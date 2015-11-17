@@ -1,0 +1,20 @@
+.mutate {
+	background: rgba(255, 0, 255, .25) !important;
+	/*transition: background .5s ease;*/
+}
+
+body {
+	background: white;
+}
+
+.page {
+	padding: 7px 12px;
+	margin: 30px;
+	background: white;
+}
+
+.chunk {
+	border: 1px solid red;
+	padding: 7px 12px;
+	margin: 30px;
+}

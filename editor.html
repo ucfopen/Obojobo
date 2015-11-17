@@ -1,0 +1,81 @@
+<!doctype html>
+<html class="no-js" lang="">
+	<head>
+		<meta charset="utf-8">
+		<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+		<title></title>
+		<meta name="description" content="">
+		<meta name="viewport" content="width=device-width, initial-scale=1">
+
+		<link rel="stylesheet" href="css/main.css">
+
+		<style>
+			body {
+				background: #efefef;
+			}
+
+			#editor-app {
+				background: white;
+				padding: 20px;
+				margin: 20px;
+				border: 1px solid rgba(0, 0, 0, 0.2);
+				white-space: pre-wrap;
+
+			}
+
+			*[data-obo-text]
+			{
+				position: relative;
+				margin: 10px;
+				border: 1px solid rgba(255, 0, 0, .1);
+			}
+
+			/**[data-oboid],
+			*[data-obo-text]
+			{
+				position: relative;
+				padding: 10px;
+				border: 1px solid rgba(255, 0, 0, .1);
+			}
+
+			*[data-oboid]:before,
+			*[data-obo-text]:before
+			{
+				position: absolute;
+				right: 0;
+				top: 0;
+				content: attr(data-obo-index);
+				font-size: 7pt;
+				background: pink;
+				color: black;
+				font-family: 'Droid Sans Mono';
+				display: block;
+			}
+
+			*[data-obo-text]:before
+			{
+				position: absolute;
+				right: 0;
+				top: 0;
+				font-size: 7pt;
+				color: gray;
+				font-family: 'Droid Sans Mono';
+				display: block;
+			}*/
+		</style>
+
+		<!--<script src="https://fb.me/react-0.13.3.js"></script>
+		<script src="https://fb.me/JSXTransformer-0.13.3.js"></script>-->
+	</head>
+	<body>
+
+		<div id="content"></div>
+
+		<div id="testapp"></div>
+		<div id="editor-app"></div>
+
+		<!--<script type="text/jsx" src="src/main.js"></script>-->
+
+		<script src="build/js/editor-app.js"></script>
+	</body>
+</html>
