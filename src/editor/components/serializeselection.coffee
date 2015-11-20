@@ -14,7 +14,6 @@ ComponentClassMap = require '../../util/componentclassmap'
 
 History = require '../history/history'
 
-OboNode = require '../../obodom/obonode'
 OboNodeUtil = require '../../obodom/obonodeutil'
 descriptorToNode = require '../../obodom/descriptortonode'
 
@@ -29,7 +28,6 @@ components =
 	paragraph:    require './paragraph'
 	figure:       require './figure'
 	list:         require './list'
-	listItem:     require './listitem'
 
 Test = require './test'
 

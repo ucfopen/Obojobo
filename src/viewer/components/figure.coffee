@@ -2,7 +2,6 @@ React = require 'react'
 StyleableText = require '../../text/styleabletext'
 
 OboNodeComponentMixin = require '../../oboreact/obonodecomponentmixin'
-OboComponentTextStatics = require '../../oboreact/obocomponenttextstatics'
 OboReact = require '../../oboreact/oboreact'
 
 

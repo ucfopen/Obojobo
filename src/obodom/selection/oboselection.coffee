@@ -1,95 +1,118 @@
-OboTextSelectionCaret = require './obotextselectioncaret'
-OboSelectionDOMUtil = require './oboselectiondomutil'
-
-OboNodeUtil = require '../obonodeutil'
-
-Text = require '../../components/text'
-
-
-getNodesFromNodeToNode = (startNode, endNode) ->
-	nodes = []
-	OboNodeUtil.getDFS nodes, startNode.root
-
-	nodes.slice nodes.indexOf(startNode), nodes.indexOf(endNode) + 1
-
+OboCursor = require './obocursor'
 
 class OboSelection
-	# new OboSelection(): Create from native selection (requires DOM)
-	# new OboSelection(descriptorObject): Create from descriptor (requires DOM)
-	# new OboSelection(id, number, id, number): Create from arguments
-	constructor: (descriptorOrStartIndex = null, startTextIndex = null, endIndex = null, endTextIndex = null) ->
-		descriptor = startIndex = descriptorOrStartIndex
+	constructor: (@module) ->
+		s = window.getSelection()
+		r = s.getRangeAt(0)
 
-		if descriptor? and typeof descriptor is 'object'
-			startIndex = descriptor.start.index
-			endIndex = descriptor.end.index
-			startTextIndex = descriptor.start.textIndex
-			endTextIndex = descriptor.end.textIndex
-		else if not (startIndex and startTextIndex and endIndex and endTextIndex)
-			range = window.getSelection().getRangeAt 0
+		start = @getChunkForDomNode r.startContainer
+		end   = @getChunkForDomNode r.endContainer
 
-			startNode = OboSelectionDOMUtil.findTextWithId(range.startContainer)
-			endNode   = OboSelectionDOMUtil.findTextWithId(range.endContainer)
+		@start     = new OboCursor(start, r.startContainer, r.startOffset)
+		@end       = new OboCursor(end, r.endContainer, r.endOffset)
+		@calculateAllNodes()
 
-			startIndex = startNode.getAttribute('data-obo-index')
-			endIndex = endNode.getAttribute('data-obo-index')
-			startTextIndex = Text.getOboTextPos range.startContainer, range.startOffset, startNode
-			endTextIndex = Text.getOboTextPos range.endContainer, range.endOffset, endNode
+		@futureStart = @futureEnd = null
 
-		@setStart startIndex, startTextIndex
-		@setEnd   endIndex, endTextIndex
+	calculateAllNodes: ->
+		# console.log 'CAN'
+		# console.log __lo.__debug_print()
 
-		@path = getNodesFromNodeToNode @start.oboNode, @end.oboNode
+		@inbetween   = []
+		@all = [@start.chunk]
 
-		window.__s
+		n = @start.chunk
+		while n? and n isnt @end.chunk
+			# console.log 'LOOKING AT', n
+			# console.log 'COMPARE   ', @end.chunk
+			if n isnt @start.chunk
+				@inbetween.push n
+				@all.push n
+			n = n.nextSibling()
 
-		console.log @, @.toDescriptor()
+		if @all[@all.length - 1] isnt @end.chunk
+			@all.push @end.chunk
 
-	setCaret: (textId, index) ->
-		@setStart textId, index
+	getChunkForDomNode: (domNode) ->
+		index = @getIndex domNode
+		@module.chunks.at index
+
+	getRange: (parentElement) ->
+		hasStart = parentElement.contains @start.node
+		hasEnd   = parentElement.contains @end.node
+
+		if not hasStart and not hasEnd then return 'insideOrOutside'
+		if     hasStart and not hasEnd then return 'start'
+		if not hasStart and     hasEnd then return 'end'
+		'both'
+
+	getIndex: (node) ->
+		while node?
+			if node.getAttribute? and node.getAttribute('data-component-index')?
+				return node.getAttribute('data-component-index')
+			node = node.parentElement
+
+	setStart: (node, offset) ->
+		@start.node = node
+		@start.offset = offset
+		@start.chunk = @getChunkForDomNode node
+		@calculateAllNodes()
+
+	setEnd: (node, offset) ->
+		@end.node = node
+		@end.offset = offset
+		@end.chunk = @getChunkForDomNode node
+		@calculateAllNodes()
+
+	setCaret: (node, offset) ->
+		@setStart node, offset
 		@collapse()
 
-	setStart: (textId, index) ->
-		@start = new OboTextSelectionCaret textId, index
-
-	setEnd: (textId, index) ->
-		@end = new OboTextSelectionCaret textId, index
-
-	# Modifies selection to a caret
-	collapse: ->
-		@end = @start.clone()
-
 	select: ->
-		console.log 'SELECT', @
-		return if not @start.domNode? or not @end.domNode?
-
-		startDomPos = Text.getDomPosition @start.textIndex, @start.domNode
-		endDomPos   = Text.getDomPosition @end.textIndex,   @end.domNode
+		return if not @start.node? or not @end.node?
 
 		s = window.getSelection()
 		r = new Range
 
-		r.setStart startDomPos.textNode, startDomPos.offset
-		r.setEnd endDomPos.textNode, endDomPos.offset
+		r.setStart @start.node, @start.offset
+		r.setEnd @end.node, @end.offset
 
 		s.removeAllRanges()
 		s.addRange r
 
-	toDescriptor: ->
-		start: @start.toDescriptor()
-		end: @end.toDescriptor()
+	collapse: ->
+		@end = @start.clone()
+
+	setFutureStart: (chunk, data) ->
+		@futureStart =
+			chunk: chunk
+			data: data
+
+	setFutureEnd: (chunk, data) ->
+		@futureEnd =
+			chunk: chunk
+			data: data
+
+	setFutureCaret: (chunk, data) ->
+		console.log 'set future caret', chunk, data
+		@setFutureStart chunk, data
+		@setFutureEnd   chunk, data
 
 
-Object.defineProperties OboSelection.prototype,
-	"type":
+Object.defineProperties OboSelection.prototype, {
+	"type": {
 		get: ->
-			if @start.index isnt @end.index         then return 'nodeRange'
-			if @start.textIndex isnt @end.textIndex then return 'textRange'
-			return 'caret'
+			s = window.getSelection()
 
-
-#@TODO
-window.__s = OboSelection
+			if @start.chunk.cid is @end.chunk.cid
+				if s.type is 'Caret'
+					return 'caret'
+				else
+					return 'textSpan'
+			else
+				return 'nodeSpan'
+	}
+}
 
 
 module.exports = OboSelection

@@ -72,15 +72,15 @@ Text = React.createClass
 
 	getInitialState: ->
 		ComponentMap.registerComponent @, @props.id
-		@props.styleableText ?= new StyleableText('Insert Text Here') #@TODO
+		@props.text ?= new StyleableText('Insert Text Here') #@TODO
 
 		return (
 			id: @props.id
-			styleableText: @props.styleableText
+			text: @props.text
 		)
 
 	componentWillReceiveProps: (nextProps) ->
-		@setState { styleableText:nextProps.styleableText }
+		@setState { text:nextProps.text }
 
 	# componentDidUpdate: ->
 	# 	startDomPos = @getDomPosition @lastCommandEvent.sel.start.index, React.findDOMNode(@)
@@ -98,7 +98,7 @@ Text = React.createClass
 
 
 	render: ->
-		mockElement = StyleableTextRenderer @state.styleableText
+		mockElement = StyleableTextRenderer @state.text
 		# React.createElement('span', { 'data-obo-type':'text' },
 		# 	React.createElement(TextElement, { descriptor:mockElement })
 		# )

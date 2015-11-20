@@ -3,14 +3,10 @@ ComponentMap = require '../util/componentmap'
 
 module.exports =
 	getInitialState: ->
-		id = @props.oboNode.id
+		id = @props.chunk.cid
 		ComponentMap.registerComponent @, id
 
-		{ oboNode:@props.oboNode }
+		{ chunk:@props.chunk }
 
 	componentWillReceiveProps: (nextProps) ->
-		@setState { oboNode:nextProps.oboNode }
-
-	# handleCommand: (commandEvent) ->
-	# 	if @constructor['on' + commandEvent.command]
-	# 		@constructor['on' + commandEvent.command]
+		@setState { chunk:nextProps.chunk }

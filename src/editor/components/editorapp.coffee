@@ -6,7 +6,6 @@ MutationPainter.observe()
 
 Keyboard = require '../../util/keyboard'
 Command = require '../commands/command'
-CommandEvent = require '../commands/commandevent'
 StyleType = require '../../text/styletype'
 
 ComponentMap = require '../../util/componentmap'
@@ -14,215 +13,31 @@ ComponentClassMap = require '../../util/componentclassmap'
 
 History = require '../history/history'
 
-OboNode = require '../../obodom/obonode'
-OboNodeUtil = require '../../obodom/obonodeutil'
-descriptorToNode = require '../../obodom/descriptortonode'
+OboSelection = require '../../obodom/selection/oboselection'
 
 OboReact = require '../../oboreact/oboreact'
 
-OboSelection = require '../../obodom/selection/oboselection'
-OboSelectionRange = require '../../obodom/selection/oboselectionrange'
-
 HTMLToOboNodes = require '../import/html'
 
-# @TODO - Dynamically or batch load all components
-components =
-	# editabletext: require './editabletext'
-	paragraph:    require './paragraph'
-	figure:       require './figure'
-	list:         require './list'
-	listItem:     require './listitem'
+Module = require '../../models/module'
+Chunk = require '../../models/chunk'
 
 Test = require './test'
 
 window.__ss = SerializeSelection
 
 
-# TextGroup = require './textgroup'
-
-# tg = new TextGroup
-# tg.add(null, {a:0})
-# tg.add(null, {b:1})
-# tg.add(null, {c:2})
-# tg.get(0).text.insertText(0, "hello")
-# tg.get(1).text.insertText(0, "world")
-# tg.get(1).text.styleText(2, 3, 'b')
-# tg.get(2).text.insertText(0, "the end!")
-# tg.merge 1
-# tg.splitText 1, 5, (data) ->
-# 	{b: data.b}
-# tg.deleteSpan 0, 2, 2, 4
-# tg.merge 0  #heend!
-# tg.__debug_print()
-
-
-# start:
-#		oboNode: <OBO NODE>
-#		cursor:
-#			node: <DOM NODE>
-#			offset: <INT>
-# inbetween: <ARRAY{OBO NODE}>
-# end:
-#		oboNode: <OBO NODE>
-#		cursor:
-#			node: <DOM NODE>
-#			offset: <INT>
-# type: type
-
-# class OboRange2
-# 	constructor: (@sel, targetNode) ->
-# 		@start = new OboCursor2
-# 		@end   = new OboCursor2
-
-# 		if targetNode.contains @sel.start.node
-# 			@start.node = @sel.start.node
-# 			@start.offset  = @sel.start.offset
-# 		else
-# 			@start.node =
-
-# class FutureSelection
-# 	constructor: (@oboNodeId, @selFn) ->
-
-# 	select: ->
-# 		@selFn()
-
-class OboSelection2
-	constructor: (@root) ->
-		s = window.getSelection()
-		r = s.getRangeAt(0)
-
-		start = @getOboNodeOfDomNode r.startContainer
-		end   = @getOboNodeOfDomNode r.endContainer
-
-		@start     = new OboCursor2(start, r.startContainer, r.startOffset)
-		@end       = new OboCursor2(end, r.endContainer, r.endOffset)
-		@calculateAllNodes()
-
-		@futureStart = @futureEnd = null
-
-	calculateAllNodes: ->
-		# console.log 'CAN'
-		# console.log __lo.__debug_print()
-
-		@inbetween   = []
-		@all = [@start.oboNode]
-
-		n = @start.oboNode
-		while n? and n isnt @end.oboNode
-			# console.log 'LOOKING AT', n
-			# console.log 'COMPARE   ', @end.oboNode
-			if n isnt @start.oboNode
-				@inbetween.push n
-				@all.push n
-			n = n.nextSibling
-
-		if @all[@all.length - 1] isnt @end.oboNode
-			@all.push @end.oboNode
-
-	getOboNodeOfDomNode: (domNode) ->
-		index = @getIndex domNode
-		@root.children[index]
-
-	getRange: (parentElement) ->
-		hasStart = parentElement.contains @start.node
-		hasEnd   = parentElement.contains @end.node
-
-		if not hasStart and not hasEnd then return 'insideOrOutside'
-		if     hasStart and not hasEnd then return 'start'
-		if not hasStart and     hasEnd then return 'end'
-		'both'
-
-	getIndex: (node) ->
-		while node?
-			if node.getAttribute? and node.getAttribute('data-component-index')?
-				return node.getAttribute('data-component-index')
-			node = node.parentElement
-
-	setStart: (node, offset) ->
-		@start.node = node
-		@start.offset = offset
-		@start.oboNode = @getOboNodeOfDomNode node
-		@calculateAllNodes()
-
-	setEnd: (node, offset) ->
-		@end.node = node
-		@end.offset = offset
-		@end.oboNode = @getOboNodeOfDomNode node
-		@calculateAllNodes()
-
-	setCaret: (node, offset) ->
-		@setStart node, offset
-		@collapse()
-
-	select: ->
-		return if not @start.node? or not @end.node?
-
-		s = window.getSelection()
-		r = new Range
-
-		r.setStart @start.node, @start.offset
-		r.setEnd @end.node, @end.offset
-
-		s.removeAllRanges()
-		s.addRange r
-
-	collapse: ->
-		@end = @start.clone()
-
-	setFutureStart: (oboNode, data) ->
-		@futureStart =
-			oboNode: oboNode
-			data: data
-
-	setFutureEnd: (oboNode, data) ->
-		@futureEnd =
-			oboNode: oboNode
-			data: data
-
-	setFutureCaret: (oboNode, data) ->
-		console.log 'set future caret', oboNode, data
-		@setFutureStart oboNode, data
-		@setFutureEnd   oboNode, data
-
-
-Object.defineProperties OboSelection2.prototype, {
-	"type": {
-		get: ->
-			s = window.getSelection()
-
-			if @start.oboNode.id is @end.oboNode.id
-				if s.type is 'Caret'
-					return 'caret'
-				else
-					return 'textSpan'
-			else
-				return 'nodeSpan'
-	}
-}
-
-class OboCursor2
-	constructor: (@oboNode = null, @node = null, @offset = null) ->
-
-	clone: ->
-		new OboCursor2 @oboNode, @node, @offset
 
 
 
-# callTree = (path, commandEvent, range) ->
-# 	for selNode in path
-# 		component = selNode.component
-# 		# console.log 'callTree', selNode, component
+ComponentClassMap.register 'heading',    require './heading'
+ComponentClassMap.register 'singletext',    require './singletext'
+ComponentClassMap.register 'list',         require './list'
+ComponentClassMap.register 'figure',       require './figure'
+ComponentClassMap.register 'question',     require './question'
+ComponentClassMap.register 'table',     require './table'
 
-# 		if component and component.handleCommand?
-# 			# console.log '_', component.handleCommand
-# 			component.handleCommand commandEvent, range
-# 			break if commandEvent.propagationStopped
-
-# 	#@TODO - this crappy (use promises???)
-# 	for cb in commandEvent.callbacks
-# 		cb commandEvent
-
-# 	commandEvent.callbacks = []
+ComponentClassMap.setDefaultComponentClass require './singletext'
 
 
 EditorApp = React.createClass
@@ -230,20 +45,11 @@ EditorApp = React.createClass
 	getInitialState: ->
 		loDescriptor = require('../../debug/fakelo')
 
-		ComponentClassMap.register 'paragraph',    components.paragraph
-		ComponentClassMap.register 'list',         components.list
-		ComponentClassMap.register 'listItem',     components.listItem
-		# ComponentClassMap.register 'editabletext', components.editabletext
-		ComponentClassMap.register 'figure',       components.figure
-		ComponentClassMap.register 'question',     require './question'
-
-		ComponentClassMap.setDefaultComponentClass components.paragraph
-
-		root = descriptorToNode loDescriptor
+		module = Module.createFromDescriptor loDescriptor
 
 		console.log 'lo be all lke', loDescriptor
-		window.__lo = root
-		console.log 'root be all like', root
+		window.__lo = module
+		console.log 'root be all like', module
 
 		@loDescriptor = loDescriptor
 		@history = new History();
@@ -251,103 +57,27 @@ EditorApp = React.createClass
 		window.__history = @history;
 
 		return (
-			root: root
+			module: module
 		)
 
-# Command.INSERT = 'insert' #insertText
-# Command.NEW_LINE = 'newLine' #split or remove
-# Command.DELETE = 'delete' #remove or deleteText, [then merge]
-# Command.CUT = 'cut' #getHTML, then remove or deleteText
-# Command.STYLE = 'style' #setStyle
-# Command.INDENT = 'indent' #indent or indentText
-
-# caret, textSpan, nodeSpan
-
-
-# start:
-#		oboNode: <OBO NODE>
-#		cursor:
-#			node: <DOM NODE>
-#			offset: <INT>
-# inbetween: <ARRAY{OBO NODE}>
-# end:
-#		oboNode: <OBO NODE>
-#		cursor:
-#			node: <DOM NODE>
-#			offset: <INT>
-# type: type
-
-
-# DeleteSelection()
-#	inbetweens.remove()
-#		@state.oboNode.remove()
-#	start.deleteSelection(sel)
-#		...
-#	end.deleteSelection(sel)
-#		...
-#		sel.end.node = aNode?
-#		sel.end.offset -= n
-#	start.merge(end)
-#		...
-#	sel.setEndToEqualTheStart()
-
-# INSERT
-#	DeleteSelection()
-#	start.insertText(sel.start.cursor, 'f')
-#		...
-#		sel.start.node = something?
-#		sel.start.offset += n
-
-# DELETE
-#	If Caret
-#		start.deleteText(sel)
-#	Else
-#		DeleteSelection()
-
-# NEW_LINE
-#	DeleteSelection()
-#	start.split(sel.start.cursor)
-
-# CUT
-#	AllNodes.getHTML(sel)
-#	DeleteSelection()
-
-# STYLE
-#	AllNodes.styleSelection(sel)
-
-# INDENT
-#	AllNodes.indentSelection(sel)
-
-
-	# DeleteSelection()
-	#	inbetweens.remove()
-	#		@state.oboNode.remove()
-	#	start.deleteSelection(sel)
-	#		...
-	#	end.deleteSelection(sel)
-	#		...
-	#		sel.end.node = aNode?
-	#		sel.end.offset -= n
-	#	start.merge(end)
-	#		...
-	#	sel.setEndToEqualTheStart()
 	deleteSelection: (sel) ->
 		return if sel.type is 'caret'
 
 		for node in sel.inbetween
 			node.remove()
 
-		@callComponentFn 'deleteSelection', @sel.start.oboNode
+		@callComponentFn 'deleteSelection', @sel.start.chunk
 
 		if sel.type is 'nodeSpan'
-			@callComponentFn 'deleteSelection', @sel.end.oboNode
-			@callComponentFn 'merge', @sel.start.oboNode, [@sel.end.oboNode]
+			@callComponentFn 'deleteSelection', @sel.end.chunk
+			if @callComponentFn('acceptMerge', @sel.end.chunk, [@sel.start.chunk])
+				@callComponentFn 'merge', @sel.start.chunk, [@sel.end.chunk]
 		# 	# @sel.end.oboNode.remove()
 
 		sel.collapse()
 
 	onKeyDown: (event) ->
-		@sel = new OboSelection2(@state.root)
+		@sel = new OboSelection @state.module
 		console.log 'SELBE'
 		console.log @sel
 
@@ -362,15 +92,19 @@ EditorApp = React.createClass
 			when Keyboard.BACKSPACE, Keyboard.DELETE
 				event.preventDefault()
 				if @sel.type is 'caret'
-					caretEdge = @callComponentFn 'getCaretEdge', @sel.start.oboNode
+					caretEdge = @callComponentFn 'getCaretEdge', @sel.start.chunk
 					deleteForwards = event.keyCode is Keyboard.DELETE
 					switch
 						when caretEdge is 'start' and not deleteForwards
-							@send 'merge', @sel.start.oboNode.prevSibling, [@sel.start.oboNode]
+							if @callComponentFn('acceptMerge', @sel.start.chunk, [@sel.start.chunk.prevSibling()])
+								@send 'merge', @sel.start.chunk.prevSibling(), [@sel.start.chunk]
+
 						when caretEdge is 'end' and deleteForwards
-							@send 'merge', @sel.start.oboNode, [@sel.start.oboNode.nextSibling]
+							if @callComponentFn('acceptMerge', @sel.start.chunk.nextSibling(), [@sel.start.chunk])
+								@send 'merge', @sel.start.chunk, [@sel.start.chunk.nextSibling()]
+
 						else
-							@send 'deleteText', @sel.start.oboNode, [event.keyCode is Keyboard.DELETE]
+							@send 'deleteText', @sel.start.chunk, [event.keyCode is Keyboard.DELETE]
 				else
 					@deleteSelection @sel
 					@afterSend()
@@ -384,7 +118,7 @@ EditorApp = React.createClass
 			when Keyboard.ENTER
 				event.preventDefault()
 				@deleteSelection @sel
-				@send 'splitText', @sel.start.oboNode, [event.shiftKey]
+				@send 'splitText', @sel.start.chunk, [event.shiftKey]
 
 		if metaOrCtrlKeyHeld
 			switch event.keyCode
@@ -420,7 +154,7 @@ EditorApp = React.createClass
 		char = String.fromCharCode event.charCode
 		# @handleKey char, event
 
-		@selLater = @sel.start.oboNode
+		@selLater = @sel.start.chunk
 
 		@sendText char
 
@@ -451,17 +185,9 @@ EditorApp = React.createClass
 		@afterSend()
 
 	sendText: (char) ->
+		console.log 'setText', char, @sel.start.chunk
 		@deleteSelection @sel
-		@send 'insertText', @sel.start.oboNode, [char]
-
-	# handleKey: (char, event) ->
-	# 	switch event.keyCode
-	# 		when Keyboard.ENTER
-	# 			if event.shiftKey
-	# 				@send Command.INSERT_TEXT, ["\n"]
-	# 			else
-	# 				@send Command.SPLIT_TEXT, null
-	# 		else @send Command.INSERT_TEXT, [char]
+		@send 'insertText', @sel.start.chunk, [char]
 
 	beforeSend: ->
 		console.time 'send'
@@ -472,13 +198,13 @@ EditorApp = React.createClass
 		# @savedSelection = SerializeSelection.save()
 		@savedSelection =
 			start:
-				index: @sel.start.oboNode.index
-				data:  @callComponentFn 'saveSelection', @sel.start.oboNode, [@sel.start]
+				index: @sel.start.chunk.getIndex()
+				data:  @callComponentFn 'saveSelection', @sel.start.chunk, [@sel.start]
 			end:
-				index: @sel.end.oboNode.index
-				data:  @callComponentFn 'saveSelection', @sel.end.oboNode, [@sel.end]
+				index: @sel.end.chunk.getIndex()
+				data:  @callComponentFn 'saveSelection', @sel.end.chunk, [@sel.end]
 
-		console.log 'ss=',@savedSelection.start.data.offset
+		# console.log 'ss=',@savedSelection
 		console.timeEnd 'ss'
 
 		#prime the pumps
@@ -487,7 +213,7 @@ EditorApp = React.createClass
 
 	afterSend: ->
 		console.time 'toDescriptor'
-		@loDescriptor = @state.root.toDescriptor true
+		@loDescriptor = @state.module.toJSON()
 		console.timeEnd 'toDescriptor'
 
 		console.timeEnd 'send'
@@ -509,59 +235,22 @@ EditorApp = React.createClass
 		@afterSend()
 
 	callComponentFn: (fn, node, data) ->
-		if node.componentClass? and node.componentClass[fn]?
-			return node.componentClass[fn].apply node.componentClass, [@sel, node].concat(data)
+		componentClass = node.getComponent()
+		if not componentClass[fn] then return null
 
-		null
-
-	# sendOLD: (command, data = []) ->
-	# 	# return
-	# 	@sel = new OboSelection()
-
-
-	# 	startComponent = @sel.start.path.last.component
-	# 	endComponent   = @sel.end.path.last.component
-
-	# 	return if not startComponent or not endComponent
-
-	# 	#prime the pumps
-	# 	if @history.length is 0
-	# 		@history.add @loDescriptor, @sel.toDescriptor()
-
-	# 	commandEvent = new CommandEvent command, @sel, data
-	# 	@selectionPending = @sel
-
-	# 	if @sel.type isnt 'nodeRange'
-	# 		callTree @sel.start.path.all, commandEvent, new OboSelectionRange('only', @sel.start.textIndex, @sel.end.textIndex, @sel.start.oboNode)
-	# 	else
-	# 		callTree @sel.start.path.all, commandEvent, new OboSelectionRange('start', @sel.start.textIndex, Infinity, @sel.start.oboNode)
-
-	# 		nodePath = @sel.path
-	# 		console.log 'node path be all', nodePath
-	# 		for oboNode in nodePath.slice(1, -1)
-	# 			component = ComponentMap.getComponentById oboNode.id
-	# 			if component?
-	# 				component.handleCommand commandEvent, new OboSelectionRange('inside', 0, Infinity, oboNode)
-
-	# 		callTree @sel.end.path.all, commandEvent, new OboSelectionRange('end', 0, @sel.end.textIndex, @sel.end.oboNode)
-
-	# 	console.time 'toDescriptor'
-	# 	@loDescriptor = @state.root.toDescriptor true
-	# 	console.timeEnd 'toDescriptor'
-
-	# 	@onChildUpdate commandEvent
+		componentClass[fn].apply componentClass, [@sel, node].concat(data)
 
 	undo: ->
 		history = @history.undo()
 		console.log 'UNDO RESTORE', history.lo
-		console.log descriptorToNode(history.lo)
-		@setState({ root:descriptorToNode(history.lo) })
+		console.log Module.createFromDescriptor(history.lo)
+		@setState({ module:Module.createFromDescriptor(history.lo) })
 		if history.selection
 			@selectionPending = history.selection
 
 	redo: () ->
 		history = @history.redo()
-		@setState({ root:descriptorToNode(history.lo) })
+		@setState({ module:Module.createFromDescriptor(history.lo) })
 		if history.selection
 			@selectionPending = history.selection
 
@@ -569,27 +258,26 @@ EditorApp = React.createClass
 		# @sel.select()
 		# @tempSel = SerializeSelection.save()
 
-		@setState { root:@state.root }
+		@setState { module:@state.module }
 
 	updateSelection: ->
 		console.log 'UPDATE SELECTION'
 		console.log @sel
 
 		# @callComponentFn 'updateSelection'
-		if @sel.futureStart? and @sel.futureEnd? and @sel.futureStart.oboNode.id is @sel.futureEnd.oboNode.id
-			console.log 'carets'
-			@callComponentFn 'updateSelection', @sel.futureStart.oboNode, ['inside']
+		if @sel.futureStart? and @sel.futureEnd? and @sel.futureStart.chunk.cid is @sel.futureEnd.chunk.cid
+			@callComponentFn 'updateSelection', @sel.futureStart.chunk, ['inside']
 		else
 			if @sel.futureStart?
-				@callComponentFn 'updateSelection', @sel.futureStart.oboNode, ['start']
+				@callComponentFn 'updateSelection', @sel.futureStart.chunk, ['start']
 			if @sel.futureEnd?
-				@callComponentFn 'updateSelection', @sel.futureEnd.oboNode, ['end']
+				@callComponentFn 'updateSelection', @sel.futureEnd.chunk, ['end']
 
 		@sel.select()
 
 	#@sel.start.oboNode.index
 	componentDidUpdate: ->
-		console.log 'CDUUUUUU'
+		# console.log 'CDUUUUUU'
 
 		@updateSelection()
 
@@ -598,14 +286,12 @@ EditorApp = React.createClass
 			# @history.add @loDescriptor, @savedSelection
 			s = {
 				start:
-					index: @sel.futureStart.oboNode.index
+					index: @sel.futureStart.chunk.getIndex()
 					data:  @sel.futureStart.data
 				end:
-					index: @sel.futureEnd.oboNode.index
+					index: @sel.futureEnd.chunk.getIndex()
 					data:  @sel.futureEnd.data
 			}
-
-			console.log 'AH PUSHA', s
 
 			@history.add @loDescriptor, s
 			# delete @savedSelection
@@ -630,11 +316,11 @@ EditorApp = React.createClass
 			console.log @history
 			console.log @selectionPending
 
-			startOboNode = @state.root.children[@selectionPending.start.index]
-			endOboNode   = @state.root.children[@selectionPending.end.index]
+			startChunk = @state.module.chunks.at @selectionPending.start.index
+			endChunk   = @state.module.chunks.at @selectionPending.end.index
 
-			start = @callComponentFn 'restoreSelection', startOboNode, [@selectionPending.start.data]
-			end   = @callComponentFn 'restoreSelection', endOboNode, [@selectionPending.end.data]
+			start = @callComponentFn 'restoreSelection', startChunk, [@selectionPending.start.data]
+			end   = @callComponentFn 'restoreSelection', endChunk, [@selectionPending.end.data]
 
 			s = window.getSelection()
 			r = new Range
@@ -673,7 +359,7 @@ EditorApp = React.createClass
 	# 	console.timeEnd 'kp'
 
 	saveHistory: ->
-		@loDescriptor = @state.root.toDescriptor true
+		@loDescriptor = @state.module.toJSON()
 		@history.add @loDescriptor, null
 
 	# renderTEST: ->
@@ -690,47 +376,27 @@ EditorApp = React.createClass
 	# 			React.createElement Test
 
 	render: ->
-		OboReact.createElement 'div', @state.root, '0',
-			{
-				onClick: @onClick,
-				onKeyDown: @onKeyDown,
-				onKeyPress: @onKeyPress,
-				onPaste: @onPaste,
-				contentEditable: true,
-			},
-			@state.root.children.map (childNode, index) ->
-				newIndex = '0.' + index
-				React.createElement 'div', { className:'component', 'data-component-index':index, 'data-oboid':childNode.id },
-					OboReact.createElement childNode.componentClass, childNode, newIndex, { oboNode:childNode, index:newIndex, parentIndex:'0', 'data-butts':'a' }
-			# OboReact.createChildren @state.root, '0'
+		saveHistoryFn = @saveHistory
 
-	# renderOLD: ->
-	# 	oboNode = @state.root
-
-	# 	children = []
-	# 	for childNode, i in oboNode.children
-	# 		continue if not childNode.componentClass
-
-	# 		children.push React.createElement childNode.componentClass, {
-	# 			ref: oboNode.type + i,
-	# 			oboNode: childNode,
-	# 			key: childNode.id,
-	# 			index: i,
-	# 			saveHistory: @saveHistory,
-	# 			parentIndex: '0'
-	# 		}
-
-	# 	React.createElement 'div', {
-	# 		'data-oboid': oboNode.id,
-	# 		'data-obo-type': oboNode.type,
-	# 		'data-obo-index': 0,
-	# 		'data-new-obo-id': '0',
-	# 		contentEditable: true,
-	# 		onClick: @onClick
-	# 		onKeyDown: @onKeyDown
-	# 		onKeyPress: @onKeyPress
-	# 		onKeyUp: @onKeyUp
-	# 	}, children
+		React.createElement 'div', {
+			onClick: @onClick,
+			onKeyDown: @onKeyDown,
+			onKeyPress: @onKeyPress,
+			onPaste: @onPaste,
+			contentEditable: true
+		},
+			@state.module.chunks.models.map (chunk, index) ->
+				React.createElement 'div', {
+					className: 'component'
+					'data-component-type': chunk.get 'type'
+					'data-component-index': index
+					'data-oboid': chunk.cid
+					key: index
+				},
+					React.createElement chunk.getComponent(), {
+						chunk: chunk
+						saveHistoryFn: saveHistoryFn
+					}
 
 
 

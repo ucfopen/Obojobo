@@ -1,7 +1,6 @@
 React = require 'react'
 
 OboNodeComponentMixin = require '../../oboreact/obonodecomponentmixin'
-OboComponentTextStatics = require '../../oboreact/obocomponenttextstatics'
 OboReact = require '../../oboreact/oboreact'
 
 QuestionItem = require './question/questionitem'

@@ -3,129 +3,142 @@ TextGroup = require './textgroup'
 
 POS = require './textpositionmethods'
 
+mergeDataFn = (consumer, digested) -> consumer
+
 methods =
-	# SERIALIZATION/DECODE METHODS
-	# ================================================
-	createNodeDataFromDescriptor: (descriptor) ->
-		textGroup: TextGroup.fromDescriptor descriptor.data.textGroup
-		indent: 0
-
-	getDataDescriptor: (oboNode) ->
-		indent: oboNode.data.indent
-		textGroup: oboNode.data.textGroup.toDescriptor()
-
 	# STATE QUERIES
 	# ================================================
-	getCaretEdge: (sel, oboNode) ->
-		info = POS.getCaretInfo sel.start, oboNode
+	getCaretEdge: (sel, chunk) ->
+		info = POS.getCaretInfo sel.start, chunk
+		data = chunk.get 'data'
 
 		if info.textIndex is 0 and info.offset <= 0 then return 'start'
-		if info.textIndex is oboNode.data.textGroup.length - 1 and info.offset >= oboNode.data.textGroup.last.text.length then return 'end'
+		if info.textIndex is data.textGroup.length - 1 and info.offset >= data.textGroup.last.text.length then return 'end'
 		'inside'
 
 	# CARET OPERATIONS
 	# ================================================
-	insertText: (sel, oboNode, textToInsert) ->
-		info = POS.getCaretInfo sel.start, oboNode
+	insertText: (sel, chunk, textToInsert) ->
+		console.log 'insertText', arguments
+
+		info = POS.getCaretInfo sel.start, chunk
 		info.text.insertText info.offset, textToInsert
 
-		sel.setFutureCaret sel.start.oboNode, { offset: info.offset + textToInsert.length, childIndex: info.textIndex }
+		sel.setFutureCaret sel.start.chunk, { offset: info.offset + textToInsert.length, childIndex: info.textIndex }
 
-	deleteText: (sel, oboNode, deleteForwards) ->
-		info = POS.getCaretInfo sel.start, oboNode
+	deleteText: (sel, chunk, deleteForwards) ->
+		info = POS.getCaretInfo sel.start, chunk
+		data = chunk.get 'data'
 
-		if not deleteForwards and info.offset is 0 and info.text isnt oboNode.data.textGroup.first
-			sel.setFutureCaret oboNode, { offset: oboNode.data.textGroup.get(info.textIndex - 1).text.length, childIndex: info.textIndex - 1}
-			oboNode.data.textGroup.merge info.textIndex - 1
+		if not deleteForwards and info.offset is 0 and info.text isnt data.textGroup.first
+			sel.setFutureCaret chunk, { offset: data.textGroup.get(info.textIndex - 1).text.length, childIndex: info.textIndex - 1}
+			data.textGroup.merge info.textIndex - 1, mergeDataFn
 			return
 
-		if deleteForwards and info.offset is info.text.length and info.text isnt oboNode.data.textGroup.last and oboNode.data.textGroup.length > 1
-			sel.setFutureCaret oboNode, { offset: info.offset, childIndex: info.textIndex }
-			oboNode.data.textGroup.merge info.textIndex
+		if deleteForwards and info.offset is info.text.length and info.text isnt data.textGroup.last and data.textGroup.length > 1
+			sel.setFutureCaret chunk, { offset: info.offset, childIndex: info.textIndex }
+			data.textGroup.merge info.textIndex, mergeDataFn
 			return
 
 		[start, end] = if not deleteForwards then [info.offset - 1, info.offset] else [info.offset, info.offset + 1]
 
 		info.text.deleteText start, end
 
-		sel.setFutureCaret oboNode, { offset: start, childIndex: info.textIndex }
+		sel.setFutureCaret chunk, { offset: start, childIndex: info.textIndex }
 
-	splitText: (sel, oboNode, shiftKey) ->
-		info = POS.getCaretInfo sel.start, oboNode
+	splitText: (sel, chunk, shiftKey) ->
+		console.log 'splitText', arguments
+
+		info = POS.getCaretInfo sel.start, chunk
 
 		newText = info.text.split info.offset
 
-		clonedNode = oboNode.clone()
-		clonedNode.data.textGroup.first.text = newText
-		oboNode.addAfter clonedNode
+		clonedNode = chunk.clone()
+		clonedNode.get('data').textGroup.first.text = newText
+		chunk.addAfter clonedNode
 
 		sel.setFutureCaret clonedNode, { offset: 0, childIndex: 0 }
 
 	# MODIFY SELECTION OPERATIONS
 	# ================================================
 
-	deleteSelection: (sel, oboNode) ->
-		span = POS.getSelSpanInfo sel, oboNode
+	deleteSelection: (sel, chunk) ->
+		span = POS.getSelSpanInfo sel, chunk
 
-		oboNode.data.textGroup.deleteSpan span.start.textIndex, span.start.offset, span.end.textIndex, span.end.offset, @mergeTextGroups
+		chunk.get('data').textGroup.deleteSpan span.start.textIndex, span.start.offset, span.end.textIndex, span.end.offset, @mergeTextGroups
 
-		range = sel.getRange(oboNode.domEl)
+		range = sel.getRange(chunk.getDomEl())
 		if range is 'start' or range is 'both'
-			sel.setFutureCaret oboNode, { offset: span.start.offset, childIndex: span.start.textIndex }
+			sel.setFutureCaret chunk, { offset: span.start.offset, childIndex: span.start.textIndex }
 
-	styleSelection: (sel, oboNode, styleType, styleData) ->
-		span = POS.getSelSpanInfo sel, oboNode
+	styleSelection: (sel, chunk, styleType, styleData) ->
+		span = POS.getSelSpanInfo sel, chunk
+		data = chunk.get('data')
 
-		oboNode.data.textGroup.toggleStyleText span.start.textIndex, span.start.offset, span.end.textIndex, span.end.offset, styleType, styleData
+		console.log 'styleSelection', arguments
+		console.log span
+		console.log span.start.textIndex, span.start.offset, span.end.textIndex, span.end.offset
 
-		POS.reselectSpan sel, oboNode, span
+		data.textGroup.toggleStyleText span.start.textIndex, span.start.offset, span.end.textIndex, span.end.offset, styleType, styleData
+
+		POS.reselectSpan sel, chunk, span
 
 	# NO SELECTION OPERATIONS
 	# ================================================
 
-	merge: (sel, consumerNode, digestedNode) ->
-		oldTextLength = consumerNode.data.textGroup.last.text.length
+	acceptMerge: (sel, digestedChunk, consumerChunk) -> true
 
-		consumerNode.data.textGroup.last.text.merge digestedNode.data.textGroup.first.text
-		digestedNode.remove()
+	merge: (sel, consumerChunk, digestedChunk) ->
+		console.clear()
+		console.log 'merge', sel, consumerChunk, digestedChunk
 
-		sel.setFutureCaret consumerNode, { offset: oldTextLength, childIndex: consumerNode.data.textGroup.length - 1 }
+		consumerData = consumerChunk.get 'data'
+		digestedData = digestedChunk.get 'data'
 
-	indent: (sel, oboNode, decreaseIndent) ->
+		oldTextLength = consumerData.textGroup.last.text.length
+
+		consumerData.textGroup.last.text.merge digestedData.textGroup.first.text
+		digestedChunk.remove()
+
+		sel.setFutureCaret consumerChunk, { offset: oldTextLength, childIndex: consumerData.textGroup.length - 1 }
+
+	indent: (sel, chunk, decreaseIndent) ->
 		if sel.type is 'caret'
-			info = POS.getCaretInfo sel.start, oboNode
+			info = POS.getCaretInfo sel.start, chunk
 			if info.textIndex isnt 0 or info.offset isnt 0
-				return @insertText sel, oboNode, "\t"
+				return @insertText sel, chunk, "\t"
+
+		data = chunk.get 'data'
 
 		if not decreaseIndent
-			oboNode.data.indent++
-		else if oboNode.data.indent > 0
-			oboNode.data.indent--
+			data.indent++
+		else if data.indent > 0
+			data.indent--
 
 	# STORING SELECTION OPERATIONS
 	# ================================================
 
-	saveSelection: (sel, oboNode, cursor) ->
-		info = POS.getCaretInfo cursor, oboNode
+	saveSelection: (sel, chunk, cursor) ->
+		info = POS.getCaretInfo cursor, chunk
 		childIndex: info.textIndex
 		offset:     info.offset
 
-	restoreSelection: (sel, oboNode, savedSelData) ->
+	restoreSelection: (sel, chunk, savedSelData) ->
 		console.log '_____________________________restore selection', arguments
-		node = POS.getTextNode oboNode, savedSelData.childIndex
+		node = POS.getTextNode chunk, savedSelData.childIndex
 		console.log node
 		return null if not node?
 
 		Text.getDomPosition savedSelData.offset, node
 
-	updateSelection: (sel, oboNode, type) ->
+	updateSelection: (sel, chunk, type) ->
 		if type is 'start' or type is 'inside'
-			node = POS.getTextNode oboNode, sel.futureStart.data.childIndex
+			node = POS.getTextNode chunk, sel.futureStart.data.childIndex
 			o = Text.getDomPosition sel.futureStart.data.offset, node
 			sel.setStart o.textNode, o.offset
 
 		if type is 'end' or type is 'inside'
-			node = POS.getTextNode oboNode, sel.futureEnd.data.childIndex
+			node = POS.getTextNode chunk, sel.futureEnd.data.childIndex
 			o = Text.getDomPosition sel.futureEnd.data.offset, node
 			sel.setEnd o.textNode, o.offset
 

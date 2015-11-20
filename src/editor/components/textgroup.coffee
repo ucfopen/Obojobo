@@ -15,6 +15,9 @@ class TextGroup
 	add: (text, data) ->
 		@items.push new TextGroupItem text, data
 
+	addAt: (index, text, data) ->
+		@items.splice index, 0, new TextGroupItem(text, data)
+
 	get: (index) ->
 		@items[index]
 
@@ -85,6 +88,23 @@ class TextGroup
 		@items = newItems
 		@merge startIndex
 
+	clearSpan: (startIndex, startTextIndex, endIndex, endTextIndex) ->
+		startItem = @items[startIndex]
+		endItem   = @items[endIndex]
+		startText = startItem.text
+		endText   = endItem.text
+
+		if startText is endText
+			startText.deleteText startTextIndex, endTextIndex
+			return
+
+		startText.deleteText startTextIndex, startText.length
+		endText.deleteText 0, endTextIndex
+
+		for item, i in @items
+			if i > startIndex and i < endIndex
+				item.text.init()
+
 	styleText: (startIndex, startTextIndex, endIndex, endTextIndex, styleType, styleData) ->
 		@applyStyleFunction 'styleText', arguments
 
@@ -98,6 +118,8 @@ class TextGroup
 	applyStyleFunction: (fn, args) ->
 		[startIndex, startTextIndex, endIndex, endTextIndex, styleType, styleData] = args
 
+		console.log 'APPLY STYLE FUNCTION', startIndex, startTextIndex, endIndex, endTextIndex, styleType, styleData
+
 		startItem = @items[startIndex]
 		endItem   = @items[endIndex]
 		startText = startItem.text
@@ -108,12 +130,15 @@ class TextGroup
 			return
 
 
+		foundStartText = false
 		for item in @items
 			if item.text is startText
 				item.text[fn] startTextIndex, startText.length, styleType, styleData
+				foundStartText = true
 			else if item.text is endText
 				item.text[fn] 0, endTextIndex, styleType, styleData
-			else
+				break
+			else if foundStartText
 				item.text[fn] 0, item.text.length, styleType, styleData
 
 

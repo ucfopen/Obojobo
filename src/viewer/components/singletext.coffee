@@ -1,13 +1,12 @@
 React = require 'react'
 
 OboNodeComponentMixin = require '../../oboreact/obonodecomponentmixin'
-OboComponentTextStatics = require '../../oboreact/obocomponenttextstatics'
 OboReact = require '../../oboreact/oboreact'
 
 StyleableText = require '../../text/styleabletext'
 TextGroup = require '../../editor/components/textgroup'
 
-Paragraph = React.createClass
+SingleText = React.createClass
 	mixins: [OboNodeComponentMixin]
 	statics:
 		createNodeDataFromDescriptor: (descriptor) ->
@@ -15,9 +14,11 @@ Paragraph = React.createClass
 			indent: 0
 
 	render: ->
-		OboReact.createElement('p', @state.oboNode, @props.index, null,
-			OboReact.createText(@state.oboNode.data.textGroup.get(0).text, @state.oboNode, 0, null, @props.index)
+		data = @state.chunk.get('data')
+
+		React.createElement(data.type, null,
+			OboReact.createText(data.textGroup.get(0).text, @state.chunk, 0, null)
 		)
 
 
-module.exports = Paragraph
+module.exports = SingleText

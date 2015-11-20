@@ -1,55 +1,63 @@
 Text = require '../../components/text'
 
 TextPositionMethods =
-	getCaretInfo: (cursor, oboNode) ->
+	getCaretInfo: (cursor, chunk) ->
 		info = Text.getOboTextInfo cursor.node, cursor.offset
-		info.text = TextPositionMethods.getText oboNode, info.textIndex
+		info.text = TextPositionMethods.getText chunk, info.textIndex
 
 		info
 
-	getText: (oboNode, index) ->
-		oboNode.data.textGroup.get(index).text
+	getText: (chunk, index) ->
+		data = chunk.get 'data'
 
-	getStartInfo: (oboNode) ->
+		data.textGroup.get(index).text
+
+	getStartInfo: (chunk) ->
+		data = chunk.get 'data'
+
 		textIndex: 0
 		offset:    0
-		text:      oboNode.data.textGroup.first.text
+		text:      data.textGroup.first.text
 
-	getEndInfo: (oboNode) ->
-		textIndex: oboNode.data.textGroup.length - 1
-		offset:    oboNode.data.textGroup.last.text.length
-		text:      oboNode.data.textGroup.last.text
+	getEndInfo: (chunk) ->
+		data = chunk.get 'data'
 
-	getSelSpanInfo: (sel, oboNode) ->
-		textGroup = oboNode.data.textGroup
+		textIndex: data.textGroup.length - 1
+		offset:    data.textGroup.last.text.length
+		text:      data.textGroup.last.text
 
-		switch sel.getRange(oboNode.domEl)
+	getSelSpanInfo: (sel, chunk) ->
+		data = chunk.get 'data'
+
+		textGroup = data.textGroup
+
+		switch sel.getRange(chunk.getDomEl())
 			when 'start'
-				start: TextPositionMethods.getCaretInfo sel.start, oboNode
-				end:   TextPositionMethods.getEndInfo oboNode
+				start: TextPositionMethods.getCaretInfo sel.start, chunk
+				end:   TextPositionMethods.getEndInfo chunk
 
 			when 'end'
-				start: TextPositionMethods.getStartInfo oboNode
-				end:   TextPositionMethods.getCaretInfo sel.end, oboNode
+				start: TextPositionMethods.getStartInfo chunk
+				end:   TextPositionMethods.getCaretInfo sel.end, chunk
 
 			when 'both'
-				start: TextPositionMethods.getCaretInfo sel.start, oboNode
-				end:   TextPositionMethods.getCaretInfo sel.end, oboNode
+				start: TextPositionMethods.getCaretInfo sel.start, chunk
+				end:   TextPositionMethods.getCaretInfo sel.end, chunk
 
 			when 'insideOrOutside'
-				start: TextPositionMethods.getStartInfo oboNode
-				end:   TextPositionMethods.getEndInfo oboNode
+				start: TextPositionMethods.getStartInfo chunk
+				end:   TextPositionMethods.getEndInfo chunk
 
-	getTextNode: (oboNode, childIndex) ->
-		oboNode.domEl.querySelector "*[data-text-index='#{childIndex}']"
+	getTextNode: (chunk, childIndex) ->
+		chunk.getDomEl().querySelector "*[data-text-index='#{childIndex}']"
 
-	reselectSpan: (sel, oboNode, span = null) ->
-		span ?=  TextPositionMethods.getSelSpanInfo sel, oboNode
-		range = sel.getRange(oboNode.domEl)
+	reselectSpan: (sel, chunk, span = null) ->
+		span ?=  TextPositionMethods.getSelSpanInfo sel, chunk
+		range = sel.getRange(chunk.getDomEl())
 		if range is 'start' or range is 'both'
-			sel.setFutureStart oboNode, { offset: span.start.offset, childIndex: span.start.textIndex }
+			sel.setFutureStart chunk, { offset: span.start.offset, childIndex: span.start.textIndex }
 		if range is 'end' or range is 'both'
-			sel.setFutureEnd oboNode, { offset: span.end.offset, childIndex: span.end.textIndex }
+			sel.setFutureEnd chunk, { offset: span.end.offset, childIndex: span.end.textIndex }
 
 
 module.exports = TextPositionMethods

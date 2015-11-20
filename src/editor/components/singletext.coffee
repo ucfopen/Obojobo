@@ -4,50 +4,48 @@ React = require 'react'
 OboNodeComponentMixin = require '../../oboreact/obonodecomponentmixin'
 OboReact = require '../../oboreact/oboreact'
 
+ViewerSingleText = require '../../viewer/components/singletext'
+
 Text = require '../../components/text'
 StyleableText = require '../../text/styleabletext'
 TextGroup = require './textgroup'
 
 TextMethods = require './textmethods'
-POS = require './textpositionmethods'
-
-Chunk = require '../../models/chunk'
 
 
 
 
 
-Figure = React.createClass
+SingleText = React.createClass
 	mixins: [OboNodeComponentMixin]
 	statics:
-		consumableElements: []
+		consumableElements: ['p']
 
 		# OBONODE DATA METHODS
 		# ================================================
 		createNewNodeData: ->
 			textGroup: new TextGroup()
-			url: null
-			position: 'center'
+			indent: 0
+			type: 'p'
 
 		cloneNodeData: (data) ->
 			textGroup: data.textGroup.clone()
-			url: data.url
-			position: data.position
+			indent: data.indent
+			type: data.type
 
 		# SERIALIZATION/DECODE METHODS
 		# ================================================
 		createNodeDataFromDescriptor: (descriptor) ->
-			console.log 'descr be all like', descriptor
 			textGroup: TextGroup.fromDescriptor descriptor.data.textGroup
-			url: descriptor.data.url
-			position: descriptor.data.position
+			indent: descriptor.data.indent
+			type: descriptor.data.type
 
 		getDataDescriptor: (chunk) ->
 			data = chunk.get 'data'
 
+			indent: data.indent
 			textGroup: data.textGroup.toDescriptor()
-			url: data.url
-			position: data.position
+			type: data.type
 
 		# HTML METHODS
 		# ================================================
@@ -62,20 +60,10 @@ Figure = React.createClass
 				}
 			]
 
-		splitText: (sel, chunk, shiftKey) ->
-			info = POS.getCaretInfo sel.start, chunk
-
-			newText = info.text.split info.offset
-
-			newNode = Chunk.create() #@TODO - assumes it has a textGroup
-			newNode.get('data').textGroup.first.text = newText
-			chunk.addAfter newNode
-
-			sel.setFutureCaret newNode, { offset: 0, childIndex: 0 }
-
 		getCaretEdge:                 TextMethods.getCaretEdge
 		insertText:                   TextMethods.insertText
 		deleteText:                   TextMethods.deleteText
+		splitText:                    TextMethods.splitText
 		deleteSelection:              TextMethods.deleteSelection
 		styleSelection:               TextMethods.styleSelection
 		acceptMerge:                  TextMethods.acceptMerge
@@ -85,26 +73,20 @@ Figure = React.createClass
 		restoreSelection:             TextMethods.restoreSelection
 		updateSelection:              TextMethods.updateSelection
 
-	setPosition: ->
-		data = @state.chunk.get 'data'
-
-		positions = ['left', 'center', 'right']
-		curIndex = positions.indexOf data.position
-		curIndex = (curIndex + 1) % positions.length
-		data.position = positions[curIndex]
-
-		@setState { chunk:@state.chunk }
-		@props.saveHistoryFn()
-
 	render: ->
 		data = @state.chunk.get('data')
 
-		React.createElement 'div', { contentEditable:false },
-			React.createElement 'button', { onClick: @setPosition }, 'Set Position'
-			React.createElement 'figure', { style: { textAlign:data.position }},
-				React.createElement 'img', { src:data.url, width:300 },
-				React.createElement 'figcaption', { contentEditable:true },
-					OboReact.createText(data.textGroup.get(0).text, @state.chunk, 0, { contentEditable:true })
+		React.createElement('div', { style: { marginLeft: (data.indent * 20) + 'px' } },
+			React.createElement(ViewerSingleText, { chunk:@state.chunk, index:@props.index })
+		)
 
 
-module.exports = Figure
+# console.log SingleText
+# console.log SingleText.createNewNodeData
+# for o, k in SingleText
+# 	console.log o, k
+
+# TextMethods.decorate SingleText
+
+
+module.exports = SingleText

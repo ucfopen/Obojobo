@@ -3,33 +3,25 @@ React = require 'react'
 ComponentMap = require '../../util/componentmap'
 ComponentClassMap = require '../../util/componentclassmap'
 
-OboNode = require '../../obodom/obonode'
-OboNodeUtil = require '../../obodom/obonodeutil'
-descriptorToNode = require '../../obodom/descriptortonode'
-
 OboReact = require '../../oboreact/oboreact'
 
 OboSelection = require '../../obodom/selection/oboselection'
 
 # @TODO - Dynamically or batch load all components
 components =
-	editabletext: require './editabletext'
-	paragraph:    require './paragraph'
+	singletext:    require './singletext'
 	figure:       require './figure'
 	list:         require './list'
-	listItem:     require './listitem'
 
 
 ViewerApp = React.createClass
 	getInitialState: ->
 		loDescriptor = require('../../debug/fakelo')
 
-		ComponentClassMap.register 'paragraph',    components.paragraph
-		ComponentClassMap.register 'list',         components.list
-		ComponentClassMap.register 'listItem',     components.listItem
-		ComponentClassMap.register 'editabletext', components.editabletext
-		ComponentClassMap.register 'figure',       components.figure
-		ComponentClassMap.register 'question',     require('./question')
+		ComponentClassMap.register 'singletext',    require './singletext'
+		ComponentClassMap.register 'list',         require './list'
+		ComponentClassMap.register 'figure',       require './figure'
+		ComponentClassMap.register 'question',     require './question'
 
 		root = descriptorToNode loDescriptor
 

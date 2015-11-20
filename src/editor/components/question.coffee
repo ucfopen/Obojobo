@@ -1,8 +1,6 @@
 React = require 'react'
 
 OboNodeComponentMixin = require '../../oboreact/obonodecomponentmixin'
-OboComponentTextStatics = require '../../oboreact/obocomponenttextstatics'
-OboTextCommandHandlers = require '../commands/obotextcommandhandlers'
 OboReact = require '../../oboreact/oboreact'
 DOMUtil = require '../../dom/domutil'
 Text = require '../../components/text'

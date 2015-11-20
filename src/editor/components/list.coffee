@@ -3,13 +3,8 @@
 
 React = require 'react'
 
-OboNodeComponentMixin = require '../../oboreact/obonodecomponentmixin'
-OboComponentTextStatics = require './statics/obocomponenttextstatics'
-OboTextCommandHandlers = require '../commands/obotextcommandhandlers'
+OboNodeComponentMixin = require '../../oboreact/OboNodecomponentmixin'
 OboReact = require '../../oboreact/oboreact'
-OboNode = require '../../obodom/obonode'
-
-ViewerParagraph = require '../../viewer/components/paragraph'
 
 Text = require '../../components/text'
 StyleableText = require '../../text/styleabletext'
@@ -21,20 +16,37 @@ POS = require './textpositionmethods'
 MockElement = require '../../components/text/mockelement'
 MockTextNode = require '../../components/text/mocktextnode'
 
+Chunk = require '../../models/chunk'
+
 List = React.createClass
 	mixins: [OboNodeComponentMixin]
 	statics:
-		consumableElements: ['p']
+		consumableElements: ['ul', 'ol']
 
 		# OBONODE DATA METHODS
 		# ================================================
 		createNewNodeData: ->
-			textGroup: new TextGroup()
+			textGroup = new TextGroup()
+			textGroup.get(0).data = { indent:0 }
+
+			textGroup: textGroup
 			indent: 0
 
 		cloneNodeData: (data) ->
 			textGroup: data.textGroup.clone()
 			indent: data.indent
+
+		# SERIALIZATION/DECODE METHODS
+		# ================================================
+		createNodeDataFromDescriptor: (descriptor) ->
+			textGroup: TextGroup.fromDescriptor descriptor.data.textGroup
+			indent: 0
+
+		getDataDescriptor: (chunk) ->
+			data = chunk.get 'data'
+
+			indent: data.indent
+			textGroup: data.textGroup.toDescriptor()
 
 		# HTML METHODS
 		# ================================================
@@ -43,36 +55,37 @@ List = React.createClass
 			group.first.text = StyleableText.createFromElement(el)
 
 			[
-				OboNode.create @, {
+				Chunk.create @, {
 					textGroup: group
 					indent: 0
 				}
 			]
 
 
-		splitText: (sel, oboNode, shiftKey) ->
-			info = POS.getCaretInfo sel.start, oboNode
+		splitText: (sel, chunk, shiftKey) ->
+			info = POS.getCaretInfo sel.start, chunk
+			data = chunk.get 'data'
 
-			item = oboNode.data.textGroup.get(info.textIndex)
+			item = data.textGroup.get(info.textIndex)
 
 			if item.text.length is 0
 				if item.data.indent > 0
 					item.data.indent--
 
-					sel.setFutureCaret oboNode, { offset:0, childIndex:info.textIndex }
+					sel.setFutureCaret chunk, { offset:0, childIndex:info.textIndex }
 					return
 
-				caretInLastItem = info.text is oboNode.data.textGroup.last.text
+				caretInLastItem = info.text is data.textGroup.last.text
 
 				if not caretInLastItem
-					afterNode = oboNode.clone()
-					afterNode.data.textGroup = oboNode.data.textGroup.split info.textIndex
+					afterNode = chunk.clone()
+					afterNode.get('data').textGroup = data.textGroup.split info.textIndex
 
-				inbetweenNode = OboNode.create()
+				inbetweenNode = Chunk.create()
 
-				oboNode.data.textGroup.remove info.textIndex
+				data.textGroup.remove info.textIndex
 
-				oboNode.addAfter inbetweenNode
+				chunk.addAfter inbetweenNode
 
 				if not caretInLastItem
 					inbetweenNode.addAfter afterNode
@@ -80,69 +93,67 @@ List = React.createClass
 				sel.setFutureCaret inbetweenNode, { offset:0, childIndex:0 }
 				return
 
-			oboNode.data.textGroup.splitText info.textIndex, info.offset
+			data.textGroup.splitText info.textIndex, info.offset
 
-			sel.setFutureCaret oboNode, { offset:0, childIndex:info.textIndex + 1}
+			sel.setFutureCaret chunk, { offset:0, childIndex:info.textIndex + 1}
 
 
-		indent: (sel, oboNode, decreaseIndent) ->
+		indent: (sel, chunk, decreaseIndent) ->
+			console.log 'indent', arguments
+
+			data = chunk.get 'data'
+
 			if sel.type is 'caret'
-				info = POS.getCaretInfo sel.start, oboNode
+				info = POS.getCaretInfo sel.start, chunk
 
 				if info.offset is 0 and info.textIndex is 0
-					@applyIndent oboNode.data, decreaseIndent
-					sel.setFutureCaret oboNode, { offset:0, childIndex:0 }
+					@applyIndent data.textGroup.get(info.textIndex).data, decreaseIndent
+					sel.setFutureCaret chunk, { offset:0, childIndex:0 }
 					return
 
 				if info.offset isnt 0
-					return @insertText sel, oboNode, "\t"
+					return @insertText sel, chunk, "\t"
 				else
-					@applyIndent oboNode.data.textGroup.get(info.textIndex).data, decreaseIndent
-					sel.setFutureCaret oboNode, { offset:0, childIndex:info.textIndex }
+					@applyIndent data.textGroup.get(info.textIndex).data, decreaseIndent
+					sel.setFutureCaret chunk, { offset:0, childIndex:info.textIndex }
 					return
 
-			console.log 'c'
-			span = POS.getSelSpanInfo sel, oboNode
+			span = POS.getSelSpanInfo sel, chunk
 			curIndex = span.start.textIndex
 			while curIndex <= span.end.textIndex
-				@applyIndent oboNode.data.textGroup.get(curIndex).data, decreaseIndent
+				@applyIndent data.textGroup.get(curIndex).data, decreaseIndent
 				curIndex++
 
-			POS.reselectSpan sel, oboNode, span
+			POS.reselectSpan sel, chunk, span
 
 		applyIndent: (data, decreaseIndent) ->
+			console.log 'APPLY INDENT', data
 			if not decreaseIndent
 				data.indent++
 			else if data.indent > 0
 				data.indent--
 
 
-		createNodeDataFromDescriptor: TextMethods.createNodeDataFromDescriptor
-		getDataDescriptor:            TextMethods.getDataDescriptor
 		getCaretEdge:                 TextMethods.getCaretEdge
 		insertText:                   TextMethods.insertText
 		deleteText:                   TextMethods.deleteText
 		deleteSelection:              TextMethods.deleteSelection
 		styleSelection:               TextMethods.styleSelection
+		acceptMerge:                  TextMethods.acceptMerge
 		merge:                        TextMethods.merge
 		saveSelection:                TextMethods.saveSelection
 		restoreSelection:             TextMethods.restoreSelection
 		updateSelection:              TextMethods.updateSelection
 
 
-	# printTree: (indent = '', el, curUl) ->
-	# 	if el.nodeType is 'element'
-	# 		console.log indent, '<', el.type, '>', (if el is curUl then '***' else '')
-
-	# 		for child in el.children
-	# 			@printTree indent + '    ', child, curUl
-	# 	else
-	# 		console.log indent, '"', el.text.value, '"'
 
 	render: ->
-		indent = @state.oboNode.data.indent
+		data = @state.chunk.get 'data'
 
-		texts = @state.oboNode.data.textGroup
+		texts = data.textGroup
+
+		console.time 'computeUL'
+
 		curIndentLevel = 0
 		curIndex = 0
 		rootUl = curUl = new MockElement 'ul'
@@ -190,9 +201,12 @@ List = React.createClass
 
 			text = new MockTextNode item.text
 			text.index = curIndex
+			# text.indent = item.data.indent
 			curIndex++
 
 			curUl.lastChild.addChild text
+
+			console.timeEnd 'computeUL'
 
 			# console.log 'TREE'
 			# console.log '==========================================='
@@ -202,37 +216,40 @@ List = React.createClass
 		# @printTree '', rootUl, curUl
 		# console.log rootUl
 
-		OboReact.createElement 'div', @state.oboNode, @props.index, { style: { marginLeft: (@state.oboNode.data.indent * 20) + 'px' } }, @renderEl(rootUl)
+		console.log 'UL'
+		console.log rootUl
 
 
-	renderEl: (node) ->
-		# console.log 'renderEl', node
+		React.createElement 'div', { style: { marginLeft: (data.indent * 20) + 'px' } }, @renderEl(rootUl, 0, 0)
+
+	# printTree: (indent = '', el, curUl) ->
+	# 	if el.nodeType is 'element'
+	# 		console.log indent, '<', el.type, '>', (if el is curUl then '***' else '')
+
+	# 		for child in el.children
+	# 			@printTree indent + '    ', child, curUl
+	# 	else
+	# 		console.log indent, '"', el.text.value, '"'
+
+	renderEl: (node, index, indent) ->
+		# console.log 'renderEl', arguments
+
+		key = @state.chunk.cid + '-' + indent + '-' + index
+
+		# console.log key
+
 		switch node.nodeType
-			when 'text'   then OboReact.createText node.text, @state.oboNode, node.index, null, @props.index
+			when 'text'   then OboReact.createText node.text, @state.chunk, node.index, null
 			# @TODO: KEY!!!!!1
-			when 'element'then React.createElement node.type, { key:Math.random() }, @renderChildren(node.children)
+			when 'element'then React.createElement node.type, { key:key }, @renderChildren(node.children, indent + 1)
 
-	renderChildren: (children) ->
+	renderChildren: (children, indent) ->
 		# console.log 'renderChildren', children
 		els = []
-		for child in children
-			els.push @renderEl(child)
+		for child, index in children
+			els.push @renderEl(child, index, indent)
 
 		els
-
-	# renderOLD: ->
-
-
-
-
-
-	# 	texts = []
-	# 	for item, index in @state.oboNode.data.textGroup.items
-	# 		console.log item
-	# 		console.log item.text
-	# 		texts.push React.createElement 'li', null, OboReact.createText(item.text, @state.oboNode, index, null, @props.index)
-
-	# 	OboReact.createElement 'ul', @state.oboNode, @props.index, null, texts
 
 
 module.exports = List
