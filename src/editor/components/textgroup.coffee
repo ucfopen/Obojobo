@@ -141,7 +141,46 @@ class TextGroup
 			else if foundStartText
 				item.text[fn] 0, item.text.length, styleType, styleData
 
+	getStyles: (startIndex, startTextIndex, endIndex, endTextIndex) ->
+		startItem = @items[startIndex]
+		endItem   = @items[endIndex]
+		startText = startItem.text
+		endText   = endItem.text
 
+		if startText is endText
+			return startText.getStyles startTextIndex, endTextIndex
+
+		numTexts = 0
+		allStyles = {}
+		foundStartText = false
+		for item in @items
+			styles = {}
+
+			if item.text is startText
+				numTexts++
+				styles = item.text.getStyles startTextIndex, startText.length
+				foundStartText = true
+			else if item.text is endText
+				numTexts++
+				styles = item.text.getStyles 0, endTextIndex
+				break
+			else if foundStartText
+				numTexts++
+				styles = item.text.getStyles 0, item.text.length
+
+			for style in styles
+				console.log 'lookin at', style
+				if allStyles[style]?
+					allStyles[style]++
+				else
+					allStyles[style] = 1
+
+		returnedStyles = {}
+		for style in allStyles
+			if allStyles[style] is numTexts
+				returnedStyles[style] = style
+
+		returnedStyles
 
 
 	__debug_print: ->

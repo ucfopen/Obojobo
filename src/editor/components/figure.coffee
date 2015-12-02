@@ -2,7 +2,6 @@ React = require 'react'
 
 
 OboNodeComponentMixin = require '../../oboreact/obonodecomponentmixin'
-OboReact = require '../../oboreact/oboreact'
 
 Text = require '../../components/text'
 StyleableText = require '../../text/styleabletext'
@@ -83,7 +82,10 @@ Figure = React.createClass
 		indent:                       TextMethods.indent
 		saveSelection:                TextMethods.saveSelection
 		restoreSelection:             TextMethods.restoreSelection
-		updateSelection:              TextMethods.updateSelection
+		selectStart:                  TextMethods.selectStart
+		selectEnd:                    TextMethods.selectEnd
+		# updateSelection:              TextMethods.updateSelection
+		getTextMenuCommands:          TextMethods.getTextMenuCommands
 
 	setPosition: ->
 		data = @state.chunk.get 'data'
@@ -94,7 +96,7 @@ Figure = React.createClass
 		data.position = positions[curIndex]
 
 		@setState { chunk:@state.chunk }
-		@props.saveHistoryFn()
+		@props.updateFn()
 
 	render: ->
 		data = @state.chunk.get('data')
@@ -104,7 +106,7 @@ Figure = React.createClass
 			React.createElement 'figure', { style: { textAlign:data.position }},
 				React.createElement 'img', { src:data.url, width:300 },
 				React.createElement 'figcaption', { contentEditable:true },
-					OboReact.createText(data.textGroup.get(0).text, @state.chunk, 0, { contentEditable:true })
+					Text.createElement(data.textGroup.get(0).text, @state.chunk, 0, { contentEditable:true })
 
 
 module.exports = Figure

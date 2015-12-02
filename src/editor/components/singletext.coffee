@@ -2,9 +2,8 @@ React = require 'react'
 
 
 OboNodeComponentMixin = require '../../oboreact/obonodecomponentmixin'
-OboReact = require '../../oboreact/oboreact'
 
-ViewerSingleText = require '../../viewer/components/singletext'
+# ViewerSingleText = require '../../viewer/components/singletext'
 
 Text = require '../../components/text'
 StyleableText = require '../../text/styleabletext'
@@ -12,9 +11,7 @@ TextGroup = require './textgroup'
 
 TextMethods = require './textmethods'
 
-
-
-
+Chunk = require '../../models/chunk'
 
 SingleText = React.createClass
 	mixins: [OboNodeComponentMixin]
@@ -57,6 +54,7 @@ SingleText = React.createClass
 				Chunk.create @, {
 					textGroup: group
 					indent: 0
+					type: 'p'
 				}
 			]
 
@@ -71,22 +69,18 @@ SingleText = React.createClass
 		indent:                       TextMethods.indent
 		saveSelection:                TextMethods.saveSelection
 		restoreSelection:             TextMethods.restoreSelection
-		updateSelection:              TextMethods.updateSelection
+		getSelectionStyles:           TextMethods.getSelectionStyles
+		# updateSelection:              TextMethods.updateSelection
+		selectStart:                  TextMethods.selectStart
+		selectEnd:                    TextMethods.selectEnd
+		getTextMenuCommands:          TextMethods.getTextMenuCommands
 
 	render: ->
 		data = @state.chunk.get('data')
 
-		React.createElement('div', { style: { marginLeft: (data.indent * 20) + 'px' } },
-			React.createElement(ViewerSingleText, { chunk:@state.chunk, index:@props.index })
+		React.createElement('p', { style: { marginLeft: (data.indent * 20) + 'px' } },
+			Text.createElement data.textGroup.get(0).text, @state.chunk, 0
 		)
-
-
-# console.log SingleText
-# console.log SingleText.createNewNodeData
-# for o, k in SingleText
-# 	console.log o, k
-
-# TextMethods.decorate SingleText
 
 
 module.exports = SingleText

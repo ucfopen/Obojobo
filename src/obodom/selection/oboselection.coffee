@@ -85,18 +85,39 @@ class OboSelection
 
 	setFutureStart: (chunk, data) ->
 		@futureStart =
-			chunk: chunk
+			index: chunk.getIndex()
 			data: data
 
 	setFutureEnd: (chunk, data) ->
 		@futureEnd =
-			chunk: chunk
+			index: chunk.getIndex()
 			data: data
 
 	setFutureCaret: (chunk, data) ->
-		console.log 'set future caret', chunk, data
 		@setFutureStart chunk, data
 		@setFutureEnd   chunk, data
+
+	clearFuture: ->
+		@futureStart = @futureEnd = null
+
+	getDescriptor: ->
+		@constructor.createDescriptor(
+			@start.chunk.getIndex(),
+			@start.chunk.callComponentFn('saveSelection', @, [@start]),
+			@end.chunk.getIndex(),
+			@end.chunk.callComponentFn('saveSelection', @, [@end])
+		)
+
+	getFutureDescriptor: ->
+		if not @futureStart? or not @futureEnd? then return null
+
+		@constructor.createDescriptor(
+			@futureStart.index,
+			@futureStart.data,
+			@futureEnd.index,
+			@futureEnd.data
+		)
+
 
 
 Object.defineProperties OboSelection.prototype, {
@@ -113,6 +134,16 @@ Object.defineProperties OboSelection.prototype, {
 				return 'nodeSpan'
 	}
 }
+
+
+OboSelection.createDescriptor = (startIndex, startData, endIndex, endData) ->
+	start:
+		index: startIndex
+		data:  startData
+	end:
+		index: endIndex
+		data:  endData
+
 
 
 module.exports = OboSelection

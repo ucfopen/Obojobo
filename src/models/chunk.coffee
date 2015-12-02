@@ -28,6 +28,11 @@ class Chunk extends Backbone.Model
 	getComponent: ->
 		ComponentClassMap.getClassForType @get('type')
 
+	callComponentFn: (fn, sel, data) ->
+		componentClass = @getComponent()
+		if not componentClass[fn] then return null
+		componentClass[fn].apply componentClass, [sel, @].concat(data)
+
 	getDomEl: ->
 		document.body.querySelector ".component[data-oboid='#{@cid}']"
 
@@ -48,12 +53,16 @@ Chunk.createFromDescriptor = (descriptor) ->
 		data: ComponentClassMap.getClassForType(descriptor.type).createNodeDataFromDescriptor descriptor
 	}
 
-Chunk.create = (type = null, data = null) ->
-	if not type?
+Chunk.create = (typeOrClass = null, data = null) ->
+	if not typeOrClass?
 		componentClass = ComponentClassMap.getDefaultComponentClass()
 		type = ComponentClassMap.getTypeOfClass componentClass
+	else if typeof typeOrClass is 'string'
+		componentClass = ComponentClassMap.getClassForType typeOrClass
+		type = typeOrClass
 	else
-		componentClass = ComponentClassMap.getClassForType type
+		componentClass = typeOrClass
+		type = ComponentClassMap.getTypeOfClass typeOrClass
 
 	data ?= componentClass.createNewNodeData()
 

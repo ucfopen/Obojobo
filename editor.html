@@ -14,6 +14,11 @@
 				background: #efefef;
 			}
 
+			h1, h2, h3, h4, h5, h6
+			{
+				font-family: 'Open Sans';
+			}
+
 			#editor-app {
 				background: white;
 				padding: 20px;
@@ -21,6 +26,18 @@
 				border: 1px solid rgba(0, 0, 0, 0.2);
 				white-space: pre-wrap;
 
+			}
+
+			#rect {
+				border: 2px solid red;
+				position: absolute;
+				left: 0;
+				top: 0;
+				display:none;
+			}
+
+			:focus {
+				outline: none;
 			}
 
 /*			*[data-obo-text]
@@ -69,24 +86,13 @@
 	</head>
 	<body>
 
-		<ul>
-			<li>
-				<ul>
-					<li>
-						<ul>
-							<li>
-								hay kids
-							</li>
-						</ul>
-					</li>
-				</ul>
-			</li>
-		</ul>
 
 		<div id="content"></div>
 
 		<div id="testapp"></div>
 		<div id="editor-app"></div>
+
+		<div id="rect"></div>
 
 		<!--<script type="text/jsx" src="src/main.js"></script>-->
 

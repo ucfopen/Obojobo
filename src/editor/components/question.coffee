@@ -1,7 +1,6 @@
 React = require 'react'
 
 OboNodeComponentMixin = require '../../oboreact/obonodecomponentmixin'
-OboReact = require '../../oboreact/oboreact'
 DOMUtil = require '../../dom/domutil'
 Text = require '../../components/text'
 
@@ -69,6 +68,9 @@ Question = React.createClass
 
 
 	render: ->
+		React.createElement 'div', null, 'question'
+
+	renderWORKING: ->
 		# console.log 'dash rendar', @state, @props
 
 		if @state.editing?
@@ -79,18 +81,6 @@ Question = React.createClass
 		React.createElement 'div', { onClick:@onClick, style: { background:'red' }, 'data-obo-index':@props.index },
 			curComponent
 
-	# renderOld: ->
-	# 	console.log 'dash rendar', @state.oboNode
-
-	# 	deleteAnswerFn = @deleteAnswer
-	# 	oboNode = @state.oboNode
-	# 	OboReact.createElement('div', @state.oboNode, @props.index, { contentEditable:false },
-	# 		React.createElement 'p', { contentEditable:true }, OboReact.createText(oboNode.data.question, oboNode, 0, null, @props.index),
-	# 		React.createElement 'div', null, oboNode.data.answers.map(((answer, index) ->
-	# 			React.createElement QuestionItem, { key:index, oboNode:oboNode, parentIndex:@props.index, index:index + 1, answer:answer, deleteAnswerFn:deleteAnswerFn }
-	# 		).bind(@)),
-	# 		React.createElement 'button', { onClick:@addAnswer }, '+'
-	# 	)
 
 
 QuestionEdit = React.createClass
@@ -99,7 +89,7 @@ QuestionEdit = React.createClass
 		deleteAnswerFn = @props.deleteAnswerFn
 
 		React.createElement 'div', null,
-			React.createElement 'p', { contentEditable:true }, OboReact.createText(oboNode.data.question, oboNode, 0, null, @props.index),
+			React.createElement 'p', { contentEditable:true }, Text.createElement(oboNode.data.question, oboNode, 0),
 			React.createElement 'div', null, oboNode.data.answers.map(((answer, index) ->
 				React.createElement QuestionItem, { key:index, oboNode:oboNode, parentIndex:@props.index, index:index, answer:answer, deleteAnswerFn:deleteAnswerFn }
 			).bind(@)),

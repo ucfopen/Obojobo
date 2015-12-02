@@ -18,11 +18,13 @@ methods =
 
 	# CARET OPERATIONS
 	# ================================================
-	insertText: (sel, chunk, textToInsert) ->
-		console.log 'insertText', arguments
-
+	insertText: (sel, chunk, textToInsert, styles = null) ->
 		info = POS.getCaretInfo sel.start, chunk
 		info.text.insertText info.offset, textToInsert
+
+		if styles?
+			for style in styles
+				info.text.styleText info.offset, info.offset + 1, style
 
 		sel.setFutureCaret sel.start.chunk, { offset: info.offset + textToInsert.length, childIndex: info.textIndex }
 
@@ -75,13 +77,15 @@ methods =
 		span = POS.getSelSpanInfo sel, chunk
 		data = chunk.get('data')
 
-		console.log 'styleSelection', arguments
-		console.log span
-		console.log span.start.textIndex, span.start.offset, span.end.textIndex, span.end.offset
-
 		data.textGroup.toggleStyleText span.start.textIndex, span.start.offset, span.end.textIndex, span.end.offset, styleType, styleData
 
 		POS.reselectSpan sel, chunk, span
+
+	getSelectionStyles: (sel, chunk) ->
+		span = POS.getSelSpanInfo sel, chunk
+		data = chunk.get('data')
+
+		data.textGroup.getStyles span.start.textIndex, span.start.offset, span.end.textIndex, span.end.offset
 
 	# NO SELECTION OPERATIONS
 	# ================================================
@@ -90,7 +94,6 @@ methods =
 
 	merge: (sel, consumerChunk, digestedChunk) ->
 		console.clear()
-		console.log 'merge', sel, consumerChunk, digestedChunk
 
 		consumerData = consumerChunk.get 'data'
 		digestedData = digestedChunk.get 'data'
@@ -123,24 +126,53 @@ methods =
 		childIndex: info.textIndex
 		offset:     info.offset
 
-	restoreSelection: (sel, chunk, savedSelData) ->
-		console.log '_____________________________restore selection', arguments
+	# Take descriptor at savedSelData and turn it into sel.*
+	restoreSelection: (sel, chunk, type, savedSelData) ->
 		node = POS.getTextNode chunk, savedSelData.childIndex
 		console.log node
 		return null if not node?
 
-		Text.getDomPosition savedSelData.offset, node
+		domPos = Text.getDomPosition savedSelData.offset, node
 
-	updateSelection: (sel, chunk, type) ->
-		if type is 'start' or type is 'inside'
-			node = POS.getTextNode chunk, sel.futureStart.data.childIndex
-			o = Text.getDomPosition sel.futureStart.data.offset, node
-			sel.setStart o.textNode, o.offset
+		if type is 'start'
+			sel.setStart domPos.textNode, domPos.offset
+		else if type is 'end'
+			sel.setEnd domPos.textNode, domPos.offset
 
-		if type is 'end' or type is 'inside'
-			node = POS.getTextNode chunk, sel.futureEnd.data.childIndex
-			o = Text.getDomPosition sel.futureEnd.data.offset, node
-			sel.setEnd o.textNode, o.offset
+	# # Take sel.future* and turn it into sel.*
+	# updateSelection: (sel, chunk, type) ->
+	# 	if type is 'start' or type is 'inside'
+	# 		node = POS.getTextNode chunk, sel.futureStart.data.childIndex
+	# 		o = Text.getDomPosition sel.futureStart.data.offset, node
+	# 		sel.setStart o.textNode, o.offset
+
+	# 	if type is 'end' or type is 'inside'
+	# 		node = POS.getTextNode chunk, sel.futureEnd.data.childIndex
+	# 		o = Text.getDomPosition sel.futureEnd.data.offset, node
+	# 		sel.setEnd o.textNode, o.offset
+
+	selectStart: (sel, chunk) ->
+		info = POS.getStartInfo chunk
+		sel.setFutureCaret chunk, { childIndex:info.textIndex, offset:info.offset }
+
+	selectEnd: (sel, chunk) ->
+		info = POS.getEndInfo chunk
+		sel.setFutureCaret chunk, { childIndex:info.textIndex, offset:info.offset }
+
+	# TEXT MENU OPERATIONS
+	# ================================================
+
+	getTextMenuCommands: (sel, chunk) ->
+		[
+			{
+				label: 'Bold',
+				fn: (sel, chunk) -> chunk.callComponentFn 'styleSelection', sel, ['b']
+			},
+			{
+				label: 'Italic',
+				fn: (sel, chunk) -> chunk.callComponentFn 'styleSelection', sel, ['i']
+			}
+		]
 
 	# decorate: (component) ->
 	# 	console.log 'DECORATE', methods, component

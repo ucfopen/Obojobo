@@ -29,11 +29,27 @@ module.exports = {
 							"styleList": [
 								{
 									"type": "b",
-									"start": 1,
-									"end": 3,
+									"start": 0,
+									"end": 4,
 									"data": {}
 								}
 							]
+						}
+					}
+				]
+			}
+		},
+		{
+			"type": "singletext",
+			"data": {
+				"indent": 0,
+				"type": 'p'
+				"textGroup": [
+					{
+						"data": {},
+						"text": {
+							"value": "1234",
+							"styleList": []
 						}
 					}
 				]

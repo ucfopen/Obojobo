@@ -1,9 +1,6 @@
 React = require 'react'
 
-ComponentMap = require '../../util/componentmap'
 ComponentClassMap = require '../../util/componentclassmap'
-
-OboReact = require '../../oboreact/oboreact'
 
 OboSelection = require '../../obodom/selection/oboselection'
 
@@ -47,12 +44,15 @@ ViewerApp = React.createClass
 		s = new OboSelection @savedSel
 		s.select()
 
+	# render: ->
+	# 	OboReact.createElement 'div', @state.root, '0',
+	# 		{
+	# 			onMouseUp: @onMouseUp
+	# 		},
+	# 		OboReact.createChildren @state.root, '0'
+
 	render: ->
-		OboReact.createElement 'div', @state.root, '0',
-			{
-				onMouseUp: @onMouseUp
-			},
-			OboReact.createChildren @state.root, '0'
+		'@TODO'
 
 	renderOLD: ->
 		oboNode = @state.root

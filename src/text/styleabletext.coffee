@@ -124,6 +124,9 @@ class StyleableText
 		@styleList.remove styleRange
 		@styleList.normalize()
 
+	getStyles: (from, to) ->
+		@styleList.getStylesInRange from, to
+
 	split: (atIndex) ->
 		return null if isNaN(atIndex)
 

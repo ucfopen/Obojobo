@@ -4,7 +4,6 @@
 React = require 'react'
 
 OboNodeComponentMixin = require '../../oboreact/OboNodecomponentmixin'
-OboReact = require '../../oboreact/oboreact'
 
 Text = require '../../components/text'
 StyleableText = require '../../text/styleabletext'
@@ -21,7 +20,7 @@ Chunk = require '../../models/chunk'
 Table = React.createClass
 	mixins: [OboNodeComponentMixin]
 	statics:
-		consumableElements: ['ul', 'ol']
+		consumableElements: ['table']
 
 		# OBONODE DATA METHODS
 		# ================================================
@@ -59,6 +58,10 @@ Table = React.createClass
 		# HTML METHODS
 		# ================================================
 		createNewNodesFromElement: (el) ->
+			console.clear()
+			console.log 'TABLE READ HTML'
+			console.log el
+
 			group = new TextGroup()
 			group.first.text = StyleableText.createFromElement(el)
 
@@ -101,7 +104,10 @@ Table = React.createClass
 		styleSelection:               TextMethods.styleSelection
 		saveSelection:                TextMethods.saveSelection
 		restoreSelection:             TextMethods.restoreSelection
-		updateSelection:              TextMethods.updateSelection
+		# updateSelection:              TextMethods.updateSelection
+		selectStart:                  TextMethods.selectStart
+		selectEnd:                    TextMethods.selectEnd
+		getTextMenuCommands:          TextMethods.getTextMenuCommands
 
 	addRow: ->
 		console.log 'addROW'
@@ -119,7 +125,7 @@ Table = React.createClass
 
 		@setState { chunk:@state.chunk }
 
-		@props.saveHistoryFn()
+		@props.updateFn()
 
 	addCol: ->
 		data = @state.chunk.get 'data'
@@ -136,7 +142,7 @@ Table = React.createClass
 
 		@setState { chunk:@state.chunk }
 
-		@props.saveHistoryFn()
+		@props.updateFn()
 
 
 	render: ->
@@ -157,7 +163,7 @@ Table = React.createClass
 						React.createElement 'tr', null,
 							data.textGroup.items.slice(rowNum * numCols, (rowNum + 1) * numCols).map (textGroupItem, index) ->
 								React.createElement 'td', { style: { border: '1px solid gray' } },
-									OboReact.createText textGroupItem.text, chunk, rowNum * numCols + index, null
+									Text.createElement textGroupItem.text, chunk, rowNum * numCols + index
 		]
 
 

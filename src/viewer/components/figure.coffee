@@ -2,7 +2,6 @@ React = require 'react'
 StyleableText = require '../../text/styleabletext'
 
 OboNodeComponentMixin = require '../../oboreact/obonodecomponentmixin'
-OboReact = require '../../oboreact/oboreact'
 
 
 Figure = React.createClass
@@ -14,13 +13,16 @@ Figure = React.createClass
 			text: StyleableText.createFromObject descriptor.data.text
 
 	render: ->
-		return OboReact.createElement 'figure', @state.oboNode, @props.index,
-			{
-				style: { textAlign:@state.oboNode.data.position }
-			},
-			React.createElement 'img', { src:@state.oboNode.data.url, width:300 },
-			React.createElement 'figcaption', null,
-				OboReact.createText(@state.oboNode.data.text, @state.oboNode, 0, null, @props.index)
+		'@TODO'
+
+	# render: ->
+	# 	return OboReact.createElement 'figure', @state.oboNode, @props.index,
+	# 		{
+	# 			style: { textAlign:@state.oboNode.data.position }
+	# 		},
+	# 		React.createElement 'img', { src:@state.oboNode.data.url, width:300 },
+	# 		React.createElement 'figcaption', null,
+	# 			OboReact.createText(@state.oboNode.data.text, @state.oboNode, 0, null, @props.index)
 
 
 module.exports = Figure

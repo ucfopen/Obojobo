@@ -1,5 +1,11 @@
 React = require 'react'
-SerializeSelection = require 'serialize-selection'
+
+TextMenu = require './editor/textmenu'
+SideMenu = require './editor/sidemenu'
+StylesMenu = require './editor/stylesmenu'
+Selection = require './editor/selection'
+
+Screen = require '../../dom/screen'
 
 MutationPainter = require '../../debug/mutationpainter'
 MutationPainter.observe()
@@ -8,23 +14,15 @@ Keyboard = require '../../util/keyboard'
 Command = require '../commands/command'
 StyleType = require '../../text/styletype'
 
-ComponentMap = require '../../util/componentmap'
 ComponentClassMap = require '../../util/componentclassmap'
 
 History = require '../history/history'
-
-OboSelection = require '../../obodom/selection/oboselection'
-
-OboReact = require '../../oboreact/oboreact'
 
 HTMLToOboNodes = require '../import/html'
 
 Module = require '../../models/module'
 Chunk = require '../../models/chunk'
 
-Test = require './test'
-
-window.__ss = SerializeSelection
 
 
 
@@ -47,17 +45,17 @@ EditorApp = React.createClass
 
 		module = Module.createFromDescriptor loDescriptor
 
-		console.log 'lo be all lke', loDescriptor
+		@history = new History
+		@selection = new Selection
+		@screen = new Screen
+
+		window.__history = @history
 		window.__lo = module
-		console.log 'root be all like', module
-
-		@loDescriptor = loDescriptor
-		@history = new History();
-
-		window.__history = @history;
 
 		return (
 			module: module
+			selection: @selection #@TODO
+			styleBrush: {}
 		)
 
 	deleteSelection: (sel) ->
@@ -66,59 +64,55 @@ EditorApp = React.createClass
 		for node in sel.inbetween
 			node.remove()
 
-		@callComponentFn 'deleteSelection', @sel.start.chunk
+		@callComponentFn 'deleteSelection', sel.start.chunk
 
 		if sel.type is 'nodeSpan'
-			@callComponentFn 'deleteSelection', @sel.end.chunk
-			if @callComponentFn('acceptMerge', @sel.end.chunk, [@sel.start.chunk])
-				@callComponentFn 'merge', @sel.start.chunk, [@sel.end.chunk]
-		# 	# @sel.end.oboNode.remove()
+			@callComponentFn 'deleteSelection', sel.end.chunk
+			if @callComponentFn('acceptMerge', sel.end.chunk, [sel.start.chunk])
+				@callComponentFn 'merge', sel.start.chunk, [sel.end.chunk]
 
 		sel.collapse()
 
+
+	# EVENTS
+
 	onKeyDown: (event) ->
-		@sel = new OboSelection @state.module
-		console.log 'SELBE'
-		console.log @sel
+		@updateSelection()
 
-		@beforeSend()
-
-		# console.log event.keyCode
-		# return
 		metaOrCtrlKeyHeld = event.metaKey or event.ctrlKey
 
 		switch event.keyCode
 			# DELETE
 			when Keyboard.BACKSPACE, Keyboard.DELETE
 				event.preventDefault()
-				if @sel.type is 'caret'
-					caretEdge = @callComponentFn 'getCaretEdge', @sel.start.chunk
+				if @selection.sel.type is 'caret'
+					caretEdge = @callComponentFn 'getCaretEdge', @selection.sel.start.chunk
 					deleteForwards = event.keyCode is Keyboard.DELETE
 					switch
 						when caretEdge is 'start' and not deleteForwards
-							if @callComponentFn('acceptMerge', @sel.start.chunk, [@sel.start.chunk.prevSibling()])
-								@send 'merge', @sel.start.chunk.prevSibling(), [@sel.start.chunk]
+							if @callComponentFn('acceptMerge', @selection.sel.start.chunk, [@selection.sel.start.chunk.prevSibling()])
+								@send 'merge', @selection.sel.start.chunk.prevSibling(), [@selection.sel.start.chunk]
 
 						when caretEdge is 'end' and deleteForwards
-							if @callComponentFn('acceptMerge', @sel.start.chunk.nextSibling(), [@sel.start.chunk])
-								@send 'merge', @sel.start.chunk, [@sel.start.chunk.nextSibling()]
+							if @callComponentFn('acceptMerge', @selection.sel.start.chunk.nextSibling(), [@selection.sel.start.chunk])
+								@send 'merge', @selection.sel.start.chunk, [@selection.sel.start.chunk.nextSibling()]
 
 						else
-							@send 'deleteText', @sel.start.chunk, [event.keyCode is Keyboard.DELETE]
+							@send 'deleteText', @selection.sel.start.chunk, [event.keyCode is Keyboard.DELETE]
 				else
-					@deleteSelection @sel
-					@afterSend()
+					@deleteSelection @selection.sel
+					@update()
 
 			# INDENT
 			when Keyboard.TAB
 				event.preventDefault()
-				@send 'indent', @sel.all, [event.shiftKey]
+				@send 'indent', @selection.sel.all, [event.shiftKey]
 
 			# NEW LINE
 			when Keyboard.ENTER
 				event.preventDefault()
-				@deleteSelection @sel
-				@send 'splitText', @sel.start.chunk, [event.shiftKey]
+				@deleteSelection @selection.sel
+				@send 'splitText', @selection.sel.start.chunk, [event.shiftKey]
 
 		if metaOrCtrlKeyHeld
 			switch event.keyCode
@@ -126,11 +120,13 @@ EditorApp = React.createClass
 				# to stop the browsers default execCommand behavior.
 				when 66 #b
 					event.preventDefault()
-					@send 'styleSelection', @sel.all, [StyleType.BOLD]
+					@nextStyle = StyleType.BOLD
+					@send 'styleSelection', @selection.sel.all, [StyleType.BOLD]
 
 				when 73 #i
 					event.preventDefault()
-					@send 'styleSelection', @sel.all, [StyleType.ITALIC]
+					@nextStyle = StyleType.ITALIC
+					@send 'styleSelection', @selection.sel.all, [StyleType.ITALIC]
 
 				#
 				# when 65 #a
@@ -146,20 +142,25 @@ EditorApp = React.createClass
 					@redo()
 
 	onKeyPress: (event) ->
-		# return
 		console.time 'kpCycle'
 
 		event.preventDefault()
 
 		char = String.fromCharCode event.charCode
-		# @handleKey char, event
-
-		@selLater = @sel.start.chunk
 
 		@sendText char
 
+	onKeyUp: (event) ->
+		@state.styleBrush = {}
+		if @nextStyle
+			@state.styleBrush[@nextStyle] = @nextStyle
+			delete @nextStyle
+
+		@updateSelection()
+
+
 	onPaste: (event) ->
-		@beforeSend()
+		# @beforeSend()
 
 		event.preventDefault()
 
@@ -171,232 +172,220 @@ EditorApp = React.createClass
 		else
 			@sendText text
 
+	onMouseDown: (event) ->
+		@selection.clear()
+		@state.styleBrush = {}
+		true
+
+	onMouseUp: (event) ->
+		setTimeout @updateSelection.bind(@), 0
+		true
+
+
+
+
+
+	updateSelection: ->
+		# @state.styleBrush = {}
+		# curSel = @selection.getSelectionDescriptor()
+		@selection.update @state.module
+		# nextSel = @selection.getSelectionDescriptor()
+
+
+
+		@setState {
+			selection: @selection
+			# newSelection: JSON.stringify(curSel) == JSON.stringify(nextSel) #@TODO, assumes object order
+			# styleBrush: @state.styleBrush
+		}
+
+
+
+
+
+
 	sendHTML: (html) ->
-		oboNodes = HTMLToOboNodes(html)
-		console.log 'I woulda created'
-		console.log oboNodes
+		chunks = HTMLToOboNodes(html)
 
-		@deleteSelection @sel
-		@callComponentFn 'splitText', @sel.start.oboNode
-		splitNode = @sel.start.oboNode.nextSibling
-		for node in oboNodes
-			splitNode.addBefore node
+		@deleteSelection @selection.sel
+		@callComponentFn 'splitText', @selection.sel.start.chunk
+		splitNode = @selection.sel.start.chunk.nextSibling()
+		for chunk in chunks
+			splitNode.addBefore chunk
 
-		@afterSend()
+		@update()
 
 	sendText: (char) ->
-		console.log 'setText', char, @sel.start.chunk
-		@deleteSelection @sel
-		@send 'insertText', @sel.start.chunk, [char]
+		if char is 's'
+			console.clear()
+			@__savedSelection = s = @selection.getSelectionDescriptor()
+			console.log JSON.stringify(s, null, 2)
+			return
 
-	beforeSend: ->
-		console.time 'send'
-		console.time 'cycle'
-		# console.log '>>>>>>>>>>>>>>>>>>>SEND', fn, nodeOrNodes, data
+		if char is 'S'
+			console.clear()
+			@selection.selectFromDescriptor @state.module, @__savedSelection
+			return
 
-		console.time 'ss'
-		# @savedSelection = SerializeSelection.save()
-		@savedSelection =
-			start:
-				index: @sel.start.chunk.getIndex()
-				data:  @callComponentFn 'saveSelection', @sel.start.chunk, [@sel.start]
-			end:
-				index: @sel.end.chunk.getIndex()
-				data:  @callComponentFn 'saveSelection', @sel.end.chunk, [@sel.end]
+		if char is 'c'
+			console.clear()
+			return
 
-		# console.log 'ss=',@savedSelection
-		console.timeEnd 'ss'
+		if char is 'g'
+			styles = @callComponentFn 'getSelectionStyles', @selection.sel.start.chunk
+			console.log 'STYLES:', styles
+			return
 
-		#prime the pumps
-		if @history.length is 0
-			@history.add @loDescriptor, @savedSelection
+		console.log 'sendText', char, @nextStyle
 
-	afterSend: ->
-		console.time 'toDescriptor'
-		@loDescriptor = @state.module.toJSON()
-		console.timeEnd 'toDescriptor'
+		@deleteSelection @selection.sel
+		@send 'insertText', @selection.sel.start.chunk, [char, Object.keys(@state.styleBrush)]
 
-		console.timeEnd 'send'
+	# beforeSend: ->
+	# 	console.time 'send'
+	# 	console.time 'cycle'
 
-		@onChildUpdate()
+	# 	console.time 'ss'
+	# 	@savedSelection = @selection.sel.getDescriptor()
+	# 	console.timeEnd 'ss'
 
-	send: (fn, nodeOrNodes, data = []) ->
-		if nodeOrNodes instanceof Array
-			nodes = nodeOrNodes
+	send: (fn, chunkOrChunks, data = []) ->
+		if chunkOrChunks instanceof Array
+			chunks = chunkOrChunks
 		else
-			nodes = []
-			nodes.push nodeOrNodes
+			chunks = []
+			chunks.push chunkOrChunks
 
-		# console.log 'ok den', nodes
+		for chunk in chunks
+			@callComponentFn fn, chunk, data
 
-		for node in nodes
-			@callComponentFn fn, node, data
+		@update()
 
-		@afterSend()
+	callComponentFn: (fn, chunk, data) ->
+		chunk.callComponentFn fn, @selection.sel, data
 
-	callComponentFn: (fn, node, data) ->
-		componentClass = node.getComponent()
-		if not componentClass[fn] then return null
+	update: ->
+		# console.time 'toDescriptor'
+		# @loDescriptor =
+		# console.timeEnd 'toDescriptor'
 
-		componentClass[fn].apply componentClass, [@sel, node].concat(data)
+		# console.timeEnd 'send'
+
+		# @historyShouldUpdate = true
+
+
+		@selectionPending = @selection.getFutureDescriptor()
+		@selection.sel.clearFuture()
+		@history.add @state.module.toJSON(), @selectionPending
+		@setState {
+			module: @state.module
+			selection: @state.selection
+			styleBrush: @state.styleBrush
+		}
+
 
 	undo: ->
 		history = @history.undo()
-		console.log 'UNDO RESTORE', history.lo
-		console.log Module.createFromDescriptor(history.lo)
-		@setState({ module:Module.createFromDescriptor(history.lo) })
-		if history.selection
-			@selectionPending = history.selection
+		@setState { module:Module.createFromDescriptor(history.lo) }
+		if history.selection then @selectionPending = history.selection
 
-	redo: () ->
+	redo: ->
 		history = @history.redo()
-		@setState({ module:Module.createFromDescriptor(history.lo) })
-		if history.selection
-			@selectionPending = history.selection
+		@setState { module:Module.createFromDescriptor(history.lo) }
+		if history.selection then @selectionPending = history.selection
 
-	onChildUpdate: (commandResult) ->
-		# @sel.select()
-		# @tempSel = SerializeSelection.save()
+	componentDidMount: ->
+		#prime the pumps
+		@history.add @state.module.toJSON(), null
 
-		@setState { module:@state.module }
-
-	updateSelection: ->
-		console.log 'UPDATE SELECTION'
-		console.log @sel
-
-		# @callComponentFn 'updateSelection'
-		if @sel.futureStart? and @sel.futureEnd? and @sel.futureStart.chunk.cid is @sel.futureEnd.chunk.cid
-			@callComponentFn 'updateSelection', @sel.futureStart.chunk, ['inside']
-		else
-			if @sel.futureStart?
-				@callComponentFn 'updateSelection', @sel.futureStart.chunk, ['start']
-			if @sel.futureEnd?
-				@callComponentFn 'updateSelection', @sel.futureEnd.chunk, ['end']
-
-		@sel.select()
-
-	#@sel.start.oboNode.index
 	componentDidUpdate: ->
-		# console.log 'CDUUUUUU'
-
-		@updateSelection()
-
-		if @sel?.futureStart? and @sel.futureEnd?
-
-			# @history.add @loDescriptor, @savedSelection
-			s = {
-				start:
-					index: @sel.futureStart.chunk.getIndex()
-					data:  @sel.futureStart.data
-				end:
-					index: @sel.futureEnd.chunk.getIndex()
-					data:  @sel.futureEnd.data
-			}
-
-			@history.add @loDescriptor, s
-			# delete @savedSelection
-
-			delete @sel
-
-		# if @tempSel
-		# 	console.time 'ssr'
-		# 	SerializeSelection.restore(@tempSel)
-		# 	console.timeEnd 'ssr'
-		# 	delete @tempSel
-
-		# if @selLater and @selLater.componentClass? and @selLater.componentClass.updateSelection?
-		# 	@selLater.componentClass.updateSelection @sel
-		# 	@selLater = null
-		# 	@sel.select()
-		# else if @selectionPending
-		# 	SerializeSelection.restore @selectionPending
-		# 	@selectionPending = null
+		console.log 'COMPONENT DID UPDATE'
 
 		if @selectionPending
-			console.log @history
-			console.log @selectionPending
-
-			startChunk = @state.module.chunks.at @selectionPending.start.index
-			endChunk   = @state.module.chunks.at @selectionPending.end.index
-
-			start = @callComponentFn 'restoreSelection', startChunk, [@selectionPending.start.data]
-			end   = @callComponentFn 'restoreSelection', endChunk, [@selectionPending.end.data]
-
-			s = window.getSelection()
-			r = new Range
-
-			console.log 'start', start
-			console.log 'end', end
-
-			r.setStart start.textNode, start.offset
-			r.setEnd   end.textNode,   end.offset
-
-			s.removeAllRanges()
-			s.addRange r
-
+			@selection.selectFromDescriptor @state.module, @selectionPending
 			delete @selectionPending
+		# else
+			# @selection.selectFuture @state.module
 
+		# if @historyShouldUpdate
+		# 	delete @historyShouldUpdate
+		# 	@history.add @state.module.toJSON(), @selection.getSelectionDescriptor()
 
+		# @history.__debug_print()
+		# @screen.scrollSelectionIntoViewIfNeeded()
+		@screen.tweenSelectionIntoViewIfNeeded()
+
+		#Nasty hack
+		if @selectionShouldUpdate
+			delete @selectionShouldUpdate
+			@selection.update @state.module
+			@setState { selection:@selection }
 
 		console.timeEnd 'cycle'
 		console.timeEnd 'kpCycle'
 
+	onTextMenuCommand: (commandLabel) ->
+		# @beforeSend()
 
+		for chunk in @selection.sel.all
+			@selection.runCommand(commandLabel, chunk)
 
-	# componentDidUpdateOLD: ->
-	# 	# if we didn't do an undo/redo, push to history
-	# 	if @sel
-	# 		@history.add @loDescriptor, @sel.toDescriptor()
+		@update()
 
-	# 	if @selectionPending
-	# 		@selectionPending.select()
-	# 		@selectionPending = null
+	onSideMenuClick: (position) ->
+		newChunk = Chunk.create()
 
-	# 	@sel = null
+		if position is 'before'
+			@selection.sel.start.chunk.addBefore newChunk
+			@callComponentFn 'selectStart', newChunk
+		else
+			@selection.sel.end.chunk.addAfter newChunk
+			@callComponentFn 'selectEnd', newChunk, ['end']
 
-	# 	console.log @history
+		# console.log 'selection  is', @selection.sel, JSON.stringify(@selection.sel.futureStart)
 
-	# 	console.timeEnd 'kp'
+		@selectionShouldUpdate = true
+		@update()
 
-	saveHistory: ->
-		@loDescriptor = @state.module.toJSON()
-		@history.add @loDescriptor, null
-
-	# renderTEST: ->
-	# 	React.createElement 'div', null,
-	# 		React.createElement Test
-	# 		OboReact.createElement 'div', @state.root, '0',
-	# 			{
-	# 				onClick: @onClick,
-	# 				onKeyDown: @onKeyDown,
-	# 				onKeyPress: @onKeyPress,
-	# 				contentEditable: true,
-	# 			},
-	# 			# OboReact.createChildren @state.root, '0',
-	# 			React.createElement Test
 
 	render: ->
 		saveHistoryFn = @saveHistory
 
-		React.createElement 'div', {
-			onClick: @onClick,
-			onKeyDown: @onKeyDown,
-			onKeyPress: @onKeyPress,
-			onPaste: @onPaste,
-			contentEditable: true
-		},
-			@state.module.chunks.models.map (chunk, index) ->
-				React.createElement 'div', {
-					className: 'component'
-					'data-component-type': chunk.get 'type'
-					'data-component-index': index
-					'data-oboid': chunk.cid
-					key: index
-				},
-					React.createElement chunk.getComponent(), {
-						chunk: chunk
-						saveHistoryFn: saveHistoryFn
-					}
+		# console.log 'new selection?', @state.newSelection
+		# { style:{ background:(if @state.newSelection then 'red' else 'white') } }
+
+		React.createElement 'div', null,
+			React.createElement StylesMenu, {
+				selection: @state.selection
+				styleBrush: @state.styleBrush
+				}
+			React.createElement SideMenu, {
+				selection: @state.selection
+				handlerFn: @onSideMenuClick
+				}
+			React.createElement TextMenu, { selection:@state.selection, commandHandler:@onTextMenuCommand }
+			React.createElement 'div', {
+				onClick: @onClick,
+				onKeyDown: @onKeyDown,
+				onKeyPress: @onKeyPress,
+				onKeyUp: @onKeyUp,
+				onPaste: @onPaste,
+				onMouseDown: @onMouseDown,
+				onMouseUp: @onMouseUp,
+				contentEditable: true
+			},
+				@state.module.chunks.models.map (chunk, index) ->
+					React.createElement 'div', {
+						className: 'component'
+						'data-component-type': chunk.get 'type'
+						'data-component-index': index
+						'data-oboid': chunk.cid
+						key: index
+					},
+						React.createElement chunk.getComponent(), {
+							chunk: chunk
+							updateFn: @update
+						}
 
 
 

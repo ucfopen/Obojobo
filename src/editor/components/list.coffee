@@ -4,7 +4,6 @@
 React = require 'react'
 
 OboNodeComponentMixin = require '../../oboreact/OboNodecomponentmixin'
-OboReact = require '../../oboreact/oboreact'
 
 Text = require '../../components/text'
 StyleableText = require '../../text/styleabletext'
@@ -99,8 +98,6 @@ List = React.createClass
 
 
 		indent: (sel, chunk, decreaseIndent) ->
-			console.log 'indent', arguments
-
 			data = chunk.get 'data'
 
 			if sel.type is 'caret'
@@ -127,7 +124,6 @@ List = React.createClass
 			POS.reselectSpan sel, chunk, span
 
 		applyIndent: (data, decreaseIndent) ->
-			console.log 'APPLY INDENT', data
 			if not decreaseIndent
 				data.indent++
 			else if data.indent > 0
@@ -143,7 +139,10 @@ List = React.createClass
 		merge:                        TextMethods.merge
 		saveSelection:                TextMethods.saveSelection
 		restoreSelection:             TextMethods.restoreSelection
-		updateSelection:              TextMethods.updateSelection
+		# updateSelection:              TextMethods.updateSelection
+		selectStart:                  TextMethods.selectStart
+		selectEnd:                    TextMethods.selectEnd
+		getTextMenuCommands:          TextMethods.getTextMenuCommands
 
 
 
@@ -152,7 +151,7 @@ List = React.createClass
 
 		texts = data.textGroup
 
-		console.time 'computeUL'
+		# console.time 'computeUL'
 
 		curIndentLevel = 0
 		curIndex = 0
@@ -206,7 +205,7 @@ List = React.createClass
 
 			curUl.lastChild.addChild text
 
-			console.timeEnd 'computeUL'
+			# console.timeEnd 'computeUL'
 
 			# console.log 'TREE'
 			# console.log '==========================================='
@@ -216,8 +215,8 @@ List = React.createClass
 		# @printTree '', rootUl, curUl
 		# console.log rootUl
 
-		console.log 'UL'
-		console.log rootUl
+		# console.log 'UL'
+		# console.log rootUl
 
 
 		React.createElement 'div', { style: { marginLeft: (data.indent * 20) + 'px' } }, @renderEl(rootUl, 0, 0)
@@ -239,7 +238,7 @@ List = React.createClass
 		# console.log key
 
 		switch node.nodeType
-			when 'text'   then OboReact.createText node.text, @state.chunk, node.index, null
+			when 'text'   then Text.createElement node.text, @state.chunk, node.index
 			# @TODO: KEY!!!!!1
 			when 'element'then React.createElement node.type, { key:key }, @renderChildren(node.children, indent + 1)
 

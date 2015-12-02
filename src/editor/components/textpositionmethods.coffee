@@ -27,6 +27,9 @@ TextPositionMethods =
 		text:      data.textGroup.last.text
 
 	getSelSpanInfo: (sel, chunk) ->
+		console.log 'getSelSpanInfo', sel, chunk
+		console.log sel
+		console.log sel.getRange
 		data = chunk.get 'data'
 
 		textGroup = data.textGroup

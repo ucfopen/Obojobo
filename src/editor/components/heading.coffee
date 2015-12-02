@@ -2,9 +2,6 @@ React = require 'react'
 
 
 OboNodeComponentMixin = require '../../oboreact/obonodecomponentmixin'
-OboReact = require '../../oboreact/oboreact'
-
-ViewerSingleText = require '../../viewer/components/singletext'
 
 Text = require '../../components/text'
 StyleableText = require '../../text/styleabletext'
@@ -54,7 +51,7 @@ Heading = React.createClass
 			[
 				Chunk.create @, {
 					textGroup: group
-					indent: 0
+					headingLevel: parseInt(el.tagName.substr(1))
 				}
 			]
 
@@ -79,11 +76,14 @@ Heading = React.createClass
 		indent:                       TextMethods.indent
 		saveSelection:                TextMethods.saveSelection
 		restoreSelection:             TextMethods.restoreSelection
-		updateSelection:              TextMethods.updateSelection
+		# updateSelection:              TextMethods.updateSelection
+		selectStart:                  TextMethods.selectStart
+		selectEnd:                    TextMethods.selectEnd
+		getTextMenuCommands:          TextMethods.getTextMenuCommands
 
 	render: ->
 		data = @state.chunk.get('data')
-		React.createElement('h' + data.headingLevel, null, OboReact.createText(data.textGroup.get(0).text, @state.chunk, 0, null))
+		React.createElement('h' + data.headingLevel, null, Text.createElement(data.textGroup.get(0).text, @state.chunk, 0))
 
 
 # console.log SingleText

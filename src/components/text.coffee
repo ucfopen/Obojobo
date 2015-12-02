@@ -3,8 +3,6 @@ StyleableText = require '../text/styleabletext'
 StyleableTextRenderer = require './text/styleabletextrenderer'
 TextElement = require './text/textelement'
 
-ComponentMap = require '../util/componentmap'
-
 DOMUtil = require '../dom/domutil'
 
 
@@ -51,6 +49,13 @@ Text = React.createClass
 
 			return null
 
+		createElement: (styleableText, chunk, index, attrs = {}) ->
+			attrs['text'] = styleableText
+			attrs['key'] = 't-' + chunk.cid + '-' + index
+			attrs['textIndex'] = index
+
+			React.createElement(Text, attrs)
+
 	appendText: (text) ->
 		@state.styleableText.appendText text
 		@setState { styleableText: @state.styleableText }
@@ -71,7 +76,6 @@ Text = React.createClass
 		@state.styleableText #@TODO
 
 	getInitialState: ->
-		ComponentMap.registerComponent @, @props.id
 		@props.text ?= new StyleableText('Insert Text Here') #@TODO
 
 		return (
