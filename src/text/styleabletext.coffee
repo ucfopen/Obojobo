@@ -57,6 +57,9 @@ class StyleableText
 	insertText: (atIndex, text) ->
 		console.log 'st.insertText', atIndex, text
 
+		console.log 'before'
+		@__debug_print()
+
 		insertLength = text.length
 
 		for range in @styleList.styles
@@ -76,6 +79,9 @@ class StyleableText
 		@value = @value.substring(0, atIndex) + text + @value.substring(atIndex)
 
 		@styleList.normalize()
+
+		console.log 'after'
+		@__debug_print()
 
 	deleteText: (from, to) ->
 		return if from > to
@@ -118,14 +124,28 @@ class StyleableText
 		@styleList.normalize()
 
 	styleText: (from, to, styleType, styleData) ->
+		console.log 'styleText'
+		console.log 'before'
+		@__debug_print()
+
 		styleRange = trimStyleRange new StyleRange(from, to, styleType, styleData), @value.length
 		@styleList.add styleRange
 		@styleList.normalize()
 
+		console.log 'after'
+		@__debug_print()
+
 	unstyleText: (from, to, styleType, styleData) ->
+		console.log 'unstyleText'
+		console.log 'before'
+		@__debug_print()
+
 		styleRange = trimStyleRange new StyleRange(from, to, styleType, styleData), @value.length
 		@styleList.remove styleRange
 		@styleList.normalize()
+
+		console.log 'afTER'
+		@__debug_print()
 
 	getStyles: (from, to) ->
 		@styleList.getStylesInRange from, to
@@ -199,7 +219,7 @@ class StyleableText
 		@__debug_print()
 
 	__debug_print: ->
-		console.log '   |          |' + @value + '|'
+		console.log '   |          |' + @value + ' |'
 		fill = ''
 		for i in [0..@value.length + 10]
 			fill += ' '
@@ -210,11 +230,13 @@ class StyleableText
 			s2 = ''
 			for i in [0...style.start]
 				s2 += '·'
-			for i in [style.start...style.end]
+			s2 += '<'
+			for i in [style.start+1...style.end]
 				s2 += '='
-			for i in [style.end...fill.length]
+			s2 += '>'
+			for i in [style.end+1...fill.length]
 				s2 += '·'
-			console.log (j + '   ').substr(0, 3) + '|' + (s1 + s2 + fill).substr(0, fill.length) + '|' + JSON.stringify(style.data) # + '|' + style.__debug
+			console.log (j + '   ').substr(0, 3) + '|' + (s1 + s2 + fill).substr(0, fill.length + 1) + '|' + JSON.stringify(style.data) # + '|' + style.__debug
 			j++
 
 

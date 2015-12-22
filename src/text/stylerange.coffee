@@ -24,6 +24,21 @@ class StyleRange
 	compareToRange: (from, to) ->
 		to ?= from
 
+		# console.log 'compareToRange2', from, to, @start, @end, @length()
+
+		return StyleRange.CONTAINS         if @length() is 0 and @start <= from and to <= @end
+		return StyleRange.AFTER            if to <= @start
+		return StyleRange.BEFORE           if @end < from
+		return StyleRange.CONTAINS         if @start <= from and to <= @end
+		#return StyleRange.CONTAINS         if @start < from and to < @end
+		#return StyleRange.CONTAINS_EDGE    if @start <= from and to <= @end
+		return StyleRange.ENSCAPSULATED_BY if from <= @start and @end <= to
+		return StyleRange.INSIDE_LEFT      if @start <= from
+		return StyleRange.INSIDE_RIGHT
+
+	compareToRangeWORKING_TODO: (from, to) ->
+		to ?= from
+
 		console.log 'compareToRange', from, to, @start, @end
 
 		return StyleRange.AFTER            if to <= @start

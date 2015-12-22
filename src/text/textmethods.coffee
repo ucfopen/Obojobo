@@ -28,12 +28,6 @@ methods =
 			for style in styles
 				info.text.styleText info.offset, info.offset + 1, style
 
-		console.log 'insertText'
-		info.text.__debug_print()
-
-		console.log 'we setum json'
-		chunk.set 'json', @getDataDescriptor(chunk)
-
 		sel.setFutureCaret sel.start.chunk, { offset: info.offset + textToInsert.length, childIndex: info.textIndex }
 
 	deleteText: (sel, chunk, deleteForwards) ->

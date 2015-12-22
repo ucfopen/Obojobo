@@ -41,6 +41,9 @@ class ChunkStyleList
 	remove: (styleRange) ->
 		comparisons = @getStyleComparisonsForRange styleRange.start, styleRange.end, styleRange.type
 
+		console.log 'remove, comparisons', styleRange
+		console.log JSON.stringify(comparisons, null, 2)
+
 		# For any ranges that are enscapulated by this range we simply delete them
 		for co in comparisons.enscapsulatedBy
 			co.invalidate()
@@ -54,10 +57,21 @@ class ChunkStyleList
 			co.start = styleRange.end
 
 		# For any contained ranges we have to split them into two new ranges
+		# However we remove any new ranges if they have a length of 0
 		for co in comparisons.contains
-			origEnd = co.end
-			co.end = styleRange.start
-			@add new StyleRange(styleRange.end, origEnd, co.type, co.data)
+			leftRange = co
+			origEnd = leftRange.end
+			leftRange.end = styleRange.start
+
+			rightRange = new StyleRange styleRange.end, origEnd, co.type, co.data
+
+			if leftRange.length() is 0
+				leftRange.invalidate()
+
+			if rightRange.length() > 0
+				@add rightRange
+
+
 
 		@normalize()
 
