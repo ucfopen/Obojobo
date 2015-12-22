@@ -21,9 +21,15 @@ TextElement = React.createClass
 			for child, index in @state.descriptor.children
 				children.push React.createElement(TextElement, { descriptor:child, key:index })
 
-			options = null
+			options = @state.descriptor.attrs
 			if @state.descriptor.parent is null
-				options = { 'data-obo-text', id:@props.id, 'data-obo-index':@props.index, 'data-owner-id':@props.ownerId, 'data-text-index':@props.textIndex }
+				options['data-obo-text'] = true
+				options['id'] = @props.id
+				options['data-obo-index'] = @props.index
+				options['data-owner-id'] = @props.ownerId
+				options['data-text-index'] = @props.textIndex
+
+				# options = { 'data-obo-text', id:@props.id, 'data-obo-index':@props.index, 'data-owner-id':@props.ownerId, 'data-text-index':@props.textIndex }
 
 			return React.createElement @state.descriptor.type, options, children
 

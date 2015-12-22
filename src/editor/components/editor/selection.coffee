@@ -58,18 +58,25 @@ class Selection
 		command.apply @, [@sel, chunk]
 
 	update: (module) ->
+		console.time 'selection.update'
 		@clear()
+
+		console.time 'new oboSelection'
 		@sel = new OboSelection module
+		console.timeEnd 'new oboSelection'
+
+		console.time 'OboSelectionRect.createFromSelection'
 		@rect = OboSelectionRect.createFromSelection()
+		console.timeEnd 'OboSelectionRect.createFromSelection'
+
+		console.time 'OboSelectionRect.createFromChunks'
 		@chunkRect = OboSelectionRect.createFromChunks @sel.all
+		console.timeEnd 'OboSelectionRect.createFromChunks'
 
 		@updateTextCommands()
 		@updateStyles()
 
-		# console.log 'valid commands are'
-		console.log 'all',@
-		# console.log 'valid',@validCommands
-		# console.log 'labels',validLabels
+		console.timeEnd 'selection.update'
 
 	updateTextCommands: ->
 		@commands = {}
@@ -77,6 +84,8 @@ class Selection
 
 		if @sel.type is 'caret'
 			return
+
+		console.time 'updateTextCommands'
 
 		allCommands = {}
 		for chunk in @sel.all
@@ -105,6 +114,8 @@ class Selection
 			if command.count is numChunks
 				@commands[command.label] = command
 				@labels.push command.label
+
+		console.timeEnd 'updateTextCommands'
 
 	updateStyles: ->
 		console.time 'updateStyles'

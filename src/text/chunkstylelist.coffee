@@ -189,7 +189,7 @@ class ChunkStyleList
 				start = null
 
 				for range in @styles
-					range.invalidate() if range.length() is 0
+					# range.invalidate() if range.length() is 0
 
 					if range.isMergeable styleType, data
 						tmp[range.start] ?= 0

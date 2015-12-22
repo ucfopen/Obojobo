@@ -47,7 +47,8 @@ Text = React.createClass
 					return { textNode:textNode, offset:offset - totalCharactersFromStart }
 				totalCharactersFromStart += textNode.nodeValue.length
 
-			return null
+			# Should never get here
+			return { textNode:textNode, offset:totalCharactersFromStart }
 
 		createElement: (styleableText, chunk, index, attrs = {}) ->
 			attrs['text'] = styleableText

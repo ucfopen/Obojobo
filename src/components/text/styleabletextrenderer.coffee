@@ -66,7 +66,7 @@ getTextNodeFragmentDescriptorsAt = (rootNode, startIndex, endIndex) ->
 
 	return fragmentDescriptors
 
-wrap = (wrapType, nodeFragmentDescriptor) ->
+wrap = (styleRange, nodeFragmentDescriptor) ->
 	nodeToWrap = nodeFragmentDescriptor.node
 	text = nodeToWrap.text
 	fromPosition = nodeFragmentDescriptor.startIndex
@@ -84,7 +84,7 @@ wrap = (wrapType, nodeFragmentDescriptor) ->
 		nodeToWrap.parent.addBefore newChild, nodeToWrap
 
 	# add in wrapped text
-	newChild = new MockElement(wrapType)
+	newChild = new MockElement(styleRange.type, styleRange.data)
 	nodeToWrap.parent.replaceChild nodeToWrap, newChild
 	newChild.addChild nodeToWrap
 	nodeToWrap.text = wrappedText
@@ -99,7 +99,7 @@ applyStyle = (el, styleRange) ->
 	fragmentDescriptors = getTextNodeFragmentDescriptorsAt el, styleRange.start, styleRange.end
 	for i in [fragmentDescriptors.length - 1..0] by -1
 		fragmentDescriptor = fragmentDescriptors[i]
-		wrap styleRange.type, fragmentDescriptor
+		wrap styleRange, fragmentDescriptor
 
 getMockElement = (styleableText) ->
 	# console.time 'getMockElement'

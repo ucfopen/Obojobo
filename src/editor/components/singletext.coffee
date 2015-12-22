@@ -21,7 +21,7 @@ SingleText = React.createClass
 		# OBONODE DATA METHODS
 		# ================================================
 		createNewNodeData: ->
-			textGroup: new TextGroup()
+			textGroup: TextGroup.create(1)
 			indent: 0
 			type: 'p'
 
@@ -33,7 +33,7 @@ SingleText = React.createClass
 		# SERIALIZATION/DECODE METHODS
 		# ================================================
 		createNodeDataFromDescriptor: (descriptor) ->
-			textGroup: TextGroup.fromDescriptor descriptor.data.textGroup
+			textGroup: TextGroup.fromDescriptor descriptor.data.textGroup, 1
 			indent: descriptor.data.indent
 			type: descriptor.data.type
 
@@ -47,7 +47,7 @@ SingleText = React.createClass
 		# HTML METHODS
 		# ================================================
 		createNewNodesFromElement: (el) ->
-			group = new TextGroup()
+			group = TextGroup.create(1)
 			group.first.text = StyleableText.createFromElement(el)
 
 			[
@@ -64,7 +64,8 @@ SingleText = React.createClass
 		splitText:                    TextMethods.splitText
 		deleteSelection:              TextMethods.deleteSelection
 		styleSelection:               TextMethods.styleSelection
-		acceptMerge:                  TextMethods.acceptMerge
+		unstyleSelection:             TextMethods.unstyleSelection
+		canMergeWith:                    TextMethods.canMergeWith
 		merge:                        TextMethods.merge
 		indent:                       TextMethods.indent
 		saveSelection:                TextMethods.saveSelection
@@ -74,6 +75,10 @@ SingleText = React.createClass
 		selectStart:                  TextMethods.selectStart
 		selectEnd:                    TextMethods.selectEnd
 		getTextMenuCommands:          TextMethods.getTextMenuCommands
+		acceptAbsorb:                 TextMethods.acceptAbsorb
+		absorb:                       TextMethods.absorb
+		transformSelection:           TextMethods.transformSelection
+		split:                        TextMethods.split
 
 	render: ->
 		data = @state.chunk.get('data')

@@ -36,13 +36,30 @@ getTagName = (node) ->
 createOboNodesFromDOMNode = (node) ->
 	console.log 'createOboNodesFromDOMNode', node
 
-	tagName = getTagName(node)
-	componentClass = ComponentClassMap.getClassForElement tagName
+	componentClass = null
+
+	# first, see if this is copied from our HTML, in which case we can be more specific
+	type = node.getAttribute('data-component-type')
+	if type?
+		componentClass = ComponentClassMap.getClassForType type
+		mainEls = node.getElementsByClassName('main')
+		console.log 'main els be'
+		console.log node
+		console.log mainEls, mainEls.length
+		if mainEls?.length? and mainEls.length >= 1
+			node = mainEls[0]
+			console.log 'CHANGING NODE', mainEls, node
+
+	# else, see if there's a component out there that can read elements of this type
+	if not componentClass?
+		tagName = getTagName(node)
+		componentClass = ComponentClassMap.getClassForElement tagName
 
 	console.log 'componentClass', componentClass
 
 	if not componentClass then return [] # OR FRAGMENT?
 
+	console.log 'SO', node
 	nodes = componentClass.createNewNodesFromElement node
 
 	console.log 'createOboNodesFromDOMNode___', nodes

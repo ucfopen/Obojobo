@@ -1,5 +1,5 @@
 class MockElement
-	constructor: (@type) ->
+	constructor: (@type, @attrs = {}) ->
 		@nodeType = 'element'
 		@children = []
 		@parent = null

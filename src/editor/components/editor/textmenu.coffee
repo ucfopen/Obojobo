@@ -22,7 +22,7 @@ TextMenu = React.createClass
 		React.createElement('div', { style: {
 			position: 'absolute'
 			left: rect.left + 'px'
-			top: (rect.top - HEIGHT - MARGIN) + 'px'
+			top: (rect.top + window.scrollY - HEIGHT - MARGIN) + 'px'
 			height: HEIGHT + 'px'
 			background: 'white'
 			border: '1px solid black'

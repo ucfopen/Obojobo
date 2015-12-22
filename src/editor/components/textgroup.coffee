@@ -1,36 +1,90 @@
+ObjectAssign = require 'object-assign'
 StyleableText = require '../../text/styleabletext'
+
+createData = (data, template) ->
+	clone = ObjectAssign {}, data
+
+	for key of clone
+		if not template[key]?
+			delete clone[key]
+
+	for key of template
+		if not clone[key]?
+			if typeof template[key] is 'object'
+				clone[key] = ObjectAssign {}, template[key]
+			else
+				clone[key] = template[key]
+
+	clone
+
+defaultCloneFn = (data) ->
+	ObjectAssign {}, data
+
+defaultMergeFn = (consumer, digested) ->
+	ObjectAssign consumer, digested
+
 
 class TextGroupItem
 	constructor: (@text = new StyleableText(), @data = {}) ->
 
-defaultCloneFn = (data) ->
-	Object.assign {}, data
+	clone: (cloneDataFn = defaultCloneFn) ->
+		new TextGroupItem @text.clone(), cloneDataFn(@data)
 
-defaultMergeFn = (consumer, digested) ->
-	Object.assign consumer, digested
 
 class TextGroup
-	constructor: (@items = [new TextGroupItem]) ->
+	constructor: (@maxItems = Infinity, dataTemplate = {}, @items = []) ->
+		@dataTemplate = Object.freeze ObjectAssign({}, dataTemplate)
+
+	clear: ->
+		@items = []
+
+	init: (numItems = 1) ->
+		@clear()
+
+		while numItems--
+			@add()
+
+		@
+
+	fill: ->
+		return if @maxItems is Infinity
+
+		while not @isFull
+			@add()
+
+		@
 
 	add: (text, data) ->
-		@items.push new TextGroupItem text, data
+		return @ if @isFull
+
+		@items.push new TextGroupItem text, createData(data, @dataTemplate)
+		@
 
 	addAt: (index, text, data) ->
-		@items.splice index, 0, new TextGroupItem(text, data)
+		return @ if @isFull
+
+		@items.splice index, 0, new TextGroupItem(text, createData(data, @dataTemplate))
+		@
+
+	addGroup: (group, cloneDataFn = defaultCloneFn) ->
+		for item in group.items
+			clone = item.clone cloneDataFn
+			@add clone.text, createData(clone.data, @dataTemplate)
+		@
 
 	get: (index) ->
 		@items[index]
 
 	remove: (index) ->
-		@items.splice index, 1
+		@items.splice(index, 1)[0]
 
 	clone: (cloneDataFn = defaultCloneFn) ->
 		clonedItems = []
 
 		for item in @items
-			clonedItems.push new TextGroupItem(item.text.clone(), cloneDataFn(item.data))
+			clonedItems.push item.clone(cloneDataFn)
 
-		new TextGroup clonedItems
+		new TextGroup @maxItems, @dataTemplate, clonedItems
 
 	toDescriptor: (dataToDescriptorFn = defaultCloneFn) ->
 		desc = []
@@ -40,11 +94,14 @@ class TextGroup
 
 		desc
 
+	slice: (from, to = Infinity) ->
+		@items = @items.slice from, to
+
 	split: (index) ->
 		siblingItems = @items[index+1..]
 		@items = @items[0..index]
 
-		new TextGroup siblingItems
+		new TextGroup @maxItems, @dataTemplate, siblingItems
 
 	splitText: (index, textIndex, cloneDataFn = defaultCloneFn) ->
 		item = @items[index]
@@ -54,14 +111,16 @@ class TextGroup
 		newItem.text = item.text.split textIndex
 
 		@items.splice index + 1, 0, newItem
+		@
 
 	merge: (index, mergeDataFn = defaultMergeFn) ->
 		digestedItem = @items.splice(index + 1, 1)[0]
 		consumerItem = @items[index]
 
-		consumerItem.data = mergeDataFn consumerItem.data, digestedItem.data
+		consumerItem.data = createData(mergeDataFn(consumerItem.data, digestedItem.data), @dataTemplate)
 
 		consumerItem.text.merge digestedItem.text
+		@
 
 	deleteSpan: (startIndex, startTextIndex, endIndex, endTextIndex, mergeFn = defaultMergeFn) ->
 		startItem = @items[startIndex]
@@ -105,6 +164,8 @@ class TextGroup
 			if i > startIndex and i < endIndex
 				item.text.init()
 
+		@
+
 	styleText: (startIndex, startTextIndex, endIndex, endTextIndex, styleType, styleData) ->
 		@applyStyleFunction 'styleText', arguments
 
@@ -118,7 +179,7 @@ class TextGroup
 	applyStyleFunction: (fn, args) ->
 		[startIndex, startTextIndex, endIndex, endTextIndex, styleType, styleData] = args
 
-		console.log 'APPLY STYLE FUNCTION', startIndex, startTextIndex, endIndex, endTextIndex, styleType, styleData
+		# console.log 'APPLY STYLE FUNCTION', startIndex, startTextIndex, endIndex, endTextIndex, styleType, styleData
 
 		startItem = @items[startIndex]
 		endItem   = @items[endIndex]
@@ -140,6 +201,8 @@ class TextGroup
 				break
 			else if foundStartText
 				item.text[fn] 0, item.text.length, styleType, styleData
+
+		@
 
 	getStyles: (startIndex, startTextIndex, endIndex, endTextIndex) ->
 		startItem = @items[startIndex]
@@ -163,20 +226,20 @@ class TextGroup
 			else if item.text is endText
 				numTexts++
 				styles = item.text.getStyles 0, endTextIndex
-				break
 			else if foundStartText
 				numTexts++
 				styles = item.text.getStyles 0, item.text.length
 
-			for style in styles
-				console.log 'lookin at', style
+			for style of styles
 				if allStyles[style]?
 					allStyles[style]++
 				else
 					allStyles[style] = 1
 
+			if item.text is endText then break
+
 		returnedStyles = {}
-		for style in allStyles
+		for style of allStyles
 			if allStyles[style] is numTexts
 				returnedStyles[style] = style
 
@@ -199,18 +262,31 @@ Object.defineProperties TextGroup.prototype, {
 		"get": -> @items[0]
 
 	"last":
-		"get": ->
-			@items[@items.length - 1]
+		"get": -> @items[@items.length - 1]
+
+	"isFull":
+		"get": -> @items.length is @maxItems
+
+	"isEmpty":
+		"get": -> @items.length is 0
 }
 
-TextGroup.fromDescriptor = (descriptor, restoreDataDescriptorFn = defaultCloneFn) ->
+TextGroup.fromDescriptor = (descriptor, maxItems, dataTemplate, restoreDataDescriptorFn = defaultCloneFn) ->
 	items = []
 	for item in descriptor
 		items.push new TextGroupItem(StyleableText.createFromObject(item.text), restoreDataDescriptorFn(item.data))
 
-	new TextGroup items
+	new TextGroup maxItems, dataTemplate, items
+
+TextGroup.create = (maxItems = Infinity, dataTemplate = {}, numItemsToCreate = 1) ->
+	group = new TextGroup maxItems, dataTemplate
+	group.init numItemsToCreate
+
+	group
 
 
+#@TODO
+window.TextGroup = TextGroup
 
 
 module.exports = TextGroup

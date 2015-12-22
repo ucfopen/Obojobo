@@ -1,3 +1,5 @@
+"use strict";
+
 React = require 'react'
 EditorApp = require './editor/components/editorapp'
 

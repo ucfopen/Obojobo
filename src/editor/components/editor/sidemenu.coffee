@@ -31,7 +31,7 @@ SideMenu = React.createClass
 				style: {
 					position: 'absolute'
 					left: '10px'
-					top: (rect.top - MARGIN - HEIGHT) + 'px'
+					top: (rect.top + window.scrollY - MARGIN - HEIGHT) + 'px'
 					width: WIDTH + 'px'
 					height: HEIGHT + 'px'
 					background: 'rgba(255, 0, 0, 0.1)'
@@ -43,7 +43,7 @@ SideMenu = React.createClass
 				style: {
 					position: 'absolute'
 					left: '10px'
-					top: (rect.bottom + MARGIN) + 'px'
+					top: (rect.bottom + window.scrollY + MARGIN) + 'px'
 					width: WIDTH + 'px'
 					height: HEIGHT + 'px'
 					background: 'rgba(255, 0, 0, 0.1)'

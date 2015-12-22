@@ -1,30 +1,30 @@
 OboCursor = require './obocursor'
+Selection = require '../../dom/selection'
+DOMUtil = require '../../dom/domutil'
+
+domType = null
 
 class OboSelection
 	constructor: (@module) ->
-		s = window.getSelection()
-		r = s.getRangeAt(0)
+		s = new Selection()
 
-		start = @getChunkForDomNode r.startContainer
-		end   = @getChunkForDomNode r.endContainer
+		start = @getChunkForDomNode s.startContainer
+		end   = @getChunkForDomNode s.endContainer
 
-		@start     = new OboCursor(start, r.startContainer, r.startOffset)
-		@end       = new OboCursor(end, r.endContainer, r.endOffset)
+		@start     = new OboCursor(start, s.startContainer, s.startOffset)
+		@end       = new OboCursor(end, s.endContainer, s.endOffset)
 		@calculateAllNodes()
+
+		domType = s.getType()
 
 		@futureStart = @futureEnd = null
 
 	calculateAllNodes: ->
-		# console.log 'CAN'
-		# console.log __lo.__debug_print()
-
 		@inbetween   = []
 		@all = [@start.chunk]
 
 		n = @start.chunk
 		while n? and n isnt @end.chunk
-			# console.log 'LOOKING AT', n
-			# console.log 'COMPARE   ', @end.chunk
 			if n isnt @start.chunk
 				@inbetween.push n
 				@all.push n
@@ -38,8 +38,9 @@ class OboSelection
 		@module.chunks.at index
 
 	getRange: (parentElement) ->
-		hasStart = parentElement.contains @start.node
-		hasEnd   = parentElement.contains @end.node
+		# IE 10 doesn't support contains for text nodes, so we have to query their parentNodes (https://connect.microsoft.com/IE/feedback/details/780874/node-contains-is-incorrect)
+		hasStart = parentElement.contains @start.node.parentNode
+		hasEnd   = parentElement.contains @end.node.parentNode
 
 		if not hasStart and not hasEnd then return 'insideOrOutside'
 		if     hasStart and not hasEnd then return 'start'
@@ -47,10 +48,7 @@ class OboSelection
 		'both'
 
 	getIndex: (node) ->
-		while node?
-			if node.getAttribute? and node.getAttribute('data-component-index')?
-				return node.getAttribute('data-component-index')
-			node = node.parentElement
+		DOMUtil.findParentAttr node, 'data-component-index'
 
 	setStart: (node, offset) ->
 		@start.node = node
@@ -71,14 +69,17 @@ class OboSelection
 	select: ->
 		return if not @start.node? or not @end.node?
 
-		s = window.getSelection()
-		r = new Range
+		s = new Selection()
+		s.set @start.node, @start.offset, @end.node, @end.offset
 
-		r.setStart @start.node, @start.offset
-		r.setEnd @end.node, @end.offset
+		# s = window.getSelection()
+		# r = new Range
 
-		s.removeAllRanges()
-		s.addRange r
+		# r.setStart @start.node, @start.offset
+		# r.setEnd @end.node, @end.offset
+
+		# s.removeAllRanges()
+		# s.addRange r
 
 	collapse: ->
 		@end = @start.clone()
@@ -96,6 +97,10 @@ class OboSelection
 	setFutureCaret: (chunk, data) ->
 		@setFutureStart chunk, data
 		@setFutureEnd   chunk, data
+
+	setFutureFromSelection: ->
+		@setFutureStart @start.chunk, @start.chunk.callComponentFn('saveSelection', @, [@start])
+		@setFutureEnd   @end.chunk,   @end.chunk.callComponentFn('saveSelection', @, [@start])
 
 	clearFuture: ->
 		@futureStart = @futureEnd = null
@@ -123,10 +128,10 @@ class OboSelection
 Object.defineProperties OboSelection.prototype, {
 	"type": {
 		get: ->
-			s = window.getSelection()
+			s = new Selection()
 
 			if @start.chunk.cid is @end.chunk.cid
-				if s.type is 'Caret'
+				if domType is 'caret'
 					return 'caret'
 				else
 					return 'textSpan'

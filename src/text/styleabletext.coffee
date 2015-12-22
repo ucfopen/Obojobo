@@ -55,9 +55,12 @@ class StyleableText
 		@value += text #@TODO - does this handle styles ok?
 
 	insertText: (atIndex, text) ->
+		console.log 'st.insertText', atIndex, text
+
 		insertLength = text.length
 
 		for range in @styleList.styles
+			console.log 'comparision=', range.compareToRange(atIndex)
 			switch range.compareToRange atIndex
 				when StyleRange.CONTAINS
 					range.end += insertLength
@@ -258,7 +261,8 @@ StyleableText.getStylesOfElement = (el) ->
 		#when 'b'               then styles.push { type:StyleType.BOLD }
 		when 'a'               then styles.push { type:StyleType.LINK, data:el.getAttribute('href') }
 		when 'q'               then styles.push { type:StyleType.QUOTE, data:el.getAttribute('cite') }
-		when 'abbr', 'acronym' then styles.push { type:StyleType.COMMENT, data:el.getAttribute('title') }
+		#@TODO:
+		# when 'abbr', 'acronym' then styles.push { type:StyleType.COMMENT, data:el.getAttribute('title') }
 		when 'sup'             then styles.push { type:StyleType.SUPERSCRIPT, data:1 }
 		when 'sub'             then styles.push { type:StyleType.SUPERSCRIPT, data:-1 }
 		# @TODO:

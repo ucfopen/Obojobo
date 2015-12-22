@@ -1,3 +1,5 @@
+Selection = require '../../dom/selection'
+
 class OboSelectionRect
 	constructor: ->
 		@type   = OboSelectionRect.TYPE_NONE
@@ -21,14 +23,15 @@ OboSelectionRect.TYPE_CHUNKS = 'chunks'
 
 OboSelectionRect.createFromSelection = ->
 	rect = new OboSelectionRect()
-	sel = window.getSelection()
+	sel = new Selection()
 
-	return rect if sel.type.toLowerCase() is "none"
+	selType = sel.getType()
 
-	range = sel.getRangeAt 0
-	clientRects = range.getClientRects()
+	return rect if selType is "none"
 
-	rect.type = if sel.type is 'Caret' then OboSelectionRect.TYPE_CARET else OboSelectionRect.TYPE_SELECTION
+	clientRects = sel.getClientRects()
+
+	rect.type = if selType is 'caret' then OboSelectionRect.TYPE_CARET else OboSelectionRect.TYPE_SELECTION
 	rect.top = Infinity
 	rect.right = -Infinity
 	rect.bottom = -Infinity

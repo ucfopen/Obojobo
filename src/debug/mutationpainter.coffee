@@ -10,7 +10,7 @@ observer = new MutationObserver (mutations) ->
 		continue if mutation.attributeName is 'class' and mutation.oldValue is 'mutate'
 
 		node = mutation.target
-		if node.nodeType is Node.TEXT_NODE then node = node.parentElement
+		if node.nodeType is Node.TEXT_NODE then node = node.parentNode
 		node.classList.add 'mutate'
 
 	clearTimeout timeoutId

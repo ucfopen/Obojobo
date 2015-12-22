@@ -25,10 +25,7 @@ Table = React.createClass
 		# OBONODE DATA METHODS
 		# ================================================
 		createNewNodeData: ->
-			textGroup = new TextGroup()
-			textGroup.get(0).data = { indent:0 }
-
-			textGroup: textGroup
+			textGroup: TextGroup.create(9)
 			position: 'center'
 			rows: 3
 			cols: 3
@@ -42,7 +39,7 @@ Table = React.createClass
 		# SERIALIZATION/DECODE METHODS
 		# ================================================
 		createNodeDataFromDescriptor: (descriptor) ->
-			textGroup: TextGroup.fromDescriptor descriptor.data.textGroup
+			textGroup: TextGroup.fromDescriptor descriptor.data.textGroup, parseInt(descriptor.data.rows, 10) * parseInt(descriptor.data.cols, 10)
 			position: descriptor.data.position
 			rows: descriptor.data.rows
 			cols: descriptor.data.cols
@@ -59,25 +56,40 @@ Table = React.createClass
 		# ================================================
 		createNewNodesFromElement: (el) ->
 			console.clear()
-			console.log 'TABLE READ HTML'
-			console.log el
+			console.log 'CREATE TABLE', el
 
-			group = new TextGroup()
-			group.first.text = StyleableText.createFromElement(el)
+			group = new TextGroup
+
+			maxNumCols = 0
+			rows = Array.prototype.slice.call el.getElementsByTagName('tr')
+			for row in rows
+				cols = Array.prototype.slice.call row.getElementsByTagName('td')
+				maxNumCols = Math.max maxNumCols, cols.length
+				for col in cols
+					group.add StyleableText.createFromElement(col)
+
+			console.log group
+
+			group.maxItems = group.length
 
 			[
 				Chunk.create @, {
 					textGroup: group
-					indent: 0
+					position: 'center'
+					rows: rows.length
+					cols: maxNumCols
 				}
 			]
 
 
 		splitText: (sel, chunk, shiftKey) -> null
-		acceptMerge: (sel, digestedChunk, consumerChunk) -> false
-		merge: (sel, consumerChunk, digestedChunk) -> null
+		# acceptMerge: (sel, digestedChunk, consumerChunk) -> false
+		# merge: (sel, consumerChunk, digestedChunk) -> null
+
 
 		deleteSelection: (sel, chunk) ->
+			chunk.markChanged()
+
 			span = POS.getSelSpanInfo sel, chunk
 
 			chunk.get('data').textGroup.clearSpan span.start.textIndex, span.start.offset, span.end.textIndex, span.end.offset
@@ -86,9 +98,14 @@ Table = React.createClass
 			if range is 'start' or range is 'both'
 				sel.setFutureCaret chunk, { offset: span.start.offset, childIndex: span.start.textIndex }
 
-		indent: (sel, chunk, decreaseIndent) -> @insertText sel, chunk, "\t"
+		indent: (sel, chunk, decreaseIndent) ->
+			chunk.markChanged()
+
+			@insertText sel, chunk, "\t"
 
 		deleteText: (sel, chunk, deleteForwards) ->
+			chunk.markChanged()
+
 			info = POS.getCaretInfo sel.start, chunk
 			data = chunk.get 'data'
 
@@ -98,10 +115,22 @@ Table = React.createClass
 
 			sel.setFutureCaret chunk, { offset: start, childIndex: info.textIndex }
 
+		# init: (sel, chunk) ->
+		# 	data = chunk.get 'data'
+
+		# 	data.rows = data.cols = 0
+		# 	data.textGroup.init 0
+
+		acceptAbsorb: -> false
+		absorb: -> false
+		split: -> false
+		transformSelection: -> false
 
 		getCaretEdge:                 TextMethods.getCaretEdge
 		insertText:                   TextMethods.insertText
 		styleSelection:               TextMethods.styleSelection
+		unstyleSelection:             TextMethods.unstyleSelection
+		getSelectionStyles:           TextMethods.getSelectionStyles
 		saveSelection:                TextMethods.saveSelection
 		restoreSelection:             TextMethods.restoreSelection
 		# updateSelection:              TextMethods.updateSelection
@@ -109,13 +138,19 @@ Table = React.createClass
 		selectEnd:                    TextMethods.selectEnd
 		getTextMenuCommands:          TextMethods.getTextMenuCommands
 
+
+
 	addRow: ->
 		console.log 'addROW'
+
+		@state.chunk.markChanged()
 
 		data = @state.chunk.get 'data'
 		numCols = data.cols
 
 		console.log numCols
+
+		data.textGroup.maxItems += data.cols
 
 		while numCols
 			data.textGroup.add()
@@ -128,9 +163,13 @@ Table = React.createClass
 		@props.updateFn()
 
 	addCol: ->
+		@state.chunk.markChanged()
+
 		data = @state.chunk.get 'data'
 		numCols = data.cols
 		row = data.rows
+
+		data.textGroup.maxItems += data.rows
 
 		while row
 			index = row * numCols
@@ -152,14 +191,14 @@ Table = React.createClass
 
 		renderRow = @renderRow
 
-		React.createElement 'div', null, [
-			React.createElement('div', { contentEditable:false },
+		React.createElement 'div', { contentEditable:false }, [
+			React.createElement('div', null,
 				React.createElement('button', { onClick:@addRow }, '+Row'),
 				React.createElement('button', { onClick:@addCol }, '+Col')
 			),
-			React.createElement 'table', { style: { width: '100%' } },
+			React.createElement 'table', { contentEditable:true, className:'main', style: { width: '100%', tableLayout: 'fixed' } },
 				React.createElement 'tbody', null,
-					[0..data.rows].map (rowNum) ->
+					[0...data.rows].map (rowNum) ->
 						React.createElement 'tr', null,
 							data.textGroup.items.slice(rowNum * numCols, (rowNum + 1) * numCols).map (textGroupItem, index) ->
 								React.createElement 'td', { style: { border: '1px solid gray' } },

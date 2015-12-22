@@ -11,7 +11,6 @@ StylesMenu = React.createClass
 		styleBrush: {}
 
 	componentWillReceiveProps: (nextProps) ->
-		console.log 'CWRP', nextProps
 		@setState {
 			styles: nextProps.selection.styles
 			styleBrush: nextProps.styleBrush
@@ -20,7 +19,7 @@ StylesMenu = React.createClass
 	render: ->
 		React.createElement 'div', {
 			style: {
-				position: 'absolute'
+				position: 'fixed'
 				left: '0'
 				top: '0'
 				background: 'white'

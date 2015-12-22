@@ -17,6 +17,8 @@ var glob = require('glob');
 var del = require('del');
 var uglify = require('gulp-uglify');
 
+var brfs = require('brfs');
+
 // function jsxify(sourceFolder, destFolder, gulp)
 // {
 // 	return gulp
@@ -60,7 +62,8 @@ gulp.task('browserify-viewer', ['coffee'], function() {
 gulp.task('browserify-editor', ['coffee'], function() {
 	return browserify({
 		debug: true,
-		entries: glob.sync('./tmp/js/editor.js')
+		entries: glob.sync('./tmp/js/editor.js'),
+		transform: [brfs]
 	}).bundle()
 		.pipe(source('editor-app.js'))
 		.pipe(gulp.dest('./build/js'));

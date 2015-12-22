@@ -23,7 +23,7 @@ Heading = React.createClass
 		# OBONODE DATA METHODS
 		# ================================================
 		createNewNodeData: ->
-			textGroup: new TextGroup()
+			textGroup: TextGroup.create(1)
 			headingLevel: 1
 
 		cloneNodeData: (data) ->
@@ -33,7 +33,7 @@ Heading = React.createClass
 		# SERIALIZATION/DECODE METHODS
 		# ================================================
 		createNodeDataFromDescriptor: (descriptor) ->
-			textGroup: TextGroup.fromDescriptor descriptor.data.textGroup
+			textGroup: TextGroup.fromDescriptor descriptor.data.textGroup, 1
 			headingLevel: descriptor.data.headingLevel
 
 		getDataDescriptor: (chunk) ->
@@ -45,7 +45,7 @@ Heading = React.createClass
 		# HTML METHODS
 		# ================================================
 		createNewNodesFromElement: (el) ->
-			group = new TextGroup()
+			group = TextGroup.create(1)
 			group.first.text = StyleableText.createFromElement(el)
 
 			[
@@ -56,6 +56,8 @@ Heading = React.createClass
 			]
 
 		splitText: (sel, chunk, shiftKey) ->
+			chunk.markChanged()
+
 			info = POS.getCaretInfo sel.start, chunk
 
 			newText = info.text.split info.offset
@@ -71,7 +73,9 @@ Heading = React.createClass
 		deleteText:                   TextMethods.deleteText
 		deleteSelection:              TextMethods.deleteSelection
 		styleSelection:               TextMethods.styleSelection
-		acceptMerge:                  TextMethods.acceptMerge
+		unstyleSelection:             TextMethods.unstyleSelection
+		getSelectionStyles:           TextMethods.getSelectionStyles
+		canMergeWith:                    TextMethods.canMergeWith
 		merge:                        TextMethods.merge
 		indent:                       TextMethods.indent
 		saveSelection:                TextMethods.saveSelection
@@ -80,10 +84,14 @@ Heading = React.createClass
 		selectStart:                  TextMethods.selectStart
 		selectEnd:                    TextMethods.selectEnd
 		getTextMenuCommands:          TextMethods.getTextMenuCommands
+		acceptAbsorb:                 TextMethods.acceptAbsorb
+		absorb:                       TextMethods.absorb
+		transformSelection:           TextMethods.transformSelection
+		split:                        TextMethods.split
 
 	render: ->
 		data = @state.chunk.get('data')
-		React.createElement('h' + data.headingLevel, null, Text.createElement(data.textGroup.get(0).text, @state.chunk, 0))
+		React.createElement('h' + data.headingLevel, { className:'main' }, Text.createElement(data.textGroup.get(0).text, @state.chunk, 0))
 
 
 # console.log SingleText

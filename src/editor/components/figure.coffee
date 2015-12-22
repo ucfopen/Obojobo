@@ -17,14 +17,13 @@ Chunk = require '../../models/chunk'
 
 
 Figure = React.createClass
-	mixins: [OboNodeComponentMixin]
 	statics:
 		consumableElements: []
 
 		# OBONODE DATA METHODS
 		# ================================================
 		createNewNodeData: ->
-			textGroup: new TextGroup()
+			textGroup: TextGroup.create(1)
 			url: null
 			position: 'center'
 
@@ -37,7 +36,7 @@ Figure = React.createClass
 		# ================================================
 		createNodeDataFromDescriptor: (descriptor) ->
 			console.log 'descr be all like', descriptor
-			textGroup: TextGroup.fromDescriptor descriptor.data.textGroup
+			textGroup: TextGroup.fromDescriptor descriptor.data.textGroup, 1
 			url: descriptor.data.url
 			position: descriptor.data.position
 
@@ -51,7 +50,7 @@ Figure = React.createClass
 		# HTML METHODS
 		# ================================================
 		createNewNodesFromElement: (el) ->
-			group = new TextGroup()
+			group = TextGroup.create(1)
 			group.first.text = StyleableText.createFromElement(el)
 
 			[
@@ -62,6 +61,8 @@ Figure = React.createClass
 			]
 
 		splitText: (sel, chunk, shiftKey) ->
+			chunk.markChanged()
+
 			info = POS.getCaretInfo sel.start, chunk
 
 			newText = info.text.split info.offset
@@ -77,7 +78,9 @@ Figure = React.createClass
 		deleteText:                   TextMethods.deleteText
 		deleteSelection:              TextMethods.deleteSelection
 		styleSelection:               TextMethods.styleSelection
-		acceptMerge:                  TextMethods.acceptMerge
+		unstyleSelection:             TextMethods.unstyleSelection
+		getSelectionStyles:           TextMethods.getSelectionStyles
+		canMergeWith:                    TextMethods.canMergeWith
 		merge:                        TextMethods.merge
 		indent:                       TextMethods.indent
 		saveSelection:                TextMethods.saveSelection
@@ -86,8 +89,23 @@ Figure = React.createClass
 		selectEnd:                    TextMethods.selectEnd
 		# updateSelection:              TextMethods.updateSelection
 		getTextMenuCommands:          TextMethods.getTextMenuCommands
+		acceptAbsorb:                 TextMethods.acceptAbsorb
+		absorb:                       TextMethods.absorb
+		transformSelection:           TextMethods.transformSelection
+		split:                        TextMethods.split
+
+	getInitialState: ->
+		{ chunk:@props.chunk }
+
+	componentWillReceiveProps: (nextProps) ->
+		@setState {
+			chunk: nextProps.chunk
+			active: nextProps.isActive
+		}
 
 	setPosition: ->
+		@state.chunk.markChanged()
+
 		data = @state.chunk.get 'data'
 
 		positions = ['left', 'center', 'right']
@@ -98,13 +116,17 @@ Figure = React.createClass
 		@setState { chunk:@state.chunk }
 		@props.updateFn()
 
+	onClick: ->
+		true
+		# @props.activateFn @state.chunk
+
 	render: ->
 		data = @state.chunk.get('data')
 
-		React.createElement 'div', { contentEditable:false },
-			React.createElement 'button', { onClick: @setPosition }, 'Set Position'
-			React.createElement 'figure', { style: { textAlign:data.position }},
-				React.createElement 'img', { src:data.url, width:300 },
+		React.createElement 'div', { contentEditable:false, onClick:@onClick },
+			if @state.active then React.createElement('button', { onClick: @setPosition }, 'Set Position') else null,
+			React.createElement 'figure', { style: { textAlign:data.position }, unselectable:'on' },
+				React.createElement 'img', { src:data.url, width:300, unselectable:'on' }, #IE requires unselectable to remove drag handles
 				React.createElement 'figcaption', { contentEditable:true },
 					Text.createElement(data.textGroup.get(0).text, @state.chunk, 0, { contentEditable:true })
 

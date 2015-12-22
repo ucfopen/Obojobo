@@ -12,6 +12,8 @@ TextGroup = require './textgroup'
 TextMethods = require './textmethods'
 POS = require './textpositionmethods'
 
+ListStyles = require './list/liststyles'
+
 MockElement = require '../../components/text/mockelement'
 MockTextNode = require '../../components/text/mocktextnode'
 
@@ -20,48 +22,114 @@ Chunk = require '../../models/chunk'
 List = React.createClass
 	mixins: [OboNodeComponentMixin]
 	statics:
-		consumableElements: ['ul', 'ol']
+		consumableElements: ['ul', 'ol', 'menu', 'dir']
 
 		# OBONODE DATA METHODS
 		# ================================================
 		createNewNodeData: ->
-			textGroup = new TextGroup()
-			textGroup.get(0).data = { indent:0 }
-
-			textGroup: textGroup
+			textGroup: TextGroup.create(Infinity, { indent:0 })
 			indent: 0
+			listStyles: new ListStyles('unordered')
 
 		cloneNodeData: (data) ->
 			textGroup: data.textGroup.clone()
 			indent: data.indent
+			listStyles: data.listStyles.clone()
 
 		# SERIALIZATION/DECODE METHODS
 		# ================================================
 		createNodeDataFromDescriptor: (descriptor) ->
-			textGroup: TextGroup.fromDescriptor descriptor.data.textGroup
+			textGroup: TextGroup.fromDescriptor descriptor.data.textGroup, Infinity, { indent:0 }
 			indent: 0
+			listStyles: ListStyles.fromDescriptor descriptor.data.listStyles
 
 		getDataDescriptor: (chunk) ->
 			data = chunk.get 'data'
 
 			indent: data.indent
 			textGroup: data.textGroup.toDescriptor()
+			listStyles: data.listStyles.toDescriptor()
 
 		# HTML METHODS
 		# ================================================
 		createNewNodesFromElement: (el) ->
-			group = new TextGroup()
-			group.first.text = StyleableText.createFromElement(el)
+			# console.log 'List::cNNFE', el
 
-			[
-				Chunk.create @, {
-					textGroup: group
-					indent: 0
-				}
-			]
+			# group =
+			# group.first.text = StyleableText.createFromElement(el)
 
+			chunk = Chunk.create @, {
+				textGroup: new TextGroup(Infinity, { indent:0 })
+				indent: 0
+				listStyles: new ListStyles(if el.tagName.toLowerCase() is 'ol' then 'ordered' else 'unordered')
+			}
+
+			@processElement 0, chunk.get('data'), el
+
+			# [
+			# 	Chunk.create @, {
+			# 		textGroup: group
+			# 		indent: 0
+			# 		listStyles: new ListStyles('unordered')
+			# 	}
+			# ]
+			[chunk]
+
+		processElement: (indentLevel, chunkData, el) ->
+			# console.log 'processElement', arguments
+
+			if el.tagName.toLowerCase() is 'li'
+				# console.log 'adding text', el, indentLevel
+				# create a cloned elment with further sub-lists having their content removed (so this text won't be found when creating it)
+				# console.log 'el is', el, el.outerHTML
+				cloneEl = el.cloneNode true
+				Array.prototype.map.call cloneEl.querySelectorAll('ul, ol, menu, dir'), (e) -> e.innerHTML = ''
+				# console.log 'cloneEl is', cloneEl, cloneEl.outerHTML
+				chunkData.textGroup.add StyleableText.createFromElement(cloneEl), { indent:indentLevel }
+
+				for node in Array.prototype.slice.call el.children
+					@processElement indentLevel + 1, chunkData, node
+			else
+				listStyles =
+					type: if el.tagName.toLowerCase() is 'ol' then 'ordered' else 'unordered'
+
+				if el.getAttribute('start')?
+					listStyles.start = el.getAttribute('start')
+
+				if el.style.listStyleType?
+					listStyles.bulletStyle = el.style.listStyleType
+
+				# console.log 'setting list styles', indentLevel, listStyles
+
+				chunkData.listStyles.set indentLevel, listStyles
+
+				for node in Array.prototype.slice.call el.children
+					@processElement indentLevel, chunkData, node
+
+
+		recalculateStartValues: (refTextGroup, listStyles) ->
+			console.log 'recalculateStartValues'
+			indents = {}
+
+			for item in refTextGroup.items
+				indentLevel = item.data.indent
+				if not indents[indentLevel]?
+					indents[indentLevel] = 1
+				else
+					indents[indentLevel]++
+
+			console.log indents
+
+			for indentLevel, startAddition of indents
+				console.log 'startAddition', startAddition, 'indentLevel', indentLevel
+				style = listStyles.getSetStyles indentLevel
+				console.log 'i spy', style
+				if style.start isnt null
+					style.start += startAddition
 
 		splitText: (sel, chunk, shiftKey) ->
+			chunk.markChanged()
+
 			info = POS.getCaretInfo sel.start, chunk
 			data = chunk.get 'data'
 
@@ -87,6 +155,7 @@ List = React.createClass
 				chunk.addAfter inbetweenNode
 
 				if not caretInLastItem
+					@recalculateStartValues data.textGroup, afterNode.get('data').listStyles
 					inbetweenNode.addAfter afterNode
 
 				sel.setFutureCaret inbetweenNode, { offset:0, childIndex:0 }
@@ -98,6 +167,9 @@ List = React.createClass
 
 
 		indent: (sel, chunk, decreaseIndent) ->
+			chunk.markChanged()
+
+			# console.log 'indent', arguments, chunk.get('data').textGroup
 			data = chunk.get 'data'
 
 			if sel.type is 'caret'
@@ -135,7 +207,9 @@ List = React.createClass
 		deleteText:                   TextMethods.deleteText
 		deleteSelection:              TextMethods.deleteSelection
 		styleSelection:               TextMethods.styleSelection
-		acceptMerge:                  TextMethods.acceptMerge
+		unstyleSelection:             TextMethods.unstyleSelection
+		getSelectionStyles:           TextMethods.getSelectionStyles
+		canMergeWith:                    TextMethods.canMergeWith
 		merge:                        TextMethods.merge
 		saveSelection:                TextMethods.saveSelection
 		restoreSelection:             TextMethods.restoreSelection
@@ -143,19 +217,33 @@ List = React.createClass
 		selectStart:                  TextMethods.selectStart
 		selectEnd:                    TextMethods.selectEnd
 		getTextMenuCommands:          TextMethods.getTextMenuCommands
+		acceptAbsorb:                 TextMethods.acceptAbsorb
+		absorb:                       TextMethods.absorb
+		transformSelection:           TextMethods.transformSelection
+		split:                        TextMethods.split
 
+	createMockListElement: (data, indentLevel) ->
+		style = data.listStyles.get indentLevel
 
+		tag = if style.type is 'unordered' then 'ul' else 'ol'
+		el = new MockElement tag
+		el.start = style.start
+		el.listStyleType = style.bulletStyle
+
+		el
 
 	render: ->
 		data = @state.chunk.get 'data'
 
 		texts = data.textGroup
 
+		# console.log 'render list', data.listStyles
+
 		# console.time 'computeUL'
 
 		curIndentLevel = 0
 		curIndex = 0
-		rootUl = curUl = new MockElement 'ul'
+		rootUl = curUl = @createMockListElement(data, curIndentLevel)
 
 		li = new MockElement 'li'
 		curUl.addChild li
@@ -178,9 +266,13 @@ List = React.createClass
 					# console.log 'BEFORE ITER'
 					# @printTree '', rootUl, curUl
 
+					curIndentLevel++
+
 					# if the last LI's last child isn't a UL, create it
-					if curUl.lastChild.lastChild?.type isnt 'ul'
-						newUl = new MockElement 'ul'
+					if curUl.lastChild.lastChild?.type isnt 'ul' and curUl.lastChild.lastChild?.type isnt 'ol'
+					# if curUl.lastChild.lastChild?.type is 'li'
+						# console.log 'create mock list el for', curIndentLevel
+						newUl = @createMockListElement(data, curIndentLevel)
 						newLi = new MockElement 'li'
 						newUl.addChild newLi
 						curUl.lastChild.addChild newUl
@@ -188,7 +280,7 @@ List = React.createClass
 					else
 						curUl = curUl.lastChild.lastChild
 
-					curIndentLevel++
+
 
 					# console.log 'AFTER ITER'
 					# @printTree '', rootUl, curUl
@@ -205,7 +297,12 @@ List = React.createClass
 
 			curUl.lastChild.addChild text
 
+			# if item.data.start
+				# curUl.start = item.data.start
+
 			# console.timeEnd 'computeUL'
+
+		# console.log rootUl
 
 			# console.log 'TREE'
 			# console.log '==========================================='
@@ -238,9 +335,9 @@ List = React.createClass
 		# console.log key
 
 		switch node.nodeType
-			when 'text'   then Text.createElement node.text, @state.chunk, node.index
+			when 'text'    then Text.createElement node.text, @state.chunk, node.index
 			# @TODO: KEY!!!!!1
-			when 'element'then React.createElement node.type, { key:key }, @renderChildren(node.children, indent + 1)
+			when 'element' then React.createElement node.type, { key:key, start:node.start, style: { listStyleType:node.listStyleType } }, @renderChildren(node.children, indent + 1)
 
 	renderChildren: (children, indent) ->
 		# console.log 'renderChildren', children

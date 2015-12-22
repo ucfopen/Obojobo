@@ -24,6 +24,8 @@ class StyleRange
 	compareToRange: (from, to) ->
 		to ?= from
 
+		console.log 'compareToRange', from, to, @start, @end
+
 		return StyleRange.AFTER            if to <= @start
 		return StyleRange.BEFORE           if @end < from
 		return StyleRange.CONTAINS         if @start <= from and to <= @end
