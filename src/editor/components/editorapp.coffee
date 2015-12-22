@@ -52,7 +52,7 @@ console.error = (msg) ->
 
 
 
-linkify = require './linkify'
+linkify = require '../../text/linkify'
 StyleableText = require '../../text/styleabletext'
 
 t = new StyleableText()
@@ -113,7 +113,8 @@ Selection = require './editor/selection'
 
 Screen = require '../../dom/screen'
 
-ListDetector = require './listdetector'
+#@TODO
+ListDetector = require '../../obochunk/list/listdetector'
 
 MutationPainter = require '../../debug/mutationpainter'
 MutationPainter.observe()
@@ -137,17 +138,17 @@ DOMUtil = require '../../dom/domutil'
 
 
 
-ComponentClassMap.register 'heading',    require './heading'
-ComponentClassMap.register 'singletext',    require './singletext'
-ComponentClassMap.register 'break',    require './break'
-ComponentClassMap.register 'youtube',    require './youtube'
-ComponentClassMap.register 'iframe',    require './iframe'
-ComponentClassMap.register 'list',         require './list'
-ComponentClassMap.register 'figure',       require './figure'
-ComponentClassMap.register 'question',     require './question'
-ComponentClassMap.register 'table',     require './table'
+ComponentClassMap.register 'heading',    require '../../obochunk/heading/editor'
+ComponentClassMap.register 'singletext', require '../../obochunk/singletext/editor'
+ComponentClassMap.register 'break',      require '../../obochunk/break/editor'
+ComponentClassMap.register 'youtube',    require '../../obochunk/youtube/editor'
+ComponentClassMap.register 'iframe',     require '../../obochunk/iframe/editor'
+ComponentClassMap.register 'list',       require '../../obochunk/list/editor'
+ComponentClassMap.register 'figure',     require '../../obochunk/figure/editor'
+ComponentClassMap.register 'question',   require '../../obochunk/question/editor'
+ComponentClassMap.register 'table',      require '../../obochunk/table/editor'
 
-ComponentClassMap.setDefaultComponentClass require './singletext'
+ComponentClassMap.setDefaultComponentClass require '../../obochunk/singletext/editor'
 
 
 EditorApp = React.createClass

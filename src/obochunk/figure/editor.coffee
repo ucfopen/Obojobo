@@ -5,42 +5,47 @@ OboNodeComponentMixin = require '../../oboreact/obonodecomponentmixin'
 
 Text = require '../../components/text'
 StyleableText = require '../../text/styleabletext'
-TextGroup = require './textgroup'
+TextGroup = require '../../text/textgroup'
 
-TextMethods = require './textmethods'
-POS = require './textpositionmethods'
+TextMethods = require '../../text/textmethods'
+POS = require '../../text/textpositionmethods'
+
 Chunk = require '../../models/chunk'
 
 
 
 
 
-Heading = React.createClass
-	mixins: [OboNodeComponentMixin]
+Figure = React.createClass
 	statics:
-		consumableElements: ['h1', 'h2', 'h3', 'h4', 'h5', 'h6']
+		consumableElements: []
 
 		# OBONODE DATA METHODS
 		# ================================================
 		createNewNodeData: ->
 			textGroup: TextGroup.create(1)
-			headingLevel: 1
+			url: null
+			position: 'center'
 
 		cloneNodeData: (data) ->
 			textGroup: data.textGroup.clone()
-			headingLevel: data.headingLevel
+			url: data.url
+			position: data.position
 
 		# SERIALIZATION/DECODE METHODS
 		# ================================================
 		createNodeDataFromDescriptor: (descriptor) ->
+			console.log 'descr be all like', descriptor
 			textGroup: TextGroup.fromDescriptor descriptor.data.textGroup, 1
-			headingLevel: descriptor.data.headingLevel
+			url: descriptor.data.url
+			position: descriptor.data.position
 
 		getDataDescriptor: (chunk) ->
 			data = chunk.get 'data'
 
 			textGroup: data.textGroup.toDescriptor()
-			headingLevel: data.headingLevel
+			url: data.url
+			position: data.position
 
 		# HTML METHODS
 		# ================================================
@@ -51,7 +56,7 @@ Heading = React.createClass
 			[
 				Chunk.create @, {
 					textGroup: group
-					headingLevel: parseInt(el.tagName.substr(1))
+					indent: 0
 				}
 			]
 
@@ -80,26 +85,50 @@ Heading = React.createClass
 		indent:                       TextMethods.indent
 		saveSelection:                TextMethods.saveSelection
 		restoreSelection:             TextMethods.restoreSelection
-		# updateSelection:              TextMethods.updateSelection
 		selectStart:                  TextMethods.selectStart
 		selectEnd:                    TextMethods.selectEnd
+		# updateSelection:              TextMethods.updateSelection
 		getTextMenuCommands:          TextMethods.getTextMenuCommands
 		acceptAbsorb:                 TextMethods.acceptAbsorb
 		absorb:                       TextMethods.absorb
 		transformSelection:           TextMethods.transformSelection
 		split:                        TextMethods.split
 
+	getInitialState: ->
+		{ chunk:@props.chunk }
+
+	componentWillReceiveProps: (nextProps) ->
+		@setState {
+			chunk: nextProps.chunk
+			active: nextProps.isActive
+		}
+
+	setPosition: ->
+		@state.chunk.markChanged()
+
+		data = @state.chunk.get 'data'
+
+		positions = ['left', 'center', 'right']
+		curIndex = positions.indexOf data.position
+		curIndex = (curIndex + 1) % positions.length
+		data.position = positions[curIndex]
+
+		@setState { chunk:@state.chunk }
+		@props.updateFn()
+
+	onClick: ->
+		true
+		# @props.activateFn @state.chunk
+
 	render: ->
 		data = @state.chunk.get('data')
-		React.createElement('h' + data.headingLevel, { className:'main' }, Text.createElement(data.textGroup.get(0).text, @state.chunk, 0))
+
+		React.createElement 'div', { contentEditable:false, onClick:@onClick },
+			if @state.active then React.createElement('button', { onClick: @setPosition }, 'Set Position') else null,
+			React.createElement 'figure', { style: { textAlign:data.position }, unselectable:'on' },
+				React.createElement 'img', { src:data.url, width:300, unselectable:'on' }, #IE requires unselectable to remove drag handles
+				React.createElement 'figcaption', { contentEditable:true },
+					Text.createElement(data.textGroup.get(0).text, @state.chunk, 0, { contentEditable:true })
 
 
-# console.log SingleText
-# console.log SingleText.createNewNodeData
-# for o, k in SingleText
-# 	console.log o, k
-
-# TextMethods.decorate SingleText
-
-
-module.exports = Heading
+module.exports = Figure

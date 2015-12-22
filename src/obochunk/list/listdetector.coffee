@@ -1,4 +1,4 @@
-ListStyles = require './list/liststyles'
+ListStyles = require './liststyles'
 
 regexes =
 	bulletListItem: /^[ \t]*(\*)[ \t]+([\s\S]*)/ # Interpert text such as ' * list item' as a bullet in a list

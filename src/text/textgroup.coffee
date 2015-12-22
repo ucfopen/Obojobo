@@ -1,5 +1,5 @@
 ObjectAssign = require 'object-assign'
-StyleableText = require '../../text/styleabletext'
+StyleableText = require './styleabletext'
 
 createData = (data, template) ->
 	clone = ObjectAssign {}, data

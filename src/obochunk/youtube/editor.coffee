@@ -1,8 +1,8 @@
 React = require 'react'
 
 OboNodeComponentMixin = require '../../oboreact/OboNodecomponentmixin'
-TextMethods = require './textmethods'
-POS = require './textpositionmethods'
+TextMethods = require '../../text/textmethods'
+POS = require '../../text/textpositionmethods'
 
 Chunk = require '../../models/chunk'
 

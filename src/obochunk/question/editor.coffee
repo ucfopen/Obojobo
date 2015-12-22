@@ -5,7 +5,7 @@ DOMUtil = require '../../dom/domutil'
 Text = require '../../components/text'
 
 ViewerQuestion = require '../../viewer/components/question'
-QuestionItem = require './question/questionitem'
+QuestionItem = require './questionitem'
 
 StyleableText = require '../../text/styleabletext'
 

@@ -1,4 +1,4 @@
-Text = require '../../components/text'
+Text = require '../components/text'
 
 TextPositionMethods =
 	getCaretInfo: (cursor, chunk) ->

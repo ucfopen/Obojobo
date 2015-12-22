@@ -1,4 +1,4 @@
-Text = require '../../components/text'
+Text = require '../components/text'
 TextGroup = require './textgroup'
 
 POS = require './textpositionmethods'

@@ -7,12 +7,12 @@ OboNodeComponentMixin = require '../../oboreact/OboNodecomponentmixin'
 
 Text = require '../../components/text'
 StyleableText = require '../../text/styleabletext'
-TextGroup = require './textgroup'
+TextGroup = require '../../text/textgroup'
 
-TextMethods = require './textmethods'
-POS = require './textpositionmethods'
+TextMethods = require '../../text/textmethods'
+POS = require '../../text/textpositionmethods'
 
-ListStyles = require './list/liststyles'
+ListStyles = require './liststyles'
 
 MockElement = require '../../components/text/mockelement'
 MockTextNode = require '../../components/text/mocktextnode'
