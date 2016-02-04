@@ -11,80 +11,231 @@
 
 		<style>
 			body {
-				background: #efefef;
-				font-family: Georgia;
-			}
-
-			h1, h2, h3, h4, h5, h6
-			{
-				font-family: 'Open Sans';
-			}
-
-			#editor-app {
 				background: white;
-				padding: 20px;
-				margin: 20px;
-				border: 1px solid rgba(0, 0, 0, 0.2);
-				white-space: pre-wrap;
-
 			}
 
-			#rect {
-				border: 2px solid red;
-				position: absolute;
+
+
+			.toolbar {
+				position: fixed;
 				left: 0;
 				top: 0;
-				display:none;
+				right: 0;
+
+				height: 40px;
+				padding-left: 60px;
+
+				background: #e5e5e5;
+				box-shadow: 0 2px 2px rgba(0, 0, 0, 0.2);
+				z-index: 9999;
+			}
+
+			.toolbar hr {
+				display: inline-block;
+				width: 1px;
+				height: 32px;
+				margin: 4px;
+				margin-left: 10px;
+				margin-right: 10px;
+
+				background: rgba(0, 0, 0, 0.1);
+				border: none;
+			}
+
+			.toolbar > div {
+				display: inline-block;
+			}
+
+			.toolbar a {
+				display: inline-block;
+				width: 32px;
+				height: 32px;
+				margin: 4px;
+				overflow: hidden;
+
+				border: none;
+				border-bottom: 1px solid rgba(0, 0, 0, 0.2);
+				border-radius: 4px;
+				background: white;
+				cursor: pointer;
+
+				line-height: 0;
+				text-indent: -9999px;
+			}
+
+			.toolbar a:hover,
+			.toolbar a.on {
+				background: #dff0ff;
+			}
+
+			.toolbar .list-button,
+			.toolbar .grid-button {
+				position: relative;
+			}
+
+			.toolbar .list-button ul,
+			.toolbar .grid-button table {
+				position: absolute;
+				left: 0;
+				top: 40px;
+
+				margin: 0;
+				padding: 0;
+
+				z-index: 9999;
+				border: 1px solid rgba(0, 0, 0, 0.2);
+				box-shadow: 0 2px 2px rgba(0, 0, 0, 0.25);
+				background: white;
+			}
+
+			.toolbar .list-button ul li {
+				padding: 10px;
+				width: 150px;
+
+				font-family: 'Source Sans Pro';
+				font-size: 10pt;
+
+				list-style-type: none;
+				cursor: pointer;
+			}
+
+			.toolbar .list-button ul li:hover {
+				background: #CAE4FF;
+			}
+
+			.toolbar .grid-button table {
+				width: 133px;
+				padding-top: 1px;
+				padding-bottom: 1px;
+			}
+
+			.toolbar .grid-button table td {
+				display: inline-block;
+				width: 15px;
+				height: 15px;
+				margin: 1px;
+				margin-top: 0;
+				margin-bottom: 0;
+
+				border: 1px solid rgba(0, 0, 0, 0.2);
+				cursor: pointer;
+			}
+
+			.toolbar .grid-button table td.selected {
+				background: #CAE4FF;
+			}
+
+			.toolbar .grid-button .tooltip {
+				position: absolute;
+				left: 0;
+				top: 180px;
+
+				width: 133px;
+				height: 20px;
+				box-sizing: border-box;
+				padding: 10px;
+
+				font-family: 'Source Sans Pro';
+				font-weight: bold;
+				font-size: 9pt;
+				text-align: center;
+				line-height: 0;
+
+				z-index: 10000;
+				color: white;
+				background: black;
+				border-radius: 10px;
+			}
+
+			.toolbar select {
+				width: 130px;
+				margin-top: 10px;
+				float: left;
+
+				font-size: 12pt;
+			}
+
+			.side-menu {
+				box-shadow: 0 2px 2px rgba(0, 0, 0, .1);
+				border-radius: 15px;
+				background: white;
+				color: #d4d4d4;
+			}
+			.side-menu.open {
+				color: #3771AD;
+				background: #CAE4FF;
+			}
+
+			.side-menu .insert-button {
+				line-height: 0;
+				font-size: 22pt;
+				text-align: center;
+				padding-top: 13px;
+				box-sizing: border-box;
+			}
+
+			.side-menu .insert-list {
+				padding-right: 1.5em;
+			}
+
+			.side-menu .insert-list button {
+				background: transparent;
+				border: none;
+				color: black;
+				font-family: 'Source Sans Pro';
+				font-weight: bold;
+				font-size: 10pt;
+				margin-left: 1.5em;
+				cursor: pointer;
+				opacity: 0.5;
+			}
+
+			.side-menu .insert-list button:hover {
+				opacity: 1;
+			}
+
+
+
+			.content {
+				position: absolute;
+				left: 0;
+				right: 0;
+				top: 20px;
 			}
 
 			:focus {
 				outline: none;
 			}
 
-			*[data-changed="true"]
-			{
-				background: yellow;
-			}
-
-/*			*[data-obo-text]
+			.component
 			{
 				position: relative;
-				margin: 10px;
-				border: 1px solid rgba(255, 0, 0, .1);
-			}*/
-
-			/**[data-oboid],
-			*[data-obo-text]
-			{
-				position: relative;
-				padding: 10px;
-				border: 1px solid rgba(255, 0, 0, .1);
 			}
-
-			*[data-oboid]:before,
-			*[data-obo-text]:before
+			.component:before
 			{
 				position: absolute;
 				right: 0;
 				top: 0;
-				content: attr(data-obo-index);
-				font-size: 7pt;
+				content: attr(data-server-id);
+				font-size: 10pt;
 				background: pink;
 				color: black;
 				font-family: 'Droid Sans Mono';
 				display: block;
+				max-width: 200px;
+			}
+			.component[data-changed='true']:before
+			{
+				background: yellow;
+
 			}
 
-			*[data-obo-text]:before
+			.component[data-component-type='OboChunk.Table'] table
 			{
-				position: absolute;
-				right: 0;
-				top: 0;
-				font-size: 7pt;
-				color: gray;
-				font-family: 'Droid Sans Mono';
-				display: block;
-			}*/
+				padding-left: 100px;
+				padding-right: 100px;
+			}
+
 		</style>
 
 		<!--<script src="https://fb.me/react-0.13.3.js"></script>

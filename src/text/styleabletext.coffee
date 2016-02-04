@@ -1,3 +1,5 @@
+ObjectAssign = require 'object-assign'
+
 ChunkStyleList = require './chunkstylelist'
 StyleRange = require './stylerange'
 
@@ -6,12 +8,19 @@ StyleType = require './styletype'
 
 # ceiling Infinity end values to the length
 trimStyleRange = (styleRange, maxLength) ->
+	# if maxLength is 0
+	# 	styleRange.start = -1
+	# 	styleRange.end = -1
+	# 	return styleRange
+
 	styleRange.end = Math.min styleRange.end, maxLength
 	styleRange
 
+
 class StyleableText
 	constructor: (text = '') ->
-		@setText text
+		@init()
+		@insertText(0, text)
 
 	init: ->
 		@styleList = new ChunkStyleList
@@ -24,20 +33,9 @@ class StyleableText
 
 		clone
 
-	# getSlice: (start, end) ->
-	# 	clone = @clone()
-	# 	clone.deleteText end, clone.length
-	# 	clone.deleteText 0, start
-
-	# 	clone
-
 	getExportedObject: ->
 		value: @value
 		styleList: @styleList.getExportedObject()
-
-	setText: (text) ->
-		@init()
-		@insertText(0, text)
 
 	replaceText: (from, to, text) ->
 		return @deleteText(from, to) if not text? or text.length is 0
@@ -45,25 +43,25 @@ class StyleableText
 		# Goal: The replaced text should adopt the styles of where the range starts.
 		# The following combination of commands achieves what we want
 		@insertText from + 1, text
-		@styleList.normalize()
+		@normalizeStyles()
 		@deleteText from, from + 1
-		@styleList.normalize()
+		@normalizeStyles()
 		@deleteText from + text.length, to + text.length - 1
-		@styleList.normalize()
+		@normalizeStyles()
 
 	appendText: (text) ->
 		@value += text #@TODO - does this handle styles ok?
 
 	insertText: (atIndex, text) ->
-		console.log 'st.insertText', atIndex, text
+		# console.log 'st.insertText', atIndex, text
 
-		console.log 'before'
-		@__debug_print()
+		# console.log 'before'
+		# @__debug_print()
 
 		insertLength = text.length
 
 		for range in @styleList.styles
-			console.log 'comparision=', range.compareToRange(atIndex)
+			# console.log 'comparision=', range.compareToRange(atIndex)
 			switch range.compareToRange atIndex
 				when StyleRange.CONTAINS
 					range.end += insertLength
@@ -76,12 +74,19 @@ class StyleableText
 					range.start += insertLength
 					range.end += insertLength
 
+		# apply initial styles to new text
+		# if @length is 0 and @initialStyles.length() > 0
+		# 	for range in @initialStyles.styles
+		# 		range.start = 0
+		# 		range.end = insertLength
+		# 		@styleList.add range
+
 		@value = @value.substring(0, atIndex) + text + @value.substring(atIndex)
 
-		@styleList.normalize()
+		@normalizeStyles()
 
-		console.log 'after'
-		@__debug_print()
+		# console.log 'after'
+		# @__debug_print()
 
 	deleteText: (from, to) ->
 		return if from > to
@@ -91,7 +96,14 @@ class StyleableText
 
 		deleteLength = to - from
 
+		# if to is @value.length
+		# 	lastCharStyles = @styleList.getStylesInRange @value.length - 1, @value.length
+
+		# console.log 'delete text'
 		for range in @styleList.styles
+			# console.log 'looking at', range
+			# console.log range.toString()
+			# console.log range, range.compareToRange(from, to)
 			switch range.compareToRange from, to
 				when StyleRange.CONTAINS
 					range.end -= deleteLength
@@ -110,9 +122,16 @@ class StyleableText
 					range.start -= deleteLength
 					range.end -= deleteLength
 
+			# console.log 'after'
+			# console.log range.toString()
+
 		@value = @value.substring(0, from) + @value.substring(to)
 
-		@styleList.normalize()
+		# if lastCharStyles
+		# 	for style of lastCharStyles
+		# 		@initialStyles.add new StyleRange(0, 0, style)
+
+		@normalizeStyles()
 
 	toggleStyleText: (from, to, styleType, styleData) ->
 		styleRange = trimStyleRange new StyleRange(from, to, styleType, styleData), @value.length
@@ -121,45 +140,87 @@ class StyleableText
 		else
 			@styleList.add styleRange
 
-		@styleList.normalize()
+		@normalizeStyles()
 
 	styleText: (from, to, styleType, styleData) ->
-		console.log 'styleText'
-		console.log 'before'
-		@__debug_print()
+		# console.log 'styleText', from, to, styleType, styleData
+		# console.log 'styleText before'
+		# @__debug_print()
 
-		styleRange = trimStyleRange new StyleRange(from, to, styleType, styleData), @value.length
+		range = new StyleRange(from, to, styleType, styleData)
+
+		# console.log range
+
+		styleRange = trimStyleRange range, @value.length
+
+		# console.log styleRange
 		@styleList.add styleRange
-		@styleList.normalize()
 
-		console.log 'after'
-		@__debug_print()
+		# console.log 'style text middle'
+		# @__debug_print()
+
+		@normalizeStyles()
+
+		# console.log 'style text after'
+		# @__debug_print()
 
 	unstyleText: (from, to, styleType, styleData) ->
-		console.log 'unstyleText'
-		console.log 'before'
-		@__debug_print()
+		# console.log 'unstyleText'
+		# console.log 'before'
+		# @__debug_print()
 
 		styleRange = trimStyleRange new StyleRange(from, to, styleType, styleData), @value.length
 		@styleList.remove styleRange
-		@styleList.normalize()
+		@normalizeStyles()
 
-		console.log 'afTER'
-		@__debug_print()
+		# console.log 'afTER'
+		# @__debug_print()
 
 	getStyles: (from, to) ->
-		@styleList.getStylesInRange from, to
+		@styleList.getStylesInRange(from, to)
 
 	split: (atIndex) ->
+		# console.log 'ST.split', atIndex
 		return null if isNaN(atIndex)
+
+		splitAtEnd = atIndex is @value.length
 
 		sibling = @clone()
 
 		@deleteText atIndex, @value.length
 
+		# console.log 'before'
+		# sibling.__debug_print()
+
 		sibling.deleteText 0, atIndex
 
+		# special case - if splitting at the end of a line
+		# we want to shove the last character styles as
+		# initial styles into the new sibling.
+		if splitAtEnd
+			lastCharStyles = @styleList.getStylesInRange @value.length - 1, @value.length
+			for style of lastCharStyles
+				sibling.styleText 0, 0, style #@TODO - what about data?
+
+		# console.log 'after'
+		# sibling.__debug_print()
+
+		# sibling.styleList.normalize()
+
+		# console.log 'after2'
+		# sibling.__debug_print()
+
 		sibling
+
+	normalizeStyles: ->
+		# console.log 'normalizeStyles', @length, @initialStyles.length()
+		# if @length isnt 0 and @initialStyles.length() > 0
+		# 	@initialStyles.clear()
+
+		# if @length is 0 and @styleList.length() > 0
+		# 	@styleList.clear()
+		# else
+		@styleList.normalize()
 
 	# mergeOld: (otherText, atIndex = null) ->
 	# 	if prependText
@@ -187,8 +248,8 @@ class StyleableText
 
 	merge: (otherText, atIndex = null) ->
 		# console.clear()
-		console.log 'merge', @, otherText, atIndex
-		@__debug_print()
+		# console.log 'merge', @, otherText, atIndex
+		# @__debug_print()
 
 		atIndex ?= @value.length
 
@@ -205,7 +266,7 @@ class StyleableText
 
 		@styleList.normalize()
 
-		@__debug_print()
+		# @__debug_print()
 
 		for range in otherText.styleList.styles
 			curRange = range.clone()
@@ -216,7 +277,7 @@ class StyleableText
 
 		@styleList.normalize()
 
-		@__debug_print()
+		# @__debug_print()
 
 	__debug_print: ->
 		console.log '   |          |' + @value + ' |'
@@ -236,7 +297,7 @@ class StyleableText
 			s2 += '>'
 			for i in [style.end+1...fill.length]
 				s2 += '·'
-			console.log (j + '   ').substr(0, 3) + '|' + (s1 + s2 + fill).substr(0, fill.length + 1) + '|' + JSON.stringify(style.data) # + '|' + style.__debug
+			console.log (j + '   ').substr(0, 3) + '|' + (s1 + s2 + fill).substr(0, fill.length + 1) + '|' + style.start + ',' + style.end + '|' + JSON.stringify(style.data) # + '|' + style.__debug
 			j++
 
 
@@ -248,6 +309,7 @@ Object.defineProperties StyleableText.prototype,
 StyleableText.createFromObject = (o) ->
 	st = new StyleableText
 	st.styleList = ChunkStyleList.createFromObject o.styleList
+	# st.initialStyles = ChunkStyleList.createFromObject o.initialStyles
 	st.value = o.value
 
 	st
@@ -361,6 +423,43 @@ StyleableText.createFromElement = (node) ->
 # 				if styleRange?
 # 					styleRange.end = st.value.length
 # 					st.styleList.add styleRange
+
+
+window.st = StyleableText.createFromObject {
+	"value": "fHeyggItalhgeyAfggfsNffD BOLDasdHey this is boldHey this is fasfdf",
+	"styleList": [
+		{
+			"type": "b",
+			"start": 1,
+			"end": 4,
+			"data": {}
+		},
+		{
+			"type": "b",
+			"start": 10,
+			"end": 29,
+			"data": {}
+		},
+		{
+			"type": "b",
+			"start": 31,
+			"end": 60,
+			"data": {}
+		},
+		{
+			"type": "i",
+			"start": 6,
+			"end": 10,
+			"data": {}
+		},
+		{
+			"type": "i",
+			"start": 14,
+			"end": 22,
+			"data": {}
+		}
+	]
+}
 
 
 module.exports = StyleableText

@@ -1,13 +1,11 @@
 React = require 'react'
 
-OboNodeComponentMixin = require '../../oboreact/OboNodecomponentmixin'
 TextMethods = require '../../text/textmethods'
 POS = require '../../text/textpositionmethods'
 
 Chunk = require '../../models/chunk'
 
 Break = React.createClass
-	mixins: [OboNodeComponentMixin]
 	statics:
 		consumableElements: ['hr']
 
@@ -24,6 +22,12 @@ Break = React.createClass
 		# HTML METHODS
 		# ================================================
 		createNewNodesFromElement: (el) -> [Chunk.create @]
+
+	getInitialState: ->
+		{ chunk:@props.chunk }
+
+	componentWillReceiveProps: (nextProps) ->
+		@setState { chunk:nextProps.chunk }
 
 	render: ->
 		React.createElement 'div', { contentEditable:false },

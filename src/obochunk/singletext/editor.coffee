@@ -1,8 +1,6 @@
 React = require 'react'
 
 
-OboNodeComponentMixin = require '../../oboreact/obonodecomponentmixin'
-
 # ViewerSingleText = require '../../viewer/components/singletext'
 
 Text = require '../../components/text'
@@ -14,18 +12,26 @@ TextMethods = require '../../text/textmethods'
 Chunk = require '../../models/chunk'
 
 SingleText = React.createClass
-	mixins: [OboNodeComponentMixin]
 	statics:
 		consumableElements: ['p']
+
+		insertLabel: ['Text']
+		onInsert: (selection, atIndex) ->
+			newChunk = Chunk.create @
+			selection.sel.setFutureCaret atIndex, { childIndex:0, offset:0 }
+
+			newChunk
 
 		# OBONODE DATA METHODS
 		# ================================================
 		createNewNodeData: ->
+			# console.log 'ST.createNewNodeData', data
 			textGroup: TextGroup.create(1)
 			indent: 0
 			type: 'p'
 
 		cloneNodeData: (data) ->
+			# console.log 'ST.cloneNodeData', data
 			textGroup: data.textGroup.clone()
 			indent: data.indent
 			type: data.type
@@ -33,12 +39,14 @@ SingleText = React.createClass
 		# SERIALIZATION/DECODE METHODS
 		# ================================================
 		createNodeDataFromDescriptor: (descriptor) ->
-			textGroup: TextGroup.fromDescriptor descriptor.data.textGroup, 1
-			indent: descriptor.data.indent
-			type: descriptor.data.type
+			# console.log 'ST.createNodeDataFromDescriptor', descriptor
+			textGroup: TextGroup.fromDescriptor descriptor.content.textGroup, 1
+			indent: descriptor.content.indent
+			type: descriptor.content.type
 
 		getDataDescriptor: (chunk) ->
-			data = chunk.get 'data'
+			# console.log 'ST.getDataDescriptor', chunk
+			data = chunk.componentContent
 
 			indent: data.indent
 			textGroup: data.textGroup.toDescriptor()
@@ -59,6 +67,7 @@ SingleText = React.createClass
 			]
 
 		getCaretEdge:                 TextMethods.getCaretEdge
+		canRemoveSibling:             TextMethods.canRemoveSibling
 		insertText:                   TextMethods.insertText
 		deleteText:                   TextMethods.deleteText
 		splitText:                    TextMethods.splitText
@@ -68,6 +77,7 @@ SingleText = React.createClass
 		canMergeWith:                    TextMethods.canMergeWith
 		merge:                        TextMethods.merge
 		indent:                       TextMethods.indent
+		onTab:                       TextMethods.onTab
 		saveSelection:                TextMethods.saveSelection
 		restoreSelection:             TextMethods.restoreSelection
 		getSelectionStyles:           TextMethods.getSelectionStyles
@@ -80,10 +90,17 @@ SingleText = React.createClass
 		transformSelection:           TextMethods.transformSelection
 		split:                        TextMethods.split
 
-	render: ->
-		data = @state.chunk.get('data')
+	getInitialState: ->
+		{ chunk:@props.chunk }
 
-		React.createElement('p', { style: { marginLeft: (data.indent * 20) + 'px' } },
+	componentWillReceiveProps: (nextProps) ->
+		@setState { chunk:nextProps.chunk }
+
+	render: ->
+		# console.log 'ST.r', @state.chunk, @state.chunk.get('index'), @state.chunk.componentContent.textGroup
+		data = @state.chunk.componentContent
+
+		React.createElement('p', { style: { marginLeft: data.indent * 20 } },
 			Text.createElement data.textGroup.get(0).text, @state.chunk, 0
 		)
 

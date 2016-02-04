@@ -1,7 +1,18 @@
+# Chrome sometimes has range startContainer / endContainer as an element node
+# so we need to dig down in this case to find the first text node
+getTextNode = (node) ->
+	while node? and node.nodeType isnt Node.TEXT_NODE
+		node = node.childNodes[0]
+
+	node
+
 class Selection
 	constructor: ->
 		@domSelection = window.getSelection()
-		@domRange = @domSelection.getRangeAt 0
+		@domRange = null
+
+		if @domSelection.rangeCount > 0
+			@domRange = @domSelection.getRangeAt 0
 
 	getType: ->
 		if @domSelection.type?
@@ -19,6 +30,7 @@ class Selection
 		'range'
 
 	getClientRects: ->
+		if not @domRange? then return []
 		@domRange.getClientRects()
 
 	set: (startNode, startOffset, endNode, endOffset) ->
@@ -33,11 +45,11 @@ class Selection
 
 Object.defineProperties Selection.prototype, {
 	startContainer:
-		get: -> @domRange.startContainer
+		get: -> getTextNode @domRange.startContainer
 	startOffset:
 		get: -> @domRange.startOffset
 	endContainer:
-		get: -> @domRange.endContainer
+		get: -> getTextNode @domRange.endContainer
 	endOffset:
 		get: -> @domRange.endOffset
 }

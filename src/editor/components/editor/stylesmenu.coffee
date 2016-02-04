@@ -13,7 +13,7 @@ StylesMenu = React.createClass
 	componentWillReceiveProps: (nextProps) ->
 		@setState {
 			styles: nextProps.selection.styles
-			styleBrush: nextProps.styleBrush
+			styleBrush: nextProps.selection.styleBrush
 		}
 
 	render: ->
@@ -25,7 +25,7 @@ StylesMenu = React.createClass
 				background: 'white'
 				border: '1px solid black'
 			}
-		}, Object.keys(@state.styles) + '|' + Object.keys(@state.styleBrush)
+		}, Object.keys(@state.styles) + '| +' + @state.styleBrush.stylesToApply + '| -' + @state.styleBrush.stylesToRemove
 
 
 module.exports = StylesMenu

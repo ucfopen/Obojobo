@@ -2,82 +2,81 @@ React = require 'react'
 
 ComponentClassMap = require '../../util/componentclassmap'
 
-OboSelection = require '../../obodom/selection/oboselection'
+Selection = require '../../editor/components/editor/selection'
+TextMenu = require './viewer/textmenu'
 
-# @TODO - Dynamically or batch load all components
-components =
-	singletext:    require './singletext'
-	figure:       require './figure'
-	list:         require './list'
+ComponentClassMap.register 'OboChunk.Heading',    require '../../obochunk/heading/viewer'
+ComponentClassMap.register 'OboChunk.SingleText', require '../../obochunk/singletext/viewer'
+ComponentClassMap.register 'OboChunk.Break',      require '../../obochunk/break/viewer'
+ComponentClassMap.register 'OboChunk.YouTube',    require '../../obochunk/youtube/viewer'
+ComponentClassMap.register 'OboChunk.IFrame',     require '../../obochunk/iframe/viewer'
+ComponentClassMap.register 'OboChunk.List',       require '../../obochunk/list/viewer'
+ComponentClassMap.register 'OboChunk.Figure',     require '../../obochunk/figure/viewer'
+ComponentClassMap.register 'OboChunk.Question',   require '../../obochunk/question/viewer'
+ComponentClassMap.register 'OboChunk.Table',      require '../../obochunk/table/viewer'
+
+ComponentClassMap.setDefaultComponentClass require '../../obochunk/singletext/viewer'
 
 
 ViewerApp = React.createClass
 	getInitialState: ->
-		loDescriptor = require('../../debug/fakelo')
-
-		ComponentClassMap.register 'singletext',    require './singletext'
-		ComponentClassMap.register 'list',         require './list'
-		ComponentClassMap.register 'figure',       require './figure'
-		ComponentClassMap.register 'question',     require './question'
-
-		root = descriptorToNode loDescriptor
-
-		console.log 'lo be all lke', loDescriptor
-		window.__lo = root
-		console.log 'root be all like', root
-
-		return (
-			root: root
-		)
+		{
+			module: @props.module
+			selection: new Selection()
+		}
 
 	onMouseUp: ->
-		return
-		@sel = new OboSelection()
-		# console.log(JSON.stringify(@sel.toDescriptor(), null, 2))
+		@state.selection.update(@state.module)
 
-	saveSelection: ->
-		@savedSel = @sel
+		@setState {
+			selection: @state.selection
+		}
 
-	reselect: ->
-		return if not @savedSel?
+	onTextMenuCommand: (command) ->
+		console.log 'otmc', command
 
-		s = new OboSelection @savedSel
-		s.select()
+		switch command
+			when 'Ask a question'
+				question = prompt 'Question?'
 
-	# render: ->
-	# 	OboReact.createElement 'div', @state.root, '0',
-	# 		{
-	# 			onMouseUp: @onMouseUp
-	# 		},
-	# 		OboReact.createChildren @state.root, '0'
+				for chunk in @state.selection.sel.all
+					chunk.callComponentFn 'styleSelection', @state.selection, ['_comment', {'data-comment-text':question}]
+
+				@state.selection.clear()
+
+				@setState {
+					module: @state.module
+					selection: @state.selection
+				}
+
 
 	render: ->
-		'@TODO'
+		React.createElement 'div', null,
+			React.createElement(TextMenu, { selection:@state.selection, commands:['Ask a question', 'Save snippet'], commandHandler:@onTextMenuCommand }),
+			React.createElement('div', { id:'viewer', className:'content', onMouseUp:@onMouseUp },
+				@state.module.chunks.models.map (chunk, index) ->
+					component = chunk.getComponent()
 
-	renderOLD: ->
-		oboNode = @state.root
-
-		children = []
-		for childNode, i in oboNode.children
-			continue if not childNode.componentClass
-
-			children.push React.createElement childNode.componentClass, {
-				ref: oboNode.type + i,
-				oboNode: childNode,
-				key: childNode.id,
-				index: i,
-				saveHistory: @saveHistory
-			}
-
-		children.push React.createElement 'button', { onClick:@saveSelection }, 'SAVE SELECTION'
-		children.push React.createElement 'button', { onClick:@reselect }, 'RE-SELECT'
-
-		React.createElement 'div', {
-			'data-oboid': oboNode.id,
-			'data-obo-type': oboNode.type,
-			'data-obo-index': 0,
-			onMouseUp: @onMouseUp
-		}, children
+					React.createElement 'div', {
+						className: 'component'
+						'data-component-type': chunk.get 'type'
+						'data-component-index': index
+						'data-oboid': chunk.cid
+						'data-server-index': chunk.get 'index'
+						'data-server-id': chunk.get 'id'
+						'data-server-derived-from': chunk.get 'derivedFrom'
+						'data-changed': chunk.dirty
+						key: index
+						# style: {
+							# opacity: if not activeChunk? or chunk is activeChunk then '1' else '0.2'
+						# }
+					},
+						React.createElement component, {
+							chunk: chunk
+							# showModalFn: showModalFn
+							# isActive: activeChunk is chunk
+						}
+			)
 
 
 

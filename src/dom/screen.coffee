@@ -13,11 +13,15 @@ class Screen
 		x: window.scrollX || window.pageXOffset || document.scrollLeft || document.body.scrollLeft || 0
 		y: window.scrollY || window.pageYOffset || document.scrollTop  || document.body.scrollTop  || 0
 
-	saveScrollPosition: (fn) ->
+	saveScrollPosition: ->
+		pos = @getScrollPosition()
+
 		@savedScrollPos = @getScrollPosition()
+		console.log 'Screen.saveScrollPosition', @savedScrollPos
 
 	restoreScrollPosition: ->
 		return if not @savedScrollPos?
+		console.log 'Screen.restoreScrollPosition', @savedScrollPos
 		window.scrollTo @savedScrollPos.x, @savedScrollPos.y
 
 	getScrollDistanceNeededToPutSelectionIntoView: ->

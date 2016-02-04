@@ -3,8 +3,6 @@
 
 React = require 'react'
 
-OboNodeComponentMixin = require '../../oboreact/OboNodecomponentmixin'
-
 Text = require '../../components/text'
 StyleableText = require '../../text/styleabletext'
 TextGroup = require '../../text/textgroup'
@@ -20,7 +18,6 @@ MockTextNode = require '../../components/text/mocktextnode'
 Chunk = require '../../models/chunk'
 
 List = React.createClass
-	mixins: [OboNodeComponentMixin]
 	statics:
 		consumableElements: ['ul', 'ol', 'menu', 'dir']
 
@@ -39,12 +36,12 @@ List = React.createClass
 		# SERIALIZATION/DECODE METHODS
 		# ================================================
 		createNodeDataFromDescriptor: (descriptor) ->
-			textGroup: TextGroup.fromDescriptor descriptor.data.textGroup, Infinity, { indent:0 }
+			textGroup: TextGroup.fromDescriptor descriptor.content.textGroup, Infinity, { indent:0 }
 			indent: 0
-			listStyles: ListStyles.fromDescriptor descriptor.data.listStyles
+			listStyles: ListStyles.fromDescriptor descriptor.content.listStyles
 
 		getDataDescriptor: (chunk) ->
-			data = chunk.get 'data'
+			data = chunk.componentContent
 
 			indent: data.indent
 			textGroup: data.textGroup.toDescriptor()
@@ -64,7 +61,7 @@ List = React.createClass
 				listStyles: new ListStyles(if el.tagName.toLowerCase() is 'ol' then 'ordered' else 'unordered')
 			}
 
-			@processElement 0, chunk.get('data'), el
+			@processElement 0, chunk.componentContent, el
 
 			# [
 			# 	Chunk.create @, {
@@ -127,11 +124,11 @@ List = React.createClass
 				if style.start isnt null
 					style.start += startAddition
 
-		splitText: (sel, chunk, shiftKey) ->
-			chunk.markChanged()
+		splitText: (selection, chunk, shiftKey) ->
+			chunk.markDirty()
 
-			info = POS.getCaretInfo sel.start, chunk
-			data = chunk.get 'data'
+			info = POS.getCaretInfo selection.sel.start, chunk
+			data = chunk.componentContent
 
 			item = data.textGroup.get(info.textIndex)
 
@@ -139,14 +136,14 @@ List = React.createClass
 				if item.data.indent > 0
 					item.data.indent--
 
-					sel.setFutureCaret chunk, { offset:0, childIndex:info.textIndex }
+					selection.sel.setFutureCaret chunk, { offset:0, childIndex:info.textIndex }
 					return
 
 				caretInLastItem = info.text is data.textGroup.last.text
 
 				if not caretInLastItem
 					afterNode = chunk.clone()
-					afterNode.get('data').textGroup = data.textGroup.split info.textIndex
+					afterNode.componentContent.textGroup = data.textGroup.split info.textIndex
 
 				inbetweenNode = Chunk.create()
 
@@ -155,45 +152,95 @@ List = React.createClass
 				chunk.addAfter inbetweenNode
 
 				if not caretInLastItem
-					@recalculateStartValues data.textGroup, afterNode.get('data').listStyles
+					@recalculateStartValues data.textGroup, afterNode.componentContent.listStyles
 					inbetweenNode.addAfter afterNode
 
-				sel.setFutureCaret inbetweenNode, { offset:0, childIndex:0 }
+				selection.sel.setFutureCaret inbetweenNode, { offset:0, childIndex:0 }
 				return
 
 			data.textGroup.splitText info.textIndex, info.offset
 
-			sel.setFutureCaret chunk, { offset:0, childIndex:info.textIndex + 1}
+			selection.sel.setFutureCaret chunk, { offset:0, childIndex:info.textIndex + 1}
 
+		indent: (selection, chunk, decreaseIndent) ->
+			chunk.markDirty()
 
-		indent: (sel, chunk, decreaseIndent) ->
-			chunk.markChanged()
+			data = chunk.componentContent
 
-			# console.log 'indent', arguments, chunk.get('data').textGroup
-			data = chunk.get 'data'
+			if selection.sel.type is 'caret'
+				info = POS.getCaretInfo selection.sel.start, chunk
 
-			if sel.type is 'caret'
-				info = POS.getCaretInfo sel.start, chunk
+				# If the first list item has the cursor
+				if info.textIndex is 0
+					# Indent the whole list instead
+					return TextMethods.indent selection, chunk, decreaseIndent
 
-				if info.offset is 0 and info.textIndex is 0
-					@applyIndent data.textGroup.get(info.textIndex).data, decreaseIndent
-					sel.setFutureCaret chunk, { offset:0, childIndex:0 }
-					return
+				# Else indent the list item with the cursor
+				@applyIndent data.textGroup.get(info.textIndex).data, decreaseIndent
+				return
 
-				if info.offset isnt 0
-					return @insertText sel, chunk, "\t"
-				else
-					@applyIndent data.textGroup.get(info.textIndex).data, decreaseIndent
-					sel.setFutureCaret chunk, { offset:0, childIndex:info.textIndex }
-					return
+			span = POS.getSelSpanInfo selection.sel, chunk
 
-			span = POS.getSelSpanInfo sel, chunk
+			# If the first list item is in some way selected
+			if span.start.textIndex is 0
+				# Indent the whole list instead
+				return TextMethods.indent selection, chunk, decreaseIndent
+
+			# Else indent each list item in the selection
 			curIndex = span.start.textIndex
 			while curIndex <= span.end.textIndex
 				@applyIndent data.textGroup.get(curIndex).data, decreaseIndent
 				curIndex++
 
-			POS.reselectSpan sel, chunk, span
+			POS.reselectSpan selection.sel, chunk, span
+
+		onTab: (selection, chunk, unTab) ->
+			chunk.markDirty()
+
+			data = chunk.componentContent
+
+			if selection.sel.type is 'caret'
+				info = POS.getCaretInfo selection.sel.start, chunk
+				if info.offset is 0
+					@indent selection, chunk, unTab
+				else
+					TextMethods.onTab selection, chunk, unTab
+				return
+
+			span = POS.getSelSpanInfo selection.sel, chunk
+			if span.start.textIndex isnt span.end.textIndex or span.start.offset is 0
+				@indent selection, chunk, unTab
+			else
+				TextMethods.onTab selection, chunk, unTab
+
+		# indentWORKING: (selection, chunk, decreaseIndent) ->
+		# 	chunk.markDirty()
+
+		# 	# console.log 'indent', arguments, chunk.componentContent.textGroup
+		# 	data = chunk.componentContent
+
+		# 	if selection.sel.type is 'caret'
+		# 		info = POS.getCaretInfo selection.sel.start, chunk
+
+		# 		if info.offset is 0 and info.textIndex is 0
+		# 			@applyIndent data.textGroup.get(info.textIndex).data, decreaseIndent
+		# 			selection.sel.setFutureCaret chunk, { offset:0, childIndex:0 }
+		# 			return
+
+		# 		if info.offset isnt 0
+		# 			return @insertText sel, chunk, "\t"
+		# 		else
+		# 			@applyIndent data.textGroup.get(info.textIndex).data, decreaseIndent
+		# 			selection.sel.setFutureCaret chunk, { offset:0, childIndex:info.textIndex }
+		# 			return
+
+		# 	span = POS.getSelSpanInfo selection.sel, chunk
+		# 	curIndex = span.start.textIndex
+		# 	while curIndex <= span.end.textIndex
+		# 		@applyIndent data.textGroup.get(curIndex).data, decreaseIndent
+		# 		curIndex++
+
+		# 	POS.reselectSpan selection.sel, chunk, span
 
 		applyIndent: (data, decreaseIndent) ->
 			if not decreaseIndent
@@ -201,8 +248,25 @@ List = React.createClass
 			else if data.indent > 0
 				data.indent--
 
+		getTextMenuCommands: (selection, chunk) ->
+			commands = TextMethods.getTextMenuCommands selection, chunk
+			commands.push {
+				label: 'Indent'
+				fn: (selection, chunk) ->
+					chunk.callComponentFn 'indent', selection, [false]
+
+			}
+			commands.push {
+				label: 'Unindent'
+				fn: (selection, chunk) ->
+					chunk.callComponentFn 'indent', selection, [true]
+			}
+
+			commands
+
 
 		getCaretEdge:                 TextMethods.getCaretEdge
+		canRemoveSibling:             TextMethods.canRemoveSibling
 		insertText:                   TextMethods.insertText
 		deleteText:                   TextMethods.deleteText
 		deleteSelection:              TextMethods.deleteSelection
@@ -216,7 +280,6 @@ List = React.createClass
 		# updateSelection:              TextMethods.updateSelection
 		selectStart:                  TextMethods.selectStart
 		selectEnd:                    TextMethods.selectEnd
-		getTextMenuCommands:          TextMethods.getTextMenuCommands
 		acceptAbsorb:                 TextMethods.acceptAbsorb
 		absorb:                       TextMethods.absorb
 		transformSelection:           TextMethods.transformSelection
@@ -232,8 +295,14 @@ List = React.createClass
 
 		el
 
+	getInitialState: ->
+		{ chunk:@props.chunk }
+
+	componentWillReceiveProps: (nextProps) ->
+		@setState { chunk:nextProps.chunk }
+
 	render: ->
-		data = @state.chunk.get 'data'
+		data = @state.chunk.componentContent
 
 		texts = data.textGroup
 

@@ -1,5 +1,7 @@
 # Turns a StyleableText item into a mock DOM tree, which can then be used to render out in React
 
+ObjectAssign = require 'object-assign'
+
 StyleableText = require '../../text/styleabletext'
 StyleRange = require '../../text/stylerange'
 StyleType = require '../../text/styletype'
@@ -66,6 +68,45 @@ getTextNodeFragmentDescriptorsAt = (rootNode, startIndex, endIndex) ->
 
 	return fragmentDescriptors
 
+wrapElement = (styleRange, nodeToWrap, text) ->
+	switch styleRange.type
+		when 'sup'
+			level = styleRange.data
+			if level > 0
+				node = root = new MockElement 'sup'
+				while level > 1
+					newChild = new MockElement 'sup'
+					node.addChild newChild
+					node = newChild
+					level--
+			else
+				level = Math.abs level
+				node = root = new MockElement 'sub'
+				while level > 1
+					newChild = new MockElement 'sub'
+					node.addChild newChild
+					node = newChild
+					level--
+
+			nodeToWrap.parent.replaceChild nodeToWrap, root
+			node.addChild nodeToWrap
+			nodeToWrap.text = text
+			root
+
+		when '_comment'
+			newChild = new MockElement('span', ObjectAssign({ 'class':'comment' }, styleRange.data))
+			nodeToWrap.parent.replaceChild nodeToWrap, newChild
+			newChild.addChild nodeToWrap
+			nodeToWrap.text = text
+			newChild
+
+		else
+			newChild = new MockElement(styleRange.type, ObjectAssign({}, styleRange.data))
+			nodeToWrap.parent.replaceChild nodeToWrap, newChild
+			newChild.addChild nodeToWrap
+			nodeToWrap.text = text
+			newChild
+
 wrap = (styleRange, nodeFragmentDescriptor) ->
 	nodeToWrap = nodeFragmentDescriptor.node
 	text = nodeToWrap.text
@@ -84,11 +125,7 @@ wrap = (styleRange, nodeFragmentDescriptor) ->
 		nodeToWrap.parent.addBefore newChild, nodeToWrap
 
 	# add in wrapped text
-	newChild = new MockElement(styleRange.type, styleRange.data)
-	nodeToWrap.parent.replaceChild nodeToWrap, newChild
-	newChild.addChild nodeToWrap
-	nodeToWrap.text = wrappedText
-	nodeToWrap = newChild
+	nodeToWrap = wrapElement styleRange, nodeToWrap, wrappedText
 
 	# add in right text
 	if rightText.length > 0
@@ -122,12 +159,25 @@ getMockElement = (styleableText) ->
 
 # 	console.log 'Fragments=', fragments, s
 
-# __debugPrintNode = (node, indent = '') ->
-# 	if node.nodeType is 'element'
-# 		console.log indent + node.type
-# 		for child in node.children
-# 			__debugPrintNode child, indent + '  '
-# 	else
-# 		console.log indent + '[' + node.text + ']'
+__debugPrintNode = (node, indent = '') ->
+	if node.nodeType is 'element'
+		console.log indent + node.type
+		for child in node.children
+			__debugPrintNode child, indent + '  '
+	else
+		console.log indent + '[' + node.text + ']'
+
+
+__getHTML = (node) ->
+	if node.nodeType is 'text'
+		return node.text
+
+	"<#{node.type}>#{node.children.map((child) -> __getHTML(child)).join('')}</#{node.type}>"
+
+
+
+window.__getMockElement = getMockElement
+window.__debugPrintNode = __debugPrintNode
+window.__getHTML = __getHTML
 
 module.exports = getMockElement

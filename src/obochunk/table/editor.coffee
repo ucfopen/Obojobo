@@ -3,8 +3,6 @@
 
 React = require 'react'
 
-OboNodeComponentMixin = require '../../oboreact/OboNodecomponentmixin'
-
 Text = require '../../components/text'
 StyleableText = require '../../text/styleabletext'
 TextGroup = require '../../text/textgroup'
@@ -18,14 +16,32 @@ MockTextNode = require '../../components/text/mocktextnode'
 Chunk = require '../../models/chunk'
 
 Table = React.createClass
-	mixins: [OboNodeComponentMixin]
 	statics:
 		consumableElements: ['table']
+
+		insertLabel: ['Table']
+		onInsert: (selection, atIndex, opts = {}) ->
+			console.log 'onInsert', opts
+			if not opts.rows then opts.rows = ~~prompt('Rows?')
+			if not opts.cols then opts.cols = ~~prompt('Cols?')
+
+			group = TextGroup.create(opts.rows * opts.cols, {}, opts.rows * opts.cols)
+
+			newChunk = Chunk.create @, {
+				textGroup: group
+				position: 'center'
+				rows: opts.rows
+				cols: opts.cols
+			}
+
+			selection.sel.setFutureCaret atIndex, { childIndex:0, offset:0 }
+
+			newChunk
 
 		# OBONODE DATA METHODS
 		# ================================================
 		createNewNodeData: ->
-			textGroup: TextGroup.create(9)
+			textGroup: TextGroup.create(9, {}, 9)
 			position: 'center'
 			rows: 3
 			cols: 3
@@ -39,13 +55,15 @@ Table = React.createClass
 		# SERIALIZATION/DECODE METHODS
 		# ================================================
 		createNodeDataFromDescriptor: (descriptor) ->
-			textGroup: TextGroup.fromDescriptor descriptor.data.textGroup, parseInt(descriptor.data.rows, 10) * parseInt(descriptor.data.cols, 10)
-			position: descriptor.data.position
-			rows: descriptor.data.rows
-			cols: descriptor.data.cols
+			content = descriptor.content
+
+			textGroup: TextGroup.fromDescriptor content.textGroup, parseInt(content.rows, 10) * parseInt(content.cols, 10)
+			position: content.position
+			rows: content.rows
+			cols: content.cols
 
 		getDataDescriptor: (chunk) ->
-			data = chunk.get 'data'
+			data = chunk.componentContent
 
 			textGroup: data.textGroup.toDescriptor()
 			position: data.position
@@ -87,36 +105,36 @@ Table = React.createClass
 		# merge: (sel, consumerChunk, digestedChunk) -> null
 
 
-		deleteSelection: (sel, chunk) ->
-			chunk.markChanged()
+		deleteSelection: (selection, chunk) ->
+			chunk.markDirty()
 
 			span = POS.getSelSpanInfo sel, chunk
 
-			chunk.get('data').textGroup.clearSpan span.start.textIndex, span.start.offset, span.end.textIndex, span.end.offset
+			chunk.componentContent.textGroup.clearSpan span.start.textIndex, span.start.offset, span.end.textIndex, span.end.offset
 
-			range = sel.getRange(chunk.getDomEl())
+			range = selection.sel.getRange(chunk.getDomEl())
 			if range is 'start' or range is 'both'
-				sel.setFutureCaret chunk, { offset: span.start.offset, childIndex: span.start.textIndex }
+				selection.sel.setFutureCaret chunk, { offset: span.start.offset, childIndex: span.start.textIndex }
 
-		indent: (sel, chunk, decreaseIndent) ->
-			chunk.markChanged()
+		# indent: (sel, chunk, decreaseIndent) ->
+		# 	chunk.markDirty()
 
-			@insertText sel, chunk, "\t"
+		# 	@insertText sel, chunk, "\t"
 
-		deleteText: (sel, chunk, deleteForwards) ->
-			chunk.markChanged()
+		deleteText: (selection, chunk, deleteForwards) ->
+			chunk.markDirty()
 
-			info = POS.getCaretInfo sel.start, chunk
-			data = chunk.get 'data'
+			info = POS.getCaretInfo selection.sel.start, chunk
+			data = chunk.componentContent
 
 			[start, end] = if not deleteForwards then [info.offset - 1, info.offset] else [info.offset, info.offset + 1]
 
 			info.text.deleteText start, end
 
-			sel.setFutureCaret chunk, { offset: start, childIndex: info.textIndex }
+			selection.sel.setFutureCaret chunk, { offset: start, childIndex: info.textIndex }
 
 		# init: (sel, chunk) ->
-		# 	data = chunk.get 'data'
+		# 	data = chunk.componentContent
 
 		# 	data.rows = data.cols = 0
 		# 	data.textGroup.init 0
@@ -127,6 +145,7 @@ Table = React.createClass
 		transformSelection: -> false
 
 		getCaretEdge:                 TextMethods.getCaretEdge
+		canRemoveSibling:             TextMethods.canRemoveSibling
 		insertText:                   TextMethods.insertText
 		styleSelection:               TextMethods.styleSelection
 		unstyleSelection:             TextMethods.unstyleSelection
@@ -137,15 +156,17 @@ Table = React.createClass
 		selectStart:                  TextMethods.selectStart
 		selectEnd:                    TextMethods.selectEnd
 		getTextMenuCommands:          TextMethods.getTextMenuCommands
+		onTab:                        TextMethods.onTab
+		indent:                       TextMethods.indent
 
 
 
 	addRow: ->
 		console.log 'addROW'
 
-		@state.chunk.markChanged()
+		@state.chunk.markDirty()
 
-		data = @state.chunk.get 'data'
+		data = @state.chunk.componentContent
 		numCols = data.cols
 
 		console.log numCols
@@ -163,9 +184,9 @@ Table = React.createClass
 		@props.updateFn()
 
 	addCol: ->
-		@state.chunk.markChanged()
+		@state.chunk.markDirty()
 
-		data = @state.chunk.get 'data'
+		data = @state.chunk.componentContent
 		numCols = data.cols
 		row = data.rows
 
@@ -183,13 +204,27 @@ Table = React.createClass
 
 		@props.updateFn()
 
+	setDimensions: (rows, cols) ->
+		@state.chunk.markDirty()
+
+		data.rows = rows
+		data.cols = cols
+		data.textGroup = TextGroup.create rows * cols, null, rows * cols
+
+		@setState { chunk:@state.chunk }
+
+		@props.updateFn()
+
+	getInitialState: ->
+		{ chunk:@props.chunk }
+
+	componentWillReceiveProps: (nextProps) ->
+		@setState { chunk:nextProps.chunk }
 
 	render: ->
 		chunk = @state.chunk
-		data = chunk.get 'data'
+		data = chunk.componentContent
 		numCols = data.cols
-
-		renderRow = @renderRow
 
 		React.createElement 'div', { contentEditable:false }, [
 			React.createElement('div', null,

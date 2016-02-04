@@ -2,8 +2,15 @@ React = require 'react'
 StyleableText = require '../text/styleabletext'
 StyleableTextRenderer = require './text/styleabletextrenderer'
 TextElement = require './text/textelement'
+emptyChar = require('../text/textconstants').EMPTY_CHAR
 
 DOMUtil = require '../dom/domutil'
+
+
+# getNodeLength = (node) ->
+# 	console.log 'emptychar', node.nodeValue is emptyChar
+# 	if node.nodeValue is emptyChar then return 0
+# 	node.nodeValue.length
 
 
 Text = React.createClass
@@ -14,30 +21,39 @@ Text = React.createClass
 			sel.text.index = @getOboTextPos sel.domContainer, sel.domIndex, node
 
 		getOboTextInfo: (targetTextNode, offset) ->
+			# console.log 'getOboTextInfo', targetTextNode, offset
+
 			totalCharactersFromStart = 0
 			# element ?= DOMUtil.getOboElementFromChild targetTextNode.parentElement, 'chunk'
 
-			oboTextNode = DOMUtil.findParentWithAttr targetTextNode, 'data-obo-text'
-			textIndex = oboTextNode.getAttribute 'data-text-index'
+			oboTextNode = DOMUtil.findParentWithAttr targetTextNode, 'data-text-index'
+			# console.log oboTextNode
+			textIndex = parseInt oboTextNode.getAttribute('data-text-index'), 10
+
+			if oboTextNode.textContent is emptyChar
+				return {
+					offset: 0
+					textIndex: textIndex
+				}
 
 			for textNode in DOMUtil.getTextNodesInOrder(oboTextNode)
 				break if textNode is targetTextNode
 				totalCharactersFromStart += textNode.nodeValue.length
 
 			offset: totalCharactersFromStart + offset
-			textIndex: parseInt textIndex, 10
+			textIndex: textIndex
 
 		#@TODO - Delete me!!!
-		getOboTextPos: (targetTextNode, offset, element) ->
-			console.warn 'stop using this method'
-			totalCharactersFromStart = 0
-			# element ?= DOMUtil.getOboElementFromChild targetTextNode.parentElement, 'chunk'
+		# getOboTextPos: (targetTextNode, offset, element) ->
+		# 	console.warn 'stop using this method'
+		# 	totalCharactersFromStart = 0
+		# 	# element ?= DOMUtil.getOboElementFromChild targetTextNode.parentElement, 'chunk'
 
-			for textNode in DOMUtil.getTextNodesInOrder(element)
-				break if textNode is targetTextNode
-				totalCharactersFromStart += textNode.nodeValue.length
+		# 	for textNode in DOMUtil.getTextNodesInOrder(element)
+		# 		break if textNode is targetTextNode
+		# 		totalCharactersFromStart += textNode.nodeValue.length
 
-			totalCharactersFromStart + offset
+		# 	totalCharactersFromStart + offset
 
 		getDomPosition: (offset, element) ->
 			totalCharactersFromStart = 0
@@ -47,8 +63,8 @@ Text = React.createClass
 					return { textNode:textNode, offset:offset - totalCharactersFromStart }
 				totalCharactersFromStart += textNode.nodeValue.length
 
-			# Should never get here
-			return { textNode:textNode, offset:totalCharactersFromStart }
+			# There are no text nodes or something went really wrong, so return 0! ¯\_(ツ)_/¯
+			return { textNode:null, offset:0 }
 
 		createElement: (styleableText, chunk, index, attrs = {}) ->
 			attrs['text'] = styleableText
@@ -103,11 +119,15 @@ Text = React.createClass
 
 
 	render: ->
+		# console.clear()
 		mockElement = StyleableTextRenderer @state.text
+		# console.log mockElement
+		# __debugPrintNode mockElement
 		# React.createElement('span', { 'data-obo-type':'text' },
 		# 	React.createElement(TextElement, { descriptor:mockElement })
 		# )
-		React.createElement(TextElement, { descriptor:mockElement, id:@state.id, index:@props.index, textIndex:@props.textIndex, ownerId:@props.ownerId })
+		# React.createElement 'div', {'data-obo-text':true, 'data-text-index':@props.textIndex},
+		React.createElement(TextElement, {descriptor:mockElement, id:@state.id, index:@props.index, textIndex:@props.textIndex, ownerId:@props.ownerId, elementKey:'0' })
 
 
 module.exports = Text

@@ -1,8 +1,5 @@
 React = require 'react'
 
-
-OboNodeComponentMixin = require '../../oboreact/obonodecomponentmixin'
-
 Text = require '../../components/text'
 StyleableText = require '../../text/styleabletext'
 TextGroup = require '../../text/textgroup'
@@ -20,6 +17,20 @@ Figure = React.createClass
 	statics:
 		consumableElements: []
 
+		insertLabel: ['Image']
+		onInsert: (selection, atIndex) ->
+			url = prompt('URL?')
+
+			newChunk = Chunk.create @, {
+				textGroup: TextGroup.create(1)
+				position: 'center'
+				url: url
+			}
+
+			selection.sel.setFutureCaret atIndex, { childIndex:0, offset:0 }
+
+			newChunk
+
 		# OBONODE DATA METHODS
 		# ================================================
 		createNewNodeData: ->
@@ -36,12 +47,12 @@ Figure = React.createClass
 		# ================================================
 		createNodeDataFromDescriptor: (descriptor) ->
 			console.log 'descr be all like', descriptor
-			textGroup: TextGroup.fromDescriptor descriptor.data.textGroup, 1
-			url: descriptor.data.url
-			position: descriptor.data.position
+			textGroup: TextGroup.fromDescriptor descriptor.content.textGroup, 1
+			url: descriptor.content.url
+			position: descriptor.content.position
 
 		getDataDescriptor: (chunk) ->
-			data = chunk.get 'data'
+			data = chunk.componentContent
 
 			textGroup: data.textGroup.toDescriptor()
 			url: data.url
@@ -60,20 +71,21 @@ Figure = React.createClass
 				}
 			]
 
-		splitText: (sel, chunk, shiftKey) ->
-			chunk.markChanged()
+		splitText: (selection, chunk, shiftKey) ->
+			chunk.markDirty()
 
-			info = POS.getCaretInfo sel.start, chunk
+			info = POS.getCaretInfo selection.sel.start, chunk
 
 			newText = info.text.split info.offset
 
 			newNode = Chunk.create() #@TODO - assumes it has a textGroup
-			newNode.get('data').textGroup.first.text = newText
+			newNode.componentContent.textGroup.first.text = newText
 			chunk.addAfter newNode
 
-			sel.setFutureCaret newNode, { offset: 0, childIndex: 0 }
+			selection.sel.setFutureCaret newNode, { offset: 0, childIndex: 0 }
 
 		getCaretEdge:                 TextMethods.getCaretEdge
+		canRemoveSibling:             TextMethods.canRemoveSibling
 		insertText:                   TextMethods.insertText
 		deleteText:                   TextMethods.deleteText
 		deleteSelection:              TextMethods.deleteSelection
@@ -82,7 +94,7 @@ Figure = React.createClass
 		getSelectionStyles:           TextMethods.getSelectionStyles
 		canMergeWith:                    TextMethods.canMergeWith
 		merge:                        TextMethods.merge
-		indent:                       TextMethods.indent
+		onTab:                       TextMethods.onTab
 		saveSelection:                TextMethods.saveSelection
 		restoreSelection:             TextMethods.restoreSelection
 		selectStart:                  TextMethods.selectStart
@@ -104,9 +116,9 @@ Figure = React.createClass
 		}
 
 	setPosition: ->
-		@state.chunk.markChanged()
+		@state.chunk.markDirty()
 
-		data = @state.chunk.get 'data'
+		data = @state.chunk.componentContent
 
 		positions = ['left', 'center', 'right']
 		curIndex = positions.indexOf data.position
@@ -120,13 +132,33 @@ Figure = React.createClass
 		true
 		# @props.activateFn @state.chunk
 
+	# render: ->
+	# 	data = @state.chunk.componentContent
+
+	# 	React.createElement 'div', { onClick:@onClick },
+	# 		if @state.active then React.createElement('button', { onClick: @setPosition }, 'Set Position') else null,
+	# 		React.createElement 'figure', { style: { textAlign:data.position }, unselectable:'on' },
+	# 			React.createElement 'img', { src:data.url, width:300, unselectable:'on' }, #IE requires unselectable to remove drag handles
+	# 			React.createElement 'figcaption', {  },
+	# 				Text.createElement(data.textGroup.get(0).text, @state.chunk, 0, { })
+
 	render: ->
-		data = @state.chunk.get('data')
+		data = @state.chunk.componentContent
+
+		if data.url?.length > 0
+			img = React.createElement 'img', { src:data.url, width:300, unselectable:'on' }, #IE requires unselectable to remove drag handles
+		else
+			img = React.createElement 'div', { style:{
+				display: 'inline-block'
+				background: '#dedede'
+				width: 300
+				height: 200
+			}}
 
 		React.createElement 'div', { contentEditable:false, onClick:@onClick },
 			if @state.active then React.createElement('button', { onClick: @setPosition }, 'Set Position') else null,
 			React.createElement 'figure', { style: { textAlign:data.position }, unselectable:'on' },
-				React.createElement 'img', { src:data.url, width:300, unselectable:'on' }, #IE requires unselectable to remove drag handles
+				img,
 				React.createElement 'figcaption', { contentEditable:true },
 					Text.createElement(data.textGroup.get(0).text, @state.chunk, 0, { contentEditable:true })
 

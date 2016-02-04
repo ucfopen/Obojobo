@@ -1,6 +1,7 @@
 nameToClass = new Map
 classToName = new Map
 consumableElements = new Map
+inserts = new Map
 defaultClass = null
 
 ComponentClassMap =
@@ -18,6 +19,9 @@ ComponentClassMap =
 			for el in componentClass.consumableElements
 				consumableElements.set el, componentClass
 
+		if componentClass.insertLabel?
+			inserts.set componentClass.insertLabel, componentClass
+
 	getClassForType: (type) ->
 		nameToClass.get type
 
@@ -33,6 +37,9 @@ ComponentClassMap =
 	getClassForElement: (el) ->
 		if consumableElements.has el then return consumableElements.get el
 		defaultClass
+
+	getInserts: ->
+		inserts
 
 
 module.exports = ComponentClassMap

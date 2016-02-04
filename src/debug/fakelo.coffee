@@ -1,8 +1,9 @@
 module.exports = {
-	"name": "untitled",
+	"metadata":
+		"title": "untitled"
 	"chunks": [
 		{
-			"type": "heading",
+			"type": "OboChunk.Heading",
 			"data": {
 				"headingLevel": 1
 				"textGroup": [
@@ -17,11 +18,11 @@ module.exports = {
 			}
 		},
 		{
-			"type": "break",
+			"type": "OboChunk.Break",
 			"data": {}
 		},
 		{
-			"type": "singletext",
+			"type": "OboChunk.SingleText",
 			"data": {
 				"indent": 0,
 				"type": 'p'
@@ -44,13 +45,13 @@ module.exports = {
 			}
 		},
 		{
-			"type": "youtube",
+			"type": "OboChunk.YouTube",
 			"data": {
 				"videoId": "iClHpepBY1I"
 			}
 		},
 		{
-			"type": "singletext",
+			"type": "OboChunk.SingleText",
 			"data": {
 				"indent": 0,
 				"type": 'p'
@@ -79,7 +80,7 @@ module.exports = {
 		# 	}
 		# },
 		{
-			"type": "singletext",
+			"type": "OboChunk.SingleText",
 			"data": {
 				"indent": 0,
 				"type": 'p'
@@ -102,7 +103,7 @@ module.exports = {
 			}
 		},
 		{
-			"type": "singletext",
+			"type": "OboChunk.SingleText",
 			"data": {
 				"indent": 0,
 				"type": 'p'
@@ -118,7 +119,7 @@ module.exports = {
 			}
 		},
 		{
-			"type": "table",
+			"type": "OboChunk.Table",
 			"data": {
 				"position": "center",
 				"rows": 3
@@ -198,7 +199,7 @@ module.exports = {
 			}
 		},
 		{
-			"type": "singletext",
+			"type": "OboChunk.SingleText",
 			"data": {
 				"indent": 0,
 				"type": 'p'
@@ -221,7 +222,7 @@ module.exports = {
 			}
 		},
 		{
-			"type": "figure",
+			"type": "OboChunk.Figure",
 			"data": {
 				"url": "/img/img.png"
 				"position": "center"
@@ -237,7 +238,7 @@ module.exports = {
 			}
 		},
 		{
-			"type": "list",
+			"type": "OboChunk.List",
 			"data": {
 				"listStyles": {
 					"type": "unordered",
@@ -287,7 +288,7 @@ module.exports = {
 			}
 		},
 		{
-			"type": "list",
+			"type": "OboChunk.List",
 			"data": {
 				"listStyles": {
 					"type": "unordered",

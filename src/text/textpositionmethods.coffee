@@ -8,26 +8,26 @@ TextPositionMethods =
 		info
 
 	getText: (chunk, index) ->
-		data = chunk.get 'data'
+		data = chunk.componentContent
 
 		data.textGroup.get(index).text
 
 	getStartInfo: (chunk) ->
-		data = chunk.get 'data'
+		data = chunk.componentContent
 
 		textIndex: 0
 		offset:    0
 		text:      data.textGroup.first.text
 
 	getEndInfo: (chunk) ->
-		data = chunk.get 'data'
+		data = chunk.componentContent
 
 		textIndex: data.textGroup.length - 1
 		offset:    data.textGroup.last.text.length
 		text:      data.textGroup.last.text
 
 	getSelSpanInfo: (sel, chunk) ->
-		data = chunk.get 'data'
+		data = chunk.componentContent
 
 		textGroup = data.textGroup
 

@@ -9,11 +9,17 @@ SingleText = React.createClass
 	mixins: [OboNodeComponentMixin]
 	statics:
 		createNodeDataFromDescriptor: (descriptor) ->
-			textGroup: TextGroup.fromDescriptor descriptor.data.textGroup
-			indent: 0
+			descriptor = { indent:0 }
+
+			if not descriptor.data?.textGroup?
+				descriptor.textGroup = new TextGroup()
+			else
+				descriptor.textGroup = TextGroup.fromDescriptor descriptor.data.textGroup
+
+			descriptor
 
 	render: ->
-		data = @state.chunk.get('data')
+		data = @state.chunk.componentContent
 		React.createElement(data.type, null, Text.createElement(data.textGroup.get(0).text, @state.chunk, 0))
 
 

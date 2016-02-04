@@ -1,8 +1,6 @@
 React = require 'react'
 
 
-OboNodeComponentMixin = require '../../oboreact/obonodecomponentmixin'
-
 Text = require '../../components/text'
 StyleableText = require '../../text/styleabletext'
 TextGroup = require '../../text/textgroup'
@@ -16,7 +14,6 @@ Chunk = require '../../models/chunk'
 
 
 Heading = React.createClass
-	mixins: [OboNodeComponentMixin]
 	statics:
 		consumableElements: ['h1', 'h2', 'h3', 'h4', 'h5', 'h6']
 
@@ -33,11 +30,11 @@ Heading = React.createClass
 		# SERIALIZATION/DECODE METHODS
 		# ================================================
 		createNodeDataFromDescriptor: (descriptor) ->
-			textGroup: TextGroup.fromDescriptor descriptor.data.textGroup, 1
-			headingLevel: descriptor.data.headingLevel
+			textGroup: TextGroup.fromDescriptor descriptor.content.textGroup, 1
+			headingLevel: descriptor.content.headingLevel
 
 		getDataDescriptor: (chunk) ->
-			data = chunk.get 'data'
+			data = chunk.componentContent
 
 			textGroup: data.textGroup.toDescriptor()
 			headingLevel: data.headingLevel
@@ -55,20 +52,21 @@ Heading = React.createClass
 				}
 			]
 
-		splitText: (sel, chunk, shiftKey) ->
-			chunk.markChanged()
+		splitText: (selection, chunk, shiftKey) ->
+			chunk.markDirty()
 
-			info = POS.getCaretInfo sel.start, chunk
+			info = POS.getCaretInfo selection.sel.start, chunk
 
 			newText = info.text.split info.offset
 
 			newNode = Chunk.create() #@TODO - assumes it has a textGroup
-			newNode.get('data').textGroup.first.text = newText
+			newNode.componentContent.textGroup.first.text = newText
 			chunk.addAfter newNode
 
-			sel.setFutureCaret newNode, { offset: 0, childIndex: 0 }
+			selection.sel.setFutureCaret newNode, { offset: 0, childIndex: 0 }
 
 		getCaretEdge:                 TextMethods.getCaretEdge
+		canRemoveSibling:             TextMethods.canRemoveSibling
 		insertText:                   TextMethods.insertText
 		deleteText:                   TextMethods.deleteText
 		deleteSelection:              TextMethods.deleteSelection
@@ -78,6 +76,7 @@ Heading = React.createClass
 		canMergeWith:                    TextMethods.canMergeWith
 		merge:                        TextMethods.merge
 		indent:                       TextMethods.indent
+		onTab:                       TextMethods.onTab
 		saveSelection:                TextMethods.saveSelection
 		restoreSelection:             TextMethods.restoreSelection
 		# updateSelection:              TextMethods.updateSelection
@@ -89,8 +88,14 @@ Heading = React.createClass
 		transformSelection:           TextMethods.transformSelection
 		split:                        TextMethods.split
 
+	getInitialState: ->
+		{ chunk:@props.chunk }
+
+	componentWillReceiveProps: (nextProps) ->
+		@setState { chunk:nextProps.chunk }
+
 	render: ->
-		data = @state.chunk.get('data')
+		data = @state.chunk.componentContent
 		React.createElement('h' + data.headingLevel, { className:'main' }, Text.createElement(data.textGroup.get(0).text, @state.chunk, 0))
 
 

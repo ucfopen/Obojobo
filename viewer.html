@@ -10,47 +10,15 @@
 		<link rel="stylesheet" href="css/main.css">
 
 		<style>
-			*[data-oboid]
+			span[data-comment-text]
 			{
 				position: relative;
-				padding: 10px;
-				border: 1px solid rgba(255, 0, 0, .1);
-			}
 
-			*[data-obo-index]
-			{
-				position: relative;
-			}
-
-			*[data-obo-index]:after
-			{
-				position: absolute;
-				right: 0;
-				top: 0;
-				content: attr(data-obo-index);
-				font-size: 7pt;
-				color: black;
-				font-family: 'Droid Sans Mono';
-				display: block;
-				background: white;
-			}
-
-			*[data-obo-text]:before
-			{
-				position: absolute;
-				right: 0;
-				top: 0;
-				/*content: attr(id);*/
-				font-size: 7pt;
-				/*background: pink;*/
-				color: gray;
-				font-family: 'Droid Sans Mono';
-				display: block;
+				border-radius: 4px;
+				background: linear-gradient(180deg, yellow, #FFDE21);
 			}
 		</style>
 
-		<!--<script src="https://fb.me/react-0.13.3.js"></script>
-		<script src="https://fb.me/JSXTransformer-0.13.3.js"></script>-->
 	</head>
 	<body>
 

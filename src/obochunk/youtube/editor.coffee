@@ -1,6 +1,5 @@
 React = require 'react'
 
-OboNodeComponentMixin = require '../../oboreact/OboNodecomponentmixin'
 TextMethods = require '../../text/textmethods'
 POS = require '../../text/textpositionmethods'
 
@@ -9,6 +8,14 @@ Chunk = require '../../models/chunk'
 YouTube = React.createClass
 	statics:
 		consumableElements: []
+
+		insertLabel: ['YouTube Video']
+		onInsert: (selection, atIndex) ->
+			videoId = prompt('Video ID?')
+
+			Chunk.create @, {
+				videoId: videoId
+			}
 
 		# OBONODE DATA METHODS
 		# ================================================
@@ -21,10 +28,10 @@ YouTube = React.createClass
 		# SERIALIZATION/DECODE METHODS
 		# ================================================
 		createNodeDataFromDescriptor: (descriptor) ->
-			videoId: descriptor.data.videoId
+			videoId: descriptor.content.videoId
 
 		getDataDescriptor: (chunk) ->
-			videoId: chunk.get('data').videoId
+			videoId: chunk.componentContent.videoId
 
 		# HTML METHODS
 		# ================================================
@@ -47,7 +54,7 @@ YouTube = React.createClass
 	componentWillReceiveProps: (nextProps) ->
 		@setState {
 			chunk: nextProps.chunk
-			userVideoId: nextProps.chunk.get('data').videoId
+			userVideoId: nextProps.chunk.componentContent.videoId
 			active: nextProps.isActive
 		}
 
@@ -62,13 +69,13 @@ YouTube = React.createClass
 		@setState { userVideoId:event.target.value }
 
 	onSetVideoId: ->
-		@state.chunk.markChanged()
-		@state.chunk.get('data').videoId = @state.userVideoId
+		@state.chunk.markDirty()
+		@state.chunk.componentContent.videoId = @state.userVideoId
 		@setState { chunk:@state.chunk }
 		@props.activateFn null
 
 	render: ->
-		data = @state.chunk.get('data')
+		data = @state.chunk.componentContent
 
 		if @state.active
 			childElements =

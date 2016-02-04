@@ -24,7 +24,7 @@ class History
 	__debug_print: () ->
 		console.log('HISTORY:')
 		for o in @stack
-			console.log JSON.stringify(o.selection)
+			console.log JSON.stringify(o, null, 4)
 
 
 Object.defineProperties History.prototype,

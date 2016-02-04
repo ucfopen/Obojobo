@@ -90,8 +90,8 @@ gulp.task('minify-editor', ['browserify-editor'], function() {
 // 		.pipe(gulp.dest('./build/js'));
 // });
 
-gulp.task('buildall', ['browserify-viewer', 'browserify-editor']);
 gulp.task('build', ['browserify-editor']);
+// gulp.task('build', ['browserify-viewer', 'browserify-editor']);
 
 // gulp.task('build', folders('src', function(folder) {
 // 	var sourceFolder = path.join('src', folder);

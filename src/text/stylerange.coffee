@@ -8,47 +8,63 @@ class StyleRange
 		new StyleRange @start, @end, @type, @data
 
 	getExportedObject: ->
-		type:  @type
-		start: @start
-		end:   @end
-		data:  @data
+		type:   @type
+		start:  @start
+		end:    @end
+		data:   @data
 
 	toString: ->
 		@type + ":" + @start + "," + @end + "(" + @data + ")"
+
+	isInvalid: ->
+		# @length() is 0 and @start > -1 and @end > -1
+		@length() is 0 and @start isnt 0 and @end isnt 0
 
 	# Instead of deleting a range it might be more useful
 	# to invalidate it now and delete it later
 	invalidate: ->
 		@start = @end = -1
+		# @start = @end = 0
 
 	compareToRange: (from, to) ->
 		to ?= from
 
-		# console.log 'compareToRange2', from, to, @start, @end, @length()
-
-		return StyleRange.CONTAINS         if @length() is 0 and @start <= from and to <= @end
+		return StyleRange.CONTAINS         if from is 0 and @start is 0 and to <= @end
 		return StyleRange.AFTER            if to <= @start
-		return StyleRange.BEFORE           if @end < from
-		return StyleRange.CONTAINS         if @start <= from and to <= @end
-		#return StyleRange.CONTAINS         if @start < from and to < @end
-		#return StyleRange.CONTAINS_EDGE    if @start <= from and to <= @end
-		return StyleRange.ENSCAPSULATED_BY if from <= @start and @end <= to
-		return StyleRange.INSIDE_LEFT      if @start <= from
+		return StyleRange.BEFORE           if from > @end
+		return StyleRange.CONTAINS         if from >= @start and to <= @end
+		return StyleRange.ENSCAPSULATED_BY if from <= @start and to >= @end
+		return StyleRange.INSIDE_LEFT      if from >= @start
 		return StyleRange.INSIDE_RIGHT
 
-	compareToRangeWORKING_TODO: (from, to) ->
-		to ?= from
+	# compareToRangeWorking_2_TODO: (from, to) ->
+	# 	to ?= from
 
-		console.log 'compareToRange', from, to, @start, @end
+	# 	# console.log 'compareToRange2', from, to, @start, @end, @length()
 
-		return StyleRange.AFTER            if to <= @start
-		return StyleRange.BEFORE           if @end < from
-		return StyleRange.CONTAINS         if @start <= from and to <= @end
-		#return StyleRange.CONTAINS         if @start < from and to < @end
-		#return StyleRange.CONTAINS_EDGE    if @start <= from and to <= @end
-		return StyleRange.ENSCAPSULATED_BY if from <= @start and @end <= to
-		return StyleRange.INSIDE_LEFT      if @start <= from
-		return StyleRange.INSIDE_RIGHT
+	# 	return StyleRange.CONTAINS         if @length() is 0 and @start <= from and to <= @end
+	# 	return StyleRange.AFTER            if to <= @start
+	# 	return StyleRange.BEFORE           if @end < from
+	# 	return StyleRange.CONTAINS         if @start <= from and to <= @end
+	# 	#return StyleRange.CONTAINS         if @start < from and to < @end
+	# 	#return StyleRange.CONTAINS_EDGE    if @start <= from and to <= @end
+	# 	return StyleRange.ENSCAPSULATED_BY if from <= @start and @end <= to
+	# 	return StyleRange.INSIDE_LEFT      if @start <= from
+	# 	return StyleRange.INSIDE_RIGHT
+
+	# compareToRangeWORKING_TODO: (from, to) ->
+	# 	to ?= from
+
+	# 	console.log 'compareToRange', from, to, @start, @end
+
+	# 	return StyleRange.AFTER            if to <= @start
+	# 	return StyleRange.BEFORE           if @end < from
+	# 	return StyleRange.CONTAINS         if @start <= from and to <= @end
+	# 	#return StyleRange.CONTAINS         if @start < from and to < @end
+	# 	#return StyleRange.CONTAINS_EDGE    if @start <= from and to <= @end
+	# 	return StyleRange.ENSCAPSULATED_BY if from <= @start and @end <= to
+	# 	return StyleRange.INSIDE_LEFT      if @start <= from
+	# 	return StyleRange.INSIDE_RIGHT
 
 	length: ->
 		@end - @start

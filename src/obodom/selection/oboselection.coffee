@@ -84,44 +84,22 @@ class OboSelection
 	collapse: ->
 		@end = @start.clone()
 
-	setFutureStart: (chunk, data) ->
+	setFutureStart: (chunkOrIndex, data) ->
 		@futureStart =
-			index: chunk.getIndex()
+			index: if not isNaN(chunkOrIndex) then chunkOrIndex else chunkOrIndex.get('index')
 			data: data
 
-	setFutureEnd: (chunk, data) ->
+	setFutureEnd: (chunkOrIndex, data) ->
 		@futureEnd =
-			index: chunk.getIndex()
+			index: if not isNaN(chunkOrIndex) then chunkOrIndex else chunkOrIndex.get('index')
 			data: data
 
 	setFutureCaret: (chunk, data) ->
 		@setFutureStart chunk, data
 		@setFutureEnd   chunk, data
 
-	setFutureFromSelection: ->
-		@setFutureStart @start.chunk, @start.chunk.callComponentFn('saveSelection', @, [@start])
-		@setFutureEnd   @end.chunk,   @end.chunk.callComponentFn('saveSelection', @, [@start])
-
 	clearFuture: ->
 		@futureStart = @futureEnd = null
-
-	getDescriptor: ->
-		@constructor.createDescriptor(
-			@start.chunk.getIndex(),
-			@start.chunk.callComponentFn('saveSelection', @, [@start]),
-			@end.chunk.getIndex(),
-			@end.chunk.callComponentFn('saveSelection', @, [@end])
-		)
-
-	getFutureDescriptor: ->
-		if not @futureStart? or not @futureEnd? then return null
-
-		@constructor.createDescriptor(
-			@futureStart.index,
-			@futureStart.data,
-			@futureEnd.index,
-			@futureEnd.data
-		)
 
 
 

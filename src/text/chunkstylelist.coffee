@@ -8,12 +8,17 @@ keySortFn = (a, b) ->
 
 class ChunkStyleList
 	constructor: ->
+		@clear()
+
+	clear: ->
 		@styles = []
 
 		# Object.observe @styles, ->
 		# 	console.log 'chunkstylelist changed'
 
 	getExportedObject: ->
+		if @styles.length is 0 then return null
+
 		output = []
 
 		for style in @styles
@@ -40,9 +45,6 @@ class ChunkStyleList
 
 	remove: (styleRange) ->
 		comparisons = @getStyleComparisonsForRange styleRange.start, styleRange.end, styleRange.type
-
-		console.log 'remove, comparisons', styleRange
-		console.log JSON.stringify(comparisons, null, 2)
 
 		# For any ranges that are enscapulated by this range we simply delete them
 		for co in comparisons.enscapsulatedBy
@@ -112,6 +114,43 @@ class ChunkStyleList
 			styles[range.type] = range.type
 
 		styles
+
+	getStyles: ->
+		styles = {}
+
+		for range in @styles
+			styles[range.type] = range.type
+
+		styles
+
+	# Returns another ChunkStyleList instance with all the styles that are within the
+	# given range. Each range will have a start and end value of 0
+	# getStyleListInRange: (from, to) ->
+	# 	styleList = @clone()
+	# 	styleList.slice from, to
+	# 	for range in styleList
+	# 		range.start = range.end = 0
+
+	# 	styleList
+
+	# "Chops" the style list for a given range.
+	# Items that do not fit inside the range are removed,
+	# items that fall inside the range are constrained to
+	# the given range.
+	slice: (from, to) ->
+		newStyles = []
+		for range in @getRangesInRange(from, to)
+			newStyles.push range
+			range.start = Math.max(range.start, from)
+			range.end = Math.min(range.end, to)
+
+		@styles = newStyles
+
+	# Moves each item in the list by byAmount
+	# shift: (byAmount) ->
+	# 	for range in @styles
+	# 		range.start += byAmount
+	# 		range.end += byAmount
 
 	cleanupSuperscripts: ->
 		# console.log 'cleanupSubSup', @styles
@@ -203,7 +242,7 @@ class ChunkStyleList
 				start = null
 
 				for range in @styles
-					# range.invalidate() if range.length() is 0
+					# range.invalidate() if range.length() is 0 #<-----@TODO
 
 					if range.isMergeable styleType, data
 						tmp[range.start] ?= 0
@@ -225,6 +264,11 @@ class ChunkStyleList
 						newStyles.push new StyleRange(start, end, styleType, data)
 						start = null
 
+		for i in [newStyles.length - 1..0] by -1
+			style = newStyles[i]
+			if style.isInvalid()
+				newStyles.splice i, 1
+
 		@styles = newStyles
 
 		# console.timeEnd 'normalize'
@@ -232,8 +276,9 @@ class ChunkStyleList
 ChunkStyleList.createFromObject = (o) ->
 	styleList = new ChunkStyleList()
 
-	for rangeObj in o
-		styleList.add StyleRange.createFromObject rangeObj
+	if o?
+		for rangeObj in o
+			styleList.add StyleRange.createFromObject rangeObj
 
 	styleList
 

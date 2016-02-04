@@ -1,29 +1,32 @@
 React = require 'react'
 
+toolbarClasses =
+	separator: require './toolbar/separator'
+	button: require './toolbar/button'
+	toggle: require './toolbar/toggle'
+	listButton: require './toolbar/listbutton'
+	gridButton: require './toolbar/gridbutton'
+	select: require './toolbar/select'
 
-MARGIN = 10
-WIDTH = 30
-HEIGHT = 30
 
 Toolbar = React.createClass
 	getInitialState: ->
 		selection: @props.selection
-		commands: ['createUl', 'createOl', 'indent', 'unindent', 'P', 'H1', 'H2']
+		# commands: ['REDRAW', 'SAVE', 'createUl', 'createOl', 'indent', 'unindent', 'P', 'H1', 'H2']
+		commands: @props.commands
 
 	componentWillReceiveProps: (nextProps) ->
 		@setState {
 			selection: nextProps.selection
+			commands: nextProps.commands
 		}
 
-	onMouseDown: (command) ->
-		@props.commandHandler command
-
 	render: ->
-		onMouseDown = @onMouseDown
+		commandHandler = @props.commandHandler
 
-		React.createElement 'div', { style: { position:'fixed', right:0, top:0 }},
-			@state.commands.map (command) ->
-				React.createElement 'button', { onMouseDown:onMouseDown.bind(@, command) }, command
+		React.createElement 'div', { className:'toolbar' },
+			@state.commands.map (command, index) ->
+				React.createElement toolbarClasses[command.type], { command:command, commandHandler:commandHandler, key:index }
 
 
 module.exports = Toolbar

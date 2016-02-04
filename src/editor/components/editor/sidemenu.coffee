@@ -1,54 +1,50 @@
 React = require 'react'
 
+SideMenuList = require './sidemenu/sidemenulist'
 
-MARGIN = 10
+MARGIN = 5
 WIDTH = 30
 HEIGHT = 30
 
 SideMenu = React.createClass
 	getInitialState: ->
 		chunkRect: @props.selection.chunkRect
+		inserts: @props.inserts
 
 	componentWillReceiveProps: (nextProps) ->
 		@setState {
 			chunkRect: nextProps.selection.chunkRect
+			inserts: nextProps.inserts
 		}
 
-	onBeforeClick: ->
-		@props.handlerFn 'before'
+	onBeforeClick: (componentClass) ->
+		@props.handlerFn 'before', componentClass
 
-	onAfterClick: ->
-		@props.handlerFn 'after'
+	onAfterClick: (componentClass) ->
+		@props.handlerFn 'after', componentClass
 
 	render: ->
 		rect = @state.chunkRect
 
 		if not rect then return null
 
-		React.createElement('div', null,
-			React.createElement('div', {
-				onClick: @onBeforeClick,
-				style: {
-					position: 'absolute'
-					left: '10px'
-					top: (rect.top + window.scrollY - MARGIN - HEIGHT) + 'px'
-					width: WIDTH + 'px'
-					height: HEIGHT + 'px'
-					background: 'rgba(255, 0, 0, 0.1)'
-					border: '1px solid black'
-				}
+		React.createElement('div', { style:{
+				# position: 'fixed'
+				# zIndex: 1
+				# left: 0
+				# width: 50
+				# top: 0
+				# bottom: 0
+			}},
+			React.createElement(SideMenuList, {
+				inserts: @state.inserts,
+				onMouseDown: @onBeforeClick,
+				yPos: rect.top + window.scrollY - MARGIN - HEIGHT
 			}),
-			React.createElement('div', {
-				onClick: @onAfterClick,
-				style: {
-					position: 'absolute'
-					left: '10px'
-					top: (rect.bottom + window.scrollY + MARGIN) + 'px'
-					width: WIDTH + 'px'
-					height: HEIGHT + 'px'
-					background: 'rgba(255, 0, 0, 0.1)'
-					border: '1px solid black'
-				}
+			React.createElement(SideMenuList, {
+				inserts: @state.inserts,
+				onMouseDown: @onAfterClick,
+				yPos: rect.bottom + window.scrollY + MARGIN
 			})
 		)
 
