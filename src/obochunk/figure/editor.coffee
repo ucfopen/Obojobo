@@ -10,9 +10,6 @@ POS = require '../../text/textpositionmethods'
 Chunk = require '../../models/chunk'
 
 
-
-
-
 Figure = React.createClass
 	statics:
 		consumableElements: []
@@ -27,7 +24,7 @@ Figure = React.createClass
 				url: url
 			}
 
-			selection.sel.setFutureCaret atIndex, { childIndex:0, offset:0 }
+			selection.setFutureCaret atIndex, { childIndex:0, offset:0 }
 
 			newChunk
 
@@ -74,7 +71,7 @@ Figure = React.createClass
 		splitText: (selection, chunk, shiftKey) ->
 			chunk.markDirty()
 
-			info = POS.getCaretInfo selection.sel.start, chunk
+			info = POS.getCaretInfo selection.text.start, chunk
 
 			newText = info.text.split info.offset
 
@@ -82,7 +79,7 @@ Figure = React.createClass
 			newNode.componentContent.textGroup.first.text = newText
 			chunk.addAfter newNode
 
-			selection.sel.setFutureCaret newNode, { offset: 0, childIndex: 0 }
+			selection.setFutureCaret newNode, { offset: 0, childIndex: 0 }
 
 		getCaretEdge:                 TextMethods.getCaretEdge
 		canRemoveSibling:             TextMethods.canRemoveSibling
@@ -96,6 +93,23 @@ Figure = React.createClass
 		merge:                        TextMethods.merge
 		onTab:                       TextMethods.onTab
 		saveSelection:                TextMethods.saveSelection
+
+		blur: (selection, chunk) ->
+			console.log '<<<<<<<<<<<< blur', arguments
+			__activateFn null
+
+		focus: (selection, chunk) ->
+			# span = selection.text.getRange chunk.getDomEl()
+			console.log '>>>>>>>>>>>> focus'
+			if selection.text.type is 'caret'
+				info = POS.getCaretInfo selection.text.start, chunk
+				if info.textIndex is -1
+					console.log 'ACTIVATE!'
+					__activateFn chunk
+				else
+					__activateFn null
+				console.log info
+
 		restoreSelection:             TextMethods.restoreSelection
 		selectStart:                  TextMethods.selectStart
 		selectEnd:                    TextMethods.selectEnd
@@ -129,8 +143,8 @@ Figure = React.createClass
 		@props.updateFn()
 
 	onClick: ->
-		true
-		# @props.activateFn @state.chunk
+		# true
+		@props.activateFn @state.chunk
 
 	# render: ->
 	# 	data = @state.chunk.componentContent
@@ -142,25 +156,38 @@ Figure = React.createClass
 	# 			React.createElement 'figcaption', {  },
 	# 				Text.createElement(data.textGroup.get(0).text, @state.chunk, 0, { })
 
+	onTrapFocus: ->
+		console.log 'trap focus'
+		@props.activateFn @state.chunk
+
+	onTrapBlur: ->
+		console.log 'trap blur'
+		@props.activateFn null
+
 	render: ->
 		data = @state.chunk.componentContent
 
+		outline = if @state.active then '2px solid #5EBF97' else 'none'
+
 		if data.url?.length > 0
-			img = React.createElement 'img', { src:data.url, width:300, unselectable:'on' }, #IE requires unselectable to remove drag handles
+			img = React.createElement 'img', { src:data.url, width:300, onClick:@onClick, unselectable:'on', style:{outline:outline} }, #IE requires unselectable to remove drag handles
 		else
-			img = React.createElement 'div', { style:{
+			img = React.createElement 'div', { onClick:@onClick, style:{
 				display: 'inline-block'
 				background: '#dedede'
 				width: 300
 				height: 200
+				outline: outline
 			}}
 
-		React.createElement 'div', { contentEditable:false, onClick:@onClick },
-			if @state.active then React.createElement('button', { onClick: @setPosition }, 'Set Position') else null,
-			React.createElement 'figure', { style: { textAlign:data.position }, unselectable:'on' },
-				img,
-				React.createElement 'figcaption', { contentEditable:true },
-					Text.createElement(data.textGroup.get(0).text, @state.chunk, 0, { contentEditable:true })
+		React.createElement 'div', { contentEditable:false },
+			React.createElement 'span', { contentEditable:true, className:'trap', 'data-text-index':'-1' }, ' '
+			React.createElement 'div', { contentEditable:false },
+				# if @state.active then React.createElement('button', { onClick: @setPosition }, 'Set Position') else null,
+				React.createElement 'figure', { style: { textAlign:data.position }, unselectable:'on' },
+					img,
+					React.createElement 'figcaption', { contentEditable:true },
+						Text.createElement(data.textGroup.get(0).text, @state.chunk, 0, { contentEditable:true })
 
 
 module.exports = Figure

@@ -76,7 +76,10 @@ class Chunk extends Backbone.Model
 	# 	@collection.indexOf @
 
 	prevSibling: ->
-		@collection.at @get('index') - 1
+		index = @get('index')
+		return null if index - 1 < 0
+
+		@collection.at index - 1
 
 	nextSibling: ->
 		@collection.at @get('index') + 1
@@ -156,8 +159,6 @@ class Chunk extends Backbone.Model
 # 	chunk.set 'savedJSON', JSON.stringify(json)
 
 Chunk.create = (typeOrClass = null, content = null) ->
-	console.log 'Chunk.create', arguments
-
 	if not typeOrClass?
 		componentClass = ComponentClassMap.getDefaultComponentClass()
 		type = ComponentClassMap.getTypeOfClass componentClass
@@ -169,8 +170,6 @@ Chunk.create = (typeOrClass = null, content = null) ->
 		type = ComponentClassMap.getTypeOfClass typeOrClass
 
 	content ?= componentClass.createNewNodeData()
-
-	console.log 'content is', content
 
 	chunk = new Chunk {
 		type: type

@@ -35,11 +35,11 @@
 # 			textIndent: 0
 
 # 		insertText: (oboNode, sel, text) ->
-# 			console.log 'QUESTOIN INSERT TEXT', arguments, sel.start.node, sel.end.node
+# 			console.log 'QUESTOIN INSERT TEXT', arguments, text.start.node, text.end.node
 
-# 			index = DOMUtil.findParentAttr sel.start.node, 'data-index'
+# 			index = DOMUtil.findParentAttr text.start.node, 'data-index'
 # 			answer = oboNode.data.answers[index]
-# 			pos = Text.getOboTextPos sel.start.node, sel.start.offset, sel.start.node.parentElement.parentElement
+# 			pos = Text.getOboTextPos text.start.node, text.start.offset, text.start.node.parentElement.parentElement
 # 			answer.text.insertText pos, text
 
 # 	handleCommand: (commandEvent, range) ->

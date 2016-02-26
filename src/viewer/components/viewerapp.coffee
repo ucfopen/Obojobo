@@ -39,7 +39,7 @@ ViewerApp = React.createClass
 			when 'Ask a question'
 				question = prompt 'Question?'
 
-				for chunk in @state.selection.sel.all
+				for chunk in @state.selection.text.all
 					chunk.callComponentFn 'styleSelection', @state.selection, ['_comment', {'data-comment-text':question}]
 
 				@state.selection.clear()

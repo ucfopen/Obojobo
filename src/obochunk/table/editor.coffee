@@ -34,7 +34,7 @@ Table = React.createClass
 				cols: opts.cols
 			}
 
-			selection.sel.setFutureCaret atIndex, { childIndex:0, offset:0 }
+			selection.setFutureCaret atIndex, { childIndex:0, offset:0 }
 
 			newChunk
 
@@ -108,13 +108,13 @@ Table = React.createClass
 		deleteSelection: (selection, chunk) ->
 			chunk.markDirty()
 
-			span = POS.getSelSpanInfo sel, chunk
+			span = POS.getSelSpanInfo selection.text, chunk
 
 			chunk.componentContent.textGroup.clearSpan span.start.textIndex, span.start.offset, span.end.textIndex, span.end.offset
 
-			range = selection.sel.getRange(chunk.getDomEl())
+			range = selection.text.getRange(chunk.getDomEl())
 			if range is 'start' or range is 'both'
-				selection.sel.setFutureCaret chunk, { offset: span.start.offset, childIndex: span.start.textIndex }
+				selection.setFutureCaret chunk, { offset: span.start.offset, childIndex: span.start.textIndex }
 
 		# indent: (sel, chunk, decreaseIndent) ->
 		# 	chunk.markDirty()
@@ -124,14 +124,14 @@ Table = React.createClass
 		deleteText: (selection, chunk, deleteForwards) ->
 			chunk.markDirty()
 
-			info = POS.getCaretInfo selection.sel.start, chunk
+			info = POS.getCaretInfo selection.text.start, chunk
 			data = chunk.componentContent
 
 			[start, end] = if not deleteForwards then [info.offset - 1, info.offset] else [info.offset, info.offset + 1]
 
 			info.text.deleteText start, end
 
-			selection.sel.setFutureCaret chunk, { offset: start, childIndex: info.textIndex }
+			selection.setFutureCaret chunk, { offset: start, childIndex: info.textIndex }
 
 		# init: (sel, chunk) ->
 		# 	data = chunk.componentContent
@@ -162,14 +162,10 @@ Table = React.createClass
 
 
 	addRow: ->
-		console.log 'addROW'
-
 		@state.chunk.markDirty()
 
 		data = @state.chunk.componentContent
 		numCols = data.cols
-
-		console.log numCols
 
 		data.textGroup.maxItems += data.cols
 
@@ -181,6 +177,7 @@ Table = React.createClass
 
 		@setState { chunk:@state.chunk }
 
+		# @props.selection.setFutureCaret @state.chunk, { offset:0, childIndex:data.textGroup.length - data.cols - 1 }
 		@props.updateFn()
 
 	addCol: ->
@@ -194,7 +191,6 @@ Table = React.createClass
 
 		while row
 			index = row * numCols
-			console.log 'add at', index
 			data.textGroup.addAt index
 			row--
 
@@ -216,10 +212,15 @@ Table = React.createClass
 		@props.updateFn()
 
 	getInitialState: ->
-		{ chunk:@props.chunk }
+		chunk: @props.chunk
+		active: false
 
 	componentWillReceiveProps: (nextProps) ->
 		@setState { chunk:nextProps.chunk }
+
+	edit: ->
+		if not @state.active
+			@props.activateFn @state.chunk
 
 	render: ->
 		chunk = @state.chunk
@@ -229,7 +230,8 @@ Table = React.createClass
 		React.createElement 'div', { contentEditable:false }, [
 			React.createElement('div', null,
 				React.createElement('button', { onClick:@addRow }, '+Row'),
-				React.createElement('button', { onClick:@addCol }, '+Col')
+				React.createElement('button', { onClick:@addCol }, '+Col'),
+				React.createElement('button', { onClick:@edit }, 'Edit'),
 			),
 			React.createElement 'table', { contentEditable:true, className:'main', style: { width: '100%', tableLayout: 'fixed' } },
 				React.createElement 'tbody', null,

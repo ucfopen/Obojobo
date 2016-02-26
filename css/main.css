@@ -15,12 +15,18 @@ body {
 
 	white-space: pre-wrap;
 	line-height: 1.5em;
-	font-family: Georgia;
+	/*font-family: Georgia;*/
+	font-family: 'Noto Serif';
 }
 
 h1, h2, h3, h4, h5, h6
 {
-	font-family: 'Open Sans';
+	/*font-family: 'Open Sans';*/
+	font-family: 'Noto Sans';
+}
+h1
+{
+	color: #336898;
 }
 
 .component {

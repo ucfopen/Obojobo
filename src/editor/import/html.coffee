@@ -52,6 +52,7 @@ createOboNodesFromDOMNode = (node) ->
 
 	# else, see if there's a component out there that can read elements of this type
 	if not componentClass?
+		console.log 'el searcho'
 		tagName = getTagName(node)
 		componentClass = ComponentClassMap.getClassForElement tagName
 
@@ -59,7 +60,7 @@ createOboNodesFromDOMNode = (node) ->
 
 	if not componentClass then return [] # OR FRAGMENT?
 
-	console.log 'SO', node
+	console.log 'SO', node, componentClass
 	nodes = componentClass.createNewNodesFromElement node
 
 	console.log 'createOboNodesFromDOMNode___', nodes

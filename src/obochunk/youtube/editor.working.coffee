@@ -87,10 +87,7 @@ YouTube = React.createClass
 		else
 			childElements = React.createElement 'img', { width:'100%', height:'auto', style:{ position:'absolute', left:0, top:'50%', transform:'translateY(-50%)'}, src:"https://i.ytimg.com/vi/#{data.videoId}/hqdefault.jpg" }
 
-		React.createElement 'div', null, [
-			React.createElement 'span', { className:'trap' }, ' '
-			React.createElement 'div', { contentEditable:false, 'data-video-id':data.videoId, onClick:@onClick, style: { width:560, height:315, overflow:'hidden', position:'relative' } }, childElements
-		]
+		React.createElement 'div', { contentEditable:false, 'data-video-id':data.videoId, onClick:@onClick, style: { width:560, height:315, overflow:'hidden', position:'relative' } }, childElements
 
 
 module.exports = YouTube

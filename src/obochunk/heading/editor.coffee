@@ -55,7 +55,7 @@ Heading = React.createClass
 		splitText: (selection, chunk, shiftKey) ->
 			chunk.markDirty()
 
-			info = POS.getCaretInfo selection.sel.start, chunk
+			info = POS.getCaretInfo selection.text.start, chunk
 
 			newText = info.text.split info.offset
 
@@ -63,7 +63,7 @@ Heading = React.createClass
 			newNode.componentContent.textGroup.first.text = newText
 			chunk.addAfter newNode
 
-			selection.sel.setFutureCaret newNode, { offset: 0, childIndex: 0 }
+			selection.setFutureCaret newNode, { offset: 0, childIndex: 0 }
 
 		getCaretEdge:                 TextMethods.getCaretEdge
 		canRemoveSibling:             TextMethods.canRemoveSibling

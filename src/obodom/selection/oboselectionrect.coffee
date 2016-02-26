@@ -1,4 +1,4 @@
-Selection = require '../../dom/selection'
+DOMSelection = require '../../dom/domselection'
 
 class OboSelectionRect
 	constructor: ->
@@ -23,7 +23,7 @@ OboSelectionRect.TYPE_CHUNKS = 'chunks'
 
 OboSelectionRect.createFromSelection = ->
 	rect = new OboSelectionRect()
-	sel = new Selection()
+	sel = new DOMSelection()
 
 	selType = sel.getType()
 
@@ -46,6 +46,9 @@ OboSelectionRect.createFromSelection = ->
 	rect.width  = rect.right - rect.left
 	rect.height = rect.bottom - rect.top
 
+	rect.selection = sel
+	rect.chunks = null
+
 	rect
 
 OboSelectionRect.createFromChunks = (chunks) ->
@@ -57,6 +60,8 @@ OboSelectionRect.createFromChunks = (chunks) ->
 	rect.left = Infinity
 
 	for chunk in chunks
+		continue if not chunk?
+
 		chunkRect = chunk.getDomEl().getBoundingClientRect()
 
 		rect.top    = Math.min rect.top, chunkRect.top
@@ -66,6 +71,9 @@ OboSelectionRect.createFromChunks = (chunks) ->
 
 	rect.width  = rect.right - rect.left
 	rect.height = rect.bottom - rect.top
+
+	rect.chunks = chunks
+	rect.selection = null
 
 	rect
 

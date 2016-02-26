@@ -50,7 +50,7 @@ List = React.createClass
 		# HTML METHODS
 		# ================================================
 		createNewNodesFromElement: (el) ->
-			# console.log 'List::cNNFE', el
+			console.log 'List::cNNFE', el
 
 			# group =
 			# group.first.text = StyleableText.createFromElement(el)
@@ -73,19 +73,22 @@ List = React.createClass
 			[chunk]
 
 		processElement: (indentLevel, chunkData, el) ->
-			# console.log 'processElement', arguments
+			console.log 'processElement', arguments
 
 			if el.tagName.toLowerCase() is 'li'
-				# console.log 'adding text', el, indentLevel
 				# create a cloned elment with further sub-lists having their content removed (so this text won't be found when creating it)
-				# console.log 'el is', el, el.outerHTML
 				cloneEl = el.cloneNode true
-				Array.prototype.map.call cloneEl.querySelectorAll('ul, ol, menu, dir'), (e) -> e.innerHTML = ''
-				# console.log 'cloneEl is', cloneEl, cloneEl.outerHTML
-				chunkData.textGroup.add StyleableText.createFromElement(cloneEl), { indent:indentLevel }
+				Array.prototype.map.call cloneEl.querySelectorAll('ul, ol, menu, dir'), (e) -> e.parentElement.removeChild e
+				document.body.appendChild cloneEl
+				st = StyleableText.createFromElement(cloneEl)
+
+				if st.length > 0
+					chunkData.textGroup.add st, { indent:indentLevel }
 
 				for node in Array.prototype.slice.call el.children
 					@processElement indentLevel + 1, chunkData, node
+
+				document.body.removeChild cloneEl
 			else
 				listStyles =
 					type: if el.tagName.toLowerCase() is 'ol' then 'ordered' else 'unordered'
@@ -105,7 +108,6 @@ List = React.createClass
 
 
 		recalculateStartValues: (refTextGroup, listStyles) ->
-			console.log 'recalculateStartValues'
 			indents = {}
 
 			for item in refTextGroup.items
@@ -115,19 +117,15 @@ List = React.createClass
 				else
 					indents[indentLevel]++
 
-			console.log indents
-
 			for indentLevel, startAddition of indents
-				console.log 'startAddition', startAddition, 'indentLevel', indentLevel
 				style = listStyles.getSetStyles indentLevel
-				console.log 'i spy', style
 				if style.start isnt null
 					style.start += startAddition
 
 		splitText: (selection, chunk, shiftKey) ->
 			chunk.markDirty()
 
-			info = POS.getCaretInfo selection.sel.start, chunk
+			info = POS.getCaretInfo selection.text.start, chunk
 			data = chunk.componentContent
 
 			item = data.textGroup.get(info.textIndex)
@@ -136,7 +134,7 @@ List = React.createClass
 				if item.data.indent > 0
 					item.data.indent--
 
-					selection.sel.setFutureCaret chunk, { offset:0, childIndex:info.textIndex }
+					selection.setFutureCaret chunk, { offset:0, childIndex:info.textIndex }
 					return
 
 				caretInLastItem = info.text is data.textGroup.last.text
@@ -155,20 +153,20 @@ List = React.createClass
 					@recalculateStartValues data.textGroup, afterNode.componentContent.listStyles
 					inbetweenNode.addAfter afterNode
 
-				selection.sel.setFutureCaret inbetweenNode, { offset:0, childIndex:0 }
+				selection.setFutureCaret inbetweenNode, { offset:0, childIndex:0 }
 				return
 
 			data.textGroup.splitText info.textIndex, info.offset
 
-			selection.sel.setFutureCaret chunk, { offset:0, childIndex:info.textIndex + 1}
+			selection.setFutureCaret chunk, { offset:0, childIndex:info.textIndex + 1}
 
 		indent: (selection, chunk, decreaseIndent) ->
 			chunk.markDirty()
 
 			data = chunk.componentContent
 
-			if selection.sel.type is 'caret'
-				info = POS.getCaretInfo selection.sel.start, chunk
+			if selection.text.type is 'caret'
+				info = POS.getCaretInfo selection.text.start, chunk
 
 				# If the first list item has the cursor
 				if info.textIndex is 0
@@ -179,7 +177,7 @@ List = React.createClass
 				@applyIndent data.textGroup.get(info.textIndex).data, decreaseIndent
 				return
 
-			span = POS.getSelSpanInfo selection.sel, chunk
+			span = POS.getSelSpanInfo selection.text, chunk
 
 			# If the first list item is in some way selected
 			if span.start.textIndex is 0
@@ -192,22 +190,22 @@ List = React.createClass
 				@applyIndent data.textGroup.get(curIndex).data, decreaseIndent
 				curIndex++
 
-			POS.reselectSpan selection.sel, chunk, span
+			# POS.reselectSpan selection.text, chunk, span
 
 		onTab: (selection, chunk, unTab) ->
 			chunk.markDirty()
 
 			data = chunk.componentContent
 
-			if selection.sel.type is 'caret'
-				info = POS.getCaretInfo selection.sel.start, chunk
+			if selection.text.type is 'caret'
+				info = POS.getCaretInfo selection.text.start, chunk
 				if info.offset is 0
 					@indent selection, chunk, unTab
 				else
 					TextMethods.onTab selection, chunk, unTab
 				return
 
-			span = POS.getSelSpanInfo selection.sel, chunk
+			span = POS.getSelSpanInfo selection.text, chunk
 			if span.start.textIndex isnt span.end.textIndex or span.start.offset is 0
 				@indent selection, chunk, unTab
 			else
@@ -219,28 +217,28 @@ List = React.createClass
 		# 	# console.log 'indent', arguments, chunk.componentContent.textGroup
 		# 	data = chunk.componentContent
 
-		# 	if selection.sel.type is 'caret'
-		# 		info = POS.getCaretInfo selection.sel.start, chunk
+		# 	if selection.text.type is 'caret'
+		# 		info = POS.getCaretInfo selection.text.start, chunk
 
 		# 		if info.offset is 0 and info.textIndex is 0
 		# 			@applyIndent data.textGroup.get(info.textIndex).data, decreaseIndent
-		# 			selection.sel.setFutureCaret chunk, { offset:0, childIndex:0 }
+		# 			selection.setFutureCaret chunk, { offset:0, childIndex:0 }
 		# 			return
 
 		# 		if info.offset isnt 0
 		# 			return @insertText sel, chunk, "\t"
 		# 		else
 		# 			@applyIndent data.textGroup.get(info.textIndex).data, decreaseIndent
-		# 			selection.sel.setFutureCaret chunk, { offset:0, childIndex:info.textIndex }
+		# 			selection.setFutureCaret chunk, { offset:0, childIndex:info.textIndex }
 		# 			return
 
-		# 	span = POS.getSelSpanInfo selection.sel, chunk
+		# 	span = POS.getSelSpanInfo selection.text, chunk
 		# 	curIndex = span.start.textIndex
 		# 	while curIndex <= span.end.textIndex
 		# 		@applyIndent data.textGroup.get(curIndex).data, decreaseIndent
 		# 		curIndex++
 
-		# 	POS.reselectSpan selection.sel, chunk, span
+		# 	POS.reselectSpan selection.text, chunk, span
 
 		applyIndent: (data, decreaseIndent) ->
 			if not decreaseIndent
@@ -264,11 +262,70 @@ List = React.createClass
 
 			commands
 
+		deleteText: (selection, chunk, deleteForwards) ->
+			chunk.markDirty()
+
+			info = POS.getCaretInfo selection.text.start, chunk
+			data = chunk.componentContent
+
+			# If backspacing at the start of one of the list items (that isn't the first)
+			if not deleteForwards and info.textIndex > 0 and info.offset is 0 and data.textGroup.get(info.textIndex).data.indent > 0
+				#...then unindent
+				data.textGroup.get(info.textIndex).data.indent--
+				return true
+
+			# if backspacing at the start of an item that is at minimum indent (and we're not attempting to un-indent the whole list)
+			if not deleteForwards and info.offset is 0 and data.textGroup.get(info.textIndex).data.indent is 0 and (info.textIndex > 0 or data.indent is 0)
+				newChunk = Chunk.create()
+				# consumed = chunk.clone()
+				# consumed.componentContent.textGroup.slice info.textIndex, info.textIndex + 1
+				# newChunk.callComponentFn 'absorb', selection, [newChunk, consumed]
+				#@TODO - this assumes too much, should use 'absorb'
+				newChunk.componentContent.textGroup.first.text = data.textGroup.get(info.textIndex).text
+
+				if info.textIndex is 0
+					top    = chunk
+					bottom = chunk.clone()
+
+					bottom.componentContent.textGroup.slice 1
+					@recalculateStartValues bottom.componentContent.textGroup, top.componentContent.listStyles
+
+					top.replaceWith newChunk
+					newChunk.addAfter bottom
+
+				else if info.textIndex is data.textGroup.length - 1
+					top = chunk
+
+					top.componentContent.textGroup.slice 0, data.textGroup.length - 1
+
+					top.addAfter newChunk
+				else
+					top    = chunk
+					middle = newChunk
+					bottom = chunk.clone()
+
+					top.componentContent.textGroup.slice 0, info.textIndex
+					bottom.componentContent.textGroup.slice info.textIndex + 1
+					@recalculateStartValues top.componentContent.textGroup, bottom.componentContent.listStyles
+
+					top.addAfter middle
+					middle.addAfter bottom
+
+
+
+
+
+				selection.setFutureCaret newChunk, { offset:0, childIndex:0 }
+
+				return true
+
+			TextMethods.deleteText selection, chunk, deleteForwards
+
 
 		getCaretEdge:                 TextMethods.getCaretEdge
 		canRemoveSibling:             TextMethods.canRemoveSibling
 		insertText:                   TextMethods.insertText
-		deleteText:                   TextMethods.deleteText
+		# deleteText:                   TextMethods.deleteText
 		deleteSelection:              TextMethods.deleteSelection
 		styleSelection:               TextMethods.styleSelection
 		unstyleSelection:             TextMethods.unstyleSelection
@@ -291,9 +348,14 @@ List = React.createClass
 		tag = if style.type is 'unordered' then 'ul' else 'ol'
 		el = new MockElement tag
 		el.start = style.start
-		el.listStyleType = style.bulletStyle
+		el._listStyleType = style.bulletStyle
 
 		el
+
+	addItemToList: (ul, li, lis) ->
+		ul.addChild li
+		li.listStyleType = ul._listStyleType
+		lis.push li
 
 	getInitialState: ->
 		{ chunk:@props.chunk }
@@ -306,84 +368,58 @@ List = React.createClass
 
 		texts = data.textGroup
 
-		# console.log 'render list', data.listStyles
-
-		# console.time 'computeUL'
-
 		curIndentLevel = 0
 		curIndex = 0
 		rootUl = curUl = @createMockListElement(data, curIndentLevel)
+		lis = []
 
 		li = new MockElement 'li'
-		curUl.addChild li
+		@addItemToList curUl, li, lis
 
-		for item in texts.items
-			# if item.data.indent is curIndentLevel
-
+		for item, itemIndex in texts.items
 			# if this item is lower than the current indent level...
 			if item.data.indent < curIndentLevel
 				# traverse up the tree looking for our curUl:
 				while curIndentLevel > item.data.indent
 					curUl = curUl.parent.parent
 					curIndentLevel--
+
 			# else, if this item is higher than the current indent level...
 			else if item.data.indent > curIndentLevel
-				# console.log 'BEFORE TRAVERSE'
-				# @printTree '', rootUl, curUl
 				# traverse down the tree...
 				while curIndentLevel < item.data.indent
-					# console.log 'BEFORE ITER'
-					# @printTree '', rootUl, curUl
-
 					curIndentLevel++
 
 					# if the last LI's last child isn't a UL, create it
 					if curUl.lastChild.lastChild?.type isnt 'ul' and curUl.lastChild.lastChild?.type isnt 'ol'
-					# if curUl.lastChild.lastChild?.type is 'li'
-						# console.log 'create mock list el for', curIndentLevel
 						newUl = @createMockListElement(data, curIndentLevel)
 						newLi = new MockElement 'li'
-						newUl.addChild newLi
+						@addItemToList newUl, newLi, lis
 						curUl.lastChild.addChild newUl
 						curUl = newUl
 					else
 						curUl = curUl.lastChild.lastChild
 
-
-
-					# console.log 'AFTER ITER'
-					# @printTree '', rootUl, curUl
-
 			# if the lastChild is not an LI or it is an LI that already has text inside
 			if not (curUl.lastChild?.type is 'li') or (curUl.lastChild?.lastChild?)
 				li = new MockElement 'li'
-				curUl.addChild li
+				@addItemToList curUl, li, lis
 
 			text = new MockTextNode item.text
 			text.index = curIndex
-			# text.indent = item.data.indent
 			curIndex++
 
 			curUl.lastChild.addChild text
 
-			# if item.data.start
-				# curUl.start = item.data.start
 
-			# console.timeEnd 'computeUL'
-
-		# console.log rootUl
-
-			# console.log 'TREE'
-			# console.log '==========================================='
-			# @printTree '', rootUl, curUl
-
-		# console.log 'DE ROOT TREE BE'
+		# console.log 'TREE'
+		# console.log '==========================================='
 		# @printTree '', rootUl, curUl
-		# console.log rootUl
 
-		# console.log 'UL'
-		# console.log rootUl
-
+		# Remove bullets from nested LIs
+		for li in lis
+			if li.children?[0]?.nodeType isnt 'text'
+				li.listStyleType = 'none'
 
 		React.createElement 'div', { style: { marginLeft: (data.indent * 20) + 'px' } }, @renderEl(rootUl, 0, 0)
 
@@ -401,11 +437,8 @@ List = React.createClass
 
 		key = @state.chunk.cid + '-' + indent + '-' + index
 
-		# console.log key
-
 		switch node.nodeType
 			when 'text'    then Text.createElement node.text, @state.chunk, node.index
-			# @TODO: KEY!!!!!1
 			when 'element' then React.createElement node.type, { key:key, start:node.start, style: { listStyleType:node.listStyleType } }, @renderChildren(node.children, indent + 1)
 
 	renderChildren: (children, indent) ->

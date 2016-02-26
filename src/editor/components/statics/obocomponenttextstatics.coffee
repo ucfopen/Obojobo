@@ -32,7 +32,7 @@ module.exports = ->
 		# _oninsertText: (commandEvent, range, text) ->
 		# 	sel = commandEvent.sel
 
-		# 	if sel.type isnt 'caret'
+		# 	if text.type isnt 'caret'
 		# 		deleteText commandEvent, range, text
 
 		# 	if range.type is 'only' or range.type is 'start'

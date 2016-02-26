@@ -18,7 +18,7 @@ SingleText = React.createClass
 		insertLabel: ['Text']
 		onInsert: (selection, atIndex) ->
 			newChunk = Chunk.create @
-			selection.sel.setFutureCaret atIndex, { childIndex:0, offset:0 }
+			selection.setFutureCaret atIndex, { childIndex:0, offset:0 }
 
 			newChunk
 

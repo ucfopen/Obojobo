@@ -1,6 +1,19 @@
 React = require 'react'
 
 
+	# onContextMenuCommand: (event) ->
+	# 	# console.log 'ocmc', arguments
+
+	# 	switch event.type
+	# 		when 'spelling'
+	# 			@sendText event.data
+	# 		when 'command'
+	# 			switch event.data
+	# 				when 'Cut', 'Delete'
+	# 					@deleteSelection @selection.text
+
+	# 	@update()
+
 WIDTH = 30
 MARGIN = 10
 

@@ -10,6 +10,8 @@ TextPositionMethods =
 	getText: (chunk, index) ->
 		data = chunk.componentContent
 
+		if index < 0 or index >= data.textGroup.length then return null
+
 		data.textGroup.get(index).text
 
 	getStartInfo: (chunk) ->
@@ -51,13 +53,14 @@ TextPositionMethods =
 	getTextNode: (chunk, childIndex) ->
 		chunk.getDomEl().querySelector "*[data-text-index='#{childIndex}']"
 
-	reselectSpan: (sel, chunk, span = null) ->
-		span ?=  TextPositionMethods.getSelSpanInfo sel, chunk
-		range = sel.getRange(chunk.getDomEl())
-		if range is 'start' or range is 'both'
-			sel.setFutureStart chunk, { offset: span.start.offset, childIndex: span.start.textIndex }
-		if range is 'end' or range is 'both'
-			sel.setFutureEnd chunk, { offset: span.end.offset, childIndex: span.end.textIndex }
+	# reselectSpan: (sel, chunk, span = null) ->
+	# 	console.log '@TODO this is busted'
+	# 	span ?=  TextPositionMethods.getSelSpanInfo sel, chunk
+	# 	range = text.getRange(chunk.getDomEl())
+	# 	if range is 'start' or range is 'both'
+	# 		sel.setFutureStart chunk, { offset: span.start.offset, childIndex: span.start.textIndex }
+	# 	if range is 'end' or range is 'both'
+	# 		sel.setFutureEnd chunk, { offset: span.end.offset, childIndex: span.end.textIndex }
 
 
 module.exports = TextPositionMethods

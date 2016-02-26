@@ -91,7 +91,7 @@ Question = React.createClass
 		deleteText: (selection, chunk, deleteForwards) ->
 			chunk.markDirty()
 
-			info = POS.getCaretInfo selection.sel.start, chunk
+			info = POS.getCaretInfo selection.text.start, chunk
 			data = chunk.componentContent
 
 			if not deleteForwards and info.offset is 0 and info.textIndex is 1
@@ -110,7 +110,7 @@ Question = React.createClass
 
 			chunk.markDirty()
 
-			info = POS.getCaretInfo selection.sel.start, chunk
+			info = POS.getCaretInfo selection.text.start, chunk
 			data = chunk.componentContent
 
 			item = data.textGroup.get(info.textIndex)
@@ -135,22 +135,22 @@ Question = React.createClass
 			# 		@recalculateStartValues data.textGroup, afterNode.componentContent.listStyles
 			# 		inbetweenNode.addAfter afterNode
 
-			# 	selection.sel.setFutureCaret inbetweenNode, { offset:0, childIndex:0 }
+			# 	selection.setFutureCaret inbetweenNode, { offset:0, childIndex:0 }
 			# 	return
 
 			data.textGroup.splitText info.textIndex, info.offset, (data) -> { score:0 }
 
-			selection.sel.setFutureCaret chunk, { offset:0, childIndex:info.textIndex + 1}
+			selection.setFutureCaret chunk, { offset:0, childIndex:info.textIndex + 1}
 
 		selectAll: (selection, chunk) ->
-			info = POS.getCaretInfo selection.sel.start, chunk
+			info = POS.getCaretInfo selection.text.start, chunk
 
 			console.log info
 
-			selection.sel.setFutureStart chunk, { offset:0, childIndex:info.textIndex }
-			selection.sel.setFutureEnd chunk, { offset:info.text.length, childIndex:info.textIndex }
+			selection.setFutureStart chunk, { offset:0, childIndex:info.textIndex }
+			selection.setFutureEnd chunk, { offset:info.text.length, childIndex:info.textIndex }
 
-			console.log selection.sel.futureStart, selection.sel.futureEnd
+			console.log selection.text.futureStart, selection.text.futureEnd
 
 			true
 

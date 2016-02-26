@@ -14,7 +14,13 @@
 				background: white;
 			}
 
+			.trap {
+				height: 0;
+				display: block;
 
+				color: rgba(0, 0, 0, 0);
+				/*border: 2px solid red;*/
+			}
 
 			.toolbar {
 				position: fixed;
@@ -201,6 +207,7 @@
 				left: 0;
 				right: 0;
 				top: 20px;
+				bottom: 0;
 			}
 
 			:focus {
@@ -236,6 +243,16 @@
 				padding-right: 100px;
 			}
 
+			/*div {
+			    outline: 1px dotted black;
+			    padding: 1em;
+			    background: white;
+			}
+
+			div[contenteditable="true"] {
+			    background: yellow;
+			}*/
+
 		</style>
 
 		<!--<script src="https://fb.me/react-0.13.3.js"></script>
@@ -254,5 +271,13 @@
 		<!--<script type="text/jsx" src="src/main.js"></script>-->
 
 		<script src="build/js/editor-app.js"></script>
+
+		<!-- <div tabindex="2" id='p1' onfocus="console.log('p1');" contenteditable="true">
+			editable div
+			<div contenteditable="false">
+				non-editable div
+				<div tabindex="1" id='p2' onfocus="console.log('p2');"  contenteditable="true">nested editable div</div>
+			</div>
+		</div> -->
 	</body>
 </html>

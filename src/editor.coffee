@@ -4,8 +4,14 @@ React = require 'react'
 EditorApp = require './editor/components/editorapp'
 API = require './net/api'
 
+require './util/console'
 
-API.module.get document.location.hash.substr(1), (module) ->
-# API.module.get 'Y5Nr5', (module) ->
-	console.log 'I GOT A THING', module
+id = document.location.hash.substr(1)
+
+render = (module = null) ->
 	React.render React.createElement(EditorApp, {module:module}), document.getElementById('editor-app')
+
+if id isnt ''
+	API.module.get id, render
+else
+	render()

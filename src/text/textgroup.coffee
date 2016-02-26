@@ -207,8 +207,13 @@ class TextGroup
 	getStyles: (startIndex, startTextIndex, endIndex, endTextIndex) ->
 		startItem = @items[startIndex]
 		endItem   = @items[endIndex]
+
+		if not startItem? or not endItem? then return {}
+
 		startText = startItem.text
 		endText   = endItem.text
+
+		if not startText? or not endText? then return {}
 
 		if startText is endText
 			return startText.getStyles startTextIndex, endTextIndex

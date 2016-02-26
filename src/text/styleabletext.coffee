@@ -323,6 +323,8 @@ StyleableText.getStylesOfElement = (el) ->
 
 	computedStyle = window.getComputedStyle el
 
+	# debugger;
+
 	#console.log '___________', el, computedStyle, computedStyle.getPropertyValue('font-weight')
 
 	switch computedStyle.getPropertyValue 'font-weight'
@@ -359,7 +361,7 @@ StyleableText.getStylesOfElement = (el) ->
 StyleableText.createFromElement = (node) ->
 	console.warn '@TODO - MOVE THIS method somewhere else!'
 	# console.log 'ST.CFE', arguments
-	#console.log 'StyleableText.createFromElement', node.outerHTML
+	console.log 'StyleableText.createFromElement', node.outerHTML
 
 	#if node.nodeType is Node.ELEMENT_NODE then node.setAttribute('data-read', '1');
 
@@ -384,6 +386,7 @@ StyleableText.createFromElement = (node) ->
 				st.value += "\n"
 			else
 				styles = StyleableText.getStylesOfElement node
+				console.log 'styles fer', node, 'be', styles
 				ranges = []
 				for style in styles
 					#console.log '  creating a new range for', node.outerHTML, style

@@ -1,100 +1,129 @@
-OboSelection = require '../../../obodom/selection/oboselection'
+TextSelection = require '../../../obodom/selection/textselection'
 OboSelectionRect = require '../../../obodom/selection/oboselectionrect'
 
 
 class Selection
 	constructor: ->
 		@clear()
+		@lastText = null
 
 	clear: ->
 		@commands = {}
 		@textCommands = []
 		@rect = null
 		@chunkRect = null
-		@sel = null
+		@text = null
 		@styles = {}
+		@futureStart = null
+		@futureEnd = null
 
 	getSelectionDescriptor: ->
-		if not @sel? then return null
+		if not @text? then return null
 
-		OboSelection.createDescriptor(
-			@sel.start.chunk.get('index'),
-			@sel.start.chunk.callComponentFn('saveSelection', @, [@sel.start]),
-			@sel.end.chunk.get('index'),
-			@sel.end.chunk.callComponentFn('saveSelection', @, [@sel.end])
+		TextSelection.createDescriptor(
+			@text.start.chunk.get('index'),
+			@text.start.chunk.callComponentFn('saveSelection', @, [@text.start]),
+			@text.end.chunk.get('index'),
+			@text.end.chunk.callComponentFn('saveSelection', @, [@text.end])
 		)
 
 	getFutureDescriptor: ->
-		if not @sel? then return null
-		if not @sel.futureStart? or not @sel.futureEnd? then return null
+		if not @futureStart? or not @futureEnd? then return null
 
-		OboSelection.createDescriptor(
-			@sel.futureStart.index,
-			@sel.futureStart.data,
-			@sel.futureEnd.index,
-			@sel.futureEnd.data
+		TextSelection.createDescriptor(
+			@futureStart.index,
+			@futureStart.data,
+			@futureEnd.index,
+			@futureEnd.data
 		)
 
-	selectFromDescriptor: (module, descriptor, useTimeout = false) ->
+	selectFromDescriptor: (module, descriptor) ->
 		startChunk = module.chunks.at descriptor.start.index
 		endChunk   = module.chunks.at descriptor.end.index
 
 		startChunk.callComponentFn 'restoreSelection', @, ['start', descriptor.start.data]
 		endChunk.callComponentFn 'restoreSelection', @, ['end', descriptor.end.data]
 
-		if useTimeout
-			console.log 'USING TIMEOUT!'
-			setTimeout @sel.select.bind(@sel)
-			return
+		@text.select()
 
-		@sel.select()
+	setFutureStart: (chunkOrIndex, data) ->
+		@futureStart =
+			index: if not isNaN(chunkOrIndex) then chunkOrIndex else chunkOrIndex.get('index')
+			data: data
 
-	# selectFuture: (module) ->
-	# 	# console.log 'SELECT FUTURE'
-	# 	# console.log @sel
+	setFutureEnd: (chunkOrIndex, data) ->
+		@futureEnd =
+			index: if not isNaN(chunkOrIndex) then chunkOrIndex else chunkOrIndex.get('index')
+			data: data
 
-	# 	return if not @sel
+	setFutureCaret: (chunk, data) ->
+		@setFutureStart chunk, data
+		@setFutureEnd   chunk, data
 
-	# 	# @callComponentFn 'updateSelection'
-	# 	if @sel.futureStart? and @sel.futureEnd?
-	# 		start = module.chunks.at @sel.futureStart.index
-	# 		end   = module.chunks.at @sel.futureEnd.index
+	#@TODO - THIS SUX
+	setFutureFromDescriptor: (descriptor) ->
+		@futureStart =
+			index: descriptor.start.index
+			data: descriptor.start.data
+		@futureEnd =
+			index: descriptor.end.index
+			data: descriptor.end.data
 
-	# 		if start.cid is end.cid
-	# 			start.callComponentFn 'updateSelection', @sel, ['inside']
-	# 	else
-	# 		if @sel.futureStart?
-	# 			module.chunks.at(@sel.futureStart.index).callComponentFn 'updateSelection', @sel, ['start']
-	# 		if @sel.futureEnd?
-	# 			module.chunks.at(@sel.futureEnd.index).callComponentFn 'updateSelection', @sel, ['end']
-
-	# 	@sel.clearFuture()
-	# 	@sel.select()
+	clearFuture: ->
+		@futureStart = @futureEnd = null
 
 	runTextCommands: (label) ->
-		command = @commands[label].commandFnByIndex[@sel.start.chunk.get('index')]
+		command = @commands[label].commandFnByIndex[@text.start.chunk.get('index')]
 		data = null
 		if command.pre?
 			data = command.pre.apply @
 
-		for chunk in @sel.all
+		for chunk in @text.all
 			command = @commands[label].commandFnByIndex[chunk.get('index')]
 			command.fn.apply @, [@, chunk, data]
 
 	update: (module) ->
+		# return if not document.getElementById('editor').contains(document.activeElement)
+
 		console.time 'selection.update'
 		@clear()
 
 		console.time 'new oboSelection'
-		@sel = new OboSelection module
+		console.log 'last text', @text
+		lastStart = if @lastText?.start?.chunk? then @lastText.start.chunk else null
+		lastEnd   = if @lastText?.end?.chunk?   then @lastText.end.chunk   else null
+
+		@text = new TextSelection module
+
+		newStart = @text.start.chunk
+		newEnd   = @text.end.chunk
+
+		console.log 'lastStart', lastStart
+
+		if lastStart? and lastStart isnt newStart
+			lastStart.callComponentFn 'blur', @
+		if newStart?
+			newStart.callComponentFn 'focus', @
+
+		if lastEnd? and lastEnd isnt newEnd and lastEnd isnt lastStart
+			lastEnd.callComponentFn 'blur', @
+		if newEnd? and newEnd isnt newStart
+			newEnd.callComponentFn 'focus', @
+
+		@lastText = @text
+
 		console.timeEnd 'new oboSelection'
+		console.log 'Selection.update.@text', @text
 
 		console.time 'OboSelectionRect.createFromSelection'
 		@rect = OboSelectionRect.createFromSelection()
 		console.timeEnd 'OboSelectionRect.createFromSelection'
 
 		console.time 'OboSelectionRect.createFromChunks'
-		@chunkRect = OboSelectionRect.createFromChunks @sel.all
+		r = window.getSelection().getRangeAt(0)
+		window.rs = r.startContainer
+		window.re = r.endContainer
+		@chunkRect = OboSelectionRect.createFromChunks @text.all
 		console.timeEnd 'OboSelectionRect.createFromChunks'
 
 		@updateTextCommands()
@@ -106,14 +135,15 @@ class Selection
 		@commands = {}
 		@textCommands = []
 
-		if @sel.type is 'caret'
+		if @text.type is 'caret'
 			return
 
 		console.time 'updateTextCommands'
 
 		allCommands = {}
-		for chunk in @sel.all
-			# commands = chunk.callComponentFn 'getTextMenuCommands', [@sel, chunk]
+		console.log @text.all
+		for chunk in @text.all
+			# commands = chunk.callComponentFn 'getTextMenuCommands', [@text, chunk]
 			commands = chunk.callComponentFn 'getTextMenuCommands', @
 
 			continue if not commands?
@@ -133,7 +163,7 @@ class Selection
 						commandFnByIndex: commandFnByIndex
 					}
 
-		numChunks = @sel.all.length
+		numChunks = @text.all.length
 		for label, command of allCommands
 			# console.log 'considering' , command
 			if command.count is numChunks
@@ -147,9 +177,9 @@ class Selection
 
 		@styles = {}
 
-		numChunks = @sel.all.length
+		numChunks = @text.all.length
 		allStyles = {}
-		for chunk in @sel.all
+		for chunk in @text.all
 			styles = chunk.callComponentFn 'getSelectionStyles', @
 
 			if not styles then return
@@ -168,8 +198,9 @@ class Selection
 		console.timeEnd 'updateStyles'
 
 	setFutureFromSelection: ->
-		@sel.setFutureStart @sel.start.chunk, @sel.start.chunk.callComponentFn('saveSelection', @, [@sel.start])
-		@sel.setFutureEnd   @sel.end.chunk,   @sel.end.chunk.callComponentFn('saveSelection', @, [@sel.end])
+		return null if not @text?
+		@setFutureStart @text.start.chunk, @text.start.chunk.callComponentFn('saveSelection', @, [@text.start])
+		@setFutureEnd   @text.end.chunk,   @text.end.chunk.callComponentFn('saveSelection', @, [@text.end])
 
 
 module.exports = Selection

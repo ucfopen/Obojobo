@@ -1,6 +1,6 @@
 DOMUtil =
 	findParentWithAttr: (node, targetAttribute, targetValue = null) ->
-		while node isnt document.body
+		while node? and node isnt document.body
 			if node.getAttribute?
 				attr = node.getAttribute targetAttribute
 				return node if attr? and (targetValue is null or attr is targetValue)

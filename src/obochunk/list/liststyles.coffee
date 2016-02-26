@@ -66,6 +66,10 @@ class ListStyles
 
 		clone
 
+	map: (fn) ->
+		for indent, style of @styles
+			fn style, indent
+
 
 ListStyles.fromDescriptor = (descriptor) ->
 	styles = new ListStyles descriptor.type

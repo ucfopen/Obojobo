@@ -1,27 +1,27 @@
-OboCursor = require './obocursor'
-Selection = require '../../dom/selection'
+TextCursor = require './textcursor'
+DOMSelection = require '../../dom/domselection'
 DOMUtil = require '../../dom/domutil'
 
 domType = null
 
-class OboSelection
+class TextSelection
 	constructor: (@module) ->
-		s = new Selection()
+		s = new DOMSelection()
 
 		start = @getChunkForDomNode s.startContainer
 		end   = @getChunkForDomNode s.endContainer
 
-		@start     = new OboCursor(start, s.startContainer, s.startOffset)
-		@end       = new OboCursor(end, s.endContainer, s.endOffset)
+		@start     = new TextCursor(start, s.startContainer, s.startOffset)
+		@end       = new TextCursor(end, s.endContainer, s.endOffset)
 		@calculateAllNodes()
 
 		domType = s.getType()
 
-		@futureStart = @futureEnd = null
-
 	calculateAllNodes: ->
 		@inbetween   = []
-		@all = [@start.chunk]
+
+		if @start?.chunk?
+			@all = [@start.chunk]
 
 		n = @start.chunk
 		while n? and n isnt @end.chunk
@@ -30,7 +30,7 @@ class OboSelection
 				@all.push n
 			n = n.nextSibling()
 
-		if @all[@all.length - 1] isnt @end.chunk
+		if @end?.chunk? and @all[@all.length - 1] isnt @end.chunk
 			@all.push @end.chunk
 
 	getChunkForDomNode: (domNode) ->
@@ -69,46 +69,22 @@ class OboSelection
 	select: ->
 		return if not @start.node? or not @end.node?
 
-		s = new Selection()
+		s = new DOMSelection()
 		s.set @start.node, @start.offset, @end.node, @end.offset
-
-		# s = window.getSelection()
-		# r = new Range
-
-		# r.setStart @start.node, @start.offset
-		# r.setEnd @end.node, @end.offset
-
-		# s.removeAllRanges()
-		# s.addRange r
 
 	collapse: ->
 		@end = @start.clone()
 
-	setFutureStart: (chunkOrIndex, data) ->
-		@futureStart =
-			index: if not isNaN(chunkOrIndex) then chunkOrIndex else chunkOrIndex.get('index')
-			data: data
-
-	setFutureEnd: (chunkOrIndex, data) ->
-		@futureEnd =
-			index: if not isNaN(chunkOrIndex) then chunkOrIndex else chunkOrIndex.get('index')
-			data: data
-
-	setFutureCaret: (chunk, data) ->
-		@setFutureStart chunk, data
-		@setFutureEnd   chunk, data
-
-	clearFuture: ->
-		@futureStart = @futureEnd = null
 
 
 
-Object.defineProperties OboSelection.prototype, {
+
+Object.defineProperties TextSelection.prototype, {
 	"type": {
 		get: ->
-			s = new Selection()
-
-			if @start.chunk.cid is @end.chunk.cid
+			if not @start.chunk? or not @end.chunk?
+				return 'none'
+			else if @start.chunk.cid is @end.chunk.cid
 				if domType is 'caret'
 					return 'caret'
 				else
@@ -119,7 +95,7 @@ Object.defineProperties OboSelection.prototype, {
 }
 
 
-OboSelection.createDescriptor = (startIndex, startData, endIndex, endData) ->
+TextSelection.createDescriptor = (startIndex, startData, endIndex, endData) ->
 	start:
 		index: startIndex
 		data:  startData
@@ -129,4 +105,4 @@ OboSelection.createDescriptor = (startIndex, startData, endIndex, endData) ->
 
 
 
-module.exports = OboSelection
+module.exports = TextSelection

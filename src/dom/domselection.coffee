@@ -6,7 +6,7 @@ getTextNode = (node) ->
 
 	node
 
-class Selection
+class DOMSelection
 	constructor: ->
 		@domSelection = window.getSelection()
 		@domRange = null
@@ -43,7 +43,7 @@ class Selection
 		@domSelection.addRange r
 
 
-Object.defineProperties Selection.prototype, {
+Object.defineProperties DOMSelection.prototype, {
 	startContainer:
 		get: -> getTextNode @domRange.startContainer
 	startOffset:
@@ -55,4 +55,4 @@ Object.defineProperties Selection.prototype, {
 }
 
 
-module.exports = Selection
+module.exports = DOMSelection

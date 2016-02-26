@@ -18,7 +18,7 @@ Text = React.createClass
 		computeIndex: (node, sel) ->
 			sel.text.id = node.id
 			sel.text.domNode = node
-			sel.text.index = @getOboTextPos sel.domContainer, sel.domIndex, node
+			sel.text.index = @getOboTextPos text.domContainer, text.domIndex, node
 
 		getOboTextInfo: (targetTextNode, offset) ->
 			# console.log 'getOboTextInfo', targetTextNode, offset
@@ -104,8 +104,8 @@ Text = React.createClass
 		@setState { text:nextProps.text }
 
 	# componentDidUpdate: ->
-	# 	startDomPos = @getDomPosition @lastCommandEvent.sel.start.index, React.findDOMNode(@)
-	# 	endDomPos   = @getDomPosition @lastCommandEvent.sel.end.index, React.findDOMNode(@)
+	# 	startDomPos = @getDomPosition @lastCommandEvent.text.start.index, React.findDOMNode(@)
+	# 	endDomPos   = @getDomPosition @lastCommandEvent.text.end.index, React.findDOMNode(@)
 
 	# 	s = window.getSelection()
 	# 	r = new Range

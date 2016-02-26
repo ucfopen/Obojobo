@@ -10,11 +10,8 @@ methods =
 	# STATE QUERIES
 	# ================================================
 	getCaretEdge: (selection, chunk) ->
-		info = POS.getCaretInfo selection.sel.start, chunk
+		info = POS.getCaretInfo selection.text.start, chunk
 		data = chunk.componentContent
-
-		console.log 'getCaretEdge', info
-		console.log '@TODO getCaretEdge not working with empty char'
 
 		if info.textIndex is 0 and info.offset <= 0
 			if data.textGroup.length is 1 and info.text.length is 0 then return 'startAndEnd'
@@ -33,7 +30,7 @@ methods =
 		# stylesToRemove = null
 		# console.log '@TODO - broke this to test stuff'
 
-		info = POS.getCaretInfo selection.sel.start, chunk
+		info = POS.getCaretInfo selection.text.start, chunk
 		info.text.insertText info.offset, textToInsert
 
 		if stylesToApply?
@@ -47,16 +44,16 @@ methods =
 		if textToInsert is ' ' and not info.text.getStyles(info.offset - 1, info.offset)['a']?
 			linkify info.text
 
-		selection.sel.setFutureCaret selection.sel.start.chunk, { offset: info.offset + textToInsert.length, childIndex: info.textIndex }
+		selection.setFutureCaret selection.text.start.chunk, { offset: info.offset + textToInsert.length, childIndex: info.textIndex }
 
 	deleteText: (selection, chunk, deleteForwards) ->
 		chunk.markDirty()
 
-		info = POS.getCaretInfo selection.sel.start, chunk
+		info = POS.getCaretInfo selection.text.start, chunk
 		data = chunk.componentContent
 
 		# If backspacing at the start and the chunk is indented...
-		if not deleteForwards and info.offset is 0 and data.indent? and ~~data.indent > 0
+		if not deleteForwards and info.offset is 0 and info.textIndex is 0 and data.indent? and ~~data.indent > 0
 			# ...decrease indent
 			data.indent--
 			return true
@@ -64,14 +61,14 @@ methods =
 		# If backspacing and the start of a text that's not the first text...
 		if not deleteForwards and info.offset is 0 and info.text isnt data.textGroup.first.text
 			# ...merge that text with the previous one
-			selection.sel.setFutureCaret chunk, { offset: data.textGroup.get(info.textIndex - 1).text.length, childIndex: info.textIndex - 1}
+			selection.setFutureCaret chunk, { offset: data.textGroup.get(info.textIndex - 1).text.length, childIndex: info.textIndex - 1}
 			data.textGroup.merge info.textIndex - 1, mergeDataFn
 			return true
 
 		# If using delete key on the end of a text that's not the last text...
 		if deleteForwards and info.offset is info.text.length and info.text isnt data.textGroup.last.text and data.textGroup.length > 1
 			# ...merge that text with the next one
-			selection.sel.setFutureCaret chunk, { offset: info.offset, childIndex: info.textIndex }
+			selection.setFutureCaret chunk, { offset: info.offset, childIndex: info.textIndex }
 			data.textGroup.merge info.textIndex, mergeDataFn
 			return true
 
@@ -91,13 +88,13 @@ methods =
 		# console.log 'deleteText'
 		# info.text.__debug_print()
 
-		selection.sel.setFutureCaret chunk, { offset: start, childIndex: info.textIndex }
+		selection.setFutureCaret chunk, { offset: start, childIndex: info.textIndex }
 		true
 
 	splitText: (selection, chunk, shiftKey) ->
 		chunk.markDirty()
 
-		info = POS.getCaretInfo selection.sel.start, chunk
+		info = POS.getCaretInfo selection.text.start, chunk
 
 		newText = info.text.split info.offset
 
@@ -105,7 +102,7 @@ methods =
 		clonedNode.componentContent.textGroup.first.text = newText
 		chunk.addAfter clonedNode
 
-		selection.sel.setFutureCaret clonedNode, { offset: 0, childIndex: 0 }
+		selection.setFutureCaret clonedNode, { offset: 0, childIndex: 0 }
 
 	# MODIFY SELECTION OPERATIONS
 	# ================================================
@@ -113,38 +110,34 @@ methods =
 	deleteSelection: (selection, chunk) ->
 		chunk.markDirty()
 
-		span = POS.getSelSpanInfo selection.sel, chunk
+		span = POS.getSelSpanInfo selection.text, chunk
 
 		chunk.componentContent.textGroup.deleteSpan span.start.textIndex, span.start.offset, span.end.textIndex, span.end.offset, @mergeTextGroups
 
-		range = selection.sel.getRange(chunk.getDomEl())
+		range = selection.text.getRange(chunk.getDomEl())
 		if range is 'start' or range is 'both'
-			selection.sel.setFutureCaret chunk, { offset: span.start.offset, childIndex: span.start.textIndex }
+			selection.setFutureCaret chunk, { offset: span.start.offset, childIndex: span.start.textIndex }
 
 	styleSelection: (selection, chunk, styleType, styleData) ->
 		chunk.markDirty()
 
-		span = POS.getSelSpanInfo selection.sel, chunk
+		span = POS.getSelSpanInfo selection.text, chunk
 		data = chunk.componentContent
 
 		data.textGroup.styleText span.start.textIndex, span.start.offset, span.end.textIndex, span.end.offset, styleType, styleData
 
-		POS.reselectSpan selection.sel, chunk, span
-
 	unstyleSelection: (selection, chunk, styleType, styleData) ->
 		chunk.markDirty()
 
-		span = POS.getSelSpanInfo selection.sel, chunk
+		span = POS.getSelSpanInfo selection.text, chunk
 		data = chunk.componentContent
 
 		data.textGroup.unstyleText span.start.textIndex, span.start.offset, span.end.textIndex, span.end.offset, styleType, styleData
 
-		POS.reselectSpan selection.sel, chunk, span
-
 	getSelectionStyles: (selection, chunk) ->
 		# console.log 'getSelectionStyles', arguments, chunk.get('index')
 
-		span = POS.getSelSpanInfo selection.sel, chunk
+		span = POS.getSelSpanInfo selection.text, chunk
 		data = chunk.componentContent
 
 		data.textGroup.getStyles span.start.textIndex, span.start.offset, span.end.textIndex, span.end.offset
@@ -174,7 +167,7 @@ methods =
 		# consumerChunk.replaceWith digestedChunk
 
 		# startInfo = POS.getStartInfo digestedChunk
-		# selection.sel.setFutureCaret digestedChunk, { childIndex:startInfo.textIndex, offset:startInfo.offset }
+		# selection.setFutureCaret digestedChunk, { childIndex:startInfo.textIndex, offset:startInfo.offset }
 
 	merge: (selection, consumerChunk, digestedChunk) ->
 		consumerChunk.markDirty()
@@ -200,12 +193,12 @@ methods =
 		if digestedData.textGroup.length is 0
 			digestedChunk.remove()
 
-		selection.sel.setFutureCaret consumerChunk, { offset: oldTextLength, childIndex: oldIndex }
+		selection.setFutureCaret consumerChunk, { offset: oldTextLength, childIndex: oldIndex }
 
 	# insertTab: (selection, chunk, untab) ->
 	# 	chunk.markDirty()
 
-	# 	if selection.sel.type is 'nodeSpan'
+	# 	if selection.text.type is 'nodeSpan'
 	# 		return @indent selection, chunk, untab
 
 
@@ -213,8 +206,8 @@ methods =
 	indent: (selection, chunk, decreaseIndent) ->
 		chunk.markDirty()
 
-		# if selection.sel.type is 'caret'
-		# 	info = POS.getCaretInfo selection.sel.start, chunk
+		# if selection.text.type is 'caret'
+		# 	info = POS.getCaretInfo selection.text.start, chunk
 		# 	if info.textIndex isnt 0 or info.offset isnt 0
 		# 		return @insertText selection, chunk, "\t"
 
@@ -266,35 +259,35 @@ methods =
 	transformSelection: (selection, newChunk) ->
 		data = newChunk.componentContent
 
-		if selection.sel.type isnt 'nodeSpan'
-			selection.sel.start.chunk.callComponentFn 'split', selection
-			newChunks = newChunk.callComponentFn 'absorb', selection, [selection.sel.start.chunk]
+		if selection.text.type isnt 'nodeSpan'
+			selection.text.start.chunk.callComponentFn 'split', selection
+			newChunks = newChunk.callComponentFn 'absorb', selection, [selection.text.start.chunk]
 
 			firstChunk = newChunks[0]
 			lastChunk = newChunks[newChunks.length - 1]
 		else
-			selection.sel.start.chunk.callComponentFn 'split', selection
-			newTopChunks = newChunk.callComponentFn 'absorb', selection, [selection.sel.start.chunk]
+			selection.text.start.chunk.callComponentFn 'split', selection
+			newTopChunks = newChunk.callComponentFn 'absorb', selection, [selection.text.start.chunk]
 
-			for digestableChunk in selection.sel.inbetween
+			for digestableChunk in selection.text.inbetween
 				newChunk.callComponentFn 'absorb', selection, [digestableChunk]
 
-			selection.sel.end.chunk.callComponentFn 'split', selection
-			newBottomChunks = newChunk.callComponentFn 'absorb', selection, [selection.sel.end.chunk]
+			selection.text.end.chunk.callComponentFn 'split', selection
+			newBottomChunks = newChunk.callComponentFn 'absorb', selection, [selection.text.end.chunk]
 
 			firstChunk = newTopChunks[0]
 			lastChunk = newBottomChunks[newBottomChunks.length - 1]
 
 		startInfo = POS.getStartInfo firstChunk
 		endInfo = POS.getEndInfo lastChunk
-		selection.sel.setFutureStart firstChunk, { childIndex:startInfo.textIndex, offset:startInfo.offset }
-		selection.sel.setFutureEnd lastChunk, { childIndex:endInfo.textIndex, offset:endInfo.offset }
+		selection.setFutureStart firstChunk, { childIndex:startInfo.textIndex, offset:startInfo.offset }
+		selection.setFutureEnd lastChunk, { childIndex:endInfo.textIndex, offset:endInfo.offset }
 
 	# split chunk into a possible total of three new chunks - one before the selection, one containing the selection and one after the selection
 	split: (selection, chunk) ->
 		chunk.markDirty()
 
-		span = POS.getSelSpanInfo selection.sel, chunk
+		span = POS.getSelSpanInfo selection.text, chunk
 		data = chunk.componentContent
 
 		allTextSelected = span.start.textIndex is 0 and span.end.textIndex is data.textGroup.length - 1
@@ -317,8 +310,8 @@ methods =
 	# absorb: (selection, chunk, chunksToAbsorb) ->
 	# 	console.log 'split', arguments
 
-	# 	span = POS.getSelSpanInfo selection.sel, chunk
-	# 	range = selection.sel.getRange(chunk.getDomEl())
+	# 	span = POS.getSelSpanInfo selection.text, chunk
+	# 	range = selection.text.getRange(chunk.getDomEl())
 	# 	data = chunk.componentContent
 
 	# 	allTextSelected = span.start.textIndex is 0 and span.end.textIndex is data.textGroup.length - 1
@@ -365,7 +358,7 @@ methods =
 		childIndex: info.textIndex
 		offset:     info.offset
 
-	# Take descriptor at savedSelData and turn it into selection.sel.*
+	# Take descriptor at savedSelData and turn it into selection.text.*
 	restoreSelection: (selection, chunk, type, savedSelData) ->
 		node = POS.getTextNode chunk, savedSelData.childIndex
 		return null if not node?
@@ -373,29 +366,29 @@ methods =
 		domPos = Text.getDomPosition savedSelData.offset, node
 
 		if type is 'start'
-			selection.sel.setStart domPos.textNode, domPos.offset
+			selection.text.setStart domPos.textNode, domPos.offset
 		else if type is 'end'
-			selection.sel.setEnd domPos.textNode, domPos.offset
+			selection.text.setEnd domPos.textNode, domPos.offset
 
-	# # Take selection.sel.future* and turn it into selection.sel.*
+	# # Take selection.text.future* and turn it into selection.text.*
 	# updateSelection: (selection, chunk, type) ->
 	# 	if type is 'start' or type is 'inside'
-	# 		node = POS.getTextNode chunk, selection.sel.futureStart.data.childIndex
-	# 		o = Text.getDomPosition selection.sel.futureStart.data.offset, node
-	# 		selection.sel.setStart o.textNode, o.offset
+	# 		node = POS.getTextNode chunk, selection.text.futureStart.data.childIndex
+	# 		o = Text.getDomPosition selection.text.futureStart.data.offset, node
+	# 		selection.text.setStart o.textNode, o.offset
 
 	# 	if type is 'end' or type is 'inside'
-	# 		node = POS.getTextNode chunk, selection.sel.futureEnd.data.childIndex
-	# 		o = Text.getDomPosition selection.sel.futureEnd.data.offset, node
-	# 		selection.sel.setEnd o.textNode, o.offset
+	# 		node = POS.getTextNode chunk, selection.text.futureEnd.data.childIndex
+	# 		o = Text.getDomPosition selection.text.futureEnd.data.offset, node
+	# 		selection.text.setEnd o.textNode, o.offset
 
 	selectStart: (selection, chunk) ->
 		info = POS.getStartInfo chunk
-		selection.sel.setFutureCaret chunk, { childIndex:info.textIndex, offset:info.offset }
+		selection.setFutureCaret chunk, { childIndex:info.textIndex, offset:info.offset }
 
 	selectEnd: (selection, chunk) ->
 		info = POS.getEndInfo chunk
-		selection.sel.setFutureCaret chunk, { childIndex:info.textIndex, offset:info.offset }
+		selection.setFutureCaret chunk, { childIndex:info.textIndex, offset:info.offset }
 
 	# TEXT MENU OPERATIONS
 	# ================================================

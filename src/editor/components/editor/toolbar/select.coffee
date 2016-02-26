@@ -9,7 +9,6 @@ Select = React.createClass
 		@setState { selectedOption:nextProps.command.selectedOption }
 
 	onChange: (event) ->
-		console.log 'u change', event.target.value, @props.commandHandler, @props.command
 		@setState { selectedOption:event.target.value }
 		@props.commandHandler @props.command, { option: event.target.value }
 
