@@ -9,6 +9,16 @@
 
 		<link rel="stylesheet" href="css/main.css">
 
+		<head>
+			<script src="./node_modules/react/dist/react.js"></script>
+			<script src="./node_modules/react-dom/dist/react-dom.js"></script>
+			<script src="./node_modules/immutable/dist/immutable.min.js"></script>
+			<script src="./node_modules/underscore/underscore-min.js"></script>
+			<script src="./node_modules/backbone/backbone-min.js"></script>
+
+			<link rel="stylesheet" href="http://localhost:8090/assets/style.css">
+		</head>
+
 		<style>
 			body {
 				background: white;
@@ -264,13 +274,14 @@
 		<div id="content"></div>
 
 		<div id="testapp"></div>
-		<div id="editor-app"></div>
+		<div id="editor-app">LOADING...</div>
 
 		<div id="rect"></div>
 
 		<!--<script type="text/jsx" src="src/main.js"></script>-->
 
-		<script src="build/js/editor-app.js"></script>
+		<script src="http://localhost:8090/webpack-dev-server.js"></script>
+		<script src="http://localhost:8090/assets/editor.js"></script>
 
 		<!-- <div tabindex="2" id='p1' onfocus="console.log('p1');" contenteditable="true">
 			editable div

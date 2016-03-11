@@ -1,0 +1,333 @@
+# @TODO - I don't allow vendor prefixes, so need to require AutoPrefixer or some other library
+
+scss_files: './app/assets/stylesheets/**/*.scss'
+
+# exclude: 'app/assets/stylesheets/plugins/**'
+
+linters:
+  BorderZero:
+    convention: none
+
+  NestingDepth:
+    enabled: true
+    max_depth: 8
+    ignore_parent_selectors: false
+
+  SelectorDepth:
+    enabled: true
+    max_depth: 8
+
+  DeclarationOrder:
+    enabled: false
+
+  SpaceBeforeBrace:
+    enabled: true
+    style: new_line
+
+  Indentation:
+    width: 1
+    character: tab
+
+  LeadingZero:
+    style: include_zero
+
+  HexNotation:
+    style: uppercase
+
+  HexLength:
+    style: long
+
+  PropertyUnits:
+    global: ['em', 'rem', '%', 'vh', 'vh', 'vmin', 'ex', 's'] #vmax not supported by IE http://caniuse.com/#feat=viewport-units
+    properties:
+      border: ['px']
+      border-radius: ['px']
+      border-top-right-radius: ['px']
+      border-bottom-right-radius: ['px']
+      border-bottom-left-radius: ['px']
+      border-top-left-radius: ['px']
+      border-radius-topright: ['px']
+      border-radius-bottomright: ['px']
+      border-radius-bottomleft: ['px']
+      border-radius-topleft: ['px']
+      outline: ['px']
+      outline-width: ['px']
+      line-height: ['em', 'rem']
+
+  PropertySortOrder:
+    separate_groups: true
+    order:
+      - $variable
+      - $extend
+      - $import
+      -
+      - content
+      -
+      - position
+      - top
+      - right
+      - bottom
+      - left
+      - -webkit-align-items
+      - align-items
+      - -webkit-align-content
+      - align-content
+      - -webkit-align-self
+      - align-self
+      - -webkit-flex
+      - -ms-flex
+      - flex
+      - -webkit-flex-align
+      - -ms-flex-align
+      - flex-align
+      - -webkit-flex-basis
+      - -ms-flex-basis
+      - flex-basis
+      - -webkit-flex-direction
+      - -ms-flex-direction
+      - flex-direction
+      - -webkit-flex-flow
+      - -ms-flex-flow
+      - flex-flow
+      - -webkit-flex-grow
+      - -ms-flex-grow
+      - flex-grow
+      - -webkit-flex-order
+      - -ms-flex-order
+      - flex-order
+      - -webkit-flex-pack
+      - -ms-flex-pack
+      - flex-pack
+      - -webkit-flex-shrink
+      - -ms-flex-shrink
+      - flex-shrink
+      - -webkit-flex-wrap
+      - -ms-flex-wrap
+      - flex-wrap
+      - -webkit-justify-content
+      - justify-content
+      - -ms-flex-order
+      - -webkit-order
+      - order
+      - z-index
+      -
+      - -webkit-box-sizing
+      - -moz-box-sizing
+      - box-sizing
+      - display
+      - float
+      - width
+      - height
+      - max-width
+      - max-height
+      - min-width
+      - min-height
+      - padding
+      - padding-top
+      - padding-right
+      - padding-bottom
+      - padding-left
+      - margin
+      - margin-top
+      - margin-right
+      - margin-bottom
+      - margin-left
+      - margin-collapse
+      - margin-top-collapse
+      - margin-right-collapse
+      - margin-bottom-collapse
+      - margin-left-collapse
+      - overflow
+      - overflow-x
+      - overflow-y
+      - clip
+      - clip-path
+      - clear
+      -
+      - color
+      - counter-reset
+      - counter-increment
+      - -webkit-direction
+      - direction
+      - font
+      - font-family
+      - -webkit-font-feature-settings
+      - -moz-font-feature-settings
+      - -ms-font-feature-settings
+      - font-feature-settings
+      - font-size
+      - -webkit-font-kerning
+      - font-kerning
+      - -moz-osx-font-smoothing
+      - -webkit-font-smoothing
+      - font-smoothing
+      - font-stretch
+      - font-style
+      - font-variant
+      - font-weight
+      - hanging-punctuation
+      - hyphens
+      - quotes
+      - line-height
+      - letter-spacing
+      - text-align
+      - text-decoration
+      - -webkit-text-emphasis
+      - text-emphasis
+      - -webkit-text-emphasis-color
+      - text-emphasis-color
+      - -webkit-text-emphasis-position
+      - text-emphasis-position
+      - -webkit-text-emphasis-style
+      - text-emphasis-style
+      - text-indent
+      - -ms-text-justify
+      - text-justify
+      - -ms-text-overflow-style
+      - -ms-text-overflow
+      - text-overflow
+      - text-overflow-ellipsis
+      - text-overflow-mode
+      - text-rendering
+      - text-size-adjust
+      - text-shadow
+      - text-transform
+      - word-break
+      - word-spacing
+      - -ms-word-wrap
+      - word-wrap
+      - word-break
+      - -ms-word-break
+      - -moz-tab-size
+      - -o-tab-size
+      - tab-size
+      - vertical-align
+      - white-space
+      - list-style
+      - list-style-image
+      - list-style-position
+      - list-style-type
+      -
+      - -webkit-appearance
+      - -moz-appearance
+      - appearance
+      - background
+      - background-color
+      - background-attachment
+      - -webkit-background-clip
+      - background-clip
+      - background-image
+      - background-repeat
+      - background-repeat-x
+      - background-repeat-y
+      - background-position
+      - background-position-x
+      - background-position-y
+      - background-origin
+      - background-size
+      - -webkit-box-decoration-break
+      - box-decoration-break
+      - -webkit-box-shadow
+      - box-shadow
+      - border
+      - border-collapse
+      - border-top
+      - border-right
+      - border-bottom
+      - border-left
+      - border-color
+      - border-image
+      - border-top-color
+      - border-right-color
+      - border-bottom-color
+      - border-left-color
+      - border-spacing
+      - border-style
+      - border-top-style
+      - border-right-style
+      - border-bottom-style
+      - border-left-style
+      - border-width
+      - border-top-width
+      - border-right-width
+      - border-bottom-width
+      - border-left-width
+      - border-radius
+      - border-top-right-radius
+      - border-bottom-right-radius
+      - border-bottom-left-radius
+      - border-top-left-radius
+      - border-radius-topright
+      - border-radius-bottomright
+      - border-radius-bottomleft
+      - border-radius-topleft
+      - outline
+      - outline-width
+      - outline-style
+      - outline-color
+      - outline-offset
+      - -webkit-perspective
+      - perspective
+      - -webkit-perspective-origin
+      - perspective-origin
+      - table-layout
+      - -webkit-transform
+      - -ms-transform
+      - transform
+      - -webkit-transform-origin
+      - -ms-transform-origin
+      - transform-origin
+      - -webkit-transform-style
+      - -ms-transform-style
+      - transform-style
+      -
+      - -webkit-animation
+      - animation
+      - -webkit-animation-delay
+      - animation-delay
+      - -webkit-animation-duration
+      - animation-duration
+      - -webkit-animation-iteration-count
+      - animation-iteration-count
+      - -webkit-animation-name
+      - animation-name
+      - -webkit-animation-play-state
+      - animation-play-state
+      - -webkit-animation-timing-function
+      - animation-timing-function
+      - -webkit-animation-fill-mode
+      - animation-fill-mode
+      - -webkit-backface-visibility
+      - backface-visibility
+      - -webkit-transition
+      - transition
+      - -webkit-transition-delay
+      - transition-delay
+      - -webkit-transition-duration
+      - transition-duration
+      - -webkit-transition-property
+      - transition-property
+      - -webkit-transition-timing-function
+      - transition-timing-function
+      - will-change
+      -
+      - cursor
+      - opacity
+      - filter
+      - visibility
+      - -ms-zoom
+      - zoom
+      - marks
+      - page-break
+      - page-break-before
+      - page-break-inside
+      - page-break-after
+      - pointer-events
+      - resize
+      - unicode-bidi
+      - -webkit-user-select
+      - -moz-user-select
+      - -ms-user-select
+      - user-select
+      - scrollbar
+      - widows
