@@ -1,0 +1,30 @@
+[
+	{
+		"label": "Text",
+		"chunk": "ObojoboDraft.Chunks.SingleText"
+	},
+	{
+		"label": "List",
+		"chunk": "ObojoboDraft.Chunks.List"
+	},
+	{
+		"label": "Image",
+		"chunk": "ObojoboDraft.Chunks.Figure"
+	},
+	{
+		"label": "Table",
+		"chunk": "ObojoboDraft.Chunks.Table"
+	},
+	{
+		"label": "Equation",
+		"chunk": "ObojoboDraft.Chunks.MathEquation"
+	},
+	{
+		"label": "YouTube",
+		"chunk": "ObojoboDraft.Chunks.YouTube"
+	},
+	{
+		"label": "Break",
+		"chunk": "ObojoboDraft.Chunks.Break"
+	}
+]

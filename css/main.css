@@ -3,6 +3,10 @@
 	/*transition: background .5s ease;*/
 }
 
+html {
+	font-size: 14pt;
+}
+
 body {
 	margin: 0;
 	padding: 0;
@@ -10,114 +14,23 @@ body {
 	background: white;
 }
 
-.content {
-	margin-top: 60px;
 
-	white-space: pre-wrap;
-	line-height: 1.5em;
-	/*font-family: Georgia;*/
-	font-family: 'Noto Serif';
-}
 
-h1, h2, h3, h4, h5, h6
-{
-	/*font-family: 'Open Sans';*/
-	font-family: 'Noto Sans';
-}
-h1
-{
-	color: #336898;
-}
+// .component[data-component-type="OboChunk.Question"]
+// {
+// 	margin: 0;
+// 	padding: 40px 60px;
+// 	box-sizing: border-box;
 
-.component {
-	margin: 0 60px 40px 60px;
-}
-.component[data-component-type="OboChunk.Question"]
-{
-	margin: 0;
-	padding: 40px 60px;
-	box-sizing: border-box;
-
-	background: #efefef;
-}
+// 	background: #efefef;
+// }
 
 /*Fix for empty content editable things:*/
-*[data-text-index] :empty {
-/**[data-text-index] .empty {*/
-	display: inline-block;
-	height: 1em; /*@TODO*/
-	/*border: 1px solid red;*/
-	/*min-height: 1px;*/
-	min-width: 1px;
-}
-
-.text-menu
-{
-	position: relative;
-	border-radius: 15px;
-	background: rgba(0, 0, 0, 0.9);
-	box-shadow: 0 2px 2px rgba(0, 0, 0, 0.2);
-	transform: translate(-50%);
-}
-
-.text-menu:after
-{
-	content: ' ';
-	position: absolute;
-	bottom: -20px;
-	display: block;
-	width: 10px;
-	height: 0px;
-	width: 0px;
-	left: 50%;
-	border: 10px solid transparent;
-	border-top: 10px solid rgba(0, 0, 0, 0.9);
-	transform: translate(-50%);
-}
-
-.text-menu a
-{
-	display: inline-block;
-	border: none;
-	background: none;
-	font-size: 10pt;
-	font-family: Arial;
-	color: white;
-	font-weight: bold;
-	opacity: 0.8;
-	cursor: pointer;
-	border-right: 1px solid rgba(255, 255, 255, 0.3);
-	height: 20px;
-	margin-top: 5px;
-	margin-right: 2px;
-	padding-left: 5px;
-	padding-right: 5px;
-	vertical-align: middle;
-}
-
-.text-menu a:first-child
-{
-	padding-left: 10px;
-}
-
-.text-menu a:last-child
-{
-	border-right: none;
-}
-
-.text-menu a:hover
-{
-	opacity: 1;
-}
-
-.text-menu a img
-{
-	width: 20px;
-	height: 20px;
-}
-
-.text-menu a span
-{
-	display: block;
-	margin-top: 2px;
-}
+// *[data-text-index] :empty {
+// /**[data-text-index] .empty {*/
+// 	display: inline-block;
+// 	height: 1em; /*@TODO*/
+// 	/*border: 1px solid red;*/
+// 	/*min-height: 1px;*/
+// 	min-width: 1px;
+// }

@@ -26,7 +26,7 @@ module.exports = {
 	externals: {
 		'react': 'React',
 		'react-dom': 'ReactDOM',
-		'backbone': 'Backbone'
+		'backbone': 'Backbone',
 	},
 	plugins: [
 		new ExtractTextPlugin('style.css', {
