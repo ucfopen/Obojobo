@@ -17,8 +17,8 @@
     "backbone.nativeajax": "^0.4.3",
     "immutable": "^3.7.6",
     "katex": "^0.5.1",
-    "react": "^15.0.1",
-    "react-dom": "^15.0.1"
+    "react": "^15.0.2",
+    "react-dom": "^15.0.2"
   },
   "devDependencies": {
     "babel-core": "^6.6.4",
@@ -32,6 +32,7 @@
     "http-server": "^0.9.0",
     "json-loader": "^0.5.4",
     "node-sass": "^3.4.2",
+    "react-addons-perf": "^15.0.2",
     "sass-loader": "^3.1.2",
     "style-loader": "^0.13.0",
     "webpack": "^1.12.14",
