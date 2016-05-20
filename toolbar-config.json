@@ -19,14 +19,14 @@
 			"type": "toggle",
 			"label": "Bold text",
 			"state": "off",
-			"img": "/img/editor/toolbar/bold.svg"
+			"img": "TOOLBAR_BOLD"
 		},
 		{
 			"id": "italic",
 			"type": "toggle",
 			"label": "Italicize text",
 			"state": "off",
-			"img": "/img/editor/toolbar/italic.svg"
+			"img": "TOOLBAR_ITALIC"
 		},
 		{
 			"type": "separator"
@@ -35,13 +35,13 @@
 			"id": "ul",
 			"type": "button",
 			"label": "Transform selection to unordered list",
-			"img": "/img/editor/toolbar/ul.svg"
+			"img": "TOOLBAR_UL"
 		},
 		{
 			"id": "ol",
 			"type": "button",
 			"label": "Transform selection to ordered list",
-			"img": "/img/editor/toolbar/ol.svg"
+			"img": "TOOLBAR_OL"
 		},
 		{
 			"type": "separator"
@@ -50,13 +50,13 @@
 			"id": "indent",
 			"type": "button",
 			"label": "Indent",
-			"img": "/img/editor/toolbar/indent.svg"
+			"img": "TOOLBAR_INDENT"
 		},
 		{
 			"id": "unindent",
 			"type": "button",
 			"label": "Unindent",
-			"img": "/img/editor/toolbar/unindent.svg"
+			"img": "TOOLBAR_UNINDENT"
 		},
 		{
 			"type": "separator"
@@ -65,19 +65,19 @@
 			"id": "image",
 			"type": "button",
 			"label": "Insert Image",
-			"img": "/img/editor/toolbar/image.svg"
+			"img": "TOOLBAR_IMAGE"
 		},
 		{
 			"id": "table",
 			"type": "gridButton",
 			"label": "Insert Table",
-			"img": "/img/editor/toolbar/table.svg"
+			"img": "TOOLBAR_TABLE"
 		},
 		{
 			"id": "insert",
 			"type": "listButton",
 			"label": "Insert",
-			"img": "/img/editor/toolbar/insert.svg",
+			"img": "TOOLBAR_INSERT",
 			"listItems": [
 				{
 					"id": "OboChunk.YouTube",
