@@ -6,13 +6,14 @@ var ExtractTextPlugin = require('extract-text-webpack-plugin');
 // must match config.webpack.dev_server.port
 var devServerPort = 3808;
 
+
 // set TARGET=production on the environment to add asset fingerprints
 var production = process.env.TARGET === 'production';
 
 var config = {
 	entry: {
 		// 'obodraft': ['./src/scripts/node_modules/app/OboDraft.coffee'],
-		'application': ['./app/assets/webpack/src/scripts/node_modules/editor.coffee'],
+		'application': ['./app/assets/editor/src/scripts/node_modules/editor.coffee'],
 		// 'thing': ['./src/scripts/thing/something.coffee'],
 	},
 	// output: {
