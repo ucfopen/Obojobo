@@ -11,7 +11,7 @@ exec('pwd', function(err, stdout, stderr) {
 fs.stat('./node_modules/webpack/bin/webpack.js', function(err, stat) {
 	if(err == null)
 	{
-		exec('./node_modules/webpack/bin/webpack.js -p', function(err, stdout, stderr) {
+		exec('./node_modules/webpack/bin/webpack.js', function(err, stdout, stderr) {
 			console.log(stdout);
 		});
 	}
@@ -20,7 +20,7 @@ fs.stat('./node_modules/webpack/bin/webpack.js', function(err, stat) {
 		fs.stat('../webpack/bin/webpack.js', function(err, stat) {
 			if(err == null)
 			{
-				exec('../webpack/bin/webpack.js -p', function(err, stdout, stderr) {
+				exec('../webpack/bin/webpack.js', function(err, stdout, stderr) {
 					console.log(stdout);
 				});
 			}
