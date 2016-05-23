@@ -11,7 +11,7 @@ var production = process.env.TARGET === 'production';
 
 var config = {
 	entry: {
-		'editor': ['./app/assets/editor/src/scripts/node_modules/editor.coffee']
+		'editor': [path.join(__dirname, 'src', 'scripts', 'node_modules', 'editor.coffee')]
 	},
 	output: {
 		// must match config.webpack.output_dir

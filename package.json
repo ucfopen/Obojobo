@@ -5,7 +5,8 @@
   "main": "index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "start": "npm run serve | npm run dev",
+    "start": "webpack --watch",
+    "start_local": "npm run serve | npm run dev",
     "serve": "./node_modules/http-server/bin/http-server -p 8000",
     "dev": "webpack-dev-server --progress --colors --port 8090",
     "build": "webpack -p"
@@ -34,7 +35,9 @@
     "node-sass": "^3.4.2",
     "react-addons-perf": "^15.0.2",
     "sass-loader": "^3.1.2",
+    "stats-webpack-plugin": "^0.3.1",
     "style-loader": "^0.13.0",
+    "svg-url-loader": "^1.0.3",
     "webpack": "^1.12.14",
     "webpack-dev-server": "^1.14.1"
   }
