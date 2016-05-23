@@ -7,9 +7,13 @@
 		<meta name="description" content="">
 		<meta name="viewport" content="width=device-width, initial-scale=1">
 
-		<!-- <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/KaTeX/0.5.1/katex.min.css"> -->
+		<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/KaTeX/0.5.1/katex.min.css">
 
 		<link rel="stylesheet" href="css/main.css">
+
+		<style>
+			.editor--components--editor-app { position:absolute !important; left:0; right:0; top:0; bottom:0; }
+		</style>
 
 		<head>
 			<script src="./node_modules/react/dist/react.js"></script>
@@ -19,34 +23,13 @@
 			<script src="./node_modules/backbone/backbone-min.js"></script>
 			<script src="./node_modules/backbone.nativeajax/backbone.nativeajax.js"></script>
 
-			<link rel="stylesheet" href="http://localhost:8090/assets/style.css">
+			<link rel="stylesheet" href="http://localhost:8090/build/style.css">
 		</head>
-
-
-		<!--<script src="https://fb.me/react-0.13.3.js"></script>
-		<script src="https://fb.me/JSXTransformer-0.13.3.js"></script>-->
 	</head>
 	<body>
-
-
-		<div id="content"></div>
-
-		<div id="testapp"></div>
 		<div id="editor-app">LOADING...</div>
 
-		<div id="rect"></div>
-
-		<!--<script type="text/jsx" src="src/main.js"></script>-->
-
 		<script src="http://localhost:8090/webpack-dev-server.js"></script>
-		<script src="http://localhost:8090/assets/editor.js"></script>
-
-		<!-- <div tabindex="2" id='p1' onfocus="console.log('p1');" contenteditable="true">
-			editable div
-			<div contenteditable="false">
-				non-editable div
-				<div tabindex="1" id='p2' onfocus="console.log('p2');"  contenteditable="true">nested editable div</div>
-			</div>
-		</div> -->
+		<script src="http://localhost:8090/build/editor.js"></script>
 	</body>
 </html>
