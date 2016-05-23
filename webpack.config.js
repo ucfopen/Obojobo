@@ -15,8 +15,8 @@ var config = {
 	},
 	output: {
 		// must match config.webpack.output_dir
-		path: path.join(__dirname, '..', '..', '..', 'public', 'webpack'),
-		publicPath: 'webpack/',
+		path: path.join(__dirname, 'build'),
+		publicPath: 'build/',
 		filename: production ? '[name]-[chunkhash].js' : '[name].js'
 	},
 	module: {
