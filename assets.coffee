@@ -14,3 +14,5 @@ module.exports =
 	TEXTMENU_LINK: require 'svg-url?noquotes!./img/editor/textmenu/link.svg'
 	TEXTMENU_SUB: require 'svg-url?noquotes!./img/editor/textmenu/sub.svg'
 	TEXTMENU_SUP: require 'svg-url?noquotes!./img/editor/textmenu/sup.svg'
+
+	BUTTON_EDIT: require 'svg-url?noquotes!./img/editor/buttons/edit.svg'
