@@ -1,4 +1,7 @@
 module.exports =
+	getBackgroundImage: (asset) ->
+		"url('" + asset.replace(/'/g, "\\'") + "')"
+
 	TOOLBAR_BOLD: require 'svg-url?noquotes!./img/editor/toolbar/bold.svg'
 	TOOLBAR_ITALIC: require 'svg-url?noquotes!./img/editor/toolbar/italic.svg'
 	TOOLBAR_IMAGE: require 'svg-url?noquotes!./img/editor/toolbar/image.svg'
@@ -16,3 +19,7 @@ module.exports =
 	TEXTMENU_SUP: require 'svg-url?noquotes!./img/editor/textmenu/sup.svg'
 
 	BUTTON_EDIT: require 'svg-url?noquotes!./img/editor/buttons/edit.svg'
+	BUTTON_TABLE_INSERT: require 'svg-url?noquotes!./img/editor/buttons/table-insert.svg'
+	BUTTON_TABLE_INSERT_HOVER: require 'svg-url?noquotes!./img/editor/buttons/table-insert-hover.svg'
+	BUTTON_TABLE_REMOVE: require 'svg-url?noquotes!./img/editor/buttons/table-remove.svg'
+	BUTTON_TABLE_REMOVE_HOVER: require 'svg-url?noquotes!./img/editor/buttons/table-remove-hover.svg'
