@@ -26,5 +26,9 @@
 	{
 		"label": "Break",
 		"chunk": "ObojoboDraft.Chunks.Break"
+	},
+	{
+		"label": "Broken",
+		"chunk": "ObojoboDraft.Chunks.Broken"
 	}
 ]
