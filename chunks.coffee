@@ -8,3 +8,4 @@ module.exports =
 	"ObojoboDraft.Chunks.Table": require "./src/scripts/node_modules/ObojoboDraft/Chunks/Table/editor"
 	"ObojoboDraft.Chunks.YouTube": require "./src/scripts/node_modules/ObojoboDraft/Chunks/YouTube/editor"
 	"ObojoboDraft.Chunks.MathEquation": require "./src/scripts/node_modules/ObojoboDraft/Chunks/MathEquation/editor"
+	"ObojoboDraft.Chunks.Question": require "./src/scripts/node_modules/ObojoboDraft/Chunks/Question/editor"
