@@ -4,8 +4,8 @@
 		"chunk": "ObojoboDraft.Chunks.SingleText"
 	},
 	{
-		"label": "Question",
-		"chunk": "ObojoboDraft.Chunks.Question"
+		"label": "MC Question",
+		"chunk": "ObojoboDraft.Chunks.MultipleChoiceQuestion"
 	},
 	{
 		"label": "List",
