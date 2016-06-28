@@ -1,6 +1,5 @@
 var path = require('path');
 var webpack = require('webpack')
-var StatsPlugin = require('stats-webpack-plugin');
 var ExtractTextPlugin = require('extract-text-webpack-plugin');
 
 var config = {
