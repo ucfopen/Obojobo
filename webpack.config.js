@@ -3,12 +3,6 @@ var webpack = require('webpack')
 var StatsPlugin = require('stats-webpack-plugin');
 var ExtractTextPlugin = require('extract-text-webpack-plugin');
 
-// must match config.webpack.dev_server.port
-// var devServerPort = 3808;
-
-// set TARGET=production on the environment to add asset fingerprints
-var production = process.env.TARGET === 'production';
-
 var config = {
 	entry: {
 		'obojobo-draft-document-editor': [path.join(__dirname, 'src', 'scripts', 'node_modules', 'obojobo-draft-document-editor.coffee')]
@@ -17,7 +11,7 @@ var config = {
 		// must match config.webpack.output_dir
 		path: path.join(__dirname, 'build'),
 		publicPath: 'build/',
-		filename: production ? '[name]-[chunkhash].js' : '[name].js'
+		filename: '[name].js'
 	},
 	module: {
 		loaders: [
@@ -38,17 +32,14 @@ var config = {
 		'backbone': 'Backbone',
 	},
 	plugins: [
+		// @TODO next 3 copied from old production do we need?
+		new webpack.NoErrorsPlugin(),
+		new webpack.optimize.DedupePlugin(),
+		new webpack.optimize.OccurenceOrderPlugin(),
+		// end todo
+
 		new ExtractTextPlugin('obojobo-draft-document-editor.css', {
 			allChunks: true
-		}),
-		//must match config.webpack.manifest_filename
-		new StatsPlugin('manifest.json', {
-			// We only need assetsByChunkName
-			chunkModules: false,
-			source: false,
-			chunks: false,
-			modules: false,
-			assets: true
 		})
 	],
 	resolve: {
@@ -56,27 +47,5 @@ var config = {
 	}
 }
 
-if (production) {
-	config.plugins.push(
-		new webpack.NoErrorsPlugin(),
-		new webpack.optimize.UglifyJsPlugin({
-			compressor: { warnings: false },
-			sourceMap: false
-		}),
-		new webpack.DefinePlugin({
-			'process.env': { NODE_ENV: JSON.stringify('production') }
-		}),
-		new webpack.optimize.DedupePlugin(),
-		new webpack.optimize.OccurenceOrderPlugin()
-	);
-} else {
-	// config.devServer = {
-	// 	port: devServerPort,
-	// 	headers: { 'Access-Control-Allow-Origin': '*' }
-	// };
-	//config.output.publicPath = '//localhost:' + devServerPort + '/webpack/';
-	// Source maps
-	// config.devtool = 'cheap-module-eval-source-map';
-}
 
 module.exports = config;
