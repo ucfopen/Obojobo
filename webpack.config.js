@@ -11,7 +11,7 @@ var production = process.env.TARGET === 'production';
 
 var config = {
 	entry: {
-		'editor': [path.join(__dirname, 'src', 'scripts', 'node_modules', 'editor.coffee')]
+		'obojobo-draft-document-editor': [path.join(__dirname, 'src', 'scripts', 'node_modules', 'obojobo-draft-document-editor.coffee')]
 	},
 	output: {
 		// must match config.webpack.output_dir
@@ -38,7 +38,7 @@ var config = {
 		'backbone': 'Backbone',
 	},
 	plugins: [
-		new ExtractTextPlugin('style.css', {
+		new ExtractTextPlugin('obojobo-draft-document-editor.css', {
 			allChunks: true
 		}),
 		//must match config.webpack.manifest_filename
