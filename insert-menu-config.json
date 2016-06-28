@@ -4,10 +4,6 @@
 		"chunk": "ObojoboDraft.Chunks.SingleText"
 	},
 	{
-		"label": "MC Question",
-		"chunk": "ObojoboDraft.Chunks.MultipleChoiceQuestion"
-	},
-	{
 		"label": "List",
 		"chunk": "ObojoboDraft.Chunks.List"
 	},
@@ -32,7 +28,7 @@
 		"chunk": "ObojoboDraft.Chunks.Break"
 	},
 	{
-		"label": "Broken",
-		"chunk": "ObojoboDraft.Chunks.Broken"
+		"label": "MC Question",
+		"chunk": "ObojoboDraft.Chunks.MultipleChoiceQuestion"
 	}
 ]
