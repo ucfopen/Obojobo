@@ -2,6 +2,8 @@ module.exports =
 	getBackgroundImage: (asset) ->
 		"url('" + asset.replace(/'/g, "\\'") + "')"
 
+	SIDEMENU_HANDLE: require 'svg-url?noquotes!./img/editor/sidemenu/handle.svg'
+
 	TOOLBAR_BOLD: require 'svg-url?noquotes!./img/editor/toolbar/bold.svg'
 	TOOLBAR_ITALIC: require 'svg-url?noquotes!./img/editor/toolbar/italic.svg'
 	TOOLBAR_IMAGE: require 'svg-url?noquotes!./img/editor/toolbar/image.svg'
