@@ -3,6 +3,14 @@ module.exports =
 		"url('" + asset.replace(/'/g, "\\'") + "')"
 
 	SIDEMENU_HANDLE: require 'svg-url?noquotes!./img/editor/sidemenu/handle.svg'
+	SIDEMENU_BREAK: require 'svg-url?noquotes!./img/editor/sidemenu/break.svg'
+	SIDEMENU_EQUATION: require 'svg-url?noquotes!./img/editor/sidemenu/equation.svg'
+	SIDEMENU_FIGURE: require 'svg-url?noquotes!./img/editor/sidemenu/figure.svg'
+	SIDEMENU_LIST: require 'svg-url?noquotes!./img/editor/sidemenu/list.svg'
+	SIDEMENU_MC: require 'svg-url?noquotes!./img/editor/sidemenu/mc.svg'
+	SIDEMENU_TABLE: require 'svg-url?noquotes!./img/editor/sidemenu/table.svg'
+	SIDEMENU_TEXT: require 'svg-url?noquotes!./img/editor/sidemenu/text.svg'
+	SIDEMENU_YOUTUBE: require 'svg-url?noquotes!./img/editor/sidemenu/youtube.svg'
 
 	TOOLBAR_BOLD: require 'svg-url?noquotes!./img/editor/toolbar/bold.svg'
 	TOOLBAR_ITALIC: require 'svg-url?noquotes!./img/editor/toolbar/italic.svg'
