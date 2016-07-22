@@ -14,17 +14,17 @@ console.log 'editor', OBO
 
 
 
-loadModule = require './loadModule'
+loadModule = require '../loadModule'
 
-Editor = window.Editor
-EditorApp = Editor.components.EditorApp
+Viewer = window.Viewer
+ViewerApp = Viewer.components.ViewerApp
 
 moduleId = decodeURIComponent(document.location.hash).substr(1)
 
 loadModule moduleId, (items) ->
-	ReactDOM.render `<EditorApp
+	ReactDOM.render `<ViewerApp
 						module={items.module}
 						chunks={items.chunks}
 						insertItems={items.insertItems}
 						toolbarItems={items.toolbarItems}
-					/>`, document.getElementById('editor-app')
+					/>`, document.getElementById('viewer-app')

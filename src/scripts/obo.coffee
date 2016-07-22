@@ -79,4 +79,4 @@ Object.defineProperties OBO.prototype, {
 }
 
 
-module.exports = new OBO()
+window.OBO = new OBO()

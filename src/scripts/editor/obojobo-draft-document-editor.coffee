@@ -1,0 +1,1 @@
+window.Editor = require 'Editor'

@@ -4,12 +4,16 @@ var ExtractTextPlugin = require('extract-text-webpack-plugin');
 
 var config = {
 	entry: {
+		'obo': [path.join(__dirname, 'src', 'scripts', 'obo.coffee')],
 		'obojobo-draft': [path.join(__dirname, 'src', 'scripts', 'obojobo-draft.coffee')],
-		// 'obojobo-draft-document-editor': [path.join(__dirname, 'src', 'scripts', 'obojobo-draft-document-editor.coffee')],
-		// 'obojobo-draft-document-editor-chunks': [path.join(__dirname, 'src', 'scripts', 'obojobo-draft-document-editor-chunks.coffee')],
-		// 'obojobo-draft-document-editor-app': [path.join(__dirname, 'src', 'scripts', 'obojobo-draft-document-editor-app.coffee')],
-		// 'obojobo-draft-document-viewer-bootstrap': [path.join(__dirname, 'src', 'scripts', 'obojobo-draft-document-viewer-bootstrap.coffee')],
-		// 'obojobo-draft-document-viewer': [path.join(__dirname, 'src', 'scripts', 'obojobo-draft-document-viewer.coffee')]
+
+		'obojobo-draft-document-editor': [path.join(__dirname, 'src', 'scripts', 'editor', 'obojobo-draft-document-editor.coffee')],
+		'obojobo-draft-document-editor-chunks': [path.join(__dirname, 'src', 'scripts', 'editor', 'obojobo-draft-document-editor-chunks.coffee')],
+		'obojobo-draft-document-editor-app': [path.join(__dirname, 'src', 'scripts', 'editor', 'obojobo-draft-document-editor-app.coffee')],
+
+		'obojobo-draft-document-viewer': [path.join(__dirname, 'src', 'scripts', 'viewer', 'obojobo-draft-document-viewer.coffee')],
+		'obojobo-draft-document-viewer-chunks': [path.join(__dirname, 'src', 'scripts', 'viewer', 'obojobo-draft-document-viewer-chunks.coffee')],
+		'obojobo-draft-document-viewer-app': [path.join(__dirname, 'src', 'scripts', 'viewer', 'obojobo-draft-document-viewer-app.coffee')],
 	},
 	output: {
 		// must match config.webpack.output_dir
@@ -44,10 +48,7 @@ var config = {
 
 		// new webpack.optimize.CommonsChunkPlugin('common-'),
 
-		new ExtractTextPlugin({
-			filename: "[name].css",
-			allChunks: true
-		})
+		new ExtractTextPlugin('[name].css')
 	],
 	resolve: {
 		extensions: ['', '.js', '.coffee']
