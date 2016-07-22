@@ -4,7 +4,8 @@ var ExtractTextPlugin = require('extract-text-webpack-plugin');
 
 var config = {
 	entry: {
-		'obojobo-draft-document-editor': [path.join(__dirname, 'src', 'scripts', 'obojobo-draft-document-editor.coffee')]
+		'obojobo-draft-document-editor': [path.join(__dirname, 'src', 'scripts', 'obojobo-draft-document-editor.coffee')],
+		'obojobo-draft-document-viewer': [path.join(__dirname, 'src', 'scripts', 'obojobo-draft-document-viewer.coffee')]
 	},
 	output: {
 		// must match config.webpack.output_dir
