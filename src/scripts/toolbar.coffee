@@ -85,17 +85,17 @@ OBO
 
 	.addToolbarItem
 		type: 'button'
-		label: 'Indent'
-		icon: Assets.TOOLBAR_INDENT
-		onClick: (toolbarItem, editorState) ->
-			ChunkUtil.send 'indent', editorState.selection.chunk.all, editorState.selection, [false]
-
-	.addToolbarItem
-		type: 'button'
 		label: 'Unindent'
 		icon: Assets.TOOLBAR_UNINDENT
 		onClick: (toolbarItem, editorState) ->
 			ChunkUtil.send 'indent', editorState.selection.chunk.all, editorState.selection, [true]
+
+	.addToolbarItem
+		type: 'button'
+		label: 'Indent'
+		icon: Assets.TOOLBAR_INDENT
+		onClick: (toolbarItem, editorState) ->
+			ChunkUtil.send 'indent', editorState.selection.chunk.all, editorState.selection, [false]
 
 	.addToolbarItem
 		type: 'separator'
