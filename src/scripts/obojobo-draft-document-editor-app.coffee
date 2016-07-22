@@ -3,18 +3,28 @@
 
 "use strict";
 
+console.log 'editor', OBO
+
+# setup toolbar
+# require './toolbar'
+
+# load chunks
+# require 'chunks/editor'
+
+
+
+
 loadModule = require './loadModule'
 
-Viewer = require 'viewer'
-ViewerApp = Viewer.components.ViewerApp
+Editor = window.Editor
+EditorApp = Editor.components.EditorApp
 
 moduleId = decodeURIComponent(document.location.hash).substr(1)
 
-# ReactDOM.render `<ViewerApp />`, document.getElementById('viewer-app')
-
 loadModule moduleId, (items) ->
-	ReactDOM.render `<ViewerApp
+	ReactDOM.render `<EditorApp
 						module={items.module}
 						chunks={items.chunks}
 						insertItems={items.insertItems}
-					/>`, document.getElementById('viewer-app')
+						toolbarItems={items.toolbarItems}
+					/>`, document.getElementById('editor-app')

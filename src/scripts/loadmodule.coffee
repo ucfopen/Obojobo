@@ -1,4 +1,4 @@
-ObojoboDraft = require 'ObojoboDraft'
+ObojoboDraft = window.ObojoboDraft
 ComponentClassMap = ObojoboDraft.util.ComponentClassMap
 Head = ObojoboDraft.page.Head
 Module = ObojoboDraft.models.Module

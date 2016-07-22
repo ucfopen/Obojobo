@@ -1,0 +1,1 @@
+window.ObojoboDraft = require 'ObojoboDraft'

@@ -1,7 +1,7 @@
-Editor = require 'editor'
+Editor = window.Editor
 Assets = Editor.assets
 
-ObojoboDraft = require 'ObojoboDraft'
+ObojoboDraft = window.ObojoboDraft
 StyleType = ObojoboDraft.text.StyleType
 ChunkUtil = ObojoboDraft.page.ChunkUtil
 

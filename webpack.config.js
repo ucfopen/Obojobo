@@ -4,8 +4,12 @@ var ExtractTextPlugin = require('extract-text-webpack-plugin');
 
 var config = {
 	entry: {
-		'obojobo-draft-document-editor': [path.join(__dirname, 'src', 'scripts', 'obojobo-draft-document-editor.coffee')],
-		'obojobo-draft-document-viewer': [path.join(__dirname, 'src', 'scripts', 'obojobo-draft-document-viewer.coffee')]
+		'obojobo-draft': [path.join(__dirname, 'src', 'scripts', 'obojobo-draft.coffee')],
+		// 'obojobo-draft-document-editor': [path.join(__dirname, 'src', 'scripts', 'obojobo-draft-document-editor.coffee')],
+		// 'obojobo-draft-document-editor-chunks': [path.join(__dirname, 'src', 'scripts', 'obojobo-draft-document-editor-chunks.coffee')],
+		// 'obojobo-draft-document-editor-app': [path.join(__dirname, 'src', 'scripts', 'obojobo-draft-document-editor-app.coffee')],
+		// 'obojobo-draft-document-viewer-bootstrap': [path.join(__dirname, 'src', 'scripts', 'obojobo-draft-document-viewer-bootstrap.coffee')],
+		// 'obojobo-draft-document-viewer': [path.join(__dirname, 'src', 'scripts', 'obojobo-draft-document-viewer.coffee')]
 	},
 	output: {
 		// must match config.webpack.output_dir
@@ -14,7 +18,6 @@ var config = {
 		filename: '[name].js'
 	},
 	module: {
-
 		loaders: [
 			{
 				test: /\.coffee?$/,
@@ -39,7 +42,10 @@ var config = {
 		new webpack.optimize.OccurenceOrderPlugin(),
 		// end todo
 
-		new ExtractTextPlugin('obojobo-draft-document-editor.css', {
+		// new webpack.optimize.CommonsChunkPlugin('common-'),
+
+		new ExtractTextPlugin({
+			filename: "[name].css",
 			allChunks: true
 		})
 	],

@@ -26,6 +26,7 @@ class OBO
 		@
 
 	registerChunk: (chunkClass, opts = {}) ->
+		console.log '____registerChunk', chunkClass.displayName, opts
 		chunks.set chunkClass.type, chunkClass
 
 		opts = Object.assign {
@@ -57,6 +58,7 @@ class OBO
 		@
 
 	getChunks: (callback) ->
+		console.log '__getChunks', callback
 		if chunksLoaded is chunks.size
 			callback(chunks)
 		else
