@@ -4,6 +4,7 @@ Assets = Editor.assets
 ObojoboDraft = window.ObojoboDraft
 StyleType = ObojoboDraft.text.StyleType
 ChunkUtil = ObojoboDraft.page.ChunkUtil
+Chunk = ObojoboDraft.models.Chunk
 
 OBO
 	.addToolbarItem
