@@ -100,3 +100,15 @@ OBO
 
 	.addToolbarItem
 		type: 'separator'
+
+	.addToolbarItem
+		type: 'button'
+		label: '_test'
+		icon: Assets.TOOLBAR_ITALIC
+		onClick: (toolbarItem, editorState) ->
+			console.clear()
+			console.log '_test'
+			# editorState.selection.chunk.start.chunk.styleSelection editorState.selection, 'q', { zeroLength:true }
+			editorState.selection.chunk.start.chunk.insertText editorState.selection, '*'
+			editorState.selection.chunk.end.offset++
+			editorState.selection.chunk.start.chunk.styleSelection editorState.selection, 'q', { deleteMeZeroLength:true }

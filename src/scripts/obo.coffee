@@ -63,7 +63,7 @@ class OBO
 		@
 
 	getChunks: (callback) ->
-		console.log '__getChunks', callback
+		# console.log '__getChunks', callback
 		if chunksLoaded is chunks.size
 			callback(chunks)
 		else
