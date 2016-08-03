@@ -1,32 +1,17 @@
 .component
 {
-	position: relative;
-	margin: 0;
-	// padding: 0;
-	// display: inline-block;
-	display: block;
-	width: 100%;
 	box-sizing: border-box;
-	// // background: white;
-
-	white-space: pre-wrap;
-	word-wrap: break-word;
-	overflow-wrap: break-word;
-	line-height: 1.5em;
-	font-family: 'Noto Serif';
-
 	color: black;
+	display: block;
+	font-family: 'Noto Serif';
+	line-height: 1.5em;
+	margin: 0;
+	overflow-wrap: break-word;
 	padding: 1px;
-
-	// > *
-	// {
-	// 	margin-top: 1rem;
-	// 	margin-bottom: 1rem;
-	// }
-
-
-
-	// // outline: 1px solid red;
+	position: relative;
+	white-space: pre-wrap;
+	width: 100%;
+	word-wrap: break-word;
 
 	.pad
 	{
