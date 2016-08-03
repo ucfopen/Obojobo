@@ -1,0 +1,43 @@
+.component
+{
+	position: relative;
+	margin: 0;
+	// padding: 0;
+	// display: inline-block;
+	display: block;
+	width: 100%;
+	box-sizing: border-box;
+	// // background: white;
+
+	white-space: pre-wrap;
+	word-wrap: break-word;
+	overflow-wrap: break-word;
+	line-height: 1.5em;
+	font-family: 'Noto Serif';
+
+	color: black;
+	padding: 1px;
+
+
+
+	// // outline: 1px solid red;
+
+	.pad
+	{
+		max-width: 40rem;
+		margin: 0 auto;
+	}
+
+	h1, h2, h3, h4, h5, h6
+	{
+		/*font-family: 'Open Sans';*/
+		font-family: 'Noto Sans';
+
+	}
+	h1
+	{
+		color: #336898;
+		// font-family: 'Directors Gothic 230';
+		// font-size: 36pt;
+	}
+}
