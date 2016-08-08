@@ -43,12 +43,8 @@ class OBO
 				console.log 'promise fire'
 				loadDependency dependency, resolve
 
-		console.log 'promises', promises
-
 		Promise.all(promises).then ->
 			chunksLoaded++
-
-			console.log 'now', chunksLoaded, chunks.size
 
 			if chunksLoaded is chunks.size
 				for callback in getChunksCallbacks

@@ -27,13 +27,13 @@ OBO
 				when 'Normal Text'
 					newChunk = Chunk.create 'ObojoboDraft.Chunks.SingleText'
 
-			newChunk.transformSelection editorState.selection
+			newChunk.replaceSelection editorState.selection
 		onSelectionUpdate: (toolbarItem, editorState) ->
 			if editorState.selection.chunk?.start?.chunk?
-				type = editorState.selection.chunk.start.chunk.get('type')
+				type = editorState.selection.startChunk.get('type')
 				headingLevel = 0
 				if type is 'ObojoboDraft.Chunks.Heading'
-					headingLevel = editorState.selection.chunk.start.chunk.componentContent.headingLevel
+					headingLevel = editorState.selection.startChunk.componentContent.headingLevel
 
 				for chunk in editorState.selection.chunk.all
 					if chunk.get('type') isnt type
