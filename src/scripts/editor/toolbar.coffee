@@ -6,57 +6,9 @@ StyleType = ObojoboDraft.text.StyleType
 ChunkUtil = ObojoboDraft.page.ChunkUtil
 Chunk = ObojoboDraft.models.Chunk
 
+console.log '@TODO - assumes heading is installed'
+
 OBO
-	.addToolbarItem
-		type: 'select'
-		label: 'Change text type'
-		selectedOption: 'Heading 1'
-		options: [
-			'Heading 1',
-			'Heading 2',
-			'Normal Text'
-		]
-		onClick: (toolbarItem, editorState) ->
-			switch toolbarItem.selectedOption
-				when 'Heading 1'
-					newChunk = Chunk.create 'ObojoboDraft.Chunks.Heading'
-					newChunk.componentContent.headingLevel = 1
-				when 'Heading 2'
-					newChunk = Chunk.create 'ObojoboDraft.Chunks.Heading'
-					newChunk.componentContent.headingLevel = 2
-				when 'Normal Text'
-					newChunk = Chunk.create 'ObojoboDraft.Chunks.SingleText'
-
-			newChunk.replaceSelection editorState.selection
-		onSelectionUpdate: (toolbarItem, editorState) ->
-			if editorState.selection.chunk?.start?.chunk?
-				type = editorState.selection.startChunk.get('type')
-				headingLevel = 0
-				if type is 'ObojoboDraft.Chunks.Heading'
-					headingLevel = editorState.selection.startChunk.componentContent.headingLevel
-
-				for chunk in editorState.selection.chunk.all
-					if chunk.get('type') isnt type
-						type = null
-						break
-					else if type is 'ObojoboDraft.Chunks.Heading' and chunk.componentContent.headingLevel isnt headingLevel
-						type = null
-						break
-
-				if type?
-					switch type + headingLevel
-						when 'ObojoboDraft.Chunks.Heading1'
-							toolbarItem.selectedOption = 'Heading 1'
-						when 'ObojoboDraft.Chunks.Heading2'
-							toolbarItem.selectedOption = 'Heading 2'
-						else
-							toolbarItem.selectedOption = 'Normal Text'
-				else
-					toolbarItem.selectedOption = null
-
-	.addToolbarItem
-		type: 'separator'
-
 	.addToolbarItem
 		type: 'toggle'
 		label: 'Bold text'

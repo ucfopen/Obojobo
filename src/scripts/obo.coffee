@@ -54,8 +54,12 @@ class OBO
 
 		@
 
-	addToolbarItem: (opts) ->
-		toolbarItems.push opts
+	addToolbarItem: (opts, position = -1) ->
+		if position > -1
+			toolbarItems.splice position, 0, opts
+		else
+			toolbarItems.push opts
+
 		@
 
 	getChunks: (callback) ->
