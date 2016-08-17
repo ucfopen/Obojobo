@@ -26,7 +26,6 @@ class OBO
 		@
 
 	registerChunk: (chunkClass, opts = {}) ->
-		console.log '____registerChunk', chunkClass.displayName, opts
 		chunks.set chunkClass.type, chunkClass
 
 		opts = Object.assign {
