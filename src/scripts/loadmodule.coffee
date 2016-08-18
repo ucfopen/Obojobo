@@ -7,7 +7,8 @@ API = ObojoboDraft.net.API
 loadModule = (id, loadCallback) ->
 	if id?.length? and id.length > 0
 		API.module.get id, (descr) ->
-			loadCallback Module.createFromDescriptor(descr)
+			#@TODO
+			loadCallback Module.createFromDescriptor(null, descr)
 	else
 		loadCallback()
 
