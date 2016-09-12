@@ -28,13 +28,24 @@
 	}
 	h1
 	{
-		color: #336898;
+		color: #003a6f;
 		// font-family: 'Directors Gothic 230';
 		// font-size: 36pt;
+		line-height: 3rem;
+	}
+
+	h2
+	{
+		line-height: 2.5rem;
 	}
 
 	pre
 	{
 		font-family: 'Droid Sans Mono';
+	}
+
+	a
+	{
+		color: #bd1438;
 	}
 }

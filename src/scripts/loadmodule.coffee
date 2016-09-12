@@ -1,4 +1,6 @@
 ObojoboDraft = window.ObojoboDraft
+OBO = window.OBO
+
 ComponentClassMap = ObojoboDraft.util.ComponentClassMap
 Head = ObojoboDraft.page.Head
 Module = ObojoboDraft.models.Module

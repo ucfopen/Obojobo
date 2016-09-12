@@ -4,6 +4,7 @@ getChunksCallbacks = []
 defaultChunk = null
 insertItems = new Map()
 toolbarItems = []
+textListeners = []
 
 class OBO
 	loadDependency: (url, onLoadCallback = ->) ->
@@ -26,6 +27,7 @@ class OBO
 		@
 
 	registerChunk: (chunkClass, opts = {}) ->
+		# console.log('REGISTER CHUNKK', chunkClass.type);
 		chunks.set chunkClass.type, chunkClass
 
 		opts = Object.assign {
@@ -39,7 +41,6 @@ class OBO
 		loadDependency = @loadDependency
 		promises = opts.dependencies.map (dependency) ->
 			new Promise (resolve, reject) ->
-				console.log 'promise fire'
 				loadDependency dependency, resolve
 
 		Promise.all(promises).then ->
@@ -61,9 +62,18 @@ class OBO
 
 		@
 
+	registerTextListener: (opts, position = -1) ->
+		if position > -1
+			textListeners.splice position, 0, opts
+		else
+			textListeners.push opts
+
+		@
+
 	getChunks: (callback) ->
-		console.log '__getChunks', callback
-		if chunksLoaded is chunks.size
+		# console.log('OBO get CHUNKS');
+		# console.log(chunksLoaded, chunks.size);
+		if true or chunksLoaded is chunks.size
 			callback(chunks)
 		else
 			getChunksCallbacks.push callback
@@ -80,6 +90,9 @@ Object.defineProperties OBO.prototype, {
 
 	toolbarItems:
 		get: -> toolbarItems
+
+	textListeners:
+		get: -> textListeners
 
 	__debug__chunks:
 		get: -> chunks

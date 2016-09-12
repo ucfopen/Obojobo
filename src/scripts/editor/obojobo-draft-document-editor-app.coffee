@@ -3,7 +3,7 @@
 
 "use strict";
 
-console.log 'editor', OBO
+# console.log 'editor', OBO
 
 # setup toolbar
 # require './toolbar'

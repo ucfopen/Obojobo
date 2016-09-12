@@ -4,11 +4,13 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1",
+    "test": "./node_modules/.bin/jasmine-node spec",
     "postinstall": "webpack",
     "start": "webpack --watch",
     "start-dev": "./node_modules/http-server/bin/http-server -p 8000 | webpack-dev-server --progress --colors --port 8090",
-    "build": "webpack"
+    "build": "webpack",
+    "karma": "./node_modules/karma/bin/karma start ./karma.conf.js",
+    "karma-coverage": "./node_modules/karma/bin/karma start ./karma-coverage.conf.js"
   },
   "author": "",
   "license": "ISC",
@@ -23,6 +25,7 @@
     "css-loader": "^0.23.1",
     "dragula": "^3.7.1",
     "extract-text-webpack-plugin": "^1.0.1",
+    "jasmine-node": "^1.14.5",
     "json-loader": "^0.5.4",
     "katex": "^0.5.1",
     "node-sass": "^3.4.2",
@@ -32,10 +35,15 @@
     "webpack": "^1.12.14"
   },
   "devDependencies": {
-    "react": "^15.0.2",
-    "react-dom": "^15.0.2",
-    "backbone": "^1.2.3",
+    "backbone": "^1.3.3",
     "http-server": "^0.9.0",
+    "jasmine-core": "^2.5.0",
+    "karma": "^1.2.0",
+    "karma-chrome-launcher": "^2.0.0",
+    "karma-coverage": "^1.1.1",
+    "karma-jasmine": "^0.1.6",
+    "react": "^15.3.1",
+    "react-dom": "^15.0.2",
     "webpack-dev-server": "^1.14.1"
   }
 }

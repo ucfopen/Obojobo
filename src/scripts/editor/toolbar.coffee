@@ -1,3 +1,4 @@
+OBO = window.OBO
 Editor = window.Editor
 Assets = Editor.assets
 
@@ -5,8 +6,6 @@ ObojoboDraft = window.ObojoboDraft
 StyleType = ObojoboDraft.text.StyleType
 ChunkUtil = ObojoboDraft.page.ChunkUtil
 Chunk = ObojoboDraft.models.Chunk
-
-console.log '@TODO - assumes heading is installed'
 
 OBO
 	.addToolbarItem
