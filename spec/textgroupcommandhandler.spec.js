@@ -244,6 +244,21 @@ window.OBO.getChunks( function(chunks) {
 			expect(s.start).toEqual(s.end);
 		});
 
+		it('splits text on enter', function() {
+			chunkSpanVirtSel.collapse();
+			chunkTop.splitText();
+			cc1 = chunkTop.componentContent.textGroup.toDescriptor();
+
+			beforeEach();
+
+
+			chunkSpanVirtSel.collapse();
+			chunkTop.onEnter();
+			cc2 = chunkTop.componentContent.textGroup.toDescriptor();
+
+			expect(cc1).toEqual(cc2);
+		});
+
 		it('splits text and moves caret to start of new text', function() {
 			chunkSpanVirtSel.collapse();
 			chunkTop.splitText();

@@ -12,7 +12,7 @@ loadModule = (id, loadCallback) ->
 			#@TODO
 			loadCallback Module.createFromDescriptor(null, descr)
 	else
-		loadCallback()
+		loadCallback new Module
 
 module.exports = (moduleId, loadCallback) ->
 	OBO.getChunks (chunks) ->
@@ -28,8 +28,3 @@ module.exports = (moduleId, loadCallback) ->
 				chunks: chunks
 				toolbarItems: OBO.toolbarItems
 			}
-
-
-
-
-

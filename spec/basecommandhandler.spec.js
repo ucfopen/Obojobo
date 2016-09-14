@@ -256,6 +256,10 @@ window.OBO.getChunks( function(chunks) {
 			expect(chunkTop.deleteText()).toBe(false);
 		});
 
+		it('onEnter returns false', function() {
+			expect(chunkTop.onEnter()).toBe(false);
+		});
+
 		it('splitText returns false', function() {
 			expect(chunkTop.splitText()).toBe(false);
 		});
@@ -353,7 +357,7 @@ window.OBO.getChunks( function(chunks) {
 		});
 
 		it('dirtys chunks where appropriate', function() {
-			['getCaretEdge', 'isEmpty', 'canRemoveSibling', 'insertText', 'deleteText', 'splitText', 'deleteSelection', 'getCopyOfSelection', 'styleSelection', 'unstyleSelection', 'getSelectionStyles', 'canMergeWith', 'indent', 'onTab', 'acceptAbsorb', 'absorb', 'split', 'getDOMStateBeforeInput', 'getDOMModificationAfterInput', 'applyDOMModification', 'selectStart', 'selectEnd', 'selectAll', 'onSelectAll', 'getTextMenuCommands', 'paste', 'getVirtualSelectionStartData', 'getVirtualSelectionEndData', 'getDOMSelectionStart', 'getDOMSelectionEnd', 'areCursorsEquivalent'].map(function(fn) {
+			['getCaretEdge', 'isEmpty', 'canRemoveSibling', 'insertText', 'deleteText', 'onEnter', 'splitText', 'deleteSelection', 'getCopyOfSelection', 'styleSelection', 'unstyleSelection', 'getSelectionStyles', 'canMergeWith', 'indent', 'onTab', 'acceptAbsorb', 'absorb', 'split', 'getDOMStateBeforeInput', 'getDOMModificationAfterInput', 'applyDOMModification', 'selectStart', 'selectEnd', 'selectAll', 'onSelectAll', 'getTextMenuCommands', 'paste', 'getVirtualSelectionStartData', 'getVirtualSelectionEndData', 'getDOMSelectionStart', 'getDOMSelectionEnd', 'areCursorsEquivalent'].map(function(fn) {
 				chunkTop.dirty = false;
 				chunkTop[fn]();
 				expect(chunkTop.dirty).toBe(false);
