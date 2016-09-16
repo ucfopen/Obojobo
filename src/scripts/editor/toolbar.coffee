@@ -1,17 +1,21 @@
+TOOLBAR_BOLD = require 'svg-url?noquotes!./assets/bold.svg'
+TOOLBAR_ITALIC = require 'svg-url?noquotes!./assets/italic.svg'
+TOOLBAR_INDENT = require 'svg-url?noquotes!./assets/indent.svg'
+TOOLBAR_INSERT = require 'svg-url?noquotes!./assets/insert.svg'
+TOOLBAR_UNINDENT = require 'svg-url?noquotes!./assets/unindent.svg'
+
 OBO = window.OBO
-Editor = window.Editor
-Assets = Editor.assets
 
 ObojoboDraft = window.ObojoboDraft
 StyleType = ObojoboDraft.text.StyleType
-ChunkUtil = ObojoboDraft.page.ChunkUtil
+ChunkUtil = ObojoboDraft.chunk.util.ChunkUtil
 Chunk = ObojoboDraft.models.Chunk
 
 OBO
 	.addToolbarItem
 		type: 'toggle'
 		label: 'Bold text'
-		icon: Assets.TOOLBAR_BOLD
+		icon: TOOLBAR_BOLD
 		state: 'off'
 		onClick: (toolbarItem, editorState, selection) ->
 			ChunkUtil.activateStyle StyleType.BOLD, selection, editorState.styleBrush
@@ -23,7 +27,7 @@ OBO
 	.addToolbarItem
 		type: 'toggle'
 		label: 'Italicize text'
-		icon: Assets.TOOLBAR_ITALIC
+		icon: TOOLBAR_ITALIC
 		state: 'off'
 		onClick: (toolbarItem, editorState, selection) ->
 			ChunkUtil.activateStyle StyleType.ITALIC, selection, editorState.styleBrush
@@ -38,14 +42,14 @@ OBO
 	.addToolbarItem
 		type: 'button'
 		label: 'Unindent'
-		icon: Assets.TOOLBAR_UNINDENT
+		icon: TOOLBAR_UNINDENT
 		onClick: (toolbarItem, editorState, selection) ->
 			ChunkUtil.send 'indent', selection.virtual.all, selection, [true]
 
 	.addToolbarItem
 		type: 'button'
 		label: 'Indent'
-		icon: Assets.TOOLBAR_INDENT
+		icon: TOOLBAR_INDENT
 		onClick: (toolbarItem, editorState, selection) ->
 			ChunkUtil.send 'indent', selection.virtual.all, selection, [false]
 

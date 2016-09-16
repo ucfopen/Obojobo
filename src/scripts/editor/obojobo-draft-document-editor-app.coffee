@@ -3,7 +3,7 @@
 
 "use strict";
 
-# console.log 'editor', OBO
+# console.log 'editor', OBOoo
 
 # setup toolbar
 # require './toolbar'
@@ -16,8 +16,7 @@
 
 loadModule = require '../loadmodule'
 
-Editor = window.Editor
-EditorApp = Editor.components.EditorApp
+EditorApp = require 'Editor/components/editorapp'
 
 moduleId = decodeURIComponent(document.location.hash).substr(1)
 
