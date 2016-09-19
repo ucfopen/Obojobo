@@ -8,3 +8,13 @@
 * '@TODO - Dont like that Im getting the dom selection for curChunkSel when the chunk selection should be up to date theoretically'
 * '@TODO - Shortcuts like Ctrl+S to save trigger screen tween'
 * '@TODO - '
+
+Migrate key commands and inputmanger alg to functions
+
+aka
+
+editor.deleteSelection()
+editor.sendKey 'a' ?
+editor.insertText ?
+editor.sendTab()
+editor.setSelection
