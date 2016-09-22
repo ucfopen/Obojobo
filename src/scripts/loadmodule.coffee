@@ -20,6 +20,7 @@ module.exports = (moduleId, loadCallback) ->
 			ComponentClassMap.register type, chunkClass
 
 		ComponentClassMap.setDefault OBO.defaultChunk
+		ComponentClassMap.setError OBO.errorChunk
 
 		loadModule moduleId, (module) ->
 			loadCallback {

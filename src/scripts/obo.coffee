@@ -2,6 +2,7 @@ chunks = new Map()
 chunksLoaded = 0
 getChunksCallbacks = []
 defaultChunk = null
+errorChunk = null
 insertItems = new Map()
 toolbarItems = []
 textListeners = []
@@ -33,9 +34,11 @@ class OBO
 		opts = Object.assign {
 			dependencies: []
 			default: false
+			error: false
 			insertItem: null
 		}, opts
 		if opts.default then defaultChunk = chunkClass.type
+		if opts.error then errorChunk = chunkClass.type
 		if opts.insertItem then insertItems.set chunkClass.type, opts.insertItem
 
 		loadDependency = @loadDependency
@@ -84,6 +87,9 @@ class OBO
 Object.defineProperties OBO.prototype, {
 	defaultChunk:
 		get: -> defaultChunk
+
+	errorChunk:
+		get: -> errorChunk
 
 	insertItems:
 		get: -> insertItems
