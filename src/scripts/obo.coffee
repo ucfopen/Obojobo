@@ -1,3 +1,6 @@
+ComponentClassMap = require './componentclassmap'
+
+componentClassMap = new ComponentClassMap()
 chunks = new Map()
 chunksLoaded = 0
 getChunksCallbacks = []
@@ -30,6 +33,7 @@ class OBO
 	registerChunk: (chunkClass, opts = {}) ->
 		# console.log('REGISTER CHUNKK', chunkClass.type);
 		chunks.set chunkClass.type, chunkClass
+		componentClassMap.register chunkClass.type, chunkClass
 
 		opts = Object.assign {
 			dependencies: []
@@ -37,8 +41,10 @@ class OBO
 			error: false
 			insertItem: null
 		}, opts
-		if opts.default then defaultChunk = chunkClass.type
-		if opts.error then errorChunk = chunkClass.type
+		if opts.default
+			componentClassMap.setDefault chunkClass.type
+		if opts.error
+			componentClassMap.setError chunkClass.type
 		if opts.insertItem then insertItems.set chunkClass.type, opts.insertItem
 
 		loadDependency = @loadDependency
@@ -99,6 +105,9 @@ Object.defineProperties OBO.prototype, {
 
 	textListeners:
 		get: -> textListeners
+
+	componentClassMap:
+		get: -> componentClassMap
 
 	__debug__chunks:
 		get: -> chunks

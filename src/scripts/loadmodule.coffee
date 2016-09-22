@@ -1,7 +1,6 @@
 ObojoboDraft = window.ObojoboDraft
 OBO = window.OBO
 
-ComponentClassMap = ObojoboDraft.chunk.ComponentClassMap
 Head = ObojoboDraft.page.Head
 Module = ObojoboDraft.models.Module
 API = ObojoboDraft.net.API
@@ -16,12 +15,6 @@ loadModule = (id, loadCallback) ->
 
 module.exports = (moduleId, loadCallback) ->
 	OBO.getChunks (chunks) ->
-		chunks.forEach (chunkClass, type) ->
-			ComponentClassMap.register type, chunkClass
-
-		ComponentClassMap.setDefault OBO.defaultChunk
-		ComponentClassMap.setError OBO.errorChunk
-
 		loadModule moduleId, (module) ->
 			loadCallback {
 				module: module
