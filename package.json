@@ -5,7 +5,6 @@
   "main": "index.js",
   "scripts": {
     "test": "./node_modules/.bin/jasmine-node spec",
-    "postinstall": "webpack",
     "start": "webpack --watch",
     "start-dev": "webpack-dev-server --progress --colors --port 8090 --host 0.0.0.0",
     "build": "webpack",
