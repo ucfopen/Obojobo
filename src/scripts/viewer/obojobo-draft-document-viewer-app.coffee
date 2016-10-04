@@ -1,18 +1,4 @@
-# window.React = require 'react'
-# window.Perf = require 'react-addons-perf'
-
 "use strict";
-
-console.log 'editor', OBO
-
-# setup toolbar
-# require './toolbar'
-
-# load chunks
-# require 'chunks/editor'
-
-
-
 
 loadModule = require '../loadModule'
 

@@ -25,6 +25,7 @@
     "css-loader": "^0.23.1",
     "dragula": "^3.7.1",
     "extract-text-webpack-plugin": "^1.0.1",
+    "glob": "^7.1.0",
     "jasmine-node": "^1.14.5",
     "json-loader": "^0.5.4",
     "katex": "^0.5.1",

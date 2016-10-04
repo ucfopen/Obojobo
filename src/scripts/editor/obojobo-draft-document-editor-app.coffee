@@ -1,22 +1,12 @@
-# window.React = require 'react'
-# window.Perf = require 'react-addons-perf'
-
 "use strict";
 
-# console.log 'editor', OBOoo
-
 # setup toolbar
-# require './toolbar'
-
-# load chunks
-# require 'chunks/editor'
-
-
-
+console.log 'BOUT TO LOAD TOOLBAR!', window.OBO
+require './toolbar'
 
 loadModule = require '../loadmodule'
 
-EditorApp = require 'Editor/components/editorapp'
+EditorApp = window.Editor.components.EditorApp
 
 moduleId = decodeURIComponent(document.location.hash).substr(1)
 
