@@ -1,8 +1,5 @@
 "use strict";
 
-# setup toolbar
-require './toolbar'
-
 loadModule = require '../loadmodule'
 
 EditorApp = window.Editor.components.EditorApp
