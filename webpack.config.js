@@ -26,7 +26,7 @@ var config = {
 				loaders: ['babel?presets[]=react&presets[]=es2015', 'coffee-loader']
 			},
 			{
-				test: /\.scss$/,
+				test: /\.s?css$/,
 				loader: ExtractTextPlugin.extract(['css', 'sass'])
 			}
 		]
