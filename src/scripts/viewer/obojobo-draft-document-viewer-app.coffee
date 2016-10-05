@@ -1,6 +1,6 @@
 "use strict";
 
-loadModule = require '../loadModule'
+loadModule = require '../loadmodule'
 
 Viewer = window.Viewer
 ViewerApp = Viewer.components.ViewerApp

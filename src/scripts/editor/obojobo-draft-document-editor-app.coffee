@@ -1,7 +1,6 @@
 "use strict";
 
 # setup toolbar
-console.log 'BOUT TO LOAD TOOLBAR!', window.OBO
 require './toolbar'
 
 loadModule = require '../loadmodule'

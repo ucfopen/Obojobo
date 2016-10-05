@@ -31,7 +31,6 @@ class OBO
 		@
 
 	registerChunk: (chunkClass, opts = {}) ->
-		# console.log('REGISTER CHUNKK', chunkClass.type);
 		chunks.set chunkClass.type, chunkClass
 		componentClassMap.register chunkClass.type, chunkClass
 
@@ -80,8 +79,6 @@ class OBO
 		@
 
 	getChunks: (callback) ->
-		# console.log('OBO get CHUNKS');
-		# console.log(chunksLoaded, chunks.size);
 		if true or chunksLoaded is chunks.size
 			callback(chunks)
 		else
