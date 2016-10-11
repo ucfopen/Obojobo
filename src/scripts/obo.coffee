@@ -63,8 +63,6 @@ class OBO
 		@
 
 	addToolbarItem: (opts, position = -1) ->
-		console.log 'ADD TOOLBAR', opts.label, position
-
 		if position > -1
 			toolbarItems.splice position, 0, opts
 		else

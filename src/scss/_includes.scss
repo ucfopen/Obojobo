@@ -1,0 +1,38 @@
+$color-action: #6714bd;
+$color-error: #990000;
+$color-text: #000;
+$color-text-minor: lighten($color-text, 60%);
+$color-bg: #FFF;
+$color-shadow: rgba(0, 0, 0, 0.3);
+$color-highlight: #93c6ff;
+$color-bg2: #f4f4f4;
+$color-correct: rgba(147, 230, 133, 1.0);
+$color-incorrect: #ff755b;
+
+$box-shadow-focus: 0 0 3px 3px #5991ca;
+
+$font-default: 'Noto Sans';
+$font-monospace: 'Droid Sans Mono', monospace;
+
+$dimension-column-width: 40rem;
+$dimension-padding: 3rem;
+
+@mixin pad()
+{
+	padding-left: $dimension-padding;
+	padding-right: $dimension-padding;
+}
+
+@mixin placeholder($height)
+{
+	background: $color-bg2;
+	box-sizing: border-box;
+	color: transparentize($color-text, 0.5);
+	font-family: $font-default;
+	font-size: 1rem;
+	font-weight: bold;
+	height: $height;
+	line-height: 0;
+	padding-top: $height / 2;
+	text-align: center;
+}

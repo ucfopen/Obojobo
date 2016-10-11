@@ -1,3 +1,5 @@
+@import '../scss/includes';
+
 html {
   height: 100%;
   width: 100%;
@@ -29,7 +31,7 @@ body {
 
 	.pad
 	{
-		max-width: 40rem;
+		max-width: $dimension-column-width;
 		margin-left: auto;
 		margin-right: auto;
 	}
