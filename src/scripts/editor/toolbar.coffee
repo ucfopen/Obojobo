@@ -15,7 +15,8 @@ ChunkUtil = ObojoboDraft.chunk.util.ChunkUtil
 Chunk = ObojoboDraft.models.Chunk
 
 OBO
-	.addToolbarItem
+	.registerToolbarItem
+		id: 'boldText'
 		type: 'toggle'
 		label: 'Bold text'
 		icon: TOOLBAR_BOLD
@@ -27,7 +28,8 @@ OBO
 			boldState = boldBrushState is 'apply' or (boldBrushState isnt 'remove' and selection.styles[StyleType.BOLD])
 			toolbarItem.state = if boldState then 'on' else 'off'
 
-	.addToolbarItem
+	.registerToolbarItem
+		id: 'italicText'
 		type: 'toggle'
 		label: 'Italicize text'
 		icon: TOOLBAR_ITALIC
@@ -39,10 +41,8 @@ OBO
 			italicState = italicBrushState is 'apply' or (italicBrushState isnt 'remove' and selection.styles[StyleType.ITALIC])
 			toolbarItem.state = if italicState then 'on' else 'off'
 
-	.addToolbarItem
-		type: 'separator'
-
-	.addToolbarItem
+	.registerToolbarItem
+		id: 'link'
 		type: 'toggle'
 		label: 'Link'
 		icon: TOOLBAR_LINK
@@ -55,39 +55,34 @@ OBO
 			state = brushState is 'apply' or (brushState isnt 'remove' and selection.styles[StyleType.LINK])
 			toolbarItem.state = if state then 'on' else 'off'
 
-	.addToolbarItem
-		type: 'separator'
-
-	.addToolbarItem
+	.registerToolbarItem
+		id: 'unindent'
 		type: 'button'
 		label: 'Unindent'
 		icon: TOOLBAR_UNINDENT
 		onClick: (toolbarItem, editorState, selection) ->
 			ChunkUtil.send 'indent', selection.virtual.all, selection, [true]
 
-	.addToolbarItem
+	.registerToolbarItem
+		id: 'indent'
 		type: 'button'
 		label: 'Indent'
 		icon: TOOLBAR_INDENT
 		onClick: (toolbarItem, editorState, selection) ->
 			ChunkUtil.send 'indent', selection.virtual.all, selection, [false]
 
-	.addToolbarItem
-		type: 'separator'
-
-	.addToolbarItem
+	.registerToolbarItem
+		id: 'subscriptText'
 		type: 'button'
 		label: 'Subscript'
 		icon: TOOLBAR_SUB
 		onClick: (toolbarItem, editorState, selection) ->
 			ChunkUtil.send 'styleSelection', selection.virtual.all, selection, [StyleType.SUPERSCRIPT, -1]
 
-	.addToolbarItem
+	.registerToolbarItem
+		id: 'superscriptText'
 		type: 'button'
 		label: 'Superscript'
 		icon: TOOLBAR_SUP
 		onClick: (toolbarItem, editorState, selection) ->
 			ChunkUtil.send 'styleSelection', selection.virtual.all, selection, [StyleType.SUPERSCRIPT, 1]
-
-	.addToolbarItem
-		type: 'separator'

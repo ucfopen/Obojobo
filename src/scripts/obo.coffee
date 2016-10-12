@@ -7,6 +7,9 @@ getChunksCallbacks = []
 defaultChunk = null
 errorChunk = null
 insertItems = new Map()
+registeredToolbarItems = {
+	'separator': { id:'separator', type:'separator' }
+}
 toolbarItems = []
 textListeners = []
 
@@ -62,12 +65,12 @@ class OBO
 
 		@
 
-	addToolbarItem: (opts, position = -1) ->
-		if position > -1
-			toolbarItems.splice position, 0, opts
-		else
-			toolbarItems.push opts
+	registerToolbarItem: (opts) ->
+		registeredToolbarItems[opts.id] = opts
+		@
 
+	addToolbarItem: (id) ->
+		toolbarItems.push Object.assign({}, registeredToolbarItems[id])
 		@
 
 	registerTextListener: (opts, position = -1) ->
@@ -96,6 +99,9 @@ Object.defineProperties OBO.prototype, {
 
 	insertItems:
 		get: -> insertItems
+
+	registeredToolbarItems:
+		get: -> registeredToolbarItems
 
 	toolbarItems:
 		get: -> toolbarItems
