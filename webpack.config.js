@@ -9,6 +9,7 @@ var config = {
 		'obojobo-draft': [path.join(__dirname, 'src', 'scripts', 'obojobo-draft.coffee')],
 		'obojobo-draft-document-editor': [path.join(__dirname, 'src', 'scripts', 'editor', 'obojobo-draft-document-editor.coffee')],
 		'obojobo-draft-document-editor-app': [path.join(__dirname, 'src', 'scripts', 'editor', 'obojobo-draft-document-editor-app.coffee')],
+		'default-toolbar': [path.join(__dirname, 'src', 'scripts', 'editor', 'default-toolbar.coffee')],
 		'obojobo-draft-document-viewer': [path.join(__dirname, 'src', 'scripts', 'viewer', 'obojobo-draft-document-viewer.coffee')],
 		'obojobo-draft-document-viewer-app': [path.join(__dirname, 'src', 'scripts', 'viewer', 'obojobo-draft-document-viewer-app.coffee')],
 	},
