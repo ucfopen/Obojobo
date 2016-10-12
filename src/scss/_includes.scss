@@ -1,21 +1,29 @@
-$color-action: #6714bd;
+$color-action: #6714BD;
+$color-action-minor: desaturate(lighten($color-action, 30%), 40%);
 $color-error: #990000;
-$color-text: #000;
+$color-text: #000000;
 $color-text-minor: lighten($color-text, 60%);
-$color-bg: #FFF;
+$color-bg: #FFFFFF;
 $color-shadow: rgba(0, 0, 0, 0.3);
-$color-highlight: #93c6ff;
-$color-bg2: #f4f4f4;
-$color-correct: rgba(147, 230, 133, 1.0);
-$color-incorrect: #ff755b;
+$color-highlight: #93C6FF;
+$color-bg2: #F4F4F4;
+$color-correct: rgba(147, 230, 133, 1);
+$color-incorrect: #FF755B;
+$color-transparent: rgba(0, 0, 0, 0);
+$color-browser-focus: #5991CA;
 
-$box-shadow-focus: 0 0 3px 3px #5991ca;
+$box-shadow-focus: 0 0 3px 3px $color-browser-focus;
 
-$font-default: 'Noto Sans';
+$duration-animation-default: 0.2s;
+
+$font-default: 'Noto Sans', Arial, sans-serif;
+$font-text: 'Noto Serif', serif;
 $font-monospace: 'Droid Sans Mono', monospace;
 
 $dimension-column-width: 40rem;
 $dimension-padding: 3rem;
+$dimension-editor: $dimension-column-width + $dimension-padding + $dimension-padding;
+$dimension-toolbar-height: 2.7rem;
 
 @mixin pad()
 {
