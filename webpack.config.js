@@ -2,6 +2,8 @@ var path = require('path');
 var webpack = require('webpack')
 var glob = require('glob');
 var ExtractTextPlugin = require('extract-text-webpack-plugin');
+var bourbon = require('node-bourbon');
+
 
 var config = {
 	entry: {
@@ -28,7 +30,7 @@ var config = {
 			},
 			{
 				test: /\.s?css$/,
-				loader: ExtractTextPlugin.extract(['css', 'sass'])
+				loader: ExtractTextPlugin.extract(['css', 'sass?includePaths[]=' + bourbon.includePaths])
 			}
 		]
 	},
