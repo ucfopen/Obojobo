@@ -13,15 +13,18 @@ $color-correct: rgba(147, 230, 133, 1);
 $color-incorrect: #FF755B;
 $color-transparent: rgba(0, 0, 0, 0);
 $color-browser-focus: #5991CA;
+$color-comment: #FFD400;
 
 $box-shadow-focus: 0 0 3px 3px $color-browser-focus;
 $box-shadow-overlay: 0 2px 2px $color-shadow;
 
 $duration-animation-default: 0.2s;
 
-$font-default: 'Noto Sans', Arial, sans-serif;
+$font-default: 'Libre Franklin', Arial, sans-serif;
 $font-text: 'Noto Serif', serif;
 $font-monospace: 'Droid Sans Mono', monospace;
+
+$font-size: 14pt;
 
 $dimension-column-width: 40rem;
 $dimension-padding: 3rem;

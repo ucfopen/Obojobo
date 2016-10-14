@@ -13,7 +13,7 @@ body {
   overflow: auto;
   margin: 0;
   -webkit-overflow-scrolling: touch;
-  font-size: 14pt;
+  font-size: $font-size;
 }
 .component
 {
@@ -22,14 +22,30 @@ body {
 	display: block;
 	font-family: 'Noto Serif';
 	line-height: 1.5em;
-	margin: 0;
+	// margin: 0;
+	// margin-top: 1rem;
+	// margin-bottom: 1rem;
 	overflow-wrap: break-word;
 	// padding: 1px;
-	padding: 1px 0;
+	// padding: 1px 0;
 	position: relative;
 	white-space: pre-wrap;
 	width: 100%;
 	word-wrap: break-word;
+	margin: 0 auto;
+	padding-top: 1rem;
+	padding-bottom: 1rem;
+	// border: 1px solid red;
+
+	&:first-child
+	{
+		padding-top: 2rem;
+	}
+
+	&:last-child
+	{
+		padding-bottom: 2rem;
+	}
 
 	.pad
 	{
@@ -41,13 +57,14 @@ body {
 	h1, h2, h3, h4, h5, h6
 	{
 		/*font-family: 'Open Sans';*/
-		font-family: 'Noto Sans';
+		font-family: $font-default;
 		font-weight: normal;
+		margin: 0;
 
 	}
 	h1
 	{
-		color: #003a6f;
+		// color: #003a6f;
 		// font-family: 'Directors Gothic 230';
 		// font-size: 36pt;
 		line-height: 3rem;
@@ -56,6 +73,9 @@ body {
 	h2
 	{
 		line-height: 2.5rem;
+		color: #A20E83;
+		font-size: 1.5rem;
+		// margin-bottom: 0;
 	}
 
 	pre,
