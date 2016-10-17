@@ -8,6 +8,8 @@
 * '@TODO - Dont like that Im getting the dom selection for curChunkSel when the chunk selection should be up to date theoretically'
 * '@TODO - Shortcuts like Ctrl+S to save trigger screen tween'
 * '@TODO - '
+* Editing of YouTube / iFrame bubble is focus wonky
+* Need to load google fonts on editor end probably
 
 Migrate key commands and inputmanger alg to functions
 

@@ -37,15 +37,7 @@ body {
 	padding-bottom: 1rem;
 	// border: 1px solid red;
 
-	&:first-child
-	{
-		padding-top: 2rem;
-	}
 
-	&:last-child
-	{
-		padding-bottom: 2rem;
-	}
 
 	.pad
 	{
@@ -88,5 +80,21 @@ body {
 	a
 	{
 		color: #bd1438;
+	}
+}
+
+.document
+{
+	.component
+	{
+		&:first-child
+		{
+			padding-top: 2rem;
+		}
+
+		&:last-child
+		{
+			padding-bottom: 2rem;
+		}
 	}
 }
