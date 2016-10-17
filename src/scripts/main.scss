@@ -60,6 +60,13 @@ body {
 		// font-family: 'Directors Gothic 230';
 		// font-size: 36pt;
 		line-height: 3rem;
+		font-weight: 700;
+
+		b,
+		strong
+		{
+			font-weight: 900;
+		}
 	}
 
 	h2
@@ -80,6 +87,17 @@ body {
 	a
 	{
 		color: #bd1438;
+	}
+
+	.obojobo-draft--chunks--question .question
+	{
+		font-weight: 700;
+
+		b,
+		strong
+		{
+			font-weight: 900;
+		}
 	}
 }
 
