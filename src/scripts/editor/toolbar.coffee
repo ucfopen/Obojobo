@@ -74,7 +74,7 @@ OBO
 	.registerToolbarItem
 		id: 'subscriptText'
 		type: 'button'
-		label: 'Subscript'
+		label: 'Subscript Text'
 		icon: TOOLBAR_SUB
 		onClick: (toolbarItem, editorState, selection) ->
 			ChunkUtil.send 'styleSelection', selection.virtual.all, selection, [StyleType.SUPERSCRIPT, -1]
@@ -82,7 +82,7 @@ OBO
 	.registerToolbarItem
 		id: 'superscriptText'
 		type: 'button'
-		label: 'Superscript'
+		label: 'Superscript Text'
 		icon: TOOLBAR_SUP
 		onClick: (toolbarItem, editorState, selection) ->
 			ChunkUtil.send 'styleSelection', selection.virtual.all, selection, [StyleType.SUPERSCRIPT, 1]
