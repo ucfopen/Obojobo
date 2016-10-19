@@ -1,4 +1,3 @@
-* @TODO - IDEA - Have click targets, allow you to set future carets on them, so you can click on the img in figure chunk and then setFutureCaret() it
 * '@TODO - All of the command handlers should move out to Editor since they all have to do with editing!!!!'
 * '@TODO - forcePageRender should just use callbacks'
 * '@TODO - Need a better name than "compoment"'

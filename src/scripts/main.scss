@@ -103,16 +103,13 @@ body {
 
 .document
 {
-	.component
+	.component:first-child
 	{
-		&:first-child
-		{
-			padding-top: 2rem;
-		}
+		padding-top: 2rem;
+	}
 
-		&:last-child
-		{
-			padding-bottom: 2rem;
-		}
+	.component:nth-last-child(2)
+	{
+		padding-bottom: 2rem;
 	}
 }
