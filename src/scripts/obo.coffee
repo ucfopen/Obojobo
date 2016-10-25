@@ -34,6 +34,7 @@ class OBO
 		@
 
 	registerChunk: (chunkClass, opts = {}) ->
+		console.log 'registerChunk', chunkClass.type, opts
 		chunks.set chunkClass.type, chunkClass
 		componentClassMap.register chunkClass.type, chunkClass
 

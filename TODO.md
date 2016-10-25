@@ -5,8 +5,9 @@
 * '@TODO - turn classes like pad into sass mixins'
 * '@TODO - Dont like that Im getting the dom selection for curChunkSel when the chunk selection should be up to date theoretically'
 * '@TODO - Shortcuts like Ctrl+S to save trigger screen tween'
-* '@TODO - '
+* '@TODO - Perhaps instaed of selection.setPage have page be part of the selection'
 * Need to load google fonts on editor end maybe?
+* Redoing between pages when character added is not last character throws errors
 
 Migrate key commands and inputmanger alg to functions
 
