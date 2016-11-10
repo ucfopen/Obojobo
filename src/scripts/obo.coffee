@@ -1,17 +1,20 @@
 ComponentClassMap = require './componentclassmap'
 
 componentClassMap = new ComponentClassMap()
-chunks = new Map()
-chunksLoaded = 0
-getChunksCallbacks = []
-defaultChunk = null
-errorChunk = null
+items = new Map()
+itemsLoaded = 0
+getItemsCallbacks = []
+defaults = new Map()
+# errorChunk = null @TODO
+
+# this is editor stuff only
 insertItems = new Map()
 registeredToolbarItems = {
 	'separator': { id:'separator', type:'separator' }
 }
 toolbarItems = []
 textListeners = []
+
 
 class OBO
 	loadDependency: (url, onLoadCallback = ->) ->
@@ -33,21 +36,28 @@ class OBO
 
 		@
 
-	registerChunk: (chunkClass, opts = {}) ->
-		console.log 'registerChunk', chunkClass.type, opts
-		chunks.set chunkClass.type, chunkClass
-		componentClassMap.register chunkClass.type, chunkClass
+	register: (className, opts = {}) ->
+		console.log 'regsiter', className, opts
+		items.set className, opts
+		# componentClassMap.register chunkClass.type, chunkClass
 
 		opts = Object.assign {
+			type: null
 			dependencies: []
 			default: false
 			error: false
 			insertItem: null
+			modelClass: null
+			componentClass: null
+			selectionHandler: null
+			commandHandler: null
 		}, opts
+
 		if opts.default
-			componentClassMap.setDefault chunkClass.type
-		if opts.error
-			componentClassMap.setError chunkClass.type
+			# componentClassMap.setDefault chunkClass.type
+			defaults.set opts.type, className
+		# if opts.error
+		# 	componentClassMap.setError chunkClass.type
 		if opts.insertItem then insertItems.set chunkClass.type, opts.insertItem
 
 		loadDependency = @loadDependency
@@ -56,15 +66,58 @@ class OBO
 				loadDependency dependency, resolve
 
 		Promise.all(promises).then ->
-			chunksLoaded++
+			itemsLoaded++
 
-			if chunksLoaded is chunks.size
-				for callback in getChunksCallbacks
+			if itemsLoaded is items.size
+				for callback in getItemsCallbacks
 					callback chunks
 
-				getChunksCallbacks = []
+				getItemsCallbacks = []
 
 		@
+
+	getDefaultItemForModelType: (modelType) ->
+		type = defaults.get modelType
+		if not type
+			return null
+
+		items.get type
+
+	getItemForType: (type) ->
+		items.get type
+
+	# registerChunk: (chunkClass, opts = {}) ->
+	# 	console.log 'registerChunk', chunkClass.type, opts
+	# 	chunks.set chunkClass.type, chunkClass
+	# 	componentClassMap.register chunkClass.type, chunkClass
+
+	# 	opts = Object.assign {
+	# 		dependencies: []
+	# 		default: false
+	# 		error: false
+	# 		insertItem: null
+	# 	}, opts
+	# 	if opts.default
+	# 		componentClassMap.setDefault chunkClass.type
+	# 	if opts.error
+	# 		componentClassMap.setError chunkClass.type
+	# 	if opts.insertItem then insertItems.set chunkClass.type, opts.insertItem
+
+	# 	loadDependency = @loadDependency
+	# 	promises = opts.dependencies.map (dependency) ->
+	# 		new Promise (resolve, reject) ->
+	# 			loadDependency dependency, resolve
+
+	# 	Promise.all(promises).then ->
+	# 		chunksLoaded++
+
+	# 		if chunksLoaded is chunks.size
+	# 			for callback in getChunksCallbacks
+	# 				callback chunks
+
+	# 			getChunksCallbacks = []
+
+	# 	@
 
 	registerToolbarItem: (opts) ->
 		registeredToolbarItems[opts.id] = opts
@@ -82,21 +135,25 @@ class OBO
 
 		@
 
-	getChunks: (callback) ->
-		if true or chunksLoaded is chunks.size
-			callback(chunks)
+	getItems: (callback) ->
+		if true or itemsLoaded is items.size
+			callback(items)
 		else
-			getChunksCallbacks.push callback
+			getItemsCallbacks.push callback
 
 		null
 
+	getDefaultItemForType: (type) ->
+		className = defaults.get(type)
+		if not className?
+			return null
+
+		items.get(className)
+
 
 Object.defineProperties OBO.prototype, {
-	defaultChunk:
-		get: -> defaultChunk
-
-	errorChunk:
-		get: -> errorChunk
+	# errorChunk:
+	# 	get: -> errorChunk
 
 	insertItems:
 		get: -> insertItems
@@ -110,8 +167,8 @@ Object.defineProperties OBO.prototype, {
 	textListeners:
 		get: -> textListeners
 
-	componentClassMap:
-		get: -> componentClassMap
+	# componentClassMap:
+	# 	get: -> componentClassMap
 
 	__debug__chunks:
 		get: -> chunks

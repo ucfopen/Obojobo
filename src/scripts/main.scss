@@ -15,6 +15,41 @@ body {
   -webkit-overflow-scrolling: touch;
   font-size: $font-size;
 }
+
+// .component-container > .component:first-child
+// {
+// 	padding-top: 2rem;
+// 	border: 1px solid red;
+// }
+
+// .component-container > .component:last-child
+// {
+// 	padding-bottom: 2rem;
+// 	border: 1px solid green;
+// }
+
+.component:first-child
+{
+	padding-top: 0;
+	// border: 2px solid red;
+}
+.component:last-child
+{
+	padding-bottom: 0;
+	// border: 2px solid blue;
+}
+.component:first-child:last-child
+{
+	padding-top: 0;
+	padding-bottom: 0;
+	// border: 2px solid green;
+}
+
+.component
+{
+	// border: 2px solid gray;
+}
+
 .component
 {
 	box-sizing: border-box;
@@ -33,9 +68,30 @@ body {
 	width: 100%;
 	word-wrap: break-word;
 	margin: 0 auto;
-	padding-top: 1rem;
-	padding-bottom: 1rem;
+	// margin-bottom: 1rem;
 	// border: 1px solid red;
+
+	// border: 2px solid red;
+	// padding: 2rem !important;
+	// border: 1px solid gray;
+
+			padding-top: 1rem;
+			padding-bottom: 1rem;
+
+	// &:after
+	// {
+	// 	position: absolute;
+ //    top: 0;
+ //    right: 0;
+ //    // content: attr(data-type);
+ //    /* width: 155px; */
+ //    height: 1rem;
+ //    background: #dadada;
+ //    font-size: 12px;
+ //    line-height: 1rem;
+ //    text-align: right;
+ //    font-family: monospace;
+	// }
 
 
 
@@ -103,13 +159,5 @@ body {
 
 .document
 {
-	.component:first-child
-	{
-		padding-top: 2rem;
-	}
 
-	.component:last-child
-	{
-		padding-bottom: 2rem;
-	}
 }

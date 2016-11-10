@@ -1,9 +1,9 @@
-ObojoboDraft = window.ObojoboDraft
+Common = window.ObojoboDraft.Common
 OBO = window.OBO
 
-Head = ObojoboDraft.page.Head
-Module = ObojoboDraft.models.Module
-API = ObojoboDraft.net.API
+Head = Common.page.Head
+Module = Common.models.Module
+API = Common.net.API
 
 loadModule = (id, loadCallback) ->
 	if id?.length? and id.length > 0
@@ -14,7 +14,7 @@ loadModule = (id, loadCallback) ->
 		loadCallback new Module
 
 module.exports = (moduleId, loadCallback) ->
-	OBO.getChunks (chunks) ->
+	OBO.getItems (chunks) ->
 		loadModule moduleId, (module) ->
 			loadCallback {
 				module: module
