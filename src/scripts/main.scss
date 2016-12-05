@@ -4,13 +4,13 @@
 html {
   height: 100%;
   width: 100%;
-  overflow: hidden;
+  // overflow: hidden;
 }
 
 body {
   height: 100%;
   padding: 0;
-  overflow: auto;
+  // overflow: auto;
   margin: 0;
   -webkit-overflow-scrolling: touch;
   font-size: $font-size;

@@ -18,3 +18,18 @@ editor.sendKey 'a' ?
 editor.insertText ?
 editor.sendTab()
 editor.setSelection
+
+
+
+"content": {
+	"triggers": {
+		"onEnter": {
+			"type": "unlock",
+			"value": "final-assessment"
+		},
+		"onCompletion": {
+			"type": "message",
+			"value": "blah blah blah"
+		}
+	}
+}

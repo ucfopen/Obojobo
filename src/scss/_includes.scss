@@ -9,6 +9,7 @@ $color-bg: #FFFFFF;
 $color-shadow: rgba(0, 0, 0, 0.3);
 $color-highlight: #93C6FF;
 $color-bg2: #F4F4F4;
+$color-bg3:  #4f4f4f;
 $color-correct: rgba(147, 230, 133, 1);
 $color-incorrect: #FF755B;
 $color-transparent: rgba(0, 0, 0, 0);
@@ -30,6 +31,7 @@ $dimension-column-width: 46rem;
 $dimension-padding: 3rem;
 $dimension-editor: $dimension-column-width + $dimension-padding + $dimension-padding;
 $dimension-toolbar-height: 2.7rem;
+$dimension-nav-menu: 20rem;
 
 @mixin pad()
 {

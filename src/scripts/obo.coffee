@@ -37,7 +37,7 @@ class OBO
 		@
 
 	register: (className, opts = {}) ->
-		console.log 'regsiter', className, opts
+		# console.log 'regsiter', className, opts
 		items.set className, opts
 		# componentClassMap.register chunkClass.type, chunkClass
 

@@ -3,6 +3,31 @@
 	"children": [
 		{
 			"type": "ObojoboDraft.Sections.Assessment",
+			"content": {
+				"attempts": "unlimited",
+				"disableNavigationOnVisit": true,
+				"lockNavigationDuringTest": true,
+				"scoreActions": [
+					{
+						"from": 0,
+						"to": 99,
+						"message": "You failed - now look at the content",
+						"action": {
+							"type": "unlock",
+							"value": "_next"
+						}
+					},
+					{
+						"from": 100,
+						"to": 100,
+						"message": "You passed - now take the final assessment",
+						"action": {
+							"type": "unlock",
+							"value": "final-assessment"
+						}
+					}
+				]
+			},
 			"children": [
 				{
 					"type": "ObojoboDraft.Pages.Page",
@@ -22,6 +47,98 @@
 									}
 								]
 							}
+						},
+						{
+							"type": "ObojoboDraft.Chunks.Question",
+							"content": {
+								"shuffle": true,
+								"type": "assessment"
+							},
+							"children": [
+								{
+									"type": "ObojoboDraft.Chunks.Heading",
+									"content": {
+										"headingLevel": 1,
+										"textGroup": [
+											{
+												"text": {
+													"value": "Here is a question with only one right answer",
+													"styleList": null
+												},
+												"data": {
+													"indent": 0
+												}
+											}
+										]
+									}
+								},
+								{
+									"type": "ObojoboDraft.Chunks.MCAssessment",
+									"content": {
+										"responseType": "pick-one"
+									},
+									"children": [
+										{
+											"type": "ObojoboDraft.Chunks.MCAssessment.MCChoice",
+											"content": {
+												"score": 100
+											},
+											"children": [
+												{
+													"type": "ObojoboDraft.Chunks.MCAssessment.MCAnswer",
+													"children": [
+														{
+															"type": "ObojoboDraft.Chunks.Text",
+															"content": {
+																"textGroup": [
+																	{
+																		"text": {
+																			"value": "This is the correct answer",
+																			"styleList": null
+																		},
+																		"data": {
+																			"indent": 0
+																		}
+																	}
+																]
+															}
+														}
+													]
+												}
+											]
+										},
+										{
+											"type": "ObojoboDraft.Chunks.MCAssessment.MCChoice",
+											"content": {
+												"score": 0
+											},
+											"children": [
+												{
+													"type": "ObojoboDraft.Chunks.MCAssessment.MCAnswer",
+													"children": [
+														{
+															"type": "ObojoboDraft.Chunks.Text",
+															"content": {
+																"textGroup": [
+																	{
+																		"text": {
+																			"value": "This is the wrong answer",
+																			"styleList": null
+																		},
+																		"data": {
+																			"indent": 0
+																		}
+																	}
+																]
+															}
+														}
+													]
+												}
+											]
+										}
+									]
+								}
+							]
 						},
 						{
 							"type": "ObojoboDraft.Chunks.QuestionBank",
@@ -512,7 +629,11 @@
 			"type": "ObojoboDraft.Sections.Content",
 			"children": [
 				{
+					"id": "page-1",
 					"type": "ObojoboDraft.Pages.Page",
+					"content": {
+						"title": "Projectile Motion"
+					},
 					"children": [
 						{
 							"type": "ObojoboDraft.Chunks.Heading",
@@ -1562,6 +1683,934 @@
 									]
 								}
 							]
+						}
+					]
+				},
+				{
+					"id": "page-2",
+					"type": "ObojoboDraft.Pages.Page",
+					"content": {
+						"title": "Equation Examples"
+					},
+					"children": [
+						{
+							"type": "ObojoboDraft.Chunks.Heading",
+							"content": {
+								"headingLevel": 1,
+								"textGroup": [
+									{
+										"data": {
+											"indent": 0
+										},
+										"text": {
+											"value": "Equation Examples",
+											"styleList": null
+										}
+									}
+								]
+							}
+						},
+						{
+							"type": "ObojoboDraft.Chunks.Heading",
+							"content": {
+								"headingLevel": 2,
+								"textGroup": [
+									{
+										"data": {
+											"indent": 0
+										},
+										"text": {
+											"value": "The initial velocity",
+											"styleList": null
+										}
+									}
+								]
+							}
+						},
+						{
+							"type": "ObojoboDraft.Chunks.Text",
+							"content": {
+								"textGroup": [
+									{
+										"data": {
+											"indent": 0
+										},
+										"text": {
+											"value": "Let the projectile be launched with an initial velocity v_0 which can be expressed as the sum of horizontal and vertical components as follows:",
+											"styleList": [
+												{
+													"start": 56,
+													"end": 59,
+													"type": "_latex",
+													"data": null
+												}
+											]
+										}
+									}
+								]
+							}
+						},
+						{
+							"type": "ObojoboDraft.Chunks.MathEquation",
+							"content": {
+								"latex": "v_0=v_{0_x}i+v_{0_y}j",
+								"align": "center"
+							}
+						},
+						{
+							"type": "ObojoboDraft.Chunks.Text",
+							"content": {
+								"textGroup": [
+									{
+										"data": {
+											"indent": 0
+										},
+										"text": {
+											"value": "The components x_{0_x} and v_{0_y} can be found if the initial launch angle, \\theta, is known:",
+											"styleList": [
+												{
+													"start": 15,
+													"end": 22,
+													"type": "_latex",
+													"data": null
+												},
+												{
+													"start": 27,
+													"end": 34,
+													"type": "_latex",
+													"data": null
+												},
+												{
+													"start": 77,
+													"end": 83,
+													"type": "_latex",
+													"data": null
+												}
+											]
+										}
+									}
+								]
+							}
+						},
+						{
+							"type": "ObojoboDraft.Chunks.List",
+							"content": {
+								"listStyles": null,
+								"textGroup": [
+									{
+										"data": {
+											"indent": 0
+										},
+										"text": {
+											"value": "v_{0_x} = v_0 \\cos \\theta",
+											"styleList": [
+												{
+													"start": 0,
+													"end": 27,
+													"type": "_latex",
+													"data": null
+												}
+											]
+										}
+									},
+									{
+										"data": {
+											"indent": 0
+										},
+										"text": {
+											"value": "v_{0_t} = v_0 \\sin \\theta",
+											"styleList": [
+												{
+													"start": 0,
+													"end": 27,
+													"type": "_latex",
+													"data": null
+												}
+											]
+										}
+									}
+								]
+							}
+						},
+						{
+							"type": "ObojoboDraft.Chunks.Text",
+							"content": {
+								"textGroup": [
+									{
+										"data": {
+											"indent": 0
+										},
+										"text": {
+											"value": "See also the section Parabolic equation for information on finding the initial velocity.",
+											"styleList": null
+										}
+									}
+								]
+							}
+						}
+					]
+				},
+				{
+					"id": "page-3",
+					"type": "ObojoboDraft.Pages.Page",
+					"content": {
+						"title": "Page 3"
+					},
+					"children": [
+						{
+							"type": "ObojoboDraft.Chunks.Heading",
+							"content": {
+								"headingLevel": 1,
+								"textGroup": [
+									{
+										"data": {
+											"indent": 0
+										},
+										"text": {
+											"value": "Page 3",
+											"styleList": null
+										}
+									}
+								]
+							}
+						},
+						{
+							"type": "ObojoboDraft.Chunks.Heading",
+							"content": {
+								"headingLevel": 2,
+								"textGroup": [
+									{
+										"data": {
+											"indent": 0
+										},
+										"text": {
+											"value": "The initial velocity",
+											"styleList": null
+										}
+									}
+								]
+							}
+						},
+						{
+							"type": "ObojoboDraft.Chunks.Text",
+							"content": {
+								"textGroup": [
+									{
+										"data": {
+											"indent": 0
+										},
+										"text": {
+											"value": "Let the projectile be launched with an initial velocity v_0 which can be expressed as the sum of horizontal and vertical components as follows:",
+											"styleList": [
+												{
+													"start": 56,
+													"end": 59,
+													"type": "_latex",
+													"data": null
+												}
+											]
+										}
+									}
+								]
+							}
+						},
+						{
+							"type": "ObojoboDraft.Chunks.MathEquation",
+							"content": {
+								"latex": "v_0=v_{0_x}i+v_{0_y}j",
+								"align": "center"
+							}
+						},
+						{
+							"type": "ObojoboDraft.Chunks.Text",
+							"content": {
+								"textGroup": [
+									{
+										"data": {
+											"indent": 0
+										},
+										"text": {
+											"value": "The components x_{0_x} and v_{0_y} can be found if the initial launch angle, \\theta, is known:",
+											"styleList": [
+												{
+													"start": 15,
+													"end": 22,
+													"type": "_latex",
+													"data": null
+												},
+												{
+													"start": 27,
+													"end": 34,
+													"type": "_latex",
+													"data": null
+												},
+												{
+													"start": 77,
+													"end": 83,
+													"type": "_latex",
+													"data": null
+												}
+											]
+										}
+									}
+								]
+							}
+						},
+						{
+							"type": "ObojoboDraft.Chunks.List",
+							"content": {
+								"listStyles": null,
+								"textGroup": [
+									{
+										"data": {
+											"indent": 0
+										},
+										"text": {
+											"value": "v_{0_x} = v_0 \\cos \\theta",
+											"styleList": [
+												{
+													"start": 0,
+													"end": 27,
+													"type": "_latex",
+													"data": null
+												}
+											]
+										}
+									},
+									{
+										"data": {
+											"indent": 0
+										},
+										"text": {
+											"value": "v_{0_t} = v_0 \\sin \\theta",
+											"styleList": [
+												{
+													"start": 0,
+													"end": 27,
+													"type": "_latex",
+													"data": null
+												}
+											]
+										}
+									}
+								]
+							}
+						},
+						{
+							"type": "ObojoboDraft.Chunks.Text",
+							"content": {
+								"textGroup": [
+									{
+										"data": {
+											"indent": 0
+										},
+										"text": {
+											"value": "See also the section Parabolic equation for information on finding the initial velocity.",
+											"styleList": null
+										}
+									}
+								]
+							}
+						}
+					]
+				}
+			]
+		},
+		{
+			"id": "final-assessment",
+			"type": "ObojoboDraft.Sections.Assessment",
+			"children": [
+				{
+					"type": "ObojoboDraft.Pages.Page",
+					"children": [
+						{
+							"type": "ObojoboDraft.Chunks.Text",
+							"content": {
+								"textGroup": [
+									{
+										"text": {
+											"value": "First, an example of an assessment pretest. This example is simply a single question bank of four questions, randomly selected. Use the Reshuffle button to regenerate the display. This button is just included to test the question bank and will probably change as we get closer to the final release.",
+											"styleList": null
+										},
+										"data": {
+											"indent": 0
+										}
+									}
+								]
+							}
+						},
+						{
+							"type": "ObojoboDraft.Chunks.Question",
+							"content": {
+								"shuffle": true,
+								"type": "assessment"
+							},
+							"children": [
+								{
+									"type": "ObojoboDraft.Chunks.Heading",
+									"content": {
+										"headingLevel": 1,
+										"textGroup": [
+											{
+												"text": {
+													"value": "Here is a question with only one right answer",
+													"styleList": null
+												},
+												"data": {
+													"indent": 0
+												}
+											}
+										]
+									}
+								},
+								{
+									"type": "ObojoboDraft.Chunks.MCAssessment",
+									"content": {
+										"responseType": "pick-one"
+									},
+									"children": [
+										{
+											"type": "ObojoboDraft.Chunks.MCAssessment.MCChoice",
+											"content": {
+												"score": 100
+											},
+											"children": [
+												{
+													"type": "ObojoboDraft.Chunks.MCAssessment.MCAnswer",
+													"children": [
+														{
+															"type": "ObojoboDraft.Chunks.Text",
+															"content": {
+																"textGroup": [
+																	{
+																		"text": {
+																			"value": "This is the correct answer",
+																			"styleList": null
+																		},
+																		"data": {
+																			"indent": 0
+																		}
+																	}
+																]
+															}
+														}
+													]
+												}
+											]
+										},
+										{
+											"type": "ObojoboDraft.Chunks.MCAssessment.MCChoice",
+											"content": {
+												"score": 0
+											},
+											"children": [
+												{
+													"type": "ObojoboDraft.Chunks.MCAssessment.MCAnswer",
+													"children": [
+														{
+															"type": "ObojoboDraft.Chunks.Text",
+															"content": {
+																"textGroup": [
+																	{
+																		"text": {
+																			"value": "This is the wrong answer",
+																			"styleList": null
+																		},
+																		"data": {
+																			"indent": 0
+																		}
+																	}
+																]
+															}
+														}
+													]
+												}
+											]
+										}
+									]
+								}
+							]
+						},
+						{
+							"type": "ObojoboDraft.Chunks.QuestionBank",
+							"children": [
+								{
+									"type": "ObojoboDraft.Chunks.Question",
+									"content": {
+										"shuffle": true,
+										"type": "assessment"
+									},
+									"children": [
+										{
+											"type": "ObojoboDraft.Chunks.Heading",
+											"content": {
+												"headingLevel": 1,
+												"textGroup": [
+													{
+														"text": {
+															"value": "Here is a question with only one right answer",
+															"styleList": null
+														},
+														"data": {
+															"indent": 0
+														}
+													}
+												]
+											}
+										},
+										{
+											"type": "ObojoboDraft.Chunks.MCAssessment",
+											"content": {
+												"responseType": "pick-one"
+											},
+											"children": [
+												{
+													"type": "ObojoboDraft.Chunks.MCAssessment.MCChoice",
+													"content": {
+														"score": 100
+													},
+													"children": [
+														{
+															"type": "ObojoboDraft.Chunks.MCAssessment.MCAnswer",
+															"children": [
+																{
+																	"type": "ObojoboDraft.Chunks.Text",
+																	"content": {
+																		"textGroup": [
+																			{
+																				"text": {
+																					"value": "This is the correct answer",
+																					"styleList": null
+																				},
+																				"data": {
+																					"indent": 0
+																				}
+																			}
+																		]
+																	}
+																}
+															]
+														}
+													]
+												},
+												{
+													"type": "ObojoboDraft.Chunks.MCAssessment.MCChoice",
+													"content": {
+														"score": 0
+													},
+													"children": [
+														{
+															"type": "ObojoboDraft.Chunks.MCAssessment.MCAnswer",
+															"children": [
+																{
+																	"type": "ObojoboDraft.Chunks.Text",
+																	"content": {
+																		"textGroup": [
+																			{
+																				"text": {
+																					"value": "This is the wrong answer",
+																					"styleList": null
+																				},
+																				"data": {
+																					"indent": 0
+																				}
+																			}
+																		]
+																	}
+																}
+															]
+														}
+													]
+												}
+											]
+										}
+									]
+								},
+								{
+									"type": "ObojoboDraft.Chunks.Question",
+									"content": {
+										"shuffle": true,
+										"type": "assessment"
+									},
+									"children": [
+										{
+											"type": "ObojoboDraft.Chunks.Heading",
+											"content": {
+												"headingLevel": 1,
+												"textGroup": [
+													{
+														"text": {
+															"value": "Here is a question with multiple correct answers",
+															"styleList": null
+														},
+														"data": {
+															"indent": 0
+														}
+													}
+												]
+											}
+										},
+										{
+											"type": "ObojoboDraft.Chunks.MCAssessment",
+											"content": {
+												"responseType": "pick-one-multiple-correct"
+											},
+											"children": [
+												{
+													"type": "ObojoboDraft.Chunks.MCAssessment.MCChoice",
+													"content": {
+														"score": 100
+													},
+													"children": [
+														{
+															"type": "ObojoboDraft.Chunks.MCAssessment.MCAnswer",
+															"children": [
+																{
+																	"type": "ObojoboDraft.Chunks.Text",
+																	"content": {
+																		"textGroup": [
+																			{
+																				"text": {
+																					"value": "This is a correct answer",
+																					"styleList": null
+																				},
+																				"data": {
+																					"indent": 0
+																				}
+																			}
+																		]
+																	}
+																}
+															]
+														}
+													]
+												},
+												{
+													"type": "ObojoboDraft.Chunks.MCAssessment.MCChoice",
+													"content": {
+														"score": 100
+													},
+													"children": [
+														{
+															"type": "ObojoboDraft.Chunks.MCAssessment.MCAnswer",
+															"children": [
+																{
+																	"type": "ObojoboDraft.Chunks.Text",
+																	"content": {
+																		"textGroup": [
+																			{
+																				"text": {
+																					"value": "This is a correct answer",
+																					"styleList": null
+																				},
+																				"data": {
+																					"indent": 0
+																				}
+																			}
+																		]
+																	}
+																}
+															]
+														}
+													]
+												},
+												{
+													"type": "ObojoboDraft.Chunks.MCAssessment.MCChoice",
+													"content": {
+														"score": 0
+													},
+													"children": [
+														{
+															"type": "ObojoboDraft.Chunks.MCAssessment.MCAnswer",
+															"children": [
+																{
+																	"type": "ObojoboDraft.Chunks.Text",
+																	"content": {
+																		"textGroup": [
+																			{
+																				"text": {
+																					"value": "This is an incorrect answer",
+																					"styleList": null
+																				},
+																				"data": {
+																					"indent": 0
+																				}
+																			}
+																		]
+																	}
+																}
+															]
+														}
+													]
+												}
+											]
+										}
+									]
+								},
+								{
+									"type": "ObojoboDraft.Chunks.Question",
+									"content": {
+										"shuffle": true,
+										"type": "assessment"
+									},
+									"children": [
+										{
+											"type": "ObojoboDraft.Chunks.Heading",
+											"content": {
+												"headingLevel": 1,
+												"textGroup": [
+													{
+														"text": {
+															"value": "Here is a question with multiple correct answers but only one needs to be chosen",
+															"styleList": null
+														},
+														"data": {
+															"indent": 0
+														}
+													}
+												]
+											}
+										},
+										{
+											"type": "ObojoboDraft.Chunks.MCAssessment",
+											"content": {
+												"responseType": "pick-one-multiple-correct"
+											},
+											"children": [
+												{
+													"type": "ObojoboDraft.Chunks.MCAssessment.MCChoice",
+													"content": {
+														"score": 100
+													},
+													"children": [
+														{
+															"type": "ObojoboDraft.Chunks.MCAssessment.MCAnswer",
+															"children": [
+																{
+																	"type": "ObojoboDraft.Chunks.Text",
+																	"content": {
+																		"textGroup": [
+																			{
+																				"text": {
+																					"value": "This is a correct answer",
+																					"styleList": null
+																				},
+																				"data": {
+																					"indent": 0
+																				}
+																			}
+																		]
+																	}
+																}
+															]
+														}
+													]
+												},
+												{
+													"type": "ObojoboDraft.Chunks.MCAssessment.MCChoice",
+													"content": {
+														"score": 100
+													},
+													"children": [
+														{
+															"type": "ObojoboDraft.Chunks.MCAssessment.MCAnswer",
+															"children": [
+																{
+																	"type": "ObojoboDraft.Chunks.Text",
+																	"content": {
+																		"textGroup": [
+																			{
+																				"text": {
+																					"value": "This is a correct answer",
+																					"styleList": null
+																				},
+																				"data": {
+																					"indent": 0
+																				}
+																			}
+																		]
+																	}
+																}
+															]
+														}
+													]
+												},
+												{
+													"type": "ObojoboDraft.Chunks.MCAssessment.MCChoice",
+													"content": {
+														"score": 0
+													},
+													"children": [
+														{
+															"type": "ObojoboDraft.Chunks.MCAssessment.MCAnswer",
+															"children": [
+																{
+																	"type": "ObojoboDraft.Chunks.Text",
+																	"content": {
+																		"textGroup": [
+																			{
+																				"text": {
+																					"value": "This is an incorrect answer",
+																					"styleList": null
+																				},
+																				"data": {
+																					"indent": 0
+																				}
+																			}
+																		]
+																	}
+																}
+															]
+														}
+													]
+												}
+											]
+										}
+									]
+								},
+								{
+									"type": "ObojoboDraft.Chunks.Question",
+									"content": {
+										"shuffle": true,
+										"type": "assessment"
+									},
+									"children": [
+										{
+											"type": "ObojoboDraft.Chunks.Heading",
+											"content": {
+												"headingLevel": 1,
+												"textGroup": [
+													{
+														"text": {
+															"value": "Here is a question which contains multiple types of content in the question",
+															"styleList": null
+														},
+														"data": {
+															"indent": 0
+														}
+													}
+												]
+											}
+										},
+										{
+											"type": "ObojoboDraft.Chunks.List",
+											"content": {
+												"listStyles": {
+													"type": "ordered"
+												},
+												"textGroup": [
+													{
+														"text": {
+															"value": "For example, this ordered list",
+															"styleList": null
+														},
+														"data": {
+															"indent": 0
+														}
+													},
+													{
+														"text": {
+															"value": "With a YouTube video below...",
+															"styleList": null
+														},
+														"data": {
+															"indent": 1
+														}
+													}
+												]
+											}
+										},
+										{
+											"type": "ObojoboDraft.Chunks.YouTube",
+											"content": {
+												"videoId": "zJb-Q49vD3A"
+											}
+										},
+										{
+											"type": "ObojoboDraft.Chunks.MCAssessment",
+											"content": {
+												"responseType": "pick-one"
+											},
+											"children": [
+												{
+													"type": "ObojoboDraft.Chunks.MCAssessment.MCChoice",
+													"content": {
+														"score": 100
+													},
+													"children": [
+														{
+															"type": "ObojoboDraft.Chunks.MCAssessment.MCAnswer",
+															"children": [
+																{
+																	"type": "ObojoboDraft.Chunks.Text",
+																	"content": {
+																		"textGroup": [
+																			{
+																				"text": {
+																					"value": "This is the correct answer",
+																					"styleList": null
+																				},
+																				"data": {
+																					"indent": 0
+																				}
+																			}
+																		]
+																	}
+																}
+															]
+														}
+													]
+												},
+												{
+													"type": "ObojoboDraft.Chunks.MCAssessment.MCChoice",
+													"content": {
+														"score": 0
+													},
+													"children": [
+														{
+															"type": "ObojoboDraft.Chunks.MCAssessment.MCAnswer",
+															"children": [
+																{
+																	"type": "ObojoboDraft.Chunks.Text",
+																	"content": {
+																		"textGroup": [
+																			{
+																				"text": {
+																					"value": "This is the incorrect answer",
+																					"styleList": null
+																				},
+																				"data": {
+																					"indent": 0
+																				}
+																			}
+																		]
+																	}
+																}
+															]
+														}
+													]
+												}
+											]
+										}
+									]
+								}
+							]
+						},
+						{
+							"type": "ObojoboDraft.Chunks.Text",
+							"content": {
+								"textGroup": [
+									{
+										"text": {
+											"value": "Next are the content pages - in this example there is only one but you can have as many pages as needed.",
+											"styleList": null
+										},
+										"data": {
+											"indent": 0
+										}
+									}
+								]
+							}
 						}
 					]
 				}
