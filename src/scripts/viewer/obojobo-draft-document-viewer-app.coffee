@@ -1,61 +1,59 @@
 "use strict";
+NavStore = require 'Viewer/stores/navstore'
+ScoreStore = require 'Viewer/stores/scorestore'
+AssessmentStore = require 'Viewer/stores/assessmentstore'
 
-Common = window.ObojoboDraft.Common
-OboModel = Common.models.OboModel
+moduleData =
+	model: null
+	navState: null
+	scoreState: null
+	assessmentState: null
 
-t = OboModel.create('ObojoboDraft.Chunks.Text')
-t2 = OboModel.create('chunk')
-t3 = OboModel.create({ type:'ObojoboDraft.Chunks.Text', children:null })
+render = =>
+	console.log 'RENDER'
+	moduleData.navState = NavStore.getState()
+	moduleData.scoreState = ScoreStore.getState()
+	moduleData.assessmentState = AssessmentStore.getState()
+	ReactDOM.render `<window.Viewer.components.ViewerApp moduleData={moduleData} />`, document.getElementById('viewer-app')
 
-console.log 'items be=', t, t2, t3
+showDocument = (json) =>
+	OboModel = window.ObojoboDraft.Common.models.OboModel
+	moduleData.model = OboModel.create(json)
+	NavStore.init moduleData.model
+	render()
 
-
-c = OBO.getDefaultItemForType('chunk')
-# OBO.register "ObojoboDraft.Chunks.List", Object.assign({}, c)
-# OBO.register "ObojoboDraft.Chunks.MCAssessment", Object.assign({}, c)
-# OBO.register "ObojoboDraft.Chunks.Question", Object.assign({}, c)
-# OBO.register "ObojoboDraft.Chunks.QuestionBank", Object.assign({}, c)
-# OBO.register "ObojoboDraft.Chunks.Text", Object.assign({}, c)
-# OBO.register "ObojoboDraft.Modules.Module", Object.assign({}, c)
-# OBO.register "ObojoboDraft.Sections.Content", Object.assign({}, c)
-OBO.register "ObojoboDraft.Pages.AssessmentIntro", Object.assign({}, c)
-# OBO.register "ObojoboDraft.Pages.Page", Object.assign({}, c)
-# OBO.register "ObojoboDraft.Sections.Assessment", Object.assign({}, c)
-
-
-
-
-
-moduleData = require 'json!../../../test-object.json'
-console.log moduleData
-
-Viewer = window.Viewer
-ViewerApp = Viewer.components.ViewerApp
+# === SET UP DATA STORES ===
+NavStore.addChangeListener render
+ScoreStore.addChangeListener render
+AssessmentStore.addChangeListener render
 
 
-# console.log t4
-# t4 = OboModel.create(moduleData)
-ReactDOM.render `<ViewerApp
-					moduleData={moduleData}
-				/>`, document.getElementById('viewer-app')
+# === FIGURE OUT WHERE TO GET THE DOCUMENT FROM ===
+if window.location.hash.indexOf('legacy') > -1
+	# support legacy objects
+	legacyJson = require 'json!../../../citing-sources-mla.json'
+	moduleData.model =  window.ObojoboDraft.Common.models.Legacy.createModuleFromObo2ModuleJSON legacyJson
+	NavStore.init moduleData.model
+	render()
 
+else if window.location.hash.indexOf('file') > -1
+	# load from our test file
+	json = require 'json!../../../test-object.json'
+	showDocument(json)
 
-# loadModule = require '../loadmodule'
+else if window.localStorage.__lo?
+	# load from local storage
+	try
+		json = JSON.parse(window.localStorage.__lo)
+		showDocument(json)
 
-# Viewer = window.Viewer
-# ViewerApp = Viewer.components.ViewerApp
-
-# moduleId = decodeURIComponent(document.location.hash).substr(1)
-
-# loadModule moduleId, (items) ->
-# 	console.log 'items be', items
-
-	# items.module = items.module.constructor.createFromDescriptor null, JSON.parse(window.localStorage.__module)
-	# moduleData = require 'json!../../../test-object.json'
-
-	# ReactDOM.render `<ViewerApp
-	# 					moduleData={moduleData}
-	# 					chunks={items.chunks}
-	# 					insertItems={items.insertItems}
-	# 					toolbarItems={items.toolbarItems}
-	# 				/>`, document.getElementById('viewer-app')
+	catch e
+		# ...
+else
+	# load from api
+	fetch '/api/drafts/sample'
+	.then (resp) => resp.json() # convert resp to json
+	.then (json) => showDocument(json) # render
+	.catch (error) =>
+		console.log 'error', error
+		throw error
