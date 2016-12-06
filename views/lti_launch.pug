@@ -1,0 +1,9 @@
+extends layout
+
+block head
+  script(src='/static/react/react.min.js')
+  script(src='/static/react-dom/react-dom.min.js')
+
+block content
+  h1= title
+  p Welcome #{username} (v#{_rev})

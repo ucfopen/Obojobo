@@ -1,0 +1,37 @@
+ {
+  "name": "obojobo-server",
+  "version": "3.0.0-alpha-1",
+  "private": true,
+  "scripts": {
+    "start": "node ./bin/www",
+    "start:dev": "concurrently \"yarn run start:express:dev\" \"yarn run start:webpack:dev\" \"yarn run start:couchdb:dev\"",
+    "start:express:dev": "nodemon --exec DEBUG=obojobo:* npm start",
+    "start:couchdb:dev": "couchdb",
+    "start:webpack:dev": "cd ./devsrc/obojobo-draft-document-engine && yarn run start-dev",
+    "postinstall": "echo 'finish setup for dev: run `postinstall:dev` then `start:dev` to run the server.'",
+    "postinstall:dev": "(git clone -b feature/new-data-model git@clu.cdl.ucf.edu:obojobo/obojobo-draft-document-engine.git devsrc/obojobo-draft-document-engine || echo 'doc engine already cloned') && yarn run postinstall:docengine:dev",
+    "postinstall:docengine:dev": "cd ./devsrc/obojobo-draft-document-engine && yarn"
+  },
+  "engines": {
+    "node": "^7.0.0"
+  },
+  "dependencies": {
+    "body-parser": "~1.15.2",
+    "concurrently": "^3.1.0",
+    "consolidate": "^0.14.1",
+    "cookie-parser": "~1.4.3",
+    "cookie-session": "^2.0.0-alpha.1",
+    "debug": "~2.2.0",
+    "express": "~4.14.0",
+    "express-ims-lti": "^0.2.4",
+    "morgan": "~1.7.0",
+    "mustache": "^2.2.1",
+    "node-sass-middleware": "0.9.8",
+    "obojobo-draft-document-engine": "git+ssh://clu.cdl.ucf.edu/obojobo/obojobo-draft-document-engine.git#feature/new-data-model",
+    "pug": "^2.0.0-beta6",
+    "react": "^15.3.2",
+    "react-dom": "^15.3.2",
+    "request-promise": "^4.1.1",
+    "serve-favicon": "~2.3.0"
+  }
+}
