@@ -1,7 +1,8 @@
 "use strict";
-NavStore = require 'Viewer/stores/navstore'
-ScoreStore = require 'Viewer/stores/scorestore'
-AssessmentStore = require 'Viewer/stores/assessmentstore'
+
+NavStore = window.Viewer.stores.NavStore
+ScoreStore = window.Viewer.stores.ScoreStore
+AssessmentStore = window.Viewer.stores.AssessmentStore
 
 moduleData =
 	model: null
@@ -10,7 +11,6 @@ moduleData =
 	assessmentState: null
 
 render = =>
-	console.log 'RENDER'
 	moduleData.navState = NavStore.getState()
 	moduleData.scoreState = ScoreStore.getState()
 	moduleData.assessmentState = AssessmentStore.getState()
