@@ -4,13 +4,18 @@
 html {
   height: 100%;
   width: 100%;
-  // overflow: hidden;
+  overflow: hidden;
+  // -webkit-overflow-scrolling: touch;
+}
+
+a {
+  color: inherit;
 }
 
 body {
   height: 100%;
   padding: 0;
-  // overflow: auto;
+
   margin: 0;
   -webkit-overflow-scrolling: touch;
   font-size: $font-size;
@@ -27,6 +32,12 @@ body {
 // 	padding-bottom: 2rem;
 // 	border: 1px solid green;
 // }
+
+#viewer-app
+{
+	height: 100%;
+	overflow: auto;
+}
 
 .component:first-child
 {

@@ -14,6 +14,7 @@ registeredToolbarItems = {
 }
 toolbarItems = []
 textListeners = []
+triggerActions = {}
 
 
 class OBO
@@ -167,8 +168,8 @@ Object.defineProperties OBO.prototype, {
 	textListeners:
 		get: -> textListeners
 
-	# componentClassMap:
-	# 	get: -> componentClassMap
+	triggerActions:
+		get: -> triggerActions
 
 	__debug__chunks:
 		get: -> chunks

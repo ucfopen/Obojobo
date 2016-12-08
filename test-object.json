@@ -2,11 +2,38 @@
 	"type": "ObojoboDraft.Modules.Module",
 	"children": [
 		{
+			"id": "pre-test",
 			"type": "ObojoboDraft.Sections.Assessment",
 			"content": {
+				"title": "Pre-test",
+				"triggers": [
+					{
+						"type": "onNavEnter",
+						"run": "once",
+						"actions": [
+							{
+								"type": "_navDisable"
+							}
+						]
+					},
+					{
+						"type": "onStartAttempt",
+						"actions": [
+							{
+								"type": "navLock"
+							}
+						]
+					},
+					{
+						"type": "onNavExit",
+						"actions": [
+							{
+								"type": "navUnlock"
+							}
+						]
+					}
+				],
 				"attempts": "unlimited",
-				"disableNavigationOnVisit": true,
-				"lockNavigationDuringTest": true,
 				"scoreActions": [
 					{
 						"from": 0,
