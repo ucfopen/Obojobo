@@ -12,7 +12,7 @@
 						"run": "once",
 						"actions": [
 							{
-								"type": "_navDisable"
+								"type": "navDisable"
 							}
 						]
 					},
@@ -29,6 +29,9 @@
 						"actions": [
 							{
 								"type": "navUnlock"
+							},
+							{
+								"type": "navEnable"
 							}
 						]
 					}
@@ -38,7 +41,7 @@
 					{
 						"from": 0,
 						"to": 99,
-						"message": "You failed - now look at the content",
+						"message": "Continue on to learn more about this topic.",
 						"action": {
 							"type": "unlock",
 							"value": "_next"
@@ -47,7 +50,7 @@
 					{
 						"from": 100,
 						"to": 100,
-						"message": "You passed - now take the final assessment",
+						"message": "Congratulations! Continue on to the final assessment to complete this module.",
 						"action": {
 							"type": "unlock",
 							"value": "final-assessment"

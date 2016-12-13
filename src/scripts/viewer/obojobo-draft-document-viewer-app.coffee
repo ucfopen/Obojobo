@@ -14,6 +14,7 @@ render = =>
 	moduleData.navState = NavStore.getState()
 	moduleData.scoreState = ScoreStore.getState()
 	moduleData.assessmentState = AssessmentStore.getState()
+
 	ReactDOM.render `<window.Viewer.components.ViewerApp moduleData={moduleData} />`, document.getElementById('viewer-app')
 
 showDocument = (json) =>
