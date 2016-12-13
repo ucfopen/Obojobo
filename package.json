@@ -1,4 +1,4 @@
- {
+{
   "name": "obojobo-server",
   "version": "3.0.0-alpha-1",
   "private": true,
@@ -27,7 +27,8 @@
     "morgan": "~1.7.0",
     "mustache": "^2.2.1",
     "node-sass-middleware": "0.9.8",
-    "obojobo-draft-document-engine": "git+ssh://clu.cdl.ucf.edu/obojobo/obojobo-draft-document-engine.git#feature/new-data-model",
+    "nodemon": "^1.11.0",
+    "obojobo-draft-document-engine": "git+ssh://git@clu.cdl.ucf.edu/obojobo/obojobo-draft-document-engine.git#feature/new-data-model",
     "pug": "^2.0.0-beta6",
     "react": "^15.3.2",
     "react-dom": "^15.3.2",

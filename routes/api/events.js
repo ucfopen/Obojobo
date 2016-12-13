@@ -29,7 +29,7 @@ router.post('/', (req, res, next) => {
   rp(postRequest)
   .then( body => {
     event._id = body.id
-    req.app.emit('oboevent:' + event.type, event);
+    req.app.emit('oboevent:' + event.action, event);
     res.json({eventId:body.id});
   })
   .catch( err => {

@@ -84,7 +84,7 @@ var rp = require('request-promise');
 
 // THIS SHOULD PROBABLY BE MOVED
 app.on('oboevent:SaveState', event => {
-  event._id = event.user + ':' + event.draftId + ':' + event.draftRev
+  event._id = event.user + ':' + event.draft_id + ':' + event.draft_rev
 
   let getRequest = {
     uri: cdb + '/view_state/'+event._id,
