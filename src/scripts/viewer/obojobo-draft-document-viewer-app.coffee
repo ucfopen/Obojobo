@@ -11,16 +11,41 @@ moduleData =
 	assessmentState: null
 
 render = =>
+	# console.log 'STATE'
+	# console.log NavStore.getState()
+	# console.log ScoreStore.getState()
+	# console.log AssessmentStore.getState()
+	# console.log '------------'
+
 	moduleData.navState = NavStore.getState()
 	moduleData.scoreState = ScoreStore.getState()
 	moduleData.assessmentState = AssessmentStore.getState()
+
+	window.localStorage.stateData = JSON.stringify({
+		navState:        moduleData.navState,
+		scoreState:      moduleData.scoreState,
+		assessmentState: moduleData.assessmentState
+	})
+	# console.log window.localStorage.stateData
+	# console.log moduleData.navState
 
 	ReactDOM.render `<window.Viewer.components.ViewerApp moduleData={moduleData} />`, document.getElementById('viewer-app')
 
 showDocument = (json) =>
 	OboModel = window.ObojoboDraft.Common.models.OboModel
 	moduleData.model = OboModel.create(json)
-	NavStore.init moduleData.model
+
+	if true or not window.localStorage.stateData?
+		console.log moduleData.model
+		NavStore.init moduleData.model, moduleData.model.modelState.start
+	else
+		stateData = JSON.parse(window.localStorage.stateData)
+		console.log 'STATE DATA', stateData
+
+		NavStore.setState stateData.navState
+		ScoreStore.setState stateData.scoreState
+		AssessmentStore.setState stateData.assessmentState
+
 	render()
 
 # === SET UP DATA STORES ===
