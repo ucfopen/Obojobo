@@ -12,9 +12,6 @@
     "karma-coverage": "./node_modules/karma/bin/karma start ./karma-coverage.conf.js"
   },
   "author": "",
-  "dependencies": {
-    "shuffle-array": "^1.0.0"
-  },
   "devDependencies": {
     "babel-core": "^6.6.4",
     "babel-loader": "^6.2.4",
