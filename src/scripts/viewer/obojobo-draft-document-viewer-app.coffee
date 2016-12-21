@@ -10,6 +10,17 @@ debounce = (ms, cb) ->
 	debounce.id = setTimeout cb, ms
 debounce.id = null
 
+window.ObojoboDraft.Common.flux.Dispatcher.register (payload) ->
+	switch payload.type
+		when 'assessment:startAttempt'
+			APIUtil.postEvent moduleData.model, 'assessment:startAttempt', payload.value
+
+		when 'assessment:endAttempt'
+			APIUtil.postEvent moduleData.model, 'assessment:endAttempt', payload.value
+
+		when 'score:set'
+			APIUtil.postEvent moduleData.model, 'score:set', payload.value
+
 
 
 moduleData =
@@ -30,7 +41,7 @@ render = =>
 	})
 
 	debounce 2000, ->
-		console.clear()
+		# console.clear()
 		console.log 'SEND'
 		APIUtil.saveState moduleData.model, {
 			navState: moduleData.navState
