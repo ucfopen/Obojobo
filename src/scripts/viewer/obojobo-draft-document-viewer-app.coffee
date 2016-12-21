@@ -3,6 +3,14 @@
 NavStore = window.Viewer.stores.NavStore
 ScoreStore = window.Viewer.stores.ScoreStore
 AssessmentStore = window.Viewer.stores.AssessmentStore
+APIUtil = window.Viewer.util.APIUtil
+
+debounce = (ms, cb) ->
+	clearTimeout debounce.id
+	debounce.id = setTimeout cb, ms
+debounce.id = null
+
+
 
 moduleData =
 	model: null
@@ -11,12 +19,6 @@ moduleData =
 	assessmentState: null
 
 render = =>
-	# console.log 'STATE'
-	# console.log NavStore.getState()
-	# console.log ScoreStore.getState()
-	# console.log AssessmentStore.getState()
-	# console.log '------------'
-
 	moduleData.navState = NavStore.getState()
 	moduleData.scoreState = ScoreStore.getState()
 	moduleData.assessmentState = AssessmentStore.getState()
@@ -26,8 +28,15 @@ render = =>
 		scoreState:      moduleData.scoreState,
 		assessmentState: moduleData.assessmentState
 	})
-	# console.log window.localStorage.stateData
-	# console.log moduleData.navState
+
+	debounce 2000, ->
+		console.clear()
+		console.log 'SEND'
+		APIUtil.saveState moduleData.model, {
+			navState: moduleData.navState
+			scoreState: moduleData.scoreState
+			assessmentState: moduleData.assessmentState
+		}
 
 	ReactDOM.render `<window.Viewer.components.ViewerApp moduleData={moduleData} />`, document.getElementById('viewer-app')
 
@@ -77,9 +86,4 @@ else if window.localStorage.__lo?
 		# ...
 else
 	# load from api
-	fetch '/api/drafts/sample'
-	.then (resp) => resp.json() # convert resp to json
-	.then (json) => showDocument(json) # render
-	.catch (error) =>
-		console.log 'error', error
-		throw error
+	APIUtil.fetchDraft('sample').then (json) => showDocument(json)
