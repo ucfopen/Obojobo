@@ -5,6 +5,8 @@ ScoreStore = window.Viewer.stores.ScoreStore
 AssessmentStore = window.Viewer.stores.AssessmentStore
 APIUtil = window.Viewer.util.APIUtil
 
+JSONInput = require 'Viewer/components/jsoninput'
+
 debounce = (ms, cb) ->
 	clearTimeout debounce.id
 	debounce.id = setTimeout cb, ms
@@ -49,7 +51,24 @@ render = =>
 			assessmentState: moduleData.assessmentState
 		}
 
-	ReactDOM.render `<window.Viewer.components.ViewerApp moduleData={moduleData} />`, document.getElementById('viewer-app')
+	ReactDOM.render `<div>
+		<window.Viewer.components.ViewerApp moduleData={moduleData} />
+		<JSONInput onChange={onChangeJSON} value={JSON.stringify(moduleData.model.toJSON(), null, 2)} />
+	</div>`, document.getElementById('viewer-app')
+
+
+onChangeJSON = (json) ->
+	try
+		o = JSON.parse(json)
+	catch e
+		alert 'Error parsing JSON'
+		return
+
+	OboModel = window.ObojoboDraft.Common.models.OboModel
+	newModule = OboModel.create o
+
+	moduleData.model = newModule
+	render()
 
 showDocument = (json) =>
 	OboModel = window.ObojoboDraft.Common.models.OboModel
