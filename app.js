@@ -83,7 +83,7 @@ var cdb = 'http://localhost:5984'
 var rp = require('request-promise');
 
 // THIS SHOULD PROBABLY BE MOVED
-app.on('oboevent:SaveState', event => {
+app.on('oboevent:saveState', event => {
   event._id = event.user + ':' + event.draft_id + ':' + event.draft_rev
 
   let getRequest = {
