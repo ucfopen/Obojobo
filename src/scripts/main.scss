@@ -37,6 +37,11 @@ body {
 {
 	height: 100%;
 	overflow: auto;
+
+	.root
+	{
+		height: 100%;
+	}
 }
 
 .component:first-child

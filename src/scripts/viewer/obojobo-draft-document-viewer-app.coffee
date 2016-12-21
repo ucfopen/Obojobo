@@ -51,7 +51,7 @@ render = =>
 			assessmentState: moduleData.assessmentState
 		}
 
-	ReactDOM.render `<div>
+	ReactDOM.render `<div className="root">
 		<window.Viewer.components.ViewerApp moduleData={moduleData} />
 		<JSONInput onChange={onChangeJSON} value={JSON.stringify(moduleData.model.toJSON(), null, 2)} />
 	</div>`, document.getElementById('viewer-app')
