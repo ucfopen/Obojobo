@@ -44,26 +44,28 @@ body {
 	}
 }
 
-.component:first-child
-{
-	padding-top: 0;
-	// border: 2px solid red;
-}
-.component:last-child
-{
-	padding-bottom: 0;
-	// border: 2px solid blue;
-}
-.component:first-child:last-child
-{
-	padding-top: 0;
-	padding-bottom: 0;
-	// border: 2px solid green;
-}
+// .component:first-of-type
+// {
+// 	padding-top: 0;
+// 	// border: 2px solid red;
+// }
+// .component:last-of-type
+// {
+// 	padding-bottom: 0;
+// 	// border: 2px solid blue;
+// }
+// .component:first-of-type:last-of-type
+// {
+// 	padding-top: 0;
+// 	padding-bottom: 0;
+// 	// border: 2px solid green;
+// }
 
 .component
 {
 	// border: 2px solid gray;
+
+
 }
 
 .component
@@ -108,6 +110,16 @@ body {
  //    text-align: right;
  //    font-family: monospace;
 	// }
+
+	&.first
+	{
+		padding-top: 0;
+	}
+
+	&.last
+	{
+		padding-bottom: 0;
+	}
 
 
 
