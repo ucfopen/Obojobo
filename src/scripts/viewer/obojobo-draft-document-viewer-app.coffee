@@ -1,8 +1,8 @@
 "use strict";
 
-NavStore = window.Viewer.stores.NavStore
+navStore = window.Viewer.stores.navStore
 ScoreStore = window.Viewer.stores.ScoreStore
-AssessmentStore = window.Viewer.stores.AssessmentStore
+assessmentStore = window.Viewer.stores.assessmentStore
 APIUtil = window.Viewer.util.APIUtil
 
 JSONInput = require 'Viewer/components/jsoninput'
@@ -12,17 +12,33 @@ debounce = (ms, cb) ->
 	debounce.id = setTimeout cb, ms
 debounce.id = null
 
-window.ObojoboDraft.Common.flux.Dispatcher.register (payload) ->
-	switch payload.type
-		when 'assessment:startAttempt'
-			APIUtil.postEvent moduleData.model, 'assessment:startAttempt', payload.value
+# set up global event listeners
+Dispatcher = window.ObojoboDraft.Common.flux.Dispatcher
 
-		when 'assessment:endAttempt'
-			APIUtil.postEvent moduleData.model, 'assessment:endAttempt', payload.value
+Dispatcher.on
+	'assessment:startAttempt': (payload) => APIUtil.postEvent(moduleData.model, 'assessment:startAttempt', payload.value)
+	'assessment:endAttempt':   (payload) => APIUtil.postEvent(moduleData.model, 'assessment:endAttempt', payload.value)
+	'score:set':               (payload) => APIUtil.postEvent(moduleData.model, 'score:set', payload.value)
+	'window:focus':            (payload) => APIUtil.postEvent(moduleData.model, 'windowFocus', {})
+	'window:blur':             (payload) => APIUtil.postEvent(moduleData.model, 'windowFocus', {})
 
-		when 'score:set'
-			APIUtil.postEvent moduleData.model, 'score:set', payload.value
+# Set up listeners for window for blur/focus
+onFocus = ->
+	document.body.className = 'is-focused-window'
+	Dispatcher.trigger 'window:focus'
 
+onBlur = ->
+	document.body.className = 'is-blured-window'
+	Dispatcher.trigger 'window:blur'
+
+ie = false;
+`//@cc_on ie = true`
+if ie
+	document.onfocusin = onFocus
+	document.onfocusout = onBlur
+else
+	window.onfocus = onFocus
+	window.onblur = onBlur
 
 
 moduleData =
@@ -32,9 +48,10 @@ moduleData =
 	assessmentState: null
 
 render = =>
-	moduleData.navState = NavStore.getState()
+	console.log 'RENDER'
+	moduleData.navState = navStore.getState()
 	moduleData.scoreState = ScoreStore.getState()
-	moduleData.assessmentState = AssessmentStore.getState()
+	moduleData.assessmentState = assessmentStore.getState()
 
 	window.localStorage.stateData = JSON.stringify({
 		navState:        moduleData.navState,
@@ -74,21 +91,21 @@ showDocument = (json) =>
 
 	if true or not window.localStorage.stateData?
 		console.log moduleData.model
-		NavStore.init moduleData.model, moduleData.model.modelState.start
+		navStore.init moduleData.model, moduleData.model.modelState.start
 	else
 		stateData = JSON.parse(window.localStorage.stateData)
 		console.log 'STATE DATA', stateData
 
-		NavStore.setState stateData.navState
+		navStore.setState stateData.navState
 		ScoreStore.setState stateData.scoreState
-		AssessmentStore.setState stateData.assessmentState
+		assessmentStore.setState stateData.assessmentState
 
 	render()
 
 # === SET UP DATA STORES ===
-NavStore.addChangeListener render
-ScoreStore.addChangeListener render
-AssessmentStore.addChangeListener render
+navStore.onChange render
+ScoreStore.onChange render
+assessmentStore.onChange render
 
 
 # === FIGURE OUT WHERE TO GET THE DOCUMENT FROM ===
@@ -96,7 +113,7 @@ if window.location.hash.indexOf('legacy') > -1
 	# support legacy objects
 	legacyJson = require 'json!../../../citing-sources-mla.json'
 	moduleData.model =  window.ObojoboDraft.Common.models.Legacy.createModuleFromObo2ModuleJSON legacyJson
-	NavStore.init moduleData.model
+	navStore.init moduleData.model
 	render()
 
 else if window.location.hash.indexOf('file') > -1
