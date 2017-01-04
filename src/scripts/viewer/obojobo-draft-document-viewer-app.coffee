@@ -43,8 +43,6 @@ render = =>
 	})
 
 	debounce 2000, ->
-		# console.clear()
-		console.log 'SEND'
 		APIUtil.saveState moduleData.model, {
 			navState: moduleData.navState
 			scoreState: moduleData.scoreState
