@@ -1,8 +1,9 @@
 "use strict";
 
-navStore = window.Viewer.stores.navStore
+ModalStore = window.ObojoboDraft.Common.stores.ModalStore
+NavStore = window.Viewer.stores.NavStore
 ScoreStore = window.Viewer.stores.ScoreStore
-assessmentStore = window.Viewer.stores.assessmentStore
+AssessmentStore = window.Viewer.stores.AssessmentStore
 APIUtil = window.Viewer.util.APIUtil
 
 JSONInput = require 'Viewer/components/jsoninput'
@@ -46,12 +47,14 @@ moduleData =
 	navState: null
 	scoreState: null
 	assessmentState: null
+	modalState: null
 
 render = =>
 	console.log 'RENDER'
-	moduleData.navState = navStore.getState()
+	moduleData.navState = NavStore.getState()
 	moduleData.scoreState = ScoreStore.getState()
-	moduleData.assessmentState = assessmentStore.getState()
+	moduleData.assessmentState = AssessmentStore.getState()
+	moduleData.modalState = ModalStore.getState()
 
 	window.localStorage.stateData = JSON.stringify({
 		navState:        moduleData.navState,
@@ -91,21 +94,22 @@ showDocument = (json) =>
 
 	if true or not window.localStorage.stateData?
 		console.log moduleData.model
-		navStore.init moduleData.model, moduleData.model.modelState.start
+		NavStore.init moduleData.model, moduleData.model.modelState.start
 	else
 		stateData = JSON.parse(window.localStorage.stateData)
 		console.log 'STATE DATA', stateData
 
-		navStore.setState stateData.navState
+		NavStore.setState stateData.navState
 		ScoreStore.setState stateData.scoreState
-		assessmentStore.setState stateData.assessmentState
+		AssessmentStore.setState stateData.assessmentState
 
 	render()
 
 # === SET UP DATA STORES ===
-navStore.onChange render
+NavStore.onChange render
 ScoreStore.onChange render
-assessmentStore.onChange render
+AssessmentStore.onChange render
+ModalStore.onChange render
 
 
 # === FIGURE OUT WHERE TO GET THE DOCUMENT FROM ===
@@ -113,7 +117,7 @@ if window.location.hash.indexOf('legacy') > -1
 	# support legacy objects
 	legacyJson = require 'json!../../../citing-sources-mla.json'
 	moduleData.model =  window.ObojoboDraft.Common.models.Legacy.createModuleFromObo2ModuleJSON legacyJson
-	navStore.init moduleData.model
+	NavStore.init moduleData.model
 	render()
 
 else if window.location.hash.indexOf('file') > -1

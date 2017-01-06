@@ -3,6 +3,7 @@
 $color-action: #6714BD;
 $color-action-minor: desaturate(lighten($color-action, 30%), 40%);
 $color-error: #990000;
+$color-dangerous: #D40000;
 $color-text: #000000;
 $color-text-minor: lighten($color-text, 60%);
 $color-bg: #FFFFFF;
@@ -32,6 +33,9 @@ $dimension-padding: 3rem;
 $dimension-editor: $dimension-column-width + $dimension-padding + $dimension-padding;
 $dimension-toolbar-height: 2.7rem;
 $dimension-nav-menu: 20rem;
+
+$z-index-above-most: 9999;
+$z-index-above-all: 99999;
 
 @mixin pad()
 {
