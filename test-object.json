@@ -1954,7 +1954,10 @@
                            },
                            {
                                "type": "_viewer:alert",
-                               "value": { "message":"First lets start with a pre-test. This will let you see how familar you are with the content." }
+                               "value": {
+                                  "title": "Title",
+                                  "message": "First lets start with a pre-test. This will let you see how familar you are with the content."
+                                }
                            }
                        ]
                    },
