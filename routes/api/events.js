@@ -1,10 +1,6 @@
 var express = require('express');
 var router = express.Router();
-var rp = require('request-promise');
-
-var cdb = 'http://localhost:5984'
-
-///
+var db = require('../../db.js')
 
 router.post('/', (req, res, next) => {
   // check perms
@@ -13,31 +9,21 @@ router.post('/', (req, res, next) => {
 
   // add data to the event
   let event = req.body.event
-  event.source = "client"
-  event.serverTime = new Date().toISOString()
-  event.user = "4",
-  event.ip =  req.headers['x-forwarded-for'] || req.connection.remoteAddress;
 
-  // store event
-  let postRequest = {
-    uri: cdb + '/events',
-    method: 'POST',
-    json: true,
-    body: event
+  let insertObject = {
+    actorTime: event.actorTime,
+    action: event.action,
+    actor: 4, // @TODO: set actor correctly
+    ip: (req.headers['x-forwarded-for'] || req.connection.remoteAddress),
+    metadata: {},
+    payload: event.payload
   }
 
-  rp(postRequest)
-  .then( body => {
-    event._id = body.id
-    req.app.emit('oboevent:' + event.action, event);
-    res.json({eventId:body.id});
-  })
-  .catch( err => {
-    console.log(err)
-    res.status(500).json({error:'Error saving event'});
-  })
+  db.none("INSERT INTO events (actortime, action, actor, ip, metadata, payload) VALUES(${actorTime}, ${action}, ${actor}, ${ip}, ${metadata}, ${payload})", insertObject)
+  .then( result => res.json({eventId:'body.id'}) )
+  .catch( error => res.status(404).json({error:'Draft not found'}))
 
-});
+})
 
 
 module.exports = router;

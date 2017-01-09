@@ -8,6 +8,8 @@ var ltiMiddleware = require('express-ims-lti');
 var cookieSession = require('cookie-session')
 var cons = require('consolidate');
 
+var appEvents = require('./appevents');
+
 // Require our routes/controllers
 var indexRoute = require('./routes/index');
 var ltiRoute = require('./routes/lti');
@@ -16,6 +18,9 @@ var apiEventsRoute = require('./routes/api/events');
 var apiStatesRoute = require('./routes/api/states');
 
 var app = express();
+
+app.locals.cdb = 'http://localhost:5984'
+
 
 // view engine setup
 var engines = require('consolidate');
@@ -29,10 +34,7 @@ app.use(logger('dev'));
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use(cookieParser());
-app.use(cookieSession({
-  name: 'obo3',
-  keys: ['key1', 'key2']
-}))
+app.use(cookieSession({name: 'obo3', keys: ['key1', 'key2']}))
 app.use(require('node-sass-middleware')({
   src: path.join(__dirname, 'public'),
   dest: path.join(__dirname, 'public'),
@@ -78,61 +80,6 @@ app.use(function(err, req, res, next) {
   res.render('error.pug');
 });
 
-
-var cdb = 'http://localhost:5984'
-var rp = require('request-promise');
-
-// THIS SHOULD PROBABLY BE MOVED
-app.on('oboevent:saveState', event => {
-  event._id = event.user + ':' + event.draft_id + ':' + event.draft_rev
-
-  let getRequest = {
-    uri: cdb + '/view_state/'+event._id,
-    method: 'GET',
-    json: true
-  }
-
-  // create
-  rp(getRequest)
-  .then( body => {
-    event._rev = body._rev
-    let putRequest = {
-      uri: cdb + '/view_state/'+event._id,
-      method: 'PUT',
-      json: true,
-      body: event
-    }
-
-    // create
-    rp(putRequest)
-    .then( body => {
-      console.log('state saved', body);
-    })
-    .catch( err => {
-      console.log('ERROR', err)
-    })
-
-  })
-  .catch( err => {
-
-    let postRequest = {
-      uri: cdb + '/view_state',
-      method: 'POST',
-      json: true,
-      body: event
-    }
-
-    // create
-    rp(postRequest)
-    .then( body => {
-      console.log('state saved', body);
-    })
-    .catch( err => {
-      console.log('ERROR', err)
-    })
-
-  })
-
-});
+appEvents.register(app);
 
 module.exports = app;

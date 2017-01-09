@@ -1,8 +1,6 @@
 var express = require('express');
 var router = express.Router();
-var rp = require('request-promise');
-
-var cdb = 'http://localhost:5984'
+var db = require('../db.js')
 
 /* GET users listing. */
 router.get('/', (req, res, next) => {
@@ -37,56 +35,24 @@ router.all('/launch', (req, res, next) => {
     if (req.session.lti) {
       req.session.lti = null
     }
-    res.status(401)
-    res.render('error.pug', {message: 'Access Denied', error: {status: 'Invalid LTI launch request'}, stack:null });
+    res.status(401).render('error.pug', {message: 'Access Denied', error: {status: 'Invalid LTI launch request'}, stack:null });
     return
   }
 
   let user = {
-    _id: req.lti.body.tool_consumer_instance_guid + ':' + req.lti.body.lis_person_sourcedid,
-    consumerUserId: req.lti.body.lis_person_sourcedid,
-    consumerId: req.lti.body.tool_consumer_instance_guid,
-    username: req.lti.username,
-    email: req.lti.lis_person_contact_email_primary,
-    firstName: req.lti.lis_person_name_given,
-    lastName: req.lti.lis_person_name_family,
-    roles: req.lti.body.roles,
-    created: new Date().toISOString()
+    consumer: req.lti.body.tool_consumer_instance_guid,
+    username: req.lti.body.lis_person_sourcedid,
+    email: req.lti.body.lis_person_contact_email_primary,
+    firstName: req.lti.body.lis_person_name_given,
+    lastName: req.lti.body.lis_person_name_family,
+    roles: req.lti.body.roles
   }
 
-  let getRequest = {
-    uri: cdb + '/users/' + user._id,
-    method: 'GET',
-    json: true
-  }
-
-  rp(getRequest) // user exists?
-  .then( user => {
-    req.session.currentUser = user
-    req.session.lti = null
-    res.render('lti_launch.pug', user)
-  })
-  .catch( () => {
-    // couldnt get the user, make one!
-    let insertRequest = {
-      uri: cdb + '/users/',
-      method: 'POST',
-      json: true,
-      body: user
-    }
-
-    rp(insertRequest)
-    .then( body => {
-      user._id = body.id
-      user._rev = body.rev
-      req.session.currentUser = user
-      req.session.lti = null
-      res.render('lti_launch.pug', user);
-    })
-    .catch( err => {
-      console.log('new, failure', err)
-      res.render('error.pug', {message: 'ERROR', error: {status: 'There was a problem storing your new account.'}});
-    })
+  db.none("INSERT INTO users (consumer, username, email, firstName, lastName, roles) VALUES(${consumer}, ${username}, ${email}, ${firstName}, ${lastName}, ${roles}) ON CONFLICT (username) DO UPDATE SET email = ${email}, firstName = ${firstName}, lastName = ${lastName}, roles = ${roles}", user)
+  .then( result =>  res.render('lti_launch.pug', user) )
+  .catch( error => {
+    console.log('new, failure', error)
+    res.render('error.pug', {message: 'ERROR', error: {status: 'There was a problem storing your new account.'}});
   })
 
 })
