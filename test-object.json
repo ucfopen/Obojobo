@@ -1954,19 +1954,7 @@
                            },
                            {
                                "type": "_viewer:alert",
-                               "value": { "message":"yo" }
-                           }
-                       ]
-                   },
-                   {
-                       "type": "onNavExit",
-                       "run": "once",
-                       "actions": [
-                           {
-                               "type": "nav:enable"
-                           },
-                           {
-                               "type": "nav:open"
+                               "value": { "message":"First lets start with a pre-test. This will let you see how familar you are with the content." }
                            }
                        ]
                    },
@@ -2131,12 +2119,34 @@
                    "type": "ObojoboDraft.Pages.Page",
                    "children": [
                        {
+                           "id": "header",
+                           "content": {
+                               "headingLevel": 1,
+                               "textGroup": [
+                                   {
+                                       "text": {
+                                           "value": "Assessment",
+                                           "styleList": null
+                                       },
+                                       "data": {
+                                           "indent": 0
+                                       }
+                                   }
+                               ]
+                           },
+                           "metadata": {
+                           },
+                           "index": 0,
+                           "type": "ObojoboDraft.Chunks.Heading",
+                           "children": null
+                       },
+                       {
                            "id": "91634999-7601-4b78-86ae-a25925729be6",
                            "content": {
                                "textGroup": [
                                    {
                                        "text": {
-                                           "value": "Click Begin to try the assessment!",
+                                           "value": "Click Begin below to attempt the assessment. Scoring a 100% will move you to the next module, otherwise you will have a chance to review the content and re-take the assessment with different questions.",
                                            "styleList": null
                                        },
                                        "data": {
@@ -3002,25 +3012,6 @@
                                    ]
                                }
                            ]
-                       },
-                       {
-                          "type": "ObojoboDraft.Chunks.ActionButton",
-                          "content": {
-                              "label": "Submit",
-                              "triggers": [
-                                 {
-                                    "type": "onClick",
-                                    "actions": [
-                                       {
-                                          "type": "assessment:endAttempt",
-                                          "value": {
-                                             "id": "assessment"
-                                          }
-                                       }
-                                    ]
-                                 }
-                              ]
-                          }
                        }
                    ]
                }
