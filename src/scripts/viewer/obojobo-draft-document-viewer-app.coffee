@@ -3,6 +3,7 @@
 ModalStore = window.ObojoboDraft.Common.stores.ModalStore
 NavStore = window.Viewer.stores.NavStore
 ScoreStore = window.Viewer.stores.ScoreStore
+QuestionStore = window.Viewer.stores.QuestionStore
 AssessmentStore = window.Viewer.stores.AssessmentStore
 APIUtil = window.Viewer.util.APIUtil
 
@@ -46,6 +47,7 @@ moduleData =
 	model: null
 	navState: null
 	scoreState: null
+	questionState: null
 	assessmentState: null
 	modalState: null
 
@@ -53,19 +55,23 @@ render = =>
 	console.log 'RENDER'
 	moduleData.navState = NavStore.getState()
 	moduleData.scoreState = ScoreStore.getState()
+	moduleData.questionState = QuestionStore.getState()
 	moduleData.assessmentState = AssessmentStore.getState()
 	moduleData.modalState = ModalStore.getState()
 
 	window.localStorage.stateData = JSON.stringify({
 		navState:        moduleData.navState,
 		scoreState:      moduleData.scoreState,
+		questionState:   moduleData.questionState,
 		assessmentState: moduleData.assessmentState
 	})
 
 	debounce 2000, ->
+		console.log 'SAVE STATE'
 		APIUtil.saveState moduleData.model, {
 			navState: moduleData.navState
 			scoreState: moduleData.scoreState
+			questionState: moduleData.questionState
 			assessmentState: moduleData.assessmentState
 		}
 
@@ -92,22 +98,27 @@ showDocument = (json) =>
 	OboModel = window.ObojoboDraft.Common.models.OboModel
 	moduleData.model = OboModel.create(json)
 
-	if true or not window.localStorage.stateData?
-		console.log moduleData.model
-		NavStore.init moduleData.model, moduleData.model.modelState.start
-	else
-		stateData = JSON.parse(window.localStorage.stateData)
-		console.log 'STATE DATA', stateData
+	APIUtil.getAttempts(moduleData.model).then (res) =>
+		console.log('ATTEMPTS', res)
 
-		NavStore.setState stateData.navState
-		ScoreStore.setState stateData.scoreState
-		AssessmentStore.setState stateData.assessmentState
+		if true or not window.localStorage.stateData?
+			console.log moduleData.model
+			NavStore.init moduleData.model, moduleData.model.modelState.start
+		else
+			stateData = JSON.parse(window.localStorage.stateData)
+			console.log 'STATE DATA', stateData
 
-	render()
+			NavStore.setState stateData.navState
+			ScoreStore.setState stateData.scoreState
+			QuestionStore.setState stateData.questionState
+			AssessmentStore.setState stateData.assessmentState
+
+		render()
 
 # === SET UP DATA STORES ===
 NavStore.onChange render
 ScoreStore.onChange render
+QuestionStore.onChange render
 AssessmentStore.onChange render
 ModalStore.onChange render
 
@@ -125,14 +136,14 @@ else if window.location.hash.indexOf('file') > -1
 	json = require 'json!../../../test-object.json'
 	showDocument(json)
 
-else if window.localStorage.__lo?
-	# load from local storage
-	try
-		json = JSON.parse(window.localStorage.__lo)
-		showDocument(json)
+# else if window.localStorage.__lo?
+# 	# load from local storage
+# 	try
+# 		json = JSON.parse(window.localStorage.__lo)
+# 		showDocument(json)
 
-	catch e
-		# ...
+# 	catch e
+# 		# ...
 else
 	# load from api
-	APIUtil.fetchDraft('sample').then (json) => showDocument(json)
+	APIUtil.fetchDraft('sample').then (res) => showDocument(res.value)
