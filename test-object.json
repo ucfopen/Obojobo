@@ -2186,13 +2186,13 @@
                    ]
                },
                {
-                   "id": "assessment-page",
+                   "id": "assessment-qb",
                    "content": {
                    },
                    "metadata": {
                    },
                    "index": 0,
-                   "type": "ObojoboDraft.Pages.Page",
+                   "type": "ObojoboDraft.Chunks.QuestionBank",
                    "children": [
                        {
                            "id": "58846784-efc2-44bb-bf2e-a11a4081fe52",
@@ -2333,7 +2333,7 @@
                            "id": "e9eadfe7-52af-4d57-aa6f-e710b4f3e610",
                            "content": {
                               "choose": 2,
-                               "select": "random-group-with-shuffled-children"
+                              "select": "random-group-with-shuffled-children"
                            },
                            "metadata": {
                            },
