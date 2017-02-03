@@ -2188,11 +2188,12 @@
                {
                    "id": "assessment-page",
                    "content": {
+                      "choose": 1
                    },
                    "metadata": {
                    },
                    "index": 0,
-                   "type": "ObojoboDraft.Pages.Page",
+                   "type": "ObojoboDraft.Chunks.QuestionBank",
                    "children": [
                        {
                            "id": "58846784-efc2-44bb-bf2e-a11a4081fe52",

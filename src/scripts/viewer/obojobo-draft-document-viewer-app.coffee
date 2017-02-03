@@ -42,12 +42,7 @@ else
 	window.onblur = onBlur
 
 
-moduleData =
-	model: null
-	navState: null
-	scoreState: null
-	assessmentState: null
-	modalState: null
+moduleData = {}
 
 render = =>
 	console.log 'RENDER'
@@ -76,24 +71,52 @@ render = =>
 
 
 onChangeJSON = (json) ->
+	a = document.getElementById('alert')
+	if(a)
+		a.parentElement.removeChild(a)
+
 	try
 		o = JSON.parse(json)
+
 	catch e
-		alert 'Error parsing JSON'
+		d = document.createElement('div')
+		d.id = 'alert'
+		p = document.createElement('p')
+		p.innerText = 'Error parsing JSON: ' + e.toString()
+		d.appendChild(p)
+		d.style.position = "fixed"
+		d.style.left = "10px"
+		d.style.top = "10px"
+		d.style.width = "300px"
+		d.style.height = "300px"
+		d.style.border = "3px solid red"
+		d.style.zIndex = "9999999999"
+		d.style.background = "white"
+		document.body.appendChild(d)
+		console.log(e)
 		return
 
-	OboModel = window.ObojoboDraft.Common.models.OboModel
-	newModule = OboModel.create o
+	# OboModel = window.ObojoboDraft.Common.models.OboModel
+	# newModule = OboModel.create o
 
-	moduleData.model = newModule
-	render()
+	# moduleData.model = newModule
+	showDocument(o)
 
 showDocument = (json) =>
+	moduleData =
+		model: null
+		navState: null
+		scoreState: null
+		assessmentState: null
+		modalState: null
+
 	OboModel = window.ObojoboDraft.Common.models.OboModel
+	OboModel.models = {}
+	# debugger
 	moduleData.model = OboModel.create(json)
 
 	if true or not window.localStorage.stateData?
-		console.log moduleData.model
+		console.log moduleData
 		NavStore.init moduleData.model, moduleData.model.modelState.start
 	else
 		stateData = JSON.parse(window.localStorage.stateData)
