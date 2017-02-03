@@ -22,6 +22,7 @@
     "cookie-parser": "~1.4.3",
     "cookie-session": "^2.0.0-alpha.1",
     "debug": "~2.2.0",
+    "eventemitter": "^0.3.3",
     "express": "~4.14.0",
     "express-ims-lti": "^0.2.4",
     "morgan": "~1.7.0",

@@ -10,17 +10,27 @@ var cons = require('consolidate');
 
 var appEvents = require('./appevents');
 
+var sdom = require('./sdom');
+var DraftTree = require('./drafttree');
+
+var db = require('./db');
+
 // Require our routes/controllers
+var router = require('./router');
 var indexRoute = require('./routes/index');
 var ltiRoute = require('./routes/lti');
 var apiDraftsRoute = require('./routes/api/drafts');
 var apiEventsRoute = require('./routes/api/events');
 var apiStatesRoute = require('./routes/api/states');
+// var apiAssessmentsRoute = require('./routes/api/assessments');
 
 var app = express();
 
-app.locals.cdb = 'http://localhost:5984'
+// let EventEmitter = require('events')
 
+// class Emitter extends EventEmitter {}
+// let emitter = new Emitter();
+// app.emitter = emitter;
 
 // view engine setup
 var engines = require('consolidate');
@@ -61,13 +71,14 @@ app.use('/lti', ltiRoute);
 app.use('/api/drafts', apiDraftsRoute)
 app.use('/api/events', apiEventsRoute)
 app.use('/api/states', apiStatesRoute)
+// app.use('/api/assessments', apiAssessmentsRoute)
 
 // catch 404 and forward to error handler
-app.use(function(req, res, next) {
-  var err = new Error('Not Found');
-  err.status = 404;
-  next(err);
-});
+// app.use(function(req, res, next) {
+//   var err = new Error('Not Found');
+//   err.status = 404;
+//   next(err);
+// });
 
 // error handler
 app.use(function(err, req, res, next) {
@@ -80,6 +91,93 @@ app.use(function(err, req, res, next) {
   res.render('error.pug');
 });
 
+// app.registered = {}
+// app.register = function(registration) {
+//   if(app.registered[registration.title]) return
+
+//   let api = Object.assign({
+//     init: function() {},
+//     listeners: {},
+//     events: [],
+//   }, registration.api)
+
+//   app.registered[registration.title] = api
+
+//   api.init(app, router, db);
+
+//   for(let event in api.listeners)
+//   {
+//     app.on(event, api.listeners[event])
+//   }
+// }
+
+assessment = require('./assessment')
+questionBank = require('./assessment/questionbank')
+mcAssessment = require('./assessment/mcassessment')
+question = require('./assessment/question')
+mcChoice = require('./assessment/mcchoice')
+
+app.sdom = sdom
+
+app.sdom.registerApi(app, db, router, assessment)
+app.sdom.registerApi(app, db, router, questionBank)
+app.sdom.registerApi(app, db, router, mcAssessment)
+app.sdom.registerApi(app, db, router, question)
+app.sdom.registerApi(app, db, router, mcChoice)
+
+
+
+
+app.getDraft = function(id) {
+  console.log('GET DRAFT', id)
+  return new Promise(function(resolve, reject) {
+    db
+      .one(`
+        SELECT *
+        FROM drafts
+        WHERE id = $1
+      `, id)
+      .then( result => {
+        result.document._id = result.id
+        result.document._rev = result.revision
+
+        console.time('a')
+        let draftTree = new DraftTree(app, db, result.document)
+        console.timeEnd('a')
+
+        // let draft = Object.assign({}, result.document)
+
+        resolve(draftTree)
+      })
+      .catch( (error) => {
+        reject(error)
+      })
+  })
+}
+
+// console.log('get d')
+// app
+//   .getDraft('00000000-0000-0000-0000-000000000000')
+//   .then( (result) => {
+//     // console.log('GOT RESULT', result)
+//   })
+//   .catch( (error) => {
+//     console.error('GOT ERROR', error)
+//   })
+
+app.logError = function(name, req, ...additional) {
+  console.error("ERROR:", name, "\n", (new Date()), "\nREQUEST HEADERS", req.headers, "\nREQUEST BODY", req.body);
+  if(typeof additional !== "undefined")
+  {
+    console.error(additional);
+  }
+  console.error("");
+}
+
 appEvents.register(app);
+
+// console.log(router);
+
+
 
 module.exports = app;

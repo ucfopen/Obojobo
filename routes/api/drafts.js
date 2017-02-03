@@ -1,29 +1,37 @@
-var express = require('express');
-var router = express.Router();
-var db = require('../../db.js')
+var router = require('../../router.js');
+var db = require('../../db.js');
 
-resultToDraft = (result) => {
-  let draft  = result.document
-  draft._id  = result.id
-  draft._rev = result.revision
-  return draft
-}
+// resultToDraft = (result) => {
+//   let draft  = result.document
+//   draft._id  = result.id
+//   draft._rev = result.revision
+//   return filterOutAssessment(draft)
+// }
+
+
 
 router.get('/sample', (req, res, next) => {
+  req.app.getDraft("00000000-0000-0000-0000-000000000000")
+    .then( (draftTree) => {
+      // req.app.emit('internal:getDraft', req, res, draftTree)
+      draftTree.root.yell('internal:sendToClient', req, res)
 
-  console.log(req)
+      res.success(draftTree.document)
+    })
 
-  db.one("SELECT * from drafts where id = $1", "00000000-0000-0000-0000-000000000000")
-  .then( result => res.json(resultToDraft(result)))
-  .catch( error => res.status(404).json({error:'Draft not found'}))
+    .catch( (error) => {
+      console.error(error)
+      res.missing('Draft not found0')
+    })
 
 });
 
 router.get('/:draftId', (req, res, next) => {
 
-  db.one("SELECT * from drafts where id = $1", req.params.draftId)
-  .then(result => res.json(resultToDraft(result)))
-  .catch(error => res.status(404).json({error:'Draft not found'}))
+  db
+    .one("SELECT * from drafts where id = $1", req.params.draftId)
+    .then(result => res.success(resultToDraft(result)))
+    .catch(error => res.missing('Draft not found1'))
 
 });
 

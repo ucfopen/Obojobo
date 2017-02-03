@@ -1,5 +1,4 @@
-var express = require('express');
-var router = express.Router();
+var router = require('../../router.js');
 var rp = require('request-promise');
 
 router.get('/:draftId-:revision', (req, res, next) => {
@@ -13,10 +12,10 @@ router.get('/:draftId-:revision', (req, res, next) => {
 
   rp(getRequest)
   .then( viewState => {
-    res.json(viewState);
+    res.success(viewState);
   })
   .catch( () => {
-    res.status(404).json({error:'No View State not found'});
+    res.missing({error:'No View State not found'});
   })
 
 });

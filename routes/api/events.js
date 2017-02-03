@@ -1,5 +1,4 @@
-var express = require('express');
-var router = express.Router();
+var router = require('../../router.js');
 var db = require('../../db.js')
 
 router.post('/', (req, res, next) => {
@@ -19,9 +18,15 @@ router.post('/', (req, res, next) => {
     payload: event.payload
   }
 
-  db.none("INSERT INTO events (actortime, action, actor, ip, metadata, payload) VALUES(${actorTime}, ${action}, ${actor}, ${ip}, ${metadata}, ${payload})", insertObject)
-  .then( result => res.json({eventId:'body.id'}) )
-  .catch( error => res.status(404).json({error:'Draft not found'}))
+  db
+    .none("INSERT INTO events (actortime, action, actor, ip, metadata, payload) VALUES(${actorTime}, ${action}, ${actor}, ${ip}, ${metadata}, ${payload})", insertObject)
+    .then( result => {
+      // console.log('>>>>>>>>APP EMIT', event.action)
+      // console.log(req.app.eventNames())
+      req.app.emit('client:' + event.action, insertObject, req, db);
+      res.success({eventId:'body.id'})
+    })
+    .catch( error => res.unexpected(error.toString()))
 
 })
 
