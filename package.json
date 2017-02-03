@@ -28,7 +28,7 @@
     "mustache": "^2.2.1",
     "node-sass-middleware": "0.9.8",
     "nodemon": "^1.11.0",
-    "obojobo-draft-document-engine": "git+ssh://git@github.com:ucfcdl/Obojobo-Document-Engine.git#feature/new-data-model",
+    "obojobo-draft-document-engine": "git+ssh://git@github.com/ucfcdl/Obojobo-Document-Engine.git#feature/new-data-model",
     "pg-promise": "^5.5.0",
     "pug": "^2.0.0-beta6",
     "react": "^15.3.2",
