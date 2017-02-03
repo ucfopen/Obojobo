@@ -9,7 +9,7 @@
     "start:couchdb:dev": "couchdb",
     "start:webpack:dev": "cd ./devsrc/obojobo-draft-document-engine && yarn run start-dev",
     "postinstall": "echo 'finish setup for dev: run `postinstall:dev` then `start:dev` to run the server.'",
-    "postinstall:dev": "(git clone -b feature/new-data-model git@clu.cdl.ucf.edu:obojobo/obojobo-draft-document-engine.git devsrc/obojobo-draft-document-engine || echo 'doc engine already cloned') && yarn run postinstall:docengine:dev",
+    "postinstall:dev": "(git clone -b feature/new-data-model git@github.com:ucfcdl/Obojobo-Document-Engine.git devsrc/obojobo-draft-document-engine || echo 'doc engine already cloned') && yarn run postinstall:docengine:dev",
     "postinstall:docengine:dev": "cd ./devsrc/obojobo-draft-document-engine && yarn"
   },
   "engines": {
