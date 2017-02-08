@@ -51,5 +51,26 @@
     "webpack": "^1.12.14",
     "webpack-dev-server": "^1.14.1"
   },
-  "dependencies": {}
+  "dependencies": {},
+  "obojobo-chunks":[
+    "ObojoboDraft.Chunks.ActionButton",
+    "ObojoboDraft.Chunks.Break",
+    "ObojoboDraft.Chunks.Code",
+    "ObojoboDraft.Chunks.Figure",
+    "ObojoboDraft.Chunks.Heading",
+    "ObojoboDraft.Chunks.IFrame",
+    "ObojoboDraft.Chunks.List",
+    "ObojoboDraft.Chunks.MathEquation",
+    "ObojoboDraft.Chunks.MCAssessment",
+    "ObojoboDraft.Chunks.Question",
+    "ObojoboDraft.Chunks.QuestionBank",
+    "ObojoboDraft.Chunks.Table",
+    "ObojoboDraft.Chunks.Text",
+    "ObojoboDraft.Chunks.YouTube",
+    "ObojoboDraft.Group",
+    "ObojoboDraft.Modules.Module",
+    "ObojoboDraft.Pages.Page",
+    "ObojoboDraft.Sections.Assessment",
+    "ObojoboDraft.Sections.Content"
+  ]
 }
