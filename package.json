@@ -6,13 +6,17 @@
   "scripts": {
     "test": "./node_modules/.bin/jasmine-node spec",
     "start": "webpack --watch",
-    "start-dev": "webpack-dev-server --progress --colors --port 8090 --host 0.0.0.0",
+    "dev": "webpack-dev-server --progress --colors --port 8090 --host 0.0.0.0",
     "build": "webpack",
+    "build:gitadd": "git add ./build",
     "karma": "./node_modules/karma/bin/karma start ./karma.conf.js",
     "karma-coverage": "./node_modules/karma/bin/karma start ./karma-coverage.conf.js"
   },
+  "pre-commit": [
+    "build",
+    "build:gitadd"
+  ],
   "author": "",
-  "dependencies": {},
   "devDependencies": {
     "babel-core": "^6.6.4",
     "babel-loader": "^6.2.4",
@@ -38,6 +42,7 @@
     "node-bourbon": "^4.2.8",
     "node-sass": "^3.4.2",
     "object-assign": "^4.1.0",
+    "pre-commit": "^1.2.2",
     "react": "^15.3.1",
     "react-dom": "^15.0.2",
     "sass-loader": "^3.1.2",
@@ -45,5 +50,6 @@
     "svg-url-loader": "^1.0.3",
     "webpack": "^1.12.14",
     "webpack-dev-server": "^1.14.1"
-  }
+  },
+  "dependencies": {}
 }
