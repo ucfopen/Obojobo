@@ -1,0 +1,33 @@
+.obojobo-draft--chunks--figure {
+  text-align: center; }
+  .obojobo-draft--chunks--figure figure {
+    height: 100%;
+    margin: 0;
+    padding: 0;
+    width: 100%; }
+  .obojobo-draft--chunks--figure .container {
+    display: inline-block;
+    height: auto;
+    position: relative;
+    width: 18rem; }
+    .obojobo-draft--chunks--figure .container img {
+      background: #FFFFFF;
+      border: none;
+      display: block;
+      width: 100%; }
+    .obojobo-draft--chunks--figure .container .img-placeholder {
+      border: 1px solid rgba(0, 0, 0, 0.3); }
+  .obojobo-draft--chunks--figure figcaption {
+    color: #999999;
+    font-size: 0.9em; }
+  .obojobo-draft--chunks--figure.medium .container {
+    width: 46rem; }
+  .obojobo-draft--chunks--figure.large figure {
+    padding-top: 0; }
+    .obojobo-draft--chunks--figure.large figure img {
+      display: block; }
+    .obojobo-draft--chunks--figure.large figure .img-placeholder {
+      border-left: none;
+      border-right: none; }
+  .obojobo-draft--chunks--figure.large .container {
+    width: 100%; }

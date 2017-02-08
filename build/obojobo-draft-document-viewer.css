@@ -1,0 +1,26 @@
+html, body {
+  height: 100%; }
+
+.viewer--components--viewer-app {
+  height: 100%; }
+  .viewer--components--viewer-app main .wrapper {
+    background: #FFFFFF;
+    box-sizing: border-box;
+    position: relative; }
+  .viewer--components--viewer-app .comment {
+    position: relative; }
+    .viewer--components--viewer-app .comment > * {
+      position: relative;
+      z-index: 2; }
+    .viewer--components--viewer-app .comment::before {
+      background: #FFD400;
+      bottom: 0;
+      content: ' ';
+      left: 0;
+      opacity: 0.4;
+      position: absolute;
+      right: 0;
+      top: 0;
+      transform: scale(1, 1.2); }
+  .viewer--components--viewer-app .page-container {
+    border-bottom: 1px solid rgba(0, 0, 0, 0.3); }

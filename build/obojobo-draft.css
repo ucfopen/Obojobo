@@ -1,0 +1,326 @@
+body *[data-indent="1"] {
+  margin-left: 2rem; }
+
+body *[data-indent="2"] {
+  margin-left: 4rem; }
+
+body *[data-indent="3"] {
+  margin-left: 6rem; }
+
+body *[data-indent="4"] {
+  margin-left: 8rem; }
+
+body *[data-indent="5"] {
+  margin-left: 10rem; }
+
+body *[data-indent="6"] {
+  margin-left: 12rem; }
+
+body *[data-indent="7"] {
+  margin-left: 14rem; }
+
+body *[data-indent="8"] {
+  margin-left: 16rem; }
+
+body *[data-indent="9"] {
+  margin-left: 18rem; }
+
+body *[data-indent="10"] {
+  margin-left: 20rem; }
+
+body *[data-indent="11"] {
+  margin-left: 22rem; }
+
+body *[data-indent="12"] {
+  margin-left: 24rem; }
+
+body *[data-indent="13"] {
+  margin-left: 26rem; }
+
+body *[data-indent="14"] {
+  margin-left: 28rem; }
+
+body *[data-indent="15"] {
+  margin-left: 30rem; }
+
+body *[data-indent="16"] {
+  margin-left: 32rem; }
+
+body *[data-indent="17"] {
+  margin-left: 34rem; }
+
+body *[data-indent="18"] {
+  margin-left: 36rem; }
+
+body *[data-indent="19"] {
+  margin-left: 38rem; }
+
+body *[data-indent="20"] {
+  margin-left: 40rem; }
+
+html {
+  height: 100%;
+  width: 100%;
+  overflow: hidden; }
+
+body {
+  height: 100%;
+  padding: 0;
+  overflow: auto;
+  margin: 0;
+  -webkit-overflow-scrolling: touch;
+  font-size: 14pt; }
+
+.component {
+  box-sizing: border-box;
+  color: black;
+  display: block;
+  font-family: 'Noto Serif';
+  line-height: 1.5em;
+  overflow-wrap: break-word;
+  position: relative;
+  white-space: pre-wrap;
+  width: 100%;
+  word-wrap: break-word;
+  margin: 0 auto;
+  padding-top: 1rem;
+  padding-bottom: 1rem; }
+  .component .pad {
+    max-width: 46rem;
+    margin-left: auto;
+    margin-right: auto; }
+  .component h1, .component h2, .component h3, .component h4, .component h5, .component h6 {
+    /*font-family: 'Open Sans';*/
+    font-family: "Libre Franklin", Arial, sans-serif;
+    font-weight: normal;
+    margin: 0; }
+  .component h1 {
+    line-height: 3rem;
+    font-weight: 700; }
+    .component h1 b,
+    .component h1 strong {
+      font-weight: 900; }
+  .component h2 {
+    line-height: 2.5rem;
+    color: #A20E83;
+    font-size: 1.5rem; }
+  .component pre,
+  .component textarea {
+    font-family: 'Droid Sans Mono'; }
+  .component a {
+    color: #bd1438; }
+  .component .obojobo-draft--chunks--question .question {
+    font-weight: 700; }
+    .component .obojobo-draft--chunks--question .question b,
+    .component .obojobo-draft--chunks--question .question strong {
+      font-weight: 900; }
+
+.document .component:first-child {
+  padding-top: 2rem; }
+
+.document .component:last-child {
+  padding-bottom: 2rem; }
+.obojobo-draft--components--delete-button button {
+  background: #F4F4F4;
+  border: none;
+  border-radius: 1.5rem;
+  box-sizing: border-box;
+  cursor: pointer;
+  display: block;
+  font-family: "Libre Franklin", Arial, sans-serif;
+  font-size: inherit;
+  height: 1.5rem;
+  overflow: hidden;
+  position: relative;
+  text-indent: -9999px;
+  transition: background 0.2s ease, color 0.2s ease;
+  width: 1.5rem; }
+  .obojobo-draft--components--delete-button button::after {
+    color: #b497d3;
+    content: '+';
+    font-size: 1.5rem;
+    left: 50%;
+    position: absolute;
+    text-indent: 0;
+    top: 50%;
+    transform: translate(-50%, -50%) rotate(45deg); }
+  .obojobo-draft--components--delete-button button:hover {
+    background: #6714BD; }
+    .obojobo-draft--components--delete-button button:hover::after {
+      color: #FFFFFF; }
+.obojobo-draft--components--edit-button {
+  display: inline-block; }
+  .obojobo-draft--components--edit-button button {
+    -webkit-user-select: none;
+    -moz-user-select: none;
+    -ms-user-select: none;
+    user-select: none;
+    background-color: #FFFFFF;
+    background-position: 0.3rem center;
+    background-repeat: no-repeat;
+    background-size: 30%;
+    border: 1px solid #6714BD;
+    box-shadow: 0 1px 1px rgba(0, 0, 0, 0.3);
+    color: #6714BD;
+    cursor: pointer;
+    font-family: "Libre Franklin", Arial, sans-serif;
+    font-size: 0.7rem;
+    height: 2rem;
+    margin-left: 1rem;
+    opacity: 0.8;
+    position: relative;
+    text-align: right;
+    width: 3.25rem; }
+    .obojobo-draft--components--edit-button button:hover {
+      background-color: #6714BD;
+      color: #FFFFFF;
+      opacity: 1;
+      text-align: center; }
+.obojobo-draft--components--button {
+  display: inline-block; }
+  .obojobo-draft--components--button button {
+    -webkit-user-select: none;
+    -moz-user-select: none;
+    -ms-user-select: none;
+    user-select: none;
+    background-color: #FFFFFF;
+    border: 1px solid #6714BD;
+    box-shadow: 0 1px 1px rgba(0, 0, 0, 0.3);
+    color: #6714BD;
+    cursor: pointer;
+    font-family: "Libre Franklin", Arial, sans-serif;
+    font-size: 0.7rem;
+    height: 2rem;
+    opacity: 0.8;
+    position: relative;
+    text-align: center;
+    width: 3.25rem; }
+    .obojobo-draft--components--button button:hover {
+      background-color: #6714BD;
+      color: #FFFFFF;
+      opacity: 1; }
+.obojobo-draft--components--modal--bubble {
+  background: #FFFFFF;
+  border: 1px solid rgba(0, 0, 0, 0.3);
+  border-radius: 0.3rem;
+  bottom: 0;
+  box-shadow: 0 2px 2px rgba(0, 0, 0, 0.3);
+  box-sizing: border-box;
+  display: inline-block;
+  left: 50%;
+  margin-top: 0.75rem;
+  padding: 0.5rem 2rem;
+  position: absolute;
+  transform: translate(-50%, 120%);
+  z-index: 10; }
+  .obojobo-draft--components--modal--bubble::before {
+    background: #FFFFFF;
+    border-left: 1px solid rgba(0, 0, 0, 0.3);
+    border-top: 1px solid rgba(0, 0, 0, 0.3);
+    content: ' ';
+    height: 1rem;
+    left: 50%;
+    position: absolute;
+    top: 0;
+    transform: translate(-50%, -50%) rotate(45deg);
+    width: 1rem; }
+  .obojobo-draft--components--modal--bubble .container {
+    position: relative; }
+.obojobo-draft--components--modal--bubble .single-input-bubble .interactable {
+  margin-bottom: 0.3rem; }
+
+.obojobo-draft--components--modal--bubble .single-input-bubble input {
+  border: 1px solid #6714BD;
+  box-sizing: border-box;
+  font-family: "Droid Sans Mono", monospace;
+  font-size: 0.8rem;
+  height: 2rem;
+  padding: 0.2rem;
+  width: 75%; }
+
+.obojobo-draft--components--modal--bubble .single-input-bubble button {
+  background: #6714BD;
+  border: none;
+  border-radius: 0 0.3rem 0.3rem 0;
+  box-sizing: border-box;
+  color: #FFFFFF;
+  cursor: pointer;
+  font-family: "Libre Franklin", Arial, sans-serif;
+  font-size: 0.8rem;
+  font-weight: bold;
+  height: 2rem;
+  padding: 0.23rem 0.5rem;
+  text-transform: uppercase;
+  vertical-align: top;
+  width: 25%; }
+
+.obojobo-draft--components--modal--bubble .single-input-bubble .label {
+  color: #999999;
+  display: block;
+  font-family: "Libre Franklin", Arial, sans-serif;
+  font-size: 0.7rem;
+  font-weight: bold;
+  text-align: center; }
+.editor--components--text-menu {
+  background: rgba(0, 0, 0, 0.9);
+  border-radius: 1.75rem;
+  box-shadow: 0 2px 2px rgba(0, 0, 0, 0.3);
+  box-sizing: border-box;
+  height: 1.75rem;
+  position: absolute;
+  transform: translate(-50%, -2.95rem);
+  z-index: 9999; }
+  .editor--components--text-menu::after {
+    border: 0.8rem solid transparent;
+    border-top: 0.8rem solid rgba(0, 0, 0, 0.9);
+    content: ' ';
+    display: block;
+    height: 0;
+    left: 50%;
+    position: absolute;
+    top: 1.75rem;
+    transform: translate(-50%, -0.5px);
+    width: 0; }
+  .editor--components--text-menu a {
+    background: none;
+    border: none;
+    border-right: 1px solid rgba(255, 255, 255, 0.3);
+    box-sizing: border-box;
+    color: #FFFFFF;
+    cursor: pointer;
+    display: inline-block;
+    font-family: "Libre Franklin", Arial, sans-serif;
+    font-size: 1rem;
+    font-weight: bold;
+    height: 1.225rem;
+    margin-top: 0.875rem;
+    opacity: 0.8;
+    padding-left: 0.4rem;
+    padding-right: 0.4rem;
+    position: relative;
+    transform: translate(0, -50%);
+    vertical-align: middle; }
+    .editor--components--text-menu a:hover {
+      opacity: 1; }
+    .editor--components--text-menu a:first-child {
+      padding-left: 0.6rem; }
+    .editor--components--text-menu a:last-child {
+      border-right: none;
+      padding-right: 0.6rem; }
+    .editor--components--text-menu a img {
+      height: 1.225rem;
+      width: 1.225rem; }
+    .editor--components--text-menu a span {
+      display: block;
+      height: 1.225rem;
+      line-height: 1.225rem;
+      pointer-events: none; }
+  .editor--components--text-menu .click-blocker {
+    background: #FFFFFF;
+    display: block;
+    height: 100%;
+    left: 0;
+    opacity: 0;
+    position: absolute;
+    top: 0;
+    width: 100%; }

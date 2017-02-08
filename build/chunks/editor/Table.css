@@ -1,0 +1,241 @@
+.component[data-component-type="ObojoboDraft.Chunks.Table"].selection-contains .obojobo-draft--components--delete-button, .component[data-component-type="ObojoboDraft.Chunks.Table"].selection-inside .obojobo-draft--components--delete-button, .component[data-component-type="ObojoboDraft.Chunks.Table"].selection-start .obojobo-draft--components--delete-button, .component[data-component-type="ObojoboDraft.Chunks.Table"].selection-end .obojobo-draft--components--delete-button {
+  display: block; }
+
+.obojobo-draft--chunks--table.preview {
+  margin-left: 3rem;
+  margin-right: 3rem; }
+  .obojobo-draft--chunks--table.preview .anchor {
+    z-index: 2; }
+  .obojobo-draft--chunks--table.preview .container {
+    position: relative; }
+  .obojobo-draft--chunks--table.preview .viewer {
+    margin-bottom: 0;
+    margin-left: 0;
+    margin-right: 0; }
+  .obojobo-draft--chunks--table.preview .obojobo-draft--components--edit-button {
+    position: absolute;
+    right: 0.5rem;
+    top: 0.5rem;
+    z-index: 2; }
+  .obojobo-draft--chunks--table.preview .obojobo-draft--components--delete-button {
+    display: none;
+    position: absolute;
+    right: 0;
+    top: 0;
+    transform: translate(50%, -50%);
+    z-index: 3; }
+
+.obojobo-draft--chunks--table.editor .container {
+  position: relative; }
+
+.obojobo-draft--chunks--table.editor .edit-table {
+  background: #FFFFFF;
+  border: 1px solid rgba(0, 0, 0, 0.3);
+  border-collapse: collapse;
+  cursor: text;
+  position: relative;
+  table-layout: fixed;
+  width: 100%; }
+  .obojobo-draft--chunks--table.editor .edit-table:focus {
+    outline: none; }
+  .obojobo-draft--chunks--table.editor .edit-table thead tr:first-child {
+    line-height: inherit; }
+  .obojobo-draft--chunks--table.editor .edit-table th,
+  .obojobo-draft--chunks--table.editor .edit-table td {
+    border: 1px solid rgba(0, 0, 0, 0.3);
+    padding: 0.2em 0.5em;
+    text-align: left; }
+    .obojobo-draft--chunks--table.editor .edit-table th:first-child,
+    .obojobo-draft--chunks--table.editor .edit-table td:first-child {
+      width: auto; }
+  .obojobo-draft--chunks--table.editor .edit-table th {
+    background: #F4F4F4;
+    font-family: "Libre Franklin", Arial, sans-serif;
+    font-size: 0.9em;
+    text-align: center; }
+
+.obojobo-draft--chunks--table.editor .obojobo-draft--components--button {
+  bottom: 0;
+  left: 50%;
+  position: absolute;
+  transform: translate(-50%, 270%); }
+.obojobo-draft--chunks--table.viewer .view {
+  border-collapse: collapse;
+  table-layout: fixed;
+  user-select: none;
+  width: 100%; }
+  .obojobo-draft--chunks--table.viewer .view th,
+  .obojobo-draft--chunks--table.viewer .view td {
+    border: 1px solid rgba(0, 0, 0, 0.3);
+    box-sizing: border-box;
+    font-size: 1rem;
+    height: auto;
+    line-height: 1.5rem;
+    margin: 0;
+    padding: 0.2em 0.5em;
+    text-align: left;
+    width: auto; }
+  .obojobo-draft--chunks--table.viewer .view th {
+    background: #F4F4F4;
+    font-family: "Libre Franklin", Arial, sans-serif;
+    font-size: 0.9em;
+    text-align: center; }
+.obojobo-draft--chunks--table--table-controls {
+  position: absolute;
+  left: -1.3rem;
+  top: -1.3rem;
+  right: 0;
+  bottom: 0;
+  background: #e8e8e8;
+  border: 1px solid #b3b3b3;
+  outline: 2px solid #6714BD; }
+  .obojobo-draft--chunks--table--table-controls button {
+    position: absolute;
+    width: 17px;
+    height: 26px;
+    overflow: hidden;
+    text-indent: -9999px;
+    transition: transform 0.1s ease;
+    border: none;
+    background: transparent;
+    background-repeat: no-repeat;
+    background-position: center;
+    cursor: pointer; }
+    .obojobo-draft--chunks--table--table-controls button.add-col {
+      right: -3em;
+      top: 50%;
+      transform: rotate(-90deg); }
+      .obojobo-draft--chunks--table--table-controls button.add-col:hover {
+        transform: rotate(-90deg) scale(1.5); }
+    .obojobo-draft--chunks--table--table-controls button.add-row {
+      left: 50%;
+      bottom: -4em; }
+      .obojobo-draft--chunks--table--table-controls button.add-row:hover {
+        transform: scale(1.5); }
+.obojobo-draft--chunks--table--table-menu {
+  position: absolute;
+  width: 1rem;
+  height: 1rem;
+  cursor: default;
+  z-index: 1;
+  text-align: center;
+  background-repeat: no-repeat;
+  display: inline-block; }
+  .obojobo-draft--chunks--table--table-menu:hover {
+    z-index: 2;
+    background-color: white; }
+    .obojobo-draft--chunks--table--table-menu:hover ul {
+      display: block; }
+  .obojobo-draft--chunks--table--table-menu.col {
+    transform: translate(0, -1.2rem); }
+    .obojobo-draft--chunks--table--table-menu.col:hover {
+      transform: translate(0, -1.2rem) scale(1.5, 1.5); }
+  .obojobo-draft--chunks--table--table-menu.row {
+    transform: rotate(-90deg) translate(0, -1.2rem); }
+    .obojobo-draft--chunks--table--table-menu.row:hover {
+      transform: rotate(-90deg) translate(0, -1.2rem) scale(1.5, 1.5); }
+    .obojobo-draft--chunks--table--table-menu.row ul {
+      transform: rotate(90deg) scale(0.75, 0.75);
+      transform-origin: top left;
+      top: 1rem;
+      left: 1rem; }
+  .obojobo-draft--chunks--table--table-menu ul {
+    display: none;
+    position: absolute;
+    left: 0;
+    top: 1rem;
+    width: 15rem;
+    font-size: 0.9rem;
+    height: auto;
+    background: white;
+    font-family: 'Noto Sans';
+    font-weight: normal;
+    list-style-type: none;
+    margin: 0;
+    padding: 0;
+    line-height: 1rem;
+    border: 1px solid gray;
+    transform: scale(0.75, 0.75);
+    transform-origin: top left; }
+    .obojobo-draft--chunks--table--table-menu ul li {
+      padding: 1rem;
+      border-bottom: 1px solid gray;
+      cursor: pointer;
+      position: relative;
+      vertical-align: middle; }
+      .obojobo-draft--chunks--table--table-menu ul li:hover {
+        background: #6714BD;
+        color: white; }
+      .obojobo-draft--chunks--table--table-menu ul li:last-child {
+        border-bottom: none; }
+      .obojobo-draft--chunks--table--table-menu ul li.insert-left:after {
+        content: "\2190";
+        position: absolute;
+        top: 0.5rem;
+        font-size: 2rem;
+        left: 0.6rem; }
+      .obojobo-draft--chunks--table--table-menu ul li.insert-right:after {
+        content: "\2192";
+        position: absolute;
+        top: 0.5rem;
+        font-size: 2rem;
+        right: 0.6rem; }
+      .obojobo-draft--chunks--table--table-menu ul li.insert-above:after {
+        content: "\2191";
+        position: absolute;
+        top: 0.8rem;
+        font-size: 2rem;
+        left: 1rem; }
+      .obojobo-draft--chunks--table--table-menu ul li.insert-below:after {
+        content: "\2193";
+        position: absolute;
+        top: 0.8rem;
+        font-size: 2rem;
+        left: 1rem; }
+.editor--components--toolbar {
+  background: 'red'; }
+  .editor--components--toolbar .grid-button {
+    display: inline-block;
+    position: relative;
+    vertical-align: top; }
+    .editor--components--toolbar .grid-button .table-container {
+      position: absolute;
+      top: 40px;
+      width: 133px;
+      z-index: 9999; }
+    .editor--components--toolbar .grid-button table {
+      background: white;
+      border: 1px solid rgba(0, 0, 0, 0.2);
+      box-shadow: 0 2px 2px rgba(0, 0, 0, 0.25);
+      left: 0;
+      margin: 0;
+      margin-bottom: 0.25rem;
+      padding-bottom: 1px;
+      padding-top: 1px;
+      padding: 0;
+      width: 100%; }
+      .editor--components--toolbar .grid-button table td {
+        border: 1px solid rgba(0, 0, 0, 0.2);
+        cursor: pointer;
+        display: inline-block;
+        height: 15px;
+        margin-bottom: 0;
+        margin-top: 0;
+        margin: 1px;
+        width: 15px; }
+        .editor--components--toolbar .grid-button table td.selected {
+          background: #CAE4FF; }
+    .editor--components--toolbar .grid-button .tooltip {
+      background: black;
+      border-radius: 10px;
+      box-sizing: border-box;
+      color: white;
+      font-family: 'Source Sans Pro';
+      font-size: 9pt;
+      font-weight: bold;
+      height: 20px;
+      line-height: 0;
+      padding: 10px;
+      text-align: center;
+      width: 100%;
+      z-index: 10000; }

@@ -1,0 +1,58 @@
+.component[data-component-type="ObojoboDraft.Chunks.YouTube"].selection-contains .obojobo-draft--components--delete-button, .component[data-component-type="ObojoboDraft.Chunks.YouTube"].selection-inside .obojobo-draft--components--delete-button, .component[data-component-type="ObojoboDraft.Chunks.YouTube"].selection-start .obojobo-draft--components--delete-button, .component[data-component-type="ObojoboDraft.Chunks.YouTube"].selection-end .obojobo-draft--components--delete-button {
+  display: block; }
+
+.obojobo-draft--chunks--you-tube .anchor {
+  z-index: 2; }
+
+.obojobo-draft--chunks--you-tube > .container {
+  height: 25rem;
+  margin: 0 auto;
+  position: relative;
+  width: 32rem; }
+
+.obojobo-draft--chunks--you-tube .placeholder,
+.obojobo-draft--chunks--you-tube .edit,
+.obojobo-draft--chunks--you-tube img,
+.obojobo-draft--chunks--you-tube iframe {
+  height: 100%;
+  margin: 0 auto;
+  width: 100%; }
+
+.obojobo-draft--chunks--you-tube .placeholder {
+  background: #F4F4F4;
+  box-sizing: border-box;
+  color: rgba(0, 0, 0, 0.5);
+  font-family: "Libre Franklin", Arial, sans-serif;
+  font-size: 1rem;
+  font-weight: bold;
+  height: 25rem;
+  line-height: 0;
+  padding-top: 12.5rem;
+  text-align: center; }
+
+.obojobo-draft--chunks--you-tube .edit {
+  background: #000000;
+  position: relative;
+  z-index: 3; }
+
+.obojobo-draft--chunks--you-tube .obojobo-draft--components--delete-button {
+  display: none;
+  position: absolute;
+  right: 0;
+  top: 0;
+  transform: translate(50%, -50%);
+  z-index: 3; }
+
+.obojobo-draft--chunks--you-tube .obojobo-draft--components--edit-button {
+  position: absolute;
+  right: 1rem;
+  top: 1rem;
+  z-index: 3; }
+.obojobo-draft--chunks--you-tube {
+  display: block;
+  margin: 1em auto;
+  text-align: center; }
+  .obojobo-draft--chunks--you-tube iframe {
+    height: 25rem;
+    margin: 0 auto;
+    width: 32rem; }
