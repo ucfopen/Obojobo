@@ -1,3 +1,10 @@
+# delete localStorage.stateData
+
+
+
+
+
+
 "use strict";
 
 ModalStore = window.ObojoboDraft.Common.stores.ModalStore
@@ -5,8 +12,22 @@ NavStore = window.Viewer.stores.NavStore
 ScoreStore = window.Viewer.stores.ScoreStore
 AssessmentStore = window.Viewer.stores.AssessmentStore
 APIUtil = window.Viewer.util.APIUtil
+NavUtil = window.Viewer.util.NavUtil
 
 JSONInput = require 'Viewer/components/jsoninput'
+
+button = document.createElement 'button'
+button.appendChild document.createTextNode('RESET')
+button.style.position = 'fixed'
+button.style.top = '0'
+button.style.right = '0'
+button.id = '--reset-all'
+button.onclick = ->
+	if confirm('Are you sure you want to reset all saved changes and revert back to the example?')
+		delete window.localStorage.__edit
+		window.location.reload()
+
+document.body.appendChild(button)
 
 debounce = (ms, cb) ->
 	clearTimeout debounce.id
@@ -70,31 +91,8 @@ render = =>
 	</div>`, document.getElementById('viewer-app')
 
 
-onChangeJSON = (json) ->
-	a = document.getElementById('alert')
-	if(a)
-		a.parentElement.removeChild(a)
+onChangeJSON = (o) ->
 
-	try
-		o = JSON.parse(json)
-
-	catch e
-		d = document.createElement('div')
-		d.id = 'alert'
-		p = document.createElement('p')
-		p.innerText = 'Error parsing JSON: ' + e.toString()
-		d.appendChild(p)
-		d.style.position = "fixed"
-		d.style.left = "10px"
-		d.style.top = "10px"
-		d.style.width = "300px"
-		d.style.height = "300px"
-		d.style.border = "3px solid red"
-		d.style.zIndex = "9999999999"
-		d.style.background = "white"
-		document.body.appendChild(d)
-		console.log(e)
-		return
 
 	# OboModel = window.ObojoboDraft.Common.models.OboModel
 	# newModule = OboModel.create o
@@ -115,9 +113,13 @@ showDocument = (json) =>
 	# debugger
 	moduleData.model = OboModel.create(json)
 
-	if true or not window.localStorage.stateData?
+	# if true or not window.localStorage.stateData?
+
+
+	if not window.localStorage.stateData?
 		console.log moduleData
-		NavStore.init moduleData.model, moduleData.model.modelState.start
+		NavStore.init moduleData.model
+		NavUtil.goto moduleData.model.modelState.start
 	else
 		stateData = JSON.parse(window.localStorage.stateData)
 		console.log 'STATE DATA', stateData
@@ -125,6 +127,8 @@ showDocument = (json) =>
 		NavStore.setState stateData.navState
 		ScoreStore.setState stateData.scoreState
 		AssessmentStore.setState stateData.assessmentState
+
+		NavStore.init moduleData.model
 
 	render()
 
@@ -148,14 +152,18 @@ else if window.location.hash.indexOf('file') > -1
 	json = require 'json!../../../test-object.json'
 	showDocument(json)
 
-else if window.localStorage.__lo?
-	# load from local storage
-	try
-		json = JSON.parse(window.localStorage.__lo)
-		showDocument(json)
-
-	catch e
-		# ...
-else
+else if window.location.hash.indexOf('sample') > -1
 	# load from api
 	APIUtil.fetchDraft('sample').then (json) => showDocument(json)
+
+
+
+else
+	# load from local storage
+	if window.localStorage.__edit
+		json = JSON.parse window.localStorage.__edit
+	else
+		json = require 'json!../../../test-object.json'
+
+	showDocument(json)
+
