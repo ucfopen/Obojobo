@@ -4,13 +4,17 @@
   "private": true,
   "scripts": {
     "start": "node ./bin/www",
-    "start:dev": "concurrently \"yarn run start:express:dev\" \"yarn run start:webpack:dev\" \"yarn run start:couchdb:dev\"",
-    "start:express:dev": "nodemon --exec DEBUG=obojobo:* npm start",
-    "start:couchdb:dev": "couchdb",
-    "start:webpack:dev": "cd ./devsrc/obojobo-draft-document-engine && yarn run start-dev",
-    "postinstall": "echo 'finish setup for dev: run `postinstall:dev` then `start:dev` to run the server.'",
-    "postinstall:dev": "(git clone -b feature/new-data-model git@clu.cdl.ucf.edu:obojobo/obojobo-draft-document-engine.git devsrc/obojobo-draft-document-engine || echo 'doc engine already cloned') && yarn run postinstall:docengine:dev",
-    "postinstall:docengine:dev": "cd ./devsrc/obojobo-draft-document-engine && yarn"
+    "dev": "concurrently \"yarn express:dev\" \"yarn docengine:dev\" ",
+    "express:dev": "nodemon --exec DEBUG=obojobo:* yarn start",
+
+    "chunks:register": "node ./bin/register_chunks.js",
+
+    "docengine:dev": "cd ./devsrc/obojobo-draft-document-engine && yarn dev",
+    "docengine:setup": "yarn docengine:clone && yarn docengine:nodemodules",
+    "docengine:clone": "git clone -b feature/new-data-model git@github.com:ucfcdl/Obojobo-Document-Engine.git devsrc/obojobo-draft-document-engine || echo 'already cloned'",
+    "docengine:nodemodules": "cd ./devsrc/obojobo-draft-document-engine && yarn",
+
+    "postinstall": "yarn chunks:register && echo 'FOR Obojobo Doc Engine development: run `docengine:setup` then `dev` to run the server.'"
   },
   "engines": {
     "node": "^7.0.0"
@@ -25,6 +29,7 @@
     "eventemitter": "^0.3.3",
     "express": "~4.14.0",
     "express-ims-lti": "^0.2.4",
+    "glob": "^7.1.1",
     "morgan": "~1.7.0",
     "mustache": "^2.2.1",
     "node-sass-middleware": "0.9.8",

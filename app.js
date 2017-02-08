@@ -7,6 +7,8 @@ var bodyParser = require('body-parser');
 var ltiMiddleware = require('express-ims-lti');
 var cookieSession = require('cookie-session')
 var cons = require('consolidate');
+var fs = require('fs');
+var path = require('path');
 
 var appEvents = require('./appevents');
 
@@ -27,10 +29,15 @@ var apiStatesRoute = require('./routes/api/states');
 var app = express();
 
 // let EventEmitter = require('events')
-
 // class Emitter extends EventEmitter {}
 // let emitter = new Emitter();
 // app.emitter = emitter;
+
+// @TODO: figure these out dynamically?
+let installedChunksJson = fs.readFileSync('./config/installed_chunks.json');
+let installedChunksRaw = JSON.parse(installedChunksJson);
+app.locals.installedChunks = installedChunksRaw.map((chunk) => {return path.basename(chunk)});
+
 
 // view engine setup
 var engines = require('consolidate');
@@ -65,6 +72,14 @@ app.use(ltiMiddleware({
 app.use(express.static(path.join(__dirname, 'public')));
 app.use('/static/react', express.static(__dirname + '/node_modules/react/dist'));
 app.use('/static/react-dom', express.static(__dirname + '/node_modules/react-dom/dist'));
+app.use('/static/obo-draft', express.static(__dirname + '/node_modules/obojobo-draft-document-engine/build'));
+
+installedChunksRaw.forEach((chunk) => {
+  console.log(`Registering chunk /static/chunks/${path.basename(chunk)} to ${__dirname}/${chunk}.js`)
+  app.use(`/static/chunks/${path.basename(chunk)}.js`, express.static(`${__dirname}/${chunk}.js`));
+  app.use(`/static/chunks/${path.basename(chunk)}.css`, express.static(`${__dirname}/${chunk}.css`));
+})
+
 
 app.use('/', indexRoute);
 app.use('/lti', ltiRoute);
@@ -174,10 +189,7 @@ app.logError = function(name, req, ...additional) {
   console.error("");
 }
 
+
 appEvents.register(app);
-
-// console.log(router);
-
-
 
 module.exports = app;
