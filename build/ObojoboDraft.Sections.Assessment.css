@@ -1,0 +1,19 @@
+.obojobo-draft--sections--assessment .untested,
+.obojobo-draft--sections--assessment .score {
+  text-align: center;
+  padding-top: 6rem; }
+  .obojobo-draft--sections--assessment .untested h1,
+  .obojobo-draft--sections--assessment .score h1 {
+    margin-bottom: 1rem; }
+  .obojobo-draft--sections--assessment .untested p,
+  .obojobo-draft--sections--assessment .score p {
+    margin-bottom: 3rem; }
+
+.obojobo-draft--sections--assessment .submit-button {
+  display: block;
+  margin: 0 auto;
+  transform: scale(1.25, 1.25);
+  text-align: center;
+  width: 46rem; }
+  .obojobo-draft--sections--assessment .submit-button button {
+    min-width: 9rem; }

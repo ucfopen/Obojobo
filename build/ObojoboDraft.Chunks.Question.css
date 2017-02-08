@@ -1,0 +1,65 @@
+@charset "UTF-8";
+.obojobo-draft--chunks--question {
+  background: #F4F4F4;
+  border-radius: 0.25rem;
+  margin: 0 auto;
+  padding: 0;
+  position: relative;
+  width: 52rem;
+  padding-top: 1rem;
+  margin-bottom: 1rem; }
+  .obojobo-draft--chunks--question.is-active .blocker, .obojobo-draft--chunks--question.is-viewed .blocker {
+    display: none; }
+  .obojobo-draft--chunks--question.is-hidden .blocker {
+    position: absolute;
+    left: 0;
+    top: 0;
+    right: 0;
+    bottom: 0;
+    background: #F4F4F4;
+    cursor: pointer;
+    transition: background 0.2s;
+    border-radius: 0.25rem; }
+    .obojobo-draft--chunks--question.is-hidden .blocker:hover {
+      background: #f7f7f7; }
+      .obojobo-draft--chunks--question.is-hidden .blocker:hover span {
+        transform: translate(-50%, -50%) scale(1.1, 1.1); }
+    .obojobo-draft--chunks--question.is-hidden .blocker span {
+      transition: transform 0.2s;
+      font-family: "Libre Franklin", Arial, sans-serif;
+      color: #6714BD;
+      position: absolute;
+      left: 50%;
+      top: 50%;
+      transform: translate(-50%, -50%);
+      pointer-events: none; }
+  .obojobo-draft--chunks--question::after {
+    color: #FFFFFF;
+    font-family: "Libre Franklin", Arial, sans-serif;
+    font-size: 0.7rem;
+    font-weight: bold;
+    left: 50%;
+    line-height: 2em;
+    padding: 0 1em;
+    position: absolute;
+    top: 0;
+    transform: translate(-26rem, 0) translate(3rem, 0); }
+  .obojobo-draft--chunks--question.is-type-practice::before {
+    color: #999999;
+    content: 'Practice';
+    display: block;
+    font-family: "Libre Franklin", Arial, sans-serif;
+    font-size: 0.7rem;
+    left: 50%;
+    line-height: 2em;
+    position: absolute;
+    top: 0.4rem;
+    transform: translate(-26rem, 0) translate(3rem, 0); }
+  .obojobo-draft--chunks--question.is-type-practice.is-correct {
+    background: rgba(147, 230, 133, 0.3); }
+    .obojobo-draft--chunks--question.is-type-practice.is-correct::after {
+      background: #38ae24;
+      content: '\2713   Correct!'; }
+  .obojobo-draft--chunks--question.is-type-practice.is-incorrect::after {
+    background: #ff350f;
+    content: '\2716   Incorrect'; }

@@ -1,0 +1,382 @@
+/******/ (function(modules) { // webpackBootstrap
+/******/ 	// The module cache
+/******/ 	var installedModules = {};
+
+/******/ 	// The require function
+/******/ 	function __webpack_require__(moduleId) {
+
+/******/ 		// Check if module is in cache
+/******/ 		if(installedModules[moduleId])
+/******/ 			return installedModules[moduleId].exports;
+
+/******/ 		// Create a new module (and put it into the cache)
+/******/ 		var module = installedModules[moduleId] = {
+/******/ 			exports: {},
+/******/ 			id: moduleId,
+/******/ 			loaded: false
+/******/ 		};
+
+/******/ 		// Execute the module function
+/******/ 		modules[moduleId].call(module.exports, module, module.exports, __webpack_require__);
+
+/******/ 		// Flag the module as loaded
+/******/ 		module.loaded = true;
+
+/******/ 		// Return the exports of the module
+/******/ 		return module.exports;
+/******/ 	}
+
+
+/******/ 	// expose the modules object (__webpack_modules__)
+/******/ 	__webpack_require__.m = modules;
+
+/******/ 	// expose the module cache
+/******/ 	__webpack_require__.c = installedModules;
+
+/******/ 	// __webpack_public_path__
+/******/ 	__webpack_require__.p = "build/";
+
+/******/ 	// Load entry module and return exports
+/******/ 	return __webpack_require__(0);
+/******/ })
+/************************************************************************/
+/******/ ({
+
+/***/ 0:
+/***/ function(module, exports, __webpack_require__) {
+
+	module.exports = __webpack_require__(158);
+
+
+/***/ },
+
+/***/ 154:
+/***/ function(module, exports, __webpack_require__) {
+
+	'use strict';
+
+	var Adapter, Common, ScoreActions;
+
+	ScoreActions = __webpack_require__(156);
+
+	Common = window.ObojoboDraft.Common;
+
+	Adapter = {
+	  construct: function construct(model, attrs) {
+	    var ref, ref1;
+	    if ((attrs != null ? (ref = attrs.content) != null ? ref.attempts : void 0 : void 0) != null) {
+	      if (attrs.content.attempts === 'unlimited') {
+	        model.modelState.attempts = 2e308;
+	      } else {
+	        model.modelState.attempts = parseInt(attrs.content.attempts, 10);
+	      }
+	    } else {
+	      model.modelState.attempts = 1;
+	    }
+	    if ((attrs != null ? (ref1 = attrs.content) != null ? ref1.scoreActions : void 0 : void 0) != null) {
+	      return model.modelState.scoreActions = new ScoreActions(attrs.content.scoreActions);
+	    } else {
+	      return model.modelState.scoreActions = new ScoreActions();
+	    }
+	  },
+	  clone: function clone(model, _clone) {
+	    _clone.modelState.attempts = model.modelState.attempts;
+	    _clone.modelState.hideNav = model.modelState.hideNav;
+	    return _clone.modelState.scoreActions = model.modelState.scoreActions.clone();
+	  },
+	  toJSON: function toJSON(model, json) {
+	    json.content.attempts = model.modelState.attempts;
+	    json.content.hideNav = model.modelState.hideNav;
+	    return json.content.scoreActions = model.modelState.scoreActions.toObject();
+	  }
+	};
+
+	module.exports = Adapter;
+
+/***/ },
+
+/***/ 155:
+/***/ function(module, exports) {
+
+	'use strict';
+
+	var Dialog, ModalUtil;
+
+	Dialog = window.ObojoboDraft.Common.components.modal.Dialog;
+
+	ModalUtil = window.ObojoboDraft.Common.util.ModalUtil;
+
+	module.exports = React.createClass({
+		displayName: 'exports',
+
+		onCancel: function onCancel() {
+			return ModalUtil.hide();
+		},
+		onSubmit: function onSubmit() {
+			ModalUtil.hide();
+			return this.props.onSubmit();
+		},
+		render: function render() {
+			return React.createElement(
+				Dialog,
+				{ width: '32rem', buttons: [{
+						value: 'Submit as incomplete',
+						altAction: true,
+						dangerous: true,
+						onClick: this.onSubmit
+					}, 'or', {
+						value: 'Resume assessment',
+						onClick: this.onCancel,
+						default: true
+					}] },
+				React.createElement(
+					'b',
+					null,
+					'Wait! You left some questions blank.'
+				),
+				React.createElement('br', null),
+				'Finish answering all questions and submit again.'
+			);
+		}
+	});
+
+/***/ },
+
+/***/ 156:
+/***/ function(module, exports) {
+
+	"use strict";
+
+	var ScoreActions;
+
+	ScoreActions = function () {
+	  function ScoreActions(_actions) {
+	    this._actions = _actions != null ? _actions : [];
+	  }
+
+	  ScoreActions.prototype.getActionForScore = function (score) {
+	    var action, i, len, ref;
+	    ref = this._actions;
+	    for (i = 0, len = ref.length; i < len; i++) {
+	      action = ref[i];
+	      if (score >= action.from && score <= action.to) {
+	        return action;
+	      }
+	    }
+	    return null;
+	  };
+
+	  ScoreActions.prototype.toObject = function () {
+	    return Object.assign([], this._actions);
+	  };
+
+	  ScoreActions.prototype.clone = function () {
+	    return new ScoreActions(this.toObject());
+	  };
+
+	  return ScoreActions;
+	}();
+
+	module.exports = ScoreActions;
+
+/***/ },
+
+/***/ 157:
+/***/ function(module, exports, __webpack_require__) {
+
+	'use strict';
+
+	var AssessmentUtil, AttemptIncompleteDialog, Button, Common, Dispatcher, ModalUtil, NavUtil, OboComponent, OboModel, ScoreStore;
+
+	__webpack_require__(202);
+
+	Common = window.ObojoboDraft.Common;
+
+	OboComponent = Common.components.OboComponent;
+
+	OboModel = Common.models.OboModel;
+
+	Button = Common.components.Button;
+
+	Dispatcher = Common.flux.Dispatcher;
+
+	ModalUtil = Common.util.ModalUtil;
+
+	ScoreStore = window.Viewer.stores.ScoreStore;
+
+	AssessmentUtil = window.Viewer.util.AssessmentUtil;
+
+	NavUtil = window.Viewer.util.NavUtil;
+
+	AttemptIncompleteDialog = __webpack_require__(155);
+
+	module.exports = React.createClass({
+	  displayName: 'exports',
+
+	  getCurrentStep: function getCurrentStep() {
+	    var assessment;
+	    assessment = AssessmentUtil.getAssessmentForModel(this.props.moduleData.assessmentState, this.props.model);
+	    if (assessment === null) {
+	      return 'untested';
+	    }
+	    if (assessment.current !== null) {
+	      return 'takingTest';
+	    }
+	    if (assessment.attempts.length > 0) {
+	      return 'scoreSubmitted';
+	    }
+	    return 'untested';
+	  },
+	  isAttemptIncomplete: function isAttemptIncomplete() {
+	    return AssessmentUtil.isCurrentAttemptIncomplete(this.props.moduleData.assessmentState, this.props.model);
+	  },
+	  onClickSubmit: function onClickSubmit() {
+	    if (this.isAttemptIncomplete()) {
+	      ModalUtil.show(React.createElement(AttemptIncompleteDialog, { onSubmit: this.endAttempt }));
+	      return;
+	    }
+	    return this.endAttempt();
+	  },
+	  endAttempt: function endAttempt() {
+	    return AssessmentUtil.endAttempt(this.props.model);
+	  },
+	  exitAssessment: function exitAssessment() {
+	    var scoreAction;
+	    scoreAction = this.getScoreAction();
+	    switch (scoreAction.action.value) {
+	      case '_next':
+	        return NavUtil.goNext();
+	      case '_prev':
+	        return NavUtil.goPrev();
+	      default:
+	        return NavUtil.goto(scoreAction.action.value);
+	    }
+	  },
+	  getScoreAction: function getScoreAction() {
+	    var highestScore, scoreAction;
+	    highestScore = AssessmentUtil.getHighestAssessmentScoreForModel(this.props.moduleData.assessmentState, this.props.model);
+	    scoreAction = this.props.model.modelState.scoreActions.getActionForScore(highestScore);
+	    if (scoreAction) {
+	      return scoreAction;
+	    }
+	    return {
+	      from: 0,
+	      to: 100,
+	      message: "You did it!!!",
+	      action: {
+	        type: "unlock",
+	        value: "_next"
+	      }
+	    };
+	  },
+	  render: function render() {
+	    var Component, PageComponent, child, childEl, highestScore, pageModel, recentScore, scoreAction;
+	    recentScore = AssessmentUtil.getLastAttemptScoreForModel(this.props.moduleData.assessmentState, this.props.model);
+	    highestScore = AssessmentUtil.getHighestAttemptScoreForModel(this.props.moduleData.assessmentState, this.props.model);
+	    childEl = function () {
+	      switch (this.getCurrentStep()) {
+	        case 'untested':
+	          child = this.props.model.children.at(0);
+	          Component = child.getComponentClass();
+	          return React.createElement(
+	            'div',
+	            { className: 'untested' },
+	            React.createElement(Component, { model: child, moduleData: this.props.moduleData })
+	          );
+	        case 'takingTest':
+	          child = this.props.model.children.at(1);
+	          Component = child.getComponentClass();
+	          return React.createElement(
+	            'div',
+	            { className: 'test' },
+	            React.createElement(Component, { className: 'untested', model: child, moduleData: this.props.moduleData, showScore: recentScore !== null }),
+	            React.createElement(
+	              'div',
+	              { className: 'submit-button' },
+	              React.createElement(Button, { onClick: this.onClickSubmit, value: this.isAttemptIncomplete() ? 'Submit (Not all questions have been answered)' : 'Submit' })
+	            )
+	          );
+	        case 'scoreSubmitted':
+	          scoreAction = this.getScoreAction();
+	          if (scoreAction.page != null) {
+	            pageModel = OboModel.create(scoreAction.page);
+	            PageComponent = pageModel.getComponentClass();
+	            childEl = React.createElement(PageComponent, { model: pageModel });
+	          } else {
+	            childEl = React.createElement(
+	              'p',
+	              null,
+	              scoreAction.message
+	            );
+	          }
+	          return React.createElement(
+	            'div',
+	            { className: 'score unlock' },
+	            React.createElement(
+	              'h1',
+	              null,
+	              'Your score is ' + Math.round(recentScore) + '%'
+	            ),
+	            recentScore === highestScore ? React.createElement(
+	              'h2',
+	              null,
+	              'This is your highest score'
+	            ) : React.createElement(
+	              'h2',
+	              null,
+	              'Your highest score was ' + Math.round(highestScore) + '%'
+	            ),
+	            childEl
+	          );
+	      }
+	    }.call(this);
+	    return React.createElement(
+	      OboComponent,
+	      {
+	        model: this.props.model,
+	        className: 'obojobo-draft--sections--assessment'
+	      },
+	      childEl
+	    );
+	  }
+	});
+
+/***/ },
+
+/***/ 158:
+/***/ function(module, exports, __webpack_require__) {
+
+	'use strict';
+
+	var AssessmentStore, ObojoboDraft;
+
+	ObojoboDraft = window.ObojoboDraft;
+
+	AssessmentStore = window.Viewer.stores.assessmentStore;
+
+	OBO.register('ObojoboDraft.Sections.Assessment', {
+	  type: 'section',
+	  adapter: __webpack_require__(154),
+	  componentClass: __webpack_require__(157),
+	  selectionHandler: null,
+	  generateNav: function generateNav(model) {
+	    return [{
+	      type: 'link',
+	      label: model.title || (model.title = 'Assessment'),
+	      id: model.get('id')
+	    }, {
+	      type: 'seperator'
+	    }];
+	  }
+	});
+
+/***/ },
+
+/***/ 202:
+/***/ function(module, exports) {
+
+	// removed by extract-text-webpack-plugin
+
+/***/ }
+
+/******/ });

@@ -1,0 +1,11 @@
+.obojobo-draft--chunks--iframe {
+  display: block;
+  font-size: 0.8rem;
+  margin: 0 auto;
+  max-width: 52rem;
+  text-align: left;
+  width: 100%; }
+  .obojobo-draft--chunks--iframe iframe {
+    height: 20rem;
+    margin: 0 auto;
+    width: 100%; }

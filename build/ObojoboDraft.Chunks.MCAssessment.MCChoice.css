@@ -1,0 +1,48 @@
+.obojobo-draft--chunks--mc-assessment--mc-choice {
+  list-style-type: none;
+  min-height: 2em;
+  position: relative;
+  transition: background 0.1s ease;
+  font-family: "Libre Franklin", Arial, sans-serif;
+  padding-bottom: 1rem;
+  cursor: pointer; }
+  .obojobo-draft--chunks--mc-assessment--mc-choice:hover {
+    background: #93C6FF; }
+  .obojobo-draft--chunks--mc-assessment--mc-choice input {
+    position: absolute;
+    top: 1.35rem;
+    left: 3rem; }
+  .obojobo-draft--chunks--mc-assessment--mc-choice .children {
+    margin-left: 5rem;
+    margin-right: 5rem;
+    pointer-events: none; }
+  .obojobo-draft--chunks--mc-assessment--mc-choice label,
+  .obojobo-draft--chunks--mc-assessment--mc-choice .label {
+    cursor: pointer;
+    display: table;
+    min-height: 2em;
+    padding: 0.5em 0;
+    position: relative;
+    width: 100%; }
+  .obojobo-draft--chunks--mc-assessment--mc-choice .input {
+    display: table-cell;
+    padding-left: 2rem;
+    vertical-align: middle;
+    width: 100%; }
+    .obojobo-draft--chunks--mc-assessment--mc-choice .input:focus {
+      box-shadow: none;
+      outline: none; }
+      .obojobo-draft--chunks--mc-assessment--mc-choice .input:focus .text {
+        box-shadow: 0 0 3px 3px #5991CA; }
+  .obojobo-draft--chunks--mc-assessment--mc-choice .feedback {
+    box-sizing: border-box;
+    color: rgba(0, 0, 0, 0.7);
+    font-size: 0.7em;
+    margin-top: -0.5rem;
+    padding: 0.1rem 2rem;
+    padding-bottom: 0.5rem;
+    position: relative; }
+    .obojobo-draft--chunks--mc-assessment--mc-choice .feedback .placeholder {
+      left: 0.5rem; }
+  .obojobo-draft--chunks--mc-assessment--mc-choice.is-selected {
+    background: rgba(147, 198, 255, 0.7); }
