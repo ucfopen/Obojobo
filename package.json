@@ -3,18 +3,23 @@
   "version": "3.0.0-alpha-1",
   "private": true,
   "scripts": {
-    "start": "node ./bin/www",
+    "start": "yarn express:prod",
     "dev": "concurrently \"yarn express:dev\" \"yarn docengine:dev\" ",
+
+    "db:initdocker": "docker run --name db_postgres -d --restart=unless-stopped -p 5432:5432 postgres:9.6.1-alpine",
+
     "express:dev": "nodemon --exec DEBUG=obojobo:* yarn start",
+    "express:prod": "node ./bin/www",
 
     "chunks:register": "node ./bin/register_chunks.js",
+    "chunks:registerdev": "node ./bin/register_chunks.js",
 
     "docengine:dev": "cd ./devsrc/obojobo-draft-document-engine && yarn dev",
-    "docengine:setup": "yarn docengine:clone && yarn docengine:nodemodules",
+    "docengine:setup": "\"yarn docengine:clone\" && \"yarn docengine:nodemodules\"",
     "docengine:clone": "git clone -b feature/new-data-model git@github.com:ucfcdl/Obojobo-Document-Engine.git devsrc/obojobo-draft-document-engine || echo 'already cloned'",
     "docengine:nodemodules": "cd ./devsrc/obojobo-draft-document-engine && yarn",
 
-    "postinstall": "yarn chunks:register && echo 'FOR Obojobo Doc Engine development: run `docengine:setup` then `dev` to run the server.'"
+    "postinstall": "node ./bin/register_chunks.js"
   },
   "engines": {
     "node": "^7.0.0"
@@ -34,7 +39,7 @@
     "mustache": "^2.2.1",
     "node-sass-middleware": "0.9.8",
     "nodemon": "^1.11.0",
-    "obojobo-draft-document-engine": "git+ssh://git@clu.cdl.ucf.edu/obojobo/obojobo-draft-document-engine.git#feature/new-data-model",
+    "obojobo-draft-document-engine": "git+ssh://git@github.com/ucfcdl/Obojobo-Document-Engine.git#feature/new-data-model",
     "pg-promise": "^5.5.0",
     "pug": "^2.0.0-beta6",
     "react": "^15.3.2",
