@@ -27,10 +27,11 @@ html(lang="en")
     block content
 
     if draftPath == 'http://localhost:8090/build/'
-        script(src=`${draftPath}webpack-dev-server.js`)
+        script(src="http://localhost:8090/webpack-dev-server.js")
 
     script(src=`${paths.draftPath}obo.js`)
     script(src=`${paths.draftPath}obojobo-draft.js`)
+    script(src=`${paths.draftPath}obojobo-draft-document-viewer.js`)
 
     each chunk in installedChunks
         script(src=`${paths.chunkPath}${chunk}.js`)
