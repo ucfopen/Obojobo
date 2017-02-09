@@ -3,12 +3,12 @@ var router = express.Router();
 
 /* GET home page. */
 router.get('/', (req, res, next) => {
-  res.render('index.pug', { title: 'Obojobo 3', basePath: req.app.locals.basePath });
+  res.render('index.pug', { title: 'Obojobo 3', draftPath: req.app.locals.draftPath });
 });
 
 /* GET home page. */
 router.get('/view', (req, res, next) => {
-  res.render('viewer.pug', { title: 'Obojobo 3', basePath: req.app.locals.basePath });
+  res.render('viewer.pug', { title: 'Obojobo 3', draftPath: req.app.locals.draftPath });
 });
 
 module.exports = router;

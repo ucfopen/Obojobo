@@ -4,15 +4,15 @@
   "private": true,
   "scripts": {
     "start": "yarn express:prod",
-    "dev": "concurrently \"yarn express:dev\" \"yarn docengine:dev\" ",
+    "dev": "concurrently \"yarn express:dev\" \"yarn docengine:dev\"",
 
     "db:initdocker": "docker run --name db_postgres -d --restart=unless-stopped -p 5432:5432 postgres:9.6.1-alpine",
 
-    "express:dev": "nodemon --exec DEBUG=obojobo:* yarn start",
+    "express:dev": "nodemon --ignore config/installed_chunks.json --exec DEBUG=obojobo:* node ./bin/www",
     "express:prod": "node ./bin/www",
 
     "chunks:register": "node ./bin/register_chunks.js",
-    "chunks:registerdev": "node ./bin/register_chunks.js",
+    "chunks:registerdev": "node ./bin/register_chunks.js --dev",
 
     "docengine:dev": "cd ./devsrc/obojobo-draft-document-engine && yarn dev",
     "docengine:setup": "\"yarn docengine:clone\" && \"yarn docengine:nodemodules\"",

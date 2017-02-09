@@ -33,10 +33,6 @@ var app = express();
 // let emitter = new Emitter();
 // app.emitter = emitter;
 
-// @TODO: figure these out dynamically?
-let installedChunksJson = fs.readFileSync('./config/installed_chunks.json');
-let installedChunksRaw = JSON.parse(installedChunksJson);
-app.locals.installedChunks = installedChunksRaw.map((chunk) => {return path.basename(chunk)});
 
 
 // view engine setup
@@ -74,11 +70,30 @@ app.use('/static/react', express.static(__dirname + '/node_modules/react/dist'))
 app.use('/static/react-dom', express.static(__dirname + '/node_modules/react-dom/dist'));
 app.use('/static/obo-draft', express.static(__dirname + '/node_modules/obojobo-draft-document-engine/build'));
 
-installedChunksRaw.forEach((chunk) => {
-  console.log(`Registering chunk /static/chunks/${path.basename(chunk)} to ${__dirname}/${chunk}.js`)
-  app.use(`/static/chunks/${path.basename(chunk)}.js`, express.static(`${__dirname}/${chunk}.js`));
-  app.use(`/static/chunks/${path.basename(chunk)}.css`, express.static(`${__dirname}/${chunk}.css`));
+// Dynamically load the obojobo doc chunks in dev or production
+if(app.get('env') === 'production'){
+  console.log('Registering Production Chunks');
+  spawn = require( 'child_process' ).spawnSync,
+  ls = spawn( 'yarn', [ 'chunks:register'] );
+  app.locals.draftPath = "/static/chunks/"
+}
+else{
+  console.log('Registering Development Chunks');
+  spawn = require( 'child_process' ).spawnSync,
+  ls = spawn('yarn', ['chunks:registerdev']);
+  app.locals.draftPath = "http://localhost:8090/build/"
+}
+
+let installedChunksJson = fs.readFileSync('./config/installed_chunks.json');
+let installedChunksObject = JSON.parse(installedChunksJson);
+app.locals.installedChunks = [];
+Object.keys(installedChunksObject).forEach( chunkName => {
+  console.log(`Registering /static/chunks/${chunkName}.js to ${__dirname}/${installedChunksObject[chunkName]}.js`)
+  app.use(`/static/chunks/${chunkName}.js`, express.static(`${__dirname}/${installedChunksObject[chunkName]}.js`));
+  app.use(`/static/chunks/${chunkName}.css`, express.static(`${__dirname}/${installedChunksObject[chunkName]}.css`));
+  app.locals.installedChunks.push(chunkName)
 })
+
 
 
 app.use('/', indexRoute);
