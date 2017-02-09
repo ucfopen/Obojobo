@@ -5,20 +5,15 @@
   "scripts": {
     "start": "yarn express:prod",
     "dev": "concurrently \"yarn express:dev\" \"yarn docengine:dev\"",
-
     "db:initdocker": "docker run --name db_postgres -d --restart=unless-stopped -p 5432:5432 postgres:9.6.1-alpine",
-
     "express:dev": "nodemon --ignore config/installed_chunks.json --exec DEBUG=obojobo:* node ./bin/www",
-    "express:prod": "node ./bin/www",
-
+    "express:prod": "NODE_ENV=production node ./bin/www",
     "chunks:register": "node ./bin/register_chunks.js",
     "chunks:registerdev": "node ./bin/register_chunks.js --dev",
-
     "docengine:dev": "cd ./devsrc/obojobo-draft-document-engine && yarn dev",
     "docengine:setup": "\"yarn docengine:clone\" && \"yarn docengine:nodemodules\"",
     "docengine:clone": "git clone -b feature/new-data-model git@github.com:ucfcdl/Obojobo-Document-Engine.git devsrc/obojobo-draft-document-engine || echo 'already cloned'",
     "docengine:nodemodules": "cd ./devsrc/obojobo-draft-document-engine && yarn",
-
     "postinstall": "node ./bin/register_chunks.js"
   },
   "engines": {

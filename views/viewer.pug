@@ -9,11 +9,11 @@ html(lang="en")
     link(rel='stylesheet', href='/stylesheets/style.css')
     link(rel="stylesheet", media="screen", href="https://fonts.googleapis.com/css?family=Droid+Sans+Mono|Libre+Franklin:400,400i,700,700i,900,900i|Noto+Serif:400,400i,700,700i")
 
-    link(rel="stylesheet", media="screen", href=`${draftPath}obojobo-draft.css`)
-    link(rel="stylesheet", media="screen", href=`${draftPath}obojobo-draft-document-viewer.css`)
+    link(rel="stylesheet", media="screen", href=`${paths.draftPath}obojobo-draft.css`)
+    link(rel="stylesheet", media="screen", href=`${paths.draftPath}obojobo-draft-document-viewer.css`)
 
     each chunk in installedChunks
-        link(rel="stylesheet", media="screen", href=`${draftPath}${chunk}.css`)
+        link(rel="stylesheet", media="screen", href=`${paths.chunkPath}${chunk}.css`)
 
 
     script(src="//fb.me/react-with-addons-15.0.2.js")
@@ -29,10 +29,10 @@ html(lang="en")
     if draftPath == 'http://localhost:8090/build/'
         script(src=`${draftPath}webpack-dev-server.js`)
 
-    script(src="/static/obo-draft/obo.js")
-    script(src="/static/obo-draft/obojobo-draft.js")
+    script(src=`${paths.draftPath}obo.js`)
+    script(src=`${paths.draftPath}obojobo-draft.js`)
 
     each chunk in installedChunks
-        script(rel="stylesheet", media="screen", href=`${draftPath}${chunk}.js`)
+        script(src=`${paths.chunkPath}${chunk}.js`)
 
-    script(src="/static/obo-draft/obojobo-draft-document-viewer-app.js")
+    script(src=`${paths.draftPath}obojobo-draft-document-viewer-app.js`)

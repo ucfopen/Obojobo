@@ -70,18 +70,24 @@ app.use('/static/react', express.static(__dirname + '/node_modules/react/dist'))
 app.use('/static/react-dom', express.static(__dirname + '/node_modules/react-dom/dist'));
 app.use('/static/obo-draft', express.static(__dirname + '/node_modules/obojobo-draft-document-engine/build'));
 
+app.locals.paths = {}
+
 // Dynamically load the obojobo doc chunks in dev or production
 if(app.get('env') === 'production'){
   console.log('Registering Production Chunks');
   spawn = require( 'child_process' ).spawnSync,
   ls = spawn( 'yarn', [ 'chunks:register'] );
-  app.locals.draftPath = "/static/chunks/"
+
+  app.locals.paths.chunkPath = "/static/chunks/"
+  app.locals.paths.draftPath = "/static/obo-draft/"
 }
 else{
   console.log('Registering Development Chunks');
   spawn = require( 'child_process' ).spawnSync,
   ls = spawn('yarn', ['chunks:registerdev']);
-  app.locals.draftPath = "http://localhost:8090/build/"
+
+  app.locals.paths.draftPath = "http://localhost:8090/build/"
+  app.locals.paths.chunkPath = "http://localhost:8090/build/"
 }
 
 let installedChunksJson = fs.readFileSync('./config/installed_chunks.json');
@@ -93,7 +99,6 @@ Object.keys(installedChunksObject).forEach( chunkName => {
   app.use(`/static/chunks/${chunkName}.css`, express.static(`${__dirname}/${installedChunksObject[chunkName]}.css`));
   app.locals.installedChunks.push(chunkName)
 })
-
 
 
 app.use('/', indexRoute);
