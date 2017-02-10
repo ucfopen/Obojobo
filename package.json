@@ -25,6 +25,8 @@
     "consolidate": "^0.14.1",
     "cookie-parser": "~1.4.3",
     "cookie-session": "^2.0.0-alpha.1",
+    "db-migrate": "^0.10.0-beta.20",
+    "db-migrate-pg": "^0.1.11",
     "debug": "~2.2.0",
     "eventemitter": "^0.3.3",
     "express": "~4.14.0",
