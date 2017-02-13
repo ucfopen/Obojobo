@@ -116,7 +116,8 @@ showDocument = (json) =>
 	# if true or not window.localStorage.stateData?
 
 
-	if not window.localStorage.stateData?
+	# if not window.localStorage.stateData?
+	if true or not window.localStorage.stateData?
 		console.log moduleData
 		NavStore.init moduleData.model
 		NavUtil.goto moduleData.model.modelState.start
