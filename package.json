@@ -9,6 +9,7 @@
     "db:initdocker": "docker run --name db_postgres -d --restart=unless-stopped -p 5432:5432 postgres:9.6.1-alpine",
     "db:migrateup": "node node_modules/db-migrate/bin/db-migrate up",
     "db:migratedown": "node node_modules/db-migrate/bin/db-migrate down",
+    "db:seed": "node ./bin/seed_sample_draft.js",
 
     "express:dev": "nodemon --ignore config/installed_chunks.json --exec DEBUG=obojobo:* node ./bin/www",
     "express:prod": "NODE_ENV=production node ./bin/www",
@@ -19,9 +20,7 @@
     "docengine:dev": "cd ./devsrc/obojobo-draft-document-engine && yarn dev",
     "docengine:setup": "\"yarn docengine:clone\" && \"yarn docengine:nodemodules\"",
     "docengine:clone": "git clone -b feature/new-data-model git@github.com:ucfcdl/Obojobo-Document-Engine.git devsrc/obojobo-draft-document-engine || echo 'already cloned'",
-    "docengine:nodemodules": "cd ./devsrc/obojobo-draft-document-engine && yarn",
-
-    "postinstall": "node ./bin/register_chunks.js"
+    "docengine:nodemodules": "cd ./devsrc/obojobo-draft-document-engine && yarn"
   },
   "engines": {
     "node": "^7.0.0"
