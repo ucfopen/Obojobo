@@ -242,6 +242,7 @@
 	    if (body == null) {
 	      body = {};
 	    }
+	    console.log('post', endpoint, body);
 	    return fetch(endpoint, {
 	      method: 'POST',
 	      body: JSON.stringify(body),
@@ -257,7 +258,7 @@
 	        action: eventAction,
 	        draft_id: lo.get('_id'),
 	        draft_rev: lo.get('_rev'),
-	        actorTime: new Date().toISOString(),
+	        actor_time: new Date().toISOString(),
 	        payload: eventPayload
 	      }
 	    });
