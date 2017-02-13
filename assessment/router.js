@@ -97,6 +97,7 @@ module.exports = class AssessmentRouter extends RouterAPI {
 	}
 
 	attemptEnd(endpoint, req, res, next) {
+		console.log('attempt end')
 		try
 		{
 		// check perms
@@ -126,7 +127,7 @@ module.exports = class AssessmentRouter extends RouterAPI {
 						this.db
 							.any(`
 								SELECT *
-								FROM attempt_question_responses
+								FROM attempts_question_responses
 								WHERE attempt_id = $1
 							`, [req.params.attemptId])
 							.then( responseHistory => {

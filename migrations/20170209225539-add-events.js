@@ -22,7 +22,7 @@ exports.up = function(db) {
     action: { type: 'varchar', length: 100},
     actor: { type: 'varchar', length: 100},
     ip: { type: 'varchar', length: 50},
-    matadata: { type: 'json'},
+    metadata: { type: 'json'},
     payload: { type: 'json'}
   })
   .then( result => {

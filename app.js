@@ -162,22 +162,31 @@ app.sdom.registerApi(app, db, router, mcChoice)
 
 
 
-
+// Get the latest draft of id and create a draftTree out of it
 app.getDraft = function(id) {
   console.log('GET DRAFT', id)
   return new Promise(function(resolve, reject) {
     db
       .one(`
-        SELECT *
+        SELECT
+          drafts.id AS id,
+          drafts.created_at AS draft_created_at,
+          drafts_content.created_at AS content_created_at,
+          drafts_content.content AS content
         FROM drafts
-        WHERE id = $1
+        JOIN drafts_content
+        ON drafts.id = drafts_content.draft_id
+        WHERE drafts.id = $1
+        ORDER BY drafts_content.created_at DESC
+        LIMIT 1
       `, id)
       .then( result => {
-        result.document._id = result.id
-        result.document._rev = result.revision
+        console.log(result)
+        result.content._id = result.id
+        result.content._rev = result.revision
 
         console.time('a')
-        let draftTree = new DraftTree(app, db, result.document)
+        let draftTree = new DraftTree(app, db, result.content)
         console.timeEnd('a')
 
         // let draft = Object.assign({}, result.document)

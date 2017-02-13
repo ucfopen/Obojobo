@@ -33,13 +33,13 @@ let registration = {
 				// insert
 				db
 					.none(`
-						INSERT INTO attempt_question_responses (attempt_id, question_id, response)
+						INSERT INTO attempts_question_responses (attempt_id, question_id, response)
 						VALUES($1, $2, $3)
 						ON CONFLICT (attempt_id, question_id) DO
 						UPDATE
 						SET response = $3, updated_at = now()
-						WHERE attempt_question_responses.attempt_id = $1
-						AND attempt_question_responses.question_id = $2`
+						WHERE attempts_question_responses.attempt_id = $1
+						AND attempts_question_responses.question_id = $2`
 					, [event.payload.attemptId, event.payload.questionId, event.payload.response])
 					.catch( error => {
 						app.logError(eventSetResponse, 'DB UNEXPECTED', req, error, error.toString());

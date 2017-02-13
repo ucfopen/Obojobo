@@ -13,7 +13,7 @@ db
 			state json NOT NULL,
 			score decimal
 		);
-		CREATE TABLE attempt_question_responses(
+		CREATE TABLE attempts_question_responses(
 			id bigserial PRIMARY KEY,
 			created_at TIMESTAMP WITH TIME zone NOT NULL DEFAULT now(),
 			updated_at TIMESTAMP WITH TIME zone NOT NULL DEFAULT now(),
@@ -21,7 +21,7 @@ db
 			question_id varchar(100),
 			response json
 		);
-		ALTER TABLE attempt_question_responses
+		ALTER TABLE attempts_question_responses
 		ADD CONSTRAINT attempt_question
 		UNIQUE (attempt_id, question_id);
 	`)
