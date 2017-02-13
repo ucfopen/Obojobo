@@ -1,19 +1,9 @@
 var router = require('../../router.js');
 var db = require('../../db.js');
 
-// resultToDraft = (result) => {
-//   let draft  = result.document
-//   draft._id  = result.id
-//   draft._rev = result.revision
-//   return filterOutAssessment(draft)
-// }
-
-
-
 router.get('/sample', (req, res, next) => {
   req.app.getDraft("00000000-0000-0000-0000-000000000000")
     .then( (draftTree) => {
-      // req.app.emit('internal:getDraft', req, res, draftTree)
       draftTree.root.yell('internal:sendToClient', req, res)
 
       res.success(draftTree.document)

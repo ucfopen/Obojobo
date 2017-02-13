@@ -119,8 +119,6 @@ module.exports = function(questionBank, attemptHistory) {
 	let questionHistory = getQuestionHistory(attemptHistory, questionBank)
 	let opts = getBankOptions(questionBank.node)
 
-	console.log('SELECT QUESTIONS', questionHistory)
-
 	switch(opts.select) {
 		case 'random-all':          return getRandomAllQuestions(questionHistory, questionBank)
 		case 'random-unseen':       return getRandomUnseenQuestions(questionHistory, questionBank)

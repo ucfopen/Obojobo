@@ -2,10 +2,8 @@ let findOboNode = (oboNode, targetId) => {
   ((oboNode, id) => {
     if(findOboNode.oboNode) return
 
-    // console.log('FIND OBO NODE', oboNode.id, id)
     if(oboNode.id === id)
     {
-      console.log('GOTEM', oboNode)
       findOboNode.oboNode = oboNode
     }
     for(index in oboNode.children)

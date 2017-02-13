@@ -12,7 +12,6 @@ module.exports = class AssessmentRouter extends RouterAPI {
 	}
 
 	attemptStart(endpoint, req, res, next) {
-		try{
 		// check perms
 
 		// check input
@@ -42,9 +41,6 @@ module.exports = class AssessmentRouter extends RouterAPI {
 
 						var questions = []
 						var state = {} //@TODO Retrieve state
-						try{
-						// console.log('EMIT', assessment.yell)
-
 
 						assessment.yell('ObojoboDraft.Sections.Assessment:attemptStart', req, res, assessment, attemptHistory, {
 							getQuestions: function() { return attemptState.questions },
@@ -52,14 +48,8 @@ module.exports = class AssessmentRouter extends RouterAPI {
 							getData:      function() { return attemptState.data },
 							setData:      function(d) { attemptState.data = d },
 						})
-						}catch(e){console.error(e)}
 
-						console.log('ATTEMPT DATA', attemptState)
-						// let questionIds = attemptState.questions.map( (question) => { return question.node.id } )
 						let questionObjects = attemptState.questions.map( (question) => { return question.toObject() } )
-
-
-						// req.app.emit('internal:sendToClient', req, res, questionObjects)
 
 						this.db
 							.one(`
@@ -88,18 +78,11 @@ module.exports = class AssessmentRouter extends RouterAPI {
 					})
 			})
 			.catch( error => {
-				console.log('------------', error)
 				res.missing(error.toString())
 			})
-
-		// res.success('here')
-		}catch(e){console.error(e)}
 	}
 
 	attemptEnd(endpoint, req, res, next) {
-		console.log('attempt end')
-		try
-		{
 		// check perms
 
 		// check input
@@ -172,9 +155,6 @@ module.exports = class AssessmentRouter extends RouterAPI {
 			.catch( error => {
 				this.logAndRespondToUnexpected('Unexpected DB error', endpoint, req, error)
 			})
-
-		}
-		catch(e) { console.error(e) }
 	}
 
 	getAttempts(endpoint, req, res, next) {
@@ -191,31 +171,25 @@ module.exports = class AssessmentRouter extends RouterAPI {
 		}
 
 		// select
-		try
-		{
-			this.db
-				.manyOrNone(`
-					SELECT
-						id AS "attemptId",
-						created_at as "startDate",
-						completed_at as "endDate",
-						state,
-						score
-					FROM attempts
-					WHERE user_id = $1
-					AND draft_id = $2`
-				, [req.params.userId, req.params.draftId])
-				.then( result => {
-					// console.log('RESULT', result);
-					res.success({
-						attempts: result
-					})
+		this.db
+			.manyOrNone(`
+				SELECT
+					id AS "attemptId",
+					created_at as "startDate",
+					completed_at as "endDate",
+					state,
+					score
+				FROM attempts
+				WHERE user_id = $1
+				AND draft_id = $2`
+			, [req.params.userId, req.params.draftId])
+			.then( result => {
+				res.success({
+					attempts: result
 				})
-				.catch( error => {
-					this.logAndRespondToUnexpected('Unexpected DB error', endpoint, req, error)
-				})
-		} catch(e) {
-			console.error('Unexpected error', e);
-		}
+			})
+			.catch( error => {
+				this.logAndRespondToUnexpected('Unexpected DB error', endpoint, req, error)
+			})
 	}
 }
