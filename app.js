@@ -126,26 +126,6 @@ app.use(function(err, req, res, next) {
   res.render('error.pug');
 });
 
-// app.registered = {}
-// app.register = function(registration) {
-//   if(app.registered[registration.title]) return
-
-//   let api = Object.assign({
-//     init: function() {},
-//     listeners: {},
-//     events: [],
-//   }, registration.api)
-
-//   app.registered[registration.title] = api
-
-//   api.init(app, router, db);
-
-//   for(let event in api.listeners)
-//   {
-//     app.on(event, api.listeners[event])
-//   }
-// }
-
 assessment = require('./assessment')
 questionBank = require('./assessment/questionbank')
 mcAssessment = require('./assessment/mcassessment')
@@ -164,7 +144,6 @@ app.sdom.registerApi(app, db, router, mcChoice)
 
 // Get the latest draft of id and create a draftTree out of it
 app.getDraft = function(id) {
-  console.log('GET DRAFT', id)
   return new Promise(function(resolve, reject) {
     db
       .one(`
@@ -181,15 +160,12 @@ app.getDraft = function(id) {
         LIMIT 1
       `, id)
       .then( result => {
-        console.log(result)
         result.content._id = result.id
         result.content._rev = result.revision
 
         console.time('a')
         let draftTree = new DraftTree(app, db, result.content)
         console.timeEnd('a')
-
-        // let draft = Object.assign({}, result.document)
 
         resolve(draftTree)
       })
@@ -199,16 +175,6 @@ app.getDraft = function(id) {
   })
 }
 
-// console.log('get d')
-// app
-//   .getDraft('00000000-0000-0000-0000-000000000000')
-//   .then( (result) => {
-//     // console.log('GOT RESULT', result)
-//   })
-//   .catch( (error) => {
-//     console.error('GOT ERROR', error)
-//   })
-
 app.logError = function(name, req, ...additional) {
   console.error("ERROR:", name, "\n", (new Date()), "\nREQUEST HEADERS", req.headers, "\nREQUEST BODY", req.body);
   if(typeof additional !== "undefined")
@@ -217,7 +183,6 @@ app.logError = function(name, req, ...additional) {
   }
   console.error("");
 }
-
 
 appEvents.register(app);
 

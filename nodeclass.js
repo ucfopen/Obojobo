@@ -1,7 +1,3 @@
-// let createChildSet = (nodeClass) => {
-//   return getChildSet(nodeClass, new Set(), true)
-// }
-
 let getChildSet = (nodeClass, set, recur) => {
   for(let i in nodeClass.children)
   {
@@ -21,28 +17,12 @@ module.exports = class NodeClass {
     this.db = db
     this.init = initFn
     this.children = []
-    // this.childSet = createChildSet(this.node)
-    // this.immediateChildrenSet = getChildSet(this.node, new Set(), false)
     this._listeners = new Map()
-
-    // console.log('CONSTRUCT NODE CLASS', node.type, this._listeners)
-
 
     let i = 0
     for(let event in listeners)
     {
-      // app.removeAllListeners(event)
-      // console.log('CREATING A LISTENER FOR', event, this.node.id, app.listeners(event))
-      // if(this._listeners.get(event)) {
-      //   // console.log('REMOVING OLD')
-      //   app.removeListener(event, this._listeners.get(event))
-      // }
-
       this._listeners.set(event, listeners[event].bind(this))
-      // this[event] = this._listeners.get(event)
-      // app.on(event, this._listeners.get(event))
-      // console.log('RESULT', app.listeners(event))
-      // console.log('')
       i++
     }
   }
@@ -60,8 +40,6 @@ module.exports = class NodeClass {
   }
 
   yell(event) {
-    // console.log(this.node.id, 'yells', event)
-
     let eventListener = this._listeners.get(event)
     if(eventListener) eventListener.apply(this, Array.prototype.slice.call(arguments, 1))
 
@@ -76,8 +54,6 @@ module.exports = class NodeClass {
   }
 
   toObject() {
-
-    // console.log('toObject', this.node.id, this.node.type, this.children)
     let o = Object.assign({}, this.node)
     o.children = []
 

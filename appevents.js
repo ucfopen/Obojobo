@@ -5,12 +5,10 @@ module.exports = {
   register: (app) => {
     // THIS SHOULD PROBABLY BE MOVED
     app.on('client:saveState', event => {
-      console.log('SAVE STATE');
-      console.log(event);
       event._id = event.user + ':' + event.draft_id + ':' + event.draft_rev
 
       // upsert, created_at, updated_at
-      db.none("        INSERT INTO view_state(          user_id,          metadata,          payload        ) VALUES(          ${userId},          ${metadata},          ${payload}        )", event)
+      db.none("INSERT INTO view_state(user_id, metadata, payload) VALUES(${userId}, ${metadata}, ${payload})", event)
       .then( (result) => {
         return true
       })

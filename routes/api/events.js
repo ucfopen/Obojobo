@@ -18,16 +18,12 @@ router.post('/', (req, res, next) => {
     payload: event.payload
   }
 
-  console.log('INSERT OBJECT', insertObject, insertObject.actorTime)
-
   db
     .one(
       "INSERT INTO events(actor_time, action, actor, ip, metadata, payload) VALUES (${actorTime}, ${action}, ${userId}, ${ip}, ${metadata}, ${payload}) RETURNING created_at", insertObject
     , insertObject)
     .then( result => {
       insertObject.createdAt = result.created_at
-      // console.log('>>>>>>>>APP EMIT', event.action)
-      // console.log(req.app.eventNames())
       req.app.emit('client:' + event.action, insertObject, req, db);
       res.success({ createdAt:result.created_at })
     })
