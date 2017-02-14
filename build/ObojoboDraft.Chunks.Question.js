@@ -45,12 +45,12 @@
 /***/ 0:
 /***/ function(module, exports, __webpack_require__) {
 
-	module.exports = __webpack_require__(106);
+	module.exports = __webpack_require__(107);
 
 
 /***/ },
 
-/***/ 104:
+/***/ 105:
 /***/ function(module, exports) {
 
 	"use strict";
@@ -90,14 +90,14 @@
 
 /***/ },
 
-/***/ 105:
+/***/ 106:
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
 
 	var AssessmentUtil, Common, Dispatcher, OboComponent, Question, QuestionUtil, ScoreUtil;
 
-	__webpack_require__(183);
+	__webpack_require__(184);
 
 	Common = window.ObojoboDraft.Common;
 
@@ -115,14 +115,6 @@
 	  displayName: 'Question',
 
 	  getInitialState: function getInitialState() {
-	    var currentAttempt;
-	    if (this.props.model.modelState.type === 'assessment') {
-	      currentAttempt = AssessmentUtil.getCurrentAttemptForModel(this.props.moduleData.assessmentState, this.props.model);
-	      console.log('currentAttempt', currentAttempt);
-	      if ((currentAttempt != null ? currentAttempt.responses[this.props.model.get('id')] : void 0) == null) {
-	        AssessmentUtil.registerQuestionForAttempt(this.props.model);
-	      }
-	    }
 	    return {
 	      score: null
 	    };
@@ -184,7 +176,7 @@
 
 /***/ },
 
-/***/ 106:
+/***/ 107:
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -195,14 +187,14 @@
 
 	OBO.register('ObojoboDraft.Chunks.Question', {
 	  type: 'chunk',
-	  adapter: __webpack_require__(104),
-	  componentClass: __webpack_require__(105),
+	  adapter: __webpack_require__(105),
+	  componentClass: __webpack_require__(106),
 	  selectionHandler: new ObojoboDraft.Common.chunk.textChunk.TextGroupSelectionHandler()
 	});
 
 /***/ },
 
-/***/ 183:
+/***/ 184:
 /***/ function(module, exports) {
 
 	// removed by extract-text-webpack-plugin

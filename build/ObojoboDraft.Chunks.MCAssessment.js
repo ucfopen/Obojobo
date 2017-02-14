@@ -68,7 +68,7 @@
 /***/ 0:
 /***/ function(module, exports, __webpack_require__) {
 
-	module.exports = __webpack_require__(100);
+	module.exports = __webpack_require__(101);
 
 
 /***/ },
@@ -80,7 +80,7 @@
 
 	var Common, MCAnswer, OboComponent;
 
-	__webpack_require__(36);
+	__webpack_require__(37);
 
 	Common = window.ObojoboDraft.Common;
 
@@ -161,7 +161,7 @@
 
 	var Common, MCChoice, OboComponent, OboModel;
 
-	__webpack_require__(37);
+	__webpack_require__(38);
 
 	Common = window.ObojoboDraft.Common;
 
@@ -305,7 +305,7 @@
 
 	var Common, MCFeedback, OboComponent;
 
-	__webpack_require__(38);
+	__webpack_require__(39);
 
 	Common = window.ObojoboDraft.Common;
 
@@ -351,20 +351,20 @@
 
 /***/ },
 
-/***/ 36:
+/***/ 37:
 /***/ function(module, exports) {
 
 	// removed by extract-text-webpack-plugin
 
 /***/ },
 
-/***/ 37:
-36,
-
 /***/ 38:
-36,
+37,
 
-/***/ 98:
+/***/ 39:
+37,
+
+/***/ 99:
 /***/ function(module, exports) {
 
 	'use strict';
@@ -392,14 +392,14 @@
 
 /***/ },
 
-/***/ 99:
+/***/ 100:
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
 
 	var Button, Common, Dispatcher, MCAssessment, OboComponent, OboModel, QuestionUtil;
 
-	__webpack_require__(181);
+	__webpack_require__(182);
 
 	Common = window.ObojoboDraft.Common;
 
@@ -606,7 +606,7 @@
 
 /***/ },
 
-/***/ 100:
+/***/ 101:
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -623,14 +623,14 @@
 
 	OBO.register('ObojoboDraft.Chunks.MCAssessment', {
 	  type: 'chunk',
-	  adapter: __webpack_require__(98),
-	  componentClass: __webpack_require__(99),
+	  adapter: __webpack_require__(99),
+	  componentClass: __webpack_require__(100),
 	  selectionHandler: new ObojoboDraft.Common.chunk.textChunk.TextGroupSelectionHandler()
 	});
 
 /***/ },
 
-/***/ 181:
-36
+/***/ 182:
+37
 
 /******/ })));

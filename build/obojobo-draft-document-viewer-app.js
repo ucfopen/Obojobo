@@ -45,12 +45,12 @@
 /***/ 0:
 /***/ function(module, exports, __webpack_require__) {
 
-	module.exports = __webpack_require__(171);
+	module.exports = __webpack_require__(172);
 
 
 /***/ },
 
-/***/ 162:
+/***/ 163:
 /***/ function(module, exports) {
 
 	'use strict';
@@ -107,7 +107,7 @@
 	    }
 	    return React.createElement(
 	      'div',
-	      { style: { position: 'fixed', right: 0, top: 0, zIndex: 9999 } },
+	      { style: { position: 'fixed', right: 0, top: '50px', zIndex: 9999 } },
 	      React.createElement(
 	        'button',
 	        { onClick: this.onToggle },
@@ -121,7 +121,7 @@
 
 /***/ },
 
-/***/ 171:
+/***/ 172:
 /***/ function(module, exports, __webpack_require__) {
 
 	"use strict";
@@ -140,7 +140,7 @@
 
 	APIUtil = window.Viewer.util.APIUtil;
 
-	JSONInput = __webpack_require__(162);
+	JSONInput = __webpack_require__(163);
 
 	_debounce = function debounce(ms, cb) {
 	  clearTimeout(_debounce.id);
@@ -292,12 +292,12 @@
 	ModalStore.onChange(render);
 
 	if (window.location.hash.indexOf('legacy') > -1) {
-	  legacyJson = __webpack_require__(207);
+	  legacyJson = __webpack_require__(209);
 	  moduleData.model = window.ObojoboDraft.Common.models.Legacy.createModuleFromObo2ModuleJSON(legacyJson);
 	  NavStore.init(moduleData.model);
 	  render();
 	} else if (window.location.hash.indexOf('file') > -1) {
-	  json = __webpack_require__(208);
+	  json = __webpack_require__(210);
 	  showDocument(json);
 	} else {
 	  APIUtil.fetchDraft('sample').then(function (_this) {
@@ -309,7 +309,7 @@
 
 /***/ },
 
-/***/ 207:
+/***/ 209:
 /***/ function(module, exports) {
 
 	module.exports = {
@@ -2682,7 +2682,7 @@
 
 /***/ },
 
-/***/ 208:
+/***/ 210:
 /***/ function(module, exports) {
 
 	module.exports = {
@@ -2690,8 +2690,7 @@
 		"_rev": "9-fc44e9eef35bcc6ae36778ab2286a689",
 		"id": "68016af1-bbb7-4038-81a9-70df6022ed35",
 		"content": {
-			"title": "Physics 2D",
-			"start": "assessment"
+			"title": "Physics 2D"
 		},
 		"metadata": {},
 		"index": 0,

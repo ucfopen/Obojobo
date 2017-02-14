@@ -57,7 +57,7 @@
 
 	var Common, MCAnswer, OboComponent;
 
-	__webpack_require__(36);
+	__webpack_require__(37);
 
 	Common = window.ObojoboDraft.Common;
 
@@ -103,7 +103,7 @@
 
 /***/ },
 
-/***/ 36:
+/***/ 37:
 /***/ function(module, exports) {
 
 	// removed by extract-text-webpack-plugin

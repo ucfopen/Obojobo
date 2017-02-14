@@ -1,9 +1,57 @@
 .viewer--viewer-app {
   height: 100%;
-  transition: padding-left 0.2s;
-  overflow: auto; }
+  transition: padding-left 0.2s 0.2s, padding-top 0.2s;
+  overflow: auto;
+  padding-top: 2.5rem;
+  box-sizing: border-box; }
   .viewer--viewer-app.is-open-nav.is-enabled-nav {
-    padding-left: 20rem; }
+    padding-left: 16rem;
+    padding-top: 0; }
+    .viewer--viewer-app.is-open-nav.is-enabled-nav > header {
+      top: -2.5rem;
+      background: transparent;
+      border-bottom: 1px solid transparent; }
+      .viewer--viewer-app.is-open-nav.is-enabled-nav > header .viewer--components--logo, .viewer--viewer-app.is-open-nav.is-enabled-nav > header .location {
+        opacity: 0;
+        transition-delay: 0s;
+        transition: 0.1s opacity; }
+  .viewer--viewer-app > header {
+    background: #FFFFFF;
+    position: absolute;
+    left: 0;
+    width: 100%;
+    top: 0;
+    height: 2.5rem;
+    z-index: 999;
+    border-bottom: 1px solid rgba(0, 0, 0, 0.1);
+    font-size: .7rem;
+    font-family: Libre Franklin;
+    color: #000000;
+    padding: 0.8rem 2rem;
+    padding-left: 4rem;
+    box-sizing: border-box;
+    transition: top 0.2s, background 0.2s; }
+    .viewer--viewer-app > header > div {
+      position: relative; }
+    .viewer--viewer-app > header .module-title {
+      text-transform: uppercase;
+      display: inline-block;
+      cursor: default; }
+    .viewer--viewer-app > header .location {
+      margin-left: 1rem;
+      font-weight: bold;
+      transition: opacity 0.2s;
+      transition-delay: 0.4s;
+      cursor: default; }
+    .viewer--viewer-app > header .viewer--components--logo {
+      color: #999999;
+      position: fixed;
+      right: 2rem;
+      top: 0.8rem;
+      transition: opacity 0.2s;
+      transition-delay: 0.6s;
+      opacity: 0.2;
+      cursor: default; }
 @charset "UTF-8";
 .viewer--components--inline-nav-button {
   background: rgba(103, 20, 189, 0.05);
@@ -18,7 +66,8 @@
   cursor: pointer;
   text-align: center;
   height: 6rem;
-  line-height: 3.5rem; }
+  line-height: 3.5rem;
+  transform: translate(0, -1px); }
   .viewer--components--inline-nav-button:focus {
     outline: none; }
   .viewer--components--inline-nav-button.is-enabled.is-prev {
@@ -45,29 +94,39 @@
       border-bottom: 1px solid rgba(0, 0, 0, 0.3); }
     .viewer--components--inline-nav-button.is-disabled.is-next {
       border-top: 1px solid rgba(0, 0, 0, 0.3); }
+.viewer--components--logo {
+  display: block;
+  width: 4rem;
+  height: 1rem;
+  background-size: contain;
+  background-position: center right;
+  background-repeat: no-repeat;
+  padding-top: 1rem;
+  box-sizing: border-box;
+  overflow: hidden; }
+  .viewer--components--logo.is-inverted {
+    filter: invert(100%); }
 @charset "UTF-8";
 .viewer--components--nav {
   position: fixed;
   top: 0;
   left: 0;
   bottom: 0;
-  z-index: 9999;
+  z-index: 999;
   font-family: "Libre Franklin", Arial, sans-serif;
-  color: rgba(255, 255, 255, 0.8);
-  background: #4f4f4f;
+  color: #FFFFFF;
+  background: #131313;
   font-size: 1rem;
-  width: 20rem;
+  width: 16rem;
   padding: 2rem;
+  padding-top: 1rem;
   box-sizing: border-box;
   text-align: right;
-  transition: left 0.2s; }
+  transition: left 0.2s 0.2s; }
   .viewer--components--nav.is-locked li.link,
   .viewer--components--nav.is-locked li.seperator {
-    opacity: 0.5;
+    opacity: 0.25;
     pointer-events: none; }
-    .viewer--components--nav.is-locked li.link a,
-    .viewer--components--nav.is-locked li.seperator a {
-      text-decoration: line-through; }
     .viewer--components--nav.is-locked li.link.is-selected,
     .viewer--components--nav.is-locked li.seperator.is-selected {
       opacity: 1; }
@@ -75,7 +134,7 @@
       .viewer--components--nav.is-locked li.seperator.is-selected a {
         text-decoration: none; }
   .viewer--components--nav.is-closed {
-    left: -20rem; }
+    left: -16rem; }
   .viewer--components--nav.is-open .toggle-button {
     background-color: transparent;
     border: 2px solid transparent; }
@@ -124,22 +183,28 @@
     font-size: 0.7rem;
     opacity: .5;
     text-transform: uppercase;
-    cursor: default; }
+    cursor: default;
+    margin-bottom: 1rem; }
   .viewer--components--nav .toggle-button {
-    background-color: #FFFFFF;
+    background-color: transparent;
     background-position: center center;
     background-repeat: no-repeat;
-    border-radius: 0.5rem;
     border: none;
     cursor: pointer;
-    height: 3rem;
-    left: 1.25rem;
+    height: 1.5rem;
+    left: 1rem;
     overflow: hidden;
     position: fixed;
     text-indent: -9999px;
-    top: 1.35rem;
+    top: 0.5rem;
     transition: background-color 0.2s;
-    width: 3rem;
+    width: 1.5rem;
     z-index: 2; }
     .viewer--components--nav .toggle-button:focus {
       outline: none; }
+  .viewer--components--nav .viewer--components--logo {
+    position: absolute;
+    right: 2rem;
+    bottom: 2rem;
+    font-size: 0.7rem;
+    opacity: 0.1; }

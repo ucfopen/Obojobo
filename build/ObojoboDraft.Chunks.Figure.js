@@ -45,12 +45,12 @@
 /***/ 0:
 /***/ function(module, exports, __webpack_require__) {
 
-	module.exports = __webpack_require__(88);
+	module.exports = __webpack_require__(89);
 
 
 /***/ },
 
-/***/ 84:
+/***/ 85:
 /***/ function(module, exports) {
 
 	'use strict';
@@ -93,7 +93,7 @@
 
 /***/ },
 
-/***/ 85:
+/***/ 86:
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -110,7 +110,7 @@
 	    data = this.props.chunk.modelState;
 	    if (data.url == null) {
 	      imgStyles = {
-	        backgroundImage: Common.util.getBackgroundImage(__webpack_require__(223)),
+	        backgroundImage: Common.util.getBackgroundImage(__webpack_require__(225)),
 	        backgroundSize: '16px',
 	        height: '300px'
 	      };
@@ -136,7 +136,7 @@
 
 /***/ },
 
-/***/ 86:
+/***/ 87:
 /***/ function(module, exports) {
 
 	"use strict";
@@ -179,16 +179,16 @@
 
 /***/ },
 
-/***/ 87:
+/***/ 88:
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
 
 	var Common, Figure, Image, NonEditableChunk, OboComponent, TextGroupEl;
 
-	__webpack_require__(177);
+	__webpack_require__(178);
 
-	Image = __webpack_require__(85);
+	Image = __webpack_require__(86);
 
 	Common = window.ObojoboDraft.Common;
 
@@ -233,34 +233,34 @@
 
 /***/ },
 
-/***/ 88:
+/***/ 89:
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
 
 	var ObojoboDraft, SelectionHandler;
 
-	SelectionHandler = __webpack_require__(86);
+	SelectionHandler = __webpack_require__(87);
 
 	ObojoboDraft = window.ObojoboDraft;
 
 	OBO.register('ObojoboDraft.Chunks.Figure', {
 	  type: 'chunk',
-	  adapter: __webpack_require__(84),
-	  componentClass: __webpack_require__(87),
+	  adapter: __webpack_require__(85),
+	  componentClass: __webpack_require__(88),
 	  selectionHandler: new SelectionHandler()
 	});
 
 /***/ },
 
-/***/ 177:
+/***/ 178:
 /***/ function(module, exports) {
 
 	// removed by extract-text-webpack-plugin
 
 /***/ },
 
-/***/ 223:
+/***/ 225:
 /***/ function(module, exports) {
 
 	module.exports = "data:image/svg+xml;charset=utf8,%3Csvg id='Layer_1' data-name='Layer 1' xmlns='http://www.w3.org/2000/svg' viewBox='0 0 12 12'%3E%3Cdefs%3E%3Cstyle%3E.cls-1%7Bopacity:0.03;%7D%3C/style%3E%3C/defs%3E%3Ctitle%3Ebg%3C/title%3E%3Crect class='cls-1' width='6' height='6'/%3E%3Crect class='cls-1' x='6' y='6' width='6' height='6'/%3E%3C/svg%3E"

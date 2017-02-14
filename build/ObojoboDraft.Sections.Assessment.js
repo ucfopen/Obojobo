@@ -45,19 +45,19 @@
 /***/ 0:
 /***/ function(module, exports, __webpack_require__) {
 
-	module.exports = __webpack_require__(158);
+	module.exports = __webpack_require__(159);
 
 
 /***/ },
 
-/***/ 154:
+/***/ 155:
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
 
 	var Adapter, Common, ScoreActions;
 
-	ScoreActions = __webpack_require__(156);
+	ScoreActions = __webpack_require__(157);
 
 	Common = window.ObojoboDraft.Common;
 
@@ -95,7 +95,7 @@
 
 /***/ },
 
-/***/ 155:
+/***/ 156:
 /***/ function(module, exports) {
 
 	'use strict';
@@ -142,7 +142,7 @@
 
 /***/ },
 
-/***/ 156:
+/***/ 157:
 /***/ function(module, exports) {
 
 	"use strict";
@@ -181,14 +181,14 @@
 
 /***/ },
 
-/***/ 157:
+/***/ 158:
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
 
 	var AssessmentUtil, AttemptIncompleteDialog, Button, Common, Dispatcher, ModalUtil, NavUtil, OboComponent, OboModel, ScoreStore;
 
-	__webpack_require__(202);
+	__webpack_require__(203);
 
 	Common = window.ObojoboDraft.Common;
 
@@ -208,7 +208,7 @@
 
 	NavUtil = window.Viewer.util.NavUtil;
 
-	AttemptIncompleteDialog = __webpack_require__(155);
+	AttemptIncompleteDialog = __webpack_require__(156);
 
 	module.exports = React.createClass({
 	  displayName: 'exports',
@@ -227,11 +227,11 @@
 	    }
 	    return 'untested';
 	  },
-	  isAttemptIncomplete: function isAttemptIncomplete() {
-	    return AssessmentUtil.isCurrentAttemptIncomplete(this.props.moduleData.assessmentState, this.props.model);
+	  isAttemptComplete: function isAttemptComplete() {
+	    return AssessmentUtil.isCurrentAttemptComplete(this.props.moduleData.assessmentState, this.props.moduleData.questionState, this.props.model);
 	  },
 	  onClickSubmit: function onClickSubmit() {
-	    if (this.isAttemptIncomplete()) {
+	    if (!this.isAttemptComplete()) {
 	      ModalUtil.show(React.createElement(AttemptIncompleteDialog, { onSubmit: this.endAttempt }));
 	      return;
 	    }
@@ -254,7 +254,7 @@
 	  },
 	  getScoreAction: function getScoreAction() {
 	    var highestScore, scoreAction;
-	    highestScore = AssessmentUtil.getHighestAssessmentScoreForModel(this.props.moduleData.assessmentState, this.props.model);
+	    highestScore = AssessmentUtil.getHighestAttemptScoreForModel(this.props.moduleData.assessmentState, this.props.model);
 	    scoreAction = this.props.model.modelState.scoreActions.getActionForScore(highestScore);
 	    if (scoreAction) {
 	      return scoreAction;
@@ -293,7 +293,7 @@
 	            React.createElement(
 	              'div',
 	              { className: 'submit-button' },
-	              React.createElement(Button, { onClick: this.onClickSubmit, value: this.isAttemptIncomplete() ? 'Submit (Not all questions have been answered)' : 'Submit' })
+	              React.createElement(Button, { onClick: this.onClickSubmit, value: this.isAttemptComplete() ? 'Submit' : 'Submit (Not all questions have been answered)' })
 	            )
 	          );
 	        case 'scoreSubmitted':
@@ -343,7 +343,7 @@
 
 /***/ },
 
-/***/ 158:
+/***/ 159:
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -356,8 +356,8 @@
 
 	OBO.register('ObojoboDraft.Sections.Assessment', {
 	  type: 'section',
-	  adapter: __webpack_require__(154),
-	  componentClass: __webpack_require__(157),
+	  adapter: __webpack_require__(155),
+	  componentClass: __webpack_require__(158),
 	  selectionHandler: null,
 	  generateNav: function generateNav(model) {
 	    return [{
@@ -372,7 +372,7 @@
 
 /***/ },
 
-/***/ 202:
+/***/ 203:
 /***/ function(module, exports) {
 
 	// removed by extract-text-webpack-plugin
