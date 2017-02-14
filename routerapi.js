@@ -19,6 +19,6 @@ module.exports = class RouterAPI {
   logAndRespondToUnexpected(errorMessage, endpoint, req, jsError)
   {
     app.logError(endpoint, errorMessage, req, jsError, jsError.toString())
-    res.unexpected(jsError.toString())
+    res.unexpected(jsError)
   }
 }

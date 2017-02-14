@@ -30,6 +30,11 @@ router.use(function(req, res, next) {
   }
 
   res.unexpected = function(message) {
+    if(message instanceof Error)
+    {
+      console.error('error thrown', message.stack)
+      message = message.toString()
+    }
     return res.status(500).json({
       status: 'error',
       value: {
