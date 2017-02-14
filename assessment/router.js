@@ -1,5 +1,6 @@
 let RouterAPI = require('../routerapi')
 let Util = require('./util')
+let DraftModel = require('../models/draft')
 
 module.exports = class AssessmentRouter extends RouterAPI {
 	constructor(router, db)
@@ -19,7 +20,7 @@ module.exports = class AssessmentRouter extends RouterAPI {
 		// insert
 		let userId = 4; //@TODO - Hardcoded
 
-		req.app.getDraft(req.body.draftId)
+		DraftModel.fetchById(req.body.draftId)
 			.then( (draftTree) => {
 				this.db
 					.any(`
@@ -105,7 +106,7 @@ module.exports = class AssessmentRouter extends RouterAPI {
 
 				// res.success('ok')
 
-				req.app.getDraft(draftId)
+				DraftModel.fetchById(draftId)
 					.then( (draftTree) => {
 						this.db
 							.any(`

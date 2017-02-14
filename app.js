@@ -6,36 +6,14 @@ var cookieParser = require('cookie-parser');
 var bodyParser = require('body-parser');
 var ltiMiddleware = require('express-ims-lti');
 var cookieSession = require('cookie-session')
-var cons = require('consolidate');
+var cons = require('consolidate'); // allows multiple view engines
 var fs = require('fs');
-var path = require('path');
-
 var appEvents = require('./appevents');
-
 var sdom = require('./sdom');
-var DraftTree = require('./drafttree');
-
 var db = require('./db');
-
-// Require our routes/controllers
-var router = require('./router');
-var indexRoute = require('./routes/index');
-var ltiRoute = require('./routes/lti');
-var apiDraftsRoute = require('./routes/api/drafts');
-var apiEventsRoute = require('./routes/api/events');
-var apiStatesRoute = require('./routes/api/states');
-// var apiAssessmentsRoute = require('./routes/api/assessments');
-
 var app = express();
 
-// let EventEmitter = require('events')
-// class Emitter extends EventEmitter {}
-// let emitter = new Emitter();
-// app.emitter = emitter;
-
-
-
-// view engine setup
+// =========== VIEW ENGINES ================
 var engines = require('consolidate');
 app.engine('pug', engines.pug)
 app.engine('mustache', engines.mustache)
@@ -55,9 +33,7 @@ app.use(require('node-sass-middleware')({
   sourceMap: true
 }));
 
-
-
-
+// =========== 3RD PARTY MIDDLEWARE ================
 app.use(ltiMiddleware({
   credentials: function (key, callback) {
     // `this` is a reference to the request object.
@@ -73,15 +49,16 @@ app.use(ltiMiddleware({
 
 }));
 
+
+// =========== ASSET PATHS ================
 // Register static assets
 app.use(express.static(path.join(__dirname, 'public')));
 app.use('/static/react', express.static(__dirname + '/node_modules/react/dist'));
 app.use('/static/react-dom', express.static(__dirname + '/node_modules/react-dom/dist'));
 app.use('/static/obo-draft', express.static(__dirname + '/node_modules/obojobo-draft-document-engine/build'));
 
+// Search for dynamic Obojobo Draft Chunks
 app.locals.paths = {}
-
-// Dynamically load the obojobo doc chunks in dev or production
 if(app.get('env') === 'production'){
   console.log('Registering Production Chunks');
   spawn = require( 'child_process' ).spawnSync,
@@ -99,6 +76,7 @@ else{
   app.locals.paths.chunkPath = "http://localhost:8090/build/"
 }
 
+// Process dynamic Obojobo Draft Chunks
 let installedChunksJson = fs.readFileSync('./config/installed_chunks.json');
 let installedChunksObject = JSON.parse(installedChunksJson);
 app.locals.installedChunks = [];
@@ -110,6 +88,14 @@ Object.keys(installedChunksObject).forEach( chunkName => {
 })
 
 
+// =========== ROUTING & CONTROLERS ===========
+var router = require('./router');
+var indexRoute = require('./routes/index');
+var ltiRoute = require('./routes/lti');
+var apiDraftsRoute = require('./routes/api/drafts');
+var apiEventsRoute = require('./routes/api/events');
+var apiStatesRoute = require('./routes/api/states');
+// var apiAssessmentsRoute = require('./routes/api/assessments');
 app.use('/', indexRoute);
 app.use('/lti', ltiRoute);
 app.use('/api/drafts', apiDraftsRoute)
@@ -117,6 +103,24 @@ app.use('/api/events', apiEventsRoute)
 app.use('/api/states', apiStatesRoute)
 // app.use('/api/assessments', apiAssessmentsRoute)
 
+// load up the dynamic obojobo draft chunks/objects
+// @TODO more dyanmic or include in
+// Change this so the registration happens in the module's main require?
+assessment = require('./assessment')
+questionBank = require('./assessment/questionbank')
+mcAssessment = require('./assessment/mcassessment')
+question = require('./assessment/question')
+mcChoice = require('./assessment/mcchoice')
+
+app.sdom = sdom
+app.sdom.registerApi(app, db, router, assessment)
+app.sdom.registerApi(app, db, router, questionBank)
+app.sdom.registerApi(app, db, router, mcAssessment)
+app.sdom.registerApi(app, db, router, question)
+app.sdom.registerApi(app, db, router, mcChoice)
+
+
+// @TODO 404!
 // catch 404 and forward to error handler
 // app.use(function(req, res, next) {
 //   var err = new Error('Not Found');
@@ -137,55 +141,7 @@ app.use(function(err, req, res, next) {
   res.render('error.pug');
 });
 
-assessment = require('./assessment')
-questionBank = require('./assessment/questionbank')
-mcAssessment = require('./assessment/mcassessment')
-question = require('./assessment/question')
-mcChoice = require('./assessment/mcchoice')
-
-app.sdom = sdom
-
-app.sdom.registerApi(app, db, router, assessment)
-app.sdom.registerApi(app, db, router, questionBank)
-app.sdom.registerApi(app, db, router, mcAssessment)
-app.sdom.registerApi(app, db, router, question)
-app.sdom.registerApi(app, db, router, mcChoice)
-
-
-
-// Get the latest draft of id and create a draftTree out of it
-app.getDraft = function(id) {
-  return new Promise(function(resolve, reject) {
-    db
-      .one(`
-        SELECT
-          drafts.id AS id,
-          drafts.created_at AS draft_created_at,
-          drafts_content.created_at AS content_created_at,
-          drafts_content.content AS content
-        FROM drafts
-        JOIN drafts_content
-        ON drafts.id = drafts_content.draft_id
-        WHERE drafts.id = $1
-        ORDER BY drafts_content.created_at DESC
-        LIMIT 1
-      `, id)
-      .then( result => {
-        result.content._id = result.id
-        result.content._rev = result.revision
-
-        console.time('a')
-        let draftTree = new DraftTree(app, db, result.content)
-        console.timeEnd('a')
-
-        resolve(draftTree)
-      })
-      .catch( (error) => {
-        reject(error)
-      })
-  })
-}
-
+// @TODO: centralize logging
 app.logError = function(name, req, ...additional) {
   console.error("ERROR:", name, "\n", (new Date()), "\nREQUEST HEADERS", req.headers, "\nREQUEST BODY", req.body);
   if(typeof additional !== "undefined")

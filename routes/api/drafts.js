@@ -1,8 +1,9 @@
 var router = require('../../router.js');
 var db = require('../../db.js');
+let DraftModel = require('../../models/draft')
 
 router.get('/sample', (req, res, next) => {
-  req.app.getDraft("00000000-0000-0000-0000-000000000000")
+  DraftModel.fetchById("00000000-0000-0000-0000-000000000000")
     .then( (draftTree) => {
       draftTree.root.yell('internal:sendToClient', req, res)
 

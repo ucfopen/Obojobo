@@ -19,6 +19,8 @@ router.use(function(req, res, next) {
     })
   }
 
+  // @TODO - in the controller - throw an error instead of calling this
+  // let the main response handler catch it and respond with this
   res.badInput = function(message) {
     return res.status(400).json({
       status: 'error',
