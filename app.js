@@ -54,17 +54,26 @@ app.use(require('node-sass-middleware')({
   indentedSyntax: true,
   sourceMap: true
 }));
+
+
+
+
 app.use(ltiMiddleware({
   credentials: function (key, callback) {
     // `this` is a reference to the request object.
     // var consumer = this.consumer = fetchLtiConsumer(key);
     // The first parameter is an error (null if there is none).
     // callback(null, key, consumer.secret);
-    callback(null, key, 'lti-secret2');
+
+    // THIS IS THE DEFAULT found in http://ltiapps.net/test/tc.php
+    // TESTING
+    if(key == 'jisc.ac.uk') callback(null, key, 'secret')
+    else callback(null, key, 'secret');
   },
 
 }));
 
+// Register static assets
 app.use(express.static(path.join(__dirname, 'public')));
 app.use('/static/react', express.static(__dirname + '/node_modules/react/dist'));
 app.use('/static/react-dom', express.static(__dirname + '/node_modules/react-dom/dist'));

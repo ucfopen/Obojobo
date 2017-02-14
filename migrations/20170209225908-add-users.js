@@ -26,11 +26,18 @@ exports.up = function(db) {
     roles: { type: 'text[]'}
   })
   .then( result => {
+    return db.addIndex('users', 'users_unique_username_per_consumer', ['consumer', 'username'], true)
+  })
+  .then( result => {
     return db.addIndex('users', 'users_username_index', ['username'])
+  })
+  .then( result => {
+    return db.addIndex('users', 'users_consumer_index', ['consumer'])
   })
   .then( result => {
     return db.addIndex('users', 'users_created_at_index', ['created_at'])
   })
+
 };
 
 exports.down = function(db) {

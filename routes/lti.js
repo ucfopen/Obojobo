@@ -43,12 +43,21 @@ router.all('/launch', (req, res, next) => {
     consumer: req.lti.body.tool_consumer_instance_guid,
     username: req.lti.body.lis_person_sourcedid,
     email: req.lti.body.lis_person_contact_email_primary,
-    firstName: req.lti.body.lis_person_name_given,
-    lastName: req.lti.body.lis_person_name_family,
+    first_name: req.lti.body.lis_person_name_given,
+    last_name: req.lti.body.lis_person_name_family,
     roles: req.lti.body.roles
   }
 
-  db.none("INSERT INTO users (consumer, username, email, firstName, lastName, roles) VALUES(${consumer}, ${username}, ${email}, ${firstName}, ${lastName}, ${roles}) ON CONFLICT (username) DO UPDATE SET email = ${email}, firstName = ${firstName}, lastName = ${lastName}, roles = ${roles}", user)
+  db.none(`
+    INSERT INTO users
+      (consumer, username, email, first_name, last_name, roles)
+      VALUES($[consumer], $[username], $[email], $[first_name], $[last_name], $[roles])
+    ON CONFLICT (consumer, username) DO UPDATE SET
+      email = $[email],
+      first_name = $[first_name],
+      last_name = $[last_name],
+      roles = $[roles]
+    `, user)
   .then( result =>  res.render('lti_launch.pug', user) )
   .catch( error => {
     console.log('new, failure', error)
