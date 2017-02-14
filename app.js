@@ -13,6 +13,7 @@ var sdom = require('./sdom');
 var db = require('./db');
 var app = express();
 
+
 // =========== VIEW ENGINES ================
 var engines = require('consolidate');
 app.engine('pug', engines.pug)
@@ -32,6 +33,7 @@ app.use(require('node-sass-middleware')({
   indentedSyntax: true,
   sourceMap: true
 }));
+
 
 // =========== 3RD PARTY MIDDLEWARE ================
 app.use(ltiMiddleware({
@@ -58,50 +60,45 @@ app.use('/static/react-dom', express.static(__dirname + '/node_modules/react-dom
 app.use('/static/obo-draft', express.static(__dirname + '/node_modules/obojobo-draft-document-engine/build'));
 
 // Search for dynamic Obojobo Draft Chunks
-app.locals.paths = {}
-if(app.get('env') === 'production'){
-  console.log('Registering Production Chunks');
-  spawn = require( 'child_process' ).spawnSync,
-  ls = spawn( 'yarn', [ 'chunks:register'] );
-
-  app.locals.paths.chunkPath = "/static/chunks/"
-  app.locals.paths.draftPath = "/static/obo-draft/"
+app.locals.paths = {
+  chunkPath: "/static/chunks/",
+  draftPath: "/static/obo-draft/"
 }
-else{
-  console.log('Registering Development Chunks');
-  spawn = require( 'child_process' ).spawnSync,
-  ls = spawn('yarn', ['chunks:registerdev']);
 
+let registerChunkScript = 'chunks:register'
+if(app.get('env') !== 'production'){
+  console.log('Registering Development Chunks');
   app.locals.paths.draftPath = "http://localhost:8090/build/"
   app.locals.paths.chunkPath = "http://localhost:8090/build/"
+  registerChunkScript = 'chunks:registerdev'
 }
+
+// call script
+spawn = require( 'child_process' ).spawnSync,
+ls = spawn('yarn', [registerChunkScript]);
 
 // Process dynamic Obojobo Draft Chunks
 let installedChunksJson = fs.readFileSync('./config/installed_chunks.json');
 let installedChunksObject = JSON.parse(installedChunksJson);
 app.locals.installedChunks = [];
+console.log("Dynamic Asset Routing")
 Object.keys(installedChunksObject).forEach( chunkName => {
-  console.log(`Registering /static/chunks/${chunkName}.js to ${__dirname}/${installedChunksObject[chunkName]}.js`)
-  app.use(`/static/chunks/${chunkName}.js`, express.static(`${__dirname}/${installedChunksObject[chunkName]}.js`));
-  app.use(`/static/chunks/${chunkName}.css`, express.static(`${__dirname}/${installedChunksObject[chunkName]}.css`));
+  let urlBase = `static/chunks/${chunkName}`;
+  let pathBase = `${__dirname}/${installedChunksObject[chunkName]}`
+  console.log(`${urlBase} => ${pathBase}`)
+  app.use(`${urlBase}.js`, express.static(`${pathBase}.js`));
+  app.use(`${urlBase}.css`, express.static(`${pathBase}.css`));
   app.locals.installedChunks.push(chunkName)
 })
 
 
 // =========== ROUTING & CONTROLERS ===========
-var router = require('./router');
-var indexRoute = require('./routes/index');
-var ltiRoute = require('./routes/lti');
-var apiDraftsRoute = require('./routes/api/drafts');
-var apiEventsRoute = require('./routes/api/events');
-var apiStatesRoute = require('./routes/api/states');
-// var apiAssessmentsRoute = require('./routes/api/assessments');
-app.use('/', indexRoute);
-app.use('/lti', ltiRoute);
-app.use('/api/drafts', apiDraftsRoute)
-app.use('/api/events', apiEventsRoute)
-app.use('/api/states', apiStatesRoute)
-// app.use('/api/assessments', apiAssessmentsRoute)
+app.use('/', require('./routes/index'));
+app.use('/lti', require('./routes/lti'));
+app.use('/api/drafts', require('./routes/api/drafts'))
+app.use('/api/events', require('./routes/api/events'))
+app.use('/api/states', require('./routes/api/states'))
+// app.use('/api/assessments', require('./routes/api/assessments'))
 
 // load up the dynamic obojobo draft chunks/objects
 // @TODO more dyanmic or include in
@@ -112,6 +109,7 @@ mcAssessment = require('./assessment/mcassessment')
 question = require('./assessment/question')
 mcChoice = require('./assessment/mcchoice')
 
+var router = require('./router');
 app.sdom = sdom
 app.sdom.registerApi(app, db, router, assessment)
 app.sdom.registerApi(app, db, router, questionBank)
