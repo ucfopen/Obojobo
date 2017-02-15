@@ -1,4 +1,4 @@
-let sdom = require('../sdom')
+let obojoboDraftExpress = require('../obojobo_draft_express');
 let db = require('../db');
 
 // Collects all children DraftNodes into a Set() object
@@ -17,7 +17,6 @@ class DraftNode {
     this.draftTree = draftTree
     this.node = Object.assign({}, node)
     delete this.node.children
-    this.db = db
     this.init = initFn
     this.children = []
     this._listeners = new Map()
@@ -79,7 +78,7 @@ class Draft {
   processRawNode(node){
     let initFn = () => {}
     let listeners = {}
-    let registration = sdom.getRegistration(node.type)
+    let registration = obojoboDraftExpress.getDraftModule(node.type)
 
     if(registration){
       let instApi = registration.inst

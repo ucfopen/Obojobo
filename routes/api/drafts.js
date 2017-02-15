@@ -9,10 +9,9 @@ router.get('/sample', (req, res, next) => {
       res.success(draftTree.document)
       next()
     })
-
     .catch(error => {
       console.error(error)
-      res.missing('Draft not found0')
+      res.missing('Draft not found')
       next()
     })
 
@@ -27,7 +26,7 @@ router.get('/:draftId', (req, res, next) => {
       next()
     })
     .catch(error => {
-      res.missing('Draft not found1')
+      res.missing('Draft not found')
       next()
     })
 

@@ -1,13 +1,13 @@
 var express = require('express');
 var fs = require('fs');
 var path = require('path');
-var sdom = require('./sdom');
 var ltiMiddleware = require('express-ims-lti');
 var db = require('./db')
 var router = require('./router');
 
-let app,
-  settings = {}
+let app;
+let settings = {};
+let registeredDraftModules = new Map();
 
 let initialize = (appRef, settingsRef = null) => {
   settings = settingsRef
@@ -17,9 +17,7 @@ let initialize = (appRef, settingsRef = null) => {
   app.use(ltiMiddleware({
     credentials: function (key, callback) {
       // `this` is a reference to the request object.
-      // var consumer = this.consumer = fetchLtiConsumer(key);
-      // The first parameter is an error (null if there is none).
-      // callback(null, key, consumer.secret);
+      // The first callback parameter is for errors (null if there is none).
       if(key == 'jisc.ac.uk') callback(null, key, 'secret') // THIS IS THE DEFAULT found in http://ltiapps.net/test/tc.php
       else callback(null, key, 'secret');
     },
@@ -27,12 +25,12 @@ let initialize = (appRef, settingsRef = null) => {
   }));
 
 
-  // =========== ASSET PATHS ================
+  // =========== STATIC ASSET PATHS ================
   // Register static assets
   app.use(express.static(path.join(__dirname, 'public')));
-  app.use('/static/react', express.static(__dirname + '/node_modules/react/dist'));
-  app.use('/static/react-dom', express.static(__dirname + '/node_modules/react-dom/dist'));
-  app.use('/static/obo-draft', express.static(__dirname + '/node_modules/obojobo-draft-document-engine/build'));
+  // app.use('/static/react', express.static(`${__dirname}/node_modules/react/dist`));
+  // app.use('/static/react-dom', express.static(`${__dirname}/node_modules/react-dom/dist`));
+  app.use('/static/obo-draft', express.static(`${__dirname}/node_modules/obojobo-draft-document-engine/build`));
 
   // Search for dynamic Obojobo Draft Chunks
   app.locals.paths = {
@@ -78,24 +76,45 @@ let initialize = (appRef, settingsRef = null) => {
   // load up the dynamic obojobo draft chunks/objects
   // @TODO more dyanmic or include in
   // Change this so the registration happens in the module's main require?
-  assessment = require('./assessment')
-  questionBank = require('./assessment/questionbank')
-  mcAssessment = require('./assessment/mcassessment')
-  question = require('./assessment/question')
-  mcChoice = require('./assessment/mcchoice')
-
-  app.sdom = sdom
-  app.sdom.registerApi(app, db, router, assessment)
-  app.sdom.registerApi(app, db, router, questionBank)
-  app.sdom.registerApi(app, db, router, mcAssessment)
-  app.sdom.registerApi(app, db, router, question)
-  app.sdom.registerApi(app, db, router, mcChoice)
+  registerDraftModule(require('./assessment'))
+  registerDraftModule(require('./assessment/questionbank'))
+  registerDraftModule(require('./assessment/mcassessment'))
+  registerDraftModule(require('./assessment/question'))
+  registerDraftModule(require('./assessment/mcchoice'))
 
   app.on('client:saveState', onClientSaveState)
 
   app.use(middleware);
 }
 
+let createNewApi = () => {
+  return {
+    init: function() {},
+    listeners: {},
+    events: [],
+  }
+}
+
+let registerDraftModule = (registration) => {
+  if(registeredDraftModules.has(registration.title)) return
+
+  api = {
+    static: Object.assign(createNewApi(), registration.static),
+    inst: Object.assign(createNewApi(), registration.instance)
+  }
+
+  registeredDraftModules.set(registration.title, api)
+  api.static.init(app, db, router)
+
+  for(let event in api.static.listeners)
+  {
+    app.on(event, api.static.listeners[event])
+  }
+}
+
+let getDraftModule = (name) => {
+  return registeredDraftModules.get(name)
+}
 
 let onClientSaveState = (event) => {
   event._id = `${event.user}:${event.draft_id}:${event.draft_rev}`
@@ -114,10 +133,13 @@ let onClientSaveState = (event) => {
   })
 }
 
-
 let middleware = (req, res, next) => {
   console.log('MIDDLEWARE FIRED');
   next()
 }
 
-module.exports = { initialize: initialize }
+module.exports = {
+  initialize: initialize,
+  registerDraftModule: registerDraftModule,
+  getDraftModule: getDraftModule
+}
