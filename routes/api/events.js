@@ -26,8 +26,12 @@ router.post('/', (req, res, next) => {
       insertObject.createdAt = result.created_at
       req.app.emit('client:' + event.action, insertObject, req, db);
       res.success({ createdAt:result.created_at })
+      next();
     })
-    .catch( error => res.unexpected(error))
+    .catch( error => {
+      res.unexpected(error)
+      next()
+    })
 
 })
 

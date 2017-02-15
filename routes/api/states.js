@@ -13,9 +13,11 @@ router.get('/:draftId-:revision', (req, res, next) => {
   rp(getRequest)
   .then( viewState => {
     res.success(viewState);
+    next()
   })
   .catch( () => {
     res.missing({error:'No View State not found'});
+    next()
   })
 
 });

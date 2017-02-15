@@ -12,6 +12,7 @@ router.get('/', (req, res, next) => {
   else{
     res.send("I have no idea who you are");
   }
+  next()
 });
 
 router.get('/config.xml', (req, res, next) => {
@@ -27,6 +28,7 @@ router.get('/config.xml', (req, res, next) => {
     picker_url:'value'
   }
   res.render('lti_config_xml.mustache', viewParams);
+  next()
 });
 
 router.all('/launch', (req, res, next) => {
@@ -36,6 +38,7 @@ router.all('/launch', (req, res, next) => {
       req.session.lti = null
     }
     res.status(401).render('error.pug', {message: 'Access Denied', error: {status: 'Invalid LTI launch request'}, stack:null });
+    next()
     return
   }
 
@@ -58,10 +61,14 @@ router.all('/launch', (req, res, next) => {
       last_name = $[last_name],
       roles = $[roles]
     `, user)
-  .then( result =>  res.render('lti_launch.pug', user) )
+  .then( result => {
+    res.render('lti_launch.pug', user)
+    next()
+  })
   .catch( error => {
     console.log('new, failure', error)
     res.render('error.pug', {message: 'ERROR', error: {status: 'There was a problem storing your new account.'}});
+    next()
   })
 
 })
