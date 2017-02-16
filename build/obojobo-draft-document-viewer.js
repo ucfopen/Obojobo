@@ -302,8 +302,8 @@
 	OboModel = window.ObojoboDraft.Common.models.OboModel;
 
 	QuestionUtil = {
-	  setResponse: function setResponse(id, response) {
-	    return Dispatcher.trigger('question:setResponse', {
+	  recordResponse: function recordResponse(id, response) {
+	    return Dispatcher.trigger('question:recordResponse', {
 	      value: {
 	        id: id,
 	        response: response
@@ -312,6 +312,21 @@
 	  },
 	  resetResponse: function resetResponse(id) {
 	    return Dispatcher.trigger('question:resetResponse', {
+	      value: {
+	        id: id
+	      }
+	    });
+	  },
+	  setData: function setData(id, data) {
+	    return Dispatcher.trigger('question:setData', {
+	      value: {
+	        id: id,
+	        data: data
+	      }
+	    });
+	  },
+	  clearData: function clearData(id) {
+	    return Dispatcher.trigger('question:clearData', {
 	      value: {
 	        id: id
 	      }
@@ -343,8 +358,13 @@
 	    return 'hidden';
 	  },
 	  getResponse: function getResponse(state, model) {
-	    var response;
-	    return response = state.responses[model.get('id')];
+	    return state.responses[model.get('id')];
+	  },
+	  hasResponse: function hasResponse(state, model) {
+	    return typeof state.responses[model.get('id')] !== 'undefined';
+	  },
+	  getData: function getData(state, model) {
+	    return state.data[model.get('id')];
 	  }
 	};
 
@@ -671,7 +691,16 @@
 	Dispatcher = window.ObojoboDraft.Common.flux.Dispatcher;
 
 	ScoreUtil = {
+	  getScoreForModel: function getScoreForModel(state, model) {
+	    var score;
+	    score = state.scores[model.get('id')];
+	    if (typeof score === "undefined" || score === null) {
+	      return null;
+	    }
+	    return score;
+	  },
 	  setScore: function setScore(id, score) {
+	    console.log('SET SCORE', id, score);
 	    return Dispatcher.trigger('score:set', {
 	      value: {
 	        id: id,
@@ -1245,10 +1274,11 @@
 	    this.state = {
 	      viewing: null,
 	      viewedQuestions: {},
-	      responses: {}
+	      responses: {},
+	      data: {}
 	    };
 	    Dispatcher.on({
-	      'question:setResponse': function (_this) {
+	      'question:recordResponse': function (_this) {
 	        return function (payload) {
 	          _this.state.responses[payload.value.id] = payload.value.response;
 	          return _this.triggerChange();
@@ -1257,6 +1287,18 @@
 	      'question:resetResponse': function (_this) {
 	        return function (payload) {
 	          delete _this.state.responses[payload.value.id];
+	          return _this.triggerChange();
+	        };
+	      }(this),
+	      'question:setData': function (_this) {
+	        return function (payload) {
+	          _this.state.data[payload.value.id] = payload.value.data;
+	          return _this.triggerChange();
+	        };
+	      }(this),
+	      'question:clearData': function (_this) {
+	        return function (payload) {
+	          delete _this.state.data[payload.value.id];
 	          return _this.triggerChange();
 	        };
 	      }(this),
@@ -1328,11 +1370,9 @@
 	  extend(ScoreStore, superClass);
 
 	  function ScoreStore() {
-	    ScoreStore.__super__.constructor.call(this, 'scorestore');
+	    ScoreStore.__super__.constructor.call(this, 'scoreStore');
 	    this.state = {
-	      scores: {},
-	      viewing: null,
-	      viewed: {}
+	      scores: {}
 	    };
 	    Dispatcher.on({
 	      'score:set': function (_this) {
@@ -1350,15 +1390,6 @@
 	      }(this)
 	    });
 	  }
-
-	  ScoreStore.prototype.getScore = function (model) {
-	    var score;
-	    score = this.state.scores[model.get('id')];
-	    if (typeof score === 'undefined') {
-	      return null;
-	    }
-	    return score;
-	  };
 
 	  ScoreStore.prototype.getState = function () {
 	    return this.state;

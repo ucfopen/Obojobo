@@ -117,8 +117,12 @@ body {
     color: #A20E83;
     font-size: 1.5rem; }
   .component pre,
+  .component code,
+  .component pre code,
   .component textarea {
-    font-family: 'Droid Sans Mono'; }
+    font-family: "Roboto Mono", monospace;
+    font-size: 1.1rem;
+    letter-spacing: -0.01rem; }
   .component a {
     color: #bd1438; }
   .component .obojobo-draft--chunks--question .question {
@@ -204,6 +208,11 @@ body {
     border-bottom: 1px solid #350a61; }
     .obojobo-draft--components--button button:hover {
       opacity: 1; }
+    .obojobo-draft--components--button button:disabled {
+      background-color: #F4F4F4;
+      color: #999999;
+      border-bottom: 1px solid transparent;
+      opacity: 1; }
   .obojobo-draft--components--button.dangerous button {
     background-color: #D40000;
     border-bottom: 1px solid #350a61; }
@@ -256,7 +265,7 @@ body {
 .obojobo-draft--components--modal--bubble .single-input-bubble input {
   border: 1px solid #6714BD;
   box-sizing: border-box;
-  font-family: "Droid Sans Mono", monospace;
+  font-family: "Roboto Mono", monospace;
   font-size: 0.8rem;
   height: 2rem;
   padding: 0.2rem;

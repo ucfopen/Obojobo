@@ -112,64 +112,40 @@
 	QuestionUtil = window.Viewer.util.QuestionUtil;
 
 	Question = React.createClass({
-	  displayName: 'Question',
+		displayName: 'Question',
 
-	  getInitialState: function getInitialState() {
-	    return {
-	      score: null
-	    };
-	  },
-	  setScore: function setScore(score) {
-	    ScoreUtil.setScore(this.props.model.get('id'), score);
-	    return this.setState({
-	      score: score
-	    });
-	  },
-	  onClickBlocker: function onClickBlocker() {
-	    return QuestionUtil.viewQuestion(this.props.model.get('id'));
-	  },
-	  componentWillReceiveProps: function componentWillReceiveProps(nextProps) {
-	    if (nextProps.model !== this.props.model) {
-	      return this.setScore(null);
-	    }
-	  },
-	  render: function render() {
-	    var score, viewState;
-	    console.log('R', this.props);
-	    if (this.props.model.modelState.type === 'practice') {
-	      score = this.state.score;
-	    } else {
-	      score = null;
-	    }
-	    viewState = QuestionUtil.getViewState(this.props.moduleData.questionState, this.props.model);
-	    return React.createElement(
-	      OboComponent,
-	      {
-	        model: this.props.model,
-	        className: 'obojobo-draft--chunks--question' + (score === null ? '' : score === 100 ? ' is-correct' : ' is-incorrect') + (' is-type-' + this.props.model.modelState.type) + ' is-' + viewState
-	      },
-	      this.props.model.children.models.map(function (child, index) {
-	        var Component = child.getComponentClass();
-	        return React.createElement(Component, {
-	          key: child.get('id'),
-	          model: child,
-	          setScore: this.setScore,
-	          score: score,
-	          type: this.props.model.modelState.type,
-	          moduleData: this.props.moduleData
-	        });
-	      }.bind(this)),
-	      React.createElement(
-	        'div',
-	        { className: 'blocker', onClick: this.onClickBlocker },
-	        React.createElement(
-	          'span',
-	          null,
-	          'Click to view question'
-	        )
-	      )
-	    );
-	  }
+		onClickBlocker: function onClickBlocker() {
+			return QuestionUtil.viewQuestion(this.props.model.get('id'));
+		},
+		render: function render() {
+			var score, viewState;
+			score = ScoreUtil.getScoreForModel(this.props.moduleData.scoreState, this.props.model.children.last());
+			viewState = QuestionUtil.getViewState(this.props.moduleData.questionState, this.props.model);
+			return React.createElement(
+				OboComponent,
+				{
+					model: this.props.model,
+					className: 'obojobo-draft--chunks--question' + (score === null ? '' : score === 100 ? ' is-correct' : ' is-incorrect') + (' is-type-' + this.props.model.modelState.type) + ' is-' + viewState
+				},
+				this.props.model.children.models.map(function (child, index) {
+					var Component = child.getComponentClass();
+					return React.createElement(Component, {
+						key: child.get('id'),
+						model: child,
+						moduleData: this.props.moduleData
+					});
+				}.bind(this)),
+				React.createElement(
+					'div',
+					{ className: 'blocker', onClick: this.onClickBlocker },
+					React.createElement(
+						'span',
+						null,
+						'Click to view question'
+					)
+				)
+			);
+		}
 	});
 
 	module.exports = Question;

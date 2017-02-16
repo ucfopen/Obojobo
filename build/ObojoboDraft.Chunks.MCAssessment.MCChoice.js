@@ -61,7 +61,8 @@
 	  construct: function construct(model, attrs) {
 	    var ref;
 	    if ((attrs != null ? (ref = attrs.content) != null ? ref.score : void 0 : void 0) != null) {
-	      return model.modelState.score = attrs.content.score;
+	      model.modelState.score = attrs.content.score;
+	      return model.modelState._score = attrs.content.score;
 	    } else {
 	      return model.modelState.score = '';
 	    }
@@ -83,7 +84,7 @@
 
 	'use strict';
 
-	var Common, MCChoice, OboComponent, OboModel;
+	var Common, MCChoice, OboComponent, OboModel, QuestionUtil;
 
 	__webpack_require__(38);
 
@@ -93,15 +94,16 @@
 
 	OboModel = Common.models.OboModel;
 
+	QuestionUtil = window.Viewer.util.QuestionUtil;
+
 	MCChoice = React.createClass({
 	  displayName: 'MCChoice',
 
 	  getDefaultProps: function getDefaultProps() {
 	    return {
-	      isSelected: false,
-	      showFeedback: false,
-	      type: 'practice',
-	      onChange: function onChange() {}
+	      responseType: null,
+	      revealAll: false,
+	      questionSubmitted: false
 	    };
 	  },
 	  getInitialState: function getInitialState() {
@@ -144,16 +146,8 @@
 	    feedback.children.add(text);
 	    return feedback;
 	  },
-	  onChange: function onChange(event) {
-	    return this.props.onChange(this.props.model, event.target.checked);
-	  },
-	  onClick: function onClick(event) {
-	    if (!this.props.isSelected) {
-	      return this.props.onChange(this.props.model, true);
-	    }
-	  },
 	  getInputType: function getInputType() {
-	    switch (this.props.model.parent.modelState.responseType) {
+	    switch (this.props.responseType) {
 	      case 'pick-all':
 	        return 'checkbox';
 	      default:
@@ -161,19 +155,21 @@
 	    }
 	  },
 	  render: function render() {
+	    var isSelected;
+	    isSelected = QuestionUtil.getResponse(this.props.moduleData.questionState, this.props.model) === true;
 	    return React.createElement(
 	      OboComponent,
 	      {
 	        model: this.props.model,
-	        onClick: this.onClick,
-	        className: 'obojobo-draft--chunks--mc-assessment--mc-choice' + (this.props.isSelected ? ' is-selected' : ' is-not-selected') + (this.props.model.modelState.score === 100 ? ' is-correct' : ' is-incorrect')
+	        className: 'obojobo-draft--chunks--mc-assessment--mc-choice' + (isSelected ? ' is-selected' : ' is-not-selected') + (this.props.model.modelState.score === 100 ? ' is-correct' : ' is-incorrect')
 	      },
 	      React.createElement('input', {
+	        ref: 'input',
 	        type: this.getInputType(),
 	        value: this.props.model.get('id'),
-	        checked: this.props.isSelected,
-	        name: this.props.model.parent.get('id'),
-	        onChange: this.onChange
+	        checked: isSelected,
+	        name: this.props.model.parent.get('id')
+
 	      }),
 	      React.createElement(
 	        'div',
@@ -183,17 +179,12 @@
 	          var isAnswerItem = type === 'ObojoboDraft.Chunks.MCAssessment.MCAnswer';
 	          var isFeedbackItem = type === 'ObojoboDraft.Chunks.MCAssessment.MCFeedback';
 
-	          if (!isAnswerItem && !isFeedbackItem) {
-	            return null;
+	          //console.log('TEST', child.get('id'), child.get('type'), '==>', isAnswerItem, '||(', isFeedbackItem, '&&', this.props.revealAll, '))')
+
+	          if (isAnswerItem || isFeedbackItem && this.props.questionSubmitted && isSelected || isFeedbackItem && this.props.revealAll) {
+	            var Component = child.getComponentClass();
+	            return React.createElement(Component, { key: child.get('id'), model: child });
 	          }
-
-	          if (isFeedbackItem && !this.props.showFeedback) {
-	            return null;
-	          }
-
-	          var Component = child.getComponentClass();
-
-	          return React.createElement(Component, { key: child.get('id'), model: child });
 	        }.bind(this))
 	      )
 	    );

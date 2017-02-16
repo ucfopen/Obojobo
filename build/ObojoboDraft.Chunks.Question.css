@@ -1,13 +1,14 @@
 @charset "UTF-8";
 .obojobo-draft--chunks--question {
-  background: #F4F4F4;
+  background: #FFFFFF;
   border-radius: 0.25rem;
   margin: 0 auto;
   padding: 0;
   position: relative;
   width: 52rem;
   padding-top: 1rem;
-  margin-bottom: 1rem; }
+  margin-bottom: 1rem;
+  border: 1px solid rgba(0, 0, 0, 0.1); }
   .obojobo-draft--chunks--question.is-active .blocker, .obojobo-draft--chunks--question.is-viewed .blocker {
     display: none; }
   .obojobo-draft--chunks--question.is-hidden .blocker {
@@ -16,14 +17,12 @@
     top: 0;
     right: 0;
     bottom: 0;
-    background: #F4F4F4;
+    background: #FFFFFF;
     cursor: pointer;
     transition: background 0.2s;
     border-radius: 0.25rem; }
-    .obojobo-draft--chunks--question.is-hidden .blocker:hover {
-      background: #f7f7f7; }
-      .obojobo-draft--chunks--question.is-hidden .blocker:hover span {
-        transform: translate(-50%, -50%) scale(1.1, 1.1); }
+    .obojobo-draft--chunks--question.is-hidden .blocker:hover span {
+      transform: translate(-50%, -50%) scale(1.1, 1.1); }
     .obojobo-draft--chunks--question.is-hidden .blocker span {
       transition: transform 0.2s;
       font-family: "Libre Franklin", Arial, sans-serif;

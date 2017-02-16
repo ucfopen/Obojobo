@@ -159,10 +159,14 @@ body {
 	}
 
 	pre,
+	code,
+	pre code,
 	textarea
 	{
-		font-family: 'Droid Sans Mono';
+		font-family: $font-monospace;
 		// tab-size: 8;
+		font-size: 1.1rem;
+		letter-spacing: -0.01rem;
 	}
 
 	a

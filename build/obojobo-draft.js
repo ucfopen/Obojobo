@@ -320,10 +320,6 @@
 	  return ex2.apply(this, arguments);
 	};
 
-	Dispatcher.FAKEtrigger = function () {
-	  return console.log('FAKE', arguments);
-	};
-
 	module.exports = Dispatcher;
 
 /***/ },
@@ -4895,15 +4891,8 @@
 /* 20 */
 /***/ function(module, exports) {
 
-	/*
-	object-assign
-	(c) Sindre Sorhus
-	@license MIT
-	*/
-
 	'use strict';
 	/* eslint-disable no-unused-vars */
-	var getOwnPropertySymbols = Object.getOwnPropertySymbols;
 	var hasOwnProperty = Object.prototype.hasOwnProperty;
 	var propIsEnumerable = Object.prototype.propertyIsEnumerable;
 
@@ -4924,7 +4913,7 @@
 			// Detect buggy property enumeration order in older V8 versions.
 
 			// https://bugs.chromium.org/p/v8/issues/detail?id=4118
-			var test1 = new String('abc');  // eslint-disable-line no-new-wrappers
+			var test1 = new String('abc');  // eslint-disable-line
 			test1[5] = 'de';
 			if (Object.getOwnPropertyNames(test1)[0] === '5') {
 				return false;
@@ -4953,7 +4942,7 @@
 			}
 
 			return true;
-		} catch (err) {
+		} catch (e) {
 			// We don't expect any of the above to throw, but better to be safe.
 			return false;
 		}
@@ -4973,8 +4962,8 @@
 				}
 			}
 
-			if (getOwnPropertySymbols) {
-				symbols = getOwnPropertySymbols(from);
+			if (Object.getOwnPropertySymbols) {
+				symbols = Object.getOwnPropertySymbols(from);
 				for (var i = 0; i < symbols.length; i++) {
 					if (propIsEnumerable.call(from, symbols[i])) {
 						to[symbols[i]] = from[symbols[i]];
@@ -5459,7 +5448,8 @@
 
 	  getDefaultProps: function getDefaultProps() {
 	    return {
-	      value: 'Button'
+	      value: 'Button',
+	      disabled: false
 	    };
 	  },
 	  focus: function focus() {
@@ -5475,7 +5465,7 @@
 	          ref: 'button',
 	          onClick: this.props.onClick,
 	          tabIndex: this.props.shouldPreventTab ? '-1' : this.props.tabIndex,
-	          disabled: this.props.shouldPreventTab
+	          disabled: this.props.disabled || this.props.shouldPreventTab
 	        },
 	        this.props.value
 	      )

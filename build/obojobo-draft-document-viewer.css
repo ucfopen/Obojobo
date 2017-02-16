@@ -9,7 +9,6 @@
     padding-top: 0; }
     .viewer--viewer-app.is-open-nav.is-enabled-nav > header {
       top: -2.5rem;
-      background: transparent;
       border-bottom: 1px solid transparent; }
       .viewer--viewer-app.is-open-nav.is-enabled-nav > header .viewer--components--logo, .viewer--viewer-app.is-open-nav.is-enabled-nav > header .location {
         opacity: 0;
@@ -27,10 +26,10 @@
     font-size: .7rem;
     font-family: Libre Franklin;
     color: #000000;
-    padding: 0.8rem 2rem;
+    padding: 0.8rem 1rem;
     padding-left: 4rem;
     box-sizing: border-box;
-    transition: top 0.2s, background 0.2s; }
+    transition: top 0.2s; }
     .viewer--viewer-app > header > div {
       position: relative; }
     .viewer--viewer-app > header .module-title {
@@ -46,7 +45,7 @@
     .viewer--viewer-app > header .viewer--components--logo {
       color: #999999;
       position: fixed;
-      right: 2rem;
+      right: 1rem;
       top: 0.8rem;
       transition: opacity 0.2s;
       transition-delay: 0.6s;

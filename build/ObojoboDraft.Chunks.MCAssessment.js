@@ -137,7 +137,8 @@
 	  construct: function construct(model, attrs) {
 	    var ref;
 	    if ((attrs != null ? (ref = attrs.content) != null ? ref.score : void 0 : void 0) != null) {
-	      return model.modelState.score = attrs.content.score;
+	      model.modelState.score = attrs.content.score;
+	      return model.modelState._score = attrs.content.score;
 	    } else {
 	      return model.modelState.score = '';
 	    }
@@ -159,7 +160,7 @@
 
 	'use strict';
 
-	var Common, MCChoice, OboComponent, OboModel;
+	var Common, MCChoice, OboComponent, OboModel, QuestionUtil;
 
 	__webpack_require__(38);
 
@@ -169,15 +170,16 @@
 
 	OboModel = Common.models.OboModel;
 
+	QuestionUtil = window.Viewer.util.QuestionUtil;
+
 	MCChoice = React.createClass({
 	  displayName: 'MCChoice',
 
 	  getDefaultProps: function getDefaultProps() {
 	    return {
-	      isSelected: false,
-	      showFeedback: false,
-	      type: 'practice',
-	      onChange: function onChange() {}
+	      responseType: null,
+	      revealAll: false,
+	      questionSubmitted: false
 	    };
 	  },
 	  getInitialState: function getInitialState() {
@@ -220,16 +222,8 @@
 	    feedback.children.add(text);
 	    return feedback;
 	  },
-	  onChange: function onChange(event) {
-	    return this.props.onChange(this.props.model, event.target.checked);
-	  },
-	  onClick: function onClick(event) {
-	    if (!this.props.isSelected) {
-	      return this.props.onChange(this.props.model, true);
-	    }
-	  },
 	  getInputType: function getInputType() {
-	    switch (this.props.model.parent.modelState.responseType) {
+	    switch (this.props.responseType) {
 	      case 'pick-all':
 	        return 'checkbox';
 	      default:
@@ -237,19 +231,21 @@
 	    }
 	  },
 	  render: function render() {
+	    var isSelected;
+	    isSelected = QuestionUtil.getResponse(this.props.moduleData.questionState, this.props.model) === true;
 	    return React.createElement(
 	      OboComponent,
 	      {
 	        model: this.props.model,
-	        onClick: this.onClick,
-	        className: 'obojobo-draft--chunks--mc-assessment--mc-choice' + (this.props.isSelected ? ' is-selected' : ' is-not-selected') + (this.props.model.modelState.score === 100 ? ' is-correct' : ' is-incorrect')
+	        className: 'obojobo-draft--chunks--mc-assessment--mc-choice' + (isSelected ? ' is-selected' : ' is-not-selected') + (this.props.model.modelState.score === 100 ? ' is-correct' : ' is-incorrect')
 	      },
 	      React.createElement('input', {
+	        ref: 'input',
 	        type: this.getInputType(),
 	        value: this.props.model.get('id'),
-	        checked: this.props.isSelected,
-	        name: this.props.model.parent.get('id'),
-	        onChange: this.onChange
+	        checked: isSelected,
+	        name: this.props.model.parent.get('id')
+
 	      }),
 	      React.createElement(
 	        'div',
@@ -259,17 +255,12 @@
 	          var isAnswerItem = type === 'ObojoboDraft.Chunks.MCAssessment.MCAnswer';
 	          var isFeedbackItem = type === 'ObojoboDraft.Chunks.MCAssessment.MCFeedback';
 
-	          if (!isAnswerItem && !isFeedbackItem) {
-	            return null;
+	          //console.log('TEST', child.get('id'), child.get('type'), '==>', isAnswerItem, '||(', isFeedbackItem, '&&', this.props.revealAll, '))')
+
+	          if (isAnswerItem || isFeedbackItem && this.props.questionSubmitted && isSelected || isFeedbackItem && this.props.revealAll) {
+	            var Component = child.getComponentClass();
+	            return React.createElement(Component, { key: child.get('id'), model: child });
 	          }
-
-	          if (isFeedbackItem && !this.props.showFeedback) {
-	            return null;
-	          }
-
-	          var Component = child.getComponentClass();
-
-	          return React.createElement(Component, { key: child.get('id'), model: child });
 	        }.bind(this))
 	      )
 	    );
@@ -397,7 +388,7 @@
 
 	'use strict';
 
-	var Button, Common, Dispatcher, MCAssessment, OboComponent, OboModel, QuestionUtil;
+	var Button, Common, DOMUtil, Dispatcher, MCAssessment, OboComponent, OboModel, QuestionUtil, ScoreUtil;
 
 	__webpack_require__(182);
 
@@ -411,132 +402,108 @@
 
 	Dispatcher = Common.flux.Dispatcher;
 
+	DOMUtil = Common.page.DOMUtil;
+
 	QuestionUtil = window.Viewer.util.QuestionUtil;
+
+	ScoreUtil = window.Viewer.util.ScoreUtil;
 
 	MCAssessment = React.createClass({
 	  displayName: 'MCAssessment',
 
-	  getDefaultProps: function getDefaultProps() {
-	    return {
-	      score: null,
-	      type: 'practice'
-	    };
-	  },
-	  getInitialState: function getInitialState() {
-	    return {
-	      shuffledAnswers: this.getShuffledAnswers(),
-	      __responses: new Set(),
-	      __showAllFeedback: false
-	    };
-	  },
-	  getResponse: function getResponse() {
-	    var response;
-	    response = QuestionUtil.getResponse(this.props.moduleData.questionState, this.props.model);
-	    if (!response) {
-	      response = this.createNewResponseObject();
-	    }
-	    return response;
-	  },
-	  setResponse: function setResponse(response) {
-	    return QuestionUtil.setResponse(this.props.model.get('id'), response);
-	  },
-	  createNewResponseObject: function createNewResponseObject() {
-	    return {
-	      answers: {},
-	      revealAll: false
-	    };
-	  },
-	  getShuffledAnswers: function getShuffledAnswers() {
-	    var children, i, len, model, ref;
-	    children = [];
+	  calculateScore: function calculateScore() {
+	    var child, correct, i, id, j, len, len1, ref, ref1, responses;
+	    correct = new Set();
+	    responses = new Set();
 	    ref = this.props.model.children.models;
 	    for (i = 0, len = ref.length; i < len; i++) {
-	      model = ref[i];
-	      children.push(model);
+	      child = ref[i];
+	      if (child.modelState.score === 100) {
+	        correct.add(child.get('id'));
+	      }
+	      if (QuestionUtil.getResponse(this.props.moduleData.questionState, child)) {
+	        responses.add(child.get('id'));
+	      }
 	    }
-	    return _.shuffle(children);
-	  },
-	  onAnswerChoiceChange: function onAnswerChoiceChange(model, checked) {
-	    var response, submitAfter;
-	    submitAfter = false;
-	    response = this.getResponse();
-	    if (this.props.model.modelState.responseType !== 'pick-all') {
-	      response = this.createNewResponseObject();
-	    }
-	    if (checked) {
-	      response.answers[model.get('id')] = model.get('id');
-	    } else {
-	      delete response.answers[model.get('id')];
-	    }
-	    return this.setResponse(response);
-	  },
-	  getSelectedAnswerItemSet: function getSelectedAnswerItemSet() {
-	    var r;
-	    r = this.getResponse();
-	    console.log(r);
-	    return new Set(Object.keys(this.getResponse().answers).map(function (answerId) {
-	      return OboModel.models[answerId];
-	    }));
-	  },
-	  calculateScore: function calculateScore() {
-	    var i, isCorrectAnswer, isIncorrectAnswer, j, len, len1, mcChoice, mcChoiceSelected, ref, ref1, responses;
-	    responses = this.getSelectedAnswerItemSet();
-	    if (this.props.model.modelState.responseType === 'pick-all') {
-	      ref = this.state.shuffledAnswers;
-	      for (i = 0, len = ref.length; i < len; i++) {
-	        mcChoice = ref[i];
-	        mcChoiceSelected = responses.has(mcChoice);
-	        isCorrectAnswer = mcChoice.modelState.score === 100;
-	        isIncorrectAnswer = mcChoice.modelState.score === 0;
-	        console.log('calc', mcChoiceSelected, mcChoice.modelState.score);
-	        if (isCorrectAnswer && !mcChoiceSelected || isIncorrectAnswer && mcChoiceSelected) {
+	    switch (this.props.model.modelState.responseType) {
+	      case 'pick-all':
+	        if (correct.size !== responses.size) {
 	          return 0;
 	        }
-	      }
-	      return 100;
-	    } else {
-	      ref1 = this.state.shuffledAnswers;
-	      for (j = 0, len1 = ref1.length; j < len1; j++) {
-	        mcChoice = ref1[j];
-	        mcChoiceSelected = responses.has(mcChoice);
-	        isCorrectAnswer = mcChoice.modelState.score === 100;
-	        isIncorrectAnswer = mcChoice.modelState.score === 0;
-	        if (mcChoiceSelected) {
-	          if (isCorrectAnswer) {
+	        correct.forEach(function (id) {
+	          if (!responses.has(id)) {
+	            return 0;
+	          }
+	        });
+	        return 100;
+	      default:
+	        ref1 = Array.from(correct);
+	        for (j = 0, len1 = ref1.length; j < len1; j++) {
+	          id = ref1[j];
+	          if (responses.has(id)) {
 	            return 100;
 	          }
-	          return 0;
 	        }
-	      }
+	        return 0;
 	    }
-	    return 0;
 	  },
 	  onClickSubmit: function onClickSubmit(event) {
-	    var response;
 	    event.preventDefault();
-	    response = this.getResponse();
-	    response.revealAll = true;
-	    return this.setResponse(response);
+	    return ScoreUtil.setScore(this.props.model.get('id'), this.calculateScore());
 	  },
 	  onClickRevealAll: function onClickRevealAll(event) {
-	    var response;
 	    event.preventDefault();
-	    response = this.getResponse();
-	    response.revealAll = true;
-	    return this.setResponse(response);
+	    return QuestionUtil.setData(this.props.model.get('id'), {
+	      revealAll: true
+	    });
 	  },
 	  onClickReset: function onClickReset(event) {
 	    event.preventDefault();
 	    return this.reset();
 	  },
 	  reset: function reset() {
-	    return QuestionUtil.resetResponse(this.props.model.get('id'));
+	    var child, i, len, ref;
+	    ref = this.props.model.children.models;
+	    for (i = 0, len = ref.length; i < len; i++) {
+	      child = ref[i];
+	      QuestionUtil.resetResponse(child.get('id'));
+	    }
+	    QuestionUtil.clearData(this.props.model.get('id'));
+	    return ScoreUtil.clearScore(this.props.model.get('id'));
+	  },
+	  onClick: function onClick(event) {
+	    var child, i, len, mcChoiceEl, mcChoiceId, ref;
+	    mcChoiceEl = DOMUtil.findParentWithAttr(event.target, 'data-type', 'ObojoboDraft.Chunks.MCAssessment.MCChoice');
+	    if (!mcChoiceEl) {
+	      return;
+	    }
+	    mcChoiceId = mcChoiceEl.getAttribute('data-id');
+	    if (!mcChoiceId) {
+	      return;
+	    }
+	    if (this.getScore() !== null) {
+	      this.reset();
+	    }
+	    switch (this.props.model.modelState.responseType) {
+	      case 'pick-all':
+	        console.log('SETTING', mcChoiceId, 'TO', !QuestionUtil.getResponse(this.props.moduleData.questionState, OboModel.models[mcChoiceId]));
+	        console.log(this.props.moduleData.questionState);
+	        return QuestionUtil.recordResponse(mcChoiceId, !QuestionUtil.getResponse(this.props.moduleData.questionState, OboModel.models[mcChoiceId]));
+	      default:
+	        ref = this.props.model.children.models;
+	        for (i = 0, len = ref.length; i < len; i++) {
+	          child = ref[i];
+	          QuestionUtil.resetResponse(child.get('id'));
+	        }
+	        return QuestionUtil.recordResponse(mcChoiceId, true);
+	    }
+	  },
+	  getScore: function getScore() {
+	    return ScoreUtil.getScoreForModel(this.props.moduleData.scoreState, this.props.model);
 	  },
 	  render: function render() {
-	    var instructions, responseType, responses;
+	    var instructions, questionSubmitted, ref, responseType, revealAll, score;
 	    responseType = this.props.model.modelState.responseType;
-	    responses = this.getSelectedAnswerItemSet();
-	    console.log('MCAssessment responses', responses);
 	    instructions = function () {
 	      switch (responseType) {
 	        case 'pick-one':
@@ -547,12 +514,16 @@
 	          return 'Pick all the correct answers';
 	      }
 	    }();
+	    revealAll = (ref = QuestionUtil.getData(this.props.moduleData.questionState, this.props.model)) != null ? ref.revealAll : void 0;
+	    score = this.getScore();
+	    questionSubmitted = score !== null;
 	    return React.createElement(
 	      OboComponent,
 	      {
 	        model: this.props.model,
+	        onClick: this.onClick,
 	        tag: 'form',
-	        className: 'obojobo-draft--chunks--mc-assessment' + (' is-response-type-' + this.props.model.modelState.responseType) + (this.state.showAllFeedback ? ' is-showing-all-feedback' : ' is-not-showing-all-feedback') + (this.props.score === null ? ' is-unscored' : ' is-scored')
+	        className: 'obojobo-draft--chunks--mc-assessment' + (' is-response-type-' + this.props.model.modelState.responseType) + (revealAll ? ' is-revealing-all' : ' is-not-revealing-all') + (score === null ? ' is-unscored' : ' is-scored')
 	      },
 	      React.createElement(
 	        'span',
@@ -560,44 +531,54 @@
 	        instructions,
 	        ':'
 	      ),
-	      this.state.shuffledAnswers.map(function (child, index) {
+	      this.props.model.children.models.map(function (child, index) {
 	        if (child.get('type') !== 'ObojoboDraft.Chunks.MCAssessment.MCChoice') {
 	          return null;
 	        }
 
-	        var isSelected = responses.has(child);
 	        var Component = child.getComponentClass();
 	        return React.createElement(Component, {
 	          key: child.get('id'),
 	          model: child,
-	          isSelected: isSelected,
-	          showFeedback: this.props.type === 'practice' && (this.state.showAllFeedback || isSelected && responseType !== 'pick-all'),
-	          type: this.props.type,
-	          onChange: this.onAnswerChoiceChange
+	          moduleData: this.props.moduleData,
+	          responseType: responseType,
+	          revealAll: revealAll,
+	          questionSubmitted: questionSubmitted
+
 	        });
 	      }.bind(this)),
-	      this.props.type === 'practice' ? React.createElement(
+	      React.createElement(
 	        'div',
 	        { className: 'submit' },
-	        responseType === 'pick-all' ? React.createElement(Button, {
-	          onClick: this.onClickSubmit,
-	          disabled: this.state.showAllFeedback,
-	          value: 'Check Your Answers'
-	        }) : React.createElement(Button, {
-	          onClick: this.onClickRevealAll,
-	          disabled: this.state.showAllFeedback,
-	          value: 'Reveal All Answers'
-	        }),
-	        React.createElement(
-	          'span',
-	          { className: 'divider' },
-	          ' - '
-	        ),
 	        React.createElement(Button, {
-	          onClick: this.onClickReset,
-	          value: 'Reset'
-	        })
-	      ) : React.createElement('div', { className: 'submit' })
+	          onClick: this.onClickSubmit,
+	          disabled: questionSubmitted,
+	          value: 'Check Your Answer'
+	        }),
+	        questionSubmitted ? React.createElement(
+	          'div',
+	          { className: 'reveal-all-button' },
+	          React.createElement(
+	            'span',
+	            { className: 'divider' },
+	            ' - '
+	          ),
+	          React.createElement(Button, {
+	            onClick: this.onClickRevealAll,
+	            disabled: revealAll,
+	            value: 'Reveal All Answers'
+	          })
+	        ) : null,
+	        React.createElement(
+	          'div',
+	          { className: 'reset-button' },
+	          React.createElement(Button, {
+	            altAction: true,
+	            onClick: this.onClickReset,
+	            value: 'Reset'
+	          })
+	        )
+	      )
 	    );
 	  }
 	});
