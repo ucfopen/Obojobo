@@ -211,6 +211,7 @@ body {
     .obojobo-draft--components--button button:disabled {
       background-color: #F4F4F4;
       color: #999999;
+      border: 1px solid transparent;
       border-bottom: 1px solid transparent;
       opacity: 1; }
   .obojobo-draft--components--button.dangerous button {
@@ -224,6 +225,12 @@ body {
     .obojobo-draft--components--button.alt-action button:hover {
       background-color: #6714BD;
       color: #FFFFFF; }
+    .obojobo-draft--components--button.alt-action button:disabled {
+      background-color: #F4F4F4;
+      color: #999999;
+      border: 1px solid transparent;
+      border-bottom: 1px solid transparent;
+      opacity: 1; }
   .obojobo-draft--components--button.alt-action.dangerous button {
     border: 1px solid #D40000;
     border-bottom: 1px solid #D40000;
@@ -232,6 +239,12 @@ body {
     .obojobo-draft--components--button.alt-action.dangerous button:hover {
       background-color: #D40000;
       color: #FFFFFF; }
+    .obojobo-draft--components--button.alt-action.dangerous button:disabled {
+      background-color: #F4F4F4;
+      color: #999999;
+      border: 1px solid transparent;
+      border-bottom: 1px solid transparent;
+      opacity: 1; }
 .obojobo-draft--components--modal--bubble {
   background: #FFFFFF;
   border: 1px solid rgba(0, 0, 0, 0.3);

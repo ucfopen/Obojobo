@@ -317,18 +317,18 @@
 	      }
 	    });
 	  },
-	  setData: function setData(id, data) {
+	  setData: function setData(id, key, value) {
 	    return Dispatcher.trigger('question:setData', {
 	      value: {
-	        id: id,
-	        data: data
+	        key: id + ':' + key,
+	        value: value
 	      }
 	    });
 	  },
-	  clearData: function clearData(id) {
+	  clearData: function clearData(id, key) {
 	    return Dispatcher.trigger('question:clearData', {
 	      value: {
-	        id: id
+	        key: id + ':' + key
 	      }
 	    });
 	  },
@@ -363,8 +363,8 @@
 	  hasResponse: function hasResponse(state, model) {
 	    return typeof state.responses[model.get('id')] !== 'undefined';
 	  },
-	  getData: function getData(state, model) {
-	    return state.data[model.get('id')];
+	  getData: function getData(state, model, key) {
+	    return state.data[model.get('id') + ':' + key];
 	  }
 	};
 
@@ -1292,13 +1292,13 @@
 	      }(this),
 	      'question:setData': function (_this) {
 	        return function (payload) {
-	          _this.state.data[payload.value.id] = payload.value.data;
+	          _this.state.data[payload.value.key] = payload.value.value;
 	          return _this.triggerChange();
 	        };
 	      }(this),
 	      'question:clearData': function (_this) {
 	        return function (payload) {
-	          delete _this.state.data[payload.value.id];
+	          delete _this.state.data[payload.value.key];
 	          return _this.triggerChange();
 	        };
 	      }(this),

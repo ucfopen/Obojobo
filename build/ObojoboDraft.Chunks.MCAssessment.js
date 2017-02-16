@@ -411,8 +411,18 @@
 	MCAssessment = React.createClass({
 	  displayName: 'MCAssessment',
 
-	  calculateScore: function calculateScore() {
-	    var child, correct, i, id, j, len, len1, ref, ref1, responses;
+	  componentWillMount: function componentWillMount() {
+	    var shuffledIds;
+	    shuffledIds = QuestionUtil.getData(this.props.moduleData.questionState, this.props.model, 'shuffledIds');
+	    if (!shuffledIds) {
+	      shuffledIds = _.shuffle(this.props.model.children.models).map(function (model) {
+	        return model.get('id');
+	      });
+	      return QuestionUtil.setData(this.props.model.get('id'), 'shuffledIds', shuffledIds);
+	    }
+	  },
+	  getResponseData: function getResponseData() {
+	    var child, correct, i, len, ref, responses;
 	    correct = new Set();
 	    responses = new Set();
 	    ref = this.props.model.children.models;
@@ -425,6 +435,16 @@
 	        responses.add(child.get('id'));
 	      }
 	    }
+	    return {
+	      correct: correct,
+	      responses: responses
+	    };
+	  },
+	  calculateScore: function calculateScore() {
+	    var correct, i, id, len, ref, responseData, responses;
+	    responseData = this.getResponseData();
+	    correct = responseData.correct;
+	    responses = responseData.responses;
 	    switch (this.props.model.modelState.responseType) {
 	      case 'pick-all':
 	        if (correct.size !== responses.size) {
@@ -437,9 +457,9 @@
 	        });
 	        return 100;
 	      default:
-	        ref1 = Array.from(correct);
-	        for (j = 0, len1 = ref1.length; j < len1; j++) {
-	          id = ref1[j];
+	        ref = Array.from(correct);
+	        for (i = 0, len = ref.length; i < len; i++) {
+	          id = ref[i];
 	          if (responses.has(id)) {
 	            return 100;
 	          }
@@ -453,9 +473,7 @@
 	  },
 	  onClickRevealAll: function onClickRevealAll(event) {
 	    event.preventDefault();
-	    return QuestionUtil.setData(this.props.model.get('id'), {
-	      revealAll: true
-	    });
+	    return QuestionUtil.setData(this.props.model.get('id'), 'revealAll', true);
 	  },
 	  onClickReset: function onClickReset(event) {
 	    event.preventDefault();
@@ -468,7 +486,7 @@
 	      child = ref[i];
 	      QuestionUtil.resetResponse(child.get('id'));
 	    }
-	    QuestionUtil.clearData(this.props.model.get('id'));
+	    QuestionUtil.clearData(this.props.model.get('id'), 'revealAll');
 	    return ScoreUtil.clearScore(this.props.model.get('id'));
 	  },
 	  onClick: function onClick(event) {
@@ -502,7 +520,7 @@
 	    return ScoreUtil.getScoreForModel(this.props.moduleData.scoreState, this.props.model);
 	  },
 	  render: function render() {
-	    var instructions, questionSubmitted, ref, responseType, revealAll, score;
+	    var instructions, questionAnswered, questionSubmitted, responseType, revealAll, score, shuffledIds;
 	    responseType = this.props.model.modelState.responseType;
 	    instructions = function () {
 	      switch (responseType) {
@@ -514,9 +532,12 @@
 	          return 'Pick all the correct answers';
 	      }
 	    }();
-	    revealAll = (ref = QuestionUtil.getData(this.props.moduleData.questionState, this.props.model)) != null ? ref.revealAll : void 0;
+	    revealAll = QuestionUtil.getData(this.props.moduleData.questionState, this.props.model, 'revealAll');
 	    score = this.getScore();
 	    questionSubmitted = score !== null;
+	    questionAnswered = this.getResponseData().responses.size >= 1;
+	    shuffledIds = QuestionUtil.getData(this.props.moduleData.questionState, this.props.model, 'shuffledIds');
+	    console.log('RESPSONE DATA', this.getResponseData());
 	    return React.createElement(
 	      OboComponent,
 	      {
@@ -531,7 +552,8 @@
 	        instructions,
 	        ':'
 	      ),
-	      this.props.model.children.models.map(function (child, index) {
+	      shuffledIds.map(function (id, index) {
+	        var child = OboModel.models[id];
 	        if (child.get('type') !== 'ObojoboDraft.Chunks.MCAssessment.MCChoice') {
 	          return null;
 	        }
@@ -552,7 +574,7 @@
 	        { className: 'submit' },
 	        React.createElement(Button, {
 	          onClick: this.onClickSubmit,
-	          disabled: questionSubmitted,
+	          disabled: questionSubmitted || !questionAnswered,
 	          value: 'Check Your Answer'
 	        }),
 	        questionSubmitted ? React.createElement(
@@ -575,6 +597,7 @@
 	          React.createElement(Button, {
 	            altAction: true,
 	            onClick: this.onClickReset,
+	            disabled: !questionAnswered,
 	            value: 'Reset'
 	          })
 	        )
