@@ -31,8 +31,6 @@ let initialize = (appRef, settingsRef = null) => {
   // =========== STATIC ASSET PATHS ================
   // Register static assets
   app.use(express.static(path.join(__dirname, 'public')));
-  // app.use('/static/react', express.static(`${__dirname}/node_modules/react/dist`));
-  // app.use('/static/react-dom', express.static(`${__dirname}/node_modules/react-dom/dist`));
   app.use('/static/obo-draft', express.static(`${__dirname}/node_modules/obojobo-draft-document-engine/build`));
 
   // Search for dynamic Obojobo Draft Chunks
@@ -65,12 +63,11 @@ let initialize = (appRef, settingsRef = null) => {
 
   for(let moduleName in installedModulesObject){
     let paths = installedModulesObject[moduleName]
-    let urlBase = `static/modules/${moduleName}`;
-    let pathBase = __dirname
+    let urlBase = `/static/modules/${moduleName}`;
 
     for(var pathType in paths){
       let filePath = paths[pathType]
-      let pathPair = { url: `${urlBase}/${pathType}${path.extname(filePath)}`, path:`${pathBase}/${filePath}`}
+      let pathPair = { url: `${urlBase}/${pathType}${path.extname(filePath)}`, path:filePath}
 
       if( ! isProd && pathPair.path.includes('/devsrc/')){
         pathPair.url = `${app.locals.paths.draftPath}${path.basename(filePath)}`

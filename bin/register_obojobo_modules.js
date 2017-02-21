@@ -36,7 +36,7 @@ searchPaths.forEach((search) => {
 
         // verify the files exist
         for(let i in module){
-          module[i] = `${libDir}/${module[i]}`
+          module[i] = path.resolve(libDir, module[i])
           if(!fs.existsSync(module[i])){
             throw new Error(`Registered file "${path.basename(module[i])}" is missing for "${name}" in ${libDir}/obojobo.json`);
           }
