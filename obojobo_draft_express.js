@@ -8,10 +8,13 @@ var router = require('./router');
 let app;
 let settings = {};
 let registeredDraftModules = new Map();
+let isProd = true;
+
 
 let initialize = (appRef, settingsRef = null) => {
   settings = settingsRef
   app = appRef
+  isProd = app.get('env') === 'production';
 
   // =========== 3RD PARTY MIDDLEWARE ================
   app.use(ltiMiddleware({
@@ -34,36 +37,57 @@ let initialize = (appRef, settingsRef = null) => {
 
   // Search for dynamic Obojobo Draft Chunks
   app.locals.paths = {
-    chunkPath: "/static/chunks/",
     draftPath: "/static/obo-draft/"
   }
 
   let registerChunkScript = 'chunks:register'
-  if(app.get('env') !== 'production'){
-    console.log('Registering Development Chunks');
+  if( ! isProd){
     app.locals.paths.draftPath = "http://localhost:8090/build/"
-    app.locals.paths.chunkPath = "http://localhost:8090/build/"
     registerChunkScript = 'chunks:registerdev'
   }
 
-  // call script
+  // call yarn script
   spawn = require( 'child_process' ).spawnSync,
   ls = spawn('yarn', [registerChunkScript]);
 
-  // Process dynamic Obojobo Draft Chunks
-  let installedChunksJson = fs.readFileSync('./config/installed_chunks.json');
-  let installedChunksObject = JSON.parse(installedChunksJson);
-  app.locals.installedChunks = [];
+  // Process dynamic Obojobo Draft Modules
   console.log("Dynamic Asset Routing")
-  Object.keys(installedChunksObject).forEach( chunkName => {
-    let urlBase = `static/chunks/${chunkName}`;
-    let pathBase = `${__dirname}/${installedChunksObject[chunkName]}`
-    console.log(`${urlBase} => ${pathBase}`)
-    app.use(`${urlBase}.js`, express.static(`${pathBase}.js`));
-    app.use(`${urlBase}.css`, express.static(`${pathBase}.css`));
-    app.locals.installedChunks.push(chunkName)
-  })
+  let installedModulesJson = fs.readFileSync('./config/installed_modules.json');
+  let installedModulesObject = JSON.parse(installedModulesJson);
 
+  app.locals.modules = {
+    serverScript: [],
+    viewerScript: [],
+    viewerCss: [],
+    authorScript: [],
+    authorCss: []
+  }
+
+  for(let moduleName in installedModulesObject){
+    let paths = installedModulesObject[moduleName]
+    let urlBase = `static/modules/${moduleName}`;
+    let pathBase = __dirname
+
+    for(var pathType in paths){
+      let filePath = paths[pathType]
+      let pathPair = { url: `${urlBase}/${pathType}${path.extname(filePath)}`, path:`${pathBase}/${filePath}`}
+
+      if( ! isProd && pathPair.path.includes('/devsrc/')){
+        pathPair.url = `${app.locals.paths.draftPath}${path.basename(filePath)}`
+      }
+
+      if( ! app.locals.modules[pathType]){
+        app.locals.modules[pathType] = [];
+      }
+
+      app.locals.modules[pathType].push(pathPair)
+
+      if(pathType !== 'serverScripts'){
+        console.log(`${pathPair.url} => ${pathPair.path}`)
+        app.use(pathPair.url, express.static(pathPair.path))
+      }
+    }
+  }
 
 
   // =========== ROUTING & CONTROLERS ===========
@@ -76,7 +100,7 @@ let initialize = (appRef, settingsRef = null) => {
   // load up the dynamic obojobo draft chunks/objects
   // @TODO more dyanmic or include in
   // Change this so the registration happens in the module's main require?
-  registerDraftModule(require('./assessment'))
+  registerDraftModule(require('./assessment/assessment'))
   registerDraftModule(require('./assessment/questionbank'))
   registerDraftModule(require('./assessment/mcassessment'))
   registerDraftModule(require('./assessment/question'))

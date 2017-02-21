@@ -12,8 +12,8 @@ html(lang="en")
     link(rel="stylesheet", media="screen", href=`${paths.draftPath}obojobo-draft.css`)
     link(rel="stylesheet", media="screen", href=`${paths.draftPath}obojobo-draft-document-viewer.css`)
 
-    each chunk in installedChunks
-        link(rel="stylesheet", media="screen", href=`${paths.chunkPath}${chunk}.css`)
+    each css in modules.viewerCSS
+        link(rel="stylesheet", media="screen", href=`${css.url}`)
 
 
     script(src="//fb.me/react-with-addons-15.0.2.js")
@@ -33,7 +33,7 @@ html(lang="en")
     script(src=`${paths.draftPath}obojobo-draft.js`)
     script(src=`${paths.draftPath}obojobo-draft-document-viewer.js`)
 
-    each chunk in installedChunks
-        script(src=`${paths.chunkPath}${chunk}.js`)
+    each js in modules.viewerScript
+        script(src=`${js.url}`)
 
     script(src=`${paths.draftPath}obojobo-draft-document-viewer-app.js`)
