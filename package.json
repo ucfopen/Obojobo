@@ -6,11 +6,12 @@
   "scripts": {
     "test": "./node_modules/.bin/jasmine-node spec",
     "start": "webpack --watch",
-    "dev": "webpack-dev-server --progress --colors --port 8090 --host 0.0.0.0",
+    "dev": "webpack-dev-server  --colors --port 8090 --host 0.0.0.0",
     "build": "webpack",
     "build:gitadd": "git add ./build",
     "karma": "./node_modules/karma/bin/karma start ./karma.conf.js",
-    "karma-coverage": "./node_modules/karma/bin/karma start ./karma-coverage.conf.js"
+    "karma-coverage": "./node_modules/karma/bin/karma start ./karma-coverage.conf.js",
+    "generateModuleManifest": "node ./bin/generate_module_manifest.js"
   },
   "pre-commit": [
     "build",
@@ -51,26 +52,5 @@
     "webpack": "^1.12.14",
     "webpack-dev-server": "^1.14.1"
   },
-  "dependencies": {},
-  "obojobo-chunks":[
-    "ObojoboDraft.Chunks.ActionButton",
-    "ObojoboDraft.Chunks.Break",
-    "ObojoboDraft.Chunks.Code",
-    "ObojoboDraft.Chunks.Figure",
-    "ObojoboDraft.Chunks.Heading",
-    "ObojoboDraft.Chunks.IFrame",
-    "ObojoboDraft.Chunks.List",
-    "ObojoboDraft.Chunks.MathEquation",
-    "ObojoboDraft.Chunks.MCAssessment",
-    "ObojoboDraft.Chunks.Question",
-    "ObojoboDraft.Chunks.QuestionBank",
-    "ObojoboDraft.Chunks.Table",
-    "ObojoboDraft.Chunks.Text",
-    "ObojoboDraft.Chunks.YouTube",
-    "ObojoboDraft.Group",
-    "ObojoboDraft.Modules.Module",
-    "ObojoboDraft.Pages.Page",
-    "ObojoboDraft.Sections.Assessment",
-    "ObojoboDraft.Sections.Content"
-  ]
+  "dependencies": {}
 }
