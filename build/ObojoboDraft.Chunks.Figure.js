@@ -63,7 +63,7 @@
 
 	Adapter = {
 	  construct: function construct(model, attrs) {
-	    var ref, ref1;
+	    var ref, ref1, ref2, ref3;
 	    TextGroupAdapter.construct(model, attrs);
 	    model.modelState.textGroup.maxItems = 1;
 	    if (attrs != null ? (ref = attrs.content) != null ? ref.url : void 0 : void 0) {
@@ -72,20 +72,34 @@
 	      model.modelState.url = null;
 	    }
 	    if (attrs != null ? (ref1 = attrs.content) != null ? ref1.size : void 0 : void 0) {
-	      return model.modelState.size = attrs.content.size;
+	      model.modelState.size = attrs.content.size;
 	    } else {
-	      return model.modelState.size = 'small';
+	      model.modelState.size = 'small';
+	    }
+	    if (attrs != null ? (ref2 = attrs.content) != null ? ref2.width : void 0 : void 0) {
+	      model.modelState.width = attrs.content.width;
+	    } else {
+	      model.modelState.width = null;
+	    }
+	    if (attrs != null ? (ref3 = attrs.content) != null ? ref3.height : void 0 : void 0) {
+	      return model.modelState.height = attrs.content.height;
+	    } else {
+	      return model.modelState.height = null;
 	    }
 	  },
 	  clone: function clone(model, _clone) {
 	    TextGroupAdapter.clone(model, _clone);
 	    _clone.modelState.url = model.modelState.url;
-	    return _clone.modelState.size = model.modelState.size;
+	    _clone.modelState.size = model.modelState.size;
+	    _clone.modelState.width = model.modelState.width;
+	    return _clone.modelState.height = model.modelState.height;
 	  },
 	  toJSON: function toJSON(model, json) {
 	    TextGroupAdapter.toJSON(model, json);
 	    json.content.url = model.modelState.url;
-	    return json.content.size = model.modelState.size;
+	    json.content.size = model.modelState.size;
+	    json.content.width = model.modelState.width;
+	    return json.content.height = model.modelState.height;
 	  }
 	};
 
@@ -120,6 +134,15 @@
 	      case 'small':
 	      case 'medium':
 	        return React.createElement('img', { src: data.url, unselectable: 'on' });
+	      case 'custom':
+	        imgStyles = {};
+	        if (data.width != null) {
+	          imgStyles.width = data.width + 'px';
+	        }
+	        if (data.height != null) {
+	          imgStyles.height = data.height + 'px';
+	        }
+	        return React.createElement('img', { src: data.url, unselectable: 'on', style: imgStyles });
 	      case 'large':
 	        imgStyles = {
 	          backgroundImage: "url('" + data.url + "')",

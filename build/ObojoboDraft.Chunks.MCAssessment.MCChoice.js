@@ -123,8 +123,8 @@
 	    }
 	  },
 	  render: function render() {
-	    var isSelected;
-	    isSelected = QuestionUtil.getResponse(this.props.moduleData.questionState, this.props.model) === true;
+	    var isSelected, ref;
+	    isSelected = ((ref = QuestionUtil.getResponse(this.props.moduleData.questionState, this.props.model)) != null ? ref.set : void 0) === true;
 	    return React.createElement(
 	      OboComponent,
 	      {

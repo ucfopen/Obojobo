@@ -200,8 +200,8 @@
 	    }
 	  },
 	  render: function render() {
-	    var isSelected;
-	    isSelected = QuestionUtil.getResponse(this.props.moduleData.questionState, this.props.model) === true;
+	    var isSelected, ref;
+	    isSelected = ((ref = QuestionUtil.getResponse(this.props.moduleData.questionState, this.props.model)) != null ? ref.set : void 0) === true;
 	    return React.createElement(
 	      OboComponent,
 	      {
@@ -395,7 +395,7 @@
 	    }
 	  },
 	  getResponseData: function getResponseData() {
-	    var child, correct, i, len, ref, responses;
+	    var child, correct, i, len, ref, ref1, responses;
 	    correct = new Set();
 	    responses = new Set();
 	    ref = this.props.model.children.models;
@@ -404,7 +404,7 @@
 	      if (child.modelState.score === 100) {
 	        correct.add(child.get('id'));
 	      }
-	      if (QuestionUtil.getResponse(this.props.moduleData.questionState, child)) {
+	      if ((ref1 = QuestionUtil.getResponse(this.props.moduleData.questionState, child)) != null ? ref1.set : void 0) {
 	        responses.add(child.get('id'));
 	      }
 	    }
@@ -481,7 +481,7 @@
 	    return ScoreUtil.clearScore(this.props.model.parent.get('id'));
 	  },
 	  onClick: function onClick(event) {
-	    var child, i, len, mcChoiceEl, mcChoiceId, ref, revealAll;
+	    var child, i, len, mcChoiceEl, mcChoiceId, ref, ref1, revealAll;
 	    mcChoiceEl = DOMUtil.findParentWithAttr(event.target, 'data-type', 'ObojoboDraft.Chunks.MCAssessment.MCChoice');
 	    if (!mcChoiceEl) {
 	      return;
@@ -496,16 +496,18 @@
 	    }
 	    switch (this.props.model.modelState.responseType) {
 	      case 'pick-all':
-	        console.log('SETTING', mcChoiceId, 'TO', !QuestionUtil.getResponse(this.props.moduleData.questionState, OboModel.models[mcChoiceId]));
-	        console.log(this.props.moduleData.questionState);
-	        return QuestionUtil.recordResponse(mcChoiceId, !QuestionUtil.getResponse(this.props.moduleData.questionState, OboModel.models[mcChoiceId]));
+	        return QuestionUtil.recordResponse(mcChoiceId, {
+	          set: !((ref = QuestionUtil.getResponse(this.props.moduleData.questionState, OboModel.models[mcChoiceId])) != null ? ref.set : void 0)
+	        });
 	      default:
-	        ref = this.props.model.children.models;
-	        for (i = 0, len = ref.length; i < len; i++) {
-	          child = ref[i];
+	        ref1 = this.props.model.children.models;
+	        for (i = 0, len = ref1.length; i < len; i++) {
+	          child = ref1[i];
 	          QuestionUtil.resetResponse(child.get('id'));
 	        }
-	        return QuestionUtil.recordResponse(mcChoiceId, true);
+	        return QuestionUtil.recordResponse(mcChoiceId, {
+	          set: true
+	        });
 	    }
 	  },
 	  getScore: function getScore() {

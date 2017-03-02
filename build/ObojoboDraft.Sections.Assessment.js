@@ -360,14 +360,11 @@
 	  adapter: __webpack_require__(161),
 	  componentClass: __webpack_require__(164),
 	  selectionHandler: null,
-	  generateNav: function generateNav(model) {
-	    return [{
+	  getNavItem: function getNavItem(model) {
+	    return {
 	      type: 'link',
-	      label: model.title || (model.title = 'Assessment'),
-	      id: model.get('id')
-	    }, {
-	      type: 'seperator'
-	    }];
+	      label: model.title || 'Assessment'
+	    };
 	  }
 	});
 

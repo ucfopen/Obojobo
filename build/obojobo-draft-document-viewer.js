@@ -785,6 +785,7 @@
 	        id = payload.value.id;
 	        model = OboModel.models[id];
 	        assessment = _this.state.assessments[id];
+	        debugger;
 	        return APIUtil.endAttempt(assessment.current).then(function (res) {
 	          if (res.status === 'error') {
 	            return ErrorUtil.errorResponse(res);
@@ -801,7 +802,7 @@
 	        });
 	      };
 	    }(this));
-	    Dispatcher.on('question:setResponse', function (_this) {
+	    Dispatcher.on('question:recordResponse', function (_this) {
 	      return function (payload) {
 	        var assessment, id, model, questionModel;
 	        id = payload.value.id;
@@ -811,9 +812,10 @@
 	        if ((assessment != null ? assessment.current : void 0) != null) {
 	          questionModel = model.getParentOfType('ObojoboDraft.Chunks.Question');
 	          console.log('QUESTION SET RESPONSE', questionModel);
-	          APIUtil.postEvent(model.getRoot(), 'question:setResponse', {
+	          APIUtil.postEvent(model.getRoot(), 'question:recordResponse', {
 	            attemptId: assessment.current.id,
 	            questionId: questionModel.get('id'),
+	            targetId: id,
 	            response: payload.value.response
 	          });
 	          return _this.triggerChange();
@@ -1097,7 +1099,8 @@
 	      return null;
 	    }
 	    model.children.at(1).children.models.forEach(function (questionModel) {
-	      if (!QuestionUtil.getResponse(questionState, questionModel)) {
+	      var ref;
+	      if (!((ref = QuestionUtil.getResponse(questionState, questionModel)) != null ? ref.set : void 0)) {
 	        return false;
 	      }
 	    });

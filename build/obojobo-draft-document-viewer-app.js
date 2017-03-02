@@ -4553,6 +4553,7 @@
 			{
 				"id": "assessment",
 				"content": {
+					"title": "Custom Assessment Title",
 					"triggers": [
 						{
 							"type": "onNavEnter",
