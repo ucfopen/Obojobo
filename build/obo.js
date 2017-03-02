@@ -45,12 +45,12 @@
 /***/ 0:
 /***/ function(module, exports, __webpack_require__) {
 
-	module.exports = __webpack_require__(170);
+	module.exports = __webpack_require__(173);
 
 
 /***/ },
 
-/***/ 77:
+/***/ 81:
 /***/ function(module, exports) {
 
 	"use strict";
@@ -106,14 +106,14 @@
 
 /***/ },
 
-/***/ 170:
+/***/ 173:
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
 
 	var ComponentClassMap, OBO, componentClassMap, defaults, getItemsCallbacks, insertItems, items, itemsLoaded, registeredToolbarItems, textListeners, toolbarItems, triggerActions;
 
-	ComponentClassMap = __webpack_require__(77);
+	ComponentClassMap = __webpack_require__(81);
 
 	componentClassMap = new ComponentClassMap();
 
@@ -181,7 +181,8 @@
 	      modelClass: null,
 	      componentClass: null,
 	      selectionHandler: null,
-	      commandHandler: null
+	      commandHandler: null,
+	      init: function init() {}
 	    }, opts);
 	    if (opts["default"]) {
 	      defaults.set(opts.type, className);
@@ -189,6 +190,7 @@
 	    if (opts.insertItem) {
 	      insertItems.set(chunkClass.type, opts.insertItem);
 	    }
+	    opts.init();
 	    loadDependency = this.loadDependency;
 	    promises = opts.dependencies.map(function (dependency) {
 	      return new Promise(function (resolve, reject) {

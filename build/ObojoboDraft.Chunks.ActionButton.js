@@ -45,12 +45,12 @@
 /***/ 0:
 /***/ function(module, exports, __webpack_require__) {
 
-	module.exports = __webpack_require__(80);
+	module.exports = __webpack_require__(84);
 
 
 /***/ },
 
-/***/ 78:
+/***/ 82:
 /***/ function(module, exports) {
 
 	'use strict';
@@ -78,14 +78,14 @@
 
 /***/ },
 
-/***/ 79:
+/***/ 83:
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
 
 	var ActionButton, Button, Common, OboComponent;
 
-	__webpack_require__(175);
+	__webpack_require__(178);
 
 	Common = window.ObojoboDraft.Common;
 
@@ -102,7 +102,7 @@
 	  render: function render() {
 	    return React.createElement(
 	      OboComponent,
-	      { model: this.props.model },
+	      { model: this.props.model, moduleData: this.props.moduleData },
 	      React.createElement(
 	        'div',
 	        { className: 'obojobo-draft--chunks--action-button' },
@@ -116,7 +116,7 @@
 
 /***/ },
 
-/***/ 80:
+/***/ 84:
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -127,14 +127,14 @@
 
 	OBO.register('ObojoboDraft.Chunks.ActionButton', {
 	  type: 'chunk',
-	  adapter: __webpack_require__(78),
-	  componentClass: __webpack_require__(79),
+	  adapter: __webpack_require__(82),
+	  componentClass: __webpack_require__(83),
 	  selectionHandler: new ObojoboDraft.Common.chunk.textChunk.TextGroupSelectionHandler()
 	});
 
 /***/ },
 
-/***/ 175:
+/***/ 178:
 /***/ function(module, exports) {
 
 	// removed by extract-text-webpack-plugin

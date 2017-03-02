@@ -45,12 +45,12 @@
 /***/ 0:
 /***/ function(module, exports, __webpack_require__) {
 
-	module.exports = __webpack_require__(92);
+	module.exports = __webpack_require__(96);
 
 
 /***/ },
 
-/***/ 90:
+/***/ 94:
 /***/ function(module, exports) {
 
 	"use strict";
@@ -86,14 +86,14 @@
 
 /***/ },
 
-/***/ 91:
+/***/ 95:
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
 
 	var Common, Heading, OboComponent, TextChunk, TextGroupEl;
 
-	__webpack_require__(179);
+	__webpack_require__(182);
 
 	Common = window.ObojoboDraft.Common;
 
@@ -112,7 +112,7 @@
 	    inner = React.createElement('h' + data.headingLevel, null, React.createElement(TextGroupEl, { text: data.textGroup.first.text, indent: data.textGroup.first.data.indent, groupIndex: '0' }));
 	    return React.createElement(
 	      OboComponent,
-	      { model: this.props.model },
+	      { model: this.props.model, moduleData: this.props.moduleData },
 	      React.createElement(
 	        TextChunk,
 	        { className: 'obojobo-draft--chunks--heading pad' },
@@ -126,7 +126,7 @@
 
 /***/ },
 
-/***/ 92:
+/***/ 96:
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -137,14 +137,27 @@
 
 	OBO.register('ObojoboDraft.Chunks.Heading', {
 	  type: 'chunk',
-	  adapter: __webpack_require__(90),
-	  componentClass: __webpack_require__(91),
-	  selectionHandler: new ObojoboDraft.Common.chunk.textChunk.TextGroupSelectionHandler()
+	  adapter: __webpack_require__(94),
+	  componentClass: __webpack_require__(95),
+	  selectionHandler: new ObojoboDraft.Common.chunk.textChunk.TextGroupSelectionHandler(),
+	  getNavItem: function getNavItem(model) {
+	    switch (model.modelState.headingLevel) {
+	      case 2:
+	        return {
+	          type: 'sub-link',
+	          label: model.modelState.textGroup.first.text.value,
+	          path: [model.modelState.textGroup.first.text.value.toLowerCase().replace(/ /g, '-')],
+	          showChildren: false
+	        };
+	      default:
+	        return null;
+	    }
+	  }
 	});
 
 /***/ },
 
-/***/ 179:
+/***/ 182:
 /***/ function(module, exports) {
 
 	// removed by extract-text-webpack-plugin

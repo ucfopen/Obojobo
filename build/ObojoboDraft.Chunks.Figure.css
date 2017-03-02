@@ -19,8 +19,9 @@
     .obojobo-draft--chunks--figure .container .img-placeholder {
       border: 1px solid rgba(0, 0, 0, 0.3); }
   .obojobo-draft--chunks--figure figcaption {
-    color: #999999;
-    font-size: 0.9em; }
+    font-family: "Libre Franklin", Arial, sans-serif;
+    font-size: 0.8rem;
+    color: #999999; }
   .obojobo-draft--chunks--figure.medium .container {
     width: 46rem; }
   .obojobo-draft--chunks--figure.large figure {

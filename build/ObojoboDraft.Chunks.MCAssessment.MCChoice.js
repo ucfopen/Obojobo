@@ -45,12 +45,12 @@
 /***/ 0:
 /***/ function(module, exports, __webpack_require__) {
 
-	module.exports = __webpack_require__(28);
+	module.exports = __webpack_require__(29);
 
 
 /***/ },
 
-/***/ 26:
+/***/ 27:
 /***/ function(module, exports) {
 
 	'use strict';
@@ -79,14 +79,14 @@
 
 /***/ },
 
-/***/ 27:
+/***/ 28:
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
 
 	var Common, MCChoice, OboComponent, OboModel, QuestionUtil;
 
-	__webpack_require__(38);
+	__webpack_require__(41);
 
 	Common = window.ObojoboDraft.Common;
 
@@ -105,38 +105,6 @@
 	      revealAll: false,
 	      questionSubmitted: false
 	    };
-	  },
-	  getInitialState: function getInitialState() {
-	    return {
-	      children: this.createChildren(this.props.model.children.models)
-	    };
-	  },
-	  componentWillReceiveProps: function componentWillReceiveProps(nextProps) {
-	    if (nextProps.model != null) {
-	      return this.setState({
-	        children: this.createChildren(this.props.model.children.models)
-	      });
-	    }
-	  },
-	  createChildren: function createChildren(models) {
-	    var children, hasFeedback, i, len, model;
-	    children = [];
-	    hasFeedback = false;
-	    for (i = 0, len = models.length; i < len; i++) {
-	      model = models[i];
-	      children.push(model);
-	      if (model.get('type') === 'ObojoboDraft.Chunks.MCAssessment.MCFeedback') {
-	        hasFeedback = true;
-	      }
-	    }
-	    if (!hasFeedback) {
-	      if (this.props.model.modelState.score === 100) {
-	        children.push(this.createFeedbackItem('Correct!'));
-	      } else {
-	        children.push(this.createFeedbackItem('Incorrect'));
-	      }
-	    }
-	    return children;
 	  },
 	  createFeedbackItem: function createFeedbackItem(message) {
 	    var feedback, text;
@@ -161,6 +129,7 @@
 	      OboComponent,
 	      {
 	        model: this.props.model,
+	        moduleData: this.props.moduleData,
 	        className: 'obojobo-draft--chunks--mc-assessment--mc-choice' + (isSelected ? ' is-selected' : ' is-not-selected') + (this.props.model.modelState.score === 100 ? ' is-correct' : ' is-incorrect')
 	      },
 	      React.createElement('input', {
@@ -174,16 +143,14 @@
 	      React.createElement(
 	        'div',
 	        { className: 'children' },
-	        this.state.children.map(function (child, index) {
+	        this.props.model.children.map(function (child, index) {
 	          var type = child.get('type');
 	          var isAnswerItem = type === 'ObojoboDraft.Chunks.MCAssessment.MCAnswer';
 	          var isFeedbackItem = type === 'ObojoboDraft.Chunks.MCAssessment.MCFeedback';
 
-	          //console.log('TEST', child.get('id'), child.get('type'), '==>', isAnswerItem, '||(', isFeedbackItem, '&&', this.props.revealAll, '))')
-
-	          if (isAnswerItem || isFeedbackItem && this.props.questionSubmitted && isSelected || isFeedbackItem && this.props.revealAll) {
+	          if (isAnswerItem) {
 	            var Component = child.getComponentClass();
-	            return React.createElement(Component, { key: child.get('id'), model: child });
+	            return React.createElement(Component, { key: child.get('id'), model: child, moduleData: this.props.moduleData });
 	          }
 	        }.bind(this))
 	      )
@@ -195,7 +162,7 @@
 
 /***/ },
 
-/***/ 28:
+/***/ 29:
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -206,14 +173,14 @@
 
 	OBO.register('ObojoboDraft.Chunks.MCAssessment.MCChoice', {
 	  type: 'chunk',
-	  adapter: __webpack_require__(26),
-	  componentClass: __webpack_require__(27),
+	  adapter: __webpack_require__(27),
+	  componentClass: __webpack_require__(28),
 	  selectionHandler: new ObojoboDraft.Common.chunk.textChunk.TextGroupSelectionHandler()
 	});
 
 /***/ },
 
-/***/ 38:
+/***/ 41:
 /***/ function(module, exports) {
 
 	// removed by extract-text-webpack-plugin

@@ -45,19 +45,19 @@
 /***/ 0:
 /***/ function(module, exports, __webpack_require__) {
 
-	module.exports = __webpack_require__(82);
+	module.exports = __webpack_require__(86);
 
 
 /***/ },
 
-/***/ 81:
+/***/ 85:
 /***/ function(module, exports, __webpack_require__) {
 
 	"use strict";
 
 	var Break, Common, NonEditableChunk, OboComponent;
 
-	__webpack_require__(176);
+	__webpack_require__(179);
 
 	Common = window.ObojoboDraft.Common;
 
@@ -71,7 +71,7 @@
 		render: function render() {
 			return React.createElement(
 				OboComponent,
-				{ model: this.props.model },
+				{ model: this.props.model, moduleData: this.props.moduleData },
 				React.createElement(
 					NonEditableChunk,
 					{ className: "obojobo-draft--chunks--break viewer" },
@@ -85,7 +85,7 @@
 
 /***/ },
 
-/***/ 82:
+/***/ 86:
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -97,13 +97,13 @@
 	OBO.register('ObojoboDraft.Chunks.Break', {
 	  type: 'chunk',
 	  adapter: null,
-	  componentClass: __webpack_require__(81),
+	  componentClass: __webpack_require__(85),
 	  selectionHandler: new Common.chunk.focusableChunk.FocusableSelectionHandler()
 	});
 
 /***/ },
 
-/***/ 176:
+/***/ 179:
 /***/ function(module, exports) {
 
 	// removed by extract-text-webpack-plugin

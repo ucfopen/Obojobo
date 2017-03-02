@@ -45,64 +45,88 @@
 /***/ 0:
 /***/ function(module, exports, __webpack_require__) {
 
-	module.exports = __webpack_require__(154);
+	module.exports = __webpack_require__(160);
 
 
 /***/ },
 
-/***/ 153:
+/***/ 159:
 /***/ function(module, exports, __webpack_require__) {
 
-	"use strict";
+	'use strict';
 
-	var Common, OboComponent;
+	var Common, NavUtil, OboComponent;
 
-	__webpack_require__(202);
+	__webpack_require__(206);
 
 	Common = window.ObojoboDraft.Common;
 
 	OboComponent = Common.components.OboComponent;
 
+	NavUtil = window.Viewer.util.NavUtil;
+
 	module.exports = React.createClass({
-		displayName: "exports",
+			displayName: 'exports',
 
-		render: function render() {
-			return React.createElement(
-				OboComponent,
-				{
-					model: this.props.model,
-					className: "obojobo-draft--pages--page"
-				},
-				this.props.model.children.models.map(function (child, index) {
-					var Component = child.getComponentClass();
+			componentWillReceiveProps: function componentWillReceiveProps(nextProps) {
+					console.log('___-COMPARE', nextProps.moduleData.navState === this.props.moduleData.navState);
+					if (nextProps.moduleData.navState.navTargetId !== this.props.moduleData.navState.navTargetId) {
+							return NavUtil.setFlag(this.props.moduleData.navState.navTargetId, 'visited', true);
+					}
+			},
+			render: function render() {
+					return React.createElement(
+							OboComponent,
+							{
+									model: this.props.model,
+									moduleData: this.props.moduleData,
+									className: 'obojobo-draft--pages--page'
+							},
+							this.props.model.children.models.map(function (child, index) {
+									var Component = child.getComponentClass();
 
-					return React.createElement(Component, { key: index, model: child, moduleData: this.props.moduleData });
-				}.bind(this))
-			);
-		}
+									return React.createElement(Component, { key: index, model: child, moduleData: this.props.moduleData });
+							}.bind(this))
+					);
+			}
 	});
 
 /***/ },
 
-/***/ 154:
+/***/ 160:
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
 
-	var ObojoboDraft;
+	var Dispatcher, ObojoboDraft;
 
 	ObojoboDraft = window.ObojoboDraft;
+
+	Dispatcher = ObojoboDraft.Common.flux.Dispatcher;
 
 	OBO.register('ObojoboDraft.Pages.Page', {
 	  type: 'page',
 	  "default": true,
-	  componentClass: __webpack_require__(153),
-	  selectionHandler: null
+	  componentClass: __webpack_require__(159),
+	  selectionHandler: null,
+	  getNavItem: function getNavItem(model) {
+	    var title;
+	    title = '';
+	    if (model.title != null) {
+	      title = model.title;
+	    }
+	    return {
+	      type: 'link',
+	      label: model.title,
+	      path: [title.toLowerCase().replace(/ /g, '-')],
+	      showChildren: false
+	    };
+	  }
 	});
 
 /***/ },
 
-/***/ 202:
+/***/ 206:
 /***/ function(module, exports) {
 
 	// removed by extract-text-webpack-plugin

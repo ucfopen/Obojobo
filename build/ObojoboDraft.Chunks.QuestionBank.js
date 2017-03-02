@@ -45,12 +45,12 @@
 /***/ 0:
 /***/ function(module, exports, __webpack_require__) {
 
-	module.exports = __webpack_require__(110);
+	module.exports = __webpack_require__(114);
 
 
 /***/ },
 
-/***/ 108:
+/***/ 112:
 /***/ function(module, exports) {
 
 	"use strict";
@@ -99,14 +99,14 @@
 
 /***/ },
 
-/***/ 109:
+/***/ 113:
 /***/ function(module, exports, __webpack_require__) {
 
 	"use strict";
 
 	var Common, OboComponent, QuestionBank;
 
-	__webpack_require__(185);
+	__webpack_require__(188);
 
 	Common = window.ObojoboDraft.Common;
 
@@ -120,6 +120,7 @@
 				OboComponent,
 				{
 					model: this.props.model,
+					moduleData: this.props.moduleData,
 					className: "obojobo-draft--chunks--question-bank"
 				},
 				this.props.model.children.models.map(function (child, index) {
@@ -135,7 +136,7 @@
 
 /***/ },
 
-/***/ 110:
+/***/ 114:
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -146,14 +147,14 @@
 
 	OBO.register('ObojoboDraft.Chunks.QuestionBank', {
 	  type: 'chunk',
-	  adapter: __webpack_require__(108),
-	  componentClass: __webpack_require__(109),
+	  adapter: __webpack_require__(112),
+	  componentClass: __webpack_require__(113),
 	  selectionHandler: new ObojoboDraft.Common.chunk.textChunk.TextGroupSelectionHandler()
 	});
 
 /***/ },
 
-/***/ 185:
+/***/ 188:
 /***/ function(module, exports) {
 
 	// removed by extract-text-webpack-plugin

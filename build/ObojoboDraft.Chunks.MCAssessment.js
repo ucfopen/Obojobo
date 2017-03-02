@@ -68,19 +68,19 @@
 /***/ 0:
 /***/ function(module, exports, __webpack_require__) {
 
-	module.exports = __webpack_require__(101);
+	module.exports = __webpack_require__(105);
 
 
 /***/ },
 
-/***/ 24:
+/***/ 25:
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
 
 	var Common, MCAnswer, OboComponent;
 
-	__webpack_require__(37);
+	__webpack_require__(40);
 
 	Common = window.ObojoboDraft.Common;
 
@@ -94,12 +94,13 @@
 				OboComponent,
 				{
 					model: this.props.model,
+					moduleData: this.props.moduleData,
 					className: 'obojobo-draft--chunks--mc-assessment--mc-answer'
 				},
 				this.props.model.children.models.map(function (child, index) {
 					var Component = child.getComponentClass();
-					return React.createElement(Component, { key: child.get('id'), model: child });
-				})
+					return React.createElement(Component, { key: child.get('id'), model: child, moduleData: this.props.moduleData });
+				}.bind(this))
 			);
 		}
 	});
@@ -108,7 +109,7 @@
 
 /***/ },
 
-/***/ 25:
+/***/ 26:
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -120,13 +121,13 @@
 	OBO.register('ObojoboDraft.Chunks.MCAssessment.MCAnswer', {
 	  type: 'chunk',
 	  adapter: null,
-	  componentClass: __webpack_require__(24),
+	  componentClass: __webpack_require__(25),
 	  selectionHandler: new ObojoboDraft.Common.chunk.textChunk.TextGroupSelectionHandler()
 	});
 
 /***/ },
 
-/***/ 26:
+/***/ 27:
 /***/ function(module, exports) {
 
 	'use strict';
@@ -155,14 +156,14 @@
 
 /***/ },
 
-/***/ 27:
+/***/ 28:
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
 
 	var Common, MCChoice, OboComponent, OboModel, QuestionUtil;
 
-	__webpack_require__(38);
+	__webpack_require__(41);
 
 	Common = window.ObojoboDraft.Common;
 
@@ -181,38 +182,6 @@
 	      revealAll: false,
 	      questionSubmitted: false
 	    };
-	  },
-	  getInitialState: function getInitialState() {
-	    return {
-	      children: this.createChildren(this.props.model.children.models)
-	    };
-	  },
-	  componentWillReceiveProps: function componentWillReceiveProps(nextProps) {
-	    if (nextProps.model != null) {
-	      return this.setState({
-	        children: this.createChildren(this.props.model.children.models)
-	      });
-	    }
-	  },
-	  createChildren: function createChildren(models) {
-	    var children, hasFeedback, i, len, model;
-	    children = [];
-	    hasFeedback = false;
-	    for (i = 0, len = models.length; i < len; i++) {
-	      model = models[i];
-	      children.push(model);
-	      if (model.get('type') === 'ObojoboDraft.Chunks.MCAssessment.MCFeedback') {
-	        hasFeedback = true;
-	      }
-	    }
-	    if (!hasFeedback) {
-	      if (this.props.model.modelState.score === 100) {
-	        children.push(this.createFeedbackItem('Correct!'));
-	      } else {
-	        children.push(this.createFeedbackItem('Incorrect'));
-	      }
-	    }
-	    return children;
 	  },
 	  createFeedbackItem: function createFeedbackItem(message) {
 	    var feedback, text;
@@ -237,6 +206,7 @@
 	      OboComponent,
 	      {
 	        model: this.props.model,
+	        moduleData: this.props.moduleData,
 	        className: 'obojobo-draft--chunks--mc-assessment--mc-choice' + (isSelected ? ' is-selected' : ' is-not-selected') + (this.props.model.modelState.score === 100 ? ' is-correct' : ' is-incorrect')
 	      },
 	      React.createElement('input', {
@@ -250,16 +220,14 @@
 	      React.createElement(
 	        'div',
 	        { className: 'children' },
-	        this.state.children.map(function (child, index) {
+	        this.props.model.children.map(function (child, index) {
 	          var type = child.get('type');
 	          var isAnswerItem = type === 'ObojoboDraft.Chunks.MCAssessment.MCAnswer';
 	          var isFeedbackItem = type === 'ObojoboDraft.Chunks.MCAssessment.MCFeedback';
 
-	          //console.log('TEST', child.get('id'), child.get('type'), '==>', isAnswerItem, '||(', isFeedbackItem, '&&', this.props.revealAll, '))')
-
-	          if (isAnswerItem || isFeedbackItem && this.props.questionSubmitted && isSelected || isFeedbackItem && this.props.revealAll) {
+	          if (isAnswerItem) {
 	            var Component = child.getComponentClass();
-	            return React.createElement(Component, { key: child.get('id'), model: child });
+	            return React.createElement(Component, { key: child.get('id'), model: child, moduleData: this.props.moduleData });
 	          }
 	        }.bind(this))
 	      )
@@ -271,7 +239,7 @@
 
 /***/ },
 
-/***/ 28:
+/***/ 29:
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -282,21 +250,21 @@
 
 	OBO.register('ObojoboDraft.Chunks.MCAssessment.MCChoice', {
 	  type: 'chunk',
-	  adapter: __webpack_require__(26),
-	  componentClass: __webpack_require__(27),
+	  adapter: __webpack_require__(27),
+	  componentClass: __webpack_require__(28),
 	  selectionHandler: new ObojoboDraft.Common.chunk.textChunk.TextGroupSelectionHandler()
 	});
 
 /***/ },
 
-/***/ 29:
+/***/ 30:
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
 
 	var Common, MCFeedback, OboComponent;
 
-	__webpack_require__(39);
+	__webpack_require__(42);
 
 	Common = window.ObojoboDraft.Common;
 
@@ -310,12 +278,13 @@
 				OboComponent,
 				{
 					model: this.props.model,
+					moduleData: this.props.moduleData,
 					className: 'obojobo-draft--chunks--mc-assessment--mc-feedback'
 				},
 				this.props.model.children.models.map(function (child, index) {
 					var Component = child.getComponentClass();
-					return React.createElement(Component, { key: child.get('id'), model: child });
-				})
+					return React.createElement(Component, { key: child.get('id'), model: child, moduleData: this.props.moduleData });
+				}.bind(this))
 			);
 		}
 	});
@@ -324,7 +293,7 @@
 
 /***/ },
 
-/***/ 30:
+/***/ 31:
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -336,26 +305,26 @@
 	OBO.register('ObojoboDraft.Chunks.MCAssessment.MCFeedback', {
 	  type: 'chunk',
 	  adapter: null,
-	  componentClass: __webpack_require__(29),
+	  componentClass: __webpack_require__(30),
 	  selectionHandler: new ObojoboDraft.Common.chunk.textChunk.TextGroupSelectionHandler()
 	});
 
 /***/ },
 
-/***/ 37:
+/***/ 40:
 /***/ function(module, exports) {
 
 	// removed by extract-text-webpack-plugin
 
 /***/ },
 
-/***/ 38:
-37,
+/***/ 41:
+40,
 
-/***/ 39:
-37,
+/***/ 42:
+40,
 
-/***/ 99:
+/***/ 103:
 /***/ function(module, exports) {
 
 	'use strict';
@@ -383,14 +352,16 @@
 
 /***/ },
 
-/***/ 100:
+/***/ 104:
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
 
-	var Button, Common, DOMUtil, Dispatcher, MCAssessment, OboComponent, OboModel, QuestionUtil, ScoreUtil;
+	var Button, Common, DOMUtil, Dispatcher, MCAssessment, OboComponent, OboModel, QuestionUtil, ReactCSSTransitionGroup, ScoreUtil;
 
-	__webpack_require__(182);
+	__webpack_require__(185);
+
+	ReactCSSTransitionGroup = React.addons.CSSTransitionGroup;
 
 	Common = window.ObojoboDraft.Common;
 
@@ -403,6 +374,8 @@
 	Dispatcher = Common.flux.Dispatcher;
 
 	DOMUtil = Common.page.DOMUtil;
+
+	OboModel = Common.models.OboModel;
 
 	QuestionUtil = window.Viewer.util.QuestionUtil;
 
@@ -469,7 +442,14 @@
 	  },
 	  onClickSubmit: function onClickSubmit(event) {
 	    event.preventDefault();
-	    return ScoreUtil.setScore(this.props.model.get('id'), this.calculateScore());
+	    return this.updateScore();
+	  },
+	  updateScore: function updateScore() {
+	    return ScoreUtil.setScore(this.props.model.parent.get('id'), this.calculateScore());
+	  },
+	  onClickUndoRevealAll: function onClickUndoRevealAll(event) {
+	    event.preventDefault();
+	    return QuestionUtil.setData(this.props.model.get('id'), 'revealAll', false);
 	  },
 	  onClickRevealAll: function onClickRevealAll(event) {
 	    event.preventDefault();
@@ -480,17 +460,28 @@
 	    return this.reset();
 	  },
 	  reset: function reset() {
-	    var child, i, len, ref;
+	    this.clearRevealAll();
+	    this.clearResponses();
+	    return this.clearScore();
+	  },
+	  clearRevealAll: function clearRevealAll() {
+	    return QuestionUtil.clearData(this.props.model.get('id'), 'revealAll');
+	  },
+	  clearResponses: function clearResponses() {
+	    var child, i, len, ref, results;
 	    ref = this.props.model.children.models;
+	    results = [];
 	    for (i = 0, len = ref.length; i < len; i++) {
 	      child = ref[i];
-	      QuestionUtil.resetResponse(child.get('id'));
+	      results.push(QuestionUtil.resetResponse(child.get('id')));
 	    }
-	    QuestionUtil.clearData(this.props.model.get('id'), 'revealAll');
-	    return ScoreUtil.clearScore(this.props.model.get('id'));
+	    return results;
+	  },
+	  clearScore: function clearScore() {
+	    return ScoreUtil.clearScore(this.props.model.parent.get('id'));
 	  },
 	  onClick: function onClick(event) {
-	    var child, i, len, mcChoiceEl, mcChoiceId, ref;
+	    var child, i, len, mcChoiceEl, mcChoiceId, ref, revealAll;
 	    mcChoiceEl = DOMUtil.findParentWithAttr(event.target, 'data-type', 'ObojoboDraft.Chunks.MCAssessment.MCChoice');
 	    if (!mcChoiceEl) {
 	      return;
@@ -499,6 +490,7 @@
 	    if (!mcChoiceId) {
 	      return;
 	    }
+	    revealAll = this.isRevealingAll();
 	    if (this.getScore() !== null) {
 	      this.reset();
 	    }
@@ -517,10 +509,13 @@
 	    }
 	  },
 	  getScore: function getScore() {
-	    return ScoreUtil.getScoreForModel(this.props.moduleData.scoreState, this.props.model);
+	    return ScoreUtil.getScoreForModel(this.props.moduleData.scoreState, this.props.model.parent);
+	  },
+	  isRevealingAll: function isRevealingAll() {
+	    return QuestionUtil.getData(this.props.moduleData.questionState, this.props.model, 'revealAll');
 	  },
 	  render: function render() {
-	    var instructions, questionAnswered, questionSubmitted, responseType, revealAll, score, shuffledIds;
+	    var SolutionComponent, feedbacks, instructions, questionAnswered, questionSubmitted, responseType, revealAll, score, shuffledIds, solution;
 	    responseType = this.props.model.modelState.responseType;
 	    instructions = function () {
 	      switch (responseType) {
@@ -532,16 +527,26 @@
 	          return 'Pick all the correct answers';
 	      }
 	    }();
-	    revealAll = QuestionUtil.getData(this.props.moduleData.questionState, this.props.model, 'revealAll');
+	    revealAll = this.isRevealingAll();
 	    score = this.getScore();
 	    questionSubmitted = score !== null;
 	    questionAnswered = this.getResponseData().responses.size >= 1;
 	    shuffledIds = QuestionUtil.getData(this.props.moduleData.questionState, this.props.model, 'shuffledIds');
+	    feedbacks = Array.from(this.getResponseData().responses).filter(function (mcChoiceId) {
+	      return OboModel.models[mcChoiceId].children.length > 1;
+	    }.bind(this)).map(function (mcChoiceId) {
+	      return OboModel.models[mcChoiceId].children.at(1);
+	    }.bind(this));
 	    console.log('RESPSONE DATA', this.getResponseData());
+	    solution = this.props.model.parent.modelState.solution;
+	    if (solution != null) {
+	      SolutionComponent = solution.getComponentClass();
+	    }
 	    return React.createElement(
 	      OboComponent,
 	      {
 	        model: this.props.model,
+	        moduleData: this.props.moduleData,
 	        onClick: this.onClick,
 	        tag: 'form',
 	        className: 'obojobo-draft--chunks--mc-assessment' + (' is-response-type-' + this.props.model.modelState.responseType) + (revealAll ? ' is-revealing-all' : ' is-not-revealing-all') + (score === null ? ' is-unscored' : ' is-scored')
@@ -572,35 +577,78 @@
 	      React.createElement(
 	        'div',
 	        { className: 'submit' },
-	        React.createElement(Button, {
+	        questionSubmitted ? React.createElement(Button, {
+	          altAction: true,
+	          onClick: this.onClickReset,
+	          value: 'Try Again'
+	        }) : React.createElement(Button, {
 	          onClick: this.onClickSubmit,
-	          disabled: questionSubmitted || !questionAnswered,
 	          value: 'Check Your Answer'
 	        }),
-	        questionSubmitted ? React.createElement(
+	        questionSubmitted ? score === 100 ? React.createElement(
+	          'p',
+	          { className: 'result correct' },
+	          'Correct!'
+	        ) : React.createElement(
+	          'p',
+	          { className: 'result incorrect' },
+	          'Incorrect'
+	        ) : null
+	      ),
+	      React.createElement(
+	        ReactCSSTransitionGroup,
+	        {
+	          component: 'div',
+	          transitionName: 'submit',
+	          transitionEnterTimeout: 800,
+	          transitionLeaveTimeout: 800
+	        },
+	        questionSubmitted && (feedbacks.length > 0 || solution) ? React.createElement(
 	          'div',
-	          { className: 'reveal-all-button' },
+	          { className: 'solution', key: 'solution' },
 	          React.createElement(
-	            'span',
-	            { className: 'divider' },
-	            ' - '
+	            'div',
+	            { className: 'score' },
+	            feedbacks.length === 0 ? null : React.createElement(
+	              'div',
+	              { className: 'feedback' },
+	              feedbacks.map(function (model) {
+	                var Component = model.getComponentClass();
+	                return React.createElement(Component, {
+	                  key: model.get('id'),
+	                  model: model,
+	                  moduleData: this.props.moduleData,
+	                  responseType: responseType,
+	                  revealAll: revealAll,
+	                  questionSubmitted: questionSubmitted
+	                });
+	              }.bind(this))
+	            )
 	          ),
-	          React.createElement(Button, {
-	            onClick: this.onClickRevealAll,
-	            disabled: revealAll,
-	            value: 'Reveal All Answers'
-	          })
-	        ) : null,
-	        React.createElement(
-	          'div',
-	          { className: 'reset-button' },
-	          React.createElement(Button, {
+	          revealAll ? React.createElement(Button, {
 	            altAction: true,
-	            onClick: this.onClickReset,
-	            disabled: !questionAnswered,
-	            value: 'Reset'
-	          })
-	        )
+	            onClick: this.onClickUndoRevealAll,
+	            value: 'Hide Explanation'
+	          }) : solution ? React.createElement(Button, {
+	            altAction: true,
+	            onClick: this.onClickRevealAll,
+	            value: 'Read an explanation of the answer'
+	          }) : null,
+	          React.createElement(
+	            ReactCSSTransitionGroup,
+	            {
+	              component: 'div',
+	              transitionName: 'solution',
+	              transitionEnterTimeout: 800,
+	              transitionLeaveTimeout: 800
+	            },
+	            revealAll ? React.createElement(
+	              'div',
+	              { className: 'solution-container', key: 'solution-component' },
+	              React.createElement(SolutionComponent, { model: solution, moduleData: this.props.moduleData })
+	            ) : null
+	          )
+	        ) : null
 	      )
 	    );
 	  }
@@ -610,31 +658,31 @@
 
 /***/ },
 
-/***/ 101:
+/***/ 105:
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
 
 	var ObojoboDraft;
 
-	__webpack_require__(28);
+	__webpack_require__(29);
 
-	__webpack_require__(25);
+	__webpack_require__(26);
 
-	__webpack_require__(30);
+	__webpack_require__(31);
 
 	ObojoboDraft = window.ObojoboDraft;
 
 	OBO.register('ObojoboDraft.Chunks.MCAssessment', {
 	  type: 'chunk',
-	  adapter: __webpack_require__(99),
-	  componentClass: __webpack_require__(100),
+	  adapter: __webpack_require__(103),
+	  componentClass: __webpack_require__(104),
 	  selectionHandler: new ObojoboDraft.Common.chunk.textChunk.TextGroupSelectionHandler()
 	});
 
 /***/ },
 
-/***/ 182:
-37
+/***/ 185:
+40
 
 /******/ })));

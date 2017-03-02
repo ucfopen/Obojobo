@@ -45,12 +45,12 @@
 /***/ 0:
 /***/ function(module, exports, __webpack_require__) {
 
-	module.exports = __webpack_require__(172);
+	module.exports = __webpack_require__(175);
 
 
 /***/ },
 
-/***/ 163:
+/***/ 169:
 /***/ function(module, exports) {
 
 	'use strict';
@@ -121,26 +121,16 @@
 
 /***/ },
 
-/***/ 172:
+/***/ 175:
 /***/ function(module, exports, __webpack_require__) {
 
 	"use strict";
 
-	var APIUtil, AssessmentStore, Dispatcher, JSONInput, ModalStore, NavStore, QuestionStore, ScoreStore, _debounce, ie, json, legacyJson, moduleData, onBlur, onChangeJSON, onFocus, render, showDocument;
-
-	ModalStore = window.ObojoboDraft.Common.stores.ModalStore;
-
-	NavStore = window.Viewer.stores.NavStore;
-
-	ScoreStore = window.Viewer.stores.ScoreStore;
-
-	QuestionStore = window.Viewer.stores.QuestionStore;
-
-	AssessmentStore = window.Viewer.stores.AssessmentStore;
+	var APIUtil, Dispatcher, JSONInput, _debounce, ie, json, legacyJson, moduleData, onBlur, onChangeJSON, onFocus, render, showDocument;
 
 	APIUtil = window.Viewer.util.APIUtil;
 
-	JSONInput = __webpack_require__(163);
+	JSONInput = __webpack_require__(169);
 
 	_debounce = function debounce(ms, cb) {
 	  clearTimeout(_debounce.id);
@@ -150,34 +140,6 @@
 	_debounce.id = null;
 
 	Dispatcher = window.ObojoboDraft.Common.flux.Dispatcher;
-
-	Dispatcher.on({
-	  'assessment:startAttempt': function (_this) {
-	    return function (payload) {
-	      return APIUtil.postEvent(moduleData.model, 'assessment:startAttempt', payload.value);
-	    };
-	  }(undefined),
-	  'assessment:endAttempt': function (_this) {
-	    return function (payload) {
-	      return APIUtil.postEvent(moduleData.model, 'assessment:endAttempt', payload.value);
-	    };
-	  }(undefined),
-	  'score:set': function (_this) {
-	    return function (payload) {
-	      return APIUtil.postEvent(moduleData.model, 'score:set', payload.value);
-	    };
-	  }(undefined),
-	  'window:focus': function (_this) {
-	    return function (payload) {
-	      return APIUtil.postEvent(moduleData.model, 'windowFocus', {});
-	    };
-	  }(undefined),
-	  'window:blur': function (_this) {
-	    return function (payload) {
-	      return APIUtil.postEvent(moduleData.model, 'windowFocus', {});
-	    };
-	  }(undefined)
-	});
 
 	onFocus = function onFocus() {
 	  document.body.className = 'is-focused-window';
@@ -211,33 +173,13 @@
 	};
 
 	render = function (_this) {
-	  return function () {
+	  return function (json) {
 	    console.log('RENDER');
-	    moduleData.navState = NavStore.getState();
-	    moduleData.scoreState = ScoreStore.getState();
-	    moduleData.questionState = QuestionStore.getState();
-	    moduleData.assessmentState = AssessmentStore.getState();
-	    moduleData.modalState = ModalStore.getState();
-	    window.localStorage.stateData = JSON.stringify({
-	      navState: moduleData.navState,
-	      scoreState: moduleData.scoreState,
-	      questionState: moduleData.questionState,
-	      assessmentState: moduleData.assessmentState
-	    });
-	    _debounce(2000, function () {
-	      console.log('SAVE STATE');
-	      return APIUtil.saveState(moduleData.model, {
-	        navState: moduleData.navState,
-	        scoreState: moduleData.scoreState,
-	        questionState: moduleData.questionState,
-	        assessmentState: moduleData.assessmentState
-	      });
-	    });
 	    return ReactDOM.render(React.createElement(
 	      'div',
 	      { className: 'root' },
-	      React.createElement(window.Viewer.components.ViewerApp, { moduleData: moduleData }),
-	      React.createElement(JSONInput, { onChange: onChangeJSON, value: JSON.stringify(moduleData.model.toJSON(), null, 2) })
+	      React.createElement(window.Viewer.components.ViewerApp, { json: json }),
+	      React.createElement(JSONInput, { onChange: onChangeJSON, value: JSON.stringify(json, null, 2) })
 	    ), document.getElementById('viewer-app'));
 	  };
 	}(undefined);
@@ -259,45 +201,17 @@
 
 	showDocument = function (_this) {
 	  return function (json) {
-	    var OboModel;
-	    OboModel = window.ObojoboDraft.Common.models.OboModel;
-	    moduleData.model = OboModel.create(json);
-	    return APIUtil.getAttempts(moduleData.model).then(function (res) {
-	      var stateData;
-	      console.log('ATTEMPTS', res);
-	      if (true) {
-	        console.log(moduleData.model);
-	        NavStore.init(moduleData.model, moduleData.model.modelState.start);
-	      } else {
-	        stateData = JSON.parse(window.localStorage.stateData);
-	        console.log('STATE DATA', stateData);
-	        NavStore.setState(stateData.navState);
-	        ScoreStore.setState(stateData.scoreState);
-	        QuestionStore.setState(stateData.questionState);
-	        AssessmentStore.setState(stateData.assessmentState);
-	      }
-	      return render();
-	    });
+	    return render(json);
 	  };
 	}(undefined);
 
-	NavStore.onChange(render);
-
-	ScoreStore.onChange(render);
-
-	QuestionStore.onChange(render);
-
-	AssessmentStore.onChange(render);
-
-	ModalStore.onChange(render);
-
 	if (window.location.hash.indexOf('legacy') > -1) {
-	  legacyJson = __webpack_require__(209);
+	  legacyJson = __webpack_require__(213);
 	  moduleData.model = window.ObojoboDraft.Common.models.Legacy.createModuleFromObo2ModuleJSON(legacyJson);
 	  NavStore.init(moduleData.model);
 	  render();
 	} else if (window.location.hash.indexOf('file') > -1) {
-	  json = __webpack_require__(210);
+	  json = __webpack_require__(214);
 	  showDocument(json);
 	} else {
 	  APIUtil.fetchDraft('sample').then(function (_this) {
@@ -309,7 +223,7 @@
 
 /***/ },
 
-/***/ 209:
+/***/ 213:
 /***/ function(module, exports) {
 
 	module.exports = {
@@ -2682,7 +2596,7 @@
 
 /***/ },
 
-/***/ 210:
+/***/ 214:
 /***/ function(module, exports) {
 
 	module.exports = {
@@ -3208,14 +3122,169 @@
 								"id": "a75581c6-b936-4ba0-8b51-e66c04d6285f",
 								"content": {
 									"shuffle": true,
-									"type": "practice"
+									"type": "practice",
+									"solution": {
+										"id": "solution-pg",
+										"content": {
+											"title": "Equation Examples"
+										},
+										"metadata": {},
+										"index": 0,
+										"type": "ObojoboDraft.Pages.Page",
+										"children": [
+											{
+												"id": "2-0f392890-4ab8-4f40-ac12-83483c6714cf",
+												"content": {
+													"textGroup": [
+														{
+															"text": {
+																"value": "Let the projectile be launched with an initial velocity v_0 which can be expressed as the sum of horizontal and vertical components as follows:",
+																"styleList": [
+																	{
+																		"type": "_latex",
+																		"start": 56,
+																		"end": 59,
+																		"data": {}
+																	}
+																]
+															},
+															"data": {
+																"indent": 0
+															}
+														}
+													]
+												},
+												"metadata": {},
+												"index": 0,
+												"type": "ObojoboDraft.Chunks.Text",
+												"children": null
+											},
+											{
+												"id": "2-85db9cde-daa3-4303-84a2-23c9e28d3996",
+												"content": {
+													"latex": "v_0=v_{0_x}i+v_{0_y}j",
+													"align": "center"
+												},
+												"metadata": {},
+												"index": 0,
+												"type": "ObojoboDraft.Chunks.MathEquation",
+												"children": null
+											},
+											{
+												"id": "2-376cddfc-1076-49dd-9f6e-1e6ff6adab76",
+												"content": {
+													"textGroup": [
+														{
+															"text": {
+																"value": "The components x_{0_x} and v_{0_y} can be found if the initial launch angle, \\theta, is known:",
+																"styleList": [
+																	{
+																		"type": "_latex",
+																		"start": 15,
+																		"end": 22,
+																		"data": {}
+																	},
+																	{
+																		"type": "_latex",
+																		"start": 27,
+																		"end": 34,
+																		"data": {}
+																	},
+																	{
+																		"type": "_latex",
+																		"start": 77,
+																		"end": 83,
+																		"data": {}
+																	}
+																]
+															},
+															"data": {
+																"indent": 0
+															}
+														}
+													]
+												},
+												"metadata": {},
+												"index": 0,
+												"type": "ObojoboDraft.Chunks.Text",
+												"children": null
+											},
+											{
+												"id": "2-294386f1-0dd7-43f5-be48-9f9da5a9c472",
+												"content": {
+													"listStyles": {
+														"type": "unordered",
+														"indents": {}
+													},
+													"textGroup": [
+														{
+															"text": {
+																"value": "v_{0_x} = v_0 \\cos \\theta",
+																"styleList": [
+																	{
+																		"type": "_latex",
+																		"start": 0,
+																		"end": 27,
+																		"data": {}
+																	}
+																]
+															},
+															"data": {
+																"indent": 0
+															}
+														},
+														{
+															"text": {
+																"value": "v_{0_t} = v_0 \\sin \\theta",
+																"styleList": [
+																	{
+																		"type": "_latex",
+																		"start": 0,
+																		"end": 27,
+																		"data": {}
+																	}
+																]
+															},
+															"data": {
+																"indent": 0
+															}
+														}
+													]
+												},
+												"metadata": {},
+												"index": 0,
+												"type": "ObojoboDraft.Chunks.List",
+												"children": null
+											},
+											{
+												"id": "2-436f3bd4-6b63-49ed-b348-907424e3a939",
+												"content": {
+													"textGroup": [
+														{
+															"text": {
+																"value": "See also the section Parabolic equation for information on finding the initial velocity.",
+																"styleList": null
+															},
+															"data": {
+																"indent": 0
+															}
+														}
+													]
+												},
+												"metadata": {},
+												"index": 0,
+												"type": "ObojoboDraft.Chunks.Text",
+												"children": null
+											}
+										]
+									}
 								},
 								"metadata": {},
 								"index": 0,
 								"type": "ObojoboDraft.Chunks.Question",
 								"children": [
 									{
-										"id": "8022fb0b-b035-431d-a8db-4741ee536c16",
+										"id": "2-8022fb0b-b035-431d-a8db-4741ee536c16",
 										"content": {
 											"headingLevel": 1,
 											"textGroup": [
@@ -3423,7 +3492,7 @@
 									"textGroup": [
 										{
 											"text": {
-												"value": "Finally this is a question bank containing two sets of two questions each, randomly selected.",
+												"value": "Finally this is a question bank containing two sets of two questions each, randomly selected. Finally this is a question bank containing two sets of two questions each, randomly selected. Finally this is a question bank containing two sets of two questions each, randomly selected. Finally this is a question bank containing two sets of two questions each, randomly selected. Finally this is a question bank containing two sets of two questions each, randomly selected. Finally this is a question bank containing two sets of two questions each, randomly selected. Finally this is a question bank containing two sets of two questions each, randomly selected. Finally this is a question bank containing two sets of two questions each, randomly selected. Finally this is a question bank containing two sets of two questions each, randomly selected. Finally this is a question bank containing two sets of two questions each, randomly selected. Finally this is a question bank containing two sets of two questions each, randomly selected. Finally this is a question bank containing two sets of two questions each, randomly selected. Finally this is a question bank containing two sets of two questions each, randomly selected. Finally this is a question bank containing two sets of two questions each, randomly selected. Finally this is a question bank containing two sets of two questions each, randomly selected. Finally this is a question bank containing two sets of two questions each, randomly selected. Finally this is a question bank containing two sets of two questions each, randomly selected. Finally this is a question bank containing two sets of two questions each, randomly selected. Finally this is a question bank containing two sets of two questions each, randomly selected. Finally this is a question bank containing two sets of two questions each, randomly selected. Finally this is a question bank containing two sets of two questions each, randomly selected. Finally this is a question bank containing two sets of two questions each, randomly selected. Finally this is a question bank containing two sets of two questions each, randomly selected. Finally this is a question bank containing two sets of two questions each, randomly selected. Finally this is a question bank containing two sets of two questions each, randomly selected. Finally this is a question bank containing two sets of two questions each, randomly selected. Finally this is a question bank containing two sets of two questions each, randomly selected. Finally this is a question bank containing two sets of two questions each, randomly selected. Finally this is a question bank containing two sets of two questions each, randomly selected. Finally this is a question bank containing two sets of two questions each, randomly selected. Finally this is a question bank containing two sets of two questions each, randomly selected. Finally this is a question bank containing two sets of two questions each, randomly selected. Finally this is a question bank containing two sets of two questions each, randomly selected. Finally this is a question bank containing two sets of two questions each, randomly selected. Finally this is a question bank containing two sets of two questions each, randomly selected. Finally this is a question bank containing two sets of two questions each, randomly selected. Finally this is a question bank containing two sets of two questions each, randomly selected. Finally this is a question bank containing two sets of two questions each, randomly selected. Finally this is a question bank containing two sets of two questions each, randomly selected. Finally this is a question bank containing two sets of two questions each, randomly selected. Finally this is a question bank containing two sets of two questions each, randomly selected. Finally this is a question bank containing two sets of two questions each, randomly selected. Finally this is a question bank containing two sets of two questions each, randomly selected. Finally this is a question bank containing two sets of two questions each, randomly selected. Finally this is a question bank containing two sets of two questions each, randomly selected. Finally this is a question bank containing two sets of two questions each, randomly selected. Finally this is a question bank containing two sets of two questions each, randomly selected. Finally this is a question bank containing two sets of two questions each, randomly selected. Finally this is a question bank containing two sets of two questions each, randomly selected. Finally this is a question bank containing two sets of two questions each, randomly selected. Finally this is a question bank containing two sets of two questions each, randomly selected. Finally this is a question bank containing two sets of two questions each, randomly selected. Finally this is a question bank containing two sets of two questions each, randomly selected. Finally this is a question bank containing two sets of two questions each, randomly selected. Finally this is a question bank containing two sets of two questions each, randomly selected. Finally this is a question bank containing two sets of two questions each, randomly selected. Finally this is a question bank containing two sets of two questions each, randomly selected. Finally this is a question bank containing two sets of two questions each, randomly selected. Finally this is a question bank containing two sets of two questions each, randomly selected. Finally this is a question bank containing two sets of two questions each, randomly selected. Finally this is a question bank containing two sets of two questions each, randomly selected. Finally this is a question bank containing two sets of two questions each, randomly selected. Finally this is a question bank containing two sets of two questions each, randomly selected. Finally this is a question bank containing two sets of two questions each, randomly selected. Finally this is a question bank containing two sets of two questions each, randomly selected. Finally this is a question bank containing two sets of two questions each, randomly selected. Finally this is a question bank containing two sets of two questions each, randomly selected. Finally this is a question bank containing two sets of two questions each, randomly selected. Finally this is a question bank containing two sets of two questions each, randomly selected. Finally this is a question bank containing two sets of two questions each, randomly selected. Finally this is a question bank containing two sets of two questions each, randomly selected. Finally this is a question bank containing two sets of two questions each, randomly selected. Finally this is a question bank containing two sets of two questions each, randomly selected. Finally this is a question bank containing two sets of two questions each, randomly selected. Finally this is a question bank containing two sets of two questions each, randomly selected. Finally this is a question bank containing two sets of two questions each, randomly selected. Finally this is a question bank containing two sets of two questions each, randomly selected. Finally this is a question bank containing two sets of two questions each, randomly selected. Finally this is a question bank containing two sets of two questions each, randomly selected. Finally this is a question bank containing two sets of two questions each, randomly selected. Finally this is a question bank containing two sets of two questions each, randomly selected. Finally this is a question bank containing two sets of two questions each, randomly selected. Finally this is a question bank containing two sets of two questions each, randomly selected. Finally this is a question bank containing two sets of two questions each, randomly selected. ",
 												"styleList": null
 											},
 											"data": {
@@ -4283,7 +4352,7 @@
 						]
 					},
 					{
-						"id": "page-3",
+						"id": "pg-3",
 						"content": {
 							"title": "Page 3"
 						},

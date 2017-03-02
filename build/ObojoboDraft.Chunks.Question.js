@@ -45,21 +45,23 @@
 /***/ 0:
 /***/ function(module, exports, __webpack_require__) {
 
-	module.exports = __webpack_require__(107);
+	module.exports = __webpack_require__(111);
 
 
 /***/ },
 
-/***/ 105:
+/***/ 109:
 /***/ function(module, exports) {
 
 	"use strict";
 
-	var Adapter;
+	var Adapter, OboModel;
+
+	OboModel = window.ObojoboDraft.Common.models.OboModel;
 
 	Adapter = {
 	  construct: function construct(model, attrs) {
-	    var ref, ref1, ref2;
+	    var ref, ref1, ref2, ref3;
 	    if ((attrs != null ? (ref = attrs.content) != null ? ref.shuffle : void 0 : void 0) != null) {
 	      model.modelState.shuffle = attrs.content.shuffle;
 	    } else {
@@ -71,18 +73,25 @@
 	      model.modelState.limit = 0;
 	    }
 	    if ((attrs != null ? (ref2 = attrs.content) != null ? ref2.type : void 0 : void 0) != null) {
-	      return model.modelState.type = attrs.content.type;
+	      model.modelState.type = attrs.content.type;
 	    } else {
-	      return model.modelState.type = "practice";
+	      model.modelState.type = "practice";
+	    }
+	    if ((attrs != null ? (ref3 = attrs.content) != null ? ref3.solution : void 0 : void 0) != null) {
+	      return model.modelState.solution = OboModel.create(attrs.content.solution);
+	    } else {
+	      return model.modelState.solution = null;
 	    }
 	  },
 	  clone: function clone(model, _clone) {
 	    _clone.modelState.shuffle = model.modelState.shuffle;
-	    return _clone.modelState.type = model.modelState.type;
+	    _clone.modelState.type = model.modelState.type;
+	    return _clone.modelState.solution = model.modelState.solution.clone();
 	  },
 	  toJSON: function toJSON(model, json) {
 	    json.content.shuffle = model.modelState.shuffle;
-	    return json.content.type = model.modelState.type;
+	    json.content.type = model.modelState.type;
+	    return json.content.solution = model.modelState.solution.toJSON();
 	  }
 	};
 
@@ -90,14 +99,16 @@
 
 /***/ },
 
-/***/ 106:
+/***/ 110:
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
 
-	var AssessmentUtil, Common, Dispatcher, OboComponent, Question, QuestionUtil, ScoreUtil;
+	var Button, Common, Dispatcher, FocusUtil, OboComponent, Question, QuestionUtil, ReactCSSTransitionGroup, ScoreUtil;
 
-	__webpack_require__(184);
+	__webpack_require__(187);
+
+	ReactCSSTransitionGroup = React.addons.CSSTransitionGroup;
 
 	Common = window.ObojoboDraft.Common;
 
@@ -105,7 +116,9 @@
 
 	Dispatcher = Common.flux.Dispatcher;
 
-	AssessmentUtil = window.Viewer.util.AssessmentUtil;
+	FocusUtil = Common.util.FocusUtil;
+
+	Button = Common.components.Button;
 
 	ScoreUtil = window.Viewer.util.ScoreUtil;
 
@@ -115,33 +128,39 @@
 		displayName: 'Question',
 
 		onClickBlocker: function onClickBlocker() {
-			return QuestionUtil.viewQuestion(this.props.model.get('id'));
+			QuestionUtil.viewQuestion(this.props.model.get('id'));
+			return FocusUtil.focusComponent(this.props.model.get('id'));
 		},
 		render: function render() {
 			var score, viewState;
-			score = ScoreUtil.getScoreForModel(this.props.moduleData.scoreState, this.props.model.children.last());
+			score = ScoreUtil.getScoreForModel(this.props.moduleData.scoreState, this.props.model);
 			viewState = QuestionUtil.getViewState(this.props.moduleData.questionState, this.props.model);
 			return React.createElement(
 				OboComponent,
 				{
 					model: this.props.model,
-					className: 'obojobo-draft--chunks--question' + (score === null ? '' : score === 100 ? ' is-correct' : ' is-incorrect') + (' is-type-' + this.props.model.modelState.type) + ' is-' + viewState
+					moduleData: this.props.moduleData,
+					className: 'flip-container obojobo-draft--chunks--question' + (score === null ? '' : score === 100 ? ' is-correct' : ' is-incorrect') + (' is-type-' + this.props.model.modelState.type) + ' is-' + viewState
 				},
-				this.props.model.children.models.map(function (child, index) {
-					var Component = child.getComponentClass();
-					return React.createElement(Component, {
-						key: child.get('id'),
-						model: child,
-						moduleData: this.props.moduleData
-					});
-				}.bind(this)),
 				React.createElement(
 					'div',
-					{ className: 'blocker', onClick: this.onClickBlocker },
+					{ className: 'flipper' },
 					React.createElement(
-						'span',
-						null,
-						'Click to view question'
+						'div',
+						{ className: 'content back' },
+						this.props.model.children.models.map(function (child, index) {
+							var Component = child.getComponentClass();
+							return React.createElement(Component, {
+								key: child.get('id'),
+								model: child,
+								moduleData: this.props.moduleData
+							});
+						}.bind(this))
+					),
+					React.createElement(
+						'div',
+						{ className: 'blocker front', key: 'blocker', onClick: this.onClickBlocker },
+						React.createElement(Button, { value: 'Try question' })
 					)
 				)
 			);
@@ -152,7 +171,7 @@
 
 /***/ },
 
-/***/ 107:
+/***/ 111:
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -163,14 +182,27 @@
 
 	OBO.register('ObojoboDraft.Chunks.Question', {
 	  type: 'chunk',
-	  adapter: __webpack_require__(105),
-	  componentClass: __webpack_require__(106),
-	  selectionHandler: new ObojoboDraft.Common.chunk.textChunk.TextGroupSelectionHandler()
+	  adapter: __webpack_require__(109),
+	  componentClass: __webpack_require__(110),
+	  selectionHandler: new ObojoboDraft.Common.chunk.textChunk.TextGroupSelectionHandler(),
+	  getNavItem: function getNavItem(model) {
+	    return {
+	      type: 'sub-link',
+	      label: '[Q] ' + model.children.at(0).modelState.textGroup.first.text.value
+	    };
+	  },
+	  generateNav: function generateNav(model) {
+	    return [{
+	      type: 'sub-link',
+	      label: 'Question',
+	      id: model.get('id')
+	    }];
+	  }
 	});
 
 /***/ },
 
-/***/ 184:
+/***/ 187:
 /***/ function(module, exports) {
 
 	// removed by extract-text-webpack-plugin

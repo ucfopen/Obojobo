@@ -45,7 +45,7 @@
 /***/ 0:
 /***/ function(module, exports, __webpack_require__) {
 
-	module.exports = __webpack_require__(104);
+	module.exports = __webpack_require__(108);
 
 
 /***/ },
@@ -162,7 +162,7 @@
 
 /***/ },
 
-/***/ 4:
+/***/ 5:
 /***/ function(module, exports) {
 
 	/**
@@ -214,7 +214,7 @@
 
 	/* jshint unused:false */
 
-	var Style = __webpack_require__(21);
+	var Style = __webpack_require__(22);
 
 	/**
 	 * This file contains metrics regarding fonts and individual symbols. The sigma
@@ -333,7 +333,7 @@
 	// metrics, including height, depth, italic correction, and skew (kern from the
 	// character to the corresponding \skewchar)
 	// This map is generated via `make metrics`. It should not be changed manually.
-	var metricMap = __webpack_require__(240);
+	var metricMap = __webpack_require__(244);
 
 	/**
 	 * This function is a convience function for looking up information in the
@@ -351,7 +351,7 @@
 
 /***/ },
 
-/***/ 21:
+/***/ 22:
 /***/ function(module, exports) {
 
 	/**
@@ -484,7 +484,7 @@
 
 /***/ },
 
-/***/ 22:
+/***/ 23:
 /***/ function(module, exports, __webpack_require__) {
 
 	/**
@@ -492,9 +492,9 @@
 	 * different kinds of domTree nodes in a consistent manner.
 	 */
 
-	var domTree = __webpack_require__(75);
+	var domTree = __webpack_require__(79);
 	var fontMetrics = __webpack_require__(13);
-	var symbols = __webpack_require__(23);
+	var symbols = __webpack_require__(24);
 	var utils = __webpack_require__(2);
 
 	var greekCapitals = [
@@ -938,7 +938,7 @@
 
 /***/ },
 
-/***/ 23:
+/***/ 24:
 /***/ function(module, exports) {
 
 	/**
@@ -3530,7 +3530,7 @@
 
 /***/ },
 
-/***/ 74:
+/***/ 78:
 /***/ function(module, exports) {
 
 	/**
@@ -3565,7 +3565,7 @@
 
 /***/ },
 
-/***/ 75:
+/***/ 79:
 /***/ function(module, exports, __webpack_require__) {
 
 	/**
@@ -3841,7 +3841,7 @@
 
 /***/ },
 
-/***/ 76:
+/***/ 80:
 /***/ function(module, exports) {
 
 	/**
@@ -3871,7 +3871,7 @@
 
 /***/ },
 
-/***/ 102:
+/***/ 106:
 /***/ function(module, exports) {
 
 	'use strict';
@@ -3906,16 +3906,16 @@
 
 /***/ },
 
-/***/ 103:
+/***/ 107:
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
 
 	var Common, MathEquation, NonEditableChunk, OboComponent, getLatexHtml, katex;
 
-	__webpack_require__(183);
+	__webpack_require__(186);
 
-	katex = __webpack_require__(231);
+	katex = __webpack_require__(235);
 
 	Common = window.ObojoboDraft.Common;
 
@@ -3961,7 +3961,7 @@
 	    }
 	    return React.createElement(
 	      OboComponent,
-	      { model: this.props.model, className: 'obojobo-draft--chunks--math-equation pad align-' + this.props.model.modelState.align },
+	      { model: this.props.model, moduleData: this.props.moduleData, className: 'obojobo-draft--chunks--math-equation pad align-' + this.props.model.modelState.align },
 	      React.createElement(
 	        NonEditableChunk,
 	        null,
@@ -3975,7 +3975,7 @@
 
 /***/ },
 
-/***/ 104:
+/***/ 108:
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -3986,21 +3986,21 @@
 
 	OBO.register('ObojoboDraft.Chunks.MathEquation', {
 	  type: 'chunk',
-	  adapter: __webpack_require__(102),
-	  componentClass: __webpack_require__(103),
+	  adapter: __webpack_require__(106),
+	  componentClass: __webpack_require__(107),
 	  selectionHandler: new Common.chunk.focusableChunk.FocusableSelectionHandler()
 	});
 
 /***/ },
 
-/***/ 183:
+/***/ 186:
 /***/ function(module, exports) {
 
 	// removed by extract-text-webpack-plugin
 
 /***/ },
 
-/***/ 231:
+/***/ 235:
 /***/ function(module, exports, __webpack_require__) {
 
 	/**
@@ -4011,11 +4011,11 @@
 	 * errors in the expression, or errors in javascript handling.
 	 */
 
-	var ParseError = __webpack_require__(4);
-	var Settings = __webpack_require__(74);
+	var ParseError = __webpack_require__(5);
+	var Settings = __webpack_require__(78);
 
-	var buildTree = __webpack_require__(237);
-	var parseTree = __webpack_require__(243);
+	var buildTree = __webpack_require__(241);
+	var parseTree = __webpack_require__(247);
 	var utils = __webpack_require__(2);
 
 	/**
@@ -4080,7 +4080,7 @@
 
 /***/ },
 
-/***/ 232:
+/***/ 236:
 /***/ function(module, exports, __webpack_require__) {
 
 	/**
@@ -4096,9 +4096,9 @@
 	 * kinds.
 	 */
 
-	var matchAt = __webpack_require__(244);
+	var matchAt = __webpack_require__(248);
 
-	var ParseError = __webpack_require__(4);
+	var ParseError = __webpack_require__(5);
 
 	// The main lexer class
 	function Lexer(input) {
@@ -4281,7 +4281,7 @@
 
 /***/ },
 
-/***/ 233:
+/***/ 237:
 /***/ function(module, exports) {
 
 	/**
@@ -4477,17 +4477,17 @@
 
 /***/ },
 
-/***/ 234:
+/***/ 238:
 /***/ function(module, exports, __webpack_require__) {
 
-	var functions = __webpack_require__(241);
-	var environments = __webpack_require__(239);
-	var Lexer = __webpack_require__(232);
-	var symbols = __webpack_require__(23);
+	var functions = __webpack_require__(245);
+	var environments = __webpack_require__(243);
+	var Lexer = __webpack_require__(236);
+	var symbols = __webpack_require__(24);
 	var utils = __webpack_require__(2);
 
-	var parseData = __webpack_require__(76);
-	var ParseError = __webpack_require__(4);
+	var parseData = __webpack_require__(80);
+	var ParseError = __webpack_require__(5);
 
 	/**
 	 * This file contains the parser used to parse out a TeX expression from the
@@ -5204,7 +5204,7 @@
 
 /***/ },
 
-/***/ 235:
+/***/ 239:
 /***/ function(module, exports, __webpack_require__) {
 
 	/**
@@ -5214,12 +5214,12 @@
 	 * called, to produce a final HTML tree.
 	 */
 
-	var ParseError = __webpack_require__(4);
-	var Style = __webpack_require__(21);
+	var ParseError = __webpack_require__(5);
+	var Style = __webpack_require__(22);
 
-	var buildCommon = __webpack_require__(22);
-	var delimiter = __webpack_require__(238);
-	var domTree = __webpack_require__(75);
+	var buildCommon = __webpack_require__(23);
+	var delimiter = __webpack_require__(242);
+	var domTree = __webpack_require__(79);
 	var fontMetrics = __webpack_require__(13);
 	var utils = __webpack_require__(2);
 
@@ -6573,7 +6573,7 @@
 
 /***/ },
 
-/***/ 236:
+/***/ 240:
 /***/ function(module, exports, __webpack_require__) {
 
 	/**
@@ -6582,11 +6582,11 @@
 	 * parser.
 	 */
 
-	var buildCommon = __webpack_require__(22);
+	var buildCommon = __webpack_require__(23);
 	var fontMetrics = __webpack_require__(13);
-	var mathMLTree = __webpack_require__(242);
-	var ParseError = __webpack_require__(4);
-	var symbols = __webpack_require__(23);
+	var mathMLTree = __webpack_require__(246);
+	var ParseError = __webpack_require__(5);
+	var symbols = __webpack_require__(24);
 	var utils = __webpack_require__(2);
 
 	var makeSpan = buildCommon.makeSpan;
@@ -7099,15 +7099,15 @@
 
 /***/ },
 
-/***/ 237:
+/***/ 241:
 /***/ function(module, exports, __webpack_require__) {
 
-	var buildHTML = __webpack_require__(235);
-	var buildMathML = __webpack_require__(236);
-	var buildCommon = __webpack_require__(22);
-	var Options = __webpack_require__(233);
-	var Settings = __webpack_require__(74);
-	var Style = __webpack_require__(21);
+	var buildHTML = __webpack_require__(239);
+	var buildMathML = __webpack_require__(240);
+	var buildCommon = __webpack_require__(23);
+	var Options = __webpack_require__(237);
+	var Settings = __webpack_require__(78);
+	var Style = __webpack_require__(22);
 
 	var makeSpan = buildCommon.makeSpan;
 
@@ -7146,7 +7146,7 @@
 
 /***/ },
 
-/***/ 238:
+/***/ 242:
 /***/ function(module, exports, __webpack_require__) {
 
 	/**
@@ -7171,12 +7171,12 @@
 	 * used in `\left` and `\right`.
 	 */
 
-	var ParseError = __webpack_require__(4);
-	var Style = __webpack_require__(21);
+	var ParseError = __webpack_require__(5);
+	var Style = __webpack_require__(22);
 
-	var buildCommon = __webpack_require__(22);
+	var buildCommon = __webpack_require__(23);
 	var fontMetrics = __webpack_require__(13);
-	var symbols = __webpack_require__(23);
+	var symbols = __webpack_require__(24);
 	var utils = __webpack_require__(2);
 
 	var makeSpan = buildCommon.makeSpan;
@@ -7692,12 +7692,12 @@
 
 /***/ },
 
-/***/ 239:
+/***/ 243:
 /***/ function(module, exports, __webpack_require__) {
 
 	var fontMetrics = __webpack_require__(13);
-	var parseData = __webpack_require__(76);
-	var ParseError = __webpack_require__(4);
+	var parseData = __webpack_require__(80);
+	var ParseError = __webpack_require__(5);
 
 	var ParseNode = parseData.ParseNode;
 	var ParseResult = parseData.ParseResult;
@@ -7877,7 +7877,7 @@
 
 /***/ },
 
-/***/ 240:
+/***/ 244:
 /***/ function(module, exports) {
 
 	module.exports = {
@@ -9635,11 +9635,11 @@
 
 /***/ },
 
-/***/ 241:
+/***/ 245:
 /***/ function(module, exports, __webpack_require__) {
 
 	var utils = __webpack_require__(2);
-	var ParseError = __webpack_require__(4);
+	var ParseError = __webpack_require__(5);
 
 	// This file contains a list of functions that we parse. The functions map
 	// contains the following data:
@@ -10271,7 +10271,7 @@
 
 /***/ },
 
-/***/ 242:
+/***/ 246:
 /***/ function(module, exports, __webpack_require__) {
 
 	/**
@@ -10380,7 +10380,7 @@
 
 /***/ },
 
-/***/ 243:
+/***/ 247:
 /***/ function(module, exports, __webpack_require__) {
 
 	/**
@@ -10388,7 +10388,7 @@
 	 * TODO(emily): Remove this
 	 */
 
-	var Parser = __webpack_require__(234);
+	var Parser = __webpack_require__(238);
 
 	/**
 	 * Parses an expression using a Parser, then returns the parsed result.
@@ -10404,7 +10404,7 @@
 
 /***/ },
 
-/***/ 244:
+/***/ 248:
 /***/ function(module, exports) {
 
 	/** @flow */

@@ -29,7 +29,8 @@
     padding: 0.8rem 1rem;
     padding-left: 4rem;
     box-sizing: border-box;
-    transition: top 0.2s; }
+    transition: top 0.2s;
+    opacity: 0.95; }
     .viewer--viewer-app > header > div {
       position: relative; }
     .viewer--viewer-app > header .module-title {
@@ -107,6 +108,7 @@
     filter: invert(100%); }
 @charset "UTF-8";
 .viewer--components--nav {
+  overflow: auto;
   position: fixed;
   top: 0;
   left: 0;
@@ -120,7 +122,6 @@
   padding: 2rem;
   padding-top: 1rem;
   box-sizing: border-box;
-  text-align: right;
   transition: left 0.2s 0.2s; }
   .viewer--components--nav.is-locked li.link,
   .viewer--components--nav.is-locked li.seperator {
@@ -141,6 +142,10 @@
       background-color: transparent; }
   .viewer--components--nav.is-disabled {
     display: none; }
+  .viewer--components--nav .is-visited {
+    color: green; }
+  .viewer--components--nav .is-correct {
+    color: orange; }
   .viewer--components--nav .is-selected {
     font-weight: bold;
     color: #93C6FF; }
@@ -169,13 +174,23 @@
     border: none;
     border-bottom: 1px solid #FFFFFF;
     opacity: 0.2; }
-  .viewer--components--nav .link {
+  .viewer--components--nav .link,
+  .viewer--components--nav .sub-link {
     cursor: pointer; }
-    .viewer--components--nav .link:hover {
+    .viewer--components--nav .link:hover,
+    .viewer--components--nav .sub-link:hover {
       color: #FFFFFF; }
-    .viewer--components--nav .link.is-selected:hover {
+    .viewer--components--nav .link.is-selected:hover,
+    .viewer--components--nav .sub-link.is-selected:hover {
       color: #93C6FF;
       cursor: default; }
+  .viewer--components--nav .link {
+    margin-top: 1rem; }
+  .viewer--components--nav .sub-link {
+    font-size: .7rem;
+    opacity: .6;
+    list-style-type: inherit;
+    margin-left: 1rem; }
   .viewer--components--nav .seperator {
     cursor: default; }
   .viewer--components--nav .heading {

@@ -45,12 +45,12 @@
 /***/ 0:
 /***/ function(module, exports, __webpack_require__) {
 
-	module.exports = __webpack_require__(152);
+	module.exports = __webpack_require__(158);
 
 
 /***/ },
 
-/***/ 150:
+/***/ 156:
 /***/ function(module, exports) {
 
 	'use strict';
@@ -80,14 +80,14 @@
 
 /***/ },
 
-/***/ 151:
+/***/ 157:
 /***/ function(module, exports, __webpack_require__) {
 
 	"use strict";
 
 	var Common, Dispatcher, NavUtil, OboComponent, OboModel, navStore;
 
-	__webpack_require__(201);
+	__webpack_require__(205);
 
 	navStore = window.Viewer.stores.navStore;
 
@@ -117,6 +117,7 @@
 	      OboComponent,
 	      {
 	        model: this.props.model,
+	        moduleData: this.props.moduleData,
 	        className: "obojobo-draft--modules--module"
 	      },
 	      React.createElement(
@@ -130,7 +131,7 @@
 
 /***/ },
 
-/***/ 152:
+/***/ 158:
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -142,9 +143,16 @@
 	OBO.register('ObojoboDraft.Modules.Module', {
 	  type: 'module',
 	  "default": true,
-	  adapter: __webpack_require__(150),
-	  componentClass: __webpack_require__(151),
+	  adapter: __webpack_require__(156),
+	  componentClass: __webpack_require__(157),
 	  selectionHandler: null,
+	  getNavItem: function getNavItem(model) {
+	    return {
+	      type: 'heading',
+	      label: model.title,
+	      showChildren: true
+	    };
+	  },
 	  generateNav: function generateNav(model) {
 	    return [{
 	      type: 'heading',
@@ -155,7 +163,7 @@
 
 /***/ },
 
-/***/ 201:
+/***/ 205:
 /***/ function(module, exports) {
 
 	// removed by extract-text-webpack-plugin

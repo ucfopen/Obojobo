@@ -1,10 +1,10 @@
 "use strict";
 
-ModalStore = window.ObojoboDraft.Common.stores.ModalStore
-NavStore = window.Viewer.stores.NavStore
-ScoreStore = window.Viewer.stores.ScoreStore
-QuestionStore = window.Viewer.stores.QuestionStore
-AssessmentStore = window.Viewer.stores.AssessmentStore
+# ModalStore = window.ObojoboDraft.Common.stores.ModalStore
+# NavStore = window.Viewer.stores.NavStore
+# ScoreStore = window.Viewer.stores.ScoreStore
+# QuestionStore = window.Viewer.stores.QuestionStore
+# AssessmentStore = window.Viewer.stores.AssessmentStore
 APIUtil = window.Viewer.util.APIUtil
 
 JSONInput = require 'Viewer/components/jsoninput'
@@ -17,12 +17,12 @@ debounce.id = null
 # set up global event listeners
 Dispatcher = window.ObojoboDraft.Common.flux.Dispatcher
 
-Dispatcher.on
-	'assessment:startAttempt': (payload) => APIUtil.postEvent(moduleData.model, 'assessment:startAttempt', payload.value)
-	'assessment:endAttempt':   (payload) => APIUtil.postEvent(moduleData.model, 'assessment:endAttempt', payload.value)
-	'score:set':               (payload) => APIUtil.postEvent(moduleData.model, 'score:set', payload.value)
-	'window:focus':            (payload) => APIUtil.postEvent(moduleData.model, 'windowFocus', {})
-	'window:blur':             (payload) => APIUtil.postEvent(moduleData.model, 'windowFocus', {})
+# Dispatcher.on
+# 	'assessment:startAttempt': (payload) => APIUtil.postEvent(moduleData.model, 'assessment:startAttempt', payload.value)
+# 	'assessment:endAttempt':   (payload) => APIUtil.postEvent(moduleData.model, 'assessment:endAttempt', payload.value)
+# 	'score:set':               (payload) => APIUtil.postEvent(moduleData.model, 'score:set', payload.value)
+# 	'window:focus':            (payload) => APIUtil.postEvent(moduleData.model, 'windowFocus', {})
+# 	'window:blur':             (payload) => APIUtil.postEvent(moduleData.model, 'windowFocus', {})
 
 # Set up listeners for window for blur/focus
 onFocus = ->
@@ -51,33 +51,33 @@ moduleData =
 	assessmentState: null
 	modalState: null
 
-render = =>
+render = (json) =>
 	console.log 'RENDER'
-	moduleData.navState = NavStore.getState()
-	moduleData.scoreState = ScoreStore.getState()
-	moduleData.questionState = QuestionStore.getState()
-	moduleData.assessmentState = AssessmentStore.getState()
-	moduleData.modalState = ModalStore.getState()
+	# moduleData.navState = NavStore.getState()
+	# moduleData.scoreState = ScoreStore.getState()
+	# moduleData.questionState = QuestionStore.getState()
+	# moduleData.assessmentState = AssessmentStore.getState()
+	# moduleData.modalState = ModalStore.getState()
 
-	window.localStorage.stateData = JSON.stringify({
-		navState:        moduleData.navState,
-		scoreState:      moduleData.scoreState,
-		questionState:   moduleData.questionState,
-		assessmentState: moduleData.assessmentState
-	})
+	# window.localStorage.stateData = JSON.stringify({
+	# 	navState:        moduleData.navState,
+	# 	scoreState:      moduleData.scoreState,
+	# 	questionState:   moduleData.questionState,
+	# 	assessmentState: moduleData.assessmentState
+	# })
 
-	debounce 2000, ->
-		console.log 'SAVE STATE'
-		APIUtil.saveState moduleData.model, {
-			navState: moduleData.navState
-			scoreState: moduleData.scoreState
-			questionState: moduleData.questionState
-			assessmentState: moduleData.assessmentState
-		}
+	# debounce 2000, ->
+	# 	console.log 'SAVE STATE'
+	# 	APIUtil.saveState moduleData.model, {
+	# 		navState: moduleData.navState
+	# 		scoreState: moduleData.scoreState
+	# 		questionState: moduleData.questionState
+	# 		assessmentState: moduleData.assessmentState
+	# 	}
 
 	ReactDOM.render `<div className="root">
-		<window.Viewer.components.ViewerApp moduleData={moduleData} />
-		<JSONInput onChange={onChangeJSON} value={JSON.stringify(moduleData.model.toJSON(), null, 2)} />
+		<window.Viewer.components.ViewerApp json={json} />
+		<JSONInput onChange={onChangeJSON} value={JSON.stringify(json, null, 2)} />
 	</div>`, document.getElementById('viewer-app')
 
 
@@ -95,32 +95,32 @@ onChangeJSON = (json) ->
 	render()
 
 showDocument = (json) =>
-	OboModel = window.ObojoboDraft.Common.models.OboModel
-	moduleData.model = OboModel.create(json)
+	# OboModel = window.ObojoboDraft.Common.models.OboModel
+	# moduleData.model = OboModel.create(json)
 
-	APIUtil.getAttempts(moduleData.model).then (res) =>
-		console.log('ATTEMPTS', res)
+	# APIUtil.getAttempts(moduleData.model).then (res) =>
+	# 	console.log('ATTEMPTS', res)
 
-		if true or not window.localStorage.stateData?
-			console.log moduleData.model
-			NavStore.init moduleData.model, moduleData.model.modelState.start
-		else
-			stateData = JSON.parse(window.localStorage.stateData)
-			console.log 'STATE DATA', stateData
+	# 	if true or not window.localStorage.stateData?
+	# 		console.log moduleData.model
+	# 		# NavStore.init moduleData.model, moduleData.model.modelState.start
+	# 	else
+	# 		stateData = JSON.parse(window.localStorage.stateData)
+	# 		console.log 'STATE DATA', stateData
 
-			NavStore.setState stateData.navState
-			ScoreStore.setState stateData.scoreState
-			QuestionStore.setState stateData.questionState
-			AssessmentStore.setState stateData.assessmentState
+	# 		NavStore.setState stateData.navState
+	# 		ScoreStore.setState stateData.scoreState
+	# 		QuestionStore.setState stateData.questionState
+	# 		AssessmentStore.setState stateData.assessmentState
 
-		render()
+		render(json)
 
-# === SET UP DATA STORES ===
-NavStore.onChange render
-ScoreStore.onChange render
-QuestionStore.onChange render
-AssessmentStore.onChange render
-ModalStore.onChange render
+# # === SET UP DATA STORES ===
+# NavStore.onChange render
+# ScoreStore.onChange render
+# QuestionStore.onChange render
+# AssessmentStore.onChange render
+# ModalStore.onChange render
 
 
 # === FIGURE OUT WHERE TO GET THE DOCUMENT FROM ===

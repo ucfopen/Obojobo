@@ -446,3 +446,19 @@ body {
     animation-duration: 0.2s;
     animation-name: obojobo-draft--components--modal-container--content;
     font-family: "Libre Franklin", Arial, sans-serif; }
+.viewer--components--focus-blocker {
+  position: fixed;
+  left: 0;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  background: #FFFFFF;
+  transition: opacity 0.8s;
+  opacity: 0;
+  pointer-events: none; }
+
+.component[data-focussed="true"] {
+  z-index: 2; }
+
+.viewer--viewer-app.is-focus-state-enter .viewer--components--focus-blocker, .viewer--viewer-app.is-focus-state-active .viewer--components--focus-blocker {
+  opacity: 0.9; }

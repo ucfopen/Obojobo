@@ -45,12 +45,12 @@
 /***/ 0:
 /***/ function(module, exports, __webpack_require__) {
 
-	module.exports = __webpack_require__(95);
+	module.exports = __webpack_require__(99);
 
 
 /***/ },
 
-/***/ 93:
+/***/ 97:
 /***/ function(module, exports) {
 
 	"use strict";
@@ -78,14 +78,14 @@
 
 /***/ },
 
-/***/ 94:
+/***/ 98:
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
 
 	var Common, IFrame, OboComponent;
 
-	__webpack_require__(180);
+	__webpack_require__(183);
 
 	Common = window.ObojoboDraft.Common;
 
@@ -97,7 +97,7 @@
 		render: function render() {
 			return React.createElement(
 				OboComponent,
-				{ model: this.props.model },
+				{ model: this.props.model, moduleData: this.props.moduleData },
 				React.createElement(
 					'div',
 					{ className: 'obojobo-draft--chunks--iframe viewer' },
@@ -111,7 +111,7 @@
 
 /***/ },
 
-/***/ 95:
+/***/ 99:
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -122,14 +122,14 @@
 
 	OBO.register('ObojoboDraft.Chunks.IFrame', {
 	  type: 'chunk',
-	  adapter: __webpack_require__(93),
-	  componentClass: __webpack_require__(94),
+	  adapter: __webpack_require__(97),
+	  componentClass: __webpack_require__(98),
 	  selectionHandler: new Common.chunk.focusableChunk.FocusableSelectionHandler()
 	});
 
 /***/ },
 
-/***/ 180:
+/***/ 183:
 /***/ function(module, exports) {
 
 	// removed by extract-text-webpack-plugin

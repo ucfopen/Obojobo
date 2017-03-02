@@ -45,19 +45,19 @@
 /***/ 0:
 /***/ function(module, exports, __webpack_require__) {
 
-	module.exports = __webpack_require__(84);
+	module.exports = __webpack_require__(88);
 
 
 /***/ },
 
-/***/ 83:
+/***/ 87:
 /***/ function(module, exports, __webpack_require__) {
 
 	"use strict";
 
 	var Code, Common, OboComponent, TextChunk, TextGroupEl;
 
-	__webpack_require__(177);
+	__webpack_require__(180);
 
 	Common = window.ObojoboDraft.Common;
 
@@ -77,7 +77,7 @@
 	    });
 	    return React.createElement(
 	      OboComponent,
-	      { model: this.props.model },
+	      { model: this.props.model, moduleData: this.props.moduleData },
 	      React.createElement(
 	        TextChunk,
 	        { className: "obojobo-draft--chunks--single-text pad" },
@@ -99,7 +99,7 @@
 
 /***/ },
 
-/***/ 84:
+/***/ 88:
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -112,13 +112,13 @@
 	  type: 'chunk',
 	  "default": true,
 	  adapter: ObojoboDraft.Common.chunk.textChunk.TextGroupAdapter,
-	  componentClass: __webpack_require__(83),
+	  componentClass: __webpack_require__(87),
 	  selectionHandler: new ObojoboDraft.Common.chunk.textChunk.TextGroupSelectionHandler()
 	});
 
 /***/ },
 
-/***/ 177:
+/***/ 180:
 /***/ function(module, exports) {
 
 	// removed by extract-text-webpack-plugin

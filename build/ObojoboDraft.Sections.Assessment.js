@@ -45,19 +45,19 @@
 /***/ 0:
 /***/ function(module, exports, __webpack_require__) {
 
-	module.exports = __webpack_require__(159);
+	module.exports = __webpack_require__(165);
 
 
 /***/ },
 
-/***/ 155:
+/***/ 161:
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
 
 	var Adapter, Common, ScoreActions;
 
-	ScoreActions = __webpack_require__(157);
+	ScoreActions = __webpack_require__(163);
 
 	Common = window.ObojoboDraft.Common;
 
@@ -95,7 +95,7 @@
 
 /***/ },
 
-/***/ 156:
+/***/ 162:
 /***/ function(module, exports) {
 
 	'use strict';
@@ -142,7 +142,7 @@
 
 /***/ },
 
-/***/ 157:
+/***/ 163:
 /***/ function(module, exports) {
 
 	"use strict";
@@ -181,14 +181,14 @@
 
 /***/ },
 
-/***/ 158:
+/***/ 164:
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
 
 	var AssessmentUtil, AttemptIncompleteDialog, Button, Common, Dispatcher, ModalUtil, NavUtil, OboComponent, OboModel, ScoreStore;
 
-	__webpack_require__(203);
+	__webpack_require__(207);
 
 	Common = window.ObojoboDraft.Common;
 
@@ -208,7 +208,7 @@
 
 	NavUtil = window.Viewer.util.NavUtil;
 
-	AttemptIncompleteDialog = __webpack_require__(156);
+	AttemptIncompleteDialog = __webpack_require__(162);
 
 	module.exports = React.createClass({
 	  displayName: 'exports',
@@ -334,6 +334,7 @@
 	      OboComponent,
 	      {
 	        model: this.props.model,
+	        moduleData: this.props.moduleData,
 	        className: 'obojobo-draft--sections--assessment'
 	      },
 	      childEl
@@ -343,7 +344,7 @@
 
 /***/ },
 
-/***/ 159:
+/***/ 165:
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -356,8 +357,8 @@
 
 	OBO.register('ObojoboDraft.Sections.Assessment', {
 	  type: 'section',
-	  adapter: __webpack_require__(155),
-	  componentClass: __webpack_require__(158),
+	  adapter: __webpack_require__(161),
+	  componentClass: __webpack_require__(164),
 	  selectionHandler: null,
 	  generateNav: function generateNav(model) {
 	    return [{
@@ -372,7 +373,7 @@
 
 /***/ },
 
-/***/ 203:
+/***/ 207:
 /***/ function(module, exports) {
 
 	// removed by extract-text-webpack-plugin

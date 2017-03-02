@@ -45,12 +45,12 @@
 /***/ 0:
 /***/ function(module, exports, __webpack_require__) {
 
-	module.exports = __webpack_require__(118);
+	module.exports = __webpack_require__(122);
 
 
 /***/ },
 
-/***/ 116:
+/***/ 120:
 /***/ function(module, exports) {
 
 	"use strict";
@@ -78,14 +78,14 @@
 
 /***/ },
 
-/***/ 117:
+/***/ 121:
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
 
 	var Common, OboComponent, YouTube;
 
-	__webpack_require__(188);
+	__webpack_require__(191);
 
 	Common = window.ObojoboDraft.Common;
 
@@ -99,7 +99,7 @@
 	    data = this.props.model.modelState;
 	    return React.createElement(
 	      OboComponent,
-	      { model: this.props.model },
+	      { model: this.props.model, moduleData: this.props.moduleData },
 	      React.createElement(
 	        'div',
 	        { className: 'obojobo-draft--chunks--you-tube viewer' },
@@ -113,7 +113,7 @@
 
 /***/ },
 
-/***/ 118:
+/***/ 122:
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -124,14 +124,14 @@
 
 	OBO.register('ObojoboDraft.Chunks.YouTube', {
 	  type: 'chunk',
-	  adapter: __webpack_require__(116),
-	  componentClass: __webpack_require__(117),
+	  adapter: __webpack_require__(120),
+	  componentClass: __webpack_require__(121),
 	  selectionHandler: new Common.chunk.focusableChunk.FocusableSelectionHandler()
 	});
 
 /***/ },
 
-/***/ 188:
+/***/ 191:
 /***/ function(module, exports) {
 
 	// removed by extract-text-webpack-plugin

@@ -45,12 +45,12 @@
 /***/ 0:
 /***/ function(module, exports, __webpack_require__) {
 
-	module.exports = __webpack_require__(113);
+	module.exports = __webpack_require__(117);
 
 
 /***/ },
 
-/***/ 41:
+/***/ 44:
 /***/ function(module, exports) {
 
 	'use strict';
@@ -272,7 +272,7 @@
 
 /***/ },
 
-/***/ 42:
+/***/ 45:
 /***/ function(module, exports) {
 
 	'use strict';
@@ -318,14 +318,14 @@
 
 /***/ },
 
-/***/ 111:
+/***/ 115:
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
 
 	var Adapter, GridTextGroup;
 
-	GridTextGroup = __webpack_require__(41);
+	GridTextGroup = __webpack_require__(44);
 
 	Adapter = {
 	  construct: function construct(model, attrs) {
@@ -357,18 +357,18 @@
 
 /***/ },
 
-/***/ 112:
+/***/ 116:
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
 
 	var Common, GridTextGroup, OboComponent, SelectionHandler, Table, TextGroupEl;
 
-	__webpack_require__(186);
+	__webpack_require__(189);
 
-	GridTextGroup = __webpack_require__(41);
+	GridTextGroup = __webpack_require__(44);
 
-	SelectionHandler = __webpack_require__(42);
+	SelectionHandler = __webpack_require__(45);
 
 	Common = window.ObojoboDraft.Common;
 
@@ -431,7 +431,7 @@
 			});
 			return React.createElement(
 				OboComponent,
-				{ model: this.props.model },
+				{ model: this.props.model, moduleData: this.props.moduleData },
 				React.createElement(
 					'div',
 					{ className: 'obojobo-draft--chunks--table viewer pad' },
@@ -466,27 +466,27 @@
 
 /***/ },
 
-/***/ 113:
+/***/ 117:
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
 
 	var ObojoboDraft, SelectionHandler;
 
-	SelectionHandler = __webpack_require__(42);
+	SelectionHandler = __webpack_require__(45);
 
 	ObojoboDraft = window.ObojoboDraft;
 
 	OBO.register('ObojoboDraft.Chunks.Table', {
 	  type: 'chunk',
-	  adapter: __webpack_require__(111),
-	  componentClass: __webpack_require__(112),
+	  adapter: __webpack_require__(115),
+	  componentClass: __webpack_require__(116),
 	  selectionHandler: new SelectionHandler()
 	});
 
 /***/ },
 
-/***/ 186:
+/***/ 189:
 /***/ function(module, exports) {
 
 	// removed by extract-text-webpack-plugin

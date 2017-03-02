@@ -1,21 +1,30 @@
 .obojobo-draft--chunks--mc-assessment--mc-choice {
   list-style-type: none;
-  min-height: 2em;
+  min-height: 4rem;
   position: relative;
   transition: background 0.1s ease;
   font-family: "Libre Franklin", Arial, sans-serif;
   padding-bottom: 1rem;
   cursor: pointer; }
   .obojobo-draft--chunks--mc-assessment--mc-choice:hover {
-    background: #93C6FF; }
+    background: rgba(147, 198, 255, 0.15); }
   .obojobo-draft--chunks--mc-assessment--mc-choice input {
     position: absolute;
-    top: 1.35rem;
-    left: 3rem; }
+    top: 2rem;
+    left: 3rem;
+    transform: translate(0, -50%);
+    margin: 0; }
   .obojobo-draft--chunks--mc-assessment--mc-choice .children {
     margin-left: 5rem;
     margin-right: 5rem;
     pointer-events: none; }
+    .obojobo-draft--chunks--mc-assessment--mc-choice .children .feedback-icon {
+      position: absolute;
+      opacity: 0.4;
+      width: 1rem;
+      right: 0.5rem;
+      top: 50%;
+      transform: translate(0, -50%); }
   .obojobo-draft--chunks--mc-assessment--mc-choice label,
   .obojobo-draft--chunks--mc-assessment--mc-choice .label {
     cursor: pointer;
@@ -45,21 +54,52 @@
     .obojobo-draft--chunks--mc-assessment--mc-choice .feedback .placeholder {
       left: 0.5rem; }
   .obojobo-draft--chunks--mc-assessment--mc-choice.is-selected {
-    background: rgba(147, 198, 255, 0.7); }
+    background: rgba(147, 198, 255, 0.25); }
 .obojobo-draft--chunks--mc-assessment--mc-feedback {
-  opacity: 0.9;
-  border-top: 1px solid rgba(0, 0, 0, 0.3);
   font-size: 80%; }
+@charset "UTF-8";
 .obojobo-draft--chunks--mc-assessment {
   padding-bottom: 0; }
-  .obojobo-draft--chunks--mc-assessment.is-scored .obojobo-draft--chunks--mc-assessment--mc-choice.is-selected.is-correct, .obojobo-draft--chunks--mc-assessment.is-scored .obojobo-draft--chunks--mc-assessment--mc-choice.is-selected.is-correct:hover, .obojobo-draft--chunks--mc-assessment.is-revealing-all .obojobo-draft--chunks--mc-assessment--mc-choice.is-selected.is-correct, .obojobo-draft--chunks--mc-assessment.is-revealing-all .obojobo-draft--chunks--mc-assessment--mc-choice.is-selected.is-correct:hover {
-    background: #93e685; }
-  .obojobo-draft--chunks--mc-assessment.is-scored .obojobo-draft--chunks--mc-assessment--mc-choice.is-selected.is-incorrect, .obojobo-draft--chunks--mc-assessment.is-scored .obojobo-draft--chunks--mc-assessment--mc-choice.is-selected.is-incorrect:hover, .obojobo-draft--chunks--mc-assessment.is-revealing-all .obojobo-draft--chunks--mc-assessment--mc-choice.is-selected.is-incorrect, .obojobo-draft--chunks--mc-assessment.is-revealing-all .obojobo-draft--chunks--mc-assessment--mc-choice.is-selected.is-incorrect:hover {
-    background: #FF755B; }
-  .obojobo-draft--chunks--mc-assessment.is-revealing-all .obojobo-draft--chunks--mc-assessment--mc-choice.is-not-selected.is-correct, .obojobo-draft--chunks--mc-assessment.is-revealing-all .obojobo-draft--chunks--mc-assessment--mc-choice.is-not-selected.is-correct:hover {
-    background: rgba(147, 230, 133, 0.3); }
-  .obojobo-draft--chunks--mc-assessment.is-revealing-all .obojobo-draft--chunks--mc-assessment--mc-choice.is-not-selected.is-incorrect, .obojobo-draft--chunks--mc-assessment.is-revealing-all .obojobo-draft--chunks--mc-assessment--mc-choice.is-not-selected.is-incorrect:hover {
-    background: rgba(255, 117, 91, 0.3); }
+
+@keyframes fadein {
+  0% {
+    opacity: 0; }
+  100% {
+    opacity: 1; } }
+
+@keyframes bounce {
+  0% {
+    transform: scale(0); }
+  50% {
+    transform: scale(1.1); }
+  80% {
+    transform: scale(0.9); }
+  100% {
+    transform: scale(1); } }
+  .obojobo-draft--chunks--mc-assessment.is-scored .obojobo-draft--chunks--mc-assessment--mc-choice.is-selected.is-correct, .obojobo-draft--chunks--mc-assessment.is-scored .obojobo-draft--chunks--mc-assessment--mc-choice.is-selected.is-correct:hover {
+    background: rgba(56, 174, 36, 0.1); }
+    .obojobo-draft--chunks--mc-assessment.is-scored .obojobo-draft--chunks--mc-assessment--mc-choice.is-selected.is-correct:before, .obojobo-draft--chunks--mc-assessment.is-scored .obojobo-draft--chunks--mc-assessment--mc-choice.is-selected.is-correct:hover:before {
+      content: "\2714";
+      position: absolute;
+      top: 2rem;
+      display: block;
+      color: #38ae24;
+      font-size: 2.5rem;
+      transform: translate(-50%, -50%);
+      left: 1.5rem;
+      animation: fadein 0.4s; }
+  .obojobo-draft--chunks--mc-assessment.is-scored .obojobo-draft--chunks--mc-assessment--mc-choice.is-selected.is-incorrect, .obojobo-draft--chunks--mc-assessment.is-scored .obojobo-draft--chunks--mc-assessment--mc-choice.is-selected.is-incorrect:hover {
+    background: rgba(194, 31, 0, 0.1); }
+    .obojobo-draft--chunks--mc-assessment.is-scored .obojobo-draft--chunks--mc-assessment--mc-choice.is-selected.is-incorrect:before, .obojobo-draft--chunks--mc-assessment.is-scored .obojobo-draft--chunks--mc-assessment--mc-choice.is-selected.is-incorrect:hover:before {
+      content: "\2716";
+      position: absolute;
+      top: 2rem;
+      display: block;
+      color: #c21f00;
+      font-size: 2.5rem;
+      transform: translate(-50%, -50%);
+      left: 1.5rem;
+      animation: fadein 0.4s; }
   .obojobo-draft--chunks--mc-assessment .instructions {
     padding-left: 3rem;
     padding-right: 3rem;
@@ -78,18 +118,116 @@
       cursor: pointer;
       font-size: 0.85rem;
       margin-bottom: 1rem;
-      margin-top: 1rem; }
+      margin-top: 1rem;
+      min-width: 10.5rem; }
     .obojobo-draft--chunks--mc-assessment .submit .divider {
       color: rgba(0, 0, 0, 0.3);
       display: inline-block;
       padding: 0 0.4em;
       transform: scale(2, 0.9); }
-    .obojobo-draft--chunks--mc-assessment .submit .reset-button {
-      position: absolute;
-      right: 0;
-      top: 0; }
-    .obojobo-draft--chunks--mc-assessment .submit .reveal-all-button {
-      display: inline-block; }
+    .obojobo-draft--chunks--mc-assessment .submit .obojobo-draft--components--button:first-child {
+      margin-right: 1rem; }
+    .obojobo-draft--chunks--mc-assessment .submit .result {
+      font-family: "Libre Franklin", Arial, sans-serif;
+      color: white;
+      font-weight: bold;
+      box-sizing: border-box;
+      margin: 0;
+      display: inline-block;
+      border-radius: 9999px;
+      padding: 0 1.5rem;
+      font-size: 0.8rem;
+      margin-bottom: 1rem;
+      animation: bounce .4s; }
+      .obojobo-draft--chunks--mc-assessment .submit .result.correct {
+        background-color: #38ae24; }
+      .obojobo-draft--chunks--mc-assessment .submit .result.incorrect {
+        background-color: #c21f00; }
+  .obojobo-draft--chunks--mc-assessment .solution {
+    background: #F4F4F4;
+    padding-left: 3rem;
+    padding-right: 3rem;
+    border-top: 1px solid rgba(0, 0, 0, 0.3);
+    position: relative;
+    border-bottom-left-radius: 0.3rem;
+    border-bottom-right-radius: 0.3rem;
+    padding-bottom: 1px; }
+    .obojobo-draft--chunks--mc-assessment .solution.submit-enter {
+      opacity: 0;
+      max-height: 0;
+      overflow: hidden; }
+    .obojobo-draft--chunks--mc-assessment .solution.submit-enter.submit-enter-active {
+      opacity: 1;
+      max-height: 16rem;
+      transition: opacity 0.4s, max-height 0.4s; }
+    .obojobo-draft--chunks--mc-assessment .solution.submit-leave {
+      opacity: 1;
+      max-height: 16rem;
+      overflow: hidden; }
+    .obojobo-draft--chunks--mc-assessment .solution.submit-leave.submit-leave-active {
+      opacity: 0;
+      max-height: 0;
+      transition: opacity 0.4s, max-height 0.4s; }
+    .obojobo-draft--chunks--mc-assessment .solution > .score {
+      padding: 0;
+      position: relative;
+      text-align: left;
+      padding-top: 1rem; }
+      .obojobo-draft--chunks--mc-assessment .solution > .score .feedback {
+        min-height: 1rem;
+        margin-bottom: 1rem; }
+        .obojobo-draft--chunks--mc-assessment .solution > .score .feedback:before {
+          content: "Feedback:";
+          font-family: "Libre Franklin", Arial, sans-serif;
+          font-size: .7rem;
+          font-weight: bold;
+          color: rgba(0, 0, 0, 0.5);
+          display: block; }
+        .obojobo-draft--chunks--mc-assessment .solution > .score .feedback > .obojobo-draft--chunks--mc-assessment--mc-feedback {
+          padding: 0;
+          margin-top: -1rem; }
+    .obojobo-draft--chunks--mc-assessment .solution > .obojobo-draft--components--button {
+      margin-bottom: 1rem; }
+      .obojobo-draft--chunks--mc-assessment .solution > .obojobo-draft--components--button button {
+        min-width: 10.5rem; }
+    .obojobo-draft--chunks--mc-assessment .solution .solution-container {
+      background: #FFFFFF;
+      text-align: left;
+      padding: 0 2rem;
+      margin-bottom: 1rem;
+      border: 1px solid rgba(0, 0, 0, 0.3); }
+      .obojobo-draft--chunks--mc-assessment .solution .solution-container:before {
+        content: "Full explanation:";
+        font-family: "Libre Franklin", Arial, sans-serif;
+        font-size: .7rem;
+        font-weight: bold;
+        color: rgba(0, 0, 0, 0.75);
+        margin-top: 1rem;
+        display: block; }
+      .obojobo-draft--chunks--mc-assessment .solution .solution-container.solution-enter {
+        max-height: 0;
+        overflow: hidden;
+        border: 0 solid transparent;
+        margin-bottom: 0;
+        opacity: 0; }
+      .obojobo-draft--chunks--mc-assessment .solution .solution-container.solution-enter.solution-enter-active {
+        max-height: 60rem;
+        margin-bottom: 1rem;
+        border: 1px solid rgba(0, 0, 0, 0.3);
+        opacity: 1;
+        transition: max-height 0.4s, margin-bottom 0.4s, border 0.4s, opacity 0.4s; }
+      .obojobo-draft--chunks--mc-assessment .solution .solution-container.solution-leave {
+        max-height: 60rem;
+        margin-bottom: 1rem;
+        border: 1px solid rgba(0, 0, 0, 0.3);
+        overflow: hidden;
+        opacity: 1; }
+      .obojobo-draft--chunks--mc-assessment .solution .solution-container.solution-leave.solution-leave-active {
+        max-height: 0;
+        margin-bottom: 0;
+        border: 0 solid transparent;
+        opacity: 0;
+        transition: max-height 0.4s, margin-bottom 0.4s, border 0.4s, opacity 0.4s; }
   .obojobo-draft--chunks--mc-assessment .obojobo-draft--chunks--mc-assessment--mc-choice {
     border-bottom: 1px solid rgba(0, 0, 0, 0.05);
     padding-top: 0;

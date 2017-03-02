@@ -52,6 +52,7 @@ class OBO
 			componentClass: null
 			selectionHandler: null
 			commandHandler: null
+			init: ->
 		}, opts
 
 		if opts.default
@@ -60,6 +61,8 @@ class OBO
 		# if opts.error
 		# 	componentClassMap.setError chunkClass.type
 		if opts.insertItem then insertItems.set chunkClass.type, opts.insertItem
+
+		opts.init()
 
 		loadDependency = @loadDependency
 		promises = opts.dependencies.map (dependency) ->
