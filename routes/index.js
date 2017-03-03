@@ -8,7 +8,7 @@ router.get('/', (req, res, next) => {
 });
 
 /* GET home page. */
-router.get('/view', (req, res, next) => {
+router.get('/view?(/*)', (req, res, next) => {
   res.render('viewer.pug', { title: 'Obojobo 3', paths: req.app.locals.paths, modules: req.app.locals.modules });
   next()
 });

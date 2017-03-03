@@ -118,17 +118,33 @@ module.exports = class AssessmentRouter extends RouterAPI {
 								var assessment = draftTree.findNodeClass(assessmentId)
 								var state = {
 									scores: [0],
-									questions: attemptState.questions
+									questions: attemptState.questions,
+									scoresByQuestionId: {}
 								}
 
 								// res.success('ok')
 
 								assessment.yell('ObojoboDraft.Sections.Assessment:attemptEnd', req, res, assessment, responseHistory, {
 									getQuestions: function() { return state.questions },
-									addScore: function(s) { state.scores.push(s) }
+									addScore: function(questionId, score) {
+										console.log('addScore', questionId, score)
+										state.scores.push(score);
+										state.scoresByQuestionId[questionId] = score;
+									}
 								})
 
 								let score = state.scores.reduce( (a, b) => { return a + b } ) / state.questions.length
+
+								console.log('we here');
+								console.log(score);
+								console.log(state);
+
+								let scores = state.questions.map(function(question) {
+									return {
+										id: question.id,
+										score: state.scoresByQuestionId[question.id] || 0
+									}
+								})
 
 								this.db
 									.none(`
@@ -138,22 +154,27 @@ module.exports = class AssessmentRouter extends RouterAPI {
 									`, [score, req.params.attemptId])
 									.then( result => {
 										res.success({
-											score: score
+											attemptScore: score,
+											scores: scores
 										})
 									})
 									.catch( error => {
+										console.log('errora', error, error.toString());
 										this.logAndRespondToUnexpected('Unexpected DB error', endpoint, req, error)
 									})
 							})
 							.catch( error => {
+								console.log('errorb', error, error.toString());
 								this.logAndRespondToUnexpected('Unexpected DB error', endpoint, req, error)
 							})
 					})
 					.catch( error => {
+						console.log('errorc', error, error.toString());
 						this.logAndRespondToUnexpected('Unable to get draft', endpoint, req, error)
 					})
 			})
 			.catch( error => {
+				console.log('errord', error, error.toString());
 				this.logAndRespondToUnexpected('Unexpected DB error', endpoint, req, error)
 			})
 	}
