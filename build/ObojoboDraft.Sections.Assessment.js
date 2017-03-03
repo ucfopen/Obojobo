@@ -270,7 +270,7 @@
 	    };
 	  },
 	  render: function render() {
-	    var Component, PageComponent, child, childEl, highestScore, pageModel, recentScore, scoreAction;
+	    var Component, PageComponent, child, childEl, highestScore, pageModel, questionScores, recentScore, scoreAction;
 	    recentScore = AssessmentUtil.getLastAttemptScoreForModel(this.props.moduleData.assessmentState, this.props.model);
 	    highestScore = AssessmentUtil.getHighestAttemptScoreForModel(this.props.moduleData.assessmentState, this.props.model);
 	    childEl = function () {
@@ -298,10 +298,11 @@
 	          );
 	        case 'scoreSubmitted':
 	          scoreAction = this.getScoreAction();
+	          questionScores = AssessmentUtil.getLastAttemptScoresForModel(this.props.moduleData.assessmentState, this.props.model);
 	          if (scoreAction.page != null) {
 	            pageModel = OboModel.create(scoreAction.page);
 	            PageComponent = pageModel.getComponentClass();
-	            childEl = React.createElement(PageComponent, { model: pageModel });
+	            childEl = React.createElement(PageComponent, { model: pageModel, moduleData: this.props.moduleData });
 	          } else {
 	            childEl = React.createElement(
 	              'p',
@@ -326,6 +327,23 @@
 	              null,
 	              'Your highest score was ' + Math.round(highestScore) + '%'
 	            ),
+	            questionScores.map(function (questionScore) {
+	              return React.createElement(
+	                'p',
+	                null,
+	                React.createElement(
+	                  'span',
+	                  null,
+	                  questionScore.id
+	                ),
+	                React.createElement('br', null),
+	                React.createElement(
+	                  'span',
+	                  null,
+	                  questionScore.score
+	                )
+	              );
+	            }.bind(this)),
 	            childEl
 	          );
 	      }

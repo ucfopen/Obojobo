@@ -2111,6 +2111,7 @@
        {
            "id": "assessment",
            "content": {
+               "title": "Custom Assessment Title",
                "triggers": [
                    {
                        "type": "onNavEnter",
@@ -2281,8 +2282,7 @@
            "children": [
                {
                    "id": "3a35ccef-7248-4b84-ae22-70d9a369e64b",
-                   "content": {
-                   },
+                   "content": {},
                    "metadata": {
                    },
                    "index": 0,

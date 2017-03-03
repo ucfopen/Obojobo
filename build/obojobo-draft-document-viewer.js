@@ -785,7 +785,6 @@
 	        id = payload.value.id;
 	        model = OboModel.models[id];
 	        assessment = _this.state.assessments[id];
-	        debugger;
 	        return APIUtil.endAttempt(assessment.current).then(function (res) {
 	          if (res.status === 'error') {
 	            return ErrorUtil.errorResponse(res);
@@ -794,7 +793,7 @@
 	            QuestionUtil.hideQuestion(question.id);
 	            return QuestionUtil.resetResponse(question.id);
 	          });
-	          assessment.current.score = res.value.score;
+	          assessment.current.result = res.value;
 	          assessment.attempts.push(assessment.current);
 	          assessment.current = null;
 	          model.processTrigger('onEndAttempt');
@@ -815,7 +814,7 @@
 	          APIUtil.postEvent(model.getRoot(), 'question:recordResponse', {
 	            attemptId: assessment.current.id,
 	            questionId: questionModel.get('id'),
-	            targetId: id,
+	            responderId: id,
 	            response: payload.value.response
 	          });
 	          return _this.triggerChange();
@@ -1062,7 +1061,7 @@
 	    if (assessment.attempts.length === 0) {
 	      return 0;
 	    }
-	    return assessment.attempts[assessment.attempts.length - 1].score;
+	    return assessment.attempts[assessment.attempts.length - 1].result.attemptScore;
 	  },
 	  getHighestAttemptScoreForModel: function getHighestAttemptScoreForModel(state, model) {
 	    var assessment;
@@ -1071,10 +1070,21 @@
 	      return null;
 	    }
 	    return assessment.attempts.map(function (attempt) {
-	      return attempt.score;
+	      return attempt.result.attemptScore;
 	    }).reduce(function (a, b) {
 	      return Math.max(a, b);
 	    }, 0);
+	  },
+	  getLastAttemptScoresForModel: function getLastAttemptScoresForModel(state, model) {
+	    var assessment;
+	    assessment = AssessmentUtil.getAssessmentForModel(state, model);
+	    if (!assessment) {
+	      return null;
+	    }
+	    if (assessment.attempts.length === 0) {
+	      return 0;
+	    }
+	    return assessment.attempts[assessment.attempts.length - 1].result.scores;
 	  },
 	  getCurrentAttemptForModel: function getCurrentAttemptForModel(state, model) {
 	    var assessment;
