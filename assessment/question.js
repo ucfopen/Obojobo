@@ -2,6 +2,9 @@ let registration = {
 	title: 'ObojoboDraft.Chunks.Question',
 	instance: {
 		listeners: {
+			'internal:sendToClient': function(req, res) {
+				this.node.content.practice = false
+			},
 			'ObojoboDraft.Sections.Assessment:attemptEnd': function(req, res, assessment, responseHistory, currentAttempt) {
 				console.log('hear', responseHistory)
 				if(!assessment.contains(this.node)) return

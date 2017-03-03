@@ -3,8 +3,7 @@ let registration = {
 	instance: {
 		listeners: {
 			'internal:sendToClient': function(req, res) {
-				console.log('@TODO')
-				// this.node.content.score = 0
+				this.node.content.score = 0
 			}
 		}
 	}
