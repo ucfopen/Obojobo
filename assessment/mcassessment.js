@@ -5,13 +5,16 @@ let registration = {
 			'ObojoboDraft.Chunks.Question:calculateScore': function(app, question, responseRecord, setScore) {
 				if(!question.contains(this.node)) return
 
+				console.log('RESPONSE RECORD');
+				console.log(responseRecord);
+
 				switch(this.node.content.responseType)
 				{
 					case 'pick-one':
 					case 'pick-one-multiple-correct':
 						let answers = responseRecord.response.answers
 
-						let mcChoice = this.draftTree.findNodeClass(Object.keys(responseRecord.response.answers)[0])
+						let mcChoice = this.draftTree.findNodeClass(responseRecord.responder_id)
 						setScore(mcChoice.node.content.score)
 						break
 

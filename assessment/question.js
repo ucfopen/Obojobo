@@ -2,7 +2,11 @@ let registration = {
 	title: 'ObojoboDraft.Chunks.Question',
 	instance: {
 		listeners: {
+			'internal:sendToClient': function(req, res) {
+				this.node.content.practice = false
+			},
 			'ObojoboDraft.Sections.Assessment:attemptEnd': function(req, res, assessment, responseHistory, currentAttempt) {
+				console.log('hear', responseHistory)
 				if(!assessment.contains(this.node)) return
 
 				for(let i in responseHistory)
@@ -11,9 +15,10 @@ let registration = {
 
 					if(responseRecord.question_id === this.node.id)
 					{
-						this.yell('ObojoboDraft.Chunks.Question:calculateScore', req.app, this, responseRecord, function(score) {
-							currentAttempt.addScore(score)
-						})
+						this.yell('ObojoboDraft.Chunks.Question:calculateScore', req.app, this, responseRecord, (function(score) {
+							currentAttempt.addScore(this.node.id, score)
+							console.log('gonna add a question', score, this.node.id)
+						}).bind(this))
 					}
 				}
 			}
