@@ -72,10 +72,10 @@
 	    } else {
 	      model.modelState.limit = 0;
 	    }
-	    if ((attrs != null ? (ref2 = attrs.content) != null ? ref2.type : void 0 : void 0) != null) {
-	      model.modelState.type = attrs.content.type;
+	    if ((attrs != null ? (ref2 = attrs.content) != null ? ref2.practice : void 0 : void 0) != null) {
+	      model.modelState.practice = attrs.content.practice;
 	    } else {
-	      model.modelState.type = "practice";
+	      model.modelState.practice = true;
 	    }
 	    if ((attrs != null ? (ref3 = attrs.content) != null ? ref3.solution : void 0 : void 0) != null) {
 	      return model.modelState.solution = OboModel.create(attrs.content.solution);
@@ -129,7 +129,9 @@
 
 		onClickBlocker: function onClickBlocker() {
 			QuestionUtil.viewQuestion(this.props.model.get('id'));
-			return FocusUtil.focusComponent(this.props.model.get('id'));
+			if (this.props.model.modelState.practice) {
+				return FocusUtil.focusComponent(this.props.model.get('id'));
+			}
 		},
 		render: function render() {
 			var score, viewState;
@@ -140,7 +142,7 @@
 				{
 					model: this.props.model,
 					moduleData: this.props.moduleData,
-					className: 'flip-container obojobo-draft--chunks--question' + (score === null ? '' : score === 100 ? ' is-correct' : ' is-incorrect') + (' is-type-' + this.props.model.modelState.type) + ' is-' + viewState
+					className: 'flip-container obojobo-draft--chunks--question' + (score === null ? '' : score === 100 ? ' is-correct' : ' is-incorrect') + ' is-' + viewState + (this.props.model.modelState.practice ? ' is-practice' : ' is-not-practice')
 				},
 				React.createElement(
 					'div',

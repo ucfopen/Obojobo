@@ -4800,8 +4800,7 @@
 							{
 								"id": "58846784-efc2-44bb-bf2e-a11a4081fe52",
 								"content": {
-									"shuffle": true,
-									"type": "assessment"
+									"shuffle": true
 								},
 								"metadata": {},
 								"index": 0,
@@ -4935,7 +4934,6 @@
 										"id": "05198d90-9c2a-49a1-b9a1-aa547f440e40",
 										"content": {
 											"shuffle": true,
-											"type": "assessment",
 											"limit": 1
 										},
 										"metadata": {},
@@ -5060,7 +5058,6 @@
 										"id": "fdeec8f5-4541-4cb6-b5fe-364fffed5ed7",
 										"content": {
 											"shuffle": true,
-											"type": "assessment",
 											"limit": 1
 										},
 										"metadata": {},
@@ -5224,8 +5221,7 @@
 									{
 										"id": "258e0d44-fc5d-4708-bb20-6ecc1b1b9a7d",
 										"content": {
-											"shuffle": true,
-											"type": "assessment"
+											"shuffle": true
 										},
 										"metadata": {},
 										"index": 0,
@@ -5388,8 +5384,7 @@
 									{
 										"id": "2ca74085-7d43-44fe-a7c3-5d10ab03fef7",
 										"content": {
-											"shuffle": true,
-											"type": "assessment"
+											"shuffle": true
 										},
 										"metadata": {},
 										"index": 0,

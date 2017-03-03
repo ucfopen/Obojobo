@@ -43,7 +43,7 @@
 .obojobo-draft--chunks--question.is-hidden .flipper {
   border: 1px solid #6714BD; }
 
-.obojobo-draft--chunks--question.is-type-practice .back::before {
+.obojobo-draft--chunks--question.is-practice .back::before {
   color: #999999;
   content: 'Practice';
   display: block;
@@ -55,11 +55,14 @@
   top: 0rem;
   transform: translate(-26rem, 0) translate(3rem, 0); }
 
-.obojobo-draft--chunks--question.is-type-practice.is-correct .flipper {
+.obojobo-draft--chunks--question.is-practice.is-correct .flipper {
   border: 1px solid #38ae24; }
 
-.obojobo-draft--chunks--question.is-type-practice.is-incorrect .flipper {
+.obojobo-draft--chunks--question.is-practice.is-incorrect .flipper {
   border: 1px solid #c21f00; }
+
+.obojobo-draft--chunks--question.is-not-practice .submit {
+  display: none; }
 
 .obojobo-draft--chunks--question .blocker {
   position: absolute;
