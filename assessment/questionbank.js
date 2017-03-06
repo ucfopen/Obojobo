@@ -4,8 +4,7 @@ let registration = {
 	title: 'ObojoboDraft.Chunks.QuestionBank',
 	instance: {
 		listeners: {
-			'internal:sendToClient': function(req, res) {
-				console.log('@TODO, Memory leak?')
+			'ObojoboDraft.Sections.Assessment:sendToClient': function(req, res) {
 				this.children = []
 			},
 			'ObojoboDraft.Sections.Assessment:attemptStart': function(req, res, assessment, attemptHistory, currentAttempt) {

@@ -13,14 +13,14 @@ let registration = {
 			app.use('/api/assessments', assessmentRouter)
 		},
 		listeners: {
-			'internal:getDraft': (req, res, draftTree) => {
-				return
-				let assessments = draftTree.findNodesWithType('ObojoboDraft.Sections.Assessment')
-				for(let i in assessments)
-				{
-					assessments[i].children[1].children = []
-				}
-			},
+			// 'internal:getDraft': (req, res, draftTree) => {
+			// 	return
+			// 	let assessments = draftTree.findNodesWithType('ObojoboDraft.Sections.Assessment')
+			// 	for(let i in assessments)
+			// 	{
+			// 		assessments[i].children[1].children = []
+			// 	}
+			// },
 			'client:question:recordResponse': (event, req, db) => {
 				let eventRecordResponse = 'client:question:recordResponse'
 
@@ -47,6 +47,13 @@ let registration = {
 					.catch( error => {
 						app.logError(eventRecordResponse, 'DB UNEXPECTED', req, error, error.toString());
 					})
+			}
+		}
+	},
+	instance: {
+		listeners: {
+			'internal:sendToClient': function(req, res, draftTree) {
+				this.yell('ObojoboDraft.Sections.Assessment:sendToClient', req, res, draftTree);
 			}
 		}
 	}
