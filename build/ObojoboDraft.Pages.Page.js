@@ -45,19 +45,19 @@
 /***/ 0:
 /***/ function(module, exports, __webpack_require__) {
 
-	module.exports = __webpack_require__(160);
+	module.exports = __webpack_require__(177);
 
 
 /***/ },
 
-/***/ 159:
+/***/ 176:
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
 
 	var Common, NavUtil, OboComponent;
 
-	__webpack_require__(206);
+	__webpack_require__(224);
 
 	Common = window.ObojoboDraft.Common;
 
@@ -93,7 +93,7 @@
 
 /***/ },
 
-/***/ 160:
+/***/ 177:
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -107,7 +107,7 @@
 	OBO.register('ObojoboDraft.Pages.Page', {
 	  type: 'page',
 	  "default": true,
-	  componentClass: __webpack_require__(159),
+	  componentClass: __webpack_require__(176),
 	  selectionHandler: null,
 	  getNavItem: function getNavItem(model) {
 	    var title;
@@ -126,7 +126,7 @@
 
 /***/ },
 
-/***/ 206:
+/***/ 224:
 /***/ function(module, exports) {
 
 	// removed by extract-text-webpack-plugin

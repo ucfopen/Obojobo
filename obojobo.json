@@ -26,6 +26,11 @@
             "viewerCSS":"build/ObojoboDraft.Chunks.Heading.css"
         },
         {
+            "name":"ObojoboDraft.Chunks.HTML",
+            "viewerScript":"build/ObojoboDraft.Chunks.HTML.js",
+            "viewerCSS":"build/ObojoboDraft.Chunks.HTML.css"
+        },
+        {
             "name":"ObojoboDraft.Chunks.IFrame",
             "viewerScript":"build/ObojoboDraft.Chunks.IFrame.js",
             "viewerCSS":"build/ObojoboDraft.Chunks.IFrame.css"

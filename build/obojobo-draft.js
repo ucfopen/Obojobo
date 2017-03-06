@@ -67,7 +67,7 @@
 /* 0 */
 /***/ function(module, exports, __webpack_require__) {
 
-	module.exports = __webpack_require__(174);
+	module.exports = __webpack_require__(191);
 
 
 /***/ },
@@ -182,38 +182,7 @@
 
 
 /***/ },
-/* 2 */,
-/* 3 */
-/***/ function(module, exports) {
-
-	'use strict';
-
-	var Dispatcher, ex, ex2;
-
-	Dispatcher = {};
-
-	_.extend(Dispatcher, Backbone.Events);
-
-	ex = Dispatcher.on;
-
-	ex2 = Dispatcher.trigger;
-
-	Dispatcher.on = function () {
-	  console.log('ON', arguments);
-	  return ex.apply(this, arguments);
-	};
-
-	Dispatcher.trigger = function () {
-	  console.log('TRIGGER', arguments);
-	  return ex2.apply(this, arguments);
-	};
-
-	window.__dispatcher = Dispatcher;
-
-	module.exports = Dispatcher;
-
-/***/ },
-/* 4 */
+/* 2 */
 /***/ function(module, exports) {
 
 	/**
@@ -259,1169 +228,12 @@
 
 
 /***/ },
-/* 5 */,
-/* 6 */
-/***/ function(module, exports, __webpack_require__) {
-
-	'use strict';
-
-	var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol" ? function (obj) { return typeof obj; } : function (obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; };
-
-	var DefaultAdapter,
-	    Dispatcher,
-	    OBO,
-	    OboModel,
-	    OboModelCollection,
-	    createUUID,
-	    extend = function extend(child, parent) {
-	  for (var key in parent) {
-	    if (hasProp.call(parent, key)) child[key] = parent[key];
-	  }function ctor() {
-	    this.constructor = child;
-	  }ctor.prototype = parent.prototype;child.prototype = new ctor();child.__super__ = parent.prototype;return child;
-	},
-	    hasProp = {}.hasOwnProperty;
-
-	OBO = window.OBO;
-
-	createUUID = __webpack_require__(67);
-
-	Dispatcher = __webpack_require__(3);
-
-	DefaultAdapter = {
-	  construct: function construct(attrs) {
-	    return null;
-	  },
-	  clone: function clone(_clone) {
-	    return _clone;
-	  },
-	  toJSON: function toJSON(model, json) {
-	    return json;
-	  }
-	};
-
-	OboModel = function (superClass) {
-	  extend(OboModel, superClass);
-
-	  OboModel.prototype.defaults = function () {
-	    return {
-	      id: null,
-	      content: {},
-	      metadata: {},
-	      index: 0,
-	      type: ''
-	    };
-	  };
-
-	  function OboModel(attrs, adapter) {
-	    var ref, ref1;
-	    this.adapter = adapter != null ? adapter : DefaultAdapter;
-	    this.parent = null;
-	    this.children = new OboModelCollection();
-	    this.triggers = [];
-	    this.title = null;
-	    this.modelState = {
-	      dirty: false,
-	      needsUpdate: false,
-	      editing: false
-	    };
-	    if (attrs.id == null) {
-	      attrs.id = this.createNewLocalId();
-	    }
-	    OboModel.__super__.constructor.call(this, attrs);
-	    this.adapter.construct(this, attrs);
-	    if (((ref = attrs.content) != null ? ref.triggers : void 0) != null) {
-	      this.triggers = attrs.content.triggers;
-	    }
-	    if (((ref1 = attrs.content) != null ? ref1.title : void 0) != null) {
-	      this.title = attrs.content.title;
-	    }
-	    this.children.on('remove', this.onChildRemove, this);
-	    this.children.on('add', this.onChildAdd, this);
-	    this.children.on('reset', this.onChildrenReset, this);
-	    OboModel.models[this.get('id')] = this;
-	  }
-
-	  OboModel.prototype.getRoot = function () {
-	    var root;
-	    root = this;
-	    while (root !== null) {
-	      if (root.parent) {
-	        root = root.parent;
-	      } else {
-	        return root;
-	      }
-	    }
-	    return null;
-	  };
-
-	  OboModel.prototype.getDraftId = function () {
-	    var root;
-	    root = this.getRoot();
-	    if (root == null) {
-	      return null;
-	    }
-	    return root.get('_id');
-	  };
-
-	  OboModel.prototype.processTrigger = function (type) {
-	    var action, i, index, j, k, len, len1, len2, ref, ref1, results, trigIndex, trigger, triggersToDelete;
-	    triggersToDelete = [];
-	    ref = this.triggers;
-	    for (trigIndex = i = 0, len = ref.length; i < len; trigIndex = ++i) {
-	      trigger = ref[trigIndex];
-	      if (trigger.type === type) {
-	        ref1 = trigger.actions;
-	        for (index = j = 0, len1 = ref1.length; j < len1; index = ++j) {
-	          action = ref1[index];
-	          if (action.type === '_js') {
-	            eval(action.value);
-	          } else {
-	            Dispatcher.trigger(action.type, action);
-	          }
-	        }
-	        if (trigger.run != null && trigger.run === 'once') {
-	          triggersToDelete.unshift(trigIndex);
-	        }
-	      }
-	    }
-	    results = [];
-	    for (k = 0, len2 = triggersToDelete.length; k < len2; k++) {
-	      index = triggersToDelete[k];
-	      results.push(this.triggers.splice(index, 1));
-	    }
-	    return results;
-	  };
-
-	  OboModel.prototype.onChildRemove = function (model, collection, options) {
-	    model.parent = null;
-	    model.markDirty();
-	    return delete OboModel.models[model.get('id')];
-	  };
-
-	  OboModel.prototype.onChildAdd = function (model, collection, options) {
-	    model.parent = this;
-	    return model.markDirty();
-	  };
-
-	  OboModel.prototype.onChildrenReset = function (collection, options) {
-	    var child, i, len, ref, results;
-	    ref = this.children.models;
-	    results = [];
-	    for (i = 0, len = ref.length; i < len; i++) {
-	      child = ref[i];
-	      results.push(child.parent = this);
-	    }
-	    return results;
-	  };
-
-	  OboModel.prototype.createNewLocalId = function () {
-	    return createUUID();
-	  };
-
-	  OboModel.prototype.assignNewId = function () {
-	    delete OboModel.models[this.get('id')];
-	    this.set('id', this.createNewLocalId());
-	    return OboModel.models[this.get('id')] = this;
-	  };
-
-	  OboModel.prototype.clone = function (deep) {
-	    var child, clone, i, len, ref;
-	    if (deep == null) {
-	      deep = false;
-	    }
-	    clone = new OboModel(this.attributes, this.adapter.constructor);
-	    this.adapter.clone(this, clone);
-	    if (deep && this.hasChildren()) {
-	      ref = this.children;
-	      for (i = 0, len = ref.length; i < len; i++) {
-	        child = ref[i];
-	        clone.children.add(child.clone(true));
-	      }
-	    }
-	    return clone;
-	  };
-
-	  OboModel.prototype.toJSON = function () {
-	    var child, i, json, len, ref;
-	    json = OboModel.__super__.toJSON.call(this);
-	    this.adapter.toJSON(this, json);
-	    json.children = null;
-	    if (this.hasChildren()) {
-	      json.children = [];
-	      ref = this.children.models;
-	      for (i = 0, len = ref.length; i < len; i++) {
-	        child = ref[i];
-	        json.children.push(child.toJSON());
-	      }
-	    }
-	    return json;
-	  };
-
-	  OboModel.prototype.revert = function () {
-	    var attr, attrName, id, index, newModel, ref;
-	    newModel = new this.constructor();
-	    index = this.get('index');
-	    id = this.get('id');
-	    this.clear();
-	    ref = newModel.attributes;
-	    for (attrName in ref) {
-	      attr = ref[attrName];
-	      this.set(attrName, attr);
-	    }
-	    this.set('index', index);
-	    this.set('id', id);
-	    this.modelState = newModel.modelState;
-	    return this;
-	  };
-
-	  OboModel.prototype.markDirty = function (markChildren) {
-	    var child, i, len, ref, results;
-	    if (markChildren == null) {
-	      markChildren = false;
-	    }
-	    this.modelState.dirty = this.modelState.needsUpdate = true;
-	    if (markChildren) {
-	      ref = this.children.models;
-	      results = [];
-	      for (i = 0, len = ref.length; i < len; i++) {
-	        child = ref[i];
-	        results.push(child.markDirty());
-	      }
-	      return results;
-	    }
-	  };
-
-	  OboModel.prototype.markForUpdate = function (markChildren) {
-	    var child, i, len, ref, results;
-	    if (markChildren == null) {
-	      markChildren = false;
-	    }
-	    this.modelState.needsUpdate = true;
-	    if (markChildren) {
-	      ref = this.children.models;
-	      results = [];
-	      for (i = 0, len = ref.length; i < len; i++) {
-	        child = ref[i];
-	        results.push(child.markForUpdate());
-	      }
-	      return results;
-	    }
-	  };
-
-	  OboModel.prototype.markUpdated = function (markChildren) {
-	    var child, i, len, ref, results;
-	    if (markChildren == null) {
-	      markChildren = false;
-	    }
-	    this.modelState.needsUpdate = false;
-	    if (markChildren) {
-	      ref = this.children.models;
-	      results = [];
-	      for (i = 0, len = ref.length; i < len; i++) {
-	        child = ref[i];
-	        results.push(child.modelState.needsUpdate = false);
-	      }
-	      return results;
-	    }
-	  };
-
-	  OboModel.prototype.getDomEl = function () {
-	    return document.body.querySelector(".component[data-id='" + this.get('id') + "']");
-	  };
-
-	  OboModel.prototype.getComponentClass = function () {
-	    return OBO.getItemForType(this.get('type')).componentClass;
-	  };
-
-	  OboModel.prototype.hasChildren = function () {
-	    return this.children.models.length > 0;
-	  };
-
-	  OboModel.prototype.isOrphan = function () {
-	    return this.parent == null;
-	  };
-
-	  OboModel.prototype.addChildBefore = function (sibling) {
-	    var collection;
-	    if (this.isOrphan()) {
-	      return;
-	    }
-	    collection = this.parent.collection;
-	    if (collection.contains(sibling)) {
-	      collection.remove(sibling);
-	    }
-	    return collection.add(sibling, {
-	      at: this.getIndex()
-	    });
-	  };
-
-	  OboModel.prototype.addChildAfter = function (sibling) {
-	    var collection;
-	    if (this.isOrphan()) {
-	      return;
-	    }
-	    collection = this.parent.collection;
-	    if (collection.contains(sibling)) {
-	      collection.remove(sibling);
-	    }
-	    return collection.add(sibling, {
-	      at: this.getIndex() + 1
-	    });
-	  };
-
-	  OboModel.prototype.moveTo = function (index) {
-	    var refChunk;
-	    if (this.getIndex() === index) {
-	      return;
-	    }
-	    refChunk = this.parent.at(index);
-	    if (index < this.getIndex()) {
-	      return refChunk.addChildBefore(this);
-	    } else {
-	      return refChunk.addChildAfter(this);
-	    }
-	  };
-
-	  OboModel.prototype.moveToTop = function () {
-	    return this.moveTo(0);
-	  };
-
-	  OboModel.prototype.moveToBottom = function () {
-	    return this.moveTo(this.parent.length - 1);
-	  };
-
-	  OboModel.prototype.prevSibling = function () {
-	    if (this.isOrphan() || this.isFirst()) {
-	      return null;
-	    }
-	    return this.parent.children.at(this.getIndex() - 1);
-	  };
-
-	  OboModel.prototype.getIndex = function () {
-	    if (!this.parent) {
-	      return 0;
-	    }
-	    return this.parent.children.models.indexOf(this);
-	  };
-
-	  OboModel.prototype.nextSibling = function () {
-	    if (this.isOrphan() || this.isLast()) {
-	      return null;
-	    }
-	    return this.parent.children.at(this.parent.children.models.indexOf(this) + 1);
-	  };
-
-	  OboModel.prototype.isFirst = function () {
-	    if (this.isOrphan()) {
-	      return false;
-	    }
-	    return this.getIndex() === 0;
-	  };
-
-	  OboModel.prototype.isLast = function () {
-	    if (this.isOrphan()) {
-	      return false;
-	    }
-	    return this.getIndex() === this.parent.length - 1;
-	  };
-
-	  OboModel.prototype.isBefore = function (otherChunk) {
-	    if (this.isOrphan()) {
-	      return false;
-	    }
-	    return this.getIndex() < otherChunk.getIndex();
-	  };
-
-	  OboModel.prototype.isAfter = function (otherChunk) {
-	    if (this.isOrphan()) {
-	      return false;
-	    }
-	    return this.getIndex() > otherChunk.getIndex();
-	  };
-
-	  OboModel.prototype.remove = function () {
-	    if (!this.isOrphan()) {
-	      return this.parent.remove(this);
-	    }
-	  };
-
-	  OboModel.prototype.replaceWith = function (newChunk) {
-	    if (this.isOrphan() || newChunk === this) {
-	      return;
-	    }
-	    this.addChildBefore(newChunk);
-	    return this.remove();
-	  };
-
-	  OboModel.prototype.contains = function (child) {
-	    while (child !== null) {
-	      if (child === this) {
-	        return true;
-	      }
-	      child = child.parent;
-	    }
-	    return false;
-	  };
-
-	  OboModel.prototype.getChildContainingModel = function (model) {
-	    var child, i, len, ref;
-	    ref = this.children.models;
-	    for (i = 0, len = ref.length; i < len; i++) {
-	      child = ref[i];
-	      if (child.contains(model)) {
-	        return child;
-	      }
-	    }
-	    return null;
-	  };
-
-	  OboModel.prototype.getParentOfType = function (type) {
-	    var model;
-	    model = this.parent;
-	    while (model !== null) {
-	      if (model.get('type') === type) {
-	        return model;
-	      }
-	      model = model.parent;
-	    }
-	    return null;
-	  };
-
-	  OboModel.prototype.__debug_print = function (indent) {
-	    var child, i, len, ref, results;
-	    if (indent == null) {
-	      indent = '';
-	    }
-	    console.log(indent + this.get('type'));
-	    ref = this.children.models;
-	    results = [];
-	    for (i = 0, len = ref.length; i < len; i++) {
-	      child = ref[i];
-	      results.push(child.__debug_print(indent + '  '));
-	    }
-	    return results;
-	  };
-
-	  return OboModel;
-	}(Backbone.Model);
-
-	OboModel.models = {};
-
-	OboModelCollection = function (superClass) {
-	  extend(OboModelCollection, superClass);
-
-	  function OboModelCollection() {
-	    return OboModelCollection.__super__.constructor.apply(this, arguments);
-	  }
-
-	  return OboModelCollection;
-	}(Backbone.Collection);
-
-	OboModel.create = function (typeOrNameOrJson, attrs) {
-	  var c, child, children, i, item, len, oboModel;
-	  if (attrs == null) {
-	    attrs = {};
-	  }
-	  if ((typeof typeOrNameOrJson === 'undefined' ? 'undefined' : _typeof(typeOrNameOrJson)) === 'object') {
-	    oboModel = OboModel.create(typeOrNameOrJson.type, typeOrNameOrJson);
-	    if (oboModel != null) {
-	      children = typeOrNameOrJson.children;
-	      if (children != null) {
-	        for (i = 0, len = children.length; i < len; i++) {
-	          child = children[i];
-	          c = OboModel.create(child);
-	          oboModel.children.add(c);
-	        }
-	      }
-	    }
-	    return oboModel;
-	  }
-	  item = OBO.getDefaultItemForModelType(typeOrNameOrJson);
-	  if (!item) {
-	    item = OBO.getItemForType(typeOrNameOrJson);
-	  }
-	  if (!item) {
-	    return null;
-	  }
-	  attrs.type = typeOrNameOrJson;
-	  return new OboModel(attrs, item.adapter);
-	};
-
-	module.exports = OboModel;
-
-/***/ },
-/* 7 */
-/***/ function(module, exports) {
-
-	'use strict';
-
-	var DOMUtil;
-
-	DOMUtil = {
-	  findParentWithAttr: function findParentWithAttr(node, targetAttribute, targetValue, rootParent) {
-	    var attr;
-	    if (targetValue == null) {
-	      targetValue = null;
-	    }
-	    if (rootParent == null) {
-	      rootParent = document.body;
-	    }
-	    while (node != null && node !== rootParent) {
-	      if (node.getAttribute != null) {
-	        attr = node.getAttribute(targetAttribute);
-	        if (attr != null && (targetValue === null || attr === targetValue)) {
-	          return node;
-	        }
-	      }
-	      node = node.parentNode;
-	    }
-	    return null;
-	  },
-	  findParentAttr: function findParentAttr(node, targetAttribute) {
-	    node = DOMUtil.findParentWithAttr(node, targetAttribute);
-	    if (node == null) {
-	      return null;
-	    }
-	    return node.getAttribute(targetAttribute);
-	  },
-	  findParentComponentElements: function findParentComponentElements(node) {
-	    var componentSet, cur;
-	    componentSet = new Set();
-	    cur = node;
-	    while (cur !== null) {
-	      cur = DOMUtil.findParentWithAttr(cur, 'data-obo-component');
-	      if (cur == null) {
-	        break;
-	      }
-	      if (DOMUtil.elementLikeComponent(cur)) {
-	        componentSet.add(cur);
-	      }
-	      cur = cur.parentElement;
-	    }
-	    return componentSet;
-	  },
-	  findParentComponentIds: function findParentComponentIds(node) {
-	    var ids;
-	    ids = new Set();
-	    DOMUtil.findParentComponentElements(node).forEach(function (el) {
-	      return ids.add(el.getAttribute('data-id'));
-	    });
-	    return ids;
-	  },
-	  elementLikeComponent: function elementLikeComponent(node) {
-	    return node.getAttribute('data-obo-component') && node.classList.contains('component') && node.getAttribute('data-id') != null && node.getAttribute('data-type') != null;
-	  },
-	  getFirstTextNodeOfElement: function getFirstTextNodeOfElement(node) {
-	    while (node != null && node.nodeType !== Node.TEXT_NODE) {
-	      node = node.childNodes[0];
-	    }
-	    return node;
-	  },
-	  getTextNodesInOrder: function getTextNodesInOrder(element) {
-	    var textNodes;
-	    textNodes = [];
-	    DOMUtil.getTextNodesInOrderRecur(element, textNodes);
-	    return textNodes;
-	  },
-	  getTextNodesInOrderRecur: function getTextNodesInOrderRecur(element, textNodes) {
-	    var i, len, node, ref, results;
-	    ref = element.childNodes;
-	    results = [];
-	    for (i = 0, len = ref.length; i < len; i++) {
-	      node = ref[i];
-	      if (node.nodeType === Node.TEXT_NODE) {
-	        results.push(textNodes.push(node));
-	      } else {
-	        results.push(DOMUtil.getTextNodesInOrderRecur(node, textNodes));
-	      }
-	    }
-	    return results;
-	  }
-	};
-
-	module.exports = DOMUtil;
-
-/***/ },
-/* 8 */
-/***/ function(module, exports, __webpack_require__) {
-
-	'use strict';
-
-	var ChunkStyleList, HtmlUtil, ObjectAssign, StyleRange, StyleType, StyleableText, trimStyleRange;
-
-	ObjectAssign = __webpack_require__(21);
-
-	ChunkStyleList = __webpack_require__(59);
-
-	StyleRange = __webpack_require__(15);
-
-	StyleType = __webpack_require__(11);
-
-	HtmlUtil = __webpack_require__(65);
-
-	trimStyleRange = function trimStyleRange(styleRange, maxLength) {
-	  styleRange.end = Math.min(styleRange.end, maxLength);
-	  return styleRange;
-	};
-
-	StyleableText = function () {
-	  function StyleableText(text) {
-	    if (text == null) {
-	      text = '';
-	    }
-	    this.init();
-	    this.insertText(0, text);
-	  }
-
-	  StyleableText.prototype.init = function () {
-	    this.styleList = new ChunkStyleList();
-	    return this.value = '';
-	  };
-
-	  StyleableText.prototype.clone = function () {
-	    var clone;
-	    clone = new StyleableText();
-	    clone.value = this.value;
-	    clone.styleList = this.styleList.clone();
-	    return clone;
-	  };
-
-	  StyleableText.prototype.getExportedObject = function () {
-	    return {
-	      value: this.value,
-	      styleList: this.styleList.getExportedObject()
-	    };
-	  };
-
-	  StyleableText.prototype.setText = function (text) {
-	    this.init();
-	    return this.insertText(0, text);
-	  };
-
-	  StyleableText.prototype.replaceText = function (from, to, text) {
-	    if (text == null || text.length === 0) {
-	      return this.deleteText(from, to);
-	    }
-	    this.insertText(from + 1, text);
-	    this.normalizeStyles();
-	    this.deleteText(from, from + 1);
-	    this.normalizeStyles();
-	    this.deleteText(from + text.length, to + text.length - 1);
-	    return this.normalizeStyles();
-	  };
-
-	  StyleableText.prototype.appendText = function (text) {
-	    return this.insertText(this.length, text);
-	  };
-
-	  StyleableText.prototype.insertText = function (atIndex, text) {
-	    var insertLength, k, len, range, ref;
-	    insertLength = text.length;
-	    ref = this.styleList.styles;
-	    for (k = 0, len = ref.length; k < len; k++) {
-	      range = ref[k];
-	      switch (range.compareToRange(atIndex)) {
-	        case StyleRange.CONTAINS:
-	          range.end += insertLength;
-	          break;
-	        case StyleRange.AFTER:
-	          range.start += insertLength;
-	          range.end += insertLength;
-	      }
-	    }
-	    this.value = this.value.substring(0, atIndex) + text + this.value.substring(atIndex);
-	    return this.normalizeStyles();
-	  };
-
-	  StyleableText.prototype.deleteText = function (from, to) {
-	    var deleteLength, k, len, range, ref;
-	    if (from == null) {
-	      from = -1;
-	    }
-	    if (to == null) {
-	      to = 2e308;
-	    }
-	    if (from > to) {
-	      return;
-	    }
-	    from = Math.max(0, from);
-	    to = Math.min(to, this.value.length);
-	    deleteLength = to - from;
-	    ref = this.styleList.styles;
-	    for (k = 0, len = ref.length; k < len; k++) {
-	      range = ref[k];
-	      switch (range.compareToRange(from, to)) {
-	        case StyleRange.CONTAINS:
-	          range.end -= deleteLength;
-	          break;
-	        case StyleRange.INSIDE_LEFT:
-	          range.end = from;
-	          break;
-	        case StyleRange.ENSCAPSULATED_BY:
-	          range.invalidate();
-	          break;
-	        case StyleRange.INSIDE_RIGHT:
-	          range.start = from;
-	          range.end -= deleteLength;
-	          break;
-	        case StyleRange.AFTER:
-	          range.start -= deleteLength;
-	          range.end -= deleteLength;
-	      }
-	    }
-	    this.value = this.value.substring(0, from) + this.value.substring(to);
-	    return this.normalizeStyles();
-	  };
-
-	  StyleableText.prototype.toggleStyleText = function (styleType, from, to, styleData) {
-	    var styleRange;
-	    if (from == null) {
-	      from = 0;
-	    }
-	    if (to == null) {
-	      to = this.length;
-	    }
-	    styleRange = trimStyleRange(new StyleRange(from, to, styleType, styleData), this.value.length);
-	    if (this.styleList.rangeHasStyle(from, Math.min(to, this.value.length), styleType)) {
-	      this.styleList.remove(styleRange);
-	    } else {
-	      this.styleList.add(styleRange);
-	    }
-	    return this.normalizeStyles();
-	  };
-
-	  StyleableText.prototype.styleText = function (styleType, from, to, styleData) {
-	    var range, styleRange;
-	    if (from == null) {
-	      from = 0;
-	    }
-	    if (to == null) {
-	      to = this.length;
-	    }
-	    range = new StyleRange(from, to, styleType, styleData);
-	    styleRange = trimStyleRange(range, this.value.length);
-	    this.styleList.add(styleRange);
-	    return this.normalizeStyles();
-	  };
-
-	  StyleableText.prototype.unstyleText = function (styleType, from, to) {
-	    var styleRange;
-	    if (from == null) {
-	      from = 0;
-	    }
-	    if (to == null) {
-	      to = this.length;
-	    }
-	    styleRange = trimStyleRange(new StyleRange(from, to, styleType), this.value.length);
-	    this.styleList.remove(styleRange);
-	    return this.normalizeStyles();
-	  };
-
-	  StyleableText.prototype.getStyles = function (from, to) {
-	    return this.styleList.getStylesInRange(from, to);
-	  };
-
-	  StyleableText.prototype.split = function (atIndex) {
-	    var lastCharStyles, sibling, splitAtEnd, style;
-	    if (isNaN(atIndex)) {
-	      return null;
-	    }
-	    splitAtEnd = atIndex === this.value.length;
-	    sibling = this.clone();
-	    this.deleteText(atIndex, this.value.length);
-	    sibling.deleteText(0, atIndex);
-	    if (splitAtEnd) {
-	      lastCharStyles = this.styleList.getStylesInRange(this.value.length - 1, this.value.length);
-	      for (style in lastCharStyles) {
-	        sibling.styleText(style, 0, 0);
-	      }
-	    }
-	    return sibling;
-	  };
-
-	  StyleableText.prototype.normalizeStyles = function () {
-	    return this.styleList.normalize();
-	  };
-
-	  StyleableText.prototype.merge = function (otherText, atIndex) {
-	    var curRange, insertLength, k, l, len, len1, range, ref, ref1;
-	    if (atIndex == null) {
-	      atIndex = null;
-	    }
-	    if (atIndex == null) {
-	      atIndex = this.value.length;
-	    }
-	    insertLength = otherText.value.length;
-	    ref = this.styleList.styles;
-	    for (k = 0, len = ref.length; k < len; k++) {
-	      range = ref[k];
-	      switch (range.compareToRange(atIndex)) {
-	        case StyleRange.AFTER:
-	          range.start += insertLength;
-	          range.end += insertLength;
-	      }
-	    }
-	    this.value = this.value.substring(0, atIndex) + otherText.value + this.value.substring(atIndex);
-	    this.styleList.normalize();
-	    ref1 = otherText.styleList.styles;
-	    for (l = 0, len1 = ref1.length; l < len1; l++) {
-	      range = ref1[l];
-	      curRange = range.clone();
-	      curRange.start += atIndex;
-	      curRange.end += atIndex;
-	      this.styleList.add(curRange);
-	    }
-	    return this.styleList.normalize();
-	  };
-
-	  StyleableText.prototype.__debug_print = function () {
-	    var fill, i, j, k, l, len, m, n, p, ref, ref1, ref2, ref3, ref4, ref5, ref6, results, s1, s2, style;
-	    console.log('   |          |' + this.value + ' |');
-	    fill = '';
-	    for (i = k = 0, ref = this.value.length + 10; 0 <= ref ? k <= ref : k >= ref; i = 0 <= ref ? ++k : --k) {
-	      fill += ' ';
-	    }
-	    j = 0;
-	    ref1 = this.styleList.styles;
-	    results = [];
-	    for (l = 0, len = ref1.length; l < len; l++) {
-	      style = ref1[l];
-	      s1 = (style.type + '          ').substr(0, 10) + '|';
-	      s2 = '';
-	      for (i = m = 0, ref2 = style.start; 0 <= ref2 ? m < ref2 : m > ref2; i = 0 <= ref2 ? ++m : --m) {
-	        s2 += '·';
-	      }
-	      s2 += '<';
-	      for (i = n = ref3 = style.start + 1, ref4 = style.end; ref3 <= ref4 ? n < ref4 : n > ref4; i = ref3 <= ref4 ? ++n : --n) {
-	        s2 += '=';
-	      }
-	      s2 += '>';
-	      for (i = p = ref5 = style.end + 1, ref6 = fill.length; ref5 <= ref6 ? p < ref6 : p > ref6; i = ref5 <= ref6 ? ++p : --p) {
-	        s2 += '·';
-	      }
-	      console.log((j + '   ').substr(0, 3) + '|' + (s1 + s2 + fill).substr(0, fill.length + 1) + '|' + style.start + ',' + style.end + '|' + JSON.stringify(style.data));
-	      results.push(j++);
-	    }
-	    return results;
-	  };
-
-	  return StyleableText;
-	}();
-
-	Object.defineProperties(StyleableText.prototype, {
-	  "length": {
-	    get: function get() {
-	      return this.value.length;
-	    }
-	  }
-	});
-
-	StyleableText.createFromObject = function (o) {
-	  var st;
-	  st = new StyleableText();
-	  st.styleList = ChunkStyleList.createFromObject(o.styleList);
-	  st.value = o.value;
-	  return st;
-	};
-
-	StyleableText.getStylesOfElement = function (el) {
-	  var computedStyle, styles;
-	  if (el.nodeType !== Node.ELEMENT_NODE) {
-	    return [];
-	  }
-	  styles = [];
-	  computedStyle = window.getComputedStyle(el);
-	  switch (computedStyle.getPropertyValue('font-weight')) {
-	    case "bold":
-	    case "bolder":
-	    case "700":
-	    case "800":
-	    case "900":
-	      styles.push({
-	        type: StyleType.BOLD
-	      });
-	  }
-	  switch (computedStyle.getPropertyValue('text-decoration')) {
-	    case "line-through":
-	      styles.push({
-	        type: StyleType.STRIKETHROUGH
-	      });
-	  }
-	  switch (computedStyle.getPropertyValue('font-style')) {
-	    case "italic":
-	      styles.push({
-	        type: StyleType.ITALIC
-	      });
-	  }
-	  switch (computedStyle.getPropertyValue('font-family').toLowerCase()) {
-	    case "monospace":
-	      styles.push({
-	        type: StyleType.MONOSPACE
-	      });
-	  }
-	  switch (el.tagName.toLowerCase()) {
-	    case 'a':
-	      if (el.getAttribute('href') != null) {
-	        styles.push({
-	          type: StyleType.LINK,
-	          data: {
-	            href: el.getAttribute('href')
-	          }
-	        });
-	      }
-	      break;
-	    case 'q':
-	      styles.push({
-	        type: StyleType.QUOTE,
-	        data: el.getAttribute('cite')
-	      });
-	      break;
-	    case 'sup':
-	      styles.push({
-	        type: StyleType.SUPERSCRIPT,
-	        data: 1
-	      });
-	      break;
-	    case 'sub':
-	      styles.push({
-	        type: StyleType.SUPERSCRIPT,
-	        data: -1
-	      });
-	  }
-	  return styles;
-	};
-
-	StyleableText.createFromElement = function (node) {
-	  var childNode, k, l, len, len1, len2, m, range, ranges, ref, results, state, style, styleRange, styles;
-	  if (node == null) {
-	    return new StyleableText();
-	  }
-	  if (arguments[1] == null) {
-	    state = {
-	      curText: new StyleableText(),
-	      texts: []
-	    };
-	    StyleableText.createFromElement(node, state);
-	    state.texts.push(state.curText);
-	    state.curText.styleList.normalize();
-	    return state.texts;
-	  }
-	  state = arguments[1];
-	  switch (node.nodeType) {
-	    case Node.TEXT_NODE:
-	      return state.curText.value += node.nodeValue;
-	    case Node.ELEMENT_NODE:
-	      if (state.curText.length > 0 && !HtmlUtil.isElementInline(node)) {
-	        state.texts.push(state.curText);
-	        state.curText.styleList.normalize();
-	        state.curText = new StyleableText();
-	      }
-	      styles = StyleableText.getStylesOfElement(node);
-	      ranges = [];
-	      for (k = 0, len = styles.length; k < len; k++) {
-	        style = styles[k];
-	        styleRange = new StyleRange(state.curText.value.length, 2e308, style.type, style.data);
-	        ranges.push(styleRange);
-	      }
-	      ref = node.childNodes;
-	      for (l = 0, len1 = ref.length; l < len1; l++) {
-	        childNode = ref[l];
-	        StyleableText.createFromElement(childNode, state);
-	      }
-	      results = [];
-	      for (m = 0, len2 = ranges.length; m < len2; m++) {
-	        range = ranges[m];
-	        range.end = state.curText.value.length;
-	        results.push(state.curText.styleList.add(range));
-	      }
-	      return results;
-	  }
-	};
-
-	window.__st = StyleableText;
-
-	module.exports = StyleableText;
-
-/***/ },
-/* 9 */,
-/* 10 */
-/***/ function(module, exports, __webpack_require__) {
-
-	'use strict';
-
-	var DOMSelection, DOMUtil;
-
-	DOMUtil = __webpack_require__(7);
-
-	DOMSelection = function () {
-	  function DOMSelection() {
-	    this.domSelection = window.getSelection();
-	    this.domRange = null;
-	    if (this.domSelection.rangeCount > 0) {
-	      this.domRange = this.domSelection.getRangeAt(0);
-	    }
-	  }
-
-	  DOMSelection.prototype.getType = function () {
-	    if (this.domSelection.type != null) {
-	      return this.domSelection.type.toLowerCase();
-	    }
-	    if (this.domSelection.isCollapsed != null) {
-	      if (this.domSelection.isCollapsed) {
-	        return 'caret';
-	      } else {
-	        return 'range';
-	      }
-	    }
-	    if (this.domSelection.focusNode === this.domSelection.anchorNode && this.domSelection.focusOffset === this.domSelection.anchorOffset) {
-	      return 'caret';
-	    }
-	    return 'range';
-	  };
-
-	  DOMSelection.prototype.getClientRects = function () {
-	    if (this.domRange == null) {
-	      return [];
-	    }
-	    return this.domRange.getClientRects();
-	  };
-
-	  DOMSelection.prototype.set = function (startNode, startOffset, endNode, endOffset) {
-	    var r;
-	    r = document.createRange();
-	    r.setStart(startNode, startOffset);
-	    r.setEnd(endNode, endOffset);
-	    this.domSelection.removeAllRanges();
-	    this.domSelection.addRange(r);
-	    this.domRange = r;
-	    return this;
-	  };
-
-	  DOMSelection.prototype.setStart = function (node, offset) {
-	    return this.domRange.setStart(node, offset);
-	  };
-
-	  DOMSelection.prototype.setEnd = function (node, offset) {
-	    return this.domRange.setEnd(node, offset);
-	  };
-
-	  DOMSelection.prototype.includes = function (node) {
-	    if (node == null) {
-	      return false;
-	    }
-	    return node.contains(this.startText) && node.contains(this.endText);
-	  };
-
-	  return DOMSelection;
-	}();
-
-	DOMSelection.set = function (startNode, startOffset, endNode, endOffset) {
-	  return new DOMSelection().set(startNode, startOffset, endNode, endOffset);
-	};
-
-	DOMSelection.includes = function (node) {
-	  return new DOMSelection().includes(node);
-	};
-
-	DOMSelection.get = function () {
-	  return new DOMSelection();
-	};
-
-	Object.defineProperties(DOMSelection.prototype, {
-	  startContainer: {
-	    get: function get() {
-	      if (this.domRange == null) {
-	        return null;
-	      }
-	      if (this.domRange.startContainer.nodeType === Node.TEXT_NODE) {
-	        return this.domRange.startContainer.parentElement;
-	      } else {
-	        return this.domRange.startContainer;
-	      }
-	    }
-	  },
-	  startText: {
-	    get: function get() {
-	      if (this.domRange == null) {
-	        return null;
-	      }
-	      return DOMUtil.getFirstTextNodeOfElement(this.domRange.startContainer);
-	    }
-	  },
-	  startOffset: {
-	    get: function get() {
-	      if (this.domRange == null) {
-	        return null;
-	      }
-	      return this.domRange.startOffset;
-	    }
-	  },
-	  endContainer: {
-	    get: function get() {
-	      if (this.domRange == null) {
-	        return null;
-	      }
-	      if (this.domRange.endContainer.nodeType === Node.TEXT_NODE) {
-	        return this.domRange.endContainer.parentElement;
-	      } else {
-	        return this.domRange.endContainer;
-	      }
-	    }
-	  },
-	  endText: {
-	    get: function get() {
-	      if (this.domRange == null) {
-	        return null;
-	      }
-	      return DOMUtil.getFirstTextNodeOfElement(this.domRange.endContainer);
-	    }
-	  },
-	  endOffset: {
-	    get: function get() {
-	      if (this.domRange == null) {
-	        return null;
-	      }
-	      return this.domRange.endOffset;
-	    }
-	  }
-	});
-
-	window.__ds = function () {
-	  return DOMSelection.get();
-	};
-
-	module.exports = DOMSelection;
-
-/***/ },
-/* 11 */
-/***/ function(module, exports) {
-
-	'use strict';
-
-	var StyleType;
-
-	StyleType = {
-	  BOLD: 'b',
-	  ITALIC: 'i',
-	  STRIKETHROUGH: 'del',
-	  LINK: 'a',
-	  QUOTE: 'q',
-	  MONOSPACE: 'monospace',
-	  SUPERSCRIPT: 'sup',
-	  COMMENT: '_comment',
-	  LATEX: '_latex'
-	};
-
-	module.exports = StyleType;
-
-/***/ },
-/* 12 */
+/* 3 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/* jshint unused:false */
 
-	var Style = __webpack_require__(18);
+	var Style = __webpack_require__(4);
 
 	/**
 	 * This file contains metrics regarding fonts and individual symbols. The sigma
@@ -1540,7 +352,7 @@
 	// metrics, including height, depth, italic correction, and skew (kern from the
 	// character to the corresponding \skewchar)
 	// This map is generated via `make metrics`. It should not be changed manually.
-	var metricMap = __webpack_require__(224);
+	var metricMap = __webpack_require__(55);
 
 	/**
 	 * This function is a convience function for looking up information in the
@@ -1557,192 +369,7 @@
 
 
 /***/ },
-/* 13 */,
-/* 14 */
-/***/ function(module, exports, __webpack_require__) {
-
-	'use strict';
-
-	var BaseSelectionHandler, Chunk;
-
-	Chunk = __webpack_require__(6);
-
-	BaseSelectionHandler = function () {
-	  function BaseSelectionHandler() {}
-
-	  BaseSelectionHandler.prototype.getCopyOfSelection = function (selection, chunk, cloneId) {
-	    if (cloneId == null) {
-	      cloneId = false;
-	    }
-	    return chunk.clone(cloneId);
-	  };
-
-	  BaseSelectionHandler.prototype.selectStart = function (selection, chunk, asRange) {
-	    return false;
-	  };
-
-	  BaseSelectionHandler.prototype.selectEnd = function (selection, chunk, asRange) {
-	    return false;
-	  };
-
-	  BaseSelectionHandler.prototype.selectAll = function (selection, chunk) {
-	    this.selectStart(selection, chunk, true);
-	    return this.selectEnd(selection, chunk, true);
-	  };
-
-	  BaseSelectionHandler.prototype.getVirtualSelectionStartData = function (selection, chunk) {
-	    return null;
-	  };
-
-	  BaseSelectionHandler.prototype.getDOMSelectionStart = function (selection, chunk) {
-	    return null;
-	  };
-
-	  BaseSelectionHandler.prototype.getVirtualSelectionEndData = function (selection, chunk) {
-	    return null;
-	  };
-
-	  BaseSelectionHandler.prototype.getDOMSelectionEnd = function (selection, chunk) {
-	    return null;
-	  };
-
-	  BaseSelectionHandler.prototype.areCursorsEquivalent = function (selection, chunk, thisCursorData, otherCursorData) {
-	    return false;
-	  };
-
-	  return BaseSelectionHandler;
-	}();
-
-	module.exports = BaseSelectionHandler;
-
-/***/ },
-/* 15 */
-/***/ function(module, exports, __webpack_require__) {
-
-	'use strict';
-
-	var StyleRange, StyleType;
-
-	StyleType = __webpack_require__(11);
-
-	StyleRange = function () {
-	  function StyleRange(start, end, type, data) {
-	    this.start = start != null ? start : 0;
-	    this.end = end != null ? end : 0;
-	    this.type = type != null ? type : '';
-	    this.data = data != null ? data : {};
-	  }
-
-	  StyleRange.prototype.clone = function () {
-	    return new StyleRange(this.start, this.end, this.type, this.data);
-	  };
-
-	  StyleRange.prototype.getExportedObject = function () {
-	    return {
-	      type: this.type,
-	      start: this.start,
-	      end: this.end,
-	      data: this.data
-	    };
-	  };
-
-	  StyleRange.prototype.toString = function () {
-	    return this.type + ":" + this.start + "," + this.end + "(" + this.data + ")";
-	  };
-
-	  StyleRange.prototype.isInvalid = function () {
-	    return this.length() === 0 && this.start !== 0 && this.end !== 0;
-	  };
-
-	  StyleRange.prototype.invalidate = function () {
-	    return this.start = this.end = -1;
-	  };
-
-	  StyleRange.prototype.compareToRange = function (from, to) {
-	    if (to == null) {
-	      to = from;
-	    }
-	    if (from === 0 && this.start === 0 && to <= this.end) {
-	      return StyleRange.CONTAINS;
-	    }
-	    if (to <= this.start) {
-	      return StyleRange.AFTER;
-	    }
-	    if (from > this.end) {
-	      return StyleRange.BEFORE;
-	    }
-	    if (from >= this.start && to <= this.end) {
-	      return StyleRange.CONTAINS;
-	    }
-	    if (from <= this.start && to >= this.end) {
-	      return StyleRange.ENSCAPSULATED_BY;
-	    }
-	    if (from >= this.start) {
-	      return StyleRange.INSIDE_LEFT;
-	    }
-	    return StyleRange.INSIDE_RIGHT;
-	  };
-
-	  StyleRange.prototype.length = function () {
-	    return this.end - this.start;
-	  };
-
-	  StyleRange.prototype.isMergeable = function (otherType, otherData) {
-	    var k, ref, v;
-	    if (this.type !== otherType) {
-	      return false;
-	    }
-	    if (this.data instanceof Object) {
-	      ref = this.data;
-	      for (k in ref) {
-	        v = ref[k];
-	        if (otherData[k] == null || otherData[k] !== v) {
-	          return false;
-	        }
-	      }
-	    } else {
-	      if (this.data !== otherData) {
-	        return false;
-	      }
-	    }
-	    return true;
-	  };
-
-	  return StyleRange;
-	}();
-
-	StyleRange.BEFORE = 'before';
-
-	StyleRange.AFTER = 'after';
-
-	StyleRange.INSIDE_LEFT = 'left';
-
-	StyleRange.INSIDE_RIGHT = 'right';
-
-	StyleRange.CONTAINS = 'contains';
-
-	StyleRange.ENSCAPSULATED_BY = 'enscapsulatedBy';
-
-	StyleRange.createFromObject = function (o) {
-	  return new StyleRange(o.start, o.end, o.type, o.data);
-	};
-
-	module.exports = StyleRange;
-
-/***/ },
-/* 16 */
-/***/ function(module, exports) {
-
-	"use strict";
-
-	module.exports = {
-	  EMPTY_CHAR_CODE: 8203,
-	  EMPTY_CHAR: String.fromCharCode(8203)
-	};
-
-/***/ },
-/* 17 */,
-/* 18 */
+/* 4 */
 /***/ function(module, exports) {
 
 	/**
@@ -1874,7 +501,7 @@
 
 
 /***/ },
-/* 19 */
+/* 5 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/**
@@ -1882,9 +509,9 @@
 	 * different kinds of domTree nodes in a consistent manner.
 	 */
 
-	var domTree = __webpack_require__(76);
-	var fontMetrics = __webpack_require__(12);
-	var symbols = __webpack_require__(20);
+	var domTree = __webpack_require__(17);
+	var fontMetrics = __webpack_require__(3);
+	var symbols = __webpack_require__(6);
 	var utils = __webpack_require__(1);
 
 	var greekCapitals = [
@@ -2327,7 +954,7 @@
 
 
 /***/ },
-/* 20 */
+/* 6 */
 /***/ function(module, exports) {
 
 	/**
@@ -4918,399 +3545,51 @@
 
 
 /***/ },
-/* 21 */
+/* 7 */,
+/* 8 */
 /***/ function(module, exports) {
 
 	'use strict';
-	/* eslint-disable no-unused-vars */
-	var hasOwnProperty = Object.prototype.hasOwnProperty;
-	var propIsEnumerable = Object.prototype.propertyIsEnumerable;
 
-	function toObject(val) {
-		if (val === null || val === undefined) {
-			throw new TypeError('Object.assign cannot be called with null or undefined');
-		}
+	var Dispatcher, ex, ex2;
 
-		return Object(val);
-	}
+	Dispatcher = {};
 
-	function shouldUseNative() {
-		try {
-			if (!Object.assign) {
-				return false;
-			}
+	_.extend(Dispatcher, Backbone.Events);
 
-			// Detect buggy property enumeration order in older V8 versions.
+	ex = Dispatcher.on;
 
-			// https://bugs.chromium.org/p/v8/issues/detail?id=4118
-			var test1 = new String('abc');  // eslint-disable-line
-			test1[5] = 'de';
-			if (Object.getOwnPropertyNames(test1)[0] === '5') {
-				return false;
-			}
+	ex2 = Dispatcher.trigger;
 
-			// https://bugs.chromium.org/p/v8/issues/detail?id=3056
-			var test2 = {};
-			for (var i = 0; i < 10; i++) {
-				test2['_' + String.fromCharCode(i)] = i;
-			}
-			var order2 = Object.getOwnPropertyNames(test2).map(function (n) {
-				return test2[n];
-			});
-			if (order2.join('') !== '0123456789') {
-				return false;
-			}
-
-			// https://bugs.chromium.org/p/v8/issues/detail?id=3056
-			var test3 = {};
-			'abcdefghijklmnopqrst'.split('').forEach(function (letter) {
-				test3[letter] = letter;
-			});
-			if (Object.keys(Object.assign({}, test3)).join('') !==
-					'abcdefghijklmnopqrst') {
-				return false;
-			}
-
-			return true;
-		} catch (e) {
-			// We don't expect any of the above to throw, but better to be safe.
-			return false;
-		}
-	}
-
-	module.exports = shouldUseNative() ? Object.assign : function (target, source) {
-		var from;
-		var to = toObject(target);
-		var symbols;
-
-		for (var s = 1; s < arguments.length; s++) {
-			from = Object(arguments[s]);
-
-			for (var key in from) {
-				if (hasOwnProperty.call(from, key)) {
-					to[key] = from[key];
-				}
-			}
-
-			if (Object.getOwnPropertySymbols) {
-				symbols = Object.getOwnPropertySymbols(from);
-				for (var i = 0; i < symbols.length; i++) {
-					if (propIsEnumerable.call(from, symbols[i])) {
-						to[symbols[i]] = from[symbols[i]];
-					}
-				}
-			}
-		}
-
-		return to;
+	Dispatcher.on = function () {
+	  console.log('ON', arguments);
+	  return ex.apply(this, arguments);
 	};
 
-
-/***/ },
-/* 22 */,
-/* 23 */,
-/* 24 */,
-/* 25 */,
-/* 26 */,
-/* 27 */,
-/* 28 */,
-/* 29 */,
-/* 30 */,
-/* 31 */,
-/* 32 */
-/***/ function(module, exports, __webpack_require__) {
-
-	"use strict";
-
-	__webpack_require__(193);
-
-	module.exports = React.createClass({
-	  displayName: "exports",
-
-	  getDefaultProps: function getDefaultProps() {
-	    return {
-	      indent: 0
-	    };
-	  },
-	  focus: function focus() {
-	    return ReactDOM.findDOMNode(this.refs.button).focus();
-	  },
-	  render: function render() {
-	    return React.createElement(
-	      "div",
-	      { className: "obojobo-draft--components--delete-button" },
-	      React.createElement(
-	        "button",
-	        {
-	          ref: "button",
-	          onClick: this.props.onClick,
-	          tabIndex: this.props.shouldPreventTab ? '-1' : this.props.tabIndex,
-	          disabled: this.props.shouldPreventTab
-	        },
-	        "Delete"
-	      )
-	    );
-	  }
-	});
-
-/***/ },
-/* 33 */
-/***/ function(module, exports, __webpack_require__) {
-
-	"use strict";
-
-	var Dispatcher, Store;
-
-	Dispatcher = __webpack_require__(3);
-
-	Store = function () {
-	  function Store(name) {
-	    this.name = name;
-	    this.state = {};
-	  }
-
-	  Store.prototype.triggerChange = function () {
-	    return Dispatcher.trigger(this.name + ":change");
-	  };
-
-	  Store.prototype.onChange = function (callback) {
-	    return Dispatcher.on(this.name + ":change", callback);
-	  };
-
-	  Store.prototype.offChange = function (callback) {
-	    return Dispatcher.off(this.name + ":change", callback);
-	  };
-
-	  Store.prototype.setAndTrigger = function (keyValues) {
-	    Object.assign(this.state, keyValues);
-	    return this.triggerChange();
-	  };
-
-	  Store.prototype.getState = function () {
-	    return Object.assign({}, this.state);
-	  };
-
-	  Store.prototype.setState = function (newState) {
-	    return this.state = Object.assign({}, newState);
-	  };
-
-	  return Store;
-	}();
-
-	module.exports = Store;
-
-/***/ },
-/* 34 */
-/***/ function(module, exports, __webpack_require__) {
-
-	'use strict';
-
-	var DOMSelection, OboSelectionRect;
-
-	DOMSelection = __webpack_require__(10);
-
-	OboSelectionRect = function () {
-	  function OboSelectionRect() {
-	    this.type = OboSelectionRect.TYPE_NONE;
-	    this.top = 0;
-	    this.right = 0;
-	    this.bottom = 0;
-	    this.left = 0;
-	    this.width = 0;
-	    this.height = 0;
-	  }
-
-	  return OboSelectionRect;
-	}();
-
-	Object.defineProperties(OboSelectionRect.prototype, {
-	  "valid": {
-	    get: function get() {
-	      return this.type !== OboSelectionRect.TYPE_NONE;
-	    }
-	  }
-	});
-
-	OboSelectionRect.TYPE_NONE = 'none';
-
-	OboSelectionRect.TYPE_CARET = 'caret';
-
-	OboSelectionRect.TYPE_SELECTION = 'selection';
-
-	OboSelectionRect.TYPE_CHUNKS = 'chunks';
-
-	OboSelectionRect.createFromSelection = function () {
-	  var clientRect, clientRects, i, len, rect, sel, selType;
-	  rect = new OboSelectionRect();
-	  sel = new DOMSelection();
-	  selType = sel.getType();
-	  if (selType === "none") {
-	    return rect;
-	  }
-	  clientRects = sel.getClientRects();
-	  rect.type = selType === 'caret' ? OboSelectionRect.TYPE_CARET : OboSelectionRect.TYPE_SELECTION;
-	  rect.top = 2e308;
-	  rect.right = -2e308;
-	  rect.bottom = -2e308;
-	  rect.left = 2e308;
-	  for (i = 0, len = clientRects.length; i < len; i++) {
-	    clientRect = clientRects[i];
-	    rect.top = Math.min(rect.top, clientRect.top);
-	    rect.right = Math.max(rect.right, clientRect.right);
-	    rect.bottom = Math.max(rect.bottom, clientRect.bottom);
-	    rect.left = Math.min(rect.left, clientRect.left);
-	  }
-	  rect.width = rect.right - rect.left;
-	  rect.height = rect.bottom - rect.top;
-	  rect.selection = sel;
-	  rect.chunks = null;
-	  return rect;
+	Dispatcher.trigger = function () {
+	  console.log('TRIGGER', arguments);
+	  return ex2.apply(this, arguments);
 	};
 
-	OboSelectionRect.createFromChunks = function (chunks) {
-	  var chunk, chunkRect, i, len, rect;
-	  if (chunks == null) {
-	    chunks = [];
-	  }
-	  rect = new OboSelectionRect();
-	  rect.type = OboSelectionRect.TYPE_CHUNKS;
-	  rect.top = 2e308;
-	  rect.right = -2e308;
-	  rect.bottom = -2e308;
-	  rect.left = 2e308;
-	  for (i = 0, len = chunks.length; i < len; i++) {
-	    chunk = chunks[i];
-	    if (chunk == null) {
-	      continue;
-	    }
-	    chunkRect = chunk.getDomEl().getBoundingClientRect();
-	    rect.top = Math.min(rect.top, chunkRect.top);
-	    rect.right = Math.max(rect.right, chunkRect.right);
-	    rect.bottom = Math.max(rect.bottom, chunkRect.bottom);
-	    rect.left = Math.min(rect.left, chunkRect.left);
-	  }
-	  rect.width = rect.right - rect.left;
-	  rect.height = rect.bottom - rect.top;
-	  rect.chunks = chunks;
-	  rect.selection = null;
-	  return rect;
-	};
+	window.__dispatcher = Dispatcher;
 
-	module.exports = OboSelectionRect;
+	module.exports = Dispatcher;
 
 /***/ },
-/* 35 */
-/***/ function(module, exports) {
-
-	"use strict";
-
-	var VirtualCursor;
-
-	VirtualCursor = function () {
-	  function VirtualCursor(chunk, data) {
-	    this.chunk = chunk;
-	    this.data = data;
-	  }
-
-	  VirtualCursor.prototype.isEquivalentTo = function (otherCursor) {
-	    return this.chunk.areCursorsEquivalent(this, otherCursor);
-	  };
-
-	  VirtualCursor.prototype.clone = function () {
-	    return new VirtualCursor(this.chunk, Object.assign({}, this.data));
-	  };
-
-	  return VirtualCursor;
-	}();
-
-	module.exports = VirtualCursor;
-
-/***/ },
-/* 36 */
+/* 9 */,
+/* 10 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
 
 	var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol" ? function (obj) { return typeof obj; } : function (obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; };
 
-	var ObjectAssign;
-
-	ObjectAssign = __webpack_require__(21);
-
-	module.exports = {
-	  createData: function createData(data, template) {
-	    var clone, key;
-	    clone = ObjectAssign({}, data);
-	    for (key in clone) {
-	      if (template[key] == null) {
-	        delete clone[key];
-	      }
-	    }
-	    for (key in template) {
-	      if (clone[key] == null) {
-	        if (_typeof(template[key]) === 'object') {
-	          clone[key] = ObjectAssign({}, template[key]);
-	        } else {
-	          clone[key] = template[key];
-	        }
-	      }
-	    }
-	    return clone;
-	  },
-	  defaultCloneFn: function defaultCloneFn(data) {
-	    return ObjectAssign({}, data);
-	  },
-	  defaultMergeFn: function defaultMergeFn(consumer, digested) {
-	    return consumer;
-	  }
-	};
-
-/***/ },
-/* 37 */
-/***/ function(module, exports, __webpack_require__) {
-
-	'use strict';
-
-	var Dispatcher, FocusUtil, OboModel;
-
-	Dispatcher = __webpack_require__(3);
-
-	OboModel = __webpack_require__(6);
-
-	FocusUtil = {
-	  focusComponent: function focusComponent(id) {
-	    return Dispatcher.trigger('focus:component', {
-	      value: {
-	        id: id
-	      }
-	    });
-	  },
-	  unfocus: function unfocus() {
-	    return Dispatcher.trigger('focus:unfocus');
-	  },
-	  getFocussedComponent: function getFocussedComponent(state) {
-	    return OboModel.models[state.focussedId];
-	  }
-	};
-
-	module.exports = FocusUtil;
-
-/***/ },
-/* 38 */,
-/* 39 */,
-/* 40 */,
-/* 41 */,
-/* 42 */,
-/* 43 */,
-/* 44 */,
-/* 45 */,
-/* 46 */
-/***/ function(module, exports, __webpack_require__) {
-
-	'use strict';
-
-	var BaseSelectionHandler,
-	    FocusableSelectionHandler,
+	var DefaultAdapter,
+	    Dispatcher,
+	    OBO,
+	    OboModel,
+	    OboModelCollection,
+	    createUUID,
 	    extend = function extend(child, parent) {
 	  for (var key in parent) {
 	    if (hasProp.call(parent, key)) child[key] = parent[key];
@@ -5320,2280 +3599,1141 @@
 	},
 	    hasProp = {}.hasOwnProperty;
 
-	BaseSelectionHandler = __webpack_require__(14);
+	OBO = window.OBO;
 
-	FocusableSelectionHandler = function (superClass) {
-	  extend(FocusableSelectionHandler, superClass);
+	createUUID = __webpack_require__(84);
 
-	  function FocusableSelectionHandler() {
-	    return FocusableSelectionHandler.__super__.constructor.apply(this, arguments);
+	Dispatcher = __webpack_require__(8);
+
+	DefaultAdapter = {
+	  construct: function construct(attrs) {
+	    return null;
+	  },
+	  clone: function clone(_clone) {
+	    return _clone;
+	  },
+	  toJSON: function toJSON(model, json) {
+	    return json;
+	  }
+	};
+
+	OboModel = function (superClass) {
+	  extend(OboModel, superClass);
+
+	  OboModel.prototype.defaults = function () {
+	    return {
+	      id: null,
+	      content: {},
+	      metadata: {},
+	      index: 0,
+	      type: ''
+	    };
+	  };
+
+	  function OboModel(attrs, adapter) {
+	    var ref, ref1;
+	    this.adapter = adapter != null ? adapter : DefaultAdapter;
+	    this.parent = null;
+	    this.children = new OboModelCollection();
+	    this.triggers = [];
+	    this.title = null;
+	    this.modelState = {
+	      dirty: false,
+	      needsUpdate: false,
+	      editing: false
+	    };
+	    if (attrs.id == null) {
+	      attrs.id = this.createNewLocalId();
+	    }
+	    OboModel.__super__.constructor.call(this, attrs);
+	    this.adapter.construct(this, attrs);
+	    if (((ref = attrs.content) != null ? ref.triggers : void 0) != null) {
+	      this.triggers = attrs.content.triggers;
+	    }
+	    if (((ref1 = attrs.content) != null ? ref1.title : void 0) != null) {
+	      this.title = attrs.content.title;
+	    }
+	    this.children.on('remove', this.onChildRemove, this);
+	    this.children.on('add', this.onChildAdd, this);
+	    this.children.on('reset', this.onChildrenReset, this);
+	    OboModel.models[this.get('id')] = this;
 	  }
 
-	  FocusableSelectionHandler.prototype.getVirtualSelectionStartData = function (selection, chunk) {
-	    return {
-	      groupIndex: 'anchor:main',
-	      offset: 0
-	    };
-	  };
-
-	  FocusableSelectionHandler.prototype.getVirtualSelectionEndData = function (selection, chunk) {
-	    return {
-	      groupIndex: 'anchor:main',
-	      offset: 0
-	    };
-	  };
-
-	  FocusableSelectionHandler.prototype.getDOMSelectionStart = function (selection, chunk) {
-	    return {
-	      textNode: chunk.getDomEl().getElementsByClassName('anchor')[0].childNodes[0],
-	      offset: 0
-	    };
-	  };
-
-	  FocusableSelectionHandler.prototype.getDOMSelectionEnd = function (selection, chunk) {
-	    return {
-	      textNode: chunk.getDomEl().getElementsByClassName('anchor')[0].childNodes[0],
-	      offset: 0
-	    };
-	  };
-
-	  FocusableSelectionHandler.prototype.selectStart = function (selection, chunk, asRange) {
-	    selection.virtual.setStart(chunk, {
-	      groupIndex: 'anchor:main',
-	      offset: 0
-	    });
-	    if (!asRange) {
-	      return selection.virtual.collapse();
-	    }
-	  };
-
-	  FocusableSelectionHandler.prototype.selectEnd = function (selection, chunk, asRange) {
-	    selection.virtual.setEnd(chunk, {
-	      groupIndex: 'anchor:main',
-	      offset: 0
-	    });
-	    if (!asRange) {
-	      return selection.virtual.collapseToEnd();
-	    }
-	  };
-
-	  FocusableSelectionHandler.prototype.areCursorsEquivalent = function (selectionWhichIsNullTODO, chunk, thisCursorData, otherCursorData) {
-	    return thisCursorData.offset === otherCursorData.offset && thisCursorData.groupIndex === otherCursorData.groupIndex;
-	  };
-
-	  return FocusableSelectionHandler;
-	}(BaseSelectionHandler);
-
-	module.exports = FocusableSelectionHandler;
-
-/***/ },
-/* 47 */
-/***/ function(module, exports, __webpack_require__) {
-
-	'use strict';
-
-	var DOMUtil, StyleableText, StyleableTextRenderer, TextGroupEl, emptyChar;
-
-	StyleableText = __webpack_require__(8);
-
-	StyleableTextRenderer = __webpack_require__(128);
-
-	emptyChar = __webpack_require__(16).EMPTY_CHAR;
-
-	DOMUtil = __webpack_require__(7);
-
-	TextGroupEl = React.createClass({
-	  displayName: 'TextGroupEl',
-
-	  statics: {
-	    getTextElement: function getTextElement(chunk, groupIndex) {
-	      return chunk.getDomEl().querySelector("*[data-group-index='" + groupIndex + "']");
-	    },
-	    getTextElementAtCursor: function getTextElementAtCursor(virtualCursor) {
-	      return TextGroupEl.getTextElement(virtualCursor.chunk, virtualCursor.data.groupIndex);
-	    },
-	    getDomPosition: function getDomPosition(virtualCursor) {
-	      var element, i, len, ref, textNode, totalCharactersFromStart;
-	      totalCharactersFromStart = 0;
-	      element = TextGroupEl.getTextElementAtCursor(virtualCursor);
-	      if (!element) {
-	        return null;
-	      }
-	      if (element != null) {
-	        ref = DOMUtil.getTextNodesInOrder(element);
-	        for (i = 0, len = ref.length; i < len; i++) {
-	          textNode = ref[i];
-	          if (totalCharactersFromStart + textNode.nodeValue.length >= virtualCursor.data.offset) {
-	            return {
-	              textNode: textNode,
-	              offset: virtualCursor.data.offset - totalCharactersFromStart
-	            };
-	          }
-	          totalCharactersFromStart += textNode.nodeValue.length;
-	        }
-	      }
-	      return {
-	        textNode: null,
-	        offset: 0
-	      };
-	    }
-	  },
-	  componentDidUpdate: function componentDidUpdate() {
-	    return console.timeEnd('textRender');
-	  },
-	  createChild: function createChild(el, key) {
-	    var attrs, createChild, groupIndex, ref, ref1;
-	    createChild = this.createChild;
-	    groupIndex = this.props.groupIndex;
-	    attrs = {
-	      key: key.counter++
-	    };
-	    switch (el.type) {
-	      case 'a':
-	        if (((ref = el.attrs) != null ? ref.href : void 0) != null) {
-	          attrs.href = el.attrs.href;
-	          attrs.target = "_blank";
-	        }
-	        break;
-	      case 'span':
-	        if (((ref1 = el.attrs) != null ? ref1['class'] : void 0) != null) {
-	          attrs.className = el.attrs['class'];
-	        }
-	    }
-	    return React.createElement(el.type, attrs, el.children.map(function (child, index) {
-	      switch (child.nodeType) {
-	        case 'text':
-	          if (child.html != null) {
-	            return React.createElement('span', { key: key.counter++, dangerouslySetInnerHTML: { __html: child.html } });
-	          } else if (child.text.length === 0) {
-	            return React.createElement(
-	              'span',
-	              { key: key.counter++ },
-	              emptyChar
-	            );
-	          } else if (child.text.charAt(child.text.length - 1) === "\n") {
-	            return React.createElement(
-	              'span',
-	              { key: key.counter++ },
-	              child.text,
-	              emptyChar
-	            );
-	          } else {
-	            return React.createElement(
-	              'span',
-	              { key: key.counter++ },
-	              child.text
-	            );
-	          }
-	          break;
-	        default:
-	          return createChild(child, key);
-	      }
-	    }));
-	  },
-	  render: function render() {
-	    var key, mockElement;
-	    console.time('textRender');
-	    key = {
-	      counter: 0
-	    };
-	    mockElement = StyleableTextRenderer(this.props.text);
-	    return React.createElement(
-	      'span',
-	      { className: 'text', 'data-group-index': this.props.groupIndex, 'data-indent': this.props.indent },
-	      this.createChild(mockElement, key)
-	    );
-	  }
-	});
-
-	window.__gdp = TextGroupEl.getDomPosition;
-
-	module.exports = TextGroupEl;
-
-/***/ },
-/* 48 */
-/***/ function(module, exports, __webpack_require__) {
-
-	'use strict';
-
-	var _extends = Object.assign || function (target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i]; for (var key in source) { if (Object.prototype.hasOwnProperty.call(source, key)) { target[key] = source[key]; } } } return target; };
-
-	var EMPTY_CHAR;
-
-	EMPTY_CHAR = __webpack_require__(16).EMPTY_CHAR;
-
-	module.exports = React.createClass({
-			displayName: 'exports',
-
-			render: function render() {
-					return React.createElement(
-							'span',
-							_extends({}, this.props, {
-									className: 'anchor',
-									ref: 'anchorElement',
-									contentEditable: 'true',
-									tabIndex: this.props.shouldPreventTab ? '-1' : '',
-									suppressContentEditableWarning: true,
-									'data-group-index': 'anchor:' + this.props.name
-							}),
-							EMPTY_CHAR
-					);
-			}
-	});
-
-/***/ },
-/* 49 */
-/***/ function(module, exports, __webpack_require__) {
-
-	'use strict';
-
-	__webpack_require__(192);
-
-	module.exports = React.createClass({
-	  displayName: 'exports',
-
-	  getDefaultProps: function getDefaultProps() {
-	    return {
-	      value: 'Button',
-	      disabled: false
-	    };
-	  },
-	  focus: function focus() {
-	    return ReactDOM.findDOMNode(this.refs.button).focus();
-	  },
-	  render: function render() {
-	    return React.createElement(
-	      'div',
-	      { className: "obojobo-draft--components--button" + (this.props.dangerous ? ' dangerous' : '') + (this.props.altAction ? ' alt-action' : '') },
-	      React.createElement(
-	        'button',
-	        {
-	          ref: 'button',
-	          onClick: this.props.onClick,
-	          tabIndex: this.props.shouldPreventTab ? '-1' : this.props.tabIndex,
-	          disabled: this.props.disabled || this.props.shouldPreventTab
-	        },
-	        this.props.value
-	      )
-	    );
-	  }
-	});
-
-/***/ },
-/* 50 */
-/***/ function(module, exports, __webpack_require__) {
-
-	"use strict";
-
-	__webpack_require__(196);
-
-	module.exports = React.createClass({
-	  displayName: "exports",
-
-	  render: function render() {
-	    return React.createElement(
-	      "div",
-	      { className: "obojobo-draft--components--modal--bubble" },
-	      React.createElement(
-	        "div",
-	        { className: "container" },
-	        this.props.children
-	      )
-	    );
-	  }
-	});
-
-/***/ },
-/* 51 */
-/***/ function(module, exports, __webpack_require__) {
-
-	'use strict';
-
-	var _extends = Object.assign || function (target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i]; for (var key in source) { if (Object.prototype.hasOwnProperty.call(source, key)) { target[key] = source[key]; } } } return target; };
-
-	var Button, DeleteButton, Modal;
-
-	__webpack_require__(198);
-
-	Button = __webpack_require__(49);
-
-	DeleteButton = __webpack_require__(32);
-
-	Modal = __webpack_require__(53);
-
-	module.exports = React.createClass({
-	  displayName: 'exports',
-
-	  getDefaultProps: function getDefaultProps() {
-	    return {
-	      centered: true
-	    };
-	  },
-	  componentDidMount: function componentDidMount() {
-	    var button, i, index, len, ref, results;
-	    ref = this.props.buttons;
-	    results = [];
-	    for (index = i = 0, len = ref.length; i < len; index = ++i) {
-	      button = ref[index];
-	      if (button["default"]) {
-	        results.push(this.refs['button' + index].focus());
+	  OboModel.prototype.getRoot = function () {
+	    var root;
+	    root = this;
+	    while (root !== null) {
+	      if (root.parent) {
+	        root = root.parent;
 	      } else {
-	        results.push(void 0);
+	        return root;
 	      }
 	    }
-	    return results;
-	  },
-	  focusOnFirstElement: function focusOnFirstElement() {
-	    return this.refs.button0.focus();
-	  },
-	  render: function render() {
-	    var styles;
-	    styles = null;
-	    if (this.props.width) {
-	      styles = {
-	        width: this.props.width
-	      };
-	    }
-	    return React.createElement(
-	      'div',
-	      { className: 'obojobo-draft--components--modal--dialog', style: styles },
-	      React.createElement(
-	        Modal,
-	        { onClose: this.props.onClose, focusOnFirstElement: this.focusOnFirstElement },
-	        this.props.title ? React.createElement(
-	          'h1',
-	          { className: 'heading', style: { textAlign: this.props.centered ? 'center' : null } },
-	          this.props.title
-	        ) : null,
-	        React.createElement(
-	          'div',
-	          { className: 'dialog-content', style: { textAlign: this.props.centered ? 'center' : null } },
-	          this.props.children
-	        ),
-	        React.createElement(
-	          'div',
-	          { className: 'controls' },
-	          this.props.buttons.map(function (buttonPropsOrText, index) {
-	            if (typeof buttonPropsOrText === "string") {
-	              return React.createElement(
-	                'span',
-	                { key: index, className: 'text' },
-	                buttonPropsOrText
-	              );
-	            }
-	            buttonPropsOrText.key = index;
-	            return React.createElement(Button, _extends({ ref: 'button' + index }, buttonPropsOrText));
-	          }.bind(this))
-	        )
-	      )
-	    );
-	  }
-	});
-
-/***/ },
-/* 52 */
-/***/ function(module, exports, __webpack_require__) {
-
-	'use strict';
-
-	var SimpleDialog;
-
-	__webpack_require__(199);
-
-	SimpleDialog = __webpack_require__(54);
-
-	module.exports = React.createClass({
-		displayName: 'exports',
-
-		render: function render() {
-			return React.createElement(
-				'div',
-				{ className: 'obojobo-draft--components--modal--error-dialog' },
-				React.createElement(
-					SimpleDialog,
-					{ ok: true, title: this.props.title },
-					this.props.children
-				)
-			);
-		}
-	});
-
-/***/ },
-/* 53 */
-/***/ function(module, exports, __webpack_require__) {
-
-	'use strict';
-
-	var DeleteButton;
-
-	__webpack_require__(200);
-
-	DeleteButton = __webpack_require__(32);
-
-	module.exports = React.createClass({
-	  displayName: 'exports',
-
-	  componentDidMount: function componentDidMount() {
-	    if (this.props.onClose) {
-	      return document.addEventListener('keyup', this.onKeyUp);
-	    }
-	  },
-	  componentWillUnmount: function componentWillUnmount() {
-	    if (this.props.onClose) {
-	      return document.removeEventListener('keyup', this.onKeyUp);
-	    }
-	  },
-	  onKeyUp: function onKeyUp(event) {
-	    if (event.keyCode === 27) {
-	      return this.props.onClose();
-	    }
-	  },
-	  onTabTrapFocus: function onTabTrapFocus() {
-	    if (this.props.onClose) {
-	      return this.refs.closeButton.focus();
-	    } else if (this.props.focusOnFirstElement) {
-	      return this.props.focusOnFirstElement();
-	    }
-	  },
-	  render: function render() {
-	    return React.createElement(
-	      'div',
-	      { className: 'obojobo-draft--components--modal--modal' },
-	      React.createElement('input', { className: 'first-tab', ref: 'firstTab', type: 'text', onFocus: this.onTabTrapFocus }),
-	      this.props.onClose ? React.createElement(DeleteButton, { ref: 'closeButton', onClick: this.props.onClose }) : null,
-	      React.createElement(
-	        'div',
-	        { className: 'content' },
-	        this.props.children
-	      ),
-	      React.createElement('input', { className: 'last-tab', ref: 'lastTab', type: 'text', onFocus: this.onTabTrapFocus })
-	    );
-	  }
-	});
-
-/***/ },
-/* 54 */
-/***/ function(module, exports, __webpack_require__) {
-
-	'use strict';
-
-	var Dialog, ModalUtil;
-
-	__webpack_require__(201);
-
-	ModalUtil = __webpack_require__(66);
-
-	Dialog = __webpack_require__(51);
-
-	module.exports = React.createClass({
-	  displayName: 'exports',
-
-	  getDefaultProps: function getDefaultProps() {
-	    return {
-	      ok: false,
-	      noOrYes: false,
-	      yesOrNo: false,
-	      cancelOk: false,
-	      title: null,
-	      width: null,
-	      onCancel: function onCancel() {
-	        return ModalUtil.hide();
-	      },
-	      onConfirm: function onConfirm() {
-	        return ModalUtil.hide();
-	      }
-	    };
-	  },
-	  render: function render() {
-	    var buttons, cancelButton, confirmButton;
-	    cancelButton = null;
-	    confirmButton = null;
-	    if (this.props.ok) {
-	      buttons = [{
-	        value: 'OK',
-	        onClick: this.props.onConfirm,
-	        "default": true
-	      }];
-	    } else if (this.props.noOrYes) {
-	      buttons = [{
-	        value: 'No',
-	        onClick: this.props.onCancel
-	      }, 'or', {
-	        value: 'Yes',
-	        onClick: this.props.onConfirm,
-	        "default": true
-	      }];
-	    } else if (this.props.yesOrNo) {
-	      buttons = [{
-	        value: 'Yes',
-	        onClick: this.props.onConfirm
-	      }, 'or', {
-	        value: 'No',
-	        onClick: this.props.onCancel,
-	        "default": true
-	      }];
-	    } else if (this.props.cancelOk) {
-	      buttons = [{
-	        value: 'Cancel',
-	        altAction: true,
-	        onClick: this.props.onCancel
-	      }, {
-	        value: 'OK',
-	        onClick: this.props.onConfirm,
-	        "default": true
-	      }];
-	    }
-	    return React.createElement(
-	      'div',
-	      { className: 'obojobo-draft--components--modal--simple-dialog' },
-	      React.createElement(
-	        Dialog,
-	        { centered: true, buttons: buttons, title: this.props.title, width: this.props.width },
-	        this.props.children
-	      )
-	    );
-	  }
-	});
-
-/***/ },
-/* 55 */
-/***/ function(module, exports) {
-
-	"use strict";
-
-	var MockElement;
-
-	MockElement = function () {
-	  function MockElement(type, attrs) {
-	    this.type = type;
-	    this.attrs = attrs != null ? attrs : {};
-	    this.nodeType = 'element';
-	    this.children = [];
-	    this.parent = null;
-	  }
-
-	  MockElement.prototype.addChild = function (child) {
-	    this.children.push(child);
-	    return child.parent = this;
+	    return null;
 	  };
 
-	  MockElement.prototype.addChildAt = function (child, atIndex) {
-	    this.children.splice(atIndex, 0, child);
-	    return child.parent = this;
-	  };
-
-	  MockElement.prototype.getChildIndex = function (child) {
-	    return this.children.indexOf(child);
-	  };
-
-	  MockElement.prototype.addBefore = function (childToAdd, targetChild) {
-	    var index;
-	    index = this.getChildIndex(targetChild);
-	    return this.addChildAt(childToAdd, index);
-	  };
-
-	  MockElement.prototype.addAfter = function (childToAdd, targetChild) {
-	    var index;
-	    index = this.getChildIndex(targetChild);
-	    return this.addChildAt(childToAdd, index + 1);
-	  };
-
-	  MockElement.prototype.replaceChild = function (childToReplace, newChild) {
-	    var index;
-	    index = this.getChildIndex(childToReplace);
-	    this.children[index] = newChild;
-	    newChild.parent = this;
-	    return childToReplace.parent = null;
-	  };
-
-	  return MockElement;
-	}();
-
-	Object.defineProperties(MockElement.prototype, {
-	  "firstChild": {
-	    get: function get() {
-	      return this.children[0];
-	    }
-	  },
-	  "lastChild": {
-	    get: function get() {
-	      return this.children[this.children.length - 1];
-	    }
-	  }
-	});
-
-	module.exports = MockElement;
-
-/***/ },
-/* 56 */
-/***/ function(module, exports) {
-
-	'use strict';
-
-	var MockTextNode;
-
-	MockTextNode = function () {
-	  function MockTextNode(text) {
-	    this.text = text != null ? text : '';
-	    this.nodeType = 'text';
-	    this.parent = null;
-	  }
-
-	  return MockTextNode;
-	}();
-
-	module.exports = MockTextNode;
-
-/***/ },
-/* 57 */
-/***/ function(module, exports, __webpack_require__) {
-
-	'use strict';
-
-	var Cursor, DOMUtil;
-
-	DOMUtil = __webpack_require__(7);
-
-	Cursor = function () {
-	  function Cursor(chunk, node, offset) {
-	    this.chunk = chunk != null ? chunk : null;
-	    this.node = node != null ? node : null;
-	    this.offset = offset != null ? offset : null;
-	    this.textNode = DOMUtil.getFirstTextNodeOfElement(this.node);
-	    this.isValid = this.chunk !== null && this.offset !== null;
-	    this.isText = this.isValid && this.textNode !== null;
-	  }
-
-	  Cursor.prototype.clone = function () {
-	    return new Cursor(this.chunk, this.node, this.offset);
-	  };
-
-	  return Cursor;
-	}();
-
-	module.exports = Cursor;
-
-/***/ },
-/* 58 */
-/***/ function(module, exports, __webpack_require__) {
-
-	'use strict';
-
-	var DOMSelection, DOMUtil, VirtualCursor, VirtualSelection;
-
-	VirtualCursor = __webpack_require__(35);
-
-	DOMUtil = __webpack_require__(7);
-
-	DOMSelection = __webpack_require__(10);
-
-	VirtualSelection = function () {
-	  function VirtualSelection(page1) {
-	    this.page = page1;
-	    this.clear();
-	  }
-
-	  VirtualSelection.prototype.clear = function () {
-	    this.start = null;
-	    return this.end = null;
-	  };
-
-	  VirtualSelection.prototype.clone = function () {
-	    var virtSel;
-	    virtSel = new VirtualSelection(this.page);
-	    virtSel.start = this.start.clone();
-	    virtSel.end = this.end.clone();
-	    return virtSel;
-	  };
-
-	  VirtualSelection.prototype.getPosition = function (chunk) {
-	    var chunkIndex, endIndex, ref, ref1, startIndex;
-	    if (((ref = this.start) != null ? ref.chunk : void 0) == null || ((ref1 = this.end) != null ? ref1.chunk : void 0) == null) {
-	      return 'unknown';
-	    }
-	    chunkIndex = chunk.get('index');
-	    startIndex = this.start.chunk.get('index');
-	    endIndex = this.end.chunk.get('index');
-	    if (chunkIndex < startIndex) {
-	      return 'before';
-	    }
-	    if (chunkIndex === startIndex && chunkIndex === endIndex) {
-	      return 'contains';
-	    }
-	    if (chunkIndex === startIndex) {
-	      return 'start';
-	    }
-	    if (chunkIndex < endIndex) {
-	      return 'inside';
-	    }
-	    if (chunkIndex === endIndex) {
-	      return 'end';
-	    }
-	    return 'after';
-	  };
-
-	  VirtualSelection.prototype.collapse = function () {
-	    return this.end = this.start.clone();
-	  };
-
-	  VirtualSelection.prototype.collapseToEnd = function () {
-	    return this.start = this.end.clone();
-	  };
-
-	  VirtualSelection.prototype.setStart = function (chunk, data) {
-	    return this.start = new VirtualCursor(chunk, data);
-	  };
-
-	  VirtualSelection.prototype.setEnd = function (chunk, data) {
-	    return this.end = new VirtualCursor(chunk, data);
-	  };
-
-	  VirtualSelection.prototype.setCaret = function (chunk, data) {
-	    this.setStart(chunk, data);
-	    return this.collapse();
-	  };
-
-	  VirtualSelection.prototype.toObject = function () {
-	    var end, ref, ref1, ref2, ref3, start;
-	    if (((ref = this.start) != null ? ref.chunk : void 0) == null || ((ref1 = this.start) != null ? ref1.data : void 0) == null) {
-	      start = {
-	        index: -1,
-	        data: {}
-	      };
-	    } else {
-	      start = {
-	        index: this.start.chunk.get('index'),
-	        data: Object.assign({}, this.start.data)
-	      };
-	    }
-	    if (((ref2 = this.end) != null ? ref2.chunk : void 0) == null || ((ref3 = this.end) != null ? ref3.data : void 0) == null) {
-	      end = {
-	        index: -1,
-	        data: {}
-	      };
-	    } else {
-	      end = {
-	        index: this.end.chunk.get('index'),
-	        data: Object.assign({}, this.end.data)
-	      };
-	    }
-	    return {
-	      start: start,
-	      end: end
-	    };
-	  };
-
-	  VirtualSelection.prototype.fromObject = function (o) {
-	    this.setStart(this.page.chunks.at(o.start.index), o.start.data);
-	    return this.setEnd(this.page.chunks.at(o.end.index), o.end.data);
-	  };
-
-	  VirtualSelection.prototype.fromDOMSelection = function (domSelection) {
-	    var endChunk, endChunkIndex, startChunk, startChunkIndex;
-	    if (domSelection == null) {
-	      domSelection = null;
-	    }
-	    if (domSelection == null) {
-	      domSelection = DOMSelection.get();
-	    }
-	    startChunkIndex = DOMUtil.findParentAttr(domSelection.startContainer, 'data-component-index');
-	    endChunkIndex = DOMUtil.findParentAttr(domSelection.endContainer, 'data-component-index');
-	    if (!startChunkIndex || !endChunkIndex) {
-	      return;
-	    }
-	    startChunk = this.page.chunks.at(startChunkIndex);
-	    endChunk = this.page.chunks.at(endChunkIndex);
-	    if (!startChunk || !endChunk) {
-	      return;
-	    }
-	    this.setStart(startChunk, startChunk.getVirtualSelectionStartData());
-	    return this.setEnd(endChunk, endChunk.getVirtualSelectionEndData());
-	  };
-
-	  VirtualSelection.prototype.__debug_print = function () {
-	    return console.log(JSON.stringify(this.toObject(), null, 4));
-	  };
-
-	  return VirtualSelection;
-	}();
-
-	Object.defineProperties(VirtualSelection.prototype, {
-	  "type": {
-	    get: function get() {
-	      var ref, ref1;
-	      switch (false) {
-	        case !(((ref = this.start) != null ? ref.chunk : void 0) == null || ((ref1 = this.end) != null ? ref1.chunk : void 0) == null):
-	          return 'none';
-	        case this.start.chunk.cid === this.end.chunk.cid:
-	          return 'chunkSpan';
-	        case !this.start.isEquivalentTo(this.end):
-	          return 'caret';
-	        default:
-	          return 'textSpan';
-	      }
-	    }
-	  },
-	  "all": {
-	    get: function get() {
-	      var all, cur;
-	      switch (this.type) {
-	        case 'chunkSpan':
-	          all = [];
-	          cur = this.start.chunk;
-	          while (cur != null && cur !== this.end.chunk.nextSibling()) {
-	            all.push(cur);
-	            cur = cur.nextSibling();
-	          }
-	          return all;
-	        case 'textSpan':
-	        case 'caret':
-	          return all = [this.start.chunk];
-	        default:
-	          return [];
-	      }
-	    }
-	  },
-	  "inbetween": {
-	    get: function get() {
-	      var result;
-	      if (this.type !== 'chunkSpan') {
-	        return [];
-	      }
-	      result = this.all;
-	      result.pop();
-	      result.shift();
-	      return result;
-	    }
-	  }
-	});
-
-	VirtualSelection.fromObject = function (page, o) {
-	  var vs;
-	  vs = new VirtualSelection(page);
-	  vs.fromObject(page, o);
-	  return vs;
-	};
-
-	VirtualSelection.fromDOMSelection = function (page, domSelection) {
-	  var vs;
-	  vs = new VirtualSelection(page);
-	  vs.fromDOMSelection(domSelection);
-	  return vs;
-	};
-
-	module.exports = VirtualSelection;
-
-/***/ },
-/* 59 */
-/***/ function(module, exports, __webpack_require__) {
-
-	'use strict';
-
-	var ChunkStyleList, StyleRange, StyleType, keySortFn;
-
-	StyleType = __webpack_require__(11);
-
-	StyleRange = __webpack_require__(15);
-
-	keySortFn = function keySortFn(a, b) {
-	  return Number(a) - Number(b);
-	};
-
-	ChunkStyleList = function () {
-	  function ChunkStyleList() {
-	    this.clear();
-	  }
-
-	  ChunkStyleList.prototype.clear = function () {
-	    return this.styles = [];
-	  };
-
-	  ChunkStyleList.prototype.getExportedObject = function () {
-	    var j, len, output, ref, style;
-	    if (this.styles.length === 0) {
+	  OboModel.prototype.getDraftId = function () {
+	    var root;
+	    root = this.getRoot();
+	    if (root == null) {
 	      return null;
 	    }
-	    output = [];
-	    ref = this.styles;
-	    for (j = 0, len = ref.length; j < len; j++) {
-	      style = ref[j];
-	      output.push(style.getExportedObject());
-	    }
-	    return output;
+	    return root.get('_id');
 	  };
 
-	  ChunkStyleList.prototype.clone = function () {
-	    var cloneStyleList, j, len, ref, style;
-	    cloneStyleList = new ChunkStyleList();
-	    ref = this.styles;
-	    for (j = 0, len = ref.length; j < len; j++) {
-	      style = ref[j];
-	      cloneStyleList.add(style.clone());
-	    }
-	    return cloneStyleList;
-	  };
-
-	  ChunkStyleList.prototype.length = function () {
-	    return this.styles.length;
-	  };
-
-	  ChunkStyleList.prototype.get = function () {
-	    return this.styles[i];
-	  };
-
-	  ChunkStyleList.prototype.add = function (styleRange) {
-	    return this.styles.push(styleRange);
-	  };
-
-	  ChunkStyleList.prototype.remove = function (styleRange) {
-	    var co, comparisons, j, k, l, leftRange, len, len1, len2, len3, m, origEnd, ref, ref1, ref2, ref3, rightRange;
-	    comparisons = this.getStyleComparisonsForRange(styleRange.start, styleRange.end, styleRange.type);
-	    ref = comparisons.enscapsulatedBy;
-	    for (j = 0, len = ref.length; j < len; j++) {
-	      co = ref[j];
-	      co.invalidate();
-	    }
-	    ref1 = comparisons.left;
-	    for (k = 0, len1 = ref1.length; k < len1; k++) {
-	      co = ref1[k];
-	      co.end = styleRange.start;
-	    }
-	    ref2 = comparisons.right;
-	    for (l = 0, len2 = ref2.length; l < len2; l++) {
-	      co = ref2[l];
-	      co.start = styleRange.end;
-	    }
-	    ref3 = comparisons.contains;
-	    for (m = 0, len3 = ref3.length; m < len3; m++) {
-	      co = ref3[m];
-	      leftRange = co;
-	      origEnd = leftRange.end;
-	      leftRange.end = styleRange.start;
-	      rightRange = new StyleRange(styleRange.end, origEnd, co.type, co.data);
-	      if (leftRange.length() === 0) {
-	        leftRange.invalidate();
-	      }
-	      if (rightRange.length() > 0) {
-	        this.add(rightRange);
-	      }
-	    }
-	    return this.normalize();
-	  };
-
-	  ChunkStyleList.prototype.getStyleComparisonsForRange = function (from, to, type) {
-	    var comparisons, curComparison, j, len, ref, style;
-	    type = type || null;
-	    to = to || from;
-	    comparisons = {
-	      after: [],
-	      before: [],
-	      enscapsulatedBy: [],
-	      contains: [],
-	      left: [],
-	      right: []
-	    };
-	    ref = this.styles;
-	    for (j = 0, len = ref.length; j < len; j++) {
-	      style = ref[j];
-	      curComparison = style.compareToRange(from, to);
-	      if (type === null || style.type === type) {
-	        comparisons[curComparison].push(style);
-	      }
-	    }
-	    return comparisons;
-	  };
-
-	  ChunkStyleList.prototype.rangeHasStyle = function (from, to, styleType) {
-	    return this.getStyleComparisonsForRange(from, to, styleType).contains.length > 0;
-	  };
-
-	  ChunkStyleList.prototype.getStylesInRange = function (from, to) {
-	    var j, len, range, ref, styles;
-	    styles = {};
-	    ref = this.getStyleComparisonsForRange(from, to).contains;
-	    for (j = 0, len = ref.length; j < len; j++) {
-	      range = ref[j];
-	      styles[range.type] = range.type;
-	    }
-	    return styles;
-	  };
-
-	  ChunkStyleList.prototype.getStyles = function () {
-	    var j, len, range, ref, styles;
-	    styles = {};
-	    ref = this.styles;
-	    for (j = 0, len = ref.length; j < len; j++) {
-	      range = ref[j];
-	      styles[range.type] = range.type;
-	    }
-	    return styles;
-	  };
-
-	  ChunkStyleList.prototype.cleanupSuperscripts = function () {
-	    var curLevel, curRange, i, j, k, len, len1, level, mark, newStyles, ref, styleRange;
-	    mark = [];
-	    newStyles = [];
-	    ref = this.styles;
-	    for (j = 0, len = ref.length; j < len; j++) {
-	      styleRange = ref[j];
-	      if (styleRange.type !== StyleType.SUPERSCRIPT) {
-	        newStyles.push(styleRange);
-	        continue;
-	      }
-	      if (mark[styleRange.start] == null) {
-	        mark[styleRange.start] = 0;
-	      }
-	      if (mark[styleRange.end] == null) {
-	        mark[styleRange.end] = 0;
-	      }
-	      level = parseInt(styleRange.data, 10);
-	      mark[styleRange.start] += level;
-	      mark[styleRange.end] -= level;
-	    }
-	    curRange = new StyleRange(-1, -1, StyleType.SUPERSCRIPT, 0);
-	    curLevel = 0;
-	    for (i = k = 0, len1 = mark.length; k < len1; i = ++k) {
-	      level = mark[i];
-	      if (mark[i] == null) {
-	        continue;
-	      }
-	      curLevel += level;
-	      if (curRange.start === -1) {
-	        curRange.start = i;
-	        curRange.data = curLevel;
-	      } else if (curRange.end === -1) {
-	        curRange.end = i;
-	        if (curRange.data !== 0) {
-	          newStyles.push(curRange);
-	        }
-	        curRange = new StyleRange(i, -1, StyleType.SUPERSCRIPT, curLevel);
-	      }
-	    }
-	    return this.styles = newStyles;
-	  };
-
-	  ChunkStyleList.prototype.normalize = function () {
-	    var curData, curEncodedData, data, dataValues, datas, datasToCheck, end, i, j, k, key, keys, l, len, len1, len2, m, n, name, name1, newStyles, range, ref, ref1, ref2, start, style, styleName, styleRange, styleType, t, tmp, total;
-	    this.cleanupSuperscripts();
-	    newStyles = [];
-	    datasToCheck = {};
-	    dataValues = {};
-	    for (styleName in StyleType) {
-	      styleType = StyleType[styleName];
-	      datasToCheck[styleType] = [];
-	      dataValues[styleType] = [];
-	    }
-	    for (i = j = ref = this.styles.length - 1; j >= 0; i = j += -1) {
-	      styleRange = this.styles[i];
-	      curData = styleRange.data;
-	      curEncodedData = JSON.stringify(curData);
-	      if (datasToCheck[styleRange.type].indexOf(curEncodedData) === -1) {
-	        datasToCheck[styleRange.type].push(curEncodedData);
-	        dataValues[styleRange.type].push(curData);
-	      }
-	    }
-	    for (styleType in dataValues) {
-	      datas = dataValues[styleType];
-	      for (k = 0, len = datas.length; k < len; k++) {
-	        data = datas[k];
-	        tmp = {};
-	        total = 0;
-	        start = null;
-	        ref1 = this.styles;
-	        for (l = 0, len1 = ref1.length; l < len1; l++) {
-	          range = ref1[l];
-	          if (range.isMergeable(styleType, data)) {
-	            if (tmp[name = range.start] == null) {
-	              tmp[name] = 0;
-	            }
-	            if (tmp[name1 = range.end] == null) {
-	              tmp[name1] = 0;
-	            }
-	            tmp[range.start]++;
-	            tmp[range.end]--;
+	  OboModel.prototype.processTrigger = function (type) {
+	    var action, i, index, j, k, len, len1, len2, ref, ref1, results, trigIndex, trigger, triggersToDelete;
+	    triggersToDelete = [];
+	    ref = this.triggers;
+	    for (trigIndex = i = 0, len = ref.length; i < len; trigIndex = ++i) {
+	      trigger = ref[trigIndex];
+	      if (trigger.type === type) {
+	        ref1 = trigger.actions;
+	        for (index = j = 0, len1 = ref1.length; j < len1; index = ++j) {
+	          action = ref1[index];
+	          if (action.type === '_js') {
+	            eval(action.value);
+	          } else {
+	            Dispatcher.trigger(action.type, action);
 	          }
 	        }
-	        keys = Object.keys(tmp).sort(keySortFn);
-	        for (m = 0, len2 = keys.length; m < len2; m++) {
-	          key = keys[m];
-	          end = Number(key);
-	          t = tmp[key];
-	          if (start == null) {
-	            start = end;
-	          }
-	          total += t;
-	          if (total === 0) {
-	            newStyles.push(new StyleRange(start, end, styleType, data));
-	            start = null;
-	          }
+	        if (trigger.run != null && trigger.run === 'once') {
+	          triggersToDelete.unshift(trigIndex);
 	        }
 	      }
-	    }
-	    for (i = n = ref2 = newStyles.length - 1; n >= 0; i = n += -1) {
-	      style = newStyles[i];
-	      if (style.isInvalid()) {
-	        newStyles.splice(i, 1);
-	      }
-	    }
-	    return this.styles = newStyles;
-	  };
-
-	  return ChunkStyleList;
-	}();
-
-	ChunkStyleList.createFromObject = function (o) {
-	  var j, len, rangeObj, styleList;
-	  styleList = new ChunkStyleList();
-	  if (o != null) {
-	    for (j = 0, len = o.length; j < len; j++) {
-	      rangeObj = o[j];
-	      styleList.add(StyleRange.createFromObject(rangeObj));
-	    }
-	  }
-	  return styleList;
-	};
-
-	module.exports = ChunkStyleList;
-
-/***/ },
-/* 60 */
-/***/ function(module, exports, __webpack_require__) {
-
-	'use strict';
-
-	var ObjectAssign, StyleableText, TextGroup, TextGroupItem, Util, addChildToGroup, createChild, getItemsArray, removeAllChildrenFromGroup, removeChildFromGroup, setChildToGroup;
-
-	StyleableText = __webpack_require__(8);
-
-	Util = __webpack_require__(36);
-
-	TextGroupItem = __webpack_require__(62);
-
-	ObjectAssign = __webpack_require__(21);
-
-	getItemsArray = function getItemsArray(itemOrItems) {
-	  if (itemOrItems instanceof TextGroupItem) {
-	    return [itemOrItems];
-	  } else {
-	    return itemOrItems;
-	  }
-	};
-
-	addChildToGroup = function addChildToGroup(itemOrItems, group, atIndex) {
-	  var item, items, j, len, results;
-	  if (atIndex == null) {
-	    atIndex = null;
-	  }
-	  items = getItemsArray(itemOrItems);
-	  if (atIndex === null) {
-	    group.items = group.items.concat(items);
-	  } else {
-	    group.items = group.items.slice(0, atIndex).concat(items).concat(group.items.slice(atIndex));
-	  }
-	  results = [];
-	  for (j = 0, len = items.length; j < len; j++) {
-	    item = items[j];
-	    results.push(item.parent = group);
-	  }
-	  return results;
-	};
-
-	removeChildFromGroup = function removeChildFromGroup(itemOrItems, group) {
-	  var item, items, j, len, removed, removedItems;
-	  removedItems = [];
-	  items = getItemsArray(itemOrItems);
-	  for (j = 0, len = items.length; j < len; j++) {
-	    item = items[j];
-	    removed = group.items.splice(item.index, 1)[0];
-	    removed.parent = null;
-	    removedItems.push(removed);
-	  }
-	  return removedItems;
-	};
-
-	setChildToGroup = function setChildToGroup(item, group, atIndex) {
-	  group.items[atIndex] = item;
-	  return item.parent = group;
-	};
-
-	removeAllChildrenFromGroup = function removeAllChildrenFromGroup(group) {
-	  var item, j, len, ref;
-	  ref = group.items;
-	  for (j = 0, len = ref.length; j < len; j++) {
-	    item = ref[j];
-	    item.parent = null;
-	  }
-	  return group.items = [];
-	};
-
-	createChild = function createChild(text, data, dataTemplate) {
-	  return new TextGroupItem(text, Util.createData(data, dataTemplate));
-	};
-
-	TextGroup = function () {
-	  function TextGroup(maxItems1, dataTemplate, initialItems) {
-	    var item, j, len;
-	    this.maxItems = maxItems1 != null ? maxItems1 : 2e308;
-	    if (dataTemplate == null) {
-	      dataTemplate = {};
-	    }
-	    if (initialItems == null) {
-	      initialItems = [];
-	    }
-	    this.items = [];
-	    this.dataTemplate = Object.freeze(ObjectAssign({}, dataTemplate));
-	    for (j = 0, len = initialItems.length; j < len; j++) {
-	      item = initialItems[j];
-	      this.add(item.text, item.data);
-	    }
-	  }
-
-	  TextGroup.prototype.clear = function () {
-	    return removeAllChildrenFromGroup(this);
-	  };
-
-	  TextGroup.prototype.indexOf = function (item) {
-	    return this.items.indexOf(item);
-	  };
-
-	  TextGroup.prototype.init = function (numItems) {
-	    if (numItems == null) {
-	      numItems = 1;
-	    }
-	    this.clear();
-	    while (numItems-- && !this.isFull) {
-	      this.add();
-	    }
-	    return this;
-	  };
-
-	  TextGroup.prototype.fill = function () {
-	    var results;
-	    if (this.maxItems === 2e308) {
-	      return;
 	    }
 	    results = [];
-	    while (!this.isFull) {
-	      results.push(this.add());
+	    for (k = 0, len2 = triggersToDelete.length; k < len2; k++) {
+	      index = triggersToDelete[k];
+	      results.push(this.triggers.splice(index, 1));
 	    }
 	    return results;
 	  };
 
-	  TextGroup.prototype.add = function (text, data) {
-	    if (this.isFull) {
-	      return this;
+	  OboModel.prototype.onChildRemove = function (model, collection, options) {
+	    model.parent = null;
+	    model.markDirty();
+	    return delete OboModel.models[model.get('id')];
+	  };
+
+	  OboModel.prototype.onChildAdd = function (model, collection, options) {
+	    model.parent = this;
+	    return model.markDirty();
+	  };
+
+	  OboModel.prototype.onChildrenReset = function (collection, options) {
+	    var child, i, len, ref, results;
+	    ref = this.children.models;
+	    results = [];
+	    for (i = 0, len = ref.length; i < len; i++) {
+	      child = ref[i];
+	      results.push(child.parent = this);
 	    }
-	    addChildToGroup(createChild(text, data, this.dataTemplate), this);
+	    return results;
+	  };
+
+	  OboModel.prototype.createNewLocalId = function () {
+	    return createUUID();
+	  };
+
+	  OboModel.prototype.assignNewId = function () {
+	    delete OboModel.models[this.get('id')];
+	    this.set('id', this.createNewLocalId());
+	    return OboModel.models[this.get('id')] = this;
+	  };
+
+	  OboModel.prototype.clone = function (deep) {
+	    var child, clone, i, len, ref;
+	    if (deep == null) {
+	      deep = false;
+	    }
+	    clone = new OboModel(this.attributes, this.adapter.constructor);
+	    this.adapter.clone(this, clone);
+	    if (deep && this.hasChildren()) {
+	      ref = this.children;
+	      for (i = 0, len = ref.length; i < len; i++) {
+	        child = ref[i];
+	        clone.children.add(child.clone(true));
+	      }
+	    }
+	    return clone;
+	  };
+
+	  OboModel.prototype.toJSON = function () {
+	    var child, i, json, len, ref;
+	    json = OboModel.__super__.toJSON.call(this);
+	    this.adapter.toJSON(this, json);
+	    json.children = null;
+	    if (this.hasChildren()) {
+	      json.children = [];
+	      ref = this.children.models;
+	      for (i = 0, len = ref.length; i < len; i++) {
+	        child = ref[i];
+	        json.children.push(child.toJSON());
+	      }
+	    }
+	    return json;
+	  };
+
+	  OboModel.prototype.revert = function () {
+	    var attr, attrName, id, index, newModel, ref;
+	    newModel = new this.constructor();
+	    index = this.get('index');
+	    id = this.get('id');
+	    this.clear();
+	    ref = newModel.attributes;
+	    for (attrName in ref) {
+	      attr = ref[attrName];
+	      this.set(attrName, attr);
+	    }
+	    this.set('index', index);
+	    this.set('id', id);
+	    this.modelState = newModel.modelState;
 	    return this;
 	  };
 
-	  TextGroup.prototype.addAt = function (index, text, data) {
-	    if (this.isFull) {
-	      return this;
+	  OboModel.prototype.markDirty = function (markChildren) {
+	    var child, i, len, ref, results;
+	    if (markChildren == null) {
+	      markChildren = false;
 	    }
-	    addChildToGroup(createChild(text, data, this.dataTemplate), this, index);
-	    return this;
-	  };
-
-	  TextGroup.prototype.addGroup = function (group, cloneDataFn) {
-	    if (cloneDataFn == null) {
-	      cloneDataFn = Util.defaultCloneFn;
+	    this.modelState.dirty = this.modelState.needsUpdate = true;
+	    if (markChildren) {
+	      ref = this.children.models;
+	      results = [];
+	      for (i = 0, len = ref.length; i < len; i++) {
+	        child = ref[i];
+	        results.push(child.markDirty());
+	      }
+	      return results;
 	    }
-	    return this.addGroupAt(group, null, cloneDataFn);
 	  };
 
-	  TextGroup.prototype.addGroupAt = function (group, index, cloneDataFn) {
-	    var clone, item, itemsToAdd, j, len, ref;
-	    if (cloneDataFn == null) {
-	      cloneDataFn = Util.defaultCloneFn;
+	  OboModel.prototype.markForUpdate = function (markChildren) {
+	    var child, i, len, ref, results;
+	    if (markChildren == null) {
+	      markChildren = false;
 	    }
-	    itemsToAdd = [];
-	    ref = group.items;
-	    for (j = 0, len = ref.length; j < len; j++) {
-	      item = ref[j];
-	      clone = item.clone(cloneDataFn);
-	      itemsToAdd.push(createChild(clone.text, clone.data, this.dataTemplate));
+	    this.modelState.needsUpdate = true;
+	    if (markChildren) {
+	      ref = this.children.models;
+	      results = [];
+	      for (i = 0, len = ref.length; i < len; i++) {
+	        child = ref[i];
+	        results.push(child.markForUpdate());
+	      }
+	      return results;
 	    }
-	    addChildToGroup(itemsToAdd, this, index);
-	    return this;
 	  };
 
-	  TextGroup.prototype.get = function (index) {
-	    return this.items[index];
-	  };
-
-	  TextGroup.prototype.set = function (index, text, data) {
-	    return setChildToGroup(createChild(text, data, this.dataTemplate), this, index);
-	  };
-
-	  TextGroup.prototype.remove = function (index) {
-	    return removeChildFromGroup(this.items[index], this)[0];
-	  };
-
-	  TextGroup.prototype.clone = function (cloneDataFn) {
-	    var clonedItems, item, j, len, ref;
-	    if (cloneDataFn == null) {
-	      cloneDataFn = Util.defaultCloneFn;
+	  OboModel.prototype.markUpdated = function (markChildren) {
+	    var child, i, len, ref, results;
+	    if (markChildren == null) {
+	      markChildren = false;
 	    }
-	    clonedItems = [];
-	    ref = this.items;
-	    for (j = 0, len = ref.length; j < len; j++) {
-	      item = ref[j];
-	      clonedItems.push(item.clone(cloneDataFn));
+	    this.modelState.needsUpdate = false;
+	    if (markChildren) {
+	      ref = this.children.models;
+	      results = [];
+	      for (i = 0, len = ref.length; i < len; i++) {
+	        child = ref[i];
+	        results.push(child.modelState.needsUpdate = false);
+	      }
+	      return results;
 	    }
-	    return new TextGroup(this.maxItems, this.dataTemplate, clonedItems);
 	  };
 
-	  TextGroup.prototype.toDescriptor = function () {
-	    var desc, item, j, len, ref;
-	    desc = [];
-	    ref = this.items;
-	    for (j = 0, len = ref.length; j < len; j++) {
-	      item = ref[j];
-	      desc.push({
-	        text: item.text.getExportedObject(),
-	        data: Util.defaultCloneFn(item.data)
-	      });
-	    }
-	    return desc;
+	  OboModel.prototype.getDomEl = function () {
+	    return document.body.querySelector(".component[data-id='" + this.get('id') + "']");
 	  };
 
-	  TextGroup.prototype.toSlice = function (from, to) {
+	  OboModel.prototype.getComponentClass = function () {
+	    return OBO.getItemForType(this.get('type')).componentClass;
+	  };
+
+	  OboModel.prototype.hasChildren = function () {
+	    return this.children.models.length > 0;
+	  };
+
+	  OboModel.prototype.isOrphan = function () {
+	    return this.parent == null;
+	  };
+
+	  OboModel.prototype.addChildBefore = function (sibling) {
+	    var collection;
+	    if (this.isOrphan()) {
+	      return;
+	    }
+	    collection = this.parent.collection;
+	    if (collection.contains(sibling)) {
+	      collection.remove(sibling);
+	    }
+	    return collection.add(sibling, {
+	      at: this.getIndex()
+	    });
+	  };
+
+	  OboModel.prototype.addChildAfter = function (sibling) {
+	    var collection;
+	    if (this.isOrphan()) {
+	      return;
+	    }
+	    collection = this.parent.collection;
+	    if (collection.contains(sibling)) {
+	      collection.remove(sibling);
+	    }
+	    return collection.add(sibling, {
+	      at: this.getIndex() + 1
+	    });
+	  };
+
+	  OboModel.prototype.moveTo = function (index) {
+	    var refChunk;
+	    if (this.getIndex() === index) {
+	      return;
+	    }
+	    refChunk = this.parent.at(index);
+	    if (index < this.getIndex()) {
+	      return refChunk.addChildBefore(this);
+	    } else {
+	      return refChunk.addChildAfter(this);
+	    }
+	  };
+
+	  OboModel.prototype.moveToTop = function () {
+	    return this.moveTo(0);
+	  };
+
+	  OboModel.prototype.moveToBottom = function () {
+	    return this.moveTo(this.parent.length - 1);
+	  };
+
+	  OboModel.prototype.prevSibling = function () {
+	    if (this.isOrphan() || this.isFirst()) {
+	      return null;
+	    }
+	    return this.parent.children.at(this.getIndex() - 1);
+	  };
+
+	  OboModel.prototype.getIndex = function () {
+	    if (!this.parent) {
+	      return 0;
+	    }
+	    return this.parent.children.models.indexOf(this);
+	  };
+
+	  OboModel.prototype.nextSibling = function () {
+	    if (this.isOrphan() || this.isLast()) {
+	      return null;
+	    }
+	    return this.parent.children.at(this.parent.children.models.indexOf(this) + 1);
+	  };
+
+	  OboModel.prototype.isFirst = function () {
+	    if (this.isOrphan()) {
+	      return false;
+	    }
+	    return this.getIndex() === 0;
+	  };
+
+	  OboModel.prototype.isLast = function () {
+	    if (this.isOrphan()) {
+	      return false;
+	    }
+	    return this.getIndex() === this.parent.length - 1;
+	  };
+
+	  OboModel.prototype.isBefore = function (otherChunk) {
+	    if (this.isOrphan()) {
+	      return false;
+	    }
+	    return this.getIndex() < otherChunk.getIndex();
+	  };
+
+	  OboModel.prototype.isAfter = function (otherChunk) {
+	    if (this.isOrphan()) {
+	      return false;
+	    }
+	    return this.getIndex() > otherChunk.getIndex();
+	  };
+
+	  OboModel.prototype.remove = function () {
+	    if (!this.isOrphan()) {
+	      return this.parent.remove(this);
+	    }
+	  };
+
+	  OboModel.prototype.replaceWith = function (newChunk) {
+	    if (this.isOrphan() || newChunk === this) {
+	      return;
+	    }
+	    this.addChildBefore(newChunk);
+	    return this.remove();
+	  };
+
+	  OboModel.prototype.contains = function (child) {
+	    while (child !== null) {
+	      if (child === this) {
+	        return true;
+	      }
+	      child = child.parent;
+	    }
+	    return false;
+	  };
+
+	  OboModel.prototype.getChildContainingModel = function (model) {
+	    var child, i, len, ref;
+	    ref = this.children.models;
+	    for (i = 0, len = ref.length; i < len; i++) {
+	      child = ref[i];
+	      if (child.contains(model)) {
+	        return child;
+	      }
+	    }
+	    return null;
+	  };
+
+	  OboModel.prototype.getParentOfType = function (type) {
+	    var model;
+	    model = this.parent;
+	    while (model !== null) {
+	      if (model.get('type') === type) {
+	        return model;
+	      }
+	      model = model.parent;
+	    }
+	    return null;
+	  };
+
+	  OboModel.prototype.__debug_print = function (indent) {
+	    var child, i, len, ref, results;
+	    if (indent == null) {
+	      indent = '';
+	    }
+	    console.log(indent + this.get('type'));
+	    ref = this.children.models;
+	    results = [];
+	    for (i = 0, len = ref.length; i < len; i++) {
+	      child = ref[i];
+	      results.push(child.__debug_print(indent + '  '));
+	    }
+	    return results;
+	  };
+
+	  return OboModel;
+	}(Backbone.Model);
+
+	OboModel.models = {};
+
+	OboModelCollection = function (superClass) {
+	  extend(OboModelCollection, superClass);
+
+	  function OboModelCollection() {
+	    return OboModelCollection.__super__.constructor.apply(this, arguments);
+	  }
+
+	  return OboModelCollection;
+	}(Backbone.Collection);
+
+	OboModel.create = function (typeOrNameOrJson, attrs) {
+	  var c, child, children, i, item, len, oboModel;
+	  if (attrs == null) {
+	    attrs = {};
+	  }
+	  if ((typeof typeOrNameOrJson === 'undefined' ? 'undefined' : _typeof(typeOrNameOrJson)) === 'object') {
+	    oboModel = OboModel.create(typeOrNameOrJson.type, typeOrNameOrJson);
+	    if (oboModel != null) {
+	      children = typeOrNameOrJson.children;
+	      if (children != null) {
+	        for (i = 0, len = children.length; i < len; i++) {
+	          child = children[i];
+	          c = OboModel.create(child);
+	          oboModel.children.add(c);
+	        }
+	      }
+	    }
+	    return oboModel;
+	  }
+	  item = OBO.getDefaultItemForModelType(typeOrNameOrJson);
+	  if (!item) {
+	    item = OBO.getItemForType(typeOrNameOrJson);
+	  }
+	  if (!item) {
+	    return null;
+	  }
+	  attrs.type = typeOrNameOrJson;
+	  return new OboModel(attrs, item.adapter);
+	};
+
+	module.exports = OboModel;
+
+/***/ },
+/* 11 */
+/***/ function(module, exports) {
+
+	'use strict';
+
+	var DOMUtil;
+
+	DOMUtil = {
+	  findParentWithAttr: function findParentWithAttr(node, targetAttribute, targetValue, rootParent) {
+	    var attr;
+	    if (targetValue == null) {
+	      targetValue = null;
+	    }
+	    if (rootParent == null) {
+	      rootParent = document.body;
+	    }
+	    while (node != null && node !== rootParent) {
+	      if (node.getAttribute != null) {
+	        attr = node.getAttribute(targetAttribute);
+	        if (attr != null && (targetValue === null || attr === targetValue)) {
+	          return node;
+	        }
+	      }
+	      node = node.parentNode;
+	    }
+	    return null;
+	  },
+	  findParentAttr: function findParentAttr(node, targetAttribute) {
+	    node = DOMUtil.findParentWithAttr(node, targetAttribute);
+	    if (node == null) {
+	      return null;
+	    }
+	    return node.getAttribute(targetAttribute);
+	  },
+	  findParentComponentElements: function findParentComponentElements(node) {
+	    var componentSet, cur;
+	    componentSet = new Set();
+	    cur = node;
+	    while (cur !== null) {
+	      cur = DOMUtil.findParentWithAttr(cur, 'data-obo-component');
+	      if (cur == null) {
+	        break;
+	      }
+	      if (DOMUtil.elementLikeComponent(cur)) {
+	        componentSet.add(cur);
+	      }
+	      cur = cur.parentElement;
+	    }
+	    return componentSet;
+	  },
+	  findParentComponentIds: function findParentComponentIds(node) {
+	    var ids;
+	    ids = new Set();
+	    DOMUtil.findParentComponentElements(node).forEach(function (el) {
+	      return ids.add(el.getAttribute('data-id'));
+	    });
+	    return ids;
+	  },
+	  elementLikeComponent: function elementLikeComponent(node) {
+	    return node.getAttribute('data-obo-component') && node.classList.contains('component') && node.getAttribute('data-id') != null && node.getAttribute('data-type') != null;
+	  },
+	  getFirstTextNodeOfElement: function getFirstTextNodeOfElement(node) {
+	    while (node != null && node.nodeType !== Node.TEXT_NODE) {
+	      node = node.childNodes[0];
+	    }
+	    return node;
+	  },
+	  getTextNodesInOrder: function getTextNodesInOrder(element) {
+	    var textNodes;
+	    textNodes = [];
+	    DOMUtil.getTextNodesInOrderRecur(element, textNodes);
+	    return textNodes;
+	  },
+	  getTextNodesInOrderRecur: function getTextNodesInOrderRecur(element, textNodes) {
+	    var i, len, node, ref, results;
+	    ref = element.childNodes;
+	    results = [];
+	    for (i = 0, len = ref.length; i < len; i++) {
+	      node = ref[i];
+	      if (node.nodeType === Node.TEXT_NODE) {
+	        results.push(textNodes.push(node));
+	      } else {
+	        results.push(DOMUtil.getTextNodesInOrderRecur(node, textNodes));
+	      }
+	    }
+	    return results;
+	  }
+	};
+
+	module.exports = DOMUtil;
+
+/***/ },
+/* 12 */
+/***/ function(module, exports, __webpack_require__) {
+
+	'use strict';
+
+	var ChunkStyleList, HtmlUtil, ObjectAssign, StyleRange, StyleType, StyleableText, trimStyleRange;
+
+	ObjectAssign = __webpack_require__(24);
+
+	ChunkStyleList = __webpack_require__(76);
+
+	StyleRange = __webpack_require__(21);
+
+	StyleType = __webpack_require__(15);
+
+	HtmlUtil = __webpack_require__(82);
+
+	trimStyleRange = function trimStyleRange(styleRange, maxLength) {
+	  styleRange.end = Math.min(styleRange.end, maxLength);
+	  return styleRange;
+	};
+
+	StyleableText = function () {
+	  function StyleableText(text) {
+	    if (text == null) {
+	      text = '';
+	    }
+	    this.init();
+	    this.insertText(0, text);
+	  }
+
+	  StyleableText.prototype.init = function () {
+	    this.styleList = new ChunkStyleList();
+	    return this.value = '';
+	  };
+
+	  StyleableText.prototype.clone = function () {
+	    var clone;
+	    clone = new StyleableText();
+	    clone.value = this.value;
+	    clone.styleList = this.styleList.clone();
+	    return clone;
+	  };
+
+	  StyleableText.prototype.getExportedObject = function () {
+	    return {
+	      value: this.value,
+	      styleList: this.styleList.getExportedObject()
+	    };
+	  };
+
+	  StyleableText.prototype.setText = function (text) {
+	    this.init();
+	    return this.insertText(0, text);
+	  };
+
+	  StyleableText.prototype.replaceText = function (from, to, text) {
+	    if (text == null || text.length === 0) {
+	      return this.deleteText(from, to);
+	    }
+	    this.insertText(from + 1, text);
+	    this.normalizeStyles();
+	    this.deleteText(from, from + 1);
+	    this.normalizeStyles();
+	    this.deleteText(from + text.length, to + text.length - 1);
+	    return this.normalizeStyles();
+	  };
+
+	  StyleableText.prototype.appendText = function (text) {
+	    return this.insertText(this.length, text);
+	  };
+
+	  StyleableText.prototype.insertText = function (atIndex, text) {
+	    var insertLength, k, len, range, ref;
+	    insertLength = text.length;
+	    ref = this.styleList.styles;
+	    for (k = 0, len = ref.length; k < len; k++) {
+	      range = ref[k];
+	      switch (range.compareToRange(atIndex)) {
+	        case StyleRange.CONTAINS:
+	          range.end += insertLength;
+	          break;
+	        case StyleRange.AFTER:
+	          range.start += insertLength;
+	          range.end += insertLength;
+	      }
+	    }
+	    this.value = this.value.substring(0, atIndex) + text + this.value.substring(atIndex);
+	    return this.normalizeStyles();
+	  };
+
+	  StyleableText.prototype.deleteText = function (from, to) {
+	    var deleteLength, k, len, range, ref;
+	    if (from == null) {
+	      from = -1;
+	    }
 	    if (to == null) {
 	      to = 2e308;
 	    }
-	    removeChildFromGroup(this.items.slice(to), this);
-	    removeChildFromGroup(this.items.slice(0, from), this);
-	    return this;
+	    if (from > to) {
+	      return;
+	    }
+	    from = Math.max(0, from);
+	    to = Math.min(to, this.value.length);
+	    deleteLength = to - from;
+	    ref = this.styleList.styles;
+	    for (k = 0, len = ref.length; k < len; k++) {
+	      range = ref[k];
+	      switch (range.compareToRange(from, to)) {
+	        case StyleRange.CONTAINS:
+	          range.end -= deleteLength;
+	          break;
+	        case StyleRange.INSIDE_LEFT:
+	          range.end = from;
+	          break;
+	        case StyleRange.ENSCAPSULATED_BY:
+	          range.invalidate();
+	          break;
+	        case StyleRange.INSIDE_RIGHT:
+	          range.start = from;
+	          range.end -= deleteLength;
+	          break;
+	        case StyleRange.AFTER:
+	          range.start -= deleteLength;
+	          range.end -= deleteLength;
+	      }
+	    }
+	    this.value = this.value.substring(0, from) + this.value.substring(to);
+	    return this.normalizeStyles();
 	  };
 
-	  TextGroup.prototype.splitBefore = function (index) {
-	    var item, sibling;
-	    sibling = new TextGroup(this.maxItems, this.dataTemplate);
-	    while (this.length !== index) {
-	      item = this.remove(index);
-	      sibling.add(item.text, item.data);
+	  StyleableText.prototype.toggleStyleText = function (styleType, from, to, styleData) {
+	    var styleRange;
+	    if (from == null) {
+	      from = 0;
+	    }
+	    if (to == null) {
+	      to = this.length;
+	    }
+	    styleRange = trimStyleRange(new StyleRange(from, to, styleType, styleData), this.value.length);
+	    if (this.styleList.rangeHasStyle(from, Math.min(to, this.value.length), styleType)) {
+	      this.styleList.remove(styleRange);
+	    } else {
+	      this.styleList.add(styleRange);
+	    }
+	    return this.normalizeStyles();
+	  };
+
+	  StyleableText.prototype.styleText = function (styleType, from, to, styleData) {
+	    var range, styleRange;
+	    if (from == null) {
+	      from = 0;
+	    }
+	    if (to == null) {
+	      to = this.length;
+	    }
+	    range = new StyleRange(from, to, styleType, styleData);
+	    styleRange = trimStyleRange(range, this.value.length);
+	    this.styleList.add(styleRange);
+	    return this.normalizeStyles();
+	  };
+
+	  StyleableText.prototype.unstyleText = function (styleType, from, to) {
+	    var styleRange;
+	    if (from == null) {
+	      from = 0;
+	    }
+	    if (to == null) {
+	      to = this.length;
+	    }
+	    styleRange = trimStyleRange(new StyleRange(from, to, styleType), this.value.length);
+	    this.styleList.remove(styleRange);
+	    return this.normalizeStyles();
+	  };
+
+	  StyleableText.prototype.getStyles = function (from, to) {
+	    return this.styleList.getStylesInRange(from, to);
+	  };
+
+	  StyleableText.prototype.split = function (atIndex) {
+	    var lastCharStyles, sibling, splitAtEnd, style;
+	    if (isNaN(atIndex)) {
+	      return null;
+	    }
+	    splitAtEnd = atIndex === this.value.length;
+	    sibling = this.clone();
+	    this.deleteText(atIndex, this.value.length);
+	    sibling.deleteText(0, atIndex);
+	    if (splitAtEnd) {
+	      lastCharStyles = this.styleList.getStylesInRange(this.value.length - 1, this.value.length);
+	      for (style in lastCharStyles) {
+	        sibling.styleText(style, 0, 0);
+	      }
 	    }
 	    return sibling;
 	  };
 
-	  TextGroup.prototype.splitText = function (index, offset) {
-	    var item, newItem;
-	    item = this.items[index];
-	    newItem = createChild(item.text.split(offset), Util.defaultCloneFn(item.data), this.dataTemplate);
-	    addChildToGroup(newItem, this, index + 1);
-	    return newItem;
+	  StyleableText.prototype.normalizeStyles = function () {
+	    return this.styleList.normalize();
 	  };
 
-	  TextGroup.prototype.merge = function (index, mergeDataFn) {
-	    var consumerItem, digestedItem;
-	    if (mergeDataFn == null) {
-	      mergeDataFn = Util.defaultMergeFn;
+	  StyleableText.prototype.merge = function (otherText, atIndex) {
+	    var curRange, insertLength, k, l, len, len1, range, ref, ref1;
+	    if (atIndex == null) {
+	      atIndex = null;
 	    }
-	    digestedItem = this.items.splice(index + 1, 1)[0];
-	    consumerItem = this.items[index];
-	    if (!digestedItem || !consumerItem) {
-	      return this;
+	    if (atIndex == null) {
+	      atIndex = this.value.length;
 	    }
-	    consumerItem.data = Util.createData(mergeDataFn(consumerItem.data, digestedItem.data), this.dataTemplate);
-	    consumerItem.text.merge(digestedItem.text);
-	    return this;
-	  };
-
-	  TextGroup.prototype.deleteSpan = function (startIndex, startTextIndex, endIndex, endTextIndex, merge, mergeFn) {
-	    var endItem, endText, i, item, j, len, newItems, ref, startItem, startText;
-	    if (merge == null) {
-	      merge = true;
-	    }
-	    if (mergeFn == null) {
-	      mergeFn = Util.defaultMergeFn;
-	    }
-	    startItem = this.items[startIndex];
-	    endItem = this.items[endIndex];
-	    if (!startItem) {
-	      startItem = this.first;
-	    }
-	    if (!endItem) {
-	      endItem = this.last;
-	    }
-	    startText = startItem.text;
-	    endText = endItem.text;
-	    if (startText === endText) {
-	      startText.deleteText(startTextIndex, endTextIndex);
-	      return;
-	    }
-	    startText.deleteText(startTextIndex, startText.length);
-	    endText.deleteText(0, endTextIndex);
-	    if (merge) {
-	      newItems = [];
-	      ref = this.items;
-	      for (i = j = 0, len = ref.length; j < len; i = ++j) {
-	        item = ref[i];
-	        if (i < startIndex || i > endIndex) {
-	          newItems.push(item);
-	        } else if (i === startIndex) {
-	          newItems.push(startItem);
-	        } else if (i === endIndex) {
-	          newItems.push(endItem);
-	        }
-	      }
-	      removeAllChildrenFromGroup(this);
-	      addChildToGroup(newItems, this);
-	      return this.merge(startIndex, mergeFn);
-	    }
-	  };
-
-	  TextGroup.prototype.clearSpan = function (startIndex, startTextIndex, endIndex, endTextIndex) {
-	    var endItem, endText, i, item, j, len, ref, startItem, startText;
-	    startItem = this.items[startIndex];
-	    endItem = this.items[endIndex];
-	    startText = startItem.text;
-	    endText = endItem.text;
-	    if (startText === endText) {
-	      startText.deleteText(startTextIndex, endTextIndex);
-	      return;
-	    }
-	    startText.deleteText(startTextIndex, startText.length);
-	    endText.deleteText(0, endTextIndex);
-	    ref = this.items;
-	    for (i = j = 0, len = ref.length; j < len; i = ++j) {
-	      item = ref[i];
-	      if (i > startIndex && i < endIndex) {
-	        item.text.init();
+	    insertLength = otherText.value.length;
+	    ref = this.styleList.styles;
+	    for (k = 0, len = ref.length; k < len; k++) {
+	      range = ref[k];
+	      switch (range.compareToRange(atIndex)) {
+	        case StyleRange.AFTER:
+	          range.start += insertLength;
+	          range.end += insertLength;
 	      }
 	    }
-	    return this;
+	    this.value = this.value.substring(0, atIndex) + otherText.value + this.value.substring(atIndex);
+	    this.styleList.normalize();
+	    ref1 = otherText.styleList.styles;
+	    for (l = 0, len1 = ref1.length; l < len1; l++) {
+	      range = ref1[l];
+	      curRange = range.clone();
+	      curRange.start += atIndex;
+	      curRange.end += atIndex;
+	      this.styleList.add(curRange);
+	    }
+	    return this.styleList.normalize();
 	  };
 
-	  TextGroup.prototype.styleText = function (startIndex, startTextIndex, endIndex, endTextIndex, styleType, styleData) {
-	    return this.applyStyleFunction('styleText', arguments);
-	  };
-
-	  TextGroup.prototype.unstyleText = function (startIndex, startTextIndex, endIndex, endTextIndex, styleType, styleData) {
-	    return this.applyStyleFunction('unstyleText', arguments);
-	  };
-
-	  TextGroup.prototype.toggleStyleText = function (startIndex, startTextIndex, endIndex, endTextIndex, styleType, styleData) {
-	    return this.applyStyleFunction('toggleStyleText', arguments);
-	  };
-
-	  TextGroup.prototype.applyStyleFunction = function (fn, args) {
-	    var endIndex, endItem, endText, endTextIndex, foundStartText, item, j, len, ref, startIndex, startItem, startText, startTextIndex, styleData, styleType;
-	    startIndex = args[0], startTextIndex = args[1], endIndex = args[2], endTextIndex = args[3], styleType = args[4], styleData = args[5];
-	    startItem = this.items[startIndex];
-	    endItem = this.items[endIndex];
-	    startText = startItem.text;
-	    endText = endItem.text;
-	    if (startText === endText) {
-	      startText[fn](styleType, startTextIndex, endTextIndex, styleData);
-	      return;
+	  StyleableText.prototype.__debug_print = function () {
+	    var fill, i, j, k, l, len, m, n, p, ref, ref1, ref2, ref3, ref4, ref5, ref6, results, s1, s2, style;
+	    console.log('   |          |' + this.value + ' |');
+	    fill = '';
+	    for (i = k = 0, ref = this.value.length + 10; 0 <= ref ? k <= ref : k >= ref; i = 0 <= ref ? ++k : --k) {
+	      fill += ' ';
 	    }
-	    foundStartText = false;
-	    ref = this.items;
-	    for (j = 0, len = ref.length; j < len; j++) {
-	      item = ref[j];
-	      if (item.text === startText) {
-	        item.text[fn](styleType, startTextIndex, startText.length, styleData);
-	        foundStartText = true;
-	      } else if (item.text === endText) {
-	        item.text[fn](styleType, 0, endTextIndex, styleData);
-	        break;
-	      } else if (foundStartText) {
-	        item.text[fn](styleType, 0, item.text.length, styleData);
-	      }
-	    }
-	    return this;
-	  };
-
-	  TextGroup.prototype.getStyles = function (startIndex, startTextIndex, endIndex, endTextIndex) {
-	    var allStyles, endItem, endText, foundStartText, item, j, len, numTexts, ref, returnedStyles, startItem, startText, style, styles;
-	    startItem = this.items[startIndex];
-	    endItem = this.items[endIndex];
-	    if (startItem == null || endItem == null) {
-	      return {};
-	    }
-	    startText = startItem.text;
-	    endText = endItem.text;
-	    if (startText == null || endText == null) {
-	      return {};
-	    }
-	    if (startText === endText) {
-	      return startText.getStyles(startTextIndex, endTextIndex);
-	    }
-	    numTexts = 0;
-	    allStyles = {};
-	    foundStartText = false;
-	    ref = this.items;
-	    for (j = 0, len = ref.length; j < len; j++) {
-	      item = ref[j];
-	      styles = {};
-	      if (item.text === startText) {
-	        numTexts++;
-	        styles = item.text.getStyles(startTextIndex, startText.length);
-	        foundStartText = true;
-	      } else if (item.text === endText) {
-	        numTexts++;
-	        styles = item.text.getStyles(0, endTextIndex);
-	      } else if (foundStartText) {
-	        numTexts++;
-	        styles = item.text.getStyles(0, item.text.length);
-	      }
-	      for (style in styles) {
-	        if (allStyles[style] != null) {
-	          allStyles[style]++;
-	        } else {
-	          allStyles[style] = 1;
-	        }
-	      }
-	      if (item.text === endText) {
-	        break;
-	      }
-	    }
-	    returnedStyles = {};
-	    for (style in allStyles) {
-	      if (allStyles[style] === numTexts) {
-	        returnedStyles[style] = style;
-	      }
-	    }
-	    return returnedStyles;
-	  };
-
-	  TextGroup.prototype.__debug_print = function () {
-	    var item, j, len, ref, results;
-	    console.log('========================');
-	    ref = this.items;
+	    j = 0;
+	    ref1 = this.styleList.styles;
 	    results = [];
-	    for (j = 0, len = ref.length; j < len; j++) {
-	      item = ref[j];
-	      item.text.__debug_print();
-	      console.log(JSON.stringify(item.data));
-	      results.push(console.log('---------------------'));
+	    for (l = 0, len = ref1.length; l < len; l++) {
+	      style = ref1[l];
+	      s1 = (style.type + '          ').substr(0, 10) + '|';
+	      s2 = '';
+	      for (i = m = 0, ref2 = style.start; 0 <= ref2 ? m < ref2 : m > ref2; i = 0 <= ref2 ? ++m : --m) {
+	        s2 += '·';
+	      }
+	      s2 += '<';
+	      for (i = n = ref3 = style.start + 1, ref4 = style.end; ref3 <= ref4 ? n < ref4 : n > ref4; i = ref3 <= ref4 ? ++n : --n) {
+	        s2 += '=';
+	      }
+	      s2 += '>';
+	      for (i = p = ref5 = style.end + 1, ref6 = fill.length; ref5 <= ref6 ? p < ref6 : p > ref6; i = ref5 <= ref6 ? ++p : --p) {
+	        s2 += '·';
+	      }
+	      console.log((j + '   ').substr(0, 3) + '|' + (s1 + s2 + fill).substr(0, fill.length + 1) + '|' + style.start + ',' + style.end + '|' + JSON.stringify(style.data));
+	      results.push(j++);
 	    }
 	    return results;
 	  };
 
-	  return TextGroup;
+	  return StyleableText;
 	}();
 
-	Object.defineProperties(TextGroup.prototype, {
+	Object.defineProperties(StyleableText.prototype, {
 	  "length": {
-	    "get": function get() {
-	      return this.items.length;
-	    }
-	  },
-	  "first": {
-	    "get": function get() {
-	      return this.items[0];
-	    }
-	  },
-	  "last": {
-	    "get": function get() {
-	      return this.items[this.items.length - 1];
-	    }
-	  },
-	  "isFull": {
-	    "get": function get() {
-	      return this.items.length === this.maxItems;
-	    }
-	  },
-	  "isEmpty": {
-	    "get": function get() {
-	      return this.items.length === 0;
-	    }
-	  },
-	  "isBlank": {
-	    "get": function get() {
-	      return this.isEmpty || this.items.length === 1 && this.first.text.length === 0;
+	    get: function get() {
+	      return this.value.length;
 	    }
 	  }
 	});
 
-	TextGroup.fromDescriptor = function (descriptor, maxItems, dataTemplate, restoreDataDescriptorFn) {
-	  var item, items, j, len;
-	  if (restoreDataDescriptorFn == null) {
-	    restoreDataDescriptorFn = Util.defaultCloneFn;
-	  }
-	  items = [];
-	  for (j = 0, len = descriptor.length; j < len; j++) {
-	    item = descriptor[j];
-	    items.push(createChild(StyleableText.createFromObject(item.text), restoreDataDescriptorFn(item.data), dataTemplate));
-	  }
-	  return new TextGroup(maxItems, dataTemplate, items);
+	StyleableText.createFromObject = function (o) {
+	  var st;
+	  st = new StyleableText();
+	  st.styleList = ChunkStyleList.createFromObject(o.styleList);
+	  st.value = o.value;
+	  return st;
 	};
 
-	TextGroup.create = function (maxItems, dataTemplate, numItemsToCreate) {
-	  var group;
-	  if (maxItems == null) {
-	    maxItems = 2e308;
+	StyleableText.getStylesOfElement = function (el) {
+	  var computedStyle, styles;
+	  if (el.nodeType !== Node.ELEMENT_NODE) {
+	    return [];
 	  }
-	  if (dataTemplate == null) {
-	    dataTemplate = {};
+	  styles = [];
+	  computedStyle = window.getComputedStyle(el);
+	  switch (computedStyle.getPropertyValue('font-weight')) {
+	    case "bold":
+	    case "bolder":
+	    case "700":
+	    case "800":
+	    case "900":
+	      styles.push({
+	        type: StyleType.BOLD
+	      });
 	  }
-	  if (numItemsToCreate == null) {
-	    numItemsToCreate = 1;
+	  switch (computedStyle.getPropertyValue('text-decoration')) {
+	    case "line-through":
+	      styles.push({
+	        type: StyleType.STRIKETHROUGH
+	      });
 	  }
-	  group = new TextGroup(maxItems, dataTemplate);
-	  group.init(numItemsToCreate);
-	  return group;
+	  switch (computedStyle.getPropertyValue('font-style')) {
+	    case "italic":
+	      styles.push({
+	        type: StyleType.ITALIC
+	      });
+	  }
+	  switch (computedStyle.getPropertyValue('font-family').toLowerCase()) {
+	    case "monospace":
+	      styles.push({
+	        type: StyleType.MONOSPACE
+	      });
+	  }
+	  switch (el.tagName.toLowerCase()) {
+	    case 'a':
+	      if (el.getAttribute('href') != null) {
+	        styles.push({
+	          type: StyleType.LINK,
+	          data: {
+	            href: el.getAttribute('href')
+	          }
+	        });
+	      }
+	      break;
+	    case 'q':
+	      styles.push({
+	        type: StyleType.QUOTE,
+	        data: el.getAttribute('cite')
+	      });
+	      break;
+	    case 'sup':
+	      styles.push({
+	        type: StyleType.SUPERSCRIPT,
+	        data: 1
+	      });
+	      break;
+	    case 'sub':
+	      styles.push({
+	        type: StyleType.SUPERSCRIPT,
+	        data: -1
+	      });
+	  }
+	  return styles;
 	};
 
-	window.TextGroup = TextGroup;
-
-	module.exports = TextGroup;
-
-/***/ },
-/* 61 */
-/***/ function(module, exports) {
-
-	"use strict";
-
-	var TextGroupCursor;
-
-	TextGroupCursor = function () {
-	  function TextGroupCursor(virtualCursor) {
-	    this.virtualCursor = virtualCursor;
+	StyleableText.createFromElement = function (node) {
+	  var childNode, k, l, len, len1, len2, m, range, ranges, ref, results, state, style, styleRange, styles;
+	  if (node == null) {
+	    return new StyleableText();
 	  }
-
-	  return TextGroupCursor;
-	}();
-
-	Object.defineProperties(TextGroupCursor.prototype, {
-	  isTextStart: {
-	    "get": function get() {
-	      return this.offset === 0;
-	    }
-	  },
-	  isTextEnd: {
-	    "get": function get() {
-	      return this.offset === this.text.length;
-	    }
-	  },
-	  isFirstText: {
-	    "get": function get() {
-	      return this.groupIndex === 0;
-	    }
-	  },
-	  isLastText: {
-	    "get": function get() {
-	      return this.groupIndex === this.textGroup.length - 1;
-	    }
-	  },
-	  isGroupStart: {
-	    "get": function get() {
-	      return this.isTextStart && this.isFirstText;
-	    }
-	  },
-	  isGroupEnd: {
-	    "get": function get() {
-	      return this.isTextEnd && this.isLastText;
-	    }
-	  },
-	  textGroup: {
-	    "get": function get() {
-	      return this.virtualCursor.chunk.modelState.textGroup;
-	    }
-	  },
-	  groupIndex: {
-	    "get": function get() {
-	      if (this.virtualCursor.data != null) {
-	        return this.virtualCursor.data.groupIndex;
-	      } else {
-	        return -1;
-	      }
-	    }
-	  },
-	  offset: {
-	    "get": function get() {
-	      if (this.virtualCursor.data != null) {
-	        return this.virtualCursor.data.offset;
-	      } else {
-	        return 0;
-	      }
-	    }
-	  },
-	  textGroupItem: {
-	    "get": function get() {
-	      return this.virtualCursor.chunk.modelState.textGroup.get(this.virtualCursor.data.groupIndex);
-	    }
-	  },
-	  text: {
-	    "get": function get() {
-	      return this.textGroupItem.text;
-	    }
-	  }
-	});
-
-	module.exports = TextGroupCursor;
-
-/***/ },
-/* 62 */
-/***/ function(module, exports, __webpack_require__) {
-
-	'use strict';
-
-	var StyleableText, TextGroupItem, Util;
-
-	StyleableText = __webpack_require__(8);
-
-	Util = __webpack_require__(36);
-
-	module.exports = TextGroupItem = function () {
-	  function TextGroupItem(text, data, parent) {
-	    this.text = text != null ? text : new StyleableText();
-	    this.data = data != null ? data : {};
-	    this.parent = parent != null ? parent : null;
-	  }
-
-	  TextGroupItem.prototype.clone = function (cloneDataFn) {
-	    if (cloneDataFn == null) {
-	      cloneDataFn = Util.defaultCloneFn;
-	    }
-	    return new TextGroupItem(this.text.clone(), cloneDataFn(this.data), null);
-	  };
-
-	  return TextGroupItem;
-	}();
-
-	Object.defineProperties(TextGroupItem.prototype, {
-	  "index": {
-	    "get": function get() {
-	      if (this.parent === null) {
-	        return -1;
-	      }
-	      return this.parent.indexOf(this);
-	    }
-	  }
-	});
-
-/***/ },
-/* 63 */
-/***/ function(module, exports, __webpack_require__) {
-
-	'use strict';
-
-	var DOMUtil, TextGroupCursor, TextGroupSelection, VirtualCursor, emptyChar, getCursors;
-
-	TextGroupCursor = __webpack_require__(61);
-
-	VirtualCursor = __webpack_require__(35);
-
-	DOMUtil = __webpack_require__(7);
-
-	emptyChar = __webpack_require__(16).EMPTY_CHAR;
-
-	getCursors = function getCursors(chunk, virtualSelection) {
-	  var chunkEnd, chunkStart, position;
-	  if (!virtualSelection) {
-	    return {
-	      start: null,
-	      end: null
+	  if (arguments[1] == null) {
+	    state = {
+	      curText: new StyleableText(),
+	      texts: []
 	    };
+	    StyleableText.createFromElement(node, state);
+	    state.texts.push(state.curText);
+	    state.curText.styleList.normalize();
+	    return state.texts;
 	  }
-	  chunkStart = TextGroupSelection.getGroupStartCursor(chunk);
-	  chunkEnd = TextGroupSelection.getGroupEndCursor(chunk);
-	  position = virtualSelection.getPosition(chunk);
-	  switch (position) {
-	    case 'start':
-	      return {
-	        start: new TextGroupCursor(virtualSelection.start),
-	        end: chunkEnd
-	      };
-	    case 'end':
-	      return {
-	        start: chunkStart,
-	        end: new TextGroupCursor(virtualSelection.end)
-	      };
-	    case 'contains':
-	      return {
-	        start: new TextGroupCursor(virtualSelection.start),
-	        end: new TextGroupCursor(virtualSelection.end)
-	      };
-	    case 'inside':
-	      return {
-	        start: chunkStart,
-	        end: chunkEnd
-	      };
-	    default:
-	      return {
-	        start: null,
-	        end: null
-	      };
+	  state = arguments[1];
+	  switch (node.nodeType) {
+	    case Node.TEXT_NODE:
+	      return state.curText.value += node.nodeValue;
+	    case Node.ELEMENT_NODE:
+	      if (state.curText.length > 0 && !HtmlUtil.isElementInline(node)) {
+	        state.texts.push(state.curText);
+	        state.curText.styleList.normalize();
+	        state.curText = new StyleableText();
+	      }
+	      styles = StyleableText.getStylesOfElement(node);
+	      ranges = [];
+	      for (k = 0, len = styles.length; k < len; k++) {
+	        style = styles[k];
+	        styleRange = new StyleRange(state.curText.value.length, 2e308, style.type, style.data);
+	        ranges.push(styleRange);
+	      }
+	      ref = node.childNodes;
+	      for (l = 0, len1 = ref.length; l < len1; l++) {
+	        childNode = ref[l];
+	        StyleableText.createFromElement(childNode, state);
+	      }
+	      results = [];
+	      for (m = 0, len2 = ranges.length; m < len2; m++) {
+	        range = ranges[m];
+	        range.end = state.curText.value.length;
+	        results.push(state.curText.styleList.add(range));
+	      }
+	      return results;
 	  }
 	};
 
-	TextGroupSelection = function () {
-	  function TextGroupSelection(chunk1, virtualSelection1) {
-	    this.chunk = chunk1;
-	    this.virtualSelection = virtualSelection1;
+	window.__st = StyleableText;
+
+	module.exports = StyleableText;
+
+/***/ },
+/* 13 */,
+/* 14 */
+/***/ function(module, exports, __webpack_require__) {
+
+	'use strict';
+
+	var DOMSelection, DOMUtil;
+
+	DOMUtil = __webpack_require__(11);
+
+	DOMSelection = function () {
+	  function DOMSelection() {
+	    this.domSelection = window.getSelection();
+	    this.domRange = null;
+	    if (this.domSelection.rangeCount > 0) {
+	      this.domRange = this.domSelection.getRangeAt(0);
+	    }
 	  }
 
-	  TextGroupSelection.prototype.includes = function (item) {
-	    var groupIndex;
-	    if (this.type === 'none') {
-	      return false;
+	  DOMSelection.prototype.getType = function () {
+	    if (this.domSelection.type != null) {
+	      return this.domSelection.type.toLowerCase();
 	    }
-	    groupIndex = item.index;
-	    return this.start.groupIndex === groupIndex || this.end.groupIndex === groupIndex;
+	    if (this.domSelection.isCollapsed != null) {
+	      if (this.domSelection.isCollapsed) {
+	        return 'caret';
+	      } else {
+	        return 'range';
+	      }
+	    }
+	    if (this.domSelection.focusNode === this.domSelection.anchorNode && this.domSelection.focusOffset === this.domSelection.anchorOffset) {
+	      return 'caret';
+	    }
+	    return 'range';
 	  };
 
-	  TextGroupSelection.prototype.selectGroup = function () {
-	    return TextGroupSelection.selectGroup(this.chunk, this.virtualSelection);
-	  };
-
-	  TextGroupSelection.prototype.selectText = function (groupIndex) {
-	    return TextGroupSelection.selectText(this.chunk, groupIndex, this.virtualSelection);
-	  };
-
-	  TextGroupSelection.prototype.setCaretToGroupStart = function () {
-	    return TextGroupSelection.setCaretToGroupStart(this.chunk, this.virtualSelection);
-	  };
-
-	  TextGroupSelection.prototype.setCaretToTextStart = function (groupIndex) {
-	    return TextGroupSelection.setCaretToTextStart(this.chunk, groupIndex, this.virtualSelection);
-	  };
-
-	  TextGroupSelection.prototype.setCaretToGroupEnd = function () {
-	    return TextGroupSelection.setCaretToGroupEnd(this.chunk, this.virtualSelection);
-	  };
-
-	  TextGroupSelection.prototype.setCaretToTextEnd = function (groupIndex) {
-	    return TextGroupSelection.setCaretToTextEnd(this.chunk, groupIndex, this.virtualSelection);
-	  };
-
-	  TextGroupSelection.prototype.setCaret = function (groupIndex, offset) {
-	    return this.virtualSelection.setCaret(this.chunk, {
-	      groupIndex: groupIndex,
-	      offset: offset
-	    });
-	  };
-
-	  TextGroupSelection.prototype.setStart = function (groupIndex, offset) {
-	    return this.virtualSelection.setStart(this.chunk, {
-	      groupIndex: groupIndex,
-	      offset: offset
-	    });
-	  };
-
-	  TextGroupSelection.prototype.setEnd = function (groupIndex, offset) {
-	    return this.virtualSelection.setEnd(this.chunk, {
-	      groupIndex: groupIndex,
-	      offset: offset
-	    });
-	  };
-
-	  TextGroupSelection.prototype.getAllSelectedTexts = function () {
-	    var all, i, j, ref, ref1, ref2, ref3;
-	    if (((ref = this.start) != null ? ref.text : void 0) == null || ((ref1 = this.end) != null ? ref1.text : void 0) == null) {
+	  DOMSelection.prototype.getClientRects = function () {
+	    if (this.domRange == null) {
 	      return [];
 	    }
-	    all = [];
-	    for (i = j = ref2 = this.start.groupIndex, ref3 = this.end.groupIndex; ref2 <= ref3 ? j <= ref3 : j >= ref3; i = ref2 <= ref3 ? ++j : --j) {
-	      all.push(this.chunk.modelState.textGroup.get(i));
-	    }
-	    return all;
+	    return this.domRange.getClientRects();
 	  };
 
-	  return TextGroupSelection;
+	  DOMSelection.prototype.set = function (startNode, startOffset, endNode, endOffset) {
+	    var r;
+	    r = document.createRange();
+	    r.setStart(startNode, startOffset);
+	    r.setEnd(endNode, endOffset);
+	    this.domSelection.removeAllRanges();
+	    this.domSelection.addRange(r);
+	    this.domRange = r;
+	    return this;
+	  };
+
+	  DOMSelection.prototype.setStart = function (node, offset) {
+	    return this.domRange.setStart(node, offset);
+	  };
+
+	  DOMSelection.prototype.setEnd = function (node, offset) {
+	    return this.domRange.setEnd(node, offset);
+	  };
+
+	  DOMSelection.prototype.includes = function (node) {
+	    if (node == null) {
+	      return false;
+	    }
+	    return node.contains(this.startText) && node.contains(this.endText);
+	  };
+
+	  return DOMSelection;
 	}();
 
-	Object.defineProperties(TextGroupSelection.prototype, {
-	  type: {
+	DOMSelection.set = function (startNode, startOffset, endNode, endOffset) {
+	  return new DOMSelection().set(startNode, startOffset, endNode, endOffset);
+	};
+
+	DOMSelection.includes = function (node) {
+	  return new DOMSelection().includes(node);
+	};
+
+	DOMSelection.get = function () {
+	  return new DOMSelection();
+	};
+
+	Object.defineProperties(DOMSelection.prototype, {
+	  startContainer: {
 	    get: function get() {
-	      var cursors, position;
-	      cursors = getCursors(this.chunk, this.virtualSelection);
-	      position = this.position;
-	      switch (false) {
-	        case !(cursors.start === null || cursors.end === null):
-	          return 'none';
-	        case !(position === 'contains' && cursors.start.groupIndex === cursors.end.groupIndex && cursors.start.offset === cursors.end.offset):
-	          return 'caret';
-	        case cursors.start.groupIndex !== cursors.end.groupIndex:
-	          return 'TextSpan';
-	        default:
-	          return 'multipleTextSpan';
+	      if (this.domRange == null) {
+	        return null;
+	      }
+	      if (this.domRange.startContainer.nodeType === Node.TEXT_NODE) {
+	        return this.domRange.startContainer.parentElement;
+	      } else {
+	        return this.domRange.startContainer;
 	      }
 	    }
 	  },
-	  start: {
+	  startText: {
 	    get: function get() {
-	      return getCursors(this.chunk, this.virtualSelection).start;
+	      if (this.domRange == null) {
+	        return null;
+	      }
+	      return DOMUtil.getFirstTextNodeOfElement(this.domRange.startContainer);
 	    }
 	  },
-	  end: {
+	  startOffset: {
 	    get: function get() {
-	      return getCursors(this.chunk, this.virtualSelection).end;
+	      if (this.domRange == null) {
+	        return null;
+	      }
+	      return this.domRange.startOffset;
 	    }
 	  },
-	  position: {
+	  endContainer: {
 	    get: function get() {
-	      return this.virtualSelection.getPosition(this.chunk);
+	      if (this.domRange == null) {
+	        return null;
+	      }
+	      if (this.domRange.endContainer.nodeType === Node.TEXT_NODE) {
+	        return this.domRange.endContainer.parentElement;
+	      } else {
+	        return this.domRange.endContainer;
+	      }
+	    }
+	  },
+	  endText: {
+	    get: function get() {
+	      if (this.domRange == null) {
+	        return null;
+	      }
+	      return DOMUtil.getFirstTextNodeOfElement(this.domRange.endContainer);
+	    }
+	  },
+	  endOffset: {
+	    get: function get() {
+	      if (this.domRange == null) {
+	        return null;
+	      }
+	      return this.domRange.endOffset;
 	    }
 	  }
 	});
 
-	TextGroupSelection.getGroupStartCursor = function (chunk) {
-	  return TextGroupSelection.getTextStartCursor(chunk, 0);
+	window.__ds = function () {
+	  return DOMSelection.get();
 	};
 
-	TextGroupSelection.getGroupEndCursor = function (chunk) {
-	  return TextGroupSelection.getTextEndCursor(chunk, chunk.modelState.textGroup.length - 1);
-	};
-
-	TextGroupSelection.getTextStartCursor = function (chunk, groupIndex) {
-	  var virtCur;
-	  virtCur = new VirtualCursor(chunk, {
-	    groupIndex: groupIndex,
-	    offset: 0
-	  });
-	  return new TextGroupCursor(virtCur);
-	};
-
-	TextGroupSelection.getTextEndCursor = function (chunk, groupIndex) {
-	  var virtCur;
-	  virtCur = new VirtualCursor(chunk, {
-	    groupIndex: groupIndex,
-	    offset: chunk.modelState.textGroup.get(groupIndex).text.length
-	  });
-	  return new TextGroupCursor(virtCur);
-	};
-
-	TextGroupSelection.selectGroup = function (chunk, virtualSelection) {
-	  var end, start;
-	  start = TextGroupSelection.getGroupStartCursor(chunk);
-	  end = TextGroupSelection.getGroupEndCursor(chunk);
-	  virtualSelection.setStart(start.virtualCursor.chunk, start.virtualCursor.data);
-	  return virtualSelection.setEnd(end.virtualCursor.chunk, end.virtualCursor.data);
-	};
-
-	TextGroupSelection.selectText = function (chunk, groupIndex, virtualSelection) {
-	  var end, start;
-	  start = TextGroupSelection.getTextStartCursor(chunk, groupIndex);
-	  end = TextGroupSelection.getTextEndCursor(chunk, groupIndex);
-	  virtualSelection.setStart(start.virtualCursor.chunk, start.virtualCursor.data);
-	  return virtualSelection.setEnd(end.virtualCursor.chunk, end.virtualCursor.data);
-	};
-
-	TextGroupSelection.setCaretToGroupStart = function (chunk, virtualSelection) {
-	  TextGroupSelection.selectGroup(chunk, virtualSelection);
-	  return virtualSelection.collapse();
-	};
-
-	TextGroupSelection.setCaretToTextStart = function (chunk, groupIndex, virtualSelection) {
-	  TextGroupSelection.selectText(chunk, groupIndex, virtualSelection);
-	  return virtualSelection.collapse();
-	};
-
-	TextGroupSelection.setCaretToGroupEnd = function (chunk, virtualSelection) {
-	  TextGroupSelection.selectGroup(chunk, virtualSelection);
-	  return virtualSelection.collapseToEnd();
-	};
-
-	TextGroupSelection.setCaretToTextEnd = function (chunk, groupIndex, virtualSelection) {
-	  TextGroupSelection.selectText(chunk, groupIndex, virtualSelection);
-	  return virtualSelection.collapseToEnd();
-	};
-
-	TextGroupSelection.getCursorDataFromDOM = function (targetTextNode, offset) {
-	  var anchor, groupIndex, groupIndexAttr, j, len, oboTextNode, ref, textNode, totalCharactersFromStart;
-	  totalCharactersFromStart = 0;
-	  oboTextNode = DOMUtil.findParentWithAttr(targetTextNode, 'data-group-index');
-	  if (oboTextNode) {
-	    groupIndexAttr = oboTextNode.getAttribute('data-group-index');
-	    groupIndex = parseInt(groupIndexAttr, 10);
-	    if (isNaN(groupIndex)) {
-	      groupIndex = groupIndexAttr;
-	    }
-	  }
-	  if (oboTextNode == null || oboTextNode.textContent === emptyChar) {
-	    return {
-	      offset: 0,
-	      groupIndex: groupIndex
-	    };
-	  }
-	  ref = DOMUtil.getTextNodesInOrder(oboTextNode);
-	  for (j = 0, len = ref.length; j < len; j++) {
-	    textNode = ref[j];
-	    if (textNode === targetTextNode) {
-	      break;
-	    }
-	    totalCharactersFromStart += textNode.nodeValue.length;
-	  }
-	  anchor = false;
-	  if (groupIndexAttr.indexOf('anchor:') === 0) {
-	    anchor = groupIndexAttr.substr(groupIndexAttr.indexOf(':') + 1);
-	  }
-	  offset += totalCharactersFromStart;
-	  if (anchor) {
-	    offset = 0;
-	  }
-	  return {
-	    offset: offset,
-	    groupIndex: groupIndex
-	  };
-	};
-
-	module.exports = TextGroupSelection;
+	module.exports = DOMSelection;
 
 /***/ },
-/* 64 */
-/***/ function(module, exports) {
-
-	"use strict";
-
-	module.exports = function (asset) {
-	  return "url('" + asset.replace(/'/g, "\\'") + "')";
-	};
-
-/***/ },
-/* 65 */
+/* 15 */
 /***/ function(module, exports) {
 
 	'use strict';
 
-	var isElementInline, _sanitize;
+	var StyleType;
 
-	_sanitize = function sanitize(node) {
-	  var attr, child, i, j, len, len1, ref, ref1;
-	  if (node.nodeType === Node.ELEMENT_NODE) {
-	    if (node.tagName.toLowerCase() === 'script') {
-	      node = node.parentElement.replaceChild(document.createElement('span'), node);
-	    }
-	    ref = node.attributes;
-	    for (i = 0, len = ref.length; i < len; i++) {
-	      attr = ref[i];
-	      switch (attr.name) {
-	        case 'href':
-	        case 'cite':
-	        case 'style':
-	          true;
-	          break;
-	        default:
-	          node.setAttribute(attr.name, '');
-	      }
-	    }
-	    ref1 = node.childNodes;
-	    for (j = 0, len1 = ref1.length; j < len1; j++) {
-	      child = ref1[j];
-	      _sanitize(child);
-	    }
-	  }
-	  return node;
+	StyleType = {
+	  BOLD: 'b',
+	  ITALIC: 'i',
+	  STRIKETHROUGH: 'del',
+	  LINK: 'a',
+	  QUOTE: 'q',
+	  MONOSPACE: 'monospace',
+	  SUPERSCRIPT: 'sup',
+	  COMMENT: '_comment',
+	  LATEX: '_latex'
 	};
 
-	isElementInline = function isElementInline(el) {
-	  switch (el.tagName.toLowerCase()) {
-	    case 'b':
-	    case 'big':
-	    case 'i':
-	    case 'small':
-	    case 'tt':
-	    case 'abbr':
-	    case 'acronym':
-	    case 'cite':
-	    case 'code':
-	    case 'dfn':
-	    case 'em':
-	    case 'kbd':
-	    case 'strong':
-	    case 'samp':
-	    case 'time':
-	    case 'var':
-	    case 'a':
-	    case 'bdo':
-	    case 'br':
-	    case 'img':
-	    case 'map':
-	    case 'object':
-	    case 'q':
-	    case 'script':
-	    case 'span':
-	    case 'sub':
-	    case 'sup':
-	    case 'button':
-	    case 'input':
-	    case 'label':
-	    case 'select':
-	    case 'textarea':
-	      return true;
-	    default:
-	      return false;
-	  }
-	};
-
-	module.exports = {
-	  sanitize: _sanitize,
-	  isElementInline: isElementInline
-	};
+	module.exports = StyleType;
 
 /***/ },
-/* 66 */
-/***/ function(module, exports, __webpack_require__) {
-
-	'use strict';
-
-	var Dispatcher, ModalUtil;
-
-	Dispatcher = __webpack_require__(3);
-
-	ModalUtil = {
-	  show: function show(component) {
-	    return Dispatcher.trigger('modal:show', {
-	      value: {
-	        component: component
-	      }
-	    });
-	  },
-	  hide: function hide() {
-	    return Dispatcher.trigger('modal:hide');
-	  },
-	  getCurrentModal: function getCurrentModal(state) {
-	    if (state.modals.length === 0) {
-	      return null;
-	    }
-	    return state.modals[0];
-	  }
-	};
-
-	module.exports = ModalUtil;
-
-/***/ },
-/* 67 */
-/***/ function(module, exports) {
-
-	"use strict";
-
-	module.exports = function () {
-	  var _getId;
-	  _getId = function getId(a) {
-	    if (a) {
-	      return (a ^ Math.random() * 16 >> a / 4).toString(16);
-	    } else {
-	      return ([1e7] + -1e3 + -4e3 + -8e3 + -1e11).replace(/[018]/g, _getId);
-	    }
-	  };
-	  return _getId();
-	};
-
-/***/ },
-/* 68 */
-/***/ function(module, exports, __webpack_require__) {
-
-	'use strict';
-
-	module.exports = {
-	  Common: {
-	    chunk: {
-	      BaseSelectionHandler: __webpack_require__(14),
-	      FocusableChunk: __webpack_require__(123),
-	      focusableChunk: {
-	        FocusableSelectionHandler: __webpack_require__(46),
-	        ToggleSelectionHandler: __webpack_require__(124)
-	      },
-	      NonEditableChunk: __webpack_require__(125),
-	      TextChunk: __webpack_require__(126),
-	      textChunk: {
-	        TextGroupSelectionHandler: __webpack_require__(130),
-	        TextGroupEl: __webpack_require__(47),
-	        Linkify: __webpack_require__(127),
-	        TextGroupAdapter: __webpack_require__(129)
-	      },
-	      util: {
-	        ChunkUtil: __webpack_require__(131),
-	        Insert: __webpack_require__(132),
-	        InsertWithText: __webpack_require__(133)
-	      }
-	    },
-	    components: {
-	      OboComponent: __webpack_require__(140),
-	      Anchor: __webpack_require__(48),
-	      DeleteButton: __webpack_require__(32),
-	      EditButton: __webpack_require__(134),
-	      Button: __webpack_require__(49),
-	      modal: {
-	        bubble: {
-	          Bubble: __webpack_require__(50),
-	          SingleInputBubble: __webpack_require__(136)
-	        },
-	        Question: __webpack_require__(137),
-	        SimpleMessage: __webpack_require__(138),
-	        Modal: __webpack_require__(53),
-	        Dialog: __webpack_require__(51),
-	        SimpleDialog: __webpack_require__(54),
-	        ErrorDialog: __webpack_require__(52)
-	      },
-	      TextMenu: __webpack_require__(141),
-	      ModalContainer: __webpack_require__(139),
-	      FocusBlocker: __webpack_require__(135)
-	    },
-	    flux: {
-	      Store: __webpack_require__(33),
-	      Dispatcher: __webpack_require__(3)
-	    },
-	    mockDOM: {
-	      MockElement: __webpack_require__(55),
-	      MockTextNode: __webpack_require__(56)
-	    },
-	    models: {
-	      OboModel: __webpack_require__(6),
-	      Legacy: __webpack_require__(142)
-	    },
-	    net: {
-	      API: __webpack_require__(143)
-	    },
-	    selection: {
-	      ChunkSelection: __webpack_require__(147),
-	      Cursor: __webpack_require__(57),
-	      DOMSelection: __webpack_require__(10),
-	      OboSelectionRect: __webpack_require__(34),
-	      Selection: __webpack_require__(148),
-	      VirtualCursor: __webpack_require__(35),
-	      VirtualCursorData: __webpack_require__(149),
-	      VirtualSelection: __webpack_require__(58)
-	    },
-	    stores: {
-	      ModalStore: __webpack_require__(151),
-	      FocusStore: __webpack_require__(150)
-	    },
-	    page: {
-	      DOMUtil: __webpack_require__(7),
-	      Head: __webpack_require__(144),
-	      Keyboard: __webpack_require__(145),
-	      Screen: __webpack_require__(146)
-	    },
-	    text: {
-	      ChunkStyleList: __webpack_require__(59),
-	      StyleableText: __webpack_require__(8),
-	      StyleRange: __webpack_require__(15),
-	      StyleType: __webpack_require__(11),
-	      TextConstants: __webpack_require__(16)
-	    },
-	    textGroup: {
-	      TextGroup: __webpack_require__(60),
-	      TextGroupCursor: __webpack_require__(61),
-	      TextGroupItem: __webpack_require__(62),
-	      TextGroupSelection: __webpack_require__(63),
-	      TextGroupUtil: __webpack_require__(36)
-	    },
-	    util: {
-	      Console: __webpack_require__(152),
-	      getBackgroundImage: __webpack_require__(64),
-	      HtmlUtil: __webpack_require__(65),
-	      ModalUtil: __webpack_require__(66),
-	      FocusUtil: __webpack_require__(37),
-	      ErrorUtil: __webpack_require__(153),
-	      UUID: __webpack_require__(67)
-	    }
-	  }
-	};
-
-/***/ },
-/* 69 */,
-/* 70 */,
-/* 71 */,
-/* 72 */,
-/* 73 */,
-/* 74 */,
-/* 75 */
+/* 16 */
 /***/ function(module, exports) {
 
 	/**
@@ -7627,7 +4767,7 @@
 
 
 /***/ },
-/* 76 */
+/* 17 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/**
@@ -7902,7 +5042,7 @@
 
 
 /***/ },
-/* 77 */
+/* 18 */
 /***/ function(module, exports) {
 
 	/**
@@ -7931,2147 +5071,578 @@
 
 
 /***/ },
-/* 78 */,
-/* 79 */,
-/* 80 */,
-/* 81 */,
-/* 82 */,
-/* 83 */,
-/* 84 */,
-/* 85 */,
-/* 86 */,
-/* 87 */,
-/* 88 */,
-/* 89 */,
-/* 90 */,
-/* 91 */,
-/* 92 */,
-/* 93 */,
-/* 94 */,
-/* 95 */,
-/* 96 */,
-/* 97 */,
-/* 98 */,
-/* 99 */,
-/* 100 */,
-/* 101 */,
-/* 102 */,
-/* 103 */,
-/* 104 */,
-/* 105 */,
-/* 106 */,
-/* 107 */,
-/* 108 */,
-/* 109 */,
-/* 110 */,
-/* 111 */,
-/* 112 */,
-/* 113 */,
-/* 114 */,
-/* 115 */,
-/* 116 */,
-/* 117 */,
-/* 118 */,
-/* 119 */,
-/* 120 */,
-/* 121 */,
-/* 122 */,
-/* 123 */
+/* 19 */,
+/* 20 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
 
-	var _extends = Object.assign || function (target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i]; for (var key in source) { if (Object.prototype.hasOwnProperty.call(source, key)) { target[key] = source[key]; } } } return target; };
+	var BaseSelectionHandler, Chunk;
 
-	var Anchor;
+	Chunk = __webpack_require__(10);
 
-	Anchor = __webpack_require__(48);
+	BaseSelectionHandler = function () {
+	  function BaseSelectionHandler() {}
 
-	module.exports = React.createClass({
-	  displayName: 'exports',
-
-	  getDefaultProps: function getDefaultProps() {
-	    return {
-	      indent: 0,
-	      spellcheck: true
-	    };
-	  },
-	  getAnchorNode: function getAnchorNode() {
-	    var ref, ref1, ref2;
-	    if (((ref = this.refs) != null ? (ref1 = ref.anchor) != null ? (ref2 = ref1.refs) != null ? ref2.anchorElement : void 0 : void 0 : void 0) == null) {
-	      return null;
-	    }
-	    return this.refs.anchor.refs.anchorElement;
-	  },
-	  render: function render() {
-	    var className;
-	    className = this.props.className;
-	    return React.createElement(
-	      'div',
-	      { className: 'focusable-chunk anchor-container' + (className ? ' ' + className : ''), contentEditable: 'false' },
-	      React.createElement(Anchor, _extends({}, this.props, { name: 'main', ref: 'anchor' })),
-	      this.props.children
-	    );
-	  }
-	});
-
-/***/ },
-/* 124 */
-/***/ function(module, exports, __webpack_require__) {
-
-	'use strict';
-
-	var BaseSelectionHandler,
-	    FocusableSelectionHandler,
-	    ToggleSelectionHandler,
-	    extend = function extend(child, parent) {
-	  for (var key in parent) {
-	    if (hasProp.call(parent, key)) child[key] = parent[key];
-	  }function ctor() {
-	    this.constructor = child;
-	  }ctor.prototype = parent.prototype;child.prototype = new ctor();child.__super__ = parent.prototype;return child;
-	},
-	    hasProp = {}.hasOwnProperty;
-
-	BaseSelectionHandler = __webpack_require__(14);
-
-	FocusableSelectionHandler = __webpack_require__(46);
-
-	ToggleSelectionHandler = function (superClass) {
-	  extend(ToggleSelectionHandler, superClass);
-
-	  function ToggleSelectionHandler(textSelectionHandler, focusSelectionHandler) {
-	    this.textSelectionHandler = textSelectionHandler;
-	    this.focusSelectionHandler = focusSelectionHandler != null ? focusSelectionHandler : new FocusableSelectionHandler();
-	  }
-
-	  ToggleSelectionHandler.prototype.getCopyOfSelection = function (selection, chunk, cloneId) {
-	    if (chunk.isEditing()) {
-	      return this.textSelectionHandler.getCopyOfSelection.apply(this, arguments);
-	    } else {
-	      return this.focusSelectionHandler.getCopyOfSelection.apply(this, arguments);
-	    }
-	  };
-
-	  ToggleSelectionHandler.prototype.selectAll = function (selection, chunk) {
-	    if (chunk.isEditing()) {
-	      return this.textSelectionHandler.selectAll.apply(this, arguments);
-	    } else {
-	      return this.focusSelectionHandler.selectAll.apply(this, arguments);
-	    }
-	  };
-
-	  ToggleSelectionHandler.prototype.selectStart = function (selection, chunk, asRange) {
-	    if (asRange == null) {
-	      asRange = false;
-	    }
-	    if (chunk.isEditing()) {
-	      return this.textSelectionHandler.selectStart.apply(this, arguments);
-	    } else {
-	      return this.focusSelectionHandler.selectStart.apply(this, arguments);
-	    }
-	  };
-
-	  ToggleSelectionHandler.prototype.selectEnd = function (selection, chunk, asRange) {
-	    if (asRange == null) {
-	      asRange = false;
-	    }
-	    if (chunk.isEditing()) {
-	      return this.textSelectionHandler.selectEnd.apply(this, arguments);
-	    } else {
-	      return this.focusSelectionHandler.selectEnd.apply(this, arguments);
-	    }
-	  };
-
-	  ToggleSelectionHandler.prototype.getVirtualSelectionStartData = function (selection, chunk, text, html) {
-	    if (chunk.isEditing()) {
-	      return this.textSelectionHandler.getVirtualSelectionStartData.apply(this, arguments);
-	    } else {
-	      return this.focusSelectionHandler.getVirtualSelectionStartData.apply(this, arguments);
-	    }
-	  };
-
-	  ToggleSelectionHandler.prototype.getVirtualSelectionEndData = function (selection, chunk, text, html) {
-	    if (chunk.isEditing()) {
-	      return this.textSelectionHandler.getVirtualSelectionEndData.apply(this, arguments);
-	    } else {
-	      return this.focusSelectionHandler.getVirtualSelectionEndData.apply(this, arguments);
-	    }
-	  };
-
-	  ToggleSelectionHandler.prototype.getDOMSelectionStart = function (selection, chunk, text, html) {
-	    if (chunk.isEditing()) {
-	      return this.textSelectionHandler.getDOMSelectionStart.apply(this, arguments);
-	    } else {
-	      return this.focusSelectionHandler.getDOMSelectionStart.apply(this, arguments);
-	    }
-	  };
-
-	  ToggleSelectionHandler.prototype.getDOMSelectionEnd = function (selection, chunk, text, html) {
-	    if (chunk.isEditing()) {
-	      return this.textSelectionHandler.getDOMSelectionEnd.apply(this, arguments);
-	    } else {
-	      return this.focusSelectionHandler.getDOMSelectionEnd.apply(this, arguments);
-	    }
-	  };
-
-	  ToggleSelectionHandler.prototype.areCursorsEquivalent = function (selection, chunk, text, html) {
-	    if (chunk.isEditing()) {
-	      return this.textSelectionHandler.areCursorsEquivalent.apply(this, arguments);
-	    } else {
-	      return this.focusSelectionHandler.areCursorsEquivalent.apply(this, arguments);
-	    }
-	  };
-
-	  return ToggleSelectionHandler;
-	}(BaseSelectionHandler);
-
-	module.exports = ToggleSelectionHandler;
-
-/***/ },
-/* 125 */
-/***/ function(module, exports) {
-
-	'use strict';
-
-	module.exports = React.createClass({
-	  displayName: 'exports',
-
-	  getDefaultProps: function getDefaultProps() {
-	    return {
-	      indent: 0
-	    };
-	  },
-	  render: function render() {
-	    return React.createElement(
-	      'div',
-	      { className: 'non-editable-chunk' + (this.props.className ? ' ' + this.props.className : ''), contentEditable: 'false', 'data-indent': this.props.indent },
-	      this.props.children
-	    );
-	  }
-	});
-
-/***/ },
-/* 126 */
-/***/ function(module, exports) {
-
-	'use strict';
-
-	module.exports = React.createClass({
-	  displayName: 'exports',
-
-	  getDefaultProps: function getDefaultProps() {
-	    return {
-	      indent: 0
-	    };
-	  },
-	  render: function render() {
-	    return React.createElement(
-	      'div',
-	      { className: 'text-chunk' + (this.props.className ? ' ' + this.props.className : '') },
-	      this.props.children
-	    );
-	  }
-	});
-
-/***/ },
-/* 127 */
-/***/ function(module, exports) {
-
-	"use strict";
-
-	var regex;
-
-	regex = new RegExp("(?:(?:https?)://)?" + "(?:\\S+(?::\\S*)?@)?" + "(?:" + "(?!(?:10|127)(?:\\.\\d{1,3}){3})" + "(?!(?:169\\.254|192\\.168)(?:\\.\\d{1,3}){2})" + "(?!172\\.(?:1[6-9]|2\\d|3[0-1])(?:\\.\\d{1,3}){2})" + "(?:[1-9]\\d?|1\\d\\d|2[01]\\d|22[0-3])" + "(?:\\.(?:1?\\d{1,2}|2[0-4]\\d|25[0-5])){2}" + "(?:\\.(?:[1-9]\\d?|1\\d\\d|2[0-4]\\d|25[0-4]))" + "|" + "(?:(?:[a-z\\u00a1-\\uffff0-9]-*)*[a-z\\u00a1-\\uffff0-9]+)" + "(?:\\.(?:[a-z\\u00a1-\\uffff0-9]-*)*[a-z\\u00a1-\\uffff0-9]+)*" + "(?:\\.(?:[a-z\\u00a1-\\uffff]{2,}))" + "\\.?" + ")" + "(?::\\d{2,5})?" + "(?:[/?#]\\S*)?", "gi");
-
-	module.exports = function (chunk, targetTextGroupItem) {
-	  var i, len, link, links, results, selection, styleApplied, styleableText;
-	  console.time('linkify');
-	  styleApplied = false;
-	  links = [];
-	  selection = chunk.page.module.app.selection;
-	  styleableText = targetTextGroupItem.text;
-	  while ((results = regex.exec(styleableText.value)) !== null) {
-	    links.unshift([results.index, regex.lastIndex, styleableText.value.substring(results.index, regex.lastIndex)]);
-	  }
-	  if (links.length === 0) {
-	    return false;
-	  }
-	  selection.saveVirtualSelection();
-	  for (i = 0, len = links.length; i < len; i++) {
-	    link = links[i];
-	    selection.virtual.start.data.groupIndex = targetTextGroupItem.index;
-	    selection.virtual.end.data.groupIndex = selection.virtual.start.data.groupIndex;
-	    selection.virtual.start.data.offset = link[0];
-	    selection.virtual.end.data.offset = link[1];
-	    if (chunk.getSelectionStyles().a == null) {
-	      if (link[2].indexOf('http') !== 0) {
-	        link[2] = 'http://' + link[2];
-	      }
-	      chunk.styleSelection('a', {
-	        href: link[2]
-	      });
-	      styleApplied = true;
-	    }
-	  }
-	  selection.restoreVirtualSelection();
-	  console.timeEnd('linkify');
-	  return styleApplied;
-	};
-
-/***/ },
-/* 128 */
-/***/ function(module, exports, __webpack_require__) {
-
-	'use strict';
-
-	var MockElement, MockTextNode, ORDER, ObjectAssign, StyleRange, StyleType, StyleableText, _debugPrintNode, _getHTML, applyStyle, getMockElement, getTextNodeFragmentDescriptorsAt, _getTextNodeFragmentDescriptorsAtHelper, katex, wrap, wrapElement;
-
-	ObjectAssign = __webpack_require__(21);
-
-	katex = __webpack_require__(215);
-
-	StyleableText = __webpack_require__(8);
-
-	StyleRange = __webpack_require__(15);
-
-	StyleType = __webpack_require__(11);
-
-	MockElement = __webpack_require__(55);
-
-	MockTextNode = __webpack_require__(56);
-
-	ORDER = [StyleType.COMMENT, StyleType.LATEX, StyleType.LINK, StyleType.QUOTE, StyleType.BOLD, StyleType.STRIKETHROUGH, StyleType.MONOSPACE, StyleType.SUPERSCRIPT, StyleType.ITALIC];
-
-	_getTextNodeFragmentDescriptorsAtHelper = function getTextNodeFragmentDescriptorsAtHelper(stateObj, targetStartIndex, targetEndIndex) {
-	  var charsRead, child, j, len, ref, results;
-	  if (stateObj.curNode.nodeType === 'element') {
-	    ref = stateObj.curNode.children;
-	    results = [];
-	    for (j = 0, len = ref.length; j < len; j++) {
-	      child = ref[j];
-	      stateObj.curNode = child;
-	      results.push(_getTextNodeFragmentDescriptorsAtHelper(stateObj, targetStartIndex, targetEndIndex));
-	    }
-	    return results;
-	  } else {
-	    charsRead = stateObj.charsRead + stateObj.curNode.text.length;
-	    if (charsRead >= targetEndIndex && stateObj.end === null) {
-	      stateObj.end = {
-	        node: stateObj.curNode,
-	        startIndex: 0,
-	        endIndex: targetEndIndex - stateObj.charsRead
-	      };
-	    } else if (stateObj.start !== null && stateObj.end === null) {
-	      stateObj.inbetween.push({
-	        node: stateObj.curNode,
-	        startIndex: 0,
-	        endIndex: 2e308
-	      });
-	    }
-	    if (charsRead >= targetStartIndex && stateObj.start === null) {
-	      stateObj.start = {
-	        node: stateObj.curNode,
-	        startIndex: targetStartIndex - stateObj.charsRead,
-	        endIndex: 2e308
-	      };
-	    }
-	    stateObj.last = {
-	      node: stateObj.curNode,
-	      startIndex: 0,
-	      endIndex: 2e308
-	    };
-	    return stateObj.charsRead = charsRead;
-	  }
-	};
-
-	getTextNodeFragmentDescriptorsAt = function getTextNodeFragmentDescriptorsAt(rootNode, startIndex, endIndex) {
-	  var fragmentDescriptors, stateObj;
-	  stateObj = {
-	    charsRead: 0,
-	    start: null,
-	    inbetween: [],
-	    end: null,
-	    curNode: rootNode
-	  };
-	  _getTextNodeFragmentDescriptorsAtHelper(stateObj, startIndex, endIndex);
-	  if (stateObj.end === null) {
-	    stateObj.end = stateObj.last;
-	  }
-	  if (stateObj.start.node === stateObj.end.node) {
-	    stateObj.start.endIndex = stateObj.end.endIndex;
-	    stateObj.end = null;
-	  }
-	  fragmentDescriptors = stateObj.inbetween;
-	  if (stateObj.start !== null) {
-	    fragmentDescriptors.unshift(stateObj.start);
-	  }
-	  if (stateObj.end !== null) {
-	    fragmentDescriptors.push(stateObj.end);
-	  }
-	  return fragmentDescriptors;
-	};
-
-	wrapElement = function wrapElement(styleRange, nodeToWrap, text) {
-	  var html, level, newChild, node, root;
-	  switch (styleRange.type) {
-	    case 'sup':
-	      level = styleRange.data;
-	      if (level > 0) {
-	        node = root = new MockElement('sup');
-	        while (level > 1) {
-	          newChild = new MockElement('sup');
-	          node.addChild(newChild);
-	          node = newChild;
-	          level--;
-	        }
-	      } else {
-	        level = Math.abs(level);
-	        node = root = new MockElement('sub');
-	        while (level > 1) {
-	          newChild = new MockElement('sub');
-	          node.addChild(newChild);
-	          node = newChild;
-	          level--;
-	        }
-	      }
-	      nodeToWrap.parent.replaceChild(nodeToWrap, root);
-	      node.addChild(nodeToWrap);
-	      nodeToWrap.text = text;
-	      return root;
-	    case '_comment':
-	      newChild = new MockElement('span', ObjectAssign({
-	        'class': 'comment'
-	      }, styleRange.data));
-	      nodeToWrap.parent.replaceChild(nodeToWrap, newChild);
-	      newChild.addChild(nodeToWrap);
-	      nodeToWrap.text = text;
-	      return newChild;
-	    case '_latex':
-	      newChild = new MockElement('span', ObjectAssign({
-	        'class': 'latex'
-	      }, styleRange.data));
-	      nodeToWrap.parent.replaceChild(nodeToWrap, newChild);
-	      newChild.addChild(nodeToWrap);
-	      html = katex.renderToString(text);
-	      nodeToWrap.html = html;
-	      nodeToWrap.text = text;
-	      return newChild;
-	    default:
-	      newChild = new MockElement(styleRange.type, ObjectAssign({}, styleRange.data));
-	      nodeToWrap.parent.replaceChild(nodeToWrap, newChild);
-	      newChild.addChild(nodeToWrap);
-	      nodeToWrap.text = text;
-	      return newChild;
-	  }
-	};
-
-	wrap = function wrap(styleRange, nodeFragmentDescriptor) {
-	  var fromPosition, leftText, newChild, nodeToWrap, rightText, text, toPosition, wrappedText;
-	  nodeToWrap = nodeFragmentDescriptor.node;
-	  text = nodeToWrap.text;
-	  fromPosition = nodeFragmentDescriptor.startIndex;
-	  toPosition = nodeFragmentDescriptor.endIndex;
-	  leftText = text.substring(0, fromPosition);
-	  wrappedText = text.substring(fromPosition, toPosition);
-	  rightText = text.substring(toPosition);
-	  if (wrappedText.length === 0) {
-	    return;
-	  }
-	  if (leftText.length > 0) {
-	    newChild = new MockTextNode(leftText);
-	    nodeToWrap.parent.addBefore(newChild, nodeToWrap);
-	  }
-	  nodeToWrap = wrapElement(styleRange, nodeToWrap, wrappedText);
-	  if (rightText.length > 0) {
-	    newChild = new MockTextNode(rightText);
-	    return nodeToWrap.parent.addAfter(newChild, nodeToWrap);
-	  }
-	};
-
-	applyStyle = function applyStyle(el, styleRange) {
-	  var fragmentDescriptor, fragmentDescriptors, i, j, ref, results;
-	  fragmentDescriptors = getTextNodeFragmentDescriptorsAt(el, styleRange.start, styleRange.end);
-	  results = [];
-	  for (i = j = ref = fragmentDescriptors.length - 1; j >= 0; i = j += -1) {
-	    fragmentDescriptor = fragmentDescriptors[i];
-	    results.push(wrap(styleRange, fragmentDescriptor));
-	  }
-	  return results;
-	};
-
-	getMockElement = function getMockElement(styleableText) {
-	  var j, k, len, len1, ref, root, styleRange, styleType;
-	  root = new MockElement('span');
-	  root.addChild(new MockTextNode(styleableText.value));
-	  for (j = 0, len = ORDER.length; j < len; j++) {
-	    styleType = ORDER[j];
-	    ref = styleableText.styleList.styles;
-	    for (k = 0, len1 = ref.length; k < len1; k++) {
-	      styleRange = ref[k];
-	      if (styleRange.type === styleType) {
-	        applyStyle(root, styleRange);
-	      }
-	    }
-	  }
-	  return root;
-	};
-
-	_debugPrintNode = function __debugPrintNode(node, indent) {
-	  var child, j, len, ref, results;
-	  if (indent == null) {
-	    indent = '';
-	  }
-	  if (node.nodeType === 'element') {
-	    console.log(indent + node.type);
-	    ref = node.children;
-	    results = [];
-	    for (j = 0, len = ref.length; j < len; j++) {
-	      child = ref[j];
-	      results.push(_debugPrintNode(child, indent + '  '));
-	    }
-	    return results;
-	  } else {
-	    return console.log(indent + '[' + node.text + ']');
-	  }
-	};
-
-	_getHTML = function __getHTML(node) {
-	  if (node.nodeType === 'text') {
-	    return node.text;
-	  }
-	  return "<" + node.type + ">" + node.children.map(function (child) {
-	    return _getHTML(child);
-	  }).join('') + "</" + node.type + ">";
-	};
-
-	window.__getMockElement = getMockElement;
-
-	window.__debugPrintNode = _debugPrintNode;
-
-	window.__getHTML = _getHTML;
-
-	module.exports = getMockElement;
-
-/***/ },
-/* 129 */
-/***/ function(module, exports, __webpack_require__) {
-
-	'use strict';
-
-	var TextGroup, TextGroupAdapter;
-
-	TextGroup = __webpack_require__(60);
-
-	TextGroupAdapter = {
-	  construct: function construct(model, attrs) {
-	    var ref;
-	    if ((attrs != null ? (ref = attrs.content) != null ? ref.textGroup : void 0 : void 0) != null) {
-	      return model.modelState.textGroup = TextGroup.fromDescriptor(attrs.content.textGroup, 2e308, {
-	        indent: 0
-	      });
-	    } else {
-	      return model.modelState.textGroup = TextGroup.create(2e308, {
-	        indent: 0
-	      });
-	    }
-	  },
-	  clone: function clone(model, _clone) {
-	    return _clone.modelState.textGroup = model.modelState.textGroup.clone();
-	  },
-	  toJSON: function toJSON(model, json) {
-	    return json.content.textGroup = model.modelState.textGroup.toDescriptor();
-	  }
-	};
-
-	module.exports = TextGroupAdapter;
-
-/***/ },
-/* 130 */
-/***/ function(module, exports, __webpack_require__) {
-
-	'use strict';
-
-	var BaseSelectionHandler,
-	    TextGroupEl,
-	    TextGroupSelection,
-	    TextGroupSelectionHandler,
-	    extend = function extend(child, parent) {
-	  for (var key in parent) {
-	    if (hasProp.call(parent, key)) child[key] = parent[key];
-	  }function ctor() {
-	    this.constructor = child;
-	  }ctor.prototype = parent.prototype;child.prototype = new ctor();child.__super__ = parent.prototype;return child;
-	},
-	    hasProp = {}.hasOwnProperty;
-
-	BaseSelectionHandler = __webpack_require__(14);
-
-	TextGroupSelection = __webpack_require__(63);
-
-	TextGroupEl = __webpack_require__(47);
-
-	TextGroupSelectionHandler = function (superClass) {
-	  extend(TextGroupSelectionHandler, superClass);
-
-	  function TextGroupSelectionHandler() {
-	    return TextGroupSelectionHandler.__super__.constructor.apply(this, arguments);
-	  }
-
-	  TextGroupSelectionHandler.prototype.selectStart = function (selection, chunk, asRange) {
-	    if (asRange == null) {
-	      asRange = false;
-	    }
-	    selection.virtual.start = TextGroupSelection.getGroupStartCursor(chunk).virtualCursor;
-	    if (!asRange) {
-	      return selection.virtual.collapse();
-	    }
-	  };
-
-	  TextGroupSelectionHandler.prototype.selectEnd = function (selection, chunk, asRange) {
-	    if (asRange == null) {
-	      asRange = false;
-	    }
-	    selection.virtual.end = TextGroupSelection.getGroupEndCursor(chunk).virtualCursor;
-	    if (!asRange) {
-	      return selection.virtual.collapseToEnd();
-	    }
-	  };
-
-	  TextGroupSelectionHandler.prototype.selectAll = function (selection, chunk) {
-	    return TextGroupSelection.selectGroup(chunk, selection.virtual);
-	  };
-
-	  TextGroupSelectionHandler.prototype.getCopyOfSelection = function (selection, chunk, cloneId) {
-	    var chunkEnd, chunkStart, clone, position, sel;
+	  BaseSelectionHandler.prototype.getCopyOfSelection = function (selection, chunk, cloneId) {
 	    if (cloneId == null) {
 	      cloneId = false;
 	    }
-	    clone = chunk.clone(cloneId);
-	    position = selection.virtual.getPosition(chunk);
-	    if (position === 'contains' || position === 'start' || position === 'end') {
-	      sel = new TextGroupSelection(chunk, selection.virtual);
-	      chunkStart = TextGroupSelection.getGroupStartCursor(chunk);
-	      chunkEnd = TextGroupSelection.getGroupEndCursor(chunk);
-	      clone.modelState.textGroup.deleteSpan(sel.end.groupIndex, sel.end.offset, chunkEnd.groupIndex, chunkEnd.offset, true, this.mergeTextGroups);
-	      clone.modelState.textGroup.deleteSpan(chunkStart.groupIndex, chunkStart.offset, sel.start.groupIndex, sel.start.offset, true, this.mergeTextGroups);
-	    }
-	    return clone;
+	    return chunk.clone(cloneId);
 	  };
 
-	  TextGroupSelectionHandler.prototype.getVirtualSelectionStartData = function (selection, chunk) {
-	    var ref;
-	    if (((ref = selection.dom) != null ? ref.startText : void 0) == null) {
-	      return null;
-	    }
-	    return TextGroupSelection.getCursorDataFromDOM(selection.dom.startText, selection.dom.startOffset);
+	  BaseSelectionHandler.prototype.selectStart = function (selection, chunk, asRange) {
+	    return false;
 	  };
 
-	  TextGroupSelectionHandler.prototype.getVirtualSelectionEndData = function (selection, chunk) {
-	    var ref;
-	    if (((ref = selection.dom) != null ? ref.startText : void 0) == null) {
-	      return null;
-	    }
-	    return TextGroupSelection.getCursorDataFromDOM(selection.dom.endText, selection.dom.endOffset);
+	  BaseSelectionHandler.prototype.selectEnd = function (selection, chunk, asRange) {
+	    return false;
 	  };
 
-	  TextGroupSelectionHandler.prototype.getDOMSelectionStart = function (selection, chunk) {
-	    return TextGroupEl.getDomPosition(selection.virtual.start);
+	  BaseSelectionHandler.prototype.selectAll = function (selection, chunk) {
+	    this.selectStart(selection, chunk, true);
+	    return this.selectEnd(selection, chunk, true);
 	  };
 
-	  TextGroupSelectionHandler.prototype.getDOMSelectionEnd = function (selection, chunk) {
-	    return TextGroupEl.getDomPosition(selection.virtual.end);
+	  BaseSelectionHandler.prototype.getVirtualSelectionStartData = function (selection, chunk) {
+	    return null;
 	  };
 
-	  TextGroupSelectionHandler.prototype.areCursorsEquivalent = function (selectionWhichIsNullTODO, chunk, thisCursor, otherCursor) {
-	    return thisCursor.chunk === otherCursor.chunk && thisCursor.data.offset === otherCursor.data.offset && thisCursor.data.groupIndex === otherCursor.data.groupIndex;
+	  BaseSelectionHandler.prototype.getDOMSelectionStart = function (selection, chunk) {
+	    return null;
 	  };
 
-	  TextGroupSelectionHandler.prototype.highlightSelection = function (selection, chunk) {
-	    var sel;
-	    chunk.markDirty();
-	    sel = new TextGroupSelection(chunk, selection.virtual);
-	    return chunk.modelState.textGroup.styleText(sel.start.groupIndex, sel.start.offset, sel.end.groupIndex, sel.end.offset, '_comment', {});
+	  BaseSelectionHandler.prototype.getVirtualSelectionEndData = function (selection, chunk) {
+	    return null;
 	  };
 
-	  return TextGroupSelectionHandler;
-	}(BaseSelectionHandler);
+	  BaseSelectionHandler.prototype.getDOMSelectionEnd = function (selection, chunk) {
+	    return null;
+	  };
 
-	module.exports = TextGroupSelectionHandler;
+	  BaseSelectionHandler.prototype.areCursorsEquivalent = function (selection, chunk, thisCursorData, otherCursorData) {
+	    return false;
+	  };
+
+	  return BaseSelectionHandler;
+	}();
+
+	module.exports = BaseSelectionHandler;
 
 /***/ },
-/* 131 */
+/* 21 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
 
-	var Chunk, activateStyle, deleteSelection, replaceTextsWithinSelection, send;
+	var StyleRange, StyleType;
 
-	Chunk = __webpack_require__(6);
+	StyleType = __webpack_require__(15);
 
-	send = function send(fn, chunkOrChunks, selection, data) {
-	  var chunk, chunks, i, len, results;
-	  if (data == null) {
-	    data = [];
+	StyleRange = function () {
+	  function StyleRange(start, end, type, data) {
+	    this.start = start != null ? start : 0;
+	    this.end = end != null ? end : 0;
+	    this.type = type != null ? type : '';
+	    this.data = data != null ? data : {};
 	  }
-	  if (!(chunkOrChunks instanceof Array)) {
-	    return chunkOrChunks.callCommandFn(fn, data);
-	  }
-	  chunks = chunkOrChunks;
-	  results = [];
-	  for (i = 0, len = chunks.length; i < len; i++) {
-	    chunk = chunks[i];
-	    results.push(chunk.callCommandFn(fn, data));
-	  }
-	  return results;
-	};
 
-	deleteSelection = function deleteSelection(selection) {
-	  var i, len, node, ref;
-	  if (selection.virtual.type === 'caret') {
-	    return;
-	  }
-	  ref = selection.virtual.inbetween;
-	  for (i = 0, len = ref.length; i < len; i++) {
-	    node = ref[i];
-	    node.remove();
-	  }
-	  selection.saveVirtualSelection();
-	  selection.startChunk.deleteSelection();
-	  selection.restoreVirtualSelection();
-	  if (selection.virtual.type === 'chunkSpan') {
-	    selection.endChunk.deleteSelection();
-	    if (selection.endChunk.canMergeWith(selection.startChunk)) {
-	      selection.startChunk.merge(selection.endChunk);
+	  StyleRange.prototype.clone = function () {
+	    return new StyleRange(this.start, this.end, this.type, this.data);
+	  };
+
+	  StyleRange.prototype.getExportedObject = function () {
+	    return {
+	      type: this.type,
+	      start: this.start,
+	      end: this.end,
+	      data: this.data
+	    };
+	  };
+
+	  StyleRange.prototype.toString = function () {
+	    return this.type + ":" + this.start + "," + this.end + "(" + this.data + ")";
+	  };
+
+	  StyleRange.prototype.isInvalid = function () {
+	    return this.length() === 0 && this.start !== 0 && this.end !== 0;
+	  };
+
+	  StyleRange.prototype.invalidate = function () {
+	    return this.start = this.end = -1;
+	  };
+
+	  StyleRange.prototype.compareToRange = function (from, to) {
+	    if (to == null) {
+	      to = from;
 	    }
-	  }
-	  return selection.virtual.collapse();
-	};
+	    if (from === 0 && this.start === 0 && to <= this.end) {
+	      return StyleRange.CONTAINS;
+	    }
+	    if (to <= this.start) {
+	      return StyleRange.AFTER;
+	    }
+	    if (from > this.end) {
+	      return StyleRange.BEFORE;
+	    }
+	    if (from >= this.start && to <= this.end) {
+	      return StyleRange.CONTAINS;
+	    }
+	    if (from <= this.start && to >= this.end) {
+	      return StyleRange.ENSCAPSULATED_BY;
+	    }
+	    if (from >= this.start) {
+	      return StyleRange.INSIDE_LEFT;
+	    }
+	    return StyleRange.INSIDE_RIGHT;
+	  };
 
-	replaceTextsWithinSelection = function replaceTextsWithinSelection(selection, newChunk, expandSelection) {
-	  var end;
-	  if (expandSelection == null) {
-	    expandSelection = true;
-	  }
-	  selection.virtual.start.chunk.addChildBefore(newChunk);
-	  if (expandSelection) {
-	    selection.virtual.start.data.offset = 0;
-	    end = selection.virtual.end;
-	    end.data.offset = end.chunk.modelState.textGroup.get(end.data.groupIndex).text.length;
-	  }
-	  return newChunk.replaceSelection();
-	};
+	  StyleRange.prototype.length = function () {
+	    return this.end - this.start;
+	  };
 
-	activateStyle = function activateStyle(style, selection, styleBrush, data) {
-	  if (data == null) {
-	    data = null;
-	  }
-	  if (selection.virtual.type === 'caret') {
-	    return styleBrush.add(style, selection.styles[style] != null);
-	  } else {
-	    if (selection.styles[style] != null) {
-	      return send('unstyleSelection', selection.virtual.all, selection, [style, data]);
+	  StyleRange.prototype.isMergeable = function (otherType, otherData) {
+	    var k, ref, v;
+	    if (this.type !== otherType) {
+	      return false;
+	    }
+	    if (this.data instanceof Object) {
+	      ref = this.data;
+	      for (k in ref) {
+	        v = ref[k];
+	        if (otherData[k] == null || otherData[k] !== v) {
+	          return false;
+	        }
+	      }
 	    } else {
-	      return send('styleSelection', selection.virtual.all, selection, [style, data]);
+	      if (this.data !== otherData) {
+	        return false;
+	      }
 	    }
-	  }
+	    return true;
+	  };
+
+	  return StyleRange;
+	}();
+
+	StyleRange.BEFORE = 'before';
+
+	StyleRange.AFTER = 'after';
+
+	StyleRange.INSIDE_LEFT = 'left';
+
+	StyleRange.INSIDE_RIGHT = 'right';
+
+	StyleRange.CONTAINS = 'contains';
+
+	StyleRange.ENSCAPSULATED_BY = 'enscapsulatedBy';
+
+	StyleRange.createFromObject = function (o) {
+	  return new StyleRange(o.start, o.end, o.type, o.data);
 	};
+
+	module.exports = StyleRange;
+
+/***/ },
+/* 22 */
+/***/ function(module, exports) {
+
+	"use strict";
 
 	module.exports = {
-	  send: send,
-	  deleteSelection: deleteSelection,
-	  activateStyle: activateStyle,
-	  replaceTextsWithinSelection: replaceTextsWithinSelection
+	  EMPTY_CHAR_CODE: 8203,
+	  EMPTY_CHAR: String.fromCharCode(8203)
 	};
 
 /***/ },
-/* 132 */
-/***/ function(module, exports, __webpack_require__) {
+/* 23 */,
+/* 24 */
+/***/ function(module, exports) {
 
 	'use strict';
+	/* eslint-disable no-unused-vars */
+	var hasOwnProperty = Object.prototype.hasOwnProperty;
+	var propIsEnumerable = Object.prototype.propertyIsEnumerable;
 
-	var Chunk;
+	function toObject(val) {
+		if (val === null || val === undefined) {
+			throw new TypeError('Object.assign cannot be called with null or undefined');
+		}
 
-	Chunk = __webpack_require__(6);
+		return Object(val);
+	}
 
-	module.exports = function (componentClass, position, referenceChunk, selection, callback) {
-	  var newChunk;
-	  newChunk = Chunk.create(componentClass);
-	  switch (position) {
-	    case 'before':
-	      referenceChunk.addChildBefore(newChunk);
-	      break;
-	    case 'after':
-	      referenceChunk.addChildAfter(newChunk);
-	  }
-	  newChunk.selectStart();
-	  return callback();
+	function shouldUseNative() {
+		try {
+			if (!Object.assign) {
+				return false;
+			}
+
+			// Detect buggy property enumeration order in older V8 versions.
+
+			// https://bugs.chromium.org/p/v8/issues/detail?id=4118
+			var test1 = new String('abc');  // eslint-disable-line
+			test1[5] = 'de';
+			if (Object.getOwnPropertyNames(test1)[0] === '5') {
+				return false;
+			}
+
+			// https://bugs.chromium.org/p/v8/issues/detail?id=3056
+			var test2 = {};
+			for (var i = 0; i < 10; i++) {
+				test2['_' + String.fromCharCode(i)] = i;
+			}
+			var order2 = Object.getOwnPropertyNames(test2).map(function (n) {
+				return test2[n];
+			});
+			if (order2.join('') !== '0123456789') {
+				return false;
+			}
+
+			// https://bugs.chromium.org/p/v8/issues/detail?id=3056
+			var test3 = {};
+			'abcdefghijklmnopqrst'.split('').forEach(function (letter) {
+				test3[letter] = letter;
+			});
+			if (Object.keys(Object.assign({}, test3)).join('') !==
+					'abcdefghijklmnopqrst') {
+				return false;
+			}
+
+			return true;
+		} catch (e) {
+			// We don't expect any of the above to throw, but better to be safe.
+			return false;
+		}
+	}
+
+	module.exports = shouldUseNative() ? Object.assign : function (target, source) {
+		var from;
+		var to = toObject(target);
+		var symbols;
+
+		for (var s = 1; s < arguments.length; s++) {
+			from = Object(arguments[s]);
+
+			for (var key in from) {
+				if (hasOwnProperty.call(from, key)) {
+					to[key] = from[key];
+				}
+			}
+
+			if (Object.getOwnPropertySymbols) {
+				symbols = Object.getOwnPropertySymbols(from);
+				for (var i = 0; i < symbols.length; i++) {
+					if (propIsEnumerable.call(from, symbols[i])) {
+						to[symbols[i]] = from[symbols[i]];
+					}
+				}
+			}
+		}
+
+		return to;
 	};
 
-/***/ },
-/* 133 */
-/***/ function(module, exports, __webpack_require__) {
-
-	'use strict';
-
-	var Chunk;
-
-	Chunk = __webpack_require__(6);
-
-	module.exports = function (componentClass, position, referenceChunk, selection, callback) {
-	  var extraChunk, newChunk;
-	  newChunk = Chunk.create(componentClass);
-	  extraChunk = null;
-	  switch (position) {
-	    case 'before':
-	      referenceChunk.addChildBefore(newChunk);
-	      if (newChunk.isFirst()) {
-	        newChunk.addChildBefore(Chunk.create());
-	      }
-	      break;
-	    case 'after':
-	      referenceChunk.addChildAfter(newChunk);
-	      if (newChunk.isLast()) {
-	        newChunk.addChildAfter(Chunk.create());
-	      }
-	  }
-	  newChunk.selectStart();
-	  return callback();
-	};
 
 /***/ },
-/* 134 */
+/* 25 */,
+/* 26 */,
+/* 27 */,
+/* 28 */,
+/* 29 */,
+/* 30 */,
+/* 31 */,
+/* 32 */,
+/* 33 */,
+/* 34 */,
+/* 35 */
 /***/ function(module, exports, __webpack_require__) {
 
-	'use strict';
+	"use strict";
 
-	var editButton, getBackgroundImage;
-
-	__webpack_require__(194);
-
-	getBackgroundImage = __webpack_require__(64);
-
-	editButton = __webpack_require__(230);
+	__webpack_require__(211);
 
 	module.exports = React.createClass({
-	  displayName: 'exports',
+	  displayName: "exports",
 
 	  getDefaultProps: function getDefaultProps() {
 	    return {
 	      indent: 0
 	    };
 	  },
+	  focus: function focus() {
+	    return ReactDOM.findDOMNode(this.refs.button).focus();
+	  },
 	  render: function render() {
-	    var editButtonStyles;
-	    editButtonStyles = {
-	      backgroundImage: Common.util.getBackgroundImage(editButton)
-	    };
 	    return React.createElement(
-	      'div',
-	      { className: 'obojobo-draft--components--edit-button' },
+	      "div",
+	      { className: "obojobo-draft--components--delete-button" },
 	      React.createElement(
-	        'button',
+	        "button",
 	        {
+	          ref: "button",
 	          onClick: this.props.onClick,
-	          style: editButtonStyles,
-	          tabIndex: this.props.shouldPreventTab ? '-1' : 1,
+	          tabIndex: this.props.shouldPreventTab ? '-1' : this.props.tabIndex,
 	          disabled: this.props.shouldPreventTab
 	        },
-	        'Edit'
+	        "Delete"
 	      )
 	    );
 	  }
 	});
 
 /***/ },
-/* 135 */
-/***/ function(module, exports, __webpack_require__) {
-
-	'use strict';
-
-	var FocusBlocker, FocusUtil;
-
-	__webpack_require__(195);
-
-	FocusUtil = __webpack_require__(37);
-
-	FocusBlocker = React.createClass({
-	  displayName: 'FocusBlocker',
-
-	  render: function render() {
-	    return React.createElement('div', { className: 'viewer--components--focus-blocker' });
-	  }
-	});
-
-	module.exports = FocusBlocker;
-
-/***/ },
-/* 136 */
-/***/ function(module, exports, __webpack_require__) {
-
-	'use strict';
-
-	var Bubble;
-
-	__webpack_require__(197);
-
-	Bubble = __webpack_require__(50);
-
-	module.exports = React.createClass({
-	  displayName: 'exports',
-
-	  onChange: function onChange(event) {
-	    console.log('BubbleChange', event.target.value);
-	    return this.props.onChange(event.target.value);
-	  },
-	  onSubmit: function onSubmit(event) {
-	    event.preventDefault();
-	    return this.props.onClose();
-	  },
-	  onKeyUp: function onKeyUp(event) {
-	    console.log(event.keyCode);
-	    if (event.keyCode === 27) {
-	      return this.props.onCancel();
-	    }
-	  },
-	  componentDidMount: function componentDidMount() {
-	    return setTimeout(function () {
-	      return this.refs.input.select();
-	    }.bind(this));
-	  },
-	  render: function render() {
-	    console.log('BubbleRender', this.props.value);
-	    return React.createElement(
-	      Bubble,
-	      null,
-	      React.createElement(
-	        'label',
-	        { className: 'single-input-bubble' },
-	        React.createElement(
-	          'form',
-	          { className: 'interactable', onSubmit: this.onSubmit },
-	          React.createElement('input', { ref: 'input', type: 'text', value: this.props.value, onChange: this.onChange, onKeyUp: this.onKeyUp }),
-	          React.createElement(
-	            'button',
-	            { onClick: this.onSubmit },
-	            'Ok'
-	          )
-	        ),
-	        React.createElement(
-	          'span',
-	          { className: 'label' },
-	          this.props.label
-	        )
-	      )
-	    );
-	  }
-	});
-
-/***/ },
-/* 137 */
-/***/ function(module, exports) {
-
-	'use strict';
-
-	module.exports = React.createClass({
-		displayName: 'exports',
-
-		render: function render() {
-			return React.createElement(
-				'div',
-				null,
-				React.createElement(
-					'p',
-					null,
-					this.props.children
-				),
-				React.createElement(
-					'button',
-					{ onClick: this.props.modal.onButtonClick.bind(this, this.props.cancelOnReject ? this.props.cancel : this.props.reject) },
-					this.props.rejectButtonLabel || 'No'
-				),
-				React.createElement(
-					'button',
-					{ onClick: this.props.modal.onButtonClick.bind(this, this.props.confirm) },
-					this.props.confirmButtonLabel || 'Yes'
-				)
-			);
-		}
-	});
-
-/***/ },
-/* 138 */
-/***/ function(module, exports) {
-
-	'use strict';
-
-	module.exports = React.createClass({
-		displayName: 'exports',
-
-		render: function render() {
-			return React.createElement(
-				'div',
-				null,
-				React.createElement(
-					'p',
-					null,
-					this.props.children
-				),
-				React.createElement(
-					'button',
-					{ onClick: this.props.modal.onButtonClick.bind(this, this.props.confirm) },
-					this.props.buttonLabel || 'OK'
-				)
-			);
-		}
-	});
-
-/***/ },
-/* 139 */
+/* 36 */
 /***/ function(module, exports, __webpack_require__) {
 
 	"use strict";
 
-	__webpack_require__(202);
+	var Dispatcher, Store;
 
-	module.exports = React.createClass({
-		displayName: "exports",
+	Dispatcher = __webpack_require__(8);
 
-		render: function render() {
-			return React.createElement(
-				"div",
-				{ className: "obojobo-draft--components--modal-container" },
-				React.createElement(
-					"div",
-					{ className: "content" },
-					this.props.children
-				)
-			);
-		}
-	});
+	Store = function () {
+	  function Store(name) {
+	    this.name = name;
+	  }
+
+	  Store.prototype.init = function () {
+	    return this.state = {};
+	  };
+
+	  Store.prototype.triggerChange = function () {
+	    return Dispatcher.trigger(this.name + ":change");
+	  };
+
+	  Store.prototype.onChange = function (callback) {
+	    return Dispatcher.on(this.name + ":change", callback);
+	  };
+
+	  Store.prototype.offChange = function (callback) {
+	    return Dispatcher.off(this.name + ":change", callback);
+	  };
+
+	  Store.prototype.setAndTrigger = function (keyValues) {
+	    Object.assign(this.state, keyValues);
+	    return this.triggerChange();
+	  };
+
+	  Store.prototype.getState = function () {
+	    return Object.assign({}, this.state);
+	  };
+
+	  Store.prototype.setState = function (newState) {
+	    return this.state = Object.assign({}, newState);
+	  };
+
+	  return Store;
+	}();
+
+	module.exports = Store;
 
 /***/ },
-/* 140 */
+/* 37 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
 
-	var _extends = Object.assign || function (target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i]; for (var key in source) { if (Object.prototype.hasOwnProperty.call(source, key)) { target[key] = source[key]; } } } return target; };
+	var DOMSelection, OboSelectionRect;
 
-	var FocusUtil, OboComponent;
+	DOMSelection = __webpack_require__(14);
 
-	FocusUtil = __webpack_require__(37);
+	OboSelectionRect = function () {
+	  function OboSelectionRect() {
+	    this.type = OboSelectionRect.TYPE_NONE;
+	    this.top = 0;
+	    this.right = 0;
+	    this.bottom = 0;
+	    this.left = 0;
+	    this.width = 0;
+	    this.height = 0;
+	  }
 
-	OboComponent = React.createClass({
-	  displayName: 'OboComponent',
+	  return OboSelectionRect;
+	}();
 
-	  getDefaultProps: function getDefaultProps() {
-	    return {
-	      tag: 'div'
-	    };
-	  },
-	  render: function render() {
-	    var Component, Tag, className, isFocussed;
-	    Component = this.props.model.getComponentClass();
-	    Tag = this.props.tag;
-	    className = 'component';
-	    if (this.props.className != null) {
-	      className += ' ' + this.props.className;
+	Object.defineProperties(OboSelectionRect.prototype, {
+	  "valid": {
+	    get: function get() {
+	      return this.type !== OboSelectionRect.TYPE_NONE;
 	    }
-	    isFocussed = FocusUtil.getFocussedComponent(this.props.moduleData.focusState) === this.props.model;
-	    if (isFocussed) {
-	      console.log(this.props);
-	      console.log('FOCUS-----------', this.props.model.get('id'), this.props.model.get('type'), this.props.model.get('id'), this.props);
-	    }
-	    return React.createElement(
-	      Tag,
-	      _extends({}, this.props, {
-	        className: className,
-	        id: 'obo-' + this.props.model.get('id'),
-	        'data-obo-component': true,
-	        'data-id': this.props.model.get('id'),
-	        'data-type': this.props.model.get('type'),
-	        'data-focussed': isFocussed
-	      }),
-	      this.props.children
-	    );
 	  }
 	});
 
-	module.exports = OboComponent;
+	OboSelectionRect.TYPE_NONE = 'none';
 
-/***/ },
-/* 141 */
-/***/ function(module, exports, __webpack_require__) {
+	OboSelectionRect.TYPE_CARET = 'caret';
 
-	'use strict';
+	OboSelectionRect.TYPE_SELECTION = 'selection';
 
-	var TextMenu;
+	OboSelectionRect.TYPE_CHUNKS = 'chunks';
 
-	__webpack_require__(203);
-
-	TextMenu = React.createClass({
-	  displayName: 'TextMenu',
-
-	  renderImg: function renderImg(command) {
-	    if (command.image == null) {
-	      return React.createElement(
-	        'div',
-	        null,
-	        React.createElement(
-	          'span',
-	          null,
-	          command.label
-	        ),
-	        React.createElement('img', { className: 'click-blocker' })
-	      );
-	    }
-	    return React.createElement('img', {
-	      src: command.image,
-	      alt: command.label,
-	      title: command.label
-	    });
-	  },
-	  onMouseDown: function onMouseDown(label, event) {
-	    console.log(arguments);
-	    event.preventDefault();
-	    event.stopPropagation();
-	    return this.props.commandHandler(label);
-	  },
-	  render: function render() {
-	    var ctrlRect, renderImg, selRect;
-	    if (!this.props.relativeToElement) {
-	      return null;
-	    }
-	    if (!this.props.enabled) {
-	      return null;
-	    }
-	    ctrlRect = this.props.relativeToElement.getBoundingClientRect();
-	    selRect = this.props.selectionRect;
-	    renderImg = this.renderImg;
-	    if (!selRect || !this.props.commands || this.props.commands.length === 0) {
-	      return null;
-	    }
-	    return React.createElement('div', {
-	      className: 'editor--components--text-menu',
-	      style: {
-	        left: selRect.left + selRect.width / 2 - ctrlRect.left + 'px',
-	        top: selRect.top - ctrlRect.top + 'px'
-	      }
-	    }, this.props.commands.map(function (command, index) {
-	      return React.createElement('a', {
-	        onMouseDown: this.onMouseDown.bind(null, command.label),
-	        key: index
-	      }, renderImg(command));
-	    }.bind(this)));
+	OboSelectionRect.createFromSelection = function () {
+	  var clientRect, clientRects, i, len, rect, sel, selType;
+	  rect = new OboSelectionRect();
+	  sel = new DOMSelection();
+	  selType = sel.getType();
+	  if (selType === "none") {
+	    return rect;
 	  }
-	});
+	  clientRects = sel.getClientRects();
+	  rect.type = selType === 'caret' ? OboSelectionRect.TYPE_CARET : OboSelectionRect.TYPE_SELECTION;
+	  rect.top = 2e308;
+	  rect.right = -2e308;
+	  rect.bottom = -2e308;
+	  rect.left = 2e308;
+	  for (i = 0, len = clientRects.length; i < len; i++) {
+	    clientRect = clientRects[i];
+	    rect.top = Math.min(rect.top, clientRect.top);
+	    rect.right = Math.max(rect.right, clientRect.right);
+	    rect.bottom = Math.max(rect.bottom, clientRect.bottom);
+	    rect.left = Math.min(rect.left, clientRect.left);
+	  }
+	  rect.width = rect.right - rect.left;
+	  rect.height = rect.bottom - rect.top;
+	  rect.selection = sel;
+	  rect.chunks = null;
+	  return rect;
+	};
 
-	module.exports = TextMenu;
-
-/***/ },
-/* 142 */
-/***/ function(module, exports, __webpack_require__) {
-
-	'use strict';
-
-	var Legacy, OboModel, StyleableText, patternAddUL, patternRemoveExtraUL, patternTF;
-
-	patternAddUL = /<LI>([\s\S]*?)<\/LI>/gi;
-
-	patternRemoveExtraUL = /<\/ul><ul>/gi;
-
-	patternTF = /<\/?textformat\s?[\s\S]*?>/gi;
-
-	OboModel = __webpack_require__(6);
-
-	StyleableText = __webpack_require__(8);
-
-	Legacy = {
-	  createModuleFromObo2ModuleJSON: function createModuleFromObo2ModuleJSON(json) {
-	    var content, i, len, objective, objectivePage, oboModule, page, ref;
-	    oboModule = OboModel.create('ObojoboDraft.Modules.Module');
-	    objective = OboModel.create('ObojoboDraft.Sections.Content');
-	    objectivePage = OboModel.create('ObojoboDraft.Pages.Page');
-	    objective.children.add(objectivePage);
-	    objectivePage.children.add(Legacy.createChunksFromObo2HTML(json.objective));
-	    content = OboModel.create('ObojoboDraft.Sections.Content');
-	    ref = json.pages;
-	    for (i = 0, len = ref.length; i < len; i++) {
-	      page = ref[i];
-	      content.children.add(Legacy.createPageFromObo2ModuleJSON(page));
-	    }
-	    oboModule.children.add(objective);
-	    oboModule.children.add(content);
-	    return oboModule;
-	  },
-	  createPageFromObo2ModuleJSON: function createPageFromObo2ModuleJSON(json) {
-	    var header, i, item, len, page, ref;
-	    page = OboModel.create('ObojoboDraft.Pages.Page');
-	    header = OboModel.create('ObojoboDraft.Chunks.Heading');
-	    header.modelState.textGroup.first.text.value = json.title;
-	    page.children.add(header);
-	    ref = json.items;
-	    for (i = 0, len = ref.length; i < len; i++) {
-	      item = ref[i];
-	      switch (item.component) {
-	        case 'TextArea':
-	          page.children.add(Legacy.createChunksFromObo2HTML(item.data));
-	          break;
-	        case 'MediaView':
-	          page.children.add(Legacy.createMediaFromObo2JSON(item.media));
-	      }
-	    }
-	    return page;
-	  },
-	  createChunksFromObo2HTML: function createChunksFromObo2HTML(html) {
-	    var child, chunk, chunks, el, i, j, len, len1, ref, st, sts, tg;
+	OboSelectionRect.createFromChunks = function (chunks) {
+	  var chunk, chunkRect, i, len, rect;
+	  if (chunks == null) {
 	    chunks = [];
-	    html = html.replace(patternTF, "");
-	    html = html.replace(patternAddUL, "<ul><li>$1</li></ul>");
-	    html = html.replace(patternRemoveExtraUL, "");
-	    el = document.createElement('div');
-	    document.body.appendChild(el);
-	    el.innerHTML = html;
-	    sts = null;
-	    ref = el.children;
-	    for (i = 0, len = ref.length; i < len; i++) {
-	      child = ref[i];
-	      switch (child.tagName.toLowerCase()) {
-	        case 'ul':
-	          chunk = OboModel.create('ObojoboDraft.Chunks.List');
-	          break;
-	        default:
-	          chunk = OboModel.create('ObojoboDraft.Chunks.Text');
-	      }
-	      tg = chunk.modelState.textGroup;
-	      tg.clear();
-	      sts = StyleableText.createFromElement(child);
-	      for (j = 0, len1 = sts.length; j < len1; j++) {
-	        st = sts[j];
-	        tg.add(st);
-	      }
-	      chunks.push(chunk);
-	    }
-	    document.body.removeChild(el);
-	    console.log('-----------------');
-	    console.log(html);
-	    console.log(el.innerHTML);
-	    console.log(chunks);
-	    console.log(sts);
-	    return chunks;
-	  },
-	  createMediaFromObo2JSON: function createMediaFromObo2JSON(json) {
-	    return OboModel.create('ObojoboDraft.Chunks.Figure');
 	  }
+	  rect = new OboSelectionRect();
+	  rect.type = OboSelectionRect.TYPE_CHUNKS;
+	  rect.top = 2e308;
+	  rect.right = -2e308;
+	  rect.bottom = -2e308;
+	  rect.left = 2e308;
+	  for (i = 0, len = chunks.length; i < len; i++) {
+	    chunk = chunks[i];
+	    if (chunk == null) {
+	      continue;
+	    }
+	    chunkRect = chunk.getDomEl().getBoundingClientRect();
+	    rect.top = Math.min(rect.top, chunkRect.top);
+	    rect.right = Math.max(rect.right, chunkRect.right);
+	    rect.bottom = Math.max(rect.bottom, chunkRect.bottom);
+	    rect.left = Math.min(rect.left, chunkRect.left);
+	  }
+	  rect.width = rect.right - rect.left;
+	  rect.height = rect.bottom - rect.top;
+	  rect.chunks = chunks;
+	  rect.selection = null;
+	  return rect;
 	};
 
-	module.exports = Legacy;
+	module.exports = OboSelectionRect;
 
 /***/ },
-/* 143 */
+/* 38 */
 /***/ function(module, exports) {
 
 	"use strict";
 
-	var API, APIChunk, APIModule, makeRequest;
+	var VirtualCursor;
 
-	makeRequest = function makeRequest(method, url, data, callback) {
-	  var a, k, request, v;
-	  if (data == null) {
-	    data = null;
+	VirtualCursor = function () {
+	  function VirtualCursor(chunk, data) {
+	    this.chunk = chunk;
+	    this.data = data;
 	  }
-	  if (callback == null) {
-	    callback = function callback() {};
-	  }
-	  request = new XMLHttpRequest();
-	  request.addEventListener('load', callback);
-	  request.open(method, url, true);
-	  if (data != null) {
-	    a = [];
-	    for (k in data) {
-	      v = data[k];
-	      a.push(k + "=" + v);
-	    }
-	    data = a.join("&");
-	    return request.send(data);
-	  } else {
-	    return request.send();
-	  }
-	};
 
-	APIModule = function () {
-	  function APIModule() {}
-
-	  APIModule.prototype.get = function (moduleId, callback) {
-	    return makeRequest('GET', "/api/draft/" + moduleId + "/chunks", null, function (event) {
-	      return callback({
-	        id: moduleId,
-	        chunks: JSON.parse(event.target.responseText)
-	      });
-	    }.bind(this));
+	  VirtualCursor.prototype.isEquivalentTo = function (otherCursor) {
+	    return this.chunk.areCursorsEquivalent(this, otherCursor);
 	  };
 
-	  return APIModule;
-	}();
-
-	APIChunk = function () {
-	  function APIChunk() {}
-
-	  APIChunk.prototype.move = function (chunkMoved, chunkBefore, callback) {
-	    var beforeId;
-	    console.log(arguments);
-	    beforeId = chunkBefore != null ? chunkBefore.get('id') : null;
-	    return makeRequest('POST', "/api/chunk/" + chunkMoved.get('id') + "/move_before", {
-	      before_chunk_id: beforeId
-	    }, callback);
+	  VirtualCursor.prototype.clone = function () {
+	    return new VirtualCursor(this.chunk, Object.assign({}, this.data));
 	  };
 
-	  return APIChunk;
+	  return VirtualCursor;
 	}();
 
-	API = function () {
-	  function API() {}
-
-	  return API;
-	}();
-
-	Object.defineProperties(API.prototype, {
-	  "module": {
-	    get: function get() {
-	      return new APIModule();
-	    }
-	  },
-	  "chunk": {
-	    get: function get() {
-	      return new APIChunk();
-	    }
-	  }
-	});
-
-	module.exports = new API();
+	module.exports = VirtualCursor;
 
 /***/ },
-/* 144 */
-/***/ function(module, exports) {
+/* 39 */
+/***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
 
-	var addEl, loaded;
+	var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol" ? function (obj) { return typeof obj; } : function (obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; };
 
-	addEl = function addEl(url, el, onLoad, onError) {
-	  if (onLoad == null) {
-	    onLoad = null;
-	  }
-	  if (onError == null) {
-	    onError = null;
-	  }
-	  if (loaded[url]) {
-	    if (onLoad != null) {
-	      onLoad(url);
-	    }
-	    return true;
-	  }
-	  if (onError != null) {
-	    el.onerror = onError;
-	  }
-	  if (onLoad != null) {
-	    el.onload = function () {
-	      loaded[url] = url;
-	      return onLoad(url);
-	    };
-	  }
-	  document.head.appendChild(el);
-	  return false;
-	};
+	var ObjectAssign;
 
-	loaded = {};
+	ObjectAssign = __webpack_require__(24);
 
 	module.exports = {
-	  add: function add(urlOrUrls, onLoad, onError) {
-	    var i, len, link, results, script, type, url, urls;
-	    if (onLoad == null) {
-	      onLoad = null;
-	    }
-	    if (onError == null) {
-	      onError = null;
-	    }
-	    console.log('add', arguments);
-	    if (typeof urlOrUrls === 'string') {
-	      urls = [urlOrUrls];
-	    } else {
-	      urls = urlOrUrls;
-	    }
-	    results = [];
-	    for (i = 0, len = urls.length; i < len; i++) {
-	      url = urls[i];
-	      type = url.substr(url.lastIndexOf('.') + 1);
-	      console.log(type);
-	      switch (type) {
-	        case 'js':
-	          script = document.createElement('script');
-	          script.setAttribute('src', url);
-	          results.push(addEl(url, script, onLoad, onError));
-	          break;
-	        case 'css':
-	          link = document.createElement('link');
-	          link.setAttribute('rel', 'stylesheet');
-	          link.setAttribute('href', url);
-	          results.push(addEl(url, link, onLoad, onError));
-	          break;
-	        default:
-	          results.push(void 0);
+	  createData: function createData(data, template) {
+	    var clone, key;
+	    clone = ObjectAssign({}, data);
+	    for (key in clone) {
+	      if (template[key] == null) {
+	        delete clone[key];
 	      }
 	    }
-	    return results;
-	  }
-	};
-
-/***/ },
-/* 145 */
-/***/ function(module, exports) {
-
-	"use strict";
-
-	module.exports = {
-	  BACKSPACE: 8,
-	  TAB: 9,
-	  ENTER: 13,
-	  SHIFT: 16,
-	  CTRL: 17,
-	  ALT: 18,
-	  SPACE: 32,
-	  LEFT_ARROW: 37,
-	  UP_ARROW: 38,
-	  RIGHT_ARROW: 39,
-	  DOWN_ARROW: 40,
-	  DELETE: 46,
-	  META: 91
-	};
-
-/***/ },
-/* 146 */
-/***/ function(module, exports, __webpack_require__) {
-
-	'use strict';
-
-	var OboSelectionRect, PX_EDGE_PADDING, Screen;
-
-	OboSelectionRect = __webpack_require__(34);
-
-	PX_EDGE_PADDING = 50;
-
-	Screen = function () {
-	  function Screen(el) {
-	    this.el = el;
-	    this.intervalId = null;
-	    this.distance = 0;
-	    this.distanceLeft = 0;
-	    this.travelBy = 0;
-	  }
-
-	  Screen.prototype.scrollToTop = function () {
-	    return this.el.scrollTop = 0;
-	  };
-
-	  Screen.prototype.scrollToBottom = function () {
-	    return this.el.scrollTop = this.el.scrollHeight;
-	  };
-
-	  Screen.prototype.getScrollDistanceNeededToPutSelectionIntoView = function () {
-	    var rect, selScreenRect;
-	    selScreenRect = OboSelectionRect.createFromSelection();
-	    rect = this.el.getBoundingClientRect();
-	    if (!selScreenRect.valid) {
-	      return 0;
-	    }
-	    if (selScreenRect.top < 0) {
-	      return selScreenRect.top - PX_EDGE_PADDING;
-	    }
-	    if (selScreenRect.bottom > rect.height) {
-	      return selScreenRect.bottom - rect.height + PX_EDGE_PADDING;
-	    }
-	    return 0;
-	  };
-
-	  Screen.prototype.scrollSelectionIntoViewIfNeeded = function () {
-	    this.distance = this.getScrollDistanceNeededToPutSelectionIntoView();
-	    return this.el.scrollTop += this.distance;
-	  };
-
-	  Screen.prototype.tweenSelectionIntoViewIfNeeded = function () {
-	    this.distance = this.getScrollDistanceNeededToPutSelectionIntoView();
-	    this.distanceLeft = this.distance;
-	    if (this.distance !== 0) {
-	      this.travelBy = Math.max(1, parseInt(Math.abs(this.distance) / 10, 10));
-	      clearInterval(this.intervalId);
-	      return this.intervalId = setInterval(function () {
-	        var travel;
-	        if (this.distance < 1) {
-	          travel = Math.min(this.travelBy, this.distanceLeft * -1);
-	          this.el.scrollTop -= travel;
-	          this.distanceLeft += travel;
-	          if (this.distanceLeft >= 0) {
-	            return clearInterval(this.intervalId);
-	          }
+	    for (key in template) {
+	      if (clone[key] == null) {
+	        if (_typeof(template[key]) === 'object') {
+	          clone[key] = ObjectAssign({}, template[key]);
 	        } else {
-	          travel = Math.min(this.travelBy, this.distanceLeft);
-	          this.el.scrollTop += travel;
-	          this.distanceLeft -= travel;
-	          if (this.distanceLeft <= 0) {
-	            return clearInterval(this.intervalId);
-	          }
+	          clone[key] = template[key];
 	        }
-	      }.bind(this), 10);
-	    }
-	  };
-
-	  return Screen;
-	}();
-
-	Screen.isElementVisible = function (node) {
-	  var rect;
-	  rect = node.getBoundingClientRect();
-	  return !(rect.top > window.innerHeight || rect.bottom < 0);
-	};
-
-	window.__screen = Screen;
-
-	module.exports = Screen;
-
-/***/ },
-/* 147 */
-/***/ function(module, exports, __webpack_require__) {
-
-	'use strict';
-
-	var ChunkSelection, Cursor, DOMSelection, DOMUtil, domType;
-
-	Cursor = __webpack_require__(57);
-
-	DOMSelection = __webpack_require__(10);
-
-	DOMUtil = __webpack_require__(7);
-
-	domType = null;
-
-	ChunkSelection = function () {
-	  function ChunkSelection(module1) {
-	    this.module = module1;
-	    this.clear();
-	  }
-
-	  ChunkSelection.prototype.clear = function () {
-	    this.start = this.end = domType = null;
-	    this.inbetween = [];
-	    return this.all = [];
-	  };
-
-	  ChunkSelection.prototype.calculateAllNodes = function () {
-	    var n, ref, ref1;
-	    this.inbetween = [];
-	    this.all = [];
-	    if (((ref = this.start) != null ? ref.chunk : void 0) != null) {
-	      this.all = [this.start.chunk];
-	    }
-	    n = this.start.chunk;
-	    while (n != null && n !== this.end.chunk) {
-	      if (n !== this.start.chunk) {
-	        this.inbetween.push(n);
-	        this.all.push(n);
-	      }
-	      n = n.nextSibling();
-	    }
-	    if (((ref1 = this.end) != null ? ref1.chunk : void 0) != null && this.all[this.all.length - 1] !== this.end.chunk) {
-	      return this.all.push(this.end.chunk);
-	    }
-	  };
-
-	  ChunkSelection.prototype.getChunkForDomNode = function (domNode) {
-	    var index;
-	    index = this.getIndex(domNode);
-	    return this.module.chunks.at(index);
-	  };
-
-	  ChunkSelection.prototype.getPosition = function (chunk) {
-	    var chunkIndex, endIndex, ref, ref1, startIndex;
-	    if (((ref = this.start) != null ? ref.chunk : void 0) == null || ((ref1 = this.end) != null ? ref1.chunk : void 0) == null) {
-	      return 'unknown';
-	    }
-	    chunkIndex = chunk.get('index');
-	    startIndex = this.start.chunk.get('index');
-	    endIndex = this.end.chunk.get('index');
-	    if (chunkIndex < startIndex) {
-	      return 'before';
-	    }
-	    if (chunkIndex === startIndex && chunkIndex === endIndex) {
-	      return 'contains';
-	    }
-	    if (chunkIndex === startIndex) {
-	      return 'start';
-	    }
-	    if (chunkIndex < endIndex) {
-	      return 'inside';
-	    }
-	    if (chunkIndex === endIndex) {
-	      return 'end';
-	    }
-	    return 'after';
-	  };
-
-	  ChunkSelection.prototype.getIndex = function (node) {
-	    return DOMUtil.findParentAttr(node, 'data-component-index');
-	  };
-
-	  ChunkSelection.prototype.getFromDOMSelection = function (s) {
-	    if (s == null) {
-	      s = new DOMSelection();
-	    }
-	    this.clear();
-	    domType = s.getType();
-	    if (domType === 'none') {
-	      this.start = null;
-	      this.end = null;
-	    } else {
-	      this.start = this.getCursor(s.startContainer, s.startOffset);
-	      this.end = this.getCursor(s.endContainer, s.endOffset);
-	      this.calculateAllNodes();
-	    }
-	    return this;
-	  };
-
-	  ChunkSelection.prototype.getCursor = function (node, offset) {
-	    var chunk;
-	    chunk = this.getChunkForDomNode(node);
-	    return new Cursor(chunk, node, offset);
-	  };
-
-	  ChunkSelection.prototype.setTextStart = function (node, offset) {
-	    this.start = this.getCursor(node, offset);
-	    if (this.end === null) {
-	      this.end = this.start.clone();
-	    }
-	    return this.calculateAllNodes();
-	  };
-
-	  ChunkSelection.prototype.setTextEnd = function (node, offset) {
-	    this.end = this.getCursor(node, offset);
-	    if (this.start === null) {
-	      this.start = this.end.clone();
-	    }
-	    return this.calculateAllNodes();
-	  };
-
-	  ChunkSelection.prototype.setCaret = function (node, offset) {
-	    this.setTextStart(node, offset);
-	    return this.collapse();
-	  };
-
-	  ChunkSelection.prototype.select = function () {
-	    return DOMSelection.set(this.start.node, this.start.offset, this.end.node, this.end.offset);
-	  };
-
-	  ChunkSelection.prototype.collapse = function () {
-	    return this.end = this.start.clone();
-	  };
-
-	  return ChunkSelection;
-	}();
-
-	Object.defineProperties(ChunkSelection.prototype, {
-	  "type": {
-	    get: function get() {
-	      var ref, ref1, ref2, ref3;
-	      if (((ref = this.start) != null ? ref.chunk : void 0) == null || ((ref1 = this.end) != null ? ref1.chunk : void 0) == null || !this.start.isText || !this.end.isText) {
-	        return 'none';
-	      } else if (((ref2 = this.start) != null ? ref2.chunk.cid : void 0) === ((ref3 = this.end) != null ? ref3.chunk.cid : void 0)) {
-	        if (domType === 'caret') {
-	          return 'caret';
-	        } else {
-	          return 'textSpan';
-	        }
-	      } else {
-	        return 'chunkSpan';
 	      }
 	    }
-	  }
-	});
-
-	ChunkSelection.createDescriptor = function (startIndex, startData, endIndex, endData) {
-	  return {
-	    start: {
-	      index: startIndex,
-	      data: startData
-	    },
-	    end: {
-	      index: endIndex,
-	      data: endData
-	    }
-	  };
-	};
-
-	ChunkSelection.getFromDOMSelection = function (module, domSelection) {
-	  return new ChunkSelection(module).getFromDOMSelection(domSelection);
-	};
-
-	module.exports = ChunkSelection;
-
-/***/ },
-/* 148 */
-/***/ function(module, exports, __webpack_require__) {
-
-	'use strict';
-
-	var DOMSelection, OboSelectionRect, Selection, VirtualSelection;
-
-	OboSelectionRect = __webpack_require__(34);
-
-	DOMSelection = __webpack_require__(10);
-
-	VirtualSelection = __webpack_require__(58);
-
-	Selection = function () {
-	  function Selection(page) {
-	    this.setPage(page);
-	    this.saved = null;
-	    this.clear();
-	  }
-
-	  Selection.prototype.saveVirtualSelection = function () {
-	    return this.saved = this.virtual.clone();
-	  };
-
-	  Selection.prototype.restoreVirtualSelection = function () {
-	    return this.virtual = this.saved;
-	  };
-
-	  Selection.prototype.clear = function () {
-	    this.rect = null;
-	    this.chunkRect = null;
-	    return this.dom = null;
-	  };
-
-	  Selection.prototype.setPage = function (page) {
-	    this.page = page;
-	    return this.virtual = new VirtualSelection(this.page);
-	  };
-
-	  Selection.prototype.getSelectionDescriptor = function () {
-	    return this.virtual.toObject();
-	  };
-
-	  Selection.prototype.fromObject = function (o) {
-	    this.virtual.fromObject(o);
-	    this.selectDOM();
-	    return this.update();
-	  };
-
-	  Selection.prototype.selectDOM = function () {
-	    var e, ref, ref1, s;
-	    console.log('SELECTION selectDOM');
-	    if (((ref = this.virtual.start) != null ? ref.chunk : void 0) == null || ((ref1 = this.virtual.end) != null ? ref1.chunk : void 0) == null) {
-	      return;
-	    }
-	    console.log('startChunk', this.startChunk.cid);
-	    s = this.startChunk.getDOMSelectionStart();
-	    e = this.endChunk.getDOMSelectionEnd();
-	    return DOMSelection.set(s.textNode, s.offset, e.textNode, e.offset);
-	  };
-
-	  Selection.prototype.update = function () {
-	    console.time('selection.update');
-	    console.time('new oboSelection');
-	    this.dom = new DOMSelection();
-	    this.virtual.fromDOMSelection(this.dom);
-	    console.timeEnd('new oboSelection');
-	    console.time('OboSelectionRect.createFromSelection');
-	    this.rect = OboSelectionRect.createFromSelection();
-	    this.chunkRect = OboSelectionRect.createFromChunks(this.virtual.all);
-	    console.timeEnd('OboSelectionRect.createFromSelection');
-	    return console.timeEnd('selection.update');
-	  };
-
-	  return Selection;
-	}();
-
-	Object.defineProperties(Selection.prototype, {
-	  startChunk: {
-	    get: function get() {
-	      var ref;
-	      if (((ref = this.virtual) != null ? ref.start : void 0) == null) {
-	        return null;
-	      }
-	      return this.virtual.start.chunk;
-	    }
+	    return clone;
 	  },
-	  endChunk: {
-	    get: function get() {
-	      var ref;
-	      if (((ref = this.virtual) != null ? ref.end : void 0) == null) {
-	        return null;
-	      }
-	      return this.virtual.end.chunk;
-	    }
-	  }
-	});
-
-	module.exports = Selection;
-
-/***/ },
-/* 149 */
-/***/ function(module, exports) {
-
-	"use strict";
-
-	var VirtualCursorData;
-
-	VirtualCursorData = function () {
-	  function VirtualCursorData(content) {
-	    this.content = content;
-	  }
-
-	  VirtualCursorData.prototype.clone = function () {
-	    return new VirtualCursorData(Object.assign({}, this.content));
-	  };
-
-	  return VirtualCursorData;
-	}();
-
-	module.exports = VirtualCursorData;
-
-/***/ },
-/* 150 */
-/***/ function(module, exports, __webpack_require__) {
-
-	'use strict';
-
-	var Dispatcher,
-	    FocusStore,
-	    Store,
-	    TRANSITION_TIME_MS,
-	    focusStore,
-	    timeoutId,
-	    extend = function extend(child, parent) {
-	  for (var key in parent) {
-	    if (hasProp.call(parent, key)) child[key] = parent[key];
-	  }function ctor() {
-	    this.constructor = child;
-	  }ctor.prototype = parent.prototype;child.prototype = new ctor();child.__super__ = parent.prototype;return child;
-	},
-	    hasProp = {}.hasOwnProperty;
-
-	Store = __webpack_require__(33);
-
-	Dispatcher = __webpack_require__(3);
-
-	TRANSITION_TIME_MS = 800;
-
-	timeoutId = null;
-
-	FocusStore = function (superClass) {
-	  extend(FocusStore, superClass);
-
-	  function FocusStore() {
-	    FocusStore.__super__.constructor.call(this, 'focusStore');
-	    this.state = {
-	      focussedId: null,
-	      viewState: 'inactive'
-	    };
-	    Dispatcher.on('focus:component', function (_this) {
-	      return function (payload) {
-	        _this.state.viewState = 'enter';
-	        _this.state.focussedId = payload.value.id;
-	        _this.triggerChange();
-	        window.clearTimeout(timeoutId);
-	        return timeoutId = window.setTimeout(function () {
-	          this.state.viewState = 'active';
-	          return this.triggerChange();
-	        }.bind(_this), TRANSITION_TIME_MS);
-	      };
-	    }(this));
-	    Dispatcher.on('focus:unfocus', function (_this) {
-	      return function (payload) {
-	        _this.state.viewState = 'leave';
-	        _this.triggerChange();
-	        window.clearTimeout(timeoutId);
-	        return timeoutId = window.setTimeout(function () {
-	          this.state.viewState = 'inactive';
-	          this.state.focussedId = null;
-	          return this.triggerChange();
-	        }.bind(_this), TRANSITION_TIME_MS);
-	      };
-	    }(this));
-	  }
-
-	  FocusStore.prototype.getState = function () {
-	    return this.state;
-	  };
-
-	  FocusStore.prototype.setState = function (newState) {
-	    return this.state = newState;
-	  };
-
-	  return FocusStore;
-	}(Store);
-
-	focusStore = new FocusStore();
-
-	module.exports = focusStore;
-
-/***/ },
-/* 151 */
-/***/ function(module, exports, __webpack_require__) {
-
-	'use strict';
-
-	var Dispatcher,
-	    ModalStore,
-	    Store,
-	    modalStore,
-	    extend = function extend(child, parent) {
-	  for (var key in parent) {
-	    if (hasProp.call(parent, key)) child[key] = parent[key];
-	  }function ctor() {
-	    this.constructor = child;
-	  }ctor.prototype = parent.prototype;child.prototype = new ctor();child.__super__ = parent.prototype;return child;
-	},
-	    hasProp = {}.hasOwnProperty;
-
-	Store = __webpack_require__(33);
-
-	Dispatcher = __webpack_require__(3);
-
-	ModalStore = function (superClass) {
-	  extend(ModalStore, superClass);
-
-	  function ModalStore() {
-	    ModalStore.__super__.constructor.call(this, 'modalstore');
-	    this.state = {
-	      modals: []
-	    };
-	    Dispatcher.on('modal:show', function (_this) {
-	      return function (payload) {
-	        _this.state.modals.push(payload.value.component);
-	        return _this.triggerChange();
-	      };
-	    }(this));
-	    Dispatcher.on('modal:hide', function (_this) {
-	      return function () {
-	        _this.state.modals.shift();
-	        return _this.triggerChange();
-	      };
-	    }(this));
-	  }
-
-	  ModalStore.prototype.getState = function () {
-	    return this.state;
-	  };
-
-	  ModalStore.prototype.setState = function (newState) {
-	    return this.state = newState;
-	  };
-
-	  return ModalStore;
-	}(Store);
-
-	modalStore = new ModalStore();
-
-	module.exports = modalStore;
-
-/***/ },
-/* 152 */
-/***/ function(module, exports) {
-
-	'use strict';
-
-	console._log = console.log;
-
-	console._times = {};
-
-	console._interval = null;
-
-	console.time = function (s) {
-	  if (!console._times[s]) {
-	    console._times[s] = {
-	      time: 0,
-	      count: 0,
-	      start: 0,
-	      avg: 0
-	    };
-	  }
-	  return console._times[s].start = performance.now();
-	};
-
-	console.timeEnd = function (s) {
-	  var diff;
-	  if (console._times[s] != null) {
-	    diff = performance.now() - console._times[s].start;
-	    console._times[s].count++;
-	    console._times[s].time += diff;
-	    console._times[s].avg = (console._times[s].time / console._times[s].count).toFixed(3);
-	  }
-	  clearTimeout(console._interval);
-	  return console._interval = setTimeout(console.showTimeAverages, 1000);
-	};
-
-	console.showTimeAverages = function () {
-	  var byTime, i, len, o, s;
-	  byTime = [];
-	  for (s in console._times) {
-	    byTime.push({
-	      s: s,
-	      avg: console._times[s].avg
-	    });
-	  }
-	  byTime.sort(function (a, b) {
-	    if (a.avg < b.avg) {
-	      return 1;
-	    }
-	    if (a.avg > b.avg) {
-	      return -1;
-	    }
-	    return 0;
-	  });
-	  for (i = 0, len = byTime.length; i < len; i++) {
-	    o = byTime[i];
-	    console._log('%c' + o.avg + ': ' + o.s, 'color: blue;');
-	    return;
+	  defaultCloneFn: function defaultCloneFn(data) {
+	    return ObjectAssign({}, data);
+	  },
+	  defaultMergeFn: function defaultMergeFn(consumer, digested) {
+	    return consumer;
 	  }
 	};
 
 /***/ },
-/* 153 */
+/* 40 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
 
-	var Dispatcher, ErrorDialog, ErrorUtil;
+	var Dispatcher, FocusUtil, OboModel;
 
-	Dispatcher = __webpack_require__(3);
+	Dispatcher = __webpack_require__(8);
 
-	ErrorDialog = __webpack_require__(52);
+	OboModel = __webpack_require__(10);
 
-	ErrorUtil = {
-	  show: function show(title, errorMessage) {
-	    return Dispatcher.trigger('modal:show', {
+	FocusUtil = {
+	  focusComponent: function focusComponent(id) {
+	    return Dispatcher.trigger('focus:component', {
 	      value: {
-	        component: React.createElement(
-	          ErrorDialog,
-	          { title: title },
-	          errorMessage
-	        )
+	        id: id
 	      }
 	    });
 	  },
-	  errorResponse: function errorResponse(res) {
-	    var title;
-	    title = function () {
-	      switch (res.value.type) {
-	        case 'input':
-	          return 'Bad Input';
-	        case 'unexpected':
-	          return 'Unexpected Error';
-	      }
-	    }();
-	    return ErrorUtil.show(title, res.value.message);
+	  unfocus: function unfocus() {
+	    return Dispatcher.trigger('focus:unfocus');
+	  },
+	  getFocussedComponent: function getFocussedComponent(state) {
+	    return OboModel.models[state.focussedId];
 	  }
 	};
 
-	module.exports = ErrorUtil;
+	module.exports = FocusUtil;
 
 /***/ },
-/* 154 */,
-/* 155 */,
-/* 156 */,
-/* 157 */,
-/* 158 */,
-/* 159 */,
-/* 160 */,
-/* 161 */,
-/* 162 */,
-/* 163 */,
-/* 164 */,
-/* 165 */,
-/* 166 */,
-/* 167 */,
-/* 168 */,
-/* 169 */,
-/* 170 */,
-/* 171 */,
-/* 172 */,
-/* 173 */,
-/* 174 */
-/***/ function(module, exports, __webpack_require__) {
-
-	'use strict';
-
-	var OD;
-
-	__webpack_require__(177);
-
-	OD = __webpack_require__(68);
-
-	window.ObojoboDraft = __webpack_require__(68);
-
-/***/ },
-/* 175 */,
-/* 176 */,
-/* 177 */
-/***/ function(module, exports) {
-
-	// removed by extract-text-webpack-plugin
-
-/***/ },
-/* 178 */,
-/* 179 */,
-/* 180 */,
-/* 181 */,
-/* 182 */,
-/* 183 */,
-/* 184 */,
-/* 185 */,
-/* 186 */,
-/* 187 */,
-/* 188 */,
-/* 189 */,
-/* 190 */,
-/* 191 */,
-/* 192 */
-177,
-/* 193 */
-177,
-/* 194 */
-177,
-/* 195 */
-177,
-/* 196 */
-177,
-/* 197 */
-177,
-/* 198 */
-177,
-/* 199 */
-177,
-/* 200 */
-177,
-/* 201 */
-177,
-/* 202 */
-177,
-/* 203 */
-177,
-/* 204 */,
-/* 205 */,
-/* 206 */,
-/* 207 */,
-/* 208 */,
-/* 209 */,
-/* 210 */,
-/* 211 */,
-/* 212 */,
-/* 213 */,
-/* 214 */,
-/* 215 */
+/* 41 */,
+/* 42 */,
+/* 43 */,
+/* 44 */,
+/* 45 */,
+/* 46 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/**
@@ -10082,11 +5653,11 @@
 	 * errors in the expression, or errors in javascript handling.
 	 */
 
-	var ParseError = __webpack_require__(4);
-	var Settings = __webpack_require__(75);
+	var ParseError = __webpack_require__(2);
+	var Settings = __webpack_require__(16);
 
-	var buildTree = __webpack_require__(221);
-	var parseTree = __webpack_require__(227);
+	var buildTree = __webpack_require__(52);
+	var parseTree = __webpack_require__(58);
 	var utils = __webpack_require__(1);
 
 	/**
@@ -10150,7 +5721,7 @@
 
 
 /***/ },
-/* 216 */
+/* 47 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/**
@@ -10166,9 +5737,9 @@
 	 * kinds.
 	 */
 
-	var matchAt = __webpack_require__(228);
+	var matchAt = __webpack_require__(59);
 
-	var ParseError = __webpack_require__(4);
+	var ParseError = __webpack_require__(2);
 
 	// The main lexer class
 	function Lexer(input) {
@@ -10350,7 +5921,7 @@
 
 
 /***/ },
-/* 217 */
+/* 48 */
 /***/ function(module, exports) {
 
 	/**
@@ -10545,17 +6116,17 @@
 
 
 /***/ },
-/* 218 */
+/* 49 */
 /***/ function(module, exports, __webpack_require__) {
 
-	var functions = __webpack_require__(225);
-	var environments = __webpack_require__(223);
-	var Lexer = __webpack_require__(216);
-	var symbols = __webpack_require__(20);
+	var functions = __webpack_require__(56);
+	var environments = __webpack_require__(54);
+	var Lexer = __webpack_require__(47);
+	var symbols = __webpack_require__(6);
 	var utils = __webpack_require__(1);
 
-	var parseData = __webpack_require__(77);
-	var ParseError = __webpack_require__(4);
+	var parseData = __webpack_require__(18);
+	var ParseError = __webpack_require__(2);
 
 	/**
 	 * This file contains the parser used to parse out a TeX expression from the
@@ -11271,7 +6842,7 @@
 
 
 /***/ },
-/* 219 */
+/* 50 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/**
@@ -11281,13 +6852,13 @@
 	 * called, to produce a final HTML tree.
 	 */
 
-	var ParseError = __webpack_require__(4);
-	var Style = __webpack_require__(18);
+	var ParseError = __webpack_require__(2);
+	var Style = __webpack_require__(4);
 
-	var buildCommon = __webpack_require__(19);
-	var delimiter = __webpack_require__(222);
-	var domTree = __webpack_require__(76);
-	var fontMetrics = __webpack_require__(12);
+	var buildCommon = __webpack_require__(5);
+	var delimiter = __webpack_require__(53);
+	var domTree = __webpack_require__(17);
+	var fontMetrics = __webpack_require__(3);
 	var utils = __webpack_require__(1);
 
 	var makeSpan = buildCommon.makeSpan;
@@ -12639,7 +8210,7 @@
 
 
 /***/ },
-/* 220 */
+/* 51 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/**
@@ -12648,11 +8219,11 @@
 	 * parser.
 	 */
 
-	var buildCommon = __webpack_require__(19);
-	var fontMetrics = __webpack_require__(12);
-	var mathMLTree = __webpack_require__(226);
-	var ParseError = __webpack_require__(4);
-	var symbols = __webpack_require__(20);
+	var buildCommon = __webpack_require__(5);
+	var fontMetrics = __webpack_require__(3);
+	var mathMLTree = __webpack_require__(57);
+	var ParseError = __webpack_require__(2);
+	var symbols = __webpack_require__(6);
 	var utils = __webpack_require__(1);
 
 	var makeSpan = buildCommon.makeSpan;
@@ -13164,15 +8735,15 @@
 
 
 /***/ },
-/* 221 */
+/* 52 */
 /***/ function(module, exports, __webpack_require__) {
 
-	var buildHTML = __webpack_require__(219);
-	var buildMathML = __webpack_require__(220);
-	var buildCommon = __webpack_require__(19);
-	var Options = __webpack_require__(217);
-	var Settings = __webpack_require__(75);
-	var Style = __webpack_require__(18);
+	var buildHTML = __webpack_require__(50);
+	var buildMathML = __webpack_require__(51);
+	var buildCommon = __webpack_require__(5);
+	var Options = __webpack_require__(48);
+	var Settings = __webpack_require__(16);
+	var Style = __webpack_require__(4);
 
 	var makeSpan = buildCommon.makeSpan;
 
@@ -13210,7 +8781,7 @@
 
 
 /***/ },
-/* 222 */
+/* 53 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/**
@@ -13235,12 +8806,12 @@
 	 * used in `\left` and `\right`.
 	 */
 
-	var ParseError = __webpack_require__(4);
-	var Style = __webpack_require__(18);
+	var ParseError = __webpack_require__(2);
+	var Style = __webpack_require__(4);
 
-	var buildCommon = __webpack_require__(19);
-	var fontMetrics = __webpack_require__(12);
-	var symbols = __webpack_require__(20);
+	var buildCommon = __webpack_require__(5);
+	var fontMetrics = __webpack_require__(3);
+	var symbols = __webpack_require__(6);
 	var utils = __webpack_require__(1);
 
 	var makeSpan = buildCommon.makeSpan;
@@ -13755,12 +9326,12 @@
 
 
 /***/ },
-/* 223 */
+/* 54 */
 /***/ function(module, exports, __webpack_require__) {
 
-	var fontMetrics = __webpack_require__(12);
-	var parseData = __webpack_require__(77);
-	var ParseError = __webpack_require__(4);
+	var fontMetrics = __webpack_require__(3);
+	var parseData = __webpack_require__(18);
+	var ParseError = __webpack_require__(2);
 
 	var ParseNode = parseData.ParseNode;
 	var ParseResult = parseData.ParseResult;
@@ -13939,7 +9510,7 @@
 
 
 /***/ },
-/* 224 */
+/* 55 */
 /***/ function(module, exports) {
 
 	module.exports = {
@@ -15696,11 +11267,11 @@
 
 
 /***/ },
-/* 225 */
+/* 56 */
 /***/ function(module, exports, __webpack_require__) {
 
 	var utils = __webpack_require__(1);
-	var ParseError = __webpack_require__(4);
+	var ParseError = __webpack_require__(2);
 
 	// This file contains a list of functions that we parse. The functions map
 	// contains the following data:
@@ -16331,7 +11902,7 @@
 
 
 /***/ },
-/* 226 */
+/* 57 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/**
@@ -16439,7 +12010,7 @@
 
 
 /***/ },
-/* 227 */
+/* 58 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/**
@@ -16447,7 +12018,7 @@
 	 * TODO(emily): Remove this
 	 */
 
-	var Parser = __webpack_require__(218);
+	var Parser = __webpack_require__(49);
 
 	/**
 	 * Parses an expression using a Parser, then returns the parsed result.
@@ -16462,7 +12033,7 @@
 
 
 /***/ },
-/* 228 */
+/* 59 */
 /***/ function(module, exports) {
 
 	/** @flow */
@@ -16509,8 +12080,4450 @@
 	module.exports = matchAt;
 
 /***/ },
+/* 60 */,
+/* 61 */,
+/* 62 */,
+/* 63 */
+/***/ function(module, exports, __webpack_require__) {
+
+	'use strict';
+
+	var BaseSelectionHandler,
+	    FocusableSelectionHandler,
+	    extend = function extend(child, parent) {
+	  for (var key in parent) {
+	    if (hasProp.call(parent, key)) child[key] = parent[key];
+	  }function ctor() {
+	    this.constructor = child;
+	  }ctor.prototype = parent.prototype;child.prototype = new ctor();child.__super__ = parent.prototype;return child;
+	},
+	    hasProp = {}.hasOwnProperty;
+
+	BaseSelectionHandler = __webpack_require__(20);
+
+	FocusableSelectionHandler = function (superClass) {
+	  extend(FocusableSelectionHandler, superClass);
+
+	  function FocusableSelectionHandler() {
+	    return FocusableSelectionHandler.__super__.constructor.apply(this, arguments);
+	  }
+
+	  FocusableSelectionHandler.prototype.getVirtualSelectionStartData = function (selection, chunk) {
+	    return {
+	      groupIndex: 'anchor:main',
+	      offset: 0
+	    };
+	  };
+
+	  FocusableSelectionHandler.prototype.getVirtualSelectionEndData = function (selection, chunk) {
+	    return {
+	      groupIndex: 'anchor:main',
+	      offset: 0
+	    };
+	  };
+
+	  FocusableSelectionHandler.prototype.getDOMSelectionStart = function (selection, chunk) {
+	    return {
+	      textNode: chunk.getDomEl().getElementsByClassName('anchor')[0].childNodes[0],
+	      offset: 0
+	    };
+	  };
+
+	  FocusableSelectionHandler.prototype.getDOMSelectionEnd = function (selection, chunk) {
+	    return {
+	      textNode: chunk.getDomEl().getElementsByClassName('anchor')[0].childNodes[0],
+	      offset: 0
+	    };
+	  };
+
+	  FocusableSelectionHandler.prototype.selectStart = function (selection, chunk, asRange) {
+	    selection.virtual.setStart(chunk, {
+	      groupIndex: 'anchor:main',
+	      offset: 0
+	    });
+	    if (!asRange) {
+	      return selection.virtual.collapse();
+	    }
+	  };
+
+	  FocusableSelectionHandler.prototype.selectEnd = function (selection, chunk, asRange) {
+	    selection.virtual.setEnd(chunk, {
+	      groupIndex: 'anchor:main',
+	      offset: 0
+	    });
+	    if (!asRange) {
+	      return selection.virtual.collapseToEnd();
+	    }
+	  };
+
+	  FocusableSelectionHandler.prototype.areCursorsEquivalent = function (selectionWhichIsNullTODO, chunk, thisCursorData, otherCursorData) {
+	    return thisCursorData.offset === otherCursorData.offset && thisCursorData.groupIndex === otherCursorData.groupIndex;
+	  };
+
+	  return FocusableSelectionHandler;
+	}(BaseSelectionHandler);
+
+	module.exports = FocusableSelectionHandler;
+
+/***/ },
+/* 64 */
+/***/ function(module, exports, __webpack_require__) {
+
+	'use strict';
+
+	var DOMUtil, StyleableText, StyleableTextRenderer, TextGroupEl, emptyChar;
+
+	StyleableText = __webpack_require__(12);
+
+	StyleableTextRenderer = __webpack_require__(145);
+
+	emptyChar = __webpack_require__(22).EMPTY_CHAR;
+
+	DOMUtil = __webpack_require__(11);
+
+	TextGroupEl = React.createClass({
+	  displayName: 'TextGroupEl',
+
+	  statics: {
+	    getTextElement: function getTextElement(chunk, groupIndex) {
+	      return chunk.getDomEl().querySelector("*[data-group-index='" + groupIndex + "']");
+	    },
+	    getTextElementAtCursor: function getTextElementAtCursor(virtualCursor) {
+	      return TextGroupEl.getTextElement(virtualCursor.chunk, virtualCursor.data.groupIndex);
+	    },
+	    getDomPosition: function getDomPosition(virtualCursor) {
+	      var element, i, len, ref, textNode, totalCharactersFromStart;
+	      totalCharactersFromStart = 0;
+	      element = TextGroupEl.getTextElementAtCursor(virtualCursor);
+	      if (!element) {
+	        return null;
+	      }
+	      if (element != null) {
+	        ref = DOMUtil.getTextNodesInOrder(element);
+	        for (i = 0, len = ref.length; i < len; i++) {
+	          textNode = ref[i];
+	          if (totalCharactersFromStart + textNode.nodeValue.length >= virtualCursor.data.offset) {
+	            return {
+	              textNode: textNode,
+	              offset: virtualCursor.data.offset - totalCharactersFromStart
+	            };
+	          }
+	          totalCharactersFromStart += textNode.nodeValue.length;
+	        }
+	      }
+	      return {
+	        textNode: null,
+	        offset: 0
+	      };
+	    }
+	  },
+	  componentDidUpdate: function componentDidUpdate() {
+	    return console.timeEnd('textRender');
+	  },
+	  createChild: function createChild(el, key) {
+	    var attrs, createChild, groupIndex, ref, ref1;
+	    createChild = this.createChild;
+	    groupIndex = this.props.groupIndex;
+	    attrs = {
+	      key: key.counter++
+	    };
+	    switch (el.type) {
+	      case 'a':
+	        if (((ref = el.attrs) != null ? ref.href : void 0) != null) {
+	          attrs.href = el.attrs.href;
+	          attrs.target = "_blank";
+	        }
+	        break;
+	      case 'span':
+	        if (((ref1 = el.attrs) != null ? ref1['class'] : void 0) != null) {
+	          attrs.className = el.attrs['class'];
+	        }
+	    }
+	    return React.createElement(el.type, attrs, el.children.map(function (child, index) {
+	      switch (child.nodeType) {
+	        case 'text':
+	          if (child.html != null) {
+	            return React.createElement('span', { key: key.counter++, dangerouslySetInnerHTML: { __html: child.html } });
+	          } else if (child.text.length === 0) {
+	            return React.createElement(
+	              'span',
+	              { key: key.counter++ },
+	              emptyChar
+	            );
+	          } else if (child.text.charAt(child.text.length - 1) === "\n") {
+	            return React.createElement(
+	              'span',
+	              { key: key.counter++ },
+	              child.text,
+	              emptyChar
+	            );
+	          } else {
+	            return React.createElement(
+	              'span',
+	              { key: key.counter++ },
+	              child.text
+	            );
+	          }
+	          break;
+	        default:
+	          return createChild(child, key);
+	      }
+	    }));
+	  },
+	  render: function render() {
+	    var key, mockElement;
+	    console.time('textRender');
+	    key = {
+	      counter: 0
+	    };
+	    mockElement = StyleableTextRenderer(this.props.text);
+	    return React.createElement(
+	      'span',
+	      { className: 'text', 'data-group-index': this.props.groupIndex, 'data-indent': this.props.indent },
+	      this.createChild(mockElement, key)
+	    );
+	  }
+	});
+
+	window.__gdp = TextGroupEl.getDomPosition;
+
+	module.exports = TextGroupEl;
+
+/***/ },
+/* 65 */
+/***/ function(module, exports, __webpack_require__) {
+
+	'use strict';
+
+	var _extends = Object.assign || function (target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i]; for (var key in source) { if (Object.prototype.hasOwnProperty.call(source, key)) { target[key] = source[key]; } } } return target; };
+
+	var EMPTY_CHAR;
+
+	EMPTY_CHAR = __webpack_require__(22).EMPTY_CHAR;
+
+	module.exports = React.createClass({
+			displayName: 'exports',
+
+			render: function render() {
+					return React.createElement(
+							'span',
+							_extends({}, this.props, {
+									className: 'anchor',
+									ref: 'anchorElement',
+									contentEditable: 'true',
+									tabIndex: this.props.shouldPreventTab ? '-1' : '',
+									suppressContentEditableWarning: true,
+									'data-group-index': 'anchor:' + this.props.name
+							}),
+							EMPTY_CHAR
+					);
+			}
+	});
+
+/***/ },
+/* 66 */
+/***/ function(module, exports, __webpack_require__) {
+
+	'use strict';
+
+	__webpack_require__(210);
+
+	module.exports = React.createClass({
+	  displayName: 'exports',
+
+	  getDefaultProps: function getDefaultProps() {
+	    return {
+	      value: 'Button',
+	      disabled: false
+	    };
+	  },
+	  focus: function focus() {
+	    return ReactDOM.findDOMNode(this.refs.button).focus();
+	  },
+	  render: function render() {
+	    return React.createElement(
+	      'div',
+	      { className: "obojobo-draft--components--button" + (this.props.dangerous ? ' dangerous' : '') + (this.props.altAction ? ' alt-action' : '') },
+	      React.createElement(
+	        'button',
+	        {
+	          ref: 'button',
+	          onClick: this.props.onClick,
+	          tabIndex: this.props.shouldPreventTab ? '-1' : this.props.tabIndex,
+	          disabled: this.props.disabled || this.props.shouldPreventTab
+	        },
+	        this.props.value
+	      )
+	    );
+	  }
+	});
+
+/***/ },
+/* 67 */
+/***/ function(module, exports, __webpack_require__) {
+
+	"use strict";
+
+	__webpack_require__(214);
+
+	module.exports = React.createClass({
+	  displayName: "exports",
+
+	  render: function render() {
+	    return React.createElement(
+	      "div",
+	      { className: "obojobo-draft--components--modal--bubble" },
+	      React.createElement(
+	        "div",
+	        { className: "container" },
+	        this.props.children
+	      )
+	    );
+	  }
+	});
+
+/***/ },
+/* 68 */
+/***/ function(module, exports, __webpack_require__) {
+
+	'use strict';
+
+	var _extends = Object.assign || function (target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i]; for (var key in source) { if (Object.prototype.hasOwnProperty.call(source, key)) { target[key] = source[key]; } } } return target; };
+
+	var Button, DeleteButton, Modal;
+
+	__webpack_require__(216);
+
+	Button = __webpack_require__(66);
+
+	DeleteButton = __webpack_require__(35);
+
+	Modal = __webpack_require__(70);
+
+	module.exports = React.createClass({
+	  displayName: 'exports',
+
+	  getDefaultProps: function getDefaultProps() {
+	    return {
+	      centered: true
+	    };
+	  },
+	  componentDidMount: function componentDidMount() {
+	    var button, i, index, len, ref, results;
+	    ref = this.props.buttons;
+	    results = [];
+	    for (index = i = 0, len = ref.length; i < len; index = ++i) {
+	      button = ref[index];
+	      if (button["default"]) {
+	        results.push(this.refs['button' + index].focus());
+	      } else {
+	        results.push(void 0);
+	      }
+	    }
+	    return results;
+	  },
+	  focusOnFirstElement: function focusOnFirstElement() {
+	    return this.refs.button0.focus();
+	  },
+	  render: function render() {
+	    var styles;
+	    styles = null;
+	    if (this.props.width) {
+	      styles = {
+	        width: this.props.width
+	      };
+	    }
+	    return React.createElement(
+	      'div',
+	      { className: 'obojobo-draft--components--modal--dialog', style: styles },
+	      React.createElement(
+	        Modal,
+	        { onClose: this.props.onClose, focusOnFirstElement: this.focusOnFirstElement },
+	        this.props.title ? React.createElement(
+	          'h1',
+	          { className: 'heading', style: { textAlign: this.props.centered ? 'center' : null } },
+	          this.props.title
+	        ) : null,
+	        React.createElement(
+	          'div',
+	          { className: 'dialog-content', style: { textAlign: this.props.centered ? 'center' : null } },
+	          this.props.children
+	        ),
+	        React.createElement(
+	          'div',
+	          { className: 'controls' },
+	          this.props.buttons.map(function (buttonPropsOrText, index) {
+	            if (typeof buttonPropsOrText === "string") {
+	              return React.createElement(
+	                'span',
+	                { key: index, className: 'text' },
+	                buttonPropsOrText
+	              );
+	            }
+	            buttonPropsOrText.key = index;
+	            return React.createElement(Button, _extends({ ref: 'button' + index }, buttonPropsOrText));
+	          }.bind(this))
+	        )
+	      )
+	    );
+	  }
+	});
+
+/***/ },
+/* 69 */
+/***/ function(module, exports, __webpack_require__) {
+
+	'use strict';
+
+	var SimpleDialog;
+
+	__webpack_require__(217);
+
+	SimpleDialog = __webpack_require__(71);
+
+	module.exports = React.createClass({
+		displayName: 'exports',
+
+		render: function render() {
+			return React.createElement(
+				'div',
+				{ className: 'obojobo-draft--components--modal--error-dialog' },
+				React.createElement(
+					SimpleDialog,
+					{ ok: true, title: this.props.title },
+					this.props.children
+				)
+			);
+		}
+	});
+
+/***/ },
+/* 70 */
+/***/ function(module, exports, __webpack_require__) {
+
+	'use strict';
+
+	var DeleteButton;
+
+	__webpack_require__(218);
+
+	DeleteButton = __webpack_require__(35);
+
+	module.exports = React.createClass({
+	  displayName: 'exports',
+
+	  componentDidMount: function componentDidMount() {
+	    if (this.props.onClose) {
+	      return document.addEventListener('keyup', this.onKeyUp);
+	    }
+	  },
+	  componentWillUnmount: function componentWillUnmount() {
+	    if (this.props.onClose) {
+	      return document.removeEventListener('keyup', this.onKeyUp);
+	    }
+	  },
+	  onKeyUp: function onKeyUp(event) {
+	    if (event.keyCode === 27) {
+	      return this.props.onClose();
+	    }
+	  },
+	  onTabTrapFocus: function onTabTrapFocus() {
+	    if (this.props.onClose) {
+	      return this.refs.closeButton.focus();
+	    } else if (this.props.focusOnFirstElement) {
+	      return this.props.focusOnFirstElement();
+	    }
+	  },
+	  render: function render() {
+	    return React.createElement(
+	      'div',
+	      { className: 'obojobo-draft--components--modal--modal' },
+	      React.createElement('input', { className: 'first-tab', ref: 'firstTab', type: 'text', onFocus: this.onTabTrapFocus }),
+	      this.props.onClose ? React.createElement(DeleteButton, { ref: 'closeButton', onClick: this.props.onClose }) : null,
+	      React.createElement(
+	        'div',
+	        { className: 'content' },
+	        this.props.children
+	      ),
+	      React.createElement('input', { className: 'last-tab', ref: 'lastTab', type: 'text', onFocus: this.onTabTrapFocus })
+	    );
+	  }
+	});
+
+/***/ },
+/* 71 */
+/***/ function(module, exports, __webpack_require__) {
+
+	'use strict';
+
+	var Dialog, ModalUtil;
+
+	__webpack_require__(219);
+
+	ModalUtil = __webpack_require__(83);
+
+	Dialog = __webpack_require__(68);
+
+	module.exports = React.createClass({
+	  displayName: 'exports',
+
+	  getDefaultProps: function getDefaultProps() {
+	    return {
+	      ok: false,
+	      noOrYes: false,
+	      yesOrNo: false,
+	      cancelOk: false,
+	      title: null,
+	      width: null,
+	      onCancel: function onCancel() {
+	        return ModalUtil.hide();
+	      },
+	      onConfirm: function onConfirm() {
+	        return ModalUtil.hide();
+	      }
+	    };
+	  },
+	  render: function render() {
+	    var buttons, cancelButton, confirmButton;
+	    cancelButton = null;
+	    confirmButton = null;
+	    if (this.props.ok) {
+	      buttons = [{
+	        value: 'OK',
+	        onClick: this.props.onConfirm,
+	        "default": true
+	      }];
+	    } else if (this.props.noOrYes) {
+	      buttons = [{
+	        value: 'No',
+	        onClick: this.props.onCancel
+	      }, 'or', {
+	        value: 'Yes',
+	        onClick: this.props.onConfirm,
+	        "default": true
+	      }];
+	    } else if (this.props.yesOrNo) {
+	      buttons = [{
+	        value: 'Yes',
+	        onClick: this.props.onConfirm
+	      }, 'or', {
+	        value: 'No',
+	        onClick: this.props.onCancel,
+	        "default": true
+	      }];
+	    } else if (this.props.cancelOk) {
+	      buttons = [{
+	        value: 'Cancel',
+	        altAction: true,
+	        onClick: this.props.onCancel
+	      }, {
+	        value: 'OK',
+	        onClick: this.props.onConfirm,
+	        "default": true
+	      }];
+	    }
+	    return React.createElement(
+	      'div',
+	      { className: 'obojobo-draft--components--modal--simple-dialog' },
+	      React.createElement(
+	        Dialog,
+	        { centered: true, buttons: buttons, title: this.props.title, width: this.props.width },
+	        this.props.children
+	      )
+	    );
+	  }
+	});
+
+/***/ },
+/* 72 */
+/***/ function(module, exports) {
+
+	"use strict";
+
+	var MockElement;
+
+	MockElement = function () {
+	  function MockElement(type, attrs) {
+	    this.type = type;
+	    this.attrs = attrs != null ? attrs : {};
+	    this.nodeType = 'element';
+	    this.children = [];
+	    this.parent = null;
+	  }
+
+	  MockElement.prototype.addChild = function (child) {
+	    this.children.push(child);
+	    return child.parent = this;
+	  };
+
+	  MockElement.prototype.addChildAt = function (child, atIndex) {
+	    this.children.splice(atIndex, 0, child);
+	    return child.parent = this;
+	  };
+
+	  MockElement.prototype.getChildIndex = function (child) {
+	    return this.children.indexOf(child);
+	  };
+
+	  MockElement.prototype.addBefore = function (childToAdd, targetChild) {
+	    var index;
+	    index = this.getChildIndex(targetChild);
+	    return this.addChildAt(childToAdd, index);
+	  };
+
+	  MockElement.prototype.addAfter = function (childToAdd, targetChild) {
+	    var index;
+	    index = this.getChildIndex(targetChild);
+	    return this.addChildAt(childToAdd, index + 1);
+	  };
+
+	  MockElement.prototype.replaceChild = function (childToReplace, newChild) {
+	    var index;
+	    index = this.getChildIndex(childToReplace);
+	    this.children[index] = newChild;
+	    newChild.parent = this;
+	    return childToReplace.parent = null;
+	  };
+
+	  return MockElement;
+	}();
+
+	Object.defineProperties(MockElement.prototype, {
+	  "firstChild": {
+	    get: function get() {
+	      return this.children[0];
+	    }
+	  },
+	  "lastChild": {
+	    get: function get() {
+	      return this.children[this.children.length - 1];
+	    }
+	  }
+	});
+
+	module.exports = MockElement;
+
+/***/ },
+/* 73 */
+/***/ function(module, exports) {
+
+	'use strict';
+
+	var MockTextNode;
+
+	MockTextNode = function () {
+	  function MockTextNode(text) {
+	    this.text = text != null ? text : '';
+	    this.nodeType = 'text';
+	    this.parent = null;
+	  }
+
+	  return MockTextNode;
+	}();
+
+	module.exports = MockTextNode;
+
+/***/ },
+/* 74 */
+/***/ function(module, exports, __webpack_require__) {
+
+	'use strict';
+
+	var Cursor, DOMUtil;
+
+	DOMUtil = __webpack_require__(11);
+
+	Cursor = function () {
+	  function Cursor(chunk, node, offset) {
+	    this.chunk = chunk != null ? chunk : null;
+	    this.node = node != null ? node : null;
+	    this.offset = offset != null ? offset : null;
+	    this.textNode = DOMUtil.getFirstTextNodeOfElement(this.node);
+	    this.isValid = this.chunk !== null && this.offset !== null;
+	    this.isText = this.isValid && this.textNode !== null;
+	  }
+
+	  Cursor.prototype.clone = function () {
+	    return new Cursor(this.chunk, this.node, this.offset);
+	  };
+
+	  return Cursor;
+	}();
+
+	module.exports = Cursor;
+
+/***/ },
+/* 75 */
+/***/ function(module, exports, __webpack_require__) {
+
+	'use strict';
+
+	var DOMSelection, DOMUtil, VirtualCursor, VirtualSelection;
+
+	VirtualCursor = __webpack_require__(38);
+
+	DOMUtil = __webpack_require__(11);
+
+	DOMSelection = __webpack_require__(14);
+
+	VirtualSelection = function () {
+	  function VirtualSelection(page1) {
+	    this.page = page1;
+	    this.clear();
+	  }
+
+	  VirtualSelection.prototype.clear = function () {
+	    this.start = null;
+	    return this.end = null;
+	  };
+
+	  VirtualSelection.prototype.clone = function () {
+	    var virtSel;
+	    virtSel = new VirtualSelection(this.page);
+	    virtSel.start = this.start.clone();
+	    virtSel.end = this.end.clone();
+	    return virtSel;
+	  };
+
+	  VirtualSelection.prototype.getPosition = function (chunk) {
+	    var chunkIndex, endIndex, ref, ref1, startIndex;
+	    if (((ref = this.start) != null ? ref.chunk : void 0) == null || ((ref1 = this.end) != null ? ref1.chunk : void 0) == null) {
+	      return 'unknown';
+	    }
+	    chunkIndex = chunk.get('index');
+	    startIndex = this.start.chunk.get('index');
+	    endIndex = this.end.chunk.get('index');
+	    if (chunkIndex < startIndex) {
+	      return 'before';
+	    }
+	    if (chunkIndex === startIndex && chunkIndex === endIndex) {
+	      return 'contains';
+	    }
+	    if (chunkIndex === startIndex) {
+	      return 'start';
+	    }
+	    if (chunkIndex < endIndex) {
+	      return 'inside';
+	    }
+	    if (chunkIndex === endIndex) {
+	      return 'end';
+	    }
+	    return 'after';
+	  };
+
+	  VirtualSelection.prototype.collapse = function () {
+	    return this.end = this.start.clone();
+	  };
+
+	  VirtualSelection.prototype.collapseToEnd = function () {
+	    return this.start = this.end.clone();
+	  };
+
+	  VirtualSelection.prototype.setStart = function (chunk, data) {
+	    return this.start = new VirtualCursor(chunk, data);
+	  };
+
+	  VirtualSelection.prototype.setEnd = function (chunk, data) {
+	    return this.end = new VirtualCursor(chunk, data);
+	  };
+
+	  VirtualSelection.prototype.setCaret = function (chunk, data) {
+	    this.setStart(chunk, data);
+	    return this.collapse();
+	  };
+
+	  VirtualSelection.prototype.toObject = function () {
+	    var end, ref, ref1, ref2, ref3, start;
+	    if (((ref = this.start) != null ? ref.chunk : void 0) == null || ((ref1 = this.start) != null ? ref1.data : void 0) == null) {
+	      start = {
+	        index: -1,
+	        data: {}
+	      };
+	    } else {
+	      start = {
+	        index: this.start.chunk.get('index'),
+	        data: Object.assign({}, this.start.data)
+	      };
+	    }
+	    if (((ref2 = this.end) != null ? ref2.chunk : void 0) == null || ((ref3 = this.end) != null ? ref3.data : void 0) == null) {
+	      end = {
+	        index: -1,
+	        data: {}
+	      };
+	    } else {
+	      end = {
+	        index: this.end.chunk.get('index'),
+	        data: Object.assign({}, this.end.data)
+	      };
+	    }
+	    return {
+	      start: start,
+	      end: end
+	    };
+	  };
+
+	  VirtualSelection.prototype.fromObject = function (o) {
+	    this.setStart(this.page.chunks.at(o.start.index), o.start.data);
+	    return this.setEnd(this.page.chunks.at(o.end.index), o.end.data);
+	  };
+
+	  VirtualSelection.prototype.fromDOMSelection = function (domSelection) {
+	    var endChunk, endChunkIndex, startChunk, startChunkIndex;
+	    if (domSelection == null) {
+	      domSelection = null;
+	    }
+	    if (domSelection == null) {
+	      domSelection = DOMSelection.get();
+	    }
+	    startChunkIndex = DOMUtil.findParentAttr(domSelection.startContainer, 'data-component-index');
+	    endChunkIndex = DOMUtil.findParentAttr(domSelection.endContainer, 'data-component-index');
+	    if (!startChunkIndex || !endChunkIndex) {
+	      return;
+	    }
+	    startChunk = this.page.chunks.at(startChunkIndex);
+	    endChunk = this.page.chunks.at(endChunkIndex);
+	    if (!startChunk || !endChunk) {
+	      return;
+	    }
+	    this.setStart(startChunk, startChunk.getVirtualSelectionStartData());
+	    return this.setEnd(endChunk, endChunk.getVirtualSelectionEndData());
+	  };
+
+	  VirtualSelection.prototype.__debug_print = function () {
+	    return console.log(JSON.stringify(this.toObject(), null, 4));
+	  };
+
+	  return VirtualSelection;
+	}();
+
+	Object.defineProperties(VirtualSelection.prototype, {
+	  "type": {
+	    get: function get() {
+	      var ref, ref1;
+	      switch (false) {
+	        case !(((ref = this.start) != null ? ref.chunk : void 0) == null || ((ref1 = this.end) != null ? ref1.chunk : void 0) == null):
+	          return 'none';
+	        case this.start.chunk.cid === this.end.chunk.cid:
+	          return 'chunkSpan';
+	        case !this.start.isEquivalentTo(this.end):
+	          return 'caret';
+	        default:
+	          return 'textSpan';
+	      }
+	    }
+	  },
+	  "all": {
+	    get: function get() {
+	      var all, cur;
+	      switch (this.type) {
+	        case 'chunkSpan':
+	          all = [];
+	          cur = this.start.chunk;
+	          while (cur != null && cur !== this.end.chunk.nextSibling()) {
+	            all.push(cur);
+	            cur = cur.nextSibling();
+	          }
+	          return all;
+	        case 'textSpan':
+	        case 'caret':
+	          return all = [this.start.chunk];
+	        default:
+	          return [];
+	      }
+	    }
+	  },
+	  "inbetween": {
+	    get: function get() {
+	      var result;
+	      if (this.type !== 'chunkSpan') {
+	        return [];
+	      }
+	      result = this.all;
+	      result.pop();
+	      result.shift();
+	      return result;
+	    }
+	  }
+	});
+
+	VirtualSelection.fromObject = function (page, o) {
+	  var vs;
+	  vs = new VirtualSelection(page);
+	  vs.fromObject(page, o);
+	  return vs;
+	};
+
+	VirtualSelection.fromDOMSelection = function (page, domSelection) {
+	  var vs;
+	  vs = new VirtualSelection(page);
+	  vs.fromDOMSelection(domSelection);
+	  return vs;
+	};
+
+	module.exports = VirtualSelection;
+
+/***/ },
+/* 76 */
+/***/ function(module, exports, __webpack_require__) {
+
+	'use strict';
+
+	var ChunkStyleList, StyleRange, StyleType, keySortFn;
+
+	StyleType = __webpack_require__(15);
+
+	StyleRange = __webpack_require__(21);
+
+	keySortFn = function keySortFn(a, b) {
+	  return Number(a) - Number(b);
+	};
+
+	ChunkStyleList = function () {
+	  function ChunkStyleList() {
+	    this.clear();
+	  }
+
+	  ChunkStyleList.prototype.clear = function () {
+	    return this.styles = [];
+	  };
+
+	  ChunkStyleList.prototype.getExportedObject = function () {
+	    var j, len, output, ref, style;
+	    if (this.styles.length === 0) {
+	      return null;
+	    }
+	    output = [];
+	    ref = this.styles;
+	    for (j = 0, len = ref.length; j < len; j++) {
+	      style = ref[j];
+	      output.push(style.getExportedObject());
+	    }
+	    return output;
+	  };
+
+	  ChunkStyleList.prototype.clone = function () {
+	    var cloneStyleList, j, len, ref, style;
+	    cloneStyleList = new ChunkStyleList();
+	    ref = this.styles;
+	    for (j = 0, len = ref.length; j < len; j++) {
+	      style = ref[j];
+	      cloneStyleList.add(style.clone());
+	    }
+	    return cloneStyleList;
+	  };
+
+	  ChunkStyleList.prototype.length = function () {
+	    return this.styles.length;
+	  };
+
+	  ChunkStyleList.prototype.get = function () {
+	    return this.styles[i];
+	  };
+
+	  ChunkStyleList.prototype.add = function (styleRange) {
+	    return this.styles.push(styleRange);
+	  };
+
+	  ChunkStyleList.prototype.remove = function (styleRange) {
+	    var co, comparisons, j, k, l, leftRange, len, len1, len2, len3, m, origEnd, ref, ref1, ref2, ref3, rightRange;
+	    comparisons = this.getStyleComparisonsForRange(styleRange.start, styleRange.end, styleRange.type);
+	    ref = comparisons.enscapsulatedBy;
+	    for (j = 0, len = ref.length; j < len; j++) {
+	      co = ref[j];
+	      co.invalidate();
+	    }
+	    ref1 = comparisons.left;
+	    for (k = 0, len1 = ref1.length; k < len1; k++) {
+	      co = ref1[k];
+	      co.end = styleRange.start;
+	    }
+	    ref2 = comparisons.right;
+	    for (l = 0, len2 = ref2.length; l < len2; l++) {
+	      co = ref2[l];
+	      co.start = styleRange.end;
+	    }
+	    ref3 = comparisons.contains;
+	    for (m = 0, len3 = ref3.length; m < len3; m++) {
+	      co = ref3[m];
+	      leftRange = co;
+	      origEnd = leftRange.end;
+	      leftRange.end = styleRange.start;
+	      rightRange = new StyleRange(styleRange.end, origEnd, co.type, co.data);
+	      if (leftRange.length() === 0) {
+	        leftRange.invalidate();
+	      }
+	      if (rightRange.length() > 0) {
+	        this.add(rightRange);
+	      }
+	    }
+	    return this.normalize();
+	  };
+
+	  ChunkStyleList.prototype.getStyleComparisonsForRange = function (from, to, type) {
+	    var comparisons, curComparison, j, len, ref, style;
+	    type = type || null;
+	    to = to || from;
+	    comparisons = {
+	      after: [],
+	      before: [],
+	      enscapsulatedBy: [],
+	      contains: [],
+	      left: [],
+	      right: []
+	    };
+	    ref = this.styles;
+	    for (j = 0, len = ref.length; j < len; j++) {
+	      style = ref[j];
+	      curComparison = style.compareToRange(from, to);
+	      if (type === null || style.type === type) {
+	        comparisons[curComparison].push(style);
+	      }
+	    }
+	    return comparisons;
+	  };
+
+	  ChunkStyleList.prototype.rangeHasStyle = function (from, to, styleType) {
+	    return this.getStyleComparisonsForRange(from, to, styleType).contains.length > 0;
+	  };
+
+	  ChunkStyleList.prototype.getStylesInRange = function (from, to) {
+	    var j, len, range, ref, styles;
+	    styles = {};
+	    ref = this.getStyleComparisonsForRange(from, to).contains;
+	    for (j = 0, len = ref.length; j < len; j++) {
+	      range = ref[j];
+	      styles[range.type] = range.type;
+	    }
+	    return styles;
+	  };
+
+	  ChunkStyleList.prototype.getStyles = function () {
+	    var j, len, range, ref, styles;
+	    styles = {};
+	    ref = this.styles;
+	    for (j = 0, len = ref.length; j < len; j++) {
+	      range = ref[j];
+	      styles[range.type] = range.type;
+	    }
+	    return styles;
+	  };
+
+	  ChunkStyleList.prototype.cleanupSuperscripts = function () {
+	    var curLevel, curRange, i, j, k, len, len1, level, mark, newStyles, ref, styleRange;
+	    mark = [];
+	    newStyles = [];
+	    ref = this.styles;
+	    for (j = 0, len = ref.length; j < len; j++) {
+	      styleRange = ref[j];
+	      if (styleRange.type !== StyleType.SUPERSCRIPT) {
+	        newStyles.push(styleRange);
+	        continue;
+	      }
+	      if (mark[styleRange.start] == null) {
+	        mark[styleRange.start] = 0;
+	      }
+	      if (mark[styleRange.end] == null) {
+	        mark[styleRange.end] = 0;
+	      }
+	      level = parseInt(styleRange.data, 10);
+	      mark[styleRange.start] += level;
+	      mark[styleRange.end] -= level;
+	    }
+	    curRange = new StyleRange(-1, -1, StyleType.SUPERSCRIPT, 0);
+	    curLevel = 0;
+	    for (i = k = 0, len1 = mark.length; k < len1; i = ++k) {
+	      level = mark[i];
+	      if (mark[i] == null) {
+	        continue;
+	      }
+	      curLevel += level;
+	      if (curRange.start === -1) {
+	        curRange.start = i;
+	        curRange.data = curLevel;
+	      } else if (curRange.end === -1) {
+	        curRange.end = i;
+	        if (curRange.data !== 0) {
+	          newStyles.push(curRange);
+	        }
+	        curRange = new StyleRange(i, -1, StyleType.SUPERSCRIPT, curLevel);
+	      }
+	    }
+	    return this.styles = newStyles;
+	  };
+
+	  ChunkStyleList.prototype.normalize = function () {
+	    var curData, curEncodedData, data, dataValues, datas, datasToCheck, end, i, j, k, key, keys, l, len, len1, len2, m, n, name, name1, newStyles, range, ref, ref1, ref2, start, style, styleName, styleRange, styleType, t, tmp, total;
+	    this.cleanupSuperscripts();
+	    newStyles = [];
+	    datasToCheck = {};
+	    dataValues = {};
+	    for (styleName in StyleType) {
+	      styleType = StyleType[styleName];
+	      datasToCheck[styleType] = [];
+	      dataValues[styleType] = [];
+	    }
+	    for (i = j = ref = this.styles.length - 1; j >= 0; i = j += -1) {
+	      styleRange = this.styles[i];
+	      curData = styleRange.data;
+	      curEncodedData = JSON.stringify(curData);
+	      if (datasToCheck[styleRange.type].indexOf(curEncodedData) === -1) {
+	        datasToCheck[styleRange.type].push(curEncodedData);
+	        dataValues[styleRange.type].push(curData);
+	      }
+	    }
+	    for (styleType in dataValues) {
+	      datas = dataValues[styleType];
+	      for (k = 0, len = datas.length; k < len; k++) {
+	        data = datas[k];
+	        tmp = {};
+	        total = 0;
+	        start = null;
+	        ref1 = this.styles;
+	        for (l = 0, len1 = ref1.length; l < len1; l++) {
+	          range = ref1[l];
+	          if (range.isMergeable(styleType, data)) {
+	            if (tmp[name = range.start] == null) {
+	              tmp[name] = 0;
+	            }
+	            if (tmp[name1 = range.end] == null) {
+	              tmp[name1] = 0;
+	            }
+	            tmp[range.start]++;
+	            tmp[range.end]--;
+	          }
+	        }
+	        keys = Object.keys(tmp).sort(keySortFn);
+	        for (m = 0, len2 = keys.length; m < len2; m++) {
+	          key = keys[m];
+	          end = Number(key);
+	          t = tmp[key];
+	          if (start == null) {
+	            start = end;
+	          }
+	          total += t;
+	          if (total === 0) {
+	            newStyles.push(new StyleRange(start, end, styleType, data));
+	            start = null;
+	          }
+	        }
+	      }
+	    }
+	    for (i = n = ref2 = newStyles.length - 1; n >= 0; i = n += -1) {
+	      style = newStyles[i];
+	      if (style.isInvalid()) {
+	        newStyles.splice(i, 1);
+	      }
+	    }
+	    return this.styles = newStyles;
+	  };
+
+	  return ChunkStyleList;
+	}();
+
+	ChunkStyleList.createFromObject = function (o) {
+	  var j, len, rangeObj, styleList;
+	  styleList = new ChunkStyleList();
+	  if (o != null) {
+	    for (j = 0, len = o.length; j < len; j++) {
+	      rangeObj = o[j];
+	      styleList.add(StyleRange.createFromObject(rangeObj));
+	    }
+	  }
+	  return styleList;
+	};
+
+	module.exports = ChunkStyleList;
+
+/***/ },
+/* 77 */
+/***/ function(module, exports, __webpack_require__) {
+
+	'use strict';
+
+	var ObjectAssign, StyleableText, TextGroup, TextGroupItem, Util, addChildToGroup, createChild, getItemsArray, removeAllChildrenFromGroup, removeChildFromGroup, setChildToGroup;
+
+	StyleableText = __webpack_require__(12);
+
+	Util = __webpack_require__(39);
+
+	TextGroupItem = __webpack_require__(79);
+
+	ObjectAssign = __webpack_require__(24);
+
+	getItemsArray = function getItemsArray(itemOrItems) {
+	  if (itemOrItems instanceof TextGroupItem) {
+	    return [itemOrItems];
+	  } else {
+	    return itemOrItems;
+	  }
+	};
+
+	addChildToGroup = function addChildToGroup(itemOrItems, group, atIndex) {
+	  var item, items, j, len, results;
+	  if (atIndex == null) {
+	    atIndex = null;
+	  }
+	  items = getItemsArray(itemOrItems);
+	  if (atIndex === null) {
+	    group.items = group.items.concat(items);
+	  } else {
+	    group.items = group.items.slice(0, atIndex).concat(items).concat(group.items.slice(atIndex));
+	  }
+	  results = [];
+	  for (j = 0, len = items.length; j < len; j++) {
+	    item = items[j];
+	    results.push(item.parent = group);
+	  }
+	  return results;
+	};
+
+	removeChildFromGroup = function removeChildFromGroup(itemOrItems, group) {
+	  var item, items, j, len, removed, removedItems;
+	  removedItems = [];
+	  items = getItemsArray(itemOrItems);
+	  for (j = 0, len = items.length; j < len; j++) {
+	    item = items[j];
+	    removed = group.items.splice(item.index, 1)[0];
+	    removed.parent = null;
+	    removedItems.push(removed);
+	  }
+	  return removedItems;
+	};
+
+	setChildToGroup = function setChildToGroup(item, group, atIndex) {
+	  group.items[atIndex] = item;
+	  return item.parent = group;
+	};
+
+	removeAllChildrenFromGroup = function removeAllChildrenFromGroup(group) {
+	  var item, j, len, ref;
+	  ref = group.items;
+	  for (j = 0, len = ref.length; j < len; j++) {
+	    item = ref[j];
+	    item.parent = null;
+	  }
+	  return group.items = [];
+	};
+
+	createChild = function createChild(text, data, dataTemplate) {
+	  return new TextGroupItem(text, Util.createData(data, dataTemplate));
+	};
+
+	TextGroup = function () {
+	  function TextGroup(maxItems1, dataTemplate, initialItems) {
+	    var item, j, len;
+	    this.maxItems = maxItems1 != null ? maxItems1 : 2e308;
+	    if (dataTemplate == null) {
+	      dataTemplate = {};
+	    }
+	    if (initialItems == null) {
+	      initialItems = [];
+	    }
+	    this.items = [];
+	    this.dataTemplate = Object.freeze(ObjectAssign({}, dataTemplate));
+	    for (j = 0, len = initialItems.length; j < len; j++) {
+	      item = initialItems[j];
+	      this.add(item.text, item.data);
+	    }
+	  }
+
+	  TextGroup.prototype.clear = function () {
+	    return removeAllChildrenFromGroup(this);
+	  };
+
+	  TextGroup.prototype.indexOf = function (item) {
+	    return this.items.indexOf(item);
+	  };
+
+	  TextGroup.prototype.init = function (numItems) {
+	    if (numItems == null) {
+	      numItems = 1;
+	    }
+	    this.clear();
+	    while (numItems-- && !this.isFull) {
+	      this.add();
+	    }
+	    return this;
+	  };
+
+	  TextGroup.prototype.fill = function () {
+	    var results;
+	    if (this.maxItems === 2e308) {
+	      return;
+	    }
+	    results = [];
+	    while (!this.isFull) {
+	      results.push(this.add());
+	    }
+	    return results;
+	  };
+
+	  TextGroup.prototype.add = function (text, data) {
+	    if (this.isFull) {
+	      return this;
+	    }
+	    addChildToGroup(createChild(text, data, this.dataTemplate), this);
+	    return this;
+	  };
+
+	  TextGroup.prototype.addAt = function (index, text, data) {
+	    if (this.isFull) {
+	      return this;
+	    }
+	    addChildToGroup(createChild(text, data, this.dataTemplate), this, index);
+	    return this;
+	  };
+
+	  TextGroup.prototype.addGroup = function (group, cloneDataFn) {
+	    if (cloneDataFn == null) {
+	      cloneDataFn = Util.defaultCloneFn;
+	    }
+	    return this.addGroupAt(group, null, cloneDataFn);
+	  };
+
+	  TextGroup.prototype.addGroupAt = function (group, index, cloneDataFn) {
+	    var clone, item, itemsToAdd, j, len, ref;
+	    if (cloneDataFn == null) {
+	      cloneDataFn = Util.defaultCloneFn;
+	    }
+	    itemsToAdd = [];
+	    ref = group.items;
+	    for (j = 0, len = ref.length; j < len; j++) {
+	      item = ref[j];
+	      clone = item.clone(cloneDataFn);
+	      itemsToAdd.push(createChild(clone.text, clone.data, this.dataTemplate));
+	    }
+	    addChildToGroup(itemsToAdd, this, index);
+	    return this;
+	  };
+
+	  TextGroup.prototype.get = function (index) {
+	    return this.items[index];
+	  };
+
+	  TextGroup.prototype.set = function (index, text, data) {
+	    return setChildToGroup(createChild(text, data, this.dataTemplate), this, index);
+	  };
+
+	  TextGroup.prototype.remove = function (index) {
+	    return removeChildFromGroup(this.items[index], this)[0];
+	  };
+
+	  TextGroup.prototype.clone = function (cloneDataFn) {
+	    var clonedItems, item, j, len, ref;
+	    if (cloneDataFn == null) {
+	      cloneDataFn = Util.defaultCloneFn;
+	    }
+	    clonedItems = [];
+	    ref = this.items;
+	    for (j = 0, len = ref.length; j < len; j++) {
+	      item = ref[j];
+	      clonedItems.push(item.clone(cloneDataFn));
+	    }
+	    return new TextGroup(this.maxItems, this.dataTemplate, clonedItems);
+	  };
+
+	  TextGroup.prototype.toDescriptor = function () {
+	    var desc, item, j, len, ref;
+	    desc = [];
+	    ref = this.items;
+	    for (j = 0, len = ref.length; j < len; j++) {
+	      item = ref[j];
+	      desc.push({
+	        text: item.text.getExportedObject(),
+	        data: Util.defaultCloneFn(item.data)
+	      });
+	    }
+	    return desc;
+	  };
+
+	  TextGroup.prototype.toSlice = function (from, to) {
+	    if (to == null) {
+	      to = 2e308;
+	    }
+	    removeChildFromGroup(this.items.slice(to), this);
+	    removeChildFromGroup(this.items.slice(0, from), this);
+	    return this;
+	  };
+
+	  TextGroup.prototype.splitBefore = function (index) {
+	    var item, sibling;
+	    sibling = new TextGroup(this.maxItems, this.dataTemplate);
+	    while (this.length !== index) {
+	      item = this.remove(index);
+	      sibling.add(item.text, item.data);
+	    }
+	    return sibling;
+	  };
+
+	  TextGroup.prototype.splitText = function (index, offset) {
+	    var item, newItem;
+	    item = this.items[index];
+	    newItem = createChild(item.text.split(offset), Util.defaultCloneFn(item.data), this.dataTemplate);
+	    addChildToGroup(newItem, this, index + 1);
+	    return newItem;
+	  };
+
+	  TextGroup.prototype.merge = function (index, mergeDataFn) {
+	    var consumerItem, digestedItem;
+	    if (mergeDataFn == null) {
+	      mergeDataFn = Util.defaultMergeFn;
+	    }
+	    digestedItem = this.items.splice(index + 1, 1)[0];
+	    consumerItem = this.items[index];
+	    if (!digestedItem || !consumerItem) {
+	      return this;
+	    }
+	    consumerItem.data = Util.createData(mergeDataFn(consumerItem.data, digestedItem.data), this.dataTemplate);
+	    consumerItem.text.merge(digestedItem.text);
+	    return this;
+	  };
+
+	  TextGroup.prototype.deleteSpan = function (startIndex, startTextIndex, endIndex, endTextIndex, merge, mergeFn) {
+	    var endItem, endText, i, item, j, len, newItems, ref, startItem, startText;
+	    if (merge == null) {
+	      merge = true;
+	    }
+	    if (mergeFn == null) {
+	      mergeFn = Util.defaultMergeFn;
+	    }
+	    startItem = this.items[startIndex];
+	    endItem = this.items[endIndex];
+	    if (!startItem) {
+	      startItem = this.first;
+	    }
+	    if (!endItem) {
+	      endItem = this.last;
+	    }
+	    startText = startItem.text;
+	    endText = endItem.text;
+	    if (startText === endText) {
+	      startText.deleteText(startTextIndex, endTextIndex);
+	      return;
+	    }
+	    startText.deleteText(startTextIndex, startText.length);
+	    endText.deleteText(0, endTextIndex);
+	    if (merge) {
+	      newItems = [];
+	      ref = this.items;
+	      for (i = j = 0, len = ref.length; j < len; i = ++j) {
+	        item = ref[i];
+	        if (i < startIndex || i > endIndex) {
+	          newItems.push(item);
+	        } else if (i === startIndex) {
+	          newItems.push(startItem);
+	        } else if (i === endIndex) {
+	          newItems.push(endItem);
+	        }
+	      }
+	      removeAllChildrenFromGroup(this);
+	      addChildToGroup(newItems, this);
+	      return this.merge(startIndex, mergeFn);
+	    }
+	  };
+
+	  TextGroup.prototype.clearSpan = function (startIndex, startTextIndex, endIndex, endTextIndex) {
+	    var endItem, endText, i, item, j, len, ref, startItem, startText;
+	    startItem = this.items[startIndex];
+	    endItem = this.items[endIndex];
+	    startText = startItem.text;
+	    endText = endItem.text;
+	    if (startText === endText) {
+	      startText.deleteText(startTextIndex, endTextIndex);
+	      return;
+	    }
+	    startText.deleteText(startTextIndex, startText.length);
+	    endText.deleteText(0, endTextIndex);
+	    ref = this.items;
+	    for (i = j = 0, len = ref.length; j < len; i = ++j) {
+	      item = ref[i];
+	      if (i > startIndex && i < endIndex) {
+	        item.text.init();
+	      }
+	    }
+	    return this;
+	  };
+
+	  TextGroup.prototype.styleText = function (startIndex, startTextIndex, endIndex, endTextIndex, styleType, styleData) {
+	    return this.applyStyleFunction('styleText', arguments);
+	  };
+
+	  TextGroup.prototype.unstyleText = function (startIndex, startTextIndex, endIndex, endTextIndex, styleType, styleData) {
+	    return this.applyStyleFunction('unstyleText', arguments);
+	  };
+
+	  TextGroup.prototype.toggleStyleText = function (startIndex, startTextIndex, endIndex, endTextIndex, styleType, styleData) {
+	    return this.applyStyleFunction('toggleStyleText', arguments);
+	  };
+
+	  TextGroup.prototype.applyStyleFunction = function (fn, args) {
+	    var endIndex, endItem, endText, endTextIndex, foundStartText, item, j, len, ref, startIndex, startItem, startText, startTextIndex, styleData, styleType;
+	    startIndex = args[0], startTextIndex = args[1], endIndex = args[2], endTextIndex = args[3], styleType = args[4], styleData = args[5];
+	    startItem = this.items[startIndex];
+	    endItem = this.items[endIndex];
+	    startText = startItem.text;
+	    endText = endItem.text;
+	    if (startText === endText) {
+	      startText[fn](styleType, startTextIndex, endTextIndex, styleData);
+	      return;
+	    }
+	    foundStartText = false;
+	    ref = this.items;
+	    for (j = 0, len = ref.length; j < len; j++) {
+	      item = ref[j];
+	      if (item.text === startText) {
+	        item.text[fn](styleType, startTextIndex, startText.length, styleData);
+	        foundStartText = true;
+	      } else if (item.text === endText) {
+	        item.text[fn](styleType, 0, endTextIndex, styleData);
+	        break;
+	      } else if (foundStartText) {
+	        item.text[fn](styleType, 0, item.text.length, styleData);
+	      }
+	    }
+	    return this;
+	  };
+
+	  TextGroup.prototype.getStyles = function (startIndex, startTextIndex, endIndex, endTextIndex) {
+	    var allStyles, endItem, endText, foundStartText, item, j, len, numTexts, ref, returnedStyles, startItem, startText, style, styles;
+	    startItem = this.items[startIndex];
+	    endItem = this.items[endIndex];
+	    if (startItem == null || endItem == null) {
+	      return {};
+	    }
+	    startText = startItem.text;
+	    endText = endItem.text;
+	    if (startText == null || endText == null) {
+	      return {};
+	    }
+	    if (startText === endText) {
+	      return startText.getStyles(startTextIndex, endTextIndex);
+	    }
+	    numTexts = 0;
+	    allStyles = {};
+	    foundStartText = false;
+	    ref = this.items;
+	    for (j = 0, len = ref.length; j < len; j++) {
+	      item = ref[j];
+	      styles = {};
+	      if (item.text === startText) {
+	        numTexts++;
+	        styles = item.text.getStyles(startTextIndex, startText.length);
+	        foundStartText = true;
+	      } else if (item.text === endText) {
+	        numTexts++;
+	        styles = item.text.getStyles(0, endTextIndex);
+	      } else if (foundStartText) {
+	        numTexts++;
+	        styles = item.text.getStyles(0, item.text.length);
+	      }
+	      for (style in styles) {
+	        if (allStyles[style] != null) {
+	          allStyles[style]++;
+	        } else {
+	          allStyles[style] = 1;
+	        }
+	      }
+	      if (item.text === endText) {
+	        break;
+	      }
+	    }
+	    returnedStyles = {};
+	    for (style in allStyles) {
+	      if (allStyles[style] === numTexts) {
+	        returnedStyles[style] = style;
+	      }
+	    }
+	    return returnedStyles;
+	  };
+
+	  TextGroup.prototype.__debug_print = function () {
+	    var item, j, len, ref, results;
+	    console.log('========================');
+	    ref = this.items;
+	    results = [];
+	    for (j = 0, len = ref.length; j < len; j++) {
+	      item = ref[j];
+	      item.text.__debug_print();
+	      console.log(JSON.stringify(item.data));
+	      results.push(console.log('---------------------'));
+	    }
+	    return results;
+	  };
+
+	  return TextGroup;
+	}();
+
+	Object.defineProperties(TextGroup.prototype, {
+	  "length": {
+	    "get": function get() {
+	      return this.items.length;
+	    }
+	  },
+	  "first": {
+	    "get": function get() {
+	      return this.items[0];
+	    }
+	  },
+	  "last": {
+	    "get": function get() {
+	      return this.items[this.items.length - 1];
+	    }
+	  },
+	  "isFull": {
+	    "get": function get() {
+	      return this.items.length === this.maxItems;
+	    }
+	  },
+	  "isEmpty": {
+	    "get": function get() {
+	      return this.items.length === 0;
+	    }
+	  },
+	  "isBlank": {
+	    "get": function get() {
+	      return this.isEmpty || this.items.length === 1 && this.first.text.length === 0;
+	    }
+	  }
+	});
+
+	TextGroup.fromDescriptor = function (descriptor, maxItems, dataTemplate, restoreDataDescriptorFn) {
+	  var item, items, j, len;
+	  if (restoreDataDescriptorFn == null) {
+	    restoreDataDescriptorFn = Util.defaultCloneFn;
+	  }
+	  items = [];
+	  for (j = 0, len = descriptor.length; j < len; j++) {
+	    item = descriptor[j];
+	    items.push(createChild(StyleableText.createFromObject(item.text), restoreDataDescriptorFn(item.data), dataTemplate));
+	  }
+	  return new TextGroup(maxItems, dataTemplate, items);
+	};
+
+	TextGroup.create = function (maxItems, dataTemplate, numItemsToCreate) {
+	  var group;
+	  if (maxItems == null) {
+	    maxItems = 2e308;
+	  }
+	  if (dataTemplate == null) {
+	    dataTemplate = {};
+	  }
+	  if (numItemsToCreate == null) {
+	    numItemsToCreate = 1;
+	  }
+	  group = new TextGroup(maxItems, dataTemplate);
+	  group.init(numItemsToCreate);
+	  return group;
+	};
+
+	window.TextGroup = TextGroup;
+
+	module.exports = TextGroup;
+
+/***/ },
+/* 78 */
+/***/ function(module, exports) {
+
+	"use strict";
+
+	var TextGroupCursor;
+
+	TextGroupCursor = function () {
+	  function TextGroupCursor(virtualCursor) {
+	    this.virtualCursor = virtualCursor;
+	  }
+
+	  return TextGroupCursor;
+	}();
+
+	Object.defineProperties(TextGroupCursor.prototype, {
+	  isTextStart: {
+	    "get": function get() {
+	      return this.offset === 0;
+	    }
+	  },
+	  isTextEnd: {
+	    "get": function get() {
+	      return this.offset === this.text.length;
+	    }
+	  },
+	  isFirstText: {
+	    "get": function get() {
+	      return this.groupIndex === 0;
+	    }
+	  },
+	  isLastText: {
+	    "get": function get() {
+	      return this.groupIndex === this.textGroup.length - 1;
+	    }
+	  },
+	  isGroupStart: {
+	    "get": function get() {
+	      return this.isTextStart && this.isFirstText;
+	    }
+	  },
+	  isGroupEnd: {
+	    "get": function get() {
+	      return this.isTextEnd && this.isLastText;
+	    }
+	  },
+	  textGroup: {
+	    "get": function get() {
+	      return this.virtualCursor.chunk.modelState.textGroup;
+	    }
+	  },
+	  groupIndex: {
+	    "get": function get() {
+	      if (this.virtualCursor.data != null) {
+	        return this.virtualCursor.data.groupIndex;
+	      } else {
+	        return -1;
+	      }
+	    }
+	  },
+	  offset: {
+	    "get": function get() {
+	      if (this.virtualCursor.data != null) {
+	        return this.virtualCursor.data.offset;
+	      } else {
+	        return 0;
+	      }
+	    }
+	  },
+	  textGroupItem: {
+	    "get": function get() {
+	      return this.virtualCursor.chunk.modelState.textGroup.get(this.virtualCursor.data.groupIndex);
+	    }
+	  },
+	  text: {
+	    "get": function get() {
+	      return this.textGroupItem.text;
+	    }
+	  }
+	});
+
+	module.exports = TextGroupCursor;
+
+/***/ },
+/* 79 */
+/***/ function(module, exports, __webpack_require__) {
+
+	'use strict';
+
+	var StyleableText, TextGroupItem, Util;
+
+	StyleableText = __webpack_require__(12);
+
+	Util = __webpack_require__(39);
+
+	module.exports = TextGroupItem = function () {
+	  function TextGroupItem(text, data, parent) {
+	    this.text = text != null ? text : new StyleableText();
+	    this.data = data != null ? data : {};
+	    this.parent = parent != null ? parent : null;
+	  }
+
+	  TextGroupItem.prototype.clone = function (cloneDataFn) {
+	    if (cloneDataFn == null) {
+	      cloneDataFn = Util.defaultCloneFn;
+	    }
+	    return new TextGroupItem(this.text.clone(), cloneDataFn(this.data), null);
+	  };
+
+	  return TextGroupItem;
+	}();
+
+	Object.defineProperties(TextGroupItem.prototype, {
+	  "index": {
+	    "get": function get() {
+	      if (this.parent === null) {
+	        return -1;
+	      }
+	      return this.parent.indexOf(this);
+	    }
+	  }
+	});
+
+/***/ },
+/* 80 */
+/***/ function(module, exports, __webpack_require__) {
+
+	'use strict';
+
+	var DOMUtil, TextGroupCursor, TextGroupSelection, VirtualCursor, emptyChar, getCursors;
+
+	TextGroupCursor = __webpack_require__(78);
+
+	VirtualCursor = __webpack_require__(38);
+
+	DOMUtil = __webpack_require__(11);
+
+	emptyChar = __webpack_require__(22).EMPTY_CHAR;
+
+	getCursors = function getCursors(chunk, virtualSelection) {
+	  var chunkEnd, chunkStart, position;
+	  if (!virtualSelection) {
+	    return {
+	      start: null,
+	      end: null
+	    };
+	  }
+	  chunkStart = TextGroupSelection.getGroupStartCursor(chunk);
+	  chunkEnd = TextGroupSelection.getGroupEndCursor(chunk);
+	  position = virtualSelection.getPosition(chunk);
+	  switch (position) {
+	    case 'start':
+	      return {
+	        start: new TextGroupCursor(virtualSelection.start),
+	        end: chunkEnd
+	      };
+	    case 'end':
+	      return {
+	        start: chunkStart,
+	        end: new TextGroupCursor(virtualSelection.end)
+	      };
+	    case 'contains':
+	      return {
+	        start: new TextGroupCursor(virtualSelection.start),
+	        end: new TextGroupCursor(virtualSelection.end)
+	      };
+	    case 'inside':
+	      return {
+	        start: chunkStart,
+	        end: chunkEnd
+	      };
+	    default:
+	      return {
+	        start: null,
+	        end: null
+	      };
+	  }
+	};
+
+	TextGroupSelection = function () {
+	  function TextGroupSelection(chunk1, virtualSelection1) {
+	    this.chunk = chunk1;
+	    this.virtualSelection = virtualSelection1;
+	  }
+
+	  TextGroupSelection.prototype.includes = function (item) {
+	    var groupIndex;
+	    if (this.type === 'none') {
+	      return false;
+	    }
+	    groupIndex = item.index;
+	    return this.start.groupIndex === groupIndex || this.end.groupIndex === groupIndex;
+	  };
+
+	  TextGroupSelection.prototype.selectGroup = function () {
+	    return TextGroupSelection.selectGroup(this.chunk, this.virtualSelection);
+	  };
+
+	  TextGroupSelection.prototype.selectText = function (groupIndex) {
+	    return TextGroupSelection.selectText(this.chunk, groupIndex, this.virtualSelection);
+	  };
+
+	  TextGroupSelection.prototype.setCaretToGroupStart = function () {
+	    return TextGroupSelection.setCaretToGroupStart(this.chunk, this.virtualSelection);
+	  };
+
+	  TextGroupSelection.prototype.setCaretToTextStart = function (groupIndex) {
+	    return TextGroupSelection.setCaretToTextStart(this.chunk, groupIndex, this.virtualSelection);
+	  };
+
+	  TextGroupSelection.prototype.setCaretToGroupEnd = function () {
+	    return TextGroupSelection.setCaretToGroupEnd(this.chunk, this.virtualSelection);
+	  };
+
+	  TextGroupSelection.prototype.setCaretToTextEnd = function (groupIndex) {
+	    return TextGroupSelection.setCaretToTextEnd(this.chunk, groupIndex, this.virtualSelection);
+	  };
+
+	  TextGroupSelection.prototype.setCaret = function (groupIndex, offset) {
+	    return this.virtualSelection.setCaret(this.chunk, {
+	      groupIndex: groupIndex,
+	      offset: offset
+	    });
+	  };
+
+	  TextGroupSelection.prototype.setStart = function (groupIndex, offset) {
+	    return this.virtualSelection.setStart(this.chunk, {
+	      groupIndex: groupIndex,
+	      offset: offset
+	    });
+	  };
+
+	  TextGroupSelection.prototype.setEnd = function (groupIndex, offset) {
+	    return this.virtualSelection.setEnd(this.chunk, {
+	      groupIndex: groupIndex,
+	      offset: offset
+	    });
+	  };
+
+	  TextGroupSelection.prototype.getAllSelectedTexts = function () {
+	    var all, i, j, ref, ref1, ref2, ref3;
+	    if (((ref = this.start) != null ? ref.text : void 0) == null || ((ref1 = this.end) != null ? ref1.text : void 0) == null) {
+	      return [];
+	    }
+	    all = [];
+	    for (i = j = ref2 = this.start.groupIndex, ref3 = this.end.groupIndex; ref2 <= ref3 ? j <= ref3 : j >= ref3; i = ref2 <= ref3 ? ++j : --j) {
+	      all.push(this.chunk.modelState.textGroup.get(i));
+	    }
+	    return all;
+	  };
+
+	  return TextGroupSelection;
+	}();
+
+	Object.defineProperties(TextGroupSelection.prototype, {
+	  type: {
+	    get: function get() {
+	      var cursors, position;
+	      cursors = getCursors(this.chunk, this.virtualSelection);
+	      position = this.position;
+	      switch (false) {
+	        case !(cursors.start === null || cursors.end === null):
+	          return 'none';
+	        case !(position === 'contains' && cursors.start.groupIndex === cursors.end.groupIndex && cursors.start.offset === cursors.end.offset):
+	          return 'caret';
+	        case cursors.start.groupIndex !== cursors.end.groupIndex:
+	          return 'TextSpan';
+	        default:
+	          return 'multipleTextSpan';
+	      }
+	    }
+	  },
+	  start: {
+	    get: function get() {
+	      return getCursors(this.chunk, this.virtualSelection).start;
+	    }
+	  },
+	  end: {
+	    get: function get() {
+	      return getCursors(this.chunk, this.virtualSelection).end;
+	    }
+	  },
+	  position: {
+	    get: function get() {
+	      return this.virtualSelection.getPosition(this.chunk);
+	    }
+	  }
+	});
+
+	TextGroupSelection.getGroupStartCursor = function (chunk) {
+	  return TextGroupSelection.getTextStartCursor(chunk, 0);
+	};
+
+	TextGroupSelection.getGroupEndCursor = function (chunk) {
+	  return TextGroupSelection.getTextEndCursor(chunk, chunk.modelState.textGroup.length - 1);
+	};
+
+	TextGroupSelection.getTextStartCursor = function (chunk, groupIndex) {
+	  var virtCur;
+	  virtCur = new VirtualCursor(chunk, {
+	    groupIndex: groupIndex,
+	    offset: 0
+	  });
+	  return new TextGroupCursor(virtCur);
+	};
+
+	TextGroupSelection.getTextEndCursor = function (chunk, groupIndex) {
+	  var virtCur;
+	  virtCur = new VirtualCursor(chunk, {
+	    groupIndex: groupIndex,
+	    offset: chunk.modelState.textGroup.get(groupIndex).text.length
+	  });
+	  return new TextGroupCursor(virtCur);
+	};
+
+	TextGroupSelection.selectGroup = function (chunk, virtualSelection) {
+	  var end, start;
+	  start = TextGroupSelection.getGroupStartCursor(chunk);
+	  end = TextGroupSelection.getGroupEndCursor(chunk);
+	  virtualSelection.setStart(start.virtualCursor.chunk, start.virtualCursor.data);
+	  return virtualSelection.setEnd(end.virtualCursor.chunk, end.virtualCursor.data);
+	};
+
+	TextGroupSelection.selectText = function (chunk, groupIndex, virtualSelection) {
+	  var end, start;
+	  start = TextGroupSelection.getTextStartCursor(chunk, groupIndex);
+	  end = TextGroupSelection.getTextEndCursor(chunk, groupIndex);
+	  virtualSelection.setStart(start.virtualCursor.chunk, start.virtualCursor.data);
+	  return virtualSelection.setEnd(end.virtualCursor.chunk, end.virtualCursor.data);
+	};
+
+	TextGroupSelection.setCaretToGroupStart = function (chunk, virtualSelection) {
+	  TextGroupSelection.selectGroup(chunk, virtualSelection);
+	  return virtualSelection.collapse();
+	};
+
+	TextGroupSelection.setCaretToTextStart = function (chunk, groupIndex, virtualSelection) {
+	  TextGroupSelection.selectText(chunk, groupIndex, virtualSelection);
+	  return virtualSelection.collapse();
+	};
+
+	TextGroupSelection.setCaretToGroupEnd = function (chunk, virtualSelection) {
+	  TextGroupSelection.selectGroup(chunk, virtualSelection);
+	  return virtualSelection.collapseToEnd();
+	};
+
+	TextGroupSelection.setCaretToTextEnd = function (chunk, groupIndex, virtualSelection) {
+	  TextGroupSelection.selectText(chunk, groupIndex, virtualSelection);
+	  return virtualSelection.collapseToEnd();
+	};
+
+	TextGroupSelection.getCursorDataFromDOM = function (targetTextNode, offset) {
+	  var anchor, groupIndex, groupIndexAttr, j, len, oboTextNode, ref, textNode, totalCharactersFromStart;
+	  totalCharactersFromStart = 0;
+	  oboTextNode = DOMUtil.findParentWithAttr(targetTextNode, 'data-group-index');
+	  if (oboTextNode) {
+	    groupIndexAttr = oboTextNode.getAttribute('data-group-index');
+	    groupIndex = parseInt(groupIndexAttr, 10);
+	    if (isNaN(groupIndex)) {
+	      groupIndex = groupIndexAttr;
+	    }
+	  }
+	  if (oboTextNode == null || oboTextNode.textContent === emptyChar) {
+	    return {
+	      offset: 0,
+	      groupIndex: groupIndex
+	    };
+	  }
+	  ref = DOMUtil.getTextNodesInOrder(oboTextNode);
+	  for (j = 0, len = ref.length; j < len; j++) {
+	    textNode = ref[j];
+	    if (textNode === targetTextNode) {
+	      break;
+	    }
+	    totalCharactersFromStart += textNode.nodeValue.length;
+	  }
+	  anchor = false;
+	  if (groupIndexAttr.indexOf('anchor:') === 0) {
+	    anchor = groupIndexAttr.substr(groupIndexAttr.indexOf(':') + 1);
+	  }
+	  offset += totalCharactersFromStart;
+	  if (anchor) {
+	    offset = 0;
+	  }
+	  return {
+	    offset: offset,
+	    groupIndex: groupIndex
+	  };
+	};
+
+	module.exports = TextGroupSelection;
+
+/***/ },
+/* 81 */
+/***/ function(module, exports) {
+
+	"use strict";
+
+	module.exports = function (asset) {
+	  return "url('" + asset.replace(/'/g, "\\'") + "')";
+	};
+
+/***/ },
+/* 82 */
+/***/ function(module, exports) {
+
+	'use strict';
+
+	var isElementInline, _sanitize;
+
+	_sanitize = function sanitize(node) {
+	  var attr, child, i, j, len, len1, ref, ref1;
+	  if (node.nodeType === Node.ELEMENT_NODE) {
+	    if (node.tagName.toLowerCase() === 'script') {
+	      node = node.parentElement.replaceChild(document.createElement('span'), node);
+	    }
+	    ref = node.attributes;
+	    for (i = 0, len = ref.length; i < len; i++) {
+	      attr = ref[i];
+	      switch (attr.name) {
+	        case 'href':
+	        case 'cite':
+	        case 'style':
+	          true;
+	          break;
+	        default:
+	          node.setAttribute(attr.name, '');
+	      }
+	    }
+	    ref1 = node.childNodes;
+	    for (j = 0, len1 = ref1.length; j < len1; j++) {
+	      child = ref1[j];
+	      _sanitize(child);
+	    }
+	  }
+	  return node;
+	};
+
+	isElementInline = function isElementInline(el) {
+	  switch (el.tagName.toLowerCase()) {
+	    case 'b':
+	    case 'big':
+	    case 'i':
+	    case 'small':
+	    case 'tt':
+	    case 'abbr':
+	    case 'acronym':
+	    case 'cite':
+	    case 'code':
+	    case 'dfn':
+	    case 'em':
+	    case 'kbd':
+	    case 'strong':
+	    case 'samp':
+	    case 'time':
+	    case 'var':
+	    case 'a':
+	    case 'bdo':
+	    case 'br':
+	    case 'img':
+	    case 'map':
+	    case 'object':
+	    case 'q':
+	    case 'script':
+	    case 'span':
+	    case 'sub':
+	    case 'sup':
+	    case 'button':
+	    case 'input':
+	    case 'label':
+	    case 'select':
+	    case 'textarea':
+	      return true;
+	    default:
+	      return false;
+	  }
+	};
+
+	module.exports = {
+	  sanitize: _sanitize,
+	  isElementInline: isElementInline
+	};
+
+/***/ },
+/* 83 */
+/***/ function(module, exports, __webpack_require__) {
+
+	'use strict';
+
+	var Dispatcher, ModalUtil;
+
+	Dispatcher = __webpack_require__(8);
+
+	ModalUtil = {
+	  show: function show(component) {
+	    return Dispatcher.trigger('modal:show', {
+	      value: {
+	        component: component
+	      }
+	    });
+	  },
+	  hide: function hide() {
+	    return Dispatcher.trigger('modal:hide');
+	  },
+	  getCurrentModal: function getCurrentModal(state) {
+	    if (state.modals.length === 0) {
+	      return null;
+	    }
+	    return state.modals[0];
+	  }
+	};
+
+	module.exports = ModalUtil;
+
+/***/ },
+/* 84 */
+/***/ function(module, exports) {
+
+	"use strict";
+
+	module.exports = function () {
+	  var _getId;
+	  _getId = function getId(a) {
+	    if (a) {
+	      return (a ^ Math.random() * 16 >> a / 4).toString(16);
+	    } else {
+	      return ([1e7] + -1e3 + -4e3 + -8e3 + -1e11).replace(/[018]/g, _getId);
+	    }
+	  };
+	  return _getId();
+	};
+
+/***/ },
+/* 85 */
+/***/ function(module, exports, __webpack_require__) {
+
+	'use strict';
+
+	module.exports = {
+	  Common: {
+	    chunk: {
+	      BaseSelectionHandler: __webpack_require__(20),
+	      FocusableChunk: __webpack_require__(140),
+	      focusableChunk: {
+	        FocusableSelectionHandler: __webpack_require__(63),
+	        ToggleSelectionHandler: __webpack_require__(141)
+	      },
+	      NonEditableChunk: __webpack_require__(142),
+	      TextChunk: __webpack_require__(143),
+	      textChunk: {
+	        TextGroupSelectionHandler: __webpack_require__(147),
+	        TextGroupEl: __webpack_require__(64),
+	        Linkify: __webpack_require__(144),
+	        TextGroupAdapter: __webpack_require__(146)
+	      },
+	      util: {
+	        ChunkUtil: __webpack_require__(148),
+	        Insert: __webpack_require__(149),
+	        InsertWithText: __webpack_require__(150)
+	      }
+	    },
+	    components: {
+	      OboComponent: __webpack_require__(157),
+	      Anchor: __webpack_require__(65),
+	      DeleteButton: __webpack_require__(35),
+	      EditButton: __webpack_require__(151),
+	      Button: __webpack_require__(66),
+	      modal: {
+	        bubble: {
+	          Bubble: __webpack_require__(67),
+	          SingleInputBubble: __webpack_require__(153)
+	        },
+	        Question: __webpack_require__(154),
+	        SimpleMessage: __webpack_require__(155),
+	        Modal: __webpack_require__(70),
+	        Dialog: __webpack_require__(68),
+	        SimpleDialog: __webpack_require__(71),
+	        ErrorDialog: __webpack_require__(69)
+	      },
+	      TextMenu: __webpack_require__(158),
+	      ModalContainer: __webpack_require__(156),
+	      FocusBlocker: __webpack_require__(152)
+	    },
+	    flux: {
+	      Store: __webpack_require__(36),
+	      Dispatcher: __webpack_require__(8)
+	    },
+	    mockDOM: {
+	      MockElement: __webpack_require__(72),
+	      MockTextNode: __webpack_require__(73)
+	    },
+	    models: {
+	      OboModel: __webpack_require__(10),
+	      Legacy: __webpack_require__(159)
+	    },
+	    net: {
+	      API: __webpack_require__(160)
+	    },
+	    selection: {
+	      ChunkSelection: __webpack_require__(164),
+	      Cursor: __webpack_require__(74),
+	      DOMSelection: __webpack_require__(14),
+	      OboSelectionRect: __webpack_require__(37),
+	      Selection: __webpack_require__(165),
+	      VirtualCursor: __webpack_require__(38),
+	      VirtualCursorData: __webpack_require__(166),
+	      VirtualSelection: __webpack_require__(75)
+	    },
+	    stores: {
+	      ModalStore: __webpack_require__(168),
+	      FocusStore: __webpack_require__(167)
+	    },
+	    page: {
+	      DOMUtil: __webpack_require__(11),
+	      Head: __webpack_require__(161),
+	      Keyboard: __webpack_require__(162),
+	      Screen: __webpack_require__(163)
+	    },
+	    text: {
+	      ChunkStyleList: __webpack_require__(76),
+	      StyleableText: __webpack_require__(12),
+	      StyleRange: __webpack_require__(21),
+	      StyleType: __webpack_require__(15),
+	      TextConstants: __webpack_require__(22)
+	    },
+	    textGroup: {
+	      TextGroup: __webpack_require__(77),
+	      TextGroupCursor: __webpack_require__(78),
+	      TextGroupItem: __webpack_require__(79),
+	      TextGroupSelection: __webpack_require__(80),
+	      TextGroupUtil: __webpack_require__(39)
+	    },
+	    util: {
+	      Console: __webpack_require__(169),
+	      getBackgroundImage: __webpack_require__(81),
+	      HtmlUtil: __webpack_require__(82),
+	      ModalUtil: __webpack_require__(83),
+	      FocusUtil: __webpack_require__(40),
+	      ErrorUtil: __webpack_require__(170),
+	      UUID: __webpack_require__(84)
+	    }
+	  }
+	};
+
+/***/ },
+/* 86 */,
+/* 87 */,
+/* 88 */,
+/* 89 */,
+/* 90 */,
+/* 91 */,
+/* 92 */,
+/* 93 */,
+/* 94 */,
+/* 95 */,
+/* 96 */,
+/* 97 */,
+/* 98 */,
+/* 99 */,
+/* 100 */,
+/* 101 */,
+/* 102 */,
+/* 103 */,
+/* 104 */,
+/* 105 */,
+/* 106 */,
+/* 107 */,
+/* 108 */,
+/* 109 */,
+/* 110 */,
+/* 111 */,
+/* 112 */,
+/* 113 */,
+/* 114 */,
+/* 115 */,
+/* 116 */,
+/* 117 */,
+/* 118 */,
+/* 119 */,
+/* 120 */,
+/* 121 */,
+/* 122 */,
+/* 123 */,
+/* 124 */,
+/* 125 */,
+/* 126 */,
+/* 127 */,
+/* 128 */,
+/* 129 */,
+/* 130 */,
+/* 131 */,
+/* 132 */,
+/* 133 */,
+/* 134 */,
+/* 135 */,
+/* 136 */,
+/* 137 */,
+/* 138 */,
+/* 139 */,
+/* 140 */
+/***/ function(module, exports, __webpack_require__) {
+
+	'use strict';
+
+	var _extends = Object.assign || function (target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i]; for (var key in source) { if (Object.prototype.hasOwnProperty.call(source, key)) { target[key] = source[key]; } } } return target; };
+
+	var Anchor;
+
+	Anchor = __webpack_require__(65);
+
+	module.exports = React.createClass({
+	  displayName: 'exports',
+
+	  getDefaultProps: function getDefaultProps() {
+	    return {
+	      indent: 0,
+	      spellcheck: true
+	    };
+	  },
+	  getAnchorNode: function getAnchorNode() {
+	    var ref, ref1, ref2;
+	    if (((ref = this.refs) != null ? (ref1 = ref.anchor) != null ? (ref2 = ref1.refs) != null ? ref2.anchorElement : void 0 : void 0 : void 0) == null) {
+	      return null;
+	    }
+	    return this.refs.anchor.refs.anchorElement;
+	  },
+	  render: function render() {
+	    var className;
+	    className = this.props.className;
+	    return React.createElement(
+	      'div',
+	      { className: 'focusable-chunk anchor-container' + (className ? ' ' + className : ''), contentEditable: 'false' },
+	      React.createElement(Anchor, _extends({}, this.props, { name: 'main', ref: 'anchor' })),
+	      this.props.children
+	    );
+	  }
+	});
+
+/***/ },
+/* 141 */
+/***/ function(module, exports, __webpack_require__) {
+
+	'use strict';
+
+	var BaseSelectionHandler,
+	    FocusableSelectionHandler,
+	    ToggleSelectionHandler,
+	    extend = function extend(child, parent) {
+	  for (var key in parent) {
+	    if (hasProp.call(parent, key)) child[key] = parent[key];
+	  }function ctor() {
+	    this.constructor = child;
+	  }ctor.prototype = parent.prototype;child.prototype = new ctor();child.__super__ = parent.prototype;return child;
+	},
+	    hasProp = {}.hasOwnProperty;
+
+	BaseSelectionHandler = __webpack_require__(20);
+
+	FocusableSelectionHandler = __webpack_require__(63);
+
+	ToggleSelectionHandler = function (superClass) {
+	  extend(ToggleSelectionHandler, superClass);
+
+	  function ToggleSelectionHandler(textSelectionHandler, focusSelectionHandler) {
+	    this.textSelectionHandler = textSelectionHandler;
+	    this.focusSelectionHandler = focusSelectionHandler != null ? focusSelectionHandler : new FocusableSelectionHandler();
+	  }
+
+	  ToggleSelectionHandler.prototype.getCopyOfSelection = function (selection, chunk, cloneId) {
+	    if (chunk.isEditing()) {
+	      return this.textSelectionHandler.getCopyOfSelection.apply(this, arguments);
+	    } else {
+	      return this.focusSelectionHandler.getCopyOfSelection.apply(this, arguments);
+	    }
+	  };
+
+	  ToggleSelectionHandler.prototype.selectAll = function (selection, chunk) {
+	    if (chunk.isEditing()) {
+	      return this.textSelectionHandler.selectAll.apply(this, arguments);
+	    } else {
+	      return this.focusSelectionHandler.selectAll.apply(this, arguments);
+	    }
+	  };
+
+	  ToggleSelectionHandler.prototype.selectStart = function (selection, chunk, asRange) {
+	    if (asRange == null) {
+	      asRange = false;
+	    }
+	    if (chunk.isEditing()) {
+	      return this.textSelectionHandler.selectStart.apply(this, arguments);
+	    } else {
+	      return this.focusSelectionHandler.selectStart.apply(this, arguments);
+	    }
+	  };
+
+	  ToggleSelectionHandler.prototype.selectEnd = function (selection, chunk, asRange) {
+	    if (asRange == null) {
+	      asRange = false;
+	    }
+	    if (chunk.isEditing()) {
+	      return this.textSelectionHandler.selectEnd.apply(this, arguments);
+	    } else {
+	      return this.focusSelectionHandler.selectEnd.apply(this, arguments);
+	    }
+	  };
+
+	  ToggleSelectionHandler.prototype.getVirtualSelectionStartData = function (selection, chunk, text, html) {
+	    if (chunk.isEditing()) {
+	      return this.textSelectionHandler.getVirtualSelectionStartData.apply(this, arguments);
+	    } else {
+	      return this.focusSelectionHandler.getVirtualSelectionStartData.apply(this, arguments);
+	    }
+	  };
+
+	  ToggleSelectionHandler.prototype.getVirtualSelectionEndData = function (selection, chunk, text, html) {
+	    if (chunk.isEditing()) {
+	      return this.textSelectionHandler.getVirtualSelectionEndData.apply(this, arguments);
+	    } else {
+	      return this.focusSelectionHandler.getVirtualSelectionEndData.apply(this, arguments);
+	    }
+	  };
+
+	  ToggleSelectionHandler.prototype.getDOMSelectionStart = function (selection, chunk, text, html) {
+	    if (chunk.isEditing()) {
+	      return this.textSelectionHandler.getDOMSelectionStart.apply(this, arguments);
+	    } else {
+	      return this.focusSelectionHandler.getDOMSelectionStart.apply(this, arguments);
+	    }
+	  };
+
+	  ToggleSelectionHandler.prototype.getDOMSelectionEnd = function (selection, chunk, text, html) {
+	    if (chunk.isEditing()) {
+	      return this.textSelectionHandler.getDOMSelectionEnd.apply(this, arguments);
+	    } else {
+	      return this.focusSelectionHandler.getDOMSelectionEnd.apply(this, arguments);
+	    }
+	  };
+
+	  ToggleSelectionHandler.prototype.areCursorsEquivalent = function (selection, chunk, text, html) {
+	    if (chunk.isEditing()) {
+	      return this.textSelectionHandler.areCursorsEquivalent.apply(this, arguments);
+	    } else {
+	      return this.focusSelectionHandler.areCursorsEquivalent.apply(this, arguments);
+	    }
+	  };
+
+	  return ToggleSelectionHandler;
+	}(BaseSelectionHandler);
+
+	module.exports = ToggleSelectionHandler;
+
+/***/ },
+/* 142 */
+/***/ function(module, exports) {
+
+	'use strict';
+
+	module.exports = React.createClass({
+	  displayName: 'exports',
+
+	  getDefaultProps: function getDefaultProps() {
+	    return {
+	      indent: 0
+	    };
+	  },
+	  render: function render() {
+	    return React.createElement(
+	      'div',
+	      { className: 'non-editable-chunk' + (this.props.className ? ' ' + this.props.className : ''), contentEditable: 'false', 'data-indent': this.props.indent },
+	      this.props.children
+	    );
+	  }
+	});
+
+/***/ },
+/* 143 */
+/***/ function(module, exports) {
+
+	'use strict';
+
+	module.exports = React.createClass({
+	  displayName: 'exports',
+
+	  getDefaultProps: function getDefaultProps() {
+	    return {
+	      indent: 0
+	    };
+	  },
+	  render: function render() {
+	    return React.createElement(
+	      'div',
+	      { className: 'text-chunk' + (this.props.className ? ' ' + this.props.className : '') },
+	      this.props.children
+	    );
+	  }
+	});
+
+/***/ },
+/* 144 */
+/***/ function(module, exports) {
+
+	"use strict";
+
+	var regex;
+
+	regex = new RegExp("(?:(?:https?)://)?" + "(?:\\S+(?::\\S*)?@)?" + "(?:" + "(?!(?:10|127)(?:\\.\\d{1,3}){3})" + "(?!(?:169\\.254|192\\.168)(?:\\.\\d{1,3}){2})" + "(?!172\\.(?:1[6-9]|2\\d|3[0-1])(?:\\.\\d{1,3}){2})" + "(?:[1-9]\\d?|1\\d\\d|2[01]\\d|22[0-3])" + "(?:\\.(?:1?\\d{1,2}|2[0-4]\\d|25[0-5])){2}" + "(?:\\.(?:[1-9]\\d?|1\\d\\d|2[0-4]\\d|25[0-4]))" + "|" + "(?:(?:[a-z\\u00a1-\\uffff0-9]-*)*[a-z\\u00a1-\\uffff0-9]+)" + "(?:\\.(?:[a-z\\u00a1-\\uffff0-9]-*)*[a-z\\u00a1-\\uffff0-9]+)*" + "(?:\\.(?:[a-z\\u00a1-\\uffff]{2,}))" + "\\.?" + ")" + "(?::\\d{2,5})?" + "(?:[/?#]\\S*)?", "gi");
+
+	module.exports = function (chunk, targetTextGroupItem) {
+	  var i, len, link, links, results, selection, styleApplied, styleableText;
+	  console.time('linkify');
+	  styleApplied = false;
+	  links = [];
+	  selection = chunk.page.module.app.selection;
+	  styleableText = targetTextGroupItem.text;
+	  while ((results = regex.exec(styleableText.value)) !== null) {
+	    links.unshift([results.index, regex.lastIndex, styleableText.value.substring(results.index, regex.lastIndex)]);
+	  }
+	  if (links.length === 0) {
+	    return false;
+	  }
+	  selection.saveVirtualSelection();
+	  for (i = 0, len = links.length; i < len; i++) {
+	    link = links[i];
+	    selection.virtual.start.data.groupIndex = targetTextGroupItem.index;
+	    selection.virtual.end.data.groupIndex = selection.virtual.start.data.groupIndex;
+	    selection.virtual.start.data.offset = link[0];
+	    selection.virtual.end.data.offset = link[1];
+	    if (chunk.getSelectionStyles().a == null) {
+	      if (link[2].indexOf('http') !== 0) {
+	        link[2] = 'http://' + link[2];
+	      }
+	      chunk.styleSelection('a', {
+	        href: link[2]
+	      });
+	      styleApplied = true;
+	    }
+	  }
+	  selection.restoreVirtualSelection();
+	  console.timeEnd('linkify');
+	  return styleApplied;
+	};
+
+/***/ },
+/* 145 */
+/***/ function(module, exports, __webpack_require__) {
+
+	'use strict';
+
+	var MockElement, MockTextNode, ORDER, ObjectAssign, StyleRange, StyleType, StyleableText, _debugPrintNode, _getHTML, applyStyle, getMockElement, getTextNodeFragmentDescriptorsAt, _getTextNodeFragmentDescriptorsAtHelper, katex, wrap, wrapElement;
+
+	ObjectAssign = __webpack_require__(24);
+
+	katex = __webpack_require__(46);
+
+	StyleableText = __webpack_require__(12);
+
+	StyleRange = __webpack_require__(21);
+
+	StyleType = __webpack_require__(15);
+
+	MockElement = __webpack_require__(72);
+
+	MockTextNode = __webpack_require__(73);
+
+	ORDER = [StyleType.COMMENT, StyleType.LATEX, StyleType.LINK, StyleType.QUOTE, StyleType.BOLD, StyleType.STRIKETHROUGH, StyleType.MONOSPACE, StyleType.SUPERSCRIPT, StyleType.ITALIC];
+
+	_getTextNodeFragmentDescriptorsAtHelper = function getTextNodeFragmentDescriptorsAtHelper(stateObj, targetStartIndex, targetEndIndex) {
+	  var charsRead, child, j, len, ref, results;
+	  if (stateObj.curNode.nodeType === 'element') {
+	    ref = stateObj.curNode.children;
+	    results = [];
+	    for (j = 0, len = ref.length; j < len; j++) {
+	      child = ref[j];
+	      stateObj.curNode = child;
+	      results.push(_getTextNodeFragmentDescriptorsAtHelper(stateObj, targetStartIndex, targetEndIndex));
+	    }
+	    return results;
+	  } else {
+	    charsRead = stateObj.charsRead + stateObj.curNode.text.length;
+	    if (charsRead >= targetEndIndex && stateObj.end === null) {
+	      stateObj.end = {
+	        node: stateObj.curNode,
+	        startIndex: 0,
+	        endIndex: targetEndIndex - stateObj.charsRead
+	      };
+	    } else if (stateObj.start !== null && stateObj.end === null) {
+	      stateObj.inbetween.push({
+	        node: stateObj.curNode,
+	        startIndex: 0,
+	        endIndex: 2e308
+	      });
+	    }
+	    if (charsRead >= targetStartIndex && stateObj.start === null) {
+	      stateObj.start = {
+	        node: stateObj.curNode,
+	        startIndex: targetStartIndex - stateObj.charsRead,
+	        endIndex: 2e308
+	      };
+	    }
+	    stateObj.last = {
+	      node: stateObj.curNode,
+	      startIndex: 0,
+	      endIndex: 2e308
+	    };
+	    return stateObj.charsRead = charsRead;
+	  }
+	};
+
+	getTextNodeFragmentDescriptorsAt = function getTextNodeFragmentDescriptorsAt(rootNode, startIndex, endIndex) {
+	  var fragmentDescriptors, stateObj;
+	  stateObj = {
+	    charsRead: 0,
+	    start: null,
+	    inbetween: [],
+	    end: null,
+	    curNode: rootNode
+	  };
+	  _getTextNodeFragmentDescriptorsAtHelper(stateObj, startIndex, endIndex);
+	  if (stateObj.end === null) {
+	    stateObj.end = stateObj.last;
+	  }
+	  if (stateObj.start.node === stateObj.end.node) {
+	    stateObj.start.endIndex = stateObj.end.endIndex;
+	    stateObj.end = null;
+	  }
+	  fragmentDescriptors = stateObj.inbetween;
+	  if (stateObj.start !== null) {
+	    fragmentDescriptors.unshift(stateObj.start);
+	  }
+	  if (stateObj.end !== null) {
+	    fragmentDescriptors.push(stateObj.end);
+	  }
+	  return fragmentDescriptors;
+	};
+
+	wrapElement = function wrapElement(styleRange, nodeToWrap, text) {
+	  var html, level, newChild, node, root;
+	  switch (styleRange.type) {
+	    case 'sup':
+	      level = styleRange.data;
+	      if (level > 0) {
+	        node = root = new MockElement('sup');
+	        while (level > 1) {
+	          newChild = new MockElement('sup');
+	          node.addChild(newChild);
+	          node = newChild;
+	          level--;
+	        }
+	      } else {
+	        level = Math.abs(level);
+	        node = root = new MockElement('sub');
+	        while (level > 1) {
+	          newChild = new MockElement('sub');
+	          node.addChild(newChild);
+	          node = newChild;
+	          level--;
+	        }
+	      }
+	      nodeToWrap.parent.replaceChild(nodeToWrap, root);
+	      node.addChild(nodeToWrap);
+	      nodeToWrap.text = text;
+	      return root;
+	    case '_comment':
+	      newChild = new MockElement('span', ObjectAssign({
+	        'class': 'comment'
+	      }, styleRange.data));
+	      nodeToWrap.parent.replaceChild(nodeToWrap, newChild);
+	      newChild.addChild(nodeToWrap);
+	      nodeToWrap.text = text;
+	      return newChild;
+	    case '_latex':
+	      newChild = new MockElement('span', ObjectAssign({
+	        'class': 'latex'
+	      }, styleRange.data));
+	      nodeToWrap.parent.replaceChild(nodeToWrap, newChild);
+	      newChild.addChild(nodeToWrap);
+	      html = katex.renderToString(text);
+	      nodeToWrap.html = html;
+	      nodeToWrap.text = text;
+	      return newChild;
+	    default:
+	      newChild = new MockElement(styleRange.type, ObjectAssign({}, styleRange.data));
+	      nodeToWrap.parent.replaceChild(nodeToWrap, newChild);
+	      newChild.addChild(nodeToWrap);
+	      nodeToWrap.text = text;
+	      return newChild;
+	  }
+	};
+
+	wrap = function wrap(styleRange, nodeFragmentDescriptor) {
+	  var fromPosition, leftText, newChild, nodeToWrap, rightText, text, toPosition, wrappedText;
+	  nodeToWrap = nodeFragmentDescriptor.node;
+	  text = nodeToWrap.text;
+	  fromPosition = nodeFragmentDescriptor.startIndex;
+	  toPosition = nodeFragmentDescriptor.endIndex;
+	  leftText = text.substring(0, fromPosition);
+	  wrappedText = text.substring(fromPosition, toPosition);
+	  rightText = text.substring(toPosition);
+	  if (wrappedText.length === 0) {
+	    return;
+	  }
+	  if (leftText.length > 0) {
+	    newChild = new MockTextNode(leftText);
+	    nodeToWrap.parent.addBefore(newChild, nodeToWrap);
+	  }
+	  nodeToWrap = wrapElement(styleRange, nodeToWrap, wrappedText);
+	  if (rightText.length > 0) {
+	    newChild = new MockTextNode(rightText);
+	    return nodeToWrap.parent.addAfter(newChild, nodeToWrap);
+	  }
+	};
+
+	applyStyle = function applyStyle(el, styleRange) {
+	  var fragmentDescriptor, fragmentDescriptors, i, j, ref, results;
+	  fragmentDescriptors = getTextNodeFragmentDescriptorsAt(el, styleRange.start, styleRange.end);
+	  results = [];
+	  for (i = j = ref = fragmentDescriptors.length - 1; j >= 0; i = j += -1) {
+	    fragmentDescriptor = fragmentDescriptors[i];
+	    results.push(wrap(styleRange, fragmentDescriptor));
+	  }
+	  return results;
+	};
+
+	getMockElement = function getMockElement(styleableText) {
+	  var j, k, len, len1, ref, root, styleRange, styleType;
+	  root = new MockElement('span');
+	  root.addChild(new MockTextNode(styleableText.value));
+	  for (j = 0, len = ORDER.length; j < len; j++) {
+	    styleType = ORDER[j];
+	    ref = styleableText.styleList.styles;
+	    for (k = 0, len1 = ref.length; k < len1; k++) {
+	      styleRange = ref[k];
+	      if (styleRange.type === styleType) {
+	        applyStyle(root, styleRange);
+	      }
+	    }
+	  }
+	  return root;
+	};
+
+	_debugPrintNode = function __debugPrintNode(node, indent) {
+	  var child, j, len, ref, results;
+	  if (indent == null) {
+	    indent = '';
+	  }
+	  if (node.nodeType === 'element') {
+	    console.log(indent + node.type);
+	    ref = node.children;
+	    results = [];
+	    for (j = 0, len = ref.length; j < len; j++) {
+	      child = ref[j];
+	      results.push(_debugPrintNode(child, indent + '  '));
+	    }
+	    return results;
+	  } else {
+	    return console.log(indent + '[' + node.text + ']');
+	  }
+	};
+
+	_getHTML = function __getHTML(node) {
+	  if (node.nodeType === 'text') {
+	    return node.text;
+	  }
+	  return "<" + node.type + ">" + node.children.map(function (child) {
+	    return _getHTML(child);
+	  }).join('') + "</" + node.type + ">";
+	};
+
+	window.__getMockElement = getMockElement;
+
+	window.__debugPrintNode = _debugPrintNode;
+
+	window.__getHTML = _getHTML;
+
+	module.exports = getMockElement;
+
+/***/ },
+/* 146 */
+/***/ function(module, exports, __webpack_require__) {
+
+	'use strict';
+
+	var TextGroup, TextGroupAdapter;
+
+	TextGroup = __webpack_require__(77);
+
+	TextGroupAdapter = {
+	  construct: function construct(model, attrs) {
+	    var ref;
+	    if ((attrs != null ? (ref = attrs.content) != null ? ref.textGroup : void 0 : void 0) != null) {
+	      return model.modelState.textGroup = TextGroup.fromDescriptor(attrs.content.textGroup, 2e308, {
+	        indent: 0
+	      });
+	    } else {
+	      return model.modelState.textGroup = TextGroup.create(2e308, {
+	        indent: 0
+	      });
+	    }
+	  },
+	  clone: function clone(model, _clone) {
+	    return _clone.modelState.textGroup = model.modelState.textGroup.clone();
+	  },
+	  toJSON: function toJSON(model, json) {
+	    return json.content.textGroup = model.modelState.textGroup.toDescriptor();
+	  }
+	};
+
+	module.exports = TextGroupAdapter;
+
+/***/ },
+/* 147 */
+/***/ function(module, exports, __webpack_require__) {
+
+	'use strict';
+
+	var BaseSelectionHandler,
+	    TextGroupEl,
+	    TextGroupSelection,
+	    TextGroupSelectionHandler,
+	    extend = function extend(child, parent) {
+	  for (var key in parent) {
+	    if (hasProp.call(parent, key)) child[key] = parent[key];
+	  }function ctor() {
+	    this.constructor = child;
+	  }ctor.prototype = parent.prototype;child.prototype = new ctor();child.__super__ = parent.prototype;return child;
+	},
+	    hasProp = {}.hasOwnProperty;
+
+	BaseSelectionHandler = __webpack_require__(20);
+
+	TextGroupSelection = __webpack_require__(80);
+
+	TextGroupEl = __webpack_require__(64);
+
+	TextGroupSelectionHandler = function (superClass) {
+	  extend(TextGroupSelectionHandler, superClass);
+
+	  function TextGroupSelectionHandler() {
+	    return TextGroupSelectionHandler.__super__.constructor.apply(this, arguments);
+	  }
+
+	  TextGroupSelectionHandler.prototype.selectStart = function (selection, chunk, asRange) {
+	    if (asRange == null) {
+	      asRange = false;
+	    }
+	    selection.virtual.start = TextGroupSelection.getGroupStartCursor(chunk).virtualCursor;
+	    if (!asRange) {
+	      return selection.virtual.collapse();
+	    }
+	  };
+
+	  TextGroupSelectionHandler.prototype.selectEnd = function (selection, chunk, asRange) {
+	    if (asRange == null) {
+	      asRange = false;
+	    }
+	    selection.virtual.end = TextGroupSelection.getGroupEndCursor(chunk).virtualCursor;
+	    if (!asRange) {
+	      return selection.virtual.collapseToEnd();
+	    }
+	  };
+
+	  TextGroupSelectionHandler.prototype.selectAll = function (selection, chunk) {
+	    return TextGroupSelection.selectGroup(chunk, selection.virtual);
+	  };
+
+	  TextGroupSelectionHandler.prototype.getCopyOfSelection = function (selection, chunk, cloneId) {
+	    var chunkEnd, chunkStart, clone, position, sel;
+	    if (cloneId == null) {
+	      cloneId = false;
+	    }
+	    clone = chunk.clone(cloneId);
+	    position = selection.virtual.getPosition(chunk);
+	    if (position === 'contains' || position === 'start' || position === 'end') {
+	      sel = new TextGroupSelection(chunk, selection.virtual);
+	      chunkStart = TextGroupSelection.getGroupStartCursor(chunk);
+	      chunkEnd = TextGroupSelection.getGroupEndCursor(chunk);
+	      clone.modelState.textGroup.deleteSpan(sel.end.groupIndex, sel.end.offset, chunkEnd.groupIndex, chunkEnd.offset, true, this.mergeTextGroups);
+	      clone.modelState.textGroup.deleteSpan(chunkStart.groupIndex, chunkStart.offset, sel.start.groupIndex, sel.start.offset, true, this.mergeTextGroups);
+	    }
+	    return clone;
+	  };
+
+	  TextGroupSelectionHandler.prototype.getVirtualSelectionStartData = function (selection, chunk) {
+	    var ref;
+	    if (((ref = selection.dom) != null ? ref.startText : void 0) == null) {
+	      return null;
+	    }
+	    return TextGroupSelection.getCursorDataFromDOM(selection.dom.startText, selection.dom.startOffset);
+	  };
+
+	  TextGroupSelectionHandler.prototype.getVirtualSelectionEndData = function (selection, chunk) {
+	    var ref;
+	    if (((ref = selection.dom) != null ? ref.startText : void 0) == null) {
+	      return null;
+	    }
+	    return TextGroupSelection.getCursorDataFromDOM(selection.dom.endText, selection.dom.endOffset);
+	  };
+
+	  TextGroupSelectionHandler.prototype.getDOMSelectionStart = function (selection, chunk) {
+	    return TextGroupEl.getDomPosition(selection.virtual.start);
+	  };
+
+	  TextGroupSelectionHandler.prototype.getDOMSelectionEnd = function (selection, chunk) {
+	    return TextGroupEl.getDomPosition(selection.virtual.end);
+	  };
+
+	  TextGroupSelectionHandler.prototype.areCursorsEquivalent = function (selectionWhichIsNullTODO, chunk, thisCursor, otherCursor) {
+	    return thisCursor.chunk === otherCursor.chunk && thisCursor.data.offset === otherCursor.data.offset && thisCursor.data.groupIndex === otherCursor.data.groupIndex;
+	  };
+
+	  TextGroupSelectionHandler.prototype.highlightSelection = function (selection, chunk) {
+	    var sel;
+	    chunk.markDirty();
+	    sel = new TextGroupSelection(chunk, selection.virtual);
+	    return chunk.modelState.textGroup.styleText(sel.start.groupIndex, sel.start.offset, sel.end.groupIndex, sel.end.offset, '_comment', {});
+	  };
+
+	  return TextGroupSelectionHandler;
+	}(BaseSelectionHandler);
+
+	module.exports = TextGroupSelectionHandler;
+
+/***/ },
+/* 148 */
+/***/ function(module, exports, __webpack_require__) {
+
+	'use strict';
+
+	var Chunk, activateStyle, deleteSelection, replaceTextsWithinSelection, send;
+
+	Chunk = __webpack_require__(10);
+
+	send = function send(fn, chunkOrChunks, selection, data) {
+	  var chunk, chunks, i, len, results;
+	  if (data == null) {
+	    data = [];
+	  }
+	  if (!(chunkOrChunks instanceof Array)) {
+	    return chunkOrChunks.callCommandFn(fn, data);
+	  }
+	  chunks = chunkOrChunks;
+	  results = [];
+	  for (i = 0, len = chunks.length; i < len; i++) {
+	    chunk = chunks[i];
+	    results.push(chunk.callCommandFn(fn, data));
+	  }
+	  return results;
+	};
+
+	deleteSelection = function deleteSelection(selection) {
+	  var i, len, node, ref;
+	  if (selection.virtual.type === 'caret') {
+	    return;
+	  }
+	  ref = selection.virtual.inbetween;
+	  for (i = 0, len = ref.length; i < len; i++) {
+	    node = ref[i];
+	    node.remove();
+	  }
+	  selection.saveVirtualSelection();
+	  selection.startChunk.deleteSelection();
+	  selection.restoreVirtualSelection();
+	  if (selection.virtual.type === 'chunkSpan') {
+	    selection.endChunk.deleteSelection();
+	    if (selection.endChunk.canMergeWith(selection.startChunk)) {
+	      selection.startChunk.merge(selection.endChunk);
+	    }
+	  }
+	  return selection.virtual.collapse();
+	};
+
+	replaceTextsWithinSelection = function replaceTextsWithinSelection(selection, newChunk, expandSelection) {
+	  var end;
+	  if (expandSelection == null) {
+	    expandSelection = true;
+	  }
+	  selection.virtual.start.chunk.addChildBefore(newChunk);
+	  if (expandSelection) {
+	    selection.virtual.start.data.offset = 0;
+	    end = selection.virtual.end;
+	    end.data.offset = end.chunk.modelState.textGroup.get(end.data.groupIndex).text.length;
+	  }
+	  return newChunk.replaceSelection();
+	};
+
+	activateStyle = function activateStyle(style, selection, styleBrush, data) {
+	  if (data == null) {
+	    data = null;
+	  }
+	  if (selection.virtual.type === 'caret') {
+	    return styleBrush.add(style, selection.styles[style] != null);
+	  } else {
+	    if (selection.styles[style] != null) {
+	      return send('unstyleSelection', selection.virtual.all, selection, [style, data]);
+	    } else {
+	      return send('styleSelection', selection.virtual.all, selection, [style, data]);
+	    }
+	  }
+	};
+
+	module.exports = {
+	  send: send,
+	  deleteSelection: deleteSelection,
+	  activateStyle: activateStyle,
+	  replaceTextsWithinSelection: replaceTextsWithinSelection
+	};
+
+/***/ },
+/* 149 */
+/***/ function(module, exports, __webpack_require__) {
+
+	'use strict';
+
+	var Chunk;
+
+	Chunk = __webpack_require__(10);
+
+	module.exports = function (componentClass, position, referenceChunk, selection, callback) {
+	  var newChunk;
+	  newChunk = Chunk.create(componentClass);
+	  switch (position) {
+	    case 'before':
+	      referenceChunk.addChildBefore(newChunk);
+	      break;
+	    case 'after':
+	      referenceChunk.addChildAfter(newChunk);
+	  }
+	  newChunk.selectStart();
+	  return callback();
+	};
+
+/***/ },
+/* 150 */
+/***/ function(module, exports, __webpack_require__) {
+
+	'use strict';
+
+	var Chunk;
+
+	Chunk = __webpack_require__(10);
+
+	module.exports = function (componentClass, position, referenceChunk, selection, callback) {
+	  var extraChunk, newChunk;
+	  newChunk = Chunk.create(componentClass);
+	  extraChunk = null;
+	  switch (position) {
+	    case 'before':
+	      referenceChunk.addChildBefore(newChunk);
+	      if (newChunk.isFirst()) {
+	        newChunk.addChildBefore(Chunk.create());
+	      }
+	      break;
+	    case 'after':
+	      referenceChunk.addChildAfter(newChunk);
+	      if (newChunk.isLast()) {
+	        newChunk.addChildAfter(Chunk.create());
+	      }
+	  }
+	  newChunk.selectStart();
+	  return callback();
+	};
+
+/***/ },
+/* 151 */
+/***/ function(module, exports, __webpack_require__) {
+
+	'use strict';
+
+	var editButton, getBackgroundImage;
+
+	__webpack_require__(212);
+
+	getBackgroundImage = __webpack_require__(81);
+
+	editButton = __webpack_require__(234);
+
+	module.exports = React.createClass({
+	  displayName: 'exports',
+
+	  getDefaultProps: function getDefaultProps() {
+	    return {
+	      indent: 0
+	    };
+	  },
+	  render: function render() {
+	    var editButtonStyles;
+	    editButtonStyles = {
+	      backgroundImage: Common.util.getBackgroundImage(editButton)
+	    };
+	    return React.createElement(
+	      'div',
+	      { className: 'obojobo-draft--components--edit-button' },
+	      React.createElement(
+	        'button',
+	        {
+	          onClick: this.props.onClick,
+	          style: editButtonStyles,
+	          tabIndex: this.props.shouldPreventTab ? '-1' : 1,
+	          disabled: this.props.shouldPreventTab
+	        },
+	        'Edit'
+	      )
+	    );
+	  }
+	});
+
+/***/ },
+/* 152 */
+/***/ function(module, exports, __webpack_require__) {
+
+	'use strict';
+
+	var FocusBlocker, FocusUtil;
+
+	__webpack_require__(213);
+
+	FocusUtil = __webpack_require__(40);
+
+	FocusBlocker = React.createClass({
+	  displayName: 'FocusBlocker',
+
+	  render: function render() {
+	    return React.createElement('div', { className: 'viewer--components--focus-blocker' });
+	  }
+	});
+
+	module.exports = FocusBlocker;
+
+/***/ },
+/* 153 */
+/***/ function(module, exports, __webpack_require__) {
+
+	'use strict';
+
+	var Bubble;
+
+	__webpack_require__(215);
+
+	Bubble = __webpack_require__(67);
+
+	module.exports = React.createClass({
+	  displayName: 'exports',
+
+	  onChange: function onChange(event) {
+	    console.log('BubbleChange', event.target.value);
+	    return this.props.onChange(event.target.value);
+	  },
+	  onSubmit: function onSubmit(event) {
+	    event.preventDefault();
+	    return this.props.onClose();
+	  },
+	  onKeyUp: function onKeyUp(event) {
+	    console.log(event.keyCode);
+	    if (event.keyCode === 27) {
+	      return this.props.onCancel();
+	    }
+	  },
+	  componentDidMount: function componentDidMount() {
+	    return setTimeout(function () {
+	      return this.refs.input.select();
+	    }.bind(this));
+	  },
+	  render: function render() {
+	    console.log('BubbleRender', this.props.value);
+	    return React.createElement(
+	      Bubble,
+	      null,
+	      React.createElement(
+	        'label',
+	        { className: 'single-input-bubble' },
+	        React.createElement(
+	          'form',
+	          { className: 'interactable', onSubmit: this.onSubmit },
+	          React.createElement('input', { ref: 'input', type: 'text', value: this.props.value, onChange: this.onChange, onKeyUp: this.onKeyUp }),
+	          React.createElement(
+	            'button',
+	            { onClick: this.onSubmit },
+	            'Ok'
+	          )
+	        ),
+	        React.createElement(
+	          'span',
+	          { className: 'label' },
+	          this.props.label
+	        )
+	      )
+	    );
+	  }
+	});
+
+/***/ },
+/* 154 */
+/***/ function(module, exports) {
+
+	'use strict';
+
+	module.exports = React.createClass({
+		displayName: 'exports',
+
+		render: function render() {
+			return React.createElement(
+				'div',
+				null,
+				React.createElement(
+					'p',
+					null,
+					this.props.children
+				),
+				React.createElement(
+					'button',
+					{ onClick: this.props.modal.onButtonClick.bind(this, this.props.cancelOnReject ? this.props.cancel : this.props.reject) },
+					this.props.rejectButtonLabel || 'No'
+				),
+				React.createElement(
+					'button',
+					{ onClick: this.props.modal.onButtonClick.bind(this, this.props.confirm) },
+					this.props.confirmButtonLabel || 'Yes'
+				)
+			);
+		}
+	});
+
+/***/ },
+/* 155 */
+/***/ function(module, exports) {
+
+	'use strict';
+
+	module.exports = React.createClass({
+		displayName: 'exports',
+
+		render: function render() {
+			return React.createElement(
+				'div',
+				null,
+				React.createElement(
+					'p',
+					null,
+					this.props.children
+				),
+				React.createElement(
+					'button',
+					{ onClick: this.props.modal.onButtonClick.bind(this, this.props.confirm) },
+					this.props.buttonLabel || 'OK'
+				)
+			);
+		}
+	});
+
+/***/ },
+/* 156 */
+/***/ function(module, exports, __webpack_require__) {
+
+	"use strict";
+
+	__webpack_require__(220);
+
+	module.exports = React.createClass({
+		displayName: "exports",
+
+		render: function render() {
+			return React.createElement(
+				"div",
+				{ className: "obojobo-draft--components--modal-container" },
+				React.createElement(
+					"div",
+					{ className: "content" },
+					this.props.children
+				)
+			);
+		}
+	});
+
+/***/ },
+/* 157 */
+/***/ function(module, exports, __webpack_require__) {
+
+	'use strict';
+
+	var _extends = Object.assign || function (target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i]; for (var key in source) { if (Object.prototype.hasOwnProperty.call(source, key)) { target[key] = source[key]; } } } return target; };
+
+	var FocusUtil, OboComponent;
+
+	FocusUtil = __webpack_require__(40);
+
+	OboComponent = React.createClass({
+	  displayName: 'OboComponent',
+
+	  getDefaultProps: function getDefaultProps() {
+	    return {
+	      tag: 'div'
+	    };
+	  },
+	  render: function render() {
+	    var Component, Tag, className, isFocussed;
+	    Component = this.props.model.getComponentClass();
+	    Tag = this.props.tag;
+	    className = 'component';
+	    if (this.props.className != null) {
+	      className += ' ' + this.props.className;
+	    }
+	    isFocussed = FocusUtil.getFocussedComponent(this.props.moduleData.focusState) === this.props.model;
+	    if (isFocussed) {
+	      console.log(this.props);
+	      console.log('FOCUS-----------', this.props.model.get('id'), this.props.model.get('type'), this.props.model.get('id'), this.props);
+	    }
+	    return React.createElement(
+	      Tag,
+	      _extends({}, this.props, {
+	        className: className,
+	        id: 'obo-' + this.props.model.get('id'),
+	        'data-obo-component': true,
+	        'data-id': this.props.model.get('id'),
+	        'data-type': this.props.model.get('type'),
+	        'data-focussed': isFocussed
+	      }),
+	      this.props.children
+	    );
+	  }
+	});
+
+	module.exports = OboComponent;
+
+/***/ },
+/* 158 */
+/***/ function(module, exports, __webpack_require__) {
+
+	'use strict';
+
+	var TextMenu;
+
+	__webpack_require__(221);
+
+	TextMenu = React.createClass({
+	  displayName: 'TextMenu',
+
+	  renderImg: function renderImg(command) {
+	    if (command.image == null) {
+	      return React.createElement(
+	        'div',
+	        null,
+	        React.createElement(
+	          'span',
+	          null,
+	          command.label
+	        ),
+	        React.createElement('img', { className: 'click-blocker' })
+	      );
+	    }
+	    return React.createElement('img', {
+	      src: command.image,
+	      alt: command.label,
+	      title: command.label
+	    });
+	  },
+	  onMouseDown: function onMouseDown(label, event) {
+	    console.log(arguments);
+	    event.preventDefault();
+	    event.stopPropagation();
+	    return this.props.commandHandler(label);
+	  },
+	  render: function render() {
+	    var ctrlRect, renderImg, selRect;
+	    if (!this.props.relativeToElement) {
+	      return null;
+	    }
+	    if (!this.props.enabled) {
+	      return null;
+	    }
+	    ctrlRect = this.props.relativeToElement.getBoundingClientRect();
+	    selRect = this.props.selectionRect;
+	    renderImg = this.renderImg;
+	    if (!selRect || !this.props.commands || this.props.commands.length === 0) {
+	      return null;
+	    }
+	    return React.createElement('div', {
+	      className: 'editor--components--text-menu',
+	      style: {
+	        left: selRect.left + selRect.width / 2 - ctrlRect.left + 'px',
+	        top: selRect.top - ctrlRect.top + 'px'
+	      }
+	    }, this.props.commands.map(function (command, index) {
+	      return React.createElement('a', {
+	        onMouseDown: this.onMouseDown.bind(null, command.label),
+	        key: index
+	      }, renderImg(command));
+	    }.bind(this)));
+	  }
+	});
+
+	module.exports = TextMenu;
+
+/***/ },
+/* 159 */
+/***/ function(module, exports, __webpack_require__) {
+
+	'use strict';
+
+	var Legacy, OboModel, StyleableText, patternAddUL, patternRemoveExtraUL, patternTF;
+
+	patternAddUL = /<LI>([\s\S]*?)<\/LI>/gi;
+
+	patternRemoveExtraUL = /<\/ul><ul>/gi;
+
+	patternTF = /<\/?textformat\s?[\s\S]*?>/gi;
+
+	OboModel = __webpack_require__(10);
+
+	StyleableText = __webpack_require__(12);
+
+	Legacy = {
+	  createModuleFromObo2ModuleJSON: function createModuleFromObo2ModuleJSON(json) {
+	    var content, i, len, objective, objectivePage, oboModule, page, ref;
+	    oboModule = OboModel.create('ObojoboDraft.Modules.Module');
+	    objective = OboModel.create('ObojoboDraft.Sections.Content');
+	    objectivePage = OboModel.create('ObojoboDraft.Pages.Page');
+	    objective.children.add(objectivePage);
+	    objectivePage.children.add(Legacy.createChunksFromObo2HTML(json.objective));
+	    content = OboModel.create('ObojoboDraft.Sections.Content');
+	    ref = json.pages;
+	    for (i = 0, len = ref.length; i < len; i++) {
+	      page = ref[i];
+	      content.children.add(Legacy.createPageFromObo2ModuleJSON(page));
+	    }
+	    oboModule.children.add(objective);
+	    oboModule.children.add(content);
+	    return oboModule;
+	  },
+	  createPageFromObo2ModuleJSON: function createPageFromObo2ModuleJSON(json) {
+	    var header, i, item, len, page, ref;
+	    page = OboModel.create('ObojoboDraft.Pages.Page');
+	    header = OboModel.create('ObojoboDraft.Chunks.Heading');
+	    header.modelState.textGroup.first.text.value = json.title;
+	    page.children.add(header);
+	    ref = json.items;
+	    for (i = 0, len = ref.length; i < len; i++) {
+	      item = ref[i];
+	      switch (item.component) {
+	        case 'TextArea':
+	          page.children.add(Legacy.createChunksFromObo2HTML(item.data));
+	          break;
+	        case 'MediaView':
+	          page.children.add(Legacy.createMediaFromObo2JSON(item.media));
+	      }
+	    }
+	    return page;
+	  },
+	  createChunksFromObo2HTML: function createChunksFromObo2HTML(html) {
+	    var child, chunk, chunks, el, i, j, len, len1, ref, st, sts, tg;
+	    chunks = [];
+	    html = html.replace(patternTF, "");
+	    html = html.replace(patternAddUL, "<ul><li>$1</li></ul>");
+	    html = html.replace(patternRemoveExtraUL, "");
+	    el = document.createElement('div');
+	    document.body.appendChild(el);
+	    el.innerHTML = html;
+	    sts = null;
+	    ref = el.children;
+	    for (i = 0, len = ref.length; i < len; i++) {
+	      child = ref[i];
+	      switch (child.tagName.toLowerCase()) {
+	        case 'ul':
+	          chunk = OboModel.create('ObojoboDraft.Chunks.List');
+	          break;
+	        default:
+	          chunk = OboModel.create('ObojoboDraft.Chunks.Text');
+	      }
+	      tg = chunk.modelState.textGroup;
+	      tg.clear();
+	      sts = StyleableText.createFromElement(child);
+	      for (j = 0, len1 = sts.length; j < len1; j++) {
+	        st = sts[j];
+	        tg.add(st);
+	      }
+	      chunks.push(chunk);
+	    }
+	    document.body.removeChild(el);
+	    console.log('-----------------');
+	    console.log(html);
+	    console.log(el.innerHTML);
+	    console.log(chunks);
+	    console.log(sts);
+	    return chunks;
+	  },
+	  createMediaFromObo2JSON: function createMediaFromObo2JSON(json) {
+	    return OboModel.create('ObojoboDraft.Chunks.Figure');
+	  }
+	};
+
+	module.exports = Legacy;
+
+/***/ },
+/* 160 */
+/***/ function(module, exports) {
+
+	"use strict";
+
+	var API, APIChunk, APIModule, makeRequest;
+
+	makeRequest = function makeRequest(method, url, data, callback) {
+	  var a, k, request, v;
+	  if (data == null) {
+	    data = null;
+	  }
+	  if (callback == null) {
+	    callback = function callback() {};
+	  }
+	  request = new XMLHttpRequest();
+	  request.addEventListener('load', callback);
+	  request.open(method, url, true);
+	  if (data != null) {
+	    a = [];
+	    for (k in data) {
+	      v = data[k];
+	      a.push(k + "=" + v);
+	    }
+	    data = a.join("&");
+	    return request.send(data);
+	  } else {
+	    return request.send();
+	  }
+	};
+
+	APIModule = function () {
+	  function APIModule() {}
+
+	  APIModule.prototype.get = function (moduleId, callback) {
+	    return makeRequest('GET', "/api/draft/" + moduleId + "/chunks", null, function (event) {
+	      return callback({
+	        id: moduleId,
+	        chunks: JSON.parse(event.target.responseText)
+	      });
+	    }.bind(this));
+	  };
+
+	  return APIModule;
+	}();
+
+	APIChunk = function () {
+	  function APIChunk() {}
+
+	  APIChunk.prototype.move = function (chunkMoved, chunkBefore, callback) {
+	    var beforeId;
+	    console.log(arguments);
+	    beforeId = chunkBefore != null ? chunkBefore.get('id') : null;
+	    return makeRequest('POST', "/api/chunk/" + chunkMoved.get('id') + "/move_before", {
+	      before_chunk_id: beforeId
+	    }, callback);
+	  };
+
+	  return APIChunk;
+	}();
+
+	API = function () {
+	  function API() {}
+
+	  return API;
+	}();
+
+	Object.defineProperties(API.prototype, {
+	  "module": {
+	    get: function get() {
+	      return new APIModule();
+	    }
+	  },
+	  "chunk": {
+	    get: function get() {
+	      return new APIChunk();
+	    }
+	  }
+	});
+
+	module.exports = new API();
+
+/***/ },
+/* 161 */
+/***/ function(module, exports) {
+
+	'use strict';
+
+	var addEl, loaded;
+
+	addEl = function addEl(url, el, onLoad, onError) {
+	  if (onLoad == null) {
+	    onLoad = null;
+	  }
+	  if (onError == null) {
+	    onError = null;
+	  }
+	  if (loaded[url]) {
+	    if (onLoad != null) {
+	      onLoad(url);
+	    }
+	    return true;
+	  }
+	  if (onError != null) {
+	    el.onerror = onError;
+	  }
+	  if (onLoad != null) {
+	    el.onload = function () {
+	      loaded[url] = url;
+	      return onLoad(url);
+	    };
+	  }
+	  document.head.appendChild(el);
+	  return false;
+	};
+
+	loaded = {};
+
+	module.exports = {
+	  add: function add(urlOrUrls, onLoad, onError) {
+	    var i, len, link, results, script, type, url, urls;
+	    if (onLoad == null) {
+	      onLoad = null;
+	    }
+	    if (onError == null) {
+	      onError = null;
+	    }
+	    console.log('add', arguments);
+	    if (typeof urlOrUrls === 'string') {
+	      urls = [urlOrUrls];
+	    } else {
+	      urls = urlOrUrls;
+	    }
+	    results = [];
+	    for (i = 0, len = urls.length; i < len; i++) {
+	      url = urls[i];
+	      type = url.substr(url.lastIndexOf('.') + 1);
+	      console.log(type);
+	      switch (type) {
+	        case 'js':
+	          script = document.createElement('script');
+	          script.setAttribute('src', url);
+	          results.push(addEl(url, script, onLoad, onError));
+	          break;
+	        case 'css':
+	          link = document.createElement('link');
+	          link.setAttribute('rel', 'stylesheet');
+	          link.setAttribute('href', url);
+	          results.push(addEl(url, link, onLoad, onError));
+	          break;
+	        default:
+	          results.push(void 0);
+	      }
+	    }
+	    return results;
+	  }
+	};
+
+/***/ },
+/* 162 */
+/***/ function(module, exports) {
+
+	"use strict";
+
+	module.exports = {
+	  BACKSPACE: 8,
+	  TAB: 9,
+	  ENTER: 13,
+	  SHIFT: 16,
+	  CTRL: 17,
+	  ALT: 18,
+	  SPACE: 32,
+	  LEFT_ARROW: 37,
+	  UP_ARROW: 38,
+	  RIGHT_ARROW: 39,
+	  DOWN_ARROW: 40,
+	  DELETE: 46,
+	  META: 91
+	};
+
+/***/ },
+/* 163 */
+/***/ function(module, exports, __webpack_require__) {
+
+	'use strict';
+
+	var OboSelectionRect, PX_EDGE_PADDING, Screen;
+
+	OboSelectionRect = __webpack_require__(37);
+
+	PX_EDGE_PADDING = 50;
+
+	Screen = function () {
+	  function Screen(el) {
+	    this.el = el;
+	    this.intervalId = null;
+	    this.distance = 0;
+	    this.distanceLeft = 0;
+	    this.travelBy = 0;
+	  }
+
+	  Screen.prototype.scrollToTop = function () {
+	    return this.el.scrollTop = 0;
+	  };
+
+	  Screen.prototype.scrollToBottom = function () {
+	    return this.el.scrollTop = this.el.scrollHeight;
+	  };
+
+	  Screen.prototype.getScrollDistanceNeededToPutSelectionIntoView = function () {
+	    var rect, selScreenRect;
+	    selScreenRect = OboSelectionRect.createFromSelection();
+	    rect = this.el.getBoundingClientRect();
+	    if (!selScreenRect.valid) {
+	      return 0;
+	    }
+	    if (selScreenRect.top < 0) {
+	      return selScreenRect.top - PX_EDGE_PADDING;
+	    }
+	    if (selScreenRect.bottom > rect.height) {
+	      return selScreenRect.bottom - rect.height + PX_EDGE_PADDING;
+	    }
+	    return 0;
+	  };
+
+	  Screen.prototype.scrollSelectionIntoViewIfNeeded = function () {
+	    this.distance = this.getScrollDistanceNeededToPutSelectionIntoView();
+	    return this.el.scrollTop += this.distance;
+	  };
+
+	  Screen.prototype.tweenSelectionIntoViewIfNeeded = function () {
+	    this.distance = this.getScrollDistanceNeededToPutSelectionIntoView();
+	    this.distanceLeft = this.distance;
+	    if (this.distance !== 0) {
+	      this.travelBy = Math.max(1, parseInt(Math.abs(this.distance) / 10, 10));
+	      clearInterval(this.intervalId);
+	      return this.intervalId = setInterval(function () {
+	        var travel;
+	        if (this.distance < 1) {
+	          travel = Math.min(this.travelBy, this.distanceLeft * -1);
+	          this.el.scrollTop -= travel;
+	          this.distanceLeft += travel;
+	          if (this.distanceLeft >= 0) {
+	            return clearInterval(this.intervalId);
+	          }
+	        } else {
+	          travel = Math.min(this.travelBy, this.distanceLeft);
+	          this.el.scrollTop += travel;
+	          this.distanceLeft -= travel;
+	          if (this.distanceLeft <= 0) {
+	            return clearInterval(this.intervalId);
+	          }
+	        }
+	      }.bind(this), 10);
+	    }
+	  };
+
+	  return Screen;
+	}();
+
+	Screen.isElementVisible = function (node) {
+	  var rect;
+	  rect = node.getBoundingClientRect();
+	  return !(rect.top > window.innerHeight || rect.bottom < 0);
+	};
+
+	window.__screen = Screen;
+
+	module.exports = Screen;
+
+/***/ },
+/* 164 */
+/***/ function(module, exports, __webpack_require__) {
+
+	'use strict';
+
+	var ChunkSelection, Cursor, DOMSelection, DOMUtil, domType;
+
+	Cursor = __webpack_require__(74);
+
+	DOMSelection = __webpack_require__(14);
+
+	DOMUtil = __webpack_require__(11);
+
+	domType = null;
+
+	ChunkSelection = function () {
+	  function ChunkSelection(module1) {
+	    this.module = module1;
+	    this.clear();
+	  }
+
+	  ChunkSelection.prototype.clear = function () {
+	    this.start = this.end = domType = null;
+	    this.inbetween = [];
+	    return this.all = [];
+	  };
+
+	  ChunkSelection.prototype.calculateAllNodes = function () {
+	    var n, ref, ref1;
+	    this.inbetween = [];
+	    this.all = [];
+	    if (((ref = this.start) != null ? ref.chunk : void 0) != null) {
+	      this.all = [this.start.chunk];
+	    }
+	    n = this.start.chunk;
+	    while (n != null && n !== this.end.chunk) {
+	      if (n !== this.start.chunk) {
+	        this.inbetween.push(n);
+	        this.all.push(n);
+	      }
+	      n = n.nextSibling();
+	    }
+	    if (((ref1 = this.end) != null ? ref1.chunk : void 0) != null && this.all[this.all.length - 1] !== this.end.chunk) {
+	      return this.all.push(this.end.chunk);
+	    }
+	  };
+
+	  ChunkSelection.prototype.getChunkForDomNode = function (domNode) {
+	    var index;
+	    index = this.getIndex(domNode);
+	    return this.module.chunks.at(index);
+	  };
+
+	  ChunkSelection.prototype.getPosition = function (chunk) {
+	    var chunkIndex, endIndex, ref, ref1, startIndex;
+	    if (((ref = this.start) != null ? ref.chunk : void 0) == null || ((ref1 = this.end) != null ? ref1.chunk : void 0) == null) {
+	      return 'unknown';
+	    }
+	    chunkIndex = chunk.get('index');
+	    startIndex = this.start.chunk.get('index');
+	    endIndex = this.end.chunk.get('index');
+	    if (chunkIndex < startIndex) {
+	      return 'before';
+	    }
+	    if (chunkIndex === startIndex && chunkIndex === endIndex) {
+	      return 'contains';
+	    }
+	    if (chunkIndex === startIndex) {
+	      return 'start';
+	    }
+	    if (chunkIndex < endIndex) {
+	      return 'inside';
+	    }
+	    if (chunkIndex === endIndex) {
+	      return 'end';
+	    }
+	    return 'after';
+	  };
+
+	  ChunkSelection.prototype.getIndex = function (node) {
+	    return DOMUtil.findParentAttr(node, 'data-component-index');
+	  };
+
+	  ChunkSelection.prototype.getFromDOMSelection = function (s) {
+	    if (s == null) {
+	      s = new DOMSelection();
+	    }
+	    this.clear();
+	    domType = s.getType();
+	    if (domType === 'none') {
+	      this.start = null;
+	      this.end = null;
+	    } else {
+	      this.start = this.getCursor(s.startContainer, s.startOffset);
+	      this.end = this.getCursor(s.endContainer, s.endOffset);
+	      this.calculateAllNodes();
+	    }
+	    return this;
+	  };
+
+	  ChunkSelection.prototype.getCursor = function (node, offset) {
+	    var chunk;
+	    chunk = this.getChunkForDomNode(node);
+	    return new Cursor(chunk, node, offset);
+	  };
+
+	  ChunkSelection.prototype.setTextStart = function (node, offset) {
+	    this.start = this.getCursor(node, offset);
+	    if (this.end === null) {
+	      this.end = this.start.clone();
+	    }
+	    return this.calculateAllNodes();
+	  };
+
+	  ChunkSelection.prototype.setTextEnd = function (node, offset) {
+	    this.end = this.getCursor(node, offset);
+	    if (this.start === null) {
+	      this.start = this.end.clone();
+	    }
+	    return this.calculateAllNodes();
+	  };
+
+	  ChunkSelection.prototype.setCaret = function (node, offset) {
+	    this.setTextStart(node, offset);
+	    return this.collapse();
+	  };
+
+	  ChunkSelection.prototype.select = function () {
+	    return DOMSelection.set(this.start.node, this.start.offset, this.end.node, this.end.offset);
+	  };
+
+	  ChunkSelection.prototype.collapse = function () {
+	    return this.end = this.start.clone();
+	  };
+
+	  return ChunkSelection;
+	}();
+
+	Object.defineProperties(ChunkSelection.prototype, {
+	  "type": {
+	    get: function get() {
+	      var ref, ref1, ref2, ref3;
+	      if (((ref = this.start) != null ? ref.chunk : void 0) == null || ((ref1 = this.end) != null ? ref1.chunk : void 0) == null || !this.start.isText || !this.end.isText) {
+	        return 'none';
+	      } else if (((ref2 = this.start) != null ? ref2.chunk.cid : void 0) === ((ref3 = this.end) != null ? ref3.chunk.cid : void 0)) {
+	        if (domType === 'caret') {
+	          return 'caret';
+	        } else {
+	          return 'textSpan';
+	        }
+	      } else {
+	        return 'chunkSpan';
+	      }
+	    }
+	  }
+	});
+
+	ChunkSelection.createDescriptor = function (startIndex, startData, endIndex, endData) {
+	  return {
+	    start: {
+	      index: startIndex,
+	      data: startData
+	    },
+	    end: {
+	      index: endIndex,
+	      data: endData
+	    }
+	  };
+	};
+
+	ChunkSelection.getFromDOMSelection = function (module, domSelection) {
+	  return new ChunkSelection(module).getFromDOMSelection(domSelection);
+	};
+
+	module.exports = ChunkSelection;
+
+/***/ },
+/* 165 */
+/***/ function(module, exports, __webpack_require__) {
+
+	'use strict';
+
+	var DOMSelection, OboSelectionRect, Selection, VirtualSelection;
+
+	OboSelectionRect = __webpack_require__(37);
+
+	DOMSelection = __webpack_require__(14);
+
+	VirtualSelection = __webpack_require__(75);
+
+	Selection = function () {
+	  function Selection(page) {
+	    this.setPage(page);
+	    this.saved = null;
+	    this.clear();
+	  }
+
+	  Selection.prototype.saveVirtualSelection = function () {
+	    return this.saved = this.virtual.clone();
+	  };
+
+	  Selection.prototype.restoreVirtualSelection = function () {
+	    return this.virtual = this.saved;
+	  };
+
+	  Selection.prototype.clear = function () {
+	    this.rect = null;
+	    this.chunkRect = null;
+	    return this.dom = null;
+	  };
+
+	  Selection.prototype.setPage = function (page) {
+	    this.page = page;
+	    return this.virtual = new VirtualSelection(this.page);
+	  };
+
+	  Selection.prototype.getSelectionDescriptor = function () {
+	    return this.virtual.toObject();
+	  };
+
+	  Selection.prototype.fromObject = function (o) {
+	    this.virtual.fromObject(o);
+	    this.selectDOM();
+	    return this.update();
+	  };
+
+	  Selection.prototype.selectDOM = function () {
+	    var e, ref, ref1, s;
+	    console.log('SELECTION selectDOM');
+	    if (((ref = this.virtual.start) != null ? ref.chunk : void 0) == null || ((ref1 = this.virtual.end) != null ? ref1.chunk : void 0) == null) {
+	      return;
+	    }
+	    console.log('startChunk', this.startChunk.cid);
+	    s = this.startChunk.getDOMSelectionStart();
+	    e = this.endChunk.getDOMSelectionEnd();
+	    return DOMSelection.set(s.textNode, s.offset, e.textNode, e.offset);
+	  };
+
+	  Selection.prototype.update = function () {
+	    console.time('selection.update');
+	    console.time('new oboSelection');
+	    this.dom = new DOMSelection();
+	    this.virtual.fromDOMSelection(this.dom);
+	    console.timeEnd('new oboSelection');
+	    console.time('OboSelectionRect.createFromSelection');
+	    this.rect = OboSelectionRect.createFromSelection();
+	    this.chunkRect = OboSelectionRect.createFromChunks(this.virtual.all);
+	    console.timeEnd('OboSelectionRect.createFromSelection');
+	    return console.timeEnd('selection.update');
+	  };
+
+	  return Selection;
+	}();
+
+	Object.defineProperties(Selection.prototype, {
+	  startChunk: {
+	    get: function get() {
+	      var ref;
+	      if (((ref = this.virtual) != null ? ref.start : void 0) == null) {
+	        return null;
+	      }
+	      return this.virtual.start.chunk;
+	    }
+	  },
+	  endChunk: {
+	    get: function get() {
+	      var ref;
+	      if (((ref = this.virtual) != null ? ref.end : void 0) == null) {
+	        return null;
+	      }
+	      return this.virtual.end.chunk;
+	    }
+	  }
+	});
+
+	module.exports = Selection;
+
+/***/ },
+/* 166 */
+/***/ function(module, exports) {
+
+	"use strict";
+
+	var VirtualCursorData;
+
+	VirtualCursorData = function () {
+	  function VirtualCursorData(content) {
+	    this.content = content;
+	  }
+
+	  VirtualCursorData.prototype.clone = function () {
+	    return new VirtualCursorData(Object.assign({}, this.content));
+	  };
+
+	  return VirtualCursorData;
+	}();
+
+	module.exports = VirtualCursorData;
+
+/***/ },
+/* 167 */
+/***/ function(module, exports, __webpack_require__) {
+
+	'use strict';
+
+	var Dispatcher,
+	    FocusStore,
+	    Store,
+	    TRANSITION_TIME_MS,
+	    focusStore,
+	    timeoutId,
+	    extend = function extend(child, parent) {
+	  for (var key in parent) {
+	    if (hasProp.call(parent, key)) child[key] = parent[key];
+	  }function ctor() {
+	    this.constructor = child;
+	  }ctor.prototype = parent.prototype;child.prototype = new ctor();child.__super__ = parent.prototype;return child;
+	},
+	    hasProp = {}.hasOwnProperty;
+
+	Store = __webpack_require__(36);
+
+	Dispatcher = __webpack_require__(8);
+
+	TRANSITION_TIME_MS = 800;
+
+	timeoutId = null;
+
+	FocusStore = function (superClass) {
+	  extend(FocusStore, superClass);
+
+	  function FocusStore() {
+	    FocusStore.__super__.constructor.call(this, 'focusStore');
+	    Dispatcher.on('focus:component', function (_this) {
+	      return function (payload) {
+	        _this.state.viewState = 'enter';
+	        _this.state.focussedId = payload.value.id;
+	        _this.triggerChange();
+	        window.clearTimeout(timeoutId);
+	        return timeoutId = window.setTimeout(function () {
+	          this.state.viewState = 'active';
+	          return this.triggerChange();
+	        }.bind(_this), TRANSITION_TIME_MS);
+	      };
+	    }(this));
+	    Dispatcher.on('focus:unfocus', function (_this) {
+	      return function (payload) {
+	        _this.state.viewState = 'leave';
+	        _this.triggerChange();
+	        window.clearTimeout(timeoutId);
+	        return timeoutId = window.setTimeout(function () {
+	          this.state.viewState = 'inactive';
+	          this.state.focussedId = null;
+	          return this.triggerChange();
+	        }.bind(_this), TRANSITION_TIME_MS);
+	      };
+	    }(this));
+	  }
+
+	  FocusStore.prototype.init = function () {
+	    return this.state = {
+	      focussedId: null,
+	      viewState: 'inactive'
+	    };
+	  };
+
+	  FocusStore.prototype.getState = function () {
+	    return this.state;
+	  };
+
+	  FocusStore.prototype.setState = function (newState) {
+	    return this.state = newState;
+	  };
+
+	  return FocusStore;
+	}(Store);
+
+	focusStore = new FocusStore();
+
+	module.exports = focusStore;
+
+/***/ },
+/* 168 */
+/***/ function(module, exports, __webpack_require__) {
+
+	'use strict';
+
+	var Dispatcher,
+	    ModalStore,
+	    Store,
+	    modalStore,
+	    extend = function extend(child, parent) {
+	  for (var key in parent) {
+	    if (hasProp.call(parent, key)) child[key] = parent[key];
+	  }function ctor() {
+	    this.constructor = child;
+	  }ctor.prototype = parent.prototype;child.prototype = new ctor();child.__super__ = parent.prototype;return child;
+	},
+	    hasProp = {}.hasOwnProperty;
+
+	Store = __webpack_require__(36);
+
+	Dispatcher = __webpack_require__(8);
+
+	ModalStore = function (superClass) {
+	  extend(ModalStore, superClass);
+
+	  function ModalStore() {
+	    ModalStore.__super__.constructor.call(this, 'modalstore');
+	    Dispatcher.on('modal:show', function (_this) {
+	      return function (payload) {
+	        _this.state.modals.push(payload.value.component);
+	        return _this.triggerChange();
+	      };
+	    }(this));
+	    Dispatcher.on('modal:hide', function (_this) {
+	      return function () {
+	        _this.state.modals.shift();
+	        return _this.triggerChange();
+	      };
+	    }(this));
+	  }
+
+	  ModalStore.prototype.init = function () {
+	    return this.state = {
+	      modals: []
+	    };
+	  };
+
+	  ModalStore.prototype.getState = function () {
+	    return this.state;
+	  };
+
+	  ModalStore.prototype.setState = function (newState) {
+	    return this.state = newState;
+	  };
+
+	  return ModalStore;
+	}(Store);
+
+	modalStore = new ModalStore();
+
+	module.exports = modalStore;
+
+/***/ },
+/* 169 */
+/***/ function(module, exports) {
+
+	'use strict';
+
+	console._log = console.log;
+
+	console._times = {};
+
+	console._interval = null;
+
+	console.time = function (s) {
+	  if (!console._times[s]) {
+	    console._times[s] = {
+	      time: 0,
+	      count: 0,
+	      start: 0,
+	      avg: 0
+	    };
+	  }
+	  return console._times[s].start = performance.now();
+	};
+
+	console.timeEnd = function (s) {
+	  var diff;
+	  if (console._times[s] != null) {
+	    diff = performance.now() - console._times[s].start;
+	    console._times[s].count++;
+	    console._times[s].time += diff;
+	    console._times[s].avg = (console._times[s].time / console._times[s].count).toFixed(3);
+	  }
+	  clearTimeout(console._interval);
+	  return console._interval = setTimeout(console.showTimeAverages, 1000);
+	};
+
+	console.showTimeAverages = function () {
+	  var byTime, i, len, o, s;
+	  byTime = [];
+	  for (s in console._times) {
+	    byTime.push({
+	      s: s,
+	      avg: console._times[s].avg
+	    });
+	  }
+	  byTime.sort(function (a, b) {
+	    if (a.avg < b.avg) {
+	      return 1;
+	    }
+	    if (a.avg > b.avg) {
+	      return -1;
+	    }
+	    return 0;
+	  });
+	  for (i = 0, len = byTime.length; i < len; i++) {
+	    o = byTime[i];
+	    console._log('%c' + o.avg + ': ' + o.s, 'color: blue;');
+	    return;
+	  }
+	};
+
+/***/ },
+/* 170 */
+/***/ function(module, exports, __webpack_require__) {
+
+	'use strict';
+
+	var Dispatcher, ErrorDialog, ErrorUtil;
+
+	Dispatcher = __webpack_require__(8);
+
+	ErrorDialog = __webpack_require__(69);
+
+	ErrorUtil = {
+	  show: function show(title, errorMessage) {
+	    return Dispatcher.trigger('modal:show', {
+	      value: {
+	        component: React.createElement(
+	          ErrorDialog,
+	          { title: title },
+	          errorMessage
+	        )
+	      }
+	    });
+	  },
+	  errorResponse: function errorResponse(res) {
+	    var title;
+	    title = function () {
+	      switch (res.value.type) {
+	        case 'input':
+	          return 'Bad Input';
+	        case 'unexpected':
+	          return 'Unexpected Error';
+	      }
+	    }();
+	    return ErrorUtil.show(title, res.value.message);
+	  }
+	};
+
+	module.exports = ErrorUtil;
+
+/***/ },
+/* 171 */,
+/* 172 */,
+/* 173 */,
+/* 174 */,
+/* 175 */,
+/* 176 */,
+/* 177 */,
+/* 178 */,
+/* 179 */,
+/* 180 */,
+/* 181 */,
+/* 182 */,
+/* 183 */,
+/* 184 */,
+/* 185 */,
+/* 186 */,
+/* 187 */,
+/* 188 */,
+/* 189 */,
+/* 190 */,
+/* 191 */
+/***/ function(module, exports, __webpack_require__) {
+
+	'use strict';
+
+	var OD;
+
+	__webpack_require__(194);
+
+	OD = __webpack_require__(85);
+
+	window.ObojoboDraft = __webpack_require__(85);
+
+/***/ },
+/* 192 */,
+/* 193 */,
+/* 194 */
+/***/ function(module, exports) {
+
+	// removed by extract-text-webpack-plugin
+
+/***/ },
+/* 195 */,
+/* 196 */,
+/* 197 */,
+/* 198 */,
+/* 199 */,
+/* 200 */,
+/* 201 */,
+/* 202 */,
+/* 203 */,
+/* 204 */,
+/* 205 */,
+/* 206 */,
+/* 207 */,
+/* 208 */,
+/* 209 */,
+/* 210 */
+194,
+/* 211 */
+194,
+/* 212 */
+194,
+/* 213 */
+194,
+/* 214 */
+194,
+/* 215 */
+194,
+/* 216 */
+194,
+/* 217 */
+194,
+/* 218 */
+194,
+/* 219 */
+194,
+/* 220 */
+194,
+/* 221 */
+194,
+/* 222 */,
+/* 223 */,
+/* 224 */,
+/* 225 */,
+/* 226 */,
+/* 227 */,
+/* 228 */,
 /* 229 */,
-/* 230 */
+/* 230 */,
+/* 231 */,
+/* 232 */,
+/* 233 */,
+/* 234 */
 /***/ function(module, exports) {
 
 	module.exports = "data:image/svg+xml;charset=utf8,%3Csvg id='Layer_10' data-name='Layer 10' xmlns='http://www.w3.org/2000/svg' viewBox='0 0 20.48 20.48'%3E %3Cdefs%3E %3Cstyle%3E .cls-1 %7B fill: %236714bd; %7D %3C/style%3E %3C/defs%3E %3Ctitle%3Etoolbar-icons%3C/title%3E %3Cg%3E %3Crect class='cls-1' x='15.15' y='4.57' width='5.75' height='18.82' rx='1.13' ry='1.13' transform='translate(9.4 -14.41) rotate(45)'/%3E %3Cpath class='cls-1' d='M11.06,25l-5.3,1.23L7,20.94a1.12,1.12,0,0,1,1.59,0l2.47,2.47A1.13,1.13,0,0,1,11.06,25Z' transform='translate(-5.76 -5.76)'/%3E %3C/g%3E %3C/svg%3E"

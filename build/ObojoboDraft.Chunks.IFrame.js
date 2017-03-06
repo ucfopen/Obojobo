@@ -45,12 +45,12 @@
 /***/ 0:
 /***/ function(module, exports, __webpack_require__) {
 
-	module.exports = __webpack_require__(99);
+	module.exports = __webpack_require__(116);
 
 
 /***/ },
 
-/***/ 97:
+/***/ 114:
 /***/ function(module, exports) {
 
 	"use strict";
@@ -78,14 +78,14 @@
 
 /***/ },
 
-/***/ 98:
+/***/ 115:
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
 
 	var Common, IFrame, OboComponent;
 
-	__webpack_require__(183);
+	__webpack_require__(201);
 
 	Common = window.ObojoboDraft.Common;
 
@@ -111,7 +111,7 @@
 
 /***/ },
 
-/***/ 99:
+/***/ 116:
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -122,14 +122,14 @@
 
 	OBO.register('ObojoboDraft.Chunks.IFrame', {
 	  type: 'chunk',
-	  adapter: __webpack_require__(97),
-	  componentClass: __webpack_require__(98),
+	  adapter: __webpack_require__(114),
+	  componentClass: __webpack_require__(115),
 	  selectionHandler: new Common.chunk.focusableChunk.FocusableSelectionHandler()
 	});
 
 /***/ },
 
-/***/ 183:
+/***/ 201:
 /***/ function(module, exports) {
 
 	// removed by extract-text-webpack-plugin

@@ -45,92 +45,19 @@
 /***/ 0:
 /***/ function(module, exports, __webpack_require__) {
 
-	module.exports = __webpack_require__(175);
+	module.exports = __webpack_require__(192);
 
 
 /***/ },
 
-/***/ 169:
-/***/ function(module, exports) {
-
-	'use strict';
-
-	var JSONInput;
-
-	JSONInput = React.createClass({
-	  displayName: 'JSONInput',
-
-	  getInitialState: function getInitialState() {
-	    return {
-	      value: this.props.value,
-	      open: false
-	    };
-	  },
-	  componentWillReceiveProps: function componentWillReceiveProps(nextProps) {
-	    return this.setState({
-	      value: nextProps.value
-	    });
-	  },
-	  onClick: function onClick(event) {
-	    return this.props.onChange(this.state.value);
-	  },
-	  onChange: function onChange(event) {
-	    return this.setState({
-	      value: event.target.value
-	    });
-	  },
-	  onToggle: function onToggle(event) {
-	    var newVal;
-	    newVal = !this.state.open;
-	    this.setState({
-	      open: newVal
-	    });
-	    return this.props.onToggle(newVal);
-	  },
-	  render: function render() {
-	    if (this.state.open) {
-	      return React.createElement(
-	        'div',
-	        { style: { position: 'fixed', right: 0, top: 0, bottom: 0, width: '300px', background: 'gray', zIndex: 9999 } },
-	        React.createElement(
-	          'button',
-	          { style: { position: 'absolute', top: '0', left: 0, display: 'block', width: '300px' }, onClick: this.onToggle },
-	          'Close'
-	        ),
-	        React.createElement('textarea', { style: { position: 'absolute', left: 0, top: '20px', right: 0, bottom: '40px', width: '300px', fontFamily: 'monospace', fontSize: '10pt', padding: 0, margin: 0, boxSizing: 'border-box' }, value: this.state.value, onChange: this.onChange }),
-	        React.createElement(
-	          'button',
-	          { style: { position: 'absolute', bottom: '10px', left: 0, display: 'block', width: '300px' }, onClick: this.onClick },
-	          'Update'
-	        )
-	      );
-	    }
-	    return React.createElement(
-	      'div',
-	      { style: { position: 'fixed', right: 0, top: '50px', zIndex: 9999 } },
-	      React.createElement(
-	        'button',
-	        { onClick: this.onToggle },
-	        'Open'
-	      )
-	    );
-	  }
-	});
-
-	module.exports = JSONInput;
-
-/***/ },
-
-/***/ 175:
+/***/ 192:
 /***/ function(module, exports, __webpack_require__) {
 
 	"use strict";
 
-	var APIUtil, Dispatcher, JSONInput, _debounce, ie, json, legacyJson, moduleData, onBlur, onChangeJSON, onFocus, render, showDocument;
+	var APIUtil, Dispatcher, _debounce, ie, json, legacyJson, moduleData, onBlur, onFocus, render, showDocument;
 
 	APIUtil = window.Viewer.util.APIUtil;
-
-	JSONInput = __webpack_require__(169);
 
 	_debounce = function debounce(ms, cb) {
 	  clearTimeout(_debounce.id);
@@ -178,26 +105,10 @@
 	    return ReactDOM.render(React.createElement(
 	      'div',
 	      { className: 'root' },
-	      React.createElement(window.Viewer.components.ViewerApp, { json: json }),
-	      React.createElement(JSONInput, { onChange: onChangeJSON, value: JSON.stringify(json, null, 2) })
+	      React.createElement(window.Viewer.components.ViewerApp, { json: json })
 	    ), document.getElementById('viewer-app'));
 	  };
 	}(undefined);
-
-	onChangeJSON = function onChangeJSON(json) {
-	  var OboModel, e, newModule, o;
-	  try {
-	    o = JSON.parse(json);
-	  } catch (error) {
-	    e = error;
-	    alert('Error parsing JSON');
-	    return;
-	  }
-	  OboModel = window.ObojoboDraft.Common.models.OboModel;
-	  newModule = OboModel.create(o);
-	  moduleData.model = newModule;
-	  return render();
-	};
 
 	showDocument = function (_this) {
 	  return function (json) {
@@ -206,12 +117,12 @@
 	}(undefined);
 
 	if (window.location.hash.indexOf('legacy') > -1) {
-	  legacyJson = __webpack_require__(213);
+	  legacyJson = __webpack_require__(231);
 	  moduleData.model = window.ObojoboDraft.Common.models.Legacy.createModuleFromObo2ModuleJSON(legacyJson);
 	  NavStore.init(moduleData.model);
 	  render();
 	} else if (window.location.hash.indexOf('file') > -1) {
-	  json = __webpack_require__(214);
+	  json = __webpack_require__(232);
 	  showDocument(json);
 	} else {
 	  APIUtil.fetchDraft('sample').then(function (_this) {
@@ -223,7 +134,7 @@
 
 /***/ },
 
-/***/ 213:
+/***/ 231:
 /***/ function(module, exports) {
 
 	module.exports = {
@@ -2596,7 +2507,7 @@
 
 /***/ },
 
-/***/ 214:
+/***/ 232:
 /***/ function(module, exports) {
 
 	module.exports = {
@@ -2645,6 +2556,13 @@
 								"index": 0,
 								"type": "ObojoboDraft.Chunks.Heading",
 								"children": null
+							},
+							{
+								"id": "asdf2",
+								"content": {
+									"html": "<p>html<b>now</b></p>"
+								},
+								"type": "ObojoboDraft.Chunks.HTML"
 							},
 							{
 								"id": "61bcd6c5-9fa6-4c3a-b743-5c6d0bef21a5",
@@ -3132,6 +3050,13 @@
 										"index": 0,
 										"type": "ObojoboDraft.Pages.Page",
 										"children": [
+											{
+												"id": "asdf",
+												"content": {
+													"html": "<p>html<b>now</b></p>"
+												},
+												"type": "ObojoboDraft.Chunks.HTML"
+											},
 											{
 												"id": "2-0f392890-4ab8-4f40-ac12-83483c6714cf",
 												"content": {

@@ -45,12 +45,12 @@
 /***/ 0:
 /***/ function(module, exports, __webpack_require__) {
 
-	module.exports = __webpack_require__(111);
+	module.exports = __webpack_require__(128);
 
 
 /***/ },
 
-/***/ 109:
+/***/ 126:
 /***/ function(module, exports) {
 
 	"use strict";
@@ -86,12 +86,18 @@
 	  clone: function clone(model, _clone) {
 	    _clone.modelState.shuffle = model.modelState.shuffle;
 	    _clone.modelState.type = model.modelState.type;
-	    return _clone.modelState.solution = model.modelState.solution.clone();
+	    _clone.modelState.solution = null;
+	    if (model.modelState.solution != null) {
+	      return _clone.modelState.solution = model.modelState.solution.clone();
+	    }
 	  },
 	  toJSON: function toJSON(model, json) {
 	    json.content.shuffle = model.modelState.shuffle;
 	    json.content.type = model.modelState.type;
-	    return json.content.solution = model.modelState.solution.toJSON();
+	    json.content.solution = null;
+	    if (model.modelState.solution != null) {
+	      return json.content.solution = model.modelState.solution.toJSON();
+	    }
 	  }
 	};
 
@@ -99,14 +105,14 @@
 
 /***/ },
 
-/***/ 110:
+/***/ 127:
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
 
 	var Button, Common, Dispatcher, FocusUtil, OboComponent, Question, QuestionUtil, ReactCSSTransitionGroup, ScoreUtil;
 
-	__webpack_require__(187);
+	__webpack_require__(205);
 
 	ReactCSSTransitionGroup = React.addons.CSSTransitionGroup;
 
@@ -173,7 +179,7 @@
 
 /***/ },
 
-/***/ 111:
+/***/ 128:
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -184,13 +190,13 @@
 
 	OBO.register('ObojoboDraft.Chunks.Question', {
 	  type: 'chunk',
-	  adapter: __webpack_require__(109),
-	  componentClass: __webpack_require__(110),
+	  adapter: __webpack_require__(126),
+	  componentClass: __webpack_require__(127),
 	  selectionHandler: new ObojoboDraft.Common.chunk.textChunk.TextGroupSelectionHandler(),
 	  getNavItem: function getNavItem(model) {
 	    return {
 	      type: 'sub-link',
-	      label: '[Q] ' + model.children.at(0).modelState.textGroup.first.text.value
+	      label: '[Q] + model.children.at(0).modelState.textGroup.first.text.value'
 	    };
 	  },
 	  generateNav: function generateNav(model) {
@@ -204,7 +210,7 @@
 
 /***/ },
 
-/***/ 187:
+/***/ 205:
 /***/ function(module, exports) {
 
 	// removed by extract-text-webpack-plugin

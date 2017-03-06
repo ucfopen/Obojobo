@@ -45,12 +45,12 @@
 /***/ 0:
 /***/ function(module, exports, __webpack_require__) {
 
-	module.exports = __webpack_require__(84);
+	module.exports = __webpack_require__(98);
 
 
 /***/ },
 
-/***/ 82:
+/***/ 96:
 /***/ function(module, exports) {
 
 	'use strict';
@@ -78,14 +78,14 @@
 
 /***/ },
 
-/***/ 83:
+/***/ 97:
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
 
 	var ActionButton, Button, Common, OboComponent;
 
-	__webpack_require__(178);
+	__webpack_require__(195);
 
 	Common = window.ObojoboDraft.Common;
 
@@ -116,7 +116,7 @@
 
 /***/ },
 
-/***/ 84:
+/***/ 98:
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -127,14 +127,14 @@
 
 	OBO.register('ObojoboDraft.Chunks.ActionButton', {
 	  type: 'chunk',
-	  adapter: __webpack_require__(82),
-	  componentClass: __webpack_require__(83),
+	  adapter: __webpack_require__(96),
+	  componentClass: __webpack_require__(97),
 	  selectionHandler: new ObojoboDraft.Common.chunk.textChunk.TextGroupSelectionHandler()
 	});
 
 /***/ },
 
-/***/ 178:
+/***/ 195:
 /***/ function(module, exports) {
 
 	// removed by extract-text-webpack-plugin
