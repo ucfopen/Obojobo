@@ -71,6 +71,9 @@
 	  },
 	  toJSON: function toJSON(model, json) {
 	    return json.content.label = model.modelState.label;
+	  },
+	  toText: function toText(model) {
+	    return model.modelState.label;
 	  }
 	};
 
@@ -85,7 +88,7 @@
 
 	var ActionButton, Button, Common, OboComponent;
 
-	__webpack_require__(195);
+	__webpack_require__(197);
 
 	Common = window.ObojoboDraft.Common;
 
@@ -134,7 +137,7 @@
 
 /***/ },
 
-/***/ 195:
+/***/ 197:
 /***/ function(module, exports) {
 
 	// removed by extract-text-webpack-plugin

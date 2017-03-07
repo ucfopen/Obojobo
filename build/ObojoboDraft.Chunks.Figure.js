@@ -45,12 +45,12 @@
 /***/ 0:
 /***/ function(module, exports, __webpack_require__) {
 
-	module.exports = __webpack_require__(107);
+	module.exports = __webpack_require__(108);
 
 
 /***/ },
 
-/***/ 103:
+/***/ 104:
 /***/ function(module, exports) {
 
 	'use strict';
@@ -100,6 +100,9 @@
 	    json.content.size = model.modelState.size;
 	    json.content.width = model.modelState.width;
 	    return json.content.height = model.modelState.height;
+	  },
+	  toText: function toText(model) {
+	    return 'Image: ' + model.modelState.url + "\n Caption:" + TextGroupAdapter.toText(model);
 	  }
 	};
 
@@ -107,7 +110,7 @@
 
 /***/ },
 
-/***/ 104:
+/***/ 105:
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -124,7 +127,7 @@
 	    data = this.props.chunk.modelState;
 	    if (data.url == null) {
 	      imgStyles = {
-	        backgroundImage: Common.util.getBackgroundImage(__webpack_require__(233)),
+	        backgroundImage: Common.util.getBackgroundImage(__webpack_require__(236)),
 	        backgroundSize: '16px',
 	        height: '300px'
 	      };
@@ -159,7 +162,7 @@
 
 /***/ },
 
-/***/ 105:
+/***/ 106:
 /***/ function(module, exports) {
 
 	"use strict";
@@ -202,16 +205,16 @@
 
 /***/ },
 
-/***/ 106:
+/***/ 107:
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
 
 	var Common, Figure, Image, NonEditableChunk, OboComponent, TextGroupEl;
 
-	__webpack_require__(198);
+	__webpack_require__(200);
 
-	Image = __webpack_require__(104);
+	Image = __webpack_require__(105);
 
 	Common = window.ObojoboDraft.Common;
 
@@ -256,34 +259,34 @@
 
 /***/ },
 
-/***/ 107:
+/***/ 108:
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
 
 	var ObojoboDraft, SelectionHandler;
 
-	SelectionHandler = __webpack_require__(105);
+	SelectionHandler = __webpack_require__(106);
 
 	ObojoboDraft = window.ObojoboDraft;
 
 	OBO.register('ObojoboDraft.Chunks.Figure', {
 	  type: 'chunk',
-	  adapter: __webpack_require__(103),
-	  componentClass: __webpack_require__(106),
+	  adapter: __webpack_require__(104),
+	  componentClass: __webpack_require__(107),
 	  selectionHandler: new SelectionHandler()
 	});
 
 /***/ },
 
-/***/ 198:
+/***/ 200:
 /***/ function(module, exports) {
 
 	// removed by extract-text-webpack-plugin
 
 /***/ },
 
-/***/ 233:
+/***/ 236:
 /***/ function(module, exports) {
 
 	module.exports = "data:image/svg+xml;charset=utf8,%3Csvg id='Layer_1' data-name='Layer 1' xmlns='http://www.w3.org/2000/svg' viewBox='0 0 12 12'%3E%3Cdefs%3E%3Cstyle%3E.cls-1%7Bopacity:0.03;%7D%3C/style%3E%3C/defs%3E%3Ctitle%3Ebg%3C/title%3E%3Crect class='cls-1' width='6' height='6'/%3E%3Crect class='cls-1' x='6' y='6' width='6' height='6'/%3E%3C/svg%3E"

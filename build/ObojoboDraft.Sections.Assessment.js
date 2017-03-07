@@ -45,19 +45,19 @@
 /***/ 0:
 /***/ function(module, exports, __webpack_require__) {
 
-	module.exports = __webpack_require__(182);
+	module.exports = __webpack_require__(184);
 
 
 /***/ },
 
-/***/ 178:
+/***/ 180:
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
 
 	var Adapter, Common, ScoreActions;
 
-	ScoreActions = __webpack_require__(180);
+	ScoreActions = __webpack_require__(182);
 
 	Common = window.ObojoboDraft.Common;
 
@@ -95,7 +95,7 @@
 
 /***/ },
 
-/***/ 179:
+/***/ 181:
 /***/ function(module, exports) {
 
 	'use strict';
@@ -142,7 +142,7 @@
 
 /***/ },
 
-/***/ 180:
+/***/ 182:
 /***/ function(module, exports) {
 
 	"use strict";
@@ -181,14 +181,14 @@
 
 /***/ },
 
-/***/ 181:
+/***/ 183:
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
 
 	var AssessmentUtil, AttemptIncompleteDialog, Button, Common, Dispatcher, ModalUtil, NavUtil, OboComponent, OboModel, ScoreStore;
 
-	__webpack_require__(225);
+	__webpack_require__(228);
 
 	Common = window.ObojoboDraft.Common;
 
@@ -208,11 +208,16 @@
 
 	NavUtil = window.Viewer.util.NavUtil;
 
-	AttemptIncompleteDialog = __webpack_require__(179);
+	AttemptIncompleteDialog = __webpack_require__(181);
 
 	module.exports = React.createClass({
 	  displayName: 'exports',
 
+	  getInitialState: function getInitialState() {
+	    return {
+	      step: null
+	    };
+	  },
 	  getCurrentStep: function getCurrentStep() {
 	    var assessment;
 	    assessment = AssessmentUtil.getAssessmentForModel(this.props.moduleData.assessmentState, this.props.model);
@@ -226,6 +231,22 @@
 	      return 'scoreSubmitted';
 	    }
 	    return 'untested';
+	  },
+	  componentWillReceiveProps: function componentWillReceiveProps(nextProps) {
+	    var curStep;
+	    curStep = this.getCurrentStep();
+	    if (curStep !== this.state.step) {
+	      this.needsScroll = true;
+	    }
+	    return this.setState({
+	      step: curStep
+	    });
+	  },
+	  componentDidUpdate: function componentDidUpdate() {
+	    if (this.needsScroll) {
+	      delete this.needsScroll;
+	      return Dispatcher.trigger('viewer:scrollToTop');
+	    }
 	  },
 	  isAttemptComplete: function isAttemptComplete() {
 	    return AssessmentUtil.isCurrentAttemptComplete(this.props.moduleData.assessmentState, this.props.moduleData.questionState, this.props.model);
@@ -262,7 +283,7 @@
 	    return {
 	      from: 0,
 	      to: 100,
-	      message: "You did it!!!",
+	      message: "",
 	      action: {
 	        type: "unlock",
 	        value: "_next"
@@ -274,7 +295,7 @@
 	    recentScore = AssessmentUtil.getLastAttemptScoreForModel(this.props.moduleData.assessmentState, this.props.model);
 	    highestScore = AssessmentUtil.getHighestAttemptScoreForModel(this.props.moduleData.assessmentState, this.props.model);
 	    childEl = function () {
-	      switch (this.getCurrentStep()) {
+	      switch (this.state.step) {
 	        case 'untested':
 	          child = this.props.model.children.at(0);
 	          Component = child.getComponentClass();
@@ -327,23 +348,25 @@
 	              null,
 	              'Your highest score was ' + Math.round(highestScore) + '%'
 	            ),
-	            questionScores.map(function (questionScore) {
-	              return React.createElement(
-	                'p',
-	                null,
-	                React.createElement(
-	                  'span',
-	                  null,
-	                  questionScore.id
-	                ),
-	                React.createElement('br', null),
-	                React.createElement(
-	                  'span',
-	                  null,
-	                  questionScore.score
-	                )
-	              );
-	            }.bind(this)),
+	            React.createElement(
+	              'div',
+	              { className: 'review' },
+	              questionScores.map(function (questionScore) {
+	                var questionModel = OboModel.models[questionScore.id];
+	                var QuestionComponent = questionModel.getComponentClass();
+
+	                return React.createElement(
+	                  'div',
+	                  { className: questionScore.score === 100 ? 'is-correct' : 'is-not-correct' },
+	                  React.createElement(
+	                    'p',
+	                    { className: 'pad' },
+	                    questionScore.score === 100 ? 'Correct:' : 'Incorrect:'
+	                  ),
+	                  React.createElement(QuestionComponent, { model: questionModel, moduleData: this.props.moduleData, showContentOnly: true })
+	                );
+	              }.bind(this))
+	            ),
 	            childEl
 	          );
 	      }
@@ -362,7 +385,7 @@
 
 /***/ },
 
-/***/ 182:
+/***/ 184:
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -375,8 +398,8 @@
 
 	OBO.register('ObojoboDraft.Sections.Assessment', {
 	  type: 'section',
-	  adapter: __webpack_require__(178),
-	  componentClass: __webpack_require__(181),
+	  adapter: __webpack_require__(180),
+	  componentClass: __webpack_require__(183),
 	  selectionHandler: null,
 	  getNavItem: function getNavItem(model) {
 	    return {
@@ -388,7 +411,7 @@
 
 /***/ },
 
-/***/ 225:
+/***/ 228:
 /***/ function(module, exports) {
 
 	// removed by extract-text-webpack-plugin

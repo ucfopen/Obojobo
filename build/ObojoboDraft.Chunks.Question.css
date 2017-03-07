@@ -92,3 +92,5 @@
 
 .obojobo-draft--chunks--question.is-active .flipper, .obojobo-draft--chunks--question.is-viewed .flipper {
   transform: rotateY(-180deg); }
+.obojobo-draft--chunks--mc-assessment--content {
+  font-size: 80%; }

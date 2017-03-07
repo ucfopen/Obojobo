@@ -45,7 +45,7 @@
 /***/ 0:
 /***/ function(module, exports, __webpack_require__) {
 
-	module.exports = __webpack_require__(110);
+	module.exports = __webpack_require__(111);
 
 
 /***/ },
@@ -10323,10 +10323,10 @@
 
 /***/ },
 
-/***/ 108:
+/***/ 109:
 /***/ function(module, exports) {
 
-	"use strict";
+	'use strict';
 
 	var Adapter;
 
@@ -10344,6 +10344,12 @@
 	  },
 	  toJSON: function toJSON(model, json) {
 	    return json.content.html = model.modelState.html;
+	  },
+	  toText: function toText(model) {
+	    var node;
+	    node = document.createElement('p');
+	    node.innerHTML = model.modelState.html;
+	    return node.textContent;
 	  }
 	};
 
@@ -10351,14 +10357,14 @@
 
 /***/ },
 
-/***/ 109:
+/***/ 110:
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
 
 	var Common, HTML, OboComponent, katex;
 
-	__webpack_require__(199);
+	__webpack_require__(201);
 
 	katex = __webpack_require__(46);
 
@@ -10399,7 +10405,7 @@
 
 /***/ },
 
-/***/ 110:
+/***/ 111:
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -10410,14 +10416,14 @@
 
 	OBO.register('ObojoboDraft.Chunks.HTML', {
 	  type: 'chunk',
-	  adapter: __webpack_require__(108),
-	  componentClass: __webpack_require__(109),
+	  adapter: __webpack_require__(109),
+	  componentClass: __webpack_require__(110),
 	  selectionHandler: new Common.chunk.focusableChunk.FocusableSelectionHandler()
 	});
 
 /***/ },
 
-/***/ 199:
+/***/ 201:
 /***/ function(module, exports) {
 
 	// removed by extract-text-webpack-plugin

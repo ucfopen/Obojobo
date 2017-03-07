@@ -45,7 +45,7 @@
 /***/ 0:
 /***/ function(module, exports, __webpack_require__) {
 
-	module.exports = __webpack_require__(134);
+	module.exports = __webpack_require__(136);
 
 
 /***/ },
@@ -318,7 +318,7 @@
 
 /***/ },
 
-/***/ 132:
+/***/ 134:
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -350,6 +350,29 @@
 	  toJSON: function toJSON(model, json) {
 	    json.content.textGroup = model.modelState.textGroup.toDescriptor();
 	    return json.content.header = model.modelState.header;
+	  },
+	  toText: function toText(model) {
+	    var border, col, i, item, j, k, l, len, longestStringLength, pad, ref, ref1, ref2, row, s, text, textItem;
+	    longestStringLength = 0;
+	    ref = model.modelState.textGroup.items;
+	    for (j = 0, len = ref.length; j < len; j++) {
+	      textItem = ref[j];
+	      longestStringLength = Math.max(longestStringLength, textItem.text.value.length);
+	    }
+	    pad = ' '.repeat(longestStringLength);
+	    border = '-'.repeat(longestStringLength);
+	    text = '';
+	    text += border + "\n";
+	    for (row = k = 0, ref1 = model.modelState.textGroup.numRows; 0 <= ref1 ? k < ref1 : k > ref1; row = 0 <= ref1 ? ++k : --k) {
+	      s = [];
+	      for (col = l = 0, ref2 = model.modelState.textGroup.numCols; 0 <= ref2 ? l < ref2 : l > ref2; col = 0 <= ref2 ? ++l : --l) {
+	        i = row * model.modelState.textGroup.numCols + col;
+	        item = model.modelState.textGroup.items[i];
+	        s.push((item.text.value + pad).substr(0, pad.length));
+	      }
+	      text += "| " + s.join(' | ') + " |" + "\n" + border + "\n";
+	    }
+	    return text;
 	  }
 	};
 
@@ -357,14 +380,14 @@
 
 /***/ },
 
-/***/ 133:
+/***/ 135:
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
 
 	var Common, GridTextGroup, OboComponent, SelectionHandler, Table, TextGroupEl;
 
-	__webpack_require__(207);
+	__webpack_require__(210);
 
 	GridTextGroup = __webpack_require__(61);
 
@@ -466,7 +489,7 @@
 
 /***/ },
 
-/***/ 134:
+/***/ 136:
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -479,14 +502,14 @@
 
 	OBO.register('ObojoboDraft.Chunks.Table', {
 	  type: 'chunk',
-	  adapter: __webpack_require__(132),
-	  componentClass: __webpack_require__(133),
+	  adapter: __webpack_require__(134),
+	  componentClass: __webpack_require__(135),
 	  selectionHandler: new SelectionHandler()
 	});
 
 /***/ },
 
-/***/ 207:
+/***/ 210:
 /***/ function(module, exports) {
 
 	// removed by extract-text-webpack-plugin

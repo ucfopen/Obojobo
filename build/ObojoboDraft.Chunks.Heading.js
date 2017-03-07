@@ -45,12 +45,12 @@
 /***/ 0:
 /***/ function(module, exports, __webpack_require__) {
 
-	module.exports = __webpack_require__(113);
+	module.exports = __webpack_require__(114);
 
 
 /***/ },
 
-/***/ 111:
+/***/ 112:
 /***/ function(module, exports) {
 
 	"use strict";
@@ -79,6 +79,9 @@
 	  toJSON: function toJSON(model, json) {
 	    TextGroupAdapter.toJSON(model, json);
 	    return json.content.headingLevel = model.modelState.headingLevel;
+	  },
+	  toText: function toText(model) {
+	    return TextGroupAdapter.toText(model);
 	  }
 	};
 
@@ -86,14 +89,14 @@
 
 /***/ },
 
-/***/ 112:
+/***/ 113:
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
 
 	var Common, Heading, OboComponent, TextChunk, TextGroupEl;
 
-	__webpack_require__(200);
+	__webpack_require__(202);
 
 	Common = window.ObojoboDraft.Common;
 
@@ -126,7 +129,7 @@
 
 /***/ },
 
-/***/ 113:
+/***/ 114:
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -137,16 +140,20 @@
 
 	OBO.register('ObojoboDraft.Chunks.Heading', {
 	  type: 'chunk',
-	  adapter: __webpack_require__(111),
-	  componentClass: __webpack_require__(112),
+	  adapter: __webpack_require__(112),
+	  componentClass: __webpack_require__(113),
 	  selectionHandler: new ObojoboDraft.Common.chunk.textChunk.TextGroupSelectionHandler(),
 	  getNavItem: function getNavItem(model) {
 	    switch (model.modelState.headingLevel) {
+	      case 1:
 	      case 2:
+	        if (model.modelState.headingLevel === 1 && model.getIndex() === 0) {
+	          return null;
+	        }
 	        return {
 	          type: 'sub-link',
-	          label: model.modelState.textGroup.first.text.value,
-	          path: [model.modelState.textGroup.first.text.value.toLowerCase().replace(/ /g, '-')],
+	          label: model.toText(),
+	          path: [model.toText().toLowerCase().replace(/ /g, '-')],
 	          showChildren: false
 	        };
 	      default:
@@ -157,7 +164,7 @@
 
 /***/ },
 
-/***/ 200:
+/***/ 202:
 /***/ function(module, exports) {
 
 	// removed by extract-text-webpack-plugin

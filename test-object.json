@@ -50,6 +50,13 @@
                            "children": null
                        },
                        {
+                           "id": "asdf2",
+                           "content": {
+                               "html": "<p>html<b>now</b></p>"
+                           },
+                           "type": "ObojoboDraft.Chunks.HTML"
+                       },
+                       {
                            "id": "61bcd6c5-9fa6-4c3a-b743-5c6d0bef21a5",
                            "content": {
                                "headingLevel": 2,
@@ -563,6 +570,13 @@
                                     "index": 0,
                                     "type": "ObojoboDraft.Pages.Page",
                                     "children": [
+                                        {
+                                            "id": "asdf",
+                                            "content": {
+                                                "html": "<p>html<b>now</b></p>"
+                                            },
+                                            "type": "ObojoboDraft.Chunks.HTML"
+                                        },
                                         {
                                             "id": "2-0f392890-4ab8-4f40-ac12-83483c6714cf",
                                             "content": {

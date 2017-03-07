@@ -45,12 +45,12 @@
 /***/ 0:
 /***/ function(module, exports, __webpack_require__) {
 
-	module.exports = __webpack_require__(139);
+	module.exports = __webpack_require__(141);
 
 
 /***/ },
 
-/***/ 137:
+/***/ 139:
 /***/ function(module, exports) {
 
 	"use strict";
@@ -71,6 +71,9 @@
 	  },
 	  toJSON: function toJSON(model, json) {
 	    return json.content.videoId = model.modelState.videoId;
+	  },
+	  toText: function toText(model) {
+	    return "https://www.youtube.com/watch?v=" + model.modelState.videoId;
 	  }
 	};
 
@@ -78,14 +81,14 @@
 
 /***/ },
 
-/***/ 138:
+/***/ 140:
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
 
 	var Common, OboComponent, YouTube;
 
-	__webpack_require__(209);
+	__webpack_require__(212);
 
 	Common = window.ObojoboDraft.Common;
 
@@ -113,7 +116,7 @@
 
 /***/ },
 
-/***/ 139:
+/***/ 141:
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -124,14 +127,14 @@
 
 	OBO.register('ObojoboDraft.Chunks.YouTube', {
 	  type: 'chunk',
-	  adapter: __webpack_require__(137),
-	  componentClass: __webpack_require__(138),
+	  adapter: __webpack_require__(139),
+	  componentClass: __webpack_require__(140),
 	  selectionHandler: new Common.chunk.focusableChunk.FocusableSelectionHandler()
 	});
 
 /***/ },
 
-/***/ 209:
+/***/ 212:
 /***/ function(module, exports) {
 
 	// removed by extract-text-webpack-plugin

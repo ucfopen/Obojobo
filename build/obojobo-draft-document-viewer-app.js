@@ -45,12 +45,12 @@
 /***/ 0:
 /***/ function(module, exports, __webpack_require__) {
 
-	module.exports = __webpack_require__(192);
+	module.exports = __webpack_require__(194);
 
 
 /***/ },
 
-/***/ 192:
+/***/ 194:
 /***/ function(module, exports, __webpack_require__) {
 
 	"use strict";
@@ -117,12 +117,12 @@
 	}(undefined);
 
 	if (window.location.hash.indexOf('legacy') > -1) {
-	  legacyJson = __webpack_require__(231);
+	  legacyJson = __webpack_require__(234);
 	  moduleData.model = window.ObojoboDraft.Common.models.Legacy.createModuleFromObo2ModuleJSON(legacyJson);
 	  NavStore.init(moduleData.model);
 	  render();
 	} else if (window.location.hash.indexOf('file') > -1) {
-	  json = __webpack_require__(232);
+	  json = __webpack_require__(235);
 	  showDocument(json);
 	} else {
 	  APIUtil.fetchDraft('sample').then(function (_this) {
@@ -134,7 +134,7 @@
 
 /***/ },
 
-/***/ 231:
+/***/ 234:
 /***/ function(module, exports) {
 
 	module.exports = {
@@ -2507,7 +2507,7 @@
 
 /***/ },
 
-/***/ 232:
+/***/ 235:
 /***/ function(module, exports) {
 
 	module.exports = {

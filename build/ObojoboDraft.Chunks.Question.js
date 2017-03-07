@@ -40,17 +40,76 @@
 /******/ 	return __webpack_require__(0);
 /******/ })
 /************************************************************************/
-/******/ ({
+/******/ ((function(modules) {
+	// Check all modules for deduplicated modules
+	for(var i in modules) {
+		if(Object.prototype.hasOwnProperty.call(modules, i)) {
+			switch(typeof modules[i]) {
+			case "function": break;
+			case "object":
+				// Module can be created from a template
+				modules[i] = (function(_m) {
+					var args = _m.slice(1), fn = modules[_m[0]];
+					return function (a,b,c) {
+						fn.apply(this, [a,b,c].concat(args));
+					};
+				}(modules[i]));
+				break;
+			default:
+				// Module is a copy of another module
+				modules[i] = modules[modules[i]];
+				break;
+			}
+		}
+	}
+	return modules;
+}({
 
 /***/ 0:
 /***/ function(module, exports, __webpack_require__) {
 
-	module.exports = __webpack_require__(128);
+	module.exports = __webpack_require__(130);
 
 
 /***/ },
 
-/***/ 126:
+/***/ 127:
+/***/ function(module, exports, __webpack_require__) {
+
+	'use strict';
+
+	var Common, OboComponent, QuestionContent;
+
+	__webpack_require__(207);
+
+	Common = window.ObojoboDraft.Common;
+
+	OboComponent = Common.components.OboComponent;
+
+	QuestionContent = React.createClass({
+		displayName: 'QuestionContent',
+
+		render: function render() {
+			return React.createElement(
+				OboComponent,
+				{
+					model: this.props.model,
+					moduleData: this.props.moduleData,
+					className: 'obojobo-draft--chunks--mc-question--content'
+				},
+				this.props.model.children.models.slice(0, this.props.model.children.models.length - 1).map(function (child, index) {
+					var Component = child.getComponentClass();
+					return React.createElement(Component, { key: child.get('id'), model: child, moduleData: this.props.moduleData });
+				}.bind(this))
+			);
+		}
+	});
+
+	module.exports = QuestionContent;
+
+/***/ },
+
+/***/ 128:
 /***/ function(module, exports) {
 
 	"use strict";
@@ -105,14 +164,14 @@
 
 /***/ },
 
-/***/ 127:
+/***/ 129:
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
 
-	var Button, Common, Dispatcher, FocusUtil, OboComponent, Question, QuestionUtil, ReactCSSTransitionGroup, ScoreUtil;
+	var Button, Common, Dispatcher, FocusUtil, OboComponent, Question, QuestionContent, QuestionUtil, ReactCSSTransitionGroup, ScoreUtil;
 
-	__webpack_require__(205);
+	__webpack_require__(208);
 
 	ReactCSSTransitionGroup = React.addons.CSSTransitionGroup;
 
@@ -130,6 +189,8 @@
 
 	QuestionUtil = window.Viewer.util.QuestionUtil;
 
+	QuestionContent = __webpack_require__(127);
+
 	Question = React.createClass({
 		displayName: 'Question',
 
@@ -140,9 +201,14 @@
 			}
 		},
 		render: function render() {
-			var score, viewState;
+			var AssessmentComponent, assessment, score, viewState;
+			if (this.props.showContentOnly) {
+				return this.renderContentOnly();
+			}
 			score = ScoreUtil.getScoreForModel(this.props.moduleData.scoreState, this.props.model);
 			viewState = QuestionUtil.getViewState(this.props.moduleData.questionState, this.props.model);
+			assessment = this.props.model.children.models[this.props.model.children.models.length - 1];
+			AssessmentComponent = assessment.getComponentClass();
 			return React.createElement(
 				OboComponent,
 				{
@@ -156,19 +222,39 @@
 					React.createElement(
 						'div',
 						{ className: 'content back' },
-						this.props.model.children.models.map(function (child, index) {
-							var Component = child.getComponentClass();
-							return React.createElement(Component, {
-								key: child.get('id'),
-								model: child,
-								moduleData: this.props.moduleData
-							});
-						}.bind(this))
+						React.createElement(QuestionContent, { model: this.props.model, moduleData: this.props.moduleData }),
+						React.createElement(AssessmentComponent, {
+							key: assessment.get('id'),
+							model: assessment,
+							moduleData: this.props.moduleData
+						})
 					),
 					React.createElement(
 						'div',
 						{ className: 'blocker front', key: 'blocker', onClick: this.onClickBlocker },
-						React.createElement(Button, { value: 'Try question' })
+						React.createElement(Button, { value: this.props.model.modelState.practice ? 'Try Question' : 'View Question' })
+					)
+				)
+			);
+		},
+		renderContentOnly: function renderContentOnly() {
+			var score, viewState;
+			score = ScoreUtil.getScoreForModel(this.props.moduleData.scoreState, this.props.model);
+			viewState = QuestionUtil.getViewState(this.props.moduleData.questionState, this.props.model);
+			return React.createElement(
+				OboComponent,
+				{
+					model: this.props.model,
+					moduleData: this.props.moduleData,
+					className: 'flip-container obojobo-draft--chunks--question' + (score === null ? '' : score === 100 ? ' is-correct' : ' is-incorrect') + ' is-active' + (this.props.model.modelState.practice ? ' is-practice' : ' is-not-practice')
+				},
+				React.createElement(
+					'div',
+					{ className: 'flipper' },
+					React.createElement(
+						'div',
+						{ className: 'content back' },
+						React.createElement(QuestionContent, { model: this.props.model, moduleData: this.props.moduleData })
 					)
 				)
 			);
@@ -179,7 +265,7 @@
 
 /***/ },
 
-/***/ 128:
+/***/ 130:
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -190,31 +276,37 @@
 
 	OBO.register('ObojoboDraft.Chunks.Question', {
 	  type: 'chunk',
-	  adapter: __webpack_require__(126),
-	  componentClass: __webpack_require__(127),
+	  adapter: __webpack_require__(128),
+	  componentClass: __webpack_require__(129),
 	  selectionHandler: new ObojoboDraft.Common.chunk.textChunk.TextGroupSelectionHandler(),
 	  getNavItem: function getNavItem(model) {
+	    var label, questions;
+	    questions = model.parent.children.models.filter(function (child) {
+	      return child.get('type') === 'ObojoboDraft.Chunks.Question';
+	    });
+	    if (model.modelState.practice) {
+	      label = 'Practice Question';
+	    } else {
+	      label = 'Question';
+	    }
 	    return {
 	      type: 'sub-link',
-	      label: '[Q] + model.children.at(0).modelState.textGroup.first.text.value'
+	      label: '[Q] ' + label + ' ' + (questions.indexOf(model) + 1),
+	      path: ['#obo-' + model.get('id')]
 	    };
-	  },
-	  generateNav: function generateNav(model) {
-	    return [{
-	      type: 'sub-link',
-	      label: 'Question',
-	      id: model.get('id')
-	    }];
 	  }
 	});
 
 /***/ },
 
-/***/ 205:
+/***/ 207:
 /***/ function(module, exports) {
 
 	// removed by extract-text-webpack-plugin
 
-/***/ }
+/***/ },
 
-/******/ });
+/***/ 208:
+207
+
+/******/ })));
