@@ -24,10 +24,14 @@
     position: relative;
     border: 1px solid #c21f00;
     background: rgba(194, 31, 0, 0.1); }
+    .obojobo-draft--sections--assessment .review .is-not-correct .obojobo-draft--chunks--question .flipper .responses-hidden {
+      color: #c21f00; }
   .obojobo-draft--sections--assessment .review .is-correct .obojobo-draft--chunks--question .flipper {
     position: relative;
     border: 1px solid #38ae24;
     background: rgba(56, 174, 36, 0.1); }
+    .obojobo-draft--sections--assessment .review .is-correct .obojobo-draft--chunks--question .flipper .responses-hidden {
+      color: #38ae24; }
 
 .obojobo-draft--sections--assessment .submit-button {
   display: block;

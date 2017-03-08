@@ -254,7 +254,12 @@
 					React.createElement(
 						'div',
 						{ className: 'content back' },
-						React.createElement(QuestionContent, { model: this.props.model, moduleData: this.props.moduleData })
+						React.createElement(QuestionContent, { model: this.props.model, moduleData: this.props.moduleData }),
+						React.createElement(
+							'div',
+							{ className: 'pad responses-hidden' },
+							'(Responses Hidden)'
+						)
 					)
 				)
 			);

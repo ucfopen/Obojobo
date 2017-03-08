@@ -1731,13 +1731,13 @@
 	      if (prevModel) {
 	        prevEl = React.createElement(InlineNavButton, { ref: 'prev', type: 'prev', title: 'Back: ' + prevModel.title });
 	      } else {
-	        prevEl = React.createElement(InlineNavButton, { ref: 'prev', type: 'prev', title: 'Start of content', disabled: true });
+	        prevEl = React.createElement(InlineNavButton, { ref: 'prev', type: 'prev', title: "Start of " + this.state.model.title, disabled: true });
 	      }
 	      nextModel = NavUtil.getNextModel(this.state.navState);
 	      if (nextModel) {
 	        nextEl = React.createElement(InlineNavButton, { ref: 'next', type: 'next', title: 'Next: ' + nextModel.title });
 	      } else {
-	        nextEl = React.createElement(InlineNavButton, { ref: 'next', type: 'next', title: 'End of content', disabled: true });
+	        nextEl = React.createElement(InlineNavButton, { ref: 'next', type: 'next', title: "End of " + this.state.model.title, disabled: true });
 	      }
 	    }
 	    modal = ModalUtil.getCurrentModal(this.state.modalState);

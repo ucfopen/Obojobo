@@ -351,7 +351,7 @@
 	            React.createElement(
 	              'div',
 	              { className: 'review' },
-	              questionScores.map(function (questionScore) {
+	              questionScores.map(function (questionScore, index) {
 	                var questionModel = OboModel.models[questionScore.id];
 	                var QuestionComponent = questionModel.getComponentClass();
 
@@ -361,7 +361,7 @@
 	                  React.createElement(
 	                    'p',
 	                    { className: 'pad' },
-	                    questionScore.score === 100 ? 'Correct:' : 'Incorrect:'
+	                    'Question ' + (index + 1) + ' - ' + (questionScore.score === 100 ? 'Correct:' : 'Incorrect:')
 	                  ),
 	                  React.createElement(QuestionComponent, { model: questionModel, moduleData: this.props.moduleData, showContentOnly: true })
 	                );
