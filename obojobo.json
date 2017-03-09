@@ -102,6 +102,7 @@
         },
         {
             "name":"ObojoboDraft.Sections.Assessment",
+            "draftNode":"server/assessment.js",
             "viewerScript":"build/ObojoboDraft.Sections.Assessment.js",
             "viewerCSS":"build/ObojoboDraft.Sections.Assessment.css"
         },

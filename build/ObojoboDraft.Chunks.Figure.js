@@ -63,7 +63,7 @@
 
 	Adapter = {
 	  construct: function construct(model, attrs) {
-	    var ref, ref1, ref2, ref3;
+	    var ref, ref1, ref2, ref3, ref4;
 	    TextGroupAdapter.construct(model, attrs);
 	    model.modelState.textGroup.maxItems = 1;
 	    if (attrs != null ? (ref = attrs.content) != null ? ref.url : void 0 : void 0) {
@@ -82,9 +82,14 @@
 	      model.modelState.width = null;
 	    }
 	    if (attrs != null ? (ref3 = attrs.content) != null ? ref3.height : void 0 : void 0) {
-	      return model.modelState.height = attrs.content.height;
+	      model.modelState.height = attrs.content.height;
 	    } else {
-	      return model.modelState.height = null;
+	      model.modelState.height = null;
+	    }
+	    if (attrs != null ? (ref4 = attrs.content) != null ? ref4.alt : void 0 : void 0) {
+	      return model.modelState.alt = attrs.content.alt;
+	    } else {
+	      return model.modelState.alt = null;
 	    }
 	  },
 	  clone: function clone(model, _clone) {
@@ -92,14 +97,16 @@
 	    _clone.modelState.url = model.modelState.url;
 	    _clone.modelState.size = model.modelState.size;
 	    _clone.modelState.width = model.modelState.width;
-	    return _clone.modelState.height = model.modelState.height;
+	    _clone.modelState.height = model.modelState.height;
+	    return _clone.modelState.alt = model.modelState.alt;
 	  },
 	  toJSON: function toJSON(model, json) {
 	    TextGroupAdapter.toJSON(model, json);
 	    json.content.url = model.modelState.url;
 	    json.content.size = model.modelState.size;
 	    json.content.width = model.modelState.width;
-	    return json.content.height = model.modelState.height;
+	    json.content.height = model.modelState.height;
+	    return json.content.alt = model.modelState.alt;
 	  },
 	  toText: function toText(model) {
 	    return 'Image: ' + model.modelState.url + "\n Caption:" + TextGroupAdapter.toText(model);
@@ -137,7 +144,7 @@
 	      case 'small':
 	      case 'medium':
 	      case 'large':
-	        return React.createElement('img', { src: data.url, unselectable: 'on' });
+	        return React.createElement('img', { src: data.url, unselectable: 'on', alt: data.alt });
 	      case 'custom':
 	        imgStyles = {};
 	        if (data.width != null) {
@@ -146,7 +153,7 @@
 	        if (data.height != null) {
 	          imgStyles.height = data.height + 'px';
 	        }
-	        return React.createElement('img', { src: data.url, unselectable: 'on', style: imgStyles });
+	        return React.createElement('img', { src: data.url, unselectable: 'on', alt: data.alt, style: imgStyles });
 	    }
 	  }
 	});

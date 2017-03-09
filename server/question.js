@@ -4,12 +4,12 @@ class MCChoice extends DraftNode{
 	constructor(draftTree, node, initFn) {
 		super(draftTree, node, initFn)
 		this.registerEvents({
-			// 'internal:sendToClient': this.onSendToClient,
-			// 'ObojoboDraft.Sections.Assessment:attemptEnd' : this.onAttemptEnd
+			'ObojoboDraft.Sections.Assessment:sendToAssessment' : this.onSendToAssessment,
+			'ObojoboDraft.Sections.Assessment:attemptEnd' : this.onAttemptEnd
 		})
 	}
 
-	onSendToClient(req, res){
+	onSendToAssessment(req, res){
 		this.node.content.practice = false
 	}
 

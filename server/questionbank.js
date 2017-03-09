@@ -5,7 +5,7 @@ class QuestionBank extends DraftNode{
 	constructor(draftTree, node, initFn) {
 		super(draftTree, node, initFn)
 		this.registerEvents({
-			'internal:sendToClient': this.onSendToClient,
+			'ObojoboDraft.Sections.Assessment:sendToClient': this.onSendToClient,
 			'ObojoboDraft.Sections.Assessment:attemptStart': this.onAttemptStart
 		})
 	}

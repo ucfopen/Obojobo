@@ -55,7 +55,7 @@ app.post('/api/assessments/attempt/start', (req, res, next) => {
 			.then( result => {
 				for(let i in attemptState.questions)
 				{
-					attemptState.questions[i].yell('internal:sendToClient', req, res)
+					attemptState.questions[i].yell('ObojoboDraft.Sections.Assessment:sendToAssessment', req, res)
 				}
 				let clientQuestionObjects = attemptState.questions.map( (question) => { return question.toObject() } )
 
