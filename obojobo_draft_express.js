@@ -1,166 +1,129 @@
-var express = require('express');
-var fs = require('fs');
-var path = require('path');
-var ltiMiddleware = require('express-ims-lti');
-var db = require('./db')
-var router = require('./router');
-
-let app;
-let settings = {};
-let registeredDraftModules = new Map();
+let express = require('express');
+let app = express();
+let fs = require('fs');
+let path = require('path');
+let ltiMiddleware = require('express-ims-lti');
+let db = oboRequire('db')
+let apiResponseDecorator = oboRequire('api_response_decorator');
+let draftNodeStore = oboRequire('draft_node_store')
+let parentApp = null
+let EventEmitter = require('events');
+let registeredModuleApps = new Map();
 let isProd = true;
 
+// Global event emitter for the application
+// Not ideal to store this as a global, buuuut
+global.oboEvents = new EventEmitter(this);
 
-let initialize = (appRef, settingsRef = null) => {
-  settings = settingsRef
-  app = appRef
-  isProd = app.get('env') === 'production';
-
-  // =========== 3RD PARTY MIDDLEWARE ================
-  app.use(ltiMiddleware({
-    credentials: function (key, callback) {
-      // `this` is a reference to the request object.
-      // The first callback parameter is for errors (null if there is none).
-      if(key == 'jisc.ac.uk') callback(null, key, 'secret') // THIS IS THE DEFAULT found in http://ltiapps.net/test/tc.php
-      else callback(null, key, 'secret');
-    },
-
-  }));
+app.on('mount', (app) => {
+	isProd = app.get('env') === 'production';
+	parentApp = app;
 
 
-  // =========== STATIC ASSET PATHS ================
-  // Register static assets
-  app.use(express.static(path.join(__dirname, 'public')));
-  app.use('/static/obo-draft', express.static(`${__dirname}/node_modules/obojobo-draft-document-engine/build`));
+	// Decorate api routes with convenient functions
+	parentApp.use('/api', apiResponseDecorator);
 
-  // Search for dynamic Obojobo Draft Chunks
-  app.locals.paths = {
-    draftPath: "/static/obo-draft/"
-  }
+	// =========== STATIC ASSET PATHS ================
+	// Register static assets
+	parentApp.use(express.static(path.join(__dirname, 'public')));
+	parentApp.use('/static/obo-draft', express.static(`${__dirname}/node_modules/obojobo-draft-document-engine/build`));
 
-  let registerChunkScript = 'chunks:register'
-  if( ! isProd){
-    app.locals.paths.draftPath = "http://localhost:8090/build/"
-    registerChunkScript = 'chunks:registerdev'
-  }
+	// Search for dynamic Obojobo Draft Chunks
+	parentApp.locals.paths = {
+		appPath: __dirname,
+		draftPath: "/static/obo-draft/"
+	}
 
-  // call yarn script
-  spawn = require( 'child_process' ).spawnSync,
-  ls = spawn('yarn', [registerChunkScript]);
+	let registerChunkScript = 'chunks:register'
+	if( ! isProd){
+		parentApp.locals.paths.draftPath = "http://localhost:8090/build/"
+		registerChunkScript = 'chunks:registerdev'
+	}
 
-  // Process dynamic Obojobo Draft Modules
-  console.log("Dynamic Asset Routing")
-  let installedModulesJson = fs.readFileSync('./config/installed_modules.json');
-  let installedModulesObject = JSON.parse(installedModulesJson);
+	// call yarn script
+	spawn = require( 'child_process' ).spawnSync,
+	ls = spawn('yarn', [registerChunkScript]);
 
-  app.locals.modules = {
-    serverScript: [],
-    viewerScript: [],
-    viewerCss: [],
-    authorScript: [],
-    authorCss: []
-  }
+	// Process dynamic Obojobo Draft Modules
+	let installedModulesJson = fs.readFileSync('./config/installed_modules.json');
+	let installedModulesObject = JSON.parse(installedModulesJson);
 
-  for(let moduleName in installedModulesObject){
-    let paths = installedModulesObject[moduleName]
-    let urlBase = `/static/modules/${moduleName}`;
+	// register any express apps
+	if(installedModulesObject.hasOwnProperty('expressApps')){
+		let apps = installedModulesObject.expressApps
+		delete installedModulesObject.expressApps
+		apps.forEach( appFile => {
+			let ea = require(appFile)
+			console.log('Registering express App', appFile)
+			registeredModuleApps.set(appFile, ea)
+			parentApp.use(ea);
+		})
+	}
 
-    for(var pathType in paths){
-      let filePath = paths[pathType]
-      let pathPair = { url: `${urlBase}/${pathType}${path.extname(filePath)}`, path:filePath}
+	// this holds references to files registered from plugin modules
+	// registered via obojobo.json file in each node package
+	// anything in here will be exposed with a public url
+	parentApp.locals.modules = {
+		viewerScript: [],
+		viewerCSS: [],
+		authorScript: [],
+		authorCSS: []
+	}
 
-      if( ! isProd && pathPair.path.includes('/devsrc/')){
-        pathPair.url = `${app.locals.paths.draftPath}${path.basename(filePath)}`
-      }
+	// register client css, js and server side draftNodes
+	for(let moduleName in installedModulesObject){
+		let paths = installedModulesObject[moduleName]
+		let urlBase = `/static/modules/${moduleName}`;
+		for(var pathType in paths){
+			let filePath = paths[pathType]
+			let pathPair = { url: `${urlBase}/${pathType}${path.extname(filePath)}`, path:filePath, name:moduleName}
 
-      if( ! app.locals.modules[pathType]){
-        app.locals.modules[pathType] = [];
-      }
+			if( ! isProd && pathPair.path.includes('/devsrc/')){
+				pathPair.url = `${parentApp.locals.paths.draftPath}${path.basename(filePath)}`
+			}
 
-      app.locals.modules[pathType].push(pathPair)
+			// if it's a draftNode, register it
+			if(pathType === 'draftNode'){
+				draftNodeStore.add(pathPair.name, pathPair.path);
+				continue;
+			}
 
-      if(pathType !== 'serverScripts'){
-        console.log(`${pathPair.url} => ${pathPair.path}`)
-        app.use(pathPair.url, express.static(pathPair.path))
-      }
-    }
-  }
+			// only allowed types are already defined in locals.modules
+			if(!parentApp.locals.modules.hasOwnProperty(pathType)) continue;
+
+			// add to the catalog
+			parentApp.locals.modules[pathType].push(pathPair)
+			//
+			parentApp.use(pathPair.url, express.static(pathPair.path))
+		}
+	}
+
+	// =========== ROUTING & CONTROLERS ===========
+
+	parentApp.use('/', oboRequire('routes/viewer'));
+	parentApp.use('/lti', oboRequire('routes/lti'));
+	parentApp.use('/api/drafts', oboRequire('routes/api/drafts'))
+	parentApp.use('/api/events', oboRequire('routes/api/events'))
+	parentApp.use('/api/states', oboRequire('routes/api/states'))
+
+})
 
 
-  // =========== ROUTING & CONTROLERS ===========
-  app.use('/lti', require('./routes/lti'));
-  app.use('/api/drafts', require('./routes/api/drafts'))
-  app.use('/api/events', require('./routes/api/events'))
-  app.use('/api/states', require('./routes/api/states'))
-  // app.use('/api/assessments', require('./routes/api/assessments'))
+global.oboEvents.on('client:saveState', (event) => {
+	event._id = `${event.user}:${event.draft_id}:${event.draft_rev}`
 
-  // load up the dynamic obojobo draft chunks/objects
-  // @TODO more dyanmic or include in
-  // Change this so the registration happens in the module's main require?
-  registerDraftModule(require('./assessment/assessment'))
-  registerDraftModule(require('./assessment/questionbank'))
-  registerDraftModule(require('./assessment/mcassessment'))
-  registerDraftModule(require('./assessment/question'))
-  registerDraftModule(require('./assessment/mcchoice'))
+	db.none(`
+		INSERT INTO view_state
+		(user_id, metadata, payload)
+		VALUES($[userId], $[metadata], $[payload])`
+		, event)
+	.then( (result) => {
+		return true
+	})
+	.catch( (error) => {
+		console.log(error);
+		res.error(404).json({error:'Draft not found'})
+	})
+});
 
-  app.on('client:saveState', onClientSaveState)
-
-  app.use(middleware);
-}
-
-let createNewApi = () => {
-  return {
-    init: function() {},
-    listeners: {},
-    events: [],
-  }
-}
-
-let registerDraftModule = (registration) => {
-  if(registeredDraftModules.has(registration.title)) return
-
-  api = {
-    static: Object.assign(createNewApi(), registration.static),
-    inst: Object.assign(createNewApi(), registration.instance)
-  }
-
-  registeredDraftModules.set(registration.title, api)
-  api.static.init(app, db, router)
-
-  for(let event in api.static.listeners)
-  {
-    app.on(event, api.static.listeners[event])
-  }
-}
-
-let getDraftModule = (name) => {
-  return registeredDraftModules.get(name)
-}
-
-let onClientSaveState = (event) => {
-  event._id = `${event.user}:${event.draft_id}:${event.draft_rev}`
-
-  db.none(`
-    INSERT INTO view_state
-    (user_id, metadata, payload)
-    VALUES($[userId], $[metadata], $[payload])`
-    , event)
-  .then( (result) => {
-    return true
-  })
-  .catch( (error) => {
-    console.log(error);
-    res.error(404).json({error:'Draft not found'})
-  })
-}
-
-let middleware = (req, res, next) => {
-  console.log('MIDDLEWARE FIRED');
-  next()
-}
-
-module.exports = {
-  initialize: initialize,
-  registerDraftModule: registerDraftModule,
-  getDraftModule: getDraftModule
-}
+module.exports = app

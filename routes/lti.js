@@ -1,11 +1,10 @@
 var express = require('express');
 var router = express.Router();
-var db = require('../db.js')
+var db = oboRequire('db.js')
 
 /* GET users listing. */
 router.get('/', (req, res, next) => {
   req.session.gunk = 5
-  console.log(req.session)
   if (req.session.currentUser) {
     res.send(req.session.currentUser.username + ", you've logged in with lti!");
   }
@@ -28,7 +27,6 @@ router.get('/config.xml', (req, res, next) => {
     picker_url:'value'
   }
   res.render('lti_config_xml.mustache', viewParams);
-  next()
 });
 
 router.all('/launch', (req, res, next) => {
@@ -38,7 +36,6 @@ router.all('/launch', (req, res, next) => {
       req.session.lti = null
     }
     res.status(401).render('error.pug', {message: 'Access Denied', error: {status: 'Invalid LTI launch request'}, stack:null });
-    next()
     return
   }
 
@@ -63,12 +60,10 @@ router.all('/launch', (req, res, next) => {
     `, user)
   .then( result => {
     res.render('lti_launch.pug', user)
-    next()
   })
   .catch( error => {
     console.log('new, failure', error)
     res.render('error.pug', {message: 'ERROR', error: {status: 'There was a problem storing your new account.'}});
-    next()
   })
 
 })
