@@ -1,4 +1,7 @@
 {
+    "express":[
+        "server/express.js"
+    ],
     "modules":[
         {
             "name":"ObojoboDraft.Chunks.ActionButton",
@@ -47,16 +50,23 @@
         },
         {
             "name":"ObojoboDraft.Chunks.MCAssessment",
+            "draftNode":"server/mcassessment.js",
             "viewerScript":"build/ObojoboDraft.Chunks.MCAssessment.js",
             "viewerCSS":"build/ObojoboDraft.Chunks.MCAssessment.css"
         },
         {
+            "name":"ObojoboDraft.Chunks.MCAssessment.MCChoice",
+            "draftNode":"server/mcchoice.js"
+        },
+        {
             "name":"ObojoboDraft.Chunks.Question",
+            "draftNode":"server/question.js",
             "viewerScript":"build/ObojoboDraft.Chunks.Question.js",
             "viewerCSS":"build/ObojoboDraft.Chunks.Question.css"
         },
         {
             "name":"ObojoboDraft.Chunks.QuestionBank",
+            "draftNode":"server/questionbank.js",
             "viewerScript":"build/ObojoboDraft.Chunks.QuestionBank.js",
             "viewerCSS":"build/ObojoboDraft.Chunks.QuestionBank.css"
         },
