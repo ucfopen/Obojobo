@@ -18,6 +18,7 @@ if(isDev)
 }
 
 let allModules = new Map();
+let allApps = new Set();
 
 searchPaths.forEach((search) => {
   console.log(search)
@@ -45,12 +46,28 @@ searchPaths.forEach((search) => {
         allModules.set(name, module)
       })
     }
+
+    if(json.hasOwnProperty('express')){
+      let libDir = path.dirname(file)
+      console.log(libDir, 'has Express Apps')
+      json['express'].forEach( appFile => {
+        let resolved = path.resolve(libDir, appFile)
+        if(!fs.existsSync(resolved)){
+          throw new Error(`Registered express app "${path.basename(resolved)}" is missing in ${libDir}/obojobo.json`);
+        }
+        // register
+        allApps.add(resolved)
+      })
+    }
   })
 })
 
 // Store the modules to our config
 console.log(allModules.size + ' modules found')
-let moduleStorage = {};
+let moduleStorage = {
+  expressApps: Array.from(allApps)
+};
+
 allModules.forEach((val, key) => {
   moduleStorage[key] = val;
 })

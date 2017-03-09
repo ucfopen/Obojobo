@@ -1,7 +1,9 @@
-var router = require('../../router.js');
+var express = require('express');
+var app = express();
+
 // var rp = require('request-promise');
 
-router.get('/:draftId-:revision', (req, res, next) => {
+app.get('/:draftId-:revision', (req, res, next) => {
   // let currentUserId = 4
   // disabled
   // let getRequest = {
@@ -22,4 +24,4 @@ router.get('/:draftId-:revision', (req, res, next) => {
 
 });
 
-module.exports = router;
+module.exports = app;

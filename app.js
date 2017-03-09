@@ -7,6 +7,13 @@ var bodyParser = require('body-parser');
 var cookieSession = require('cookie-session')
 var viewEngine = require('consolidate');
 var app = express();
+
+// Global for loading specialized Obojobo stuff
+// use oboRequire('models/draft') to load draft models from any context
+global.oboRequire = function(name) {
+    return require(`${__dirname}/${name}`);
+}
+
 let obojoboDraftExpress = require('./obojobo_draft_express');
 
 // =========== ROUTING & CONTROLERS ===========
@@ -35,8 +42,7 @@ app.use(require('node-sass-middleware')({
   sourceMap: true
 }));
 
-obojoboDraftExpress.initialize(app)
-
+app.use(obojoboDraftExpress)
 
 // @TODO 404!
 // catch 404 and forward to error handler

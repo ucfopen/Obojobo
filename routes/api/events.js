@@ -1,7 +1,9 @@
-var router = require('../../router.js');
+var express = require('express');
+var app = express();
+
 var db = require('../../db.js')
 
-router.post('/', (req, res, next) => {
+app.post('/', (req, res, next) => {
   // check perms
 
   // check input
@@ -18,22 +20,21 @@ router.post('/', (req, res, next) => {
     payload: event.payload
   }
 
-  db
-    .one(
-      "INSERT INTO events(actor_time, action, actor, ip, metadata, payload) VALUES (${actorTime}, ${action}, ${userId}, ${ip}, ${metadata}, ${payload}) RETURNING created_at", insertObject
-    , insertObject)
-    .then( result => {
-      insertObject.createdAt = result.created_at
-      req.app.emit('client:' + event.action, insertObject, req, db);
-      res.success({ createdAt:result.created_at })
-      next();
-    })
-    .catch( error => {
-      res.unexpected(error)
-      next()
-    })
+  db.one(
+    "INSERT INTO events(actor_time, action, actor, ip, metadata, payload) VALUES (${actorTime}, ${action}, ${userId}, ${ip}, ${metadata}, ${payload}) RETURNING created_at", insertObject
+    , insertObject
+  )
+  .then( result => {
+    insertObject.createdAt = result.created_at;
+    global.oboEvents.emit(`client:${event.action}`, insertObject, req);
+    res.success({ createdAt:result.created_at });
+    next();
+  })
+  .catch( error => {
+    res.unexpected(error);
+    next();
+  })
 
 })
 
-
-module.exports = router;
+module.exports = app;

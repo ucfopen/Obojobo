@@ -6,7 +6,6 @@ apps:
       - "config/installed_modules.json"
       - "pm2_dev.yaml"
       - "pm2_prod.yaml"
-      - "devsrc"
     env:
       NODE_ENV: development
       DEBUG: obojobo:*
