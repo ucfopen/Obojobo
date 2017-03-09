@@ -23,13 +23,13 @@ body {
 
 // .component-container > .component:first-child
 // {
-// 	padding-top: 2rem;
+// 	padding-top: 2em;
 // 	border: 1px solid red;
 // }
 
 // .component-container > .component:last-child
 // {
-// 	padding-bottom: 2rem;
+// 	padding-bottom: 2em;
 // 	border: 1px solid green;
 // }
 
@@ -75,41 +75,15 @@ body {
 	display: block;
 	font-family: 'Noto Serif';
 	line-height: 1.5em;
-	// margin: 0;
-	// margin-top: 1rem;
-	// margin-bottom: 1rem;
 	overflow-wrap: break-word;
-	// padding: 1px;
-	// padding: 1px 0;
 	position: relative;
 	white-space: pre-wrap;
 	width: 100%;
 	word-wrap: break-word;
 	margin: 0 auto;
-	// margin-bottom: 1rem;
-	// border: 1px solid red;
+	padding-top: 1em;
+	padding-bottom: 1em;
 
-	// border: 2px solid red;
-	// padding: 2rem !important;
-	// border: 1px solid gray;
-
-			padding-top: 1rem;
-			padding-bottom: 1rem;
-
-	// &:after
-	// {
-	// 	position: absolute;
- //    top: 0;
- //    right: 0;
- //    // content: attr(data-type);
- //    /* width: 155px; */
- //    height: 1rem;
- //    background: #dadada;
- //    font-size: 12px;
- //    line-height: 1rem;
- //    text-align: right;
- //    font-family: monospace;
-	// }
 
 	&.first
 	{
@@ -121,13 +95,13 @@ body {
 		padding-bottom: 0;
 	}
 
-
-
 	.pad
 	{
-		max-width: $dimension-column-width;
-		margin-left: auto;
-		margin-right: auto;
+		// max-width: $dimension-column-width;
+		// margin-left: auto;
+		// margin-right: auto;
+		padding-left: $dimension-padding;
+		padding-right: $dimension-padding;
 	}
 
 	h1, h2, h3, h4, h5, h6
@@ -140,7 +114,7 @@ body {
 	}
 	h1
 	{
-		line-height: 3rem;
+		line-height: 1em;
 		font-weight: 700;
 
 		b,
@@ -152,9 +126,9 @@ body {
 
 	h2
 	{
-		line-height: 2.5rem;
+		line-height: 1em;
 		color: #A20E83;
-		font-size: 1.5rem;
+		font-size: 1.5em;
 		// margin-bottom: 0;
 	}
 
@@ -165,8 +139,8 @@ body {
 	{
 		font-family: $font-monospace;
 		// tab-size: 8;
-		font-size: 1.1rem;
-		letter-spacing: -0.01rem;
+		font-size: 1em;
+		letter-spacing: -0.01em;
 	}
 
 	a

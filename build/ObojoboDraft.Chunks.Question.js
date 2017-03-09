@@ -78,23 +78,17 @@
 
 	'use strict';
 
-	var Common, OboComponent, QuestionContent;
+	var QuestionContent;
 
 	__webpack_require__(207);
-
-	Common = window.ObojoboDraft.Common;
-
-	OboComponent = Common.components.OboComponent;
 
 	QuestionContent = React.createClass({
 		displayName: 'QuestionContent',
 
 		render: function render() {
 			return React.createElement(
-				OboComponent,
+				'div',
 				{
-					model: this.props.model,
-					moduleData: this.props.moduleData,
 					className: 'obojobo-draft--chunks--mc-question--content'
 				},
 				this.props.model.children.models.slice(0, this.props.model.children.models.length - 1).map(function (child, index) {

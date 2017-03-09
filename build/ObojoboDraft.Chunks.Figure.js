@@ -136,6 +136,7 @@
 	    switch (data.size) {
 	      case 'small':
 	      case 'medium':
+	      case 'large':
 	        return React.createElement('img', { src: data.url, unselectable: 'on' });
 	      case 'custom':
 	        imgStyles = {};
@@ -146,14 +147,6 @@
 	          imgStyles.height = data.height + 'px';
 	        }
 	        return React.createElement('img', { src: data.url, unselectable: 'on', style: imgStyles });
-	      case 'large':
-	        imgStyles = {
-	          backgroundImage: "url('" + data.url + "')",
-	          backgroundSize: 'cover',
-	          backgroundPosition: 'center',
-	          height: '300px'
-	        };
-	        return React.createElement('img', { unselectable: 'on', style: imgStyles });
 	    }
 	  }
 	});

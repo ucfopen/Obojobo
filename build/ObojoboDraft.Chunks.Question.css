@@ -1,7 +1,6 @@
 /* entire container, keeps perspective */
 .flip-container {
   perspective: 1000px;
-  width: 52rem;
   margin: 0 auto; }
 
 /* flip the pane when hovered */
@@ -33,12 +32,13 @@
 
 .obojobo-draft--chunks--question .flipper {
   background: #FFFFFF;
-  border-radius: 0.25rem;
+  border-radius: 0.25em;
   padding: 0;
   position: relative;
-  padding-top: 1rem;
-  margin-bottom: 1rem;
-  border: 1px solid rgba(0, 0, 0, 0.1); }
+  padding-top: 1em;
+  margin-bottom: 1em;
+  border: 1px solid rgba(0, 0, 0, 0.1);
+  max-width: 44em; }
 
 .obojobo-draft--chunks--question.is-hidden .flipper {
   border: 1px solid #6714BD; }
@@ -48,12 +48,11 @@
   content: 'Practice';
   display: block;
   font-family: "Libre Franklin", Arial, sans-serif;
-  font-size: 0.7rem;
-  left: 50%;
-  line-height: 2em;
   position: absolute;
-  top: 0rem;
-  transform: translate(-26rem, 0) translate(3rem, 0); }
+  left: 3.15em;
+  top: -0.5em;
+  transform: scale(0.7);
+  transform-origin: top left; }
 
 .obojobo-draft--chunks--question.is-practice.is-correct .flipper {
   border: 1px solid #38ae24; }
@@ -73,7 +72,7 @@
   opacity: 1;
   background: #FFFFFF;
   cursor: pointer;
-  border-radius: 0.25rem; }
+  border-radius: 0.25em; }
   .obojobo-draft--chunks--question .blocker:hover .obojobo-draft--components--button {
     transform: translate(-50%, -50%) scale(1.1, 1.1); }
   .obojobo-draft--chunks--question .blocker .obojobo-draft--components--button {
@@ -95,8 +94,6 @@
 
 .obojobo-draft--chunks--question .responses-hidden {
   font-family: "Libre Franklin", Arial, sans-serif;
-  font-size: 0.9rem;
+  font-size: 0.9em;
   text-align: center;
-  margin-bottom: 1rem; }
-.obojobo-draft--chunks--mc-assessment--content {
-  font-size: 80%; }
+  margin-bottom: 1em; }

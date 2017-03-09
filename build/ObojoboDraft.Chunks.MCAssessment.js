@@ -555,7 +555,7 @@
 	      },
 	      React.createElement(
 	        'span',
-	        { className: 'instructions pad' },
+	        { className: 'instructions' },
 	        instructions,
 	        ':'
 	      ),
@@ -585,7 +585,8 @@
 	          value: 'Try Again'
 	        }) : React.createElement(Button, {
 	          onClick: this.onClickSubmit,
-	          value: 'Check Your Answer'
+	          value: 'Check Your Answer',
+	          disabled: !questionAnswered
 	        }),
 	        questionSubmitted ? score === 100 ? React.createElement(
 	          'p',
