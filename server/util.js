@@ -1,18 +1,18 @@
 let findOboNode = (oboNode, targetId) => {
-  ((oboNode, id) => {
-    if(findOboNode.oboNode) return
+	((oboNode, id) => {
+		if(findOboNode.oboNode) return
 
-    if(oboNode.id === id)
-    {
-      findOboNode.oboNode = oboNode
-    }
-    for(index in oboNode.children)
-    {
-      findOboNode(oboNode.children[index], id)
-    }
-  })(oboNode, targetId)
+		if(oboNode.id === id)
+		{
+			findOboNode.oboNode = oboNode
+		}
+		for(index in oboNode.children)
+		{
+			findOboNode(oboNode.children[index], id)
+		}
+	})(oboNode, targetId)
 
-  return findOboNode.oboNode
+	return findOboNode.oboNode
 }
 
 let filterOutAssessment = (draft) => {
@@ -60,15 +60,15 @@ let getQuestions = (oboNode, assessmentState) => {
 }
 
 let zeroOutScores = (oboNode) => {
-  if(oboNode.type === 'ObojoboDraft.Chunks.MCAssessment.MCChoice')
-  {
-    oboNode.content.score = 0
-  }
+	if(oboNode.type === 'ObojoboDraft.Chunks.MCAssessment.MCChoice')
+	{
+		oboNode.content.score = 0
+	}
 
-  for(index in oboNode.children)
-  {
-    zeroOutScores(oboNode.children[index])
-  }
+	for(index in oboNode.children)
+	{
+		zeroOutScores(oboNode.children[index])
+	}
 }
 
 module.exports = {
