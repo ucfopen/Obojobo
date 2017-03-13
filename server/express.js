@@ -30,7 +30,7 @@ app.post('/api/assessments/attempt/start', (req, res, next) => {
 		.then( (attemptHistory) => {
 			var assessment = draftTree.findNodeClass(req.body.assessmentId)
 
-			if(attemptHistory.length >= assessment.node.content.attempts)
+			if(assessment.node.content.attempts && (attemptHistory.length >= assessment.node.content.attempts))
 			{
 				return res.reject('Attempt limit reached')
 			}
@@ -60,17 +60,7 @@ app.post('/api/assessments/attempt/start', (req, res, next) => {
 				Promise.all(promises)
 				.then( () => {
 					let questionObjects = attemptState.questions.map( (question) => { return question.toObject() } )
-					let attempt = {
-						userId: currentUser.id,
-						draftId: req.body.draftId,
-						assessmentId: req.body.assessmentId,
-						state: {
-							questions:questionObjects,
-							data: attemptState.data
-						}
-					}
-
-					Assessment.insertNewAttempt(userId, req.body.draftId, req.body.assessmentId, { questions:questionObjects, data:attemptState.data })
+					Assessment.insertNewAttempt(currentUser.id, req.body.draftId, req.body.assessmentId, { questions:questionObjects, data:attemptState.data })
 					.then( result => {
 						res.success(result)
 					})
