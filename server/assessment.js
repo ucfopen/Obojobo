@@ -23,6 +23,7 @@ class Assessment extends DraftNode {
 	// 	})
 	// }
 
+	// @TODO: most things touching the db should end up in models. figure this out
 	static getAttemptHistory(userId, draftId) {
 		return (
 			db.manyOrNone(`
@@ -34,10 +35,10 @@ class Assessment extends DraftNode {
 					state,
 					result
 				FROM attempts
-				WHERE user_id = $1
-				AND draft_id = $2
+				WHERE user_id = $[userId]
+					AND draft_id = $[draftId]
 				ORDER BY completed_at DESC`
-			, [userId, draftId])
+			, {userId:userId, draftId:draftId})
 		)
 	}
 
@@ -62,21 +63,24 @@ class Assessment extends DraftNode {
 		)
 	}
 
+	// @TODO: most things touching the db should end up in models. figure this out
 	static updateAttempt(result, attemptId)
 	{
 		return (
 			db.one(`
 				UPDATE attempts
-				SET completed_at = now(), result = $1
-				WHERE id = $2
+				SET
+					completed_at = now(),
+					result = $[result]
+				WHERE id = $[attemptId]
 				RETURNING
-				id AS "attemptId",
-				created_at as "startTime",
-				completed_at as "endTime",
-				assessment_id as "assessmentId",
-				state,
-				result
-			`, [result, attemptId])
+					id AS "attemptId",
+					created_at as "startTime",
+					completed_at as "endTime",
+					assessment_id as "assessmentId",
+					state,
+					result
+			`, {result:result, attemptId:attemptId})
 		)
 	}
 
@@ -94,8 +98,10 @@ class Assessment extends DraftNode {
 	}
 
 	onRenderViewer(req, res, oboGlobals) {
+		let currentUser = req.requireCurrentUser();
+
 		return (
-			this.constructor.getAttemptHistory(4, req.params.draftId)
+			this.constructor.getAttemptHistory(currentUser.id, req.params.draftId)
 			.then( (attemptHistory) => {
 				oboGlobals.set('ObojoboDraft.Sections.Assessment:attemptHistory', attemptHistory)
 				return Promise.resolve()

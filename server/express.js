@@ -10,24 +10,23 @@ let logAndRespondToUnexpected = (errorMessage, res, req, jsError) => {
 
 app.post('/api/assessments/attempt/start', (req, res, next) => {
 	// check perms
+	let currentUser = req.requireCurrentUser();
 
 	// check input
 
 	// insert
-	let userId = 4; //@TODO - Hardcoded
-
 	DraftModel.fetchById(req.body.draftId)
 	.then( (draftTree) => {
 		db
 		.any(`
 			SELECT *
 			FROM attempts
-			WHERE user_id = $1
-			AND draft_id = $2
-			AND assessment_id = $3
+			WHERE user_id = $[userId]
+			AND draft_id = $[draftId]
+			AND assessment_id = $[assessmentId]
 			AND completed_at IS NOT NULL
 			ORDER BY completed_at
-			`, [userId, req.body.draftId, req.body.assessmentId])
+			`, {userId: currentUser.id, draftId: req.body.draftId, assessmentId: req.body.assessmentId})
 		.then( (attemptHistory) => {
 			var assessment = draftTree.findNodeClass(req.body.assessmentId)
 
@@ -61,6 +60,15 @@ app.post('/api/assessments/attempt/start', (req, res, next) => {
 				Promise.all(promises)
 				.then( () => {
 					let questionObjects = attemptState.questions.map( (question) => { return question.toObject() } )
+					let attempt = {
+						userId: currentUser.id,
+						draftId: req.body.draftId,
+						assessmentId: req.body.assessmentId,
+						state: {
+							questions:questionObjects,
+							data: attemptState.data
+						}
+					}
 
 					Assessment.insertNewAttempt(userId, req.body.draftId, req.body.assessmentId, { questions:questionObjects, data:attemptState.data })
 					.then( result => {
@@ -83,6 +91,7 @@ app.post('/api/assessments/attempt/start', (req, res, next) => {
 
 app.post('/api/assessments/attempt/:attemptId/end', (req, res, next) => {
 	// check perms
+	let currentUser = req.requireCurrentUser();
 
 	// check input
 
@@ -169,18 +178,12 @@ app.post('/api/assessments/attempt/:attemptId/end', (req, res, next) => {
 	})
 })
 
-app.get('/api/assessments/attempts/user/:userId/draft/:draftId', (req, res, next) => {
+// gets the current user's attempts for all assessments for a specific draft
+app.get('/api/drafts/:draftId/attempts', (req, res, next) => {
 	// check perms
+	let currentUser = req.requireCurrentUser();
 
 	// check input
-	if(!req.params.userId) {
-		app.logError('Missing userId', req)
-		return req.missing('userId')
-	}
-	if(!req.params.draftId) {
-		app.logError('Missing draftId', req)
-		return req.missing('draftId')
-	}
 
 	// select
 	db.manyOrNone(`
@@ -192,10 +195,10 @@ app.get('/api/assessments/attempts/user/:userId/draft/:draftId', (req, res, next
 			state,
 			score
 		FROM attempts
-		WHERE user_id = $1
-		AND draft_id = $2
+		WHERE user_id = $[userId]
+			AND draft_id = $[draftId]
 		ORDER BY completed_at DESC`
-		, [req.params.userId, req.params.draftId])
+		, {userId: currentUser.id, draftId: req.params.draftId})
 	.then( result => {
 		res.success({
 			attempts: result
@@ -217,17 +220,18 @@ global.oboEvents.on('client:question:recordResponse', (event, req) => {
 	if(!event.payload.response)    return app.logError(eventRecordResponse, 'Missing Response', req, event)
 
 	db.none(`
-		INSERT INTO attempts_question_responses (attempt_id, question_id, responder_id, response)
-		VALUES($1, $2, $3, $4)
+		INSERT INTO attempts_question_responses
+		(attempt_id, question_id, responder_id, response)
+		VALUES($[attemptId], $[questionId], $[responderId], $[response])
 		ON CONFLICT (attempt_id, question_id) DO
-		UPDATE
-		SET
-			responder_id = $3,
-			response = $4,
-			updated_at = now()
-		WHERE attempts_question_responses.attempt_id = $1
-		AND attempts_question_responses.question_id = $2`
-		, [event.payload.attemptId, event.payload.questionId, event.payload.responderId, event.payload.response])
+			UPDATE
+			SET
+				responder_id = $[responderId],
+				response = $[response],
+				updated_at = now()
+			WHERE attempts_question_responses.attempt_id = $[attemptId]
+				AND attempts_question_responses.question_id = $[questionId]`
+		, {attemptId: event.payload.attemptId, questionId: event.payload.questionId, responderId: event.payload.responderId, response: event.payload.response})
 	.catch( error => {
 		app.logError(eventRecordResponse, 'DB UNEXPECTED', req, error, error.toString());
 	})
