@@ -58,19 +58,13 @@ app.post('/api/assessments/attempt/start', (req, res, next) => {
 					promises = promises.concat(attemptState.questions[i].yell('ObojoboDraft.Sections.Assessment:sendToAssessment', req, res))
 				}
 
-				Promises.all(promises)
+				Promise.all(promises)
 				.then( () => {
 					let questionObjects = attemptState.questions.map( (question) => { return question.toObject() } )
 
-					db.one(`
-						INSERT INTO attempts (user_id, draft_id, assessment_id, state)
-						VALUES($1, $2, $3, $4)
-						RETURNING *
-						`, [userId, req.body.draftId, req.body.assessmentId, { questions:questionObjects, data:attemptState.data }])
+					Assessment.insertNewAttempt(userId, req.body.draftId, req.body.assessmentId, { questions:questionObjects, data:attemptState.data })
 					.then( result => {
-
-
-						res.success(Assessment.getAttemptObjectFromDbRow(result))
+						res.success(result)
 					})
 					.catch( error => {
 						logAndRespondToUnexpected('Unexpected DB error', res, req, error)

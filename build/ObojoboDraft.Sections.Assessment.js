@@ -330,7 +330,6 @@
 	        case 'scoreSubmitted':
 	          scoreAction = this.getScoreAction();
 	          questionScores = AssessmentUtil.getLastAttemptScoresForModel(this.props.moduleData.assessmentState, this.props.model);
-	          debugger;
 	          if (scoreAction.page != null) {
 	            pageModel = OboModel.create(scoreAction.page);
 	            PageComponent = pageModel.getComponentClass();

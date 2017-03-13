@@ -41,6 +41,27 @@ class Assessment extends DraftNode {
 		)
 	}
 
+	static insertNewAttempt(userId, draftId, assessmentId, state) {
+		return (
+			db.one(`
+				INSERT INTO attempts (user_id, draft_id, assessment_id, state)
+				VALUES($[userId], $[draftId], $[assessmentId], $[state])
+				RETURNING
+				id AS "attemptId",
+				created_at as "startTime",
+				completed_at as "endTime",
+				assessment_id as "assessmentId",
+				state,
+				result
+			`, {
+				userId: userId,
+				draftId: draftId,
+				assessmentId: assessmentId,
+				state: state
+			})
+		)
+	}
+
 	static updateAttempt(result, attemptId)
 	{
 		return (

@@ -859,7 +859,7 @@
 	  }
 
 	  AssessmentStore.prototype.init = function (history) {
-	    var attempt, i, len, unfinishedAttempt;
+	    var attempt, i, j, k, len, len1, len2, nonExistantQuestions, question, ref, unfinishedAttempt;
 	    this.state = {
 	      assessments: {}
 	    };
@@ -867,6 +867,7 @@
 	      return new Date(a.startTime).getTime() > new Date(b.startTime).getTime();
 	    });
 	    unfinishedAttempt = null;
+	    nonExistantQuestions = [];
 	    for (i = 0, len = history.length; i < len; i++) {
 	      attempt = history[i];
 	      if (!this.state.assessments[attempt.assessmentId]) {
@@ -877,6 +878,17 @@
 	      } else {
 	        this.state.assessments[attempt.assessmentId].attempts.push(attempt);
 	      }
+	      ref = attempt.state.questions;
+	      for (j = 0, len1 = ref.length; j < len1; j++) {
+	        question = ref[j];
+	        if (!OboModel.models[question.id]) {
+	          nonExistantQuestions.push(question);
+	        }
+	      }
+	    }
+	    for (k = 0, len2 = nonExistantQuestions.length; k < len2; k++) {
+	      question = nonExistantQuestions[k];
+	      OboModel.create(question);
 	    }
 	    if (unfinishedAttempt) {
 	      console.log('unfinishedAttempt', unfinishedAttempt);
