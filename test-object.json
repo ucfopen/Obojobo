@@ -372,7 +372,7 @@
                                    }
                                ],
                                "url": "http://lorempixel.com/640/480/sports/",
-                               "size": "small"
+                               "size": "custom"
                            },
                            "metadata": {
                            },
@@ -2160,7 +2160,7 @@
                       ]
                    }
                ],
-               "attempts": null,
+               "attempts": 1,
                "scoreActions": [
                    {
                        "from": 0,

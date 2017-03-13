@@ -23,14 +23,15 @@ class MCChoice extends DraftNode{
 
 			if(responseRecord.question_id === this.node.id)
 			{
-				this.yell('ObojoboDraft.Chunks.Question:calculateScore', req.app, this, responseRecord, (function(score) {
-					currentAttempt.addScore(this.node.id, score)
-					console.log('gonna add a question', score, this.node.id)
-				}).bind(this))
+				return (
+					this.yell('ObojoboDraft.Chunks.Question:calculateScore', req.app, this, responseRecord, (function(score) {
+						currentAttempt.addScore(this.node.id, score)
+						console.log('gonna add a question', score, this.node.id)
+					}).bind(this))
+				)
 			}
 		}
 	}
-
 }
 
 module.exports = MCChoice

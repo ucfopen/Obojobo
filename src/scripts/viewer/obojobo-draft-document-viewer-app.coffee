@@ -51,7 +51,7 @@ moduleData =
 	assessmentState: null
 	modalState: null
 
-render = (json) =>
+render = (initialState) =>
 	console.log 'RENDER'
 	# moduleData.navState = NavStore.getState()
 	# moduleData.scoreState = ScoreStore.getState()
@@ -76,33 +76,33 @@ render = (json) =>
 	# 	}
 
 	ReactDOM.render `<div className="root">
-		<window.Viewer.components.ViewerApp json={json} />
-
+		<window.Viewer.components.ViewerApp initialState={initialState} />
 	</div>`, document.getElementById('viewer-app')
 
 
 
 
-showDocument = (json) =>
-	# OboModel = window.ObojoboDraft.Common.models.OboModel
-	# moduleData.model = OboModel.create(json)
+# showDocument = (json) =>
+# 	# OboModel = window.ObojoboDraft.Common.models.OboModel
+# 	# moduleData.model = OboModel.create(json)
 
-	# APIUtil.getAttempts(moduleData.model).then (res) =>
-	# 	console.log('ATTEMPTS', res)
+# 	# APIUtil.getAttempts(moduleData.model).then (res) =>
+# 	# 	console.log('ATTEMPTS', res)
+# 	# 	return
 
-	# 	if true or not window.localStorage.stateData?
-	# 		console.log moduleData.model
-	# 		# NavStore.init moduleData.model, moduleData.model.modelState.start
-	# 	else
-	# 		stateData = JSON.parse(window.localStorage.stateData)
-	# 		console.log 'STATE DATA', stateData
+# 	# 	if true or not window.localStorage.stateData?
+# 	# 		console.log moduleData.model
+# 	# 		# NavStore.init moduleData.model, moduleData.model.modelState.start
+# 	# 	else
+# 	# 		stateData = JSON.parse(window.localStorage.stateData)
+# 	# 		console.log 'STATE DATA', stateData
 
-	# 		NavStore.setState stateData.navState
-	# 		ScoreStore.setState stateData.scoreState
-	# 		QuestionStore.setState stateData.questionState
-	# 		AssessmentStore.setState stateData.assessmentState
+# 	# 		NavStore.setState stateData.navState
+# 	# 		ScoreStore.setState stateData.scoreState
+# 	# 		QuestionStore.setState stateData.questionState
+# 	# 		AssessmentStore.setState stateData.assessmentState
 
-		render(json)
+# 		render(json)
 
 # # === SET UP DATA STORES ===
 # NavStore.onChange render
@@ -113,26 +113,21 @@ showDocument = (json) =>
 
 
 # === FIGURE OUT WHERE TO GET THE DOCUMENT FROM ===
-if window.location.hash.indexOf('legacy') > -1
-	# support legacy objects
-	legacyJson = require 'json!../../../citing-sources-mla.json'
-	moduleData.model =  window.ObojoboDraft.Common.models.Legacy.createModuleFromObo2ModuleJSON legacyJson
-	NavStore.init moduleData.model
-	render()
+# if window.location.hash.indexOf('legacy') > -1
+# 	# support legacy objects
+# 	legacyJson = require 'json!../../../citing-sources-mla.json'
+# 	moduleData.model =  window.ObojoboDraft.Common.models.Legacy.createModuleFromObo2ModuleJSON legacyJson
+# 	NavStore.init moduleData.model
+# 	render()
 
-else if window.location.hash.indexOf('file') > -1
-	# load from our test file
-	json = require 'json!../../../test-object.json'
-	showDocument(json)
+# else if window.location.hash.indexOf('file') > -1
+# 	# load from our test file
+# 	json = require 'json!../../../test-object.json'
+# 	showDocument(json)
 
-# else if window.localStorage.__lo?
-# 	# load from local storage
-# 	try
-# 		json = JSON.parse(window.localStorage.__lo)
-# 		showDocument(json)
 
-# 	catch e
-# 		# ...
-else
-	# load from api
-	APIUtil.fetchDraft('sample').then (res) => showDocument(res.value)
+# else
+# 	# load from api
+# 	APIUtil.fetchDraft('sample').then (res) => showDocument(res.value)
+
+render(window.__oboGlobals)

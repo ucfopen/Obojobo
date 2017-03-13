@@ -302,7 +302,17 @@
 	          return React.createElement(
 	            'div',
 	            { className: 'untested' },
-	            React.createElement(Component, { model: child, moduleData: this.props.moduleData })
+	            React.createElement(Component, { model: child, moduleData: this.props.moduleData }),
+	            React.createElement(
+	              'p',
+	              null,
+	              '#' + this.props.model.modelState.attempts
+	            ),
+	            React.createElement(
+	              'p',
+	              null,
+	              '#' + AssessmentUtil.getNumberOfAttemptsCompletedForModel(this.props.moduleData.assessmentState, this.props.model)
+	            )
 	          );
 	        case 'takingTest':
 	          child = this.props.model.children.at(1);
@@ -320,6 +330,7 @@
 	        case 'scoreSubmitted':
 	          scoreAction = this.getScoreAction();
 	          questionScores = AssessmentUtil.getLastAttemptScoresForModel(this.props.moduleData.assessmentState, this.props.model);
+	          debugger;
 	          if (scoreAction.page != null) {
 	            pageModel = OboModel.create(scoreAction.page);
 	            PageComponent = pageModel.getComponentClass();

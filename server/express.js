@@ -2,6 +2,7 @@ let express = require('express');
 let app = express();
 let DraftModel = oboRequire('models/draft');
 let db = oboRequire('db');
+let Assessment = require('./assessment');
 
 let logAndRespondToUnexpected = (errorMessage, res, req, jsError) => {
 	res.unexpected(jsError)
@@ -30,6 +31,11 @@ app.post('/api/assessments/attempt/start', (req, res, next) => {
 		.then( (attemptHistory) => {
 			var assessment = draftTree.findNodeClass(req.body.assessmentId)
 
+			if(attemptHistory.length >= assessment.node.content.attempts)
+			{
+				return res.reject('Attempt limit reached')
+			}
+
 			var attemptState = {
 				questions: [],
 				data: {}
@@ -38,34 +44,38 @@ app.post('/api/assessments/attempt/start', (req, res, next) => {
 			var questions = []
 			var state = {} //@TODO Retrieve state
 
-			assessment.yell('ObojoboDraft.Sections.Assessment:attemptStart', req, res, assessment, attemptHistory, {
+			let promises = assessment.yell('ObojoboDraft.Sections.Assessment:attemptStart', req, res, assessment, attemptHistory, {
 				getQuestions: function() { return attemptState.questions },
 				setQuestions: function(q) { attemptState.questions = q },
 				getData:      function() { return attemptState.data },
 				setData:      function(d) { attemptState.data = d },
 			})
-
-			let questionObjects = attemptState.questions.map( (question) => { return question.toObject() } )
-
-			db.one(`
-				INSERT INTO attempts (user_id, draft_id, assessment_id, state)
-				VALUES($1, $2, $3, $4)
-				RETURNING id
-				`, [userId, req.body.draftId, req.body.assessmentId, { questions:questionObjects, data:attemptState.data }])
-			.then( result => {
+			Promise.all(promises).then( () => {
+				// let questionObjects = attemptState.questions.map( (question) => { return question.toObject() } )
+				let promises = []
 				for(let i in attemptState.questions)
 				{
-					attemptState.questions[i].yell('ObojoboDraft.Sections.Assessment:sendToAssessment', req, res)
+					promises = promises.concat(attemptState.questions[i].yell('ObojoboDraft.Sections.Assessment:sendToAssessment', req, res))
 				}
-				let clientQuestionObjects = attemptState.questions.map( (question) => { return question.toObject() } )
 
-				res.success({
-					attemptId: result.id,
-					questions: clientQuestionObjects
+				Promises.all(promises)
+				.then( () => {
+					let questionObjects = attemptState.questions.map( (question) => { return question.toObject() } )
+
+					db.one(`
+						INSERT INTO attempts (user_id, draft_id, assessment_id, state)
+						VALUES($1, $2, $3, $4)
+						RETURNING *
+						`, [userId, req.body.draftId, req.body.assessmentId, { questions:questionObjects, data:attemptState.data }])
+					.then( result => {
+
+
+						res.success(Assessment.getAttemptObjectFromDbRow(result))
+					})
+					.catch( error => {
+						logAndRespondToUnexpected('Unexpected DB error', res, req, error)
+					})
 				})
-			})
-			.catch( error => {
-				logAndRespondToUnexpected('Unexpected DB error', res, req, error)
 			})
 		})
 		.catch( error => {
@@ -116,7 +126,7 @@ app.post('/api/assessments/attempt/:attemptId/end', (req, res, next) => {
 
 				// res.success('ok')
 
-				assessment.yell('ObojoboDraft.Sections.Assessment:attemptEnd', req, res, assessment, responseHistory, {
+				let promises = assessment.yell('ObojoboDraft.Sections.Assessment:attemptEnd', req, res, assessment, responseHistory, {
 					getQuestions: function() { return state.questions },
 					addScore: function(questionId, score) {
 						console.log('addScore', questionId, score)
@@ -124,30 +134,29 @@ app.post('/api/assessments/attempt/:attemptId/end', (req, res, next) => {
 						state.scoresByQuestionId[questionId] = score;
 					}
 				})
+				Promise.all(promises).then( () => {
+					let score = state.scores.reduce( (a, b) => { return a + b } ) / state.questions.length
 
-				let score = state.scores.reduce( (a, b) => { return a + b } ) / state.questions.length
+					let scores = state.questions.map(function(question) {
+						return {
+							id: question.id,
+							score: state.scoresByQuestionId[question.id] || 0
+						}
+					})
 
-				let scores = state.questions.map(function(question) {
-					return {
-						id: question.id,
-						score: state.scoresByQuestionId[question.id] || 0
-					}
-				})
-
-				db.none(`
-					UPDATE attempts
-					SET completed_at = now(), score = $1
-					WHERE id = $2
-					`, [score, req.params.attemptId])
-				.then( result => {
-					res.success({
+					let result = {
 						attemptScore: score,
 						scores: scores
+					}
+
+					Assessment.updateAttempt(result, req.params.attemptId)
+					.then( result => {
+						res.success(result)
 					})
-				})
-				.catch( error => {
-					console.log('errora', error, error.toString());
-					logAndRespondToUnexpected('Unexpected DB error', res, req, error)
+					.catch( error => {
+						console.log('errora', error, error.toString());
+						logAndRespondToUnexpected('Unexpected DB error', res, req, error)
+					})
 				})
 			})
 			.catch( error => {
@@ -185,11 +194,13 @@ app.get('/api/assessments/attempts/user/:userId/draft/:draftId', (req, res, next
 			id AS "attemptId",
 			created_at as "startDate",
 			completed_at as "endDate",
+			assessment_id,
 			state,
 			score
 		FROM attempts
 		WHERE user_id = $1
-		AND draft_id = $2`
+		AND draft_id = $2
+		ORDER BY completed_at DESC`
 		, [req.params.userId, req.params.draftId])
 	.then( result => {
 		res.success({
