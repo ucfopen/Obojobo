@@ -15,33 +15,32 @@ exports.setup = function(options, seedLink) {
 };
 
 exports.up = function(db) {
-  return db.createTable('users', {
+  return db.createTable('events', {
     id: { type: 'bigserial', primaryKey: true},
     created_at: { type: 'timestamp WITH TIME ZONE', notNull: true, defaultValue: new String('now()')},
-    consumer: { type: 'varchar', length: 200},
-    username: { type: 'varchar', length: 100},
-    email: { type: 'varchar', length: 100},
-    first_name: { type: 'varchar', length: 100},
-    last_name: { type: 'varchar', length: 100},
-    roles: { type: 'text[]'}
+    actor_time: { type: 'timestamp WITH TIME ZONE', notNull: true, defaultValue: new String('now()')},
+    action: { type: 'varchar', length: 100},
+    actor: { type: 'varchar', length: 100},
+    ip: { type: 'varchar', length: 50},
+    metadata: { type: 'jsonb'},
+    payload: { type: 'jsonb'}
   })
   .then( result => {
-    return db.addIndex('users', 'users_unique_username_per_consumer', ['consumer', 'username'], true)
+    return db.addIndex('events', 'events_created_at_index', ['created_at'])
   })
   .then( result => {
-    return db.addIndex('users', 'users_username_index', ['username'])
+    return db.addIndex('events', 'events_actor_time_index', ['actor_time'])
   })
   .then( result => {
-    return db.addIndex('users', 'users_consumer_index', ['consumer'])
+    return db.addIndex('events', 'events_action_index', ['action'])
   })
   .then( result => {
-    return db.addIndex('users', 'users_created_at_index', ['created_at'])
+    return db.addIndex('events', 'events_actor_index', ['actor'])
   })
-
 };
 
 exports.down = function(db) {
-  return db.dropTable('users');
+  return db.dropTable('events');
 };
 
 exports._meta = {

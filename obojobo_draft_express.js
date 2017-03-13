@@ -10,10 +10,27 @@ let parentApp = null
 let EventEmitter = require('events');
 let registeredModuleApps = new Map();
 let isProd = true;
+let User = oboRequire('models/user')
 
 // Global event emitter for the application
 // Not ideal to store this as a global, buuuut
 global.oboEvents = new EventEmitter(this);
+
+// @HACK insert a user into the session
+app.use((req, res, next) => {
+	req.session.currentUser = User.fetchById(99);
+	next();
+});
+
+app.use((req, res, next) => {
+	req.requireCurrentUser = () => {
+		if( ! req.session || ! req.session.currentUser || ! (req.session.currentUser instanceof User)){
+			throw Error('Login Required')
+		}
+		return req.session.currentUser
+	}
+	next();
+})
 
 app.on('mount', (app) => {
 	isProd = app.get('env') === 'production';
@@ -109,21 +126,29 @@ app.on('mount', (app) => {
 })
 
 
-global.oboEvents.on('client:saveState', (event) => {
-	event._id = `${event.user}:${event.draft_id}:${event.draft_rev}`
+global.oboEvents.on('client:saveState', (event, req) => {
+	let currentUser = req.requireCurrentUser();
+
+	let data = {
+		_id: `${rcurrentUser.id}:${event.draft_id}:${event.draft_rev}`,
+		userId: currentUser.id,
+		metadata: metadata,
+		payload: payload
+	};
 
 	db.none(`
 		INSERT INTO view_state
 		(user_id, metadata, payload)
 		VALUES($[userId], $[metadata], $[payload])`
-		, event)
+		, data)
 	.then( (result) => {
-		return true
+		return true;
 	})
 	.catch( (error) => {
 		console.log(error);
 		res.error(404).json({error:'Draft not found'})
 	})
 });
+
 
 module.exports = app

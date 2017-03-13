@@ -15,25 +15,28 @@ exports.setup = function(options, seedLink) {
 };
 
 exports.up = function(db) {
-  return db.createTable('view_state', {
+  return db.createTable('users', {
+    id: { type: 'bigserial', primaryKey: true},
     created_at: { type: 'timestamp WITH TIME ZONE', notNull: true, defaultValue: new String('now()')},
-    updated_at: { type: 'timestamp WITH TIME ZONE', notNull: true, defaultValue: new String('now()')},
-    user_id: { type: 'bigint', notNull: true},
-    metadata: {type: 'json'},
-    payload: {type: 'json'}
+    username: { type: 'varchar', length: 100},
+    email: { type: 'varchar', length: 100},
+    first_name: { type: 'varchar', length: 100},
+    last_name: { type: 'varchar', length: 100},
+    roles: { type: 'text[]'}
   })
   .then( result => {
-    return db.addIndex('view_state', 'view_state_user_id_index', ['user_id'])
+    return db.addIndex('users', 'users_username_index', ['username'])
   })
   .then( result => {
-    return db.addIndex('view_state', 'view_state_updated_at_index', ['updated_at'])
+    return db.addIndex('users', 'users_created_at_index', ['created_at'])
   })
+
 };
 
 exports.down = function(db) {
-  return db.dropTable('view_state');
+  return db.dropTable('users');
 };
 
 exports._meta = {
-  "version": 1
+  "version": 2
 };

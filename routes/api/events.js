@@ -5,7 +5,7 @@ var db = require('../../db.js')
 
 app.post('/', (req, res, next) => {
   // check perms
-
+  let currentUser = req.requireCurrentUser();
   // check input
 
   // add data to the event
@@ -14,7 +14,7 @@ app.post('/', (req, res, next) => {
   let insertObject = {
     actorTime: event.actor_time,
     action: event.action,
-    userId: 4, // @TODO: set actor correctly
+    userId: currentUser.id, // @TODO: set actor correctly
     ip: (req.headers['x-forwarded-for'] || req.connection.remoteAddress),
     metadata: {},
     payload: event.payload

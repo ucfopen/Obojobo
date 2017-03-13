@@ -23,7 +23,7 @@ exports.up = function(db) {
     user_id: { type: 'bigint', notNull: true},
     draft_id: {type: 'UUID', notNull: true},
     assessment_id: { type: 'varchar', length: 100},
-    state: { type: 'json'},
+    state: { type: 'jsonb'},
     score: { type: 'decimal', defaultValue: '0'}
   })
   .then( result => {

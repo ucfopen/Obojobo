@@ -23,7 +23,7 @@ exports.up = function(db) {
     assessment_id: { type: 'varchar', length: 100},
     question_id: { type: 'varchar', length: 100},
     score: { type: 'decimal', defaultValue: '0'},
-    response: { type: 'json'}
+    response: { type: 'jsonb'}
   })
   .then( result => {
     return db.addIndex('attempts_question_responses', 'aqr_attempt_id_index', ['attempt_id'])
