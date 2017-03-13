@@ -42,14 +42,21 @@ class DraftNode {
 	}
 
 	yell(event) {
+		let promises = []
+
 		if(this._listeners){
 			let eventListener = this._listeners.get(event)
-			if(eventListener) eventListener.apply(this, Array.prototype.slice.call(arguments, 1))
+			if(eventListener) {
+				let rtn = eventListener.apply(this, Array.prototype.slice.call(arguments, 1))
+				if(rtn) promises.push(rtn)
+			}
 		}
 
 		for(let i in this.children){
-			this.children[i].yell.apply(this.children[i], arguments)
+			promises = promises.concat(this.children[i].yell.apply(this.children[i], arguments))
 		}
+
+		return promises
 	}
 
 	init() {

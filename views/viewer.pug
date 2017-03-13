@@ -29,6 +29,12 @@ html(lang="en")
     if draftPath == 'http://localhost:8090/build/'
         script(src="http://localhost:8090/webpack-dev-server.js")
 
+    script !{oboGlobals.renderScriptContent()}
+
+    if inlines
+        each js in inlines
+            script !{js}
+
     script(src=`${paths.draftPath}obo.js`)
     script(src=`${paths.draftPath}obojobo-draft.js`)
     script(src=`${paths.draftPath}obojobo-draft-document-viewer.js`)

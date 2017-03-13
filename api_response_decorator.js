@@ -1,4 +1,3 @@
-
 let success = (req, res, next, valueObject) => {
   return res.status(200).json({
     status: 'ok',
@@ -16,13 +15,23 @@ let missing = (req, res, next, message) => {
   })
 }
 
+let reject = (req, res, next, message) => {
+  return res.status(403).json({
+    status: 'error',
+    value: {
+      type: 'reject',
+      message: message
+    }
+  })
+}
+
 // @TODO - in the controller - throw an error instead of calling this
 // let the main response handler catch it and respond with this
 let badInput = (req, res, next, message) => {
   return res.status(400).json({
     status: 'error',
     value: {
-      type: 'input',
+      type: 'badInput',
       message: message
     }
   })
@@ -50,5 +59,6 @@ module.exports = (req, res, next) => {
   res.missing = missing.bind(this, req, res, next)
   res.badInput = badInput.bind(this, req, res, next)
   res.unexpected = unexpected.bind(this, req, res, next)
+  res.reject = reject.bind(this, req, res, next)
   next();
 };

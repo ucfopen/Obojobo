@@ -9,6 +9,10 @@ class Draft {
 		this.root = this.processRawNode(rawDraft)
 	}
 
+	yell() {
+		return Promise.all(this.root.yell.apply(this.root, arguments))
+	}
+
 	processRawNode(node){
 		let initFn = () => {}
 
