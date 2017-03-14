@@ -1,0 +1,19 @@
+extends layout
+
+block content
+	h1 LTI Launch Instructions
+	h2 Configuration XML
+
+	p View the LTI configuration xml <a href="#{xml_url}" data-turbolinks="false">here</a>
+	p This configuration is used to install your LTI tool into an LSM.  This xml can be referenced by url or copied and pasted durring the install process.
+
+	h2 LTI Launch
+	p View the LTI Launch endpoint <a href="#{launch_url}" data-turbolinks="false">here</a>
+	p Note, this url is typically sent a POST request with all sorts of LTI data.  If you access it directly, it'll display an error page indicating your request did not validate.
+
+	h3 Testing LTI Launch
+	ol
+		li Visit the <a href="http://ltiapps.net/test/tc.php">IMS LTI Tool Consumer Emulator</a>
+		li Set <b>Launch URL</b> to <span>"{{ url_for('launch', _external=True) }}"</span>
+		li Set <b>Consmer key</b> to the value defined in <span>"settings.py"</span>
+		li Set <b>Shared secret</b> to the value defined in <span>"settings.py"</span>

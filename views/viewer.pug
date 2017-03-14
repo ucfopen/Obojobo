@@ -1,45 +1,45 @@
 doctype html
 html(lang="en")
-  head
-    title= 'Obojobo Viewer'
-    meta(charset='utf-8')
-    meta(http-equiv='X-UA-Compatible', content='IE=edge,chrome=1')
-    meta(id="meta-viewport", name="viewport", content="width=device-width, initial-scale=1, minimum-scale=1 user-scalable=yes")
+	head
+		title= 'Obojobo Viewer'
+		meta(charset='utf-8')
+		meta(http-equiv='X-UA-Compatible', content='IE=edge,chrome=1')
+		meta(id="meta-viewport", name="viewport", content="width=device-width, initial-scale=1, minimum-scale=1 user-scalable=yes")
 
-    link(rel='stylesheet', href='/stylesheets/style.css')
-    link(rel="stylesheet", media="screen", href="https://fonts.googleapis.com/css?family=Libre+Franklin:400,400i,700,700i,900,900i|Roboto+Mono:400,400i,700,700i")
+		link(rel='stylesheet', href='/stylesheets/style.css')
+		link(rel="stylesheet", media="screen", href="https://fonts.googleapis.com/css?family=Libre+Franklin:400,400i,700,700i,900,900i|Roboto+Mono:400,400i,700,700i")
 
-    link(rel="stylesheet", media="screen", href=`${paths.draftPath}obojobo-draft.css`)
-    link(rel="stylesheet", media="screen", href=`${paths.draftPath}obojobo-draft-document-viewer.css`)
+		link(rel="stylesheet", media="screen", href=`${paths.draftPath}obojobo-draft.css`)
+		link(rel="stylesheet", media="screen", href=`${paths.draftPath}obojobo-draft-document-viewer.css`)
 
-    each css in modules.viewerCSS
-        link(rel="stylesheet", media="screen", href=`${css.url}`)
+		each css in modules.viewerCSS
+			link(rel="stylesheet", media="screen", href=`${css.url}`)
 
 
-    script(src="//fb.me/react-with-addons-15.0.2.js")
-    script(src="//fb.me/react-dom-15.0.2.js")
-    script(src="//cdnjs.cloudflare.com/ajax/libs/underscore.js/1.5.1/underscore-min.js")
-    script(src="//cdnjs.cloudflare.com/ajax/libs/backbone.js/1.3.3/backbone-min.js")
+		script(src="//fb.me/react-with-addons-15.0.2.js")
+		script(src="//fb.me/react-dom-15.0.2.js")
+		script(src="//cdnjs.cloudflare.com/ajax/libs/underscore.js/1.5.1/underscore-min.js")
+		script(src="//cdnjs.cloudflare.com/ajax/libs/backbone.js/1.3.3/backbone-min.js")
+		block head
 
-    block head
-  body
-    div(id="viewer-app")= 'LOADING...'
-    block content
+	body
+		div(id="viewer-app")= 'LOADING...'
+		block content
 
-    if draftPath == 'http://localhost:8090/build/'
-        script(src="http://localhost:8090/webpack-dev-server.js")
+		if draftPath == 'http://localhost:8090/build/'
+			script(src="http://localhost:8090/webpack-dev-server.js")
 
-    script !{oboGlobals.renderScriptContent()}
+		script !{oboGlobals.renderScriptContent()}
 
-    if inlines
-        each js in inlines
-            script !{js}
+		if inlines
+			each js in inlines
+				script !{js}
 
-    script(src=`${paths.draftPath}obo.js`)
-    script(src=`${paths.draftPath}obojobo-draft.js`)
-    script(src=`${paths.draftPath}obojobo-draft-document-viewer.js`)
+		script(src=`${paths.draftPath}obo.js`)
+		script(src=`${paths.draftPath}obojobo-draft.js`)
+		script(src=`${paths.draftPath}obojobo-draft-document-viewer.js`)
 
-    each js in modules.viewerScript
-        script(src=`${js.url}`)
+		each js in modules.viewerScript
+			script(src=`${js.url}`)
 
-    script(src=`${paths.draftPath}obojobo-draft-document-viewer-app.js`)
+		script(src=`${paths.draftPath}obojobo-draft-document-viewer-app.js`)
