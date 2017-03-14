@@ -98,15 +98,18 @@ class Assessment extends DraftNode {
 	}
 
 	onRenderViewer(req, res, oboGlobals) {
-		let currentUser = req.requireCurrentUser();
+		return req.requireCurrentUser()
+		.then(currentUser => {
+			return this.constructor.getAttemptHistory(currentUser.id, req.params.draftId)
+		})
+		.then( (attemptHistory) => {
+			oboGlobals.set('ObojoboDraft.Sections.Assessment:attemptHistory', attemptHistory)
+			return Promise.resolve()
+		})
+		.catch(err => {
+			return Promise.reject(err)
+		})
 
-		return (
-			this.constructor.getAttemptHistory(currentUser.id, req.params.draftId)
-			.then( (attemptHistory) => {
-				oboGlobals.set('ObojoboDraft.Sections.Assessment:attemptHistory', attemptHistory)
-				return Promise.resolve()
-			})
-		)
 	}
 }
 

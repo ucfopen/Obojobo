@@ -532,6 +532,7 @@
 	  get: function get(endpoint) {
 	    return fetch(endpoint, {
 	      method: 'GET',
+	      credentials: 'include',
 	      headers: {
 	        'Accept': 'application/json',
 	        'Content-Type': 'application/json'
@@ -545,6 +546,7 @@
 	    console.log('post', endpoint, body);
 	    return fetch(endpoint, {
 	      method: 'POST',
+	      credentials: 'include',
 	      body: JSON.stringify(body),
 	      headers: {
 	        'Accept': 'application/json',
