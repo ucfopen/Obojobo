@@ -25,7 +25,7 @@ exports.up = function(db) {
     roles: { type: 'text[]'}
   })
   .then( result => {
-    return db.addIndex('users', 'users_username_index', ['username'])
+    return db.addIndex('users', 'users_username_index', ['username'], true)
   })
   .then( result => {
     return db.addIndex('users', 'users_created_at_index', ['created_at'])

@@ -32,7 +32,7 @@
     "debug": "~2.2.0",
     "eventemitter": "^0.3.3",
     "express": "~4.14.0",
-    "express-ims-lti": "^0.2.4",
+    "express-ims-lti": "git+ssh://git@github.com/ucfcdl/express-ims-lti.git#ac7d1f4e9c5afa6470185d107b32ffdbaf28cd32",
     "glob": "^7.1.1",
     "morgan": "~1.7.0",
     "node-sass-middleware": "0.9.8",

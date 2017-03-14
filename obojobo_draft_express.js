@@ -3,6 +3,8 @@ let app = express();
 let fs = require('fs');
 let path = require('path');
 let ltiMiddleware = require('express-ims-lti');
+let lti  = require("ims-lti");
+let DevNonceStore = oboRequire('dev_nonce_store');
 let db = oboRequire('db')
 let apiResponseDecorator = oboRequire('api_response_decorator');
 let draftNodeStore = oboRequire('draft_node_store')
@@ -11,6 +13,7 @@ let EventEmitter = require('events');
 let registeredModuleApps = new Map();
 let isProd = true;
 let User = oboRequire('models/user')
+
 
 // Global event emitter for the application
 // Not ideal to store this as a global, buuuut
@@ -36,6 +39,11 @@ app.on('mount', (app) => {
 	isProd = app.get('env') === 'production';
 	parentApp = app;
 
+
+	parentApp.use(ltiMiddleware({
+		nonceStore: new DevNonceStore(),
+		credentials: (key, callback) => { callback(null, 'key', 'secret') }
+	}))
 
 	// Decorate api routes with convenient functions
 	parentApp.use('/api', apiResponseDecorator);

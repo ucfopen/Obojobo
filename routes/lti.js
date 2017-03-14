@@ -4,13 +4,11 @@ var db = oboRequire('db.js')
 var User = oboRequire('models/user')
 
 router.get('/whoami', (req, res, next) => {
-	req.session.gunk = 5
+	let msg = "I have no idea who you are"
 	if (req.session.currentUser) {
-		res.send(`Hello ${req.session.currentUser.username}!`);
+		msg = `Hello ${req.session.currentUser.username}!`
 	}
-	else{
-		res.send("I have no idea who you are");
-	}
+	res.send(msg);
 	next()
 });
 
@@ -49,7 +47,7 @@ router.post('/launch', (req, res, next) => {
 	}
 
 	let user = {
-		consumer: req.lti.body.tool_consumer_instance_guid,
+		// consumer: req.lti.body.tool_consumer_instance_guid,
 		username: req.lti.body.lis_person_sourcedid,
 		email: req.lti.body.lis_person_contact_email_primary,
 		first_name: req.lti.body.lis_person_name_given,
@@ -59,9 +57,9 @@ router.post('/launch', (req, res, next) => {
 
 	db.none(`
 		INSERT INTO users
-			(consumer, username, email, first_name, last_name, roles)
-			VALUES($[consumer], $[username], $[email], $[first_name], $[last_name], $[roles])
-		ON CONFLICT (consumer, username) DO UPDATE SET
+			(username, email, first_name, last_name, roles)
+			VALUES($[username], $[email], $[first_name], $[last_name], $[roles])
+		ON CONFLICT (username) DO UPDATE SET
 			email = $[email],
 			first_name = $[first_name],
 			last_name = $[last_name],
@@ -73,7 +71,7 @@ router.post('/launch', (req, res, next) => {
 	})
 	.catch( error => {
 		console.log('new, failure', error)
-		res.render('error.pug', {message: 'ERROR', error: {status: 'There was a problem storing your new account.'}});
+		res.render('error.pug', {message: 'ERROR', error: {status: 'There was a problem creating your account.'}});
 		next()
 	})
 

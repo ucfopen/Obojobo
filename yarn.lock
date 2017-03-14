@@ -674,9 +674,9 @@ expand-range@^1.8.1:
   dependencies:
     fill-range "^2.1.0"
 
-express-ims-lti@^0.2.4:
+"express-ims-lti@git+ssh://git@github.com/ucfcdl/express-ims-lti.git#ac7d1f4e9c5afa6470185d107b32ffdbaf28cd32":
   version "0.2.4"
-  resolved "https://registry.yarnpkg.com/express-ims-lti/-/express-ims-lti-0.2.4.tgz#469f1720357668678370f86dba96ae356cc79978"
+  resolved "git+ssh://git@github.com/ucfcdl/express-ims-lti.git#ac7d1f4e9c5afa6470185d107b32ffdbaf28cd32"
   dependencies:
     ims-lti "~2.1.0"
 
