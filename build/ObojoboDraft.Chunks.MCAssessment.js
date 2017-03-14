@@ -589,13 +589,26 @@
 	          disabled: !questionAnswered
 	        }),
 	        questionSubmitted ? score === 100 ? React.createElement(
-	          'p',
-	          { className: 'result correct' },
-	          'Correct!'
+	          'div',
+	          { className: 'result-container' },
+	          React.createElement(
+	            'p',
+	            { className: 'result correct' },
+	            'Correct!'
+	          )
 	        ) : React.createElement(
-	          'p',
-	          { className: 'result incorrect' },
-	          'Incorrect'
+	          'div',
+	          { className: 'result-container' },
+	          React.createElement(
+	            'p',
+	            { className: 'result incorrect' },
+	            'Incorrect'
+	          ),
+	          responseType === 'pick-all' ? React.createElement(
+	            'span',
+	            { className: 'pick-all-instructions' },
+	            'You have either missed some correct answers or selected some incorrect answers'
+	          ) : null
 	        ) : null
 	      ),
 	      React.createElement(
@@ -614,7 +627,7 @@
 	            { className: 'score' },
 	            feedbacks.length === 0 ? null : React.createElement(
 	              'div',
-	              { className: 'feedback' },
+	              { className: 'feedback' + (responseType === 'pick-all' ? ' is-pick-all-feedback' : ' is-not-pick-all-feedback') },
 	              feedbacks.map(function (model) {
 	                var Component = model.getComponentClass();
 	                return React.createElement(Component, {
