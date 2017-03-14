@@ -25,6 +25,9 @@ router.get('/view/:draftId*', (req, res, next) => {
 
 				next()
 			})
+			.catch(err => {
+				next(err)
+			})
 		})
 	})
 	.catch(error => {

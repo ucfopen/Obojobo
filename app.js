@@ -2,9 +2,8 @@ var express = require('express');
 var path = require('path');
 var favicon = require('serve-favicon');
 var logger = require('morgan');
-var cookieParser = require('cookie-parser');
 var bodyParser = require('body-parser');
-var cookieSession = require('cookie-session')
+var session = require('express-session')
 var app = express();
 
 // Global for loading specialized Obojobo stuff
@@ -30,15 +29,11 @@ app.use(favicon(path.join(__dirname, 'public', 'favicon.ico')));
 app.use(logger('common'));
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: false }));
-app.use(cookieParser());
-
-app.use(cookieSession({
-	name: 'obo3',
-	keys: ['key1', 'key2'],
-	maxAge: 24 * 60 * 60 * 1000,
-	sameSite: 'strict',
-	secure: false,
-	signed: true
+app.use(session({
+	secret: 'disIsSecret',
+	resave: false,
+	saveUninitialized: true,
+	cookie: { }
 }))
 
 app.use(require('node-sass-middleware')({

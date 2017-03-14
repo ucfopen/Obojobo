@@ -4,12 +4,14 @@ var db = oboRequire('db.js')
 var User = oboRequire('models/user')
 
 router.get('/whoami', (req, res, next) => {
-	let msg = "I have no idea who you are"
-	if (req.session.currentUser) {
-		msg = `Hello ${req.session.currentUser.username}!`
-	}
-	res.send(msg);
-	next()
+
+	req.getCurrentUser(false)
+	.then(currentuser => {
+		console.log('__________________________', req.session.STUPID_VALUE)
+		let msg = `Hello ${currentuser.username}!`
+		res.send(msg);
+		next()
+	})
 });
 
 router.get('/config.xml', (req, res, next) => {
@@ -29,45 +31,40 @@ router.get('/config.xml', (req, res, next) => {
 });
 
 router.get('/launch', (req, res, next) => {
+	req.session.STUPID_VALUE = 5
 	let baseUrl = `${req.protocol}://${req.host}:${req.app.get('port')}`
 	res.render('lti_launch_static.pug', {launch_url: `${baseUrl}/lti/launch`, xml_url: `${baseUrl}/lti/config.xml`});
 	next()
 })
 
 router.post('/launch', (req, res, next) => {
-	console.log('LAAAUNCH')
 	if(!req.lti){
 		// we attempted to launch again and failed, so clear the lti data from the session
 		if (req.session.lti) {
 			req.session.lti = null
 		}
 		res.status(401).render('error.pug', {message: 'Access Denied', error: {status: 'Invalid LTI launch request'}, stack:null });
-		next()
-		return
+		return next()
 	}
 
-	let user = {
-		// consumer: req.lti.body.tool_consumer_instance_guid,
+	let user = new User({
 		username: req.lti.body.lis_person_sourcedid,
 		email: req.lti.body.lis_person_contact_email_primary,
-		first_name: req.lti.body.lis_person_name_given,
-		last_name: req.lti.body.lis_person_name_family,
+		firstName: req.lti.body.lis_person_name_given,
+		lastName: req.lti.body.lis_person_name_family,
 		roles: req.lti.body.roles
-	}
+	});
 
-	db.none(`
-		INSERT INTO users
-			(username, email, first_name, last_name, roles)
-			VALUES($[username], $[email], $[first_name], $[last_name], $[roles])
-		ON CONFLICT (username) DO UPDATE SET
-			email = $[email],
-			first_name = $[first_name],
-			last_name = $[last_name],
-			roles = $[roles]
-		`, user)
+
+	user.saveOrCreate()
 	.then( result => {
-		res.render('lti_launch.pug', user);
-		next()
+		req.setCurrentUser(user)
+		req.getCurrentUser()
+		.then(currentUser => {
+			res.render('lti_launch.pug', {title: 'go', user: currentUser});
+			console.log('USER LOGGED IN', currentUser.username, req.session.currentUserId )
+			next()
+		})
 	})
 	.catch( error => {
 		console.log('new, failure', error)
