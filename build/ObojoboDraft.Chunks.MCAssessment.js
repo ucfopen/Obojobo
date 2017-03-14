@@ -524,7 +524,7 @@
 	        case 'pick-one':
 	          return 'Pick the correct answer';
 	        case 'pick-one-multiple-correct':
-	          return 'Pick a correct answer';
+	          return 'Pick one of the correct answers';
 	        case 'pick-all':
 	          return 'Pick all the correct answers';
 	      }

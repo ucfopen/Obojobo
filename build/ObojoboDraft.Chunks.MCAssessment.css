@@ -104,13 +104,13 @@
       left: 0.6em;
       animation: fadein 0.4s; }
   .obojobo-draft--chunks--mc-assessment .instructions {
-    padding-left: 4.28571em;
-    padding-right: 4.28571em;
+    padding-left: 3em;
+    padding-right: 3em;
     content: 'Practice';
     display: block;
     font-family: "Libre Franklin", Arial, sans-serif;
     color: #6714BD;
-    font-size: 0.7em;
+    font-size: 1em;
     font-weight: normal;
     border-bottom: 1px solid rgba(0, 0, 0, 0.05); }
   .obojobo-draft--chunks--mc-assessment .submit {

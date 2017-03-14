@@ -553,7 +553,7 @@
 	    });
 	  },
 	  postEvent: function postEvent(lo, eventAction, eventPayload) {
-	    return APIUtil.post('/api/events', {
+	    return createParsedJsonPromise(APIUtil.post('/api/events', {
 	      event: {
 	        action: eventAction,
 	        draft_id: lo.get('_id'),
@@ -561,7 +561,7 @@
 	        actor_time: new Date().toISOString(),
 	        payload: eventPayload
 	      }
-	    });
+	    }));
 	  },
 	  saveState: function saveState(lo, state) {
 	    return APIUtil.postEvent(lo, 'saveState', state);
@@ -765,6 +765,7 @@
 	getNewAssessmentObject = function getNewAssessmentObject() {
 	  return {
 	    current: null,
+	    currentResponses: [],
 	    attempts: []
 	  };
 	};
@@ -826,8 +827,10 @@
 	            return ErrorUtil.errorResponse(res);
 	          }
 	          assessment.current.state.questions.forEach(function (question) {
-	            QuestionUtil.hideQuestion(question.id);
-	            return QuestionUtil.resetResponse(question.id);
+	            return QuestionUtil.hideQuestion(question.id);
+	          });
+	          assessment.currentResponses.forEach(function (responderId) {
+	            return QuestionUtil.resetResponse(responderId);
 	          });
 	          assessment.attempts.push(res.value);
 	          assessment.current = null;
@@ -843,16 +846,23 @@
 	        model = OboModel.models[id];
 	        console.log('SET RESPONSE', payload, model);
 	        assessment = AssessmentUtil.getAssessmentForModel(_this.state, model);
+	        if ((assessment != null ? assessment.currentResponses : void 0) != null) {
+	          assessment.currentResponses.push(id);
+	        }
 	        if ((assessment != null ? assessment.current : void 0) != null) {
 	          questionModel = model.getParentOfType('ObojoboDraft.Chunks.Question');
 	          console.log('QUESTION SET RESPONSE', questionModel);
-	          APIUtil.postEvent(model.getRoot(), 'question:recordResponse', {
-	            attemptId: assessment.current.id,
+	          return APIUtil.postEvent(model.getRoot(), 'question:recordResponse', {
+	            attemptId: assessment.current.attemptId,
 	            questionId: questionModel.get('id'),
 	            responderId: id,
 	            response: payload.value.response
+	          }).then(function (res) {
+	            if (res.status === 'error') {
+	              return ErrorUtil.errorResponse(res);
+	            }
+	            return _this.triggerChange();
 	          });
-	          return _this.triggerChange();
 	        }
 	      };
 	    }(this));
