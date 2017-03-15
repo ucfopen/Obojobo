@@ -1,9 +1,9 @@
 doctype html
 html(lang="en")
-  head
-    title= title
-    link(rel='stylesheet', href='/stylesheets/style.css')
+	head
+		title #{title}
+		link(rel='stylesheet', href='/stylesheets/style.css')
+		block head
 
-    block head
-  body
-    block content
+	body
+		block content

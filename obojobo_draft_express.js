@@ -3,6 +3,8 @@ let app = express();
 let fs = require('fs');
 let path = require('path');
 let ltiMiddleware = require('express-ims-lti');
+let lti  = require("ims-lti");
+let DevNonceStore = oboRequire('dev_nonce_store');
 let db = oboRequire('db')
 let apiResponseDecorator = oboRequire('api_response_decorator');
 let draftNodeStore = oboRequire('draft_node_store')
@@ -11,25 +13,55 @@ let EventEmitter = require('events');
 let registeredModuleApps = new Map();
 let isProd = true;
 let User = oboRequire('models/user')
+let GuestUser = oboRequire('models/guest_user')
+
 
 // Global event emitter for the application
 // Not ideal to store this as a global, buuuut
 global.oboEvents = new EventEmitter(this);
 
-// @HACK insert a user into the session
-app.use((req, res, next) => {
-	req.session.currentUser = User.fetchById(99);
-	next();
-});
 
 app.use((req, res, next) => {
-	req.requireCurrentUser = () => {
-		if( ! req.session || ! req.session.currentUser || ! (req.session.currentUser instanceof User)){
-			res.unexpected('Login Required')
-			throw Error('Login Required')
-		}
-		return req.session.currentUser
+	req.setCurrentUser = (user) =>{
+		if(! user instanceof User) throw new Error('Invalid User for Current user')
+		console.log('SETTING CURRENT USER', user.id)
+		req.session.currentUserId = user.id
 	}
+
+	// returns a Promise!!!
+	req.getCurrentUser = (isRequired=false) => {
+		if(req.currentUser) return Promise.resolve(req.currentUser)
+
+		if( ! req.session || ! req.session.currentUserId ){
+			console.log('no currentUserId set');
+			if(isRequired) return Promise.reject(new Error('Login Required'))
+			return Promise.resolve(new GuestUser());
+		}
+
+		return User.fetchById(req.session.currentUserId)
+		.then(user => {
+			console.log('USER FOUND', user)
+			req.currentUser = user
+			return user
+		})
+		.catch(err => {
+			console.log('user not found after query', req.session.currentUserId);
+			if(isRequired) return Promise.reject(new Error('Login Required'))
+			return Promise.resolve(new GuestUser());
+		})
+	}
+
+	// returns a promise
+	req.requireCurrentUser = () => {
+		return req.getCurrentUser(true)
+		.then(user => {
+			return user
+		})
+		.catch( err => {
+			throw new Error('Login Required')
+		})
+	}
+
 	next();
 })
 
@@ -37,6 +69,11 @@ app.on('mount', (app) => {
 	isProd = app.get('env') === 'production';
 	parentApp = app;
 
+
+	parentApp.use(ltiMiddleware({
+		nonceStore: new DevNonceStore(),
+		credentials: (key, callback) => { callback(null, 'key', 'secret') }
+	}))
 
 	// Decorate api routes with convenient functions
 	parentApp.use('/api', apiResponseDecorator);
@@ -128,26 +165,27 @@ app.on('mount', (app) => {
 
 
 global.oboEvents.on('client:saveState', (event, req) => {
-	let currentUser = req.requireCurrentUser();
+	req.requireCurrentUser()
+	.then(user => {
+		let data = {
+			_id: `${rcurrentUser.id}:${event.draft_id}:${event.draft_rev}`,
+			userId: currentUser.id,
+			metadata: metadata,
+			payload: payload
+		};
 
-	let data = {
-		_id: `${rcurrentUser.id}:${event.draft_id}:${event.draft_rev}`,
-		userId: currentUser.id,
-		metadata: metadata,
-		payload: payload
-	};
-
-	db.none(`
-		INSERT INTO view_state
-		(user_id, metadata, payload)
-		VALUES($[userId], $[metadata], $[payload])`
-		, data)
-	.then( (result) => {
-		return true;
-	})
-	.catch( (error) => {
-		console.log(error);
-		res.error(404).json({error:'Draft not found'})
+		db.none(`
+			INSERT INTO view_state
+			(user_id, metadata, payload)
+			VALUES($[userId], $[metadata], $[payload])`
+			, data)
+		.then( (result) => {
+			return true;
+		})
+		.catch( (error) => {
+			console.log(error);
+			res.error(404).json({error:'Draft not found'})
+		})
 	})
 });
 
