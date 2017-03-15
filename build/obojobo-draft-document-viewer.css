@@ -142,10 +142,8 @@
       background-color: transparent; }
   .viewer--components--nav.is-disabled {
     display: none; }
-  .viewer--components--nav .is-visited {
-    color: green; }
   .viewer--components--nav .is-correct {
-    color: orange; }
+    color: #b4d4af; }
   .viewer--components--nav .is-selected {
     font-weight: bold;
     color: #93C6FF; }
@@ -165,7 +163,8 @@
     opacity: .3; }
   .viewer--components--nav ul {
     padding: 0;
-    margin: 0; }
+    margin: 0;
+    text-align: right; }
   .viewer--components--nav li {
     position: relative;
     list-style-type: none;
@@ -179,7 +178,7 @@
     cursor: pointer; }
     .viewer--components--nav .link:hover,
     .viewer--components--nav .sub-link:hover {
-      color: #FFFFFF; }
+      color: #93C6FF; }
     .viewer--components--nav .link.is-selected:hover,
     .viewer--components--nav .sub-link.is-selected:hover {
       color: #93C6FF;
@@ -189,8 +188,14 @@
   .viewer--components--nav .sub-link {
     font-size: .7rem;
     opacity: .6;
-    list-style-type: inherit;
-    margin-left: 1rem; }
+    margin-left: 1rem;
+    position: relative; }
+    .viewer--components--nav .sub-link:after {
+      content: "\2022";
+      position: absolute;
+      right: -1.3em;
+      top: 1em;
+      transform: translate(0, -50%); }
   .viewer--components--nav .seperator {
     cursor: default; }
   .viewer--components--nav .heading {

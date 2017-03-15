@@ -290,7 +290,7 @@
 	    }
 	    return {
 	      type: 'sub-link',
-	      label: '[Q] ' + label + ' ' + (questions.indexOf(model) + 1),
+	      label: label + ' ' + (questions.indexOf(model) + 1),
 	      path: ['#obo-' + model.get('id')]
 	    };
 	  }

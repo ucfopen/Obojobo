@@ -15,6 +15,9 @@ registeredToolbarItems = {
 toolbarItems = []
 textListeners = []
 triggerActions = {}
+variableHandlers = new Map()
+
+window.__VH = variableHandlers
 
 
 class OBO
@@ -52,6 +55,7 @@ class OBO
 			componentClass: null
 			selectionHandler: null
 			commandHandler: null
+			variables: {}
 			init: ->
 		}, opts
 
@@ -63,6 +67,9 @@ class OBO
 		if opts.insertItem then insertItems.set chunkClass.type, opts.insertItem
 
 		opts.init()
+
+		for variable, cb of opts.variables
+			variableHandlers.set variable, cb
 
 		loadDependency = @loadDependency
 		promises = opts.dependencies.map (dependency) ->
@@ -153,6 +160,12 @@ class OBO
 			return null
 
 		items.get(className)
+
+	getTextForVariable: (variable, model, viewerState) ->
+		cb = variableHandlers.get(variable)
+		if not cb then return null
+
+		cb.call null, model, viewerState
 
 
 Object.defineProperties OBO.prototype, {

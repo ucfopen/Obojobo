@@ -86,7 +86,10 @@
 
 	_getFlatList = function getFlatList(item) {
 	  var child, i, len1, list, ref;
-	  list = [item];
+	  list = [];
+	  if (item.type !== 'hidden') {
+	    list.push(item);
+	  }
 	  if (item.showChildren) {
 	    ref = item.children;
 	    for (i = 0, len1 = ref.length; i < len1; i++) {
@@ -186,6 +189,17 @@
 	      return null;
 	    }
 	    return OboModel.models[navTarget.id];
+	  },
+	  getFirst: function getFirst(state) {
+	    var i, item, len1, list;
+	    list = NavUtil.getOrderedList(state);
+	    for (i = 0, len1 = list.length; i < len1; i++) {
+	      item = list[i];
+	      if (item.type === 'link') {
+	        return item;
+	      }
+	    }
+	    return null;
 	  },
 	  getPrev: function getPrev(state) {
 	    var index, item, list, navTarget;
@@ -402,7 +416,7 @@
 	          if (!navItem) {
 	            return;
 	          }
-	          return NavUtil.setFlag(payload.value.id, 'correct', true);
+	          return NavUtil.setFlag(payload.value.id, 'correct', payload.value.score === 100);
 	        };
 	      }(this)
 	    }, this);
@@ -413,6 +427,7 @@
 	      items: {},
 	      itemsById: {},
 	      itemsByPath: {},
+	      itemsByFullPath: {},
 	      navTargetHistory: [],
 	      navTargetId: null,
 	      locked: false,
@@ -420,12 +435,18 @@
 	    };
 	    this.buildMenu(model);
 	    console.log(this.state.items);
-	    return NavUtil.gotoPath(startingPath);
+	    NavUtil.gotoPath(startingPath);
+	    if (startingId != null) {
+	      return NavUtil.goto(startingId);
+	    } else {
+	      return NavUtil.goto(NavUtil.getFirst(this.state).id);
+	    }
 	  };
 
 	  NavStore.prototype.buildMenu = function (model) {
 	    this.state.itemsById = {};
 	    this.state.itemsByPath = {};
+	    this.state.itemsByFullPath = {};
 	    return this.state.items = this.generateNav(model);
 	  };
 
@@ -439,8 +460,10 @@
 	      this.state.navTargetHistory.push(this.state.navTargetId);
 	      this.state.itemsById[this.state.navTargetId].showChildren = false;
 	    }
-	    navItem.showChildren = true;
-	    window.history.pushState({}, 'title123', navItem.fullFlatPath);
+	    if (navItem.showChildrenOnNavigation) {
+	      navItem.showChildren = true;
+	    }
+	    window.history.pushState({}, document.title, navItem.fullFlatPath);
 	    this.state.navTargetId = navItem.id;
 	    NavUtil.getNavTargetModel(this.state).processTrigger('onNavEnter');
 	    return this.triggerChange();
@@ -463,7 +486,8 @@
 	      type: 'hidden',
 	      label: '',
 	      path: '',
-	      showChildren: true
+	      showChildren: true,
+	      showChildrenOnNavigation: true
 	    }, navItem);
 	    navItem.flags = [];
 	    navItem.children = [];
@@ -489,6 +513,7 @@
 	      childNavItem.flatPath = flatPath;
 	      childNavItem.fullFlatPath = ['/view', model.getRoot().get('_id'), flatPath].join('/');
 	      this.state.itemsByPath[flatPath] = childNavItem;
+	      this.state.itemsByFullPath[childNavItem.fullFlatPath] = childNavItem;
 	    }
 	    this.state.itemsById[model.get('id')] = navItem;
 	    return navItem;
@@ -1473,7 +1498,7 @@
 							lockEl = null;
 					}
 					list = NavUtil.getOrderedList(this.props.navState);
-					console.log('LIST', list);
+					console.log('LISTs', list);
 					return React.createElement(
 							'div',
 							{ className: 'viewer--components--nav' + (this.props.navState.locked ? ' is-locked' : ' is-unlocked') + (this.props.navState.open ? ' is-open' : ' is-closed') + (this.props.navState.disabled ? ' is-disabled' : ' is-enabled') },
@@ -1519,7 +1544,7 @@
 																	React.createElement(
 																			'a',
 																			null,
-																			item.label + ':' + item.flatPath
+																			item.label
 																	),
 																	lockEl
 															);
@@ -1534,7 +1559,7 @@
 																	React.createElement(
 																			'a',
 																			null,
-																			item.label + ':' + item.flatPath
+																			item.label
 																	),
 																	lockEl
 															);

@@ -71,7 +71,7 @@
 	        model.modelState.attempts = parseInt(attrs.content.attempts, 10);
 	      }
 	    } else {
-	      model.modelState.attempts = 1;
+	      model.modelState.attempts = 2e308;
 	    }
 	    if ((attrs != null ? (ref1 = attrs.content) != null ? ref1.scoreActions : void 0 : void 0) != null) {
 	      return model.modelState.scoreActions = new ScoreActions(attrs.content.scoreActions);
@@ -295,7 +295,7 @@
 	    recentScore = AssessmentUtil.getLastAttemptScoreForModel(this.props.moduleData.assessmentState, this.props.model);
 	    highestScore = AssessmentUtil.getHighestAttemptScoreForModel(this.props.moduleData.assessmentState, this.props.model);
 	    childEl = function () {
-	      switch (this.state.step) {
+	      switch (this.getCurrentStep()) {
 	        case 'untested':
 	          child = this.props.model.children.at(0);
 	          Component = child.getComponentClass();
@@ -332,6 +332,8 @@
 	          questionScores = AssessmentUtil.getLastAttemptScoresForModel(this.props.moduleData.assessmentState, this.props.model);
 	          if (scoreAction.page != null) {
 	            pageModel = OboModel.create(scoreAction.page);
+	            pageModel.parent = this.props.model;
+	            console.log('@TODO - FIGURE OUT A BETTER WAY TO DO THIS - THIS IS NEEDED TO GET {{VARIABLES}} WORKING');
 	            PageComponent = pageModel.getComponentClass();
 	            childEl = React.createElement(PageComponent, { model: pageModel, moduleData: this.props.moduleData });
 	          } else {
@@ -400,11 +402,11 @@
 
 	'use strict';
 
-	var AssessmentStore, ObojoboDraft;
+	var AssessmentUtil, ObojoboDraft;
 
 	ObojoboDraft = window.ObojoboDraft;
 
-	AssessmentStore = window.Viewer.stores.assessmentStore;
+	AssessmentUtil = window.Viewer.util.AssessmentUtil;
 
 	OBO.register('ObojoboDraft.Sections.Assessment', {
 	  type: 'section',
@@ -412,10 +414,33 @@
 	  componentClass: __webpack_require__(183),
 	  selectionHandler: null,
 	  getNavItem: function getNavItem(model) {
+	    var title;
+	    title = model.title || 'Assessment';
 	    return {
 	      type: 'link',
-	      label: model.title || 'Assessment'
+	      label: title,
+	      path: [title.toLowerCase().replace(/ /g, '-')],
+	      showChildren: false,
+	      showChildrenOnNavigation: false
 	    };
+	  },
+	  variables: {
+	    'assessment:attemptsRemaining': function assessmentAttemptsRemaining(textModel, viewerProps) {
+	      var assessmentModel;
+	      assessmentModel = textModel.getParentOfType('ObojoboDraft.Sections.Assessment');
+	      if (assessmentModel.modelState.attempts === 2e308) {
+	        return 'unlimited';
+	      }
+	      return assessmentModel.modelState.attempts - AssessmentUtil.getNumberOfAttemptsCompletedForModel(viewerProps.assessmentState, textModel);
+	    },
+	    'assessment:attemptsAmount': function assessmentAttemptsAmount(textModel, viewerProps) {
+	      var assessmentModel;
+	      assessmentModel = textModel.getParentOfType('ObojoboDraft.Sections.Assessment');
+	      if (assessmentModel.modelState.attempts === 2e308) {
+	        return 'unlimited';
+	      }
+	      return assessmentModel.modelState.attempts;
+	    }
 	  }
 	});
 

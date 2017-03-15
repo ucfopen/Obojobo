@@ -53,9 +53,9 @@
 /***/ 137:
 /***/ function(module, exports, __webpack_require__) {
 
-	"use strict";
+	'use strict';
 
-	var Common, OboComponent, Text, TextChunk, TextGroupEl;
+	var Common, Dispatcher, OboComponent, Text, TextChunk, TextGroupEl, varRegex;
 
 	__webpack_require__(211);
 
@@ -67,20 +67,42 @@
 
 	TextChunk = Common.chunk.TextChunk;
 
+	Dispatcher = Common.flux.Dispatcher;
+
+	varRegex = /\{\{(.+?)\}\}/;
+
 	Text = React.createClass({
-	  displayName: "Text",
+	  displayName: 'Text',
 
 	  render: function render() {
 	    var texts;
-	    texts = this.props.model.modelState.textGroup.items.map(function (textItem, index) {
-	      return React.createElement(TextGroupEl, { text: textItem.text, groupIndex: index, indent: textItem.data.indent, key: index });
-	    });
+	    texts = this.props.model.modelState.textGroup.items.map(function (_this) {
+	      return function (textItem, index) {
+	        var match, newText, startIndex, variable;
+	        if (textItem.text.value.indexOf('{{')) {
+	          match = null;
+	          textItem = textItem.clone();
+	          console.log('TODO - Change this so that it splits into tokens so it doesnt have to replace {{unknown}} with unknown');
+	          while ((match = varRegex.exec(textItem.text.value)) !== null) {
+	            variable = match[1];
+	            newText = window.OBO.getTextForVariable(variable, _this.props.model, _this.props.moduleData);
+	            if (newText === null) {
+	              newText = match[1];
+	            }
+	            newText = '' + newText;
+	            startIndex = textItem.text.value.indexOf(match[0], varRegex.lastIndex);
+	            textItem.text.replaceText(startIndex, startIndex + match[0].length, newText);
+	          }
+	        }
+	        return React.createElement(TextGroupEl, { text: textItem.text, groupIndex: index, indent: textItem.data.indent, key: index });
+	      };
+	    }(this));
 	    return React.createElement(
 	      OboComponent,
 	      { model: this.props.model, moduleData: this.props.moduleData },
 	      React.createElement(
 	        TextChunk,
-	        { className: "obojobo-draft--chunks--single-text pad" },
+	        { className: 'obojobo-draft--chunks--single-text pad' },
 	        texts
 	      )
 	    );

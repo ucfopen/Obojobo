@@ -111,7 +111,7 @@
 
 	'use strict';
 
-	var ComponentClassMap, OBO, componentClassMap, defaults, getItemsCallbacks, insertItems, items, itemsLoaded, registeredToolbarItems, textListeners, toolbarItems, triggerActions;
+	var ComponentClassMap, OBO, componentClassMap, defaults, getItemsCallbacks, insertItems, items, itemsLoaded, registeredToolbarItems, textListeners, toolbarItems, triggerActions, variableHandlers;
 
 	ComponentClassMap = __webpack_require__(95);
 
@@ -140,6 +140,10 @@
 
 	triggerActions = {};
 
+	variableHandlers = new Map();
+
+	window.__VH = variableHandlers;
+
 	OBO = function () {
 	  function OBO() {}
 
@@ -167,7 +171,7 @@
 	  };
 
 	  OBO.prototype.register = function (className, opts) {
-	    var loadDependency, promises;
+	    var cb, loadDependency, promises, ref, variable;
 	    if (opts == null) {
 	      opts = {};
 	    }
@@ -182,6 +186,7 @@
 	      componentClass: null,
 	      selectionHandler: null,
 	      commandHandler: null,
+	      variables: {},
 	      init: function init() {}
 	    }, opts);
 	    if (opts["default"]) {
@@ -191,6 +196,11 @@
 	      insertItems.set(chunkClass.type, opts.insertItem);
 	    }
 	    opts.init();
+	    ref = opts.variables;
+	    for (variable in ref) {
+	      cb = ref[variable];
+	      variableHandlers.set(variable, cb);
+	    }
 	    loadDependency = this.loadDependency;
 	    promises = opts.dependencies.map(function (dependency) {
 	      return new Promise(function (resolve, reject) {
@@ -262,6 +272,15 @@
 	      return null;
 	    }
 	    return items.get(className);
+	  };
+
+	  OBO.prototype.getTextForVariable = function (variable, model, viewerState) {
+	    var cb;
+	    cb = variableHandlers.get(variable);
+	    if (!cb) {
+	      return null;
+	    }
+	    return cb.call(null, model, viewerState);
 	  };
 
 	  return OBO;

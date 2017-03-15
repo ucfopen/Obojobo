@@ -135,8 +135,9 @@ render = (initialState) =>
 # window.location.pathname = '/view/' + window.__oboGlobals.draftId
 history.replaceState('', document.title, '/view/' + window.__oboGlobals.draftId + window.location.search)
 
-window.addEventListener 'popstate', (event) ->
-	debugger
+# window.addEventListener 'popstate', (event) ->
+# 	console.log('event', event)
+# 	debugger
 
 
 render(window.__oboGlobals)

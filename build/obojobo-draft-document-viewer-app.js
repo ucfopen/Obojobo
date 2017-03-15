@@ -114,10 +114,6 @@
 
 	history.replaceState('', document.title, '/view/' + window.__oboGlobals.draftId + window.location.search);
 
-	window.addEventListener('popstate', function (event) {
-	  debugger;
-	});
-
 	render(window.__oboGlobals);
 
 /***/ },

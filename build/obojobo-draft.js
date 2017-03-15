@@ -5158,10 +5158,16 @@
 
 	StyleRange = function () {
 	  function StyleRange(start, end, type, data) {
-	    this.start = start != null ? start : 0;
-	    this.end = end != null ? end : 0;
+	    if (start == null) {
+	      start = 0;
+	    }
+	    if (end == null) {
+	      end = 0;
+	    }
 	    this.type = type != null ? type : '';
 	    this.data = data != null ? data : {};
+	    this.start = parseInt(start, 10);
+	    this.end = parseInt(end, 10);
 	  }
 
 	  StyleRange.prototype.clone = function () {
