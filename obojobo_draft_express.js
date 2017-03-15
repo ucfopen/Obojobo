@@ -25,6 +25,7 @@ app.use((req, res, next) => {
 app.use((req, res, next) => {
 	req.requireCurrentUser = () => {
 		if( ! req.session || ! req.session.currentUser || ! (req.session.currentUser instanceof User)){
+			res.unexpected('Login Required')
 			throw Error('Login Required')
 		}
 		return req.session.currentUser
