@@ -134,7 +134,7 @@
 	    data = this.props.chunk.modelState;
 	    if (data.url == null) {
 	      imgStyles = {
-	        backgroundImage: Common.util.getBackgroundImage(__webpack_require__(234)),
+	        backgroundImage: Common.util.getBackgroundImage(__webpack_require__(235)),
 	        backgroundSize: '16px',
 	        height: '300px'
 	      };
@@ -286,7 +286,7 @@
 
 /***/ },
 
-/***/ 234:
+/***/ 235:
 /***/ function(module, exports) {
 
 	module.exports = "data:image/svg+xml;charset=utf8,%3Csvg id='Layer_1' data-name='Layer 1' xmlns='http://www.w3.org/2000/svg' viewBox='0 0 12 12'%3E%3Cdefs%3E%3Cstyle%3E.cls-1%7Bopacity:0.03;%7D%3C/style%3E%3C/defs%3E%3Ctitle%3Ebg%3C/title%3E%3Crect class='cls-1' width='6' height='6'/%3E%3Crect class='cls-1' x='6' y='6' width='6' height='6'/%3E%3C/svg%3E"

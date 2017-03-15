@@ -1,5 +1,8 @@
 "use strict";
 
+# polyfills:
+require('smoothscroll-polyfill').polyfill()
+
 # ModalStore = window.ObojoboDraft.Common.stores.ModalStore
 # NavStore = window.Viewer.stores.NavStore
 # ScoreStore = window.Viewer.stores.ScoreStore
@@ -129,5 +132,11 @@ render = (initialState) =>
 # else
 # 	# load from api
 # 	APIUtil.fetchDraft('sample').then (res) => showDocument(res.value)
+# window.location.pathname = '/view/' + window.__oboGlobals.draftId
+history.replaceState('', document.title, '/view/' + window.__oboGlobals.draftId + window.location.search)
+
+window.addEventListener 'popstate', (event) ->
+	debugger
+
 
 render(window.__oboGlobals)

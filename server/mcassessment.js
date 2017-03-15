@@ -9,40 +9,55 @@ class MCAssessment extends DraftNode {
 		})
 	}
 
-	onCalculateScore(app, question, responseRecord, setScore){
+	onCalculateScore(app, question, responseRecords, setScore){
 		if(!question.contains(this.node)) return
 
-		console.log('RESPONSE RECORD');
-		console.log(responseRecord);
+		// console.log('RES RECS', responseRecords)
 
 		switch(this.node.content.responseType)
 		{
 			case 'pick-one':
 			case 'pick-one-multiple-correct':
-				let answers = responseRecord.response.answers
+				console.log('response records', responseRecords)
+				let selectedItems = responseRecords.filter( (record) => { return record.response.set === true })
+				console.log('selectedItems', selectedItems)
+				//@TODO - Check to make sure there isn't more than one responseRecord (there shouldn't be for these type of questions)
+				if(selectedItems.length > 1) throw 'Impossible response to non pick-all MCAssessment response'
 
-				let mcChoice = this.draftTree.findNodeClass(responseRecord.responder_id)
+				if(selectedItems.length === 0) return setScore(0)
+
+				let mcChoice = this.draftTree.findNodeClass(selectedItems[0].responder_id)
 				setScore(mcChoice.node.content.score)
 				break
 
 			case 'pick-all':
-				let mcChoiceIds = [...this.immediateChildrenSet]
-				for(let i in mcChoiceIds)
-				{
-					let mcChoiceId = mcChoiceIds[i]
-					let mcChoice = this.draftTree.findNodeClass(mcChoiceId)
-					if(
-						(mcChoice.node.content.score === 0 && responseRecord.response.answers[mcChoiceId])
-						||
-						(mcChoice.node.content.score === 100 && !responseRecord.response.answers[mcChoiceId])
-					)
-					{
-						return setScore(0)
-					}
-				}
+				// console.log('RESPONSE RECORDs');
+				// console.log(responseRecords);
 
-				setScore(100)
-				break
+				let correctIds = new Set([...this.immediateChildrenSet]
+					.filter( (id) => {
+						return this.draftTree.findNodeClass(id).node.content.score === 100
+					}))
+
+				let responseIds = new Set(
+					responseRecords.filter(
+						(record) => {
+							return record.response.set === true
+						}
+					)
+					.map(
+						(record) => {
+							return record.responder_id
+						}
+					)
+				)
+
+				console.log('correct ids', Array.from(correctIds))
+				console.log('response ids', Array.from(responseIds))
+
+				if(correctIds.size !== responseIds.size) return setScore(0)
+				correctIds.forEach( (id) => { if(!responseIds.has(id)) return setScore(0) } )
+				return setScore(100)
 		}
 	}
 }

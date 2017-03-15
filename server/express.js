@@ -218,7 +218,7 @@ global.oboEvents.on('client:question:recordResponse', (event, req) => {
 		INSERT INTO attempts_question_responses
 		(attempt_id, question_id, responder_id, response)
 		VALUES($[attemptId], $[questionId], $[responderId], $[response])
-		ON CONFLICT (attempt_id, question_id) DO
+		ON CONFLICT (attempt_id, question_id, responder_id) DO
 			UPDATE
 			SET
 				responder_id = $[responderId],

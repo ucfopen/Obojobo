@@ -440,7 +440,7 @@
 	      this.state.itemsById[this.state.navTargetId].showChildren = false;
 	    }
 	    navItem.showChildren = true;
-	    window.history.pushState({}, 'title123', navItem.flatPath);
+	    window.history.pushState({}, 'title123', navItem.fullFlatPath);
 	    this.state.navTargetId = navItem.id;
 	    NavUtil.getNavTargetModel(this.state).processTrigger('onNavEnter');
 	    return this.triggerChange();
@@ -457,17 +457,20 @@
 	      navItem = item.getNavItem(model);
 	    }
 	    if (navItem == null) {
-	      navItem = {
-	        type: 'hidden',
-	        label: '',
-	        path: '',
-	        showChildren: true
-	      };
+	      navItem = {};
 	    }
+	    navItem = Object.assign({
+	      type: 'hidden',
+	      label: '',
+	      path: '',
+	      showChildren: true
+	    }, navItem);
 	    navItem.flags = [];
 	    navItem.children = [];
 	    navItem.id = model.get('id');
-	    navItem.fullPath = [].concat(navItem.path);
+	    navItem.fullPath = [].concat(navItem.path).filter(function (item) {
+	      return item !== '';
+	    });
 	    navItem.flags = {
 	      visited: false,
 	      complete: false,
@@ -478,9 +481,13 @@
 	      child = ref[i];
 	      childNavItem = this.generateNav(child, indent + '_');
 	      navItem.children.push(childNavItem);
-	      childNavItem.fullPath = navItem.fullPath.concat(childNavItem.fullPath);
-	      flatPath = '/view/' + model.getRoot().get('_id') + '/' + childNavItem.fullPath.join('/');
+	      childNavItem.fullPath = navItem.fullPath.concat(childNavItem.fullPath).filter(function (item) {
+	        return item !== '';
+	      });
+	      console.log('yeah so uh', childNavItem);
+	      flatPath = childNavItem.fullPath.join('/');
 	      childNavItem.flatPath = flatPath;
+	      childNavItem.fullFlatPath = ['/view', model.getRoot().get('_id'), flatPath].join('/');
 	      this.state.itemsByPath[flatPath] = childNavItem;
 	    }
 	    this.state.itemsById[model.get('id')] = navItem;
@@ -685,7 +692,7 @@
 
 	NavUtil = __webpack_require__(12);
 
-	logo = __webpack_require__(239);
+	logo = __webpack_require__(240);
 
 	OBO = window.OBO;
 
@@ -1397,7 +1404,7 @@
 
 	'use strict';
 
-	var Logo, Nav, NavUtil, arrowImg, getBackgroundImage, hamburgerImg, lockImg, navStore;
+	var Logo, Nav, NavUtil, OboModel, arrowImg, getBackgroundImage, hamburgerImg, lockImg, navStore;
 
 	__webpack_require__(232);
 
@@ -1407,13 +1414,15 @@
 
 	Logo = __webpack_require__(86);
 
-	hamburgerImg = __webpack_require__(237);
+	hamburgerImg = __webpack_require__(238);
 
-	arrowImg = __webpack_require__(236);
+	arrowImg = __webpack_require__(237);
 
-	lockImg = __webpack_require__(238);
+	lockImg = __webpack_require__(239);
 
 	getBackgroundImage = window.ObojoboDraft.Common.util.getBackgroundImage;
+
+	OboModel = window.ObojoboDraft.Common.models.OboModel;
 
 	Nav = React.createClass({
 			displayName: 'Nav',
@@ -1424,7 +1433,15 @@
 					};
 			},
 			onClick: function onClick(item) {
-					return NavUtil.gotoPath(item.flatPath);
+					var el;
+					if (item.type === 'link') {
+							return NavUtil.gotoPath(item.fullPath);
+					} else if (item.type === 'sub-link') {
+							el = OboModel.models[item.id].getDomEl();
+							return el.scrollIntoView({
+									behavior: 'smooth'
+							});
+					}
 			},
 			hideNav: function hideNav() {
 					return NavUtil.toggle();
@@ -1912,28 +1929,28 @@
 /***/ 233:
 230,
 
-/***/ 236:
+/***/ 237:
 /***/ function(module, exports) {
 
 	module.exports = "data:image/svg+xml;charset=utf8,%3C?xml version='1.0' encoding='utf-8'?%3E %3C!-- Generator: Adobe Illustrator 19.0.0, SVG Export Plug-In . SVG Version: 6.00 Build 0) --%3E %3Csvg version='1.1' id='Layer_1' xmlns='http://www.w3.org/2000/svg' xmlns:xlink='http://www.w3.org/1999/xlink' x='0px' y='0px' viewBox='-290 387 30 20' style='enable-background:new -290 387 30 20;' xml:space='preserve'%3E %3Cpath d='M-272.5,405.4l-12.1-7.4c-0.6-0.4-0.6-1.7,0-2.1l12.1-7.4c0.5-0.3,1,0.3,1,1.1v14.7C-271.4,405.2-272,405.7-272.5,405.4z' fill='rgba(0, 0, 0, .2)' transform='translate(2, 0)'/%3E %3C/svg%3E"
 
 /***/ },
 
-/***/ 237:
+/***/ 238:
 /***/ function(module, exports) {
 
 	module.exports = "data:image/svg+xml;charset=utf8,%3Csvg width='20' height='10' viewBox='0 0 100 100' xmlns='http://www.w3.org/2000/svg' version='1.1'%3E %3Cline x1='0' y1='10' x2='100' y2='10' stroke='rgba(0, 0, 0, .2)' stroke-width='20' stroke-linecap='round' /%3E %3Cline x1='0' y1='50' x2='100' y2='50' stroke='rgba(0, 0, 0, .2)' stroke-width='20' stroke-linecap='round' /%3E %3Cline x1='0' y1='90' x2='100' y2='90' stroke='rgba(0, 0, 0, .2)' stroke-width='20' stroke-linecap='round' /%3E %3C/svg%3E"
 
 /***/ },
 
-/***/ 238:
+/***/ 239:
 /***/ function(module, exports) {
 
 	module.exports = "data:image/svg+xml;charset=utf8,%3C?xml version='1.0' encoding='utf-8'?%3E %3Csvg version='1.1' xmlns='http://www.w3.org/2000/svg' xmlns:xlink='http://www.w3.org/1999/xlink' viewBox='0 0 10 16' style='enable-background:new 0 0 10 16;' xml:space='preserve'%3E %3Cpath fill='white' id='XMLID_6_' d='M9.1,6H8.5V3.5C8.5,1.5,6.9,0,5,0C3.1,0,1.6,1.5,1.6,3.5l0,2.5H0.9C0.4,6,0,6.4,0,6.9v8.2 C0,15.6,0.4,16,0.9,16h8.2c0.5,0,0.9-0.4,0.9-0.9V6.9C10,6.4,9.6,6,9.1,6z M3.3,3.4c0-0.9,0.8-1.6,1.7-1.6c0.9,0,1.7,0.8,1.7,1.7V6 H3.3V3.4z'/%3E %3C/svg%3E"
 
 /***/ },
 
-/***/ 239:
+/***/ 240:
 /***/ function(module, exports) {
 
 	module.exports = "data:image/svg+xml;charset=utf8,%3C?xml version='1.0' encoding='utf-8'?%3E %3C!-- Generator: Adobe Illustrator 15.0.2, SVG Export Plug-In . SVG Version: 6.00 Build 0) --%3E %3C!DOCTYPE svg PUBLIC '-//W3C//DTD SVG 1.1//EN' 'http://www.w3.org/Graphics/SVG/1.1/DTD/svg11.dtd'%3E %3Csvg version='1.1' id='Layer_1' xmlns='http://www.w3.org/2000/svg' xmlns:xlink='http://www.w3.org/1999/xlink' x='0px' y='0px' width='253px' height='64.577px' viewBox='0 0 253 64.577' enable-background='new 0 0 253 64.577' xml:space='preserve' fill='black'%3E %3Cpath d='M18.399,53.629c-0.01,0-0.021,0-0.031,0C7.023,53.396,0,43.151,0,33.793c0-10.79,8.426-19.905,18.399-19.905 c11.006,0,18.399,10.292,18.399,19.905c0,10.719-8.239,19.617-18.367,19.835C18.421,53.629,18.41,53.629,18.399,53.629z M18.399,18.257c-8.393,0-14.031,8.033-14.031,15.536c0.295,7.574,5.625,15.468,14.031,15.468c8.393,0,14.031-7.998,14.031-15.468 C32.43,25.372,26.005,18.257,18.399,18.257z'/%3E %3Cpath d='M58.15,53.629c-6.02,0-13.502-3.57-16.154-10.394c-0.287-0.733-0.603-1.542-0.603-3.281l0-38.454 c0-0.398,0.158-0.779,0.439-1.061S42.495,0,42.893,0h1.369c0.829,0,1.5,0.671,1.5,1.5v18.495c3.827-4.056,8.188-6.106,13.004-6.106 c11.111,0,17.989,10.332,17.989,19.905C76.444,44.75,68.099,53.629,58.15,53.629z M45.761,27.446v12.437 c0,4.652,7.208,9.378,12.389,9.378c8.516,0,14.236-7.998,14.236-15.468c0-7.472-5.208-15.536-13.621-15.536 C51.235,18.257,47.065,24.927,45.761,27.446z'/%3E %3Cpath d='M99.064,53.629c-0.01,0-0.021,0-0.031,0c-11.346-0.233-18.369-10.478-18.369-19.835 c0-10.79,8.426-19.905,18.399-19.905c11.005,0,18.398,10.292,18.398,19.905c0,10.719-8.239,19.617-18.366,19.835 C99.086,53.629,99.075,53.629,99.064,53.629z M99.064,18.257c-8.393,0-14.031,8.033-14.031,15.536 c0.294,7.574,5.624,15.468,14.031,15.468c8.393,0,14.031-7.998,14.031-15.468C113.096,25.372,106.67,18.257,99.064,18.257z'/%3E %3Cpath d='M153.252,53.629c-0.01,0-0.021,0-0.031,0c-11.346-0.233-18.369-10.478-18.369-19.835 c0-10.79,8.426-19.905,18.399-19.905c11.006,0,18.399,10.292,18.399,19.905c0,10.719-8.239,19.617-18.367,19.835 C153.273,53.629,153.263,53.629,153.252,53.629z M153.252,18.257c-8.393,0-14.031,8.033-14.031,15.536 c0.294,7.574,5.624,15.468,14.031,15.468c8.393,0,14.031-7.998,14.031-15.468C167.283,25.372,160.858,18.257,153.252,18.257z'/%3E %3Cpath d='M234.601,53.629c-0.01,0-0.021,0-0.031,0c-11.345-0.233-18.367-10.478-18.367-19.835 c0-10.79,8.426-19.905,18.398-19.905c11.006,0,18.399,10.292,18.399,19.905c0,10.719-8.239,19.617-18.367,19.835 C234.622,53.629,234.611,53.629,234.601,53.629z M234.601,18.257c-8.393,0-14.03,8.033-14.03,15.536 c0.294,7.574,5.624,15.468,14.03,15.468c8.394,0,14.031-7.998,14.031-15.468C248.632,25.372,242.206,18.257,234.601,18.257z'/%3E %3Cpath d='M193.62,53.629c-6.021,0-13.503-3.57-16.155-10.394l-0.098-0.239c-0.254-0.607-0.603-1.438-0.603-3.042 c0.002-15.911,0.098-38.237,0.099-38.461c0.003-0.826,0.674-1.494,1.5-1.494h1.368c0.829,0,1.5,0.671,1.5,1.5v18.495 c3.827-4.055,8.188-6.106,13.005-6.106c11.111,0,17.988,10.332,17.988,19.904C211.915,44.75,203.569,53.629,193.62,53.629z M181.231,27.446v12.437c0,4.652,7.208,9.378,12.389,9.378c8.515,0,14.235-7.998,14.235-15.468c0-7.472-5.207-15.536-13.619-15.536 C186.705,18.257,182.535,24.927,181.231,27.446z'/%3E %3Cpath d='M118.017,64.577c-0.013,0-0.026,0-0.039,0c-2.437-0.063-5.533-0.434-7.865-2.765 c-0.308-0.308-0.467-0.734-0.436-1.167c0.031-0.434,0.249-0.833,0.597-1.094l1.096-0.821c0.566-0.425,1.353-0.396,1.887,0.072 c1.083,0.947,2.617,1.408,4.691,1.408c2.913,0,6.3-2.752,6.3-6.3V16.073c0-0.829,0.671-1.5,1.5-1.5h1.368c0.829,0,1.5,0.671,1.5,1.5 v37.835C128.616,60.195,123.03,64.577,118.017,64.577z M127.116,8.268h-1.368c-0.829,0-1.5-0.671-1.5-1.5V2.389 c0-0.829,0.671-1.5,1.5-1.5h1.368c0.829,0,1.5,0.671,1.5,1.5v4.379C128.616,7.597,127.945,8.268,127.116,8.268z'/%3E %3C/svg%3E"

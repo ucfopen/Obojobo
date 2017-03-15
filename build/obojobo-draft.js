@@ -15217,7 +15217,7 @@
 
 	getBackgroundImage = __webpack_require__(81);
 
-	editButton = __webpack_require__(235);
+	editButton = __webpack_require__(236);
 
 	module.exports = React.createClass({
 	  displayName: 'exports',
@@ -15844,20 +15844,27 @@
 	    return this.el.scrollTop = this.el.scrollHeight;
 	  };
 
-	  Screen.prototype.getScrollDistanceNeededToPutSelectionIntoView = function () {
-	    var rect, selScreenRect;
-	    selScreenRect = OboSelectionRect.createFromSelection();
+	  Screen.prototype.getScrollDistanceNeededToPutClientRectIntoView = function (clientRect) {
+	    var rect;
 	    rect = this.el.getBoundingClientRect();
-	    if (!selScreenRect.valid) {
+	    if (!clientRect.valid) {
 	      return 0;
 	    }
-	    if (selScreenRect.top < 0) {
-	      return selScreenRect.top - PX_EDGE_PADDING;
+	    if (clientRect.top < 0) {
+	      return clientRect.top - PX_EDGE_PADDING;
 	    }
-	    if (selScreenRect.bottom > rect.height) {
-	      return selScreenRect.bottom - rect.height + PX_EDGE_PADDING;
+	    if (clientRect.bottom > rect.height) {
+	      return clientRect.bottom - rect.height + PX_EDGE_PADDING;
 	    }
 	    return 0;
+	  };
+
+	  Screen.prototype.getScrollDistanceNeededToPutElementIntoView = function (el) {
+	    return this.getScrollDistanceNeededToPutClientRectIntoView(el.getBoundingClientRect());
+	  };
+
+	  Screen.prototype.getScrollDistanceNeededToPutSelectionIntoView = function () {
+	    return this.getScrollDistanceNeededToPutClientRectIntoView(OboSelectionRect.createFromSelection());
 	  };
 
 	  Screen.prototype.scrollSelectionIntoViewIfNeeded = function () {
@@ -15865,8 +15872,8 @@
 	    return this.el.scrollTop += this.distance;
 	  };
 
-	  Screen.prototype.tweenSelectionIntoViewIfNeeded = function () {
-	    this.distance = this.getScrollDistanceNeededToPutSelectionIntoView();
+	  Screen.prototype.tweenByDistance = function (distance) {
+	    this.distance = distance;
 	    this.distanceLeft = this.distance;
 	    if (this.distance !== 0) {
 	      this.travelBy = Math.max(1, parseInt(Math.abs(this.distance) / 10, 10));
@@ -15890,6 +15897,14 @@
 	        }
 	      }.bind(this), 10);
 	    }
+	  };
+
+	  Screen.prototype.tweenElementIntoViewIfNeeded = function (el) {
+	    return this.tweenByDistance(this.getScrollDistanceNeededToPutElementIntoView(el));
+	  };
+
+	  Screen.prototype.tweenSelectionIntoViewIfNeeded = function () {
+	    return this.tweenByDistance(this.getScrollDistanceNeededToPutSelectionIntoView());
 	  };
 
 	  return Screen;
@@ -16546,7 +16561,8 @@
 /* 232 */,
 /* 233 */,
 /* 234 */,
-/* 235 */
+/* 235 */,
+/* 236 */
 /***/ function(module, exports) {
 
 	module.exports = "data:image/svg+xml;charset=utf8,%3Csvg id='Layer_10' data-name='Layer 10' xmlns='http://www.w3.org/2000/svg' viewBox='0 0 20.48 20.48'%3E %3Cdefs%3E %3Cstyle%3E .cls-1 %7B fill: %236714bd; %7D %3C/style%3E %3C/defs%3E %3Ctitle%3Etoolbar-icons%3C/title%3E %3Cg%3E %3Crect class='cls-1' x='15.15' y='4.57' width='5.75' height='18.82' rx='1.13' ry='1.13' transform='translate(9.4 -14.41) rotate(45)'/%3E %3Cpath class='cls-1' d='M11.06,25l-5.3,1.23L7,20.94a1.12,1.12,0,0,1,1.59,0l2.47,2.47A1.13,1.13,0,0,1,11.06,25Z' transform='translate(-5.76 -5.76)'/%3E %3C/g%3E %3C/svg%3E"

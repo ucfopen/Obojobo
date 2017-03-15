@@ -14,24 +14,20 @@ class MCChoice extends DraftNode{
 	}
 
 	onAttemptEnd(req, res, assessment, responseHistory, currentAttempt) {
-		console.log('hear', responseHistory)
 		if(!assessment.contains(this.node)) return
 
-		for(let i in responseHistory)
-		{
-			let responseRecord = responseHistory[i]
+		let questionResponses = responseHistory.filter( (responseRecord) => {
+			return responseRecord.question_id === this.node.id
+		})
 
-			if(responseRecord.question_id === this.node.id)
-			{
-				console.log('yeah')
-				return (
-					this.yell('ObojoboDraft.Chunks.Question:calculateScore', req.app, this, responseRecord, (function(score) {
-						currentAttempt.addScore(this.node.id, score)
-						console.log('gonna add a question', score, this.node.id)
-					}).bind(this))
-				)
-			}
-		}
+		if(questionResponses.length === 0) return
+
+		return (
+			this.yell('ObojoboDraft.Chunks.Question:calculateScore', req.app, this, questionResponses, (function(score) {
+				currentAttempt.addScore(this.node.id, score)
+				console.log('gonna add a question', score, this.node.id)
+			}).bind(this))
+		)
 	}
 }
 
