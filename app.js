@@ -16,9 +16,6 @@ global.oboRequire = function(name) {
 
 let obojoboDraftExpress = require('./obojobo_draft_express');
 
-// =========== ROUTING & CONTROLERS ===========
-app.use('/', require('./routes/index'));
-
 // =========== STATIC ASSET PATHS ================
 app.use(express.static(path.join(__dirname, 'public')));
 

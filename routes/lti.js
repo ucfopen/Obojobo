@@ -2,15 +2,14 @@ let express = require('express');
 let router = express.Router();
 let ltiLaunch = oboRequire('lti_launch')
 
-router.get('/whoami', (req, res, next) => {
-	req.getCurrentUser(false)
-	.then(currentuser => {
-		let msg = `Hello ${currentuser.username}!`
-		res.send(msg);
-		next()
-	})
-});
+// LTI Instructions
+router.get('/', (req, res, next) => {
+	let baseUrl = `${req.protocol}://${req.host}:${req.app.get('port')}`
+	res.render('lti_launch_static.pug', {launch_url: `${baseUrl}/lti/launch`, xml_url: `${baseUrl}/lti/config.xml`});
+	next()
+})
 
+// LTI Configuration
 router.get('/config.xml', (req, res, next) => {
 	res.type('xml')
 	let viewParams = {
@@ -26,22 +25,5 @@ router.get('/config.xml', (req, res, next) => {
 	res.render('lti_config_xml.pug', viewParams);
 	next()
 });
-
-router.get('/launch', (req, res, next) => {
-	let baseUrl = `${req.protocol}://${req.host}:${req.app.get('port')}`
-	res.render('lti_launch_static.pug', {launch_url: `${baseUrl}/lti/launch`, xml_url: `${baseUrl}/lti/config.xml`});
-	next()
-})
-
-router.post('/launch', (req, res, next) => {
-	ltiLaunch.handle(req)
-	.then(user => {
-		res.render('lti_launch.pug', {title: 'LTI Authorized', user: user});
-		next()
-	})
-	.catch(err => {
-		next(err)
-	})
-})
 
 module.exports = router;
