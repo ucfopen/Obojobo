@@ -1,4 +1,6 @@
-var pgp = require('pg-promise')(/*options*/)
-var db = pgp('postgres://postgres:mysecretpassword@127.0.0.1:5432/postgres')
+let pgp = require('pg-promise')(/*options*/)
+let config = require('./config')
 
-module.exports = db
+let db = pgp(config.db.connectionString);
+
+module.exports = db;

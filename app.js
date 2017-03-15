@@ -4,7 +4,9 @@ var favicon = require('serve-favicon');
 var logger = require('morgan');
 var bodyParser = require('body-parser');
 var session = require('express-session')
+var pgSession = require('connect-pg-simple')
 var app = express();
+let config = require('./config')
 
 // Global for loading specialized Obojobo stuff
 // use oboRequire('models/draft') to load draft models from any context
@@ -29,11 +31,22 @@ app.use(favicon(path.join(__dirname, 'public', 'favicon.ico')));
 app.use(logger('common'));
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: false }));
+
 app.use(session({
+	store: new (pgSession(session))({
+		conString: config.db.connectionString,
+		tableName: 'sessions'
+	}),
 	secret: 'disIsSecret',
 	resave: false,
-	saveUninitialized: true,
-	cookie: { }
+	saveUninitialized: false,
+	cookie: {
+		path: '/',
+		sameSite: 'strict',
+		httpOnly: false,
+		secure: false,
+		maxAge: 30 * 24 * 60 * 60 * 1000 // 30 days
+	}
 }))
 
 app.use(require('node-sass-middleware')({

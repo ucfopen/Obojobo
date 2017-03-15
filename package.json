@@ -25,6 +25,7 @@
   "dependencies": {
     "body-parser": "~1.15.2",
     "concurrently": "^3.1.0",
+    "connect-pg-simple": "^3.1.2",
     "db-migrate": "^0.10.0-beta.20",
     "db-migrate-pg": "^0.1.11",
     "debug": "~2.2.0",

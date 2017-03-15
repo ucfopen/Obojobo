@@ -1,7 +1,8 @@
-var express = require('express');
-var router = express.Router();
-var db = oboRequire('db.js')
-var User = oboRequire('models/user')
+let express = require('express');
+let router = express.Router();
+let db = oboRequire('db');
+let User = oboRequire('models/user');
+let ltiLaunch = oboRequire('lti_launch')
 
 router.get('/whoami', (req, res, next) => {
 
