@@ -14,6 +14,7 @@ let registeredModuleApps = new Map();
 let isProd = true;
 let User = oboRequire('models/user')
 let GuestUser = oboRequire('models/guest_user')
+let config = oboRequire('config')
 
 
 // Global event emitter for the application
@@ -21,10 +22,10 @@ let GuestUser = oboRequire('models/guest_user')
 global.oboEvents = new EventEmitter(this);
 
 
+// Add some request
 app.use((req, res, next) => {
 	req.setCurrentUser = (user) =>{
 		if(! user instanceof User) throw new Error('Invalid User for Current user')
-		console.log('SETTING CURRENT USER', user.id)
 		req.session.currentUserId = user.id
 	}
 
@@ -33,19 +34,16 @@ app.use((req, res, next) => {
 		if(req.currentUser) return Promise.resolve(req.currentUser)
 
 		if( ! req.session || ! req.session.currentUserId ){
-			console.log('no currentUserId set');
 			if(isRequired) return Promise.reject(new Error('Login Required'))
 			return Promise.resolve(new GuestUser());
 		}
 
 		return User.fetchById(req.session.currentUserId)
 		.then(user => {
-			console.log('USER FOUND', user)
 			req.currentUser = user
 			return user
 		})
 		.catch(err => {
-			console.log('user not found after query', req.session.currentUserId);
 			if(isRequired) return Promise.reject(new Error('Login Required'))
 			return Promise.resolve(new GuestUser());
 		})
@@ -65,15 +63,54 @@ app.use((req, res, next) => {
 	next();
 })
 
+// LTI middleware
+app.use(ltiMiddleware({
+	nonceStore: new DevNonceStore(),
+	credentials: (key, callback) => {
+		// locate a matching key/secret pair
+		let keys = Object.keys(config.lti.keys)
+		for (var i = keys.length - 1; i >= 0; i--) {
+			if(keys[i] == key){
+				return callback(null, key, config.lti.keys[keys[i]])
+			}
+		}
+		return callback(new Error('Invalid LTI credentials'))
+	}
+}))
+
+
+//  LTI launch detection
+app.use((req, res, next) => {
+	// Check for lti data in the request (provided by express-ims-lti)
+	console.log('TESTING LTI')
+	if(!req.lti) return next()
+
+	Promise.resolve(req.lti)
+	.then(lti => {
+		console.log('Is a launch!')
+		req.session.lti = null
+		// create or update the use using the LTI data
+		return new User({
+			username: lti.body.lis_person_sourcedid,
+			email: lti.body.lis_person_contact_email_primary,
+			firstName: lti.body.lis_person_name_given,
+			lastName: lti.body.lis_person_name_family,
+			roles: lti.body.roles
+		}).saveOrCreate()
+	})
+	.then(user => {
+		req.setCurrentUser(user)
+		next()
+	})
+	.catch(error => {
+		next(new Error('There was a problem creating your account.'))
+	})
+});
+
+
 app.on('mount', (app) => {
 	isProd = app.get('env') === 'production';
 	parentApp = app;
-
-
-	parentApp.use(ltiMiddleware({
-		nonceStore: new DevNonceStore(),
-		credentials: (key, callback) => { callback(null, 'key', 'secret') }
-	}))
 
 	// Decorate api routes with convenient functions
 	parentApp.use('/api', apiResponseDecorator);

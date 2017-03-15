@@ -11,6 +11,9 @@ class Draft {
 
 	yell() {
 		return Promise.all(this.root.yell.apply(this.root, arguments))
+		.then(() => {
+			return this
+		})
 	}
 
 	processRawNode(node){
@@ -59,7 +62,7 @@ class Draft {
 		})
 		.catch( error => {
 			console.log('fetchById Error', error.message)
-			return error
+			return Promise.reject(error)
 		})
 	}
 

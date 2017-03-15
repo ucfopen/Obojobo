@@ -18,61 +18,31 @@ class UserError extends Error {
 }
 
 // Returns a promise containing lti data and the current user
-let handle = (req, res, next) => {
-	// // Check for lti data in the request (provided by express-ims-lti)
-	// if(!req.lti){
-	// 	if (req.session.lti) req.session.lti = null
-
-	// 	res.status(401)
-	// 	.render('error.pug', {message: 'Access Denied', error: {status: 'Invalid LTI launch request'}, stack:null });
-	// 	return next()
-	// }
-
-	// // create or update the use using the LTI data
-	// let user = new User({
-	// 	username: req.lti.body.lis_person_sourcedid,
-	// 	email: req.lti.body.lis_person_contact_email_primary,
-	// 	firstName: req.lti.body.lis_person_name_given,
-	// 	lastName: req.lti.body.lis_person_name_family,
-	// 	roles: req.lti.body.roles
-	// });
-
-	// return user.saveOrCreate()
-	// .then( result => {
-	// 	req.setCurrentUser(user)
-	// 	next()
-	// })
-	// .catch( error => {
-	// 	console.log('new, failure', error)
-	// 	res.render('error.pug', {message: 'ERROR', error: {status: 'There was a problem creating your account.'}});
-	// 	next()
-	// })
-
-
-
+let handle = (req) => {
 	// Check for lti data in the request (provided by express-ims-lti)
 	if(!req.lti){
-		if (req.session.lti) req.session.lti = null
-		return Promise.reject(new UnauthorizedError('Invalid LTI launch Request'))
+		req.session.lti = null
+		return req.getCurrentUser()
 	}
 
-	let lti = req.lti.body
-	// create or update the use using the LTI data
-	let user = new User({
-		username: lti.lis_person_sourcedid,
-		email: lti.lis_person_contact_email_primary,
-		firstName: lti.lis_person_name_given,
-		lastName: lti.lis_person_name_family,
-		roles: lti.roles
-	});
-
-	return user.saveOrCreate()
-	.then( result => {
-		req.setCurrentUser(user)
-		return [user, req.lti]
+	return Promise.resolve(req.lti)
+	.then(lti => {
+		req.session.lti = null
+		// create or update the use using the LTI data
+		return new User({
+			username: lti.body.lis_person_sourcedid,
+			email: lti.body.lis_person_contact_email_primary,
+			firstName: lti.body.lis_person_name_given,
+			lastName: lti.body.lis_person_name_family,
+			roles: lti.body.roles
+		}).saveOrCreate()
 	})
-	.catch( error => {
-		return new UserError('There was a problem creating your account.')
+	.then(user => {
+		req.setCurrentUser(user)
+		return user
+	})
+	.catch(error => {
+		return Promise.reject(new UserError('There was a problem creating your account.'))
 	})
 }
 
