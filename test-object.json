@@ -1089,6 +1089,38 @@
                                                                            "children": null
                                                                        }
                                                                    ]
+                                                               },
+                                                               {
+                                                                   "id": "C3ac57285-a214-4aa1-908f-fb79bdb20590",
+                                                                   "content": {
+                                                                   },
+                                                                   "metadata": {
+                                                                   },
+                                                                   "index": 0,
+                                                                   "type": "ObojoboDraft.Chunks.MCAssessment.MCFeedback",
+                                                                   "children": [
+                                                                       {
+                                                                           "id": "C1064bc5e-fa09-4497-bc33-cf3b2b6e39f3",
+                                                                           "content": {
+                                                                               "textGroup": [
+                                                                                   {
+                                                                                       "text": {
+                                                                                           "value": "Feedback - This is the correct answer",
+                                                                                           "styleList": null
+                                                                                       },
+                                                                                       "data": {
+                                                                                           "indent": 0
+                                                                                       }
+                                                                                   }
+                                                                               ]
+                                                                           },
+                                                                           "metadata": {
+                                                                           },
+                                                                           "index": 0,
+                                                                           "type": "ObojoboDraft.Chunks.Text",
+                                                                           "children": null
+                                                                       }
+                                                                   ]
                                                                }
                                                            ]
                                                        },
@@ -1118,6 +1150,38 @@
                                                                                    {
                                                                                        "text": {
                                                                                            "value": "This is the correct answer too",
+                                                                                           "styleList": null
+                                                                                       },
+                                                                                       "data": {
+                                                                                           "indent": 0
+                                                                                       }
+                                                                                   }
+                                                                               ]
+                                                                           },
+                                                                           "metadata": {
+                                                                           },
+                                                                           "index": 0,
+                                                                           "type": "ObojoboDraft.Chunks.Text",
+                                                                           "children": null
+                                                                       }
+                                                                   ]
+                                                               },
+                                                               {
+                                                                   "id": "B-3ac57285-a214-4aa1-908f-fb79bdb20590",
+                                                                   "content": {
+                                                                   },
+                                                                   "metadata": {
+                                                                   },
+                                                                   "index": 0,
+                                                                   "type": "ObojoboDraft.Chunks.MCAssessment.MCFeedback",
+                                                                   "children": [
+                                                                       {
+                                                                           "id": "B-1064bc5e-fa09-4497-bc33-cf3b2b6e39f3",
+                                                                           "content": {
+                                                                               "textGroup": [
+                                                                                   {
+                                                                                       "text": {
+                                                                                           "value": "Feedback - This is the correct answer too",
                                                                                            "styleList": null
                                                                                        },
                                                                                        "data": {

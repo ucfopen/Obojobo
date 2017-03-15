@@ -206,6 +206,7 @@ app.get('/api/drafts/:draftId/attempts', (req, res, next) => {
 global.oboEvents.on('client:question:recordResponse', (event, req) => {
 	let eventRecordResponse = 'client:question:recordResponse'
 
+
 	// check perms
 	// check input
 	if(!event.payload.attemptId)   return app.logError(eventRecordResponse, 'Missing Attempt ID', req, event)
@@ -227,6 +228,7 @@ global.oboEvents.on('client:question:recordResponse', (event, req) => {
 				AND attempts_question_responses.question_id = $[questionId]`
 		, {attemptId: event.payload.attemptId, questionId: event.payload.questionId, responderId: event.payload.responderId, response: event.payload.response})
 	.catch( error => {
+		console.log(error);
 		app.logError(eventRecordResponse, 'DB UNEXPECTED', req, error, error.toString());
 	})
 });
