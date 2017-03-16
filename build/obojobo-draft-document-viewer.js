@@ -604,7 +604,7 @@
 	    return createParsedJsonPromise(fetch("/api/drafts/" + id));
 	  },
 	  getAttempts: function getAttempts(lo) {
-	    return createParsedJsonPromise(APIUtil.get("/api/assessments/attempts/user/4/draft/" + lo.get('_id')));
+	    return createParsedJsonPromise(APIUtil.get("/api/drafts/" + lo.get('_id') + "/attempts"));
 	  },
 	  startAttempt: function startAttempt(lo, assessment, questions) {
 	    return createParsedJsonPromise(APIUtil.post('/api/assessments/attempt/start', {
