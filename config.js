@@ -4,8 +4,16 @@ let configuration = {}
 // Database
 let db = fs.readFileSync('./config/db.json');
 db = JSON.parse(db)['development']; // @TODO: use environment variable
-configuration.db = db
-configuration.db.connectionString = `${db.driver}://${db.user}:${db.password}@${db.host}:${db.port}/${db.database}`
+
+// convert the json in db.json to an object our database libraries like
+configuration.db = {
+	host: db.host,
+	port: db.port,
+	database: db.database,
+	user: db.user,
+	password: db.password
+};
+
 
 let lti = fs.readFileSync('./config/lti.json');
 lti = JSON.parse(lti)['development']

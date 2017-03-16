@@ -28,6 +28,14 @@ app.on('mount', (app) => {
 
 	// Add some request
 	parentApp.use((req, res, next) => {
+		// if we're behind a load balancer or something
+		if(req.headers['x-forwarded-proto'] === 'https'){
+			req.connection.encrypted = true;
+		}
+		if(req.headers['x-host']){
+			req.headers.host = req.headers['x-host'];
+		}
+
 		req.setCurrentUser = (user) =>{
 			if(! user instanceof User) throw new Error('Invalid User for Current user')
 			req.session.currentUserId = user.id
@@ -78,6 +86,7 @@ app.on('mount', (app) => {
 					return callback(null, key, config.lti.keys[keys[i]])
 				}
 			}
+			console.warn(`LTI ERROR FINDING CONFIG FOR KEY: ${key}`)
 			return callback(new Error('Invalid LTI credentials'))
 		}
 	}))
@@ -86,12 +95,10 @@ app.on('mount', (app) => {
 	//  LTI launch detection
 	parentApp.use((req, res, next) => {
 		// Check for lti data in the request (provided by express-ims-lti)
-		console.log('TESTING LTI')
 		if(!req.lti) return next()
 
 		Promise.resolve(req.lti)
 		.then(lti => {
-			console.log('Is a launch!')
 			req.session.lti = null
 			// create or update the use using the LTI data
 			return new User({
@@ -188,8 +195,6 @@ app.on('mount', (app) => {
 			parentApp.use(pathPair.url, express.static(pathPair.path))
 		}
 	}
-
-	// =========== ROUTING & CONTROLERS ===========
 
 	// =========== ROUTING & CONTROLERS ===========
 	parentApp.use('/', oboRequire('/routes/index'));

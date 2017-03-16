@@ -31,7 +31,7 @@ app.use(bodyParser.urlencoded({ extended: false }));
 
 app.use(session({
 	store: new (pgSession(session))({
-		conString: config.db.connectionString,
+		conString: config.db,
 		tableName: 'sessions'
 	}),
 	secret: 'disIsSecret',

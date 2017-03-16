@@ -4,10 +4,5 @@ apps:
     exec_mode: cluster
     # TODO: figure out how much memory we use and set this
     #max_memory_restart: 150M
-    ignore_watch:
-      - "config/installed_modules.json"
-      - "pm2_dev.yaml"
-      - "pm2_prod.yaml"
-      - "devsrc"
     env:
       NODE_ENV: production
