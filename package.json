@@ -1,14 +1,14 @@
 {
   "name": "obojobo-server",
-  "version": "3.0.0-alpha-1",
+  "version": "3.0.0-alpha-2",
   "private": true,
   "scripts": {
     "start": "yarn express:prod",
     "dev": "concurrently \"yarn express:dev\" \"yarn docengine:dev\"",
     "db:initdocker": "docker run --name db_postgres -d --restart=unless-stopped -p 5432:5432 postgres:9.6.1-alpine",
-    "db:reset": "node node_modules/db-migrate/bin/db-migrate reset",
-    "db:migrateup": "node node_modules/db-migrate/bin/db-migrate up",
-    "db:migratedown": "node node_modules/db-migrate/bin/db-migrate down",
+    "db:reset": "node node_modules/db-migrate/bin/db-migrate reset --config config/db.json",
+    "db:migrateup": "node node_modules/db-migrate/bin/db-migrate up --config config/db.json",
+    "db:migratedown": "node node_modules/db-migrate/bin/db-migrate down --config config/db.json",
     "db:seed": "node ./bin/seed_sample_draft.js",
     "express:dev": "pm2-dev start pm2_dev.yaml",
     "express:prod": "NODE_ENV=production node ./bin/www",
@@ -20,7 +20,7 @@
     "docengine:nodemodules": "cd ./devsrc/obojobo-draft-document-engine && yarn"
   },
   "engines": {
-    "node": "^7.0.0"
+    "node": "^6.9.4"
   },
   "dependencies": {
     "body-parser": "~1.15.2",
