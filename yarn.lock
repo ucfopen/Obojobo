@@ -1550,7 +1550,7 @@ object.omit@^2.0.0:
 
 "obojobo-draft-document-engine@git+ssh://git@github.com/ucfcdl/Obojobo-Document-Engine.git#feature/new-data-model":
   version "0.0.2-alpha1"
-  resolved "git+ssh://git@github.com/ucfcdl/Obojobo-Document-Engine.git#2ba02f5b08295701cff329f0f0800d171f7c126a"
+  resolved "git+ssh://git@github.com/ucfcdl/Obojobo-Document-Engine.git#aeafc58a53270edf7e9fafe3eed4d2a4a91d1b86"
 
 on-finished@~2.3.0:
   version "2.3.0"
