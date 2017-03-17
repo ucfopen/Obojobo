@@ -2,7 +2,8 @@ apps:
   - script: ./bin/www
     name: obojobo
     exec_mode: cluster
-    # TODO: figure out how much memory we use and set this
-    #max_memory_restart: 150M
+    instances: 2
+    cwd: ../../current
+    max_memory_restart: 100M # I think 100 should be plenty
     env:
       NODE_ENV: production
