@@ -6,6 +6,7 @@ let ltiLaunch = oboRequire('lti_launch')
 
 
 router.all('/view/:draftId*', (req, res, next) => {
+	console.log('DO A THING')
 	let oboGlobals = new OboGlobals();
 
 	req.getCurrentUser(true)

@@ -15,6 +15,8 @@ let isProd = true;
 let User = oboRequire('models/user')
 let GuestUser = oboRequire('models/guest_user')
 let config = oboRequire('config')
+let insertEvent = oboRequire('insert_event')
+let getIp = oboRequire('get_ip')
 
 
 // Global event emitter for the application
@@ -92,13 +94,22 @@ app.on('mount', (app) => {
 	}))
 
 
+
+
+
 	//  LTI launch detection
-	parentApp.use((req, res, next) => {
+	// parentApp.use((req, res, next) => {
+	parentApp.use('/view/:draftId*', (req, res, next) => {
+		console.log('HAHAHAHHAHAHA', req.params.draftId)
 		// Check for lti data in the request (provided by express-ims-lti)
 		if(!req.lti) return next()
 
-		Promise.resolve(req.lti)
+		let ltiBody = null
+
+		Promise.resolve(req.lti )
 		.then(lti => {
+			ltiBody = lti.body
+
 			req.session.lti = null
 			// create or update the use using the LTI data
 			return new User({
@@ -109,11 +120,47 @@ app.on('mount', (app) => {
 				roles: lti.body.roles
 			}).saveOrCreate()
 		})
-		.then(user => {
+		.then(function(user) {
 			req.setCurrentUser(user)
-			next()
+
+			let draftId = req.params.draftId
+
+
+			//@TODO - Move this to somewhere else!
+			db.one("INSERT INTO launches (draft_id, user_id, type, link, data) VALUES ($[draftId], $[userId], 'lti', $[link], $[data]) RETURNING id", {
+				draftId: draftId,
+				link: ltiBody.lis_outcome_service_url,
+				data: ltiBody,
+				userId: user.id
+			})
+			.then( (result) => {
+				console.log('__', result)
+				insertEvent({
+					action: 'lti:launch',
+					actorTime: new Date().toISOString(),
+					payload: { launchId:result.id },
+					userId: user.id,
+					ip: getIp(req),
+					metadata: {}
+				})
+				.then( (createdAt) => {
+					next()
+				})
+			})
+			// .catch( (error) => {
+			// 	console.log('ER', error)
+			// })
+
+			// console.log('HAYYY')
+			// console.log(lti)
+
+
+			.catch( (error) => {
+				console.log('ERRORRRRRRRR', error)
+			})
 		})
 		.catch(error => {
+			console.log('error', error)
 			next(new Error('There was a problem creating your account.'))
 		})
 	});
@@ -199,6 +246,7 @@ app.on('mount', (app) => {
 	// =========== ROUTING & CONTROLERS ===========
 	parentApp.use('/', oboRequire('/routes/index'));
 	parentApp.use('/', oboRequire('routes/viewer'));
+	parentApp.use('/', oboRequire('routes/editor'));
 	parentApp.use('/lti', oboRequire('routes/lti'));
 	parentApp.use('/api/drafts', oboRequire('routes/api/drafts'))
 	parentApp.use('/api/events', oboRequire('routes/api/events'))

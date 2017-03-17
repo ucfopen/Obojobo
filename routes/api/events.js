@@ -1,7 +1,8 @@
 var express = require('express');
 var app = express();
 
-var db = require('../../db.js')
+var insertEvent = oboRequire('insert_event')
+var getIp = oboRequire('get_ip')
 
 app.post('/', (req, res, next) => {
 	req.requireCurrentUser()
@@ -14,16 +15,13 @@ app.post('/', (req, res, next) => {
 		let insertObject = {
 			actorTime: event.actor_time,
 			action: event.action,
-			userId: currentUser.id, // @TODO: set actor correctly
-			ip: (req.headers['x-forwarded-for'] || req.connection.remoteAddress),
+			userId: currentUser.id,
+			ip: getIp(req),
 			metadata: {},
 			payload: event.payload
 		}
 
-		db.one(
-			"INSERT INTO events(actor_time, action, actor, ip, metadata, payload) VALUES (${actorTime}, ${action}, ${userId}, ${ip}, ${metadata}, ${payload}) RETURNING created_at", insertObject
-			, insertObject
-		)
+		insertEvent(insertObject)
 		.then( result => {
 			insertObject.createdAt = result.created_at;
 			global.oboEvents.emit(`client:${event.action}`, insertObject, req);
