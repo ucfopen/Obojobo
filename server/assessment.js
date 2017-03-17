@@ -2,12 +2,6 @@ let DraftNode = oboRequire('models/draft_node')
 let db = oboRequire('db');
 let express = require('express');
 let app = express();
-app.on('render:viewer', function(oboGlobals) {
-	console.log('RENDER VIEWER', oboGlobals);
-	oboGlobals.set('alpha', 'string');
-	oboGlobals.set('beta', 123);
-	oboGlobals.set('omega', { x:1 });
-});
 
 class Assessment extends DraftNode {
 	// static getAttemptObjectFromDbRow(dbRow) {

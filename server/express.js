@@ -3,6 +3,8 @@ let app = express();
 let DraftModel = oboRequire('models/draft');
 let db = oboRequire('db');
 let Assessment = require('./assessment');
+let lti = oboRequire('lti')
+
 
 let logAndRespondToUnexpected = (errorMessage, res, req, jsError) => {
 	res.unexpected(jsError)
@@ -147,7 +149,11 @@ app.post('/api/assessments/attempt/:attemptId/end', (req, res, next) => {
 
 						Assessment.updateAttempt(result, req.params.attemptId)
 						.then( result => {
-							res.success(result)
+							lti.replaceResult(currentUser.id, draftId, score / 100, (err, result) => {
+								console.log('RR', err, result)
+							})
+
+
 						})
 						.catch( error => {
 							console.log('errora', error, error.toString());

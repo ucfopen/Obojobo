@@ -1893,8 +1893,7 @@
 	        ModalContainer,
 	        null,
 	        modal
-	      ) : null,
-	      React.createElement(JSONInput, { onChange: this.onChangeJSON, value: JSON.stringify(this.state.model.toJSON(), null, 2) })
+	      ) : null
 	    );
 	  }
 	});
