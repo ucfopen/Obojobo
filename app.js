@@ -1,7 +1,6 @@
 var express = require('express');
 var path = require('path');
 var favicon = require('serve-favicon');
-var logger = require('morgan');
 var bodyParser = require('body-parser');
 var session = require('express-session')
 var pgSession = require('connect-pg-simple')
@@ -25,7 +24,6 @@ app.set('views', path.join(__dirname, 'views'));
 
 // =========== SET UP MIDDLEWARE ================
 app.use(favicon(path.join(__dirname, 'public', 'favicon.ico')));
-app.use(logger('common'));
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: false }));
 
