@@ -16,6 +16,9 @@
   text-align: left;
   width: 70%;
   margin: 0 auto; }
+  .obojobo-draft--sections--assessment .review .number-correct {
+    text-align: center;
+    font-family: "Libre Franklin", Arial, sans-serif; }
   .obojobo-draft--sections--assessment .review .is-correct > p,
   .obojobo-draft--sections--assessment .review .is-not-correct > p {
     margin-top: 0;

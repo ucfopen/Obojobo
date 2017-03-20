@@ -291,7 +291,7 @@
 	    };
 	  },
 	  render: function render() {
-	    var Component, PageComponent, child, childEl, highestScore, pageModel, questionScores, recentScore, scoreAction;
+	    var Component, PageComponent, child, childEl, highestScore, numCorrect, pageModel, questionScores, recentScore, scoreAction;
 	    recentScore = AssessmentUtil.getLastAttemptScoreForModel(this.props.moduleData.assessmentState, this.props.model);
 	    highestScore = AssessmentUtil.getHighestAttemptScoreForModel(this.props.moduleData.assessmentState, this.props.model);
 	    childEl = function () {
@@ -302,17 +302,7 @@
 	          return React.createElement(
 	            'div',
 	            { className: 'untested' },
-	            React.createElement(Component, { model: child, moduleData: this.props.moduleData }),
-	            React.createElement(
-	              'p',
-	              null,
-	              '#' + this.props.model.modelState.attempts
-	            ),
-	            React.createElement(
-	              'p',
-	              null,
-	              '#' + AssessmentUtil.getNumberOfAttemptsCompletedForModel(this.props.moduleData.assessmentState, this.props.model)
-	            )
+	            React.createElement(Component, { model: child, moduleData: this.props.moduleData })
 	          );
 	        case 'takingTest':
 	          child = this.props.model.children.at(1);
@@ -330,6 +320,14 @@
 	        case 'scoreSubmitted':
 	          scoreAction = this.getScoreAction();
 	          questionScores = AssessmentUtil.getLastAttemptScoresForModel(this.props.moduleData.assessmentState, this.props.model);
+	          numCorrect = questionScores.reduce(function (acc, questionScore) {
+	            var n;
+	            n = 0;
+	            if (parseInt(questionScore.score, 10) === 100) {
+	              n = 1;
+	            }
+	            return parseInt(acc, 10) + n;
+	          }, [0]);
 	          if (scoreAction.page != null) {
 	            pageModel = OboModel.create(scoreAction.page);
 	            pageModel.parent = this.props.model;
@@ -363,6 +361,11 @@
 	            React.createElement(
 	              'div',
 	              { className: 'review' },
+	              React.createElement(
+	                'p',
+	                { className: 'number-correct' },
+	                'You got ' + numCorrect + ' out of ' + questionScores.length + ' questions correct:'
+	              ),
 	              questionScores.map(function (questionScore, index) {
 	                var questionModel = OboModel.models[questionScore.id];
 	                var QuestionComponent = questionModel.getComponentClass();

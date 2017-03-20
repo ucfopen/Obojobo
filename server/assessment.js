@@ -4,18 +4,26 @@ let express = require('express');
 let app = express();
 
 class Assessment extends DraftNode {
-	// static getAttemptObjectFromDbRow(dbRow) {
-	// 	return ({
-	// 		attemptId: dbRow.id,
-	// 		assessmentId: dbRow.assessment_id,
-	// 		draftId: dbRow.draft_id,
-	// 		startTime: dbRow.created_at,
-	// 		endTime: dbRow.completed_at,
-	// 		questions: dbRow.state.questions,
-	// 		data: dbRow.state.data,
-	// 		result: dbRow.result
-	// 	})
-	// }
+	static getCompletedAssessmentAttemptHistory(userId, draftId, assessmentId) {
+		return (
+			db.manyOrNone(`
+				SELECT
+					id AS "attemptId",
+					created_at as "startTime",
+					completed_at as "endTime",
+					assessment_id as "assessmentId",
+					state,
+					result
+				FROM attempts
+				WHERE
+					user_id = $[userId]
+					AND draft_id = $[draftId]
+					AND assessment_id = $[assessmentId]
+					AND completed_at IS NOT NULL
+				ORDER BY completed_at DESC`
+			, {userId:userId, draftId:draftId, assessmentId:assessmentId})
+		)
+	}
 
 	// @TODO: most things touching the db should end up in models. figure this out
 	static getAttemptHistory(userId, draftId) {
@@ -29,7 +37,8 @@ class Assessment extends DraftNode {
 					state,
 					result
 				FROM attempts
-				WHERE user_id = $[userId]
+				WHERE
+					user_id = $[userId]
 					AND draft_id = $[draftId]
 				ORDER BY completed_at DESC`
 			, {userId:userId, draftId:draftId})
