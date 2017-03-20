@@ -9,4 +9,3 @@ apps:
       - "pm2_prod.yaml"
     env:
       NODE_ENV: development
-      DEBUG: '*'
