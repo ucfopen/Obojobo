@@ -17,12 +17,11 @@ let GuestUser = oboRequire('models/guest_user')
 let config = oboRequire('config')
 let insertEvent = oboRequire('insert_event')
 let getIp = oboRequire('get_ip')
-
+let ltiUtil = oboRequire('lti')
 
 // Global event emitter for the application
 // Not ideal to store this as a global, buuuut
 global.oboEvents = new EventEmitter(this);
-
 
 app.on('mount', (app) => {
 	isProd = app.get('env') === 'production';
@@ -81,30 +80,25 @@ app.on('mount', (app) => {
 	parentApp.use(ltiMiddleware({
 		nonceStore: new DevNonceStore(),
 		credentials: (key, callback) => {
-			// locate a matching key/secret pair
-			let keys = Object.keys(config.lti.keys)
-			for (var i = keys.length - 1; i >= 0; i--) {
-				if(keys[i] == key){
-					return callback(null, key, config.lti.keys[keys[i]])
-				}
+			try{
+				let secret = ltiUtil.findSecretForKey(key)
+				callback(null, key, secret)
 			}
-			console.warn(`LTI ERROR FINDING CONFIG FOR KEY: ${key}`)
-			return callback(new Error('Invalid LTI credentials'))
+			catch(err){
+				callback(new Error('Invalid LTI credentials'))
+			}
 		}
 	}))
-
-
-
 
 
 	//  LTI launch detection
 	// parentApp.use((req, res, next) => {
 	parentApp.use('/view/:draftId*', (req, res, next) => {
-		console.log('HAHAHAHHAHAHA', req.params.draftId)
 		// Check for lti data in the request (provided by express-ims-lti)
 		if(!req.lti) return next()
 
 		let ltiBody = null
+		let currentUser = null
 
 		Promise.resolve(req.lti )
 		.then(lti => {
@@ -120,44 +114,32 @@ app.on('mount', (app) => {
 				roles: lti.body.roles
 			}).saveOrCreate()
 		})
-		.then(function(user) {
-			req.setCurrentUser(user)
+		.then(user => {
+			currentUser = user
+			req.setCurrentUser(currentUser)
 
 			let draftId = req.params.draftId
 
-
 			//@TODO - Move this to somewhere else!
-			db.one("INSERT INTO launches (draft_id, user_id, type, link, data) VALUES ($[draftId], $[userId], 'lti', $[link], $[data]) RETURNING id", {
+			return db.one("INSERT INTO launches (draft_id, user_id, type, link, data) VALUES ($[draftId], $[userId], 'lti', $[link], $[data]) RETURNING id", {
 				draftId: draftId,
 				link: ltiBody.lis_outcome_service_url,
 				data: ltiBody,
-				userId: user.id
+				userId: currentUser.id
 			})
-			.then( (result) => {
-				console.log('__', result)
-				insertEvent({
-					action: 'lti:launch',
-					actorTime: new Date().toISOString(),
-					payload: { launchId:result.id },
-					userId: user.id,
-					ip: getIp(req),
-					metadata: {}
-				})
-				.then( (createdAt) => {
-					next()
-				})
+		})
+		.then(result => {
+			return insertEvent({
+				action: 'lti:launch',
+				actorTime: new Date().toISOString(),
+				payload: { launchId:result.id },
+				userId: currentUser.id,
+				ip: getIp(req),
+				metadata: {}
 			})
-			// .catch( (error) => {
-			// 	console.log('ER', error)
-			// })
-
-			// console.log('HAYYY')
-			// console.log(lti)
-
-
-			.catch( (error) => {
-				console.log('ERRORRRRRRRR', error)
-			})
+		})
+		.then(createdAt => {
+			next()
 		})
 		.catch(error => {
 			console.log('error', error)
@@ -279,6 +261,5 @@ global.oboEvents.on('client:saveState', (event, req) => {
 		})
 	})
 });
-
 
 module.exports = app
