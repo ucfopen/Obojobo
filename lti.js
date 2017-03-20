@@ -3,9 +3,9 @@ let HMAC_SHA1 = require('ims-lti/lib/hmac-sha1')
 let config = oboRequire('config')
 let db = require('./db')
 
-let retrieveLtiRequestBody = function(userId, draftId) {
+let retrieveLtiRequestData = function(userId, draftId) {
 	return db.one(`
-		SELECT data
+		SELECT data, lti_key
 		FROM launches
 		WHERE user_id = $[userId]
 		AND draft_id = $[draftId]
@@ -33,17 +33,17 @@ let findSecretForKey = (key) => {
 
 // Returns a promise
 let replaceResult = function(userId, draftId, score) {
-	return retrieveLtiRequestBody(userId, draftId)
+	return retrieveLtiRequestData(userId, draftId)
 	.then( (result) => {
-		let key = 'testkey' // @TODO: this key should be stored somewhere related to the lti data!
 		let ltiBody = result.data;
+		let ltiLaunchKey = result.lti_key
 		let outcomeDocument = new OutcomeDocument({
 			body: {
 				lis_outcome_service_url: ltiBody.lis_outcome_service_url,
 				lis_result_sourcedid: ltiBody.lis_result_sourcedid
 			},
-			consumer_key: key,
-			consumer_secret: findSecretForKey(key),
+			consumer_key: ltiLaunchKey,
+			consumer_secret: findSecretForKey(ltiLaunchKey),
 			signer: new HMAC_SHA1()
 		})
 
