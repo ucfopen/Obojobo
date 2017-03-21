@@ -8,6 +8,11 @@ router.all('/editor', (req, res, next) => {
 	req.getCurrentUser(true)
 	.then(user => {
 		if(user.isGuest()) return Promise.reject(new Error('Login Required'))
+		if(!user.canViewEditor) {
+			res.status(404)
+			next()
+			return
+		}
 
 		db.any(`
 			SELECT DISTINCT ON (draft_id)
