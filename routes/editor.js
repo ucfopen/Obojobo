@@ -10,8 +10,7 @@ router.all('/editor', (req, res, next) => {
 		if(user.isGuest()) return Promise.reject(new Error('Login Required'))
 		if(!user.canViewEditor) {
 			res.status(404)
-			next()
-			return
+			return next()
 		}
 
 		db.any(`
