@@ -22,10 +22,15 @@ app.get('/:draftId', (req, res, next) => {
 
 //@TODO - Transactionify this
 app.post('/new', (req, res, next) => {
+	let newDraft = null
+
 	req.requireCurrentUser()
 	.then(currentUser => {
 		if(!currentUser.canCreateDrafts) throw 'Insufficent permissions'
 
+	// 	return db.none(`BEGIN`)
+	// })
+	// .then( () => {
 		return db.one(`
 			INSERT INTO drafts(
 				user_id
@@ -33,12 +38,14 @@ app.post('/new', (req, res, next) => {
 			VALUES(
 				$[userId]
 			)
-			RETURNING id
+			RETURNING *
 		`, {
 			userId: currentUser.id
 		})
 	})
 	.then( (result) => {
+		newDraft = result
+
 		return db.one(`
 			INSERT INTO drafts_content(
 				draft_id,
@@ -48,13 +55,18 @@ app.post('/new', (req, res, next) => {
 				$[draftId],
 				'{}'
 			)
-			RETURNING id
+			RETURNING *
 		`, {
 			draftId: result.id
 		})
 	})
 	.then( (result) => {
-		res.success(result)
+		newDraft.content = result
+
+	// 	return db.none(`COMMIT`)
+	// })
+	// .then( () => {
+		res.success(newDraft)
 		next()
 	})
 	.catch(err => {
@@ -124,7 +136,7 @@ app.get('/', (req, res, next) => {
 	.then(currentUser => {
 		if(!currentUser.canViewDrafts) throw 'Insufficent permissions'
 
-		db.any(`
+		return db.any(`
 			SELECT DISTINCT ON (draft_id)
 				draft_id AS "draftId",
 				id AS "latestVersion",
@@ -143,6 +155,7 @@ app.get('/', (req, res, next) => {
 		})
 	})
 	.then( (result) => {
+		console.log('DEM RESULTS', result)
 		res.success(result)
 	})
 });
