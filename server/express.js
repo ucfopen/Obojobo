@@ -23,15 +23,7 @@ app.post('/api/assessments/attempt/start', (req, res, next) => {
 	.then(draft => {
 		draftTree = draft
 
-		return  db.any(`
-			SELECT *
-			FROM attempts
-			WHERE user_id = $[userId]
-			AND draft_id = $[draftId]
-			AND assessment_id = $[assessmentId]
-			AND completed_at IS NOT NULL
-			ORDER BY completed_at
-			`, {userId: currentUser.id, draftId: req.body.draftId, assessmentId: req.body.assessmentId})
+		return Assessment.getCompletedAssessmentAttemptHistory(currentUser.id, req.body.draftId, req.body.assessmentId)
 	})
 	.then(attemptHistory => {
 		var assessment = draftTree.findNodeClass(req.body.assessmentId)
@@ -85,6 +77,8 @@ app.post('/api/assessments/attempt/:attemptId/end', (req, res, next) => {
 	let draftId
 	let assessmentId
 	let score
+	let attemptHistory
+	let maxAttemptScore
 	let state
 	let currentUser
 
@@ -151,9 +145,15 @@ app.post('/api/assessments/attempt/:attemptId/end', (req, res, next) => {
 		}
 		return Assessment.updateAttempt(result, req.params.attemptId)
 	})
-	.then(updateAttemptResult => {
+	.then((updateAttemptResult) => {
 		updateResult = updateAttemptResult
-		return lti.replaceResult(currentUser.id, draftId, score / 100)
+		return Assessment.getCompletedAssessmentAttemptHistory(currentUser.id, draftId, assessmentId)
+	})
+	.then((attemptHistory) => {
+		let allScores = attemptHistory.map( attempt => { return parseFloat(attempt.result.attemptScore) } )
+		maxAttemptScore = Math.max(0, ...allScores);
+
+		return lti.replaceResult(currentUser.id, draftId, maxAttemptScore / 100)
 	})
 	.then(isScoreSent => {
 		updateResult.ltiOutcomes = {

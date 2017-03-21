@@ -10376,19 +10376,17 @@
 	  displayName: 'HTML',
 
 	  createMarkup: function createMarkup() {
-	    return {
-	      __html: this.props.model.modelState.html
-	    };
-	  },
-	  componentDidMount: function componentDidMount() {
-	    var el, i, latexes, len, results;
-	    latexes = ReactDOM.findDOMNode(this).querySelectorAll('.latex');
-	    results = [];
+	    var div, el, i, latexes, len;
+	    div = document.createElement('div');
+	    div.innerHTML = this.props.model.modelState.html;
+	    latexes = div.querySelectorAll('.latex');
 	    for (i = 0, len = latexes.length; i < len; i++) {
 	      el = latexes[i];
-	      results.push(el.innerHTML = katex.renderToString(el.innerHTML));
+	      el.innerHTML = katex.renderToString(el.innerHTML);
 	    }
-	    return results;
+	    return {
+	      __html: div.innerHTML
+	    };
 	  },
 	  render: function render() {
 	    var data;

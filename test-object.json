@@ -3,8 +3,7 @@
    "_rev": "9-fc44e9eef35bcc6ae36778ab2286a689",
    "id": "68016af1-bbb7-4038-81a9-70df6022ed35",
    "content": {
-       "title": "Physics 2D",
-       "start": "assessment"
+       "title": "Physics 2D"
    },
    "metadata": {
    },
@@ -53,7 +52,7 @@
                        {
                            "id": "asdf2",
                            "content": {
-                               "html": "<p>html<b>now</b></p>"
+                               "html": "<p>html<b>now</b><ul><li>list</li><li>um<span class='latex'>\\mathrm{\\frac{m}{s^2}}</span>yo</p>"
                            },
                            "type": "ObojoboDraft.Chunks.HTML"
                        },
