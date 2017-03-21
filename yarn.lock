@@ -1553,8 +1553,8 @@ object.omit@^2.0.0:
     is-extendable "^0.1.1"
 
 "obojobo-draft-document-engine@git+ssh://git@github.com/ucfcdl/Obojobo-Document-Engine.git#feature/new-data-model":
-  version "0.0.2-alpha2"
-  resolved "git+ssh://git@github.com/ucfcdl/Obojobo-Document-Engine.git#202ca21c259f3e8a23baed04b6bf59791e8e12a6"
+  version "0.0.2"
+  resolved "git+ssh://git@github.com/ucfcdl/Obojobo-Document-Engine.git#e20f5f94606d5ba2b64094b341c7bb9e64918284"
   dependencies:
     smoothscroll-polyfill "^0.3.4"
 
