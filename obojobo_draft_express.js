@@ -98,11 +98,14 @@ app.on('mount', (app) => {
 		if(!req.lti) return next()
 
 		let ltiBody = null
+		let ltiLaunchKey = null
 		let currentUser = null
 
 		Promise.resolve(req.lti )
 		.then(lti => {
+			console.log(lti)
 			ltiBody = lti.body
+			ltiLaunchKey = lti.consumer_key
 
 			req.session.lti = null
 			// create or update the use using the LTI data
@@ -121,12 +124,19 @@ app.on('mount', (app) => {
 			let draftId = req.params.draftId
 
 			//@TODO - Move this to somewhere else!
-			return db.one("INSERT INTO launches (draft_id, user_id, type, link, data) VALUES ($[draftId], $[userId], 'lti', $[link], $[data]) RETURNING id", {
-				draftId: draftId,
-				link: ltiBody.lis_outcome_service_url,
-				data: ltiBody,
-				userId: currentUser.id
-			})
+			return db.one(`
+				INSERT INTO launches
+				(draft_id, user_id, type, link, lti_key, data)
+				VALUES ($[draftId], $[userId], 'lti', $[link], $[lti_key], $[data])
+				RETURNING id`
+				, {
+					draftId: draftId,
+					userId: currentUser.id,
+					link: ltiBody.lis_outcome_service_url,
+					lti_key: ltiLaunchKey,
+					data: ltiBody
+				}
+			)
 		})
 		.then(result => {
 			return insertEvent({

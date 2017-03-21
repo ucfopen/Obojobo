@@ -19,10 +19,17 @@ exports.up = function(db) {
     id: { type: 'bigserial', primaryKey: true},
     created_at: { type: 'timestamp WITH TIME ZONE', notNull: true, defaultValue: new String('now()')},
     draft_id: { type: 'UUID', notNull: true},
+    lti_key: {type: 'varchar', length:500, notNull: true},
     user_id: { type: 'bigint', notNull:true },
     type: { type: 'varchar', length:200, notNull: true},
     link: { type: 'varchar', length:500, notNull: true},
     data: { type:'jsonb' }
+  })
+  .then( result => {
+    return db.addIndex('launches', 'launches_typical_search', ['user_id', 'draft_id', 'type'])
+  })
+  .then( result => {
+    return db.addIndex('launches', 'launches_created_at', ['created_at'])
   })
 };
 

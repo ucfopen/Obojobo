@@ -34,6 +34,7 @@
     "express-ims-lti": "git+ssh://git@github.com/ucfcdl/express-ims-lti.git#ac7d1f4e9c5afa6470185d107b32ffdbaf28cd32",
     "express-session": "^1.15.1",
     "glob": "^7.1.1",
+    "moment": "^2.18.0",
     "morgan": "~1.7.0",
     "node-sass-middleware": "0.9.8",
     "obojobo-draft-document-engine": "git+ssh://git@github.com/ucfcdl/Obojobo-Document-Engine.git#feature/new-data-model",

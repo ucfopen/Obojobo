@@ -1388,6 +1388,10 @@ moment-timezone@^0.5.x:
   version "2.17.1"
   resolved "https://registry.yarnpkg.com/moment/-/moment-2.17.1.tgz#fed9506063f36b10f066c8b59a144d7faebe1d82"
 
+moment@^2.18.0:
+  version "2.18.0"
+  resolved "https://registry.yarnpkg.com/moment/-/moment-2.18.0.tgz#6cfec6a495eca915d02600a67020ed994937252c"
+
 "mongodb-uri@>= 0.9.7":
   version "0.9.7"
   resolved "https://registry.yarnpkg.com/mongodb-uri/-/mongodb-uri-0.9.7.tgz#0f771ad16f483ae65f4287969428e9fbc4aa6181"
@@ -1549,8 +1553,10 @@ object.omit@^2.0.0:
     is-extendable "^0.1.1"
 
 "obojobo-draft-document-engine@git+ssh://git@github.com/ucfcdl/Obojobo-Document-Engine.git#feature/new-data-model":
-  version "0.0.2-alpha1"
+  version "0.0.2-alpha2"
   resolved "git+ssh://git@github.com/ucfcdl/Obojobo-Document-Engine.git#6c558159c50fa17ec3a7f43cd7a706fa32b14367"
+  dependencies:
+    smoothscroll-polyfill "^0.3.4"
 
 on-finished@~2.3.0:
   version "2.3.0"
