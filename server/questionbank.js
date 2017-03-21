@@ -11,7 +11,6 @@ class QuestionBank extends DraftNode{
 	}
 
 	onSendToClient(req, res){
-		console.log('@TODO, Memory leak?')
 		this.children = []
 	}
 

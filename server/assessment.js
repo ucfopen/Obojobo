@@ -87,7 +87,6 @@ class Assessment extends DraftNode {
 	}
 
 	onSendToClient(req, res){
-		console.log('yup')
 		return this.yell('ObojoboDraft.Sections.Assessment:sendToClient', req, res)
 	}
 

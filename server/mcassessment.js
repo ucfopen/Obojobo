@@ -18,9 +18,7 @@ class MCAssessment extends DraftNode {
 		{
 			case 'pick-one':
 			case 'pick-one-multiple-correct':
-				console.log('response records', responseRecords)
 				let selectedItems = responseRecords.filter( (record) => { return record.response.set === true })
-				console.log('selectedItems', selectedItems)
 				//@TODO - Check to make sure there isn't more than one responseRecord (there shouldn't be for these type of questions)
 				if(selectedItems.length > 1) throw 'Impossible response to non pick-all MCAssessment response'
 
@@ -52,8 +50,6 @@ class MCAssessment extends DraftNode {
 					)
 				)
 
-				console.log('correct ids', Array.from(correctIds))
-				console.log('response ids', Array.from(responseIds))
 
 				if(correctIds.size !== responseIds.size) return setScore(0)
 				correctIds.forEach( (id) => { if(!responseIds.has(id)) return setScore(0) } )

@@ -25,7 +25,6 @@ class MCChoice extends DraftNode{
 		return (
 			this.yell('ObojoboDraft.Chunks.Question:calculateScore', req.app, this, questionResponses, (function(score) {
 				currentAttempt.addScore(this.node.id, score)
-				console.log('gonna add a question', score, this.node.id)
 			}).bind(this))
 		)
 	}

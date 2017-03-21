@@ -128,7 +128,6 @@ app.post('/api/assessments/attempt/:attemptId/end', (req, res, next) => {
 		let promises = assessment.yell('ObojoboDraft.Sections.Assessment:attemptEnd', req, res, assessment, responseHistory, {
 			getQuestions: () => { return state.questions },
 			addScore: (questionId, score) => {
-				console.log('addScore', questionId, score)
 				state.scores.push(score);
 				state.scoresByQuestionId[questionId] = score;
 			}
@@ -150,14 +149,16 @@ app.post('/api/assessments/attempt/:attemptId/end', (req, res, next) => {
 			attemptScore: score,
 			scores: scores
 		}
-
 		return Assessment.updateAttempt(result, req.params.attemptId)
 	})
-	.then(result => {
-		updateResult = result
+	.then(updateAttemptResult => {
+		updateResult = updateAttemptResult
 		return lti.replaceResult(currentUser.id, draftId, score / 100)
 	})
-	.then(result => {
+	.then(isScoreSent => {
+		updateResult.ltiOutcomes = {
+			sent: isScoreSent,
+		}
 		res.success(updateResult)
 	})
 	.catch(error => {
