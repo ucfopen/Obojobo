@@ -29,4 +29,7 @@ node_modules
 # Debug log from npm
 npm-debug.log
 
+# dont include installed chunks
+config/installed_chunks.json
+
 devsrc

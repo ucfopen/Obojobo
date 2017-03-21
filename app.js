@@ -1,85 +1,80 @@
 var express = require('express');
 var path = require('path');
 var favicon = require('serve-favicon');
-var logger = require('morgan');
-var cookieParser = require('cookie-parser');
 var bodyParser = require('body-parser');
-var ltiMiddleware = require('express-ims-lti');
-var cookieSession = require('cookie-session')
-var cons = require('consolidate');
-
-var appEvents = require('./appevents');
-
-// Require our routes/controllers
-var indexRoute = require('./routes/index');
-var ltiRoute = require('./routes/lti');
-var apiDraftsRoute = require('./routes/api/drafts');
-var apiEventsRoute = require('./routes/api/events');
-var apiStatesRoute = require('./routes/api/states');
-
+var session = require('express-session')
+var pgSession = require('connect-pg-simple')
 var app = express();
+let config = require('./config')
 
-app.locals.cdb = 'http://localhost:5984'
+// Global for loading specialized Obojobo stuff
+// use oboRequire('models/draft') to load draft models from any context
+global.oboRequire = function(name) {
+	return require(`${__dirname}/${name}`);
+}
 
+let obojoboDraftExpress = require('./obojobo_draft_express');
 
-// view engine setup
-var engines = require('consolidate');
-app.engine('pug', engines.pug)
-app.engine('mustache', engines.mustache)
-app.set('views', path.join(__dirname, 'views'));
-app.set('view engine', 'html');
-
-app.use(favicon(path.join(__dirname, 'public', 'favicon.ico')));
-app.use(logger('dev'));
-app.use(bodyParser.json());
-app.use(bodyParser.urlencoded({ extended: false }));
-app.use(cookieParser());
-app.use(cookieSession({name: 'obo3', keys: ['key1', 'key2']}))
-app.use(require('node-sass-middleware')({
-  src: path.join(__dirname, 'public'),
-  dest: path.join(__dirname, 'public'),
-  indentedSyntax: true,
-  sourceMap: true
-}));
-app.use(ltiMiddleware({
-  credentials: function (key, callback) {
-    // `this` is a reference to the request object.
-    // var consumer = this.consumer = fetchLtiConsumer(key);
-    // The first parameter is an error (null if there is none).
-    // callback(null, key, consumer.secret);
-    callback(null, key, 'lti-secret2');
-  },
-
-}));
-
+// =========== STATIC ASSET PATHS ================
 app.use(express.static(path.join(__dirname, 'public')));
-app.use('/static/react', express.static(__dirname + '/node_modules/react/dist'));
-app.use('/static/react-dom', express.static(__dirname + '/node_modules/react-dom/dist'));
 
-app.use('/', indexRoute);
-app.use('/lti', ltiRoute);
-app.use('/api/drafts', apiDraftsRoute)
-app.use('/api/events', apiEventsRoute)
-app.use('/api/states', apiStatesRoute)
+// =========== VIEW ENGINES ================
+app.set('view engine', 'pug')
+app.set('views', path.join(__dirname, 'views'));
 
-// catch 404 and forward to error handler
-app.use(function(req, res, next) {
-  var err = new Error('Not Found');
-  err.status = 404;
-  next(err);
-});
+// =========== SET UP MIDDLEWARE ================
+app.use(favicon(path.join(__dirname, 'public', 'favicon.ico')));
+app.use(bodyParser.json(config.general.bodyParser.jsonOptions));
+app.use(bodyParser.urlencoded(config.general.bodyParser.urlencodedOptions));
+
+app.use(session({
+	store: new (pgSession(session))({
+		conString: config.db,
+		tableName: 'sessions'
+	}),
+	secret: 'disIsSecret',
+	resave: false,
+	saveUninitialized: false,
+	cookie: {
+		path: '/',
+		sameSite: 'strict',
+		httpOnly: false,
+		secure: false,
+		maxAge: 30 * 24 * 60 * 60 * 1000 // 30 days
+	}
+}))
+
+app.use(require('node-sass-middleware')({
+	src: path.join(__dirname, 'public'),
+	dest: path.join(__dirname, 'public'),
+	indentedSyntax: true,
+	sourceMap: true
+}));
+
+app.use(obojoboDraftExpress)
+
+// @TODO 404!
 
 // error handler
 app.use(function(err, req, res, next) {
-  // set locals, only providing error in development
-  res.locals.message = err.message;
-  res.locals.error = req.app.get('env') === 'development' ? err : {};
-
-  // render the error page
-  res.status(err.status || 500);
-  res.render('error.pug');
+	// set locals, only providing error in development
+	res.locals.message = err.message;
+	res.locals.error = req.app.get('env') === 'development' ? err : {};
+	console.error(err)
+	// render the error page
+	res.status(err.status || 500);
+	res.render('error.pug');
+	next()
 });
 
-appEvents.register(app);
+// @TODO: centralize logging
+app.logError = function(name, req, ...additional) {
+	console.error("ERROR:", name, "\n", (new Date()), "\nREQUEST HEADERS", req.headers, "\nREQUEST BODY", req.body);
+	if(typeof additional !== "undefined")
+	{
+		console.error(additional);
+	}
+	console.error("");
+}
 
 module.exports = app;

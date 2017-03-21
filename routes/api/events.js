@@ -1,29 +1,39 @@
 var express = require('express');
-var router = express.Router();
-var db = require('../../db.js')
+var app = express();
 
-router.post('/', (req, res, next) => {
-  // check perms
+var insertEvent = oboRequire('insert_event')
+var getIp = oboRequire('get_ip')
 
-  // check input
+app.post('/', (req, res, next) => {
+	req.requireCurrentUser()
+	.then(currentUser => {
+		// check input
 
-  // add data to the event
-  let event = req.body.event
+		// add data to the event
+		let event = req.body.event
 
-  let insertObject = {
-    actorTime: event.actorTime,
-    action: event.action,
-    actor: 4, // @TODO: set actor correctly
-    ip: (req.headers['x-forwarded-for'] || req.connection.remoteAddress),
-    metadata: {},
-    payload: event.payload
-  }
+		let insertObject = {
+			actorTime: event.actor_time,
+			action: event.action,
+			userId: currentUser.id,
+			ip: getIp(req),
+			metadata: {},
+			payload: event.payload
+		}
 
-  db.none("INSERT INTO events (actortime, action, actor, ip, metadata, payload) VALUES(${actorTime}, ${action}, ${actor}, ${ip}, ${metadata}, ${payload})", insertObject)
-  .then( result => res.json({eventId:'body.id'}) )
-  .catch( error => res.status(404).json({error:'Draft not found'}))
+		insertEvent(insertObject)
+		.then( result => {
+			insertObject.createdAt = result.created_at;
+			global.oboEvents.emit(`client:${event.action}`, insertObject, req);
+			res.success({ createdAt:result.created_at });
+			next();
+		})
+		.catch( error => {
+			res.unexpected(error);
+			next();
+		})
+	})
 
 })
 
-
-module.exports = router;
+module.exports = app;
