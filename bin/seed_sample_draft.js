@@ -10,7 +10,7 @@ db.query('SELECT * FROM drafts where id = $1', [sampleKey])
 .then( result => {
   if(result.length != 1){
     console.log('ADDING DRAFT')
-    return db.query('INSERT INTO drafts (id) VALUES($1)', [sampleKey])
+    return db.query('INSERT INTO drafts (id, user_id) VALUES($1, 0)', [sampleKey])
   }
   return 0
 })

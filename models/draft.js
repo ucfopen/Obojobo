@@ -45,16 +45,18 @@ class Draft {
 		return db.one(`
 			SELECT
 				drafts.id AS id,
+				drafts_content.id AS version,
 				drafts.created_at AS draft_created_at,
 				drafts_content.created_at AS content_created_at,
 				drafts_content.content AS content
 			FROM drafts
 			JOIN drafts_content
 			ON drafts.id = drafts_content.draft_id
-			WHERE drafts.id = $1
-			ORDER BY drafts_content.created_at DESC
+			WHERE drafts.id = $[id]
+			AND deleted = FALSE
+			ORDER BY version DESC
 			LIMIT 1
-			`, id)
+			`, { id:id })
 		.then( result => {
 			result.content._id = result.id
 			result.content._rev = result.revision
