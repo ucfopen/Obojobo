@@ -1,40 +1,44 @@
+let inflector = require('json-inflector')
+
+let camelize = (o) => { return inflector.transform(o, 'camelizeLower') }
+
 let success = (req, res, next, valueObject) => {
-  return res.status(200).json({
+  return res.status(200).json(camelize({
     status: 'ok',
     value: valueObject
-  })
+  }))
 }
 
 let missing = (req, res, next, message) => {
-  return res.status(404).json({
+  return res.status(404).json(camelize({
     status: 'error',
     value: {
       type: 'missing',
       message: message
     }
-  })
+  }))
 }
 
 let reject = (req, res, next, message) => {
-  return res.status(403).json({
+  return res.status(403).json(camelize({
     status: 'error',
     value: {
       type: 'reject',
       message: message
     }
-  })
+  }))
 }
 
 // @TODO - in the controller - throw an error instead of calling this
 // let the main response handler catch it and respond with this
 let badInput = (req, res, next, message) => {
-  return res.status(400).json({
+  return res.status(400).json(camelize({
     status: 'error',
     value: {
       type: 'badInput',
       message: message
     }
-  })
+  }))
 }
 
 let unexpected = (req, res, next, message) => {
@@ -43,13 +47,13 @@ let unexpected = (req, res, next, message) => {
     console.error('error thrown', message.stack)
     message = message.toString()
   }
-  return res.status(500).json({
+  return res.status(500).json(camelize({
     status: 'error',
     value: {
       type: 'unexpected',
       message: message
     }
-  })
+  }))
 }
 
 module.exports = (req, res, next) => {

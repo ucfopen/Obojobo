@@ -1,4 +1,5 @@
 let db = oboRequire('db');
+let permissions = oboRequire('config').permissions
 
 class User {
 	constructor({id=0, firstName='Guest', lastName='Guest', email='guest@obojobo.ucf.edu', username='guest', createdAt=Date.now(), roles=[]} = {}){
@@ -9,6 +10,14 @@ class User {
 		this.username = username;
 		this.createdAt = createdAt;
 		this.roles = roles;
+
+		// creates 'canEditDrafts' getter if 'canEditDrafts' is set in config/role_groups.json
+		for(let permName in permissions)
+		{
+			Object.defineProperty(this, permName, {
+				get: this.hasPermission.bind(this, permName)
+			})
+		}
 	}
 
 	static fetchById(id) {
@@ -49,10 +58,32 @@ class User {
 		})
 	}
 
-	isGuest(){
+	isGuest() {
+		console.log('User::isGuest is not implemented')
 		return false;
 	}
 
+	hasRole(expectedRole) {
+		return this.roles.indexOf(expectedRole) > -1
+	}
+
+	hasRoles(expectedRoles) {
+		return expectedRoles.length === this.roles.filter( (role) => {
+			return expectedRoles.indexOf(role) > -1
+		}).length
+	}
+
+	hasOneOfRole(expectedRoles) {
+		return this.roles.filter( (role) => {
+			return expectedRoles.indexOf(role) > -1
+		}).length > 0
+	}
+
+	hasPermission(permName) {
+		if(!permissions[permName]) return false
+		return this.hasOneOfRole(permissions[permName])
+	}
 }
+
 
 module.exports = User

@@ -1,10 +1,16 @@
 let fs = require('fs')
 let configuration = {}
 
-// Database
-let db = fs.readFileSync('./config/db.json');
-db = JSON.parse(db)['development']; // @TODO: use environment variable
+let getConfigFileData = (configFile, type) => {
+	return JSON.parse(fs.readFileSync(configFile))[type]
+}
 
+let addToConfig = function(configFile, type, propertyName) {
+	configuration[propertyName] = getConfigFileData(configFile, type)
+	return configuration[propertyName]
+}
+
+db = getConfigFileData('./config/db.json', 'development')
 // convert the json in db.json to an object our database libraries like
 configuration.db = {
 	host: db.host,
@@ -14,9 +20,8 @@ configuration.db = {
 	password: db.password
 };
 
-
-let lti = fs.readFileSync('./config/lti.json');
-lti = JSON.parse(lti)['development']
-configuration.lti = lti
+addToConfig('./config/lti.json', 'development', 'lti')
+addToConfig('./config/permission_groups.json', 'development', 'permissions')
+addToConfig('./config/general.json', 'development', 'general')
 
 module.exports = configuration

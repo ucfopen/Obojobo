@@ -24,8 +24,8 @@ app.set('views', path.join(__dirname, 'views'));
 
 // =========== SET UP MIDDLEWARE ================
 app.use(favicon(path.join(__dirname, 'public', 'favicon.ico')));
-app.use(bodyParser.json());
-app.use(bodyParser.urlencoded({ extended: false }));
+app.use(bodyParser.json(config.general.bodyParser.jsonOptions));
+app.use(bodyParser.urlencoded(config.general.bodyParser.urlencodedOptions));
 
 app.use(session({
 	store: new (pgSession(session))({
