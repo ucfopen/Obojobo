@@ -29,6 +29,7 @@
     "db-migrate": "^0.10.0-beta.20",
     "db-migrate-pg": "^0.1.11",
     "debug": "~2.2.0",
+    "eslint": "^3.18.0",
     "eventemitter": "^0.3.3",
     "express": "~4.14.0",
     "express-ims-lti": "git+ssh://git@github.com/ucfcdl/express-ims-lti.git#ac7d1f4e9c5afa6470185d107b32ffdbaf28cd32",

@@ -23,14 +23,16 @@ app.get('/:draftId', (req, res, next) => {
 //@TODO - Transactionify this
 app.post('/new', (req, res, next) => {
 	let newDraft = null
+	let user = null
 
 	req.requireCurrentUser()
 	.then(currentUser => {
+		user = currentUser
 		if(!currentUser.canCreateDrafts) throw 'Insufficent permissions'
 
-	// 	return db.none(`BEGIN`)
-	// })
-	// .then( () => {
+		return db.none(`BEGIN`)
+	})
+	.then( () => {
 		return db.one(`
 			INSERT INTO drafts(
 				user_id
@@ -40,7 +42,7 @@ app.post('/new', (req, res, next) => {
 			)
 			RETURNING *
 		`, {
-			userId: currentUser.id
+			userId: user.id
 		})
 	})
 	.then( (result) => {
@@ -63,9 +65,9 @@ app.post('/new', (req, res, next) => {
 	.then( (result) => {
 		newDraft.content = result
 
-	// 	return db.none(`COMMIT`)
-	// })
-	// .then( () => {
+		return db.none(`COMMIT`)
+	})
+	.then( () => {
 		res.success(newDraft)
 		next()
 	})
@@ -157,6 +159,10 @@ app.get('/', (req, res, next) => {
 	.then( (result) => {
 		console.log('DEM RESULTS', result)
 		res.success(result)
+	})
+	.catch(error => {
+		res.unexpected(error)
+		next()
 	})
 });
 
