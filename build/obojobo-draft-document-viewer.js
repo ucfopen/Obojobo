@@ -904,6 +904,9 @@
 
 	  AssessmentStore.prototype.init = function (history) {
 	    var attempt, i, j, k, len, len1, len2, nonExistantQuestions, question, ref, unfinishedAttempt;
+	    if (history == null) {
+	      history = [];
+	    }
 	    this.state = {
 	      assessments: {}
 	    };
