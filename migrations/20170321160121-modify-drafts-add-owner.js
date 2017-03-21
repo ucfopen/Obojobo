@@ -19,10 +19,16 @@ exports.up = function(db) {
     type: 'bigint',
     notNull: true
   })
+  .then(result => {
+    return db.addIndex('drafts', 'user_id', ['user_id'])
+  })
 };
 
 exports.down = function(db) {
-  return db.removeColumn('drafts', 'user_id')
+  return db.removeIndex('drafts', 'user_id')
+  .then(result => {
+    return db.removeColumn('drafts', 'user_id')
+  })
 };
 
 exports._meta = {

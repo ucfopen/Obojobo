@@ -20,10 +20,16 @@ exports.up = function(db) {
     defaultValue: false,
     notNull: true
   })
+  .then(result => {
+    return db.addIndex('drafts', 'deleted', ['deleted'])
+  })
 };
 
 exports.down = function(db) {
-  return db.removeColumn('drafts', 'deleted')
+  return db.removeIndex('drafts', 'deleted')
+  .then(result => {
+    return db.removeColumn('drafts', 'deleted')
+  })
 };
 
 exports._meta = {
