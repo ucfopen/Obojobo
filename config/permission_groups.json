@@ -1,0 +1,8 @@
+{
+	"development": {
+		"canEditDrafts": ["Instructor", "Administrator"],
+		"canDeleteDrafts": ["Instructor", "Administrator"],
+		"canCreateDrafts": ["Instructor", "Administrator"],
+		"canViewDrafts": ["Instructor", "Administrator"]
+	}
+}

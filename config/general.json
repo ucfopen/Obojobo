@@ -1,0 +1,12 @@
+{
+	"development": {
+		"bodyParser": {
+			"jsonOptions": {
+				"limit": "1mb"
+			},
+			"urlencodedOptions": {
+				"extended": false
+			}
+		}
+	}
+}
