@@ -72,8 +72,8 @@ app.post('/new', (req, res, next) => {
 		next()
 	})
 	.catch(err => {
+		res.unexpected(error)
 		next()
-		return Promise.reject(err)
 	})
 })
 
