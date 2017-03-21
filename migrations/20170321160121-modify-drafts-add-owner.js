@@ -20,12 +20,12 @@ exports.up = function(db) {
     notNull: true
   })
   .then(result => {
-    return db.addIndex('drafts', 'user_id', ['user_id'])
+    return db.addIndex('drafts', 'drafts_user_id', ['user_id'])
   })
 };
 
 exports.down = function(db) {
-  return db.removeIndex('drafts', 'user_id')
+  return db.removeIndex('drafts', 'drafts_user_id')
   .then(result => {
     return db.removeColumn('drafts', 'user_id')
   })

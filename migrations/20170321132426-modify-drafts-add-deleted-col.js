@@ -21,12 +21,12 @@ exports.up = function(db) {
     notNull: true
   })
   .then(result => {
-    return db.addIndex('drafts', 'deleted', ['deleted'])
+    return db.addIndex('drafts', 'drafts_deleted', ['deleted'])
   })
 };
 
 exports.down = function(db) {
-  return db.removeIndex('drafts', 'deleted')
+  return db.removeIndex('drafts', 'drafts_deleted')
   .then(result => {
     return db.removeColumn('drafts', 'deleted')
   })
