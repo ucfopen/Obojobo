@@ -9,10 +9,10 @@ TOOLBAR_LINK = require 'svg-url?noquotes!./assets/link.svg'
 
 OBO = window.OBO
 
-ObojoboDraft = window.ObojoboDraft
-StyleType = ObojoboDraft.text.StyleType
-ChunkUtil = ObojoboDraft.chunk.util.ChunkUtil
-Chunk = ObojoboDraft.models.Chunk
+Common = window.ObojoboDraft.Common
+StyleType = Common.text.StyleType
+ChunkUtil = Common.chunk.util.ChunkUtil
+Chunk = Common.models.Chunk
 
 OBO
 	.registerToolbarItem

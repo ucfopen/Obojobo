@@ -1,16 +1,17 @@
 {
   "name": "obojobo-draft-document-engine",
-  "version": "0.0.1",
+  "version": "0.0.2-alpha2",
   "description": "",
   "main": "index.js",
   "scripts": {
     "test": "./node_modules/.bin/jasmine-node spec",
     "start": "webpack --watch",
-    "dev": "webpack-dev-server --progress --colors --port 8090 --host 0.0.0.0",
+    "dev": "webpack-dev-server  --colors --port 8090 --host 0.0.0.0",
     "build": "webpack",
     "build:gitadd": "git add ./build",
     "karma": "./node_modules/karma/bin/karma start ./karma.conf.js",
-    "karma-coverage": "./node_modules/karma/bin/karma start ./karma-coverage.conf.js"
+    "karma-coverage": "./node_modules/karma/bin/karma start ./karma-coverage.conf.js",
+    "generateModuleManifest": "node ./bin/generate_module_manifest.js"
   },
   "pre-commit": [
     "build",
@@ -43,13 +44,14 @@
     "node-sass": "^3.4.2",
     "object-assign": "^4.1.0",
     "pre-commit": "^1.2.2",
-    "react": "^15.3.1",
-    "react-dom": "^15.0.2",
     "sass-loader": "^3.1.2",
     "style-loader": "^0.13.0",
     "svg-url-loader": "^1.0.3",
     "webpack": "^1.12.14",
     "webpack-dev-server": "^1.14.1"
   },
-  "dependencies": {}
+  "dependencies": {
+    "smoothscroll-polyfill": "^0.3.4",
+    "whatwg-fetch": "^2.0.3"
+  }
 }

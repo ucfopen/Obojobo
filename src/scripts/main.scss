@@ -5,16 +5,69 @@ html {
   height: 100%;
   width: 100%;
   overflow: hidden;
+  // -webkit-overflow-scrolling: touch;
+}
+
+a {
+  color: inherit;
 }
 
 body {
   height: 100%;
   padding: 0;
-  overflow: auto;
+
   margin: 0;
   -webkit-overflow-scrolling: touch;
   font-size: $font-size;
 }
+
+// .component-container > .component:first-child
+// {
+// 	padding-top: 2em;
+// 	border: 1px solid red;
+// }
+
+// .component-container > .component:last-child
+// {
+// 	padding-bottom: 2em;
+// 	border: 1px solid green;
+// }
+
+#viewer-app
+{
+	height: 100%;
+	overflow: auto;
+
+	.root
+	{
+		height: 100%;
+	}
+}
+
+// .component:first-of-type
+// {
+// 	padding-top: 0;
+// 	// border: 2px solid red;
+// }
+// .component:last-of-type
+// {
+// 	padding-bottom: 0;
+// 	// border: 2px solid blue;
+// }
+// .component:first-of-type:last-of-type
+// {
+// 	padding-top: 0;
+// 	padding-bottom: 0;
+// 	// border: 2px solid green;
+// }
+
+.component
+{
+	// border: 2px solid gray;
+
+
+}
+
 .component
 {
 	box-sizing: border-box;
@@ -22,28 +75,33 @@ body {
 	display: block;
 	font-family: 'Noto Serif';
 	line-height: 1.5em;
-	// margin: 0;
-	// margin-top: 1rem;
-	// margin-bottom: 1rem;
 	overflow-wrap: break-word;
-	// padding: 1px;
-	// padding: 1px 0;
 	position: relative;
 	white-space: pre-wrap;
 	width: 100%;
 	word-wrap: break-word;
 	margin: 0 auto;
-	padding-top: 1rem;
-	padding-bottom: 1rem;
-	// border: 1px solid red;
+	padding-top: 1em;
+	padding-bottom: 1em;
 
 
+	&.first
+	{
+		padding-top: 0;
+	}
+
+	&.last
+	{
+		padding-bottom: 0;
+	}
 
 	.pad
 	{
-		max-width: $dimension-column-width;
-		margin-left: auto;
-		margin-right: auto;
+		// max-width: $dimension-column-width;
+		// margin-left: auto;
+		// margin-right: auto;
+		padding-left: $dimension-padding;
+		padding-right: $dimension-padding;
 	}
 
 	h1, h2, h3, h4, h5, h6
@@ -56,10 +114,7 @@ body {
 	}
 	h1
 	{
-		// color: #003a6f;
-		// font-family: 'Directors Gothic 230';
-		// font-size: 36pt;
-		line-height: 3rem;
+		line-height: 1em;
 		font-weight: 700;
 
 		b,
@@ -71,17 +126,21 @@ body {
 
 	h2
 	{
-		line-height: 2.5rem;
+		line-height: 1em;
 		color: #A20E83;
-		font-size: 1.5rem;
+		font-size: 1.5em;
 		// margin-bottom: 0;
 	}
 
 	pre,
+	code,
+	pre code,
 	textarea
 	{
-		font-family: 'Droid Sans Mono';
+		font-family: $font-monospace;
 		// tab-size: 8;
+		font-size: 1em;
+		letter-spacing: -0.01em;
 	}
 
 	a
@@ -103,13 +162,5 @@ body {
 
 .document
 {
-	.component:first-child
-	{
-		padding-top: 2rem;
-	}
 
-	.component:last-child
-	{
-		padding-bottom: 2rem;
-	}
 }

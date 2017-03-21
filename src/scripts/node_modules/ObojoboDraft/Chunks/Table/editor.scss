@@ -1,0 +1,114 @@
+@import '../../../../../../../scss/includes';
+
+.component[data-component-type="ObojoboDraft.Chunks.Table"]
+{
+	&.selection-contains,
+	&.selection-inside,
+	&.selection-start,
+	&.selection-end
+	{
+		.obojobo-draft--components--delete-button
+		{
+			display: block;
+		}
+	}
+}
+
+.obojobo-draft--chunks--table.preview
+{
+	margin-left: $dimension-padding;
+	margin-right: $dimension-padding;
+
+	.anchor
+	{
+		z-index: 2;
+	}
+
+	.container
+	{
+		position: relative;
+	}
+
+	.viewer
+	{
+		margin-bottom: 0;
+		margin-left: 0;
+		margin-right: 0;
+	}
+
+	.obojobo-draft--components--edit-button
+	{
+		position: absolute;
+		right: 0.5em;
+		top: 0.5em;
+		z-index: 2;
+	}
+
+	.obojobo-draft--components--delete-button
+	{
+		display: none;
+		position: absolute;
+		right: 0;
+		top: 0;
+		transform: translate(50%, -50%);
+		z-index: 3;
+	}
+}
+
+.obojobo-draft--chunks--table.editor
+{
+	.container
+	{
+		position: relative;
+	}
+
+	.edit-table
+	{
+		background: $color-bg;
+		border: 1px solid $color-shadow;
+		border-collapse: collapse;
+		cursor: text;
+		position: relative;
+		table-layout: fixed;
+		width: 100%;
+
+		&:focus
+		{
+			outline: none;
+		}
+
+		thead tr:first-child
+		{
+			line-height: inherit;
+		}
+
+		th,
+		td
+		{
+			border: 1px solid $color-shadow;
+			padding: 0.2em 0.5em;
+			text-align: left;
+
+			&:first-child
+			{
+				width: auto;
+			}
+		}
+
+		th
+		{
+			background: $color-bg2;
+			font-family: $font-default;
+			font-size: 0.9em;
+			text-align: center;
+		}
+	}
+
+	.obojobo-draft--components--button
+	{
+		bottom: 0;
+		left: 50%;
+		position: absolute;
+		transform: translate(-50%, 270%);
+	}
+}

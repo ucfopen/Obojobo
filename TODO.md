@@ -1,3 +1,15 @@
+CHEN:
+* Need to clear questions in assessments
+* go to a bit from page load
+* nav icons
+* nav colors and stuff
+* Need to put QuestionContent into its own chunk
+
+
+
+
+
+
 * '@TODO - All of the command handlers should move out to Editor since they all have to do with editing!!!!'
 * '@TODO - forcePageRender should just use callbacks'
 * '@TODO - Need a better name than "compoment"'
@@ -18,3 +30,18 @@ editor.sendKey 'a' ?
 editor.insertText ?
 editor.sendTab()
 editor.setSelection
+
+
+
+"content": {
+	"triggers": {
+		"onEnter": {
+			"type": "unlock",
+			"value": "final-assessment"
+		},
+		"onCompletion": {
+			"type": "message",
+			"value": "blah blah blah"
+		}
+	}
+}

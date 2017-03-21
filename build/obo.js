@@ -45,12 +45,12 @@
 /***/ 0:
 /***/ function(module, exports, __webpack_require__) {
 
-	module.exports = __webpack_require__(189);
+	module.exports = __webpack_require__(192);
 
 
 /***/ },
 
-/***/ 130:
+/***/ 95:
 /***/ function(module, exports) {
 
 	"use strict";
@@ -106,26 +106,24 @@
 
 /***/ },
 
-/***/ 189:
+/***/ 192:
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
 
-	var ComponentClassMap, OBO, chunks, chunksLoaded, componentClassMap, defaultChunk, errorChunk, getChunksCallbacks, insertItems, registeredToolbarItems, textListeners, toolbarItems;
+	var ComponentClassMap, OBO, componentClassMap, defaults, getItemsCallbacks, insertItems, items, itemsLoaded, registeredToolbarItems, textListeners, toolbarItems, triggerActions, variableHandlers;
 
-	ComponentClassMap = __webpack_require__(130);
+	ComponentClassMap = __webpack_require__(95);
 
 	componentClassMap = new ComponentClassMap();
 
-	chunks = new Map();
+	items = new Map();
 
-	chunksLoaded = 0;
+	itemsLoaded = 0;
 
-	getChunksCallbacks = [];
+	getItemsCallbacks = [];
 
-	defaultChunk = null;
-
-	errorChunk = null;
+	defaults = new Map();
 
 	insertItems = new Map();
 
@@ -139,6 +137,12 @@
 	toolbarItems = [];
 
 	textListeners = [];
+
+	triggerActions = {};
+
+	variableHandlers = new Map();
+
+	window.__VH = variableHandlers;
 
 	OBO = function () {
 	  function OBO() {}
@@ -166,28 +170,36 @@
 	    return this;
 	  };
 
-	  OBO.prototype.registerChunk = function (chunkClass, opts) {
-	    var loadDependency, promises;
+	  OBO.prototype.register = function (className, opts) {
+	    var cb, loadDependency, promises, ref, variable;
 	    if (opts == null) {
 	      opts = {};
 	    }
-	    console.log('registerChunk', chunkClass.type, opts);
-	    chunks.set(chunkClass.type, chunkClass);
-	    componentClassMap.register(chunkClass.type, chunkClass);
+	    items.set(className, opts);
 	    opts = Object.assign({
+	      type: null,
 	      dependencies: [],
 	      "default": false,
 	      error: false,
-	      insertItem: null
+	      insertItem: null,
+	      modelClass: null,
+	      componentClass: null,
+	      selectionHandler: null,
+	      commandHandler: null,
+	      variables: {},
+	      init: function init() {}
 	    }, opts);
 	    if (opts["default"]) {
-	      componentClassMap.setDefault(chunkClass.type);
-	    }
-	    if (opts.error) {
-	      componentClassMap.setError(chunkClass.type);
+	      defaults.set(opts.type, className);
 	    }
 	    if (opts.insertItem) {
 	      insertItems.set(chunkClass.type, opts.insertItem);
+	    }
+	    opts.init();
+	    ref = opts.variables;
+	    for (variable in ref) {
+	      cb = ref[variable];
+	      variableHandlers.set(variable, cb);
 	    }
 	    loadDependency = this.loadDependency;
 	    promises = opts.dependencies.map(function (dependency) {
@@ -197,16 +209,29 @@
 	    });
 	    Promise.all(promises).then(function () {
 	      var callback, i, len;
-	      chunksLoaded++;
-	      if (chunksLoaded === chunks.size) {
-	        for (i = 0, len = getChunksCallbacks.length; i < len; i++) {
-	          callback = getChunksCallbacks[i];
+	      itemsLoaded++;
+	      if (itemsLoaded === items.size) {
+	        for (i = 0, len = getItemsCallbacks.length; i < len; i++) {
+	          callback = getItemsCallbacks[i];
 	          callback(chunks);
 	        }
-	        return getChunksCallbacks = [];
+	        return getItemsCallbacks = [];
 	      }
 	    });
 	    return this;
+	  };
+
+	  OBO.prototype.getDefaultItemForModelType = function (modelType) {
+	    var type;
+	    type = defaults.get(modelType);
+	    if (!type) {
+	      return null;
+	    }
+	    return items.get(type);
+	  };
+
+	  OBO.prototype.getItemForType = function (type) {
+	    return items.get(type);
 	  };
 
 	  OBO.prototype.registerToolbarItem = function (opts) {
@@ -231,29 +256,37 @@
 	    return this;
 	  };
 
-	  OBO.prototype.getChunks = function (callback) {
+	  OBO.prototype.getItems = function (callback) {
 	    if (true) {
-	      callback(chunks);
+	      callback(items);
 	    } else {
-	      getChunksCallbacks.push(callback);
+	      getItemsCallbacks.push(callback);
 	    }
 	    return null;
+	  };
+
+	  OBO.prototype.getDefaultItemForType = function (type) {
+	    var className;
+	    className = defaults.get(type);
+	    if (className == null) {
+	      return null;
+	    }
+	    return items.get(className);
+	  };
+
+	  OBO.prototype.getTextForVariable = function (variable, model, viewerState) {
+	    var cb;
+	    cb = variableHandlers.get(variable);
+	    if (!cb) {
+	      return null;
+	    }
+	    return cb.call(null, model, viewerState);
 	  };
 
 	  return OBO;
 	}();
 
 	Object.defineProperties(OBO.prototype, {
-	  defaultChunk: {
-	    get: function get() {
-	      return defaultChunk;
-	    }
-	  },
-	  errorChunk: {
-	    get: function get() {
-	      return errorChunk;
-	    }
-	  },
 	  insertItems: {
 	    get: function get() {
 	      return insertItems;
@@ -274,9 +307,9 @@
 	      return textListeners;
 	    }
 	  },
-	  componentClassMap: {
+	  triggerActions: {
 	    get: function get() {
-	      return componentClassMap;
+	      return triggerActions;
 	    }
 	  },
 	  __debug__chunks: {
