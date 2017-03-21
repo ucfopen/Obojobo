@@ -1,0 +1,634 @@
+.obojobo-draft--components--delete-button button {
+  background: #F4F4F4;
+  border: none;
+  border-radius: 1.5rem;
+  box-sizing: border-box;
+  cursor: pointer;
+  display: block;
+  font-family: "Libre Franklin", Arial, sans-serif;
+  font-size: inherit;
+  height: 1.5rem;
+  overflow: hidden;
+  position: relative;
+  text-indent: -9999px;
+  transition: background 0.2s ease, color 0.2s ease;
+  width: 1.5rem; }
+  .obojobo-draft--components--delete-button button::after {
+    color: #b497d3;
+    content: '+';
+    font-size: 1.5rem;
+    left: 50%;
+    position: absolute;
+    text-indent: 0;
+    top: 50%;
+    transform: translate(-50%, -50%) rotate(45deg); }
+  .obojobo-draft--components--delete-button button:hover {
+    background: #6714BD; }
+    .obojobo-draft--components--delete-button button:hover::after {
+      color: #FFFFFF; }
+.obojobo-draft--components--edit-button {
+  display: inline-block; }
+  .obojobo-draft--components--edit-button button {
+    -webkit-user-select: none;
+    -moz-user-select: none;
+    -ms-user-select: none;
+    user-select: none;
+    background-color: #FFFFFF;
+    background-position: 0.3rem center;
+    background-repeat: no-repeat;
+    background-size: 30%;
+    border: 1px solid #6714BD;
+    box-shadow: 0 1px 1px rgba(0, 0, 0, 0.3);
+    color: #6714BD;
+    cursor: pointer;
+    font-family: "Libre Franklin", Arial, sans-serif;
+    font-size: 0.7rem;
+    height: 2rem;
+    margin-left: 1rem;
+    opacity: 0.8;
+    position: relative;
+    text-align: right;
+    width: 3.25rem; }
+    .obojobo-draft--components--edit-button button:hover {
+      background-color: #6714BD;
+      color: #FFFFFF;
+      opacity: 1;
+      text-align: center; }
+.obojobo-draft--components--button {
+  display: inline-block; }
+  .obojobo-draft--components--button button {
+    -webkit-user-select: none;
+    -moz-user-select: none;
+    -ms-user-select: none;
+    user-select: none;
+    background-color: #FFFFFF;
+    border: 1px solid #6714BD;
+    box-shadow: 0 1px 1px rgba(0, 0, 0, 0.3);
+    color: #6714BD;
+    cursor: pointer;
+    font-family: "Libre Franklin", Arial, sans-serif;
+    font-size: 0.7rem;
+    height: 2rem;
+    opacity: 0.8;
+    position: relative;
+    text-align: center;
+    width: 3.25rem; }
+    .obojobo-draft--components--button button:hover {
+      background-color: #6714BD;
+      color: #FFFFFF;
+      opacity: 1; }
+.obojobo-draft--components--modal--bubble {
+  background: #FFFFFF;
+  border: 1px solid rgba(0, 0, 0, 0.3);
+  border-radius: 0.3rem;
+  bottom: 0;
+  box-shadow: 0 2px 2px rgba(0, 0, 0, 0.3);
+  box-sizing: border-box;
+  display: inline-block;
+  left: 50%;
+  margin-top: 0.75rem;
+  padding: 0.5rem 2rem;
+  position: absolute;
+  transform: translate(-50%, 120%);
+  z-index: 10; }
+  .obojobo-draft--components--modal--bubble::before {
+    background: #FFFFFF;
+    border-left: 1px solid rgba(0, 0, 0, 0.3);
+    border-top: 1px solid rgba(0, 0, 0, 0.3);
+    content: ' ';
+    height: 1rem;
+    left: 50%;
+    position: absolute;
+    top: 0;
+    transform: translate(-50%, -50%) rotate(45deg);
+    width: 1rem; }
+  .obojobo-draft--components--modal--bubble .container {
+    position: relative; }
+.obojobo-draft--components--modal--bubble .single-input-bubble .interactable {
+  margin-bottom: 0.3rem; }
+
+.obojobo-draft--components--modal--bubble .single-input-bubble input {
+  border: 1px solid #6714BD;
+  box-sizing: border-box;
+  font-family: "Droid Sans Mono", monospace;
+  font-size: 0.8rem;
+  height: 2rem;
+  padding: 0.2rem;
+  width: 75%; }
+
+.obojobo-draft--components--modal--bubble .single-input-bubble button {
+  background: #6714BD;
+  border: none;
+  border-radius: 0 0.3rem 0.3rem 0;
+  box-sizing: border-box;
+  color: #FFFFFF;
+  cursor: pointer;
+  font-family: "Libre Franklin", Arial, sans-serif;
+  font-size: 0.8rem;
+  font-weight: bold;
+  height: 2rem;
+  padding: 0.23rem 0.5rem;
+  text-transform: uppercase;
+  vertical-align: top;
+  width: 25%; }
+
+.obojobo-draft--components--modal--bubble .single-input-bubble .label {
+  color: #999999;
+  display: block;
+  font-family: "Libre Franklin", Arial, sans-serif;
+  font-size: 0.7rem;
+  font-weight: bold;
+  text-align: center; }
+.editor--components--text-menu {
+  background: rgba(0, 0, 0, 0.9);
+  border-radius: 1.75rem;
+  box-shadow: 0 2px 2px rgba(0, 0, 0, 0.3);
+  box-sizing: border-box;
+  height: 1.75rem;
+  position: absolute;
+  transform: translate(-50%, -2.95rem);
+  z-index: 9999; }
+  .editor--components--text-menu::after {
+    border: 0.8rem solid transparent;
+    border-top: 0.8rem solid rgba(0, 0, 0, 0.9);
+    content: ' ';
+    display: block;
+    height: 0;
+    left: 50%;
+    position: absolute;
+    top: 1.75rem;
+    transform: translate(-50%, -0.5px);
+    width: 0; }
+  .editor--components--text-menu a {
+    background: none;
+    border: none;
+    border-right: 1px solid rgba(255, 255, 255, 0.3);
+    box-sizing: border-box;
+    color: #FFFFFF;
+    cursor: pointer;
+    display: inline-block;
+    font-family: "Libre Franklin", Arial, sans-serif;
+    font-size: 1rem;
+    font-weight: bold;
+    height: 1.225rem;
+    margin-top: 0.875rem;
+    opacity: 0.8;
+    padding-left: 0.4rem;
+    padding-right: 0.4rem;
+    position: relative;
+    transform: translate(0, -50%);
+    vertical-align: middle; }
+    .editor--components--text-menu a:hover {
+      opacity: 1; }
+    .editor--components--text-menu a:first-child {
+      padding-left: 0.6rem; }
+    .editor--components--text-menu a:last-child {
+      border-right: none;
+      padding-right: 0.6rem; }
+    .editor--components--text-menu a img {
+      height: 1.225rem;
+      width: 1.225rem; }
+    .editor--components--text-menu a span {
+      display: block;
+      height: 1.225rem;
+      line-height: 1.225rem;
+      pointer-events: none; }
+  .editor--components--text-menu .click-blocker {
+    background: #FFFFFF;
+    display: block;
+    height: 100%;
+    left: 0;
+    opacity: 0;
+    position: absolute;
+    top: 0;
+    width: 100%; }
+.editor--components--editor-app {
+  background: #F4F4F4;
+  bottom: 0;
+  left: 0;
+  position: absolute;
+  right: 0;
+  top: 0; }
+  .editor--components--editor-app .anchor {
+    color: transparent;
+    cursor: default;
+    height: 0;
+    left: 0;
+    outline: none;
+    position: absolute;
+    top: 0; }
+  .editor--components--editor-app .anchor-container {
+    position: relative; }
+    .editor--components--editor-app .anchor-container .anchor {
+      bottom: 0;
+      height: auto;
+      left: 0;
+      right: 0;
+      top: 0; }
+  .editor--components--editor-app .focusable-chunk .anchor {
+    cursor: pointer; }
+  .editor--components--editor-app .focusable-chunk:hover.highlight-on-hover,
+  .editor--components--editor-app .focusable-chunk:hover .highlight-on-hover {
+    outline: 0.15rem solid rgba(103, 20, 189, 0.4); }
+  .editor--components--editor-app .component.selection-contains .outline-on-selection,
+  .editor--components--editor-app .component.selection-inside .outline-on-selection,
+  .editor--components--editor-app .component.selection-start .outline-on-selection,
+  .editor--components--editor-app .component.selection-end .outline-on-selection {
+    outline: 0.15rem solid #6714BD; }
+  .editor--components--editor-app .controls {
+    left: 50%;
+    position: absolute;
+    top: 0;
+    transform: translate(-26rem);
+    width: 52rem;
+    z-index: 100; }
+  .editor--components--editor-app main {
+    bottom: 0;
+    left: 0;
+    overflow: scroll;
+    position: absolute;
+    right: 0;
+    top: 2.7rem;
+    transition: background 0.2s ease;
+    width: 100%; }
+    .editor--components--editor-app main .wrapper {
+      box-sizing: border-box;
+      margin-top: 2.5rem;
+      margin-bottom: 5rem;
+      position: relative; }
+    .editor--components--editor-app main .page-container {
+      text-align: center;
+      position: relative;
+      padding-top: 2.5rem;
+      padding-bottom: 2.5rem; }
+      .editor--components--editor-app main .page-container .editor--components--editor-page {
+        text-align: left; }
+        .editor--components--editor-app main .page-container .editor--components--editor-page > .obojobo-draft--components--delete-button {
+          display: none; }
+      .editor--components--editor-app main .page-container.active .add-page-btn {
+        display: block; }
+      .editor--components--editor-app main .page-container.active .editor--components--editor-page {
+        margin-bottom: 0; }
+        .editor--components--editor-app main .page-container.active .editor--components--editor-page::before {
+          border: 1px solid #b497d3; }
+        .editor--components--editor-app main .page-container.active .editor--components--editor-page > .obojobo-draft--components--delete-button {
+          display: block; }
+      .editor--components--editor-app main .page-container .add-page-btn {
+        position: absolute;
+        display: none;
+        background: #FFFFFF;
+        text-transform: uppercase;
+        font-size: 0.7rem;
+        font: "Libre Franklin", Arial, sans-serif;
+        border: none;
+        font-weight: bold;
+        color: rgba(0, 0, 0, 0.3);
+        margin: 0 auto;
+        border-radius: 0.2rem;
+        padding: 0.5rem;
+        cursor: pointer;
+        transition: color 0.2s, background 0.2s;
+        left: 50%;
+        z-index: 1; }
+        .editor--components--editor-app main .page-container .add-page-btn.top {
+          top: 0;
+          transform: translate(-26rem, -50%); }
+        .editor--components--editor-app main .page-container .add-page-btn.bottom {
+          bottom: 0;
+          transform: translate(-26rem, 50%); }
+        .editor--components--editor-app main .page-container .add-page-btn:hover {
+          background: #b497d3;
+          color: rgba(0, 0, 0, 0.7); }
+    .editor--components--editor-app main .append-menu {
+      margin-left: 50%;
+      position: relative;
+      transform: translate(-50%);
+      width: 52rem; }
+      .editor--components--editor-app main .append-menu .editor--components--side-menu--side-menu-list {
+        background: none;
+        opacity: 0.5;
+        padding-top: 0.3rem;
+        text-align: center;
+        top: 0;
+        transition: opacity 0.2s ease;
+        width: 52rem; }
+        .editor--components--editor-app main .append-menu .editor--components--side-menu--side-menu-list:hover {
+          opacity: 1; }
+        .editor--components--editor-app main .append-menu .editor--components--side-menu--side-menu-list .side-menu-button:hover {
+          background: #b497d3; }
+          .editor--components--editor-app main .append-menu .editor--components--side-menu--side-menu-list .side-menu-button:hover::after {
+            background: #b497d3; }
+          .editor--components--editor-app main .append-menu .editor--components--side-menu--side-menu-list .side-menu-button:hover .label {
+            background: #b497d3; }
+  .editor--components--editor-app .editing-blocker {
+    background: rgba(255, 255, 255, 0.5);
+    bottom: 0;
+    left: 0;
+    position: fixed;
+    right: 0;
+    top: 0;
+    z-index: 1000; }
+.editor--components--toolbar {
+  background: #F4F4F4;
+  border-bottom: 1px solid rgba(0, 0, 0, 0.1);
+  height: 2.7rem;
+  position: absolute;
+  width: 100%;
+  z-index: 1000; }
+  .editor--components--toolbar .wrapper {
+    box-sizing: border-box;
+    display: block;
+    margin: 0 auto;
+    max-width: 52rem;
+    padding: 0;
+    position: relative; }
+    .editor--components--toolbar .wrapper > *:first-child {
+      margin-left: 0; }
+  .editor--components--toolbar hr {
+    border: none;
+    border-left: 1px solid rgba(0, 0, 0, 0.1);
+    display: inline-block;
+    height: 1.3rem;
+    margin-left: 0.5rem;
+    margin-right: 0.5rem;
+    margin-top: 1.35rem;
+    transform: translate(0, -50%);
+    width: 0; }
+  .editor--components--toolbar > div {
+    display: inline-block; }
+  .editor--components--toolbar a {
+    position: relative;
+    border: 1px solid transparent;
+    border-radius: 0.2rem;
+    cursor: pointer;
+    display: inline-block;
+    height: 1.9rem;
+    line-height: 0;
+    margin: 0.3rem;
+    margin-top: 0.4rem;
+    opacity: 0.7;
+    text-indent: -9999px;
+    transition: border 0.2s background 0.2s opacity 0.2s;
+    vertical-align: top;
+    width: 1.9rem; }
+    .editor--components--toolbar a.on {
+      background: #b497d3;
+      border: 1px solid #b497d3;
+      opacity: 1; }
+    .editor--components--toolbar a::before, .editor--components--toolbar a::after {
+      background: #F4F4F4;
+      border-bottom-left-radius: 0.2rem;
+      border-bottom-right-radius: 0.2rem;
+      border-bottom: 1px solid transparent;
+      border-left: 1px solid transparent;
+      border-right: 1px solid transparent;
+      bottom: 0;
+      color: #999999;
+      content: attr(alt);
+      display: inline-block;
+      font-family: "Libre Franklin", Arial, sans-serif;
+      font-size: 0.7rem;
+      font-weight: bold;
+      height: 1.9rem;
+      left: 50%;
+      line-height: 1.9rem;
+      min-width: 2.7rem;
+      opacity: 0;
+      overflow: hidden;
+      padding-left: 0.5rem;
+      padding-right: 0.5rem;
+      pointer-events: none;
+      position: absolute;
+      text-align: center;
+      text-indent: 0;
+      text-transform: uppercase;
+      transform: translate(-50%, 50%) translate(0, 1.35rem);
+      transition-delay: 0s !important;
+      transition: opacity 0.2s;
+      vertical-align: middle;
+      white-space: nowrap; }
+    .editor--components--toolbar a::before {
+      transform: translate(-50%, 50%) translate(0, 1.35rem) translate(0, -1px); }
+    .editor--components--toolbar a:hover::before, .editor--components--toolbar a:hover::after {
+      opacity: 1;
+      transition-delay: 1s !important;
+      transition: opacity 0.2s; }
+    .editor--components--toolbar a:hover::after {
+      border-bottom: 1px solid rgba(0, 0, 0, 0.1);
+      border-left: 1px solid rgba(0, 0, 0, 0.1);
+      border-right: 1px solid rgba(0, 0, 0, 0.1); }
+  .editor--components--toolbar a:hover {
+    border: 1px solid rgba(0, 0, 0, 0.3);
+    opacity: 1; }
+  .editor--components--toolbar a:active {
+    background: rgba(0, 0, 0, 0.3); }
+  .editor--components--toolbar select {
+    float: left;
+    font-size: 1rem;
+    margin-left: 0.7rem;
+    margin-right: 0.7rem;
+    margin-top: 1.35rem;
+    transform: translate(0, -50%);
+    width: 8rem; }
+.editor--components--side-menu {
+  height: 100%;
+  left: 0;
+  position: absolute;
+  right: 0;
+  top: 0; }
+  .editor--components--side-menu.gu-transit {
+    display: none; }
+  .editor--components--side-menu.dragging .editor--components--side-menu--side-menu-list,
+  .editor--components--side-menu.dragging .editor--components--side-menu--side-menu-handle {
+    opacity: 0; }
+  .editor--components--side-menu .clone-container {
+    left: 0;
+    pointer-events: none;
+    position: absolute;
+    right: 0;
+    top: 1rem;
+    z-index: 1; }
+    .editor--components--side-menu .clone-container .dragged-container {
+      background: #FFFFFF;
+      margin: 0 auto;
+      outline: 0.15rem solid #6714BD; }
+  .editor--components--side-menu .editor--components--side-menu--side-menu-list {
+    transform: translate(-1.1rem); }
+
+.editor--components--editor-page .editor--components--side-menu--dragged {
+  background: #dbbef8; }
+  .editor--components--editor-page .editor--components--side-menu--dragged > * {
+    opacity: 0.2; }
+.gu-mirror {
+  position: fixed !important;
+  margin: 0 !important;
+  z-index: 9999 !important;
+  opacity: 0.8;
+  -ms-filter: "progid:DXImageTransform.Microsoft.Alpha(Opacity=80)";
+  filter: alpha(opacity=80); }
+
+.gu-hide {
+  display: none !important; }
+
+.gu-unselectable {
+  -webkit-user-select: none !important;
+  -moz-user-select: none !important;
+  -ms-user-select: none !important;
+  user-select: none !important; }
+
+.gu-transit {
+  opacity: 0.2;
+  -ms-filter: "progid:DXImageTransform.Microsoft.Alpha(Opacity=20)";
+  filter: alpha(opacity=20); }
+.editor--components--side-menu--side-menu-list {
+  background: #FFFFFF;
+  border: 0.2rem solid #F4F4F4;
+  border-radius: 2.2rem;
+  box-sizing: border-box;
+  color: #e7e7e7;
+  cursor: pointer;
+  position: absolute;
+  transition: border-radius 0.2s, background 0.2s; }
+  .editor--components--side-menu--side-menu-list.open {
+    background: #b497d3;
+    border: 0.2rem solid transparent;
+    border-radius: 0.2rem;
+    color: rgba(0, 0, 0, 0.5); }
+  .editor--components--side-menu--side-menu-list .insert-button {
+    box-sizing: border-box;
+    display: inline-block;
+    font-size: 1.76rem;
+    height: 1.8rem;
+    line-height: 0;
+    position: relative;
+    text-align: center;
+    vertical-align: middle;
+    width: 1.8rem; }
+    .editor--components--side-menu--side-menu-list .insert-button::after {
+      content: '+';
+      font-family: "Libre Franklin", Arial, sans-serif;
+      left: 50%;
+      position: absolute;
+      top: 50%;
+      transform: translate(-50%, -50%) translate(0.5px, 0); }
+  .editor--components--side-menu--side-menu-list .side-menu-button {
+    border-top-left-radius: 0.2rem;
+    border-top-right-radius: 0.2rem;
+    display: inline-block;
+    height: 1.8rem;
+    position: relative; }
+    .editor--components--side-menu--side-menu-list .side-menu-button button {
+      background-color: transparent;
+      background-position: center;
+      background-repeat: no-repeat;
+      background-size: 1.2rem 1.2rem;
+      border: none;
+      color: #000000;
+      cursor: pointer;
+      display: block;
+      font-family: "Libre Franklin", Arial, sans-serif;
+      font-size: 0.7rem;
+      font-weight: bold;
+      height: 1.8rem;
+      overflow: hidden;
+      position: relative;
+      text-indent: -9999px;
+      vertical-align: middle;
+      width: 2.86rem; }
+    .editor--components--side-menu--side-menu-list .side-menu-button:last-child {
+      border-right: none; }
+    .editor--components--side-menu--side-menu-list .side-menu-button:hover {
+      background-color: #FFFFFF; }
+      .editor--components--side-menu--side-menu-list .side-menu-button:hover::after {
+        background: #FFFFFF;
+        content: ' ';
+        display: block;
+        height: 0.2rem;
+        left: 0;
+        position: 'absolute';
+        top: 0;
+        width: 2.86rem; }
+      .editor--components--side-menu--side-menu-list .side-menu-button:hover .label-container {
+        opacity: 1; }
+  .editor--components--side-menu--side-menu-list .label-container {
+    bottom: 0;
+    box-sizing: border-box;
+    display: inline-block;
+    font-family: "Libre Franklin", Arial, sans-serif;
+    font-size: 0.6rem;
+    font-weight: bold;
+    left: 50%;
+    margin: 0;
+    opacity: 0;
+    pointer-events: none;
+    position: absolute;
+    text-align: center;
+    text-transform: uppercase;
+    transform: translate(-50%, 100%);
+    vertical-align: top;
+    width: 10rem; }
+    .editor--components--side-menu--side-menu-list .label-container .label {
+      background: #FFFFFF;
+      border-bottom-left-radius: 0.2rem;
+      border-bottom-right-radius: 0.2rem;
+      border-radius: 0.2rem;
+      border-top: none;
+      box-sizing: border-box;
+      display: inline-block;
+      min-width: 2.86rem;
+      padding: 0.2rem; }
+.editor--components--side-menu--side-menu-handle {
+  background-color: #FFFFFF;
+  background-position: center;
+  background-repeat: no-repeat;
+  background-size: 0.5rem;
+  border: 0.2rem solid #F4F4F4;
+  cursor: move;
+  transform: translate(-50%);
+  transition: width ease 0.2s, background ease 0.2s;
+  width: 0.7rem; }
+  .editor--components--side-menu--side-menu-handle:hover {
+    background-color: #b497d3;
+    border: 2px solid #b497d3;
+    width: 1.5rem; }
+.loading-modal {
+  background: rgba(255, 255, 255, 0.4);
+  bottom: 0;
+  left: 0;
+  position: fixed;
+  right: 0;
+  top: 0;
+  z-index: 99999999; }
+.editor--components--editor-page {
+  position: relative; }
+  .editor--components--editor-page::before {
+    background: #FFFFFF;
+    border: 1px solid transparent;
+    border-radius: 0.3rem;
+    bottom: 0;
+    content: ' ';
+    display: block;
+    left: 50%;
+    position: absolute;
+    top: 0;
+    transform: translate(-50%, 0);
+    width: 52rem; }
+  .editor--components--editor-page .chunks:focus {
+    outline: none; }
+  .editor--components--editor-page .component {
+    color: #595959;
+    max-width: 52rem; }
+    .editor--components--editor-page .component.selection-contains, .editor--components--editor-page .component.selection-inside, .editor--components--editor-page .component.selection-start, .editor--components--editor-page .component.selection-end {
+      color: #000000;
+      z-index: 2; }
+  .editor--components--editor-page.editing .component.not-editing-chunk {
+    opacity: 0.2; }
+  .editor--components--editor-page > .obojobo-draft--components--delete-button {
+    position: absolute;
+    top: 0;
+    left: 50%;
+    transform: translate(26rem) translate(-50%, -50%); }
+    .editor--components--editor-page > .obojobo-draft--components--delete-button button {
+      border: 1px solid #b497d3; }
+    .editor--components--editor-page > .obojobo-draft--components--delete-button:hover button {
+      border: 1px solid #6714BD; }

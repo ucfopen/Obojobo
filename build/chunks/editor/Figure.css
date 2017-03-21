@@ -1,0 +1,91 @@
+.component[data-component-type="ObojoboDraft.Chunks.Figure"].selection-contains .obojobo-draft--components--delete-button, .component[data-component-type="ObojoboDraft.Chunks.Figure"].selection-inside .obojobo-draft--components--delete-button, .component[data-component-type="ObojoboDraft.Chunks.Figure"].selection-start .obojobo-draft--components--delete-button, .component[data-component-type="ObojoboDraft.Chunks.Figure"].selection-end .obojobo-draft--components--delete-button {
+  display: block; }
+
+.obojobo-draft--chunks--figure .anchor {
+  z-index: 1; }
+
+.obojobo-draft--chunks--figure figure::after {
+  bottom: 0;
+  color: #999999;
+  content: 'Click here to specify a caption';
+  display: none;
+  font-size: 0.9em;
+  font-style: italic;
+  left: 0;
+  pointer-events: none;
+  position: absolute;
+  text-align: center;
+  width: 100%; }
+
+.obojobo-draft--chunks--figure figure.empty-caption::after {
+  display: block; }
+
+.obojobo-draft--chunks--figure figure.focus-anchor .size-controls,
+.obojobo-draft--chunks--figure figure.focus-anchor .img-controls {
+  display: block; }
+
+.obojobo-draft--chunks--figure figcaption {
+  position: relative;
+  z-index: 2; }
+  .obojobo-draft--chunks--figure figcaption:focus {
+    outline: none; }
+
+.obojobo-draft--chunks--figure .container.outline-on-selection {
+  background: rgba(103, 20, 189, 0.3); }
+
+.obojobo-draft--chunks--figure .container .size-controls {
+  display: none;
+  left: 50%;
+  position: absolute;
+  top: 50%;
+  transform: translate(-50%, -50%);
+  z-index: 3; }
+
+.obojobo-draft--chunks--figure .container .img-controls {
+  bottom: 20%;
+  display: none;
+  left: 50%;
+  position: absolute;
+  transform: translate(-50%, -50%);
+  z-index: 3; }
+
+.obojobo-draft--chunks--figure .obojobo-draft--components--delete-button {
+  display: none;
+  position: absolute;
+  right: 0;
+  top: 0;
+  transform: translate(50%, -50%);
+  z-index: 3; }
+.obojobo-draft--chunks--figure {
+  text-align: center; }
+  .obojobo-draft--chunks--figure figure {
+    height: 100%;
+    margin: 0;
+    padding: 0;
+    width: 100%; }
+  .obojobo-draft--chunks--figure .container {
+    display: inline-block;
+    height: auto;
+    position: relative;
+    width: 18rem; }
+    .obojobo-draft--chunks--figure .container img {
+      background: #FFFFFF;
+      border: none;
+      display: block;
+      width: 100%; }
+    .obojobo-draft--chunks--figure .container .img-placeholder {
+      border: 1px solid rgba(0, 0, 0, 0.3); }
+  .obojobo-draft--chunks--figure figcaption {
+    color: #999999;
+    font-size: 0.9em; }
+  .obojobo-draft--chunks--figure.medium .container {
+    width: 46rem; }
+  .obojobo-draft--chunks--figure.large figure {
+    padding-top: 0; }
+    .obojobo-draft--chunks--figure.large figure img {
+      display: block; }
+    .obojobo-draft--chunks--figure.large figure .img-placeholder {
+      border-left: none;
+      border-right: none; }
+  .obojobo-draft--chunks--figure.large .container {
+    width: 100%; }

@@ -1,0 +1,46 @@
+.obojobo-draft--chunks--html .anchor {
+  z-index: 2; }
+
+.obojobo-draft--chunks--html > .container {
+  margin: 0 auto;
+  position: relative;
+  z-index: 3; }
+
+.obojobo-draft--chunks--html .placeholder, .obojobo-draft--chunks--html .edit, .obojobo-draft--chunks--html img, .obojobo-draft--chunks--html iframe {
+  height: 100%;
+  margin: 0 auto;
+  width: 100%; }
+
+.obojobo-draft--chunks--html .placeholder {
+  background: #F4F4F4;
+  box-sizing: border-box;
+  color: #999999;
+  font-family: 'Source Sans Pro';
+  font-size: 0.9em;
+  font-weight: bold;
+  line-height: 0;
+  padding-top: 200px;
+  text-align: center; }
+
+.obojobo-draft--chunks--html textarea {
+  box-sizing: border-box;
+  font-size: 0.9rem;
+  height: 400px;
+  padding: 1rem;
+  width: 100%; }
+
+.obojobo-draft--chunks--html .obojobo-draft--components--delete-button {
+  position: absolute;
+  right: 0;
+  top: 0;
+  transform: translate(50%, -50%);
+  z-index: 3; }
+
+.obojobo-draft--chunks--html .obojobo-draft--components--edit-button {
+  position: absolute;
+  right: 1rem;
+  top: 1rem;
+  z-index: 3; }
+.obojobo-draft--chunks--html {
+  display: block;
+  margin: 1em auto; }

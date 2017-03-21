@@ -1,0 +1,43 @@
+.component[data-component-type="ObojoboDraft.Chunks.MathEquation"].selection-contains .obojobo-draft--components--delete-button, .component[data-component-type="ObojoboDraft.Chunks.MathEquation"].selection-inside .obojobo-draft--components--delete-button, .component[data-component-type="ObojoboDraft.Chunks.MathEquation"].selection-start .obojobo-draft--components--delete-button, .component[data-component-type="ObojoboDraft.Chunks.MathEquation"].selection-end .obojobo-draft--components--delete-button {
+  display: block; }
+
+.editing-chunk .obojobo-draft--chunks--math-equation .katex-container {
+  background: #FFFFFF;
+  border: 2px solid #6714BD;
+  border-radius: 0.5em;
+  margin-left: 0;
+  padding-left: 1em;
+  padding-right: 1em;
+  transform: translateY(-2px); }
+
+.editing-chunk .obojobo-draft--chunks--math-equation .anchor {
+  pointer-events: none; }
+
+.obojobo-draft--chunks--math-equation {
+  text-align: center; }
+  .obojobo-draft--chunks--math-equation .katex-container {
+    display: inline-block;
+    margin-left: 4rem; }
+  .obojobo-draft--chunks--math-equation .error-msg {
+    background: #ffe6e6;
+    border: 2px solid #ff6666;
+    border-radius: 4px;
+    color: #000000;
+    font-family: "Droid Sans Mono", monospace;
+    font-size: 0.7rem;
+    left: 50%;
+    line-height: 1rem;
+    padding: 0.5rem;
+    position: absolute;
+    top: 0;
+    transform: translate(-50%, -120%);
+    width: 50%; }
+  .obojobo-draft--chunks--math-equation .obojobo-draft--components--delete-button {
+    display: none;
+    position: absolute;
+    right: 0;
+    top: 0;
+    transform: translate(50%, -50%);
+    z-index: 3; }
+  .obojobo-draft--chunks--math-equation .empty {
+    color: rgba(0, 0, 0, 0.3); }

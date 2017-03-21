@@ -1,0 +1,19 @@
+.component[data-component-type="ObojoboDraft.Chunks.Code"].selection-contains pre::after, .component[data-component-type="ObojoboDraft.Chunks.Code"].selection-inside pre::after, .component[data-component-type="ObojoboDraft.Chunks.Code"].selection-start pre::after, .component[data-component-type="ObojoboDraft.Chunks.Code"].selection-end pre::after {
+  border-top: 1px solid #999999;
+  bottom: -2rem;
+  color: #999999;
+  content: 'Shift+Enter to stop editing';
+  font-family: "Libre Franklin", Arial, sans-serif;
+  font-size: 0.7rem;
+  left: 2rem;
+  position: absolute; }
+
+.obojobo-draft--chunks--code pre {
+  position: relative; }
+.obojobo-draft--chunks--code pre {
+  font-size: 1rem;
+  padding-left: 2rem;
+  padding-right: 2rem; }
+
+.obojobo-draft--chunks--code .text {
+  display: block; }
