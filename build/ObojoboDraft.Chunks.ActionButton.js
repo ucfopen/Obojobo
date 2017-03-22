@@ -88,7 +88,7 @@
 
 	var ActionButton, Button, Common, OboComponent;
 
-	__webpack_require__(197);
+	__webpack_require__(198);
 
 	Common = window.ObojoboDraft.Common;
 
@@ -137,7 +137,7 @@
 
 /***/ },
 
-/***/ 197:
+/***/ 198:
 /***/ function(module, exports) {
 
 	// removed by extract-text-webpack-plugin

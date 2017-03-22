@@ -67,7 +67,7 @@
 /* 0 */
 /***/ function(module, exports, __webpack_require__) {
 
-	module.exports = __webpack_require__(193);
+	module.exports = __webpack_require__(194);
 
 
 /***/ },
@@ -5383,7 +5383,7 @@
 
 	"use strict";
 
-	__webpack_require__(214);
+	__webpack_require__(215);
 
 	module.exports = React.createClass({
 	  displayName: "exports",
@@ -12349,7 +12349,7 @@
 
 	'use strict';
 
-	__webpack_require__(213);
+	__webpack_require__(214);
 
 	module.exports = React.createClass({
 	  displayName: 'exports',
@@ -12387,7 +12387,7 @@
 
 	"use strict";
 
-	__webpack_require__(217);
+	__webpack_require__(218);
 
 	module.exports = React.createClass({
 	  displayName: "exports",
@@ -12415,7 +12415,7 @@
 
 	var Button, DeleteButton, Modal;
 
-	__webpack_require__(219);
+	__webpack_require__(220);
 
 	Button = __webpack_require__(66);
 
@@ -12500,7 +12500,7 @@
 
 	var SimpleDialog;
 
-	__webpack_require__(220);
+	__webpack_require__(221);
 
 	SimpleDialog = __webpack_require__(71);
 
@@ -12528,7 +12528,7 @@
 
 	var DeleteButton;
 
-	__webpack_require__(221);
+	__webpack_require__(222);
 
 	DeleteButton = __webpack_require__(35);
 
@@ -12581,7 +12581,7 @@
 
 	var Dialog, ModalUtil;
 
-	__webpack_require__(222);
+	__webpack_require__(223);
 
 	ModalUtil = __webpack_require__(83);
 
@@ -15219,11 +15219,11 @@
 
 	var editButton, getBackgroundImage;
 
-	__webpack_require__(215);
+	__webpack_require__(216);
 
 	getBackgroundImage = __webpack_require__(81);
 
-	editButton = __webpack_require__(236);
+	editButton = __webpack_require__(239);
 
 	module.exports = React.createClass({
 	  displayName: 'exports',
@@ -15263,7 +15263,7 @@
 
 	var FocusBlocker, FocusUtil;
 
-	__webpack_require__(216);
+	__webpack_require__(217);
 
 	FocusUtil = __webpack_require__(40);
 
@@ -15285,7 +15285,7 @@
 
 	var Bubble;
 
-	__webpack_require__(218);
+	__webpack_require__(219);
 
 	Bubble = __webpack_require__(67);
 
@@ -15404,7 +15404,7 @@
 
 	"use strict";
 
-	__webpack_require__(223);
+	__webpack_require__(224);
 
 	module.exports = React.createClass({
 		displayName: "exports",
@@ -15480,7 +15480,7 @@
 
 	var TextMenu;
 
-	__webpack_require__(224);
+	__webpack_require__(225);
 
 	TextMenu = React.createClass({
 	  displayName: 'TextMenu',
@@ -16495,29 +16495,29 @@
 /* 190 */,
 /* 191 */,
 /* 192 */,
-/* 193 */
+/* 193 */,
+/* 194 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
 
 	var OD;
 
-	__webpack_require__(196);
+	__webpack_require__(197);
 
 	OD = __webpack_require__(85);
 
 	window.ObojoboDraft = __webpack_require__(85);
 
 /***/ },
-/* 194 */,
 /* 195 */,
-/* 196 */
+/* 196 */,
+/* 197 */
 /***/ function(module, exports) {
 
 	// removed by extract-text-webpack-plugin
 
 /***/ },
-/* 197 */,
 /* 198 */,
 /* 199 */,
 /* 200 */,
@@ -16533,31 +16533,31 @@
 /* 210 */,
 /* 211 */,
 /* 212 */,
-/* 213 */
-196,
+/* 213 */,
 /* 214 */
-196,
+197,
 /* 215 */
-196,
+197,
 /* 216 */
-196,
+197,
 /* 217 */
-196,
+197,
 /* 218 */
-196,
+197,
 /* 219 */
-196,
+197,
 /* 220 */
-196,
+197,
 /* 221 */
-196,
+197,
 /* 222 */
-196,
+197,
 /* 223 */
-196,
+197,
 /* 224 */
-196,
-/* 225 */,
+197,
+/* 225 */
+197,
 /* 226 */,
 /* 227 */,
 /* 228 */,
@@ -16568,7 +16568,10 @@
 /* 233 */,
 /* 234 */,
 /* 235 */,
-/* 236 */
+/* 236 */,
+/* 237 */,
+/* 238 */,
+/* 239 */
 /***/ function(module, exports) {
 
 	module.exports = "data:image/svg+xml;charset=utf8,%3Csvg id='Layer_10' data-name='Layer 10' xmlns='http://www.w3.org/2000/svg' viewBox='0 0 20.48 20.48'%3E %3Cdefs%3E %3Cstyle%3E .cls-1 %7B fill: %236714bd; %7D %3C/style%3E %3C/defs%3E %3Ctitle%3Etoolbar-icons%3C/title%3E %3Cg%3E %3Crect class='cls-1' x='15.15' y='4.57' width='5.75' height='18.82' rx='1.13' ry='1.13' transform='translate(9.4 -14.41) rotate(45)'/%3E %3Cpath class='cls-1' d='M11.06,25l-5.3,1.23L7,20.94a1.12,1.12,0,0,1,1.59,0l2.47,2.47A1.13,1.13,0,0,1,11.06,25Z' transform='translate(-5.76 -5.76)'/%3E %3C/g%3E %3C/svg%3E"

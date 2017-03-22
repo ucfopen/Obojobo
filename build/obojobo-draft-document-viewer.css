@@ -227,3 +227,24 @@
     bottom: 2rem;
     font-size: 0.7rem;
     opacity: 0.1; }
+.viewer--components--sketchpad {
+  position: fixed;
+  right: 30px;
+  top: 30px;
+  background: #fffbf0;
+  box-shadow: 0 1px 4px rgba(0, 0, 0, 0.3);
+  width: 30em;
+  height: 40em;
+  z-index: 99999; }
+  .viewer--components--sketchpad .lc,
+  .viewer--components--sketchpad .lc * {
+    position: absolute;
+    left: 0;
+    top: 0;
+    right: 0;
+    bottom: 0; }
+  .viewer--components--sketchpad .toolbar {
+    position: absolute;
+    background: black;
+    left: 0;
+    bottom: 0; }
