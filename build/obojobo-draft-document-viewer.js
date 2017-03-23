@@ -1602,6 +1602,14 @@
 	Sketchpad = React.createClass({
 	  displayName: 'Sketchpad',
 
+	  getInitialState: function getInitialState() {
+	    this.boundMouseMove = this.onDocMouseMove.bind(this);
+	    this.boundMouseUp = this.onDocMouseUp.bind(this);
+	    return {
+	      left: 0,
+	      top: 0
+	    };
+	  },
 	  componentDidMount: function componentDidMount() {
 	    this.lc = LC.init(this.refs.canvas);
 	    window.__lc = this.lc;
@@ -1622,10 +1630,41 @@
 	  setColor: function setColor(color) {
 	    return this.lc.setColor('primary', color);
 	  },
+	  undo: function undo() {
+	    return this.lc.undo();
+	  },
+	  redo: function redo() {
+	    return this.lc.redo();
+	  },
+	  onDocMouseMove: function onDocMouseMove(event) {
+	    this.setState({
+	      left: this.state.left + (event.screenX - this.x),
+	      top: this.state.top + (event.screenY - this.y)
+	    });
+	    this.x = event.screenX;
+	    return this.y = event.screenY;
+	  },
+	  onDocMouseUp: function onDocMouseUp(event) {
+	    delete this.x;
+	    delete this.y;
+	    window.document.removeEventListener('mousemove', this.boundMouseMove);
+	    return window.document.removeEventListener('mouseup', this.boundMouseUp);
+	  },
+	  startDrag: function startDrag(event) {
+	    this.x = event.screenX;
+	    this.y = event.screenY;
+	    window.document.addEventListener('mousemove', this.boundMouseMove);
+	    return window.document.addEventListener('mouseup', this.boundMouseUp);
+	  },
 	  render: function render() {
 	    return React.createElement(
 	      'div',
-	      { className: 'viewer--components--sketchpad' },
+	      { className: 'viewer--components--sketchpad', style: { left: this.state.left, top: this.state.top } },
+	      React.createElement(
+	        'div',
+	        { className: 'handle', onMouseDown: this.startDrag },
+	        'Sketchpad'
+	      ),
 	      React.createElement('div', { ref: 'canvas', className: 'lc' }),
 	      React.createElement(
 	        'div',
@@ -1679,6 +1718,16 @@
 	          'button',
 	          { onClick: this.setColor.bind(null, 'green') },
 	          'Green'
+	        ),
+	        React.createElement(
+	          'button',
+	          { onClick: this.undo },
+	          'Undo'
+	        ),
+	        React.createElement(
+	          'button',
+	          { onClick: this.redo },
+	          'Redo'
 	        )
 	      )
 	    );

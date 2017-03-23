@@ -229,14 +229,33 @@
     opacity: 0.1; }
 .viewer--components--sketchpad {
   position: fixed;
-  right: 30px;
-  top: 30px;
-  background: #fffbf0;
-  box-shadow: 0 1px 4px rgba(0, 0, 0, 0.3);
   width: 30em;
   height: 40em;
-  z-index: 99999; }
-  .viewer--components--sketchpad .lc,
+  z-index: 99999;
+  box-shadow: 0 3px 0 #9e9887; }
+  .viewer--components--sketchpad .handle {
+    width: 100%;
+    height: 2em;
+    background: #633a3a;
+    cursor: move;
+    box-shadow: inset 0 -2px 0 rgba(0, 0, 0, 0.3);
+    font-family: "Libre Franklin", Arial, sans-serif;
+    line-height: 2em;
+    text-align: center;
+    color: #9a7979;
+    text-shadow: 0px -1px rgba(0, 0, 0, 0.1);
+    border-left: 1px solid #633a3a;
+    border-right: 1px solid #633a3a;
+    box-sizing: border-box; }
+  .viewer--components--sketchpad .lc {
+    background: #fffbf0;
+    position: absolute;
+    top: 2em;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    border-left: 1px solid #d4d2cd;
+    border-right: 1px solid #d4d2cd; }
   .viewer--components--sketchpad .lc * {
     position: absolute;
     left: 0;
