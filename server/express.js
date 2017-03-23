@@ -164,6 +164,8 @@ app.post('/api/assessments/attempt/:attemptId/end', (req, res, next) => {
 		return Assessment.getCompletedAssessmentAttemptHistory(currentUser.id, draftId, assessmentId)
 	})
 	.then((attemptHistory) => {
+		if(isPreviewing) return Promise.resolve(false)
+
 		let allScores = attemptHistory.map( attempt => { return parseFloat(attempt.result.attemptScore) } )
 		maxAttemptScore = Math.max(0, ...allScores);
 

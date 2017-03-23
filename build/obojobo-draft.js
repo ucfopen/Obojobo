@@ -15467,6 +15467,12 @@
 	      tag: 'div'
 	    };
 	  },
+	  componentDidMount: function componentDidMount() {
+	    return this.props.model.processTrigger('onMount');
+	  },
+	  componentWillUnmount: function componentWillUnmount() {
+	    return this.props.model.processTrigger('onUnmount');
+	  },
 	  render: function render() {
 	    var Component, Tag, className, isFocussed;
 	    Component = this.props.model.getComponentClass();

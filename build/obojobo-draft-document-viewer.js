@@ -455,6 +455,9 @@
 	      return;
 	    }
 	    if (this.state.navTargetId != null) {
+	      if (this.state.navTargetId === navItem.id) {
+	        return;
+	      }
 	      navTargetModel = (ref = NavUtil.getNavTargetModel(this.state)) != null ? ref.processTrigger('onNavExit') : void 0;
 	      this.state.navTargetHistory.push(this.state.navTargetId);
 	      this.state.itemsById[this.state.navTargetId].showChildren = false;
@@ -1882,7 +1885,7 @@
 	      this.isPreviewing ? React.createElement(
 	        'div',
 	        { className: 'preview-banner' },
-	        'You are previewing this object - Assessments will not be saved'
+	        'You are previewing this object - Assessments will not be counted'
 	      ) : null,
 	      React.createElement(FocusBlocker, { moduleData: this.state }),
 	      modal ? React.createElement(
