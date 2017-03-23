@@ -45,19 +45,19 @@
 /***/ 0:
 /***/ function(module, exports, __webpack_require__) {
 
-	module.exports = __webpack_require__(138);
+	module.exports = __webpack_require__(140);
 
 
 /***/ },
 
-/***/ 137:
+/***/ 139:
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
 
 	var Common, Dispatcher, OboComponent, Text, TextChunk, TextGroupEl, varRegex;
 
-	__webpack_require__(211);
+	__webpack_require__(212);
 
 	Common = window.ObojoboDraft.Common;
 
@@ -82,7 +82,6 @@
 	        if (textItem.text.value.indexOf('{{')) {
 	          match = null;
 	          textItem = textItem.clone();
-	          console.log('TODO - Change this so that it splits into tokens so it doesnt have to replace {{unknown}} with unknown');
 	          while ((match = varRegex.exec(textItem.text.value)) !== null) {
 	            variable = match[1];
 	            newText = window.OBO.getTextForVariable(variable, _this.props.model, _this.props.moduleData);
@@ -113,7 +112,7 @@
 
 /***/ },
 
-/***/ 138:
+/***/ 140:
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -126,13 +125,13 @@
 	  type: 'chunk',
 	  "default": true,
 	  adapter: ObojoboDraft.Common.chunk.textChunk.TextGroupAdapter,
-	  componentClass: __webpack_require__(137),
+	  componentClass: __webpack_require__(139),
 	  selectionHandler: new ObojoboDraft.Common.chunk.textChunk.TextGroupSelectionHandler()
 	});
 
 /***/ },
 
-/***/ 211:
+/***/ 212:
 /***/ function(module, exports) {
 
 	// removed by extract-text-webpack-plugin

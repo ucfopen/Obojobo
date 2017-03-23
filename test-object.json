@@ -34,8 +34,15 @@
                                "textGroup": [
                                    {
                                        "text": {
-                                           "value": "Projectile Motion",
-                                           "styleList": null
+                                           "value": "\\sin(x) Projectile Motion",
+                                           "styleList": [
+                                              {
+                                                  "type": "_latex",
+                                                  "start": 0,
+                                                  "end": 7,
+                                                  "data": {}
+                                              }
+                                           ]
                                        },
                                        "data": {
                                            "indent": 0
@@ -62,12 +69,16 @@
                                "headingLevel": 2,
                                "textGroup": [
                                    {
-                                       "text": {
-                                           "value": "The initial velocity",
-                                           "styleList": null
-                                       },
-                                       "data": {
-                                           "indent": 0
+                                      "text": {
+                                           "value": "\\sin(x) Projectile Motion",
+                                           "styleList": [
+                                              {
+                                                  "type": "_latex",
+                                                  "start": 0,
+                                                  "end": 7,
+                                                  "data": {}
+                                              }
+                                           ]
                                        }
                                    }
                                ]
@@ -558,6 +569,7 @@
                        {
                            "id": "a75581c6-b936-4ba0-8b51-e66c04d6285f",
                            "content": {
+                                "title": "My Custom Question Title",
                                "shuffle": true,
                                "type": "practice",
                                "solution": {
@@ -1127,7 +1139,7 @@
                                                        {
                                                            "id": "45741cef-b80e-4f79-a87c-f53677c59109",
                                                            "content": {
-                                                               "score": 100
+                                                               "score": 0
                                                            },
                                                            "metadata": {
                                                            },
@@ -1149,7 +1161,7 @@
                                                                                "textGroup": [
                                                                                    {
                                                                                        "text": {
-                                                                                           "value": "This is the correct answer too",
+                                                                                           "value": "This is NOT the correct answer",
                                                                                            "styleList": null
                                                                                        },
                                                                                        "data": {
@@ -2224,7 +2236,7 @@
                       ]
                    }
                ],
-               "attempts": 3,
+               "attempts": 999,
                "scoreActions": [
                    {
                        "from": 0,

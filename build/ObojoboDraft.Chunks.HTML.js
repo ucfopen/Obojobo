@@ -45,7 +45,7 @@
 /***/ 0:
 /***/ function(module, exports, __webpack_require__) {
 
-	module.exports = __webpack_require__(111);
+	module.exports = __webpack_require__(113);
 
 
 /***/ },
@@ -492,7 +492,7 @@
 	 * different kinds of domTree nodes in a consistent manner.
 	 */
 
-	var domTree = __webpack_require__(17);
+	var domTree = __webpack_require__(18);
 	var fontMetrics = __webpack_require__(3);
 	var symbols = __webpack_require__(6);
 	var utils = __webpack_require__(1);
@@ -3530,7 +3530,7 @@
 
 /***/ },
 
-/***/ 16:
+/***/ 17:
 /***/ function(module, exports) {
 
 	/**
@@ -3565,7 +3565,7 @@
 
 /***/ },
 
-/***/ 17:
+/***/ 18:
 /***/ function(module, exports, __webpack_require__) {
 
 	/**
@@ -3841,7 +3841,7 @@
 
 /***/ },
 
-/***/ 18:
+/***/ 19:
 /***/ function(module, exports) {
 
 	/**
@@ -3883,7 +3883,7 @@
 	 */
 
 	var ParseError = __webpack_require__(2);
-	var Settings = __webpack_require__(16);
+	var Settings = __webpack_require__(17);
 
 	var buildTree = __webpack_require__(52);
 	var parseTree = __webpack_require__(58);
@@ -4357,7 +4357,7 @@
 	var symbols = __webpack_require__(6);
 	var utils = __webpack_require__(1);
 
-	var parseData = __webpack_require__(18);
+	var parseData = __webpack_require__(19);
 	var ParseError = __webpack_require__(2);
 
 	/**
@@ -5090,7 +5090,7 @@
 
 	var buildCommon = __webpack_require__(5);
 	var delimiter = __webpack_require__(53);
-	var domTree = __webpack_require__(17);
+	var domTree = __webpack_require__(18);
 	var fontMetrics = __webpack_require__(3);
 	var utils = __webpack_require__(1);
 
@@ -6977,7 +6977,7 @@
 	var buildMathML = __webpack_require__(51);
 	var buildCommon = __webpack_require__(5);
 	var Options = __webpack_require__(48);
-	var Settings = __webpack_require__(16);
+	var Settings = __webpack_require__(17);
 	var Style = __webpack_require__(4);
 
 	var makeSpan = buildCommon.makeSpan;
@@ -7567,7 +7567,7 @@
 /***/ function(module, exports, __webpack_require__) {
 
 	var fontMetrics = __webpack_require__(3);
-	var parseData = __webpack_require__(18);
+	var parseData = __webpack_require__(19);
 	var ParseError = __webpack_require__(2);
 
 	var ParseNode = parseData.ParseNode;
@@ -10323,7 +10323,7 @@
 
 /***/ },
 
-/***/ 109:
+/***/ 111:
 /***/ function(module, exports) {
 
 	'use strict';
@@ -10357,14 +10357,14 @@
 
 /***/ },
 
-/***/ 110:
+/***/ 112:
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
 
 	var Common, HTML, OboComponent, katex;
 
-	__webpack_require__(201);
+	__webpack_require__(202);
 
 	katex = __webpack_require__(46);
 
@@ -10403,7 +10403,7 @@
 
 /***/ },
 
-/***/ 111:
+/***/ 113:
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -10414,14 +10414,14 @@
 
 	OBO.register('ObojoboDraft.Chunks.HTML', {
 	  type: 'chunk',
-	  adapter: __webpack_require__(109),
-	  componentClass: __webpack_require__(110),
+	  adapter: __webpack_require__(111),
+	  componentClass: __webpack_require__(112),
 	  selectionHandler: new Common.chunk.focusableChunk.FocusableSelectionHandler()
 	});
 
 /***/ },
 
-/***/ 201:
+/***/ 202:
 /***/ function(module, exports) {
 
 	// removed by extract-text-webpack-plugin

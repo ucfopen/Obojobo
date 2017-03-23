@@ -45,20 +45,20 @@
 /***/ 0:
 /***/ function(module, exports, __webpack_require__) {
 
-	__webpack_require__(241);
-	module.exports = __webpack_require__(194);
+	__webpack_require__(242);
+	module.exports = __webpack_require__(195);
 
 
 /***/ },
 
-/***/ 194:
+/***/ 195:
 /***/ function(module, exports, __webpack_require__) {
 
 	"use strict";
 
 	var APIUtil, Dispatcher, _debounce, ie, moduleData, onBlur, onFocus, render;
 
-	__webpack_require__(234).polyfill();
+	__webpack_require__(235).polyfill();
 
 	APIUtil = window.Viewer.util.APIUtil;
 
@@ -104,7 +104,6 @@
 
 	render = function (_this) {
 	  return function (initialState) {
-	    console.log('RENDER');
 	    return ReactDOM.render(React.createElement(
 	      'div',
 	      { className: 'root' },
@@ -119,7 +118,7 @@
 
 /***/ },
 
-/***/ 234:
+/***/ 235:
 /***/ function(module, exports, __webpack_require__) {
 
 	/*
@@ -417,7 +416,7 @@
 
 /***/ },
 
-/***/ 241:
+/***/ 242:
 /***/ function(module, exports) {
 
 	(function(self) {

@@ -55,7 +55,6 @@ moduleData =
 	modalState: null
 
 render = (initialState) =>
-	console.log 'RENDER'
 	# moduleData.navState = NavStore.getState()
 	# moduleData.scoreState = ScoreStore.getState()
 	# moduleData.questionState = QuestionStore.getState()

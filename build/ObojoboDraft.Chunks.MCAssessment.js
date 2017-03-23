@@ -68,7 +68,7 @@
 /***/ 0:
 /***/ function(module, exports, __webpack_require__) {
 
-	module.exports = __webpack_require__(123);
+	module.exports = __webpack_require__(125);
 
 
 /***/ },
@@ -324,7 +324,7 @@
 /***/ 45:
 43,
 
-/***/ 121:
+/***/ 123:
 /***/ function(module, exports) {
 
 	'use strict';
@@ -352,14 +352,14 @@
 
 /***/ },
 
-/***/ 122:
+/***/ 124:
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
 
 	var Button, Common, DOMUtil, Dispatcher, MCAssessment, OboComponent, OboModel, QuestionUtil, ReactCSSTransitionGroup, ScoreUtil;
 
-	__webpack_require__(205);
+	__webpack_require__(206);
 
 	ReactCSSTransitionGroup = React.addons.CSSTransitionGroup;
 
@@ -414,7 +414,7 @@
 					};
 			},
 			calculateScore: function calculateScore() {
-					var correct, i, id, len, ref, responseData, responses;
+					var correct, i, id, len, ref, responseData, responses, score;
 					responseData = this.getResponseData();
 					correct = responseData.correct;
 					responses = responseData.responses;
@@ -423,12 +423,13 @@
 									if (correct.size !== responses.size) {
 											return 0;
 									}
+									score = 100;
 									correct.forEach(function (id) {
 											if (!responses.has(id)) {
-													return 0;
+													return score = 0;
 											}
 									});
-									return 100;
+									return score;
 							default:
 									ref = Array.from(correct);
 									for (i = 0, len = ref.length; i < len; i++) {
@@ -531,7 +532,6 @@
 					}.bind(this)).map(function (mcChoiceId) {
 							return OboModel.models[mcChoiceId].children.at(1);
 					}.bind(this));
-					console.log('RESPSONE DATA', this.getResponseData());
 					solution = this.props.model.parent.modelState.solution;
 					if (solution != null) {
 							SolutionComponent = solution.getComponentClass();
@@ -692,7 +692,7 @@
 
 /***/ },
 
-/***/ 123:
+/***/ 125:
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -709,14 +709,14 @@
 
 	OBO.register('ObojoboDraft.Chunks.MCAssessment', {
 	  type: 'chunk',
-	  adapter: __webpack_require__(121),
-	  componentClass: __webpack_require__(122),
+	  adapter: __webpack_require__(123),
+	  componentClass: __webpack_require__(124),
 	  selectionHandler: new ObojoboDraft.Common.chunk.textChunk.TextGroupSelectionHandler()
 	});
 
 /***/ },
 
-/***/ 205:
+/***/ 206:
 43
 
 /******/ })));

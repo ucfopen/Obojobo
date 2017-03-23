@@ -45,7 +45,7 @@
 /***/ 0:
 /***/ function(module, exports, __webpack_require__) {
 
-	module.exports = __webpack_require__(136);
+	module.exports = __webpack_require__(138);
 
 
 /***/ },
@@ -318,7 +318,7 @@
 
 /***/ },
 
-/***/ 134:
+/***/ 136:
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -380,14 +380,14 @@
 
 /***/ },
 
-/***/ 135:
+/***/ 137:
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
 
 	var Common, GridTextGroup, OboComponent, SelectionHandler, Table, TextGroupEl;
 
-	__webpack_require__(210);
+	__webpack_require__(211);
 
 	GridTextGroup = __webpack_require__(61);
 
@@ -489,7 +489,7 @@
 
 /***/ },
 
-/***/ 136:
+/***/ 138:
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -502,14 +502,14 @@
 
 	OBO.register('ObojoboDraft.Chunks.Table', {
 	  type: 'chunk',
-	  adapter: __webpack_require__(134),
-	  componentClass: __webpack_require__(135),
+	  adapter: __webpack_require__(136),
+	  componentClass: __webpack_require__(137),
 	  selectionHandler: new SelectionHandler()
 	});
 
 /***/ },
 
-/***/ 210:
+/***/ 211:
 /***/ function(module, exports) {
 
 	// removed by extract-text-webpack-plugin

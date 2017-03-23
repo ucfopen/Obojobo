@@ -45,19 +45,19 @@
 /***/ 0:
 /***/ function(module, exports, __webpack_require__) {
 
-	module.exports = __webpack_require__(184);
+	module.exports = __webpack_require__(185);
 
 
 /***/ },
 
-/***/ 180:
+/***/ 181:
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
 
 	var Adapter, Common, ScoreActions;
 
-	ScoreActions = __webpack_require__(182);
+	ScoreActions = __webpack_require__(183);
 
 	Common = window.ObojoboDraft.Common;
 
@@ -95,7 +95,7 @@
 
 /***/ },
 
-/***/ 181:
+/***/ 182:
 /***/ function(module, exports) {
 
 	'use strict';
@@ -142,7 +142,7 @@
 
 /***/ },
 
-/***/ 182:
+/***/ 183:
 /***/ function(module, exports) {
 
 	"use strict";
@@ -181,14 +181,14 @@
 
 /***/ },
 
-/***/ 183:
+/***/ 184:
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
 
 	var AssessmentUtil, AttemptIncompleteDialog, Button, Common, Dispatcher, ModalUtil, NavUtil, OboComponent, OboModel, ScoreStore;
 
-	__webpack_require__(228);
+	__webpack_require__(229);
 
 	Common = window.ObojoboDraft.Common;
 
@@ -208,7 +208,7 @@
 
 	NavUtil = window.Viewer.util.NavUtil;
 
-	AttemptIncompleteDialog = __webpack_require__(181);
+	AttemptIncompleteDialog = __webpack_require__(182);
 
 	module.exports = React.createClass({
 	  displayName: 'exports',
@@ -331,7 +331,6 @@
 	          if (scoreAction.page != null) {
 	            pageModel = OboModel.create(scoreAction.page);
 	            pageModel.parent = this.props.model;
-	            console.log('@TODO - FIGURE OUT A BETTER WAY TO DO THIS - THIS IS NEEDED TO GET {{VARIABLES}} WORKING');
 	            PageComponent = pageModel.getComponentClass();
 	            childEl = React.createElement(PageComponent, { model: pageModel, moduleData: this.props.moduleData });
 	          } else {
@@ -372,7 +371,7 @@
 
 	                return React.createElement(
 	                  'div',
-	                  { className: questionScore.score === 100 ? 'is-correct' : 'is-not-correct' },
+	                  { key: index, className: questionScore.score === 100 ? 'is-correct' : 'is-not-correct' },
 	                  React.createElement(
 	                    'p',
 	                    { className: 'pad' },
@@ -400,7 +399,7 @@
 
 /***/ },
 
-/***/ 184:
+/***/ 185:
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -413,8 +412,8 @@
 
 	OBO.register('ObojoboDraft.Sections.Assessment', {
 	  type: 'section',
-	  adapter: __webpack_require__(180),
-	  componentClass: __webpack_require__(183),
+	  adapter: __webpack_require__(181),
+	  componentClass: __webpack_require__(184),
 	  selectionHandler: null,
 	  getNavItem: function getNavItem(model) {
 	    var title;
@@ -449,7 +448,7 @@
 
 /***/ },
 
-/***/ 228:
+/***/ 229:
 /***/ function(module, exports) {
 
 	// removed by extract-text-webpack-plugin

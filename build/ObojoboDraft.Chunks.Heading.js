@@ -45,12 +45,12 @@
 /***/ 0:
 /***/ function(module, exports, __webpack_require__) {
 
-	module.exports = __webpack_require__(114);
+	module.exports = __webpack_require__(116);
 
 
 /***/ },
 
-/***/ 112:
+/***/ 114:
 /***/ function(module, exports) {
 
 	"use strict";
@@ -89,14 +89,14 @@
 
 /***/ },
 
-/***/ 113:
+/***/ 115:
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
 
 	var Common, Heading, OboComponent, TextChunk, TextGroupEl;
 
-	__webpack_require__(202);
+	__webpack_require__(203);
 
 	Common = window.ObojoboDraft.Common;
 
@@ -129,7 +129,7 @@
 
 /***/ },
 
-/***/ 114:
+/***/ 116:
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -140,8 +140,8 @@
 
 	OBO.register('ObojoboDraft.Chunks.Heading', {
 	  type: 'chunk',
-	  adapter: __webpack_require__(112),
-	  componentClass: __webpack_require__(113),
+	  adapter: __webpack_require__(114),
+	  componentClass: __webpack_require__(115),
 	  selectionHandler: new ObojoboDraft.Common.chunk.textChunk.TextGroupSelectionHandler(),
 	  getNavItem: function getNavItem(model) {
 	    switch (model.modelState.headingLevel) {
@@ -152,7 +152,7 @@
 	        }
 	        return {
 	          type: 'sub-link',
-	          label: model.toText(),
+	          label: model.modelState.textGroup.first.text,
 	          path: [model.toText().toLowerCase().replace(/ /g, '-')],
 	          showChildren: false
 	        };
@@ -164,7 +164,7 @@
 
 /***/ },
 
-/***/ 202:
+/***/ 203:
 /***/ function(module, exports) {
 
 	// removed by extract-text-webpack-plugin
