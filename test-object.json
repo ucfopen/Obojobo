@@ -3,7 +3,8 @@
    "_rev": "9-fc44e9eef35bcc6ae36778ab2286a689",
    "id": "68016af1-bbb7-4038-81a9-70df6022ed35",
    "content": {
-       "title": "Physics 2D"
+       "title": "Physics 2D",
+       "start": "assessment"
    },
    "metadata": {
    },
@@ -2205,7 +2206,6 @@
                "triggers": [
                    {
                        "type": "onNavEnter",
-                       "run": "once",
                        "actions": [
                            {
                                "type": "nav:lock"
@@ -2226,14 +2226,6 @@
                              "type": "nav:lock"
                          }
                       ]
-                   },
-                   {
-                      "type": "onEndAttempt",
-                      "actions": [
-                         {
-                             "type": "nav:unlock"
-                         }
-                      ]
                    }
                ],
                "attempts": 999,
@@ -2244,6 +2236,18 @@
                        "page": {
                           "type": "ObojoboDraft.Pages.Page",
                           "id": "fail-page",
+                          "content": {
+                              "triggers": [
+                                  {
+                                      "type": "onMount",
+                                      "actions": [
+                                          {
+                                              "type": "nav:unlock"
+                                          }
+                                      ]
+                                  }
+                              ]
+                          },
                           "children": [
                              {
                                 "type": "ObojoboDraft.Chunks.Text",
@@ -2319,6 +2323,18 @@
                        "page": {
                           "type": "ObojoboDraft.Pages.Page",
                           "id": "fail-page",
+                          "content": {
+                              "triggers": [
+                                  {
+                                      "type": "onMount",
+                                      "actions": [
+                                          {
+                                              "type": "nav:unlock"
+                                          }
+                                      ]
+                                  }
+                              ]
+                          },
                           "children": [
                              {
                                 "type": "ObojoboDraft.Chunks.Text",
