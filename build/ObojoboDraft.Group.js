@@ -45,19 +45,19 @@
 /***/ 0:
 /***/ function(module, exports, __webpack_require__) {
 
-	module.exports = __webpack_require__(175);
+	module.exports = __webpack_require__(176);
 
 
 /***/ },
 
-/***/ 174:
+/***/ 175:
 /***/ function(module, exports, __webpack_require__) {
 
 	"use strict";
 
 	var Common, Group, OboComponent;
 
-	__webpack_require__(226);
+	__webpack_require__(227);
 
 	Common = window.ObojoboDraft.Common;
 
@@ -86,7 +86,7 @@
 
 /***/ },
 
-/***/ 175:
+/***/ 176:
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -99,13 +99,13 @@
 	  type: 'group',
 	  "default": true,
 	  adapter: null,
-	  componentClass: __webpack_require__(174),
+	  componentClass: __webpack_require__(175),
 	  selectionHandler: null
 	});
 
 /***/ },
 
-/***/ 226:
+/***/ 227:
 /***/ function(module, exports) {
 
 	// removed by extract-text-webpack-plugin

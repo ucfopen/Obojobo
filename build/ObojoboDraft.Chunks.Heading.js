@@ -96,7 +96,7 @@
 
 	var Common, Heading, OboComponent, TextChunk, TextGroupEl;
 
-	__webpack_require__(203);
+	__webpack_require__(204);
 
 	Common = window.ObojoboDraft.Common;
 
@@ -164,7 +164,7 @@
 
 /***/ },
 
-/***/ 203:
+/***/ 204:
 /***/ function(module, exports) {
 
 	// removed by extract-text-webpack-plugin

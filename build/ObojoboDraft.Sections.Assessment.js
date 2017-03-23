@@ -45,19 +45,19 @@
 /***/ 0:
 /***/ function(module, exports, __webpack_require__) {
 
-	module.exports = __webpack_require__(185);
+	module.exports = __webpack_require__(186);
 
 
 /***/ },
 
-/***/ 181:
+/***/ 182:
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
 
 	var Adapter, Common, ScoreActions;
 
-	ScoreActions = __webpack_require__(183);
+	ScoreActions = __webpack_require__(184);
 
 	Common = window.ObojoboDraft.Common;
 
@@ -95,7 +95,7 @@
 
 /***/ },
 
-/***/ 182:
+/***/ 183:
 /***/ function(module, exports) {
 
 	'use strict';
@@ -142,7 +142,7 @@
 
 /***/ },
 
-/***/ 183:
+/***/ 184:
 /***/ function(module, exports) {
 
 	"use strict";
@@ -181,14 +181,14 @@
 
 /***/ },
 
-/***/ 184:
+/***/ 185:
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
 
 	var AssessmentUtil, AttemptIncompleteDialog, Button, Common, Dispatcher, ModalUtil, NavUtil, OboComponent, OboModel, ScoreStore;
 
-	__webpack_require__(229);
+	__webpack_require__(230);
 
 	Common = window.ObojoboDraft.Common;
 
@@ -208,7 +208,7 @@
 
 	NavUtil = window.Viewer.util.NavUtil;
 
-	AttemptIncompleteDialog = __webpack_require__(182);
+	AttemptIncompleteDialog = __webpack_require__(183);
 
 	module.exports = React.createClass({
 	  displayName: 'exports',
@@ -399,7 +399,7 @@
 
 /***/ },
 
-/***/ 185:
+/***/ 186:
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -412,8 +412,8 @@
 
 	OBO.register('ObojoboDraft.Sections.Assessment', {
 	  type: 'section',
-	  adapter: __webpack_require__(181),
-	  componentClass: __webpack_require__(184),
+	  adapter: __webpack_require__(182),
+	  componentClass: __webpack_require__(185),
 	  selectionHandler: null,
 	  getNavItem: function getNavItem(model) {
 	    var title;
@@ -448,7 +448,7 @@
 
 /***/ },
 
-/***/ 229:
+/***/ 230:
 /***/ function(module, exports) {
 
 	// removed by extract-text-webpack-plugin

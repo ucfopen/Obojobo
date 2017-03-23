@@ -14,10 +14,13 @@ app.post('/api/assessments/attempt/start', (req, res, next) => {
 	let draftId = req.body.draftId
 	let draftTree
 	let attemptState
+	let isPreviewing
 
 	req.requireCurrentUser()
 	.then(user => {
 		currentUser = user
+		isPreviewing = currentUser.canViewEditor
+
 		return DraftModel.fetchById(draftId)
 	})
 	.then(draft => {
@@ -56,7 +59,16 @@ app.post('/api/assessments/attempt/start', (req, res, next) => {
 	})
 	.then(() => {
 		let questionObjects = attemptState.questions.map( (question) => { return question.toObject() } )
-		return Assessment.insertNewAttempt(currentUser.id, req.body.draftId, req.body.assessmentId, { questions:questionObjects, data:attemptState.data })
+		return Assessment.insertNewAttempt(
+			currentUser.id,
+			req.body.draftId,
+			req.body.assessmentId,
+			{
+				questions: questionObjects,
+				data: attemptState.data
+			},
+			isPreviewing
+		)
 	})
 	.then(result => {
 		res.success(result)
@@ -81,10 +93,12 @@ app.post('/api/assessments/attempt/:attemptId/end', (req, res, next) => {
 	let maxAttemptScore
 	let state
 	let currentUser
+	let isPreviewing
 
 	req.requireCurrentUser()
 	.then(user => {
 		currentUser = user
+		isPreviewing = user.canViewEditor
 		// check input
 		// insert
 		// get draft and assessment ids for this attempt

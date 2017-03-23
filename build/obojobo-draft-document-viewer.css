@@ -52,6 +52,30 @@
       transition-delay: 0.6s;
       opacity: 0.2;
       cursor: default; }
+  .viewer--viewer-app > .preview-banner {
+    font-family: "Libre Franklin", Arial, sans-serif;
+    background: #fff8de;
+    box-shadow: 0 1px 1px rgba(0, 0, 0, 0.3);
+    box-sizing: border-box;
+    color: #c54f4f;
+    font-size: .7em;
+    font-weight: bold;
+    height: 2rem;
+    left: 0;
+    padding: .5em 1em;
+    position: fixed;
+    right: 0;
+    text-align: center;
+    top: 0;
+    z-index: 99999; }
+  .viewer--viewer-app.is-previewing {
+    margin-top: 2rem; }
+    .viewer--viewer-app.is-previewing > header {
+      top: 2rem; }
+    .viewer--viewer-app.is-previewing .viewer--components--nav {
+      top: 2rem; }
+      .viewer--viewer-app.is-previewing .viewer--components--nav > .toggle-button {
+        top: 2.5rem; }
 @charset "UTF-8";
 .viewer--components--inline-nav-button {
   background: rgba(103, 20, 189, 0.05);
