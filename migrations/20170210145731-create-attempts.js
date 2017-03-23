@@ -19,12 +19,12 @@ exports.up = function(db) {
     id: { type: 'UUID', primaryKey: true, defaultValue: new String('uuid_generate_v4()')},
     created_at: { type: 'timestamp WITH TIME ZONE', notNull: true, defaultValue: new String('now()')},
     updated_at: { type: 'timestamp WITH TIME ZONE', notNull: true, defaultValue: new String('now()')},
-    completed_at: { type: 'timestamp WITH TIME ZONE', notNull: true, defaultValue: new String('now()')},
+    completed_at: { type: 'timestamp WITH TIME ZONE', notNull: false},
     user_id: { type: 'bigint', notNull: true},
     draft_id: {type: 'UUID', notNull: true},
     assessment_id: { type: 'varchar', length: 100},
     state: { type: 'jsonb'},
-    score: { type: 'decimal', defaultValue: '0'}
+    result: { type: 'jsonb'}
   })
   .then( result => {
     return db.addIndex('attempts', 'attempts_user_id_index', ['user_id'])

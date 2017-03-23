@@ -23,6 +23,7 @@ exports.up = function(db) {
     assessment_id: { type: 'varchar', length: 100},
     question_id: { type: 'varchar', length: 100},
     score: { type: 'decimal', defaultValue: '0'},
+    responder_id: {type: 'varchar' ,length: 100},
     response: { type: 'jsonb'}
   })
   .then( result => {
@@ -38,7 +39,7 @@ exports.up = function(db) {
     return db.addIndex('attempts_question_responses', 'aqr_created_at_index', ['created_at'])
   })
   .then( result => {
-    return db.addIndex('attempts_question_responses', 'aqr_unique_questions', ['attempt_id', 'question_id'], true)
+    return db.addIndex('attempts_question_responses', 'aqr_unique_responses', ['attempt_id', 'question_id', 'responder_id'], true)
   })
 };
 

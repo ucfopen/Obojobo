@@ -17,10 +17,18 @@ exports.setup = function(options, seedLink) {
 exports.up = function(db) {
   return db.createTable('drafts', {
     id: { type: 'UUID', primaryKey: true, defaultValue: new String('uuid_generate_v4()')},
-    created_at: { type: 'timestamp WITH TIME ZONE', notNull: true, defaultValue: new String('now()')}
+    user_id: { type: 'bigint', notNull: true },
+    created_at: { type: 'timestamp WITH TIME ZONE', notNull: true, defaultValue: new String('now()')},
+    deleted: { type: 'boolean', defaultValue: false, notNull: true}
   })
   .then( result => {
     return db.addIndex('drafts', 'drafts_created_at_index', ['created_at'])
+  })
+  .then(result => {
+    return db.addIndex('drafts', 'drafts_user_id', ['user_id'])
+  })
+  .then(result => {
+    return db.addIndex('drafts', 'drafts_deleted', ['deleted'])
   })
 };
 
