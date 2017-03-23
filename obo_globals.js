@@ -12,7 +12,7 @@ module.exports = class OboGlobals {
       return true
     }
 
-    if(typeof value === 'number' || value instanceof Number)
+    if(typeof value === 'number' || value instanceof Number || typeof value === 'boolean' || value instanceof Boolean)
     {
       this.entries[key] = value
       return true

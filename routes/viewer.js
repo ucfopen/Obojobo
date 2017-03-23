@@ -8,18 +8,23 @@ let ltiLaunch = oboRequire('lti_launch')
 router.all('/view/:draftId*', (req, res, next) => {
 	console.log('DO A THING')
 	let oboGlobals = new OboGlobals();
+	let user = null;
+	let draft = null;
 
 	req.getCurrentUser(true)
-	.then(user => {
+	.then(currentUser => {
+		user = currentUser
 		if(user.isGuest()) return Promise.reject(new Error('Login Required'))
 		return DraftModel.fetchById(req.params.draftId)
 	})
-	.then(draft => {
+	.then(draftModel => {
+		draft = draftModel
 		return draft.yell('internal:sendToClient', req, res)
 	})
 	.then((draft) => {
 		oboGlobals.set('draft', draft.document)
 		oboGlobals.set('draftId', req.params.draftId)
+		oboGlobals.set('previewing', user.canViewEditor)
 		return draft.yell('internal:renderViewer', req, res, oboGlobals)
 	})
 	.then((draft) => {
