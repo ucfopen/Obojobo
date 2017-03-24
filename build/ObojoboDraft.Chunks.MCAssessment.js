@@ -384,16 +384,6 @@
 	MCAssessment = React.createClass({
 			displayName: 'MCAssessment',
 
-			componentWillMount: function componentWillMount() {
-					var shuffledIds;
-					shuffledIds = QuestionUtil.getData(this.props.moduleData.questionState, this.props.model, 'shuffledIds');
-					if (!shuffledIds) {
-							shuffledIds = _.shuffle(this.props.model.children.models).map(function (model) {
-									return model.get('id');
-							});
-							return QuestionUtil.setData(this.props.model.get('id'), 'shuffledIds', shuffledIds);
-					}
-			},
 			getResponseData: function getResponseData() {
 					var child, correct, i, len, ref, ref1, responses;
 					correct = new Set();
@@ -522,11 +512,17 @@
 			render: function render() {
 					var SolutionComponent, feedbacks, questionAnswered, questionSubmitted, responseType, revealAll, score, shuffledIds, solution;
 					responseType = this.props.model.modelState.responseType;
+					shuffledIds = QuestionUtil.getData(this.props.moduleData.questionState, this.props.model, 'shuffledIds');
+					if (!shuffledIds) {
+							shuffledIds = _.shuffle(this.props.model.children.models).map(function (model) {
+									return model.get('id');
+							});
+							QuestionUtil.setData(this.props.model.get('id'), 'shuffledIds', shuffledIds);
+					}
 					revealAll = this.isRevealingAll();
 					score = this.getScore();
 					questionSubmitted = score !== null;
 					questionAnswered = this.getResponseData().responses.size >= 1;
-					shuffledIds = QuestionUtil.getData(this.props.moduleData.questionState, this.props.model, 'shuffledIds');
 					feedbacks = Array.from(this.getResponseData().responses).filter(function (mcChoiceId) {
 							return OboModel.models[mcChoiceId].children.length > 1;
 					}.bind(this)).map(function (mcChoiceId) {

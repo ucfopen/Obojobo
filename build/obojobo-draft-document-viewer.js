@@ -520,6 +520,17 @@
 	    return navItem;
 	  };
 
+	  NavStore.prototype._clearFlags = function () {
+	    var i, item, len, ref, results;
+	    ref = this.state.items;
+	    results = [];
+	    for (i = 0, len = ref.length; i < len; i++) {
+	      item = ref[i];
+	      results.push(item.flags.complete = false);
+	    }
+	    return results;
+	  };
+
 	  return NavStore;
 	}(Store);
 
@@ -1830,6 +1841,17 @@
 	      focusState: FocusStore.getState()
 	    });
 	  },
+	  resetAssessments: function resetAssessments() {
+	    AssessmentStore.init();
+	    QuestionStore.init();
+	    ScoreStore.init();
+	    AssessmentStore.triggerChange();
+	    QuestionStore.triggerChange();
+	    return ScoreStore.triggerChange();
+	  },
+	  unlockNavigation: function unlockNavigation() {
+	    return NavUtil.unlock();
+	  },
 	  render: function render() {
 	    var ModuleComponent, modal, navTargetModel, navTargetTitle, nextEl, nextModel, prevEl, prevModel;
 	    window.__lo = this.state.model;
@@ -1885,7 +1907,25 @@
 	      this.isPreviewing ? React.createElement(
 	        'div',
 	        { className: 'preview-banner' },
-	        'You are previewing this object - Assessments will not be counted'
+	        React.createElement(
+	          'span',
+	          null,
+	          'You are previewing this object - Assessments will not be counted'
+	        ),
+	        React.createElement(
+	          'div',
+	          { className: 'controls' },
+	          React.createElement(
+	            'button',
+	            { onClick: this.unlockNavigation, disabled: !this.state.navState.locked },
+	            'Unlock navigation'
+	          ),
+	          React.createElement(
+	            'button',
+	            { onClick: this.resetAssessments },
+	            'Reset assessments & questions'
+	          )
+	        )
 	      ) : null,
 	      React.createElement(FocusBlocker, { moduleData: this.state }),
 	      modal ? React.createElement(

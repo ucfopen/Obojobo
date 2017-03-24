@@ -54,28 +54,65 @@
       cursor: default; }
   .viewer--viewer-app > .preview-banner {
     font-family: "Libre Franklin", Arial, sans-serif;
-    background: #fff8de;
-    box-shadow: 0 1px 1px rgba(0, 0, 0, 0.3);
+    background: #555a69;
     box-sizing: border-box;
-    color: #c54f4f;
+    color: white;
     font-size: .7em;
     font-weight: bold;
-    height: 2rem;
+    line-height: 0;
+    height: 3rem;
     left: 0;
     padding: .5em 1em;
+    padding-top: 1.5rem;
     position: fixed;
     right: 0;
-    text-align: center;
-    top: 0;
+    bottom: 0;
     z-index: 99999; }
+    .viewer--viewer-app > .preview-banner .controls {
+      position: absolute;
+      right: 1em;
+      top: 50%;
+      transform: translate(0, -50%) translate(0, 0.5px); }
+      .viewer--viewer-app > .preview-banner .controls button {
+        -webkit-appearance: none;
+        -moz-appearance: none;
+        -ms-appearance: none;
+        -o-appearance: none;
+        appearance: none;
+        margin-left: 1em;
+        font-family: "Libre Franklin", Arial, sans-serif;
+        font-size: 0.75em;
+        -webkit-user-select: none;
+        -moz-user-select: none;
+        -ms-user-select: none;
+        user-select: none;
+        cursor: pointer;
+        font-family: "Libre Franklin", Arial, sans-serif;
+        font-size: 1em;
+        position: relative;
+        text-align: center;
+        min-width: 3.25em;
+        border-radius: .2em;
+        padding: 0.4em;
+        background-color: white;
+        color: #555a69;
+        border: 1px solid transparent;
+        border-bottom: 1px solid #cccccc;
+        border: 1px solid white;
+        border-bottom: 1px solid white;
+        background-color: #FFFFFF;
+        color: #555a69; }
+        .viewer--viewer-app > .preview-banner .controls button:hover {
+          background-color: #555a69;
+          color: white; }
+        .viewer--viewer-app > .preview-banner .controls button:disabled {
+          opacity: 0.5;
+          cursor: default; }
+          .viewer--viewer-app > .preview-banner .controls button:disabled:hover {
+            background-color: #FFFFFF;
+            color: #555a69; }
   .viewer--viewer-app.is-previewing {
-    margin-top: 2rem; }
-    .viewer--viewer-app.is-previewing > header {
-      top: 2rem; }
-    .viewer--viewer-app.is-previewing .viewer--components--nav {
-      top: 2rem; }
-      .viewer--viewer-app.is-previewing .viewer--components--nav > .toggle-button {
-        top: 2.5rem; }
+    height: calc(100% - 3rem); }
 @charset "UTF-8";
 .viewer--components--inline-nav-button {
   background: rgba(103, 20, 189, 0.05);
