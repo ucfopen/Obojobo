@@ -26,7 +26,7 @@ app.post('/api/assessments/attempt/start', (req, res, next) => {
 	.then(draft => {
 		draftTree = draft
 
-		return Assessment.getCompletedAssessmentAttemptHistory(currentUser.id, req.body.draftId, req.body.assessmentId)
+		return Assessment.getCompletedAssessmentAttemptHistory(currentUser.id, req.body.draftId, req.body.assessmentId, true)
 	})
 	.then(attemptHistory => {
 		var assessment = draftTree.findNodeClass(req.body.assessmentId)
@@ -161,7 +161,7 @@ app.post('/api/assessments/attempt/:attemptId/end', (req, res, next) => {
 	})
 	.then((updateAttemptResult) => {
 		updateResult = updateAttemptResult
-		return Assessment.getCompletedAssessmentAttemptHistory(currentUser.id, draftId, assessmentId)
+		return Assessment.getCompletedAssessmentAttemptHistory(currentUser.id, draftId, assessmentId, false)
 	})
 	.then((attemptHistory) => {
 		if(isPreviewing) return Promise.resolve(false)
