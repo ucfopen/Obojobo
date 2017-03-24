@@ -103,7 +103,7 @@ app.on('mount', (app) => {
 
 		Promise.resolve(req.lti )
 		.then(lti => {
-			console.log(lti)
+			console.log(lti.body)
 			ltiBody = lti.body
 			ltiLaunchKey = lti.consumer_key
 
