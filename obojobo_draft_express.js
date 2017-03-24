@@ -251,7 +251,7 @@ global.oboEvents.on('client:saveState', (event, req) => {
 	req.requireCurrentUser()
 	.then(user => {
 		let data = {
-			_id: `${rcurrentUser.id}:${event.draft_id}:${event.draft_rev}`,
+			_id: `${currentUser.id}:${event.draft_id}:${event.draft_rev}`,
 			userId: currentUser.id,
 			metadata: metadata,
 			payload: payload
