@@ -1,6 +1,6 @@
 {
   "name": "obojobo-server",
-  "version": "3.0.1-alpha-4",
+  "version": "3.0.1-alpha-5",
   "private": true,
   "scripts": {
     "start": "yarn express:prod",
