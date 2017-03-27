@@ -47,7 +47,10 @@ app.on('mount', (app) => {
 			if(req.currentUser) return Promise.resolve(req.currentUser)
 
 			if( ! req.session || ! req.session.currentUserId ){
-				if(isRequired) return Promise.reject(new Error('Login Required'))
+				if(isRequired){
+					console.warn('No Session or Current User?', req.session instanceof Object, req.session.currentUserId)
+					return Promise.reject(new Error('Login Required'))
+				}
 				return Promise.resolve(new GuestUser());
 			}
 
@@ -57,6 +60,7 @@ app.on('mount', (app) => {
 				return user
 			})
 			.catch(err => {
+				console.warn('getCurrentUser', err)
 				if(isRequired) return Promise.reject(new Error('Login Required'))
 				return Promise.resolve(new GuestUser());
 			})
@@ -68,7 +72,8 @@ app.on('mount', (app) => {
 			.then(user => {
 				return user
 			})
-			.catch( err => {
+			.catch(err => {
+				console.warn('requireCurrentUser', err)
 				throw new Error('Login Required')
 			})
 		}

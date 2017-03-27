@@ -32,15 +32,16 @@ app.use(session({
 		conString: config.db,
 		tableName: 'sessions'
 	}),
-	secret: 'disIsSecret',
+	secret: config.general.cookieSecret,
 	resave: false,
+	name: config.general.cookieName,
 	saveUninitialized: false,
 	cookie: {
 		path: '/',
-		sameSite: 'strict',
-		httpOnly: false,
-		secure: false,
-		maxAge: 30 * 24 * 60 * 60 * 1000 // 30 days
+		sameSite: false, // Seems to be blocking access from webcourses2c.instructure.com to obojobo (though not webcourses.ucf.edu?)
+		httpOnly: !config.general.secureCookie,
+		secure: config.general.secureCookie,
+		maxAge: 10 * 24 * 60 * 60 * 1000 // 30 days
 	}
 }))
 
