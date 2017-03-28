@@ -1,6 +1,7 @@
 .obojobo-draft--chunks--action-button .obojobo-draft--components--button {
   margin: 0 auto;
   min-width: 9em;
-  display: block; }
+  display: block;
+  text-align: center; }
   .obojobo-draft--chunks--action-button .obojobo-draft--components--button button {
     min-width: 9em; }

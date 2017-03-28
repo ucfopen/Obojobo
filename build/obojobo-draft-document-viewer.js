@@ -1847,7 +1847,12 @@
 	    ScoreStore.init();
 	    AssessmentStore.triggerChange();
 	    QuestionStore.triggerChange();
-	    return ScoreStore.triggerChange();
+	    ScoreStore.triggerChange();
+	    return ModalUtil.show(React.createElement(
+	      SimpleDialog,
+	      { ok: true, width: '15em' },
+	      'Assessment attempts and all question responses have been reset.'
+	    ));
 	  },
 	  unlockNavigation: function unlockNavigation() {
 	    return NavUtil.unlock();

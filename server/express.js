@@ -26,12 +26,12 @@ app.post('/api/assessments/attempt/start', (req, res, next) => {
 	.then(draft => {
 		draftTree = draft
 
-		return Assessment.getCompletedAssessmentAttemptHistory(currentUser.id, req.body.draftId, req.body.assessmentId, true)
+		return Assessment.getCompletedAssessmentAttemptHistory(currentUser.id, req.body.draftId, req.body.assessmentId, false)
 	})
 	.then(attemptHistory => {
 		var assessment = draftTree.findNodeClass(req.body.assessmentId)
 
-		if(assessment.node.content.attempts && (attemptHistory.length >= assessment.node.content.attempts))
+		if(!isPreviewing && assessment.node.content.attempts && (attemptHistory.length >= assessment.node.content.attempts))
 		{
 			return res.reject('Attempt limit reached')
 		}

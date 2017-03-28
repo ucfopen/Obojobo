@@ -108,7 +108,7 @@
 	      { model: this.props.model, moduleData: this.props.moduleData },
 	      React.createElement(
 	        'div',
-	        { className: 'obojobo-draft--chunks--action-button' },
+	        { className: 'obojobo-draft--chunks--action-button pad' },
 	        React.createElement(Button, { onClick: this.onClick, value: this.props.model.modelState.label })
 	      )
 	    );

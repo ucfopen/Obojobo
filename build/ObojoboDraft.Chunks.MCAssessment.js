@@ -207,7 +207,8 @@
 	      {
 	        model: this.props.model,
 	        moduleData: this.props.moduleData,
-	        className: 'obojobo-draft--chunks--mc-assessment--mc-choice' + (isSelected ? ' is-selected' : ' is-not-selected') + (this.props.model.modelState.score === 100 ? ' is-correct' : ' is-incorrect')
+	        className: 'obojobo-draft--chunks--mc-assessment--mc-choice' + (isSelected ? ' is-selected' : ' is-not-selected') + (this.props.model.modelState.score === 100 ? ' is-correct' : ' is-incorrect'),
+	        'data-choice-label': this.props.label
 	      },
 	      React.createElement('input', {
 	        ref: 'input',
@@ -279,7 +280,8 @@
 				{
 					model: this.props.model,
 					moduleData: this.props.moduleData,
-					className: 'obojobo-draft--chunks--mc-assessment--mc-feedback'
+					className: 'obojobo-draft--chunks--mc-assessment--mc-feedback' + (this.props.model.parent.modelState.score === 100 ? ' is-correct-feedback' : ' is-incorrect-feedback'),
+					'data-choice-label': this.props.label
 				},
 				this.props.model.children.models.map(function (child, index) {
 					var Component = child.getComponentClass();
@@ -525,6 +527,8 @@
 					questionAnswered = this.getResponseData().responses.size >= 1;
 					feedbacks = Array.from(this.getResponseData().responses).filter(function (mcChoiceId) {
 							return OboModel.models[mcChoiceId].children.length > 1;
+					}.bind(this)).sort(function (id1, id2) {
+							return shuffledIds.indexOf(id1) - shuffledIds.indexOf(id2);
 					}.bind(this)).map(function (mcChoiceId) {
 							return OboModel.models[mcChoiceId].children.at(1);
 					}.bind(this));
@@ -586,7 +590,8 @@
 											moduleData: this.props.moduleData,
 											responseType: responseType,
 											revealAll: revealAll,
-											questionSubmitted: questionSubmitted
+											questionSubmitted: questionSubmitted,
+											label: String.fromCharCode(index + 65)
 
 									});
 							}.bind(this)),
@@ -650,7 +655,8 @@
 																			moduleData: this.props.moduleData,
 																			responseType: responseType,
 																			revealAll: revealAll,
-																			questionSubmitted: questionSubmitted
+																			questionSubmitted: questionSubmitted,
+																			label: String.fromCharCode(shuffledIds.indexOf(model.parent.get('id')) + 65)
 																	});
 															}.bind(this))
 													)

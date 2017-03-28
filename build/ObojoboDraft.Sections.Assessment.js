@@ -357,6 +357,7 @@
 	              null,
 	              'Your highest score was ' + Math.round(highestScore) + '%'
 	            ),
+	            childEl,
 	            React.createElement(
 	              'div',
 	              { className: 'review' },
@@ -374,14 +375,13 @@
 	                  { key: index, className: questionScore.score === 100 ? 'is-correct' : 'is-not-correct' },
 	                  React.createElement(
 	                    'p',
-	                    { className: 'pad' },
+	                    null,
 	                    'Question ' + (index + 1) + ' - ' + (questionScore.score === 100 ? 'Correct:' : 'Incorrect:')
 	                  ),
 	                  React.createElement(QuestionComponent, { model: questionModel, moduleData: this.props.moduleData, showContentOnly: true })
 	                );
 	              }.bind(this))
-	            ),
-	            childEl
+	            )
 	          );
 	      }
 	    }.call(this);
