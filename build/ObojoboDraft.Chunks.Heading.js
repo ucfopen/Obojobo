@@ -112,7 +112,7 @@
 	  render: function render() {
 	    var data, inner;
 	    data = this.props.model.modelState;
-	    inner = React.createElement('h' + data.headingLevel, null, React.createElement(TextGroupEl, { text: data.textGroup.first.text, indent: data.textGroup.first.data.indent, groupIndex: '0' }));
+	    inner = React.createElement('h' + data.headingLevel, null, React.createElement(TextGroupEl, { parentModel: this.props.model, text: data.textGroup.first.text, indent: data.textGroup.first.data.indent, groupIndex: '0' }));
 	    return React.createElement(
 	      OboComponent,
 	      { model: this.props.model, moduleData: this.props.moduleData },

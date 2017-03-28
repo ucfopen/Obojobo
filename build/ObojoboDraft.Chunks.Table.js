@@ -50,7 +50,7 @@
 
 /***/ },
 
-/***/ 61:
+/***/ 65:
 /***/ function(module, exports) {
 
 	'use strict';
@@ -272,7 +272,7 @@
 
 /***/ },
 
-/***/ 62:
+/***/ 66:
 /***/ function(module, exports) {
 
 	'use strict';
@@ -325,7 +325,7 @@
 
 	var Adapter, GridTextGroup;
 
-	GridTextGroup = __webpack_require__(61);
+	GridTextGroup = __webpack_require__(65);
 
 	Adapter = {
 	  construct: function construct(model, attrs) {
@@ -389,9 +389,9 @@
 
 	__webpack_require__(212);
 
-	GridTextGroup = __webpack_require__(61);
+	GridTextGroup = __webpack_require__(65);
 
-	SelectionHandler = __webpack_require__(62);
+	SelectionHandler = __webpack_require__(66);
 
 	Common = window.ObojoboDraft.Common;
 
@@ -416,9 +416,9 @@
 							className: 'cell row-0 col-' + index,
 							'data-table-position': model.get('id') + ',0,' + index
 						},
-						React.createElement(TextGroupEl, { text: textGroupItem.text, groupIndex: index })
+						React.createElement(TextGroupEl, { parentModel: this.props.model, text: textGroupItem.text, groupIndex: index })
 					);
-				});
+				}.bind(this));
 				header = React.createElement(
 					'tr',
 					{ key: 'header' },
@@ -443,9 +443,9 @@
 							className: 'cell row-' + rowNum + ' col-' + index,
 							'data-table-position': model.get('id') + ',' + rowNum + ',' + index
 						},
-						React.createElement(TextGroupEl, { text: textGroupItem.text, groupIndex: rowNum * numCols + index })
+						React.createElement(TextGroupEl, { parentModel: this.props.model, text: textGroupItem.text, groupIndex: rowNum * numCols + index })
 					);
-				});
+				}.bind(this));
 				return React.createElement(
 					'tr',
 					{ key: rowNum },
@@ -496,7 +496,7 @@
 
 	var ObojoboDraft, SelectionHandler;
 
-	SelectionHandler = __webpack_require__(62);
+	SelectionHandler = __webpack_require__(66);
 
 	ObojoboDraft = window.ObojoboDraft;
 

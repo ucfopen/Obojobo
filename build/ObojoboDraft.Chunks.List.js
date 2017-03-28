@@ -50,7 +50,7 @@
 
 /***/ },
 
-/***/ 60:
+/***/ 64:
 /***/ function(module, exports) {
 
 	'use strict';
@@ -215,7 +215,7 @@
 
 	var Adapter, Common, ListStyles, TextGroup, TextGroupAdapter;
 
-	ListStyles = __webpack_require__(60);
+	ListStyles = __webpack_require__(64);
 
 	Common = window.ObojoboDraft.Common;
 
@@ -267,7 +267,7 @@
 
 	__webpack_require__(206);
 
-	ListStyles = __webpack_require__(60);
+	ListStyles = __webpack_require__(64);
 
 	Common = window.ObojoboDraft.Common;
 
@@ -374,7 +374,7 @@
 	    key = this.props.model.cid + '-' + indent + '-' + index;
 	    switch (node.nodeType) {
 	      case 'text':
-	        return React.createElement(TextGroupEl, { text: node.text, key: key, groupIndex: node.index });
+	        return React.createElement(TextGroupEl, { parentModel: this.props.model, text: node.text, key: key, groupIndex: node.index });
 	      case 'element':
 	        return React.createElement(node.type, {
 	          key: key,

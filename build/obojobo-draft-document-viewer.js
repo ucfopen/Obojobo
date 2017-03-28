@@ -73,7 +73,7 @@
 
 /***/ },
 
-/***/ 12:
+/***/ 16:
 /***/ function(module, exports) {
 
 	'use strict';
@@ -266,7 +266,7 @@
 
 /***/ },
 
-/***/ 23:
+/***/ 29:
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -287,7 +287,7 @@
 	},
 	    hasProp = {}.hasOwnProperty;
 
-	NavUtil = __webpack_require__(12);
+	NavUtil = __webpack_require__(16);
 
 	OBO = window.OBO;
 
@@ -542,7 +542,7 @@
 
 /***/ },
 
-/***/ 41:
+/***/ 45:
 /***/ function(module, exports) {
 
 	'use strict';
@@ -634,7 +634,7 @@
 
 /***/ },
 
-/***/ 42:
+/***/ 46:
 /***/ function(module, exports) {
 
 	'use strict';
@@ -725,7 +725,7 @@
 
 	__webpack_require__(233);
 
-	NavUtil = __webpack_require__(12);
+	NavUtil = __webpack_require__(16);
 
 	logo = __webpack_require__(242);
 
@@ -788,11 +788,11 @@
 
 	ScoreUtil = __webpack_require__(93);
 
-	QuestionUtil = __webpack_require__(42);
+	QuestionUtil = __webpack_require__(46);
 
-	APIUtil = __webpack_require__(41);
+	APIUtil = __webpack_require__(45);
 
-	NavUtil = __webpack_require__(12);
+	NavUtil = __webpack_require__(16);
 
 	Store = window.ObojoboDraft.Common.flux.Store;
 
@@ -999,7 +999,7 @@
 	},
 	    hasProp = {}.hasOwnProperty;
 
-	APIUtil = __webpack_require__(41);
+	APIUtil = __webpack_require__(45);
 
 	Store = window.ObojoboDraft.Common.flux.Store;
 
@@ -1169,7 +1169,7 @@
 
 	Dispatcher = window.ObojoboDraft.Common.flux.Dispatcher;
 
-	QuestionUtil = __webpack_require__(42);
+	QuestionUtil = __webpack_require__(46);
 
 	AssessmentUtil = {
 	  getAssessmentForModel: function getAssessmentForModel(state, model) {
@@ -1328,7 +1328,7 @@
 
 	__webpack_require__(232);
 
-	NavUtil = __webpack_require__(12);
+	NavUtil = __webpack_require__(16);
 
 	InlineNavButton = React.createClass({
 	  displayName: 'InlineNavButton',
@@ -1439,9 +1439,9 @@
 
 	__webpack_require__(234);
 
-	navStore = __webpack_require__(23);
+	navStore = __webpack_require__(29);
 
-	NavUtil = __webpack_require__(12);
+	NavUtil = __webpack_require__(16);
 
 	Logo = __webpack_require__(88);
 
@@ -1606,7 +1606,7 @@
 
 	InlineNavButton = __webpack_require__(189);
 
-	NavUtil = __webpack_require__(12);
+	NavUtil = __webpack_require__(16);
 
 	Logo = __webpack_require__(88);
 
@@ -1636,11 +1636,11 @@
 
 	FocusBlocker = Common.components.FocusBlocker;
 
-	NavStore = __webpack_require__(23);
+	NavStore = __webpack_require__(29);
 
 	ModalStore = window.ObojoboDraft.Common.stores.ModalStore;
 
-	NavStore = __webpack_require__(23);
+	NavStore = __webpack_require__(29);
 
 	ScoreStore = __webpack_require__(91);
 
@@ -1672,6 +1672,7 @@
 	      return ReactDOM.findDOMNode(this.refs.container).scrollTop = payload.value;
 	    }.bind(this));
 	    Dispatcher.on('viewer:scrollToTop', this.scrollToTop.bind(this));
+	    Dispatcher.on('getTextForVariable', this.getTextForVariable.bind(this));
 	    this.isPreviewing = OboGlobals.get('previewing');
 	    state = {
 	      model: OboModel.create(OboGlobals.get('draft')),
@@ -1761,6 +1762,9 @@
 	      this.scrollToTop();
 	      return delete this.needsScroll;
 	    }
+	  },
+	  getTextForVariable: function getTextForVariable(event, variable, textModel) {
+	    return event.text = OBO.getTextForVariable(variable, textModel, this.state);
 	  },
 	  scrollToTop: function scrollToTop() {
 	    var el;
@@ -1958,15 +1962,15 @@
 	  stores: {
 	    ScoreStore: __webpack_require__(91),
 	    AssessmentStore: __webpack_require__(89),
-	    NavStore: __webpack_require__(23),
+	    NavStore: __webpack_require__(29),
 	    QuestionStore: __webpack_require__(90)
 	  },
 	  util: {
 	    AssessmentUtil: __webpack_require__(92),
-	    NavUtil: __webpack_require__(12),
+	    NavUtil: __webpack_require__(16),
 	    ScoreUtil: __webpack_require__(93),
-	    APIUtil: __webpack_require__(41),
-	    QuestionUtil: __webpack_require__(42)
+	    APIUtil: __webpack_require__(45),
+	    QuestionUtil: __webpack_require__(46)
 	  }
 	};
 

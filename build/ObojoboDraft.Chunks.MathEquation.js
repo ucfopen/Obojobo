@@ -50,7 +50,7 @@
 
 /***/ },
 
-/***/ 7:
+/***/ 9:
 /***/ function(module, exports) {
 
 	/**
@@ -162,7 +162,7 @@
 
 /***/ },
 
-/***/ 9:
+/***/ 12:
 /***/ function(module, exports) {
 
 	/**
@@ -209,12 +209,12 @@
 
 /***/ },
 
-/***/ 20:
+/***/ 23:
 /***/ function(module, exports, __webpack_require__) {
 
 	/* jshint unused:false */
 
-	var Style = __webpack_require__(25);
+	var Style = __webpack_require__(30);
 
 	/**
 	 * This file contains metrics regarding fonts and individual symbols. The sigma
@@ -351,7 +351,7 @@
 
 /***/ },
 
-/***/ 25:
+/***/ 30:
 /***/ function(module, exports) {
 
 	/**
@@ -484,7 +484,7 @@
 
 /***/ },
 
-/***/ 26:
+/***/ 31:
 /***/ function(module, exports, __webpack_require__) {
 
 	/**
@@ -493,9 +493,9 @@
 	 */
 
 	var domTree = __webpack_require__(95);
-	var fontMetrics = __webpack_require__(20);
-	var symbols = __webpack_require__(27);
-	var utils = __webpack_require__(7);
+	var fontMetrics = __webpack_require__(23);
+	var symbols = __webpack_require__(32);
+	var utils = __webpack_require__(9);
 
 	var greekCapitals = [
 	    "\\Gamma",
@@ -938,7 +938,7 @@
 
 /***/ },
 
-/***/ 27:
+/***/ 32:
 /***/ function(module, exports) {
 
 	/**
@@ -3578,7 +3578,7 @@
 	 * Similar functions for working with MathML nodes exist in mathMLTree.js.
 	 */
 
-	var utils = __webpack_require__(7);
+	var utils = __webpack_require__(9);
 
 	/**
 	 * Create an HTML className based on a list of classes. In addition to joining
@@ -4014,12 +4014,12 @@
 	 * errors in the expression, or errors in javascript handling.
 	 */
 
-	var ParseError = __webpack_require__(9);
+	var ParseError = __webpack_require__(12);
 	var Settings = __webpack_require__(94);
 
 	var buildTree = __webpack_require__(250);
 	var parseTree = __webpack_require__(256);
-	var utils = __webpack_require__(7);
+	var utils = __webpack_require__(9);
 
 	/**
 	 * Parse and build an expression, and place that expression in the DOM node
@@ -4101,7 +4101,7 @@
 
 	var matchAt = __webpack_require__(257);
 
-	var ParseError = __webpack_require__(9);
+	var ParseError = __webpack_require__(12);
 
 	// The main lexer class
 	function Lexer(input) {
@@ -4486,11 +4486,11 @@
 	var functions = __webpack_require__(254);
 	var environments = __webpack_require__(252);
 	var Lexer = __webpack_require__(245);
-	var symbols = __webpack_require__(27);
-	var utils = __webpack_require__(7);
+	var symbols = __webpack_require__(32);
+	var utils = __webpack_require__(9);
 
 	var parseData = __webpack_require__(96);
-	var ParseError = __webpack_require__(9);
+	var ParseError = __webpack_require__(12);
 
 	/**
 	 * This file contains the parser used to parse out a TeX expression from the
@@ -5217,14 +5217,14 @@
 	 * called, to produce a final HTML tree.
 	 */
 
-	var ParseError = __webpack_require__(9);
-	var Style = __webpack_require__(25);
+	var ParseError = __webpack_require__(12);
+	var Style = __webpack_require__(30);
 
-	var buildCommon = __webpack_require__(26);
+	var buildCommon = __webpack_require__(31);
 	var delimiter = __webpack_require__(251);
 	var domTree = __webpack_require__(95);
-	var fontMetrics = __webpack_require__(20);
-	var utils = __webpack_require__(7);
+	var fontMetrics = __webpack_require__(23);
+	var utils = __webpack_require__(9);
 
 	var makeSpan = buildCommon.makeSpan;
 
@@ -6585,12 +6585,12 @@
 	 * parser.
 	 */
 
-	var buildCommon = __webpack_require__(26);
-	var fontMetrics = __webpack_require__(20);
+	var buildCommon = __webpack_require__(31);
+	var fontMetrics = __webpack_require__(23);
 	var mathMLTree = __webpack_require__(255);
-	var ParseError = __webpack_require__(9);
-	var symbols = __webpack_require__(27);
-	var utils = __webpack_require__(7);
+	var ParseError = __webpack_require__(12);
+	var symbols = __webpack_require__(32);
+	var utils = __webpack_require__(9);
 
 	var makeSpan = buildCommon.makeSpan;
 	var fontMap = buildCommon.fontMap;
@@ -7107,10 +7107,10 @@
 
 	var buildHTML = __webpack_require__(248);
 	var buildMathML = __webpack_require__(249);
-	var buildCommon = __webpack_require__(26);
+	var buildCommon = __webpack_require__(31);
 	var Options = __webpack_require__(246);
 	var Settings = __webpack_require__(94);
-	var Style = __webpack_require__(25);
+	var Style = __webpack_require__(30);
 
 	var makeSpan = buildCommon.makeSpan;
 
@@ -7174,13 +7174,13 @@
 	 * used in `\left` and `\right`.
 	 */
 
-	var ParseError = __webpack_require__(9);
-	var Style = __webpack_require__(25);
+	var ParseError = __webpack_require__(12);
+	var Style = __webpack_require__(30);
 
-	var buildCommon = __webpack_require__(26);
-	var fontMetrics = __webpack_require__(20);
-	var symbols = __webpack_require__(27);
-	var utils = __webpack_require__(7);
+	var buildCommon = __webpack_require__(31);
+	var fontMetrics = __webpack_require__(23);
+	var symbols = __webpack_require__(32);
+	var utils = __webpack_require__(9);
 
 	var makeSpan = buildCommon.makeSpan;
 
@@ -7698,9 +7698,9 @@
 /***/ 252:
 /***/ function(module, exports, __webpack_require__) {
 
-	var fontMetrics = __webpack_require__(20);
+	var fontMetrics = __webpack_require__(23);
 	var parseData = __webpack_require__(96);
-	var ParseError = __webpack_require__(9);
+	var ParseError = __webpack_require__(12);
 
 	var ParseNode = parseData.ParseNode;
 	var ParseResult = parseData.ParseResult;
@@ -9641,8 +9641,8 @@
 /***/ 254:
 /***/ function(module, exports, __webpack_require__) {
 
-	var utils = __webpack_require__(7);
-	var ParseError = __webpack_require__(9);
+	var utils = __webpack_require__(9);
+	var ParseError = __webpack_require__(12);
 
 	// This file contains a list of functions that we parse. The functions map
 	// contains the following data:
@@ -10287,7 +10287,7 @@
 	 * domTree.js, creating namespaced DOM nodes and HTML text markup respectively.
 	 */
 
-	var utils = __webpack_require__(7);
+	var utils = __webpack_require__(9);
 
 	/**
 	 * This node represents a general purpose MathML node of any type. The

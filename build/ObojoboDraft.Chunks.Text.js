@@ -53,9 +53,9 @@
 /***/ 139:
 /***/ function(module, exports, __webpack_require__) {
 
-	'use strict';
+	"use strict";
 
-	var Common, Dispatcher, OboComponent, Text, TextChunk, TextGroupEl, varRegex;
+	var Common, Dispatcher, OboComponent, Text, TextChunk, TextGroupEl;
 
 	__webpack_require__(213);
 
@@ -69,39 +69,22 @@
 
 	Dispatcher = Common.flux.Dispatcher;
 
-	varRegex = /\{\{(.+?)\}\}/;
-
 	Text = React.createClass({
-	  displayName: 'Text',
+	  displayName: "Text",
 
 	  render: function render() {
 	    var texts;
 	    texts = this.props.model.modelState.textGroup.items.map(function (_this) {
 	      return function (textItem, index) {
-	        var match, newText, startIndex, variable;
-	        if (textItem.text.value.indexOf('{{')) {
-	          match = null;
-	          textItem = textItem.clone();
-	          while ((match = varRegex.exec(textItem.text.value)) !== null) {
-	            variable = match[1];
-	            newText = window.OBO.getTextForVariable(variable, _this.props.model, _this.props.moduleData);
-	            if (newText === null) {
-	              newText = match[1];
-	            }
-	            newText = '' + newText;
-	            startIndex = textItem.text.value.indexOf(match[0], varRegex.lastIndex);
-	            textItem.text.replaceText(startIndex, startIndex + match[0].length, newText);
-	          }
-	        }
-	        return React.createElement(TextGroupEl, { text: textItem.text, groupIndex: index, indent: textItem.data.indent, key: index });
+	        return React.createElement(TextGroupEl, { text: textItem.text, groupIndex: index, indent: textItem.data.indent, key: index, parentModel: this.props.model });
 	      };
-	    }(this));
+	    }(this).bind(this));
 	    return React.createElement(
 	      OboComponent,
 	      { model: this.props.model, moduleData: this.props.moduleData },
 	      React.createElement(
 	        TextChunk,
-	        { className: 'obojobo-draft--chunks--single-text pad' },
+	        { className: "obojobo-draft--chunks--single-text pad" },
 	        texts
 	      )
 	    );

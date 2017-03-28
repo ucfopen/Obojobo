@@ -73,8 +73,8 @@
 	  render: function render() {
 	    var texts;
 	    texts = this.props.model.modelState.textGroup.items.map(function (textItem, index) {
-	      return React.createElement(TextGroupEl, { text: textItem.text, groupIndex: index, indent: textItem.data.indent, key: index });
-	    });
+	      return React.createElement(TextGroupEl, { parentModel: this.props.model, text: textItem.text, groupIndex: index, indent: textItem.data.indent, key: index });
+	    }.bind(this));
 	    return React.createElement(
 	      OboComponent,
 	      { model: this.props.model, moduleData: this.props.moduleData },

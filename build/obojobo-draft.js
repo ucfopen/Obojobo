@@ -233,7 +233,7 @@
 
 	/* jshint unused:false */
 
-	var Style = __webpack_require__(4);
+	var Style = __webpack_require__(6);
 
 	/**
 	 * This file contains metrics regarding fonts and individual symbols. The sigma
@@ -352,7 +352,7 @@
 	// metrics, including height, depth, italic correction, and skew (kern from the
 	// character to the corresponding \skewchar)
 	// This map is generated via `make metrics`. It should not be changed manually.
-	var metricMap = __webpack_require__(55);
+	var metricMap = __webpack_require__(59);
 
 	/**
 	 * This function is a convience function for looking up information in the
@@ -370,6 +370,56 @@
 
 /***/ },
 /* 4 */
+/***/ function(module, exports) {
+
+	"use strict";
+
+	var Dispatcher, ex, ex2;
+
+	Dispatcher = {};
+
+	_.extend(Dispatcher, Backbone.Events);
+
+	ex = Dispatcher.on;
+
+	ex2 = Dispatcher.trigger;
+
+	Dispatcher.on = function () {
+	  return ex.apply(this, arguments);
+	};
+
+	Dispatcher.trigger = function () {
+	  return ex2.apply(this, arguments);
+	};
+
+	window.__dispatcher = Dispatcher;
+
+	module.exports = Dispatcher;
+
+/***/ },
+/* 5 */
+/***/ function(module, exports) {
+
+	'use strict';
+
+	var StyleType;
+
+	StyleType = {
+	  BOLD: 'b',
+	  ITALIC: 'i',
+	  STRIKETHROUGH: 'del',
+	  LINK: 'a',
+	  QUOTE: 'q',
+	  MONOSPACE: 'monospace',
+	  SUPERSCRIPT: 'sup',
+	  COMMENT: '_comment',
+	  LATEX: '_latex'
+	};
+
+	module.exports = StyleType;
+
+/***/ },
+/* 6 */
 /***/ function(module, exports) {
 
 	/**
@@ -501,7 +551,7 @@
 
 
 /***/ },
-/* 5 */
+/* 7 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/**
@@ -509,9 +559,9 @@
 	 * different kinds of domTree nodes in a consistent manner.
 	 */
 
-	var domTree = __webpack_require__(18);
+	var domTree = __webpack_require__(21);
 	var fontMetrics = __webpack_require__(3);
-	var symbols = __webpack_require__(6);
+	var symbols = __webpack_require__(8);
 	var utils = __webpack_require__(1);
 
 	var greekCapitals = [
@@ -954,7 +1004,7 @@
 
 
 /***/ },
-/* 6 */
+/* 8 */
 /***/ function(module, exports) {
 
 	/**
@@ -3545,37 +3595,499 @@
 
 
 /***/ },
-/* 7 */,
-/* 8 */
-/***/ function(module, exports) {
-
-	"use strict";
-
-	var Dispatcher, ex, ex2;
-
-	Dispatcher = {};
-
-	_.extend(Dispatcher, Backbone.Events);
-
-	ex = Dispatcher.on;
-
-	ex2 = Dispatcher.trigger;
-
-	Dispatcher.on = function () {
-	  return ex.apply(this, arguments);
-	};
-
-	Dispatcher.trigger = function () {
-	  return ex2.apply(this, arguments);
-	};
-
-	window.__dispatcher = Dispatcher;
-
-	module.exports = Dispatcher;
-
-/***/ },
 /* 9 */,
 /* 10 */
+/***/ function(module, exports, __webpack_require__) {
+
+	'use strict';
+
+	var ChunkStyleList, HtmlUtil, ObjectAssign, StyleRange, StyleType, StyleableText, trimStyleRange;
+
+	ObjectAssign = __webpack_require__(11);
+
+	ChunkStyleList = __webpack_require__(25);
+
+	StyleRange = __webpack_require__(15);
+
+	StyleType = __webpack_require__(5);
+
+	HtmlUtil = __webpack_require__(28);
+
+	trimStyleRange = function trimStyleRange(styleRange, maxLength) {
+	  styleRange.end = Math.min(styleRange.end, maxLength);
+	  return styleRange;
+	};
+
+	StyleableText = function () {
+	  function StyleableText(text) {
+	    if (text == null) {
+	      text = '';
+	    }
+	    this.init();
+	    this.insertText(0, text);
+	  }
+
+	  StyleableText.prototype.init = function () {
+	    this.styleList = new ChunkStyleList();
+	    return this.value = '';
+	  };
+
+	  StyleableText.prototype.clone = function () {
+	    var clone;
+	    clone = new StyleableText();
+	    clone.value = this.value;
+	    clone.styleList = this.styleList.clone();
+	    return clone;
+	  };
+
+	  StyleableText.prototype.getExportedObject = function () {
+	    return {
+	      value: this.value,
+	      styleList: this.styleList.getExportedObject()
+	    };
+	  };
+
+	  StyleableText.prototype.setText = function (text) {
+	    this.init();
+	    return this.insertText(0, text);
+	  };
+
+	  StyleableText.prototype.replaceText = function (from, to, text) {
+	    if (text == null || text.length === 0) {
+	      return this.deleteText(from, to);
+	    }
+	    this.insertText(from + 1, text);
+	    this.normalizeStyles();
+	    this.deleteText(from, from + 1);
+	    this.normalizeStyles();
+	    this.deleteText(from + text.length, to + text.length - 1);
+	    return this.normalizeStyles();
+	  };
+
+	  StyleableText.prototype.appendText = function (text) {
+	    return this.insertText(this.length, text);
+	  };
+
+	  StyleableText.prototype.insertText = function (atIndex, text) {
+	    var insertLength, k, len, range, ref;
+	    insertLength = text.length;
+	    ref = this.styleList.styles;
+	    for (k = 0, len = ref.length; k < len; k++) {
+	      range = ref[k];
+	      switch (range.compareToRange(atIndex)) {
+	        case StyleRange.CONTAINS:
+	          range.end += insertLength;
+	          break;
+	        case StyleRange.AFTER:
+	          range.start += insertLength;
+	          range.end += insertLength;
+	      }
+	    }
+	    this.value = this.value.substring(0, atIndex) + text + this.value.substring(atIndex);
+	    return this.normalizeStyles();
+	  };
+
+	  StyleableText.prototype.deleteText = function (from, to) {
+	    var deleteLength, k, len, range, ref;
+	    if (from == null) {
+	      from = -1;
+	    }
+	    if (to == null) {
+	      to = 2e308;
+	    }
+	    if (from > to) {
+	      return;
+	    }
+	    from = Math.max(0, from);
+	    to = Math.min(to, this.value.length);
+	    deleteLength = to - from;
+	    ref = this.styleList.styles;
+	    for (k = 0, len = ref.length; k < len; k++) {
+	      range = ref[k];
+	      switch (range.compareToRange(from, to)) {
+	        case StyleRange.CONTAINS:
+	          range.end -= deleteLength;
+	          break;
+	        case StyleRange.INSIDE_LEFT:
+	          range.end = from;
+	          break;
+	        case StyleRange.ENSCAPSULATED_BY:
+	          range.invalidate();
+	          break;
+	        case StyleRange.INSIDE_RIGHT:
+	          range.start = from;
+	          range.end -= deleteLength;
+	          break;
+	        case StyleRange.AFTER:
+	          range.start -= deleteLength;
+	          range.end -= deleteLength;
+	      }
+	    }
+	    this.value = this.value.substring(0, from) + this.value.substring(to);
+	    return this.normalizeStyles();
+	  };
+
+	  StyleableText.prototype.toggleStyleText = function (styleType, from, to, styleData) {
+	    var styleRange;
+	    if (from == null) {
+	      from = 0;
+	    }
+	    if (to == null) {
+	      to = this.length;
+	    }
+	    styleRange = trimStyleRange(new StyleRange(from, to, styleType, styleData), this.value.length);
+	    if (this.styleList.rangeHasStyle(from, Math.min(to, this.value.length), styleType)) {
+	      this.styleList.remove(styleRange);
+	    } else {
+	      this.styleList.add(styleRange);
+	    }
+	    return this.normalizeStyles();
+	  };
+
+	  StyleableText.prototype.styleText = function (styleType, from, to, styleData) {
+	    var range, styleRange;
+	    if (from == null) {
+	      from = 0;
+	    }
+	    if (to == null) {
+	      to = this.length;
+	    }
+	    range = new StyleRange(from, to, styleType, styleData);
+	    styleRange = trimStyleRange(range, this.value.length);
+	    this.styleList.add(styleRange);
+	    return this.normalizeStyles();
+	  };
+
+	  StyleableText.prototype.unstyleText = function (styleType, from, to) {
+	    var styleRange;
+	    if (from == null) {
+	      from = 0;
+	    }
+	    if (to == null) {
+	      to = this.length;
+	    }
+	    styleRange = trimStyleRange(new StyleRange(from, to, styleType), this.value.length);
+	    this.styleList.remove(styleRange);
+	    return this.normalizeStyles();
+	  };
+
+	  StyleableText.prototype.getStyles = function (from, to) {
+	    return this.styleList.getStylesInRange(from, to);
+	  };
+
+	  StyleableText.prototype.split = function (atIndex) {
+	    var lastCharStyles, sibling, splitAtEnd, style;
+	    if (isNaN(atIndex)) {
+	      return null;
+	    }
+	    splitAtEnd = atIndex === this.value.length;
+	    sibling = this.clone();
+	    this.deleteText(atIndex, this.value.length);
+	    sibling.deleteText(0, atIndex);
+	    if (splitAtEnd) {
+	      lastCharStyles = this.styleList.getStylesInRange(this.value.length - 1, this.value.length);
+	      for (style in lastCharStyles) {
+	        sibling.styleText(style, 0, 0);
+	      }
+	    }
+	    return sibling;
+	  };
+
+	  StyleableText.prototype.normalizeStyles = function () {
+	    return this.styleList.normalize();
+	  };
+
+	  StyleableText.prototype.merge = function (otherText, atIndex) {
+	    var curRange, insertLength, k, l, len, len1, range, ref, ref1;
+	    if (atIndex == null) {
+	      atIndex = null;
+	    }
+	    if (atIndex == null) {
+	      atIndex = this.value.length;
+	    }
+	    insertLength = otherText.value.length;
+	    ref = this.styleList.styles;
+	    for (k = 0, len = ref.length; k < len; k++) {
+	      range = ref[k];
+	      switch (range.compareToRange(atIndex)) {
+	        case StyleRange.AFTER:
+	          range.start += insertLength;
+	          range.end += insertLength;
+	      }
+	    }
+	    this.value = this.value.substring(0, atIndex) + otherText.value + this.value.substring(atIndex);
+	    this.styleList.normalize();
+	    ref1 = otherText.styleList.styles;
+	    for (l = 0, len1 = ref1.length; l < len1; l++) {
+	      range = ref1[l];
+	      curRange = range.clone();
+	      curRange.start += atIndex;
+	      curRange.end += atIndex;
+	      this.styleList.add(curRange);
+	    }
+	    return this.styleList.normalize();
+	  };
+
+	  StyleableText.prototype.__debug_print = function () {
+	    var fill, i, j, k, l, len, m, n, p, ref, ref1, ref2, ref3, ref4, ref5, ref6, results, s1, s2, style;
+	    console.log('   |          |' + this.value + ' |');
+	    fill = '';
+	    for (i = k = 0, ref = this.value.length + 10; 0 <= ref ? k <= ref : k >= ref; i = 0 <= ref ? ++k : --k) {
+	      fill += ' ';
+	    }
+	    j = 0;
+	    ref1 = this.styleList.styles;
+	    results = [];
+	    for (l = 0, len = ref1.length; l < len; l++) {
+	      style = ref1[l];
+	      s1 = (style.type + '          ').substr(0, 10) + '|';
+	      s2 = '';
+	      for (i = m = 0, ref2 = style.start; 0 <= ref2 ? m < ref2 : m > ref2; i = 0 <= ref2 ? ++m : --m) {
+	        s2 += '·';
+	      }
+	      s2 += '<';
+	      for (i = n = ref3 = style.start + 1, ref4 = style.end; ref3 <= ref4 ? n < ref4 : n > ref4; i = ref3 <= ref4 ? ++n : --n) {
+	        s2 += '=';
+	      }
+	      s2 += '>';
+	      for (i = p = ref5 = style.end + 1, ref6 = fill.length; ref5 <= ref6 ? p < ref6 : p > ref6; i = ref5 <= ref6 ? ++p : --p) {
+	        s2 += '·';
+	      }
+	      console.log((j + '   ').substr(0, 3) + '|' + (s1 + s2 + fill).substr(0, fill.length + 1) + '|' + style.start + ',' + style.end + '|' + JSON.stringify(style.data));
+	      results.push(j++);
+	    }
+	    return results;
+	  };
+
+	  return StyleableText;
+	}();
+
+	Object.defineProperties(StyleableText.prototype, {
+	  "length": {
+	    get: function get() {
+	      return this.value.length;
+	    }
+	  }
+	});
+
+	StyleableText.createFromObject = function (o) {
+	  var st;
+	  st = new StyleableText();
+	  st.styleList = ChunkStyleList.createFromObject(o.styleList);
+	  st.value = o.value;
+	  return st;
+	};
+
+	StyleableText.getStylesOfElement = function (el) {
+	  var computedStyle, styles;
+	  if (el.nodeType !== Node.ELEMENT_NODE) {
+	    return [];
+	  }
+	  styles = [];
+	  computedStyle = window.getComputedStyle(el);
+	  switch (computedStyle.getPropertyValue('font-weight')) {
+	    case "bold":
+	    case "bolder":
+	    case "700":
+	    case "800":
+	    case "900":
+	      styles.push({
+	        type: StyleType.BOLD
+	      });
+	  }
+	  switch (computedStyle.getPropertyValue('text-decoration')) {
+	    case "line-through":
+	      styles.push({
+	        type: StyleType.STRIKETHROUGH
+	      });
+	  }
+	  switch (computedStyle.getPropertyValue('font-style')) {
+	    case "italic":
+	      styles.push({
+	        type: StyleType.ITALIC
+	      });
+	  }
+	  switch (computedStyle.getPropertyValue('font-family').toLowerCase()) {
+	    case "monospace":
+	      styles.push({
+	        type: StyleType.MONOSPACE
+	      });
+	  }
+	  switch (el.tagName.toLowerCase()) {
+	    case 'a':
+	      if (el.getAttribute('href') != null) {
+	        styles.push({
+	          type: StyleType.LINK,
+	          data: {
+	            href: el.getAttribute('href')
+	          }
+	        });
+	      }
+	      break;
+	    case 'q':
+	      styles.push({
+	        type: StyleType.QUOTE,
+	        data: el.getAttribute('cite')
+	      });
+	      break;
+	    case 'sup':
+	      styles.push({
+	        type: StyleType.SUPERSCRIPT,
+	        data: 1
+	      });
+	      break;
+	    case 'sub':
+	      styles.push({
+	        type: StyleType.SUPERSCRIPT,
+	        data: -1
+	      });
+	  }
+	  return styles;
+	};
+
+	StyleableText.createFromElement = function (node) {
+	  var childNode, k, l, len, len1, len2, m, range, ranges, ref, results, state, style, styleRange, styles;
+	  if (node == null) {
+	    return new StyleableText();
+	  }
+	  if (arguments[1] == null) {
+	    state = {
+	      curText: new StyleableText(),
+	      texts: []
+	    };
+	    StyleableText.createFromElement(node, state);
+	    state.texts.push(state.curText);
+	    state.curText.styleList.normalize();
+	    return state.texts;
+	  }
+	  state = arguments[1];
+	  switch (node.nodeType) {
+	    case Node.TEXT_NODE:
+	      return state.curText.value += node.nodeValue;
+	    case Node.ELEMENT_NODE:
+	      if (state.curText.length > 0 && !HtmlUtil.isElementInline(node)) {
+	        state.texts.push(state.curText);
+	        state.curText.styleList.normalize();
+	        state.curText = new StyleableText();
+	      }
+	      styles = StyleableText.getStylesOfElement(node);
+	      ranges = [];
+	      for (k = 0, len = styles.length; k < len; k++) {
+	        style = styles[k];
+	        styleRange = new StyleRange(state.curText.value.length, 2e308, style.type, style.data);
+	        ranges.push(styleRange);
+	      }
+	      ref = node.childNodes;
+	      for (l = 0, len1 = ref.length; l < len1; l++) {
+	        childNode = ref[l];
+	        StyleableText.createFromElement(childNode, state);
+	      }
+	      results = [];
+	      for (m = 0, len2 = ranges.length; m < len2; m++) {
+	        range = ranges[m];
+	        range.end = state.curText.value.length;
+	        results.push(state.curText.styleList.add(range));
+	      }
+	      return results;
+	  }
+	};
+
+	window.__st = StyleableText;
+
+	module.exports = StyleableText;
+
+/***/ },
+/* 11 */
+/***/ function(module, exports) {
+
+	'use strict';
+	/* eslint-disable no-unused-vars */
+	var hasOwnProperty = Object.prototype.hasOwnProperty;
+	var propIsEnumerable = Object.prototype.propertyIsEnumerable;
+
+	function toObject(val) {
+		if (val === null || val === undefined) {
+			throw new TypeError('Object.assign cannot be called with null or undefined');
+		}
+
+		return Object(val);
+	}
+
+	function shouldUseNative() {
+		try {
+			if (!Object.assign) {
+				return false;
+			}
+
+			// Detect buggy property enumeration order in older V8 versions.
+
+			// https://bugs.chromium.org/p/v8/issues/detail?id=4118
+			var test1 = new String('abc');  // eslint-disable-line
+			test1[5] = 'de';
+			if (Object.getOwnPropertyNames(test1)[0] === '5') {
+				return false;
+			}
+
+			// https://bugs.chromium.org/p/v8/issues/detail?id=3056
+			var test2 = {};
+			for (var i = 0; i < 10; i++) {
+				test2['_' + String.fromCharCode(i)] = i;
+			}
+			var order2 = Object.getOwnPropertyNames(test2).map(function (n) {
+				return test2[n];
+			});
+			if (order2.join('') !== '0123456789') {
+				return false;
+			}
+
+			// https://bugs.chromium.org/p/v8/issues/detail?id=3056
+			var test3 = {};
+			'abcdefghijklmnopqrst'.split('').forEach(function (letter) {
+				test3[letter] = letter;
+			});
+			if (Object.keys(Object.assign({}, test3)).join('') !==
+					'abcdefghijklmnopqrst') {
+				return false;
+			}
+
+			return true;
+		} catch (e) {
+			// We don't expect any of the above to throw, but better to be safe.
+			return false;
+		}
+	}
+
+	module.exports = shouldUseNative() ? Object.assign : function (target, source) {
+		var from;
+		var to = toObject(target);
+		var symbols;
+
+		for (var s = 1; s < arguments.length; s++) {
+			from = Object(arguments[s]);
+
+			for (var key in from) {
+				if (hasOwnProperty.call(from, key)) {
+					to[key] = from[key];
+				}
+			}
+
+			if (Object.getOwnPropertySymbols) {
+				symbols = Object.getOwnPropertySymbols(from);
+				for (var i = 0; i < symbols.length; i++) {
+					if (propIsEnumerable.call(from, symbols[i])) {
+						to[symbols[i]] = from[symbols[i]];
+					}
+				}
+			}
+		}
+
+		return to;
+	};
+
+
+/***/ },
+/* 12 */,
+/* 13 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -3601,7 +4113,7 @@
 
 	createUUID = __webpack_require__(86);
 
-	Dispatcher = __webpack_require__(8);
+	Dispatcher = __webpack_require__(4);
 
 	DefaultAdapter = {
 	  construct: function construct(attrs) {
@@ -4083,7 +4595,7 @@
 	module.exports = OboModel;
 
 /***/ },
-/* 11 */
+/* 14 */
 /***/ function(module, exports) {
 
 	'use strict';
@@ -4175,15 +4687,175 @@
 	module.exports = DOMUtil;
 
 /***/ },
-/* 12 */,
-/* 13 */
+/* 15 */
+/***/ function(module, exports, __webpack_require__) {
+
+	'use strict';
+
+	var StyleRange, StyleType;
+
+	StyleType = __webpack_require__(5);
+
+	StyleRange = function () {
+	  function StyleRange(start, end, type, data) {
+	    if (start == null) {
+	      start = 0;
+	    }
+	    if (end == null) {
+	      end = 0;
+	    }
+	    this.type = type != null ? type : '';
+	    this.data = data != null ? data : {};
+	    this.start = parseInt(start, 10);
+	    this.end = parseInt(end, 10);
+	  }
+
+	  StyleRange.prototype.clone = function () {
+	    return new StyleRange(this.start, this.end, this.type, this.data);
+	  };
+
+	  StyleRange.prototype.getExportedObject = function () {
+	    return {
+	      type: this.type,
+	      start: this.start,
+	      end: this.end,
+	      data: this.data
+	    };
+	  };
+
+	  StyleRange.prototype.toString = function () {
+	    return this.type + ":" + this.start + "," + this.end + "(" + this.data + ")";
+	  };
+
+	  StyleRange.prototype.isInvalid = function () {
+	    return this.length() === 0 && this.start !== 0 && this.end !== 0;
+	  };
+
+	  StyleRange.prototype.invalidate = function () {
+	    return this.start = this.end = -1;
+	  };
+
+	  StyleRange.prototype.compareToRange = function (from, to) {
+	    if (to == null) {
+	      to = from;
+	    }
+	    if (from === 0 && this.start === 0 && to <= this.end) {
+	      return StyleRange.CONTAINS;
+	    }
+	    if (to <= this.start) {
+	      return StyleRange.AFTER;
+	    }
+	    if (from > this.end) {
+	      return StyleRange.BEFORE;
+	    }
+	    if (from >= this.start && to <= this.end) {
+	      return StyleRange.CONTAINS;
+	    }
+	    if (from <= this.start && to >= this.end) {
+	      return StyleRange.ENSCAPSULATED_BY;
+	    }
+	    if (from >= this.start) {
+	      return StyleRange.INSIDE_LEFT;
+	    }
+	    return StyleRange.INSIDE_RIGHT;
+	  };
+
+	  StyleRange.prototype.length = function () {
+	    return this.end - this.start;
+	  };
+
+	  StyleRange.prototype.isMergeable = function (otherType, otherData) {
+	    var k, ref, v;
+	    if (this.type !== otherType) {
+	      return false;
+	    }
+	    if (this.data instanceof Object) {
+	      ref = this.data;
+	      for (k in ref) {
+	        v = ref[k];
+	        if (otherData[k] == null || otherData[k] !== v) {
+	          return false;
+	        }
+	      }
+	    } else {
+	      if (this.data !== otherData) {
+	        return false;
+	      }
+	    }
+	    return true;
+	  };
+
+	  return StyleRange;
+	}();
+
+	StyleRange.BEFORE = 'before';
+
+	StyleRange.AFTER = 'after';
+
+	StyleRange.INSIDE_LEFT = 'left';
+
+	StyleRange.INSIDE_RIGHT = 'right';
+
+	StyleRange.CONTAINS = 'contains';
+
+	StyleRange.ENSCAPSULATED_BY = 'enscapsulatedBy';
+
+	StyleRange.createFromObject = function (o) {
+	  return new StyleRange(o.start, o.end, o.type, o.data);
+	};
+
+	module.exports = StyleRange;
+
+/***/ },
+/* 16 */,
+/* 17 */
+/***/ function(module, exports, __webpack_require__) {
+
+	'use strict';
+
+	var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol" ? function (obj) { return typeof obj; } : function (obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; };
+
+	var ObjectAssign;
+
+	ObjectAssign = __webpack_require__(11);
+
+	module.exports = {
+	  createData: function createData(data, template) {
+	    var clone, key;
+	    clone = ObjectAssign({}, data);
+	    for (key in clone) {
+	      if (template[key] == null) {
+	        delete clone[key];
+	      }
+	    }
+	    for (key in template) {
+	      if (clone[key] == null) {
+	        if (_typeof(template[key]) === 'object') {
+	          clone[key] = ObjectAssign({}, template[key]);
+	        } else {
+	          clone[key] = template[key];
+	        }
+	      }
+	    }
+	    return clone;
+	  },
+	  defaultCloneFn: function defaultCloneFn(data) {
+	    return ObjectAssign({}, data);
+	  },
+	  defaultMergeFn: function defaultMergeFn(consumer, digested) {
+	    return consumer;
+	  }
+	};
+
+/***/ },
+/* 18 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
 
 	var DOMSelection, DOMUtil;
 
-	DOMUtil = __webpack_require__(11);
+	DOMUtil = __webpack_require__(14);
 
 	DOMSelection = function () {
 	  function DOMSelection() {
@@ -4325,430 +4997,7 @@
 	module.exports = DOMSelection;
 
 /***/ },
-/* 14 */
-/***/ function(module, exports, __webpack_require__) {
-
-	'use strict';
-
-	var ChunkStyleList, HtmlUtil, ObjectAssign, StyleRange, StyleType, StyleableText, trimStyleRange;
-
-	ObjectAssign = __webpack_require__(24);
-
-	ChunkStyleList = __webpack_require__(76);
-
-	StyleRange = __webpack_require__(22);
-
-	StyleType = __webpack_require__(15);
-
-	HtmlUtil = __webpack_require__(84);
-
-	trimStyleRange = function trimStyleRange(styleRange, maxLength) {
-	  styleRange.end = Math.min(styleRange.end, maxLength);
-	  return styleRange;
-	};
-
-	StyleableText = function () {
-	  function StyleableText(text) {
-	    if (text == null) {
-	      text = '';
-	    }
-	    this.init();
-	    this.insertText(0, text);
-	  }
-
-	  StyleableText.prototype.init = function () {
-	    this.styleList = new ChunkStyleList();
-	    return this.value = '';
-	  };
-
-	  StyleableText.prototype.clone = function () {
-	    var clone;
-	    clone = new StyleableText();
-	    clone.value = this.value;
-	    clone.styleList = this.styleList.clone();
-	    return clone;
-	  };
-
-	  StyleableText.prototype.getExportedObject = function () {
-	    return {
-	      value: this.value,
-	      styleList: this.styleList.getExportedObject()
-	    };
-	  };
-
-	  StyleableText.prototype.setText = function (text) {
-	    this.init();
-	    return this.insertText(0, text);
-	  };
-
-	  StyleableText.prototype.replaceText = function (from, to, text) {
-	    if (text == null || text.length === 0) {
-	      return this.deleteText(from, to);
-	    }
-	    this.insertText(from + 1, text);
-	    this.normalizeStyles();
-	    this.deleteText(from, from + 1);
-	    this.normalizeStyles();
-	    this.deleteText(from + text.length, to + text.length - 1);
-	    return this.normalizeStyles();
-	  };
-
-	  StyleableText.prototype.appendText = function (text) {
-	    return this.insertText(this.length, text);
-	  };
-
-	  StyleableText.prototype.insertText = function (atIndex, text) {
-	    var insertLength, k, len, range, ref;
-	    insertLength = text.length;
-	    ref = this.styleList.styles;
-	    for (k = 0, len = ref.length; k < len; k++) {
-	      range = ref[k];
-	      switch (range.compareToRange(atIndex)) {
-	        case StyleRange.CONTAINS:
-	          range.end += insertLength;
-	          break;
-	        case StyleRange.AFTER:
-	          range.start += insertLength;
-	          range.end += insertLength;
-	      }
-	    }
-	    this.value = this.value.substring(0, atIndex) + text + this.value.substring(atIndex);
-	    return this.normalizeStyles();
-	  };
-
-	  StyleableText.prototype.deleteText = function (from, to) {
-	    var deleteLength, k, len, range, ref;
-	    if (from == null) {
-	      from = -1;
-	    }
-	    if (to == null) {
-	      to = 2e308;
-	    }
-	    if (from > to) {
-	      return;
-	    }
-	    from = Math.max(0, from);
-	    to = Math.min(to, this.value.length);
-	    deleteLength = to - from;
-	    ref = this.styleList.styles;
-	    for (k = 0, len = ref.length; k < len; k++) {
-	      range = ref[k];
-	      switch (range.compareToRange(from, to)) {
-	        case StyleRange.CONTAINS:
-	          range.end -= deleteLength;
-	          break;
-	        case StyleRange.INSIDE_LEFT:
-	          range.end = from;
-	          break;
-	        case StyleRange.ENSCAPSULATED_BY:
-	          range.invalidate();
-	          break;
-	        case StyleRange.INSIDE_RIGHT:
-	          range.start = from;
-	          range.end -= deleteLength;
-	          break;
-	        case StyleRange.AFTER:
-	          range.start -= deleteLength;
-	          range.end -= deleteLength;
-	      }
-	    }
-	    this.value = this.value.substring(0, from) + this.value.substring(to);
-	    return this.normalizeStyles();
-	  };
-
-	  StyleableText.prototype.toggleStyleText = function (styleType, from, to, styleData) {
-	    var styleRange;
-	    if (from == null) {
-	      from = 0;
-	    }
-	    if (to == null) {
-	      to = this.length;
-	    }
-	    styleRange = trimStyleRange(new StyleRange(from, to, styleType, styleData), this.value.length);
-	    if (this.styleList.rangeHasStyle(from, Math.min(to, this.value.length), styleType)) {
-	      this.styleList.remove(styleRange);
-	    } else {
-	      this.styleList.add(styleRange);
-	    }
-	    return this.normalizeStyles();
-	  };
-
-	  StyleableText.prototype.styleText = function (styleType, from, to, styleData) {
-	    var range, styleRange;
-	    if (from == null) {
-	      from = 0;
-	    }
-	    if (to == null) {
-	      to = this.length;
-	    }
-	    range = new StyleRange(from, to, styleType, styleData);
-	    styleRange = trimStyleRange(range, this.value.length);
-	    this.styleList.add(styleRange);
-	    return this.normalizeStyles();
-	  };
-
-	  StyleableText.prototype.unstyleText = function (styleType, from, to) {
-	    var styleRange;
-	    if (from == null) {
-	      from = 0;
-	    }
-	    if (to == null) {
-	      to = this.length;
-	    }
-	    styleRange = trimStyleRange(new StyleRange(from, to, styleType), this.value.length);
-	    this.styleList.remove(styleRange);
-	    return this.normalizeStyles();
-	  };
-
-	  StyleableText.prototype.getStyles = function (from, to) {
-	    return this.styleList.getStylesInRange(from, to);
-	  };
-
-	  StyleableText.prototype.split = function (atIndex) {
-	    var lastCharStyles, sibling, splitAtEnd, style;
-	    if (isNaN(atIndex)) {
-	      return null;
-	    }
-	    splitAtEnd = atIndex === this.value.length;
-	    sibling = this.clone();
-	    this.deleteText(atIndex, this.value.length);
-	    sibling.deleteText(0, atIndex);
-	    if (splitAtEnd) {
-	      lastCharStyles = this.styleList.getStylesInRange(this.value.length - 1, this.value.length);
-	      for (style in lastCharStyles) {
-	        sibling.styleText(style, 0, 0);
-	      }
-	    }
-	    return sibling;
-	  };
-
-	  StyleableText.prototype.normalizeStyles = function () {
-	    return this.styleList.normalize();
-	  };
-
-	  StyleableText.prototype.merge = function (otherText, atIndex) {
-	    var curRange, insertLength, k, l, len, len1, range, ref, ref1;
-	    if (atIndex == null) {
-	      atIndex = null;
-	    }
-	    if (atIndex == null) {
-	      atIndex = this.value.length;
-	    }
-	    insertLength = otherText.value.length;
-	    ref = this.styleList.styles;
-	    for (k = 0, len = ref.length; k < len; k++) {
-	      range = ref[k];
-	      switch (range.compareToRange(atIndex)) {
-	        case StyleRange.AFTER:
-	          range.start += insertLength;
-	          range.end += insertLength;
-	      }
-	    }
-	    this.value = this.value.substring(0, atIndex) + otherText.value + this.value.substring(atIndex);
-	    this.styleList.normalize();
-	    ref1 = otherText.styleList.styles;
-	    for (l = 0, len1 = ref1.length; l < len1; l++) {
-	      range = ref1[l];
-	      curRange = range.clone();
-	      curRange.start += atIndex;
-	      curRange.end += atIndex;
-	      this.styleList.add(curRange);
-	    }
-	    return this.styleList.normalize();
-	  };
-
-	  StyleableText.prototype.__debug_print = function () {
-	    var fill, i, j, k, l, len, m, n, p, ref, ref1, ref2, ref3, ref4, ref5, ref6, results, s1, s2, style;
-	    console.log('   |          |' + this.value + ' |');
-	    fill = '';
-	    for (i = k = 0, ref = this.value.length + 10; 0 <= ref ? k <= ref : k >= ref; i = 0 <= ref ? ++k : --k) {
-	      fill += ' ';
-	    }
-	    j = 0;
-	    ref1 = this.styleList.styles;
-	    results = [];
-	    for (l = 0, len = ref1.length; l < len; l++) {
-	      style = ref1[l];
-	      s1 = (style.type + '          ').substr(0, 10) + '|';
-	      s2 = '';
-	      for (i = m = 0, ref2 = style.start; 0 <= ref2 ? m < ref2 : m > ref2; i = 0 <= ref2 ? ++m : --m) {
-	        s2 += '·';
-	      }
-	      s2 += '<';
-	      for (i = n = ref3 = style.start + 1, ref4 = style.end; ref3 <= ref4 ? n < ref4 : n > ref4; i = ref3 <= ref4 ? ++n : --n) {
-	        s2 += '=';
-	      }
-	      s2 += '>';
-	      for (i = p = ref5 = style.end + 1, ref6 = fill.length; ref5 <= ref6 ? p < ref6 : p > ref6; i = ref5 <= ref6 ? ++p : --p) {
-	        s2 += '·';
-	      }
-	      console.log((j + '   ').substr(0, 3) + '|' + (s1 + s2 + fill).substr(0, fill.length + 1) + '|' + style.start + ',' + style.end + '|' + JSON.stringify(style.data));
-	      results.push(j++);
-	    }
-	    return results;
-	  };
-
-	  return StyleableText;
-	}();
-
-	Object.defineProperties(StyleableText.prototype, {
-	  "length": {
-	    get: function get() {
-	      return this.value.length;
-	    }
-	  }
-	});
-
-	StyleableText.createFromObject = function (o) {
-	  var st;
-	  st = new StyleableText();
-	  st.styleList = ChunkStyleList.createFromObject(o.styleList);
-	  st.value = o.value;
-	  return st;
-	};
-
-	StyleableText.getStylesOfElement = function (el) {
-	  var computedStyle, styles;
-	  if (el.nodeType !== Node.ELEMENT_NODE) {
-	    return [];
-	  }
-	  styles = [];
-	  computedStyle = window.getComputedStyle(el);
-	  switch (computedStyle.getPropertyValue('font-weight')) {
-	    case "bold":
-	    case "bolder":
-	    case "700":
-	    case "800":
-	    case "900":
-	      styles.push({
-	        type: StyleType.BOLD
-	      });
-	  }
-	  switch (computedStyle.getPropertyValue('text-decoration')) {
-	    case "line-through":
-	      styles.push({
-	        type: StyleType.STRIKETHROUGH
-	      });
-	  }
-	  switch (computedStyle.getPropertyValue('font-style')) {
-	    case "italic":
-	      styles.push({
-	        type: StyleType.ITALIC
-	      });
-	  }
-	  switch (computedStyle.getPropertyValue('font-family').toLowerCase()) {
-	    case "monospace":
-	      styles.push({
-	        type: StyleType.MONOSPACE
-	      });
-	  }
-	  switch (el.tagName.toLowerCase()) {
-	    case 'a':
-	      if (el.getAttribute('href') != null) {
-	        styles.push({
-	          type: StyleType.LINK,
-	          data: {
-	            href: el.getAttribute('href')
-	          }
-	        });
-	      }
-	      break;
-	    case 'q':
-	      styles.push({
-	        type: StyleType.QUOTE,
-	        data: el.getAttribute('cite')
-	      });
-	      break;
-	    case 'sup':
-	      styles.push({
-	        type: StyleType.SUPERSCRIPT,
-	        data: 1
-	      });
-	      break;
-	    case 'sub':
-	      styles.push({
-	        type: StyleType.SUPERSCRIPT,
-	        data: -1
-	      });
-	  }
-	  return styles;
-	};
-
-	StyleableText.createFromElement = function (node) {
-	  var childNode, k, l, len, len1, len2, m, range, ranges, ref, results, state, style, styleRange, styles;
-	  if (node == null) {
-	    return new StyleableText();
-	  }
-	  if (arguments[1] == null) {
-	    state = {
-	      curText: new StyleableText(),
-	      texts: []
-	    };
-	    StyleableText.createFromElement(node, state);
-	    state.texts.push(state.curText);
-	    state.curText.styleList.normalize();
-	    return state.texts;
-	  }
-	  state = arguments[1];
-	  switch (node.nodeType) {
-	    case Node.TEXT_NODE:
-	      return state.curText.value += node.nodeValue;
-	    case Node.ELEMENT_NODE:
-	      if (state.curText.length > 0 && !HtmlUtil.isElementInline(node)) {
-	        state.texts.push(state.curText);
-	        state.curText.styleList.normalize();
-	        state.curText = new StyleableText();
-	      }
-	      styles = StyleableText.getStylesOfElement(node);
-	      ranges = [];
-	      for (k = 0, len = styles.length; k < len; k++) {
-	        style = styles[k];
-	        styleRange = new StyleRange(state.curText.value.length, 2e308, style.type, style.data);
-	        ranges.push(styleRange);
-	      }
-	      ref = node.childNodes;
-	      for (l = 0, len1 = ref.length; l < len1; l++) {
-	        childNode = ref[l];
-	        StyleableText.createFromElement(childNode, state);
-	      }
-	      results = [];
-	      for (m = 0, len2 = ranges.length; m < len2; m++) {
-	        range = ranges[m];
-	        range.end = state.curText.value.length;
-	        results.push(state.curText.styleList.add(range));
-	      }
-	      return results;
-	  }
-	};
-
-	window.__st = StyleableText;
-
-	module.exports = StyleableText;
-
-/***/ },
-/* 15 */
-/***/ function(module, exports) {
-
-	'use strict';
-
-	var StyleType;
-
-	StyleType = {
-	  BOLD: 'b',
-	  ITALIC: 'i',
-	  STRIKETHROUGH: 'del',
-	  LINK: 'a',
-	  QUOTE: 'q',
-	  MONOSPACE: 'monospace',
-	  SUPERSCRIPT: 'sup',
-	  COMMENT: '_comment',
-	  LATEX: '_latex'
-	};
-
-	module.exports = StyleType;
-
-/***/ },
-/* 16 */
+/* 19 */
 /***/ function(module, exports) {
 
 	"use strict";
@@ -4759,7 +5008,7 @@
 	};
 
 /***/ },
-/* 17 */
+/* 20 */
 /***/ function(module, exports) {
 
 	/**
@@ -4793,7 +5042,7 @@
 
 
 /***/ },
-/* 18 */
+/* 21 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/**
@@ -5068,7 +5317,7 @@
 
 
 /***/ },
-/* 19 */
+/* 22 */
 /***/ function(module, exports) {
 
 	/**
@@ -5097,15 +5346,15 @@
 
 
 /***/ },
-/* 20 */,
-/* 21 */
+/* 23 */,
+/* 24 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
 
 	var BaseSelectionHandler, Chunk;
 
-	Chunk = __webpack_require__(10);
+	Chunk = __webpack_require__(13);
 
 	BaseSelectionHandler = function () {
 	  function BaseSelectionHandler() {}
@@ -5156,227 +5405,897 @@
 	module.exports = BaseSelectionHandler;
 
 /***/ },
-/* 22 */
+/* 25 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
 
-	var StyleRange, StyleType;
+	var ChunkStyleList, StyleRange, StyleType, keySortFn;
 
-	StyleType = __webpack_require__(15);
+	StyleType = __webpack_require__(5);
 
-	StyleRange = function () {
-	  function StyleRange(start, end, type, data) {
-	    if (start == null) {
-	      start = 0;
-	    }
-	    if (end == null) {
-	      end = 0;
-	    }
-	    this.type = type != null ? type : '';
-	    this.data = data != null ? data : {};
-	    this.start = parseInt(start, 10);
-	    this.end = parseInt(end, 10);
-	  }
+	StyleRange = __webpack_require__(15);
 
-	  StyleRange.prototype.clone = function () {
-	    return new StyleRange(this.start, this.end, this.type, this.data);
-	  };
-
-	  StyleRange.prototype.getExportedObject = function () {
-	    return {
-	      type: this.type,
-	      start: this.start,
-	      end: this.end,
-	      data: this.data
-	    };
-	  };
-
-	  StyleRange.prototype.toString = function () {
-	    return this.type + ":" + this.start + "," + this.end + "(" + this.data + ")";
-	  };
-
-	  StyleRange.prototype.isInvalid = function () {
-	    return this.length() === 0 && this.start !== 0 && this.end !== 0;
-	  };
-
-	  StyleRange.prototype.invalidate = function () {
-	    return this.start = this.end = -1;
-	  };
-
-	  StyleRange.prototype.compareToRange = function (from, to) {
-	    if (to == null) {
-	      to = from;
-	    }
-	    if (from === 0 && this.start === 0 && to <= this.end) {
-	      return StyleRange.CONTAINS;
-	    }
-	    if (to <= this.start) {
-	      return StyleRange.AFTER;
-	    }
-	    if (from > this.end) {
-	      return StyleRange.BEFORE;
-	    }
-	    if (from >= this.start && to <= this.end) {
-	      return StyleRange.CONTAINS;
-	    }
-	    if (from <= this.start && to >= this.end) {
-	      return StyleRange.ENSCAPSULATED_BY;
-	    }
-	    if (from >= this.start) {
-	      return StyleRange.INSIDE_LEFT;
-	    }
-	    return StyleRange.INSIDE_RIGHT;
-	  };
-
-	  StyleRange.prototype.length = function () {
-	    return this.end - this.start;
-	  };
-
-	  StyleRange.prototype.isMergeable = function (otherType, otherData) {
-	    var k, ref, v;
-	    if (this.type !== otherType) {
-	      return false;
-	    }
-	    if (this.data instanceof Object) {
-	      ref = this.data;
-	      for (k in ref) {
-	        v = ref[k];
-	        if (otherData[k] == null || otherData[k] !== v) {
-	          return false;
-	        }
-	      }
-	    } else {
-	      if (this.data !== otherData) {
-	        return false;
-	      }
-	    }
-	    return true;
-	  };
-
-	  return StyleRange;
-	}();
-
-	StyleRange.BEFORE = 'before';
-
-	StyleRange.AFTER = 'after';
-
-	StyleRange.INSIDE_LEFT = 'left';
-
-	StyleRange.INSIDE_RIGHT = 'right';
-
-	StyleRange.CONTAINS = 'contains';
-
-	StyleRange.ENSCAPSULATED_BY = 'enscapsulatedBy';
-
-	StyleRange.createFromObject = function (o) {
-	  return new StyleRange(o.start, o.end, o.type, o.data);
+	keySortFn = function keySortFn(a, b) {
+	  return Number(a) - Number(b);
 	};
 
-	module.exports = StyleRange;
+	ChunkStyleList = function () {
+	  function ChunkStyleList() {
+	    this.clear();
+	  }
+
+	  ChunkStyleList.prototype.clear = function () {
+	    return this.styles = [];
+	  };
+
+	  ChunkStyleList.prototype.getExportedObject = function () {
+	    var j, len, output, ref, style;
+	    if (this.styles.length === 0) {
+	      return null;
+	    }
+	    output = [];
+	    ref = this.styles;
+	    for (j = 0, len = ref.length; j < len; j++) {
+	      style = ref[j];
+	      output.push(style.getExportedObject());
+	    }
+	    return output;
+	  };
+
+	  ChunkStyleList.prototype.clone = function () {
+	    var cloneStyleList, j, len, ref, style;
+	    cloneStyleList = new ChunkStyleList();
+	    ref = this.styles;
+	    for (j = 0, len = ref.length; j < len; j++) {
+	      style = ref[j];
+	      cloneStyleList.add(style.clone());
+	    }
+	    return cloneStyleList;
+	  };
+
+	  ChunkStyleList.prototype.length = function () {
+	    return this.styles.length;
+	  };
+
+	  ChunkStyleList.prototype.get = function () {
+	    return this.styles[i];
+	  };
+
+	  ChunkStyleList.prototype.add = function (styleRange) {
+	    return this.styles.push(styleRange);
+	  };
+
+	  ChunkStyleList.prototype.remove = function (styleRange) {
+	    var co, comparisons, j, k, l, leftRange, len, len1, len2, len3, m, origEnd, ref, ref1, ref2, ref3, rightRange;
+	    comparisons = this.getStyleComparisonsForRange(styleRange.start, styleRange.end, styleRange.type);
+	    ref = comparisons.enscapsulatedBy;
+	    for (j = 0, len = ref.length; j < len; j++) {
+	      co = ref[j];
+	      co.invalidate();
+	    }
+	    ref1 = comparisons.left;
+	    for (k = 0, len1 = ref1.length; k < len1; k++) {
+	      co = ref1[k];
+	      co.end = styleRange.start;
+	    }
+	    ref2 = comparisons.right;
+	    for (l = 0, len2 = ref2.length; l < len2; l++) {
+	      co = ref2[l];
+	      co.start = styleRange.end;
+	    }
+	    ref3 = comparisons.contains;
+	    for (m = 0, len3 = ref3.length; m < len3; m++) {
+	      co = ref3[m];
+	      leftRange = co;
+	      origEnd = leftRange.end;
+	      leftRange.end = styleRange.start;
+	      rightRange = new StyleRange(styleRange.end, origEnd, co.type, co.data);
+	      if (leftRange.length() === 0) {
+	        leftRange.invalidate();
+	      }
+	      if (rightRange.length() > 0) {
+	        this.add(rightRange);
+	      }
+	    }
+	    return this.normalize();
+	  };
+
+	  ChunkStyleList.prototype.getStyleComparisonsForRange = function (from, to, type) {
+	    var comparisons, curComparison, j, len, ref, style;
+	    type = type || null;
+	    to = to || from;
+	    comparisons = {
+	      after: [],
+	      before: [],
+	      enscapsulatedBy: [],
+	      contains: [],
+	      left: [],
+	      right: []
+	    };
+	    ref = this.styles;
+	    for (j = 0, len = ref.length; j < len; j++) {
+	      style = ref[j];
+	      curComparison = style.compareToRange(from, to);
+	      if (type === null || style.type === type) {
+	        comparisons[curComparison].push(style);
+	      }
+	    }
+	    return comparisons;
+	  };
+
+	  ChunkStyleList.prototype.rangeHasStyle = function (from, to, styleType) {
+	    return this.getStyleComparisonsForRange(from, to, styleType).contains.length > 0;
+	  };
+
+	  ChunkStyleList.prototype.getStylesInRange = function (from, to) {
+	    var j, len, range, ref, styles;
+	    styles = {};
+	    ref = this.getStyleComparisonsForRange(from, to).contains;
+	    for (j = 0, len = ref.length; j < len; j++) {
+	      range = ref[j];
+	      styles[range.type] = range.type;
+	    }
+	    return styles;
+	  };
+
+	  ChunkStyleList.prototype.getStyles = function () {
+	    var j, len, range, ref, styles;
+	    styles = {};
+	    ref = this.styles;
+	    for (j = 0, len = ref.length; j < len; j++) {
+	      range = ref[j];
+	      styles[range.type] = range.type;
+	    }
+	    return styles;
+	  };
+
+	  ChunkStyleList.prototype.cleanupSuperscripts = function () {
+	    var curLevel, curRange, i, j, k, len, len1, level, mark, newStyles, ref, styleRange;
+	    mark = [];
+	    newStyles = [];
+	    ref = this.styles;
+	    for (j = 0, len = ref.length; j < len; j++) {
+	      styleRange = ref[j];
+	      if (styleRange.type !== StyleType.SUPERSCRIPT) {
+	        newStyles.push(styleRange);
+	        continue;
+	      }
+	      if (mark[styleRange.start] == null) {
+	        mark[styleRange.start] = 0;
+	      }
+	      if (mark[styleRange.end] == null) {
+	        mark[styleRange.end] = 0;
+	      }
+	      level = parseInt(styleRange.data, 10);
+	      mark[styleRange.start] += level;
+	      mark[styleRange.end] -= level;
+	    }
+	    curRange = new StyleRange(-1, -1, StyleType.SUPERSCRIPT, 0);
+	    curLevel = 0;
+	    for (i = k = 0, len1 = mark.length; k < len1; i = ++k) {
+	      level = mark[i];
+	      if (mark[i] == null) {
+	        continue;
+	      }
+	      curLevel += level;
+	      if (curRange.start === -1) {
+	        curRange.start = i;
+	        curRange.data = curLevel;
+	      } else if (curRange.end === -1) {
+	        curRange.end = i;
+	        if (curRange.data !== 0) {
+	          newStyles.push(curRange);
+	        }
+	        curRange = new StyleRange(i, -1, StyleType.SUPERSCRIPT, curLevel);
+	      }
+	    }
+	    return this.styles = newStyles;
+	  };
+
+	  ChunkStyleList.prototype.normalize = function () {
+	    var curData, curEncodedData, data, dataValues, datas, datasToCheck, end, i, j, k, key, keys, l, len, len1, len2, m, n, name, name1, newStyles, range, ref, ref1, ref2, start, style, styleName, styleRange, styleType, t, tmp, total;
+	    this.cleanupSuperscripts();
+	    newStyles = [];
+	    datasToCheck = {};
+	    dataValues = {};
+	    for (styleName in StyleType) {
+	      styleType = StyleType[styleName];
+	      datasToCheck[styleType] = [];
+	      dataValues[styleType] = [];
+	    }
+	    for (i = j = ref = this.styles.length - 1; j >= 0; i = j += -1) {
+	      styleRange = this.styles[i];
+	      curData = styleRange.data;
+	      curEncodedData = JSON.stringify(curData);
+	      if (datasToCheck[styleRange.type].indexOf(curEncodedData) === -1) {
+	        datasToCheck[styleRange.type].push(curEncodedData);
+	        dataValues[styleRange.type].push(curData);
+	      }
+	    }
+	    for (styleType in dataValues) {
+	      datas = dataValues[styleType];
+	      for (k = 0, len = datas.length; k < len; k++) {
+	        data = datas[k];
+	        tmp = {};
+	        total = 0;
+	        start = null;
+	        ref1 = this.styles;
+	        for (l = 0, len1 = ref1.length; l < len1; l++) {
+	          range = ref1[l];
+	          if (range.isMergeable(styleType, data)) {
+	            if (tmp[name = range.start] == null) {
+	              tmp[name] = 0;
+	            }
+	            if (tmp[name1 = range.end] == null) {
+	              tmp[name1] = 0;
+	            }
+	            tmp[range.start]++;
+	            tmp[range.end]--;
+	          }
+	        }
+	        keys = Object.keys(tmp).sort(keySortFn);
+	        for (m = 0, len2 = keys.length; m < len2; m++) {
+	          key = keys[m];
+	          end = Number(key);
+	          t = tmp[key];
+	          if (start == null) {
+	            start = end;
+	          }
+	          total += t;
+	          if (total === 0) {
+	            newStyles.push(new StyleRange(start, end, styleType, data));
+	            start = null;
+	          }
+	        }
+	      }
+	    }
+	    for (i = n = ref2 = newStyles.length - 1; n >= 0; i = n += -1) {
+	      style = newStyles[i];
+	      if (style.isInvalid()) {
+	        newStyles.splice(i, 1);
+	      }
+	    }
+	    return this.styles = newStyles;
+	  };
+
+	  return ChunkStyleList;
+	}();
+
+	ChunkStyleList.createFromObject = function (o) {
+	  var j, len, rangeObj, styleList;
+	  styleList = new ChunkStyleList();
+	  if (o != null) {
+	    for (j = 0, len = o.length; j < len; j++) {
+	      rangeObj = o[j];
+	      styleList.add(StyleRange.createFromObject(rangeObj));
+	    }
+	  }
+	  return styleList;
+	};
+
+	module.exports = ChunkStyleList;
 
 /***/ },
-/* 23 */,
-/* 24 */
+/* 26 */
+/***/ function(module, exports, __webpack_require__) {
+
+	'use strict';
+
+	var ObjectAssign, StyleableText, TextGroup, TextGroupItem, Util, addChildToGroup, createChild, getItemsArray, removeAllChildrenFromGroup, removeChildFromGroup, setChildToGroup;
+
+	StyleableText = __webpack_require__(10);
+
+	Util = __webpack_require__(17);
+
+	TextGroupItem = __webpack_require__(27);
+
+	ObjectAssign = __webpack_require__(11);
+
+	getItemsArray = function getItemsArray(itemOrItems) {
+	  if (itemOrItems instanceof TextGroupItem) {
+	    return [itemOrItems];
+	  } else {
+	    return itemOrItems;
+	  }
+	};
+
+	addChildToGroup = function addChildToGroup(itemOrItems, group, atIndex) {
+	  var item, items, j, len, results;
+	  if (atIndex == null) {
+	    atIndex = null;
+	  }
+	  items = getItemsArray(itemOrItems);
+	  if (atIndex === null) {
+	    group.items = group.items.concat(items);
+	  } else {
+	    group.items = group.items.slice(0, atIndex).concat(items).concat(group.items.slice(atIndex));
+	  }
+	  results = [];
+	  for (j = 0, len = items.length; j < len; j++) {
+	    item = items[j];
+	    results.push(item.parent = group);
+	  }
+	  return results;
+	};
+
+	removeChildFromGroup = function removeChildFromGroup(itemOrItems, group) {
+	  var item, items, j, len, removed, removedItems;
+	  removedItems = [];
+	  items = getItemsArray(itemOrItems);
+	  for (j = 0, len = items.length; j < len; j++) {
+	    item = items[j];
+	    removed = group.items.splice(item.index, 1)[0];
+	    removed.parent = null;
+	    removedItems.push(removed);
+	  }
+	  return removedItems;
+	};
+
+	setChildToGroup = function setChildToGroup(item, group, atIndex) {
+	  group.items[atIndex] = item;
+	  return item.parent = group;
+	};
+
+	removeAllChildrenFromGroup = function removeAllChildrenFromGroup(group) {
+	  var item, j, len, ref;
+	  ref = group.items;
+	  for (j = 0, len = ref.length; j < len; j++) {
+	    item = ref[j];
+	    item.parent = null;
+	  }
+	  return group.items = [];
+	};
+
+	createChild = function createChild(text, data, dataTemplate) {
+	  return new TextGroupItem(text, Util.createData(data, dataTemplate));
+	};
+
+	TextGroup = function () {
+	  function TextGroup(maxItems1, dataTemplate, initialItems) {
+	    var item, j, len;
+	    this.maxItems = maxItems1 != null ? maxItems1 : 2e308;
+	    if (dataTemplate == null) {
+	      dataTemplate = {};
+	    }
+	    if (initialItems == null) {
+	      initialItems = [];
+	    }
+	    this.items = [];
+	    this.dataTemplate = Object.freeze(ObjectAssign({}, dataTemplate));
+	    for (j = 0, len = initialItems.length; j < len; j++) {
+	      item = initialItems[j];
+	      this.add(item.text, item.data);
+	    }
+	  }
+
+	  TextGroup.prototype.clear = function () {
+	    return removeAllChildrenFromGroup(this);
+	  };
+
+	  TextGroup.prototype.indexOf = function (item) {
+	    return this.items.indexOf(item);
+	  };
+
+	  TextGroup.prototype.init = function (numItems) {
+	    if (numItems == null) {
+	      numItems = 1;
+	    }
+	    this.clear();
+	    while (numItems-- && !this.isFull) {
+	      this.add();
+	    }
+	    return this;
+	  };
+
+	  TextGroup.prototype.fill = function () {
+	    var results;
+	    if (this.maxItems === 2e308) {
+	      return;
+	    }
+	    results = [];
+	    while (!this.isFull) {
+	      results.push(this.add());
+	    }
+	    return results;
+	  };
+
+	  TextGroup.prototype.add = function (text, data) {
+	    if (this.isFull) {
+	      return this;
+	    }
+	    addChildToGroup(createChild(text, data, this.dataTemplate), this);
+	    return this;
+	  };
+
+	  TextGroup.prototype.addAt = function (index, text, data) {
+	    if (this.isFull) {
+	      return this;
+	    }
+	    addChildToGroup(createChild(text, data, this.dataTemplate), this, index);
+	    return this;
+	  };
+
+	  TextGroup.prototype.addGroup = function (group, cloneDataFn) {
+	    if (cloneDataFn == null) {
+	      cloneDataFn = Util.defaultCloneFn;
+	    }
+	    return this.addGroupAt(group, null, cloneDataFn);
+	  };
+
+	  TextGroup.prototype.addGroupAt = function (group, index, cloneDataFn) {
+	    var clone, item, itemsToAdd, j, len, ref;
+	    if (cloneDataFn == null) {
+	      cloneDataFn = Util.defaultCloneFn;
+	    }
+	    itemsToAdd = [];
+	    ref = group.items;
+	    for (j = 0, len = ref.length; j < len; j++) {
+	      item = ref[j];
+	      clone = item.clone(cloneDataFn);
+	      itemsToAdd.push(createChild(clone.text, clone.data, this.dataTemplate));
+	    }
+	    addChildToGroup(itemsToAdd, this, index);
+	    return this;
+	  };
+
+	  TextGroup.prototype.get = function (index) {
+	    return this.items[index];
+	  };
+
+	  TextGroup.prototype.set = function (index, text, data) {
+	    return setChildToGroup(createChild(text, data, this.dataTemplate), this, index);
+	  };
+
+	  TextGroup.prototype.remove = function (index) {
+	    return removeChildFromGroup(this.items[index], this)[0];
+	  };
+
+	  TextGroup.prototype.clone = function (cloneDataFn) {
+	    var clonedItems, item, j, len, ref;
+	    if (cloneDataFn == null) {
+	      cloneDataFn = Util.defaultCloneFn;
+	    }
+	    clonedItems = [];
+	    ref = this.items;
+	    for (j = 0, len = ref.length; j < len; j++) {
+	      item = ref[j];
+	      clonedItems.push(item.clone(cloneDataFn));
+	    }
+	    return new TextGroup(this.maxItems, this.dataTemplate, clonedItems);
+	  };
+
+	  TextGroup.prototype.toDescriptor = function () {
+	    var desc, item, j, len, ref;
+	    desc = [];
+	    ref = this.items;
+	    for (j = 0, len = ref.length; j < len; j++) {
+	      item = ref[j];
+	      desc.push({
+	        text: item.text.getExportedObject(),
+	        data: Util.defaultCloneFn(item.data)
+	      });
+	    }
+	    return desc;
+	  };
+
+	  TextGroup.prototype.toSlice = function (from, to) {
+	    if (to == null) {
+	      to = 2e308;
+	    }
+	    removeChildFromGroup(this.items.slice(to), this);
+	    removeChildFromGroup(this.items.slice(0, from), this);
+	    return this;
+	  };
+
+	  TextGroup.prototype.splitBefore = function (index) {
+	    var item, sibling;
+	    sibling = new TextGroup(this.maxItems, this.dataTemplate);
+	    while (this.length !== index) {
+	      item = this.remove(index);
+	      sibling.add(item.text, item.data);
+	    }
+	    return sibling;
+	  };
+
+	  TextGroup.prototype.splitText = function (index, offset) {
+	    var item, newItem;
+	    item = this.items[index];
+	    newItem = createChild(item.text.split(offset), Util.defaultCloneFn(item.data), this.dataTemplate);
+	    addChildToGroup(newItem, this, index + 1);
+	    return newItem;
+	  };
+
+	  TextGroup.prototype.merge = function (index, mergeDataFn) {
+	    var consumerItem, digestedItem;
+	    if (mergeDataFn == null) {
+	      mergeDataFn = Util.defaultMergeFn;
+	    }
+	    digestedItem = this.items.splice(index + 1, 1)[0];
+	    consumerItem = this.items[index];
+	    if (!digestedItem || !consumerItem) {
+	      return this;
+	    }
+	    consumerItem.data = Util.createData(mergeDataFn(consumerItem.data, digestedItem.data), this.dataTemplate);
+	    consumerItem.text.merge(digestedItem.text);
+	    return this;
+	  };
+
+	  TextGroup.prototype.deleteSpan = function (startIndex, startTextIndex, endIndex, endTextIndex, merge, mergeFn) {
+	    var endItem, endText, i, item, j, len, newItems, ref, startItem, startText;
+	    if (merge == null) {
+	      merge = true;
+	    }
+	    if (mergeFn == null) {
+	      mergeFn = Util.defaultMergeFn;
+	    }
+	    startItem = this.items[startIndex];
+	    endItem = this.items[endIndex];
+	    if (!startItem) {
+	      startItem = this.first;
+	    }
+	    if (!endItem) {
+	      endItem = this.last;
+	    }
+	    startText = startItem.text;
+	    endText = endItem.text;
+	    if (startText === endText) {
+	      startText.deleteText(startTextIndex, endTextIndex);
+	      return;
+	    }
+	    startText.deleteText(startTextIndex, startText.length);
+	    endText.deleteText(0, endTextIndex);
+	    if (merge) {
+	      newItems = [];
+	      ref = this.items;
+	      for (i = j = 0, len = ref.length; j < len; i = ++j) {
+	        item = ref[i];
+	        if (i < startIndex || i > endIndex) {
+	          newItems.push(item);
+	        } else if (i === startIndex) {
+	          newItems.push(startItem);
+	        } else if (i === endIndex) {
+	          newItems.push(endItem);
+	        }
+	      }
+	      removeAllChildrenFromGroup(this);
+	      addChildToGroup(newItems, this);
+	      return this.merge(startIndex, mergeFn);
+	    }
+	  };
+
+	  TextGroup.prototype.clearSpan = function (startIndex, startTextIndex, endIndex, endTextIndex) {
+	    var endItem, endText, i, item, j, len, ref, startItem, startText;
+	    startItem = this.items[startIndex];
+	    endItem = this.items[endIndex];
+	    startText = startItem.text;
+	    endText = endItem.text;
+	    if (startText === endText) {
+	      startText.deleteText(startTextIndex, endTextIndex);
+	      return;
+	    }
+	    startText.deleteText(startTextIndex, startText.length);
+	    endText.deleteText(0, endTextIndex);
+	    ref = this.items;
+	    for (i = j = 0, len = ref.length; j < len; i = ++j) {
+	      item = ref[i];
+	      if (i > startIndex && i < endIndex) {
+	        item.text.init();
+	      }
+	    }
+	    return this;
+	  };
+
+	  TextGroup.prototype.styleText = function (startIndex, startTextIndex, endIndex, endTextIndex, styleType, styleData) {
+	    return this.applyStyleFunction('styleText', arguments);
+	  };
+
+	  TextGroup.prototype.unstyleText = function (startIndex, startTextIndex, endIndex, endTextIndex, styleType, styleData) {
+	    return this.applyStyleFunction('unstyleText', arguments);
+	  };
+
+	  TextGroup.prototype.toggleStyleText = function (startIndex, startTextIndex, endIndex, endTextIndex, styleType, styleData) {
+	    return this.applyStyleFunction('toggleStyleText', arguments);
+	  };
+
+	  TextGroup.prototype.applyStyleFunction = function (fn, args) {
+	    var endIndex, endItem, endText, endTextIndex, foundStartText, item, j, len, ref, startIndex, startItem, startText, startTextIndex, styleData, styleType;
+	    startIndex = args[0], startTextIndex = args[1], endIndex = args[2], endTextIndex = args[3], styleType = args[4], styleData = args[5];
+	    startItem = this.items[startIndex];
+	    endItem = this.items[endIndex];
+	    startText = startItem.text;
+	    endText = endItem.text;
+	    if (startText === endText) {
+	      startText[fn](styleType, startTextIndex, endTextIndex, styleData);
+	      return;
+	    }
+	    foundStartText = false;
+	    ref = this.items;
+	    for (j = 0, len = ref.length; j < len; j++) {
+	      item = ref[j];
+	      if (item.text === startText) {
+	        item.text[fn](styleType, startTextIndex, startText.length, styleData);
+	        foundStartText = true;
+	      } else if (item.text === endText) {
+	        item.text[fn](styleType, 0, endTextIndex, styleData);
+	        break;
+	      } else if (foundStartText) {
+	        item.text[fn](styleType, 0, item.text.length, styleData);
+	      }
+	    }
+	    return this;
+	  };
+
+	  TextGroup.prototype.getStyles = function (startIndex, startTextIndex, endIndex, endTextIndex) {
+	    var allStyles, endItem, endText, foundStartText, item, j, len, numTexts, ref, returnedStyles, startItem, startText, style, styles;
+	    startItem = this.items[startIndex];
+	    endItem = this.items[endIndex];
+	    if (startItem == null || endItem == null) {
+	      return {};
+	    }
+	    startText = startItem.text;
+	    endText = endItem.text;
+	    if (startText == null || endText == null) {
+	      return {};
+	    }
+	    if (startText === endText) {
+	      return startText.getStyles(startTextIndex, endTextIndex);
+	    }
+	    numTexts = 0;
+	    allStyles = {};
+	    foundStartText = false;
+	    ref = this.items;
+	    for (j = 0, len = ref.length; j < len; j++) {
+	      item = ref[j];
+	      styles = {};
+	      if (item.text === startText) {
+	        numTexts++;
+	        styles = item.text.getStyles(startTextIndex, startText.length);
+	        foundStartText = true;
+	      } else if (item.text === endText) {
+	        numTexts++;
+	        styles = item.text.getStyles(0, endTextIndex);
+	      } else if (foundStartText) {
+	        numTexts++;
+	        styles = item.text.getStyles(0, item.text.length);
+	      }
+	      for (style in styles) {
+	        if (allStyles[style] != null) {
+	          allStyles[style]++;
+	        } else {
+	          allStyles[style] = 1;
+	        }
+	      }
+	      if (item.text === endText) {
+	        break;
+	      }
+	    }
+	    returnedStyles = {};
+	    for (style in allStyles) {
+	      if (allStyles[style] === numTexts) {
+	        returnedStyles[style] = style;
+	      }
+	    }
+	    return returnedStyles;
+	  };
+
+	  TextGroup.prototype.__debug_print = function () {
+	    var item, j, len, ref, results;
+	    console.log('========================');
+	    ref = this.items;
+	    results = [];
+	    for (j = 0, len = ref.length; j < len; j++) {
+	      item = ref[j];
+	      item.text.__debug_print();
+	      console.log(JSON.stringify(item.data));
+	      results.push(console.log('---------------------'));
+	    }
+	    return results;
+	  };
+
+	  return TextGroup;
+	}();
+
+	Object.defineProperties(TextGroup.prototype, {
+	  "length": {
+	    "get": function get() {
+	      return this.items.length;
+	    }
+	  },
+	  "first": {
+	    "get": function get() {
+	      return this.items[0];
+	    }
+	  },
+	  "last": {
+	    "get": function get() {
+	      return this.items[this.items.length - 1];
+	    }
+	  },
+	  "isFull": {
+	    "get": function get() {
+	      return this.items.length === this.maxItems;
+	    }
+	  },
+	  "isEmpty": {
+	    "get": function get() {
+	      return this.items.length === 0;
+	    }
+	  },
+	  "isBlank": {
+	    "get": function get() {
+	      return this.isEmpty || this.items.length === 1 && this.first.text.length === 0;
+	    }
+	  }
+	});
+
+	TextGroup.fromDescriptor = function (descriptor, maxItems, dataTemplate, restoreDataDescriptorFn) {
+	  var item, items, j, len;
+	  if (restoreDataDescriptorFn == null) {
+	    restoreDataDescriptorFn = Util.defaultCloneFn;
+	  }
+	  items = [];
+	  for (j = 0, len = descriptor.length; j < len; j++) {
+	    item = descriptor[j];
+	    items.push(createChild(StyleableText.createFromObject(item.text), restoreDataDescriptorFn(item.data), dataTemplate));
+	  }
+	  return new TextGroup(maxItems, dataTemplate, items);
+	};
+
+	TextGroup.create = function (maxItems, dataTemplate, numItemsToCreate) {
+	  var group;
+	  if (maxItems == null) {
+	    maxItems = 2e308;
+	  }
+	  if (dataTemplate == null) {
+	    dataTemplate = {};
+	  }
+	  if (numItemsToCreate == null) {
+	    numItemsToCreate = 1;
+	  }
+	  group = new TextGroup(maxItems, dataTemplate);
+	  group.init(numItemsToCreate);
+	  return group;
+	};
+
+	window.TextGroup = TextGroup;
+
+	module.exports = TextGroup;
+
+/***/ },
+/* 27 */
+/***/ function(module, exports, __webpack_require__) {
+
+	'use strict';
+
+	var StyleableText, TextGroupItem, Util;
+
+	StyleableText = __webpack_require__(10);
+
+	Util = __webpack_require__(17);
+
+	module.exports = TextGroupItem = function () {
+	  function TextGroupItem(text, data, parent) {
+	    this.text = text != null ? text : new StyleableText();
+	    this.data = data != null ? data : {};
+	    this.parent = parent != null ? parent : null;
+	  }
+
+	  TextGroupItem.prototype.clone = function (cloneDataFn) {
+	    if (cloneDataFn == null) {
+	      cloneDataFn = Util.defaultCloneFn;
+	    }
+	    return new TextGroupItem(this.text.clone(), cloneDataFn(this.data), null);
+	  };
+
+	  return TextGroupItem;
+	}();
+
+	Object.defineProperties(TextGroupItem.prototype, {
+	  "index": {
+	    "get": function get() {
+	      if (this.parent === null) {
+	        return -1;
+	      }
+	      return this.parent.indexOf(this);
+	    }
+	  }
+	});
+
+/***/ },
+/* 28 */
 /***/ function(module, exports) {
 
 	'use strict';
-	/* eslint-disable no-unused-vars */
-	var hasOwnProperty = Object.prototype.hasOwnProperty;
-	var propIsEnumerable = Object.prototype.propertyIsEnumerable;
 
-	function toObject(val) {
-		if (val === null || val === undefined) {
-			throw new TypeError('Object.assign cannot be called with null or undefined');
-		}
+	var isElementInline, _sanitize;
 
-		return Object(val);
-	}
-
-	function shouldUseNative() {
-		try {
-			if (!Object.assign) {
-				return false;
-			}
-
-			// Detect buggy property enumeration order in older V8 versions.
-
-			// https://bugs.chromium.org/p/v8/issues/detail?id=4118
-			var test1 = new String('abc');  // eslint-disable-line
-			test1[5] = 'de';
-			if (Object.getOwnPropertyNames(test1)[0] === '5') {
-				return false;
-			}
-
-			// https://bugs.chromium.org/p/v8/issues/detail?id=3056
-			var test2 = {};
-			for (var i = 0; i < 10; i++) {
-				test2['_' + String.fromCharCode(i)] = i;
-			}
-			var order2 = Object.getOwnPropertyNames(test2).map(function (n) {
-				return test2[n];
-			});
-			if (order2.join('') !== '0123456789') {
-				return false;
-			}
-
-			// https://bugs.chromium.org/p/v8/issues/detail?id=3056
-			var test3 = {};
-			'abcdefghijklmnopqrst'.split('').forEach(function (letter) {
-				test3[letter] = letter;
-			});
-			if (Object.keys(Object.assign({}, test3)).join('') !==
-					'abcdefghijklmnopqrst') {
-				return false;
-			}
-
-			return true;
-		} catch (e) {
-			// We don't expect any of the above to throw, but better to be safe.
-			return false;
-		}
-	}
-
-	module.exports = shouldUseNative() ? Object.assign : function (target, source) {
-		var from;
-		var to = toObject(target);
-		var symbols;
-
-		for (var s = 1; s < arguments.length; s++) {
-			from = Object(arguments[s]);
-
-			for (var key in from) {
-				if (hasOwnProperty.call(from, key)) {
-					to[key] = from[key];
-				}
-			}
-
-			if (Object.getOwnPropertySymbols) {
-				symbols = Object.getOwnPropertySymbols(from);
-				for (var i = 0; i < symbols.length; i++) {
-					if (propIsEnumerable.call(from, symbols[i])) {
-						to[symbols[i]] = from[symbols[i]];
-					}
-				}
-			}
-		}
-
-		return to;
+	_sanitize = function sanitize(node) {
+	  var attr, child, i, j, len, len1, ref, ref1;
+	  if (node.nodeType === Node.ELEMENT_NODE) {
+	    if (node.tagName.toLowerCase() === 'script') {
+	      node = node.parentElement.replaceChild(document.createElement('span'), node);
+	    }
+	    ref = node.attributes;
+	    for (i = 0, len = ref.length; i < len; i++) {
+	      attr = ref[i];
+	      switch (attr.name) {
+	        case 'href':
+	        case 'cite':
+	        case 'style':
+	          true;
+	          break;
+	        default:
+	          node.setAttribute(attr.name, '');
+	      }
+	    }
+	    ref1 = node.childNodes;
+	    for (j = 0, len1 = ref1.length; j < len1; j++) {
+	      child = ref1[j];
+	      _sanitize(child);
+	    }
+	  }
+	  return node;
 	};
 
+	isElementInline = function isElementInline(el) {
+	  switch (el.tagName.toLowerCase()) {
+	    case 'b':
+	    case 'big':
+	    case 'i':
+	    case 'small':
+	    case 'tt':
+	    case 'abbr':
+	    case 'acronym':
+	    case 'cite':
+	    case 'code':
+	    case 'dfn':
+	    case 'em':
+	    case 'kbd':
+	    case 'strong':
+	    case 'samp':
+	    case 'time':
+	    case 'var':
+	    case 'a':
+	    case 'bdo':
+	    case 'br':
+	    case 'img':
+	    case 'map':
+	    case 'object':
+	    case 'q':
+	    case 'script':
+	    case 'span':
+	    case 'sub':
+	    case 'sup':
+	    case 'button':
+	    case 'input':
+	    case 'label':
+	    case 'select':
+	    case 'textarea':
+	      return true;
+	    default:
+	      return false;
+	  }
+	};
+
+	module.exports = {
+	  sanitize: _sanitize,
+	  isElementInline: isElementInline
+	};
 
 /***/ },
-/* 25 */,
-/* 26 */,
-/* 27 */,
-/* 28 */,
 /* 29 */,
 /* 30 */,
 /* 31 */,
 /* 32 */,
 /* 33 */,
 /* 34 */,
-/* 35 */
+/* 35 */,
+/* 36 */,
+/* 37 */,
+/* 38 */,
+/* 39 */,
+/* 40 */
 /***/ function(module, exports, __webpack_require__) {
 
 	"use strict";
@@ -5413,14 +6332,14 @@
 	});
 
 /***/ },
-/* 36 */
+/* 41 */
 /***/ function(module, exports, __webpack_require__) {
 
 	"use strict";
 
 	var Dispatcher, Store;
 
-	Dispatcher = __webpack_require__(8);
+	Dispatcher = __webpack_require__(4);
 
 	Store = function () {
 	  function Store(name) {
@@ -5462,14 +6381,14 @@
 	module.exports = Store;
 
 /***/ },
-/* 37 */
+/* 42 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
 
 	var DOMSelection, OboSelectionRect;
 
-	DOMSelection = __webpack_require__(13);
+	DOMSelection = __webpack_require__(18);
 
 	OboSelectionRect = function () {
 	  function OboSelectionRect() {
@@ -5561,7 +6480,7 @@
 	module.exports = OboSelectionRect;
 
 /***/ },
-/* 38 */
+/* 43 */
 /***/ function(module, exports) {
 
 	"use strict";
@@ -5588,56 +6507,16 @@
 	module.exports = VirtualCursor;
 
 /***/ },
-/* 39 */
-/***/ function(module, exports, __webpack_require__) {
-
-	'use strict';
-
-	var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol" ? function (obj) { return typeof obj; } : function (obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; };
-
-	var ObjectAssign;
-
-	ObjectAssign = __webpack_require__(24);
-
-	module.exports = {
-	  createData: function createData(data, template) {
-	    var clone, key;
-	    clone = ObjectAssign({}, data);
-	    for (key in clone) {
-	      if (template[key] == null) {
-	        delete clone[key];
-	      }
-	    }
-	    for (key in template) {
-	      if (clone[key] == null) {
-	        if (_typeof(template[key]) === 'object') {
-	          clone[key] = ObjectAssign({}, template[key]);
-	        } else {
-	          clone[key] = template[key];
-	        }
-	      }
-	    }
-	    return clone;
-	  },
-	  defaultCloneFn: function defaultCloneFn(data) {
-	    return ObjectAssign({}, data);
-	  },
-	  defaultMergeFn: function defaultMergeFn(consumer, digested) {
-	    return consumer;
-	  }
-	};
-
-/***/ },
-/* 40 */
+/* 44 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
 
 	var Dispatcher, FocusUtil, OboModel;
 
-	Dispatcher = __webpack_require__(8);
+	Dispatcher = __webpack_require__(4);
 
-	OboModel = __webpack_require__(10);
+	OboModel = __webpack_require__(13);
 
 	FocusUtil = {
 	  focusComponent: function focusComponent(id) {
@@ -5658,12 +6537,12 @@
 	module.exports = FocusUtil;
 
 /***/ },
-/* 41 */,
-/* 42 */,
-/* 43 */,
-/* 44 */,
 /* 45 */,
-/* 46 */
+/* 46 */,
+/* 47 */,
+/* 48 */,
+/* 49 */,
+/* 50 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/**
@@ -5675,10 +6554,10 @@
 	 */
 
 	var ParseError = __webpack_require__(2);
-	var Settings = __webpack_require__(17);
+	var Settings = __webpack_require__(20);
 
-	var buildTree = __webpack_require__(52);
-	var parseTree = __webpack_require__(58);
+	var buildTree = __webpack_require__(56);
+	var parseTree = __webpack_require__(62);
 	var utils = __webpack_require__(1);
 
 	/**
@@ -5742,7 +6621,7 @@
 
 
 /***/ },
-/* 47 */
+/* 51 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/**
@@ -5758,7 +6637,7 @@
 	 * kinds.
 	 */
 
-	var matchAt = __webpack_require__(59);
+	var matchAt = __webpack_require__(63);
 
 	var ParseError = __webpack_require__(2);
 
@@ -5942,7 +6821,7 @@
 
 
 /***/ },
-/* 48 */
+/* 52 */
 /***/ function(module, exports) {
 
 	/**
@@ -6137,16 +7016,16 @@
 
 
 /***/ },
-/* 49 */
+/* 53 */
 /***/ function(module, exports, __webpack_require__) {
 
-	var functions = __webpack_require__(56);
-	var environments = __webpack_require__(54);
-	var Lexer = __webpack_require__(47);
-	var symbols = __webpack_require__(6);
+	var functions = __webpack_require__(60);
+	var environments = __webpack_require__(58);
+	var Lexer = __webpack_require__(51);
+	var symbols = __webpack_require__(8);
 	var utils = __webpack_require__(1);
 
-	var parseData = __webpack_require__(19);
+	var parseData = __webpack_require__(22);
 	var ParseError = __webpack_require__(2);
 
 	/**
@@ -6863,7 +7742,7 @@
 
 
 /***/ },
-/* 50 */
+/* 54 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/**
@@ -6874,11 +7753,11 @@
 	 */
 
 	var ParseError = __webpack_require__(2);
-	var Style = __webpack_require__(4);
+	var Style = __webpack_require__(6);
 
-	var buildCommon = __webpack_require__(5);
-	var delimiter = __webpack_require__(53);
-	var domTree = __webpack_require__(18);
+	var buildCommon = __webpack_require__(7);
+	var delimiter = __webpack_require__(57);
+	var domTree = __webpack_require__(21);
 	var fontMetrics = __webpack_require__(3);
 	var utils = __webpack_require__(1);
 
@@ -8231,7 +9110,7 @@
 
 
 /***/ },
-/* 51 */
+/* 55 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/**
@@ -8240,11 +9119,11 @@
 	 * parser.
 	 */
 
-	var buildCommon = __webpack_require__(5);
+	var buildCommon = __webpack_require__(7);
 	var fontMetrics = __webpack_require__(3);
-	var mathMLTree = __webpack_require__(57);
+	var mathMLTree = __webpack_require__(61);
 	var ParseError = __webpack_require__(2);
-	var symbols = __webpack_require__(6);
+	var symbols = __webpack_require__(8);
 	var utils = __webpack_require__(1);
 
 	var makeSpan = buildCommon.makeSpan;
@@ -8756,15 +9635,15 @@
 
 
 /***/ },
-/* 52 */
+/* 56 */
 /***/ function(module, exports, __webpack_require__) {
 
-	var buildHTML = __webpack_require__(50);
-	var buildMathML = __webpack_require__(51);
-	var buildCommon = __webpack_require__(5);
-	var Options = __webpack_require__(48);
-	var Settings = __webpack_require__(17);
-	var Style = __webpack_require__(4);
+	var buildHTML = __webpack_require__(54);
+	var buildMathML = __webpack_require__(55);
+	var buildCommon = __webpack_require__(7);
+	var Options = __webpack_require__(52);
+	var Settings = __webpack_require__(20);
+	var Style = __webpack_require__(6);
 
 	var makeSpan = buildCommon.makeSpan;
 
@@ -8802,7 +9681,7 @@
 
 
 /***/ },
-/* 53 */
+/* 57 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/**
@@ -8828,11 +9707,11 @@
 	 */
 
 	var ParseError = __webpack_require__(2);
-	var Style = __webpack_require__(4);
+	var Style = __webpack_require__(6);
 
-	var buildCommon = __webpack_require__(5);
+	var buildCommon = __webpack_require__(7);
 	var fontMetrics = __webpack_require__(3);
-	var symbols = __webpack_require__(6);
+	var symbols = __webpack_require__(8);
 	var utils = __webpack_require__(1);
 
 	var makeSpan = buildCommon.makeSpan;
@@ -9347,11 +10226,11 @@
 
 
 /***/ },
-/* 54 */
+/* 58 */
 /***/ function(module, exports, __webpack_require__) {
 
 	var fontMetrics = __webpack_require__(3);
-	var parseData = __webpack_require__(19);
+	var parseData = __webpack_require__(22);
 	var ParseError = __webpack_require__(2);
 
 	var ParseNode = parseData.ParseNode;
@@ -9531,7 +10410,7 @@
 
 
 /***/ },
-/* 55 */
+/* 59 */
 /***/ function(module, exports) {
 
 	module.exports = {
@@ -11288,7 +12167,7 @@
 
 
 /***/ },
-/* 56 */
+/* 60 */
 /***/ function(module, exports, __webpack_require__) {
 
 	var utils = __webpack_require__(1);
@@ -11923,7 +12802,7 @@
 
 
 /***/ },
-/* 57 */
+/* 61 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/**
@@ -12031,7 +12910,7 @@
 
 
 /***/ },
-/* 58 */
+/* 62 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/**
@@ -12039,7 +12918,7 @@
 	 * TODO(emily): Remove this
 	 */
 
-	var Parser = __webpack_require__(49);
+	var Parser = __webpack_require__(53);
 
 	/**
 	 * Parses an expression using a Parser, then returns the parsed result.
@@ -12054,7 +12933,7 @@
 
 
 /***/ },
-/* 59 */
+/* 63 */
 /***/ function(module, exports) {
 
 	/** @flow */
@@ -12101,10 +12980,10 @@
 	module.exports = matchAt;
 
 /***/ },
-/* 60 */,
-/* 61 */,
-/* 62 */,
-/* 63 */
+/* 64 */,
+/* 65 */,
+/* 66 */,
+/* 67 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -12120,7 +12999,7 @@
 	},
 	    hasProp = {}.hasOwnProperty;
 
-	BaseSelectionHandler = __webpack_require__(21);
+	BaseSelectionHandler = __webpack_require__(24);
 
 	FocusableSelectionHandler = function (superClass) {
 	  extend(FocusableSelectionHandler, superClass);
@@ -12187,18 +13066,22 @@
 	module.exports = FocusableSelectionHandler;
 
 /***/ },
-/* 64 */
+/* 68 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
 
-	var DOMUtil, StyleableTextComponent, TextGroupEl, emptyChar;
+	var DOMUtil, Dispatcher, StyleableTextComponent, TextGroupEl, emptyChar, varRegex;
 
-	emptyChar = __webpack_require__(16).EMPTY_CHAR;
+	emptyChar = __webpack_require__(19).EMPTY_CHAR;
 
-	DOMUtil = __webpack_require__(11);
+	DOMUtil = __webpack_require__(14);
 
-	StyleableTextComponent = __webpack_require__(77);
+	StyleableTextComponent = __webpack_require__(80);
+
+	Dispatcher = __webpack_require__(4);
+
+	varRegex = /\{\{(.+?)\}\}/;
 
 	TextGroupEl = React.createClass({
 	  displayName: 'TextGroupEl',
@@ -12240,11 +13123,31 @@
 	    return console.timeEnd('textRender');
 	  },
 	  render: function render() {
+	    var event, match, startIndex, text, variable;
 	    console.time('textRender');
+	    text = this.props.text;
+	    console.log('text', text);
+	    if (this.props.parentModel && text.value.indexOf('{{')) {
+	      match = null;
+	      text = text.clone();
+	      while ((match = varRegex.exec(text.value)) !== null) {
+	        variable = match[1];
+	        event = {
+	          text: ''
+	        };
+	        Dispatcher.trigger('getTextForVariable', event, variable, this.props.parentModel);
+	        if (event.text === null) {
+	          event.text = match[1];
+	        }
+	        event.text = '' + event.text;
+	        startIndex = text.value.indexOf(match[0], varRegex.lastIndex);
+	        text.replaceText(startIndex, startIndex + match[0].length, event.text);
+	      }
+	    }
 	    return React.createElement(
 	      'span',
 	      { className: 'text', 'data-group-index': this.props.groupIndex, 'data-indent': this.props.indent },
-	      React.createElement(StyleableTextComponent, { text: this.props.text })
+	      React.createElement(StyleableTextComponent, { text: text })
 	    );
 	  }
 	});
@@ -12254,7 +13157,7 @@
 	module.exports = TextGroupEl;
 
 /***/ },
-/* 65 */
+/* 69 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -12263,7 +13166,7 @@
 
 	var EMPTY_CHAR;
 
-	EMPTY_CHAR = __webpack_require__(16).EMPTY_CHAR;
+	EMPTY_CHAR = __webpack_require__(19).EMPTY_CHAR;
 
 	module.exports = React.createClass({
 			displayName: 'exports',
@@ -12285,7 +13188,7 @@
 	});
 
 /***/ },
-/* 66 */
+/* 70 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -12297,7 +13200,7 @@
 
 	  getDefaultProps: function getDefaultProps() {
 	    return {
-	      value: 'Button',
+	      value: null,
 	      disabled: false
 	    };
 	  },
@@ -12305,6 +13208,12 @@
 	    return ReactDOM.findDOMNode(this.refs.button).focus();
 	  },
 	  render: function render() {
+	    var children;
+	    if (this.props.value) {
+	      children = this.props.value;
+	    } else {
+	      children = this.props.children;
+	    }
 	    return React.createElement(
 	      'div',
 	      { className: "obojobo-draft--components--button" + (this.props.dangerous ? ' dangerous' : '') + (this.props.altAction ? ' alt-action' : '') },
@@ -12316,14 +13225,14 @@
 	          tabIndex: this.props.shouldPreventTab ? '-1' : this.props.tabIndex,
 	          disabled: this.props.disabled || this.props.shouldPreventTab
 	        },
-	        this.props.value
+	        children
 	      )
 	    );
 	  }
 	});
 
 /***/ },
-/* 67 */
+/* 71 */
 /***/ function(module, exports, __webpack_require__) {
 
 	"use strict";
@@ -12347,7 +13256,7 @@
 	});
 
 /***/ },
-/* 68 */
+/* 72 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -12358,11 +13267,11 @@
 
 	__webpack_require__(221);
 
-	Button = __webpack_require__(66);
+	Button = __webpack_require__(70);
 
-	DeleteButton = __webpack_require__(35);
+	DeleteButton = __webpack_require__(40);
 
-	Modal = __webpack_require__(70);
+	Modal = __webpack_require__(74);
 
 	module.exports = React.createClass({
 	  displayName: 'exports',
@@ -12434,7 +13343,7 @@
 	});
 
 /***/ },
-/* 69 */
+/* 73 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -12443,7 +13352,7 @@
 
 	__webpack_require__(222);
 
-	SimpleDialog = __webpack_require__(71);
+	SimpleDialog = __webpack_require__(75);
 
 	module.exports = React.createClass({
 		displayName: 'exports',
@@ -12462,7 +13371,7 @@
 	});
 
 /***/ },
-/* 70 */
+/* 74 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -12471,7 +13380,7 @@
 
 	__webpack_require__(223);
 
-	DeleteButton = __webpack_require__(35);
+	DeleteButton = __webpack_require__(40);
 
 	module.exports = React.createClass({
 	  displayName: 'exports',
@@ -12515,7 +13424,7 @@
 	});
 
 /***/ },
-/* 71 */
+/* 75 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -12526,7 +13435,7 @@
 
 	ModalUtil = __webpack_require__(85);
 
-	Dialog = __webpack_require__(68);
+	Dialog = __webpack_require__(72);
 
 	module.exports = React.createClass({
 	  displayName: 'exports',
@@ -12599,7 +13508,7 @@
 	});
 
 /***/ },
-/* 72 */
+/* 76 */
 /***/ function(module, exports) {
 
 	"use strict";
@@ -12668,7 +13577,7 @@
 	module.exports = MockElement;
 
 /***/ },
-/* 73 */
+/* 77 */
 /***/ function(module, exports) {
 
 	'use strict';
@@ -12688,14 +13597,14 @@
 	module.exports = MockTextNode;
 
 /***/ },
-/* 74 */
+/* 78 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
 
 	var Cursor, DOMUtil;
 
-	DOMUtil = __webpack_require__(11);
+	DOMUtil = __webpack_require__(14);
 
 	Cursor = function () {
 	  function Cursor(chunk, node, offset) {
@@ -12717,18 +13626,18 @@
 	module.exports = Cursor;
 
 /***/ },
-/* 75 */
+/* 79 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
 
 	var DOMSelection, DOMUtil, VirtualCursor, VirtualSelection;
 
-	VirtualCursor = __webpack_require__(38);
+	VirtualCursor = __webpack_require__(43);
 
-	DOMUtil = __webpack_require__(11);
+	DOMUtil = __webpack_require__(14);
 
-	DOMSelection = __webpack_require__(13);
+	DOMSelection = __webpack_require__(18);
 
 	VirtualSelection = function () {
 	  function VirtualSelection(page1) {
@@ -12927,288 +13836,16 @@
 	module.exports = VirtualSelection;
 
 /***/ },
-/* 76 */
-/***/ function(module, exports, __webpack_require__) {
-
-	'use strict';
-
-	var ChunkStyleList, StyleRange, StyleType, keySortFn;
-
-	StyleType = __webpack_require__(15);
-
-	StyleRange = __webpack_require__(22);
-
-	keySortFn = function keySortFn(a, b) {
-	  return Number(a) - Number(b);
-	};
-
-	ChunkStyleList = function () {
-	  function ChunkStyleList() {
-	    this.clear();
-	  }
-
-	  ChunkStyleList.prototype.clear = function () {
-	    return this.styles = [];
-	  };
-
-	  ChunkStyleList.prototype.getExportedObject = function () {
-	    var j, len, output, ref, style;
-	    if (this.styles.length === 0) {
-	      return null;
-	    }
-	    output = [];
-	    ref = this.styles;
-	    for (j = 0, len = ref.length; j < len; j++) {
-	      style = ref[j];
-	      output.push(style.getExportedObject());
-	    }
-	    return output;
-	  };
-
-	  ChunkStyleList.prototype.clone = function () {
-	    var cloneStyleList, j, len, ref, style;
-	    cloneStyleList = new ChunkStyleList();
-	    ref = this.styles;
-	    for (j = 0, len = ref.length; j < len; j++) {
-	      style = ref[j];
-	      cloneStyleList.add(style.clone());
-	    }
-	    return cloneStyleList;
-	  };
-
-	  ChunkStyleList.prototype.length = function () {
-	    return this.styles.length;
-	  };
-
-	  ChunkStyleList.prototype.get = function () {
-	    return this.styles[i];
-	  };
-
-	  ChunkStyleList.prototype.add = function (styleRange) {
-	    return this.styles.push(styleRange);
-	  };
-
-	  ChunkStyleList.prototype.remove = function (styleRange) {
-	    var co, comparisons, j, k, l, leftRange, len, len1, len2, len3, m, origEnd, ref, ref1, ref2, ref3, rightRange;
-	    comparisons = this.getStyleComparisonsForRange(styleRange.start, styleRange.end, styleRange.type);
-	    ref = comparisons.enscapsulatedBy;
-	    for (j = 0, len = ref.length; j < len; j++) {
-	      co = ref[j];
-	      co.invalidate();
-	    }
-	    ref1 = comparisons.left;
-	    for (k = 0, len1 = ref1.length; k < len1; k++) {
-	      co = ref1[k];
-	      co.end = styleRange.start;
-	    }
-	    ref2 = comparisons.right;
-	    for (l = 0, len2 = ref2.length; l < len2; l++) {
-	      co = ref2[l];
-	      co.start = styleRange.end;
-	    }
-	    ref3 = comparisons.contains;
-	    for (m = 0, len3 = ref3.length; m < len3; m++) {
-	      co = ref3[m];
-	      leftRange = co;
-	      origEnd = leftRange.end;
-	      leftRange.end = styleRange.start;
-	      rightRange = new StyleRange(styleRange.end, origEnd, co.type, co.data);
-	      if (leftRange.length() === 0) {
-	        leftRange.invalidate();
-	      }
-	      if (rightRange.length() > 0) {
-	        this.add(rightRange);
-	      }
-	    }
-	    return this.normalize();
-	  };
-
-	  ChunkStyleList.prototype.getStyleComparisonsForRange = function (from, to, type) {
-	    var comparisons, curComparison, j, len, ref, style;
-	    type = type || null;
-	    to = to || from;
-	    comparisons = {
-	      after: [],
-	      before: [],
-	      enscapsulatedBy: [],
-	      contains: [],
-	      left: [],
-	      right: []
-	    };
-	    ref = this.styles;
-	    for (j = 0, len = ref.length; j < len; j++) {
-	      style = ref[j];
-	      curComparison = style.compareToRange(from, to);
-	      if (type === null || style.type === type) {
-	        comparisons[curComparison].push(style);
-	      }
-	    }
-	    return comparisons;
-	  };
-
-	  ChunkStyleList.prototype.rangeHasStyle = function (from, to, styleType) {
-	    return this.getStyleComparisonsForRange(from, to, styleType).contains.length > 0;
-	  };
-
-	  ChunkStyleList.prototype.getStylesInRange = function (from, to) {
-	    var j, len, range, ref, styles;
-	    styles = {};
-	    ref = this.getStyleComparisonsForRange(from, to).contains;
-	    for (j = 0, len = ref.length; j < len; j++) {
-	      range = ref[j];
-	      styles[range.type] = range.type;
-	    }
-	    return styles;
-	  };
-
-	  ChunkStyleList.prototype.getStyles = function () {
-	    var j, len, range, ref, styles;
-	    styles = {};
-	    ref = this.styles;
-	    for (j = 0, len = ref.length; j < len; j++) {
-	      range = ref[j];
-	      styles[range.type] = range.type;
-	    }
-	    return styles;
-	  };
-
-	  ChunkStyleList.prototype.cleanupSuperscripts = function () {
-	    var curLevel, curRange, i, j, k, len, len1, level, mark, newStyles, ref, styleRange;
-	    mark = [];
-	    newStyles = [];
-	    ref = this.styles;
-	    for (j = 0, len = ref.length; j < len; j++) {
-	      styleRange = ref[j];
-	      if (styleRange.type !== StyleType.SUPERSCRIPT) {
-	        newStyles.push(styleRange);
-	        continue;
-	      }
-	      if (mark[styleRange.start] == null) {
-	        mark[styleRange.start] = 0;
-	      }
-	      if (mark[styleRange.end] == null) {
-	        mark[styleRange.end] = 0;
-	      }
-	      level = parseInt(styleRange.data, 10);
-	      mark[styleRange.start] += level;
-	      mark[styleRange.end] -= level;
-	    }
-	    curRange = new StyleRange(-1, -1, StyleType.SUPERSCRIPT, 0);
-	    curLevel = 0;
-	    for (i = k = 0, len1 = mark.length; k < len1; i = ++k) {
-	      level = mark[i];
-	      if (mark[i] == null) {
-	        continue;
-	      }
-	      curLevel += level;
-	      if (curRange.start === -1) {
-	        curRange.start = i;
-	        curRange.data = curLevel;
-	      } else if (curRange.end === -1) {
-	        curRange.end = i;
-	        if (curRange.data !== 0) {
-	          newStyles.push(curRange);
-	        }
-	        curRange = new StyleRange(i, -1, StyleType.SUPERSCRIPT, curLevel);
-	      }
-	    }
-	    return this.styles = newStyles;
-	  };
-
-	  ChunkStyleList.prototype.normalize = function () {
-	    var curData, curEncodedData, data, dataValues, datas, datasToCheck, end, i, j, k, key, keys, l, len, len1, len2, m, n, name, name1, newStyles, range, ref, ref1, ref2, start, style, styleName, styleRange, styleType, t, tmp, total;
-	    this.cleanupSuperscripts();
-	    newStyles = [];
-	    datasToCheck = {};
-	    dataValues = {};
-	    for (styleName in StyleType) {
-	      styleType = StyleType[styleName];
-	      datasToCheck[styleType] = [];
-	      dataValues[styleType] = [];
-	    }
-	    for (i = j = ref = this.styles.length - 1; j >= 0; i = j += -1) {
-	      styleRange = this.styles[i];
-	      curData = styleRange.data;
-	      curEncodedData = JSON.stringify(curData);
-	      if (datasToCheck[styleRange.type].indexOf(curEncodedData) === -1) {
-	        datasToCheck[styleRange.type].push(curEncodedData);
-	        dataValues[styleRange.type].push(curData);
-	      }
-	    }
-	    for (styleType in dataValues) {
-	      datas = dataValues[styleType];
-	      for (k = 0, len = datas.length; k < len; k++) {
-	        data = datas[k];
-	        tmp = {};
-	        total = 0;
-	        start = null;
-	        ref1 = this.styles;
-	        for (l = 0, len1 = ref1.length; l < len1; l++) {
-	          range = ref1[l];
-	          if (range.isMergeable(styleType, data)) {
-	            if (tmp[name = range.start] == null) {
-	              tmp[name] = 0;
-	            }
-	            if (tmp[name1 = range.end] == null) {
-	              tmp[name1] = 0;
-	            }
-	            tmp[range.start]++;
-	            tmp[range.end]--;
-	          }
-	        }
-	        keys = Object.keys(tmp).sort(keySortFn);
-	        for (m = 0, len2 = keys.length; m < len2; m++) {
-	          key = keys[m];
-	          end = Number(key);
-	          t = tmp[key];
-	          if (start == null) {
-	            start = end;
-	          }
-	          total += t;
-	          if (total === 0) {
-	            newStyles.push(new StyleRange(start, end, styleType, data));
-	            start = null;
-	          }
-	        }
-	      }
-	    }
-	    for (i = n = ref2 = newStyles.length - 1; n >= 0; i = n += -1) {
-	      style = newStyles[i];
-	      if (style.isInvalid()) {
-	        newStyles.splice(i, 1);
-	      }
-	    }
-	    return this.styles = newStyles;
-	  };
-
-	  return ChunkStyleList;
-	}();
-
-	ChunkStyleList.createFromObject = function (o) {
-	  var j, len, rangeObj, styleList;
-	  styleList = new ChunkStyleList();
-	  if (o != null) {
-	    for (j = 0, len = o.length; j < len; j++) {
-	      rangeObj = o[j];
-	      styleList.add(StyleRange.createFromObject(rangeObj));
-	    }
-	  }
-	  return styleList;
-	};
-
-	module.exports = ChunkStyleList;
-
-/***/ },
-/* 77 */
+/* 80 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
 
 	var StyleableTextComponent, StyleableTextRenderer, emptyChar;
 
-	StyleableTextRenderer = __webpack_require__(78);
+	StyleableTextRenderer = __webpack_require__(81);
 
-	emptyChar = __webpack_require__(16).EMPTY_CHAR;
+	emptyChar = __webpack_require__(19).EMPTY_CHAR;
 
 	StyleableTextComponent = React.createClass({
 	  displayName: 'StyleableTextComponent',
@@ -13280,26 +13917,26 @@
 	module.exports = StyleableTextComponent;
 
 /***/ },
-/* 78 */
+/* 81 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
 
 	var MockElement, MockTextNode, ORDER, ObjectAssign, StyleRange, StyleType, StyleableText, _debugPrintNode, _getHTML, applyStyle, getMockElement, getTextNodeFragmentDescriptorsAt, _getTextNodeFragmentDescriptorsAtHelper, katex, wrap, wrapElement;
 
-	ObjectAssign = __webpack_require__(24);
+	ObjectAssign = __webpack_require__(11);
 
-	katex = __webpack_require__(46);
+	katex = __webpack_require__(50);
 
-	StyleableText = __webpack_require__(14);
+	StyleableText = __webpack_require__(10);
 
-	StyleRange = __webpack_require__(22);
+	StyleRange = __webpack_require__(15);
 
-	StyleType = __webpack_require__(15);
+	StyleType = __webpack_require__(5);
 
-	MockElement = __webpack_require__(72);
+	MockElement = __webpack_require__(76);
 
-	MockTextNode = __webpack_require__(73);
+	MockTextNode = __webpack_require__(77);
 
 	ORDER = [StyleType.COMMENT, StyleType.LATEX, StyleType.LINK, StyleType.QUOTE, StyleType.BOLD, StyleType.STRIKETHROUGH, StyleType.MONOSPACE, StyleType.SUPERSCRIPT, StyleType.ITALIC];
 
@@ -13514,493 +14151,7 @@
 	module.exports = getMockElement;
 
 /***/ },
-/* 79 */
-/***/ function(module, exports, __webpack_require__) {
-
-	'use strict';
-
-	var ObjectAssign, StyleableText, TextGroup, TextGroupItem, Util, addChildToGroup, createChild, getItemsArray, removeAllChildrenFromGroup, removeChildFromGroup, setChildToGroup;
-
-	StyleableText = __webpack_require__(14);
-
-	Util = __webpack_require__(39);
-
-	TextGroupItem = __webpack_require__(81);
-
-	ObjectAssign = __webpack_require__(24);
-
-	getItemsArray = function getItemsArray(itemOrItems) {
-	  if (itemOrItems instanceof TextGroupItem) {
-	    return [itemOrItems];
-	  } else {
-	    return itemOrItems;
-	  }
-	};
-
-	addChildToGroup = function addChildToGroup(itemOrItems, group, atIndex) {
-	  var item, items, j, len, results;
-	  if (atIndex == null) {
-	    atIndex = null;
-	  }
-	  items = getItemsArray(itemOrItems);
-	  if (atIndex === null) {
-	    group.items = group.items.concat(items);
-	  } else {
-	    group.items = group.items.slice(0, atIndex).concat(items).concat(group.items.slice(atIndex));
-	  }
-	  results = [];
-	  for (j = 0, len = items.length; j < len; j++) {
-	    item = items[j];
-	    results.push(item.parent = group);
-	  }
-	  return results;
-	};
-
-	removeChildFromGroup = function removeChildFromGroup(itemOrItems, group) {
-	  var item, items, j, len, removed, removedItems;
-	  removedItems = [];
-	  items = getItemsArray(itemOrItems);
-	  for (j = 0, len = items.length; j < len; j++) {
-	    item = items[j];
-	    removed = group.items.splice(item.index, 1)[0];
-	    removed.parent = null;
-	    removedItems.push(removed);
-	  }
-	  return removedItems;
-	};
-
-	setChildToGroup = function setChildToGroup(item, group, atIndex) {
-	  group.items[atIndex] = item;
-	  return item.parent = group;
-	};
-
-	removeAllChildrenFromGroup = function removeAllChildrenFromGroup(group) {
-	  var item, j, len, ref;
-	  ref = group.items;
-	  for (j = 0, len = ref.length; j < len; j++) {
-	    item = ref[j];
-	    item.parent = null;
-	  }
-	  return group.items = [];
-	};
-
-	createChild = function createChild(text, data, dataTemplate) {
-	  return new TextGroupItem(text, Util.createData(data, dataTemplate));
-	};
-
-	TextGroup = function () {
-	  function TextGroup(maxItems1, dataTemplate, initialItems) {
-	    var item, j, len;
-	    this.maxItems = maxItems1 != null ? maxItems1 : 2e308;
-	    if (dataTemplate == null) {
-	      dataTemplate = {};
-	    }
-	    if (initialItems == null) {
-	      initialItems = [];
-	    }
-	    this.items = [];
-	    this.dataTemplate = Object.freeze(ObjectAssign({}, dataTemplate));
-	    for (j = 0, len = initialItems.length; j < len; j++) {
-	      item = initialItems[j];
-	      this.add(item.text, item.data);
-	    }
-	  }
-
-	  TextGroup.prototype.clear = function () {
-	    return removeAllChildrenFromGroup(this);
-	  };
-
-	  TextGroup.prototype.indexOf = function (item) {
-	    return this.items.indexOf(item);
-	  };
-
-	  TextGroup.prototype.init = function (numItems) {
-	    if (numItems == null) {
-	      numItems = 1;
-	    }
-	    this.clear();
-	    while (numItems-- && !this.isFull) {
-	      this.add();
-	    }
-	    return this;
-	  };
-
-	  TextGroup.prototype.fill = function () {
-	    var results;
-	    if (this.maxItems === 2e308) {
-	      return;
-	    }
-	    results = [];
-	    while (!this.isFull) {
-	      results.push(this.add());
-	    }
-	    return results;
-	  };
-
-	  TextGroup.prototype.add = function (text, data) {
-	    if (this.isFull) {
-	      return this;
-	    }
-	    addChildToGroup(createChild(text, data, this.dataTemplate), this);
-	    return this;
-	  };
-
-	  TextGroup.prototype.addAt = function (index, text, data) {
-	    if (this.isFull) {
-	      return this;
-	    }
-	    addChildToGroup(createChild(text, data, this.dataTemplate), this, index);
-	    return this;
-	  };
-
-	  TextGroup.prototype.addGroup = function (group, cloneDataFn) {
-	    if (cloneDataFn == null) {
-	      cloneDataFn = Util.defaultCloneFn;
-	    }
-	    return this.addGroupAt(group, null, cloneDataFn);
-	  };
-
-	  TextGroup.prototype.addGroupAt = function (group, index, cloneDataFn) {
-	    var clone, item, itemsToAdd, j, len, ref;
-	    if (cloneDataFn == null) {
-	      cloneDataFn = Util.defaultCloneFn;
-	    }
-	    itemsToAdd = [];
-	    ref = group.items;
-	    for (j = 0, len = ref.length; j < len; j++) {
-	      item = ref[j];
-	      clone = item.clone(cloneDataFn);
-	      itemsToAdd.push(createChild(clone.text, clone.data, this.dataTemplate));
-	    }
-	    addChildToGroup(itemsToAdd, this, index);
-	    return this;
-	  };
-
-	  TextGroup.prototype.get = function (index) {
-	    return this.items[index];
-	  };
-
-	  TextGroup.prototype.set = function (index, text, data) {
-	    return setChildToGroup(createChild(text, data, this.dataTemplate), this, index);
-	  };
-
-	  TextGroup.prototype.remove = function (index) {
-	    return removeChildFromGroup(this.items[index], this)[0];
-	  };
-
-	  TextGroup.prototype.clone = function (cloneDataFn) {
-	    var clonedItems, item, j, len, ref;
-	    if (cloneDataFn == null) {
-	      cloneDataFn = Util.defaultCloneFn;
-	    }
-	    clonedItems = [];
-	    ref = this.items;
-	    for (j = 0, len = ref.length; j < len; j++) {
-	      item = ref[j];
-	      clonedItems.push(item.clone(cloneDataFn));
-	    }
-	    return new TextGroup(this.maxItems, this.dataTemplate, clonedItems);
-	  };
-
-	  TextGroup.prototype.toDescriptor = function () {
-	    var desc, item, j, len, ref;
-	    desc = [];
-	    ref = this.items;
-	    for (j = 0, len = ref.length; j < len; j++) {
-	      item = ref[j];
-	      desc.push({
-	        text: item.text.getExportedObject(),
-	        data: Util.defaultCloneFn(item.data)
-	      });
-	    }
-	    return desc;
-	  };
-
-	  TextGroup.prototype.toSlice = function (from, to) {
-	    if (to == null) {
-	      to = 2e308;
-	    }
-	    removeChildFromGroup(this.items.slice(to), this);
-	    removeChildFromGroup(this.items.slice(0, from), this);
-	    return this;
-	  };
-
-	  TextGroup.prototype.splitBefore = function (index) {
-	    var item, sibling;
-	    sibling = new TextGroup(this.maxItems, this.dataTemplate);
-	    while (this.length !== index) {
-	      item = this.remove(index);
-	      sibling.add(item.text, item.data);
-	    }
-	    return sibling;
-	  };
-
-	  TextGroup.prototype.splitText = function (index, offset) {
-	    var item, newItem;
-	    item = this.items[index];
-	    newItem = createChild(item.text.split(offset), Util.defaultCloneFn(item.data), this.dataTemplate);
-	    addChildToGroup(newItem, this, index + 1);
-	    return newItem;
-	  };
-
-	  TextGroup.prototype.merge = function (index, mergeDataFn) {
-	    var consumerItem, digestedItem;
-	    if (mergeDataFn == null) {
-	      mergeDataFn = Util.defaultMergeFn;
-	    }
-	    digestedItem = this.items.splice(index + 1, 1)[0];
-	    consumerItem = this.items[index];
-	    if (!digestedItem || !consumerItem) {
-	      return this;
-	    }
-	    consumerItem.data = Util.createData(mergeDataFn(consumerItem.data, digestedItem.data), this.dataTemplate);
-	    consumerItem.text.merge(digestedItem.text);
-	    return this;
-	  };
-
-	  TextGroup.prototype.deleteSpan = function (startIndex, startTextIndex, endIndex, endTextIndex, merge, mergeFn) {
-	    var endItem, endText, i, item, j, len, newItems, ref, startItem, startText;
-	    if (merge == null) {
-	      merge = true;
-	    }
-	    if (mergeFn == null) {
-	      mergeFn = Util.defaultMergeFn;
-	    }
-	    startItem = this.items[startIndex];
-	    endItem = this.items[endIndex];
-	    if (!startItem) {
-	      startItem = this.first;
-	    }
-	    if (!endItem) {
-	      endItem = this.last;
-	    }
-	    startText = startItem.text;
-	    endText = endItem.text;
-	    if (startText === endText) {
-	      startText.deleteText(startTextIndex, endTextIndex);
-	      return;
-	    }
-	    startText.deleteText(startTextIndex, startText.length);
-	    endText.deleteText(0, endTextIndex);
-	    if (merge) {
-	      newItems = [];
-	      ref = this.items;
-	      for (i = j = 0, len = ref.length; j < len; i = ++j) {
-	        item = ref[i];
-	        if (i < startIndex || i > endIndex) {
-	          newItems.push(item);
-	        } else if (i === startIndex) {
-	          newItems.push(startItem);
-	        } else if (i === endIndex) {
-	          newItems.push(endItem);
-	        }
-	      }
-	      removeAllChildrenFromGroup(this);
-	      addChildToGroup(newItems, this);
-	      return this.merge(startIndex, mergeFn);
-	    }
-	  };
-
-	  TextGroup.prototype.clearSpan = function (startIndex, startTextIndex, endIndex, endTextIndex) {
-	    var endItem, endText, i, item, j, len, ref, startItem, startText;
-	    startItem = this.items[startIndex];
-	    endItem = this.items[endIndex];
-	    startText = startItem.text;
-	    endText = endItem.text;
-	    if (startText === endText) {
-	      startText.deleteText(startTextIndex, endTextIndex);
-	      return;
-	    }
-	    startText.deleteText(startTextIndex, startText.length);
-	    endText.deleteText(0, endTextIndex);
-	    ref = this.items;
-	    for (i = j = 0, len = ref.length; j < len; i = ++j) {
-	      item = ref[i];
-	      if (i > startIndex && i < endIndex) {
-	        item.text.init();
-	      }
-	    }
-	    return this;
-	  };
-
-	  TextGroup.prototype.styleText = function (startIndex, startTextIndex, endIndex, endTextIndex, styleType, styleData) {
-	    return this.applyStyleFunction('styleText', arguments);
-	  };
-
-	  TextGroup.prototype.unstyleText = function (startIndex, startTextIndex, endIndex, endTextIndex, styleType, styleData) {
-	    return this.applyStyleFunction('unstyleText', arguments);
-	  };
-
-	  TextGroup.prototype.toggleStyleText = function (startIndex, startTextIndex, endIndex, endTextIndex, styleType, styleData) {
-	    return this.applyStyleFunction('toggleStyleText', arguments);
-	  };
-
-	  TextGroup.prototype.applyStyleFunction = function (fn, args) {
-	    var endIndex, endItem, endText, endTextIndex, foundStartText, item, j, len, ref, startIndex, startItem, startText, startTextIndex, styleData, styleType;
-	    startIndex = args[0], startTextIndex = args[1], endIndex = args[2], endTextIndex = args[3], styleType = args[4], styleData = args[5];
-	    startItem = this.items[startIndex];
-	    endItem = this.items[endIndex];
-	    startText = startItem.text;
-	    endText = endItem.text;
-	    if (startText === endText) {
-	      startText[fn](styleType, startTextIndex, endTextIndex, styleData);
-	      return;
-	    }
-	    foundStartText = false;
-	    ref = this.items;
-	    for (j = 0, len = ref.length; j < len; j++) {
-	      item = ref[j];
-	      if (item.text === startText) {
-	        item.text[fn](styleType, startTextIndex, startText.length, styleData);
-	        foundStartText = true;
-	      } else if (item.text === endText) {
-	        item.text[fn](styleType, 0, endTextIndex, styleData);
-	        break;
-	      } else if (foundStartText) {
-	        item.text[fn](styleType, 0, item.text.length, styleData);
-	      }
-	    }
-	    return this;
-	  };
-
-	  TextGroup.prototype.getStyles = function (startIndex, startTextIndex, endIndex, endTextIndex) {
-	    var allStyles, endItem, endText, foundStartText, item, j, len, numTexts, ref, returnedStyles, startItem, startText, style, styles;
-	    startItem = this.items[startIndex];
-	    endItem = this.items[endIndex];
-	    if (startItem == null || endItem == null) {
-	      return {};
-	    }
-	    startText = startItem.text;
-	    endText = endItem.text;
-	    if (startText == null || endText == null) {
-	      return {};
-	    }
-	    if (startText === endText) {
-	      return startText.getStyles(startTextIndex, endTextIndex);
-	    }
-	    numTexts = 0;
-	    allStyles = {};
-	    foundStartText = false;
-	    ref = this.items;
-	    for (j = 0, len = ref.length; j < len; j++) {
-	      item = ref[j];
-	      styles = {};
-	      if (item.text === startText) {
-	        numTexts++;
-	        styles = item.text.getStyles(startTextIndex, startText.length);
-	        foundStartText = true;
-	      } else if (item.text === endText) {
-	        numTexts++;
-	        styles = item.text.getStyles(0, endTextIndex);
-	      } else if (foundStartText) {
-	        numTexts++;
-	        styles = item.text.getStyles(0, item.text.length);
-	      }
-	      for (style in styles) {
-	        if (allStyles[style] != null) {
-	          allStyles[style]++;
-	        } else {
-	          allStyles[style] = 1;
-	        }
-	      }
-	      if (item.text === endText) {
-	        break;
-	      }
-	    }
-	    returnedStyles = {};
-	    for (style in allStyles) {
-	      if (allStyles[style] === numTexts) {
-	        returnedStyles[style] = style;
-	      }
-	    }
-	    return returnedStyles;
-	  };
-
-	  TextGroup.prototype.__debug_print = function () {
-	    var item, j, len, ref, results;
-	    console.log('========================');
-	    ref = this.items;
-	    results = [];
-	    for (j = 0, len = ref.length; j < len; j++) {
-	      item = ref[j];
-	      item.text.__debug_print();
-	      console.log(JSON.stringify(item.data));
-	      results.push(console.log('---------------------'));
-	    }
-	    return results;
-	  };
-
-	  return TextGroup;
-	}();
-
-	Object.defineProperties(TextGroup.prototype, {
-	  "length": {
-	    "get": function get() {
-	      return this.items.length;
-	    }
-	  },
-	  "first": {
-	    "get": function get() {
-	      return this.items[0];
-	    }
-	  },
-	  "last": {
-	    "get": function get() {
-	      return this.items[this.items.length - 1];
-	    }
-	  },
-	  "isFull": {
-	    "get": function get() {
-	      return this.items.length === this.maxItems;
-	    }
-	  },
-	  "isEmpty": {
-	    "get": function get() {
-	      return this.items.length === 0;
-	    }
-	  },
-	  "isBlank": {
-	    "get": function get() {
-	      return this.isEmpty || this.items.length === 1 && this.first.text.length === 0;
-	    }
-	  }
-	});
-
-	TextGroup.fromDescriptor = function (descriptor, maxItems, dataTemplate, restoreDataDescriptorFn) {
-	  var item, items, j, len;
-	  if (restoreDataDescriptorFn == null) {
-	    restoreDataDescriptorFn = Util.defaultCloneFn;
-	  }
-	  items = [];
-	  for (j = 0, len = descriptor.length; j < len; j++) {
-	    item = descriptor[j];
-	    items.push(createChild(StyleableText.createFromObject(item.text), restoreDataDescriptorFn(item.data), dataTemplate));
-	  }
-	  return new TextGroup(maxItems, dataTemplate, items);
-	};
-
-	TextGroup.create = function (maxItems, dataTemplate, numItemsToCreate) {
-	  var group;
-	  if (maxItems == null) {
-	    maxItems = 2e308;
-	  }
-	  if (dataTemplate == null) {
-	    dataTemplate = {};
-	  }
-	  if (numItemsToCreate == null) {
-	    numItemsToCreate = 1;
-	  }
-	  group = new TextGroup(maxItems, dataTemplate);
-	  group.init(numItemsToCreate);
-	  return group;
-	};
-
-	window.TextGroup = TextGroup;
-
-	module.exports = TextGroup;
-
-/***/ },
-/* 80 */
+/* 82 */
 /***/ function(module, exports) {
 
 	"use strict";
@@ -14084,60 +14235,20 @@
 	module.exports = TextGroupCursor;
 
 /***/ },
-/* 81 */
-/***/ function(module, exports, __webpack_require__) {
-
-	'use strict';
-
-	var StyleableText, TextGroupItem, Util;
-
-	StyleableText = __webpack_require__(14);
-
-	Util = __webpack_require__(39);
-
-	module.exports = TextGroupItem = function () {
-	  function TextGroupItem(text, data, parent) {
-	    this.text = text != null ? text : new StyleableText();
-	    this.data = data != null ? data : {};
-	    this.parent = parent != null ? parent : null;
-	  }
-
-	  TextGroupItem.prototype.clone = function (cloneDataFn) {
-	    if (cloneDataFn == null) {
-	      cloneDataFn = Util.defaultCloneFn;
-	    }
-	    return new TextGroupItem(this.text.clone(), cloneDataFn(this.data), null);
-	  };
-
-	  return TextGroupItem;
-	}();
-
-	Object.defineProperties(TextGroupItem.prototype, {
-	  "index": {
-	    "get": function get() {
-	      if (this.parent === null) {
-	        return -1;
-	      }
-	      return this.parent.indexOf(this);
-	    }
-	  }
-	});
-
-/***/ },
-/* 82 */
+/* 83 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
 
 	var DOMUtil, TextGroupCursor, TextGroupSelection, VirtualCursor, emptyChar, getCursors;
 
-	TextGroupCursor = __webpack_require__(80);
+	TextGroupCursor = __webpack_require__(82);
 
-	VirtualCursor = __webpack_require__(38);
+	VirtualCursor = __webpack_require__(43);
 
-	DOMUtil = __webpack_require__(11);
+	DOMUtil = __webpack_require__(14);
 
-	emptyChar = __webpack_require__(16).EMPTY_CHAR;
+	emptyChar = __webpack_require__(19).EMPTY_CHAR;
 
 	getCursors = function getCursors(chunk, virtualSelection) {
 	  var chunkEnd, chunkStart, position;
@@ -14393,94 +14504,13 @@
 	module.exports = TextGroupSelection;
 
 /***/ },
-/* 83 */
+/* 84 */
 /***/ function(module, exports) {
 
 	"use strict";
 
 	module.exports = function (asset) {
 	  return "url('" + asset.replace(/'/g, "\\'") + "')";
-	};
-
-/***/ },
-/* 84 */
-/***/ function(module, exports) {
-
-	'use strict';
-
-	var isElementInline, _sanitize;
-
-	_sanitize = function sanitize(node) {
-	  var attr, child, i, j, len, len1, ref, ref1;
-	  if (node.nodeType === Node.ELEMENT_NODE) {
-	    if (node.tagName.toLowerCase() === 'script') {
-	      node = node.parentElement.replaceChild(document.createElement('span'), node);
-	    }
-	    ref = node.attributes;
-	    for (i = 0, len = ref.length; i < len; i++) {
-	      attr = ref[i];
-	      switch (attr.name) {
-	        case 'href':
-	        case 'cite':
-	        case 'style':
-	          true;
-	          break;
-	        default:
-	          node.setAttribute(attr.name, '');
-	      }
-	    }
-	    ref1 = node.childNodes;
-	    for (j = 0, len1 = ref1.length; j < len1; j++) {
-	      child = ref1[j];
-	      _sanitize(child);
-	    }
-	  }
-	  return node;
-	};
-
-	isElementInline = function isElementInline(el) {
-	  switch (el.tagName.toLowerCase()) {
-	    case 'b':
-	    case 'big':
-	    case 'i':
-	    case 'small':
-	    case 'tt':
-	    case 'abbr':
-	    case 'acronym':
-	    case 'cite':
-	    case 'code':
-	    case 'dfn':
-	    case 'em':
-	    case 'kbd':
-	    case 'strong':
-	    case 'samp':
-	    case 'time':
-	    case 'var':
-	    case 'a':
-	    case 'bdo':
-	    case 'br':
-	    case 'img':
-	    case 'map':
-	    case 'object':
-	    case 'q':
-	    case 'script':
-	    case 'span':
-	    case 'sub':
-	    case 'sup':
-	    case 'button':
-	    case 'input':
-	    case 'label':
-	    case 'select':
-	    case 'textarea':
-	      return true;
-	    default:
-	      return false;
-	  }
-	};
-
-	module.exports = {
-	  sanitize: _sanitize,
-	  isElementInline: isElementInline
 	};
 
 /***/ },
@@ -14491,7 +14521,7 @@
 
 	var Dispatcher, ModalUtil;
 
-	Dispatcher = __webpack_require__(8);
+	Dispatcher = __webpack_require__(4);
 
 	ModalUtil = {
 	  show: function show(component) {
@@ -14541,17 +14571,17 @@
 	module.exports = {
 	  Common: {
 	    chunk: {
-	      BaseSelectionHandler: __webpack_require__(21),
+	      BaseSelectionHandler: __webpack_require__(24),
 	      FocusableChunk: __webpack_require__(144),
 	      focusableChunk: {
-	        FocusableSelectionHandler: __webpack_require__(63),
+	        FocusableSelectionHandler: __webpack_require__(67),
 	        ToggleSelectionHandler: __webpack_require__(145)
 	      },
 	      NonEditableChunk: __webpack_require__(146),
 	      TextChunk: __webpack_require__(147),
 	      textChunk: {
 	        TextGroupSelectionHandler: __webpack_require__(150),
-	        TextGroupEl: __webpack_require__(64),
+	        TextGroupEl: __webpack_require__(68),
 	        Linkify: __webpack_require__(148),
 	        TextGroupAdapter: __webpack_require__(149)
 	      },
@@ -14563,36 +14593,36 @@
 	    },
 	    components: {
 	      OboComponent: __webpack_require__(160),
-	      Anchor: __webpack_require__(65),
-	      DeleteButton: __webpack_require__(35),
+	      Anchor: __webpack_require__(69),
+	      DeleteButton: __webpack_require__(40),
 	      EditButton: __webpack_require__(154),
-	      Button: __webpack_require__(66),
+	      Button: __webpack_require__(70),
 	      modal: {
 	        bubble: {
-	          Bubble: __webpack_require__(67),
+	          Bubble: __webpack_require__(71),
 	          SingleInputBubble: __webpack_require__(156)
 	        },
 	        Question: __webpack_require__(157),
 	        SimpleMessage: __webpack_require__(158),
-	        Modal: __webpack_require__(70),
-	        Dialog: __webpack_require__(68),
-	        SimpleDialog: __webpack_require__(71),
-	        ErrorDialog: __webpack_require__(69)
+	        Modal: __webpack_require__(74),
+	        Dialog: __webpack_require__(72),
+	        SimpleDialog: __webpack_require__(75),
+	        ErrorDialog: __webpack_require__(73)
 	      },
 	      TextMenu: __webpack_require__(161),
 	      ModalContainer: __webpack_require__(159),
 	      FocusBlocker: __webpack_require__(155)
 	    },
 	    flux: {
-	      Store: __webpack_require__(36),
-	      Dispatcher: __webpack_require__(8)
+	      Store: __webpack_require__(41),
+	      Dispatcher: __webpack_require__(4)
 	    },
 	    mockDOM: {
-	      MockElement: __webpack_require__(72),
-	      MockTextNode: __webpack_require__(73)
+	      MockElement: __webpack_require__(76),
+	      MockTextNode: __webpack_require__(77)
 	    },
 	    models: {
-	      OboModel: __webpack_require__(10),
+	      OboModel: __webpack_require__(13),
 	      Legacy: __webpack_require__(162)
 	    },
 	    net: {
@@ -14600,46 +14630,46 @@
 	    },
 	    selection: {
 	      ChunkSelection: __webpack_require__(167),
-	      Cursor: __webpack_require__(74),
-	      DOMSelection: __webpack_require__(13),
-	      OboSelectionRect: __webpack_require__(37),
+	      Cursor: __webpack_require__(78),
+	      DOMSelection: __webpack_require__(18),
+	      OboSelectionRect: __webpack_require__(42),
 	      Selection: __webpack_require__(168),
-	      VirtualCursor: __webpack_require__(38),
+	      VirtualCursor: __webpack_require__(43),
 	      VirtualCursorData: __webpack_require__(169),
-	      VirtualSelection: __webpack_require__(75)
+	      VirtualSelection: __webpack_require__(79)
 	    },
 	    stores: {
 	      ModalStore: __webpack_require__(171),
 	      FocusStore: __webpack_require__(170)
 	    },
 	    page: {
-	      DOMUtil: __webpack_require__(11),
+	      DOMUtil: __webpack_require__(14),
 	      Head: __webpack_require__(164),
 	      Keyboard: __webpack_require__(165),
 	      Screen: __webpack_require__(166)
 	    },
 	    text: {
-	      ChunkStyleList: __webpack_require__(76),
-	      StyleableText: __webpack_require__(14),
-	      StyleableTextComponent: __webpack_require__(77),
-	      StyleableTextRenderer: __webpack_require__(78),
-	      StyleRange: __webpack_require__(22),
-	      StyleType: __webpack_require__(15),
-	      TextConstants: __webpack_require__(16)
+	      ChunkStyleList: __webpack_require__(25),
+	      StyleableText: __webpack_require__(10),
+	      StyleableTextComponent: __webpack_require__(80),
+	      StyleableTextRenderer: __webpack_require__(81),
+	      StyleRange: __webpack_require__(15),
+	      StyleType: __webpack_require__(5),
+	      TextConstants: __webpack_require__(19)
 	    },
 	    textGroup: {
-	      TextGroup: __webpack_require__(79),
-	      TextGroupCursor: __webpack_require__(80),
-	      TextGroupItem: __webpack_require__(81),
-	      TextGroupSelection: __webpack_require__(82),
-	      TextGroupUtil: __webpack_require__(39)
+	      TextGroup: __webpack_require__(26),
+	      TextGroupCursor: __webpack_require__(82),
+	      TextGroupItem: __webpack_require__(27),
+	      TextGroupSelection: __webpack_require__(83),
+	      TextGroupUtil: __webpack_require__(17)
 	    },
 	    util: {
 	      Console: __webpack_require__(172),
-	      getBackgroundImage: __webpack_require__(83),
-	      HtmlUtil: __webpack_require__(84),
+	      getBackgroundImage: __webpack_require__(84),
+	      HtmlUtil: __webpack_require__(28),
 	      ModalUtil: __webpack_require__(85),
-	      FocusUtil: __webpack_require__(40),
+	      FocusUtil: __webpack_require__(44),
 	      ErrorUtil: __webpack_require__(173),
 	      UUID: __webpack_require__(86),
 	      OboGlobals: __webpack_require__(174)
@@ -14713,7 +14743,7 @@
 
 	var Anchor;
 
-	Anchor = __webpack_require__(65);
+	Anchor = __webpack_require__(69);
 
 	module.exports = React.createClass({
 	  displayName: 'exports',
@@ -14761,9 +14791,9 @@
 	},
 	    hasProp = {}.hasOwnProperty;
 
-	BaseSelectionHandler = __webpack_require__(21);
+	BaseSelectionHandler = __webpack_require__(24);
 
-	FocusableSelectionHandler = __webpack_require__(63);
+	FocusableSelectionHandler = __webpack_require__(67);
 
 	ToggleSelectionHandler = function (superClass) {
 	  extend(ToggleSelectionHandler, superClass);
@@ -14955,7 +14985,7 @@
 
 	var TextGroup, TextGroupAdapter;
 
-	TextGroup = __webpack_require__(79);
+	TextGroup = __webpack_require__(26);
 
 	TextGroupAdapter = {
 	  construct: function construct(model, attrs) {
@@ -15002,11 +15032,11 @@
 	},
 	    hasProp = {}.hasOwnProperty;
 
-	BaseSelectionHandler = __webpack_require__(21);
+	BaseSelectionHandler = __webpack_require__(24);
 
-	TextGroupSelection = __webpack_require__(82);
+	TextGroupSelection = __webpack_require__(83);
 
-	TextGroupEl = __webpack_require__(64);
+	TextGroupEl = __webpack_require__(68);
 
 	TextGroupSelectionHandler = function (superClass) {
 	  extend(TextGroupSelectionHandler, superClass);
@@ -15104,7 +15134,7 @@
 
 	var Chunk, activateStyle, deleteSelection, replaceTextsWithinSelection, send;
 
-	Chunk = __webpack_require__(10);
+	Chunk = __webpack_require__(13);
 
 	send = function send(fn, chunkOrChunks, selection, data) {
 	  var chunk, chunks, i, len, results;
@@ -15189,7 +15219,7 @@
 
 	var Chunk;
 
-	Chunk = __webpack_require__(10);
+	Chunk = __webpack_require__(13);
 
 	module.exports = function (componentClass, position, referenceChunk, selection, callback) {
 	  var newChunk;
@@ -15213,7 +15243,7 @@
 
 	var Chunk;
 
-	Chunk = __webpack_require__(10);
+	Chunk = __webpack_require__(13);
 
 	module.exports = function (componentClass, position, referenceChunk, selection, callback) {
 	  var extraChunk, newChunk;
@@ -15246,7 +15276,7 @@
 
 	__webpack_require__(217);
 
-	getBackgroundImage = __webpack_require__(83);
+	getBackgroundImage = __webpack_require__(84);
 
 	editButton = __webpack_require__(238);
 
@@ -15290,7 +15320,7 @@
 
 	__webpack_require__(218);
 
-	FocusUtil = __webpack_require__(40);
+	FocusUtil = __webpack_require__(44);
 
 	FocusBlocker = React.createClass({
 	  displayName: 'FocusBlocker',
@@ -15312,7 +15342,7 @@
 
 	__webpack_require__(220);
 
-	Bubble = __webpack_require__(67);
+	Bubble = __webpack_require__(71);
 
 	module.exports = React.createClass({
 	  displayName: 'exports',
@@ -15457,7 +15487,7 @@
 
 	var FocusUtil, OboComponent;
 
-	FocusUtil = __webpack_require__(40);
+	FocusUtil = __webpack_require__(44);
 
 	OboComponent = React.createClass({
 	  displayName: 'OboComponent',
@@ -15582,9 +15612,9 @@
 
 	patternTF = /<\/?textformat\s?[\s\S]*?>/gi;
 
-	OboModel = __webpack_require__(10);
+	OboModel = __webpack_require__(13);
 
-	StyleableText = __webpack_require__(14);
+	StyleableText = __webpack_require__(10);
 
 	Legacy = {
 	  createModuleFromObo2ModuleJSON: function createModuleFromObo2ModuleJSON(json) {
@@ -15856,7 +15886,7 @@
 
 	var OboSelectionRect, PX_EDGE_PADDING, Screen;
 
-	OboSelectionRect = __webpack_require__(37);
+	OboSelectionRect = __webpack_require__(42);
 
 	PX_EDGE_PADDING = 50;
 
@@ -15961,11 +15991,11 @@
 
 	var ChunkSelection, Cursor, DOMSelection, DOMUtil, domType;
 
-	Cursor = __webpack_require__(74);
+	Cursor = __webpack_require__(78);
 
-	DOMSelection = __webpack_require__(13);
+	DOMSelection = __webpack_require__(18);
 
-	DOMUtil = __webpack_require__(11);
+	DOMUtil = __webpack_require__(14);
 
 	domType = null;
 
@@ -16138,11 +16168,11 @@
 
 	var DOMSelection, OboSelectionRect, Selection, VirtualSelection;
 
-	OboSelectionRect = __webpack_require__(37);
+	OboSelectionRect = __webpack_require__(42);
 
-	DOMSelection = __webpack_require__(13);
+	DOMSelection = __webpack_require__(18);
 
-	VirtualSelection = __webpack_require__(75);
+	VirtualSelection = __webpack_require__(79);
 
 	Selection = function () {
 	  function Selection(page) {
@@ -16274,9 +16304,9 @@
 	},
 	    hasProp = {}.hasOwnProperty;
 
-	Store = __webpack_require__(36);
+	Store = __webpack_require__(41);
 
-	Dispatcher = __webpack_require__(8);
+	Dispatcher = __webpack_require__(4);
 
 	TRANSITION_TIME_MS = 800;
 
@@ -16354,9 +16384,9 @@
 	},
 	    hasProp = {}.hasOwnProperty;
 
-	Store = __webpack_require__(36);
+	Store = __webpack_require__(41);
 
-	Dispatcher = __webpack_require__(8);
+	Dispatcher = __webpack_require__(4);
 
 	ModalStore = function (superClass) {
 	  extend(ModalStore, superClass);
@@ -16467,9 +16497,9 @@
 
 	var Dispatcher, ErrorDialog, ErrorUtil;
 
-	Dispatcher = __webpack_require__(8);
+	Dispatcher = __webpack_require__(4);
 
-	ErrorDialog = __webpack_require__(69);
+	ErrorDialog = __webpack_require__(73);
 
 	ErrorUtil = {
 	  show: function show(title, errorMessage) {

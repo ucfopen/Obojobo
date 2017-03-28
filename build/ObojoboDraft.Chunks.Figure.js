@@ -246,7 +246,7 @@
 							data.textGroup.first.text.length > 0 ? React.createElement(
 								'figcaption',
 								{ ref: 'caption' },
-								React.createElement(TextGroupEl, { text: data.textGroup.first.text, groupIndex: '0' })
+								React.createElement(TextGroupEl, { parentModel: this.props.model, text: data.textGroup.first.text, groupIndex: '0' })
 							) : null
 						)
 					)

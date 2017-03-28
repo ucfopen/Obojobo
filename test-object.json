@@ -779,7 +779,7 @@
                                {
                                    "id": "dfe52410-8339-4234-962d-9c296fc2ac37",
                                    "content": {
-                                       "responseType": "pick-one-multiple-correct"
+                                       "responseType": "pick-all"
                                    },
                                    "metadata": {
                                    },
@@ -2209,13 +2209,6 @@
                        "actions": [
                            {
                                "type": "nav:lock"
-                           },
-                           {
-                               "type": "_viewer:alert",
-                               "value": {
-                                  "title": "Title",
-                                  "message": "First lets start with a pre-test. This will let you see how familar you are with the content."
-                                }
                            }
                        ]
                    },
@@ -2401,7 +2394,7 @@
                                "textGroup": [
                                    {
                                        "text": {
-                                           "value": "Assessment",
+                                           "value": "Assessment {{assessment:attemptsRemaining}}",
                                            "styleList": null
                                        },
                                        "data": {
@@ -2440,7 +2433,30 @@
                        {
                           "type": "ObojoboDraft.Chunks.ActionButton",
                           "content": {
-                              "label": "Begin",
+                              "textGroup": [
+                                  {
+                                      "text": {
+                                          "value": "Click y=\\sin(x) {{assessment:attemptsRemaining}} Begin",
+                                          "styleList": [
+                                              {
+                                                  "type": "b",
+                                                  "start": 0,
+                                                  "end": 3,
+                                                  "data": {}
+                                              },
+                                              {
+                                                  "type": "_latex",
+                                                  "start": 6,
+                                                  "end": 15,
+                                                  "data": {}
+                                              }
+                                          ]
+                                      },
+                                      "data": {
+                                          "indent": 0
+                                      }
+                                  }
+                              ],
                               "triggers": [
                                  {
                                     "type": "onClick",
