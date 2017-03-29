@@ -2275,6 +2275,7 @@
                              {
                                 "type": "ObojoboDraft.Chunks.ActionButton",
                                 "content": {
+                                    "align": "right",
                                     "label": "Review Content",
                                     "triggers": [
                                        {

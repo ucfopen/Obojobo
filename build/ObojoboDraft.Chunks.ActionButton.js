@@ -1621,7 +1621,7 @@
 
 	TextGroupAdapter = {
 	  construct: function construct(model, attrs) {
-	    var ref, ref1;
+	    var ref, ref1, ref2;
 	    if ((attrs != null ? (ref = attrs.content) != null ? ref.textGroup : void 0 : void 0) != null) {
 	      model.modelState.textGroup = TextGroup.fromDescriptor(attrs.content.textGroup, 2e308, {
 	        indent: 0
@@ -1632,18 +1632,25 @@
 	      });
 	    }
 	    if (attrs != null ? (ref1 = attrs.content) != null ? ref1.label : void 0 : void 0) {
-	      return model.modelState.label = attrs.content.label;
+	      model.modelState.label = attrs.content.label;
 	    } else {
-	      return model.modelState.label = '';
+	      model.modelState.label = '';
+	    }
+	    if (attrs != null ? (ref2 = attrs.content) != null ? ref2.align : void 0 : void 0) {
+	      return model.modelState.align = attrs.content.align;
+	    } else {
+	      return model.modelState.align = 'center';
 	    }
 	  },
 	  clone: function clone(model, _clone) {
 	    _clone.modelState.textGroup = model.modelState.textGroup.clone();
-	    return _clone.modelState.label = model.modelState.label;
+	    _clone.modelState.label = model.modelState.label;
+	    return _clone.modelState.align = model.modelState.align;
 	  },
 	  toJSON: function toJSON(model, json) {
 	    json.content.textGroup = model.modelState.textGroup.toDescriptor();
-	    return json.content.label = model.modelState.label;
+	    json.content.label = model.modelState.label;
+	    return json.content.align = model.modelState.align;
 	  },
 	  toText: function toText(model) {
 	    return model.modelState.textGroup.first.text.value;
@@ -1690,7 +1697,7 @@
 	        { className: 'obojobo-draft--chunks--action-button pad' },
 	        React.createElement(
 	          Button,
-	          { onClick: this.onClick, value: this.props.model.modelState.label },
+	          { onClick: this.onClick, value: this.props.model.modelState.label, align: this.props.model.modelState.align },
 	          React.createElement(TextGroupEl, { textItem: textItem, groupIndex: '0', parentModel: this.props.model })
 	        )
 	      )

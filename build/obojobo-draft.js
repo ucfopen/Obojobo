@@ -13201,7 +13201,8 @@
 	  getDefaultProps: function getDefaultProps() {
 	    return {
 	      value: null,
-	      disabled: false
+	      disabled: false,
+	      align: 'center'
 	    };
 	  },
 	  focus: function focus() {
@@ -13216,7 +13217,7 @@
 	    }
 	    return React.createElement(
 	      'div',
-	      { className: "obojobo-draft--components--button" + (this.props.dangerous ? ' dangerous' : '') + (this.props.altAction ? ' alt-action' : '') },
+	      { className: "obojobo-draft--components--button" + (this.props.dangerous ? ' dangerous' : '') + (this.props.altAction ? ' alt-action' : '') + (' align-' + this.props.align) },
 	      React.createElement(
 	        'button',
 	        {
