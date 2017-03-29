@@ -451,7 +451,7 @@
 					{ key: rowNum },
 					row
 				);
-			});
+			}.bind(this));
 			return React.createElement(
 				OboComponent,
 				{ model: this.props.model, moduleData: this.props.moduleData },
