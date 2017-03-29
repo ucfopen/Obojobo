@@ -13125,7 +13125,7 @@
 	  render: function render() {
 	    var event, match, startIndex, text, variable;
 	    console.time('textRender');
-	    text = this.props.text;
+	    text = this.props.textItem.text;
 	    console.log('text', text);
 	    if (this.props.parentModel && text.value.indexOf('{{')) {
 	      match = null;
@@ -13146,7 +13146,7 @@
 	    }
 	    return React.createElement(
 	      'span',
-	      { className: 'text', 'data-group-index': this.props.groupIndex, 'data-indent': this.props.indent },
+	      { className: 'text' + ' align-' + this.props.textItem.data.align, 'data-group-index': this.props.groupIndex, 'data-indent': this.props.textItem.data.indent },
 	      React.createElement(StyleableTextComponent, { text: text })
 	    );
 	  }
@@ -14992,11 +14992,13 @@
 	    var ref;
 	    if ((attrs != null ? (ref = attrs.content) != null ? ref.textGroup : void 0 : void 0) != null) {
 	      return model.modelState.textGroup = TextGroup.fromDescriptor(attrs.content.textGroup, 2e308, {
-	        indent: 0
+	        indent: 0,
+	        align: 'left'
 	      });
 	    } else {
 	      return model.modelState.textGroup = TextGroup.create(2e308, {
-	        indent: 0
+	        indent: 0,
+	        align: 'left'
 	      });
 	    }
 	  },

@@ -76,7 +76,7 @@
 	    var texts;
 	    texts = this.props.model.modelState.textGroup.items.map(function (_this) {
 	      return function (textItem, index) {
-	        return React.createElement(TextGroupEl, { text: textItem.text, groupIndex: index, indent: textItem.data.indent, key: index, parentModel: this.props.model });
+	        return React.createElement(TextGroupEl, { textItem: textItem, groupIndex: index, key: index, parentModel: this.props.model });
 	      };
 	    }(this).bind(this));
 	    return React.createElement(

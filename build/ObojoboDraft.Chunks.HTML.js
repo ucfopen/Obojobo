@@ -10332,18 +10332,25 @@
 
 	Adapter = {
 	  construct: function construct(model, attrs) {
-	    var ref;
+	    var ref, ref1;
 	    if ((attrs != null ? (ref = attrs.content) != null ? ref.html : void 0 : void 0) != null) {
-	      return model.modelState.html = attrs.content.html;
+	      model.modelState.html = attrs.content.html;
 	    } else {
-	      return model.modelState.html = null;
+	      model.modelState.html = null;
+	    }
+	    if ((attrs != null ? (ref1 = attrs.content) != null ? ref1.align : void 0 : void 0) != null) {
+	      return model.modelState.align = attrs.content.align;
+	    } else {
+	      return model.modelState.align = 'left';
 	    }
 	  },
 	  clone: function clone(model, _clone) {
-	    return _clone.modelState.html = model.modelState.html;
+	    _clone.modelState.html = model.modelState.html;
+	    return _clone.modelState.align = model.modelState.align;
 	  },
 	  toJSON: function toJSON(model, json) {
-	    return json.content.html = model.modelState.html;
+	    json.content.html = model.modelState.html;
+	    return json.content.align = model.modelState.align;
 	  },
 	  toText: function toText(model) {
 	    var node;
@@ -10394,7 +10401,7 @@
 	    return React.createElement(
 	      OboComponent,
 	      { model: this.props.model, moduleData: this.props.moduleData },
-	      React.createElement('div', { className: 'obojobo-draft--chunks--html viewer pad', dangerouslySetInnerHTML: this.createMarkup() })
+	      React.createElement('div', { className: 'obojobo-draft--chunks--html viewer pad' + ' align-' + data.align, dangerouslySetInnerHTML: this.createMarkup() })
 	    );
 	  }
 	});

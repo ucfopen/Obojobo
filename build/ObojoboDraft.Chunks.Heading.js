@@ -53,7 +53,7 @@
 /***/ 114:
 /***/ function(module, exports) {
 
-	"use strict";
+	'use strict';
 
 	var Adapter, Common, TextGroupAdapter;
 
@@ -63,22 +63,29 @@
 
 	Adapter = {
 	  construct: function construct(model, attrs) {
-	    var ref;
+	    var ref, ref1;
 	    TextGroupAdapter.construct(model, attrs);
 	    model.modelState.textGroup.maxItems = 1;
 	    if (attrs != null ? (ref = attrs.content) != null ? ref.headingLevel : void 0 : void 0) {
-	      return model.modelState.headingLevel = attrs.content.headingLevel;
+	      model.modelState.headingLevel = attrs.content.headingLevel;
 	    } else {
-	      return model.modelState.headingLevel = 1;
+	      model.modelState.headingLevel = 1;
+	    }
+	    if (attrs != null ? (ref1 = attrs.content) != null ? ref1.align : void 0 : void 0) {
+	      return model.modelState.align = attrs.content.align;
+	    } else {
+	      return model.modelState.align = 'left';
 	    }
 	  },
 	  clone: function clone(model, _clone) {
 	    TextGroupAdapter.clone(model, _clone);
-	    return _clone.modelState.headingLevel = model.modelState.headingLevel;
+	    _clone.modelState.headingLevel = model.modelState.headingLevel;
+	    return _clone.modelState.align = model.modelState.align;
 	  },
 	  toJSON: function toJSON(model, json) {
 	    TextGroupAdapter.toJSON(model, json);
-	    return json.content.headingLevel = model.modelState.headingLevel;
+	    json.content.headingLevel = model.modelState.headingLevel;
+	    return json.content.align = model.modelState.align;
 	  },
 	  toText: function toText(model) {
 	    return TextGroupAdapter.toText(model);
@@ -112,7 +119,7 @@
 	  render: function render() {
 	    var data, inner;
 	    data = this.props.model.modelState;
-	    inner = React.createElement('h' + data.headingLevel, null, React.createElement(TextGroupEl, { parentModel: this.props.model, text: data.textGroup.first.text, indent: data.textGroup.first.data.indent, groupIndex: '0' }));
+	    inner = React.createElement('h' + data.headingLevel, null, React.createElement(TextGroupEl, { parentModel: this.props.model, textItem: data.textGroup.first, groupIndex: '0' }));
 	    return React.createElement(
 	      OboComponent,
 	      { model: this.props.model, moduleData: this.props.moduleData },

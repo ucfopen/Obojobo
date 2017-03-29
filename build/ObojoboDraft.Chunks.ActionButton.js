@@ -1691,7 +1691,7 @@
 	        React.createElement(
 	          Button,
 	          { onClick: this.onClick, value: this.props.model.modelState.label },
-	          React.createElement(TextGroupEl, { text: textItem.text, groupIndex: '0', indent: textItem.data.indent, parentModel: this.props.model })
+	          React.createElement(TextGroupEl, { textItem: textItem, groupIndex: '0', parentModel: this.props.model })
 	        )
 	      )
 	    );

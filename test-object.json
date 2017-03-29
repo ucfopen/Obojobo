@@ -46,7 +46,8 @@
                                            ]
                                        },
                                        "data": {
-                                           "indent": 0
+                                           "indent": 0,
+                                           "align": "right"
                                        }
                                    }
                                ]
@@ -108,7 +109,8 @@
                                            ]
                                        },
                                        "data": {
-                                           "indent": 0
+                                           "indent": 0,
+                                           "align": "right"
                                        }
                                    }
                                ]
@@ -586,7 +588,8 @@
                                         {
                                             "id": "asdf",
                                             "content": {
-                                                "html": "<p>html<b>now</b></p>"
+                                                "html": "<p>html<b>now</b></p>",
+                                                "align": "center"
                                             },
                                             "type": "ObojoboDraft.Chunks.HTML"
                                         },
@@ -2261,6 +2264,9 @@
                                                      "type": "i"
                                                  }
                                              ]
+                                          },
+                                          "data": {
+                                              "align": "center"
                                           }
                                        }
                                     ]

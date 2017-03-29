@@ -129,6 +129,12 @@ body {
     .component .obojobo-draft--chunks--question .question b,
     .component .obojobo-draft--chunks--question .question strong {
       font-weight: 900; }
+  .component .text.align-left {
+    text-align: left; }
+  .component .text.align-right {
+    text-align: right; }
+  .component .text.align-center {
+    text-align: center; }
 .obojobo-draft--components--delete-button button {
   background: #F4F4F4;
   border: none;

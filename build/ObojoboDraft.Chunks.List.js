@@ -374,7 +374,7 @@
 	    key = this.props.model.cid + '-' + indent + '-' + index;
 	    switch (node.nodeType) {
 	      case 'text':
-	        return React.createElement(TextGroupEl, { parentModel: this.props.model, text: node.text, key: key, groupIndex: node.index });
+	        return React.createElement(TextGroupEl, { parentModel: this.props.model, textItem: { text: node.text, data: {} }, key: key, groupIndex: node.index });
 	      case 'element':
 	        return React.createElement(node.type, {
 	          key: key,
