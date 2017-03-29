@@ -1945,9 +1945,9 @@ object.omit@^2.0.0:
     for-own "^0.1.4"
     is-extendable "^0.1.1"
 
-"obojobo-draft-document-engine@git+ssh://git@github.com/ucfcdl/Obojobo-Document-Engine.git#v0.0.4":
-  version "0.0.4"
-  resolved "git+ssh://git@github.com/ucfcdl/Obojobo-Document-Engine.git#9c47657dc8f0d227bce98e3ac28204ee321c4f63"
+"obojobo-draft-document-engine@git+ssh://git@github.com/ucfcdl/Obojobo-Document-Engine.git#v0.0.5":
+  version "0.0.5"
+  resolved "git+ssh://git@github.com/ucfcdl/Obojobo-Document-Engine.git#ca760514e9b19f2c34d34ac2b6d8b9b608087d58"
   dependencies:
     smoothscroll-polyfill "^0.3.4"
     whatwg-fetch "^2.0.3"
