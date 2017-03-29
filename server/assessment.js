@@ -28,6 +28,25 @@ class Assessment extends DraftNode {
 		)
 	}
 
+	static getNumberAttemptsTaken(userId, draftId, assessmentId) {
+		return (
+			db.one(`
+				SELECT
+					COUNT(*)
+				FROM attempts
+				WHERE
+					user_id = $[userId]
+					AND draft_id = $[draftId]
+					AND assessment_id = $[assessmentId]
+					AND completed_at IS NOT NULL
+					AND preview = false
+			`, {userId:userId, draftId:draftId, assessmentId:assessmentId})
+		)
+		.then( (result) => {
+			return parseInt(result.count, 10)
+		})
+	}
+
 	// @TODO: most things touching the db should end up in models. figure this out
 	static getAttemptHistory(userId, draftId) {
 		return (

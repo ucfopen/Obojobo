@@ -15,6 +15,7 @@ app.post('/api/assessments/attempt/start', (req, res, next) => {
 	let draftTree
 	let attemptState
 	let isPreviewing
+	let attemptHistory
 
 	req.requireCurrentUser()
 	.then(user => {
@@ -26,14 +27,18 @@ app.post('/api/assessments/attempt/start', (req, res, next) => {
 	.then(draft => {
 		draftTree = draft
 
-		return Assessment.getCompletedAssessmentAttemptHistory(currentUser.id, req.body.draftId, req.body.assessmentId, false)
+		return Assessment.getCompletedAssessmentAttemptHistory(currentUser.id, req.body.draftId, req.body.assessmentId, true)
 	})
-	.then(attemptHistory => {
+	.then(result => {
+		attemptHistory = result
+		return Assessment.getNumberAttemptsTaken(currentUser.id, req.body.draftId, req.body.assessmentId)
+	})
+	.then(numAttempts => {
 		var assessment = draftTree.findNodeClass(req.body.assessmentId)
 
-		if(!isPreviewing && assessment.node.content.attempts && (attemptHistory.length >= assessment.node.content.attempts))
+		if(!isPreviewing && assessment.node.content.attempts && (numAttempts >= assessment.node.content.attempts))
 		{
-			return res.reject('Attempt limit reached')
+			throw new Error('Attempt limit reached')
 		}
 
 		attemptState = {
@@ -74,7 +79,14 @@ app.post('/api/assessments/attempt/start', (req, res, next) => {
 		res.success(result)
 	})
 	.catch(error => {
-		logAndRespondToUnexpected('Unexpected DB error', res, req, error)
+		switch(error.message)
+		{
+			case 'Attempt limit reached':
+				return res.reject('Attempt limit reached')
+
+			default:
+				logAndRespondToUnexpected('Unexpected DB error', res, req, error)
+		}
 	})
 
 })
