@@ -68,19 +68,19 @@
 /***/ 0:
 /***/ function(module, exports, __webpack_require__) {
 
-	module.exports = __webpack_require__(130);
+	module.exports = __webpack_require__(132);
 
 
 /***/ },
 
-/***/ 127:
+/***/ 129:
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
 
 	var QuestionContent;
 
-	__webpack_require__(208);
+	__webpack_require__(210);
 
 	QuestionContent = React.createClass({
 		displayName: 'QuestionContent',
@@ -103,7 +103,7 @@
 
 /***/ },
 
-/***/ 128:
+/***/ 130:
 /***/ function(module, exports) {
 
 	"use strict";
@@ -158,14 +158,14 @@
 
 /***/ },
 
-/***/ 129:
+/***/ 131:
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
 
 	var Button, Common, Dispatcher, FocusUtil, OboComponent, Question, QuestionContent, QuestionUtil, ReactCSSTransitionGroup, ScoreUtil;
 
-	__webpack_require__(209);
+	__webpack_require__(211);
 
 	ReactCSSTransitionGroup = React.addons.CSSTransitionGroup;
 
@@ -183,7 +183,7 @@
 
 	QuestionUtil = window.Viewer.util.QuestionUtil;
 
-	QuestionContent = __webpack_require__(127);
+	QuestionContent = __webpack_require__(129);
 
 	Question = React.createClass({
 		displayName: 'Question',
@@ -264,7 +264,7 @@
 
 /***/ },
 
-/***/ 130:
+/***/ 132:
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -275,22 +275,24 @@
 
 	OBO.register('ObojoboDraft.Chunks.Question', {
 	  type: 'chunk',
-	  adapter: __webpack_require__(128),
-	  componentClass: __webpack_require__(129),
+	  adapter: __webpack_require__(130),
+	  componentClass: __webpack_require__(131),
 	  selectionHandler: new ObojoboDraft.Common.chunk.textChunk.TextGroupSelectionHandler(),
 	  getNavItem: function getNavItem(model) {
 	    var label, questions;
 	    questions = model.parent.children.models.filter(function (child) {
 	      return child.get('type') === 'ObojoboDraft.Chunks.Question';
 	    });
-	    if (model.modelState.practice) {
-	      label = 'Practice Question';
+	    if (model.title) {
+	      label = model.title;
+	    } else if (model.modelState.practice) {
+	      label = 'Practice Question ' + (questions.indexOf(model) + 1);
 	    } else {
-	      label = 'Question';
+	      label = 'Question ' + (questions.indexOf(model) + 1);
 	    }
 	    return {
 	      type: 'sub-link',
-	      label: label + ' ' + (questions.indexOf(model) + 1),
+	      label: label,
 	      path: ['#obo-' + model.get('id')]
 	    };
 	  }
@@ -298,14 +300,14 @@
 
 /***/ },
 
-/***/ 208:
+/***/ 210:
 /***/ function(module, exports) {
 
 	// removed by extract-text-webpack-plugin
 
 /***/ },
 
-/***/ 209:
-208
+/***/ 211:
+210
 
 /******/ })));

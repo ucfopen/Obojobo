@@ -68,19 +68,19 @@
 /***/ 0:
 /***/ function(module, exports, __webpack_require__) {
 
-	module.exports = __webpack_require__(123);
+	module.exports = __webpack_require__(125);
 
 
 /***/ },
 
-/***/ 28:
+/***/ 33:
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
 
 	var Common, MCAnswer, OboComponent;
 
-	__webpack_require__(43);
+	__webpack_require__(47);
 
 	Common = window.ObojoboDraft.Common;
 
@@ -109,7 +109,7 @@
 
 /***/ },
 
-/***/ 29:
+/***/ 34:
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -121,13 +121,13 @@
 	OBO.register('ObojoboDraft.Chunks.MCAssessment.MCAnswer', {
 	  type: 'chunk',
 	  adapter: null,
-	  componentClass: __webpack_require__(28),
+	  componentClass: __webpack_require__(33),
 	  selectionHandler: new ObojoboDraft.Common.chunk.textChunk.TextGroupSelectionHandler()
 	});
 
 /***/ },
 
-/***/ 30:
+/***/ 35:
 /***/ function(module, exports) {
 
 	'use strict';
@@ -156,14 +156,14 @@
 
 /***/ },
 
-/***/ 31:
+/***/ 36:
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
 
 	var Common, MCChoice, OboComponent, OboModel, QuestionUtil;
 
-	__webpack_require__(44);
+	__webpack_require__(48);
 
 	Common = window.ObojoboDraft.Common;
 
@@ -207,7 +207,8 @@
 	      {
 	        model: this.props.model,
 	        moduleData: this.props.moduleData,
-	        className: 'obojobo-draft--chunks--mc-assessment--mc-choice' + (isSelected ? ' is-selected' : ' is-not-selected') + (this.props.model.modelState.score === 100 ? ' is-correct' : ' is-incorrect')
+	        className: 'obojobo-draft--chunks--mc-assessment--mc-choice' + (isSelected ? ' is-selected' : ' is-not-selected') + (this.props.model.modelState.score === 100 ? ' is-correct' : ' is-incorrect'),
+	        'data-choice-label': this.props.label
 	      },
 	      React.createElement('input', {
 	        ref: 'input',
@@ -239,7 +240,7 @@
 
 /***/ },
 
-/***/ 32:
+/***/ 37:
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -250,21 +251,21 @@
 
 	OBO.register('ObojoboDraft.Chunks.MCAssessment.MCChoice', {
 	  type: 'chunk',
-	  adapter: __webpack_require__(30),
-	  componentClass: __webpack_require__(31),
+	  adapter: __webpack_require__(35),
+	  componentClass: __webpack_require__(36),
 	  selectionHandler: new ObojoboDraft.Common.chunk.textChunk.TextGroupSelectionHandler()
 	});
 
 /***/ },
 
-/***/ 33:
+/***/ 38:
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
 
 	var Common, MCFeedback, OboComponent;
 
-	__webpack_require__(45);
+	__webpack_require__(49);
 
 	Common = window.ObojoboDraft.Common;
 
@@ -279,7 +280,8 @@
 				{
 					model: this.props.model,
 					moduleData: this.props.moduleData,
-					className: 'obojobo-draft--chunks--mc-assessment--mc-feedback'
+					className: 'obojobo-draft--chunks--mc-assessment--mc-feedback' + (this.props.model.parent.modelState.score === 100 ? ' is-correct-feedback' : ' is-incorrect-feedback'),
+					'data-choice-label': this.props.label
 				},
 				this.props.model.children.models.map(function (child, index) {
 					var Component = child.getComponentClass();
@@ -293,7 +295,7 @@
 
 /***/ },
 
-/***/ 34:
+/***/ 39:
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -305,26 +307,26 @@
 	OBO.register('ObojoboDraft.Chunks.MCAssessment.MCFeedback', {
 	  type: 'chunk',
 	  adapter: null,
-	  componentClass: __webpack_require__(33),
+	  componentClass: __webpack_require__(38),
 	  selectionHandler: new ObojoboDraft.Common.chunk.textChunk.TextGroupSelectionHandler()
 	});
 
 /***/ },
 
-/***/ 43:
+/***/ 47:
 /***/ function(module, exports) {
 
 	// removed by extract-text-webpack-plugin
 
 /***/ },
 
-/***/ 44:
-43,
+/***/ 48:
+47,
 
-/***/ 45:
-43,
+/***/ 49:
+47,
 
-/***/ 121:
+/***/ 123:
 /***/ function(module, exports) {
 
 	'use strict';
@@ -352,14 +354,14 @@
 
 /***/ },
 
-/***/ 122:
+/***/ 124:
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
 
 	var Button, Common, DOMUtil, Dispatcher, MCAssessment, OboComponent, OboModel, QuestionUtil, ReactCSSTransitionGroup, ScoreUtil;
 
-	__webpack_require__(206);
+	__webpack_require__(208);
 
 	ReactCSSTransitionGroup = React.addons.CSSTransitionGroup;
 
@@ -384,16 +386,6 @@
 	MCAssessment = React.createClass({
 			displayName: 'MCAssessment',
 
-			componentWillMount: function componentWillMount() {
-					var shuffledIds;
-					shuffledIds = QuestionUtil.getData(this.props.moduleData.questionState, this.props.model, 'shuffledIds');
-					if (!shuffledIds) {
-							shuffledIds = _.shuffle(this.props.model.children.models).map(function (model) {
-									return model.get('id');
-							});
-							return QuestionUtil.setData(this.props.model.get('id'), 'shuffledIds', shuffledIds);
-					}
-			},
 			getResponseData: function getResponseData() {
 					var child, correct, i, len, ref, ref1, responses;
 					correct = new Set();
@@ -414,7 +406,7 @@
 					};
 			},
 			calculateScore: function calculateScore() {
-					var correct, i, id, len, ref, responseData, responses;
+					var correct, i, id, len, ref, responseData, responses, score;
 					responseData = this.getResponseData();
 					correct = responseData.correct;
 					responses = responseData.responses;
@@ -423,12 +415,13 @@
 									if (correct.size !== responses.size) {
 											return 0;
 									}
+									score = 100;
 									correct.forEach(function (id) {
 											if (!responses.has(id)) {
-													return 0;
+													return score = 0;
 											}
 									});
-									return 100;
+									return score;
 							default:
 									ref = Array.from(correct);
 									for (i = 0, len = ref.length; i < len; i++) {
@@ -521,17 +514,24 @@
 			render: function render() {
 					var SolutionComponent, feedbacks, questionAnswered, questionSubmitted, responseType, revealAll, score, shuffledIds, solution;
 					responseType = this.props.model.modelState.responseType;
+					shuffledIds = QuestionUtil.getData(this.props.moduleData.questionState, this.props.model, 'shuffledIds');
+					if (!shuffledIds) {
+							shuffledIds = _.shuffle(this.props.model.children.models).map(function (model) {
+									return model.get('id');
+							});
+							QuestionUtil.setData(this.props.model.get('id'), 'shuffledIds', shuffledIds);
+					}
 					revealAll = this.isRevealingAll();
 					score = this.getScore();
 					questionSubmitted = score !== null;
 					questionAnswered = this.getResponseData().responses.size >= 1;
-					shuffledIds = QuestionUtil.getData(this.props.moduleData.questionState, this.props.model, 'shuffledIds');
 					feedbacks = Array.from(this.getResponseData().responses).filter(function (mcChoiceId) {
 							return OboModel.models[mcChoiceId].children.length > 1;
+					}.bind(this)).sort(function (id1, id2) {
+							return shuffledIds.indexOf(id1) - shuffledIds.indexOf(id2);
 					}.bind(this)).map(function (mcChoiceId) {
 							return OboModel.models[mcChoiceId].children.at(1);
 					}.bind(this));
-					console.log('RESPSONE DATA', this.getResponseData());
 					solution = this.props.model.parent.modelState.solution;
 					if (solution != null) {
 							SolutionComponent = solution.getComponentClass();
@@ -590,7 +590,8 @@
 											moduleData: this.props.moduleData,
 											responseType: responseType,
 											revealAll: revealAll,
-											questionSubmitted: questionSubmitted
+											questionSubmitted: questionSubmitted,
+											label: String.fromCharCode(index + 65)
 
 									});
 							}.bind(this)),
@@ -654,7 +655,8 @@
 																			moduleData: this.props.moduleData,
 																			responseType: responseType,
 																			revealAll: revealAll,
-																			questionSubmitted: questionSubmitted
+																			questionSubmitted: questionSubmitted,
+																			label: String.fromCharCode(shuffledIds.indexOf(model.parent.get('id')) + 65)
 																	});
 															}.bind(this))
 													)
@@ -692,31 +694,31 @@
 
 /***/ },
 
-/***/ 123:
+/***/ 125:
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
 
 	var ObojoboDraft;
 
-	__webpack_require__(32);
-
-	__webpack_require__(29);
+	__webpack_require__(37);
 
 	__webpack_require__(34);
+
+	__webpack_require__(39);
 
 	ObojoboDraft = window.ObojoboDraft;
 
 	OBO.register('ObojoboDraft.Chunks.MCAssessment', {
 	  type: 'chunk',
-	  adapter: __webpack_require__(121),
-	  componentClass: __webpack_require__(122),
+	  adapter: __webpack_require__(123),
+	  componentClass: __webpack_require__(124),
 	  selectionHandler: new ObojoboDraft.Common.chunk.textChunk.TextGroupSelectionHandler()
 	});
 
 /***/ },
 
-/***/ 206:
-43
+/***/ 208:
+47
 
 /******/ })));

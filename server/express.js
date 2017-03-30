@@ -14,23 +14,31 @@ app.post('/api/assessments/attempt/start', (req, res, next) => {
 	let draftId = req.body.draftId
 	let draftTree
 	let attemptState
+	let isPreviewing
+	let attemptHistory
 
 	req.requireCurrentUser()
 	.then(user => {
 		currentUser = user
+		isPreviewing = currentUser.canViewEditor
+
 		return DraftModel.fetchById(draftId)
 	})
 	.then(draft => {
 		draftTree = draft
 
-		return Assessment.getCompletedAssessmentAttemptHistory(currentUser.id, req.body.draftId, req.body.assessmentId)
+		return Assessment.getCompletedAssessmentAttemptHistory(currentUser.id, req.body.draftId, req.body.assessmentId, true)
 	})
-	.then(attemptHistory => {
+	.then(result => {
+		attemptHistory = result
+		return Assessment.getNumberAttemptsTaken(currentUser.id, req.body.draftId, req.body.assessmentId)
+	})
+	.then(numAttempts => {
 		var assessment = draftTree.findNodeClass(req.body.assessmentId)
 
-		if(assessment.node.content.attempts && (attemptHistory.length >= assessment.node.content.attempts))
+		if(!isPreviewing && assessment.node.content.attempts && (numAttempts >= assessment.node.content.attempts))
 		{
-			return res.reject('Attempt limit reached')
+			throw new Error('Attempt limit reached')
 		}
 
 		attemptState = {
@@ -56,13 +64,29 @@ app.post('/api/assessments/attempt/start', (req, res, next) => {
 	})
 	.then(() => {
 		let questionObjects = attemptState.questions.map( (question) => { return question.toObject() } )
-		return Assessment.insertNewAttempt(currentUser.id, req.body.draftId, req.body.assessmentId, { questions:questionObjects, data:attemptState.data })
+		return Assessment.insertNewAttempt(
+			currentUser.id,
+			req.body.draftId,
+			req.body.assessmentId,
+			{
+				questions: questionObjects,
+				data: attemptState.data
+			},
+			isPreviewing
+		)
 	})
 	.then(result => {
 		res.success(result)
 	})
 	.catch(error => {
-		logAndRespondToUnexpected('Unexpected DB error', res, req, error)
+		switch(error.message)
+		{
+			case 'Attempt limit reached':
+				return res.reject('Attempt limit reached')
+
+			default:
+				logAndRespondToUnexpected('Unexpected DB error', res, req, error)
+		}
 	})
 
 })
@@ -81,10 +105,12 @@ app.post('/api/assessments/attempt/:attemptId/end', (req, res, next) => {
 	let maxAttemptScore
 	let state
 	let currentUser
+	let isPreviewing
 
 	req.requireCurrentUser()
 	.then(user => {
 		currentUser = user
+		isPreviewing = user.canViewEditor
 		// check input
 		// insert
 		// get draft and assessment ids for this attempt
@@ -147,9 +173,11 @@ app.post('/api/assessments/attempt/:attemptId/end', (req, res, next) => {
 	})
 	.then((updateAttemptResult) => {
 		updateResult = updateAttemptResult
-		return Assessment.getCompletedAssessmentAttemptHistory(currentUser.id, draftId, assessmentId)
+		return Assessment.getCompletedAssessmentAttemptHistory(currentUser.id, draftId, assessmentId, false)
 	})
 	.then((attemptHistory) => {
+		if(isPreviewing) return Promise.resolve(false)
+
 		let allScores = attemptHistory.map( attempt => { return parseFloat(attempt.result.attemptScore) } )
 		maxAttemptScore = Math.max(0, ...allScores);
 

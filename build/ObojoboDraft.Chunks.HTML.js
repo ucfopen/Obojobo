@@ -45,7 +45,7 @@
 /***/ 0:
 /***/ function(module, exports, __webpack_require__) {
 
-	module.exports = __webpack_require__(111);
+	module.exports = __webpack_require__(113);
 
 
 /***/ },
@@ -214,7 +214,7 @@
 
 	/* jshint unused:false */
 
-	var Style = __webpack_require__(4);
+	var Style = __webpack_require__(6);
 
 	/**
 	 * This file contains metrics regarding fonts and individual symbols. The sigma
@@ -333,7 +333,7 @@
 	// metrics, including height, depth, italic correction, and skew (kern from the
 	// character to the corresponding \skewchar)
 	// This map is generated via `make metrics`. It should not be changed manually.
-	var metricMap = __webpack_require__(55);
+	var metricMap = __webpack_require__(59);
 
 	/**
 	 * This function is a convience function for looking up information in the
@@ -351,7 +351,7 @@
 
 /***/ },
 
-/***/ 4:
+/***/ 6:
 /***/ function(module, exports) {
 
 	/**
@@ -484,7 +484,7 @@
 
 /***/ },
 
-/***/ 5:
+/***/ 7:
 /***/ function(module, exports, __webpack_require__) {
 
 	/**
@@ -492,9 +492,9 @@
 	 * different kinds of domTree nodes in a consistent manner.
 	 */
 
-	var domTree = __webpack_require__(17);
+	var domTree = __webpack_require__(21);
 	var fontMetrics = __webpack_require__(3);
-	var symbols = __webpack_require__(6);
+	var symbols = __webpack_require__(8);
 	var utils = __webpack_require__(1);
 
 	var greekCapitals = [
@@ -938,7 +938,7 @@
 
 /***/ },
 
-/***/ 6:
+/***/ 8:
 /***/ function(module, exports) {
 
 	/**
@@ -3530,7 +3530,7 @@
 
 /***/ },
 
-/***/ 16:
+/***/ 20:
 /***/ function(module, exports) {
 
 	/**
@@ -3565,7 +3565,7 @@
 
 /***/ },
 
-/***/ 17:
+/***/ 21:
 /***/ function(module, exports, __webpack_require__) {
 
 	/**
@@ -3841,7 +3841,7 @@
 
 /***/ },
 
-/***/ 18:
+/***/ 22:
 /***/ function(module, exports) {
 
 	/**
@@ -3871,7 +3871,7 @@
 
 /***/ },
 
-/***/ 46:
+/***/ 50:
 /***/ function(module, exports, __webpack_require__) {
 
 	/**
@@ -3883,10 +3883,10 @@
 	 */
 
 	var ParseError = __webpack_require__(2);
-	var Settings = __webpack_require__(16);
+	var Settings = __webpack_require__(20);
 
-	var buildTree = __webpack_require__(52);
-	var parseTree = __webpack_require__(58);
+	var buildTree = __webpack_require__(56);
+	var parseTree = __webpack_require__(62);
 	var utils = __webpack_require__(1);
 
 	/**
@@ -3951,7 +3951,7 @@
 
 /***/ },
 
-/***/ 47:
+/***/ 51:
 /***/ function(module, exports, __webpack_require__) {
 
 	/**
@@ -3967,7 +3967,7 @@
 	 * kinds.
 	 */
 
-	var matchAt = __webpack_require__(59);
+	var matchAt = __webpack_require__(63);
 
 	var ParseError = __webpack_require__(2);
 
@@ -4152,7 +4152,7 @@
 
 /***/ },
 
-/***/ 48:
+/***/ 52:
 /***/ function(module, exports) {
 
 	/**
@@ -4348,16 +4348,16 @@
 
 /***/ },
 
-/***/ 49:
+/***/ 53:
 /***/ function(module, exports, __webpack_require__) {
 
-	var functions = __webpack_require__(56);
-	var environments = __webpack_require__(54);
-	var Lexer = __webpack_require__(47);
-	var symbols = __webpack_require__(6);
+	var functions = __webpack_require__(60);
+	var environments = __webpack_require__(58);
+	var Lexer = __webpack_require__(51);
+	var symbols = __webpack_require__(8);
 	var utils = __webpack_require__(1);
 
-	var parseData = __webpack_require__(18);
+	var parseData = __webpack_require__(22);
 	var ParseError = __webpack_require__(2);
 
 	/**
@@ -5075,7 +5075,7 @@
 
 /***/ },
 
-/***/ 50:
+/***/ 54:
 /***/ function(module, exports, __webpack_require__) {
 
 	/**
@@ -5086,11 +5086,11 @@
 	 */
 
 	var ParseError = __webpack_require__(2);
-	var Style = __webpack_require__(4);
+	var Style = __webpack_require__(6);
 
-	var buildCommon = __webpack_require__(5);
-	var delimiter = __webpack_require__(53);
-	var domTree = __webpack_require__(17);
+	var buildCommon = __webpack_require__(7);
+	var delimiter = __webpack_require__(57);
+	var domTree = __webpack_require__(21);
 	var fontMetrics = __webpack_require__(3);
 	var utils = __webpack_require__(1);
 
@@ -6444,7 +6444,7 @@
 
 /***/ },
 
-/***/ 51:
+/***/ 55:
 /***/ function(module, exports, __webpack_require__) {
 
 	/**
@@ -6453,11 +6453,11 @@
 	 * parser.
 	 */
 
-	var buildCommon = __webpack_require__(5);
+	var buildCommon = __webpack_require__(7);
 	var fontMetrics = __webpack_require__(3);
-	var mathMLTree = __webpack_require__(57);
+	var mathMLTree = __webpack_require__(61);
 	var ParseError = __webpack_require__(2);
-	var symbols = __webpack_require__(6);
+	var symbols = __webpack_require__(8);
 	var utils = __webpack_require__(1);
 
 	var makeSpan = buildCommon.makeSpan;
@@ -6970,15 +6970,15 @@
 
 /***/ },
 
-/***/ 52:
+/***/ 56:
 /***/ function(module, exports, __webpack_require__) {
 
-	var buildHTML = __webpack_require__(50);
-	var buildMathML = __webpack_require__(51);
-	var buildCommon = __webpack_require__(5);
-	var Options = __webpack_require__(48);
-	var Settings = __webpack_require__(16);
-	var Style = __webpack_require__(4);
+	var buildHTML = __webpack_require__(54);
+	var buildMathML = __webpack_require__(55);
+	var buildCommon = __webpack_require__(7);
+	var Options = __webpack_require__(52);
+	var Settings = __webpack_require__(20);
+	var Style = __webpack_require__(6);
 
 	var makeSpan = buildCommon.makeSpan;
 
@@ -7017,7 +7017,7 @@
 
 /***/ },
 
-/***/ 53:
+/***/ 57:
 /***/ function(module, exports, __webpack_require__) {
 
 	/**
@@ -7043,11 +7043,11 @@
 	 */
 
 	var ParseError = __webpack_require__(2);
-	var Style = __webpack_require__(4);
+	var Style = __webpack_require__(6);
 
-	var buildCommon = __webpack_require__(5);
+	var buildCommon = __webpack_require__(7);
 	var fontMetrics = __webpack_require__(3);
-	var symbols = __webpack_require__(6);
+	var symbols = __webpack_require__(8);
 	var utils = __webpack_require__(1);
 
 	var makeSpan = buildCommon.makeSpan;
@@ -7563,11 +7563,11 @@
 
 /***/ },
 
-/***/ 54:
+/***/ 58:
 /***/ function(module, exports, __webpack_require__) {
 
 	var fontMetrics = __webpack_require__(3);
-	var parseData = __webpack_require__(18);
+	var parseData = __webpack_require__(22);
 	var ParseError = __webpack_require__(2);
 
 	var ParseNode = parseData.ParseNode;
@@ -7748,7 +7748,7 @@
 
 /***/ },
 
-/***/ 55:
+/***/ 59:
 /***/ function(module, exports) {
 
 	module.exports = {
@@ -9506,7 +9506,7 @@
 
 /***/ },
 
-/***/ 56:
+/***/ 60:
 /***/ function(module, exports, __webpack_require__) {
 
 	var utils = __webpack_require__(1);
@@ -10142,7 +10142,7 @@
 
 /***/ },
 
-/***/ 57:
+/***/ 61:
 /***/ function(module, exports, __webpack_require__) {
 
 	/**
@@ -10251,7 +10251,7 @@
 
 /***/ },
 
-/***/ 58:
+/***/ 62:
 /***/ function(module, exports, __webpack_require__) {
 
 	/**
@@ -10259,7 +10259,7 @@
 	 * TODO(emily): Remove this
 	 */
 
-	var Parser = __webpack_require__(49);
+	var Parser = __webpack_require__(53);
 
 	/**
 	 * Parses an expression using a Parser, then returns the parsed result.
@@ -10275,7 +10275,7 @@
 
 /***/ },
 
-/***/ 59:
+/***/ 63:
 /***/ function(module, exports) {
 
 	/** @flow */
@@ -10323,7 +10323,7 @@
 
 /***/ },
 
-/***/ 109:
+/***/ 111:
 /***/ function(module, exports) {
 
 	'use strict';
@@ -10332,18 +10332,25 @@
 
 	Adapter = {
 	  construct: function construct(model, attrs) {
-	    var ref;
+	    var ref, ref1;
 	    if ((attrs != null ? (ref = attrs.content) != null ? ref.html : void 0 : void 0) != null) {
-	      return model.modelState.html = attrs.content.html;
+	      model.modelState.html = attrs.content.html;
 	    } else {
-	      return model.modelState.html = null;
+	      model.modelState.html = null;
+	    }
+	    if ((attrs != null ? (ref1 = attrs.content) != null ? ref1.align : void 0 : void 0) != null) {
+	      return model.modelState.align = attrs.content.align;
+	    } else {
+	      return model.modelState.align = 'left';
 	    }
 	  },
 	  clone: function clone(model, _clone) {
-	    return _clone.modelState.html = model.modelState.html;
+	    _clone.modelState.html = model.modelState.html;
+	    return _clone.modelState.align = model.modelState.align;
 	  },
 	  toJSON: function toJSON(model, json) {
-	    return json.content.html = model.modelState.html;
+	    json.content.html = model.modelState.html;
+	    return json.content.align = model.modelState.align;
 	  },
 	  toText: function toText(model) {
 	    var node;
@@ -10357,16 +10364,16 @@
 
 /***/ },
 
-/***/ 110:
+/***/ 112:
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
 
 	var Common, HTML, OboComponent, katex;
 
-	__webpack_require__(202);
+	__webpack_require__(204);
 
-	katex = __webpack_require__(46);
+	katex = __webpack_require__(50);
 
 	Common = window.ObojoboDraft.Common;
 
@@ -10394,7 +10401,7 @@
 	    return React.createElement(
 	      OboComponent,
 	      { model: this.props.model, moduleData: this.props.moduleData },
-	      React.createElement('div', { className: 'obojobo-draft--chunks--html viewer pad', dangerouslySetInnerHTML: this.createMarkup() })
+	      React.createElement('div', { className: 'obojobo-draft--chunks--html viewer pad' + ' align-' + data.align, dangerouslySetInnerHTML: this.createMarkup() })
 	    );
 	  }
 	});
@@ -10403,7 +10410,7 @@
 
 /***/ },
 
-/***/ 111:
+/***/ 113:
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -10414,14 +10421,14 @@
 
 	OBO.register('ObojoboDraft.Chunks.HTML', {
 	  type: 'chunk',
-	  adapter: __webpack_require__(109),
-	  componentClass: __webpack_require__(110),
+	  adapter: __webpack_require__(111),
+	  componentClass: __webpack_require__(112),
 	  selectionHandler: new Common.chunk.focusableChunk.FocusableSelectionHandler()
 	});
 
 /***/ },
 
-/***/ 202:
+/***/ 204:
 /***/ function(module, exports) {
 
 	// removed by extract-text-webpack-plugin

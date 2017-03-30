@@ -45,12 +45,12 @@
 /***/ 0:
 /***/ function(module, exports, __webpack_require__) {
 
-	module.exports = __webpack_require__(108);
+	module.exports = __webpack_require__(110);
 
 
 /***/ },
 
-/***/ 104:
+/***/ 106:
 /***/ function(module, exports) {
 
 	'use strict';
@@ -117,7 +117,7 @@
 
 /***/ },
 
-/***/ 105:
+/***/ 107:
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -134,7 +134,7 @@
 	    data = this.props.chunk.modelState;
 	    if (data.url == null) {
 	      imgStyles = {
-	        backgroundImage: Common.util.getBackgroundImage(__webpack_require__(238)),
+	        backgroundImage: Common.util.getBackgroundImage(__webpack_require__(240)),
 	        backgroundSize: '16px',
 	        height: '300px'
 	      };
@@ -162,7 +162,7 @@
 
 /***/ },
 
-/***/ 106:
+/***/ 108:
 /***/ function(module, exports) {
 
 	"use strict";
@@ -205,16 +205,16 @@
 
 /***/ },
 
-/***/ 107:
+/***/ 109:
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
 
 	var Common, Figure, Image, NonEditableChunk, OboComponent, TextGroupEl;
 
-	__webpack_require__(201);
+	__webpack_require__(203);
 
-	Image = __webpack_require__(105);
+	Image = __webpack_require__(107);
 
 	Common = window.ObojoboDraft.Common;
 
@@ -246,7 +246,7 @@
 							data.textGroup.first.text.length > 0 ? React.createElement(
 								'figcaption',
 								{ ref: 'caption' },
-								React.createElement(TextGroupEl, { text: data.textGroup.first.text, groupIndex: '0' })
+								React.createElement(TextGroupEl, { parentModel: this.props.model, textItem: data.textGroup.first, groupIndex: '0' })
 							) : null
 						)
 					)
@@ -259,34 +259,34 @@
 
 /***/ },
 
-/***/ 108:
+/***/ 110:
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
 
 	var ObojoboDraft, SelectionHandler;
 
-	SelectionHandler = __webpack_require__(106);
+	SelectionHandler = __webpack_require__(108);
 
 	ObojoboDraft = window.ObojoboDraft;
 
 	OBO.register('ObojoboDraft.Chunks.Figure', {
 	  type: 'chunk',
-	  adapter: __webpack_require__(104),
-	  componentClass: __webpack_require__(107),
+	  adapter: __webpack_require__(106),
+	  componentClass: __webpack_require__(109),
 	  selectionHandler: new SelectionHandler()
 	});
 
 /***/ },
 
-/***/ 201:
+/***/ 203:
 /***/ function(module, exports) {
 
 	// removed by extract-text-webpack-plugin
 
 /***/ },
 
-/***/ 238:
+/***/ 240:
 /***/ function(module, exports) {
 
 	module.exports = "data:image/svg+xml;charset=utf8,%3Csvg id='Layer_1' data-name='Layer 1' xmlns='http://www.w3.org/2000/svg' viewBox='0 0 12 12'%3E%3Cdefs%3E%3Cstyle%3E.cls-1%7Bopacity:0.03;%7D%3C/style%3E%3C/defs%3E%3Ctitle%3Ebg%3C/title%3E%3Crect class='cls-1' width='6' height='6'/%3E%3Crect class='cls-1' x='6' y='6' width='6' height='6'/%3E%3C/svg%3E"

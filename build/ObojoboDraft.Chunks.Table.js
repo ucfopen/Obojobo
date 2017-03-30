@@ -45,12 +45,12 @@
 /***/ 0:
 /***/ function(module, exports, __webpack_require__) {
 
-	module.exports = __webpack_require__(136);
+	module.exports = __webpack_require__(138);
 
 
 /***/ },
 
-/***/ 61:
+/***/ 65:
 /***/ function(module, exports) {
 
 	'use strict';
@@ -272,7 +272,7 @@
 
 /***/ },
 
-/***/ 62:
+/***/ 66:
 /***/ function(module, exports) {
 
 	'use strict';
@@ -318,14 +318,14 @@
 
 /***/ },
 
-/***/ 134:
+/***/ 136:
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
 
 	var Adapter, GridTextGroup;
 
-	GridTextGroup = __webpack_require__(61);
+	GridTextGroup = __webpack_require__(65);
 
 	Adapter = {
 	  construct: function construct(model, attrs) {
@@ -380,18 +380,18 @@
 
 /***/ },
 
-/***/ 135:
+/***/ 137:
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
 
 	var Common, GridTextGroup, OboComponent, SelectionHandler, Table, TextGroupEl;
 
-	__webpack_require__(211);
+	__webpack_require__(213);
 
-	GridTextGroup = __webpack_require__(61);
+	GridTextGroup = __webpack_require__(65);
 
-	SelectionHandler = __webpack_require__(62);
+	SelectionHandler = __webpack_require__(66);
 
 	Common = window.ObojoboDraft.Common;
 
@@ -416,9 +416,9 @@
 							className: 'cell row-0 col-' + index,
 							'data-table-position': model.get('id') + ',0,' + index
 						},
-						React.createElement(TextGroupEl, { text: textGroupItem.text, groupIndex: index })
+						React.createElement(TextGroupEl, { parentModel: this.props.model, textItem: textGroupItem, groupIndex: index })
 					);
-				});
+				}.bind(this));
 				header = React.createElement(
 					'tr',
 					{ key: 'header' },
@@ -443,15 +443,15 @@
 							className: 'cell row-' + rowNum + ' col-' + index,
 							'data-table-position': model.get('id') + ',' + rowNum + ',' + index
 						},
-						React.createElement(TextGroupEl, { text: textGroupItem.text, groupIndex: rowNum * numCols + index })
+						React.createElement(TextGroupEl, { parentModel: this.props.model, textItem: textGroupItem, groupIndex: rowNum * numCols + index })
 					);
-				});
+				}.bind(this));
 				return React.createElement(
 					'tr',
 					{ key: rowNum },
 					row
 				);
-			});
+			}.bind(this));
 			return React.createElement(
 				OboComponent,
 				{ model: this.props.model, moduleData: this.props.moduleData },
@@ -489,27 +489,27 @@
 
 /***/ },
 
-/***/ 136:
+/***/ 138:
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
 
 	var ObojoboDraft, SelectionHandler;
 
-	SelectionHandler = __webpack_require__(62);
+	SelectionHandler = __webpack_require__(66);
 
 	ObojoboDraft = window.ObojoboDraft;
 
 	OBO.register('ObojoboDraft.Chunks.Table', {
 	  type: 'chunk',
-	  adapter: __webpack_require__(134),
-	  componentClass: __webpack_require__(135),
+	  adapter: __webpack_require__(136),
+	  componentClass: __webpack_require__(137),
 	  selectionHandler: new SelectionHandler()
 	});
 
 /***/ },
 
-/***/ 211:
+/***/ 213:
 /***/ function(module, exports) {
 
 	// removed by extract-text-webpack-plugin

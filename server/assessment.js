@@ -4,7 +4,9 @@ let express = require('express');
 let app = express();
 
 class Assessment extends DraftNode {
-	static getCompletedAssessmentAttemptHistory(userId, draftId, assessmentId) {
+	static getCompletedAssessmentAttemptHistory(userId, draftId, assessmentId, includePreviewAttempts) {
+		let previewSql = includePreviewAttempts ? '' : 'AND preview = FALSE'
+
 		return (
 			db.manyOrNone(`
 				SELECT
@@ -20,9 +22,29 @@ class Assessment extends DraftNode {
 					AND draft_id = $[draftId]
 					AND assessment_id = $[assessmentId]
 					AND completed_at IS NOT NULL
+					${previewSql}
 				ORDER BY completed_at DESC`
 			, {userId:userId, draftId:draftId, assessmentId:assessmentId})
 		)
+	}
+
+	static getNumberAttemptsTaken(userId, draftId, assessmentId) {
+		return (
+			db.one(`
+				SELECT
+					COUNT(*)
+				FROM attempts
+				WHERE
+					user_id = $[userId]
+					AND draft_id = $[draftId]
+					AND assessment_id = $[assessmentId]
+					AND completed_at IS NOT NULL
+					AND preview = false
+			`, {userId:userId, draftId:draftId, assessmentId:assessmentId})
+		)
+		.then( (result) => {
+			return parseInt(result.count, 10)
+		})
 	}
 
 	// @TODO: most things touching the db should end up in models. figure this out
@@ -40,16 +62,17 @@ class Assessment extends DraftNode {
 				WHERE
 					user_id = $[userId]
 					AND draft_id = $[draftId]
+					AND preview = FALSE
 				ORDER BY completed_at DESC`
 			, {userId:userId, draftId:draftId})
 		)
 	}
 
-	static insertNewAttempt(userId, draftId, assessmentId, state) {
+	static insertNewAttempt(userId, draftId, assessmentId, state, isPreview) {
 		return (
 			db.one(`
-				INSERT INTO attempts (user_id, draft_id, assessment_id, state)
-				VALUES($[userId], $[draftId], $[assessmentId], $[state])
+				INSERT INTO attempts (user_id, draft_id, assessment_id, state, preview)
+				VALUES($[userId], $[draftId], $[assessmentId], $[state], $[isPreview])
 				RETURNING
 				id AS "attemptId",
 				created_at as "startTime",
@@ -61,7 +84,8 @@ class Assessment extends DraftNode {
 				userId: userId,
 				draftId: draftId,
 				assessmentId: assessmentId,
-				state: state
+				state: state,
+				isPreview: isPreview
 			})
 		)
 	}

@@ -45,12 +45,12 @@
 /***/ 0:
 /***/ function(module, exports, __webpack_require__) {
 
-	module.exports = __webpack_require__(193);
+	module.exports = __webpack_require__(195);
 
 
 /***/ },
 
-/***/ 95:
+/***/ 97:
 /***/ function(module, exports) {
 
 	"use strict";
@@ -106,14 +106,14 @@
 
 /***/ },
 
-/***/ 193:
+/***/ 195:
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
 
 	var ComponentClassMap, OBO, componentClassMap, defaults, getItemsCallbacks, insertItems, items, itemsLoaded, registeredToolbarItems, textListeners, toolbarItems, triggerActions, variableHandlers;
 
-	ComponentClassMap = __webpack_require__(95);
+	ComponentClassMap = __webpack_require__(97);
 
 	componentClassMap = new ComponentClassMap();
 

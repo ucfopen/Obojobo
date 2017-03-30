@@ -45,19 +45,19 @@
 /***/ 0:
 /***/ function(module, exports, __webpack_require__) {
 
-	module.exports = __webpack_require__(138);
+	module.exports = __webpack_require__(140);
 
 
 /***/ },
 
-/***/ 137:
+/***/ 139:
 /***/ function(module, exports, __webpack_require__) {
 
-	'use strict';
+	"use strict";
 
-	var Common, Dispatcher, OboComponent, Text, TextChunk, TextGroupEl, varRegex;
+	var Common, Dispatcher, OboComponent, Text, TextChunk, TextGroupEl;
 
-	__webpack_require__(212);
+	__webpack_require__(214);
 
 	Common = window.ObojoboDraft.Common;
 
@@ -69,40 +69,22 @@
 
 	Dispatcher = Common.flux.Dispatcher;
 
-	varRegex = /\{\{(.+?)\}\}/;
-
 	Text = React.createClass({
-	  displayName: 'Text',
+	  displayName: "Text",
 
 	  render: function render() {
 	    var texts;
 	    texts = this.props.model.modelState.textGroup.items.map(function (_this) {
 	      return function (textItem, index) {
-	        var match, newText, startIndex, variable;
-	        if (textItem.text.value.indexOf('{{')) {
-	          match = null;
-	          textItem = textItem.clone();
-	          console.log('TODO - Change this so that it splits into tokens so it doesnt have to replace {{unknown}} with unknown');
-	          while ((match = varRegex.exec(textItem.text.value)) !== null) {
-	            variable = match[1];
-	            newText = window.OBO.getTextForVariable(variable, _this.props.model, _this.props.moduleData);
-	            if (newText === null) {
-	              newText = match[1];
-	            }
-	            newText = '' + newText;
-	            startIndex = textItem.text.value.indexOf(match[0], varRegex.lastIndex);
-	            textItem.text.replaceText(startIndex, startIndex + match[0].length, newText);
-	          }
-	        }
-	        return React.createElement(TextGroupEl, { text: textItem.text, groupIndex: index, indent: textItem.data.indent, key: index });
+	        return React.createElement(TextGroupEl, { textItem: textItem, groupIndex: index, key: index, parentModel: this.props.model });
 	      };
-	    }(this));
+	    }(this).bind(this));
 	    return React.createElement(
 	      OboComponent,
 	      { model: this.props.model, moduleData: this.props.moduleData },
 	      React.createElement(
 	        TextChunk,
-	        { className: 'obojobo-draft--chunks--single-text pad' },
+	        { className: "obojobo-draft--chunks--single-text pad" },
 	        texts
 	      )
 	    );
@@ -113,7 +95,7 @@
 
 /***/ },
 
-/***/ 138:
+/***/ 140:
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -126,13 +108,13 @@
 	  type: 'chunk',
 	  "default": true,
 	  adapter: ObojoboDraft.Common.chunk.textChunk.TextGroupAdapter,
-	  componentClass: __webpack_require__(137),
+	  componentClass: __webpack_require__(139),
 	  selectionHandler: new ObojoboDraft.Common.chunk.textChunk.TextGroupSelectionHandler()
 	});
 
 /***/ },
 
-/***/ 212:
+/***/ 214:
 /***/ function(module, exports) {
 
 	// removed by extract-text-webpack-plugin

@@ -45,15 +45,15 @@
 /***/ 0:
 /***/ function(module, exports, __webpack_require__) {
 
-	module.exports = __webpack_require__(114);
+	module.exports = __webpack_require__(116);
 
 
 /***/ },
 
-/***/ 112:
+/***/ 114:
 /***/ function(module, exports) {
 
-	"use strict";
+	'use strict';
 
 	var Adapter, Common, TextGroupAdapter;
 
@@ -63,22 +63,29 @@
 
 	Adapter = {
 	  construct: function construct(model, attrs) {
-	    var ref;
+	    var ref, ref1;
 	    TextGroupAdapter.construct(model, attrs);
 	    model.modelState.textGroup.maxItems = 1;
 	    if (attrs != null ? (ref = attrs.content) != null ? ref.headingLevel : void 0 : void 0) {
-	      return model.modelState.headingLevel = attrs.content.headingLevel;
+	      model.modelState.headingLevel = attrs.content.headingLevel;
 	    } else {
-	      return model.modelState.headingLevel = 1;
+	      model.modelState.headingLevel = 1;
+	    }
+	    if (attrs != null ? (ref1 = attrs.content) != null ? ref1.align : void 0 : void 0) {
+	      return model.modelState.align = attrs.content.align;
+	    } else {
+	      return model.modelState.align = 'left';
 	    }
 	  },
 	  clone: function clone(model, _clone) {
 	    TextGroupAdapter.clone(model, _clone);
-	    return _clone.modelState.headingLevel = model.modelState.headingLevel;
+	    _clone.modelState.headingLevel = model.modelState.headingLevel;
+	    return _clone.modelState.align = model.modelState.align;
 	  },
 	  toJSON: function toJSON(model, json) {
 	    TextGroupAdapter.toJSON(model, json);
-	    return json.content.headingLevel = model.modelState.headingLevel;
+	    json.content.headingLevel = model.modelState.headingLevel;
+	    return json.content.align = model.modelState.align;
 	  },
 	  toText: function toText(model) {
 	    return TextGroupAdapter.toText(model);
@@ -89,14 +96,14 @@
 
 /***/ },
 
-/***/ 113:
+/***/ 115:
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
 
 	var Common, Heading, OboComponent, TextChunk, TextGroupEl;
 
-	__webpack_require__(203);
+	__webpack_require__(205);
 
 	Common = window.ObojoboDraft.Common;
 
@@ -112,7 +119,7 @@
 	  render: function render() {
 	    var data, inner;
 	    data = this.props.model.modelState;
-	    inner = React.createElement('h' + data.headingLevel, null, React.createElement(TextGroupEl, { text: data.textGroup.first.text, indent: data.textGroup.first.data.indent, groupIndex: '0' }));
+	    inner = React.createElement('h' + data.headingLevel, null, React.createElement(TextGroupEl, { parentModel: this.props.model, textItem: data.textGroup.first, groupIndex: '0' }));
 	    return React.createElement(
 	      OboComponent,
 	      { model: this.props.model, moduleData: this.props.moduleData },
@@ -129,7 +136,7 @@
 
 /***/ },
 
-/***/ 114:
+/***/ 116:
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -140,8 +147,8 @@
 
 	OBO.register('ObojoboDraft.Chunks.Heading', {
 	  type: 'chunk',
-	  adapter: __webpack_require__(112),
-	  componentClass: __webpack_require__(113),
+	  adapter: __webpack_require__(114),
+	  componentClass: __webpack_require__(115),
 	  selectionHandler: new ObojoboDraft.Common.chunk.textChunk.TextGroupSelectionHandler(),
 	  getNavItem: function getNavItem(model) {
 	    switch (model.modelState.headingLevel) {
@@ -152,7 +159,7 @@
 	        }
 	        return {
 	          type: 'sub-link',
-	          label: model.toText(),
+	          label: model.modelState.textGroup.first.text,
 	          path: [model.toText().toLowerCase().replace(/ /g, '-')],
 	          showChildren: false
 	        };
@@ -164,7 +171,7 @@
 
 /***/ },
 
-/***/ 203:
+/***/ 205:
 /***/ function(module, exports) {
 
 	// removed by extract-text-webpack-plugin

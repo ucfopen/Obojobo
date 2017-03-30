@@ -29,9 +29,6 @@ class MCAssessment extends DraftNode {
 				break
 
 			case 'pick-all':
-				// console.log('RESPONSE RECORDs');
-				// console.log(responseRecords);
-
 				let correctIds = new Set([...this.immediateChildrenSet]
 					.filter( (id) => {
 						return this.draftTree.findNodeClass(id).node.content.score === 100
@@ -50,10 +47,11 @@ class MCAssessment extends DraftNode {
 					)
 				)
 
-
 				if(correctIds.size !== responseIds.size) return setScore(0)
-				correctIds.forEach( (id) => { if(!responseIds.has(id)) return setScore(0) } )
-				return setScore(100)
+
+				let score = 100
+				correctIds.forEach( (id) => { if(!responseIds.has(id)) score = 0 })
+				return setScore(score)
 		}
 	}
 }

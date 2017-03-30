@@ -103,6 +103,18 @@
       transform: translate(-50%, -50%);
       left: 0.6em;
       animation: fadein 0.4s; }
+  .obojobo-draft--chunks--mc-assessment.is-scored.is-response-type-pick-all .obojobo-draft--chunks--mc-assessment--mc-choice.is-selected.is-correct:before, .obojobo-draft--chunks--mc-assessment.is-scored.is-response-type-pick-all .obojobo-draft--chunks--mc-assessment--mc-choice.is-selected.is-correct:hover:before {
+    content: "\2714" attr(data-choice-label);
+    font-size: 1.25em;
+    left: 1.25em;
+    top: 1.5em;
+    letter-spacing: 0.2em; }
+  .obojobo-draft--chunks--mc-assessment.is-scored.is-response-type-pick-all .obojobo-draft--chunks--mc-assessment--mc-choice.is-selected.is-incorrect:before, .obojobo-draft--chunks--mc-assessment.is-scored.is-response-type-pick-all .obojobo-draft--chunks--mc-assessment--mc-choice.is-selected.is-incorrect:hover:before {
+    content: "\2716" attr(data-choice-label);
+    font-size: 1.25em;
+    left: 1.25em;
+    top: 1.5em;
+    letter-spacing: 0.2em; }
   .obojobo-draft--chunks--mc-assessment .instructions {
     padding-left: 3em;
     padding-right: 3em;
@@ -202,14 +214,21 @@
           padding-bottom: 0;
           position: relative; }
         .obojobo-draft--chunks--mc-assessment .solution > .score .feedback.is-pick-all-feedback > .obojobo-draft--chunks--mc-assessment--mc-feedback {
-          padding-left: 3em; }
+          padding-left: 4em; }
           .obojobo-draft--chunks--mc-assessment .solution > .score .feedback.is-pick-all-feedback > .obojobo-draft--chunks--mc-assessment--mc-feedback:before {
             display: block;
             position: absolute;
             top: 1em;
             left: 4em;
-            content: "\2022";
-            font-size: 1em; }
+            font-family: "Libre Franklin", Arial, sans-serif;
+            font-size: 1em;
+            letter-spacing: 0.25em; }
+          .obojobo-draft--chunks--mc-assessment .solution > .score .feedback.is-pick-all-feedback > .obojobo-draft--chunks--mc-assessment--mc-feedback.is-correct-feedback:before {
+            content: "\2714" attr(data-choice-label);
+            color: #38ae24; }
+          .obojobo-draft--chunks--mc-assessment .solution > .score .feedback.is-pick-all-feedback > .obojobo-draft--chunks--mc-assessment--mc-feedback.is-incorrect-feedback:before {
+            content: "\2716" attr(data-choice-label);
+            color: #c21f00; }
     .obojobo-draft--chunks--mc-assessment .solution > .obojobo-draft--components--button {
       margin-bottom: 1em;
       margin-left: 3em; }

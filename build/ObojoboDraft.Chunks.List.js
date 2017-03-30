@@ -45,12 +45,12 @@
 /***/ 0:
 /***/ function(module, exports, __webpack_require__) {
 
-	module.exports = __webpack_require__(120);
+	module.exports = __webpack_require__(122);
 
 
 /***/ },
 
-/***/ 60:
+/***/ 64:
 /***/ function(module, exports) {
 
 	'use strict';
@@ -208,14 +208,14 @@
 
 /***/ },
 
-/***/ 118:
+/***/ 120:
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
 
 	var Adapter, Common, ListStyles, TextGroup, TextGroupAdapter;
 
-	ListStyles = __webpack_require__(60);
+	ListStyles = __webpack_require__(64);
 
 	Common = window.ObojoboDraft.Common;
 
@@ -258,16 +258,16 @@
 
 /***/ },
 
-/***/ 119:
+/***/ 121:
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
 
 	var Chunk, Common, List, ListStyles, MockElement, MockTextNode, OboComponent, SelectionHandler, TextChunk, TextGroup, TextGroupEl, selectionHandler;
 
-	__webpack_require__(205);
+	__webpack_require__(207);
 
-	ListStyles = __webpack_require__(60);
+	ListStyles = __webpack_require__(64);
 
 	Common = window.ObojoboDraft.Common;
 
@@ -374,7 +374,7 @@
 	    key = this.props.model.cid + '-' + indent + '-' + index;
 	    switch (node.nodeType) {
 	      case 'text':
-	        return React.createElement(TextGroupEl, { text: node.text, key: key, groupIndex: node.index });
+	        return React.createElement(TextGroupEl, { parentModel: this.props.model, textItem: { text: node.text, data: {} }, key: key, groupIndex: node.index });
 	      case 'element':
 	        return React.createElement(node.type, {
 	          key: key,
@@ -400,7 +400,7 @@
 
 /***/ },
 
-/***/ 120:
+/***/ 122:
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -411,14 +411,14 @@
 
 	OBO.register('ObojoboDraft.Chunks.List', {
 	  type: 'chunk',
-	  adapter: __webpack_require__(118),
-	  componentClass: __webpack_require__(119),
+	  adapter: __webpack_require__(120),
+	  componentClass: __webpack_require__(121),
 	  selectionHandler: new ObojoboDraft.Common.chunk.textChunk.TextGroupSelectionHandler()
 	});
 
 /***/ },
 
-/***/ 205:
+/***/ 207:
 /***/ function(module, exports) {
 
 	// removed by extract-text-webpack-plugin

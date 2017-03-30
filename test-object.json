@@ -3,7 +3,8 @@
    "_rev": "9-fc44e9eef35bcc6ae36778ab2286a689",
    "id": "68016af1-bbb7-4038-81a9-70df6022ed35",
    "content": {
-       "title": "Physics 2D"
+       "title": "Physics 2D",
+       "start": "assessment"
    },
    "metadata": {
    },
@@ -34,11 +35,19 @@
                                "textGroup": [
                                    {
                                        "text": {
-                                           "value": "Projectile Motion",
-                                           "styleList": null
+                                           "value": "\\sin(x) Projectile Motion",
+                                           "styleList": [
+                                              {
+                                                  "type": "_latex",
+                                                  "start": 0,
+                                                  "end": 7,
+                                                  "data": {}
+                                              }
+                                           ]
                                        },
                                        "data": {
-                                           "indent": 0
+                                           "indent": 0,
+                                           "align": "right"
                                        }
                                    }
                                ]
@@ -62,12 +71,16 @@
                                "headingLevel": 2,
                                "textGroup": [
                                    {
-                                       "text": {
-                                           "value": "The initial velocity",
-                                           "styleList": null
-                                       },
-                                       "data": {
-                                           "indent": 0
+                                      "text": {
+                                           "value": "\\sin(x) Projectile Motion",
+                                           "styleList": [
+                                              {
+                                                  "type": "_latex",
+                                                  "start": 0,
+                                                  "end": 7,
+                                                  "data": {}
+                                              }
+                                           ]
                                        }
                                    }
                                ]
@@ -96,7 +109,8 @@
                                            ]
                                        },
                                        "data": {
-                                           "indent": 0
+                                           "indent": 0,
+                                           "align": "right"
                                        }
                                    }
                                ]
@@ -558,6 +572,7 @@
                        {
                            "id": "a75581c6-b936-4ba0-8b51-e66c04d6285f",
                            "content": {
+                                "title": "My Custom Question Title",
                                "shuffle": true,
                                "type": "practice",
                                "solution": {
@@ -573,7 +588,8 @@
                                         {
                                             "id": "asdf",
                                             "content": {
-                                                "html": "<p>html<b>now</b></p>"
+                                                "html": "<p>html<b>now</b></p>",
+                                                "align": "center"
                                             },
                                             "type": "ObojoboDraft.Chunks.HTML"
                                         },
@@ -766,7 +782,7 @@
                                {
                                    "id": "dfe52410-8339-4234-962d-9c296fc2ac37",
                                    "content": {
-                                       "responseType": "pick-one-multiple-correct"
+                                       "responseType": "pick-all"
                                    },
                                    "metadata": {
                                    },
@@ -1127,7 +1143,7 @@
                                                        {
                                                            "id": "45741cef-b80e-4f79-a87c-f53677c59109",
                                                            "content": {
-                                                               "score": 100
+                                                               "score": 0
                                                            },
                                                            "metadata": {
                                                            },
@@ -1149,7 +1165,7 @@
                                                                                "textGroup": [
                                                                                    {
                                                                                        "text": {
-                                                                                           "value": "This is the correct answer too",
+                                                                                           "value": "This is NOT the correct answer",
                                                                                            "styleList": null
                                                                                        },
                                                                                        "data": {
@@ -2193,17 +2209,9 @@
                "triggers": [
                    {
                        "type": "onNavEnter",
-                       "run": "once",
                        "actions": [
                            {
                                "type": "nav:lock"
-                           },
-                           {
-                               "type": "_viewer:alert",
-                               "value": {
-                                  "title": "Title",
-                                  "message": "First lets start with a pre-test. This will let you see how familar you are with the content."
-                                }
                            }
                        ]
                    },
@@ -2214,17 +2222,9 @@
                              "type": "nav:lock"
                          }
                       ]
-                   },
-                   {
-                      "type": "onEndAttempt",
-                      "actions": [
-                         {
-                             "type": "nav:unlock"
-                         }
-                      ]
                    }
                ],
-               "attempts": 3,
+               "attempts": 999,
                "scoreActions": [
                    {
                        "from": 0,
@@ -2232,6 +2232,18 @@
                        "page": {
                           "type": "ObojoboDraft.Pages.Page",
                           "id": "fail-page",
+                          "content": {
+                              "triggers": [
+                                  {
+                                      "type": "onMount",
+                                      "actions": [
+                                          {
+                                              "type": "nav:unlock"
+                                          }
+                                      ]
+                                  }
+                              ]
+                          },
                           "children": [
                              {
                                 "type": "ObojoboDraft.Chunks.Text",
@@ -2252,6 +2264,9 @@
                                                      "type": "i"
                                                  }
                                              ]
+                                          },
+                                          "data": {
+                                              "align": "center"
                                           }
                                        }
                                     ]
@@ -2260,6 +2275,7 @@
                              {
                                 "type": "ObojoboDraft.Chunks.ActionButton",
                                 "content": {
+                                    "align": "right",
                                     "label": "Review Content",
                                     "triggers": [
                                        {
@@ -2307,6 +2323,18 @@
                        "page": {
                           "type": "ObojoboDraft.Pages.Page",
                           "id": "fail-page",
+                          "content": {
+                              "triggers": [
+                                  {
+                                      "type": "onMount",
+                                      "actions": [
+                                          {
+                                              "type": "nav:unlock"
+                                          }
+                                      ]
+                                  }
+                              ]
+                          },
                           "children": [
                              {
                                 "type": "ObojoboDraft.Chunks.Text",
@@ -2373,7 +2401,7 @@
                                "textGroup": [
                                    {
                                        "text": {
-                                           "value": "Assessment",
+                                           "value": "Assessment {{assessment:attemptsRemaining}}",
                                            "styleList": null
                                        },
                                        "data": {
@@ -2412,7 +2440,30 @@
                        {
                           "type": "ObojoboDraft.Chunks.ActionButton",
                           "content": {
-                              "label": "Begin",
+                              "textGroup": [
+                                  {
+                                      "text": {
+                                          "value": "Click y=\\sin(x) {{assessment:attemptsRemaining}} Begin",
+                                          "styleList": [
+                                              {
+                                                  "type": "b",
+                                                  "start": 0,
+                                                  "end": 3,
+                                                  "data": {}
+                                              },
+                                              {
+                                                  "type": "_latex",
+                                                  "start": 6,
+                                                  "end": 15,
+                                                  "data": {}
+                                              }
+                                          ]
+                                      },
+                                      "data": {
+                                          "indent": 0
+                                      }
+                                  }
+                              ],
                               "triggers": [
                                  {
                                     "type": "onClick",

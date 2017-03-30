@@ -45,19 +45,19 @@
 /***/ 0:
 /***/ function(module, exports, __webpack_require__) {
 
-	module.exports = __webpack_require__(103);
+	module.exports = __webpack_require__(105);
 
 
 /***/ },
 
-/***/ 102:
+/***/ 104:
 /***/ function(module, exports, __webpack_require__) {
 
 	"use strict";
 
 	var Code, Common, OboComponent, TextChunk, TextGroupEl;
 
-	__webpack_require__(200);
+	__webpack_require__(202);
 
 	Common = window.ObojoboDraft.Common;
 
@@ -73,8 +73,8 @@
 	  render: function render() {
 	    var texts;
 	    texts = this.props.model.modelState.textGroup.items.map(function (textItem, index) {
-	      return React.createElement(TextGroupEl, { text: textItem.text, groupIndex: index, indent: textItem.data.indent, key: index });
-	    });
+	      return React.createElement(TextGroupEl, { parentModel: this.props.model, textItem: textItem, groupIndex: index, key: index });
+	    }.bind(this));
 	    return React.createElement(
 	      OboComponent,
 	      { model: this.props.model, moduleData: this.props.moduleData },
@@ -99,7 +99,7 @@
 
 /***/ },
 
-/***/ 103:
+/***/ 105:
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -112,13 +112,13 @@
 	  type: 'chunk',
 	  "default": true,
 	  adapter: ObojoboDraft.Common.chunk.textChunk.TextGroupAdapter,
-	  componentClass: __webpack_require__(102),
+	  componentClass: __webpack_require__(104),
 	  selectionHandler: new ObojoboDraft.Common.chunk.textChunk.TextGroupSelectionHandler()
 	});
 
 /***/ },
 
-/***/ 200:
+/***/ 202:
 /***/ function(module, exports) {
 
 	// removed by extract-text-webpack-plugin

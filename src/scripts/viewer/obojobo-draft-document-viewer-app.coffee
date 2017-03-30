@@ -10,7 +10,7 @@ require('smoothscroll-polyfill').polyfill()
 # AssessmentStore = window.Viewer.stores.AssessmentStore
 APIUtil = window.Viewer.util.APIUtil
 
-
+OboGlobals = window.ObojoboDraft.Common.util.OboGlobals
 
 debounce = (ms, cb) ->
 	clearTimeout debounce.id
@@ -54,8 +54,7 @@ moduleData =
 	assessmentState: null
 	modalState: null
 
-render = (initialState) =>
-	console.log 'RENDER'
+render = =>
 	# moduleData.navState = NavStore.getState()
 	# moduleData.scoreState = ScoreStore.getState()
 	# moduleData.questionState = QuestionStore.getState()
@@ -79,7 +78,7 @@ render = (initialState) =>
 	# 	}
 
 	ReactDOM.render `<div className="root">
-		<window.Viewer.components.ViewerApp initialState={initialState} />
+		<window.Viewer.components.ViewerApp />
 	</div>`, document.getElementById('viewer-app')
 
 
@@ -133,11 +132,11 @@ render = (initialState) =>
 # 	# load from api
 # 	APIUtil.fetchDraft('sample').then (res) => showDocument(res.value)
 # window.location.pathname = '/view/' + window.__oboGlobals.draftId
-history.replaceState('', document.title, '/view/' + window.__oboGlobals.draftId + window.location.search)
+history.replaceState('', document.title, '/view/' + OboGlobals.get('draftId') + window.location.search)
 
 # window.addEventListener 'popstate', (event) ->
 # 	console.log('event', event)
 # 	debugger
 
 
-render(window.__oboGlobals)
+render()

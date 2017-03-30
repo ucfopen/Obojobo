@@ -129,6 +129,12 @@ body {
     .component .obojobo-draft--chunks--question .question b,
     .component .obojobo-draft--chunks--question .question strong {
       font-weight: 900; }
+  .component .text.align-left {
+    text-align: left; }
+  .component .text.align-right {
+    text-align: right; }
+  .component .text.align-center {
+    text-align: center; }
 .obojobo-draft--components--delete-button button {
   background: #F4F4F4;
   border: none;
@@ -197,7 +203,6 @@ body {
     font-size: 0.85em;
     opacity: 0.8;
     position: relative;
-    text-align: center;
     min-width: 3.25em;
     border-radius: .2em;
     padding: .6rem 1em;
@@ -244,6 +249,12 @@ body {
       border: 1px solid transparent;
       border-bottom: 1px solid transparent;
       opacity: 1; }
+  .obojobo-draft--components--button.align-left {
+    text-align: left; }
+  .obojobo-draft--components--button.align-right {
+    text-align: right; }
+  .obojobo-draft--components--button.align-center {
+    text-align: center; }
 .obojobo-draft--components--modal--bubble {
   background: #FFFFFF;
   border: 1px solid rgba(0, 0, 0, 0.3);

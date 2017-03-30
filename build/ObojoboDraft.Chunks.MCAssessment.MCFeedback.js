@@ -45,19 +45,19 @@
 /***/ 0:
 /***/ function(module, exports, __webpack_require__) {
 
-	module.exports = __webpack_require__(34);
+	module.exports = __webpack_require__(39);
 
 
 /***/ },
 
-/***/ 33:
+/***/ 38:
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
 
 	var Common, MCFeedback, OboComponent;
 
-	__webpack_require__(45);
+	__webpack_require__(49);
 
 	Common = window.ObojoboDraft.Common;
 
@@ -72,7 +72,8 @@
 				{
 					model: this.props.model,
 					moduleData: this.props.moduleData,
-					className: 'obojobo-draft--chunks--mc-assessment--mc-feedback'
+					className: 'obojobo-draft--chunks--mc-assessment--mc-feedback' + (this.props.model.parent.modelState.score === 100 ? ' is-correct-feedback' : ' is-incorrect-feedback'),
+					'data-choice-label': this.props.label
 				},
 				this.props.model.children.models.map(function (child, index) {
 					var Component = child.getComponentClass();
@@ -86,7 +87,7 @@
 
 /***/ },
 
-/***/ 34:
+/***/ 39:
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -98,13 +99,13 @@
 	OBO.register('ObojoboDraft.Chunks.MCAssessment.MCFeedback', {
 	  type: 'chunk',
 	  adapter: null,
-	  componentClass: __webpack_require__(33),
+	  componentClass: __webpack_require__(38),
 	  selectionHandler: new ObojoboDraft.Common.chunk.textChunk.TextGroupSelectionHandler()
 	});
 
 /***/ },
 
-/***/ 45:
+/***/ 49:
 /***/ function(module, exports) {
 
 	// removed by extract-text-webpack-plugin

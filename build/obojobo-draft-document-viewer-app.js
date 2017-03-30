@@ -45,22 +45,24 @@
 /***/ 0:
 /***/ function(module, exports, __webpack_require__) {
 
-	__webpack_require__(244);
-	module.exports = __webpack_require__(195);
+	__webpack_require__(246);
+	module.exports = __webpack_require__(197);
 
 
 /***/ },
 
-/***/ 195:
+/***/ 197:
 /***/ function(module, exports, __webpack_require__) {
 
 	"use strict";
 
-	var APIUtil, Dispatcher, _debounce, ie, moduleData, onBlur, onFocus, render;
+	var APIUtil, Dispatcher, OboGlobals, _debounce, ie, moduleData, onBlur, onFocus, render;
 
-	__webpack_require__(237).polyfill();
+	__webpack_require__(239).polyfill();
 
 	APIUtil = window.Viewer.util.APIUtil;
+
+	OboGlobals = window.ObojoboDraft.Common.util.OboGlobals;
 
 	_debounce = function debounce(ms, cb) {
 	  clearTimeout(_debounce.id);
@@ -103,23 +105,22 @@
 	};
 
 	render = function (_this) {
-	  return function (initialState) {
-	    console.log('RENDER');
+	  return function () {
 	    return ReactDOM.render(React.createElement(
 	      'div',
 	      { className: 'root' },
-	      React.createElement(window.Viewer.components.ViewerApp, { initialState: initialState })
+	      React.createElement(window.Viewer.components.ViewerApp, null)
 	    ), document.getElementById('viewer-app'));
 	  };
 	}(undefined);
 
-	history.replaceState('', document.title, '/view/' + window.__oboGlobals.draftId + window.location.search);
+	history.replaceState('', document.title, '/view/' + OboGlobals.get('draftId') + window.location.search);
 
-	render(window.__oboGlobals);
+	render();
 
 /***/ },
 
-/***/ 237:
+/***/ 239:
 /***/ function(module, exports, __webpack_require__) {
 
 	/*
@@ -417,7 +418,7 @@
 
 /***/ },
 
-/***/ 244:
+/***/ 246:
 /***/ function(module, exports) {
 
 	(function(self) {
