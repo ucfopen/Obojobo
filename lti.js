@@ -3,10 +3,12 @@ let HMAC_SHA1 = require('ims-lti/lib/hmac-sha1')
 let config = oboRequire('config')
 let db = require('./db')
 let moment = require('moment')
+let insertEvent = oboRequire('insert_event')
+let getIp = oboRequire('get_ip')
 
 let retrieveLtiRequestData = function(userId, draftId) {
 	return db.one(`
-		SELECT data, lti_key
+		SELECT id, data, lti_key
 		FROM launches
 		WHERE user_id = $[userId]
 		AND draft_id = $[draftId]
@@ -39,13 +41,18 @@ let findSecretForKey = (key) => {
    Rejects with Error Object only when we tried to send to the service and it failed
 */
 let replaceResult = function(userId, draftId, score) {
+	let ltiBody
+	let ltiReqData
+
 	return retrieveLtiRequestData(userId, draftId)
 	.then(result => {
+		ltiReqData = result
+
 		// Launch found, try to send the score to the outcome service
 		// wrap send_replace_result in a promise
 		return new Promise((resolve, reject) => {
-			let ltiBody = result.data;
-			let ltiLaunchKey = result.lti_key
+			ltiBody = ltiReqData.data;
+			let ltiLaunchKey = ltiReqData.lti_key
 			let outcomeDocument = new OutcomeDocument({
 				body: {
 					lis_outcome_service_url: ltiBody.lis_outcome_service_url,
@@ -61,6 +68,25 @@ let replaceResult = function(userId, draftId, score) {
 			outcomeDocument.send_replace_result(score, (err, result) =>{
 				if(err) reject(err)
 				resolve(result)
+
+				insertEvent({
+					action: 'lti:replaceResult',
+					actorTime: new Date().toISOString(),
+					payload: {
+						launchId: ltiReqData.id,
+						launchKey: ltiLaunchKey,
+						body: {
+							lis_outcome_service_url: ltiBody.lis_outcome_service_url,
+							lis_result_sourcedid: ltiBody.lis_result_sourcedid
+						},
+						score: score,
+						result: result,
+						error: err
+					},
+					userId: userId,
+					ip: '1',
+					metadata: {}
+				})
 			})
 		})
 		.catch(error => {
