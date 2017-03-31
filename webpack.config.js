@@ -29,6 +29,10 @@ var config = {
 				loaders: ['babel?presets[]=react&presets[]=es2015', 'coffee-loader']
 			},
 			{
+				test: /\.(cur)$/,
+				loaders: ['url-loader?limit=10000']
+			},
+			{
 				test: /\.s?css$/,
 				loader: ExtractTextPlugin.extract(['css', 'sass?includePaths[]=' + bourbon.includePaths])
 			}

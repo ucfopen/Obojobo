@@ -333,7 +333,7 @@
 	// metrics, including height, depth, italic correction, and skew (kern from the
 	// character to the corresponding \skewchar)
 	// This map is generated via `make metrics`. It should not be changed manually.
-	var metricMap = __webpack_require__(256);
+	var metricMap = __webpack_require__(267);
 
 	/**
 	 * This function is a convience function for looking up information in the
@@ -3918,7 +3918,7 @@
 
 	__webpack_require__(209);
 
-	katex = __webpack_require__(247);
+	katex = __webpack_require__(258);
 
 	Common = window.ObojoboDraft.Common;
 
@@ -4003,7 +4003,7 @@
 
 /***/ },
 
-/***/ 247:
+/***/ 258:
 /***/ function(module, exports, __webpack_require__) {
 
 	/**
@@ -4017,8 +4017,8 @@
 	var ParseError = __webpack_require__(12);
 	var Settings = __webpack_require__(94);
 
-	var buildTree = __webpack_require__(253);
-	var parseTree = __webpack_require__(259);
+	var buildTree = __webpack_require__(264);
+	var parseTree = __webpack_require__(270);
 	var utils = __webpack_require__(9);
 
 	/**
@@ -4083,7 +4083,7 @@
 
 /***/ },
 
-/***/ 248:
+/***/ 259:
 /***/ function(module, exports, __webpack_require__) {
 
 	/**
@@ -4099,7 +4099,7 @@
 	 * kinds.
 	 */
 
-	var matchAt = __webpack_require__(260);
+	var matchAt = __webpack_require__(271);
 
 	var ParseError = __webpack_require__(12);
 
@@ -4284,7 +4284,7 @@
 
 /***/ },
 
-/***/ 249:
+/***/ 260:
 /***/ function(module, exports) {
 
 	/**
@@ -4480,12 +4480,12 @@
 
 /***/ },
 
-/***/ 250:
+/***/ 261:
 /***/ function(module, exports, __webpack_require__) {
 
-	var functions = __webpack_require__(257);
-	var environments = __webpack_require__(255);
-	var Lexer = __webpack_require__(248);
+	var functions = __webpack_require__(268);
+	var environments = __webpack_require__(266);
+	var Lexer = __webpack_require__(259);
 	var symbols = __webpack_require__(32);
 	var utils = __webpack_require__(9);
 
@@ -5207,7 +5207,7 @@
 
 /***/ },
 
-/***/ 251:
+/***/ 262:
 /***/ function(module, exports, __webpack_require__) {
 
 	/**
@@ -5221,7 +5221,7 @@
 	var Style = __webpack_require__(30);
 
 	var buildCommon = __webpack_require__(31);
-	var delimiter = __webpack_require__(254);
+	var delimiter = __webpack_require__(265);
 	var domTree = __webpack_require__(95);
 	var fontMetrics = __webpack_require__(23);
 	var utils = __webpack_require__(9);
@@ -6576,7 +6576,7 @@
 
 /***/ },
 
-/***/ 252:
+/***/ 263:
 /***/ function(module, exports, __webpack_require__) {
 
 	/**
@@ -6587,7 +6587,7 @@
 
 	var buildCommon = __webpack_require__(31);
 	var fontMetrics = __webpack_require__(23);
-	var mathMLTree = __webpack_require__(258);
+	var mathMLTree = __webpack_require__(269);
 	var ParseError = __webpack_require__(12);
 	var symbols = __webpack_require__(32);
 	var utils = __webpack_require__(9);
@@ -7102,13 +7102,13 @@
 
 /***/ },
 
-/***/ 253:
+/***/ 264:
 /***/ function(module, exports, __webpack_require__) {
 
-	var buildHTML = __webpack_require__(251);
-	var buildMathML = __webpack_require__(252);
+	var buildHTML = __webpack_require__(262);
+	var buildMathML = __webpack_require__(263);
 	var buildCommon = __webpack_require__(31);
-	var Options = __webpack_require__(249);
+	var Options = __webpack_require__(260);
 	var Settings = __webpack_require__(94);
 	var Style = __webpack_require__(30);
 
@@ -7149,7 +7149,7 @@
 
 /***/ },
 
-/***/ 254:
+/***/ 265:
 /***/ function(module, exports, __webpack_require__) {
 
 	/**
@@ -7695,7 +7695,7 @@
 
 /***/ },
 
-/***/ 255:
+/***/ 266:
 /***/ function(module, exports, __webpack_require__) {
 
 	var fontMetrics = __webpack_require__(23);
@@ -7880,7 +7880,7 @@
 
 /***/ },
 
-/***/ 256:
+/***/ 267:
 /***/ function(module, exports) {
 
 	module.exports = {
@@ -9638,7 +9638,7 @@
 
 /***/ },
 
-/***/ 257:
+/***/ 268:
 /***/ function(module, exports, __webpack_require__) {
 
 	var utils = __webpack_require__(9);
@@ -10274,7 +10274,7 @@
 
 /***/ },
 
-/***/ 258:
+/***/ 269:
 /***/ function(module, exports, __webpack_require__) {
 
 	/**
@@ -10383,7 +10383,7 @@
 
 /***/ },
 
-/***/ 259:
+/***/ 270:
 /***/ function(module, exports, __webpack_require__) {
 
 	/**
@@ -10391,7 +10391,7 @@
 	 * TODO(emily): Remove this
 	 */
 
-	var Parser = __webpack_require__(250);
+	var Parser = __webpack_require__(261);
 
 	/**
 	 * Parses an expression using a Parser, then returns the parsed result.
@@ -10407,7 +10407,7 @@
 
 /***/ },
 
-/***/ 260:
+/***/ 271:
 /***/ function(module, exports) {
 
 	/** @flow */

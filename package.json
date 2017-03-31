@@ -51,8 +51,10 @@
     "webpack-dev-server": "^1.14.1"
   },
   "dependencies": {
+    "file-loader": "^0.10.1",
     "literallycanvas": "^0.4.14",
     "smoothscroll-polyfill": "^0.3.4",
+    "url-loader": "^0.5.8",
     "whatwg-fetch": "^2.0.3"
   }
 }

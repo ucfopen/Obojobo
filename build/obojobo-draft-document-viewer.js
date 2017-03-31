@@ -1598,11 +1598,33 @@
 
 	'use strict';
 
-	var Sketchpad;
+	var Sketchpad, getBackgroundImage, iconBlack, iconBlue, iconClear, iconDots, iconEraser, iconGreen, iconRed;
 
 	__webpack_require__(236);
 
 	__webpack_require__(238);
+
+	iconRed = __webpack_require__(254);
+
+	iconBlue = __webpack_require__(249);
+
+	iconBlack = __webpack_require__(247);
+
+	iconGreen = __webpack_require__(252);
+
+	iconEraser = __webpack_require__(250);
+
+	iconClear = __webpack_require__(255);
+
+	iconDots = {
+	  'red': __webpack_require__(253),
+	  'blue': __webpack_require__(248),
+	  'black': __webpack_require__(246),
+	  'green': __webpack_require__(251),
+	  'erase': __webpack_require__(256)
+	};
+
+	getBackgroundImage = window.ObojoboDraft.Common.util.getBackgroundImage;
 
 	Sketchpad = React.createClass({
 	  displayName: 'Sketchpad',
@@ -1612,34 +1634,38 @@
 	    this.boundMouseUp = this.onDocMouseUp.bind(this);
 	    return {
 	      left: 0,
-	      top: 0
+	      top: 0,
+	      strokeWidth: 2,
+	      color: 'black'
 	    };
 	  },
 	  componentDidMount: function componentDidMount() {
 	    this.lc = LC.init(this.refs.canvas);
 	    window.__lc = this.lc;
-	    this.lc.tool.strokeWidth = 2;
+	    this.lc.tool.strokeWidth = this.state.strokeWidth;
 	    this.Pencil = new this.lc.opts.tools[0](this.lc);
 	    return this.Eraser = new this.lc.opts.tools[1](this.lc);
 	  },
-	  usePencil: function usePencil() {
-	    return this.lc.tool = this.Pencil;
-	  },
-	  useEraser: function useEraser() {
-	    return this.lc.tool = this.Eraser;
-	  },
 	  setStrokeWidth: function setStrokeWidth(strokeWidth) {
-	    console.log('ARGGGGG', arguments);
-	    return this.lc.tool.strokeWidth = strokeWidth;
+	    this.lc.tool.strokeWidth = strokeWidth;
+	    return this.setState({
+	      strokeWidth: strokeWidth
+	    });
 	  },
 	  setColor: function setColor(color) {
-	    return this.lc.setColor('primary', color);
+	    if (color === 'erase') {
+	      this.lc.tool = this.Eraser;
+	    } else {
+	      this.lc.tool = this.Pencil;
+	      this.lc.setColor('primary', color);
+	    }
+	    this.lc.tool.strokeWidth = this.state.strokeWidth;
+	    return this.setState({
+	      color: color
+	    });
 	  },
-	  undo: function undo() {
-	    return this.lc.undo();
-	  },
-	  redo: function redo() {
-	    return this.lc.redo();
+	  clear: function clear() {
+	    return this.lc.clear();
 	  },
 	  onDocMouseMove: function onDocMouseMove(event) {
 	    this.setState({
@@ -1662,13 +1688,15 @@
 	    return window.document.addEventListener('mouseup', this.boundMouseUp);
 	  },
 	  render: function render() {
+	    var iconStroke;
+	    iconStroke = iconDots[this.state.color];
 	    return React.createElement(
 	      'div',
-	      { className: 'viewer--components--sketchpad', style: { left: this.state.left, top: this.state.top } },
+	      { className: 'viewer--components--sketchpad' + (' tip-' + this.state.strokeWidth) },
 	      React.createElement(
 	        'div',
 	        { className: 'handle', onMouseDown: this.startDrag },
-	        'Sketchpad'
+	        'Sketchboard'
 	      ),
 	      React.createElement('div', { ref: 'canvas', className: 'lc' }),
 	      React.createElement(
@@ -1676,64 +1704,60 @@
 	        { className: 'toolbar' },
 	        React.createElement(
 	          'button',
-	          { onClick: this.usePencil },
-	          'Pencil'
-	        ),
-	        React.createElement(
-	          'button',
-	          { onClick: this.useEraser },
-	          'Eraser'
-	        ),
-	        React.createElement(
-	          'button',
-	          { onClick: this.setStrokeWidth.bind(null, 1) },
-	          'Width 1'
-	        ),
-	        React.createElement(
-	          'button',
-	          { onClick: this.setStrokeWidth.bind(null, 2) },
-	          'Width 2'
-	        ),
-	        React.createElement(
-	          'button',
-	          { onClick: this.setStrokeWidth.bind(null, 5) },
-	          'Width 5'
-	        ),
-	        React.createElement(
-	          'button',
-	          { onClick: this.setStrokeWidth.bind(null, 10) },
-	          'Width 10'
-	        ),
-	        React.createElement(
-	          'button',
-	          { onClick: this.setColor.bind(null, 'black') },
+	          { className: this.state.color === 'black' ? ' is-selected' : ' is-not-selected', onClick: this.setColor.bind(null, 'black'), style: { backgroundImage: getBackgroundImage(iconBlack) } },
 	          'Black'
 	        ),
 	        React.createElement(
 	          'button',
-	          { onClick: this.setColor.bind(null, 'red') },
+	          { className: this.state.color === 'red' ? ' is-selected' : ' is-not-selected', onClick: this.setColor.bind(null, 'red'), style: { backgroundImage: getBackgroundImage(iconRed) } },
 	          'Red'
 	        ),
 	        React.createElement(
 	          'button',
-	          { onClick: this.setColor.bind(null, 'blue') },
+	          { className: this.state.color === 'blue' ? ' is-selected' : ' is-not-selected', onClick: this.setColor.bind(null, 'blue'), style: { backgroundImage: getBackgroundImage(iconBlue) } },
 	          'Blue'
 	        ),
 	        React.createElement(
 	          'button',
-	          { onClick: this.setColor.bind(null, 'green') },
+	          { className: this.state.color === 'green' ? ' is-selected' : ' is-not-selected', onClick: this.setColor.bind(null, 'green'), style: { backgroundImage: getBackgroundImage(iconGreen) } },
 	          'Green'
 	        ),
 	        React.createElement(
 	          'button',
-	          { onClick: this.undo },
-	          'Undo'
+	          { className: this.state.color === 'erase' ? ' is-selected' : ' is-not-selected', onClick: this.setColor.bind(null, 'erase'), style: { backgroundImage: getBackgroundImage(iconEraser) } },
+	          'Eraser'
+	        ),
+	        React.createElement('hr', null),
+	        React.createElement(
+	          'button',
+	          { className: 'tip-1' + (this.state.strokeWidth === 1 ? ' is-selected' : ' is-not-selected'), onClick: this.setStrokeWidth.bind(null, 1), style: { backgroundImage: getBackgroundImage(iconStroke) } },
+	          'Width 1'
 	        ),
 	        React.createElement(
 	          'button',
-	          { onClick: this.redo },
-	          'Redo'
+	          { className: 'tip-2' + (this.state.strokeWidth === 2 ? ' is-selected' : ' is-not-selected'), onClick: this.setStrokeWidth.bind(null, 2), style: { backgroundImage: getBackgroundImage(iconStroke) } },
+	          'Width 2'
+	        ),
+	        React.createElement(
+	          'button',
+	          { className: 'tip-5' + (this.state.strokeWidth === 5 ? ' is-selected' : ' is-not-selected'), onClick: this.setStrokeWidth.bind(null, 5), style: { backgroundImage: getBackgroundImage(iconStroke) } },
+	          'Width 5'
+	        ),
+	        React.createElement(
+	          'button',
+	          { className: 'tip-10' + (this.state.strokeWidth === 10 ? ' is-selected' : ' is-not-selected'), onClick: this.setStrokeWidth.bind(null, 10), style: { backgroundImage: getBackgroundImage(iconStroke) } },
+	          'Width 10'
+	        ),
+	        React.createElement(
+	          'button',
+	          { className: 'clear', onClick: this.clear, style: { backgroundImage: getBackgroundImage(iconClear) } },
+	          'Clear'
 	        )
+	      ),
+	      React.createElement(
+	        'button',
+	        { className: 'close' },
+	        '\xD7'
 	      )
 	    );
 	  }
@@ -1748,7 +1772,7 @@
 
 	'use strict';
 
-	var AssessmentStore, Common, DOMUtil, Dispatcher, FocusBlocker, FocusStore, FocusUtil, InlineNavButton, JSONInput, Legacy, Logo, ModalContainer, ModalStore, ModalUtil, Nav, NavStore, NavUtil, OBO, OboModel, QuestionStore, ReactDOM, ScoreStore, Screen, SimpleDialog, Sketchpad, ViewerApp;
+	var AssessmentStore, Common, DOMUtil, Dispatcher, FocusBlocker, FocusStore, FocusUtil, InlineNavButton, JSONInput, Legacy, Logo, ModalContainer, ModalStore, ModalUtil, Nav, NavStore, NavUtil, OBO, OboGlobals, OboModel, QuestionStore, ReactDOM, ScoreStore, Screen, SimpleDialog, Sketchpad, ViewerApp;
 
 	__webpack_require__(237);
 
@@ -1801,6 +1825,8 @@
 	FocusStore = ObojoboDraft.Common.stores.FocusStore;
 
 	FocusUtil = ObojoboDraft.Common.util.FocusUtil;
+
+	OboGlobals = ObojoboDraft.Common.util.OboGlobals;
 
 	Sketchpad = __webpack_require__(192);
 
@@ -2039,7 +2065,7 @@
 	    modal = ModalUtil.getCurrentModal(this.state.modalState);
 	    return React.createElement(
 	      'div',
-	      { ref: 'container', onMouseDown: this.onMouseDown, onScroll: this.onScroll, className: 'viewer--viewer-app' + (this.isPreviewing ? ' is-previewing' : ' is-not-previewing') + (this.state.navState.locked ? ' is-locked-nav' : ' is-unlocked-nav') + (this.state.navState.open ? ' is-open-nav' : ' is-closed-nav') + (this.state.navState.disabled ? ' is-disabled-nav' : ' is-enabled-nav') + ' is-focus-state-' + this.state.focusState.viewState },
+	      { ref: 'container', onMouseDown: this.onMouseDown, onScroll: this.onScroll, className: 'viewer--viewer-app' + (this.isPreviewing ? ' is-previewing' : ' is-not-previewing') + (this.state.navState.locked ? ' is-locked-nav' : ' is-unlocked-nav') + (this.state.navState.open ? ' is-open-nav' : ' is-closed-nav') + (this.state.navState.disabled ? ' is-disabled-nav' : ' is-enabled-nav') + ' is-focus-state-' + this.state.focusState.viewState + ' is-sketching' },
 	      React.createElement(
 	        'header',
 	        null,
@@ -6937,6 +6963,83 @@
 /***/ function(module, exports) {
 
 	module.exports = "data:image/svg+xml;charset=utf8,%3C?xml version='1.0' encoding='utf-8'?%3E %3C!-- Generator: Adobe Illustrator 15.0.2, SVG Export Plug-In . SVG Version: 6.00 Build 0) --%3E %3C!DOCTYPE svg PUBLIC '-//W3C//DTD SVG 1.1//EN' 'http://www.w3.org/Graphics/SVG/1.1/DTD/svg11.dtd'%3E %3Csvg version='1.1' id='Layer_1' xmlns='http://www.w3.org/2000/svg' xmlns:xlink='http://www.w3.org/1999/xlink' x='0px' y='0px' width='253px' height='64.577px' viewBox='0 0 253 64.577' enable-background='new 0 0 253 64.577' xml:space='preserve' fill='black'%3E %3Cpath d='M18.399,53.629c-0.01,0-0.021,0-0.031,0C7.023,53.396,0,43.151,0,33.793c0-10.79,8.426-19.905,18.399-19.905 c11.006,0,18.399,10.292,18.399,19.905c0,10.719-8.239,19.617-18.367,19.835C18.421,53.629,18.41,53.629,18.399,53.629z M18.399,18.257c-8.393,0-14.031,8.033-14.031,15.536c0.295,7.574,5.625,15.468,14.031,15.468c8.393,0,14.031-7.998,14.031-15.468 C32.43,25.372,26.005,18.257,18.399,18.257z'/%3E %3Cpath d='M58.15,53.629c-6.02,0-13.502-3.57-16.154-10.394c-0.287-0.733-0.603-1.542-0.603-3.281l0-38.454 c0-0.398,0.158-0.779,0.439-1.061S42.495,0,42.893,0h1.369c0.829,0,1.5,0.671,1.5,1.5v18.495c3.827-4.056,8.188-6.106,13.004-6.106 c11.111,0,17.989,10.332,17.989,19.905C76.444,44.75,68.099,53.629,58.15,53.629z M45.761,27.446v12.437 c0,4.652,7.208,9.378,12.389,9.378c8.516,0,14.236-7.998,14.236-15.468c0-7.472-5.208-15.536-13.621-15.536 C51.235,18.257,47.065,24.927,45.761,27.446z'/%3E %3Cpath d='M99.064,53.629c-0.01,0-0.021,0-0.031,0c-11.346-0.233-18.369-10.478-18.369-19.835 c0-10.79,8.426-19.905,18.399-19.905c11.005,0,18.398,10.292,18.398,19.905c0,10.719-8.239,19.617-18.366,19.835 C99.086,53.629,99.075,53.629,99.064,53.629z M99.064,18.257c-8.393,0-14.031,8.033-14.031,15.536 c0.294,7.574,5.624,15.468,14.031,15.468c8.393,0,14.031-7.998,14.031-15.468C113.096,25.372,106.67,18.257,99.064,18.257z'/%3E %3Cpath d='M153.252,53.629c-0.01,0-0.021,0-0.031,0c-11.346-0.233-18.369-10.478-18.369-19.835 c0-10.79,8.426-19.905,18.399-19.905c11.006,0,18.399,10.292,18.399,19.905c0,10.719-8.239,19.617-18.367,19.835 C153.273,53.629,153.263,53.629,153.252,53.629z M153.252,18.257c-8.393,0-14.031,8.033-14.031,15.536 c0.294,7.574,5.624,15.468,14.031,15.468c8.393,0,14.031-7.998,14.031-15.468C167.283,25.372,160.858,18.257,153.252,18.257z'/%3E %3Cpath d='M234.601,53.629c-0.01,0-0.021,0-0.031,0c-11.345-0.233-18.367-10.478-18.367-19.835 c0-10.79,8.426-19.905,18.398-19.905c11.006,0,18.399,10.292,18.399,19.905c0,10.719-8.239,19.617-18.367,19.835 C234.622,53.629,234.611,53.629,234.601,53.629z M234.601,18.257c-8.393,0-14.03,8.033-14.03,15.536 c0.294,7.574,5.624,15.468,14.03,15.468c8.394,0,14.031-7.998,14.031-15.468C248.632,25.372,242.206,18.257,234.601,18.257z'/%3E %3Cpath d='M193.62,53.629c-6.021,0-13.503-3.57-16.155-10.394l-0.098-0.239c-0.254-0.607-0.603-1.438-0.603-3.042 c0.002-15.911,0.098-38.237,0.099-38.461c0.003-0.826,0.674-1.494,1.5-1.494h1.368c0.829,0,1.5,0.671,1.5,1.5v18.495 c3.827-4.055,8.188-6.106,13.005-6.106c11.111,0,17.988,10.332,17.988,19.904C211.915,44.75,203.569,53.629,193.62,53.629z M181.231,27.446v12.437c0,4.652,7.208,9.378,12.389,9.378c8.515,0,14.235-7.998,14.235-15.468c0-7.472-5.207-15.536-13.619-15.536 C186.705,18.257,182.535,24.927,181.231,27.446z'/%3E %3Cpath d='M118.017,64.577c-0.013,0-0.026,0-0.039,0c-2.437-0.063-5.533-0.434-7.865-2.765 c-0.308-0.308-0.467-0.734-0.436-1.167c0.031-0.434,0.249-0.833,0.597-1.094l1.096-0.821c0.566-0.425,1.353-0.396,1.887,0.072 c1.083,0.947,2.617,1.408,4.691,1.408c2.913,0,6.3-2.752,6.3-6.3V16.073c0-0.829,0.671-1.5,1.5-1.5h1.368c0.829,0,1.5,0.671,1.5,1.5 v37.835C128.616,60.195,123.03,64.577,118.017,64.577z M127.116,8.268h-1.368c-0.829,0-1.5-0.671-1.5-1.5V2.389 c0-0.829,0.671-1.5,1.5-1.5h1.368c0.829,0,1.5,0.671,1.5,1.5v4.379C128.616,7.597,127.945,8.268,127.116,8.268z'/%3E %3C/svg%3E"
+
+/***/ },
+
+/***/ 246:
+/***/ function(module, exports) {
+
+	module.exports = "data:image/svg+xml;charset=utf8,%3C?xml version='1.0' encoding='utf-8'?%3E %3C!-- Generator: Adobe Illustrator 19.0.0, SVG Export Plug-In . SVG Version: 6.00 Build 0) --%3E %3Csvg version='1.1' id='Layer_1' xmlns='http://www.w3.org/2000/svg' xmlns:xlink='http://www.w3.org/1999/xlink' x='0px' y='0px' viewBox='0 0 1 1' style='enable-background:new 0 0 1 1;' xml:space='preserve'%3E %3Cstyle type='text/css'%3E .st0%7Bfill:black%7D %3C/style%3E %3Ccircle id='XMLID_1_' class='st0' cx='0.5' cy='0.5' r='0.5'/%3E %3C/svg%3E"
+
+/***/ },
+
+/***/ 247:
+/***/ function(module, exports) {
+
+	module.exports = "data:image/svg+xml;charset=utf8,%3C?xml version='1.0' encoding='utf-8'?%3E %3C!-- Generator: Adobe Illustrator 19.0.0, SVG Export Plug-In . SVG Version: 6.00 Build 0) --%3E %3Csvg version='1.1' id='Layer_1' xmlns='http://www.w3.org/2000/svg' xmlns:xlink='http://www.w3.org/1999/xlink' x='0px' y='0px' viewBox='0 0 22 22' style='enable-background:new 0 0 22 22;' xml:space='preserve'%3E %3Cstyle type='text/css'%3E .st0%7Bfill:black;%7D .st1%7Bfill:%23FFFFFF;%7D .st2%7Bfill:%234C4C4D;%7D %3C/style%3E %3Cpolygon id='XMLID_2_' class='st0' points='15.1,13.4 6.9,13.4 6.9,7.9 15.1,1.4 '/%3E %3Cg id='XMLID_8_'%3E %3Crect id='XMLID_3_' x='5.8' y='15.1' class='st1' width='10.5' height='6.9'/%3E %3Cpath id='XMLID_4_' class='st2' d='M16.7,22H5.3v-7.4h11.5V22z M6.3,22h9.5v-6.4H6.3V22z'/%3E %3C/g%3E %3C/svg%3E"
+
+/***/ },
+
+/***/ 248:
+/***/ function(module, exports) {
+
+	module.exports = "data:image/svg+xml;charset=utf8,%3C?xml version='1.0' encoding='utf-8'?%3E %3C!-- Generator: Adobe Illustrator 19.0.0, SVG Export Plug-In . SVG Version: 6.00 Build 0) --%3E %3Csvg version='1.1' id='Layer_1' xmlns='http://www.w3.org/2000/svg' xmlns:xlink='http://www.w3.org/1999/xlink' x='0px' y='0px' viewBox='0 0 1 1' style='enable-background:new 0 0 1 1;' xml:space='preserve'%3E %3Cstyle type='text/css'%3E .st0%7Bfill:blue%7D %3C/style%3E %3Ccircle id='XMLID_1_' class='st0' cx='0.5' cy='0.5' r='0.5'/%3E %3C/svg%3E"
+
+/***/ },
+
+/***/ 249:
+/***/ function(module, exports) {
+
+	module.exports = "data:image/svg+xml;charset=utf8,%3C?xml version='1.0' encoding='utf-8'?%3E %3C!-- Generator: Adobe Illustrator 19.0.0, SVG Export Plug-In . SVG Version: 6.00 Build 0) --%3E %3Csvg version='1.1' id='Layer_1' xmlns='http://www.w3.org/2000/svg' xmlns:xlink='http://www.w3.org/1999/xlink' x='0px' y='0px' viewBox='0 0 22 22' style='enable-background:new 0 0 22 22;' xml:space='preserve'%3E %3Cstyle type='text/css'%3E .st0%7Bfill:blue;%7D .st1%7Bfill:%23FFFFFF;%7D .st2%7Bfill:%234C4C4D;%7D %3C/style%3E %3Cpolygon id='XMLID_2_' class='st0' points='15.1,13.4 6.9,13.4 6.9,7.9 15.1,1.4 '/%3E %3Cg id='XMLID_8_'%3E %3Crect id='XMLID_3_' x='5.8' y='15.1' class='st1' width='10.5' height='6.9'/%3E %3Cpath id='XMLID_4_' class='st2' d='M16.7,22H5.3v-7.4h11.5V22z M6.3,22h9.5v-6.4H6.3V22z'/%3E %3C/g%3E %3C/svg%3E"
+
+/***/ },
+
+/***/ 250:
+/***/ function(module, exports) {
+
+	module.exports = "data:image/svg+xml;charset=utf8,%3C?xml version='1.0' encoding='utf-8'?%3E %3C!-- Generator: Adobe Illustrator 19.0.0, SVG Export Plug-In . SVG Version: 6.00 Build 0) --%3E %3Csvg version='1.1' id='Layer_1' xmlns='http://www.w3.org/2000/svg' xmlns:xlink='http://www.w3.org/1999/xlink' x='0px' y='0px' viewBox='0 0 22 22' style='enable-background:new 0 0 22 22;' xml:space='preserve'%3E %3Cstyle type='text/css'%3E .st0%7Bfill:%23FFFFFF;stroke:%234C4C4D;stroke-miterlimit:10;%7D .st1%7Bfill:%234C4C4D;%7D .st2%7Bfill:none;stroke:%234C4C4D;stroke-miterlimit:10;%7D %3C/style%3E %3Cpolygon id='XMLID_2_' class='st0' points='18.7,8.7 11.1,16.2 6.3,16.2 3.3,13.2 13.3,3.3 '/%3E %3Crect id='XMLID_4_' x='10' y='4.7' transform='matrix(0.7071 -0.7071 0.7071 0.7071 -2.0269 12.013)' class='st1' width='7' height='7.6'/%3E %3Cline id='XMLID_1_' class='st2' x1='6.1' y1='16.2' x2='18.5' y2='16.2'/%3E %3C/svg%3E"
+
+/***/ },
+
+/***/ 251:
+/***/ function(module, exports) {
+
+	module.exports = "data:image/svg+xml;charset=utf8,%3C?xml version='1.0' encoding='utf-8'?%3E %3C!-- Generator: Adobe Illustrator 19.0.0, SVG Export Plug-In . SVG Version: 6.00 Build 0) --%3E %3Csvg version='1.1' id='Layer_1' xmlns='http://www.w3.org/2000/svg' xmlns:xlink='http://www.w3.org/1999/xlink' x='0px' y='0px' viewBox='0 0 1 1' style='enable-background:new 0 0 1 1;' xml:space='preserve'%3E %3Cstyle type='text/css'%3E .st0%7Bfill:%23008000;%7D %3C/style%3E %3Ccircle id='XMLID_1_' class='st0' cx='0.5' cy='0.5' r='0.5'/%3E %3C/svg%3E"
+
+/***/ },
+
+/***/ 252:
+/***/ function(module, exports) {
+
+	module.exports = "data:image/svg+xml;charset=utf8,%3C?xml version='1.0' encoding='utf-8'?%3E %3C!-- Generator: Adobe Illustrator 19.0.0, SVG Export Plug-In . SVG Version: 6.00 Build 0) --%3E %3Csvg version='1.1' id='Layer_1' xmlns='http://www.w3.org/2000/svg' xmlns:xlink='http://www.w3.org/1999/xlink' x='0px' y='0px' viewBox='0 0 22 22' style='enable-background:new 0 0 22 22;' xml:space='preserve'%3E %3Cstyle type='text/css'%3E .st0%7Bfill:%23008000;%7D .st1%7Bfill:%23FFFFFF;%7D .st2%7Bfill:%234C4C4D;%7D %3C/style%3E %3Cpolygon id='XMLID_2_' class='st0' points='15.1,13.4 6.9,13.4 6.9,7.9 15.1,1.4 '/%3E %3Cg id='XMLID_8_'%3E %3Crect id='XMLID_3_' x='5.8' y='15.1' class='st1' width='10.5' height='6.9'/%3E %3Cpath id='XMLID_4_' class='st2' d='M16.7,22H5.3v-7.4h11.5V22z M6.3,22h9.5v-6.4H6.3V22z'/%3E %3C/g%3E %3C/svg%3E"
+
+/***/ },
+
+/***/ 253:
+/***/ function(module, exports) {
+
+	module.exports = "data:image/svg+xml;charset=utf8,%3C?xml version='1.0' encoding='utf-8'?%3E %3C!-- Generator: Adobe Illustrator 19.0.0, SVG Export Plug-In . SVG Version: 6.00 Build 0) --%3E %3Csvg version='1.1' id='Layer_1' xmlns='http://www.w3.org/2000/svg' xmlns:xlink='http://www.w3.org/1999/xlink' x='0px' y='0px' viewBox='0 0 1 1' style='enable-background:new 0 0 1 1;' xml:space='preserve'%3E %3Cstyle type='text/css'%3E .st0%7Bfill:red%7D %3C/style%3E %3Ccircle id='XMLID_1_' class='st0' cx='0.5' cy='0.5' r='0.5'/%3E %3C/svg%3E"
+
+/***/ },
+
+/***/ 254:
+/***/ function(module, exports) {
+
+	module.exports = "data:image/svg+xml;charset=utf8,%3C?xml version='1.0' encoding='utf-8'?%3E %3C!-- Generator: Adobe Illustrator 19.0.0, SVG Export Plug-In . SVG Version: 6.00 Build 0) --%3E %3Csvg version='1.1' id='Layer_1' xmlns='http://www.w3.org/2000/svg' xmlns:xlink='http://www.w3.org/1999/xlink' x='0px' y='0px' viewBox='0 0 22 22' style='enable-background:new 0 0 22 22;' xml:space='preserve'%3E %3Cstyle type='text/css'%3E .st0%7Bfill:%23ED1F24;%7D .st1%7Bfill:%23FFFFFF;%7D .st2%7Bfill:%234C4C4D;%7D %3C/style%3E %3Cpolygon id='XMLID_2_' class='st0' points='15.1,13.4 6.9,13.4 6.9,7.9 15.1,1.4 '/%3E %3Cg id='XMLID_8_'%3E %3Crect id='XMLID_3_' x='5.8' y='15.1' class='st1' width='10.5' height='6.9'/%3E %3Cpath id='XMLID_4_' class='st2' d='M16.7,22H5.3v-7.4h11.5V22z M6.3,22h9.5v-6.4H6.3V22z'/%3E %3C/g%3E %3C/svg%3E"
+
+/***/ },
+
+/***/ 255:
+/***/ function(module, exports) {
+
+	module.exports = "data:image/svg+xml;charset=utf8,%3C?xml version='1.0' encoding='utf-8'?%3E %3C!-- Generator: Adobe Illustrator 19.0.0, SVG Export Plug-In . SVG Version: 6.00 Build 0) --%3E %3Csvg version='1.1' id='Layer_1' xmlns='http://www.w3.org/2000/svg' xmlns:xlink='http://www.w3.org/1999/xlink' x='0px' y='0px' viewBox='0 0 22 22' style='enable-background:new 0 0 22 22;' xml:space='preserve'%3E %3Cstyle type='text/css'%3E .st0%7Bfill:%23FFFFFF;stroke:%234C4C4D;stroke-miterlimit:10;%7D .st1%7Bfill:none;stroke:%234C4C4D;stroke-linecap:round;stroke-miterlimit:10;%7D .st2%7Bopacity:0.3;%7D %3C/style%3E %3Cg id='XMLID_14_'%3E %3Cpolygon id='XMLID_1_' class='st0' points='15.9,18.6 6.1,18.6 5.3,7.9 16.7,7.9 '/%3E %3Cpath id='XMLID_12_' class='st1' d='M13.1,6.5H8.9C8.7,6.5,8.5,6.3,8.5,6V3.8c0-0.2,0.2-0.4,0.4-0.4h4.2c0.2,0,0.4,0.2,0.4,0.4V6 C13.5,6.3,13.3,6.5,13.1,6.5z'/%3E %3Cpath id='XMLID_7_' class='st0' d='M16.1,5.5H5.9C5.5,5.5,5.3,5.7,5.3,6v1.3c0,0.3,0.3,0.6,0.6,0.6h10.3c0.3,0,0.6-0.3,0.6-0.6V6 C16.7,5.7,16.5,5.5,16.1,5.5z'/%3E %3Cg id='XMLID_10_' class='st2'%3E %3Cline id='XMLID_9_' class='st1' x1='11' y1='15.8' x2='11' y2='10.7'/%3E %3Cline id='XMLID_11_' class='st1' x1='13.4' y1='15.8' x2='13.7' y2='10.7'/%3E %3Cline id='XMLID_13_' class='st1' x1='8.6' y1='15.8' x2='8.3' y2='10.7'/%3E %3C/g%3E %3C/g%3E %3C/svg%3E"
+
+/***/ },
+
+/***/ 256:
+/***/ function(module, exports) {
+
+	module.exports = "data:image/svg+xml;charset=utf8,%3C?xml version='1.0' encoding='utf-8'?%3E %3C!-- Generator: Adobe Illustrator 19.0.0, SVG Export Plug-In . SVG Version: 6.00 Build 0) --%3E %3Csvg version='1.1' id='Layer_1' xmlns='http://www.w3.org/2000/svg' xmlns:xlink='http://www.w3.org/1999/xlink' x='0px' y='0px' viewBox='0 0 1 1' style='enable-background:new 0 0 1 1;' xml:space='preserve'%3E %3Cstyle type='text/css'%3E .st0%7Bfill:white;%7D %3C/style%3E %3Ccircle id='XMLID_1_' class='st0' cx='0.5' cy='0.5' r='0.5'/%3E %3C/svg%3E"
 
 /***/ }
 
