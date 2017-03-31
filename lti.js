@@ -84,7 +84,7 @@ let replaceResult = function(userId, draftId, score) {
 						error: err
 					},
 					userId: userId,
-					ip: '1',
+					ip: '',
 					metadata: {}
 				})
 			})
