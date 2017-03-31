@@ -57,7 +57,7 @@
 
 	var Common, NavUtil, OboComponent;
 
-	__webpack_require__(230);
+	__webpack_require__(231);
 
 	Common = window.ObojoboDraft.Common;
 
@@ -125,7 +125,7 @@
 
 /***/ },
 
-/***/ 230:
+/***/ 231:
 /***/ function(module, exports) {
 
 	// removed by extract-text-webpack-plugin

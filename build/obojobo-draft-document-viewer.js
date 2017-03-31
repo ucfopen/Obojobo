@@ -723,11 +723,11 @@
 
 	var Common, Logo, NavUtil, OBO, getBackgroundImage, logo;
 
-	__webpack_require__(234);
+	__webpack_require__(235);
 
 	NavUtil = __webpack_require__(16);
 
-	logo = __webpack_require__(245);
+	logo = __webpack_require__(246);
 
 	OBO = window.OBO;
 
@@ -1326,7 +1326,7 @@
 
 	var InlineNavButton, NavUtil;
 
-	__webpack_require__(233);
+	__webpack_require__(234);
 
 	NavUtil = __webpack_require__(16);
 
@@ -1437,7 +1437,7 @@
 
 	var Logo, Nav, NavUtil, OboModel, StyleableText, StyleableTextComponent, arrowImg, getBackgroundImage, hamburgerImg, lockImg, navStore;
 
-	__webpack_require__(235);
+	__webpack_require__(236);
 
 	navStore = __webpack_require__(29);
 
@@ -1445,11 +1445,11 @@
 
 	Logo = __webpack_require__(88);
 
-	hamburgerImg = __webpack_require__(243);
+	hamburgerImg = __webpack_require__(244);
 
-	arrowImg = __webpack_require__(242);
+	arrowImg = __webpack_require__(243);
 
-	lockImg = __webpack_require__(244);
+	lockImg = __webpack_require__(245);
 
 	getBackgroundImage = window.ObojoboDraft.Common.util.getBackgroundImage;
 
@@ -1598,31 +1598,37 @@
 
 	'use strict';
 
-	var Sketchpad, getBackgroundImage, iconBlack, iconBlue, iconClear, iconDots, iconEraser, iconGreen, iconRed;
+	var Sketchpad, bgGridSmall, getBackgroundImage, icon, iconBlack, iconBlue, iconClear, iconDots, iconEraser, iconGreen, iconGrid, iconRed;
 
-	__webpack_require__(236);
+	__webpack_require__(237);
 
-	__webpack_require__(238);
+	__webpack_require__(239);
 
-	iconRed = __webpack_require__(254);
+	icon = __webpack_require__(255);
 
-	iconBlue = __webpack_require__(249);
+	iconRed = __webpack_require__(257);
 
-	iconBlack = __webpack_require__(247);
+	iconBlue = __webpack_require__(250);
 
-	iconGreen = __webpack_require__(252);
+	iconBlack = __webpack_require__(248);
 
-	iconEraser = __webpack_require__(250);
+	iconGreen = __webpack_require__(253);
 
-	iconClear = __webpack_require__(255);
+	iconEraser = __webpack_require__(251);
+
+	iconClear = __webpack_require__(258);
+
+	iconGrid = __webpack_require__(254);
 
 	iconDots = {
-	  'red': __webpack_require__(253),
-	  'blue': __webpack_require__(248),
-	  'black': __webpack_require__(246),
-	  'green': __webpack_require__(251),
-	  'erase': __webpack_require__(256)
+	  'red': __webpack_require__(256),
+	  'blue': __webpack_require__(249),
+	  'black': __webpack_require__(247),
+	  'green': __webpack_require__(252),
+	  'erase': __webpack_require__(259)
 	};
+
+	bgGridSmall = __webpack_require__(199);
 
 	getBackgroundImage = window.ObojoboDraft.Common.util.getBackgroundImage;
 
@@ -1636,7 +1642,8 @@
 	      left: 0,
 	      top: 0,
 	      strokeWidth: 2,
-	      color: 'black'
+	      color: 'black',
+	      bg: 'grid'
 	    };
 	  },
 	  componentDidMount: function componentDidMount() {
@@ -1664,8 +1671,27 @@
 	      color: color
 	    });
 	  },
+	  setBg: function setBg(type) {
+	    return this.setState({
+	      bg: type
+	    });
+	  },
 	  clear: function clear() {
 	    return this.lc.clear();
+	  },
+	  onToggleBtnMouseOver: function onToggleBtnMouseOver() {
+	    if (!this.props.open) {
+	      return this.setState({
+	        tease: true
+	      });
+	    }
+	  },
+	  onToggleBtnMouseOut: function onToggleBtnMouseOut() {
+	    if (!this.props.open) {
+	      return this.setState({
+	        tease: false
+	      });
+	    }
 	  },
 	  onDocMouseMove: function onDocMouseMove(event) {
 	    this.setState({
@@ -1687,17 +1713,31 @@
 	    window.document.addEventListener('mousemove', this.boundMouseMove);
 	    return window.document.addEventListener('mouseup', this.boundMouseUp);
 	  },
+	  onOpen: function onOpen() {
+	    this.setState({
+	      tease: false
+	    });
+	    return this.props.onOpen();
+	  },
 	  render: function render() {
-	    var iconStroke;
+	    var bgStyle, iconStroke;
 	    iconStroke = iconDots[this.state.color];
+	    bgStyle = {};
+	    if (this.state.bg === 'grid') {
+	      bgStyle = {
+	        backgroundImage: getBackgroundImage(bgGridSmall)
+	      };
+	    }
 	    return React.createElement(
 	      'div',
-	      { className: 'viewer--components--sketchpad' + (' tip-' + this.state.strokeWidth) },
+	      { className: 'viewer--components--sketchpad' + (' tip-' + this.state.strokeWidth) + (this.props.open ? ' is-open' : ' is-closed') + (this.state.tease ? ' is-teasing' : ' is-not-teasing') },
+	      React.createElement('div', { className: 'btn-toggle', style: { backgroundImage: getBackgroundImage(icon) }, onClick: this.onOpen, onMouseOver: this.onToggleBtnMouseOver, onMouseOut: this.onToggleBtnMouseOut }),
 	      React.createElement(
 	        'div',
 	        { className: 'handle', onMouseDown: this.startDrag },
 	        'Sketchboard'
 	      ),
+	      React.createElement('div', { className: 'bg', style: bgStyle }),
 	      React.createElement('div', { ref: 'canvas', className: 'lc' }),
 	      React.createElement(
 	        'div',
@@ -1748,6 +1788,9 @@
 	          { className: 'tip-10' + (this.state.strokeWidth === 10 ? ' is-selected' : ' is-not-selected'), onClick: this.setStrokeWidth.bind(null, 10), style: { backgroundImage: getBackgroundImage(iconStroke) } },
 	          'Width 10'
 	        ),
+	        React.createElement('hr', null),
+	        React.createElement('button', { className: 'bg-grid' + (this.state.bg === 'grid' ? ' is-selected' : ' is-not-selected'), onClick: this.setBg.bind(null, 'grid'), style: { backgroundImage: getBackgroundImage(iconGrid) } }),
+	        React.createElement('button', { className: 'bg-blank' + (this.state.bg === 'blank' ? ' is-selected' : ' is-not-selected'), onClick: this.setBg.bind(null, 'blank') }),
 	        React.createElement(
 	          'button',
 	          { className: 'clear', onClick: this.clear, style: { backgroundImage: getBackgroundImage(iconClear) } },
@@ -1756,7 +1799,7 @@
 	      ),
 	      React.createElement(
 	        'button',
-	        { className: 'close' },
+	        { className: 'close', onClick: this.props.onClose },
 	        '\xD7'
 	      )
 	    );
@@ -1774,7 +1817,7 @@
 
 	var AssessmentStore, Common, DOMUtil, Dispatcher, FocusBlocker, FocusStore, FocusUtil, InlineNavButton, JSONInput, Legacy, Logo, ModalContainer, ModalStore, ModalUtil, Nav, NavStore, NavUtil, OBO, OboGlobals, OboModel, QuestionStore, ReactDOM, ScoreStore, Screen, SimpleDialog, Sketchpad, ViewerApp;
 
-	__webpack_require__(237);
+	__webpack_require__(238);
 
 	JSONInput = __webpack_require__(190);
 
@@ -1858,7 +1901,8 @@
 	      assessmentState: null,
 	      modalState: null,
 	      focusState: null,
-	      navTargetId: null
+	      navTargetId: null,
+	      sketchpadOpen: false
 	    };
 	    ScoreStore.init();
 	    QuestionStore.init();
@@ -2037,6 +2081,16 @@
 	  unlockNavigation: function unlockNavigation() {
 	    return NavUtil.unlock();
 	  },
+	  onSketchpadClose: function onSketchpadClose() {
+	    return this.setState({
+	      sketchpadOpen: false
+	    });
+	  },
+	  onSketchpadOpen: function onSketchpadOpen() {
+	    return this.setState({
+	      sketchpadOpen: true
+	    });
+	  },
 	  render: function render() {
 	    var ModuleComponent, modal, navTargetModel, navTargetTitle, nextEl, nextModel, prevEl, prevModel;
 	    window.__lo = this.state.model;
@@ -2065,7 +2119,7 @@
 	    modal = ModalUtil.getCurrentModal(this.state.modalState);
 	    return React.createElement(
 	      'div',
-	      { ref: 'container', onMouseDown: this.onMouseDown, onScroll: this.onScroll, className: 'viewer--viewer-app' + (this.isPreviewing ? ' is-previewing' : ' is-not-previewing') + (this.state.navState.locked ? ' is-locked-nav' : ' is-unlocked-nav') + (this.state.navState.open ? ' is-open-nav' : ' is-closed-nav') + (this.state.navState.disabled ? ' is-disabled-nav' : ' is-enabled-nav') + ' is-focus-state-' + this.state.focusState.viewState + ' is-sketching' },
+	      { ref: 'container', onMouseDown: this.onMouseDown, onScroll: this.onScroll, className: 'viewer--viewer-app' + (this.isPreviewing ? ' is-previewing' : ' is-not-previewing') + (this.state.navState.locked ? ' is-locked-nav' : ' is-unlocked-nav') + (this.state.navState.open ? ' is-open-nav' : ' is-closed-nav') + (this.state.navState.disabled ? ' is-disabled-nav' : ' is-enabled-nav') + ' is-focus-state-' + this.state.focusState.viewState + (this.state.sketchpadOpen ? ' is-sketching' : ' is-not-sketching') },
 	      React.createElement(
 	        'header',
 	        null,
@@ -2118,7 +2172,7 @@
 	        null,
 	        modal
 	      ) : null,
-	      React.createElement(Sketchpad, null)
+	      React.createElement(Sketchpad, { open: this.state.sketchpadOpen, onClose: this.onSketchpadClose, onOpen: this.onSketchpadOpen })
 	    );
 	  }
 	});
@@ -2162,26 +2216,33 @@
 
 /***/ },
 
-/***/ 233:
+/***/ 199:
+/***/ function(module, exports) {
+
+	module.exports = "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABAAAAAQCAYAAAAf8/9hAAAABGdBTUEAALGPC/xhBQAAACBjSFJNAAB6JgAAgIQAAPoAAACA6AAAdTAAAOpgAAA6mAAAF3CculE8AAAABmJLR0QAAAAAAAD5Q7t/AAAACXBIWXMAAAsSAAALEgHS3X78AAAAJklEQVQ4y2N8+en/fwYKAAsDAwODGC/5BjBRYvuoAaMGjBpARQMAafkEHis2ZR0AAAAASUVORK5CYII="
+
+/***/ },
+
+/***/ 234:
 /***/ function(module, exports) {
 
 	// removed by extract-text-webpack-plugin
 
 /***/ },
 
-/***/ 234:
-233,
-
 /***/ 235:
-233,
+234,
 
 /***/ 236:
-233,
+234,
 
 /***/ 237:
-233,
+234,
 
 /***/ 238:
+234,
+
+/***/ 239:
 /***/ function(module, exports, __webpack_require__) {
 
 	var require;var require;(function(f){if(true){module.exports=f()}else if(typeof define==="function"&&define.amd){define([],f)}else{var g;if(typeof window!=="undefined"){g=window}else if(typeof global!=="undefined"){g=global}else if(typeof self!=="undefined"){g=self}else{g=this}g.LC = f()}})(function(){var define,module,exports;return (function e(t,n,r){function s(o,u){if(!n[o]){if(!t[o]){var a=typeof require=="function"&&require;if(!u&&a)return require(o,!0);if(i)return i(o,!0);var f=new Error("Cannot find module '"+o+"'");throw f.code="MODULE_NOT_FOUND",f}var l=n[o]={exports:{}};t[o][0].call(l.exports,function(e){var n=t[o][1][e];return s(n?n:e)},l,l.exports,e,t,n,r)}return n[o].exports}var i=typeof require=="function"&&require;for(var o=0;o<r.length;o++)s(r[o]);return s})({1:[function(require,module,exports){
@@ -6938,105 +6999,119 @@
 
 /***/ },
 
-/***/ 242:
+/***/ 243:
 /***/ function(module, exports) {
 
 	module.exports = "data:image/svg+xml;charset=utf8,%3C?xml version='1.0' encoding='utf-8'?%3E %3C!-- Generator: Adobe Illustrator 19.0.0, SVG Export Plug-In . SVG Version: 6.00 Build 0) --%3E %3Csvg version='1.1' id='Layer_1' xmlns='http://www.w3.org/2000/svg' xmlns:xlink='http://www.w3.org/1999/xlink' x='0px' y='0px' viewBox='-290 387 30 20' style='enable-background:new -290 387 30 20;' xml:space='preserve'%3E %3Cpath d='M-272.5,405.4l-12.1-7.4c-0.6-0.4-0.6-1.7,0-2.1l12.1-7.4c0.5-0.3,1,0.3,1,1.1v14.7C-271.4,405.2-272,405.7-272.5,405.4z' fill='rgba(0, 0, 0, .2)' transform='translate(2, 0)'/%3E %3C/svg%3E"
 
 /***/ },
 
-/***/ 243:
+/***/ 244:
 /***/ function(module, exports) {
 
 	module.exports = "data:image/svg+xml;charset=utf8,%3Csvg width='20' height='10' viewBox='0 0 100 100' xmlns='http://www.w3.org/2000/svg' version='1.1'%3E %3Cline x1='0' y1='10' x2='100' y2='10' stroke='rgba(0, 0, 0, .2)' stroke-width='20' stroke-linecap='round' /%3E %3Cline x1='0' y1='50' x2='100' y2='50' stroke='rgba(0, 0, 0, .2)' stroke-width='20' stroke-linecap='round' /%3E %3Cline x1='0' y1='90' x2='100' y2='90' stroke='rgba(0, 0, 0, .2)' stroke-width='20' stroke-linecap='round' /%3E %3C/svg%3E"
 
 /***/ },
 
-/***/ 244:
+/***/ 245:
 /***/ function(module, exports) {
 
 	module.exports = "data:image/svg+xml;charset=utf8,%3C?xml version='1.0' encoding='utf-8'?%3E %3Csvg version='1.1' xmlns='http://www.w3.org/2000/svg' xmlns:xlink='http://www.w3.org/1999/xlink' viewBox='0 0 10 16' style='enable-background:new 0 0 10 16;' xml:space='preserve'%3E %3Cpath fill='white' id='XMLID_6_' d='M9.1,6H8.5V3.5C8.5,1.5,6.9,0,5,0C3.1,0,1.6,1.5,1.6,3.5l0,2.5H0.9C0.4,6,0,6.4,0,6.9v8.2 C0,15.6,0.4,16,0.9,16h8.2c0.5,0,0.9-0.4,0.9-0.9V6.9C10,6.4,9.6,6,9.1,6z M3.3,3.4c0-0.9,0.8-1.6,1.7-1.6c0.9,0,1.7,0.8,1.7,1.7V6 H3.3V3.4z'/%3E %3C/svg%3E"
 
 /***/ },
 
-/***/ 245:
+/***/ 246:
 /***/ function(module, exports) {
 
 	module.exports = "data:image/svg+xml;charset=utf8,%3C?xml version='1.0' encoding='utf-8'?%3E %3C!-- Generator: Adobe Illustrator 15.0.2, SVG Export Plug-In . SVG Version: 6.00 Build 0) --%3E %3C!DOCTYPE svg PUBLIC '-//W3C//DTD SVG 1.1//EN' 'http://www.w3.org/Graphics/SVG/1.1/DTD/svg11.dtd'%3E %3Csvg version='1.1' id='Layer_1' xmlns='http://www.w3.org/2000/svg' xmlns:xlink='http://www.w3.org/1999/xlink' x='0px' y='0px' width='253px' height='64.577px' viewBox='0 0 253 64.577' enable-background='new 0 0 253 64.577' xml:space='preserve' fill='black'%3E %3Cpath d='M18.399,53.629c-0.01,0-0.021,0-0.031,0C7.023,53.396,0,43.151,0,33.793c0-10.79,8.426-19.905,18.399-19.905 c11.006,0,18.399,10.292,18.399,19.905c0,10.719-8.239,19.617-18.367,19.835C18.421,53.629,18.41,53.629,18.399,53.629z M18.399,18.257c-8.393,0-14.031,8.033-14.031,15.536c0.295,7.574,5.625,15.468,14.031,15.468c8.393,0,14.031-7.998,14.031-15.468 C32.43,25.372,26.005,18.257,18.399,18.257z'/%3E %3Cpath d='M58.15,53.629c-6.02,0-13.502-3.57-16.154-10.394c-0.287-0.733-0.603-1.542-0.603-3.281l0-38.454 c0-0.398,0.158-0.779,0.439-1.061S42.495,0,42.893,0h1.369c0.829,0,1.5,0.671,1.5,1.5v18.495c3.827-4.056,8.188-6.106,13.004-6.106 c11.111,0,17.989,10.332,17.989,19.905C76.444,44.75,68.099,53.629,58.15,53.629z M45.761,27.446v12.437 c0,4.652,7.208,9.378,12.389,9.378c8.516,0,14.236-7.998,14.236-15.468c0-7.472-5.208-15.536-13.621-15.536 C51.235,18.257,47.065,24.927,45.761,27.446z'/%3E %3Cpath d='M99.064,53.629c-0.01,0-0.021,0-0.031,0c-11.346-0.233-18.369-10.478-18.369-19.835 c0-10.79,8.426-19.905,18.399-19.905c11.005,0,18.398,10.292,18.398,19.905c0,10.719-8.239,19.617-18.366,19.835 C99.086,53.629,99.075,53.629,99.064,53.629z M99.064,18.257c-8.393,0-14.031,8.033-14.031,15.536 c0.294,7.574,5.624,15.468,14.031,15.468c8.393,0,14.031-7.998,14.031-15.468C113.096,25.372,106.67,18.257,99.064,18.257z'/%3E %3Cpath d='M153.252,53.629c-0.01,0-0.021,0-0.031,0c-11.346-0.233-18.369-10.478-18.369-19.835 c0-10.79,8.426-19.905,18.399-19.905c11.006,0,18.399,10.292,18.399,19.905c0,10.719-8.239,19.617-18.367,19.835 C153.273,53.629,153.263,53.629,153.252,53.629z M153.252,18.257c-8.393,0-14.031,8.033-14.031,15.536 c0.294,7.574,5.624,15.468,14.031,15.468c8.393,0,14.031-7.998,14.031-15.468C167.283,25.372,160.858,18.257,153.252,18.257z'/%3E %3Cpath d='M234.601,53.629c-0.01,0-0.021,0-0.031,0c-11.345-0.233-18.367-10.478-18.367-19.835 c0-10.79,8.426-19.905,18.398-19.905c11.006,0,18.399,10.292,18.399,19.905c0,10.719-8.239,19.617-18.367,19.835 C234.622,53.629,234.611,53.629,234.601,53.629z M234.601,18.257c-8.393,0-14.03,8.033-14.03,15.536 c0.294,7.574,5.624,15.468,14.03,15.468c8.394,0,14.031-7.998,14.031-15.468C248.632,25.372,242.206,18.257,234.601,18.257z'/%3E %3Cpath d='M193.62,53.629c-6.021,0-13.503-3.57-16.155-10.394l-0.098-0.239c-0.254-0.607-0.603-1.438-0.603-3.042 c0.002-15.911,0.098-38.237,0.099-38.461c0.003-0.826,0.674-1.494,1.5-1.494h1.368c0.829,0,1.5,0.671,1.5,1.5v18.495 c3.827-4.055,8.188-6.106,13.005-6.106c11.111,0,17.988,10.332,17.988,19.904C211.915,44.75,203.569,53.629,193.62,53.629z M181.231,27.446v12.437c0,4.652,7.208,9.378,12.389,9.378c8.515,0,14.235-7.998,14.235-15.468c0-7.472-5.207-15.536-13.619-15.536 C186.705,18.257,182.535,24.927,181.231,27.446z'/%3E %3Cpath d='M118.017,64.577c-0.013,0-0.026,0-0.039,0c-2.437-0.063-5.533-0.434-7.865-2.765 c-0.308-0.308-0.467-0.734-0.436-1.167c0.031-0.434,0.249-0.833,0.597-1.094l1.096-0.821c0.566-0.425,1.353-0.396,1.887,0.072 c1.083,0.947,2.617,1.408,4.691,1.408c2.913,0,6.3-2.752,6.3-6.3V16.073c0-0.829,0.671-1.5,1.5-1.5h1.368c0.829,0,1.5,0.671,1.5,1.5 v37.835C128.616,60.195,123.03,64.577,118.017,64.577z M127.116,8.268h-1.368c-0.829,0-1.5-0.671-1.5-1.5V2.389 c0-0.829,0.671-1.5,1.5-1.5h1.368c0.829,0,1.5,0.671,1.5,1.5v4.379C128.616,7.597,127.945,8.268,127.116,8.268z'/%3E %3C/svg%3E"
 
 /***/ },
 
-/***/ 246:
+/***/ 247:
 /***/ function(module, exports) {
 
 	module.exports = "data:image/svg+xml;charset=utf8,%3C?xml version='1.0' encoding='utf-8'?%3E %3C!-- Generator: Adobe Illustrator 19.0.0, SVG Export Plug-In . SVG Version: 6.00 Build 0) --%3E %3Csvg version='1.1' id='Layer_1' xmlns='http://www.w3.org/2000/svg' xmlns:xlink='http://www.w3.org/1999/xlink' x='0px' y='0px' viewBox='0 0 1 1' style='enable-background:new 0 0 1 1;' xml:space='preserve'%3E %3Cstyle type='text/css'%3E .st0%7Bfill:black%7D %3C/style%3E %3Ccircle id='XMLID_1_' class='st0' cx='0.5' cy='0.5' r='0.5'/%3E %3C/svg%3E"
 
 /***/ },
 
-/***/ 247:
+/***/ 248:
 /***/ function(module, exports) {
 
 	module.exports = "data:image/svg+xml;charset=utf8,%3C?xml version='1.0' encoding='utf-8'?%3E %3C!-- Generator: Adobe Illustrator 19.0.0, SVG Export Plug-In . SVG Version: 6.00 Build 0) --%3E %3Csvg version='1.1' id='Layer_1' xmlns='http://www.w3.org/2000/svg' xmlns:xlink='http://www.w3.org/1999/xlink' x='0px' y='0px' viewBox='0 0 22 22' style='enable-background:new 0 0 22 22;' xml:space='preserve'%3E %3Cstyle type='text/css'%3E .st0%7Bfill:black;%7D .st1%7Bfill:%23FFFFFF;%7D .st2%7Bfill:%234C4C4D;%7D %3C/style%3E %3Cpolygon id='XMLID_2_' class='st0' points='15.1,13.4 6.9,13.4 6.9,7.9 15.1,1.4 '/%3E %3Cg id='XMLID_8_'%3E %3Crect id='XMLID_3_' x='5.8' y='15.1' class='st1' width='10.5' height='6.9'/%3E %3Cpath id='XMLID_4_' class='st2' d='M16.7,22H5.3v-7.4h11.5V22z M6.3,22h9.5v-6.4H6.3V22z'/%3E %3C/g%3E %3C/svg%3E"
 
 /***/ },
 
-/***/ 248:
+/***/ 249:
 /***/ function(module, exports) {
 
 	module.exports = "data:image/svg+xml;charset=utf8,%3C?xml version='1.0' encoding='utf-8'?%3E %3C!-- Generator: Adobe Illustrator 19.0.0, SVG Export Plug-In . SVG Version: 6.00 Build 0) --%3E %3Csvg version='1.1' id='Layer_1' xmlns='http://www.w3.org/2000/svg' xmlns:xlink='http://www.w3.org/1999/xlink' x='0px' y='0px' viewBox='0 0 1 1' style='enable-background:new 0 0 1 1;' xml:space='preserve'%3E %3Cstyle type='text/css'%3E .st0%7Bfill:blue%7D %3C/style%3E %3Ccircle id='XMLID_1_' class='st0' cx='0.5' cy='0.5' r='0.5'/%3E %3C/svg%3E"
 
 /***/ },
 
-/***/ 249:
+/***/ 250:
 /***/ function(module, exports) {
 
 	module.exports = "data:image/svg+xml;charset=utf8,%3C?xml version='1.0' encoding='utf-8'?%3E %3C!-- Generator: Adobe Illustrator 19.0.0, SVG Export Plug-In . SVG Version: 6.00 Build 0) --%3E %3Csvg version='1.1' id='Layer_1' xmlns='http://www.w3.org/2000/svg' xmlns:xlink='http://www.w3.org/1999/xlink' x='0px' y='0px' viewBox='0 0 22 22' style='enable-background:new 0 0 22 22;' xml:space='preserve'%3E %3Cstyle type='text/css'%3E .st0%7Bfill:blue;%7D .st1%7Bfill:%23FFFFFF;%7D .st2%7Bfill:%234C4C4D;%7D %3C/style%3E %3Cpolygon id='XMLID_2_' class='st0' points='15.1,13.4 6.9,13.4 6.9,7.9 15.1,1.4 '/%3E %3Cg id='XMLID_8_'%3E %3Crect id='XMLID_3_' x='5.8' y='15.1' class='st1' width='10.5' height='6.9'/%3E %3Cpath id='XMLID_4_' class='st2' d='M16.7,22H5.3v-7.4h11.5V22z M6.3,22h9.5v-6.4H6.3V22z'/%3E %3C/g%3E %3C/svg%3E"
 
 /***/ },
 
-/***/ 250:
+/***/ 251:
 /***/ function(module, exports) {
 
 	module.exports = "data:image/svg+xml;charset=utf8,%3C?xml version='1.0' encoding='utf-8'?%3E %3C!-- Generator: Adobe Illustrator 19.0.0, SVG Export Plug-In . SVG Version: 6.00 Build 0) --%3E %3Csvg version='1.1' id='Layer_1' xmlns='http://www.w3.org/2000/svg' xmlns:xlink='http://www.w3.org/1999/xlink' x='0px' y='0px' viewBox='0 0 22 22' style='enable-background:new 0 0 22 22;' xml:space='preserve'%3E %3Cstyle type='text/css'%3E .st0%7Bfill:%23FFFFFF;stroke:%234C4C4D;stroke-miterlimit:10;%7D .st1%7Bfill:%234C4C4D;%7D .st2%7Bfill:none;stroke:%234C4C4D;stroke-miterlimit:10;%7D %3C/style%3E %3Cpolygon id='XMLID_2_' class='st0' points='18.7,8.7 11.1,16.2 6.3,16.2 3.3,13.2 13.3,3.3 '/%3E %3Crect id='XMLID_4_' x='10' y='4.7' transform='matrix(0.7071 -0.7071 0.7071 0.7071 -2.0269 12.013)' class='st1' width='7' height='7.6'/%3E %3Cline id='XMLID_1_' class='st2' x1='6.1' y1='16.2' x2='18.5' y2='16.2'/%3E %3C/svg%3E"
 
 /***/ },
 
-/***/ 251:
+/***/ 252:
 /***/ function(module, exports) {
 
 	module.exports = "data:image/svg+xml;charset=utf8,%3C?xml version='1.0' encoding='utf-8'?%3E %3C!-- Generator: Adobe Illustrator 19.0.0, SVG Export Plug-In . SVG Version: 6.00 Build 0) --%3E %3Csvg version='1.1' id='Layer_1' xmlns='http://www.w3.org/2000/svg' xmlns:xlink='http://www.w3.org/1999/xlink' x='0px' y='0px' viewBox='0 0 1 1' style='enable-background:new 0 0 1 1;' xml:space='preserve'%3E %3Cstyle type='text/css'%3E .st0%7Bfill:%23008000;%7D %3C/style%3E %3Ccircle id='XMLID_1_' class='st0' cx='0.5' cy='0.5' r='0.5'/%3E %3C/svg%3E"
 
 /***/ },
 
-/***/ 252:
+/***/ 253:
 /***/ function(module, exports) {
 
 	module.exports = "data:image/svg+xml;charset=utf8,%3C?xml version='1.0' encoding='utf-8'?%3E %3C!-- Generator: Adobe Illustrator 19.0.0, SVG Export Plug-In . SVG Version: 6.00 Build 0) --%3E %3Csvg version='1.1' id='Layer_1' xmlns='http://www.w3.org/2000/svg' xmlns:xlink='http://www.w3.org/1999/xlink' x='0px' y='0px' viewBox='0 0 22 22' style='enable-background:new 0 0 22 22;' xml:space='preserve'%3E %3Cstyle type='text/css'%3E .st0%7Bfill:%23008000;%7D .st1%7Bfill:%23FFFFFF;%7D .st2%7Bfill:%234C4C4D;%7D %3C/style%3E %3Cpolygon id='XMLID_2_' class='st0' points='15.1,13.4 6.9,13.4 6.9,7.9 15.1,1.4 '/%3E %3Cg id='XMLID_8_'%3E %3Crect id='XMLID_3_' x='5.8' y='15.1' class='st1' width='10.5' height='6.9'/%3E %3Cpath id='XMLID_4_' class='st2' d='M16.7,22H5.3v-7.4h11.5V22z M6.3,22h9.5v-6.4H6.3V22z'/%3E %3C/g%3E %3C/svg%3E"
 
 /***/ },
 
-/***/ 253:
-/***/ function(module, exports) {
-
-	module.exports = "data:image/svg+xml;charset=utf8,%3C?xml version='1.0' encoding='utf-8'?%3E %3C!-- Generator: Adobe Illustrator 19.0.0, SVG Export Plug-In . SVG Version: 6.00 Build 0) --%3E %3Csvg version='1.1' id='Layer_1' xmlns='http://www.w3.org/2000/svg' xmlns:xlink='http://www.w3.org/1999/xlink' x='0px' y='0px' viewBox='0 0 1 1' style='enable-background:new 0 0 1 1;' xml:space='preserve'%3E %3Cstyle type='text/css'%3E .st0%7Bfill:red%7D %3C/style%3E %3Ccircle id='XMLID_1_' class='st0' cx='0.5' cy='0.5' r='0.5'/%3E %3C/svg%3E"
-
-/***/ },
-
 /***/ 254:
 /***/ function(module, exports) {
 
-	module.exports = "data:image/svg+xml;charset=utf8,%3C?xml version='1.0' encoding='utf-8'?%3E %3C!-- Generator: Adobe Illustrator 19.0.0, SVG Export Plug-In . SVG Version: 6.00 Build 0) --%3E %3Csvg version='1.1' id='Layer_1' xmlns='http://www.w3.org/2000/svg' xmlns:xlink='http://www.w3.org/1999/xlink' x='0px' y='0px' viewBox='0 0 22 22' style='enable-background:new 0 0 22 22;' xml:space='preserve'%3E %3Cstyle type='text/css'%3E .st0%7Bfill:%23ED1F24;%7D .st1%7Bfill:%23FFFFFF;%7D .st2%7Bfill:%234C4C4D;%7D %3C/style%3E %3Cpolygon id='XMLID_2_' class='st0' points='15.1,13.4 6.9,13.4 6.9,7.9 15.1,1.4 '/%3E %3Cg id='XMLID_8_'%3E %3Crect id='XMLID_3_' x='5.8' y='15.1' class='st1' width='10.5' height='6.9'/%3E %3Cpath id='XMLID_4_' class='st2' d='M16.7,22H5.3v-7.4h11.5V22z M6.3,22h9.5v-6.4H6.3V22z'/%3E %3C/g%3E %3C/svg%3E"
+	module.exports = "data:image/svg+xml;charset=utf8,%3C?xml version='1.0' encoding='utf-8'?%3E %3C!-- Generator: Adobe Illustrator 19.0.0, SVG Export Plug-In . SVG Version: 6.00 Build 0) --%3E %3Csvg version='1.1' id='Layer_1' xmlns='http://www.w3.org/2000/svg' xmlns:xlink='http://www.w3.org/1999/xlink' x='0px' y='0px' viewBox='0 0 22 22' style='enable-background:new 0 0 22 22;' xml:space='preserve'%3E %3Cstyle type='text/css'%3E .st0%7Bfill:%23FFFFFF;%7D .st1%7Bfill:none;stroke:%23EAF2FA;stroke-miterlimit:10;%7D %3C/style%3E %3Crect id='XMLID_2_' class='st0' width='22' height='22'/%3E %3Cg id='XMLID_5_'%3E %3Cline id='XMLID_1_' class='st1' x1='4' y1='0' x2='4' y2='22'/%3E %3Cline id='XMLID_3_' class='st1' x1='11' y1='0' x2='11' y2='22'/%3E %3Cline id='XMLID_4_' class='st1' x1='18' y1='0' x2='18' y2='22'/%3E %3C/g%3E %3Cg id='XMLID_6_'%3E %3Cline id='XMLID_9_' class='st1' x1='22' y1='4' x2='0' y2='4'/%3E %3Cline id='XMLID_8_' class='st1' x1='22' y1='11' x2='0' y2='11'/%3E %3Cline id='XMLID_7_' class='st1' x1='22' y1='18' x2='0' y2='18'/%3E %3C/g%3E %3C/svg%3E"
 
 /***/ },
 
 /***/ 255:
 /***/ function(module, exports) {
 
-	module.exports = "data:image/svg+xml;charset=utf8,%3C?xml version='1.0' encoding='utf-8'?%3E %3C!-- Generator: Adobe Illustrator 19.0.0, SVG Export Plug-In . SVG Version: 6.00 Build 0) --%3E %3Csvg version='1.1' id='Layer_1' xmlns='http://www.w3.org/2000/svg' xmlns:xlink='http://www.w3.org/1999/xlink' x='0px' y='0px' viewBox='0 0 22 22' style='enable-background:new 0 0 22 22;' xml:space='preserve'%3E %3Cstyle type='text/css'%3E .st0%7Bfill:%23FFFFFF;stroke:%234C4C4D;stroke-miterlimit:10;%7D .st1%7Bfill:none;stroke:%234C4C4D;stroke-linecap:round;stroke-miterlimit:10;%7D .st2%7Bopacity:0.3;%7D %3C/style%3E %3Cg id='XMLID_14_'%3E %3Cpolygon id='XMLID_1_' class='st0' points='15.9,18.6 6.1,18.6 5.3,7.9 16.7,7.9 '/%3E %3Cpath id='XMLID_12_' class='st1' d='M13.1,6.5H8.9C8.7,6.5,8.5,6.3,8.5,6V3.8c0-0.2,0.2-0.4,0.4-0.4h4.2c0.2,0,0.4,0.2,0.4,0.4V6 C13.5,6.3,13.3,6.5,13.1,6.5z'/%3E %3Cpath id='XMLID_7_' class='st0' d='M16.1,5.5H5.9C5.5,5.5,5.3,5.7,5.3,6v1.3c0,0.3,0.3,0.6,0.6,0.6h10.3c0.3,0,0.6-0.3,0.6-0.6V6 C16.7,5.7,16.5,5.5,16.1,5.5z'/%3E %3Cg id='XMLID_10_' class='st2'%3E %3Cline id='XMLID_9_' class='st1' x1='11' y1='15.8' x2='11' y2='10.7'/%3E %3Cline id='XMLID_11_' class='st1' x1='13.4' y1='15.8' x2='13.7' y2='10.7'/%3E %3Cline id='XMLID_13_' class='st1' x1='8.6' y1='15.8' x2='8.3' y2='10.7'/%3E %3C/g%3E %3C/g%3E %3C/svg%3E"
+	module.exports = "data:image/svg+xml;charset=utf8,%3C?xml version='1.0' encoding='utf-8'?%3E %3C!-- Generator: Adobe Illustrator 19.0.0, SVG Export Plug-In . SVG Version: 6.00 Build 0) --%3E %3Csvg version='1.1' id='Layer_1' xmlns='http://www.w3.org/2000/svg' xmlns:xlink='http://www.w3.org/1999/xlink' x='0px' y='0px' viewBox='0 0 22 22' style='enable-background:new 0 0 22 22;' xml:space='preserve'%3E %3Cstyle type='text/css'%3E .st0%7Bfill:none;stroke:%23000000;stroke-miterlimit:10%7D polygon%7Bstroke-opacity:0.4;fill-opacity:0.4;%7D %3C/style%3E %3Cpolygon id='XMLID_5_' points='17.3,21.2 1.6,21.2 1.6,3.6 10.8,3.6 9.8,4.6 2.6,4.6 2.6,20.2 16.3,20.2 16.3,13.3 17.3,12.3 '/%3E %3Cpolygon id='XMLID_4_' class='st0' points='7.3,9.7 7.3,14.7 12.3,14.7 21,5.9 16.1,1 '/%3E %3Cpolygon id='XMLID_2_' points='7.3,11.2 10.8,14.7 7.3,14.7 '/%3E %3C/svg%3E"
 
 /***/ },
 
 /***/ 256:
+/***/ function(module, exports) {
+
+	module.exports = "data:image/svg+xml;charset=utf8,%3C?xml version='1.0' encoding='utf-8'?%3E %3C!-- Generator: Adobe Illustrator 19.0.0, SVG Export Plug-In . SVG Version: 6.00 Build 0) --%3E %3Csvg version='1.1' id='Layer_1' xmlns='http://www.w3.org/2000/svg' xmlns:xlink='http://www.w3.org/1999/xlink' x='0px' y='0px' viewBox='0 0 1 1' style='enable-background:new 0 0 1 1;' xml:space='preserve'%3E %3Cstyle type='text/css'%3E .st0%7Bfill:red%7D %3C/style%3E %3Ccircle id='XMLID_1_' class='st0' cx='0.5' cy='0.5' r='0.5'/%3E %3C/svg%3E"
+
+/***/ },
+
+/***/ 257:
+/***/ function(module, exports) {
+
+	module.exports = "data:image/svg+xml;charset=utf8,%3C?xml version='1.0' encoding='utf-8'?%3E %3C!-- Generator: Adobe Illustrator 19.0.0, SVG Export Plug-In . SVG Version: 6.00 Build 0) --%3E %3Csvg version='1.1' id='Layer_1' xmlns='http://www.w3.org/2000/svg' xmlns:xlink='http://www.w3.org/1999/xlink' x='0px' y='0px' viewBox='0 0 22 22' style='enable-background:new 0 0 22 22;' xml:space='preserve'%3E %3Cstyle type='text/css'%3E .st0%7Bfill:%23ED1F24;%7D .st1%7Bfill:%23FFFFFF;%7D .st2%7Bfill:%234C4C4D;%7D %3C/style%3E %3Cpolygon id='XMLID_2_' class='st0' points='15.1,13.4 6.9,13.4 6.9,7.9 15.1,1.4 '/%3E %3Cg id='XMLID_8_'%3E %3Crect id='XMLID_3_' x='5.8' y='15.1' class='st1' width='10.5' height='6.9'/%3E %3Cpath id='XMLID_4_' class='st2' d='M16.7,22H5.3v-7.4h11.5V22z M6.3,22h9.5v-6.4H6.3V22z'/%3E %3C/g%3E %3C/svg%3E"
+
+/***/ },
+
+/***/ 258:
+/***/ function(module, exports) {
+
+	module.exports = "data:image/svg+xml;charset=utf8,%3C?xml version='1.0' encoding='utf-8'?%3E %3C!-- Generator: Adobe Illustrator 19.0.0, SVG Export Plug-In . SVG Version: 6.00 Build 0) --%3E %3Csvg version='1.1' id='Layer_1' xmlns='http://www.w3.org/2000/svg' xmlns:xlink='http://www.w3.org/1999/xlink' x='0px' y='0px' viewBox='0 0 22 22' style='enable-background:new 0 0 22 22;' xml:space='preserve'%3E %3Cstyle type='text/css'%3E .st0%7Bfill:%23FFFFFF;stroke:%234C4C4D;stroke-miterlimit:10;%7D .st1%7Bfill:none;stroke:%234C4C4D;stroke-linecap:round;stroke-miterlimit:10;%7D .st2%7Bopacity:0.3;%7D %3C/style%3E %3Cg id='XMLID_14_'%3E %3Cpolygon id='XMLID_1_' class='st0' points='15.9,18.6 6.1,18.6 5.3,7.9 16.7,7.9 '/%3E %3Cpath id='XMLID_12_' class='st1' d='M13.1,6.5H8.9C8.7,6.5,8.5,6.3,8.5,6V3.8c0-0.2,0.2-0.4,0.4-0.4h4.2c0.2,0,0.4,0.2,0.4,0.4V6 C13.5,6.3,13.3,6.5,13.1,6.5z'/%3E %3Cpath id='XMLID_7_' class='st0' d='M16.1,5.5H5.9C5.5,5.5,5.3,5.7,5.3,6v1.3c0,0.3,0.3,0.6,0.6,0.6h10.3c0.3,0,0.6-0.3,0.6-0.6V6 C16.7,5.7,16.5,5.5,16.1,5.5z'/%3E %3Cg id='XMLID_10_' class='st2'%3E %3Cline id='XMLID_9_' class='st1' x1='11' y1='15.8' x2='11' y2='10.7'/%3E %3Cline id='XMLID_11_' class='st1' x1='13.4' y1='15.8' x2='13.7' y2='10.7'/%3E %3Cline id='XMLID_13_' class='st1' x1='8.6' y1='15.8' x2='8.3' y2='10.7'/%3E %3C/g%3E %3C/g%3E %3C/svg%3E"
+
+/***/ },
+
+/***/ 259:
 /***/ function(module, exports) {
 
 	module.exports = "data:image/svg+xml;charset=utf8,%3C?xml version='1.0' encoding='utf-8'?%3E %3C!-- Generator: Adobe Illustrator 19.0.0, SVG Export Plug-In . SVG Version: 6.00 Build 0) --%3E %3Csvg version='1.1' id='Layer_1' xmlns='http://www.w3.org/2000/svg' xmlns:xlink='http://www.w3.org/1999/xlink' x='0px' y='0px' viewBox='0 0 1 1' style='enable-background:new 0 0 1 1;' xml:space='preserve'%3E %3Cstyle type='text/css'%3E .st0%7Bfill:white;%7D %3C/style%3E %3Ccircle id='XMLID_1_' class='st0' cx='0.5' cy='0.5' r='0.5'/%3E %3C/svg%3E"

@@ -294,7 +294,7 @@
     opacity: 0.1; }
 .viewer--components--sketchpad {
   position: fixed;
-  width: 30rem;
+  width: 29.9rem;
   z-index: 99999;
   box-shadow: 0 1px 0 rgba(0, 0, 0, 0.3);
   border: 8px solid #e8e8e8;
@@ -302,9 +302,15 @@
   box-sizing: border-box;
   font-size: .6em;
   user-select: none;
+  transform: translate(100%, 0) translate(2px, 0);
   top: 0;
   right: 0;
-  bottom: 0; }
+  bottom: 0;
+  transition: transform 0.2s; }
+  .viewer--components--sketchpad.is-open {
+    transform: none; }
+  .viewer--components--sketchpad.is-teasing.is-closed {
+    transform: translate(99%, 0); }
   .viewer--components--sketchpad.tip-1 .lc,
   .viewer--components--sketchpad.tip-2 .lc {
     cursor: url(data:application/octet-stream;base64,AAABAAEAAwMAAAEAIABYAAAAFgAAACgAAAADAAAABgAAAAEAIAAAAAAAJAAAACMuAAAjLgAAAAAAAAAAAAAAAABDAAAAegAAAEIAAAB6AAAAgAAAAHkAAABDAAAAegAAAEMAAAAAAAAAAAAAAAA=) 1.5 2.5, auto; }
@@ -312,6 +318,24 @@
     cursor: url(data:application/octet-stream;base64,AAABAAEABwcAAAEAIAAIAQAAFgAAACgAAAAHAAAADgAAAAEAIAAAAAAAxAAAACMuAAAjLgAAAAAAAAAAAAAAAAAAAAAAJgAAAGUAAAB6AAAAZQAAACUAAAAAAAAAJgAAAIAAAACAAAAAgAAAAIAAAACAAAAAJQAAAGYAAACAAAAAgAAAAIAAAACAAAAAgAAAAGUAAAB5AAAAgAAAAIAAAACAAAAAgAAAAIAAAAB5AAAAZgAAAIAAAACAAAAAgAAAAIAAAACAAAAAZQAAACYAAACAAAAAgAAAAIAAAACAAAAAgAAAACgAAAAAAAAAJgAAAGUAAAB6AAAAZQAAACYAAAAAggAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAggAAAA==) 3 4, auto; }
   .viewer--components--sketchpad.tip-10 .lc {
     cursor: url(data:application/octet-stream;base64,AAABAAEADQ0AAAEAIAAAAwAAFgAAACgAAAANAAAAGgAAAAEAIAAAAAAApAIAACMuAAAjLgAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAeAAAAUwAAAHIAAAB9AAAAcgAAAFMAAAAdAAAAAAAAAAAAAAAAAAAAAAAAAAIAAABLAAAAgAAAAIAAAACAAAAAgAAAAIAAAACAAAAAgAAAAEoAAAACAAAAAAAAAAAAAABLAAAAgAAAAIAAAACAAAAAgAAAAIAAAACAAAAAgAAAAIAAAACAAAAASgAAAAAAAAAcAAAAfwAAAIAAAACAAAAAgAAAAIAAAACAAAAAgAAAAIAAAACAAAAAgAAAAIAAAAAeAAAAVAAAAIAAAACAAAAAgAAAAIAAAACAAAAAgAAAAIAAAACAAAAAgAAAAIAAAACAAAAAUgAAAHMAAACAAAAAgAAAAIAAAACAAAAAgAAAAIAAAACAAAAAgAAAAIAAAACAAAAAgAAAAHIAAAB9AAAAgAAAAIAAAACAAAAAgAAAAIAAAACAAAAAgAAAAIAAAACAAAAAgAAAAIAAAAB8AAAAcwAAAIAAAACAAAAAgAAAAIAAAACAAAAAgAAAAIAAAACAAAAAgAAAAIAAAACAAAAAcgAAAFUAAACAAAAAgAAAAIAAAACAAAAAgAAAAIAAAACAAAAAgAAAAIAAAACAAAAAgAAAAFMAAAAfAAAAgAAAAIAAAACAAAAAgAAAAIAAAACAAAAAgAAAAIAAAACAAAAAgAAAAIAAAAAeAAAAAAAAAEwAAACAAAAAgAAAAIAAAACAAAAAgAAAAIAAAACAAAAAgAAAAIAAAABLAAAAAAAAAAAAAAACAAAATAAAAIAAAACAAAAAgAAAAIAAAACAAAAAgAAAAIAAAABLAAAAAgAAAAAAAAAAAAAAAAAAAAAAAAAfAAAAVAAAAHMAAAB9AAAAcgAAAFQAAAAeAAAAAAAAAAAAAAAA4DgAAIAIAACACAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAIAIAACACAAA4DgAAA==) 6 7, auto; }
+  .viewer--components--sketchpad .btn-toggle {
+    position: absolute;
+    width: 2rem;
+    height: 3rem;
+    left: 0;
+    top: 3rem;
+    background-size: 1.5rem 1.5rem !important;
+    background-repeat: no-repeat !important;
+    background-position: center center !important;
+    border-radius: 0.3rem;
+    cursor: pointer;
+    border: 8px solid #e8e8e8;
+    background: #e8e8e8;
+    transform: translate(-100%, 0) translate(-8px, 0);
+    border: 2px solid rgba(0, 0, 0, 0.3);
+    border-right: none;
+    border-top-right-radius: 0;
+    border-bottom-right-radius: 0; }
   .viewer--components--sketchpad hr {
     background: rgba(0, 0, 0, 0.1);
     border: none;
@@ -319,6 +343,13 @@
     width: 2em;
     display: inline-block;
     margin-bottom: 1em; }
+  .viewer--components--sketchpad .bg {
+    background: white;
+    position: absolute;
+    top: 2em;
+    right: 2em;
+    left: 0;
+    bottom: 0; }
   .viewer--components--sketchpad .close {
     position: absolute;
     right: 0.15em;
@@ -345,7 +376,6 @@
     color: #909090;
     box-sizing: border-box; }
   .viewer--components--sketchpad .lc {
-    background: white;
     position: absolute;
     top: 2em;
     right: 2em;
@@ -397,6 +427,8 @@
         background-size: 6px; }
       .viewer--components--sketchpad .toolbar button.tip-10 {
         background-size: 13px; }
+      .viewer--components--sketchpad .toolbar button.bg-blank {
+        background: white; }
       .viewer--components--sketchpad .toolbar button.clear {
         position: absolute;
         right: 0;

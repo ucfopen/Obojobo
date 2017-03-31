@@ -265,7 +265,7 @@
 
 	var Chunk, Common, List, ListStyles, MockElement, MockTextNode, OboComponent, SelectionHandler, TextChunk, TextGroup, TextGroupEl, selectionHandler;
 
-	__webpack_require__(207);
+	__webpack_require__(208);
 
 	ListStyles = __webpack_require__(64);
 
@@ -418,7 +418,7 @@
 
 /***/ },
 
-/***/ 207:
+/***/ 208:
 /***/ function(module, exports) {
 
 	// removed by extract-text-webpack-plugin

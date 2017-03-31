@@ -88,7 +88,7 @@
 
 	var Common, IFrame, OboComponent;
 
-	__webpack_require__(206);
+	__webpack_require__(207);
 
 	Common = window.ObojoboDraft.Common;
 
@@ -132,7 +132,7 @@
 
 /***/ },
 
-/***/ 206:
+/***/ 207:
 /***/ function(module, exports) {
 
 	// removed by extract-text-webpack-plugin

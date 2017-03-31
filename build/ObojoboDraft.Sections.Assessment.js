@@ -188,7 +188,7 @@
 
 	var AssessmentUtil, AttemptIncompleteDialog, Button, Common, Dispatcher, ModalUtil, NavUtil, OboComponent, OboModel, ScoreStore;
 
-	__webpack_require__(231);
+	__webpack_require__(232);
 
 	Common = window.ObojoboDraft.Common;
 
@@ -448,7 +448,7 @@
 
 /***/ },
 
-/***/ 231:
+/***/ 232:
 /***/ function(module, exports) {
 
 	// removed by extract-text-webpack-plugin
