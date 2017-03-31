@@ -4,6 +4,8 @@ let DraftModel = oboRequire('models/draft');
 let db = oboRequire('db');
 let Assessment = require('./assessment');
 let lti = oboRequire('lti')
+let insertEvent = oboRequire('insert_event')
+let getIp = oboRequire('get_ip')
 
 let logAndRespondToUnexpected = (errorMessage, res, req, jsError) => {
 	res.unexpected(jsError)
@@ -77,6 +79,15 @@ app.post('/api/assessments/attempt/start', (req, res, next) => {
 	})
 	.then(result => {
 		res.success(result)
+
+		insertEvent({
+			action: 'assessment:attemptStart',
+			actorTime: new Date().toISOString(),
+			payload: { attemptId:result.attemptId },
+			userId: currentUser.id,
+			ip: getIp(req),
+			metadata: {}
+		})
 	})
 	.catch(error => {
 		switch(error.message)
@@ -188,6 +199,15 @@ app.post('/api/assessments/attempt/:attemptId/end', (req, res, next) => {
 			sent: isScoreSent,
 		}
 		res.success(updateResult)
+
+		insertEvent({
+			action: 'assessment:attemptEnd',
+			actorTime: new Date().toISOString(),
+			payload: { attemptId: req.params.attemptId },
+			userId: currentUser.id,
+			ip: getIp(req),
+			metadata: {}
+		})
 	})
 	.catch(error => {
 		console.log('error', error, error.toString());
