@@ -13134,7 +13134,6 @@
 	    var event, match, startIndex, text, variable;
 	    console.time('textRender');
 	    text = this.props.textItem.text;
-	    console.log('text', text);
 	    if (this.props.parentModel && text.value.indexOf('{{')) {
 	      match = null;
 	      text = text.clone();
