@@ -18,7 +18,8 @@ app.post('/', (req, res, next) => {
 			userId: currentUser.id,
 			ip: getIp(req),
 			metadata: {},
-			payload: event.payload
+			payload: event.payload,
+			draftId: event.draft_id
 		}
 
 		insertEvent(insertObject)

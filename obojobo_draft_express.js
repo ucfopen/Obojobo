@@ -150,7 +150,8 @@ app.on('mount', (app) => {
 				payload: { launchId:result.id },
 				userId: currentUser.id,
 				ip: getIp(req),
-				metadata: {}
+				metadata: {},
+				draftId: req.params.draftId
 			})
 		})
 		.then(createdAt => {
