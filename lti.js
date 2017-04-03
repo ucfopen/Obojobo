@@ -99,6 +99,7 @@ let replaceResult = function(userId, draftId, score) {
 	.catch(error => {
 		// Fail if sending the score failed
 		if(error.fatal){
+			console.error(error)
 			return Promise.reject(Error(`Unable to send score to LMS`))
 		}
 
