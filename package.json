@@ -17,7 +17,8 @@
     "docengine:dev": "cd ./devsrc/obojobo-draft-document-engine && yarn dev",
     "docengine:setup": "\"yarn docengine:clone\" && \"yarn docengine:nodemodules\"",
     "docengine:clone": "git clone -b feature/new-data-model git@github.com:ucfcdl/Obojobo-Document-Engine.git devsrc/obojobo-draft-document-engine || echo 'already cloned'",
-    "docengine:nodemodules": "cd ./devsrc/obojobo-draft-document-engine && yarn"
+    "docengine:nodemodules": "cd ./devsrc/obojobo-draft-document-engine && yarn",
+    "test":"jest --watch "
   },
   "engines": {
     "node": "^6.9.4"
@@ -45,5 +46,13 @@
     "pug": "^2.0.0-beta6",
     "serve-favicon": "~2.3.0"
   },
-  "devDependencies": {}
+  "devDependencies": {
+    "jest-cli": "^19.0.2"
+  },
+  "jest": {
+    "verbose": true,
+    "testPathIgnorePatterns":[
+      "devsrc"
+    ]
+  }
 }
