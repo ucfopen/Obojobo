@@ -266,7 +266,99 @@
 
 /***/ },
 
-/***/ 29:
+/***/ 20:
+/***/ function(module, exports) {
+
+	'use strict';
+
+	var APIUtil, createParsedJsonPromise;
+
+	createParsedJsonPromise = function createParsedJsonPromise(promise) {
+	  var jsonPromise;
+	  jsonPromise = new Promise(function (resolve, reject) {
+	    return promise.then(function (_this) {
+	      return function (res) {
+	        return res.json();
+	      };
+	    }(this)).then(function (_this) {
+	      return function (json) {
+	        if (json.status === 'error') {
+	          console.error(json.value);
+	        }
+	        return resolve(json);
+	      };
+	    }(this))["catch"](function (_this) {
+	      return function (error) {
+	        return reject(error);
+	      };
+	    }(this));
+	  });
+	  return jsonPromise;
+	};
+
+	APIUtil = {
+	  get: function get(endpoint) {
+	    return fetch(endpoint, {
+	      method: 'GET',
+	      credentials: 'include',
+	      headers: {
+	        'Accept': 'application/json',
+	        'Content-Type': 'application/json'
+	      }
+	    });
+	  },
+	  post: function post(endpoint, body) {
+	    if (body == null) {
+	      body = {};
+	    }
+	    return fetch(endpoint, {
+	      method: 'POST',
+	      credentials: 'include',
+	      body: JSON.stringify(body),
+	      headers: {
+	        'Accept': 'application/json',
+	        'Content-Type': 'application/json'
+	      }
+	    });
+	  },
+	  postEvent: function postEvent(lo, eventAction, eventPayload) {
+	    console.log('POST EVENT', eventPayload);
+	    return createParsedJsonPromise(APIUtil.post('/api/events', {
+	      event: {
+	        action: eventAction,
+	        draft_id: lo.get('_id'),
+	        actor_time: new Date().toISOString(),
+	        payload: eventPayload
+	      }
+	    }));
+	  },
+	  saveState: function saveState(lo, state) {
+	    return APIUtil.postEvent(lo, 'saveState', state);
+	  },
+	  fetchDraft: function fetchDraft(id) {
+	    return createParsedJsonPromise(fetch("/api/drafts/" + id));
+	  },
+	  getAttempts: function getAttempts(lo) {
+	    return createParsedJsonPromise(APIUtil.get("/api/drafts/" + lo.get('_id') + "/attempts"));
+	  },
+	  startAttempt: function startAttempt(lo, assessment, questions) {
+	    return createParsedJsonPromise(APIUtil.post('/api/assessments/attempt/start', {
+	      draftId: lo.get('_id'),
+	      assessmentId: assessment.get('id'),
+	      actor: 4,
+	      questions: '@TODO'
+	    }));
+	  },
+	  endAttempt: function endAttempt(attempt) {
+	    return createParsedJsonPromise(APIUtil.post("/api/assessments/attempt/" + attempt.attemptId + "/end"));
+	  }
+	};
+
+	module.exports = APIUtil;
+
+/***/ },
+
+/***/ 30:
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -290,7 +382,7 @@
 
 	NavUtil = __webpack_require__(16);
 
-	APIUtil = __webpack_require__(30);
+	APIUtil = __webpack_require__(20);
 
 	OBO = window.OBO;
 
@@ -576,98 +668,6 @@
 
 /***/ },
 
-/***/ 30:
-/***/ function(module, exports) {
-
-	'use strict';
-
-	var APIUtil, createParsedJsonPromise;
-
-	createParsedJsonPromise = function createParsedJsonPromise(promise) {
-	  var jsonPromise;
-	  jsonPromise = new Promise(function (resolve, reject) {
-	    return promise.then(function (_this) {
-	      return function (res) {
-	        return res.json();
-	      };
-	    }(this)).then(function (_this) {
-	      return function (json) {
-	        if (json.status === 'error') {
-	          console.error(json.value);
-	        }
-	        return resolve(json);
-	      };
-	    }(this))["catch"](function (_this) {
-	      return function (error) {
-	        return reject(error);
-	      };
-	    }(this));
-	  });
-	  return jsonPromise;
-	};
-
-	APIUtil = {
-	  get: function get(endpoint) {
-	    return fetch(endpoint, {
-	      method: 'GET',
-	      credentials: 'include',
-	      headers: {
-	        'Accept': 'application/json',
-	        'Content-Type': 'application/json'
-	      }
-	    });
-	  },
-	  post: function post(endpoint, body) {
-	    if (body == null) {
-	      body = {};
-	    }
-	    return fetch(endpoint, {
-	      method: 'POST',
-	      credentials: 'include',
-	      body: JSON.stringify(body),
-	      headers: {
-	        'Accept': 'application/json',
-	        'Content-Type': 'application/json'
-	      }
-	    });
-	  },
-	  postEvent: function postEvent(lo, eventAction, eventPayload) {
-	    console.log('POST EVENT', eventPayload);
-	    return createParsedJsonPromise(APIUtil.post('/api/events', {
-	      event: {
-	        action: eventAction,
-	        draft_id: lo.get('_id'),
-	        actor_time: new Date().toISOString(),
-	        payload: eventPayload
-	      }
-	    }));
-	  },
-	  saveState: function saveState(lo, state) {
-	    return APIUtil.postEvent(lo, 'saveState', state);
-	  },
-	  fetchDraft: function fetchDraft(id) {
-	    return createParsedJsonPromise(fetch("/api/drafts/" + id));
-	  },
-	  getAttempts: function getAttempts(lo) {
-	    return createParsedJsonPromise(APIUtil.get("/api/drafts/" + lo.get('_id') + "/attempts"));
-	  },
-	  startAttempt: function startAttempt(lo, assessment, questions) {
-	    return createParsedJsonPromise(APIUtil.post('/api/assessments/attempt/start', {
-	      draftId: lo.get('_id'),
-	      assessmentId: assessment.get('id'),
-	      actor: 4,
-	      questions: '@TODO'
-	    }));
-	  },
-	  endAttempt: function endAttempt(attempt) {
-	    return createParsedJsonPromise(APIUtil.post("/api/assessments/attempt/" + attempt.attemptId + "/end"));
-	  }
-	};
-
-	module.exports = APIUtil;
-
-/***/ },
-
 /***/ 46:
 /***/ function(module, exports) {
 
@@ -824,7 +824,7 @@
 
 	QuestionUtil = __webpack_require__(46);
 
-	APIUtil = __webpack_require__(30);
+	APIUtil = __webpack_require__(20);
 
 	NavUtil = __webpack_require__(16);
 
@@ -926,7 +926,7 @@
 	        }
 	        if ((assessment != null ? assessment.current : void 0) != null) {
 	          questionModel = model.getParentOfType('ObojoboDraft.Chunks.Question');
-	          return APIUtil.postEvent(model.getRoot(), 'question:recordResponse', {
+	          return APIUtil.postEvent(model.getRoot(), 'assessment:recordResponse', {
 	            attemptId: assessment.current.attemptId,
 	            questionId: questionModel.get('id'),
 	            responderId: id,
@@ -1033,7 +1033,7 @@
 	},
 	    hasProp = {}.hasOwnProperty;
 
-	APIUtil = __webpack_require__(30);
+	APIUtil = __webpack_require__(20);
 
 	Store = window.ObojoboDraft.Common.flux.Store;
 
@@ -1049,8 +1049,17 @@
 	    Dispatcher.on({
 	      'question:recordResponse': function (_this) {
 	        return function (payload) {
-	          _this.state.responses[payload.value.id] = payload.value.response;
-	          return _this.triggerChange();
+	          var id, model, questionModel;
+	          id = payload.value.id;
+	          model = OboModel.models[id];
+	          _this.state.responses[id] = payload.value.response;
+	          _this.triggerChange();
+	          questionModel = model.getParentOfType('ObojoboDraft.Chunks.Question');
+	          return APIUtil.postEvent(questionModel.getRoot(), 'question:recordResponse', {
+	            questionId: questionModel.get('id'),
+	            responderId: id,
+	            response: payload.value.response
+	          });
 	        };
 	      }(this),
 	      'question:resetResponse': function (_this) {
@@ -1123,12 +1132,14 @@
 /***/ },
 
 /***/ 91:
-/***/ function(module, exports) {
+/***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
 
-	var Dispatcher,
+	var APIUtil,
+	    Dispatcher,
 	    FocusUtil,
+	    OboModel,
 	    ScoreStore,
 	    Store,
 	    scoreStore,
@@ -1141,11 +1152,15 @@
 	},
 	    hasProp = {}.hasOwnProperty;
 
+	APIUtil = __webpack_require__(20);
+
 	Store = window.ObojoboDraft.Common.flux.Store;
 
 	Dispatcher = window.ObojoboDraft.Common.flux.Dispatcher;
 
 	FocusUtil = window.ObojoboDraft.Common.util.FocusUtil;
+
+	OboModel = window.ObojoboDraft.Common.models.OboModel;
 
 	ScoreStore = function (superClass) {
 	  extend(ScoreStore, superClass);
@@ -1155,17 +1170,28 @@
 	    Dispatcher.on({
 	      'score:set': function (_this) {
 	        return function (payload) {
+	          var model;
 	          _this.state.scores[payload.value.id] = payload.value.score;
 	          if (payload.value.score === 100) {
 	            FocusUtil.unfocus();
 	          }
-	          return _this.triggerChange();
+	          _this.triggerChange();
+	          model = OboModel.models[payload.value.id];
+	          return APIUtil.postEvent(model.getRoot(), 'score:set', {
+	            id: payload.value.id,
+	            score: payload.value.score
+	          });
 	        };
 	      }(this),
 	      'score:clear': function (_this) {
 	        return function (payload) {
+	          var model;
 	          delete _this.state.scores[payload.value.id];
-	          return _this.triggerChange();
+	          _this.triggerChange();
+	          model = OboModel.models[payload.value.id];
+	          return APIUtil.postEvent(model.getRoot(), 'score:clear', {
+	            id: payload.value.id
+	          });
 	        };
 	      }(this)
 	    });
@@ -1473,7 +1499,7 @@
 
 	__webpack_require__(234);
 
-	navStore = __webpack_require__(29);
+	navStore = __webpack_require__(30);
 
 	NavUtil = __webpack_require__(16);
 
@@ -1670,11 +1696,11 @@
 
 	FocusBlocker = Common.components.FocusBlocker;
 
-	NavStore = __webpack_require__(29);
+	NavStore = __webpack_require__(30);
 
 	ModalStore = window.ObojoboDraft.Common.stores.ModalStore;
 
-	NavStore = __webpack_require__(29);
+	NavStore = __webpack_require__(30);
 
 	ScoreStore = __webpack_require__(91);
 
@@ -1996,14 +2022,14 @@
 	  stores: {
 	    ScoreStore: __webpack_require__(91),
 	    AssessmentStore: __webpack_require__(89),
-	    NavStore: __webpack_require__(29),
+	    NavStore: __webpack_require__(30),
 	    QuestionStore: __webpack_require__(90)
 	  },
 	  util: {
 	    AssessmentUtil: __webpack_require__(92),
 	    NavUtil: __webpack_require__(16),
 	    ScoreUtil: __webpack_require__(93),
-	    APIUtil: __webpack_require__(30),
+	    APIUtil: __webpack_require__(20),
 	    QuestionUtil: __webpack_require__(46)
 	  }
 	};

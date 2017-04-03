@@ -82,13 +82,13 @@
 
 	ObjectAssign = __webpack_require__(11);
 
-	ChunkStyleList = __webpack_require__(25);
+	ChunkStyleList = __webpack_require__(26);
 
 	StyleRange = __webpack_require__(15);
 
 	StyleType = __webpack_require__(5);
 
-	HtmlUtil = __webpack_require__(28);
+	HtmlUtil = __webpack_require__(29);
 
 	trimStyleRange = function trimStyleRange(styleRange, maxLength) {
 	  styleRange.end = Math.min(styleRange.end, maxLength);
@@ -727,7 +727,7 @@
 
 /***/ },
 
-/***/ 25:
+/***/ 26:
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -1000,7 +1000,7 @@
 
 /***/ },
 
-/***/ 26:
+/***/ 27:
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -1011,7 +1011,7 @@
 
 	Util = __webpack_require__(17);
 
-	TextGroupItem = __webpack_require__(27);
+	TextGroupItem = __webpack_require__(28);
 
 	ObjectAssign = __webpack_require__(11);
 
@@ -1487,7 +1487,7 @@
 
 /***/ },
 
-/***/ 27:
+/***/ 28:
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -1528,7 +1528,7 @@
 
 /***/ },
 
-/***/ 28:
+/***/ 29:
 /***/ function(module, exports) {
 
 	'use strict';
@@ -1617,7 +1617,7 @@
 
 	var TextGroup, TextGroupAdapter;
 
-	TextGroup = __webpack_require__(26);
+	TextGroup = __webpack_require__(27);
 
 	TextGroupAdapter = {
 	  construct: function construct(model, attrs) {

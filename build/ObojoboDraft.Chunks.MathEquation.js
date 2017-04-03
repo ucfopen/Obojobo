@@ -209,7 +209,7 @@
 
 /***/ },
 
-/***/ 23:
+/***/ 24:
 /***/ function(module, exports, __webpack_require__) {
 
 	/* jshint unused:false */
@@ -493,7 +493,7 @@
 	 */
 
 	var domTree = __webpack_require__(95);
-	var fontMetrics = __webpack_require__(23);
+	var fontMetrics = __webpack_require__(24);
 	var symbols = __webpack_require__(33);
 	var utils = __webpack_require__(9);
 
@@ -5223,7 +5223,7 @@
 	var buildCommon = __webpack_require__(32);
 	var delimiter = __webpack_require__(251);
 	var domTree = __webpack_require__(95);
-	var fontMetrics = __webpack_require__(23);
+	var fontMetrics = __webpack_require__(24);
 	var utils = __webpack_require__(9);
 
 	var makeSpan = buildCommon.makeSpan;
@@ -6586,7 +6586,7 @@
 	 */
 
 	var buildCommon = __webpack_require__(32);
-	var fontMetrics = __webpack_require__(23);
+	var fontMetrics = __webpack_require__(24);
 	var mathMLTree = __webpack_require__(255);
 	var ParseError = __webpack_require__(12);
 	var symbols = __webpack_require__(33);
@@ -7178,7 +7178,7 @@
 	var Style = __webpack_require__(31);
 
 	var buildCommon = __webpack_require__(32);
-	var fontMetrics = __webpack_require__(23);
+	var fontMetrics = __webpack_require__(24);
 	var symbols = __webpack_require__(33);
 	var utils = __webpack_require__(9);
 
@@ -7698,7 +7698,7 @@
 /***/ 252:
 /***/ function(module, exports, __webpack_require__) {
 
-	var fontMetrics = __webpack_require__(23);
+	var fontMetrics = __webpack_require__(24);
 	var parseData = __webpack_require__(96);
 	var ParseError = __webpack_require__(12);
 

@@ -559,7 +559,7 @@
 	 * different kinds of domTree nodes in a consistent manner.
 	 */
 
-	var domTree = __webpack_require__(21);
+	var domTree = __webpack_require__(22);
 	var fontMetrics = __webpack_require__(3);
 	var symbols = __webpack_require__(8);
 	var utils = __webpack_require__(1);
@@ -3605,13 +3605,13 @@
 
 	ObjectAssign = __webpack_require__(11);
 
-	ChunkStyleList = __webpack_require__(25);
+	ChunkStyleList = __webpack_require__(26);
 
 	StyleRange = __webpack_require__(15);
 
 	StyleType = __webpack_require__(5);
 
-	HtmlUtil = __webpack_require__(28);
+	HtmlUtil = __webpack_require__(29);
 
 	trimStyleRange = function trimStyleRange(styleRange, maxLength) {
 	  styleRange.end = Math.min(styleRange.end, maxLength);
@@ -5016,7 +5016,8 @@
 	};
 
 /***/ },
-/* 20 */
+/* 20 */,
+/* 21 */
 /***/ function(module, exports) {
 
 	/**
@@ -5050,7 +5051,7 @@
 
 
 /***/ },
-/* 21 */
+/* 22 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/**
@@ -5325,7 +5326,7 @@
 
 
 /***/ },
-/* 22 */
+/* 23 */
 /***/ function(module, exports) {
 
 	/**
@@ -5354,8 +5355,8 @@
 
 
 /***/ },
-/* 23 */,
-/* 24 */
+/* 24 */,
+/* 25 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -5413,7 +5414,7 @@
 	module.exports = BaseSelectionHandler;
 
 /***/ },
-/* 25 */
+/* 26 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -5685,7 +5686,7 @@
 	module.exports = ChunkStyleList;
 
 /***/ },
-/* 26 */
+/* 27 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -5696,7 +5697,7 @@
 
 	Util = __webpack_require__(17);
 
-	TextGroupItem = __webpack_require__(27);
+	TextGroupItem = __webpack_require__(28);
 
 	ObjectAssign = __webpack_require__(11);
 
@@ -6171,7 +6172,7 @@
 	module.exports = TextGroup;
 
 /***/ },
-/* 27 */
+/* 28 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -6211,7 +6212,7 @@
 	});
 
 /***/ },
-/* 28 */
+/* 29 */
 /***/ function(module, exports) {
 
 	'use strict';
@@ -6292,7 +6293,6 @@
 	};
 
 /***/ },
-/* 29 */,
 /* 30 */,
 /* 31 */,
 /* 32 */,
@@ -6562,7 +6562,7 @@
 	 */
 
 	var ParseError = __webpack_require__(2);
-	var Settings = __webpack_require__(20);
+	var Settings = __webpack_require__(21);
 
 	var buildTree = __webpack_require__(56);
 	var parseTree = __webpack_require__(62);
@@ -7033,7 +7033,7 @@
 	var symbols = __webpack_require__(8);
 	var utils = __webpack_require__(1);
 
-	var parseData = __webpack_require__(22);
+	var parseData = __webpack_require__(23);
 	var ParseError = __webpack_require__(2);
 
 	/**
@@ -7765,7 +7765,7 @@
 
 	var buildCommon = __webpack_require__(7);
 	var delimiter = __webpack_require__(57);
-	var domTree = __webpack_require__(21);
+	var domTree = __webpack_require__(22);
 	var fontMetrics = __webpack_require__(3);
 	var utils = __webpack_require__(1);
 
@@ -9650,7 +9650,7 @@
 	var buildMathML = __webpack_require__(55);
 	var buildCommon = __webpack_require__(7);
 	var Options = __webpack_require__(52);
-	var Settings = __webpack_require__(20);
+	var Settings = __webpack_require__(21);
 	var Style = __webpack_require__(6);
 
 	var makeSpan = buildCommon.makeSpan;
@@ -10238,7 +10238,7 @@
 /***/ function(module, exports, __webpack_require__) {
 
 	var fontMetrics = __webpack_require__(3);
-	var parseData = __webpack_require__(22);
+	var parseData = __webpack_require__(23);
 	var ParseError = __webpack_require__(2);
 
 	var ParseNode = parseData.ParseNode;
@@ -13007,7 +13007,7 @@
 	},
 	    hasProp = {}.hasOwnProperty;
 
-	BaseSelectionHandler = __webpack_require__(24);
+	BaseSelectionHandler = __webpack_require__(25);
 
 	FocusableSelectionHandler = function (superClass) {
 	  extend(FocusableSelectionHandler, superClass);
@@ -14580,7 +14580,7 @@
 	module.exports = {
 	  Common: {
 	    chunk: {
-	      BaseSelectionHandler: __webpack_require__(24),
+	      BaseSelectionHandler: __webpack_require__(25),
 	      FocusableChunk: __webpack_require__(144),
 	      focusableChunk: {
 	        FocusableSelectionHandler: __webpack_require__(67),
@@ -14658,7 +14658,7 @@
 	      Screen: __webpack_require__(166)
 	    },
 	    text: {
-	      ChunkStyleList: __webpack_require__(25),
+	      ChunkStyleList: __webpack_require__(26),
 	      StyleableText: __webpack_require__(10),
 	      StyleableTextComponent: __webpack_require__(80),
 	      StyleableTextRenderer: __webpack_require__(81),
@@ -14667,16 +14667,16 @@
 	      TextConstants: __webpack_require__(19)
 	    },
 	    textGroup: {
-	      TextGroup: __webpack_require__(26),
+	      TextGroup: __webpack_require__(27),
 	      TextGroupCursor: __webpack_require__(82),
-	      TextGroupItem: __webpack_require__(27),
+	      TextGroupItem: __webpack_require__(28),
 	      TextGroupSelection: __webpack_require__(83),
 	      TextGroupUtil: __webpack_require__(17)
 	    },
 	    util: {
 	      Console: __webpack_require__(172),
 	      getBackgroundImage: __webpack_require__(84),
-	      HtmlUtil: __webpack_require__(28),
+	      HtmlUtil: __webpack_require__(29),
 	      ModalUtil: __webpack_require__(85),
 	      FocusUtil: __webpack_require__(45),
 	      ErrorUtil: __webpack_require__(173),
@@ -14800,7 +14800,7 @@
 	},
 	    hasProp = {}.hasOwnProperty;
 
-	BaseSelectionHandler = __webpack_require__(24);
+	BaseSelectionHandler = __webpack_require__(25);
 
 	FocusableSelectionHandler = __webpack_require__(67);
 
@@ -14994,7 +14994,7 @@
 
 	var TextGroup, TextGroupAdapter;
 
-	TextGroup = __webpack_require__(26);
+	TextGroup = __webpack_require__(27);
 
 	TextGroupAdapter = {
 	  construct: function construct(model, attrs) {
@@ -15043,7 +15043,7 @@
 	},
 	    hasProp = {}.hasOwnProperty;
 
-	BaseSelectionHandler = __webpack_require__(24);
+	BaseSelectionHandler = __webpack_require__(25);
 
 	TextGroupSelection = __webpack_require__(83);
 

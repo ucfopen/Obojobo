@@ -492,7 +492,7 @@
 	 * different kinds of domTree nodes in a consistent manner.
 	 */
 
-	var domTree = __webpack_require__(21);
+	var domTree = __webpack_require__(22);
 	var fontMetrics = __webpack_require__(3);
 	var symbols = __webpack_require__(8);
 	var utils = __webpack_require__(1);
@@ -3530,7 +3530,7 @@
 
 /***/ },
 
-/***/ 20:
+/***/ 21:
 /***/ function(module, exports) {
 
 	/**
@@ -3565,7 +3565,7 @@
 
 /***/ },
 
-/***/ 21:
+/***/ 22:
 /***/ function(module, exports, __webpack_require__) {
 
 	/**
@@ -3841,7 +3841,7 @@
 
 /***/ },
 
-/***/ 22:
+/***/ 23:
 /***/ function(module, exports) {
 
 	/**
@@ -3883,7 +3883,7 @@
 	 */
 
 	var ParseError = __webpack_require__(2);
-	var Settings = __webpack_require__(20);
+	var Settings = __webpack_require__(21);
 
 	var buildTree = __webpack_require__(56);
 	var parseTree = __webpack_require__(62);
@@ -4357,7 +4357,7 @@
 	var symbols = __webpack_require__(8);
 	var utils = __webpack_require__(1);
 
-	var parseData = __webpack_require__(22);
+	var parseData = __webpack_require__(23);
 	var ParseError = __webpack_require__(2);
 
 	/**
@@ -5090,7 +5090,7 @@
 
 	var buildCommon = __webpack_require__(7);
 	var delimiter = __webpack_require__(57);
-	var domTree = __webpack_require__(21);
+	var domTree = __webpack_require__(22);
 	var fontMetrics = __webpack_require__(3);
 	var utils = __webpack_require__(1);
 
@@ -6977,7 +6977,7 @@
 	var buildMathML = __webpack_require__(55);
 	var buildCommon = __webpack_require__(7);
 	var Options = __webpack_require__(52);
-	var Settings = __webpack_require__(20);
+	var Settings = __webpack_require__(21);
 	var Style = __webpack_require__(6);
 
 	var makeSpan = buildCommon.makeSpan;
@@ -7567,7 +7567,7 @@
 /***/ function(module, exports, __webpack_require__) {
 
 	var fontMetrics = __webpack_require__(3);
-	var parseData = __webpack_require__(22);
+	var parseData = __webpack_require__(23);
 	var ParseError = __webpack_require__(2);
 
 	var ParseNode = parseData.ParseNode;

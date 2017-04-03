@@ -247,8 +247,8 @@ app.get('/api/drafts/:draftId/attempts', (req, res, next) => {
 	})
 })
 
-global.oboEvents.on('client:question:recordResponse', (event, req) => {
-	let eventRecordResponse = 'client:question:recordResponse'
+global.oboEvents.on('client:assessment:recordResponse', (event, req) => {
+	let eventRecordResponse = 'client:assessment:recordResponse'
 
 
 	// check perms
