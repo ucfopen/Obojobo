@@ -45,12 +45,12 @@
 /***/ 0:
 /***/ function(module, exports, __webpack_require__) {
 
-	module.exports = __webpack_require__(39);
+	module.exports = __webpack_require__(40);
 
 
 /***/ },
 
-/***/ 38:
+/***/ 39:
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -87,7 +87,7 @@
 
 /***/ },
 
-/***/ 39:
+/***/ 40:
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -99,7 +99,7 @@
 	OBO.register('ObojoboDraft.Chunks.MCAssessment.MCFeedback', {
 	  type: 'chunk',
 	  adapter: null,
-	  componentClass: __webpack_require__(38),
+	  componentClass: __webpack_require__(39),
 	  selectionHandler: new ObojoboDraft.Common.chunk.textChunk.TextGroupSelectionHandler()
 	});
 

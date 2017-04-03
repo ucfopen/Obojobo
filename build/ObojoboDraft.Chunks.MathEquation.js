@@ -214,7 +214,7 @@
 
 	/* jshint unused:false */
 
-	var Style = __webpack_require__(30);
+	var Style = __webpack_require__(31);
 
 	/**
 	 * This file contains metrics regarding fonts and individual symbols. The sigma
@@ -351,7 +351,7 @@
 
 /***/ },
 
-/***/ 30:
+/***/ 31:
 /***/ function(module, exports) {
 
 	/**
@@ -484,7 +484,7 @@
 
 /***/ },
 
-/***/ 31:
+/***/ 32:
 /***/ function(module, exports, __webpack_require__) {
 
 	/**
@@ -494,7 +494,7 @@
 
 	var domTree = __webpack_require__(95);
 	var fontMetrics = __webpack_require__(23);
-	var symbols = __webpack_require__(32);
+	var symbols = __webpack_require__(33);
 	var utils = __webpack_require__(9);
 
 	var greekCapitals = [
@@ -938,7 +938,7 @@
 
 /***/ },
 
-/***/ 32:
+/***/ 33:
 /***/ function(module, exports) {
 
 	/**
@@ -4486,7 +4486,7 @@
 	var functions = __webpack_require__(254);
 	var environments = __webpack_require__(252);
 	var Lexer = __webpack_require__(245);
-	var symbols = __webpack_require__(32);
+	var symbols = __webpack_require__(33);
 	var utils = __webpack_require__(9);
 
 	var parseData = __webpack_require__(96);
@@ -5218,9 +5218,9 @@
 	 */
 
 	var ParseError = __webpack_require__(12);
-	var Style = __webpack_require__(30);
+	var Style = __webpack_require__(31);
 
-	var buildCommon = __webpack_require__(31);
+	var buildCommon = __webpack_require__(32);
 	var delimiter = __webpack_require__(251);
 	var domTree = __webpack_require__(95);
 	var fontMetrics = __webpack_require__(23);
@@ -6585,11 +6585,11 @@
 	 * parser.
 	 */
 
-	var buildCommon = __webpack_require__(31);
+	var buildCommon = __webpack_require__(32);
 	var fontMetrics = __webpack_require__(23);
 	var mathMLTree = __webpack_require__(255);
 	var ParseError = __webpack_require__(12);
-	var symbols = __webpack_require__(32);
+	var symbols = __webpack_require__(33);
 	var utils = __webpack_require__(9);
 
 	var makeSpan = buildCommon.makeSpan;
@@ -7107,10 +7107,10 @@
 
 	var buildHTML = __webpack_require__(248);
 	var buildMathML = __webpack_require__(249);
-	var buildCommon = __webpack_require__(31);
+	var buildCommon = __webpack_require__(32);
 	var Options = __webpack_require__(246);
 	var Settings = __webpack_require__(94);
-	var Style = __webpack_require__(30);
+	var Style = __webpack_require__(31);
 
 	var makeSpan = buildCommon.makeSpan;
 
@@ -7175,11 +7175,11 @@
 	 */
 
 	var ParseError = __webpack_require__(12);
-	var Style = __webpack_require__(30);
+	var Style = __webpack_require__(31);
 
-	var buildCommon = __webpack_require__(31);
+	var buildCommon = __webpack_require__(32);
 	var fontMetrics = __webpack_require__(23);
-	var symbols = __webpack_require__(32);
+	var symbols = __webpack_require__(33);
 	var utils = __webpack_require__(9);
 
 	var makeSpan = buildCommon.makeSpan;

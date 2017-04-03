@@ -73,7 +73,7 @@
 
 /***/ },
 
-/***/ 33:
+/***/ 34:
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -109,7 +109,7 @@
 
 /***/ },
 
-/***/ 34:
+/***/ 35:
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -121,13 +121,13 @@
 	OBO.register('ObojoboDraft.Chunks.MCAssessment.MCAnswer', {
 	  type: 'chunk',
 	  adapter: null,
-	  componentClass: __webpack_require__(33),
+	  componentClass: __webpack_require__(34),
 	  selectionHandler: new ObojoboDraft.Common.chunk.textChunk.TextGroupSelectionHandler()
 	});
 
 /***/ },
 
-/***/ 35:
+/***/ 36:
 /***/ function(module, exports) {
 
 	'use strict';
@@ -156,7 +156,7 @@
 
 /***/ },
 
-/***/ 36:
+/***/ 37:
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -240,7 +240,7 @@
 
 /***/ },
 
-/***/ 37:
+/***/ 38:
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -251,14 +251,14 @@
 
 	OBO.register('ObojoboDraft.Chunks.MCAssessment.MCChoice', {
 	  type: 'chunk',
-	  adapter: __webpack_require__(35),
-	  componentClass: __webpack_require__(36),
+	  adapter: __webpack_require__(36),
+	  componentClass: __webpack_require__(37),
 	  selectionHandler: new ObojoboDraft.Common.chunk.textChunk.TextGroupSelectionHandler()
 	});
 
 /***/ },
 
-/***/ 38:
+/***/ 39:
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -295,7 +295,7 @@
 
 /***/ },
 
-/***/ 39:
+/***/ 40:
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -307,7 +307,7 @@
 	OBO.register('ObojoboDraft.Chunks.MCAssessment.MCFeedback', {
 	  type: 'chunk',
 	  adapter: null,
-	  componentClass: __webpack_require__(38),
+	  componentClass: __webpack_require__(39),
 	  selectionHandler: new ObojoboDraft.Common.chunk.textChunk.TextGroupSelectionHandler()
 	});
 
@@ -701,11 +701,11 @@
 
 	var ObojoboDraft;
 
-	__webpack_require__(37);
+	__webpack_require__(38);
 
-	__webpack_require__(34);
+	__webpack_require__(35);
 
-	__webpack_require__(39);
+	__webpack_require__(40);
 
 	ObojoboDraft = window.ObojoboDraft;
 

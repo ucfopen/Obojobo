@@ -86,7 +86,8 @@ app.post('/api/assessments/attempt/start', (req, res, next) => {
 			payload: { attemptId:result.attemptId },
 			userId: currentUser.id,
 			ip: getIp(req),
-			metadata: {}
+			metadata: {},
+			draftId: draftId
 		})
 	})
 	.catch(error => {
@@ -206,7 +207,8 @@ app.post('/api/assessments/attempt/:attemptId/end', (req, res, next) => {
 			payload: { attemptId: req.params.attemptId },
 			userId: currentUser.id,
 			ip: getIp(req),
-			metadata: {}
+			metadata: {},
+			draftId: draftId
 		})
 	})
 	.catch(error => {

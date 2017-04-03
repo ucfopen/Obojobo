@@ -271,7 +271,8 @@
 
 	'use strict';
 
-	var Dispatcher,
+	var APIUtil,
+	    Dispatcher,
 	    NavStore,
 	    NavUtil,
 	    OBO,
@@ -288,6 +289,8 @@
 	    hasProp = {}.hasOwnProperty;
 
 	NavUtil = __webpack_require__(16);
+
+	APIUtil = __webpack_require__(30);
 
 	OBO = window.OBO;
 
@@ -311,7 +314,14 @@
 	      }(this),
 	      'nav:gotoPath': function (_this) {
 	        return function (payload) {
-	          return _this.gotoItem(_this.state.itemsByPath[payload.value.path]);
+	          var oldNavTargetId;
+	          oldNavTargetId = _this.state.navTargetId;
+	          if (_this.gotoItem(_this.state.itemsByPath[payload.value.path])) {
+	            return APIUtil.postEvent(OboModel.getRoot(), 'nav:gotoPath', {
+	              from: oldNavTargetId,
+	              to: _this.state.itemsByPath[payload.value.path].id
+	            });
+	          }
 	        };
 	      }(this),
 	      'nav:setFlag': function navSetFlag(payload) {
@@ -322,17 +332,40 @@
 	      },
 	      'nav:prev': function (_this) {
 	        return function (payload) {
-	          return _this.gotoItem(NavUtil.getPrev(_this.state));
+	          var oldNavTargetId, prev;
+	          oldNavTargetId = _this.state.navTargetId;
+	          prev = NavUtil.getPrev(_this.state);
+	          if (_this.gotoItem(prev)) {
+	            return APIUtil.postEvent(OboModel.getRoot(), 'nav:prev', {
+	              from: oldNavTargetId,
+	              to: prev.id
+	            });
+	          }
 	        };
 	      }(this),
 	      'nav:next': function (_this) {
 	        return function (payload) {
-	          return _this.gotoItem(NavUtil.getNext(_this.state));
+	          var next, oldNavTargetId;
+	          oldNavTargetId = _this.state.navTargetId;
+	          next = NavUtil.getNext(_this.state);
+	          if (_this.gotoItem(next)) {
+	            return APIUtil.postEvent(OboModel.getRoot(), 'nav:next', {
+	              from: oldNavTargetId,
+	              to: next.id
+	            });
+	          }
 	        };
 	      }(this),
 	      'nav:goto': function (_this) {
 	        return function (payload) {
-	          return _this.gotoItem(_this.state.itemsById[payload.value.id]);
+	          var oldNavTargetId;
+	          oldNavTargetId = _this.state.navTargetId;
+	          if (_this.gotoItem(_this.state.itemsById[payload.value.id])) {
+	            return APIUtil.postEvent(OboModel.getRoot(), 'nav:goto', {
+	              from: oldNavTargetId,
+	              to: _this.state.itemsById[payload.value.id].id
+	            });
+	          }
 	        };
 	      }(this),
 	      'nav:lock': function (_this) {
@@ -452,7 +485,7 @@
 	  NavStore.prototype.gotoItem = function (navItem) {
 	    var navTargetModel, ref;
 	    if (!navItem) {
-	      return;
+	      return false;
 	    }
 	    if (this.state.navTargetId != null) {
 	      if (this.state.navTargetId === navItem.id) {
@@ -468,7 +501,8 @@
 	    window.history.pushState({}, document.title, navItem.fullFlatPath);
 	    this.state.navTargetId = navItem.id;
 	    NavUtil.getNavTargetModel(this.state).processTrigger('onNavEnter');
-	    return this.triggerChange();
+	    this.triggerChange();
+	    return true;
 	  };
 
 	  NavStore.prototype.generateNav = function (model, indent) {
@@ -542,7 +576,7 @@
 
 /***/ },
 
-/***/ 45:
+/***/ 30:
 /***/ function(module, exports) {
 
 	'use strict';
@@ -598,11 +632,11 @@
 	    });
 	  },
 	  postEvent: function postEvent(lo, eventAction, eventPayload) {
+	    console.log('POST EVENT', eventPayload);
 	    return createParsedJsonPromise(APIUtil.post('/api/events', {
 	      event: {
 	        action: eventAction,
 	        draft_id: lo.get('_id'),
-	        draft_rev: lo.get('_rev'),
 	        actor_time: new Date().toISOString(),
 	        payload: eventPayload
 	      }
@@ -790,7 +824,7 @@
 
 	QuestionUtil = __webpack_require__(46);
 
-	APIUtil = __webpack_require__(45);
+	APIUtil = __webpack_require__(30);
 
 	NavUtil = __webpack_require__(16);
 
@@ -999,7 +1033,7 @@
 	},
 	    hasProp = {}.hasOwnProperty;
 
-	APIUtil = __webpack_require__(45);
+	APIUtil = __webpack_require__(30);
 
 	Store = window.ObojoboDraft.Common.flux.Store;
 
@@ -1039,7 +1073,7 @@
 	      }(this),
 	      'question:hide': function (_this) {
 	        return function (payload) {
-	          APIUtil.postEvent(OboModel.models[payload.value.id], 'question:hide', {
+	          APIUtil.postEvent(OboModel.models[payload.value.id].getRoot(), 'question:hide', {
 	            questionId: payload.value.id
 	          });
 	          delete _this.state.viewedQuestions[payload.value.id];
@@ -1051,7 +1085,7 @@
 	      }(this),
 	      'question:view': function (_this) {
 	        return function (payload) {
-	          APIUtil.postEvent(OboModel.models[payload.value.id], 'question:view', {
+	          APIUtil.postEvent(OboModel.models[payload.value.id].getRoot(), 'question:view', {
 	            questionId: payload.value.id
 	          });
 	          _this.state.viewedQuestions[payload.value.id] = true;
@@ -1969,7 +2003,7 @@
 	    AssessmentUtil: __webpack_require__(92),
 	    NavUtil: __webpack_require__(16),
 	    ScoreUtil: __webpack_require__(93),
-	    APIUtil: __webpack_require__(45),
+	    APIUtil: __webpack_require__(30),
 	    QuestionUtil: __webpack_require__(46)
 	  }
 	};

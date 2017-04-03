@@ -4552,6 +4552,14 @@
 
 	OboModel.models = {};
 
+	OboModel.getRoot = function () {
+	  var id;
+	  for (id in OboModel.models) {
+	    return OboModel.models[id].getRoot();
+	  }
+	  return null;
+	};
+
 	OboModelCollection = function (superClass) {
 	  extend(OboModelCollection, superClass);
 
@@ -6295,7 +6303,8 @@
 /* 37 */,
 /* 38 */,
 /* 39 */,
-/* 40 */
+/* 40 */,
+/* 41 */
 /***/ function(module, exports, __webpack_require__) {
 
 	"use strict";
@@ -6332,7 +6341,7 @@
 	});
 
 /***/ },
-/* 41 */
+/* 42 */
 /***/ function(module, exports, __webpack_require__) {
 
 	"use strict";
@@ -6381,7 +6390,7 @@
 	module.exports = Store;
 
 /***/ },
-/* 42 */
+/* 43 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -6480,7 +6489,7 @@
 	module.exports = OboSelectionRect;
 
 /***/ },
-/* 43 */
+/* 44 */
 /***/ function(module, exports) {
 
 	"use strict";
@@ -6507,7 +6516,7 @@
 	module.exports = VirtualCursor;
 
 /***/ },
-/* 44 */
+/* 45 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -6537,7 +6546,6 @@
 	module.exports = FocusUtil;
 
 /***/ },
-/* 45 */,
 /* 46 */,
 /* 47 */,
 /* 48 */,
@@ -13270,7 +13278,7 @@
 
 	Button = __webpack_require__(70);
 
-	DeleteButton = __webpack_require__(40);
+	DeleteButton = __webpack_require__(41);
 
 	Modal = __webpack_require__(74);
 
@@ -13381,7 +13389,7 @@
 
 	__webpack_require__(223);
 
-	DeleteButton = __webpack_require__(40);
+	DeleteButton = __webpack_require__(41);
 
 	module.exports = React.createClass({
 	  displayName: 'exports',
@@ -13634,7 +13642,7 @@
 
 	var DOMSelection, DOMUtil, VirtualCursor, VirtualSelection;
 
-	VirtualCursor = __webpack_require__(43);
+	VirtualCursor = __webpack_require__(44);
 
 	DOMUtil = __webpack_require__(14);
 
@@ -14245,7 +14253,7 @@
 
 	TextGroupCursor = __webpack_require__(82);
 
-	VirtualCursor = __webpack_require__(43);
+	VirtualCursor = __webpack_require__(44);
 
 	DOMUtil = __webpack_require__(14);
 
@@ -14595,7 +14603,7 @@
 	    components: {
 	      OboComponent: __webpack_require__(160),
 	      Anchor: __webpack_require__(69),
-	      DeleteButton: __webpack_require__(40),
+	      DeleteButton: __webpack_require__(41),
 	      EditButton: __webpack_require__(154),
 	      Button: __webpack_require__(70),
 	      modal: {
@@ -14615,7 +14623,7 @@
 	      FocusBlocker: __webpack_require__(155)
 	    },
 	    flux: {
-	      Store: __webpack_require__(41),
+	      Store: __webpack_require__(42),
 	      Dispatcher: __webpack_require__(4)
 	    },
 	    mockDOM: {
@@ -14633,9 +14641,9 @@
 	      ChunkSelection: __webpack_require__(167),
 	      Cursor: __webpack_require__(78),
 	      DOMSelection: __webpack_require__(18),
-	      OboSelectionRect: __webpack_require__(42),
+	      OboSelectionRect: __webpack_require__(43),
 	      Selection: __webpack_require__(168),
-	      VirtualCursor: __webpack_require__(43),
+	      VirtualCursor: __webpack_require__(44),
 	      VirtualCursorData: __webpack_require__(169),
 	      VirtualSelection: __webpack_require__(79)
 	    },
@@ -14670,7 +14678,7 @@
 	      getBackgroundImage: __webpack_require__(84),
 	      HtmlUtil: __webpack_require__(28),
 	      ModalUtil: __webpack_require__(85),
-	      FocusUtil: __webpack_require__(44),
+	      FocusUtil: __webpack_require__(45),
 	      ErrorUtil: __webpack_require__(173),
 	      UUID: __webpack_require__(86),
 	      OboGlobals: __webpack_require__(174)
@@ -15323,7 +15331,7 @@
 
 	__webpack_require__(218);
 
-	FocusUtil = __webpack_require__(44);
+	FocusUtil = __webpack_require__(45);
 
 	FocusBlocker = React.createClass({
 	  displayName: 'FocusBlocker',
@@ -15490,7 +15498,7 @@
 
 	var FocusUtil, OboComponent;
 
-	FocusUtil = __webpack_require__(44);
+	FocusUtil = __webpack_require__(45);
 
 	OboComponent = React.createClass({
 	  displayName: 'OboComponent',
@@ -15889,7 +15897,7 @@
 
 	var OboSelectionRect, PX_EDGE_PADDING, Screen;
 
-	OboSelectionRect = __webpack_require__(42);
+	OboSelectionRect = __webpack_require__(43);
 
 	PX_EDGE_PADDING = 50;
 
@@ -16171,7 +16179,7 @@
 
 	var DOMSelection, OboSelectionRect, Selection, VirtualSelection;
 
-	OboSelectionRect = __webpack_require__(42);
+	OboSelectionRect = __webpack_require__(43);
 
 	DOMSelection = __webpack_require__(18);
 
@@ -16307,7 +16315,7 @@
 	},
 	    hasProp = {}.hasOwnProperty;
 
-	Store = __webpack_require__(41);
+	Store = __webpack_require__(42);
 
 	Dispatcher = __webpack_require__(4);
 
@@ -16387,7 +16395,7 @@
 	},
 	    hasProp = {}.hasOwnProperty;
 
-	Store = __webpack_require__(41);
+	Store = __webpack_require__(42);
 
 	Dispatcher = __webpack_require__(4);
 
