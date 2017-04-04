@@ -1,8 +1,13 @@
 let getQuestionHistory = (attemptHistory, questionBank) => {
+	console.log('   GET QUESTION HISTORY', questionBank.node.id)
+
 	let attempt, question
 	let questionHistory = new Map(
 		[...questionBank.immediateChildrenSet]
-			.filter( (id) => { return questionBank.draftTree.findNodeClass(id).node.type !== 'ObojoboDraft.Chunks.QuestionBank' } )
+			.filter( (id) => {
+				console.log('TEST', id, questionBank.draftTree.findNodeClass(id).node.type !== 'ObojoboDraft.Chunks.QuestionBank')
+				return questionBank.draftTree.findNodeClass(id).node.type !== 'ObojoboDraft.Chunks.QuestionBank'
+			} )
 			.map( (id) => { return [id, 0] })
 	)
 
@@ -54,8 +59,10 @@ let getRandomAllQuestions = (questionHistory, questionBank) => {
 }
 
 let getSequentialQuestions = (questionHistory, questionBank) => {
+	console.log('   GET SEQ', questionBank.node.id, questionBank.node.content)
 	let opts = getBankOptions(questionBank.node)
 	let questionHistoryArray = getQuestionHistoryArray(questionHistory)
+	console.log('   QH ARRAY', questionBank.node.id, questionHistoryArray)
 
 	questionHistoryArray.sort( (a, b) => {
 		if(a.timesUsed === b.timesUsed)
@@ -71,20 +78,29 @@ let getSequentialQuestions = (questionHistory, questionBank) => {
 }
 
 let getQuestions = (questionHistoryArray, questionBank, choose) => {
-	return (
-		questionHistoryArray
-			.filter( (questionItem) => {
-				let question = questionBank.draftTree.findNodeClass(questionItem.id)
-				let content = question.node.content
-				let limitExceeded = content.limit && content.limit !== 0 && questionItem.timesUsed >= content.limit
+	console.log('   GET QUESTIONS', choose)
 
-				return !limitExceeded
-			} )
-			.slice(0, choose)
-			.map( (questionItem) => {
-				return questionBank.draftTree.findNodeClass(questionItem.id)
-			} )
-	)
+	let result = questionHistoryArray
+		.filter( (questionItem) => {
+			let question = questionBank.draftTree.findNodeClass(questionItem.id)
+			let content = question.node.content
+			let limitExceeded = content.limit && content.limit !== 0 && questionItem.timesUsed >= content.limit
+
+			return !limitExceeded
+		} )
+		.slice(0, choose)
+		.map( (questionItem) => {
+			return questionBank.draftTree.findNodeClass(questionItem.id)
+		} )
+
+	console.log('   result')
+	for(let i in result)
+	{
+		console.log('      ', result[i].node.id)
+	}
+	console.log('   ---------')
+
+	return result
 }
 
 let shuffleArray = function(array) {
@@ -117,6 +133,7 @@ let getBankOptions = (questionBankNode) => {
 
 module.exports = function(questionBank, attemptHistory) {
 	let questionHistory = getQuestionHistory(attemptHistory, questionBank)
+	console.log('QHISTORY', questionBank.node.id, questionHistory)
 	let opts = getBankOptions(questionBank.node)
 
 	switch(opts.select) {

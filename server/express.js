@@ -18,6 +18,7 @@ app.post('/api/assessments/attempt/start', (req, res, next) => {
 	let attemptState
 	let isPreviewing
 	let attemptHistory
+	let assessmentQBTree
 
 	req.requireCurrentUser()
 	.then(user => {
@@ -43,20 +44,224 @@ app.post('/api/assessments/attempt/start', (req, res, next) => {
 			throw new Error('Attempt limit reached')
 		}
 
+		// 1. create a tree structure from the assessment question bank
+		// 2. create another tree structure from the attempt history
+		// 3. use the attempt history and node settings to trim the tree,
+		//  leaving only the nodes to send to the client
+		// 4. flatten the tree to only questions
+
+		let getBankOptions = (questionBankNode) => {
+			let content = questionBankNode.content
+
+			return ({
+				choose: content.choose    || Infinity,
+				select: content.select    || 'sequential',
+			})
+		}
+
+		let shuffleArray = function(array) {
+			var currentIndex = array.length, temporaryValue, randomIndex;
+
+			// While there remain elements to shuffle...
+			while (0 !== currentIndex) {
+
+				// Pick a remaining element...
+				randomIndex = Math.floor(Math.random() * currentIndex);
+				currentIndex -= 1;
+
+				// And swap it with the current element.
+				temporaryValue = array[currentIndex];
+				array[currentIndex] = array[randomIndex];
+				array[randomIndex] = temporaryValue;
+			}
+
+			return array;
+		}
+
+
+		let childrenIds = assessment.children[1].childrenSet
+
+		// console.log('childrenSet', childrenIds)
+
+		let uses = new Map()
+		childrenIds.forEach( (id) => {
+			let type = assessment.draftTree.findNodeClass(id).node.type
+			if(type === 'ObojoboDraft.Chunks.QuestionBank' || type === 'ObojoboDraft.Chunks.Question')
+			{
+				uses.set(id, 0)
+			}
+		})
+
+		historyTree = assessment.children[1].toObject()
+
+		let constructUses = function(node)
+		{
+			// console.log('CU', node)
+			if(uses.has(node.id))
+			{
+				uses.set(node.id, uses.get(node.id) + 1)
+			}
+
+			for(let i in node.children)
+			{
+				constructUses(node.children[i])
+			}
+		}
+
+		for(let i in attemptHistory)
+		{
+			// console.log('hisotry', attemptHistory[i])
+			constructUses(attemptHistory[i].state.qb)
+		}
+
+		console.log('uses___', uses)
+
+		assessmentQBTree = assessment.children[1].toObject()
+		// console.log('assessmentQBTree', assessmentQBTree)
+
+		let chooseChildren = function(choose, select, node)
+		{
+			console.log('choose children', choose, select, node.id)
+
+
+			let draftNode = assessment.draftTree.findNodeClass(node.id)
+			let myChildren = [...draftNode.immediateChildrenSet]
+
+			if(!select) select = 'sequential';
+
+
+
+			switch(select)
+			{
+				case 'sequential':
+
+
+					myChildren.sort(function(a, b) {
+						return uses.get(a) - uses.get(b)
+					})
+
+					var myChildrenDraftNodes = myChildren.map( (id) => {
+						return assessment.draftTree.findNodeClass(id).toObject()
+					})
+
+					var slice = myChildrenDraftNodes.slice(0, choose)
+
+					break
+
+				case 'random-all':
+					myChildren = shuffleArray(myChildren)
+
+					var myChildrenDraftNodes = myChildren.map( (id) => {
+						return assessment.draftTree.findNodeClass(id).toObject()
+					})
+
+					var slice = myChildrenDraftNodes.slice(0, choose)
+
+					break
+
+				case 'random-unseen':
+
+					myChildren.sort(function(a, b) {
+						if(uses.get(a) === uses.get(b))
+						{
+							return Math.random() < 0.5 ? -1 : 1;
+						}
+						return uses.get(a) - uses.get(b)
+					})
+
+					var myChildrenDraftNodes = myChildren.map( (id) => {
+						return assessment.draftTree.findNodeClass(id).toObject()
+					})
+
+					var slice = myChildrenDraftNodes.slice(0, choose)
+
+					break
+			}
+
+
+
+			console.log('i chose', slice.map(function(dn) { return dn.id }))
+
+			return slice
+		}
+
+		let trimTree = function(node)
+		{
+			if(node.type === 'ObojoboDraft.Chunks.QuestionBank')
+			{
+				console.log('TEST', node.id, node.content, node.content.choose)
+				let opts = getBankOptions(node)
+				node.children = chooseChildren(opts.choose, opts.select, node)
+			}
+
+			for(let i in node.children)
+			{
+				trimTree(node.children[i])
+			}
+		}
+
+		trimTree(assessmentQBTree)
+
+		let questions = []
+		let flattenTree = function(node)
+		{
+			if(node.type === 'ObojoboDraft.Chunks.Question')
+			{
+				questions.push(assessment.draftTree.findNodeClass(node.id))
+			}
+
+			for(let i in node.children)
+			{
+				flattenTree(node.children[i])
+			}
+		}
+
+		flattenTree(assessmentQBTree)
+
+		// console.log('FLAT TREE', questions)
+		// return;
+
+		// let buildAssessmentTree = (draftNode) => {
+		// 	console.log('BAT', draftNode)
+		// 	let o = {
+		// 		id: draftNode.node.id,
+		// 		children: []
+		// 	}
+
+		// 	for(i in draftNode.children)
+		// 	{
+		// 		let child = draftNode.draftTree.findNodeClass(draftNode.children[i])
+		// 		o.children.push(buildAssessmentTree(child))
+		// 	}
+
+		// 	return o
+		// }
+
+		// let questionTree = buildAssessmentTree(assessment.children[1])
+
+		// console.log('QT', questionTree)
+
 		attemptState = {
-			questions: [],
+			qb: assessmentQBTree,
+			questions: questions,
 			data: {}
 		}
 
-		let promises = assessment.yell('ObojoboDraft.Sections.Assessment:attemptStart', req, res, assessment, attemptHistory, {
-			getQuestions: function() { return attemptState.questions },
-			setQuestions: function(q) { attemptState.questions = q },
-			getData:      function() { return attemptState.data },
-			setData:      function(d) { attemptState.data = d },
-		})
-		return Promise.all(promises)
-	})
-	.then(() => {
+		// console.log('ObojoboDraft.Sections.Assessment:attemptStart BEGIN', assessment.children[1].node.id)
+
+		// let promises = assessment.yell('ObojoboDraft.Sections.Assessment:attemptStart', req, res, assessment, attemptHistory, {
+		// 	getQuestions: function() { return attemptState.questions },
+		// 	setQuestions: function(q) { attemptState.questions = q },
+		// 	getData:      function() { return attemptState.data },
+		// 	setData:      function(d) { attemptState.data = d },
+		// })
+
+		// console.log('ObojoboDraft.Sections.Assessment:attemptStart END', attemptState.questions.length)
+
+		// return Promise.all(promises)
+	// 	return true
+	// })
+	// .then(() => {
 		let promises = []
 		for(let i in attemptState.questions)
 		{
@@ -72,7 +277,8 @@ app.post('/api/assessments/attempt/start', (req, res, next) => {
 			req.body.assessmentId,
 			{
 				questions: questionObjects,
-				data: attemptState.data
+				data: attemptState.data,
+				qb: assessmentQBTree
 			},
 			isPreviewing
 		)
