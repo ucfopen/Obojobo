@@ -2491,7 +2491,7 @@
                    "type": "ObojoboDraft.Chunks.QuestionBank",
                    "children": [
                        {
-                           "id": "58846784-efc2-44bb-bf2e-a11a4081fe52",
+                           "id": "aqb.1",
                            "content": {
                                "shuffle": true
                            },
@@ -2625,10 +2625,10 @@
                            ]
                        },
                        {
-                           "id": "e9eadfe7-52af-4d57-aa6f-e710b4f3e610",
+                           "id": "aqb2",
                            "content": {
-                              "choose": 1,
-                              "select": "random-unseen"
+                              "choose": 2,
+                              "select": "sequential"
                            },
                            "metadata": {
                            },
@@ -2636,10 +2636,9 @@
                            "type": "ObojoboDraft.Chunks.QuestionBank",
                            "children": [
                                {
-                                   "id": "05198d90-9c2a-49a1-b9a1-aa547f440e40",
+                                   "id": "qb-1",
                                    "content": {
-                                       "shuffle": true,
-                                       "limit": 1
+                                       "shuffle": true
                                    },
                                    "metadata": {
                                    },
@@ -2771,10 +2770,9 @@
                                    ]
                                },
                                {
-                                   "id": "fdeec8f5-4541-4cb6-b5fe-364fffed5ed7",
+                                   "id": "qb-2",
                                    "content": {
-                                       "shuffle": true,
-                                       "limit": 1
+                                       "shuffle": true
                                    },
                                    "metadata": {
                                    },
@@ -2950,7 +2948,7 @@
                                    ]
                                },
                                {
-                                   "id": "258e0d44-fc5d-4708-bb20-6ecc1b1b9a7d",
+                                   "id": "qb-3",
                                    "content": {
                                        "shuffle": true
                                    },
@@ -3128,7 +3126,7 @@
                                    ]
                                },
                                {
-                                   "id": "2ca74085-7d43-44fe-a7c3-5d10ab03fef7",
+                                   "id": "qb-4",
                                    "content": {
                                        "shuffle": true
                                    },
