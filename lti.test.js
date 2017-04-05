@@ -1,12 +1,11 @@
-let originalConsole = console
-global.console = {warn: jest.fn(), log: jest.fn(), error: jest.fn()}
 let lti
-
-
 
 describe('lti', () => {
 
 	beforeAll(() => {
+		let originalConsole = console
+		global.console = {warn: jest.fn(), log: jest.fn(), error: jest.fn()}
+
 		jest.mock('fs');
 		jest.mock('./db');
 		jest.mock('http')
@@ -243,7 +242,6 @@ describe('lti', () => {
 
 		return lti.replaceResult(1, 2, 1)
 		.catch((err) => {
-			// expect(console.log).toBeCalledWith('No Relevent LTI Request found for user 1, on 2')
 			expect(err).toBeInstanceOf(Error)
 			expect(err.message).toBe('Unable to send score to LMS')
 			expect(console.log).toBeCalledWith('SETTING LTI OUTCOME SCORE SET to 1 for user: 1 on sourcedid: test-sourcedid using key: testkey')
