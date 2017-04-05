@@ -16,7 +16,6 @@ let User = oboRequire('models/user')
 let GuestUser = oboRequire('models/guest_user')
 let config = oboRequire('config')
 let insertEvent = oboRequire('insert_event')
-let getIp = oboRequire('get_ip')
 let ltiUtil = oboRequire('lti')
 
 // Global event emitter for the application
@@ -29,6 +28,10 @@ app.on('mount', (app) => {
 
 	// Add some request
 	parentApp.use((req, res, next) => {
+		// make sure the remoteAddress is set behind a load balancer
+		if(req.headers['x-forwarded-for']){
+			req.connection.remoteAddress = req.headers['x-forwarded-for']
+		}
 		// if we're behind a load balancer or something
 		if(req.headers['x-forwarded-proto'] === 'https'){
 			req.connection.encrypted = true;
@@ -149,7 +152,7 @@ app.on('mount', (app) => {
 				actorTime: new Date().toISOString(),
 				payload: { launchId:result.id },
 				userId: currentUser.id,
-				ip: getIp(req),
+				ip: req.connection.remoteAddress,
 				metadata: {},
 				draftId: req.params.draftId
 			})

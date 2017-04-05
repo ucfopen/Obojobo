@@ -2,7 +2,6 @@ var express = require('express');
 var app = express();
 
 var insertEvent = oboRequire('insert_event')
-var getIp = oboRequire('get_ip')
 
 app.post('/', (req, res, next) => {
 	req.requireCurrentUser()
@@ -16,7 +15,7 @@ app.post('/', (req, res, next) => {
 			actorTime: event.actor_time,
 			action: event.action,
 			userId: currentUser.id,
-			ip: getIp(req),
+			ip: req.connection.remoteAddress,
 			metadata: {},
 			payload: event.payload,
 			draftId: event.draft_id

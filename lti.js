@@ -4,7 +4,6 @@ let config = oboRequire('config')
 let db = require('./db')
 let moment = require('moment')
 let insertEvent = oboRequire('insert_event')
-let getIp = oboRequire('get_ip')
 
 let retrieveLtiRequestData = function(userId, draftId) {
 	return db.one(`
