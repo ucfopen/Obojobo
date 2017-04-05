@@ -1,18 +1,3 @@
-// jest.mock('fs');
-// let fs = require('fs')
-// let dbJson = JSON.stringify({
-// 	test:{
-// 		host: 'hostVal',
-// 		port: 'portVal',
-// 		database: 'databaseVal',
-// 		user: 'userVal',
-// 		password: 'pwVal'
-// 	},
-// 	development:{
-// 		host: 'itsdev!',
-// 	},
-// })
-
 // Global for loading specialized Obojobo stuff
 // use oboRequire('models/draft') to load draft models from any context
 global.oboRequire = function(name) {
@@ -59,6 +44,4 @@ describe('draft_node_store', () => {
 		let g2 = draft_node_store.get('test-node-ignore')
 		expect(g2).toBe(DraftNode)
 	})
-
-
 })
