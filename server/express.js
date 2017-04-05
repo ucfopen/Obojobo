@@ -8,6 +8,7 @@ let insertEvent = oboRequire('insert_event')
 let getIp = oboRequire('get_ip')
 
 let logAndRespondToUnexpected = (errorMessage, res, req, jsError) => {
+	console.error('logAndRespondToUnexpected', jsError, errorMessage);
 	res.unexpected(jsError)
 }
 
