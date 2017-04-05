@@ -2627,9 +2627,9 @@ object.omit@^2.0.0:
     for-own "^0.1.4"
     is-extendable "^0.1.1"
 
-"obojobo-draft-document-engine@git+ssh://git@github.com/ucfcdl/Obojobo-Document-Engine.git#v0.0.7":
-  version "0.0.7"
-  resolved "git+ssh://git@github.com/ucfcdl/Obojobo-Document-Engine.git#e0ac04468b8fc77ff74e9beb109f2bce48598ee1"
+"obojobo-draft-document-engine@git+ssh://git@github.com/ucfcdl/Obojobo-Document-Engine.git#v0.0.8":
+  version "0.0.8"
+  resolved "git+ssh://git@github.com/ucfcdl/Obojobo-Document-Engine.git#f24be739de896674a99e0aa72640c406ad9a9314"
   dependencies:
     smoothscroll-polyfill "^0.3.4"
     whatwg-fetch "^2.0.3"

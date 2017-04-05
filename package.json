@@ -54,6 +54,7 @@
   },
   "jest": {
     "verbose": true,
+    "setupTestFrameworkScriptFile":"./setup_tests.js",
     "testPathIgnorePatterns": [
       "devsrc"
     ]

@@ -21,6 +21,7 @@ const msgFunctions = ['missing', 'badInput', 'unexpected', 'reject']
 
 describe('api_response_decorator', () => {
 	it('sets the expected properties on res', () => {
+		expect.assertions(functions.length * 2);
 		let [res, req, mockJson, mockStatus, mockNext] = mockArgs()
 
 		functions.forEach(prop => {
@@ -52,6 +53,7 @@ describe('api_response_decorator', () => {
 	})
 
 	it('messages to be returned in the value object', () =>{
+		expect.assertions(msgFunctions.length * 2);
 
 		let [res, req, mockJson, mockStatus, mockNext] = mockArgs()
 
@@ -64,6 +66,7 @@ describe('api_response_decorator', () => {
 	})
 
 	it('messages to set error status in json', () =>{
+		expect.assertions(msgFunctions.length);
 
 		let [res, req, mockJson, mockStatus, mockNext] = mockArgs()
 

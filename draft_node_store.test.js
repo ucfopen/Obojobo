@@ -1,9 +1,3 @@
-// Global for loading specialized Obojobo stuff
-// use oboRequire('models/draft') to load draft models from any context
-global.oboRequire = function(name) {
-	return require(`${__dirname}/${name}`);
-}
-
 jest.mock('test_node');
 
 let DraftNode = global.oboRequire('models/draft_node')
