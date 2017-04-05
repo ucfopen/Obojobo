@@ -68,19 +68,19 @@
 /***/ 0:
 /***/ function(module, exports, __webpack_require__) {
 
-	module.exports = __webpack_require__(125);
+	module.exports = __webpack_require__(143);
 
 
 /***/ },
 
-/***/ 34:
+/***/ 39:
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
 
 	var Common, MCAnswer, OboComponent;
 
-	__webpack_require__(47);
+	__webpack_require__(57);
 
 	Common = window.ObojoboDraft.Common;
 
@@ -109,7 +109,7 @@
 
 /***/ },
 
-/***/ 35:
+/***/ 40:
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -121,13 +121,13 @@
 	OBO.register('ObojoboDraft.Chunks.MCAssessment.MCAnswer', {
 	  type: 'chunk',
 	  adapter: null,
-	  componentClass: __webpack_require__(34),
+	  componentClass: __webpack_require__(39),
 	  selectionHandler: new ObojoboDraft.Common.chunk.textChunk.TextGroupSelectionHandler()
 	});
 
 /***/ },
 
-/***/ 36:
+/***/ 41:
 /***/ function(module, exports) {
 
 	'use strict';
@@ -156,14 +156,14 @@
 
 /***/ },
 
-/***/ 37:
+/***/ 42:
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
 
 	var Common, MCChoice, OboComponent, OboModel, QuestionUtil;
 
-	__webpack_require__(48);
+	__webpack_require__(58);
 
 	Common = window.ObojoboDraft.Common;
 
@@ -240,7 +240,7 @@
 
 /***/ },
 
-/***/ 38:
+/***/ 43:
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -251,21 +251,21 @@
 
 	OBO.register('ObojoboDraft.Chunks.MCAssessment.MCChoice', {
 	  type: 'chunk',
-	  adapter: __webpack_require__(36),
-	  componentClass: __webpack_require__(37),
+	  adapter: __webpack_require__(41),
+	  componentClass: __webpack_require__(42),
 	  selectionHandler: new ObojoboDraft.Common.chunk.textChunk.TextGroupSelectionHandler()
 	});
 
 /***/ },
 
-/***/ 39:
+/***/ 44:
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
 
 	var Common, MCFeedback, OboComponent;
 
-	__webpack_require__(49);
+	__webpack_require__(59);
 
 	Common = window.ObojoboDraft.Common;
 
@@ -295,7 +295,7 @@
 
 /***/ },
 
-/***/ 40:
+/***/ 45:
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -307,26 +307,26 @@
 	OBO.register('ObojoboDraft.Chunks.MCAssessment.MCFeedback', {
 	  type: 'chunk',
 	  adapter: null,
-	  componentClass: __webpack_require__(39),
+	  componentClass: __webpack_require__(44),
 	  selectionHandler: new ObojoboDraft.Common.chunk.textChunk.TextGroupSelectionHandler()
 	});
 
 /***/ },
 
-/***/ 47:
+/***/ 57:
 /***/ function(module, exports) {
 
 	// removed by extract-text-webpack-plugin
 
 /***/ },
 
-/***/ 48:
-47,
+/***/ 58:
+57,
 
-/***/ 49:
-47,
+/***/ 59:
+57,
 
-/***/ 123:
+/***/ 141:
 /***/ function(module, exports) {
 
 	'use strict';
@@ -354,14 +354,14 @@
 
 /***/ },
 
-/***/ 124:
+/***/ 142:
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
 
 	var Button, Common, DOMUtil, Dispatcher, MCAssessment, OboComponent, OboModel, QuestionUtil, ReactCSSTransitionGroup, ScoreUtil;
 
-	__webpack_require__(207);
+	__webpack_require__(262);
 
 	ReactCSSTransitionGroup = React.addons.CSSTransitionGroup;
 
@@ -694,31 +694,31 @@
 
 /***/ },
 
-/***/ 125:
+/***/ 143:
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
 
 	var ObojoboDraft;
 
-	__webpack_require__(38);
-
-	__webpack_require__(35);
+	__webpack_require__(43);
 
 	__webpack_require__(40);
+
+	__webpack_require__(45);
 
 	ObojoboDraft = window.ObojoboDraft;
 
 	OBO.register('ObojoboDraft.Chunks.MCAssessment', {
 	  type: 'chunk',
-	  adapter: __webpack_require__(123),
-	  componentClass: __webpack_require__(124),
+	  adapter: __webpack_require__(141),
+	  componentClass: __webpack_require__(142),
 	  selectionHandler: new ObojoboDraft.Common.chunk.textChunk.TextGroupSelectionHandler()
 	});
 
 /***/ },
 
-/***/ 207:
-47
+/***/ 262:
+57
 
 /******/ })));

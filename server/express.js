@@ -111,7 +111,7 @@ app.post('/api/assessments/attempt/start', (req, res, next) => {
 		for(let i in attemptHistory)
 		{
 			// console.log('hisotry', attemptHistory[i])
-			constructUses(attemptHistory[i].state.qb)
+			if(attemptHistory[i].state.qb) constructUses(attemptHistory[i].state.qb)
 		}
 
 		console.log('uses___', uses)
@@ -297,6 +297,8 @@ app.post('/api/assessments/attempt/start', (req, res, next) => {
 		})
 	})
 	.catch(error => {
+		// console.log('attempt start error', error)
+
 		switch(error.message)
 		{
 			case 'Attempt limit reached':

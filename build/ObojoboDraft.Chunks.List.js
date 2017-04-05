@@ -45,12 +45,12 @@
 /***/ 0:
 /***/ function(module, exports, __webpack_require__) {
 
-	module.exports = __webpack_require__(122);
+	module.exports = __webpack_require__(140);
 
 
 /***/ },
 
-/***/ 64:
+/***/ 75:
 /***/ function(module, exports) {
 
 	'use strict';
@@ -208,14 +208,14 @@
 
 /***/ },
 
-/***/ 120:
+/***/ 138:
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
 
 	var Adapter, Common, ListStyles, TextGroup, TextGroupAdapter;
 
-	ListStyles = __webpack_require__(64);
+	ListStyles = __webpack_require__(75);
 
 	Common = window.ObojoboDraft.Common;
 
@@ -258,16 +258,16 @@
 
 /***/ },
 
-/***/ 121:
+/***/ 139:
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
 
 	var Chunk, Common, List, ListStyles, MockElement, MockTextNode, OboComponent, SelectionHandler, TextChunk, TextGroup, TextGroupEl, selectionHandler;
 
-	__webpack_require__(206);
+	__webpack_require__(261);
 
-	ListStyles = __webpack_require__(64);
+	ListStyles = __webpack_require__(75);
 
 	Common = window.ObojoboDraft.Common;
 
@@ -400,7 +400,7 @@
 
 /***/ },
 
-/***/ 122:
+/***/ 140:
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -411,14 +411,14 @@
 
 	OBO.register('ObojoboDraft.Chunks.List', {
 	  type: 'chunk',
-	  adapter: __webpack_require__(120),
-	  componentClass: __webpack_require__(121),
+	  adapter: __webpack_require__(138),
+	  componentClass: __webpack_require__(139),
 	  selectionHandler: new ObojoboDraft.Common.chunk.textChunk.TextGroupSelectionHandler()
 	});
 
 /***/ },
 
-/***/ 206:
+/***/ 261:
 /***/ function(module, exports) {
 
 	// removed by extract-text-webpack-plugin

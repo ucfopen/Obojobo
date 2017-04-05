@@ -1,3 +1,5 @@
+require './polyfills'
+
 ComponentClassMap = require './componentclassmap'
 
 componentClassMap = new ComponentClassMap()

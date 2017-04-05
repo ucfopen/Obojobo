@@ -68,19 +68,19 @@
 /***/ 0:
 /***/ function(module, exports, __webpack_require__) {
 
-	module.exports = __webpack_require__(132);
+	module.exports = __webpack_require__(150);
 
 
 /***/ },
 
-/***/ 129:
+/***/ 147:
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
 
 	var QuestionContent;
 
-	__webpack_require__(209);
+	__webpack_require__(264);
 
 	QuestionContent = React.createClass({
 		displayName: 'QuestionContent',
@@ -103,7 +103,7 @@
 
 /***/ },
 
-/***/ 130:
+/***/ 148:
 /***/ function(module, exports) {
 
 	"use strict";
@@ -158,14 +158,14 @@
 
 /***/ },
 
-/***/ 131:
+/***/ 149:
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
 
 	var Button, Common, Dispatcher, FocusUtil, OboComponent, Question, QuestionContent, QuestionUtil, ReactCSSTransitionGroup, ScoreUtil;
 
-	__webpack_require__(210);
+	__webpack_require__(265);
 
 	ReactCSSTransitionGroup = React.addons.CSSTransitionGroup;
 
@@ -183,7 +183,7 @@
 
 	QuestionUtil = window.Viewer.util.QuestionUtil;
 
-	QuestionContent = __webpack_require__(129);
+	QuestionContent = __webpack_require__(147);
 
 	Question = React.createClass({
 		displayName: 'Question',
@@ -264,7 +264,7 @@
 
 /***/ },
 
-/***/ 132:
+/***/ 150:
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -275,8 +275,8 @@
 
 	OBO.register('ObojoboDraft.Chunks.Question', {
 	  type: 'chunk',
-	  adapter: __webpack_require__(130),
-	  componentClass: __webpack_require__(131),
+	  adapter: __webpack_require__(148),
+	  componentClass: __webpack_require__(149),
 	  selectionHandler: new ObojoboDraft.Common.chunk.textChunk.TextGroupSelectionHandler(),
 	  getNavItem: function getNavItem(model) {
 	    var label, questions;
@@ -300,14 +300,14 @@
 
 /***/ },
 
-/***/ 209:
+/***/ 264:
 /***/ function(module, exports) {
 
 	// removed by extract-text-webpack-plugin
 
 /***/ },
 
-/***/ 210:
-209
+/***/ 265:
+264
 
 /******/ })));

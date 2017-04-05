@@ -79,9 +79,11 @@
     transform: scale(0.9); }
   100% {
     transform: scale(1); } }
-  .obojobo-draft--chunks--mc-assessment.is-scored .obojobo-draft--chunks--mc-assessment--mc-choice.is-selected.is-correct, .obojobo-draft--chunks--mc-assessment.is-scored .obojobo-draft--chunks--mc-assessment--mc-choice.is-selected.is-correct:hover {
+  .obojobo-draft--chunks--mc-assessment.is-scored.is-response-type-pick-one .obojobo-draft--chunks--mc-assessment--mc-choice.is-selected.is-correct,
+  .obojobo-draft--chunks--mc-assessment.is-scored.is-response-type-pick-one-multiple-correct .obojobo-draft--chunks--mc-assessment--mc-choice.is-selected.is-correct {
     background: rgba(56, 174, 36, 0.1); }
-    .obojobo-draft--chunks--mc-assessment.is-scored .obojobo-draft--chunks--mc-assessment--mc-choice.is-selected.is-correct:before, .obojobo-draft--chunks--mc-assessment.is-scored .obojobo-draft--chunks--mc-assessment--mc-choice.is-selected.is-correct:hover:before {
+    .obojobo-draft--chunks--mc-assessment.is-scored.is-response-type-pick-one .obojobo-draft--chunks--mc-assessment--mc-choice.is-selected.is-correct:before,
+    .obojobo-draft--chunks--mc-assessment.is-scored.is-response-type-pick-one-multiple-correct .obojobo-draft--chunks--mc-assessment--mc-choice.is-selected.is-correct:before {
       content: "\2714";
       position: absolute;
       top: 0.65em;
@@ -91,9 +93,11 @@
       transform: translate(-50%, -50%);
       left: 0.6em;
       animation: fadein 0.4s; }
-  .obojobo-draft--chunks--mc-assessment.is-scored .obojobo-draft--chunks--mc-assessment--mc-choice.is-selected.is-incorrect, .obojobo-draft--chunks--mc-assessment.is-scored .obojobo-draft--chunks--mc-assessment--mc-choice.is-selected.is-incorrect:hover {
+  .obojobo-draft--chunks--mc-assessment.is-scored.is-response-type-pick-one .obojobo-draft--chunks--mc-assessment--mc-choice.is-selected.is-incorrect,
+  .obojobo-draft--chunks--mc-assessment.is-scored.is-response-type-pick-one-multiple-correct .obojobo-draft--chunks--mc-assessment--mc-choice.is-selected.is-incorrect {
     background: rgba(194, 31, 0, 0.1); }
-    .obojobo-draft--chunks--mc-assessment.is-scored .obojobo-draft--chunks--mc-assessment--mc-choice.is-selected.is-incorrect:before, .obojobo-draft--chunks--mc-assessment.is-scored .obojobo-draft--chunks--mc-assessment--mc-choice.is-selected.is-incorrect:hover:before {
+    .obojobo-draft--chunks--mc-assessment.is-scored.is-response-type-pick-one .obojobo-draft--chunks--mc-assessment--mc-choice.is-selected.is-incorrect:before,
+    .obojobo-draft--chunks--mc-assessment.is-scored.is-response-type-pick-one-multiple-correct .obojobo-draft--chunks--mc-assessment--mc-choice.is-selected.is-incorrect:before {
       content: "\2716";
       position: absolute;
       top: 0.65em;
@@ -103,18 +107,36 @@
       transform: translate(-50%, -50%);
       left: 0.6em;
       animation: fadein 0.4s; }
-  .obojobo-draft--chunks--mc-assessment.is-scored.is-response-type-pick-all .obojobo-draft--chunks--mc-assessment--mc-choice.is-selected.is-correct:before, .obojobo-draft--chunks--mc-assessment.is-scored.is-response-type-pick-all .obojobo-draft--chunks--mc-assessment--mc-choice.is-selected.is-correct:hover:before {
-    content: "\2714" attr(data-choice-label);
+  .obojobo-draft--chunks--mc-assessment.is-scored.is-response-type-pick-all .obojobo-draft--chunks--mc-assessment--mc-choice.is-selected.is-correct:before {
+    content: "\2714";
+    position: absolute;
+    top: 0.65em;
+    display: block;
+    color: #38ae24;
+    font-size: 2.5em;
+    transform: translate(-50%, -50%);
+    left: 0.6em;
+    animation: fadein 0.4s;
     font-size: 1.25em;
     left: 1.25em;
     top: 1.5em;
-    letter-spacing: 0.2em; }
-  .obojobo-draft--chunks--mc-assessment.is-scored.is-response-type-pick-all .obojobo-draft--chunks--mc-assessment--mc-choice.is-selected.is-incorrect:before, .obojobo-draft--chunks--mc-assessment.is-scored.is-response-type-pick-all .obojobo-draft--chunks--mc-assessment--mc-choice.is-selected.is-incorrect:hover:before {
-    content: "\2716" attr(data-choice-label);
+    letter-spacing: 0.2em;
+    content: "\2714" attr(data-choice-label); }
+  .obojobo-draft--chunks--mc-assessment.is-scored.is-response-type-pick-all .obojobo-draft--chunks--mc-assessment--mc-choice.is-selected.is-incorrect:before {
+    content: "\2716";
+    position: absolute;
+    top: 0.65em;
+    display: block;
+    color: #c21f00;
+    font-size: 2.5em;
+    transform: translate(-50%, -50%);
+    left: 0.6em;
+    animation: fadein 0.4s;
     font-size: 1.25em;
     left: 1.25em;
     top: 1.5em;
-    letter-spacing: 0.2em; }
+    letter-spacing: 0.2em;
+    content: "\2716" attr(data-choice-label); }
   .obojobo-draft--chunks--mc-assessment .instructions {
     padding-left: 3em;
     padding-right: 3em;

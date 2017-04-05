@@ -10,12 +10,15 @@
 /* flip speed goes here */
 .flipper {
   transition: 0.4s;
+  -ms-transition: none;
   transform-style: preserve-3d;
   position: relative; }
 
 /* hide back of pane during swap */
 .front, .back {
-  backface-visibility: hidden; }
+  -webkit-backface-visibility: hidden;
+  backface-visibility: hidden;
+  -ms-backface-visibility: visible; }
 
 /* front pane, placed above back */
 .front {

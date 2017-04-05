@@ -45,19 +45,19 @@
 /***/ 0:
 /***/ function(module, exports, __webpack_require__) {
 
-	module.exports = __webpack_require__(105);
+	module.exports = __webpack_require__(123);
 
 
 /***/ },
 
-/***/ 104:
+/***/ 122:
 /***/ function(module, exports, __webpack_require__) {
 
 	"use strict";
 
 	var Code, Common, OboComponent, TextChunk, TextGroupEl;
 
-	__webpack_require__(201);
+	__webpack_require__(256);
 
 	Common = window.ObojoboDraft.Common;
 
@@ -99,7 +99,7 @@
 
 /***/ },
 
-/***/ 105:
+/***/ 123:
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -112,13 +112,13 @@
 	  type: 'chunk',
 	  "default": true,
 	  adapter: ObojoboDraft.Common.chunk.textChunk.TextGroupAdapter,
-	  componentClass: __webpack_require__(104),
+	  componentClass: __webpack_require__(122),
 	  selectionHandler: new ObojoboDraft.Common.chunk.textChunk.TextGroupSelectionHandler()
 	});
 
 /***/ },
 
-/***/ 201:
+/***/ 256:
 /***/ function(module, exports) {
 
 	// removed by extract-text-webpack-plugin

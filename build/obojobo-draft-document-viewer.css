@@ -79,13 +79,14 @@
         -ms-appearance: none;
         -o-appearance: none;
         appearance: none;
-        margin-left: 1em;
-        font-family: "Libre Franklin", Arial, sans-serif;
-        font-size: 0.75em;
         -webkit-user-select: none;
         -moz-user-select: none;
         -ms-user-select: none;
         user-select: none;
+        margin-left: 1em;
+        font-family: "Libre Franklin", Arial, sans-serif;
+        font-size: 0.75em;
+        line-height: 1em;
         cursor: pointer;
         font-family: "Libre Franklin", Arial, sans-serif;
         font-size: 1em;

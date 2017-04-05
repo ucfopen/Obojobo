@@ -1,7 +1,5 @@
 "use strict";
 
-# polyfills:
-require('smoothscroll-polyfill').polyfill()
 
 # ModalStore = window.ObojoboDraft.Common.stores.ModalStore
 # NavStore = window.Viewer.stores.NavStore

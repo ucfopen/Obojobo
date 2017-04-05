@@ -45,12 +45,12 @@
 /***/ 0:
 /***/ function(module, exports, __webpack_require__) {
 
-	module.exports = __webpack_require__(138);
+	module.exports = __webpack_require__(156);
 
 
 /***/ },
 
-/***/ 65:
+/***/ 76:
 /***/ function(module, exports) {
 
 	'use strict';
@@ -272,7 +272,7 @@
 
 /***/ },
 
-/***/ 66:
+/***/ 77:
 /***/ function(module, exports) {
 
 	'use strict';
@@ -318,14 +318,14 @@
 
 /***/ },
 
-/***/ 136:
+/***/ 154:
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
 
 	var Adapter, GridTextGroup;
 
-	GridTextGroup = __webpack_require__(65);
+	GridTextGroup = __webpack_require__(76);
 
 	Adapter = {
 	  construct: function construct(model, attrs) {
@@ -380,18 +380,18 @@
 
 /***/ },
 
-/***/ 137:
+/***/ 155:
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
 
 	var Common, GridTextGroup, OboComponent, SelectionHandler, Table, TextGroupEl;
 
-	__webpack_require__(212);
+	__webpack_require__(267);
 
-	GridTextGroup = __webpack_require__(65);
+	GridTextGroup = __webpack_require__(76);
 
-	SelectionHandler = __webpack_require__(66);
+	SelectionHandler = __webpack_require__(77);
 
 	Common = window.ObojoboDraft.Common;
 
@@ -489,27 +489,27 @@
 
 /***/ },
 
-/***/ 138:
+/***/ 156:
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
 
 	var ObojoboDraft, SelectionHandler;
 
-	SelectionHandler = __webpack_require__(66);
+	SelectionHandler = __webpack_require__(77);
 
 	ObojoboDraft = window.ObojoboDraft;
 
 	OBO.register('ObojoboDraft.Chunks.Table', {
 	  type: 'chunk',
-	  adapter: __webpack_require__(136),
-	  componentClass: __webpack_require__(137),
+	  adapter: __webpack_require__(154),
+	  componentClass: __webpack_require__(155),
 	  selectionHandler: new SelectionHandler()
 	});
 
 /***/ },
 
-/***/ 212:
+/***/ 267:
 /***/ function(module, exports) {
 
 	// removed by extract-text-webpack-plugin

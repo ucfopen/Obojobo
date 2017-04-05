@@ -45,7 +45,7 @@
 /***/ 0:
 /***/ function(module, exports, __webpack_require__) {
 
-	module.exports = __webpack_require__(100);
+	module.exports = __webpack_require__(118);
 
 
 /***/ },
@@ -80,15 +80,15 @@
 
 	var ChunkStyleList, HtmlUtil, ObjectAssign, StyleRange, StyleType, StyleableText, trimStyleRange;
 
-	ObjectAssign = __webpack_require__(11);
+	ObjectAssign = __webpack_require__(13);
 
-	ChunkStyleList = __webpack_require__(26);
+	ChunkStyleList = __webpack_require__(30);
 
-	StyleRange = __webpack_require__(15);
+	StyleRange = __webpack_require__(17);
 
 	StyleType = __webpack_require__(5);
 
-	HtmlUtil = __webpack_require__(29);
+	HtmlUtil = __webpack_require__(33);
 
 	trimStyleRange = function trimStyleRange(styleRange, maxLength) {
 	  styleRange.end = Math.min(styleRange.end, maxLength);
@@ -475,7 +475,7 @@
 
 /***/ },
 
-/***/ 11:
+/***/ 13:
 /***/ function(module, exports) {
 
 	'use strict';
@@ -565,7 +565,7 @@
 
 /***/ },
 
-/***/ 15:
+/***/ 17:
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -686,7 +686,7 @@
 
 /***/ },
 
-/***/ 17:
+/***/ 20:
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -695,7 +695,7 @@
 
 	var ObjectAssign;
 
-	ObjectAssign = __webpack_require__(11);
+	ObjectAssign = __webpack_require__(13);
 
 	module.exports = {
 	  createData: function createData(data, template) {
@@ -727,7 +727,7 @@
 
 /***/ },
 
-/***/ 26:
+/***/ 30:
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -736,7 +736,7 @@
 
 	StyleType = __webpack_require__(5);
 
-	StyleRange = __webpack_require__(15);
+	StyleRange = __webpack_require__(17);
 
 	keySortFn = function keySortFn(a, b) {
 	  return Number(a) - Number(b);
@@ -1000,7 +1000,7 @@
 
 /***/ },
 
-/***/ 27:
+/***/ 31:
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -1009,11 +1009,11 @@
 
 	StyleableText = __webpack_require__(10);
 
-	Util = __webpack_require__(17);
+	Util = __webpack_require__(20);
 
-	TextGroupItem = __webpack_require__(28);
+	TextGroupItem = __webpack_require__(32);
 
-	ObjectAssign = __webpack_require__(11);
+	ObjectAssign = __webpack_require__(13);
 
 	getItemsArray = function getItemsArray(itemOrItems) {
 	  if (itemOrItems instanceof TextGroupItem) {
@@ -1487,7 +1487,7 @@
 
 /***/ },
 
-/***/ 28:
+/***/ 32:
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -1496,7 +1496,7 @@
 
 	StyleableText = __webpack_require__(10);
 
-	Util = __webpack_require__(17);
+	Util = __webpack_require__(20);
 
 	module.exports = TextGroupItem = function () {
 	  function TextGroupItem(text, data, parent) {
@@ -1528,7 +1528,7 @@
 
 /***/ },
 
-/***/ 29:
+/***/ 33:
 /***/ function(module, exports) {
 
 	'use strict';
@@ -1610,14 +1610,14 @@
 
 /***/ },
 
-/***/ 98:
+/***/ 116:
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
 
 	var TextGroup, TextGroupAdapter;
 
-	TextGroup = __webpack_require__(27);
+	TextGroup = __webpack_require__(31);
 
 	TextGroupAdapter = {
 	  construct: function construct(model, attrs) {
@@ -1661,14 +1661,14 @@
 
 /***/ },
 
-/***/ 99:
+/***/ 117:
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
 
 	var ActionButton, Button, Common, OboComponent, TextChunk, TextGroupEl;
 
-	__webpack_require__(199);
+	__webpack_require__(254);
 
 	Common = window.ObojoboDraft.Common;
 
@@ -1709,7 +1709,7 @@
 
 /***/ },
 
-/***/ 100:
+/***/ 118:
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -1720,14 +1720,14 @@
 
 	OBO.register('ObojoboDraft.Chunks.ActionButton', {
 	  type: 'chunk',
-	  adapter: __webpack_require__(98),
-	  componentClass: __webpack_require__(99),
+	  adapter: __webpack_require__(116),
+	  componentClass: __webpack_require__(117),
 	  selectionHandler: new ObojoboDraft.Common.chunk.textChunk.TextGroupSelectionHandler()
 	});
 
 /***/ },
 
-/***/ 199:
+/***/ 254:
 /***/ function(module, exports) {
 
 	// removed by extract-text-webpack-plugin
