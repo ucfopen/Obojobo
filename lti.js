@@ -66,7 +66,7 @@ let replaceResult = function(userId, draftId, score) {
 
 			outcomeDocument.send_replace_result(score, (err, result) =>{
 				if(err) reject(err)
-				resolve(result)
+				else resolve(result)
 
 				insertEvent({
 					action: 'lti:replaceResult',
@@ -86,6 +86,9 @@ let replaceResult = function(userId, draftId, score) {
 					ip: '',
 					metadata: {},
 					draftId: draftId
+				})
+				.catch(err => {
+					console.log('There was an error inserting the lti event')
 				})
 			})
 		})

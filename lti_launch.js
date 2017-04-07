@@ -1,5 +1,6 @@
-var db = oboRequire('db.js')
+var db = oboRequire('db')
 var User = oboRequire('models/user')
+
 
 class UnauthorizedError extends Error {
 	constructor(message){
@@ -17,7 +18,8 @@ class UserError extends Error {
 	}
 }
 
-// Returns a promise containing lti data and the current user
+// Returns a promise containing the current user (can be null)
+// If it's an lti launch - it'll get or create a user
 let handle = (req) => {
 	// Check for lti data in the request (provided by express-ims-lti)
 	if(!req.lti){
@@ -42,6 +44,7 @@ let handle = (req) => {
 		return user
 	})
 	.catch(error => {
+		console.error('lti handle error', error)
 		return Promise.reject(new UserError('There was a problem creating your account.'))
 	})
 }

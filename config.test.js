@@ -16,7 +16,6 @@ let dbJson = JSON.stringify({
 describe('config', () => {
 
 	beforeEach(() => {
-		process.env.NODE_ENV = 'test'
 		fs.__setMockFileContents('./config/db.json', dbJson);
 		fs.__setMockFileContents('./config/lti.json', '{"test":{"key":"value"}}');
 		fs.__setMockFileContents('./config/permission_groups.json', '{"test":{"key":"value"}}');

@@ -24,9 +24,9 @@ describe('api_response_decorator', () => {
 		expect.assertions(functions.length * 2);
 		let [res, req, mockJson, mockStatus, mockNext] = mockArgs()
 
-		functions.forEach(prop => {
-			expect(res).toHaveProperty(prop)
-			expect(res[prop]).toBeInstanceOf(Function)
+		functions.forEach(func => {
+			expect(res).toHaveProperty(func)
+			expect(res[func]).toBeInstanceOf(Function)
 		})
 	})
 
@@ -85,5 +85,9 @@ describe('api_response_decorator', () => {
 
 		res.success(input)
 		expect(mockJson).toBeCalledWith(expected)
+	})
+
+	it.skip('functions return expected values', () => {
+		// @TODO
 	})
 })
