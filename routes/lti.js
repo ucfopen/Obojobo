@@ -1,10 +1,9 @@
 let express = require('express');
 let router = express.Router();
-let ltiLaunch = oboRequire('lti_launch')
 
 // LTI Instructions
 router.get('/', (req, res, next) => {
-	let baseUrl = `${req.protocol}://${req.host}:${req.app.get('port')}`
+	let baseUrl = `${req.protocol}://${req.req.hostname}:${req.app.get('port')}`
 	res.render('lti_launch_static.pug', {launch_url: `${baseUrl}/lti/launch`, xml_url: `${baseUrl}/lti/config.xml`});
 	next()
 })

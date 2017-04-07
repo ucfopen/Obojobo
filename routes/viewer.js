@@ -2,8 +2,6 @@ var express = require('express');
 var router = express.Router();
 var OboGlobals = oboRequire('obo_globals')
 let DraftModel = oboRequire('models/draft')
-let ltiLaunch = oboRequire('lti_launch')
-
 
 router.all('/view/:draftId*', (req, res, next) => {
 	let oboGlobals = new OboGlobals();
