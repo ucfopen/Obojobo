@@ -5,7 +5,6 @@ let db = oboRequire('db');
 let Assessment = require('./assessment');
 let lti = oboRequire('lti')
 let insertEvent = oboRequire('insert_event')
-let getIp = oboRequire('get_ip')
 
 let logAndRespondToUnexpected = (errorMessage, res, req, jsError) => {
 	res.unexpected(jsError)
@@ -291,7 +290,7 @@ app.post('/api/assessments/attempt/start', (req, res, next) => {
 			actorTime: new Date().toISOString(),
 			payload: { attemptId:result.attemptId },
 			userId: currentUser.id,
-			ip: getIp(req),
+			ip: req.connection.remoteAddress,
 			metadata: {},
 			draftId: draftId
 		})
@@ -412,7 +411,7 @@ app.post('/api/assessments/attempt/:attemptId/end', (req, res, next) => {
 			actorTime: new Date().toISOString(),
 			payload: { attemptId: req.params.attemptId },
 			userId: currentUser.id,
-			ip: getIp(req),
+			ip: req.connection.remoteAddress,
 			metadata: {},
 			draftId: draftId
 		})

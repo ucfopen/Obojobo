@@ -216,11 +216,6 @@
 					React.createElement(
 						'div',
 						{ className: 'content back' },
-						React.createElement(
-							'p',
-							null,
-							this.props.model.get('id')
-						),
 						React.createElement(QuestionContent, { model: this.props.model, moduleData: this.props.moduleData }),
 						React.createElement(AssessmentComponent, {
 							key: assessment.get('id'),
@@ -231,11 +226,6 @@
 					React.createElement(
 						'div',
 						{ className: 'blocker front', key: 'blocker', onClick: this.onClickBlocker },
-						React.createElement(
-							'p',
-							null,
-							this.props.model.get('id')
-						),
 						React.createElement(Button, { value: this.props.model.modelState.practice ? 'Try Question' : 'View Question' })
 					)
 				)
@@ -258,11 +248,6 @@
 					React.createElement(
 						'div',
 						{ className: 'content back' },
-						React.createElement(
-							'p',
-							null,
-							this.props.model.get('id')
-						),
 						React.createElement(QuestionContent, { model: this.props.model, moduleData: this.props.moduleData }),
 						React.createElement(
 							'div',
