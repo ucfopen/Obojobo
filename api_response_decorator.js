@@ -47,6 +47,11 @@ let unexpected = (req, res, next, message) => {
     console.error('error thrown', message.stack)
     message = message.toString()
   }
+  else
+  {
+    console.error('error message', message)
+  }
+
   return res.status(500).json(camelize({
     status: 'error',
     value: {
