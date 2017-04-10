@@ -6,12 +6,11 @@ var session = require('express-session')
 var pgSession = require('connect-pg-simple')
 var app = express();
 let config = require('./config')
+let oboRequire = require('./obo_require')
 
 // Global for loading specialized Obojobo stuff
 // use oboRequire('models/draft') to load draft models from any context
-global.oboRequire = function(name) {
-	return require(`${__dirname}/${name}`);
-}
+global.oboRequire = oboRequire
 
 let obojoboDraftExpress = require('./obojobo_draft_express');
 
