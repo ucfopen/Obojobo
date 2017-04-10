@@ -1,0 +1,13 @@
+{
+	"development": {
+		"paths": [
+			"devsrc/obojobo-draft-document-engine/",
+			"node_modules/obojobo-draft-document-engine/"
+		]
+	},
+	"production": {
+		"paths": [
+			"node_modules/obojobo-draft-document-engine/"
+		]
+	}
+}
