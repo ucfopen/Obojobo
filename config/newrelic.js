@@ -7,10 +7,11 @@
  * description of configuration variables and their potential values.
  */
 exports.config = {
+  agent_enabled: false,
   /**
    * Array of application names.
    */
-  app_name: ['Obojobo'],
+  app_name: ['Obojobo Next'],
   /**
    * Your New Relic license key.
    */
