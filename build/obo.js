@@ -151,7 +151,7 @@
 
 	'use strict';
 
-	module.exports = __webpack_require__(248)() ? Symbol : __webpack_require__(250);
+	module.exports = __webpack_require__(247)() ? Symbol : __webpack_require__(249);
 
 
 /***/ },
@@ -549,7 +549,7 @@
 
 	'use strict';
 
-	var isIterable = __webpack_require__(241);
+	var isIterable = __webpack_require__(245);
 
 	module.exports = function (value) {
 		if (!isIterable(value)) throw new TypeError(value + " is not iterable");
@@ -1097,7 +1097,7 @@
 	    return to;
 	  };
 	};
-	window.Set = __webpack_require__(243);
+	window.Set = __webpack_require__(238);
 
 	if (!Array.from) {
 	  Array.from = __webpack_require__(113);
@@ -1533,6 +1533,100 @@
 
 	'use strict';
 
+	module.exports = __webpack_require__(239)() ? Set : __webpack_require__(251);
+
+
+/***/ },
+
+/***/ 239:
+/***/ function(module, exports) {
+
+	'use strict';
+
+	module.exports = function () {
+		var set, iterator, result;
+		if (typeof Set !== 'function') return false;
+		set = new Set(['raz', 'dwa', 'trzy']);
+		if (String(set) !== '[object Set]') return false;
+		if (set.size !== 3) return false;
+		if (typeof set.add !== 'function') return false;
+		if (typeof set.clear !== 'function') return false;
+		if (typeof set.delete !== 'function') return false;
+		if (typeof set.entries !== 'function') return false;
+		if (typeof set.forEach !== 'function') return false;
+		if (typeof set.has !== 'function') return false;
+		if (typeof set.keys !== 'function') return false;
+		if (typeof set.values !== 'function') return false;
+
+		iterator = set.values();
+		result = iterator.next();
+		if (result.done !== false) return false;
+		if (result.value !== 'raz') return false;
+
+		return true;
+	};
+
+
+/***/ },
+
+/***/ 240:
+/***/ function(module, exports) {
+
+	// Exports true if environment provides native `Set` implementation,
+	// whatever that is.
+
+	'use strict';
+
+	module.exports = (function () {
+		if (typeof Set === 'undefined') return false;
+		return (Object.prototype.toString.call(Set.prototype) === '[object Set]');
+	}());
+
+
+/***/ },
+
+/***/ 241:
+/***/ function(module, exports, __webpack_require__) {
+
+	'use strict';
+
+	var setPrototypeOf    = __webpack_require__(35)
+	  , contains          = __webpack_require__(54)
+	  , d                 = __webpack_require__(19)
+	  , Iterator          = __webpack_require__(56)
+	  , toStringTagSymbol = __webpack_require__(24).toStringTag
+
+	  , defineProperty = Object.defineProperty
+	  , SetIterator;
+
+	SetIterator = module.exports = function (set, kind) {
+		if (!(this instanceof SetIterator)) return new SetIterator(set, kind);
+		Iterator.call(this, set.__setData__, set);
+		if (!kind) kind = 'value';
+		else if (contains.call(kind, 'key+value')) kind = 'key+value';
+		else kind = 'value';
+		defineProperty(this, '__kind__', d('', kind));
+	};
+	if (setPrototypeOf) setPrototypeOf(SetIterator, Iterator);
+
+	SetIterator.prototype = Object.create(Iterator.prototype, {
+		constructor: d(SetIterator),
+		_resolve: d(function (i) {
+			if (this.__kind__ === 'value') return this.__list__[i];
+			return [this.__list__[i], this.__list__[i]];
+		}),
+		toString: d(function () { return '[object Set Iterator]'; })
+	});
+	defineProperty(SetIterator.prototype, toStringTagSymbol, d('c', 'Set Iterator'));
+
+
+/***/ },
+
+/***/ 242:
+/***/ function(module, exports, __webpack_require__) {
+
+	'use strict';
+
 	var setPrototypeOf = __webpack_require__(35)
 	  , contains       = __webpack_require__(54)
 	  , d              = __webpack_require__(19)
@@ -1565,7 +1659,7 @@
 
 /***/ },
 
-/***/ 239:
+/***/ 243:
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -1573,7 +1667,7 @@
 	var isArguments = __webpack_require__(52)
 	  , callable    = __webpack_require__(11)
 	  , isString    = __webpack_require__(55)
-	  , get         = __webpack_require__(240)
+	  , get         = __webpack_require__(244)
 
 	  , isArray = Array.isArray, call = Function.prototype.call
 	  , some = Array.prototype.some;
@@ -1618,15 +1712,15 @@
 
 /***/ },
 
-/***/ 240:
+/***/ 244:
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
 
 	var isArguments    = __webpack_require__(52)
 	  , isString       = __webpack_require__(55)
-	  , ArrayIterator  = __webpack_require__(238)
-	  , StringIterator = __webpack_require__(242)
+	  , ArrayIterator  = __webpack_require__(242)
+	  , StringIterator = __webpack_require__(246)
 	  , iterable       = __webpack_require__(109)
 	  , iteratorSymbol = __webpack_require__(24).iterator;
 
@@ -1640,7 +1734,7 @@
 
 /***/ },
 
-/***/ 241:
+/***/ 245:
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -1662,7 +1756,7 @@
 
 /***/ },
 
-/***/ 242:
+/***/ 246:
 /***/ function(module, exports, __webpack_require__) {
 
 	// Thanks @mathiasbynens
@@ -1706,188 +1800,7 @@
 
 /***/ },
 
-/***/ 243:
-/***/ function(module, exports, __webpack_require__) {
-
-	'use strict';
-
-	module.exports = __webpack_require__(244)() ? Set : __webpack_require__(247);
-
-
-/***/ },
-
-/***/ 244:
-/***/ function(module, exports) {
-
-	'use strict';
-
-	module.exports = function () {
-		var set, iterator, result;
-		if (typeof Set !== 'function') return false;
-		set = new Set(['raz', 'dwa', 'trzy']);
-		if (String(set) !== '[object Set]') return false;
-		if (set.size !== 3) return false;
-		if (typeof set.add !== 'function') return false;
-		if (typeof set.clear !== 'function') return false;
-		if (typeof set.delete !== 'function') return false;
-		if (typeof set.entries !== 'function') return false;
-		if (typeof set.forEach !== 'function') return false;
-		if (typeof set.has !== 'function') return false;
-		if (typeof set.keys !== 'function') return false;
-		if (typeof set.values !== 'function') return false;
-
-		iterator = set.values();
-		result = iterator.next();
-		if (result.done !== false) return false;
-		if (result.value !== 'raz') return false;
-
-		return true;
-	};
-
-
-/***/ },
-
-/***/ 245:
-/***/ function(module, exports) {
-
-	// Exports true if environment provides native `Set` implementation,
-	// whatever that is.
-
-	'use strict';
-
-	module.exports = (function () {
-		if (typeof Set === 'undefined') return false;
-		return (Object.prototype.toString.call(Set.prototype) === '[object Set]');
-	}());
-
-
-/***/ },
-
-/***/ 246:
-/***/ function(module, exports, __webpack_require__) {
-
-	'use strict';
-
-	var setPrototypeOf    = __webpack_require__(35)
-	  , contains          = __webpack_require__(54)
-	  , d                 = __webpack_require__(19)
-	  , Iterator          = __webpack_require__(56)
-	  , toStringTagSymbol = __webpack_require__(24).toStringTag
-
-	  , defineProperty = Object.defineProperty
-	  , SetIterator;
-
-	SetIterator = module.exports = function (set, kind) {
-		if (!(this instanceof SetIterator)) return new SetIterator(set, kind);
-		Iterator.call(this, set.__setData__, set);
-		if (!kind) kind = 'value';
-		else if (contains.call(kind, 'key+value')) kind = 'key+value';
-		else kind = 'value';
-		defineProperty(this, '__kind__', d('', kind));
-	};
-	if (setPrototypeOf) setPrototypeOf(SetIterator, Iterator);
-
-	SetIterator.prototype = Object.create(Iterator.prototype, {
-		constructor: d(SetIterator),
-		_resolve: d(function (i) {
-			if (this.__kind__ === 'value') return this.__list__[i];
-			return [this.__list__[i], this.__list__[i]];
-		}),
-		toString: d(function () { return '[object Set Iterator]'; })
-	});
-	defineProperty(SetIterator.prototype, toStringTagSymbol, d('c', 'Set Iterator'));
-
-
-/***/ },
-
 /***/ 247:
-/***/ function(module, exports, __webpack_require__) {
-
-	'use strict';
-
-	var clear          = __webpack_require__(105)
-	  , eIndexOf       = __webpack_require__(218)
-	  , setPrototypeOf = __webpack_require__(35)
-	  , callable       = __webpack_require__(11)
-	  , d              = __webpack_require__(19)
-	  , ee             = __webpack_require__(252)
-	  , Symbol         = __webpack_require__(24)
-	  , iterator       = __webpack_require__(109)
-	  , forOf          = __webpack_require__(239)
-	  , Iterator       = __webpack_require__(246)
-	  , isNative       = __webpack_require__(245)
-
-	  , call = Function.prototype.call
-	  , defineProperty = Object.defineProperty, getPrototypeOf = Object.getPrototypeOf
-	  , SetPoly, getValues, NativeSet;
-
-	if (isNative) NativeSet = Set;
-
-	module.exports = SetPoly = function Set(/*iterable*/) {
-		var iterable = arguments[0], self;
-		if (!(this instanceof SetPoly)) throw new TypeError('Constructor requires \'new\'');
-		if (isNative && setPrototypeOf) self = setPrototypeOf(new NativeSet(), getPrototypeOf(this));
-		else self = this;
-		if (iterable != null) iterator(iterable);
-		defineProperty(self, '__setData__', d('c', []));
-		if (!iterable) return self;
-		forOf(iterable, function (value) {
-			if (eIndexOf.call(this, value) !== -1) return;
-			this.push(value);
-		}, self.__setData__);
-		return self;
-	};
-
-	if (isNative) {
-		if (setPrototypeOf) setPrototypeOf(SetPoly, NativeSet);
-		SetPoly.prototype = Object.create(NativeSet.prototype, { constructor: d(SetPoly) });
-	}
-
-	ee(Object.defineProperties(SetPoly.prototype, {
-		add: d(function (value) {
-			if (this.has(value)) return this;
-			this.emit('_add', this.__setData__.push(value) - 1, value);
-			return this;
-		}),
-		clear: d(function () {
-			if (!this.__setData__.length) return;
-			clear.call(this.__setData__);
-			this.emit('_clear');
-		}),
-		delete: d(function (value) {
-			var index = eIndexOf.call(this.__setData__, value);
-			if (index === -1) return false;
-			this.__setData__.splice(index, 1);
-			this.emit('_delete', index, value);
-			return true;
-		}),
-		entries: d(function () { return new Iterator(this, 'key+value'); }),
-		forEach: d(function (cb/*, thisArg*/) {
-			var thisArg = arguments[1], iterator, result, value;
-			callable(cb);
-			iterator = this.values();
-			result = iterator._next();
-			while (result !== undefined) {
-				value = iterator._resolve(result);
-				call.call(cb, thisArg, value, value, this);
-				result = iterator._next();
-			}
-		}),
-		has: d(function (value) {
-			return (eIndexOf.call(this.__setData__, value) !== -1);
-		}),
-		keys: d(getValues = function () { return this.values(); }),
-		size: d.gs(function () { return this.__setData__.length; }),
-		values: d(function () { return new Iterator(this); }),
-		toString: d(function () { return '[object Set]'; })
-	}));
-	defineProperty(SetPoly.prototype, Symbol.iterator, d(getValues));
-	defineProperty(SetPoly.prototype, Symbol.toStringTag, d('c', 'Set'));
-
-
-/***/ },
-
-/***/ 248:
 /***/ function(module, exports) {
 
 	'use strict';
@@ -1911,7 +1824,7 @@
 
 /***/ },
 
-/***/ 249:
+/***/ 248:
 /***/ function(module, exports) {
 
 	'use strict';
@@ -1927,7 +1840,7 @@
 
 /***/ },
 
-/***/ 250:
+/***/ 249:
 /***/ function(module, exports, __webpack_require__) {
 
 	// ES2015 Symbol polyfill for environments that do not (or partially) support it
@@ -1935,7 +1848,7 @@
 	'use strict';
 
 	var d              = __webpack_require__(19)
-	  , validateSymbol = __webpack_require__(251)
+	  , validateSymbol = __webpack_require__(250)
 
 	  , create = Object.create, defineProperties = Object.defineProperties
 	  , defineProperty = Object.defineProperty, objPrototype = Object.prototype
@@ -2052,17 +1965,104 @@
 
 /***/ },
 
-/***/ 251:
+/***/ 250:
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
 
-	var isSymbol = __webpack_require__(249);
+	var isSymbol = __webpack_require__(248);
 
 	module.exports = function (value) {
 		if (!isSymbol(value)) throw new TypeError(value + " is not a symbol");
 		return value;
 	};
+
+
+/***/ },
+
+/***/ 251:
+/***/ function(module, exports, __webpack_require__) {
+
+	'use strict';
+
+	var clear          = __webpack_require__(105)
+	  , eIndexOf       = __webpack_require__(218)
+	  , setPrototypeOf = __webpack_require__(35)
+	  , callable       = __webpack_require__(11)
+	  , d              = __webpack_require__(19)
+	  , ee             = __webpack_require__(252)
+	  , Symbol         = __webpack_require__(24)
+	  , iterator       = __webpack_require__(109)
+	  , forOf          = __webpack_require__(243)
+	  , Iterator       = __webpack_require__(241)
+	  , isNative       = __webpack_require__(240)
+
+	  , call = Function.prototype.call
+	  , defineProperty = Object.defineProperty, getPrototypeOf = Object.getPrototypeOf
+	  , SetPoly, getValues, NativeSet;
+
+	if (isNative) NativeSet = Set;
+
+	module.exports = SetPoly = function Set(/*iterable*/) {
+		var iterable = arguments[0], self;
+		if (!(this instanceof SetPoly)) throw new TypeError('Constructor requires \'new\'');
+		if (isNative && setPrototypeOf) self = setPrototypeOf(new NativeSet(), getPrototypeOf(this));
+		else self = this;
+		if (iterable != null) iterator(iterable);
+		defineProperty(self, '__setData__', d('c', []));
+		if (!iterable) return self;
+		forOf(iterable, function (value) {
+			if (eIndexOf.call(this, value) !== -1) return;
+			this.push(value);
+		}, self.__setData__);
+		return self;
+	};
+
+	if (isNative) {
+		if (setPrototypeOf) setPrototypeOf(SetPoly, NativeSet);
+		SetPoly.prototype = Object.create(NativeSet.prototype, { constructor: d(SetPoly) });
+	}
+
+	ee(Object.defineProperties(SetPoly.prototype, {
+		add: d(function (value) {
+			if (this.has(value)) return this;
+			this.emit('_add', this.__setData__.push(value) - 1, value);
+			return this;
+		}),
+		clear: d(function () {
+			if (!this.__setData__.length) return;
+			clear.call(this.__setData__);
+			this.emit('_clear');
+		}),
+		delete: d(function (value) {
+			var index = eIndexOf.call(this.__setData__, value);
+			if (index === -1) return false;
+			this.__setData__.splice(index, 1);
+			this.emit('_delete', index, value);
+			return true;
+		}),
+		entries: d(function () { return new Iterator(this, 'key+value'); }),
+		forEach: d(function (cb/*, thisArg*/) {
+			var thisArg = arguments[1], iterator, result, value;
+			callable(cb);
+			iterator = this.values();
+			result = iterator._next();
+			while (result !== undefined) {
+				value = iterator._resolve(result);
+				call.call(cb, thisArg, value, value, this);
+				result = iterator._next();
+			}
+		}),
+		has: d(function (value) {
+			return (eIndexOf.call(this.__setData__, value) !== -1);
+		}),
+		keys: d(getValues = function () { return this.values(); }),
+		size: d.gs(function () { return this.__setData__.length; }),
+		values: d(function () { return new Iterator(this); }),
+		toString: d(function () { return '[object Set]'; })
+	}));
+	defineProperty(SetPoly.prototype, Symbol.iterator, d(getValues));
+	defineProperty(SetPoly.prototype, Symbol.toStringTag, d('c', 'Set'));
 
 
 /***/ },

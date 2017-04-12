@@ -4,7 +4,8 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "test": "./node_modules/.bin/jasmine-node spec",
+    "test": "jest --verbose --watch",
+    "old-test": "./node_modules/.bin/jasmine-node spec",
     "start": "webpack --watch",
     "dev": "webpack-dev-server  --colors --port 8090 --host 0.0.0.0",
     "build": "webpack",
@@ -12,6 +13,11 @@
     "karma": "./node_modules/karma/bin/karma start ./karma.conf.js",
     "karma-coverage": "./node_modules/karma/bin/karma start ./karma-coverage.conf.js",
     "generateModuleManifest": "node ./bin/generate_module_manifest.js"
+  },
+  "jest": {
+    "testPathIgnorePatterns": [
+      "/spec/"
+    ]
   },
   "pre-commit": [
     "build",
@@ -34,6 +40,7 @@
     "http-server": "^0.9.0",
     "jasmine-core": "^2.5.0",
     "jasmine-node": "^1.14.5",
+    "jest-cli": "^19.0.2",
     "json-loader": "^0.5.4",
     "karma": "^1.2.0",
     "karma-chrome-launcher": "^2.0.0",
