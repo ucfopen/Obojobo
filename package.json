@@ -1,6 +1,6 @@
 {
   "name": "obojobo-server",
-  "version": "3.0.1-alpha-11",
+  "version": "3.0.1-alpha-13",
   "private": true,
   "scripts": {
     "start": "yarn express:prod",
@@ -39,6 +39,7 @@
     "json-inflector": "^1.1.0",
     "moment": "^2.18.0",
     "morgan": "~1.7.0",
+    "newrelic": "^1.38.2",
     "node-sass-middleware": "0.9.8",
     "obojobo-draft-document-engine": "git+ssh://git@github.com/ucfcdl/Obojobo-Document-Engine.git#v0.0.9",
     "pg-promise": "^5.5.0",

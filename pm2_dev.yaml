@@ -10,3 +10,4 @@ apps:
       - "pm2_prod.yaml"
     env:
       NODE_ENV: development
+      NEW_RELIC_HOME: './config/'
