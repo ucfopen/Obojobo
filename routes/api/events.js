@@ -1,6 +1,6 @@
 var express = require('express');
 var app = express();
-
+var oboEvents = oboRequire('obo_events')
 var insertEvent = oboRequire('insert_event')
 
 app.post('/', (req, res, next) => {
@@ -24,7 +24,7 @@ app.post('/', (req, res, next) => {
 		insertEvent(insertObject)
 		.then( result => {
 			insertObject.createdAt = result.created_at;
-			global.oboEvents.emit(`client:${event.action}`, insertObject, req);
+			oboEvents.emit(`client:${event.action}`, insertObject, req);
 			res.success({ createdAt:result.created_at });
 			next();
 		})

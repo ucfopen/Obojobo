@@ -15,25 +15,11 @@ describe('lti', () => {
 
 		global.console = {warn: jest.fn(), log: jest.fn(), error: jest.fn()}
 
-		jest.mock('fs');
 		jest.mock('./db');
 		jest.mock('ims-lti/lib/extensions/outcomes')
 
 		let fs = require('fs')
-		let dbJson = JSON.stringify({
-			test:{
-				host: 'hostVal',
-				port: 555,
-				database: 'databaseVal',
-				user: 'userVal',
-				password: 'pwVal'
-			}
-		})
-
-		fs.__setMockFileContents('./config/db.json', dbJson);
 		fs.__setMockFileContents('./config/lti.json', '{"test":{"keys":{"testkey":"testsecret"}}}');
-		fs.__setMockFileContents('./config/permission_groups.json', '{"test":{"key":"value"}}');
-		fs.__setMockFileContents('./config/general.json', '{"test":{"key":"value"}}');
 
 		lti = require('./lti')
 	});

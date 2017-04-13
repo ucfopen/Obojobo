@@ -1,26 +1,9 @@
-jest.mock('fs');
-let fs = require('fs')
-let dbJson = JSON.stringify({
-	test:{
-		host: 'hostVal',
-		port: 'portVal',
-		database: 'databaseVal',
-		user: 'userVal',
-		password: 'pwVal'
-	},
-	development:{
-		host: 'itsdev!',
-	},
-})
-
 describe('config', () => {
 
-	beforeEach(() => {
-		fs.__setMockFileContents('./config/db.json', dbJson);
-		fs.__setMockFileContents('./config/lti.json', '{"test":{"key":"value"}}');
-		fs.__setMockFileContents('./config/permission_groups.json', '{"test":{"key":"value"}}');
-		fs.__setMockFileContents('./config/general.json', '{"test":{"key":"value"}}');
-	});
+	beforeEach(() => {})
+	afterEach(() => {})
+	beforeAll(() => {})
+	afterAll(() => {})
 
 
 	it('db to have expected props and vals', () => {

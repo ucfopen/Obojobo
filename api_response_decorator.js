@@ -42,11 +42,14 @@ let badInput = (req, res, next, message) => {
 }
 
 let unexpected = (req, res, next, message) => {
-  if(message instanceof Error)
-  {
+  if(message instanceof Error){
     console.error('error thrown', message.stack)
     message = message.toString()
   }
+  else{
+    console.error('error message', message)
+  }
+
   return res.status(500).json(camelize({
     status: 'error',
     value: {

@@ -27,6 +27,7 @@ configuration.db = {
 
 addToConfig('./config/lti.json', env, 'lti')
 addToConfig('./config/permission_groups.json', env, 'permissions')
+addToConfig('./config/draft.json', env, 'draft')
 addToConfig('./config/general.json', env, 'general')
 
 module.exports = configuration
