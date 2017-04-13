@@ -1,10 +1,12 @@
 #!/usr/bin/env node
 
-var db = require('../db');
 var fs = require('fs');
 
+var db = require('../db');
+var oboPath = require('../obo-path')
+
 const sampleKey = '00000000-0000-0000-0000-000000000000';
-const sampleDoc = 'node_modules/obojobo-draft-document-engine/test-object.json';
+const sampleDoc = oboPath.expandDraftPath('test-object.json');
 
 db.query('SELECT * FROM drafts where id = $1', [sampleKey])
 .then( result => {

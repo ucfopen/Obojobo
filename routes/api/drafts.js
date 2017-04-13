@@ -2,7 +2,10 @@ var express = require('express');
 var app = express();
 let DraftModel = oboRequire('models/draft')
 
-var db = require('../../db.js')
+var db = require('../../db')
+
+let insertNewDraft = require('./drafts/insert_new_draft')
+let updateDraft = require('./drafts/update_draft')
 
 app.get('/:draftId', (req, res, next) => {
 	let draftId = req.params.draftId
@@ -33,41 +36,9 @@ app.post('/new', (req, res, next) => {
 		return db.none(`BEGIN`)
 	})
 	.then( () => {
-		return db.one(`
-			INSERT INTO drafts(
-				user_id
-			)
-			VALUES(
-				$[userId]
-			)
-			RETURNING *
-		`, {
-			userId: user.id
-		})
+		return insertNewDraft(user.id)
 	})
-	.then( (result) => {
-		newDraft = result
-
-		return db.one(`
-			INSERT INTO drafts_content(
-				draft_id,
-				content
-			)
-			VALUES(
-				$[draftId],
-				'{}'
-			)
-			RETURNING *
-		`, {
-			draftId: result.id
-		})
-	})
-	.then( (result) => {
-		newDraft.content = result
-
-		return db.none(`COMMIT`)
-	})
-	.then( () => {
+	.then( (newDraft) => {
 		res.success(newDraft)
 		next()
 	})
@@ -83,23 +54,10 @@ app.post(/(\w{8}-\w{4}-\w{4}-\w{4}-\w{12})/, (req, res, next) => {
 	.then(currentUser => {
 		if(!currentUser.canEditDrafts) throw 'Insufficent permissions'
 
-		return db.one(`
-			INSERT INTO drafts_content(
-				draft_id,
-				content
-			)
-			VALUES(
-				$[draftId],
-				$[content]
-			)
-			RETURNING id
-		`, {
-			draftId: req.params[0],
-			content: req.body
-		})
+		return updateDraft(req.params[0], req.body)
 	})
 	.then( id => {
-		res.success(id)
+		res.success({ id:id })
 		next()
 	})
 	.catch(error => {
