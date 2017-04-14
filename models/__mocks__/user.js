@@ -23,6 +23,10 @@ class MockUser {
 		if(!permissions[permName]) return false
 		return this.hasOneOfRole(permissions[permName])
 	}
+
+	saveOrCreate(){
+		return Promise.resolve(this)
+	}
 }
 
 module.exports = MockUser;

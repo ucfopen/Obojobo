@@ -41,7 +41,7 @@ module.exports = (req, res, next) => {
 
 	let currentUser = null
 
-	Promise.resolve(req.lti)
+	return Promise.resolve(req.lti)
 	.then(lti => {
 		// Save/Create the user
 		let newUser = new User({

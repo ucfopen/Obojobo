@@ -3,7 +3,7 @@ let router = express.Router();
 
 // LTI Instructions
 router.get('/', (req, res, next) => {
-	let baseUrl = `${req.protocol}://${req.req.hostname}:${req.app.get('port')}`
+	let baseUrl = `${req.protocol}://${req.hostname}:${req.app.get('port')}`
 	res.render('lti_launch_static.pug', {launch_url: `${baseUrl}/lti/launch`, xml_url: `${baseUrl}/lti/config.xml`});
 	next()
 })
