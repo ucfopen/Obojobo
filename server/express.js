@@ -5,6 +5,7 @@ let db = oboRequire('db');
 let Assessment = require('./assessment');
 let lti = oboRequire('lti')
 let insertEvent = oboRequire('insert_event')
+let oboEvents = oboRequire('obo_events')
 
 let logAndRespondToUnexpected = (errorMessage, res, req, jsError) => {
 	res.unexpected(jsError)
@@ -452,7 +453,7 @@ app.get('/api/drafts/:draftId/attempts', (req, res, next) => {
 	})
 })
 
-global.oboEvents.on('client:assessment:recordResponse', (event, req) => {
+oboEvents.on('client:assessment:recordResponse', (event, req) => {
 	let eventRecordResponse = 'client:assessment:recordResponse'
 
 
