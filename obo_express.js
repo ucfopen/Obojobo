@@ -1,3 +1,15 @@
+/*
+ OBOJOBO Express Middleware
+
+ Install into your own express app using:
+ app.use(require('obo_express'))
+ Your parent express app will need:
+   * a session handler
+   * a body parser (if using 'body-parser', make sure json options is set to 1mb or higher)
+   * a view engine that parses .pug
+*/
+
+global.oboRequire = require('./obo_require')
 let express = require('express');
 let app = express();
 let DevNonceStore = oboRequire('dev_nonce_store');
@@ -9,7 +21,9 @@ let ltiLaunchMiddlerware = oboRequire('express_lti_launch')
 let registerChunks = oboRequire('express_register_chunks')
 let ltiUtil = oboRequire('lti')
 
+// when the parent app is mounted
 app.on('mount', (app) => {
+	// =========== MIDDLEWARE ===========
 	app.use(loadBalancerHelperMiddleware)
 	app.use(currentUserMiddleware)
 	app.use(ltiMiddleware({
@@ -26,12 +40,13 @@ app.on('mount', (app) => {
 	}))
 	app.use('/view/:draftId*', ltiLaunchMiddlerware)
 	app.use('/api', apiResponseDecorator);
+
+	// =========== REGISTER OBOJOBO DRAFT CHUNKS ===========
 	registerChunks(app)
 
 	// =========== ROUTING & CONTROLERS ===========
-	app.use('/', oboRequire('/routes/index'));
-	app.use('/', oboRequire('routes/viewer'));
-	app.use('/', oboRequire('routes/editor'));
+	app.use('/view', oboRequire('routes/viewer'));
+	app.use('/editor', oboRequire('routes/editor'));
 	app.use('/lti', oboRequire('routes/lti'));
 	app.use('/api/drafts', oboRequire('routes/api/drafts'))
 	app.use('/api/events', oboRequire('routes/api/events'))

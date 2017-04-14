@@ -3,7 +3,7 @@ var router = express.Router();
 var OboGlobals = oboRequire('obo_globals')
 let DraftModel = oboRequire('models/draft')
 
-router.all('/view/example', (req, res, next) => {
+router.all('/example', (req, res, next) => {
 	if(req.app.get('env') === 'development')
 	{
 		res.redirect('/view/00000000-0000-0000-0000-000000000000')
@@ -14,7 +14,7 @@ router.all('/view/example', (req, res, next) => {
 	}
 })
 
-router.all('/view/:draftId*', (req, res, next) => {
+router.all('/:draftId*', (req, res, next) => {
 	let oboGlobals = new OboGlobals();
 	let user = null;
 	let draft = null;

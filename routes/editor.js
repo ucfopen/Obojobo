@@ -2,7 +2,7 @@ var express = require('express');
 var router = express.Router();
 var db = require('../db')
 
-router.all('/editor', (req, res, next) => {
+router.all('/', (req, res, next) => {
 	// let oboGlobals = new OboGlobals();
 
 	req.getCurrentUser(true)

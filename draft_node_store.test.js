@@ -7,9 +7,10 @@ let draft_node_store = require('./draft_node_store');
 
 describe('draft_node_store', () => {
 
+	beforeAll(() => {})
+	afterAll(() => {})
 	beforeEach(() => {});
 	afterEach(() => {});
-
 
 	it('get returns a Draft Node by default', () => {
 		let g = draft_node_store.get('no-way-this-exists')
