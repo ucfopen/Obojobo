@@ -1,4 +1,3 @@
-let db = oboRequire('db');
 let User = require('./user')
 
 class GuestUser extends User{
@@ -13,9 +12,6 @@ class GuestUser extends User{
 	isGuest(){
 		return true;
 	}
-
 }
 
 module.exports = GuestUser
-
-

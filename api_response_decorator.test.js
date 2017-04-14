@@ -2,9 +2,11 @@ const apiFunctions = ['success', 'missing', 'badInput', 'unexpected', 'reject']
 const functionsWithMessages = ['missing', 'badInput', 'unexpected', 'reject']
 let mockArgs // array of mocked express middleware request arguments
 
-describe('api_response_decorator', () => {
+describe('api response middleware', () => {
 
-	beforeAll(() => {
+	beforeAll(() => {})
+	afterAll(() => {})
+	beforeEach(() => {
 		mockArgs = (() => {
 			let res = {}
 			let req = {}
@@ -22,9 +24,12 @@ describe('api_response_decorator', () => {
 			return [res, req, mockJson, mockStatus, mockNext]
 		})()
 	})
-	afterAll(() => {})
-	beforeEach(() => {})
-	afterEach(() => {})
+	afterEach(() => {
+		let [res, req, mockJson, mockStatus, mockNext] = mockArgs
+		mockNext.mockClear()
+		mockStatus.mockClear()
+		mockJson.mockClear()
+	})
 
 	it('sets the expected properties on res', () => {
 		expect.assertions(apiFunctions.length * 2);

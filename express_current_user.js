@@ -1,7 +1,8 @@
 let User = oboRequire('models/user')
+let GuestUser = oboRequire('models/guest_user')
 
 let setCurrentUser = (req, user) => {
-	if(! user instanceof User) throw new Error('Invalid User for Current user')
+	if( ! (user instanceof User)) throw new Error('Invalid User for Current user')
 	req.session.currentUserId = user.id
 }
 
