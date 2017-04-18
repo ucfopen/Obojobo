@@ -1,12 +1,15 @@
 const apiFunctions = ['success', 'missing', 'badInput', 'unexpected', 'reject']
 const functionsWithMessages = ['missing', 'badInput', 'unexpected', 'reject']
 let mockArgs // array of mocked express middleware request arguments
+let originalError = console.error
 
 describe('api response middleware', () => {
 
 	beforeAll(() => {})
 	afterAll(() => {})
 	beforeEach(() => {
+
+		console.error = jest.fn()
 		mockArgs = (() => {
 			let res = {}
 			let req = {}
@@ -29,6 +32,7 @@ describe('api response middleware', () => {
 		mockNext.mockClear()
 		mockStatus.mockClear()
 		mockJson.mockClear()
+		console.error = originalError
 	})
 
 	it('sets the expected properties on res', () => {
@@ -96,6 +100,12 @@ describe('api response middleware', () => {
 
 		res.success(input)
 		expect(mockJson).toBeCalledWith(expected)
+	})
+
+	it('deals with error messages in unexpected', () => {
+		let [res, req, mockJson, mockStatus, mockNext] = mockArgs
+		res.unexpected(new Error('test error'))
+		expect(mockJson.mock.calls[0][0].value.message).toBe('Error: test error')
 	})
 
 	it.skip('functions return expected values', () => {

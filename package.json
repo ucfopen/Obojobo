@@ -65,6 +65,7 @@
       "controllers/**/*.js",
       "bin/*.js"
     ],
+    "coverageReporters":["json", "lcov", "text", "html"],
     "testPathIgnorePatterns": [
       "devsrc"
     ]
