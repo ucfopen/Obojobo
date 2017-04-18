@@ -133,8 +133,8 @@ describe('current user middleware', () => {
 		})
 	})
 
-	it('requireCurrentUser returns the current user', () =>{
-		expect.assertions(3)
+	it('gets currentUser if already set on req', () => {
+		expect.assertions(2)
 
 		let [res, req, mockJson, mockStatus, mockNext] = mockArgs
 		let User = require('./models/user')
@@ -143,6 +143,59 @@ describe('current user middleware', () => {
 		req.setCurrentUser(mockUser)
 
 		return req.requireCurrentUser()
+		.then(user => {
+			expect(user.id).toBe(8)
+			return req.getCurrentUser()
+		})
+		.then(secondUser => {
+			expect(secondUser.id).toBe(8)
+		})
+	})
+
+	it('getCurrentUser returns a guest user when fetchById fails', () =>{
+		expect.assertions(2)
+
+		let [res, req, mockJson, mockStatus, mockNext] = mockArgs
+		let User = require('./models/user')
+		let GuestUser = require('./models/guest_user')
+		User.fetchById = jest.fn().mockImplementation(id => {return Promise.reject('die rebel scum')})
+		req.session.currentUserId = 9
+		return req.getCurrentUser()
+		.then(user => {
+			expect(User.fetchById).toBeCalledWith(9)
+			expect(user).toBeInstanceOf(GuestUser)
+		})
+	})
+
+	it('getCurrentUser returns rejexts when fetchById fails and login is required', () =>{
+		expect.assertions(3)
+
+		let [res, req, mockJson, mockStatus, mockNext] = mockArgs
+		let User = require('./models/user')
+		let GuestUser = require('./models/guest_user')
+		User.fetchById = jest.fn().mockImplementation(id => {return Promise.reject('die rebel scum')})
+		req.session.currentUserId = 9
+		return req.getCurrentUser(true)
+		.then(user => {
+			expect(true).toBe('this should never happen')
+		})
+		.catch(err => {
+			expect(User.fetchById).toBeCalledWith(9)
+			expect(err).toBeInstanceOf(Error)
+			expect(err.message).toBe('Login Required')
+		})
+	})
+
+	it('getCurrentUser gets the current user', () => {
+		expect.assertions(3)
+
+		let [res, req, mockJson, mockStatus, mockNext] = mockArgs
+		let User = require('./models/user')
+		let mockUser = new User({id:8})
+		User.fetchById = jest.fn().mockImplementation(id => {return Promise.resolve(mockUser)})
+		req.setCurrentUser(mockUser)
+
+		return req.getCurrentUser()
 		.then(user => {
 			expect(User.fetchById).toBeCalledWith(8)
 			expect(user.id).toBe(8)
