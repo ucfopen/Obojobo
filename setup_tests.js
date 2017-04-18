@@ -24,3 +24,6 @@ fs.__setMockFileContents('./config/draft.json', '{"test":{"paths":[]}}');
 fs.__setMockFileContents('./config/permission_groups.json', '{"test":{"key":"value"}}');
 fs.__setMockFileContents('./config/general.json', '{"test":{"key":"value"}}');
 
+global.mockVirtual = (mock) => {
+	jest.mock(mock, () => {return jest.fn()}, {virtual: true})
+}
