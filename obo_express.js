@@ -9,7 +9,7 @@
    * a view engine that parses .pug
 */
 
-global.oboRequire = require('./obo_require')
+global.oboRequire = (name) => {return require(`${__dirname}/${name}`)}
 let express = require('express');
 let app = express();
 let DevNonceStore = oboRequire('dev_nonce_store');
