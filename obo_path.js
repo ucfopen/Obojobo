@@ -3,8 +3,7 @@ let path = require('path')
 let config = require('./config');
 
 let getDraftPath = () => {
-	for(let i = 0, len = config.draft.paths.length; i < len; i++)
-	{
+	for(let i = 0, len = config.draft.paths.length; i < len; i++){
 		if(fs.existsSync(config.draft.paths[i])) return config.draft.paths[i]
 	}
 
