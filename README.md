@@ -199,6 +199,114 @@ This will result in the JSON
 }
 ```
 
+### listStyles
+
+This element describes a **listStyles** property for an **Obojobo.Chunks.List** component. `<listStyles>` should contain either or both a `<type>` and `<indents>` element.
+
+`<type>` should contain either the text `ordered` or `unordered`. `<indents>` should contain one or more `<indent>` elements. `<indent>` elements should contain a `level` attribute and optionally `start`, `type` and/or `bulletStyle` attributes.
+
+An example of this format is shown below:
+
+```
+<List>
+	<listStyles>
+		<type>ordered</type>
+		<indents>
+			<indent level="2" type="unordered" bulletStyle="square" />
+			<indent level="4" type="ordered" start="10" bulletStyle="upper-alpha" />
+		</indents>
+	</listStyles>
+	<textGroup>
+		<t>One (indent=1)</t>
+		<t align="right" indent="2">Two (indent=2, align=right)</t>
+		<t indent="6">Three (indent=6)</t>
+		<t indent="2">Four (indent=2)</t>
+		<t indent="4">Five (indent=4)</t>
+		<t indent="3">Six (indent=3)</t>
+	</textGroup>
+</List>
+```
+
+This will result in the following JSON:
+
+```
+{
+	"id": null,
+	"type": "ObojoboDraft.Chunks.List",
+	"content": {
+		"textGroup": [
+			{
+				"text": {
+					"value": "One (indent=1)",
+					"styleList": []
+				},
+				"data": null
+			},
+			{
+				"text": {
+					"value": "Two (indent=2, align=right)",
+					"styleList": []
+				},
+				"data": {
+					"align": "right",
+					"indent": "2"
+				}
+			},
+			{
+				"text": {
+					"value": "Three (indent=6)",
+					"styleList": []
+				},
+				"data": {
+					"indent": "6"
+				}
+			},
+			{
+				"text": {
+					"value": "Four (indent=2)",
+					"styleList": []
+				},
+				"data": {
+					"indent": "2"
+				}
+			},
+			{
+				"text": {
+					"value": "Five (indent=4)",
+					"styleList": []
+				},
+				"data": {
+					"indent": "4"
+				}
+			},
+			{
+				"text": {
+					"value": "Six (indent=3)",
+					"styleList": []
+				},
+				"data": {
+					"indent": "3"
+				}
+			}
+		],
+		"listStyles": {
+			"type": "ordered",
+			"indents": {
+				"2": {
+					"type": "unordered",
+					"bulletStyle": "square"
+				},
+				"4": {
+					"type": "ordered",
+					"start": "10",
+					"bulletStyle": "upper-alpha"
+				}
+			}
+		}
+	},
+	"children": []
+}
+```
 
 ## HTML-Like Shorthand
 
@@ -264,7 +372,9 @@ Note that unlike HTML nested lists are not supported.
 ### `<pre>`: Code
 
 ```
-<pre>let x = 1;</pre>
+<pre>function F(x) {
+	return x + G(x);
+}</pre>
 ```
 
 becomes
@@ -272,7 +382,9 @@ becomes
 ```
 <ObojoboDraft.Chunks.Code>
 	<textGroup>
-		<t>let x = 1;</t>
+		<t>function F(x) {</t>
+		<t indent="1">return x + G(x);</t>
+		<t>}</pre></t>
 	</textGroup>
 </ObojoboDraft.Chunks.Code>
 ```

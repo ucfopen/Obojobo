@@ -7,8 +7,6 @@ let htmlTransform = (node) => {
 		{
 			case 'h1':
 			case 'h2':
-				console.log('h', node, node.attributes)
-				// align = node.attributes ? node.attributes.align : null;
 				if(!node.attributes) node.attributes = {};
 				node.attributes.headingLevel = parseInt(node.name.charAt(1), 10);
 				node.name = 'ObojoboDraft.Chunks.Heading'
