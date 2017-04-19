@@ -80,7 +80,7 @@ describe('models draft', () => {
 	})
 
 
-	it.only('yells to children', () => {
+	it('yells to children', () => {
 		expect.assertions(2)
 
 		let Draft = oboRequire('models/draft')
@@ -102,6 +102,6 @@ describe('models draft', () => {
 		children.forEach(c => {
 			expect(c.yell).toBeCalledWith('test')
 		})
-
 	})
+
 })
