@@ -3,7 +3,6 @@ let draftNodeStore = oboRequire('draft_node_store')
 
 class Draft {
 	constructor(rawDraft) {
-		this.instances = new Map()
 		this.nodesById = new Map()
 		this.nodesByType = new Map()
 		this.root = this.processRawNode(rawDraft)
@@ -16,25 +15,24 @@ class Draft {
 		})
 	}
 
-	processRawNode(node){
+	processRawNode(rawNode){
 		let initFn = () => {}
 
-		let draftClass = draftNodeStore.get(node.type)
+		let draftClass = draftNodeStore.get(rawNode.type)
 
-		let draftNode = new draftClass(this, node, initFn)
-		this.instances.set(node.id, draftNode)
+		let draftNode = new draftClass(this, rawNode, initFn)
 
 		draftNode.init()
 
 		this.nodesById.set(draftNode.node.id, draftNode)
 
-		let nodesByType = this.nodesByType.get(node.type)
+		let nodesByType = this.nodesByType.get(rawNode.type)
 		if(!nodesByType) nodesByType = []
 		nodesByType.push(draftNode)
-		this.nodesByType.set(node.type, nodesByType)
+		this.nodesByType.set(rawNode.type, nodesByType)
 
-		for(let i in node.children){
-			let childNode = this.processRawNode(node.children[i])
+		for(let i in rawNode.children){
+			let childNode = this.processRawNode(rawNode.children[i])
 			draftNode.children.push(childNode)
 		}
 
@@ -72,11 +70,11 @@ class Draft {
 		return this.root.toObject()
 	}
 
-	findNodeClass(id) {
+	getChildNodeById(id) {
 		return this.nodesById.get(id)
 	}
 
-	findNodesWithType(type) {
+	getChildNodesByType(type) {
 		return this.nodesByType.get(type)
 	}
 
