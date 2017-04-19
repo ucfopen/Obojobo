@@ -24,10 +24,6 @@ describe('models draft', () => {
 	beforeEach(() => {});
 	afterEach(() => {});
 
-	it('get returns a Draft Node by default', () => {
-		// expect(true).toBe(false)
-	})
-
 	it('initializes expected properties', () => {
 		let Draft = oboRequire('models/draft')
 		let DraftNode = oboRequire('models/draft_node')
