@@ -11,31 +11,57 @@ mockVirtual('./express_lti_launch')
 mockVirtual('./express_register_chunks')
 mockVirtual('./lti')
 
+let mockOn = jest.fn().mockImplementation((event, func) => {})
+let mockOnCallback
 let mockExpress = (mockOn = false, mockStatic = false) => {
 	jest.mock('express', () => {
-		return () => ({
+		let module = () => ({
 			on: (mockOn ? mockOn : jest.fn()),
+			use: jest.fn(),
+			get: jest.fn(),
+			post: jest.fn(),
+			delete: jest.fn(),
 			static: (mockStatic ? mockStatic : jest.fn())
 		})
+		module.Router = () => ({
+			all: jest.fn(),
+			get: jest.fn()
+		})
+
+		return module
 	}, {virtual: true});
 }
 
-
 describe('obo express', () => {
 
-	beforeAll(() => {})
+	beforeAll(() => {
+		// call this beforeAll because it only happens once on require
+		// and the tests are run in random order
+		mockExpress(mockOn)
+		let oe = require('./obo_express')
+		mockOnCallback = mockOn.mock.calls[0][1]
+	})
 	afterAll(() => {})
 	beforeEach(() => {})
 	afterEach(() => {})
 
-	it.only('listens to mount event', () => {
-		let mockOn = jest.fn().mockImplementation((event, func) => {})
-		mockExpress(mockOn)
-
-		let app = require('express')()
-		let oe = require('./obo_express')
-
+	it('listens to mount event', () => {
 		expect(mockOn).toBeCalledWith('mount', expect.any(Function))
+	})
+
+	it('implements expected middleware on parent app', () => {
+		let oe = require('./obo_express')
+		let mockApp = require('express')()
+		let registerChunks = require('./express_register_chunks')
+		mockOnCallback(mockApp)
+
+		expect(mockApp.on).toHaveBeenCalledTimes(1)
+		expect(mockApp.use).toHaveBeenCalledTimes(11)
+		expect(registerChunks).toHaveBeenCalled()
+		expect(mockApp.use).toHaveBeenCalledWith(oboRequire('express_load_balancer_helper'))
+		expect(mockApp.use).toHaveBeenCalledWith(oboRequire('express_current_user'))
+		expect(mockApp.use).toHaveBeenCalledWith(expect.any(String), oboRequire('api_response_decorator'))
+		expect(mockApp.use).toHaveBeenCalledWith(expect.any(String), oboRequire('express_lti_launch'))
 	})
 
 	it('returns an express application', () => {
@@ -46,7 +72,6 @@ describe('obo express', () => {
 			on: expect.any(Function),
 			static: expect.any(Function)
 		}))
-
 	})
 
 })
