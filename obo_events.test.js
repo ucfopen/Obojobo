@@ -7,11 +7,10 @@ describe('obo events', () => {
 	afterEach(() => {});
 
 	it('returns a singleton event emitter', () => {
-		const mockModuleReturn = {test:true}
 		jest.mock('events');
-		jest.mock('./obo_events', () => { return mockModuleReturn }, {virtual: true});
+		let expectedEmitter = require('events');
 		let oboEvents = require('./obo_events')
-		expect(oboEvents).toBe(mockModuleReturn)
+		expect(oboEvents).toBeInstanceOf(expectedEmitter)
 	})
 
 })
