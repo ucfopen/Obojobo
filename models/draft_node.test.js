@@ -15,6 +15,18 @@ let mockRawDraft = {
 				id: 999,
 				type: 'DraftNode',
 				content: {otherStuff:true},
+				children: [
+					{
+						id: 777,
+						type: 'DraftNode',
+						content: {otherStuff:true},
+					},
+				]
+			},
+			{
+				id: 888,
+				type: 'DraftNode',
+				content: {otherStuff:false},
 			}
 		]
 	}
@@ -81,7 +93,7 @@ describe('models draft', () => {
 
 
 	it('yells to children', () => {
-		expect.assertions(2)
+		expect.assertions(4)
 
 		let Draft = oboRequire('models/draft')
 		let d = new Draft(mockRawDraft.content)
@@ -102,6 +114,27 @@ describe('models draft', () => {
 		children.forEach(c => {
 			expect(c.yell).toBeCalledWith('test')
 		})
+	})
+
+	it('builds childrenSet as expected', () => {
+		let Draft = oboRequire('models/draft')
+		let d = new Draft(mockRawDraft.content)
+		let cSet = d.getChildNodeById(666).childrenSet
+		expect(cSet.has(999)).toBe(true)
+		expect(cSet.has(888)).toBe(true)
+		expect(cSet.has(777)).toBe(true)
+		expect(cSet.has(333)).toBe(false)
+	})
+
+
+	it('builds immediateChildrenSet as expected', () => {
+		let Draft = oboRequire('models/draft')
+		let d = new Draft(mockRawDraft.content)
+		let cSet = d.getChildNodeById(666).immediateChildrenSet
+		expect(cSet.has(999)).toBe(true)
+		expect(cSet.has(888)).toBe(true)
+		expect(cSet.has(777)).toBe(false)
+		expect(cSet.has(333)).toBe(false)
 	})
 
 })
