@@ -37,7 +37,7 @@ app.post('/api/assessments/attempt/start', (req, res, next) => {
 		return Assessment.getNumberAttemptsTaken(currentUser.id, req.body.draftId, req.body.assessmentId)
 	})
 	.then(numAttempts => {
-		var assessment = draftTree.findNodeClass(req.body.assessmentId)
+		var assessment = draftTree.getChildNodeById(req.body.assessmentId)
 
 		if(!isPreviewing && assessment.node.content.attempts && (numAttempts >= assessment.node.content.attempts))
 		{
@@ -85,7 +85,7 @@ app.post('/api/assessments/attempt/start', (req, res, next) => {
 
 		let uses = new Map()
 		childrenIds.forEach( (id) => {
-			let type = assessment.draftTree.findNodeClass(id).node.type
+			let type = assessment.draftTree.getChildNodeById(id).node.type
 			if(type === 'ObojoboDraft.Chunks.QuestionBank' || type === 'ObojoboDraft.Chunks.Question')
 			{
 				uses.set(id, 0)
@@ -124,7 +124,7 @@ app.post('/api/assessments/attempt/start', (req, res, next) => {
 			console.log('choose children', choose, select, node.id)
 
 
-			let draftNode = assessment.draftTree.findNodeClass(node.id)
+			let draftNode = assessment.draftTree.getChildNodeById(node.id)
 			let myChildren = [...draftNode.immediateChildrenSet]
 
 			if(!select) select = 'sequential';
@@ -141,7 +141,7 @@ app.post('/api/assessments/attempt/start', (req, res, next) => {
 					})
 
 					var myChildrenDraftNodes = myChildren.map( (id) => {
-						return assessment.draftTree.findNodeClass(id).toObject()
+						return assessment.draftTree.getChildNodeById(id).toObject()
 					})
 
 					var slice = myChildrenDraftNodes.slice(0, choose)
@@ -152,7 +152,7 @@ app.post('/api/assessments/attempt/start', (req, res, next) => {
 					myChildren = shuffleArray(myChildren)
 
 					var myChildrenDraftNodes = myChildren.map( (id) => {
-						return assessment.draftTree.findNodeClass(id).toObject()
+						return assessment.draftTree.getChildNodeById(id).toObject()
 					})
 
 					var slice = myChildrenDraftNodes.slice(0, choose)
@@ -170,7 +170,7 @@ app.post('/api/assessments/attempt/start', (req, res, next) => {
 					})
 
 					var myChildrenDraftNodes = myChildren.map( (id) => {
-						return assessment.draftTree.findNodeClass(id).toObject()
+						return assessment.draftTree.getChildNodeById(id).toObject()
 					})
 
 					var slice = myChildrenDraftNodes.slice(0, choose)
@@ -207,7 +207,7 @@ app.post('/api/assessments/attempt/start', (req, res, next) => {
 		{
 			if(node.type === 'ObojoboDraft.Chunks.Question')
 			{
-				questions.push(assessment.draftTree.findNodeClass(node.id))
+				questions.push(assessment.draftTree.getChildNodeById(node.id))
 			}
 
 			for(let i in node.children)
@@ -230,7 +230,7 @@ app.post('/api/assessments/attempt/start', (req, res, next) => {
 
 		// 	for(i in draftNode.children)
 		// 	{
-		// 		let child = draftNode.draftTree.findNodeClass(draftNode.children[i])
+		// 		let child = draftNode.draftTree.getChildNodeById(draftNode.children[i])
 		// 		o.children.push(buildAssessmentTree(child))
 		// 	}
 
@@ -356,7 +356,7 @@ app.post('/api/assessments/attempt/:attemptId/end', (req, res, next) => {
 			`, [req.params.attemptId])
 	})
 	.then(responseHistory => {
-		var assessment = draftTree.findNodeClass(assessmentId)
+		var assessment = draftTree.getChildNodeById(assessmentId)
 		state = {
 			scores: [0],
 			questions: attemptState.questions,

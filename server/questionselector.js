@@ -5,8 +5,8 @@ let getQuestionHistory = (attemptHistory, questionBank) => {
 	let questionHistory = new Map(
 		[...questionBank.immediateChildrenSet]
 			.filter( (id) => {
-				console.log('TEST', id, questionBank.draftTree.findNodeClass(id).node.type !== 'ObojoboDraft.Chunks.QuestionBank')
-				return questionBank.draftTree.findNodeClass(id).node.type !== 'ObojoboDraft.Chunks.QuestionBank'
+				console.log('TEST', id, questionBank.draftTree.getChildNodeById(id).node.type !== 'ObojoboDraft.Chunks.QuestionBank')
+				return questionBank.draftTree.getChildNodeById(id).node.type !== 'ObojoboDraft.Chunks.QuestionBank'
 			} )
 			.map( (id) => { return [id, 0] })
 	)
@@ -82,7 +82,7 @@ let getQuestions = (questionHistoryArray, questionBank, choose) => {
 
 	let result = questionHistoryArray
 		.filter( (questionItem) => {
-			let question = questionBank.draftTree.findNodeClass(questionItem.id)
+			let question = questionBank.draftTree.getChildNodeById(questionItem.id)
 			let content = question.node.content
 			let limitExceeded = content.limit && content.limit !== 0 && questionItem.timesUsed >= content.limit
 
@@ -90,7 +90,7 @@ let getQuestions = (questionHistoryArray, questionBank, choose) => {
 		} )
 		.slice(0, choose)
 		.map( (questionItem) => {
-			return questionBank.draftTree.findNodeClass(questionItem.id)
+			return questionBank.draftTree.getChildNodeById(questionItem.id)
 		} )
 
 	console.log('   result')
