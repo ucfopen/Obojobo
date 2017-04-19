@@ -49,9 +49,9 @@ class Draft {
 				drafts_content.content AS content
 			FROM drafts
 			JOIN drafts_content
-			ON drafts.id = drafts_content.draft_id
+				ON drafts.id = drafts_content.draft_id
 			WHERE drafts.id = $[id]
-			AND deleted = FALSE
+				AND deleted = FALSE
 			ORDER BY version DESC
 			LIMIT 1
 			`, { id:id })

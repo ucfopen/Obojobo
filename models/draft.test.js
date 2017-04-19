@@ -7,11 +7,14 @@ let mockRawDraft = {
 	content_created_at: new Date().toISOString(),
 	content: {
 		id: 666,
+		stuff: true,
 		type: 'DraftNode',
+		content: {nothing:true},
 		children: [
 			{
 				id: 999,
 				type: 'DraftNode',
+				content: {otherStuff:true},
 			}
 		]
 	}
@@ -48,7 +51,7 @@ describe('models draft', () => {
 			expect(model).toBeInstanceOf(Draft)
 			expect(model.root).toBeInstanceOf(DraftNode)
 			expect(model.nodesById.size).toBe(2)
-			expect(model.nodesById.get(666)).toBeInstanceOf(DraftNode)
+			expect(model.getChildNodeById(999)).toBeInstanceOf(DraftNode)
 			expect(model.nodesByType.get('DraftNode')).toHaveLength(2)
 		})
 	})
