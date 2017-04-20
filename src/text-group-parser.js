@@ -26,21 +26,32 @@ let parseT = (el) => {
 		data: el.attributes || null
 	}
 
+	// let foundText = false;
+	// let lastTextNode = null;
 	for(let i in el.value)
 	{
 		// console.log('call pt', el.elements, i, el.elements[i], t.text)
-		parseText(el.value[i], t.text)
+		parseText(el.value[i], t.text) //, foundText, lastTextNode)
 	}
+
+	// if(lastTextNode) lastTextNode.text = lastTextNode.text.replace(/\s+$/, '');
 
 	// console.log('parseT result', t);
 
 	return t;
 }
 
-let parseText = (node, textItem) => {
+let parseText = (node, textItem, foundText, lastTextNode) => {
 	// console.log('parseText', node)
 	if(node.type === 'text')
 	{
+		if(!foundText && typeof node.text === 'string')
+		{
+			foundText = true;
+			// node.text = node.text.replace(/^\s+/, '');
+		}
+
+		lastTextNode = node;
 		textItem.value += node.text
 		return
 	}
@@ -81,7 +92,7 @@ let parseText = (node, textItem) => {
 
 	for(let i in node.value)
 	{
-		parseText(node.value[i], textItem)
+		parseText(node.value[i], textItem)//, foundText, lastTextNode)
 	}
 
 	styleRange.end = textItem.value.length

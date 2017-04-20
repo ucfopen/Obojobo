@@ -94,7 +94,7 @@ let htmlTransform = (node) => {
 				break;
 			
 			case 'hr':
-				node.name = 'ObobojoDraft.Chunks.Break'
+				node.name = 'ObojoboDraft.Chunks.Break'
 
 				break;
 

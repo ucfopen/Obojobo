@@ -589,25 +589,6 @@ Both examples above produce the following JSON:
 }
 ```
 
-### Test document example
+### More examples
 
-This example should feature the majority of use-cases and features:
-
-```
-<ObojoboDraftDoc>
-</ObojoboDraftDoc>
-```
-
-
-
-
-
-
-
-
-
-
-
-
-
-z
+More examples are available in the examples directory.

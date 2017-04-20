@@ -1,6 +1,7 @@
 let convert = require('xml-js');
 
 let nameTransform = require('./src/name-transformer');
+let extensionTransform = require('./src/extension-transform');
 let htmlTransform = require('./src/html-transform');
 let draftJsonTransform = require('./src/draft-json-transform');
 let attrElementToAttrItem = require('./src/attr-element-to-attr-item')
@@ -71,6 +72,7 @@ module.exports = (xml, generateIds = false) => {
 	});
 
 	nameTransform(root)
+	extensionTransform(root)
 	htmlTransform(root)
 	elementsToAttrElements(root)
 	attrElementToAttrItem(root)
