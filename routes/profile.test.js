@@ -1,3 +1,5 @@
+jest.mock('../db')
+
 let mockExpressMethods = {}
 let mockRouterMethods = {}
 
@@ -26,7 +28,7 @@ let mockExpress = () => {
 }
 
 
-describe('index route', () => {
+describe('lti route', () => {
 
 	beforeAll(() => {})
 	afterAll(() => {})
@@ -36,65 +38,65 @@ describe('index route', () => {
 	test('registers the expected routes ', () => {
 		mockExpress()
 		let express = require('express')
-		let editor = oboRequire('routes/index')
+		let editor = oboRequire('routes/profile')
+		expect(mockRouterMethods.get).toHaveBeenCalledTimes(1)
 		expect(mockRouterMethods.get).toBeCalledWith('/', expect.any(Function))
 	})
 
-	test('calls next', () => {
+	test('index calls next', () => {
+		expect.assertions(1)
+
 		mockExpress()
 		let express = require('express')
-		let editor = oboRequire('routes/index')
+		let editor = oboRequire('routes/profile')
+		let User = oboRequire('models/user')
 		let routeFunction = mockRouterMethods.get.mock.calls[0][1]
 
 		let mockReq = {
-			app:{
-				locals:{
-					paths:'test',
-					modules:'test'
-				}
-			}
+			getCurrentUser: () => { return Promise.resolve(new User()) }
 		}
 
 		let mockRes = {
 			status: jest.fn(),
-			render: jest.fn()
+			render: jest.fn(),
+			send: jest.fn()
 		}
 
 		let mockNext = jest.fn()
 
-		routeFunction(mockReq, mockRes, mockNext)
-		expect(mockNext).toBeCalledWith()
+		return routeFunction(mockReq, mockRes, mockNext)
+		.then(() => {
+			expect(mockNext).toBeCalledWith()
+		})
+
 	})
 
-	test('renders the expected stuff', () => {
+	test('index calls send', () => {
+		expect.assertions(1)
+
 		mockExpress()
 		let express = require('express')
-		let editor = oboRequire('routes/index')
+		let editor = oboRequire('routes/profile')
+		let User = oboRequire('models/user')
 		let routeFunction = mockRouterMethods.get.mock.calls[0][1]
 
 		let mockReq = {
-			app:{
-				locals:{
-					paths:'test1',
-					modules:'test2'
-				}
-			}
+			getCurrentUser: () => { return Promise.resolve(new User()) }
 		}
 
 		let mockRes = {
 			status: jest.fn(),
-			render: jest.fn()
+			render: jest.fn(),
+			send: jest.fn()
 		}
 
 		let mockNext = jest.fn()
 
-		routeFunction(mockReq, mockRes, mockNext)
-		expect(mockRes.render).toBeCalledWith(expect.any(String), expect.objectContaining({
-			paths:"test1",
-			modules: "test2",
-			title:"Obojobo 3"
-		}))
-	})
+		return routeFunction(mockReq, mockRes, mockNext)
+		.then(() => {
+			expect(mockRes.send).toBeCalledWith("Hello guest!")
+		})
 
+	})
 
 })
