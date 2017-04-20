@@ -12,6 +12,10 @@ class GuestUser extends User{
 	isGuest(){
 		return true;
 	}
+
+	static fetchById(id) {
+		throw new Error('Cannot fetch Guest User')
+	}
 }
 
 module.exports = GuestUser
