@@ -116,25 +116,43 @@ describe('models draft', () => {
 		})
 	})
 
+	it('yell fires named event listeners', () => {
+		let DraftNode = oboRequire('models/draft_node')
+		const draftTree = {}
+		let eventFn = jest.fn().mockImplementation(() => {return 5})
+		let d = new DraftNode(draftTree, mockRawDraft.content);
+		d.registerEvents({ test: eventFn})
+		let promises = d.yell('test')
+		expect(eventFn).toHaveBeenCalled()
+	})
+
 	it('builds childrenSet as expected', () => {
 		let Draft = oboRequire('models/draft')
 		let d = new Draft(mockRawDraft.content)
-		let cSet = d.getChildNodeById(666).childrenSet
-		expect(cSet.has(999)).toBe(true)
-		expect(cSet.has(888)).toBe(true)
-		expect(cSet.has(777)).toBe(true)
-		expect(cSet.has(333)).toBe(false)
+		let childrenSet = d.getChildNodeById(666).childrenSet
+		expect(childrenSet.has(999)).toBe(true)
+		expect(childrenSet.has(888)).toBe(true)
+		expect(childrenSet.has(777)).toBe(true)
+		expect(childrenSet.has(333)).toBe(false)
 	})
 
 
 	it('builds immediateChildrenSet as expected', () => {
 		let Draft = oboRequire('models/draft')
 		let d = new Draft(mockRawDraft.content)
-		let cSet = d.getChildNodeById(666).immediateChildrenSet
-		expect(cSet.has(999)).toBe(true)
-		expect(cSet.has(888)).toBe(true)
-		expect(cSet.has(777)).toBe(false)
-		expect(cSet.has(333)).toBe(false)
+		let iChildrenSet = d.getChildNodeById(666).immediateChildrenSet
+		expect(iChildrenSet.has(999)).toBe(true)
+		expect(iChildrenSet.has(888)).toBe(true)
+		expect(iChildrenSet.has(777)).toBe(false)
+		expect(iChildrenSet.has(333)).toBe(false)
 	})
 
+	it('contains finds child nodes', () => {
+		let Draft = oboRequire('models/draft')
+		let d = new Draft(mockRawDraft.content)
+		expect(d.root.contains({id:999})).toBe(true)
+		expect(d.root.contains({id:888})).toBe(true)
+		expect(d.root.contains({id:777})).toBe(true)
+		expect(d.root.contains({id:333})).toBe(false)
+	})
 })
