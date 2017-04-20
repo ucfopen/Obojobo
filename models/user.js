@@ -26,7 +26,7 @@ class User {
 			FROM users
 			WHERE id = $1
 		`, id)
-		.then( (result) => {
+		.then(result => {
 			return new User({
 				id: result.id,
 				firstName: result.first_name,
@@ -68,13 +68,13 @@ class User {
 	}
 
 	hasRoles(expectedRoles) {
-		return expectedRoles.length === this.roles.filter( (role) => {
+		return expectedRoles.length === this.roles.filter(role => {
 			return expectedRoles.indexOf(role) > -1
 		}).length
 	}
 
 	hasOneOfRole(expectedRoles) {
-		return this.roles.filter( (role) => {
+		return this.roles.filter(role => {
 			return expectedRoles.indexOf(role) > -1
 		}).length > 0
 	}
