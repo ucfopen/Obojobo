@@ -59,7 +59,6 @@ class User {
 	}
 
 	isGuest() {
-		console.log('User::isGuest is not implemented')
 		return false;
 	}
 
