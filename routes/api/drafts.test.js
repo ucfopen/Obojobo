@@ -32,7 +32,7 @@ let mockExpress = () => {
 }
 
 
-describe('lti route', () => {
+describe('api draft route', () => {
 
 	beforeAll(() => {})
 	afterAll(() => {})
