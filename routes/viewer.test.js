@@ -58,9 +58,6 @@ describe('lti route', () => {
 		}
 
 		let mockRes = {
-			status: jest.fn(),
-			render: jest.fn(),
-			send: jest.fn(),
 			redirect: jest.fn()
 		}
 
@@ -75,21 +72,17 @@ describe('lti route', () => {
 		expect.assertions(1)
 
 		mockExpress()
-		let express = require('express')
-		let editor = oboRequire('routes/viewer')
+		require('express')
+		oboRequire('routes/viewer')
 		let User = oboRequire('models/user')
 		let routeFunction = mockRouterMethods.all.mock.calls[0][1]
 
 		//  mock app.get('env') to reutrn 'development'
 		let mockReq = {
-			getCurrentUser: () => { return Promise.resolve(new User()) },
 			app: {get: jest.fn().mockImplementationOnce(() => { return 'development'})}
 		}
 
 		let mockRes = {
-			status: jest.fn(),
-			render: jest.fn(),
-			send: jest.fn(),
 			redirect: jest.fn()
 		}
 
@@ -103,22 +96,16 @@ describe('lti route', () => {
 		expect.assertions(2)
 
 		mockExpress()
-		let express = require('express')
-		let editor = oboRequire('routes/viewer')
+		require('express')
+		oboRequire('routes/viewer')
 		let GuestUser = oboRequire('models/guest_user')
 		let routeFunction = mockRouterMethods.all.mock.calls[1][1]
 
 		let mockReq = {
 			getCurrentUser: () => { return Promise.resolve(new GuestUser()) },
-			app: {get: jest.fn().mockImplementationOnce(() => { return 'development'})}
 		}
 
-		let mockRes = {
-			status: jest.fn(),
-			render: jest.fn(),
-			send: jest.fn(),
-			redirect: jest.fn()
-		}
+		let mockRes = {}
 
 		let mockNext = jest.fn()
 
@@ -145,12 +132,7 @@ describe('lti route', () => {
 			getCurrentUser: () => { return Promise.reject('not logged in') },
 		}
 
-		let mockRes = {
-			status: jest.fn(),
-			render: jest.fn(),
-			send: jest.fn(),
-			redirect: jest.fn()
-		}
+		let mockRes = {}
 
 		let mockNext = jest.fn()
 
@@ -177,14 +159,10 @@ describe('lti route', () => {
 			getCurrentUser: () => { return Promise.resolve(new User()) },
 			params: {draftId: 555},
 			app: {locals:{paths:'paths', modules:'modules'}}
-			// getCurrentUser: () => { return Promise.reject('not logged in') },
 		}
 
 		let mockRes = {
-			status: jest.fn(),
 			render: jest.fn(),
-			send: jest.fn(),
-			redirect: jest.fn()
 		}
 
 		let mockNext = jest.fn()
@@ -199,7 +177,7 @@ describe('lti route', () => {
 
 		return routeFunction(mockReq, mockRes, mockNext)
 		.then((result) => {
-			expect(mockYell).toBeCalled()
+			expect(mockYell).toBeCalledWith('internal:sendToClient', expect.any(Object), expect.any(Object))
 			expect(mockRes.render).toBeCalledWith(expect.any(String), expect.objectContaining({
 				title: 'Obojobo 3',
 				paths: 'paths',
