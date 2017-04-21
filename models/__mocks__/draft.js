@@ -5,13 +5,9 @@ let mockYell = jest.fn()
 class MockDraft {
 	constructor(rawDraft){
 		this.yell = mockYell
+		this.root = this
+		this.document = `{"json":"value"}`
 	}
-
-	static fetchById(id){
-		console.log('Mock fetch')
-		return Promise.resolve(new MockDraft())
-	}
-
 }
 
 MockDraft.fetchById = jest.fn().mockImplementation((id) => {

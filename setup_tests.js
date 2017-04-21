@@ -24,5 +24,7 @@ fs.__setMockFileContents('./config/permission_groups.json', '{"test":{"canDoThin
 fs.__setMockFileContents('./config/general.json', '{"test":{"key":"value"}}');
 
 global.mockVirtual = (mock) => {
-	jest.mock(mock, () => {return jest.fn()}, {virtual: true})
+	let mockFunction = jest.fn()
+	jest.mock(mock, () => {return mockFunction}, {virtual: true})
+	return mockFunction
 }

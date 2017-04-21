@@ -1,5 +1,5 @@
 var express = require('express');
-var app = express();
+var router = express.Router();
 let DraftModel = oboRequire('models/draft')
 
 var db = require('../../db')
@@ -7,67 +7,72 @@ var db = require('../../db')
 let insertNewDraft = require('./drafts/insert_new_draft')
 let updateDraft = require('./drafts/update_draft')
 
-app.get('/:draftId', (req, res, next) => {
+router.get('/:draftId', (req, res, next) => {
 	let draftId = req.params.draftId
 
-	DraftModel.fetchById(draftId)
+	return DraftModel.fetchById(draftId)
 	.then(draftTree => {
 		draftTree.root.yell('internal:sendToClient', req, res)
 		res.success(draftTree.document)
-		next()
+		return next()
 	})
-	.catch(error => {
-		console.error('e', error)
+	.catch(err => {
+		console.error(err)
 		res.missing('Draft not found')
-		next()
+		next(err)
+		return Promise.reject(err)
 	})
 });
 
 //@TODO - Transactionify this
-app.post('/new', (req, res, next) => {
+router.post('/new', (req, res, next) => {
 	let newDraft = null
 	let user = null
 
-	req.requireCurrentUser()
+	return req.requireCurrentUser()
 	.then(currentUser => {
 		user = currentUser
 		if(!currentUser.canCreateDrafts) throw 'Insufficent permissions'
 
 		return db.none(`BEGIN`)
 	})
-	.then( () => {
+	.then(() => {
 		return insertNewDraft(user.id)
 	})
-	.then( (newDraft) => {
+	.then(newDraft => {
 		res.success(newDraft)
-		next()
+		return next()
 	})
 	.catch(err => {
-		res.unexpected(error)
-		next()
+		res.unexpected(err)
+		next(err)
+		return Promise.reject(err)
 	})
 })
 
 //@TODO - Ensure that you can't post to a deleted draft, ensure you can only delete your own stuff
-app.post(/(\w{8}-\w{4}-\w{4}-\w{4}-\w{12})/, (req, res, next) => {
-	req.requireCurrentUser()
+router.post(/(\w{8}-\w{4}-\w{4}-\w{4}-\w{12})/, (req, res, next) => {
+	return req.requireCurrentUser()
 	.then(currentUser => {
 		if(!currentUser.canEditDrafts) throw 'Insufficent permissions'
 
 		return updateDraft(req.params[0], req.body)
 	})
-	.then( id => {
+	.then(id => {
+		console.log('done')
 		res.success({ id:id })
-		next()
+		return next()
 	})
 	.catch(error => {
+		console.log(error)
 		res.unexpected(error)
-		next()
+		next(error)
+		return Promise.reject(error)
 	})
 });
 
-app.delete('/:draftId', (req, res, next) => {
-	req.requireCurrentUser()
+router.delete('/:draftId', (req, res, next) => {
+	return req.requireCurrentUser()
 	.then(currentUser => {
 		if(!currentUser.canDeleteDrafts) throw 'Insufficent permissions'
 
@@ -81,21 +86,21 @@ app.delete('/:draftId', (req, res, next) => {
 			userId: currentUser.id
 		})
 	})
-	.then( id => {
+	.then(id => {
 		res.success(id)
-		next()
+		return next()
 	})
-	.catch(error => {
-		res.unexpected(error)
-		next()
+	.catch(err => {
+		res.unexpected(err)
+		next(err)
+		return Promise.reject(err)
 	})
 });
 
-app.get('/', (req, res, next) => {
-	req.requireCurrentUser()
+router.get('/', (req, res, next) => {
+	return req.requireCurrentUser()
 	.then(currentUser => {
 		if(!currentUser.canViewDrafts) throw 'Insufficent permissions'
-
 		return db.any(`
 			SELECT DISTINCT ON (draft_id)
 				draft_id AS "draftId",
@@ -110,18 +115,18 @@ app.get('/', (req, res, next) => {
 				AND user_id = $[userId]
 			)
 			ORDER BY draft_id, id desc
-		`, {
-			userId: currentUser.id
-		})
+		`, {userId: currentUser.id})
 	})
-	.then( (result) => {
-		console.log('DEM RESULTS', result)
+	.then(result => {
 		res.success(result)
+		return next()
 	})
-	.catch(error => {
-		res.unexpected(error)
-		next()
+	.catch(err => {
+		console.log(err)
+		res.unexpected(err)
+		next(err)
+		return Promise.reject(err)
 	})
 });
 
-module.exports = app;
+module.exports = router;

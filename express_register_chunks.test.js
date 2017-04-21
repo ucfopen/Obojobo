@@ -4,12 +4,12 @@ jest.mock('child_process')
 
 // just mock these non-existent things
 jest.mock('/file/path/express.js', () => ({expressApp:true}), {virtual: true});
-jest.mock('/file/path/fake_thing.js', () => {}, {virtual: true});
-jest.mock('/file/otherpath/viewer.js', () => {}, {virtual: true});
-jest.mock('/file/otherotherpath/viewer.css', () => {}, {virtual: true});
-jest.mock('/file_2/otherpath/viewer.js', () => {}, {virtual: true});
-jest.mock('/file_2/otherotherpath/viewer.css', () => {}, {virtual: true});
-jest.mock('/file_3/path/viewer.js', () => {}, {virtual: true});
+mockVirtual('/file/path/fake_thing.js')
+mockVirtual('/file/otherpath/viewer.js')
+mockVirtual('/file/otherotherpath/viewer.css')
+mockVirtual('/file_2/otherpath/viewer.js')
+mockVirtual('/file_2/otherotherpath/viewer.css')
+mockVirtual('/file_3/path/viewer.js')
 
 describe('register chunks middleware', () => {
 

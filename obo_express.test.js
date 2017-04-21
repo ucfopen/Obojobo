@@ -26,7 +26,8 @@ let mockExpress = (mockOn = false, mockStatic = false) => {
 		module.Router = () => ({
 			all: jest.fn(),
 			get: jest.fn(),
-			post: jest.fn()
+			post: jest.fn(),
+			delete: jest.fn()
 		})
 
 		return module

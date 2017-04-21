@@ -10,4 +10,9 @@ db.any.mockImplementation((query, vars) => {
 	return Promise.resolve(null)
 })
 
+db.none = jest.fn()
+db.none.mockImplementation((query, vars) => {
+	return Promise.resolve(null)
+})
+
 module.exports = db;

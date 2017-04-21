@@ -9,52 +9,34 @@ module.exports = (userId, content = {}, draftId = null) => {
 			if(!draftId)
 			{
 				return db.one(`
-					INSERT INTO drafts(
-						user_id
-					)
-					VALUES(
-						$[userId]
-					)
+					INSERT INTO drafts
+						(user_id)
+					VALUES
+						($[userId])
 					RETURNING *
-				`, {
-					userId: userId
-				})
+				`, {userId: userId})
 			}
 			else
 			{
 				return db.one(`
-					INSERT INTO drafts(
-						id,
-						user_id
-					)
-					VALUES(
-						$[id],
-						$[userId]
-					)
+					INSERT INTO drafts
+						(id, user_id)
+					VALUES
+						($[id], $[userId])
 					RETURNING *
-				`, {
-					id: draftId,
-					userId: userId
-				})
+				`, {id: draftId, userId: userId})
 			}
 		})
 		.then( (result) => {
 			newDraft = result
 
 			return db.one(`
-				INSERT INTO drafts_content(
-					draft_id,
-					content
-				)
-				VALUES(
-					$[draftId],
-					$[content]
-				)
+				INSERT INTO drafts_content
+					(draft_id, content)
+				VALUES
+					($[draftId], $[content])
 				RETURNING *
-			`, {
-				draftId: result.id,
-				content: content
-			})
+			`, {draftId: result.id, content: content})
 		})
 		.then( (result) => {
 			newDraft.content = result
