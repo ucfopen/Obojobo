@@ -218,32 +218,4 @@ describe('lti route', () => {
 		})
 	})
 
-	// test('index calls send', () => {
-	// 	expect.assertions(1)
-
-	// 	mockExpress()
-	// 	let express = require('express')
-	// 	let editor = oboRequire('routes/profile')
-	// 	let User = oboRequire('models/user')
-	// 	let routeFunction = mockRouterMethods.get.mock.calls[0][1]
-
-	// 	let mockReq = {
-	// 		getCurrentUser: () => { return Promise.resolve(new User()) }
-	// 	}
-
-	// 	let mockRes = {
-	// 		status: jest.fn(),
-	// 		render: jest.fn(),
-	// 		send: jest.fn()
-	// 	}
-
-	// 	let mockNext = jest.fn()
-
-	// 	return routeFunction(mockReq, mockRes, mockNext)
-	// 	.then(() => {
-	// 		expect(mockRes.send).toBeCalledWith("Hello guest!")
-	// 	})
-
-	// })
-
 })
