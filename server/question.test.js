@@ -21,7 +21,7 @@ describe('Question', () => {
     expect(mcChoice.node.content.practice).toBeFalsy()
   })
 
-  it('returns if assessment contains \'this\' node on attempt end', () => {
+  it('returns if assessment doesn\'t contain \'this\' node on attempt end', () => {
     mcChoice.node.id = 'test12345'
     expect(mcChoice.yell(events.attemptEnd, {}, {}, rootNode.root, {}, {})).toEqual([])
   })
