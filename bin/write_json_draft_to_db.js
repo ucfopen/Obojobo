@@ -14,24 +14,30 @@ let updateDraft = oboRequire('routes/api/drafts/update_draft')
 
 let draftId, userId
 
-try
-{
+try{
 	if(process.argv.length <= 2) throw usageError
-	
+
 	let fn = process.argv[2]
 	let jsonFilePath = process.argv[3]
 
 	let file = fs.readFileSync(jsonFilePath)
 	let json = JSON.parse(file)
 
-	switch(fn)
-	{
+	switch(fn){
 		case 'insert':
 			userId = process.argv[4] || 0
 			draftId = process.argv[5] || null
 
-			insertNewDraft(userId, json, draftId)
-			.then( (newDraft) => {
+			insertNewDraft(userId, json)
+			.then(newDraft => {
+				return db.one(`
+					UPDATE drafts
+					SET id = $[newId]
+					WHERE id = $[currentId]
+					`, {newId: draftId, currentId: newDraft.id}
+				)
+			})
+			.then(()=>{
 				console.log('OK');
 				process.exit()
 				return
@@ -42,12 +48,12 @@ try
 				return
 			})
 			break;
-		
+
 		case 'update':
 			draftId = process.argv[4] || 0
 
 			updateDraft(draftId, json)
-			.then( id => {
+			.then(id => {
 				console.log('OK. id=' + id)
 				process.exit()
 				return
@@ -58,14 +64,13 @@ try
 				return
 			})
 			break;
-		
+
 		default:
 			throw usageError
 			break
 	}
 }
-catch(e)
-{
+catch(e){
 	console.log('erroror')
 	console.error(e.message);
 	process.exit(1);
