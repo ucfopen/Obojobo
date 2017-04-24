@@ -1,7 +1,7 @@
 jest.mock('../../../db')
 
 
-describe('api draft update route', () => {
+describe('api draft update helper', () => {
 
 	beforeAll(() => {})
 	afterAll(() => {})
