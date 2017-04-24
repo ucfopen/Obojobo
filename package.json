@@ -62,8 +62,12 @@
       "models/*.js",
       "routes/*.js",
       "routes/**/*.js",
-      "controllers/**/*.js",
-      "bin/*.js"
+      "controllers/**/*.js"
+    ],
+    "coveragePathIgnorePatterns":[
+      "/node_modules",
+      "/app.js",
+      "/dev_nonce_store.js"
     ],
     "coverageReporters":["json", "lcov", "text", "html"],
     "testPathIgnorePatterns": [
