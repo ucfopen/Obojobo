@@ -1,5 +1,5 @@
-const apiFunctions = ['success', 'missing', 'badInput', 'unexpected', 'reject']
-const functionsWithMessages = ['missing', 'badInput', 'unexpected', 'reject']
+const apiFunctions = ['success', 'missing', 'badInput', 'unexpected', 'reject', 'notAuthorized']
+const functionsWithMessages = ['missing', 'badInput', 'unexpected', 'reject', 'notAuthorized']
 let mockArgs // array of mocked express middleware request arguments
 let originalError = console.error
 
@@ -54,7 +54,7 @@ describe('api response middleware', () => {
 		let [res, req, mockJson, mockStatus, mockNext] = mockArgs
 
 		apiFunctions.forEach((prop, index) => { res[prop]() })
-		expect(mockStatus.mock.calls).toEqual([[200], [404], [400], [500], [403]])
+		expect(mockStatus.mock.calls).toEqual([[200], [404], [400], [500], [403], [401]])
 	})
 
 	it('success to pass the value object', () => {

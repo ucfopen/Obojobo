@@ -78,6 +78,7 @@ module.exports = (req, res, next) => {
   res.success = success.bind(this, req, res, next)
   res.missing = missing.bind(this, req, res, next)
   res.badInput = badInput.bind(this, req, res, next)
+  res.notAuthorized = notAuthorized.bind(this, req, res, next)
   res.unexpected = unexpected.bind(this, req, res, next)
   res.reject = reject.bind(this, req, res, next)
   next();
