@@ -4,13 +4,14 @@ var oboEvents = oboRequire('obo_events')
 var insertEvent = oboRequire('insert_event')
 
 router.post('/', (req, res, next) => {
-	let insertObject
-	let event = req.body.event
 	return req.requireCurrentUser()
 	.then(currentUser => {
 		// check input
 
-		insertObject = {
+		// add data to the event
+		let event = req.body.event
+
+		let insertObject = {
 			actorTime: event.actor_time,
 			action: event.action,
 			userId: currentUser.id,
@@ -21,17 +22,22 @@ router.post('/', (req, res, next) => {
 		}
 
 		return insertEvent(insertObject)
-	})
-	.then(result => {
-		insertObject.createdAt = result.created_at;
-		oboEvents.emit(`client:${event.action}`, insertObject, req);
-		res.success({ createdAt:result.created_at });
-		return next();
+		.then(result => {
+			insertObject.createdAt = result.created_at;
+			oboEvents.emit(`client:${event.action}`, insertObject, req);
+			res.success({ createdAt:result.created_at });
+			return next();
+		})
+		.catch(err => {
+			console.error('Insert Event Failure:', err)
+			res.unexpected(err);
+			next();
+		})
 	})
 	.catch(err => {
 		console.log(err)
-		res.unexpected(err);
-		next(); // dont pass error here
+		res.notAuthorized(err);
+		next();
 		return Promise.reject(err)
 	})
 

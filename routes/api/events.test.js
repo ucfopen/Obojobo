@@ -48,11 +48,11 @@ describe('api draft events route', () => {
 	})
 
 	test('requires current user', () => {
-		expect.assertions(2)
+		expect.assertions(3)
 		mockExpress()
 		require('express')
 
-		oboRequire('routes/api/drafts')
+		oboRequire('routes/api/events')
 		let routeFunction = mockRouterMethods.post.mock.calls[0][1]
 
 		let mockReq = {
@@ -60,7 +60,8 @@ describe('api draft events route', () => {
 		}
 
 		let mockRes = {
-			unexpected: jest.fn()
+			unexpected: jest.fn(),
+			notAuthorized: jest.fn()
 		}
 
 		let mockNext = jest.fn()
@@ -71,17 +72,18 @@ describe('api draft events route', () => {
 		})
 		.catch(err => {
 			console.log(err)
-			expect(mockRes.unexpected).toBeCalledWith('no current user')
-			expect(mockNext).toBeCalledWith('no current user')
+			expect(mockRes.notAuthorized).toBeCalledWith('no current user')
+			expect(mockRes.unexpected).not.toBeCalled()
+			expect(mockNext).toBeCalledWith()
 		})
 	})
 
-	test.only('inserts event', () => {
+	test('inserts event', () => {
 		expect.assertions(2)
 		mockExpress()
 		require('express')
 		let db = oboRequire('db')
-		db.one.mockImplementationOnce(() => {return {created_at: 1}})
+		db.one.mockImplementationOnce(() => {return Promise.resolve({created_at: 1})})
 
 		oboRequire('routes/api/events')
 		let routeFunction = mockRouterMethods.post.mock.calls[0][1]
@@ -112,13 +114,12 @@ describe('api draft events route', () => {
 
 		})
 		.catch(err => {
-			console.log(err)
 			expect(err).toBe('never called')
 		})
 	})
 
 
-	test.only('calls next when insert fails', () => {
+	test('calls next when insert fails', () => {
 		expect.assertions(2)
 		mockExpress()
 		require('express')
@@ -149,11 +150,11 @@ describe('api draft events route', () => {
 
 		return routeFunction(mockReq, mockRes, mockNext)
 		.then(() => {
-			expect(true).toBe('never called')
-		})
-		.catch(err => {
 			expect(mockRes.unexpected).toBeCalledWith("db fail")
 			expect(mockNext).toBeCalledWith()
+		})
+		.catch(err => {
+			expect(true).toBe('never called')
 		})
 	})
 

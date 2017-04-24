@@ -9,11 +9,25 @@ let success = (req, res, next, valueObject) => {
   }))
 }
 
-let missing = (req, res, next, message) => {
-  return res.status(404).json(camelize({
+// @TODO - in the controller - throw an error instead of calling this
+// let the main response handler catch it and respond with this
+let badInput = (req, res, next, message) => {
+  return res.status(400).json(camelize({
     status: 'error',
     value: {
-      type: 'missing',
+      type: 'badInput',
+      message: message
+    }
+  }))
+}
+
+// @TODO - in the controller - throw an error instead of calling this
+// let the main response handler catch it and respond with this
+let notAuthorized = (req, res, next, message) => {
+  return res.status(401).json(camelize({
+    status: 'error',
+    value: {
+      type: 'notAuthorized',
       message: message
     }
   }))
@@ -29,17 +43,16 @@ let reject = (req, res, next, message) => {
   }))
 }
 
-// @TODO - in the controller - throw an error instead of calling this
-// let the main response handler catch it and respond with this
-let badInput = (req, res, next, message) => {
-  return res.status(400).json(camelize({
+let missing = (req, res, next, message) => {
+  return res.status(404).json(camelize({
     status: 'error',
     value: {
-      type: 'badInput',
+      type: 'missing',
       message: message
     }
   }))
 }
+
 
 let unexpected = (req, res, next, message) => {
   if(message instanceof Error){
