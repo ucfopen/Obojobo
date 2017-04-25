@@ -2,10 +2,10 @@ var express = require('express');
 var router = express.Router();
 var db = require('../db')
 
-router.all('/editor', (req, res, next) => {
+let displayEditor = (req, res, next) => {
 	// let oboGlobals = new OboGlobals();
 
-	req.getCurrentUser(true)
+	return req.getCurrentUser(true)
 	.then(user => {
 		if(user.isGuest()) return Promise.reject(new Error('Login Required'))
 		if(!user.canViewEditor) {
@@ -13,7 +13,7 @@ router.all('/editor', (req, res, next) => {
 			return next()
 		}
 
-		db.any(`
+		return db.any(`
 			SELECT DISTINCT ON (draft_id)
 				draft_id AS "draftId",
 				id AS "latestVersion",
@@ -43,6 +43,9 @@ router.all('/editor', (req, res, next) => {
 	.catch(error => {
 		next(error)
 	})
-});
+}
+
+router.post('/', displayEditor);
+router.get('/', displayEditor);
 
 module.exports = router;
