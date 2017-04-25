@@ -38,11 +38,18 @@ router.all('/view/:draftId*', (req, res, next) => {
 		return draft.yell('internal:renderViewer', req, res, oboGlobals)
 	})
 	.then((draft) => {
+		let isProd = req.app.get('env') === 'production'
 		res.render('viewer.pug', {
 			title: 'Obojobo 3',
 			paths: req.app.locals.paths,
 			modules: req.app.locals.modules,
-			oboGlobals: oboGlobals
+			oboGlobals: oboGlobals,
+			headerScripts:[
+				`//fb.me/react-with-addons-15.0.2${isProd ? '.min' : ''}.js`,
+				`//fb.me/react-dom-15.0.2${isProd ? '.min' : ''}.js`,
+				`//cdnjs.cloudflare.com/ajax/libs/underscore.js/1.5.1/underscore${isProd ? '-min' : ''}.js`,
+				`//cdnjs.cloudflare.com/ajax/libs/backbone.js/1.3.3/backbone${isProd ? '-min' : ''}.js`,
+			],
 		});
 
 		next()

@@ -10,8 +10,7 @@ process.argv.forEach(function (val, index, array) {
   if(val == '--dev') isDev = true;
 });
 
-// let searchPaths = ["./node_modules/*/obojobo.json"];
-let searchPaths = [];
+let searchPaths = ["./node_modules/*/obojobo.json"];
 
 if(isDev)
 {
