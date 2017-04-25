@@ -39,7 +39,7 @@ try
 				exec('node ' + writeJsonDraftToDbPath + ' update ' + sampleJsonPath + ' 00000000-0000-0000-0000-000000000000', {}, (err, stdout, stderr) => {
 					if(err) {
 						console.error(err.message);
-						process.exit(1)
+						return;
 					}
 
 					console.log('Sample JSON Draft changed, updating...')
