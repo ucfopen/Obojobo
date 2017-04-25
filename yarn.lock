@@ -1975,9 +1975,9 @@ object.omit@^2.0.0:
     for-own "^0.1.4"
     is-extendable "^0.1.1"
 
-"obojobo-draft-document-engine@git+ssh://git@github.com/ucfcdl/Obojobo-Document-Engine.git#v0.0.10":
-  version "0.0.10"
-  resolved "git+ssh://git@github.com/ucfcdl/Obojobo-Document-Engine.git#410b6e5d55ecba0624beb90dd966516842c42be1"
+"obojobo-draft-document-engine@git+ssh://git@github.com/ucfcdl/Obojobo-Document-Engine.git#v0.0.11":
+  version "0.0.11"
+  resolved "git+ssh://git@github.com/ucfcdl/Obojobo-Document-Engine.git#54a142f30d90409c268007f6780de2d2993e0501"
   dependencies:
     array-from "^2.1.1"
     es6-set "^0.1.5"
