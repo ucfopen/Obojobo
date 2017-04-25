@@ -97,76 +97,66 @@
 	QuestionUtil = window.Viewer.util.QuestionUtil;
 
 	MCChoice = React.createClass({
-		displayName: 'MCChoice',
+	  displayName: 'MCChoice',
 
-		getDefaultProps: function getDefaultProps() {
-			return {
-				responseType: null,
-				revealAll: false,
-				questionSubmitted: false
-			};
-		},
-		createFeedbackItem: function createFeedbackItem(message) {
-			var feedback, text;
-			feedback = OboModel.create('ObojoboDraft.Chunks.MCAssessment.MCFeedback');
-			text = OboModel.create('ObojoboDraft.Chunks.Text');
-			text.modelState.textGroup.first.text.insertText(0, message);
-			feedback.children.add(text);
-			return feedback;
-		},
-		getInputType: function getInputType() {
-			switch (this.props.responseType) {
-				case 'pick-all':
-					return 'checkbox';
-				default:
-					return 'radio';
-			}
-		},
-		render: function render() {
-			var isSelected, ref;
-			isSelected = ((ref = QuestionUtil.getResponse(this.props.moduleData.questionState, this.props.model)) != null ? ref.set : void 0) === true;
-			return React.createElement(
-				OboComponent,
-				{
-					model: this.props.model,
-					moduleData: this.props.moduleData,
-					className: 'obojobo-draft--chunks--mc-assessment--mc-choice' + (isSelected ? ' is-selected' : ' is-not-selected') + (this.props.model.modelState.score === 100 ? ' is-correct' : ' is-incorrect'),
-					'data-choice-label': this.props.label
-				},
-				React.createElement('input', {
-					ref: 'input',
-					type: this.getInputType(),
-					value: this.props.model.get('id'),
-					checked: isSelected,
-					name: this.props.model.parent.get('id')
+	  getDefaultProps: function getDefaultProps() {
+	    return {
+	      responseType: null,
+	      revealAll: false,
+	      questionSubmitted: false
+	    };
+	  },
+	  createFeedbackItem: function createFeedbackItem(message) {
+	    var feedback, text;
+	    feedback = OboModel.create('ObojoboDraft.Chunks.MCAssessment.MCFeedback');
+	    text = OboModel.create('ObojoboDraft.Chunks.Text');
+	    text.modelState.textGroup.first.text.insertText(0, message);
+	    feedback.children.add(text);
+	    return feedback;
+	  },
+	  getInputType: function getInputType() {
+	    switch (this.props.responseType) {
+	      case 'pick-all':
+	        return 'checkbox';
+	      default:
+	        return 'radio';
+	    }
+	  },
+	  render: function render() {
+	    var isSelected, ref;
+	    isSelected = ((ref = QuestionUtil.getResponse(this.props.moduleData.questionState, this.props.model)) != null ? ref.set : void 0) === true;
+	    return React.createElement(
+	      OboComponent,
+	      {
+	        model: this.props.model,
+	        moduleData: this.props.moduleData,
+	        className: 'obojobo-draft--chunks--mc-assessment--mc-choice' + (isSelected ? ' is-selected' : ' is-not-selected') + (this.props.model.modelState.score === 100 ? ' is-correct' : ' is-incorrect'),
+	        'data-choice-label': this.props.label
+	      },
+	      React.createElement('input', {
+	        ref: 'input',
+	        type: this.getInputType(),
+	        value: this.props.model.get('id'),
+	        checked: isSelected,
+	        name: this.props.model.parent.get('id')
 
-				}),
-				React.createElement(
-					'div',
-					{ className: 'children' },
-					this.props.model.children.map(function (child, index) {
-						var type = child.get('type');
-						var isAnswerItem = type === 'ObojoboDraft.Chunks.MCAssessment.MCAnswer';
-						var isFeedbackItem = type === 'ObojoboDraft.Chunks.MCAssessment.MCFeedback';
+	      }),
+	      React.createElement(
+	        'div',
+	        { className: 'children' },
+	        this.props.model.children.map(function (child, index) {
+	          var type = child.get('type');
+	          var isAnswerItem = type === 'ObojoboDraft.Chunks.MCAssessment.MCAnswer';
+	          var isFeedbackItem = type === 'ObojoboDraft.Chunks.MCAssessment.MCFeedback';
 
-						if (isAnswerItem) {
-							var Component = child.getComponentClass();
-							return React.createElement(Component, { key: child.get('id'), model: child, moduleData: this.props.moduleData });
-						}
-					}.bind(this))
-				),
-				React.createElement(
-					'div',
-					null,
-					this.props.model.modelState.score
-				),
-				React.createElement(
-					'div',
-					null,
-					this.props.model.get('id')
-				)
-			);
-		}
+	          if (isAnswerItem) {
+	            var Component = child.getComponentClass();
+	            return React.createElement(Component, { key: child.get('id'), model: child, moduleData: this.props.moduleData });
+	          }
+	        }.bind(this))
+	      )
+	    );
+	  }
 	});
 
 	module.exports = MCChoice;
