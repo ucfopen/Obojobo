@@ -4,7 +4,6 @@ let config = oboRequire('config')
 let db = require('./db')
 let moment = require('moment')
 let insertEvent = oboRequire('insert_event')
-let getIp = oboRequire('get_ip')
 
 let retrieveLtiRequestData = function(userId, draftId) {
 	return db.one(`
@@ -67,7 +66,7 @@ let replaceResult = function(userId, draftId, score) {
 
 			outcomeDocument.send_replace_result(score, (err, result) =>{
 				if(err) reject(err)
-				resolve(result)
+				else resolve(result)
 
 				insertEvent({
 					action: 'lti:replaceResult',
@@ -88,6 +87,9 @@ let replaceResult = function(userId, draftId, score) {
 					metadata: {},
 					draftId: draftId
 				})
+				.catch(err => {
+					console.log('There was an error inserting the lti event')
+				})
 			})
 		})
 		.catch(error => {
@@ -98,8 +100,9 @@ let replaceResult = function(userId, draftId, score) {
 	})
 	.catch(error => {
 		// Fail if sending the score failed
-		if(error.fatal){
-			console.error(error)
+		console.error('LTI replaceResult Error', error)
+
+		if(error && error.fatal){
 			return Promise.reject(Error(`Unable to send score to LMS`))
 		}
 

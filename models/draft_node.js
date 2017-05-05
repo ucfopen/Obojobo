@@ -59,10 +59,6 @@ class DraftNode {
 		return promises
 	}
 
-	init() {
-		this.init()
-	}
-
 	toObject() {
 		let o = Object.assign({}, this.node)
 		o.children = []

@@ -17,8 +17,11 @@
     "chunks:registerdev": "node ./bin/register_obojobo_modules.js --dev",
     "docengine:dev": "cd ./devsrc/obojobo-draft-document-engine && yarn dev",
     "docengine:setup": "\"yarn docengine:clone\" && \"yarn docengine:nodemodules\"",
-    "docengine:clone": "git clone -b feature/new-data-model git@github.com:ucfcdl/Obojobo-Document-Engine.git devsrc/obojobo-draft-document-engine || echo 'already cloned'",
-    "docengine:nodemodules": "cd ./devsrc/obojobo-draft-document-engine && yarn"
+    "docengine:clone": "git clone git@github.com:ucfcdl/Obojobo-Document-Engine.git devsrc/obojobo-draft-document-engine || echo 'already cloned'",
+    "docengine:nodemodules": "cd ./devsrc/obojobo-draft-document-engine && yarn",
+    "test": "jest --watch",
+    "test:ci": "CI=true jest --coverage",
+    "precommit": "npm run test:ci"
   },
   "engines": {
     "node": "^6.9.4"
@@ -47,5 +50,28 @@
     "pug": "^2.0.0-beta6",
     "serve-favicon": "~2.3.0"
   },
-  "devDependencies": {}
+  "devDependencies": {
+    "husky": "^0.13.3",
+    "jest-cli": "^19.0.2"
+  },
+  "jest": {
+    "verbose": true,
+    "setupTestFrameworkScriptFile":"./setup_tests.js",
+    "collectCoverageFrom":[
+      "*.js",
+      "models/*.js",
+      "routes/*.js",
+      "routes/**/*.js",
+      "controllers/**/*.js"
+    ],
+    "coveragePathIgnorePatterns":[
+      "/node_modules",
+      "/app.js",
+      "/dev_nonce_store.js"
+    ],
+    "coverageReporters":["json", "lcov", "text", "html"],
+    "testPathIgnorePatterns": [
+      "devsrc"
+    ]
+  }
 }

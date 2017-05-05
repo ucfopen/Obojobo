@@ -2,36 +2,32 @@ var express = require('express');
 var router = express.Router();
 var OboGlobals = oboRequire('obo_globals')
 let DraftModel = oboRequire('models/draft')
-let ltiLaunch = oboRequire('lti_launch')
-let oboPath = oboRequire('obo_path')
 
-router.all('/view/example', (req, res, next) => {
-	if(req.app.get('env') === 'development')
-	{
+router.all('/example', (req, res, next) => {
+	if(req.app.get('env') === 'development'){
 		res.redirect('/view/00000000-0000-0000-0000-000000000000')
 	}
-	else
-	{
+	else{
 		next()
 	}
 })
 
-router.all('/view/:draftId*', (req, res, next) => {
+router.all('/:draftId*', (req, res, next) => {
 	let oboGlobals = new OboGlobals();
 	let user = null;
 	let draft = null;
 
-	req.getCurrentUser(true)
+	return req.getCurrentUser(true)
 	.then(currentUser => {
 		user = currentUser
-		if(user.isGuest()) return Promise.reject(new Error('Login Required'))
+		if(user.isGuest()) throw new Error('Login Required')
 		return DraftModel.fetchById(req.params.draftId)
 	})
 	.then(draftModel => {
 		draft = draftModel
 		return draft.yell('internal:sendToClient', req, res)
 	})
-	.then((draft) => {
+	.then(draft => {
 		oboGlobals.set('draft', draft.document)
 		oboGlobals.set('draftId', req.params.draftId)
 		oboGlobals.set('previewing', user.canViewEditor)
@@ -56,6 +52,7 @@ router.all('/view/:draftId*', (req, res, next) => {
 	})
 	.catch(error => {
 		next(error)
+		return Promise.reject(error)
 	})
 });
 

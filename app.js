@@ -7,13 +7,6 @@ var session = require('express-session')
 var pgSession = require('connect-pg-simple')
 var app = express();
 let config = require('./config')
-let oboRequire = require('./obo_require')
-
-// Global for loading specialized Obojobo stuff
-// use oboRequire('models/draft') to load draft models from any context
-global.oboRequire = oboRequire
-
-let obojoboDraftExpress = require('./obojobo_draft_express');
 
 // =========== STATIC ASSET PATHS ================
 app.use(express.static(path.join(__dirname, 'public')));
@@ -45,14 +38,14 @@ app.use(session({
 	}
 }))
 
-app.use(require('node-sass-middleware')({
-	src: path.join(__dirname, 'public'),
-	dest: path.join(__dirname, 'public'),
-	indentedSyntax: true,
-	sourceMap: true
-}));
+//
+app.use(require('./obo_express'))
 
-app.use(obojoboDraftExpress)
+
+// Custom Routes
+app.use('/', require('./routes/index'));
+app.use('/profile', require('./routes/profile'));
+
 
 // @TODO 404!
 
