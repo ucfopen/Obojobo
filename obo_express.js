@@ -12,32 +12,19 @@
 global.oboRequire = (name) => {return require(`${__dirname}/${name}`)}
 let express = require('express');
 let app = express();
-let DevNonceStore = oboRequire('dev_nonce_store');
 let apiResponseDecorator = oboRequire('api_response_decorator');
-let ltiMiddleware = require('express-ims-lti');
 let loadBalancerHelperMiddleware = oboRequire('express_load_balancer_helper')
 let currentUserMiddleware = oboRequire('express_current_user')
 let ltiLaunchMiddleware = oboRequire('express_lti_launch')
 let registerChunks = oboRequire('express_register_chunks')
-let ltiUtil = oboRequire('lti')
+let oboLtiMiddleware = oboRequire('obo_ims_lti')
 
 // when the parent app is mounted
 app.on('mount', (app) => {
 	// =========== MIDDLEWARE ===========
 	app.use(loadBalancerHelperMiddleware)
 	app.use(currentUserMiddleware)
-	app.use(ltiMiddleware({
-		nonceStore: new DevNonceStore(),
-		credentials: (key, callback) => {
-			try{
-				let secret = ltiUtil.findSecretForKey(key)
-				callback(null, key, secret)
-			}
-			catch(err){
-				callback(new Error('Invalid LTI credentials'))
-			}
-		}
-	}))
+	app.use(oboLtiMiddleware)
 	app.use('/view/:draftId*', ltiLaunchMiddleware)
 	app.use('/api', apiResponseDecorator);
 
