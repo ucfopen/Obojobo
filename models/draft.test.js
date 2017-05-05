@@ -15,6 +15,11 @@ describe('models draft', () => {
 					id: 999,
 					type: 'DraftNode',
 					content: {otherStuff:true},
+				},
+				{
+					id: 222,
+					type: 'Some.Node.Type',
+					content: {yes:'no'}
 				}
 			]
 		}
@@ -54,7 +59,7 @@ describe('models draft', () => {
 		.then(model => {
 			expect(model).toBeInstanceOf(Draft)
 			expect(model.root).toBeInstanceOf(DraftNode)
-			expect(model.nodesById.size).toBe(2)
+			expect(model.nodesById.size).toBe(3)
 			expect(model.getChildNodeById(999)).toBeInstanceOf(DraftNode)
 			expect(model.nodesByType.get('DraftNode')).toHaveLength(2)
 		})
@@ -121,7 +126,7 @@ describe('models draft', () => {
 	})
 
 	it('responds to getChildNodesByType', () => {
-		expect.assertions(2)
+		expect.assertions(7)
 
 		let Draft = oboRequire('models/draft')
 		let DraftNode = oboRequire('models/draft_node')
@@ -133,7 +138,14 @@ describe('models draft', () => {
 		return Draft.fetchById('whatever')
 		.then(model => {
 			expect(model.getChildNodesByType('DraftNode')).toBeInstanceOf(Array)
+			expect(model.getChildNodesByType('DraftNode')).toHaveLength(2)
 			expect(model.getChildNodesByType('DraftNode')[0]).toBeInstanceOf(DraftNode)
+
+			expect(model.getChildNodesByType('Some.Node.Type')).toBeInstanceOf(Array)
+			expect(model.getChildNodesByType('Some.Node.Type')).toHaveLength(1)
+			expect(model.getChildNodesByType('Some.Node.Type')[0]).toBeInstanceOf(DraftNode)
+
+			expect(model.getChildNodesByType('Some.Missing.Node')).toBe(undefined)
 		})
 	})
 
