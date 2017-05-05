@@ -2,6 +2,7 @@ var express = require('express');
 var router = express.Router();
 var OboGlobals = oboRequire('obo_globals')
 let DraftModel = oboRequire('models/draft')
+let assetForEnv = oboRequire('asset_resolver').assetForEnv
 
 router.all('/example', (req, res, next) => {
 	if(req.app.get('env') === 'development'){
@@ -36,15 +37,16 @@ router.all('/:draftId*', (req, res, next) => {
 	.then(draft => {
 		let isProd = req.app.get('env') === 'production'
 		res.render('viewer.pug', {
-			title: 'Obojobo 3',
-			paths: req.app.locals.paths,
-			modules: req.app.locals.modules,
+			title: 'Obojobo Next Document Viewer',
 			oboGlobals: oboGlobals,
-			headerScripts:[
-				`//fb.me/react-with-addons-15.0.2${isProd ? '.min' : ''}.js`,
-				`//fb.me/react-dom-15.0.2${isProd ? '.min' : ''}.js`,
-				`//cdnjs.cloudflare.com/ajax/libs/underscore.js/1.5.1/underscore${isProd ? '-min' : ''}.js`,
-				`//cdnjs.cloudflare.com/ajax/libs/backbone.js/1.3.3/backbone${isProd ? '-min' : ''}.js`,
+			css: [assetForEnv('/static/viewer$[.min].css')],
+			footerJs: [assetForEnv('/static/viewer$[.min].js')],
+			headerJs:[
+				assetForEnv('//fb.me/react-with-addons-15.0.2$[.min].js'),
+				assetForEnv('//fb.me/react-dom-15.0.2$[.min].js'),
+				assetForEnv('//cdnjs.cloudflare.com/ajax/libs/underscore.js/1.5.1/underscore$[-min].js'),
+				assetForEnv('//cdnjs.cloudflare.com/ajax/libs/backbone.js/1.3.3/backbone$[-min].js'),
+				// assetForEnv('$[http://localhost:8090/webpack-dev-server.js]')
 			],
 		});
 

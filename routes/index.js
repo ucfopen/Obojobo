@@ -5,7 +5,6 @@ var router = express.Router();
 router.get('/', (req, res, next) => {
 	res.render('index.pug', {
 		title: 'Obojobo 3',
-		paths: req.app.locals.paths,
 		modules: req.app.locals.modules
 	});
 	next()

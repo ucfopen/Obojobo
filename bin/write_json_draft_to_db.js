@@ -1,5 +1,5 @@
 #!/usr/bin/env node
-
+global.oboRequire = (name) => {return require(`${__dirname}/../${name}`)}
 let fs = require('fs')
 
 let usageError = new Error(`Usage:
@@ -7,7 +7,6 @@ let usageError = new Error(`Usage:
 	node write_json_draft_to_db.js update file.json draft_id`
 )
 
-global.oboRequire = require('../obo_require')
 let db = oboRequire('db')
 let insertNewDraft = oboRequire('routes/api/drafts/insert_new_draft')
 let updateDraft = oboRequire('routes/api/drafts/update_draft')
