@@ -33,12 +33,12 @@ describe('user model', () => {
 		let User = oboRequire('models/user')
 		let u
 
-		u = new User({roles: ["roleName", "otherRollName"]});
+		u = new User({roles: ["roleName", "otherRoleName"]});
 		expect(u.roles).toHaveLength(2)
 		expect(u.canDoThing).toBe(true)
 		expect(u.canDoThingOtherThing).toBe(undefined)
 
-		u = new User({roles: ["roleName2", "otherRollName"]});
+		u = new User({roles: ["roleName2", "otherRoleName"]});
 		expect(u.roles).toHaveLength(2)
 		expect(u.canDoThing).toBe(false)
 		expect(u.canDoThingOtherThing).toBe(undefined)
@@ -46,7 +46,7 @@ describe('user model', () => {
 
 	it('hasPermission behaves', () => {
 		let User = oboRequire('models/user')
-		u = new User({roles: ["roleName", "otherRollName"]});
+		u = new User({roles: ["roleName", "otherRoleName"]});
 
 		expect(u.hasPermission('test')).toBe(false)
 		expect(u.hasPermission('canDoThing')).toBe(true)
@@ -55,20 +55,35 @@ describe('user model', () => {
 
 	it('hasRole and hasRoles work', () => {
 		let User = oboRequire('models/user')
-		let u = new User({roles: ["roleName", "otherRollName"]});
+		let u = new User({roles: ["roleName", "otherRoleName"]});
 		expect(u.hasRole('test')).toBe(false)
 		expect(u.hasRole('roleName')).toBe(true)
-		expect(u.hasRole('otherRollName')).toBe(true)
+		expect(u.hasRole('otherRoleName')).toBe(true)
 
-		expect(u.hasRoles(['roleName', 'otherRollName'])).toBe(true)
+		expect(u.hasRoles(['roleName', 'otherRoleName'])).toBe(true)
 		expect(u.hasRoles(['roleName'])).toBe(true)
 		expect(u.hasRoles(['test', 'noway'])).toBe(false)
 		expect(u.hasRoles(['roleName', 'noway'])).toBe(false)
+
+		expect(u.hasOneOfRole([]))
+	})
+
+	it('hasRole and hasOneOfRole work', () => {
+		let User = oboRequire('models/user')
+		let u = new User({roles: ["roleName", "otherRoleName"]});
+		expect(u.hasRole('test')).toBe(false)
+		expect(u.hasRole('roleName')).toBe(true)
+		expect(u.hasRole('otherRoleName')).toBe(true)
+
+		expect(u.hasOneOfRole(['test'])).toBe(false)
+		expect(u.hasOneOfRole(['roleName'])).toBe(true)
+		expect(u.hasOneOfRole(['roleName', 'otherRoleName'])).toBe(true)
+		expect(u.hasOneOfRole(['roleName', 'test'])).toBe(true)
 	})
 
 	it('responds to isGuest correctly', () => {
 		let User = oboRequire('models/user')
-		let u = new User({roles: ["roleName", "otherRollName"]});
+		let u = new User({roles: ["roleName", "otherRoleName"]});
 		expect(u.isGuest()).toBe(false)
 	})
 

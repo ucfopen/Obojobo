@@ -108,7 +108,12 @@ describe('api response middleware', () => {
 		expect(mockJson.mock.calls[0][0].value.message).toBe('Error: test error')
 	})
 
-	it.skip('functions return expected values', () => {
-		// @TODO
+	it('functions return expected values', () => {
+		expect.assertions(apiFunctions.length);
+		apiFunctions.forEach(func => {
+			let [res, req, mockJson, mockStatus, mockNext] = mockArgs
+			mockJson.mockImplementationOnce((input) => {return 'output'})
+			expect(res[func]('input')).toBe('output')
+		})
 	})
 })

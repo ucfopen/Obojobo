@@ -100,7 +100,7 @@ let replaceResult = function(userId, draftId, score) {
 	})
 	.catch(error => {
 		// Fail if sending the score failed
-		console.error(error)
+		console.error('LTI replaceResult Error', error)
 
 		if(error && error.fatal){
 			return Promise.reject(Error(`Unable to send score to LMS`))

@@ -37,8 +37,6 @@ let storeLtiLaunch = (draftId, user, ip, ltiBody, ltiConsumerKey) => {
 module.exports = (req, res, next) => {
 	if(!req.lti) return next() // bypass, no lti launch data
 	req.session.lti = null // clean req.session.lti created by express-ims-lti, it's problematic for multiple launches
-	console.log(req.lti.body) // let's keep a record of the lti data in the logs
-
 	let currentUser = null
 
 	return Promise.resolve(req.lti)
@@ -71,7 +69,8 @@ module.exports = (req, res, next) => {
 		next()
 	})
 	.catch(error => {
-		console.log('error', error)
+		console.error('LTI Launch Error', error)
+		console.error('LTI Body', (req.lti && req.lti.body) ? req.lti.body : 'No LTI Body')
 		next(new Error('There was a problem creating your account.'))
 	})
 }

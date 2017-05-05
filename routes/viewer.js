@@ -35,7 +35,6 @@ router.all('/:draftId*', (req, res, next) => {
 		return draft.yell('internal:renderViewer', req, res, oboGlobals)
 	})
 	.then(draft => {
-		let isProd = req.app.get('env') === 'production'
 		res.render('viewer.pug', {
 			title: 'Obojobo Next Document Viewer',
 			oboGlobals: oboGlobals,

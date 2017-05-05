@@ -120,7 +120,7 @@ describe('lti route', () => {
 	})
 
 
-	test('view draft rejects guest', () => {
+	test('view draft rejects non-logged in users', () => {
 		expect.assertions(1)
 
 		mockExpress()
@@ -185,9 +185,10 @@ describe('lti route', () => {
 		.then((result) => {
 			expect(mockYell).toBeCalledWith('internal:sendToClient', expect.any(Object), expect.any(Object))
 			expect(mockRes.render).toBeCalledWith(expect.any(String), expect.objectContaining({
-				title: 'Obojobo 3',
-				paths: 'paths',
-				modules: 'modules',
+				title: 'Obojobo Next Document Viewer',
+				css: ['/static/viewer.css'],
+				footerJs: ['/static/viewer.js'],
+				headerJs: expect.any(Array),
 				oboGlobals: expect.objectContaining({
 					entries:{
 						draft: `"{\"json\":\"value\"}"`,

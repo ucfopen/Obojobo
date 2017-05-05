@@ -31,7 +31,7 @@ describe('guest user model', () => {
 		}).toThrowError('Cannot save or create Guest User')
 	})
 
-	it('throws error using saveOrCreate', () =>{
+	it('throws error using fetchById', () =>{
 		let GuestUser = oboRequire('models/guest_user')
 
 		expect(() => {
