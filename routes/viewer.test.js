@@ -158,7 +158,10 @@ describe('lti route', () => {
 		let mockReq = {
 			getCurrentUser: () => { return Promise.resolve(new User()) },
 			params: {draftId: 555},
-			app: {locals:{paths:'paths', modules:'modules'}}
+			app: {
+				get: jest.fn().mockImplementation(() => {return ''}),
+				locals:{paths:'paths', modules:'modules'}
+			}
 		}
 
 		let mockRes = {
