@@ -120,7 +120,7 @@ describe('lti route', () => {
 	})
 
 
-	test('view draft rejects guest', () => {
+	test('view draft rejects non-logged in users', () => {
 		expect.assertions(1)
 
 		mockExpress()

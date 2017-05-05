@@ -1,31 +1,35 @@
-jest.mock('../db')
-
-let mockRawDraft = {
-	id:'whatever',
-	version: 9,
-	draft_created_at: new Date().toISOString(),
-	content_created_at: new Date().toISOString(),
-	content: {
-		id: 666,
-		stuff: true,
-		type: 'DraftNode',
-		content: {nothing:true},
-		children: [
-			{
-				id: 999,
-				type: 'DraftNode',
-				content: {otherStuff:true},
-			}
-		]
-	}
-}
-
 describe('models draft', () => {
+	jest.mock('../db')
+	let mockRawDraft = {
+		id:'whatever',
+		version: 9,
+		draft_created_at: new Date().toISOString(),
+		content_created_at: new Date().toISOString(),
+		content: {
+			id: 666,
+			stuff: true,
+			type: 'DraftNode',
+			content: {nothing:true},
+			children: [
+				{
+					id: 999,
+					type: 'DraftNode',
+					content: {otherStuff:true},
+				}
+			]
+		}
+	}
+
+	let originalConsole = global.console
 
 	beforeAll(() => {})
 	afterAll(() => {})
-	beforeEach(() => {});
-	afterEach(() => {});
+	beforeEach(() => {
+		global.console = {warn: jest.fn(), log: jest.fn(), error: jest.fn()}
+	});
+	afterEach(() => {
+		global.console = originalConsole
+	});
 
 	it('initializes expected properties', () => {
 		let Draft = oboRequire('models/draft')
@@ -91,13 +95,14 @@ describe('models draft', () => {
 			expect(model.document).toEqual(expect.objectContaining({
 				children: expect.any(Array),
 				id: 666,
-				type: "DraftNode"
+				type: "DraftNode",
+				stuff: true
 			}))
 		})
 	})
 
 	it('responds to getChildNodeById', () => {
-		expect.assertions(1)
+		expect.assertions(4)
 
 		let Draft = oboRequire('models/draft')
 		let DraftNode = oboRequire('models/draft_node')
@@ -109,6 +114,9 @@ describe('models draft', () => {
 		return Draft.fetchById('whatever')
 		.then(model => {
 			expect(model.getChildNodeById(666)).toBeInstanceOf(DraftNode)
+			expect(model.getChildNodeById(666).node.id).toBe(666)
+			expect(model.getChildNodeById(666).node.stuff).toBe(true)
+			expect(model.getChildNodeById(666).node.type).toBe("DraftNode")
 		})
 	})
 

@@ -17,7 +17,7 @@ let apiResponseDecorator = oboRequire('api_response_decorator');
 let ltiMiddleware = require('express-ims-lti');
 let loadBalancerHelperMiddleware = oboRequire('express_load_balancer_helper')
 let currentUserMiddleware = oboRequire('express_current_user')
-let ltiLaunchMiddlerware = oboRequire('express_lti_launch')
+let ltiLaunchMiddleware = oboRequire('express_lti_launch')
 let registerChunks = oboRequire('express_register_chunks')
 let ltiUtil = oboRequire('lti')
 
@@ -38,7 +38,7 @@ app.on('mount', (app) => {
 			}
 		}
 	}))
-	app.use('/view/:draftId*', ltiLaunchMiddlerware)
+	app.use('/view/:draftId*', ltiLaunchMiddleware)
 	app.use('/api', apiResponseDecorator);
 
 	// =========== REGISTER OBOJOBO DRAFT CHUNKS ===========

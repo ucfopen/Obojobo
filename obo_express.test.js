@@ -1,15 +1,12 @@
-jest.mock('./db')
-
-mockVirtual('./apiResponseDecorator')
-mockVirtual('./apiResponseDecorator')
-mockVirtual('./dev_nonce_store')
 mockVirtual('./api_response_decorator')
-mockVirtual('express-ims-lti')
-mockVirtual('./express_load_balancer_helper')
+mockVirtual('./dev_nonce_store')
 mockVirtual('./express_current_user')
+mockVirtual('./express_load_balancer_helper')
 mockVirtual('./express_lti_launch')
 mockVirtual('./express_register_chunks')
 mockVirtual('./lti')
+mockVirtual('express-ims-lti')
+jest.mock('./db')
 
 let mockOn = jest.fn().mockImplementation((event, func) => {})
 let mockOnCallback
@@ -57,9 +54,8 @@ describe('obo express', () => {
 		let registerChunks = require('./express_register_chunks')
 		mockOnCallback(mockApp)
 
-		expect(mockApp.on).toHaveBeenCalledTimes(1)
-		expect(mockApp.use).toHaveBeenCalledTimes(11)
-		expect(registerChunks).toHaveBeenCalled()
+		expect(mockApp.on).toHaveBeenCalledWith('mount', expect.any(Function))
+		expect(registerChunks).toHaveBeenCalledWith(mockApp)
 		expect(mockApp.use).toHaveBeenCalledWith(oboRequire('express_load_balancer_helper'))
 		expect(mockApp.use).toHaveBeenCalledWith(oboRequire('express_current_user'))
 		expect(mockApp.use).toHaveBeenCalledWith(expect.any(String), oboRequire('api_response_decorator'))

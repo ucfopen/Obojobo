@@ -6,10 +6,15 @@ jest.mock('./models/user')
 
 describe('current user middleware', () => {
 
+	let originalConsole = global.console
+
 	beforeAll(() => {})
 	afterAll(() => {})
 	beforeEach(() => {
+		global.console = {warn: jest.fn(), log: jest.fn(), error: jest.fn()}
+
 		mockArgs = (() => {
+			global.console = {warn: jest.fn(), log: jest.fn(), error: jest.fn()}
 			let res = {}
 			let req = {session:{}}
 			let mockJson = jest.fn().mockImplementation(obj => {
@@ -27,6 +32,7 @@ describe('current user middleware', () => {
 		})()
 	})
 	afterEach(() => {
+		global.console = originalConsole
 		let [res, req, mockJson, mockStatus, mockNext] = mockArgs
 		mockNext.mockClear()
 		mockStatus.mockClear()
@@ -167,7 +173,7 @@ describe('current user middleware', () => {
 		})
 	})
 
-	it('getCurrentUser returns rejexts when fetchById fails and login is required', () =>{
+	it('getCurrentUser returns rejects when fetchById fails and login is required', () =>{
 		expect.assertions(3)
 
 		let [res, req, mockJson, mockStatus, mockNext] = mockArgs

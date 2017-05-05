@@ -31,11 +31,11 @@ let mockArgs = (withLtiData = false) => {
 	return [res, req, mockJson, res.status, mockNext]
 }
 
-let mockDBForLaunch = (resovleInsert = true, resolveEvent = true) => {
+let mockDBForLaunch = (resolveInsert = true, resolveEvent = true) => {
 		db = require('./db')
 
 		// mock the launch insert
-		if(resovleInsert){
+		if(resolveInsert){
 			db.one.mockImplementationOnce((query, vars) => {
 				return Promise.resolve({id:88})
 			})
@@ -62,10 +62,15 @@ let mockDBForLaunch = (resovleInsert = true, resolveEvent = true) => {
 
 describe('lti launch middleware', () => {
 
+	let originalConsole = global.console
 	beforeAll(() => {})
 	afterAll(() => {})
-	beforeEach(() => {})
-	afterEach(() => {})
+	beforeEach(() => {
+		global.console = {warn: jest.fn(), log: jest.fn(), error: jest.fn()}
+	});
+	afterEach(() => {
+		global.console = originalConsole
+	});
 
 	it('calls next with no lti data', () => {
 		let [res, req, mockJson, mockStatus, mockNext] = mockArgs()
