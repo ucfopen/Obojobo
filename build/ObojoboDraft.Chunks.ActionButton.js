@@ -43,15 +43,15 @@
 /******/ ({
 
 /***/ 0:
-/***/ function(module, exports, __webpack_require__) {
+/***/ (function(module, exports, __webpack_require__) {
 
-	module.exports = __webpack_require__(118);
+	module.exports = __webpack_require__(117);
 
 
-/***/ },
+/***/ }),
 
 /***/ 5:
-/***/ function(module, exports) {
+/***/ (function(module, exports) {
 
 	'use strict';
 
@@ -71,10 +71,10 @@
 
 	module.exports = StyleType;
 
-/***/ },
+/***/ }),
 
 /***/ 10:
-/***/ function(module, exports, __webpack_require__) {
+/***/ (function(module, exports, __webpack_require__) {
 
 	'use strict';
 
@@ -473,13 +473,20 @@
 
 	module.exports = StyleableText;
 
-/***/ },
+/***/ }),
 
 /***/ 13:
-/***/ function(module, exports) {
+/***/ (function(module, exports) {
+
+	/*
+	object-assign
+	(c) Sindre Sorhus
+	@license MIT
+	*/
 
 	'use strict';
 	/* eslint-disable no-unused-vars */
+	var getOwnPropertySymbols = Object.getOwnPropertySymbols;
 	var hasOwnProperty = Object.prototype.hasOwnProperty;
 	var propIsEnumerable = Object.prototype.propertyIsEnumerable;
 
@@ -500,7 +507,7 @@
 			// Detect buggy property enumeration order in older V8 versions.
 
 			// https://bugs.chromium.org/p/v8/issues/detail?id=4118
-			var test1 = new String('abc');  // eslint-disable-line
+			var test1 = new String('abc');  // eslint-disable-line no-new-wrappers
 			test1[5] = 'de';
 			if (Object.getOwnPropertyNames(test1)[0] === '5') {
 				return false;
@@ -529,7 +536,7 @@
 			}
 
 			return true;
-		} catch (e) {
+		} catch (err) {
 			// We don't expect any of the above to throw, but better to be safe.
 			return false;
 		}
@@ -549,8 +556,8 @@
 				}
 			}
 
-			if (Object.getOwnPropertySymbols) {
-				symbols = Object.getOwnPropertySymbols(from);
+			if (getOwnPropertySymbols) {
+				symbols = getOwnPropertySymbols(from);
 				for (var i = 0; i < symbols.length; i++) {
 					if (propIsEnumerable.call(from, symbols[i])) {
 						to[symbols[i]] = from[symbols[i]];
@@ -563,10 +570,10 @@
 	};
 
 
-/***/ },
+/***/ }),
 
 /***/ 17:
-/***/ function(module, exports, __webpack_require__) {
+/***/ (function(module, exports, __webpack_require__) {
 
 	'use strict';
 
@@ -684,10 +691,10 @@
 
 	module.exports = StyleRange;
 
-/***/ },
+/***/ }),
 
 /***/ 20:
-/***/ function(module, exports, __webpack_require__) {
+/***/ (function(module, exports, __webpack_require__) {
 
 	'use strict';
 
@@ -725,10 +732,10 @@
 	  }
 	};
 
-/***/ },
+/***/ }),
 
 /***/ 30:
-/***/ function(module, exports, __webpack_require__) {
+/***/ (function(module, exports, __webpack_require__) {
 
 	'use strict';
 
@@ -998,10 +1005,10 @@
 
 	module.exports = ChunkStyleList;
 
-/***/ },
+/***/ }),
 
 /***/ 31:
-/***/ function(module, exports, __webpack_require__) {
+/***/ (function(module, exports, __webpack_require__) {
 
 	'use strict';
 
@@ -1485,10 +1492,10 @@
 
 	module.exports = TextGroup;
 
-/***/ },
+/***/ }),
 
 /***/ 32:
-/***/ function(module, exports, __webpack_require__) {
+/***/ (function(module, exports, __webpack_require__) {
 
 	'use strict';
 
@@ -1526,10 +1533,10 @@
 	  }
 	});
 
-/***/ },
+/***/ }),
 
 /***/ 33:
-/***/ function(module, exports) {
+/***/ (function(module, exports) {
 
 	'use strict';
 
@@ -1608,10 +1615,10 @@
 	  isElementInline: isElementInline
 	};
 
-/***/ },
+/***/ }),
 
-/***/ 116:
-/***/ function(module, exports, __webpack_require__) {
+/***/ 115:
+/***/ (function(module, exports, __webpack_require__) {
 
 	'use strict';
 
@@ -1659,16 +1666,16 @@
 
 	module.exports = TextGroupAdapter;
 
-/***/ },
+/***/ }),
 
-/***/ 117:
-/***/ function(module, exports, __webpack_require__) {
+/***/ 116:
+/***/ (function(module, exports, __webpack_require__) {
 
 	'use strict';
 
 	var ActionButton, Button, Common, OboComponent, TextChunk, TextGroupEl;
 
-	__webpack_require__(254);
+	__webpack_require__(253);
 
 	Common = window.ObojoboDraft.Common;
 
@@ -1707,10 +1714,10 @@
 
 	module.exports = ActionButton;
 
-/***/ },
+/***/ }),
 
-/***/ 118:
-/***/ function(module, exports, __webpack_require__) {
+/***/ 117:
+/***/ (function(module, exports, __webpack_require__) {
 
 	'use strict';
 
@@ -1720,18 +1727,18 @@
 
 	OBO.register('ObojoboDraft.Chunks.ActionButton', {
 	  type: 'chunk',
-	  adapter: __webpack_require__(116),
-	  componentClass: __webpack_require__(117),
+	  adapter: __webpack_require__(115),
+	  componentClass: __webpack_require__(116),
 	  selectionHandler: new ObojoboDraft.Common.chunk.textChunk.TextGroupSelectionHandler()
 	});
 
-/***/ },
+/***/ }),
 
-/***/ 254:
-/***/ function(module, exports) {
+/***/ 253:
+/***/ (function(module, exports) {
 
 	// removed by extract-text-webpack-plugin
 
-/***/ }
+/***/ })
 
 /******/ });

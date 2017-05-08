@@ -43,15 +43,15 @@
 /******/ ({
 
 /***/ 0:
-/***/ function(module, exports, __webpack_require__) {
+/***/ (function(module, exports, __webpack_require__) {
 
-	module.exports = __webpack_require__(197);
+	module.exports = __webpack_require__(196);
 
 
-/***/ },
+/***/ }),
 
-/***/ 195:
-/***/ function(module, exports) {
+/***/ 194:
+/***/ (function(module, exports) {
 
 	'use strict';
 
@@ -78,16 +78,16 @@
 
 	module.exports = Adapter;
 
-/***/ },
+/***/ }),
 
-/***/ 196:
-/***/ function(module, exports, __webpack_require__) {
+/***/ 195:
+/***/ (function(module, exports, __webpack_require__) {
 
 	"use strict";
 
 	var Common, Dispatcher, NavUtil, OboComponent, OboModel, navStore;
 
-	__webpack_require__(283);
+	__webpack_require__(282);
 
 	navStore = window.Viewer.stores.navStore;
 
@@ -129,10 +129,10 @@
 	  }
 	});
 
-/***/ },
+/***/ }),
 
-/***/ 197:
-/***/ function(module, exports, __webpack_require__) {
+/***/ 196:
+/***/ (function(module, exports, __webpack_require__) {
 
 	'use strict';
 
@@ -143,8 +143,8 @@
 	OBO.register('ObojoboDraft.Modules.Module', {
 	  type: 'module',
 	  "default": true,
-	  adapter: __webpack_require__(195),
-	  componentClass: __webpack_require__(196),
+	  adapter: __webpack_require__(194),
+	  componentClass: __webpack_require__(195),
 	  selectionHandler: null,
 	  getNavItem: function getNavItem(model) {
 	    return {
@@ -161,13 +161,13 @@
 	  }
 	});
 
-/***/ },
+/***/ }),
 
-/***/ 283:
-/***/ function(module, exports) {
+/***/ 282:
+/***/ (function(module, exports) {
 
 	// removed by extract-text-webpack-plugin
 
-/***/ }
+/***/ })
 
 /******/ });

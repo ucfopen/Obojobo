@@ -43,15 +43,15 @@
 /******/ ({
 
 /***/ 0:
-/***/ function(module, exports, __webpack_require__) {
+/***/ (function(module, exports, __webpack_require__) {
 
-	module.exports = __webpack_require__(128);
+	module.exports = __webpack_require__(127);
 
 
-/***/ },
+/***/ }),
 
-/***/ 124:
-/***/ function(module, exports) {
+/***/ 123:
+/***/ (function(module, exports) {
 
 	'use strict';
 
@@ -115,10 +115,10 @@
 
 	module.exports = Adapter;
 
-/***/ },
+/***/ }),
 
-/***/ 125:
-/***/ function(module, exports, __webpack_require__) {
+/***/ 124:
+/***/ (function(module, exports, __webpack_require__) {
 
 	'use strict';
 
@@ -160,10 +160,10 @@
 
 	module.exports = Image;
 
-/***/ },
+/***/ }),
 
-/***/ 126:
-/***/ function(module, exports) {
+/***/ 125:
+/***/ (function(module, exports) {
 
 	"use strict";
 
@@ -203,18 +203,18 @@
 	  return SelectionHandler;
 	}(TextGroupSelectionHandler);
 
-/***/ },
+/***/ }),
 
-/***/ 127:
-/***/ function(module, exports, __webpack_require__) {
+/***/ 126:
+/***/ (function(module, exports, __webpack_require__) {
 
 	'use strict';
 
 	var Common, Figure, Image, NonEditableChunk, OboComponent, TextGroupEl;
 
-	__webpack_require__(257);
+	__webpack_require__(256);
 
-	Image = __webpack_require__(125);
+	Image = __webpack_require__(124);
 
 	Common = window.ObojoboDraft.Common;
 
@@ -257,40 +257,40 @@
 
 	module.exports = Figure;
 
-/***/ },
+/***/ }),
 
-/***/ 128:
-/***/ function(module, exports, __webpack_require__) {
+/***/ 127:
+/***/ (function(module, exports, __webpack_require__) {
 
 	'use strict';
 
 	var ObojoboDraft, SelectionHandler;
 
-	SelectionHandler = __webpack_require__(126);
+	SelectionHandler = __webpack_require__(125);
 
 	ObojoboDraft = window.ObojoboDraft;
 
 	OBO.register('ObojoboDraft.Chunks.Figure', {
 	  type: 'chunk',
-	  adapter: __webpack_require__(124),
-	  componentClass: __webpack_require__(127),
+	  adapter: __webpack_require__(123),
+	  componentClass: __webpack_require__(126),
 	  selectionHandler: new SelectionHandler()
 	});
 
-/***/ },
+/***/ }),
 
-/***/ 257:
-/***/ function(module, exports) {
+/***/ 256:
+/***/ (function(module, exports) {
 
 	// removed by extract-text-webpack-plugin
 
-/***/ },
+/***/ }),
 
 /***/ 294:
-/***/ function(module, exports) {
+/***/ (function(module, exports) {
 
 	module.exports = "data:image/svg+xml;charset=utf8,%3Csvg id='Layer_1' data-name='Layer 1' xmlns='http://www.w3.org/2000/svg' viewBox='0 0 12 12'%3E%3Cdefs%3E%3Cstyle%3E.cls-1%7Bopacity:0.03;%7D%3C/style%3E%3C/defs%3E%3Ctitle%3Ebg%3C/title%3E%3Crect class='cls-1' width='6' height='6'/%3E%3Crect class='cls-1' x='6' y='6' width='6' height='6'/%3E%3C/svg%3E"
 
-/***/ }
+/***/ })
 
 /******/ });

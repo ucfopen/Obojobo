@@ -43,15 +43,15 @@
 /******/ ({
 
 /***/ 0:
-/***/ function(module, exports, __webpack_require__) {
+/***/ (function(module, exports, __webpack_require__) {
 
-	module.exports = __webpack_require__(131);
+	module.exports = __webpack_require__(130);
 
 
-/***/ },
+/***/ }),
 
 /***/ 1:
-/***/ function(module, exports) {
+/***/ (function(module, exports) {
 
 	/**
 	 * This file contains a list of utility functions which are useful in other
@@ -160,10 +160,10 @@
 	};
 
 
-/***/ },
+/***/ }),
 
 /***/ 2:
-/***/ function(module, exports) {
+/***/ (function(module, exports) {
 
 	/**
 	 * This is the ParseError class, which is the main error thrown by KaTeX
@@ -207,10 +207,10 @@
 	module.exports = ParseError;
 
 
-/***/ },
+/***/ }),
 
 /***/ 3:
-/***/ function(module, exports, __webpack_require__) {
+/***/ (function(module, exports, __webpack_require__) {
 
 	/* jshint unused:false */
 
@@ -349,10 +349,10 @@
 	};
 
 
-/***/ },
+/***/ }),
 
 /***/ 6:
-/***/ function(module, exports) {
+/***/ (function(module, exports) {
 
 	/**
 	 * This file contains information and classes for the various kinds of styles
@@ -482,10 +482,10 @@
 	};
 
 
-/***/ },
+/***/ }),
 
 /***/ 7:
-/***/ function(module, exports, __webpack_require__) {
+/***/ (function(module, exports, __webpack_require__) {
 
 	/**
 	 * This module contains general functions that can be used for building
@@ -936,10 +936,10 @@
 	};
 
 
-/***/ },
+/***/ }),
 
 /***/ 8:
-/***/ function(module, exports) {
+/***/ (function(module, exports) {
 
 	/**
 	 * This file holds a list of all no-argument functions and single-character
@@ -3528,10 +3528,10 @@
 	module.exports = symbols;
 
 
-/***/ },
+/***/ }),
 
 /***/ 25:
-/***/ function(module, exports) {
+/***/ (function(module, exports) {
 
 	/**
 	 * This is a module for storing settings passed into KaTeX. It correctly handles
@@ -3563,10 +3563,10 @@
 	module.exports = Settings;
 
 
-/***/ },
+/***/ }),
 
 /***/ 26:
-/***/ function(module, exports, __webpack_require__) {
+/***/ (function(module, exports, __webpack_require__) {
 
 	/**
 	 * These objects store the data about the DOM nodes we create, as well as some
@@ -3839,10 +3839,10 @@
 	};
 
 
-/***/ },
+/***/ }),
 
 /***/ 27:
-/***/ function(module, exports) {
+/***/ (function(module, exports) {
 
 	/**
 	 * The resulting parse tree nodes of the parse tree.
@@ -3869,10 +3869,10 @@
 
 
 
-/***/ },
+/***/ }),
 
 /***/ 60:
-/***/ function(module, exports, __webpack_require__) {
+/***/ (function(module, exports, __webpack_require__) {
 
 	/**
 	 * This is the main entry point for KaTeX. Here, we expose functions for
@@ -3949,10 +3949,10 @@
 	};
 
 
-/***/ },
+/***/ }),
 
 /***/ 61:
-/***/ function(module, exports, __webpack_require__) {
+/***/ (function(module, exports, __webpack_require__) {
 
 	/**
 	 * The Lexer class handles tokenizing the input in various ways. Since our
@@ -4150,10 +4150,10 @@
 	module.exports = Lexer;
 
 
-/***/ },
+/***/ }),
 
 /***/ 62:
-/***/ function(module, exports) {
+/***/ (function(module, exports) {
 
 	/**
 	 * This file contains information about the options that the Parser carries
@@ -4346,10 +4346,10 @@
 	module.exports = Options;
 
 
-/***/ },
+/***/ }),
 
 /***/ 63:
-/***/ function(module, exports, __webpack_require__) {
+/***/ (function(module, exports, __webpack_require__) {
 
 	var functions = __webpack_require__(70);
 	var environments = __webpack_require__(68);
@@ -5073,10 +5073,10 @@
 	module.exports = Parser;
 
 
-/***/ },
+/***/ }),
 
 /***/ 64:
-/***/ function(module, exports, __webpack_require__) {
+/***/ (function(module, exports, __webpack_require__) {
 
 	/**
 	 * This file does the main work of building a domTree structure from a parse
@@ -6442,10 +6442,10 @@
 	module.exports = buildHTML;
 
 
-/***/ },
+/***/ }),
 
 /***/ 65:
-/***/ function(module, exports, __webpack_require__) {
+/***/ (function(module, exports, __webpack_require__) {
 
 	/**
 	 * This file converts a parse tree into a cooresponding MathML tree. The main
@@ -6968,10 +6968,10 @@
 	module.exports = buildMathML;
 
 
-/***/ },
+/***/ }),
 
 /***/ 66:
-/***/ function(module, exports, __webpack_require__) {
+/***/ (function(module, exports, __webpack_require__) {
 
 	var buildHTML = __webpack_require__(64);
 	var buildMathML = __webpack_require__(65);
@@ -7015,10 +7015,10 @@
 	module.exports = buildTree;
 
 
-/***/ },
+/***/ }),
 
 /***/ 67:
-/***/ function(module, exports, __webpack_require__) {
+/***/ (function(module, exports, __webpack_require__) {
 
 	/**
 	 * This file deals with creating delimiters of various sizes. The TeXbook
@@ -7561,10 +7561,10 @@
 	};
 
 
-/***/ },
+/***/ }),
 
 /***/ 68:
-/***/ function(module, exports, __webpack_require__) {
+/***/ (function(module, exports, __webpack_require__) {
 
 	var fontMetrics = __webpack_require__(3);
 	var parseData = __webpack_require__(27);
@@ -7746,10 +7746,10 @@
 	})();
 
 
-/***/ },
+/***/ }),
 
 /***/ 69:
-/***/ function(module, exports) {
+/***/ (function(module, exports) {
 
 	module.exports = {
 	"AMS-Regular": {
@@ -9504,10 +9504,10 @@
 	}};
 
 
-/***/ },
+/***/ }),
 
 /***/ 70:
-/***/ function(module, exports, __webpack_require__) {
+/***/ (function(module, exports, __webpack_require__) {
 
 	var utils = __webpack_require__(1);
 	var ParseError = __webpack_require__(2);
@@ -10140,10 +10140,10 @@
 	};
 
 
-/***/ },
+/***/ }),
 
 /***/ 71:
-/***/ function(module, exports, __webpack_require__) {
+/***/ (function(module, exports, __webpack_require__) {
 
 	/**
 	 * These objects store data about MathML nodes. This is the MathML equivalent
@@ -10249,10 +10249,10 @@
 	};
 
 
-/***/ },
+/***/ }),
 
 /***/ 72:
-/***/ function(module, exports, __webpack_require__) {
+/***/ (function(module, exports, __webpack_require__) {
 
 	/**
 	 * Provides a single function for parsing an expression using a Parser
@@ -10273,10 +10273,10 @@
 	module.exports = parseTree;
 
 
-/***/ },
+/***/ }),
 
 /***/ 73:
-/***/ function(module, exports) {
+/***/ (function(module, exports) {
 
 	/** @flow */
 
@@ -10321,10 +10321,10 @@
 
 	module.exports = matchAt;
 
-/***/ },
+/***/ }),
 
-/***/ 129:
-/***/ function(module, exports) {
+/***/ 128:
+/***/ (function(module, exports) {
 
 	'use strict';
 
@@ -10362,16 +10362,16 @@
 
 	module.exports = Adapter;
 
-/***/ },
+/***/ }),
 
-/***/ 130:
-/***/ function(module, exports, __webpack_require__) {
+/***/ 129:
+/***/ (function(module, exports, __webpack_require__) {
 
 	'use strict';
 
 	var Common, HTML, OboComponent, katex;
 
-	__webpack_require__(258);
+	__webpack_require__(257);
 
 	katex = __webpack_require__(60);
 
@@ -10408,10 +10408,10 @@
 
 	module.exports = HTML;
 
-/***/ },
+/***/ }),
 
-/***/ 131:
-/***/ function(module, exports, __webpack_require__) {
+/***/ 130:
+/***/ (function(module, exports, __webpack_require__) {
 
 	'use strict';
 
@@ -10421,18 +10421,18 @@
 
 	OBO.register('ObojoboDraft.Chunks.HTML', {
 	  type: 'chunk',
-	  adapter: __webpack_require__(129),
-	  componentClass: __webpack_require__(130),
+	  adapter: __webpack_require__(128),
+	  componentClass: __webpack_require__(129),
 	  selectionHandler: new Common.chunk.focusableChunk.FocusableSelectionHandler()
 	});
 
-/***/ },
+/***/ }),
 
-/***/ 258:
-/***/ function(module, exports) {
+/***/ 257:
+/***/ (function(module, exports) {
 
 	// removed by extract-text-webpack-plugin
 
-/***/ }
+/***/ })
 
 /******/ });

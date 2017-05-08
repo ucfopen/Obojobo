@@ -43,15 +43,15 @@
 /******/ ({
 
 /***/ 0:
-/***/ function(module, exports, __webpack_require__) {
+/***/ (function(module, exports, __webpack_require__) {
 
-	module.exports = __webpack_require__(121);
+	module.exports = __webpack_require__(120);
 
 
-/***/ },
+/***/ }),
 
-/***/ 119:
-/***/ function(module, exports) {
+/***/ 118:
+/***/ (function(module, exports) {
 
 	'use strict';
 
@@ -65,16 +65,16 @@
 
 	module.exports = Adapter;
 
-/***/ },
+/***/ }),
 
-/***/ 120:
-/***/ function(module, exports, __webpack_require__) {
+/***/ 119:
+/***/ (function(module, exports, __webpack_require__) {
 
 	"use strict";
 
 	var Break, Common, NonEditableChunk, OboComponent;
 
-	__webpack_require__(255);
+	__webpack_require__(254);
 
 	Common = window.ObojoboDraft.Common;
 
@@ -100,10 +100,10 @@
 
 	module.exports = Break;
 
-/***/ },
+/***/ }),
 
-/***/ 121:
-/***/ function(module, exports, __webpack_require__) {
+/***/ 120:
+/***/ (function(module, exports, __webpack_require__) {
 
 	'use strict';
 
@@ -113,18 +113,18 @@
 
 	OBO.register('ObojoboDraft.Chunks.Break', {
 	  type: 'chunk',
-	  adapter: __webpack_require__(119),
-	  componentClass: __webpack_require__(120),
+	  adapter: __webpack_require__(118),
+	  componentClass: __webpack_require__(119),
 	  selectionHandler: new Common.chunk.focusableChunk.FocusableSelectionHandler()
 	});
 
-/***/ },
+/***/ }),
 
-/***/ 255:
-/***/ function(module, exports) {
+/***/ 254:
+/***/ (function(module, exports) {
 
 	// removed by extract-text-webpack-plugin
 
-/***/ }
+/***/ })
 
 /******/ });

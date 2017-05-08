@@ -43,21 +43,21 @@
 /******/ ({
 
 /***/ 0:
-/***/ function(module, exports, __webpack_require__) {
+/***/ (function(module, exports, __webpack_require__) {
 
-	module.exports = __webpack_require__(158);
+	module.exports = __webpack_require__(157);
 
 
-/***/ },
+/***/ }),
 
-/***/ 157:
-/***/ function(module, exports, __webpack_require__) {
+/***/ 156:
+/***/ (function(module, exports, __webpack_require__) {
 
 	"use strict";
 
 	var Common, Dispatcher, OboComponent, Text, TextChunk, TextGroupEl;
 
-	__webpack_require__(268);
+	__webpack_require__(267);
 
 	Common = window.ObojoboDraft.Common;
 
@@ -93,10 +93,10 @@
 
 	module.exports = Text;
 
-/***/ },
+/***/ }),
 
-/***/ 158:
-/***/ function(module, exports, __webpack_require__) {
+/***/ 157:
+/***/ (function(module, exports, __webpack_require__) {
 
 	'use strict';
 
@@ -108,17 +108,17 @@
 	  type: 'chunk',
 	  "default": true,
 	  adapter: ObojoboDraft.Common.chunk.textChunk.TextGroupAdapter,
-	  componentClass: __webpack_require__(157),
+	  componentClass: __webpack_require__(156),
 	  selectionHandler: new ObojoboDraft.Common.chunk.textChunk.TextGroupSelectionHandler()
 	});
 
-/***/ },
+/***/ }),
 
-/***/ 268:
-/***/ function(module, exports) {
+/***/ 267:
+/***/ (function(module, exports) {
 
 	// removed by extract-text-webpack-plugin
 
-/***/ }
+/***/ })
 
 /******/ });

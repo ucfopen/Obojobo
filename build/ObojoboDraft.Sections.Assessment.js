@@ -43,21 +43,21 @@
 /******/ ({
 
 /***/ 0:
-/***/ function(module, exports, __webpack_require__) {
+/***/ (function(module, exports, __webpack_require__) {
 
-	module.exports = __webpack_require__(204);
+	module.exports = __webpack_require__(203);
 
 
-/***/ },
+/***/ }),
 
-/***/ 200:
-/***/ function(module, exports, __webpack_require__) {
+/***/ 199:
+/***/ (function(module, exports, __webpack_require__) {
 
 	'use strict';
 
 	var Adapter, Common, ScoreActions;
 
-	ScoreActions = __webpack_require__(202);
+	ScoreActions = __webpack_require__(201);
 
 	Common = window.ObojoboDraft.Common;
 
@@ -93,10 +93,10 @@
 
 	module.exports = Adapter;
 
-/***/ },
+/***/ }),
 
-/***/ 201:
-/***/ function(module, exports) {
+/***/ 200:
+/***/ (function(module, exports) {
 
 	'use strict';
 
@@ -140,10 +140,10 @@
 		}
 	});
 
-/***/ },
+/***/ }),
 
-/***/ 202:
-/***/ function(module, exports) {
+/***/ 201:
+/***/ (function(module, exports) {
 
 	"use strict";
 
@@ -179,16 +179,16 @@
 
 	module.exports = ScoreActions;
 
-/***/ },
+/***/ }),
 
-/***/ 203:
-/***/ function(module, exports, __webpack_require__) {
+/***/ 202:
+/***/ (function(module, exports, __webpack_require__) {
 
 	'use strict';
 
 	var AssessmentUtil, AttemptIncompleteDialog, Button, Common, Dispatcher, ModalUtil, NavUtil, OboComponent, OboModel, ScoreStore;
 
-	__webpack_require__(285);
+	__webpack_require__(284);
 
 	Common = window.ObojoboDraft.Common;
 
@@ -208,7 +208,7 @@
 
 	NavUtil = window.Viewer.util.NavUtil;
 
-	AttemptIncompleteDialog = __webpack_require__(201);
+	AttemptIncompleteDialog = __webpack_require__(200);
 
 	module.exports = React.createClass({
 	  displayName: 'exports',
@@ -397,10 +397,10 @@
 	  }
 	});
 
-/***/ },
+/***/ }),
 
-/***/ 204:
-/***/ function(module, exports, __webpack_require__) {
+/***/ 203:
+/***/ (function(module, exports, __webpack_require__) {
 
 	'use strict';
 
@@ -412,8 +412,8 @@
 
 	OBO.register('ObojoboDraft.Sections.Assessment', {
 	  type: 'section',
-	  adapter: __webpack_require__(200),
-	  componentClass: __webpack_require__(203),
+	  adapter: __webpack_require__(199),
+	  componentClass: __webpack_require__(202),
 	  selectionHandler: null,
 	  getNavItem: function getNavItem(model) {
 	    var title;
@@ -446,13 +446,13 @@
 	  }
 	});
 
-/***/ },
+/***/ }),
 
-/***/ 285:
-/***/ function(module, exports) {
+/***/ 284:
+/***/ (function(module, exports) {
 
 	// removed by extract-text-webpack-plugin
 
-/***/ }
+/***/ })
 
 /******/ });

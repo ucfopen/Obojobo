@@ -65,14 +65,14 @@
 	return modules;
 }([
 /* 0 */
-/***/ function(module, exports, __webpack_require__) {
+/***/ (function(module, exports, __webpack_require__) {
 
-	module.exports = __webpack_require__(213);
+	module.exports = __webpack_require__(212);
 
 
-/***/ },
+/***/ }),
 /* 1 */
-/***/ function(module, exports) {
+/***/ (function(module, exports) {
 
 	/**
 	 * This file contains a list of utility functions which are useful in other
@@ -181,9 +181,9 @@
 	};
 
 
-/***/ },
+/***/ }),
 /* 2 */
-/***/ function(module, exports) {
+/***/ (function(module, exports) {
 
 	/**
 	 * This is the ParseError class, which is the main error thrown by KaTeX
@@ -227,9 +227,9 @@
 	module.exports = ParseError;
 
 
-/***/ },
+/***/ }),
 /* 3 */
-/***/ function(module, exports, __webpack_require__) {
+/***/ (function(module, exports, __webpack_require__) {
 
 	/* jshint unused:false */
 
@@ -368,9 +368,9 @@
 	};
 
 
-/***/ },
+/***/ }),
 /* 4 */
-/***/ function(module, exports) {
+/***/ (function(module, exports) {
 
 	"use strict";
 
@@ -396,9 +396,9 @@
 
 	module.exports = Dispatcher;
 
-/***/ },
+/***/ }),
 /* 5 */
-/***/ function(module, exports) {
+/***/ (function(module, exports) {
 
 	'use strict';
 
@@ -418,9 +418,9 @@
 
 	module.exports = StyleType;
 
-/***/ },
+/***/ }),
 /* 6 */
-/***/ function(module, exports) {
+/***/ (function(module, exports) {
 
 	/**
 	 * This file contains information and classes for the various kinds of styles
@@ -550,9 +550,9 @@
 	};
 
 
-/***/ },
+/***/ }),
 /* 7 */
-/***/ function(module, exports, __webpack_require__) {
+/***/ (function(module, exports, __webpack_require__) {
 
 	/**
 	 * This module contains general functions that can be used for building
@@ -1003,9 +1003,9 @@
 	};
 
 
-/***/ },
+/***/ }),
 /* 8 */
-/***/ function(module, exports) {
+/***/ (function(module, exports) {
 
 	/**
 	 * This file holds a list of all no-argument functions and single-character
@@ -3594,10 +3594,10 @@
 	module.exports = symbols;
 
 
-/***/ },
+/***/ }),
 /* 9 */,
 /* 10 */
-/***/ function(module, exports, __webpack_require__) {
+/***/ (function(module, exports, __webpack_require__) {
 
 	'use strict';
 
@@ -3996,14 +3996,21 @@
 
 	module.exports = StyleableText;
 
-/***/ },
+/***/ }),
 /* 11 */,
 /* 12 */,
 /* 13 */
-/***/ function(module, exports) {
+/***/ (function(module, exports) {
+
+	/*
+	object-assign
+	(c) Sindre Sorhus
+	@license MIT
+	*/
 
 	'use strict';
 	/* eslint-disable no-unused-vars */
+	var getOwnPropertySymbols = Object.getOwnPropertySymbols;
 	var hasOwnProperty = Object.prototype.hasOwnProperty;
 	var propIsEnumerable = Object.prototype.propertyIsEnumerable;
 
@@ -4024,7 +4031,7 @@
 			// Detect buggy property enumeration order in older V8 versions.
 
 			// https://bugs.chromium.org/p/v8/issues/detail?id=4118
-			var test1 = new String('abc');  // eslint-disable-line
+			var test1 = new String('abc');  // eslint-disable-line no-new-wrappers
 			test1[5] = 'de';
 			if (Object.getOwnPropertyNames(test1)[0] === '5') {
 				return false;
@@ -4053,7 +4060,7 @@
 			}
 
 			return true;
-		} catch (e) {
+		} catch (err) {
 			// We don't expect any of the above to throw, but better to be safe.
 			return false;
 		}
@@ -4073,8 +4080,8 @@
 				}
 			}
 
-			if (Object.getOwnPropertySymbols) {
-				symbols = Object.getOwnPropertySymbols(from);
+			if (getOwnPropertySymbols) {
+				symbols = getOwnPropertySymbols(from);
 				for (var i = 0; i < symbols.length; i++) {
 					if (propIsEnumerable.call(from, symbols[i])) {
 						to[symbols[i]] = from[symbols[i]];
@@ -4087,10 +4094,10 @@
 	};
 
 
-/***/ },
+/***/ }),
 /* 14 */,
 /* 15 */
-/***/ function(module, exports, __webpack_require__) {
+/***/ (function(module, exports, __webpack_require__) {
 
 	'use strict';
 
@@ -4113,7 +4120,7 @@
 
 	OBO = window.OBO;
 
-	createUUID = __webpack_require__(97);
+	createUUID = __webpack_require__(96);
 
 	Dispatcher = __webpack_require__(4);
 
@@ -4150,6 +4157,7 @@
 	    if (adapter == null) {
 	      adapter = {};
 	    }
+	    OboModel.__super__.constructor.call(this);
 	    this.parent = null;
 	    this.children = new OboModelCollection();
 	    this.triggers = [];
@@ -4604,9 +4612,9 @@
 
 	module.exports = OboModel;
 
-/***/ },
+/***/ }),
 /* 16 */
-/***/ function(module, exports) {
+/***/ (function(module, exports) {
 
 	'use strict';
 
@@ -4696,9 +4704,9 @@
 
 	module.exports = DOMUtil;
 
-/***/ },
+/***/ }),
 /* 17 */
-/***/ function(module, exports, __webpack_require__) {
+/***/ (function(module, exports, __webpack_require__) {
 
 	'use strict';
 
@@ -4816,11 +4824,11 @@
 
 	module.exports = StyleRange;
 
-/***/ },
+/***/ }),
 /* 18 */,
 /* 19 */,
 /* 20 */
-/***/ function(module, exports, __webpack_require__) {
+/***/ (function(module, exports, __webpack_require__) {
 
 	'use strict';
 
@@ -4858,9 +4866,9 @@
 	  }
 	};
 
-/***/ },
+/***/ }),
 /* 21 */
-/***/ function(module, exports, __webpack_require__) {
+/***/ (function(module, exports, __webpack_require__) {
 
 	'use strict';
 
@@ -5007,9 +5015,9 @@
 
 	module.exports = DOMSelection;
 
-/***/ },
+/***/ }),
 /* 22 */
-/***/ function(module, exports) {
+/***/ (function(module, exports) {
 
 	"use strict";
 
@@ -5018,11 +5026,11 @@
 	  EMPTY_CHAR: String.fromCharCode(8203)
 	};
 
-/***/ },
+/***/ }),
 /* 23 */,
 /* 24 */,
 /* 25 */
-/***/ function(module, exports) {
+/***/ (function(module, exports) {
 
 	/**
 	 * This is a module for storing settings passed into KaTeX. It correctly handles
@@ -5054,9 +5062,9 @@
 	module.exports = Settings;
 
 
-/***/ },
+/***/ }),
 /* 26 */
-/***/ function(module, exports, __webpack_require__) {
+/***/ (function(module, exports, __webpack_require__) {
 
 	/**
 	 * These objects store the data about the DOM nodes we create, as well as some
@@ -5329,9 +5337,9 @@
 	};
 
 
-/***/ },
+/***/ }),
 /* 27 */
-/***/ function(module, exports) {
+/***/ (function(module, exports) {
 
 	/**
 	 * The resulting parse tree nodes of the parse tree.
@@ -5358,10 +5366,10 @@
 
 
 
-/***/ },
+/***/ }),
 /* 28 */,
 /* 29 */
-/***/ function(module, exports, __webpack_require__) {
+/***/ (function(module, exports, __webpack_require__) {
 
 	'use strict';
 
@@ -5417,9 +5425,9 @@
 
 	module.exports = BaseSelectionHandler;
 
-/***/ },
+/***/ }),
 /* 30 */
-/***/ function(module, exports, __webpack_require__) {
+/***/ (function(module, exports, __webpack_require__) {
 
 	'use strict';
 
@@ -5689,9 +5697,9 @@
 
 	module.exports = ChunkStyleList;
 
-/***/ },
+/***/ }),
 /* 31 */
-/***/ function(module, exports, __webpack_require__) {
+/***/ (function(module, exports, __webpack_require__) {
 
 	'use strict';
 
@@ -6175,9 +6183,9 @@
 
 	module.exports = TextGroup;
 
-/***/ },
+/***/ }),
 /* 32 */
-/***/ function(module, exports, __webpack_require__) {
+/***/ (function(module, exports, __webpack_require__) {
 
 	'use strict';
 
@@ -6215,9 +6223,9 @@
 	  }
 	});
 
-/***/ },
+/***/ }),
 /* 33 */
-/***/ function(module, exports) {
+/***/ (function(module, exports) {
 
 	'use strict';
 
@@ -6296,7 +6304,7 @@
 	  isElementInline: isElementInline
 	};
 
-/***/ },
+/***/ }),
 /* 34 */,
 /* 35 */,
 /* 36 */,
@@ -6310,11 +6318,11 @@
 /* 44 */,
 /* 45 */,
 /* 46 */
-/***/ function(module, exports, __webpack_require__) {
+/***/ (function(module, exports, __webpack_require__) {
 
 	"use strict";
 
-	__webpack_require__(271);
+	__webpack_require__(270);
 
 	module.exports = React.createClass({
 	  displayName: "exports",
@@ -6345,9 +6353,9 @@
 	  }
 	});
 
-/***/ },
+/***/ }),
 /* 47 */
-/***/ function(module, exports, __webpack_require__) {
+/***/ (function(module, exports, __webpack_require__) {
 
 	"use strict";
 
@@ -6394,9 +6402,9 @@
 
 	module.exports = Store;
 
-/***/ },
+/***/ }),
 /* 48 */
-/***/ function(module, exports, __webpack_require__) {
+/***/ (function(module, exports, __webpack_require__) {
 
 	'use strict';
 
@@ -6493,9 +6501,9 @@
 
 	module.exports = OboSelectionRect;
 
-/***/ },
+/***/ }),
 /* 49 */
-/***/ function(module, exports) {
+/***/ (function(module, exports) {
 
 	"use strict";
 
@@ -6520,9 +6528,9 @@
 
 	module.exports = VirtualCursor;
 
-/***/ },
+/***/ }),
 /* 50 */
-/***/ function(module, exports, __webpack_require__) {
+/***/ (function(module, exports, __webpack_require__) {
 
 	'use strict';
 
@@ -6550,7 +6558,7 @@
 
 	module.exports = FocusUtil;
 
-/***/ },
+/***/ }),
 /* 51 */,
 /* 52 */,
 /* 53 */,
@@ -6561,7 +6569,7 @@
 /* 58 */,
 /* 59 */,
 /* 60 */
-/***/ function(module, exports, __webpack_require__) {
+/***/ (function(module, exports, __webpack_require__) {
 
 	/**
 	 * This is the main entry point for KaTeX. Here, we expose functions for
@@ -6638,9 +6646,9 @@
 	};
 
 
-/***/ },
+/***/ }),
 /* 61 */
-/***/ function(module, exports, __webpack_require__) {
+/***/ (function(module, exports, __webpack_require__) {
 
 	/**
 	 * The Lexer class handles tokenizing the input in various ways. Since our
@@ -6838,9 +6846,9 @@
 	module.exports = Lexer;
 
 
-/***/ },
+/***/ }),
 /* 62 */
-/***/ function(module, exports) {
+/***/ (function(module, exports) {
 
 	/**
 	 * This file contains information about the options that the Parser carries
@@ -7033,9 +7041,9 @@
 	module.exports = Options;
 
 
-/***/ },
+/***/ }),
 /* 63 */
-/***/ function(module, exports, __webpack_require__) {
+/***/ (function(module, exports, __webpack_require__) {
 
 	var functions = __webpack_require__(70);
 	var environments = __webpack_require__(68);
@@ -7759,9 +7767,9 @@
 	module.exports = Parser;
 
 
-/***/ },
+/***/ }),
 /* 64 */
-/***/ function(module, exports, __webpack_require__) {
+/***/ (function(module, exports, __webpack_require__) {
 
 	/**
 	 * This file does the main work of building a domTree structure from a parse
@@ -9127,9 +9135,9 @@
 	module.exports = buildHTML;
 
 
-/***/ },
+/***/ }),
 /* 65 */
-/***/ function(module, exports, __webpack_require__) {
+/***/ (function(module, exports, __webpack_require__) {
 
 	/**
 	 * This file converts a parse tree into a cooresponding MathML tree. The main
@@ -9652,9 +9660,9 @@
 	module.exports = buildMathML;
 
 
-/***/ },
+/***/ }),
 /* 66 */
-/***/ function(module, exports, __webpack_require__) {
+/***/ (function(module, exports, __webpack_require__) {
 
 	var buildHTML = __webpack_require__(64);
 	var buildMathML = __webpack_require__(65);
@@ -9698,9 +9706,9 @@
 	module.exports = buildTree;
 
 
-/***/ },
+/***/ }),
 /* 67 */
-/***/ function(module, exports, __webpack_require__) {
+/***/ (function(module, exports, __webpack_require__) {
 
 	/**
 	 * This file deals with creating delimiters of various sizes. The TeXbook
@@ -10243,9 +10251,9 @@
 	};
 
 
-/***/ },
+/***/ }),
 /* 68 */
-/***/ function(module, exports, __webpack_require__) {
+/***/ (function(module, exports, __webpack_require__) {
 
 	var fontMetrics = __webpack_require__(3);
 	var parseData = __webpack_require__(27);
@@ -10427,9 +10435,9 @@
 	})();
 
 
-/***/ },
+/***/ }),
 /* 69 */
-/***/ function(module, exports) {
+/***/ (function(module, exports) {
 
 	module.exports = {
 	"AMS-Regular": {
@@ -12184,9 +12192,9 @@
 	}};
 
 
-/***/ },
+/***/ }),
 /* 70 */
-/***/ function(module, exports, __webpack_require__) {
+/***/ (function(module, exports, __webpack_require__) {
 
 	var utils = __webpack_require__(1);
 	var ParseError = __webpack_require__(2);
@@ -12819,9 +12827,9 @@
 	};
 
 
-/***/ },
+/***/ }),
 /* 71 */
-/***/ function(module, exports, __webpack_require__) {
+/***/ (function(module, exports, __webpack_require__) {
 
 	/**
 	 * These objects store data about MathML nodes. This is the MathML equivalent
@@ -12927,9 +12935,9 @@
 	};
 
 
-/***/ },
+/***/ }),
 /* 72 */
-/***/ function(module, exports, __webpack_require__) {
+/***/ (function(module, exports, __webpack_require__) {
 
 	/**
 	 * Provides a single function for parsing an expression using a Parser
@@ -12950,9 +12958,9 @@
 	module.exports = parseTree;
 
 
-/***/ },
+/***/ }),
 /* 73 */
-/***/ function(module, exports) {
+/***/ (function(module, exports) {
 
 	/** @flow */
 
@@ -12997,13 +13005,12 @@
 
 	module.exports = matchAt;
 
-/***/ },
+/***/ }),
 /* 74 */,
 /* 75 */,
 /* 76 */,
-/* 77 */,
-/* 78 */
-/***/ function(module, exports, __webpack_require__) {
+/* 77 */
+/***/ (function(module, exports, __webpack_require__) {
 
 	'use strict';
 
@@ -13084,9 +13091,9 @@
 
 	module.exports = FocusableSelectionHandler;
 
-/***/ },
-/* 79 */
-/***/ function(module, exports, __webpack_require__) {
+/***/ }),
+/* 78 */
+/***/ (function(module, exports, __webpack_require__) {
 
 	'use strict';
 
@@ -13096,7 +13103,7 @@
 
 	DOMUtil = __webpack_require__(16);
 
-	StyleableTextComponent = __webpack_require__(91);
+	StyleableTextComponent = __webpack_require__(90);
 
 	Dispatcher = __webpack_require__(4);
 
@@ -13174,9 +13181,9 @@
 
 	module.exports = TextGroupEl;
 
-/***/ },
-/* 80 */
-/***/ function(module, exports, __webpack_require__) {
+/***/ }),
+/* 79 */
+/***/ (function(module, exports, __webpack_require__) {
 
 	'use strict';
 
@@ -13205,13 +13212,13 @@
 			}
 	});
 
-/***/ },
-/* 81 */
-/***/ function(module, exports, __webpack_require__) {
+/***/ }),
+/* 80 */
+/***/ (function(module, exports, __webpack_require__) {
 
 	'use strict';
 
-	__webpack_require__(270);
+	__webpack_require__(269);
 
 	module.exports = React.createClass({
 	  displayName: 'exports',
@@ -13250,13 +13257,13 @@
 	  }
 	});
 
-/***/ },
-/* 82 */
-/***/ function(module, exports, __webpack_require__) {
+/***/ }),
+/* 81 */
+/***/ (function(module, exports, __webpack_require__) {
 
 	"use strict";
 
-	__webpack_require__(274);
+	__webpack_require__(273);
 
 	module.exports = React.createClass({
 	  displayName: "exports",
@@ -13274,9 +13281,9 @@
 	  }
 	});
 
-/***/ },
-/* 83 */
-/***/ function(module, exports, __webpack_require__) {
+/***/ }),
+/* 82 */
+/***/ (function(module, exports, __webpack_require__) {
 
 	'use strict';
 
@@ -13284,13 +13291,13 @@
 
 	var Button, DeleteButton, Modal;
 
-	__webpack_require__(276);
+	__webpack_require__(275);
 
-	Button = __webpack_require__(81);
+	Button = __webpack_require__(80);
 
 	DeleteButton = __webpack_require__(46);
 
-	Modal = __webpack_require__(85);
+	Modal = __webpack_require__(84);
 
 	module.exports = React.createClass({
 	  displayName: 'exports',
@@ -13361,17 +13368,17 @@
 	  }
 	});
 
-/***/ },
-/* 84 */
-/***/ function(module, exports, __webpack_require__) {
+/***/ }),
+/* 83 */
+/***/ (function(module, exports, __webpack_require__) {
 
 	'use strict';
 
 	var SimpleDialog;
 
-	__webpack_require__(277);
+	__webpack_require__(276);
 
-	SimpleDialog = __webpack_require__(86);
+	SimpleDialog = __webpack_require__(85);
 
 	module.exports = React.createClass({
 		displayName: 'exports',
@@ -13389,15 +13396,15 @@
 		}
 	});
 
-/***/ },
-/* 85 */
-/***/ function(module, exports, __webpack_require__) {
+/***/ }),
+/* 84 */
+/***/ (function(module, exports, __webpack_require__) {
 
 	'use strict';
 
 	var DeleteButton;
 
-	__webpack_require__(278);
+	__webpack_require__(277);
 
 	DeleteButton = __webpack_require__(46);
 
@@ -13442,19 +13449,19 @@
 	  }
 	});
 
-/***/ },
-/* 86 */
-/***/ function(module, exports, __webpack_require__) {
+/***/ }),
+/* 85 */
+/***/ (function(module, exports, __webpack_require__) {
 
 	'use strict';
 
 	var Dialog, ModalUtil;
 
-	__webpack_require__(279);
+	__webpack_require__(278);
 
-	ModalUtil = __webpack_require__(96);
+	ModalUtil = __webpack_require__(95);
 
-	Dialog = __webpack_require__(83);
+	Dialog = __webpack_require__(82);
 
 	module.exports = React.createClass({
 	  displayName: 'exports',
@@ -13526,9 +13533,9 @@
 	  }
 	});
 
-/***/ },
-/* 87 */
-/***/ function(module, exports) {
+/***/ }),
+/* 86 */
+/***/ (function(module, exports) {
 
 	"use strict";
 
@@ -13595,9 +13602,9 @@
 
 	module.exports = MockElement;
 
-/***/ },
-/* 88 */
-/***/ function(module, exports) {
+/***/ }),
+/* 87 */
+/***/ (function(module, exports) {
 
 	'use strict';
 
@@ -13615,9 +13622,9 @@
 
 	module.exports = MockTextNode;
 
-/***/ },
-/* 89 */
-/***/ function(module, exports, __webpack_require__) {
+/***/ }),
+/* 88 */
+/***/ (function(module, exports, __webpack_require__) {
 
 	'use strict';
 
@@ -13644,9 +13651,9 @@
 
 	module.exports = Cursor;
 
-/***/ },
-/* 90 */
-/***/ function(module, exports, __webpack_require__) {
+/***/ }),
+/* 89 */
+/***/ (function(module, exports, __webpack_require__) {
 
 	'use strict';
 
@@ -13854,15 +13861,15 @@
 
 	module.exports = VirtualSelection;
 
-/***/ },
-/* 91 */
-/***/ function(module, exports, __webpack_require__) {
+/***/ }),
+/* 90 */
+/***/ (function(module, exports, __webpack_require__) {
 
 	'use strict';
 
 	var StyleableTextComponent, StyleableTextRenderer, emptyChar;
 
-	StyleableTextRenderer = __webpack_require__(92);
+	StyleableTextRenderer = __webpack_require__(91);
 
 	emptyChar = __webpack_require__(22).EMPTY_CHAR;
 
@@ -13935,9 +13942,9 @@
 
 	module.exports = StyleableTextComponent;
 
-/***/ },
-/* 92 */
-/***/ function(module, exports, __webpack_require__) {
+/***/ }),
+/* 91 */
+/***/ (function(module, exports, __webpack_require__) {
 
 	'use strict';
 
@@ -13953,9 +13960,9 @@
 
 	StyleType = __webpack_require__(5);
 
-	MockElement = __webpack_require__(87);
+	MockElement = __webpack_require__(86);
 
-	MockTextNode = __webpack_require__(88);
+	MockTextNode = __webpack_require__(87);
 
 	ORDER = [StyleType.COMMENT, StyleType.LATEX, StyleType.LINK, StyleType.QUOTE, StyleType.BOLD, StyleType.STRIKETHROUGH, StyleType.MONOSPACE, StyleType.SUPERSCRIPT, StyleType.ITALIC];
 
@@ -14169,9 +14176,9 @@
 
 	module.exports = getMockElement;
 
-/***/ },
-/* 93 */
-/***/ function(module, exports) {
+/***/ }),
+/* 92 */
+/***/ (function(module, exports) {
 
 	"use strict";
 
@@ -14253,15 +14260,15 @@
 
 	module.exports = TextGroupCursor;
 
-/***/ },
-/* 94 */
-/***/ function(module, exports, __webpack_require__) {
+/***/ }),
+/* 93 */
+/***/ (function(module, exports, __webpack_require__) {
 
 	'use strict';
 
 	var DOMUtil, TextGroupCursor, TextGroupSelection, VirtualCursor, emptyChar, getCursors;
 
-	TextGroupCursor = __webpack_require__(93);
+	TextGroupCursor = __webpack_require__(92);
 
 	VirtualCursor = __webpack_require__(49);
 
@@ -14522,9 +14529,9 @@
 
 	module.exports = TextGroupSelection;
 
-/***/ },
-/* 95 */
-/***/ function(module, exports) {
+/***/ }),
+/* 94 */
+/***/ (function(module, exports) {
 
 	"use strict";
 
@@ -14532,9 +14539,9 @@
 	  return "url('" + asset.replace(/'/g, "\\'") + "')";
 	};
 
-/***/ },
-/* 96 */
-/***/ function(module, exports, __webpack_require__) {
+/***/ }),
+/* 95 */
+/***/ (function(module, exports, __webpack_require__) {
 
 	'use strict';
 
@@ -14563,9 +14570,9 @@
 
 	module.exports = ModalUtil;
 
-/***/ },
-/* 97 */
-/***/ function(module, exports) {
+/***/ }),
+/* 96 */
+/***/ (function(module, exports) {
 
 	"use strict";
 
@@ -14581,9 +14588,9 @@
 	  return _getId();
 	};
 
-/***/ },
-/* 98 */
-/***/ function(module, exports, __webpack_require__) {
+/***/ }),
+/* 97 */
+/***/ (function(module, exports, __webpack_require__) {
 
 	'use strict';
 
@@ -14591,112 +14598,113 @@
 	  Common: {
 	    chunk: {
 	      BaseSelectionHandler: __webpack_require__(29),
-	      FocusableChunk: __webpack_require__(162),
+	      FocusableChunk: __webpack_require__(161),
 	      focusableChunk: {
-	        FocusableSelectionHandler: __webpack_require__(78),
-	        ToggleSelectionHandler: __webpack_require__(163)
+	        FocusableSelectionHandler: __webpack_require__(77),
+	        ToggleSelectionHandler: __webpack_require__(162)
 	      },
-	      NonEditableChunk: __webpack_require__(164),
-	      TextChunk: __webpack_require__(165),
+	      NonEditableChunk: __webpack_require__(163),
+	      TextChunk: __webpack_require__(164),
 	      textChunk: {
-	        TextGroupSelectionHandler: __webpack_require__(168),
-	        TextGroupEl: __webpack_require__(79),
-	        Linkify: __webpack_require__(166),
-	        TextGroupAdapter: __webpack_require__(167)
+	        TextGroupSelectionHandler: __webpack_require__(167),
+	        TextGroupEl: __webpack_require__(78),
+	        Linkify: __webpack_require__(165),
+	        TextGroupAdapter: __webpack_require__(166)
 	      },
 	      util: {
-	        ChunkUtil: __webpack_require__(169),
-	        Insert: __webpack_require__(170),
-	        InsertWithText: __webpack_require__(171)
+	        ChunkUtil: __webpack_require__(168),
+	        Insert: __webpack_require__(169),
+	        InsertWithText: __webpack_require__(170)
 	      }
 	    },
 	    components: {
-	      OboComponent: __webpack_require__(178),
-	      Anchor: __webpack_require__(80),
+	      OboComponent: __webpack_require__(177),
+	      Anchor: __webpack_require__(79),
 	      DeleteButton: __webpack_require__(46),
-	      EditButton: __webpack_require__(172),
-	      Button: __webpack_require__(81),
+	      EditButton: __webpack_require__(171),
+	      Button: __webpack_require__(80),
 	      modal: {
 	        bubble: {
-	          Bubble: __webpack_require__(82),
-	          SingleInputBubble: __webpack_require__(174)
+	          Bubble: __webpack_require__(81),
+	          SingleInputBubble: __webpack_require__(173)
 	        },
-	        Question: __webpack_require__(175),
-	        SimpleMessage: __webpack_require__(176),
-	        Modal: __webpack_require__(85),
-	        Dialog: __webpack_require__(83),
-	        SimpleDialog: __webpack_require__(86),
-	        ErrorDialog: __webpack_require__(84)
+	        Question: __webpack_require__(174),
+	        SimpleMessage: __webpack_require__(175),
+	        Modal: __webpack_require__(84),
+	        Dialog: __webpack_require__(82),
+	        SimpleDialog: __webpack_require__(85),
+	        ErrorDialog: __webpack_require__(83)
 	      },
-	      TextMenu: __webpack_require__(179),
-	      ModalContainer: __webpack_require__(177),
-	      FocusBlocker: __webpack_require__(173)
+	      TextMenu: __webpack_require__(178),
+	      ModalContainer: __webpack_require__(176),
+	      FocusBlocker: __webpack_require__(172)
 	    },
 	    flux: {
 	      Store: __webpack_require__(47),
 	      Dispatcher: __webpack_require__(4)
 	    },
 	    mockDOM: {
-	      MockElement: __webpack_require__(87),
-	      MockTextNode: __webpack_require__(88)
+	      MockElement: __webpack_require__(86),
+	      MockTextNode: __webpack_require__(87)
 	    },
 	    models: {
 	      OboModel: __webpack_require__(15),
-	      Legacy: __webpack_require__(180)
+	      Legacy: __webpack_require__(179)
 	    },
 	    net: {
-	      API: __webpack_require__(181)
+	      API: __webpack_require__(180)
 	    },
 	    selection: {
-	      ChunkSelection: __webpack_require__(185),
-	      Cursor: __webpack_require__(89),
+	      ChunkSelection: __webpack_require__(184),
+	      Cursor: __webpack_require__(88),
 	      DOMSelection: __webpack_require__(21),
 	      OboSelectionRect: __webpack_require__(48),
-	      Selection: __webpack_require__(186),
+	      Selection: __webpack_require__(185),
 	      VirtualCursor: __webpack_require__(49),
-	      VirtualCursorData: __webpack_require__(187),
-	      VirtualSelection: __webpack_require__(90)
+	      VirtualCursorData: __webpack_require__(186),
+	      VirtualSelection: __webpack_require__(89)
 	    },
 	    stores: {
-	      ModalStore: __webpack_require__(189),
-	      FocusStore: __webpack_require__(188)
+	      ModalStore: __webpack_require__(188),
+	      FocusStore: __webpack_require__(187)
 	    },
 	    page: {
 	      DOMUtil: __webpack_require__(16),
-	      Head: __webpack_require__(182),
-	      Keyboard: __webpack_require__(183),
-	      Screen: __webpack_require__(184)
+	      Head: __webpack_require__(181),
+	      Keyboard: __webpack_require__(182),
+	      Screen: __webpack_require__(183)
 	    },
 	    text: {
 	      ChunkStyleList: __webpack_require__(30),
 	      StyleableText: __webpack_require__(10),
-	      StyleableTextComponent: __webpack_require__(91),
-	      StyleableTextRenderer: __webpack_require__(92),
+	      StyleableTextComponent: __webpack_require__(90),
+	      StyleableTextRenderer: __webpack_require__(91),
 	      StyleRange: __webpack_require__(17),
 	      StyleType: __webpack_require__(5),
 	      TextConstants: __webpack_require__(22)
 	    },
 	    textGroup: {
 	      TextGroup: __webpack_require__(31),
-	      TextGroupCursor: __webpack_require__(93),
+	      TextGroupCursor: __webpack_require__(92),
 	      TextGroupItem: __webpack_require__(32),
-	      TextGroupSelection: __webpack_require__(94),
+	      TextGroupSelection: __webpack_require__(93),
 	      TextGroupUtil: __webpack_require__(20)
 	    },
 	    util: {
-	      Console: __webpack_require__(190),
-	      getBackgroundImage: __webpack_require__(95),
+	      Console: __webpack_require__(189),
+	      getBackgroundImage: __webpack_require__(94),
 	      HtmlUtil: __webpack_require__(33),
-	      ModalUtil: __webpack_require__(96),
+	      ModalUtil: __webpack_require__(95),
 	      FocusUtil: __webpack_require__(50),
-	      ErrorUtil: __webpack_require__(191),
-	      UUID: __webpack_require__(97),
-	      OboGlobals: __webpack_require__(192)
+	      ErrorUtil: __webpack_require__(190),
+	      UUID: __webpack_require__(96),
+	      OboGlobals: __webpack_require__(191)
 	    }
 	  }
 	};
 
-/***/ },
+/***/ }),
+/* 98 */,
 /* 99 */,
 /* 100 */,
 /* 101 */,
@@ -14759,9 +14767,8 @@
 /* 158 */,
 /* 159 */,
 /* 160 */,
-/* 161 */,
-/* 162 */
-/***/ function(module, exports, __webpack_require__) {
+/* 161 */
+/***/ (function(module, exports, __webpack_require__) {
 
 	'use strict';
 
@@ -14769,7 +14776,7 @@
 
 	var Anchor;
 
-	Anchor = __webpack_require__(80);
+	Anchor = __webpack_require__(79);
 
 	module.exports = React.createClass({
 	  displayName: 'exports',
@@ -14799,9 +14806,9 @@
 	  }
 	});
 
-/***/ },
-/* 163 */
-/***/ function(module, exports, __webpack_require__) {
+/***/ }),
+/* 162 */
+/***/ (function(module, exports, __webpack_require__) {
 
 	'use strict';
 
@@ -14819,14 +14826,18 @@
 
 	BaseSelectionHandler = __webpack_require__(29);
 
-	FocusableSelectionHandler = __webpack_require__(78);
+	FocusableSelectionHandler = __webpack_require__(77);
 
 	ToggleSelectionHandler = function (superClass) {
 	  extend(ToggleSelectionHandler, superClass);
 
 	  function ToggleSelectionHandler(textSelectionHandler, focusSelectionHandler) {
+	    if (focusSelectionHandler == null) {
+	      focusSelectionHandler = new FocusableSelectionHandler();
+	    }
+	    ToggleSelectionHandler.__super__.constructor.call(this);
 	    this.textSelectionHandler = textSelectionHandler;
-	    this.focusSelectionHandler = focusSelectionHandler != null ? focusSelectionHandler : new FocusableSelectionHandler();
+	    this.focusSelectionHandler = focusSelectionHandler;
 	  }
 
 	  ToggleSelectionHandler.prototype.getCopyOfSelection = function (selection, chunk, cloneId) {
@@ -14912,9 +14923,9 @@
 
 	module.exports = ToggleSelectionHandler;
 
-/***/ },
-/* 164 */
-/***/ function(module, exports) {
+/***/ }),
+/* 163 */
+/***/ (function(module, exports) {
 
 	'use strict';
 
@@ -14935,9 +14946,9 @@
 	  }
 	});
 
-/***/ },
-/* 165 */
-/***/ function(module, exports) {
+/***/ }),
+/* 164 */
+/***/ (function(module, exports) {
 
 	'use strict';
 
@@ -14958,9 +14969,9 @@
 	  }
 	});
 
-/***/ },
-/* 166 */
-/***/ function(module, exports) {
+/***/ }),
+/* 165 */
+/***/ (function(module, exports) {
 
 	"use strict";
 
@@ -15003,9 +15014,9 @@
 	  return styleApplied;
 	};
 
-/***/ },
-/* 167 */
-/***/ function(module, exports, __webpack_require__) {
+/***/ }),
+/* 166 */
+/***/ (function(module, exports, __webpack_require__) {
 
 	'use strict';
 
@@ -15041,9 +15052,9 @@
 
 	module.exports = TextGroupAdapter;
 
-/***/ },
-/* 168 */
-/***/ function(module, exports, __webpack_require__) {
+/***/ }),
+/* 167 */
+/***/ (function(module, exports, __webpack_require__) {
 
 	'use strict';
 
@@ -15062,9 +15073,9 @@
 
 	BaseSelectionHandler = __webpack_require__(29);
 
-	TextGroupSelection = __webpack_require__(94);
+	TextGroupSelection = __webpack_require__(93);
 
-	TextGroupEl = __webpack_require__(79);
+	TextGroupEl = __webpack_require__(78);
 
 	TextGroupSelectionHandler = function (superClass) {
 	  extend(TextGroupSelectionHandler, superClass);
@@ -15154,9 +15165,9 @@
 
 	module.exports = TextGroupSelectionHandler;
 
-/***/ },
-/* 169 */
-/***/ function(module, exports, __webpack_require__) {
+/***/ }),
+/* 168 */
+/***/ (function(module, exports, __webpack_require__) {
 
 	'use strict';
 
@@ -15239,9 +15250,9 @@
 	  replaceTextsWithinSelection: replaceTextsWithinSelection
 	};
 
-/***/ },
-/* 170 */
-/***/ function(module, exports, __webpack_require__) {
+/***/ }),
+/* 169 */
+/***/ (function(module, exports, __webpack_require__) {
 
 	'use strict';
 
@@ -15263,9 +15274,9 @@
 	  return callback();
 	};
 
-/***/ },
-/* 171 */
-/***/ function(module, exports, __webpack_require__) {
+/***/ }),
+/* 170 */
+/***/ (function(module, exports, __webpack_require__) {
 
 	'use strict';
 
@@ -15294,17 +15305,17 @@
 	  return callback();
 	};
 
-/***/ },
-/* 172 */
-/***/ function(module, exports, __webpack_require__) {
+/***/ }),
+/* 171 */
+/***/ (function(module, exports, __webpack_require__) {
 
 	'use strict';
 
 	var editButton, getBackgroundImage;
 
-	__webpack_require__(272);
+	__webpack_require__(271);
 
-	getBackgroundImage = __webpack_require__(95);
+	getBackgroundImage = __webpack_require__(94);
 
 	editButton = __webpack_require__(295);
 
@@ -15338,15 +15349,15 @@
 	  }
 	});
 
-/***/ },
-/* 173 */
-/***/ function(module, exports, __webpack_require__) {
+/***/ }),
+/* 172 */
+/***/ (function(module, exports, __webpack_require__) {
 
 	'use strict';
 
 	var FocusBlocker, FocusUtil;
 
-	__webpack_require__(273);
+	__webpack_require__(272);
 
 	FocusUtil = __webpack_require__(50);
 
@@ -15360,17 +15371,17 @@
 
 	module.exports = FocusBlocker;
 
-/***/ },
-/* 174 */
-/***/ function(module, exports, __webpack_require__) {
+/***/ }),
+/* 173 */
+/***/ (function(module, exports, __webpack_require__) {
 
 	'use strict';
 
 	var Bubble;
 
-	__webpack_require__(275);
+	__webpack_require__(274);
 
-	Bubble = __webpack_require__(82);
+	Bubble = __webpack_require__(81);
 
 	module.exports = React.createClass({
 	  displayName: 'exports',
@@ -15422,9 +15433,9 @@
 	  }
 	});
 
-/***/ },
-/* 175 */
-/***/ function(module, exports) {
+/***/ }),
+/* 174 */
+/***/ (function(module, exports) {
 
 	'use strict';
 
@@ -15454,9 +15465,9 @@
 		}
 	});
 
-/***/ },
-/* 176 */
-/***/ function(module, exports) {
+/***/ }),
+/* 175 */
+/***/ (function(module, exports) {
 
 	'use strict';
 
@@ -15481,13 +15492,13 @@
 		}
 	});
 
-/***/ },
-/* 177 */
-/***/ function(module, exports, __webpack_require__) {
+/***/ }),
+/* 176 */
+/***/ (function(module, exports, __webpack_require__) {
 
 	"use strict";
 
-	__webpack_require__(280);
+	__webpack_require__(279);
 
 	module.exports = React.createClass({
 		displayName: "exports",
@@ -15505,9 +15516,9 @@
 		}
 	});
 
-/***/ },
-/* 178 */
-/***/ function(module, exports, __webpack_require__) {
+/***/ }),
+/* 177 */
+/***/ (function(module, exports, __webpack_require__) {
 
 	'use strict';
 
@@ -15557,15 +15568,15 @@
 
 	module.exports = OboComponent;
 
-/***/ },
-/* 179 */
-/***/ function(module, exports, __webpack_require__) {
+/***/ }),
+/* 178 */
+/***/ (function(module, exports, __webpack_require__) {
 
 	'use strict';
 
 	var TextMenu;
 
-	__webpack_require__(281);
+	__webpack_require__(280);
 
 	TextMenu = React.createClass({
 	  displayName: 'TextMenu',
@@ -15626,9 +15637,9 @@
 
 	module.exports = TextMenu;
 
-/***/ },
-/* 180 */
-/***/ function(module, exports, __webpack_require__) {
+/***/ }),
+/* 179 */
+/***/ (function(module, exports, __webpack_require__) {
 
 	'use strict';
 
@@ -15725,9 +15736,9 @@
 
 	module.exports = Legacy;
 
-/***/ },
-/* 181 */
-/***/ function(module, exports) {
+/***/ }),
+/* 180 */
+/***/ (function(module, exports) {
 
 	"use strict";
 
@@ -15808,9 +15819,9 @@
 
 	module.exports = new API();
 
-/***/ },
-/* 182 */
-/***/ function(module, exports) {
+/***/ }),
+/* 181 */
+/***/ (function(module, exports) {
 
 	'use strict';
 
@@ -15884,9 +15895,9 @@
 	  }
 	};
 
-/***/ },
-/* 183 */
-/***/ function(module, exports) {
+/***/ }),
+/* 182 */
+/***/ (function(module, exports) {
 
 	"use strict";
 
@@ -15906,9 +15917,9 @@
 	  META: 91
 	};
 
-/***/ },
-/* 184 */
-/***/ function(module, exports, __webpack_require__) {
+/***/ }),
+/* 183 */
+/***/ (function(module, exports, __webpack_require__) {
 
 	'use strict';
 
@@ -16011,15 +16022,15 @@
 
 	module.exports = Screen;
 
-/***/ },
-/* 185 */
-/***/ function(module, exports, __webpack_require__) {
+/***/ }),
+/* 184 */
+/***/ (function(module, exports, __webpack_require__) {
 
 	'use strict';
 
 	var ChunkSelection, Cursor, DOMSelection, DOMUtil, domType;
 
-	Cursor = __webpack_require__(89);
+	Cursor = __webpack_require__(88);
 
 	DOMSelection = __webpack_require__(21);
 
@@ -16188,9 +16199,9 @@
 
 	module.exports = ChunkSelection;
 
-/***/ },
-/* 186 */
-/***/ function(module, exports, __webpack_require__) {
+/***/ }),
+/* 185 */
+/***/ (function(module, exports, __webpack_require__) {
 
 	'use strict';
 
@@ -16200,7 +16211,7 @@
 
 	DOMSelection = __webpack_require__(21);
 
-	VirtualSelection = __webpack_require__(90);
+	VirtualSelection = __webpack_require__(89);
 
 	Selection = function () {
 	  function Selection(page) {
@@ -16289,9 +16300,9 @@
 
 	module.exports = Selection;
 
-/***/ },
-/* 187 */
-/***/ function(module, exports) {
+/***/ }),
+/* 186 */
+/***/ (function(module, exports) {
 
 	"use strict";
 
@@ -16311,9 +16322,9 @@
 
 	module.exports = VirtualCursorData;
 
-/***/ },
-/* 188 */
-/***/ function(module, exports, __webpack_require__) {
+/***/ }),
+/* 187 */
+/***/ (function(module, exports, __webpack_require__) {
 
 	'use strict';
 
@@ -16393,9 +16404,9 @@
 
 	module.exports = focusStore;
 
-/***/ },
-/* 189 */
-/***/ function(module, exports, __webpack_require__) {
+/***/ }),
+/* 188 */
+/***/ (function(module, exports, __webpack_require__) {
 
 	'use strict';
 
@@ -16456,9 +16467,9 @@
 
 	module.exports = modalStore;
 
-/***/ },
-/* 190 */
-/***/ function(module, exports) {
+/***/ }),
+/* 189 */
+/***/ (function(module, exports) {
 
 	'use strict';
 
@@ -16517,9 +16528,9 @@
 	  }
 	};
 
-/***/ },
-/* 191 */
-/***/ function(module, exports, __webpack_require__) {
+/***/ }),
+/* 190 */
+/***/ (function(module, exports, __webpack_require__) {
 
 	'use strict';
 
@@ -16527,7 +16538,7 @@
 
 	Dispatcher = __webpack_require__(4);
 
-	ErrorDialog = __webpack_require__(84);
+	ErrorDialog = __webpack_require__(83);
 
 	ErrorUtil = {
 	  show: function show(title, errorMessage) {
@@ -16559,9 +16570,9 @@
 
 	module.exports = ErrorUtil;
 
-/***/ },
-/* 192 */
-/***/ function(module, exports) {
+/***/ }),
+/* 191 */
+/***/ (function(module, exports) {
 
 	'use strict';
 
@@ -16592,7 +16603,8 @@
 
 	module.exports = OboGlobals;
 
-/***/ },
+/***/ }),
+/* 192 */,
 /* 193 */,
 /* 194 */,
 /* 195 */,
@@ -16612,21 +16624,21 @@
 /* 209 */,
 /* 210 */,
 /* 211 */,
-/* 212 */,
-/* 213 */
-/***/ function(module, exports, __webpack_require__) {
+/* 212 */
+/***/ (function(module, exports, __webpack_require__) {
 
 	'use strict';
 
 	var OD;
 
-	__webpack_require__(253);
+	__webpack_require__(252);
 
-	OD = __webpack_require__(98);
+	OD = __webpack_require__(97);
 
-	window.ObojoboDraft = __webpack_require__(98);
+	window.ObojoboDraft = __webpack_require__(97);
 
-/***/ },
+/***/ }),
+/* 213 */,
 /* 214 */,
 /* 215 */,
 /* 216 */,
@@ -16665,13 +16677,13 @@
 /* 249 */,
 /* 250 */,
 /* 251 */,
-/* 252 */,
-/* 253 */
-/***/ function(module, exports) {
+/* 252 */
+/***/ (function(module, exports) {
 
 	// removed by extract-text-webpack-plugin
 
-/***/ },
+/***/ }),
+/* 253 */,
 /* 254 */,
 /* 255 */,
 /* 256 */,
@@ -16687,31 +16699,31 @@
 /* 266 */,
 /* 267 */,
 /* 268 */,
-/* 269 */,
+/* 269 */
+252,
 /* 270 */
-253,
+252,
 /* 271 */
-253,
+252,
 /* 272 */
-253,
+252,
 /* 273 */
-253,
+252,
 /* 274 */
-253,
+252,
 /* 275 */
-253,
+252,
 /* 276 */
-253,
+252,
 /* 277 */
-253,
+252,
 /* 278 */
-253,
+252,
 /* 279 */
-253,
+252,
 /* 280 */
-253,
-/* 281 */
-253,
+252,
+/* 281 */,
 /* 282 */,
 /* 283 */,
 /* 284 */,
@@ -16726,9 +16738,9 @@
 /* 293 */,
 /* 294 */,
 /* 295 */
-/***/ function(module, exports) {
+/***/ (function(module, exports) {
 
 	module.exports = "data:image/svg+xml;charset=utf8,%3Csvg id='Layer_10' data-name='Layer 10' xmlns='http://www.w3.org/2000/svg' viewBox='0 0 20.48 20.48'%3E %3Cdefs%3E %3Cstyle%3E .cls-1 %7B fill: %236714bd; %7D %3C/style%3E %3C/defs%3E %3Ctitle%3Etoolbar-icons%3C/title%3E %3Cg%3E %3Crect class='cls-1' x='15.15' y='4.57' width='5.75' height='18.82' rx='1.13' ry='1.13' transform='translate(9.4 -14.41) rotate(45)'/%3E %3Cpath class='cls-1' d='M11.06,25l-5.3,1.23L7,20.94a1.12,1.12,0,0,1,1.59,0l2.47,2.47A1.13,1.13,0,0,1,11.06,25Z' transform='translate(-5.76 -5.76)'/%3E %3C/g%3E %3C/svg%3E"
 
-/***/ }
+/***/ })
 /******/ ])));

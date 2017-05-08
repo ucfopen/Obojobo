@@ -43,15 +43,15 @@
 /******/ ({
 
 /***/ 0:
-/***/ function(module, exports, __webpack_require__) {
+/***/ (function(module, exports, __webpack_require__) {
 
-	module.exports = __webpack_require__(212);
+	module.exports = __webpack_require__(211);
 
 
-/***/ },
+/***/ }),
 
 /***/ 11:
-/***/ function(module, exports) {
+/***/ (function(module, exports) {
 
 	'use strict';
 
@@ -61,10 +61,10 @@
 	};
 
 
-/***/ },
+/***/ }),
 
 /***/ 12:
-/***/ function(module, exports) {
+/***/ (function(module, exports) {
 
 	'use strict';
 
@@ -74,16 +74,16 @@
 	};
 
 
-/***/ },
+/***/ }),
 
 /***/ 19:
-/***/ function(module, exports, __webpack_require__) {
+/***/ (function(module, exports, __webpack_require__) {
 
 	'use strict';
 
 	var assign        = __webpack_require__(53)
-	  , normalizeOpts = __webpack_require__(106)
-	  , isCallable    = __webpack_require__(230)
+	  , normalizeOpts = __webpack_require__(105)
+	  , isCallable    = __webpack_require__(229)
 	  , contains      = __webpack_require__(54)
 
 	  , d;
@@ -144,32 +144,32 @@
 	};
 
 
-/***/ },
+/***/ }),
 
 /***/ 24:
-/***/ function(module, exports, __webpack_require__) {
+/***/ (function(module, exports, __webpack_require__) {
 
 	'use strict';
 
-	module.exports = __webpack_require__(248)() ? Symbol : __webpack_require__(250);
+	module.exports = __webpack_require__(247)() ? Symbol : __webpack_require__(249);
 
 
-/***/ },
+/***/ }),
 
 /***/ 35:
-/***/ function(module, exports, __webpack_require__) {
+/***/ (function(module, exports, __webpack_require__) {
 
 	'use strict';
 
-	module.exports = __webpack_require__(107)()
+	module.exports = __webpack_require__(106)()
 		? Object.setPrototypeOf
-		: __webpack_require__(108);
+		: __webpack_require__(107);
 
 
-/***/ },
+/***/ }),
 
 /***/ 52:
-/***/ function(module, exports) {
+/***/ (function(module, exports) {
 
 	'use strict';
 
@@ -180,34 +180,34 @@
 	module.exports = function (x) { return (toString.call(x) === id); };
 
 
-/***/ },
+/***/ }),
 
 /***/ 53:
-/***/ function(module, exports, __webpack_require__) {
+/***/ (function(module, exports, __webpack_require__) {
 
 	'use strict';
 
-	module.exports = __webpack_require__(225)()
+	module.exports = __webpack_require__(224)()
 		? Object.assign
-		: __webpack_require__(226);
+		: __webpack_require__(225);
 
 
-/***/ },
+/***/ }),
 
 /***/ 54:
-/***/ function(module, exports, __webpack_require__) {
+/***/ (function(module, exports, __webpack_require__) {
 
 	'use strict';
 
-	module.exports = __webpack_require__(236)()
+	module.exports = __webpack_require__(235)()
 		? String.prototype.contains
-		: __webpack_require__(237);
+		: __webpack_require__(236);
 
 
-/***/ },
+/***/ }),
 
 /***/ 55:
-/***/ function(module, exports) {
+/***/ (function(module, exports) {
 
 	'use strict';
 
@@ -221,19 +221,19 @@
 	};
 
 
-/***/ },
+/***/ }),
 
 /***/ 56:
-/***/ function(module, exports, __webpack_require__) {
+/***/ (function(module, exports, __webpack_require__) {
 
 	'use strict';
 
-	var clear    = __webpack_require__(105)
+	var clear    = __webpack_require__(104)
 	  , assign   = __webpack_require__(53)
 	  , callable = __webpack_require__(11)
 	  , value    = __webpack_require__(12)
 	  , d        = __webpack_require__(19)
-	  , autoBind = __webpack_require__(217)
+	  , autoBind = __webpack_require__(216)
 	  , Symbol   = __webpack_require__(24)
 
 	  , defineProperty = Object.defineProperty
@@ -318,93 +318,10 @@
 	defineProperty(Iterator.prototype, Symbol.toStringTag, d('', 'Iterator'));
 
 
-/***/ },
+/***/ }),
 
-/***/ 74:
-/***/ function(module, exports, __webpack_require__) {
-
-	/* WEBPACK VAR INJECTION */(function(setImmediate, clearImmediate) {var nextTick = __webpack_require__(291).nextTick;
-	var apply = Function.prototype.apply;
-	var slice = Array.prototype.slice;
-	var immediateIds = {};
-	var nextImmediateId = 0;
-
-	// DOM APIs, for completeness
-
-	exports.setTimeout = function() {
-	  return new Timeout(apply.call(setTimeout, window, arguments), clearTimeout);
-	};
-	exports.setInterval = function() {
-	  return new Timeout(apply.call(setInterval, window, arguments), clearInterval);
-	};
-	exports.clearTimeout =
-	exports.clearInterval = function(timeout) { timeout.close(); };
-
-	function Timeout(id, clearFn) {
-	  this._id = id;
-	  this._clearFn = clearFn;
-	}
-	Timeout.prototype.unref = Timeout.prototype.ref = function() {};
-	Timeout.prototype.close = function() {
-	  this._clearFn.call(window, this._id);
-	};
-
-	// Does not start the time, just sets up the members needed.
-	exports.enroll = function(item, msecs) {
-	  clearTimeout(item._idleTimeoutId);
-	  item._idleTimeout = msecs;
-	};
-
-	exports.unenroll = function(item) {
-	  clearTimeout(item._idleTimeoutId);
-	  item._idleTimeout = -1;
-	};
-
-	exports._unrefActive = exports.active = function(item) {
-	  clearTimeout(item._idleTimeoutId);
-
-	  var msecs = item._idleTimeout;
-	  if (msecs >= 0) {
-	    item._idleTimeoutId = setTimeout(function onTimeout() {
-	      if (item._onTimeout)
-	        item._onTimeout();
-	    }, msecs);
-	  }
-	};
-
-	// That's not how node.js implements it but the exposed api is the same.
-	exports.setImmediate = typeof setImmediate === "function" ? setImmediate : function(fn) {
-	  var id = nextImmediateId++;
-	  var args = arguments.length < 2 ? false : slice.call(arguments, 1);
-
-	  immediateIds[id] = true;
-
-	  nextTick(function onNextTick() {
-	    if (immediateIds[id]) {
-	      // fn.call() is faster so we optimize for the common use-case
-	      // @see http://jsperf.com/call-apply-segu
-	      if (args) {
-	        fn.apply(null, args);
-	      } else {
-	        fn.call(null);
-	      }
-	      // Prevent ids from leaking
-	      exports.clearImmediate(id);
-	    }
-	  });
-
-	  return id;
-	};
-
-	exports.clearImmediate = typeof clearImmediate === "function" ? clearImmediate : function(id) {
-	  delete immediateIds[id];
-	};
-	/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(74).setImmediate, __webpack_require__(74).clearImmediate))
-
-/***/ },
-
-/***/ 105:
-/***/ function(module, exports, __webpack_require__) {
+/***/ 104:
+/***/ (function(module, exports, __webpack_require__) {
 
 	// Inspired by Google Closure:
 	// http://closure-library.googlecode.com/svn/docs/
@@ -420,10 +337,10 @@
 	};
 
 
-/***/ },
+/***/ }),
 
-/***/ 106:
-/***/ function(module, exports) {
+/***/ 105:
+/***/ (function(module, exports) {
 
 	'use strict';
 
@@ -444,10 +361,10 @@
 	};
 
 
-/***/ },
+/***/ }),
 
-/***/ 107:
-/***/ function(module, exports) {
+/***/ 106:
+/***/ (function(module, exports) {
 
 	'use strict';
 
@@ -462,17 +379,17 @@
 	};
 
 
-/***/ },
+/***/ }),
 
-/***/ 108:
-/***/ function(module, exports, __webpack_require__) {
+/***/ 107:
+/***/ (function(module, exports, __webpack_require__) {
 
 	// Big thanks to @WebReflection for sorting this out
 	// https://gist.github.com/WebReflection/5593554
 
 	'use strict';
 
-	var isObject      = __webpack_require__(231)
+	var isObject      = __webpack_require__(230)
 	  , value         = __webpack_require__(12)
 
 	  , isPrototypeOf = Object.prototype.isPrototypeOf
@@ -539,17 +456,17 @@
 		return false;
 	}())));
 
-	__webpack_require__(228);
+	__webpack_require__(227);
 
 
-/***/ },
+/***/ }),
 
-/***/ 109:
-/***/ function(module, exports, __webpack_require__) {
+/***/ 108:
+/***/ (function(module, exports, __webpack_require__) {
 
 	'use strict';
 
-	var isIterable = __webpack_require__(241);
+	var isIterable = __webpack_require__(240);
 
 	module.exports = function (value) {
 		if (!isIterable(value)) throw new TypeError(value + " is not iterable");
@@ -557,21 +474,21 @@
 	};
 
 
-/***/ },
+/***/ }),
 
-/***/ 113:
-/***/ function(module, exports, __webpack_require__) {
+/***/ 112:
+/***/ (function(module, exports, __webpack_require__) {
 
 	module.exports = (typeof Array.from === 'function' ?
 	  Array.from :
-	  __webpack_require__(114)
+	  __webpack_require__(113)
 	);
 
 
-/***/ },
+/***/ }),
 
-/***/ 114:
-/***/ function(module, exports) {
+/***/ 113:
+/***/ (function(module, exports) {
 
 	// Production steps of ECMA-262, Edition 6, 22.1.2.1
 	// Reference: http://www.ecma-international.org/ecma-262/6.0/#sec-array.from
@@ -787,10 +704,10 @@
 	})();
 
 
-/***/ },
+/***/ }),
 
-/***/ 115:
-/***/ function(module, exports) {
+/***/ 114:
+/***/ (function(module, exports) {
 
 	"use strict";
 
@@ -843,18 +760,18 @@
 
 	module.exports = ComponentClassMap;
 
-/***/ },
+/***/ }),
 
-/***/ 212:
-/***/ function(module, exports, __webpack_require__) {
+/***/ 211:
+/***/ (function(module, exports, __webpack_require__) {
 
 	'use strict';
 
 	var ComponentClassMap, OBO, componentClassMap, defaults, getItemsCallbacks, insertItems, items, itemsLoaded, registeredToolbarItems, textListeners, toolbarItems, triggerActions, variableHandlers;
 
-	__webpack_require__(214);
+	__webpack_require__(213);
 
-	ComponentClassMap = __webpack_require__(115);
+	ComponentClassMap = __webpack_require__(114);
 
 	componentClassMap = new ComponentClassMap();
 
@@ -1062,10 +979,10 @@
 
 	window.OBO = new OBO();
 
-/***/ },
+/***/ }),
 
-/***/ 214:
-/***/ function(module, exports, __webpack_require__) {
+/***/ 213:
+/***/ (function(module, exports, __webpack_require__) {
 
 	'use strict';
 
@@ -1097,29 +1014,29 @@
 	    return to;
 	  };
 	};
-	window.Set = __webpack_require__(243);
+	window.Set = __webpack_require__(242);
 
 	if (!Array.from) {
-	  Array.from = __webpack_require__(113);
+	  Array.from = __webpack_require__(112);
 	}
 
 	if (!window.Promise) {
-	  window.Promise = __webpack_require__(292);
+	  window.Promise = __webpack_require__(291);
 	}
 
 	__webpack_require__(293).polyfill();
 
-/***/ },
+/***/ }),
 
-/***/ 217:
-/***/ function(module, exports, __webpack_require__) {
+/***/ 216:
+/***/ (function(module, exports, __webpack_require__) {
 
 	'use strict';
 
-	var copy             = __webpack_require__(227)
-	  , normalizeOptions = __webpack_require__(106)
+	var copy             = __webpack_require__(226)
+	  , normalizeOptions = __webpack_require__(105)
 	  , ensureCallable   = __webpack_require__(11)
-	  , map              = __webpack_require__(235)
+	  , map              = __webpack_require__(234)
 	  , callable         = __webpack_require__(11)
 	  , validValue       = __webpack_require__(12)
 
@@ -1148,14 +1065,14 @@
 	};
 
 
-/***/ },
+/***/ }),
 
-/***/ 218:
-/***/ function(module, exports, __webpack_require__) {
+/***/ 217:
+/***/ (function(module, exports, __webpack_require__) {
 
 	'use strict';
 
-	var toPosInt = __webpack_require__(223)
+	var toPosInt = __webpack_require__(222)
 	  , value    = __webpack_require__(12)
 
 	  , indexOf = Array.prototype.indexOf
@@ -1184,22 +1101,22 @@
 	};
 
 
-/***/ },
+/***/ }),
 
-/***/ 219:
-/***/ function(module, exports, __webpack_require__) {
+/***/ 218:
+/***/ (function(module, exports, __webpack_require__) {
 
 	'use strict';
 
-	module.exports = __webpack_require__(220)()
+	module.exports = __webpack_require__(219)()
 		? Math.sign
-		: __webpack_require__(221);
+		: __webpack_require__(220);
 
 
-/***/ },
+/***/ }),
 
-/***/ 220:
-/***/ function(module, exports) {
+/***/ 219:
+/***/ (function(module, exports) {
 
 	'use strict';
 
@@ -1210,10 +1127,10 @@
 	};
 
 
-/***/ },
+/***/ }),
 
-/***/ 221:
-/***/ function(module, exports) {
+/***/ 220:
+/***/ (function(module, exports) {
 
 	'use strict';
 
@@ -1224,14 +1141,14 @@
 	};
 
 
-/***/ },
+/***/ }),
 
-/***/ 222:
-/***/ function(module, exports, __webpack_require__) {
+/***/ 221:
+/***/ (function(module, exports, __webpack_require__) {
 
 	'use strict';
 
-	var sign = __webpack_require__(219)
+	var sign = __webpack_require__(218)
 
 	  , abs = Math.abs, floor = Math.floor;
 
@@ -1243,24 +1160,24 @@
 	};
 
 
-/***/ },
+/***/ }),
 
-/***/ 223:
-/***/ function(module, exports, __webpack_require__) {
+/***/ 222:
+/***/ (function(module, exports, __webpack_require__) {
 
 	'use strict';
 
-	var toInteger = __webpack_require__(222)
+	var toInteger = __webpack_require__(221)
 
 	  , max = Math.max;
 
 	module.exports = function (value) { return max(0, toInteger(value)); };
 
 
-/***/ },
+/***/ }),
 
-/***/ 224:
-/***/ function(module, exports, __webpack_require__) {
+/***/ 223:
+/***/ (function(module, exports, __webpack_require__) {
 
 	// Internal method, used by iteration functions.
 	// Calls a function for each key-value pair found in object
@@ -1293,10 +1210,10 @@
 	};
 
 
-/***/ },
+/***/ }),
 
-/***/ 225:
-/***/ function(module, exports) {
+/***/ 224:
+/***/ (function(module, exports) {
 
 	'use strict';
 
@@ -1309,14 +1226,14 @@
 	};
 
 
-/***/ },
+/***/ }),
 
-/***/ 226:
-/***/ function(module, exports, __webpack_require__) {
+/***/ 225:
+/***/ (function(module, exports, __webpack_require__) {
 
 	'use strict';
 
-	var keys  = __webpack_require__(232)
+	var keys  = __webpack_require__(231)
 	  , value = __webpack_require__(12)
 
 	  , max = Math.max;
@@ -1338,10 +1255,10 @@
 	};
 
 
-/***/ },
+/***/ }),
 
-/***/ 227:
-/***/ function(module, exports, __webpack_require__) {
+/***/ 226:
+/***/ (function(module, exports, __webpack_require__) {
 
 	'use strict';
 
@@ -1355,10 +1272,10 @@
 	};
 
 
-/***/ },
+/***/ }),
 
-/***/ 228:
-/***/ function(module, exports, __webpack_require__) {
+/***/ 227:
+/***/ (function(module, exports, __webpack_require__) {
 
 	// Workaround for http://code.google.com/p/v8/issues/detail?id=2804
 
@@ -1366,8 +1283,8 @@
 
 	var create = Object.create, shim;
 
-	if (!__webpack_require__(107)()) {
-		shim = __webpack_require__(108);
+	if (!__webpack_require__(106)()) {
+		shim = __webpack_require__(107);
 	}
 
 	module.exports = (function () {
@@ -1398,20 +1315,20 @@
 	}());
 
 
-/***/ },
+/***/ }),
 
-/***/ 229:
-/***/ function(module, exports, __webpack_require__) {
+/***/ 228:
+/***/ (function(module, exports, __webpack_require__) {
 
 	'use strict';
 
-	module.exports = __webpack_require__(224)('forEach');
+	module.exports = __webpack_require__(223)('forEach');
 
 
-/***/ },
+/***/ }),
 
-/***/ 230:
-/***/ function(module, exports) {
+/***/ 229:
+/***/ (function(module, exports) {
 
 	// Deprecated
 
@@ -1420,10 +1337,10 @@
 	module.exports = function (obj) { return typeof obj === 'function'; };
 
 
-/***/ },
+/***/ }),
 
-/***/ 231:
-/***/ function(module, exports) {
+/***/ 230:
+/***/ (function(module, exports) {
 
 	'use strict';
 
@@ -1434,22 +1351,22 @@
 	};
 
 
-/***/ },
+/***/ }),
 
-/***/ 232:
-/***/ function(module, exports, __webpack_require__) {
+/***/ 231:
+/***/ (function(module, exports, __webpack_require__) {
 
 	'use strict';
 
-	module.exports = __webpack_require__(233)()
+	module.exports = __webpack_require__(232)()
 		? Object.keys
-		: __webpack_require__(234);
+		: __webpack_require__(233);
 
 
-/***/ },
+/***/ }),
 
-/***/ 233:
-/***/ function(module, exports) {
+/***/ 232:
+/***/ (function(module, exports) {
 
 	'use strict';
 
@@ -1461,10 +1378,10 @@
 	};
 
 
-/***/ },
+/***/ }),
 
-/***/ 234:
-/***/ function(module, exports) {
+/***/ 233:
+/***/ (function(module, exports) {
 
 	'use strict';
 
@@ -1475,15 +1392,15 @@
 	};
 
 
-/***/ },
+/***/ }),
 
-/***/ 235:
-/***/ function(module, exports, __webpack_require__) {
+/***/ 234:
+/***/ (function(module, exports, __webpack_require__) {
 
 	'use strict';
 
 	var callable = __webpack_require__(11)
-	  , forEach  = __webpack_require__(229)
+	  , forEach  = __webpack_require__(228)
 
 	  , call = Function.prototype.call;
 
@@ -1497,10 +1414,10 @@
 	};
 
 
-/***/ },
+/***/ }),
 
-/***/ 236:
-/***/ function(module, exports) {
+/***/ 235:
+/***/ (function(module, exports) {
 
 	'use strict';
 
@@ -1512,10 +1429,10 @@
 	};
 
 
-/***/ },
+/***/ }),
 
-/***/ 237:
-/***/ function(module, exports) {
+/***/ 236:
+/***/ (function(module, exports) {
 
 	'use strict';
 
@@ -1526,10 +1443,10 @@
 	};
 
 
-/***/ },
+/***/ }),
 
-/***/ 238:
-/***/ function(module, exports, __webpack_require__) {
+/***/ 237:
+/***/ (function(module, exports, __webpack_require__) {
 
 	'use strict';
 
@@ -1563,17 +1480,17 @@
 	});
 
 
-/***/ },
+/***/ }),
 
-/***/ 239:
-/***/ function(module, exports, __webpack_require__) {
+/***/ 238:
+/***/ (function(module, exports, __webpack_require__) {
 
 	'use strict';
 
 	var isArguments = __webpack_require__(52)
 	  , callable    = __webpack_require__(11)
 	  , isString    = __webpack_require__(55)
-	  , get         = __webpack_require__(240)
+	  , get         = __webpack_require__(239)
 
 	  , isArray = Array.isArray, call = Function.prototype.call
 	  , some = Array.prototype.some;
@@ -1616,18 +1533,18 @@
 	};
 
 
-/***/ },
+/***/ }),
 
-/***/ 240:
-/***/ function(module, exports, __webpack_require__) {
+/***/ 239:
+/***/ (function(module, exports, __webpack_require__) {
 
 	'use strict';
 
 	var isArguments    = __webpack_require__(52)
 	  , isString       = __webpack_require__(55)
-	  , ArrayIterator  = __webpack_require__(238)
-	  , StringIterator = __webpack_require__(242)
-	  , iterable       = __webpack_require__(109)
+	  , ArrayIterator  = __webpack_require__(237)
+	  , StringIterator = __webpack_require__(241)
+	  , iterable       = __webpack_require__(108)
 	  , iteratorSymbol = __webpack_require__(24).iterator;
 
 	module.exports = function (obj) {
@@ -1638,10 +1555,10 @@
 	};
 
 
-/***/ },
+/***/ }),
 
-/***/ 241:
-/***/ function(module, exports, __webpack_require__) {
+/***/ 240:
+/***/ (function(module, exports, __webpack_require__) {
 
 	'use strict';
 
@@ -1660,10 +1577,10 @@
 	};
 
 
-/***/ },
+/***/ }),
 
-/***/ 242:
-/***/ function(module, exports, __webpack_require__) {
+/***/ 241:
+/***/ (function(module, exports, __webpack_require__) {
 
 	// Thanks @mathiasbynens
 	// http://mathiasbynens.be/notes/javascript-unicode#iterating-over-symbols
@@ -1704,20 +1621,20 @@
 	});
 
 
-/***/ },
+/***/ }),
 
-/***/ 243:
-/***/ function(module, exports, __webpack_require__) {
+/***/ 242:
+/***/ (function(module, exports, __webpack_require__) {
 
 	'use strict';
 
-	module.exports = __webpack_require__(244)() ? Set : __webpack_require__(247);
+	module.exports = __webpack_require__(243)() ? Set : __webpack_require__(246);
 
 
-/***/ },
+/***/ }),
 
-/***/ 244:
-/***/ function(module, exports) {
+/***/ 243:
+/***/ (function(module, exports) {
 
 	'use strict';
 
@@ -1745,10 +1662,10 @@
 	};
 
 
-/***/ },
+/***/ }),
 
-/***/ 245:
-/***/ function(module, exports) {
+/***/ 244:
+/***/ (function(module, exports) {
 
 	// Exports true if environment provides native `Set` implementation,
 	// whatever that is.
@@ -1761,10 +1678,10 @@
 	}());
 
 
-/***/ },
+/***/ }),
 
-/***/ 246:
-/***/ function(module, exports, __webpack_require__) {
+/***/ 245:
+/***/ (function(module, exports, __webpack_require__) {
 
 	'use strict';
 
@@ -1798,24 +1715,24 @@
 	defineProperty(SetIterator.prototype, toStringTagSymbol, d('c', 'Set Iterator'));
 
 
-/***/ },
+/***/ }),
 
-/***/ 247:
-/***/ function(module, exports, __webpack_require__) {
+/***/ 246:
+/***/ (function(module, exports, __webpack_require__) {
 
 	'use strict';
 
-	var clear          = __webpack_require__(105)
-	  , eIndexOf       = __webpack_require__(218)
+	var clear          = __webpack_require__(104)
+	  , eIndexOf       = __webpack_require__(217)
 	  , setPrototypeOf = __webpack_require__(35)
 	  , callable       = __webpack_require__(11)
 	  , d              = __webpack_require__(19)
-	  , ee             = __webpack_require__(252)
+	  , ee             = __webpack_require__(251)
 	  , Symbol         = __webpack_require__(24)
-	  , iterator       = __webpack_require__(109)
-	  , forOf          = __webpack_require__(239)
-	  , Iterator       = __webpack_require__(246)
-	  , isNative       = __webpack_require__(245)
+	  , iterator       = __webpack_require__(108)
+	  , forOf          = __webpack_require__(238)
+	  , Iterator       = __webpack_require__(245)
+	  , isNative       = __webpack_require__(244)
 
 	  , call = Function.prototype.call
 	  , defineProperty = Object.defineProperty, getPrototypeOf = Object.getPrototypeOf
@@ -1885,10 +1802,10 @@
 	defineProperty(SetPoly.prototype, Symbol.toStringTag, d('c', 'Set'));
 
 
-/***/ },
+/***/ }),
 
-/***/ 248:
-/***/ function(module, exports) {
+/***/ 247:
+/***/ (function(module, exports) {
 
 	'use strict';
 
@@ -1909,10 +1826,10 @@
 	};
 
 
-/***/ },
+/***/ }),
 
-/***/ 249:
-/***/ function(module, exports) {
+/***/ 248:
+/***/ (function(module, exports) {
 
 	'use strict';
 
@@ -1925,17 +1842,17 @@
 	};
 
 
-/***/ },
+/***/ }),
 
-/***/ 250:
-/***/ function(module, exports, __webpack_require__) {
+/***/ 249:
+/***/ (function(module, exports, __webpack_require__) {
 
 	// ES2015 Symbol polyfill for environments that do not (or partially) support it
 
 	'use strict';
 
 	var d              = __webpack_require__(19)
-	  , validateSymbol = __webpack_require__(251)
+	  , validateSymbol = __webpack_require__(250)
 
 	  , create = Object.create, defineProperties = Object.defineProperties
 	  , defineProperty = Object.defineProperty, objPrototype = Object.prototype
@@ -2050,14 +1967,14 @@
 		d('c', SymbolPolyfill.prototype[SymbolPolyfill.toPrimitive]));
 
 
-/***/ },
+/***/ }),
 
-/***/ 251:
-/***/ function(module, exports, __webpack_require__) {
+/***/ 250:
+/***/ (function(module, exports, __webpack_require__) {
 
 	'use strict';
 
-	var isSymbol = __webpack_require__(249);
+	var isSymbol = __webpack_require__(248);
 
 	module.exports = function (value) {
 		if (!isSymbol(value)) throw new TypeError(value + " is not a symbol");
@@ -2065,10 +1982,10 @@
 	};
 
 
-/***/ },
+/***/ }),
 
-/***/ 252:
-/***/ function(module, exports, __webpack_require__) {
+/***/ 251:
+/***/ (function(module, exports, __webpack_require__) {
 
 	'use strict';
 
@@ -2204,10 +2121,10 @@
 	exports.methods = methods;
 
 
-/***/ },
+/***/ }),
 
-/***/ 291:
-/***/ function(module, exports) {
+/***/ 290:
+/***/ (function(module, exports) {
 
 	// shim for using process in browser
 	var process = module.exports = {};
@@ -2379,6 +2296,10 @@
 	process.removeListener = noop;
 	process.removeAllListeners = noop;
 	process.emit = noop;
+	process.prependListener = noop;
+	process.prependOnceListener = noop;
+
+	process.listeners = function (name) { return [] }
 
 	process.binding = function (name) {
 	    throw new Error('process.binding is not supported');
@@ -2391,10 +2312,10 @@
 	process.umask = function() { return 0; };
 
 
-/***/ },
+/***/ }),
 
-/***/ 292:
-/***/ function(module, exports, __webpack_require__) {
+/***/ 291:
+/***/ (function(module, exports, __webpack_require__) {
 
 	/* WEBPACK VAR INJECTION */(function(setImmediate) {(function (root) {
 
@@ -2630,15 +2551,209 @@
 
 	})(this);
 
-	/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(74).setImmediate))
+	/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(300).setImmediate))
 
-/***/ },
+/***/ }),
+
+/***/ 292:
+/***/ (function(module, exports, __webpack_require__) {
+
+	/* WEBPACK VAR INJECTION */(function(global, process) {(function (global, undefined) {
+	    "use strict";
+
+	    if (global.setImmediate) {
+	        return;
+	    }
+
+	    var nextHandle = 1; // Spec says greater than zero
+	    var tasksByHandle = {};
+	    var currentlyRunningATask = false;
+	    var doc = global.document;
+	    var registerImmediate;
+
+	    function setImmediate(callback) {
+	      // Callback can either be a function or a string
+	      if (typeof callback !== "function") {
+	        callback = new Function("" + callback);
+	      }
+	      // Copy function arguments
+	      var args = new Array(arguments.length - 1);
+	      for (var i = 0; i < args.length; i++) {
+	          args[i] = arguments[i + 1];
+	      }
+	      // Store and register the task
+	      var task = { callback: callback, args: args };
+	      tasksByHandle[nextHandle] = task;
+	      registerImmediate(nextHandle);
+	      return nextHandle++;
+	    }
+
+	    function clearImmediate(handle) {
+	        delete tasksByHandle[handle];
+	    }
+
+	    function run(task) {
+	        var callback = task.callback;
+	        var args = task.args;
+	        switch (args.length) {
+	        case 0:
+	            callback();
+	            break;
+	        case 1:
+	            callback(args[0]);
+	            break;
+	        case 2:
+	            callback(args[0], args[1]);
+	            break;
+	        case 3:
+	            callback(args[0], args[1], args[2]);
+	            break;
+	        default:
+	            callback.apply(undefined, args);
+	            break;
+	        }
+	    }
+
+	    function runIfPresent(handle) {
+	        // From the spec: "Wait until any invocations of this algorithm started before this one have completed."
+	        // So if we're currently running a task, we'll need to delay this invocation.
+	        if (currentlyRunningATask) {
+	            // Delay by doing a setTimeout. setImmediate was tried instead, but in Firefox 7 it generated a
+	            // "too much recursion" error.
+	            setTimeout(runIfPresent, 0, handle);
+	        } else {
+	            var task = tasksByHandle[handle];
+	            if (task) {
+	                currentlyRunningATask = true;
+	                try {
+	                    run(task);
+	                } finally {
+	                    clearImmediate(handle);
+	                    currentlyRunningATask = false;
+	                }
+	            }
+	        }
+	    }
+
+	    function installNextTickImplementation() {
+	        registerImmediate = function(handle) {
+	            process.nextTick(function () { runIfPresent(handle); });
+	        };
+	    }
+
+	    function canUsePostMessage() {
+	        // The test against `importScripts` prevents this implementation from being installed inside a web worker,
+	        // where `global.postMessage` means something completely different and can't be used for this purpose.
+	        if (global.postMessage && !global.importScripts) {
+	            var postMessageIsAsynchronous = true;
+	            var oldOnMessage = global.onmessage;
+	            global.onmessage = function() {
+	                postMessageIsAsynchronous = false;
+	            };
+	            global.postMessage("", "*");
+	            global.onmessage = oldOnMessage;
+	            return postMessageIsAsynchronous;
+	        }
+	    }
+
+	    function installPostMessageImplementation() {
+	        // Installs an event handler on `global` for the `message` event: see
+	        // * https://developer.mozilla.org/en/DOM/window.postMessage
+	        // * http://www.whatwg.org/specs/web-apps/current-work/multipage/comms.html#crossDocumentMessages
+
+	        var messagePrefix = "setImmediate$" + Math.random() + "$";
+	        var onGlobalMessage = function(event) {
+	            if (event.source === global &&
+	                typeof event.data === "string" &&
+	                event.data.indexOf(messagePrefix) === 0) {
+	                runIfPresent(+event.data.slice(messagePrefix.length));
+	            }
+	        };
+
+	        if (global.addEventListener) {
+	            global.addEventListener("message", onGlobalMessage, false);
+	        } else {
+	            global.attachEvent("onmessage", onGlobalMessage);
+	        }
+
+	        registerImmediate = function(handle) {
+	            global.postMessage(messagePrefix + handle, "*");
+	        };
+	    }
+
+	    function installMessageChannelImplementation() {
+	        var channel = new MessageChannel();
+	        channel.port1.onmessage = function(event) {
+	            var handle = event.data;
+	            runIfPresent(handle);
+	        };
+
+	        registerImmediate = function(handle) {
+	            channel.port2.postMessage(handle);
+	        };
+	    }
+
+	    function installReadyStateChangeImplementation() {
+	        var html = doc.documentElement;
+	        registerImmediate = function(handle) {
+	            // Create a <script> element; its readystatechange event will be fired asynchronously once it is inserted
+	            // into the document. Do so, thus queuing up the task. Remember to clean up once it's been called.
+	            var script = doc.createElement("script");
+	            script.onreadystatechange = function () {
+	                runIfPresent(handle);
+	                script.onreadystatechange = null;
+	                html.removeChild(script);
+	                script = null;
+	            };
+	            html.appendChild(script);
+	        };
+	    }
+
+	    function installSetTimeoutImplementation() {
+	        registerImmediate = function(handle) {
+	            setTimeout(runIfPresent, 0, handle);
+	        };
+	    }
+
+	    // If supported, we should attach to the prototype of global, since that is where setTimeout et al. live.
+	    var attachTo = Object.getPrototypeOf && Object.getPrototypeOf(global);
+	    attachTo = attachTo && attachTo.setTimeout ? attachTo : global;
+
+	    // Don't get fooled by e.g. browserify environments.
+	    if ({}.toString.call(global.process) === "[object process]") {
+	        // For Node.js before 0.9
+	        installNextTickImplementation();
+
+	    } else if (canUsePostMessage()) {
+	        // For non-IE10 modern browsers
+	        installPostMessageImplementation();
+
+	    } else if (global.MessageChannel) {
+	        // For web workers, where supported
+	        installMessageChannelImplementation();
+
+	    } else if (doc && "onreadystatechange" in doc.createElement("script")) {
+	        // For IE 6–8
+	        installReadyStateChangeImplementation();
+
+	    } else {
+	        // For older browsers
+	        installSetTimeoutImplementation();
+	    }
+
+	    attachTo.setImmediate = setImmediate;
+	    attachTo.clearImmediate = clearImmediate;
+	}(typeof self === "undefined" ? typeof global === "undefined" ? this : global : self));
+
+	/* WEBPACK VAR INJECTION */}.call(exports, (function() { return this; }()), __webpack_require__(290)))
+
+/***/ }),
 
 /***/ 293:
-/***/ function(module, exports, __webpack_require__) {
+/***/ (function(module, exports, __webpack_require__) {
 
 	/*
-	 * smoothscroll polyfill - v0.3.4
+	 * smoothscroll polyfill - v0.3.5
 	 * https://iamdustan.github.io/smoothscroll
 	 * 2016 (c) Dustan Kasten, Jeremias Menichelli - MIT License
 	 */
@@ -2672,6 +2787,7 @@
 	    var original = {
 	      scroll: w.scroll || w.scrollTo,
 	      scrollBy: w.scrollBy,
+	      elScroll: Element.prototype.scroll || scrollElement,
 	      scrollIntoView: Element.prototype.scrollIntoView
 	    };
 
@@ -2763,9 +2879,6 @@
 	     * @param {Object} context
 	     */
 	    function step(context) {
-	      // call method again on next available frame
-	      context.frame = w.requestAnimationFrame(step.bind(w, context));
-
 	      var time = now();
 	      var value;
 	      var currentX;
@@ -2783,10 +2896,9 @@
 
 	      context.method.call(context.scrollable, currentX, currentY);
 
-	      // return when end points have been reached
-	      if (currentX === context.x && currentY === context.y) {
-	        w.cancelAnimationFrame(context.frame);
-	        return;
+	      // scroll more if we have not reached our destination
+	      if (currentX !== context.x || currentY !== context.y) {
+	        w.requestAnimationFrame(step.bind(w, context));
 	      }
 	    }
 
@@ -2803,7 +2915,6 @@
 	      var startY;
 	      var method;
 	      var startTime = now();
-	      var frame;
 
 	      // define scroll context
 	      if (el === d.body) {
@@ -2818,11 +2929,6 @@
 	        method = scrollElement;
 	      }
 
-	      // cancel frame when a scroll event's happening
-	      if (frame) {
-	        w.cancelAnimationFrame(frame);
-	      }
-
 	      // scroll looping over a frame
 	      step({
 	        scrollable: scrollable,
@@ -2831,8 +2937,7 @@
 	        startX: startX,
 	        startY: startY,
 	        x: x,
-	        y: y,
-	        frame: frame
+	        y: y
 	      });
 	    }
 
@@ -2880,6 +2985,45 @@
 	        ~~arguments[0].left + (w.scrollX || w.pageXOffset),
 	        ~~arguments[0].top + (w.scrollY || w.pageYOffset)
 	      );
+	    };
+
+	    // Element.prototype.scroll and Element.prototype.scrollTo
+	    Element.prototype.scroll = Element.prototype.scrollTo = function() {
+	      // avoid smooth behavior if not required
+	      if (shouldBailOut(arguments[0])) {
+	        original.elScroll.call(
+	            this,
+	            arguments[0].left || arguments[0],
+	            arguments[0].top || arguments[1]
+	        );
+	        return;
+	      }
+
+	      // LET THE SMOOTHNESS BEGIN!
+	      smoothScroll.call(
+	          this,
+	          this,
+	          arguments[0].left,
+	          arguments[0].top
+	      );
+	    };
+
+	    // Element.prototype.scrollBy
+	    Element.prototype.scrollBy = function() {
+	      var arg0 = arguments[0];
+
+	      if (typeof arg0 === 'object') {
+	        this.scroll({
+	          left: arg0.left + this.scrollLeft,
+	          top: arg0.top + this.scrollTop,
+	          behavior: arg0.behavior
+	        });
+	      } else {
+	        this.scroll(
+	          this.scrollLeft + arg0,
+	          this.scrollTop + arguments[1]
+	        );
+	      }
 	    };
 
 	    // Element.prototype.scrollIntoView
@@ -2930,6 +3074,66 @@
 	})(window, document);
 
 
-/***/ }
+/***/ }),
+
+/***/ 300:
+/***/ (function(module, exports, __webpack_require__) {
+
+	var apply = Function.prototype.apply;
+
+	// DOM APIs, for completeness
+
+	exports.setTimeout = function() {
+	  return new Timeout(apply.call(setTimeout, window, arguments), clearTimeout);
+	};
+	exports.setInterval = function() {
+	  return new Timeout(apply.call(setInterval, window, arguments), clearInterval);
+	};
+	exports.clearTimeout =
+	exports.clearInterval = function(timeout) {
+	  if (timeout) {
+	    timeout.close();
+	  }
+	};
+
+	function Timeout(id, clearFn) {
+	  this._id = id;
+	  this._clearFn = clearFn;
+	}
+	Timeout.prototype.unref = Timeout.prototype.ref = function() {};
+	Timeout.prototype.close = function() {
+	  this._clearFn.call(window, this._id);
+	};
+
+	// Does not start the time, just sets up the members needed.
+	exports.enroll = function(item, msecs) {
+	  clearTimeout(item._idleTimeoutId);
+	  item._idleTimeout = msecs;
+	};
+
+	exports.unenroll = function(item) {
+	  clearTimeout(item._idleTimeoutId);
+	  item._idleTimeout = -1;
+	};
+
+	exports._unrefActive = exports.active = function(item) {
+	  clearTimeout(item._idleTimeoutId);
+
+	  var msecs = item._idleTimeout;
+	  if (msecs >= 0) {
+	    item._idleTimeoutId = setTimeout(function onTimeout() {
+	      if (item._onTimeout)
+	        item._onTimeout();
+	    }, msecs);
+	  }
+	};
+
+	// setimmediate attaches itself to the global object
+	__webpack_require__(292);
+	exports.setImmediate = setImmediate;
+	exports.clearImmediate = clearImmediate;
+
+
+/***/ })
 
 /******/ });
