@@ -1,7 +1,7 @@
-StyleableText = window.ObojoboDraft.text.StyleableText;
-StyleRange    = window.ObojoboDraft.text.StyleRange;
-TextGroup     = window.ObojoboDraft.text.TextGroup;
-TextGroupItem = window.ObojoboDraft.text.TextGroupItem;
+StyleableText = window.ObojoboDraft.Common.text.StyleableText;
+StyleRange    = window.ObojoboDraft.Common.text.StyleRange;
+TextGroup     = window.ObojoboDraft.Common.textGroup.TextGroup;
+TextGroupItem = window.ObojoboDraft.Common.textGroup.TextGroupItem;
 
 describe('TextGroup', function() {
 	beforeEach(function() {
@@ -21,7 +21,7 @@ describe('TextGroup', function() {
 		frozenEmptyObject = Object.freeze({});
 	});
 
-	it('creates instances with expected values', function(done) {
+	it('creates instances with expected values', function() {
 		expect(tg.maxItems).toBe(Infinity);
 		expect(tg.items.length).toBe(0);
 		expect(tg.dataTemplate).toEqual(frozenEmptyObject);
@@ -37,35 +37,27 @@ describe('TextGroup', function() {
 		expect(tgWithItems.maxItems).toBe(Infinity);
 		expect(tgWithItems.items.length).toBe(2);
 		expect(tgWithItems.dataTemplate).toEqual(frozenEmptyObject);
-
-		// done();
 	});
 
-	it('adds initial items while conforming to data template', function(done) {
+	it('adds initial items while conforming to data template', function() {
 		expect(tgWithItems.items[0].data).toEqual({});
-
-		// done();
 	});
 
-	it('clears items', function(done) {
+	it('clears items', function() {
 		tgWithItems.clear();
 
 		expect(tgWithItems.maxItems).toBe(Infinity);
 		expect(tgWithItems.items.length).toBe(0);
 		expect(tgWithItems.dataTemplate).toEqual(frozenEmptyObject);
-
-		// done();
 	});
 
-	it('returns the index of an item', function(done) {
+	it('returns the index of an item', function() {
 		tg.add(new StyleableText('test'));
 
 		expect(tg.indexOf(tg.first)).toBe(0);
-
-		// done();
 	});
 
-	it('initializes the text group with items', function(done) {
+	it('initializes the text group with items', function() {
 		tgWithItems.init(10);
 
 		tgWithItems.items.map(function(item) {
@@ -74,11 +66,9 @@ describe('TextGroup', function() {
 		});
 
 		expect(tgWithItems.items.length).toBe(10);
-
-		// done();
 	});
 
-	it('initializes the text group with items while respecting the max items limit', function(done) {
+	it('initializes the text group with items while respecting the max items limit', function() {
 		tg3items.init(10);
 
 		tg3items.items.map(function(item) {
@@ -87,11 +77,9 @@ describe('TextGroup', function() {
 		});
 
 		expect(tg3items.items.length).toBe(3);
-
-		// done();
 	});
 
-	it('fills items to the max item limit', function(done) {
+	it('fills items to the max item limit', function() {
 		tg3items.fill();
 
 		tg3items.items.map(function(item) {
@@ -100,19 +88,15 @@ describe('TextGroup', function() {
 		});
 
 		expect(tg3items.items.length).toBe(3);
-
-		// done();
 	});
 
-	it("doesn't fill items with no max item limit", function(done) {
+	it("doesn't fill items with no max item limit", function() {
 		tg.fill();
 
 		expect(tg.items.length).toBe(0);
-
-		// done();
 	});
 
-	it("adds items while respecting data template", function(done) {
+	it("adds items while respecting data template", function() {
 		tg.add(new StyleableText('new item'), { x:0 });
 
 		expect(tg.items.length).toBe(1);
@@ -124,21 +108,17 @@ describe('TextGroup', function() {
 		expect(tgDataTemplate.items.length).toBe(1);
 		expect(tgDataTemplate.first.text).toEqual(new StyleableText('new item'));
 		expect(tgDataTemplate.first.data).toEqual({ a:100, b:2 });
-
-		// done();
 	});
 
-	it("adds item at a specified index", function(done) {
+	it("adds item at a specified index", function() {
 		tgWithItems.addAt(0, new StyleableText('new'));
 
 		expect(tgWithItems.items.length).toBe(3);
 		expect(tgWithItems.first.text).toEqual(new StyleableText('new'));
 		expect(tgWithItems.first.data).toEqual({});
-
-		// done();
 	});
 
-	it("adds a group", function(done) {
+	it("adds a group", function() {
 		tg.add(new StyleableText('A'));
 		tg.add(new StyleableText('B'));
 
@@ -149,11 +129,9 @@ describe('TextGroup', function() {
 		expect(tg.items[1].text).toEqual(new StyleableText('B'));
 		expect(tg.items[2].text).toEqual(new StyleableText('first'));
 		expect(tg.items[3].text).toEqual(new StyleableText('second'));
-
-		// done();
 	});
 
-	it("adds a group at a specified index", function(done) {
+	it("adds a group at a specified index", function() {
 		tg.add(new StyleableText('A'));
 		tg.add(new StyleableText('B'));
 
@@ -164,11 +142,9 @@ describe('TextGroup', function() {
 		expect(tg.items[1].text).toEqual(new StyleableText('first'));
 		expect(tg.items[2].text).toEqual(new StyleableText('second'));
 		expect(tg.items[3].text).toEqual(new StyleableText('B'));
-
-		// done();
 	});
 
-	it("adds a group and maintains data template", function(done) {
+	it("adds a group and maintains data template", function() {
 		tg.dataTemplate = { a:1, b:2, x:3 };
 		tg.add(new StyleableText('A'));
 		tg.add(new StyleableText('B'), { a:100, c:200, x:300 });
@@ -180,11 +156,9 @@ describe('TextGroup', function() {
 		expect(tgDataTemplate.items.length).toBe(2);
 		expect(tgDataTemplate.items[0].data).toEqual({ a:1, b:2 });
 		expect(tgDataTemplate.items[1].data).toEqual({ a:100, b:2 });
-
-		// done();
 	});
 
-	it("adds a group with custom clone data function", function(done) {
+	it("adds a group with custom clone data function", function() {
 		tg.dataTemplate = { a:1, b:2, x:3 };
 		tg.add(new StyleableText('A'));
 		tg.add(new StyleableText('B'));
@@ -197,35 +171,27 @@ describe('TextGroup', function() {
 		});
 
 		expect(tg.items[2].data).toEqual({ a:1, b:2, x:1000 });
-
-		// done();
 	});
 
-	it("retrieves an item at a specified index", function(done) {
+	it("retrieves an item at a specified index", function() {
 		expect(tgWithItems.get(0)).toEqual(tgWithItems.items[0]);
-
-		// done();
 	});
 
-	it("sets an item at a specified index", function(done) {
+	it("sets an item at a specified index", function() {
 		tgWithItems.set(0, new StyleableText("new"));
 
 		expect(tgWithItems.items.length).toBe(2);
 		expect(tgWithItems.items[0].text).toEqual(new StyleableText("new"));
-
-		// done();
 	});
 
-	it("removes an item at a specified index", function(done) {
+	it("removes an item at a specified index", function() {
 		tgWithItems.remove(0);
 
 		expect(tgWithItems.items.length).toBe(1);
 		expect(tgWithItems.items[0].text).toEqual(new StyleableText("second"));
-
-		// done();
 	});
 
-	it("clones itself", function(done) {
+	it("clones itself", function() {
 		clone = tgWithItems.clone();
 
 		expect(clone).not.toBe(tgWithItems);
@@ -238,11 +204,9 @@ describe('TextGroup', function() {
 		expect(clone.items[1].text).toEqual(tgWithItems.items[1].text);
 		expect(clone.items[0].data).toEqual(tgWithItems.items[0].data);
 		expect(clone.items[1].data).toEqual(tgWithItems.items[1].data);
-
-		// done();
 	});
 
-	it("clones itself with a custom clone function", function(done) {
+	it("clones itself with a custom clone function", function() {
 		tgDataTemplate.add(new StyleableText("new1"), { a:100 });
 		tgDataTemplate.add(new StyleableText("new2"), { b:100 });
 
@@ -256,11 +220,9 @@ describe('TextGroup', function() {
 		expect(clone.items[1].text).toEqual(new StyleableText("new2"));
 		expect(clone.items[0].data).toEqual({ a:100, b:5 });
 		expect(clone.items[1].data).toEqual({ a:1, b:5 });
-
-		// done();
 	});
 
-	it("exports to an object", function(done) {
+	it("exports to an object", function() {
 		expect(tgWithItems.toDescriptor()).toEqual([
 			{
 				text: {
@@ -277,20 +239,16 @@ describe('TextGroup', function() {
 				data: {}
 			}
 		]);
-
-		// done();
 	});
 
-	it("reduces to a subset with toSlice", function(done) {
+	it("reduces to a subset with toSlice", function() {
 		tgWithItems.toSlice(0, 1);
 
 		expect(tgWithItems.items.length).toBe(1);
 		expect(tgWithItems.items[0].text).toEqual(new StyleableText('first'));
-
-		// done();
 	});
 
-	it("splits itself into two groups", function(done) {
+	it("splits itself into two groups", function() {
 		tg.add(new StyleableText("A"));
 		tg.add(new StyleableText("B"));
 		tg.add(new StyleableText("C"));
@@ -319,44 +277,36 @@ describe('TextGroup', function() {
 		expect(c.items[0].text).toEqual(new StyleableText("A"));
 		expect(c.items[1].text).toEqual(new StyleableText("B"));
 		expect(c.items[2].text).toEqual(new StyleableText("C"));
-
-		// done();
 	});
 
-	it("splits text at the start of the group", function(done) {
+	it("splits text at the start of the group", function() {
 		tgWithItems.splitText(0, 0);
 
 		expect(tgWithItems.items.length).toBe(3);
 		expect(tgWithItems.items[0].text).toEqual(new StyleableText(""));
 		expect(tgWithItems.items[1].text).toEqual(new StyleableText("first"));
 		expect(tgWithItems.items[2].text).toEqual(new StyleableText("second"));
-
-		// done();
 	});
 
-	it("splits text in the middle of the group", function(done) {
+	it("splits text in the middle of the group", function() {
 		tgWithItems.splitText(0, 2);
 
 		expect(tgWithItems.items.length).toBe(3);
 		expect(tgWithItems.items[0].text).toEqual(new StyleableText("fi"));
 		expect(tgWithItems.items[1].text).toEqual(new StyleableText("rst"));
 		expect(tgWithItems.items[2].text).toEqual(new StyleableText("second"));
-
-		// done();
 	});
 
-	it("splits text at the end of the group", function(done) {
+	it("splits text at the end of the group", function() {
 		tgWithItems.splitText(1, 6);
 
 		expect(tgWithItems.items.length).toBe(3);
 		expect(tgWithItems.items[0].text).toEqual(new StyleableText("first"));
 		expect(tgWithItems.items[1].text).toEqual(new StyleableText("second"));
 		expect(tgWithItems.items[2].text).toEqual(new StyleableText(""));
-
-		// done();
 	});
 
-	it("splits text and clones data", function(done) {
+	it("splits text and clones data", function() {
 		tgDataTemplate.add(new StyleableText("first"), { a:100 });
 		tgDataTemplate.add(new StyleableText("second"), { b:200 });
 
@@ -366,11 +316,9 @@ describe('TextGroup', function() {
 		expect(tgDataTemplate.items[0].data).toEqual({ a:100, b:2 });
 		expect(tgDataTemplate.items[1].data).toEqual({ a:100, b:2 });
 		expect(tgDataTemplate.items[2].data).toEqual({ a:1, b:200 });
-
-		// done();
 	});
 
-	it("merges text", function(done) {
+	it("merges text", function() {
 		tgDataTemplate.add(new StyleableText("my"), { a:'my', b:100 });
 		tgDataTemplate.add(new StyleableText("hot"), { a:'hot', b:200 });
 		tgDataTemplate.add(new StyleableText("dog"), { a:'dog', b:300 });
@@ -386,11 +334,9 @@ describe('TextGroup', function() {
 		expect(tgDataTemplate.items[0].data).toEqual({ a:'my', b:100 });
 		expect(tgDataTemplate.items[1].data).toEqual({ a:'hot', b:200 });
 		expect(tgDataTemplate.items[2].data).toEqual({ a:'is tasty', b:400 });
-
-		// done();
 	});
 
-	it("merges text with a custom merge function", function(done) {
+	it("merges text with a custom merge function", function() {
 		tgDataTemplate.add(new StyleableText("abc"), { b:100 });
 		tgDataTemplate.add(new StyleableText("xyz"), { b:200 });
 
@@ -400,127 +346,101 @@ describe('TextGroup', function() {
 		});
 
 		expect(tgDataTemplate.items[0].data).toEqual({ a:1, b:300 });
-
-		// done();
 	});
 
-	it("deletes a span of text", function(done) {
+	it("deletes a span of text", function() {
 		tgWithItems.deleteSpan(0, 1, 0, 2);
 
 		expect(tgWithItems.items.length).toBe(2);
 		expect(tgWithItems.items[0].text).toEqual(new StyleableText("frst"));
 		expect(tgWithItems.items[1].text).toEqual(new StyleableText("second"));
-
-		// done();
 	});
 
-	it("deletes a span of text at the start of the first item", function(done) {
+	it("deletes a span of text at the start of the first item", function() {
 		tgWithItems.deleteSpan(0, 0, 0, 1);
 
 		expect(tgWithItems.items.length).toBe(2);
 		expect(tgWithItems.items[0].text).toEqual(new StyleableText("irst"));
 		expect(tgWithItems.items[1].text).toEqual(new StyleableText("second"));
-
-		// done();
 	});
 
-	it("deletes a span of text at the end of the first item", function(done) {
+	it("deletes a span of text at the end of the first item", function() {
 		tgWithItems.deleteSpan(0, 4, 0, 5);
 
 		expect(tgWithItems.items.length).toBe(2);
 		expect(tgWithItems.items[0].text).toEqual(new StyleableText("firs"));
 		expect(tgWithItems.items[1].text).toEqual(new StyleableText("second"));
-
-		// done();
 	});
 
-	it("deletes the complete span of the first text item", function(done) {
+	it("deletes the complete span of the first text item", function() {
 		tgWithItems.deleteSpan(0, 0, 0, 5);
 
 		expect(tgWithItems.items.length).toBe(2);
 		expect(tgWithItems.items[0].text).toEqual(new StyleableText(""));
 		expect(tgWithItems.items[1].text).toEqual(new StyleableText("second"));
-
-		// done();
 	});
 
-	it("deletes a span of text at the start of the last item", function(done) {
+	it("deletes a span of text at the start of the last item", function() {
 		tgWithItems.deleteSpan(1, 0, 1, 1);
 
 		expect(tgWithItems.items.length).toBe(2);
 		expect(tgWithItems.items[0].text).toEqual(new StyleableText("first"));
 		expect(tgWithItems.items[1].text).toEqual(new StyleableText("econd"));
-
-		// done();
 	});
 
-	it("deletes a span of text at the end of the last item", function(done) {
+	it("deletes a span of text at the end of the last item", function() {
 		tgWithItems.deleteSpan(1, 5, 1, 6);
 
 		expect(tgWithItems.items.length).toBe(2);
 		expect(tgWithItems.items[0].text).toEqual(new StyleableText("first"));
 		expect(tgWithItems.items[1].text).toEqual(new StyleableText("secon"));
-
-		// done();
 	});
 
-	it("deletes the complete span of the last text item", function(done) {
+	it("deletes the complete span of the last text item", function() {
 		tgWithItems.deleteSpan(1, 0, 1, 6);
 
 		expect(tgWithItems.items.length).toBe(2);
 		expect(tgWithItems.items[0].text).toEqual(new StyleableText("first"));
 		expect(tgWithItems.items[1].text).toEqual(new StyleableText(""));
-
-		// done();
 	});
 
-	it("deletes a span of text that covers two text items", function(done) {
+	it("deletes a span of text that covers two text items", function() {
 		tgWithItems.deleteSpan(0, 1, 1, 5);
 
 		expect(tgWithItems.items.length).toBe(1);
 		expect(tgWithItems.items[0].text).toEqual(new StyleableText("fd"));
-
-		// done();
 	});
 
-	it("deletes a span of text that covers two text items but doesn't merge when specified not to merge", function(done) {
+	it("deletes a span of text that covers two text items but doesn't merge when specified not to merge", function() {
 		tgWithItems.deleteSpan(0, 1, 1, 5, false);
 
 		expect(tgWithItems.items.length).toBe(2);
 		expect(tgWithItems.items[0].text).toEqual(new StyleableText("f"));
 		expect(tgWithItems.items[1].text).toEqual(new StyleableText("d"));
-
-		// done();
 	});
 
-	it("deletes a span of text from the beginning to inside the last text item", function(done) {
+	it("deletes a span of text from the beginning to inside the last text item", function() {
 		tgWithItems.deleteSpan(0, 0, 1, 5);
 
 		expect(tgWithItems.items.length).toBe(1);
 		expect(tgWithItems.items[0].text).toEqual(new StyleableText("d"));
-
-		// done();
 	});
 
-	it("deletes a span of text from inside the first text item to the end", function(done) {
+	it("deletes a span of text from inside the first text item to the end", function() {
 		tgWithItems.deleteSpan(0, 1, 1, 6);
 
 		expect(tgWithItems.items.length).toBe(1);
 		expect(tgWithItems.items[0].text).toEqual(new StyleableText("f"));
-
-		// done();
 	});
 
-	it("deletes all the text", function(done) {
+	it("deletes all the text", function() {
 		tgWithItems.deleteSpan(0, 0, 1, 6);
 
 		expect(tgWithItems.items.length).toBe(1);
 		expect(tgWithItems.items[0].text).toEqual(new StyleableText(""));
-
-		// done();
 	});
 
-	it("deletes a span of text and merges data", function(done) {
+	it("deletes a span of text and merges data", function() {
 		tgDataTemplate.add(new StyleableText("first"), { a:100 });
 		tgDataTemplate.add(new StyleableText("second"), { b:200 });
 
@@ -528,11 +448,9 @@ describe('TextGroup', function() {
 
 		expect(tgDataTemplate.items.length).toBe(1);
 		expect(tgDataTemplate.items[0].data).toEqual({ a:100, b:2 });
-
-		// done();
 	});
 
-	it("deletes a span of text and merges data with a custom merge function", function(done) {
+	it("deletes a span of text and merges data with a custom merge function", function() {
 		tgDataTemplate.add(new StyleableText("first"), { a:100 });
 		tgDataTemplate.add(new StyleableText("second"), { b:200 });
 
@@ -543,121 +461,97 @@ describe('TextGroup', function() {
 
 		expect(tgDataTemplate.items.length).toBe(1);
 		expect(tgDataTemplate.items[0].data).toEqual({ a:101, b:2 });
-
-		// done();
 	});
 
-	it("clears a span of text", function(done) {
+	it("clears a span of text", function() {
 		tgWithItems.clearSpan(0, 1, 0, 2);
 
 		expect(tgWithItems.items.length).toBe(2);
 		expect(tgWithItems.items[0].text).toEqual(new StyleableText("frst"));
 		expect(tgWithItems.items[1].text).toEqual(new StyleableText("second"));
-
-		// done();
 	});
 
-	it("clears a span of text at the start of the first item", function(done) {
+	it("clears a span of text at the start of the first item", function() {
 		tgWithItems.clearSpan(0, 0, 0, 1);
 
 		expect(tgWithItems.items.length).toBe(2);
 		expect(tgWithItems.items[0].text).toEqual(new StyleableText("irst"));
 		expect(tgWithItems.items[1].text).toEqual(new StyleableText("second"));
-
-		// done();
 	});
 
-	it("clears a span of text at the end of the first item", function(done) {
+	it("clears a span of text at the end of the first item", function() {
 		tgWithItems.clearSpan(0, 4, 0, 5);
 
 		expect(tgWithItems.items.length).toBe(2);
 		expect(tgWithItems.items[0].text).toEqual(new StyleableText("firs"));
 		expect(tgWithItems.items[1].text).toEqual(new StyleableText("second"));
-
-		// done();
 	});
 
-	it("clears the complete span of the first text item", function(done) {
+	it("clears the complete span of the first text item", function() {
 		tgWithItems.clearSpan(0, 0, 0, 5);
 
 		expect(tgWithItems.items.length).toBe(2);
 		expect(tgWithItems.items[0].text).toEqual(new StyleableText(""));
 		expect(tgWithItems.items[1].text).toEqual(new StyleableText("second"));
-
-		// done();
 	});
 
-	it("clears a span of text at the start of the last item", function(done) {
+	it("clears a span of text at the start of the last item", function() {
 		tgWithItems.clearSpan(1, 0, 1, 1);
 
 		expect(tgWithItems.items.length).toBe(2);
 		expect(tgWithItems.items[0].text).toEqual(new StyleableText("first"));
 		expect(tgWithItems.items[1].text).toEqual(new StyleableText("econd"));
-
-		// done();
 	});
 
-	it("clears a span of text at the end of the last item", function(done) {
+	it("clears a span of text at the end of the last item", function() {
 		tgWithItems.clearSpan(1, 5, 1, 6);
 
 		expect(tgWithItems.items.length).toBe(2);
 		expect(tgWithItems.items[0].text).toEqual(new StyleableText("first"));
 		expect(tgWithItems.items[1].text).toEqual(new StyleableText("secon"));
-
-		// done();
 	});
 
-	it("clears the complete span of the last text item", function(done) {
+	it("clears the complete span of the last text item", function() {
 		tgWithItems.clearSpan(1, 0, 1, 6);
 
 		expect(tgWithItems.items.length).toBe(2);
 		expect(tgWithItems.items[0].text).toEqual(new StyleableText("first"));
 		expect(tgWithItems.items[1].text).toEqual(new StyleableText(""));
-
-		// done();
 	});
 
-	it("clears a span of text that covers two text items", function(done) {
+	it("clears a span of text that covers two text items", function() {
 		tgWithItems.clearSpan(0, 1, 1, 5, false);
 
 		expect(tgWithItems.items.length).toBe(2);
 		expect(tgWithItems.items[0].text).toEqual(new StyleableText("f"));
 		expect(tgWithItems.items[1].text).toEqual(new StyleableText("d"));
-
-		// done();
 	});
 
-	it("clears a span of text from the beginning to inside the last text item", function(done) {
+	it("clears a span of text from the beginning to inside the last text item", function() {
 		tgWithItems.clearSpan(0, 0, 1, 5);
 
 		expect(tgWithItems.items.length).toBe(2);
 		expect(tgWithItems.items[0].text).toEqual(new StyleableText(""));
 		expect(tgWithItems.items[1].text).toEqual(new StyleableText("d"));
-
-		// done();
 	});
 
-	it("clears a span of text from inside the first text item to the end", function(done) {
+	it("clears a span of text from inside the first text item to the end", function() {
 		tgWithItems.clearSpan(0, 1, 1, 6);
 
 		expect(tgWithItems.items.length).toBe(2);
 		expect(tgWithItems.items[0].text).toEqual(new StyleableText("f"));
 		expect(tgWithItems.items[1].text).toEqual(new StyleableText(""));
-
-		// done();
 	});
 
-	it("clears all the text", function(done) {
+	it("clears all the text", function() {
 		tgWithItems.clearSpan(0, 0, 1, 6);
 
 		expect(tgWithItems.items.length).toBe(2);
 		expect(tgWithItems.items[0].text).toEqual(new StyleableText(""));
 		expect(tgWithItems.items[1].text).toEqual(new StyleableText(""));
-
-		// done();
 	});
 
-	it("styles text at the beginning of the group", function(done) {
+	it("styles text at the beginning of the group", function() {
 		tgWith3Items.styleText(0, 0, 0, 1, 'b');
 		styles1 = tgWith3Items.items[0].text.styleList.styles;
 		styles2 = tgWith3Items.items[1].text.styleList.styles;
@@ -667,11 +561,9 @@ describe('TextGroup', function() {
 		expect(styles2.length).toBe(0);
 		expect(styles3.length).toBe(0);
 		expect(styles1[0]).toEqual(new StyleRange(0, 1, 'b'));
-
-		// done();
 	});
 
-	it("styles text at the end of the group", function(done) {
+	it("styles text at the end of the group", function() {
 		tgWith3Items.styleText(2, 4, 2, 5, 'b');
 		styles1 = tgWith3Items.items[0].text.styleList.styles;
 		styles2 = tgWith3Items.items[1].text.styleList.styles;
@@ -681,11 +573,9 @@ describe('TextGroup', function() {
 		expect(styles2.length).toBe(0);
 		expect(styles3.length).toBe(1);
 		expect(styles3[0]).toEqual(new StyleRange(4, 5, 'b'));
-
-		// done();
 	});
 
-	it("styles text spanning two text items", function(done) {
+	it("styles text spanning two text items", function() {
 		tgWith3Items.styleText(0, 1, 1, 1, 'b');
 		styles1 = tgWith3Items.items[0].text.styleList.styles;
 		styles2 = tgWith3Items.items[1].text.styleList.styles;
@@ -696,11 +586,9 @@ describe('TextGroup', function() {
 		expect(styles3.length).toBe(0);
 		expect(styles1[0]).toEqual(new StyleRange(1, 5, 'b'));
 		expect(styles2[0]).toEqual(new StyleRange(0, 1, 'b'));
-
-		// done();
 	});
 
-	it("styles all text", function(done) {
+	it("styles all text", function() {
 		tgWith3Items.styleText(0, 0, 2, 5, 'b');
 		styles1 = tgWith3Items.items[0].text.styleList.styles;
 		styles2 = tgWith3Items.items[1].text.styleList.styles;
@@ -712,11 +600,9 @@ describe('TextGroup', function() {
 		expect(styles1[0]).toEqual(new StyleRange(0, 5, 'b'));
 		expect(styles2[0]).toEqual(new StyleRange(0, 6, 'b'));
 		expect(styles3[0]).toEqual(new StyleRange(0, 5, 'b'));
-
-		// done();
 	});
 
-	it("unstyles a span of text", function(done) {
+	it("unstyles a span of text", function() {
 		tgWith3Items.styleText(0, 0, 2, 5, 'b');
 		tgWith3Items.unstyleText(0, 0, 0, 1, 'b');
 		styles1 = tgWith3Items.items[0].text.styleList.styles;
@@ -729,11 +615,9 @@ describe('TextGroup', function() {
 		expect(styles1[0]).toEqual(new StyleRange(1, 5, 'b'));
 		expect(styles2[0]).toEqual(new StyleRange(0, 6, 'b'));
 		expect(styles3[0]).toEqual(new StyleRange(0, 5, 'b'));
-
-		// done();
 	});
 
-	it("toggleStyle will style a portion of un-styled text", function(done) {
+	it("toggleStyle will style a portion of un-styled text", function() {
 		tgWith3Items.toggleStyleText(1, 1, 1, 5, 'b');
 		styles1 = tgWith3Items.items[0].text.styleList.styles;
 		styles2 = tgWith3Items.items[1].text.styleList.styles;
@@ -743,11 +627,9 @@ describe('TextGroup', function() {
 		expect(styles2.length).toBe(1);
 		expect(styles3.length).toBe(0);
 		expect(styles2[0]).toEqual(new StyleRange(1, 5, 'b'));
-
-		// done();
 	});
 
-	it("toggleStyle will style a portion of partially styled text", function(done) {
+	it("toggleStyle will style a portion of partially styled text", function() {
 		tgWith3Items.styleText(1, 1, 1, 5, 'b');
 		tgWith3Items.toggleStyleText(1, 0, 1, 6, 'b')
 		styles1 = tgWith3Items.items[0].text.styleList.styles;
@@ -758,11 +640,9 @@ describe('TextGroup', function() {
 		expect(styles2.length).toBe(1);
 		expect(styles3.length).toBe(0);
 		expect(styles2[0]).toEqual(new StyleRange(0, 6, 'b'));
-
-		// done();
 	});
 
-	it("toggleStyle will un-style a portion of styled text", function(done) {
+	it("toggleStyle will un-style a portion of styled text", function() {
 		tgWith3Items.styleText(1, 1, 1, 5, 'b');
 		tgWith3Items.toggleStyleText(1, 2, 1, 5, 'b')
 		styles1 = tgWith3Items.items[0].text.styleList.styles;
@@ -773,11 +653,9 @@ describe('TextGroup', function() {
 		expect(styles2.length).toBe(1);
 		expect(styles3.length).toBe(0);
 		expect(styles2[0]).toEqual(new StyleRange(1, 2, 'b'));
-
-		// done();
 	});
 
-	it("toggleStyle will un-style the portion of styled text", function(done) {
+	it("toggleStyle will un-style the portion of styled text", function() {
 		tgWith3Items.styleText(1, 1, 1, 5, 'b');
 		tgWith3Items.toggleStyleText(1, 1, 1, 5, 'b')
 		styles1 = tgWith3Items.items[0].text.styleList.styles;
@@ -787,11 +665,9 @@ describe('TextGroup', function() {
 		expect(styles1.length).toBe(0);
 		expect(styles2.length).toBe(0);
 		expect(styles3.length).toBe(0);
-
-		// done();
 	});
 
-	it("getStyles will return only the styles covered by the span", function(done) {
+	it("getStyles will return only the styles covered by the span", function() {
 		tgWith3Items.styleText(1, 1, 1, 5, 'b');
 		tgWith3Items.styleText(1, 0, 1, 6, 'i');
 		styles1 = tgWith3Items.items[0].text.styleList.styles;
@@ -805,29 +681,21 @@ describe('TextGroup', function() {
 		styles = tgWith3Items.getStyles(1, 0, 1, 5);
 		expect(styles.i).toBe('i');
 		expect(styles.b).not.toBeDefined();
-
-		// done();
 	});
 
-	it("returns the length", function(done) {
+	it("returns the length", function() {
 		expect(tgWithItems.length).toBe(tgWithItems.items.length);
-
-		// done();
 	});
 
-	it("returns the first item", function(done) {
+	it("returns the first item", function() {
 		expect(tgWithItems.first).toBe(tgWithItems.items[0]);
-
-		// done();
 	});
 
-	it("returns the last item", function(done) {
+	it("returns the last item", function() {
 		expect(tgWithItems.last).toBe(tgWithItems.items[tgWithItems.items.length - 1]);
-
-		// done();
 	});
 
-	it("can respond if it is full", function(done) {
+	it("can respond if it is full", function() {
 		expect(tg3items.isFull).toBe(false);
 		tg3items.add(new StyleableText("item"));
 		expect(tg3items.isFull).toBe(false);
@@ -835,11 +703,9 @@ describe('TextGroup', function() {
 		expect(tg3items.isFull).toBe(false);
 		tg3items.add(new StyleableText("item"));
 		expect(tg3items.isFull).toBe(true);
-
-		// done();
 	});
 
-	it("can respond if it is empty or blank", function(done) {
+	it("can respond if it is empty or blank", function() {
 		expect(tgWithItems.isEmpty).toBe(false);
 		expect(tgWithItems.isBlank).toBe(false);
 
@@ -857,11 +723,9 @@ describe('TextGroup', function() {
 
 		expect(tgWithItems.isEmpty).toBe(true);
 		expect(tgWithItems.isBlank).toBe(true);
-
-		// done();
 	});
 
-	it("can create an instance from an object", function(done) {
+	it("can create an instance from an object", function() {
 		tgDataTemplate.add("first", { a:1, c:1 });
 		tgDataTemplate.add("second", { a:2, c:2 });
 
@@ -874,11 +738,9 @@ describe('TextGroup', function() {
 		expect(newTg.items[1].text).toEqual(new StyleableText('second'));
 		expect(newTg.items[0].data).toEqual({ b:2 });
 		expect(newTg.items[1].data).toEqual({ b:2 });
-
-		// done();
 	});
 
-	it("can create an instance using the create method shortcut", function(done) {
+	it("can create an instance using the create method shortcut", function() {
 		newTg = TextGroup.create(10, { x:1 }, 4);
 		newTg.addAt(0, new StyleableText("first"), { x:2, y:1 });
 
@@ -894,7 +756,5 @@ describe('TextGroup', function() {
 		expect(newTg.items[2].data).toEqual({ x:1 });
 		expect(newTg.items[3].data).toEqual({ x:1 });
 		expect(newTg.items[4].data).toEqual({ x:1 });
-
-		// done();
 	});
 });

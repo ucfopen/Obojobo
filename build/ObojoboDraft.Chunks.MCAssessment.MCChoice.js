@@ -43,15 +43,15 @@
 /******/ ({
 
 /***/ 0:
-/***/ function(module, exports, __webpack_require__) {
+/***/ (function(module, exports, __webpack_require__) {
 
 	module.exports = __webpack_require__(43);
 
 
-/***/ },
+/***/ }),
 
 /***/ 41:
-/***/ function(module, exports) {
+/***/ (function(module, exports) {
 
 	'use strict';
 
@@ -77,10 +77,10 @@
 
 	module.exports = Adapter;
 
-/***/ },
+/***/ }),
 
 /***/ 42:
-/***/ function(module, exports, __webpack_require__) {
+/***/ (function(module, exports, __webpack_require__) {
 
 	'use strict';
 
@@ -161,10 +161,10 @@
 
 	module.exports = MCChoice;
 
-/***/ },
+/***/ }),
 
 /***/ 43:
-/***/ function(module, exports, __webpack_require__) {
+/***/ (function(module, exports, __webpack_require__) {
 
 	'use strict';
 
@@ -179,13 +179,13 @@
 	  selectionHandler: new ObojoboDraft.Common.chunk.textChunk.TextGroupSelectionHandler()
 	});
 
-/***/ },
+/***/ }),
 
 /***/ 58:
-/***/ function(module, exports) {
+/***/ (function(module, exports) {
 
 	// removed by extract-text-webpack-plugin
 
-/***/ }
+/***/ })
 
 /******/ });

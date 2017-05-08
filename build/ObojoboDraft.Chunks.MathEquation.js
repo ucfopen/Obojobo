@@ -43,15 +43,15 @@
 /******/ ({
 
 /***/ 0:
-/***/ function(module, exports, __webpack_require__) {
+/***/ (function(module, exports, __webpack_require__) {
 
-	module.exports = __webpack_require__(146);
+	module.exports = __webpack_require__(145);
 
 
-/***/ },
+/***/ }),
 
 /***/ 9:
-/***/ function(module, exports) {
+/***/ (function(module, exports) {
 
 	/**
 	 * This file contains a list of utility functions which are useful in other
@@ -160,10 +160,10 @@
 	};
 
 
-/***/ },
+/***/ }),
 
 /***/ 14:
-/***/ function(module, exports) {
+/***/ (function(module, exports) {
 
 	/**
 	 * This is the ParseError class, which is the main error thrown by KaTeX
@@ -207,10 +207,10 @@
 	module.exports = ParseError;
 
 
-/***/ },
+/***/ }),
 
 /***/ 28:
-/***/ function(module, exports, __webpack_require__) {
+/***/ (function(module, exports, __webpack_require__) {
 
 	/* jshint unused:false */
 
@@ -333,7 +333,7 @@
 	// metrics, including height, depth, italic correction, and skew (kern from the
 	// character to the corresponding \skewchar)
 	// This map is generated via `make metrics`. It should not be changed manually.
-	var metricMap = __webpack_require__(310);
+	var metricMap = __webpack_require__(311);
 
 	/**
 	 * This function is a convience function for looking up information in the
@@ -349,10 +349,10 @@
 	};
 
 
-/***/ },
+/***/ }),
 
 /***/ 36:
-/***/ function(module, exports) {
+/***/ (function(module, exports) {
 
 	/**
 	 * This file contains information and classes for the various kinds of styles
@@ -482,17 +482,17 @@
 	};
 
 
-/***/ },
+/***/ }),
 
 /***/ 37:
-/***/ function(module, exports, __webpack_require__) {
+/***/ (function(module, exports, __webpack_require__) {
 
 	/**
 	 * This module contains general functions that can be used for building
 	 * different kinds of domTree nodes in a consistent manner.
 	 */
 
-	var domTree = __webpack_require__(111);
+	var domTree = __webpack_require__(110);
 	var fontMetrics = __webpack_require__(28);
 	var symbols = __webpack_require__(38);
 	var utils = __webpack_require__(9);
@@ -936,10 +936,10 @@
 	};
 
 
-/***/ },
+/***/ }),
 
 /***/ 38:
-/***/ function(module, exports) {
+/***/ (function(module, exports) {
 
 	/**
 	 * This file holds a list of all no-argument functions and single-character
@@ -3528,10 +3528,10 @@
 	module.exports = symbols;
 
 
-/***/ },
+/***/ }),
 
-/***/ 110:
-/***/ function(module, exports) {
+/***/ 109:
+/***/ (function(module, exports) {
 
 	/**
 	 * This is a module for storing settings passed into KaTeX. It correctly handles
@@ -3563,10 +3563,10 @@
 	module.exports = Settings;
 
 
-/***/ },
+/***/ }),
 
-/***/ 111:
-/***/ function(module, exports, __webpack_require__) {
+/***/ 110:
+/***/ (function(module, exports, __webpack_require__) {
 
 	/**
 	 * These objects store the data about the DOM nodes we create, as well as some
@@ -3839,10 +3839,10 @@
 	};
 
 
-/***/ },
+/***/ }),
 
-/***/ 112:
-/***/ function(module, exports) {
+/***/ 111:
+/***/ (function(module, exports) {
 
 	/**
 	 * The resulting parse tree nodes of the parse tree.
@@ -3869,10 +3869,10 @@
 
 
 
-/***/ },
+/***/ }),
 
-/***/ 144:
-/***/ function(module, exports) {
+/***/ 143:
+/***/ (function(module, exports) {
 
 	'use strict';
 
@@ -3907,18 +3907,18 @@
 
 	module.exports = Adapter;
 
-/***/ },
+/***/ }),
 
-/***/ 145:
-/***/ function(module, exports, __webpack_require__) {
+/***/ 144:
+/***/ (function(module, exports, __webpack_require__) {
 
 	'use strict';
 
 	var Common, MathEquation, NonEditableChunk, OboComponent, getLatexHtml, katex;
 
-	__webpack_require__(263);
+	__webpack_require__(262);
 
-	katex = __webpack_require__(301);
+	katex = __webpack_require__(302);
 
 	Common = window.ObojoboDraft.Common;
 
@@ -3976,10 +3976,10 @@
 
 	module.exports = MathEquation;
 
-/***/ },
+/***/ }),
 
-/***/ 146:
-/***/ function(module, exports, __webpack_require__) {
+/***/ 145:
+/***/ (function(module, exports, __webpack_require__) {
 
 	'use strict';
 
@@ -3989,22 +3989,22 @@
 
 	OBO.register('ObojoboDraft.Chunks.MathEquation', {
 	  type: 'chunk',
-	  adapter: __webpack_require__(144),
-	  componentClass: __webpack_require__(145),
+	  adapter: __webpack_require__(143),
+	  componentClass: __webpack_require__(144),
 	  selectionHandler: new Common.chunk.focusableChunk.FocusableSelectionHandler()
 	});
 
-/***/ },
+/***/ }),
 
-/***/ 263:
-/***/ function(module, exports) {
+/***/ 262:
+/***/ (function(module, exports) {
 
 	// removed by extract-text-webpack-plugin
 
-/***/ },
+/***/ }),
 
-/***/ 301:
-/***/ function(module, exports, __webpack_require__) {
+/***/ 302:
+/***/ (function(module, exports, __webpack_require__) {
 
 	/**
 	 * This is the main entry point for KaTeX. Here, we expose functions for
@@ -4015,10 +4015,10 @@
 	 */
 
 	var ParseError = __webpack_require__(14);
-	var Settings = __webpack_require__(110);
+	var Settings = __webpack_require__(109);
 
-	var buildTree = __webpack_require__(307);
-	var parseTree = __webpack_require__(313);
+	var buildTree = __webpack_require__(308);
+	var parseTree = __webpack_require__(314);
 	var utils = __webpack_require__(9);
 
 	/**
@@ -4081,10 +4081,10 @@
 	};
 
 
-/***/ },
+/***/ }),
 
-/***/ 302:
-/***/ function(module, exports, __webpack_require__) {
+/***/ 303:
+/***/ (function(module, exports, __webpack_require__) {
 
 	/**
 	 * The Lexer class handles tokenizing the input in various ways. Since our
@@ -4099,7 +4099,7 @@
 	 * kinds.
 	 */
 
-	var matchAt = __webpack_require__(314);
+	var matchAt = __webpack_require__(315);
 
 	var ParseError = __webpack_require__(14);
 
@@ -4282,10 +4282,10 @@
 	module.exports = Lexer;
 
 
-/***/ },
+/***/ }),
 
-/***/ 303:
-/***/ function(module, exports) {
+/***/ 304:
+/***/ (function(module, exports) {
 
 	/**
 	 * This file contains information about the options that the Parser carries
@@ -4478,18 +4478,18 @@
 	module.exports = Options;
 
 
-/***/ },
+/***/ }),
 
-/***/ 304:
-/***/ function(module, exports, __webpack_require__) {
+/***/ 305:
+/***/ (function(module, exports, __webpack_require__) {
 
-	var functions = __webpack_require__(311);
-	var environments = __webpack_require__(309);
-	var Lexer = __webpack_require__(302);
+	var functions = __webpack_require__(312);
+	var environments = __webpack_require__(310);
+	var Lexer = __webpack_require__(303);
 	var symbols = __webpack_require__(38);
 	var utils = __webpack_require__(9);
 
-	var parseData = __webpack_require__(112);
+	var parseData = __webpack_require__(111);
 	var ParseError = __webpack_require__(14);
 
 	/**
@@ -5205,10 +5205,10 @@
 	module.exports = Parser;
 
 
-/***/ },
+/***/ }),
 
-/***/ 305:
-/***/ function(module, exports, __webpack_require__) {
+/***/ 306:
+/***/ (function(module, exports, __webpack_require__) {
 
 	/**
 	 * This file does the main work of building a domTree structure from a parse
@@ -5221,8 +5221,8 @@
 	var Style = __webpack_require__(36);
 
 	var buildCommon = __webpack_require__(37);
-	var delimiter = __webpack_require__(308);
-	var domTree = __webpack_require__(111);
+	var delimiter = __webpack_require__(309);
+	var domTree = __webpack_require__(110);
 	var fontMetrics = __webpack_require__(28);
 	var utils = __webpack_require__(9);
 
@@ -6574,10 +6574,10 @@
 	module.exports = buildHTML;
 
 
-/***/ },
+/***/ }),
 
-/***/ 306:
-/***/ function(module, exports, __webpack_require__) {
+/***/ 307:
+/***/ (function(module, exports, __webpack_require__) {
 
 	/**
 	 * This file converts a parse tree into a cooresponding MathML tree. The main
@@ -6587,7 +6587,7 @@
 
 	var buildCommon = __webpack_require__(37);
 	var fontMetrics = __webpack_require__(28);
-	var mathMLTree = __webpack_require__(312);
+	var mathMLTree = __webpack_require__(313);
 	var ParseError = __webpack_require__(14);
 	var symbols = __webpack_require__(38);
 	var utils = __webpack_require__(9);
@@ -7100,16 +7100,16 @@
 	module.exports = buildMathML;
 
 
-/***/ },
+/***/ }),
 
-/***/ 307:
-/***/ function(module, exports, __webpack_require__) {
+/***/ 308:
+/***/ (function(module, exports, __webpack_require__) {
 
-	var buildHTML = __webpack_require__(305);
-	var buildMathML = __webpack_require__(306);
+	var buildHTML = __webpack_require__(306);
+	var buildMathML = __webpack_require__(307);
 	var buildCommon = __webpack_require__(37);
-	var Options = __webpack_require__(303);
-	var Settings = __webpack_require__(110);
+	var Options = __webpack_require__(304);
+	var Settings = __webpack_require__(109);
 	var Style = __webpack_require__(36);
 
 	var makeSpan = buildCommon.makeSpan;
@@ -7147,10 +7147,10 @@
 	module.exports = buildTree;
 
 
-/***/ },
+/***/ }),
 
-/***/ 308:
-/***/ function(module, exports, __webpack_require__) {
+/***/ 309:
+/***/ (function(module, exports, __webpack_require__) {
 
 	/**
 	 * This file deals with creating delimiters of various sizes. The TeXbook
@@ -7693,13 +7693,13 @@
 	};
 
 
-/***/ },
+/***/ }),
 
-/***/ 309:
-/***/ function(module, exports, __webpack_require__) {
+/***/ 310:
+/***/ (function(module, exports, __webpack_require__) {
 
 	var fontMetrics = __webpack_require__(28);
-	var parseData = __webpack_require__(112);
+	var parseData = __webpack_require__(111);
 	var ParseError = __webpack_require__(14);
 
 	var ParseNode = parseData.ParseNode;
@@ -7878,10 +7878,10 @@
 	})();
 
 
-/***/ },
+/***/ }),
 
-/***/ 310:
-/***/ function(module, exports) {
+/***/ 311:
+/***/ (function(module, exports) {
 
 	module.exports = {
 	"AMS-Regular": {
@@ -9636,10 +9636,10 @@
 	}};
 
 
-/***/ },
+/***/ }),
 
-/***/ 311:
-/***/ function(module, exports, __webpack_require__) {
+/***/ 312:
+/***/ (function(module, exports, __webpack_require__) {
 
 	var utils = __webpack_require__(9);
 	var ParseError = __webpack_require__(14);
@@ -10272,10 +10272,10 @@
 	};
 
 
-/***/ },
+/***/ }),
 
-/***/ 312:
-/***/ function(module, exports, __webpack_require__) {
+/***/ 313:
+/***/ (function(module, exports, __webpack_require__) {
 
 	/**
 	 * These objects store data about MathML nodes. This is the MathML equivalent
@@ -10381,17 +10381,17 @@
 	};
 
 
-/***/ },
+/***/ }),
 
-/***/ 313:
-/***/ function(module, exports, __webpack_require__) {
+/***/ 314:
+/***/ (function(module, exports, __webpack_require__) {
 
 	/**
 	 * Provides a single function for parsing an expression using a Parser
 	 * TODO(emily): Remove this
 	 */
 
-	var Parser = __webpack_require__(304);
+	var Parser = __webpack_require__(305);
 
 	/**
 	 * Parses an expression using a Parser, then returns the parsed result.
@@ -10405,10 +10405,10 @@
 	module.exports = parseTree;
 
 
-/***/ },
+/***/ }),
 
-/***/ 314:
-/***/ function(module, exports) {
+/***/ 315:
+/***/ (function(module, exports) {
 
 	/** @flow */
 
@@ -10453,6 +10453,6 @@
 
 	module.exports = matchAt;
 
-/***/ }
+/***/ })
 
 /******/ });

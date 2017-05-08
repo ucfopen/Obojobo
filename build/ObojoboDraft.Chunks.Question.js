@@ -66,21 +66,21 @@
 }({
 
 /***/ 0:
-/***/ function(module, exports, __webpack_require__) {
+/***/ (function(module, exports, __webpack_require__) {
 
-	module.exports = __webpack_require__(150);
+	module.exports = __webpack_require__(149);
 
 
-/***/ },
+/***/ }),
 
-/***/ 147:
-/***/ function(module, exports, __webpack_require__) {
+/***/ 146:
+/***/ (function(module, exports, __webpack_require__) {
 
 	'use strict';
 
 	var QuestionContent;
 
-	__webpack_require__(264);
+	__webpack_require__(263);
 
 	QuestionContent = React.createClass({
 		displayName: 'QuestionContent',
@@ -101,10 +101,10 @@
 
 	module.exports = QuestionContent;
 
-/***/ },
+/***/ }),
 
-/***/ 148:
-/***/ function(module, exports) {
+/***/ 147:
+/***/ (function(module, exports) {
 
 	"use strict";
 
@@ -156,16 +156,16 @@
 
 	module.exports = Adapter;
 
-/***/ },
+/***/ }),
 
-/***/ 149:
-/***/ function(module, exports, __webpack_require__) {
+/***/ 148:
+/***/ (function(module, exports, __webpack_require__) {
 
 	'use strict';
 
 	var Button, Common, Dispatcher, FocusUtil, OboComponent, Question, QuestionContent, QuestionUtil, ReactCSSTransitionGroup, ScoreUtil;
 
-	__webpack_require__(265);
+	__webpack_require__(264);
 
 	ReactCSSTransitionGroup = React.addons.CSSTransitionGroup;
 
@@ -183,7 +183,7 @@
 
 	QuestionUtil = window.Viewer.util.QuestionUtil;
 
-	QuestionContent = __webpack_require__(147);
+	QuestionContent = __webpack_require__(146);
 
 	Question = React.createClass({
 		displayName: 'Question',
@@ -262,10 +262,10 @@
 
 	module.exports = Question;
 
-/***/ },
+/***/ }),
 
-/***/ 150:
-/***/ function(module, exports, __webpack_require__) {
+/***/ 149:
+/***/ (function(module, exports, __webpack_require__) {
 
 	'use strict';
 
@@ -275,8 +275,8 @@
 
 	OBO.register('ObojoboDraft.Chunks.Question', {
 	  type: 'chunk',
-	  adapter: __webpack_require__(148),
-	  componentClass: __webpack_require__(149),
+	  adapter: __webpack_require__(147),
+	  componentClass: __webpack_require__(148),
 	  selectionHandler: new ObojoboDraft.Common.chunk.textChunk.TextGroupSelectionHandler(),
 	  getNavItem: function getNavItem(model) {
 	    var label, questions;
@@ -298,16 +298,16 @@
 	  }
 	});
 
-/***/ },
+/***/ }),
 
-/***/ 264:
-/***/ function(module, exports) {
+/***/ 263:
+/***/ (function(module, exports) {
 
 	// removed by extract-text-webpack-plugin
 
-/***/ },
+/***/ }),
 
-/***/ 265:
-264
+/***/ 264:
+263
 
 /******/ })));

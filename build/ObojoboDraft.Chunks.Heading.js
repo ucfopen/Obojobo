@@ -43,15 +43,15 @@
 /******/ ({
 
 /***/ 0:
-/***/ function(module, exports, __webpack_require__) {
+/***/ (function(module, exports, __webpack_require__) {
 
-	module.exports = __webpack_require__(134);
+	module.exports = __webpack_require__(133);
 
 
-/***/ },
+/***/ }),
 
-/***/ 132:
-/***/ function(module, exports) {
+/***/ 131:
+/***/ (function(module, exports) {
 
 	'use strict';
 
@@ -94,16 +94,16 @@
 
 	module.exports = Adapter;
 
-/***/ },
+/***/ }),
 
-/***/ 133:
-/***/ function(module, exports, __webpack_require__) {
+/***/ 132:
+/***/ (function(module, exports, __webpack_require__) {
 
 	'use strict';
 
 	var Common, Heading, OboComponent, TextChunk, TextGroupEl;
 
-	__webpack_require__(259);
+	__webpack_require__(258);
 
 	Common = window.ObojoboDraft.Common;
 
@@ -134,10 +134,10 @@
 
 	module.exports = Heading;
 
-/***/ },
+/***/ }),
 
-/***/ 134:
-/***/ function(module, exports, __webpack_require__) {
+/***/ 133:
+/***/ (function(module, exports, __webpack_require__) {
 
 	'use strict';
 
@@ -147,8 +147,8 @@
 
 	OBO.register('ObojoboDraft.Chunks.Heading', {
 	  type: 'chunk',
-	  adapter: __webpack_require__(132),
-	  componentClass: __webpack_require__(133),
+	  adapter: __webpack_require__(131),
+	  componentClass: __webpack_require__(132),
 	  selectionHandler: new ObojoboDraft.Common.chunk.textChunk.TextGroupSelectionHandler(),
 	  getNavItem: function getNavItem(model) {
 	    switch (model.modelState.headingLevel) {
@@ -169,13 +169,13 @@
 	  }
 	});
 
-/***/ },
+/***/ }),
 
-/***/ 259:
-/***/ function(module, exports) {
+/***/ 258:
+/***/ (function(module, exports) {
 
 	// removed by extract-text-webpack-plugin
 
-/***/ }
+/***/ })
 
 /******/ });

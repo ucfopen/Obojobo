@@ -43,21 +43,21 @@
 /******/ ({
 
 /***/ 0:
-/***/ function(module, exports, __webpack_require__) {
+/***/ (function(module, exports, __webpack_require__) {
 
-	module.exports = __webpack_require__(199);
+	module.exports = __webpack_require__(198);
 
 
-/***/ },
+/***/ }),
 
-/***/ 198:
-/***/ function(module, exports, __webpack_require__) {
+/***/ 197:
+/***/ (function(module, exports, __webpack_require__) {
 
 	'use strict';
 
 	var Common, NavUtil, OboComponent;
 
-	__webpack_require__(284);
+	__webpack_require__(283);
 
 	Common = window.ObojoboDraft.Common;
 
@@ -90,10 +90,10 @@
 			}
 	});
 
-/***/ },
+/***/ }),
 
-/***/ 199:
-/***/ function(module, exports, __webpack_require__) {
+/***/ 198:
+/***/ (function(module, exports, __webpack_require__) {
 
 	'use strict';
 
@@ -106,7 +106,7 @@
 	OBO.register('ObojoboDraft.Pages.Page', {
 	  type: 'page',
 	  "default": true,
-	  componentClass: __webpack_require__(198),
+	  componentClass: __webpack_require__(197),
 	  selectionHandler: null,
 	  getNavItem: function getNavItem(model) {
 	    var title;
@@ -123,13 +123,13 @@
 	  }
 	});
 
-/***/ },
+/***/ }),
 
-/***/ 284:
-/***/ function(module, exports) {
+/***/ 283:
+/***/ (function(module, exports) {
 
 	// removed by extract-text-webpack-plugin
 
-/***/ }
+/***/ })
 
 /******/ });

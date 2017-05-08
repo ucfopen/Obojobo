@@ -43,15 +43,15 @@
 /******/ ({
 
 /***/ 0:
-/***/ function(module, exports, __webpack_require__) {
+/***/ (function(module, exports, __webpack_require__) {
 
-	module.exports = __webpack_require__(140);
+	module.exports = __webpack_require__(139);
 
 
-/***/ },
+/***/ }),
 
-/***/ 75:
-/***/ function(module, exports) {
+/***/ 74:
+/***/ (function(module, exports) {
 
 	'use strict';
 
@@ -206,16 +206,16 @@
 
 	module.exports = ListStyles;
 
-/***/ },
+/***/ }),
 
-/***/ 138:
-/***/ function(module, exports, __webpack_require__) {
+/***/ 137:
+/***/ (function(module, exports, __webpack_require__) {
 
 	'use strict';
 
 	var Adapter, Common, ListStyles, TextGroup, TextGroupAdapter;
 
-	ListStyles = __webpack_require__(75);
+	ListStyles = __webpack_require__(74);
 
 	Common = window.ObojoboDraft.Common;
 
@@ -256,18 +256,18 @@
 
 	module.exports = Adapter;
 
-/***/ },
+/***/ }),
 
-/***/ 139:
-/***/ function(module, exports, __webpack_require__) {
+/***/ 138:
+/***/ (function(module, exports, __webpack_require__) {
 
 	'use strict';
 
 	var Chunk, Common, List, ListStyles, MockElement, MockTextNode, OboComponent, SelectionHandler, TextChunk, TextGroup, TextGroupEl, selectionHandler;
 
-	__webpack_require__(261);
+	__webpack_require__(260);
 
-	ListStyles = __webpack_require__(75);
+	ListStyles = __webpack_require__(74);
 
 	Common = window.ObojoboDraft.Common;
 
@@ -398,10 +398,10 @@
 
 	module.exports = List;
 
-/***/ },
+/***/ }),
 
-/***/ 140:
-/***/ function(module, exports, __webpack_require__) {
+/***/ 139:
+/***/ (function(module, exports, __webpack_require__) {
 
 	'use strict';
 
@@ -411,18 +411,18 @@
 
 	OBO.register('ObojoboDraft.Chunks.List', {
 	  type: 'chunk',
-	  adapter: __webpack_require__(138),
-	  componentClass: __webpack_require__(139),
+	  adapter: __webpack_require__(137),
+	  componentClass: __webpack_require__(138),
 	  selectionHandler: new ObojoboDraft.Common.chunk.textChunk.TextGroupSelectionHandler()
 	});
 
-/***/ },
+/***/ }),
 
-/***/ 261:
-/***/ function(module, exports) {
+/***/ 260:
+/***/ (function(module, exports) {
 
 	// removed by extract-text-webpack-plugin
 
-/***/ }
+/***/ })
 
 /******/ });
