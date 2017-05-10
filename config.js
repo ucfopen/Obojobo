@@ -6,8 +6,9 @@ if(process.env.NODE_ENV){
 	env = process.env.NODE_ENV
 }
 
-let getConfigFileData = (configFile, type) => {
-	return JSON.parse(fs.readFileSync(configFile))[type]
+let getConfigFileData = (configFile, type = null) => {
+	let json = JSON.parse(fs.readFileSync(configFile))
+	return (type ? json[type] : json)
 }
 
 let addToConfig = function(configFile, type, propertyName) {

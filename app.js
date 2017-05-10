@@ -7,9 +7,11 @@ var session = require('express-session')
 var pgSession = require('connect-pg-simple')
 var app = express();
 let config = require('./config')
+let compression = require('compression')
 
 // =========== STATIC ASSET PATHS ================
 app.use(express.static(path.join(__dirname, 'public')));
+app.use(compression())
 
 // =========== VIEW ENGINES ================
 app.set('view engine', 'pug')

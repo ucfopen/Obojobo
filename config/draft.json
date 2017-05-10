@@ -3,11 +3,13 @@
 		"paths": [
 			"devsrc/obojobo-draft-document-engine/",
 			"node_modules/obojobo-draft-document-engine/"
-		]
+		],
+		"excludeModules":[]
 	},
 	"production": {
 		"paths": [
 			"node_modules/obojobo-draft-document-engine/"
-		]
+		],
+		"excludeModules":[]
 	}
 }

@@ -90,8 +90,6 @@ describe('index route', () => {
 
 		routeFunction(mockReq, mockRes, mockNext)
 		expect(mockRes.render).toBeCalledWith(expect.any(String), expect.objectContaining({
-			paths:"test1",
-			modules: "test2",
 			title:"Obojobo 3"
 		}))
 	})

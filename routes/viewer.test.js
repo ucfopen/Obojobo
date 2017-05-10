@@ -159,8 +159,11 @@ describe('lti route', () => {
 			getCurrentUser: () => { return Promise.resolve(new User()) },
 			params: {draftId: 555},
 			app: {
-				get: jest.fn().mockImplementation(() => {return ''}),
-				locals:{paths:'paths', modules:'modules'}
+				locals:{
+					paths:'paths',
+					modules:'modules',
+				},
+				get: jest.fn()
 			}
 		}
 
@@ -182,9 +185,10 @@ describe('lti route', () => {
 		.then((result) => {
 			expect(mockYell).toBeCalledWith('internal:sendToClient', expect.any(Object), expect.any(Object))
 			expect(mockRes.render).toBeCalledWith(expect.any(String), expect.objectContaining({
-				title: 'Obojobo 3',
-				paths: 'paths',
-				modules: 'modules',
+				title: 'Obojobo Next Document Viewer',
+				css: ['/static/viewer.css'],
+				footerJs: ['/static/viewer.js'],
+				headerJs: expect.any(Array),
 				oboGlobals: expect.objectContaining({
 					entries:{
 						draft: `"{\"json\":\"value\"}"`,

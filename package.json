@@ -4,21 +4,24 @@
   "private": true,
   "scripts": {
     "start": "yarn express:prod",
-    "dev": "concurrently \"yarn express:dev\" \"yarn docengine:dev\" \"yarn doc:samplewatch\"",
+    "dev": "yarn express:dev",
+    "dev:docengine": "concurrently \"yarn express:dev\" \"yarn devdocengine:start\"",
     "db:initdocker": "docker run --name db_postgres -d --restart=unless-stopped -p 5432:5432 postgres:9.6.1-alpine",
     "db:reset": "node node_modules/db-migrate/bin/db-migrate reset --config config/db.json",
     "db:migrateup": "node node_modules/db-migrate/bin/db-migrate up --config config/db.json",
     "db:migratedown": "node node_modules/db-migrate/bin/db-migrate down --config config/db.json",
-    "db:seed": "node ./bin/sample_draft.js seed",
-    "doc:samplewatch": "node ./bin/sample_draft.js watch",
+    "sampleDraft:seed": "node ./bin/sample_draft.js seed",
+    "sampleDraft:watch": "node ./bin/sample_draft.js watch",
     "express:dev": "pm2-dev start pm2_dev.yaml",
-    "express:prod": "NODE_ENV=production node ./bin/www",
-    "chunks:register": "node ./bin/register_obojobo_modules.js",
-    "chunks:registerdev": "node ./bin/register_obojobo_modules.js --dev",
-    "docengine:dev": "cd ./devsrc/obojobo-draft-document-engine && yarn dev",
-    "docengine:setup": "\"yarn docengine:clone\" && \"yarn docengine:nodemodules\"",
-    "docengine:clone": "git clone git@github.com:ucfcdl/Obojobo-Document-Engine.git devsrc/obojobo-draft-document-engine || echo 'already cloned'",
-    "docengine:nodemodules": "cd ./devsrc/obojobo-draft-document-engine && yarn",
+    "express:prod": "pm2 start pm2_prod.yaml",
+    "assets": "NODE_ENV=production webpack -p",
+    "assets:dev": "webpack",
+    "devDocEngine:start": "cd ./node_modules/obojobo-draft-document-engine && yarn dev",
+    "devDocEngine:setup": "\"yarn docengine:clone\" && \"yarn docengine:nodemodules\"",
+    "devDocEngine:clone": "git clone git@github.com:ucfcdl/Obojobo-Document-Engine.git devsrc/obojobo-draft-document-engine || echo 'already cloned'",
+    "devDocEngine:nodemodules": "cd ./devsrc/obojobo-draft-document-engine && yarn",
+    "devDocEngine:link": "cd ./devsrc/obojobo-draft-document-engine && yarn link && cd .. && yarn link obojobo-draft-document-engine",
+    "devDocEngine:unlink": "yarn unlink obojobo-draft-document-engine",
     "test": "jest --watch",
     "test:ci": "CI=true jest --coverage",
     "precommit": "npm run test:ci"
@@ -28,8 +31,11 @@
   },
   "dependencies": {
     "body-parser": "^1.17.1",
+    "compression": "^1.6.2",
+    "concat-files": "^0.1.1",
     "concurrently": "^3.1.0",
     "connect-pg-simple": "^3.1.2",
+    "css-loader": "^0.28.1",
     "db-migrate": "^0.10.0-beta.20",
     "db-migrate-pg": "^0.1.11",
     "debug": "~2.2.0",
@@ -38,6 +44,7 @@
     "express": "~4.14.0",
     "express-ims-lti": "git+ssh://git@github.com/ucfcdl/express-ims-lti.git#ac7d1f4e9c5afa6470185d107b32ffdbaf28cd32",
     "express-session": "^1.15.1",
+    "extract-text-webpack-plugin": "^2.1.0",
     "glob": "^7.1.1",
     "json-inflector": "^1.1.0",
     "moment": "^2.18.0",
@@ -45,31 +52,40 @@
     "newrelic": "^1.38.2",
     "node-sass-middleware": "0.9.8",
     "obojobo-draft-document-engine": "git+ssh://git@github.com/ucfcdl/Obojobo-Document-Engine.git#v0.0.11",
+    "on-build-webpack": "^0.1.0",
     "pg-promise": "^5.5.0",
     "pm2": "^2.4.2",
     "pug": "^2.0.0-beta6",
-    "serve-favicon": "~2.3.0"
+    "serve-favicon": "~2.3.0",
+    "style-loader": "^0.17.0",
+    "webpack": "^2.4.1"
   },
   "devDependencies": {
     "husky": "^0.13.3",
-    "jest-cli": "^19.0.2"
+    "jest-cli": "^19.0.2",
+    "webpack-dev-middleware": "^1.10.2"
   },
   "jest": {
     "verbose": true,
-    "setupTestFrameworkScriptFile":"./setup_tests.js",
-    "collectCoverageFrom":[
+    "setupTestFrameworkScriptFile": "./setup_tests.js",
+    "collectCoverageFrom": [
       "*.js",
       "models/*.js",
       "routes/*.js",
       "routes/**/*.js",
       "controllers/**/*.js"
     ],
-    "coveragePathIgnorePatterns":[
+    "coveragePathIgnorePatterns": [
       "/node_modules",
       "/app.js",
       "/dev_nonce_store.js"
     ],
-    "coverageReporters":["json", "lcov", "text", "html"],
+    "coverageReporters": [
+      "json",
+      "lcov",
+      "text",
+      "html"
+    ],
     "testPathIgnorePatterns": [
       "devsrc"
     ]
