@@ -31,6 +31,7 @@
   },
   "dependencies": {
     "body-parser": "^1.17.1",
+    "compression": "^1.6.2",
     "concat-files": "^0.1.1",
     "concurrently": "^3.1.0",
     "connect-pg-simple": "^3.1.2",
@@ -61,7 +62,8 @@
   },
   "devDependencies": {
     "husky": "^0.13.3",
-    "jest-cli": "^19.0.2"
+    "jest-cli": "^19.0.2",
+    "webpack-dev-middleware": "^1.10.2"
   },
   "jest": {
     "verbose": true,

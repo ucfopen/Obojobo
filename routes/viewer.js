@@ -39,7 +39,10 @@ router.all('/:draftId*', (req, res, next) => {
 			title: 'Obojobo Next Document Viewer',
 			oboGlobals: oboGlobals,
 			css: [assetForEnv('/static/viewer$[.min].css')],
-			footerJs: [assetForEnv('/static/viewer$[.min].js')],
+			footerJs: [
+				assetForEnv('/static/viewer$[.min].js'),
+				assetForEnv('/static/viewer-app$[.min].js')
+			],
 			headerJs:[
 				assetForEnv('//fb.me/react-with-addons-15.0.2$[.min].js'),
 				assetForEnv('//fb.me/react-dom-15.0.2$[.min].js'),
