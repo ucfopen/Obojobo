@@ -186,8 +186,8 @@ describe('lti route', () => {
 			expect(mockYell).toBeCalledWith('internal:sendToClient', expect.any(Object), expect.any(Object))
 			expect(mockRes.render).toBeCalledWith(expect.any(String), expect.objectContaining({
 				title: 'Obojobo Next Document Viewer',
-				css: ['/static/viewer.css'],
-				footerJs: ['/static/viewer.js'],
+				css: expect.any(Array),
+				footerJs: expect.any(Array),
 				headerJs: expect.any(Array),
 				oboGlobals: expect.objectContaining({
 					entries:{

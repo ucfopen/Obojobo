@@ -13,6 +13,11 @@ mockVirtual('/file_2/otherpath/viewer.js')
 mockVirtual('/file_2/otherotherpath/viewer.css')
 mockVirtual('/file_3/path/viewer.js')
 
+
+mockVirtual('webpack-dev-middleware')
+mockVirtual('webpack')
+mockVirtual('./webpack.config')
+
 describe('register chunks middleware', () => {
 
 	beforeAll(() => {})
@@ -59,10 +64,37 @@ describe('register chunks middleware', () => {
 		expect(dns.add).toHaveBeenCalledWith('pkg.type.node2', '/file/other')
 	})
 
-	it('adds the static paths to chunk js and css files', () => {
+	it('adds the webpack server in dev mode', () => {
+		let webpackDevMiddleware = require('webpack-dev-middleware')
+		webpackDevMiddleware.mockClear()
+		webpackDevMiddleware.mockImplementationOnce(()=>{return 'webPackDevMiddleWareReturn'})
+
 		middleware = require('./express_register_chunks')
 		let mockApp = {
-			get: jest.fn(),
+			get: jest.fn().mockImplementationOnce(() => {return 'development'}),
+			use: jest.fn(),
+			locals:{}
+		}
+
+		// mock static so it just returns it's argument for the haveBeenCalledWith tests below
+		let express = require('express')
+		express.static.mockImplementation((path) => { return path })
+
+		middleware(mockApp)
+		expect(mockApp.use).toHaveBeenCalledWith('webPackDevMiddleWareReturn')
+
+		// make sure the static routes are being added in this module, they should be all via webpack
+		expect(mockApp.use).not.toHaveBeenCalledWith(expect.any(String), expect.any(String))
+	})
+
+	it('adds the static paths to chunk js and css files in production mode', () => {
+		let webpackDevMiddleware = require('webpack-dev-middleware')
+		webpackDevMiddleware.mockClear()
+		webpackDevMiddleware.mockImplementationOnce(()=>{return 'webPackDevMiddleWareReturn'})
+
+		middleware = require('./express_register_chunks')
+		let mockApp = {
+			get: jest.fn().mockImplementationOnce(() => {return 'production'}),
 			use: jest.fn(),
 			locals:{}
 		}
@@ -76,6 +108,9 @@ describe('register chunks middleware', () => {
 		expect(mockApp.use).toHaveBeenCalledWith('/static/viewer.js', expect.any(String))
 		expect(mockApp.use).toHaveBeenCalledWith('/static/viewer.min.css', expect.any(String))
 		expect(mockApp.use).toHaveBeenCalledWith('/static/viewer.css', expect.any(String))
+
+		expect(mockApp.use).not.toHaveBeenCalledWith('webPackDevMiddleWareReturn')
+		expect(webpackDevMiddleware).not.toHaveBeenCalled()
 	})
 
 
