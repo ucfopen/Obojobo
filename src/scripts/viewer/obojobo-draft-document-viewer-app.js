@@ -1,7 +1,5 @@
-import ObojoboDraft from 'ObojoboDraft';
-import Viewer from 'Viewer';
-
-import 'ObojoboDraft/default-viewer-chunks'
+import ObojoboDraft from 'ObojoboDraft'
+import Viewer from 'Viewer'
 
 import './polyfills'
 
@@ -49,7 +47,7 @@ let moduleData = {
 	modalState: null
 };
 
-let render = () => {
+window.__oboViewerRender = () => {
 	return ReactDOM.render(<div className="root">
 		<Viewer.components.ViewerApp />
 	</div>, document.getElementById('viewer-app'));
@@ -57,6 +55,3 @@ let render = () => {
 
 
 history.replaceState('', document.title, `/view/${OboGlobals.get('draftId')}${window.location.search}`);
-
-
-render();

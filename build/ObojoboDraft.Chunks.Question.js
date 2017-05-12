@@ -1,0 +1,397 @@
+/******/ (function(modules) { // webpackBootstrap
+/******/ 	// The module cache
+/******/ 	var installedModules = {};
+/******/
+/******/ 	// The require function
+/******/ 	function __webpack_require__(moduleId) {
+/******/
+/******/ 		// Check if module is in cache
+/******/ 		if(installedModules[moduleId]) {
+/******/ 			return installedModules[moduleId].exports;
+/******/ 		}
+/******/ 		// Create a new module (and put it into the cache)
+/******/ 		var module = installedModules[moduleId] = {
+/******/ 			i: moduleId,
+/******/ 			l: false,
+/******/ 			exports: {}
+/******/ 		};
+/******/
+/******/ 		// Execute the module function
+/******/ 		modules[moduleId].call(module.exports, module, module.exports, __webpack_require__);
+/******/
+/******/ 		// Flag the module as loaded
+/******/ 		module.l = true;
+/******/
+/******/ 		// Return the exports of the module
+/******/ 		return module.exports;
+/******/ 	}
+/******/
+/******/
+/******/ 	// expose the modules object (__webpack_modules__)
+/******/ 	__webpack_require__.m = modules;
+/******/
+/******/ 	// expose the module cache
+/******/ 	__webpack_require__.c = installedModules;
+/******/
+/******/ 	// identity function for calling harmony imports with the correct context
+/******/ 	__webpack_require__.i = function(value) { return value; };
+/******/
+/******/ 	// define getter function for harmony exports
+/******/ 	__webpack_require__.d = function(exports, name, getter) {
+/******/ 		if(!__webpack_require__.o(exports, name)) {
+/******/ 			Object.defineProperty(exports, name, {
+/******/ 				configurable: false,
+/******/ 				enumerable: true,
+/******/ 				get: getter
+/******/ 			});
+/******/ 		}
+/******/ 	};
+/******/
+/******/ 	// getDefaultExport function for compatibility with non-harmony modules
+/******/ 	__webpack_require__.n = function(module) {
+/******/ 		var getter = module && module.__esModule ?
+/******/ 			function getDefault() { return module['default']; } :
+/******/ 			function getModuleExports() { return module; };
+/******/ 		__webpack_require__.d(getter, 'a', getter);
+/******/ 		return getter;
+/******/ 	};
+/******/
+/******/ 	// Object.prototype.hasOwnProperty.call
+/******/ 	__webpack_require__.o = function(object, property) { return Object.prototype.hasOwnProperty.call(object, property); };
+/******/
+/******/ 	// __webpack_public_path__
+/******/ 	__webpack_require__.p = "build/";
+/******/
+/******/ 	// Load entry module and return exports
+/******/ 	return __webpack_require__(__webpack_require__.s = 178);
+/******/ })
+/************************************************************************/
+/******/ ({
+
+/***/ 0:
+/***/ (function(module, exports) {
+
+module.exports = ObojoboDraft;
+
+/***/ }),
+
+/***/ 1:
+/***/ (function(module, exports) {
+
+module.exports = Viewer;
+
+/***/ }),
+
+/***/ 120:
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+Object.defineProperty(exports, "__esModule", {
+	value: true
+});
+
+__webpack_require__(156);
+
+var QuestionContent = React.createClass({
+	displayName: 'QuestionContent',
+	render: function render() {
+		var _this = this;
+
+		return React.createElement(
+			'div',
+			{
+				className: 'obojobo-draft--chunks--mc-question--content'
+			},
+			this.props.model.children.models.slice(0, this.props.model.children.models.length - 1).map(function (child, index) {
+				var Component = child.getComponentClass();
+				return React.createElement(Component, { key: child.get('id'), model: child, moduleData: _this.props.moduleData });
+			})
+		);
+	}
+});
+
+exports.default = QuestionContent;
+
+/***/ }),
+
+/***/ 121:
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+Object.defineProperty(exports, "__esModule", {
+	value: true
+});
+
+var _ObojoboDraft = __webpack_require__(0);
+
+var _ObojoboDraft2 = _interopRequireDefault(_ObojoboDraft);
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+var OboModel = _ObojoboDraft2.default.models.OboModel;
+
+
+var Adapter = {
+	construct: function construct(model, attrs) {
+		if (__guard__(attrs != null ? attrs.content : undefined, function (x) {
+			return x.shuffle;
+		}) != null) {
+			model.modelState.shuffle = attrs.content.shuffle;
+		} else {
+			model.modelState.shuffle = false;
+		}
+
+		if (__guard__(attrs != null ? attrs.content : undefined, function (x1) {
+			return x1.limit;
+		}) != null) {
+			model.modelState.limit = attrs.content.limit;
+		} else {
+			model.modelState.limit = 0;
+		}
+
+		if (__guard__(attrs != null ? attrs.content : undefined, function (x2) {
+			return x2.practice;
+		}) != null) {
+			model.modelState.practice = attrs.content.practice;
+		} else {
+			model.modelState.practice = true;
+		}
+
+		if (__guard__(attrs != null ? attrs.content : undefined, function (x3) {
+			return x3.solution;
+		}) != null) {
+			return model.modelState.solution = OboModel.create(attrs.content.solution);
+		} else {
+			return model.modelState.solution = null;
+		}
+	},
+	clone: function clone(model, _clone) {
+		_clone.modelState.shuffle = model.modelState.shuffle;
+		_clone.modelState.type = model.modelState.type;
+		_clone.modelState.solution = null;
+
+		if (model.modelState.solution != null) {
+			return _clone.modelState.solution = model.modelState.solution.clone();
+		}
+	},
+	toJSON: function toJSON(model, json) {
+		json.content.shuffle = model.modelState.shuffle;
+		json.content.type = model.modelState.type;
+		json.content.solution = null;
+
+		if (model.modelState.solution != null) {
+			return json.content.solution = model.modelState.solution.toJSON();
+		}
+	}
+};
+
+exports.default = Adapter;
+
+function __guard__(value, transform) {
+	return typeof value !== 'undefined' && value !== null ? transform(value) : undefined;
+}
+
+/***/ }),
+
+/***/ 122:
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+Object.defineProperty(exports, "__esModule", {
+	value: true
+});
+
+__webpack_require__(157);
+
+var _ObojoboDraft = __webpack_require__(0);
+
+var _ObojoboDraft2 = _interopRequireDefault(_ObojoboDraft);
+
+var _Viewer = __webpack_require__(1);
+
+var _Viewer2 = _interopRequireDefault(_Viewer);
+
+var _viewerComponent = __webpack_require__(120);
+
+var _viewerComponent2 = _interopRequireDefault(_viewerComponent);
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+var ReactCSSTransitionGroup = React.addons.CSSTransitionGroup;
+
+var OboComponent = _ObojoboDraft2.default.components.OboComponent;
+var Dispatcher = _ObojoboDraft2.default.flux.Dispatcher;
+var FocusUtil = _ObojoboDraft2.default.util.FocusUtil;
+var Button = _ObojoboDraft2.default.components.Button;
+var ScoreUtil = _Viewer2.default.util.ScoreUtil;
+var QuestionUtil = _Viewer2.default.util.QuestionUtil;
+
+
+var Question = React.createClass({
+	displayName: 'Question',
+	onClickBlocker: function onClickBlocker() {
+		QuestionUtil.viewQuestion(this.props.model.get('id'));
+
+		if (this.props.model.modelState.practice) {
+			return FocusUtil.focusComponent(this.props.model.get('id'));
+		}
+	},
+
+
+	// setTimeout (->
+	// 	FocusUtil.unfocus()
+	// 	QuestionUtil.hideQuestion @props.model.get('id')
+	// ).bind(@), 5000
+
+	render: function render() {
+		if (this.props.showContentOnly) {
+			return this.renderContentOnly();
+		}
+
+		var score = ScoreUtil.getScoreForModel(this.props.moduleData.scoreState, this.props.model);
+		var viewState = QuestionUtil.getViewState(this.props.moduleData.questionState, this.props.model);
+
+		var assessment = this.props.model.children.models[this.props.model.children.models.length - 1];
+		var AssessmentComponent = assessment.getComponentClass();
+
+		return React.createElement(
+			OboComponent,
+			{
+				model: this.props.model,
+				moduleData: this.props.moduleData,
+				className: 'flip-container obojobo-draft--chunks--question' + (score === null ? '' : score === 100 ? ' is-correct' : ' is-incorrect') + ' is-' + viewState + (this.props.model.modelState.practice ? ' is-practice' : ' is-not-practice')
+			},
+			React.createElement(
+				'div',
+				{ className: 'flipper' },
+				React.createElement(
+					'div',
+					{ className: 'content back' },
+					React.createElement(_viewerComponent2.default, { model: this.props.model, moduleData: this.props.moduleData }),
+					React.createElement(AssessmentComponent, {
+						key: assessment.get('id'),
+						model: assessment,
+						moduleData: this.props.moduleData
+					})
+				),
+				React.createElement(
+					'div',
+					{ className: 'blocker front', key: 'blocker', onClick: this.onClickBlocker },
+					React.createElement(Button, { value: this.props.model.modelState.practice ? 'Try Question' : 'View Question' })
+				)
+			)
+		);
+	},
+	renderContentOnly: function renderContentOnly() {
+		var score = ScoreUtil.getScoreForModel(this.props.moduleData.scoreState, this.props.model);
+		var viewState = QuestionUtil.getViewState(this.props.moduleData.questionState, this.props.model);
+
+		return React.createElement(
+			OboComponent,
+			{
+				model: this.props.model,
+				moduleData: this.props.moduleData,
+				className: 'flip-container obojobo-draft--chunks--question' + (score === null ? '' : score === 100 ? ' is-correct' : ' is-incorrect') + ' is-active' + (this.props.model.modelState.practice ? ' is-practice' : ' is-not-practice')
+			},
+			React.createElement(
+				'div',
+				{ className: 'flipper' },
+				React.createElement(
+					'div',
+					{ className: 'content back' },
+					React.createElement(_viewerComponent2.default, { model: this.props.model, moduleData: this.props.moduleData }),
+					React.createElement(
+						'div',
+						{ className: 'pad responses-hidden' },
+						'(Responses Hidden)'
+					)
+				)
+			)
+		);
+	}
+});
+
+exports.default = Question;
+
+/***/ }),
+
+/***/ 156:
+/***/ (function(module, exports) {
+
+// removed by extract-text-webpack-plugin
+
+/***/ }),
+
+/***/ 157:
+/***/ (function(module, exports) {
+
+// removed by extract-text-webpack-plugin
+
+/***/ }),
+
+/***/ 178:
+/***/ (function(module, exports, __webpack_require__) {
+
+module.exports = __webpack_require__(41);
+
+
+/***/ }),
+
+/***/ 41:
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+var _ObojoboDraft = __webpack_require__(0);
+
+var _ObojoboDraft2 = _interopRequireDefault(_ObojoboDraft);
+
+var _adapter = __webpack_require__(121);
+
+var _adapter2 = _interopRequireDefault(_adapter);
+
+var _viewerComponent = __webpack_require__(122);
+
+var _viewerComponent2 = _interopRequireDefault(_viewerComponent);
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+var SelectionHandler = _ObojoboDraft2.default.chunk.textChunk.TextGroupSelectionHandler;
+
+_ObojoboDraft2.default.Store.registerModel('ObojoboDraft.Chunks.Question', {
+	type: 'chunk',
+	adapter: _adapter2.default,
+	componentClass: _viewerComponent2.default,
+	selectionHandler: new SelectionHandler(),
+	getNavItem: function getNavItem(model) {
+		var label = void 0;
+		var questions = model.parent.children.models.filter(function (child) {
+			return child.get('type') === 'ObojoboDraft.Chunks.Question';
+		});
+
+		if (model.title) {
+			label = model.title;
+		} else if (model.modelState.practice) {
+			label = 'Practice Question ' + (questions.indexOf(model) + 1);
+		} else {
+			label = 'Question ' + (questions.indexOf(model) + 1);
+		}
+
+		return {
+			type: 'sub-link',
+			label: label,
+			path: ['#obo-' + model.get('id')]
+		};
+	}
+});
+
+/***/ })
+
+/******/ });
