@@ -1,10 +1,14 @@
 let fs = require('fs')
 let configuration = {}
+let env = 'development'
 
-let env = 'development' //@TODO
+if(process.env.NODE_ENV){
+	env = process.env.NODE_ENV
+}
 
-let getConfigFileData = (configFile, type) => {
-	return JSON.parse(fs.readFileSync(configFile))[type]
+let getConfigFileData = (configFile, type = null) => {
+	let json = JSON.parse(fs.readFileSync(configFile))
+	return (type ? json[type] : json)
 }
 
 let addToConfig = function(configFile, type, propertyName) {
@@ -12,7 +16,7 @@ let addToConfig = function(configFile, type, propertyName) {
 	return configuration[propertyName]
 }
 
-db = getConfigFileData('./config/db.json', env)
+let db = getConfigFileData('./config/db.json', env)
 // convert the json in db.json to an object our database libraries like
 configuration.db = {
 	host: db.host,

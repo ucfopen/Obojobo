@@ -33,3 +33,5 @@ npm-debug.log
 config/installed_chunks.json
 
 devsrc
+
+public/compiled

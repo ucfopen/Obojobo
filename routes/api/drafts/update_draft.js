@@ -16,7 +16,7 @@ module.exports = (draftId, content) => {
 			draftId: draftId,
 			content: content
 		})
-		.then( result => {
+		.then(result => {
 			return result.id
 		})
 	)

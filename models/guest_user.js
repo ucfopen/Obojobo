@@ -1,4 +1,3 @@
-let db = oboRequire('db');
 let User = require('./user')
 
 class GuestUser extends User{
@@ -14,8 +13,9 @@ class GuestUser extends User{
 		return true;
 	}
 
+	static fetchById(id) {
+		throw new Error('Cannot fetch Guest User')
+	}
 }
 
 module.exports = GuestUser
-
-

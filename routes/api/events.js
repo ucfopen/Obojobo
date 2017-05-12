@@ -1,11 +1,10 @@
 var express = require('express');
-var app = express();
-
+var router = express.Router();
+var oboEvents = oboRequire('obo_events')
 var insertEvent = oboRequire('insert_event')
-var getIp = oboRequire('get_ip')
 
-app.post('/', (req, res, next) => {
-	req.requireCurrentUser()
+router.post('/', (req, res, next) => {
+	return req.requireCurrentUser()
 	.then(currentUser => {
 		// check input
 
@@ -16,25 +15,32 @@ app.post('/', (req, res, next) => {
 			actorTime: event.actor_time,
 			action: event.action,
 			userId: currentUser.id,
-			ip: getIp(req),
+			ip: req.connection.remoteAddress,
 			metadata: {},
 			payload: event.payload,
 			draftId: event.draft_id
 		}
 
-		insertEvent(insertObject)
-		.then( result => {
+		return insertEvent(insertObject)
+		.then(result => {
 			insertObject.createdAt = result.created_at;
-			global.oboEvents.emit(`client:${event.action}`, insertObject, req);
+			oboEvents.emit(`client:${event.action}`, insertObject, req);
 			res.success({ createdAt:result.created_at });
+			return next();
+		})
+		.catch(err => {
+			console.error('Insert Event Failure:', err)
+			res.unexpected(err);
 			next();
 		})
-		.catch( error => {
-			res.unexpected(error);
-			next();
-		})
+	})
+	.catch(err => {
+		console.log(err)
+		res.notAuthorized(err);
+		next();
+		return Promise.reject(err)
 	})
 
 })
 
-module.exports = app;
+module.exports = router;
