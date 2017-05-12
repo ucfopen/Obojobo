@@ -67,14 +67,11 @@ var config = {
 
 // var files = glob.sync(path.join(__dirname, 'src', 'scripts', 'node_modules', 'ObojoboDraft', 'Chunks', '**/viewer.coffee'))
 var files = glob.sync(path.join(__dirname, 'src', 'scripts', 'node_modules', 'ObojoboDraft', '**', 'viewer2.coffee'))
-console.log('files be all like', files)
 for(file in files)
 {
 	var str = files[file]
 	var dir = str.substr(str.indexOf('ObojoboDraft')).split(path.sep)
-	console.log('dir', dir)
 	dir.pop()
-	console.log('dir', dir)
 	var itemName = dir.join('.')
 
 	config.entry[itemName] = [files[file]]
@@ -82,7 +79,5 @@ for(file in files)
 
 
 // config.entry.test = [path.join(__dirname, 'src', 'scripts', 'node_modules', 'chunks', 'src', 'core', 'base', 'Break', 'editor.coffee')]
-
-console.log(config.entry)
 
 module.exports = config;
