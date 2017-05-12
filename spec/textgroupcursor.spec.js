@@ -5,7 +5,7 @@ Chunk            = window.ObojoboDraft.models.Chunk;
 TextGroup        = window.ObojoboDraft.text.TextGroup;
 ComponentClassMap        = window.ObojoboDraft.util.ComponentClassMap;
 
-window.OBO.getChunks( function(chunks) {
+window.ObojoboDraft.Store.getChunks( function(chunks) {
 	chunks.forEach(function(chunkClass, type) {
 		ComponentClassMap.register(type, chunkClass);
 	});
