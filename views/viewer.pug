@@ -8,6 +8,7 @@ html(lang="en")
 
 		link(rel='stylesheet', href='/stylesheets/style.css')
 		link(rel="stylesheet", media="screen", href="//fonts.googleapis.com/css?family=Libre+Franklin:400,400i,700,700i,900,900i|Roboto+Mono:400,400i,700,700i|Noto+Serif:400,400i,700,700i")
+		link(rel="stylesheet", media="screen", href="https://cdnjs.cloudflare.com/ajax/libs/KaTeX/0.7.1/katex.min.css")
 
 		each href in css
 			link(rel="stylesheet", media="screen", href=href)
@@ -32,3 +33,5 @@ html(lang="en")
 
 		each src in footerJs
 			script(src=src)
+
+		script window.__oboViewerRender()

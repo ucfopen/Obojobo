@@ -12,13 +12,12 @@ module.exports = {
 	target: 'web',
 	entry: {
 		"viewer": [
-			`${docEngineBasePath}obo.js`,
 			`${docEngineBasePath}obojobo-draft.js`,
 			`${docEngineBasePath}obojobo-draft.css`,
-			`${docEngineBasePath}obojobo-draft-document-viewer.js`,
-			`${docEngineBasePath}obojobo-draft-document-viewer.css`
-		].concat(getInstalledModules(optimize?'production':'development').assets),
-		"viewer-app": [`${docEngineBasePath}obojobo-draft-document-viewer-app.js`],
+			`${docEngineBasePath}viewer.js`,
+			`${docEngineBasePath}viewer.css`,
+			`${docEngineBasePath}viewer-app.js`,
+		].concat(getInstalledModules(optimize?'production':'development').assets)
 	},
 	module: {
 		rules:[
