@@ -4,7 +4,8 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "test": "./node_modules/.bin/jasmine-node spec",
+    "test": "jest --verbose",
+    "test:watch": "jest --verbose --watch",
     "start": "webpack --watch",
     "dev": "webpack-dev-server  --colors --port 8090 --host 0.0.0.0",
     "build": "webpack",
@@ -34,6 +35,7 @@
     "http-server": "^0.9.0",
     "jasmine-core": "^2.5.0",
     "jasmine-node": "^1.14.5",
+    "jest": "^19.0.2",
     "json-loader": "^0.5.4",
     "karma": "^1.2.0",
     "karma-chrome-launcher": "^2.0.0",
@@ -54,7 +56,16 @@
     "array-from": "^2.1.1",
     "es6-set": "^0.1.5",
     "promise-polyfill": "^6.0.2",
+    "react": "15.0.2",
+    "react-dom": "15.0.2",
     "smoothscroll-polyfill": "^0.3.4",
+    "underscore": "1.5.1",
     "whatwg-fetch": "^2.0.3"
+  },
+  "jest": {
+    "testURL": "http://localhost:3000/view/00000000-0000-0000-0000-000000000000",
+    "setupFiles": [
+      "./spec/setupTests.js"
+    ]
   }
 }
