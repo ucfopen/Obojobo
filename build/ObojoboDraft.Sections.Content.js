@@ -40,110 +40,12 @@
 /******/ 	return __webpack_require__(0);
 /******/ })
 /************************************************************************/
-/******/ ({
-
-/***/ 0:
+/******/ ([
+/* 0 */
 /***/ function(module, exports, __webpack_require__) {
 
-	module.exports = __webpack_require__(206);
+	(function webpackMissingModule() { throw new Error("Cannot find module \"/Users/si512833/Documents/Obojobo-Next/devsrc/obojobo-draft-document-engine/src/scripts/node_modules/ObojoboDraft/Sections/Content/viewer.js\""); }());
 
-
-/***/ },
-
-/***/ 205:
-/***/ function(module, exports, __webpack_require__) {
-
-	"use strict";
-
-	var Common, NavUtil, OboComponent, OboModel;
-
-	__webpack_require__(286);
-
-	Common = window.ObojoboDraft.Common;
-
-	OboComponent = Common.components.OboComponent;
-
-	OboModel = Common.models.OboModel;
-
-	NavUtil = window.Viewer.util.NavUtil;
-
-	module.exports = React.createClass({
-	  displayName: "exports",
-
-	  render: function render() {
-	    var ChildComponent, child, childEl, navTargetModel;
-	    childEl = null;
-	    navTargetModel = NavUtil.getNavTargetModel(this.props.moduleData.navState);
-	    if (navTargetModel) {
-	      child = this.props.model.getChildContainingModel(navTargetModel);
-	      ChildComponent = child.getComponentClass();
-	      childEl = React.createElement(ChildComponent, { model: child, moduleData: this.props.moduleData });
-	    }
-	    return React.createElement(
-	      OboComponent,
-	      {
-	        model: this.props.model,
-	        moduleData: this.props.moduleData,
-	        className: "obojobo-draft--sections--content"
-	      },
-	      React.createElement(
-	        "div",
-	        null,
-	        childEl
-	      )
-	    );
-	  }
-	});
-
-/***/ },
-
-/***/ 206:
-/***/ function(module, exports, __webpack_require__) {
-
-	'use strict';
-
-	var ObojoboDraft;
-
-	ObojoboDraft = window.ObojoboDraft;
-
-	OBO.register('ObojoboDraft.Sections.Content', {
-	  type: 'section',
-	  "default": true,
-	  adapter: null,
-	  componentClass: __webpack_require__(205),
-	  selectionHandler: null,
-	  getNavItem: function getNavItem(model) {
-	    return {
-	      type: 'hidden',
-	      showChildren: true
-	    };
-	  },
-	  generateNav: function generateNav(model) {
-	    var child, i, index, len, nav, ref;
-	    nav = [];
-	    ref = model.children.models;
-	    for (index = i = 0, len = ref.length; i < len; index = ++i) {
-	      child = ref[index];
-	      nav.push({
-	        type: 'link',
-	        label: child.title,
-	        id: child.get('id')
-	      });
-	    }
-	    nav.push({
-	      type: 'seperator'
-	    });
-	    return nav;
-	  }
-	});
-
-/***/ },
-
-/***/ 286:
-/***/ function(module, exports) {
-
-	// removed by extract-text-webpack-plugin
 
 /***/ }
-
-/******/ });
+/******/ ]);

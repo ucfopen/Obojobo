@@ -24,14 +24,14 @@ class MCAssessment extends DraftNode {
 
 				if(selectedItems.length === 0) return setScore(0)
 
-				let mcChoice = this.draftTree.findNodeClass(selectedItems[0].responder_id)
+				let mcChoice = this.draftTree.getChildNodeById(selectedItems[0].responder_id)
 				setScore(mcChoice.node.content.score)
 				break
 
 			case 'pick-all':
 				let correctIds = new Set([...this.immediateChildrenSet]
 					.filter( (id) => {
-						return this.draftTree.findNodeClass(id).node.content.score === 100
+						return this.draftTree.getChildNodeById(id).node.content.score === 100
 					}))
 
 				let responseIds = new Set(

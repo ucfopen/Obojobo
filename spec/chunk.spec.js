@@ -9,7 +9,7 @@ TextGroup        = window.ObojoboDraft.text.TextGroup;
 ComponentClassMap        = window.ObojoboDraft.util.ComponentClassMap;
 DOMSelection = window.ObojoboDraft.page.DOMSelection;
 
-window.OBO.getChunks( function(chunks) {
+window.ObojoboDraft.Store.getChunks( function(chunks) {
 	chunks.forEach(function(chunkClass, type) {
 		ComponentClassMap.register(type, chunkClass);
 	});

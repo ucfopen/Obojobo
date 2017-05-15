@@ -14,16 +14,15 @@ describe('MCAssessment', () => {
 
   beforeEach(() => {
     rootNode = new Draft(testJson)
-    mcAssessment = new MCAssessment()
+    mcAssessment = new MCAssessment(
+      draftTree = { findNodeClass: jest.fn().mockImplementation(() => responseRecord) }
+      children = [new DraftNode()]
+    )
     responseRecord = {
       node: { content: { score: 100 } },
       response: { set: true },
       responder_id: 'test'
     }
-    mcAssessment.draftTree = {
-      findNodeClass: jest.fn().mockImplementation(() => responseRecord)
-    }
-    mcAssessment.children = [new DraftNode()]
     score = null
   })
 

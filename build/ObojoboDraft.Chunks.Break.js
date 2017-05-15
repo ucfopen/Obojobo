@@ -40,91 +40,12 @@
 /******/ 	return __webpack_require__(0);
 /******/ })
 /************************************************************************/
-/******/ ({
-
-/***/ 0:
+/******/ ([
+/* 0 */
 /***/ function(module, exports, __webpack_require__) {
 
-	module.exports = __webpack_require__(121);
+	(function webpackMissingModule() { throw new Error("Cannot find module \"/Users/si512833/Documents/Obojobo-Next/devsrc/obojobo-draft-document-engine/src/scripts/node_modules/ObojoboDraft/Chunks/Break/viewer.js\""); }());
 
-
-/***/ },
-
-/***/ 119:
-/***/ function(module, exports) {
-
-	'use strict';
-
-	var Adapter;
-
-	Adapter = {
-	  toText: function toText(model) {
-	    return '---';
-	  }
-	};
-
-	module.exports = Adapter;
-
-/***/ },
-
-/***/ 120:
-/***/ function(module, exports, __webpack_require__) {
-
-	"use strict";
-
-	var Break, Common, NonEditableChunk, OboComponent;
-
-	__webpack_require__(255);
-
-	Common = window.ObojoboDraft.Common;
-
-	OboComponent = Common.components.OboComponent;
-
-	NonEditableChunk = Common.chunk.NonEditableChunk;
-
-	Break = React.createClass({
-		displayName: "Break",
-
-		render: function render() {
-			return React.createElement(
-				OboComponent,
-				{ model: this.props.model, moduleData: this.props.moduleData },
-				React.createElement(
-					NonEditableChunk,
-					{ className: "obojobo-draft--chunks--break viewer" },
-					React.createElement("hr", null)
-				)
-			);
-		}
-	});
-
-	module.exports = Break;
-
-/***/ },
-
-/***/ 121:
-/***/ function(module, exports, __webpack_require__) {
-
-	'use strict';
-
-	var Common;
-
-	Common = window.ObojoboDraft.Common;
-
-	OBO.register('ObojoboDraft.Chunks.Break', {
-	  type: 'chunk',
-	  adapter: __webpack_require__(119),
-	  componentClass: __webpack_require__(120),
-	  selectionHandler: new Common.chunk.focusableChunk.FocusableSelectionHandler()
-	});
-
-/***/ },
-
-/***/ 255:
-/***/ function(module, exports) {
-
-	// removed by extract-text-webpack-plugin
 
 /***/ }
-
-/******/ });
+/******/ ]);

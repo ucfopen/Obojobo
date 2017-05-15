@@ -40,89 +40,12 @@
 /******/ 	return __webpack_require__(0);
 /******/ })
 /************************************************************************/
-/******/ ({
-
-/***/ 0:
+/******/ ([
+/* 0 */
 /***/ function(module, exports, __webpack_require__) {
 
-	module.exports = __webpack_require__(123);
+	(function webpackMissingModule() { throw new Error("Cannot find module \"/Users/si512833/Documents/Obojobo-Next/devsrc/obojobo-draft-document-engine/src/scripts/node_modules/ObojoboDraft/Chunks/Code/viewer.js\""); }());
 
-
-/***/ },
-
-/***/ 122:
-/***/ function(module, exports, __webpack_require__) {
-
-	"use strict";
-
-	var Code, Common, OboComponent, TextChunk, TextGroupEl;
-
-	__webpack_require__(256);
-
-	Common = window.ObojoboDraft.Common;
-
-	OboComponent = Common.components.OboComponent;
-
-	TextGroupEl = Common.chunk.textChunk.TextGroupEl;
-
-	TextChunk = Common.chunk.TextChunk;
-
-	Code = React.createClass({
-	  displayName: "Code",
-
-	  render: function render() {
-	    var texts;
-	    texts = this.props.model.modelState.textGroup.items.map(function (textItem, index) {
-	      return React.createElement(TextGroupEl, { parentModel: this.props.model, textItem: textItem, groupIndex: index, key: index });
-	    }.bind(this));
-	    return React.createElement(
-	      OboComponent,
-	      { model: this.props.model, moduleData: this.props.moduleData },
-	      React.createElement(
-	        TextChunk,
-	        { className: "obojobo-draft--chunks--single-text pad" },
-	        React.createElement(
-	          "pre",
-	          null,
-	          React.createElement(
-	            "code",
-	            null,
-	            texts
-	          )
-	        )
-	      )
-	    );
-	  }
-	});
-
-	module.exports = Code;
-
-/***/ },
-
-/***/ 123:
-/***/ function(module, exports, __webpack_require__) {
-
-	'use strict';
-
-	var ObojoboDraft;
-
-	ObojoboDraft = window.ObojoboDraft;
-
-	OBO.register('ObojoboDraft.Chunks.Code', {
-	  type: 'chunk',
-	  "default": true,
-	  adapter: ObojoboDraft.Common.chunk.textChunk.TextGroupAdapter,
-	  componentClass: __webpack_require__(122),
-	  selectionHandler: new ObojoboDraft.Common.chunk.textChunk.TextGroupSelectionHandler()
-	});
-
-/***/ },
-
-/***/ 256:
-/***/ function(module, exports) {
-
-	// removed by extract-text-webpack-plugin
 
 /***/ }
-
-/******/ });
+/******/ ]);

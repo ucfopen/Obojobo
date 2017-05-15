@@ -1,0 +1,428 @@
+body *[data-indent="1"] {
+  margin-left: 2rem; }
+
+body *[data-indent="2"] {
+  margin-left: 4rem; }
+
+body *[data-indent="3"] {
+  margin-left: 6rem; }
+
+body *[data-indent="4"] {
+  margin-left: 8rem; }
+
+body *[data-indent="5"] {
+  margin-left: 10rem; }
+
+body *[data-indent="6"] {
+  margin-left: 12rem; }
+
+body *[data-indent="7"] {
+  margin-left: 14rem; }
+
+body *[data-indent="8"] {
+  margin-left: 16rem; }
+
+body *[data-indent="9"] {
+  margin-left: 18rem; }
+
+body *[data-indent="10"] {
+  margin-left: 20rem; }
+
+body *[data-indent="11"] {
+  margin-left: 22rem; }
+
+body *[data-indent="12"] {
+  margin-left: 24rem; }
+
+body *[data-indent="13"] {
+  margin-left: 26rem; }
+
+body *[data-indent="14"] {
+  margin-left: 28rem; }
+
+body *[data-indent="15"] {
+  margin-left: 30rem; }
+
+body *[data-indent="16"] {
+  margin-left: 32rem; }
+
+body *[data-indent="17"] {
+  margin-left: 34rem; }
+
+body *[data-indent="18"] {
+  margin-left: 36rem; }
+
+body *[data-indent="19"] {
+  margin-left: 38rem; }
+
+body *[data-indent="20"] {
+  margin-left: 40rem; }
+
+html {
+  height: 100%;
+  width: 100%;
+  overflow: hidden; }
+
+a {
+  color: inherit; }
+
+body {
+  height: 100%;
+  padding: 0;
+  margin: 0;
+  -webkit-overflow-scrolling: touch;
+  font-size: 14pt; }
+
+#viewer-app {
+  height: 100%;
+  overflow: auto; }
+  #viewer-app .root {
+    height: 100%; }
+
+.component {
+  box-sizing: border-box;
+  color: black;
+  display: block;
+  font-family: 'Noto Serif';
+  line-height: 1.5em;
+  overflow-wrap: break-word;
+  position: relative;
+  white-space: pre-wrap;
+  width: 100%;
+  word-wrap: break-word;
+  margin: 0 auto;
+  padding-top: 1em;
+  padding-bottom: 1em; }
+  .component.first {
+    padding-top: 0; }
+  .component.last {
+    padding-bottom: 0; }
+  .component .pad {
+    padding-left: 3em;
+    padding-right: 3em; }
+  .component h1, .component h2, .component h3, .component h4, .component h5, .component h6 {
+    /*font-family: 'Open Sans';*/
+    font-family: "Libre Franklin", Arial, sans-serif;
+    font-weight: normal;
+    margin: 0; }
+  .component h1 {
+    line-height: 1em;
+    font-weight: 700; }
+    .component h1 b,
+    .component h1 strong {
+      font-weight: 900; }
+  .component h2 {
+    line-height: 1em;
+    color: #A20E83;
+    font-size: 1.5em; }
+  .component pre,
+  .component code,
+  .component pre code,
+  .component textarea {
+    font-family: "Roboto Mono", monospace;
+    font-size: 1em;
+    letter-spacing: -0.01em; }
+  .component a {
+    color: #bd1438; }
+  .component .obojobo-draft--chunks--question .question {
+    font-weight: 700; }
+    .component .obojobo-draft--chunks--question .question b,
+    .component .obojobo-draft--chunks--question .question strong {
+      font-weight: 900; }
+  .component .text.align-left {
+    text-align: left; }
+  .component .text.align-right {
+    text-align: right; }
+  .component .text.align-center {
+    text-align: center; }
+.viewer--viewer-app {
+  height: 100%;
+  transition: padding-left 0.2s 0.2s, padding-top 0.2s;
+  overflow: auto;
+  padding-top: 2.5rem;
+  box-sizing: border-box; }
+  .viewer--viewer-app.is-open-nav.is-enabled-nav {
+    padding-left: 16rem;
+    padding-top: 0; }
+    .viewer--viewer-app.is-open-nav.is-enabled-nav > header {
+      top: -2.5rem;
+      border-bottom: 1px solid transparent; }
+      .viewer--viewer-app.is-open-nav.is-enabled-nav > header .viewer--components--logo, .viewer--viewer-app.is-open-nav.is-enabled-nav > header .location {
+        opacity: 0;
+        transition-delay: 0s;
+        transition: 0.1s opacity; }
+  .viewer--viewer-app > header {
+    background: #FFFFFF;
+    position: absolute;
+    left: 0;
+    width: 100%;
+    top: 0;
+    height: 2.5rem;
+    z-index: 999;
+    border-bottom: 1px solid rgba(0, 0, 0, 0.1);
+    font-size: .7rem;
+    font-family: Libre Franklin;
+    color: #000000;
+    padding: 0.8rem 1rem;
+    padding-left: 4rem;
+    box-sizing: border-box;
+    transition: top 0.2s;
+    opacity: 0.95; }
+    .viewer--viewer-app > header > div {
+      position: relative; }
+    .viewer--viewer-app > header .module-title {
+      text-transform: uppercase;
+      display: inline-block;
+      cursor: default; }
+    .viewer--viewer-app > header .location {
+      margin-left: 1rem;
+      font-weight: bold;
+      transition: opacity 0.2s;
+      transition-delay: 0.4s;
+      cursor: default; }
+    .viewer--viewer-app > header .viewer--components--logo {
+      color: #999999;
+      position: fixed;
+      right: 1rem;
+      top: 0.8rem;
+      transition: opacity 0.2s;
+      transition-delay: 0.6s;
+      opacity: 0.2;
+      cursor: default; }
+  .viewer--viewer-app > .preview-banner {
+    font-family: "Libre Franklin", Arial, sans-serif;
+    background: #555a69;
+    box-sizing: border-box;
+    color: white;
+    font-size: .7em;
+    font-weight: bold;
+    line-height: 0;
+    height: 3rem;
+    left: 0;
+    padding: .5em 1em;
+    padding-top: 1.5rem;
+    position: fixed;
+    right: 0;
+    bottom: 0;
+    z-index: 99999; }
+    .viewer--viewer-app > .preview-banner .controls {
+      position: absolute;
+      right: 1em;
+      top: 50%;
+      transform: translate(0, -50%) translate(0, 0.5px); }
+      .viewer--viewer-app > .preview-banner .controls button {
+        -webkit-appearance: none;
+        -moz-appearance: none;
+        -ms-appearance: none;
+        -o-appearance: none;
+        appearance: none;
+        -webkit-user-select: none;
+        -moz-user-select: none;
+        -ms-user-select: none;
+        user-select: none;
+        margin-left: 1em;
+        font-family: "Libre Franklin", Arial, sans-serif;
+        font-size: 0.75em;
+        line-height: 1em;
+        cursor: pointer;
+        font-family: "Libre Franklin", Arial, sans-serif;
+        font-size: 1em;
+        position: relative;
+        text-align: center;
+        min-width: 3.25em;
+        border-radius: .2em;
+        padding: 0.4em;
+        background-color: white;
+        color: #555a69;
+        border: 1px solid transparent;
+        border-bottom: 1px solid #cccccc;
+        border: 1px solid white;
+        border-bottom: 1px solid white;
+        background-color: #FFFFFF;
+        color: #555a69; }
+        .viewer--viewer-app > .preview-banner .controls button:hover {
+          background-color: #555a69;
+          color: white; }
+        .viewer--viewer-app > .preview-banner .controls button:disabled {
+          opacity: 0.5;
+          cursor: default; }
+          .viewer--viewer-app > .preview-banner .controls button:disabled:hover {
+            background-color: #FFFFFF;
+            color: #555a69; }
+  .viewer--viewer-app.is-previewing {
+    height: calc(100% - 3rem); }
+@charset "UTF-8";
+.viewer--components--inline-nav-button {
+  background: rgba(103, 20, 189, 0.05);
+  width: 100%;
+  border: none;
+  font-family: "Libre Franklin", Arial, sans-serif;
+  font-size: 0.9em;
+  padding: 1em;
+  box-sizing: border-box;
+  color: #6714BD;
+  transition: color 0.2s, background 0.2s;
+  cursor: pointer;
+  text-align: center;
+  height: 6em;
+  line-height: 3.5em;
+  transform: translate(0, -1px); }
+  .viewer--components--inline-nav-button:focus {
+    outline: none; }
+  .viewer--components--inline-nav-button.is-enabled.is-prev {
+    border-bottom: 1px solid #6714BD; }
+    .viewer--components--inline-nav-button.is-enabled.is-prev:before {
+      content: "\279C";
+      transform: rotate(-90deg) translate(0, -0.5rem);
+      display: inline-block;
+      opacity: 0.5; }
+  .viewer--components--inline-nav-button.is-enabled.is-next {
+    border-top: 1px solid #6714BD; }
+    .viewer--components--inline-nav-button.is-enabled.is-next:before {
+      content: "\279C";
+      transform: rotate(90deg) translate(0, 0.5rem);
+      display: inline-block;
+      opacity: 0.5; }
+  .viewer--components--inline-nav-button.is-enabled:hover {
+    color: #FFFFFF;
+    background: #6714BD; }
+  .viewer--components--inline-nav-button.is-disabled {
+    background: #F4F4F4;
+    color: rgba(0, 0, 0, 0.3); }
+    .viewer--components--inline-nav-button.is-disabled.is-prev {
+      border-bottom: 1px solid rgba(0, 0, 0, 0.3); }
+    .viewer--components--inline-nav-button.is-disabled.is-next {
+      border-top: 1px solid rgba(0, 0, 0, 0.3); }
+.viewer--components--logo {
+  display: block;
+  width: 4rem;
+  height: 1rem;
+  background-size: contain;
+  background-position: center right;
+  background-repeat: no-repeat;
+  padding-top: 1rem;
+  box-sizing: border-box;
+  overflow: hidden; }
+  .viewer--components--logo.is-inverted {
+    filter: invert(100%); }
+@charset "UTF-8";
+.viewer--components--nav {
+  overflow: auto;
+  position: fixed;
+  top: 0;
+  left: 0;
+  bottom: 0;
+  z-index: 999;
+  font-family: "Libre Franklin", Arial, sans-serif;
+  color: #FFFFFF;
+  background: #131313;
+  font-size: 1rem;
+  width: 16rem;
+  padding: 2rem;
+  padding-top: 1rem;
+  box-sizing: border-box;
+  transition: left 0.2s 0.2s; }
+  .viewer--components--nav.is-locked li.link,
+  .viewer--components--nav.is-locked li.seperator {
+    opacity: 0.25;
+    pointer-events: none; }
+    .viewer--components--nav.is-locked li.link.is-selected,
+    .viewer--components--nav.is-locked li.seperator.is-selected {
+      opacity: 1; }
+      .viewer--components--nav.is-locked li.link.is-selected a,
+      .viewer--components--nav.is-locked li.seperator.is-selected a {
+        text-decoration: none; }
+  .viewer--components--nav.is-closed {
+    left: -16rem; }
+  .viewer--components--nav.is-open .toggle-button {
+    background-color: transparent;
+    border: 2px solid transparent; }
+    .viewer--components--nav.is-open .toggle-button:hover {
+      background-color: transparent; }
+  .viewer--components--nav.is-disabled {
+    display: none; }
+  .viewer--components--nav .is-correct {
+    color: #b4d4af; }
+  .viewer--components--nav .is-selected {
+    font-weight: bold;
+    color: #93C6FF; }
+    .viewer--components--nav .is-selected:after {
+      content: "\2022";
+      position: absolute;
+      right: -1rem;
+      top: 50%;
+      transform: translate(0, -50%); }
+    .viewer--components--nav .is-selected .lock-icon {
+      display: none; }
+  .viewer--components--nav .lock-icon {
+    position: absolute;
+    right: -1.2rem;
+    top: 0.2rem;
+    width: 0.7rem;
+    opacity: .3; }
+  .viewer--components--nav ul {
+    padding: 0;
+    margin: 0;
+    text-align: right; }
+  .viewer--components--nav li {
+    position: relative;
+    list-style-type: none;
+    padding: 0.25rem 0; }
+  .viewer--components--nav hr {
+    border: none;
+    border-bottom: 1px solid #FFFFFF;
+    opacity: 0.2; }
+  .viewer--components--nav .link,
+  .viewer--components--nav .sub-link {
+    cursor: pointer; }
+    .viewer--components--nav .link:hover,
+    .viewer--components--nav .sub-link:hover {
+      color: #93C6FF; }
+    .viewer--components--nav .link.is-selected:hover,
+    .viewer--components--nav .sub-link.is-selected:hover {
+      color: #93C6FF;
+      cursor: default; }
+  .viewer--components--nav .link {
+    margin-top: 1rem; }
+  .viewer--components--nav .sub-link {
+    font-size: .7rem;
+    opacity: .6;
+    margin-left: 1rem;
+    position: relative; }
+    .viewer--components--nav .sub-link:after {
+      content: "\2022";
+      position: absolute;
+      right: -1.3em;
+      top: 1em;
+      transform: translate(0, -50%); }
+  .viewer--components--nav .seperator {
+    cursor: default; }
+  .viewer--components--nav .heading {
+    font-size: 0.7rem;
+    opacity: .5;
+    text-transform: uppercase;
+    cursor: default;
+    margin-bottom: 1rem; }
+  .viewer--components--nav .toggle-button {
+    background-color: transparent;
+    background-position: center center;
+    background-repeat: no-repeat;
+    border: none;
+    cursor: pointer;
+    height: 1.5rem;
+    left: 1rem;
+    overflow: hidden;
+    position: fixed;
+    text-indent: -9999px;
+    top: 0.5rem;
+    transition: background-color 0.2s;
+    width: 1.5rem;
+    z-index: 2; }
+    .viewer--components--nav .toggle-button:focus {
+      outline: none; }
+  .viewer--components--nav .viewer--components--logo {
+    position: absolute;
+    right: 2rem;
+    bottom: 2rem;
+    font-size: 0.7rem;
+    opacity: 0.1; }

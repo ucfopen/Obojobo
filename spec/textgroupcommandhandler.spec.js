@@ -10,7 +10,7 @@ ComponentClassMap        = window.ObojoboDraft.util.ComponentClassMap;
 DOMSelection = window.ObojoboDraft.page.DOMSelection;
 TextGroupCommandHandler = window.Editor.command.TextGroupCommandHandler;
 
-window.OBO.getChunks( function(chunks) {
+window.ObojoboDraft.Store.getChunks( function(chunks) {
 	chunks.forEach(function(chunkClass, type) {
 		ComponentClassMap.register(type, chunkClass);
 	});
