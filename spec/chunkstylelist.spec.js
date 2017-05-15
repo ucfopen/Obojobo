@@ -1,7 +1,7 @@
 // require('./bootstrap');
 
-ChunkStyleList = window.ObojoboDraft.text.ChunkStyleList;
-StyleRange     = window.ObojoboDraft.text.StyleRange;
+ChunkStyleList = window.ObojoboDraft.Common.text.ChunkStyleList;
+StyleRange     = window.ObojoboDraft.Common.text.StyleRange;
 
 describe('ChunkStyleList', function() {
 	beforeEach(function() {
@@ -14,7 +14,7 @@ describe('ChunkStyleList', function() {
 		styleList.add(styleRangeBold);
 	});
 
-	it('exports to an object', function(done) {
+	it('exports to an object', function() {
 		actual = styleList.getExportedObject();
 
 		expected = [
@@ -35,11 +35,9 @@ describe('ChunkStyleList', function() {
 		];
 
 		expect(actual).toEqual(expected);
-
-		// done();
 	});
 
-	it('imports an object', function(done) {
+	it('imports an object', function() {
 		styleList = ChunkStyleList.createFromObject([
 			{
 				start: 10,
@@ -51,34 +49,26 @@ describe('ChunkStyleList', function() {
 
 		expect(styleList.styles.length).toEqual(1);
 		expect(styleList.styles[0]).toEqual(new StyleRange(10, 20, 'a', { href:'website.net' }));
-
-		// done();
 	});
 
-	it('clones', function(done) {
+	it('clones', function() {
 		clone = styleList.clone();
 
 		expect(clone).not.toBe(styleList);
 		expect(clone.getExportedObject()).toEqual(styleList.getExportedObject());
-
-		// done();
 	});
 
-	it('specifies the length', function(done) {
+	it('specifies the length', function() {
 		expect(styleList.length()).toBe(2);
-
-		// done();
 	});
 
-	it('completely removes ranges enscapsulated by a given range', function(done) {
+	it('completely removes ranges enscapsulated by a given range', function() {
 		styleList.remove(new StyleRange(5, 20));
 
 		expect(styleList.length()).toBe(0);
-
-		// done();
 	});
 
-	it('trims ranges overlapped by a given range', function(done) {
+	it('trims ranges overlapped by a given range', function() {
 		styleList.remove(new StyleRange(0, 10));
 		styleList.remove(new StyleRange(15, 20));
 
@@ -94,11 +84,9 @@ describe('ChunkStyleList', function() {
 				expect(range).toEqual(new StyleRange(10, 15, 'b'));
 			}
 		});
-
-		// done();
 	});
 
-	it('splits ranges that contain a given range', function(done) {
+	it('splits ranges that contain a given range', function() {
 		//styleRangeLink = new StyleRange(5, 15, 'a', { href:'google.com' });
 		//styleRangeBold = new StyleRange(10, 20, 'b');
 		styleList.remove(new StyleRange(10, 11, 'a'));
@@ -123,11 +111,9 @@ describe('ChunkStyleList', function() {
 				data: { href:'google.com' }
 			}
 		]);
-
-		// done();
 	});
 
-	it('normalizes similar ranges', function(done) {
+	it('normalizes similar ranges', function() {
 		newStyleRange = new StyleRange(5, 15, 'b');
 		styleList.add(newStyleRange);
 		styleList.normalize();
@@ -140,11 +126,9 @@ describe('ChunkStyleList', function() {
 				expect(range).toEqual(new StyleRange(5, 20, 'b'));
 			}
 		});
-
-		// done();
 	});
 
-	it("doesn't normalize dis-similar ranges", function(done) {
+	it("doesn't normalize dis-similar ranges", function() {
 		newStyleRange = new StyleRange(0, 20, 'a', { href:'new-website.com'});
 		styleList.add(newStyleRange);
 		styleList.normalize();
@@ -175,11 +159,9 @@ describe('ChunkStyleList', function() {
 				}
 			}
 		]);
-
-		// done();
 	});
 
-	it("returns styles ranges after a given range", function(done) {
+	it("returns styles ranges after a given range", function() {
 		comparisons = styleList.getStyleComparisonsForRange(0, 1, 'b');
 
 		expect(comparisons.after.length).toBe(1);
@@ -190,11 +172,9 @@ describe('ChunkStyleList', function() {
 		expect(comparisons.right.length).toBe(0);
 
 		expect(comparisons.after[0]).toBe(styleRangeBold);
-
-		// done();
 	});
 
-	it("returns styles ranges before a given range", function(done) {
+	it("returns styles ranges before a given range", function() {
 		comparisons = styleList.getStyleComparisonsForRange(21, 22, 'b');
 
 		expect(comparisons.after.length).toBe(0);
@@ -205,11 +185,9 @@ describe('ChunkStyleList', function() {
 		expect(comparisons.right.length).toBe(0);
 
 		expect(comparisons.before[0]).toBe(styleRangeBold);
-
-		// done();
 	});
 
-	it("returns styles ranges enscapsulated by a given range", function(done) {
+	it("returns styles ranges enscapsulated by a given range", function() {
 		comparisons = styleList.getStyleComparisonsForRange(0, 20, 'b');
 
 		expect(comparisons.after.length).toBe(0);
@@ -220,11 +198,9 @@ describe('ChunkStyleList', function() {
 		expect(comparisons.right.length).toBe(0);
 
 		expect(comparisons.enscapsulatedBy[0]).toBe(styleRangeBold);
-
-		// done();
 	});
 
-	it("returns styles ranges containing a given range", function(done) {
+	it("returns styles ranges containing a given range", function() {
 		comparisons = styleList.getStyleComparisonsForRange(11, 20, 'b');
 
 		expect(comparisons.after.length).toBe(0);
@@ -235,11 +211,9 @@ describe('ChunkStyleList', function() {
 		expect(comparisons.right.length).toBe(0);
 
 		expect(comparisons.contains[0]).toBe(styleRangeBold);
-
-		// done();
 	});
 
-	it("returns styles ranges within the left side of a given range", function(done) {
+	it("returns styles ranges within the left side of a given range", function() {
 		comparisons = styleList.getStyleComparisonsForRange(20, 21, 'b');
 
 		expect(comparisons.after.length).toBe(0);
@@ -250,11 +224,9 @@ describe('ChunkStyleList', function() {
 		expect(comparisons.right.length).toBe(0);
 
 		expect(comparisons.left[0]).toBe(styleRangeBold);
-
-		// done();
 	});
 
-	it("returns styles ranges within the right side of a given range", function(done) {
+	it("returns styles ranges within the right side of a given range", function() {
 		comparisons = styleList.getStyleComparisonsForRange(0, 11, 'b');
 
 		expect(comparisons.after.length).toBe(0);
@@ -265,11 +237,9 @@ describe('ChunkStyleList', function() {
 		expect(comparisons.right.length).toBe(1);
 
 		expect(comparisons.right[0]).toBe(styleRangeBold);
-
-		// done();
 	});
 
-	it("returns all styles range comparisons when no type is specified", function(done) {
+	it("returns all styles range comparisons when no type is specified", function() {
 		comparisons = styleList.getStyleComparisonsForRange(0, 15);
 
 		expect(comparisons.after.length).toBe(0);
@@ -281,38 +251,30 @@ describe('ChunkStyleList', function() {
 
 		expect(comparisons.enscapsulatedBy[0]).toBe(styleRangeLink);
 		expect(comparisons.right[0]).toBe(styleRangeBold);
-
-		// done();
 	});
 
-	it("returns styles with getStyles", function(done) {
+	it("returns styles with getStyles", function() {
 		styles = styleList.getStyles();
 
 		expect(Object.keys(styles).length).toBe(2);
 		expect(styles['a']).toBe('a');
 		expect(styles['b']).toBe('b');
-
-		// done();
 	});
 
-	it("returns styles completely within a given range", function(done) {
+	it("returns styles completely within a given range", function() {
 		styles = styleList.getStylesInRange(5, 15);
 
 		expect(Object.keys(styles).length).toBe(1);
 		expect(styles['a']).toBe('a');
-
-		// done();
 	});
 
-	it("doesn't return styles completely within a given range", function(done) {
+	it("doesn't return styles completely within a given range", function() {
 		styles = styleList.getStylesInRange(0, 15);
 
 		expect(styles).toEqual({});
-
-		// done();
 	});
 
-	it("cleans up superscripts", function(done) {
+	it("cleans up superscripts", function() {
 		styleList2 = new ChunkStyleList();
 		sub1 = new StyleRange(5, 10, 'sup', 3);
 		sub2 = new StyleRange(5, 10, 'sup', -3);
@@ -328,7 +290,5 @@ describe('ChunkStyleList', function() {
 
 		expect(styleList2.length()).toBe(1);
 		expect(styleList2.styles[0]).toEqual(new StyleRange(15, 20, 'sup', 1));
-
-		// done();
 	});
 });
