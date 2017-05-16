@@ -30,6 +30,8 @@ describe('ScoreStore', () => {
 	test.only('should init state with an empty scores object and return it', () => {
 		ScoreStore.init();
 
+		expect(true).toBe(true);
+
 		expect(ScoreStore.getState()).toEqual({
 			scores: {}
 		})

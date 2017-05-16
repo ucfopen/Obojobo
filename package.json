@@ -67,12 +67,14 @@
   "jest": {
     "testURL": "http://localhost:3000/view/00000000-0000-0000-0000-000000000000",
     "setupFiles": [
-      "./__tests__/setupTests.js"
+      "./setupTests.js"
     ],
     "verbose": true,
     "moduleNameMapper": {
       "^ObojoboDraft(.*)$": "<rootDir>/src/scripts/submodules/ObojoboDraft$1",
-      "^Viewer(.*)$": "<rootDir>/src/scripts/submodules/Viewer$1"
+      "^Viewer(.*)$": "<rootDir>/src/scripts/submodules/Viewer$1",
+      "\\.scss$": "<rootDir>/__mocks__/ignore-file-stub.js",
+      "\\.svg$": "<rootDir>/__mocks__/ignore-file-stub.js"
     }
   }
 }
