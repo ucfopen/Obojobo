@@ -1,9 +1,13 @@
-let OboModel = window.ObojoboDraft.Common.models.OboModel;
-let ScoreStore = window.Viewer.stores.ScoreStore;
-let Dispatcher = window.ObojoboDraft.Common.flux.Dispatcher;
-let APIUtil = window.Viewer.util.APIUtil;
-let FocusUtil = window.ObojoboDraft.Common.util.FocusUtil;
-let NavStore = window.Viewer.stores.NavStore;
+import ObojoboDraft from 'ObojoboDraft'
+import Viewer from 'Viewer'
+
+let Dispatcher = ObojoboDraft.Common.flux.Dispatcher
+let OboModel = ObojoboDraft.Common.models.OboModel;
+let ScoreStore = Viewer.stores.ScoreStore;
+let APIUtil = Viewer.util.APIUtil;
+let FocusUtil = ObojoboDraft.Common.util.FocusUtil;
+let NavStore = Viewer.stores.NavStore;
+
 
 //@TODO: Is this valid?
 OboModel.models.test = {
@@ -23,7 +27,7 @@ describe('ScoreStore', () => {
 		FocusUtil.unfocus = jest.fn()
 	})
 
-	it('should init state with an empty scores object and return it', () => {
+	test.only('should init state with an empty scores object and return it', () => {
 		ScoreStore.init();
 
 		expect(ScoreStore.getState()).toEqual({
