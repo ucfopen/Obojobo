@@ -11,24 +11,28 @@ describe('MCAssessment', () => {
   let score
   const events = { onCalculateScore: 'ObojoboDraft.Chunks.Question:calculateScore' }
   const setScore = s => { score = s }
+  const findNodeClassMock = jest.fn().mockImplementation(() => responseRecord)
 
   beforeEach(() => {
     rootNode = new Draft(testJson)
     mcAssessment = new MCAssessment(
-      draftTree = { findNodeClass: jest.fn().mockImplementation(() => responseRecord) }
+      draftTree = { findNodeClass: findNodeClassMock }
       children = [new DraftNode()]
     )
-    responseRecord = {
-      node: { content: { score: 100 } },
-      response: { set: true },
-      responder_id: 'test'
-    }
+
+    responseRecord = new DraftNode(
+      node = { content: { score: 100 } },
+      response = { set: true },
+      responder_id = 'test'
+    )
+
     score = null
   })
 
-  it('returns if question doesn\'t contain \'this\' node on calculate score', () => {
+  it("returns if question doesn't contain 'this' node on calulate score", () => {
     mcAssessment.node.id = 'test12345'
-    expect(mcAssessment.yell(events.onCalculateScore, {}, rootNode.root, {}, {})).toEqual([])
+    expect(mcAssessment.yell(events.onCalculateScore, {}, rootNode.root, {}, setScore)).toEqual([])
+    expect(score).toBe(null)
   })
 
   it('throws error if multiple answers chosen on non pick-all assessment', () => {
@@ -70,6 +74,7 @@ describe('MCAssessment', () => {
     let responseRecords = [responseRecord]
     mcAssessment.node = { content: { responseType: 'pick-all' } }
     // ID of chosen !== ID of correct ('test')
+    // TODO: Set score of this test node to 0.
     mcAssessment.children[0].node = { id: 'test123' }
     mcAssessment.yell(events.onCalculateScore, {}, rootNode.root, responseRecords, setScore)
     expect(score).toEqual(0)
@@ -83,4 +88,8 @@ describe('MCAssessment', () => {
     mcAssessment.yell(events.onCalculateScore, {}, rootNode.root, responseRecords, setScore)
     expect(score).toEqual(100)
   })
+
+  // TODO: Add test that sets score to 100 when two correct answers are chosen
+  //       out of two correct answer choices for pick-all question type.
+
 })

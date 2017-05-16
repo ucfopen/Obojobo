@@ -8,6 +8,6 @@ window.Backbone = require('backbone');
 
 window.__oboGlobals = {};
 
-require("../build/obo.js")
+// require("../build/obo.js")
 require("../build/obojobo-draft.js")
 require("../build/obojobo-draft-document-viewer.js")

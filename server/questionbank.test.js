@@ -14,7 +14,7 @@ describe('QuestionBank', () => {
     expect(questionBank.children).toEqual([])
   })
 
-  it('handles attempt start event', () => {
+  it.skip('handles attempt start event', () => {
     // TODO: Test this functionality once the code is in use (in express.js)
   })
 })
