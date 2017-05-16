@@ -1,17 +1,4 @@
-
-
-//@TODO: Is this valid?
-
-
-// OboModel.models.test = {
-// 	getRoot: () => {}
-// }
-
-
-// Stop the NavStore from listening to score:set since we're
-// not interested in testing NavStore here.
-
-
+import ScoreUtil from 'Viewer/util/score-util'
 
 describe('ScoreUtil', () => {
 	let originalOboModel = window.ObojoboDraft.Common.models.OboModel;

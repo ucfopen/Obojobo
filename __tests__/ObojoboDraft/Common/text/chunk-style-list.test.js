@@ -1,9 +1,12 @@
-// require('./bootstrap');
+import ObojoboDraft from 'ObojoboDraft'
+import Viewer from 'Viewer'
 
-ChunkStyleList = window.ObojoboDraft.Common.text.ChunkStyleList;
-StyleRange     = window.ObojoboDraft.Common.text.StyleRange;
+let ChunkStyleList = ObojoboDraft.text.ChunkStyleList;
+let StyleRange     = ObojoboDraft.text.StyleRange;
 
 describe('ChunkStyleList', function() {
+	let styleList, styleRangeLink, styleRangeBold;
+
 	beforeEach(function() {
 		styleList = new ChunkStyleList();
 		styleRangeLink = new StyleRange(5, 15, 'a', { href:'google.com' });
@@ -15,9 +18,9 @@ describe('ChunkStyleList', function() {
 	});
 
 	it('exports to an object', function() {
-		actual = styleList.getExportedObject();
+		let actual = styleList.getExportedObject();
 
-		expected = [
+		let expected = [
 			{
 				start: 5,
 				end: 15,
@@ -52,7 +55,7 @@ describe('ChunkStyleList', function() {
 	});
 
 	it('clones', function() {
-		clone = styleList.clone();
+		let clone = styleList.clone();
 
 		expect(clone).not.toBe(styleList);
 		expect(clone.getExportedObject()).toEqual(styleList.getExportedObject());
@@ -114,7 +117,7 @@ describe('ChunkStyleList', function() {
 	});
 
 	it('normalizes similar ranges', function() {
-		newStyleRange = new StyleRange(5, 15, 'b');
+		let newStyleRange = new StyleRange(5, 15, 'b');
 		styleList.add(newStyleRange);
 		styleList.normalize();
 
@@ -129,7 +132,7 @@ describe('ChunkStyleList', function() {
 	});
 
 	it("doesn't normalize dis-similar ranges", function() {
-		newStyleRange = new StyleRange(0, 20, 'a', { href:'new-website.com'});
+		let newStyleRange = new StyleRange(0, 20, 'a', { href:'new-website.com'});
 		styleList.add(newStyleRange);
 		styleList.normalize();
 
@@ -162,7 +165,7 @@ describe('ChunkStyleList', function() {
 	});
 
 	it("returns styles ranges after a given range", function() {
-		comparisons = styleList.getStyleComparisonsForRange(0, 1, 'b');
+		let comparisons = styleList.getStyleComparisonsForRange(0, 1, 'b');
 
 		expect(comparisons.after.length).toBe(1);
 		expect(comparisons.before.length).toBe(0);
@@ -175,7 +178,7 @@ describe('ChunkStyleList', function() {
 	});
 
 	it("returns styles ranges before a given range", function() {
-		comparisons = styleList.getStyleComparisonsForRange(21, 22, 'b');
+		let comparisons = styleList.getStyleComparisonsForRange(21, 22, 'b');
 
 		expect(comparisons.after.length).toBe(0);
 		expect(comparisons.before.length).toBe(1);
@@ -188,7 +191,7 @@ describe('ChunkStyleList', function() {
 	});
 
 	it("returns styles ranges enscapsulated by a given range", function() {
-		comparisons = styleList.getStyleComparisonsForRange(0, 20, 'b');
+		let comparisons = styleList.getStyleComparisonsForRange(0, 20, 'b');
 
 		expect(comparisons.after.length).toBe(0);
 		expect(comparisons.before.length).toBe(0);
@@ -201,7 +204,7 @@ describe('ChunkStyleList', function() {
 	});
 
 	it("returns styles ranges containing a given range", function() {
-		comparisons = styleList.getStyleComparisonsForRange(11, 20, 'b');
+		let comparisons = styleList.getStyleComparisonsForRange(11, 20, 'b');
 
 		expect(comparisons.after.length).toBe(0);
 		expect(comparisons.before.length).toBe(0);
@@ -214,7 +217,7 @@ describe('ChunkStyleList', function() {
 	});
 
 	it("returns styles ranges within the left side of a given range", function() {
-		comparisons = styleList.getStyleComparisonsForRange(20, 21, 'b');
+		let comparisons = styleList.getStyleComparisonsForRange(20, 21, 'b');
 
 		expect(comparisons.after.length).toBe(0);
 		expect(comparisons.before.length).toBe(0);
@@ -227,7 +230,7 @@ describe('ChunkStyleList', function() {
 	});
 
 	it("returns styles ranges within the right side of a given range", function() {
-		comparisons = styleList.getStyleComparisonsForRange(0, 11, 'b');
+		let comparisons = styleList.getStyleComparisonsForRange(0, 11, 'b');
 
 		expect(comparisons.after.length).toBe(0);
 		expect(comparisons.before.length).toBe(0);
@@ -240,7 +243,7 @@ describe('ChunkStyleList', function() {
 	});
 
 	it("returns all styles range comparisons when no type is specified", function() {
-		comparisons = styleList.getStyleComparisonsForRange(0, 15);
+		let comparisons = styleList.getStyleComparisonsForRange(0, 15);
 
 		expect(comparisons.after.length).toBe(0);
 		expect(comparisons.before.length).toBe(0);
@@ -254,7 +257,7 @@ describe('ChunkStyleList', function() {
 	});
 
 	it("returns styles with getStyles", function() {
-		styles = styleList.getStyles();
+		let styles = styleList.getStyles();
 
 		expect(Object.keys(styles).length).toBe(2);
 		expect(styles['a']).toBe('a');
@@ -262,24 +265,24 @@ describe('ChunkStyleList', function() {
 	});
 
 	it("returns styles completely within a given range", function() {
-		styles = styleList.getStylesInRange(5, 15);
+		let styles = styleList.getStylesInRange(5, 15);
 
 		expect(Object.keys(styles).length).toBe(1);
 		expect(styles['a']).toBe('a');
 	});
 
 	it("doesn't return styles completely within a given range", function() {
-		styles = styleList.getStylesInRange(0, 15);
+		let styles = styleList.getStylesInRange(0, 15);
 
 		expect(styles).toEqual({});
 	});
 
 	it("cleans up superscripts", function() {
-		styleList2 = new ChunkStyleList();
-		sub1 = new StyleRange(5, 10, 'sup', 3);
-		sub2 = new StyleRange(5, 10, 'sup', -3);
-		sub3 = new StyleRange(15, 20, 'sup', 3);
-		sub4 = new StyleRange(15, 20, 'sup', -2);
+		let styleList2 = new ChunkStyleList();
+		let sub1 = new StyleRange(5, 10, 'sup', 3);
+		let sub2 = new StyleRange(5, 10, 'sup', -3);
+		let sub3 = new StyleRange(15, 20, 'sup', 3);
+		let sub4 = new StyleRange(15, 20, 'sup', -2);
 
 		styleList2.add(sub1);
 		styleList2.add(sub2);

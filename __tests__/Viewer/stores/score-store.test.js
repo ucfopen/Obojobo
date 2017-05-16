@@ -1,11 +1,11 @@
 import ObojoboDraft from 'ObojoboDraft'
 import Viewer from 'Viewer'
 
-let Dispatcher = ObojoboDraft.Common.flux.Dispatcher
-let OboModel = ObojoboDraft.Common.models.OboModel;
+let Dispatcher = ObojoboDraft.flux.Dispatcher
+let OboModel = ObojoboDraft.models.OboModel;
 let ScoreStore = Viewer.stores.ScoreStore;
 let APIUtil = Viewer.util.APIUtil;
-let FocusUtil = ObojoboDraft.Common.util.FocusUtil;
+let FocusUtil = ObojoboDraft.util.FocusUtil;
 let NavStore = Viewer.stores.NavStore;
 
 
@@ -27,7 +27,7 @@ describe('ScoreStore', () => {
 		FocusUtil.unfocus = jest.fn()
 	})
 
-	test.only('should init state with an empty scores object and return it', () => {
+	it('should init state with an empty scores object and return it', () => {
 		ScoreStore.init();
 
 		expect(true).toBe(true);

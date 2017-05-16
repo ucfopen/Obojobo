@@ -1,7 +1,10 @@
-let OboModel = window.ObojoboDraft.Common.models.OboModel;
-let QuestionStore = window.Viewer.stores.QuestionStore;
-let APIUtil = window.Viewer.util.APIUtil;
-let Dispatcher = window.ObojoboDraft.Common.flux.Dispatcher;
+import ObojoboDraft from 'ObojoboDraft'
+import Viewer from 'Viewer'
+
+let OboModel = ObojoboDraft.models.OboModel;
+let QuestionStore = Viewer.stores.QuestionStore;
+let APIUtil = Viewer.util.APIUtil;
+let Dispatcher = ObojoboDraft.flux.Dispatcher;
 
 //@TODO: Is this valid?
 // OboModel.models.test = {

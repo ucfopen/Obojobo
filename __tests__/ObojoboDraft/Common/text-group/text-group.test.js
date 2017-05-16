@@ -1,10 +1,14 @@
-StyleableText = window.ObojoboDraft.Common.text.StyleableText;
-StyleRange    = window.ObojoboDraft.Common.text.StyleRange;
-TextGroup     = window.ObojoboDraft.Common.textGroup.TextGroup;
-TextGroupItem = window.ObojoboDraft.Common.textGroup.TextGroupItem;
+import ObojoboDraft from 'ObojoboDraft'
+
+let StyleableText = ObojoboDraft.text.StyleableText;
+let StyleRange    = ObojoboDraft.text.StyleRange;
+let TextGroup     = ObojoboDraft.textGroup.TextGroup;
+let TextGroupItem = ObojoboDraft.textGroup.TextGroupItem;
 
 describe('TextGroup', function() {
-	beforeEach(function() {
+	let tg, tg3items, tgDataTemplate, tgWithItems, tgWith3Items, frozenEmptyObject;
+
+	beforeEach(() => {
 		tg = new TextGroup()
 		tg3items = new TextGroup(3)
 		tgDataTemplate = new TextGroup(Infinity, { a:1, b:2 });
@@ -19,7 +23,7 @@ describe('TextGroup', function() {
 		]);
 
 		frozenEmptyObject = Object.freeze({});
-	});
+	})
 
 	it('creates instances with expected values', function() {
 		expect(tg.maxItems).toBe(Infinity);
@@ -192,7 +196,7 @@ describe('TextGroup', function() {
 	});
 
 	it("clones itself", function() {
-		clone = tgWithItems.clone();
+		let clone = tgWithItems.clone();
 
 		expect(clone).not.toBe(tgWithItems);
 		expect(clone.items.length).toBe(tgWithItems.items.length);
@@ -210,7 +214,7 @@ describe('TextGroup', function() {
 		tgDataTemplate.add(new StyleableText("new1"), { a:100 });
 		tgDataTemplate.add(new StyleableText("new2"), { b:100 });
 
-		clone = tgDataTemplate.clone(function(data) {
+		let clone = tgDataTemplate.clone(function(data) {
 			data.b = 5;
 			return data;
 		});
@@ -253,8 +257,8 @@ describe('TextGroup', function() {
 		tg.add(new StyleableText("B"));
 		tg.add(new StyleableText("C"));
 
-		a = tg.clone();
-		sibling = a.splitBefore(1);
+		let a = tg.clone();
+		let sibling = a.splitBefore(1);
 
 		expect(a.items.length).toBe(1);
 		expect(sibling.items.length).toBe(2);
@@ -262,7 +266,7 @@ describe('TextGroup', function() {
 		expect(sibling.items[0].text).toEqual(new StyleableText("B"));
 		expect(sibling.items[1].text).toEqual(new StyleableText("C"));
 
-		b = tg.clone();
+		let b = tg.clone();
 		sibling = b.splitBefore(0);
 		expect(b.items.length).toBe(0);
 		expect(sibling.items.length).toBe(3);
@@ -270,7 +274,7 @@ describe('TextGroup', function() {
 		expect(sibling.items[1].text).toEqual(new StyleableText("B"));
 		expect(sibling.items[2].text).toEqual(new StyleableText("C"));
 
-		c = tg.clone();
+		let c = tg.clone();
 		sibling = c.splitBefore(3);
 		expect(c.items.length).toBe(3);
 		expect(sibling.items.length).toBe(0);
@@ -553,9 +557,9 @@ describe('TextGroup', function() {
 
 	it("styles text at the beginning of the group", function() {
 		tgWith3Items.styleText(0, 0, 0, 1, 'b');
-		styles1 = tgWith3Items.items[0].text.styleList.styles;
-		styles2 = tgWith3Items.items[1].text.styleList.styles;
-		styles3 = tgWith3Items.items[2].text.styleList.styles;
+		let styles1 = tgWith3Items.items[0].text.styleList.styles;
+		let styles2 = tgWith3Items.items[1].text.styleList.styles;
+		let styles3 = tgWith3Items.items[2].text.styleList.styles;
 
 		expect(styles1.length).toBe(1);
 		expect(styles2.length).toBe(0);
@@ -565,9 +569,9 @@ describe('TextGroup', function() {
 
 	it("styles text at the end of the group", function() {
 		tgWith3Items.styleText(2, 4, 2, 5, 'b');
-		styles1 = tgWith3Items.items[0].text.styleList.styles;
-		styles2 = tgWith3Items.items[1].text.styleList.styles;
-		styles3 = tgWith3Items.items[2].text.styleList.styles;
+		let styles1 = tgWith3Items.items[0].text.styleList.styles;
+		let styles2 = tgWith3Items.items[1].text.styleList.styles;
+		let styles3 = tgWith3Items.items[2].text.styleList.styles;
 
 		expect(styles1.length).toBe(0);
 		expect(styles2.length).toBe(0);
@@ -577,9 +581,9 @@ describe('TextGroup', function() {
 
 	it("styles text spanning two text items", function() {
 		tgWith3Items.styleText(0, 1, 1, 1, 'b');
-		styles1 = tgWith3Items.items[0].text.styleList.styles;
-		styles2 = tgWith3Items.items[1].text.styleList.styles;
-		styles3 = tgWith3Items.items[2].text.styleList.styles;
+		let styles1 = tgWith3Items.items[0].text.styleList.styles;
+		let styles2 = tgWith3Items.items[1].text.styleList.styles;
+		let styles3 = tgWith3Items.items[2].text.styleList.styles;
 
 		expect(styles1.length).toBe(1);
 		expect(styles2.length).toBe(1);
@@ -590,9 +594,9 @@ describe('TextGroup', function() {
 
 	it("styles all text", function() {
 		tgWith3Items.styleText(0, 0, 2, 5, 'b');
-		styles1 = tgWith3Items.items[0].text.styleList.styles;
-		styles2 = tgWith3Items.items[1].text.styleList.styles;
-		styles3 = tgWith3Items.items[2].text.styleList.styles;
+		let styles1 = tgWith3Items.items[0].text.styleList.styles;
+		let styles2 = tgWith3Items.items[1].text.styleList.styles;
+		let styles3 = tgWith3Items.items[2].text.styleList.styles;
 
 		expect(styles1.length).toBe(1);
 		expect(styles2.length).toBe(1);
@@ -605,9 +609,9 @@ describe('TextGroup', function() {
 	it("unstyles a span of text", function() {
 		tgWith3Items.styleText(0, 0, 2, 5, 'b');
 		tgWith3Items.unstyleText(0, 0, 0, 1, 'b');
-		styles1 = tgWith3Items.items[0].text.styleList.styles;
-		styles2 = tgWith3Items.items[1].text.styleList.styles;
-		styles3 = tgWith3Items.items[2].text.styleList.styles;
+		let styles1 = tgWith3Items.items[0].text.styleList.styles;
+		let styles2 = tgWith3Items.items[1].text.styleList.styles;
+		let styles3 = tgWith3Items.items[2].text.styleList.styles;
 
 		expect(styles1.length).toBe(1);
 		expect(styles2.length).toBe(1);
@@ -619,9 +623,9 @@ describe('TextGroup', function() {
 
 	it("toggleStyle will style a portion of un-styled text", function() {
 		tgWith3Items.toggleStyleText(1, 1, 1, 5, 'b');
-		styles1 = tgWith3Items.items[0].text.styleList.styles;
-		styles2 = tgWith3Items.items[1].text.styleList.styles;
-		styles3 = tgWith3Items.items[2].text.styleList.styles;
+		let styles1 = tgWith3Items.items[0].text.styleList.styles;
+		let styles2 = tgWith3Items.items[1].text.styleList.styles;
+		let styles3 = tgWith3Items.items[2].text.styleList.styles;
 
 		expect(styles1.length).toBe(0);
 		expect(styles2.length).toBe(1);
@@ -632,9 +636,9 @@ describe('TextGroup', function() {
 	it("toggleStyle will style a portion of partially styled text", function() {
 		tgWith3Items.styleText(1, 1, 1, 5, 'b');
 		tgWith3Items.toggleStyleText(1, 0, 1, 6, 'b')
-		styles1 = tgWith3Items.items[0].text.styleList.styles;
-		styles2 = tgWith3Items.items[1].text.styleList.styles;
-		styles3 = tgWith3Items.items[2].text.styleList.styles;
+		let styles1 = tgWith3Items.items[0].text.styleList.styles;
+		let styles2 = tgWith3Items.items[1].text.styleList.styles;
+		let styles3 = tgWith3Items.items[2].text.styleList.styles;
 
 		expect(styles1.length).toBe(0);
 		expect(styles2.length).toBe(1);
@@ -645,9 +649,9 @@ describe('TextGroup', function() {
 	it("toggleStyle will un-style a portion of styled text", function() {
 		tgWith3Items.styleText(1, 1, 1, 5, 'b');
 		tgWith3Items.toggleStyleText(1, 2, 1, 5, 'b')
-		styles1 = tgWith3Items.items[0].text.styleList.styles;
-		styles2 = tgWith3Items.items[1].text.styleList.styles;
-		styles3 = tgWith3Items.items[2].text.styleList.styles;
+		let styles1 = tgWith3Items.items[0].text.styleList.styles;
+		let styles2 = tgWith3Items.items[1].text.styleList.styles;
+		let styles3 = tgWith3Items.items[2].text.styleList.styles;
 
 		expect(styles1.length).toBe(0);
 		expect(styles2.length).toBe(1);
@@ -658,9 +662,9 @@ describe('TextGroup', function() {
 	it("toggleStyle will un-style the portion of styled text", function() {
 		tgWith3Items.styleText(1, 1, 1, 5, 'b');
 		tgWith3Items.toggleStyleText(1, 1, 1, 5, 'b')
-		styles1 = tgWith3Items.items[0].text.styleList.styles;
-		styles2 = tgWith3Items.items[1].text.styleList.styles;
-		styles3 = tgWith3Items.items[2].text.styleList.styles;
+		let styles1 = tgWith3Items.items[0].text.styleList.styles;
+		let styles2 = tgWith3Items.items[1].text.styleList.styles;
+		let styles3 = tgWith3Items.items[2].text.styleList.styles;
 
 		expect(styles1.length).toBe(0);
 		expect(styles2.length).toBe(0);
@@ -670,11 +674,11 @@ describe('TextGroup', function() {
 	it("getStyles will return only the styles covered by the span", function() {
 		tgWith3Items.styleText(1, 1, 1, 5, 'b');
 		tgWith3Items.styleText(1, 0, 1, 6, 'i');
-		styles1 = tgWith3Items.items[0].text.styleList.styles;
-		styles2 = tgWith3Items.items[1].text.styleList.styles;
-		styles3 = tgWith3Items.items[2].text.styleList.styles;
+		let styles1 = tgWith3Items.items[0].text.styleList.styles;
+		let styles2 = tgWith3Items.items[1].text.styleList.styles;
+		let styles3 = tgWith3Items.items[2].text.styleList.styles;
 
-		styles = tgWith3Items.getStyles(1, 1, 1, 5);
+		let styles = tgWith3Items.getStyles(1, 1, 1, 5);
 		expect(styles.i).toBe('i');
 		expect(styles.b).toBe('b');
 
@@ -729,8 +733,8 @@ describe('TextGroup', function() {
 		tgDataTemplate.add("first", { a:1, c:1 });
 		tgDataTemplate.add("second", { a:2, c:2 });
 
-		o = tgWithItems.toDescriptor();
-		newTg = TextGroup.fromDescriptor(o, 10, { b:2 });
+		let o = tgWithItems.toDescriptor();
+		let newTg = TextGroup.fromDescriptor(o, 10, { b:2 });
 
 		expect(newTg.maxItems).toBe(10);
 		expect(newTg.items.length).toBe(2);
@@ -741,7 +745,7 @@ describe('TextGroup', function() {
 	});
 
 	it("can create an instance using the create method shortcut", function() {
-		newTg = TextGroup.create(10, { x:1 }, 4);
+		let newTg = TextGroup.create(10, { x:1 }, 4);
 		newTg.addAt(0, new StyleableText("first"), { x:2, y:1 });
 
 		expect(newTg.maxItems).toBe(10);

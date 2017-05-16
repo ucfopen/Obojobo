@@ -1,7 +1,4 @@
-console.log('====IMPORTING OBO')
-
-
-
+// console.log('====IMPORTING OBO')
 
 import ComponentClassMap from './component-class-map';
 

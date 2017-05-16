@@ -1,7 +1,12 @@
-StyleableText = window.ObojoboDraft.Common.text.StyleableText;
-StyleRange    = window.ObojoboDraft.Common.text.StyleRange;
+import ObojoboDraft from 'ObojoboDraft'
+import Viewer from 'Viewer'
+
+let StyleableText = ObojoboDraft.text.StyleableText;
+let StyleRange    = ObojoboDraft.text.StyleRange;
 
 describe('StyleableText', function() {
+	let st, st1, st2;
+
 	beforeEach(function() {
 		st = new StyleableText('123456789ABCDEF');
 		st.styleText('a', 5, 10, { href:'website.com' });
@@ -193,7 +198,7 @@ describe('StyleableText', function() {
 	});
 
 	it("splits a styleable text", function() {
-		sibling = st.split(6);
+		let sibling = st.split(6);
 
 		expect(st.value).toEqual('123456');
 		expect(st.styleList.length()).toEqual(1);
@@ -207,7 +212,7 @@ describe('StyleableText', function() {
 	it("merges two styleable texts", function() {
 		st1.merge(st2);
 
-		similar = new StyleableText('abc123');
+		let similar = new StyleableText('abc123');
 		similar.styleText('a', 2, 4, { href:'website.com' });
 
 		expect(st1).toEqual(similar);
