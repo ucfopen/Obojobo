@@ -5,9 +5,12 @@ window.React = require('react');
 window.ReactDOM = require('react-dom');
 window._ = require('underscore');
 window.Backbone = require('backbone');
+window.katex = require('katex');
 
 window.__oboGlobals = {};
 
-require("../build/obo.js")
-require("../build/obojobo-draft.js")
-require("../build/obojobo-draft-document-viewer.js")
+// require("../build/obo.js")
+// window.ObojoboDraft = require("../build/obojobo-draft.js")
+// window.Viewer = require('../build/viewer.js')
+
+// require("../build/viewer-app.js")

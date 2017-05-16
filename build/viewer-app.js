@@ -2579,6 +2579,12 @@ process.off = noop;
 process.removeListener = noop;
 process.removeAllListeners = noop;
 process.emit = noop;
+process.prependListener = noop;
+process.prependOnceListener = noop;
+
+process.listeners = function (name) {
+    return [];
+};
 
 process.binding = function (name) {
     throw new Error('process.binding is not supported');
@@ -3039,7 +3045,7 @@ var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol
 var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol" ? function (obj) { return typeof obj; } : function (obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; };
 
 /*
- * smoothscroll polyfill - v0.3.4
+ * smoothscroll polyfill - v0.3.5
  * https://iamdustan.github.io/smoothscroll
  * 2016 (c) Dustan Kasten, Jeremias Menichelli - MIT License
  */
@@ -3074,6 +3080,7 @@ var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol
     var original = {
       scroll: w.scroll || w.scrollTo,
       scrollBy: w.scrollBy,
+      elScroll: Element.prototype.scroll || scrollElement,
       scrollIntoView: Element.prototype.scrollIntoView
     };
 
@@ -3156,9 +3163,6 @@ var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol
      * @param {Object} context
      */
     function step(context) {
-      // call method again on next available frame
-      context.frame = w.requestAnimationFrame(step.bind(w, context));
-
       var time = now();
       var value;
       var currentX;
@@ -3176,10 +3180,9 @@ var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol
 
       context.method.call(context.scrollable, currentX, currentY);
 
-      // return when end points have been reached
-      if (currentX === context.x && currentY === context.y) {
-        w.cancelAnimationFrame(context.frame);
-        return;
+      // scroll more if we have not reached our destination
+      if (currentX !== context.x || currentY !== context.y) {
+        w.requestAnimationFrame(step.bind(w, context));
       }
     }
 
@@ -3196,7 +3199,6 @@ var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol
       var startY;
       var method;
       var startTime = now();
-      var frame;
 
       // define scroll context
       if (el === d.body) {
@@ -3211,11 +3213,6 @@ var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol
         method = scrollElement;
       }
 
-      // cancel frame when a scroll event's happening
-      if (frame) {
-        w.cancelAnimationFrame(frame);
-      }
-
       // scroll looping over a frame
       step({
         scrollable: scrollable,
@@ -3224,8 +3221,7 @@ var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol
         startX: startX,
         startY: startY,
         x: x,
-        y: y,
-        frame: frame
+        y: y
       });
     }
 
@@ -3255,6 +3251,33 @@ var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol
 
       // LET THE SMOOTHNESS BEGIN!
       smoothScroll.call(w, d.body, ~~arguments[0].left + (w.scrollX || w.pageXOffset), ~~arguments[0].top + (w.scrollY || w.pageYOffset));
+    };
+
+    // Element.prototype.scroll and Element.prototype.scrollTo
+    Element.prototype.scroll = Element.prototype.scrollTo = function () {
+      // avoid smooth behavior if not required
+      if (shouldBailOut(arguments[0])) {
+        original.elScroll.call(this, arguments[0].left || arguments[0], arguments[0].top || arguments[1]);
+        return;
+      }
+
+      // LET THE SMOOTHNESS BEGIN!
+      smoothScroll.call(this, this, arguments[0].left, arguments[0].top);
+    };
+
+    // Element.prototype.scrollBy
+    Element.prototype.scrollBy = function () {
+      var arg0 = arguments[0];
+
+      if ((typeof arg0 === 'undefined' ? 'undefined' : _typeof(arg0)) === 'object') {
+        this.scroll({
+          left: arg0.left + this.scrollLeft,
+          top: arg0.top + this.scrollTop,
+          behavior: arg0.behavior
+        });
+      } else {
+        this.scroll(this.scrollLeft + arg0, this.scrollTop + arguments[1]);
+      }
     };
 
     // Element.prototype.scrollIntoView
