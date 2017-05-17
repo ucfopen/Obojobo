@@ -1,30 +1,37 @@
-import ObojoboDraft from 'ObojoboDraft'
-import Viewer from 'Viewer'
+import ScoreStore from 'Viewer/stores/score-store'
+import APIUtil from 'Viewer/util/api-util'
+import FocusUtil from 'ObojoboDraft/Common/util/focus-util'
+import Dispatcher from 'ObojoboDraft/Common/flux/dispatcher'
+import OboModel from 'ObojoboDraft/Common/models/obo-model'
 
-let Dispatcher = ObojoboDraft.flux.Dispatcher
-let OboModel = ObojoboDraft.models.OboModel;
-let ScoreStore = Viewer.stores.ScoreStore;
-let APIUtil = Viewer.util.APIUtil;
-let FocusUtil = ObojoboDraft.util.FocusUtil;
-let NavStore = Viewer.stores.NavStore;
+jest.mock('Viewer/util/api-util', () => {
+	return {
+		postEvent: jest.fn()
+	}
+})
 
+jest.mock('ObojoboDraft/Common/util/focus-util', () => {
+	return {
+		unfocus: jest.fn()
+	}
+})
 
-//@TODO: Is this valid?
-OboModel.models.test = {
-	getRoot: () => {}
-}
-
-// Stop the NavStore from listening to score:set since we're
-// not interested in testing NavStore here.
-Dispatcher.off('score:set', null, NavStore)
+jest.mock('ObojoboDraft/Common/models/obo-model', () => {
+	return {
+		models: {
+			test: {
+				getRoot: jest.fn()
+			}
+		}
+	}
+})
 
 describe('ScoreStore', () => {
 	beforeEach(() => {
 		ScoreStore.init()
 
 		ScoreStore.triggerChange = jest.fn()
-		APIUtil.postEvent = jest.fn()
-		FocusUtil.unfocus = jest.fn()
+		jest.resetAllMocks()
 	})
 
 	it('should init state with an empty scores object and return it', () => {

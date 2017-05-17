@@ -1,44 +1,34 @@
+import ScoreStore from 'Viewer/stores/score-store'
 import ScoreUtil from 'Viewer/util/score-util'
+import OboModel from 'ObojoboDraft/Common/models/obo-model'
+import Dispatcher from 'ObojoboDraft/Common/flux/dispatcher'
 
-describe('ScoreUtil', () => {
-	let originalOboModel = window.ObojoboDraft.Common.models.OboModel;
-	let originalNavStore = window.Viewer.stores.NavStore;
-	let originalDispatcher = window.ObojoboDraft.Common.flux.Dispatcher;
+jest.mock('Viewer/util/api-util', () => {
+	return {
+		postEvent: jest.fn()
+	}
+})
 
-	let ScoreStore = window.Viewer.stores.ScoreStore;
-	// let ScoreUtil = window.Viewer.util.ScoreUtil;
-	let Dispatcher = window.ObojoboDraft.Common.flux.Dispatcher;
-	let APIUtil = window.Viewer.util.APIUtil;
-
-	beforeAll(() => {
-		window.ObojoboDraft.Common.models.OboModel = {
-			models: {
-				test: {
-					getRoot: () => {}
-				}
+jest.mock('ObojoboDraft/Common/models/obo-model', () => {
+	return {
+		models: {
+			test: {
+				getRoot: jest.fn()
 			}
 		}
+	}
+})
 
-		window.Viewer.stores.NavStore = {};
+jest.mock('ObojoboDraft/Common/flux/dispatcher', () => {
+	return {
+		trigger: jest.fn(),
+		on: jest.fn()
+	}
+})
 
-
-		Dispatcher = window.ObojoboDraft.Common.flux.Dispatcher
-	})
-
-	afterAll(() => {
-		window.ObojoboDraft.Common.models.OboModel = originalOboModel
-		window.Viewer.stores.NavStore = originalNavStore;
-		window.ObojoboDraft.Common.flux.Dispatcher = originalDispatcher;
-	})
-
+describe('ScoreUtil', () => {
 	beforeEach(() => {
-		// window.ObojoboDraft.Common.flux.Dispatcher = {
-		// 	trigger: jest.fn()
-		// }
-
 		ScoreStore.init()
-
-		APIUtil.postEvent = jest.fn()
 	})
 
 	it("should return a null score for a model that doesn't have a score associated with it", () => {
@@ -67,16 +57,8 @@ describe('ScoreUtil', () => {
 		expect(score).toBe(50)
 	})
 
-	it.only('should set scores', () => {
-		window.ObojoboDraft.Common.flux.Dispatcher = {
-			trigger: jest.fn()
-		}
-
-		// let ScoreUtil = window.Viewer.util.ScoreUtil
-		let ScoreUtil = require('../../../src/scripts/node_modules/Viewer/util/scoreutil.coffee')
+	it('should set scores', () => {
 		ScoreUtil.setScore('test', 50)
-
-		console.log(Dispatcher.trigger)
 
 		expect(Dispatcher.trigger).toHaveBeenCalledWith('score:set', expect.objectContaining({
 			value: {
