@@ -1,5 +1,4 @@
-global.oboRequire = require('../../../obo_require')
-const QuestionBank = require('./questionbank')
+const QuestionBank = require('../../server/questionbank')
 
 describe('QuestionBank', () => {
   const questionBank = new QuestionBank()

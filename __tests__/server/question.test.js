@@ -1,7 +1,8 @@
-global.oboRequire = require('../../../obo_require')
-const MCChoice    = require('./question') // Naming error here, currently an issue.
-const testJson    = require('../test-object.json')
+const MCChoice    = require('../../server/question') // Naming error here, currently an issue.
+const testJson    = require('../../test-object.json')
 const Draft       = oboRequire('models/draft')
+
+jest.mock('../../../../db')
 
 describe('Question', () => {
   const rootNode = new Draft(testJson)
@@ -12,9 +13,7 @@ describe('Question', () => {
   }
 
   // TODO: This is the implementation for the last argument
-  const currentAttempt = {
-    addScore: jest.fn()
-  }
+  const currentAttempt = { addScore: jest.fn() }
 
   it('disables practice on send to assessment', () => {
     let responseHistory = []
@@ -46,7 +45,7 @@ describe('Question', () => {
 
   it('emits calculate score event when necessary', () => {
     let responseRecord = { question_id: mcChoice.node.id }
-    responseHistory = [responseRecord]
+    let responseHistory = [responseRecord]
     expect(mcChoice.yell(events.attemptEnd, {}, {}, rootNode.root, responseHistory, currentAttempt)).toEqual([[]])
     expect(currentAttempt.addScore).toHaveBeenCalledTimes(1)
   })

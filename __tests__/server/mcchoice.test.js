@@ -1,5 +1,4 @@
-global.oboRequire = require('../../../obo_require')
-const MCChoice = require('./mcchoice')
+const MCChoice = require('../../server/mcchoice')
 
 describe('MCChoice', () => {
   const mcChoice = new MCChoice()

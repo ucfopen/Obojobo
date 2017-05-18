@@ -1,8 +1,9 @@
-global.oboRequire  = require('../../../obo_require')
-const MCAssessment = require('./mcassessment')
-const testJson     = require('../test-object.json')
+const MCAssessment = require('../../server/mcassessment')
+const testJson     = require('../../test-object.json')
 const Draft        = oboRequire('models/draft')
 const DraftNode    = oboRequire('models/draft_node')
+
+jest.mock('../../../../db')
 
 describe('MCAssessment', () => {
   let rootNode
@@ -15,16 +16,14 @@ describe('MCAssessment', () => {
 
   beforeEach(() => {
     rootNode = new Draft(testJson)
-    mcAssessment = new MCAssessment(
-      draftTree = { findNodeClass: findNodeClassMock }
-      children = [new DraftNode()]
-    )
 
-    responseRecord = new DraftNode(
-      node = { content: { score: 100 } },
-      response = { set: true },
-      responder_id = 'test'
-    )
+    mcAssessment = new MCAssessment({ findNodeClass: findNodeClassMock })
+    mcAssessment.children = [new DraftNode()]
+    mcAssessment.node = {}
+
+    responseRecord = new DraftNode({}, { content: { score: 100 } })
+    responseRecord.response = { set: true },
+    responseRecord.responder_id = 'test'
 
     score = null
   })
@@ -74,7 +73,7 @@ describe('MCAssessment', () => {
     let responseRecords = [responseRecord]
     mcAssessment.node = { content: { responseType: 'pick-all' } }
     // ID of chosen !== ID of correct ('test')
-    // TODO: Set score of this test node to 0.
+    // TODO: Set score of this test node to 0?
     mcAssessment.children[0].node = { id: 'test123' }
     mcAssessment.yell(events.onCalculateScore, {}, rootNode.root, responseRecords, setScore)
     expect(score).toEqual(0)
@@ -92,4 +91,7 @@ describe('MCAssessment', () => {
   // TODO: Add test that sets score to 100 when two correct answers are chosen
   //       out of two correct answer choices for pick-all question type.
 
+  it.skip('sets score to 100 on ALL correct answers chosen (pick-all)', () => {
+    expect(1).toBe(1)
+  })
 })

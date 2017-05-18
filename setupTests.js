@@ -1,5 +1,9 @@
+const path = require('path')
+
 // Hack to get LaTeX to not warn about quirks mode:
 document.write('<!DOCTYPE html><body><div id="viewer-app"></div></body>');
+
+global.oboRequire = name => require(path.join(__dirname, `../../${name}`))
 
 window.React = require('react');
 window.ReactDOM = require('react-dom');
