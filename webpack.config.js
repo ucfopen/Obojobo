@@ -12,8 +12,8 @@ module.exports = {
 	target: 'web',
 	entry: {
 		"viewer": [
-			`${docEngineBasePath}obojobo-draft.js`,
-			`${docEngineBasePath}obojobo-draft.css`,
+			`${docEngineBasePath}common.js`,
+			`${docEngineBasePath}common.css`,
 			`${docEngineBasePath}viewer.js`,
 			`${docEngineBasePath}viewer.css`,
 			`${docEngineBasePath}viewer-app.js`,

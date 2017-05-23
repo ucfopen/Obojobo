@@ -5,7 +5,7 @@
   "scripts": {
     "start": "yarn express:prod",
     "dev": "yarn express:dev",
-    "dev:docengine": "concurrently \"yarn express:dev\" \"yarn devdocengine:start\"",
+    "dev:docEngine": "concurrently \"yarn express:dev\" \"yarn devDocEngine:start\"",
     "db:initdocker": "docker run --name db_postgres -d --restart=unless-stopped -p 5432:5432 postgres:9.6.1-alpine",
     "db:reset": "node node_modules/db-migrate/bin/db-migrate reset --config config/db.json",
     "db:migrateup": "node node_modules/db-migrate/bin/db-migrate up --config config/db.json",
