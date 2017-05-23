@@ -63,7 +63,7 @@
 /******/ 	__webpack_require__.p = "build/";
 /******/
 /******/ 	// Load entry module and return exports
-/******/ 	return __webpack_require__(__webpack_require__.s = 182);
+/******/ 	return __webpack_require__(__webpack_require__.s = 172);
 /******/ })
 /************************************************************************/
 /******/ ({
@@ -71,11 +71,57 @@
 /***/ 0:
 /***/ (function(module, exports) {
 
-module.exports = ObojoboDraft;
+module.exports = Common;
 
 /***/ }),
 
-/***/ 128:
+/***/ 151:
+/***/ (function(module, exports) {
+
+// removed by extract-text-webpack-plugin
+
+/***/ }),
+
+/***/ 172:
+/***/ (function(module, exports, __webpack_require__) {
+
+module.exports = __webpack_require__(39);
+
+
+/***/ }),
+
+/***/ 39:
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+var _Common = __webpack_require__(0);
+
+var _Common2 = _interopRequireDefault(_Common);
+
+var _adapter = __webpack_require__(79);
+
+var _adapter2 = _interopRequireDefault(_adapter);
+
+var _viewerComponent = __webpack_require__(80);
+
+var _viewerComponent2 = _interopRequireDefault(_viewerComponent);
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+var SelectionHandler = _Common2.default.chunk.focusableChunk.FocusableSelectionHandler;
+
+_Common2.default.Store.registerModel('ObojoboDraft.Chunks.YouTube', {
+	type: 'chunk',
+	adapter: _adapter2.default,
+	componentClass: _viewerComponent2.default,
+	selectionHandler: new SelectionHandler()
+});
+
+/***/ }),
+
+/***/ 79:
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -113,7 +159,7 @@ function __guard__(value, transform) {
 
 /***/ }),
 
-/***/ 129:
+/***/ 80:
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -123,15 +169,15 @@ Object.defineProperty(exports, "__esModule", {
 	value: true
 });
 
-__webpack_require__(161);
+__webpack_require__(151);
 
-var _ObojoboDraft = __webpack_require__(0);
+var _Common = __webpack_require__(0);
 
-var _ObojoboDraft2 = _interopRequireDefault(_ObojoboDraft);
+var _Common2 = _interopRequireDefault(_Common);
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
-var OboComponent = _ObojoboDraft2.default.components.OboComponent;
+var OboComponent = _Common2.default.components.OboComponent;
 
 
 var YouTube = React.createClass({
@@ -152,52 +198,6 @@ var YouTube = React.createClass({
 });
 
 exports.default = YouTube;
-
-/***/ }),
-
-/***/ 161:
-/***/ (function(module, exports) {
-
-// removed by extract-text-webpack-plugin
-
-/***/ }),
-
-/***/ 182:
-/***/ (function(module, exports, __webpack_require__) {
-
-module.exports = __webpack_require__(45);
-
-
-/***/ }),
-
-/***/ 45:
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-
-
-var _ObojoboDraft = __webpack_require__(0);
-
-var _ObojoboDraft2 = _interopRequireDefault(_ObojoboDraft);
-
-var _adapter = __webpack_require__(128);
-
-var _adapter2 = _interopRequireDefault(_adapter);
-
-var _viewerComponent = __webpack_require__(129);
-
-var _viewerComponent2 = _interopRequireDefault(_viewerComponent);
-
-function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
-
-var SelectionHandler = _ObojoboDraft2.default.chunk.focusableChunk.FocusableSelectionHandler;
-
-_ObojoboDraft2.default.Store.registerModel('ObojoboDraft.Chunks.YouTube', {
-	type: 'chunk',
-	adapter: _adapter2.default,
-	componentClass: _viewerComponent2.default,
-	selectionHandler: new SelectionHandler()
-});
 
 /***/ })
 

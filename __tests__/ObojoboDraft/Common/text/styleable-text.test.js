@@ -1,8 +1,8 @@
-import ObojoboDraft from 'ObojoboDraft'
+import Common from 'Common'
 import Viewer from 'Viewer'
 
-let StyleableText = ObojoboDraft.text.StyleableText;
-let StyleRange    = ObojoboDraft.text.StyleRange;
+let StyleableText = Common.text.StyleableText;
+let StyleRange    = Common.text.StyleRange;
 
 describe('StyleableText', function() {
 	let st, st1, st2;

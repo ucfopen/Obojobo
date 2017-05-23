@@ -1,9 +1,9 @@
-import ObojoboDraft from 'ObojoboDraft'
+import Common from 'Common'
 
-let StyleableText = ObojoboDraft.text.StyleableText;
-let StyleRange    = ObojoboDraft.text.StyleRange;
-let TextGroup     = ObojoboDraft.textGroup.TextGroup;
-let TextGroupItem = ObojoboDraft.textGroup.TextGroupItem;
+let StyleableText = Common.text.StyleableText;
+let StyleRange    = Common.text.StyleRange;
+let TextGroup     = Common.textGroup.TextGroup;
+let TextGroupItem = Common.textGroup.TextGroupItem;
 
 describe('TextGroup', function() {
 	let tg, tg3items, tgDataTemplate, tgWithItems, tgWith3Items, frozenEmptyObject;

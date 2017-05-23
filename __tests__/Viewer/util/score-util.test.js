@@ -1,15 +1,15 @@
-import ScoreStore from 'Viewer/stores/score-store'
-import ScoreUtil from 'Viewer/util/score-util'
-import OboModel from 'ObojoboDraft/Common/models/obo-model'
-import Dispatcher from 'ObojoboDraft/Common/flux/dispatcher'
+import ScoreStore from '../../../src/scripts/viewer/stores/score-store'
+import ScoreUtil from '../../../src/scripts/viewer/util/score-util'
+import OboModel from '../../../src/scripts/common/models/obo-model'
+import Dispatcher from '../../../src/scripts/common/flux/dispatcher'
 
-jest.mock('Viewer/util/api-util', () => {
+jest.mock('../../../src/scripts/viewer/util/api-util', () => {
 	return {
 		postEvent: jest.fn()
 	}
 })
 
-jest.mock('ObojoboDraft/Common/models/obo-model', () => {
+jest.mock('../../../src/scripts/common/models/obo-model', () => {
 	return {
 		models: {
 			test: {
@@ -19,7 +19,7 @@ jest.mock('ObojoboDraft/Common/models/obo-model', () => {
 	}
 })
 
-jest.mock('ObojoboDraft/Common/flux/dispatcher', () => {
+jest.mock('../../../src/scripts/common/flux/dispatcher', () => {
 	return {
 		trigger: jest.fn(),
 		on: jest.fn()

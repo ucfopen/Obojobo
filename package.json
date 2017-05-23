@@ -6,6 +6,8 @@
   "scripts": {
     "test": "jest --verbose",
     "test:watch": "jest --verbose --watch",
+    "test:noCache": "jest --verbose --no-cache",
+    "test:watchNoCache": "jest --verbose --watch --no-cache",
     "start": "webpack --watch",
     "dev": "webpack-dev-server  --colors --port 8090 --host 0.0.0.0",
     "build": "webpack",
@@ -71,8 +73,6 @@
     ],
     "verbose": true,
     "moduleNameMapper": {
-      "^ObojoboDraft(.*)$": "<rootDir>/src/scripts/submodules/ObojoboDraft$1",
-      "^Viewer(.*)$": "<rootDir>/src/scripts/submodules/Viewer$1",
       "\\.scss$": "<rootDir>/__mocks__/ignore-file-stub.js",
       "\\.svg$": "<rootDir>/__mocks__/ignore-file-stub.js"
     }

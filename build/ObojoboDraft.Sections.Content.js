@@ -63,7 +63,7 @@
 /******/ 	__webpack_require__.p = "build/";
 /******/
 /******/ 	// Load entry module and return exports
-/******/ 	return __webpack_require__(__webpack_require__.s = 186);
+/******/ 	return __webpack_require__(__webpack_require__.s = 176);
 /******/ })
 /************************************************************************/
 /******/ ({
@@ -71,7 +71,7 @@
 /***/ 0:
 /***/ (function(module, exports) {
 
-module.exports = ObojoboDraft;
+module.exports = Common;
 
 /***/ }),
 
@@ -82,92 +82,38 @@ module.exports = Viewer;
 
 /***/ }),
 
-/***/ 142:
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-
-
-Object.defineProperty(exports, "__esModule", {
-	value: true
-});
-
-__webpack_require__(165);
-
-var _ObojoboDraft = __webpack_require__(0);
-
-var _ObojoboDraft2 = _interopRequireDefault(_ObojoboDraft);
-
-var _Viewer = __webpack_require__(1);
-
-var _Viewer2 = _interopRequireDefault(_Viewer);
-
-function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
-
-var OboComponent = _ObojoboDraft2.default.components.OboComponent;
-var OboModel = _ObojoboDraft2.default.models.OboModel;
-var NavUtil = _Viewer2.default.util.NavUtil;
-exports.default = React.createClass({
-	displayName: 'viewer-component',
-	render: function render() {
-		var childEl = null;
-		var navTargetModel = NavUtil.getNavTargetModel(this.props.moduleData.navState);
-		if (navTargetModel) {
-			var child = this.props.model.getChildContainingModel(navTargetModel);
-			var ChildComponent = child.getComponentClass();
-			childEl = React.createElement(ChildComponent, { model: child, moduleData: this.props.moduleData });
-		}
-
-		return React.createElement(
-			OboComponent,
-			{
-				model: this.props.model,
-				moduleData: this.props.moduleData,
-				className: 'obojobo-draft--sections--content'
-			},
-			React.createElement(
-				'div',
-				null,
-				childEl
-			)
-		);
-	}
-});
-
-/***/ }),
-
-/***/ 165:
+/***/ 155:
 /***/ (function(module, exports) {
 
 // removed by extract-text-webpack-plugin
 
 /***/ }),
 
-/***/ 186:
+/***/ 176:
 /***/ (function(module, exports, __webpack_require__) {
 
-module.exports = __webpack_require__(49);
+module.exports = __webpack_require__(43);
 
 
 /***/ }),
 
-/***/ 49:
+/***/ 43:
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
 
 
-var _ObojoboDraft = __webpack_require__(0);
+var _Common = __webpack_require__(0);
 
-var _ObojoboDraft2 = _interopRequireDefault(_ObojoboDraft);
+var _Common2 = _interopRequireDefault(_Common);
 
-var _viewerComponent = __webpack_require__(142);
+var _viewerComponent = __webpack_require__(88);
 
 var _viewerComponent2 = _interopRequireDefault(_viewerComponent);
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
-_ObojoboDraft2.default.Store.registerModel('ObojoboDraft.Sections.Content', {
+_Common2.default.Store.registerModel('ObojoboDraft.Sections.Content', {
 	type: 'section',
 	default: true,
 	adapter: null,
@@ -196,6 +142,60 @@ _ObojoboDraft2.default.Store.registerModel('ObojoboDraft.Sections.Content', {
 		});
 
 		return nav;
+	}
+});
+
+/***/ }),
+
+/***/ 88:
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+Object.defineProperty(exports, "__esModule", {
+	value: true
+});
+
+__webpack_require__(155);
+
+var _Common = __webpack_require__(0);
+
+var _Common2 = _interopRequireDefault(_Common);
+
+var _Viewer = __webpack_require__(1);
+
+var _Viewer2 = _interopRequireDefault(_Viewer);
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+var OboComponent = _Common2.default.components.OboComponent;
+var OboModel = _Common2.default.models.OboModel;
+var NavUtil = _Viewer2.default.util.NavUtil;
+exports.default = React.createClass({
+	displayName: 'viewer-component',
+	render: function render() {
+		var childEl = null;
+		var navTargetModel = NavUtil.getNavTargetModel(this.props.moduleData.navState);
+		if (navTargetModel) {
+			var child = this.props.model.getChildContainingModel(navTargetModel);
+			var ChildComponent = child.getComponentClass();
+			childEl = React.createElement(ChildComponent, { model: child, moduleData: this.props.moduleData });
+		}
+
+		return React.createElement(
+			OboComponent,
+			{
+				model: this.props.model,
+				moduleData: this.props.moduleData,
+				className: 'obojobo-draft--sections--content'
+			},
+			React.createElement(
+				'div',
+				null,
+				childEl
+			)
+		);
 	}
 });
 

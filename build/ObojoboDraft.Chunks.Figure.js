@@ -63,7 +63,7 @@
 /******/ 	__webpack_require__.p = "build/";
 /******/
 /******/ 	// Load entry module and return exports
-/******/ 	return __webpack_require__(__webpack_require__.s = 170);
+/******/ 	return __webpack_require__(__webpack_require__.s = 160);
 /******/ })
 /************************************************************************/
 /******/ ({
@@ -71,11 +71,66 @@
 /***/ 0:
 /***/ (function(module, exports) {
 
-module.exports = ObojoboDraft;
+module.exports = Common;
 
 /***/ }),
 
-/***/ 100:
+/***/ 137:
+/***/ (function(module, exports) {
+
+// removed by extract-text-webpack-plugin
+
+/***/ }),
+
+/***/ 156:
+/***/ (function(module, exports) {
+
+module.exports = "data:image/svg+xml,%3Csvg id='Layer_1' data-name='Layer 1' xmlns='http://www.w3.org/2000/svg' viewBox='0 0 12 12'%3E%3Cdefs%3E%3Cstyle%3E.cls-1%7Bopacity:0.03;%7D%3C/style%3E%3C/defs%3E%3Ctitle%3Ebg%3C/title%3E%3Crect class='cls-1' width='6' height='6'/%3E%3Crect class='cls-1' x='6' y='6' width='6' height='6'/%3E%3C/svg%3E"
+
+/***/ }),
+
+/***/ 160:
+/***/ (function(module, exports, __webpack_require__) {
+
+module.exports = __webpack_require__(28);
+
+
+/***/ }),
+
+/***/ 28:
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+var _Common = __webpack_require__(0);
+
+var _Common2 = _interopRequireDefault(_Common);
+
+var _selectionHandler = __webpack_require__(53);
+
+var _selectionHandler2 = _interopRequireDefault(_selectionHandler);
+
+var _adapter = __webpack_require__(51);
+
+var _adapter2 = _interopRequireDefault(_adapter);
+
+var _viewerComponent = __webpack_require__(54);
+
+var _viewerComponent2 = _interopRequireDefault(_viewerComponent);
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+_Common2.default.Store.registerModel('ObojoboDraft.Chunks.Figure', {
+	type: 'chunk',
+	adapter: _adapter2.default,
+	componentClass: _viewerComponent2.default,
+	selectionHandler: new _selectionHandler2.default()
+});
+
+/***/ }),
+
+/***/ 51:
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -85,13 +140,13 @@ Object.defineProperty(exports, "__esModule", {
 	value: true
 });
 
-var _ObojoboDraft = __webpack_require__(0);
+var _Common = __webpack_require__(0);
 
-var _ObojoboDraft2 = _interopRequireDefault(_ObojoboDraft);
+var _Common2 = _interopRequireDefault(_Common);
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
-var TextGroupAdapter = _ObojoboDraft2.default.chunk.textChunk.TextGroupAdapter;
+var TextGroupAdapter = _Common2.default.chunk.textChunk.TextGroupAdapter;
 
 
 var Adapter = {
@@ -168,7 +223,7 @@ function __guard__(value, transform) {
 
 /***/ }),
 
-/***/ 101:
+/***/ 52:
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -178,9 +233,9 @@ Object.defineProperty(exports, "__esModule", {
 	value: true
 });
 
-var _ObojoboDraft = __webpack_require__(0);
+var _Common = __webpack_require__(0);
 
-var _ObojoboDraft2 = _interopRequireDefault(_ObojoboDraft);
+var _Common2 = _interopRequireDefault(_Common);
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
@@ -192,7 +247,7 @@ var Image = React.createClass({
 
 		if (data.url == null) {
 			imgStyles = {
-				backgroundImage: Common.util.getBackgroundImage(__webpack_require__(166)),
+				backgroundImage: _Common2.default.util.getBackgroundImage(__webpack_require__(156)),
 				backgroundSize: '16px',
 				height: '300px'
 			};
@@ -223,7 +278,7 @@ exports.default = Image;
 
 /***/ }),
 
-/***/ 102:
+/***/ 53:
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -235,9 +290,9 @@ Object.defineProperty(exports, "__esModule", {
 
 var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
 
-var _ObojoboDraft = __webpack_require__(0);
+var _Common = __webpack_require__(0);
 
-var _ObojoboDraft2 = _interopRequireDefault(_ObojoboDraft);
+var _Common2 = _interopRequireDefault(_Common);
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
@@ -248,9 +303,9 @@ function _possibleConstructorReturn(self, call) { if (!self) { throw new Referen
 function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
 
 var SelectionHandler = void 0;
-var TextGroupSelectionHandler = _ObojoboDraft2.default.chunk.textChunk.TextGroupSelectionHandler;
-var FocusableSelectionHandler = _ObojoboDraft2.default.chunk.focusableChunk.FocusableSelectionHandler;
-var Chunk = _ObojoboDraft2.default.models.Chunk;
+var TextGroupSelectionHandler = _Common2.default.chunk.textChunk.TextGroupSelectionHandler;
+var FocusableSelectionHandler = _Common2.default.chunk.focusableChunk.FocusableSelectionHandler;
+var Chunk = _Common2.default.models.Chunk;
 
 exports.default = SelectionHandler = function (_TextGroupSelectionHa) {
 	_inherits(SelectionHandler, _TextGroupSelectionHa);
@@ -273,7 +328,7 @@ exports.default = SelectionHandler = function (_TextGroupSelectionHa) {
 
 /***/ }),
 
-/***/ 103:
+/***/ 54:
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -283,21 +338,21 @@ Object.defineProperty(exports, "__esModule", {
 	value: true
 });
 
-__webpack_require__(147);
+__webpack_require__(137);
 
-var _image = __webpack_require__(101);
+var _image = __webpack_require__(52);
 
 var _image2 = _interopRequireDefault(_image);
 
-var _ObojoboDraft = __webpack_require__(0);
+var _Common = __webpack_require__(0);
 
-var _ObojoboDraft2 = _interopRequireDefault(_ObojoboDraft);
+var _Common2 = _interopRequireDefault(_Common);
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
-var OboComponent = _ObojoboDraft2.default.components.OboComponent;
-var TextGroupEl = _ObojoboDraft2.default.chunk.textChunk.TextGroupEl;
-var NonEditableChunk = _ObojoboDraft2.default.chunk.NonEditableChunk;
+var OboComponent = _Common2.default.components.OboComponent;
+var TextGroupEl = _Common2.default.chunk.textChunk.TextGroupEl;
+var NonEditableChunk = _Common2.default.chunk.NonEditableChunk;
 
 
 var Figure = React.createClass({
@@ -331,61 +386,6 @@ var Figure = React.createClass({
 });
 
 exports.default = Figure;
-
-/***/ }),
-
-/***/ 147:
-/***/ (function(module, exports) {
-
-// removed by extract-text-webpack-plugin
-
-/***/ }),
-
-/***/ 166:
-/***/ (function(module, exports) {
-
-module.exports = "data:image/svg+xml,%3Csvg id='Layer_1' data-name='Layer 1' xmlns='http://www.w3.org/2000/svg' viewBox='0 0 12 12'%3E%3Cdefs%3E%3Cstyle%3E.cls-1%7Bopacity:0.03;%7D%3C/style%3E%3C/defs%3E%3Ctitle%3Ebg%3C/title%3E%3Crect class='cls-1' width='6' height='6'/%3E%3Crect class='cls-1' x='6' y='6' width='6' height='6'/%3E%3C/svg%3E"
-
-/***/ }),
-
-/***/ 170:
-/***/ (function(module, exports, __webpack_require__) {
-
-module.exports = __webpack_require__(34);
-
-
-/***/ }),
-
-/***/ 34:
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-
-
-var _ObojoboDraft = __webpack_require__(0);
-
-var _ObojoboDraft2 = _interopRequireDefault(_ObojoboDraft);
-
-var _selectionHandler = __webpack_require__(102);
-
-var _selectionHandler2 = _interopRequireDefault(_selectionHandler);
-
-var _adapter = __webpack_require__(100);
-
-var _adapter2 = _interopRequireDefault(_adapter);
-
-var _viewerComponent = __webpack_require__(103);
-
-var _viewerComponent2 = _interopRequireDefault(_viewerComponent);
-
-function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
-
-_ObojoboDraft2.default.Store.registerModel('ObojoboDraft.Chunks.Figure', {
-	type: 'chunk',
-	adapter: _adapter2.default,
-	componentClass: _viewerComponent2.default,
-	selectionHandler: new _selectionHandler2.default()
-});
 
 /***/ })
 

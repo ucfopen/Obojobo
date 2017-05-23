@@ -1,22 +1,22 @@
 describe.skip('BaseCommandHandler');
 
-// import ObojoboDraft from 'ObojoboDraft'
+// import Common from 'Common'
 // import Viewer from 'Viewer'
 
-// let VirtualCursor    = ObojoboDraft.oboDOM.Selection.VirtualCursor;
-// let VirtualSelection    = ObojoboDraft.oboDOM.Selection.VirtualSelection;
-// let StyleableText    = ObojoboDraft.text.StyleableText;
-// let TextGroupCursor  = ObojoboDraft.text.TextGroupCursor;
-// let TextGroupSelection  = ObojoboDraft.text.TextGroupSelection;
-// let Chunk            = ObojoboDraft.models.Chunk;
-// let Module            = ObojoboDraft.models.Module;
-// let TextGroup        = ObojoboDraft.text.TextGroup;
-// let ComponentClassMap        = ObojoboDraft.util.ComponentClassMap;
-// let DOMSelection = ObojoboDraft.page.DOMSelection;
-// let BaseCommandHandler = ObojoboDraft.command.BaseCommandHandler;
+// let VirtualCursor    = Common.oboDOM.Selection.VirtualCursor;
+// let VirtualSelection    = Common.oboDOM.Selection.VirtualSelection;
+// let StyleableText    = Common.text.StyleableText;
+// let TextGroupCursor  = Common.text.TextGroupCursor;
+// let TextGroupSelection  = Common.text.TextGroupSelection;
+// let Chunk            = Common.models.Chunk;
+// let Module            = Common.models.Module;
+// let TextGroup        = Common.text.TextGroup;
+// let ComponentClassMap        = Common.util.ComponentClassMap;
+// let DOMSelection = Common.page.DOMSelection;
+// let BaseCommandHandler = Common.command.BaseCommandHandler;
 // let TextGroupCommandHandler = Editor.command.TextGroupCommandHandler;
 
-// ObojoboDraft.Store.getChunks( function(chunks) {
+// Common.Store.getChunks( function(chunks) {
 // 	chunks.forEach(function(chunkClass, type) {
 // 		ComponentClassMap.register(type, chunkClass);
 // 	});

@@ -1,8 +1,8 @@
-import ObojoboDraft from 'ObojoboDraft'
+import Common from 'Common'
 import Viewer from 'Viewer'
 
-let ChunkStyleList = ObojoboDraft.text.ChunkStyleList;
-let StyleRange     = ObojoboDraft.text.StyleRange;
+let ChunkStyleList = Common.text.ChunkStyleList;
+let StyleRange     = Common.text.StyleRange;
 
 describe('ChunkStyleList', function() {
 	let styleList, styleRangeLink, styleRangeBold;

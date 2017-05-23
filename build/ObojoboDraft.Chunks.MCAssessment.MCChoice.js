@@ -63,7 +63,7 @@
 /******/ 	__webpack_require__.p = "build/";
 /******/
 /******/ 	// Load entry module and return exports
-/******/ 	return __webpack_require__(__webpack_require__.s = 175);
+/******/ 	return __webpack_require__(__webpack_require__.s = 165);
 /******/ })
 /************************************************************************/
 /******/ ({
@@ -71,7 +71,7 @@
 /***/ 0:
 /***/ (function(module, exports) {
 
-module.exports = ObojoboDraft;
+module.exports = Common;
 
 /***/ }),
 
@@ -82,7 +82,53 @@ module.exports = Viewer;
 
 /***/ }),
 
-/***/ 14:
+/***/ 15:
+/***/ (function(module, exports) {
+
+// removed by extract-text-webpack-plugin
+
+/***/ }),
+
+/***/ 165:
+/***/ (function(module, exports, __webpack_require__) {
+
+module.exports = __webpack_require__(7);
+
+
+/***/ }),
+
+/***/ 7:
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+var _Common = __webpack_require__(0);
+
+var _Common2 = _interopRequireDefault(_Common);
+
+var _adapter = __webpack_require__(8);
+
+var _adapter2 = _interopRequireDefault(_adapter);
+
+var _viewerComponent = __webpack_require__(9);
+
+var _viewerComponent2 = _interopRequireDefault(_viewerComponent);
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+var SelectionHandler = _Common2.default.chunk.textChunk.TextGroupSelectionHandler;
+
+_Common2.default.Store.registerModel('ObojoboDraft.Chunks.MCAssessment.MCChoice', {
+	type: 'chunk',
+	adapter: _adapter2.default,
+	componentClass: _viewerComponent2.default,
+	selectionHandler: new SelectionHandler()
+});
+
+/***/ }),
+
+/***/ 8:
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -118,7 +164,7 @@ function __guard__(value, transform) {
 
 /***/ }),
 
-/***/ 15:
+/***/ 9:
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -128,11 +174,11 @@ Object.defineProperty(exports, "__esModule", {
 	value: true
 });
 
-__webpack_require__(17);
+__webpack_require__(15);
 
-var _ObojoboDraft = __webpack_require__(0);
+var _Common = __webpack_require__(0);
 
-var _ObojoboDraft2 = _interopRequireDefault(_ObojoboDraft);
+var _Common2 = _interopRequireDefault(_Common);
 
 var _Viewer = __webpack_require__(1);
 
@@ -140,8 +186,8 @@ var _Viewer2 = _interopRequireDefault(_Viewer);
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
-var OboComponent = _ObojoboDraft2.default.components.OboComponent;
-var OboModel = _ObojoboDraft2.default.models.OboModel;
+var OboComponent = _Common2.default.components.OboComponent;
+var OboModel = _Common2.default.models.OboModel;
 var QuestionUtil = _Viewer2.default.util.QuestionUtil;
 
 
@@ -258,52 +304,6 @@ exports.default = MCChoice;
 function __guard__(value, transform) {
 	return typeof value !== 'undefined' && value !== null ? transform(value) : undefined;
 }
-
-/***/ }),
-
-/***/ 17:
-/***/ (function(module, exports) {
-
-// removed by extract-text-webpack-plugin
-
-/***/ }),
-
-/***/ 175:
-/***/ (function(module, exports, __webpack_require__) {
-
-module.exports = __webpack_require__(7);
-
-
-/***/ }),
-
-/***/ 7:
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-
-
-var _ObojoboDraft = __webpack_require__(0);
-
-var _ObojoboDraft2 = _interopRequireDefault(_ObojoboDraft);
-
-var _adapter = __webpack_require__(14);
-
-var _adapter2 = _interopRequireDefault(_adapter);
-
-var _viewerComponent = __webpack_require__(15);
-
-var _viewerComponent2 = _interopRequireDefault(_viewerComponent);
-
-function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
-
-var SelectionHandler = _ObojoboDraft2.default.chunk.textChunk.TextGroupSelectionHandler;
-
-_ObojoboDraft2.default.Store.registerModel('ObojoboDraft.Chunks.MCAssessment.MCChoice', {
-	type: 'chunk',
-	adapter: _adapter2.default,
-	componentClass: _viewerComponent2.default,
-	selectionHandler: new SelectionHandler()
-});
 
 /***/ })
 

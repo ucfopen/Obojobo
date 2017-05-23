@@ -1,2 +1,2 @@
-import Viewer from 'Viewer'
+import Viewer from './index'
 window.Viewer = Viewer

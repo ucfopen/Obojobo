@@ -1,22 +1,22 @@
-import ScoreStore from 'Viewer/stores/score-store'
-import APIUtil from 'Viewer/util/api-util'
-import FocusUtil from 'ObojoboDraft/Common/util/focus-util'
-import Dispatcher from 'ObojoboDraft/Common/flux/dispatcher'
-import OboModel from 'ObojoboDraft/Common/models/obo-model'
+import ScoreStore from '../../../src/scripts/viewer/stores/score-store'
+import APIUtil from '../../../src/scripts/viewer/util/api-util'
+import FocusUtil from '../../../src/common/util/focus-util'
+import Dispatcher from '../../../src/common/flux/dispatcher'
+import OboModel from '../../../src/common/models/obo-model'
 
-jest.mock('Viewer/util/api-util', () => {
+jest.mock('../../../src/scripts/viewer/util/api-util', () => {
 	return {
 		postEvent: jest.fn()
 	}
 })
 
-jest.mock('ObojoboDraft/Common/util/focus-util', () => {
+jest.mock('../../../src/common/util/focus-util', () => {
 	return {
 		unfocus: jest.fn()
 	}
 })
 
-jest.mock('ObojoboDraft/Common/models/obo-model', () => {
+jest.mock('../../../src/common/models/obo-model', () => {
 	return {
 		models: {
 			test: {

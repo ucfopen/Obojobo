@@ -1,0 +1,228 @@
+@import '../../../scss/includes';
+
+.viewer--components--nav
+{
+	$padding: 2rem;
+
+	overflow: auto;
+	position: fixed;
+	top: 0;
+	left: 0;
+	bottom: 0;
+	z-index: $z-index-above-content;
+	font-family: $font-default;
+	color: $color-bg;
+	background: $color-bg3;
+	font-size: 1rem;
+	width: $dimension-nav-menu;
+	padding: $padding;
+	padding-top: $padding / 2;
+	box-sizing: border-box;
+	// text-align: right;
+	transition: left $duration-animation-default $duration-animation-default;
+	// transform: translate(0, -1px);
+	// border-right: 1px solid transparentize($color-shadow, 0.2);
+
+	//@TODO - Temporary
+	// text-align: left;
+
+	&.is-locked
+	{
+		li.link,
+		li.seperator
+		{
+			opacity: 0.25;
+			pointer-events: none;
+
+			&.is-selected
+			{
+
+				opacity: 1;
+
+				a
+				{
+					text-decoration: none;
+				}
+			}
+		}
+	}
+
+	&.is-closed
+	{
+		left: -$dimension-nav-menu;
+	}
+
+	&.is-open
+	{
+		.toggle-button
+		{
+			background-color: transparent;
+			border: 2px solid $color-transparent;
+
+			&:hover
+			{
+				background-color: transparent;
+			}
+		}
+	}
+
+	&.is-disabled
+	{
+		display: none;
+	}
+
+	// .is-visited
+	// {
+	// 	color: #b4d4af;
+	// }
+
+	.is-correct
+	{
+		color: #b4d4af;
+	}
+
+	// .is-not-correct
+	// {
+	// 	color: #ec7b7b;
+	// }
+
+	.is-selected
+	{
+		font-weight: bold;
+		color: $color-highlight;
+
+		&:after
+		{
+			content: "•";
+			position: absolute;
+			right: -$padding / 2;
+			top: 50%;
+			transform: translate(0, -50%);
+		}
+
+		.lock-icon
+		{
+			display: none;
+		}
+	}
+
+	.lock-icon
+	{
+		position: absolute;
+		right: -1.2rem;
+		top: 0.2rem;
+		width: 0.7rem;
+		opacity: .3;
+	}
+
+	ul
+	{
+		padding: 0;
+		margin: 0;
+		text-align: right;
+	}
+
+	li
+	{
+		position: relative;
+		list-style-type: none;
+		padding: 0.25rem 0;
+	}
+
+	hr
+	{
+		border: none;
+		border-bottom: 1px solid $color-bg;
+		opacity: 0.2;
+	}
+
+	.link,
+	.sub-link
+	{
+		cursor: pointer;
+
+		&:hover
+		{
+			color: $color-highlight;
+		}
+
+		&.is-selected:hover
+		{
+			color: $color-highlight;
+			cursor: default;
+		}
+	}
+
+	.link
+	{
+		margin-top: 1rem;
+	}
+
+	.sub-link
+	{
+		font-size: .7rem;
+		opacity: .6;
+		// list-style-type: inherit;
+		margin-left: 1rem;
+		position: relative;
+
+		&:after
+		{
+			content: "•";
+			position: absolute;
+			right: -1.3em;
+			top: 1em;
+			transform: translate(0, -50%);
+		}
+	}
+
+
+	.seperator
+	{
+		cursor: default;
+	}
+
+	.heading
+	{
+		font-size: 0.7rem;
+		opacity: .5;
+		text-transform: uppercase;
+		cursor: default;
+		margin-bottom: 1rem;
+	}
+
+	.toggle-button
+	{
+		background-color: transparent;
+		background-position: center center;
+		background-repeat: no-repeat;
+		// border-radius: 0.5rem;
+		border: none;
+		cursor: pointer;
+		height: 1.5rem;
+		// left: 1.25rem;
+		left: 1rem;
+		overflow: hidden;
+		position: fixed;
+		text-indent: -9999px;
+		// top: 1.35rem;
+		top: 0.5rem;
+		transition: background-color $duration-animation-default;
+		width: 1.5rem;
+		z-index: 2;
+
+		&:focus
+		{
+			outline: none;
+		}
+	}
+
+	.viewer--components--logo
+	{
+		position: absolute;
+		right: $padding;
+		bottom: $padding;
+		font-size: 0.7rem;
+		opacity: 0.1;
+	}
+}

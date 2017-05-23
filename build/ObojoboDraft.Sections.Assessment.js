@@ -63,7 +63,7 @@
 /******/ 	__webpack_require__.p = "build/";
 /******/
 /******/ 	// Load entry module and return exports
-/******/ 	return __webpack_require__(__webpack_require__.s = 185);
+/******/ 	return __webpack_require__(__webpack_require__.s = 175);
 /******/ })
 /************************************************************************/
 /******/ ({
@@ -71,7 +71,7 @@
 /***/ 0:
 /***/ (function(module, exports) {
 
-module.exports = ObojoboDraft;
+module.exports = Common;
 
 /***/ }),
 
@@ -82,7 +82,100 @@ module.exports = Viewer;
 
 /***/ }),
 
-/***/ 138:
+/***/ 154:
+/***/ (function(module, exports) {
+
+// removed by extract-text-webpack-plugin
+
+/***/ }),
+
+/***/ 175:
+/***/ (function(module, exports, __webpack_require__) {
+
+module.exports = __webpack_require__(42);
+
+
+/***/ }),
+
+/***/ 42:
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+var _Common = __webpack_require__(0);
+
+var _Common2 = _interopRequireDefault(_Common);
+
+var _Viewer = __webpack_require__(1);
+
+var _Viewer2 = _interopRequireDefault(_Viewer);
+
+var _adapter = __webpack_require__(84);
+
+var _adapter2 = _interopRequireDefault(_adapter);
+
+var _viewerComponent = __webpack_require__(87);
+
+var _viewerComponent2 = _interopRequireDefault(_viewerComponent);
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+var AssessmentUtil = _Viewer2.default.util.AssessmentUtil;
+
+
+_Common2.default.Store.registerModel('ObojoboDraft.Sections.Assessment', {
+	type: 'section',
+	adapter: _adapter2.default,
+	componentClass: _viewerComponent2.default,
+	selectionHandler: null,
+	getNavItem: function getNavItem(model) {
+		var title = model.title || 'Assessment';
+
+		return {
+			type: 'link',
+			label: title,
+			path: [title.toLowerCase().replace(/ /g, '-')],
+			showChildren: false,
+			showChildrenOnNavigation: false
+		};
+	},
+
+	variables: {
+		'assessment:attemptsRemaining': function assessmentAttemptsRemaining(textModel, viewerProps) {
+			var assessmentModel = textModel.getParentOfType('ObojoboDraft.Sections.Assessment');
+			if (assessmentModel.modelState.attempts === Infinity) {
+				return 'unlimited';
+			}
+
+			return assessmentModel.modelState.attempts - AssessmentUtil.getNumberOfAttemptsCompletedForModel(viewerProps.assessmentState, textModel);
+		},
+		'assessment:attemptsAmount': function assessmentAttemptsAmount(textModel, viewerProps) {
+			var assessmentModel = textModel.getParentOfType('ObojoboDraft.Sections.Assessment');
+			if (assessmentModel.modelState.attempts === Infinity) {
+				return 'unlimited';
+			}
+
+			return assessmentModel.modelState.attempts;
+		}
+	}
+
+	// generateNav: (model) ->
+	// 	[
+	// 		{
+	// 			type: 'link',
+	// 			label: model.title ||= 'Assessment',
+	// 			id: model.get('id')
+	// 		},
+	// 		{
+	// 			type: 'seperator'
+	// 		}
+	// 	]
+});
+
+/***/ }),
+
+/***/ 84:
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -92,7 +185,7 @@ Object.defineProperty(exports, "__esModule", {
 	value: true
 });
 
-var _scoreActions = __webpack_require__(140);
+var _scoreActions = __webpack_require__(86);
 
 var _scoreActions2 = _interopRequireDefault(_scoreActions);
 
@@ -156,7 +249,7 @@ function __guard__(value, transform) {
 
 /***/ }),
 
-/***/ 139:
+/***/ 85:
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -166,14 +259,14 @@ Object.defineProperty(exports, "__esModule", {
 	value: true
 });
 
-var _ObojoboDraft = __webpack_require__(0);
+var _Common = __webpack_require__(0);
 
-var _ObojoboDraft2 = _interopRequireDefault(_ObojoboDraft);
+var _Common2 = _interopRequireDefault(_Common);
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
-var Dialog = _ObojoboDraft2.default.components.modal.Dialog;
-var ModalUtil = _ObojoboDraft2.default.util.ModalUtil;
+var Dialog = _Common2.default.components.modal.Dialog;
+var ModalUtil = _Common2.default.util.ModalUtil;
 exports.default = React.createClass({
 	displayName: 'attempt-incomplete-dialog',
 	onCancel: function onCancel() {
@@ -209,7 +302,7 @@ exports.default = React.createClass({
 
 /***/ }),
 
-/***/ 140:
+/***/ 86:
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -284,7 +377,7 @@ exports.default = ScoreActions;
 
 /***/ }),
 
-/***/ 141:
+/***/ 87:
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -294,27 +387,27 @@ Object.defineProperty(exports, "__esModule", {
 	value: true
 });
 
-__webpack_require__(164);
+__webpack_require__(154);
 
-var _ObojoboDraft = __webpack_require__(0);
+var _Common = __webpack_require__(0);
 
-var _ObojoboDraft2 = _interopRequireDefault(_ObojoboDraft);
+var _Common2 = _interopRequireDefault(_Common);
 
 var _Viewer = __webpack_require__(1);
 
 var _Viewer2 = _interopRequireDefault(_Viewer);
 
-var _attemptIncompleteDialog = __webpack_require__(139);
+var _attemptIncompleteDialog = __webpack_require__(85);
 
 var _attemptIncompleteDialog2 = _interopRequireDefault(_attemptIncompleteDialog);
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
-var OboComponent = _ObojoboDraft2.default.components.OboComponent;
-var OboModel = _ObojoboDraft2.default.models.OboModel;
-var Button = _ObojoboDraft2.default.components.Button;
-var Dispatcher = _ObojoboDraft2.default.flux.Dispatcher;
-var ModalUtil = _ObojoboDraft2.default.util.ModalUtil;
+var OboComponent = _Common2.default.components.OboComponent;
+var OboModel = _Common2.default.models.OboModel;
+var Button = _Common2.default.components.Button;
+var Dispatcher = _Common2.default.flux.Dispatcher;
+var ModalUtil = _Common2.default.util.ModalUtil;
 var ScoreStore = _Viewer2.default.stores.ScoreStore;
 var AssessmentUtil = _Viewer2.default.util.AssessmentUtil;
 var NavUtil = _Viewer2.default.util.NavUtil;
@@ -523,99 +616,6 @@ exports.default = React.createClass({
 			childEl
 		);
 	}
-});
-
-/***/ }),
-
-/***/ 164:
-/***/ (function(module, exports) {
-
-// removed by extract-text-webpack-plugin
-
-/***/ }),
-
-/***/ 185:
-/***/ (function(module, exports, __webpack_require__) {
-
-module.exports = __webpack_require__(48);
-
-
-/***/ }),
-
-/***/ 48:
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-
-
-var _ObojoboDraft = __webpack_require__(0);
-
-var _ObojoboDraft2 = _interopRequireDefault(_ObojoboDraft);
-
-var _Viewer = __webpack_require__(1);
-
-var _Viewer2 = _interopRequireDefault(_Viewer);
-
-var _adapter = __webpack_require__(138);
-
-var _adapter2 = _interopRequireDefault(_adapter);
-
-var _viewerComponent = __webpack_require__(141);
-
-var _viewerComponent2 = _interopRequireDefault(_viewerComponent);
-
-function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
-
-var AssessmentUtil = _Viewer2.default.util.AssessmentUtil;
-
-
-_ObojoboDraft2.default.Store.registerModel('ObojoboDraft.Sections.Assessment', {
-	type: 'section',
-	adapter: _adapter2.default,
-	componentClass: _viewerComponent2.default,
-	selectionHandler: null,
-	getNavItem: function getNavItem(model) {
-		var title = model.title || 'Assessment';
-
-		return {
-			type: 'link',
-			label: title,
-			path: [title.toLowerCase().replace(/ /g, '-')],
-			showChildren: false,
-			showChildrenOnNavigation: false
-		};
-	},
-
-	variables: {
-		'assessment:attemptsRemaining': function assessmentAttemptsRemaining(textModel, viewerProps) {
-			var assessmentModel = textModel.getParentOfType('ObojoboDraft.Sections.Assessment');
-			if (assessmentModel.modelState.attempts === Infinity) {
-				return 'unlimited';
-			}
-
-			return assessmentModel.modelState.attempts - AssessmentUtil.getNumberOfAttemptsCompletedForModel(viewerProps.assessmentState, textModel);
-		},
-		'assessment:attemptsAmount': function assessmentAttemptsAmount(textModel, viewerProps) {
-			var assessmentModel = textModel.getParentOfType('ObojoboDraft.Sections.Assessment');
-			if (assessmentModel.modelState.attempts === Infinity) {
-				return 'unlimited';
-			}
-
-			return assessmentModel.modelState.attempts;
-		}
-	}
-
-	// generateNav: (model) ->
-	// 	[
-	// 		{
-	// 			type: 'link',
-	// 			label: model.title ||= 'Assessment',
-	// 			id: model.get('id')
-	// 		},
-	// 		{
-	// 			type: 'seperator'
-	// 		}
-	// 	]
 });
 
 /***/ })

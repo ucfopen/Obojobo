@@ -63,7 +63,7 @@
 /******/ 	__webpack_require__.p = "build/";
 /******/
 /******/ 	// Load entry module and return exports
-/******/ 	return __webpack_require__(__webpack_require__.s = 183);
+/******/ 	return __webpack_require__(__webpack_require__.s = 173);
 /******/ })
 /************************************************************************/
 /******/ ({
@@ -71,7 +71,7 @@
 /***/ 0:
 /***/ (function(module, exports) {
 
-module.exports = ObojoboDraft;
+module.exports = Common;
 
 /***/ }),
 
@@ -82,7 +82,65 @@ module.exports = Viewer;
 
 /***/ }),
 
-/***/ 135:
+/***/ 152:
+/***/ (function(module, exports) {
+
+// removed by extract-text-webpack-plugin
+
+/***/ }),
+
+/***/ 173:
+/***/ (function(module, exports, __webpack_require__) {
+
+module.exports = __webpack_require__(40);
+
+
+/***/ }),
+
+/***/ 40:
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+var _Common = __webpack_require__(0);
+
+var _Common2 = _interopRequireDefault(_Common);
+
+var _adapter = __webpack_require__(81);
+
+var _adapter2 = _interopRequireDefault(_adapter);
+
+var _viewerComponent = __webpack_require__(82);
+
+var _viewerComponent2 = _interopRequireDefault(_viewerComponent);
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+_Common2.default.Store.registerModel('ObojoboDraft.Modules.Module', {
+	type: 'module',
+	default: true,
+	adapter: _adapter2.default,
+	componentClass: _viewerComponent2.default,
+	selectionHandler: null,
+	getNavItem: function getNavItem(model) {
+		return {
+			type: 'heading',
+			label: model.title,
+			showChildren: true
+		};
+	},
+	generateNav: function generateNav(model) {
+		return [{
+			type: 'heading',
+			label: model.title
+		}];
+	}
+});
+
+/***/ }),
+
+/***/ 81:
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -119,7 +177,7 @@ function __guard__(value, transform) {
 
 /***/ }),
 
-/***/ 136:
+/***/ 82:
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -129,11 +187,11 @@ Object.defineProperty(exports, "__esModule", {
 	value: true
 });
 
-__webpack_require__(162);
+__webpack_require__(152);
 
-var _ObojoboDraft = __webpack_require__(0);
+var _Common = __webpack_require__(0);
 
-var _ObojoboDraft2 = _interopRequireDefault(_ObojoboDraft);
+var _Common2 = _interopRequireDefault(_Common);
 
 var _Viewer = __webpack_require__(1);
 
@@ -142,9 +200,9 @@ var _Viewer2 = _interopRequireDefault(_Viewer);
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 var navStore = _Viewer2.default.stores.navStore;
-var OboComponent = _ObojoboDraft2.default.components.OboComponent;
-var OboModel = _ObojoboDraft2.default.models.OboModel;
-var Dispatcher = _ObojoboDraft2.default.flux.Dispatcher;
+var OboComponent = _Common2.default.components.OboComponent;
+var OboModel = _Common2.default.models.OboModel;
+var Dispatcher = _Common2.default.flux.Dispatcher;
 var NavUtil = _Viewer2.default.util.NavUtil;
 exports.default = React.createClass({
 	displayName: 'viewer-component',
@@ -171,64 +229,6 @@ exports.default = React.createClass({
 				childEl
 			)
 		);
-	}
-});
-
-/***/ }),
-
-/***/ 162:
-/***/ (function(module, exports) {
-
-// removed by extract-text-webpack-plugin
-
-/***/ }),
-
-/***/ 183:
-/***/ (function(module, exports, __webpack_require__) {
-
-module.exports = __webpack_require__(46);
-
-
-/***/ }),
-
-/***/ 46:
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-
-
-var _ObojoboDraft = __webpack_require__(0);
-
-var _ObojoboDraft2 = _interopRequireDefault(_ObojoboDraft);
-
-var _adapter = __webpack_require__(135);
-
-var _adapter2 = _interopRequireDefault(_adapter);
-
-var _viewerComponent = __webpack_require__(136);
-
-var _viewerComponent2 = _interopRequireDefault(_viewerComponent);
-
-function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
-
-_ObojoboDraft2.default.Store.registerModel('ObojoboDraft.Modules.Module', {
-	type: 'module',
-	default: true,
-	adapter: _adapter2.default,
-	componentClass: _viewerComponent2.default,
-	selectionHandler: null,
-	getNavItem: function getNavItem(model) {
-		return {
-			type: 'heading',
-			label: model.title,
-			showChildren: true
-		};
-	},
-	generateNav: function generateNav(model) {
-		return [{
-			type: 'heading',
-			label: model.title
-		}];
 	}
 });
 
