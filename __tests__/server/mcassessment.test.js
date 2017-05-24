@@ -12,14 +12,16 @@ describe('MCAssessment', () => {
   let score
   const events = { onCalculateScore: 'ObojoboDraft.Chunks.Question:calculateScore' }
   const setScore = s => { score = s }
-  const findNodeClassMock = jest.fn().mockImplementation(() => responseRecord)
+  const getChildNodeByIdMock = jest.fn(() => responseRecord)
 
   beforeEach(() => {
     rootNode = new Draft(testJson)
 
-    mcAssessment = new MCAssessment({ findNodeClass: findNodeClassMock })
-    mcAssessment.children = [new DraftNode()]
-    mcAssessment.node = {}
+    mcAssessment = new MCAssessment({ getChildNodeById: getChildNodeByIdMock })
+    mcAssessment.children = [new DraftNode({}, { id: 'test' }, {})]
+    mcAssessment.node = { id: 'test' }
+
+    rootNode.root.children.push(mcAssessment)
 
     responseRecord = new DraftNode({}, { content: { score: 100 } })
     responseRecord.response = { set: true },
@@ -29,14 +31,13 @@ describe('MCAssessment', () => {
   })
 
   it("returns if question doesn't contain 'this' node on calulate score", () => {
-    mcAssessment.node.id = 'test12345'
+    rootNode.root.children = []
     expect(mcAssessment.yell(events.onCalculateScore, {}, rootNode.root, {}, setScore)).toEqual([])
     expect(score).toBe(null)
   })
 
   it('throws error if multiple answers chosen on non pick-all assessment', () => {
     mcAssessment.node.content = { responseType: 'pick-one' }
-    mcAssessment.node.id = 'the-content'
     let responseRecords = [responseRecord, responseRecord]
     let errorMessage = 'Impossible response to non pick-all MCAssessment response'
     let calculateScore = () => mcAssessment.yell(events.onCalculateScore, {}, rootNode.root, responseRecords, {})
@@ -62,16 +63,21 @@ describe('MCAssessment', () => {
 
   it('sets score to 0 if number of chosen !== number of correct answers (pick-all)', () => {
     let responseRecords = [responseRecord]
-    mcAssessment.node.content = { responseType: 'pick-all' }
-    mcAssessment.children = [new DraftNode(), new DraftNode()]
-    mcAssessment.children[0].node = { id: 'test' }
+    mcAssessment.node = {
+      content: { responseType: 'pick-all' },
+      id: 'test'
+    }
+    mcAssessment.children = [
+      new DraftNode({}, { id: 'test' }, {}),
+      new DraftNode({}, { id: 'test2' }, {})
+    ]
     mcAssessment.yell(events.onCalculateScore, {}, rootNode.root, responseRecords, setScore)
     expect(score).toEqual(0)
   })
 
   it('sets score to 0 if any chosen answers are not the correct answer (pick-all)', () => {
     let responseRecords = [responseRecord]
-    mcAssessment.node = { content: { responseType: 'pick-all' } }
+    mcAssessment.node = { content: { responseType: 'pick-all' }, id: 'test' }
     // ID of chosen !== ID of correct ('test')
     // TODO: Set score of this test node to 0?
     mcAssessment.children[0].node = { id: 'test123' }
@@ -81,17 +87,25 @@ describe('MCAssessment', () => {
 
   it('sets score to 100 on correct answers chosen (pick-all)', () => {
     let responseRecords = [responseRecord]
-    mcAssessment.node = { content: { responseType: 'pick-all' } }
+    mcAssessment.node = { content: { responseType: 'pick-all' }, id: 'test' }
     // Chosen answer ID will now match correct answer ID
     mcAssessment.children[0].node = { id: 'test' }
     mcAssessment.yell(events.onCalculateScore, {}, rootNode.root, responseRecords, setScore)
     expect(score).toEqual(100)
   })
 
-  // TODO: Add test that sets score to 100 when two correct answers are chosen
-  //       out of two correct answer choices for pick-all question type.
-
-  it.skip('sets score to 100 on ALL correct answers chosen (pick-all)', () => {
-    expect(1).toBe(1)
+  it('sets score to 100 on ALL correct answers chosen (pick-all)', () => {
+    let responseRecords = [responseRecord, Object.assign({}, responseRecord, { responder_id: 'test2' })]
+    responseRecords[1].responder_id = 'test2'
+    mcAssessment.node = {
+      content: { responseType: 'pick-all' },
+      id: 'test'
+    }
+    mcAssessment.children = [
+      new DraftNode({}, { id: 'test' }, {}),
+      new DraftNode({}, { id: 'test2' }, {})
+    ]
+    mcAssessment.yell(events.onCalculateScore, {}, rootNode.root, responseRecords, setScore)
+    expect(score).toEqual(100)
   })
 })

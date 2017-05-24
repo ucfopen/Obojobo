@@ -22,10 +22,6 @@ describe('Question', () => {
     expect(mcChoice.node.content.practice).toBe(false)
   })
 
-  // TODO: The last argument is an object containing an addScore method. Create
-  //       a mock function for addScore and pass it in, then ensure it is not
-  //       called.
-
   it("returns if assessment doesn't contain 'this' node on attempt end", () => {
     expect(mcChoice.yell(events.attemptEnd, {}, {}, rootNode.root, {}, currentAttempt)).toEqual([])
     expect(currentAttempt.addScore).not.toHaveBeenCalled()
