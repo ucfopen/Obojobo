@@ -1,18 +1,18 @@
 const MCChoice    = require('../../server/question') // Naming error here, currently an issue.
 const testJson    = require('../../test-object.json')
 const Draft       = oboRequire('models/draft')
+const DraftNode   = oboRequire('models/draft_node')
 
 jest.mock('../../../../db')
 
 describe('Question', () => {
   const rootNode = new Draft(testJson)
-  const mcChoice = new MCChoice()
+  const mcChoice = new MCChoice({}, { id: 'test' }, {})
+  const testChild = new DraftNode({}, { id: 'test' }, {})
   const events = {
     sendToAssessment: 'ObojoboDraft.Sections.Assessment:sendToAssessment',
-    attemptEnd: 'ObojoboDraft.Sections.Assessment:attemptEnd'
+    attemptEnd: 'ObojoboDraft.Sections.Assessment:attemptEnd',
   }
-
-  // TODO: This is the implementation for the last argument
   const currentAttempt = { addScore: jest.fn() }
 
   it('disables practice on send to assessment', () => {
@@ -27,26 +27,24 @@ describe('Question', () => {
   //       called.
 
   it("returns if assessment doesn't contain 'this' node on attempt end", () => {
-    mcChoice.node.id = 'test12345'
     expect(mcChoice.yell(events.attemptEnd, {}, {}, rootNode.root, {}, currentAttempt)).toEqual([])
     expect(currentAttempt.addScore).not.toHaveBeenCalled()
   })
 
   it('returns if there are no question responses', () => {
-    mcChoice.node.id = 'the-content'
     let responseHistory = []
     expect(mcChoice.yell(events.attemptEnd, {}, {}, rootNode.root, responseHistory, currentAttempt)).toEqual([])
     expect(currentAttempt.addScore).not.toHaveBeenCalled()
   })
 
-  // TODO: This is not specific enough. Intead, mock addScore like above and
-  //       check that it is called the expected number of times witht the
-  //       expected number of arguments.
-
   it('emits calculate score event when necessary', () => {
+    const testAddScore = jest.fn((app, mcChoice, responses, addScore) => addScore(100))
     let responseRecord = { question_id: mcChoice.node.id }
     let responseHistory = [responseRecord]
-    expect(mcChoice.yell(events.attemptEnd, {}, {}, rootNode.root, responseHistory, currentAttempt)).toEqual([[]])
-    expect(currentAttempt.addScore).toHaveBeenCalledTimes(1)
+    rootNode.root.children.push(mcChoice)
+    testChild.registerEvents({ 'ObojoboDraft.Chunks.Question:calculateScore': testAddScore })
+    mcChoice.children.push(testChild)
+    mcChoice.yell(events.attemptEnd, { app: {} }, {}, rootNode.root, responseHistory, currentAttempt)
+    expect(currentAttempt.addScore).toHaveBeenCalled()
   })
 })
