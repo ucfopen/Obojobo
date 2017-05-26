@@ -1,8 +1,5 @@
-import Common from 'Common'
-import Viewer from 'Viewer'
-
-let StyleableText = Common.text.StyleableText;
-let StyleRange    = Common.text.StyleRange;
+import StyleableText from '../../../../src/scripts/common/text/styleable-text'
+import StyleRange from '../../../../src/scripts/common/text/style-range'
 
 describe('StyleableText', function() {
 	let st, st1, st2;

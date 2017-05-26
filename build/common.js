@@ -306,11 +306,8 @@ var OboModel = function (_Backbone$Model) {
 	}, {
 		key: 'onChildrenReset',
 		value: function onChildrenReset(collection, options) {
-			var _this3 = this;
-
-			console.log('m', this.children.models.length);
-			return Array.from(this.children.models).map(function (child) {
-				return console.log('child', child, 'this', _this3)(child.parent = _this3);
+			options.previousModels.map(function (child) {
+				return child.parent = null;
 			});
 		}
 	}, {
@@ -345,7 +342,7 @@ var OboModel = function (_Backbone$Model) {
 				var _iteratorError2 = undefined;
 
 				try {
-					for (var _iterator2 = Array.from(this.children)[Symbol.iterator](), _step2; !(_iteratorNormalCompletion2 = (_step2 = _iterator2.next()).done); _iteratorNormalCompletion2 = true) {
+					for (var _iterator2 = Array.from(this.children.models)[Symbol.iterator](), _step2; !(_iteratorNormalCompletion2 = (_step2 = _iterator2.next()).done); _iteratorNormalCompletion2 = true) {
 						var child = _step2.value;
 
 						clone.children.add(child.clone(true));
@@ -441,8 +438,8 @@ var OboModel = function (_Backbone$Model) {
 	}, {
 		key: 'revert',
 		value: function revert() {
-			// Does this work?
-			var newModel = new this.constructor();
+			// Does this work? - NO, needs fixing
+			var newModel = new this.constructor({});
 
 			var index = this.get('index');
 			var id = this.get('id');
@@ -531,14 +528,13 @@ var OboModel = function (_Backbone$Model) {
 				return;
 			}
 
-			var collection = this.parent.collection;
+			var children = this.parent.children;
 
-
-			if (collection.contains(sibling)) {
-				collection.remove(sibling);
+			if (children.contains(sibling)) {
+				children.remove(sibling);
 			}
 
-			return collection.add(sibling, { at: this.getIndex() });
+			return children.add(sibling, { at: this.getIndex() });
 		}
 	}, {
 		key: 'addChildAfter',
@@ -547,14 +543,13 @@ var OboModel = function (_Backbone$Model) {
 				return;
 			}
 
-			var collection = this.parent.collection;
+			var children = this.parent.children;
 
-
-			if (collection.contains(sibling)) {
-				collection.remove(sibling);
+			if (children.contains(sibling)) {
+				children.remove(sibling);
 			}
 
-			return collection.add(sibling, { at: this.getIndex() + 1 });
+			return children.add(sibling, { at: this.getIndex() + 1 });
 		}
 	}, {
 		key: 'moveTo',
@@ -563,7 +558,7 @@ var OboModel = function (_Backbone$Model) {
 				return;
 			}
 
-			var refChunk = this.parent.at(index);
+			var refChunk = this.parent.children.at(index);
 
 			if (index < this.getIndex()) {
 				return refChunk.addChildBefore(this);
@@ -579,7 +574,7 @@ var OboModel = function (_Backbone$Model) {
 	}, {
 		key: 'moveToBottom',
 		value: function moveToBottom() {
-			return this.moveTo(this.parent.length - 1);
+			return this.moveTo(this.parent.children.length - 1);
 		}
 	}, {
 		key: 'prevSibling',
@@ -619,7 +614,7 @@ var OboModel = function (_Backbone$Model) {
 			if (this.isOrphan()) {
 				return false;
 			}
-			return this.getIndex() === this.parent.length - 1;
+			return this.getIndex() === this.parent.children.length - 1;
 		}
 	}, {
 		key: 'isBefore',
@@ -641,7 +636,7 @@ var OboModel = function (_Backbone$Model) {
 		key: 'remove',
 		value: function remove() {
 			if (!this.isOrphan()) {
-				return this.parent.remove(this);
+				return this.parent.children.remove(this);
 			}
 		}
 	}, {
@@ -6413,8 +6408,6 @@ var _index = __webpack_require__(61);
 var _index2 = _interopRequireDefault(_index);
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
-
-alert('common');
 
 window.Common = _index2.default;
 

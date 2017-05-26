@@ -1,8 +1,5 @@
-import Common from 'Common'
-import Viewer from 'Viewer'
-
-let ChunkStyleList = Common.text.ChunkStyleList;
-let StyleRange     = Common.text.StyleRange;
+import ChunkStyleList from '../../../../src/scripts/common/text/chunk-style-list'
+import StyleRange from '../../../../src/scripts/common/text/style-range'
 
 describe('ChunkStyleList', function() {
 	let styleList, styleRangeLink, styleRangeBold;

@@ -1,9 +1,7 @@
-import Common from 'Common'
-
-let StyleableText = Common.text.StyleableText;
-let StyleRange    = Common.text.StyleRange;
-let TextGroup     = Common.textGroup.TextGroup;
-let TextGroupItem = Common.textGroup.TextGroupItem;
+import StyleableText from '../../../../src/scripts/common/text/styleable-text'
+import StyleRange from '../../../../src/scripts/common/text/style-range'
+import TextGroup from '../../../../src/scripts/common/text-group/text-group'
+import TextGroupItem from '../../../../src/scripts/common/text-group/text-group-item'
 
 describe('TextGroup', function() {
 	let tg, tg3items, tgDataTemplate, tgWithItems, tgWith3Items, frozenEmptyObject;

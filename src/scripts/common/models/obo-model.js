@@ -124,10 +124,7 @@ class OboModel extends Backbone.Model {
 	}
 
 	onChildrenReset(collection, options) {
-		console.log('m', this.children.models.length)
-		return Array.from(this.children.models).map((child) =>
-			console.log('child', child, 'this', this)
-			(child.parent = this));
+		options.previousModels.map((child) => child.parent = null)
 	}
 
 	createNewLocalId() {
@@ -149,7 +146,7 @@ class OboModel extends Backbone.Model {
 		this.adapter.clone(this, clone);
 
 		if (deep && this.hasChildren()) {
-			for (let child of Array.from(this.children)) {
+			for (let child of Array.from(this.children.models)) {
 				clone.children.add(child.clone(true));
 			}
 		}
@@ -184,8 +181,8 @@ class OboModel extends Backbone.Model {
 	}
 
 	revert() {
-		// Does this work?
-		let newModel = new this.constructor();
+		// Does this work? - NO, needs fixing
+		let newModel = new this.constructor({});
 
 		let index = this.get('index');
 		let id = this.get('id');
@@ -257,31 +254,31 @@ class OboModel extends Backbone.Model {
 	addChildBefore(sibling) {
 		if (this.isOrphan()) { return; }
 
-		let { collection } = this.parent;
+		let children = this.parent.children;
 
-		if (collection.contains(sibling)) {
-			collection.remove(sibling);
+		if (children.contains(sibling)) {
+			children.remove(sibling);
 		}
 
-		return collection.add(sibling, { at:this.getIndex() });
+		return children.add(sibling, { at:this.getIndex() });
 	}
 
 	addChildAfter(sibling) {
 		if (this.isOrphan()) { return; }
 
-		let { collection } = this.parent;
+		let children = this.parent.children;
 
-		if (collection.contains(sibling)) {
-			collection.remove(sibling);
+		if (children.contains(sibling)) {
+			children.remove(sibling);
 		}
 
-		return collection.add(sibling, { at:this.getIndex() + 1 });
+		return children.add(sibling, { at:this.getIndex() + 1 });
 	}
 
 	moveTo(index) {
 		if (this.getIndex() === index) { return; }
 
-		let refChunk = this.parent.at(index);
+		let refChunk = this.parent.children.at(index);
 
 		if (index < this.getIndex()) {
 			return refChunk.addChildBefore(this);
@@ -295,7 +292,7 @@ class OboModel extends Backbone.Model {
 	}
 
 	moveToBottom() {
-		return this.moveTo(this.parent.length - 1);
+		return this.moveTo(this.parent.children.length - 1);
 	}
 
 	prevSibling() {
@@ -320,7 +317,7 @@ class OboModel extends Backbone.Model {
 
 	isLast() {
 		if (this.isOrphan()) { return false; }
-		return this.getIndex() === (this.parent.length - 1);
+		return this.getIndex() === (this.parent.children.length - 1);
 	}
 
 	isBefore(otherChunk) {
@@ -334,7 +331,7 @@ class OboModel extends Backbone.Model {
 	}
 
 	remove() {
-		if (!this.isOrphan()) { return this.parent.remove(this); }
+		if (!this.isOrphan()) { return this.parent.children.remove(this); }
 	}
 
 	replaceWith(newChunk) {

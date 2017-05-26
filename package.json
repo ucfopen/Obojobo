@@ -73,6 +73,8 @@
     ],
     "verbose": true,
     "moduleNameMapper": {
+      "^Common(.*)$": "<rootDir>/src/scripts/common$1",
+      "^Viewer(.*)$": "<rootDir>/src/scripts/viewer$1",
       "\\.scss$": "<rootDir>/__mocks__/ignore-file-stub.js",
       "\\.svg$": "<rootDir>/__mocks__/ignore-file-stub.js"
     }

@@ -1,8 +1,8 @@
 import ScoreStore from '../../../src/scripts/viewer/stores/score-store'
 import APIUtil from '../../../src/scripts/viewer/util/api-util'
-import FocusUtil from '../../../src/common/util/focus-util'
-import Dispatcher from '../../../src/common/flux/dispatcher'
-import OboModel from '../../../src/common/models/obo-model'
+import FocusUtil from '../../../src/scripts/common/util/focus-util'
+import Dispatcher from '../../../src/scripts/common/flux/dispatcher'
+import OboModel from '../../../src/scripts/common/models/obo-model'
 
 jest.mock('../../../src/scripts/viewer/util/api-util', () => {
 	return {
@@ -10,13 +10,13 @@ jest.mock('../../../src/scripts/viewer/util/api-util', () => {
 	}
 })
 
-jest.mock('../../../src/common/util/focus-util', () => {
+jest.mock('../../../src/scripts/common/util/focus-util', () => {
 	return {
 		unfocus: jest.fn()
 	}
 })
 
-jest.mock('../../../src/common/models/obo-model', () => {
+jest.mock('../../../src/scripts/common/models/obo-model', () => {
 	return {
 		models: {
 			test: {
