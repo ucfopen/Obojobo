@@ -16,6 +16,17 @@
     "karma-coverage": "./node_modules/karma/bin/karma start ./karma-coverage.conf.js",
     "generateModuleManifest": "node ./bin/generate_module_manifest.js"
   },
+  "jest": {
+    "testURL": "http://localhost:3000/view/00000000-0000-0000-0000-000000000000",
+    "setupFiles": [
+      "./setupTests.js"
+    ],
+    "verbose": true,
+    "moduleNameMapper": {
+      "^ObojoboDraft(.*)$": "<rootDir>/src/scripts/submodules/ObojoboDraft$1",
+      "^Viewer(.*)$": "<rootDir>/src/scripts/submodules/Viewer$1"
+    }
+  },
   "pre-commit": [
     "build",
     "build:gitadd"

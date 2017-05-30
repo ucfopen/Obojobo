@@ -814,14 +814,6 @@
               "children": []
             },
             {
-              "type": "text",
-              "text": " with feedback and an included "
-            },
-            {
-              "type": "text",
-              "text": ":\n\t\t\t\t"
-            },
-            {
               "id": "15d5f3a2-4db5-4306-92ae-49325f3eb8e2",
               "type": "ObojoboDraft.Chunks.Question",
               "content": {
