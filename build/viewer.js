@@ -932,49 +932,6 @@ var getNewAssessmentObject = function getNewAssessmentObject() {
 	};
 };
 
-var startAssessmentAttempt = function startAssessmentAttempt(state, attemptObject) {
-	var id = attemptObject.assessmentId;
-	var model = OboModel.models[id];
-
-	model.children.at(1).children.reset();
-	var _iteratorNormalCompletion = true;
-	var _didIteratorError = false;
-	var _iteratorError = undefined;
-
-	try {
-		for (var _iterator = Array.from(attemptObject.state.questions)[Symbol.iterator](), _step; !(_iteratorNormalCompletion = (_step = _iterator.next()).done); _iteratorNormalCompletion = true) {
-			var child = _step.value;
-
-			var c = OboModel.create(child);
-			model.children.at(1).children.add(c);
-		}
-	} catch (err) {
-		_didIteratorError = true;
-		_iteratorError = err;
-	} finally {
-		try {
-			if (!_iteratorNormalCompletion && _iterator.return) {
-				_iterator.return();
-			}
-		} finally {
-			if (_didIteratorError) {
-				throw _iteratorError;
-			}
-		}
-	}
-
-	if (!state.assessments[id]) {
-		state.assessments[id] = getNewAssessmentObject();
-	}
-
-	state.assessments[id].current = attemptObject;
-
-	_navUtil2.default.rebuildMenu(model.getRoot());
-	_navUtil2.default.goto(id);
-
-	return model.processTrigger('onStartAttempt');
-};
-
 var AssessmentStore = function (_Store) {
 	_inherits(AssessmentStore, _Store);
 
@@ -988,24 +945,7 @@ var AssessmentStore = function (_Store) {
 		var _this = _possibleConstructorReturn(this, (AssessmentStore.__proto__ || Object.getPrototypeOf(AssessmentStore)).call(this, 'assessmentstore'));
 
 		Dispatcher.on('assessment:startAttempt', function (payload) {
-			id = payload.value.id;
-
-			model = OboModel.models[id];
-
-			return _apiUtil2.default.startAttempt(model.getRoot(), model, {}).then(function (res) {
-				if (res.status === 'error') {
-					switch (res.value.message.toLowerCase()) {
-						case 'attempt limit reached':
-							return ErrorUtil.show('No attempts left', "You have attempted this assessment the maximum number of times available.");
-							break;
-						default:
-							return ErrorUtil.errorResponse(res);
-					}
-				}
-
-				startAssessmentAttempt(_this.state, res.value);
-				return _this.triggerChange();
-			});
+			tryStartAttempt(OboModel.models[payload.value.id]);
 		});
 
 		Dispatcher.on('assessment:endAttempt', function (payload) {
@@ -1089,13 +1029,13 @@ var AssessmentStore = function (_Store) {
 			var unfinishedAttempt = null;
 			var nonExistantQuestions = [];
 
-			var _iteratorNormalCompletion2 = true;
-			var _didIteratorError2 = false;
-			var _iteratorError2 = undefined;
+			var _iteratorNormalCompletion = true;
+			var _didIteratorError = false;
+			var _iteratorError = undefined;
 
 			try {
-				for (var _iterator2 = Array.from(history)[Symbol.iterator](), _step2; !(_iteratorNormalCompletion2 = (_step2 = _iterator2.next()).done); _iteratorNormalCompletion2 = true) {
-					var attempt = _step2.value;
+				for (var _iterator = Array.from(history)[Symbol.iterator](), _step; !(_iteratorNormalCompletion = (_step = _iterator.next()).done); _iteratorNormalCompletion = true) {
+					var attempt = _step.value;
 
 					if (!this.state.assessments[attempt.assessmentId]) {
 						this.state.assessments[attempt.assessmentId] = getNewAssessmentObject();
@@ -1108,32 +1048,57 @@ var AssessmentStore = function (_Store) {
 						this.state.assessments[attempt.assessmentId].attempts.push(attempt);
 					}
 
-					var _iteratorNormalCompletion4 = true;
-					var _didIteratorError4 = false;
-					var _iteratorError4 = undefined;
+					var _iteratorNormalCompletion3 = true;
+					var _didIteratorError3 = false;
+					var _iteratorError3 = undefined;
 
 					try {
-						for (var _iterator4 = Array.from(attempt.state.questions)[Symbol.iterator](), _step4; !(_iteratorNormalCompletion4 = (_step4 = _iterator4.next()).done); _iteratorNormalCompletion4 = true) {
-							question = _step4.value;
+						for (var _iterator3 = Array.from(attempt.state.questions)[Symbol.iterator](), _step3; !(_iteratorNormalCompletion3 = (_step3 = _iterator3.next()).done); _iteratorNormalCompletion3 = true) {
+							question = _step3.value;
 
 							if (!OboModel.models[question.id]) {
 								nonExistantQuestions.push(question);
 							}
 						}
 					} catch (err) {
-						_didIteratorError4 = true;
-						_iteratorError4 = err;
+						_didIteratorError3 = true;
+						_iteratorError3 = err;
 					} finally {
 						try {
-							if (!_iteratorNormalCompletion4 && _iterator4.return) {
-								_iterator4.return();
+							if (!_iteratorNormalCompletion3 && _iterator3.return) {
+								_iterator3.return();
 							}
 						} finally {
-							if (_didIteratorError4) {
-								throw _iteratorError4;
+							if (_didIteratorError3) {
+								throw _iteratorError3;
 							}
 						}
 					}
+				}
+			} catch (err) {
+				_didIteratorError = true;
+				_iteratorError = err;
+			} finally {
+				try {
+					if (!_iteratorNormalCompletion && _iterator.return) {
+						_iterator.return();
+					}
+				} finally {
+					if (_didIteratorError) {
+						throw _iteratorError;
+					}
+				}
+			}
+
+			var _iteratorNormalCompletion2 = true;
+			var _didIteratorError2 = false;
+			var _iteratorError2 = undefined;
+
+			try {
+				for (var _iterator2 = Array.from(nonExistantQuestions)[Symbol.iterator](), _step2; !(_iteratorNormalCompletion2 = (_step2 = _iterator2.next()).done); _iteratorNormalCompletion2 = true) {
+					question = _step2.value;
+
+					OboModel.create(question);
 				}
 			} catch (err) {
 				_didIteratorError2 = true;
@@ -1150,31 +1115,6 @@ var AssessmentStore = function (_Store) {
 				}
 			}
 
-			var _iteratorNormalCompletion3 = true;
-			var _didIteratorError3 = false;
-			var _iteratorError3 = undefined;
-
-			try {
-				for (var _iterator3 = Array.from(nonExistantQuestions)[Symbol.iterator](), _step3; !(_iteratorNormalCompletion3 = (_step3 = _iterator3.next()).done); _iteratorNormalCompletion3 = true) {
-					question = _step3.value;
-
-					OboModel.create(question);
-				}
-			} catch (err) {
-				_didIteratorError3 = true;
-				_iteratorError3 = err;
-			} finally {
-				try {
-					if (!_iteratorNormalCompletion3 && _iterator3.return) {
-						_iterator3.return();
-					}
-				} finally {
-					if (_didIteratorError3) {
-						throw _iteratorError3;
-					}
-				}
-			}
-
 			if (unfinishedAttempt) {
 				return ModalUtil.show(React.createElement(
 					SimpleDialog,
@@ -1187,15 +1127,80 @@ var AssessmentStore = function (_Store) {
 				));
 			}
 		}
-		//startAssessmentAttempt(attempt)
-
 	}, {
 		key: 'onResumeAttemptConfirm',
 		value: function onResumeAttemptConfirm(unfinishedAttempt) {
 			ModalUtil.hide();
 
-			startAssessmentAttempt(this.state, unfinishedAttempt);
+			this.startAttempt(this.state, unfinishedAttempt);
 			return this.triggerChange();
+		}
+	}, {
+		key: 'tryStartAttempt',
+		value: function tryStartAttempt(model) {
+			var _this2 = this;
+
+			return _apiUtil2.default.startAttempt(model.getRoot(), model, {}).then(function (res) {
+				if (res.status === 'error') {
+					switch (res.value.message.toLowerCase()) {
+						case 'attempt limit reached':
+							ErrorUtil.show('No attempts left', "You have attempted this assessment the maximum number of times available.");
+							break;
+
+						default:
+							ErrorUtil.errorResponse(res);
+					}
+
+					return;
+				}
+
+				_this2.startAttempt(_this2.state, res.value);
+				_this2.triggerChange();
+			});
+		}
+	}, {
+		key: 'startAttempt',
+		value: function startAttempt(attemptObject) {
+			var id = attemptObject.assessmentId;
+			var model = OboModel.models[id];
+
+			model.children.at(1).children.reset();
+			var _iteratorNormalCompletion4 = true;
+			var _didIteratorError4 = false;
+			var _iteratorError4 = undefined;
+
+			try {
+				for (var _iterator4 = Array.from(attemptObject.state.questions)[Symbol.iterator](), _step4; !(_iteratorNormalCompletion4 = (_step4 = _iterator4.next()).done); _iteratorNormalCompletion4 = true) {
+					var child = _step4.value;
+
+					var c = OboModel.create(child);
+					model.children.at(1).children.add(c);
+				}
+			} catch (err) {
+				_didIteratorError4 = true;
+				_iteratorError4 = err;
+			} finally {
+				try {
+					if (!_iteratorNormalCompletion4 && _iterator4.return) {
+						_iterator4.return();
+					}
+				} finally {
+					if (_didIteratorError4) {
+						throw _iteratorError4;
+					}
+				}
+			}
+
+			if (!this.state.assessments[id]) {
+				this.state.assessments[id] = getNewAssessmentObject();
+			}
+
+			this.state.assessments[id].current = attemptObject;
+
+			_navUtil2.default.rebuildMenu(model.getRoot());
+			_navUtil2.default.goto(id);
+
+			model.processTrigger('onStartAttempt');
 		}
 	}, {
 		key: 'getState',

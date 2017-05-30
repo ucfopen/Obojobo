@@ -21,53 +21,13 @@ let getNewAssessmentObject = () =>
 	})
 ;
 
-let startAssessmentAttempt = function(state, attemptObject) {
-	let id = attemptObject.assessmentId;
-	let model = OboModel.models[id];
-
-	model.children.at(1).children.reset();
-	for (let child of Array.from(attemptObject.state.questions)) {
-		let c = OboModel.create(child);
-		model.children.at(1).children.add(c);
-	}
-
-	if (!state.assessments[id]) {
-		state.assessments[id] = getNewAssessmentObject();
-	}
-
-	state.assessments[id].current = attemptObject;
-
-	NavUtil.rebuildMenu(model.getRoot());
-	NavUtil.goto(id);
-
-	return model.processTrigger('onStartAttempt');
-};
-
-
 class AssessmentStore extends Store {
 	constructor() {
 		let assessment, id, model;
 		super('assessmentstore');
 
 		Dispatcher.on('assessment:startAttempt', payload => {
-			({ id } = payload.value);
-			model = OboModel.models[id];
-
-			return APIUtil.startAttempt(model.getRoot(), model, {})
-			.then(res => {
-				if (res.status === 'error') {
-					switch (res.value.message.toLowerCase()) {
-						case 'attempt limit reached':
-							return ErrorUtil.show('No attempts left', "You have attempted this assessment the maximum number of times available.");
-							break;
-						default:
-							return ErrorUtil.errorResponse(res);
-					}
-				}
-
-				startAssessmentAttempt(this.state, res.value);
-				return this.triggerChange();
-			});
+			tryStartAttempt(OboModel.models[payload.value.id]);
 		});
 
 		Dispatcher.on('assessment:endAttempt', payload => {
@@ -163,14 +123,58 @@ class AssessmentStore extends Store {
 			return ModalUtil.show(<SimpleDialog ok title='Resume Attempt' onConfirm={this.onResumeAttemptConfirm.bind(this, unfinishedAttempt)}><p>It looks like you were in the middle of an attempt. We'll resume you where you left off.</p></SimpleDialog>);
 		}
 	}
-			//startAssessmentAttempt(attempt)
 
 	onResumeAttemptConfirm(unfinishedAttempt) {
 		ModalUtil.hide();
 
-		startAssessmentAttempt(this.state, unfinishedAttempt);
+		this.startAttempt(this.state, unfinishedAttempt);
 		return this.triggerChange();
 	}
+
+	tryStartAttempt(model) {
+		return (
+			APIUtil.startAttempt(model.getRoot(), model, {})
+			.then(res => {
+				if (res.status === 'error') {
+					switch (res.value.message.toLowerCase()) {
+						case 'attempt limit reached':
+							ErrorUtil.show('No attempts left', "You have attempted this assessment the maximum number of times available.");
+							break;
+
+						default:
+							ErrorUtil.errorResponse(res);
+					}
+
+					return;
+				}
+
+				this.startAttempt(this.state, res.value);
+				this.triggerChange();
+			})
+		)
+	}
+
+	startAttempt(attemptObject) {
+		let id = attemptObject.assessmentId;
+		let model = OboModel.models[id];
+
+		model.children.at(1).children.reset();
+		for (let child of Array.from(attemptObject.state.questions)) {
+			let c = OboModel.create(child);
+			model.children.at(1).children.add(c);
+		}
+
+		if (!this.state.assessments[id]) {
+			this.state.assessments[id] = getNewAssessmentObject();
+		}
+
+		this.state.assessments[id].current = attemptObject;
+
+		NavUtil.rebuildMenu(model.getRoot());
+		NavUtil.goto(id);
+
+		model.processTrigger('onStartAttempt');
+	};
 
 	getState() { return this.state; }
 
