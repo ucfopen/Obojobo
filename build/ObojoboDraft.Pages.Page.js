@@ -63,7 +63,7 @@
 /******/ 	__webpack_require__.p = "build/";
 /******/
 /******/ 	// Load entry module and return exports
-/******/ 	return __webpack_require__(__webpack_require__.s = 184);
+/******/ 	return __webpack_require__(__webpack_require__.s = 174);
 /******/ })
 /************************************************************************/
 /******/ ({
@@ -71,7 +71,7 @@
 /***/ 0:
 /***/ (function(module, exports) {
 
-module.exports = ObojoboDraft;
+module.exports = Common;
 
 /***/ }),
 
@@ -82,7 +82,65 @@ module.exports = Viewer;
 
 /***/ }),
 
-/***/ 137:
+/***/ 153:
+/***/ (function(module, exports) {
+
+// removed by extract-text-webpack-plugin
+
+/***/ }),
+
+/***/ 174:
+/***/ (function(module, exports, __webpack_require__) {
+
+module.exports = __webpack_require__(41);
+
+
+/***/ }),
+
+/***/ 41:
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+var _Common = __webpack_require__(0);
+
+var _Common2 = _interopRequireDefault(_Common);
+
+var _viewerComponent = __webpack_require__(83);
+
+var _viewerComponent2 = _interopRequireDefault(_viewerComponent);
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+_Common2.default.Store.registerModel('ObojoboDraft.Pages.Page', {
+	type: 'page',
+	default: true,
+	componentClass: _viewerComponent2.default,
+	selectionHandler: null,
+	getNavItem: function getNavItem(model) {
+		var title = '';
+		if (model.title != null) {
+			title = model.title;
+		}
+
+		return {
+			type: 'link',
+			label: model.title,
+			// path: ['page-' + (model.getIndex() + 1) + '-' + model.get('id')],
+			path: [title.toLowerCase().replace(/ /g, '-')],
+			showChildren: false
+		};
+	}
+	// init: ->
+	// 	Dispatcher.on 'nav:willGotoPath', (oldNavItem, newNavItem) ->
+	// 		alert('yeah')
+
+});
+
+/***/ }),
+
+/***/ 83:
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -92,11 +150,11 @@ Object.defineProperty(exports, "__esModule", {
 	value: true
 });
 
-__webpack_require__(163);
+__webpack_require__(153);
 
-var _ObojoboDraft = __webpack_require__(0);
+var _Common = __webpack_require__(0);
 
-var _ObojoboDraft2 = _interopRequireDefault(_ObojoboDraft);
+var _Common2 = _interopRequireDefault(_Common);
 
 var _Viewer = __webpack_require__(1);
 
@@ -104,7 +162,7 @@ var _Viewer2 = _interopRequireDefault(_Viewer);
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
-var OboComponent = _ObojoboDraft2.default.components.OboComponent;
+var OboComponent = _Common2.default.components.OboComponent;
 var NavUtil = _Viewer2.default.util.NavUtil;
 exports.default = React.createClass({
 	displayName: 'viewer-component',
@@ -130,64 +188,6 @@ exports.default = React.createClass({
 			})
 		);
 	}
-});
-
-/***/ }),
-
-/***/ 163:
-/***/ (function(module, exports) {
-
-// removed by extract-text-webpack-plugin
-
-/***/ }),
-
-/***/ 184:
-/***/ (function(module, exports, __webpack_require__) {
-
-module.exports = __webpack_require__(47);
-
-
-/***/ }),
-
-/***/ 47:
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-
-
-var _ObojoboDraft = __webpack_require__(0);
-
-var _ObojoboDraft2 = _interopRequireDefault(_ObojoboDraft);
-
-var _viewerComponent = __webpack_require__(137);
-
-var _viewerComponent2 = _interopRequireDefault(_viewerComponent);
-
-function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
-
-_ObojoboDraft2.default.Store.registerModel('ObojoboDraft.Pages.Page', {
-	type: 'page',
-	default: true,
-	componentClass: _viewerComponent2.default,
-	selectionHandler: null,
-	getNavItem: function getNavItem(model) {
-		var title = '';
-		if (model.title != null) {
-			title = model.title;
-		}
-
-		return {
-			type: 'link',
-			label: model.title,
-			// path: ['page-' + (model.getIndex() + 1) + '-' + model.get('id')],
-			path: [title.toLowerCase().replace(/ /g, '-')],
-			showChildren: false
-		};
-	}
-	// init: ->
-	// 	Dispatcher.on 'nav:willGotoPath', (oldNavItem, newNavItem) ->
-	// 		alert('yeah')
-
 });
 
 /***/ })

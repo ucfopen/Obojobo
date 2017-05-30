@@ -70,7 +70,7 @@
 /* 0 */
 /***/ (function(module, exports) {
 
-module.exports = ObojoboDraft;
+module.exports = Common;
 
 /***/ }),
 /* 1 */
@@ -83,14 +83,14 @@ Object.defineProperty(exports, "__esModule", {
 	value: true
 });
 
-var _ObojoboDraft = __webpack_require__(0);
+var _Common = __webpack_require__(0);
 
-var _ObojoboDraft2 = _interopRequireDefault(_ObojoboDraft);
+var _Common2 = _interopRequireDefault(_Common);
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
-var Dispatcher = _ObojoboDraft2.default.flux.Dispatcher;
-var OboModel = _ObojoboDraft2.default.models.OboModel;
+var Dispatcher = _Common2.default.flux.Dispatcher;
+var OboModel = _Common2.default.models.OboModel;
 
 
 var getFlatList = function getFlatList(item) {
@@ -442,9 +442,9 @@ Object.defineProperty(exports, "__esModule", {
 
 var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
 
-var _ObojoboDraft = __webpack_require__(0);
+var _Common = __webpack_require__(0);
 
-var _ObojoboDraft2 = _interopRequireDefault(_ObojoboDraft);
+var _Common2 = _interopRequireDefault(_Common);
 
 var _navUtil = __webpack_require__(1);
 
@@ -462,9 +462,9 @@ function _possibleConstructorReturn(self, call) { if (!self) { throw new Referen
 
 function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
 
-var Store = _ObojoboDraft2.default.flux.Store;
-var Dispatcher = _ObojoboDraft2.default.flux.Dispatcher;
-var OboModel = _ObojoboDraft2.default.models.OboModel;
+var Store = _Common2.default.flux.Store;
+var Dispatcher = _Common2.default.flux.Dispatcher;
+var OboModel = _Common2.default.models.OboModel;
 
 var NavStore = function (_Store) {
 	_inherits(NavStore, _Store);
@@ -642,7 +642,7 @@ var NavStore = function (_Store) {
 			if (indent == null) {
 				indent = '';
 			}
-			var item = _ObojoboDraft2.default.Store.getItemForType(model.get('type'));
+			var item = _Common2.default.Store.getItemForType(model.get('type'));
 
 			var navItem = null;
 			if (item.getNavItem != null) {
@@ -745,14 +745,14 @@ Object.defineProperty(exports, "__esModule", {
 	value: true
 });
 
-var _ObojoboDraft = __webpack_require__(0);
+var _Common = __webpack_require__(0);
 
-var _ObojoboDraft2 = _interopRequireDefault(_ObojoboDraft);
+var _Common2 = _interopRequireDefault(_Common);
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
-var Dispatcher = _ObojoboDraft2.default.flux.Dispatcher;
-var OboModel = _ObojoboDraft2.default.models.OboModel;
+var Dispatcher = _Common2.default.flux.Dispatcher;
+var OboModel = _Common2.default.models.OboModel;
 
 
 var QuestionUtil = {
@@ -835,7 +835,7 @@ Object.defineProperty(exports, "__esModule", {
 	value: true
 });
 
-__webpack_require__(20);
+__webpack_require__(19);
 
 var _navUtil = __webpack_require__(1);
 
@@ -845,15 +845,13 @@ var _obojoboLogo = __webpack_require__(26);
 
 var _obojoboLogo2 = _interopRequireDefault(_obojoboLogo);
 
-var _ObojoboDraft = __webpack_require__(0);
+var _Common = __webpack_require__(0);
 
-var _ObojoboDraft2 = _interopRequireDefault(_ObojoboDraft);
+var _Common2 = _interopRequireDefault(_Common);
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
-var _window = window,
-    OBO = _window.OBO;
-var getBackgroundImage = _ObojoboDraft2.default.util.getBackgroundImage;
+var getBackgroundImage = _Common2.default.util.getBackgroundImage;
 
 
 var Logo = React.createClass({
@@ -886,9 +884,9 @@ Object.defineProperty(exports, "__esModule", {
 
 var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
 
-var _ObojoboDraft = __webpack_require__(0);
+var _Common = __webpack_require__(0);
 
-var _ObojoboDraft2 = _interopRequireDefault(_ObojoboDraft);
+var _Common2 = _interopRequireDefault(_Common);
 
 var _assessmentUtil = __webpack_require__(9);
 
@@ -918,12 +916,12 @@ function _possibleConstructorReturn(self, call) { if (!self) { throw new Referen
 
 function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
 
-var Store = _ObojoboDraft2.default.flux.Store;
-var Dispatcher = _ObojoboDraft2.default.flux.Dispatcher;
-var OboModel = _ObojoboDraft2.default.models.OboModel;
-var ErrorUtil = _ObojoboDraft2.default.util.ErrorUtil;
-var SimpleDialog = _ObojoboDraft2.default.components.modal.SimpleDialog;
-var ModalUtil = _ObojoboDraft2.default.util.ModalUtil;
+var Store = _Common2.default.flux.Store;
+var Dispatcher = _Common2.default.flux.Dispatcher;
+var OboModel = _Common2.default.models.OboModel;
+var ErrorUtil = _Common2.default.util.ErrorUtil;
+var SimpleDialog = _Common2.default.components.modal.SimpleDialog;
+var ModalUtil = _Common2.default.util.ModalUtil;
 
 
 var getNewAssessmentObject = function getNewAssessmentObject() {
@@ -1230,9 +1228,9 @@ Object.defineProperty(exports, "__esModule", {
 
 var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
 
-var _ObojoboDraft = __webpack_require__(0);
+var _Common = __webpack_require__(0);
 
-var _ObojoboDraft2 = _interopRequireDefault(_ObojoboDraft);
+var _Common2 = _interopRequireDefault(_Common);
 
 var _apiUtil = __webpack_require__(2);
 
@@ -1246,9 +1244,9 @@ function _possibleConstructorReturn(self, call) { if (!self) { throw new Referen
 
 function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
 
-var Store = _ObojoboDraft2.default.flux.Store;
-var Dispatcher = _ObojoboDraft2.default.flux.Dispatcher;
-var OboModel = _ObojoboDraft2.default.models.OboModel;
+var Store = _Common2.default.flux.Store;
+var Dispatcher = _Common2.default.flux.Dispatcher;
+var OboModel = _Common2.default.models.OboModel;
 
 var QuestionStore = function (_Store) {
 	_inherits(QuestionStore, _Store);
@@ -1361,9 +1359,9 @@ Object.defineProperty(exports, "__esModule", {
 
 var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
 
-var _ObojoboDraft = __webpack_require__(0);
+var _Common = __webpack_require__(0);
 
-var _ObojoboDraft2 = _interopRequireDefault(_ObojoboDraft);
+var _Common2 = _interopRequireDefault(_Common);
 
 var _apiUtil = __webpack_require__(2);
 
@@ -1377,10 +1375,10 @@ function _possibleConstructorReturn(self, call) { if (!self) { throw new Referen
 
 function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
 
-var Store = _ObojoboDraft2.default.flux.Store;
-var Dispatcher = _ObojoboDraft2.default.flux.Dispatcher;
-var FocusUtil = _ObojoboDraft2.default.util.FocusUtil;
-var OboModel = _ObojoboDraft2.default.models.OboModel;
+var Store = _Common2.default.flux.Store;
+var Dispatcher = _Common2.default.flux.Dispatcher;
+var FocusUtil = _Common2.default.util.FocusUtil;
+var OboModel = _Common2.default.models.OboModel;
 
 var ScoreStore = function (_Store) {
 	_inherits(ScoreStore, _Store);
@@ -1458,9 +1456,9 @@ Object.defineProperty(exports, "__esModule", {
 	value: true
 });
 
-var _ObojoboDraft = __webpack_require__(0);
+var _Common = __webpack_require__(0);
 
-var _ObojoboDraft2 = _interopRequireDefault(_ObojoboDraft);
+var _Common2 = _interopRequireDefault(_Common);
 
 var _questionUtil = __webpack_require__(4);
 
@@ -1468,7 +1466,7 @@ var _questionUtil2 = _interopRequireDefault(_questionUtil);
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
-var Dispatcher = _ObojoboDraft2.default.flux.Dispatcher;
+var Dispatcher = _Common2.default.flux.Dispatcher;
 
 
 var AssessmentUtil = {
@@ -1600,13 +1598,13 @@ Object.defineProperty(exports, "__esModule", {
 	value: true
 });
 
-var _ObojoboDraft = __webpack_require__(0);
+var _Common = __webpack_require__(0);
 
-var _ObojoboDraft2 = _interopRequireDefault(_ObojoboDraft);
+var _Common2 = _interopRequireDefault(_Common);
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
-var Dispatcher = _ObojoboDraft2.default.flux.Dispatcher;
+var Dispatcher = _Common2.default.flux.Dispatcher;
 
 
 var ScoreUtil = {
@@ -2109,13 +2107,13 @@ exports.default = ScoreUtil;
 "use strict";
 
 
-var _Viewer = __webpack_require__(17);
+var _index = __webpack_require__(17);
 
-var _Viewer2 = _interopRequireDefault(_Viewer);
+var _index2 = _interopRequireDefault(_index);
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
-window.Viewer = _Viewer2.default;
+window.Viewer = _index2.default;
 
 /***/ }),
 /* 13 */
@@ -2128,7 +2126,7 @@ Object.defineProperty(exports, "__esModule", {
 	value: true
 });
 
-__webpack_require__(19);
+__webpack_require__(18);
 
 var _navUtil = __webpack_require__(1);
 
@@ -2245,7 +2243,7 @@ Object.defineProperty(exports, "__esModule", {
 	value: true
 });
 
-__webpack_require__(21);
+__webpack_require__(20);
 
 var _navStore = __webpack_require__(3);
 
@@ -2271,16 +2269,16 @@ var _lockIcon = __webpack_require__(25);
 
 var _lockIcon2 = _interopRequireDefault(_lockIcon);
 
-var _ObojoboDraft = __webpack_require__(0);
+var _Common = __webpack_require__(0);
 
-var _ObojoboDraft2 = _interopRequireDefault(_ObojoboDraft);
+var _Common2 = _interopRequireDefault(_Common);
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
-var getBackgroundImage = _ObojoboDraft2.default.util.getBackgroundImage;
-var OboModel = _ObojoboDraft2.default.models.OboModel;
-var StyleableText = _ObojoboDraft2.default.text.StyleableText;
-var StyleableTextComponent = _ObojoboDraft2.default.text.StyleableTextComponent;
+var getBackgroundImage = _Common2.default.util.getBackgroundImage;
+var OboModel = _Common2.default.models.OboModel;
+var StyleableText = _Common2.default.text.StyleableText;
+var StyleableTextComponent = _Common2.default.text.StyleableTextComponent;
 
 
 var Nav = React.createClass({
@@ -2422,13 +2420,13 @@ Object.defineProperty(exports, "__esModule", {
 	value: true
 });
 
-__webpack_require__(18);
-
 __webpack_require__(22);
 
-var _ObojoboDraft = __webpack_require__(0);
+__webpack_require__(21);
 
-var _ObojoboDraft2 = _interopRequireDefault(_ObojoboDraft);
+var _Common = __webpack_require__(0);
+
+var _Common2 = _interopRequireDefault(_Common);
 
 var _react = __webpack_require__(27);
 
@@ -2473,19 +2471,19 @@ var _nav2 = _interopRequireDefault(_nav);
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 //@TODO
-var Legacy = _ObojoboDraft2.default.models.Legacy;
-var DOMUtil = _ObojoboDraft2.default.page.DOMUtil;
-var Screen = _ObojoboDraft2.default.page.Screen;
-var OboModel = _ObojoboDraft2.default.models.OboModel;
-var Dispatcher = _ObojoboDraft2.default.flux.Dispatcher;
-var ModalContainer = _ObojoboDraft2.default.components.ModalContainer;
-var SimpleDialog = _ObojoboDraft2.default.components.modal.SimpleDialog;
-var ModalUtil = _ObojoboDraft2.default.util.ModalUtil;
-var FocusBlocker = _ObojoboDraft2.default.components.FocusBlocker;
-var ModalStore = _ObojoboDraft2.default.stores.ModalStore;
-var FocusStore = _ObojoboDraft2.default.stores.FocusStore;
-var FocusUtil = _ObojoboDraft2.default.util.FocusUtil;
-var OboGlobals = _ObojoboDraft2.default.util.OboGlobals;
+var Legacy = _Common2.default.models.Legacy;
+var DOMUtil = _Common2.default.page.DOMUtil;
+var Screen = _Common2.default.page.Screen;
+var OboModel = _Common2.default.models.OboModel;
+var Dispatcher = _Common2.default.flux.Dispatcher;
+var ModalContainer = _Common2.default.components.ModalContainer;
+var SimpleDialog = _Common2.default.components.modal.SimpleDialog;
+var ModalUtil = _Common2.default.util.ModalUtil;
+var FocusBlocker = _Common2.default.components.FocusBlocker;
+var ModalStore = _Common2.default.stores.ModalStore;
+var FocusStore = _Common2.default.stores.FocusStore;
+var FocusUtil = _Common2.default.util.FocusUtil;
+var OboGlobals = _Common2.default.util.OboGlobals;
 
 // Dispatcher.on 'all', (eventName, payload) -> console.log 'EVENT TRIGGERED', eventName
 
@@ -2505,7 +2503,7 @@ var ViewerApp = _react2.default.createClass({
 	getInitialState: function getInitialState() {
 		var _this = this;
 
-		_ObojoboDraft2.default.Store.loadDependency('https://cdnjs.cloudflare.com/ajax/libs/KaTeX/0.5.1/katex.min.css');
+		_Common2.default.Store.loadDependency('https://cdnjs.cloudflare.com/ajax/libs/KaTeX/0.5.1/katex.min.css');
 
 		Dispatcher.on('viewer:scrollTo', function (payload) {
 			return ReactDOM.findDOMNode(_this.refs.container).scrollTop = payload.value;
@@ -2595,7 +2593,7 @@ var ViewerApp = _react2.default.createClass({
 		}
 	},
 	getTextForVariable: function getTextForVariable(event, variable, textModel) {
-		return event.text = _ObojoboDraft2.default.Store.getTextForVariable(variable, textModel, this.state);
+		return event.text = _Common2.default.Store.getTextForVariable(variable, textModel, this.state);
 	},
 	scrollToTop: function scrollToTop() {
 		var el = ReactDOM.findDOMNode(this.refs.prev);

@@ -63,7 +63,7 @@
 /******/ 	__webpack_require__.p = "build/";
 /******/
 /******/ 	// Load entry module and return exports
-/******/ 	return __webpack_require__(__webpack_require__.s = 167);
+/******/ 	return __webpack_require__(__webpack_require__.s = 157);
 /******/ })
 /************************************************************************/
 /******/ ({
@@ -71,48 +71,48 @@
 /***/ 0:
 /***/ (function(module, exports) {
 
-module.exports = ObojoboDraft;
+module.exports = Common;
 
 /***/ }),
 
-/***/ 144:
+/***/ 134:
 /***/ (function(module, exports) {
 
 // removed by extract-text-webpack-plugin
 
 /***/ }),
 
-/***/ 167:
+/***/ 157:
 /***/ (function(module, exports, __webpack_require__) {
 
-module.exports = __webpack_require__(31);
+module.exports = __webpack_require__(25);
 
 
 /***/ }),
 
-/***/ 31:
+/***/ 25:
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
 
 
-var _adapter = __webpack_require__(95);
+var _adapter = __webpack_require__(46);
 
 var _adapter2 = _interopRequireDefault(_adapter);
 
-var _viewerComponent = __webpack_require__(96);
+var _viewerComponent = __webpack_require__(47);
 
 var _viewerComponent2 = _interopRequireDefault(_viewerComponent);
 
-var _ObojoboDraft = __webpack_require__(0);
+var _Common = __webpack_require__(0);
 
-var _ObojoboDraft2 = _interopRequireDefault(_ObojoboDraft);
+var _Common2 = _interopRequireDefault(_Common);
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
-var SelectionHandler = _ObojoboDraft2.default.chunk.textChunk.TextGroupSelectionHandler;
+var SelectionHandler = _Common2.default.chunk.textChunk.TextGroupSelectionHandler;
 
-_ObojoboDraft2.default.Store.registerModel('ObojoboDraft.Chunks.ActionButton', {
+_Common2.default.Store.registerModel('ObojoboDraft.Chunks.ActionButton', {
 	type: 'chunk',
 	adapter: _adapter2.default,
 	componentClass: _viewerComponent2.default,
@@ -121,7 +121,7 @@ _ObojoboDraft2.default.Store.registerModel('ObojoboDraft.Chunks.ActionButton', {
 
 /***/ }),
 
-/***/ 95:
+/***/ 46:
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -131,13 +131,13 @@ Object.defineProperty(exports, "__esModule", {
 	value: true
 });
 
-var _ObojoboDraft = __webpack_require__(0);
+var _Common = __webpack_require__(0);
 
-var _ObojoboDraft2 = _interopRequireDefault(_ObojoboDraft);
+var _Common2 = _interopRequireDefault(_Common);
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
-var TextGroup = _ObojoboDraft2.default.textGroup.TextGroup;
+var TextGroup = _Common2.default.textGroup.TextGroup;
 
 var TextGroupAdapter = {
 	construct: function construct(model, attrs) {
@@ -188,7 +188,7 @@ function __guard__(value, transform) {
 
 /***/ }),
 
-/***/ 96:
+/***/ 47:
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -198,18 +198,18 @@ Object.defineProperty(exports, "__esModule", {
 	value: true
 });
 
-__webpack_require__(144);
+__webpack_require__(134);
 
-var _ObojoboDraft = __webpack_require__(0);
+var _Common = __webpack_require__(0);
 
-var _ObojoboDraft2 = _interopRequireDefault(_ObojoboDraft);
+var _Common2 = _interopRequireDefault(_Common);
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
-var OboComponent = _ObojoboDraft2.default.components.OboComponent;
-var Button = _ObojoboDraft2.default.components.Button;
-var TextGroupEl = _ObojoboDraft2.default.chunk.textChunk.TextGroupEl;
-var TextChunk = _ObojoboDraft2.default.chunk.TextChunk;
+var OboComponent = _Common2.default.components.OboComponent;
+var Button = _Common2.default.components.Button;
+var TextGroupEl = _Common2.default.chunk.textChunk.TextGroupEl;
+var TextChunk = _Common2.default.chunk.TextChunk;
 
 var ActionButton = React.createClass({
 	displayName: 'ActionButton',

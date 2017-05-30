@@ -5,7 +5,9 @@
   "main": "index.js",
   "scripts": {
     "test": "jest --verbose",
-    "test:watch": "jest --verbose --watch --no-cache",
+    "test:watch": "jest --verbose --watch",
+    "test:noCache": "jest --verbose --no-cache",
+    "test:watchNoCache": "jest --verbose --watch --no-cache",
     "start": "webpack --watch",
     "dev": "webpack-dev-server  --colors --port 8090 --host 0.0.0.0",
     "build": "webpack",
@@ -74,5 +76,18 @@
     "smoothscroll-polyfill": "^0.3.4",
     "underscore": "1.5.1",
     "whatwg-fetch": "^2.0.3"
+  },
+  "jest": {
+    "testURL": "http://localhost:3000/view/00000000-0000-0000-0000-000000000000",
+    "setupFiles": [
+      "./setupTests.js"
+    ],
+    "verbose": true,
+    "moduleNameMapper": {
+      "^Common(.*)$": "<rootDir>/src/scripts/common$1",
+      "^Viewer(.*)$": "<rootDir>/src/scripts/viewer$1",
+      "\\.scss$": "<rootDir>/__mocks__/ignore-file-stub.js",
+      "\\.svg$": "<rootDir>/__mocks__/ignore-file-stub.js"
+    }
   }
 }

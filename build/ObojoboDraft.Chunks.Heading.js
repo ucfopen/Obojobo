@@ -63,7 +63,7 @@
 /******/ 	__webpack_require__.p = "build/";
 /******/
 /******/ 	// Load entry module and return exports
-/******/ 	return __webpack_require__(__webpack_require__.s = 172);
+/******/ 	return __webpack_require__(__webpack_require__.s = 162);
 /******/ })
 /************************************************************************/
 /******/ ({
@@ -71,11 +71,81 @@
 /***/ 0:
 /***/ (function(module, exports) {
 
-module.exports = ObojoboDraft;
+module.exports = Common;
 
 /***/ }),
 
-/***/ 106:
+/***/ 139:
+/***/ (function(module, exports) {
+
+// removed by extract-text-webpack-plugin
+
+/***/ }),
+
+/***/ 162:
+/***/ (function(module, exports, __webpack_require__) {
+
+module.exports = __webpack_require__(30);
+
+
+/***/ }),
+
+/***/ 30:
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+var _Common = __webpack_require__(0);
+
+var _Common2 = _interopRequireDefault(_Common);
+
+var _adapter = __webpack_require__(57);
+
+var _adapter2 = _interopRequireDefault(_adapter);
+
+var _viewerComponent = __webpack_require__(58);
+
+var _viewerComponent2 = _interopRequireDefault(_viewerComponent);
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+var SelectionHandler = _Common2.default.chunk.textChunk.TextGroupSelectionHandler;
+
+_Common2.default.Store.registerModel('ObojoboDraft.Chunks.Heading', {
+	type: 'chunk',
+	adapter: _adapter2.default,
+	componentClass: _viewerComponent2.default,
+	selectionHandler: new SelectionHandler(),
+	getNavItem: function getNavItem(model) {
+		switch (model.modelState.headingLevel) {
+			// when 1
+			// 	type: 'link',
+			// 	label: model.modelState.textGroup.first.text.value,
+			// 	path: [model.modelState.textGroup.first.text.value.toLowerCase().replace(/ /g, '-')],
+			// 	showChildren: false
+
+			case 1:case 2:
+				if (model.modelState.headingLevel === 1 && model.getIndex() === 0) {
+					return null;
+				}
+
+				return {
+					type: 'sub-link',
+					label: model.modelState.textGroup.first.text,
+					path: [model.toText().toLowerCase().replace(/ /g, '-')],
+					showChildren: false
+				};
+
+			default:
+				return null;
+		}
+	}
+});
+
+/***/ }),
+
+/***/ 57:
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -85,13 +155,13 @@ Object.defineProperty(exports, "__esModule", {
 	value: true
 });
 
-var _ObojoboDraft = __webpack_require__(0);
+var _Common = __webpack_require__(0);
 
-var _ObojoboDraft2 = _interopRequireDefault(_ObojoboDraft);
+var _Common2 = _interopRequireDefault(_Common);
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
-var TextGroupAdapter = _ObojoboDraft2.default.chunk.textChunk.TextGroupAdapter;
+var TextGroupAdapter = _Common2.default.chunk.textChunk.TextGroupAdapter;
 
 
 var Adapter = {
@@ -138,7 +208,7 @@ function __guard__(value, transform) {
 
 /***/ }),
 
-/***/ 107:
+/***/ 58:
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -148,17 +218,17 @@ Object.defineProperty(exports, "__esModule", {
 	value: true
 });
 
-__webpack_require__(149);
+__webpack_require__(139);
 
-var _ObojoboDraft = __webpack_require__(0);
+var _Common = __webpack_require__(0);
 
-var _ObojoboDraft2 = _interopRequireDefault(_ObojoboDraft);
+var _Common2 = _interopRequireDefault(_Common);
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
-var OboComponent = _ObojoboDraft2.default.components.OboComponent;
-var TextGroupEl = _ObojoboDraft2.default.chunk.textChunk.TextGroupEl;
-var TextChunk = _ObojoboDraft2.default.chunk.TextChunk;
+var OboComponent = _Common2.default.components.OboComponent;
+var TextGroupEl = _Common2.default.chunk.textChunk.TextGroupEl;
+var TextChunk = _Common2.default.chunk.TextChunk;
 
 
 var Heading = React.createClass({
@@ -181,76 +251,6 @@ var Heading = React.createClass({
 });
 
 exports.default = Heading;
-
-/***/ }),
-
-/***/ 149:
-/***/ (function(module, exports) {
-
-// removed by extract-text-webpack-plugin
-
-/***/ }),
-
-/***/ 172:
-/***/ (function(module, exports, __webpack_require__) {
-
-module.exports = __webpack_require__(36);
-
-
-/***/ }),
-
-/***/ 36:
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-
-
-var _ObojoboDraft = __webpack_require__(0);
-
-var _ObojoboDraft2 = _interopRequireDefault(_ObojoboDraft);
-
-var _adapter = __webpack_require__(106);
-
-var _adapter2 = _interopRequireDefault(_adapter);
-
-var _viewerComponent = __webpack_require__(107);
-
-var _viewerComponent2 = _interopRequireDefault(_viewerComponent);
-
-function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
-
-var SelectionHandler = _ObojoboDraft2.default.chunk.textChunk.TextGroupSelectionHandler;
-
-_ObojoboDraft2.default.Store.registerModel('ObojoboDraft.Chunks.Heading', {
-	type: 'chunk',
-	adapter: _adapter2.default,
-	componentClass: _viewerComponent2.default,
-	selectionHandler: new SelectionHandler(),
-	getNavItem: function getNavItem(model) {
-		switch (model.modelState.headingLevel) {
-			// when 1
-			// 	type: 'link',
-			// 	label: model.modelState.textGroup.first.text.value,
-			// 	path: [model.modelState.textGroup.first.text.value.toLowerCase().replace(/ /g, '-')],
-			// 	showChildren: false
-
-			case 1:case 2:
-				if (model.modelState.headingLevel === 1 && model.getIndex() === 0) {
-					return null;
-				}
-
-				return {
-					type: 'sub-link',
-					label: model.modelState.textGroup.first.text,
-					path: [model.toText().toLowerCase().replace(/ /g, '-')],
-					showChildren: false
-				};
-
-			default:
-				return null;
-		}
-	}
-});
 
 /***/ })
 

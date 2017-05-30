@@ -63,7 +63,7 @@
 /******/ 	__webpack_require__.p = "build/";
 /******/
 /******/ 	// Load entry module and return exports
-/******/ 	return __webpack_require__(__webpack_require__.s = 174);
+/******/ 	return __webpack_require__(__webpack_require__.s = 164);
 /******/ })
 /************************************************************************/
 /******/ ({
@@ -71,302 +71,26 @@
 /***/ 0:
 /***/ (function(module, exports) {
 
-module.exports = ObojoboDraft;
+module.exports = Common;
 
 /***/ }),
 
-/***/ 110:
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-
-
-Object.defineProperty(exports, "__esModule", {
-	value: true
-});
-
-var _listStyles = __webpack_require__(24);
-
-var _listStyles2 = _interopRequireDefault(_listStyles);
-
-var _ObojoboDraft = __webpack_require__(0);
-
-var _ObojoboDraft2 = _interopRequireDefault(_ObojoboDraft);
-
-function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
-
-var TextGroup = _ObojoboDraft2.default.textGroup.TextGroup;
-var TextGroupAdapter = _ObojoboDraft2.default.chunk.textChunk.TextGroupAdapter;
-
-
-var Adapter = {
-	construct: function construct(model, attrs) {
-		TextGroupAdapter.construct(model, attrs);
-
-		if (__guard__(attrs != null ? attrs.content : undefined, function (x) {
-			return x.listStyles;
-		}) != null) {
-			return model.modelState.listStyles = _listStyles2.default.fromDescriptor(attrs.content.listStyles);
-		} else {
-			return model.modelState.listStyles = new _listStyles2.default('unordered');
-		}
-	},
-	clone: function clone(model, _clone) {
-		TextGroupAdapter.clone(model, _clone);
-		return _clone.modelState.listStyles = model.modelState.listStyles.clone();
-	},
-	toJSON: function toJSON(model, json) {
-		TextGroupAdapter.toJSON(model, json);
-		return json.content.listStyles = model.modelState.listStyles.toDescriptor();
-	},
-	toText: function toText(model) {
-		console.log('@TODO - List toText method');
-		var text = '';
-		var _iteratorNormalCompletion = true;
-		var _didIteratorError = false;
-		var _iteratorError = undefined;
-
-		try {
-			for (var _iterator = Array.from(model.modelState.textGroup.items)[Symbol.iterator](), _step; !(_iteratorNormalCompletion = (_step = _iterator.next()).done); _iteratorNormalCompletion = true) {
-				var textItem = _step.value;
-
-				text += '  * ' + textItem.text.value + '\n';
-			}
-		} catch (err) {
-			_didIteratorError = true;
-			_iteratorError = err;
-		} finally {
-			try {
-				if (!_iteratorNormalCompletion && _iterator.return) {
-					_iterator.return();
-				}
-			} finally {
-				if (_didIteratorError) {
-					throw _iteratorError;
-				}
-			}
-		}
-
-		return text;
-	}
-};
-
-exports.default = Adapter;
-
-function __guard__(value, transform) {
-	return typeof value !== 'undefined' && value !== null ? transform(value) : undefined;
-}
-
-/***/ }),
-
-/***/ 111:
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-
-
-Object.defineProperty(exports, "__esModule", {
-	value: true
-});
-
-__webpack_require__(151);
-
-var _listStyles = __webpack_require__(24);
-
-var _listStyles2 = _interopRequireDefault(_listStyles);
-
-var _ObojoboDraft = __webpack_require__(0);
-
-var _ObojoboDraft2 = _interopRequireDefault(_ObojoboDraft);
-
-function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
-
-var TextGroup = _ObojoboDraft2.default.textGroup.TextGroup; //@TODO - HAS TO REBUILD MOCKELEMENT STRUCTURE EVERYTIME, WOULD LIKE TO NOT HAVE TO DO THAT!
-
-var TextGroupEl = _ObojoboDraft2.default.chunk.textChunk.TextGroupEl;
-var Chunk = _ObojoboDraft2.default.models.Chunk;
-var MockElement = _ObojoboDraft2.default.mockDOM.MockElement;
-var MockTextNode = _ObojoboDraft2.default.mockDOM.MockTextNode;
-var TextChunk = _ObojoboDraft2.default.chunk.TextChunk;
-
-var SelectionHandler = _ObojoboDraft2.default.chunk.textChunk.TextGroupSelectionHandler;
-var OboComponent = _ObojoboDraft2.default.components.OboComponent;
-
-
-var selectionHandler = new SelectionHandler();
-
-var List = React.createClass({
-	displayName: 'List',
-	createMockListElement: function createMockListElement(data, indentLevel) {
-		var style = data.listStyles.get(indentLevel);
-
-		var tag = style.type === 'unordered' ? 'ul' : 'ol';
-		var el = new MockElement(tag);
-		el.start = style.start;
-		el._listStyleType = style.bulletStyle;
-
-		return el;
-	},
-	addItemToList: function addItemToList(ul, li, lis) {
-		ul.addChild(li);
-		li.listStyleType = ul._listStyleType;
-		return lis.push(li);
-	},
-	render: function render() {
-		var curUl = void 0;
-		window.yeOldListHandler = List.commandHandler;
-		window.yeOldListChunk = this.props.model;
-
-		var data = this.props.model.modelState;
-
-		var texts = data.textGroup;
-
-		var curIndentLevel = 0;
-		var curIndex = 0;
-		var rootUl = curUl = this.createMockListElement(data, curIndentLevel);
-		var lis = [];
-
-		var li = new MockElement('li');
-		this.addItemToList(curUl, li, lis);
-
-		for (var itemIndex = 0; itemIndex < texts.items.length; itemIndex++) {
-			// if this item is lower than the current indent level...
-			var item = texts.items[itemIndex];
-			if (item.data.indent < curIndentLevel) {
-				// traverse up the tree looking for our curUl:
-				while (curIndentLevel > item.data.indent) {
-					curUl = curUl.parent.parent;
-					curIndentLevel--;
-				}
-
-				// else, if this item is higher than the current indent level...
-			} else if (item.data.indent > curIndentLevel) {
-				// traverse down the tree...
-				while (curIndentLevel < item.data.indent) {
-					curIndentLevel++;
-
-					// if the last LI's last child isn't a UL, create it
-					if ((curUl.lastChild.lastChild != null ? curUl.lastChild.lastChild.type : undefined) !== 'ul' && (curUl.lastChild.lastChild != null ? curUl.lastChild.lastChild.type : undefined) !== 'ol') {
-						var newUl = this.createMockListElement(data, curIndentLevel);
-						var newLi = new MockElement('li');
-						this.addItemToList(newUl, newLi, lis);
-						curUl.lastChild.addChild(newUl);
-						curUl = newUl;
-					} else {
-						curUl = curUl.lastChild.lastChild;
-					}
-				}
-			}
-
-			// if the lastChild is not an LI or it is an LI that already has text inside
-			if (!((curUl.lastChild != null ? curUl.lastChild.type : undefined) === 'li') || (curUl.lastChild != null ? curUl.lastChild.lastChild : undefined) != null) {
-				li = new MockElement('li');
-				this.addItemToList(curUl, li, lis);
-			}
-
-			var text = new MockTextNode(item.text);
-			text.index = curIndex;
-			curIndex++;
-
-			curUl.lastChild.addChild(text);
-		}
-
-		// console.log 'TREE'
-		// console.log '==========================================='
-		// @printTree '', rootUl, curUl
-
-		// Remove bullets from nested LIs
-		var _iteratorNormalCompletion = true;
-		var _didIteratorError = false;
-		var _iteratorError = undefined;
-
-		try {
-			for (var _iterator = Array.from(lis)[Symbol.iterator](), _step; !(_iteratorNormalCompletion = (_step = _iterator.next()).done); _iteratorNormalCompletion = true) {
-				li = _step.value;
-
-				if (__guard__(li.children != null ? li.children[0] : undefined, function (x) {
-					return x.nodeType;
-				}) !== 'text') {
-					li.listStyleType = 'none';
-				}
-			}
-
-			// React.createElement 'div', { style: { marginLeft: (data.indent * 20) + 'px' } }, @renderEl(rootUl, 0, 0)
-		} catch (err) {
-			_didIteratorError = true;
-			_iteratorError = err;
-		} finally {
-			try {
-				if (!_iteratorNormalCompletion && _iterator.return) {
-					_iterator.return();
-				}
-			} finally {
-				if (_didIteratorError) {
-					throw _iteratorError;
-				}
-			}
-		}
-
-		return React.createElement(
-			OboComponent,
-			{ model: this.props.model, moduleData: this.props.moduleData },
-			React.createElement(
-				TextChunk,
-				{ className: 'obojobo-draft--chunks--list pad' },
-				React.createElement(
-					'div',
-					{ 'data-indent': data.indent },
-					this.renderEl(rootUl, 0, 0)
-				)
-			)
-		);
-	},
-	renderEl: function renderEl(node, index, indent) {
-		var key = this.props.model.cid + '-' + indent + '-' + index;
-
-		switch (node.nodeType) {
-			case 'text':
-				return React.createElement(TextGroupEl, { parentModel: this.props.model, textItem: { text: node.text, data: {} }, key: key, groupIndex: node.index });
-			case 'element':
-				return React.createElement(node.type, { key: key, start: node.start, style: { listStyleType: node.listStyleType } }, this.renderChildren(node.children, indent + 1));
-		}
-	},
-	renderChildren: function renderChildren(children, indent) {
-		// console.log 'renderChildren', children
-		var els = [];
-		for (var index = 0; index < children.length; index++) {
-			var child = children[index];
-			els.push(this.renderEl(child, index, indent));
-		}
-
-		return els;
-	}
-});
-
-exports.default = List;
-
-function __guard__(value, transform) {
-	return typeof value !== 'undefined' && value !== null ? transform(value) : undefined;
-}
-
-/***/ }),
-
-/***/ 151:
+/***/ 141:
 /***/ (function(module, exports) {
 
 // removed by extract-text-webpack-plugin
 
 /***/ }),
 
-/***/ 174:
+/***/ 164:
 /***/ (function(module, exports, __webpack_require__) {
 
-module.exports = __webpack_require__(38);
+module.exports = __webpack_require__(32);
 
 
 /***/ }),
 
-/***/ 24:
+/***/ 17:
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -542,34 +266,310 @@ exports.default = ListStyles;
 
 /***/ }),
 
-/***/ 38:
+/***/ 32:
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
 
 
-var _ObojoboDraft = __webpack_require__(0);
+var _Common = __webpack_require__(0);
 
-var _ObojoboDraft2 = _interopRequireDefault(_ObojoboDraft);
+var _Common2 = _interopRequireDefault(_Common);
 
-var _adapter = __webpack_require__(110);
+var _adapter = __webpack_require__(61);
 
 var _adapter2 = _interopRequireDefault(_adapter);
 
-var _viewerComponent = __webpack_require__(111);
+var _viewerComponent = __webpack_require__(62);
 
 var _viewerComponent2 = _interopRequireDefault(_viewerComponent);
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
-var SelectionHandler = _ObojoboDraft2.default.chunk.textChunk.TextGroupSelectionHandler;
+var SelectionHandler = _Common2.default.chunk.textChunk.TextGroupSelectionHandler;
 
-_ObojoboDraft2.default.Store.registerModel('ObojoboDraft.Chunks.List', {
+_Common2.default.Store.registerModel('ObojoboDraft.Chunks.List', {
 	type: 'chunk',
 	adapter: _adapter2.default,
 	componentClass: _viewerComponent2.default,
 	selectionHandler: new SelectionHandler()
 });
+
+/***/ }),
+
+/***/ 61:
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+Object.defineProperty(exports, "__esModule", {
+	value: true
+});
+
+var _listStyles = __webpack_require__(17);
+
+var _listStyles2 = _interopRequireDefault(_listStyles);
+
+var _Common = __webpack_require__(0);
+
+var _Common2 = _interopRequireDefault(_Common);
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+var TextGroup = _Common2.default.textGroup.TextGroup;
+var TextGroupAdapter = _Common2.default.chunk.textChunk.TextGroupAdapter;
+
+
+var Adapter = {
+	construct: function construct(model, attrs) {
+		TextGroupAdapter.construct(model, attrs);
+
+		if (__guard__(attrs != null ? attrs.content : undefined, function (x) {
+			return x.listStyles;
+		}) != null) {
+			return model.modelState.listStyles = _listStyles2.default.fromDescriptor(attrs.content.listStyles);
+		} else {
+			return model.modelState.listStyles = new _listStyles2.default('unordered');
+		}
+	},
+	clone: function clone(model, _clone) {
+		TextGroupAdapter.clone(model, _clone);
+		return _clone.modelState.listStyles = model.modelState.listStyles.clone();
+	},
+	toJSON: function toJSON(model, json) {
+		TextGroupAdapter.toJSON(model, json);
+		return json.content.listStyles = model.modelState.listStyles.toDescriptor();
+	},
+	toText: function toText(model) {
+		console.log('@TODO - List toText method');
+		var text = '';
+		var _iteratorNormalCompletion = true;
+		var _didIteratorError = false;
+		var _iteratorError = undefined;
+
+		try {
+			for (var _iterator = Array.from(model.modelState.textGroup.items)[Symbol.iterator](), _step; !(_iteratorNormalCompletion = (_step = _iterator.next()).done); _iteratorNormalCompletion = true) {
+				var textItem = _step.value;
+
+				text += '  * ' + textItem.text.value + '\n';
+			}
+		} catch (err) {
+			_didIteratorError = true;
+			_iteratorError = err;
+		} finally {
+			try {
+				if (!_iteratorNormalCompletion && _iterator.return) {
+					_iterator.return();
+				}
+			} finally {
+				if (_didIteratorError) {
+					throw _iteratorError;
+				}
+			}
+		}
+
+		return text;
+	}
+};
+
+exports.default = Adapter;
+
+function __guard__(value, transform) {
+	return typeof value !== 'undefined' && value !== null ? transform(value) : undefined;
+}
+
+/***/ }),
+
+/***/ 62:
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+Object.defineProperty(exports, "__esModule", {
+	value: true
+});
+
+__webpack_require__(141);
+
+var _listStyles = __webpack_require__(17);
+
+var _listStyles2 = _interopRequireDefault(_listStyles);
+
+var _Common = __webpack_require__(0);
+
+var _Common2 = _interopRequireDefault(_Common);
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+var TextGroup = _Common2.default.textGroup.TextGroup; //@TODO - HAS TO REBUILD MOCKELEMENT STRUCTURE EVERYTIME, WOULD LIKE TO NOT HAVE TO DO THAT!
+
+var TextGroupEl = _Common2.default.chunk.textChunk.TextGroupEl;
+var Chunk = _Common2.default.models.Chunk;
+var MockElement = _Common2.default.mockDOM.MockElement;
+var MockTextNode = _Common2.default.mockDOM.MockTextNode;
+var TextChunk = _Common2.default.chunk.TextChunk;
+
+var SelectionHandler = _Common2.default.chunk.textChunk.TextGroupSelectionHandler;
+var OboComponent = _Common2.default.components.OboComponent;
+
+
+var selectionHandler = new SelectionHandler();
+
+var List = React.createClass({
+	displayName: 'List',
+	createMockListElement: function createMockListElement(data, indentLevel) {
+		var style = data.listStyles.get(indentLevel);
+
+		var tag = style.type === 'unordered' ? 'ul' : 'ol';
+		var el = new MockElement(tag);
+		el.start = style.start;
+		el._listStyleType = style.bulletStyle;
+
+		return el;
+	},
+	addItemToList: function addItemToList(ul, li, lis) {
+		ul.addChild(li);
+		li.listStyleType = ul._listStyleType;
+		return lis.push(li);
+	},
+	render: function render() {
+		var curUl = void 0;
+		window.yeOldListHandler = List.commandHandler;
+		window.yeOldListChunk = this.props.model;
+
+		var data = this.props.model.modelState;
+
+		var texts = data.textGroup;
+
+		var curIndentLevel = 0;
+		var curIndex = 0;
+		var rootUl = curUl = this.createMockListElement(data, curIndentLevel);
+		var lis = [];
+
+		var li = new MockElement('li');
+		this.addItemToList(curUl, li, lis);
+
+		for (var itemIndex = 0; itemIndex < texts.items.length; itemIndex++) {
+			// if this item is lower than the current indent level...
+			var item = texts.items[itemIndex];
+			if (item.data.indent < curIndentLevel) {
+				// traverse up the tree looking for our curUl:
+				while (curIndentLevel > item.data.indent) {
+					curUl = curUl.parent.parent;
+					curIndentLevel--;
+				}
+
+				// else, if this item is higher than the current indent level...
+			} else if (item.data.indent > curIndentLevel) {
+				// traverse down the tree...
+				while (curIndentLevel < item.data.indent) {
+					curIndentLevel++;
+
+					// if the last LI's last child isn't a UL, create it
+					if ((curUl.lastChild.lastChild != null ? curUl.lastChild.lastChild.type : undefined) !== 'ul' && (curUl.lastChild.lastChild != null ? curUl.lastChild.lastChild.type : undefined) !== 'ol') {
+						var newUl = this.createMockListElement(data, curIndentLevel);
+						var newLi = new MockElement('li');
+						this.addItemToList(newUl, newLi, lis);
+						curUl.lastChild.addChild(newUl);
+						curUl = newUl;
+					} else {
+						curUl = curUl.lastChild.lastChild;
+					}
+				}
+			}
+
+			// if the lastChild is not an LI or it is an LI that already has text inside
+			if (!((curUl.lastChild != null ? curUl.lastChild.type : undefined) === 'li') || (curUl.lastChild != null ? curUl.lastChild.lastChild : undefined) != null) {
+				li = new MockElement('li');
+				this.addItemToList(curUl, li, lis);
+			}
+
+			var text = new MockTextNode(item.text);
+			text.index = curIndex;
+			curIndex++;
+
+			curUl.lastChild.addChild(text);
+		}
+
+		// console.log 'TREE'
+		// console.log '==========================================='
+		// @printTree '', rootUl, curUl
+
+		// Remove bullets from nested LIs
+		var _iteratorNormalCompletion = true;
+		var _didIteratorError = false;
+		var _iteratorError = undefined;
+
+		try {
+			for (var _iterator = Array.from(lis)[Symbol.iterator](), _step; !(_iteratorNormalCompletion = (_step = _iterator.next()).done); _iteratorNormalCompletion = true) {
+				li = _step.value;
+
+				if (__guard__(li.children != null ? li.children[0] : undefined, function (x) {
+					return x.nodeType;
+				}) !== 'text') {
+					li.listStyleType = 'none';
+				}
+			}
+
+			// React.createElement 'div', { style: { marginLeft: (data.indent * 20) + 'px' } }, @renderEl(rootUl, 0, 0)
+		} catch (err) {
+			_didIteratorError = true;
+			_iteratorError = err;
+		} finally {
+			try {
+				if (!_iteratorNormalCompletion && _iterator.return) {
+					_iterator.return();
+				}
+			} finally {
+				if (_didIteratorError) {
+					throw _iteratorError;
+				}
+			}
+		}
+
+		return React.createElement(
+			OboComponent,
+			{ model: this.props.model, moduleData: this.props.moduleData },
+			React.createElement(
+				TextChunk,
+				{ className: 'obojobo-draft--chunks--list pad' },
+				React.createElement(
+					'div',
+					{ 'data-indent': data.indent },
+					this.renderEl(rootUl, 0, 0)
+				)
+			)
+		);
+	},
+	renderEl: function renderEl(node, index, indent) {
+		var key = this.props.model.cid + '-' + indent + '-' + index;
+
+		switch (node.nodeType) {
+			case 'text':
+				return React.createElement(TextGroupEl, { parentModel: this.props.model, textItem: { text: node.text, data: {} }, key: key, groupIndex: node.index });
+			case 'element':
+				return React.createElement(node.type, { key: key, start: node.start, style: { listStyleType: node.listStyleType } }, this.renderChildren(node.children, indent + 1));
+		}
+	},
+	renderChildren: function renderChildren(children, indent) {
+		// console.log 'renderChildren', children
+		var els = [];
+		for (var index = 0; index < children.length; index++) {
+			var child = children[index];
+			els.push(this.renderEl(child, index, indent));
+		}
+
+		return els;
+	}
+});
+
+exports.default = List;
+
+function __guard__(value, transform) {
+	return typeof value !== 'undefined' && value !== null ? transform(value) : undefined;
+}
 
 /***/ })
 

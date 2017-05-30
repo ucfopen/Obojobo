@@ -63,7 +63,7 @@
 /******/ 	__webpack_require__.p = "build/";
 /******/
 /******/ 	// Load entry module and return exports
-/******/ 	return __webpack_require__(__webpack_require__.s = 178);
+/******/ 	return __webpack_require__(__webpack_require__.s = 168);
 /******/ })
 /************************************************************************/
 /******/ ({
@@ -71,7 +71,7 @@
 /***/ 0:
 /***/ (function(module, exports) {
 
-module.exports = ObojoboDraft;
+module.exports = Common;
 
 /***/ }),
 
@@ -82,7 +82,80 @@ module.exports = Viewer;
 
 /***/ }),
 
-/***/ 120:
+/***/ 146:
+/***/ (function(module, exports) {
+
+// removed by extract-text-webpack-plugin
+
+/***/ }),
+
+/***/ 147:
+/***/ (function(module, exports) {
+
+// removed by extract-text-webpack-plugin
+
+/***/ }),
+
+/***/ 168:
+/***/ (function(module, exports, __webpack_require__) {
+
+module.exports = __webpack_require__(35);
+
+
+/***/ }),
+
+/***/ 35:
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+var _Common = __webpack_require__(0);
+
+var _Common2 = _interopRequireDefault(_Common);
+
+var _adapter = __webpack_require__(72);
+
+var _adapter2 = _interopRequireDefault(_adapter);
+
+var _viewerComponent = __webpack_require__(73);
+
+var _viewerComponent2 = _interopRequireDefault(_viewerComponent);
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+var SelectionHandler = _Common2.default.chunk.textChunk.TextGroupSelectionHandler;
+
+_Common2.default.Store.registerModel('ObojoboDraft.Chunks.Question', {
+	type: 'chunk',
+	adapter: _adapter2.default,
+	componentClass: _viewerComponent2.default,
+	selectionHandler: new SelectionHandler(),
+	getNavItem: function getNavItem(model) {
+		var label = void 0;
+		var questions = model.parent.children.models.filter(function (child) {
+			return child.get('type') === 'ObojoboDraft.Chunks.Question';
+		});
+
+		if (model.title) {
+			label = model.title;
+		} else if (model.modelState.practice) {
+			label = 'Practice Question ' + (questions.indexOf(model) + 1);
+		} else {
+			label = 'Question ' + (questions.indexOf(model) + 1);
+		}
+
+		return {
+			type: 'sub-link',
+			label: label,
+			path: ['#obo-' + model.get('id')]
+		};
+	}
+});
+
+/***/ }),
+
+/***/ 71:
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -92,7 +165,7 @@ Object.defineProperty(exports, "__esModule", {
 	value: true
 });
 
-__webpack_require__(156);
+__webpack_require__(146);
 
 var QuestionContent = React.createClass({
 	displayName: 'QuestionContent',
@@ -116,7 +189,7 @@ exports.default = QuestionContent;
 
 /***/ }),
 
-/***/ 121:
+/***/ 72:
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -126,13 +199,13 @@ Object.defineProperty(exports, "__esModule", {
 	value: true
 });
 
-var _ObojoboDraft = __webpack_require__(0);
+var _Common = __webpack_require__(0);
 
-var _ObojoboDraft2 = _interopRequireDefault(_ObojoboDraft);
+var _Common2 = _interopRequireDefault(_Common);
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
-var OboModel = _ObojoboDraft2.default.models.OboModel;
+var OboModel = _Common2.default.models.OboModel;
 
 
 var Adapter = {
@@ -197,7 +270,7 @@ function __guard__(value, transform) {
 
 /***/ }),
 
-/***/ 122:
+/***/ 73:
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -207,17 +280,17 @@ Object.defineProperty(exports, "__esModule", {
 	value: true
 });
 
-__webpack_require__(157);
+__webpack_require__(147);
 
-var _ObojoboDraft = __webpack_require__(0);
+var _Common = __webpack_require__(0);
 
-var _ObojoboDraft2 = _interopRequireDefault(_ObojoboDraft);
+var _Common2 = _interopRequireDefault(_Common);
 
 var _Viewer = __webpack_require__(1);
 
 var _Viewer2 = _interopRequireDefault(_Viewer);
 
-var _viewerComponent = __webpack_require__(120);
+var _viewerComponent = __webpack_require__(71);
 
 var _viewerComponent2 = _interopRequireDefault(_viewerComponent);
 
@@ -225,10 +298,10 @@ function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { de
 
 var ReactCSSTransitionGroup = React.addons.CSSTransitionGroup;
 
-var OboComponent = _ObojoboDraft2.default.components.OboComponent;
-var Dispatcher = _ObojoboDraft2.default.flux.Dispatcher;
-var FocusUtil = _ObojoboDraft2.default.util.FocusUtil;
-var Button = _ObojoboDraft2.default.components.Button;
+var OboComponent = _Common2.default.components.OboComponent;
+var Dispatcher = _Common2.default.flux.Dispatcher;
+var FocusUtil = _Common2.default.util.FocusUtil;
+var Button = _Common2.default.components.Button;
 var ScoreUtil = _Viewer2.default.util.ScoreUtil;
 var QuestionUtil = _Viewer2.default.util.QuestionUtil;
 
@@ -318,79 +391,6 @@ var Question = React.createClass({
 });
 
 exports.default = Question;
-
-/***/ }),
-
-/***/ 156:
-/***/ (function(module, exports) {
-
-// removed by extract-text-webpack-plugin
-
-/***/ }),
-
-/***/ 157:
-/***/ (function(module, exports) {
-
-// removed by extract-text-webpack-plugin
-
-/***/ }),
-
-/***/ 178:
-/***/ (function(module, exports, __webpack_require__) {
-
-module.exports = __webpack_require__(41);
-
-
-/***/ }),
-
-/***/ 41:
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-
-
-var _ObojoboDraft = __webpack_require__(0);
-
-var _ObojoboDraft2 = _interopRequireDefault(_ObojoboDraft);
-
-var _adapter = __webpack_require__(121);
-
-var _adapter2 = _interopRequireDefault(_adapter);
-
-var _viewerComponent = __webpack_require__(122);
-
-var _viewerComponent2 = _interopRequireDefault(_viewerComponent);
-
-function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
-
-var SelectionHandler = _ObojoboDraft2.default.chunk.textChunk.TextGroupSelectionHandler;
-
-_ObojoboDraft2.default.Store.registerModel('ObojoboDraft.Chunks.Question', {
-	type: 'chunk',
-	adapter: _adapter2.default,
-	componentClass: _viewerComponent2.default,
-	selectionHandler: new SelectionHandler(),
-	getNavItem: function getNavItem(model) {
-		var label = void 0;
-		var questions = model.parent.children.models.filter(function (child) {
-			return child.get('type') === 'ObojoboDraft.Chunks.Question';
-		});
-
-		if (model.title) {
-			label = model.title;
-		} else if (model.modelState.practice) {
-			label = 'Practice Question ' + (questions.indexOf(model) + 1);
-		} else {
-			label = 'Question ' + (questions.indexOf(model) + 1);
-		}
-
-		return {
-			type: 'sub-link',
-			label: label,
-			path: ['#obo-' + model.get('id')]
-		};
-	}
-});
 
 /***/ })
 

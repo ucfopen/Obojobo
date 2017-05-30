@@ -63,7 +63,7 @@
 /******/ 	__webpack_require__.p = "build/";
 /******/
 /******/ 	// Load entry module and return exports
-/******/ 	return __webpack_require__(__webpack_require__.s = 169);
+/******/ 	return __webpack_require__(__webpack_require__.s = 159);
 /******/ })
 /************************************************************************/
 /******/ ({
@@ -71,45 +71,45 @@
 /***/ 0:
 /***/ (function(module, exports) {
 
-module.exports = ObojoboDraft;
+module.exports = Common;
 
 /***/ }),
 
-/***/ 146:
+/***/ 136:
 /***/ (function(module, exports) {
 
 // removed by extract-text-webpack-plugin
 
 /***/ }),
 
-/***/ 169:
+/***/ 159:
 /***/ (function(module, exports, __webpack_require__) {
 
-module.exports = __webpack_require__(33);
+module.exports = __webpack_require__(27);
 
 
 /***/ }),
 
-/***/ 33:
+/***/ 27:
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
 
 
-var _ObojoboDraft = __webpack_require__(0);
+var _Common = __webpack_require__(0);
 
-var _ObojoboDraft2 = _interopRequireDefault(_ObojoboDraft);
+var _Common2 = _interopRequireDefault(_Common);
 
-var _viewerComponent = __webpack_require__(99);
+var _viewerComponent = __webpack_require__(50);
 
 var _viewerComponent2 = _interopRequireDefault(_viewerComponent);
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
-var SelectionHandler = _ObojoboDraft2.default.chunk.textChunk.TextGroupSelectionHandler;
-var adapter = _ObojoboDraft2.default.chunk.textChunk.textGroupAdapter;
+var SelectionHandler = _Common2.default.chunk.textChunk.TextGroupSelectionHandler;
+var adapter = _Common2.default.chunk.textChunk.textGroupAdapter;
 
-_ObojoboDraft2.default.Store.registerModel('ObojoboDraft.Chunks.Code', {
+_Common2.default.Store.registerModel('ObojoboDraft.Chunks.Code', {
 	type: 'chunk',
 	default: true,
 	adapter: adapter,
@@ -119,7 +119,7 @@ _ObojoboDraft2.default.Store.registerModel('ObojoboDraft.Chunks.Code', {
 
 /***/ }),
 
-/***/ 99:
+/***/ 50:
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -129,17 +129,17 @@ Object.defineProperty(exports, "__esModule", {
 	value: true
 });
 
-__webpack_require__(146);
+__webpack_require__(136);
 
-var _ObojoboDraft = __webpack_require__(0);
+var _Common = __webpack_require__(0);
 
-var _ObojoboDraft2 = _interopRequireDefault(_ObojoboDraft);
+var _Common2 = _interopRequireDefault(_Common);
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
-var OboComponent = _ObojoboDraft2.default.components.OboComponent;
-var TextGroupEl = _ObojoboDraft2.default.chunk.textChunk.TextGroupEl;
-var TextChunk = _ObojoboDraft2.default.chunk.TextChunk;
+var OboComponent = _Common2.default.components.OboComponent;
+var TextGroupEl = _Common2.default.chunk.textChunk.TextGroupEl;
+var TextChunk = _Common2.default.chunk.TextChunk;
 
 
 var Code = React.createClass({

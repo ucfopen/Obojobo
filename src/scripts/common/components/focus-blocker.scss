@@ -1,0 +1,55 @@
+@import '../../../scss/includes';
+
+.viewer--components--focus-blocker
+{
+	position: fixed;
+	left: 0;
+	top: 0;
+	right: 0;
+	bottom: 0;
+	background: $color-bg;
+	transition: opacity $duration-animation-default * 4;
+	opacity: 0;
+	pointer-events: none;
+	// z-index: 1;
+
+	// &.is-active
+	// {
+	// 	opacity: 0.9;
+	// }
+}
+
+// .component
+// {
+// 	// z-index: 0;
+// 	// transition: z-index $duration-animation-default * 4 step-start;
+// 	// transition: opacity $duration-animation-default * 4, z-index $duration-animation-default * 4 $duration-animation-default * 4;
+// 	// transition: z-index $duration-animation-default * 4 $duration-animation-default * 4;
+// 	// transition: z-index 0;
+// }
+
+// .component[data-focussed="true"]
+// {
+// 	z-index: 200;
+// 	// background: red;
+// 	// transition: z-index $duration-animation-default * 4;
+// 	// transition: z-index $duration-animation-default * 4 $duration-animation-default * 4;
+
+// }
+
+.component[data-focussed="true"]
+{
+	z-index: 2;
+}
+
+.viewer--viewer-app
+{
+	&.is-focus-state-enter,
+	&.is-focus-state-active
+	{
+		.viewer--components--focus-blocker
+		{
+			opacity: 0.9;
+		}
+	}
+}

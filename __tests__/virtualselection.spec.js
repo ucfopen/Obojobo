@@ -1,14 +1,14 @@
 describe.skip('VirtualSelection');
 
-// VirtualCursor    = window.ObojoboDraft.Common.selection.VirtualCursor;
-// VirtualSelection    = window.ObojoboDraft.Common.selection.VirtualSelection;
-// StyleableText    = window.ObojoboDraft.Common.text.StyleableText;
-// TextGroupCursor  = window.ObojoboDraft.Common.text.TextGroupCursor;
-// TextGroupSelection  = window.ObojoboDraft.Common.textGroup.TextGroupSelection;
-// Chunk            = window.ObojoboDraft.Common.models.Chunk;
-// Module            = window.ObojoboDraft.Common.models.Module;
-// TextGroup        = window.ObojoboDraft.Common.textGroup.TextGroup;
-// DOMSelection = window.ObojoboDraft.Common.selection.DOMSelection;
+// VirtualCursor    = window.Common.Common.selection.VirtualCursor;
+// VirtualSelection    = window.Common.Common.selection.VirtualSelection;
+// StyleableText    = window.Common.Common.text.StyleableText;
+// TextGroupCursor  = window.Common.Common.text.TextGroupCursor;
+// TextGroupSelection  = window.Common.Common.textGroup.TextGroupSelection;
+// Chunk            = window.Common.Common.models.Chunk;
+// Module            = window.Common.Common.models.Module;
+// TextGroup        = window.Common.Common.textGroup.TextGroup;
+// DOMSelection = window.Common.Common.selection.DOMSelection;
 
 // window.OBO.getItems( function(chunks) {
 // 	// chunks.forEach(function(chunkClass, type) {

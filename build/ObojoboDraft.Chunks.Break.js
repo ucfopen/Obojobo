@@ -63,7 +63,7 @@
 /******/ 	__webpack_require__.p = "build/";
 /******/
 /******/ 	// Load entry module and return exports
-/******/ 	return __webpack_require__(__webpack_require__.s = 168);
+/******/ 	return __webpack_require__(__webpack_require__.s = 158);
 /******/ })
 /************************************************************************/
 /******/ ({
@@ -71,48 +71,48 @@
 /***/ 0:
 /***/ (function(module, exports) {
 
-module.exports = ObojoboDraft;
+module.exports = Common;
 
 /***/ }),
 
-/***/ 145:
+/***/ 135:
 /***/ (function(module, exports) {
 
 // removed by extract-text-webpack-plugin
 
 /***/ }),
 
-/***/ 168:
+/***/ 158:
 /***/ (function(module, exports, __webpack_require__) {
 
-module.exports = __webpack_require__(32);
+module.exports = __webpack_require__(26);
 
 
 /***/ }),
 
-/***/ 32:
+/***/ 26:
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
 
 
-var _ObojoboDraft = __webpack_require__(0);
+var _Common = __webpack_require__(0);
 
-var _ObojoboDraft2 = _interopRequireDefault(_ObojoboDraft);
+var _Common2 = _interopRequireDefault(_Common);
 
-var _adapter = __webpack_require__(97);
+var _adapter = __webpack_require__(48);
 
 var _adapter2 = _interopRequireDefault(_adapter);
 
-var _viewerComponent = __webpack_require__(98);
+var _viewerComponent = __webpack_require__(49);
 
 var _viewerComponent2 = _interopRequireDefault(_viewerComponent);
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
-var SelectionHandler = _ObojoboDraft2.default.chunk.focusableChunk.FocusableSelectionHandler;
+var SelectionHandler = _Common2.default.chunk.focusableChunk.FocusableSelectionHandler;
 
-_ObojoboDraft2.default.Store.registerModel('ObojoboDraft.Chunks.Break', {
+_Common2.default.Store.registerModel('ObojoboDraft.Chunks.Break', {
 	type: 'chunk',
 	adapter: _adapter2.default,
 	componentClass: _viewerComponent2.default,
@@ -121,7 +121,7 @@ _ObojoboDraft2.default.Store.registerModel('ObojoboDraft.Chunks.Break', {
 
 /***/ }),
 
-/***/ 97:
+/***/ 48:
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -140,7 +140,7 @@ exports.default = Adapter;
 
 /***/ }),
 
-/***/ 98:
+/***/ 49:
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -150,16 +150,16 @@ Object.defineProperty(exports, "__esModule", {
 	value: true
 });
 
-__webpack_require__(145);
+__webpack_require__(135);
 
-var _ObojoboDraft = __webpack_require__(0);
+var _Common = __webpack_require__(0);
 
-var _ObojoboDraft2 = _interopRequireDefault(_ObojoboDraft);
+var _Common2 = _interopRequireDefault(_Common);
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
-var OboComponent = _ObojoboDraft2.default.components.OboComponent;
-var NonEditableChunk = _ObojoboDraft2.default.chunk.NonEditableChunk;
+var OboComponent = _Common2.default.components.OboComponent;
+var NonEditableChunk = _Common2.default.chunk.NonEditableChunk;
 
 
 var Break = React.createClass({
