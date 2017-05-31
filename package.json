@@ -6,9 +6,12 @@
   "name": "oboxml",
   "version": "0.1.0",
   "main": "xml2draft.js",
-  "devDependencies": {},
+  "devDependencies": {
+    "jest": "^20.0.4"
+  },
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "jest",
+    "test:watch": "jest --watch"
   },
   "author": "",
   "description": ""
