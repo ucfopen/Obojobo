@@ -27,7 +27,7 @@ class AssessmentStore extends Store {
 		super('assessmentstore');
 
 		Dispatcher.on('assessment:startAttempt', payload => {
-			tryStartAttempt(OboModel.models[payload.value.id]);
+			this.tryStartAttempt(OboModel.models[payload.value.id]);
 		});
 
 		Dispatcher.on('assessment:endAttempt', payload => {
@@ -127,7 +127,7 @@ class AssessmentStore extends Store {
 	onResumeAttemptConfirm(unfinishedAttempt) {
 		ModalUtil.hide();
 
-		this.startAttempt(this.state, unfinishedAttempt);
+		this.startAttempt(unfinishedAttempt);
 		return this.triggerChange();
 	}
 
@@ -148,7 +148,7 @@ class AssessmentStore extends Store {
 					return;
 				}
 
-				this.startAttempt(this.state, res.value);
+				this.startAttempt(res.value);
 				this.triggerChange();
 			})
 		)

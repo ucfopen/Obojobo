@@ -38,7 +38,6 @@ app.post('/api/assessments/attempt/start', (req, res, next) => {
 		return Assessment.getNumberAttemptsTaken(currentUser.id, req.body.draftId, req.body.assessmentId)
 	})
 	.then(numAttempts => {
-		console.log('hey', draftTree)
 		var assessment = draftTree.getChildNodeById(req.body.assessmentId)
 
 		if(!isPreviewing && assessment.node.content.attempts && (numAttempts >= assessment.node.content.attempts))

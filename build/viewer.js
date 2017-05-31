@@ -945,7 +945,7 @@ var AssessmentStore = function (_Store) {
 		var _this = _possibleConstructorReturn(this, (AssessmentStore.__proto__ || Object.getPrototypeOf(AssessmentStore)).call(this, 'assessmentstore'));
 
 		Dispatcher.on('assessment:startAttempt', function (payload) {
-			tryStartAttempt(OboModel.models[payload.value.id]);
+			_this.tryStartAttempt(OboModel.models[payload.value.id]);
 		});
 
 		Dispatcher.on('assessment:endAttempt', function (payload) {
@@ -1132,7 +1132,7 @@ var AssessmentStore = function (_Store) {
 		value: function onResumeAttemptConfirm(unfinishedAttempt) {
 			ModalUtil.hide();
 
-			this.startAttempt(this.state, unfinishedAttempt);
+			this.startAttempt(unfinishedAttempt);
 			return this.triggerChange();
 		}
 	}, {
@@ -1154,7 +1154,7 @@ var AssessmentStore = function (_Store) {
 					return;
 				}
 
-				_this2.startAttempt(_this2.state, res.value);
+				_this2.startAttempt(res.value);
 				_this2.triggerChange();
 			});
 		}
