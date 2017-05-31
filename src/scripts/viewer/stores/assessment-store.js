@@ -128,7 +128,7 @@ class AssessmentStore extends Store {
 		ModalUtil.hide();
 
 		this.startAttempt(unfinishedAttempt);
-		return this.triggerChange();
+		this.triggerChange();
 	}
 
 	tryStartAttempt(model) {

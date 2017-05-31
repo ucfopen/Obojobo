@@ -1,10 +1,11 @@
-import { Store } from '../../../src/scripts/common/store'
+// import { Store } from '../../../src/scripts/common/store'
 import AssessmentStore from '../../../src/scripts/viewer/stores/assessment-store'
 import OboModel from '../../../src/scripts/common/models/obo-model'
 import APIUtil from '../../../src/scripts/viewer/util/api-util'
 import Dispatcher from '../../../src/scripts/common/flux/dispatcher'
 import ModalUtil from '../../../src/scripts/common/util/modal-util'
 import ErrorUtil from '../../../src/scripts/common/util/error-util'
+import NavUtil from '../../../src/scripts/viewer/util/nav-util'
 
 jest.mock('../../../src/scripts/common/models/obo-model', () => {
 	return require('../../../__mocks__/obo-model-mock').default;
@@ -30,9 +31,9 @@ jest.mock('../../../src/scripts/viewer/util/api-util', () => {
 	}
 })
 
-describe('QuestionStore', () => {
+describe('AssessmentStore', () => {
 	beforeEach(() => {
-		// jest.resetAllMocks()
+		jest.resetAllMocks()
 
 		AssessmentStore.init()
 		AssessmentStore.triggerChange = jest.fn()
@@ -109,6 +110,23 @@ describe('QuestionStore', () => {
 		expect(ModalUtil.show).toHaveBeenCalledTimes(1)
 	})
 
+	test("resuming an unfinished attempt hides the modal, starts the attempt and triggers a change", () => {
+		let originalStartAttempt = AssessmentStore.startAttempt
+		let unfinishedAttempt = {a:1}
+
+		AssessmentStore.startAttempt = jest.fn()
+		ModalUtil.hide = jest.fn()
+
+		AssessmentStore.onResumeAttemptConfirm(unfinishedAttempt)
+
+		expect(ModalUtil.hide).toHaveBeenCalledTimes(1)
+		expect(AssessmentStore.startAttempt).toHaveBeenCalledTimes(1)
+		expect(AssessmentStore.startAttempt).toHaveBeenCalledWith(unfinishedAttempt)
+		expect(AssessmentStore.triggerChange).toHaveBeenCalledTimes(1)
+
+		AssessmentStore.startAttempt = originalStartAttempt
+	})
+
 	test("tryStartAttempt shows an error if no attempts are left", () => {
 		OboModel.__create({
 			id: 'rootId',
@@ -165,29 +183,69 @@ describe('QuestionStore', () => {
 		})
 	})
 
-	test("tryStartAttempt calls startAttempt if no errors", () => {
+	test("startAttempt injects question models, creates state, updates the nav and processes the onStartAttempt trigger", () => {
+		NavUtil.rebuildMenu = jest.fn()
+		NavUtil.goto = jest.fn()
+
+		APIUtil.startAttempt.mockImplementationOnce(() => {
+			return (Promise.resolve({
+				status: 'ok',
+				value: {
+					assessmentId: 'assessmentId',
+					state: {
+						questions: [
+							{
+								id: 'q1',
+								type: 'question'
+							},
+							{
+								id: 'q2',
+								type: 'question'
+							}
+						]
+					}
+				}
+			}))
+		})
+
 		OboModel.__create({
 			id: 'rootId',
 			type: 'root',
 			children: [
 				{
 					id: 'assessmentId',
-					type: 'assessment'
+					type: 'assessment',
+					children: [
+						{
+							id: 'pageId',
+							type: 'page'
+						},
+						{
+							id: 'questionBankId',
+							type: 'questionBank'
+						}
+					]
 				}
 			]
 		})
 
-		APIUtil.startAttempt.mockImplementationOnce(() => {
-			return (Promise.resolve({
-				status: 'ok',
-				value: {}
-			}))
-		})
+		OboModel.__registerModel('question', { adapter:{} })
 
-		AssessmentStore.startAttempt = jest.fn()
+		let assessmentModel = OboModel.models.rootId.children.at(0)
+		let qBank = assessmentModel.children.at(1)
+
+		assessmentModel.processTrigger = jest.fn()
 
 		return AssessmentStore.tryStartAttempt(OboModel.models.assessmentId).then((res) => {
-			expect(AssessmentStore.startAttempt).toHaveBeenCalledTimes(1)
+			expect(assessmentModel.children.length).toBe(2)
+			expect(qBank.children.length).toBe(2)
+			expect(qBank.children.at(0).id).toBe('q1')
+			expect(qBank.children.at(1).id).toBe('q2')
+			expect(NavUtil.rebuildMenu).toHaveBeenCalledTimes(1)
+			expect(NavUtil.goto).toHaveBeenCalledTimes(1)
+			expect(NavUtil.goto).toHaveBeenCalledWith('assessmentId')
+			expect(OboModel.models.assessmentId.processTrigger).toHaveBeenCalledWith('onStartAttempt')
+			expect(AssessmentStore.triggerChange).toHaveBeenCalledTimes(1)
 		})
 	})
 })

@@ -1133,7 +1133,7 @@ var AssessmentStore = function (_Store) {
 			ModalUtil.hide();
 
 			this.startAttempt(unfinishedAttempt);
-			return this.triggerChange();
+			this.triggerChange();
 		}
 	}, {
 		key: 'tryStartAttempt',

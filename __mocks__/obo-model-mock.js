@@ -11,7 +11,8 @@ jest.mock('../src/scripts/common/store', () => {
 				let registered = registeredModels.get(type)
 				if(registered) return registered
 				return null
-			}
+			},
+			getRegisteredModels: () => registeredModels
 		}
 	})
 })
@@ -41,6 +42,9 @@ OboModel.__create = (o) => {
 }
 OboModel.__setNextGeneratedLocalId = (n) => {
 	localId = n;
+}
+OboModel.__registerModel = (name, model) => {
+	Store.registerModel(name, model)
 }
 
 var originalCreateNewLocalId = OboModel.prototype.createNewLocalId
