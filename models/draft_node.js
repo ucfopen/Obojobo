@@ -1,6 +1,6 @@
 // Collects all children DraftNodes into a Set() object
 // optionally recursive
-collectChildrenNodes = (draftNode, set, recurse) => {
+let collectChildrenNodes = (draftNode, set, recurse) => {
 	for(let i in draftNode.children){
 		set.add(draftNode.children[i].node.id)
 		if(recurse) collectChildrenNodes(draftNode.children[i], set, true)

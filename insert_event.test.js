@@ -10,7 +10,7 @@ describe('insert_event', () => {
 	it('inserts the expected values', () => {
 		expect.assertions(3);
 
-		db = require('./db')
+		let db = require('./db')
 		let insertEvent  = require('./insert_event')
 		const expectedCreatedAt = new Date().toISOString()
 		const insertObject = {
@@ -42,7 +42,7 @@ describe('insert_event', () => {
 	it('Returns promise rejection', () => {
 		expect.assertions(1);
 
-		db = require('./db')
+		let db = require('./db')
 		let insertEvent  = require('./insert_event')
 		const err = new Error('const error')
 		// mock insert

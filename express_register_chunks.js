@@ -10,8 +10,8 @@ module.exports = (app) => {
 	// let isProd = true
 
 	// ===========  GENERATE installed_modules.json ===========
-	spawn = require( 'child_process' ).spawnSync,
-	ls = spawn('yarn', [(isProd ? 'chunks:register' : 'chunks:registerdev')]);
+	let spawn = require( 'child_process' ).spawnSync
+	let ls = spawn('yarn', [(isProd ? 'chunks:register' : 'chunks:registerdev')]);
 
 	let modules = getInstalledModules(app.get('env'))
 

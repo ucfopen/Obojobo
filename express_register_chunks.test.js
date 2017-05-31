@@ -26,7 +26,7 @@ describe('register chunks middleware', () => {
 	afterEach(() => {})
 
 	it('calls with no errors', () => {
-		middleware = require('./express_register_chunks')
+		let middleware = require('./express_register_chunks')
 		let mockApp = {
 			get: jest.fn(),
 			use: jest.fn(),
@@ -51,7 +51,7 @@ describe('register chunks middleware', () => {
 		})
 
 		let dns = require('./draft_node_store')
-		middleware = require('./express_register_chunks')
+		let middleware = require('./express_register_chunks')
 		let mockApp = {
 			get: jest.fn(),
 			use: jest.fn(),
@@ -69,7 +69,7 @@ describe('register chunks middleware', () => {
 		webpackDevMiddleware.mockClear()
 		webpackDevMiddleware.mockImplementationOnce(()=>{return 'webPackDevMiddleWareReturn'})
 
-		middleware = require('./express_register_chunks')
+		let middleware = require('./express_register_chunks')
 		let mockApp = {
 			get: jest.fn().mockImplementationOnce(() => {return 'development'}),
 			use: jest.fn(),
@@ -92,7 +92,7 @@ describe('register chunks middleware', () => {
 		webpackDevMiddleware.mockClear()
 		webpackDevMiddleware.mockImplementationOnce(()=>{return 'webPackDevMiddleWareReturn'})
 
-		middleware = require('./express_register_chunks')
+		let middleware = require('./express_register_chunks')
 		let mockApp = {
 			get: jest.fn().mockImplementationOnce(() => {return 'production'}),
 			use: jest.fn(),
@@ -115,7 +115,7 @@ describe('register chunks middleware', () => {
 
 
 	it('calls express.static as expected', () => {
-		middleware = require('./express_register_chunks')
+		let middleware = require('./express_register_chunks')
 		let mockApp = {
 			get: jest.fn(),
 			use: jest.fn(),
@@ -142,7 +142,7 @@ describe('register chunks middleware', () => {
 				draftNodes: new Map()
 			}
 		})
-		middleware = require('./express_register_chunks')
+		let middleware = require('./express_register_chunks')
 		let mockApp = {
 			get: jest.fn(),
 			use: jest.fn(),

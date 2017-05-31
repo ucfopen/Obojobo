@@ -1,6 +1,6 @@
 {
   "name": "obojobo-server",
-  "version": "3.0.5",
+  "version": "3.0.6",
   "private": true,
   "scripts": {
     "start": "yarn express:prod",
@@ -30,6 +30,7 @@
     "node": "^6.9.4"
   },
   "dependencies": {
+    "babel-preset-env": "^1.5.1",
     "body-parser": "^1.17.1",
     "compression": "^1.6.2",
     "concat-files": "^0.1.1",
@@ -51,7 +52,7 @@
     "morgan": "~1.7.0",
     "newrelic": "^1.38.2",
     "node-sass-middleware": "0.9.8",
-    "obojobo-draft-document-engine": "git+ssh://git@github.com/ucfcdl/Obojobo-Document-Engine.git#v0.0.11",
+    "obojobo-draft-document-engine": "git+ssh://git@github.com/ucfcdl/Obojobo-Document-Engine.git#v0.0.12",
     "on-build-webpack": "^0.1.0",
     "pg-promise": "^5.5.0",
     "pm2": "^2.4.2",

@@ -58,7 +58,7 @@ describe('lti', () => {
 	it('should fail to replace result when the lti data couldnt be found', () => {
 		expect.assertions(2);
 
-		db = require('./db')
+		let db = require('./db')
 		// mock the query to get lti data
 		db.one.mockImplementationOnce((query, vars) => {return Promise.reject()})
 
@@ -81,7 +81,7 @@ describe('lti', () => {
 		outcomes.__registerCallbackForSend_replace_result(send_replace_resultMock)
 
 
-		db = require('./db')
+		let db = require('./db')
 		db.one.mockImplementationOnce(() => {return Promise.resolve(mockLTIEvent)}) // mock the query to get lti data
 		db.one.mockImplementationOnce(() => {return Promise.resolve(null)}) // mock insert event
 
@@ -93,7 +93,7 @@ describe('lti', () => {
 
 		// bypass all the internals of outcomes, just returns true for success
 		let outcomes = require('ims-lti/lib/extensions/outcomes')
-		db = require('./db')
+		let db = require('./db')
 		// mock the query to get lti data
 		db.one.mockImplementationOnce(() => {return Promise.resolve(mockLTIEvent)})
 
@@ -131,7 +131,7 @@ describe('lti', () => {
 		outcomes.__registerCallbackForSend_replace_result(send_replace_resultMock)
 
 
-		db = require('./db')
+		let db = require('./db')
 		// mock the query to get lti data
 		db.one.mockImplementationOnce(() => {return Promise.resolve(mockLTIEvent)})
 		// mock the query to insert an event

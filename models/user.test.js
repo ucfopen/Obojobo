@@ -46,7 +46,7 @@ describe('user model', () => {
 
 	it('hasPermission behaves', () => {
 		let User = oboRequire('models/user')
-		u = new User({roles: ["roleName", "otherRoleName"]});
+		let u = new User({roles: ["roleName", "otherRoleName"]});
 
 		expect(u.hasPermission('test')).toBe(false)
 		expect(u.hasPermission('canDoThing')).toBe(true)

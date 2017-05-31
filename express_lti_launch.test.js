@@ -32,7 +32,7 @@ let mockArgs = (withLtiData = false) => {
 }
 
 let mockDBForLaunch = (resolveInsert = true, resolveEvent = true) => {
-		db = require('./db')
+		let db = require('./db')
 
 		// mock the launch insert
 		if(resolveInsert){
