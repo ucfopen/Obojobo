@@ -1,4 +1,4 @@
-const MCChoice = require('../../server/mcchoice')
+import MCChoice from '../../server/mcchoice'
 
 describe('MCChoice', () => {
   const mcChoice = new MCChoice()

@@ -1,4 +1,5 @@
-const MCChoice    = require('../../server/question') // Naming error here, currently an issue.
+import MCChoice from '../../server/question' // Naming error here, currently an issue.
+
 const testJson    = require('../../test-object.json')
 const Draft       = oboRequire('models/draft')
 const DraftNode   = oboRequire('models/draft_node')

@@ -1,5 +1,6 @@
-const MCAssessment = require('../../server/mcassessment')
-const testJson     = require('../../test-object.json')
+import MCAssessment from '../../server/mcassessment'
+import testJson from '../../test-object.json'
+
 const Draft        = oboRequire('models/draft')
 const DraftNode    = oboRequire('models/draft_node')
 

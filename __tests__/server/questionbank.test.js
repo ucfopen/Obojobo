@@ -1,4 +1,4 @@
-const QuestionBank = require('../../server/questionbank')
+import QuestionBank from '../../server/questionbank'
 
 describe('QuestionBank', () => {
   const questionBank = new QuestionBank()
