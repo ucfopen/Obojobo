@@ -1,0 +1,26 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`Correctly converts xml to List node 1`] = `
+Object {
+  "children": Array [],
+  "content": Object {
+    "listStyles": Object {
+      "indents": Object {
+        "2": Object {
+          "bulletStyle": "square",
+          "type": "unordered",
+        },
+        "4": Object {
+          "bulletStyle": "upper-alpha",
+          "start": "10",
+          "type": "ordered",
+        },
+      },
+      "type": "ordered",
+    },
+    "textGroup": Array [],
+  },
+  "id": null,
+  "type": "ObojoboDraft.Chunks.List",
+}
+`;

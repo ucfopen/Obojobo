@@ -1,7 +1,7 @@
 const fs = require('fs')
 const xmlToDraftObject = require('../xml-to-draft-object')
 
-it('Correctly converts xml to Page node', () => {
-  const xml = fs.readFileSync('./__tests__/xml/page.xml', 'utf8')
+it('Correctly converts xml to List node', () => {
+  const xml = fs.readFileSync('./__tests__/xml/list.xml', 'utf8')
   expect(xmlToDraftObject(xml)).toMatchSnapshot()
 })

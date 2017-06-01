@@ -1,0 +1,17 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`Correctly converts xml to Content node 1`] = `
+Object {
+  "children": Array [
+    Object {
+      "children": Array [],
+      "content": Object {},
+      "id": null,
+      "type": "ObojoboDraft.Pages.Page",
+    },
+  ],
+  "content": Object {},
+  "id": null,
+  "type": "ObojoboDraft.Sections.Content",
+}
+`;

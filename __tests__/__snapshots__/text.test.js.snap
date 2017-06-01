@@ -1,0 +1,12 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`Correctly converts xml to Text node 1`] = `
+Object {
+  "children": Array [],
+  "content": Object {
+    "textGroup": Array [],
+  },
+  "id": null,
+  "type": "ObojoboDraft.Chunks.Text",
+}
+`;
