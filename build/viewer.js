@@ -1544,29 +1544,26 @@ var AssessmentUtil = {
 
 		return assessment.current;
 	},
-	getLastAttemptForModel: function getLastAttemptForModel(state, model) {
-		var assessment = AssessmentUtil.getAssessmentForModel(state, model);
-		if (!assessment || assessment.attempts.length === 0) {
-			return null;
-		}
 
-		return assessment.attempts[assessment.attempts.length - 1];
-	},
+
+	// getLastAttemptForModel(state, model) {
+	// 	let assessment = AssessmentUtil.getAssessmentForModel(state, model);
+	// 	if (!assessment || (assessment.attempts.length === 0)) { return null; }
+
+	// 	return assessment.attempts[assessment.attempts.length - 1];
+	// },
+
 	isCurrentAttemptComplete: function isCurrentAttemptComplete(assessmentState, questionState, model) {
 		var current = AssessmentUtil.getCurrentAttemptForModel(assessmentState, model);
 		if (!current) {
 			return null;
 		}
 
-		model.children.at(1).children.models.forEach(function (questionModel) {
-			if (!__guard__(_questionUtil2.default.getResponse(questionState, questionModel), function (x) {
-				return x.set;
-			})) {
-				return false;
-			}
-		});
-
-		return true;
+		var models = model.children.at(1).children.models;
+		return models.filter(function (questionModel) {
+			var resp = _questionUtil2.default.getResponse(questionState, questionModel);
+			return resp && resp.set === true;
+		}).length === models.length;
 	},
 	getNumberOfAttemptsCompletedForModel: function getNumberOfAttemptsCompletedForModel(state, model) {
 		var assessment = AssessmentUtil.getAssessmentForModel(state, model);
@@ -1593,10 +1590,6 @@ var AssessmentUtil = {
 };
 
 exports.default = AssessmentUtil;
-
-function __guard__(value, transform) {
-	return typeof value !== 'undefined' && value !== null ? transform(value) : undefined;
-}
 
 /***/ }),
 /* 10 */

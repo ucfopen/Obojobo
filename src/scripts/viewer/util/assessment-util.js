@@ -55,22 +55,24 @@ var AssessmentUtil = {
 		return assessment.current;
 	},
 
-	getLastAttemptForModel(state, model) {
-		let assessment = AssessmentUtil.getAssessmentForModel(state, model);
-		if (!assessment || (assessment.attempts.length === 0)) { return null; }
+	// getLastAttemptForModel(state, model) {
+	// 	let assessment = AssessmentUtil.getAssessmentForModel(state, model);
+	// 	if (!assessment || (assessment.attempts.length === 0)) { return null; }
 
-		return assessment.attempts[assessment.attempts.length - 1];
-	},
+	// 	return assessment.attempts[assessment.attempts.length - 1];
+	// },
 
 	isCurrentAttemptComplete(assessmentState, questionState, model) {
 		let current = AssessmentUtil.getCurrentAttemptForModel(assessmentState, model);
 		if (!current) { return null; }
 
-		model.children.at(1).children.models.forEach(function(questionModel) {
-			if (!__guard__(QuestionUtil.getResponse(questionState, questionModel), x => x.set)) { return false; }
-		});
-
-		return true;
+		let models = model.children.at(1).children.models
+		return (
+			models.filter(function(questionModel) {
+				let resp = QuestionUtil.getResponse(questionState, questionModel)
+				return resp && resp.set === true
+			}).length === models.length
+		)
 	},
 
 	getNumberOfAttemptsCompletedForModel(state, model) {
@@ -99,8 +101,4 @@ var AssessmentUtil = {
 	}
 };
 
-
-export default AssessmentUtil;
-function __guard__(value, transform) {
-  return (typeof value !== 'undefined' && value !== null) ? transform(value) : undefined;
-}
+export default AssessmentUtil
