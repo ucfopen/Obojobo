@@ -945,68 +945,15 @@ var AssessmentStore = function (_Store) {
 		var _this = _possibleConstructorReturn(this, (AssessmentStore.__proto__ || Object.getPrototypeOf(AssessmentStore)).call(this, 'assessmentstore'));
 
 		Dispatcher.on('assessment:startAttempt', function (payload) {
-			_this.tryStartAttempt(OboModel.models[payload.value.id]);
+			_this.tryStartAttempt(payload.value.id);
 		});
 
 		Dispatcher.on('assessment:endAttempt', function (payload) {
-			id = payload.value.id;
-
-			model = OboModel.models[id];
-
-			assessment = _this.state.assessments[id];
-
-			return _apiUtil2.default.endAttempt(assessment.current).then(function (res) {
-				if (res.status === 'error') {
-					return ErrorUtil.errorResponse(res);
-				}
-
-				assessment.current.state.questions.forEach(function (question) {
-					return _questionUtil2.default.hideQuestion(question.id);
-				});
-
-				assessment.currentResponses.forEach(function (responderId) {
-					return _questionUtil2.default.resetResponse(responderId);
-				});
-
-				assessment.attempts.push(res.value);
-				assessment.current = null;
-
-				model.processTrigger('onEndAttempt');
-				return _this.triggerChange();
-			});
+			_this.tryEndAttempt(payload.value.id);
 		});
 
 		Dispatcher.on('question:recordResponse', function (payload) {
-			id = payload.value.id;
-
-			model = OboModel.models[id];
-
-			assessment = _assessmentUtil2.default.getAssessmentForModel(_this.state, model);
-			// if typeof assessment?.current?.responses[id] isnt "undefined"
-			// debugger
-
-			if ((assessment != null ? assessment.currentResponses : undefined) != null) {
-				assessment.currentResponses.push(id);
-			}
-
-			if ((assessment != null ? assessment.current : undefined) != null) {
-				var questionModel = model.getParentOfType('ObojoboDraft.Chunks.Question');
-
-				return _apiUtil2.default.postEvent(model.getRoot(), 'assessment:recordResponse', {
-					attemptId: assessment.current.attemptId,
-					questionId: questionModel.get('id'),
-					responderId: id,
-					response: payload.value.response
-				}).then(function (res) {
-					// APIUtil.recordQuestionResponse assessment.current, questionModel, payload.value.response
-
-					// @triggerChange()
-					if (res.status === 'error') {
-						return ErrorUtil.errorResponse(res);
-					}
-					return _this.triggerChange();
-				});
-			}
+			_this.tryRecordResponse(payload.value.id, payload.value.response);
 		});
 		return _this;
 	}
@@ -1137,8 +1084,10 @@ var AssessmentStore = function (_Store) {
 		}
 	}, {
 		key: 'tryStartAttempt',
-		value: function tryStartAttempt(model) {
+		value: function tryStartAttempt(id) {
 			var _this2 = this;
+
+			var model = OboModel.models[id];
 
 			return _apiUtil2.default.startAttempt(model.getRoot(), model, {}).then(function (res) {
 				if (res.status === 'error') {
@@ -1150,11 +1099,10 @@ var AssessmentStore = function (_Store) {
 						default:
 							ErrorUtil.errorResponse(res);
 					}
-
-					return;
+				} else {
+					_this2.startAttempt(res.value);
 				}
 
-				_this2.startAttempt(res.value);
 				_this2.triggerChange();
 			});
 		}
@@ -1201,6 +1149,64 @@ var AssessmentStore = function (_Store) {
 			_navUtil2.default.goto(id);
 
 			model.processTrigger('onStartAttempt');
+		}
+	}, {
+		key: 'tryEndAttempt',
+		value: function tryEndAttempt(id) {
+			var _this3 = this;
+
+			var model = OboModel.models[id];
+			var assessment = this.state.assessments[id];
+
+			return _apiUtil2.default.endAttempt(assessment.current).then(function (res) {
+				if (res.status === 'error') {
+					return ErrorUtil.errorResponse(res);
+				}
+
+				assessment.current.state.questions.forEach(function (question) {
+					return _questionUtil2.default.hideQuestion(question.id);
+				});
+
+				assessment.currentResponses.forEach(function (responderId) {
+					return _questionUtil2.default.resetResponse(responderId);
+				});
+
+				assessment.attempts.push(res.value);
+				assessment.current = null;
+
+				model.processTrigger('onEndAttempt');
+				return _this3.triggerChange();
+			});
+		}
+	}, {
+		key: 'tryRecordResponse',
+		value: function tryRecordResponse(id, response) {
+			var _this4 = this;
+
+			var model = OboModel.models[id];
+			var assessment = _assessmentUtil2.default.getAssessmentForModel(this.state, model);
+
+			if (!assessment) return;
+
+			if (assessment.currentResponses) {
+				assessment.currentResponses.push(id);
+			}
+
+			if (!assessment.currentResponses) return;
+
+			var questionModel = model.getParentOfType('ObojoboDraft.Chunks.Question');
+
+			return _apiUtil2.default.postEvent(model.getRoot(), 'assessment:recordResponse', {
+				attemptId: assessment.current.attemptId,
+				questionId: questionModel.get('id'),
+				responderId: id,
+				response: response
+			}).then(function (res) {
+				if (res.status === 'error') {
+					return ErrorUtil.errorResponse(res);
+				}
+				_this4.triggerChange();
+			});
 		}
 	}, {
 		key: 'getState',

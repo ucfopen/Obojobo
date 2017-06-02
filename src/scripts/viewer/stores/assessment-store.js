@@ -27,60 +27,15 @@ class AssessmentStore extends Store {
 		super('assessmentstore');
 
 		Dispatcher.on('assessment:startAttempt', payload => {
-			this.tryStartAttempt(OboModel.models[payload.value.id]);
+			this.tryStartAttempt(payload.value.id);
 		});
 
 		Dispatcher.on('assessment:endAttempt', payload => {
-			({ id } = payload.value);
-			model = OboModel.models[id];
-
-			assessment = this.state.assessments[id];
-
-			return APIUtil.endAttempt(assessment.current)
-			.then(res => {
-				if (res.status === 'error') { return ErrorUtil.errorResponse(res); }
-
-				assessment.current.state.questions.forEach(question => QuestionUtil.hideQuestion(question.id));
-
-				assessment.currentResponses.forEach(responderId => QuestionUtil.resetResponse(responderId));
-
-				assessment.attempts.push(res.value);
-				assessment.current = null;
-
-				model.processTrigger('onEndAttempt');
-				return this.triggerChange();
-			});
+			this.tryEndAttempt(payload.value.id);
 		});
 
 		Dispatcher.on('question:recordResponse', payload => {
-			({ id } = payload.value);
-			model = OboModel.models[id];
-
-			assessment = AssessmentUtil.getAssessmentForModel(this.state, model);
-			// if typeof assessment?.current?.responses[id] isnt "undefined"
-			// debugger
-
-			if ((assessment != null ? assessment.currentResponses : undefined) != null) {
-				assessment.currentResponses.push(id);
-			}
-
-			if ((assessment != null ? assessment.current : undefined) != null) {
-				let questionModel = model.getParentOfType('ObojoboDraft.Chunks.Question');
-
-				return APIUtil.postEvent(model.getRoot(), 'assessment:recordResponse', {
-					attemptId: assessment.current.attemptId,
-					questionId: questionModel.get('id'),
-					responderId: id,
-					response: payload.value.response
-				})
-				.then(res => {
-					// APIUtil.recordQuestionResponse assessment.current, questionModel, payload.value.response
-
-					// @triggerChange()
-					if (res.status === 'error') { return ErrorUtil.errorResponse(res); }
-					return this.triggerChange();
-				});
-			}
+			this.tryRecordResponse(payload.value.id, payload.value.response);
 		});
 	}
 
@@ -131,7 +86,9 @@ class AssessmentStore extends Store {
 		this.triggerChange();
 	}
 
-	tryStartAttempt(model) {
+	tryStartAttempt(id) {
+		let model = OboModel.models[id]
+
 		return (
 			APIUtil.startAttempt(model.getRoot(), model, {})
 			.then(res => {
@@ -144,11 +101,12 @@ class AssessmentStore extends Store {
 						default:
 							ErrorUtil.errorResponse(res);
 					}
-
-					return;
+				}
+				else
+				{
+					this.startAttempt(res.value);
 				}
 
-				this.startAttempt(res.value);
 				this.triggerChange();
 			})
 		)
@@ -175,6 +133,52 @@ class AssessmentStore extends Store {
 
 		model.processTrigger('onStartAttempt');
 	};
+
+	tryEndAttempt(id) {
+		let model = OboModel.models[id];
+		let assessment = this.state.assessments[id];
+
+		return APIUtil.endAttempt(assessment.current)
+		.then(res => {
+			if (res.status === 'error') { return ErrorUtil.errorResponse(res); }
+
+			assessment.current.state.questions.forEach(question => QuestionUtil.hideQuestion(question.id));
+
+			assessment.currentResponses.forEach(responderId => QuestionUtil.resetResponse(responderId));
+
+			assessment.attempts.push(res.value);
+			assessment.current = null;
+
+			model.processTrigger('onEndAttempt');
+			return this.triggerChange();
+		})
+	}
+
+	tryRecordResponse(id, response) {
+		let model = OboModel.models[id];
+		let assessment = AssessmentUtil.getAssessmentForModel(this.state, model);
+
+		if(!assessment) return
+
+		if(assessment.currentResponses) {
+			assessment.currentResponses.push(id);
+		}
+
+		if(!assessment.currentResponses) return
+
+		let questionModel = model.getParentOfType('ObojoboDraft.Chunks.Question');
+
+		return APIUtil.postEvent(model.getRoot(), 'assessment:recordResponse', {
+			attemptId: assessment.current.attemptId,
+			questionId: questionModel.get('id'),
+			responderId: id,
+			response: response
+		})
+		.then(res => {
+			if (res.status === 'error') { return ErrorUtil.errorResponse(res); }
+			this.triggerChange();
+		});
+	}
 
 	getState() { return this.state; }
 

@@ -8,6 +8,7 @@
     "test:watch": "jest --verbose --watch",
     "test:noCache": "jest --verbose --no-cache",
     "test:watchNoCache": "jest --verbose --watch --no-cache",
+    "test:coverage": "jest --verbose --coverage",
     "start": "webpack --watch",
     "dev": "webpack-dev-server  --colors --port 8090 --host 0.0.0.0",
     "build": "webpack",
@@ -78,6 +79,7 @@
       "^Viewer(.*)$": "<rootDir>/src/scripts/viewer$1",
       "\\.scss$": "<rootDir>/__mocks__/ignore-file-stub.js",
       "\\.svg$": "<rootDir>/__mocks__/ignore-file-stub.js"
-    }
+    },
+    "collectCoverageFrom": ["src/scripts/**", "server/**"]
   }
 }
