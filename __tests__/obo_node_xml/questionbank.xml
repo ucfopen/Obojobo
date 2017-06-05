@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ObojoboDraftDoc>
+    <QuestionBank>
+        <Question>
+            <MCAssessment responseType="pick-one">
+                <MCChoice score="100">
+                    <MCAnswer>
+                        <p>Correct</p>
+                    </MCAnswer>
+                </MCChoice>
+                <MCChoice score="0">
+                    <MCAnswer>
+                        <p>Incorrect</p>
+                    </MCAnswer>
+                </MCChoice>
+            </MCAssessment>
+        </Question>
+    </QuestionBank>
+</ObojoboDraftDoc>

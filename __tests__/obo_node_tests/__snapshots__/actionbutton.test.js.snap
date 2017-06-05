@@ -1,0 +1,26 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`Correctly converts xml to ActionButton node 1`] = `
+Object {
+  "children": Array [],
+  "content": Object {
+    "label": "test",
+    "triggers": Array [
+      Object {
+        "actions": Array [
+          Object {
+            "type": "viewer:alert",
+            "value": Object {
+              "message": "test",
+              "title": "test",
+            },
+          },
+        ],
+        "type": "onClick",
+      },
+    ],
+  },
+  "id": null,
+  "type": "ObojoboDraft.Chunks.ActionButton",
+}
+`;

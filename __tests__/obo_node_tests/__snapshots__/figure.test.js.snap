@@ -1,0 +1,23 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`Correctly converts xml to Figure node 1`] = `
+Object {
+  "children": Array [],
+  "content": Object {
+    "alt": "A city",
+    "size": "small",
+    "textGroup": Array [
+      Object {
+        "data": null,
+        "text": Object {
+          "styleList": Array [],
+          "value": "This is a small image",
+        },
+      },
+    ],
+    "url": "http://lorempixel.com/640/480/city",
+  },
+  "id": null,
+  "type": "ObojoboDraft.Chunks.Figure",
+}
+`;

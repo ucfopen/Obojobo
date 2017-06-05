@@ -1,0 +1,100 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`Correctly converts xml to Question node 1`] = `
+Object {
+  "children": Array [
+    Object {
+      "children": Array [],
+      "content": Object {
+        "textGroup": Array [
+          Object {
+            "data": null,
+            "text": Object {
+              "styleList": Array [],
+              "value": "test",
+            },
+          },
+        ],
+      },
+      "id": null,
+      "type": "ObojoboDraft.Chunks.Text",
+    },
+    Object {
+      "children": Array [
+        Object {
+          "children": Array [
+            Object {
+              "children": Array [
+                Object {
+                  "children": Array [],
+                  "content": Object {
+                    "textGroup": Array [
+                      Object {
+                        "data": null,
+                        "text": Object {
+                          "styleList": Array [],
+                          "value": "Correct",
+                        },
+                      },
+                    ],
+                  },
+                  "id": null,
+                  "type": "ObojoboDraft.Chunks.Text",
+                },
+              ],
+              "content": Object {},
+              "id": null,
+              "type": "ObojoboDraft.Chunks.MCAssessment.MCAnswer",
+            },
+          ],
+          "content": Object {
+            "score": 100,
+          },
+          "id": null,
+          "type": "ObojoboDraft.Chunks.MCAssessment.MCChoice",
+        },
+        Object {
+          "children": Array [
+            Object {
+              "children": Array [
+                Object {
+                  "children": Array [],
+                  "content": Object {
+                    "textGroup": Array [
+                      Object {
+                        "data": null,
+                        "text": Object {
+                          "styleList": Array [],
+                          "value": "Incorrect",
+                        },
+                      },
+                    ],
+                  },
+                  "id": null,
+                  "type": "ObojoboDraft.Chunks.Text",
+                },
+              ],
+              "content": Object {},
+              "id": null,
+              "type": "ObojoboDraft.Chunks.MCAssessment.MCAnswer",
+            },
+          ],
+          "content": Object {
+            "score": 0,
+          },
+          "id": null,
+          "type": "ObojoboDraft.Chunks.MCAssessment.MCChoice",
+        },
+      ],
+      "content": Object {
+        "responseType": "pick-one",
+      },
+      "id": null,
+      "type": "ObojoboDraft.Chunks.MCAssessment",
+    },
+  ],
+  "content": Object {},
+  "id": null,
+  "type": "ObojoboDraft.Chunks.Question",
+}
+`;
