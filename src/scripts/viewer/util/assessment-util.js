@@ -43,7 +43,7 @@ var AssessmentUtil = {
 		let assessment = AssessmentUtil.getAssessmentForModel(state, model);
 		if (!assessment) { return null; }
 
-		if (assessment.attempts.length === 0) { return 0; }
+		if (assessment.attempts.length === 0) { return []; }
 
 		return assessment.attempts[assessment.attempts.length - 1].result.scores;
 	},

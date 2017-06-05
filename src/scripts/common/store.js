@@ -1,8 +1,3 @@
-// console.log('====IMPORTING OBO')
-
-import ComponentClassMap from './component-class-map';
-
-let componentClassMap = new ComponentClassMap();
 let items = new Map();
 let itemsLoaded = 0;
 let getItemsCallbacks = [];
@@ -51,7 +46,6 @@ class _Store {
 		console.log('regsiter', className, opts)
 		if (opts == null) { opts = {}; }
 		items.set(className, opts);
-		// componentClassMap.register chunkClass.type, chunkClass
 
 		opts = Object.assign({
 			type: null,
@@ -68,11 +62,8 @@ class _Store {
 		}, opts);
 
 		if (opts.default) {
-			// componentClassMap.setDefault chunkClass.type
 			defaults.set(opts.type, className);
 		}
-		// if opts.error
-		// 	componentClassMap.setError chunkClass.type
 		if (opts.insertItem) { insertItems.set(chunkClass.type, opts.insertItem); }
 
 		opts.init();

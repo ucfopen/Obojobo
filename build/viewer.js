@@ -1531,7 +1531,7 @@ var AssessmentUtil = {
 		}
 
 		if (assessment.attempts.length === 0) {
-			return 0;
+			return [];
 		}
 
 		return assessment.attempts[assessment.attempts.length - 1].result.scores;

@@ -77,6 +77,15 @@ describe('QuestionUtil', () => {
 		}
 	}
 
+	let exampleAssessmentNoAttempts = {
+		assessments: {
+			assessmentId: {
+				attempts: [],
+				current: null
+			}
+		}
+	}
+
 	beforeEach(() => {
 		jest.resetAllMocks()
 
@@ -114,6 +123,25 @@ describe('QuestionUtil', () => {
 		)).toBe(50)
 	})
 
+	test("returns null for the last attempt score for a model if no assessment", () => {
+		OboModel.__create(exampleDocument)
+
+		expect(AssessmentUtil.getLastAttemptScoreForModel(
+			AssessmentStore.getState(),
+			OboModel.models.pageId
+		)).toBe(null)
+	})
+
+	test("returns 0 for the last attempt score for a model if no attempts", () => {
+		AssessmentStore.setState(exampleAssessmentNoAttempts)
+		OboModel.__create(exampleDocument)
+
+		expect(AssessmentUtil.getLastAttemptScoreForModel(
+			AssessmentStore.getState(),
+			OboModel.models.pageId
+		)).toBe(0)
+	})
+
 	test("gets the highest attempt score for a model", () => {
 		AssessmentStore.setState(exampleAssessment)
 		OboModel.__create(exampleDocument)
@@ -122,6 +150,25 @@ describe('QuestionUtil', () => {
 			AssessmentStore.getState(),
 			OboModel.models.pageId
 		)).toBe(100)
+	})
+
+	test("returns null for the highest attempt score for a model if no assessment", () => {
+		OboModel.__create(exampleDocument)
+
+		expect(AssessmentUtil.getHighestAttemptScoreForModel(
+			AssessmentStore.getState(),
+			OboModel.models.pageId
+		)).toBe(null)
+	})
+
+	test("returns 0 for the highest attempt score for a model if no attempts", () => {
+		AssessmentStore.setState(exampleAssessmentNoAttempts)
+		OboModel.__create(exampleDocument)
+
+		expect(AssessmentUtil.getHighestAttemptScoreForModel(
+			AssessmentStore.getState(),
+			OboModel.models.pageId
+		)).toBe(0)
 	})
 
 	test("gets the last attempt scores for a model", () => {
@@ -134,6 +181,25 @@ describe('QuestionUtil', () => {
 		)).toEqual([{ attemptTwoScores:'goHere' }])
 	})
 
+	test("returns null for the last attempt scores for a model if no assessment", () => {
+		OboModel.__create(exampleDocument)
+
+		expect(AssessmentUtil.getLastAttemptScoresForModel(
+			AssessmentStore.getState(),
+			OboModel.models.pageId
+		)).toEqual(null)
+	})
+
+	test("returns [] for the last attempt scores for a model if no attempts", () => {
+		AssessmentStore.setState(exampleAssessmentNoAttempts)
+		OboModel.__create(exampleDocument)
+
+		expect(AssessmentUtil.getLastAttemptScoresForModel(
+			AssessmentStore.getState(),
+			OboModel.models.pageId
+		)).toEqual([])
+	})
+
 	test("gets the current attempt for a model", () => {
 		AssessmentStore.setState(exampleAssessment)
 		OboModel.__create(exampleDocument)
@@ -144,6 +210,15 @@ describe('QuestionUtil', () => {
 		)).toEqual({
 			attemptData: 'goesHere'
 		})
+	})
+
+	test("returns null for the current attempt for a model if no assessment", () => {
+		OboModel.__create(exampleDocument)
+
+		expect(AssessmentUtil.getCurrentAttemptForModel(
+			AssessmentStore.getState(),
+			OboModel.models.pageId
+		)).toEqual(null)
 	})
 
 	test("knows if incomplete current attempt is incomplete", () => {
@@ -179,6 +254,16 @@ describe('QuestionUtil', () => {
 		)).toBe(true)
 	})
 
+	test("returns null for isCurrentAttemptCompleted if no assessment", () => {
+		OboModel.__create(exampleDocument)
+
+		expect(AssessmentUtil.isCurrentAttemptComplete(
+			AssessmentStore.getState(),
+			QuestionStore.getState(),
+			OboModel.models.assessmentId
+		)).toBe(null)
+	})
+
 	test("gets number of copmleted attempts per model", () => {
 		AssessmentStore.setState(exampleAssessment)
 		OboModel.__create(exampleDocument)
@@ -187,6 +272,15 @@ describe('QuestionUtil', () => {
 			AssessmentStore.getState(),
 			OboModel.models.assessmentId
 		)).toBe(2)
+	})
+
+	test("returns 0 fro getNumberOfAttemptsCompletedForModel if no assessment", () => {
+		OboModel.__create(exampleDocument)
+
+		expect(AssessmentUtil.getNumberOfAttemptsCompletedForModel(
+			AssessmentStore.getState(),
+			OboModel.models.assessmentId
+		)).toBe(0)
 	})
 
 	test("dispatches start attempt", () => {

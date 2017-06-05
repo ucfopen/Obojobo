@@ -18,22 +18,18 @@ class MockElement {
 		return child.parent = this;
 	}
 
-	getChildIndex(child) {
-		return this.children.indexOf(child);
-	}
-
 	addBefore(childToAdd, targetChild) {
-		let index = this.getChildIndex(targetChild);
+		let index = this.children.indexOf(targetChild);
 		return this.addChildAt(childToAdd, index);
 	}
 
 	addAfter(childToAdd, targetChild) {
-		let index = this.getChildIndex(targetChild);
+		let index = this.children.indexOf(targetChild);
 		return this.addChildAt(childToAdd, index + 1);
 	}
 
 	replaceChild(childToReplace, newChild) {
-		let index = this.getChildIndex(childToReplace);
+		let index = this.children.indexOf(childToReplace);
 		this.children[index] = newChild;
 		newChild.parent = this;
 		return childToReplace.parent = null;
