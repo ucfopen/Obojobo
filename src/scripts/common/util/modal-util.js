@@ -2,16 +2,13 @@ import Dispatcher from '../../common/flux/dispatcher';
 
 let ModalUtil = {
 	show(component) {
-		return Dispatcher.trigger('modal:show', {
-			value: {
-				component
-			}
-		}
-		);
+		Dispatcher.trigger('modal:show', {
+			value: { component }
+		});
 	},
 
 	hide() {
-		return Dispatcher.trigger('modal:hide');
+		Dispatcher.trigger('modal:hide');
 	},
 
 	getCurrentModal(state) {

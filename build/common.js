@@ -2462,14 +2462,12 @@ function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { de
 
 var FocusUtil = {
 	focusComponent: function focusComponent(id) {
-		return _dispatcher2.default.trigger('focus:component', {
-			value: {
-				id: id
-			}
+		_dispatcher2.default.trigger('focus:component', {
+			value: { id: id }
 		});
 	},
 	unfocus: function unfocus() {
-		return _dispatcher2.default.trigger('focus:unfocus');
+		_dispatcher2.default.trigger('focus:unfocus');
 	},
 	getFocussedComponent: function getFocussedComponent(state) {
 		return _oboModel2.default.models[state.focussedId];
@@ -6243,14 +6241,12 @@ function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { de
 
 var ModalUtil = {
 	show: function show(component) {
-		return _dispatcher2.default.trigger('modal:show', {
-			value: {
-				component: component
-			}
+		_dispatcher2.default.trigger('modal:show', {
+			value: { component: component }
 		});
 	},
 	hide: function hide() {
-		return _dispatcher2.default.trigger('modal:hide');
+		_dispatcher2.default.trigger('modal:hide');
 	},
 	getCurrentModal: function getCurrentModal(state) {
 		if (state.modals.length === 0) {
