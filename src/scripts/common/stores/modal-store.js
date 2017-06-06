@@ -7,20 +7,26 @@ class ModalStore extends Store {
 		super('modalstore');
 
 		Dispatcher.on('modal:show', payload => {
-			this.state.modals.push(payload.value.component);
-			return this.triggerChange();
+			this._show(payload.value.component)
 		});
 
-		Dispatcher.on('modal:hide', () => {
-			this.state.modals.shift();
-			return this.triggerChange();
-		});
+		Dispatcher.on('modal:hide', this._hide.bind(this));
 	}
 
 	init() {
 		return this.state = {
 			modals: []
 		};
+	}
+
+	_show(component) {
+		this.state.modals.push(component);
+		this.triggerChange();
+	}
+
+	_hide() {
+		this.state.modals.shift();
+		this.triggerChange();
 	}
 
 	getState() { return this.state; }

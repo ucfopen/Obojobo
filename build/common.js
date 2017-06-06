@@ -8953,38 +8953,50 @@ var FocusStore = function (_Store) {
 		var _this = _possibleConstructorReturn(this, (FocusStore.__proto__ || Object.getPrototypeOf(FocusStore)).call(this, 'focusStore'));
 
 		_dispatcher2.default.on('focus:component', function (payload) {
-			_this.state.viewState = 'enter';
-			_this.state.focussedId = payload.value.id;
-			_this.triggerChange();
-
-			window.clearTimeout(timeoutId);
-			return timeoutId = window.setTimeout(function () {
-				_this.state.viewState = 'active';
-				return _this.triggerChange();
-			}, TRANSITION_TIME_MS);
+			_this._focus(payload.value.id);
 		});
 
-		_dispatcher2.default.on('focus:unfocus', function (payload) {
-			_this.state.viewState = 'leave';
-			_this.triggerChange();
-
-			window.clearTimeout(timeoutId);
-			return timeoutId = window.setTimeout(function () {
-				_this.state.viewState = 'inactive';
-				_this.state.focussedId = null;
-				return _this.triggerChange();
-			}, TRANSITION_TIME_MS);
-		});
+		_dispatcher2.default.on('focus:unfocus', _this._unfocus.bind(_this));
 		return _this;
 	}
 
 	_createClass(FocusStore, [{
 		key: 'init',
 		value: function init() {
-			return this.state = {
+			this.state = {
 				focussedId: null,
 				viewState: 'inactive'
 			};
+		}
+	}, {
+		key: '_focus',
+		value: function _focus(id) {
+			var _this2 = this;
+
+			this.state.viewState = 'enter';
+			this.state.focussedId = id;
+			this.triggerChange();
+
+			window.clearTimeout(timeoutId);
+			timeoutId = window.setTimeout(function () {
+				_this2.state.viewState = 'active';
+				_this2.triggerChange();
+			}, TRANSITION_TIME_MS);
+		}
+	}, {
+		key: '_unfocus',
+		value: function _unfocus() {
+			var _this3 = this;
+
+			this.state.viewState = 'leave';
+			this.triggerChange();
+
+			window.clearTimeout(timeoutId);
+			timeoutId = window.setTimeout(function () {
+				_this3.state.viewState = 'inactive';
+				_this3.state.focussedId = null;
+				_this3.triggerChange();
+			}, TRANSITION_TIME_MS);
 		}
 	}, {
 		key: 'getState',
@@ -9042,14 +9054,10 @@ var ModalStore = function (_Store) {
 		var _this = _possibleConstructorReturn(this, (ModalStore.__proto__ || Object.getPrototypeOf(ModalStore)).call(this, 'modalstore'));
 
 		_dispatcher2.default.on('modal:show', function (payload) {
-			_this.state.modals.push(payload.value.component);
-			return _this.triggerChange();
+			_this._show(payload.value.component);
 		});
 
-		_dispatcher2.default.on('modal:hide', function () {
-			_this.state.modals.shift();
-			return _this.triggerChange();
-		});
+		_dispatcher2.default.on('modal:hide', _this._hide.bind(_this));
 		return _this;
 	}
 
@@ -9059,6 +9067,18 @@ var ModalStore = function (_Store) {
 			return this.state = {
 				modals: []
 			};
+		}
+	}, {
+		key: '_show',
+		value: function _show(component) {
+			this.state.modals.push(component);
+			this.triggerChange();
+		}
+	}, {
+		key: '_hide',
+		value: function _hide() {
+			this.state.modals.shift();
+			this.triggerChange();
 		}
 	}, {
 		key: 'getState',

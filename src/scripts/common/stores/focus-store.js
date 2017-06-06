@@ -9,35 +9,41 @@ class FocusStore extends Store {
 		super('focusStore');
 
 		Dispatcher.on('focus:component', payload => {
-			this.state.viewState = 'enter';
-			this.state.focussedId = payload.value.id;
-			this.triggerChange();
-
-			window.clearTimeout(timeoutId);
-			return timeoutId = window.setTimeout((() => {
-				this.state.viewState = 'active';
-				return this.triggerChange();
-			}), TRANSITION_TIME_MS);
+			this._focus(payload.value.id);
 		});
 
-		Dispatcher.on('focus:unfocus', payload => {
-			this.state.viewState = 'leave';
-			this.triggerChange();
-
-			window.clearTimeout(timeoutId);
-			return timeoutId = window.setTimeout((() => {
-				this.state.viewState = 'inactive';
-				this.state.focussedId = null;
-				return this.triggerChange();
-			}), TRANSITION_TIME_MS);
-		});
+		Dispatcher.on('focus:unfocus', this._unfocus.bind(this));
 	}
 
 	init() {
-		return this.state = {
+		this.state = {
 			focussedId: null,
 			viewState: 'inactive'
 		};
+	}
+
+	_focus(id) {
+		this.state.viewState = 'enter';
+		this.state.focussedId = id;
+		this.triggerChange();
+
+		window.clearTimeout(timeoutId);
+		timeoutId = window.setTimeout((() => {
+			this.state.viewState = 'active';
+			this.triggerChange();
+		}), TRANSITION_TIME_MS);
+	}
+
+	_unfocus() {
+		this.state.viewState = 'leave';
+		this.triggerChange();
+
+		window.clearTimeout(timeoutId);
+		timeoutId = window.setTimeout((() => {
+			this.state.viewState = 'inactive';
+			this.state.focussedId = null;
+			this.triggerChange();
+		}), TRANSITION_TIME_MS);
 	}
 
 	getState() { return this.state; }
