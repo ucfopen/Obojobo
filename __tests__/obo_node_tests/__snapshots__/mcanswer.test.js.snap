@@ -1,0 +1,20 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`Correctly converts xml to MCAnswer node 1`] = `
+Object {
+  "children": Array [
+    Object {
+      "children": Array [],
+      "content": Object {
+        "align": "left",
+        "latex": "x=v_xt",
+      },
+      "id": null,
+      "type": "ObojoboDraft.Chunks.MathEquation",
+    },
+  ],
+  "content": Object {},
+  "id": null,
+  "type": "ObojoboDraft.Chunks.MCAssessment.MCAnswer",
+}
+`;

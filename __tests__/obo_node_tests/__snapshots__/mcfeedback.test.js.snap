@@ -1,0 +1,36 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`Correctly converts xml to MCFeedback node 1`] = `
+Object {
+  "children": Array [
+    Object {
+      "children": Array [],
+      "content": Object {
+        "textGroup": Array [
+          Object {
+            "data": null,
+            "text": Object {
+              "styleList": Array [],
+              "value": "test",
+            },
+          },
+        ],
+      },
+      "id": null,
+      "type": "ObojoboDraft.Chunks.Text",
+    },
+    Object {
+      "children": Array [],
+      "content": Object {
+        "align": "left",
+        "latex": "x=v_xt",
+      },
+      "id": null,
+      "type": "ObojoboDraft.Chunks.MathEquation",
+    },
+  ],
+  "content": Object {},
+  "id": null,
+  "type": "ObojoboDraft.Chunks.MCAssessment.MCFeedback",
+}
+`;
