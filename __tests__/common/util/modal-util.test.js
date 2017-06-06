@@ -31,11 +31,13 @@ describe('ModalUtil', () => {
 	})
 
 	test('getCurrentModal returns the current modal at the top of the display stack', () => {
-		ModalUtil.show({ first:'modal' })
-		ModalUtil.show({ second:'modal' })
-
 		expect(ModalUtil.getCurrentModal(
-			ModalUtil.getState()
-		)).toEqual({ second:'modal' })
+			{
+				modals: [
+					{ first:'modal' },
+					{ second:'modal' }
+				]
+			}
+		)).toEqual({ first:'modal' })
 	})
 })
