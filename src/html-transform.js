@@ -61,23 +61,19 @@ let htmlTransform = (node) => {
 				node.name = 'ObojoboDraft.Chunks.Code'
 
 				let tEls = node.elements[0].text.split('\n').map( (text) => {
-					let indentLevel = 0;
+					let indent = 0;
 					while(text.charAt(0) === '\t')
 					{
-						indentLevel++;
+						indent++;
 						text = text.substr(1);
 					}
 
-					let attrs = {};
-					if(indentLevel > 0)
-					{
-						attrs = { indent:indentLevel };
-					}
+					let attributes = indent > 0 ? { indent } : null;
 
 					return ({
 						type: "element",
 						name: "t",
-						attributes: attrs,
+						attributes,
 						elements: [{
 							type: "text",
 							text: text
@@ -159,7 +155,7 @@ let htmlTransform = (node) => {
 				// 	elements: createTextGroup(texts)
 				// } ];
 				node.name = 'ObojoboDraft.Chunks.Table'
-				node.attributes = { numRows:rows, numCols:cols, header:thFound }
+				node.attributes = { numRows:rows, numCols:cols, header: thFound || undefined } // TODO: Need to remove header field in a condition, for consistency.
 				break;
 		}
 	}

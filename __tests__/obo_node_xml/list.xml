@@ -1,15 +1,12 @@
 <?xml version="1.0" encoding="utf-8"?>
 <ObojoboDraftDoc>
     <List>
-        <!-- ListStyles taken from test-object.xml -->
         <listStyles>
             <type>ordered</type>
-            <indents>  
-                <indent level="2" type="unordered" bulletStyle="square" />
-                <indent level="4" type="ordered" start="10" bulletStyle="upper-alpha" />
-            </indents>
         </listStyles>
         <textGroup>
+            <t></t>
+            <t></t>
         </textGroup>
     </List>
 </ObojoboDraftDoc>

@@ -1,0 +1,595 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`XML to Draft Object Tranformation Correctly converts xml to actionbutton node 1`] = `
+Object {
+  "children": Array [],
+  "content": Object {
+    "label": "test",
+    "triggers": Array [
+      Object {
+        "actions": Array [
+          Object {
+            "type": "viewer:alert",
+            "value": Object {
+              "message": "test",
+              "title": "test",
+            },
+          },
+        ],
+        "type": "onClick",
+      },
+    ],
+  },
+  "id": null,
+  "type": "ObojoboDraft.Chunks.ActionButton",
+}
+`;
+
+exports[`XML to Draft Object Tranformation Correctly converts xml to assessment node 1`] = `
+Object {
+  "children": Array [
+    Object {
+      "children": Array [],
+      "content": Object {},
+      "id": null,
+      "type": "ObojoboDraft.Pages.Page",
+    },
+    Object {
+      "children": Array [],
+      "content": Object {},
+      "id": null,
+      "type": "ObojoboDraft.Chunks.QuestionBank",
+    },
+  ],
+  "content": Object {
+    "scoreActions": Array [
+      Object {
+        "from": "0",
+        "page": Object {
+          "children": Array [],
+          "content": Object {},
+          "id": null,
+          "type": "ObojoboDraft.Pages.Page",
+        },
+        "to": "99",
+      },
+    ],
+  },
+  "id": null,
+  "type": "ObojoboDraft.Sections.Assessment",
+}
+`;
+
+exports[`XML to Draft Object Tranformation Correctly converts xml to break node 1`] = `
+Object {
+  "children": Array [],
+  "content": Object {},
+  "id": null,
+  "type": "ObojoboDraft.Chunks.Break",
+}
+`;
+
+exports[`XML to Draft Object Tranformation Correctly converts xml to code node 1`] = `
+Object {
+  "children": Array [],
+  "content": Object {
+    "textGroup": Array [
+      Object {
+        "data": null,
+        "text": Object {
+          "styleList": Array [],
+          "value": "test",
+        },
+      },
+    ],
+  },
+  "id": null,
+  "type": "ObojoboDraft.Chunks.Code",
+}
+`;
+
+exports[`XML to Draft Object Tranformation Correctly converts xml to content node 1`] = `
+Object {
+  "children": Array [
+    Object {
+      "children": Array [],
+      "content": Object {},
+      "id": null,
+      "type": "ObojoboDraft.Pages.Page",
+    },
+  ],
+  "content": Object {},
+  "id": null,
+  "type": "ObojoboDraft.Sections.Content",
+}
+`;
+
+exports[`XML to Draft Object Tranformation Correctly converts xml to figure node 1`] = `
+Object {
+  "children": Array [],
+  "content": Object {
+    "alt": "A city",
+    "size": "small",
+    "textGroup": Array [
+      Object {
+        "data": null,
+        "text": Object {
+          "styleList": Array [],
+          "value": "This is a small image",
+        },
+      },
+    ],
+    "url": "http://lorempixel.com/640/480/city",
+  },
+  "id": null,
+  "type": "ObojoboDraft.Chunks.Figure",
+}
+`;
+
+exports[`XML to Draft Object Tranformation Correctly converts xml to heading node 1`] = `
+Object {
+  "children": Array [],
+  "content": Object {
+    "textGroup": Array [
+      Object {
+        "data": null,
+        "text": Object {
+          "styleList": Array [],
+          "value": "",
+        },
+      },
+    ],
+  },
+  "id": null,
+  "type": "ObojoboDraft.Chunks.Heading",
+}
+`;
+
+exports[`XML to Draft Object Tranformation Correctly converts xml to html node 1`] = `
+Object {
+  "children": Array [],
+  "content": Object {
+    "html": "<marquee><font color='red'>Hello, I am rendered HTML</font></marquee>",
+  },
+  "id": null,
+  "type": "ObojoboDraft.Chunks.HTML",
+}
+`;
+
+exports[`XML to Draft Object Tranformation Correctly converts xml to list node 1`] = `
+Object {
+  "children": Array [],
+  "content": Object {
+    "listStyles": Object {
+      "type": "ordered",
+    },
+    "textGroup": Array [
+      Object {
+        "data": null,
+        "text": Object {
+          "styleList": Array [],
+          "value": "",
+        },
+      },
+      Object {
+        "data": null,
+        "text": Object {
+          "styleList": Array [],
+          "value": "",
+        },
+      },
+    ],
+  },
+  "id": null,
+  "type": "ObojoboDraft.Chunks.List",
+}
+`;
+
+exports[`XML to Draft Object Tranformation Correctly converts xml to mathequation node 1`] = `
+Object {
+  "children": Array [],
+  "content": Object {
+    "align": "left",
+    "latex": "x=v_xt",
+  },
+  "id": null,
+  "type": "ObojoboDraft.Chunks.MathEquation",
+}
+`;
+
+exports[`XML to Draft Object Tranformation Correctly converts xml to mcanswer node 1`] = `
+Object {
+  "children": Array [
+    Object {
+      "children": Array [],
+      "content": Object {
+        "align": "left",
+        "latex": "x=v_xt",
+      },
+      "id": null,
+      "type": "ObojoboDraft.Chunks.MathEquation",
+    },
+  ],
+  "content": Object {},
+  "id": null,
+  "type": "ObojoboDraft.Chunks.MCAssessment.MCAnswer",
+}
+`;
+
+exports[`XML to Draft Object Tranformation Correctly converts xml to mcassessment node 1`] = `
+Object {
+  "children": Array [
+    Object {
+      "children": Array [
+        Object {
+          "children": Array [
+            Object {
+              "children": Array [],
+              "content": Object {
+                "align": "left",
+                "latex": "x=v_xt",
+              },
+              "id": null,
+              "type": "ObojoboDraft.Chunks.MathEquation",
+            },
+          ],
+          "content": Object {},
+          "id": null,
+          "type": "ObojoboDraft.Chunks.MCAssessment.MCAnswer",
+        },
+      ],
+      "content": Object {
+        "score": 100,
+      },
+      "id": null,
+      "type": "ObojoboDraft.Chunks.MCAssessment.MCChoice",
+    },
+  ],
+  "content": Object {
+    "responseType": "pick-one",
+  },
+  "id": null,
+  "type": "ObojoboDraft.Chunks.MCAssessment",
+}
+`;
+
+exports[`XML to Draft Object Tranformation Correctly converts xml to mcchoice node 1`] = `
+Object {
+  "children": Array [
+    Object {
+      "children": Array [
+        Object {
+          "children": Array [],
+          "content": Object {
+            "align": "left",
+            "latex": "x=v_xt",
+          },
+          "id": null,
+          "type": "ObojoboDraft.Chunks.MathEquation",
+        },
+      ],
+      "content": Object {},
+      "id": null,
+      "type": "ObojoboDraft.Chunks.MCAssessment.MCAnswer",
+    },
+  ],
+  "content": Object {
+    "score": 100,
+  },
+  "id": null,
+  "type": "ObojoboDraft.Chunks.MCAssessment.MCChoice",
+}
+`;
+
+exports[`XML to Draft Object Tranformation Correctly converts xml to mcfeedback node 1`] = `
+Object {
+  "children": Array [
+    Object {
+      "children": Array [],
+      "content": Object {
+        "textGroup": Array [
+          Object {
+            "data": null,
+            "text": Object {
+              "styleList": Array [],
+              "value": "test",
+            },
+          },
+        ],
+      },
+      "id": null,
+      "type": "ObojoboDraft.Chunks.Text",
+    },
+    Object {
+      "children": Array [],
+      "content": Object {
+        "align": "left",
+        "latex": "x=v_xt",
+      },
+      "id": null,
+      "type": "ObojoboDraft.Chunks.MathEquation",
+    },
+  ],
+  "content": Object {},
+  "id": null,
+  "type": "ObojoboDraft.Chunks.MCAssessment.MCFeedback",
+}
+`;
+
+exports[`XML to Draft Object Tranformation Correctly converts xml to module node 1`] = `
+Object {
+  "children": Array [
+    Object {
+      "children": Array [],
+      "content": Object {},
+      "id": null,
+      "type": "ObojoboDraft.Sections.Content",
+    },
+  ],
+  "content": Object {
+    "title": "test",
+  },
+  "id": null,
+  "type": "ObojoboDraft.Modules.Module",
+}
+`;
+
+exports[`XML to Draft Object Tranformation Correctly converts xml to page node 1`] = `
+Object {
+  "children": Array [
+    Object {
+      "children": Array [],
+      "content": Object {},
+      "id": null,
+      "type": "ObojoboDraft.Chunks.Text",
+    },
+  ],
+  "content": Object {
+    "title": "test",
+  },
+  "id": null,
+  "type": "ObojoboDraft.Pages.Page",
+}
+`;
+
+exports[`XML to Draft Object Tranformation Correctly converts xml to question node 1`] = `
+Object {
+  "children": Array [
+    Object {
+      "children": Array [],
+      "content": Object {
+        "textGroup": Array [
+          Object {
+            "data": null,
+            "text": Object {
+              "styleList": Array [],
+              "value": "test",
+            },
+          },
+        ],
+      },
+      "id": null,
+      "type": "ObojoboDraft.Chunks.Text",
+    },
+    Object {
+      "children": Array [
+        Object {
+          "children": Array [
+            Object {
+              "children": Array [
+                Object {
+                  "children": Array [],
+                  "content": Object {
+                    "textGroup": Array [
+                      Object {
+                        "data": null,
+                        "text": Object {
+                          "styleList": Array [],
+                          "value": "Correct",
+                        },
+                      },
+                    ],
+                  },
+                  "id": null,
+                  "type": "ObojoboDraft.Chunks.Text",
+                },
+              ],
+              "content": Object {},
+              "id": null,
+              "type": "ObojoboDraft.Chunks.MCAssessment.MCAnswer",
+            },
+          ],
+          "content": Object {
+            "score": 100,
+          },
+          "id": null,
+          "type": "ObojoboDraft.Chunks.MCAssessment.MCChoice",
+        },
+        Object {
+          "children": Array [
+            Object {
+              "children": Array [
+                Object {
+                  "children": Array [],
+                  "content": Object {
+                    "textGroup": Array [
+                      Object {
+                        "data": null,
+                        "text": Object {
+                          "styleList": Array [],
+                          "value": "Incorrect",
+                        },
+                      },
+                    ],
+                  },
+                  "id": null,
+                  "type": "ObojoboDraft.Chunks.Text",
+                },
+              ],
+              "content": Object {},
+              "id": null,
+              "type": "ObojoboDraft.Chunks.MCAssessment.MCAnswer",
+            },
+          ],
+          "content": Object {
+            "score": 0,
+          },
+          "id": null,
+          "type": "ObojoboDraft.Chunks.MCAssessment.MCChoice",
+        },
+      ],
+      "content": Object {
+        "responseType": "pick-one",
+      },
+      "id": null,
+      "type": "ObojoboDraft.Chunks.MCAssessment",
+    },
+  ],
+  "content": Object {},
+  "id": null,
+  "type": "ObojoboDraft.Chunks.Question",
+}
+`;
+
+exports[`XML to Draft Object Tranformation Correctly converts xml to questionbank node 1`] = `
+Object {
+  "children": Array [
+    Object {
+      "children": Array [
+        Object {
+          "children": Array [
+            Object {
+              "children": Array [
+                Object {
+                  "children": Array [
+                    Object {
+                      "children": Array [],
+                      "content": Object {
+                        "textGroup": Array [
+                          Object {
+                            "data": null,
+                            "text": Object {
+                              "styleList": Array [],
+                              "value": "Correct",
+                            },
+                          },
+                        ],
+                      },
+                      "id": null,
+                      "type": "ObojoboDraft.Chunks.Text",
+                    },
+                  ],
+                  "content": Object {},
+                  "id": null,
+                  "type": "ObojoboDraft.Chunks.MCAssessment.MCAnswer",
+                },
+              ],
+              "content": Object {
+                "score": 100,
+              },
+              "id": null,
+              "type": "ObojoboDraft.Chunks.MCAssessment.MCChoice",
+            },
+            Object {
+              "children": Array [
+                Object {
+                  "children": Array [
+                    Object {
+                      "children": Array [],
+                      "content": Object {
+                        "textGroup": Array [
+                          Object {
+                            "data": null,
+                            "text": Object {
+                              "styleList": Array [],
+                              "value": "Incorrect",
+                            },
+                          },
+                        ],
+                      },
+                      "id": null,
+                      "type": "ObojoboDraft.Chunks.Text",
+                    },
+                  ],
+                  "content": Object {},
+                  "id": null,
+                  "type": "ObojoboDraft.Chunks.MCAssessment.MCAnswer",
+                },
+              ],
+              "content": Object {
+                "score": 0,
+              },
+              "id": null,
+              "type": "ObojoboDraft.Chunks.MCAssessment.MCChoice",
+            },
+          ],
+          "content": Object {
+            "responseType": "pick-one",
+          },
+          "id": null,
+          "type": "ObojoboDraft.Chunks.MCAssessment",
+        },
+      ],
+      "content": Object {},
+      "id": null,
+      "type": "ObojoboDraft.Chunks.Question",
+    },
+  ],
+  "content": Object {},
+  "id": null,
+  "type": "ObojoboDraft.Chunks.QuestionBank",
+}
+`;
+
+exports[`XML to Draft Object Tranformation Correctly converts xml to table node 1`] = `
+Object {
+  "children": Array [],
+  "content": Object {
+    "textGroup": Object {
+      "numCols": 1,
+      "numRows": 1,
+      "textGroup": Array [
+        Object {
+          "data": null,
+          "text": Object {
+            "styleList": Array [],
+            "value": "test",
+          },
+        },
+      ],
+    },
+  },
+  "id": null,
+  "type": "ObojoboDraft.Chunks.Table",
+}
+`;
+
+exports[`XML to Draft Object Tranformation Correctly converts xml to text node 1`] = `
+Object {
+  "children": Array [],
+  "content": Object {
+    "textGroup": Array [
+      Object {
+        "data": null,
+        "text": Object {
+          "styleList": Array [],
+          "value": "",
+        },
+      },
+    ],
+  },
+  "id": null,
+  "type": "ObojoboDraft.Chunks.Text",
+}
+`;
+
+exports[`XML to Draft Object Tranformation Correctly converts xml to youtube node 1`] = `
+Object {
+  "children": Array [],
+  "content": Object {
+    "videoId": "test",
+  },
+  "id": null,
+  "type": "Youtube",
+}
+`;
