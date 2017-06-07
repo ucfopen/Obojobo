@@ -15,10 +15,14 @@ let { OboModel } = Common.models;
 let { StyleableText } = Common.text;
 let { StyleableTextComponent } = Common.text;
 
-let Nav = React.createClass({
-	getInitialState() {
-		return {hover: false};
-	},
+export default class Nav extends React.Component {
+	constructor(props) {
+		super(props)
+
+		this.state = {
+			hover: false
+		}
+	}
 
 	onClick(item) {
 		if (item.type === 'link') {
@@ -27,19 +31,19 @@ let Nav = React.createClass({
 			let el = OboModel.models[item.id].getDomEl();
 			return el.scrollIntoView({ behavior:'smooth' });
 		}
-	},
+	}
 
 	hideNav() {
 		return NavUtil.toggle();
-	},
+	}
 
 	onMouseOver() {
 		return this.setState({ hover:true });
-	},
+	}
 
 	onMouseOut() {
 		return this.setState({ hover:false });
-	},
+	}
 
 	renderLabel(label) {
 		if (label instanceof StyleableText) {
@@ -47,7 +51,7 @@ let Nav = React.createClass({
 		} else {
 			return <a>{label}</a>;
 		}
-	},
+	}
 
 	render() {
 		let bg, lockEl;
@@ -68,9 +72,9 @@ let Nav = React.createClass({
 		return <div className={`viewer--components--nav${this.props.navState.locked ? ' is-locked' : ' is-unlocked'}${this.props.navState.open ? ' is-open' : ' is-closed'}${this.props.navState.disabled ? ' is-disabled' : ' is-enabled'}`}>
 			<button
 				className="toggle-button"
-				onClick={this.hideNav}
-				onMouseOver={this.onMouseOver}
-				onMouseOut={this.onMouseOut}
+				onClick={this.hideNav.bind(this)}
+				onMouseOver={this.onMouseOver.bind(this)}
+				onMouseOut={this.onMouseOut.bind(this)}
 				style={
 					{
 						backgroundImage: bg,
@@ -94,7 +98,7 @@ let Nav = React.createClass({
 							case 'link':
 								var isSelected = this.props.navState.navTargetId === item.id;
 								//var isPrevVisited = this.props.navState.navTargetHistory.indexOf(item.id) > -1
-								return <li key={index} onClick={this.onClick.bind(null, item)} className={`link${isSelected ? ' is-selected' : ' is-not-select'}${item.flags.visited ? ' is-visited' : ' is-not-visited'}${item.flags.complete ? ' is-complete' : ' is-not-complete'}${item.flags.correct ? ' is-correct' : ' is-not-correct'}`}>
+								return <li key={index} onClick={this.onClick.bind(this, item)} className={`link${isSelected ? ' is-selected' : ' is-not-select'}${item.flags.visited ? ' is-visited' : ' is-not-visited'}${item.flags.complete ? ' is-complete' : ' is-not-complete'}${item.flags.correct ? ' is-correct' : ' is-not-correct'}`}>
 									{this.renderLabel(item.label)}
 									{lockEl}
 								</li>;
@@ -103,7 +107,7 @@ let Nav = React.createClass({
 							case 'sub-link':
 								var isSelected = this.props.navState.navTargetIndex === index;
 
-								return <li key={index} onClick={this.onClick.bind(null, item)} className={`sub-link${isSelected ? ' is-selected' : ' is-not-select'}${item.flags.correct ? ' is-correct' : ' is-not-correct'}`}>
+								return <li key={index} onClick={this.onClick.bind(this, item)} className={`sub-link${isSelected ? ' is-selected' : ' is-not-select'}${item.flags.correct ? ' is-correct' : ' is-not-correct'}`}>
 									{this.renderLabel(item.label)}
 									{lockEl}
 								</li>;
@@ -121,7 +125,4 @@ let Nav = React.createClass({
 			<Logo inverted />
 		</div>;
 	}
-});
-
-
-export default Nav;
+}

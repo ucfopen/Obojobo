@@ -1,4 +1,4 @@
-export default React.createClass({
+export default class Question extends React.Component {
 	render() {
 		return <div>
 			<p>{this.props.children}</p>
@@ -10,4 +10,4 @@ export default React.createClass({
 			</button>
 		</div>;
 	}
-});
+}

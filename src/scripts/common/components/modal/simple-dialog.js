@@ -3,8 +3,8 @@ import './simple-dialog.scss';
 import ModalUtil from '../../../common/util/modal-util';
 import Dialog from '../../../common/components/modal/dialog';
 
-export default React.createClass({
-	getDefaultProps() {
+export default class SimpleDialog extends React.Component {
+	static get defaultProps() {
 		return {
 			ok: false,
 			noOrYes: false,
@@ -15,7 +15,7 @@ export default React.createClass({
 			onCancel() { return ModalUtil.hide(); },
 			onConfirm() { return ModalUtil.hide(); }
 		};
-	},
+	}
 
 	render() {
 		let buttons;
@@ -79,4 +79,4 @@ export default React.createClass({
 			</Dialog>
 		</div>;
 	}
-});
+}

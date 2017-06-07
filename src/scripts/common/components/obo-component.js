@@ -1,17 +1,17 @@
 import FocusUtil from '../../common/util/focus-util';
 
-let OboComponent = React.createClass({
-	getDefaultProps() {
+export default class OboComponent extends React.Component {
+	static get defaultProps() {
 		return {tag: 'div'};
-	},
+	}
 
 	componentDidMount() {
 		return this.props.model.processTrigger('onMount');
-	},
+	}
 
 	componentWillUnmount() {
 		return this.props.model.processTrigger('onUnmount');
-	},
+	}
 
 	render() {
 		let Component = this.props.model.getComponentClass();
@@ -36,7 +36,4 @@ let OboComponent = React.createClass({
 			{this.props.children}
 		</Tag>;
 	}
-});
-
-
-export default OboComponent;
+}

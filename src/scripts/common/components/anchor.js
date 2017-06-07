@@ -1,6 +1,6 @@
 import { EMPTY_CHAR } from '../../common/text/text-constants';
 
-export default React.createClass({
+export default class Anchor extends React.Component {
 	render() {
 		return <span
 			{...this.props}
@@ -14,4 +14,4 @@ export default React.createClass({
 			{EMPTY_CHAR}
 		</span>;
 	}
-});
+}

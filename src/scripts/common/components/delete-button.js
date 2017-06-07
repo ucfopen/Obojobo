@@ -1,13 +1,13 @@
 import './delete-button.scss';
 
-export default React.createClass({
-	getDefaultProps() {
+export default class DeleteButton extends React.Component {
+	static get defaultProps() {
 		return {indent: 0};
-	},
+	}
 
 	focus() {
 		return ReactDOM.findDOMNode(this.refs.button).focus();
-	},
+	}
 
 	render() {
 		return <div className="obojobo-draft--components--delete-button">
@@ -21,4 +21,4 @@ export default React.createClass({
 			</button>
 		</div>;
 	}
-});
+}

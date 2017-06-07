@@ -1,6 +1,6 @@
 import './viewer-page.scss';
 
-let ViewerPage = React.createClass({
+export default class ViewerPage extends React.Component {
 
 	render() {
 		let { props } = this;
@@ -36,8 +36,4 @@ let ViewerPage = React.createClass({
 			{chunks}
 		</div>;
 	}
-});
-
-
-
-export default ViewerPage;
+}

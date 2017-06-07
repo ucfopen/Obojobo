@@ -4,7 +4,6 @@ import './viewer-app.scss';
 import Common from 'Common'
 import React from 'react';
 
-import JSONInput from '../../viewer/components/json-input';
 import InlineNavButton from '../../viewer/components/inline-nav-button';
 import NavUtil from '../../viewer/util/nav-util';
 import Logo from '../../viewer/components/logo';
@@ -35,10 +34,12 @@ let { OboGlobals } = Common.util;
 
 Dispatcher.on('viewer:alert', payload => ModalUtil.show(<SimpleDialog ok title={payload.value.title}>{payload.value.message}</SimpleDialog>));
 
-let ViewerApp = React.createClass({
+export default class ViewerApp extends React.Component {
 	// === REACT LIFECYCLE METHODS ===
 
-	getInitialState() {
+	constructor(props) {
+		super(props)
+
 		Common.Store.loadDependency('https://cdnjs.cloudflare.com/ajax/libs/KaTeX/0.5.1/katex.min.css');
 
 		Dispatcher.on('viewer:scrollTo', (payload => {
@@ -77,8 +78,8 @@ let ViewerApp = React.createClass({
 		state.modalState = ModalStore.getState();
 		state.focusState = FocusStore.getState();
 
-		return state;
-	},
+		this.state = state;
+	}
 
 	componentWillMount() {
 		// === SET UP DATA STORES ===
@@ -88,7 +89,7 @@ let ViewerApp = React.createClass({
 		AssessmentStore.onChange(() => this.setState({ assessmentState: AssessmentStore.getState() }));
 		ModalStore.onChange(() => this.setState({ modalState: ModalStore.getState() }));
 		return FocusStore.onChange(() => this.setState({ focusState: FocusStore.getState() }));
-	},
+	}
 
 	// componentDidMount: ->
 		// NavUtil.gotoPath window.location.pathname
@@ -101,7 +102,7 @@ let ViewerApp = React.createClass({
 			this.needsScroll = true;
 			return this.setState({ navTargetId:nextNavTargetId });
 		}
-	},
+	}
 
 	componentDidUpdate() {
 		// alert 'here, fixme'
@@ -114,11 +115,11 @@ let ViewerApp = React.createClass({
 
 			return delete this.needsScroll;
 		}
-	},
+	}
 
 	getTextForVariable(event, variable, textModel) {
 		return event.text = Common.Store.getTextForVariable(variable, textModel, this.state);
-	},
+	}
 
 	scrollToTop() {
 		let el = ReactDOM.findDOMNode(this.refs.prev);
@@ -127,7 +128,7 @@ let ViewerApp = React.createClass({
 		} else {
 			return ReactDOM.findDOMNode(this.refs.container).scrollTop = 0;
 		}
-	},
+	}
 
 	// === NON REACT LIFECYCLE METHODS ===
 
@@ -140,22 +141,22 @@ let ViewerApp = React.createClass({
 			this.setState({ model:this.state.model });
 			return;
 		}
-	},
+	}
 
 	onBack() {
 		return NavUtil.goPrev();
-	},
+	}
 
 	onNext() {
 		return NavUtil.goNext();
-	},
+	}
 
 	onMouseDown(event) {
 		if ((this.state.focusState.focussedId == null)) { return; }
 		if (!DOMUtil.findParentComponentIds(event.target).has(this.state.focusState.focussedId)) {
 			return FocusUtil.unfocus();
 		}
-	},
+	}
 
 	onScroll(event) {
 		if ((this.state.focusState.focussedId == null)) { return; }
@@ -169,36 +170,7 @@ let ViewerApp = React.createClass({
 		if (!Screen.isElementVisible(el)) {
 			return FocusUtil.unfocus();
 		}
-	},
-
-	onChangeJSON(json) {
-		let o;
-		try {
-			o = JSON.parse(json);
-		} catch (e) {
-			alert('Error parsing JSON');
-			return;
-		}
-
-		let newModule = OboModel.create(o);
-
-		NavStore.init(newModule, newModule.modelState.start);
-		ScoreStore.init();
-		QuestionStore.init();
-		AssessmentStore.init();
-		ModalStore.init();
-		FocusStore.init();
-
-		return this.setState({
-			model: newModule,
-			navState: NavStore.getState(),
-			scoreState: ScoreStore.getState(),
-			questionState: QuestionStore.getState(),
-			assessmentState: AssessmentStore.getState(),
-			modalState: ModalStore.getState(),
-			focusState: FocusStore.getState()
-		});
-	},
+	}
 
 	resetAssessments() {
 		AssessmentStore.init();
@@ -210,11 +182,11 @@ let ViewerApp = React.createClass({
 		ScoreStore.triggerChange();
 
 		return ModalUtil.show(<SimpleDialog ok width="15em">Assessment attempts and all question responses have been reset.</SimpleDialog>);
-	},
+	}
 
 	unlockNavigation() {
 		return NavUtil.unlock();
-	},
+	}
 
 	render() {
 		let nextEl, nextModel, prevEl;
@@ -222,8 +194,6 @@ let ViewerApp = React.createClass({
 		window.__s = this.state;
 
 		let ModuleComponent = this.state.model.getComponentClass();
-
-		//<JSONInput onChange={this.onChangeJSON} value={JSON.stringify(this.state.model.toJSON(), null, 2)} />
 
 		let navTargetModel = NavUtil.getNavTargetModel(this.state.navState);
 		let navTargetTitle = '?';
@@ -251,7 +221,7 @@ let ViewerApp = React.createClass({
 
 		let modal = ModalUtil.getCurrentModal(this.state.modalState);
 
-		return <div ref="container" onMouseDown={this.onMouseDown} onScroll={this.onScroll} className={`viewer--viewer-app${this.isPreviewing ? ' is-previewing' : ' is-not-previewing'}${this.state.navState.locked ? ' is-locked-nav' : ' is-unlocked-nav'}${this.state.navState.open ? ' is-open-nav' : ' is-closed-nav'}${this.state.navState.disabled ? ' is-disabled-nav' : ' is-enabled-nav'} is-focus-state-${this.state.focusState.viewState}`}>
+		return <div ref="container" onMouseDown={this.onMouseDown.bind(this)} onScroll={this.onScroll.bind(this)} className={`viewer--viewer-app${this.isPreviewing ? ' is-previewing' : ' is-not-previewing'}${this.state.navState.locked ? ' is-locked-nav' : ' is-unlocked-nav'}${this.state.navState.open ? ' is-open-nav' : ' is-closed-nav'}${this.state.navState.disabled ? ' is-disabled-nav' : ' is-enabled-nav'} is-focus-state-${this.state.focusState.viewState}`}>
 			<header>
 				<div className="pad">
 					<span className="module-title">{this.state.model.title}</span>
@@ -269,8 +239,8 @@ let ViewerApp = React.createClass({
 				<div className="preview-banner">
 					<span>You are previewing this object - Assessments will not be counted</span>
 					<div className="controls">
-						<button onClick={this.unlockNavigation} disabled={!this.state.navState.locked}>Unlock navigation</button>
-						<button onClick={this.resetAssessments}>Reset assessments &amp; questions</button>
+						<button onClick={this.unlockNavigation.bind(this)} disabled={!this.state.navState.locked}>Unlock navigation</button>
+						<button onClick={this.resetAssessments.bind(this)}>Reset assessments &amp; questions</button>
 					</div>
 				</div>
 				:
@@ -289,6 +259,4 @@ let ViewerApp = React.createClass({
 
 		</div>;
 	}
-});
-
-export default ViewerApp;
+}

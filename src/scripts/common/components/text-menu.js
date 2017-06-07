@@ -1,19 +1,11 @@
 import './text-menu.scss';
 
-let TextMenu = React.createClass({
-	// getInitialState: ->
-	// 	selectionRect: @props.selection.rect
-
-	// componentWillReceiveProps: (nextProps) ->
-	// 	@setState {
-	// 		selectionRect: nextProps.selection.rect
-	// 	}
-
+export default class TextMenu extends React.Component {
 	renderImg(command) {
 		if ((command.image == null)) { return <div><span>{command.label}</span><img className="click-blocker" /></div>; }
 
 		return React.createElement('img', { src:command.image, alt:command.label, title:command.label });
-	},
+	}
 
 	onMouseDown(label, event) {
 		console.log(arguments);
@@ -22,7 +14,7 @@ let TextMenu = React.createClass({
 		event.stopPropagation();
 
 		return this.props.commandHandler(label);
-	},
+	}
 
 	render() {
 		if (!this.props.relativeToElement) { return null; }
@@ -41,13 +33,10 @@ let TextMenu = React.createClass({
 		}},
 			this.props.commands.map(((command, index) => {
 				return React.createElement('a', {
-					onMouseDown: this.onMouseDown.bind(null, command.label),
+					onMouseDown: this.onMouseDown.bind(this, command.label),
 					key: index
 				}, renderImg(command));
 			}))
 		);
 	}
-});
-
-
-export default TextMenu;
+}

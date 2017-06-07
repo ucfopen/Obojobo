@@ -63,7 +63,7 @@
 /******/ 	__webpack_require__.p = "build/";
 /******/
 /******/ 	// Load entry module and return exports
-/******/ 	return __webpack_require__(__webpack_require__.s = 28);
+/******/ 	return __webpack_require__(__webpack_require__.s = 27);
 /******/ })
 /************************************************************************/
 /******/ ([
@@ -835,13 +835,15 @@ Object.defineProperty(exports, "__esModule", {
 	value: true
 });
 
-__webpack_require__(19);
+var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+
+__webpack_require__(18);
 
 var _navUtil = __webpack_require__(1);
 
 var _navUtil2 = _interopRequireDefault(_navUtil);
 
-var _obojoboLogo = __webpack_require__(26);
+var _obojoboLogo = __webpack_require__(25);
 
 var _obojoboLogo2 = _interopRequireDefault(_obojoboLogo);
 
@@ -851,23 +853,40 @@ var _Common2 = _interopRequireDefault(_Common);
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
+
+function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
+
 var getBackgroundImage = _Common2.default.util.getBackgroundImage;
 
+var Logo = function (_React$Component) {
+	_inherits(Logo, _React$Component);
 
-var Logo = React.createClass({
-	displayName: 'Logo',
-	render: function render() {
-		var bg = getBackgroundImage(_obojoboLogo2.default);
+	function Logo() {
+		_classCallCheck(this, Logo);
 
-		return React.createElement(
-			'div',
-			{ className: 'viewer--components--logo' + (this.props.inverted ? ' is-inverted' : ' is-not-inverted'), style: {
-					backgroundImage: bg
-				} },
-			'Obojobo'
-		);
+		return _possibleConstructorReturn(this, (Logo.__proto__ || Object.getPrototypeOf(Logo)).apply(this, arguments));
 	}
-});
+
+	_createClass(Logo, [{
+		key: 'render',
+		value: function render() {
+			var bg = getBackgroundImage(_obojoboLogo2.default);
+
+			return React.createElement(
+				'div',
+				{ className: 'viewer--components--logo' + (this.props.inverted ? ' is-inverted' : ' is-not-inverted'), style: {
+						backgroundImage: bg
+					} },
+				'Obojobo'
+			);
+		}
+	}]);
+
+	return Logo;
+}(React.Component);
 
 exports.default = Logo;
 
@@ -1278,6 +1297,8 @@ var QuestionStore = function (_Store) {
 				_this.state.responses[id] = payload.value.response;
 				_this.triggerChange();
 
+				console.log('QRR set responses', id, 'to', payload.value.response);
+
 				var questionModel = model.getParentOfType('ObojoboDraft.Chunks.Question');
 				return _apiUtil2.default.postEvent(questionModel.getRoot(), 'question:recordResponse', {
 					questionId: questionModel.get('id'),
@@ -1554,12 +1575,14 @@ var AssessmentUtil = {
 	// },
 
 	isCurrentAttemptComplete: function isCurrentAttemptComplete(assessmentState, questionState, model) {
+		console.log('@TODO: Function not working, responses stored by responseId, not by questionId. Do not use this method.');
 		var current = AssessmentUtil.getCurrentAttemptForModel(assessmentState, model);
 		if (!current) {
 			return null;
 		}
 
 		var models = model.children.at(1).children.models;
+
 		return models.filter(function (questionModel) {
 			var resp = _questionUtil2.default.getResponse(questionState, questionModel);
 			return resp && resp.set === true;
@@ -2111,7 +2134,7 @@ exports.default = ScoreUtil;
 "use strict";
 
 
-var _index = __webpack_require__(17);
+var _index = __webpack_require__(16);
 
 var _index2 = _interopRequireDefault(_index);
 
@@ -2130,7 +2153,9 @@ Object.defineProperty(exports, "__esModule", {
 	value: true
 });
 
-__webpack_require__(18);
+var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+
+__webpack_require__(17);
 
 var _navUtil = __webpack_require__(1);
 
@@ -2138,32 +2163,52 @@ var _navUtil2 = _interopRequireDefault(_navUtil);
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
-var InlineNavButton = React.createClass({
-	displayName: 'InlineNavButton',
-	onClick: function onClick() {
-		if (this.props.disabled) {
-			return;
-		}
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
-		switch (this.props.type) {
-			case 'prev':
-				return _navUtil2.default.goPrev();
+function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
 
-			case 'next':
-				return _navUtil2.default.goNext();
-		}
-	},
-	render: function render() {
-		return React.createElement(
-			'div',
-			{
-				className: 'viewer--components--inline-nav-button is-' + this.props.type + (this.props.disabled ? ' is-disabled' : ' is-enabled'),
-				onClick: this.onClick
-			},
-			this.props.title
-		);
+function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
+
+var InlineNavButton = function (_React$Component) {
+	_inherits(InlineNavButton, _React$Component);
+
+	function InlineNavButton() {
+		_classCallCheck(this, InlineNavButton);
+
+		return _possibleConstructorReturn(this, (InlineNavButton.__proto__ || Object.getPrototypeOf(InlineNavButton)).apply(this, arguments));
 	}
-});
+
+	_createClass(InlineNavButton, [{
+		key: 'onClick',
+		value: function onClick() {
+			if (this.props.disabled) {
+				return;
+			}
+
+			switch (this.props.type) {
+				case 'prev':
+					return _navUtil2.default.goPrev();
+
+				case 'next':
+					return _navUtil2.default.goNext();
+			}
+		}
+	}, {
+		key: 'render',
+		value: function render() {
+			return React.createElement(
+				'div',
+				{
+					className: 'viewer--components--inline-nav-button is-' + this.props.type + (this.props.disabled ? ' is-disabled' : ' is-enabled'),
+					onClick: this.onClick.bind(this)
+				},
+				this.props.title
+			);
+		}
+	}]);
+
+	return InlineNavButton;
+}(React.Component);
 
 exports.default = InlineNavButton;
 
@@ -2177,77 +2222,10 @@ exports.default = InlineNavButton;
 Object.defineProperty(exports, "__esModule", {
 	value: true
 });
-var JSONInput = React.createClass({
-	displayName: 'JSONInput',
-	getInitialState: function getInitialState() {
-		return {
-			value: this.props.value,
-			open: false
-		};
-	},
-	componentWillReceiveProps: function componentWillReceiveProps(nextProps) {
-		return this.setState({
-			value: nextProps.value
-		});
-	},
-	onClick: function onClick(event) {
-		return this.props.onChange(this.state.value);
-	},
-	onChange: function onChange(event) {
-		return this.setState({ value: event.target.value });
-	},
-	onToggle: function onToggle(event) {
-		var newVal = !this.state.open;
-		return this.setState({ open: newVal });
-	},
 
-	// @props.onToggle newVal
+var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
 
-	render: function render() {
-		if (this.state.open) {
-			return React.createElement(
-				'div',
-				{ style: { position: 'fixed', right: 0, top: 0, bottom: 0, width: '300px', background: 'gray', zIndex: 9999 } },
-				React.createElement(
-					'button',
-					{ style: { position: 'absolute', top: '0', left: 0, display: 'block', width: '300px' }, onClick: this.onToggle },
-					'Close'
-				),
-				React.createElement('textarea', { style: { position: 'absolute', left: 0, top: '20px', right: 0, bottom: '40px', width: '300px', fontFamily: 'monospace', fontSize: '10pt', padding: 0, margin: 0, boxSizing: 'border-box' }, value: this.state.value, onChange: this.onChange }),
-				React.createElement(
-					'button',
-					{ style: { position: 'absolute', bottom: '10px', left: 0, display: 'block', width: '300px' }, onClick: this.onClick },
-					'Update'
-				)
-			);
-		}
-
-		return React.createElement(
-			'div',
-			{ style: { position: 'fixed', right: 0, top: '50px', zIndex: 9999 } },
-			React.createElement(
-				'button',
-				{ onClick: this.onToggle },
-				'Open'
-			)
-		);
-	}
-});
-
-exports.default = JSONInput;
-
-/***/ }),
-/* 15 */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-
-
-Object.defineProperty(exports, "__esModule", {
-	value: true
-});
-
-__webpack_require__(20);
+__webpack_require__(19);
 
 var _navStore = __webpack_require__(3);
 
@@ -2261,15 +2239,15 @@ var _logo = __webpack_require__(5);
 
 var _logo2 = _interopRequireDefault(_logo);
 
-var _hamburger = __webpack_require__(24);
+var _hamburger = __webpack_require__(23);
 
 var _hamburger2 = _interopRequireDefault(_hamburger);
 
-var _arrow = __webpack_require__(23);
+var _arrow = __webpack_require__(22);
 
 var _arrow2 = _interopRequireDefault(_arrow);
 
-var _lockIcon = __webpack_require__(25);
+var _lockIcon = __webpack_require__(24);
 
 var _lockIcon2 = _interopRequireDefault(_lockIcon);
 
@@ -2279,142 +2257,171 @@ var _Common2 = _interopRequireDefault(_Common);
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
+
+function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
+
 var getBackgroundImage = _Common2.default.util.getBackgroundImage;
 var OboModel = _Common2.default.models.OboModel;
 var StyleableText = _Common2.default.text.StyleableText;
 var StyleableTextComponent = _Common2.default.text.StyleableTextComponent;
 
+var Nav = function (_React$Component) {
+	_inherits(Nav, _React$Component);
 
-var Nav = React.createClass({
-	displayName: 'Nav',
-	getInitialState: function getInitialState() {
-		return { hover: false };
-	},
-	onClick: function onClick(item) {
-		if (item.type === 'link') {
-			return _navUtil2.default.gotoPath(item.fullPath);
-		} else if (item.type === 'sub-link') {
-			var el = OboModel.models[item.id].getDomEl();
-			return el.scrollIntoView({ behavior: 'smooth' });
-		}
-	},
-	hideNav: function hideNav() {
-		return _navUtil2.default.toggle();
-	},
-	onMouseOver: function onMouseOver() {
-		return this.setState({ hover: true });
-	},
-	onMouseOut: function onMouseOut() {
-		return this.setState({ hover: false });
-	},
-	renderLabel: function renderLabel(label) {
-		if (label instanceof StyleableText) {
-			return React.createElement(StyleableTextComponent, { text: label });
-		} else {
-			return React.createElement(
-				'a',
-				null,
-				label
-			);
-		}
-	},
-	render: function render() {
-		var _this = this;
+	function Nav(props) {
+		_classCallCheck(this, Nav);
 
-		var bg = void 0,
-		    lockEl = void 0;
-		if (this.props.navState.open || this.state.hover) {
-			bg = getBackgroundImage(_arrow2.default);
-		} else {
-			bg = getBackgroundImage(_hamburger2.default);
-		}
+		var _this = _possibleConstructorReturn(this, (Nav.__proto__ || Object.getPrototypeOf(Nav)).call(this, props));
 
-		if (this.props.navState.locked) {
-			lockEl = React.createElement(
-				'div',
-				{ className: 'lock-icon' },
-				React.createElement('img', { src: _lockIcon2.default })
-			);
-		} else {
-			lockEl = null;
-		}
-
-		var list = _navUtil2.default.getOrderedList(this.props.navState);
-
-		return React.createElement(
-			'div',
-			{ className: 'viewer--components--nav' + (this.props.navState.locked ? ' is-locked' : ' is-unlocked') + (this.props.navState.open ? ' is-open' : ' is-closed') + (this.props.navState.disabled ? ' is-disabled' : ' is-enabled') },
-			React.createElement(
-				'button',
-				{
-					className: 'toggle-button',
-					onClick: this.hideNav,
-					onMouseOver: this.onMouseOver,
-					onMouseOut: this.onMouseOut,
-					style: {
-						backgroundImage: bg,
-						transform: !this.props.navState.open && this.state.hover ? 'rotate(180deg)' : '',
-						filter: this.props.navState.open ? 'invert(100%)' : 'invert(0%)'
-					}
-				},
-				'Toggle Navigation Menu'
-			),
-			React.createElement(
-				'ul',
-				null,
-				list.map(function (item, index) {
-					switch (item.type) {
-						case 'heading':
-							var isSelected = false;
-							return React.createElement(
-								'li',
-								{ key: index, className: 'heading' + (isSelected ? ' is-selected' : ' is-not-select') },
-								_this.renderLabel(item.label)
-							);
-							break;
-
-						case 'link':
-							var isSelected = _this.props.navState.navTargetId === item.id;
-							//var isPrevVisited = this.props.navState.navTargetHistory.indexOf(item.id) > -1
-							return React.createElement(
-								'li',
-								{ key: index, onClick: _this.onClick.bind(null, item), className: 'link' + (isSelected ? ' is-selected' : ' is-not-select') + (item.flags.visited ? ' is-visited' : ' is-not-visited') + (item.flags.complete ? ' is-complete' : ' is-not-complete') + (item.flags.correct ? ' is-correct' : ' is-not-correct') },
-								_this.renderLabel(item.label),
-								lockEl
-							);
-							break;
-
-						case 'sub-link':
-							var isSelected = _this.props.navState.navTargetIndex === index;
-
-							return React.createElement(
-								'li',
-								{ key: index, onClick: _this.onClick.bind(null, item), className: 'sub-link' + (isSelected ? ' is-selected' : ' is-not-select') + (item.flags.correct ? ' is-correct' : ' is-not-correct') },
-								_this.renderLabel(item.label),
-								lockEl
-							);
-							break;
-
-						case 'seperator':
-							return React.createElement(
-								'li',
-								{ key: index, className: 'seperator' },
-								React.createElement('hr', null)
-							);
-							break;
-
-					}
-				})
-			),
-			React.createElement(_logo2.default, { inverted: true })
-		);
+		_this.state = {
+			hover: false
+		};
+		return _this;
 	}
-});
+
+	_createClass(Nav, [{
+		key: 'onClick',
+		value: function onClick(item) {
+			if (item.type === 'link') {
+				return _navUtil2.default.gotoPath(item.fullPath);
+			} else if (item.type === 'sub-link') {
+				var el = OboModel.models[item.id].getDomEl();
+				return el.scrollIntoView({ behavior: 'smooth' });
+			}
+		}
+	}, {
+		key: 'hideNav',
+		value: function hideNav() {
+			return _navUtil2.default.toggle();
+		}
+	}, {
+		key: 'onMouseOver',
+		value: function onMouseOver() {
+			return this.setState({ hover: true });
+		}
+	}, {
+		key: 'onMouseOut',
+		value: function onMouseOut() {
+			return this.setState({ hover: false });
+		}
+	}, {
+		key: 'renderLabel',
+		value: function renderLabel(label) {
+			if (label instanceof StyleableText) {
+				return React.createElement(StyleableTextComponent, { text: label });
+			} else {
+				return React.createElement(
+					'a',
+					null,
+					label
+				);
+			}
+		}
+	}, {
+		key: 'render',
+		value: function render() {
+			var _this2 = this;
+
+			var bg = void 0,
+			    lockEl = void 0;
+			if (this.props.navState.open || this.state.hover) {
+				bg = getBackgroundImage(_arrow2.default);
+			} else {
+				bg = getBackgroundImage(_hamburger2.default);
+			}
+
+			if (this.props.navState.locked) {
+				lockEl = React.createElement(
+					'div',
+					{ className: 'lock-icon' },
+					React.createElement('img', { src: _lockIcon2.default })
+				);
+			} else {
+				lockEl = null;
+			}
+
+			var list = _navUtil2.default.getOrderedList(this.props.navState);
+
+			return React.createElement(
+				'div',
+				{ className: 'viewer--components--nav' + (this.props.navState.locked ? ' is-locked' : ' is-unlocked') + (this.props.navState.open ? ' is-open' : ' is-closed') + (this.props.navState.disabled ? ' is-disabled' : ' is-enabled') },
+				React.createElement(
+					'button',
+					{
+						className: 'toggle-button',
+						onClick: this.hideNav.bind(this),
+						onMouseOver: this.onMouseOver.bind(this),
+						onMouseOut: this.onMouseOut.bind(this),
+						style: {
+							backgroundImage: bg,
+							transform: !this.props.navState.open && this.state.hover ? 'rotate(180deg)' : '',
+							filter: this.props.navState.open ? 'invert(100%)' : 'invert(0%)'
+						}
+					},
+					'Toggle Navigation Menu'
+				),
+				React.createElement(
+					'ul',
+					null,
+					list.map(function (item, index) {
+						switch (item.type) {
+							case 'heading':
+								var isSelected = false;
+								return React.createElement(
+									'li',
+									{ key: index, className: 'heading' + (isSelected ? ' is-selected' : ' is-not-select') },
+									_this2.renderLabel(item.label)
+								);
+								break;
+
+							case 'link':
+								var isSelected = _this2.props.navState.navTargetId === item.id;
+								//var isPrevVisited = this.props.navState.navTargetHistory.indexOf(item.id) > -1
+								return React.createElement(
+									'li',
+									{ key: index, onClick: _this2.onClick.bind(_this2, item), className: 'link' + (isSelected ? ' is-selected' : ' is-not-select') + (item.flags.visited ? ' is-visited' : ' is-not-visited') + (item.flags.complete ? ' is-complete' : ' is-not-complete') + (item.flags.correct ? ' is-correct' : ' is-not-correct') },
+									_this2.renderLabel(item.label),
+									lockEl
+								);
+								break;
+
+							case 'sub-link':
+								var isSelected = _this2.props.navState.navTargetIndex === index;
+
+								return React.createElement(
+									'li',
+									{ key: index, onClick: _this2.onClick.bind(_this2, item), className: 'sub-link' + (isSelected ? ' is-selected' : ' is-not-select') + (item.flags.correct ? ' is-correct' : ' is-not-correct') },
+									_this2.renderLabel(item.label),
+									lockEl
+								);
+								break;
+
+							case 'seperator':
+								return React.createElement(
+									'li',
+									{ key: index, className: 'seperator' },
+									React.createElement('hr', null)
+								);
+								break;
+
+						}
+					})
+				),
+				React.createElement(_logo2.default, { inverted: true })
+			);
+		}
+	}]);
+
+	return Nav;
+}(React.Component);
 
 exports.default = Nav;
 
 /***/ }),
-/* 16 */
+/* 15 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -2424,21 +2431,19 @@ Object.defineProperty(exports, "__esModule", {
 	value: true
 });
 
-__webpack_require__(22);
+var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
 
 __webpack_require__(21);
+
+__webpack_require__(20);
 
 var _Common = __webpack_require__(0);
 
 var _Common2 = _interopRequireDefault(_Common);
 
-var _react = __webpack_require__(27);
+var _react = __webpack_require__(26);
 
 var _react2 = _interopRequireDefault(_react);
-
-var _jsonInput = __webpack_require__(14);
-
-var _jsonInput2 = _interopRequireDefault(_jsonInput);
 
 var _inlineNavButton = __webpack_require__(13);
 
@@ -2468,13 +2473,19 @@ var _navStore = __webpack_require__(3);
 
 var _navStore2 = _interopRequireDefault(_navStore);
 
-var _nav = __webpack_require__(15);
+var _nav = __webpack_require__(14);
 
 var _nav2 = _interopRequireDefault(_nav);
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
-//@TODO
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
+
+function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; } //@TODO
+
+
 var Legacy = _Common2.default.models.Legacy;
 var DOMUtil = _Common2.default.page.DOMUtil;
 var Screen = _Common2.default.page.Screen;
@@ -2499,13 +2510,15 @@ Dispatcher.on('viewer:alert', function (payload) {
 	));
 });
 
-var ViewerApp = _react2.default.createClass({
-	displayName: 'ViewerApp',
+var ViewerApp = function (_React$Component) {
+	_inherits(ViewerApp, _React$Component);
 
 	// === REACT LIFECYCLE METHODS ===
 
-	getInitialState: function getInitialState() {
-		var _this = this;
+	function ViewerApp(props) {
+		_classCallCheck(this, ViewerApp);
+
+		var _this = _possibleConstructorReturn(this, (ViewerApp.__proto__ || Object.getPrototypeOf(ViewerApp)).call(this, props));
 
 		_Common2.default.Store.loadDependency('https://cdnjs.cloudflare.com/ajax/libs/KaTeX/0.5.1/katex.min.css');
 
@@ -2513,10 +2526,10 @@ var ViewerApp = _react2.default.createClass({
 			return ReactDOM.findDOMNode(_this.refs.container).scrollTop = payload.value;
 		});
 
-		Dispatcher.on('viewer:scrollToTop', this.scrollToTop.bind(this));
-		Dispatcher.on('getTextForVariable', this.getTextForVariable.bind(this));
+		Dispatcher.on('viewer:scrollToTop', _this.scrollToTop.bind(_this));
+		Dispatcher.on('getTextForVariable', _this.getTextForVariable.bind(_this));
 
-		this.isPreviewing = OboGlobals.get('previewing');
+		_this.isPreviewing = OboGlobals.get('previewing');
 
 		var state = {
 			model: OboModel.create(OboGlobals.get('draft')),
@@ -2544,262 +2557,261 @@ var ViewerApp = _react2.default.createClass({
 		state.modalState = ModalStore.getState();
 		state.focusState = FocusStore.getState();
 
-		return state;
-	},
-	componentWillMount: function componentWillMount() {
-		var _this2 = this;
-
-		// === SET UP DATA STORES ===
-		_navStore2.default.onChange(function () {
-			return _this2.setState({ navState: _navStore2.default.getState() });
-		});
-		_scoreStore2.default.onChange(function () {
-			return _this2.setState({ scoreState: _scoreStore2.default.getState() });
-		});
-		_questionStore2.default.onChange(function () {
-			return _this2.setState({ questionState: _questionStore2.default.getState() });
-		});
-		_assessmentStore2.default.onChange(function () {
-			return _this2.setState({ assessmentState: _assessmentStore2.default.getState() });
-		});
-		ModalStore.onChange(function () {
-			return _this2.setState({ modalState: ModalStore.getState() });
-		});
-		return FocusStore.onChange(function () {
-			return _this2.setState({ focusState: FocusStore.getState() });
-		});
-	},
-
-
-	// componentDidMount: ->
-	// NavUtil.gotoPath window.location.pathname
-
-	componentWillUpdate: function componentWillUpdate(nextProps, nextState) {
-		var navTargetId = this.state.navTargetId;
-
-		var nextNavTargetId = this.state.navState.navTargetId;
-
-		if (navTargetId !== nextNavTargetId) {
-			this.needsScroll = true;
-			return this.setState({ navTargetId: nextNavTargetId });
-		}
-	},
-	componentDidUpdate: function componentDidUpdate() {
-		// alert 'here, fixme'
-		if (this.lastCanNavigate !== _navUtil2.default.canNavigate(this.state.navState)) {
-			this.needsScroll = true;
-		}
-		this.lastCanNavigate = _navUtil2.default.canNavigate(this.state.navState);
-		if (this.needsScroll != null) {
-			this.scrollToTop();
-
-			return delete this.needsScroll;
-		}
-	},
-	getTextForVariable: function getTextForVariable(event, variable, textModel) {
-		return event.text = _Common2.default.Store.getTextForVariable(variable, textModel, this.state);
-	},
-	scrollToTop: function scrollToTop() {
-		var el = ReactDOM.findDOMNode(this.refs.prev);
-		if (el) {
-			return ReactDOM.findDOMNode(this.refs.container).scrollTop = ReactDOM.findDOMNode(el).getBoundingClientRect().height;
-		} else {
-			return ReactDOM.findDOMNode(this.refs.container).scrollTop = 0;
-		}
-	},
-
-
-	// === NON REACT LIFECYCLE METHODS ===
-
-	update: function update(json) {
-		try {
-			var o = void 0;
-			return o = JSON.parse(json);
-		} catch (e) {
-			alert('Error parsing JSON');
-			this.setState({ model: this.state.model });
-			return;
-		}
-	},
-	onBack: function onBack() {
-		return _navUtil2.default.goPrev();
-	},
-	onNext: function onNext() {
-		return _navUtil2.default.goNext();
-	},
-	onMouseDown: function onMouseDown(event) {
-		if (this.state.focusState.focussedId == null) {
-			return;
-		}
-		if (!DOMUtil.findParentComponentIds(event.target).has(this.state.focusState.focussedId)) {
-			return FocusUtil.unfocus();
-		}
-	},
-	onScroll: function onScroll(event) {
-		if (this.state.focusState.focussedId == null) {
-			return;
-		}
-
-		var component = FocusUtil.getFocussedComponent(this.state.focusState);
-		if (component == null) {
-			return;
-		}
-
-		var el = component.getDomEl();
-		if (!el) {
-			return;
-		}
-
-		if (!Screen.isElementVisible(el)) {
-			return FocusUtil.unfocus();
-		}
-	},
-	onChangeJSON: function onChangeJSON(json) {
-		var o = void 0;
-		try {
-			o = JSON.parse(json);
-		} catch (e) {
-			alert('Error parsing JSON');
-			return;
-		}
-
-		var newModule = OboModel.create(o);
-
-		_navStore2.default.init(newModule, newModule.modelState.start);
-		_scoreStore2.default.init();
-		_questionStore2.default.init();
-		_assessmentStore2.default.init();
-		ModalStore.init();
-		FocusStore.init();
-
-		return this.setState({
-			model: newModule,
-			navState: _navStore2.default.getState(),
-			scoreState: _scoreStore2.default.getState(),
-			questionState: _questionStore2.default.getState(),
-			assessmentState: _assessmentStore2.default.getState(),
-			modalState: ModalStore.getState(),
-			focusState: FocusStore.getState()
-		});
-	},
-	resetAssessments: function resetAssessments() {
-		_assessmentStore2.default.init();
-		_questionStore2.default.init();
-		_scoreStore2.default.init();
-
-		_assessmentStore2.default.triggerChange();
-		_questionStore2.default.triggerChange();
-		_scoreStore2.default.triggerChange();
-
-		return ModalUtil.show(_react2.default.createElement(
-			SimpleDialog,
-			{ ok: true, width: '15em' },
-			'Assessment attempts and all question responses have been reset.'
-		));
-	},
-	unlockNavigation: function unlockNavigation() {
-		return _navUtil2.default.unlock();
-	},
-	render: function render() {
-		var nextEl = void 0,
-		    nextModel = void 0,
-		    prevEl = void 0;
-		window.__lo = this.state.model;
-		window.__s = this.state;
-
-		var ModuleComponent = this.state.model.getComponentClass();
-
-		//<JSONInput onChange={this.onChangeJSON} value={JSON.stringify(this.state.model.toJSON(), null, 2)} />
-
-		var navTargetModel = _navUtil2.default.getNavTargetModel(this.state.navState);
-		var navTargetTitle = '?';
-		if (navTargetModel != null) {
-			navTargetTitle = navTargetModel.title;
-		}
-
-		var prevModel = nextModel = null;
-		if (_navUtil2.default.canNavigate(this.state.navState)) {
-
-			prevModel = _navUtil2.default.getPrevModel(this.state.navState);
-			if (prevModel) {
-				prevEl = _react2.default.createElement(_inlineNavButton2.default, { ref: 'prev', type: 'prev', title: 'Back: ' + prevModel.title });
-			} else {
-				prevEl = _react2.default.createElement(_inlineNavButton2.default, { ref: 'prev', type: 'prev', title: 'Start of ' + this.state.model.title, disabled: true });
-			}
-
-			nextModel = _navUtil2.default.getNextModel(this.state.navState);
-			if (nextModel) {
-				nextEl = _react2.default.createElement(_inlineNavButton2.default, { ref: 'next', type: 'next', title: 'Next: ' + nextModel.title });
-			} else {
-				nextEl = _react2.default.createElement(_inlineNavButton2.default, { ref: 'next', type: 'next', title: 'End of ' + this.state.model.title, disabled: true });
-			}
-		}
-
-		var modal = ModalUtil.getCurrentModal(this.state.modalState);
-
-		return _react2.default.createElement(
-			'div',
-			{ ref: 'container', onMouseDown: this.onMouseDown, onScroll: this.onScroll, className: 'viewer--viewer-app' + (this.isPreviewing ? ' is-previewing' : ' is-not-previewing') + (this.state.navState.locked ? ' is-locked-nav' : ' is-unlocked-nav') + (this.state.navState.open ? ' is-open-nav' : ' is-closed-nav') + (this.state.navState.disabled ? ' is-disabled-nav' : ' is-enabled-nav') + ' is-focus-state-' + this.state.focusState.viewState },
-			_react2.default.createElement(
-				'header',
-				null,
-				_react2.default.createElement(
-					'div',
-					{ className: 'pad' },
-					_react2.default.createElement(
-						'span',
-						{ className: 'module-title' },
-						this.state.model.title
-					),
-					_react2.default.createElement(
-						'span',
-						{ className: 'location' },
-						navTargetTitle
-					),
-					_react2.default.createElement(_logo2.default, null)
-				)
-			),
-			_react2.default.createElement(_nav2.default, { navState: this.state.navState }),
-			prevEl,
-			_react2.default.createElement(ModuleComponent, { model: this.state.model, moduleData: this.state }),
-			nextEl,
-			this.isPreviewing ? _react2.default.createElement(
-				'div',
-				{ className: 'preview-banner' },
-				_react2.default.createElement(
-					'span',
-					null,
-					'You are previewing this object - Assessments will not be counted'
-				),
-				_react2.default.createElement(
-					'div',
-					{ className: 'controls' },
-					_react2.default.createElement(
-						'button',
-						{ onClick: this.unlockNavigation, disabled: !this.state.navState.locked },
-						'Unlock navigation'
-					),
-					_react2.default.createElement(
-						'button',
-						{ onClick: this.resetAssessments },
-						'Reset assessments & questions'
-					)
-				)
-			) : null,
-			_react2.default.createElement(FocusBlocker, { moduleData: this.state }),
-			modal ? _react2.default.createElement(
-				ModalContainer,
-				null,
-				modal
-			) : null
-		);
+		_this.state = state;
+		return _this;
 	}
-});
+
+	_createClass(ViewerApp, [{
+		key: 'componentWillMount',
+		value: function componentWillMount() {
+			var _this2 = this;
+
+			// === SET UP DATA STORES ===
+			_navStore2.default.onChange(function () {
+				return _this2.setState({ navState: _navStore2.default.getState() });
+			});
+			_scoreStore2.default.onChange(function () {
+				return _this2.setState({ scoreState: _scoreStore2.default.getState() });
+			});
+			_questionStore2.default.onChange(function () {
+				return _this2.setState({ questionState: _questionStore2.default.getState() });
+			});
+			_assessmentStore2.default.onChange(function () {
+				return _this2.setState({ assessmentState: _assessmentStore2.default.getState() });
+			});
+			ModalStore.onChange(function () {
+				return _this2.setState({ modalState: ModalStore.getState() });
+			});
+			return FocusStore.onChange(function () {
+				return _this2.setState({ focusState: FocusStore.getState() });
+			});
+		}
+
+		// componentDidMount: ->
+		// NavUtil.gotoPath window.location.pathname
+
+	}, {
+		key: 'componentWillUpdate',
+		value: function componentWillUpdate(nextProps, nextState) {
+			var navTargetId = this.state.navTargetId;
+
+			var nextNavTargetId = this.state.navState.navTargetId;
+
+			if (navTargetId !== nextNavTargetId) {
+				this.needsScroll = true;
+				return this.setState({ navTargetId: nextNavTargetId });
+			}
+		}
+	}, {
+		key: 'componentDidUpdate',
+		value: function componentDidUpdate() {
+			// alert 'here, fixme'
+			if (this.lastCanNavigate !== _navUtil2.default.canNavigate(this.state.navState)) {
+				this.needsScroll = true;
+			}
+			this.lastCanNavigate = _navUtil2.default.canNavigate(this.state.navState);
+			if (this.needsScroll != null) {
+				this.scrollToTop();
+
+				return delete this.needsScroll;
+			}
+		}
+	}, {
+		key: 'getTextForVariable',
+		value: function getTextForVariable(event, variable, textModel) {
+			return event.text = _Common2.default.Store.getTextForVariable(variable, textModel, this.state);
+		}
+	}, {
+		key: 'scrollToTop',
+		value: function scrollToTop() {
+			var el = ReactDOM.findDOMNode(this.refs.prev);
+			if (el) {
+				return ReactDOM.findDOMNode(this.refs.container).scrollTop = ReactDOM.findDOMNode(el).getBoundingClientRect().height;
+			} else {
+				return ReactDOM.findDOMNode(this.refs.container).scrollTop = 0;
+			}
+		}
+
+		// === NON REACT LIFECYCLE METHODS ===
+
+	}, {
+		key: 'update',
+		value: function update(json) {
+			try {
+				var o = void 0;
+				return o = JSON.parse(json);
+			} catch (e) {
+				alert('Error parsing JSON');
+				this.setState({ model: this.state.model });
+				return;
+			}
+		}
+	}, {
+		key: 'onBack',
+		value: function onBack() {
+			return _navUtil2.default.goPrev();
+		}
+	}, {
+		key: 'onNext',
+		value: function onNext() {
+			return _navUtil2.default.goNext();
+		}
+	}, {
+		key: 'onMouseDown',
+		value: function onMouseDown(event) {
+			if (this.state.focusState.focussedId == null) {
+				return;
+			}
+			if (!DOMUtil.findParentComponentIds(event.target).has(this.state.focusState.focussedId)) {
+				return FocusUtil.unfocus();
+			}
+		}
+	}, {
+		key: 'onScroll',
+		value: function onScroll(event) {
+			if (this.state.focusState.focussedId == null) {
+				return;
+			}
+
+			var component = FocusUtil.getFocussedComponent(this.state.focusState);
+			if (component == null) {
+				return;
+			}
+
+			var el = component.getDomEl();
+			if (!el) {
+				return;
+			}
+
+			if (!Screen.isElementVisible(el)) {
+				return FocusUtil.unfocus();
+			}
+		}
+	}, {
+		key: 'resetAssessments',
+		value: function resetAssessments() {
+			_assessmentStore2.default.init();
+			_questionStore2.default.init();
+			_scoreStore2.default.init();
+
+			_assessmentStore2.default.triggerChange();
+			_questionStore2.default.triggerChange();
+			_scoreStore2.default.triggerChange();
+
+			return ModalUtil.show(_react2.default.createElement(
+				SimpleDialog,
+				{ ok: true, width: '15em' },
+				'Assessment attempts and all question responses have been reset.'
+			));
+		}
+	}, {
+		key: 'unlockNavigation',
+		value: function unlockNavigation() {
+			return _navUtil2.default.unlock();
+		}
+	}, {
+		key: 'render',
+		value: function render() {
+			var nextEl = void 0,
+			    nextModel = void 0,
+			    prevEl = void 0;
+			window.__lo = this.state.model;
+			window.__s = this.state;
+
+			var ModuleComponent = this.state.model.getComponentClass();
+
+			var navTargetModel = _navUtil2.default.getNavTargetModel(this.state.navState);
+			var navTargetTitle = '?';
+			if (navTargetModel != null) {
+				navTargetTitle = navTargetModel.title;
+			}
+
+			var prevModel = nextModel = null;
+			if (_navUtil2.default.canNavigate(this.state.navState)) {
+
+				prevModel = _navUtil2.default.getPrevModel(this.state.navState);
+				if (prevModel) {
+					prevEl = _react2.default.createElement(_inlineNavButton2.default, { ref: 'prev', type: 'prev', title: 'Back: ' + prevModel.title });
+				} else {
+					prevEl = _react2.default.createElement(_inlineNavButton2.default, { ref: 'prev', type: 'prev', title: 'Start of ' + this.state.model.title, disabled: true });
+				}
+
+				nextModel = _navUtil2.default.getNextModel(this.state.navState);
+				if (nextModel) {
+					nextEl = _react2.default.createElement(_inlineNavButton2.default, { ref: 'next', type: 'next', title: 'Next: ' + nextModel.title });
+				} else {
+					nextEl = _react2.default.createElement(_inlineNavButton2.default, { ref: 'next', type: 'next', title: 'End of ' + this.state.model.title, disabled: true });
+				}
+			}
+
+			var modal = ModalUtil.getCurrentModal(this.state.modalState);
+
+			return _react2.default.createElement(
+				'div',
+				{ ref: 'container', onMouseDown: this.onMouseDown.bind(this), onScroll: this.onScroll.bind(this), className: 'viewer--viewer-app' + (this.isPreviewing ? ' is-previewing' : ' is-not-previewing') + (this.state.navState.locked ? ' is-locked-nav' : ' is-unlocked-nav') + (this.state.navState.open ? ' is-open-nav' : ' is-closed-nav') + (this.state.navState.disabled ? ' is-disabled-nav' : ' is-enabled-nav') + ' is-focus-state-' + this.state.focusState.viewState },
+				_react2.default.createElement(
+					'header',
+					null,
+					_react2.default.createElement(
+						'div',
+						{ className: 'pad' },
+						_react2.default.createElement(
+							'span',
+							{ className: 'module-title' },
+							this.state.model.title
+						),
+						_react2.default.createElement(
+							'span',
+							{ className: 'location' },
+							navTargetTitle
+						),
+						_react2.default.createElement(_logo2.default, null)
+					)
+				),
+				_react2.default.createElement(_nav2.default, { navState: this.state.navState }),
+				prevEl,
+				_react2.default.createElement(ModuleComponent, { model: this.state.model, moduleData: this.state }),
+				nextEl,
+				this.isPreviewing ? _react2.default.createElement(
+					'div',
+					{ className: 'preview-banner' },
+					_react2.default.createElement(
+						'span',
+						null,
+						'You are previewing this object - Assessments will not be counted'
+					),
+					_react2.default.createElement(
+						'div',
+						{ className: 'controls' },
+						_react2.default.createElement(
+							'button',
+							{ onClick: this.unlockNavigation.bind(this), disabled: !this.state.navState.locked },
+							'Unlock navigation'
+						),
+						_react2.default.createElement(
+							'button',
+							{ onClick: this.resetAssessments.bind(this) },
+							'Reset assessments & questions'
+						)
+					)
+				) : null,
+				_react2.default.createElement(FocusBlocker, { moduleData: this.state }),
+				modal ? _react2.default.createElement(
+					ModalContainer,
+					null,
+					modal
+				) : null
+			);
+		}
+	}]);
+
+	return ViewerApp;
+}(_react2.default.Component);
 
 exports.default = ViewerApp;
 
 /***/ }),
-/* 17 */
+/* 16 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -2809,7 +2821,7 @@ Object.defineProperty(exports, "__esModule", {
 	value: true
 });
 
-var _viewerApp = __webpack_require__(16);
+var _viewerApp = __webpack_require__(15);
 
 var _viewerApp2 = _interopRequireDefault(_viewerApp);
 
@@ -2873,6 +2885,12 @@ exports.default = {
 };
 
 /***/ }),
+/* 17 */
+/***/ (function(module, exports) {
+
+// removed by extract-text-webpack-plugin
+
+/***/ }),
 /* 18 */
 /***/ (function(module, exports) {
 
@@ -2900,40 +2918,34 @@ exports.default = {
 /* 22 */
 /***/ (function(module, exports) {
 
-// removed by extract-text-webpack-plugin
+module.exports = "data:image/svg+xml,%3C?xml version='1.0' encoding='utf-8'?%3E %3C!-- Generator: Adobe Illustrator 19.0.0, SVG Export Plug-In . SVG Version: 6.00 Build 0) --%3E %3Csvg version='1.1' id='Layer_1' xmlns='http://www.w3.org/2000/svg' xmlns:xlink='http://www.w3.org/1999/xlink' x='0px' y='0px' viewBox='-290 387 30 20' style='enable-background:new -290 387 30 20;' xml:space='preserve'%3E %3Cpath d='M-272.5,405.4l-12.1-7.4c-0.6-0.4-0.6-1.7,0-2.1l12.1-7.4c0.5-0.3,1,0.3,1,1.1v14.7C-271.4,405.2-272,405.7-272.5,405.4z' fill='rgba(0, 0, 0, .2)' transform='translate(2, 0)'/%3E %3C/svg%3E"
 
 /***/ }),
 /* 23 */
 /***/ (function(module, exports) {
 
-module.exports = "data:image/svg+xml,%3C?xml version='1.0' encoding='utf-8'?%3E %3C!-- Generator: Adobe Illustrator 19.0.0, SVG Export Plug-In . SVG Version: 6.00 Build 0) --%3E %3Csvg version='1.1' id='Layer_1' xmlns='http://www.w3.org/2000/svg' xmlns:xlink='http://www.w3.org/1999/xlink' x='0px' y='0px' viewBox='-290 387 30 20' style='enable-background:new -290 387 30 20;' xml:space='preserve'%3E %3Cpath d='M-272.5,405.4l-12.1-7.4c-0.6-0.4-0.6-1.7,0-2.1l12.1-7.4c0.5-0.3,1,0.3,1,1.1v14.7C-271.4,405.2-272,405.7-272.5,405.4z' fill='rgba(0, 0, 0, .2)' transform='translate(2, 0)'/%3E %3C/svg%3E"
+module.exports = "data:image/svg+xml,%3Csvg width='20' height='10' viewBox='0 0 100 100' xmlns='http://www.w3.org/2000/svg' version='1.1'%3E %3Cline x1='0' y1='10' x2='100' y2='10' stroke='rgba(0, 0, 0, .2)' stroke-width='20' stroke-linecap='round' /%3E %3Cline x1='0' y1='50' x2='100' y2='50' stroke='rgba(0, 0, 0, .2)' stroke-width='20' stroke-linecap='round' /%3E %3Cline x1='0' y1='90' x2='100' y2='90' stroke='rgba(0, 0, 0, .2)' stroke-width='20' stroke-linecap='round' /%3E %3C/svg%3E"
 
 /***/ }),
 /* 24 */
 /***/ (function(module, exports) {
 
-module.exports = "data:image/svg+xml,%3Csvg width='20' height='10' viewBox='0 0 100 100' xmlns='http://www.w3.org/2000/svg' version='1.1'%3E %3Cline x1='0' y1='10' x2='100' y2='10' stroke='rgba(0, 0, 0, .2)' stroke-width='20' stroke-linecap='round' /%3E %3Cline x1='0' y1='50' x2='100' y2='50' stroke='rgba(0, 0, 0, .2)' stroke-width='20' stroke-linecap='round' /%3E %3Cline x1='0' y1='90' x2='100' y2='90' stroke='rgba(0, 0, 0, .2)' stroke-width='20' stroke-linecap='round' /%3E %3C/svg%3E"
+module.exports = "data:image/svg+xml,%3C?xml version='1.0' encoding='utf-8'?%3E %3Csvg version='1.1' xmlns='http://www.w3.org/2000/svg' xmlns:xlink='http://www.w3.org/1999/xlink' viewBox='0 0 10 16' style='enable-background:new 0 0 10 16;' xml:space='preserve'%3E %3Cpath fill='white' id='XMLID_6_' d='M9.1,6H8.5V3.5C8.5,1.5,6.9,0,5,0C3.1,0,1.6,1.5,1.6,3.5l0,2.5H0.9C0.4,6,0,6.4,0,6.9v8.2 C0,15.6,0.4,16,0.9,16h8.2c0.5,0,0.9-0.4,0.9-0.9V6.9C10,6.4,9.6,6,9.1,6z M3.3,3.4c0-0.9,0.8-1.6,1.7-1.6c0.9,0,1.7,0.8,1.7,1.7V6 H3.3V3.4z'/%3E %3C/svg%3E"
 
 /***/ }),
 /* 25 */
 /***/ (function(module, exports) {
 
-module.exports = "data:image/svg+xml,%3C?xml version='1.0' encoding='utf-8'?%3E %3Csvg version='1.1' xmlns='http://www.w3.org/2000/svg' xmlns:xlink='http://www.w3.org/1999/xlink' viewBox='0 0 10 16' style='enable-background:new 0 0 10 16;' xml:space='preserve'%3E %3Cpath fill='white' id='XMLID_6_' d='M9.1,6H8.5V3.5C8.5,1.5,6.9,0,5,0C3.1,0,1.6,1.5,1.6,3.5l0,2.5H0.9C0.4,6,0,6.4,0,6.9v8.2 C0,15.6,0.4,16,0.9,16h8.2c0.5,0,0.9-0.4,0.9-0.9V6.9C10,6.4,9.6,6,9.1,6z M3.3,3.4c0-0.9,0.8-1.6,1.7-1.6c0.9,0,1.7,0.8,1.7,1.7V6 H3.3V3.4z'/%3E %3C/svg%3E"
+module.exports = "data:image/svg+xml,%3C?xml version='1.0' encoding='utf-8'?%3E %3C!-- Generator: Adobe Illustrator 15.0.2, SVG Export Plug-In . SVG Version: 6.00 Build 0) --%3E %3C!DOCTYPE svg PUBLIC '-//W3C//DTD SVG 1.1//EN' 'http://www.w3.org/Graphics/SVG/1.1/DTD/svg11.dtd'%3E %3Csvg version='1.1' id='Layer_1' xmlns='http://www.w3.org/2000/svg' xmlns:xlink='http://www.w3.org/1999/xlink' x='0px' y='0px' width='253px' height='64.577px' viewBox='0 0 253 64.577' enable-background='new 0 0 253 64.577' xml:space='preserve' fill='black'%3E %3Cpath d='M18.399,53.629c-0.01,0-0.021,0-0.031,0C7.023,53.396,0,43.151,0,33.793c0-10.79,8.426-19.905,18.399-19.905 c11.006,0,18.399,10.292,18.399,19.905c0,10.719-8.239,19.617-18.367,19.835C18.421,53.629,18.41,53.629,18.399,53.629z M18.399,18.257c-8.393,0-14.031,8.033-14.031,15.536c0.295,7.574,5.625,15.468,14.031,15.468c8.393,0,14.031-7.998,14.031-15.468 C32.43,25.372,26.005,18.257,18.399,18.257z'/%3E %3Cpath d='M58.15,53.629c-6.02,0-13.502-3.57-16.154-10.394c-0.287-0.733-0.603-1.542-0.603-3.281l0-38.454 c0-0.398,0.158-0.779,0.439-1.061S42.495,0,42.893,0h1.369c0.829,0,1.5,0.671,1.5,1.5v18.495c3.827-4.056,8.188-6.106,13.004-6.106 c11.111,0,17.989,10.332,17.989,19.905C76.444,44.75,68.099,53.629,58.15,53.629z M45.761,27.446v12.437 c0,4.652,7.208,9.378,12.389,9.378c8.516,0,14.236-7.998,14.236-15.468c0-7.472-5.208-15.536-13.621-15.536 C51.235,18.257,47.065,24.927,45.761,27.446z'/%3E %3Cpath d='M99.064,53.629c-0.01,0-0.021,0-0.031,0c-11.346-0.233-18.369-10.478-18.369-19.835 c0-10.79,8.426-19.905,18.399-19.905c11.005,0,18.398,10.292,18.398,19.905c0,10.719-8.239,19.617-18.366,19.835 C99.086,53.629,99.075,53.629,99.064,53.629z M99.064,18.257c-8.393,0-14.031,8.033-14.031,15.536 c0.294,7.574,5.624,15.468,14.031,15.468c8.393,0,14.031-7.998,14.031-15.468C113.096,25.372,106.67,18.257,99.064,18.257z'/%3E %3Cpath d='M153.252,53.629c-0.01,0-0.021,0-0.031,0c-11.346-0.233-18.369-10.478-18.369-19.835 c0-10.79,8.426-19.905,18.399-19.905c11.006,0,18.399,10.292,18.399,19.905c0,10.719-8.239,19.617-18.367,19.835 C153.273,53.629,153.263,53.629,153.252,53.629z M153.252,18.257c-8.393,0-14.031,8.033-14.031,15.536 c0.294,7.574,5.624,15.468,14.031,15.468c8.393,0,14.031-7.998,14.031-15.468C167.283,25.372,160.858,18.257,153.252,18.257z'/%3E %3Cpath d='M234.601,53.629c-0.01,0-0.021,0-0.031,0c-11.345-0.233-18.367-10.478-18.367-19.835 c0-10.79,8.426-19.905,18.398-19.905c11.006,0,18.399,10.292,18.399,19.905c0,10.719-8.239,19.617-18.367,19.835 C234.622,53.629,234.611,53.629,234.601,53.629z M234.601,18.257c-8.393,0-14.03,8.033-14.03,15.536 c0.294,7.574,5.624,15.468,14.03,15.468c8.394,0,14.031-7.998,14.031-15.468C248.632,25.372,242.206,18.257,234.601,18.257z'/%3E %3Cpath d='M193.62,53.629c-6.021,0-13.503-3.57-16.155-10.394l-0.098-0.239c-0.254-0.607-0.603-1.438-0.603-3.042 c0.002-15.911,0.098-38.237,0.099-38.461c0.003-0.826,0.674-1.494,1.5-1.494h1.368c0.829,0,1.5,0.671,1.5,1.5v18.495 c3.827-4.055,8.188-6.106,13.005-6.106c11.111,0,17.988,10.332,17.988,19.904C211.915,44.75,203.569,53.629,193.62,53.629z M181.231,27.446v12.437c0,4.652,7.208,9.378,12.389,9.378c8.515,0,14.235-7.998,14.235-15.468c0-7.472-5.207-15.536-13.619-15.536 C186.705,18.257,182.535,24.927,181.231,27.446z'/%3E %3Cpath d='M118.017,64.577c-0.013,0-0.026,0-0.039,0c-2.437-0.063-5.533-0.434-7.865-2.765 c-0.308-0.308-0.467-0.734-0.436-1.167c0.031-0.434,0.249-0.833,0.597-1.094l1.096-0.821c0.566-0.425,1.353-0.396,1.887,0.072 c1.083,0.947,2.617,1.408,4.691,1.408c2.913,0,6.3-2.752,6.3-6.3V16.073c0-0.829,0.671-1.5,1.5-1.5h1.368c0.829,0,1.5,0.671,1.5,1.5 v37.835C128.616,60.195,123.03,64.577,118.017,64.577z M127.116,8.268h-1.368c-0.829,0-1.5-0.671-1.5-1.5V2.389 c0-0.829,0.671-1.5,1.5-1.5h1.368c0.829,0,1.5,0.671,1.5,1.5v4.379C128.616,7.597,127.945,8.268,127.116,8.268z'/%3E %3C/svg%3E"
 
 /***/ }),
 /* 26 */
 /***/ (function(module, exports) {
 
-module.exports = "data:image/svg+xml,%3C?xml version='1.0' encoding='utf-8'?%3E %3C!-- Generator: Adobe Illustrator 15.0.2, SVG Export Plug-In . SVG Version: 6.00 Build 0) --%3E %3C!DOCTYPE svg PUBLIC '-//W3C//DTD SVG 1.1//EN' 'http://www.w3.org/Graphics/SVG/1.1/DTD/svg11.dtd'%3E %3Csvg version='1.1' id='Layer_1' xmlns='http://www.w3.org/2000/svg' xmlns:xlink='http://www.w3.org/1999/xlink' x='0px' y='0px' width='253px' height='64.577px' viewBox='0 0 253 64.577' enable-background='new 0 0 253 64.577' xml:space='preserve' fill='black'%3E %3Cpath d='M18.399,53.629c-0.01,0-0.021,0-0.031,0C7.023,53.396,0,43.151,0,33.793c0-10.79,8.426-19.905,18.399-19.905 c11.006,0,18.399,10.292,18.399,19.905c0,10.719-8.239,19.617-18.367,19.835C18.421,53.629,18.41,53.629,18.399,53.629z M18.399,18.257c-8.393,0-14.031,8.033-14.031,15.536c0.295,7.574,5.625,15.468,14.031,15.468c8.393,0,14.031-7.998,14.031-15.468 C32.43,25.372,26.005,18.257,18.399,18.257z'/%3E %3Cpath d='M58.15,53.629c-6.02,0-13.502-3.57-16.154-10.394c-0.287-0.733-0.603-1.542-0.603-3.281l0-38.454 c0-0.398,0.158-0.779,0.439-1.061S42.495,0,42.893,0h1.369c0.829,0,1.5,0.671,1.5,1.5v18.495c3.827-4.056,8.188-6.106,13.004-6.106 c11.111,0,17.989,10.332,17.989,19.905C76.444,44.75,68.099,53.629,58.15,53.629z M45.761,27.446v12.437 c0,4.652,7.208,9.378,12.389,9.378c8.516,0,14.236-7.998,14.236-15.468c0-7.472-5.208-15.536-13.621-15.536 C51.235,18.257,47.065,24.927,45.761,27.446z'/%3E %3Cpath d='M99.064,53.629c-0.01,0-0.021,0-0.031,0c-11.346-0.233-18.369-10.478-18.369-19.835 c0-10.79,8.426-19.905,18.399-19.905c11.005,0,18.398,10.292,18.398,19.905c0,10.719-8.239,19.617-18.366,19.835 C99.086,53.629,99.075,53.629,99.064,53.629z M99.064,18.257c-8.393,0-14.031,8.033-14.031,15.536 c0.294,7.574,5.624,15.468,14.031,15.468c8.393,0,14.031-7.998,14.031-15.468C113.096,25.372,106.67,18.257,99.064,18.257z'/%3E %3Cpath d='M153.252,53.629c-0.01,0-0.021,0-0.031,0c-11.346-0.233-18.369-10.478-18.369-19.835 c0-10.79,8.426-19.905,18.399-19.905c11.006,0,18.399,10.292,18.399,19.905c0,10.719-8.239,19.617-18.367,19.835 C153.273,53.629,153.263,53.629,153.252,53.629z M153.252,18.257c-8.393,0-14.031,8.033-14.031,15.536 c0.294,7.574,5.624,15.468,14.031,15.468c8.393,0,14.031-7.998,14.031-15.468C167.283,25.372,160.858,18.257,153.252,18.257z'/%3E %3Cpath d='M234.601,53.629c-0.01,0-0.021,0-0.031,0c-11.345-0.233-18.367-10.478-18.367-19.835 c0-10.79,8.426-19.905,18.398-19.905c11.006,0,18.399,10.292,18.399,19.905c0,10.719-8.239,19.617-18.367,19.835 C234.622,53.629,234.611,53.629,234.601,53.629z M234.601,18.257c-8.393,0-14.03,8.033-14.03,15.536 c0.294,7.574,5.624,15.468,14.03,15.468c8.394,0,14.031-7.998,14.031-15.468C248.632,25.372,242.206,18.257,234.601,18.257z'/%3E %3Cpath d='M193.62,53.629c-6.021,0-13.503-3.57-16.155-10.394l-0.098-0.239c-0.254-0.607-0.603-1.438-0.603-3.042 c0.002-15.911,0.098-38.237,0.099-38.461c0.003-0.826,0.674-1.494,1.5-1.494h1.368c0.829,0,1.5,0.671,1.5,1.5v18.495 c3.827-4.055,8.188-6.106,13.005-6.106c11.111,0,17.988,10.332,17.988,19.904C211.915,44.75,203.569,53.629,193.62,53.629z M181.231,27.446v12.437c0,4.652,7.208,9.378,12.389,9.378c8.515,0,14.235-7.998,14.235-15.468c0-7.472-5.207-15.536-13.619-15.536 C186.705,18.257,182.535,24.927,181.231,27.446z'/%3E %3Cpath d='M118.017,64.577c-0.013,0-0.026,0-0.039,0c-2.437-0.063-5.533-0.434-7.865-2.765 c-0.308-0.308-0.467-0.734-0.436-1.167c0.031-0.434,0.249-0.833,0.597-1.094l1.096-0.821c0.566-0.425,1.353-0.396,1.887,0.072 c1.083,0.947,2.617,1.408,4.691,1.408c2.913,0,6.3-2.752,6.3-6.3V16.073c0-0.829,0.671-1.5,1.5-1.5h1.368c0.829,0,1.5,0.671,1.5,1.5 v37.835C128.616,60.195,123.03,64.577,118.017,64.577z M127.116,8.268h-1.368c-0.829,0-1.5-0.671-1.5-1.5V2.389 c0-0.829,0.671-1.5,1.5-1.5h1.368c0.829,0,1.5,0.671,1.5,1.5v4.379C128.616,7.597,127.945,8.268,127.116,8.268z'/%3E %3C/svg%3E"
-
-/***/ }),
-/* 27 */
-/***/ (function(module, exports) {
-
 module.exports = React;
 
 /***/ }),
-/* 28 */
+/* 27 */
 /***/ (function(module, exports, __webpack_require__) {
 
 __webpack_require__(11);

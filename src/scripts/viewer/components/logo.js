@@ -6,7 +6,7 @@ import logo from 'svg-url-loader?noquotes!./obojobo-logo.svg';
 import Common from 'Common'
 let { getBackgroundImage } = Common.util;
 
-let Logo = React.createClass({
+export default class Logo extends React.Component {
 
 	render() {
 		let bg = getBackgroundImage(logo);
@@ -19,6 +19,4 @@ let Logo = React.createClass({
 			Obojobo
 		</div>;
 	}
-});
-
-export default Logo;
+}

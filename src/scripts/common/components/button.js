@@ -1,17 +1,17 @@
 import './button.scss';
 
-export default React.createClass({
-	getDefaultProps() {
+export default class Button extends React.Component {
+	static get defaultProps() {
 		return {
 			value: null,
 			disabled: false,
 			align: 'center'
 		};
-	},
+	}
 
 	focus() {
 		return ReactDOM.findDOMNode(this.refs.button).focus();
-	},
+	}
 
 	render() {
 		let children;
@@ -35,4 +35,4 @@ export default React.createClass({
 			>{children}</button>
 		</div>;
 	}
-});
+}

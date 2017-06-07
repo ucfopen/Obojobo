@@ -20,6 +20,8 @@ class QuestionStore extends Store {
 				this.state.responses[id] = payload.value.response;
 				this.triggerChange();
 
+				console.log('QRR set responses', id, 'to', payload.value.response)
+
 				let questionModel = model.getParentOfType('ObojoboDraft.Chunks.Question');
 				return APIUtil.postEvent(questionModel.getRoot(), 'question:recordResponse', {
 					questionId: questionModel.get('id'),

@@ -4,10 +4,10 @@ import Button from '../../../common/components/button';
 import DeleteButton from '../../../common/components/delete-button';
 import Modal from './modal';
 
-export default React.createClass({
-	getDefaultProps() {
+export default class Dialog extends React.Component {
+	static get defaultProps() {
 		return {centered: true};
-	},
+	}
 
 	componentDidMount() {
 		return (() => {
@@ -22,11 +22,11 @@ export default React.createClass({
 			}
 			return result;
 		})();
-	},
+	}
 
 	focusOnFirstElement() {
 		return this.refs.button0.focus();
-	},
+	}
 
 	render() {
 		let styles = null;
@@ -36,7 +36,7 @@ export default React.createClass({
 		}
 
 		return <div className="obojobo-draft--components--modal--dialog" style={styles}>
-			<Modal onClose={this.props.onClose} focusOnFirstElement={this.focusOnFirstElement}>
+			<Modal onClose={this.props.onClose} focusOnFirstElement={this.focusOnFirstElement.bind(this)}>
 				{
 					this.props.title
 					?
@@ -62,4 +62,4 @@ export default React.createClass({
 			</Modal>
 		</div>;
 	}
-});
+}

@@ -1,7 +1,7 @@
 import StyleableTextRenderer from './styleable-text-renderer';
 import { EMPTY_CHAR as emptyChar } from '../../common/text/text-constants';
 
-let StyleableTextComponent = React.createClass({
+export default class StyleableTextComponent extends React.Component {
 	createChild(el, key) {
 		let { createChild } = this;
 		let { groupIndex } = this.props;
@@ -24,7 +24,7 @@ let StyleableTextComponent = React.createClass({
 				break;
 		}
 
-		return React.createElement(el.type, attrs, el.children.map( function(child, index) {
+		return React.createElement(el.type, attrs, el.children.map( (child, index) => {
 			switch (child.nodeType) {
 				case 'text':
 					if (child.html != null) {
@@ -41,11 +41,12 @@ let StyleableTextComponent = React.createClass({
 					}
 					// child.text || emptyChar
 				default:
-					return createChild(child, key);
+					console.log('=', this, child, key)
+					return this.createChild(child, key);
 			}
 		})
 		);
-	},
+	}
 
 	render() {
 		let key = { counter:0 };
@@ -55,6 +56,4 @@ let StyleableTextComponent = React.createClass({
 			{this.createChild(mockElement, key)}
 		</span>;
 	}
-});
-
-export default StyleableTextComponent;
+}

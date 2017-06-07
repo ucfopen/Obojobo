@@ -455,7 +455,9 @@ exports.default = React.createClass({
 	// # 	ModalUtil.show `<AttemptIncompleteDialog onSubmit={this.endAttempt} />`
 
 	isAttemptComplete: function isAttemptComplete() {
-		return AssessmentUtil.isCurrentAttemptComplete(this.props.moduleData.assessmentState, this.props.moduleData.questionState, this.props.model);
+		return true;
+		//@TODO: isCurrentAttemptComplete not functional, returning true which was the status quo for the pilot
+		// return AssessmentUtil.isCurrentAttemptComplete(this.props.moduleData.assessmentState, this.props.moduleData.questionState, this.props.model);
 	},
 	onClickSubmit: function onClickSubmit() {
 		if (!this.isAttemptComplete()) {

@@ -3,10 +3,10 @@ import './edit-button.scss';
 import getBackgroundImage from '../../common/util/get-background-image';
 import editButton from 'svg-url-loader?noquotes!./edit-button/assets/edit.svg';
 
-export default React.createClass({
-	getDefaultProps() {
+export default class EditButton extends React.Component {
+	static get defaultProps() {
 		return {indent: 0};
-	},
+	}
 
 	render() {
 		let editButtonStyles =
@@ -21,4 +21,4 @@ export default React.createClass({
 			>Edit</button>
 		</div>;
 	}
-});
+}
