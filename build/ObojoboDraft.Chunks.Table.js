@@ -630,6 +630,8 @@ Object.defineProperty(exports, "__esModule", {
 	value: true
 });
 
+var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+
 __webpack_require__(149);
 
 var _gridTextGroup = __webpack_require__(18);
@@ -646,100 +648,118 @@ var _Common2 = _interopRequireDefault(_Common);
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
+
+function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
+
 var TextGroupEl = _Common2.default.chunk.textChunk.TextGroupEl;
 var OboComponent = _Common2.default.components.OboComponent;
 
+var Table = function (_React$Component) {
+	_inherits(Table, _React$Component);
 
-var Table = React.createClass({
-	displayName: 'Table',
-	render: function render() {
-		var _this = this;
+	function Table() {
+		_classCallCheck(this, Table);
 
-		var header = void 0,
-		    row = void 0;
-		var model = this.props.model;
+		return _possibleConstructorReturn(this, (Table.__proto__ || Object.getPrototypeOf(Table)).apply(this, arguments));
+	}
 
-		var data = model.modelState;
-		var numCols = data.textGroup.numCols;
+	_createClass(Table, [{
+		key: 'render',
+		value: function render() {
+			var _this2 = this;
+
+			var header = void 0,
+			    row = void 0;
+			var model = this.props.model;
+
+			var data = model.modelState;
+			var numCols = data.textGroup.numCols;
 
 
-		if (data.header) {
-			row = data.textGroup.items.slice(0, numCols).map(function (textGroupItem, index) {
-				return React.createElement(
-					'th',
-					{
-						key: index,
-						className: 'cell row-0 col-' + index,
-						'data-table-position': model.get('id') + ',0,' + index
-					},
-					React.createElement(TextGroupEl, { parentModel: _this.props.model, textItem: textGroupItem, groupIndex: index })
+			if (data.header) {
+				row = data.textGroup.items.slice(0, numCols).map(function (textGroupItem, index) {
+					return React.createElement(
+						'th',
+						{
+							key: index,
+							className: 'cell row-0 col-' + index,
+							'data-table-position': model.get('id') + ',0,' + index
+						},
+						React.createElement(TextGroupEl, { parentModel: _this2.props.model, textItem: textGroupItem, groupIndex: index })
+					);
+				});
+
+				header = React.createElement(
+					'tr',
+					{ key: 'header' },
+					row
 				);
-			});
+			} else {
+				header = null;
+			}
 
-			header = React.createElement(
-				'tr',
-				{ key: 'header' },
-				row
-			);
-		} else {
-			header = null;
-		}
+			var startIndex = data.header ? 1 : 0;
+			var rows = __range__(startIndex, data.textGroup.numRows, false).map(function (rowNum) {
+				row = data.textGroup.items.slice(rowNum * numCols, (rowNum + 1) * numCols).map(function (textGroupItem, index) {
+					return React.createElement(
+						'td',
+						{
+							key: index,
+							className: 'cell row-' + rowNum + ' col-' + index,
+							'data-table-position': model.get('id') + ',' + rowNum + ',' + index
+						},
+						React.createElement(TextGroupEl, { parentModel: _this2.props.model, textItem: textGroupItem, groupIndex: rowNum * numCols + index })
+					);
+				});
 
-		var startIndex = data.header ? 1 : 0;
-		var rows = __range__(startIndex, data.textGroup.numRows, false).map(function (rowNum) {
-			row = data.textGroup.items.slice(rowNum * numCols, (rowNum + 1) * numCols).map(function (textGroupItem, index) {
 				return React.createElement(
-					'td',
-					{
-						key: index,
-						className: 'cell row-' + rowNum + ' col-' + index,
-						'data-table-position': model.get('id') + ',' + rowNum + ',' + index
-					},
-					React.createElement(TextGroupEl, { parentModel: _this.props.model, textItem: textGroupItem, groupIndex: rowNum * numCols + index })
+					'tr',
+					{ key: rowNum },
+					row
 				);
 			});
 
 			return React.createElement(
-				'tr',
-				{ key: rowNum },
-				row
-			);
-		});
-
-		return React.createElement(
-			OboComponent,
-			{ model: this.props.model, moduleData: this.props.moduleData },
-			React.createElement(
-				'div',
-				{ className: 'obojobo-draft--chunks--table viewer pad' },
+				OboComponent,
+				{ model: this.props.model, moduleData: this.props.moduleData },
 				React.createElement(
 					'div',
-					{ className: 'container' },
+					{ className: 'obojobo-draft--chunks--table viewer pad' },
 					React.createElement(
-						'table',
-						{
-							className: 'view',
-							ref: 'table',
-							key: 'table'
-						},
+						'div',
+						{ className: 'container' },
 						React.createElement(
-							'thead',
-							{ key: 'thead' },
-							header
-						),
-						React.createElement(
-							'tbody',
-							{ key: 'tbody' },
-							rows
+							'table',
+							{
+								className: 'view',
+								ref: 'table',
+								key: 'table'
+							},
+							React.createElement(
+								'thead',
+								{ key: 'thead' },
+								header
+							),
+							React.createElement(
+								'tbody',
+								{ key: 'tbody' },
+								rows
+							)
 						)
 					)
 				)
-			)
-		);
-	}
-});
+			);
+		}
+	}]);
+
+	return Table;
+}(React.Component);
 
 exports.default = Table;
+
 
 function __range__(left, right, inclusive) {
 	var range = [];

@@ -3,7 +3,7 @@ import './viewer-component.scss';
 import Common from 'Common'
 let { OboComponent } = Common.components;
 
-let YouTube = React.createClass({
+export default class YouTube extends React.Component {
 	render() {
 		let data = this.props.model.modelState;
 
@@ -13,7 +13,4 @@ let YouTube = React.createClass({
 			</div>
 		</OboComponent>;
 	}
-});
-
-
-export default YouTube;
+}

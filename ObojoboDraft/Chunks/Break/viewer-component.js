@@ -5,7 +5,7 @@ import Common from 'Common'
 let { OboComponent } = Common.components;
 let { NonEditableChunk } = Common.chunk;
 
-let Break = React.createClass({
+export default class Break extends React.Component {
 
 	render() {
 		return <OboComponent model={this.props.model} moduleData={this.props.moduleData}>
@@ -14,7 +14,4 @@ let Break = React.createClass({
 			</NonEditableChunk>
 		</OboComponent>;
 	}
-});
-
-
-export default Break;
+}

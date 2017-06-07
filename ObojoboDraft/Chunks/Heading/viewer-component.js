@@ -5,7 +5,7 @@ let { OboComponent } = Common.components;
 let { TextGroupEl } = Common.chunk.textChunk;
 let { TextChunk } = Common.chunk;
 
-let Heading = React.createClass({
+export default class Heading extends React.Component {
 	render() {
 		let data = this.props.model.modelState;
 
@@ -19,7 +19,4 @@ let Heading = React.createClass({
 			</TextChunk>
 		</OboComponent>;
 	}
-});
-
-
-export default Heading;
+}

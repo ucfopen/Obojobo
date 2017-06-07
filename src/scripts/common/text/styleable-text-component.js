@@ -41,7 +41,6 @@ export default class StyleableTextComponent extends React.Component {
 					}
 					// child.text || emptyChar
 				default:
-					console.log('=', this, child, key)
 					return this.createChild(child, key);
 			}
 		})

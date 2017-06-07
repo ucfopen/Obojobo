@@ -7,7 +7,7 @@ let { OboComponent } = Common.components;
 let { TextGroupEl } = Common.chunk.textChunk;
 let { NonEditableChunk } = Common.chunk;
 
-let Figure = React.createClass({
+export default class Figure extends React.Component {
 
 	render() {
 		let data = this.props.model.modelState;
@@ -31,7 +31,4 @@ let Figure = React.createClass({
 			</NonEditableChunk>
 		</OboComponent>;
 	}
-});
-
-
-export default Figure;
+}

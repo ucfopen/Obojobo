@@ -3,7 +3,7 @@ import './viewer-component.scss';
 import Common from 'Common'
 let { OboComponent } = Common.components;
 
-let QuestionBank = React.createClass({
+export default class QuestionBank extends React.Component {
 	render() {
 		return <OboComponent
 			model={this.props.model}
@@ -19,7 +19,4 @@ let QuestionBank = React.createClass({
 			}
 		</OboComponent>;
 	}
-});
-
-
-export default QuestionBank;
+}

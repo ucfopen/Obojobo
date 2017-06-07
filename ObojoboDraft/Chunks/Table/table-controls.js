@@ -6,21 +6,21 @@ import insertButton from 'svg-url-loader?noquotes!./assets/table-insert.svg';
 
 import Common from 'Common'
 
-let TableControls = React.createClass({
+export default class TableControls extends React.Component {
 
 	addRow(event) {
 		event.preventDefault();
 		event.stopPropagation();
 
 		return this.props.addRow();
-	},
+	}
 
 	addCol(event) {
 		event.preventDefault();
 		event.stopPropagation();
 
 		return this.props.addCol();
-	},
+	}
 
 	getCellPosition(type, position) {
 		let el = this.props.chunk.getDomEl();
@@ -43,15 +43,15 @@ let TableControls = React.createClass({
 			width:  cellBbox.width,
 			height: cellBbox.height
 		};
-	},
+	}
 
 	componentDidMount() {
 		return this.positionMenus();
-	},
+	}
 
 	componentDidUpdate() {
 		return this.positionMenus();
-	},
+	}
 
 	positionMenus() {
 		let { refs } = this;
@@ -72,7 +72,7 @@ let TableControls = React.createClass({
 			el.style.left = `${pos.left}px`;
 			return el.style.top  = `${pos.top}px`;
 		});
-	},
+	}
 
 	render() {
 		let { onTableMenuCommand } = this.props;
@@ -103,7 +103,7 @@ let TableControls = React.createClass({
 			<button
 				className="add-row"
 				key='0'
-				onMouseDown={this.addRow}
+				onMouseDown={this.addRow.bind(this)}
 				style={{
 					backgroundImage: bgInsert
 				}}>
@@ -112,7 +112,7 @@ let TableControls = React.createClass({
 			<button
 				className="add-col"
 				key='1'
-				onMouseDown={this.addCol}
+				onMouseDown={this.addCol.bind(this)}
 				style={{
 					backgroundImage: bgInsert
 				}}>
@@ -120,10 +120,8 @@ let TableControls = React.createClass({
 			</button>
 		</div>;
 	}
-});
+}
 
-
-export default TableControls;
 function __range__(left, right, inclusive) {
   let range = [];
   let ascending = left < right;

@@ -1,6 +1,6 @@
 import './viewer-component.scss';
 
-let QuestionContent = React.createClass({
+export default class QuestionContent extends React.Component {
 	render() {
 		return <div
 			className="obojobo-draft--chunks--mc-question--content"
@@ -13,6 +13,4 @@ let QuestionContent = React.createClass({
 			}
 		</div>;
 	}
-});
-
-export default QuestionContent;
+}

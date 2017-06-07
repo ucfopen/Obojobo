@@ -5,15 +5,15 @@ let { Assets } = Common;
 
 let icon = Common.util.getBackgroundImage(require('svg-url-loader?noquotes!./assets/table-menu-icon.svg'));
 
-let TableMenu = React.createClass({
-	getDefaultProps() {
+export default class TableMenu extends React.Component {
+	static get defaultProps() {
 		return {
 			row: null,
 			col: null,
 			type: null,
 			onMenuCommand() {}
 		};
-	},
+	}
 
 	onClick(cmd, event) {
 		event.preventDefault();
@@ -26,7 +26,7 @@ let TableMenu = React.createClass({
 		});
 
 		return false;
-	},
+	}
 
 	render() {
 		switch (this.props.type) {
@@ -34,7 +34,7 @@ let TableMenu = React.createClass({
 			case 'col': return this.renderCol();
 			default: return null;
 		}
-	},
+	}
 
 	renderRow() {
 		let styles =
@@ -42,12 +42,12 @@ let TableMenu = React.createClass({
 
 		return <div className="obojobo-draft--chunks--table--table-menu row" style={styles}>
 			<ul>
-				<li className="insert-above" onClick={this.onClick.bind(null, 'insertRowAbove')}>Insert 1 row above</li>
-				<li className="insert-below" onClick={this.onClick.bind(null, 'insertRowBelow')}>Insert 1 row below</li>
-				<li className="delete" onClick={this.onClick.bind(null, 'deleteRow')}>Delete this row</li>
+				<li className="insert-above" onClick={this.onClick.bind(this, 'insertRowAbove')}>Insert 1 row above</li>
+				<li className="insert-below" onClick={this.onClick.bind(this, 'insertRowBelow')}>Insert 1 row below</li>
+				<li className="delete" onClick={this.onClick.bind(this, 'deleteRow')}>Delete this row</li>
 			</ul>
 		</div>;
-	},
+	}
 
 	renderCol() {
 		let styles =
@@ -55,13 +55,10 @@ let TableMenu = React.createClass({
 
 		return <div className="obojobo-draft--chunks--table--table-menu col" style={styles}>
 			<ul>
-				<li className="insert-left" onClick={this.onClick.bind(null, 'insertColLeft')}>Insert 1 column left</li>
-				<li className="insert-right" onClick={this.onClick.bind(null, 'insertColRight')}>Insert 1 column right</li>
-				<li className="delete" onClick={this.onClick.bind(null, 'deleteCol')}>Delete this column</li>
+				<li className="insert-left" onClick={this.onClick.bind(this, 'insertColLeft')}>Insert 1 column left</li>
+				<li className="insert-right" onClick={this.onClick.bind(this, 'insertColRight')}>Insert 1 column right</li>
+				<li className="delete" onClick={this.onClick.bind(this, 'deleteCol')}>Delete this column</li>
 			</ul>
 		</div>;
 	}
-});
-
-
-export default TableMenu;
+}

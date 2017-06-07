@@ -6028,7 +6028,6 @@ var StyleableTextComponent = function (_React$Component) {
 						}
 					// child.text || emptyChar
 					default:
-						console.log('=', _this2, child, key);
 						return _this2.createChild(child, key);
 				}
 			}));

@@ -1,6 +1,6 @@
 import Common from 'Common'
 
-let Image = React.createClass({
+export default class Image extends React.Component {
 	render() {
 		let imgStyles;
 		let data = this.props.chunk.modelState;
@@ -32,7 +32,4 @@ let Image = React.createClass({
 				return <img src={data.url} unselectable="on" alt={data.alt} style={imgStyles} />;
 		}
 	}
-});
-
-
-export default Image;
+}

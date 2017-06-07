@@ -8,7 +8,7 @@ import Common from 'Common';
 let { TextGroupEl } = Common.chunk.textChunk;
 let { OboComponent } = Common.components;
 
-let Table = React.createClass({
+export default class Table extends React.Component {
 	render() {
 		let header, row;
 		let { model } = this.props;
@@ -72,10 +72,8 @@ let Table = React.createClass({
 			</div>
 		</OboComponent>;
 	}
-});
+}
 
-
-export default Table;
 function __range__(left, right, inclusive) {
   let range = [];
   let ascending = left < right;

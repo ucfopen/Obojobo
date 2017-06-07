@@ -129,6 +129,8 @@ Object.defineProperty(exports, "__esModule", {
 	value: true
 });
 
+var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+
 __webpack_require__(150);
 
 var _Common = __webpack_require__(0);
@@ -137,32 +139,49 @@ var _Common2 = _interopRequireDefault(_Common);
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
+
+function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
+
 var OboComponent = _Common2.default.components.OboComponent;
 var TextGroupEl = _Common2.default.chunk.textChunk.TextGroupEl;
 var TextChunk = _Common2.default.chunk.TextChunk;
 var Dispatcher = _Common2.default.flux.Dispatcher;
 
+var Text = function (_React$Component) {
+	_inherits(Text, _React$Component);
 
-var Text = React.createClass({
-	displayName: 'Text',
-	render: function render() {
-		var _this = this;
+	function Text() {
+		_classCallCheck(this, Text);
 
-		var texts = this.props.model.modelState.textGroup.items.map(function (textItem, index) {
-			return React.createElement(TextGroupEl, { textItem: textItem, groupIndex: index, key: index, parentModel: _this.props.model });
-		}.bind(this));
-
-		return React.createElement(
-			OboComponent,
-			{ model: this.props.model, moduleData: this.props.moduleData },
-			React.createElement(
-				TextChunk,
-				{ className: 'obojobo-draft--chunks--single-text pad' },
-				texts
-			)
-		);
+		return _possibleConstructorReturn(this, (Text.__proto__ || Object.getPrototypeOf(Text)).apply(this, arguments));
 	}
-});
+
+	_createClass(Text, [{
+		key: 'render',
+		value: function render() {
+			var _this2 = this;
+
+			var texts = this.props.model.modelState.textGroup.items.map(function (textItem, index) {
+				return React.createElement(TextGroupEl, { textItem: textItem, groupIndex: index, key: index, parentModel: _this2.props.model });
+			}.bind(this));
+
+			return React.createElement(
+				OboComponent,
+				{ model: this.props.model, moduleData: this.props.moduleData },
+				React.createElement(
+					TextChunk,
+					{ className: 'obojobo-draft--chunks--single-text pad' },
+					texts
+				)
+			);
+		}
+	}]);
+
+	return Text;
+}(React.Component);
 
 exports.default = Text;
 

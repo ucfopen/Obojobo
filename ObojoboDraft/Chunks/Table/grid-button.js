@@ -6,30 +6,30 @@ let NUM_COLS = 6;
 let DEFAULT_NUM_ROWS = 3;
 let DEFAULT_NUM_COLS = 2;
 
-let GridButton = React.createClass({
-	getInitialState() {
-		return {
+export default class GridButton extends React.Component {
+	constructor(props) {
+		this.state = {
 			open: false,
 			desiredRows: DEFAULT_NUM_ROWS,
 			desiredCols: DEFAULT_NUM_COLS
 		};
-	},
+	}
 
 	onButtonMouseOver() {
 		this.setDimensions(DEFAULT_NUM_ROWS, DEFAULT_NUM_COLS);
 		return this.onMouseOver();
-	},
+	}
 
 	onMouseOver() {
 		clearInterval(this.mouseOutTimeoutId);
 		return this.setState({ open:true });
-	},
+	}
 
 	onMouseOut() {
 		return this.mouseOutTimeoutId = setTimeout((() => {
 			return this.setState(this.getInitialState());
 		}), MOUSE_OUT_DELAY_MS);
-	},
+	}
 
 	onMouseDown() {
 		event.preventDefault();
@@ -37,14 +37,14 @@ let GridButton = React.createClass({
 
 		this.setState(this.getInitialState());
 		return this.props.commandHandler(this.props.command, { rows:this.state.desiredRows, cols:this.state.desiredCols });
-	},
+	}
 
 	setDimensions(rows, cols) {
 		return this.setState({
 			desiredRows: rows,
 			desiredCols: cols
 		});
-	},
+	}
 
 	createRow(rowIndex) {
 		let { state } = this;
@@ -62,7 +62,7 @@ let GridButton = React.createClass({
 				onMouseDown: onMouseDown.bind(self)
 			})
 		));
-	},
+	}
 
 	render() {
 		let grid, tooltip;
@@ -72,8 +72,8 @@ let GridButton = React.createClass({
 			let rows = __range__(0, NUM_ROWS, false).map(index => createRow(index));
 
 			grid = <table
-						onMouseOver={this.onMouseOver}
-						onMouseOut={this.onMouseOut}
+						onMouseOver={this.onMouseOver.bind(this)}
+						onMouseOut={this.onMouseOut.bind(this)}
 						key='table'
 					>
 						<tbody>{rows}</tbody>
@@ -87,8 +87,8 @@ let GridButton = React.createClass({
 
 		return <div className='grid-button' key='button' onMouseDown={this.onMouseDown.bind(this, DEFAULT_NUM_ROWS, DEFAULT_NUM_COLS)}>
 			<a
-				onMouseOver={this.onButtonMouseOver}
-				onMouseOut={this.onMouseOut}
+				onMouseOver={this.onButtonMouseOver.bind(this)}
+				onMouseOut={this.onMouseOut.bind(this)}
 				alt={this.props.command.label}
 				style={{'backgroundImage':`url("${this.props.command.icon}")`}}
 			>
@@ -100,10 +100,8 @@ let GridButton = React.createClass({
 			</div>
 		</div>;
 	}
-});
+}
 
-
-export default GridButton;
 function __range__(left, right, inclusive) {
   let range = [];
   let ascending = left < right;

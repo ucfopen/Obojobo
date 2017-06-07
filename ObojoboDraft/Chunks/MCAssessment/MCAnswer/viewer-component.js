@@ -4,7 +4,7 @@ import Common from 'Common'
 
 let { OboComponent } = Common.components;
 
-let MCAnswer = React.createClass({
+export default class MCAnswer extends React.Component {
 	render() {
 		return <OboComponent
 			model={this.props.model}
@@ -19,6 +19,4 @@ let MCAnswer = React.createClass({
 			}
 		</OboComponent>;
 	}
-});
-
-export default MCAnswer;
+}

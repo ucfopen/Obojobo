@@ -8,37 +8,14 @@ let { OboModel } = Common.models;
 
 let { QuestionUtil } = Viewer.util;
 
-let MCChoice = React.createClass({
-	getDefaultProps() {
+export default class MCChoice extends React.Component {
+	static get defaultProps() {
 		return {
 			responseType: null,
 			revealAll: false,
 			questionSubmitted: false
 		};
-	},
-
-	// getInitialState: ->
-	// 	children: @createChildren(this.props.model.children.models)
-
-	// componentWillReceiveProps: (nextProps) ->
-	// 	if nextProps.model?
-	// 		@setState { children:@createChildren(this.props.model.children.models) }
-
-	// createChildren: (models) ->
-	// 	children = []
-	// 	hasFeedback = false
-	// 	for model in models
-	// 		children.push model
-	// 		if model.get('type') is 'ObojoboDraft.Chunks.MCAssessment.MCFeedback'
-	// 			hasFeedback = true
-
-	// 	if not hasFeedback
-	// 		if @props.model.modelState.score is 100
-	// 			children.push @createFeedbackItem('Correct!')
-	// 		else
-	// 			children.push @createFeedbackItem('Incorrect')
-
-	// 	children
+	}
 
 	createFeedbackItem(message) {
 		let feedback = OboModel.create('ObojoboDraft.Chunks.MCAssessment.MCFeedback');
@@ -49,19 +26,7 @@ let MCChoice = React.createClass({
 		feedback.children.add(text);
 
 		return feedback;
-	},
-
-	// onChange: (event) ->
-	// 	if event.target.checked
-	// 		QuestionUtil.recordResponse @props.model.get('id'), true
-	// 	else
-	// 		QuestionUtil.resetResponse @props.model.get('id')
-
-	// onClick: (event) ->
-	// 	# if not @props.isSelected
-	// 		# @props.onChange @props.model, true
-	// 	# QuestionUtil.recordResponse @props.model.get('id'), true
-	// 	@refs.input.checked = true
+	}
 
 	getInputType() {
 		switch (this.props.responseType) {
@@ -70,7 +35,7 @@ let MCChoice = React.createClass({
 			default: //'pick-one', 'pick-one-multiple-correct'
 				return 'radio';
 		}
-	},
+	}
 
 	render() {
 		let isSelected = __guard__(QuestionUtil.getResponse(this.props.moduleData.questionState, this.props.model), x => x.set) === true;
@@ -106,9 +71,8 @@ let MCChoice = React.createClass({
 			</div>
 		</OboComponent>;
 	}
-});
+}
 
-export default MCChoice;
 function __guard__(value, transform) {
   return (typeof value !== 'undefined' && value !== null) ? transform(value) : undefined;
 }

@@ -7,7 +7,7 @@ let { TextGroupEl } = Common.chunk.textChunk;
 let { TextChunk } = Common.chunk;
 let { Dispatcher } = Common.flux;
 
-let Text = React.createClass({
+export default class Text extends React.Component {
 	render() {
 		let texts = this.props.model.modelState.textGroup.items.map(((textItem, index) => {
 			return <TextGroupEl textItem={textItem} groupIndex={index} key={index} parentModel={this.props.model} />;
@@ -21,7 +21,4 @@ let Text = React.createClass({
 			</TextChunk>
 		</OboComponent>;
 	}
-});
-
-
-export default Text;
+}

@@ -17,8 +17,10 @@ let getLatexHtml = function(latex) {
 };
 
 
-let MathEquation = React.createClass({
-	getInitialState() {
+export default class MathEquation extends React.Component {
+	constructor(props) {
+		super(props)
+
 		let katexHtml = getLatexHtml(this.props.model.modelState.latex);
 		if (katexHtml.error != null) {
 			katexHtml = '';
@@ -26,8 +28,8 @@ let MathEquation = React.createClass({
 			katexHtml = katexHtml.html;
 		}
 
-		return {katexHtml};
-	},
+		this.state = {katexHtml};
+	}
 
 	render() {
 		if (this.state.katexHtml.length === 0) {
@@ -40,7 +42,4 @@ let MathEquation = React.createClass({
 			</NonEditableChunk>
 		</OboComponent>;
 	}
-});
-
-
-export default MathEquation;
+}

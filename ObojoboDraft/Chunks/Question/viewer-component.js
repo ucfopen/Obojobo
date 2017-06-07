@@ -16,19 +16,14 @@ let { QuestionUtil } = Viewer.util;
 import QuestionContent from './Content/viewer-component';
 
 
-let Question = React.createClass({
+export default class Question extends React.Component {
 	onClickBlocker() {
 		QuestionUtil.viewQuestion(this.props.model.get('id'));
 
 		if (this.props.model.modelState.practice) {
 			return FocusUtil.focusComponent(this.props.model.get('id'));
 		}
-	},
-
-		// setTimeout (->
-		// 	FocusUtil.unfocus()
-		// 	QuestionUtil.hideQuestion @props.model.get('id')
-		// ).bind(@), 5000
+	}
 
 	render() {
 		if (this.props.showContentOnly) { return this.renderContentOnly(); }
@@ -53,12 +48,12 @@ let Question = React.createClass({
 						moduleData={this.props.moduleData}
 					/>
 				</div>
-				<div className="blocker front" key="blocker" onClick={this.onClickBlocker}>
+				<div className="blocker front" key="blocker" onClick={this.onClickBlocker.bind(this)}>
 					<Button value={this.props.model.modelState.practice ? 'Try Question' : 'View Question'} />
 				</div>
 			</div>
 		</OboComponent>;
-	},
+	}
 
 	renderContentOnly() {
 		let score = ScoreUtil.getScoreForModel(this.props.moduleData.scoreState, this.props.model);
@@ -79,6 +74,4 @@ let Question = React.createClass({
 			</div>
 		</OboComponent>;
 	}
-});
-
-export default Question;
+}

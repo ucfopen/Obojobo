@@ -18,7 +18,7 @@ let { ScoreUtil } = Viewer.util;
 
 // @TODO - This wont update if new children are passed in via props
 
-let MCAssessment = React.createClass({
+export default class MCAssessment extends React.Component {
 	// getInitialState: ->
 	// 	showingSolution: false
 
@@ -47,7 +47,7 @@ let MCAssessment = React.createClass({
 			correct,
 			responses
 		};
-	},
+	}
 
 	calculateScore() {
 		let responseData = this.getResponseData();
@@ -68,51 +68,51 @@ let MCAssessment = React.createClass({
 
 				return 0;
 		}
-	},
+	}
 
 	onClickSubmit(event) {
 		event.preventDefault();
 		return this.updateScore();
-	},
+	}
 
 	updateScore() {
 		return ScoreUtil.setScore(this.props.model.parent.get('id'), this.calculateScore());
-	},
+	}
 
 	onClickUndoRevealAll(event) {
 		event.preventDefault();
 		return QuestionUtil.setData(this.props.model.get('id'), 'revealAll', false);
-	},
+	}
 
 	onClickRevealAll(event) {
 		event.preventDefault();
 		return QuestionUtil.setData(this.props.model.get('id'), 'revealAll', true);
-	},
+	}
 
 	onClickReset(event) {
 		event.preventDefault();
 		return this.reset();
-	},
+	}
 
 	reset() {
 		this.clearRevealAll();
 		this.clearResponses();
 		return this.clearScore();
-	},
+	}
 
 	clearRevealAll() {
 		return QuestionUtil.clearData(this.props.model.get('id'), 'revealAll');
-	},
+	}
 		// QuestionUtil.clearData @props.model.get('id'), 'shuffledIds'
 
 	clearResponses() {
 		return Array.from(this.props.model.children.models).map((child) =>
 			QuestionUtil.resetResponse(child.get('id')));
-	},
+	}
 
 	clearScore() {
 		return ScoreUtil.clearScore(this.props.model.parent.get('id'));
-	},
+	}
 
 	onClick(event) {
 		let mcChoiceEl = DOMUtil.findParentWithAttr(event.target, 'data-type', 'ObojoboDraft.Chunks.MCAssessment.MCChoice');
@@ -146,11 +146,11 @@ let MCAssessment = React.createClass({
 					set: true
 				});
 		}
-	},
+	}
 
 	getScore() {
 		return ScoreUtil.getScoreForModel(this.props.moduleData.scoreState, this.props.model.parent);
-	},
+	}
 
 	// showSolution: (event) ->
 	// 	event.preventDefault()
@@ -158,7 +158,7 @@ let MCAssessment = React.createClass({
 
 	isRevealingAll() {
 		return QuestionUtil.getData(this.props.moduleData.questionState, this.props.model, 'revealAll');
-	},
+	}
 
 	render() {
 		let { responseType } = this.props.model.modelState;
@@ -201,7 +201,7 @@ let MCAssessment = React.createClass({
 		return <OboComponent
 			model={this.props.model}
 			moduleData={this.props.moduleData}
-			onClick={this.onClick}
+			onClick={this.onClick.bind(this)}
 			tag="form"
 			className={
 				'obojobo-draft--chunks--mc-assessment'
@@ -250,12 +250,12 @@ let MCAssessment = React.createClass({
 						?
 						<Button
 							altAction
-							onClick={this.onClickReset}
+							onClick={this.onClickReset.bind(this)}
 							value="Try Again"
 						/>
 						:
 						<Button
-							onClick={this.onClickSubmit}
+							onClick={this.onClickSubmit.bind(this)}
 							value="Check Your Answer"
 							disabled={!questionAnswered}
 						/>
@@ -326,7 +326,7 @@ let MCAssessment = React.createClass({
 							?
 							<Button
 								altAction
-								onClick={this.onClickUndoRevealAll}
+								onClick={this.onClickUndoRevealAll.bind(this)}
 								value="Hide Explanation"
 							/>
 							:
@@ -335,7 +335,7 @@ let MCAssessment = React.createClass({
 								?
 								<Button
 									altAction
-									onClick={this.onClickRevealAll}
+									onClick={this.onClickRevealAll.bind(this)}
 									value="Read an explanation of the answer"
 								/>
 								:
@@ -366,9 +366,8 @@ let MCAssessment = React.createClass({
 			</ReactCSSTransitionGroup>
 		</OboComponent>;
 	}
-});
+}
 
-export default MCAssessment;
 function __guard__(value, transform) {
   return (typeof value !== 'undefined' && value !== null) ? transform(value) : undefined;
 }

@@ -6,7 +6,7 @@ let { OboComponent } = Common.components;
 let { TextGroupEl } = Common.chunk.textChunk;
 let { TextChunk } = Common.chunk;
 
-let Code = React.createClass({
+export default class Code extends React.Component {
 	render() {
 		let texts = this.props.model.modelState.textGroup.items.map(((textItem, index) => {
 			return <TextGroupEl parentModel={this.props.model} textItem={textItem} groupIndex={index} key={index} />;
@@ -19,6 +19,4 @@ let Code = React.createClass({
 			</TextChunk>
 		</OboComponent>;
 	}
-});
-
-export default Code;
+}
