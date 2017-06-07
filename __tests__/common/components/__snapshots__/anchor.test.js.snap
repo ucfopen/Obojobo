@@ -1,0 +1,11 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`Uh 1`] = `
+<span
+  className="anchor"
+  contentEditable="true"
+  data-group-index="anchor:undefined"
+  suppressContentEditableWarning={true}
+  tabIndex=""
+/>
+`;
