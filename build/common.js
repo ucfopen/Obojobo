@@ -6125,14 +6125,13 @@ exports.default = getMockElement;
 
 
 Object.defineProperty(exports, "__esModule", {
-  value: true
+	value: true
 });
 
 exports.default = function (asset) {
-  return "url('" + asset.replace(/'/g, "\\'") + "')";
+	if (!asset || !asset.replace) return '';
+	return "url('" + asset.replace(/'/g, "\\'") + "')";
 };
-
-;
 
 /***/ }),
 /* 38 */
@@ -7190,7 +7189,7 @@ exports.default = React.createClass({
 		return { indent: 0 };
 	},
 	render: function render() {
-		var editButtonStyles = { backgroundImage: Common.util.getBackgroundImage(_edit2.default) };
+		var editButtonStyles = { backgroundImage: (0, _getBackgroundImage2.default)(_edit2.default) };
 
 		return React.createElement(
 			'div',

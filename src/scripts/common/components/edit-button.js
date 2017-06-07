@@ -10,7 +10,7 @@ export default React.createClass({
 
 	render() {
 		let editButtonStyles =
-			{backgroundImage: Common.util.getBackgroundImage(editButton)};
+			{backgroundImage: getBackgroundImage(editButton)};
 
 		return <div className="obojobo-draft--components--edit-button">
 			<button

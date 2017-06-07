@@ -1,0 +1,85 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`Button 1`] = `
+<div
+  className="obojobo-draft--components--button align-center"
+>
+  <button
+    disabled={undefined}
+    onClick={undefined}
+    tabIndex={undefined}
+  >
+    Label
+  </button>
+</div>
+`;
+
+exports[`Button align 1`] = `
+<div
+  className="obojobo-draft--components--button align-left"
+>
+  <button
+    disabled={undefined}
+    onClick={undefined}
+    tabIndex={undefined}
+  >
+    Label
+  </button>
+</div>
+`;
+
+exports[`Button altAction 1`] = `
+<div
+  className="obojobo-draft--components--button alt-action align-center"
+>
+  <button
+    disabled={undefined}
+    onClick={undefined}
+    tabIndex={undefined}
+  >
+    Label
+  </button>
+</div>
+`;
+
+exports[`Button dangerous 1`] = `
+<div
+  className="obojobo-draft--components--button dangerous align-center"
+>
+  <button
+    disabled={undefined}
+    onClick={undefined}
+    tabIndex={undefined}
+  >
+    Label
+  </button>
+</div>
+`;
+
+exports[`Button disabled 1`] = `
+<div
+  className="obojobo-draft--components--button align-center"
+>
+  <button
+    disabled={true}
+    onClick={undefined}
+    tabIndex={undefined}
+  >
+    Label
+  </button>
+</div>
+`;
+
+exports[`Button shouldPreventTab 1`] = `
+<div
+  className="obojobo-draft--components--button align-center"
+>
+  <button
+    disabled={true}
+    onClick={undefined}
+    tabIndex="-1"
+  >
+    Label
+  </button>
+</div>
+`;
