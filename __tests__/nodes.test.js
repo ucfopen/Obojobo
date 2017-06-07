@@ -36,14 +36,14 @@ const shorthandNodes = [
 
 describe('XML to Draft Object Tranformation', () => {
   for (let node of nodes) {
-    it(`Correctly converts xml to ${node} node`, () => {
+    it(`Converts ${node} xml to ${node} node`, () => {
       const xml = fs.readFileSync(`./__tests__/obo_node_xml/${node}.xml`, 'utf8')
       expect(xmlToDraftObject(xml)).toMatchSnapshot()
     })
   }
 
   for (let node of shorthandNodes) {
-    it(`Correctly converts ${node} html notation`, () => {
+    it(`Converts ${node} html notation to ${node} node`, () => {
       const xml = fs.readFileSync(`./__tests__/obo_node_xml/${node}.xml`, 'utf8')
       const xmlShorthand = fs.readFileSync(`./__tests__/obo_node_shorthand/${node}.xml`, 'utf8')
       expect(xmlToDraftObject(xml)).toEqual(xmlToDraftObject(xmlShorthand))
