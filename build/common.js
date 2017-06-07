@@ -6457,7 +6457,38 @@ var sanitize = function sanitize(node) {
 
 var isElementInline = function isElementInline(el) {
 	switch (el.tagName.toLowerCase()) {
-		case 'b':case 'big':case 'i':case 'small':case 'tt':case 'abbr':case 'acronym':case 'cite':case 'code':case 'dfn':case 'em':case 'kbd':case 'strong':case 'samp':case 'time':case 'var':case 'a':case 'bdo':case 'br':case 'img':case 'map':case 'object':case 'q':case 'script':case 'span':case 'sub':case 'sup':case 'button':case 'input':case 'label':case 'select':case 'textarea':
+		case 'b':
+		case 'big':
+		case 'i':
+		case 'small':
+		case 'tt':
+		case 'abbr':
+		case 'acronym':
+		case 'cite':
+		case 'code':
+		case 'dfn':
+		case 'em':
+		case 'kbd':
+		case 'strong':
+		case 'samp':
+		case 'time':
+		case 'var':
+		case 'a':
+		case 'bdo':
+		case 'br':
+		case 'img':
+		case 'map':
+		case 'object':
+		case 'q':
+		case 'script':
+		case 'span':
+		case 'sub':
+		case 'sup':
+		case 'button':
+		case 'input':
+		case 'label':
+		case 'select':
+		case 'textarea':
 			return true;
 		default:
 			return false;

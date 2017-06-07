@@ -1,0 +1,61 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`OboComponent 1`] = `
+<div
+  className="component"
+  data-focussed={false}
+  data-id="testId"
+  data-obo-component={true}
+  data-type="test"
+  id="obo-testId"
+  model={
+    Object {
+      "adapter": Object {},
+      "children": null,
+      "content": Object {},
+      "id": "testId",
+      "index": 0,
+      "metadata": Object {},
+      "type": "test",
+    }
+  }
+  moduleData={
+    Object {
+      "focusState": Object {},
+    }
+  }
+  tag="div"
+>
+  Test
+</div>
+`;
+
+exports[`OboComponent tag 1`] = `
+<pre
+  className="component"
+  data-focussed={false}
+  data-id="testId"
+  data-obo-component={true}
+  data-type="test"
+  id="obo-testId"
+  model={
+    Object {
+      "adapter": Object {},
+      "children": null,
+      "content": Object {},
+      "id": "testId",
+      "index": 0,
+      "metadata": Object {},
+      "type": "test",
+    }
+  }
+  moduleData={
+    Object {
+      "focusState": Object {},
+    }
+  }
+  tag="pre"
+>
+  Test
+</pre>
+`;
