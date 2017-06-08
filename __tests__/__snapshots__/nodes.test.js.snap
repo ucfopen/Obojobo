@@ -63,9 +63,20 @@ Object {
 exports[`XML to Draft Object Tranformation Converts break xml to break node 1`] = `
 Object {
   "children": Array [],
-  "content": Object {},
+  "content": Object {
+    "headingLevel": 1,
+    "textGroup": Array [
+      Object {
+        "data": null,
+        "text": Object {
+          "styleList": Array [],
+          "value": "A break:",
+        },
+      },
+    ],
+  },
   "id": null,
-  "type": "ObojoboDraft.Chunks.Break",
+  "type": "ObojoboDraft.Chunks.Heading",
 }
 `;
 
@@ -136,7 +147,7 @@ Object {
         "data": null,
         "text": Object {
           "styleList": Array [],
-          "value": "",
+          "value": "This is a test",
         },
       },
     ],
@@ -237,6 +248,29 @@ Object {
           "content": Object {},
           "id": null,
           "type": "ObojoboDraft.Chunks.MCAssessment.MCAnswer",
+        },
+        Object {
+          "children": Array [
+            Object {
+              "children": Array [],
+              "content": Object {
+                "textGroup": Array [
+                  Object {
+                    "data": null,
+                    "text": Object {
+                      "styleList": Array [],
+                      "value": "Correct",
+                    },
+                  },
+                ],
+              },
+              "id": null,
+              "type": "ObojoboDraft.Chunks.Text",
+            },
+          ],
+          "content": Object {},
+          "id": null,
+          "type": "ObojoboDraft.Chunks.MCAssessment.MCFeedback",
         },
       ],
       "content": Object {

@@ -1,7 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <ObjoboDraftDoc>
-    <figure>
-        <img src="http://lorempixel.com/640/480/city" size="small" alt="A city" />
-        <figcaption>This is a small image</figcaption>
-    </figure>
+    <Figure size="small" alt="A city" url="http://lorempixel.com/640/480/city">
+        <textGroup>
+            <t>This is a small image</t>
+        </textGroup>
+    </Figure>
 </ObjoboDraftDoc>
