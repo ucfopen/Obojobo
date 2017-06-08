@@ -7,6 +7,9 @@
                 <MCAnswer>
                     <p>Correct</p>
                 </MCAnswer>
+                <MCFeedback>
+                    <p>Correct</p>
+                </MCFeedback>
             </MCChoice>
             <MCChoice score="0">
                 <MCAnswer>

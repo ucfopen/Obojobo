@@ -5,9 +5,6 @@
             <MCAnswer>
                 <MathEquation latex="x=v_xt" align="left" />
             </MCAnswer>
-            <MCFeedback>
-                <p>Correct</p>
-            </MCFeedback>
         </MCChoice>
     </MCAssessment>
 </ObjoboDraftDoc>
