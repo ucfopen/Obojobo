@@ -123,7 +123,10 @@ let wrapElement = function(styleRange, nodeToWrap, text) {
 			newChild = new MockElement('span', ObjectAssign({ 'class':'latex' }, styleRange.data));
 			nodeToWrap.parent.replaceChild(nodeToWrap, newChild);
 			newChild.addChild(nodeToWrap);
+			console.log('RENDER TO STRING[' + text + ']')
 			let html = katex.renderToString(text);
+			 html = katex.renderToString('2+2');
+			 html = katex.renderToString('2+2');
 			nodeToWrap.html = html;
 			nodeToWrap.text = text;
 			return newChild;

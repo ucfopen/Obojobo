@@ -151,8 +151,6 @@ class ChunkStyleList {
 	// 		range.end += byAmount
 
 	cleanupSuperscripts() {
-		// console.log 'cleanupSubSup', @styles
-
 		let level;
 		let mark = [];
 		let newStyles = [];
@@ -210,7 +208,6 @@ class ChunkStyleList {
 	// 6. Continue to add up numbers that you discover
 	// 7. When your total is a 0 that ends the range
 	normalize() {
-		// console.time 'normalize'
 		//@TODO - possible to improve runtime if we sort the styles?
 
 		let i, styleType;
@@ -240,9 +237,6 @@ class ChunkStyleList {
 				dataValues[styleRange.type].push(curData);
 			}
 		}
-
-		//console.log datasToCheck
-		//console.log dataValues
 
 		for (styleType in dataValues) {
 			//console.log 'loop', styleType, datas

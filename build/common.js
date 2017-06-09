@@ -3415,6 +3415,7 @@ var MockTextNode = function MockTextNode(text) {
 		text = '';
 	}
 	this.text = text;
+	this.html = null;
 	this.nodeType = 'text';
 	this.parent = null;
 };
@@ -5653,8 +5654,6 @@ var ChunkStyleList = function () {
 	}, {
 		key: 'cleanupSuperscripts',
 		value: function cleanupSuperscripts() {
-			// console.log 'cleanupSubSup', @styles
-
 			var level = void 0;
 			var mark = [];
 			var newStyles = [];
@@ -5744,7 +5743,6 @@ var ChunkStyleList = function () {
 	}, {
 		key: 'normalize',
 		value: function normalize() {
-			// console.time 'normalize'
 			//@TODO - possible to improve runtime if we sort the styles?
 
 			var i = void 0,
@@ -5775,9 +5773,6 @@ var ChunkStyleList = function () {
 					dataValues[styleRange.type].push(curData);
 				}
 			}
-
-			//console.log datasToCheck
-			//console.log dataValues
 
 			for (styleType in dataValues) {
 				//console.log 'loop', styleType, datas
@@ -6208,7 +6203,10 @@ var wrapElement = function wrapElement(styleRange, nodeToWrap, text) {
 			newChild = new _mockElement2.default('span', (0, _objectAssign2.default)({ 'class': 'latex' }, styleRange.data));
 			nodeToWrap.parent.replaceChild(nodeToWrap, newChild);
 			newChild.addChild(nodeToWrap);
+			console.log('RENDER TO STRING[' + text + ']');
 			var html = _katex2.default.renderToString(text);
+			html = _katex2.default.renderToString('2+2');
+			html = _katex2.default.renderToString('2+2');
 			nodeToWrap.html = html;
 			nodeToWrap.text = text;
 			return newChild;
