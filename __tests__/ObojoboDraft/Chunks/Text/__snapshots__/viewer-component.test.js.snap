@@ -1,0 +1,59 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`Text Text component 1`] = `
+<div
+  className="component"
+  data-focussed={false}
+  data-id="id"
+  data-obo-component={true}
+  data-type="ObojoboDraft.Chunks.Text"
+  id="obo-id"
+  model={
+    Object {
+      "children": null,
+      "content": Object {
+        "textGroup": Array [
+          Object {
+            "data": Object {
+              "align": "left",
+              "indent": 0,
+            },
+            "text": Object {
+              "styleList": null,
+              "value": "Example Text",
+            },
+          },
+        ],
+      },
+      "id": "id",
+      "index": 0,
+      "metadata": Object {},
+      "type": "ObojoboDraft.Chunks.Text",
+    }
+  }
+  moduleData={
+    Object {
+      "focusState": Object {},
+    }
+  }
+  tag="div"
+>
+  <div
+    className="text-chunk obojobo-draft--chunks--single-text pad"
+  >
+    <span
+      className="text align-left"
+      data-group-index={0}
+      data-indent={0}
+    >
+      <span>
+        <span>
+          <span>
+            Example Text
+          </span>
+        </span>
+      </span>
+    </span>
+  </div>
+</div>
+`;

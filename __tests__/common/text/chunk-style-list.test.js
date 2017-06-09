@@ -1,5 +1,5 @@
-import ChunkStyleList from '../../../../src/scripts/common/text/chunk-style-list'
-import StyleRange from '../../../../src/scripts/common/text/style-range'
+import ChunkStyleList from '../../../src/scripts/common/text/chunk-style-list'
+import StyleRange from '../../../src/scripts/common/text/style-range'
 
 describe('ChunkStyleList', function() {
 	let styleList, styleRangeLink, styleRangeBold;

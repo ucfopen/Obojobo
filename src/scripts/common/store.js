@@ -43,7 +43,6 @@ class _Store {
 
 	registerModel(className, opts)
 	{
-		console.log('regsiter', className, opts)
 		if (opts == null) { opts = {}; }
 		items.set(className, opts);
 
@@ -180,8 +179,8 @@ Object.defineProperties(_Store.prototype, {
 		get() { return triggerActions; }
 	},
 
-	__debug__chunks: {
-		get() { return chunks; }
+	__debug_items: {
+		get() { return items; }
 	}
 });
 

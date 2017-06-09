@@ -1,13 +1,13 @@
-import OboModel from '../../../../src/scripts/common/models/obo-model'
-import Dispatcher from '../../../../src/scripts/common/flux/dispatcher'
-import createUUID from '../../../../src/scripts/common/util/uuid'
-import { Store } from '../../../../src/scripts/common/store'
+import OboModel from '../../../src/scripts/common/models/obo-model'
+import Dispatcher from '../../../src/scripts/common/flux/dispatcher'
+import createUUID from '../../../src/scripts/common/util/uuid'
+import { Store } from '../../../src/scripts/common/store'
 
-jest.mock('../../../../src/scripts/common/models/obo-model', () => {
-	return require('../../../../__mocks__/obo-model-mock').default;
+jest.mock('../../../src/scripts/common/models/obo-model', () => {
+	return require('../../../__mocks__/obo-model-mock').default;
 })
 
-jest.mock('../../../../src/scripts/common/flux/dispatcher', () => {
+jest.mock('../../../src/scripts/common/flux/dispatcher', () => {
 	return ({
 		trigger: jest.fn(),
 		on: jest.fn(),

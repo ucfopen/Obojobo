@@ -3805,7 +3805,6 @@ var _Store = function () {
 	}, {
 		key: 'registerModel',
 		value: function registerModel(className, opts) {
-			console.log('regsiter', className, opts);
 			if (opts == null) {
 				opts = {};
 			}
@@ -3993,9 +3992,9 @@ Object.defineProperties(_Store.prototype, {
 		}
 	},
 
-	__debug__chunks: {
+	__debug_items: {
 		get: function get() {
-			return chunks;
+			return items;
 		}
 	}
 });

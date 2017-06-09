@@ -1,5 +1,5 @@
-import StyleableText from '../../../../src/scripts/common/text/styleable-text'
-import StyleRange from '../../../../src/scripts/common/text/style-range'
+import StyleableText from '../../../src/scripts/common/text/styleable-text'
+import StyleRange from '../../../src/scripts/common/text/style-range'
 
 describe('StyleableText', function() {
 	let st, st1, st2;
