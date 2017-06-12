@@ -1,7 +1,13 @@
 <?xml version="1.0" encoding="utf-8"?>
 <ObojoboDraftDoc>
-    <ol>
-        <li></li>
-        <li></li>
-    </ol>
+    <Module>
+        <ol>
+            <li>This is a test</li>
+            <li>This is a test</li>
+        </ol>
+        <ul>
+            <li indent="2" bulletStyle="square" type="unordered">This is a test</li>
+            <li>This is a test</li>
+        </ul>
+    </Module>
 </ObojoboDraftDoc>

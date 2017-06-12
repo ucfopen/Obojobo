@@ -17,5 +17,10 @@
                 </MCAnswer>
             </MCChoice>
         </MCAssessment>
+        <solution>
+            <Page>
+                <p>This is a description of the solution to the problem.</p>
+            </Page>
+        </solution>
     </Question>
 </ObojoboDraftDoc>

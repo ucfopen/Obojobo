@@ -10,7 +10,7 @@ const shorthandNodes  = filterFileType(fs.readdirSync('./__tests__/obo_node_shor
 describe('XML to Draft Object Tranformation', () => {
   for (let node of nodes) {
     it(`Converts ${node} xml to ${node} node`, () => {
-      const xml = fs.readFileSync(`./__tests__/obo_node_xml/${node}.xml`)
+      const xml = fs.readFileSync(`./__tests__/obo_node_xml/${node}.xml`, 'utf8')
       expect(xmlToDraftObject(xml)).toMatchSnapshot()
 
       if (shorthandNodes.includes(`${node}`)) {

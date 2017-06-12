@@ -4,5 +4,8 @@
         <MCAnswer>
             <MathEquation latex="x=v_xt" align="left" />
         </MCAnswer>
+        <MCFeedback>
+            <p>Good job!</p>
+        </MCFeedback>
     </MCChoice>
 </ObjoboDraftDoc>

@@ -1,12 +1,23 @@
 <?xml version="1.0" encoding="utf-8"?>
 <ObojoboDraftDoc>
-    <List>
-        <listStyles>
-            <type>ordered</type>
-        </listStyles>
-        <textGroup>
-            <t></t>
-            <t></t>
-        </textGroup>
-    </List>
+    <Module>
+        <List>
+            <listStyles>
+                <type>ordered</type>
+            </listStyles>
+            <textGroup>
+                <t>This is a test</t>
+                <t>This is a test</t>
+            </textGroup>
+        </List>
+        <List>
+            <listStyles>
+                <type>unordered</type>
+            </listStyles>
+            <textGroup>
+                <t indent="2" bulletStyle="square" type="unordered">This is a test</t>
+                <t>This is a test</t>
+            </textGroup>
+        </List>
+    </Module>
 </ObojoboDraftDoc>
