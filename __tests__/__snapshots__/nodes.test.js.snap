@@ -186,21 +186,45 @@ Object {
 
 exports[`XML to Draft Object Tranformation Converts heading xml to heading node 1`] = `
 Object {
-  "children": Array [],
-  "content": Object {
-    "headingLevel": 1,
-    "textGroup": Array [
-      Object {
-        "data": null,
-        "text": Object {
-          "styleList": Array [],
-          "value": "This is a test",
-        },
+  "children": Array [
+    Object {
+      "children": Array [],
+      "content": Object {
+        "headingLevel": 1,
+        "textGroup": Array [
+          Object {
+            "data": null,
+            "text": Object {
+              "styleList": Array [],
+              "value": "This is a test",
+            },
+          },
+        ],
       },
-    ],
-  },
+      "id": null,
+      "type": "ObojoboDraft.Chunks.Heading",
+    },
+    Object {
+      "children": Array [],
+      "content": Object {
+        "headingLevel": 2,
+        "textGroup": Array [
+          Object {
+            "data": null,
+            "text": Object {
+              "styleList": Array [],
+              "value": "This is a test",
+            },
+          },
+        ],
+      },
+      "id": null,
+      "type": "ObojoboDraft.Chunks.Heading",
+    },
+  ],
+  "content": Object {},
   "id": null,
-  "type": "ObojoboDraft.Chunks.Heading",
+  "type": "ObojoboDraft.Modules.Module",
 }
 `;
 
@@ -226,7 +250,10 @@ Object {
         },
         "textGroup": Array [
           Object {
-            "data": null,
+            "data": Object {
+              "indent": "4",
+              "start": "1",
+            },
             "text": Object {
               "styleList": Array [],
               "value": "This is a test",
@@ -253,9 +280,7 @@ Object {
         "textGroup": Array [
           Object {
             "data": Object {
-              "bulletStyle": "square",
               "indent": "2",
-              "type": "unordered",
             },
             "text": Object {
               "styleList": Array [],
