@@ -35,3 +35,5 @@ config/installed_chunks.json
 devsrc
 
 public/compiled
+
+*.DS_Store
