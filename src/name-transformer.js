@@ -14,6 +14,7 @@ let nameTransform = (node) => {
 }
 
 let nameTable = {
+	'Code': 'ObojoboDraft.Chunks.Code',
 	'Module': 'ObojoboDraft.Modules.Module',
 	'Content': 'ObojoboDraft.Sections.Content',
 	'Assessment': 'ObojoboDraft.Sections.Assessment',

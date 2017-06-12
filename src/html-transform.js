@@ -61,23 +61,19 @@ let htmlTransform = (node) => {
 				node.name = 'ObojoboDraft.Chunks.Code'
 
 				let tEls = node.elements[0].text.split('\n').map( (text) => {
-					let indentLevel = 0;
+					let indent = 0;
 					while(text.charAt(0) === '\t')
 					{
-						indentLevel++;
+						indent++;
 						text = text.substr(1);
 					}
 
-					let attrs = {};
-					if(indentLevel > 0)
-					{
-						attrs = { indent:indentLevel };
-					}
+					let attributes = indent > 0 ? { indent } : null;
 
 					return ({
 						type: "element",
 						name: "t",
-						attributes: attrs,
+						attributes,
 						elements: [{
 							type: "text",
 							text: text
@@ -130,9 +126,9 @@ let htmlTransform = (node) => {
 				break;
 			
 			case 'table':
-				let rows = node.elements.length
-				let cols = node.elements[0].elements.length
-				let thFound = node.elements[0].elements[0].name === 'th'
+				let numRows = node.elements.length
+				let numCols = node.elements[0].elements.length
+				let header = node.elements[0].elements[0].name === 'th'
 
 				let cells = []
 				node.elements.forEach( (row) => {
@@ -159,7 +155,7 @@ let htmlTransform = (node) => {
 				// 	elements: createTextGroup(texts)
 				// } ];
 				node.name = 'ObojoboDraft.Chunks.Table'
-				node.attributes = { numRows:rows, numCols:cols, header:thFound }
+				node.attributes = { numRows, numCols, header }
 				break;
 		}
 	}

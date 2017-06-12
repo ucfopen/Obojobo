@@ -1,0 +1,4 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ObjoboDraftDoc>
+    <HTML html="<marquee><font color='red'>Hello, I am rendered HTML</font></marquee>" />
+</ObjoboDraftDoc>

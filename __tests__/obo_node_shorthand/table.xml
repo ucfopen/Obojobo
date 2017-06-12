@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ObojoboDraftDoc>
+    <Module>
+        <table>
+            <tr>
+                <td>test</td>
+            </tr>
+        </table>
+        <table>
+            <tr>
+                <th>This is a test</th>
+            </tr>
+            <tr>
+                <td>test</td>
+            </tr>
+        </table>
+    </Module>
+</ObojoboDraftDoc>

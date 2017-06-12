@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ObjoboDraftDoc>
+    <MCChoice score="100">
+        <MCAnswer>
+            <MathEquation latex="x=v_xt" align="left" />
+        </MCAnswer>
+        <MCFeedback>
+            <p>Good job!</p>
+        </MCFeedback>
+    </MCChoice>
+</ObjoboDraftDoc>

@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ObojoboDraftDoc>
+    <Module>
+        <List>
+            <listStyles>
+                <type>ordered</type>
+                <indent level="4" type="ordered" bulletStyle="upper-alpha" />
+            </listStyles>
+            <textGroup>
+                <t indent="4" start="1">This is a test</t>
+                <t>This is a test</t>
+            </textGroup>
+        </List>
+        <List>
+            <listStyles>
+                <type>unordered</type>
+                <indent level="2" type="unordered" bulletStyle="square" />
+            </listStyles>
+            <textGroup>
+                <t indent="2" >This is a test</t>
+                <t>This is a test</t>
+            </textGroup>
+        </List>
+    </Module>
+</ObojoboDraftDoc>
