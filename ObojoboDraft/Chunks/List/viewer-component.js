@@ -17,7 +17,7 @@ let { OboComponent } = Common.components;
 
 let selectionHandler = new SelectionHandler();
 
-var List = React.createClass({
+export default class List {
 	createMockListElement(data, indentLevel) {
 		let style = data.listStyles.get(indentLevel);
 
@@ -27,13 +27,13 @@ var List = React.createClass({
 		el._listStyleType = style.bulletStyle;
 
 		return el;
-	},
+	}
 
 	addItemToList(ul, li, lis) {
 		ul.addChild(li);
 		li.listStyleType = ul._listStyleType;
 		return lis.push(li);
-	},
+	}
 
 	render() {
 		let curUl;
@@ -114,7 +114,7 @@ var List = React.createClass({
 				</div>
 			</TextChunk>
 		</OboComponent>;
-	},
+	}
 
 	renderEl(node, index, indent) {
 		let key = this.props.model.cid + '-' + indent + '-' + index;
@@ -123,7 +123,7 @@ var List = React.createClass({
 			case 'text':    return <TextGroupEl parentModel={this.props.model} textItem={{text:node.text, data:{}}} key={key} groupIndex={node.index} />;
 			case 'element': return React.createElement(node.type, { key, start:node.start, style: { listStyleType:node.listStyleType } }, this.renderChildren(node.children, indent + 1));
 		}
-	},
+	}
 
 	renderChildren(children, indent) {
 		// console.log 'renderChildren', children
@@ -135,10 +135,8 @@ var List = React.createClass({
 
 		return els;
 	}
-});
+}
 
-
-export default List;
 function __guard__(value, transform) {
   return (typeof value !== 'undefined' && value !== null) ? transform(value) : undefined;
 }

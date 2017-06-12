@@ -259,46 +259,65 @@ Object.defineProperty(exports, "__esModule", {
 	value: true
 });
 
+var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+
 var _Common = __webpack_require__(0);
 
 var _Common2 = _interopRequireDefault(_Common);
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
 var Dialog = _Common2.default.components.modal.Dialog;
 var ModalUtil = _Common2.default.util.ModalUtil;
-exports.default = React.createClass({
-	displayName: 'attempt-incomplete-dialog',
-	onCancel: function onCancel() {
-		return ModalUtil.hide();
-	},
-	onSubmit: function onSubmit() {
-		ModalUtil.hide();
-		return this.props.onSubmit();
-	},
-	render: function render() {
-		return React.createElement(
-			Dialog,
-			{ width: '32rem', buttons: [{
-					value: 'Submit as incomplete',
-					altAction: true,
-					dangerous: true,
-					onClick: this.onSubmit
-				}, 'or', {
-					value: 'Resume assessment',
-					onClick: this.onCancel,
-					default: true
-				}] },
-			React.createElement(
-				'b',
-				null,
-				'Wait! You left some questions blank.'
-			),
-			React.createElement('br', null),
-			'Finish answering all questions and submit again.'
-		);
+
+var AttemptIncompleteDialog = function () {
+	function AttemptIncompleteDialog() {
+		_classCallCheck(this, AttemptIncompleteDialog);
 	}
-});
+
+	_createClass(AttemptIncompleteDialog, [{
+		key: 'onCancel',
+		value: function onCancel() {
+			return ModalUtil.hide();
+		}
+	}, {
+		key: 'onSubmit',
+		value: function onSubmit() {
+			ModalUtil.hide();
+			return this.props.onSubmit();
+		}
+	}, {
+		key: 'render',
+		value: function render() {
+			return React.createElement(
+				Dialog,
+				{ width: '32rem', buttons: [{
+						value: 'Submit as incomplete',
+						altAction: true,
+						dangerous: true,
+						onClick: this.onSubmit.bind(this)
+					}, 'or', {
+						value: 'Resume assessment',
+						onClick: this.onCancel.bind(this),
+						default: true
+					}] },
+				React.createElement(
+					'b',
+					null,
+					'Wait! You left some questions blank.'
+				),
+				React.createElement('br', null),
+				'Finish answering all questions and submit again.'
+			);
+		}
+	}]);
+
+	return AttemptIncompleteDialog;
+}();
+
+exports.default = AttemptIncompleteDialog;
 
 /***/ }),
 
@@ -387,6 +406,8 @@ Object.defineProperty(exports, "__esModule", {
 	value: true
 });
 
+var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+
 __webpack_require__(154);
 
 var _Common = __webpack_require__(0);
@@ -403,6 +424,8 @@ var _attemptIncompleteDialog2 = _interopRequireDefault(_attemptIncompleteDialog)
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
 var OboComponent = _Common2.default.components.OboComponent;
 var OboModel = _Common2.default.models.OboModel;
 var Button = _Common2.default.components.Button;
@@ -411,214 +434,230 @@ var ModalUtil = _Common2.default.util.ModalUtil;
 var ScoreStore = _Viewer2.default.stores.ScoreStore;
 var AssessmentUtil = _Viewer2.default.util.AssessmentUtil;
 var NavUtil = _Viewer2.default.util.NavUtil;
-exports.default = React.createClass({
-	displayName: 'viewer-component',
-	getInitialState: function getInitialState() {
-		return { step: null };
-	},
-	getCurrentStep: function getCurrentStep() {
-		var assessment = AssessmentUtil.getAssessmentForModel(this.props.moduleData.assessmentState, this.props.model);
 
-		if (assessment === null) {
+var Assessment = function () {
+	function Assessment() {
+		_classCallCheck(this, Assessment);
+
+		this.state = { step: null };
+	}
+
+	_createClass(Assessment, [{
+		key: 'getCurrentStep',
+		value: function getCurrentStep() {
+			var assessment = AssessmentUtil.getAssessmentForModel(this.props.moduleData.assessmentState, this.props.model);
+
+			if (assessment === null) {
+				return 'untested';
+			}
+			if (assessment.current !== null) {
+				return 'takingTest';
+			}
+			if (assessment.attempts.length > 0) {
+				return 'scoreSubmitted';
+			}
 			return 'untested';
 		}
-		if (assessment.current !== null) {
-			return 'takingTest';
-		}
-		if (assessment.attempts.length > 0) {
-			return 'scoreSubmitted';
-		}
-		return 'untested';
-	},
-	componentWillReceiveProps: function componentWillReceiveProps(nextProps) {
-		var curStep = this.getCurrentStep();
-		if (curStep !== this.state.step) {
-			this.needsScroll = true;
-		}
-
-		return this.setState({ step: curStep });
-	},
-	componentDidUpdate: function componentDidUpdate() {
-		if (this.needsScroll) {
-			delete this.needsScroll;
-			return Dispatcher.trigger('viewer:scrollToTop');
-		}
-	},
-
-
-	// if @needsScroll
-	// 	delete @needsScroll
-	// 	alert 'TRIG'
-	// 	Dispatcher.trigger 'viewer:scrollTo', { value: 0 }
-
-	// # componentDidMount: ->
-	// # 	ModalUtil.show `<AttemptIncompleteDialog onSubmit={this.endAttempt} />`
-
-	isAttemptComplete: function isAttemptComplete() {
-		return true;
-		//@TODO: isCurrentAttemptComplete not functional, returning true which was the status quo for the pilot
-		// return AssessmentUtil.isCurrentAttemptComplete(this.props.moduleData.assessmentState, this.props.moduleData.questionState, this.props.model);
-	},
-	onClickSubmit: function onClickSubmit() {
-		if (!this.isAttemptComplete()) {
-			ModalUtil.show(React.createElement(_attemptIncompleteDialog2.default, { onSubmit: this.endAttempt }));
-			return;
-		}
-
-		return this.endAttempt();
-	},
-	endAttempt: function endAttempt() {
-		return AssessmentUtil.endAttempt(this.props.model);
-	},
-	exitAssessment: function exitAssessment() {
-		var scoreAction = this.getScoreAction();
-
-		switch (scoreAction.action.value) {
-			case '_next':
-				return NavUtil.goNext();
-
-			case '_prev':
-				return NavUtil.goPrev();
-
-			default:
-				return NavUtil.goto(scoreAction.action.value);
-		}
-	},
-	getScoreAction: function getScoreAction() {
-		var highestScore = AssessmentUtil.getHighestAttemptScoreForModel(this.props.moduleData.assessmentState, this.props.model);
-		var scoreAction = this.props.model.modelState.scoreActions.getActionForScore(highestScore);
-		if (scoreAction) {
-			return scoreAction;
-		}
-
-		return {
-			from: 0,
-			to: 100,
-			message: "",
-			action: {
-				type: "unlock",
-				value: "_next"
+	}, {
+		key: 'componentWillReceiveProps',
+		value: function componentWillReceiveProps(nextProps) {
+			var curStep = this.getCurrentStep();
+			if (curStep !== this.state.step) {
+				this.needsScroll = true;
 			}
-		};
-	},
-	render: function render() {
-		var _this = this;
 
-		var recentScore = AssessmentUtil.getLastAttemptScoreForModel(this.props.moduleData.assessmentState, this.props.model);
-		var highestScore = AssessmentUtil.getHighestAttemptScoreForModel(this.props.moduleData.assessmentState, this.props.model);
+			return this.setState({ step: curStep });
+		}
+	}, {
+		key: 'componentDidUpdate',
+		value: function componentDidUpdate() {
+			if (this.needsScroll) {
+				delete this.needsScroll;
+				return Dispatcher.trigger('viewer:scrollToTop');
+			}
+		}
+	}, {
+		key: 'isAttemptComplete',
+		value: function isAttemptComplete() {
+			return true;
+			//@TODO: isCurrentAttemptComplete not functional, returning true which was the status quo for the pilot
+			// return AssessmentUtil.isCurrentAttemptComplete(this.props.moduleData.assessmentState, this.props.moduleData.questionState, this.props.model);
+		}
+	}, {
+		key: 'onClickSubmit',
+		value: function onClickSubmit() {
+			if (!this.isAttemptComplete()) {
+				ModalUtil.show(React.createElement(_attemptIncompleteDialog2.default, { onSubmit: this.endAttempt }));
+				return;
+			}
 
-		// alert(@state.step+ ','+ @getCurrentStep())
+			return this.endAttempt();
+		}
+	}, {
+		key: 'endAttempt',
+		value: function endAttempt() {
+			return AssessmentUtil.endAttempt(this.props.model);
+		}
+	}, {
+		key: 'exitAssessment',
+		value: function exitAssessment() {
+			var scoreAction = this.getScoreAction();
 
-		var childEl = function () {
-			switch (_this.getCurrentStep()) {
-				case 'untested':
-					var child = _this.props.model.children.at(0);
-					var Component = child.getComponentClass();
+			switch (scoreAction.action.value) {
+				case '_next':
+					return NavUtil.goNext();
 
-					return React.createElement(
-						'div',
-						{ className: 'untested' },
-						React.createElement(Component, { model: child, moduleData: _this.props.moduleData })
-					);
+				case '_prev':
+					return NavUtil.goPrev();
 
-				case 'takingTest':
-					child = _this.props.model.children.at(1);
-					Component = child.getComponentClass();
+				default:
+					return NavUtil.goto(scoreAction.action.value);
+			}
+		}
+	}, {
+		key: 'getScoreAction',
+		value: function getScoreAction() {
+			var highestScore = AssessmentUtil.getHighestAttemptScoreForModel(this.props.moduleData.assessmentState, this.props.model);
+			var scoreAction = this.props.model.modelState.scoreActions.getActionForScore(highestScore);
+			if (scoreAction) {
+				return scoreAction;
+			}
 
-					return React.createElement(
-						'div',
-						{ className: 'test' },
-						React.createElement(Component, { className: 'untested', model: child, moduleData: _this.props.moduleData, showScore: recentScore !== null }),
-						React.createElement(
+			return {
+				from: 0,
+				to: 100,
+				message: "",
+				action: {
+					type: "unlock",
+					value: "_next"
+				}
+			};
+		}
+	}, {
+		key: 'render',
+		value: function render() {
+			var _this = this;
+
+			var recentScore = AssessmentUtil.getLastAttemptScoreForModel(this.props.moduleData.assessmentState, this.props.model);
+			var highestScore = AssessmentUtil.getHighestAttemptScoreForModel(this.props.moduleData.assessmentState, this.props.model);
+
+			// alert(@state.step+ ','+ @getCurrentStep())
+
+			var childEl = function () {
+				switch (_this.getCurrentStep()) {
+					case 'untested':
+						var child = _this.props.model.children.at(0);
+						var Component = child.getComponentClass();
+
+						return React.createElement(
 							'div',
-							{ className: 'submit-button' },
-							React.createElement(Button, { onClick: _this.onClickSubmit, value: _this.isAttemptComplete() ? 'Submit' : 'Submit (Not all questions have been answered)' })
-						)
-					);
-
-				case 'scoreSubmitted':
-					var scoreAction = _this.getScoreAction();
-
-					var questionScores = AssessmentUtil.getLastAttemptScoresForModel(_this.props.moduleData.assessmentState, _this.props.model);
-
-					var numCorrect = questionScores.reduce(function (acc, questionScore) {
-						var n = 0;
-						if (parseInt(questionScore.score, 10) === 100) {
-							n = 1;
-						}
-						return parseInt(acc, 10) + n;
-					}, [0]);
-
-					if (scoreAction.page != null) {
-						var pageModel = OboModel.create(scoreAction.page);
-						pageModel.parent = _this.props.model; //'@TODO - FIGURE OUT A BETTER WAY TO DO THIS - THIS IS NEEDED TO GET {{VARIABLES}} WORKING')
-						var PageComponent = pageModel.getComponentClass();
-						childEl = React.createElement(PageComponent, { model: pageModel, moduleData: _this.props.moduleData });
-					} else {
-						childEl = React.createElement(
-							'p',
-							null,
-							scoreAction.message
+							{ className: 'untested' },
+							React.createElement(Component, { model: child, moduleData: _this.props.moduleData })
 						);
-					}
 
-					return React.createElement(
-						'div',
-						{ className: 'score unlock' },
-						React.createElement(
-							'h1',
-							null,
-							'Your score is ' + Math.round(recentScore) + '%'
-						),
-						recentScore === highestScore ? React.createElement(
-							'h2',
-							null,
-							'This is your highest score'
-						) : React.createElement(
-							'h2',
-							null,
-							'Your highest score was ' + Math.round(highestScore) + '%'
-						),
-						childEl,
-						React.createElement(
+					case 'takingTest':
+						child = _this.props.model.children.at(1);
+						Component = child.getComponentClass();
+
+						return React.createElement(
 							'div',
-							{ className: 'review' },
+							{ className: 'test' },
+							React.createElement(Component, { className: 'untested', model: child, moduleData: _this.props.moduleData, showScore: recentScore !== null }),
 							React.createElement(
+								'div',
+								{ className: 'submit-button' },
+								React.createElement(Button, { onClick: _this.onClickSubmit.bind(_this), value: _this.isAttemptComplete() ? 'Submit' : 'Submit (Not all questions have been answered)' })
+							)
+						);
+
+					case 'scoreSubmitted':
+						var scoreAction = _this.getScoreAction();
+
+						var questionScores = AssessmentUtil.getLastAttemptScoresForModel(_this.props.moduleData.assessmentState, _this.props.model);
+
+						var numCorrect = questionScores.reduce(function (acc, questionScore) {
+							var n = 0;
+							if (parseInt(questionScore.score, 10) === 100) {
+								n = 1;
+							}
+							return parseInt(acc, 10) + n;
+						}, [0]);
+
+						if (scoreAction.page != null) {
+							var pageModel = OboModel.create(scoreAction.page);
+							pageModel.parent = _this.props.model; //'@TODO - FIGURE OUT A BETTER WAY TO DO THIS - THIS IS NEEDED TO GET {{VARIABLES}} WORKING')
+							var PageComponent = pageModel.getComponentClass();
+							childEl = React.createElement(PageComponent, { model: pageModel, moduleData: _this.props.moduleData });
+						} else {
+							childEl = React.createElement(
 								'p',
-								{ className: 'number-correct' },
-								'You got ' + numCorrect + ' out of ' + questionScores.length + ' questions correct:'
+								null,
+								scoreAction.message
+							);
+						}
+
+						return React.createElement(
+							'div',
+							{ className: 'score unlock' },
+							React.createElement(
+								'h1',
+								null,
+								'Your score is ' + Math.round(recentScore) + '%'
 							),
-							questionScores.map(function (questionScore, index) {
-								var questionModel = OboModel.models[questionScore.id];
-								var QuestionComponent = questionModel.getComponentClass();
+							recentScore === highestScore ? React.createElement(
+								'h2',
+								null,
+								'This is your highest score'
+							) : React.createElement(
+								'h2',
+								null,
+								'Your highest score was ' + Math.round(highestScore) + '%'
+							),
+							childEl,
+							React.createElement(
+								'div',
+								{ className: 'review' },
+								React.createElement(
+									'p',
+									{ className: 'number-correct' },
+									'You got ' + numCorrect + ' out of ' + questionScores.length + ' questions correct:'
+								),
+								questionScores.map(function (questionScore, index) {
+									var questionModel = OboModel.models[questionScore.id];
+									var QuestionComponent = questionModel.getComponentClass();
 
-								return React.createElement(
-									'div',
-									{ key: index, className: questionScore.score === 100 ? 'is-correct' : 'is-not-correct' },
-									React.createElement(
-										'p',
-										null,
-										'Question ' + (index + 1) + ' - ' + (questionScore.score === 100 ? 'Correct:' : 'Incorrect:')
-									),
-									React.createElement(QuestionComponent, { model: questionModel, moduleData: _this.props.moduleData, showContentOnly: true })
-								);
-							})
-						)
-					);
-			}
-		}();
+									return React.createElement(
+										'div',
+										{ key: index, className: questionScore.score === 100 ? 'is-correct' : 'is-not-correct' },
+										React.createElement(
+											'p',
+											null,
+											'Question ' + (index + 1) + ' - ' + (questionScore.score === 100 ? 'Correct:' : 'Incorrect:')
+										),
+										React.createElement(QuestionComponent, { model: questionModel, moduleData: _this.props.moduleData, showContentOnly: true })
+									);
+								})
+							)
+						);
+				}
+			}();
 
-		return React.createElement(
-			OboComponent,
-			{
-				model: this.props.model,
-				moduleData: this.props.moduleData,
-				className: 'obojobo-draft--sections--assessment'
-			},
-			childEl
-		);
-	}
-});
+			return React.createElement(
+				OboComponent,
+				{
+					model: this.props.model,
+					moduleData: this.props.moduleData,
+					className: 'obojobo-draft--sections--assessment'
+				},
+				childEl
+			);
+		}
+	}]);
+
+	return Assessment;
+}();
+
+exports.default = Assessment;
 
 /***/ })
 

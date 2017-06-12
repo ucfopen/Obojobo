@@ -1,8 +1,9 @@
+import { Store } from '../../../src/scripts/common/store'
+import OboModel from '../../../__mocks__/_obo-model-with-chunks'
 import AssessmentUtil from '../../../src/scripts/viewer/util/assessment-util'
 import Dispatcher from '../../../src/scripts/common/flux/dispatcher'
 import AssessmentStore from '../../../src/scripts/viewer/stores/assessment-store'
 import QuestionStore from '../../../src/scripts/viewer/stores/question-store'
-import OboModel from '../../../src/scripts/common/models/obo-model'
 
 jest.mock('../../../src/scripts/common/flux/dispatcher', () => {
 	return ({
@@ -11,11 +12,6 @@ jest.mock('../../../src/scripts/common/flux/dispatcher', () => {
 		off: jest.fn()
 	})
 })
-
-jest.mock('../../../src/scripts/common/models/obo-model', () => {
-	return require('../../../__mocks__/obo-model-mock').default;
-})
-
 
 describe('QuestionUtil', () => {
 	let exampleDocument = {
@@ -86,11 +82,15 @@ describe('QuestionUtil', () => {
 		}
 	}
 
-	beforeEach(() => {
+	beforeEach((done) => {
 		jest.resetAllMocks()
 
 		AssessmentStore.init()
 		QuestionStore.init()
+
+		Store.getItems(() => {
+			done()
+		})
 	})
 
 	test("get an assessment from a model", () => {
@@ -101,7 +101,7 @@ describe('QuestionUtil', () => {
 				}
 			}
 		})
-		OboModel.__create(exampleDocument)
+		OboModel.create(exampleDocument)
 
 		let assessment = AssessmentUtil.getAssessmentForModel(
 			AssessmentStore.getState(),
@@ -115,7 +115,7 @@ describe('QuestionUtil', () => {
 
 	test("gets the last attempt score for a model", () => {
 		AssessmentStore.setState(exampleAssessment)
-		OboModel.__create(exampleDocument)
+		OboModel.create(exampleDocument)
 
 		expect(AssessmentUtil.getLastAttemptScoreForModel(
 			AssessmentStore.getState(),
@@ -124,7 +124,7 @@ describe('QuestionUtil', () => {
 	})
 
 	test("returns null for the last attempt score for a model if no assessment", () => {
-		OboModel.__create(exampleDocument)
+		OboModel.create(exampleDocument)
 
 		expect(AssessmentUtil.getLastAttemptScoreForModel(
 			AssessmentStore.getState(),
@@ -134,7 +134,7 @@ describe('QuestionUtil', () => {
 
 	test("returns 0 for the last attempt score for a model if no attempts", () => {
 		AssessmentStore.setState(exampleAssessmentNoAttempts)
-		OboModel.__create(exampleDocument)
+		OboModel.create(exampleDocument)
 
 		expect(AssessmentUtil.getLastAttemptScoreForModel(
 			AssessmentStore.getState(),
@@ -144,7 +144,7 @@ describe('QuestionUtil', () => {
 
 	test("gets the highest attempt score for a model", () => {
 		AssessmentStore.setState(exampleAssessment)
-		OboModel.__create(exampleDocument)
+		OboModel.create(exampleDocument)
 
 		expect(AssessmentUtil.getHighestAttemptScoreForModel(
 			AssessmentStore.getState(),
@@ -153,7 +153,7 @@ describe('QuestionUtil', () => {
 	})
 
 	test("returns null for the highest attempt score for a model if no assessment", () => {
-		OboModel.__create(exampleDocument)
+		OboModel.create(exampleDocument)
 
 		expect(AssessmentUtil.getHighestAttemptScoreForModel(
 			AssessmentStore.getState(),
@@ -163,7 +163,7 @@ describe('QuestionUtil', () => {
 
 	test("returns 0 for the highest attempt score for a model if no attempts", () => {
 		AssessmentStore.setState(exampleAssessmentNoAttempts)
-		OboModel.__create(exampleDocument)
+		OboModel.create(exampleDocument)
 
 		expect(AssessmentUtil.getHighestAttemptScoreForModel(
 			AssessmentStore.getState(),
@@ -173,7 +173,7 @@ describe('QuestionUtil', () => {
 
 	test("gets the last attempt scores for a model", () => {
 		AssessmentStore.setState(exampleAssessment)
-		OboModel.__create(exampleDocument)
+		OboModel.create(exampleDocument)
 
 		expect(AssessmentUtil.getLastAttemptScoresForModel(
 			AssessmentStore.getState(),
@@ -182,7 +182,7 @@ describe('QuestionUtil', () => {
 	})
 
 	test("returns null for the last attempt scores for a model if no assessment", () => {
-		OboModel.__create(exampleDocument)
+		OboModel.create(exampleDocument)
 
 		expect(AssessmentUtil.getLastAttemptScoresForModel(
 			AssessmentStore.getState(),
@@ -192,7 +192,7 @@ describe('QuestionUtil', () => {
 
 	test("returns [] for the last attempt scores for a model if no attempts", () => {
 		AssessmentStore.setState(exampleAssessmentNoAttempts)
-		OboModel.__create(exampleDocument)
+		OboModel.create(exampleDocument)
 
 		expect(AssessmentUtil.getLastAttemptScoresForModel(
 			AssessmentStore.getState(),
@@ -202,7 +202,7 @@ describe('QuestionUtil', () => {
 
 	test("gets the current attempt for a model", () => {
 		AssessmentStore.setState(exampleAssessment)
-		OboModel.__create(exampleDocument)
+		OboModel.create(exampleDocument)
 
 		expect(AssessmentUtil.getCurrentAttemptForModel(
 			AssessmentStore.getState(),
@@ -213,7 +213,7 @@ describe('QuestionUtil', () => {
 	})
 
 	test("returns null for the current attempt for a model if no assessment", () => {
-		OboModel.__create(exampleDocument)
+		OboModel.create(exampleDocument)
 
 		expect(AssessmentUtil.getCurrentAttemptForModel(
 			AssessmentStore.getState(),
@@ -228,7 +228,7 @@ describe('QuestionUtil', () => {
 				'q1': { set:true }
 			}
 		})
-		OboModel.__create(exampleDocument)
+		OboModel.create(exampleDocument)
 
 		expect(AssessmentUtil.isCurrentAttemptComplete(
 			AssessmentStore.getState(),
@@ -245,7 +245,7 @@ describe('QuestionUtil', () => {
 				'q2': { set:true }
 			}
 		})
-		OboModel.__create(exampleDocument)
+		OboModel.create(exampleDocument)
 
 		expect(AssessmentUtil.isCurrentAttemptComplete(
 			AssessmentStore.getState(),
@@ -255,7 +255,7 @@ describe('QuestionUtil', () => {
 	})
 
 	test.skip("returns null for isCurrentAttemptCompleted if no assessment", () => {
-		OboModel.__create(exampleDocument)
+		OboModel.create(exampleDocument)
 
 		expect(AssessmentUtil.isCurrentAttemptComplete(
 			AssessmentStore.getState(),
@@ -266,7 +266,7 @@ describe('QuestionUtil', () => {
 
 	test("gets number of copmleted attempts per model", () => {
 		AssessmentStore.setState(exampleAssessment)
-		OboModel.__create(exampleDocument)
+		OboModel.create(exampleDocument)
 
 		expect(AssessmentUtil.getNumberOfAttemptsCompletedForModel(
 			AssessmentStore.getState(),
@@ -275,7 +275,7 @@ describe('QuestionUtil', () => {
 	})
 
 	test("returns 0 fro getNumberOfAttemptsCompletedForModel if no assessment", () => {
-		OboModel.__create(exampleDocument)
+		OboModel.create(exampleDocument)
 
 		expect(AssessmentUtil.getNumberOfAttemptsCompletedForModel(
 			AssessmentStore.getState(),
@@ -284,7 +284,7 @@ describe('QuestionUtil', () => {
 	})
 
 	test("dispatches start attempt", () => {
-		OboModel.__create(exampleDocument)
+		OboModel.create(exampleDocument)
 
 		AssessmentUtil.startAttempt(OboModel.models.assessmentId)
 
@@ -299,7 +299,7 @@ describe('QuestionUtil', () => {
 	})
 
 	test("dispatches end attempt", () => {
-		OboModel.__create(exampleDocument)
+		OboModel.create(exampleDocument)
 
 		AssessmentUtil.endAttempt(OboModel.models.assessmentId)
 

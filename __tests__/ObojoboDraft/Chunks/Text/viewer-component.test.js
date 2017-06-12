@@ -2,7 +2,7 @@ import React from 'react'
 import renderer from 'react-test-renderer'
 
 import Text from '../../../../ObojoboDraft/Chunks/Text/viewer-component'
-import OboModel from '../../../_obo-model-with-chunks'
+import OboModel from '../../../../__mocks__/_obo-model-with-chunks'
 
 describe('Text', () => {
 	let model = OboModel.create({

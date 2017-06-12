@@ -1,16 +1,13 @@
-// import { Store } from '../../../src/scripts/common/store'
+import OboModel from '../../../__mocks__/_obo-model-with-chunks'
+import { Store } from '../../../src/scripts/common/store'
 import AssessmentStore from '../../../src/scripts/viewer/stores/assessment-store'
-import OboModel from '../../../src/scripts/common/models/obo-model'
+import QuestionStore from '../../../src/scripts/viewer/stores/question-store'
 import APIUtil from '../../../src/scripts/viewer/util/api-util'
 import Dispatcher from '../../../src/scripts/common/flux/dispatcher'
 import ModalUtil from '../../../src/scripts/common/util/modal-util'
 import ErrorUtil from '../../../src/scripts/common/util/error-util'
 import NavUtil from '../../../src/scripts/viewer/util/nav-util'
 import QuestionUtil from '../../../src/scripts/viewer/util/question-util'
-
-jest.mock('../../../src/scripts/common/models/obo-model', () => {
-	return require('../../../__mocks__/obo-model-mock').default;
-})
 
 jest.mock('../../../src/scripts/common/util/modal-util', () => {
 	return ({
@@ -71,7 +68,7 @@ describe('AssessmentStore', () => {
 								children: [
 									{
 										id: 'r1',
-										type: 'responder'
+										type: 'ObojoboDraft.Chunks.MCAssessment'
 									}
 								]
 							},
@@ -81,7 +78,7 @@ describe('AssessmentStore', () => {
 								children: [
 									{
 										id: 'r2',
-										type: 'responder'
+										type: 'ObojoboDraft.Chunks.MCAssessment'
 									}
 								]
 							}
@@ -90,16 +87,20 @@ describe('AssessmentStore', () => {
 				}
 			}))
 		})
-
-		OboModel.__registerModel('ObojoboDraft.Chunks.Question', { adapter:{} })
-		OboModel.__registerModel('responder', { adapter:{} })
 	}
 
-	beforeEach(() => {
+	beforeEach((done) => {
 		jest.resetAllMocks()
 
 		AssessmentStore.init()
 		AssessmentStore.triggerChange = jest.fn()
+		QuestionStore.init()
+		QuestionStore.triggerChange = jest.fn()
+
+		// Need to make sure all the Obo components are loaded
+		Store.getItems((items) => {
+			done()
+		})
 	})
 
 	it('should init state with a specific structure and return it', () => {
@@ -111,13 +112,13 @@ describe('AssessmentStore', () => {
 	})
 
 	test('inits with history (populates models and state, shows dialog for unfinished attempt', () => {
-		let q1 = OboModel.__create({
+		let q1 = OboModel.create({
 			id: 'question1',
-			type: 'question'
+			type: 'ObojoboDraft.Chunks.Question'
 		})
-		let q2 = OboModel.__create({
+		let q2 = OboModel.create({
 			id: 'question2',
-			type: 'question'
+			type: 'ObojoboDraft.Chunks.Question'
 		})
 		let history = [
 			{
@@ -126,8 +127,8 @@ describe('AssessmentStore', () => {
 				endTime: '1/1/2017 0:05:20',
 				state: {
 					questions: [
-						{ id:'question1', type:'question' },
-						{ id:'question2', type:'question' }
+						{ id:'question1', type:'ObojoboDraft.Chunks.Question' },
+						{ id:'question2', type:'ObojoboDraft.Chunks.Question' }
 					]
 				}
 			},
@@ -137,8 +138,8 @@ describe('AssessmentStore', () => {
 				endTime: null,
 				state: {
 					questions: [
-						{ id:'question1', type:'question' },
-						{ id:'questionNonExistant', type:'question' }
+						{ id:'question1', type:'ObojoboDraft.Chunks.Question' },
+						{ id:'questionNonExistant', type:'ObojoboDraft.Chunks.Question' }
 					]
 				}
 			}
@@ -158,8 +159,8 @@ describe('AssessmentStore', () => {
 							endTime: '1/1/2017 0:05:20',
 							state: {
 								questions: [
-									{ id:'question1', type:'question' },
-									{ id:'question2', type:'question' }
+									{ id:'question1', type:'ObojoboDraft.Chunks.Question' },
+									{ id:'question2', type:'ObojoboDraft.Chunks.Question' }
 								]
 							}
 						}
@@ -191,7 +192,7 @@ describe('AssessmentStore', () => {
 	})
 
 	test("tryStartAttempt shows an error if no attempts are left and triggers a change", () => {
-		OboModel.__create(getExampleAssessment())
+		OboModel.create(getExampleAssessment())
 
 		APIUtil.startAttempt.mockImplementationOnce(() => {
 			return (Promise.resolve({
@@ -211,7 +212,7 @@ describe('AssessmentStore', () => {
 	})
 
 	test("tryStartAttempt shows a generic error if an unrecognized error is thrown and triggers a change", () => {
-		OboModel.__create(getExampleAssessment())
+		OboModel.create(getExampleAssessment())
 
 		APIUtil.startAttempt.mockImplementationOnce(() => {
 			return (Promise.resolve({
@@ -232,7 +233,7 @@ describe('AssessmentStore', () => {
 
 	test("startAttempt injects question models, creates state, updates the nav and processes the onStartAttempt trigger", () => {
 		mockValidStartAttempt()
-		OboModel.__create(getExampleAssessment())
+		OboModel.create(getExampleAssessment())
 
 		NavUtil.rebuildMenu = jest.fn()
 		NavUtil.goto = jest.fn()
@@ -257,7 +258,7 @@ describe('AssessmentStore', () => {
 
 	test("endAttempt shows an error if the endAttempt request fails and triggers a change", (done) => {
 		mockValidStartAttempt()
-		OboModel.__create(getExampleAssessment())
+		OboModel.create(getExampleAssessment())
 
 		APIUtil.endAttempt = jest.fn()
 		APIUtil.endAttempt.mockImplementationOnce(() => {
@@ -282,7 +283,7 @@ describe('AssessmentStore', () => {
 
 	test("endAttempt hides questions, resets responses, updates state, processes onEndAttempt trigger and triggers a change", (done) => {
 		mockValidStartAttempt()
-		OboModel.__create(getExampleAssessment())
+		OboModel.create(getExampleAssessment())
 
 		APIUtil.endAttempt = jest.fn()
 		APIUtil.endAttempt.mockImplementationOnce(() => {
@@ -317,13 +318,14 @@ describe('AssessmentStore', () => {
 
 					done()
 				})
+				.catch((e) => { console.log(e); })
 			})
 		})
 	})
 
 	test("recordResponse with a bad response will show an error message", (done) => {
 		mockValidStartAttempt()
-		OboModel.__create(getExampleAssessment())
+		OboModel.create(getExampleAssessment())
 
 		APIUtil.postEvent.mockImplementationOnce(() => {
 			return (Promise.resolve({
@@ -352,7 +354,7 @@ describe('AssessmentStore', () => {
 
 	test("recordResponse will update state, post an event and trigger a change", (done) => {
 		mockValidStartAttempt()
-		OboModel.__create(getExampleAssessment())
+		OboModel.create(getExampleAssessment())
 
 		APIUtil.postEvent.mockImplementationOnce(() => {
 			return (Promise.resolve({

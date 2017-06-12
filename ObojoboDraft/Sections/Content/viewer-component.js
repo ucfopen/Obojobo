@@ -7,7 +7,7 @@ let { OboComponent } = Common.components;
 let { OboModel } = Common.models;
 let { NavUtil } = Viewer.util;
 
-export default React.createClass({
+export default class Content {
 	render() {
 		let childEl = null;
 		let navTargetModel = NavUtil.getNavTargetModel(this.props.moduleData.navState);
@@ -28,4 +28,4 @@ export default React.createClass({
 
 		</OboComponent>;
 	}
-});
+}

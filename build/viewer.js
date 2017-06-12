@@ -1185,11 +1185,9 @@ var AssessmentStore = function (_Store) {
 				assessment.current.state.questions.forEach(function (question) {
 					return _questionUtil2.default.hideQuestion(question.id);
 				});
-
 				assessment.currentResponses.forEach(function (responderId) {
 					return _questionUtil2.default.resetResponse(responderId);
 				});
-
 				assessment.attempts.push(res.value);
 				assessment.current = null;
 
@@ -1296,8 +1294,6 @@ var QuestionStore = function (_Store) {
 
 				_this.state.responses[id] = payload.value.response;
 				_this.triggerChange();
-
-				console.log('QRR set responses', id, 'to', payload.value.response);
 
 				var questionModel = model.getParentOfType('ObojoboDraft.Chunks.Question');
 				return _apiUtil2.default.postEvent(questionModel.getRoot(), 'question:recordResponse', {

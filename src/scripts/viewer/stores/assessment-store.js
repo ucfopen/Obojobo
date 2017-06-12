@@ -143,9 +143,7 @@ class AssessmentStore extends Store {
 			if (res.status === 'error') { return ErrorUtil.errorResponse(res); }
 
 			assessment.current.state.questions.forEach(question => QuestionUtil.hideQuestion(question.id));
-
 			assessment.currentResponses.forEach(responderId => QuestionUtil.resetResponse(responderId));
-
 			assessment.attempts.push(res.value);
 			assessment.current = null;
 

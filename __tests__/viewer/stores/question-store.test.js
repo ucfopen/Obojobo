@@ -1,12 +1,8 @@
 import { Store } from '../../../src/scripts/common/store'
 import QuestionStore from '../../../src/scripts/viewer/stores/question-store'
-import OboModel from '../../../src/scripts/common/models/obo-model'
+import OboModel from '../../../__mocks__/_obo-model-with-chunks'
 import APIUtil from '../../../src/scripts/viewer/util/api-util'
 import Dispatcher from '../../../src/scripts/common/flux/dispatcher'
-
-jest.mock('../../../src/scripts/common/models/obo-model', () => {
-	return require('../../../__mocks__/obo-model-mock').default;
-})
 
 jest.mock('../../../src/scripts/viewer/util/api-util', () => {
 	return {
@@ -16,10 +12,23 @@ jest.mock('../../../src/scripts/viewer/util/api-util', () => {
 
 describe('QuestionStore', () => {
 	let __createModels = () => {
-		return OboModel.__create({
+		return OboModel.create({
 			id: 'questionId',
 			type: 'ObojoboDraft.Chunks.Question',
 			children: [
+				{
+					id: 'text',
+					type: 'ObojoboDraft.Chunks.Text',
+					content: {
+						textGroup: [
+							{
+								text: {
+									value: 'Question Text'
+								}
+							}
+						]
+					}
+				},
 				{
 					id: 'responderId',
 					content: {
@@ -43,11 +52,16 @@ describe('QuestionStore', () => {
 		})
 	}
 
-	beforeEach(() => {
+	beforeEach((done) => {
 		jest.resetAllMocks()
 
 		QuestionStore.init()
 		QuestionStore.triggerChange = jest.fn()
+
+		// Need to make sure all the Obo components are loaded
+		Store.getItems((items) => {
+			done()
+		})
 	})
 
 	it('should init state with a specific structure and return it', () => {
@@ -67,7 +81,7 @@ describe('QuestionStore', () => {
 		expect(QuestionStore.getState()).toEqual({ x:1 })
 	})
 
-	it('should record responses, trigger a change and post an event', () => {
+	it.only('should record responses, trigger a change and post an event', () => {
 		__createModels()
 
 		Dispatcher.trigger('question:recordResponse', {

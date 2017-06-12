@@ -3,15 +3,15 @@ import Common from 'Common';
 let { Dialog } = Common.components.modal;
 let { ModalUtil } = Common.util;
 
-export default React.createClass({
+export default class AttemptIncompleteDialog {
 	onCancel() {
 		return ModalUtil.hide();
-	},
+	}
 
 	onSubmit() {
 		ModalUtil.hide();
 		return this.props.onSubmit();
-	},
+	}
 
 	render() {
 		return <Dialog width="32rem" buttons={[
@@ -19,12 +19,12 @@ export default React.createClass({
 				value: 'Submit as incomplete',
 				altAction: true,
 				dangerous: true,
-				onClick: this.onSubmit
+				onClick: this.onSubmit.bind(this)
 			},
 			'or',
 			{
 				value: 'Resume assessment',
-				onClick: this.onCancel,
+				onClick: this.onCancel.bind(this),
 				default: true
 			}
 		]}>
@@ -33,4 +33,4 @@ export default React.createClass({
 			Finish answering all questions and submit again.
 		</Dialog>;
 	}
-});
+}

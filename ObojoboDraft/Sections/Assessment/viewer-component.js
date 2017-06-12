@@ -15,10 +15,10 @@ let { NavUtil } = Viewer.util;
 
 import AttemptIncompleteDialog from './attempt-incomplete-dialog';
 
-export default React.createClass({
-	getInitialState() {
-		return {step: null};
-	},
+export default class Assessment {
+	constructor() {
+		this.state = {step: null};
+	}
 
 	getCurrentStep() {
 		let assessment = AssessmentUtil.getAssessmentForModel(this.props.moduleData.assessmentState, this.props.model);
@@ -27,7 +27,7 @@ export default React.createClass({
 		if (assessment.current !== null) { return 'takingTest'; }
 		if (assessment.attempts.length > 0) { return 'scoreSubmitted'; }
 		return 'untested';
-	},
+	}
 
 	componentWillReceiveProps(nextProps) {
 		let curStep = this.getCurrentStep();
@@ -36,28 +36,20 @@ export default React.createClass({
 		}
 
 		return this.setState({ step:curStep });
-	},
+	}
 
 	componentDidUpdate() {
 		if (this.needsScroll) {
 			delete this.needsScroll;
 			return Dispatcher.trigger('viewer:scrollToTop');
 		}
-	},
-
-		// if @needsScroll
-		// 	delete @needsScroll
-		// 	alert 'TRIG'
-		// 	Dispatcher.trigger 'viewer:scrollTo', { value: 0 }
-
-	// # componentDidMount: ->
-	// # 	ModalUtil.show `<AttemptIncompleteDialog onSubmit={this.endAttempt} />`
+	}
 
 	isAttemptComplete() {
 		return true
 		//@TODO: isCurrentAttemptComplete not functional, returning true which was the status quo for the pilot
 		// return AssessmentUtil.isCurrentAttemptComplete(this.props.moduleData.assessmentState, this.props.moduleData.questionState, this.props.model);
-	},
+	}
 
 	onClickSubmit() {
 		if (!this.isAttemptComplete()) {
@@ -66,11 +58,11 @@ export default React.createClass({
 		}
 
 		return this.endAttempt();
-	},
+	}
 
 	endAttempt() {
 		return AssessmentUtil.endAttempt(this.props.model);
-	},
+	}
 
 	exitAssessment() {
 		let scoreAction = this.getScoreAction();
@@ -85,7 +77,7 @@ export default React.createClass({
 			default:
 				return NavUtil.goto(scoreAction.action.value);
 		}
-	},
+	}
 
 	getScoreAction() {
 		let highestScore = AssessmentUtil.getHighestAttemptScoreForModel(this.props.moduleData.assessmentState, this.props.model);
@@ -101,7 +93,7 @@ export default React.createClass({
 				value: "_next"
 			}
 		};
-	},
+	}
 
 	render() {
 		let recentScore = AssessmentUtil.getLastAttemptScoreForModel(this.props.moduleData.assessmentState, this.props.model);
@@ -125,7 +117,7 @@ export default React.createClass({
 				return <div className="test">
 					<Component className="untested" model={child} moduleData={this.props.moduleData} showScore={recentScore !== null} />
 					<div className="submit-button">
-						<Button onClick={this.onClickSubmit} value={this.isAttemptComplete() ? 'Submit' : 'Submit (Not all questions have been answered)'} />
+						<Button onClick={this.onClickSubmit.bind(this)} value={this.isAttemptComplete() ? 'Submit' : 'Submit (Not all questions have been answered)'} />
 					</div>
 				</div>;
 
@@ -186,4 +178,4 @@ export default React.createClass({
 			{childEl}
 		</OboComponent>;
 	}
-});
+}

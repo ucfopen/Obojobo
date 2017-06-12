@@ -9,7 +9,7 @@ let { OboModel } = Common.models;
 let { Dispatcher } = Common.flux;
 let { NavUtil } = Viewer.util;
 
-export default React.createClass({
+export default class Module {
 
 	render() {
 		let childEl = null;
@@ -31,4 +31,4 @@ export default React.createClass({
 			</div>
 		</OboComponent>;
 	}
-});
+}

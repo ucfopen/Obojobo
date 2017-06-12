@@ -189,6 +189,8 @@ Object.defineProperty(exports, "__esModule", {
 	value: true
 });
 
+var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+
 __webpack_require__(138);
 
 var _katex = __webpack_require__(16);
@@ -201,54 +203,65 @@ var _Common2 = _interopRequireDefault(_Common);
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
 var OboComponent = _Common2.default.components.OboComponent;
 
-
-var HTML = React.createClass({
-	displayName: 'HTML',
-	createMarkup: function createMarkup() {
-		var div = document.createElement('div');
-		div.innerHTML = this.props.model.modelState.html;
-
-		var latexes = div.querySelectorAll('.latex');
-
-		var _iteratorNormalCompletion = true;
-		var _didIteratorError = false;
-		var _iteratorError = undefined;
-
-		try {
-			for (var _iterator = Array.from(latexes)[Symbol.iterator](), _step; !(_iteratorNormalCompletion = (_step = _iterator.next()).done); _iteratorNormalCompletion = true) {
-				var el = _step.value;
-
-				el.innerHTML = _katex2.default.renderToString(el.innerHTML);
-			}
-		} catch (err) {
-			_didIteratorError = true;
-			_iteratorError = err;
-		} finally {
-			try {
-				if (!_iteratorNormalCompletion && _iterator.return) {
-					_iterator.return();
-				}
-			} finally {
-				if (_didIteratorError) {
-					throw _iteratorError;
-				}
-			}
-		}
-
-		return { __html: div.innerHTML };
-	},
-	render: function render() {
-		var data = this.props.model.modelState;
-
-		return React.createElement(
-			OboComponent,
-			{ model: this.props.model, moduleData: this.props.moduleData },
-			React.createElement('div', { className: 'obojobo-draft--chunks--html viewer pad align-' + data.align, dangerouslySetInnerHTML: this.createMarkup() })
-		);
+var HTML = function () {
+	function HTML() {
+		_classCallCheck(this, HTML);
 	}
-});
+
+	_createClass(HTML, [{
+		key: 'createMarkup',
+		value: function createMarkup() {
+			var div = document.createElement('div');
+			div.innerHTML = this.props.model.modelState.html;
+
+			var latexes = div.querySelectorAll('.latex');
+
+			var _iteratorNormalCompletion = true;
+			var _didIteratorError = false;
+			var _iteratorError = undefined;
+
+			try {
+				for (var _iterator = Array.from(latexes)[Symbol.iterator](), _step; !(_iteratorNormalCompletion = (_step = _iterator.next()).done); _iteratorNormalCompletion = true) {
+					var el = _step.value;
+
+					el.innerHTML = _katex2.default.renderToString(el.innerHTML);
+				}
+			} catch (err) {
+				_didIteratorError = true;
+				_iteratorError = err;
+			} finally {
+				try {
+					if (!_iteratorNormalCompletion && _iterator.return) {
+						_iterator.return();
+					}
+				} finally {
+					if (_didIteratorError) {
+						throw _iteratorError;
+					}
+				}
+			}
+
+			return { __html: div.innerHTML };
+		}
+	}, {
+		key: 'render',
+		value: function render() {
+			var data = this.props.model.modelState;
+
+			return React.createElement(
+				OboComponent,
+				{ model: this.props.model, moduleData: this.props.moduleData },
+				React.createElement('div', { className: 'obojobo-draft--chunks--html viewer pad align-' + data.align, dangerouslySetInnerHTML: this.createMarkup() })
+			);
+		}
+	}]);
+
+	return HTML;
+}();
 
 exports.default = HTML;
 

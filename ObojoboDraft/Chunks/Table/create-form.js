@@ -1,10 +1,10 @@
-export default React.createClass({
-	getInitialState() {
-		return {
+export default class CreateForm {
+	constructor() {
+		this.state = {
 			rows: this.props.rows,
 			cols: this.props.cols
 		};
-	},
+	}
 
 	onUpdateRows(event) {
 		this.setState({
@@ -12,7 +12,7 @@ export default React.createClass({
 		});
 
 		return this.props.onChange(~~event.target.value, this.state.cols);
-	},
+	}
 
 	onUpdateCols(event) {
 		this.setState({
@@ -20,14 +20,14 @@ export default React.createClass({
 		});
 
 		return this.props.onChange(this.state.rows, ~~event.target.value);
-	},
+	}
 
 	render() {
 		return <div>
 			<label>rows:</label>
-			<input type="number" value={this.state.rows} onChange={this.onUpdateRows} />
+			<input type="number" value={this.state.rows} onChange={this.onUpdateRows.bind(this)} />
 			<label>cols:</label>
-			<input type="number" value={this.state.cols} onChange={this.onUpdateCols} />
+			<input type="number" value={this.state.cols} onChange={this.onUpdateCols.bind(this)} />
 		</div>;
 	}
-});
+}

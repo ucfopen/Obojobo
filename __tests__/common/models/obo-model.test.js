@@ -1,4 +1,4 @@
-import OboModel from '../../../src/scripts/common/models/obo-model'
+import OboModel from '../../../__mocks__/_obo-model-with-chunks'
 import Dispatcher from '../../../src/scripts/common/flux/dispatcher'
 import createUUID from '../../../src/scripts/common/util/uuid'
 import { Store } from '../../../src/scripts/common/store'
@@ -99,18 +99,22 @@ describe('OboModel', () => {
 		expect(o.toText()).toEqual('toTextTestResult')
 	})
 
-	test("should retrieve the root model", () => {
-		let o = OboModel.__create({
-			id: 'root',
-			type: 'root-type',
-			children: [{
-				id: 'child',
-				type: 'child-type'
-			}]
-		})
+	test("should retrieve the root model", (done) => {
+		Store.getItems( (items) => {
+			let o = OboModel.create({
+				id: 'root',
+				type: 'ObojoboDraft.Modules.Module',
+				children: [{
+					id: 'child',
+					type: 'ObojoboDraft.Sections.Content'
+				}]
+			})
 
-		expect(OboModel.models.root.getRoot()).toBe(o)
-		expect(OboModel.models.child.getRoot()).toBe(o)
+			expect(OboModel.models.root.getRoot()).toBe(o)
+			expect(OboModel.models.child.getRoot()).toBe(o)
+
+			done()
+		})
 	})
 
 	test("should process a trigger", () => {
@@ -189,49 +193,57 @@ describe('OboModel', () => {
 	})
 
 	//@TODO: Test fails, flags on modelState are broken, skip for now
-	test.skip("marking models as dirty sets flags dirty and needsUpdate but does not modify children", () => {
-		let o = OboModel.__create({
-			id: 'root',
-			type: 'root-type',
-			children: [{
-				id: 'child',
-				type: 'child-type'
-			}]
+	test.skip("marking models as dirty sets flags dirty and needsUpdate but does not modify children", (done) => {
+		Store.getItems((items) => {
+			let o = OboModel.create({
+				id: 'ObojoboDraft.Modules.Module',
+				type: 'root-type',
+				children: [{
+					id: 'child',
+					type: 'ObojoboDraft.Sections.Content'
+				}]
+			})
+
+			expect(OboModel.models.root.modelState.dirty).toBe(false)
+			expect(OboModel.models.root.modelState.needsUpdate).toBe(false)
+			expect(OboModel.models.child.modelState.dirty).toBe(false)
+			expect(OboModel.models.child.modelState.needsUpdate).toBe(false)
+
+			o.markDirty()
+
+			expect(OboModel.models.root.modelState.dirty).toBe(true)
+			expect(OboModel.models.root.modelState.needsUpdate).toBe(true)
+			expect(OboModel.models.child.modelState.dirty).toBe(false)
+			expect(OboModel.models.child.modelState.needsUpdate).toBe(false)
+
+			done()
 		})
-
-		expect(OboModel.models.root.modelState.dirty).toBe(false)
-		expect(OboModel.models.root.modelState.needsUpdate).toBe(false)
-		expect(OboModel.models.child.modelState.dirty).toBe(false)
-		expect(OboModel.models.child.modelState.needsUpdate).toBe(false)
-
-		o.markDirty()
-
-		expect(OboModel.models.root.modelState.dirty).toBe(true)
-		expect(OboModel.models.root.modelState.needsUpdate).toBe(true)
-		expect(OboModel.models.child.modelState.dirty).toBe(false)
-		expect(OboModel.models.child.modelState.needsUpdate).toBe(false)
 	})
 
-	test("removing children sets their parent to null, marks them dirty and removes them from the model db", () => {
-		let o = OboModel.__create({
-			id: 'root',
-			type: 'root-type',
-			children: [{
-				id: 'child',
-				type: 'child-type'
-			}]
+	test("removing children sets their parent to null, marks them dirty and removes them from the model db", (done) => {
+		Store.getItems((items) => {
+			let o = OboModel.create({
+				id: 'root',
+				type: 'ObojoboDraft.Modules.Module',
+				children: [{
+					id: 'child',
+					type: 'ObojoboDraft.Sections.Content'
+				}]
+			})
+
+			let child = OboModel.models.child;
+			child.modelState.dirty = false;
+
+			o.children.remove(child);
+
+			expect(child.parent).toBe(null);
+			expect(OboModel.models.root.modelState.dirty).toBe(false);
+			expect(child.modelState.dirty).toBe(true);
+
+			expect(OboModel.models.child).toBeUndefined()
+
+			done()
 		})
-
-		let child = OboModel.models.child;
-		child.modelState.dirty = false;
-
-		o.children.remove(child);
-
-		expect(child.parent).toBe(null);
-		expect(OboModel.models.root.modelState.dirty).toBe(false);
-		expect(child.modelState.dirty).toBe(true);
-
-		expect(OboModel.models.child).toBeUndefined()
 	})
 
 	test("adding children sets their parent and marks them dirty", () => {
@@ -456,19 +468,21 @@ describe('OboModel', () => {
 		expect(false).toBe(true)
 	})
 
-	test("getComponentClass returns the component class of a model", () => {
-		let typeAComponentClass = jest.fn()
+	test("getComponentClass returns the component class of a model", (done) => {
+		Store.getItems( (items) => {
+			OboModel.create({
+				id: 'rootId',
+				type: 'ObojoboDraft.Chunks.Text'
+			})
 
-		// Store is mocked here from obo-model-mock
-		Store.registerModel('typeA', {
-			componentClass: typeAComponentClass
+			let root = OboModel.models.rootId
+			let Text = items.get('ObojoboDraft.Chunks.Text')
+
+			expect(root.getComponentClass()).toBe(Text.componentClass)
+
+			done()
 		})
 
-		let root = OboModel.create({
-			type: 'typeA'
-		})
-
-		expect(root.getComponentClass()).toBe(typeAComponentClass)
 	})
 
 	test("hasChildren reports if a model has children", () => {

@@ -6,12 +6,12 @@ import Viewer from 'Viewer';
 let { OboComponent } = Common.components;
 let { NavUtil } = Viewer.util;
 
-export default React.createClass({
+export default class Page {
 	componentWillReceiveProps(nextProps) {
 		if (nextProps.moduleData.navState.navTargetId !== this.props.moduleData.navState.navTargetId) {
 			return NavUtil.setFlag(this.props.moduleData.navState.navTargetId, 'visited', true);
 		}
-	},
+	}
 
 	render() {
 		return <OboComponent
@@ -28,4 +28,4 @@ export default React.createClass({
 			}
 		</OboComponent>;
 	}
-});
+}

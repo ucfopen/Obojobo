@@ -5,7 +5,7 @@ import katex from 'katex';
 import Common from 'Common'
 let { OboComponent } = Common.components;
 
-const HTML = React.createClass({
+export default class HTML {
 	createMarkup() {
 		let div = document.createElement('div');
 		div.innerHTML = this.props.model.modelState.html;
@@ -17,7 +17,7 @@ const HTML = React.createClass({
 		}
 
 		return { __html:div.innerHTML  };
-	},
+	}
 
 	render() {
 		let data = this.props.model.modelState;
@@ -26,7 +26,4 @@ const HTML = React.createClass({
 			<div className={`obojobo-draft--chunks--html viewer pad align-${data.align}`} dangerouslySetInnerHTML={this.createMarkup()} />
 		</OboComponent>;
 	}
-});
-
-
-export default HTML;
+}

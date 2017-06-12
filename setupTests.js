@@ -11,6 +11,10 @@ window._ = require('underscore');
 window.Backbone = require('backbone');
 window.katex = require('katex');
 
+React.addons = {
+	CSSTransitionGroup: require('react-transition-group/CSSTransitionGroup')
+}
+
 window.__oboGlobals = {};
 
 // require("../build/obo.js")
