@@ -1,7 +1,7 @@
-let Adapter = {
+export default {
 	construct(model, attrs) {
-		if (__guard__(attrs != null ? attrs.content : undefined, x => x.src) != null) {
-			return model.modelState.src = src;
+		if(attrs && attrs.content && attrs.content.src) {
+			return model.modelState.src = attrs.content.src;
 		} else {
 			return model.modelState.src = null;
 		}
@@ -18,10 +18,4 @@ let Adapter = {
 	toText(model) {
 		return model.modelState.src;
 	}
-};
-
-
-export default Adapter;
-function __guard__(value, transform) {
-  return (typeof value !== 'undefined' && value !== null) ? transform(value) : undefined;
 }

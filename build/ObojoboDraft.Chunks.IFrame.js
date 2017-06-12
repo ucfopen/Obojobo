@@ -130,12 +130,10 @@ _Common2.default.Store.registerModel('ObojoboDraft.Chunks.IFrame', {
 Object.defineProperty(exports, "__esModule", {
 	value: true
 });
-var Adapter = {
+exports.default = {
 	construct: function construct(model, attrs) {
-		if (__guard__(attrs != null ? attrs.content : undefined, function (x) {
-			return x.src;
-		}) != null) {
-			return model.modelState.src = src;
+		if (attrs && attrs.content && attrs.content.src) {
+			return model.modelState.src = attrs.content.src;
 		} else {
 			return model.modelState.src = null;
 		}
@@ -150,12 +148,6 @@ var Adapter = {
 		return model.modelState.src;
 	}
 };
-
-exports.default = Adapter;
-
-function __guard__(value, transform) {
-	return typeof value !== 'undefined' && value !== null ? transform(value) : undefined;
-}
 
 /***/ }),
 
