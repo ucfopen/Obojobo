@@ -1,0 +1,36 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`Break Break component with textGroup 1`] = `
+<div
+  className="component"
+  data-focussed={false}
+  data-id="id"
+  data-obo-component={true}
+  data-type="ObojoboDraft.Chunks.Break"
+  id="obo-id"
+  model={
+    Object {
+      "children": null,
+      "content": Object {},
+      "id": "id",
+      "index": 0,
+      "metadata": Object {},
+      "type": "ObojoboDraft.Chunks.Break",
+    }
+  }
+  moduleData={
+    Object {
+      "focusState": Object {},
+    }
+  }
+  tag="div"
+>
+  <div
+    className="non-editable-chunk obojobo-draft--chunks--break viewer"
+    contentEditable="false"
+    data-indent={0}
+  >
+    <hr />
+  </div>
+</div>
+`;

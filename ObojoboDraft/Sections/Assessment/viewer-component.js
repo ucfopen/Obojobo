@@ -15,8 +15,10 @@ let { NavUtil } = Viewer.util;
 
 import AttemptIncompleteDialog from './attempt-incomplete-dialog';
 
-export default class Assessment {
+export default class Assessment extends React.Component {
 	constructor() {
+		super();
+
 		this.state = {step: null};
 	}
 

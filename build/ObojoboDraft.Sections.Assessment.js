@@ -426,6 +426,10 @@ function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { de
 
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
+function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
+
+function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
+
 var OboComponent = _Common2.default.components.OboComponent;
 var OboModel = _Common2.default.models.OboModel;
 var Button = _Common2.default.components.Button;
@@ -435,11 +439,16 @@ var ScoreStore = _Viewer2.default.stores.ScoreStore;
 var AssessmentUtil = _Viewer2.default.util.AssessmentUtil;
 var NavUtil = _Viewer2.default.util.NavUtil;
 
-var Assessment = function () {
+var Assessment = function (_React$Component) {
+	_inherits(Assessment, _React$Component);
+
 	function Assessment() {
 		_classCallCheck(this, Assessment);
 
-		this.state = { step: null };
+		var _this = _possibleConstructorReturn(this, (Assessment.__proto__ || Object.getPrototypeOf(Assessment)).call(this));
+
+		_this.state = { step: null };
+		return _this;
 	}
 
 	_createClass(Assessment, [{
@@ -536,7 +545,7 @@ var Assessment = function () {
 	}, {
 		key: 'render',
 		value: function render() {
-			var _this = this;
+			var _this2 = this;
 
 			var recentScore = AssessmentUtil.getLastAttemptScoreForModel(this.props.moduleData.assessmentState, this.props.model);
 			var highestScore = AssessmentUtil.getHighestAttemptScoreForModel(this.props.moduleData.assessmentState, this.props.model);
@@ -544,36 +553,36 @@ var Assessment = function () {
 			// alert(@state.step+ ','+ @getCurrentStep())
 
 			var childEl = function () {
-				switch (_this.getCurrentStep()) {
+				switch (_this2.getCurrentStep()) {
 					case 'untested':
-						var child = _this.props.model.children.at(0);
+						var child = _this2.props.model.children.at(0);
 						var Component = child.getComponentClass();
 
 						return React.createElement(
 							'div',
 							{ className: 'untested' },
-							React.createElement(Component, { model: child, moduleData: _this.props.moduleData })
+							React.createElement(Component, { model: child, moduleData: _this2.props.moduleData })
 						);
 
 					case 'takingTest':
-						child = _this.props.model.children.at(1);
+						child = _this2.props.model.children.at(1);
 						Component = child.getComponentClass();
 
 						return React.createElement(
 							'div',
 							{ className: 'test' },
-							React.createElement(Component, { className: 'untested', model: child, moduleData: _this.props.moduleData, showScore: recentScore !== null }),
+							React.createElement(Component, { className: 'untested', model: child, moduleData: _this2.props.moduleData, showScore: recentScore !== null }),
 							React.createElement(
 								'div',
 								{ className: 'submit-button' },
-								React.createElement(Button, { onClick: _this.onClickSubmit.bind(_this), value: _this.isAttemptComplete() ? 'Submit' : 'Submit (Not all questions have been answered)' })
+								React.createElement(Button, { onClick: _this2.onClickSubmit.bind(_this2), value: _this2.isAttemptComplete() ? 'Submit' : 'Submit (Not all questions have been answered)' })
 							)
 						);
 
 					case 'scoreSubmitted':
-						var scoreAction = _this.getScoreAction();
+						var scoreAction = _this2.getScoreAction();
 
-						var questionScores = AssessmentUtil.getLastAttemptScoresForModel(_this.props.moduleData.assessmentState, _this.props.model);
+						var questionScores = AssessmentUtil.getLastAttemptScoresForModel(_this2.props.moduleData.assessmentState, _this2.props.model);
 
 						var numCorrect = questionScores.reduce(function (acc, questionScore) {
 							var n = 0;
@@ -585,9 +594,9 @@ var Assessment = function () {
 
 						if (scoreAction.page != null) {
 							var pageModel = OboModel.create(scoreAction.page);
-							pageModel.parent = _this.props.model; //'@TODO - FIGURE OUT A BETTER WAY TO DO THIS - THIS IS NEEDED TO GET {{VARIABLES}} WORKING')
+							pageModel.parent = _this2.props.model; //'@TODO - FIGURE OUT A BETTER WAY TO DO THIS - THIS IS NEEDED TO GET {{VARIABLES}} WORKING')
 							var PageComponent = pageModel.getComponentClass();
-							childEl = React.createElement(PageComponent, { model: pageModel, moduleData: _this.props.moduleData });
+							childEl = React.createElement(PageComponent, { model: pageModel, moduleData: _this2.props.moduleData });
 						} else {
 							childEl = React.createElement(
 								'p',
@@ -634,7 +643,7 @@ var Assessment = function () {
 											null,
 											'Question ' + (index + 1) + ' - ' + (questionScore.score === 100 ? 'Correct:' : 'Incorrect:')
 										),
-										React.createElement(QuestionComponent, { model: questionModel, moduleData: _this.props.moduleData, showContentOnly: true })
+										React.createElement(QuestionComponent, { model: questionModel, moduleData: _this2.props.moduleData, showContentOnly: true })
 									);
 								})
 							)
@@ -655,7 +664,7 @@ var Assessment = function () {
 	}]);
 
 	return Assessment;
-}();
+}(React.Component);
 
 exports.default = Assessment;
 

@@ -17,7 +17,7 @@ let { OboComponent } = Common.components;
 
 let selectionHandler = new SelectionHandler();
 
-export default class List {
+export default class List extends React.Component {
 	createMockListElement(data, indentLevel) {
 		let style = data.listStyles.get(indentLevel);
 

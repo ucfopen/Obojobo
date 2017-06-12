@@ -5,7 +5,7 @@ import katex from 'katex';
 import Common from 'Common'
 let { OboComponent } = Common.components;
 
-export default class HTML {
+export default class HTML extends React.Component {
 	createMarkup() {
 		let div = document.createElement('div');
 		div.innerHTML = this.props.model.modelState.html;

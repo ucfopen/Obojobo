@@ -9,7 +9,7 @@ let { OboModel } = Common.models;
 let { Dispatcher } = Common.flux;
 let { NavUtil } = Viewer.util;
 
-export default class Module {
+export default class Module extends React.Component {
 
 	render() {
 		let childEl = null;

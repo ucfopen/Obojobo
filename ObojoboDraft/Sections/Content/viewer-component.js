@@ -7,7 +7,7 @@ let { OboComponent } = Common.components;
 let { OboModel } = Common.models;
 let { NavUtil } = Viewer.util;
 
-export default class Content {
+export default class Content extends React.Component {
 	render() {
 		let childEl = null;
 		let navTargetModel = NavUtil.getNavTargetModel(this.props.moduleData.navState);
