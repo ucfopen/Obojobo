@@ -1,0 +1,152 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`Assessment Assessment component 1`] = `
+<div
+  className="component obojobo-draft--sections--assessment"
+  data-focussed={false}
+  data-id="id"
+  data-obo-component={true}
+  data-type="ObojoboDraft.Sections.Assessment"
+  id="obo-id"
+  model={
+    Object {
+      "children": Array [
+        Object {
+          "children": Array [
+            Object {
+              "children": null,
+              "content": Object {},
+              "id": "child",
+              "index": 0,
+              "metadata": Object {},
+              "type": "ObojoboDraft.Chunks.Break",
+            },
+          ],
+          "content": Object {},
+          "id": "page",
+          "index": 0,
+          "metadata": Object {},
+          "type": "ObojoboDraft.Pages.Page",
+        },
+        Object {
+          "children": null,
+          "content": Object {
+            "choose": Infinity,
+            "groupSize": 1,
+            "resetWhenEmpty": undefined,
+            "select": "sequential",
+          },
+          "id": "QuestionBank",
+          "index": 0,
+          "metadata": Object {},
+          "type": "ObojoboDraft.Chunks.QuestionBank",
+        },
+      ],
+      "content": Object {
+        "attempts": 3,
+        "hideNav": undefined,
+        "scoreActions": Array [],
+      },
+      "id": "id",
+      "index": 0,
+      "metadata": Object {},
+      "type": "ObojoboDraft.Sections.Assessment",
+    }
+  }
+  moduleData={
+    Object {
+      "assessmentState": Object {
+        "assessments": Array [],
+      },
+      "focusState": Object {},
+      "navState": Object {
+        "itemsById": Object {},
+      },
+    }
+  }
+  tag="div"
+>
+  <div
+    className="untested"
+  >
+    <div
+      className="component obojobo-draft--pages--page"
+      data-focussed={false}
+      data-id="page"
+      data-obo-component={true}
+      data-type="ObojoboDraft.Pages.Page"
+      id="obo-page"
+      model={
+        Object {
+          "children": Array [
+            Object {
+              "children": null,
+              "content": Object {},
+              "id": "child",
+              "index": 0,
+              "metadata": Object {},
+              "type": "ObojoboDraft.Chunks.Break",
+            },
+          ],
+          "content": Object {},
+          "id": "page",
+          "index": 0,
+          "metadata": Object {},
+          "type": "ObojoboDraft.Pages.Page",
+        }
+      }
+      moduleData={
+        Object {
+          "assessmentState": Object {
+            "assessments": Array [],
+          },
+          "focusState": Object {},
+          "navState": Object {
+            "itemsById": Object {},
+          },
+        }
+      }
+      tag="div"
+    >
+      <div
+        className="component"
+        data-focussed={false}
+        data-id="child"
+        data-obo-component={true}
+        data-type="ObojoboDraft.Chunks.Break"
+        id="obo-child"
+        model={
+          Object {
+            "children": null,
+            "content": Object {},
+            "id": "child",
+            "index": 0,
+            "metadata": Object {},
+            "type": "ObojoboDraft.Chunks.Break",
+          }
+        }
+        moduleData={
+          Object {
+            "assessmentState": Object {
+              "assessments": Array [],
+            },
+            "focusState": Object {},
+            "navState": Object {
+              "itemsById": Object {},
+            },
+          }
+        }
+        tag="div"
+      >
+        <div
+          className="non-editable-chunk obojobo-draft--chunks--break viewer"
+          contentEditable="false"
+          data-indent={0}
+        >
+          <hr />
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+`;

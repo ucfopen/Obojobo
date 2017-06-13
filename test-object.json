@@ -568,7 +568,7 @@
             },
             {
               "id": "51a87647-8405-4cdd-92fa-b031968762ec",
-              "type": "Code",
+              "type": "ObojoboDraft.Chunks.Code",
               "content": {
                 "textGroup": [
                   {
