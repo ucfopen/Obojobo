@@ -8,6 +8,8 @@ let DEFAULT_NUM_COLS = 2;
 
 export default class GridButton extends React.Component {
 	constructor(props) {
+		super();
+
 		this.state = {
 			open: false,
 			desiredRows: DEFAULT_NUM_ROWS,
