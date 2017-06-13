@@ -1,8 +1,9 @@
 import React from 'react'
 import renderer from 'react-test-renderer'
 
-import MCAssessment from '../../../../ObojoboDraft/Chunks/MCAssessment/viewer-component'
+import Question from '../../../../ObojoboDraft/Chunks/Question/viewer-component'
 import FocusStore from '../../../../src/scripts/common/stores/focus-store'
+import FocusUtil from '../../../../src/scripts/common/util/focus-util'
 import QuestionStore from '../../../../src/scripts/viewer/stores/question-store'
 import NavStore from '../../../../src/scripts/viewer/stores/nav-store'
 import ScoreStore from '../../../../src/scripts/viewer/stores/score-store'
@@ -16,7 +17,7 @@ describe('MCAssessment', () => {
 	_.shuffle = (a) => a;
 
 	OboModel.create({
-		id: 'parent',
+		id: 'id',
 		type: 'ObojoboDraft.Chunks.Question',
 		content: {
 			title: 'Title',
@@ -42,7 +43,7 @@ describe('MCAssessment', () => {
 		},
 		children: [
 			{
-				id: 'id',
+				id: 'mc-assessment-id',
 				type: 'ObojoboDraft.Chunks.MCAssessment',
 				children: [
 					{
@@ -164,20 +165,20 @@ describe('MCAssessment', () => {
 		});
 	}
 
-	test('MCAssessment component', () => {
+	test('Question component', () => {
 		let moduleData = getModuleData();
 		const component = renderer.create(
-			<MCAssessment model={model} moduleData={moduleData} />
+			<Question model={model} moduleData={moduleData} />
 		)
 		let tree = component.toJSON()
 
 		expect(tree).toMatchSnapshot()
 	})
 
-	test('MCAssessment with response', () => {
+	test('Question with response', () => {
 		let moduleData = getModuleData();
 		const component = renderer.create(
-			<MCAssessment model={model} moduleData={moduleData} />
+			<Question model={model} moduleData={moduleData} />
 		)
 		let tree = component.toJSON()
 
@@ -186,7 +187,7 @@ describe('MCAssessment', () => {
 		APIUtil.postEvent = jest.fn()
 		QuestionUtil.recordResponse('choice1', { set:true })
 		const component2 = renderer.create(
-			<MCAssessment model={model} moduleData={moduleData} />
+			<Question model={model} moduleData={moduleData} />
 		)
 		let tree2 = component2.toJSON()
 
@@ -195,10 +196,10 @@ describe('MCAssessment', () => {
 		expect(tree).not.toEqual(tree2)
 	})
 
-	test('MCAssessment with revealAll', () => {
+	test('Question with revealAll', () => {
 		let moduleData = getModuleData();
 		const component = renderer.create(
-			<MCAssessment model={model} moduleData={moduleData} />
+			<Question model={model} moduleData={moduleData} />
 		)
 		let tree = component.toJSON()
 
@@ -206,7 +207,7 @@ describe('MCAssessment', () => {
 
 		QuestionUtil.setData('id', 'revealAll', true)
 		const component2 = renderer.create(
-			<MCAssessment model={model} moduleData={moduleData} />
+			<Question model={model} moduleData={moduleData} />
 		)
 		let tree2 = component2.toJSON()
 
@@ -215,10 +216,10 @@ describe('MCAssessment', () => {
 		expect(tree).not.toEqual(tree2)
 	})
 
-	test('MCAssessment with a set score', () => {
+	test('Question with a set score', () => {
 		let moduleData = getModuleData();
 		const component = renderer.create(
-			<MCAssessment model={model} moduleData={moduleData} />
+			<Question model={model} moduleData={moduleData} />
 		)
 		let tree = component.toJSON()
 
@@ -226,7 +227,48 @@ describe('MCAssessment', () => {
 
 		ScoreUtil.setScore('id', 100);
 		const component2 = renderer.create(
-			<MCAssessment model={model} moduleData={moduleData} />
+			<Question model={model} moduleData={moduleData} />
+		)
+		let tree2 = component2.toJSON()
+
+		expect(tree2).toMatchSnapshot()
+
+		expect(tree).not.toEqual(tree2)
+	})
+
+	test('Question view question', () => {
+		let moduleData = getModuleData();
+		const component = renderer.create(
+			<Question model={model} moduleData={moduleData} />
+		)
+		let tree = component.toJSON()
+
+		expect(tree).toMatchSnapshot()
+
+		QuestionUtil.viewQuestion('id');
+		const component2 = renderer.create(
+			<Question model={model} moduleData={moduleData} />
+		)
+		let tree2 = component2.toJSON()
+
+		expect(tree2).toMatchSnapshot()
+
+		expect(tree).not.toEqual(tree2)
+	})
+
+	test('Question view & focus question', () => {
+		let moduleData = getModuleData();
+		const component = renderer.create(
+			<Question model={model} moduleData={moduleData} />
+		)
+		let tree = component.toJSON()
+
+		expect(tree).toMatchSnapshot()
+
+		QuestionUtil.viewQuestion('id')
+		FocusUtil.focusComponent('id')
+		const component2 = renderer.create(
+			<Question model={model} moduleData={moduleData} />
 		)
 		let tree2 = component2.toJSON()
 
