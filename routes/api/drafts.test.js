@@ -230,11 +230,12 @@ describe('api draft route', () => {
 
 		oboRequire('routes/api/drafts')
 		let routeFunction = mockRouterMethods.post.mock.calls[1][1]
-
+		let content = JSON.stringify({ content: 'this is the body' })
 		let mockReq = {
 			params: {draftId: 555},
 			app: {get: jest.fn()},
-			body: 'this is the body',
+			// TODO: Broke here, might change this to the format set up in editor.pug
+			body: content,
 			requireCurrentUser: () => {
 				let u = new User();
 				u.id = 111
@@ -267,11 +268,11 @@ describe('api draft route', () => {
 		let User = oboRequire('models/user')
 		oboRequire('routes/api/drafts')
 		let routeFunction = mockRouterMethods.post.mock.calls[1][1]
-
+		let content = JSON.stringify({ content: 'this is the body' })
 		let mockReq = {
 			params: {draftId: 555},
 			app: {get: jest.fn()},
-			body: 'this is the body',
+			body: content,
 			requireCurrentUser: () => {
 				let u = new User();
 				u.id = 111

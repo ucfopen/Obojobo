@@ -22,6 +22,10 @@
     "devDocEngine:nodemodules": "cd ./devsrc/obojobo-draft-document-engine && yarn",
     "devDocEngine:link": "cd ./devsrc/obojobo-draft-document-engine && yarn link && cd ../.. && yarn link obojobo-draft-document-engine",
     "devDocEngine:unlink": "yarn unlink obojobo-draft-document-engine",
+    "devXmlParser:setup": "yarn devXmlParser:clone && yarn devXmlParser:nodemodules",
+    "devXmlParser:clone": "git clone git@clu.cdl.ucf.edu:obojobo/obojobo-draft-xml-parser.git devsrc/obojobo-draft-xml-parser || echo 'already cloned'",
+    "devXmlParser:nodemodules": "cd ./devsrc/obojobo-draft-xml-parser && yarn",
+    "devXmlParser:link": "cd ./devsrc/obojobo-draft-xml-parser && yarn link && cd ../.. && yarn link oboxml",
     "test": "jest --watch",
     "test:ci": "CI=true jest --coverage",
     "precommit": "npm run test:ci"
@@ -53,6 +57,7 @@
     "newrelic": "^1.38.2",
     "node-sass-middleware": "0.9.8",
     "obojobo-draft-document-engine": "git+ssh://git@github.com/ucfcdl/Obojobo-Document-Engine.git#v0.0.13",
+    "obojobo-draft-xml-parser": "git+ssh://git@clu.cdl.ucf.edu:obojobo/obojobo-draft-xml-parser.git",
     "on-build-webpack": "^0.1.0",
     "pg-promise": "^5.5.0",
     "pm2": "^2.4.2",

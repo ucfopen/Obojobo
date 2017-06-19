@@ -95,19 +95,15 @@ html(lang="en")
 			})
 
 			document.getElementById('button-save-draft').addEventListener('click', function(event) {
-				var text = document.getElementById('edit').value;
-				try
-				{
-					var json = JSON.parse(text);
-				}
-				catch(e)
-				{
-					alert('Unable to parse JSON: ' + e.toString())
-				}
+				// TODO: Right now, input is simply sent to the server as a string.
+				// Consider changing this. Consider having a tab to choose the type of
+				// input that will be submitted (JSON or Obo XML) beforehand.
+			
+				var draftContent = JSON.stringify({ content: document.getElementById('edit').value })
 
-				document.getElementById(editingDraftId).setAttribute('data-content', text)
+				document.getElementById(editingDraftId).setAttribute('data-content', draftContent)
 
-				postCurrentlyEditingDraft()
+				postCurrentlyEditingDraft(draftContent)
 			})
 
 			function edit(draftId, content) {
@@ -157,29 +153,32 @@ html(lang="en")
 				})
 			}
 
-			function postCurrentlyEditingDraft() {
+			function postCurrentlyEditingDraft(draftContent) {
 
 				fetch('/api/drafts/' + editingDraftId, {
 					method: 'POST',
 					credentials: 'include',
-					body: document.getElementById('edit').value,
+					body: draftContent,
 					headers: {
 						'Accept': 'application/json',
 						'Content-Type': 'application/json'
 					}
 				})
-				.then(function(resp) {
-					resp.json().then(function(json) {
-						if(json.value.id)
-						{
-							alert('New Version: ' + json.value.id)
-						}
-						else
-						{
-							alert('Error: ' + error)
-							console.error(error)
-						}
-					})
+				.then(function(res) {
+					switch (res.status) {
+						case 200:
+							res.json().then(function(json) {
+								if (json.value.id) alert('New Version: ' + json.value.id)
+								else {
+									alert('Error: ' + error)
+									console.error(error)
+								}
+							})
+							break
+						case 400:
+							alert('Error: ' + res.statusText)
+							break
+					}
 				})
 				.catch(function(error) {
 					alert('Error: ' + error)
