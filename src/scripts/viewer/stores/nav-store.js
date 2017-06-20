@@ -114,7 +114,9 @@ class NavStore extends Store {
 		if (startingId != null) {
 			return NavUtil.goto(startingId);
 		} else {
-			return NavUtil.goto(NavUtil.getFirst(this.state).id);
+			let first = NavUtil.getFirst(this.state);
+
+			if(first && first.id) NavUtil.goto(first.id);
 		}
 	}
 
@@ -122,7 +124,7 @@ class NavStore extends Store {
 		this.state.itemsById = {};
 		this.state.itemsByPath = {};
 		this.state.itemsByFullPath = {};
-		return this.state.items = this.generateNav(model);
+		this.state.items = this.generateNav(model);
 	}
 
 	gotoItem(navItem) {
@@ -147,6 +149,8 @@ class NavStore extends Store {
 	}
 
 	generateNav(model, indent) {
+		if(!model) return {};
+
 		if (indent == null) { indent = ''; }
 		let item = Common.Store.getItemForType(model.get('type'));
 

@@ -112,12 +112,12 @@ class AssessmentStore extends Store {
 		)
 	}
 
-	startAttempt(attemptObject) {
-		let id = attemptObject.assessmentId;
+	startAttempt(startAttemptResp) {
+		let id = startAttemptResp.assessmentId;
 		let model = OboModel.models[id];
 
 		model.children.at(1).children.reset();
-		for (let child of Array.from(attemptObject.state.questions)) {
+		for (let child of Array.from(startAttemptResp.state.questions)) {
 			let c = OboModel.create(child);
 			model.children.at(1).children.add(c);
 		}
@@ -126,7 +126,7 @@ class AssessmentStore extends Store {
 			this.state.assessments[id] = getNewAssessmentObject();
 		}
 
-		this.state.assessments[id].current = attemptObject;
+		this.state.assessments[id].current = startAttemptResp;
 
 		NavUtil.rebuildMenu(model.getRoot());
 		NavUtil.goto(id);
@@ -142,14 +142,22 @@ class AssessmentStore extends Store {
 		.then(res => {
 			if (res.status === 'error') { return ErrorUtil.errorResponse(res); }
 
-			assessment.current.state.questions.forEach(question => QuestionUtil.hideQuestion(question.id));
-			assessment.currentResponses.forEach(responderId => QuestionUtil.resetResponse(responderId));
-			assessment.attempts.push(res.value);
-			assessment.current = null;
-
-			model.processTrigger('onEndAttempt');
+			this.endAttempt(res.value);
 			return this.triggerChange();
 		})
+	}
+
+	endAttempt(endAttemptResp) {
+		let id = endAttemptResp.assessmentId;
+		let assessment = this.state.assessments[id];
+		let model = OboModel.models[id];
+
+		assessment.current.state.questions.forEach(question => QuestionUtil.hideQuestion(question.id));
+		assessment.currentResponses.forEach(responderId => QuestionUtil.resetResponse(responderId));
+		assessment.attempts.push(endAttemptResp);
+		assessment.current = null;
+
+		model.processTrigger('onEndAttempt');
 	}
 
 	tryRecordResponse(id, response) {

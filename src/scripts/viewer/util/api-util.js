@@ -39,7 +39,6 @@ var APIUtil = {
 	},
 
 	postEvent(lo, eventAction, eventPayload) {
-		console.log('POST EVENT', eventPayload);
 		return createParsedJsonPromise(APIUtil.post('/api/events', {
 			event: {
 				action: eventAction,

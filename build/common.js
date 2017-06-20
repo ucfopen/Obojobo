@@ -6202,10 +6202,7 @@ var wrapElement = function wrapElement(styleRange, nodeToWrap, text) {
 			newChild = new _mockElement2.default('span', (0, _objectAssign2.default)({ 'class': 'latex' }, styleRange.data));
 			nodeToWrap.parent.replaceChild(nodeToWrap, newChild);
 			newChild.addChild(nodeToWrap);
-			console.log('RENDER TO STRING[' + text + ']');
 			var html = _katex2.default.renderToString(text);
-			html = _katex2.default.renderToString('2+2');
-			html = _katex2.default.renderToString('2+2');
 			nodeToWrap.html = html;
 			nodeToWrap.text = text;
 			return newChild;

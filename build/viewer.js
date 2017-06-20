@@ -386,7 +386,6 @@ var APIUtil = {
 		});
 	},
 	postEvent: function postEvent(lo, eventAction, eventPayload) {
-		console.log('POST EVENT', eventPayload);
 		return createParsedJsonPromise(APIUtil.post('/api/events', {
 			event: {
 				action: eventAction,
@@ -597,7 +596,9 @@ var NavStore = function (_Store) {
 			if (startingId != null) {
 				return _navUtil2.default.goto(startingId);
 			} else {
-				return _navUtil2.default.goto(_navUtil2.default.getFirst(this.state).id);
+				var first = _navUtil2.default.getFirst(this.state);
+
+				if (first && first.id) _navUtil2.default.goto(first.id);
 			}
 		}
 	}, {
@@ -606,7 +607,7 @@ var NavStore = function (_Store) {
 			this.state.itemsById = {};
 			this.state.itemsByPath = {};
 			this.state.itemsByFullPath = {};
-			return this.state.items = this.generateNav(model);
+			this.state.items = this.generateNav(model);
 		}
 	}, {
 		key: 'gotoItem',
@@ -639,6 +640,8 @@ var NavStore = function (_Store) {
 	}, {
 		key: 'generateNav',
 		value: function generateNav(model, indent) {
+			if (!model) return {};
+
 			if (indent == null) {
 				indent = '';
 			}
@@ -1127,8 +1130,8 @@ var AssessmentStore = function (_Store) {
 		}
 	}, {
 		key: 'startAttempt',
-		value: function startAttempt(attemptObject) {
-			var id = attemptObject.assessmentId;
+		value: function startAttempt(startAttemptResp) {
+			var id = startAttemptResp.assessmentId;
 			var model = OboModel.models[id];
 
 			model.children.at(1).children.reset();
@@ -1137,7 +1140,7 @@ var AssessmentStore = function (_Store) {
 			var _iteratorError4 = undefined;
 
 			try {
-				for (var _iterator4 = Array.from(attemptObject.state.questions)[Symbol.iterator](), _step4; !(_iteratorNormalCompletion4 = (_step4 = _iterator4.next()).done); _iteratorNormalCompletion4 = true) {
+				for (var _iterator4 = Array.from(startAttemptResp.state.questions)[Symbol.iterator](), _step4; !(_iteratorNormalCompletion4 = (_step4 = _iterator4.next()).done); _iteratorNormalCompletion4 = true) {
 					var child = _step4.value;
 
 					var c = OboModel.create(child);
@@ -1162,7 +1165,7 @@ var AssessmentStore = function (_Store) {
 				this.state.assessments[id] = getNewAssessmentObject();
 			}
 
-			this.state.assessments[id].current = attemptObject;
+			this.state.assessments[id].current = startAttemptResp;
 
 			_navUtil2.default.rebuildMenu(model.getRoot());
 			_navUtil2.default.goto(id);
@@ -1182,18 +1185,27 @@ var AssessmentStore = function (_Store) {
 					return ErrorUtil.errorResponse(res);
 				}
 
-				assessment.current.state.questions.forEach(function (question) {
-					return _questionUtil2.default.hideQuestion(question.id);
-				});
-				assessment.currentResponses.forEach(function (responderId) {
-					return _questionUtil2.default.resetResponse(responderId);
-				});
-				assessment.attempts.push(res.value);
-				assessment.current = null;
-
-				model.processTrigger('onEndAttempt');
+				_this3.endAttempt(res.value);
 				return _this3.triggerChange();
 			});
+		}
+	}, {
+		key: 'endAttempt',
+		value: function endAttempt(endAttemptResp) {
+			var id = endAttemptResp.assessmentId;
+			var assessment = this.state.assessments[id];
+			var model = OboModel.models[id];
+
+			assessment.current.state.questions.forEach(function (question) {
+				return _questionUtil2.default.hideQuestion(question.id);
+			});
+			assessment.currentResponses.forEach(function (responderId) {
+				return _questionUtil2.default.resetResponse(responderId);
+			});
+			assessment.attempts.push(endAttemptResp);
+			assessment.current = null;
+
+			model.processTrigger('onEndAttempt');
 		}
 	}, {
 		key: 'tryRecordResponse',

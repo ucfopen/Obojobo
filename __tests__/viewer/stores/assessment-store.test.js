@@ -289,7 +289,9 @@ describe('AssessmentStore', () => {
 		APIUtil.endAttempt.mockImplementationOnce(() => {
 			return (Promise.resolve({
 				status: 'ok',
-				value: {}
+				value: {
+					assessmentId: 'assessmentId'
+				}
 			}))
 		})
 		APIUtil.postEvent.mockImplementationOnce(() => {
