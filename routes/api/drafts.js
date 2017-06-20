@@ -56,18 +56,20 @@ router.post('/new', (req, res, next) => {
 
 //@TODO - Ensure that you can't post to a deleted draft, ensure you can only delete your own stuff
 router.post(/(\w{8}-\w{4}-\w{4}-\w{4}-\w{12})/, (req, res, next) => {
-	// TODO: This breaks a few tests, 'content', TypeError on 'content' as well as 'json'.
+	let xml
 	let reqInput
 	if (req.body) {
 		try {
 			reqInput = JSON.parse(req.body.content || req.body)
 		}
 		catch(e) {
-			console.log("Input was not proper JSON formatting, " + e + ", Trying Obojobo XML ...")
+			console.log("Input was not proper JSON formatting:\n" + e + "\nTrying Obojobo XML ...")
 			reqInput = req.body
-			const convertedXml = xmlToDraftObject(reqInput.content)
+			xml = reqInput.content
+			const convertedXml = xmlToDraftObject(xml)
 			if (typeof convertedXml !== 'undefined') {
 				// TODO: Case where XML was properly converted.
+				console.log("Successfully converted Obojobo XML to JSON:")
 				console.log(convertedXml)
 			} else {
 				res.statusMessage = "Input matches neither JSON nor Obojobo XML format."
@@ -80,7 +82,7 @@ router.post(/(\w{8}-\w{4}-\w{4}-\w{4}-\w{12})/, (req, res, next) => {
 	.then(currentUser => {
 		if(!currentUser.canEditDrafts) throw 'Insufficent permissions'
 
-		return updateDraft(req.params[0], reqInput)
+		return updateDraft(req.params[0], reqInput, xml || null)
 	})
 	.then(id => {
 		console.log('done')

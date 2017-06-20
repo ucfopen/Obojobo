@@ -97,7 +97,8 @@ html(lang="en")
 			document.getElementById('button-save-draft').addEventListener('click', function(event) {
 				// TODO: Right now, input is simply sent to the server as a string.
 				// Consider changing this. Consider having a tab to choose the type of
-				// input that will be submitted (JSON or Obo XML) beforehand.
+				// input that will be submitted (JSON or Obo XML) beforehand. Zach
+				// also had another idea of how we can handle this.
 			
 				var draftContent = JSON.stringify({ content: document.getElementById('edit').value })
 

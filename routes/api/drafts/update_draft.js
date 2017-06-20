@@ -1,20 +1,23 @@
 var db = require('../../../db')
 
-module.exports = (draftId, content) => {
+module.exports = (draftId, content, xml) => {
 	return (
 		db.one(`
 			INSERT INTO drafts_content(
 				draft_id,
-				content
+				content,
+				xml
 			)
 			VALUES(
 				$[draftId],
-				$[content]
+				$[content],
+				$[xml]
 			)
 			RETURNING id
 		`, {
 			draftId: draftId,
-			content: content
+			content: content,
+			xml: xml
 		})
 		.then(result => {
 			return result.id
