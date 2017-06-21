@@ -2,8 +2,6 @@ var express = require('express');
 var router = express.Router();
 let DraftModel = oboRequire('models/draft')
 
-// TODO: Set up the package.json for this similar to the way docengine
-// is set up. Clone, link, etc.
 const xmlToDraftObject = require('oboxml/xml-to-draft-object')
 
 var db = require('../../db')
@@ -64,13 +62,13 @@ router.post(/(\w{8}-\w{4}-\w{4}-\w{4}-\w{12})/, (req, res, next) => {
 		}
 		catch(e) {
 			console.log("Input was not proper JSON formatting:\n" + e + "\nTrying Obojobo XML ...")
-			reqInput = req.body
-			xml = reqInput.content
+			xml = req.body.content
 			const convertedXml = xmlToDraftObject(xml)
 			if (typeof convertedXml !== 'undefined') {
 				// TODO: Case where XML was properly converted.
 				console.log("Successfully converted Obojobo XML to JSON:")
 				console.log(convertedXml)
+				reqInput = convertedXml
 			} else {
 				res.statusMessage = "Input matches neither JSON nor Obojobo XML format."
 				return res.status(400).send()
@@ -81,7 +79,8 @@ router.post(/(\w{8}-\w{4}-\w{4}-\w{4}-\w{12})/, (req, res, next) => {
 	return req.requireCurrentUser()
 	.then(currentUser => {
 		if(!currentUser.canEditDrafts) throw 'Insufficent permissions'
-
+		// TODO: Now that we have an xml column, we can consider making the
+		// content column null when xml is input into the editor.
 		return updateDraft(req.params[0], reqInput, xml || null)
 	})
 	.then(id => {

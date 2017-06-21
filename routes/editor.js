@@ -18,7 +18,8 @@ let displayEditor = (req, res, next) => {
 				draft_id AS "draftId",
 				id AS "latestVersion",
 				created_at AS "createdAt",
-				content
+				content,
+				xml
 			FROM drafts_content
 			WHERE draft_id IN (
 				SELECT id
@@ -31,6 +32,7 @@ let displayEditor = (req, res, next) => {
 			userId: user.id
 		})
 		.then( drafts => {
+			console.log(drafts)
 			res.render('editor.pug', {
 				title: 'Obojobo 3',
 				drafts: drafts

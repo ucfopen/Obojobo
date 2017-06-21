@@ -31,8 +31,14 @@ html(lang="en")
 							p= `(${draft.draftId})`
 						a(target="_blank" href=`/view/${draft.draftId}`).
 							(view)
-						a(href="#" class="link-edit" id=`${draft.draftId}` data-id=`${draft.draftId}` data-content=`${JSON.stringify(draft.content)}`).
-							(edit)
+						a(
+							href="#" 
+							class="link-edit" 
+							id=`${draft.draftId}` 
+							data-id=`${draft.draftId}` 
+							data-content=`${draft.xml ? draft.xml : JSON.stringify(draft.content)}`
+							).
+								(edit)
 						a(href="#" class="link-delete" data-id=`${draft.draftId}`).
 							(delete)
 			button(id="button-create-new-draft").
