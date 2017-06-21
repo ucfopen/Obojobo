@@ -32,7 +32,6 @@ let displayEditor = (req, res, next) => {
 			userId: user.id
 		})
 		.then( drafts => {
-			console.log(drafts)
 			res.render('editor.pug', {
 				title: 'Obojobo 3',
 				drafts: drafts

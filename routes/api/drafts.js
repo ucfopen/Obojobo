@@ -56,14 +56,15 @@ router.post('/new', (req, res, next) => {
 router.post(/(\w{8}-\w{4}-\w{4}-\w{4}-\w{12})/, (req, res, next) => {
 	let xml
 	let reqInput
+	console.log(req.body)
 	if (req.body) {
 		try {
-			reqInput = JSON.parse(req.body.content || req.body)
+			reqInput = JSON.parse(req.body)
 		}
 		catch(e) {
 			console.log("Input was not proper JSON formatting:\n" + e + "\nTrying Obojobo XML ...")
-			xml = req.body.content
-			const convertedXml = xmlToDraftObject(xml)
+			xml = req.body
+			const convertedXml = xmlToDraftObject(req.body)
 			if (typeof convertedXml !== 'undefined') {
 				console.log("Successfully converted Obojobo XML to JSON:")
 				console.log(convertedXml)

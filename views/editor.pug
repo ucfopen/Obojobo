@@ -101,7 +101,7 @@ html(lang="en")
 			})
 
 			document.getElementById('button-save-draft').addEventListener('click', function(event) {
-				var draftContent = JSON.stringify({ content: document.getElementById('edit').value })
+				var draftContent = document.getElementById('edit').value 
 
 				document.getElementById(editingDraftId).setAttribute('data-content', draftContent)
 
@@ -162,8 +162,8 @@ html(lang="en")
 					credentials: 'include',
 					body: draftContent,
 					headers: {
-						'Accept': 'application/json',
-						'Content-Type': 'application/json'
+						'Accept': 'text/plain',
+						'Content-Type': 'text/plain'
 					}
 				})
 				.then(function(res) {
