@@ -18,12 +18,10 @@ exports.up = function(db) {
   return db.addColumn('drafts_content', 'xml', {
     type: 'text'
   })
-  .then(result => db.addIndex('drafts_content', 'drafts_content_xml', ['xml']));
 };
 
 exports.down = function(db) {
-  return db.removeIndex('drafts_content', 'drafts_content_xml')
-  .then(result => db.removeColumn('drafts_content', 'xml'));
+  return db.removeColumn('drafts_content', 'xml')
 };
 
 exports._meta = {
