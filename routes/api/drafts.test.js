@@ -234,7 +234,6 @@ describe('api draft route', () => {
 		let mockReq = {
 			params: {draftId: 555},
 			app: {get: jest.fn()},
-			// TODO: Broke here, might change this to the format set up in editor.pug
 			body: content,
 			requireCurrentUser: () => {
 				let u = new User();

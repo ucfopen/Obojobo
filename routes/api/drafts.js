@@ -65,7 +65,6 @@ router.post(/(\w{8}-\w{4}-\w{4}-\w{4}-\w{12})/, (req, res, next) => {
 			xml = req.body.content
 			const convertedXml = xmlToDraftObject(xml)
 			if (typeof convertedXml !== 'undefined') {
-				// TODO: Case where XML was properly converted.
 				console.log("Successfully converted Obojobo XML to JSON:")
 				console.log(convertedXml)
 				reqInput = convertedXml
@@ -79,8 +78,6 @@ router.post(/(\w{8}-\w{4}-\w{4}-\w{4}-\w{12})/, (req, res, next) => {
 	return req.requireCurrentUser()
 	.then(currentUser => {
 		if(!currentUser.canEditDrafts) throw 'Insufficent permissions'
-		// TODO: Now that we have an xml column, we can consider making the
-		// content column null when xml is input into the editor.
 		return updateDraft(req.params[0], reqInput, xml || null)
 	})
 	.then(id => {
