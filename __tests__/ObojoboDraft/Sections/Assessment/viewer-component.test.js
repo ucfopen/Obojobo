@@ -148,7 +148,7 @@ describe('Assessment', () => {
 		expect(el.innerHTML).not.toEqual(el3.innerHTML)
 		expect(el2.innerHTML).not.toEqual(el3.innerHTML)
 
-		expect(el3.textContent.indexOf('%')).not.toBe(-1);
+		expect(el3.textContent.indexOf('50%')).not.toBe(-1);
 		expect(el3.textContent.indexOf('This is your highest score')).not.toBe(-1)
 
 		// Another attempt (0%):
@@ -170,7 +170,7 @@ describe('Assessment', () => {
 		expect(el2.innerHTML).not.toEqual(el4.innerHTML)
 		expect(el3.innerHTML).not.toEqual(el4.innerHTML)
 
-		expect(el4.textContent.indexOf('%')).not.toBe(-1);
+		expect(el4.textContent.indexOf('0%')).not.toBe(-1);
 		expect(el4.textContent.indexOf('This is your highest score')).toBe(-1)
 
 		// Last attempt (100%):
@@ -194,7 +194,7 @@ describe('Assessment', () => {
 		expect(el3.innerHTML).not.toEqual(el5.innerHTML)
 		expect(el4.innerHTML).not.toEqual(el5.innerHTML)
 
-		expect(el5.textContent.indexOf('%')).not.toBe(-1);
+		expect(el5.textContent.indexOf('100%')).not.toBe(-1);
 		expect(el5.textContent.indexOf('This is your highest score')).not.toBe(-1)
 	})
 })

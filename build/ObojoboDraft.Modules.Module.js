@@ -229,9 +229,8 @@ var Module = function (_React$Component) {
 			var navTargetModel = NavUtil.getNavTargetModel(this.props.moduleData.navState);
 
 			if (navTargetModel) {
-				var child = this.props.model.getChildContainingModel(navTargetModel);
-				var ChildComponent = child.getComponentClass();
-				childEl = React.createElement(ChildComponent, { model: child, moduleData: this.props.moduleData });
+				var ChildComponent = navTargetModel.getComponentClass();
+				childEl = React.createElement(ChildComponent, { model: navTargetModel, moduleData: this.props.moduleData });
 			}
 
 			return React.createElement(

@@ -810,30 +810,6 @@ describe('OboModel', () => {
 		expect(child.contains(child)).toBe(true)
 	})
 
-	test("getChildContainingModel will return a child which contains a given model", () => {
-		let root = new OboModel({})
-		let parentA = new OboModel({})
-		let parentB = new OboModel({})
-		let parentC = new OboModel({})
-		let childA = new OboModel({})
-		let childB = new OboModel({})
-		let childC = new OboModel({})
-		let otherModel = new OboModel({})
-
-		root.children.add(parentA)
-		root.children.add(parentB)
-		root.children.add(parentC)
-
-		parentA.children.add(childA)
-		parentB.children.add(childB)
-		parentC.children.add(childC)
-
-		expect(root.getChildContainingModel(childB)).toBe(parentB)
-		expect(root.getChildContainingModel(parentB)).toBe(parentB)
-		expect(root.getChildContainingModel(root)).toBe(null)
-		expect(root.getChildContainingModel(otherModel)).toBe(null)
-	})
-
 	test("getParentOfType returns a parent of a given type", () => {
 		let grandparent = new OboModel({ type:'grandparent' })
 		let parent = new OboModel({ type:'parent' })

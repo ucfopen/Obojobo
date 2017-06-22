@@ -678,38 +678,6 @@ var OboModel = function (_Backbone$Model) {
 			return false;
 		}
 	}, {
-		key: 'getChildContainingModel',
-		value: function getChildContainingModel(model) {
-			var _iteratorNormalCompletion5 = true;
-			var _didIteratorError5 = false;
-			var _iteratorError5 = undefined;
-
-			try {
-				for (var _iterator5 = Array.from(this.children.models)[Symbol.iterator](), _step5; !(_iteratorNormalCompletion5 = (_step5 = _iterator5.next()).done); _iteratorNormalCompletion5 = true) {
-					var child = _step5.value;
-
-					if (child.contains(model)) {
-						return child;
-					}
-				}
-			} catch (err) {
-				_didIteratorError5 = true;
-				_iteratorError5 = err;
-			} finally {
-				try {
-					if (!_iteratorNormalCompletion5 && _iterator5.return) {
-						_iterator5.return();
-					}
-				} finally {
-					if (_didIteratorError5) {
-						throw _iteratorError5;
-					}
-				}
-			}
-
-			return null;
-		}
-	}, {
 		key: 'getParentOfType',
 		value: function getParentOfType(type) {
 			var model = this.parent;
@@ -784,29 +752,29 @@ OboModel.create = function (typeOrNameOrJson, attrs) {
 			if (children != null) {
 				// delete typeOrNameOrJson.children
 
-				var _iteratorNormalCompletion6 = true;
-				var _didIteratorError6 = false;
-				var _iteratorError6 = undefined;
+				var _iteratorNormalCompletion5 = true;
+				var _didIteratorError5 = false;
+				var _iteratorError5 = undefined;
 
 				try {
-					for (var _iterator6 = Array.from(children)[Symbol.iterator](), _step6; !(_iteratorNormalCompletion6 = (_step6 = _iterator6.next()).done); _iteratorNormalCompletion6 = true) {
-						var child = _step6.value;
+					for (var _iterator5 = Array.from(children)[Symbol.iterator](), _step5; !(_iteratorNormalCompletion5 = (_step5 = _iterator5.next()).done); _iteratorNormalCompletion5 = true) {
+						var child = _step5.value;
 
 						var c = OboModel.create(child);
 						// console.log 'c be', c, oboModel.children
 						oboModel.children.add(c);
 					}
 				} catch (err) {
-					_didIteratorError6 = true;
-					_iteratorError6 = err;
+					_didIteratorError5 = true;
+					_iteratorError5 = err;
 				} finally {
 					try {
-						if (!_iteratorNormalCompletion6 && _iterator6.return) {
-							_iterator6.return();
+						if (!_iteratorNormalCompletion5 && _iterator5.return) {
+							_iterator5.return();
 						}
 					} finally {
-						if (_didIteratorError6) {
-							throw _iteratorError6;
+						if (_didIteratorError5) {
+							throw _iteratorError5;
 						}
 					}
 				}

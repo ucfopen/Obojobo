@@ -367,16 +367,6 @@ class OboModel extends Backbone.Model {
 		return false;
 	}
 
-	getChildContainingModel(model) {
-		for (let child of Array.from(this.children.models)) {
-			if (child.contains(model)) {
-				return child;
-			}
-		}
-
-		return null;
-	}
-
 	getParentOfType(type) {
 		let model = this.parent;
 		while (model !== null) {
