@@ -60,7 +60,7 @@ exports[`Page Page component 1`] = `
   >
     <div
       className="non-editable-chunk obojobo-draft--chunks--break viewer"
-      contentEditable="false"
+      contentEditable={false}
       data-indent={0}
     >
       <hr />

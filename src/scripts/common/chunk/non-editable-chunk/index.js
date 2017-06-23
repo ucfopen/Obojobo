@@ -4,7 +4,7 @@ export default class NonEditableChunk extends React.Component {
 	}
 
 	render() {
-		return <div className={`non-editable-chunk${this.props.className ? ` ${this.props.className}` : ''}`} contentEditable="false" data-indent={this.props.indent}>
+		return <div className={`non-editable-chunk${this.props.className ? ` ${this.props.className}` : ''}`} contentEditable={false} data-indent={this.props.indent}>
 			{ this.props.children }
 		</div>;
 	}

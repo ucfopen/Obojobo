@@ -16,7 +16,7 @@ export default class FocusableChunk extends React.Component {
 	render() {
 		let { className } = this.props;
 
-		return <div className={`focusable-chunk anchor-container${className ? ` ${className}` : ''}`} contentEditable="false">
+		return <div className={`focusable-chunk anchor-container${className ? ` ${className}` : ''}`} contentEditable={false}>
 			<Anchor {...this.props} name="main" ref="anchor" />
 			{ this.props.children }
 		</div>;

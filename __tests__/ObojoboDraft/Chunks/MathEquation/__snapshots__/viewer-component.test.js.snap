@@ -30,7 +30,7 @@ exports[`MathEquation MathEquation component 1`] = `
 >
   <div
     className="non-editable-chunk"
-    contentEditable="false"
+    contentEditable={false}
     data-indent={0}
   >
     <div

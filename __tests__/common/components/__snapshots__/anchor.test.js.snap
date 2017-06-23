@@ -3,7 +3,7 @@
 exports[`Anchor 1`] = `
 <span
   className="anchor"
-  contentEditable="true"
+  contentEditable={true}
   data-group-index="anchor:undefined"
   suppressContentEditableWarning={true}
   tabIndex=""
@@ -13,7 +13,7 @@ exports[`Anchor 1`] = `
 exports[`Anchor shouldPreventTab 1`] = `
 <span
   className="anchor"
-  contentEditable="true"
+  contentEditable={true}
   data-group-index="anchor:undefined"
   shouldPreventTab={true}
   suppressContentEditableWarning={true}

@@ -40,12 +40,12 @@ export default class TextGroupEl extends React.Component {
 		return { textNode:null, offset:0 };
 	}
 
-	componentDidUpdate() {
-		return console.timeEnd('textRender');
-	}
+	// componentDidUpdate() {
+	// 	return console.timeEnd('textRender');
+	// }
 
 	render() {
-		console.time('textRender');
+		// console.time('textRender');
 
 		let { text } = this.props.textItem;
 

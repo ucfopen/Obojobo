@@ -6,7 +6,7 @@ export default class Anchor extends React.Component {
 			{...this.props}
 			className='anchor'
 			ref='anchorElement'
-			contentEditable="true"
+			contentEditable={true}
 			tabIndex={this.props.shouldPreventTab ? '-1' : ''}
 			suppressContentEditableWarning={true}
 			data-group-index={`anchor:${this.props.name}`}

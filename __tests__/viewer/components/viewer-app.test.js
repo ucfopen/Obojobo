@@ -154,7 +154,6 @@ describe('ViewerApp', () => {
 		let questionEl = viewerEl.find('#obo-15d5f3a2-4db5-4306-92ae-49325f3eb8e2')
 
 		expect(QuestionStore.getState().responses).toEqual({})
-
 		expect(questionEl.find('.result.correct').length).toBe(0) // Correct label
 		expect(questionEl.find('.result.incorrect').length).toBe(0) // Incorrect label
 		expect(questionEl.find('#obo-31084ca3-199d-441c-9cff-59e9e44b3360').length).toBe(0) // Feedback
@@ -187,7 +186,6 @@ describe('ViewerApp', () => {
 		let questionEl = viewerEl.find('#obo-15d5f3a2-4db5-4306-92ae-49325f3eb8e2')
 
 		expect(QuestionStore.getState().responses).toEqual({})
-
 		expect(questionEl.find('.result.correct').length).toBe(0) // Correct label
 		expect(questionEl.find('.result.incorrect').length).toBe(0) // Incorrect label
 		expect(questionEl.find('#obo-31084ca3-199d-441c-9cff-59e9e44b3360').length).toBe(0) // Feedback
@@ -210,5 +208,23 @@ describe('ViewerApp', () => {
 		expect(ScoreStore.getState().scores).toEqual({
 			'15d5f3a2-4db5-4306-92ae-49325f3eb8e2': 100
 		})
+	})
+
+	test("Clicking the button to show the solution will show the solution", () => {
+		let viewerEl = mount(<ViewerApp />)
+
+		NavUtil.goto('page-3')
+
+		let questionEl = viewerEl.find('#obo-15d5f3a2-4db5-4306-92ae-49325f3eb8e2')
+
+		expect(questionEl.find('.solution-container').length).toBe(0)
+
+		questionEl.find('.blocker').simulate('click')
+		questionEl.find('#obo-d46909e8-9b3e-41de-a1f8-c7f795f19689').simulate('click') // wrong answer choice
+		questionEl.find('.submit button').simulate('click') // Check your answer button
+		// expect(questionEl.find('button').at(1)).toBe(1)
+		questionEl.find('button').at(1).simulate('click') // Show solution button
+
+		expect(questionEl.find('.solution-container').length).toBe(1)
 	})
 })

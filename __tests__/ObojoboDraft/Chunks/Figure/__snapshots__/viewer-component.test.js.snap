@@ -45,7 +45,7 @@ exports[`Figure Figure component 1`] = `
 >
   <div
     className="non-editable-chunk obojobo-draft--chunks--figure viewer custom"
-    contentEditable="false"
+    contentEditable={false}
     data-indent={0}
   >
     <div

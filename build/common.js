@@ -2611,14 +2611,15 @@ var TextGroupEl = function (_React$Component) {
 	}
 
 	_createClass(TextGroupEl, [{
-		key: 'componentDidUpdate',
-		value: function componentDidUpdate() {
-			return console.timeEnd('textRender');
-		}
-	}, {
 		key: 'render',
+
+
+		// componentDidUpdate() {
+		// 	return console.timeEnd('textRender');
+		// }
+
 		value: function render() {
-			console.time('textRender');
+			// console.time('textRender');
 
 			var text = this.props.textItem.text;
 
@@ -2755,7 +2756,7 @@ var Anchor = function (_React$Component) {
 				_extends({}, this.props, {
 					className: 'anchor',
 					ref: 'anchorElement',
-					contentEditable: 'true',
+					contentEditable: true,
 					tabIndex: this.props.shouldPreventTab ? '-1' : '',
 					suppressContentEditableWarning: true,
 					'data-group-index': 'anchor:' + this.props.name
@@ -6592,7 +6593,7 @@ var FocusableChunk = function (_React$Component) {
 
 			return React.createElement(
 				'div',
-				{ className: 'focusable-chunk anchor-container' + (className ? ' ' + className : ''), contentEditable: 'false' },
+				{ className: 'focusable-chunk anchor-container' + (className ? ' ' + className : ''), contentEditable: false },
 				React.createElement(_anchor2.default, _extends({}, this.props, { name: 'main', ref: 'anchor' })),
 				this.props.children
 			);
@@ -6786,16 +6787,16 @@ var NonEditableChunk = function (_React$Component) {
 	}
 
 	_createClass(NonEditableChunk, [{
-		key: "render",
+		key: 'render',
 		value: function render() {
 			return React.createElement(
-				"div",
-				{ className: "non-editable-chunk" + (this.props.className ? " " + this.props.className : ''), contentEditable: "false", "data-indent": this.props.indent },
+				'div',
+				{ className: 'non-editable-chunk' + (this.props.className ? ' ' + this.props.className : ''), contentEditable: false, 'data-indent': this.props.indent },
 				this.props.children
 			);
 		}
 	}], [{
-		key: "defaultProps",
+		key: 'defaultProps',
 		get: function get() {
 			return { indent: 0 };
 		}

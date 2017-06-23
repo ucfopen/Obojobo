@@ -19,15 +19,6 @@ let { ScoreUtil } = Viewer.util;
 // @TODO - This wont update if new children are passed in via props
 
 export default class MCAssessment extends React.Component {
-	// getInitialState: ->
-	// 	showingSolution: false
-
-	// componentWillMount: ->
-	// 	shuffledIds = QuestionUtil.getData(@props.moduleData.questionState, @props.model, 'shuffledIds')
-	// 	if not shuffledIds
-	// 		shuffledIds = _.shuffle(@props.model.children.models).map (model) -> model.get('id')
-	// 		QuestionUtil.setData(@props.model.get('id'), 'shuffledIds', shuffledIds)
-
 	getResponseData() {
 		let correct = new Set();
 		let responses = new Set();
@@ -160,21 +151,32 @@ export default class MCAssessment extends React.Component {
 		return QuestionUtil.getData(this.props.moduleData.questionState, this.props.model, 'revealAll');
 	}
 
-	render() {
-		let { responseType } = this.props.model.modelState;
+	componentWillReceiveProps() {
+		this.shuffle();
+	}
 
+	componentWillMount() {
+		this.shuffle();
+	}
+
+	shuffle() {
 		let shuffledIds = QuestionUtil.getData(this.props.moduleData.questionState, this.props.model, 'shuffledIds');
 		if (!shuffledIds) {
 			shuffledIds = _.shuffle(this.props.model.children.models).map(model => model.get('id'));
 			QuestionUtil.setData(this.props.model.get('id'), 'shuffledIds', shuffledIds);
 		}
+	}
 
+	render() {
+		let { responseType } = this.props.model.modelState;
 		let revealAll = this.isRevealingAll();
 		let score = this.getScore();
 		let questionSubmitted = score !== null;
 		let questionAnswered = this.getResponseData().responses.size >= 1;
-		// shuffledIds = QuestionUtil.getData(@props.moduleData.questionState, @props.model, 'shuffledIds')
+		let shuffledIds = QuestionUtil.getData(this.props.moduleData.questionState, this.props.model, 'shuffledIds')
 		// shuffledIds = _.shuffle(@props.model.children.models).map (model) -> model.get('id')
+
+		if(!shuffledIds) return false;
 
 		let feedbacks = Array.from(this.getResponseData().responses)
 			.filter(
