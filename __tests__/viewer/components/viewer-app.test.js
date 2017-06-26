@@ -178,7 +178,7 @@ describe('ViewerApp', () => {
 		})
 	})
 
-	test("Answering a question correctly displays 'Correct' and doesn't show feedback", () => {
+	test.only("Answering a question correctly displays 'Correct' and doesn't show feedback", () => {
 		let viewerEl = mount(<ViewerApp />)
 
 		NavUtil.goto('page-3')

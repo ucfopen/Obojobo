@@ -8,26 +8,5 @@ exports[`QuestionBank QuestionBank component 1`] = `
   data-obo-component={true}
   data-type="ObojoboDraft.Chunks.QuestionBank"
   id="obo-id"
-  model={
-    Object {
-      "children": null,
-      "content": Object {
-        "choose": Infinity,
-        "groupSize": 1,
-        "resetWhenEmpty": undefined,
-        "select": "sequential",
-      },
-      "id": "id",
-      "index": 0,
-      "metadata": Object {},
-      "type": "ObojoboDraft.Chunks.QuestionBank",
-    }
-  }
-  moduleData={
-    Object {
-      "focusState": Object {},
-    }
-  }
-  tag="div"
 />
 `;

@@ -24,8 +24,30 @@ export default class OboComponent extends React.Component {
 
 		let isFocussed = FocusUtil.getFocussedComponent(this.props.moduleData.focusState) === this.props.model;
 
+		let otherProps = {}
+		for(let propKey in this.props)
+		{
+			switch(propKey)
+			{
+				case 'model':
+				case 'moduleData':
+				case 'tag':
+				case 'className':
+				case 'children':
+					// do nothing
+					break;
+
+				default:
+					if(this.props.hasOwnProperty(propKey))
+					{
+						otherProps[propKey] = this.props[propKey]
+					}
+					break;
+			}
+		}
+
 		return <Tag
-			{...this.props}
+			{...otherProps}
 			className={className}
 			id={`obo-${this.props.model.get('id')}`}
 			data-obo-component

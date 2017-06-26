@@ -8,43 +8,6 @@ exports[`Content Content component 1`] = `
   data-obo-component={true}
   data-type="ObojoboDraft.Sections.Content"
   id="obo-id"
-  model={
-    Object {
-      "children": Array [
-        Object {
-          "children": Array [
-            Object {
-              "children": null,
-              "content": Object {},
-              "id": "child",
-              "index": 0,
-              "metadata": Object {},
-              "type": "ObojoboDraft.Chunks.Break",
-            },
-          ],
-          "content": Object {},
-          "id": "page",
-          "index": 0,
-          "metadata": Object {},
-          "type": "ObojoboDraft.Pages.Page",
-        },
-      ],
-      "content": Object {},
-      "id": "id",
-      "index": 0,
-      "metadata": Object {},
-      "type": "ObojoboDraft.Sections.Content",
-    }
-  }
-  moduleData={
-    Object {
-      "focusState": Object {},
-      "navState": Object {
-        "itemsById": Object {},
-      },
-    }
-  }
-  tag="div"
 >
   <div />
 </div>

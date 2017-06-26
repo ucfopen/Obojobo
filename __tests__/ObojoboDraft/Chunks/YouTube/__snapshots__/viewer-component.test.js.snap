@@ -8,24 +8,6 @@ exports[`YouTube YouTube component 1`] = `
   data-obo-component={true}
   data-type="ObojoboDraft.Chunks.YouTube"
   id="obo-id"
-  model={
-    Object {
-      "children": null,
-      "content": Object {
-        "videoId": "dQw4w9WgXcQ",
-      },
-      "id": "id",
-      "index": 0,
-      "metadata": Object {},
-      "type": "ObojoboDraft.Chunks.YouTube",
-    }
-  }
-  moduleData={
-    Object {
-      "focusState": Object {},
-    }
-  }
-  tag="div"
 >
   <div
     className="obojobo-draft--chunks--you-tube viewer"

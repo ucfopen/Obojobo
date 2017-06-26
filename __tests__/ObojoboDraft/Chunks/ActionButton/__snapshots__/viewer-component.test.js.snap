@@ -8,36 +8,6 @@ exports[`ActionButton ActionButton component with label 1`] = `
   data-obo-component={true}
   data-type="ObojoboDraft.Chunks.ActionButton"
   id="obo-id"
-  model={
-    Object {
-      "children": null,
-      "content": Object {
-        "align": "center",
-        "label": "Example Label",
-        "textGroup": Array [
-          Object {
-            "data": Object {
-              "indent": 0,
-            },
-            "text": Object {
-              "styleList": null,
-              "value": "",
-            },
-          },
-        ],
-      },
-      "id": "id",
-      "index": 0,
-      "metadata": Object {},
-      "type": "ObojoboDraft.Chunks.ActionButton",
-    }
-  }
-  moduleData={
-    Object {
-      "focusState": Object {},
-    }
-  }
-  tag="div"
 >
   <div
     className="text-chunk obojobo-draft--chunks--action-button pad"
@@ -65,36 +35,6 @@ exports[`ActionButton ActionButton component with textGroup 1`] = `
   data-obo-component={true}
   data-type="ObojoboDraft.Chunks.ActionButton"
   id="obo-id"
-  model={
-    Object {
-      "children": null,
-      "content": Object {
-        "align": "center",
-        "label": "",
-        "textGroup": Array [
-          Object {
-            "data": Object {
-              "indent": 0,
-            },
-            "text": Object {
-              "styleList": null,
-              "value": "Example Text",
-            },
-          },
-        ],
-      },
-      "id": "id",
-      "index": 0,
-      "metadata": Object {},
-      "type": "ObojoboDraft.Chunks.ActionButton",
-    }
-  }
-  moduleData={
-    Object {
-      "focusState": Object {},
-    }
-  }
-  tag="div"
 >
   <div
     className="text-chunk obojobo-draft--chunks--action-button pad"

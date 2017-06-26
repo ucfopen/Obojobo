@@ -8,25 +8,6 @@ exports[`HTML HTML component 1`] = `
   data-obo-component={true}
   data-type="ObojoboDraft.Chunks.HTML"
   id="obo-id"
-  model={
-    Object {
-      "children": null,
-      "content": Object {
-        "align": "left",
-        "html": "<marquee>Example text</marquee>",
-      },
-      "id": "id",
-      "index": 0,
-      "metadata": Object {},
-      "type": "ObojoboDraft.Chunks.HTML",
-    }
-  }
-  moduleData={
-    Object {
-      "focusState": Object {},
-    }
-  }
-  tag="div"
 >
   <div
     className="obojobo-draft--chunks--html viewer pad align-left"

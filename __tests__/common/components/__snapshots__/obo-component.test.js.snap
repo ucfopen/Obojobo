@@ -8,35 +8,6 @@ exports[`OboComponent 1`] = `
   data-obo-component={true}
   data-type="ObojoboDraft.Chunks.Text"
   id="obo-testId"
-  model={
-    Object {
-      "children": null,
-      "content": Object {
-        "textGroup": Array [
-          Object {
-            "data": Object {
-              "align": "left",
-              "indent": 0,
-            },
-            "text": Object {
-              "styleList": null,
-              "value": "",
-            },
-          },
-        ],
-      },
-      "id": "testId",
-      "index": 0,
-      "metadata": Object {},
-      "type": "ObojoboDraft.Chunks.Text",
-    }
-  }
-  moduleData={
-    Object {
-      "focusState": Object {},
-    }
-  }
-  tag="div"
 >
   Test
 </div>
@@ -50,35 +21,6 @@ exports[`OboComponent tag 1`] = `
   data-obo-component={true}
   data-type="ObojoboDraft.Chunks.Text"
   id="obo-testId"
-  model={
-    Object {
-      "children": null,
-      "content": Object {
-        "textGroup": Array [
-          Object {
-            "data": Object {
-              "align": "left",
-              "indent": 0,
-            },
-            "text": Object {
-              "styleList": null,
-              "value": "",
-            },
-          },
-        ],
-      },
-      "id": "testId",
-      "index": 0,
-      "metadata": Object {},
-      "type": "ObojoboDraft.Chunks.Text",
-    }
-  }
-  moduleData={
-    Object {
-      "focusState": Object {},
-    }
-  }
-  tag="pre"
 >
   Test
 </pre>

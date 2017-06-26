@@ -7918,9 +7918,28 @@ var OboComponent = function (_React$Component) {
 
 			var isFocussed = _focusUtil2.default.getFocussedComponent(this.props.moduleData.focusState) === this.props.model;
 
+			var otherProps = {};
+			for (var propKey in this.props) {
+				switch (propKey) {
+					case 'model':
+					case 'moduleData':
+					case 'tag':
+					case 'className':
+					case 'children':
+						// do nothing
+						break;
+
+					default:
+						if (this.props.hasOwnProperty(propKey)) {
+							otherProps[propKey] = this.props[propKey];
+						}
+						break;
+				}
+			}
+
 			return React.createElement(
 				Tag,
-				_extends({}, this.props, {
+				_extends({}, otherProps, {
 					className: className,
 					id: 'obo-' + this.props.model.get('id'),
 					'data-obo-component': true,
