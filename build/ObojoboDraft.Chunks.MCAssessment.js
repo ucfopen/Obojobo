@@ -1031,8 +1031,8 @@ var MCChoice = function (_React$Component) {
 					type: this.getInputType(),
 					value: this.props.model.get('id'),
 					checked: isSelected,
+					onChange: function onChange() {},
 					name: this.props.model.parent.get('id')
-
 				}),
 				React.createElement(
 					'div',

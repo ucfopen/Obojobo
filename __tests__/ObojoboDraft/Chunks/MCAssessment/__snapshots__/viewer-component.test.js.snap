@@ -25,6 +25,7 @@ exports[`MCAssessment MCAssessment component 1`] = `
     <input
       checked={false}
       name="id"
+      onChange={[Function]}
       type="radio"
       value="choice1"
     />
@@ -115,6 +116,7 @@ exports[`MCAssessment MCAssessment component 1`] = `
     <input
       checked={false}
       name="id"
+      onChange={[Function]}
       type="radio"
       value="choice2"
     />
@@ -237,6 +239,7 @@ exports[`MCAssessment MCAssessment with a set score 1`] = `
     <input
       checked={false}
       name="id"
+      onChange={[Function]}
       type="radio"
       value="choice1"
     />
@@ -327,6 +330,7 @@ exports[`MCAssessment MCAssessment with a set score 1`] = `
     <input
       checked={false}
       name="id"
+      onChange={[Function]}
       type="radio"
       value="choice2"
     />
@@ -449,6 +453,7 @@ exports[`MCAssessment MCAssessment with a set score 2`] = `
     <input
       checked={false}
       name="id"
+      onChange={[Function]}
       type="radio"
       value="choice1"
     />
@@ -539,6 +544,7 @@ exports[`MCAssessment MCAssessment with a set score 2`] = `
     <input
       checked={false}
       name="id"
+      onChange={[Function]}
       type="radio"
       value="choice2"
     />
@@ -661,6 +667,7 @@ exports[`MCAssessment MCAssessment with response 1`] = `
     <input
       checked={false}
       name="id"
+      onChange={[Function]}
       type="radio"
       value="choice1"
     />
@@ -751,6 +758,7 @@ exports[`MCAssessment MCAssessment with response 1`] = `
     <input
       checked={false}
       name="id"
+      onChange={[Function]}
       type="radio"
       value="choice2"
     />
@@ -873,6 +881,7 @@ exports[`MCAssessment MCAssessment with response 2`] = `
     <input
       checked={true}
       name="id"
+      onChange={[Function]}
       type="radio"
       value="choice1"
     />
@@ -963,6 +972,7 @@ exports[`MCAssessment MCAssessment with response 2`] = `
     <input
       checked={false}
       name="id"
+      onChange={[Function]}
       type="radio"
       value="choice2"
     />
@@ -1085,6 +1095,7 @@ exports[`MCAssessment MCAssessment with revealAll 1`] = `
     <input
       checked={false}
       name="id"
+      onChange={[Function]}
       type="radio"
       value="choice1"
     />
@@ -1175,6 +1186,7 @@ exports[`MCAssessment MCAssessment with revealAll 1`] = `
     <input
       checked={false}
       name="id"
+      onChange={[Function]}
       type="radio"
       value="choice2"
     />
@@ -1297,6 +1309,7 @@ exports[`MCAssessment MCAssessment with revealAll 2`] = `
     <input
       checked={false}
       name="id"
+      onChange={[Function]}
       type="radio"
       value="choice1"
     />
@@ -1387,6 +1400,7 @@ exports[`MCAssessment MCAssessment with revealAll 2`] = `
     <input
       checked={false}
       name="id"
+      onChange={[Function]}
       type="radio"
       value="choice2"
     />

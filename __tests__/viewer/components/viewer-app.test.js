@@ -210,7 +210,7 @@ describe('ViewerApp', () => {
 		})
 	})
 
-	test("Clicking the button to show the solution will show the solution", () => {
+	test.only("Clicking the button to show the solution will show the solution", () => {
 		let viewerEl = mount(<ViewerApp />)
 
 		NavUtil.goto('page-3')

@@ -190,6 +190,7 @@ exports[`Assessment Assessment page changes when attempt started and submitted 2
                 <input
                   checked={false}
                   name="question1-mcassessment1"
+                  onChange={[Function]}
                   type="radio"
                   value="question1-mcassessment1-choice1"
                 />
@@ -218,6 +219,7 @@ exports[`Assessment Assessment page changes when attempt started and submitted 2
                 <input
                   checked={false}
                   name="question1-mcassessment1"
+                  onChange={[Function]}
                   type="radio"
                   value="question1-mcassessment1-choice2"
                 />
@@ -338,6 +340,7 @@ exports[`Assessment Assessment page changes when attempt started and submitted 2
                 <input
                   checked={false}
                   name="question2-mcassessment1"
+                  onChange={[Function]}
                   type="radio"
                   value="question2-mcassessment1-choice1"
                 />
@@ -366,6 +369,7 @@ exports[`Assessment Assessment page changes when attempt started and submitted 2
                 <input
                   checked={false}
                   name="question2-mcassessment1"
+                  onChange={[Function]}
                   type="radio"
                   value="question2-mcassessment1-choice2"
                 />
