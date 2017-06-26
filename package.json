@@ -60,7 +60,7 @@
     "array-from": "^2.1.1",
     "babel-preset-env": "^1.5.1",
     "babel-preset-react-es2015": "^1.2.0",
-    "enzyme": "^2.8.2",
+    "enzyme": "^2.9.0",
     "es6-set": "^0.1.5",
     "promise-polyfill": "^6.0.2",
     "react": "^15.5.4",
