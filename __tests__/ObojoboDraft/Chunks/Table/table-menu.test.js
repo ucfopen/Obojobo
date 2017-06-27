@@ -2,16 +2,14 @@ import React from 'react';
 import { shallow, mount } from 'enzyme';
 import TableMenu from '../../../../ObojoboDraft/Chunks/Table/table-menu.js';
 
-// TODO: Test functionality of the onclick method
-//       Test renderRow/renderCol functionality
-//       Shallow render the component and snapshot test.
-
 describe('TableMenu', () => {
   let onMenuCommandMock
-  let tableMenu
+  let tableMenuRow
+  let tableMenuCol
+  let expectCommandToFire
   beforeEach(() => {
     onMenuCommandMock = jest.fn()
-    tableMenu = (
+    tableMenuRow = (
       <TableMenu 
         type='row' 
         onMenuCommand={ onMenuCommandMock } 
@@ -19,28 +17,48 @@ describe('TableMenu', () => {
         col={0}
       />
     )
+    tableMenuCol = (
+      <TableMenu
+        type='col'
+        onMenuCommand={ onMenuCommandMock }
+        row={0}
+        col={0}
+      />
+    )
+
+    expectCommandToFire = (componentToMount, elClassName, command) => {
+      const wrapper = mount(componentToMount)
+      wrapper.find(elClassName).simulate('click')
+      expect(onMenuCommandMock).toBeCalledWith({ row: 0, col: 0, command })
+    }
   })
 
   it('renders without blowing up', () => {
-    expect(shallow(tableMenu)).toMatchSnapshot()
+    expect(shallow(tableMenuRow)).toMatchSnapshot()
   })
 
   it('inserts a row above', () => {
-    const wrapper = mount(tableMenu)
-    wrapper.find('.insert-above').simulate('click')
-    expect(onMenuCommandMock).toBeCalledWith({ row: 0, col: 0, command: 'insertRowAbove' })
+    expectCommandToFire(tableMenuRow, 'li.insert-above', 'insertRowAbove')
   })
 
   it('inserts a row below', () => {
-    const wrapper = mount(tableMenu)
-    wrapper.find('.insert-below').simulate('click')
-    expect(onMenuCommandMock).toBeCalledWith({ row: 0, col: 0, command: 'insertRowBelow' })
+    expectCommandToFire(tableMenuRow, 'li.insert-below', 'insertRowBelow')
   })
 
   it('deletes a row', () => {
-    const wrapper = mount(tableMenu)
-    wrapper.find('li.delete').at(0).simulate('click')
-    expect(onMenuCommandMock).toBeCalledWith({ row: 0, col: 0, command: 'deleteRow' })
+    expectCommandToFire(tableMenuRow, 'li.delete', 'deleteRow')
+  })
+
+  it('inserts a column left', () => {
+    expectCommandToFire(tableMenuCol, 'li.insert-left', 'insertColLeft')
+  })
+
+  it('inserts a column right', () => {
+    expectCommandToFire(tableMenuCol, 'li.insert-right', 'insertColRight')
+  })
+
+  it('deletes a column', () => {
+    expectCommandToFire(tableMenuCol, 'li.delete', 'deleteCol')
   })
 })
 
