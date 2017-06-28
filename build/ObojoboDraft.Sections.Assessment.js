@@ -220,7 +220,6 @@ var Adapter = {
 	// 	scores: []
 	// 	currentScore: 0
 
-
 	clone: function clone(model, _clone) {
 		_clone.modelState.attempts = model.modelState.attempts;
 		_clone.modelState.hideNav = model.modelState.hideNav;
@@ -293,7 +292,9 @@ var AttemptIncompleteDialog = function () {
 		value: function render() {
 			return React.createElement(
 				Dialog,
-				{ width: '32rem', buttons: [{
+				{
+					width: '32rem',
+					buttons: [{
 						value: 'Submit as incomplete',
 						altAction: true,
 						dangerous: true,
@@ -302,7 +303,8 @@ var AttemptIncompleteDialog = function () {
 						value: 'Resume assessment',
 						onClick: this.onCancel.bind(this),
 						default: true
-					}] },
+					}]
+				},
 				React.createElement(
 					'b',
 					null,
@@ -535,10 +537,10 @@ var Assessment = function (_React$Component) {
 			return {
 				from: 0,
 				to: 100,
-				message: "",
+				message: '',
 				action: {
-					type: "unlock",
-					value: "_next"
+					type: 'unlock',
+					value: '_next'
 				}
 			};
 		}
@@ -571,11 +573,19 @@ var Assessment = function (_React$Component) {
 						return React.createElement(
 							'div',
 							{ className: 'test' },
-							React.createElement(Component, { className: 'untested', model: child, moduleData: _this2.props.moduleData, showScore: recentScore !== null }),
+							React.createElement(Component, {
+								className: 'untested',
+								model: child,
+								moduleData: _this2.props.moduleData,
+								showScore: recentScore !== null
+							}),
 							React.createElement(
 								'div',
 								{ className: 'submit-button' },
-								React.createElement(Button, { onClick: _this2.onClickSubmit.bind(_this2), value: _this2.isAttemptComplete() ? 'Submit' : 'Submit (Not all questions have been answered)' })
+								React.createElement(Button, {
+									onClick: _this2.onClickSubmit.bind(_this2),
+									value: _this2.isAttemptComplete() ? 'Submit' : 'Submit (Not all questions have been answered)'
+								})
 							)
 						);
 
@@ -637,13 +647,20 @@ var Assessment = function (_React$Component) {
 
 									return React.createElement(
 										'div',
-										{ key: index, className: questionScore.score === 100 ? 'is-correct' : 'is-not-correct' },
+										{
+											key: index,
+											className: questionScore.score === 100 ? 'is-correct' : 'is-not-correct'
+										},
 										React.createElement(
 											'p',
 											null,
 											'Question ' + (index + 1) + ' - ' + (questionScore.score === 100 ? 'Correct:' : 'Incorrect:')
 										),
-										React.createElement(QuestionComponent, { model: questionModel, moduleData: _this2.props.moduleData, showContentOnly: true })
+										React.createElement(QuestionComponent, {
+											model: questionModel,
+											moduleData: _this2.props.moduleData,
+											showContentOnly: true
+										})
 									);
 								})
 							)

@@ -12,9 +12,7 @@ let createRect = () => {
 }
 
 test('TextMenu', () => {
-	const component = renderer.create(
-		<TextMenu />
-	)
+	const component = renderer.create(<TextMenu />)
 	let tree = component.toJSON()
 
 	expect(tree).toMatchSnapshot()
@@ -28,9 +26,7 @@ test('TextMenu with required props', () => {
 			}}
 			enabled={true}
 			selectionRect={createRect()}
-			commands={[
-				{ label:'Label' }
-			]}
+			commands={[{ label: 'Label' }]}
 		/>
 	)
 	let tree = component.toJSON()

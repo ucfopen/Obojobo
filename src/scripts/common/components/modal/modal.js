@@ -1,48 +1,57 @@
-import './modal.scss';
+import './modal.scss'
 
-import DeleteButton from '../../../common/components/delete-button';
+import DeleteButton from '../../../common/components/delete-button'
 
 export default class Modal extends React.Component {
 	componentDidMount() {
 		if (this.props.onClose) {
-			return document.addEventListener('keyup', this.onKeyUp);
+			return document.addEventListener('keyup', this.onKeyUp)
 		}
 	}
 
 	componentWillUnmount() {
 		if (this.props.onClose) {
-			return document.removeEventListener('keyup', this.onKeyUp);
+			return document.removeEventListener('keyup', this.onKeyUp)
 		}
 	}
 
 	onKeyUp(event) {
-		if (event.keyCode === 27) { //ESC
-			return this.props.onClose();
+		if (event.keyCode === 27) {
+			//ESC
+			return this.props.onClose()
 		}
 	}
 
 	onTabTrapFocus() {
 		if (this.props.onClose) {
-			return this.refs.closeButton.focus();
+			return this.refs.closeButton.focus()
 		} else if (this.props.focusOnFirstElement) {
-			return this.props.focusOnFirstElement();
+			return this.props.focusOnFirstElement()
 		}
 	}
 
 	render() {
-		return <div className="obojobo-draft--components--modal--modal">
-			<input className="first-tab" ref="firstTab" type="text" onFocus={this.onTabTrapFocus.bind(this)} />
-			{
-				this.props.onClose
-				?
-				<DeleteButton ref="closeButton" onClick={this.props.onClose} />
-				:
-				null
-			}
-			<div className="content">
-				{this.props.children}
+		return (
+			<div className="obojobo-draft--components--modal--modal">
+				<input
+					className="first-tab"
+					ref="firstTab"
+					type="text"
+					onFocus={this.onTabTrapFocus.bind(this)}
+				/>
+				{this.props.onClose
+					? <DeleteButton ref="closeButton" onClick={this.props.onClose} />
+					: null}
+				<div className="content">
+					{this.props.children}
+				</div>
+				<input
+					className="last-tab"
+					ref="lastTab"
+					type="text"
+					onFocus={this.onTabTrapFocus.bind(this)}
+				/>
 			</div>
-			<input className="last-tab" ref="lastTab" type="text" onFocus={this.onTabTrapFocus.bind(this)} />
-		</div>;
+		)
 	}
 }

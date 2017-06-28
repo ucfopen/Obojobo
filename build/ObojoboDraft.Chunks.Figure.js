@@ -273,7 +273,9 @@ var Image = function (_React$Component) {
 			}
 
 			switch (data.size) {
-				case 'small':case 'medium':case 'large':
+				case 'small':
+				case 'medium':
+				case 'large':
 					return React.createElement('img', { src: data.url, unselectable: 'on', alt: data.alt });
 				case 'custom':
 					imgStyles = {};
@@ -401,7 +403,10 @@ var Figure = function (_React$Component) {
 				{ model: this.props.model, moduleData: this.props.moduleData },
 				React.createElement(
 					NonEditableChunk,
-					{ className: 'obojobo-draft--chunks--figure viewer ' + data.size, ref: 'component' },
+					{
+						className: 'obojobo-draft--chunks--figure viewer ' + data.size,
+						ref: 'component'
+					},
 					React.createElement(
 						'div',
 						{ className: 'container' },
@@ -412,7 +417,11 @@ var Figure = function (_React$Component) {
 							data.textGroup.first.text.length > 0 ? React.createElement(
 								'figcaption',
 								{ ref: 'caption' },
-								React.createElement(TextGroupEl, { parentModel: this.props.model, textItem: data.textGroup.first, groupIndex: '0' })
+								React.createElement(TextGroupEl, {
+									parentModel: this.props.model,
+									textItem: data.textGroup.first,
+									groupIndex: '0'
+								})
 							) : null
 						)
 					)

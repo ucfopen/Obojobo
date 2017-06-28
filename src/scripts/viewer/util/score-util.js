@@ -1,13 +1,15 @@
 import Common from 'Common'
 
-let { Dispatcher } = Common.flux;
+let { Dispatcher } = Common.flux
 
 let ScoreUtil = {
 	getScoreForModel(state, model) {
-		let score = state.scores[model.get('id')];
-		if ((typeof score === "undefined") || (score === null)) { return null; }
+		let score = state.scores[model.get('id')]
+		if (typeof score === 'undefined' || score === null) {
+			return null
+		}
 
-		return score;
+		return score
 	},
 
 	setScore(id, score) {
@@ -16,8 +18,7 @@ let ScoreUtil = {
 				id,
 				score
 			}
-		}
-		);
+		})
 	},
 
 	clearScore(id) {
@@ -25,10 +26,8 @@ let ScoreUtil = {
 			value: {
 				id
 			}
-		}
-		);
+		})
 	}
-};
+}
 
-
-export default ScoreUtil;
+export default ScoreUtil

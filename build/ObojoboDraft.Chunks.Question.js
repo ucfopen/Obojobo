@@ -191,9 +191,7 @@ var QuestionContent = function (_React$Component) {
 
 			return React.createElement(
 				'div',
-				{
-					className: 'obojobo-draft--chunks--mc-question--content'
-				},
+				{ className: 'obojobo-draft--chunks--mc-question--content' },
 				this.props.model.children.models.slice(0, this.props.model.children.models.length - 1).map(function (child, index) {
 					var Component = child.getComponentClass();
 					return React.createElement(Component, { key: child.get('id'), model: child, moduleData: _this2.props.moduleData });
@@ -387,7 +385,9 @@ var Question = function (_React$Component) {
 					React.createElement(
 						'div',
 						{ className: 'blocker front', key: 'blocker', onClick: this.onClickBlocker.bind(this) },
-						React.createElement(Button, { value: this.props.model.modelState.practice ? 'Try Question' : 'View Question' })
+						React.createElement(Button, {
+							value: this.props.model.modelState.practice ? 'Try Question' : 'View Question'
+						})
 					)
 				)
 			);

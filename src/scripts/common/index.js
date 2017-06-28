@@ -70,7 +70,6 @@ import ErrorUtil from './util/error-util'
 import UUID from './util/uuid'
 import OboGlobals from './util/obo-globals'
 
-
 export default {
 	Store: Store,
 	chunk: {
@@ -188,4 +187,4 @@ export default {
 		UUID: UUID,
 		OboGlobals: OboGlobals
 	}
-};
+}

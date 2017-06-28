@@ -9,4 +9,4 @@ Common.Store.registerModel('ObojoboDraft.Chunks.ActionButton', {
 	adapter: adapter,
 	componentClass: ViewerComponent,
 	selectionHandler: new SelectionHandler() //@TODO
-});
+})

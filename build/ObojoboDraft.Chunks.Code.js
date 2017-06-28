@@ -164,7 +164,12 @@ var Code = function (_React$Component) {
 			var _this2 = this;
 
 			var texts = this.props.model.modelState.textGroup.items.map(function (textItem, index) {
-				return React.createElement(TextGroupEl, { parentModel: _this2.props.model, textItem: textItem, groupIndex: index, key: index });
+				return React.createElement(TextGroupEl, {
+					parentModel: _this2.props.model,
+					textItem: textItem,
+					groupIndex: index,
+					key: index
+				});
 			});
 
 			return React.createElement(

@@ -104,78 +104,84 @@
 let regex = new RegExp(
 	// "^" +
 	// protocol identifier
-	"(?:(?:https?)://)?" +
-	// user:pass authentication
-	"(?:\\S+(?::\\S*)?@)?" +
-	"(?:" +
+	'(?:(?:https?)://)?' +
+		// user:pass authentication
+		'(?:\\S+(?::\\S*)?@)?' +
+		'(?:' +
 		// IP address exclusion
 		// private & local networks
-		"(?!(?:10|127)(?:\\.\\d{1,3}){3})" +
-		"(?!(?:169\\.254|192\\.168)(?:\\.\\d{1,3}){2})" +
-		"(?!172\\.(?:1[6-9]|2\\d|3[0-1])(?:\\.\\d{1,3}){2})" +
+		'(?!(?:10|127)(?:\\.\\d{1,3}){3})' +
+		'(?!(?:169\\.254|192\\.168)(?:\\.\\d{1,3}){2})' +
+		'(?!172\\.(?:1[6-9]|2\\d|3[0-1])(?:\\.\\d{1,3}){2})' +
 		// IP address dotted notation octets
 		// excludes loopback network 0.0.0.0
 		// excludes reserved space >= 224.0.0.0
 		// excludes network & broacast addresses
 		// (first & last IP address of each class)
-		"(?:[1-9]\\d?|1\\d\\d|2[01]\\d|22[0-3])" +
-		"(?:\\.(?:1?\\d{1,2}|2[0-4]\\d|25[0-5])){2}" +
-		"(?:\\.(?:[1-9]\\d?|1\\d\\d|2[0-4]\\d|25[0-4]))" +
-	"|" +
+		'(?:[1-9]\\d?|1\\d\\d|2[01]\\d|22[0-3])' +
+		'(?:\\.(?:1?\\d{1,2}|2[0-4]\\d|25[0-5])){2}' +
+		'(?:\\.(?:[1-9]\\d?|1\\d\\d|2[0-4]\\d|25[0-4]))' +
+		'|' +
 		// host name
-		"(?:(?:[a-z\\u00a1-\\uffff0-9]-*)*[a-z\\u00a1-\\uffff0-9]+)" +
+		'(?:(?:[a-z\\u00a1-\\uffff0-9]-*)*[a-z\\u00a1-\\uffff0-9]+)' +
 		// domain name
-		"(?:\\.(?:[a-z\\u00a1-\\uffff0-9]-*)*[a-z\\u00a1-\\uffff0-9]+)*" +
+		'(?:\\.(?:[a-z\\u00a1-\\uffff0-9]-*)*[a-z\\u00a1-\\uffff0-9]+)*' +
 		// TLD identifier
-		"(?:\\.(?:[a-z\\u00a1-\\uffff]{2,}))" +
+		'(?:\\.(?:[a-z\\u00a1-\\uffff]{2,}))' +
 		// TLD may end with dot
-		"\\.?" +
-	")" +
-	// port number
-	"(?::\\d{2,5})?" +
-	// resource path
-	"(?:[/?#]\\S*)?" //+
-	, "gi"
+		'\\.?' +
+		')' +
+		// port number
+		'(?::\\d{2,5})?' +
+		// resource path
+		'(?:[/?#]\\S*)?', //+
+	'gi'
 	// "$", "i"
-);
+)
 
 export default function(chunk, targetTextGroupItem) {
-	let results;
-	console.time('linkify');
+	let results
+	console.time('linkify')
 
-	let styleApplied = false;
-	let links = [];
+	let styleApplied = false
+	let links = []
 
-	let { selection } = chunk.page.module.app;
-	let styleableText = targetTextGroupItem.text;
+	let { selection } = chunk.page.module.app
+	let styleableText = targetTextGroupItem.text
 
 	while ((results = regex.exec(styleableText.value)) !== null) {
-		links.unshift([results.index, regex.lastIndex, styleableText.value.substring(results.index, regex.lastIndex)]);
+		links.unshift([
+			results.index,
+			regex.lastIndex,
+			styleableText.value.substring(results.index, regex.lastIndex)
+		])
 	}
 
-	if (links.length === 0) { return false; }
+	if (links.length === 0) {
+		return false
+	}
 
-	selection.saveVirtualSelection();
+	selection.saveVirtualSelection()
 
 	for (let link of Array.from(links)) {
-		selection.virtual.start.data.groupIndex = targetTextGroupItem.index;
-		selection.virtual.end.data.groupIndex   = selection.virtual.start.data.groupIndex;
-		selection.virtual.start.data.offset = link[0];
-		selection.virtual.end.data.offset   = link[1];
+		selection.virtual.start.data.groupIndex = targetTextGroupItem.index
+		selection.virtual.end.data.groupIndex = selection.virtual.start.data.groupIndex
+		selection.virtual.start.data.offset = link[0]
+		selection.virtual.end.data.offset = link[1]
 
-		if ((chunk.getSelectionStyles().a == null)) {
+		if (chunk.getSelectionStyles().a == null) {
 			if (link[2].indexOf('http') !== 0) {
-				link[2] = `http://${link[2]}`;
+				link[2] = `http://${link[2]}`
 			}
-			chunk.styleSelection('a', { href:link[2] });
+			chunk.styleSelection('a', { href: link[2] })
 
-			styleApplied = true;
+			styleApplied = true
 		}
 	}
 
-	selection.restoreVirtualSelection();
+	selection.restoreVirtualSelection()
 
-	console.timeEnd('linkify');
+	console.timeEnd('linkify')
 
-	return styleApplied;
-};
+	return styleApplied
+}

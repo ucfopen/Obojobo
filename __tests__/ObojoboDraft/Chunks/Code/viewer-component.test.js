@@ -24,9 +24,7 @@ describe('Code', () => {
 	}
 
 	test('Code component', () => {
-		const component = renderer.create(
-			<Code model={model} moduleData={moduleData} />
-		)
+		const component = renderer.create(<Code model={model} moduleData={moduleData} />)
 		let tree = component.toJSON()
 
 		expect(tree).toMatchSnapshot()

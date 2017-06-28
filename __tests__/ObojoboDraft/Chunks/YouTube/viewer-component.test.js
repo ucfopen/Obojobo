@@ -18,9 +18,7 @@ describe('YouTube', () => {
 	}
 
 	test('YouTube component', () => {
-		const component = renderer.create(
-			<YouTube model={model} moduleData={moduleData} />
-		)
+		const component = renderer.create(<YouTube model={model} moduleData={moduleData} />)
 		let tree = component.toJSON()
 
 		expect(tree).toMatchSnapshot()

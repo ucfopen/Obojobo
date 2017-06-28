@@ -12,12 +12,10 @@ describe('Break', () => {
 	test('Break component with textGroup', () => {
 		let model = OboModel.create({
 			id: 'id',
-			type: 'ObojoboDraft.Chunks.Break',
+			type: 'ObojoboDraft.Chunks.Break'
 		})
 
-		const component = renderer.create(
-			<Break model={model} moduleData={moduleData} />
-		)
+		const component = renderer.create(<Break model={model} moduleData={moduleData} />)
 		let tree = component.toJSON()
 
 		expect(tree).toMatchSnapshot()

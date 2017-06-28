@@ -10,21 +10,23 @@ Common.Store.registerModel('ObojoboDraft.Chunks.Question', {
 	componentClass: ViewerComponent,
 	selectionHandler: new SelectionHandler(),
 	getNavItem(model) {
-		let label;
-		let questions = model.parent.children.models.filter(child => child.get('type') === 'ObojoboDraft.Chunks.Question');
+		let label
+		let questions = model.parent.children.models.filter(
+			child => child.get('type') === 'ObojoboDraft.Chunks.Question'
+		)
 
 		if (model.title) {
-			label = model.title;
+			label = model.title
 		} else if (model.modelState.practice) {
-			label = `Practice Question ${questions.indexOf(model) + 1}`;
+			label = `Practice Question ${questions.indexOf(model) + 1}`
 		} else {
-			label = `Question ${questions.indexOf(model) + 1}`;
+			label = `Question ${questions.indexOf(model) + 1}`
 		}
 
 		return {
 			type: 'sub-link',
 			label,
 			path: [`#obo-${model.get('id')}`]
-		};
+		}
 	}
-});
+})

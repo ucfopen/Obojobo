@@ -1,7 +1,7 @@
 import Common from 'Common'
 
-let { Dispatcher } = Common.flux;
-let { OboModel } = Common.models;
+let { Dispatcher } = Common.flux
+let { OboModel } = Common.models
 
 let QuestionUtil = {
 	recordResponse(id, response) {
@@ -10,8 +10,7 @@ let QuestionUtil = {
 				id,
 				response
 			}
-		}
-		);
+		})
 	},
 
 	resetResponse(id) {
@@ -19,8 +18,7 @@ let QuestionUtil = {
 			value: {
 				id
 			}
-		}
-		);
+		})
 	},
 
 	setData(id, key, value) {
@@ -29,8 +27,7 @@ let QuestionUtil = {
 				key: id + ':' + key,
 				value
 			}
-		}
-		);
+		})
 	},
 
 	clearData(id, key) {
@@ -38,8 +35,7 @@ let QuestionUtil = {
 			value: {
 				key: id + ':' + key
 			}
-		}
-		);
+		})
 	},
 
 	viewQuestion(id) {
@@ -47,8 +43,7 @@ let QuestionUtil = {
 			value: {
 				id
 			}
-		}
-		);
+		})
 	},
 
 	hideQuestion(id) {
@@ -56,30 +51,32 @@ let QuestionUtil = {
 			value: {
 				id
 			}
-		}
-		);
+		})
 	},
 
 	getViewState(state, model) {
-		let modelId = model.get('id');
+		let modelId = model.get('id')
 
-		if (state.viewing === modelId) { return 'active'; }
-		if (state.viewedQuestions[modelId]) { return 'viewed'; }
-		return 'hidden';
+		if (state.viewing === modelId) {
+			return 'active'
+		}
+		if (state.viewedQuestions[modelId]) {
+			return 'viewed'
+		}
+		return 'hidden'
 	},
 
 	getResponse(state, model) {
-		return state.responses[model.get('id')];
+		return state.responses[model.get('id')]
 	},
 
 	hasResponse(state, model) {
-		return typeof state.responses[model.get('id')] !== 'undefined';
+		return typeof state.responses[model.get('id')] !== 'undefined'
 	},
 
 	getData(state, model, key) {
-		return state.data[model.get('id') + ':' + key];
+		return state.data[model.get('id') + ':' + key]
 	}
-};
+}
 
-
-export default QuestionUtil;
+export default QuestionUtil

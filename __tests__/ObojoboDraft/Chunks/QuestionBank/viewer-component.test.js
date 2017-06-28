@@ -15,9 +15,7 @@ describe('QuestionBank', () => {
 	}
 
 	test('QuestionBank component', () => {
-		const component = renderer.create(
-			<QuestionBank model={model} moduleData={moduleData} />
-		)
+		const component = renderer.create(<QuestionBank model={model} moduleData={moduleData} />)
 		let tree = component.toJSON()
 
 		expect(tree).toMatchSnapshot()

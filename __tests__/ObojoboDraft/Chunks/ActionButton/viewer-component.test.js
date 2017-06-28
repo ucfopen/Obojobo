@@ -24,9 +24,7 @@ describe('ActionButton', () => {
 			}
 		})
 
-		const component = renderer.create(
-			<ActionButton model={model} moduleData={moduleData} />
-		)
+		const component = renderer.create(<ActionButton model={model} moduleData={moduleData} />)
 		let tree = component.toJSON()
 
 		expect(tree).toMatchSnapshot()
@@ -41,9 +39,7 @@ describe('ActionButton', () => {
 			}
 		})
 
-		const component = renderer.create(
-			<ActionButton model={model} moduleData={moduleData} />
-		)
+		const component = renderer.create(<ActionButton model={model} moduleData={moduleData} />)
 		let tree = component.toJSON()
 
 		expect(tree).toMatchSnapshot()

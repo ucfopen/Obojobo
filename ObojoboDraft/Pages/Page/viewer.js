@@ -8,9 +8,9 @@ Common.Store.registerModel('ObojoboDraft.Pages.Page', {
 	componentClass: ViewerComponent,
 	selectionHandler: null,
 	getNavItem(model) {
-		let title = '';
+		let title = ''
 		if (model.title != null) {
-			({ title } = model);
+			;({ title } = model)
 		}
 
 		return {
@@ -19,9 +19,9 @@ Common.Store.registerModel('ObojoboDraft.Pages.Page', {
 			// path: ['page-' + (model.getIndex() + 1) + '-' + model.get('id')],
 			path: [title.toLowerCase().replace(/ /g, '-')],
 			showChildren: false
-		};
+		}
 	}
 	// init: ->
 	// 	Dispatcher.on 'nav:willGotoPath', (oldNavItem, newNavItem) ->
 	// 		alert('yeah')
-});
+})

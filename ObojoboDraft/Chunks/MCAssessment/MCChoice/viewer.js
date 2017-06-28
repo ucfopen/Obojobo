@@ -9,4 +9,4 @@ Common.Store.registerModel('ObojoboDraft.Chunks.MCAssessment.MCChoice', {
 	adapter: adapter,
 	componentClass: ViewerComponent,
 	selectionHandler: new SelectionHandler()
-});
+})

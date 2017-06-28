@@ -28,4 +28,4 @@ export default {
 		APIUtil: APIUtil,
 		QuestionUtil: QuestionUtil
 	}
-};
+}

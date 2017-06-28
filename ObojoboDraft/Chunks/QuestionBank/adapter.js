@@ -9,52 +9,51 @@ let Adapter = {
 		// shuffleGroup: If true the items in a group are shuffled randomly, otherwise they are presented in document order
 		// resetWhenEmpty: If true the saved state of an assessment will be cleared when the assessment has no more questions to show (i.e. Sequential banks start back at the first question, random banks being selecting seen questions, etc)
 		if (__guard__(attrs != null ? attrs.content : undefined, x => x.choose) != null) {
-			model.modelState.choose = attrs.content.choose;
+			model.modelState.choose = attrs.content.choose
 		} else {
-			model.modelState.choose = Infinity;
+			model.modelState.choose = Infinity
 		}
 
 		if (__guard__(attrs != null ? attrs.content : undefined, x1 => x1.groupSize) != null) {
-			model.modelState.groupSize = attrs.content.groupSize;
+			model.modelState.groupSize = attrs.content.groupSize
 		} else {
-			model.modelState.groupSize = 1;
+			model.modelState.groupSize = 1
 		}
 
 		if (__guard__(attrs != null ? attrs.content : undefined, x2 => x2.select) != null) {
-			model.modelState.select = attrs.content.select;
+			model.modelState.select = attrs.content.select
 		} else {
-			model.modelState.select = "sequential"; //random-unseen | random-all | sequential
+			model.modelState.select = 'sequential' //random-unseen | random-all | sequential
 		}
 
 		if (__guard__(attrs != null ? attrs.content : undefined, x3 => x3.shuffleGroup) != null) {
-			return model.modelState.shuffleGroup = attrs.content.shuffleGroup;
+			return (model.modelState.shuffleGroup = attrs.content.shuffleGroup)
 		} else {
-			return model.modelState.shuffleGroup = false;
+			return (model.modelState.shuffleGroup = false)
 		}
 	},
 
-		// if attrs?.content?.resetWhenEmpty?
-		// 	model.modelState.resetWhenEmpty = attrs.content.resetWhenEmpty
-		// else
-		// 	model.modelState.resetWhenEmpty = true
+	// if attrs?.content?.resetWhenEmpty?
+	// 	model.modelState.resetWhenEmpty = attrs.content.resetWhenEmpty
+	// else
+	// 	model.modelState.resetWhenEmpty = true
 
 	clone(model, clone) {
-		clone.modelState.choose         = model.modelState.choose;
-		clone.modelState.groupSize      = model.modelState.groupSize;
-		clone.modelState.select         = model.modelState.select;
-		return clone.modelState.resetWhenEmpty = model.modelState.resetWhenEmpty;
+		clone.modelState.choose = model.modelState.choose
+		clone.modelState.groupSize = model.modelState.groupSize
+		clone.modelState.select = model.modelState.select
+		return (clone.modelState.resetWhenEmpty = model.modelState.resetWhenEmpty)
 	},
 
 	toJSON(model, json) {
-		json.content.choose         = model.modelState.choose;
-		json.content.groupSize      = model.modelState.groupSize;
-		json.content.select         = model.modelState.select;
-		return json.content.resetWhenEmpty = model.modelState.resetWhenEmpty;
+		json.content.choose = model.modelState.choose
+		json.content.groupSize = model.modelState.groupSize
+		json.content.select = model.modelState.select
+		return (json.content.resetWhenEmpty = model.modelState.resetWhenEmpty)
 	}
-};
+}
 
-
-export default Adapter;
+export default Adapter
 function __guard__(value, transform) {
-  return (typeof value !== 'undefined' && value !== null) ? transform(value) : undefined;
+	return typeof value !== 'undefined' && value !== null ? transform(value) : undefined
 }

@@ -360,7 +360,7 @@ var APIUtil = {
 			method: 'GET',
 			credentials: 'include',
 			headers: {
-				'Accept': 'application/json',
+				Accept: 'application/json',
 				'Content-Type': 'application/json'
 			} //@TODO - Do I need this?
 		});
@@ -374,7 +374,7 @@ var APIUtil = {
 			credentials: 'include',
 			body: JSON.stringify(body),
 			headers: {
-				'Accept': 'application/json',
+				Accept: 'application/json',
 				'Content-Type': 'application/json'
 			}
 		});
@@ -418,7 +418,6 @@ var APIUtil = {
 // 	createParsedJsonPromise APIUtil.post "/api/assessments/attempt/#{attempt.id}/question/#{question.get('id')}", {
 // 		response: response
 // 	}
-
 
 exports.default = APIUtil;
 
@@ -868,9 +867,12 @@ var Logo = function (_React$Component) {
 
 			return React.createElement(
 				'div',
-				{ className: 'viewer--components--logo' + (this.props.inverted ? ' is-inverted' : ' is-not-inverted'), style: {
+				{
+					className: 'viewer--components--logo' + (this.props.inverted ? ' is-inverted' : ' is-not-inverted'),
+					style: {
 						backgroundImage: bg
-					} },
+					}
+				},
 				'Obojobo'
 			);
 		}
@@ -1075,7 +1077,11 @@ var AssessmentStore = function (_Store) {
 			if (unfinishedAttempt) {
 				return ModalUtil.show(React.createElement(
 					SimpleDialog,
-					{ ok: true, title: 'Resume Attempt', onConfirm: this.onResumeAttemptConfirm.bind(this, unfinishedAttempt) },
+					{
+						ok: true,
+						title: 'Resume Attempt',
+						onConfirm: this.onResumeAttemptConfirm.bind(this, unfinishedAttempt)
+					},
 					React.createElement(
 						'p',
 						null,
@@ -1103,7 +1109,7 @@ var AssessmentStore = function (_Store) {
 				if (res.status === 'error') {
 					switch (res.value.message.toLowerCase()) {
 						case 'attempt limit reached':
-							ErrorUtil.show('No attempts left', "You have attempted this assessment the maximum number of times available.");
+							ErrorUtil.show('No attempts left', 'You have attempted this assessment the maximum number of times available.');
 							break;
 
 						default:
@@ -1294,7 +1300,7 @@ var QuestionStore = function (_Store) {
 
 		Dispatcher.on({
 			'question:recordResponse': function questionRecordResponse(payload) {
-				id = payload.value.id;
+				;id = payload.value.id;
 
 				var model = OboModel.models[id];
 
@@ -1639,7 +1645,7 @@ var Dispatcher = _Common2.default.flux.Dispatcher;
 var ScoreUtil = {
 	getScoreForModel: function getScoreForModel(state, model) {
 		var score = state.scores[model.get('id')];
-		if (typeof score === "undefined" || score === null) {
+		if (typeof score === 'undefined' || score === null) {
 			return null;
 		}
 
@@ -2350,7 +2356,9 @@ var Nav = function (_React$Component) {
 
 			return React.createElement(
 				'div',
-				{ className: 'viewer--components--nav' + (this.props.navState.locked ? ' is-locked' : ' is-unlocked') + (this.props.navState.open ? ' is-open' : ' is-closed') + (this.props.navState.disabled ? ' is-disabled' : ' is-enabled') },
+				{
+					className: 'viewer--components--nav' + (this.props.navState.locked ? ' is-locked' : ' is-unlocked') + (this.props.navState.open ? ' is-open' : ' is-closed') + (this.props.navState.disabled ? ' is-disabled' : ' is-enabled')
+				},
 				React.createElement(
 					'button',
 					{
@@ -2375,7 +2383,10 @@ var Nav = function (_React$Component) {
 								var isSelected = false;
 								return React.createElement(
 									'li',
-									{ key: index, className: 'heading' + (isSelected ? ' is-selected' : ' is-not-select') },
+									{
+										key: index,
+										className: 'heading' + (isSelected ? ' is-selected' : ' is-not-select')
+									},
 									_this2.renderLabel(item.label)
 								);
 								break;
@@ -2385,7 +2396,11 @@ var Nav = function (_React$Component) {
 								//var isPrevVisited = this.props.navState.navTargetHistory.indexOf(item.id) > -1
 								return React.createElement(
 									'li',
-									{ key: index, onClick: _this2.onClick.bind(_this2, item), className: 'link' + (isSelected ? ' is-selected' : ' is-not-select') + (item.flags.visited ? ' is-visited' : ' is-not-visited') + (item.flags.complete ? ' is-complete' : ' is-not-complete') + (item.flags.correct ? ' is-correct' : ' is-not-correct') },
+									{
+										key: index,
+										onClick: _this2.onClick.bind(_this2, item),
+										className: 'link' + (isSelected ? ' is-selected' : ' is-not-select') + (item.flags.visited ? ' is-visited' : ' is-not-visited') + (item.flags.complete ? ' is-complete' : ' is-not-complete') + (item.flags.correct ? ' is-correct' : ' is-not-correct')
+									},
 									_this2.renderLabel(item.label),
 									lockEl
 								);
@@ -2396,7 +2411,11 @@ var Nav = function (_React$Component) {
 
 								return React.createElement(
 									'li',
-									{ key: index, onClick: _this2.onClick.bind(_this2, item), className: 'sub-link' + (isSelected ? ' is-selected' : ' is-not-select') + (item.flags.correct ? ' is-correct' : ' is-not-correct') },
+									{
+										key: index,
+										onClick: _this2.onClick.bind(_this2, item),
+										className: 'sub-link' + (isSelected ? ' is-selected' : ' is-not-select') + (item.flags.correct ? ' is-correct' : ' is-not-correct')
+									},
 									_this2.renderLabel(item.label),
 									lockEl
 								);
@@ -2409,7 +2428,6 @@ var Nav = function (_React$Component) {
 									React.createElement('hr', null)
 								);
 								break;
-
 						}
 					})
 				),
@@ -2586,7 +2604,6 @@ var ViewerApp = function (_React$Component) {
 	_createClass(ViewerApp, [{
 		key: 'componentWillMount',
 		value: function componentWillMount() {
-
 			// === SET UP DATA STORES ===
 			_navStore2.default.onChange(this.onNavStoreChange);
 			_scoreStore2.default.onChange(this.onScoreStoreChange);
@@ -2751,19 +2768,28 @@ var ViewerApp = function (_React$Component) {
 
 			var prevModel = nextModel = null;
 			if (_navUtil2.default.canNavigate(this.state.navState)) {
-
 				prevModel = _navUtil2.default.getPrevModel(this.state.navState);
 				if (prevModel) {
 					prevEl = _react2.default.createElement(_inlineNavButton2.default, { ref: 'prev', type: 'prev', title: 'Back: ' + prevModel.title });
 				} else {
-					prevEl = _react2.default.createElement(_inlineNavButton2.default, { ref: 'prev', type: 'prev', title: 'Start of ' + this.state.model.title, disabled: true });
+					prevEl = _react2.default.createElement(_inlineNavButton2.default, {
+						ref: 'prev',
+						type: 'prev',
+						title: 'Start of ' + this.state.model.title,
+						disabled: true
+					});
 				}
 
 				nextModel = _navUtil2.default.getNextModel(this.state.navState);
 				if (nextModel) {
 					nextEl = _react2.default.createElement(_inlineNavButton2.default, { ref: 'next', type: 'next', title: 'Next: ' + nextModel.title });
 				} else {
-					nextEl = _react2.default.createElement(_inlineNavButton2.default, { ref: 'next', type: 'next', title: 'End of ' + this.state.model.title, disabled: true });
+					nextEl = _react2.default.createElement(_inlineNavButton2.default, {
+						ref: 'next',
+						type: 'next',
+						title: 'End of ' + this.state.model.title,
+						disabled: true
+					});
 				}
 			}
 
@@ -2771,7 +2797,12 @@ var ViewerApp = function (_React$Component) {
 
 			return _react2.default.createElement(
 				'div',
-				{ ref: 'container', onMouseDown: this.onMouseDown.bind(this), onScroll: this.onScroll.bind(this), className: 'viewer--viewer-app' + (this.isPreviewing ? ' is-previewing' : ' is-not-previewing') + (this.state.navState.locked ? ' is-locked-nav' : ' is-unlocked-nav') + (this.state.navState.open ? ' is-open-nav' : ' is-closed-nav') + (this.state.navState.disabled ? ' is-disabled-nav' : ' is-enabled-nav') + ' is-focus-state-' + this.state.focusState.viewState },
+				{
+					ref: 'container',
+					onMouseDown: this.onMouseDown.bind(this),
+					onScroll: this.onScroll.bind(this),
+					className: 'viewer--viewer-app' + (this.isPreviewing ? ' is-previewing' : ' is-not-previewing') + (this.state.navState.locked ? ' is-locked-nav' : ' is-unlocked-nav') + (this.state.navState.open ? ' is-open-nav' : ' is-closed-nav') + (this.state.navState.disabled ? ' is-disabled-nav' : ' is-enabled-nav') + ' is-focus-state-' + this.state.focusState.viewState
+				},
 				_react2.default.createElement(
 					'header',
 					null,
@@ -2808,7 +2839,10 @@ var ViewerApp = function (_React$Component) {
 						{ className: 'controls' },
 						_react2.default.createElement(
 							'button',
-							{ onClick: this.unlockNavigation.bind(this), disabled: !this.state.navState.locked },
+							{
+								onClick: this.unlockNavigation.bind(this),
+								disabled: !this.state.navState.locked
+							},
 							'Unlock navigation'
 						),
 						_react2.default.createElement(

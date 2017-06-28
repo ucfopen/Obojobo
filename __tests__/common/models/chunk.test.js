@@ -1,4 +1,4 @@
-describe.skip('Chunk');
+describe.skip('Chunk')
 
 // VirtualCursor    = window.Common.oboDOM.Selection.VirtualCursor;
 // VirtualSelection    = window.Common.oboDOM.Selection.VirtualSelection;

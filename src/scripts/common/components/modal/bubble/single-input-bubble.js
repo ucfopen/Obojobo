@@ -1,42 +1,52 @@
-import './single-input-bubble.scss';
+import './single-input-bubble.scss'
 
-import Bubble from './bubble';
+import Bubble from './bubble'
 
 export default class SingleInputBubble extends React.Component {
 	onChange(event) {
-		console.log('BubbleChange', event.target.value);
-		return this.props.onChange(event.target.value);
+		console.log('BubbleChange', event.target.value)
+		return this.props.onChange(event.target.value)
 	}
 
 	onSubmit(event) {
-		event.preventDefault();
-		return this.props.onClose();
+		event.preventDefault()
+		return this.props.onClose()
 	}
 
 	onKeyUp(event) {
-		console.log(event.keyCode);
-		if (event.keyCode === 27) { //ESC
-			return this.props.onCancel();
+		console.log(event.keyCode)
+		if (event.keyCode === 27) {
+			//ESC
+			return this.props.onCancel()
 		}
 	}
 
 	componentDidMount() {
-		return setTimeout((() => {
-			return this.refs.input.select();
+		return setTimeout(() => {
+			return this.refs.input.select()
 		})
-		);
 	}
 
 	render() {
-		console.log('BubbleRender', this.props.value);
-		return <Bubble>
-			<label className="single-input-bubble">
-				<form className="interactable" onSubmit={this.onSubmit.bind(this)}>
-					<input ref="input" type="text" value={this.props.value} onChange={this.onChange.bind(this)} onKeyUp={this.onKeyUp.bind(this)} />
-					<button onClick={this.onSubmit.bind(this)}>Ok</button>
-				</form>
-				<span className="label">{this.props.label}</span>
-			</label>
-		</Bubble>;
+		console.log('BubbleRender', this.props.value)
+		return (
+			<Bubble>
+				<label className="single-input-bubble">
+					<form className="interactable" onSubmit={this.onSubmit.bind(this)}>
+						<input
+							ref="input"
+							type="text"
+							value={this.props.value}
+							onChange={this.onChange.bind(this)}
+							onKeyUp={this.onKeyUp.bind(this)}
+						/>
+						<button onClick={this.onSubmit.bind(this)}>Ok</button>
+					</form>
+					<span className="label">
+						{this.props.label}
+					</span>
+				</label>
+			</Bubble>
+		)
 	}
 }

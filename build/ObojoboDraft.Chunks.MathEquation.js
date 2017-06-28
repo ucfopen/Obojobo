@@ -124,6 +124,7 @@ _Common2.default.Store.registerModel('ObojoboDraft.Chunks.MathEquation', {
 	adapter: _adapter2.default,
 	componentClass: _viewerComponent2.default,
 	selectionHandler: new SelectionHandler()
+	// dependencies: ['https://cdnjs.cloudflare.com/ajax/libs/KaTeX/0.5.1/katex.min.css']
 });
 
 /***/ }),
@@ -250,11 +251,18 @@ var MathEquation = function (_React$Component) {
 
 			return React.createElement(
 				OboComponent,
-				{ model: this.props.model, moduleData: this.props.moduleData, className: 'obojobo-draft--chunks--math-equation pad align-' + this.props.model.modelState.align },
+				{
+					model: this.props.model,
+					moduleData: this.props.moduleData,
+					className: 'obojobo-draft--chunks--math-equation pad align-' + this.props.model.modelState.align
+				},
 				React.createElement(
 					NonEditableChunk,
 					null,
-					React.createElement('div', { className: 'katex-container', dangerouslySetInnerHTML: { __html: this.state.katexHtml } })
+					React.createElement('div', {
+						className: 'katex-container',
+						dangerouslySetInnerHTML: { __html: this.state.katexHtml }
+					})
 				)
 			);
 		}

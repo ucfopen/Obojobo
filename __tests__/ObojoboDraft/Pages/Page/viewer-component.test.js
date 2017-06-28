@@ -21,9 +21,7 @@ describe('Page', () => {
 	}
 
 	test('Page component', () => {
-		const component = renderer.create(
-			<Page model={model} moduleData={moduleData} />
-		)
+		const component = renderer.create(<Page model={model} moduleData={moduleData} />)
 		let tree = component.toJSON()
 
 		expect(tree).toMatchSnapshot()

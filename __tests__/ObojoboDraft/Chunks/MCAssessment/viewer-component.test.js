@@ -13,7 +13,7 @@ import OboModel from '../../../../__mocks__/_obo-model-with-chunks'
 import APIUtil from '../../../../src/scripts/viewer/util/api-util'
 
 describe('MCAssessment', () => {
-	_.shuffle = (a) => a;
+	_.shuffle = a => a
 
 	OboModel.create({
 		id: 'parent',
@@ -144,7 +144,7 @@ describe('MCAssessment', () => {
 		]
 	})
 
-	let model = OboModel.models.id;
+	let model = OboModel.models.id
 
 	let getModuleData = () => {
 		QuestionStore.init()
@@ -155,39 +155,33 @@ describe('MCAssessment', () => {
 			itemsById: {}
 		})
 
-		return ({
+		return {
 			focusState: FocusStore.getState(),
 			questionState: QuestionStore.getState(),
 			scoreState: ScoreStore.getState(),
 			assessmentState: AssessmentStore.getState(),
 			navState: NavStore.getState()
-		});
+		}
 	}
 
 	test('MCAssessment component', () => {
-		let moduleData = getModuleData();
-		const component = renderer.create(
-			<MCAssessment model={model} moduleData={moduleData} />
-		)
+		let moduleData = getModuleData()
+		const component = renderer.create(<MCAssessment model={model} moduleData={moduleData} />)
 		let tree = component.toJSON()
 
 		expect(tree).toMatchSnapshot()
 	})
 
 	test('MCAssessment with response', () => {
-		let moduleData = getModuleData();
-		const component = renderer.create(
-			<MCAssessment model={model} moduleData={moduleData} />
-		)
+		let moduleData = getModuleData()
+		const component = renderer.create(<MCAssessment model={model} moduleData={moduleData} />)
 		let tree = component.toJSON()
 
 		expect(tree).toMatchSnapshot()
 
 		APIUtil.postEvent = jest.fn()
-		QuestionUtil.recordResponse('choice1', { set:true })
-		const component2 = renderer.create(
-			<MCAssessment model={model} moduleData={moduleData} />
-		)
+		QuestionUtil.recordResponse('choice1', { set: true })
+		const component2 = renderer.create(<MCAssessment model={model} moduleData={moduleData} />)
 		let tree2 = component2.toJSON()
 
 		expect(tree2).toMatchSnapshot()
@@ -196,18 +190,14 @@ describe('MCAssessment', () => {
 	})
 
 	test('MCAssessment with revealAll', () => {
-		let moduleData = getModuleData();
-		const component = renderer.create(
-			<MCAssessment model={model} moduleData={moduleData} />
-		)
+		let moduleData = getModuleData()
+		const component = renderer.create(<MCAssessment model={model} moduleData={moduleData} />)
 		let tree = component.toJSON()
 
 		expect(tree).toMatchSnapshot()
 
 		QuestionUtil.setData('id', 'revealAll', true)
-		const component2 = renderer.create(
-			<MCAssessment model={model} moduleData={moduleData} />
-		)
+		const component2 = renderer.create(<MCAssessment model={model} moduleData={moduleData} />)
 		let tree2 = component2.toJSON()
 
 		expect(tree2).toMatchSnapshot()
@@ -216,18 +206,14 @@ describe('MCAssessment', () => {
 	})
 
 	test('MCAssessment with a set score', () => {
-		let moduleData = getModuleData();
-		const component = renderer.create(
-			<MCAssessment model={model} moduleData={moduleData} />
-		)
+		let moduleData = getModuleData()
+		const component = renderer.create(<MCAssessment model={model} moduleData={moduleData} />)
 		let tree = component.toJSON()
 
 		expect(tree).toMatchSnapshot()
 
-		ScoreUtil.setScore('id', 100);
-		const component2 = renderer.create(
-			<MCAssessment model={model} moduleData={moduleData} />
-		)
+		ScoreUtil.setScore('id', 100)
+		const component2 = renderer.create(<MCAssessment model={model} moduleData={moduleData} />)
 		let tree2 = component2.toJSON()
 
 		expect(tree2).toMatchSnapshot()

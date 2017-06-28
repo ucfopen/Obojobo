@@ -121,7 +121,7 @@ _Common2.default.Store.registerModel('ObojoboDraft.Pages.Page', {
 	getNavItem: function getNavItem(model) {
 		var title = '';
 		if (model.title != null) {
-			title = model.title;
+			;title = model.title;
 		}
 
 		return {

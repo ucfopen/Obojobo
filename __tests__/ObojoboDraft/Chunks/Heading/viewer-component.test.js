@@ -25,9 +25,7 @@ describe('Heading', () => {
 	}
 
 	test('Heading component', () => {
-		const component = renderer.create(
-			<Heading model={model} moduleData={moduleData} />
-		)
+		const component = renderer.create(<Heading model={model} moduleData={moduleData} />)
 		let tree = component.toJSON()
 
 		expect(tree).toMatchSnapshot()

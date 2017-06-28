@@ -348,7 +348,6 @@ var GridTextGroup = function (_TextGroup) {
 						return (
 							// console.log '  col', col
 							i = row * _this2.numCols + col,
-
 							// console.log '    i', i
 							item = _this2.items[i], s.push((item.text.value + '          ').substr(0, 10))
 						);
@@ -361,7 +360,6 @@ var GridTextGroup = function (_TextGroup) {
 	return GridTextGroup;
 }(TextGroup);
 // console.log '---------------------'
-
 
 GridTextGroup.fromDescriptor = function (descriptor, maxItems, dataTemplate, restoreDataDescriptorFn) {
 	if (restoreDataDescriptorFn == null) {
@@ -540,7 +538,9 @@ var Adapter = {
 		if (__guard__(attrs != null ? attrs.content : undefined, function (x) {
 			return x.textGroup;
 		}) != null) {
-			model.modelState.textGroup = _gridTextGroup2.default.fromDescriptor(attrs.content.textGroup, Infinity, { indent: 0 });
+			model.modelState.textGroup = _gridTextGroup2.default.fromDescriptor(attrs.content.textGroup, Infinity, {
+				indent: 0
+			});
 		} else {
 			model.modelState.textGroup = _gridTextGroup2.default.create(3, 2);
 		}
@@ -593,7 +593,7 @@ var Adapter = {
 
 		var text = '';
 
-		text += border + "\n";
+		text += border + '\n';
 		for (var row = 0, end = model.modelState.textGroup.numRows, asc = 0 <= end; asc ? row < end : row > end; asc ? row++ : row--) {
 			// console.log 'row', row
 			var s = [];
@@ -688,7 +688,11 @@ var Table = function (_React$Component) {
 							className: 'cell row-0 col-' + index,
 							'data-table-position': model.get('id') + ',0,' + index
 						},
-						React.createElement(TextGroupEl, { parentModel: _this2.props.model, textItem: textGroupItem, groupIndex: index })
+						React.createElement(TextGroupEl, {
+							parentModel: _this2.props.model,
+							textItem: textGroupItem,
+							groupIndex: index
+						})
 					);
 				});
 
@@ -711,7 +715,11 @@ var Table = function (_React$Component) {
 							className: 'cell row-' + rowNum + ' col-' + index,
 							'data-table-position': model.get('id') + ',' + rowNum + ',' + index
 						},
-						React.createElement(TextGroupEl, { parentModel: _this2.props.model, textItem: textGroupItem, groupIndex: rowNum * numCols + index })
+						React.createElement(TextGroupEl, {
+							parentModel: _this2.props.model,
+							textItem: textGroupItem,
+							groupIndex: rowNum * numCols + index
+						})
 					);
 				});
 
@@ -733,11 +741,7 @@ var Table = function (_React$Component) {
 						{ className: 'container' },
 						React.createElement(
 							'table',
-							{
-								className: 'view',
-								ref: 'table',
-								key: 'table'
-							},
+							{ className: 'view', ref: 'table', key: 'table' },
 							React.createElement(
 								'thead',
 								{ key: 'thead' },

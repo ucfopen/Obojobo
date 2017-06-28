@@ -24,9 +24,7 @@ describe('Text', () => {
 	}
 
 	test('Text component', () => {
-		const component = renderer.create(
-			<Text model={model} moduleData={moduleData} />
-		)
+		const component = renderer.create(<Text model={model} moduleData={moduleData} />)
 		let tree = component.toJSON()
 
 		expect(tree).toMatchSnapshot()

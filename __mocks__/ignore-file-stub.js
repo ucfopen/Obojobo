@@ -4,4 +4,4 @@
 // files it can't read
 // https://github.com/facebook/jest/issues/870#issuecomment-215313957
 
-module.exports = {};
+module.exports = {}

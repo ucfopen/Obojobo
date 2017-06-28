@@ -1,14 +1,18 @@
-import Chunk from '../../../common/models/obo-model';
+import Chunk from '../../../common/models/obo-model'
 
 export default function(componentClass, position, referenceChunk, selection, callback) {
-	let newChunk = Chunk.create(componentClass);
+	let newChunk = Chunk.create(componentClass)
 
 	switch (position) {
-		case 'before': referenceChunk.addChildBefore(newChunk); break;
-		case 'after': referenceChunk.addChildAfter(newChunk); break;
+		case 'before':
+			referenceChunk.addChildBefore(newChunk)
+			break
+		case 'after':
+			referenceChunk.addChildAfter(newChunk)
+			break
 	}
 
-	newChunk.selectStart();
+	newChunk.selectStart()
 
-	return callback();
-};
+	return callback()
+}

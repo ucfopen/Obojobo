@@ -18,18 +18,21 @@ Common.Store.registerModel('ObojoboDraft.Chunks.Heading', {
 			// 	path: [model.modelState.textGroup.first.text.value.toLowerCase().replace(/ /g, '-')],
 			// 	showChildren: false
 
-			case 1: case 2:
-				if ((model.modelState.headingLevel === 1) && (model.getIndex() === 0)) { return null; }
+			case 1:
+			case 2:
+				if (model.modelState.headingLevel === 1 && model.getIndex() === 0) {
+					return null
+				}
 
 				return {
 					type: 'sub-link',
 					label: model.modelState.textGroup.first.text,
 					path: [model.toText().toLowerCase().replace(/ /g, '-')],
 					showChildren: false
-				};
+				}
 
 			default:
-				return null;
+				return null
 		}
 	}
-});
+})

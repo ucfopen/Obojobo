@@ -12,19 +12,19 @@ import ModalUtil from '../src/scripts/common/util/modal-util'
 import FocusUtil from '../src/scripts/common/util/focus-util'
 
 let initModuleData = () => {
-	ScoreStore.init();
-	QuestionStore.init();
-	ModalStore.init();
-	FocusStore.init();
-	NavStore.init();
-	AssessmentStore.init();
+	ScoreStore.init()
+	QuestionStore.init()
+	ModalStore.init()
+	FocusStore.init()
+	NavStore.init()
+	AssessmentStore.init()
 
-	moduleData.navState = NavStore.getState();
-	moduleData.scoreState = ScoreStore.getState();
-	moduleData.questionState = QuestionStore.getState();
-	moduleData.assessmentState = AssessmentStore.getState();
-	moduleData.modalState = ModalStore.getState();
-	moduleData.focusState = FocusStore.getState();
+	moduleData.navState = NavStore.getState()
+	moduleData.scoreState = ScoreStore.getState()
+	moduleData.questionState = QuestionStore.getState()
+	moduleData.assessmentState = AssessmentStore.getState()
+	moduleData.modalState = ModalStore.getState()
+	moduleData.focusState = FocusStore.getState()
 }
 
 let moduleData = {}
@@ -48,4 +48,19 @@ FocusStore.onChange(() => {
 	moduleData.focusState = FocusStore.getState()
 })
 
-export { moduleData, initModuleData, AssessmentStore, NavStore, QuestionStore, ScoreStore, ModalStore, FocusStore, AssessmentUtil, NavUtil, QuestionUtil, ScoreUtil, ModalUtil, FocusUtil }
+export {
+	moduleData,
+	initModuleData,
+	AssessmentStore,
+	NavStore,
+	QuestionStore,
+	ScoreStore,
+	ModalStore,
+	FocusStore,
+	AssessmentUtil,
+	NavUtil,
+	QuestionUtil,
+	ScoreUtil,
+	ModalUtil,
+	FocusUtil
+}

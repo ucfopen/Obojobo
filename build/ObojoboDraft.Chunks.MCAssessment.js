@@ -766,17 +766,12 @@ var MCAssessment = function (_React$Component) {
 						revealAll: revealAll,
 						questionSubmitted: questionSubmitted,
 						label: String.fromCharCode(index + 65)
-
 					});
 				}),
 				React.createElement(
 					'div',
 					{ className: 'submit' },
-					questionSubmitted ? React.createElement(Button, {
-						altAction: true,
-						onClick: this.onClickReset.bind(this),
-						value: 'Try Again'
-					}) : React.createElement(Button, {
+					questionSubmitted ? React.createElement(Button, { altAction: true, onClick: this.onClickReset.bind(this), value: 'Try Again' }) : React.createElement(Button, {
 						onClick: this.onClickSubmit.bind(this),
 						value: 'Check Your Answer',
 						disabled: !questionAnswered
@@ -820,7 +815,9 @@ var MCAssessment = function (_React$Component) {
 							{ className: 'score' },
 							feedbacks.length === 0 ? null : React.createElement(
 								'div',
-								{ className: 'feedback' + (responseType === 'pick-all' ? ' is-pick-all-feedback' : ' is-not-pick-all-feedback') },
+								{
+									className: 'feedback' + (responseType === 'pick-all' ? ' is-pick-all-feedback' : ' is-not-pick-all-feedback')
+								},
 								feedbacks.map(function (model) {
 									var Component = model.getComponentClass();
 									return React.createElement(Component, {

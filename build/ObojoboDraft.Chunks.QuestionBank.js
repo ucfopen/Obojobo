@@ -161,7 +161,7 @@ var Adapter = {
 		}) != null) {
 			model.modelState.select = attrs.content.select;
 		} else {
-			model.modelState.select = "sequential"; //random-unseen | random-all | sequential
+			model.modelState.select = 'sequential'; //random-unseen | random-all | sequential
 		}
 
 		if (__guard__(attrs != null ? attrs.content : undefined, function (x3) {

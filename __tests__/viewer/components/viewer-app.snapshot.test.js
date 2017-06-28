@@ -2,7 +2,20 @@ import React from 'react'
 import renderer from 'react-test-renderer'
 import { shallow, mount } from 'enzyme'
 import OboModel from '../../../__mocks__/_obo-model-with-chunks'
-import { AssessmentStore, NavStore, QuestionStore, ScoreStore, ModalStore, FocusStore, AssessmentUtil, NavUtil, QuestionUtil, ScoreUtil, ModalUtil, FocusUtil } from '../../../__mocks__/viewer-state.mock'
+import {
+	AssessmentStore,
+	NavStore,
+	QuestionStore,
+	ScoreStore,
+	ModalStore,
+	FocusStore,
+	AssessmentUtil,
+	NavUtil,
+	QuestionUtil,
+	ScoreUtil,
+	ModalUtil,
+	FocusUtil
+} from '../../../__mocks__/viewer-state.mock'
 
 import ViewerApp from '../../../src/scripts/viewer/components/viewer-app'
 // import OboModel from '../../../__mocks__/_obo-model-with-chunks'
@@ -12,7 +25,7 @@ import APIUtil from '../../../src/scripts/viewer/util/api-util'
 // console.log('moduleData be all', moduleData.type)
 
 jest.mock('../../../src/scripts/viewer/util/api-util', () => {
-	return ({
+	return {
 		get: jest.fn(),
 		post: jest.fn(),
 		postEvent: jest.fn(),
@@ -21,27 +34,25 @@ jest.mock('../../../src/scripts/viewer/util/api-util', () => {
 		getAttempts: jest.fn(),
 		startAttempt: jest.fn(),
 		endAttempt: jest.fn()
-	})
+	}
 })
 
 describe('ViewerApp', () => {
-	let json = require('../../../test-object.json');
+	let json = require('../../../test-object.json')
 	// let viewerEl;
 
 	beforeEach(() => {
-		jest.clearAllMocks();
+		jest.clearAllMocks()
 
-		window.__oboGlobals.draft = json;
-		window.__oboGlobals.previewing = 'false';
-		window.__oboGlobals['ObojoboDraft.Sections.Assessment:attemptHistory'] = [];
+		window.__oboGlobals.draft = json
+		window.__oboGlobals.previewing = 'false'
+		window.__oboGlobals['ObojoboDraft.Sections.Assessment:attemptHistory'] = []
 
 		// viewerEl = mount(<ViewerApp />)
 	})
 
 	test('ViewerApp', () => {
-		const component = renderer.create(
-			<ViewerApp />
-		)
+		const component = renderer.create(<ViewerApp />)
 		let tree = component.toJSON()
 
 		expect(tree).toMatchSnapshot()

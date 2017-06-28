@@ -9,4 +9,4 @@ Common.Store.registerModel('ObojoboDraft.Chunks.YouTube', {
 	adapter: adapter,
 	componentClass: ViewerComponent,
 	selectionHandler: new SelectionHandler()
-});
+})

@@ -1,17 +1,15 @@
 import FocusStore from '../../../src/scripts/common/stores/focus-store'
 import Dispatcher from '../../../src/scripts/common/flux/dispatcher'
 
-
 jest.mock('../../../src/scripts/common/flux/dispatcher', () => {
-	return ({
+	return {
 		trigger: jest.fn(),
 		on: jest.fn(),
 		off: jest.fn()
-	})
+	}
 })
 
 describe('FocusStore', () => {
-
 	beforeEach(() => {
 		jest.resetAllMocks()
 		jest.useFakeTimers()

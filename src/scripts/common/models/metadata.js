@@ -1,7 +1,7 @@
 class Metadata extends Backbone.Model {
 	static initClass() {
 		// urlRoot: "/api/metadata"
-		this.prototype.idAttribute = "shortId";
+		this.prototype.idAttribute = 'shortId'
 		this.prototype.defaults = {
 			title: 'untitled',
 			synopsis: '',
@@ -11,7 +11,7 @@ class Metadata extends Backbone.Model {
 			derivedFrom: null,
 			createdAt: '',
 			updatedAt: ''
-		};
+		}
 	}
 
 	toJSON() {
@@ -25,10 +25,9 @@ class Metadata extends Backbone.Model {
 			derivedFrom: this.derivedFrom,
 			createdAt: this.createdAt,
 			updatedAt: this.updatedAt
-		};
+		}
 	}
 }
-Metadata.initClass();
+Metadata.initClass()
 
-
-export default Metadata;
+export default Metadata

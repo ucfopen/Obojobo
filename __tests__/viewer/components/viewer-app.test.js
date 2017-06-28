@@ -2,8 +2,24 @@ import React from 'react'
 import renderer from 'react-test-renderer'
 import { shallow, mount } from 'enzyme'
 import OboModel from '../../../__mocks__/_obo-model-with-chunks'
-import { getAttemptStartServerResponse, getAttemptEndServerResponse } from '../../../__mocks__/assessment-server.mock'
-import { AssessmentStore, NavStore, QuestionStore, ScoreStore, ModalStore, FocusStore, AssessmentUtil, NavUtil, QuestionUtil, ScoreUtil, ModalUtil, FocusUtil } from '../../../__mocks__/viewer-state.mock'
+import {
+	getAttemptStartServerResponse,
+	getAttemptEndServerResponse
+} from '../../../__mocks__/assessment-server.mock'
+import {
+	AssessmentStore,
+	NavStore,
+	QuestionStore,
+	ScoreStore,
+	ModalStore,
+	FocusStore,
+	AssessmentUtil,
+	NavUtil,
+	QuestionUtil,
+	ScoreUtil,
+	ModalUtil,
+	FocusUtil
+} from '../../../__mocks__/viewer-state.mock'
 import Dispatcher from '../../../src/scripts/common/flux/dispatcher'
 import ViewerApp from '../../../src/scripts/viewer/components/viewer-app'
 // import OboModel from '../../../__mocks__/_obo-model-with-chunks'
@@ -13,7 +29,7 @@ import APIUtil from '../../../src/scripts/viewer/util/api-util'
 // console.log('moduleData be all', moduleData.type)
 
 jest.mock('../../../src/scripts/viewer/util/api-util', () => {
-	return ({
+	return {
 		get: jest.fn(),
 		post: jest.fn(),
 		postEvent: jest.fn(),
@@ -22,23 +38,29 @@ jest.mock('../../../src/scripts/viewer/util/api-util', () => {
 		getAttempts: jest.fn(),
 		startAttempt: jest.fn(),
 		endAttempt: jest.fn()
-	})
+	}
 })
 
-APIUtil.postEvent = () => { return Promise.resolve({ status:'ok' })}
-APIUtil.startAttempt = () => { return Promise.resolve(getAttemptStartServerResponse()) }
-APIUtil.endAttempt = () => { return Promise.resolve(getAttemptEndServerResponse(100)) }
+APIUtil.postEvent = () => {
+	return Promise.resolve({ status: 'ok' })
+}
+APIUtil.startAttempt = () => {
+	return Promise.resolve(getAttemptStartServerResponse())
+}
+APIUtil.endAttempt = () => {
+	return Promise.resolve(getAttemptEndServerResponse(100))
+}
 
 describe('ViewerApp', () => {
-	let json = require('../../../test-object.json');
+	let json = require('../../../test-object.json')
 	// let viewerEl;
 
 	beforeEach(() => {
-		jest.clearAllMocks();
+		jest.clearAllMocks()
 
-		window.__oboGlobals.draft = json;
-		window.__oboGlobals.previewing = 'false';
-		window.__oboGlobals['ObojoboDraft.Sections.Assessment:attemptHistory'] = [];
+		window.__oboGlobals.draft = json
+		window.__oboGlobals.previewing = 'false'
+		window.__oboGlobals['ObojoboDraft.Sections.Assessment:attemptHistory'] = []
 
 		// viewerEl = mount(<ViewerApp />)
 	})
@@ -106,7 +128,7 @@ describe('ViewerApp', () => {
 		viewerEl.unmount()
 	})
 
-	test("Prev/Next buttons go to prev/next page", () => {
+	test('Prev/Next buttons go to prev/next page', () => {
 		let viewerEl = mount(<ViewerApp />)
 		let prevBtnEl = viewerEl.find('.viewer--components--inline-nav-button.is-prev')
 		let nextBtnEl = viewerEl.find('.viewer--components--inline-nav-button.is-next')
@@ -141,7 +163,7 @@ describe('ViewerApp', () => {
 		viewerEl.unmount()
 	})
 
-	test("Clicking on a question shows it", () => {
+	test('Clicking on a question shows it', () => {
 		let viewerEl = mount(<ViewerApp />)
 
 		NavUtil.goto('page-3')
@@ -154,7 +176,7 @@ describe('ViewerApp', () => {
 		questionEl.find('.blocker').simulate('click')
 
 		expect(QuestionStore.getState().viewedQuestions).toEqual({
-			'pq1': true
+			pq1: true
 		})
 		expect(QuestionStore.getState().viewing).toBe('pq1')
 
@@ -184,12 +206,12 @@ describe('ViewerApp', () => {
 		expect(questionEl.find('button').length).toBe(3) // 'Solution' button
 
 		expect(QuestionStore.getState().responses).toEqual({
-			'pq1-mca-mc1': { set:false },
-			'pq1-mca-mc2': { set:false },
-			'pq1-mca-mc3': { set:true }
+			'pq1-mca-mc1': { set: false },
+			'pq1-mca-mc2': { set: false },
+			'pq1-mca-mc3': { set: true }
 		})
 		expect(ScoreStore.getState().scores).toEqual({
-			'pq1': 0
+			pq1: 0
 		})
 
 		viewerEl.unmount()
@@ -217,18 +239,18 @@ describe('ViewerApp', () => {
 		expect(questionEl.find('button').length).toBe(3) // 'Solution' button
 
 		expect(QuestionStore.getState().responses).toEqual({
-			'pq1-mca-mc1': { set:true },
-			'pq1-mca-mc2': { set:false },
-			'pq1-mca-mc3': { set:false }
+			'pq1-mca-mc1': { set: true },
+			'pq1-mca-mc2': { set: false },
+			'pq1-mca-mc3': { set: false }
 		})
 		expect(ScoreStore.getState().scores).toEqual({
-			'pq1': 100
+			pq1: 100
 		})
 
 		viewerEl.unmount()
 	})
 
-	test("Clicking the button to show the solution will show the solution", () => {
+	test('Clicking the button to show the solution will show the solution', () => {
 		let viewerEl = mount(<ViewerApp />)
 
 		NavUtil.goto('page-3')
@@ -248,7 +270,7 @@ describe('ViewerApp', () => {
 		viewerEl.unmount()
 	})
 
-	test("Clicking start assessment will lock out navigation and start the assessment", (done) => {
+	test('Clicking start assessment will lock out navigation and start the assessment', done => {
 		let onAttemptStarted = () => {
 			Dispatcher.off('assessment:attemptStarted', onAttemptStarted)
 
@@ -281,13 +303,13 @@ describe('ViewerApp', () => {
 		expect(viewerEl.find('#obo-page-1').length).toBe(0)
 
 		let navEl = viewerEl.find('.viewer--components--nav')
-		let firstPgLinkEl = navEl.find('a').at(1);
+		let firstPgLinkEl = navEl.find('a').at(1)
 
 		Dispatcher.on('assessment:attemptStarted', onAttemptStarted)
 		firstPgLinkEl.simulate('click')
 	})
 
-	test("Finishing an assessment shows a score", (done) => {
+	test('Finishing an assessment shows a score', done => {
 		let onAttemptStarted = () => {
 			Dispatcher.off('assessment:attemptStarted', onAttemptStarted)
 

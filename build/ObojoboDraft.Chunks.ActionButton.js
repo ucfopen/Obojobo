@@ -144,7 +144,9 @@ var TextGroupAdapter = {
 		if (__guard__(attrs != null ? attrs.content : undefined, function (x) {
 			return x.textGroup;
 		}) != null) {
-			model.modelState.textGroup = TextGroup.fromDescriptor(attrs.content.textGroup, Infinity, { indent: 0 });
+			model.modelState.textGroup = TextGroup.fromDescriptor(attrs.content.textGroup, Infinity, {
+				indent: 0
+			});
 		} else {
 			model.modelState.textGroup = TextGroup.create(Infinity, { indent: 0 });
 		}
@@ -246,7 +248,11 @@ var ActionButton = function (_React$Component) {
 					{ className: 'obojobo-draft--chunks--action-button pad' },
 					React.createElement(
 						Button,
-						{ onClick: this.onClick.bind(this), value: this.props.model.modelState.label, align: this.props.model.modelState.align },
+						{
+							onClick: this.onClick.bind(this),
+							value: this.props.model.modelState.label,
+							align: this.props.model.modelState.align
+						},
 						React.createElement(TextGroupEl, { textItem: textItem, groupIndex: '0', parentModel: this.props.model })
 					)
 				)

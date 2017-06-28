@@ -1,4 +1,4 @@
-describe.skip('BaseCommandHandler');
+describe.skip('BaseCommandHandler')
 
 // import Common from 'Common'
 // import Viewer from 'Viewer'

@@ -207,7 +207,11 @@ var YouTube = function (_React$Component) {
 				React.createElement(
 					'div',
 					{ className: 'obojobo-draft--chunks--you-tube viewer' },
-					React.createElement('iframe', { src: 'https://www.youtube.com/embed/' + data.videoId, frameBorder: '0', allowFullScreen: 'true' })
+					React.createElement('iframe', {
+						src: 'https://www.youtube.com/embed/' + data.videoId,
+						frameBorder: '0',
+						allowFullScreen: 'true'
+					})
 				)
 			);
 		}

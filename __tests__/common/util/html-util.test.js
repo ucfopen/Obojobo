@@ -1,6 +1,5 @@
 import { sanitize, isElementInline } from '../../../src/scripts/common/util/html-util'
 
-
 describe('HTMLUtils', () => {
 	test('sanitize() will strip out scripts and most tags', () => {
 		let div = document.createElement('div')
@@ -32,8 +31,7 @@ describe('HTMLUtils', () => {
 						<span></span>
 					</li>
 				</ul>
-			</div>`
-		)
+			</div>`)
 	})
 
 	test('isElementInline reports if an element is an inline element :)', () => {

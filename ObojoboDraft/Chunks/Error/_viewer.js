@@ -1,44 +1,46 @@
-import './viewer.scss';
+import './viewer.scss'
 
 import { OBO } from 'obo'
 
-let { Editor } = window;
+let { Editor } = window
 import Common from 'Common'
 
+let { FocusableSelectionHandler } = Common.chunk.focusableChunk
 
-let { FocusableSelectionHandler } = Common.chunk.focusableChunk;
-
-let selectionHandler = new FocusableSelectionHandler();
+let selectionHandler = new FocusableSelectionHandler()
 
 var Error = React.createClass({
 	statics: {
 		type: 'ObojoboDraft.Chunks.Error',
-		register() { return Common.Store.registerChunk(Error, { error:true }); },
-		getSelectionHandler() { return selectionHandler; },
+		register() {
+			return Common.Store.registerChunk(Error, { error: true })
+		},
+		getSelectionHandler() {
+			return selectionHandler
+		},
 
 		createNewNodeData() {
-			return {};
+			return {}
 		},
 
 		cloneNodeData(data) {
-			return {};
+			return {}
 		},
 
 		createNodeDataFromDescriptor(descriptor) {
-			return {};
+			return {}
 		},
 
 		getDataDescriptor(chunk) {
-			return {};
+			return {}
 		}
 	},
 
 	render() {
-		return null;
+		return null
 	}
-});
+})
 
+Error.register()
 
-Error.register();
-
-export default Error;
+export default Error

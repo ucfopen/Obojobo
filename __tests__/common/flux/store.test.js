@@ -2,11 +2,11 @@ import Store from '../../../src/scripts/common/flux/store'
 import Dispatcher from '../../../src/scripts/common/flux/dispatcher'
 
 jest.mock('../../../src/scripts/common/flux/dispatcher', () => {
-	return ({
+	return {
 		trigger: jest.fn(),
 		on: jest.fn(),
 		off: jest.fn()
-	})
+	}
 })
 
 describe('Store', () => {
@@ -20,7 +20,7 @@ describe('Store', () => {
 		let store = new Store('store-name')
 
 		store.init()
-		store.state = { a:1 }
+		store.state = { a: 1 }
 		store.init()
 
 		expect(store.state).toEqual({})
@@ -36,7 +36,7 @@ describe('Store', () => {
 
 	test('onChange listens for change event', () => {
 		let store = new Store('store-name')
-		let cb = new Function
+		let cb = new Function()
 
 		store.onChange(cb)
 
@@ -45,7 +45,7 @@ describe('Store', () => {
 
 	test('offChange stops listening for change event', () => {
 		let store = new Store('store-name')
-		let cb = new Function
+		let cb = new Function()
 
 		store.offChange(cb)
 
@@ -56,15 +56,15 @@ describe('Store', () => {
 		let store = new Store('store-name')
 		store.init()
 
-		store.setAndTrigger({ a:1, b:2 })
+		store.setAndTrigger({ a: 1, b: 2 })
 
-		expect(store.state).toEqual({ a:1, b:2 })
+		expect(store.state).toEqual({ a: 1, b: 2 })
 		expect(Dispatcher.trigger).toHaveBeenCalledWith('store-name:change')
 	})
 
 	test('getState returns a copy of state', () => {
 		let store = new Store('store-name')
-		let state = { a:1, b:2 }
+		let state = { a: 1, b: 2 }
 
 		store.init()
 		store.state = state
@@ -75,7 +75,7 @@ describe('Store', () => {
 
 	test('setState sets a copy of the given state', () => {
 		let store = new Store('store-name')
-		let state = { a:1, b:2 }
+		let state = { a: 1, b: 2 }
 
 		store.init()
 		store.setState(state)
