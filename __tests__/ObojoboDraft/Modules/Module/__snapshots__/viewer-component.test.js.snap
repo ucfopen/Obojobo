@@ -4,10 +4,10 @@ exports[`Module Module component 1`] = `
 <div
   className="component obojobo-draft--modules--module"
   data-focussed={false}
-  data-id="2560969f-ed03-4a5e-a179-f5b7803a66e3"
+  data-id="d58fe35d-66f3-4fcb-8a90-e2a2ddace2e9"
   data-obo-component={true}
   data-type="ObojoboDraft.Modules.Module"
-  id="obo-2560969f-ed03-4a5e-a179-f5b7803a66e3"
+  id="obo-d58fe35d-66f3-4fcb-8a90-e2a2ddace2e9"
 >
   <div />
 </div>

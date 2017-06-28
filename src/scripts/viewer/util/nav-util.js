@@ -82,14 +82,6 @@ var NavUtil = {
 		return Dispatcher.trigger('nav:open');
 	},
 
-	disable() {
-		return Dispatcher.trigger('nav:disable');
-	},
-
-	enable() {
-		return Dispatcher.trigger('nav:enable');
-	},
-
 	toggle() {
 		return Dispatcher.trigger('nav:toggle');
 	},
@@ -203,7 +195,7 @@ var NavUtil = {
 	},
 
 	canNavigate(state) {
-		return !state.locked && !state.disabled;
+		return !state.locked;
 	},
 
 	getOrderedList(state) {

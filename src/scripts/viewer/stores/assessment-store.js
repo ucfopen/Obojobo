@@ -109,6 +109,9 @@ class AssessmentStore extends Store {
 
 				this.triggerChange();
 			})
+			.catch(e => {
+				console.error(e);
+			})
 		)
 	}
 
@@ -132,6 +135,7 @@ class AssessmentStore extends Store {
 		NavUtil.goto(id);
 
 		model.processTrigger('onStartAttempt');
+		Dispatcher.trigger('assessment:attemptStarted', id);
 	};
 
 	tryEndAttempt(id) {
@@ -144,6 +148,9 @@ class AssessmentStore extends Store {
 
 			this.endAttempt(res.value);
 			return this.triggerChange();
+		})
+		.catch(e => {
+			console.error(e);
 		})
 	}
 
@@ -158,6 +165,7 @@ class AssessmentStore extends Store {
 		assessment.current = null;
 
 		model.processTrigger('onEndAttempt');
+		Dispatcher.trigger('assessment:attemptEnded', id);
 	}
 
 	tryRecordResponse(id, response) {

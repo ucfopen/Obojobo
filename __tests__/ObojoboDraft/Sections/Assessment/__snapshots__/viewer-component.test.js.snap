@@ -125,10 +125,10 @@ exports[`Assessment Assessment page changes when attempt started and submitted 2
       <div
         className="component flip-container obojobo-draft--chunks--question is-hidden is-practice"
         data-focussed={false}
-        data-id="question1"
+        data-id="qb1-q1"
         data-obo-component={true}
         data-type="ObojoboDraft.Chunks.Question"
-        id="obo-question1"
+        id="obo-qb1-q1"
       >
         <div
           className="flipper"
@@ -142,10 +142,10 @@ exports[`Assessment Assessment page changes when attempt started and submitted 2
               <div
                 className="component"
                 data-focussed={false}
-                data-id="question1-text1"
+                data-id="8dffa3d6-9185-46a0-9b0c-bc2393532ccf"
                 data-obo-component={true}
                 data-type="ObojoboDraft.Chunks.Text"
-                id="obo-question1-text1"
+                id="obo-8dffa3d6-9185-46a0-9b0c-bc2393532ccf"
               >
                 <div
                   className="text-chunk obojobo-draft--chunks--single-text pad"
@@ -158,7 +158,7 @@ exports[`Assessment Assessment page changes when attempt started and submitted 2
                     <span>
                       <span>
                         <span>
-                          Question Text
+                          Question Bank 1 Question 1 - This is the first question you'll see
                         </span>
                       </span>
                     </span>
@@ -167,32 +167,36 @@ exports[`Assessment Assessment page changes when attempt started and submitted 2
               </div>
             </div>
             <form
-              className="component obojobo-draft--chunks--mc-assessment is-response-type- is-not-revealing-all is-unscored"
+              className="component obojobo-draft--chunks--mc-assessment is-response-type-pick-one is-not-revealing-all is-unscored"
               data-focussed={false}
-              data-id="question1-mcassessment1"
+              data-id="qb1-q1-mca"
               data-obo-component={true}
               data-type="ObojoboDraft.Chunks.MCAssessment"
-              id="obo-question1-mcassessment1"
+              id="obo-qb1-q1-mca"
               onClick={[Function]}
             >
               <span
                 className="instructions"
-              />
+              >
+                <span>
+                  Pick the correct answer
+                </span>
+              </span>
               <div
-                className="component obojobo-draft--chunks--mc-assessment--mc-choice is-not-selected is-incorrect"
+                className="component obojobo-draft--chunks--mc-assessment--mc-choice is-not-selected is-correct"
                 data-choice-label="A"
                 data-focussed={false}
-                data-id="question1-mcassessment1-choice1"
+                data-id="qb1-q1-mca-mc1"
                 data-obo-component={true}
                 data-type="ObojoboDraft.Chunks.MCAssessment.MCChoice"
-                id="obo-question1-mcassessment1-choice1"
+                id="obo-qb1-q1-mca-mc1"
               >
                 <input
                   checked={false}
-                  name="question1-mcassessment1"
+                  name="qb1-q1-mca"
                   onChange={[Function]}
                   type="radio"
-                  value="question1-mcassessment1-choice1"
+                  value="qb1-q1-mca-mc1"
                 />
                 <div
                   className="children"
@@ -200,178 +204,55 @@ exports[`Assessment Assessment page changes when attempt started and submitted 2
                   <div
                     className="component obojobo-draft--chunks--mc-assessment--mc-answer"
                     data-focussed={false}
-                    data-id="question1-mcassessment1-choice1-answer1"
+                    data-id="qb1-q1-mca-mc1-ans"
                     data-obo-component={true}
                     data-type="ObojoboDraft.Chunks.MCAssessment.MCAnswer"
-                    id="obo-question1-mcassessment1-choice1-answer1"
-                  />
-                </div>
-              </div>
-              <div
-                className="component obojobo-draft--chunks--mc-assessment--mc-choice is-not-selected is-incorrect"
-                data-choice-label="B"
-                data-focussed={false}
-                data-id="question1-mcassessment1-choice2"
-                data-obo-component={true}
-                data-type="ObojoboDraft.Chunks.MCAssessment.MCChoice"
-                id="obo-question1-mcassessment1-choice2"
-              >
-                <input
-                  checked={false}
-                  name="question1-mcassessment1"
-                  onChange={[Function]}
-                  type="radio"
-                  value="question1-mcassessment1-choice2"
-                />
-                <div
-                  className="children"
-                >
-                  <div
-                    className="component obojobo-draft--chunks--mc-assessment--mc-answer"
-                    data-focussed={false}
-                    data-id="question1-mcassessment1-choice2-answer1"
-                    data-obo-component={true}
-                    data-type="ObojoboDraft.Chunks.MCAssessment.MCAnswer"
-                    id="obo-question1-mcassessment1-choice2-answer1"
-                  />
-                </div>
-              </div>
-              <div
-                className="submit"
-              >
-                <div
-                  className="obojobo-draft--components--button align-center"
-                >
-                  <button
-                    disabled={true}
-                    onClick={[Function]}
-                    tabIndex={undefined}
+                    id="obo-qb1-q1-mca-mc1-ans"
                   >
-                    Check Your Answer
-                  </button>
-                </div>
-              </div>
-              <div />
-            </form>
-          </div>
-          <div
-            className="blocker front"
-            onClick={[Function]}
-          >
-            <div
-              className="obojobo-draft--components--button align-center"
-            >
-              <button
-                disabled={undefined}
-                onClick={undefined}
-                tabIndex={undefined}
-              >
-                Try Question
-              </button>
-            </div>
-          </div>
-        </div>
-      </div>
-      <div
-        className="component flip-container obojobo-draft--chunks--question is-hidden is-practice"
-        data-focussed={false}
-        data-id="question2"
-        data-obo-component={true}
-        data-type="ObojoboDraft.Chunks.Question"
-        id="obo-question2"
-      >
-        <div
-          className="flipper"
-        >
-          <div
-            className="content back"
-          >
-            <div
-              className="obojobo-draft--chunks--mc-question--content"
-            >
-              <div
-                className="component"
-                data-focussed={false}
-                data-id="question2-text1"
-                data-obo-component={true}
-                data-type="ObojoboDraft.Chunks.Text"
-                id="obo-question2-text1"
-              >
-                <div
-                  className="text-chunk obojobo-draft--chunks--single-text pad"
-                >
-                  <span
-                    className="text align-left"
-                    data-group-index={0}
-                    data-indent={0}
-                  >
-                    <span>
-                      <span>
-                        <span>
-                          Question Text
+                    <div
+                      className="component"
+                      data-focussed={false}
+                      data-id="9bb1c551-48be-4406-9cdb-fa21044168ca"
+                      data-obo-component={true}
+                      data-type="ObojoboDraft.Chunks.Text"
+                      id="obo-9bb1c551-48be-4406-9cdb-fa21044168ca"
+                    >
+                      <div
+                        className="text-chunk obojobo-draft--chunks--single-text pad"
+                      >
+                        <span
+                          className="text align-left"
+                          data-group-index={0}
+                          data-indent={0}
+                        >
+                          <span>
+                            <span>
+                              <span>
+                                Correct
+                              </span>
+                            </span>
+                          </span>
                         </span>
-                      </span>
-                    </span>
-                  </span>
-                </div>
-              </div>
-            </div>
-            <form
-              className="component obojobo-draft--chunks--mc-assessment is-response-type- is-not-revealing-all is-unscored"
-              data-focussed={false}
-              data-id="question2-mcassessment1"
-              data-obo-component={true}
-              data-type="ObojoboDraft.Chunks.MCAssessment"
-              id="obo-question2-mcassessment1"
-              onClick={[Function]}
-            >
-              <span
-                className="instructions"
-              />
-              <div
-                className="component obojobo-draft--chunks--mc-assessment--mc-choice is-not-selected is-incorrect"
-                data-choice-label="A"
-                data-focussed={false}
-                data-id="question2-mcassessment1-choice1"
-                data-obo-component={true}
-                data-type="ObojoboDraft.Chunks.MCAssessment.MCChoice"
-                id="obo-question2-mcassessment1-choice1"
-              >
-                <input
-                  checked={false}
-                  name="question2-mcassessment1"
-                  onChange={[Function]}
-                  type="radio"
-                  value="question2-mcassessment1-choice1"
-                />
-                <div
-                  className="children"
-                >
-                  <div
-                    className="component obojobo-draft--chunks--mc-assessment--mc-answer"
-                    data-focussed={false}
-                    data-id="question2-mcassessment1-choice1-answer1"
-                    data-obo-component={true}
-                    data-type="ObojoboDraft.Chunks.MCAssessment.MCAnswer"
-                    id="obo-question2-mcassessment1-choice1-answer1"
-                  />
+                      </div>
+                    </div>
+                  </div>
                 </div>
               </div>
               <div
                 className="component obojobo-draft--chunks--mc-assessment--mc-choice is-not-selected is-incorrect"
                 data-choice-label="B"
                 data-focussed={false}
-                data-id="question2-mcassessment1-choice2"
+                data-id="qb1-q1-mca-mc2"
                 data-obo-component={true}
                 data-type="ObojoboDraft.Chunks.MCAssessment.MCChoice"
-                id="obo-question2-mcassessment1-choice2"
+                id="obo-qb1-q1-mca-mc2"
               >
                 <input
                   checked={false}
-                  name="question2-mcassessment1"
+                  name="qb1-q1-mca"
                   onChange={[Function]}
                   type="radio"
-                  value="question2-mcassessment1-choice2"
+                  value="qb1-q1-mca-mc2"
                 />
                 <div
                   className="children"
@@ -379,11 +260,38 @@ exports[`Assessment Assessment page changes when attempt started and submitted 2
                   <div
                     className="component obojobo-draft--chunks--mc-assessment--mc-answer"
                     data-focussed={false}
-                    data-id="question2-mcassessment1-choice2-answer1"
+                    data-id="qb1-q1-mca-mc2-ans"
                     data-obo-component={true}
                     data-type="ObojoboDraft.Chunks.MCAssessment.MCAnswer"
-                    id="obo-question2-mcassessment1-choice2-answer1"
-                  />
+                    id="obo-qb1-q1-mca-mc2-ans"
+                  >
+                    <div
+                      className="component"
+                      data-focussed={false}
+                      data-id="6f271e7e-15ad-4467-9ea6-66ebf625c4fa"
+                      data-obo-component={true}
+                      data-type="ObojoboDraft.Chunks.Text"
+                      id="obo-6f271e7e-15ad-4467-9ea6-66ebf625c4fa"
+                    >
+                      <div
+                        className="text-chunk obojobo-draft--chunks--single-text pad"
+                      >
+                        <span
+                          className="text align-left"
+                          data-group-index={0}
+                          data-indent={0}
+                        >
+                          <span>
+                            <span>
+                              <span>
+                                Incorrect
+                              </span>
+                            </span>
+                          </span>
+                        </span>
+                      </div>
+                    </div>
+                  </div>
                 </div>
               </div>
               <div
@@ -455,7 +363,7 @@ exports[`Assessment Assessment page changes when attempt started and submitted 3
     className="score unlock"
   >
     <h1>
-      Your score is 50%
+      Your score is 0%
     </h1>
     <h2>
       This is your highest score
@@ -469,80 +377,21 @@ exports[`Assessment Assessment page changes when attempt started and submitted 3
       <p
         className="number-correct"
       >
-        You got 1 out of 2 questions correct:
+        You got 0 out of 1 questions correct:
       </p>
-      <div
-        className="is-correct"
-      >
-        <p>
-          Question 1 - Correct:
-        </p>
-        <div
-          className="component flip-container obojobo-draft--chunks--question is-active is-practice"
-          data-focussed={false}
-          data-id="question1"
-          data-obo-component={true}
-          data-type="ObojoboDraft.Chunks.Question"
-          id="obo-question1"
-        >
-          <div
-            className="flipper"
-          >
-            <div
-              className="content back"
-            >
-              <div
-                className="obojobo-draft--chunks--mc-question--content"
-              >
-                <div
-                  className="component"
-                  data-focussed={false}
-                  data-id="question1-text1"
-                  data-obo-component={true}
-                  data-type="ObojoboDraft.Chunks.Text"
-                  id="obo-question1-text1"
-                >
-                  <div
-                    className="text-chunk obojobo-draft--chunks--single-text pad"
-                  >
-                    <span
-                      className="text align-left"
-                      data-group-index={0}
-                      data-indent={0}
-                    >
-                      <span>
-                        <span>
-                          <span>
-                            Question Text
-                          </span>
-                        </span>
-                      </span>
-                    </span>
-                  </div>
-                </div>
-              </div>
-              <div
-                className="pad responses-hidden"
-              >
-                (Responses Hidden)
-              </div>
-            </div>
-          </div>
-        </div>
-      </div>
       <div
         className="is-not-correct"
       >
         <p>
-          Question 2 - Incorrect:
+          Question 1 - Incorrect:
         </p>
         <div
           className="component flip-container obojobo-draft--chunks--question is-active is-practice"
           data-focussed={false}
-          data-id="question2"
+          data-id="qb1-q1"
           data-obo-component={true}
           data-type="ObojoboDraft.Chunks.Question"
-          id="obo-question2"
+          id="obo-qb1-q1"
         >
           <div
             className="flipper"
@@ -556,10 +405,10 @@ exports[`Assessment Assessment page changes when attempt started and submitted 3
                 <div
                   className="component"
                   data-focussed={false}
-                  data-id="question2-text1"
+                  data-id="8dffa3d6-9185-46a0-9b0c-bc2393532ccf"
                   data-obo-component={true}
                   data-type="ObojoboDraft.Chunks.Text"
-                  id="obo-question2-text1"
+                  id="obo-8dffa3d6-9185-46a0-9b0c-bc2393532ccf"
                 >
                   <div
                     className="text-chunk obojobo-draft--chunks--single-text pad"
@@ -572,7 +421,7 @@ exports[`Assessment Assessment page changes when attempt started and submitted 3
                       <span>
                         <span>
                           <span>
-                            Question Text
+                            Question Bank 1 Question 1 - This is the first question you'll see
                           </span>
                         </span>
                       </span>
@@ -607,10 +456,10 @@ exports[`Assessment Assessment page changes when attempt started and submitted 4
     className="score unlock"
   >
     <h1>
-      Your score is 0%
+      Your score is 100%
     </h1>
     <h2>
-      Your highest score was 50%
+      This is your highest score
     </h2>
     <p>
       
@@ -621,21 +470,21 @@ exports[`Assessment Assessment page changes when attempt started and submitted 4
       <p
         className="number-correct"
       >
-        You got 0 out of 2 questions correct:
+        You got 1 out of 1 questions correct:
       </p>
       <div
-        className="is-not-correct"
+        className="is-correct"
       >
         <p>
-          Question 1 - Incorrect:
+          Question 1 - Correct:
         </p>
         <div
           className="component flip-container obojobo-draft--chunks--question is-active is-practice"
           data-focussed={false}
-          data-id="question1"
+          data-id="qb1-q1"
           data-obo-component={true}
           data-type="ObojoboDraft.Chunks.Question"
-          id="obo-question1"
+          id="obo-qb1-q1"
         >
           <div
             className="flipper"
@@ -649,10 +498,10 @@ exports[`Assessment Assessment page changes when attempt started and submitted 4
                 <div
                   className="component"
                   data-focussed={false}
-                  data-id="question1-text1"
+                  data-id="8dffa3d6-9185-46a0-9b0c-bc2393532ccf"
                   data-obo-component={true}
                   data-type="ObojoboDraft.Chunks.Text"
-                  id="obo-question1-text1"
+                  id="obo-8dffa3d6-9185-46a0-9b0c-bc2393532ccf"
                 >
                   <div
                     className="text-chunk obojobo-draft--chunks--single-text pad"
@@ -665,66 +514,7 @@ exports[`Assessment Assessment page changes when attempt started and submitted 4
                       <span>
                         <span>
                           <span>
-                            Question Text
-                          </span>
-                        </span>
-                      </span>
-                    </span>
-                  </div>
-                </div>
-              </div>
-              <div
-                className="pad responses-hidden"
-              >
-                (Responses Hidden)
-              </div>
-            </div>
-          </div>
-        </div>
-      </div>
-      <div
-        className="is-not-correct"
-      >
-        <p>
-          Question 2 - Incorrect:
-        </p>
-        <div
-          className="component flip-container obojobo-draft--chunks--question is-active is-practice"
-          data-focussed={false}
-          data-id="question2"
-          data-obo-component={true}
-          data-type="ObojoboDraft.Chunks.Question"
-          id="obo-question2"
-        >
-          <div
-            className="flipper"
-          >
-            <div
-              className="content back"
-            >
-              <div
-                className="obojobo-draft--chunks--mc-question--content"
-              >
-                <div
-                  className="component"
-                  data-focussed={false}
-                  data-id="question2-text1"
-                  data-obo-component={true}
-                  data-type="ObojoboDraft.Chunks.Text"
-                  id="obo-question2-text1"
-                >
-                  <div
-                    className="text-chunk obojobo-draft--chunks--single-text pad"
-                  >
-                    <span
-                      className="text align-left"
-                      data-group-index={0}
-                      data-indent={0}
-                    >
-                      <span>
-                        <span>
-                          <span>
-                            Question Text
+                            Question Bank 1 Question 1 - This is the first question you'll see
                           </span>
                         </span>
                       </span>
@@ -759,10 +549,10 @@ exports[`Assessment Assessment page changes when attempt started and submitted 5
     className="score unlock"
   >
     <h1>
-      Your score is 100%
+      Your score is 0%
     </h1>
     <h2>
-      This is your highest score
+      Your highest score was 100%
     </h2>
     <p>
       
@@ -773,21 +563,21 @@ exports[`Assessment Assessment page changes when attempt started and submitted 5
       <p
         className="number-correct"
       >
-        You got 2 out of 2 questions correct:
+        You got 0 out of 1 questions correct:
       </p>
       <div
-        className="is-correct"
+        className="is-not-correct"
       >
         <p>
-          Question 1 - Correct:
+          Question 1 - Incorrect:
         </p>
         <div
           className="component flip-container obojobo-draft--chunks--question is-active is-practice"
           data-focussed={false}
-          data-id="question1"
+          data-id="qb1-q1"
           data-obo-component={true}
           data-type="ObojoboDraft.Chunks.Question"
-          id="obo-question1"
+          id="obo-qb1-q1"
         >
           <div
             className="flipper"
@@ -801,10 +591,10 @@ exports[`Assessment Assessment page changes when attempt started and submitted 5
                 <div
                   className="component"
                   data-focussed={false}
-                  data-id="question1-text1"
+                  data-id="8dffa3d6-9185-46a0-9b0c-bc2393532ccf"
                   data-obo-component={true}
                   data-type="ObojoboDraft.Chunks.Text"
-                  id="obo-question1-text1"
+                  id="obo-8dffa3d6-9185-46a0-9b0c-bc2393532ccf"
                 >
                   <div
                     className="text-chunk obojobo-draft--chunks--single-text pad"
@@ -817,66 +607,7 @@ exports[`Assessment Assessment page changes when attempt started and submitted 5
                       <span>
                         <span>
                           <span>
-                            Question Text
-                          </span>
-                        </span>
-                      </span>
-                    </span>
-                  </div>
-                </div>
-              </div>
-              <div
-                className="pad responses-hidden"
-              >
-                (Responses Hidden)
-              </div>
-            </div>
-          </div>
-        </div>
-      </div>
-      <div
-        className="is-correct"
-      >
-        <p>
-          Question 2 - Correct:
-        </p>
-        <div
-          className="component flip-container obojobo-draft--chunks--question is-active is-practice"
-          data-focussed={false}
-          data-id="question2"
-          data-obo-component={true}
-          data-type="ObojoboDraft.Chunks.Question"
-          id="obo-question2"
-        >
-          <div
-            className="flipper"
-          >
-            <div
-              className="content back"
-            >
-              <div
-                className="obojobo-draft--chunks--mc-question--content"
-              >
-                <div
-                  className="component"
-                  data-focussed={false}
-                  data-id="question2-text1"
-                  data-obo-component={true}
-                  data-type="ObojoboDraft.Chunks.Text"
-                  id="obo-question2-text1"
-                >
-                  <div
-                    className="text-chunk obojobo-draft--chunks--single-text pad"
-                  >
-                    <span
-                      className="text align-left"
-                      data-group-index={0}
-                      data-indent={0}
-                    >
-                      <span>
-                        <span>
-                          <span>
-                            Question Text
+                            Question Bank 1 Question 1 - This is the first question you'll see
                           </span>
                         </span>
                       </span>

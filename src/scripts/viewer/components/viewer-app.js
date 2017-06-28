@@ -78,17 +78,34 @@ export default class ViewerApp extends React.Component {
 		state.modalState = ModalStore.getState();
 		state.focusState = FocusStore.getState();
 
+		this.onNavStoreChange = () => this.setState({ navState:NavStore.getState() })
+		this.onScoreStoreChange = () => this.setState({ scoreState:ScoreStore.getState() })
+		this.onQuestionStoreChange = () => this.setState({ questionState:QuestionStore.getState() })
+		this.onAssessmentStoreChange = () => this.setState({ assessmentState:AssessmentStore.getState() })
+		this.onModalStoreChange = () => this.setState({ modalState:ModalStore.getState() })
+		this.onFocusStoreChange = () => this.setState({ focusState:FocusStore.getState() })
+
 		this.state = state;
 	}
 
 	componentWillMount() {
+
 		// === SET UP DATA STORES ===
-		NavStore.onChange(() => this.setState({ navState: NavStore.getState() }));
-		ScoreStore.onChange(() => this.setState({ scoreState: ScoreStore.getState() }));
-		QuestionStore.onChange(() => this.setState({ questionState: QuestionStore.getState() }));
-		AssessmentStore.onChange(() => this.setState({ assessmentState: AssessmentStore.getState() }));
-		ModalStore.onChange(() => this.setState({ modalState: ModalStore.getState() }));
-		return FocusStore.onChange(() => this.setState({ focusState: FocusStore.getState() }));
+		NavStore.onChange(this.onNavStoreChange);
+		ScoreStore.onChange(this.onScoreStoreChange);
+		QuestionStore.onChange(this.onQuestionStoreChange);
+		AssessmentStore.onChange(this.onAssessmentStoreChange);
+		ModalStore.onChange(this.onModalStoreChange);
+		FocusStore.onChange(this.onFocusStoreChange);
+	}
+
+	componentWillUnmount() {
+		NavStore.offChange(this.onNavStoreChange);
+		ScoreStore.offChange(this.onScoreStoreChange);
+		QuestionStore.offChange(this.onQuestionStoreChange);
+		AssessmentStore.offChange(this.onAssessmentStoreChange);
+		ModalStore.offChange(this.onModalStoreChange);
+		FocusStore.offChange(this.onFocusStoreChange);
 	}
 
 	// componentDidMount: ->
@@ -122,11 +139,15 @@ export default class ViewerApp extends React.Component {
 	}
 
 	scrollToTop() {
-		let el = ReactDOM.findDOMNode(this.refs.prev);
+		let el = ReactDOM.findDOMNode(this.refs.prev)
+		let container = ReactDOM.findDOMNode(this.refs.container)
+
+		if(!container) return;
+
 		if (el) {
-			return ReactDOM.findDOMNode(this.refs.container).scrollTop = ReactDOM.findDOMNode(el).getBoundingClientRect().height;
+			return container.scrollTop = ReactDOM.findDOMNode(el).getBoundingClientRect().height;
 		} else {
-			return ReactDOM.findDOMNode(this.refs.container).scrollTop = 0;
+			return container.scrollTop = 0;
 		}
 	}
 

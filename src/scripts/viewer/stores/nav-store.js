@@ -65,8 +65,6 @@ class NavStore extends Store {
 			'nav:unlock':  payload => this.setAndTrigger({locked: false}),
 			'nav:close':   payload => this.setAndTrigger({open: false}),
 			'nav:open':    payload => this.setAndTrigger({open: true}),
-			'nav:disable': payload => this.setAndTrigger({disabled: true, locked: true, open: false}),
-			'nav:enable':  payload => this.setAndTrigger({disabled: false, locked: false}),
 			'nav:toggle':  payload => this.setAndTrigger({open: !this.state.open}),
 			'nav:openExternalLink': payload => {
 				window.open(payload.value.url);

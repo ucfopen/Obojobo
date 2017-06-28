@@ -183,12 +183,6 @@ var NavUtil = {
 	open: function open() {
 		return Dispatcher.trigger('nav:open');
 	},
-	disable: function disable() {
-		return Dispatcher.trigger('nav:disable');
-	},
-	enable: function enable() {
-		return Dispatcher.trigger('nav:enable');
-	},
 	toggle: function toggle() {
 		return Dispatcher.trigger('nav:toggle');
 	},
@@ -323,7 +317,7 @@ var NavUtil = {
 		return OboModel.models[nextItem.id];
 	},
 	canNavigate: function canNavigate(state) {
-		return !state.locked && !state.disabled;
+		return !state.locked;
 	},
 	getOrderedList: function getOrderedList(state) {
 		return getFlatList(state.items);
@@ -537,12 +531,6 @@ var NavStore = function (_Store) {
 			},
 			'nav:open': function navOpen(payload) {
 				return _this.setAndTrigger({ open: true });
-			},
-			'nav:disable': function navDisable(payload) {
-				return _this.setAndTrigger({ disabled: true, locked: true, open: false });
-			},
-			'nav:enable': function navEnable(payload) {
-				return _this.setAndTrigger({ disabled: false, locked: false });
 			},
 			'nav:toggle': function navToggle(payload) {
 				return _this.setAndTrigger({ open: !_this.state.open });
@@ -1126,6 +1114,8 @@ var AssessmentStore = function (_Store) {
 				}
 
 				_this2.triggerChange();
+			}).catch(function (e) {
+				console.error(e);
 			});
 		}
 	}, {
@@ -1171,6 +1161,7 @@ var AssessmentStore = function (_Store) {
 			_navUtil2.default.goto(id);
 
 			model.processTrigger('onStartAttempt');
+			Dispatcher.trigger('assessment:attemptStarted', id);
 		}
 	}, {
 		key: 'tryEndAttempt',
@@ -1187,6 +1178,8 @@ var AssessmentStore = function (_Store) {
 
 				_this3.endAttempt(res.value);
 				return _this3.triggerChange();
+			}).catch(function (e) {
+				console.error(e);
 			});
 		}
 	}, {
@@ -1206,6 +1199,7 @@ var AssessmentStore = function (_Store) {
 			assessment.current = null;
 
 			model.processTrigger('onEndAttempt');
+			Dispatcher.trigger('assessment:attemptEnded', id);
 		}
 	}, {
 		key: 'tryRecordResponse',
@@ -2294,6 +2288,7 @@ var Nav = function (_React$Component) {
 		key: 'onClick',
 		value: function onClick(item) {
 			if (item.type === 'link') {
+				if (!_navUtil2.default.canNavigate(this.props.navState)) return;
 				return _navUtil2.default.gotoPath(item.fullPath);
 			} else if (item.type === 'sub-link') {
 				var el = OboModel.models[item.id].getDomEl();
@@ -2565,6 +2560,25 @@ var ViewerApp = function (_React$Component) {
 		state.modalState = ModalStore.getState();
 		state.focusState = FocusStore.getState();
 
+		_this.onNavStoreChange = function () {
+			return _this.setState({ navState: _navStore2.default.getState() });
+		};
+		_this.onScoreStoreChange = function () {
+			return _this.setState({ scoreState: _scoreStore2.default.getState() });
+		};
+		_this.onQuestionStoreChange = function () {
+			return _this.setState({ questionState: _questionStore2.default.getState() });
+		};
+		_this.onAssessmentStoreChange = function () {
+			return _this.setState({ assessmentState: _assessmentStore2.default.getState() });
+		};
+		_this.onModalStoreChange = function () {
+			return _this.setState({ modalState: ModalStore.getState() });
+		};
+		_this.onFocusStoreChange = function () {
+			return _this.setState({ focusState: FocusStore.getState() });
+		};
+
 		_this.state = state;
 		return _this;
 	}
@@ -2572,27 +2586,24 @@ var ViewerApp = function (_React$Component) {
 	_createClass(ViewerApp, [{
 		key: 'componentWillMount',
 		value: function componentWillMount() {
-			var _this2 = this;
 
 			// === SET UP DATA STORES ===
-			_navStore2.default.onChange(function () {
-				return _this2.setState({ navState: _navStore2.default.getState() });
-			});
-			_scoreStore2.default.onChange(function () {
-				return _this2.setState({ scoreState: _scoreStore2.default.getState() });
-			});
-			_questionStore2.default.onChange(function () {
-				return _this2.setState({ questionState: _questionStore2.default.getState() });
-			});
-			_assessmentStore2.default.onChange(function () {
-				return _this2.setState({ assessmentState: _assessmentStore2.default.getState() });
-			});
-			ModalStore.onChange(function () {
-				return _this2.setState({ modalState: ModalStore.getState() });
-			});
-			return FocusStore.onChange(function () {
-				return _this2.setState({ focusState: FocusStore.getState() });
-			});
+			_navStore2.default.onChange(this.onNavStoreChange);
+			_scoreStore2.default.onChange(this.onScoreStoreChange);
+			_questionStore2.default.onChange(this.onQuestionStoreChange);
+			_assessmentStore2.default.onChange(this.onAssessmentStoreChange);
+			ModalStore.onChange(this.onModalStoreChange);
+			FocusStore.onChange(this.onFocusStoreChange);
+		}
+	}, {
+		key: 'componentWillUnmount',
+		value: function componentWillUnmount() {
+			_navStore2.default.offChange(this.onNavStoreChange);
+			_scoreStore2.default.offChange(this.onScoreStoreChange);
+			_questionStore2.default.offChange(this.onQuestionStoreChange);
+			_assessmentStore2.default.offChange(this.onAssessmentStoreChange);
+			ModalStore.offChange(this.onModalStoreChange);
+			FocusStore.offChange(this.onFocusStoreChange);
 		}
 
 		// componentDidMount: ->
@@ -2633,10 +2644,14 @@ var ViewerApp = function (_React$Component) {
 		key: 'scrollToTop',
 		value: function scrollToTop() {
 			var el = ReactDOM.findDOMNode(this.refs.prev);
+			var container = ReactDOM.findDOMNode(this.refs.container);
+
+			if (!container) return;
+
 			if (el) {
-				return ReactDOM.findDOMNode(this.refs.container).scrollTop = ReactDOM.findDOMNode(el).getBoundingClientRect().height;
+				return container.scrollTop = ReactDOM.findDOMNode(el).getBoundingClientRect().height;
 			} else {
-				return ReactDOM.findDOMNode(this.refs.container).scrollTop = 0;
+				return container.scrollTop = 0;
 			}
 		}
 

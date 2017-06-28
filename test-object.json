@@ -1,12 +1,12 @@
 {
-  "id": "2560969f-ed03-4a5e-a179-f5b7803a66e3",
+  "id": "d58fe35d-66f3-4fcb-8a90-e2a2ddace2e9",
   "type": "ObojoboDraft.Modules.Module",
   "content": {
     "title": "Obojobo Example Document"
   },
   "children": [
     {
-      "id": "19ee1b03-2309-4c1f-869f-45fca54c91e5",
+      "id": "aaa6872a-8744-4bbe-b996-ae4189e3bc55",
       "type": "ObojoboDraft.Sections.Content",
       "content": {},
       "children": [
@@ -18,7 +18,7 @@
           },
           "children": [
             {
-              "id": "39701c2f-25f8-462e-aea4-da8033b4183f",
+              "id": "cc957869-5df4-4dd2-bebc-07ec8746ba5a",
               "type": "ObojoboDraft.Chunks.Heading",
               "content": {
                 "headingLevel": 1,
@@ -35,7 +35,7 @@
               "children": []
             },
             {
-              "id": "57b550cd-b238-4235-98e3-e9f7b8af555c",
+              "id": "3534a958-b0d0-46ca-afd7-c625f69171c0",
               "type": "ObojoboDraft.Chunks.Heading",
               "content": {
                 "headingLevel": 2,
@@ -52,7 +52,7 @@
               "children": []
             },
             {
-              "id": "09f2a277-a052-4388-b162-901265676990",
+              "id": "49111e66-c21c-4298-b83e-69745f10a80b",
               "type": "ObojoboDraft.Chunks.Text",
               "content": {
                 "textGroup": [
@@ -75,7 +75,7 @@
               "children": []
             },
             {
-              "id": "62b25913-7a6e-4845-af8c-339d91a04a85",
+              "id": "c7b69e1d-db93-4808-ac3f-4199d8fdea74",
               "type": "ObojoboDraft.Chunks.MathEquation",
               "content": {
                 "latex": "v_0=v_{0_x}i+v_{0_y}j"
@@ -83,7 +83,7 @@
               "children": []
             },
             {
-              "id": "f55975c5-c8cf-4c07-ae83-776d0bc38bd6",
+              "id": "923d7b0a-511e-4437-a524-345639273ebf",
               "type": "ObojoboDraft.Chunks.Text",
               "content": {
                 "textGroup": [
@@ -118,7 +118,7 @@
               "children": []
             },
             {
-              "id": "8a6b671f-3c11-479c-9724-6c18d4b59435",
+              "id": "3721448c-a889-4648-b17b-fa617dbefb45",
               "type": "ObojoboDraft.Chunks.List",
               "content": {
                 "listStyles": {
@@ -158,7 +158,7 @@
               "children": []
             },
             {
-              "id": "a2771573-f955-429d-9916-49736bd91a64",
+              "id": "de5eb3b4-52ac-43e3-8f95-890bcf57f47c",
               "type": "ObojoboDraft.Chunks.Text",
               "content": {
                 "textGroup": [
@@ -174,7 +174,7 @@
               "children": []
             },
             {
-              "id": "20f084ad-a7c4-4e75-b2bd-375127ba7308",
+              "id": "10faa12e-6e08-4091-9fd8-935520252919",
               "type": "ObojoboDraft.Chunks.Heading",
               "content": {
                 "headingLevel": 2,
@@ -191,7 +191,7 @@
               "children": []
             },
             {
-              "id": "ad7d563b-96b7-49bb-ac6e-8221f7a897c4",
+              "id": "7e3054f6-74b0-456f-8009-191aeb294738",
               "type": "ObojoboDraft.Chunks.Text",
               "content": {
                 "textGroup": [
@@ -216,7 +216,7 @@
           },
           "children": [
             {
-              "id": "85320910-f58e-4287-8be9-8455c4180e9f",
+              "id": "2ed183ad-3e5c-401d-8c82-b9a936e316be",
               "type": "ObojoboDraft.Chunks.Heading",
               "content": {
                 "headingLevel": 1,
@@ -233,7 +233,7 @@
               "children": []
             },
             {
-              "id": "a2d42c09-499e-4d33-a9b5-8abd14cbae02",
+              "id": "92180d05-7962-45da-8260-51187add2eb3",
               "type": "ObojoboDraft.Chunks.Text",
               "content": {
                 "textGroup": [
@@ -249,7 +249,7 @@
               "children": []
             },
             {
-              "id": "dbcab9db-6725-42c0-b863-056ba9044a10",
+              "id": "ac13a3a6-b072-4c6c-a6a3-b7ff2f120e1c",
               "type": "ObojoboDraft.Chunks.Figure",
               "content": {
                 "size": "small",
@@ -268,7 +268,7 @@
               "children": []
             },
             {
-              "id": "7b7cfc34-c4b7-4fe9-8488-185bf5e27e49",
+              "id": "c91192ff-c788-42ce-84d1-37c5fbd73b51",
               "type": "ObojoboDraft.Chunks.Text",
               "content": {
                 "textGroup": [
@@ -284,7 +284,7 @@
               "children": []
             },
             {
-              "id": "53c02755-4817-49d0-b4c5-fc98f3d77f1b",
+              "id": "b7a14c9e-c641-4c31-8bc9-1bb5cfefb3a3",
               "type": "ObojoboDraft.Chunks.Figure",
               "content": {
                 "size": "medium",
@@ -294,7 +294,7 @@
               "children": []
             },
             {
-              "id": "19eb17b5-d49e-47ca-a673-fd3b487ad6b2",
+              "id": "2996c49c-dfcf-40a3-9cfb-8f191de6b52f",
               "type": "ObojoboDraft.Chunks.Text",
               "content": {
                 "textGroup": [
@@ -310,7 +310,7 @@
               "children": []
             },
             {
-              "id": "f21811c1-e677-4efc-946c-b1e05c23daa3",
+              "id": "6ccb6641-020b-4229-a190-2fdfe1034ce5",
               "type": "ObojoboDraft.Chunks.Figure",
               "content": {
                 "size": "large",
@@ -320,7 +320,7 @@
               "children": []
             },
             {
-              "id": "275a41ef-99f1-48bb-abc5-ccb7c2f52edd",
+              "id": "8af14fe0-6851-45ba-84ed-cacfc254b751",
               "type": "ObojoboDraft.Chunks.Text",
               "content": {
                 "textGroup": [
@@ -336,7 +336,7 @@
               "children": []
             },
             {
-              "id": "7dd04d99-dc0d-4014-915f-1c38bd7a4870",
+              "id": "0707b594-d03f-4072-8b05-a2d7d2b9b29e",
               "type": "ObojoboDraft.Chunks.Figure",
               "content": {
                 "width": 200,
@@ -347,7 +347,7 @@
               "children": []
             },
             {
-              "id": "ba8827ee-59a0-4fac-a6fc-79ed6af59d32",
+              "id": "35d5f8e4-306a-4ce0-9869-6bd6fb56dfe4",
               "type": "ObojoboDraft.Chunks.Text",
               "content": {
                 "textGroup": [
@@ -363,7 +363,7 @@
               "children": []
             },
             {
-              "id": "97a89796-8c8b-43cb-b57b-9d45c1ffc371",
+              "id": "88767c88-8c4d-4181-9468-364bdb80b39d",
               "type": "ObojoboDraft.Chunks.Figure",
               "content": {
                 "height": 200,
@@ -374,7 +374,7 @@
               "children": []
             },
             {
-              "id": "e3a112e7-9d53-4f8c-85e0-3ad09446ab9b",
+              "id": "b9543efe-369e-4147-8c74-1da45a3d66fd",
               "type": "ObojoboDraft.Chunks.Text",
               "content": {
                 "textGroup": [
@@ -390,7 +390,7 @@
               "children": []
             },
             {
-              "id": "c97ca687-eade-43c6-9e13-676bc64f12d1",
+              "id": "e646ebb7-5993-411f-a1f4-ed9918832fe6",
               "type": "ObojoboDraft.Chunks.Figure",
               "content": {
                 "width": 400,
@@ -402,7 +402,7 @@
               "children": []
             },
             {
-              "id": "57ba3228-a777-4af1-95f7-9329110eda05",
+              "id": "77ea13e5-1092-453a-afde-87e5646f20c9",
               "type": "ObojoboDraft.Chunks.Text",
               "content": {
                 "textGroup": [
@@ -418,7 +418,7 @@
               "children": []
             },
             {
-              "id": "792e75d1-8ffe-492f-9aa8-34094f5d4b9c",
+              "id": "daa53d5a-8ff7-4d2c-9cb4-3150f70079b6",
               "type": "ObojoboDraft.Chunks.Figure",
               "content": {
                 "size": "custom",
@@ -427,7 +427,7 @@
               "children": []
             },
             {
-              "id": "1713740f-8ad5-403c-80d2-733f755f73d1",
+              "id": "6e59388f-bb87-4396-89dd-ea7d843c43df",
               "type": "ObojoboDraft.Chunks.Text",
               "content": {
                 "textGroup": [
@@ -443,7 +443,7 @@
               "children": []
             },
             {
-              "id": "0fcf5f54-5ab5-4492-9ac7-0f44d8729295",
+              "id": "411e92b8-5a3e-4f17-bf89-c02ed77544f3",
               "type": "ObojoboDraft.Chunks.Figure",
               "content": {
                 "size": "custom",
@@ -452,7 +452,7 @@
               "children": []
             },
             {
-              "id": "ec5acc8f-c99e-4d2b-9c88-3b3f15c7d72a",
+              "id": "83daf126-f691-4069-b9a8-4426cc3e0ddc",
               "type": "ObojoboDraft.Chunks.Text",
               "content": {
                 "textGroup": [
@@ -468,7 +468,7 @@
               "children": []
             },
             {
-              "id": "d7c60811-ca53-46ae-8f36-3c6b5519133a",
+              "id": "c189c12f-5fd5-437c-86c3-ea6e5ab8aa63",
               "type": "ObojoboDraft.Chunks.Figure",
               "content": {
                 "size": "custom",
@@ -492,7 +492,7 @@
           },
           "children": [
             {
-              "id": "9509fe47-e195-4c8f-93b6-4b6ed09ab070",
+              "id": "55a7aedd-f3c6-42e5-a09d-22396d65f88e",
               "type": "ObojoboDraft.Chunks.Heading",
               "content": {
                 "headingLevel": 1,
@@ -509,7 +509,7 @@
               "children": []
             },
             {
-              "id": "f4a4ed19-f426-4580-bc63-927f8796ce45",
+              "id": "77d25dc9-f122-4fc9-af3a-1e5e961f1b39",
               "type": "ObojoboDraft.Chunks.Heading",
               "content": {
                 "headingLevel": 2,
@@ -526,7 +526,7 @@
               "children": []
             },
             {
-              "id": "394b1361-3fd4-49a3-bb2c-b241136917bf",
+              "id": "bce67a4d-aa70-400e-ba78-738a34f18e6e",
               "type": "ObojoboDraft.Chunks.Code",
               "content": {
                 "textGroup": [
@@ -535,14 +535,14 @@
                       "value": "// Computers code example:",
                       "styleList": []
                     },
-                    "data": {}
+                    "data": null
                   },
                   {
                     "text": {
                       "value": "int Fibonacci(int n)",
                       "styleList": []
                     },
-                    "data": {}
+                    "data": null
                   },
                   {
                     "text": {
@@ -567,7 +567,7 @@
               "children": []
             },
             {
-              "id": "51a87647-8405-4cdd-92fa-b031968762ec",
+              "id": "cbeff59f-2f05-454f-8445-ba091048921c",
               "type": "ObojoboDraft.Chunks.Code",
               "content": {
                 "textGroup": [
@@ -608,7 +608,7 @@
               "children": []
             },
             {
-              "id": "0725256b-3dbe-4e52-9f40-487928c79f8b",
+              "id": "7eb8f99d-e0b4-42aa-b6c9-6f5303025541",
               "type": "ObojoboDraft.Chunks.Heading",
               "content": {
                 "headingLevel": 2,
@@ -625,7 +625,7 @@
               "children": []
             },
             {
-              "id": "9b6d0e2f-6c1a-4348-a6d2-f7a7e47ecf2f",
+              "id": "2aae3c12-6279-4ea5-bf36-6d18a84ca044",
               "type": "ObojoboDraft.Chunks.Table",
               "content": {
                 "header": true,
@@ -667,7 +667,7 @@
               "children": []
             },
             {
-              "id": "b45f2210-e14b-4f2d-97d4-89fa18b834ca",
+              "id": "a42a8ca9-0551-4fb7-8980-966c4f501620",
               "type": "ObojoboDraft.Chunks.Heading",
               "content": {
                 "headingLevel": 2,
@@ -684,7 +684,7 @@
               "children": []
             },
             {
-              "id": "dd6fb923-be19-4594-b34b-ee11dc21aaf9",
+              "id": "c004e682-d623-4308-842f-f390fe8c2393",
               "type": "ObojoboDraft.Chunks.Table",
               "content": {
                 "header": false,
@@ -726,7 +726,7 @@
               "children": []
             },
             {
-              "id": "0fff83d2-ce9a-46ca-baa6-41df25b91d72",
+              "id": "d65510ed-0873-4cc0-b13c-d729397be05d",
               "type": "ObojoboDraft.Chunks.Heading",
               "content": {
                 "headingLevel": 2,
@@ -743,13 +743,13 @@
               "children": []
             },
             {
-              "id": "7c142673-65c3-47a2-a537-037db9953ea2",
+              "id": "ad5f6ce4-98e4-4825-b113-4309a0b9fb5c",
               "type": "ObojoboDraft.Chunks.Break",
               "content": {},
               "children": []
             },
             {
-              "id": "ccb9e2fd-6448-4ed6-a337-1cac6639f76d",
+              "id": "4b8451a3-81b7-4b2e-b378-732ff97024cb",
               "type": "ObojoboDraft.Chunks.Heading",
               "content": {
                 "headingLevel": 2,
@@ -766,7 +766,7 @@
               "children": []
             },
             {
-              "id": "0b5a08fe-5479-4b7a-9032-39f9727981f4",
+              "id": "5d9e88f3-6987-4b4d-8109-129cc8e46c64",
               "type": "ObojoboDraft.Chunks.YouTube",
               "content": {
                 "videoId": "dQw4w9WgXcQ"
@@ -774,7 +774,7 @@
               "children": []
             },
             {
-              "id": "46ff6205-5298-44b8-9990-035780afbb0c",
+              "id": "bcac781c-e952-4453-bd9e-b3d52c975b85",
               "type": "ObojoboDraft.Chunks.Heading",
               "content": {
                 "headingLevel": 2,
@@ -791,7 +791,7 @@
               "children": []
             },
             {
-              "id": "096f0bf4-0ba3-4984-b315-2814092c6ecf",
+              "id": "4308ea3e-f981-4c1a-9200-f38397955a88",
               "type": "ObojoboDraft.Chunks.Text",
               "content": {
                 "textGroup": [
@@ -814,17 +814,25 @@
               "children": []
             },
             {
-              "id": "15d5f3a2-4db5-4306-92ae-49325f3eb8e2",
+              "type": "text",
+              "text": " with feedback and an included "
+            },
+            {
+              "type": "text",
+              "text": ":\n\t\t\t\t"
+            },
+            {
+              "id": "pq1",
               "type": "ObojoboDraft.Chunks.Question",
               "content": {
                 "title": "A custom question title",
                 "solution": {
-                  "id": "2476eafa-0c35-4f1d-91a1-f9209ed6c7b0",
+                  "id": "e4662c07-2487-481c-850c-9dfab5fbe1ff",
                   "type": "ObojoboDraft.Pages.Page",
                   "content": {},
                   "children": [
                     {
-                      "id": "829f75fc-fbff-435b-b99e-e5a69842f854",
+                      "id": "015cf6be-631e-467a-a025-ee2c7122ee52",
                       "type": "ObojoboDraft.Chunks.Text",
                       "content": {
                         "textGroup": [
@@ -840,7 +848,7 @@
                       "children": []
                     },
                     {
-                      "id": "e9b63e69-607b-47e4-bdb9-313fb7a3f01e",
+                      "id": "cda7e532-714d-45cd-a5d4-3a8dfeb8555c",
                       "type": "ObojoboDraft.Chunks.MathEquation",
                       "content": {
                         "latex": "v_0=v_{0_x}i+v_{0_y}j"
@@ -848,7 +856,7 @@
                       "children": []
                     },
                     {
-                      "id": "5c85f54c-ea70-4494-8cec-9385eb1dd5b7",
+                      "id": "42a33427-7ac1-4941-867b-52eb4768557f",
                       "type": "ObojoboDraft.Chunks.Text",
                       "content": {
                         "textGroup": [
@@ -883,7 +891,7 @@
                       "children": []
                     },
                     {
-                      "id": "90370c2a-22d2-44cb-b300-5e74cea59ddc",
+                      "id": "8fe59026-5817-421c-9af4-c1c18f47767d",
                       "type": "ObojoboDraft.Chunks.List",
                       "content": {
                         "listStyles": {
@@ -923,7 +931,7 @@
                       "children": []
                     },
                     {
-                      "id": "673ef074-925f-48d5-987c-fc2954934855",
+                      "id": "c066c670-3042-492a-be84-a1412157e9f8",
                       "type": "ObojoboDraft.Chunks.Text",
                       "content": {
                         "textGroup": [
@@ -943,7 +951,7 @@
               },
               "children": [
                 {
-                  "id": "a0f5bb8b-cd0c-4a16-a904-6051537cc901",
+                  "id": "88e66f4a-3264-41c3-a695-6390f2c62e83",
                   "type": "ObojoboDraft.Chunks.Heading",
                   "content": {
                     "headingLevel": 1,
@@ -960,26 +968,26 @@
                   "children": []
                 },
                 {
-                  "id": "2f5bc602-d7d2-4e12-b740-50d72551d295",
+                  "id": "pq1-mca",
                   "type": "ObojoboDraft.Chunks.MCAssessment",
                   "content": {
                     "responseType": "pick-one-multiple-correct"
                   },
                   "children": [
                     {
-                      "id": "d46909e8-9b3e-41de-a1f8-c7f795f19689",
+                      "id": "pq1-mca-mc1",
                       "type": "ObojoboDraft.Chunks.MCAssessment.MCChoice",
                       "content": {
                         "score": 100
                       },
                       "children": [
                         {
-                          "id": "cc7fcdc3-c456-4658-817d-77d244e5c23d",
+                          "id": "pq1-mca-mc1-ans",
                           "type": "ObojoboDraft.Chunks.MCAssessment.MCAnswer",
                           "content": {},
                           "children": [
                             {
-                              "id": "6a4ee1a4-72b1-4931-9304-0f83e44460f0",
+                              "id": "d366cba9-5f3a-4c87-a14e-a597f21fa9ed",
                               "type": "ObojoboDraft.Chunks.MathEquation",
                               "content": {
                                 "latex": "x=v_xt",
@@ -992,19 +1000,19 @@
                       ]
                     },
                     {
-                      "id": "d3e4cd69-e830-4b20-9e48-146fe1a8f13a",
+                      "id": "pq1-mca-mc2",
                       "type": "ObojoboDraft.Chunks.MCAssessment.MCChoice",
                       "content": {
                         "score": 100
                       },
                       "children": [
                         {
-                          "id": "3eb56831-d5a6-4abe-bc32-4fe07f9b1a81",
+                          "id": "pq1-mca-mc2-ans",
                           "type": "ObojoboDraft.Chunks.MCAssessment.MCAnswer",
                           "content": {},
                           "children": [
                             {
-                              "id": "f2b0024f-c274-4d01-9e45-8223610ae459",
+                              "id": "e454c6f4-b62c-4cdd-997b-3587dd10a01a",
                               "type": "ObojoboDraft.Chunks.MathEquation",
                               "content": {
                                 "latex": "x=v_{ix}t + \\frac{1}{2} a_x t^2",
@@ -1015,12 +1023,12 @@
                           ]
                         },
                         {
-                          "id": "95e576d6-edfc-4564-9a20-b2255ed14aff",
+                          "id": "pq1-mca-mc2-fb",
                           "type": "ObojoboDraft.Chunks.MCAssessment.MCFeedback",
                           "content": {},
                           "children": [
                             {
-                              "id": "f3f41677-e054-49aa-af0b-9abab05a8f9e",
+                              "id": "f24a4216-1539-4ee9-8818-c2cff997cec2",
                               "type": "ObojoboDraft.Chunks.Text",
                               "content": {
                                 "textGroup": [
@@ -1036,7 +1044,7 @@
                               "children": []
                             },
                             {
-                              "id": "3d293ece-e243-45b9-802f-a0b786810a4f",
+                              "id": "0b471292-912d-4247-8090-12afdbcf3cc7",
                               "type": "ObojoboDraft.Chunks.MathEquation",
                               "content": {
                                 "latex": "x=v_xt",
@@ -1049,19 +1057,19 @@
                       ]
                     },
                     {
-                      "id": "6799d1ac-1d55-4c89-b503-58bf0b743096",
+                      "id": "pq1-mca-mc3",
                       "type": "ObojoboDraft.Chunks.MCAssessment.MCChoice",
                       "content": {
                         "score": 0
                       },
                       "children": [
                         {
-                          "id": "c1a25420-5559-4da0-94b9-6bcbc48cc57d",
+                          "id": "pq1-mca-mc3-ans",
                           "type": "ObojoboDraft.Chunks.MCAssessment.MCAnswer",
                           "content": {},
                           "children": [
                             {
-                              "id": "3e02d88e-3b4b-45b4-b8aa-5bbf24ad559d",
+                              "id": "38a35f9c-f86e-43d0-9325-63457ec61bd9",
                               "type": "ObojoboDraft.Chunks.MathEquation",
                               "content": {
                                 "latex": "x=\\frac{1}{2} a_x t^2",
@@ -1072,12 +1080,12 @@
                           ]
                         },
                         {
-                          "id": "35dfd055-cb31-47b8-a6a6-80677401fdaa",
+                          "id": "pq1-mca-mc3-fb",
                           "type": "ObojoboDraft.Chunks.MCAssessment.MCFeedback",
                           "content": {},
                           "children": [
                             {
-                              "id": "31084ca3-199d-441c-9cff-59e9e44b3360",
+                              "id": "96322d8f-57bc-4503-ac7a-c056f0b8a45d",
                               "type": "ObojoboDraft.Chunks.Text",
                               "content": {
                                 "textGroup": [
@@ -1114,7 +1122,7 @@
               ]
             },
             {
-              "id": "7fddaa01-7d3c-4697-b7e9-f0f6a1c07e73",
+              "id": "a55bd1bd-b43b-4ffe-a298-4df4f55b2a4c",
               "type": "ObojoboDraft.Chunks.Text",
               "content": {
                 "textGroup": [
@@ -1137,12 +1145,12 @@
               "children": []
             },
             {
-              "id": "bc288cb2-c6e4-4303-b28b-35876effd136",
+              "id": "pq2",
               "type": "ObojoboDraft.Chunks.Question",
               "content": {},
               "children": [
                 {
-                  "id": "82a65129-662e-4b6a-ba0a-10df8585d771",
+                  "id": "577d4656-be51-469a-915c-4c6a64230722",
                   "type": "ObojoboDraft.Chunks.YouTube",
                   "content": {
                     "videoId": "dQw4w9WgXcQ"
@@ -1150,7 +1158,7 @@
                   "children": []
                 },
                 {
-                  "id": "98da9197-015e-4aaa-b59f-e04fde4974df",
+                  "id": "dab177fd-7ef1-42e1-b73e-373c31f76596",
                   "type": "ObojoboDraft.Chunks.List",
                   "content": {
                     "listStyles": {
@@ -1176,26 +1184,26 @@
                   "children": []
                 },
                 {
-                  "id": "92f6c980-6585-4a9e-abe0-30068107dde7",
+                  "id": "pq2-mca",
                   "type": "ObojoboDraft.Chunks.MCAssessment",
                   "content": {
                     "responseType": "pick-all"
                   },
                   "children": [
                     {
-                      "id": "137c34b3-f46a-4837-8cd2-4a1f0b431b21",
+                      "id": "pq2-mca-mc1",
                       "type": "ObojoboDraft.Chunks.MCAssessment.MCChoice",
                       "content": {
                         "score": 100
                       },
                       "children": [
                         {
-                          "id": "a908d718-8261-479e-a125-4d340dc2eb7f",
+                          "id": "pq2-mca-mc1-ans",
                           "type": "ObojoboDraft.Chunks.MCAssessment.MCAnswer",
                           "content": {},
                           "children": [
                             {
-                              "id": "64a67add-64e5-4adb-9f3c-59692f4c29e1",
+                              "id": "8d23931d-b1e7-463f-a5f5-f884d9822227",
                               "type": "ObojoboDraft.Chunks.Text",
                               "content": {
                                 "textGroup": [
@@ -1213,12 +1221,12 @@
                           ]
                         },
                         {
-                          "id": "6bff2f7f-9a85-4a33-966f-9daf4701da2b",
+                          "id": "pq2-mca-mc1-fb",
                           "type": "ObojoboDraft.Chunks.MCAssessment.MCFeedback",
                           "content": {},
                           "children": [
                             {
-                              "id": "5954e37a-c805-48e4-b744-75618623ccc9",
+                              "id": "c09292c9-73bc-42cd-8796-ed3785e6b1a7",
                               "type": "ObojoboDraft.Chunks.Text",
                               "content": {
                                 "textGroup": [
@@ -1238,19 +1246,19 @@
                       ]
                     },
                     {
-                      "id": "42f3adc2-e1f5-457a-9233-655ac5e7d5e8",
+                      "id": "pq2-mca-mc2",
                       "type": "ObojoboDraft.Chunks.MCAssessment.MCChoice",
                       "content": {
                         "score": 100
                       },
                       "children": [
                         {
-                          "id": "f612a095-39d5-467c-9729-569cfdd0d918",
+                          "id": "pq2-mca-mc2-ans",
                           "type": "ObojoboDraft.Chunks.MCAssessment.MCAnswer",
                           "content": {},
                           "children": [
                             {
-                              "id": "6cc15d25-7df1-4ca9-8ac1-bf0a9ec471f4",
+                              "id": "e09c6922-1d36-40bc-867b-32c3762858c0",
                               "type": "ObojoboDraft.Chunks.Text",
                               "content": {
                                 "textGroup": [
@@ -1268,12 +1276,12 @@
                           ]
                         },
                         {
-                          "id": "4dfb24fe-f0c0-417a-91ed-69005bf0e3c0",
+                          "id": "pq2-mca-mc2-fb",
                           "type": "ObojoboDraft.Chunks.MCAssessment.MCFeedback",
                           "content": {},
                           "children": [
                             {
-                              "id": "060c64f8-468d-4a02-80b4-a52cfb5a6d2b",
+                              "id": "3097ad24-f6cc-498b-bf02-0c6a63908505",
                               "type": "ObojoboDraft.Chunks.Text",
                               "content": {
                                 "textGroup": [
@@ -1293,19 +1301,19 @@
                       ]
                     },
                     {
-                      "id": "864f25f6-57e3-4e8c-a0a4-35dfa138eb30",
+                      "id": "pq2-mca-mc3",
                       "type": "ObojoboDraft.Chunks.MCAssessment.MCChoice",
                       "content": {
                         "score": 0
                       },
                       "children": [
                         {
-                          "id": "fd63912d-52ff-4b60-bc6b-18bdc4705f03",
+                          "id": "pq2-mca-mc3-ans",
                           "type": "ObojoboDraft.Chunks.MCAssessment.MCAnswer",
                           "content": {},
                           "children": [
                             {
-                              "id": "cc9a4ac6-f682-44ed-acc5-af8c1cdc8a77",
+                              "id": "84d866c9-b8e5-4634-af71-63c2ea42767d",
                               "type": "ObojoboDraft.Chunks.Text",
                               "content": {
                                 "textGroup": [
@@ -1323,12 +1331,12 @@
                           ]
                         },
                         {
-                          "id": "0ce2ed21-be98-4f46-ac42-823fadbe828f",
+                          "id": "pq2-mca-mc3-fb",
                           "type": "ObojoboDraft.Chunks.MCAssessment.MCFeedback",
                           "content": {},
                           "children": [
                             {
-                              "id": "5d3b5fb4-f2b0-4036-b557-0990e37a893b",
+                              "id": "6c586efd-176a-4c9c-a4eb-a282f1e4bec0",
                               "type": "ObojoboDraft.Chunks.Text",
                               "content": {
                                 "textGroup": [
@@ -1352,7 +1360,7 @@
               ]
             },
             {
-              "id": "89d8e25f-d836-4ae9-bc7c-b37e9f368648",
+              "id": "044aad18-e0e6-4384-9bf1-e2498eff1f3d",
               "type": "ObojoboDraft.Chunks.Text",
               "content": {
                 "textGroup": [
@@ -1375,12 +1383,12 @@
               "children": []
             },
             {
-              "id": "b48aa779-2053-4a4c-8bed-2296263e0f80",
+              "id": "pq3",
               "type": "ObojoboDraft.Chunks.Question",
               "content": {},
               "children": [
                 {
-                  "id": "24128051-363e-4056-9a2c-c5d793de9129",
+                  "id": "52c840f1-f400-486b-b99f-648c035577ad",
                   "type": "ObojoboDraft.Chunks.Text",
                   "content": {
                     "textGroup": [
@@ -1396,26 +1404,26 @@
                   "children": []
                 },
                 {
-                  "id": "077d0793-0813-460d-aa8a-cb4c7c87cd27",
+                  "id": "pq3-mca",
                   "type": "ObojoboDraft.Chunks.MCAssessment",
                   "content": {
                     "responseType": "pick-one"
                   },
                   "children": [
                     {
-                      "id": "f929d6f2-47b1-4da7-ba28-32c1335e776b",
+                      "id": "pq3-mca-mc1",
                       "type": "ObojoboDraft.Chunks.MCAssessment.MCChoice",
                       "content": {
                         "score": 0
                       },
                       "children": [
                         {
-                          "id": "bff25824-3531-4de9-9c52-956dbf812a82",
+                          "id": "pq3-mca-mc1-ans",
                           "type": "ObojoboDraft.Chunks.MCAssessment.MCAnswer",
                           "content": {},
                           "children": [
                             {
-                              "id": "a3d440a0-af43-4266-893c-a12dc84aea11",
+                              "id": "09bd175e-c8c1-4e54-a51e-ac1cb3520670",
                               "type": "ObojoboDraft.Chunks.Text",
                               "content": {
                                 "textGroup": [
@@ -1435,19 +1443,19 @@
                       ]
                     },
                     {
-                      "id": "439f4995-f16a-4610-88bd-ce683e28290f",
+                      "id": "pq3-mca-mc2",
                       "type": "ObojoboDraft.Chunks.MCAssessment.MCChoice",
                       "content": {
                         "score": 100
                       },
                       "children": [
                         {
-                          "id": "fffef110-2422-4d03-b632-18633dfab9d5",
+                          "id": "pq3-mca-mc2-ans",
                           "type": "ObojoboDraft.Chunks.MCAssessment.MCAnswer",
                           "content": {},
                           "children": [
                             {
-                              "id": "3e978603-a033-4200-b50a-6afa372afb94",
+                              "id": "ea564c7f-e891-4bc0-a6cf-dea3ba25205c",
                               "type": "ObojoboDraft.Chunks.Text",
                               "content": {
                                 "textGroup": [
@@ -1471,7 +1479,7 @@
               ]
             },
             {
-              "id": "9f023e1e-15cc-471f-9d68-048e63cfdd00",
+              "id": "af2180c0-7854-41ac-accf-8b7643f46f1a",
               "type": "ObojoboDraft.Chunks.Heading",
               "content": {
                 "headingLevel": 2,
@@ -1488,7 +1496,7 @@
               "children": []
             },
             {
-              "id": "78e555b3-e773-431e-a5d5-b1fc6e29faec",
+              "id": "28fd42c1-7d4e-4e27-8933-71bcdfabca5a",
               "type": "ObojoboDraft.Chunks.Text",
               "content": {
                 "textGroup": [
@@ -1504,7 +1512,7 @@
               "children": []
             },
             {
-              "id": "1183766a-0f10-4123-9b50-cdbcc7d69fde",
+              "id": "4cc4a0d6-599f-4e99-9e22-15fea42b6aed",
               "type": "ObojoboDraft.Chunks.HTML",
               "content": {
                 "html": "<marquee><font color='red'>Hello, I am rendered HTML</font></marquee>"
@@ -1512,7 +1520,7 @@
               "children": []
             },
             {
-              "id": "40670184-2569-4a52-aadb-d8da891baaba",
+              "id": "2b9e178d-0f30-4f95-9ba5-722ff70e5adc",
               "type": "ObojoboDraft.Chunks.Heading",
               "content": {
                 "headingLevel": 2,
@@ -1529,7 +1537,7 @@
               "children": []
             },
             {
-              "id": "70595ebc-95f8-4b13-bfdc-565bc3db8ea9",
+              "id": "e802374c-6a7d-4349-9e5f-30792368062b",
               "type": "ObojoboDraft.Chunks.ActionButton",
               "content": {
                 "label": "Click me to see a message",
@@ -1551,7 +1559,7 @@
               "children": []
             },
             {
-              "id": "82e7a9e4-3691-4c64-ac82-2a065eb77988",
+              "id": "f4f75d8b-4651-4ad4-b73a-63ca549c5328",
               "type": "ObojoboDraft.Chunks.Text",
               "content": {
                 "textGroup": [
@@ -1567,7 +1575,7 @@
               "children": []
             },
             {
-              "id": "ef21b4e0-cdd3-4d55-9a3e-3d4d24daa465",
+              "id": "afd96d60-941d-4019-99b4-06d4fe1aa353",
               "type": "ObojoboDraft.Chunks.ActionButton",
               "content": {
                 "triggers": [
@@ -1612,7 +1620,7 @@
           },
           "children": [
             {
-              "id": "4faf1fea-4e3a-4b19-a7b9-71c1c79477ab",
+              "id": "9e44ebc1-5c0d-4f4f-b718-3f6f6891bb5a",
               "type": "ObojoboDraft.Chunks.Heading",
               "content": {
                 "headingLevel": 1,
@@ -1629,7 +1637,7 @@
               "children": []
             },
             {
-              "id": "34807ceb-e661-41cc-94eb-a54203e739f8",
+              "id": "72672cc5-42fd-4369-acf2-4c31fa0a1b24",
               "type": "ObojoboDraft.Chunks.Heading",
               "content": {
                 "headingLevel": 2,
@@ -1646,7 +1654,7 @@
               "children": []
             },
             {
-              "id": "f1fbce63-3bb1-4eba-b380-fbf7d5b14868",
+              "id": "341b8e4f-9d40-458c-8ddb-86a326c6c1e0",
               "type": "ObojoboDraft.Chunks.Heading",
               "content": {
                 "headingLevel": 2,
@@ -1665,7 +1673,7 @@
               "children": []
             },
             {
-              "id": "628be07d-cb7e-4fac-9025-aa593aff46c2",
+              "id": "89d7b7a8-f460-4648-a442-ca60d905aa4b",
               "type": "ObojoboDraft.Chunks.Heading",
               "content": {
                 "headingLevel": 2,
@@ -1684,7 +1692,7 @@
               "children": []
             },
             {
-              "id": "6382b29d-0c24-424b-bbc3-fe8267592e94",
+              "id": "f57b2224-b978-423b-8b93-ab98dc7ff975",
               "type": "ObojoboDraft.Chunks.Heading",
               "content": {
                 "headingLevel": 2,
@@ -1701,7 +1709,7 @@
               "children": []
             },
             {
-              "id": "91c10503-8094-4cab-8654-d496a83a51bc",
+              "id": "b5e1c57b-f7e6-483e-ae4e-f36b4a989701",
               "type": "ObojoboDraft.Chunks.MathEquation",
               "content": {
                 "latex": "y=\\sin(x)",
@@ -1710,7 +1718,7 @@
               "children": []
             },
             {
-              "id": "1ef49795-8666-499b-9996-89de398c3f9f",
+              "id": "fd8a6aad-ea37-4bc0-93da-2fb1277b9431",
               "type": "ObojoboDraft.Chunks.Heading",
               "content": {
                 "headingLevel": 2,
@@ -1727,7 +1735,7 @@
               "children": []
             },
             {
-              "id": "637760ba-5a44-4a09-95a6-1866dfec1727",
+              "id": "bd62cc3e-601a-4e65-8436-94800eb68ddf",
               "type": "ObojoboDraft.Chunks.Text",
               "content": {
                 "textGroup": [
@@ -1763,7 +1771,7 @@
               "children": []
             },
             {
-              "id": "c67c990f-64e7-4a86-89dc-2f3f560043d3",
+              "id": "e998126b-5a94-483f-ab22-92120e395880",
               "type": "ObojoboDraft.Chunks.Heading",
               "content": {
                 "headingLevel": 2,
@@ -1780,7 +1788,7 @@
               "children": []
             },
             {
-              "id": "93a437e9-ba43-4580-abf6-cab48807e3ca",
+              "id": "7cb7d272-376d-414d-8c84-2b1788403c6d",
               "type": "ObojoboDraft.Chunks.ActionButton",
               "content": {
                 "align": "right",
@@ -1789,7 +1797,7 @@
               "children": []
             },
             {
-              "id": "ad67c7d5-d6b5-4953-8aea-f784e87e4d4f",
+              "id": "d6c6a596-d9bf-416b-b5b9-30f96866d703",
               "type": "ObojoboDraft.Chunks.Heading",
               "content": {
                 "headingLevel": 2,
@@ -1806,7 +1814,7 @@
               "children": []
             },
             {
-              "id": "6043bff6-f8a3-4968-96e2-082e24e360c5",
+              "id": "4a068e84-5038-4dd8-89cc-bd7204c6ca17",
               "type": "ObojoboDraft.Chunks.Text",
               "content": {
                 "textGroup": [
@@ -1873,7 +1881,7 @@
               "children": []
             },
             {
-              "id": "642a5c4a-a07e-4332-8fe3-180cab46abab",
+              "id": "6a408b4f-6a3c-4b35-a9ab-bc971d793811",
               "type": "ObojoboDraft.Chunks.Heading",
               "content": {
                 "headingLevel": 2,
@@ -1890,7 +1898,7 @@
               "children": []
             },
             {
-              "id": "63e0a232-ca9a-4040-9c98-f8d0350cf531",
+              "id": "9800abd6-6306-4bb8-afc4-29fd91d6a4b3",
               "type": "ObojoboDraft.Chunks.Text",
               "content": {
                 "textGroup": [
@@ -1906,7 +1914,7 @@
               "children": []
             },
             {
-              "id": "f2cc0abc-9aad-4297-81e5-e3012a283861",
+              "id": "0289d62a-69f2-4b1c-bf3b-823da579c1c6",
               "type": "ObojoboDraft.Chunks.List",
               "content": {
                 "textGroup": [
@@ -1981,7 +1989,7 @@
               "children": []
             },
             {
-              "id": "7b4048ed-d3e3-4949-8304-9d67a53a7b8d",
+              "id": "8b87f822-52e8-4853-a34b-df0519ab5310",
               "type": "ObojoboDraft.Chunks.Heading",
               "content": {
                 "headingLevel": 2,
@@ -1998,13 +2006,13 @@
               "children": []
             },
             {
-              "id": "23e24025-abbd-4757-9226-616646687e1e",
+              "id": "c72bdb64-25b4-4472-ba08-ec025d9139f0",
               "type": "ObojoboDraft.Chunks.Text",
               "content": {
                 "textGroup": [
                   {
                     "text": {
-                      "value": "\n\n\t\t\t\t\tUnlike HTML whitespace is retained for element content. Note the tab characters at the start and end of this text as well as the extra lines above and below. See the XML source to view the whitespace for this element.\n\t\t\t\t\n\t\t\t\t",
+                      "value": "\n\n\t\t\t\t\tUnlike HTML whitespace is retained for element content. Note the tab characters at the start and end of this text as well as the extra lines above and below. See the XML source to view the whitespace for this element.\n\n\t\t\t\t",
                       "styleList": []
                     },
                     "data": null
@@ -2047,7 +2055,7 @@
           },
           "children": [
             {
-              "id": "bb64f845-9e85-4dc7-a0a0-a11cc5c642b5",
+              "id": "523037f1-c44b-4321-be0e-cf535a4b28d6",
               "type": "ObojoboDraft.Chunks.Heading",
               "content": {
                 "headingLevel": 1,
@@ -2064,7 +2072,7 @@
               "children": []
             },
             {
-              "id": "29b38923-bc59-4c21-8faa-c1636eff5b67",
+              "id": "ded2b88a-d8fd-4fd2-b621-5da7cbaa4c04",
               "type": "ObojoboDraft.Chunks.Text",
               "content": {
                 "textGroup": [
@@ -2093,7 +2101,7 @@
               "children": []
             },
             {
-              "id": "ad8f1a85-5db1-4be6-b63e-751120b0cba1",
+              "id": "c421a7c9-21ea-4197-a156-5ec1b99be4f1",
               "type": "ObojoboDraft.Chunks.Heading",
               "content": {
                 "headingLevel": 2,
@@ -2110,7 +2118,7 @@
               "children": []
             },
             {
-              "id": "d61a00cc-f402-42c4-9390-fe50421c4ecb",
+              "id": "78e53751-2333-4219-9bfd-cee14501da11",
               "type": "ObojoboDraft.Chunks.ActionButton",
               "content": {
                 "label": "Lock navigation",
@@ -2128,7 +2136,7 @@
               "children": []
             },
             {
-              "id": "9a9de8b9-30f8-4097-97dc-34ce93d3901c",
+              "id": "51ae9b2e-8c78-489d-b7a5-1a5a51e57acf",
               "type": "ObojoboDraft.Chunks.ActionButton",
               "content": {
                 "label": "Unlock navigation",
@@ -2146,7 +2154,7 @@
               "children": []
             },
             {
-              "id": "314531d9-92ce-4018-958d-6385af176b35",
+              "id": "28fc4a3c-c977-47d1-b68e-f56ecc1cd301",
               "type": "ObojoboDraft.Chunks.ActionButton",
               "content": {
                 "label": "Open navigation",
@@ -2164,7 +2172,7 @@
               "children": []
             },
             {
-              "id": "2f1a5909-2435-49d9-973d-cb32b9322d3f",
+              "id": "a74e60eb-5e7c-49cc-b4e7-3ed17fa00805",
               "type": "ObojoboDraft.Chunks.ActionButton",
               "content": {
                 "label": "Close navigation",
@@ -2182,7 +2190,7 @@
               "children": []
             },
             {
-              "id": "19c188ca-cba7-4421-87d7-8f993cddcfa7",
+              "id": "9789c8e0-6575-4c66-91bf-b84fda5da1c6",
               "type": "ObojoboDraft.Chunks.ActionButton",
               "content": {
                 "label": "Goto page",
@@ -2203,7 +2211,7 @@
               "children": []
             },
             {
-              "id": "9dfa25d3-9bf3-43d4-9998-c5b17a3ccc26",
+              "id": "afc33a7a-14a7-4e5a-a8ea-1854364f494d",
               "type": "ObojoboDraft.Chunks.ActionButton",
               "content": {
                 "label": "Go back",
@@ -2221,7 +2229,7 @@
               "children": []
             },
             {
-              "id": "587fc692-e508-4973-8b55-41f50060e565",
+              "id": "32357840-5770-4ecf-a645-448debd45efb",
               "type": "ObojoboDraft.Chunks.ActionButton",
               "content": {
                 "label": "Go forward",
@@ -2239,7 +2247,7 @@
               "children": []
             },
             {
-              "id": "a49169a3-ac5f-4591-b4ee-ce5e038fd0da",
+              "id": "d0932190-d974-4f87-9d1c-2d7414e96951",
               "type": "ObojoboDraft.Chunks.ActionButton",
               "content": {
                 "label": "Start an assessment attempt",
@@ -2262,14 +2270,14 @@
           ]
         },
         {
-          "id": "cbb23559-be4b-47d6-a6c5-8dd4d10ff3ab",
+          "id": "4182564d-4220-426b-a5ab-2cc0535af2b0",
           "type": "ObojoboDraft.Pages.Page",
           "content": {
             "title": "Extensions"
           },
           "children": [
             {
-              "id": "1e5644bc-fa94-459a-a460-5d5e5edfc70f",
+              "id": "8fee50c7-497f-4ee6-8a94-6be47f027c0f",
               "type": "ObojoboDraft.Chunks.Heading",
               "content": {
                 "headingLevel": 1,
@@ -2286,7 +2294,7 @@
               "children": []
             },
             {
-              "id": "591ad572-c755-4d36-a50e-3c757cd3e6c5",
+              "id": "35c9d0df-50ca-42e9-9763-bcebe4c3e05b",
               "type": "ObojoboDraft.Chunks.Text",
               "content": {
                 "textGroup": [
@@ -2311,16 +2319,16 @@
               "children": []
             },
             {
-              "id": "549bb884-9de0-4757-85b9-c11dc2a02163",
+              "id": "56c947d2-70ed-4663-8f5d-92bda4c30512",
               "type": "ObojoboDraft.Chunks.Question",
               "content": {
                 "solution": {
-                  "id": "20c66dda-836f-4e58-b1f9-f0491b1f42cd",
+                  "id": "1c020bc7-750e-41b7-9977-2720e9cd5058",
                   "type": "ObojoboDraft.Pages.Page",
                   "content": {},
                   "children": [
                     {
-                      "id": "bd57b99d-9300-4c06-b6a8-c7da098cb686",
+                      "id": "0a86e17a-c50f-44ad-8f77-65f67caec66e",
                       "type": "ObojoboDraft.Chunks.HTML",
                       "content": {
                         "html": "<div><p>Optional header for the explanation or solution</p><p>Optional explanation or solution text</p></div>"
@@ -2332,7 +2340,7 @@
               },
               "children": [
                 {
-                  "id": "28105861-f526-4ca0-b4a9-c168ad403f5c",
+                  "id": "8ad16db4-0e25-4c3c-aa02-da793237a76a",
                   "type": "ObojoboDraft.Chunks.HTML",
                   "content": {
                     "html": "Question or prompt text"
@@ -2340,7 +2348,7 @@
                   "children": []
                 },
                 {
-                  "id": "fd597e48-04fd-4234-9d22-0e7a56a1c924",
+                  "id": "8e2fca61-9b49-4454-88f3-cba19c18fa43",
                   "type": "ObojoboDraft.Chunks.HTML",
                   "content": {
                     "html": "Optional information about how to answer the question"
@@ -2348,24 +2356,24 @@
                   "children": []
                 },
                 {
-                  "id": "8a8436f6-ff94-46cf-9683-a0e17ef49e6e",
+                  "id": "39541ec6-eadc-4acc-88d5-9eacb87ff5c3",
                   "type": "ObojoboDraft.Chunks.MCAssessment",
                   "content": {},
                   "children": [
                     {
-                      "id": "a696cf38-8f96-448a-9375-bdd4ec408791",
+                      "id": "62c36fd8-bbfc-4bf1-8ee6-96424325ca15",
                       "type": "ObojoboDraft.Chunks.MCAssessment.MCChoice",
                       "content": {
                         "score": 0
                       },
                       "children": [
                         {
-                          "id": "8ce45956-94de-4ab9-8416-54a2c6de788b",
+                          "id": "9ebf180e-b6eb-464e-aa00-70536c227a17",
                           "type": "ObojoboDraft.Chunks.MCAssessment.MCAnswer",
                           "content": {},
                           "children": [
                             {
-                              "id": "9367a22b-7258-478e-a3ce-59260d132521",
+                              "id": "278e4e20-7736-400c-9840-e1dbc7f8dc02",
                               "type": "ObojoboDraft.Chunks.HTML",
                               "content": {
                                 "html": "Incorrect choice"
@@ -2375,12 +2383,12 @@
                           ]
                         },
                         {
-                          "id": "3d7bdd3b-d52b-4c00-917f-9784edf53069",
+                          "id": "2e6339a1-7fc4-4e62-bf13-4948ad6f6c72",
                           "type": "ObojoboDraft.Chunks.MCAssessment.MCFeedback",
                           "content": {},
                           "children": [
                             {
-                              "id": "14c15eae-63f3-48ef-8449-3d767c3f539e",
+                              "id": "f2f5bbbf-f14f-4371-b4e5-804147031658",
                               "type": "ObojoboDraft.Chunks.HTML",
                               "content": {
                                 "html": "Nope: Hint for incorrect choice."
@@ -2392,19 +2400,19 @@
                       ]
                     },
                     {
-                      "id": "6368bd41-3906-46fb-b5fc-17acc5a2e89d",
+                      "id": "1288565e-3224-450e-bbfa-e27c75a376e3",
                       "type": "ObojoboDraft.Chunks.MCAssessment.MCChoice",
                       "content": {
                         "score": 100
                       },
                       "children": [
                         {
-                          "id": "d4b377bb-c06c-481f-8aa9-381283cec58f",
+                          "id": "fdbd7033-9562-4427-930e-f48eb693eadb",
                           "type": "ObojoboDraft.Chunks.MCAssessment.MCAnswer",
                           "content": {},
                           "children": [
                             {
-                              "id": "88324dfa-ac23-4858-8485-8b179d7721bc",
+                              "id": "9d2b7586-abdc-425f-b8f0-2d1fd3d998a3",
                               "type": "ObojoboDraft.Chunks.HTML",
                               "content": {
                                 "html": "Correct choice"
@@ -2414,12 +2422,12 @@
                           ]
                         },
                         {
-                          "id": "d087ef08-2c21-40cf-a3cc-0b4a0156442f",
+                          "id": "43f8d528-723a-4749-9db4-9b88ba2cb2fa",
                           "type": "ObojoboDraft.Chunks.MCAssessment.MCFeedback",
                           "content": {},
                           "children": [
                             {
-                              "id": "52742731-9eae-42bc-9c16-270729da88ec",
+                              "id": "b1362540-59a8-44f7-afc1-83676c87aead",
                               "type": "ObojoboDraft.Chunks.HTML",
                               "content": {
                                 "html": "Yup: Hint for correct choice."
@@ -2466,12 +2474,12 @@
             "from": "0",
             "to": "99",
             "page": {
-              "id": "abcb5c79-c0db-4988-b49c-d8834dd4b397",
+              "id": "6123901a-37a5-4a6f-b57f-fd35eb27fd81",
               "type": "ObojoboDraft.Pages.Page",
               "content": {},
               "children": [
                 {
-                  "id": "23c73a34-4162-4919-97ae-bbfc347c3939",
+                  "id": "3b2cbd17-8ed2-4d6f-8669-3631e63e97cd",
                   "type": "ObojoboDraft.Chunks.Heading",
                   "content": {
                     "headingLevel": 1,
@@ -2490,7 +2498,7 @@
                   "children": []
                 },
                 {
-                  "id": "3a05bafe-7980-408a-b651-d4c8ec5893d5",
+                  "id": "6eab1f63-dc3f-4395-99b9-bb13b3c039de",
                   "type": "ObojoboDraft.Chunks.ActionButton",
                   "content": {
                     "textGroup": [
@@ -2525,12 +2533,12 @@
             "from": "100",
             "to": "100",
             "page": {
-              "id": "634b748a-9b6d-4499-be43-a3669427216f",
+              "id": "4a235f19-759c-46f4-a0e6-f84b7cd1dc96",
               "type": "ObojoboDraft.Pages.Page",
               "content": {},
               "children": [
                 {
-                  "id": "06d1c7df-5aac-4467-9cd6-adb98a80d2c2",
+                  "id": "60bd7634-5c50-4a45-946f-c33df6bf07fa",
                   "type": "ObojoboDraft.Chunks.Heading",
                   "content": {
                     "headingLevel": 1,
@@ -2549,7 +2557,7 @@
                   "children": []
                 },
                 {
-                  "id": "623998c1-28d6-47d8-b66e-3447c4d08190",
+                  "id": "1ab15c6d-9b37-4d2c-9230-b659c9b133a2",
                   "type": "ObojoboDraft.Chunks.ActionButton",
                   "content": {
                     "textGroup": [
@@ -2584,12 +2592,12 @@
       },
       "children": [
         {
-          "id": "a7956044-5ecd-4c07-9e04-fb8b49864b77",
+          "id": "171857df-37e4-4eba-801e-95016d236c80",
           "type": "ObojoboDraft.Pages.Page",
           "content": {},
           "children": [
             {
-              "id": "3561d4db-72fe-46bc-992a-66726b6b0576",
+              "id": "df907e73-3a89-4008-83f8-571c5db40e11",
               "type": "ObojoboDraft.Chunks.Heading",
               "content": {
                 "headingLevel": 1,
@@ -2606,7 +2614,7 @@
               "children": []
             },
             {
-              "id": "b997fa86-698f-4f0f-adc0-aa8472c2afa8",
+              "id": "e5609e36-fcab-40c1-8b35-78437737bc15",
               "type": "ObojoboDraft.Chunks.Text",
               "content": {
                 "textGroup": [
@@ -2622,7 +2630,7 @@
               "children": []
             },
             {
-              "id": "b68584b4-35c8-449d-a8ea-533b438593ce",
+              "id": "670b5f89-fada-4931-ad1f-5e64ce7215fe",
               "type": "ObojoboDraft.Chunks.Text",
               "content": {
                 "textGroup": [
@@ -2651,7 +2659,7 @@
               "children": []
             },
             {
-              "id": "cee77e11-31af-49be-aa78-f0d26c713784",
+              "id": "start-assessment-button",
               "type": "ObojoboDraft.Chunks.ActionButton",
               "content": {
                 "label": "Start an assessment attempt",
@@ -2674,7 +2682,7 @@
           ]
         },
         {
-          "id": "7ccf160e-92e2-407d-bce0-3c88c921da51",
+          "id": "qb",
           "type": "ObojoboDraft.Chunks.QuestionBank",
           "content": {
             "choose": 1,
@@ -2682,7 +2690,7 @@
           },
           "children": [
             {
-              "id": "a47f713d-330a-4a4b-8ad7-49401bbed673",
+              "id": "qb1",
               "type": "ObojoboDraft.Chunks.QuestionBank",
               "content": {
                 "choose": 1,
@@ -2690,12 +2698,12 @@
               },
               "children": [
                 {
-                  "id": "df104071-fc16-4f3b-884d-3047eda9743e",
+                  "id": "qb1-q1",
                   "type": "ObojoboDraft.Chunks.Question",
                   "content": {},
                   "children": [
                     {
-                      "id": "62feeb3e-cebd-4abf-9d97-701986d473b0",
+                      "id": "8dffa3d6-9185-46a0-9b0c-bc2393532ccf",
                       "type": "ObojoboDraft.Chunks.Text",
                       "content": {
                         "textGroup": [
@@ -2711,26 +2719,26 @@
                       "children": []
                     },
                     {
-                      "id": "dbfe6430-dd12-4668-b6cb-c284ec9ee4cd",
+                      "id": "qb1-q1-mca",
                       "type": "ObojoboDraft.Chunks.MCAssessment",
                       "content": {
                         "responseType": "pick-one"
                       },
                       "children": [
                         {
-                          "id": "e85bdfd2-347d-43fc-86ec-3ca6aae3e678",
+                          "id": "qb1-q1-mca-mc1",
                           "type": "ObojoboDraft.Chunks.MCAssessment.MCChoice",
                           "content": {
                             "score": 100
                           },
                           "children": [
                             {
-                              "id": "ed182d8f-1217-4df5-a0f7-e18242cd0cfe",
+                              "id": "qb1-q1-mca-mc1-ans",
                               "type": "ObojoboDraft.Chunks.MCAssessment.MCAnswer",
                               "content": {},
                               "children": [
                                 {
-                                  "id": "fbf00cc5-81ca-4d36-b041-23ca48994dce",
+                                  "id": "9bb1c551-48be-4406-9cdb-fa21044168ca",
                                   "type": "ObojoboDraft.Chunks.Text",
                                   "content": {
                                     "textGroup": [
@@ -2750,19 +2758,19 @@
                           ]
                         },
                         {
-                          "id": "886abd2e-0479-41d4-9d34-c897ec552a6b",
+                          "id": "qb1-q1-mca-mc2",
                           "type": "ObojoboDraft.Chunks.MCAssessment.MCChoice",
                           "content": {
                             "score": 0
                           },
                           "children": [
                             {
-                              "id": "087289e6-1b16-4e06-9e2e-c269d9eec72e",
+                              "id": "qb1-q1-mca-mc2-ans",
                               "type": "ObojoboDraft.Chunks.MCAssessment.MCAnswer",
                               "content": {},
                               "children": [
                                 {
-                                  "id": "0d260093-b4be-4d22-8b05-1352482c0f21",
+                                  "id": "6f271e7e-15ad-4467-9ea6-66ebf625c4fa",
                                   "type": "ObojoboDraft.Chunks.Text",
                                   "content": {
                                     "textGroup": [
@@ -2786,12 +2794,12 @@
                   ]
                 },
                 {
-                  "id": "37d89c68-a307-4790-9a19-ffc13a6b445b",
+                  "id": "qb1-q2",
                   "type": "ObojoboDraft.Chunks.Question",
                   "content": {},
                   "children": [
                     {
-                      "id": "ead8e020-a068-4054-938c-dd88547ca089",
+                      "id": "507d21a8-7ae6-4978-9343-6de0923bb0bc",
                       "type": "ObojoboDraft.Chunks.Text",
                       "content": {
                         "textGroup": [
@@ -2807,26 +2815,26 @@
                       "children": []
                     },
                     {
-                      "id": "c3ad1d74-1ed8-4550-b531-6f18d1b65a07",
+                      "id": "qb1-q2-mca",
                       "type": "ObojoboDraft.Chunks.MCAssessment",
                       "content": {
                         "responseType": "pick-one"
                       },
                       "children": [
                         {
-                          "id": "a82cbfa0-f0ed-4196-8d95-d18914db784b",
+                          "id": "qb1-q2-mca-mc1",
                           "type": "ObojoboDraft.Chunks.MCAssessment.MCChoice",
                           "content": {
                             "score": 100
                           },
                           "children": [
                             {
-                              "id": "2b53f4e3-17e1-44ba-bdda-03da4f285d3b",
+                              "id": "qb1-q2-mca-mc1-ans",
                               "type": "ObojoboDraft.Chunks.MCAssessment.MCAnswer",
                               "content": {},
                               "children": [
                                 {
-                                  "id": "6ac6148f-67fe-4467-8fd8-a335466092ab",
+                                  "id": "a4f51a79-fb8c-4cff-86fa-3da3423cfe77",
                                   "type": "ObojoboDraft.Chunks.Text",
                                   "content": {
                                     "textGroup": [
@@ -2846,19 +2854,19 @@
                           ]
                         },
                         {
-                          "id": "8450dd9b-7e20-4492-8f4c-e9d5bc02e984",
+                          "id": "qb1-q2-mca-mc2",
                           "type": "ObojoboDraft.Chunks.MCAssessment.MCChoice",
                           "content": {
                             "score": 0
                           },
                           "children": [
                             {
-                              "id": "6ab10404-6240-4b17-96ae-a9cb63187021",
+                              "id": "qb1-q2-mca-mc2-ans",
                               "type": "ObojoboDraft.Chunks.MCAssessment.MCAnswer",
                               "content": {},
                               "children": [
                                 {
-                                  "id": "7365c52d-22d7-49e8-8404-beade0ac5675",
+                                  "id": "c5821823-9a39-4f78-ae20-71de2baad1ed",
                                   "type": "ObojoboDraft.Chunks.Text",
                                   "content": {
                                     "textGroup": [
@@ -2884,17 +2892,17 @@
               ]
             },
             {
-              "id": "cc49c410-f0aa-4757-a238-e148b3abcbff",
+              "id": "qb2",
               "type": "ObojoboDraft.Chunks.QuestionBank",
               "content": {},
               "children": [
                 {
-                  "id": "dae93929-124a-4103-afd5-d69b5497a964",
+                  "id": "qb2.q1",
                   "type": "ObojoboDraft.Chunks.Question",
                   "content": {},
                   "children": [
                     {
-                      "id": "7a2f7abd-df5b-476d-b346-b1ba2fb898c6",
+                      "id": "ef787e6c-a7cf-40a5-9b34-4507b955326f",
                       "type": "ObojoboDraft.Chunks.Text",
                       "content": {
                         "textGroup": [
@@ -2910,26 +2918,26 @@
                       "children": []
                     },
                     {
-                      "id": "448c6e53-7c7b-4247-868b-8db4f57810ff",
+                      "id": "qb2.q1-mca",
                       "type": "ObojoboDraft.Chunks.MCAssessment",
                       "content": {
                         "responseType": "pick-one"
                       },
                       "children": [
                         {
-                          "id": "943db242-12d4-4aff-9d45-8ca93f49aa0c",
+                          "id": "qb2.q1-mca-mc1",
                           "type": "ObojoboDraft.Chunks.MCAssessment.MCChoice",
                           "content": {
                             "score": 100
                           },
                           "children": [
                             {
-                              "id": "86557004-766b-4075-9277-30bd0ec40686",
+                              "id": "qb2.q1-mca-mc1-ans",
                               "type": "ObojoboDraft.Chunks.MCAssessment.MCAnswer",
                               "content": {},
                               "children": [
                                 {
-                                  "id": "6c245102-61f4-43c3-b6d6-280f0f3867bd",
+                                  "id": "7207dfd6-a171-4fe9-8a1a-b2614fdb9873",
                                   "type": "ObojoboDraft.Chunks.Text",
                                   "content": {
                                     "textGroup": [
@@ -2949,19 +2957,19 @@
                           ]
                         },
                         {
-                          "id": "d8929e2d-89d4-47d8-974e-d9c5143306f2",
+                          "id": "qb2.q1-mca-mc2",
                           "type": "ObojoboDraft.Chunks.MCAssessment.MCChoice",
                           "content": {
                             "score": 0
                           },
                           "children": [
                             {
-                              "id": "769fae1d-10db-4b33-be73-3ba6c5405055",
+                              "id": "qb2.q1-mca-mc2-ans",
                               "type": "ObojoboDraft.Chunks.MCAssessment.MCAnswer",
                               "content": {},
                               "children": [
                                 {
-                                  "id": "33a4278e-29f5-4fcb-9594-d8ec536a0a6b",
+                                  "id": "e3829d20-f884-4e5a-96d7-7b2eac59ee4d",
                                   "type": "ObojoboDraft.Chunks.Text",
                                   "content": {
                                     "textGroup": [
@@ -2985,12 +2993,12 @@
                   ]
                 },
                 {
-                  "id": "c8bdb719-309d-4e64-8690-08d7325e88b0",
+                  "id": "qb2.q2",
                   "type": "ObojoboDraft.Chunks.Question",
                   "content": {},
                   "children": [
                     {
-                      "id": "fd11bdc8-51ce-4962-ba28-2b236c7ead66",
+                      "id": "2bda57b5-254e-4465-8572-23d5250cc715",
                       "type": "ObojoboDraft.Chunks.Text",
                       "content": {
                         "textGroup": [
@@ -3006,26 +3014,26 @@
                       "children": []
                     },
                     {
-                      "id": "0e2d611a-110a-4ee1-ac7d-12aaf3ec03a8",
+                      "id": "qb2.q2-mca",
                       "type": "ObojoboDraft.Chunks.MCAssessment",
                       "content": {
                         "responseType": "pick-one"
                       },
                       "children": [
                         {
-                          "id": "f3ea3b10-7737-4e7f-a139-bb68d3f44dfe",
+                          "id": "qb2.q2-mca-mc1",
                           "type": "ObojoboDraft.Chunks.MCAssessment.MCChoice",
                           "content": {
                             "score": 100
                           },
                           "children": [
                             {
-                              "id": "2d81cecb-22fc-4f4f-bff7-b256a4c4395e",
+                              "id": "qb2.q2-mca-mc1-ans",
                               "type": "ObojoboDraft.Chunks.MCAssessment.MCAnswer",
                               "content": {},
                               "children": [
                                 {
-                                  "id": "3942be8f-5c83-42e1-950b-d0208f4d4559",
+                                  "id": "12d8347b-95e1-4324-9d32-24c68d318ecb",
                                   "type": "ObojoboDraft.Chunks.Text",
                                   "content": {
                                     "textGroup": [
@@ -3045,19 +3053,19 @@
                           ]
                         },
                         {
-                          "id": "a51d276e-c9fd-4086-9648-2e59fa12bfc5",
+                          "id": "qb2.q2-mca-mc2",
                           "type": "ObojoboDraft.Chunks.MCAssessment.MCChoice",
                           "content": {
                             "score": 0
                           },
                           "children": [
                             {
-                              "id": "9ad36596-800b-40dd-866b-71a86ca2412b",
+                              "id": "qb2.q2-mca-mc2-ans",
                               "type": "ObojoboDraft.Chunks.MCAssessment.MCAnswer",
                               "content": {},
                               "children": [
                                 {
-                                  "id": "f25a44d7-1423-49dc-a441-b25895f7acf9",
+                                  "id": "02ed7f55-8181-4431-9d35-96dbb778221a",
                                   "type": "ObojoboDraft.Chunks.Text",
                                   "content": {
                                     "textGroup": [

@@ -26,6 +26,7 @@ export default class Nav extends React.Component {
 
 	onClick(item) {
 		if (item.type === 'link') {
+			if(!NavUtil.canNavigate(this.props.navState)) return
 			return NavUtil.gotoPath(item.fullPath);
 		} else if (item.type === 'sub-link') {
 			let el = OboModel.models[item.id].getDomEl();

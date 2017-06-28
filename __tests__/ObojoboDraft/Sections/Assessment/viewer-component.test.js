@@ -132,8 +132,8 @@ describe('Assessment', () => {
 		expect(el.innerHTML).not.toEqual(el2.innerHTML)
 		expect(el2.textContent.indexOf('%')).toBe(-1);
 
-		// End attempt (50%):
-		AssessmentStore.endAttempt(getAttemptEndServerResponse(100, 0).value)
+		// End attempt (0%):
+		AssessmentStore.endAttempt(getAttemptEndServerResponse(0).value)
 
 		const component3 = renderer.create(
 			<Assessment model={model} moduleData={moduleData} />
@@ -148,12 +148,13 @@ describe('Assessment', () => {
 		expect(el.innerHTML).not.toEqual(el3.innerHTML)
 		expect(el2.innerHTML).not.toEqual(el3.innerHTML)
 
-		expect(el3.textContent.indexOf('50%')).not.toBe(-1);
+		expect(el3.textContent.indexOf(' 0%')).not.toBe(-1);
+		expect(el3.textContent.indexOf(' 100%')).toBe(-1);
 		expect(el3.textContent.indexOf('This is your highest score')).not.toBe(-1)
 
-		// Another attempt (0%):
+		// Another attempt (100%):
 		AssessmentStore.startAttempt(getAttemptStartServerResponse().value)
-		AssessmentStore.endAttempt(getAttemptEndServerResponse(0, 0).value)
+		AssessmentStore.endAttempt(getAttemptEndServerResponse(100).value)
 
 		const component4 = renderer.create(
 			<Assessment model={model} moduleData={moduleData} />
@@ -170,12 +171,13 @@ describe('Assessment', () => {
 		expect(el2.innerHTML).not.toEqual(el4.innerHTML)
 		expect(el3.innerHTML).not.toEqual(el4.innerHTML)
 
-		expect(el4.textContent.indexOf('0%')).not.toBe(-1);
-		expect(el4.textContent.indexOf('This is your highest score')).toBe(-1)
+		expect(el4.textContent.indexOf(' 0%')).toBe(-1);
+		expect(el4.textContent.indexOf(' 100%')).not.toBe(-1);
+		expect(el4.textContent.indexOf('This is your highest score')).not.toBe(-1)
 
-		// Last attempt (100%):
+		// Last attempt (0%):
 		AssessmentStore.startAttempt(getAttemptStartServerResponse().value)
-		AssessmentStore.endAttempt(getAttemptEndServerResponse(100, 100).value)
+		AssessmentStore.endAttempt(getAttemptEndServerResponse(0).value)
 
 		const component5 = renderer.create(
 			<Assessment model={model} moduleData={moduleData} />
@@ -194,7 +196,8 @@ describe('Assessment', () => {
 		expect(el3.innerHTML).not.toEqual(el5.innerHTML)
 		expect(el4.innerHTML).not.toEqual(el5.innerHTML)
 
-		expect(el5.textContent.indexOf('100%')).not.toBe(-1);
-		expect(el5.textContent.indexOf('This is your highest score')).not.toBe(-1)
+		expect(el5.textContent.indexOf(' 0%')).not.toBe(-1);
+		expect(el5.textContent.indexOf(' 100%')).not.toBe(-1);
+		expect(el5.textContent.indexOf('This is your highest score')).toBe(-1)
 	})
 })

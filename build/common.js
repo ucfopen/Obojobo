@@ -790,7 +790,6 @@ OboModel.create = function (typeOrNameOrJson, attrs) {
 	}
 
 	if (!item) {
-		console.log('null', typeOrNameOrJson);
 		return null;
 	}
 
