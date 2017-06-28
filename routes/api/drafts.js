@@ -2,6 +2,8 @@ var express = require('express');
 var router = express.Router();
 let DraftModel = oboRequire('models/draft')
 
+const xmlToDraftObject = require('obojobo-draft-xml-parser/xml-to-draft-object')
+
 var db = require('../../db')
 
 let insertNewDraft = require('./drafts/insert_new_draft')
@@ -56,12 +58,46 @@ router.post(/(\w{8}-\w{4}-\w{4}-\w{4}-\w{12})/, (req, res, next) => {
 	.then(currentUser => {
 		if(!currentUser.canEditDrafts) throw 'Insufficent permissions'
 
-		return updateDraft(req.params[0], req.body)
-	})
-	.then(id => {
-		console.log('done')
-		res.success({ id:id })
-		return next()
+		let xml
+		let reqInput
+
+		// req.body will either be an object if sent via application/json or
+		// (hopefully) XML if sent as text
+		switch(typeof req.body)
+		{
+			case 'object':
+				reqInput = req.body
+				break
+
+			case 'string':
+				try
+				{
+					xml = req.body
+					const convertedXml = xmlToDraftObject(req.body, true)
+					if (typeof convertedXml === 'object') {
+						reqInput = convertedXml
+						break
+					}
+				}
+				catch(e)
+				{
+					console.error('Parse XML Failed:', e, req.body)
+					// continue to intentional fall through
+				}
+
+				// intentional fall through
+
+			default:
+				console.error('Posting draft failed - format unexpected:', req.body)
+				res.badInput('Posting draft failed - format unexpected')
+				return next()
+		}
+
+		return updateDraft(req.params[0], reqInput, xml || null)
+		.then((id) => {
+			res.success({ id })
+			return next()
+		})
 	})
 	.catch(error => {
 		console.log(error)

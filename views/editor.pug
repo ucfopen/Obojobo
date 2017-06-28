@@ -31,8 +31,14 @@ html(lang="en")
 							p= `(${draft.draftId})`
 						a(target="_blank" href=`/view/${draft.draftId}`).
 							(view)
-						a(href="#" class="link-edit" id=`${draft.draftId}` data-id=`${draft.draftId}` data-content=`${JSON.stringify(draft.content)}`).
-							(edit)
+						a(
+							href="#"
+							class="link-edit"
+							id=`${draft.draftId}`
+							data-id=`${draft.draftId}`
+							data-content=`${draft.xml ? draft.xml : JSON.stringify(draft.content)}`
+							).
+								(edit)
 						a(href="#" class="link-delete" data-id=`${draft.draftId}`).
 							(delete)
 			button(id="button-create-new-draft").
@@ -95,19 +101,11 @@ html(lang="en")
 			})
 
 			document.getElementById('button-save-draft').addEventListener('click', function(event) {
-				var text = document.getElementById('edit').value;
-				try
-				{
-					var json = JSON.parse(text);
-				}
-				catch(e)
-				{
-					alert('Unable to parse JSON: ' + e.toString())
-				}
+				var draftContent = document.getElementById('edit').value
 
-				document.getElementById(editingDraftId).setAttribute('data-content', text)
+				document.getElementById(editingDraftId).setAttribute('data-content', draftContent)
 
-				postCurrentlyEditingDraft()
+				postCurrentlyEditingDraft(draftContent)
 			})
 
 			function edit(draftId, content) {
@@ -147,44 +145,54 @@ html(lang="en")
 				})
 			}
 
-			function fetchDrafts() {
-				fetch('/api/drafts/')
-				.then(function(resp) {
-					resp.json().then( function(json) {
-						console.log('got', json);
-					})
+			function postCurrentlyEditingDraft(draftContent) {
+				let mime
 
-				})
-			}
-
-			function postCurrentlyEditingDraft() {
+				// try to parse JSON, if it works we assume we're sending JSON.
+				// otherwise send as plain text in the hopes that it's XML
+				try
+				{
+					JSON.parse(draftContent)
+					mime = 'application/json'
+				}
+				catch(e)
+				{
+					mime = 'text/plain'
+				}
 
 				fetch('/api/drafts/' + editingDraftId, {
 					method: 'POST',
 					credentials: 'include',
-					body: document.getElementById('edit').value,
+					body: draftContent,
 					headers: {
-						'Accept': 'application/json',
-						'Content-Type': 'application/json'
+						'Accept': mime,
+						'Content-Type': mime
 					}
 				})
-				.then(function(resp) {
-					resp.json().then(function(json) {
-						if(json.value.id)
-						{
-							alert('New Version: ' + json.value.id)
-						}
-						else
-						{
-							alert('Error: ' + error)
-							console.error(error)
-						}
-					})
+				.then(function(res) {
+					switch (res.status) {
+						case 200:
+							res.json().then(function(json) {
+								if (json.value.id) alert('New Version: ' + json.value.id)
+								else {
+									alert('Error: ' + error)
+									console.error(error)
+								}
+							})
+							break
+
+						default:
+							res.json().then(function(json) {
+								alert('Error: ' + json.value.message + ' (' + res.status + ')')
+							})
+							.catch(function(e) {
+								alert('Error: ' + res.statusText + ' (' + res.status + ')')
+							})
+							break
+					}
 				})
 				.catch(function(error) {
 					alert('Error: ' + error)
 					console.error(error)
 				})
 			}
-
-			fetchDrafts();

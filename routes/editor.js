@@ -18,7 +18,8 @@ let displayEditor = (req, res, next) => {
 				draft_id AS "draftId",
 				id AS "latestVersion",
 				created_at AS "createdAt",
-				content
+				content,
+				xml
 			FROM drafts_content
 			WHERE draft_id IN (
 				SELECT id
