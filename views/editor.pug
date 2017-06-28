@@ -32,10 +32,10 @@ html(lang="en")
 						a(target="_blank" href=`/view/${draft.draftId}`).
 							(view)
 						a(
-							href="#" 
-							class="link-edit" 
-							id=`${draft.draftId}` 
-							data-id=`${draft.draftId}` 
+							href="#"
+							class="link-edit"
+							id=`${draft.draftId}`
+							data-id=`${draft.draftId}`
 							data-content=`${draft.xml ? draft.xml : JSON.stringify(draft.content)}`
 							).
 								(edit)
@@ -101,7 +101,7 @@ html(lang="en")
 			})
 
 			document.getElementById('button-save-draft').addEventListener('click', function(event) {
-				var draftContent = document.getElementById('edit').value 
+				var draftContent = document.getElementById('edit').value
 
 				document.getElementById(editingDraftId).setAttribute('data-content', draftContent)
 
@@ -145,25 +145,28 @@ html(lang="en")
 				})
 			}
 
-			function fetchDrafts() {
-				fetch('/api/drafts/')
-				.then(function(resp) {
-					resp.json().then( function(json) {
-						console.log('got', json);
-					})
-
-				})
-			}
-
 			function postCurrentlyEditingDraft(draftContent) {
+				let mime
+
+				// try to parse JSON, if it works we assume we're sending JSON.
+				// otherwise send as plain text in the hopes that it's XML
+				try
+				{
+					JSON.parse(draftContent)
+					mime = 'application/json'
+				}
+				catch(e)
+				{
+					mime = 'text/plain'
+				}
 
 				fetch('/api/drafts/' + editingDraftId, {
 					method: 'POST',
 					credentials: 'include',
 					body: draftContent,
 					headers: {
-						'Accept': 'text/plain',
-						'Content-Type': 'text/plain'
+						'Accept': mime,
+						'Content-Type': mime
 					}
 				})
 				.then(function(res) {
@@ -177,8 +180,14 @@ html(lang="en")
 								}
 							})
 							break
-						case 400:
-							alert('Error: ' + res.statusText)
+
+						default:
+							res.json().then(function(json) {
+								alert('Error: ' + json.value.message + ' (' + res.status + ')')
+							})
+							.catch(function(e) {
+								alert('Error: ' + res.statusText + ' (' + res.status + ')')
+							})
 							break
 					}
 				})
@@ -187,5 +196,3 @@ html(lang="en")
 					console.error(error)
 				})
 			}
-
-			fetchDrafts();

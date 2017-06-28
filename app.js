@@ -3,7 +3,6 @@ var express = require('express');
 var path = require('path');
 var favicon = require('serve-favicon');
 var bodyParser = require('body-parser');
-var xmlParser = require('express-xml-bodyparser');
 var session = require('express-session')
 var pgSession = require('connect-pg-simple')
 var app = express();

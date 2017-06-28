@@ -214,7 +214,7 @@ describe('api draft route', () => {
 
 	test('save draft calls next', () => {
 		expect.assertions(2)
-		mockUpdateDraft.mockImplementationOnce(()=>{return 555})
+		mockUpdateDraft.mockImplementationOnce(()=>{ return Promise.resolve(555) })
 		mockExpress()
 		require('express')
 		let User = oboRequire('models/user')
@@ -230,11 +230,10 @@ describe('api draft route', () => {
 
 		oboRequire('routes/api/drafts')
 		let routeFunction = mockRouterMethods.post.mock.calls[1][1]
-		let content = JSON.stringify({ content: 'this is the body' })
 		let mockReq = {
 			params: {draftId: 555},
 			app: {get: jest.fn()},
-			body: content,
+			body: { a:1 },
 			requireCurrentUser: () => {
 				let u = new User();
 				u.id = 111
@@ -244,7 +243,8 @@ describe('api draft route', () => {
 		}
 
 		let mockRes = {
-			success: jest.fn()
+			success: jest.fn(),
+			unexpected: jest.fn()
 		}
 
 		let mockNext = jest.fn()
@@ -267,11 +267,10 @@ describe('api draft route', () => {
 		let User = oboRequire('models/user')
 		oboRequire('routes/api/drafts')
 		let routeFunction = mockRouterMethods.post.mock.calls[1][1]
-		let content = JSON.stringify({ content: 'this is the body' })
 		let mockReq = {
 			params: {draftId: 555},
 			app: {get: jest.fn()},
-			body: content,
+			body: { a:1 },
 			requireCurrentUser: () => {
 				let u = new User();
 				u.id = 111
@@ -308,11 +307,12 @@ describe('api draft route', () => {
 		let routeFunction = mockRouterMethods.post.mock.calls[1][1]
 
 		let mockReq = {
-			requireCurrentUser: () => { return Promise.reject('error1')},
+			requireCurrentUser: () => { return Promise.reject('error1')}
 		}
 
 		let mockRes = {
-			unexpected: jest.fn()
+			unexpected: jest.fn(),
+			badInput: jest.fn()
 		}
 
 		let mockNext = jest.fn()

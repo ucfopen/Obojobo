@@ -49,7 +49,6 @@
     "express": "~4.14.0",
     "express-ims-lti": "git+ssh://git@github.com/ucfcdl/express-ims-lti.git#ac7d1f4e9c5afa6470185d107b32ffdbaf28cd32",
     "express-session": "^1.15.1",
-    "express-xml-bodyparser": "^0.3.0",
     "extract-text-webpack-plugin": "^2.1.0",
     "glob": "^7.1.1",
     "json-inflector": "^1.1.0",

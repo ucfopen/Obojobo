@@ -2,7 +2,7 @@ var express = require('express');
 var router = express.Router();
 let DraftModel = oboRequire('models/draft')
 
-const xmlToDraftObject = require('oboxml/xml-to-draft-object')
+const xmlToDraftObject = require('obojobo-draft-xml-parser/xml-to-draft-object')
 
 var db = require('../../db')
 
@@ -54,37 +54,50 @@ router.post('/new', (req, res, next) => {
 
 //@TODO - Ensure that you can't post to a deleted draft, ensure you can only delete your own stuff
 router.post(/(\w{8}-\w{4}-\w{4}-\w{4}-\w{12})/, (req, res, next) => {
-	let xml
-	let reqInput
-	console.log(req.body)
-	if (req.body) {
-		try {
-			reqInput = JSON.parse(req.body)
-		}
-		catch(e) {
-			console.log("Input was not proper JSON formatting:\n" + e + "\nTrying Obojobo XML ...")
-			xml = req.body
-			const convertedXml = xmlToDraftObject(req.body)
-			if (typeof convertedXml !== 'undefined') {
-				console.log("Successfully converted Obojobo XML to JSON:")
-				console.log(convertedXml)
-				reqInput = convertedXml
-			} else {
-				res.statusMessage = "Input matches neither JSON nor Obojobo XML format."
-				return res.status(400).send()
-			}
-		}
-	}
-
 	return req.requireCurrentUser()
 	.then(currentUser => {
 		if(!currentUser.canEditDrafts) throw 'Insufficent permissions'
+
+		let xml
+		let reqInput
+
+		// req.body will either be an object if sent via application/json or
+		// (hopefully) XML if sent as text
+		switch(typeof req.body)
+		{
+			case 'object':
+				reqInput = req.body
+				break
+
+			case 'string':
+				try
+				{
+					xml = req.body
+					const convertedXml = xmlToDraftObject(req.body, true)
+					if (typeof convertedXml === 'object') {
+						reqInput = convertedXml
+						break
+					}
+				}
+				catch(e)
+				{
+					console.error('Parse XML Failed:', e, req.body)
+					// continue to intentional fall through
+				}
+
+				// intentional fall through
+
+			default:
+				console.error('Posting draft failed - format unexpected:', req.body)
+				res.badInput('Posting draft failed - format unexpected')
+				return next()
+		}
+
 		return updateDraft(req.params[0], reqInput, xml || null)
-	})
-	.then(id => {
-		console.log('done')
-		res.success({ id })
-		return next()
+		.then((id) => {
+			res.success({ id })
+			return next()
+		})
 	})
 	.catch(error => {
 		console.log(error)
