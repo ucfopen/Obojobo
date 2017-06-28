@@ -84,28 +84,28 @@ int Fibonacci(int n)
 				<YouTube videoId="dQw4w9WgXcQ" />
 				<h2>Practice question:</h2>
 				<p>This question is a <b>pick-one-multiple-correct</b> type question</p> with feedback and an included <b>solution</b>:
-				<Question title="A custom question title">
+				<Question id="pq1" title="A custom question title">
 					<h1>Which equation describes horizontal displacement of projectile motion?</h1>
-					<MCAssessment responseType="pick-one-multiple-correct">
-						<MCChoice score="100">
-							<MCAnswer>
+					<MCAssessment id="pq1.mca" responseType="pick-one-multiple-correct">
+						<MCChoice id="pq1-mca-mc1" score="100">
+							<MCAnswer id="pq1-mca-mc1-ans">
 								<MathEquation latex="x=v_xt" align="left" />
 							</MCAnswer>
 						</MCChoice>
-						<MCChoice score="100">
-							<MCAnswer>
+						<MCChoice id="pq1-mca-mc2" score="100">
+							<MCAnswer id="pq1-mca-mc2-ans">
 								<MathEquation latex="x=v_{ix}t + \frac{1}{2} a_x t^2" align="left" />
 							</MCAnswer>
-							<MCFeedback>
+							<MCFeedback id="pq1-mca-mc2-fb">
 								<p>Correct, however horizontal acceleration is zero so you can simplify this equation into the form below:</p>
 								<MathEquation latex="x=v_xt" align="left" />
 							</MCFeedback>
 						</MCChoice>
-						<MCChoice score="0">
-							<MCAnswer>
+						<MCChoice id="pq1-mca-mc3" score="0">
+							<MCAnswer id="pq1-mca-mc3-ans">
 								<MathEquation latex="x=\frac{1}{2} a_x t^2" align="left" />
 							</MCAnswer>
-							<MCFeedback>
+							<MCFeedback id="pq1-mca-mc3-fb">
 								<p>The <latex>a_x</latex> term representing horizontal acceleration is always 0 so this equation is simply <latex>x = 0</latex>.</p>
 							</MCFeedback>
 						</MCChoice>
@@ -124,50 +124,50 @@ int Fibonacci(int n)
 					</solution>
 				</Question>
 				<p>Questions can also contain other content such as video or lists. This question is an example of a <b>pick-all</b> type question:</p>
-				<Question>
+				<Question id="pq2">
 					<YouTube videoId="dQw4w9WgXcQ" />
 					<ol>
 						<li>Here is a list</li>
 						<li>With two items</li>
 					</ol>
-					<MCAssessment responseType="pick-all">
-						<MCChoice score="100">
-							<MCAnswer>
+					<MCAssessment id="pq2-mca" responseType="pick-all">
+						<MCChoice id="pq2-mca-mc1" score="100">
+							<MCAnswer id="pq2-mca-mc1-ans">
 								<p>This is a correct answer choice</p>
 							</MCAnswer>
-							<MCFeedback>
+							<MCFeedback id="pq2-mca-mc1-fb">
 								<p>Good job!</p>
 							</MCFeedback>
 						</MCChoice>
-						<MCChoice score="100">
-							<MCAnswer>
+						<MCChoice id="pq2-mca-mc2" score="100">
+							<MCAnswer id="pq2-mca-mc2-ans">
 								<p>This is another correct answer choice</p>
 							</MCAnswer>
-							<MCFeedback>
+							<MCFeedback id="pq2-mca-mc2-fb">
 								<p>Fantastic!</p>
 							</MCFeedback>
 						</MCChoice>
-						<MCChoice score="0">
-							<MCAnswer>
+						<MCChoice id="pq2-mca-mc3" score="0">
+							<MCAnswer id="pq2-mca-mc3-ans">
 								<p>This is an incorrect answer choice</p>
 							</MCAnswer>
-							<MCFeedback>
+							<MCFeedback id="pq2-mca-mc3-fb">
 								<p>Nope!</p>
 							</MCFeedback>
 						</MCChoice>
 					</MCAssessment>
 				</Question>
 				<p>Finally here is a <b>pick-one</b> type question:</p>
-				<Question>
+				<Question id="pq3">
 					<p>What is 2+2 = ?</p>
-					<MCAssessment responseType="pick-one">
-						<MCChoice score="0">
-							<MCAnswer>
+					<MCAssessment id="pq3-mca" responseType="pick-one">
+						<MCChoice id="pq3-mca-mc1" score="0">
+							<MCAnswer id="pq3-mca-mc1-ans">
 								<p>2</p>
 							</MCAnswer>
 						</MCChoice>
-						<MCChoice score="100">
-							<MCAnswer>
+						<MCChoice id="pq3-mca-mc2" score="100">
+							<MCAnswer id="pq3-mca-mc2-ans">
 								<p>4</p>
 							</MCAnswer>
 						</MCChoice>
@@ -226,7 +226,7 @@ int Fibonacci(int n)
 				<List>
 					<listStyles>
 						<type>ordered</type>
-						<indents>  
+						<indents>
 							<indent level="2" type="unordered" bulletStyle="square" />
 							<indent level="4" type="ordered" start="10" bulletStyle="upper-alpha" />
 						</indents>
@@ -244,7 +244,7 @@ int Fibonacci(int n)
 				<p>
 
 					Unlike HTML whitespace is retained for element content. Note the tab characters at the start and end of this text as well as the extra lines above and below. See the XML source to view the whitespace for this element.
-				
+
 				</p>
 			</Page>
 			<Page id="page-5" title="Triggers &amp; Actions">
@@ -382,7 +382,7 @@ int Fibonacci(int n)
 				<h1>Assessment</h1>
 				<p>This assessment contains two question banks. On each attempt only one question bank will be shown which will be the question bank not shown in the previous attempt. Scoring a 0-99% will take you to one page while scoring 100% will take you to another page. Navigation will be locked when starting and attempt and reopened when ending an attempt</p>
 				<p>(This paragraph uses variables - view the XML source for formatting details). You have <b>{{assessment:attemptsRemaining}}</b> of <b>{{assessment:attemptsAmount}}</b> attempts remaining - You need a 100% to complete this assignment. Click Review Content to study the content and return to this assessment to retake it.</p>
-				<ActionButton label="Start an assessment attempt">
+				<ActionButton id="start-assessment-button" label="Start an assessment attempt">
 					<triggers>
 						<trigger type="onClick">
 							<actions>
@@ -394,65 +394,65 @@ int Fibonacci(int n)
 					</triggers>
 				</ActionButton>
 			</Page>
-			<QuestionBank choose="1" select="sequential">
-				<QuestionBank choose="1" select="sequential">
-					<Question>
+			<QuestionBank id="qb" choose="1" select="sequential">
+				<QuestionBank id="qb1" choose="1" select="sequential">
+					<Question id="qb1.q1">
 						<p>Question Bank 1 Question 1 - This is the first question you'll see</p>
-						<MCAssessment responseType="pick-one">
-							<MCChoice score="100">
-								<MCAnswer>
+						<MCAssessment id="qb1-q1-mca" responseType="pick-one">
+							<MCChoice id="qb1-q1-mca-mc1" score="100">
+								<MCAnswer id="qb1-q1-mca-mc1-ans">
 									<p>Correct</p>
 								</MCAnswer>
 							</MCChoice>
-							<MCChoice score="0">
-								<MCAnswer>
+							<MCChoice id="qb1-q1-mca-mc2" score="0">
+								<MCAnswer id="qb1-q1-mca-mc2-ans">
 									<p>Incorrect</p>
 								</MCAnswer>
 							</MCChoice>
 						</MCAssessment>
 					</Question>
-					<Question>
+					<Question id="qb1.q2">
 						<p>Question Bank 1 Question 2 - This is the fourth question you'll see</p>
-						<MCAssessment responseType="pick-one">
-							<MCChoice score="100">
-								<MCAnswer>
+						<MCAssessment id="qb1.q2.mca" responseType="pick-one">
+							<MCChoice id="qb1.q2-mca-mc1" score="100">
+								<MCAnswer id="qb1.q2-mca-mc1-ans">
 									<p>Correct</p>
 								</MCAnswer>
 							</MCChoice>
-							<MCChoice score="0">
-								<MCAnswer>
+							<MCChoice id="qb1.q2-mca-mc2" score="0">
+								<MCAnswer id="qb1.q2-mca-mc2-ans">
 									<p>Incorrect</p>
 								</MCAnswer>
 							</MCChoice>
 						</MCAssessment>
 					</Question>
 				</QuestionBank>
-				<QuestionBank>
-					<Question>
+				<QuestionBank id="qb2">
+					<Question id="qb2.q1">
 						<p>Question Bank 2 Question 1 - This is the second question you'll see</p>
-						<MCAssessment responseType="pick-one">
-							<MCChoice score="100">
-								<MCAnswer>
+						<MCAssessment id="qb2-q1-mca" responseType="pick-one">
+							<MCChoice id="qb2-q1-mca-mc1" score="100">
+								<MCAnswer id="qb2-q1-mca-mc1-ans">
 									<p>Correct</p>
 								</MCAnswer>
 							</MCChoice>
-							<MCChoice score="0">
-								<MCAnswer>
+							<MCChoice id="qb2-q1-mca-mc2" score="0">
+								<MCAnswer id="qb2-q1-mca-mc2-ans">
 									<p>Incorrect</p>
 								</MCAnswer>
 							</MCChoice>
 						</MCAssessment>
 					</Question>
-					<Question>
+					<Question id="qb2.q2">
 						<p>Question Bank 2 Question 2 - This is the third question you'll see</p>
-						<MCAssessment responseType="pick-one">
-							<MCChoice score="100">
-								<MCAnswer>
+						<MCAssessment id="qb2.q2.mca" responseType="pick-one">
+							<MCChoice id="qb2.q2-mca-mc1" score="100">
+								<MCAnswer id="qb2.q2-mca-mc1-ans">
 									<p>Correct</p>
 								</MCAnswer>
 							</MCChoice>
-							<MCChoice score="0">
-								<MCAnswer>
+							<MCChoice id="qb2.q2-mca-mc2" score="0">
+								<MCAnswer id="qb2.q2-mca-mc2-ans">
 									<p>Incorrect</p>
 								</MCAnswer>
 							</MCChoice>
