@@ -83,7 +83,7 @@ int Fibonacci(int n)
 				<h2>YouTube video:</h2>
 				<YouTube videoId="dQw4w9WgXcQ" />
 				<h2>Practice question:</h2>
-				<p>This question is a <b>pick-one-multiple-correct</b> type question</p> with feedback and an included <b>solution</b>:
+				<p>This question is a <b>pick-one-multiple-correct</b> type question with feedback and an included <b>solution</b>:</p>
 				<Question id="pq1" title="A custom question title">
 					<h1>Which equation describes horizontal displacement of projectile motion?</h1>
 					<MCAssessment id="pq1.mca" responseType="pick-one-multiple-correct">
