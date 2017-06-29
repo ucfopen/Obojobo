@@ -411,62 +411,62 @@ StyleableText.getStylesOfElement = function(el) {
 	return styles
 }
 
-StyleableText.createFromElement = function(node) {
-	let state
-	console.log('ST.cFE', node.tagName, node.innerHTML, arguments[1])
-	if (node == null) {
-		return new StyleableText()
-	}
+// StyleableText.createFromElement = function(node) {
+// 	let state
+// 	console.log('ST.cFE', node.tagName, node.innerHTML, arguments[1])
+// 	if (node == null) {
+// 		return new StyleableText()
+// 	}
 
-	// console.warn '@TODO - MOVE THIS method somewhere else!'
+// 	// console.warn '@TODO - MOVE THIS method somewhere else!'
 
-	if (arguments[1] == null) {
-		state = {
-			curText: new StyleableText(),
-			texts: []
-		}
-		StyleableText.createFromElement(node, state)
+// 	if (arguments[1] == null) {
+// 		state = {
+// 			curText: new StyleableText(),
+// 			texts: []
+// 		}
+// 		StyleableText.createFromElement(node, state)
 
-		state.texts.push(state.curText)
-		state.curText.styleList.normalize()
+// 		state.texts.push(state.curText)
+// 		state.curText.styleList.normalize()
 
-		return state.texts
-	}
+// 		return state.texts
+// 	}
 
-	state = arguments[1]
+// 	state = arguments[1]
 
-	switch (node.nodeType) {
-		case Node.TEXT_NODE:
-			return (state.curText.value += node.nodeValue)
-		case Node.ELEMENT_NODE:
-			if (state.curText.length > 0 && !isElementInline(node)) {
-				state.texts.push(state.curText)
-				state.curText.styleList.normalize()
+// 	switch (node.nodeType) {
+// 		case Node.TEXT_NODE:
+// 			return (state.curText.value += node.nodeValue)
+// 		case Node.ELEMENT_NODE:
+// 			if (state.curText.length > 0 && !isElementInline(node)) {
+// 				state.texts.push(state.curText)
+// 				state.curText.styleList.normalize()
 
-				state.curText = new StyleableText()
-			}
+// 				state.curText = new StyleableText()
+// 			}
 
-			let styles = StyleableText.getStylesOfElement(node)
-			let ranges = []
-			for (let style of Array.from(styles)) {
-				let styleRange = new StyleRange(
-					state.curText.value.length,
-					Infinity,
-					style.type,
-					style.data
-				)
-				ranges.push(styleRange)
-			}
+// 			let styles = StyleableText.getStylesOfElement(node)
+// 			let ranges = []
+// 			for (let style of Array.from(styles)) {
+// 				let styleRange = new StyleRange(
+// 					state.curText.value.length,
+// 					Infinity,
+// 					style.type,
+// 					style.data
+// 				)
+// 				ranges.push(styleRange)
+// 			}
 
-			for (let childNode of Array.from(node.childNodes)) {
-				StyleableText.createFromElement(childNode, state)
-			}
+// 			for (let childNode of Array.from(node.childNodes)) {
+// 				StyleableText.createFromElement(childNode, state)
+// 			}
 
-			return Array.from(ranges).map(
-				range => ((range.end = state.curText.value.length), state.curText.styleList.add(range))
-			)
-	}
-}
+// 			return Array.from(ranges).map(
+// 				range => ((range.end = state.curText.value.length), state.curText.styleList.add(range))
+// 			)
+// 	}
+// }
 
 // @TODO
 window.__st = StyleableText

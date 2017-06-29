@@ -1615,99 +1615,62 @@ StyleableText.getStylesOfElement = function (el) {
 	return styles;
 };
 
-StyleableText.createFromElement = function (node) {
-	var state = void 0;
-	console.log('ST.cFE', node.tagName, node.innerHTML, arguments[1]);
-	if (node == null) {
-		return new StyleableText();
-	}
+// StyleableText.createFromElement = function(node) {
+// 	let state
+// 	console.log('ST.cFE', node.tagName, node.innerHTML, arguments[1])
+// 	if (node == null) {
+// 		return new StyleableText()
+// 	}
 
-	// console.warn '@TODO - MOVE THIS method somewhere else!'
+// 	// console.warn '@TODO - MOVE THIS method somewhere else!'
 
-	if (arguments[1] == null) {
-		state = {
-			curText: new StyleableText(),
-			texts: []
-		};
-		StyleableText.createFromElement(node, state);
+// 	if (arguments[1] == null) {
+// 		state = {
+// 			curText: new StyleableText(),
+// 			texts: []
+// 		}
+// 		StyleableText.createFromElement(node, state)
 
-		state.texts.push(state.curText);
-		state.curText.styleList.normalize();
+// 		state.texts.push(state.curText)
+// 		state.curText.styleList.normalize()
 
-		return state.texts;
-	}
+// 		return state.texts
+// 	}
 
-	state = arguments[1];
+// 	state = arguments[1]
 
-	switch (node.nodeType) {
-		case Node.TEXT_NODE:
-			return state.curText.value += node.nodeValue;
-		case Node.ELEMENT_NODE:
-			if (state.curText.length > 0 && !(0, _htmlUtil.isElementInline)(node)) {
-				state.texts.push(state.curText);
-				state.curText.styleList.normalize();
+// 	switch (node.nodeType) {
+// 		case Node.TEXT_NODE:
+// 			return (state.curText.value += node.nodeValue)
+// 		case Node.ELEMENT_NODE:
+// 			if (state.curText.length > 0 && !isElementInline(node)) {
+// 				state.texts.push(state.curText)
+// 				state.curText.styleList.normalize()
 
-				state.curText = new StyleableText();
-			}
+// 				state.curText = new StyleableText()
+// 			}
 
-			var styles = StyleableText.getStylesOfElement(node);
-			var ranges = [];
-			var _iteratorNormalCompletion5 = true;
-			var _didIteratorError5 = false;
-			var _iteratorError5 = undefined;
+// 			let styles = StyleableText.getStylesOfElement(node)
+// 			let ranges = []
+// 			for (let style of Array.from(styles)) {
+// 				let styleRange = new StyleRange(
+// 					state.curText.value.length,
+// 					Infinity,
+// 					style.type,
+// 					style.data
+// 				)
+// 				ranges.push(styleRange)
+// 			}
 
-			try {
-				for (var _iterator5 = Array.from(styles)[Symbol.iterator](), _step5; !(_iteratorNormalCompletion5 = (_step5 = _iterator5.next()).done); _iteratorNormalCompletion5 = true) {
-					var style = _step5.value;
+// 			for (let childNode of Array.from(node.childNodes)) {
+// 				StyleableText.createFromElement(childNode, state)
+// 			}
 
-					var styleRange = new _styleRange2.default(state.curText.value.length, Infinity, style.type, style.data);
-					ranges.push(styleRange);
-				}
-			} catch (err) {
-				_didIteratorError5 = true;
-				_iteratorError5 = err;
-			} finally {
-				try {
-					if (!_iteratorNormalCompletion5 && _iterator5.return) {
-						_iterator5.return();
-					}
-				} finally {
-					if (_didIteratorError5) {
-						throw _iteratorError5;
-					}
-				}
-			}
-
-			var _iteratorNormalCompletion6 = true;
-			var _didIteratorError6 = false;
-			var _iteratorError6 = undefined;
-
-			try {
-				for (var _iterator6 = Array.from(node.childNodes)[Symbol.iterator](), _step6; !(_iteratorNormalCompletion6 = (_step6 = _iterator6.next()).done); _iteratorNormalCompletion6 = true) {
-					var childNode = _step6.value;
-
-					StyleableText.createFromElement(childNode, state);
-				}
-			} catch (err) {
-				_didIteratorError6 = true;
-				_iteratorError6 = err;
-			} finally {
-				try {
-					if (!_iteratorNormalCompletion6 && _iterator6.return) {
-						_iterator6.return();
-					}
-				} finally {
-					if (_didIteratorError6) {
-						throw _iteratorError6;
-					}
-				}
-			}
-
-			return Array.from(ranges).map(function (range) {
-				return range.end = state.curText.value.length, state.curText.styleList.add(range);
-			});
-	}
-};
+// 			return Array.from(ranges).map(
+// 				range => ((range.end = state.curText.value.length), state.curText.styleList.add(range))
+// 			)
+// 	}
+// }
 
 // @TODO
 window.__st = StyleableText;
