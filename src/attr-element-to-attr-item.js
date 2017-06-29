@@ -1,6 +1,6 @@
 let attrElementToAttrItem = (node) => {
 	if(!node) return
-	
+
 	for(let prop in node)
 	{
 		if(typeof node[prop] === 'object')
@@ -12,7 +12,7 @@ let attrElementToAttrItem = (node) => {
 	if(node.elements)
 	{
 		// console.log('yup, dig into', node.elements)
-		for(i = node.elements.length - 1; i >= 0; i--)
+		for(let i = node.elements.length - 1; i >= 0; i--)
 		{
 			let childNode = node.elements[i];
 

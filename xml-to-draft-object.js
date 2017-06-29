@@ -24,7 +24,7 @@ let parsers = {
 }
 
 let elementsToAttrElements = (o) => {
-	for(i in o.elements)
+	for(let i in o.elements)
 	{
 		elementsToAttrElements(o.elements[i])
 	}

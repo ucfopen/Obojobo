@@ -1,4 +1,4 @@
-createTextGroup = (els) => {
+let createTextGroup = (els) => {
 	return (
 		[{
 			type: "element",
