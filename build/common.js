@@ -1134,8 +1134,6 @@ var _styleType2 = _interopRequireDefault(_styleType);
 
 var _htmlUtil = __webpack_require__(38);
 
-var _htmlUtil2 = _interopRequireDefault(_htmlUtil);
-
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
@@ -1619,6 +1617,7 @@ StyleableText.getStylesOfElement = function (el) {
 
 StyleableText.createFromElement = function (node) {
 	var state = void 0;
+	console.log('ST.cFE', node.tagName, node.innerHTML, arguments[1]);
 	if (node == null) {
 		return new StyleableText();
 	}
@@ -1644,7 +1643,7 @@ StyleableText.createFromElement = function (node) {
 		case Node.TEXT_NODE:
 			return state.curText.value += node.nodeValue;
 		case Node.ELEMENT_NODE:
-			if (state.curText.length > 0 && !_htmlUtil2.default.isElementInline(node)) {
+			if (state.curText.length > 0 && !(0, _htmlUtil.isElementInline)(node)) {
 				state.texts.push(state.curText);
 				state.curText.styleList.normalize();
 

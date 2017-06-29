@@ -3,7 +3,7 @@ import ObjectAssign from 'object-assign'
 import ChunkStyleList from './chunk-style-list'
 import StyleRange from './style-range'
 import StyleType from './style-type'
-import HtmlUtil from '../../common/util/html-util'
+import { isElementInline } from '../../common/util/html-util'
 
 // ceiling Infinity end values to the length
 let trimStyleRange = function(styleRange, maxLength) {
@@ -413,6 +413,7 @@ StyleableText.getStylesOfElement = function(el) {
 
 StyleableText.createFromElement = function(node) {
 	let state
+	console.log('ST.cFE', node.tagName, node.innerHTML, arguments[1])
 	if (node == null) {
 		return new StyleableText()
 	}
@@ -438,7 +439,7 @@ StyleableText.createFromElement = function(node) {
 		case Node.TEXT_NODE:
 			return (state.curText.value += node.nodeValue)
 		case Node.ELEMENT_NODE:
-			if (state.curText.length > 0 && !HtmlUtil.isElementInline(node)) {
+			if (state.curText.length > 0 && !isElementInline(node)) {
 				state.texts.push(state.curText)
 				state.curText.styleList.normalize()
 
