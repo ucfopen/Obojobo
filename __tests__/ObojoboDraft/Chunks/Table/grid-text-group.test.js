@@ -20,7 +20,7 @@ describe('GridTextGroup', () => {
     }
   })
 
-  it.only('adds a row to the first index', () => {
+  it('adds a row to the first index', () => {
     const result = [
       { text: { value: 'added row cell', styleList: null }, data: {} },
       { text: { value: 'added row cell', styleList: null }, data: {} },
