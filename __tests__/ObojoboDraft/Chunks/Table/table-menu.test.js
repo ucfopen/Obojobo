@@ -33,7 +33,7 @@ describe('TableMenu', () => {
     }
   })
 
-  it('renders without blowing up', () => {
+  it('renders without error', () => {
     expect(shallow(tableMenuRow)).toMatchSnapshot()
   })
 

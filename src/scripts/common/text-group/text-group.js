@@ -155,7 +155,7 @@ class TextGroup {
 		if (cloneDataFn == null) { cloneDataFn = Util.defaultCloneFn; }
 		let clonedItems = [];
 
-		for (let item of Array.from(this.items)) {
+		for (let item of this.items) {
 			clonedItems.push(item.clone(cloneDataFn));
 		}
 
