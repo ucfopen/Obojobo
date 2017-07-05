@@ -176,7 +176,7 @@ class TextGroup {
 		let clonedItems = []
 
 		for (let item of this.items) {
-			clonedItems.push(item.clone(cloneDataFn));
+			clonedItems.push(item.clone(cloneDataFn))
 		}
 
 		return new TextGroup(this.maxItems, this.dataTemplate, clonedItems)

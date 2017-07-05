@@ -306,7 +306,6 @@ var GridTextGroup = function (_TextGroup) {
 						return (
 							// console.log '  col', col
 							i = row * _this2.numCols + col,
-
 							// console.log '    i', i
 							item = _this2.items[i], s.push((item.text.value + '          ').substr(0, 10))
 						);
