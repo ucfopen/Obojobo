@@ -18,10 +18,7 @@ describe('IFrame', () => {
 	}
 
 	test('IFrame component', () => {
-
-		const component = renderer.create(
-			<IFrame model={model} moduleData={moduleData} />
-		)
+		const component = renderer.create(<IFrame model={model} moduleData={moduleData} />)
 		let tree = component.toJSON()
 
 		expect(tree).toMatchSnapshot()

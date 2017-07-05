@@ -11,4 +11,4 @@ Common.Store.registerModel('ObojoboDraft.Chunks.Code', {
 	adapter: adapter,
 	componentClass: ViewerComponent,
 	selectionHandler: new SelectionHandler()
-});
+})

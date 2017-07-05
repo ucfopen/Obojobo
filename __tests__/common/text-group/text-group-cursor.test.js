@@ -1,4 +1,4 @@
-describe.skip('TextGroupCursor');
+describe.skip('TextGroupCursor')
 
 // VirtualCursor    = window.Common.oboDOM.Selection.VirtualCursor;
 // StyleableText    = window.Common.text.StyleableText;

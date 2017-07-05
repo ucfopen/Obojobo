@@ -1,4 +1,4 @@
-describe.skip('TextGroupCommandHandler');
+describe.skip('TextGroupCommandHandler')
 
 // VirtualCursor    = window.Common.oboDOM.Selection.VirtualCursor;
 // VirtualSelection    = window.Common.oboDOM.Selection.VirtualSelection;
@@ -90,7 +90,6 @@ describe.skip('TextGroupCommandHandler');
 
 // 			document.body.innerHTML = '<div class="component" data-component-index="0" id="chunkTop"><div data-group-index="0"><p>T-abc</p></div><div data-group-index="1"><p>1T-23</p></div></div><div class="component" data-component-index="1" id="chunkMiddle"><div data-group-index="0"><p>M-abc</p></div><div data-group-index="1"><p>1M-23</p></div></div><div class="component" data-component-index="2" id="chunkBottom"><div data-group-index="0"><p>B-abc</p></div><div data-group-index="1"><p>1B-23</p></div></div>';
 
-
 // 			domSelection = DOMSelection.set(document.body.childNodes[1].childNodes[0].childNodes[0].childNodes[0], 1, document.body.childNodes[1].childNodes[0].childNodes[0].childNodes[0], 4);
 
 // 			// Little hack since the fromDOMSelection method
@@ -133,7 +132,6 @@ describe.skip('TextGroupCommandHandler');
 // 					selection: new FakeSelectionClass
 // 				}
 // 			};
-
 
 // 			// The SingleText chunks override the default TextGroupCommandHandler slightly,
 // 			// so here is a hack to make sure they're using just the default class
@@ -252,7 +250,6 @@ describe.skip('TextGroupCommandHandler');
 // 			cc1 = chunkTop.componentContent.textGroup.toDescriptor();
 
 // 			beforeEach();
-
 
 // 			chunkSpanVirtSel.collapse();
 // 			chunkTop.onEnter();
@@ -1204,7 +1201,6 @@ describe.skip('TextGroupCommandHandler');
 // 			chunkTop.selectAll();
 // 			expect(chunkTop.dirty).toBe(false);
 
-
 // 			// These methods should dirty the chunk:
 // 			chunkTop.dirty = false;
 // 			chunkTop.insertText('t');
@@ -1260,7 +1256,6 @@ describe.skip('TextGroupCommandHandler');
 // 			chunkTop.dirty = false;
 // 			chunkTop.applyDOMModification({text:'text'});
 // 			expect(chunkTop.dirty).toBe(true);
-
 
 // 			// This method may or may not dirty the chunk depending on arguments
 // 			chunkTop.dirty = false;

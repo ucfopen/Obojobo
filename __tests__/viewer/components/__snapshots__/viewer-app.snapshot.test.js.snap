@@ -1,0 +1,564 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`ViewerApp ViewerApp 1`] = `
+<div
+  className="viewer--viewer-app is-previewing is-unlocked-nav is-open-nav is-enabled-nav is-focus-state-inactive"
+  onMouseDown={[Function]}
+  onScroll={[Function]}
+>
+  <header>
+    <div
+      className="pad"
+    >
+      <span
+        className="module-title"
+      >
+        Obojobo Example Document
+      </span>
+      <span
+        className="location"
+      >
+        Example content page
+      </span>
+      <div
+        className="viewer--components--logo is-not-inverted"
+        style={
+          Object {
+            "backgroundImage": "",
+          }
+        }
+      >
+        Obojobo
+      </div>
+    </div>
+  </header>
+  <div
+    className="viewer--components--nav is-unlocked is-open is-enabled"
+  >
+    <button
+      className="toggle-button"
+      onClick={[Function]}
+      onMouseOut={[Function]}
+      onMouseOver={[Function]}
+      style={
+        Object {
+          "backgroundImage": "",
+          "filter": "invert(100%)",
+          "transform": "",
+        }
+      }
+    >
+      Toggle Navigation Menu
+    </button>
+    <ul>
+      <li
+        className="heading is-not-select"
+      >
+        <a>
+          Obojobo Example Document
+        </a>
+      </li>
+      <li
+        className="link is-selected is-not-visited is-not-complete is-not-correct"
+        onClick={[Function]}
+      >
+        <a>
+          Example content page
+        </a>
+      </li>
+      <li
+        className="sub-link is-not-select is-not-correct"
+        onClick={[Function]}
+      >
+        <span>
+          <span>
+            <span>
+              Projectile motion
+            </span>
+          </span>
+        </span>
+      </li>
+      <li
+        className="sub-link is-not-select is-not-correct"
+        onClick={[Function]}
+      >
+        <span>
+          <span>
+            <span>
+              Kinematic quantities of projectile motion
+            </span>
+          </span>
+        </span>
+      </li>
+      <li
+        className="link is-not-select is-not-visited is-not-complete is-not-correct"
+        onClick={[Function]}
+      >
+        <a>
+          Image examples
+        </a>
+      </li>
+      <li
+        className="link is-not-select is-not-visited is-not-complete is-not-correct"
+        onClick={[Function]}
+      >
+        <a>
+          Other content types
+        </a>
+      </li>
+      <li
+        className="link is-not-select is-not-visited is-not-complete is-not-correct"
+        onClick={[Function]}
+      >
+        <a>
+          Formatting
+        </a>
+      </li>
+      <li
+        className="link is-not-select is-not-visited is-not-complete is-not-correct"
+        onClick={[Function]}
+      >
+        <a>
+          Triggers & Actions
+        </a>
+      </li>
+      <li
+        className="link is-not-select is-not-visited is-not-complete is-not-correct"
+        onClick={[Function]}
+      >
+        <a>
+          Extensions
+        </a>
+      </li>
+      <li
+        className="link is-not-select is-not-visited is-not-complete is-not-correct"
+        onClick={[Function]}
+      >
+        <a>
+          Assessment
+        </a>
+      </li>
+    </ul>
+    <div
+      className="viewer--components--logo is-inverted"
+      style={
+        Object {
+          "backgroundImage": "",
+        }
+      }
+    >
+      Obojobo
+    </div>
+  </div>
+  <div
+    className="viewer--components--inline-nav-button is-prev is-disabled"
+    onClick={[Function]}
+  >
+    Start of Obojobo Example Document
+  </div>
+  <div
+    className="component obojobo-draft--modules--module"
+    data-focussed={false}
+    data-id="df9d08bb-6f91-4034-84e1-24fcc6072e47"
+    data-obo-component={true}
+    data-type="ObojoboDraft.Modules.Module"
+    id="obo-df9d08bb-6f91-4034-84e1-24fcc6072e47"
+  >
+    <div>
+      <div
+        className="component obojobo-draft--pages--page"
+        data-focussed={false}
+        data-id="page-1"
+        data-obo-component={true}
+        data-type="ObojoboDraft.Pages.Page"
+        id="obo-page-1"
+      >
+        <div
+          className="component"
+          data-focussed={false}
+          data-id="9022b75d-9b43-42aa-aba6-64321d6894f6"
+          data-obo-component={true}
+          data-type="ObojoboDraft.Chunks.Heading"
+          id="obo-9022b75d-9b43-42aa-aba6-64321d6894f6"
+        >
+          <div
+            className="text-chunk obojobo-draft--chunks--heading pad"
+          >
+            <h1>
+              <span
+                className="text align-left"
+                data-group-index="0"
+                data-indent={0}
+              >
+                <span>
+                  <span>
+                    <span>
+                      2D Motion
+                    </span>
+                  </span>
+                </span>
+              </span>
+            </h1>
+          </div>
+        </div>
+        <div
+          className="component"
+          data-focussed={false}
+          data-id="60dbff03-323c-4598-8f76-e204d036bc22"
+          data-obo-component={true}
+          data-type="ObojoboDraft.Chunks.Heading"
+          id="obo-60dbff03-323c-4598-8f76-e204d036bc22"
+        >
+          <div
+            className="text-chunk obojobo-draft--chunks--heading pad"
+          >
+            <h2>
+              <span
+                className="text align-left"
+                data-group-index="0"
+                data-indent={0}
+              >
+                <span>
+                  <span>
+                    <span>
+                      Projectile motion
+                    </span>
+                  </span>
+                </span>
+              </span>
+            </h2>
+          </div>
+        </div>
+        <div
+          className="component"
+          data-focussed={false}
+          data-id="a981c5a9-fe7a-4143-9e44-8da8936648e3"
+          data-obo-component={true}
+          data-type="ObojoboDraft.Chunks.Text"
+          id="obo-a981c5a9-fe7a-4143-9e44-8da8936648e3"
+        >
+          <div
+            className="text-chunk obojobo-draft--chunks--single-text pad"
+          >
+            <span
+              className="text align-left"
+              data-group-index={0}
+              data-indent={0}
+            >
+              <span>
+                <span>
+                  <span>
+                    Let the projectile be launched with an initial velocity 
+                  </span>
+                  <span
+                    className="latex"
+                  >
+                    <span
+                      dangerouslySetInnerHTML={
+                        Object {
+                          "__html": "<span class=\\"katex\\"><span class=\\"katex-mathml\\"><math><semantics><mrow><msub><mi>v</mi><mn>0</mn></msub></mrow><annotation encoding=\\"application/x-tex\\">v_0</annotation></semantics></math></span><span class=\\"katex-html\\" aria-hidden=\\"true\\"><span class=\\"strut\\" style=\\"height:0.43056em;\\"></span><span class=\\"strut bottom\\" style=\\"height:0.58056em;vertical-align:-0.15em;\\"></span><span class=\\"base textstyle uncramped\\"><span class=\\"mord\\"><span class=\\"mord mathit\\" style=\\"margin-right:0.03588em;\\">v</span><span class=\\"vlist\\"><span style=\\"top:0.15em;margin-right:0.05em;margin-left:-0.03588em;\\"><span class=\\"fontsize-ensurer reset-size5 size5\\"><span style=\\"font-size:0em;\\">​</span></span><span class=\\"reset-textstyle scriptstyle cramped\\"><span class=\\"mord mathrm\\">0</span></span></span><span class=\\"baseline-fix\\"><span class=\\"fontsize-ensurer reset-size5 size5\\"><span style=\\"font-size:0em;\\">​</span></span>​</span></span></span></span></span></span>",
+                        }
+                      }
+                    />
+                  </span>
+                  <span>
+                     which can be expressed as the sum of horizontal and vertical components as follows:
+                  </span>
+                </span>
+              </span>
+            </span>
+          </div>
+        </div>
+        <div
+          className="component obojobo-draft--chunks--math-equation pad align-center"
+          data-focussed={false}
+          data-id="9f015bee-0455-4369-bb06-e8ab63941e70"
+          data-obo-component={true}
+          data-type="ObojoboDraft.Chunks.MathEquation"
+          id="obo-9f015bee-0455-4369-bb06-e8ab63941e70"
+        >
+          <div
+            className="non-editable-chunk"
+            contentEditable={false}
+            data-indent={0}
+          >
+            <div
+              className="katex-container"
+              dangerouslySetInnerHTML={
+                Object {
+                  "__html": "<span class=\\"katex-display\\"><span class=\\"katex\\"><span class=\\"katex-mathml\\"><math><semantics><mrow><msub><mi>v</mi><mn>0</mn></msub><mo>=</mo><msub><mi>v</mi><mrow><msub><mn>0</mn><mi>x</mi></msub></mrow></msub><mi>i</mi><mo>+</mo><msub><mi>v</mi><mrow><msub><mn>0</mn><mi>y</mi></msub></mrow></msub><mi>j</mi></mrow><annotation encoding=\\"application/x-tex\\">v_0=v_{0_x}i+v_{0_y}j</annotation></semantics></math></span><span class=\\"katex-html\\" aria-hidden=\\"true\\"><span class=\\"strut\\" style=\\"height:0.65952em;\\"></span><span class=\\"strut bottom\\" style=\\"height:1.01174em;vertical-align:-0.35222em;\\"></span><span class=\\"base displaystyle textstyle uncramped\\"><span class=\\"mord\\"><span class=\\"mord mathit\\" style=\\"margin-right:0.03588em;\\">v</span><span class=\\"vlist\\"><span style=\\"top:0.15em;margin-right:0.05em;margin-left:-0.03588em;\\"><span class=\\"fontsize-ensurer reset-size5 size5\\"><span style=\\"font-size:0em;\\">​</span></span><span class=\\"reset-textstyle scriptstyle cramped\\"><span class=\\"mord mathrm\\">0</span></span></span><span class=\\"baseline-fix\\"><span class=\\"fontsize-ensurer reset-size5 size5\\"><span style=\\"font-size:0em;\\">​</span></span>​</span></span></span><span class=\\"mrel\\">=</span><span class=\\"mord\\"><span class=\\"mord mathit\\" style=\\"margin-right:0.03588em;\\">v</span><span class=\\"vlist\\"><span style=\\"top:0.15000000000000002em;margin-right:0.05em;margin-left:-0.03588em;\\"><span class=\\"fontsize-ensurer reset-size5 size5\\"><span style=\\"font-size:0em;\\">​</span></span><span class=\\"reset-textstyle scriptstyle cramped\\"><span class=\\"mord scriptstyle cramped\\"><span class=\\"mord\\"><span class=\\"mord mathrm\\">0</span><span class=\\"vlist\\"><span style=\\"top:0.15em;margin-right:0.07142857142857144em;margin-left:0em;\\"><span class=\\"fontsize-ensurer reset-size5 size5\\"><span style=\\"font-size:0em;\\">​</span></span><span class=\\"reset-scriptstyle scriptscriptstyle cramped\\"><span class=\\"mord mathit\\">x</span></span></span><span class=\\"baseline-fix\\"><span class=\\"fontsize-ensurer reset-size5 size5\\"><span style=\\"font-size:0em;\\">​</span></span>​</span></span></span></span></span></span><span class=\\"baseline-fix\\"><span class=\\"fontsize-ensurer reset-size5 size5\\"><span style=\\"font-size:0em;\\">​</span></span>​</span></span></span><span class=\\"mord mathit\\">i</span><span class=\\"mbin\\">+</span><span class=\\"mord\\"><span class=\\"mord mathit\\" style=\\"margin-right:0.03588em;\\">v</span><span class=\\"vlist\\"><span style=\\"top:0.14999999999999997em;margin-right:0.05em;margin-left:-0.03588em;\\"><span class=\\"fontsize-ensurer reset-size5 size5\\"><span style=\\"font-size:0em;\\">​</span></span><span class=\\"reset-textstyle scriptstyle cramped\\"><span class=\\"mord scriptstyle cramped\\"><span class=\\"mord\\"><span class=\\"mord mathrm\\">0</span><span class=\\"vlist\\"><span style=\\"top:0.15000000000000002em;margin-right:0.07142857142857144em;margin-left:0em;\\"><span class=\\"fontsize-ensurer reset-size5 size5\\"><span style=\\"font-size:0em;\\">​</span></span><span class=\\"reset-scriptstyle scriptscriptstyle cramped\\"><span class=\\"mord mathit\\" style=\\"margin-right:0.03588em;\\">y</span></span></span><span class=\\"baseline-fix\\"><span class=\\"fontsize-ensurer reset-size5 size5\\"><span style=\\"font-size:0em;\\">​</span></span>​</span></span></span></span></span></span><span class=\\"baseline-fix\\"><span class=\\"fontsize-ensurer reset-size5 size5\\"><span style=\\"font-size:0em;\\">​</span></span>​</span></span></span><span class=\\"mord mathit\\" style=\\"margin-right:0.05724em;\\">j</span></span></span></span></span>",
+                }
+              }
+            />
+          </div>
+        </div>
+        <div
+          className="component"
+          data-focussed={false}
+          data-id="243a4713-2668-4e25-8483-21588c4b2706"
+          data-obo-component={true}
+          data-type="ObojoboDraft.Chunks.Text"
+          id="obo-243a4713-2668-4e25-8483-21588c4b2706"
+        >
+          <div
+            className="text-chunk obojobo-draft--chunks--single-text pad"
+          >
+            <span
+              className="text align-left"
+              data-group-index={0}
+              data-indent={0}
+            >
+              <span>
+                <span>
+                  <span>
+                    The components 
+                  </span>
+                  <span
+                    className="latex"
+                  >
+                    <span
+                      dangerouslySetInnerHTML={
+                        Object {
+                          "__html": "<span class=\\"katex\\"><span class=\\"katex-mathml\\"><math><semantics><mrow><msub><mi>x</mi><mrow><msub><mn>0</mn><mi>x</mi></msub></mrow></msub></mrow><annotation encoding=\\"application/x-tex\\">x_{0_x}</annotation></semantics></math></span><span class=\\"katex-html\\" aria-hidden=\\"true\\"><span class=\\"strut\\" style=\\"height:0.43056em;\\"></span><span class=\\"strut bottom\\" style=\\"height:0.68556em;vertical-align:-0.255em;\\"></span><span class=\\"base textstyle uncramped\\"><span class=\\"mord\\"><span class=\\"mord mathit\\">x</span><span class=\\"vlist\\"><span style=\\"top:0.15000000000000002em;margin-right:0.05em;margin-left:0em;\\"><span class=\\"fontsize-ensurer reset-size5 size5\\"><span style=\\"font-size:0em;\\">​</span></span><span class=\\"reset-textstyle scriptstyle cramped\\"><span class=\\"mord scriptstyle cramped\\"><span class=\\"mord\\"><span class=\\"mord mathrm\\">0</span><span class=\\"vlist\\"><span style=\\"top:0.15em;margin-right:0.07142857142857144em;margin-left:0em;\\"><span class=\\"fontsize-ensurer reset-size5 size5\\"><span style=\\"font-size:0em;\\">​</span></span><span class=\\"reset-scriptstyle scriptscriptstyle cramped\\"><span class=\\"mord mathit\\">x</span></span></span><span class=\\"baseline-fix\\"><span class=\\"fontsize-ensurer reset-size5 size5\\"><span style=\\"font-size:0em;\\">​</span></span>​</span></span></span></span></span></span><span class=\\"baseline-fix\\"><span class=\\"fontsize-ensurer reset-size5 size5\\"><span style=\\"font-size:0em;\\">​</span></span>​</span></span></span></span></span></span>",
+                        }
+                      }
+                    />
+                  </span>
+                  <span>
+                     and 
+                  </span>
+                  <span
+                    className="latex"
+                  >
+                    <span
+                      dangerouslySetInnerHTML={
+                        Object {
+                          "__html": "<span class=\\"katex\\"><span class=\\"katex-mathml\\"><math><semantics><mrow><msub><mi>v</mi><mrow><msub><mn>0</mn><mi>y</mi></msub></mrow></msub></mrow><annotation encoding=\\"application/x-tex\\">v_{0_y}</annotation></semantics></math></span><span class=\\"katex-html\\" aria-hidden=\\"true\\"><span class=\\"strut\\" style=\\"height:0.43056em;\\"></span><span class=\\"strut bottom\\" style=\\"height:0.78278em;vertical-align:-0.35222em;\\"></span><span class=\\"base textstyle uncramped\\"><span class=\\"mord\\"><span class=\\"mord mathit\\" style=\\"margin-right:0.03588em;\\">v</span><span class=\\"vlist\\"><span style=\\"top:0.14999999999999997em;margin-right:0.05em;margin-left:-0.03588em;\\"><span class=\\"fontsize-ensurer reset-size5 size5\\"><span style=\\"font-size:0em;\\">​</span></span><span class=\\"reset-textstyle scriptstyle cramped\\"><span class=\\"mord scriptstyle cramped\\"><span class=\\"mord\\"><span class=\\"mord mathrm\\">0</span><span class=\\"vlist\\"><span style=\\"top:0.15000000000000002em;margin-right:0.07142857142857144em;margin-left:0em;\\"><span class=\\"fontsize-ensurer reset-size5 size5\\"><span style=\\"font-size:0em;\\">​</span></span><span class=\\"reset-scriptstyle scriptscriptstyle cramped\\"><span class=\\"mord mathit\\" style=\\"margin-right:0.03588em;\\">y</span></span></span><span class=\\"baseline-fix\\"><span class=\\"fontsize-ensurer reset-size5 size5\\"><span style=\\"font-size:0em;\\">​</span></span>​</span></span></span></span></span></span><span class=\\"baseline-fix\\"><span class=\\"fontsize-ensurer reset-size5 size5\\"><span style=\\"font-size:0em;\\">​</span></span>​</span></span></span></span></span></span>",
+                        }
+                      }
+                    />
+                  </span>
+                  <span>
+                     can be found if the initial launch angle, 
+                  </span>
+                  <span
+                    className="latex"
+                  >
+                    <span
+                      dangerouslySetInnerHTML={
+                        Object {
+                          "__html": "<span class=\\"katex\\"><span class=\\"katex-mathml\\"><math><semantics><mrow><mi>θ</mi></mrow><annotation encoding=\\"application/x-tex\\">\\\\theta</annotation></semantics></math></span><span class=\\"katex-html\\" aria-hidden=\\"true\\"><span class=\\"strut\\" style=\\"height:0.69444em;\\"></span><span class=\\"strut bottom\\" style=\\"height:0.69444em;vertical-align:0em;\\"></span><span class=\\"base textstyle uncramped\\"><span class=\\"mord mathit\\" style=\\"margin-right:0.02778em;\\">θ</span></span></span></span>",
+                        }
+                      }
+                    />
+                  </span>
+                  <span>
+                    , is known:
+                  </span>
+                </span>
+              </span>
+            </span>
+          </div>
+        </div>
+        <div
+          className="component"
+          data-focussed={false}
+          data-id="caf0052d-9dd8-47c4-b42a-ce43c46ecb1c"
+          data-obo-component={true}
+          data-type="ObojoboDraft.Chunks.List"
+          id="obo-caf0052d-9dd8-47c4-b42a-ce43c46ecb1c"
+        >
+          <div
+            className="text-chunk obojobo-draft--chunks--list pad"
+          >
+            <div
+              data-indent={undefined}
+            >
+              <ul
+                start={1}
+                style={
+                  Object {
+                    "listStyleType": undefined,
+                  }
+                }
+              >
+                <li
+                  start={undefined}
+                  style={
+                    Object {
+                      "listStyleType": "disc",
+                    }
+                  }
+                >
+                  <span
+                    className="text align-undefined"
+                    data-group-index={0}
+                    data-indent={undefined}
+                  >
+                    <span>
+                      <span>
+                        <span
+                          className="latex"
+                        >
+                          <span
+                            dangerouslySetInnerHTML={
+                              Object {
+                                "__html": "<span class=\\"katex\\"><span class=\\"katex-mathml\\"><math><semantics><mrow><msub><mi>v</mi><mrow><msub><mn>0</mn><mi>x</mi></msub></mrow></msub><mo>=</mo><msub><mi>v</mi><mn>0</mn></msub><mi>cos</mi><mi>θ</mi></mrow><annotation encoding=\\"application/x-tex\\">v_{0_x} = v_0 \\\\cos \\\\theta</annotation></semantics></math></span><span class=\\"katex-html\\" aria-hidden=\\"true\\"><span class=\\"strut\\" style=\\"height:0.69444em;\\"></span><span class=\\"strut bottom\\" style=\\"height:0.94944em;vertical-align:-0.255em;\\"></span><span class=\\"base textstyle uncramped\\"><span class=\\"mord\\"><span class=\\"mord mathit\\" style=\\"margin-right:0.03588em;\\">v</span><span class=\\"vlist\\"><span style=\\"top:0.15000000000000002em;margin-right:0.05em;margin-left:-0.03588em;\\"><span class=\\"fontsize-ensurer reset-size5 size5\\"><span style=\\"font-size:0em;\\">​</span></span><span class=\\"reset-textstyle scriptstyle cramped\\"><span class=\\"mord scriptstyle cramped\\"><span class=\\"mord\\"><span class=\\"mord mathrm\\">0</span><span class=\\"vlist\\"><span style=\\"top:0.15em;margin-right:0.07142857142857144em;margin-left:0em;\\"><span class=\\"fontsize-ensurer reset-size5 size5\\"><span style=\\"font-size:0em;\\">​</span></span><span class=\\"reset-scriptstyle scriptscriptstyle cramped\\"><span class=\\"mord mathit\\">x</span></span></span><span class=\\"baseline-fix\\"><span class=\\"fontsize-ensurer reset-size5 size5\\"><span style=\\"font-size:0em;\\">​</span></span>​</span></span></span></span></span></span><span class=\\"baseline-fix\\"><span class=\\"fontsize-ensurer reset-size5 size5\\"><span style=\\"font-size:0em;\\">​</span></span>​</span></span></span><span class=\\"mrel\\">=</span><span class=\\"mord\\"><span class=\\"mord mathit\\" style=\\"margin-right:0.03588em;\\">v</span><span class=\\"vlist\\"><span style=\\"top:0.15em;margin-right:0.05em;margin-left:-0.03588em;\\"><span class=\\"fontsize-ensurer reset-size5 size5\\"><span style=\\"font-size:0em;\\">​</span></span><span class=\\"reset-textstyle scriptstyle cramped\\"><span class=\\"mord mathrm\\">0</span></span></span><span class=\\"baseline-fix\\"><span class=\\"fontsize-ensurer reset-size5 size5\\"><span style=\\"font-size:0em;\\">​</span></span>​</span></span></span><span class=\\"mop\\">cos</span><span class=\\"mord mathit\\" style=\\"margin-right:0.02778em;\\">θ</span></span></span></span>",
+                              }
+                            }
+                          />
+                        </span>
+                      </span>
+                    </span>
+                  </span>
+                </li>
+                <li
+                  start={undefined}
+                  style={
+                    Object {
+                      "listStyleType": "disc",
+                    }
+                  }
+                >
+                  <span
+                    className="text align-undefined"
+                    data-group-index={1}
+                    data-indent={undefined}
+                  >
+                    <span>
+                      <span>
+                        <span
+                          className="latex"
+                        >
+                          <span
+                            dangerouslySetInnerHTML={
+                              Object {
+                                "__html": "<span class=\\"katex\\"><span class=\\"katex-mathml\\"><math><semantics><mrow><msub><mi>v</mi><mrow><msub><mn>0</mn><mi>t</mi></msub></mrow></msub><mo>=</mo><msub><mi>v</mi><mn>0</mn></msub><mi>sin</mi><mi>θ</mi></mrow><annotation encoding=\\"application/x-tex\\">v_{0_t} = v_0 \\\\sin \\\\theta</annotation></semantics></math></span><span class=\\"katex-html\\" aria-hidden=\\"true\\"><span class=\\"strut\\" style=\\"height:0.69444em;\\"></span><span class=\\"strut bottom\\" style=\\"height:0.94944em;vertical-align:-0.255em;\\"></span><span class=\\"base textstyle uncramped\\"><span class=\\"mord\\"><span class=\\"mord mathit\\" style=\\"margin-right:0.03588em;\\">v</span><span class=\\"vlist\\"><span style=\\"top:0.15000000000000002em;margin-right:0.05em;margin-left:-0.03588em;\\"><span class=\\"fontsize-ensurer reset-size5 size5\\"><span style=\\"font-size:0em;\\">​</span></span><span class=\\"reset-textstyle scriptstyle cramped\\"><span class=\\"mord scriptstyle cramped\\"><span class=\\"mord\\"><span class=\\"mord mathrm\\">0</span><span class=\\"vlist\\"><span style=\\"top:0.15em;margin-right:0.07142857142857144em;margin-left:0em;\\"><span class=\\"fontsize-ensurer reset-size5 size5\\"><span style=\\"font-size:0em;\\">​</span></span><span class=\\"reset-scriptstyle scriptscriptstyle cramped\\"><span class=\\"mord mathit\\">t</span></span></span><span class=\\"baseline-fix\\"><span class=\\"fontsize-ensurer reset-size5 size5\\"><span style=\\"font-size:0em;\\">​</span></span>​</span></span></span></span></span></span><span class=\\"baseline-fix\\"><span class=\\"fontsize-ensurer reset-size5 size5\\"><span style=\\"font-size:0em;\\">​</span></span>​</span></span></span><span class=\\"mrel\\">=</span><span class=\\"mord\\"><span class=\\"mord mathit\\" style=\\"margin-right:0.03588em;\\">v</span><span class=\\"vlist\\"><span style=\\"top:0.15em;margin-right:0.05em;margin-left:-0.03588em;\\"><span class=\\"fontsize-ensurer reset-size5 size5\\"><span style=\\"font-size:0em;\\">​</span></span><span class=\\"reset-textstyle scriptstyle cramped\\"><span class=\\"mord mathrm\\">0</span></span></span><span class=\\"baseline-fix\\"><span class=\\"fontsize-ensurer reset-size5 size5\\"><span style=\\"font-size:0em;\\">​</span></span>​</span></span></span><span class=\\"mop\\">sin</span><span class=\\"mord mathit\\" style=\\"margin-right:0.02778em;\\">θ</span></span></span></span>",
+                              }
+                            }
+                          />
+                        </span>
+                      </span>
+                    </span>
+                  </span>
+                </li>
+              </ul>
+            </div>
+          </div>
+        </div>
+        <div
+          className="component"
+          data-focussed={false}
+          data-id="f58c38c8-2de4-4a63-8633-32dbf9d61397"
+          data-obo-component={true}
+          data-type="ObojoboDraft.Chunks.Text"
+          id="obo-f58c38c8-2de4-4a63-8633-32dbf9d61397"
+        >
+          <div
+            className="text-chunk obojobo-draft--chunks--single-text pad"
+          >
+            <span
+              className="text align-left"
+              data-group-index={0}
+              data-indent={0}
+            >
+              <span>
+                <span>
+                  <span>
+                    See also the section Parabolic equation for information on finding the initial velocity.
+                  </span>
+                </span>
+              </span>
+            </span>
+          </div>
+        </div>
+        <div
+          className="component"
+          data-focussed={false}
+          data-id="f530a522-ddfb-40fb-9736-dbd9870d4989"
+          data-obo-component={true}
+          data-type="ObojoboDraft.Chunks.Heading"
+          id="obo-f530a522-ddfb-40fb-9736-dbd9870d4989"
+        >
+          <div
+            className="text-chunk obojobo-draft--chunks--heading pad"
+          >
+            <h2>
+              <span
+                className="text align-left"
+                data-group-index="0"
+                data-indent={0}
+              >
+                <span>
+                  <span>
+                    <span>
+                      Kinematic quantities of projectile motion
+                    </span>
+                  </span>
+                </span>
+              </span>
+            </h2>
+          </div>
+        </div>
+        <div
+          className="component"
+          data-focussed={false}
+          data-id="bf4fd224-de8e-4991-bc3f-1f4bdf979879"
+          data-obo-component={true}
+          data-type="ObojoboDraft.Chunks.Text"
+          id="obo-bf4fd224-de8e-4991-bc3f-1f4bdf979879"
+        >
+          <div
+            className="text-chunk obojobo-draft--chunks--single-text pad"
+          >
+            <span
+              className="text align-left"
+              data-group-index={0}
+              data-indent={0}
+            >
+              <span>
+                <span>
+                  <span>
+                    In projectile motion, the horizontal motion and the vertical motion are independent of each other; that is, neither motion affects the other. This is the principle of compound motion established by Galileo in 1638.
+                  </span>
+                </span>
+              </span>
+            </span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div
+    className="viewer--components--inline-nav-button is-next is-enabled"
+    onClick={[Function]}
+  >
+    Next: Image examples
+  </div>
+  <div
+    className="preview-banner"
+  >
+    <span>
+      You are previewing this object - Assessments will not be counted
+    </span>
+    <div
+      className="controls"
+    >
+      <button
+        disabled={true}
+        onClick={[Function]}
+      >
+        Unlock navigation
+      </button>
+      <button
+        onClick={[Function]}
+      >
+        Reset assessments & questions
+      </button>
+    </div>
+  </div>
+  <div
+    className="viewer--components--focus-blocker"
+  />
+</div>
+`;

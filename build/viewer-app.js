@@ -3476,47 +3476,47 @@ function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { de
 
 // Object.assign (IE)
 if (typeof Object.assign != 'function') {
-  Object.assign = function (target, varArgs) {
-    // .length of function is 2
-    'use strict';
+	Object.assign = function (target, varArgs) {
+		// .length of function is 2
+		'use strict';
 
-    if (target == null) {
-      // TypeError if undefined or null
-      throw new TypeError('Cannot convert undefined or null to object');
-    }
+		if (target == null) {
+			// TypeError if undefined or null
+			throw new TypeError('Cannot convert undefined or null to object');
+		}
 
-    var to = Object(target);
+		var to = Object(target);
 
-    for (var index = 1; index < arguments.length; index++) {
-      var nextSource = arguments[index];
+		for (var index = 1; index < arguments.length; index++) {
+			var nextSource = arguments[index];
 
-      if (nextSource != null) {
-        // Skip over if undefined or null
-        for (var nextKey in nextSource) {
-          // Avoid bugs when hasOwnProperty is shadowed
-          if (Object.prototype.hasOwnProperty.call(nextSource, nextKey)) {
-            to[nextKey] = nextSource[nextKey];
-          }
-        }
-      }
-    }
-    return to;
-  };
+			if (nextSource != null) {
+				// Skip over if undefined or null
+				for (var nextKey in nextSource) {
+					// Avoid bugs when hasOwnProperty is shadowed
+					if (Object.prototype.hasOwnProperty.call(nextSource, nextKey)) {
+						to[nextKey] = nextSource[nextKey];
+					}
+				}
+			}
+		}
+		return to;
+	};
 }
 
 // Set (IE)
 if (!window.Set) {
-  window.Set = _es6Set2.default;
+	window.Set = _es6Set2.default;
 }
 
 // Array.from (IE)
 if (!Array.from) {
-  Array.from = _arrayFrom2.default;
+	Array.from = _arrayFrom2.default;
 }
 
 // Promise (IE)
 if (!window.Promise) {
-  window.Promise = _promisePolyfill2.default;
+	window.Promise = _promisePolyfill2.default;
 }
 
 // Smooth scrollTo (non-FF)

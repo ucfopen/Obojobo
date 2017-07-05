@@ -8,31 +8,6 @@ exports[`Page Page component 1`] = `
   data-obo-component={true}
   data-type="ObojoboDraft.Pages.Page"
   id="obo-id"
-  model={
-    Object {
-      "children": Array [
-        Object {
-          "children": null,
-          "content": Object {},
-          "id": "child",
-          "index": 0,
-          "metadata": Object {},
-          "type": "ObojoboDraft.Chunks.Break",
-        },
-      ],
-      "content": Object {},
-      "id": "id",
-      "index": 0,
-      "metadata": Object {},
-      "type": "ObojoboDraft.Pages.Page",
-    }
-  }
-  moduleData={
-    Object {
-      "focusState": Object {},
-    }
-  }
-  tag="div"
 >
   <div
     className="component"
@@ -41,26 +16,10 @@ exports[`Page Page component 1`] = `
     data-obo-component={true}
     data-type="ObojoboDraft.Chunks.Break"
     id="obo-child"
-    model={
-      Object {
-        "children": null,
-        "content": Object {},
-        "id": "child",
-        "index": 0,
-        "metadata": Object {},
-        "type": "ObojoboDraft.Chunks.Break",
-      }
-    }
-    moduleData={
-      Object {
-        "focusState": Object {},
-      }
-    }
-    tag="div"
   >
     <div
       className="non-editable-chunk obojobo-draft--chunks--break viewer"
-      contentEditable="false"
+      contentEditable={false}
       data-indent={0}
     >
       <hr />

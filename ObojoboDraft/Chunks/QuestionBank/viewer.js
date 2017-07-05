@@ -9,4 +9,4 @@ Common.Store.registerModel('ObojoboDraft.Chunks.QuestionBank', {
 	adapter: adapter,
 	componentClass: ViewerComponent,
 	selectionHandler: new SelectionHandler()
-});
+})

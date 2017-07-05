@@ -678,38 +678,6 @@ var OboModel = function (_Backbone$Model) {
 			return false;
 		}
 	}, {
-		key: 'getChildContainingModel',
-		value: function getChildContainingModel(model) {
-			var _iteratorNormalCompletion5 = true;
-			var _didIteratorError5 = false;
-			var _iteratorError5 = undefined;
-
-			try {
-				for (var _iterator5 = Array.from(this.children.models)[Symbol.iterator](), _step5; !(_iteratorNormalCompletion5 = (_step5 = _iterator5.next()).done); _iteratorNormalCompletion5 = true) {
-					var child = _step5.value;
-
-					if (child.contains(model)) {
-						return child;
-					}
-				}
-			} catch (err) {
-				_didIteratorError5 = true;
-				_iteratorError5 = err;
-			} finally {
-				try {
-					if (!_iteratorNormalCompletion5 && _iterator5.return) {
-						_iterator5.return();
-					}
-				} finally {
-					if (_didIteratorError5) {
-						throw _iteratorError5;
-					}
-				}
-			}
-
-			return null;
-		}
-	}, {
 		key: 'getParentOfType',
 		value: function getParentOfType(type) {
 			var model = this.parent;
@@ -784,29 +752,29 @@ OboModel.create = function (typeOrNameOrJson, attrs) {
 			if (children != null) {
 				// delete typeOrNameOrJson.children
 
-				var _iteratorNormalCompletion6 = true;
-				var _didIteratorError6 = false;
-				var _iteratorError6 = undefined;
+				var _iteratorNormalCompletion5 = true;
+				var _didIteratorError5 = false;
+				var _iteratorError5 = undefined;
 
 				try {
-					for (var _iterator6 = Array.from(children)[Symbol.iterator](), _step6; !(_iteratorNormalCompletion6 = (_step6 = _iterator6.next()).done); _iteratorNormalCompletion6 = true) {
-						var child = _step6.value;
+					for (var _iterator5 = Array.from(children)[Symbol.iterator](), _step5; !(_iteratorNormalCompletion5 = (_step5 = _iterator5.next()).done); _iteratorNormalCompletion5 = true) {
+						var child = _step5.value;
 
 						var c = OboModel.create(child);
 						// console.log 'c be', c, oboModel.children
 						oboModel.children.add(c);
 					}
 				} catch (err) {
-					_didIteratorError6 = true;
-					_iteratorError6 = err;
+					_didIteratorError5 = true;
+					_iteratorError5 = err;
 				} finally {
 					try {
-						if (!_iteratorNormalCompletion6 && _iterator6.return) {
-							_iterator6.return();
+						if (!_iteratorNormalCompletion5 && _iterator5.return) {
+							_iterator5.return();
 						}
 					} finally {
-						if (_didIteratorError6) {
-							throw _iteratorError6;
+						if (_didIteratorError5) {
+							throw _iteratorError5;
 						}
 					}
 				}
@@ -822,7 +790,6 @@ OboModel.create = function (typeOrNameOrJson, attrs) {
 	}
 
 	if (!item) {
-		console.log('null', typeOrNameOrJson);
 		return null;
 	}
 
@@ -1166,8 +1133,6 @@ var _styleType = __webpack_require__(4);
 var _styleType2 = _interopRequireDefault(_styleType);
 
 var _htmlUtil = __webpack_require__(38);
-
-var _htmlUtil2 = _interopRequireDefault(_htmlUtil);
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
@@ -1561,7 +1526,7 @@ var StyleableText = function () {
 }();
 
 Object.defineProperties(StyleableText.prototype, {
-	"length": {
+	length: {
 		get: function get() {
 			return this.value.length;
 		}
@@ -1592,23 +1557,31 @@ StyleableText.getStylesOfElement = function (el) {
 	// console.log '___________', el, computedStyle, computedStyle.getPropertyValue('font-weight')
 
 	switch (computedStyle.getPropertyValue('font-weight')) {
-		case "bold":case "bolder":case "700":case "800":case "900":
-			styles.push({ type: _styleType2.default.BOLD });break;
+		case 'bold':
+		case 'bolder':
+		case '700':
+		case '800':
+		case '900':
+			styles.push({ type: _styleType2.default.BOLD });
+			break;
 	}
 
 	switch (computedStyle.getPropertyValue('text-decoration')) {
-		case "line-through":
-			styles.push({ type: _styleType2.default.STRIKETHROUGH });break;
+		case 'line-through':
+			styles.push({ type: _styleType2.default.STRIKETHROUGH });
+			break;
 	}
 
 	switch (computedStyle.getPropertyValue('font-style')) {
-		case "italic":
-			styles.push({ type: _styleType2.default.ITALIC });break;
+		case 'italic':
+			styles.push({ type: _styleType2.default.ITALIC });
+			break;
 	}
 
 	switch (computedStyle.getPropertyValue('font-family').toLowerCase()) {
-		case "monospace":
-			styles.push({ type: _styleType2.default.MONOSPACE });break;
+		case 'monospace':
+			styles.push({ type: _styleType2.default.MONOSPACE });
+			break;
 	}
 
 	// switch computedStyle.getPropertyValue('vertical-align') + "|" + computedStyle.getPropertyValue('font-size')
@@ -1623,13 +1596,16 @@ StyleableText.getStylesOfElement = function (el) {
 			}
 			break;
 		case 'q':
-			styles.push({ type: _styleType2.default.QUOTE, data: el.getAttribute('cite') });break;
+			styles.push({ type: _styleType2.default.QUOTE, data: el.getAttribute('cite') });
+			break;
 		//@TODO:
 		// when 'abbr', 'acronym' then styles.push { type:StyleType.COMMENT, data:el.getAttribute('title') }
 		case 'sup':
-			styles.push({ type: _styleType2.default.SUPERSCRIPT, data: 1 });break;
+			styles.push({ type: _styleType2.default.SUPERSCRIPT, data: 1 });
+			break;
 		case 'sub':
-			styles.push({ type: _styleType2.default.SUPERSCRIPT, data: -1 });break;
+			styles.push({ type: _styleType2.default.SUPERSCRIPT, data: -1 });
+			break;
 	}
 	// @TODO:
 	// when 'span'
@@ -1639,98 +1615,62 @@ StyleableText.getStylesOfElement = function (el) {
 	return styles;
 };
 
-StyleableText.createFromElement = function (node) {
-	var state = void 0;
-	if (node == null) {
-		return new StyleableText();
-	}
+// StyleableText.createFromElement = function(node) {
+// 	let state
+// 	console.log('ST.cFE', node.tagName, node.innerHTML, arguments[1])
+// 	if (node == null) {
+// 		return new StyleableText()
+// 	}
 
-	// console.warn '@TODO - MOVE THIS method somewhere else!'
+// 	// console.warn '@TODO - MOVE THIS method somewhere else!'
 
-	if (arguments[1] == null) {
-		state = {
-			curText: new StyleableText(),
-			texts: []
-		};
-		StyleableText.createFromElement(node, state);
+// 	if (arguments[1] == null) {
+// 		state = {
+// 			curText: new StyleableText(),
+// 			texts: []
+// 		}
+// 		StyleableText.createFromElement(node, state)
 
-		state.texts.push(state.curText);
-		state.curText.styleList.normalize();
+// 		state.texts.push(state.curText)
+// 		state.curText.styleList.normalize()
 
-		return state.texts;
-	}
+// 		return state.texts
+// 	}
 
-	state = arguments[1];
+// 	state = arguments[1]
 
-	switch (node.nodeType) {
-		case Node.TEXT_NODE:
-			return state.curText.value += node.nodeValue;
-		case Node.ELEMENT_NODE:
-			if (state.curText.length > 0 && !_htmlUtil2.default.isElementInline(node)) {
-				state.texts.push(state.curText);
-				state.curText.styleList.normalize();
+// 	switch (node.nodeType) {
+// 		case Node.TEXT_NODE:
+// 			return (state.curText.value += node.nodeValue)
+// 		case Node.ELEMENT_NODE:
+// 			if (state.curText.length > 0 && !isElementInline(node)) {
+// 				state.texts.push(state.curText)
+// 				state.curText.styleList.normalize()
 
-				state.curText = new StyleableText();
-			}
+// 				state.curText = new StyleableText()
+// 			}
 
-			var styles = StyleableText.getStylesOfElement(node);
-			var ranges = [];
-			var _iteratorNormalCompletion5 = true;
-			var _didIteratorError5 = false;
-			var _iteratorError5 = undefined;
+// 			let styles = StyleableText.getStylesOfElement(node)
+// 			let ranges = []
+// 			for (let style of Array.from(styles)) {
+// 				let styleRange = new StyleRange(
+// 					state.curText.value.length,
+// 					Infinity,
+// 					style.type,
+// 					style.data
+// 				)
+// 				ranges.push(styleRange)
+// 			}
 
-			try {
-				for (var _iterator5 = Array.from(styles)[Symbol.iterator](), _step5; !(_iteratorNormalCompletion5 = (_step5 = _iterator5.next()).done); _iteratorNormalCompletion5 = true) {
-					var style = _step5.value;
+// 			for (let childNode of Array.from(node.childNodes)) {
+// 				StyleableText.createFromElement(childNode, state)
+// 			}
 
-					var styleRange = new _styleRange2.default(state.curText.value.length, Infinity, style.type, style.data);
-					ranges.push(styleRange);
-				}
-			} catch (err) {
-				_didIteratorError5 = true;
-				_iteratorError5 = err;
-			} finally {
-				try {
-					if (!_iteratorNormalCompletion5 && _iterator5.return) {
-						_iterator5.return();
-					}
-				} finally {
-					if (_didIteratorError5) {
-						throw _iteratorError5;
-					}
-				}
-			}
-
-			var _iteratorNormalCompletion6 = true;
-			var _didIteratorError6 = false;
-			var _iteratorError6 = undefined;
-
-			try {
-				for (var _iterator6 = Array.from(node.childNodes)[Symbol.iterator](), _step6; !(_iteratorNormalCompletion6 = (_step6 = _iterator6.next()).done); _iteratorNormalCompletion6 = true) {
-					var childNode = _step6.value;
-
-					StyleableText.createFromElement(childNode, state);
-				}
-			} catch (err) {
-				_didIteratorError6 = true;
-				_iteratorError6 = err;
-			} finally {
-				try {
-					if (!_iteratorNormalCompletion6 && _iterator6.return) {
-						_iterator6.return();
-					}
-				} finally {
-					if (_didIteratorError6) {
-						throw _iteratorError6;
-					}
-				}
-			}
-
-			return Array.from(ranges).map(function (range) {
-				return range.end = state.curText.value.length, state.curText.styleList.add(range);
-			});
-	}
-};
+// 			return Array.from(ranges).map(
+// 				range => ((range.end = state.curText.value.length), state.curText.styleList.add(range))
+// 			)
+// 	}
+// }
 
 // @TODO
 window.__st = StyleableText;
@@ -1879,7 +1819,8 @@ var BaseSelectionHandler = function () {
 		value: function getCopyOfSelection(selection, chunk, cloneId) {
 			if (cloneId == null) {
 				cloneId = false;
-			}return chunk.clone(cloneId);
+			}
+			return chunk.clone(cloneId);
 		}
 	}, {
 		key: 'selectStart',
@@ -1991,7 +1932,7 @@ var StyleRange = function () {
 	}, {
 		key: 'toString',
 		value: function toString() {
-			return this.type + ":" + this.start + "," + this.end + "(" + this.data + ")";
+			return this.type + ':' + this.start + ',' + this.end + '(' + this.data + ')';
 		}
 	}, {
 		key: 'isInvalid',
@@ -2252,7 +2193,7 @@ var OboSelectionRect = function OboSelectionRect() {
 };
 
 Object.defineProperties(OboSelectionRect.prototype, {
-	"valid": {
+	valid: {
 		get: function get() {
 			return this.type !== OboSelectionRect.TYPE_NONE;
 		}
@@ -2270,7 +2211,7 @@ OboSelectionRect.createFromSelection = function () {
 
 	var selType = sel.getType();
 
-	if (selType === "none") {
+	if (selType === 'none') {
 		return rect;
 	}
 
@@ -2643,14 +2584,15 @@ var TextGroupEl = function (_React$Component) {
 	}
 
 	_createClass(TextGroupEl, [{
-		key: 'componentDidUpdate',
-		value: function componentDidUpdate() {
-			return console.timeEnd('textRender');
-		}
-	}, {
 		key: 'render',
+
+
+		// componentDidUpdate() {
+		// 	return console.timeEnd('textRender');
+		// }
+
 		value: function render() {
-			console.time('textRender');
+			// console.time('textRender');
 
 			var text = this.props.textItem.text;
 
@@ -2676,7 +2618,11 @@ var TextGroupEl = function (_React$Component) {
 
 			return React.createElement(
 				'span',
-				{ className: 'text align-' + this.props.textItem.data.align, 'data-group-index': this.props.groupIndex, 'data-indent': this.props.textItem.data.indent },
+				{
+					className: 'text align-' + this.props.textItem.data.align,
+					'data-group-index': this.props.groupIndex,
+					'data-indent': this.props.textItem.data.indent
+				},
 				React.createElement(_styleableTextComponent2.default, { text: text })
 			);
 		}
@@ -2780,17 +2726,17 @@ var Anchor = function (_React$Component) {
 	}
 
 	_createClass(Anchor, [{
-		key: 'render',
+		key: "render",
 		value: function render() {
 			return React.createElement(
-				'span',
+				"span",
 				_extends({}, this.props, {
-					className: 'anchor',
-					ref: 'anchorElement',
-					contentEditable: 'true',
+					className: "anchor",
+					ref: "anchorElement",
+					contentEditable: true,
 					tabIndex: this.props.shouldPreventTab ? '-1' : '',
 					suppressContentEditableWarning: true,
-					'data-group-index': 'anchor:' + this.props.name
+					"data-group-index": "anchor:" + this.props.name
 				}),
 				_textConstants.EMPTY_CHAR
 			);
@@ -2844,12 +2790,14 @@ var Button = function (_React$Component) {
 			if (this.props.value) {
 				children = this.props.value;
 			} else {
-				children = this.props.children;
+				;children = this.props.children;
 			}
 
 			return React.createElement(
 				'div',
-				{ className: "obojobo-draft--components--button" + (this.props.dangerous ? ' dangerous' : '') + (this.props.altAction ? ' alt-action' : '') + (' align-' + this.props.align) },
+				{
+					className: 'obojobo-draft--components--button' + (this.props.dangerous ? ' dangerous' : '') + (this.props.altAction ? ' alt-action' : '') + (' align-' + this.props.align)
+				},
 				React.createElement(
 					'button',
 					{
@@ -3010,7 +2958,10 @@ var Dialog = function (_React$Component) {
 				{ className: 'obojobo-draft--components--modal--dialog', style: styles },
 				React.createElement(
 					_modal2.default,
-					{ onClose: this.props.onClose, focusOnFirstElement: this.focusOnFirstElement.bind(this) },
+					{
+						onClose: this.props.onClose,
+						focusOnFirstElement: this.focusOnFirstElement.bind(this)
+					},
 					this.props.title ? React.createElement(
 						'h1',
 						{ className: 'heading', style: { textAlign: this.props.centered ? 'center' : null } },
@@ -3018,14 +2969,17 @@ var Dialog = function (_React$Component) {
 					) : null,
 					React.createElement(
 						'div',
-						{ className: 'dialog-content', style: { textAlign: this.props.centered ? 'center' : null } },
+						{
+							className: 'dialog-content',
+							style: { textAlign: this.props.centered ? 'center' : null }
+						},
 						this.props.children
 					),
 					React.createElement(
 						'div',
 						{ className: 'controls' },
 						this.props.buttons.map(function (buttonPropsOrText, index) {
-							if (typeof buttonPropsOrText === "string") {
+							if (typeof buttonPropsOrText === 'string') {
 								return React.createElement(
 									'span',
 									{ key: index, className: 'text' },
@@ -3180,14 +3134,24 @@ var Modal = function (_React$Component) {
 			return React.createElement(
 				'div',
 				{ className: 'obojobo-draft--components--modal--modal' },
-				React.createElement('input', { className: 'first-tab', ref: 'firstTab', type: 'text', onFocus: this.onTabTrapFocus.bind(this) }),
+				React.createElement('input', {
+					className: 'first-tab',
+					ref: 'firstTab',
+					type: 'text',
+					onFocus: this.onTabTrapFocus.bind(this)
+				}),
 				this.props.onClose ? React.createElement(_deleteButton2.default, { ref: 'closeButton', onClick: this.props.onClose }) : null,
 				React.createElement(
 					'div',
 					{ className: 'content' },
 					this.props.children
 				),
-				React.createElement('input', { className: 'last-tab', ref: 'lastTab', type: 'text', onFocus: this.onTabTrapFocus.bind(this) })
+				React.createElement('input', {
+					className: 'last-tab',
+					ref: 'lastTab',
+					type: 'text',
+					onFocus: this.onTabTrapFocus.bind(this)
+				})
 			);
 		}
 	}]);
@@ -3344,31 +3308,31 @@ var MockElement = function () {
 	}
 
 	_createClass(MockElement, [{
-		key: "addChild",
+		key: 'addChild',
 		value: function addChild(child) {
 			this.children.push(child);
 			return child.parent = this;
 		}
 	}, {
-		key: "addChildAt",
+		key: 'addChildAt',
 		value: function addChildAt(child, atIndex) {
 			this.children.splice(atIndex, 0, child);
 			return child.parent = this;
 		}
 	}, {
-		key: "addBefore",
+		key: 'addBefore',
 		value: function addBefore(childToAdd, targetChild) {
 			var index = this.children.indexOf(targetChild);
 			return this.addChildAt(childToAdd, index);
 		}
 	}, {
-		key: "addAfter",
+		key: 'addAfter',
 		value: function addAfter(childToAdd, targetChild) {
 			var index = this.children.indexOf(targetChild);
 			return this.addChildAt(childToAdd, index + 1);
 		}
 	}, {
-		key: "replaceChild",
+		key: 'replaceChild',
 		value: function replaceChild(childToReplace, newChild) {
 			var index = this.children.indexOf(childToReplace);
 			this.children[index] = newChild;
@@ -3381,12 +3345,12 @@ var MockElement = function () {
 }();
 
 Object.defineProperties(MockElement.prototype, {
-	"firstChild": {
+	firstChild: {
 		get: function get() {
 			return this.children[0];
 		}
 	},
-	"lastChild": {
+	lastChild: {
 		get: function get() {
 			return this.children[this.children.length - 1];
 		}
@@ -3668,7 +3632,7 @@ var VirtualSelection = function () {
 }();
 
 Object.defineProperties(VirtualSelection.prototype, {
-	"type": {
+	type: {
 		get: function get() {
 			switch (false) {
 				case !((this.start != null ? this.start.chunk : undefined) == null) && !((this.end != null ? this.end.chunk : undefined) == null):
@@ -3683,7 +3647,7 @@ Object.defineProperties(VirtualSelection.prototype, {
 		}
 	},
 
-	"all": {
+	all: {
 		get: function get() {
 			switch (this.type) {
 				case 'chunkSpan':
@@ -3697,7 +3661,8 @@ Object.defineProperties(VirtualSelection.prototype, {
 
 					return all;
 
-				case 'textSpan':case 'caret':
+				case 'textSpan':
+				case 'caret':
 					return all = [this.start.chunk];
 
 				default:
@@ -3706,7 +3671,7 @@ Object.defineProperties(VirtualSelection.prototype, {
 		}
 	},
 
-	"inbetween": {
+	inbetween: {
 		get: function get() {
 			if (this.type !== 'chunkSpan') {
 				return [];
@@ -3761,7 +3726,7 @@ var defaults = new Map();
 // this is editor stuff only
 var insertItems = new Map();
 var registeredToolbarItems = {
-	'separator': { id: 'separator', type: 'separator' }
+	separator: { id: 'separator', type: 'separator' }
 };
 var toolbarItems = [];
 var textListeners = [];
@@ -4023,49 +3988,49 @@ var TextGroupCursor = function TextGroupCursor(virtualCursor) {
 
 Object.defineProperties(TextGroupCursor.prototype, {
 	isTextStart: {
-		"get": function get() {
+		get: function get() {
 			return this.offset === 0;
 		}
 	},
 
 	isTextEnd: {
-		"get": function get() {
+		get: function get() {
 			return this.offset === this.text.length;
 		}
 	},
 
 	isFirstText: {
-		"get": function get() {
+		get: function get() {
 			return this.groupIndex === 0;
 		}
 	},
 
 	isLastText: {
-		"get": function get() {
+		get: function get() {
 			return this.groupIndex === this.textGroup.length - 1;
 		}
 	},
 
 	isGroupStart: {
-		"get": function get() {
+		get: function get() {
 			return this.isTextStart && this.isFirstText;
 		}
 	},
 
 	isGroupEnd: {
-		"get": function get() {
+		get: function get() {
 			return this.isTextEnd && this.isLastText;
 		}
 	},
 
 	textGroup: {
-		"get": function get() {
+		get: function get() {
 			return this.virtualCursor.chunk.modelState.textGroup;
 		}
 	},
 
 	groupIndex: {
-		"get": function get() {
+		get: function get() {
 			if (this.virtualCursor.data != null) {
 				return this.virtualCursor.data.groupIndex;
 			} else {
@@ -4075,7 +4040,7 @@ Object.defineProperties(TextGroupCursor.prototype, {
 	},
 
 	offset: {
-		"get": function get() {
+		get: function get() {
 			if (this.virtualCursor.data != null) {
 				return this.virtualCursor.data.offset;
 			} else {
@@ -4085,13 +4050,13 @@ Object.defineProperties(TextGroupCursor.prototype, {
 	},
 
 	textGroupItem: {
-		"get": function get() {
+		get: function get() {
 			return this.virtualCursor.chunk.modelState.textGroup.get(this.virtualCursor.data.groupIndex);
 		}
 	},
 
 	text: {
-		"get": function get() {
+		get: function get() {
 			return this.textGroupItem.text;
 		}
 	}
@@ -4158,8 +4123,8 @@ exports.default = TextGroupItem = function () {
 }();
 
 Object.defineProperties(TextGroupItem.prototype, {
-	"index": {
-		"get": function get() {
+	index: {
+		get: function get() {
 			if (this.parent === null) {
 				return -1;
 			}
@@ -4380,7 +4345,10 @@ TextGroupSelection.getTextStartCursor = function (chunk, groupIndex) {
 };
 
 TextGroupSelection.getTextEndCursor = function (chunk, groupIndex) {
-	var virtCur = new _virtualCursor2.default(chunk, { groupIndex: groupIndex, offset: chunk.modelState.textGroup.get(groupIndex).text.length });
+	var virtCur = new _virtualCursor2.default(chunk, {
+		groupIndex: groupIndex,
+		offset: chunk.modelState.textGroup.get(groupIndex).text.length
+	});
 	return new _textGroupCursor2.default(virtCur);
 };
 
@@ -5170,38 +5138,38 @@ var TextGroup = function () {
 }();
 
 Object.defineProperties(TextGroup.prototype, {
-	"length": {
-		"get": function get() {
+	length: {
+		get: function get() {
 			return this.items.length;
 		}
 	},
 
-	"first": {
-		"get": function get() {
+	first: {
+		get: function get() {
 			return this.items[0];
 		}
 	},
 
-	"last": {
-		"get": function get() {
+	last: {
+		get: function get() {
 			return this.items[this.items.length - 1];
 		}
 	},
 
-	"isFull": {
-		"get": function get() {
+	isFull: {
+		get: function get() {
 			return this.items.length === this.maxItems;
 		}
 	},
 
-	"isEmpty": {
-		"get": function get() {
+	isEmpty: {
+		get: function get() {
 			return this.items.length === 0;
 		}
 	},
 
-	"isBlank": {
-		"get": function get() {
+	isBlank: {
+		get: function get() {
 			return this.isEmpty || this.items.length === 1 && this.first.text.length === 0;
 		}
 	}
@@ -5981,7 +5949,7 @@ var StyleableTextComponent = function (_React$Component) {
 				case 'a':
 					if ((el.attrs != null ? el.attrs.href : undefined) != null) {
 						attrs.href = el.attrs.href;
-						attrs.target = "_blank";
+						attrs.target = '_blank';
 					}
 					break;
 
@@ -6005,7 +5973,7 @@ var StyleableTextComponent = function (_React$Component) {
 								{ key: key.counter++ },
 								_textConstants.EMPTY_CHAR
 							);
-						} else if (child.text.charAt(child.text.length - 1) === "\n") {
+						} else if (child.text.charAt(child.text.length - 1) === '\n') {
 							// Hack to force the display of a blank line that has no content
 							return React.createElement(
 								'span',
@@ -6192,14 +6160,14 @@ var wrapElement = function wrapElement(styleRange, nodeToWrap, text) {
 			return root;
 
 		case '_comment':
-			newChild = new _mockElement2.default('span', (0, _objectAssign2.default)({ 'class': 'comment' }, styleRange.data));
+			newChild = new _mockElement2.default('span', (0, _objectAssign2.default)({ class: 'comment' }, styleRange.data));
 			nodeToWrap.parent.replaceChild(nodeToWrap, newChild);
 			newChild.addChild(nodeToWrap);
 			nodeToWrap.text = text;
 			return newChild;
 
 		case '_latex':
-			newChild = new _mockElement2.default('span', (0, _objectAssign2.default)({ 'class': 'latex' }, styleRange.data));
+			newChild = new _mockElement2.default('span', (0, _objectAssign2.default)({ class: 'latex' }, styleRange.data));
 			nodeToWrap.parent.replaceChild(nodeToWrap, newChild);
 			newChild.addChild(nodeToWrap);
 			var html = _katex2.default.renderToString(text);
@@ -6398,7 +6366,9 @@ var sanitize = function sanitize(node) {
 				var attr = _step.value;
 
 				switch (attr.name) {
-					case 'href':case 'cite':case 'style':
+					case 'href':
+					case 'cite':
+					case 'style':
 						true; //do nothing
 						break;
 					default:
@@ -6551,8 +6521,6 @@ exports.default = function () {
 	return getId();
 };
 
-;
-
 /***/ }),
 /* 41 */
 /***/ (function(module, exports, __webpack_require__) {
@@ -6624,7 +6592,10 @@ var FocusableChunk = function (_React$Component) {
 
 			return React.createElement(
 				'div',
-				{ className: 'focusable-chunk anchor-container' + (className ? ' ' + className : ''), contentEditable: 'false' },
+				{
+					className: 'focusable-chunk anchor-container' + (className ? ' ' + className : ''),
+					contentEditable: false
+				},
 				React.createElement(_anchor2.default, _extends({}, this.props, { name: 'main', ref: 'anchor' })),
 				this.props.children
 			);
@@ -6818,16 +6789,20 @@ var NonEditableChunk = function (_React$Component) {
 	}
 
 	_createClass(NonEditableChunk, [{
-		key: "render",
+		key: 'render',
 		value: function render() {
 			return React.createElement(
-				"div",
-				{ className: "non-editable-chunk" + (this.props.className ? " " + this.props.className : ''), contentEditable: "false", "data-indent": this.props.indent },
+				'div',
+				{
+					className: 'non-editable-chunk' + (this.props.className ? ' ' + this.props.className : ''),
+					contentEditable: false,
+					'data-indent': this.props.indent
+				},
 				this.props.children
 			);
 		}
 	}], [{
-		key: "defaultProps",
+		key: 'defaultProps',
 		get: function get() {
 			return { indent: 0 };
 		}
@@ -6934,7 +6909,7 @@ exports.default = function (chunk, targetTextGroupItem) {
 
 			if (chunk.getSelectionStyles().a == null) {
 				if (link[2].indexOf('http') !== 0) {
-					link[2] = "http://" + link[2];
+					link[2] = 'http://' + link[2];
 				}
 				chunk.styleSelection('a', { href: link[2] });
 
@@ -7069,35 +7044,33 @@ exports.default = function (chunk, targetTextGroupItem) {
 var regex = new RegExp(
 // "^" +
 // protocol identifier
-"(?:(?:https?)://)?" +
+'(?:(?:https?)://)?' +
 // user:pass authentication
-"(?:\\S+(?::\\S*)?@)?" + "(?:" +
+'(?:\\S+(?::\\S*)?@)?' + '(?:' +
 // IP address exclusion
 // private & local networks
-"(?!(?:10|127)(?:\\.\\d{1,3}){3})" + "(?!(?:169\\.254|192\\.168)(?:\\.\\d{1,3}){2})" + "(?!172\\.(?:1[6-9]|2\\d|3[0-1])(?:\\.\\d{1,3}){2})" +
+'(?!(?:10|127)(?:\\.\\d{1,3}){3})' + '(?!(?:169\\.254|192\\.168)(?:\\.\\d{1,3}){2})' + '(?!172\\.(?:1[6-9]|2\\d|3[0-1])(?:\\.\\d{1,3}){2})' +
 // IP address dotted notation octets
 // excludes loopback network 0.0.0.0
 // excludes reserved space >= 224.0.0.0
 // excludes network & broacast addresses
 // (first & last IP address of each class)
-"(?:[1-9]\\d?|1\\d\\d|2[01]\\d|22[0-3])" + "(?:\\.(?:1?\\d{1,2}|2[0-4]\\d|25[0-5])){2}" + "(?:\\.(?:[1-9]\\d?|1\\d\\d|2[0-4]\\d|25[0-4]))" + "|" +
+'(?:[1-9]\\d?|1\\d\\d|2[01]\\d|22[0-3])' + '(?:\\.(?:1?\\d{1,2}|2[0-4]\\d|25[0-5])){2}' + '(?:\\.(?:[1-9]\\d?|1\\d\\d|2[0-4]\\d|25[0-4]))' + '|' +
 // host name
-"(?:(?:[a-z\\u00a1-\\uffff0-9]-*)*[a-z\\u00a1-\\uffff0-9]+)" +
+'(?:(?:[a-z\\u00a1-\\uffff0-9]-*)*[a-z\\u00a1-\\uffff0-9]+)' +
 // domain name
-"(?:\\.(?:[a-z\\u00a1-\\uffff0-9]-*)*[a-z\\u00a1-\\uffff0-9]+)*" +
+'(?:\\.(?:[a-z\\u00a1-\\uffff0-9]-*)*[a-z\\u00a1-\\uffff0-9]+)*' +
 // TLD identifier
-"(?:\\.(?:[a-z\\u00a1-\\uffff]{2,}))" +
+'(?:\\.(?:[a-z\\u00a1-\\uffff]{2,}))' +
 // TLD may end with dot
-"\\.?" + ")" +
+'\\.?' + ')' +
 // port number
-"(?::\\d{2,5})?" +
+'(?::\\d{2,5})?' +
 // resource path
-"(?:[/?#]\\S*)?" //+
-, "gi"
+'(?:[/?#]\\S*)?', //+
+'gi'
 // "$", "i"
 );
-
-;
 
 /***/ }),
 /* 47 */
@@ -7343,7 +7316,6 @@ var deleteSelection = function deleteSelection(selection) {
 	// vs = selection.virtual
 	// type = vs.type
 
-
 	// console.clear()
 	// console.log 'deleteSelection'
 	// console.log type
@@ -7472,8 +7444,6 @@ var _oboModel2 = _interopRequireDefault(_oboModel);
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
-;
-
 /***/ }),
 /* 51 */
 /***/ (function(module, exports, __webpack_require__) {
@@ -7490,9 +7460,11 @@ exports.default = function (componentClass, position, referenceChunk, selection,
 
 	switch (position) {
 		case 'before':
-			referenceChunk.addChildBefore(newChunk);break;
+			referenceChunk.addChildBefore(newChunk);
+			break;
 		case 'after':
-			referenceChunk.addChildAfter(newChunk);break;
+			referenceChunk.addChildAfter(newChunk);
+			break;
 	}
 
 	newChunk.selectStart();
@@ -7505,8 +7477,6 @@ var _oboModel = __webpack_require__(1);
 var _oboModel2 = _interopRequireDefault(_oboModel);
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
-
-;
 
 /***/ }),
 /* 52 */
@@ -7757,7 +7727,13 @@ var SingleInputBubble = function (_React$Component) {
 					React.createElement(
 						'form',
 						{ className: 'interactable', onSubmit: this.onSubmit.bind(this) },
-						React.createElement('input', { ref: 'input', type: 'text', value: this.props.value, onChange: this.onChange.bind(this), onKeyUp: this.onKeyUp.bind(this) }),
+						React.createElement('input', {
+							ref: 'input',
+							type: 'text',
+							value: this.props.value,
+							onChange: this.onChange.bind(this),
+							onKeyUp: this.onKeyUp.bind(this)
+						}),
 						React.createElement(
 							'button',
 							{ onClick: this.onSubmit.bind(this) },
@@ -7820,7 +7796,9 @@ var Question = function (_React$Component) {
 				),
 				React.createElement(
 					'button',
-					{ onClick: this.props.modal.onButtonClick.bind(this, this.props.cancelOnReject ? this.props.cancel : this.props.reject) },
+					{
+						onClick: this.props.modal.onButtonClick.bind(this, this.props.cancelOnReject ? this.props.cancel : this.props.reject)
+					},
 					this.props.rejectButtonLabel || 'No'
 				),
 				React.createElement(
@@ -7949,9 +7927,28 @@ var OboComponent = function (_React$Component) {
 
 			var isFocussed = _focusUtil2.default.getFocussedComponent(this.props.moduleData.focusState) === this.props.model;
 
+			var otherProps = {};
+			for (var propKey in this.props) {
+				switch (propKey) {
+					case 'model':
+					case 'moduleData':
+					case 'tag':
+					case 'className':
+					case 'children':
+						// do nothing
+						break;
+
+					default:
+						if (this.props.hasOwnProperty(propKey)) {
+							otherProps[propKey] = this.props[propKey];
+						}
+						break;
+				}
+			}
+
 			return React.createElement(
 				Tag,
-				_extends({}, this.props, {
+				_extends({}, otherProps, {
 					className: className,
 					id: 'obo-' + this.props.model.get('id'),
 					'data-obo-component': true,
@@ -8020,7 +8017,11 @@ var TextMenu = function (_React$Component) {
 				);
 			}
 
-			return React.createElement('img', { src: command.image, alt: command.label, title: command.label });
+			return React.createElement('img', {
+				src: command.image,
+				alt: command.label,
+				title: command.label
+			});
 		}
 	}, {
 		key: 'onMouseDown',
@@ -8053,11 +8054,14 @@ var TextMenu = function (_React$Component) {
 				return null;
 			}
 
-			return React.createElement('div', { className: 'editor--components--text-menu', style: {
+			return React.createElement('div', {
+				className: 'editor--components--text-menu',
+				style: {
 					left: selRect.left + selRect.width / 2 - ctrlRect.left + 'px',
 					top: selRect.top - ctrlRect.top + 'px'
 					// height: HEIGHT + 'px'
-				} }, this.props.commands.map(function (command, index) {
+				}
+			}, this.props.commands.map(function (command, index) {
 				return React.createElement('a', {
 					onMouseDown: _this2.onMouseDown.bind(_this2, command.label),
 					key: index
@@ -8597,13 +8601,13 @@ var Legacy = {
 		var chunks = [];
 
 		// get rid of all the textformat tags
-		html = html.replace(patternTF, "");
+		html = html.replace(patternTF, '');
 
 		// add <ul></ul> arround list items
-		html = html.replace(patternAddUL, "<ul><li>$1</li></ul>");
+		html = html.replace(patternAddUL, '<ul><li>$1</li></ul>');
 
 		//kill extra </ul><ul> that are back to back - this will make proper lists
-		html = html.replace(patternRemoveExtraUL, "");
+		html = html.replace(patternRemoveExtraUL, '');
 
 		var el = document.createElement('div');
 		document.body.appendChild(el);
@@ -8725,7 +8729,7 @@ var makeRequest = function makeRequest(method, url, data, callback) {
 			var v = data[k];
 			a.push(k + '=' + v);
 		}
-		data = a.join("&");
+		data = a.join('&');
 
 		return request.send(data);
 	} else {
@@ -8772,13 +8776,13 @@ var API = function API() {
 };
 
 Object.defineProperties(API.prototype, {
-	"module": {
+	module: {
 		get: function get() {
 			return new APIModule();
 		}
 	},
 
-	"chunk": {
+	chunk: {
 		get: function get() {
 			return new APIChunk();
 		}
@@ -9224,7 +9228,7 @@ var ChunkSelection = function () {
 }();
 
 Object.defineProperties(ChunkSelection.prototype, {
-	"type": {
+	type: {
 		get: function get() {
 			if ((this.start != null ? this.start.chunk : undefined) == null || (this.end != null ? this.end.chunk : undefined) == null || !this.start.isText || !this.end.isText) {
 				return 'none';
@@ -9434,7 +9438,6 @@ var VirtualCursorData = function () {
 
 // toObject: () ->
 // Object.assign({}, @content)
-
 
 exports.default = VirtualCursorData;
 

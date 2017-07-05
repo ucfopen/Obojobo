@@ -2,28 +2,25 @@ import styleableTextRenderer from '../../../src/scripts/common/text/styleable-te
 import StyleableText from '../../../src/scripts/common/text/styleable-text'
 
 // convience function to easily compare a MockElement
-let mockElToHTMLString = (el) => {
-	if(el.nodeType === 'text')
-	{
-		if(el.html) return el.html
+let mockElToHTMLString = el => {
+	if (el.nodeType === 'text') {
+		if (el.html) return el.html
 		return el.text
 	}
 
 	let attrs = []
-	for(let attrName in el.attrs)
-	{
+	for (let attrName in el.attrs) {
 		attrs.push(`${attrName}="${el.attrs[attrName]}"`)
 	}
-	if(attrs.length > 0)
-	{
+	if (attrs.length > 0) {
 		attrs = ' ' + attrs.join(' ')
-	}
-	else
-	{
+	} else {
 		attrs = ''
 	}
 
-	return `<${el.type}${attrs}>${el.children.map( (child) => mockElToHTMLString(child) ).join('')}</${el.type}>`
+	return `<${el.type}${attrs}>${el.children
+		.map(child => mockElToHTMLString(child))
+		.join('')}</${el.type}>`
 }
 
 describe('styleableTextRenderer', () => {
@@ -31,18 +28,22 @@ describe('styleableTextRenderer', () => {
 		let st = new StyleableText('Test')
 		let mockEl = styleableTextRenderer(st)
 
-		expect(mockElToHTMLString(mockEl)).toEqual(`
+		expect(mockElToHTMLString(mockEl)).toEqual(
+			`
 			<span>Test</span>
-		`.replace(/[\t\n]/g, ''))
+		`.replace(/[\t\n]/g, '')
+		)
 	})
 
 	test('Empty string', () => {
 		let st = new StyleableText()
 		let mockEl = styleableTextRenderer(st)
 
-		expect(mockElToHTMLString(mockEl)).toEqual(`
+		expect(mockElToHTMLString(mockEl)).toEqual(
+			`
 			<span></span>
-		`.replace(/[\t\n]/g, ''))
+		`.replace(/[\t\n]/g, '')
+		)
 	})
 
 	test('Styled text', () => {
@@ -50,19 +51,23 @@ describe('styleableTextRenderer', () => {
 		st.styleText('b', 4, 7)
 		let mockEl = styleableTextRenderer(st)
 
-		expect(mockElToHTMLString(mockEl)).toEqual(`
+		expect(mockElToHTMLString(mockEl)).toEqual(
+			`
 			<span>dog <b>fox</b> cat</span>
-		`.replace(/[\t\n]/g, ''))
+		`.replace(/[\t\n]/g, '')
+		)
 	})
 
 	test('Styled text with attributes', () => {
 		let st = new StyleableText('dog fox cat')
-		st.styleText('a', 4, 7, { href:'www.site.com' })
+		st.styleText('a', 4, 7, { href: 'www.site.com' })
 		let mockEl = styleableTextRenderer(st)
 
-		expect(mockElToHTMLString(mockEl)).toEqual(`
+		expect(mockElToHTMLString(mockEl)).toEqual(
+			`
 			<span>dog <a href="www.site.com">fox</a> cat</span>
-		`.replace(/[\t\n]/g, ''))
+		`.replace(/[\t\n]/g, '')
+		)
 	})
 
 	test('Nested styles', () => {
@@ -75,7 +80,8 @@ describe('styleableTextRenderer', () => {
 		// Style order, as defined by the ORDER constant in styleable-text-renderer
 		// is b, then del, the i.
 
-		expect(mockElToHTMLString(mockEl)).toEqual(`
+		expect(mockElToHTMLString(mockEl)).toEqual(
+			`
 			<span>
 				<i>dog </i>
 				<b>
@@ -88,17 +94,20 @@ describe('styleableTextRenderer', () => {
 				<i> c</i>
 				at
 			</span>
-		`.replace(/[\t\n]/g, ''))
+		`.replace(/[\t\n]/g, '')
+		)
 	})
 
 	test('Comment', () => {
 		let st = new StyleableText('dog fox cat')
-		st.styleText('_comment', 4, 7, { a:1 })
+		st.styleText('_comment', 4, 7, { a: 1 })
 		let mockEl = styleableTextRenderer(st)
 
-		expect(mockElToHTMLString(mockEl)).toEqual(`
+		expect(mockElToHTMLString(mockEl)).toEqual(
+			`
 			<span>dog <span class="comment" a="1">fox</span> cat</span>
-		`.replace(/[\t\n]/g, ''))
+		`.replace(/[\t\n]/g, '')
+		)
 	})
 
 	test('Super/Subscripts', () => {
@@ -107,7 +116,8 @@ describe('styleableTextRenderer', () => {
 		st.styleText('sup', 8, 11, -2)
 		let mockEl = styleableTextRenderer(st)
 
-		expect(mockElToHTMLString(mockEl)).toEqual(`
+		expect(mockElToHTMLString(mockEl)).toEqual(
+			`
 			<span>
 				dog-
 				<sup>fox</sup>
@@ -118,7 +128,8 @@ describe('styleableTextRenderer', () => {
 					</sub>
 				</sub>
 			</span>
-		`.replace(/[\t\n]/g, ''))
+		`.replace(/[\t\n]/g, '')
+		)
 	})
 
 	test.only('Nested Super/Subscripts', () => {
@@ -129,7 +140,8 @@ describe('styleableTextRenderer', () => {
 
 		let mockEl = styleableTextRenderer(st)
 
-		expect(mockElToHTMLString(mockEl)).toEqual(`
+		expect(mockElToHTMLString(mockEl)).toEqual(
+			`
 			<span>
 				<sup>
 					<sup>
@@ -155,6 +167,7 @@ describe('styleableTextRenderer', () => {
 					</sup>
 				</sup>
 			</span>
-		`.replace(/[\t\n]/g, ''))
+		`.replace(/[\t\n]/g, '')
+		)
 	})
 })

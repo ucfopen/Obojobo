@@ -7,7 +7,6 @@ import insertButton from 'svg-url-loader?noquotes!./assets/table-insert.svg';
 import Common from 'Common'
 
 export default class TableControls extends React.Component {
-
 	addRow(event) {
 		event.preventDefault();
 		event.stopPropagation();

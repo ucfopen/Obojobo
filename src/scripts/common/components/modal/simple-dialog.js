@@ -1,7 +1,7 @@
-import './simple-dialog.scss';
+import './simple-dialog.scss'
 
-import ModalUtil from '../../../common/util/modal-util';
-import Dialog from '../../../common/components/modal/dialog';
+import ModalUtil from '../../../common/util/modal-util'
+import Dialog from '../../../common/components/modal/dialog'
 
 export default class SimpleDialog extends React.Component {
 	static get defaultProps() {
@@ -12,15 +12,19 @@ export default class SimpleDialog extends React.Component {
 			cancelOk: false,
 			title: null,
 			width: null,
-			onCancel() { return ModalUtil.hide(); },
-			onConfirm() { return ModalUtil.hide(); }
-		};
+			onCancel() {
+				return ModalUtil.hide()
+			},
+			onConfirm() {
+				return ModalUtil.hide()
+			}
+		}
 	}
 
 	render() {
-		let buttons;
-		let cancelButton = null;
-		let confirmButton = null;
+		let buttons
+		let cancelButton = null
+		let confirmButton = null
 		if (this.props.ok) {
 			buttons = [
 				{
@@ -28,8 +32,7 @@ export default class SimpleDialog extends React.Component {
 					onClick: this.props.onConfirm,
 					default: true
 				}
-			];
-
+			]
 		} else if (this.props.noOrYes) {
 			buttons = [
 				{
@@ -42,8 +45,7 @@ export default class SimpleDialog extends React.Component {
 					onClick: this.props.onConfirm,
 					default: true
 				}
-			];
-
+			]
 		} else if (this.props.yesOrNo) {
 			buttons = [
 				{
@@ -56,8 +58,7 @@ export default class SimpleDialog extends React.Component {
 					onClick: this.props.onCancel,
 					default: true
 				}
-			];
-
+			]
 		} else if (this.props.cancelOk) {
 			buttons = [
 				{
@@ -70,13 +71,15 @@ export default class SimpleDialog extends React.Component {
 					onClick: this.props.onConfirm,
 					default: true
 				}
-			];
+			]
 		}
 
-		return <div className="obojobo-draft--components--modal--simple-dialog">
-			<Dialog centered buttons={buttons} title={this.props.title} width={this.props.width}>
-				{this.props.children}
-			</Dialog>
-		</div>;
+		return (
+			<div className="obojobo-draft--components--modal--simple-dialog">
+				<Dialog centered buttons={buttons} title={this.props.title} width={this.props.width}>
+					{this.props.children}
+				</Dialog>
+			</div>
+		)
 	}
 }

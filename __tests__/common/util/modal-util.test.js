@@ -2,26 +2,22 @@ import ModalUtil from '../../../src/scripts/common/util/modal-util'
 import Dispatcher from '../../../src/scripts/common/flux/dispatcher'
 
 jest.mock('../../../src/scripts/common/flux/dispatcher', () => {
-	return ({
+	return {
 		trigger: jest.fn(),
 		on: jest.fn(),
 		off: jest.fn()
-	})
+	}
 })
-
 
 describe('ModalUtil', () => {
 	test('show will dispatch the correct event', () => {
-		ModalUtil.show({ example:'component' })
+		ModalUtil.show({ example: 'component' })
 
-		expect(Dispatcher.trigger).toHaveBeenCalledWith(
-			'modal:show',
-			{
-				value: {
-					component: { example:'component' }
-				}
+		expect(Dispatcher.trigger).toHaveBeenCalledWith('modal:show', {
+			value: {
+				component: { example: 'component' }
 			}
-		)
+		})
 	})
 
 	test('hide will dispatch the correct event', () => {
@@ -31,13 +27,10 @@ describe('ModalUtil', () => {
 	})
 
 	test('getCurrentModal returns the current modal at the top of the display stack', () => {
-		expect(ModalUtil.getCurrentModal(
-			{
-				modals: [
-					{ first:'modal' },
-					{ second:'modal' }
-				]
-			}
-		)).toEqual({ first:'modal' })
+		expect(
+			ModalUtil.getCurrentModal({
+				modals: [{ first: 'modal' }, { second: 'modal' }]
+			})
+		).toEqual({ first: 'modal' })
 	})
 })

@@ -1,92 +1,91 @@
-let CommandHandler;
-let { Editor } = window;
+let CommandHandler
+let { Editor } = window
 import Common from 'Common'
 
-let { TextGroupCommandHandler } = Editor.chunk.textChunk;
-let { TextGroupSelection } = Common.textGroup;
-let { Chunk } = Common.models;
+let { TextGroupCommandHandler } = Editor.chunk.textChunk
+let { TextGroupSelection } = Common.textGroup
+let { Chunk } = Common.models
 
 export default (CommandHandler = class CommandHandler extends TextGroupCommandHandler {
 	recalculateStartValues(refTextGroup, listStyles) {
-		let indentLevel;
-		let indents = {};
+		let indentLevel
+		let indents = {}
 
 		for (let item of Array.from(refTextGroup.items)) {
-			indentLevel = item.data.indent;
-			if ((indents[indentLevel] == null)) {
-				indents[indentLevel] = 1;
+			indentLevel = item.data.indent
+			if (indents[indentLevel] == null) {
+				indents[indentLevel] = 1
 			} else {
-				indents[indentLevel]++;
+				indents[indentLevel]++
 			}
 		}
 
 		return (() => {
-			let result = [];
+			let result = []
 			for (indentLevel in indents) {
-				let startAddition = indents[indentLevel];
-				let item1;
-				let style = listStyles.getSetStyles(indentLevel);
+				let startAddition = indents[indentLevel]
+				let item1
+				let style = listStyles.getSetStyles(indentLevel)
 				if (style.start !== null) {
-					item1 = style.start += startAddition;
+					item1 = style.start += startAddition
 				}
-				result.push(item1);
+				result.push(item1)
 			}
-			return result;
-		})();
+			return result
+		})()
 	}
 
 	onEnter(selection, chunk, shiftKey) {
-		let afterNode;
-		chunk.markDirty();
+		let afterNode
+		chunk.markDirty()
 
-		let tgs = new TextGroupSelection(chunk, selection.virtual);
-		let data = chunk.modelState;
+		let tgs = new TextGroupSelection(chunk, selection.virtual)
+		let data = chunk.modelState
 
-		let item = data.textGroup.get(tgs.start.groupIndex);
+		let item = data.textGroup.get(tgs.start.groupIndex)
 
 		if (item.text.length !== 0) {
-			return chunk.splitText();
+			return chunk.splitText()
 		}
-
 
 		// if item.text.length is 0
 		if (item.data.indent > 0) {
-			item.data.indent--;
+			item.data.indent--
 
-			tgs.setCaretToTextStart(tgs.start.groupIndex);
+			tgs.setCaretToTextStart(tgs.start.groupIndex)
 
-			return;
+			return
 		}
 
-		let caretInLastItem = tgs.start.text === data.textGroup.last.text;
+		let caretInLastItem = tgs.start.text === data.textGroup.last.text
 
 		if (!caretInLastItem) {
-			afterNode = chunk.clone();
-			afterNode.modelState.textGroup = data.textGroup.splitBefore(tgs.start.groupIndex + 1);
+			afterNode = chunk.clone()
+			afterNode.modelState.textGroup = data.textGroup.splitBefore(tgs.start.groupIndex + 1)
 		}
 
-		let inbetweenNode = Chunk.create();
+		let inbetweenNode = Chunk.create()
 
-		data.textGroup.remove(tgs.start.groupIndex);
+		data.textGroup.remove(tgs.start.groupIndex)
 
-		chunk.addChildAfter(inbetweenNode);
+		chunk.addChildAfter(inbetweenNode)
 
 		if (!caretInLastItem) {
-			this.recalculateStartValues(data.textGroup, afterNode.modelState.listStyles);
-			inbetweenNode.addChildAfter(afterNode);
+			this.recalculateStartValues(data.textGroup, afterNode.modelState.listStyles)
+			inbetweenNode.addChildAfter(afterNode)
 		}
 
 		if (chunk.modelState.textGroup.isEmpty) {
-			chunk.remove();
+			chunk.remove()
 		}
 
-		return inbetweenNode.selectStart();
+		return inbetweenNode.selectStart()
 	}
-		// return
+	// return
 
-		// data.textGroup.splitText tgs.start.groupIndex, tgs.start.offset
+	// data.textGroup.splitText tgs.start.groupIndex, tgs.start.offset
 
-		// tgs.setCaretToTextStart tgs.start.groupIndex + 1
+	// tgs.setCaretToTextStart tgs.start.groupIndex + 1
 
 	// getTextMenuCommands: (selection, chunk) ->
 	// 	commands = super selection, chunk
@@ -104,76 +103,80 @@ export default (CommandHandler = class CommandHandler extends TextGroupCommandHa
 	// 	commands
 
 	deleteSelection(selection, chunk) {
-		let selType = selection.virtual.type;
-		let { textGroup } = chunk.modelState;
+		let selType = selection.virtual.type
+		let { textGroup } = chunk.modelState
 
-		super.deleteSelection(selection, chunk);
+		super.deleteSelection(selection, chunk)
 
 		// if more than one chunk was selected and the whole list was deleted then assume
 		// we want to revert this list to a Text.
-		if ((textGroup.length === 1) && (textGroup.first.text.length === 0) && (selType === 'chunkSpan')) {
-			return chunk.revert();
+		if (textGroup.length === 1 && textGroup.first.text.length === 0 && selType === 'chunkSpan') {
+			return chunk.revert()
 		}
 	}
 
 	deleteText(selection, chunk, deleteForwards) {
-		chunk.markDirty();
+		chunk.markDirty()
 
-		console.log('deleteText', this, this.recalculateStartValues);
+		console.log('deleteText', this, this.recalculateStartValues)
 
-		let tgs = new TextGroupSelection(chunk, selection.virtual);
-		let data = chunk.modelState;
+		let tgs = new TextGroupSelection(chunk, selection.virtual)
+		let data = chunk.modelState
 
-		let s = tgs.start;
+		let s = tgs.start
 
 		// If backspacing at the start of one of the list items (that isn't the first)
-		if (!deleteForwards && !s.isFirstText && s.isTextStart && (s.textGroupItem.data.indent > 0)) {
+		if (!deleteForwards && !s.isFirstText && s.isTextStart && s.textGroupItem.data.indent > 0) {
 			//...then unindent
-			s.textGroupItem.data.indent--;
-			return true;
+			s.textGroupItem.data.indent--
+			return true
 		}
 
 		// if backspacing at the start of an item that is at minimum indent (and we're not attempting to un-indent the whole list)
-		if (!deleteForwards && s.isTextStart && (s.textGroupItem.data.indent === 0) && ((s.groupIndex > 0) || (data.indent === 0))) {
-			let bottom, top;
-			let newChunk = Chunk.create();
+		if (
+			!deleteForwards &&
+			s.isTextStart &&
+			s.textGroupItem.data.indent === 0 &&
+			(s.groupIndex > 0 || data.indent === 0)
+		) {
+			let bottom, top
+			let newChunk = Chunk.create()
 			//@TODO - this assumes too much, should use 'absorb'
-			newChunk.modelState.textGroup.first.text = s.textGroupItem.text;
+			newChunk.modelState.textGroup.first.text = s.textGroupItem.text
 
 			if (s.isFirstText) {
-				top    = chunk;
-				bottom = chunk.clone();
+				top = chunk
+				bottom = chunk.clone()
 
-				bottom.modelState.textGroup.toSlice(1);
-				this.recalculateStartValues(bottom.modelState.textGroup, top.modelState.listStyles);
+				bottom.modelState.textGroup.toSlice(1)
+				this.recalculateStartValues(bottom.modelState.textGroup, top.modelState.listStyles)
 
-				top.replaceWith(newChunk);
-				newChunk.addChildAfter(bottom);
-
+				top.replaceWith(newChunk)
+				newChunk.addChildAfter(bottom)
 			} else if (s.isLastText) {
-				top = chunk;
+				top = chunk
 
-				top.modelState.textGroup.toSlice(0, data.textGroup.length - 1);
+				top.modelState.textGroup.toSlice(0, data.textGroup.length - 1)
 
-				top.addChildAfter(newChunk);
+				top.addChildAfter(newChunk)
 			} else {
-				top    = chunk;
-				let middle = newChunk;
-				bottom = chunk.clone();
+				top = chunk
+				let middle = newChunk
+				bottom = chunk.clone()
 
-				top.modelState.textGroup.toSlice(0, s.groupIndex);
-				bottom.modelState.textGroup.toSlice(s.groupIndex + 2);
-				this.recalculateStartValues(top.modelState.textGroup, bottom.modelState.listStyles);
+				top.modelState.textGroup.toSlice(0, s.groupIndex)
+				bottom.modelState.textGroup.toSlice(s.groupIndex + 2)
+				this.recalculateStartValues(top.modelState.textGroup, bottom.modelState.listStyles)
 
-				top.addChildAfter(middle);
-				middle.addChildAfter(bottom);
+				top.addChildAfter(middle)
+				middle.addChildAfter(bottom)
 			}
 
-			newChunk.selectStart();
+			newChunk.selectStart()
 
-			return true;
+			return true
 		}
 
-		return super.deleteText(selection, chunk, deleteForwards);
+		return super.deleteText(selection, chunk, deleteForwards)
 	}
-});
+})

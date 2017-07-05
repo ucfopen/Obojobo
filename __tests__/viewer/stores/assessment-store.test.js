@@ -10,16 +10,16 @@ import NavUtil from '../../../src/scripts/viewer/util/nav-util'
 import QuestionUtil from '../../../src/scripts/viewer/util/question-util'
 
 jest.mock('../../../src/scripts/common/util/modal-util', () => {
-	return ({
+	return {
 		show: jest.fn()
-	})
+	}
 })
 
 jest.mock('../../../src/scripts/common/util/error-util', () => {
-	return ({
+	return {
 		show: jest.fn(),
 		errorResponse: jest.fn()
-	})
+	}
 })
 
 jest.mock('../../../src/scripts/viewer/util/api-util', () => {
@@ -31,7 +31,7 @@ jest.mock('../../../src/scripts/viewer/util/api-util', () => {
 
 describe('AssessmentStore', () => {
 	let getExampleAssessment = () => {
-		return ({
+		return {
 			id: 'rootId',
 			type: 'ObojoboDraft.Modules.Module',
 			children: [
@@ -50,12 +50,12 @@ describe('AssessmentStore', () => {
 					]
 				}
 			]
-		})
+		}
 	}
 
 	let mockValidStartAttempt = () => {
 		APIUtil.startAttempt.mockImplementationOnce(() => {
-			return (Promise.resolve({
+			return Promise.resolve({
 				status: 'ok',
 				value: {
 					attemptId: 'attemptId',
@@ -85,11 +85,11 @@ describe('AssessmentStore', () => {
 						]
 					}
 				}
-			}))
+			})
 		})
 	}
 
-	beforeEach((done) => {
+	beforeEach(done => {
 		jest.resetAllMocks()
 
 		AssessmentStore.init()
@@ -98,13 +98,13 @@ describe('AssessmentStore', () => {
 		QuestionStore.triggerChange = jest.fn()
 
 		// Need to make sure all the Obo components are loaded
-		Store.getItems((items) => {
+		Store.getItems(items => {
 			done()
 		})
 	})
 
 	it('should init state with a specific structure and return it', () => {
-		AssessmentStore.init();
+		AssessmentStore.init()
 
 		expect(AssessmentStore.getState()).toEqual({
 			assessments: {}
@@ -127,8 +127,8 @@ describe('AssessmentStore', () => {
 				endTime: '1/1/2017 0:05:20',
 				state: {
 					questions: [
-						{ id:'question1', type:'ObojoboDraft.Chunks.Question' },
-						{ id:'question2', type:'ObojoboDraft.Chunks.Question' }
+						{ id: 'question1', type: 'ObojoboDraft.Chunks.Question' },
+						{ id: 'question2', type: 'ObojoboDraft.Chunks.Question' }
 					]
 				}
 			},
@@ -138,14 +138,14 @@ describe('AssessmentStore', () => {
 				endTime: null,
 				state: {
 					questions: [
-						{ id:'question1', type:'ObojoboDraft.Chunks.Question' },
-						{ id:'questionNonExistant', type:'ObojoboDraft.Chunks.Question' }
+						{ id: 'question1', type: 'ObojoboDraft.Chunks.Question' },
+						{ id: 'questionNonExistant', type: 'ObojoboDraft.Chunks.Question' }
 					]
 				}
 			}
 		]
 
-		AssessmentStore.init(history);
+		AssessmentStore.init(history)
 
 		expect(AssessmentStore.getState()).toEqual({
 			assessments: {
@@ -159,8 +159,8 @@ describe('AssessmentStore', () => {
 							endTime: '1/1/2017 0:05:20',
 							state: {
 								questions: [
-									{ id:'question1', type:'ObojoboDraft.Chunks.Question' },
-									{ id:'question2', type:'ObojoboDraft.Chunks.Question' }
+									{ id: 'question1', type: 'ObojoboDraft.Chunks.Question' },
+									{ id: 'question2', type: 'ObojoboDraft.Chunks.Question' }
 								]
 							}
 						}
@@ -174,9 +174,9 @@ describe('AssessmentStore', () => {
 		expect(ModalUtil.show).toHaveBeenCalledTimes(1)
 	})
 
-	test("resuming an unfinished attempt hides the modal, starts the attempt and triggers a change", () => {
+	test('resuming an unfinished attempt hides the modal, starts the attempt and triggers a change', () => {
 		let originalStartAttempt = AssessmentStore.startAttempt
-		let unfinishedAttempt = {a:1}
+		let unfinishedAttempt = { a: 1 }
 
 		AssessmentStore.startAttempt = jest.fn()
 		ModalUtil.hide = jest.fn()
@@ -191,47 +191,47 @@ describe('AssessmentStore', () => {
 		AssessmentStore.startAttempt = originalStartAttempt
 	})
 
-	test("tryStartAttempt shows an error if no attempts are left and triggers a change", () => {
+	test('tryStartAttempt shows an error if no attempts are left and triggers a change', () => {
 		OboModel.create(getExampleAssessment())
 
 		APIUtil.startAttempt.mockImplementationOnce(() => {
-			return (Promise.resolve({
+			return Promise.resolve({
 				status: 'error',
 				value: {
 					message: 'Attempt limit reached'
 				}
-			}))
+			})
 		})
 
 		ErrorUtil.show = jest.fn()
 
-		return AssessmentStore.tryStartAttempt('assessmentId').then((res) => {
+		return AssessmentStore.tryStartAttempt('assessmentId').then(res => {
 			expect(ErrorUtil.show).toHaveBeenCalledTimes(1)
-			expect(AssessmentStore.triggerChange).toHaveBeenCalledTimes(1);
+			expect(AssessmentStore.triggerChange).toHaveBeenCalledTimes(1)
 		})
 	})
 
-	test("tryStartAttempt shows a generic error if an unrecognized error is thrown and triggers a change", () => {
+	test('tryStartAttempt shows a generic error if an unrecognized error is thrown and triggers a change', () => {
 		OboModel.create(getExampleAssessment())
 
 		APIUtil.startAttempt.mockImplementationOnce(() => {
-			return (Promise.resolve({
+			return Promise.resolve({
 				status: 'error',
 				value: {
 					message: 'Some unexpected error that was not accounted for'
 				}
-			}))
+			})
 		})
 
 		ErrorUtil.show = jest.fn()
 
-		return AssessmentStore.tryStartAttempt('assessmentId').then((res) => {
+		return AssessmentStore.tryStartAttempt('assessmentId').then(res => {
 			expect(ErrorUtil.errorResponse).toHaveBeenCalledTimes(1)
-			expect(AssessmentStore.triggerChange).toHaveBeenCalledTimes(1);
+			expect(AssessmentStore.triggerChange).toHaveBeenCalledTimes(1)
 		})
 	})
 
-	test("startAttempt injects question models, creates state, updates the nav and processes the onStartAttempt trigger", () => {
+	test('startAttempt injects question models, creates state, updates the nav and processes the onStartAttempt trigger', () => {
 		mockValidStartAttempt()
 		OboModel.create(getExampleAssessment())
 
@@ -243,7 +243,7 @@ describe('AssessmentStore', () => {
 
 		assessmentModel.processTrigger = jest.fn()
 
-		return AssessmentStore.tryStartAttempt('assessmentId').then((res) => {
+		return AssessmentStore.tryStartAttempt('assessmentId').then(res => {
 			expect(assessmentModel.children.length).toBe(2)
 			expect(qBank.children.length).toBe(2)
 			expect(qBank.children.at(0).id).toBe('q1')
@@ -256,51 +256,51 @@ describe('AssessmentStore', () => {
 		})
 	})
 
-	test("endAttempt shows an error if the endAttempt request fails and triggers a change", (done) => {
+	test('endAttempt shows an error if the endAttempt request fails and triggers a change', done => {
 		mockValidStartAttempt()
 		OboModel.create(getExampleAssessment())
 
 		APIUtil.endAttempt = jest.fn()
 		APIUtil.endAttempt.mockImplementationOnce(() => {
-			return (Promise.resolve({
+			return Promise.resolve({
 				status: 'error',
 				value: {
 					message: 'Some unexpected error that was not accounted for'
 				}
-			}))
+			})
 		})
 
 		ErrorUtil.errorResponse = jest.fn()
 
-		return AssessmentStore.tryStartAttempt('assessmentId').then( () => {
-			AssessmentStore.tryEndAttempt('assessmentId').then((res) => {
+		return AssessmentStore.tryStartAttempt('assessmentId').then(() => {
+			AssessmentStore.tryEndAttempt('assessmentId').then(res => {
 				expect(ErrorUtil.errorResponse).toHaveBeenCalledTimes(1)
 				expect(AssessmentStore.triggerChange).toHaveBeenCalledTimes(1)
-				done();
+				done()
 			})
 		})
 	})
 
-	test("endAttempt hides questions, resets responses, updates state, processes onEndAttempt trigger and triggers a change", (done) => {
+	test('endAttempt hides questions, resets responses, updates state, processes onEndAttempt trigger and triggers a change', done => {
 		mockValidStartAttempt()
 		OboModel.create(getExampleAssessment())
 
 		APIUtil.endAttempt = jest.fn()
 		APIUtil.endAttempt.mockImplementationOnce(() => {
-			return (Promise.resolve({
+			return Promise.resolve({
 				status: 'ok',
 				value: {
 					assessmentId: 'assessmentId'
 				}
-			}))
+			})
 		})
 		APIUtil.postEvent.mockImplementationOnce(() => {
-			return (Promise.resolve({
+			return Promise.resolve({
 				status: 'ok',
 				value: {
 					someResponse: 'goesHere'
 				}
-			}))
+			})
 		})
 
 		ErrorUtil.errorResponse = jest.fn()
@@ -308,40 +308,43 @@ describe('AssessmentStore', () => {
 		QuestionUtil.resetReponse = jest.fn()
 		OboModel.models.assessmentId.processTrigger = jest.fn()
 
-		return AssessmentStore.tryStartAttempt('assessmentId').then( () => {
-			AssessmentStore.tryRecordResponse('r1', { responseForR1:'someValue' }).then((res) => {
-				AssessmentStore.tryEndAttempt('assessmentId').then((res) => {
-					expect(ErrorUtil.errorResponse).toHaveBeenCalledTimes(0)
-					expect(QuestionUtil.hideQuestion).toHaveBeenCalledTimes(2)
-					expect(QuestionUtil.hideQuestion).toHaveBeenCalledWith('q1')
-					expect(QuestionUtil.hideQuestion).toHaveBeenCalledWith('q2')
-					expect(OboModel.models.assessmentId.processTrigger).toHaveBeenCalledWith('onEndAttempt')
-					expect(AssessmentStore.triggerChange).toHaveBeenCalledTimes(3)
+		return AssessmentStore.tryStartAttempt('assessmentId').then(() => {
+			AssessmentStore.tryRecordResponse('r1', { responseForR1: 'someValue' }).then(res => {
+				AssessmentStore.tryEndAttempt('assessmentId')
+					.then(res => {
+						expect(ErrorUtil.errorResponse).toHaveBeenCalledTimes(0)
+						expect(QuestionUtil.hideQuestion).toHaveBeenCalledTimes(2)
+						expect(QuestionUtil.hideQuestion).toHaveBeenCalledWith('q1')
+						expect(QuestionUtil.hideQuestion).toHaveBeenCalledWith('q2')
+						expect(OboModel.models.assessmentId.processTrigger).toHaveBeenCalledWith('onEndAttempt')
+						expect(AssessmentStore.triggerChange).toHaveBeenCalledTimes(3)
 
-					done()
-				})
-				.catch((e) => { console.log(e); })
+						done()
+					})
+					.catch(e => {
+						console.log(e)
+					})
 			})
 		})
 	})
 
-	test("recordResponse with a bad response will show an error message", (done) => {
+	test('recordResponse with a bad response will show an error message', done => {
 		mockValidStartAttempt()
 		OboModel.create(getExampleAssessment())
 
 		APIUtil.postEvent.mockImplementationOnce(() => {
-			return (Promise.resolve({
+			return Promise.resolve({
 				status: 'error',
 				value: {
 					someErrorInfo: 'goesHere'
 				}
-			}))
+			})
 		})
 
 		ErrorUtil.errorResponse = jest.fn()
 
-		return AssessmentStore.tryStartAttempt('assessmentId').then( () => {
-			AssessmentStore.tryRecordResponse('r1', { responseForR1:'someValue' }).then((res) => {
+		return AssessmentStore.tryStartAttempt('assessmentId').then(() => {
+			AssessmentStore.tryRecordResponse('r1', { responseForR1: 'someValue' }).then(res => {
 				expect(ErrorUtil.errorResponse).toHaveBeenCalledWith({
 					status: 'error',
 					value: {
@@ -354,21 +357,21 @@ describe('AssessmentStore', () => {
 		})
 	})
 
-	test("recordResponse will update state, post an event and trigger a change", (done) => {
+	test('recordResponse will update state, post an event and trigger a change', done => {
 		mockValidStartAttempt()
 		OboModel.create(getExampleAssessment())
 
 		APIUtil.postEvent.mockImplementationOnce(() => {
-			return (Promise.resolve({
+			return Promise.resolve({
 				status: 'ok',
 				value: {
 					some: 'response'
 				}
-			}))
+			})
 		})
 
-		return AssessmentStore.tryStartAttempt('assessmentId').then( () => {
-			AssessmentStore.tryRecordResponse('r1', { responseForR1:'someValue' }).then((res) => {
+		return AssessmentStore.tryStartAttempt('assessmentId').then(() => {
+			AssessmentStore.tryRecordResponse('r1', { responseForR1: 'someValue' }).then(res => {
 				expect(APIUtil.postEvent).toHaveBeenCalledWith(
 					OboModel.models.rootId,
 					'assessment:recordResponse',

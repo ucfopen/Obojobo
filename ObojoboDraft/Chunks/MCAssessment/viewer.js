@@ -1,8 +1,8 @@
 import Common from 'Common'
 
-import './MCChoice/viewer';
-import './MCAnswer/viewer';
-import './MCFeedback/viewer';
+import './MCChoice/viewer'
+import './MCAnswer/viewer'
+import './MCFeedback/viewer'
 
 import adapter from './adapter'
 import ViewerComponent from './viewer-component'
@@ -14,4 +14,4 @@ Common.Store.registerModel('ObojoboDraft.Chunks.MCAssessment', {
 	adapter: adapter,
 	componentClass: ViewerComponent,
 	selectionHandler: new SelectionHandler()
-});
+})

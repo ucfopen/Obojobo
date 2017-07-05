@@ -8,29 +8,10 @@ exports[`MathEquation MathEquation component 1`] = `
   data-obo-component={true}
   data-type="ObojoboDraft.Chunks.MathEquation"
   id="obo-id"
-  model={
-    Object {
-      "children": null,
-      "content": Object {
-        "align": "center",
-        "latex": "y=\\\\frac{1}{x}",
-      },
-      "id": "id",
-      "index": 0,
-      "metadata": Object {},
-      "type": "ObojoboDraft.Chunks.MathEquation",
-    }
-  }
-  moduleData={
-    Object {
-      "focusState": Object {},
-    }
-  }
-  tag="div"
 >
   <div
     className="non-editable-chunk"
-    contentEditable="false"
+    contentEditable={false}
     data-indent={0}
   >
     <div

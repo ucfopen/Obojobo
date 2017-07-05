@@ -4,20 +4,19 @@ import createUUID from '../../../src/scripts/common/util/uuid'
 import { Store } from '../../../src/scripts/common/store'
 
 jest.mock('../../../src/scripts/common/models/obo-model', () => {
-	return require('../../../__mocks__/obo-model-mock').default;
+	return require('../../../__mocks__/obo-model-mock').default
 })
 
 jest.mock('../../../src/scripts/common/flux/dispatcher', () => {
-	return ({
+	return {
 		trigger: jest.fn(),
 		on: jest.fn(),
 		off: jest.fn()
-	})
+	}
 })
 // jest.mock('../../../../src/scripts/common/util/uuid', () => {
 // 	return jest.fn().mockImplementation( () => { return 4; } )
 // })
-
 
 describe('OboModel', () => {
 	// let testModel = {
@@ -28,7 +27,7 @@ describe('OboModel', () => {
 		// jest.resetAllMocks()
 	})
 
-	test("should construct a new instance with defaults", () => {
+	test('should construct a new instance with defaults', () => {
 		OboModel.__setNextGeneratedLocalId('testId')
 
 		let o = new OboModel({})
@@ -50,47 +49,46 @@ describe('OboModel', () => {
 		expect(OboModel.models.testId).toBe(o)
 	})
 
-	test("should construct a new instance with given attributes", () => {
+	test('should construct a new instance with given attributes', () => {
 		let o = new OboModel({
 			id: 'passedInId',
 			content: {
-				triggers: [
-					{ passedInTrigger:1 }
-				],
+				triggers: [{ passedInTrigger: 1 }],
 				title: 'passedInTitle',
 				customContent: 'example'
 			}
 		})
 
-		expect(o.triggers).toEqual([
-			{ passedInTrigger:1 }
-		])
+		expect(o.triggers).toEqual([{ passedInTrigger: 1 }])
 		expect(o.title).toEqual('passedInTitle')
 		expect(o.id).toEqual('passedInId')
 		expect(o.get('content').customContent).toEqual('example')
 	})
 
-	test("should construct a new instance with a given adapter", () => {
-		let o = new OboModel({
-			content: {
-				score: 100
+	test('should construct a new instance with a given adapter', () => {
+		let o = new OboModel(
+			{
+				content: {
+					score: 100
+				}
+			},
+			{
+				construct: (model, attrs) => {
+					model.modelState.score = attrs.content.score
+				},
+				clone: (model, clone) => {
+					clone.modelState.isCloneTest = true
+					return clone
+				},
+				toJSON: (model, json) => {
+					json.isToJSONTest = true
+					return json
+				},
+				toText: model => {
+					return 'toTextTestResult'
+				}
 			}
-		}, {
-			construct: (model, attrs) => {
-				model.modelState.score = attrs.content.score
-			},
-			clone: (model, clone) => {
-				clone.modelState.isCloneTest = true;
-				return clone;
-			},
-			toJSON: (model, json) => {
-				json.isToJSONTest = true;
-				return json;
-			},
-			toText: (model) => {
-				return 'toTextTestResult'
-			}
-		})
+		)
 
 		expect(o.modelState.score).toEqual(100)
 		expect(o.modelState.isCloneTest).toBeUndefined()
@@ -99,15 +97,17 @@ describe('OboModel', () => {
 		expect(o.toText()).toEqual('toTextTestResult')
 	})
 
-	test("should retrieve the root model", (done) => {
-		Store.getItems( (items) => {
+	test('should retrieve the root model', done => {
+		Store.getItems(items => {
 			let o = OboModel.create({
 				id: 'root',
 				type: 'ObojoboDraft.Modules.Module',
-				children: [{
-					id: 'child',
-					type: 'ObojoboDraft.Sections.Content'
-				}]
+				children: [
+					{
+						id: 'child',
+						type: 'ObojoboDraft.Sections.Content'
+					}
+				]
 			})
 
 			expect(OboModel.models.root.getRoot()).toBe(o)
@@ -117,7 +117,7 @@ describe('OboModel', () => {
 		})
 	})
 
-	test("should process a trigger", () => {
+	test('should process a trigger', () => {
 		global.__actionFn = jest.fn()
 		let o = new OboModel({
 			content: {
@@ -145,7 +145,7 @@ describe('OboModel', () => {
 							},
 							{
 								type: '_js',
-								value: "__actionFn()"
+								value: '__actionFn()'
 							}
 						]
 					}
@@ -157,14 +157,8 @@ describe('OboModel', () => {
 		o.processTrigger('t1')
 
 		expect(Dispatcher.trigger).toHaveBeenCalledTimes(2)
-		expect(Dispatcher.trigger.mock.calls[0]).toEqual([
-			'a1',
-			{ type:'a1', value:1 }
-		])
-		expect(Dispatcher.trigger.mock.calls[1]).toEqual([
-			'a2',
-			{ type:'a2', value:2 }
-		])
+		expect(Dispatcher.trigger.mock.calls[0]).toEqual(['a1', { type: 'a1', value: 1 }])
+		expect(Dispatcher.trigger.mock.calls[1]).toEqual(['a2', { type: 'a2', value: 2 }])
 
 		// process t1 but since run = 'once' it won't trigger again
 		Dispatcher.trigger.mockClear()
@@ -177,10 +171,7 @@ describe('OboModel', () => {
 		o.processTrigger('t2')
 
 		expect(Dispatcher.trigger).toHaveBeenCalledTimes(1)
-		expect(Dispatcher.trigger.mock.calls[0]).toEqual([
-			'a3',
-			{ type:'a3', value:3 }
-		])
+		expect(Dispatcher.trigger.mock.calls[0]).toEqual(['a3', { type: 'a3', value: 3 }])
 		expect(global.__actionFn).toHaveBeenCalledTimes(1)
 
 		// process t3 which isn't defined so nothing should be triggered
@@ -193,52 +184,59 @@ describe('OboModel', () => {
 	})
 
 	//@TODO: Test fails, flags on modelState are broken, skip for now
-	test.skip("marking models as dirty sets flags dirty and needsUpdate but does not modify children", (done) => {
-		Store.getItems((items) => {
-			let o = OboModel.create({
-				id: 'ObojoboDraft.Modules.Module',
-				type: 'root-type',
-				children: [{
-					id: 'child',
-					type: 'ObojoboDraft.Sections.Content'
-				}]
+	test.skip(
+		'marking models as dirty sets flags dirty and needsUpdate but does not modify children',
+		done => {
+			Store.getItems(items => {
+				let o = OboModel.create({
+					id: 'ObojoboDraft.Modules.Module',
+					type: 'root-type',
+					children: [
+						{
+							id: 'child',
+							type: 'ObojoboDraft.Sections.Content'
+						}
+					]
+				})
+
+				expect(OboModel.models.root.modelState.dirty).toBe(false)
+				expect(OboModel.models.root.modelState.needsUpdate).toBe(false)
+				expect(OboModel.models.child.modelState.dirty).toBe(false)
+				expect(OboModel.models.child.modelState.needsUpdate).toBe(false)
+
+				o.markDirty()
+
+				expect(OboModel.models.root.modelState.dirty).toBe(true)
+				expect(OboModel.models.root.modelState.needsUpdate).toBe(true)
+				expect(OboModel.models.child.modelState.dirty).toBe(false)
+				expect(OboModel.models.child.modelState.needsUpdate).toBe(false)
+
+				done()
 			})
+		}
+	)
 
-			expect(OboModel.models.root.modelState.dirty).toBe(false)
-			expect(OboModel.models.root.modelState.needsUpdate).toBe(false)
-			expect(OboModel.models.child.modelState.dirty).toBe(false)
-			expect(OboModel.models.child.modelState.needsUpdate).toBe(false)
-
-			o.markDirty()
-
-			expect(OboModel.models.root.modelState.dirty).toBe(true)
-			expect(OboModel.models.root.modelState.needsUpdate).toBe(true)
-			expect(OboModel.models.child.modelState.dirty).toBe(false)
-			expect(OboModel.models.child.modelState.needsUpdate).toBe(false)
-
-			done()
-		})
-	})
-
-	test("removing children sets their parent to null, marks them dirty and removes them from the model db", (done) => {
-		Store.getItems((items) => {
+	test('removing children sets their parent to null, marks them dirty and removes them from the model db', done => {
+		Store.getItems(items => {
 			let o = OboModel.create({
 				id: 'root',
 				type: 'ObojoboDraft.Modules.Module',
-				children: [{
-					id: 'child',
-					type: 'ObojoboDraft.Sections.Content'
-				}]
+				children: [
+					{
+						id: 'child',
+						type: 'ObojoboDraft.Sections.Content'
+					}
+				]
 			})
 
-			let child = OboModel.models.child;
-			child.modelState.dirty = false;
+			let child = OboModel.models.child
+			child.modelState.dirty = false
 
-			o.children.remove(child);
+			o.children.remove(child)
 
-			expect(child.parent).toBe(null);
-			expect(OboModel.models.root.modelState.dirty).toBe(false);
-			expect(child.modelState.dirty).toBe(true);
+			expect(child.parent).toBe(null)
+			expect(OboModel.models.root.modelState.dirty).toBe(false)
+			expect(child.modelState.dirty).toBe(true)
 
 			expect(OboModel.models.child).toBeUndefined()
 
@@ -246,68 +244,67 @@ describe('OboModel', () => {
 		})
 	})
 
-	test("adding children sets their parent and marks them dirty", () => {
-		let root = new OboModel({});
-		let child = new OboModel({});
+	test('adding children sets their parent and marks them dirty', () => {
+		let root = new OboModel({})
+		let child = new OboModel({})
 
-		expect(root.modelState.dirty).toBe(false);
-		expect(child.modelState.dirty).toBe(false);
+		expect(root.modelState.dirty).toBe(false)
+		expect(child.modelState.dirty).toBe(false)
 
-		root.children.add(child);
+		root.children.add(child)
 
-		expect(child.parent).toBe(root);
-		expect(child.modelState.dirty).toBe(true);
+		expect(child.parent).toBe(root)
+		expect(child.modelState.dirty).toBe(true)
 	})
 
-	test("removing children sets their parent to null and marks them dirty", () => {
-		let root = new OboModel({});
-		let child = new OboModel({});
+	test('removing children sets their parent to null and marks them dirty', () => {
+		let root = new OboModel({})
+		let child = new OboModel({})
 
-		root.children.add(child);
+		root.children.add(child)
 
-		root.modelState.dirty = child.modelState.dirty = false;
+		root.modelState.dirty = child.modelState.dirty = false
 
-		root.children.remove(child);
+		root.children.remove(child)
 
-		expect(child.parent).toBe(null);
-		expect(child.modelState.dirty).toBe(true);
+		expect(child.parent).toBe(null)
+		expect(child.modelState.dirty).toBe(true)
 	})
 
 	test("resetting sets the children's parent", () => {
-		let root = new OboModel({});
-		let child = new OboModel({});
+		let root = new OboModel({})
+		let child = new OboModel({})
 
-		root.children.add(child);
-		root.children.reset();
+		root.children.add(child)
+		root.children.reset()
 
-		expect(child.parent).toBe(null);
+		expect(child.parent).toBe(null)
 	})
 
-	test("creates new local IDs", () => {
-		let root = new OboModel({});
+	test('creates new local IDs', () => {
+		let root = new OboModel({})
 
-		OboModel.__setNextGeneratedLocalId(null);
+		OboModel.__setNextGeneratedLocalId(null)
 
-		expect(root.createNewLocalId())
-			.toEqual(
-				expect.stringMatching(
-					/^[0-9a-f]{8}-[0-9a-f]{4}-[1-5][0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}$/i
-				)
+		expect(root.createNewLocalId()).toEqual(
+			expect.stringMatching(
+				/^[0-9a-f]{8}-[0-9a-f]{4}-[1-5][0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}$/i
 			)
+		)
 	})
 
-	test("assign new id will assign a new id", () => {
-		let root = new OboModel({});
+	test('assign new id will assign a new id', () => {
+		let root = new OboModel({})
 
-		let oldId = root.id;
+		let oldId = root.id
 
-		root.assignNewId();
-		expect(root.id).not.toEqual(oldId);
+		root.assignNewId()
+		expect(root.id).not.toEqual(oldId)
 	})
 
 	test("clone (shallow) will clone a model (not it's children)", () => {
-		let root = new OboModel({a:1})
-		let child = new OboModel({b:2})
+		let root = new OboModel({ a: 1 })
+		let child = new OboModel({ b: 2 })
 
 		root.children.add(child)
 
@@ -318,8 +315,8 @@ describe('OboModel', () => {
 	})
 
 	test("clone (deep) will clone a model (and it's children)", () => {
-		let root = new OboModel({a:1})
-		let child = new OboModel({b:2})
+		let root = new OboModel({ a: 1 })
+		let child = new OboModel({ b: 2 })
 
 		root.children.add(child)
 
@@ -331,12 +328,15 @@ describe('OboModel', () => {
 	})
 
 	test("clone will clone a model based on it's adapter", () => {
-		let root = new OboModel({}, {
-			clone: (model, clone) => {
-				clone.set('wasCloned', true)
-				return clone
+		let root = new OboModel(
+			{},
+			{
+				clone: (model, clone) => {
+					clone.set('wasCloned', true)
+					return clone
+				}
 			}
-		})
+		)
 
 		let clone = root.clone(true)
 
@@ -344,18 +344,18 @@ describe('OboModel', () => {
 		expect(clone.get('wasCloned')).toBe(true)
 	})
 
-	test("toJSON will output a model to an object", () => {
-		OboModel.__setNextGeneratedLocalId('testId');
+	test('toJSON will output a model to an object', () => {
+		OboModel.__setNextGeneratedLocalId('testId')
 
 		let root = new OboModel({
 			type: 'nodeType',
 			content: { a: 1 }
-		});
+		})
 
 		expect(root.toJSON()).toEqual({
 			id: 'testId',
 			children: null,
-			content: { a:1 },
+			content: { a: 1 },
 			index: 0,
 			metadata: {},
 			type: 'nodeType'
@@ -363,27 +363,30 @@ describe('OboModel', () => {
 	})
 
 	test("toJSON will output a model to an object according with it's adapter", () => {
-		let root = new OboModel({
-			type: 'nodeType',
-			content: { a:1 }
-		}, {
-			toJSON: (model, json) => {
-				json.toJSONWasCalled = true
-				return json
+		let root = new OboModel(
+			{
+				type: 'nodeType',
+				content: { a: 1 }
+			},
+			{
+				toJSON: (model, json) => {
+					json.toJSONWasCalled = true
+					return json
+				}
 			}
-		});
+		)
 
 		expect(root.toJSON().toJSONWasCalled).toBe(true)
 	})
 
-	test.skip("toText will output the model into a text format", () => {
+	test.skip('toText will output the model into a text format', () => {
 		expect(true).toBe(false)
 	})
 
-	test.skip("revert will clear the model but keep the index and id", () => {
+	test.skip('revert will clear the model but keep the index and id', () => {
 		let root = new OboModel({
 			type: 'someType',
-			content: { a:1 }
+			content: { a: 1 }
 		})
 		let child = new OboModel({})
 
@@ -405,7 +408,7 @@ describe('OboModel', () => {
 		})
 	})
 
-	test("markDirty sets the dirty and needsUpdate flags", () => {
+	test('markDirty sets the dirty and needsUpdate flags', () => {
 		let root = new OboModel({})
 
 		root.modelState.dirty = root.modelState.needsUpdate = false
@@ -416,7 +419,7 @@ describe('OboModel', () => {
 		expect(root.modelState.needsUpdate).toBe(true)
 	})
 
-	test("markForUpdate sets the needsUpdate flag", () => {
+	test('markForUpdate sets the needsUpdate flag', () => {
 		let root = new OboModel({})
 
 		root.modelState.needsUpdate = false
@@ -440,7 +443,7 @@ describe('OboModel', () => {
 		expect(child.modelState.needsUpdate).toBe(true)
 	})
 
-	test("markUpdated sets the needsUpdate flag", () => {
+	test('markUpdated sets the needsUpdate flag', () => {
 		let root = new OboModel({})
 
 		root.modelState.needsUpdate = true
@@ -464,12 +467,12 @@ describe('OboModel', () => {
 		expect(child.modelState.needsUpdate).toBe(false)
 	})
 
-	test.skip("getDomEl", () => {
+	test.skip('getDomEl', () => {
 		expect(false).toBe(true)
 	})
 
-	test("getComponentClass returns the component class of a model", (done) => {
-		Store.getItems( (items) => {
+	test('getComponentClass returns the component class of a model', done => {
+		Store.getItems(items => {
 			OboModel.create({
 				id: 'rootId',
 				type: 'ObojoboDraft.Chunks.Text'
@@ -482,10 +485,9 @@ describe('OboModel', () => {
 
 			done()
 		})
-
 	})
 
-	test("hasChildren reports if a model has children", () => {
+	test('hasChildren reports if a model has children', () => {
 		let childless = new OboModel({})
 		let hasChild = new OboModel({})
 		let child = new OboModel({})
@@ -496,7 +498,7 @@ describe('OboModel', () => {
 		expect(hasChild.hasChildren()).toBe(true)
 	})
 
-	test("isOrphan reports if a model has no parent", () => {
+	test('isOrphan reports if a model has no parent', () => {
 		let root = new OboModel({})
 		let child = new OboModel({})
 
@@ -510,7 +512,7 @@ describe('OboModel', () => {
 		expect(child.isOrphan()).toBe(true)
 	})
 
-	test("addChildBefore adds a child before", () => {
+	test('addChildBefore adds a child before', () => {
 		let root = new OboModel({})
 		let childA = new OboModel({})
 		let childB = new OboModel({})
@@ -526,7 +528,7 @@ describe('OboModel', () => {
 		expect(root.children.at(2)).toBe(childB)
 	})
 
-	test("addChildBefore moves children if child added is already in collection", () => {
+	test('addChildBefore moves children if child added is already in collection', () => {
 		let root = new OboModel({})
 		let childA = new OboModel({})
 		let childB = new OboModel({})
@@ -543,7 +545,7 @@ describe('OboModel', () => {
 		expect(root.children.at(2)).toBe(childC)
 	})
 
-	test("addChildAfter adds a child after", () => {
+	test('addChildAfter adds a child after', () => {
 		let root = new OboModel({})
 		let childA = new OboModel({})
 		let childB = new OboModel({})
@@ -559,7 +561,7 @@ describe('OboModel', () => {
 		expect(root.children.at(2)).toBe(newChild)
 	})
 
-	test("addChildAfter moves children if child added is already in collection", () => {
+	test('addChildAfter moves children if child added is already in collection', () => {
 		let root = new OboModel({})
 		let childA = new OboModel({})
 		let childB = new OboModel({})
@@ -576,7 +578,7 @@ describe('OboModel', () => {
 		expect(root.children.at(2)).toBe(childA)
 	})
 
-	test("moveTo will move a model to a new index", () => {
+	test('moveTo will move a model to a new index', () => {
 		let root = new OboModel({})
 		let childA = new OboModel({})
 		let childB = new OboModel({})
@@ -611,7 +613,7 @@ describe('OboModel', () => {
 		expect(root.children.at(2)).toBe(childB)
 	})
 
-	test("moveToTop will move a model to the first index", () => {
+	test('moveToTop will move a model to the first index', () => {
 		let root = new OboModel({})
 		let childA = new OboModel({})
 		let childB = new OboModel({})
@@ -628,7 +630,7 @@ describe('OboModel', () => {
 		expect(root.children.at(2)).toBe(childC)
 	})
 
-	test("moveToBottom will move a model to the last index", () => {
+	test('moveToBottom will move a model to the last index', () => {
 		let root = new OboModel({})
 		let childA = new OboModel({})
 		let childB = new OboModel({})
@@ -645,7 +647,7 @@ describe('OboModel', () => {
 		expect(root.children.at(2)).toBe(childB)
 	})
 
-	test("prevSibling will return the previous sibling (or null if none exists)", () => {
+	test('prevSibling will return the previous sibling (or null if none exists)', () => {
 		let root = new OboModel({})
 		let childA = new OboModel({})
 		let childB = new OboModel({})
@@ -661,7 +663,7 @@ describe('OboModel', () => {
 		expect(root.prevSibling()).toBe(null)
 	})
 
-	test("nextSibling will return the next sibling (or null if none exists)", () => {
+	test('nextSibling will return the next sibling (or null if none exists)', () => {
 		let root = new OboModel({})
 		let childA = new OboModel({})
 		let childB = new OboModel({})
@@ -677,7 +679,7 @@ describe('OboModel', () => {
 		expect(root.nextSibling()).toBe(null)
 	})
 
-	test("getIndex will return the position of the model", () => {
+	test('getIndex will return the position of the model', () => {
 		let root = new OboModel({})
 		let childA = new OboModel({})
 		let childB = new OboModel({})
@@ -693,7 +695,7 @@ describe('OboModel', () => {
 		expect(root.getIndex()).toBe(0)
 	})
 
-	test("isFirst will report if a model is the first child", () => {
+	test('isFirst will report if a model is the first child', () => {
 		let root = new OboModel({})
 		let childA = new OboModel({})
 		let childB = new OboModel({})
@@ -709,7 +711,7 @@ describe('OboModel', () => {
 		expect(root.isFirst()).toBe(false)
 	})
 
-	test("isLast will report if a model is the last child", () => {
+	test('isLast will report if a model is the last child', () => {
 		let root = new OboModel({})
 		let childA = new OboModel({})
 		let childB = new OboModel({})
@@ -725,7 +727,7 @@ describe('OboModel', () => {
 		expect(root.isLast()).toBe(false)
 	})
 
-	test("isBefore will report if a model is before another model", () => {
+	test('isBefore will report if a model is before another model', () => {
 		let root = new OboModel({})
 		let childA = new OboModel({})
 		let childB = new OboModel({})
@@ -743,7 +745,7 @@ describe('OboModel', () => {
 		expect(root.isBefore(childA)).toBe(false)
 	})
 
-	test("isAfter will report if a model is after another model", () => {
+	test('isAfter will report if a model is after another model', () => {
 		let root = new OboModel({})
 		let childA = new OboModel({})
 		let childB = new OboModel({})
@@ -761,7 +763,7 @@ describe('OboModel', () => {
 		expect(root.isAfter(childA)).toBe(false)
 	})
 
-	test("remove will remove a model", () => {
+	test('remove will remove a model', () => {
 		let root = new OboModel({})
 		let child = new OboModel({})
 
@@ -773,7 +775,7 @@ describe('OboModel', () => {
 		expect(child.parent).toBe(null)
 	})
 
-	test("replaceWith will replace a model with another model", () => {
+	test('replaceWith will replace a model with another model', () => {
 		let root = new OboModel({})
 		let childA = new OboModel({})
 		let childB = new OboModel({})
@@ -791,7 +793,7 @@ describe('OboModel', () => {
 		expect(root.children.at(2)).toBe(childC)
 	})
 
-	test("contains will report if a model contains a given child", () => {
+	test('contains will report if a model contains a given child', () => {
 		let grandparent = new OboModel({})
 		let parent = new OboModel({})
 		let child = new OboModel({})
@@ -810,34 +812,10 @@ describe('OboModel', () => {
 		expect(child.contains(child)).toBe(true)
 	})
 
-	test("getChildContainingModel will return a child which contains a given model", () => {
-		let root = new OboModel({})
-		let parentA = new OboModel({})
-		let parentB = new OboModel({})
-		let parentC = new OboModel({})
-		let childA = new OboModel({})
-		let childB = new OboModel({})
-		let childC = new OboModel({})
-		let otherModel = new OboModel({})
-
-		root.children.add(parentA)
-		root.children.add(parentB)
-		root.children.add(parentC)
-
-		parentA.children.add(childA)
-		parentB.children.add(childB)
-		parentC.children.add(childC)
-
-		expect(root.getChildContainingModel(childB)).toBe(parentB)
-		expect(root.getChildContainingModel(parentB)).toBe(parentB)
-		expect(root.getChildContainingModel(root)).toBe(null)
-		expect(root.getChildContainingModel(otherModel)).toBe(null)
-	})
-
-	test("getParentOfType returns a parent of a given type", () => {
-		let grandparent = new OboModel({ type:'grandparent' })
-		let parent = new OboModel({ type:'parent' })
-		let child = new OboModel({ type:'child' })
+	test('getParentOfType returns a parent of a given type', () => {
+		let grandparent = new OboModel({ type: 'grandparent' })
+		let parent = new OboModel({ type: 'parent' })
+		let child = new OboModel({ type: 'child' })
 
 		grandparent.children.add(parent)
 		parent.children.add(child)

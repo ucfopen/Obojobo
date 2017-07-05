@@ -69,7 +69,7 @@ describe('DOMUtil', () => {
 		expect(target).toBe(null)
 	})
 
-	test("finds parent attribute value", () => {
+	test('finds parent attribute value', () => {
 		let g = document.getElementById('id-g')
 		let attr = DOMUtil.findParentAttr(g, 'data-x')
 
@@ -83,25 +83,25 @@ describe('DOMUtil', () => {
 		expect(attr).toBe(null)
 	})
 
-	test("finds parent component elements", () => {
+	test('finds parent component elements', () => {
 		let a = document.getElementById('id-a')
 		let d = document.getElementById('id-d')
 		let g = document.getElementById('id-g')
 		let els = DOMUtil.findParentComponentElements(g)
 
-		expect([...els]).toEqual([ g, d, a ])
+		expect([...els]).toEqual([g, d, a])
 	})
 
-	test("finds parent component elements ids", () => {
+	test('finds parent component elements ids', () => {
 		let a = document.getElementById('id-a')
 		let d = document.getElementById('id-d')
 		let g = document.getElementById('id-g')
 		let ids = DOMUtil.findParentComponentIds(g)
 
-		expect([...ids]).toEqual([ 'i-g', 'i-d', 'i-a' ])
+		expect([...ids]).toEqual(['i-g', 'i-d', 'i-a'])
 	})
 
-	test("elementLikeComponent checks an element to verify it seems to be a component", () => {
+	test('elementLikeComponent checks an element to verify it seems to be a component', () => {
 		let g = document.getElementById('id-g')
 		let j = document.getElementById('id-j')
 
@@ -109,18 +109,16 @@ describe('DOMUtil', () => {
 		expect(DOMUtil.elementLikeComponent(j)).toBe(false)
 	})
 
-	test("gets the first text node of an element", () => {
+	test('gets the first text node of an element', () => {
 		let c = document.getElementById('id-c')
 		let g = document.getElementById('id-g')
 
-		expect(
-			DOMUtil.getFirstTextNodeOfElement(g).textContent
-		).toBe(
-			"Second text with some line breaks and "
+		expect(DOMUtil.getFirstTextNodeOfElement(g).textContent).toBe(
+			'Second text with some line breaks and '
 		)
 	})
 
-	test("gets the text nodes of a document in order", () => {
+	test('gets the text nodes of a document in order', () => {
 		let a = document.getElementById('id-a')
 		let g = document.getElementById('id-g')
 		let textNodeContents = DOMUtil.getTextNodesInOrder(a).map(t => t.textContent)

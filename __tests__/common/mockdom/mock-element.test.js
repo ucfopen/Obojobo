@@ -3,24 +3,23 @@ import MockElement from '../../../src/scripts/common/mockdom/mock-element'
 describe('MockElement', () => {
 	beforeEach(() => {
 		// jest.resetAllMocks()
-
 		// AssessmentStore.init()
 		// QuestionStore.init()
 	})
 
 	test('creates new instance', () => {
-		let el = new MockElement('type', { a:1 });
+		let el = new MockElement('type', { a: 1 })
 
 		expect(el.type).toBe('type')
-		expect(el.attrs).toEqual({ a:1 })
+		expect(el.attrs).toEqual({ a: 1 })
 		expect(el.nodeType).toBe('element')
 		expect(el.children).toEqual([])
 		expect(el.parent).toBe(null)
 	})
 
 	test('adds child', () => {
-		let root = new MockElement('root');
-		let child = new MockElement('child');
+		let root = new MockElement('root')
+		let child = new MockElement('child')
 
 		root.addChild(child)
 
@@ -37,7 +36,7 @@ describe('MockElement', () => {
 		let childC = new MockElement('child-c')
 		let childD = new MockElement('child-d')
 
-		root.addChildAt(childA, 0);
+		root.addChildAt(childA, 0)
 
 		expect(root.children).toEqual([childA])
 

@@ -1,4 +1,4 @@
-describe.skip('VirtualSelection');
+describe.skip('VirtualSelection')
 
 // VirtualCursor    = window.Common.Common.selection.VirtualCursor;
 // VirtualSelection    = window.Common.Common.selection.VirtualSelection;

@@ -1,36 +1,41 @@
-import Common from 'Common';
+import Common from 'Common'
 
-let { Dialog } = Common.components.modal;
-let { ModalUtil } = Common.util;
+let { Dialog } = Common.components.modal
+let { ModalUtil } = Common.util
 
 export default class AttemptIncompleteDialog {
 	onCancel() {
-		return ModalUtil.hide();
+		return ModalUtil.hide()
 	}
 
 	onSubmit() {
-		ModalUtil.hide();
-		return this.props.onSubmit();
+		ModalUtil.hide()
+		return this.props.onSubmit()
 	}
 
 	render() {
-		return <Dialog width="32rem" buttons={[
-			{
-				value: 'Submit as incomplete',
-				altAction: true,
-				dangerous: true,
-				onClick: this.onSubmit.bind(this)
-			},
-			'or',
-			{
-				value: 'Resume assessment',
-				onClick: this.onCancel.bind(this),
-				default: true
-			}
-		]}>
-			<b>Wait! You left some questions blank.</b>
-			<br />
-			Finish answering all questions and submit again.
-		</Dialog>;
+		return (
+			<Dialog
+				width="32rem"
+				buttons={[
+					{
+						value: 'Submit as incomplete',
+						altAction: true,
+						dangerous: true,
+						onClick: this.onSubmit.bind(this)
+					},
+					'or',
+					{
+						value: 'Resume assessment',
+						onClick: this.onCancel.bind(this),
+						default: true
+					}
+				]}
+			>
+				<b>Wait! You left some questions blank.</b>
+				<br />
+				Finish answering all questions and submit again.
+			</Dialog>
+		)
 	}
 }

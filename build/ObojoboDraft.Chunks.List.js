@@ -570,7 +570,12 @@ var List = function (_React$Component) {
 
 			switch (node.nodeType) {
 				case 'text':
-					return React.createElement(TextGroupEl, { parentModel: this.props.model, textItem: { text: node.text, data: {} }, key: key, groupIndex: node.index });
+					return React.createElement(TextGroupEl, {
+						parentModel: this.props.model,
+						textItem: { text: node.text, data: {} },
+						key: key,
+						groupIndex: node.index
+					});
 				case 'element':
 					return React.createElement(node.type, { key: key, start: node.start, style: { listStyleType: node.listStyleType } }, this.renderChildren(node.children, indent + 1));
 			}

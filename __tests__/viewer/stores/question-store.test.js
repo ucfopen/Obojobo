@@ -52,20 +52,20 @@ describe('QuestionStore', () => {
 		})
 	}
 
-	beforeEach((done) => {
+	beforeEach(done => {
 		jest.resetAllMocks()
 
 		QuestionStore.init()
 		QuestionStore.triggerChange = jest.fn()
 
 		// Need to make sure all the Obo components are loaded
-		Store.getItems((items) => {
+		Store.getItems(items => {
 			done()
 		})
 	})
 
 	it('should init state with a specific structure and return it', () => {
-		QuestionStore.init();
+		QuestionStore.init()
 
 		expect(QuestionStore.getState()).toEqual({
 			viewing: null,
@@ -76,9 +76,9 @@ describe('QuestionStore', () => {
 	})
 
 	it('should set state', () => {
-		QuestionStore.setState({ x:1 })
+		QuestionStore.setState({ x: 1 })
 
-		expect(QuestionStore.getState()).toEqual({ x:1 })
+		expect(QuestionStore.getState()).toEqual({ x: 1 })
 	})
 
 	it.only('should record responses, trigger a change and post an event', () => {
@@ -87,7 +87,7 @@ describe('QuestionStore', () => {
 		Dispatcher.trigger('question:recordResponse', {
 			value: {
 				id: 'responderId',
-				response: { customResponse:'responseValue' }
+				response: { customResponse: 'responseValue' }
 			}
 		})
 
@@ -98,12 +98,12 @@ describe('QuestionStore', () => {
 		expect(APIUtil.postEvent.mock.calls[0][2]).toEqual({
 			questionId: 'questionId',
 			responderId: 'responderId',
-			response: { customResponse:'responseValue' }
+			response: { customResponse: 'responseValue' }
 		})
 	})
 
 	it('should reset a reponse and trigger a change for a response that has been set', () => {
-		QuestionStore.setState({ responses:{ example:'response' } })
+		QuestionStore.setState({ responses: { example: 'response' } })
 
 		Dispatcher.trigger('question:resetResponse', {
 			value: {
@@ -118,7 +118,7 @@ describe('QuestionStore', () => {
 	})
 
 	it("shouldn't reset a reponse but still trigger a change for a response that hasn't been set", () => {
-		QuestionStore.setState({ responses:{ example:'response' } })
+		QuestionStore.setState({ responses: { example: 'response' } })
 
 		Dispatcher.trigger('question:resetResponse', {
 			value: {
@@ -202,7 +202,7 @@ describe('QuestionStore', () => {
 		})
 	})
 
-	it("marks questions as viewed, keeps track of the last viewed question and triggers a change", () => {
+	it('marks questions as viewed, keeps track of the last viewed question and triggers a change', () => {
 		__createModels()
 
 		QuestionStore.setState({
@@ -231,13 +231,13 @@ describe('QuestionStore', () => {
 		expect(QuestionStore.getState()).toEqual({
 			viewing: 'responderId',
 			viewedQuestions: {
-				'responderId': true,
-				'questionId': true
+				responderId: true,
+				questionId: true
 			}
 		})
 	})
 
-	it("marks questions as hidden, keeps track of the last viewed question and triggers a change", () => {
+	it('marks questions as hidden, keeps track of the last viewed question and triggers a change', () => {
 		__createModels()
 
 		QuestionStore.setState({
@@ -279,7 +279,7 @@ describe('QuestionStore', () => {
 		})
 	})
 
-	it("last viewed question is remembered if another question is hidden", () => {
+	it('last viewed question is remembered if another question is hidden', () => {
 		__createModels()
 
 		QuestionStore.setState({

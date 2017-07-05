@@ -8,44 +8,10 @@ exports[`Figure Figure component 1`] = `
   data-obo-component={true}
   data-type="ObojoboDraft.Chunks.Figure"
   id="obo-id"
-  model={
-    Object {
-      "children": null,
-      "content": Object {
-        "alt": "Alt Text",
-        "height": "400",
-        "size": "custom",
-        "textGroup": Array [
-          Object {
-            "data": Object {
-              "align": "left",
-              "indent": 0,
-            },
-            "text": Object {
-              "styleList": null,
-              "value": "Example Text",
-            },
-          },
-        ],
-        "url": "www.example.com/img.jpg",
-        "width": "500",
-      },
-      "id": "id",
-      "index": 0,
-      "metadata": Object {},
-      "type": "ObojoboDraft.Chunks.Figure",
-    }
-  }
-  moduleData={
-    Object {
-      "focusState": Object {},
-    }
-  }
-  tag="div"
 >
   <div
     className="non-editable-chunk obojobo-draft--chunks--figure viewer custom"
-    contentEditable="false"
+    contentEditable={false}
     data-indent={0}
   >
     <div

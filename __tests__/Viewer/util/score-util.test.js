@@ -41,7 +41,7 @@ describe('ScoreUtil', () => {
 		expect(score).toBe(null)
 	})
 
-	it("should return a score for a model that has a score associated with it", () => {
+	it('should return a score for a model that has a score associated with it', () => {
 		let fakeModel = {
 			get: () => 'test'
 		}
@@ -60,18 +60,21 @@ describe('ScoreUtil', () => {
 	it('should set scores', () => {
 		ScoreUtil.setScore('test', 50)
 
-		expect(Dispatcher.trigger).toHaveBeenCalledWith('score:set', expect.objectContaining({
-			value: {
-				id: 'test',
-				score: 50
-			}
-		}));
+		expect(Dispatcher.trigger).toHaveBeenCalledWith(
+			'score:set',
+			expect.objectContaining({
+				value: {
+					id: 'test',
+					score: 50
+				}
+			})
+		)
 	})
 
 	it('should clear scores', () => {
 		ScoreUtil.setScore('test', 50)
 		ScoreUtil.clearScore('test')
 
-		expect(ScoreStore.getState()).toEqual({ scores:{} })
+		expect(ScoreStore.getState()).toEqual({ scores: {} })
 	})
 })

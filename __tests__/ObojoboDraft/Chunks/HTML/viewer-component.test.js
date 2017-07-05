@@ -18,9 +18,7 @@ describe('HTML', () => {
 	}
 
 	test('HTML component', () => {
-		const component = renderer.create(
-			<HTML model={model} moduleData={moduleData} />
-		)
+		const component = renderer.create(<HTML model={model} moduleData={moduleData} />)
 		let tree = component.toJSON()
 
 		expect(tree).toMatchSnapshot()

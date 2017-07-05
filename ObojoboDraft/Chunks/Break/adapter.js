@@ -1,8 +1,7 @@
 let Adapter = {
 	toText(model) {
-		return '---';
+		return '---'
 	}
-};
+}
 
-
-export default Adapter;
+export default Adapter

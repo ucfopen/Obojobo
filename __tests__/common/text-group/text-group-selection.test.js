@@ -1,4 +1,4 @@
-describe.skip('TextGroupSelection');
+describe.skip('TextGroupSelection')
 
 // VirtualCursor    = window.Common.oboDOM.Selection.VirtualCursor;
 // VirtualSelection    = window.Common.oboDOM.Selection.VirtualSelection;

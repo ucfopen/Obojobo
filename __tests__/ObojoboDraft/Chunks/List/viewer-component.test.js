@@ -11,83 +11,81 @@ describe('List', () => {
 
 	test('List component', () => {
 		let model = OboModel.create({
-			"id": "id",
-			"type": "ObojoboDraft.Chunks.List",
-			"content": {
-				"textGroup": [
+			id: 'id',
+			type: 'ObojoboDraft.Chunks.List',
+			content: {
+				textGroup: [
 					{
-						"text": {
-							"value": "One(indent=1)",
-							"styleList": []
+						text: {
+							value: 'One(indent=1)',
+							styleList: []
 						},
-						"data": null
+						data: null
 					},
 					{
-						"text": {
-							"value": "Two(indent=2)",
-							"styleList": []
+						text: {
+							value: 'Two(indent=2)',
+							styleList: []
 						},
-						"data": {
-							"indent": "2"
+						data: {
+							indent: '2'
 						}
 					},
 					{
-						"text": {
-							"value": "Three(indent=6)",
-							"styleList": []
+						text: {
+							value: 'Three(indent=6)',
+							styleList: []
 						},
-						"data": {
-							"indent": "6"
+						data: {
+							indent: '6'
 						}
 					},
 					{
-						"text": {
-							"value": "Four(indent=2)",
-							"styleList": []
+						text: {
+							value: 'Four(indent=2)',
+							styleList: []
 						},
-						"data": {
-							"indent": "2"
+						data: {
+							indent: '2'
 						}
 					},
 					{
-						"text": {
-							"value": "Five(indent=4)",
-							"styleList": []
+						text: {
+							value: 'Five(indent=4)',
+							styleList: []
 						},
-						"data": {
-							"indent": "4"
+						data: {
+							indent: '4'
 						}
 					},
 					{
-						"text": {
-							"value": "Six(indent=3)",
-							"styleList": []
+						text: {
+							value: 'Six(indent=3)',
+							styleList: []
 						},
-						"data": {
-							"indent": "3"
+						data: {
+							indent: '3'
 						}
 					}
 				],
-				"listStyles": {
-					"type": "ordered",
-					"indents": {
-						"2": {
-							"type": "unordered",
-							"bulletStyle": "square"
+				listStyles: {
+					type: 'ordered',
+					indents: {
+						'2': {
+							type: 'unordered',
+							bulletStyle: 'square'
 						},
-						"4": {
-							"type": "ordered",
-							"start": "10",
-							"bulletStyle": "upper-alpha"
+						'4': {
+							type: 'ordered',
+							start: '10',
+							bulletStyle: 'upper-alpha'
 						}
 					}
 				}
 			}
 		})
 
-		const component = renderer.create(
-			<List model={model} moduleData={moduleData} />
-		)
+		const component = renderer.create(<List model={model} moduleData={moduleData} />)
 		let tree = component.toJSON()
 
 		expect(tree).toMatchSnapshot()

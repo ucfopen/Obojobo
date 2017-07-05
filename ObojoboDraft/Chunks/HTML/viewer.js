@@ -9,4 +9,4 @@ Common.Store.registerModel('ObojoboDraft.Chunks.HTML', {
 	adapter: adapter,
 	componentClass: ViewerComponent,
 	selectionHandler: new SelectionHandler()
-});
+})

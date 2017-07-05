@@ -30,9 +30,7 @@ describe('Content', () => {
 	}
 
 	test('Content component', () => {
-		const component = renderer.create(
-			<Content model={model} moduleData={moduleData} />
-		)
+		const component = renderer.create(<Content model={model} moduleData={moduleData} />)
 		let tree = component.toJSON()
 
 		expect(tree).toMatchSnapshot()

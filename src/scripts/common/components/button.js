@@ -1,4 +1,4 @@
-import './button.scss';
+import './button.scss'
 
 export default class Button extends React.Component {
 	static get defaultProps() {
@@ -6,33 +6,39 @@ export default class Button extends React.Component {
 			value: null,
 			disabled: false,
 			align: 'center'
-		};
+		}
 	}
 
 	focus() {
-		return ReactDOM.findDOMNode(this.refs.button).focus();
+		return ReactDOM.findDOMNode(this.refs.button).focus()
 	}
 
 	render() {
-		let children;
+		let children
 		if (this.props.value) {
-			children = this.props.value;
+			children = this.props.value
 		} else {
-			({ children } = this.props);
+			;({ children } = this.props)
 		}
 
-		return <div className={
-			"obojobo-draft--components--button"
-			+ (this.props.dangerous ? ' dangerous' : '')
-			+ (this.props.altAction ? ' alt-action' : '')
-			+ (` align-${this.props.align}`)
-		}>
-			<button
-				ref='button'
-				onClick={this.props.onClick}
-				tabIndex={this.props.shouldPreventTab ? '-1' : this.props.tabIndex}
-				disabled={this.props.disabled || this.props.shouldPreventTab}
-			>{children}</button>
-		</div>;
+		return (
+			<div
+				className={
+					'obojobo-draft--components--button' +
+					(this.props.dangerous ? ' dangerous' : '') +
+					(this.props.altAction ? ' alt-action' : '') +
+					` align-${this.props.align}`
+				}
+			>
+				<button
+					ref="button"
+					onClick={this.props.onClick}
+					tabIndex={this.props.shouldPreventTab ? '-1' : this.props.tabIndex}
+					disabled={this.props.disabled || this.props.shouldPreventTab}
+				>
+					{children}
+				</button>
+			</div>
+		)
 	}
 }

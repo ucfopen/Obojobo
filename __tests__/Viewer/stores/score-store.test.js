@@ -35,9 +35,9 @@ describe('ScoreStore', () => {
 	})
 
 	it('should init state with an empty scores object and return it', () => {
-		ScoreStore.init();
+		ScoreStore.init()
 
-		expect(true).toBe(true);
+		expect(true).toBe(true)
 
 		expect(ScoreStore.getState()).toEqual({
 			scores: {}
@@ -45,9 +45,9 @@ describe('ScoreStore', () => {
 	})
 
 	it('should set state', () => {
-		ScoreStore.setState({ x:1 })
+		ScoreStore.setState({ x: 1 })
 
-		expect(ScoreStore.getState()).toEqual({ x:1 })
+		expect(ScoreStore.getState()).toEqual({ x: 1 })
 	})
 
 	it('should set a score, trigger a change and post a score:set event with a < 100 score', () => {
@@ -61,7 +61,7 @@ describe('ScoreStore', () => {
 		expect(ScoreStore.triggerChange).toHaveBeenCalled()
 		expect(APIUtil.postEvent).toHaveBeenCalled()
 		expect(APIUtil.postEvent.mock.calls[0][1]).toEqual('score:set')
-		expect(APIUtil.postEvent.mock.calls[0][2]).toEqual({ id:'test', score:25 })
+		expect(APIUtil.postEvent.mock.calls[0][2]).toEqual({ id: 'test', score: 25 })
 		expect(FocusUtil.unfocus).not.toHaveBeenCalled()
 		expect(ScoreStore.getState()).toEqual({
 			scores: {
@@ -81,7 +81,7 @@ describe('ScoreStore', () => {
 		expect(ScoreStore.triggerChange).toHaveBeenCalled()
 		expect(APIUtil.postEvent).toHaveBeenCalled()
 		expect(APIUtil.postEvent.mock.calls[0][1]).toEqual('score:set')
-		expect(APIUtil.postEvent.mock.calls[0][2]).toEqual({ id:'test', score:100 })
+		expect(APIUtil.postEvent.mock.calls[0][2]).toEqual({ id: 'test', score: 100 })
 		expect(FocusUtil.unfocus).toHaveBeenCalled()
 		expect(ScoreStore.getState()).toEqual({
 			scores: {
@@ -120,6 +120,6 @@ describe('ScoreStore', () => {
 		})
 		expect(APIUtil.postEvent).toHaveBeenCalled()
 		expect(APIUtil.postEvent.mock.calls[0][1]).toEqual('score:clear')
-		expect(APIUtil.postEvent.mock.calls[0][2]).toEqual({ id:'test' })
+		expect(APIUtil.postEvent.mock.calls[0][2]).toEqual({ id: 'test' })
 	})
 })

@@ -11,15 +11,11 @@ jest.mock('../../../src/scripts/common/util/focus-util', () => {
 	}
 })
 
-
 test('OboComponent', () => {
-	OboModel.create({ id:'testId', type:'ObojoboDraft.Chunks.Text' })
+	OboModel.create({ id: 'testId', type: 'ObojoboDraft.Chunks.Text' })
 
 	const component = renderer.create(
-		<OboComponent
-			model={OboModel.models.testId}
-			moduleData={{focusState:{}}}
-		>
+		<OboComponent model={OboModel.models.testId} moduleData={{ focusState: {} }}>
 			Test
 		</OboComponent>
 	)
@@ -29,14 +25,10 @@ test('OboComponent', () => {
 })
 
 test('OboComponent tag', () => {
-	OboModel.create({ id:'testId', type:'ObojoboDraft.Chunks.Text' })
+	OboModel.create({ id: 'testId', type: 'ObojoboDraft.Chunks.Text' })
 
 	const component = renderer.create(
-		<OboComponent
-			model={OboModel.models.testId}
-			moduleData={{focusState:{}}}
-			tag='pre'
-		>
+		<OboComponent model={OboModel.models.testId} moduleData={{ focusState: {} }} tag="pre">
 			Test
 		</OboComponent>
 	)

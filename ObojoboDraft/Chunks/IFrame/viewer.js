@@ -10,4 +10,4 @@ Common.Store.registerModel('ObojoboDraft.Chunks.IFrame', {
 	adapter: adapter,
 	componentClass: ViewerComponent,
 	selectionHandler: new SelectionHandler()
-});
+})

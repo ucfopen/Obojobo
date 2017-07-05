@@ -18,10 +18,7 @@ describe('MathEquation', () => {
 	}
 
 	test('MathEquation component', () => {
-
-		const component = renderer.create(
-			<MathEquation model={model} moduleData={moduleData} />
-		)
+		const component = renderer.create(<MathEquation model={model} moduleData={moduleData} />)
 		let tree = component.toJSON()
 
 		expect(tree).toMatchSnapshot()

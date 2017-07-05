@@ -183,12 +183,6 @@ var NavUtil = {
 	open: function open() {
 		return Dispatcher.trigger('nav:open');
 	},
-	disable: function disable() {
-		return Dispatcher.trigger('nav:disable');
-	},
-	enable: function enable() {
-		return Dispatcher.trigger('nav:enable');
-	},
 	toggle: function toggle() {
 		return Dispatcher.trigger('nav:toggle');
 	},
@@ -323,7 +317,7 @@ var NavUtil = {
 		return OboModel.models[nextItem.id];
 	},
 	canNavigate: function canNavigate(state) {
-		return !state.locked && !state.disabled;
+		return !state.locked;
 	},
 	getOrderedList: function getOrderedList(state) {
 		return getFlatList(state.items);
@@ -366,7 +360,7 @@ var APIUtil = {
 			method: 'GET',
 			credentials: 'include',
 			headers: {
-				'Accept': 'application/json',
+				Accept: 'application/json',
 				'Content-Type': 'application/json'
 			} //@TODO - Do I need this?
 		});
@@ -380,7 +374,7 @@ var APIUtil = {
 			credentials: 'include',
 			body: JSON.stringify(body),
 			headers: {
-				'Accept': 'application/json',
+				Accept: 'application/json',
 				'Content-Type': 'application/json'
 			}
 		});
@@ -424,7 +418,6 @@ var APIUtil = {
 // 	createParsedJsonPromise APIUtil.post "/api/assessments/attempt/#{attempt.id}/question/#{question.get('id')}", {
 // 		response: response
 // 	}
-
 
 exports.default = APIUtil;
 
@@ -537,12 +530,6 @@ var NavStore = function (_Store) {
 			},
 			'nav:open': function navOpen(payload) {
 				return _this.setAndTrigger({ open: true });
-			},
-			'nav:disable': function navDisable(payload) {
-				return _this.setAndTrigger({ disabled: true, locked: true, open: false });
-			},
-			'nav:enable': function navEnable(payload) {
-				return _this.setAndTrigger({ disabled: false, locked: false });
 			},
 			'nav:toggle': function navToggle(payload) {
 				return _this.setAndTrigger({ open: !_this.state.open });
@@ -880,9 +867,12 @@ var Logo = function (_React$Component) {
 
 			return React.createElement(
 				'div',
-				{ className: 'viewer--components--logo' + (this.props.inverted ? ' is-inverted' : ' is-not-inverted'), style: {
+				{
+					className: 'viewer--components--logo' + (this.props.inverted ? ' is-inverted' : ' is-not-inverted'),
+					style: {
 						backgroundImage: bg
-					} },
+					}
+				},
 				'Obojobo'
 			);
 		}
@@ -1087,7 +1077,11 @@ var AssessmentStore = function (_Store) {
 			if (unfinishedAttempt) {
 				return ModalUtil.show(React.createElement(
 					SimpleDialog,
-					{ ok: true, title: 'Resume Attempt', onConfirm: this.onResumeAttemptConfirm.bind(this, unfinishedAttempt) },
+					{
+						ok: true,
+						title: 'Resume Attempt',
+						onConfirm: this.onResumeAttemptConfirm.bind(this, unfinishedAttempt)
+					},
 					React.createElement(
 						'p',
 						null,
@@ -1115,7 +1109,7 @@ var AssessmentStore = function (_Store) {
 				if (res.status === 'error') {
 					switch (res.value.message.toLowerCase()) {
 						case 'attempt limit reached':
-							ErrorUtil.show('No attempts left', "You have attempted this assessment the maximum number of times available.");
+							ErrorUtil.show('No attempts left', 'You have attempted this assessment the maximum number of times available.');
 							break;
 
 						default:
@@ -1126,6 +1120,8 @@ var AssessmentStore = function (_Store) {
 				}
 
 				_this2.triggerChange();
+			}).catch(function (e) {
+				console.error(e);
 			});
 		}
 	}, {
@@ -1171,6 +1167,7 @@ var AssessmentStore = function (_Store) {
 			_navUtil2.default.goto(id);
 
 			model.processTrigger('onStartAttempt');
+			Dispatcher.trigger('assessment:attemptStarted', id);
 		}
 	}, {
 		key: 'tryEndAttempt',
@@ -1187,6 +1184,8 @@ var AssessmentStore = function (_Store) {
 
 				_this3.endAttempt(res.value);
 				return _this3.triggerChange();
+			}).catch(function (e) {
+				console.error(e);
 			});
 		}
 	}, {
@@ -1206,6 +1205,7 @@ var AssessmentStore = function (_Store) {
 			assessment.current = null;
 
 			model.processTrigger('onEndAttempt');
+			Dispatcher.trigger('assessment:attemptEnded', id);
 		}
 	}, {
 		key: 'tryRecordResponse',
@@ -1300,7 +1300,7 @@ var QuestionStore = function (_Store) {
 
 		Dispatcher.on({
 			'question:recordResponse': function questionRecordResponse(payload) {
-				id = payload.value.id;
+				;id = payload.value.id;
 
 				var model = OboModel.models[id];
 
@@ -1645,7 +1645,7 @@ var Dispatcher = _Common2.default.flux.Dispatcher;
 var ScoreUtil = {
 	getScoreForModel: function getScoreForModel(state, model) {
 		var score = state.scores[model.get('id')];
-		if (typeof score === "undefined" || score === null) {
+		if (typeof score === 'undefined' || score === null) {
 			return null;
 		}
 
@@ -2294,6 +2294,7 @@ var Nav = function (_React$Component) {
 		key: 'onClick',
 		value: function onClick(item) {
 			if (item.type === 'link') {
+				if (!_navUtil2.default.canNavigate(this.props.navState)) return;
 				return _navUtil2.default.gotoPath(item.fullPath);
 			} else if (item.type === 'sub-link') {
 				var el = OboModel.models[item.id].getDomEl();
@@ -2355,7 +2356,9 @@ var Nav = function (_React$Component) {
 
 			return React.createElement(
 				'div',
-				{ className: 'viewer--components--nav' + (this.props.navState.locked ? ' is-locked' : ' is-unlocked') + (this.props.navState.open ? ' is-open' : ' is-closed') + (this.props.navState.disabled ? ' is-disabled' : ' is-enabled') },
+				{
+					className: 'viewer--components--nav' + (this.props.navState.locked ? ' is-locked' : ' is-unlocked') + (this.props.navState.open ? ' is-open' : ' is-closed') + (this.props.navState.disabled ? ' is-disabled' : ' is-enabled')
+				},
 				React.createElement(
 					'button',
 					{
@@ -2380,7 +2383,10 @@ var Nav = function (_React$Component) {
 								var isSelected = false;
 								return React.createElement(
 									'li',
-									{ key: index, className: 'heading' + (isSelected ? ' is-selected' : ' is-not-select') },
+									{
+										key: index,
+										className: 'heading' + (isSelected ? ' is-selected' : ' is-not-select')
+									},
 									_this2.renderLabel(item.label)
 								);
 								break;
@@ -2390,7 +2396,11 @@ var Nav = function (_React$Component) {
 								//var isPrevVisited = this.props.navState.navTargetHistory.indexOf(item.id) > -1
 								return React.createElement(
 									'li',
-									{ key: index, onClick: _this2.onClick.bind(_this2, item), className: 'link' + (isSelected ? ' is-selected' : ' is-not-select') + (item.flags.visited ? ' is-visited' : ' is-not-visited') + (item.flags.complete ? ' is-complete' : ' is-not-complete') + (item.flags.correct ? ' is-correct' : ' is-not-correct') },
+									{
+										key: index,
+										onClick: _this2.onClick.bind(_this2, item),
+										className: 'link' + (isSelected ? ' is-selected' : ' is-not-select') + (item.flags.visited ? ' is-visited' : ' is-not-visited') + (item.flags.complete ? ' is-complete' : ' is-not-complete') + (item.flags.correct ? ' is-correct' : ' is-not-correct')
+									},
 									_this2.renderLabel(item.label),
 									lockEl
 								);
@@ -2401,7 +2411,11 @@ var Nav = function (_React$Component) {
 
 								return React.createElement(
 									'li',
-									{ key: index, onClick: _this2.onClick.bind(_this2, item), className: 'sub-link' + (isSelected ? ' is-selected' : ' is-not-select') + (item.flags.correct ? ' is-correct' : ' is-not-correct') },
+									{
+										key: index,
+										onClick: _this2.onClick.bind(_this2, item),
+										className: 'sub-link' + (isSelected ? ' is-selected' : ' is-not-select') + (item.flags.correct ? ' is-correct' : ' is-not-correct')
+									},
 									_this2.renderLabel(item.label),
 									lockEl
 								);
@@ -2414,7 +2428,6 @@ var Nav = function (_React$Component) {
 									React.createElement('hr', null)
 								);
 								break;
-
 						}
 					})
 				),
@@ -2565,6 +2578,25 @@ var ViewerApp = function (_React$Component) {
 		state.modalState = ModalStore.getState();
 		state.focusState = FocusStore.getState();
 
+		_this.onNavStoreChange = function () {
+			return _this.setState({ navState: _navStore2.default.getState() });
+		};
+		_this.onScoreStoreChange = function () {
+			return _this.setState({ scoreState: _scoreStore2.default.getState() });
+		};
+		_this.onQuestionStoreChange = function () {
+			return _this.setState({ questionState: _questionStore2.default.getState() });
+		};
+		_this.onAssessmentStoreChange = function () {
+			return _this.setState({ assessmentState: _assessmentStore2.default.getState() });
+		};
+		_this.onModalStoreChange = function () {
+			return _this.setState({ modalState: ModalStore.getState() });
+		};
+		_this.onFocusStoreChange = function () {
+			return _this.setState({ focusState: FocusStore.getState() });
+		};
+
 		_this.state = state;
 		return _this;
 	}
@@ -2572,27 +2604,23 @@ var ViewerApp = function (_React$Component) {
 	_createClass(ViewerApp, [{
 		key: 'componentWillMount',
 		value: function componentWillMount() {
-			var _this2 = this;
-
 			// === SET UP DATA STORES ===
-			_navStore2.default.onChange(function () {
-				return _this2.setState({ navState: _navStore2.default.getState() });
-			});
-			_scoreStore2.default.onChange(function () {
-				return _this2.setState({ scoreState: _scoreStore2.default.getState() });
-			});
-			_questionStore2.default.onChange(function () {
-				return _this2.setState({ questionState: _questionStore2.default.getState() });
-			});
-			_assessmentStore2.default.onChange(function () {
-				return _this2.setState({ assessmentState: _assessmentStore2.default.getState() });
-			});
-			ModalStore.onChange(function () {
-				return _this2.setState({ modalState: ModalStore.getState() });
-			});
-			return FocusStore.onChange(function () {
-				return _this2.setState({ focusState: FocusStore.getState() });
-			});
+			_navStore2.default.onChange(this.onNavStoreChange);
+			_scoreStore2.default.onChange(this.onScoreStoreChange);
+			_questionStore2.default.onChange(this.onQuestionStoreChange);
+			_assessmentStore2.default.onChange(this.onAssessmentStoreChange);
+			ModalStore.onChange(this.onModalStoreChange);
+			FocusStore.onChange(this.onFocusStoreChange);
+		}
+	}, {
+		key: 'componentWillUnmount',
+		value: function componentWillUnmount() {
+			_navStore2.default.offChange(this.onNavStoreChange);
+			_scoreStore2.default.offChange(this.onScoreStoreChange);
+			_questionStore2.default.offChange(this.onQuestionStoreChange);
+			_assessmentStore2.default.offChange(this.onAssessmentStoreChange);
+			ModalStore.offChange(this.onModalStoreChange);
+			FocusStore.offChange(this.onFocusStoreChange);
 		}
 
 		// componentDidMount: ->
@@ -2633,10 +2661,14 @@ var ViewerApp = function (_React$Component) {
 		key: 'scrollToTop',
 		value: function scrollToTop() {
 			var el = ReactDOM.findDOMNode(this.refs.prev);
+			var container = ReactDOM.findDOMNode(this.refs.container);
+
+			if (!container) return;
+
 			if (el) {
-				return ReactDOM.findDOMNode(this.refs.container).scrollTop = ReactDOM.findDOMNode(el).getBoundingClientRect().height;
+				return container.scrollTop = ReactDOM.findDOMNode(el).getBoundingClientRect().height;
 			} else {
-				return ReactDOM.findDOMNode(this.refs.container).scrollTop = 0;
+				return container.scrollTop = 0;
 			}
 		}
 
@@ -2736,19 +2768,28 @@ var ViewerApp = function (_React$Component) {
 
 			var prevModel = nextModel = null;
 			if (_navUtil2.default.canNavigate(this.state.navState)) {
-
 				prevModel = _navUtil2.default.getPrevModel(this.state.navState);
 				if (prevModel) {
 					prevEl = _react2.default.createElement(_inlineNavButton2.default, { ref: 'prev', type: 'prev', title: 'Back: ' + prevModel.title });
 				} else {
-					prevEl = _react2.default.createElement(_inlineNavButton2.default, { ref: 'prev', type: 'prev', title: 'Start of ' + this.state.model.title, disabled: true });
+					prevEl = _react2.default.createElement(_inlineNavButton2.default, {
+						ref: 'prev',
+						type: 'prev',
+						title: 'Start of ' + this.state.model.title,
+						disabled: true
+					});
 				}
 
 				nextModel = _navUtil2.default.getNextModel(this.state.navState);
 				if (nextModel) {
 					nextEl = _react2.default.createElement(_inlineNavButton2.default, { ref: 'next', type: 'next', title: 'Next: ' + nextModel.title });
 				} else {
-					nextEl = _react2.default.createElement(_inlineNavButton2.default, { ref: 'next', type: 'next', title: 'End of ' + this.state.model.title, disabled: true });
+					nextEl = _react2.default.createElement(_inlineNavButton2.default, {
+						ref: 'next',
+						type: 'next',
+						title: 'End of ' + this.state.model.title,
+						disabled: true
+					});
 				}
 			}
 
@@ -2756,7 +2797,12 @@ var ViewerApp = function (_React$Component) {
 
 			return _react2.default.createElement(
 				'div',
-				{ ref: 'container', onMouseDown: this.onMouseDown.bind(this), onScroll: this.onScroll.bind(this), className: 'viewer--viewer-app' + (this.isPreviewing ? ' is-previewing' : ' is-not-previewing') + (this.state.navState.locked ? ' is-locked-nav' : ' is-unlocked-nav') + (this.state.navState.open ? ' is-open-nav' : ' is-closed-nav') + (this.state.navState.disabled ? ' is-disabled-nav' : ' is-enabled-nav') + ' is-focus-state-' + this.state.focusState.viewState },
+				{
+					ref: 'container',
+					onMouseDown: this.onMouseDown.bind(this),
+					onScroll: this.onScroll.bind(this),
+					className: 'viewer--viewer-app' + (this.isPreviewing ? ' is-previewing' : ' is-not-previewing') + (this.state.navState.locked ? ' is-locked-nav' : ' is-unlocked-nav') + (this.state.navState.open ? ' is-open-nav' : ' is-closed-nav') + (this.state.navState.disabled ? ' is-disabled-nav' : ' is-enabled-nav') + ' is-focus-state-' + this.state.focusState.viewState
+				},
 				_react2.default.createElement(
 					'header',
 					null,
@@ -2793,7 +2839,10 @@ var ViewerApp = function (_React$Component) {
 						{ className: 'controls' },
 						_react2.default.createElement(
 							'button',
-							{ onClick: this.unlockNavigation.bind(this), disabled: !this.state.navState.locked },
+							{
+								onClick: this.unlockNavigation.bind(this),
+								disabled: !this.state.navState.locked
+							},
 							'Unlock navigation'
 						),
 						_react2.default.createElement(

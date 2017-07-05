@@ -165,7 +165,12 @@ var Text = function (_React$Component) {
 			var _this2 = this;
 
 			var texts = this.props.model.modelState.textGroup.items.map(function (textItem, index) {
-				return React.createElement(TextGroupEl, { textItem: textItem, groupIndex: index, key: index, parentModel: _this2.props.model });
+				return React.createElement(TextGroupEl, {
+					textItem: textItem,
+					groupIndex: index,
+					key: index,
+					parentModel: _this2.props.model
+				});
 			}.bind(this));
 
 			return React.createElement(

@@ -29,9 +29,7 @@ describe('Figure', () => {
 	}
 
 	test('Figure component', () => {
-		const component = renderer.create(
-			<Figure model={model} moduleData={moduleData} />
-		)
+		const component = renderer.create(<Figure model={model} moduleData={moduleData} />)
 		let tree = component.toJSON()
 
 		expect(tree).toMatchSnapshot()

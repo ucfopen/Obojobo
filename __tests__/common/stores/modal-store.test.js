@@ -1,17 +1,15 @@
 import ModalStore from '../../../src/scripts/common/stores/modal-store'
 import Dispatcher from '../../../src/scripts/common/flux/dispatcher'
 
-
 jest.mock('../../../src/scripts/common/flux/dispatcher', () => {
-	return ({
+	return {
 		trigger: jest.fn(),
 		on: jest.fn(),
 		off: jest.fn()
-	})
+	}
 })
 
 describe('ModalStore', () => {
-
 	beforeEach(() => {
 		jest.resetAllMocks()
 		jest.useFakeTimers()
@@ -27,18 +25,16 @@ describe('ModalStore', () => {
 	})
 
 	test('show will update state and trigger change', () => {
-		ModalStore._show({ component:'example' })
+		ModalStore._show({ component: 'example' })
 
 		expect(ModalStore.getState()).toEqual({
-			modals: [
-				{ component:'example' }
-			]
+			modals: [{ component: 'example' }]
 		})
 		expect(ModalStore.triggerChange).toHaveBeenCalledTimes(1)
 	})
 
 	test('hide will update state and trigger change', () => {
-		ModalStore._show({ component:'example' })
+		ModalStore._show({ component: 'example' })
 		ModalStore._hide()
 
 		expect(ModalStore.getState()).toEqual({

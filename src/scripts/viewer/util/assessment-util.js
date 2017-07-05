@@ -1,58 +1,74 @@
 import Common from 'Common'
 
-let { Dispatcher } = Common.flux;
+let { Dispatcher } = Common.flux
 
-import QuestionUtil from '../../viewer/util/question-util';
+import QuestionUtil from '../../viewer/util/question-util'
 
 var AssessmentUtil = {
 	getAssessmentForModel(state, model) {
-		let assessmentModel;
+		let assessmentModel
 		if (model.get('type') === 'ObojoboDraft.Sections.Assessment') {
-			assessmentModel = model;
+			assessmentModel = model
 		} else {
-			assessmentModel = model.getParentOfType('ObojoboDraft.Sections.Assessment');
+			assessmentModel = model.getParentOfType('ObojoboDraft.Sections.Assessment')
 		}
 
-		if (!assessmentModel) { return null; }
+		if (!assessmentModel) {
+			return null
+		}
 
-		let assessment = state.assessments[assessmentModel.get('id')];
-		if (!assessment) { return null; }
+		let assessment = state.assessments[assessmentModel.get('id')]
+		if (!assessment) {
+			return null
+		}
 
-		return assessment;
+		return assessment
 	},
 
 	getLastAttemptScoreForModel(state, model) {
-		let assessment = AssessmentUtil.getAssessmentForModel(state, model);
-		if (!assessment) { return null; }
+		let assessment = AssessmentUtil.getAssessmentForModel(state, model)
+		if (!assessment) {
+			return null
+		}
 
-		if (assessment.attempts.length === 0) { return 0; }
+		if (assessment.attempts.length === 0) {
+			return 0
+		}
 
-		return assessment.attempts[assessment.attempts.length - 1].result.attemptScore;
+		return assessment.attempts[assessment.attempts.length - 1].result.attemptScore
 	},
 
 	getHighestAttemptScoreForModel(state, model) {
-		let assessment = AssessmentUtil.getAssessmentForModel(state, model);
-		if (!assessment) { return null; }
+		let assessment = AssessmentUtil.getAssessmentForModel(state, model)
+		if (!assessment) {
+			return null
+		}
 
 		return assessment.attempts
 			.map(attempt => attempt.result.attemptScore)
-			.reduce(((a, b) => Math.max(a, b)), 0);
+			.reduce((a, b) => Math.max(a, b), 0)
 	},
 
 	getLastAttemptScoresForModel(state, model) {
-		let assessment = AssessmentUtil.getAssessmentForModel(state, model);
-		if (!assessment) { return null; }
+		let assessment = AssessmentUtil.getAssessmentForModel(state, model)
+		if (!assessment) {
+			return null
+		}
 
-		if (assessment.attempts.length === 0) { return []; }
+		if (assessment.attempts.length === 0) {
+			return []
+		}
 
-		return assessment.attempts[assessment.attempts.length - 1].result.scores;
+		return assessment.attempts[assessment.attempts.length - 1].result.scores
 	},
 
 	getCurrentAttemptForModel(state, model) {
-		let assessment = AssessmentUtil.getAssessmentForModel(state, model);
-		if (!assessment) { return null; }
+		let assessment = AssessmentUtil.getAssessmentForModel(state, model)
+		if (!assessment) {
+			return null
+		}
 
-		return assessment.current;
+		return assessment.current
 	},
 
 	// getLastAttemptForModel(state, model) {
@@ -63,9 +79,13 @@ var AssessmentUtil = {
 	// },
 
 	isCurrentAttemptComplete(assessmentState, questionState, model) {
-		console.log('@TODO: Function not working, responses stored by responseId, not by questionId. Do not use this method.')
-		let current = AssessmentUtil.getCurrentAttemptForModel(assessmentState, model);
-		if (!current) { return null; }
+		console.log(
+			'@TODO: Function not working, responses stored by responseId, not by questionId. Do not use this method.'
+		)
+		let current = AssessmentUtil.getCurrentAttemptForModel(assessmentState, model)
+		if (!current) {
+			return null
+		}
 
 		let models = model.children.at(1).children.models
 
@@ -78,10 +98,12 @@ var AssessmentUtil = {
 	},
 
 	getNumberOfAttemptsCompletedForModel(state, model) {
-		let assessment = AssessmentUtil.getAssessmentForModel(state, model);
-		if (!assessment || (assessment.attempts.length === 0)) { return 0; }
+		let assessment = AssessmentUtil.getAssessmentForModel(state, model)
+		if (!assessment || assessment.attempts.length === 0) {
+			return 0
+		}
 
-		return assessment.attempts.length;
+		return assessment.attempts.length
 	},
 
 	startAttempt(model) {
@@ -89,8 +111,7 @@ var AssessmentUtil = {
 			value: {
 				id: model.get('id')
 			}
-		}
-		);
+		})
 	},
 
 	endAttempt(model) {
@@ -98,9 +119,8 @@ var AssessmentUtil = {
 			value: {
 				id: model.get('id')
 			}
-		}
-		);
+		})
 	}
-};
+}
 
 export default AssessmentUtil

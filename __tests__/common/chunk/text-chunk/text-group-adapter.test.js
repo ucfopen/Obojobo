@@ -11,7 +11,7 @@ describe('TextGroupAdapter', () => {
 		TextGroupAdapter.construct(model)
 
 		expect(model.modelState.textGroup).toEqual(
-			TextGroup.create(Infinity, { indent:0, align:'left' })
+			TextGroup.create(Infinity, { indent: 0, align: 'left' })
 		)
 	})
 
@@ -32,7 +32,7 @@ describe('TextGroupAdapter', () => {
 			}
 		})
 
-		let compareTo = TextGroup.create(Infinity, { indent:0, align:'left' })
+		let compareTo = TextGroup.create(Infinity, { indent: 0, align: 'left' })
 
 		compareTo.set(0, new StyleableText('Text goes here'))
 

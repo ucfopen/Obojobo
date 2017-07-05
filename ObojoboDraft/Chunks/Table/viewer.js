@@ -1,5 +1,5 @@
 import Common from 'Common'
-import SelectionHandler from './selection-handler';
+import SelectionHandler from './selection-handler'
 import adapter from './adapter'
 import ViewerComponent from './viewer-component'
 
@@ -8,4 +8,4 @@ Common.Store.registerModel('ObojoboDraft.Chunks.Table', {
 	adapter: adapter,
 	componentClass: ViewerComponent,
 	selectionHandler: new SelectionHandler()
-});
+})

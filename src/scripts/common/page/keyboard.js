@@ -12,4 +12,4 @@ export default {
 	DOWN_ARROW: 40,
 	DELETE: 46,
 	META: 91
-};
+}

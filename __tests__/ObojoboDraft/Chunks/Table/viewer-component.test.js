@@ -44,9 +44,7 @@ describe('Table', () => {
 	}
 
 	test('Table component', () => {
-		const component = renderer.create(
-			<Table model={model} moduleData={moduleData} />
-		)
+		const component = renderer.create(<Table model={model} moduleData={moduleData} />)
 		let tree = component.toJSON()
 
 		expect(tree).toMatchSnapshot()

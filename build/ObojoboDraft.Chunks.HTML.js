@@ -263,7 +263,10 @@ var HTML = function (_React$Component) {
 			return React.createElement(
 				OboComponent,
 				{ model: this.props.model, moduleData: this.props.moduleData },
-				React.createElement('div', { className: 'obojobo-draft--chunks--html viewer pad align-' + data.align, dangerouslySetInnerHTML: this.createMarkup() })
+				React.createElement('div', {
+					className: 'obojobo-draft--chunks--html viewer pad align-' + data.align,
+					dangerouslySetInnerHTML: this.createMarkup()
+				})
 			);
 		}
 	}]);

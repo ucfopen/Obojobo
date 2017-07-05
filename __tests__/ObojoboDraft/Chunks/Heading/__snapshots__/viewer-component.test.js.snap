@@ -8,37 +8,6 @@ exports[`Heading Heading component 1`] = `
   data-obo-component={true}
   data-type="ObojoboDraft.Chunks.Heading"
   id="obo-id"
-  model={
-    Object {
-      "children": null,
-      "content": Object {
-        "align": "left",
-        "headingLevel": 2,
-        "textGroup": Array [
-          Object {
-            "data": Object {
-              "align": "left",
-              "indent": 0,
-            },
-            "text": Object {
-              "styleList": null,
-              "value": "Example Text",
-            },
-          },
-        ],
-      },
-      "id": "id",
-      "index": 0,
-      "metadata": Object {},
-      "type": "ObojoboDraft.Chunks.Heading",
-    }
-  }
-  moduleData={
-    Object {
-      "focusState": Object {},
-    }
-  }
-  tag="div"
 >
   <div
     className="text-chunk obojobo-draft--chunks--heading pad"
