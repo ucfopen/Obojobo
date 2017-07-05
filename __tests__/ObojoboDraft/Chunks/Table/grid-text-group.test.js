@@ -199,6 +199,15 @@ describe('GridTextGroup', () => {
 
     const result = {
       textGroup: [
+        { text: { styleList: null, value: 'first cell' }, data: { num: 1 }}, 
+        { text: { styleList: null, value: 'second cell' }, data: { num: 2 }}
+      ],
+      numRows: 1,
+      numCols: 2
+    }
+
+    const resultAfterFunction = {
+      textGroup: [
         { text: { styleList: null, value: 'first cell' }, data: { num: 2 }}, 
         { text: { styleList: null, value: 'second cell' }, data: { num: 4 }}
       ],
@@ -206,6 +215,7 @@ describe('GridTextGroup', () => {
       numCols: 2
     }
 
-    expect(tempGridTextGroup.toDescriptor(mockDataToDescriptorFn)).toEqual(result)
+    expect(tempGridTextGroup.toDescriptor()).toEqual(result)
+    expect(tempGridTextGroup.toDescriptor(mockDataToDescriptorFn)).toEqual(resultAfterFunction)
   })
 })
