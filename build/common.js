@@ -7687,7 +7687,6 @@ var SingleInputBubble = function (_React$Component) {
 	_createClass(SingleInputBubble, [{
 		key: 'onChange',
 		value: function onChange(event) {
-			console.log('BubbleChange', event.target.value);
 			return this.props.onChange(event.target.value);
 		}
 	}, {
@@ -7699,7 +7698,6 @@ var SingleInputBubble = function (_React$Component) {
 	}, {
 		key: 'onKeyUp',
 		value: function onKeyUp(event) {
-			console.log(event.keyCode);
 			if (event.keyCode === 27) {
 				//ESC
 				return this.props.onCancel();
@@ -7717,7 +7715,6 @@ var SingleInputBubble = function (_React$Component) {
 	}, {
 		key: 'render',
 		value: function render() {
-			console.log('BubbleRender', this.props.value);
 			return React.createElement(
 				_bubble2.default,
 				null,

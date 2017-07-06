@@ -4,7 +4,6 @@ import Bubble from './bubble'
 
 export default class SingleInputBubble extends React.Component {
 	onChange(event) {
-		console.log('BubbleChange', event.target.value)
 		return this.props.onChange(event.target.value)
 	}
 
@@ -14,7 +13,6 @@ export default class SingleInputBubble extends React.Component {
 	}
 
 	onKeyUp(event) {
-		console.log(event.keyCode)
 		if (event.keyCode === 27) {
 			//ESC
 			return this.props.onCancel()
@@ -28,7 +26,6 @@ export default class SingleInputBubble extends React.Component {
 	}
 
 	render() {
-		console.log('BubbleRender', this.props.value)
 		return (
 			<Bubble>
 				<label className="single-input-bubble">
