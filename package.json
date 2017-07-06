@@ -100,7 +100,10 @@
 			"<rootDir>/src/scripts/common/text-group/text-group-selection.js",
 			"<rootDir>/src/scripts/common/util/console.js",
 			"<rootDir>/src/scripts/viewer",
-			"<rootDir>/src/scripts/common/net"
+			"<rootDir>/src/scripts/common/net",
+			"<rootDir>/server/questionbank.js",
+			"<rootDir>/server/questionselector.js",
+			"<rootDir>/server/util.js"
 		]
 	}
 }
