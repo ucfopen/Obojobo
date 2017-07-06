@@ -1,4 +1,4 @@
-import ListStyles from './liststyles'
+import ListStyles from './list-styles'
 
 let regexes = {
 	bulletListItem: /^[ \t]*(\*)[ \t]+([\s\S]*)/, // Interpert text such as ' * list item' as a bullet in a list
@@ -20,8 +20,6 @@ let looksLikeListItem = function(s) {
 		if (bullet != null) {
 			result = {
 				type: ListStyles.TYPE_UNORDERED,
-				text: bullet.text,
-				index: bullet.text.length,
 				symbol: '*',
 				symbolIndex: 1,
 				defaultSymbol: true,
@@ -36,8 +34,6 @@ let looksLikeListItem = function(s) {
 
 			result = {
 				type: ListStyles.TYPE_ORDERED,
-				text: numericList.text,
-				index: numericList.text.length,
 				symbol: numericList.symbol,
 				symbolIndex,
 				defaultSymbol: numericList.symbol === '1',
@@ -123,7 +119,7 @@ var getSymbolIndex = function(symbol, symbolStyle) {
 					return 7
 				case 'viii':
 					return 8
-				case 'xi':
+				case 'ix':
 					return 9
 				default:
 					return 1
