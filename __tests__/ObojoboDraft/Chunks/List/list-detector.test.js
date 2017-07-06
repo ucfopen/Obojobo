@@ -1,10 +1,6 @@
 import looksLikeListItem from '../../../../ObojoboDraft/Chunks/List/list-detector'
 
 describe('List Detector', () => {
-	let moduleData = {
-		focusState: {}
-	}
-
 	test('looksLikeListItem will return false when text is not formatted property', () => {
 		expect(looksLikeListItem('')).toBe(false)
 		expect(looksLikeListItem(' ')).toBe(false)
