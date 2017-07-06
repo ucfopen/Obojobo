@@ -103,7 +103,8 @@
 			"<rootDir>/src/scripts/common/net",
 			"<rootDir>/server/questionbank.js",
 			"<rootDir>/server/questionselector.js",
-			"<rootDir>/server/util.js"
+			"<rootDir>/server/util.js",
+			"<rootDir>/server/express.js"
 		]
 	}
 }
