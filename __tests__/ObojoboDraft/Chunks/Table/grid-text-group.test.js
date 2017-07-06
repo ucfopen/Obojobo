@@ -1,6 +1,6 @@
 import { shallow, mount } from 'enzyme'
 import GridTextGroup from '../../../../ObojoboDraft/Chunks/Table/grid-text-group'
-import StylableText from '../../../../../obojobo-draft-document-engine/src/scripts/common/text/styleable-text.js'
+import StylableText from '../../../../../obojobo-draft-document-engine/src/scripts/common/text/styleable-text'
 
 describe('GridTextGroup', () => {
 	let expectDimensionsAndMaxItems
