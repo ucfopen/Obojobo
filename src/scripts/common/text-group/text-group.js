@@ -175,7 +175,7 @@ class TextGroup {
 		}
 		let clonedItems = []
 
-		for (let item of Array.from(this.items)) {
+		for (let item of this.items) {
 			clonedItems.push(item.clone(cloneDataFn))
 		}
 

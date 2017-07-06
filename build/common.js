@@ -4774,7 +4774,7 @@ var TextGroup = function () {
 			var _iteratorError5 = undefined;
 
 			try {
-				for (var _iterator5 = Array.from(this.items)[Symbol.iterator](), _step5; !(_iteratorNormalCompletion5 = (_step5 = _iterator5.next()).done); _iteratorNormalCompletion5 = true) {
+				for (var _iterator5 = this.items[Symbol.iterator](), _step5; !(_iteratorNormalCompletion5 = (_step5 = _iterator5.next()).done); _iteratorNormalCompletion5 = true) {
 					var item = _step5.value;
 
 					clonedItems.push(item.clone(cloneDataFn));

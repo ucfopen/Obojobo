@@ -11,7 +11,34 @@ class GridTextGroup extends TextGroup {
 
 		this.numRows = numRows
 		this.numCols = numCols
-		this.setDimensions()
+		this.fill()
+	}
+
+	static fromDescriptor(descriptor, maxItems, dataTemplate, restoreDataDescriptorFn) {
+		if (restoreDataDescriptorFn == null) {
+			restoreDataDescriptorFn = Util.defaultCloneFn
+		}
+		let items = []
+		for (let item of Array.from(descriptor.textGroup)) {
+			items.push(
+				new TextGroupItem(
+					StyleableText.createFromObject(item.text),
+					restoreDataDescriptorFn(item.data)
+				)
+			)
+		}
+
+		return new GridTextGroup(descriptor.numRows, descriptor.numCols, dataTemplate, items)
+	}
+
+	static create(numRows, numCols, dataTemplate) {
+		if (dataTemplate == null) {
+			dataTemplate = {}
+		}
+		let group = new GridTextGroup(numRows, numCols, dataTemplate)
+		group.init(group.maxItems)
+
+		return group
 	}
 
 	addRow(rowIndex, text, data) {
@@ -24,7 +51,6 @@ class GridTextGroup extends TextGroup {
 		if (data == null) {
 			data = null
 		}
-		console.log('addRow', rowIndex)
 		// 0 | 1 | 2
 		// 3 | 4 | 5
 		// 6 | 7 | 8
@@ -105,56 +131,13 @@ class GridTextGroup extends TextGroup {
 		return this
 	}
 
-	setDimensions(numRows, numCols) {
-		while (this.numRows < numRows) {
-			this.addRow()
-		}
-
-		while (this.numRows > numRows) {
-			this.removeRow()
-		}
-
-		while (this.numCols < numCols) {
-			this.addCol()
-		}
-
-		while (this.numCols > numCols) {
-			this.removeCol()
-		}
-
-		return this
-	}
-
-	getCellPositionForIndex(index) {
-		console.log('gcpfi', index)
-		let row = Math.floor(index / this.numCols)
-
-		return {
-			row,
-			col: index - row * this.numCols
-		}
-	}
-
-	getIndexForCellPosition(cellPos) {
-		if (
-			cellPos.row < 0 ||
-			cellPos.row > this.numRows - 1 ||
-			cellPos.col < 0 ||
-			cellPos.col > this.numCols - 1
-		) {
-			return -1
-		}
-
-		return cellPos.row * this.numCols + cellPos.col
-	}
-
 	clone(cloneDataFn) {
 		if (cloneDataFn == null) {
 			cloneDataFn = Util.defaultCloneFn
 		}
 		let clonedItems = []
 
-		for (let item of Array.from(this.items)) {
+		for (let item of this.items) {
 			clonedItems.push(item.clone(cloneDataFn))
 		}
 
@@ -167,7 +150,7 @@ class GridTextGroup extends TextGroup {
 		}
 		let desc = []
 
-		for (let item of Array.from(this.items)) {
+		for (let item of this.items) {
 			desc.push({ text: item.text.getExportedObject(), data: dataToDescriptorFn(item.data) })
 		}
 
@@ -203,38 +186,6 @@ class GridTextGroup extends TextGroup {
 	}
 }
 // console.log '---------------------'
-
-GridTextGroup.fromDescriptor = function(
-	descriptor,
-	maxItems,
-	dataTemplate,
-	restoreDataDescriptorFn
-) {
-	if (restoreDataDescriptorFn == null) {
-		restoreDataDescriptorFn = Util.defaultCloneFn
-	}
-	let items = []
-	for (let item of Array.from(descriptor.textGroup)) {
-		items.push(
-			new TextGroupItem(
-				StyleableText.createFromObject(item.text),
-				restoreDataDescriptorFn(item.data)
-			)
-		)
-	}
-
-	return new GridTextGroup(descriptor.numRows, descriptor.numCols, dataTemplate, items)
-}
-
-GridTextGroup.create = function(numRows, numCols, dataTemplate) {
-	if (dataTemplate == null) {
-		dataTemplate = {}
-	}
-	let group = new GridTextGroup(numRows, numCols, dataTemplate)
-	group.init(group.maxItems)
-
-	return group
-}
 
 // window.GridTextGroup = GridTextGroup
 

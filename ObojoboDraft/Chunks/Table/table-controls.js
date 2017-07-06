@@ -1,6 +1,6 @@
 import './tablecontrols.scss'
 
-import TableMenu from './tablemenu'
+import TableMenu from './table-menu'
 
 import insertButton from 'svg-url-loader?noquotes!./assets/table-insert.svg'
 

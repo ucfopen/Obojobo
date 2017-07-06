@@ -130,7 +130,7 @@ var GridTextGroup = function (_TextGroup) {
 
 		_this.numRows = numRows;
 		_this.numCols = numCols;
-		_this.setDimensions();
+		_this.fill();
 		return _this;
 	}
 
@@ -146,7 +146,6 @@ var GridTextGroup = function (_TextGroup) {
 			if (data == null) {
 				data = null;
 			}
-			console.log('addRow', rowIndex);
 			// 0 | 1 | 2
 			// 3 | 4 | 5
 			// 6 | 7 | 8
@@ -218,47 +217,6 @@ var GridTextGroup = function (_TextGroup) {
 			return this;
 		}
 	}, {
-		key: 'setDimensions',
-		value: function setDimensions(numRows, numCols) {
-			while (this.numRows < numRows) {
-				this.addRow();
-			}
-
-			while (this.numRows > numRows) {
-				this.removeRow();
-			}
-
-			while (this.numCols < numCols) {
-				this.addCol();
-			}
-
-			while (this.numCols > numCols) {
-				this.removeCol();
-			}
-
-			return this;
-		}
-	}, {
-		key: 'getCellPositionForIndex',
-		value: function getCellPositionForIndex(index) {
-			console.log('gcpfi', index);
-			var row = Math.floor(index / this.numCols);
-
-			return {
-				row: row,
-				col: index - row * this.numCols
-			};
-		}
-	}, {
-		key: 'getIndexForCellPosition',
-		value: function getIndexForCellPosition(cellPos) {
-			if (cellPos.row < 0 || cellPos.row > this.numRows - 1 || cellPos.col < 0 || cellPos.col > this.numCols - 1) {
-				return -1;
-			}
-
-			return cellPos.row * this.numCols + cellPos.col;
-		}
-	}, {
 		key: 'clone',
 		value: function clone(cloneDataFn) {
 			if (cloneDataFn == null) {
@@ -271,7 +229,7 @@ var GridTextGroup = function (_TextGroup) {
 			var _iteratorError = undefined;
 
 			try {
-				for (var _iterator = Array.from(this.items)[Symbol.iterator](), _step; !(_iteratorNormalCompletion = (_step = _iterator.next()).done); _iteratorNormalCompletion = true) {
+				for (var _iterator = this.items[Symbol.iterator](), _step; !(_iteratorNormalCompletion = (_step = _iterator.next()).done); _iteratorNormalCompletion = true) {
 					var item = _step.value;
 
 					clonedItems.push(item.clone(cloneDataFn));
@@ -306,7 +264,7 @@ var GridTextGroup = function (_TextGroup) {
 			var _iteratorError2 = undefined;
 
 			try {
-				for (var _iterator2 = Array.from(this.items)[Symbol.iterator](), _step2; !(_iteratorNormalCompletion2 = (_step2 = _iterator2.next()).done); _iteratorNormalCompletion2 = true) {
+				for (var _iterator2 = this.items[Symbol.iterator](), _step2; !(_iteratorNormalCompletion2 = (_step2 = _iterator2.next()).done); _iteratorNormalCompletion2 = true) {
 					var item = _step2.value;
 
 					desc.push({ text: item.text.getExportedObject(), data: dataToDescriptorFn(item.data) });
@@ -355,54 +313,56 @@ var GridTextGroup = function (_TextGroup) {
 				);
 			});
 		}
+	}], [{
+		key: 'fromDescriptor',
+		value: function fromDescriptor(descriptor, maxItems, dataTemplate, restoreDataDescriptorFn) {
+			if (restoreDataDescriptorFn == null) {
+				restoreDataDescriptorFn = Util.defaultCloneFn;
+			}
+			var items = [];
+			var _iteratorNormalCompletion3 = true;
+			var _didIteratorError3 = false;
+			var _iteratorError3 = undefined;
+
+			try {
+				for (var _iterator3 = Array.from(descriptor.textGroup)[Symbol.iterator](), _step3; !(_iteratorNormalCompletion3 = (_step3 = _iterator3.next()).done); _iteratorNormalCompletion3 = true) {
+					var item = _step3.value;
+
+					items.push(new TextGroupItem(StyleableText.createFromObject(item.text), restoreDataDescriptorFn(item.data)));
+				}
+			} catch (err) {
+				_didIteratorError3 = true;
+				_iteratorError3 = err;
+			} finally {
+				try {
+					if (!_iteratorNormalCompletion3 && _iterator3.return) {
+						_iterator3.return();
+					}
+				} finally {
+					if (_didIteratorError3) {
+						throw _iteratorError3;
+					}
+				}
+			}
+
+			return new GridTextGroup(descriptor.numRows, descriptor.numCols, dataTemplate, items);
+		}
+	}, {
+		key: 'create',
+		value: function create(numRows, numCols, dataTemplate) {
+			if (dataTemplate == null) {
+				dataTemplate = {};
+			}
+			var group = new GridTextGroup(numRows, numCols, dataTemplate);
+			group.init(group.maxItems);
+
+			return group;
+		}
 	}]);
 
 	return GridTextGroup;
 }(TextGroup);
 // console.log '---------------------'
-
-GridTextGroup.fromDescriptor = function (descriptor, maxItems, dataTemplate, restoreDataDescriptorFn) {
-	if (restoreDataDescriptorFn == null) {
-		restoreDataDescriptorFn = Util.defaultCloneFn;
-	}
-	var items = [];
-	var _iteratorNormalCompletion3 = true;
-	var _didIteratorError3 = false;
-	var _iteratorError3 = undefined;
-
-	try {
-		for (var _iterator3 = Array.from(descriptor.textGroup)[Symbol.iterator](), _step3; !(_iteratorNormalCompletion3 = (_step3 = _iterator3.next()).done); _iteratorNormalCompletion3 = true) {
-			var item = _step3.value;
-
-			items.push(new TextGroupItem(StyleableText.createFromObject(item.text), restoreDataDescriptorFn(item.data)));
-		}
-	} catch (err) {
-		_didIteratorError3 = true;
-		_iteratorError3 = err;
-	} finally {
-		try {
-			if (!_iteratorNormalCompletion3 && _iterator3.return) {
-				_iterator3.return();
-			}
-		} finally {
-			if (_didIteratorError3) {
-				throw _iteratorError3;
-			}
-		}
-	}
-
-	return new GridTextGroup(descriptor.numRows, descriptor.numCols, dataTemplate, items);
-};
-
-GridTextGroup.create = function (numRows, numCols, dataTemplate) {
-	if (dataTemplate == null) {
-		dataTemplate = {};
-	}
-	var group = new GridTextGroup(numRows, numCols, dataTemplate);
-	group.init(group.maxItems);
-
-	return group;
-};
 
 // window.GridTextGroup = GridTextGroup
 
