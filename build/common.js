@@ -6573,19 +6573,21 @@ var FocusableChunk = function (_React$Component) {
 	}
 
 	_createClass(FocusableChunk, [{
-		key: 'getAnchorNode',
-		value: function getAnchorNode() {
-			if (__guard__(__guard__(this.refs != null ? this.refs.anchor : undefined, function (x1) {
-				return x1.refs;
-			}), function (x) {
-				return x.anchorElement;
-			}) == null) {
-				return null;
-			}
-			return this.refs.anchor.refs.anchorElement;
-		}
-	}, {
 		key: 'render',
+
+
+		// getAnchorNode() {
+		// 	if (
+		// 		__guard__(
+		// 			__guard__(this.refs != null ? this.refs.anchor : undefined, x1 => x1.refs),
+		// 			x => x.anchorElement
+		// 		) == null
+		// 	) {
+		// 		return null
+		// 	}
+		// 	return this.refs.anchor.refs.anchorElement
+		// }
+
 		value: function render() {
 			var className = this.props.className;
 
