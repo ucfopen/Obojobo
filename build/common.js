@@ -2781,7 +2781,8 @@ var Button = function (_React$Component) {
 	_createClass(Button, [{
 		key: 'focus',
 		value: function focus() {
-			return ReactDOM.findDOMNode(this.refs.button).focus();
+			var el = ReactDOM.findDOMNode(this.refs.button);
+			if (el) el.focus();
 		}
 	}, {
 		key: 'render',

@@ -10,7 +10,8 @@ export default class Button extends React.Component {
 	}
 
 	focus() {
-		return ReactDOM.findDOMNode(this.refs.button).focus()
+		let el = ReactDOM.findDOMNode(this.refs.button)
+		if (el) el.focus()
 	}
 
 	render() {
