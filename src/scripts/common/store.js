@@ -1,22 +1,28 @@
-let items = new Map()
-let itemsLoaded = 0
-let getItemsCallbacks = []
-let defaults = new Map()
-// errorChunk = null @TODO
-
-// this is editor stuff only
-let insertItems = new Map()
-let registeredToolbarItems = {
-	separator: { id: 'separator', type: 'separator' }
-}
-let toolbarItems = []
-let textListeners = []
-let triggerActions = {}
-let variableHandlers = new Map()
-
-window.__items = items
+let items,
+	itemsLoaded,
+	getItemsCallbacks,
+	defaults,
+	insertItems,
+	registeredToolbarItems,
+	toolbarItems,
+	textListeners,
+	variableHandlers
 
 class _Store {
+	init() {
+		items = new Map()
+		itemsLoaded = 0
+		getItemsCallbacks = []
+		defaults = new Map()
+		insertItems = new Map()
+		toolbarItems = []
+		textListeners = []
+		variableHandlers = new Map()
+		registeredToolbarItems = {
+			separator: { id: 'separator', type: 'separator' }
+		}
+	}
+
 	loadDependency(url, onLoadCallback) {
 		if (onLoadCallback == null) {
 			onLoadCallback = function() {}
@@ -52,11 +58,8 @@ class _Store {
 		opts = Object.assign(
 			{
 				type: null,
-				dependencies: [],
 				default: false,
-				error: false,
 				insertItem: null,
-				modelClass: null,
 				componentClass: null,
 				selectionHandler: null,
 				commandHandler: null,
@@ -69,9 +72,10 @@ class _Store {
 		if (opts.default) {
 			defaults.set(opts.type, className)
 		}
-		if (opts.insertItem) {
-			insertItems.set(chunkClass.type, opts.insertItem)
-		}
+		// @TODO: Editor
+		// if (opts.insertItem) {
+		// 	insertItems.set(chunkClass.type, opts.insertItem)
+		// }
 
 		opts.init()
 
@@ -79,26 +83,6 @@ class _Store {
 			let cb = opts.variables[variable]
 			variableHandlers.set(variable, cb)
 		}
-
-		let { loadDependency } = this
-		let promises = opts.dependencies.map(
-			dependency =>
-				new Promise(function(resolve, reject) {
-					return loadDependency(dependency, resolve)
-				})
-		)
-
-		Promise.all(promises).then(function() {
-			itemsLoaded++
-
-			if (itemsLoaded === items.size) {
-				for (let callback of Array.from(getItemsCallbacks)) {
-					callback(chunks)
-				}
-
-				return (getItemsCallbacks = [])
-			}
-		})
 
 		return this
 	}
@@ -126,18 +110,19 @@ class _Store {
 		return this
 	}
 
-	registerTextListener(opts, position) {
-		if (position == null) {
-			position = -1
-		}
-		if (position > -1) {
-			textListeners.splice(position, 0, opts)
-		} else {
-			textListeners.push(opts)
-		}
+	//@TODO: Editor?
+	// registerTextListener(opts, position) {
+	// 	if (position == null) {
+	// 		position = -1
+	// 	}
+	// 	if (position > -1) {
+	// 		textListeners.splice(position, 0, opts)
+	// 	} else {
+	// 		textListeners.push(opts)
+	// 	}
 
-		return this
-	}
+	// 	return this
+	// }
 
 	getItems(callback) {
 		if (true || itemsLoaded === items.size) {
@@ -149,15 +134,6 @@ class _Store {
 		return null
 	}
 
-	getDefaultItemForType(type) {
-		let className = defaults.get(type)
-		if (className == null) {
-			return null
-		}
-
-		return items.get(className)
-	}
-
 	getTextForVariable(variable, model, viewerState) {
 		let cb = variableHandlers.get(variable)
 		if (!cb) {
@@ -166,48 +142,25 @@ class _Store {
 
 		return cb.call(null, model, viewerState)
 	}
+
+	get insertItems() {
+		return insertItems
+	}
+
+	get registeredToolbarItems() {
+		return registeredToolbarItems
+	}
+
+	get toolbarItems() {
+		return toolbarItems
+	}
+
+	get textListeners() {
+		return textListeners
+	}
 }
 
-Object.defineProperties(_Store.prototype, {
-	// errorChunk:
-	// 	get: -> errorChunk
-
-	insertItems: {
-		get() {
-			return insertItems
-		}
-	},
-
-	registeredToolbarItems: {
-		get() {
-			return registeredToolbarItems
-		}
-	},
-
-	toolbarItems: {
-		get() {
-			return toolbarItems
-		}
-	},
-
-	textListeners: {
-		get() {
-			return textListeners
-		}
-	},
-
-	triggerActions: {
-		get() {
-			return triggerActions
-		}
-	},
-
-	__debug_items: {
-		get() {
-			return items
-		}
-	}
-})
-
 let Store = new _Store()
+
+Store.init()
 export { Store }

@@ -35,6 +35,6 @@ export default class FocusableChunk extends React.Component {
 	}
 }
 
-function __guard__(value, transform) {
-	return typeof value !== 'undefined' && value !== null ? transform(value) : undefined
-}
+// function __guard__(value, transform) {
+// 	return typeof value !== 'undefined' && value !== null ? transform(value) : undefined
+// }

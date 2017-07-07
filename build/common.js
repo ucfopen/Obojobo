@@ -3718,23 +3718,15 @@ var _createClass = function () { function defineProperties(target, props) { for 
 
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
-var items = new Map();
-var itemsLoaded = 0;
-var getItemsCallbacks = [];
-var defaults = new Map();
-// errorChunk = null @TODO
-
-// this is editor stuff only
-var insertItems = new Map();
-var registeredToolbarItems = {
-	separator: { id: 'separator', type: 'separator' }
-};
-var toolbarItems = [];
-var textListeners = [];
-var triggerActions = {};
-var variableHandlers = new Map();
-
-window.__items = items;
+var items = void 0,
+    itemsLoaded = void 0,
+    getItemsCallbacks = void 0,
+    defaults = void 0,
+    insertItems = void 0,
+    registeredToolbarItems = void 0,
+    toolbarItems = void 0,
+    textListeners = void 0,
+    variableHandlers = void 0;
 
 var _Store = function () {
 	function _Store() {
@@ -3742,6 +3734,21 @@ var _Store = function () {
 	}
 
 	_createClass(_Store, [{
+		key: 'init',
+		value: function init() {
+			items = new Map();
+			itemsLoaded = 0;
+			getItemsCallbacks = [];
+			defaults = new Map();
+			insertItems = new Map();
+			toolbarItems = [];
+			textListeners = [];
+			variableHandlers = new Map();
+			registeredToolbarItems = {
+				separator: { id: 'separator', type: 'separator' }
+			};
+		}
+	}, {
 		key: 'loadDependency',
 		value: function loadDependency(url, onLoadCallback) {
 			if (onLoadCallback == null) {
@@ -3778,11 +3785,8 @@ var _Store = function () {
 
 			opts = Object.assign({
 				type: null,
-				dependencies: [],
 				default: false,
-				error: false,
 				insertItem: null,
-				modelClass: null,
 				componentClass: null,
 				selectionHandler: null,
 				commandHandler: null,
@@ -3793,9 +3797,10 @@ var _Store = function () {
 			if (opts.default) {
 				defaults.set(opts.type, className);
 			}
-			if (opts.insertItem) {
-				insertItems.set(chunkClass.type, opts.insertItem);
-			}
+			// @TODO: Editor
+			// if (opts.insertItem) {
+			// 	insertItems.set(chunkClass.type, opts.insertItem)
+			// }
 
 			opts.init();
 
@@ -3803,47 +3808,6 @@ var _Store = function () {
 				var cb = opts.variables[variable];
 				variableHandlers.set(variable, cb);
 			}
-
-			var loadDependency = this.loadDependency;
-
-			var promises = opts.dependencies.map(function (dependency) {
-				return new Promise(function (resolve, reject) {
-					return loadDependency(dependency, resolve);
-				});
-			});
-
-			Promise.all(promises).then(function () {
-				itemsLoaded++;
-
-				if (itemsLoaded === items.size) {
-					var _iteratorNormalCompletion = true;
-					var _didIteratorError = false;
-					var _iteratorError = undefined;
-
-					try {
-						for (var _iterator = Array.from(getItemsCallbacks)[Symbol.iterator](), _step; !(_iteratorNormalCompletion = (_step = _iterator.next()).done); _iteratorNormalCompletion = true) {
-							var callback = _step.value;
-
-							callback(chunks);
-						}
-					} catch (err) {
-						_didIteratorError = true;
-						_iteratorError = err;
-					} finally {
-						try {
-							if (!_iteratorNormalCompletion && _iterator.return) {
-								_iterator.return();
-							}
-						} finally {
-							if (_didIteratorError) {
-								throw _iteratorError;
-							}
-						}
-					}
-
-					return getItemsCallbacks = [];
-				}
-			});
 
 			return this;
 		}
@@ -3874,20 +3838,21 @@ var _Store = function () {
 			toolbarItems.push(Object.assign({}, registeredToolbarItems[id]));
 			return this;
 		}
-	}, {
-		key: 'registerTextListener',
-		value: function registerTextListener(opts, position) {
-			if (position == null) {
-				position = -1;
-			}
-			if (position > -1) {
-				textListeners.splice(position, 0, opts);
-			} else {
-				textListeners.push(opts);
-			}
 
-			return this;
-		}
+		//@TODO: Editor?
+		// registerTextListener(opts, position) {
+		// 	if (position == null) {
+		// 		position = -1
+		// 	}
+		// 	if (position > -1) {
+		// 		textListeners.splice(position, 0, opts)
+		// 	} else {
+		// 		textListeners.push(opts)
+		// 	}
+
+		// 	return this
+		// }
+
 	}, {
 		key: 'getItems',
 		value: function getItems(callback) {
@@ -3900,16 +3865,6 @@ var _Store = function () {
 			return null;
 		}
 	}, {
-		key: 'getDefaultItemForType',
-		value: function getDefaultItemForType(type) {
-			var className = defaults.get(type);
-			if (className == null) {
-				return null;
-			}
-
-			return items.get(className);
-		}
-	}, {
 		key: 'getTextForVariable',
 		value: function getTextForVariable(variable, model, viewerState) {
 			var cb = variableHandlers.get(variable);
@@ -3919,53 +3874,34 @@ var _Store = function () {
 
 			return cb.call(null, model, viewerState);
 		}
+	}, {
+		key: 'insertItems',
+		get: function get() {
+			return insertItems;
+		}
+	}, {
+		key: 'registeredToolbarItems',
+		get: function get() {
+			return registeredToolbarItems;
+		}
+	}, {
+		key: 'toolbarItems',
+		get: function get() {
+			return toolbarItems;
+		}
+	}, {
+		key: 'textListeners',
+		get: function get() {
+			return textListeners;
+		}
 	}]);
 
 	return _Store;
 }();
 
-Object.defineProperties(_Store.prototype, {
-	// errorChunk:
-	// 	get: -> errorChunk
-
-	insertItems: {
-		get: function get() {
-			return insertItems;
-		}
-	},
-
-	registeredToolbarItems: {
-		get: function get() {
-			return registeredToolbarItems;
-		}
-	},
-
-	toolbarItems: {
-		get: function get() {
-			return toolbarItems;
-		}
-	},
-
-	textListeners: {
-		get: function get() {
-			return textListeners;
-		}
-	},
-
-	triggerActions: {
-		get: function get() {
-			return triggerActions;
-		}
-	},
-
-	__debug_items: {
-		get: function get() {
-			return items;
-		}
-	}
-});
-
 var Store = new _Store();
+
+Store.init();
 exports.Store = Store;
 
 /***/ }),
@@ -6616,12 +6552,12 @@ var FocusableChunk = function (_React$Component) {
 	return FocusableChunk;
 }(React.Component);
 
+// function __guard__(value, transform) {
+// 	return typeof value !== 'undefined' && value !== null ? transform(value) : undefined
+// }
+
+
 exports.default = FocusableChunk;
-
-
-function __guard__(value, transform) {
-	return typeof value !== 'undefined' && value !== null ? transform(value) : undefined;
-}
 
 /***/ }),
 /* 43 */
