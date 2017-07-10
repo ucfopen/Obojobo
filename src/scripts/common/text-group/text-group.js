@@ -170,9 +170,6 @@ class TextGroup {
 	}
 
 	clone(cloneDataFn) {
-		if (cloneDataFn == null) {
-			cloneDataFn = Util.defaultCloneFn
-		}
 		let clonedItems = []
 
 		for (let item of this.items) {

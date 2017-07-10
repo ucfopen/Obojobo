@@ -193,6 +193,17 @@ describe('TextGroup', function() {
 		expect(tgWithItems.items[0].text).toEqual(new StyleableText('second'))
 	})
 
+	it('removed item has an index of -1', function() {
+		let firstItem = tgWithItems.get(0)
+
+		expect(firstItem.index).toBe(0)
+
+		let removed = tgWithItems.remove(0)
+
+		expect(firstItem).toBe(removed)
+		expect(firstItem.index).toBe(-1)
+	})
+
 	it('clones itself', function() {
 		let clone = tgWithItems.clone()
 

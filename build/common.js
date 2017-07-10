@@ -4703,9 +4703,6 @@ var TextGroup = function () {
 	}, {
 		key: 'clone',
 		value: function clone(cloneDataFn) {
-			if (cloneDataFn == null) {
-				cloneDataFn = _textGroupUtil2.default.defaultCloneFn;
-			}
 			var clonedItems = [];
 
 			var _iteratorNormalCompletion5 = true;
