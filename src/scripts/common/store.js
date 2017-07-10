@@ -125,13 +125,15 @@ class _Store {
 	// }
 
 	getItems(callback) {
-		if (true || itemsLoaded === items.size) {
-			callback(items)
-		} else {
-			getItemsCallbacks.push(callback)
-		}
+		// if (itemsLoaded === items.size) {
+		// 	callback(items)
+		// } else {
+		// 	getItemsCallbacks.push(callback)
+		// }
 
-		return null
+		// return null
+
+		callback(items)
 	}
 
 	getTextForVariable(variable, model, viewerState) {
@@ -143,9 +145,9 @@ class _Store {
 		return cb.call(null, model, viewerState)
 	}
 
-	get insertItems() {
-		return insertItems
-	}
+	// get insertItems() {
+	// 	return insertItems
+	// }
 
 	get registeredToolbarItems() {
 		return registeredToolbarItems
@@ -155,9 +157,9 @@ class _Store {
 		return toolbarItems
 	}
 
-	get textListeners() {
-		return textListeners
-	}
+	// get textListeners() {
+	// 	return textListeners
+	// }
 }
 
 let Store = new _Store()

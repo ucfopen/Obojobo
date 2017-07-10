@@ -15,12 +15,11 @@ describe('Store', () => {
 	})
 
 	test('registers a model', done => {
-		let opts = {}
-		Store.registerModel('type', opts)
+		Store.registerModel('type')
 
 		Store.getItems(items => {
 			expect(items.size).toBe(1)
-			expect(items.get('type')).toBe(opts)
+			expect(items.get('type')).toEqual({})
 
 			done()
 		})
@@ -89,6 +88,17 @@ describe('Store', () => {
 			expect(var1cb).toHaveBeenCalledTimes(0)
 			expect(var2cb).toHaveBeenCalledTimes(1)
 			expect(result).toBe('__model__viewerState')
+
+			done()
+		})
+	})
+
+	test('returns null for variable replacement for an unrecognized variable', done => {
+		Store.registerModel('type')
+
+		Store.getItems(items => {
+			let result = Store.getTextForVariable('someVar', '__model', '__viewerState')
+			expect(result).toBe(null)
 
 			done()
 		})

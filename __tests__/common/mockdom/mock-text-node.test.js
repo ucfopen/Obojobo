@@ -8,4 +8,12 @@ describe('MockTextNode', () => {
 		expect(el.nodeType).toBe('text')
 		expect(el.parent).toBe(null)
 	})
+
+	test('creates new empty node', () => {
+		let el = new MockTextNode()
+
+		expect(el.text).toBe('')
+		expect(el.nodeType).toBe('text')
+		expect(el.parent).toBe(null)
+	})
 })

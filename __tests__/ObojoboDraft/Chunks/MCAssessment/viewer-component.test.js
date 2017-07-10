@@ -53,11 +53,11 @@ describe('MCAssessment', () => {
 						},
 						children: [
 							{
-								id: 'choice1-answer1',
+								id: 'choice1-answer',
 								type: 'ObojoboDraft.Chunks.MCAssessment.MCAnswer',
 								children: [
 									{
-										id: 'choice1-answer-1-text',
+										id: 'choice1-answer-text',
 										type: 'ObojoboDraft.Chunks.Text',
 										content: {
 											textGroup: [
@@ -72,11 +72,11 @@ describe('MCAssessment', () => {
 								]
 							},
 							{
-								id: 'choice1-answer2',
-								type: 'ObojoboDraft.Chunks.MCAssessment.MCAnswer',
+								id: 'choice1-feedback',
+								type: 'ObojoboDraft.Chunks.MCAssessment.MCFeedback',
 								children: [
 									{
-										id: 'choice1-answer-2-text',
+										id: 'choice1-feedback-text',
 										type: 'ObojoboDraft.Chunks.Text',
 										content: {
 											textGroup: [
@@ -100,11 +100,11 @@ describe('MCAssessment', () => {
 						},
 						children: [
 							{
-								id: 'choice2-answer1',
+								id: 'choice2-answer',
 								type: 'ObojoboDraft.Chunks.MCAssessment.MCAnswer',
 								children: [
 									{
-										id: 'choice1-answer-1-text',
+										id: 'choice1-answer-text',
 										type: 'ObojoboDraft.Chunks.Text',
 										content: {
 											textGroup: [
@@ -119,11 +119,11 @@ describe('MCAssessment', () => {
 								]
 							},
 							{
-								id: 'choice2-answer2',
-								type: 'ObojoboDraft.Chunks.MCAssessment.MCAnswer',
+								id: 'choice2-feedback',
+								type: 'ObojoboDraft.Chunks.MCAssessment.MCFeedback',
 								children: [
 									{
-										id: 'choice1-answer-1-text',
+										id: 'choice1-feedback-text',
 										type: 'ObojoboDraft.Chunks.Text',
 										content: {
 											textGroup: [

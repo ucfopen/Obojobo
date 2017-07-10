@@ -20,7 +20,7 @@ exports[`FocusableChunk 1`] = `
 
 exports[`FocusableChunk with indent and spellcheck 1`] = `
 <div
-  className="focusable-chunk anchor-container"
+  className="focusable-chunk anchor-container test-123"
   contentEditable={false}
 >
   <span

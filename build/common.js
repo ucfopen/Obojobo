@@ -3856,13 +3856,15 @@ var _Store = function () {
 	}, {
 		key: 'getItems',
 		value: function getItems(callback) {
-			if (true) {
-				callback(items);
-			} else {
-				getItemsCallbacks.push(callback);
-			}
+			// if (itemsLoaded === items.size) {
+			// 	callback(items)
+			// } else {
+			// 	getItemsCallbacks.push(callback)
+			// }
 
-			return null;
+			// return null
+
+			callback(items);
 		}
 	}, {
 		key: 'getTextForVariable',
@@ -3874,11 +3876,11 @@ var _Store = function () {
 
 			return cb.call(null, model, viewerState);
 		}
-	}, {
-		key: 'insertItems',
-		get: function get() {
-			return insertItems;
-		}
+
+		// get insertItems() {
+		// 	return insertItems
+		// }
+
 	}, {
 		key: 'registeredToolbarItems',
 		get: function get() {
@@ -3889,11 +3891,11 @@ var _Store = function () {
 		get: function get() {
 			return toolbarItems;
 		}
-	}, {
-		key: 'textListeners',
-		get: function get() {
-			return textListeners;
-		}
+
+		// get textListeners() {
+		// 	return textListeners
+		// }
+
 	}]);
 
 	return _Store;

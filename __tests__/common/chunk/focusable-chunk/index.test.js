@@ -10,7 +10,9 @@ test('FocusableChunk', () => {
 })
 
 test('FocusableChunk with indent and spellcheck', () => {
-	const component = renderer.create(<FocusableChunk indent={2} spellcheck={false} />)
+	const component = renderer.create(
+		<FocusableChunk indent={2} spellcheck={false} className="test-123" />
+	)
 	let tree = component.toJSON()
 
 	expect(tree).toMatchSnapshot()
