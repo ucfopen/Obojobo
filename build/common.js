@@ -4621,23 +4621,13 @@ var TextGroup = function () {
 	}, {
 		key: 'add',
 		value: function add(text, data) {
-			if (this.isFull) {
-				return this;
-			}
-
-			addChildToGroup(createChild(text, data, this.dataTemplate), this);
-
+			if (!this.isFull) addChildToGroup(createChild(text, data, this.dataTemplate), this);
 			return this;
 		}
 	}, {
 		key: 'addAt',
 		value: function addAt(index, text, data) {
-			if (this.isFull) {
-				return this;
-			}
-
-			addChildToGroup(createChild(text, data, this.dataTemplate), this, index);
-
+			if (!this.isFull) addChildToGroup(createChild(text, data, this.dataTemplate), this, index);
 			return this;
 		}
 	}, {
@@ -4814,13 +4804,12 @@ var TextGroup = function () {
 			var digestedItem = this.items.splice(index + 1, 1)[0];
 			var consumerItem = this.items[index];
 
-			if (!digestedItem || !consumerItem) {
-				return this;
+			if (digestedItem && consumerItem) {
+				consumerItem.data = _textGroupUtil2.default.createData(mergeDataFn(consumerItem.data, digestedItem.data), this.dataTemplate);
+
+				consumerItem.text.merge(digestedItem.text);
 			}
 
-			consumerItem.data = _textGroupUtil2.default.createData(mergeDataFn(consumerItem.data, digestedItem.data), this.dataTemplate);
-
-			consumerItem.text.merge(digestedItem.text);
 			return this;
 		}
 	}, {
@@ -4834,14 +4823,6 @@ var TextGroup = function () {
 			}
 			var startItem = this.items[startIndex];
 			var endItem = this.items[endIndex];
-
-			if (!startItem) {
-				startItem = this.first;
-			}
-			if (!endItem) {
-				endItem = this.last;
-			}
-
 			var startText = startItem.text;
 			var endText = endItem.text;
 
@@ -5059,14 +5040,6 @@ var TextGroup = function () {
 			}
 
 			return returnedStyles;
-		}
-	}, {
-		key: '__debug_print',
-		value: function __debug_print() {
-			console.log('========================');
-			return Array.from(this.items).map(function (item) {
-				return item.text.__debug_print(), console.log(JSON.stringify(item.data)), console.log('---------------------');
-			});
 		}
 	}]);
 

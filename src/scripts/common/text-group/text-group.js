@@ -116,22 +116,12 @@ class TextGroup {
 	}
 
 	add(text, data) {
-		if (this.isFull) {
-			return this
-		}
-
-		addChildToGroup(createChild(text, data, this.dataTemplate), this)
-
+		if (!this.isFull) addChildToGroup(createChild(text, data, this.dataTemplate), this)
 		return this
 	}
 
 	addAt(index, text, data) {
-		if (this.isFull) {
-			return this
-		}
-
-		addChildToGroup(createChild(text, data, this.dataTemplate), this, index)
-
+		if (!this.isFull) addChildToGroup(createChild(text, data, this.dataTemplate), this, index)
 		return this
 	}
 
@@ -234,16 +224,15 @@ class TextGroup {
 		let digestedItem = this.items.splice(index + 1, 1)[0]
 		let consumerItem = this.items[index]
 
-		if (!digestedItem || !consumerItem) {
-			return this
+		if (digestedItem && consumerItem) {
+			consumerItem.data = Util.createData(
+				mergeDataFn(consumerItem.data, digestedItem.data),
+				this.dataTemplate
+			)
+
+			consumerItem.text.merge(digestedItem.text)
 		}
 
-		consumerItem.data = Util.createData(
-			mergeDataFn(consumerItem.data, digestedItem.data),
-			this.dataTemplate
-		)
-
-		consumerItem.text.merge(digestedItem.text)
 		return this
 	}
 
@@ -256,14 +245,6 @@ class TextGroup {
 		}
 		let startItem = this.items[startIndex]
 		let endItem = this.items[endIndex]
-
-		if (!startItem) {
-			startItem = this.first
-		}
-		if (!endItem) {
-			endItem = this.last
-		}
-
 		let startText = startItem.text
 		let endText = endItem.text
 
@@ -424,17 +405,6 @@ class TextGroup {
 		}
 
 		return returnedStyles
-	}
-
-	__debug_print() {
-		console.log('========================')
-		return Array.from(this.items).map(
-			item => (
-				item.text.__debug_print(),
-				console.log(JSON.stringify(item.data)),
-				console.log('---------------------')
-			)
-		)
 	}
 }
 
