@@ -3,7 +3,7 @@ import Common from 'Common'
 let { Dialog } = Common.components.modal
 let { ModalUtil } = Common.util
 
-export default class AttemptIncompleteDialog {
+export default class AttemptIncompleteDialog extends React.Component {
 	onCancel() {
 		return ModalUtil.hide()
 	}

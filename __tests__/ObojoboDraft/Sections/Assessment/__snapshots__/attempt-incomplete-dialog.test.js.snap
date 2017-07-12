@@ -1,0 +1,76 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`AttemptIncompleteDialog AttemptIncompleteDialog component 1`] = `
+<div
+  className="obojobo-draft--components--modal--dialog"
+  style={
+    Object {
+      "width": "32rem",
+    }
+  }
+>
+  <div
+    className="obojobo-draft--components--modal--modal"
+  >
+    <input
+      className="first-tab"
+      onFocus={[Function]}
+      type="text"
+    />
+    <div
+      className="content"
+    >
+      <div
+        className="dialog-content"
+        style={
+          Object {
+            "textAlign": "center",
+          }
+        }
+      >
+        <b>
+          Wait! You left some questions blank.
+        </b>
+        <br />
+        Finish answering all questions and submit again.
+      </div>
+      <div
+        className="controls"
+      >
+        <div
+          className="obojobo-draft--components--button dangerous alt-action align-center"
+        >
+          <button
+            disabled={undefined}
+            onClick={[Function]}
+            tabIndex={undefined}
+          >
+            Submit as incomplete
+          </button>
+        </div>
+        <span
+          className="text"
+        >
+          or
+        </span>
+        <div
+          className="obojobo-draft--components--button align-center"
+        >
+          <button
+            disabled={undefined}
+            onClick={[Function]}
+            tabIndex={undefined}
+          >
+            Resume assessment
+          </button>
+        </div>
+      </div>
+    </div>
+    <input
+      className="last-tab"
+      onFocus={[Function]}
+      type="text"
+    />
+  </div>
+</div>
+`;

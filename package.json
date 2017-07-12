@@ -89,16 +89,24 @@
 			"<rootDir>/ObojoboDraft/Chunks/Table/grid-button.js",
 			"<rootDir>/ObojoboDraft/Chunks/Table/table-controls.js",
 			"<rootDir>/ObojoboDraft/Chunks/Table/table-menu.js",
+			"<rootDir>/ObojoboDraft/Chunks/Error",
 			"<rootDir>/src/scripts/common/dist.js",
 			"<rootDir>/src/scripts/common/chunk/util",
 			"<rootDir>/src/scripts/common/models/chunk.js",
 			"<rootDir>/src/scripts/common/models/legacy.js",
 			"<rootDir>/src/scripts/common/selection",
+			"<rootDir>/src/scripts/common/chunk/text-chunk/linkify.js",
 			"<rootDir>/src/scripts/common/text-group/text-group-cursor.js",
 			"<rootDir>/src/scripts/common/text-group/text-group-selection.js",
 			"<rootDir>/src/scripts/common/util/console.js",
 			"<rootDir>/src/scripts/viewer",
-			"<rootDir>/src/scripts/common/net"
+			"<rootDir>/src/scripts/common/net",
+			"<rootDir>/server/questionbank.js",
+			"<rootDir>/server/questionselector.js",
+			"<rootDir>/server/util.js",
+			"<rootDir>/server/express.js",
+			"<rootDir>/src/scripts/common/page/screen.js",
+			"<rootDir>/src/scripts/common/page/head.js"
 		]
 	}
 }

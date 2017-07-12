@@ -217,16 +217,14 @@ var ListStyles = function () {
 	}, {
 		key: 'map',
 		value: function map(fn) {
-			var _this = this;
+			var result = [];
 
-			return function () {
-				var result = [];
-				for (var indent in _this.styles) {
-					var style = _this.styles[indent];
-					result.push(fn(style, indent));
-				}
-				return result;
-			}();
+			for (var indent in this.styles) {
+				var style = this.styles[indent];
+				result.push(fn(style, indent));
+			}
+
+			return result;
 		}
 	}]);
 

@@ -2781,7 +2781,8 @@ var Button = function (_React$Component) {
 	_createClass(Button, [{
 		key: 'focus',
 		value: function focus() {
-			return ReactDOM.findDOMNode(this.refs.button).focus();
+			var el = ReactDOM.findDOMNode(this.refs.button);
+			if (el) el.focus();
 		}
 	}, {
 		key: 'render',
@@ -3717,23 +3718,15 @@ var _createClass = function () { function defineProperties(target, props) { for 
 
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
-var items = new Map();
-var itemsLoaded = 0;
-var getItemsCallbacks = [];
-var defaults = new Map();
-// errorChunk = null @TODO
-
-// this is editor stuff only
-var insertItems = new Map();
-var registeredToolbarItems = {
-	separator: { id: 'separator', type: 'separator' }
-};
-var toolbarItems = [];
-var textListeners = [];
-var triggerActions = {};
-var variableHandlers = new Map();
-
-window.__items = items;
+var items = void 0,
+    itemsLoaded = void 0,
+    getItemsCallbacks = void 0,
+    defaults = void 0,
+    insertItems = void 0,
+    registeredToolbarItems = void 0,
+    toolbarItems = void 0,
+    textListeners = void 0,
+    variableHandlers = void 0;
 
 var _Store = function () {
 	function _Store() {
@@ -3741,6 +3734,21 @@ var _Store = function () {
 	}
 
 	_createClass(_Store, [{
+		key: 'init',
+		value: function init() {
+			items = new Map();
+			itemsLoaded = 0;
+			getItemsCallbacks = [];
+			defaults = new Map();
+			insertItems = new Map();
+			toolbarItems = [];
+			textListeners = [];
+			variableHandlers = new Map();
+			registeredToolbarItems = {
+				separator: { id: 'separator', type: 'separator' }
+			};
+		}
+	}, {
 		key: 'loadDependency',
 		value: function loadDependency(url, onLoadCallback) {
 			if (onLoadCallback == null) {
@@ -3777,11 +3785,8 @@ var _Store = function () {
 
 			opts = Object.assign({
 				type: null,
-				dependencies: [],
 				default: false,
-				error: false,
 				insertItem: null,
-				modelClass: null,
 				componentClass: null,
 				selectionHandler: null,
 				commandHandler: null,
@@ -3792,9 +3797,10 @@ var _Store = function () {
 			if (opts.default) {
 				defaults.set(opts.type, className);
 			}
-			if (opts.insertItem) {
-				insertItems.set(chunkClass.type, opts.insertItem);
-			}
+			// @TODO: Editor
+			// if (opts.insertItem) {
+			// 	insertItems.set(chunkClass.type, opts.insertItem)
+			// }
 
 			opts.init();
 
@@ -3802,47 +3808,6 @@ var _Store = function () {
 				var cb = opts.variables[variable];
 				variableHandlers.set(variable, cb);
 			}
-
-			var loadDependency = this.loadDependency;
-
-			var promises = opts.dependencies.map(function (dependency) {
-				return new Promise(function (resolve, reject) {
-					return loadDependency(dependency, resolve);
-				});
-			});
-
-			Promise.all(promises).then(function () {
-				itemsLoaded++;
-
-				if (itemsLoaded === items.size) {
-					var _iteratorNormalCompletion = true;
-					var _didIteratorError = false;
-					var _iteratorError = undefined;
-
-					try {
-						for (var _iterator = Array.from(getItemsCallbacks)[Symbol.iterator](), _step; !(_iteratorNormalCompletion = (_step = _iterator.next()).done); _iteratorNormalCompletion = true) {
-							var callback = _step.value;
-
-							callback(chunks);
-						}
-					} catch (err) {
-						_didIteratorError = true;
-						_iteratorError = err;
-					} finally {
-						try {
-							if (!_iteratorNormalCompletion && _iterator.return) {
-								_iterator.return();
-							}
-						} finally {
-							if (_didIteratorError) {
-								throw _iteratorError;
-							}
-						}
-					}
-
-					return getItemsCallbacks = [];
-				}
-			});
 
 			return this;
 		}
@@ -3873,40 +3838,33 @@ var _Store = function () {
 			toolbarItems.push(Object.assign({}, registeredToolbarItems[id]));
 			return this;
 		}
-	}, {
-		key: 'registerTextListener',
-		value: function registerTextListener(opts, position) {
-			if (position == null) {
-				position = -1;
-			}
-			if (position > -1) {
-				textListeners.splice(position, 0, opts);
-			} else {
-				textListeners.push(opts);
-			}
 
-			return this;
-		}
+		//@TODO: Editor?
+		// registerTextListener(opts, position) {
+		// 	if (position == null) {
+		// 		position = -1
+		// 	}
+		// 	if (position > -1) {
+		// 		textListeners.splice(position, 0, opts)
+		// 	} else {
+		// 		textListeners.push(opts)
+		// 	}
+
+		// 	return this
+		// }
+
 	}, {
 		key: 'getItems',
 		value: function getItems(callback) {
-			if (true) {
-				callback(items);
-			} else {
-				getItemsCallbacks.push(callback);
-			}
+			// if (itemsLoaded === items.size) {
+			// 	callback(items)
+			// } else {
+			// 	getItemsCallbacks.push(callback)
+			// }
 
-			return null;
-		}
-	}, {
-		key: 'getDefaultItemForType',
-		value: function getDefaultItemForType(type) {
-			var className = defaults.get(type);
-			if (className == null) {
-				return null;
-			}
+			// return null
 
-			return items.get(className);
+			callback(items);
 		}
 	}, {
 		key: 'getTextForVariable',
@@ -3918,53 +3876,34 @@ var _Store = function () {
 
 			return cb.call(null, model, viewerState);
 		}
+
+		// get insertItems() {
+		// 	return insertItems
+		// }
+
+	}, {
+		key: 'registeredToolbarItems',
+		get: function get() {
+			return registeredToolbarItems;
+		}
+	}, {
+		key: 'toolbarItems',
+		get: function get() {
+			return toolbarItems;
+		}
+
+		// get textListeners() {
+		// 	return textListeners
+		// }
+
 	}]);
 
 	return _Store;
 }();
 
-Object.defineProperties(_Store.prototype, {
-	// errorChunk:
-	// 	get: -> errorChunk
-
-	insertItems: {
-		get: function get() {
-			return insertItems;
-		}
-	},
-
-	registeredToolbarItems: {
-		get: function get() {
-			return registeredToolbarItems;
-		}
-	},
-
-	toolbarItems: {
-		get: function get() {
-			return toolbarItems;
-		}
-	},
-
-	textListeners: {
-		get: function get() {
-			return textListeners;
-		}
-	},
-
-	triggerActions: {
-		get: function get() {
-			return triggerActions;
-		}
-	},
-
-	__debug_items: {
-		get: function get() {
-			return items;
-		}
-	}
-});
-
 var Store = new _Store();
+
+Store.init();
 exports.Store = Store;
 
 /***/ }),
@@ -4682,23 +4621,13 @@ var TextGroup = function () {
 	}, {
 		key: 'add',
 		value: function add(text, data) {
-			if (this.isFull) {
-				return this;
-			}
-
-			addChildToGroup(createChild(text, data, this.dataTemplate), this);
-
+			if (!this.isFull) addChildToGroup(createChild(text, data, this.dataTemplate), this);
 			return this;
 		}
 	}, {
 		key: 'addAt',
 		value: function addAt(index, text, data) {
-			if (this.isFull) {
-				return this;
-			}
-
-			addChildToGroup(createChild(text, data, this.dataTemplate), this, index);
-
+			if (!this.isFull) addChildToGroup(createChild(text, data, this.dataTemplate), this, index);
 			return this;
 		}
 	}, {
@@ -4764,9 +4693,6 @@ var TextGroup = function () {
 	}, {
 		key: 'clone',
 		value: function clone(cloneDataFn) {
-			if (cloneDataFn == null) {
-				cloneDataFn = _textGroupUtil2.default.defaultCloneFn;
-			}
 			var clonedItems = [];
 
 			var _iteratorNormalCompletion5 = true;
@@ -4878,13 +4804,12 @@ var TextGroup = function () {
 			var digestedItem = this.items.splice(index + 1, 1)[0];
 			var consumerItem = this.items[index];
 
-			if (!digestedItem || !consumerItem) {
-				return this;
+			if (digestedItem && consumerItem) {
+				consumerItem.data = _textGroupUtil2.default.createData(mergeDataFn(consumerItem.data, digestedItem.data), this.dataTemplate);
+
+				consumerItem.text.merge(digestedItem.text);
 			}
 
-			consumerItem.data = _textGroupUtil2.default.createData(mergeDataFn(consumerItem.data, digestedItem.data), this.dataTemplate);
-
-			consumerItem.text.merge(digestedItem.text);
 			return this;
 		}
 	}, {
@@ -4898,14 +4823,6 @@ var TextGroup = function () {
 			}
 			var startItem = this.items[startIndex];
 			var endItem = this.items[endIndex];
-
-			if (!startItem) {
-				startItem = this.first;
-			}
-			if (!endItem) {
-				endItem = this.last;
-			}
-
 			var startText = startItem.text;
 			var endText = endItem.text;
 
@@ -5123,14 +5040,6 @@ var TextGroup = function () {
 			}
 
 			return returnedStyles;
-		}
-	}, {
-		key: '__debug_print',
-		value: function __debug_print() {
-			console.log('========================');
-			return Array.from(this.items).map(function (item) {
-				return item.text.__debug_print(), console.log(JSON.stringify(item.data)), console.log('---------------------');
-			});
 		}
 	}]);
 
@@ -6573,19 +6482,21 @@ var FocusableChunk = function (_React$Component) {
 	}
 
 	_createClass(FocusableChunk, [{
-		key: 'getAnchorNode',
-		value: function getAnchorNode() {
-			if (__guard__(__guard__(this.refs != null ? this.refs.anchor : undefined, function (x1) {
-				return x1.refs;
-			}), function (x) {
-				return x.anchorElement;
-			}) == null) {
-				return null;
-			}
-			return this.refs.anchor.refs.anchorElement;
-		}
-	}, {
 		key: 'render',
+
+
+		// getAnchorNode() {
+		// 	if (
+		// 		__guard__(
+		// 			__guard__(this.refs != null ? this.refs.anchor : undefined, x1 => x1.refs),
+		// 			x => x.anchorElement
+		// 		) == null
+		// 	) {
+		// 		return null
+		// 	}
+		// 	return this.refs.anchor.refs.anchorElement
+		// }
+
 		value: function render() {
 			var className = this.props.className;
 
@@ -6613,12 +6524,12 @@ var FocusableChunk = function (_React$Component) {
 	return FocusableChunk;
 }(React.Component);
 
+// function __guard__(value, transform) {
+// 	return typeof value !== 'undefined' && value !== null ? transform(value) : undefined
+// }
+
+
 exports.default = FocusableChunk;
-
-
-function __guard__(value, transform) {
-	return typeof value !== 'undefined' && value !== null ? transform(value) : undefined;
-}
 
 /***/ }),
 /* 43 */
@@ -7687,7 +7598,6 @@ var SingleInputBubble = function (_React$Component) {
 	_createClass(SingleInputBubble, [{
 		key: 'onChange',
 		value: function onChange(event) {
-			console.log('BubbleChange', event.target.value);
 			return this.props.onChange(event.target.value);
 		}
 	}, {
@@ -7699,7 +7609,6 @@ var SingleInputBubble = function (_React$Component) {
 	}, {
 		key: 'onKeyUp',
 		value: function onKeyUp(event) {
-			console.log(event.keyCode);
 			if (event.keyCode === 27) {
 				//ESC
 				return this.props.onCancel();
@@ -7717,7 +7626,6 @@ var SingleInputBubble = function (_React$Component) {
 	}, {
 		key: 'render',
 		value: function render() {
-			console.log('BubbleRender', this.props.value);
 			return React.createElement(
 				_bubble2.default,
 				null,

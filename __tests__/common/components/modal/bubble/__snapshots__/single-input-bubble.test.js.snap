@@ -1,0 +1,37 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`SingleInputBubble SingleInputBubble Snapshot 1`] = `
+<div
+  className="obojobo-draft--components--modal--bubble"
+>
+  <div
+    className="container"
+  >
+    <label
+      className="single-input-bubble"
+    >
+      <form
+        className="interactable"
+        onSubmit={[Function]}
+      >
+        <input
+          onChange={[Function]}
+          onKeyUp={[Function]}
+          type="text"
+          value="Value"
+        />
+        <button
+          onClick={[Function]}
+        >
+          Ok
+        </button>
+      </form>
+      <span
+        className="label"
+      >
+        Label
+      </span>
+    </label>
+  </div>
+</div>
+`;

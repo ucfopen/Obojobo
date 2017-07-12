@@ -8,17 +8,17 @@ export default class FocusableChunk extends React.Component {
 		}
 	}
 
-	getAnchorNode() {
-		if (
-			__guard__(
-				__guard__(this.refs != null ? this.refs.anchor : undefined, x1 => x1.refs),
-				x => x.anchorElement
-			) == null
-		) {
-			return null
-		}
-		return this.refs.anchor.refs.anchorElement
-	}
+	// getAnchorNode() {
+	// 	if (
+	// 		__guard__(
+	// 			__guard__(this.refs != null ? this.refs.anchor : undefined, x1 => x1.refs),
+	// 			x => x.anchorElement
+	// 		) == null
+	// 	) {
+	// 		return null
+	// 	}
+	// 	return this.refs.anchor.refs.anchorElement
+	// }
 
 	render() {
 		let { className } = this.props
@@ -35,6 +35,6 @@ export default class FocusableChunk extends React.Component {
 	}
 }
 
-function __guard__(value, transform) {
-	return typeof value !== 'undefined' && value !== null ? transform(value) : undefined
-}
+// function __guard__(value, transform) {
+// 	return typeof value !== 'undefined' && value !== null ? transform(value) : undefined
+// }

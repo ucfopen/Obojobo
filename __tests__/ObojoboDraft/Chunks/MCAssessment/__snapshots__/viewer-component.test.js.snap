@@ -35,18 +35,18 @@ exports[`MCAssessment MCAssessment component 1`] = `
       <div
         className="component obojobo-draft--chunks--mc-assessment--mc-answer"
         data-focussed={false}
-        data-id="choice1-answer1"
+        data-id="choice1-answer"
         data-obo-component={true}
         data-type="ObojoboDraft.Chunks.MCAssessment.MCAnswer"
-        id="obo-choice1-answer1"
+        id="obo-choice1-answer"
       >
         <div
           className="component"
           data-focussed={false}
-          data-id="choice1-answer-1-text"
+          data-id="choice1-answer-text"
           data-obo-component={true}
           data-type="ObojoboDraft.Chunks.Text"
-          id="obo-choice1-answer-1-text"
+          id="obo-choice1-answer-text"
         >
           <div
             className="text-chunk obojobo-draft--chunks--single-text pad"
@@ -60,41 +60,6 @@ exports[`MCAssessment MCAssessment component 1`] = `
                 <span>
                   <span>
                     Example Text
-                  </span>
-                </span>
-              </span>
-            </span>
-          </div>
-        </div>
-      </div>
-      <div
-        className="component obojobo-draft--chunks--mc-assessment--mc-answer"
-        data-focussed={false}
-        data-id="choice1-answer2"
-        data-obo-component={true}
-        data-type="ObojoboDraft.Chunks.MCAssessment.MCAnswer"
-        id="obo-choice1-answer2"
-      >
-        <div
-          className="component"
-          data-focussed={false}
-          data-id="choice1-answer-2-text"
-          data-obo-component={true}
-          data-type="ObojoboDraft.Chunks.Text"
-          id="obo-choice1-answer-2-text"
-        >
-          <div
-            className="text-chunk obojobo-draft--chunks--single-text pad"
-          >
-            <span
-              className="text align-left"
-              data-group-index={0}
-              data-indent={0}
-            >
-              <span>
-                <span>
-                  <span>
-                    Example Text 2
                   </span>
                 </span>
               </span>
@@ -126,18 +91,18 @@ exports[`MCAssessment MCAssessment component 1`] = `
       <div
         className="component obojobo-draft--chunks--mc-assessment--mc-answer"
         data-focussed={false}
-        data-id="choice2-answer1"
+        data-id="choice2-answer"
         data-obo-component={true}
         data-type="ObojoboDraft.Chunks.MCAssessment.MCAnswer"
-        id="obo-choice2-answer1"
+        id="obo-choice2-answer"
       >
         <div
           className="component"
           data-focussed={false}
-          data-id="choice1-answer-1-text"
+          data-id="choice1-answer-text"
           data-obo-component={true}
           data-type="ObojoboDraft.Chunks.Text"
-          id="obo-choice1-answer-1-text"
+          id="obo-choice1-answer-text"
         >
           <div
             className="text-chunk obojobo-draft--chunks--single-text pad"
@@ -151,41 +116,6 @@ exports[`MCAssessment MCAssessment component 1`] = `
                 <span>
                   <span>
                     Example Text 3
-                  </span>
-                </span>
-              </span>
-            </span>
-          </div>
-        </div>
-      </div>
-      <div
-        className="component obojobo-draft--chunks--mc-assessment--mc-answer"
-        data-focussed={false}
-        data-id="choice2-answer2"
-        data-obo-component={true}
-        data-type="ObojoboDraft.Chunks.MCAssessment.MCAnswer"
-        id="obo-choice2-answer2"
-      >
-        <div
-          className="component"
-          data-focussed={false}
-          data-id="choice1-answer-1-text"
-          data-obo-component={true}
-          data-type="ObojoboDraft.Chunks.Text"
-          id="obo-choice1-answer-1-text"
-        >
-          <div
-            className="text-chunk obojobo-draft--chunks--single-text pad"
-          >
-            <span
-              className="text align-left"
-              data-group-index={0}
-              data-indent={0}
-            >
-              <span>
-                <span>
-                  <span>
-                    Example Text 4
                   </span>
                 </span>
               </span>
@@ -249,18 +179,18 @@ exports[`MCAssessment MCAssessment with a set score 1`] = `
       <div
         className="component obojobo-draft--chunks--mc-assessment--mc-answer"
         data-focussed={false}
-        data-id="choice1-answer1"
+        data-id="choice1-answer"
         data-obo-component={true}
         data-type="ObojoboDraft.Chunks.MCAssessment.MCAnswer"
-        id="obo-choice1-answer1"
+        id="obo-choice1-answer"
       >
         <div
           className="component"
           data-focussed={false}
-          data-id="choice1-answer-1-text"
+          data-id="choice1-answer-text"
           data-obo-component={true}
           data-type="ObojoboDraft.Chunks.Text"
-          id="obo-choice1-answer-1-text"
+          id="obo-choice1-answer-text"
         >
           <div
             className="text-chunk obojobo-draft--chunks--single-text pad"
@@ -274,41 +204,6 @@ exports[`MCAssessment MCAssessment with a set score 1`] = `
                 <span>
                   <span>
                     Example Text
-                  </span>
-                </span>
-              </span>
-            </span>
-          </div>
-        </div>
-      </div>
-      <div
-        className="component obojobo-draft--chunks--mc-assessment--mc-answer"
-        data-focussed={false}
-        data-id="choice1-answer2"
-        data-obo-component={true}
-        data-type="ObojoboDraft.Chunks.MCAssessment.MCAnswer"
-        id="obo-choice1-answer2"
-      >
-        <div
-          className="component"
-          data-focussed={false}
-          data-id="choice1-answer-2-text"
-          data-obo-component={true}
-          data-type="ObojoboDraft.Chunks.Text"
-          id="obo-choice1-answer-2-text"
-        >
-          <div
-            className="text-chunk obojobo-draft--chunks--single-text pad"
-          >
-            <span
-              className="text align-left"
-              data-group-index={0}
-              data-indent={0}
-            >
-              <span>
-                <span>
-                  <span>
-                    Example Text 2
                   </span>
                 </span>
               </span>
@@ -340,18 +235,18 @@ exports[`MCAssessment MCAssessment with a set score 1`] = `
       <div
         className="component obojobo-draft--chunks--mc-assessment--mc-answer"
         data-focussed={false}
-        data-id="choice2-answer1"
+        data-id="choice2-answer"
         data-obo-component={true}
         data-type="ObojoboDraft.Chunks.MCAssessment.MCAnswer"
-        id="obo-choice2-answer1"
+        id="obo-choice2-answer"
       >
         <div
           className="component"
           data-focussed={false}
-          data-id="choice1-answer-1-text"
+          data-id="choice1-answer-text"
           data-obo-component={true}
           data-type="ObojoboDraft.Chunks.Text"
-          id="obo-choice1-answer-1-text"
+          id="obo-choice1-answer-text"
         >
           <div
             className="text-chunk obojobo-draft--chunks--single-text pad"
@@ -365,41 +260,6 @@ exports[`MCAssessment MCAssessment with a set score 1`] = `
                 <span>
                   <span>
                     Example Text 3
-                  </span>
-                </span>
-              </span>
-            </span>
-          </div>
-        </div>
-      </div>
-      <div
-        className="component obojobo-draft--chunks--mc-assessment--mc-answer"
-        data-focussed={false}
-        data-id="choice2-answer2"
-        data-obo-component={true}
-        data-type="ObojoboDraft.Chunks.MCAssessment.MCAnswer"
-        id="obo-choice2-answer2"
-      >
-        <div
-          className="component"
-          data-focussed={false}
-          data-id="choice1-answer-1-text"
-          data-obo-component={true}
-          data-type="ObojoboDraft.Chunks.Text"
-          id="obo-choice1-answer-1-text"
-        >
-          <div
-            className="text-chunk obojobo-draft--chunks--single-text pad"
-          >
-            <span
-              className="text align-left"
-              data-group-index={0}
-              data-indent={0}
-            >
-              <span>
-                <span>
-                  <span>
-                    Example Text 4
                   </span>
                 </span>
               </span>
@@ -463,18 +323,18 @@ exports[`MCAssessment MCAssessment with a set score 2`] = `
       <div
         className="component obojobo-draft--chunks--mc-assessment--mc-answer"
         data-focussed={false}
-        data-id="choice1-answer1"
+        data-id="choice1-answer"
         data-obo-component={true}
         data-type="ObojoboDraft.Chunks.MCAssessment.MCAnswer"
-        id="obo-choice1-answer1"
+        id="obo-choice1-answer"
       >
         <div
           className="component"
           data-focussed={false}
-          data-id="choice1-answer-1-text"
+          data-id="choice1-answer-text"
           data-obo-component={true}
           data-type="ObojoboDraft.Chunks.Text"
-          id="obo-choice1-answer-1-text"
+          id="obo-choice1-answer-text"
         >
           <div
             className="text-chunk obojobo-draft--chunks--single-text pad"
@@ -488,41 +348,6 @@ exports[`MCAssessment MCAssessment with a set score 2`] = `
                 <span>
                   <span>
                     Example Text
-                  </span>
-                </span>
-              </span>
-            </span>
-          </div>
-        </div>
-      </div>
-      <div
-        className="component obojobo-draft--chunks--mc-assessment--mc-answer"
-        data-focussed={false}
-        data-id="choice1-answer2"
-        data-obo-component={true}
-        data-type="ObojoboDraft.Chunks.MCAssessment.MCAnswer"
-        id="obo-choice1-answer2"
-      >
-        <div
-          className="component"
-          data-focussed={false}
-          data-id="choice1-answer-2-text"
-          data-obo-component={true}
-          data-type="ObojoboDraft.Chunks.Text"
-          id="obo-choice1-answer-2-text"
-        >
-          <div
-            className="text-chunk obojobo-draft--chunks--single-text pad"
-          >
-            <span
-              className="text align-left"
-              data-group-index={0}
-              data-indent={0}
-            >
-              <span>
-                <span>
-                  <span>
-                    Example Text 2
                   </span>
                 </span>
               </span>
@@ -554,18 +379,18 @@ exports[`MCAssessment MCAssessment with a set score 2`] = `
       <div
         className="component obojobo-draft--chunks--mc-assessment--mc-answer"
         data-focussed={false}
-        data-id="choice2-answer1"
+        data-id="choice2-answer"
         data-obo-component={true}
         data-type="ObojoboDraft.Chunks.MCAssessment.MCAnswer"
-        id="obo-choice2-answer1"
+        id="obo-choice2-answer"
       >
         <div
           className="component"
           data-focussed={false}
-          data-id="choice1-answer-1-text"
+          data-id="choice1-answer-text"
           data-obo-component={true}
           data-type="ObojoboDraft.Chunks.Text"
-          id="obo-choice1-answer-1-text"
+          id="obo-choice1-answer-text"
         >
           <div
             className="text-chunk obojobo-draft--chunks--single-text pad"
@@ -579,41 +404,6 @@ exports[`MCAssessment MCAssessment with a set score 2`] = `
                 <span>
                   <span>
                     Example Text 3
-                  </span>
-                </span>
-              </span>
-            </span>
-          </div>
-        </div>
-      </div>
-      <div
-        className="component obojobo-draft--chunks--mc-assessment--mc-answer"
-        data-focussed={false}
-        data-id="choice2-answer2"
-        data-obo-component={true}
-        data-type="ObojoboDraft.Chunks.MCAssessment.MCAnswer"
-        id="obo-choice2-answer2"
-      >
-        <div
-          className="component"
-          data-focussed={false}
-          data-id="choice1-answer-1-text"
-          data-obo-component={true}
-          data-type="ObojoboDraft.Chunks.Text"
-          id="obo-choice1-answer-1-text"
-        >
-          <div
-            className="text-chunk obojobo-draft--chunks--single-text pad"
-          >
-            <span
-              className="text align-left"
-              data-group-index={0}
-              data-indent={0}
-            >
-              <span>
-                <span>
-                  <span>
-                    Example Text 4
                   </span>
                 </span>
               </span>
@@ -677,18 +467,18 @@ exports[`MCAssessment MCAssessment with response 1`] = `
       <div
         className="component obojobo-draft--chunks--mc-assessment--mc-answer"
         data-focussed={false}
-        data-id="choice1-answer1"
+        data-id="choice1-answer"
         data-obo-component={true}
         data-type="ObojoboDraft.Chunks.MCAssessment.MCAnswer"
-        id="obo-choice1-answer1"
+        id="obo-choice1-answer"
       >
         <div
           className="component"
           data-focussed={false}
-          data-id="choice1-answer-1-text"
+          data-id="choice1-answer-text"
           data-obo-component={true}
           data-type="ObojoboDraft.Chunks.Text"
-          id="obo-choice1-answer-1-text"
+          id="obo-choice1-answer-text"
         >
           <div
             className="text-chunk obojobo-draft--chunks--single-text pad"
@@ -702,41 +492,6 @@ exports[`MCAssessment MCAssessment with response 1`] = `
                 <span>
                   <span>
                     Example Text
-                  </span>
-                </span>
-              </span>
-            </span>
-          </div>
-        </div>
-      </div>
-      <div
-        className="component obojobo-draft--chunks--mc-assessment--mc-answer"
-        data-focussed={false}
-        data-id="choice1-answer2"
-        data-obo-component={true}
-        data-type="ObojoboDraft.Chunks.MCAssessment.MCAnswer"
-        id="obo-choice1-answer2"
-      >
-        <div
-          className="component"
-          data-focussed={false}
-          data-id="choice1-answer-2-text"
-          data-obo-component={true}
-          data-type="ObojoboDraft.Chunks.Text"
-          id="obo-choice1-answer-2-text"
-        >
-          <div
-            className="text-chunk obojobo-draft--chunks--single-text pad"
-          >
-            <span
-              className="text align-left"
-              data-group-index={0}
-              data-indent={0}
-            >
-              <span>
-                <span>
-                  <span>
-                    Example Text 2
                   </span>
                 </span>
               </span>
@@ -768,18 +523,18 @@ exports[`MCAssessment MCAssessment with response 1`] = `
       <div
         className="component obojobo-draft--chunks--mc-assessment--mc-answer"
         data-focussed={false}
-        data-id="choice2-answer1"
+        data-id="choice2-answer"
         data-obo-component={true}
         data-type="ObojoboDraft.Chunks.MCAssessment.MCAnswer"
-        id="obo-choice2-answer1"
+        id="obo-choice2-answer"
       >
         <div
           className="component"
           data-focussed={false}
-          data-id="choice1-answer-1-text"
+          data-id="choice1-answer-text"
           data-obo-component={true}
           data-type="ObojoboDraft.Chunks.Text"
-          id="obo-choice1-answer-1-text"
+          id="obo-choice1-answer-text"
         >
           <div
             className="text-chunk obojobo-draft--chunks--single-text pad"
@@ -793,41 +548,6 @@ exports[`MCAssessment MCAssessment with response 1`] = `
                 <span>
                   <span>
                     Example Text 3
-                  </span>
-                </span>
-              </span>
-            </span>
-          </div>
-        </div>
-      </div>
-      <div
-        className="component obojobo-draft--chunks--mc-assessment--mc-answer"
-        data-focussed={false}
-        data-id="choice2-answer2"
-        data-obo-component={true}
-        data-type="ObojoboDraft.Chunks.MCAssessment.MCAnswer"
-        id="obo-choice2-answer2"
-      >
-        <div
-          className="component"
-          data-focussed={false}
-          data-id="choice1-answer-1-text"
-          data-obo-component={true}
-          data-type="ObojoboDraft.Chunks.Text"
-          id="obo-choice1-answer-1-text"
-        >
-          <div
-            className="text-chunk obojobo-draft--chunks--single-text pad"
-          >
-            <span
-              className="text align-left"
-              data-group-index={0}
-              data-indent={0}
-            >
-              <span>
-                <span>
-                  <span>
-                    Example Text 4
                   </span>
                 </span>
               </span>
@@ -891,18 +611,18 @@ exports[`MCAssessment MCAssessment with response 2`] = `
       <div
         className="component obojobo-draft--chunks--mc-assessment--mc-answer"
         data-focussed={false}
-        data-id="choice1-answer1"
+        data-id="choice1-answer"
         data-obo-component={true}
         data-type="ObojoboDraft.Chunks.MCAssessment.MCAnswer"
-        id="obo-choice1-answer1"
+        id="obo-choice1-answer"
       >
         <div
           className="component"
           data-focussed={false}
-          data-id="choice1-answer-1-text"
+          data-id="choice1-answer-text"
           data-obo-component={true}
           data-type="ObojoboDraft.Chunks.Text"
-          id="obo-choice1-answer-1-text"
+          id="obo-choice1-answer-text"
         >
           <div
             className="text-chunk obojobo-draft--chunks--single-text pad"
@@ -916,41 +636,6 @@ exports[`MCAssessment MCAssessment with response 2`] = `
                 <span>
                   <span>
                     Example Text
-                  </span>
-                </span>
-              </span>
-            </span>
-          </div>
-        </div>
-      </div>
-      <div
-        className="component obojobo-draft--chunks--mc-assessment--mc-answer"
-        data-focussed={false}
-        data-id="choice1-answer2"
-        data-obo-component={true}
-        data-type="ObojoboDraft.Chunks.MCAssessment.MCAnswer"
-        id="obo-choice1-answer2"
-      >
-        <div
-          className="component"
-          data-focussed={false}
-          data-id="choice1-answer-2-text"
-          data-obo-component={true}
-          data-type="ObojoboDraft.Chunks.Text"
-          id="obo-choice1-answer-2-text"
-        >
-          <div
-            className="text-chunk obojobo-draft--chunks--single-text pad"
-          >
-            <span
-              className="text align-left"
-              data-group-index={0}
-              data-indent={0}
-            >
-              <span>
-                <span>
-                  <span>
-                    Example Text 2
                   </span>
                 </span>
               </span>
@@ -982,18 +667,18 @@ exports[`MCAssessment MCAssessment with response 2`] = `
       <div
         className="component obojobo-draft--chunks--mc-assessment--mc-answer"
         data-focussed={false}
-        data-id="choice2-answer1"
+        data-id="choice2-answer"
         data-obo-component={true}
         data-type="ObojoboDraft.Chunks.MCAssessment.MCAnswer"
-        id="obo-choice2-answer1"
+        id="obo-choice2-answer"
       >
         <div
           className="component"
           data-focussed={false}
-          data-id="choice1-answer-1-text"
+          data-id="choice1-answer-text"
           data-obo-component={true}
           data-type="ObojoboDraft.Chunks.Text"
-          id="obo-choice1-answer-1-text"
+          id="obo-choice1-answer-text"
         >
           <div
             className="text-chunk obojobo-draft--chunks--single-text pad"
@@ -1007,41 +692,6 @@ exports[`MCAssessment MCAssessment with response 2`] = `
                 <span>
                   <span>
                     Example Text 3
-                  </span>
-                </span>
-              </span>
-            </span>
-          </div>
-        </div>
-      </div>
-      <div
-        className="component obojobo-draft--chunks--mc-assessment--mc-answer"
-        data-focussed={false}
-        data-id="choice2-answer2"
-        data-obo-component={true}
-        data-type="ObojoboDraft.Chunks.MCAssessment.MCAnswer"
-        id="obo-choice2-answer2"
-      >
-        <div
-          className="component"
-          data-focussed={false}
-          data-id="choice1-answer-1-text"
-          data-obo-component={true}
-          data-type="ObojoboDraft.Chunks.Text"
-          id="obo-choice1-answer-1-text"
-        >
-          <div
-            className="text-chunk obojobo-draft--chunks--single-text pad"
-          >
-            <span
-              className="text align-left"
-              data-group-index={0}
-              data-indent={0}
-            >
-              <span>
-                <span>
-                  <span>
-                    Example Text 4
                   </span>
                 </span>
               </span>
@@ -1105,18 +755,18 @@ exports[`MCAssessment MCAssessment with revealAll 1`] = `
       <div
         className="component obojobo-draft--chunks--mc-assessment--mc-answer"
         data-focussed={false}
-        data-id="choice1-answer1"
+        data-id="choice1-answer"
         data-obo-component={true}
         data-type="ObojoboDraft.Chunks.MCAssessment.MCAnswer"
-        id="obo-choice1-answer1"
+        id="obo-choice1-answer"
       >
         <div
           className="component"
           data-focussed={false}
-          data-id="choice1-answer-1-text"
+          data-id="choice1-answer-text"
           data-obo-component={true}
           data-type="ObojoboDraft.Chunks.Text"
-          id="obo-choice1-answer-1-text"
+          id="obo-choice1-answer-text"
         >
           <div
             className="text-chunk obojobo-draft--chunks--single-text pad"
@@ -1130,41 +780,6 @@ exports[`MCAssessment MCAssessment with revealAll 1`] = `
                 <span>
                   <span>
                     Example Text
-                  </span>
-                </span>
-              </span>
-            </span>
-          </div>
-        </div>
-      </div>
-      <div
-        className="component obojobo-draft--chunks--mc-assessment--mc-answer"
-        data-focussed={false}
-        data-id="choice1-answer2"
-        data-obo-component={true}
-        data-type="ObojoboDraft.Chunks.MCAssessment.MCAnswer"
-        id="obo-choice1-answer2"
-      >
-        <div
-          className="component"
-          data-focussed={false}
-          data-id="choice1-answer-2-text"
-          data-obo-component={true}
-          data-type="ObojoboDraft.Chunks.Text"
-          id="obo-choice1-answer-2-text"
-        >
-          <div
-            className="text-chunk obojobo-draft--chunks--single-text pad"
-          >
-            <span
-              className="text align-left"
-              data-group-index={0}
-              data-indent={0}
-            >
-              <span>
-                <span>
-                  <span>
-                    Example Text 2
                   </span>
                 </span>
               </span>
@@ -1196,18 +811,18 @@ exports[`MCAssessment MCAssessment with revealAll 1`] = `
       <div
         className="component obojobo-draft--chunks--mc-assessment--mc-answer"
         data-focussed={false}
-        data-id="choice2-answer1"
+        data-id="choice2-answer"
         data-obo-component={true}
         data-type="ObojoboDraft.Chunks.MCAssessment.MCAnswer"
-        id="obo-choice2-answer1"
+        id="obo-choice2-answer"
       >
         <div
           className="component"
           data-focussed={false}
-          data-id="choice1-answer-1-text"
+          data-id="choice1-answer-text"
           data-obo-component={true}
           data-type="ObojoboDraft.Chunks.Text"
-          id="obo-choice1-answer-1-text"
+          id="obo-choice1-answer-text"
         >
           <div
             className="text-chunk obojobo-draft--chunks--single-text pad"
@@ -1221,41 +836,6 @@ exports[`MCAssessment MCAssessment with revealAll 1`] = `
                 <span>
                   <span>
                     Example Text 3
-                  </span>
-                </span>
-              </span>
-            </span>
-          </div>
-        </div>
-      </div>
-      <div
-        className="component obojobo-draft--chunks--mc-assessment--mc-answer"
-        data-focussed={false}
-        data-id="choice2-answer2"
-        data-obo-component={true}
-        data-type="ObojoboDraft.Chunks.MCAssessment.MCAnswer"
-        id="obo-choice2-answer2"
-      >
-        <div
-          className="component"
-          data-focussed={false}
-          data-id="choice1-answer-1-text"
-          data-obo-component={true}
-          data-type="ObojoboDraft.Chunks.Text"
-          id="obo-choice1-answer-1-text"
-        >
-          <div
-            className="text-chunk obojobo-draft--chunks--single-text pad"
-          >
-            <span
-              className="text align-left"
-              data-group-index={0}
-              data-indent={0}
-            >
-              <span>
-                <span>
-                  <span>
-                    Example Text 4
                   </span>
                 </span>
               </span>
@@ -1319,18 +899,18 @@ exports[`MCAssessment MCAssessment with revealAll 2`] = `
       <div
         className="component obojobo-draft--chunks--mc-assessment--mc-answer"
         data-focussed={false}
-        data-id="choice1-answer1"
+        data-id="choice1-answer"
         data-obo-component={true}
         data-type="ObojoboDraft.Chunks.MCAssessment.MCAnswer"
-        id="obo-choice1-answer1"
+        id="obo-choice1-answer"
       >
         <div
           className="component"
           data-focussed={false}
-          data-id="choice1-answer-1-text"
+          data-id="choice1-answer-text"
           data-obo-component={true}
           data-type="ObojoboDraft.Chunks.Text"
-          id="obo-choice1-answer-1-text"
+          id="obo-choice1-answer-text"
         >
           <div
             className="text-chunk obojobo-draft--chunks--single-text pad"
@@ -1344,41 +924,6 @@ exports[`MCAssessment MCAssessment with revealAll 2`] = `
                 <span>
                   <span>
                     Example Text
-                  </span>
-                </span>
-              </span>
-            </span>
-          </div>
-        </div>
-      </div>
-      <div
-        className="component obojobo-draft--chunks--mc-assessment--mc-answer"
-        data-focussed={false}
-        data-id="choice1-answer2"
-        data-obo-component={true}
-        data-type="ObojoboDraft.Chunks.MCAssessment.MCAnswer"
-        id="obo-choice1-answer2"
-      >
-        <div
-          className="component"
-          data-focussed={false}
-          data-id="choice1-answer-2-text"
-          data-obo-component={true}
-          data-type="ObojoboDraft.Chunks.Text"
-          id="obo-choice1-answer-2-text"
-        >
-          <div
-            className="text-chunk obojobo-draft--chunks--single-text pad"
-          >
-            <span
-              className="text align-left"
-              data-group-index={0}
-              data-indent={0}
-            >
-              <span>
-                <span>
-                  <span>
-                    Example Text 2
                   </span>
                 </span>
               </span>
@@ -1410,18 +955,18 @@ exports[`MCAssessment MCAssessment with revealAll 2`] = `
       <div
         className="component obojobo-draft--chunks--mc-assessment--mc-answer"
         data-focussed={false}
-        data-id="choice2-answer1"
+        data-id="choice2-answer"
         data-obo-component={true}
         data-type="ObojoboDraft.Chunks.MCAssessment.MCAnswer"
-        id="obo-choice2-answer1"
+        id="obo-choice2-answer"
       >
         <div
           className="component"
           data-focussed={false}
-          data-id="choice1-answer-1-text"
+          data-id="choice1-answer-text"
           data-obo-component={true}
           data-type="ObojoboDraft.Chunks.Text"
-          id="obo-choice1-answer-1-text"
+          id="obo-choice1-answer-text"
         >
           <div
             className="text-chunk obojobo-draft--chunks--single-text pad"
@@ -1435,41 +980,6 @@ exports[`MCAssessment MCAssessment with revealAll 2`] = `
                 <span>
                   <span>
                     Example Text 3
-                  </span>
-                </span>
-              </span>
-            </span>
-          </div>
-        </div>
-      </div>
-      <div
-        className="component obojobo-draft--chunks--mc-assessment--mc-answer"
-        data-focussed={false}
-        data-id="choice2-answer2"
-        data-obo-component={true}
-        data-type="ObojoboDraft.Chunks.MCAssessment.MCAnswer"
-        id="obo-choice2-answer2"
-      >
-        <div
-          className="component"
-          data-focussed={false}
-          data-id="choice1-answer-1-text"
-          data-obo-component={true}
-          data-type="ObojoboDraft.Chunks.Text"
-          id="obo-choice1-answer-1-text"
-        >
-          <div
-            className="text-chunk obojobo-draft--chunks--single-text pad"
-          >
-            <span
-              className="text align-left"
-              data-group-index={0}
-              data-indent={0}
-            >
-              <span>
-                <span>
-                  <span>
-                    Example Text 4
                   </span>
                 </span>
               </span>

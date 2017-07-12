@@ -95,14 +95,14 @@ class ListStyles {
 	}
 
 	map(fn) {
-		return (() => {
-			let result = []
-			for (let indent in this.styles) {
-				let style = this.styles[indent]
-				result.push(fn(style, indent))
-			}
-			return result
-		})()
+		let result = []
+
+		for (let indent in this.styles) {
+			let style = this.styles[indent]
+			result.push(fn(style, indent))
+		}
+
+		return result
 	}
 }
 
