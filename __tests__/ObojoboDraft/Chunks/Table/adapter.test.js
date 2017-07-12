@@ -61,6 +61,7 @@ describe('Table adapter', () => {
 		TableAdapter.construct(a)
 		TableAdapter.clone(a, b)
 
+		expect(a).not.toBe(b)
 		expect(a.modelState.textGroup).toEqual(b.modelState.textGroup)
 	})
 
