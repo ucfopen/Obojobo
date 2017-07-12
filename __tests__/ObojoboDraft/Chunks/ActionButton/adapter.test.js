@@ -45,7 +45,7 @@ describe('ActionButton adapter', () => {
 		ActionButtonAdapter.construct(a)
 		ActionButtonAdapter.clone(a, b)
 
-    expect(a).not.toBe(b)
+		expect(a).not.toBe(b)
 		expect(a.modelState).toEqual(b.modelState)
 	})
 
