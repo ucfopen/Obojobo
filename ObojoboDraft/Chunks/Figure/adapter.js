@@ -32,9 +32,9 @@ let Adapter = {
 		}
 
 		if (__guard__(attrs != null ? attrs.content : undefined, x4 => x4.alt)) {
-			return (model.modelState.alt = attrs.content.alt)
+			model.modelState.alt = attrs.content.alt
 		} else {
-			return (model.modelState.alt = null)
+			model.modelState.alt = null
 		}
 	},
 
@@ -44,7 +44,7 @@ let Adapter = {
 		clone.modelState.size = model.modelState.size
 		clone.modelState.width = model.modelState.width
 		clone.modelState.height = model.modelState.height
-		return (clone.modelState.alt = model.modelState.alt)
+		clone.modelState.alt = model.modelState.alt
 	},
 
 	toJSON(model, json) {
@@ -53,11 +53,11 @@ let Adapter = {
 		json.content.size = model.modelState.size
 		json.content.width = model.modelState.width
 		json.content.height = model.modelState.height
-		return (json.content.alt = model.modelState.alt)
+		json.content.alt = model.modelState.alt
 	},
 
 	toText(model) {
-		return `Image: ${model.modelState.url}\n Caption:${TextGroupAdapter.toText(model)}`
+		return `Image: ${model.modelState.url}\n Caption: ${TextGroupAdapter.toText(model) || model.modelState.alt}`
 	}
 }
 

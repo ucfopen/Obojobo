@@ -5094,7 +5094,7 @@ TextGroup.fromDescriptor = function (descriptor, maxItems, dataTemplate, restore
 	var _iteratorError9 = undefined;
 
 	try {
-		for (var _iterator9 = Array.from(descriptor)[Symbol.iterator](), _step9; !(_iteratorNormalCompletion9 = (_step9 = _iterator9.next()).done); _iteratorNormalCompletion9 = true) {
+		for (var _iterator9 = descriptor.items[Symbol.iterator](), _step9; !(_iteratorNormalCompletion9 = (_step9 = _iterator9.next()).done); _iteratorNormalCompletion9 = true) {
 			var item = _step9.value;
 
 			items.push(createChild(_styleableText2.default.createFromObject(item.text), restoreDataDescriptorFn(item.data), dataTemplate));
