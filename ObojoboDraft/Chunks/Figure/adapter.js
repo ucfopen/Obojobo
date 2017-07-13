@@ -57,7 +57,8 @@ let Adapter = {
 	},
 
 	toText(model) {
-		return `Image: ${model.modelState.url}\n Caption: ${TextGroupAdapter.toText(model) || model.modelState.alt}`
+		return `Image: ${model.modelState.url}\n Caption: ${TextGroupAdapter.toText(model) ||
+			model.modelState.alt}`
 	}
 }
 
