@@ -8,11 +8,7 @@ let TextGroupAdapter = {
 			model.modelState.textGroup = TextGroup.fromDescriptor(attrs.content.textGroup, Infinity, {
 				indent: 0
 			})
-		} else {
-			model.modelState.textGroup = TextGroup.create(Infinity, { indent: 0 })
-		}
-
-		if (__guard__(attrs != null ? attrs.content : undefined, x1 => x1.label)) {
+		} else if (__guard__(attrs != null ? attrs.content : undefined, x1 => x1.label)) {
 			model.modelState.label = attrs.content.label
 		} else {
 			model.modelState.label = ''
@@ -26,15 +22,15 @@ let TextGroupAdapter = {
 	},
 
 	clone(model, clone) {
-		clone.modelState.textGroup = model.modelState.textGroup.clone()
-		clone.modelState.label = model.modelState.label
-		return (clone.modelState.align = model.modelState.align)
+		if (clone.modelState.textGroup) clone.modelState.textGroup = model.modelState.textGroup.clone()
+		else clone.modelState.label = model.modelState.label
+		clone.modelState.align = model.modelState.align
 	},
 
 	toJSON(model, json) {
-		json.content.textGroup = model.modelState.textGroup.toDescriptor()
-		json.content.label = model.modelState.label
-		return (json.content.align = model.modelState.align)
+		if (json.content.textGroup) json.content.textGroup = model.modelState.textGroup.toDescriptor()
+		else json.content.label = model.modelState.label
+		json.content.align = model.modelState.align
 	},
 
 	toText(model) {

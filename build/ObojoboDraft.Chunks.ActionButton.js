@@ -147,11 +147,7 @@ var TextGroupAdapter = {
 			model.modelState.textGroup = TextGroup.fromDescriptor(attrs.content.textGroup, Infinity, {
 				indent: 0
 			});
-		} else {
-			model.modelState.textGroup = TextGroup.create(Infinity, { indent: 0 });
-		}
-
-		if (__guard__(attrs != null ? attrs.content : undefined, function (x1) {
+		} else if (__guard__(attrs != null ? attrs.content : undefined, function (x1) {
 			return x1.label;
 		})) {
 			model.modelState.label = attrs.content.label;
@@ -168,14 +164,12 @@ var TextGroupAdapter = {
 		}
 	},
 	clone: function clone(model, _clone) {
-		_clone.modelState.textGroup = model.modelState.textGroup.clone();
-		_clone.modelState.label = model.modelState.label;
-		return _clone.modelState.align = model.modelState.align;
+		if (_clone.modelState.textGroup) _clone.modelState.textGroup = model.modelState.textGroup.clone();else _clone.modelState.label = model.modelState.label;
+		_clone.modelState.align = model.modelState.align;
 	},
 	toJSON: function toJSON(model, json) {
-		json.content.textGroup = model.modelState.textGroup.toDescriptor();
-		json.content.label = model.modelState.label;
-		return json.content.align = model.modelState.align;
+		if (json.content.textGroup) json.content.textGroup = model.modelState.textGroup.toDescriptor();else json.content.label = model.modelState.label;
+		json.content.align = model.modelState.align;
 	},
 	toText: function toText(model) {
 		return model.modelState.textGroup.first.text.value;
