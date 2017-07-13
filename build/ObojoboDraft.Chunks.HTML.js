@@ -157,11 +157,11 @@ var Adapter = {
 	},
 	clone: function clone(model, _clone) {
 		_clone.modelState.html = model.modelState.html;
-		return _clone.modelState.align = model.modelState.align;
+		_clone.modelState.align = model.modelState.align;
 	},
 	toJSON: function toJSON(model, json) {
 		json.content.html = model.modelState.html;
-		return json.content.align = model.modelState.align;
+		json.content.align = model.modelState.align;
 	},
 	toText: function toText(model) {
 		var node = document.createElement('p');
