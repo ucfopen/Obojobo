@@ -90,7 +90,7 @@ describe('Figure adapter', () => {
 		let attrsTextGroup = {
 			content: {
 				url: 'http://website.com/image.jpg',
-				textGroup: tg
+				textGroup: tg.items
 			}
 		}
 

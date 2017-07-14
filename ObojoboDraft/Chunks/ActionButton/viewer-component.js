@@ -13,8 +13,9 @@ export default class ActionButton extends React.Component {
 	}
 
 	render() {
-		let textItem = this.props.model.modelState.textGroup.first
-
+		let textItem = this.props.model.modelState.textGroup ?
+									 this.props.model.modelState.textGroup.first :
+									 ''
 		return (
 			<OboComponent model={this.props.model} moduleData={this.props.moduleData}>
 				<TextChunk className="obojobo-draft--chunks--action-button pad">
