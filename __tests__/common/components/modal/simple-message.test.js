@@ -6,7 +6,6 @@ import renderer from 'react-test-renderer'
 test('SimpleMessage', () => {
 	const component = renderer.create(
 		<SimpleMessage
-			buttonLabel="Label"
 			confirm="confirm"
 			modal={{
 				onButtonClick: jest.fn()

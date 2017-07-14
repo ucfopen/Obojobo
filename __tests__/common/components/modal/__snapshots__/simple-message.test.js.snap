@@ -8,7 +8,7 @@ exports[`SimpleMessage 1`] = `
   <button
     onClick={[Function]}
   >
-    Label
+    OK
   </button>
 </div>
 `;

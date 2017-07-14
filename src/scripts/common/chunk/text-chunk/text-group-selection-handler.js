@@ -1,6 +1,6 @@
 import BaseSelectionHandler from '../../../common/chunk/base-selection-handler'
 import TextGroupSelection from '../../../common/text-group/text-group-selection'
-import TextGroupEl from './text-group-el'
+import { getDomPosition } from './text-group-el-util'
 
 export default class TextGroupSelectionHandler extends BaseSelectionHandler {
 	selectStart(selection, chunk, asRange) {
@@ -80,11 +80,11 @@ export default class TextGroupSelectionHandler extends BaseSelectionHandler {
 	}
 
 	getDOMSelectionStart(selection, chunk) {
-		return TextGroupEl.getDomPosition(selection.virtual.start)
+		return getDomPosition(selection.virtual.start)
 	}
 
 	getDOMSelectionEnd(selection, chunk) {
-		return TextGroupEl.getDomPosition(selection.virtual.end)
+		return getDomPosition(selection.virtual.end)
 	}
 
 	areCursorsEquivalent(selectionWhichIsNullTODO, chunk, thisCursor, otherCursor) {
