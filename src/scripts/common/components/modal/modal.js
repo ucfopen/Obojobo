@@ -3,15 +3,20 @@ import './modal.scss'
 import DeleteButton from '../../../common/components/delete-button'
 
 export default class Modal extends React.Component {
+	constructor() {
+		super()
+		this.boundKeyUp = this.onKeyUp.bind(this)
+	}
+
 	componentDidMount() {
 		if (this.props.onClose) {
-			return document.addEventListener('keyup', this.onKeyUp)
+			return document.addEventListener('keyup', this.boundKeyUp)
 		}
 	}
 
 	componentWillUnmount() {
 		if (this.props.onClose) {
-			return document.removeEventListener('keyup', this.onKeyUp)
+			return document.removeEventListener('keyup', this.boundKeyUp)
 		}
 	}
 

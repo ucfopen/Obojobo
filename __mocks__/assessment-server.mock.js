@@ -82,6 +82,29 @@ let getAttemptStartServerResponse = () => {
 																	children: []
 																}
 															]
+														},
+														{
+															id: 'qb1-q1-mca-mc1-fb',
+															type: 'ObojoboDraft.Chunks.MCAssessment.MCFeedback',
+															content: {},
+															children: [
+																{
+																	id: 'qb1-q1-mca-mc1-fb-t',
+																	type: 'ObojoboDraft.Chunks.Text',
+																	content: {
+																		textGroup: [
+																			{
+																				text: {
+																					value: 'Correct',
+																					styleList: []
+																				},
+																				data: null
+																			}
+																		]
+																	},
+																	children: []
+																}
+															]
 														}
 													]
 												},
@@ -99,6 +122,29 @@ let getAttemptStartServerResponse = () => {
 															children: [
 																{
 																	id: '6f271e7e-15ad-4467-9ea6-66ebf625c4fa',
+																	type: 'ObojoboDraft.Chunks.Text',
+																	content: {
+																		textGroup: [
+																			{
+																				text: {
+																					value: 'Incorrect',
+																					styleList: []
+																				},
+																				data: null
+																			}
+																		]
+																	},
+																	children: []
+																}
+															]
+														},
+														{
+															id: 'qb1-q1-mca-mc2-fb',
+															type: 'ObojoboDraft.Chunks.MCAssessment.MCFeedback',
+															content: {},
+															children: [
+																{
+																	id: 'qb1-q1-mca-mc2-fb-t',
 																	type: 'ObojoboDraft.Chunks.Text',
 																	content: {
 																		textGroup: [
@@ -498,6 +544,29 @@ let getAttemptStartServerResponse = () => {
 												children: [
 													{
 														id: '6f271e7e-15ad-4467-9ea6-66ebf625c4fa',
+														type: 'ObojoboDraft.Chunks.Text',
+														content: {
+															textGroup: [
+																{
+																	text: {
+																		value: 'Incorrect',
+																		styleList: []
+																	},
+																	data: null
+																}
+															]
+														},
+														children: []
+													}
+												]
+											},
+											{
+												id: 'qb1-q1-mca-mc2-fb',
+												type: 'ObojoboDraft.Chunks.MCAssessment.MCFeedback',
+												content: {},
+												children: [
+													{
+														id: 'qb1-q1-mca-mc2-fb-t',
 														type: 'ObojoboDraft.Chunks.Text',
 														content: {
 															textGroup: [
