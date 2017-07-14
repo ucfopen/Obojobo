@@ -31,7 +31,7 @@ describe('Heading adapter', () => {
 		HeadingAdapter.clone(a, b)
 
 		expect(a).not.toBe(b)
-		expect(a).toEqual(b)
+		expect(a.modelState).toEqual(b.modelState)
 	})
 
 	it('can covert to JSON', () => {
