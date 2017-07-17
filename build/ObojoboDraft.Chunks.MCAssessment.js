@@ -352,16 +352,16 @@ var Adapter = {
 		if (__guard__(attrs != null ? attrs.content : undefined, function (x) {
 			return x.responseType;
 		}) != null) {
-			return model.modelState.responseType = attrs.content.responseType;
+			model.modelState.responseType = attrs.content.responseType;
 		} else {
-			return model.modelState.responseType = '';
+			model.modelState.responseType = '';
 		}
 	},
 	clone: function clone(model, _clone) {
-		return _clone.modelState.responseType = model.modelState.responseType;
+		_clone.modelState.responseType = model.modelState.responseType;
 	},
 	toJSON: function toJSON(model, json) {
-		return json.content.responseType = model.modelState.responseType;
+		json.content.responseType = model.modelState.responseType;
 	}
 };
 
