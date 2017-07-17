@@ -57,7 +57,7 @@
     "newrelic": "^1.38.2",
     "node-sass-middleware": "0.9.8",
     "obojobo-draft-document-engine": "git+ssh://git@github.com/ucfcdl/Obojobo-Document-Engine.git#v0.0.13",
-    "obojobo-draft-xml-parser": "git+ssh://git@clu.cdl.ucf.edu:obojobo/obojobo-draft-xml-parser.git#v.0.1.1",
+    "obojobo-draft-xml-parser": "git+ssh://git@clu.cdl.ucf.edu:obojobo/obojobo-draft-xml-parser.git#v0.1.1",
     "on-build-webpack": "^0.1.0",
     "pg-promise": "^5.5.0",
     "pm2": "^2.4.2",
