@@ -3806,9 +3806,9 @@ object.omit@^2.0.0:
     underscore "1.5.1"
     whatwg-fetch "^2.0.3"
 
-"obojobo-draft-xml-parser@git+ssh://git@clu.cdl.ucf.edu:obojobo/obojobo-draft-xml-parser.git#v0.1.1":
+"obojobo-draft-xml-parser@git+ssh://git@github.com:ucfcdl/Obojobo-Docment-XML-Parser.git#v0.1.1":
   version "0.1.1"
-  resolved "git+ssh://git@clu.cdl.ucf.edu:obojobo/obojobo-draft-xml-parser.git#3eab758987ea27aaae98a5030fc5665a7b9c7b92"
+  resolved "git+ssh://git@github.com:ucfcdl/Obojobo-Docment-XML-Parser.git#3eab758987ea27aaae98a5030fc5665a7b9c7b92"
   dependencies:
     minimist "^1.2.0"
     xml-js "^1.0.2"
