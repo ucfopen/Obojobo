@@ -255,18 +255,20 @@ var Adapter = {
 		if (__guard__(attrs != null ? attrs.content : undefined, function (x3) {
 			return x3.solution;
 		}) != null) {
-			return model.modelState.solution = OboModel.create(attrs.content.solution);
+			model.modelState.solution = OboModel.create(attrs.content.solution);
 		} else {
-			return model.modelState.solution = null;
+			model.modelState.solution = null;
 		}
 	},
 	clone: function clone(model, _clone) {
 		_clone.modelState.shuffle = model.modelState.shuffle;
 		_clone.modelState.type = model.modelState.type;
+		_clone.modelState.practice = model.modelState.practice;
+		_clone.modelState.limit = model.modelState.limit;
 		_clone.modelState.solution = null;
 
 		if (model.modelState.solution != null) {
-			return _clone.modelState.solution = model.modelState.solution.clone();
+			_clone.modelState.solution = Object.assign({}, model.modelState.solution);
 		}
 	},
 	toJSON: function toJSON(model, json) {
@@ -275,7 +277,7 @@ var Adapter = {
 		json.content.solution = null;
 
 		if (model.modelState.solution != null) {
-			return json.content.solution = model.modelState.solution.toJSON();
+			json.content.solution = model.modelState.solution.toJSON();
 		}
 	}
 };

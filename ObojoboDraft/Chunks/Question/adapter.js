@@ -23,19 +23,21 @@ let Adapter = {
 		}
 
 		if (__guard__(attrs != null ? attrs.content : undefined, x3 => x3.solution) != null) {
-			return (model.modelState.solution = OboModel.create(attrs.content.solution))
+			model.modelState.solution = OboModel.create(attrs.content.solution)
 		} else {
-			return (model.modelState.solution = null)
+			model.modelState.solution = null
 		}
 	},
 
 	clone(model, clone) {
 		clone.modelState.shuffle = model.modelState.shuffle
 		clone.modelState.type = model.modelState.type
+		clone.modelState.practice = model.modelState.practice
+		clone.modelState.limit = model.modelState.limit
 		clone.modelState.solution = null
 
 		if (model.modelState.solution != null) {
-			return (clone.modelState.solution = model.modelState.solution.clone())
+			clone.modelState.solution = Object.assign({}, model.modelState.solution)
 		}
 	},
 
@@ -45,7 +47,7 @@ let Adapter = {
 		json.content.solution = null
 
 		if (model.modelState.solution != null) {
-			return (json.content.solution = model.modelState.solution.toJSON())
+			json.content.solution = model.modelState.solution.toJSON()
 		}
 	}
 }
