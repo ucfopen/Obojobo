@@ -27,9 +27,9 @@ let Adapter = {
 		}
 
 		if (__guard__(attrs != null ? attrs.content : undefined, x3 => x3.shuffleGroup) != null) {
-			return (model.modelState.shuffleGroup = attrs.content.shuffleGroup)
+			model.modelState.shuffleGroup = attrs.content.shuffleGroup
 		} else {
-			return (model.modelState.shuffleGroup = false)
+			model.modelState.shuffleGroup = false
 		}
 	},
 
@@ -42,14 +42,15 @@ let Adapter = {
 		clone.modelState.choose = model.modelState.choose
 		clone.modelState.groupSize = model.modelState.groupSize
 		clone.modelState.select = model.modelState.select
-		return (clone.modelState.resetWhenEmpty = model.modelState.resetWhenEmpty)
+		clone.modelState.shuffleGroup = model.modelState.shuffleGroup
+		// clone.modelState.resetWhenEmpty = model.modelState.resetWhenEmpty
 	},
 
 	toJSON(model, json) {
 		json.content.choose = model.modelState.choose
 		json.content.groupSize = model.modelState.groupSize
 		json.content.select = model.modelState.select
-		return (json.content.resetWhenEmpty = model.modelState.resetWhenEmpty)
+		// json.content.resetWhenEmpty = model.modelState.resetWhenEmpty
 	}
 }
 
