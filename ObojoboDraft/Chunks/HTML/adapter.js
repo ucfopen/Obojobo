@@ -15,12 +15,12 @@ let Adapter = {
 
 	clone(model, clone) {
 		clone.modelState.html = model.modelState.html
-		return (clone.modelState.align = model.modelState.align)
+		clone.modelState.align = model.modelState.align
 	},
 
 	toJSON(model, json) {
 		json.content.html = model.modelState.html
-		return (json.content.align = model.modelState.align)
+		json.content.align = model.modelState.align
 	},
 
 	toText(model) {

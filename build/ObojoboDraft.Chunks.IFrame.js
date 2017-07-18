@@ -133,16 +133,16 @@ Object.defineProperty(exports, "__esModule", {
 exports.default = {
 	construct: function construct(model, attrs) {
 		if (attrs && attrs.content && attrs.content.src) {
-			return model.modelState.src = attrs.content.src;
+			model.modelState.src = attrs.content.src;
 		} else {
-			return model.modelState.src = null;
+			model.modelState.src = null;
 		}
 	},
 	clone: function clone(model, _clone) {
-		return _clone.modelState.src = model.modelState.src;
+		_clone.modelState.src = model.modelState.src;
 	},
 	toJSON: function toJSON(model, json) {
-		return json.content.src = model.modelState.src;
+		json.content.src = model.modelState.src;
 	},
 	toText: function toText(model) {
 		return model.modelState.src;

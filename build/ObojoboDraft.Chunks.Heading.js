@@ -181,20 +181,20 @@ var Adapter = {
 		if (__guard__(attrs != null ? attrs.content : undefined, function (x1) {
 			return x1.align;
 		})) {
-			return model.modelState.align = attrs.content.align;
+			model.modelState.align = attrs.content.align;
 		} else {
-			return model.modelState.align = 'left';
+			model.modelState.align = 'left';
 		}
 	},
 	clone: function clone(model, _clone) {
 		TextGroupAdapter.clone(model, _clone);
 		_clone.modelState.headingLevel = model.modelState.headingLevel;
-		return _clone.modelState.align = model.modelState.align;
+		_clone.modelState.align = model.modelState.align;
 	},
 	toJSON: function toJSON(model, json) {
 		TextGroupAdapter.toJSON(model, json);
 		json.content.headingLevel = model.modelState.headingLevel;
-		return json.content.align = model.modelState.align;
+		json.content.align = model.modelState.align;
 	},
 	toText: function toText(model) {
 		return TextGroupAdapter.toText(model);

@@ -1,0 +1,91 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`Question adapter can be constructed WITH attributes 1`] = `
+Object {
+  "modelState": Object {
+    "limit": 2,
+    "practice": false,
+    "shuffle": true,
+    "solution": Object {
+      "children": Array [
+        Object {
+          "children": null,
+          "content": Object {
+            "textGroup": Array [
+              Object {
+                "data": Object {
+                  "align": "left",
+                  "indent": 0,
+                },
+                "text": Object {
+                  "styleList": null,
+                  "value": "this is some example solution text",
+                },
+              },
+            ],
+          },
+          "id": "7fa8ecca-cdd2-4cb8-ae55-5435db9fb05e",
+          "index": 0,
+          "metadata": Object {},
+          "type": "ObojoboDraft.Chunks.Text",
+        },
+      ],
+      "content": Object {},
+      "id": "249138ca-be09-4ab5-b015-3a8107b4c79e",
+      "index": 0,
+      "metadata": Object {},
+      "type": "ObojoboDraft.Pages.Page",
+    },
+  },
+}
+`;
+
+exports[`Question adapter can be converted to JSON 1`] = `
+Object {
+  "content": Object {
+    "shuffle": true,
+    "solution": Object {
+      "children": Array [
+        Object {
+          "children": null,
+          "content": Object {
+            "textGroup": Array [
+              Object {
+                "data": Object {
+                  "align": "left",
+                  "indent": 0,
+                },
+                "text": Object {
+                  "styleList": null,
+                  "value": "this is some example solution text",
+                },
+              },
+            ],
+          },
+          "id": "7fa8ecca-cdd2-4cb8-ae55-5435db9fb05e",
+          "index": 0,
+          "metadata": Object {},
+          "type": "ObojoboDraft.Chunks.Text",
+        },
+      ],
+      "content": Object {},
+      "id": "249138ca-be09-4ab5-b015-3a8107b4c79e",
+      "index": 0,
+      "metadata": Object {},
+      "type": "ObojoboDraft.Pages.Page",
+    },
+    "type": undefined,
+  },
+}
+`;
+
+exports[`Question adapter can be created WITHOUT attributes 1`] = `
+Object {
+  "modelState": Object {
+    "limit": 0,
+    "practice": true,
+    "shuffle": false,
+    "solution": null,
+  },
+}
+`;

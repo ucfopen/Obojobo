@@ -1,0 +1,25 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`IFrame adapter can be constructed WITH attributes 1`] = `
+Object {
+  "modelState": Object {
+    "src": "test src",
+  },
+}
+`;
+
+exports[`IFrame adapter can be constructed WITHOUT attributes 1`] = `
+Object {
+  "modelState": Object {
+    "src": null,
+  },
+}
+`;
+
+exports[`IFrame adapter can convert to JSON 1`] = `
+Object {
+  "content": Object {
+    "src": "test src",
+  },
+}
+`;

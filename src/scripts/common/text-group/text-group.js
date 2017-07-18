@@ -451,7 +451,7 @@ TextGroup.fromDescriptor = function(descriptor, maxItems, dataTemplate, restoreD
 		restoreDataDescriptorFn = Util.defaultCloneFn
 	}
 	let items = []
-	for (let item of Array.from(descriptor)) {
+	for (let item of descriptor) {
 		items.push(
 			createChild(
 				StyleableText.createFromObject(item.text),

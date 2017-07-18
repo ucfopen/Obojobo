@@ -232,8 +232,7 @@ var ActionButton = function (_React$Component) {
 	}, {
 		key: 'render',
 		value: function render() {
-			var textItem = this.props.model.modelState.textGroup.first;
-
+			var textItem = this.props.model.modelState.textGroup ? this.props.model.modelState.textGroup.first : '';
 			return React.createElement(
 				OboComponent,
 				{ model: this.props.model, moduleData: this.props.moduleData },

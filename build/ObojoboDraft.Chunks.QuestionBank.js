@@ -167,9 +167,9 @@ var Adapter = {
 		if (__guard__(attrs != null ? attrs.content : undefined, function (x3) {
 			return x3.shuffleGroup;
 		}) != null) {
-			return model.modelState.shuffleGroup = attrs.content.shuffleGroup;
+			model.modelState.shuffleGroup = attrs.content.shuffleGroup;
 		} else {
-			return model.modelState.shuffleGroup = false;
+			model.modelState.shuffleGroup = false;
 		}
 	},
 
@@ -183,13 +183,14 @@ var Adapter = {
 		_clone.modelState.choose = model.modelState.choose;
 		_clone.modelState.groupSize = model.modelState.groupSize;
 		_clone.modelState.select = model.modelState.select;
-		return _clone.modelState.resetWhenEmpty = model.modelState.resetWhenEmpty;
+		_clone.modelState.shuffleGroup = model.modelState.shuffleGroup;
+		// clone.modelState.resetWhenEmpty = model.modelState.resetWhenEmpty
 	},
 	toJSON: function toJSON(model, json) {
 		json.content.choose = model.modelState.choose;
 		json.content.groupSize = model.modelState.groupSize;
 		json.content.select = model.modelState.select;
-		return json.content.resetWhenEmpty = model.modelState.resetWhenEmpty;
+		// json.content.resetWhenEmpty = model.modelState.resetWhenEmpty
 	}
 };
 

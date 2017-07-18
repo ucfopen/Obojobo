@@ -7,20 +7,20 @@ let Adapter = {
 		}
 
 		if (__guard__(attrs != null ? attrs.content : undefined, x1 => x1.align) != null) {
-			return (model.modelState.align = attrs.content.align)
+			model.modelState.align = attrs.content.align
 		} else {
-			return (model.modelState.align = 'center')
+			model.modelState.align = 'center'
 		}
 	},
 
 	clone(model, clone) {
 		clone.modelState.latex = model.modelState.latex
-		return (clone.modelState.align = model.modelState.align)
+		clone.modelState.align = model.modelState.align
 	},
 
 	toJSON(model, json) {
 		json.content.latex = model.modelState.latex
-		return (json.content.align = model.modelState.align)
+		json.content.align = model.modelState.align
 	},
 
 	toText(model) {

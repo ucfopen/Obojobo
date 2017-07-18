@@ -135,16 +135,16 @@ var Adapter = {
 		if (__guard__(attrs != null ? attrs.content : undefined, function (x) {
 			return x.videoId;
 		}) != null) {
-			return model.modelState.videoId = attrs.content.videoId;
+			model.modelState.videoId = attrs.content.videoId;
 		} else {
-			return model.modelState.videoId = null;
+			model.modelState.videoId = null;
 		}
 	},
 	clone: function clone(model, _clone) {
-		return _clone.modelState.videoId = model.modelState.videoId;
+		_clone.modelState.videoId = model.modelState.videoId;
 	},
 	toJSON: function toJSON(model, json) {
-		return json.content.videoId = model.modelState.videoId;
+		json.content.videoId = model.modelState.videoId;
 	},
 	toText: function toText(model) {
 		return 'https://www.youtube.com/watch?v=' + model.modelState.videoId;

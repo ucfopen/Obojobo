@@ -189,9 +189,9 @@ var Adapter = {
 		if (__guard__(attrs != null ? attrs.content : undefined, function (x4) {
 			return x4.alt;
 		})) {
-			return model.modelState.alt = attrs.content.alt;
+			model.modelState.alt = attrs.content.alt;
 		} else {
-			return model.modelState.alt = null;
+			model.modelState.alt = null;
 		}
 	},
 	clone: function clone(model, _clone) {
@@ -200,7 +200,7 @@ var Adapter = {
 		_clone.modelState.size = model.modelState.size;
 		_clone.modelState.width = model.modelState.width;
 		_clone.modelState.height = model.modelState.height;
-		return _clone.modelState.alt = model.modelState.alt;
+		_clone.modelState.alt = model.modelState.alt;
 	},
 	toJSON: function toJSON(model, json) {
 		TextGroupAdapter.toJSON(model, json);
@@ -208,10 +208,10 @@ var Adapter = {
 		json.content.size = model.modelState.size;
 		json.content.width = model.modelState.width;
 		json.content.height = model.modelState.height;
-		return json.content.alt = model.modelState.alt;
+		json.content.alt = model.modelState.alt;
 	},
 	toText: function toText(model) {
-		return 'Image: ' + model.modelState.url + '\n Caption:' + TextGroupAdapter.toText(model);
+		return 'Image: ' + model.modelState.url + '\n Caption: ' + (TextGroupAdapter.toText(model) || model.modelState.alt);
 	}
 };
 
