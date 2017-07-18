@@ -1,18 +1,18 @@
 let Adapter = {
 	construct(model, attrs) {
 		if (__guard__(attrs != null ? attrs.content : undefined, x => x.videoId) != null) {
-			return (model.modelState.videoId = attrs.content.videoId)
+			model.modelState.videoId = attrs.content.videoId
 		} else {
-			return (model.modelState.videoId = null)
+			model.modelState.videoId = null
 		}
 	},
 
 	clone(model, clone) {
-		return (clone.modelState.videoId = model.modelState.videoId)
+		clone.modelState.videoId = model.modelState.videoId
 	},
 
 	toJSON(model, json) {
-		return (json.content.videoId = model.modelState.videoId)
+		json.content.videoId = model.modelState.videoId
 	},
 
 	toText(model) {
