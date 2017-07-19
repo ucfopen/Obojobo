@@ -5,4 +5,4 @@ const logger = {
 	warn: jest.fn()
 }
 
-module.exports = logger;
+module.exports = logger
