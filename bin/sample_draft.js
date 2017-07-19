@@ -2,6 +2,7 @@
 global.oboRequire = (name) => {return require(`${__dirname}/../${name}`)}
 let fs = require('fs')
 let exec = require('child_process').exec
+let logger = oboRequire('logger')
 
 let usageError = new Error(`Usage:
 	node sample_draft.js seed
@@ -19,14 +20,14 @@ try{
 		case 'seed':
 			exec(`node ${writeJsonDraftToDbPath} insert ${sampleJsonPath} 0 ${defaultId}`, {}, (err, stdout, stderr) => {
 				if(err) {
-					console.error(err.message);
+					logger.error(err.message);
 					process.exit(1)
 				}
 
-				console.log(`Sample draft seeded at ${defaultId}, you must set the user ID to view the sample!`)
+				logger.debug(`Sample draft seeded at ${defaultId}, you must set the user ID to view the sample!`)
 
-				if(stdout) console.log(stdout)
-				if(stderr) console.log(stderr)
+				if(stdout) logger.info(stdout)
+				if(stderr) logger.error(stderr)
 				process.exit(0);
 			})
 			break;
@@ -35,14 +36,14 @@ try{
 			fs.watch(sampleJsonPath, { encoding:'buffer' }, (eventType, filename) => {
 				exec(`node ${writeJsonDraftToDbPath} update ${sampleJsonPath} ${defaultId}`, {}, (err, stdout, stderr) => {
 					if(err) {
-						console.error(err.message);
+						logger.error(err.message);
 						return;
 					}
 
-					console.log('Sample JSON Draft changed, updating...')
+					logger.info('Sample JSON Draft changed, updating...')
 
-					if(stdout) console.log(stdout)
-					if(stderr) console.log(stderr)
+					if(stdout) logger.info(stdout)
+					if(stderr) logger.error(stderr)
 				})
 			})
 			break;
@@ -53,6 +54,6 @@ try{
 	}
 }
 catch(e){
-	console.error(e.message);
+	logger.error(e.message);
 	process.exit(1);
 }

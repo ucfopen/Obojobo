@@ -1,5 +1,6 @@
 let db = oboRequire('db');
 let draftNodeStore = oboRequire('draft_node_store')
+let logger = require('../logger.js')
 
 class Draft {
 	constructor(rawDraft) {
@@ -61,7 +62,7 @@ class Draft {
 			return new Draft(result.content)
 		})
 		.catch( error => {
-			console.log('fetchById Error', error.message)
+			logger.error('fetchById Error', error.message)
 			return Promise.reject(error)
 		})
 	}

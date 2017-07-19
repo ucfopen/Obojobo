@@ -45,7 +45,6 @@ describe('api draft insert helper', () => {
 
 		})
 		.catch(err => {
-			console.log(err)
 			expect(err).toBe('never called')
 		})
 	})
@@ -64,7 +63,6 @@ describe('api draft insert helper', () => {
 			expect(result).toBe('never called')
 		})
 		.catch(err => {
-			console.log(err)
 			expect(err).toBe('error')
 		})
 	})
@@ -85,7 +83,6 @@ describe('api draft insert helper', () => {
 			expect(result).toBe('never called')
 		})
 		.catch(err => {
-			console.log(err)
 			expect(err).toBe('an error')
 		})
 	})
@@ -107,7 +104,6 @@ describe('api draft insert helper', () => {
 			expect(result).toBe('never called')
 		})
 		.catch(err => {
-			console.log(err)
 			expect(err).toBe('arrrg!')
 		})
 	})

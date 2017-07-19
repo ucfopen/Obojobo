@@ -71,7 +71,6 @@ describe('api draft events route', () => {
 			expect(true).toBe('never called')
 		})
 		.catch(err => {
-			console.log(err)
 			expect(mockRes.notAuthorized).toBeCalledWith('no current user')
 			expect(mockRes.unexpected).not.toBeCalled()
 			expect(mockNext).toBeCalledWith()

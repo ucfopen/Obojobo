@@ -2,6 +2,7 @@ var express = require('express');
 var router = express.Router();
 var oboEvents = oboRequire('obo_events')
 var insertEvent = oboRequire('insert_event')
+let logger = oboRequire('logger')
 
 router.post('/', (req, res, next) => {
 	return req.requireCurrentUser()
@@ -29,13 +30,13 @@ router.post('/', (req, res, next) => {
 			return next();
 		})
 		.catch(err => {
-			console.error('Insert Event Failure:', err)
+			logger.error('Insert Event Failure:', err)
 			res.unexpected(err);
 			next();
 		})
 	})
 	.catch(err => {
-		console.log(err)
+		logger.error(err)
 		res.notAuthorized(err);
 		next();
 		return Promise.reject(err)

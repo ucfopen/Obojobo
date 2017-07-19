@@ -1,5 +1,4 @@
 let lti
-let originalConsole = console
 let mockLTIEvent = {
 	id: 2,
 	lti_key: 'testkey',
@@ -13,8 +12,7 @@ describe('lti', () => {
 
 	beforeAll(() => {
 
-		global.console = {warn: jest.fn(), log: jest.fn(), error: jest.fn()}
-
+		jest.mock('./logger')
 		jest.mock('./db');
 		jest.mock('ims-lti/lib/extensions/outcomes')
 
@@ -24,23 +22,13 @@ describe('lti', () => {
 		lti = require('./lti')
 	});
 
-	afterAll(() => {
-		global.console = originalConsole
+	afterAll(() => {});
 
-	});
-
-	beforeEach(() => {
-		console.log.mockClear()
-		console.warn.mockClear()
-		console.error.mockClear()
-	});
+	beforeEach(() => {});
 
 	afterEach(() => {
 		let outcomes = require('ims-lti/lib/extensions/outcomes')
 		outcomes.__resetCallbackForSend_replace_result()
-		// originalConsole.log(console.log.mock.calls)
-		// originalConsole.log(console.warn.mock.calls)
-		// originalConsole.log(console.error.mock.calls)
 	});
 
 
@@ -59,12 +47,14 @@ describe('lti', () => {
 		expect.assertions(2);
 
 		let db = require('./db')
+		let logger = require('./logger')
+
 		// mock the query to get lti data
 		db.one.mockImplementationOnce((query, vars) => {return Promise.reject()})
 
 		return lti.replaceResult(1, 2, 1)
 		.then((result) => {
-			expect(console.log).toBeCalledWith('No Relevent LTI Request found for user 1, on 2')
+			expect(logger.info).toBeCalledWith('No Relevent LTI Request found for user 1, on 2')
 			expect(result).toBe(false)
 		})
 	})
@@ -132,6 +122,7 @@ describe('lti', () => {
 
 
 		let db = require('./db')
+		let logger = require('./logger')
 		// mock the query to get lti data
 		db.one.mockImplementationOnce(() => {return Promise.resolve(mockLTIEvent)})
 		// mock the query to insert an event
@@ -146,8 +137,8 @@ describe('lti', () => {
 		return lti.replaceResult(1, 2, 0.99)
 		.catch(err => {
 			expect(err).toBeInstanceOf(Error)
-			expect(console.log).toBeCalledWith('SETTING LTI OUTCOME SCORE SET to 0.99 for user: 1 on sourcedid: test-sourcedid using key: testkey')
-			expect(console.log).toBeCalledWith('replaceResult error!', 'SOME_ERROR')
+			expect(logger.info).toBeCalledWith('SETTING LTI OUTCOME SCORE SET to 0.99 for user: 1 on sourcedid: test-sourcedid using key: testkey')
+			expect(logger.error).toBeCalledWith('replaceResult error!', 'SOME_ERROR')
 		})
 	})
 

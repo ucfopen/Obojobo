@@ -62,15 +62,10 @@ let mockDBForLaunch = (resolveInsert = true, resolveEvent = true) => {
 
 describe('lti launch middleware', () => {
 
-	let originalConsole = global.console
 	beforeAll(() => {})
 	afterAll(() => {})
-	beforeEach(() => {
-		global.console = {warn: jest.fn(), log: jest.fn(), error: jest.fn()}
-	});
-	afterEach(() => {
-		global.console = originalConsole
-	});
+	beforeEach(() => {});
+	afterEach(() => {});
 
 	it('calls next with no lti data', () => {
 		let [res, req, mockJson, mockStatus, mockNext] = mockArgs()
