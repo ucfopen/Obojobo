@@ -1,7 +1,7 @@
 const fs = require('fs')
 const path = require('path')
 const glob = require('glob')
-let logger = oboRequire('logger')
+const logger = oboRequire('logger')
 
 let memoizedValues = {}
 
