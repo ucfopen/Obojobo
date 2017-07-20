@@ -18,7 +18,7 @@
 		"generateModuleManifest": "node ./bin/generate_module_manifest.js",
 		"prettier": "prettier --single-quote --use-tabs --no-semi --print-width='100' --write '{src,__{tests,mocks}__,ObojoboDraft}/**/*.js'",
 		"prettier:debug": "prettier --single-quote --use-tabs --no-semi --print-width='100' --debug-check '{src,__{tests,mocks}__,ObojoboDraft}/**/*.js'",
-		"precommit": "yarn build && yarn build:gitadd && lint-staged"
+		"precommit": "yarn test && yarn build && yarn build:gitadd && lint-staged"
 	},
 	"lint-staged": {
 		"*.js": ["yarn prettier", "git add"]
