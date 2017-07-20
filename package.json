@@ -16,8 +16,8 @@
 		"karma": "./node_modules/karma/bin/karma start ./karma.conf.js",
 		"karma-coverage": "./node_modules/karma/bin/karma start ./karma-coverage.conf.js",
 		"generateModuleManifest": "node ./bin/generate_module_manifest.js",
-		"prettier": "prettier --single-quote --use-tabs --no-semi --print-width='100' --write '{src,__{tests,mocks}__,ObojoboDraft}/**/*.js'",
-		"prettier:debug": "prettier --single-quote --use-tabs --no-semi --print-width='100' --debug-check '{src,__{tests,mocks}__,ObojoboDraft}/**/*.js'"
+		"prettier": "prettier --single-quote --use-tabs --no-semi --print-width='100' --write '{src,server,__{tests,mocks}__,ObojoboDraft}/**/*.js'",
+		"prettier:debug": "prettier --single-quote --use-tabs --no-semi --print-width='100' --debug-check '{src,server,__{tests,mocks}__,ObojoboDraft}/**/*.js'"
 	},
 	"pre-commit": ["build", "build:gitadd", "prettier"],
 	"author": "",
