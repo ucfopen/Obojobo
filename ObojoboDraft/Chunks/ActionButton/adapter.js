@@ -3,8 +3,7 @@ import Common from 'Common'
 let TextGroup = Common.textGroup.TextGroup
 
 let TextGroupAdapter = {
-	construct(model, attrs)
-	{
+	construct(model, attrs) {
 		if (__guard__(attrs != null ? attrs.content : undefined, x => x.textGroup) != null) {
 			model.modelState.textGroup = TextGroup.fromDescriptor(attrs.content.textGroup, Infinity, {
 				indent: 0
