@@ -1,5 +1,6 @@
 let findOboNode = (oboNode, targetId) => {
-	((oboNode, id) => {
+	(
+		(oboNode, id) => {
 		if(findOboNode.oboNode) return
 
 		if(oboNode.id === id)
