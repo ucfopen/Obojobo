@@ -18,11 +18,10 @@
 		"generateModuleManifest": "node ./bin/generate_module_manifest.js",
 		"prettier": "prettier --single-quote --use-tabs --no-semi --print-width='100' --write '{src,__{tests,mocks}__,ObojoboDraft}/**/*.js'",
 		"prettier:debug": "prettier --single-quote --use-tabs --no-semi --print-width='100' --debug-check '{src,__{tests,mocks}__,ObojoboDraft}/**/*.js'",
-		"precommit": "lint-staged"
+		"precommit": "yarn build && yarn build:gitadd && lint-staged"
 	},
-	"pre-commit": ["build", "build:gitadd", "lint-staged"],
 	"lint-staged": {
-		"*.js": ["echo 'lint-staged'"]
+		"*.js": ["yarn prettier", "git add"]
 	},
 	"author": "",
 	"devDependencies": {
@@ -54,7 +53,6 @@
 		"node-bourbon": "^4.2.8",
 		"node-sass": "^3.4.2",
 		"object-assign": "^4.1.0",
-		"pre-commit": "^1.2.2",
 		"prettier": "^1.5.2",
 		"sass-loader": "^6.0.5",
 		"style-loader": "^0.17.0",
