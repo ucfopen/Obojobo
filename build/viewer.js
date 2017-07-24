@@ -776,6 +776,16 @@ var QuestionUtil = {
 			}
 		});
 	},
+	showExplanation: function showExplanation(id) {
+		return Dispatcher.trigger('question:showExplanation', {
+			value: { key: id }
+		});
+	},
+	hideExplanation: function hideExplanation(id) {
+		return Dispatcher.trigger('question:hideExplanation', {
+			value: { key: id }
+		});
+	},
 	viewQuestion: function viewQuestion(id) {
 		return Dispatcher.trigger('question:view', {
 			value: {
@@ -808,7 +818,7 @@ var QuestionUtil = {
 		return typeof state.responses[model.get('id')] !== 'undefined';
 	},
 	getData: function getData(state, model, key) {
-		return state.data[model.get('id') + ':' + key];
+		return state.data[model.get('id') + ':' + key] || false;
 	}
 };
 
@@ -1322,6 +1332,16 @@ var QuestionStore = function (_Store) {
 
 			'question:setData': function questionSetData(payload) {
 				_this.state.data[payload.value.key] = payload.value.value;
+				return _this.triggerChange();
+			},
+
+			'question:showExplanation': function questionShowExplanation(payload) {
+				_this.state.data[payload.value.key + ':showingExplanation'] = true;
+				return _this.triggerChange();
+			},
+
+			'question:hideExplanation': function questionHideExplanation(payload) {
+				_this.state.data[payload.value.key + ':showingExplanation'] = false;
 				return _this.triggerChange();
 			},
 

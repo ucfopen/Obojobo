@@ -38,6 +38,18 @@ let QuestionUtil = {
 		})
 	},
 
+	showExplanation(id) {
+		return Dispatcher.trigger('question:showExplanation', {
+			value: { key: id }
+		})
+	},
+
+	hideExplanation(id) {
+		return Dispatcher.trigger('question:hideExplanation', {
+			value: { key: id }
+		})
+	},
+
 	viewQuestion(id) {
 		return Dispatcher.trigger('question:view', {
 			value: {
@@ -75,7 +87,7 @@ let QuestionUtil = {
 	},
 
 	getData(state, model, key) {
-		return state.data[model.get('id') + ':' + key]
+		return state.data[model.get('id') + ':' + key] || false
 	}
 }
 
