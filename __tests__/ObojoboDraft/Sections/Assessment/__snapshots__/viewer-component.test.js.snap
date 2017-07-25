@@ -167,7 +167,7 @@ exports[`Assessment Assessment page changes when attempt started and submitted 2
               </div>
             </div>
             <form
-              className="component obojobo-draft--chunks--mc-assessment is-response-type-pick-one is-not-revealing-all is-unscored"
+              className="component obojobo-draft--chunks--mc-assessment is-response-type-pick-one is-not-showing-explantion is-unscored"
               data-focussed={false}
               data-id="qb1-q1-mca"
               data-obo-component={true}

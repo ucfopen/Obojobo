@@ -422,10 +422,18 @@ var ScoreUtil = _Viewer2.default.util.ScoreUtil;
 var MCAssessment = function (_React$Component) {
 	_inherits(MCAssessment, _React$Component);
 
-	function MCAssessment() {
+	function MCAssessment(props) {
 		_classCallCheck(this, MCAssessment);
 
-		return _possibleConstructorReturn(this, (MCAssessment.__proto__ || Object.getPrototypeOf(MCAssessment)).apply(this, arguments));
+		var _this = _possibleConstructorReturn(this, (MCAssessment.__proto__ || Object.getPrototypeOf(MCAssessment)).call(this, props));
+
+		_this.onClickShowExplanation = _this.onClickShowExplanation.bind(_this);
+		_this.onClickHideExplanation = _this.onClickHideExplanation.bind(_this);
+		_this.onClickSubmit = _this.onClickSubmit.bind(_this);
+		_this.onClickReset = _this.onClickReset.bind(_this);
+		_this.onClick = _this.onClick.bind(_this);
+		_this.isShowingExplanation = _this.isShowingExplanation.bind(_this);
+		return _this;
 	}
 
 	_createClass(MCAssessment, [{
@@ -538,16 +546,21 @@ var MCAssessment = function (_React$Component) {
 			return ScoreUtil.setScore(this.props.model.parent.get('id'), this.calculateScore());
 		}
 	}, {
-		key: 'onClickUndoRevealAll',
-		value: function onClickUndoRevealAll(event) {
+		key: 'onClickShowExplanation',
+		value: function onClickShowExplanation(event) {
 			event.preventDefault();
-			return QuestionUtil.setData(this.props.model.get('id'), 'revealAll', false);
+			QuestionUtil.showExplanation(this.props.model.get('id'));
 		}
 	}, {
-		key: 'onClickRevealAll',
-		value: function onClickRevealAll(event) {
+		key: 'onClickHideExplanation',
+		value: function onClickHideExplanation(event) {
 			event.preventDefault();
-			return QuestionUtil.setData(this.props.model.get('id'), 'revealAll', true);
+			QuestionUtil.hideExplanation(this.props.model.get('id'));
+		}
+	}, {
+		key: 'isShowingExplanation',
+		value: function isShowingExplanation() {
+			return QuestionUtil.getData(this.props.moduleData.questionState, this.props.model, 'showingExplanation');
 		}
 	}, {
 		key: 'onClickReset',
@@ -558,14 +571,14 @@ var MCAssessment = function (_React$Component) {
 	}, {
 		key: 'reset',
 		value: function reset() {
-			this.clearRevealAll();
+			this.clearShowingExplanation();
 			this.clearResponses();
 			return this.clearScore();
 		}
 	}, {
-		key: 'clearRevealAll',
-		value: function clearRevealAll() {
-			return QuestionUtil.clearData(this.props.model.get('id'), 'revealAll');
+		key: 'clearShowingExplanation',
+		value: function clearShowingExplanation() {
+			return QuestionUtil.clearData(this.props.model.get('id'), 'showingExplanation');
 		}
 		// QuestionUtil.clearData @props.model.get('id'), 'shuffledIds'
 
@@ -593,8 +606,6 @@ var MCAssessment = function (_React$Component) {
 			if (!mcChoiceId) {
 				return;
 			}
-
-			var revealAll = this.isRevealingAll();
 
 			if (this.getScore() !== null) {
 				this.reset();
@@ -655,11 +666,6 @@ var MCAssessment = function (_React$Component) {
 		// 	@setState { showingSolution:true }
 
 	}, {
-		key: 'isRevealingAll',
-		value: function isRevealingAll() {
-			return QuestionUtil.getData(this.props.moduleData.questionState, this.props.model, 'revealAll');
-		}
-	}, {
 		key: 'componentWillReceiveProps',
 		value: function componentWillReceiveProps() {
 			this.shuffle();
@@ -687,7 +693,7 @@ var MCAssessment = function (_React$Component) {
 
 			var responseType = this.props.model.modelState.responseType;
 
-			var revealAll = this.isRevealingAll();
+			var isShowingExplanation = this.isShowingExplanation();
 			var score = this.getScore();
 			var questionSubmitted = score !== null;
 			var questionAnswered = this.getResponseData().responses.size >= 1;
@@ -715,9 +721,9 @@ var MCAssessment = function (_React$Component) {
 				{
 					model: this.props.model,
 					moduleData: this.props.moduleData,
-					onClick: this.onClick.bind(this),
+					onClick: this.onClick,
 					tag: 'form',
-					className: 'obojobo-draft--chunks--mc-assessment' + (' is-response-type-' + this.props.model.modelState.responseType) + (revealAll ? ' is-revealing-all' : ' is-not-revealing-all') + (score === null ? ' is-unscored' : ' is-scored')
+					className: 'obojobo-draft--chunks--mc-assessment' + (' is-response-type-' + this.props.model.modelState.responseType) + (isShowingExplanation ? ' is-showing-explanation' : ' is-not-showing-explantion') + (score === null ? ' is-unscored' : ' is-scored')
 				},
 				React.createElement(
 					'span',
@@ -763,7 +769,7 @@ var MCAssessment = function (_React$Component) {
 						model: child,
 						moduleData: _this2.props.moduleData,
 						responseType: responseType,
-						revealAll: revealAll,
+						isShowingExplanation: true,
 						questionSubmitted: questionSubmitted,
 						label: String.fromCharCode(index + 65)
 					});
@@ -771,8 +777,8 @@ var MCAssessment = function (_React$Component) {
 				React.createElement(
 					'div',
 					{ className: 'submit' },
-					questionSubmitted ? React.createElement(Button, { altAction: true, onClick: this.onClickReset.bind(this), value: 'Try Again' }) : React.createElement(Button, {
-						onClick: this.onClickSubmit.bind(this),
+					questionSubmitted ? React.createElement(Button, { altAction: true, onClick: this.onClickReset, value: 'Try Again' }) : React.createElement(Button, {
+						onClick: this.onClickSubmit,
 						value: 'Check Your Answer',
 						disabled: !questionAnswered
 					}),
@@ -825,20 +831,20 @@ var MCAssessment = function (_React$Component) {
 										model: model,
 										moduleData: _this2.props.moduleData,
 										responseType: responseType,
-										revealAll: revealAll,
-										questionSubmitted: questionSubmitted,
+										isShowingExplanation: true,
+										questionSubmitted: true,
 										label: String.fromCharCode(shuffledIds.indexOf(model.parent.get('id')) + 65)
 									});
 								})
 							)
 						),
-						revealAll ? React.createElement(Button, {
+						isShowingExplanation ? React.createElement(Button, {
 							altAction: true,
-							onClick: this.onClickUndoRevealAll.bind(this),
+							onClick: this.onClickHideExplanation,
 							value: 'Hide Explanation'
 						}) : solution ? React.createElement(Button, {
 							altAction: true,
-							onClick: this.onClickRevealAll.bind(this),
+							onClick: this.onClickShowExplanation,
 							value: 'Read an explanation of the answer'
 						}) : null,
 						React.createElement(
@@ -849,7 +855,7 @@ var MCAssessment = function (_React$Component) {
 								transitionEnterTimeout: 800,
 								transitionLeaveTimeout: 800
 							},
-							revealAll ? React.createElement(
+							isShowingExplanation ? React.createElement(
 								'div',
 								{ className: 'solution-container', key: 'solution-component' },
 								React.createElement(SolutionComponent, { model: solution, moduleData: this.props.moduleData })
