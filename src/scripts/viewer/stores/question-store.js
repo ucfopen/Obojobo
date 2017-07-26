@@ -37,6 +37,16 @@ class QuestionStore extends Store {
 				return this.triggerChange()
 			},
 
+			'question:showExplanation': payload => {
+				this.state.data[payload.value.key + ':showingExplanation'] = true
+				return this.triggerChange()
+			},
+
+			'question:hideExplanation': payload => {
+				this.state.data[payload.value.key + ':showingExplanation'] = false
+				return this.triggerChange()
+			},
+
 			'question:clearData': payload => {
 				delete this.state.data[payload.value.key]
 				return this.triggerChange()

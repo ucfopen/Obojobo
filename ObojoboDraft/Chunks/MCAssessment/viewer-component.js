@@ -19,6 +19,17 @@ let { ScoreUtil } = Viewer.util
 // @TODO - This wont update if new children are passed in via props
 
 export default class MCAssessment extends React.Component {
+	constructor(props) {
+		super(props)
+
+		this.onClickShowExplanation = this.onClickShowExplanation.bind(this)
+		this.onClickHideExplanation = this.onClickHideExplanation.bind(this)
+		this.onClickSubmit = this.onClickSubmit.bind(this)
+		this.onClickReset = this.onClickReset.bind(this)
+		this.onClick = this.onClick.bind(this)
+		this.isShowingExplanation = this.isShowingExplanation.bind(this)
+	}
+
 	getResponseData() {
 		let correct = new Set()
 		let responses = new Set()
@@ -81,29 +92,36 @@ export default class MCAssessment extends React.Component {
 		return ScoreUtil.setScore(this.props.model.parent.get('id'), this.calculateScore())
 	}
 
-	onClickUndoRevealAll(event) {
+	onClickShowExplanation(event) {
 		event.preventDefault()
-		return QuestionUtil.setData(this.props.model.get('id'), 'revealAll', false)
+		QuestionUtil.showExplanation(this.props.model.get('id'))
 	}
 
-	onClickRevealAll(event) {
+	onClickHideExplanation(event) {
 		event.preventDefault()
-		return QuestionUtil.setData(this.props.model.get('id'), 'revealAll', true)
+		QuestionUtil.hideExplanation(this.props.model.get('id'))
 	}
 
+	isShowingExplanation() {
+		return QuestionUtil.getData(
+			this.props.moduleData.questionState,
+			this.props.model,
+			'showingExplanation'
+		)
+	}
 	onClickReset(event) {
 		event.preventDefault()
 		return this.reset()
 	}
 
 	reset() {
-		this.clearRevealAll()
+		this.clearShowingExplanation()
 		this.clearResponses()
 		return this.clearScore()
 	}
 
-	clearRevealAll() {
-		return QuestionUtil.clearData(this.props.model.get('id'), 'revealAll')
+	clearShowingExplanation() {
+		return QuestionUtil.clearData(this.props.model.get('id'), 'showingExplanation')
 	}
 	// QuestionUtil.clearData @props.model.get('id'), 'shuffledIds'
 
@@ -131,8 +149,6 @@ export default class MCAssessment extends React.Component {
 		if (!mcChoiceId) {
 			return
 		}
-
-		let revealAll = this.isRevealingAll()
 
 		if (this.getScore() !== null) {
 			this.reset()
@@ -174,10 +190,6 @@ export default class MCAssessment extends React.Component {
 	// 	event.preventDefault()
 	// 	@setState { showingSolution:true }
 
-	isRevealingAll() {
-		return QuestionUtil.getData(this.props.moduleData.questionState, this.props.model, 'revealAll')
-	}
-
 	componentWillReceiveProps() {
 		this.shuffle()
 	}
@@ -200,7 +212,7 @@ export default class MCAssessment extends React.Component {
 
 	render() {
 		let { responseType } = this.props.model.modelState
-		let revealAll = this.isRevealingAll()
+		let isShowingExplanation = this.isShowingExplanation()
 		let score = this.getScore()
 		let questionSubmitted = score !== null
 		let questionAnswered = this.getResponseData().responses.size >= 1
@@ -233,12 +245,12 @@ export default class MCAssessment extends React.Component {
 			<OboComponent
 				model={this.props.model}
 				moduleData={this.props.moduleData}
-				onClick={this.onClick.bind(this)}
+				onClick={this.onClick}
 				tag="form"
 				className={
 					'obojobo-draft--chunks--mc-assessment' +
 					` is-response-type-${this.props.model.modelState.responseType}` +
-					(revealAll ? ' is-revealing-all' : ' is-not-revealing-all') +
+					(isShowingExplanation ? ' is-showing-explanation' : ' is-not-showing-explantion') +
 					(score === null ? ' is-unscored' : ' is-scored')
 				}
 			>
@@ -271,7 +283,7 @@ export default class MCAssessment extends React.Component {
 							model={child}
 							moduleData={this.props.moduleData}
 							responseType={responseType}
-							revealAll={revealAll}
+							isShowingExplanation
 							questionSubmitted={questionSubmitted}
 							label={String.fromCharCode(index + 65)}
 						/>
@@ -280,9 +292,9 @@ export default class MCAssessment extends React.Component {
 				{
 					<div className="submit">
 						{questionSubmitted
-							? <Button altAction onClick={this.onClickReset.bind(this)} value="Try Again" />
+							? <Button altAction onClick={this.onClickReset} value="Try Again" />
 							: <Button
-									onClick={this.onClickSubmit.bind(this)}
+									onClick={this.onClickSubmit}
 									value="Check Your Answer"
 									disabled={!questionAnswered}
 								/>}
@@ -328,8 +340,8 @@ export default class MCAssessment extends React.Component {
 															model={model}
 															moduleData={this.props.moduleData}
 															responseType={responseType}
-															revealAll={revealAll}
-															questionSubmitted={questionSubmitted}
+															isShowingExplanation
+															questionSubmitted
 															label={String.fromCharCode(
 																shuffledIds.indexOf(model.parent.get('id')) + 65
 															)}
@@ -338,16 +350,16 @@ export default class MCAssessment extends React.Component {
 												})}
 											</div>}
 								</div>
-								{revealAll
+								{isShowingExplanation
 									? <Button
 											altAction
-											onClick={this.onClickUndoRevealAll.bind(this)}
+											onClick={this.onClickHideExplanation}
 											value="Hide Explanation"
 										/>
 									: solution
 										? <Button
 												altAction
-												onClick={this.onClickRevealAll.bind(this)}
+												onClick={this.onClickShowExplanation}
 												value="Read an explanation of the answer"
 											/>
 										: null}
@@ -357,7 +369,7 @@ export default class MCAssessment extends React.Component {
 									transitionEnterTimeout={800}
 									transitionLeaveTimeout={800}
 								>
-									{revealAll
+									{isShowingExplanation
 										? <div className="solution-container" key="solution-component">
 												<SolutionComponent model={solution} moduleData={this.props.moduleData} />
 											</div>
