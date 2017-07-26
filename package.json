@@ -21,7 +21,10 @@
 		"precommit": "yarn test && yarn build && yarn build:gitadd && lint-staged"
 	},
 	"lint-staged": {
-		"*.js": ["yarn prettier", "git add"]
+		"*.js": [
+			"yarn prettier",
+			"git add"
+		]
 	},
 	"author": "",
 	"devDependencies": {
@@ -69,6 +72,7 @@
 		"promise-polyfill": "^6.0.2",
 		"react": "^15.5.4",
 		"react-dom": "^15.5.4",
+		"react-idle-timer": "^1.5.0",
 		"react-test-renderer": "^15.5.4",
 		"react-transition-group": "^1.1.3",
 		"smoothscroll-polyfill": "^0.3.4",
@@ -77,7 +81,9 @@
 	},
 	"jest": {
 		"testURL": "http://localhost:3000/view/00000000-0000-0000-0000-000000000000",
-		"setupFiles": ["./setupTests.js"],
+		"setupFiles": [
+			"./setupTests.js"
+		],
 		"verbose": true,
 		"moduleNameMapper": {
 			"^Common(.*)$": "<rootDir>/src/scripts/common$1",
@@ -85,7 +91,11 @@
 			"\\.scss$": "<rootDir>/__mocks__/ignore-file-stub.js",
 			"\\.svg$": "<rootDir>/__mocks__/ignore-file-stub.js"
 		},
-		"collectCoverageFrom": ["src/scripts/**", "ObojoboDraft/**", "server/**"],
+		"collectCoverageFrom": [
+			"src/scripts/**",
+			"ObojoboDraft/**",
+			"server/**"
+		],
 		"coveragePathIgnorePatterns": [
 			"command-handler.js",
 			"selection-handler.js",
