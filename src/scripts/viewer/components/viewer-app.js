@@ -1,11 +1,13 @@
-import '../../../scss/main.scss' //@TODO
+import '../../../scss/main.scss'
 import './viewer-app.scss'
 
 import Common from 'Common'
 import React from 'react'
+import IdleTimer from 'react-idle-timer'
 
 import InlineNavButton from '../../viewer/components/inline-nav-button'
 import NavUtil from '../../viewer/util/nav-util'
+import APIUtil from '../../viewer/util/api-util'
 import Logo from '../../viewer/components/logo'
 import ScoreStore from '../../viewer/stores/score-store'
 import QuestionStore from '../../viewer/stores/question-store'
@@ -87,6 +89,9 @@ export default class ViewerApp extends React.Component {
 			this.setState({ assessmentState: AssessmentStore.getState() })
 		this.onModalStoreChange = () => this.setState({ modalState: ModalStore.getState() })
 		this.onFocusStoreChange = () => this.setState({ focusState: FocusStore.getState() })
+
+		this.onIdle = this.onIdle.bind(this)
+		this.onReturnFromIdle = this.onReturnFromIdle.bind(this)
 
 		this.state = state
 	}
@@ -203,6 +208,18 @@ export default class ViewerApp extends React.Component {
 		}
 	}
 
+	onIdle() {
+		// TODO: Future onIdle event callback from IdleTimer
+		// console.log("User now idle.")
+		APIUtil.postEvent(this.state.model, 'viewer:idle', {})
+	}
+
+	onReturnFromIdle() {
+		// TODO: Future onReturnFromIdle event callback from IdleTimer
+		// console.log("User has returned from idle state.")
+		APIUtil.postEvent(this.state.model, 'viewer:returnFromIdle', {})
+	}
+
 	resetAssessments() {
 		AssessmentStore.init()
 		QuestionStore.init()
@@ -270,36 +287,44 @@ export default class ViewerApp extends React.Component {
 		let modal = ModalUtil.getCurrentModal(this.state.modalState)
 
 		return (
-			<div
-				ref="container"
-				onMouseDown={this.onMouseDown.bind(this)}
-				onScroll={this.onScroll.bind(this)}
-				className={`viewer--viewer-app${this.isPreviewing
-					? ' is-previewing'
-					: ' is-not-previewing'}${this.state.navState.locked
-					? ' is-locked-nav'
-					: ' is-unlocked-nav'}${this.state.navState.open ? ' is-open-nav' : ' is-closed-nav'}${this
-					.state.navState.disabled
-					? ' is-disabled-nav'
-					: ' is-enabled-nav'} is-focus-state-${this.state.focusState.viewState}`}
+			<IdleTimer
+				ref="idleTimer"
+				element={window}
+				timeout={180000}
+				idleAction={this.onIdle}
+				activeAction={this.onReturnFromIdle}
 			>
-				<header>
-					<div className="pad">
-						<span className="module-title">
-							{this.state.model.title}
-						</span>
-						<span className="location">
-							{navTargetTitle}
-						</span>
-						<Logo />
-					</div>
-				</header>
-				<Nav navState={this.state.navState} />
-				{prevEl}
-				<ModuleComponent model={this.state.model} moduleData={this.state} />
-				{nextEl}
-				{this.isPreviewing
-					? <div className="preview-banner">
+				<div
+					ref="container"
+					onMouseDown={this.onMouseDown.bind(this)}
+					onScroll={this.onScroll.bind(this)}
+					className={`viewer--viewer-app${this.isPreviewing
+						? ' is-previewing'
+						: ' is-not-previewing'}${this.state.navState.locked
+							? ' is-locked-nav'
+							: ' is-unlocked-nav'}${this.state.navState.open
+								? ' is-open-nav'
+								: ' is-closed-nav'}${this.state.navState.disabled
+									? ' is-disabled-nav'
+									: ' is-enabled-nav'} is-focus-state-${this.state.focusState.viewState}`}
+				>
+					<header>
+						<div className="pad">
+							<span className="module-title">
+								{this.state.model.title}
+							</span>
+							<span className="location">
+								{navTargetTitle}
+							</span>
+							<Logo />
+						</div>
+					</header>
+					<Nav navState={this.state.navState} />
+					{prevEl}
+					<ModuleComponent model={this.state.model} moduleData={this.state} />
+					{nextEl}
+					{this.isPreviewing
+						? <div className="preview-banner">
 							<span>You are previewing this object - Assessments will not be counted</span>
 							<div className="controls">
 								<button
@@ -307,20 +332,21 @@ export default class ViewerApp extends React.Component {
 									disabled={!this.state.navState.locked}
 								>
 									Unlock navigation
-								</button>
+									</button>
 								<button onClick={this.resetAssessments.bind(this)}>
 									Reset assessments &amp; questions
-								</button>
+									</button>
 							</div>
 						</div>
-					: null}
-				<FocusBlocker moduleData={this.state} />
-				{modal
-					? <ModalContainer>
+						: null}
+					<FocusBlocker moduleData={this.state} />
+					{modal
+						? <ModalContainer>
 							{modal}
 						</ModalContainer>
-					: null}
-			</div>
+						: null}
+				</div>
+			</IdleTimer>
 		)
 	}
 }

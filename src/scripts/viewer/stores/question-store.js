@@ -13,7 +13,7 @@ class QuestionStore extends Store {
 
 		Dispatcher.on({
 			'question:recordResponse': payload => {
-				; ({ id } = payload.value)
+				;({ id } = payload.value)
 				let model = OboModel.models[id]
 
 				this.state.responses[id] = payload.value.response
