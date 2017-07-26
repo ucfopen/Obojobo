@@ -8,7 +8,7 @@ describe('oboGlobals', () => {
 	afterAll(() => {})
 
 	it('should allow me to set valid variables', () => {
-		let OboGlobals = require('./obo_globals');
+		let OboGlobals = oboRequire('obo_globals');
 		let og = new OboGlobals();
 
 		expect(og.set('t_number', 5)).toBe(true)
@@ -19,7 +19,7 @@ describe('oboGlobals', () => {
 	})
 
 	it('should allow not allow me to set functions or objects', () => {
-		let OboGlobals = require('./obo_globals');
+		let OboGlobals = oboRequire('obo_globals');
 		let og = new OboGlobals();
 		let SomeClass = class SomeClass{};
 		expect(og.set('t_class', SomeClass)).toBe(false)
@@ -27,7 +27,7 @@ describe('oboGlobals', () => {
 	})
 
 	it('should render correct output', () =>{
-		let OboGlobals = require('./obo_globals');
+		let OboGlobals = oboRequire('obo_globals');
 		let og = new OboGlobals();
 		let SomeClass = class SomeClass{};
 

@@ -7,7 +7,7 @@ describe('config', () => {
 
 
 	it('db to have expected props and vals', () => {
-		let config = require('./config');
+		let config = oboRequire('config');
 		expect(config).toHaveProperty('db.host')
 		expect(config).toHaveProperty('db.port')
 		expect(config).toHaveProperty('db.database')
@@ -16,7 +16,7 @@ describe('config', () => {
 	})
 
 	it('expects config to have loaded all files', () => {
-		let config = require('./config');
+		let config = oboRequire('config');
 		expect(config).toHaveProperty('db')
 		expect(config).toHaveProperty('lti')
 		expect(config).toHaveProperty('permissions')
@@ -24,7 +24,7 @@ describe('config', () => {
 	})
 
 	it('selects the environment based on env', () => {
-		let config = require('./config');
+		let config = oboRequire('config');
 		expect(config).toHaveProperty('db')
 		expect(config.db.host).toBe('hostVal')
 	})

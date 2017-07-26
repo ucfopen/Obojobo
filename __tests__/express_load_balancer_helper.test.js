@@ -18,7 +18,7 @@ let mockArgs = ((headers = {}) => {
 	let mockNext = jest.fn()
 	res.status = mockStatus
 
-	let middleware = require('./express_load_balancer_helper');
+	let middleware = oboRequire('express_load_balancer_helper');
 	middleware(req, res, mockNext)
 	return [res, req, mockJson, mockStatus, mockNext]
 })

@@ -22,7 +22,7 @@ describe('api response middleware', () => {
 			let mockNext = jest.fn()
 			res.status = mockStatus
 
-			let apiResponseDecorator = require('./api_response_decorator');
+			let apiResponseDecorator = oboRequire('api_response_decorator');
 			apiResponseDecorator(req, res, mockNext)
 			return [res, req, mockJson, mockStatus, mockNext]
 		})()

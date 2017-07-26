@@ -1,4 +1,4 @@
-jest.mock('../db')
+jest.mock('../../db')
 
 let mockExpressMethods = {}
 let mockRouterMethods = {}

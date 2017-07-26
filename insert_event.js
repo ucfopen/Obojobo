@@ -1,4 +1,4 @@
-let db = require('./db')
+let db = oboRequire('db')
 
 module.exports = (insertObject) => {
 	return db.one(`
