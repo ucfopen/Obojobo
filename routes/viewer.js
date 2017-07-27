@@ -50,6 +50,7 @@ router.all('/:draftId*', (req, res, next) => {
 				assetForEnv('//cdnjs.cloudflare.com/ajax/libs/underscore.js/1.5.1/underscore$[-min].js'),
 				assetForEnv('//cdnjs.cloudflare.com/ajax/libs/backbone.js/1.3.3/backbone$[-min].js'),
 				assetForEnv('//cdnjs.cloudflare.com/ajax/libs/KaTeX/0.7.1/katex.min.js'),
+				assetForEnv('/static/caliperSensor.js')
 				// assetForEnv('$[http://localhost:8090/webpack-dev-server.js]')
 			],
 		});

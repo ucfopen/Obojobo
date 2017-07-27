@@ -49,6 +49,8 @@ app.use(require('./obo_express'))
 app.use('/', require('./routes/index'));
 app.use('/profile', require('./routes/profile'));
 
+// Temporary for caliper
+app.use(`/static/caliperSensor.js`, express.static(`./public/caliperSensor.js`))
 
 // @TODO 404!
 
