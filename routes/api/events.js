@@ -3,6 +3,13 @@ var router = express.Router();
 var oboEvents = oboRequire('obo_events')
 var insertEvent = oboRequire('insert_event')
 
+
+let getCaliperEventFromClientEvent = (clientEvent) => {
+	return ({
+		'todo': 'create a caliper event'
+	})
+}
+
 router.post('/', (req, res, next) => {
 	return req.requireCurrentUser()
 	.then(currentUser => {
@@ -11,6 +18,8 @@ router.post('/', (req, res, next) => {
 		// add data to the event
 		let event = req.body.event
 
+		let caliperEvent = getCaliperEventFromClientEvent(event)
+
 		let insertObject = {
 			actorTime: event.actor_time,
 			action: event.action,
@@ -18,7 +27,8 @@ router.post('/', (req, res, next) => {
 			ip: req.connection.remoteAddress,
 			metadata: {},
 			payload: event.payload,
-			draftId: event.draft_id
+			draftId: event.draft_id,
+			caliperPayload: caliperEvent
 		}
 
 		return insertEvent(insertObject)
