@@ -1,4 +1,4 @@
-jest.mock('./db')
+jest.mock('../db')
 
 describe('insert_event', () => {
 
@@ -10,8 +10,8 @@ describe('insert_event', () => {
 	it('inserts the expected values', () => {
 		expect.assertions(3);
 
-		let db = require('./db')
-		let insertEvent  = require('./insert_event')
+		let db = oboRequire('db')
+		let insertEvent  = oboRequire('insert_event')
 		const expectedCreatedAt = new Date().toISOString()
 		const insertObject = {
 			action: 'test::testAction',
@@ -42,8 +42,8 @@ describe('insert_event', () => {
 	it('Returns promise rejection', () => {
 		expect.assertions(1);
 
-		let db = require('./db')
-		let insertEvent  = require('./insert_event')
+		let db = oboRequire('db')
+		let insertEvent  = oboRequire('insert_event')
 		const err = new Error('const error')
 		// mock insert
 		db.one.mockImplementationOnce(() => { return Promise.reject(err) })

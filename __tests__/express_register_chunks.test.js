@@ -1,18 +1,11 @@
 jest.mock('fs')
 jest.mock('express')
 jest.mock('child_process')
-jest.mock('./obo_get_installed_modules')
-jest.mock('./draft_node_store')
+jest.mock('../obo_get_installed_modules')
+jest.mock('../draft_node_store')
 
 // just mock these non-existent things
 mockVirtual('/file/path/express.js', () => ({expressApp:true}))
-mockVirtual('/file/path/fake_thing.js')
-mockVirtual('/file/otherpath/viewer.js')
-mockVirtual('/file/otherotherpath/viewer.css')
-mockVirtual('/file_2/otherpath/viewer.js')
-mockVirtual('/file_2/otherotherpath/viewer.css')
-mockVirtual('/file_3/path/viewer.js')
-
 
 mockVirtual('webpack-dev-middleware')
 mockVirtual('webpack')
@@ -26,7 +19,7 @@ describe('register chunks middleware', () => {
 	afterEach(() => {})
 
 	it('calls with no errors', () => {
-		let middleware = require('./express_register_chunks')
+		let middleware = oboRequire('express_register_chunks')
 		let mockApp = {
 			get: jest.fn(),
 			use: jest.fn(),
@@ -39,7 +32,7 @@ describe('register chunks middleware', () => {
 	})
 
 	it('registers all nodes as expected', () => {
-		require('./obo_get_installed_modules').mockImplementationOnce((env) => {
+		oboRequire('obo_get_installed_modules').mockImplementationOnce((env) => {
 			return {
 				express: [],
 				assets: [],
@@ -50,8 +43,8 @@ describe('register chunks middleware', () => {
 			}
 		})
 
-		let dns = require('./draft_node_store')
-		let middleware = require('./express_register_chunks')
+		let dns = oboRequire('draft_node_store')
+		let middleware = oboRequire('express_register_chunks')
 		let mockApp = {
 			get: jest.fn(),
 			use: jest.fn(),
@@ -69,7 +62,7 @@ describe('register chunks middleware', () => {
 		webpackDevMiddleware.mockClear()
 		webpackDevMiddleware.mockImplementationOnce(()=>{return 'webPackDevMiddleWareReturn'})
 
-		let middleware = require('./express_register_chunks')
+		let middleware = oboRequire('express_register_chunks')
 		let mockApp = {
 			get: jest.fn().mockImplementationOnce(() => {return 'development'}),
 			use: jest.fn(),
@@ -92,7 +85,7 @@ describe('register chunks middleware', () => {
 		webpackDevMiddleware.mockClear()
 		webpackDevMiddleware.mockImplementationOnce(()=>{return 'webPackDevMiddleWareReturn'})
 
-		let middleware = require('./express_register_chunks')
+		let middleware = oboRequire('express_register_chunks')
 		let mockApp = {
 			get: jest.fn().mockImplementationOnce(() => {return 'production'}),
 			use: jest.fn(),
@@ -115,7 +108,7 @@ describe('register chunks middleware', () => {
 
 
 	it('calls express.static as expected', () => {
-		let middleware = require('./express_register_chunks')
+		let middleware = oboRequire('express_register_chunks')
 		let mockApp = {
 			get: jest.fn(),
 			use: jest.fn(),
@@ -135,14 +128,14 @@ describe('register chunks middleware', () => {
 	})
 
 	it('adds any express applications', () => {
-		require('./obo_get_installed_modules').mockImplementationOnce((env) => {
+		oboRequire('obo_get_installed_modules').mockImplementationOnce((env) => {
 			return {
 				express: ['/file/path/express.js'],
 				assets: [],
 				draftNodes: new Map()
 			}
 		})
-		let middleware = require('./express_register_chunks')
+		let middleware = oboRequire('express_register_chunks')
 		let mockApp = {
 			get: jest.fn(),
 			use: jest.fn(),

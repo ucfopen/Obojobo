@@ -9,7 +9,7 @@ describe('obo events default', () => {
 	it('loads ok', () => {
 		jest.mock('events');
 		let expectedEmitter = require('events');
-		let oboEvents = require('./obo_events_default')
+		let oboEvents = oboRequire('obo_events_default')
 		expect(true).toBe(true)
 	})
 
