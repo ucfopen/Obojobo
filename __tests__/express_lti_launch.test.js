@@ -1,5 +1,5 @@
-jest.mock('./models/user')
-jest.mock('./db')
+jest.mock('../models/user')
+jest.mock('../db')
 
 // array of mocked express middleware request arguments
 let mockArgs = (withLtiData = false) => {
@@ -32,7 +32,7 @@ let mockArgs = (withLtiData = false) => {
 }
 
 let mockDBForLaunch = (resolveInsert = true, resolveEvent = true) => {
-		let db = require('./db')
+		let db = oboRequire('db')
 
 		// mock the launch insert
 		if(resolveInsert){
@@ -69,7 +69,7 @@ describe('lti launch middleware', () => {
 
 	it('calls next with no lti data', () => {
 		let [res, req, mockJson, mockStatus, mockNext] = mockArgs()
-		require('./express_lti_launch')(req, res, mockNext)
+		oboRequire('express_lti_launch')(req, res, mockNext)
 		expect(mockNext).toBeCalledWith()
 	})
 
@@ -79,7 +79,7 @@ describe('lti launch middleware', () => {
 		let db = mockDBForLaunch()
 
 		let [res, req, mockJson, mockStatus, mockNext] = mockArgs(true)
-		return require('./express_lti_launch')(req, res, mockNext)
+		return oboRequire('express_lti_launch')(req, res, mockNext)
 		.then(() => {
 			expect(db.one.mock.calls[0][1]).toEqual(expect.objectContaining({
 				data: {
@@ -112,7 +112,7 @@ describe('lti launch middleware', () => {
 		mockDBForLaunch()
 
 		let [res, req, mockJson, mockStatus, mockNext] = mockArgs(true)
-		return require('./express_lti_launch')(req, res, mockNext)
+		return oboRequire('express_lti_launch')(req, res, mockNext)
 		.then(() => {
 			expect(mockNext).toBeCalledWith()
 		})
@@ -125,7 +125,7 @@ describe('lti launch middleware', () => {
 		mockDBForLaunch(true, false)
 
 		let [res, req, mockJson, mockStatus, mockNext] = mockArgs(true)
-		return require('./express_lti_launch')(req, res, mockNext)
+		return oboRequire('express_lti_launch')(req, res, mockNext)
 		.then(() => {
 			expect(mockNext).toBeCalledWith(expect.any(Error))
 		})
@@ -137,7 +137,7 @@ describe('lti launch middleware', () => {
 		mockDBForLaunch(false, false)
 
 		let [res, req, mockJson, mockStatus, mockNext] = mockArgs(true)
-		return require('./express_lti_launch')(req, res, mockNext)
+		return oboRequire('express_lti_launch')(req, res, mockNext)
 		.then(() => {
 			expect(mockNext).toBeCalledWith(expect.any(Error))
 		})
@@ -147,10 +147,10 @@ describe('lti launch middleware', () => {
 		expect.assertions(2)
 
 		mockDBForLaunch()
-		let User = require('./models/user')
+		let User = oboRequire('models/user')
 
 		let [res, req, mockJson, mockStatus, mockNext] = mockArgs(true)
-		return require('./express_lti_launch')(req, res, mockNext)
+		return oboRequire('express_lti_launch')(req, res, mockNext)
 		.then(() => {
 			expect(req.setCurrentUser).toBeCalledWith(expect.any(User))
 			expect(req.setCurrentUser).toBeCalledWith(expect.objectContaining({

@@ -1,4 +1,4 @@
-jest.mock('../db')
+jest.mock('../../db')
 
 
 describe('guest user model', () => {

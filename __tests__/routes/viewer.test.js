@@ -1,4 +1,4 @@
-jest.mock('../models/draft')
+jest.mock('../../models/draft')
 
 let mockExpressMethods = {}
 let mockRouterMethods = {}

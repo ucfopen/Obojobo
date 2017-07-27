@@ -17,7 +17,7 @@
     "assets": "NODE_ENV=production webpack -p",
     "assets:dev": "webpack",
     "devDocEngine:start": "cd ./node_modules/obojobo-draft-document-engine && yarn dev",
-    "devDocEngine:setup": "\"yarn docengine:clone\" && \"yarn docengine:nodemodules\"",
+    "devDocEngine:setup": "yarn devDocEngine:clone && yarn devDocEngine:nodemodules",
     "devDocEngine:clone": "git clone git@github.com:ucfcdl/Obojobo-Document-Engine.git devsrc/obojobo-draft-document-engine || echo 'already cloned'",
     "devDocEngine:nodemodules": "cd ./devsrc/obojobo-draft-document-engine && yarn",
     "devDocEngine:link": "cd ./devsrc/obojobo-draft-document-engine && yarn link && cd ../.. && yarn link obojobo-draft-document-engine",

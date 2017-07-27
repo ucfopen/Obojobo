@@ -1,6 +1,7 @@
-jest.mock('../../models/draft')
-jest.mock('../../db')
-jest.mock('../../logger')
+jest.mock('../../../models/draft')
+jest.mock('../../../models/user')
+jest.mock('../../../db')
+jest.mock('../../../logger')
 
 let mockExpressMethods = {}
 let mockRouterMethods = {}
@@ -71,7 +72,6 @@ describe('api draft route', () => {
 
 		oboRequire('routes/api/drafts')
 		let routeFunction = mockRouterMethods.get.mock.calls[0][1]
-
 		let mockReq = {
 			params: {draftId: 555},
 			app: {get: jest.fn()}

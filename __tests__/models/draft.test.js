@@ -1,6 +1,6 @@
 describe('models draft', () => {
-	jest.mock('../db')
-	jest.mock('../logger')
+	jest.mock('../../db')
+	jest.mock('../../logger')
 
 	let mockRawDraft = {
 		id:'whatever',

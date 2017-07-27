@@ -2,7 +2,7 @@ let mockArgs // array of mocked express middleware request arguments
 const userFunctions = ['setCurrentUser', 'getCurrentUser', 'requireCurrentUser']
 
 jest.mock('test_node');
-jest.mock('./models/user')
+jest.mock('../models/user')
 
 describe('current user middleware', () => {
 
@@ -21,7 +21,7 @@ describe('current user middleware', () => {
 			let mockNext = jest.fn()
 			res.status = mockStatus
 
-			let currentUserMiddleware = require('./express_current_user');
+			let currentUserMiddleware = oboRequire('express_current_user');
 			currentUserMiddleware(req, res, mockNext)
 			return [res, req, mockJson, mockStatus, mockNext]
 		})()
@@ -53,7 +53,7 @@ describe('current user middleware', () => {
 		expect.assertions(1)
 
 		let [res, req, mockJson, mockStatus, mockNext] = mockArgs
-		let User = require('./models/user')
+		let User = oboRequire('models/user')
 		let mockUser = new User({id:999})
 		req.setCurrentUser(mockUser)
 		expect(req.session.currentUserId).toBe(999)
@@ -73,7 +73,7 @@ describe('current user middleware', () => {
 		expect.assertions(3)
 
 		let [res, req, mockJson, mockStatus, mockNext] = mockArgs
-		let User = require('./models/user')
+		let User = oboRequire('models/user')
 		let mockUser = new User({id:8})
 		User.fetchById = jest.fn().mockImplementation(id => {return Promise.resolve(mockUser)})
 		req.setCurrentUser(mockUser)
@@ -90,7 +90,7 @@ describe('current user middleware', () => {
 		expect.assertions(3)
 
 		let [res, req, mockJson, mockStatus, mockNext] = mockArgs
-		let User = require('./models/user')
+		let User = oboRequire('models/user')
 		let mockUser = new User({id:8})
 		User.fetchById = jest.fn().mockImplementation(id => {return Promise.resolve(mockUser)})
 		req.setCurrentUser(mockUser)
@@ -107,7 +107,7 @@ describe('current user middleware', () => {
 		expect.assertions(3)
 
 		let [res, req, mockJson, mockStatus, mockNext] = mockArgs
-		let User = require('./models/user')
+		let User = oboRequire('models/user')
 		let GuestUser = oboRequire('models/guest_user')
 
 		return req.getCurrentUser()
@@ -122,7 +122,7 @@ describe('current user middleware', () => {
 		expect.assertions(1);
 
 		let [res, req, mockJson, mockStatus, mockNext] = mockArgs
-		let User = require('./models/user')
+		let User = oboRequire('models/user')
 
 		return req.getCurrentUser(true)
 		.then(user => {
@@ -137,7 +137,7 @@ describe('current user middleware', () => {
 		expect.assertions(2)
 
 		let [res, req, mockJson, mockStatus, mockNext] = mockArgs
-		let User = require('./models/user')
+		let User = oboRequire('models/user')
 		let mockUser = new User({id:8})
 		User.fetchById = jest.fn().mockImplementation(id => {return Promise.resolve(mockUser)})
 		req.setCurrentUser(mockUser)
@@ -156,8 +156,8 @@ describe('current user middleware', () => {
 		expect.assertions(2)
 
 		let [res, req, mockJson, mockStatus, mockNext] = mockArgs
-		let User = require('./models/user')
-		let GuestUser = require('./models/guest_user')
+		let User = oboRequire('models/user')
+		let GuestUser = oboRequire('models/guest_user')
 		User.fetchById = jest.fn().mockImplementation(id => {return Promise.reject('die rebel scum')})
 		req.session.currentUserId = 9
 		return req.getCurrentUser()
@@ -171,8 +171,8 @@ describe('current user middleware', () => {
 		expect.assertions(3)
 
 		let [res, req, mockJson, mockStatus, mockNext] = mockArgs
-		let User = require('./models/user')
-		let GuestUser = require('./models/guest_user')
+		let User = oboRequire('models/user')
+		let GuestUser = oboRequire('models/guest_user')
 		User.fetchById = jest.fn().mockImplementation(id => {return Promise.reject('die rebel scum')})
 		req.session.currentUserId = 9
 		return req.getCurrentUser(true)
@@ -190,7 +190,7 @@ describe('current user middleware', () => {
 		expect.assertions(3)
 
 		let [res, req, mockJson, mockStatus, mockNext] = mockArgs
-		let User = require('./models/user')
+		let User = oboRequire('models/user')
 		let mockUser = new User({id:8})
 		User.fetchById = jest.fn().mockImplementation(id => {return Promise.resolve(mockUser)})
 		req.setCurrentUser(mockUser)
@@ -207,7 +207,7 @@ describe('current user middleware', () => {
 		expect.assertions(1)
 
 		let [res, req, mockJson, mockStatus, mockNext] = mockArgs
-		let User = require('./models/user')
+		let User = oboRequire('models/user')
 
 		return req.requireCurrentUser()
 		.then(user => {

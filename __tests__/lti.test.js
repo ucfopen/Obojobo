@@ -12,14 +12,16 @@ describe('lti', () => {
 
 	beforeAll(() => {
 
-		jest.mock('./logger')
-		jest.mock('./db');
+		global.console = {warn: jest.fn(), log: jest.fn(), error: jest.fn()}
+
+		jest.mock('../db')
 		jest.mock('ims-lti/lib/extensions/outcomes')
+		jest.mock('../logger')
 
 		let fs = require('fs')
 		fs.__setMockFileContents('./config/lti.json', '{"test":{"keys":{"testkey":"testsecret"}}}');
 
-		lti = require('./lti')
+		lti = oboRequire('lti')
 	});
 
 	afterAll(() => {});
@@ -46,8 +48,8 @@ describe('lti', () => {
 	it('should fail to replace result when the lti data couldnt be found', () => {
 		expect.assertions(2);
 
-		let db = require('./db')
-		let logger = require('./logger')
+		let db = oboRequire('db')
+		let logger = oboRequire('logger')
 
 		// mock the query to get lti data
 		db.one.mockImplementationOnce((query, vars) => {return Promise.reject()})
@@ -71,7 +73,7 @@ describe('lti', () => {
 		outcomes.__registerCallbackForSend_replace_result(send_replace_resultMock)
 
 
-		let db = require('./db')
+		let db = oboRequire('db')
 		db.one.mockImplementationOnce(() => {return Promise.resolve(mockLTIEvent)}) // mock the query to get lti data
 		db.one.mockImplementationOnce(() => {return Promise.resolve(null)}) // mock insert event
 
@@ -83,7 +85,7 @@ describe('lti', () => {
 
 		// bypass all the internals of outcomes, just returns true for success
 		let outcomes = require('ims-lti/lib/extensions/outcomes')
-		let db = require('./db')
+		let db = oboRequire('db')
 		// mock the query to get lti data
 		db.one.mockImplementationOnce(() => {return Promise.resolve(mockLTIEvent)})
 
@@ -121,8 +123,9 @@ describe('lti', () => {
 		outcomes.__registerCallbackForSend_replace_result(send_replace_resultMock)
 
 
-		let db = require('./db')
-		let logger = require('./logger')
+		let db = oboRequire('db')
+		let logger = oboRequire('logger')
+
 		// mock the query to get lti data
 		db.one.mockImplementationOnce(() => {return Promise.resolve(mockLTIEvent)})
 		// mock the query to insert an event
