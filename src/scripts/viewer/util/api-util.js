@@ -2,7 +2,6 @@ const createParsedJsonPromise = promise => {
 	return new Promise((resolve, reject) => {
 		return promise
 			.then(res => {
-				console.log(res)
 				return res.json()
 			})
 			.then(json => {
@@ -51,8 +50,8 @@ var APIUtil = {
 				}
 			})
 			// TODO: Send Caliper event to client host.
-		).then(json => {
-			console.log(json)
+		).then(caliperEvent => {
+			parent.postMessage(caliperEvent, '*')
 		})
 	},
 

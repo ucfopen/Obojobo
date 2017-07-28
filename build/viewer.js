@@ -682,7 +682,6 @@
 				return new Promise(function(resolve, reject) {
 					return promise
 						.then(function(res) {
-							console.log(res)
 							return res.json()
 						})
 						.then(function(json) {
@@ -731,8 +730,8 @@
 							}
 						})
 						// TODO: Send Caliper event to client host.
-					).then(function(json) {
-						console.log(json)
+					).then(function(caliperEvent) {
+						parent.postMessage(caliperEvent, '*')
 					})
 				},
 				saveState: function saveState(lo, state) {
