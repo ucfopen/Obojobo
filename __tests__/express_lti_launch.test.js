@@ -5,25 +5,29 @@ jest.mock('../db')
 let mockArgs = (withLtiData = false) => {
 	let res = {}
 	let req = {
-		session:{},
-		connection:{remoteAddress:'1.1.1.1'},
-		params:{
+		session: {},
+		connection: { remoteAddress: '1.1.1.1' },
+		params: {
 			draftId: '999'
 		}
 	}
-	let mockJson = jest.fn().mockImplementation(obj => {return true})
-	res.status = jest.fn().mockImplementation(code => {return {json: mockJson}})
+	let mockJson = jest.fn().mockImplementation(obj => {
+		return true
+	})
+	res.status = jest.fn().mockImplementation(code => {
+		return { json: mockJson }
+	})
 	let mockNext = jest.fn()
 	req.setCurrentUser = jest.fn()
 
-	if(withLtiData){
+	if (withLtiData) {
 		req.lti = {
 			body: {
 				lis_person_sourcedid: '555',
-				lis_person_sourcedid: "2020",
-				lis_person_contact_email_primary: "mann@internet.com",
-				lis_person_name_given: "Hugh",
-				lis_person_name_family: "Mann",
+				lis_person_sourcedid: '2020',
+				lis_person_contact_email_primary: 'mann@internet.com',
+				lis_person_name_given: 'Hugh',
+				lis_person_name_family: 'Mann',
 				roles: ['saviour', 'explorer', 'doctor']
 			}
 		}
@@ -32,45 +36,38 @@ let mockArgs = (withLtiData = false) => {
 }
 
 let mockDBForLaunch = (resolveInsert = true, resolveEvent = true) => {
-		let db = oboRequire('db')
+	let db = oboRequire('db')
 
-		// mock the launch insert
-		if(resolveInsert){
-			db.one.mockImplementationOnce((query, vars) => {
-				return Promise.resolve({id:88})
-			})
-		}
-		else{
-			db.one.mockImplementationOnce((query, vars) => {
-				return Promise.reject('launch insert error')
-			})
-		}
+	// mock the launch insert
+	if (resolveInsert) {
+		db.one.mockImplementationOnce((query, vars) => {
+			return Promise.resolve({ id: 88 })
+		})
+	} else {
+		db.one.mockImplementationOnce((query, vars) => {
+			return Promise.reject('launch insert error')
+		})
+	}
 
-		// mock the event insert
-		if(resolveEvent){
-			db.one.mockImplementationOnce((query, vars) => {return Promise.resolve('createdAt')})
-		}
-		else{
-			db.one.mockImplementationOnce((query, vars) => {
-				return Promise.reject('event insert error')
-			})
-		}
+	// mock the event insert
+	if (resolveEvent) {
+		db.one.mockImplementationOnce((query, vars) => {
+			return Promise.resolve('createdAt')
+		})
+	} else {
+		db.one.mockImplementationOnce((query, vars) => {
+			return Promise.reject('event insert error')
+		})
+	}
 
-		return db
+	return db
 }
 
-
 describe('lti launch middleware', () => {
-
-	let originalConsole = global.console
 	beforeAll(() => {})
 	afterAll(() => {})
-	beforeEach(() => {
-		global.console = {warn: jest.fn(), log: jest.fn(), error: jest.fn()}
-	});
-	afterEach(() => {
-		global.console = originalConsole
-	});
+	beforeEach(() => {})
+	afterEach(() => {})
 
 	it('calls next with no lti data', () => {
 		let [res, req, mockJson, mockStatus, mockNext] = mockArgs()
@@ -84,30 +81,33 @@ describe('lti launch middleware', () => {
 		let db = mockDBForLaunch()
 
 		let [res, req, mockJson, mockStatus, mockNext] = mockArgs(true)
-		return oboRequire('express_lti_launch')(req, res, mockNext)
-		.then(() => {
-			expect(db.one.mock.calls[0][1]).toEqual(expect.objectContaining({
-				data: {
-					lis_person_contact_email_primary: "mann@internet.com",
-					lis_person_name_family: "Mann",
-					lis_person_name_given: "Hugh",
-					lis_person_sourcedid: "2020",
-					roles: ["saviour", "explorer", "doctor"]
-				},
-				draftId: "999",
-				"userId": 0
-			}))
-			expect(db.one.mock.calls[1][1]).toEqual(expect.objectContaining({
-				"action": "lti:launch",
-				"actorTime": expect.any(String),
-				"draftId": "999",
-				"ip": "1.1.1.1",
-				"metadata": {},
-				"payload": {
-					"launchId": 88
-				},
-				"userId": 0
-			}))
+		return oboRequire('express_lti_launch')(req, res, mockNext).then(() => {
+			expect(db.one.mock.calls[0][1]).toEqual(
+				expect.objectContaining({
+					data: {
+						lis_person_contact_email_primary: 'mann@internet.com',
+						lis_person_name_family: 'Mann',
+						lis_person_name_given: 'Hugh',
+						lis_person_sourcedid: '2020',
+						roles: ['saviour', 'explorer', 'doctor']
+					},
+					draftId: '999',
+					userId: 0
+				})
+			)
+			expect(db.one.mock.calls[1][1]).toEqual(
+				expect.objectContaining({
+					action: 'lti:launch',
+					actorTime: expect.any(String),
+					draftId: '999',
+					ip: '1.1.1.1',
+					metadata: {},
+					payload: {
+						launchId: 88
+					},
+					userId: 0
+				})
+			)
 		})
 	})
 
@@ -117,12 +117,10 @@ describe('lti launch middleware', () => {
 		mockDBForLaunch()
 
 		let [res, req, mockJson, mockStatus, mockNext] = mockArgs(true)
-		return oboRequire('express_lti_launch')(req, res, mockNext)
-		.then(() => {
+		return oboRequire('express_lti_launch')(req, res, mockNext).then(() => {
 			expect(mockNext).toBeCalledWith()
 		})
 	})
-
 
 	it('calls next error with lti data when insert event fails', () => {
 		expect.assertions(1)
@@ -130,8 +128,7 @@ describe('lti launch middleware', () => {
 		mockDBForLaunch(true, false)
 
 		let [res, req, mockJson, mockStatus, mockNext] = mockArgs(true)
-		return oboRequire('express_lti_launch')(req, res, mockNext)
-		.then(() => {
+		return oboRequire('express_lti_launch')(req, res, mockNext).then(() => {
 			expect(mockNext).toBeCalledWith(expect.any(Error))
 		})
 	})
@@ -142,8 +139,7 @@ describe('lti launch middleware', () => {
 		mockDBForLaunch(false, false)
 
 		let [res, req, mockJson, mockStatus, mockNext] = mockArgs(true)
-		return oboRequire('express_lti_launch')(req, res, mockNext)
-		.then(() => {
+		return oboRequire('express_lti_launch')(req, res, mockNext).then(() => {
 			expect(mockNext).toBeCalledWith(expect.any(Error))
 		})
 	})
@@ -155,16 +151,17 @@ describe('lti launch middleware', () => {
 		let User = oboRequire('models/user')
 
 		let [res, req, mockJson, mockStatus, mockNext] = mockArgs(true)
-		return oboRequire('express_lti_launch')(req, res, mockNext)
-		.then(() => {
+		return oboRequire('express_lti_launch')(req, res, mockNext).then(() => {
 			expect(req.setCurrentUser).toBeCalledWith(expect.any(User))
-			expect(req.setCurrentUser).toBeCalledWith(expect.objectContaining({
-				username: '2020',
-				email: 'mann@internet.com',
-				firstName: 'Hugh',
-				lastName: 'Mann',
-				roles: expect.any(Array)
-			}))
+			expect(req.setCurrentUser).toBeCalledWith(
+				expect.objectContaining({
+					username: '2020',
+					email: 'mann@internet.com',
+					firstName: 'Hugh',
+					lastName: 'Mann',
+					roles: expect.any(Array)
+				})
+			)
 		})
 	})
 })

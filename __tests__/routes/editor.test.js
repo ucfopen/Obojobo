@@ -4,36 +4,38 @@ let mockExpressMethods = {}
 let mockRouterMethods = {}
 
 let mockExpress = () => {
-	jest.mock('express', () => {
-		let module = () => {
-			let methods = ['on', 'use', 'get', 'post', 'put', 'delete', 'all', 'static']
-			let obj = {}
-			methods.forEach(m => {
-				obj[m] = mockExpressMethods[m]= jest.fn()
-			})
-			return obj
-		}
+	jest.mock(
+		'express',
+		() => {
+			let module = () => {
+				let methods = ['on', 'use', 'get', 'post', 'put', 'delete', 'all', 'static']
+				let obj = {}
+				methods.forEach(m => {
+					obj[m] = mockExpressMethods[m] = jest.fn()
+				})
+				return obj
+			}
 
-		module.Router = () => {
-			let methods = ['all', 'get', 'post', 'delete', 'put']
-			let obj = {}
-			methods.forEach(m => {
-				obj[m] = mockRouterMethods[m] = jest.fn()
-			})
-			return obj
-		}
+			module.Router = () => {
+				let methods = ['all', 'get', 'post', 'delete', 'put']
+				let obj = {}
+				methods.forEach(m => {
+					obj[m] = mockRouterMethods[m] = jest.fn()
+				})
+				return obj
+			}
 
-		return module
-	}, {virtual: true});
+			return module
+		},
+		{ virtual: true }
+	)
 }
 
-
 describe('editor route', () => {
-
 	beforeAll(() => {})
 	afterAll(() => {})
-	beforeEach(() => {});
-	afterEach(() => {});
+	beforeEach(() => {})
+	afterEach(() => {})
 
 	test('registers the expected routes ', () => {
 		mockExpress()
@@ -47,7 +49,7 @@ describe('editor route', () => {
 
 		// mock the launch insert
 		db.any.mockImplementationOnce((query, vars) => {
-			return Promise.resolve({draft:true})
+			return Promise.resolve({ draft: true })
 		})
 
 		mockExpress()
@@ -71,13 +73,15 @@ describe('editor route', () => {
 
 		let mockNext = jest.fn()
 
-		return displayEditor(mockReq, mockRes, mockNext)
-		.then(() => {
+		return displayEditor(mockReq, mockRes, mockNext).then(() => {
 			expect(mockNext).toBeCalledWith()
-			expect(mockRes.render).toBeCalledWith(expect.any(String), expect.objectContaining({
-				"drafts":{draft:true},
-				title: expect.any(String)
-			}))
+			expect(mockRes.render).toBeCalledWith(
+				expect.any(String),
+				expect.objectContaining({
+					drafts: { draft: true },
+					title: expect.any(String)
+				})
+			)
 		})
 	})
 
@@ -86,8 +90,7 @@ describe('editor route', () => {
 
 		// mock the launch insert
 		db.any.mockImplementationOnce((query, vars) => {
-			console.log('REPLY')
-			return Promise.resolve({draft:true})
+			return Promise.resolve({ draft: true })
 		})
 
 		mockExpress()
@@ -110,11 +113,9 @@ describe('editor route', () => {
 
 		let mockNext = jest.fn()
 
-		return displayEditor(mockReq, mockRes, mockNext)
-		.then(() => {
+		return displayEditor(mockReq, mockRes, mockNext).then(() => {
 			expect(mockNext).toBeCalledWith(expect.any(Error))
 			expect(mockNext.mock.calls[0][0].message).toBe('Login Required')
-
 		})
 	})
 
@@ -123,7 +124,7 @@ describe('editor route', () => {
 
 		// mock the launch insert
 		db.any.mockImplementationOnce((query, vars) => {
-			return Promise.resolve({draft:true})
+			return Promise.resolve({ draft: true })
 		})
 
 		mockExpress()
@@ -147,12 +148,9 @@ describe('editor route', () => {
 
 		let mockNext = jest.fn()
 
-		return displayEditor(mockReq, mockRes, mockNext)
-		.then(() => {
+		return displayEditor(mockReq, mockRes, mockNext).then(() => {
 			expect(mockNext).toBeCalledWith()
 			expect(mockRes.status).toBeCalledWith(404)
 		})
 	})
-
-
 })

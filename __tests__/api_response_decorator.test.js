@@ -1,15 +1,11 @@
 const apiFunctions = ['success', 'missing', 'badInput', 'unexpected', 'reject', 'notAuthorized']
 const functionsWithMessages = ['missing', 'badInput', 'unexpected', 'reject', 'notAuthorized']
 let mockArgs // array of mocked express middleware request arguments
-let originalError = console.error
 
 describe('api response middleware', () => {
-
 	beforeAll(() => {})
 	afterAll(() => {})
 	beforeEach(() => {
-
-		console.error = jest.fn()
 		mockArgs = (() => {
 			let res = {}
 			let req = {}
@@ -17,12 +13,12 @@ describe('api response middleware', () => {
 				return true
 			})
 			let mockStatus = jest.fn().mockImplementation(code => {
-				return {json: mockJson}
+				return { json: mockJson }
 			})
 			let mockNext = jest.fn()
 			res.status = mockStatus
 
-			let apiResponseDecorator = oboRequire('api_response_decorator');
+			let apiResponseDecorator = oboRequire('api_response_decorator')
 			apiResponseDecorator(req, res, mockNext)
 			return [res, req, mockJson, mockStatus, mockNext]
 		})()
@@ -32,11 +28,10 @@ describe('api response middleware', () => {
 		mockNext.mockClear()
 		mockStatus.mockClear()
 		mockJson.mockClear()
-		console.error = originalError
 	})
 
 	it('sets the expected properties on res', () => {
-		expect.assertions(apiFunctions.length * 2);
+		expect.assertions(apiFunctions.length * 2)
 		let [res, req, mockJson, mockStatus, mockNext] = mockArgs
 
 		apiFunctions.forEach(func => {
@@ -53,22 +48,24 @@ describe('api response middleware', () => {
 	it('functions set status codes as expected', () => {
 		let [res, req, mockJson, mockStatus, mockNext] = mockArgs
 
-		apiFunctions.forEach((prop, index) => { res[prop]() })
+		apiFunctions.forEach((prop, index) => {
+			res[prop]()
+		})
 		expect(mockStatus.mock.calls).toEqual([[200], [404], [400], [500], [403], [401]])
 	})
 
 	it('success to pass the value object', () => {
 		let [res, req, mockJson, mockStatus, mockNext] = mockArgs
 
-		const input = {test:true}
-		const expected = {status:'ok', value: {test:true}}
+		const input = { test: true }
+		const expected = { status: 'ok', value: { test: true } }
 
 		res.success(input)
 		expect(mockJson).toBeCalledWith(expected)
 	})
 
-	it('messages to be returned in the value object', () =>{
-		expect.assertions(functionsWithMessages.length * 2);
+	it('messages to be returned in the value object', () => {
+		expect.assertions(functionsWithMessages.length * 2)
 
 		let [res, req, mockJson, mockStatus, mockNext] = mockArgs
 
@@ -80,8 +77,8 @@ describe('api response middleware', () => {
 		})
 	})
 
-	it('messages to set error status in json', () =>{
-		expect.assertions(functionsWithMessages.length);
+	it('messages to set error status in json', () => {
+		expect.assertions(functionsWithMessages.length)
 
 		let [res, req, mockJson, mockStatus, mockNext] = mockArgs
 
@@ -95,8 +92,8 @@ describe('api response middleware', () => {
 	it('success Camalizes all result json', () => {
 		let [res, req, mockJson, mockStatus, mockNext] = mockArgs
 
-		const input = {top_value:{bottom_value:'leave_me_alone'}}
-		const expected = {status:'ok', value: {topValue:{bottomValue:'leave_me_alone'}}}
+		const input = { top_value: { bottom_value: 'leave_me_alone' } }
+		const expected = { status: 'ok', value: { topValue: { bottomValue: 'leave_me_alone' } } }
 
 		res.success(input)
 		expect(mockJson).toBeCalledWith(expected)
@@ -109,10 +106,12 @@ describe('api response middleware', () => {
 	})
 
 	it('functions return expected values', () => {
-		expect.assertions(apiFunctions.length);
+		expect.assertions(apiFunctions.length)
 		apiFunctions.forEach(func => {
 			let [res, req, mockJson, mockStatus, mockNext] = mockArgs
-			mockJson.mockImplementationOnce((input) => {return 'output'})
+			mockJson.mockImplementationOnce(input => {
+				return 'output'
+			})
 			expect(res[func]('input')).toBe('output')
 		})
 	})

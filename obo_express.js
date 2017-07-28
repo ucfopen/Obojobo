@@ -9,10 +9,12 @@
    * a view engine that parses .pug
 */
 
-global.oboRequire = (name) => {return require(`${__dirname}/${name}`)}
-let express = require('express');
-let app = express();
-let apiResponseDecorator = oboRequire('api_response_decorator');
+global.oboRequire = name => {
+	return require(`${__dirname}/${name}`)
+}
+let express = require('express')
+let app = express()
+let apiResponseDecorator = oboRequire('api_response_decorator')
 let loadBalancerHelperMiddleware = oboRequire('express_load_balancer_helper')
 let currentUserMiddleware = oboRequire('express_current_user')
 let ltiLaunchMiddleware = oboRequire('express_lti_launch')
@@ -21,22 +23,22 @@ let oboLtiMiddleware = oboRequire('obo_ims_lti')
 let IRIBuilderMiddleware = oboRequire('express_iri_builder')
 
 // when the parent app is mounted
-app.on('mount', (app) => {
+app.on('mount', app => {
 	// =========== MIDDLEWARE ===========
 	app.use(loadBalancerHelperMiddleware)
 	app.use(currentUserMiddleware)
 	app.use(oboLtiMiddleware)
 	app.use('/view/:draftId*', ltiLaunchMiddleware)
-	app.use('/api', apiResponseDecorator);
+	app.use('/api', apiResponseDecorator)
 	app.use(IRIBuilderMiddleware)
 
 	// =========== REGISTER OBOJOBO DRAFT CHUNKS ===========
 	registerChunks(app)
 
 	// =========== ROUTING & CONTROLERS ===========
-	app.use('/view', oboRequire('routes/viewer'));
-	app.use('/editor', oboRequire('routes/editor'));
-	app.use('/lti', oboRequire('routes/lti'));
+	app.use('/view', oboRequire('routes/viewer'))
+	app.use('/editor', oboRequire('routes/editor'))
+	app.use('/lti', oboRequire('routes/lti'))
 	app.use('/api/drafts', oboRequire('routes/api/drafts'))
 	app.use('/api/events', oboRequire('routes/api/events'))
 	app.use('/api/states', oboRequire('routes/api/states'))
