@@ -675,6 +675,107 @@
 		/***/ function(module, exports, __webpack_require__) {
 			'use strict'
 
+			Object.defineProperty(exports, '__esModule', {
+				value: true
+			})
+			var createParsedJsonPromise = function createParsedJsonPromise(promise) {
+				return new Promise(function(resolve, reject) {
+					return promise
+						.then(function(res) {
+							console.log(res)
+							return res.json()
+						})
+						.then(function(json) {
+							if (json.status === 'error') console.log(json.value)
+							return resolve(json)
+						})
+						.catch(function(error) {
+							return reject(error)
+						})
+				})
+			}
+
+			var APIUtil = {
+				get: function get(endpoint) {
+					return fetch(endpoint, {
+						method: 'GET',
+						credentials: 'include',
+						headers: {
+							Accept: 'application/json',
+							'Content-Type': 'application/json'
+						} //@TODO - Do I need this?
+					})
+				},
+				post: function post(endpoint, body) {
+					if (body == null) {
+						body = {}
+					}
+					return fetch(endpoint, {
+						method: 'POST',
+						credentials: 'include',
+						body: JSON.stringify(body),
+						headers: {
+							Accept: 'application/json',
+							'Content-Type': 'application/json'
+						}
+					})
+				},
+				postEvent: function postEvent(lo, action, payload) {
+					createParsedJsonPromise(
+						APIUtil.post('/api/events', {
+							event: {
+								action: action,
+								draft_id: lo.get('_id'),
+								actor_time: new Date().toISOString(),
+								payload: payload
+							}
+						})
+						// TODO: Send Caliper event to client host.
+					).then(function(json) {
+						console.log(json)
+					})
+				},
+				saveState: function saveState(lo, state) {
+					return APIUtil.postEvent(lo, 'saveState', state)
+				},
+				fetchDraft: function fetchDraft(id) {
+					return createParsedJsonPromise(fetch('/api/drafts/' + id))
+				},
+				getAttempts: function getAttempts(lo) {
+					return createParsedJsonPromise(APIUtil.get('/api/drafts/' + lo.get('_id') + '/attempts'))
+				},
+				startAttempt: function startAttempt(lo, assessment, questions) {
+					return createParsedJsonPromise(
+						APIUtil.post('/api/assessments/attempt/start', {
+							draftId: lo.get('_id'),
+							assessmentId: assessment.get('id'),
+							actor: 4,
+							questions: '@TODO'
+						})
+					)
+				},
+				endAttempt: function endAttempt(attempt) {
+					return createParsedJsonPromise(
+						APIUtil.post('/api/assessments/attempt/' + attempt.attemptId + '/end')
+					)
+				}
+			}
+
+			// recordQuestionResponse: (attempt, question, response) ->
+			// 	console.clear()
+			// 	console.log arguments
+			// 	createParsedJsonPromise APIUtil.post "/api/assessments/attempt/#{attempt.id}/question/#{question.get('id')}", {
+			// 		response: response
+			// 	}
+
+			exports.default = APIUtil
+
+			/***/
+		},
+		/* 4 */
+		/***/ function(module, exports, __webpack_require__) {
+			'use strict'
+
 			// shim for using process in browser
 			var process = (module.exports = {})
 
@@ -863,109 +964,6 @@
 
 			/***/
 		},
-		/* 4 */
-		/***/ function(module, exports, __webpack_require__) {
-			'use strict'
-
-			Object.defineProperty(exports, '__esModule', {
-				value: true
-			})
-			var createParsedJsonPromise = function createParsedJsonPromise(promise) {
-				var jsonPromise = new Promise(function(resolve, reject) {
-					return promise
-						.then(function(res) {
-							return res.json()
-						})
-						.then(function(json) {
-							//@TODO - Only do on dev???
-							if (json.status === 'error') {
-								console.error(json.value)
-							}
-							return resolve(json)
-						})
-						.catch(function(error) {
-							return reject(error)
-						})
-				})
-
-				return jsonPromise
-			}
-
-			var APIUtil = {
-				get: function get(endpoint) {
-					return fetch(endpoint, {
-						method: 'GET',
-						credentials: 'include',
-						headers: {
-							Accept: 'application/json',
-							'Content-Type': 'application/json'
-						} //@TODO - Do I need this?
-					})
-				},
-				post: function post(endpoint, body) {
-					if (body == null) {
-						body = {}
-					}
-					return fetch(endpoint, {
-						method: 'POST',
-						credentials: 'include',
-						body: JSON.stringify(body),
-						headers: {
-							Accept: 'application/json',
-							'Content-Type': 'application/json'
-						}
-					})
-				},
-				postEvent: function postEvent(lo, eventAction, eventPayload) {
-					return createParsedJsonPromise(
-						APIUtil.post('/api/events', {
-							event: {
-								action: eventAction,
-								draft_id: lo.get('_id'),
-								// draft_rev: lo.get('_rev')
-								actor_time: new Date().toISOString(),
-								payload: eventPayload
-							}
-						})
-					)
-				},
-				saveState: function saveState(lo, state) {
-					return APIUtil.postEvent(lo, 'saveState', state)
-				},
-				fetchDraft: function fetchDraft(id) {
-					return createParsedJsonPromise(fetch('/api/drafts/' + id))
-				},
-				getAttempts: function getAttempts(lo) {
-					return createParsedJsonPromise(APIUtil.get('/api/drafts/' + lo.get('_id') + '/attempts'))
-				},
-				startAttempt: function startAttempt(lo, assessment, questions) {
-					return createParsedJsonPromise(
-						APIUtil.post('/api/assessments/attempt/start', {
-							draftId: lo.get('_id'),
-							assessmentId: assessment.get('id'),
-							actor: 4,
-							questions: '@TODO'
-						})
-					)
-				},
-				endAttempt: function endAttempt(attempt) {
-					return createParsedJsonPromise(
-						APIUtil.post('/api/assessments/attempt/' + attempt.attemptId + '/end')
-					)
-				}
-			}
-
-			// recordQuestionResponse: (attempt, question, response) ->
-			// 	console.clear()
-			// 	console.log arguments
-			// 	createParsedJsonPromise APIUtil.post "/api/assessments/attempt/#{attempt.id}/question/#{question.get('id')}", {
-			// 		response: response
-			// 	}
-
-			exports.default = APIUtil
-
-			/***/
-		},
 		/* 5 */
 		/***/ function(module, exports, __webpack_require__) {
 			'use strict'
@@ -1104,7 +1102,7 @@
 
 				module.exports = invariant
 				/* WEBPACK VAR INJECTION */
-			}.call(exports, __webpack_require__(3)))
+			}.call(exports, __webpack_require__(4)))
 
 			/***/
 		},
@@ -1159,7 +1157,7 @@
 
 			var _navUtil2 = _interopRequireDefault(_navUtil)
 
-			var _apiUtil = __webpack_require__(4)
+			var _apiUtil = __webpack_require__(3)
 
 			var _apiUtil2 = _interopRequireDefault(_apiUtil)
 
@@ -1756,7 +1754,7 @@
 
 				module.exports = warning
 				/* WEBPACK VAR INJECTION */
-			}.call(exports, __webpack_require__(3)))
+			}.call(exports, __webpack_require__(4)))
 
 			/***/
 		},
@@ -1915,7 +1913,7 @@
 
 			var _questionUtil2 = _interopRequireDefault(_questionUtil)
 
-			var _apiUtil = __webpack_require__(4)
+			var _apiUtil = __webpack_require__(3)
 
 			var _apiUtil2 = _interopRequireDefault(_apiUtil)
 
@@ -2357,7 +2355,7 @@
 
 			var _Common2 = _interopRequireDefault(_Common)
 
-			var _apiUtil = __webpack_require__(4)
+			var _apiUtil = __webpack_require__(3)
 
 			var _apiUtil2 = _interopRequireDefault(_apiUtil)
 
@@ -2556,7 +2554,7 @@
 
 			var _Common2 = _interopRequireDefault(_Common)
 
-			var _apiUtil = __webpack_require__(4)
+			var _apiUtil = __webpack_require__(3)
 
 			var _apiUtil2 = _interopRequireDefault(_apiUtil)
 
@@ -4443,7 +4441,7 @@
 
 				module.exports = checkPropTypes
 				/* WEBPACK VAR INJECTION */
-			}.call(exports, __webpack_require__(3)))
+			}.call(exports, __webpack_require__(4)))
 
 			/***/
 		},
@@ -5193,7 +5191,7 @@
 					return ReactPropTypes
 				}
 				/* WEBPACK VAR INJECTION */
-			}.call(exports, __webpack_require__(3)))
+			}.call(exports, __webpack_require__(4)))
 
 			/***/
 		},
@@ -5246,7 +5244,7 @@
 					module.exports = __webpack_require__(37)()
 				}
 				/* WEBPACK VAR INJECTION */
-			}.call(exports, __webpack_require__(3)))
+			}.call(exports, __webpack_require__(4)))
 
 			/***/
 		},
@@ -6102,6 +6100,10 @@
 
 			var _navUtil2 = _interopRequireDefault(_navUtil)
 
+			var _apiUtil = __webpack_require__(3)
+
+			var _apiUtil2 = _interopRequireDefault(_apiUtil)
+
 			var _logo = __webpack_require__(14)
 
 			var _logo2 = _interopRequireDefault(_logo)
@@ -6417,6 +6419,7 @@
 						value: function onIdle() {
 							// TODO: Future onIdle event callback from IdleTimer
 							// console.log("User now idle.")
+							_apiUtil2.default.postEvent(this.state.model, 'viewer:idle', {})
 						}
 					},
 					{
@@ -6424,6 +6427,7 @@
 						value: function onReturnFromIdle() {
 							// TODO: Future onReturnFromIdle event callback from IdleTimer
 							// console.log("User has returned from idle state.")
+							_apiUtil2.default.postEvent(this.state.model, 'viewer:returnFromIdle', {})
 						}
 					},
 					{
@@ -6639,7 +6643,7 @@
 
 			var _scoreUtil2 = _interopRequireDefault(_scoreUtil)
 
-			var _apiUtil = __webpack_require__(4)
+			var _apiUtil = __webpack_require__(3)
 
 			var _apiUtil2 = _interopRequireDefault(_apiUtil)
 

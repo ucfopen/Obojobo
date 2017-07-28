@@ -1,18 +1,16 @@
-let createParsedJsonPromise = function(promise) {
-	let jsonPromise = new Promise(function(resolve, reject) {
+const createParsedJsonPromise = promise => {
+	return new Promise((resolve, reject) => {
 		return promise
-			.then(res => res.json())
+			.then(res => {
+				console.log(res)
+				return res.json()
+			})
 			.then(json => {
-				//@TODO - Only do on dev???
-				if (json.status === 'error') {
-					console.error(json.value)
-				}
+				if (json.status === 'error') console.log(json.value)
 				return resolve(json)
 			})
 			.catch(error => reject(error))
 	})
-
-	return jsonPromise
 }
 
 var APIUtil = {
@@ -42,18 +40,20 @@ var APIUtil = {
 		})
 	},
 
-	postEvent(lo, eventAction, eventPayload) {
-		return createParsedJsonPromise(
+	postEvent(lo, action, payload) {
+		createParsedJsonPromise(
 			APIUtil.post('/api/events', {
 				event: {
-					action: eventAction,
+					action,
 					draft_id: lo.get('_id'),
-					// draft_rev: lo.get('_rev')
 					actor_time: new Date().toISOString(),
-					payload: eventPayload
+					payload
 				}
 			})
-		)
+			// TODO: Send Caliper event to client host.
+		).then(json => {
+			console.log(json)
+		})
 	},
 
 	saveState(lo, state) {
