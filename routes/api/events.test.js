@@ -115,6 +115,7 @@ describe('api draft events route', () => {
 		})
 		.catch(err => {
 			expect(err).toBe('never called')
+			console.error(err)
 		})
 	})
 
