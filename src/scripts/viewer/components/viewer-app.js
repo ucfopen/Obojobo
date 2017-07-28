@@ -301,12 +301,12 @@ export default class ViewerApp extends React.Component {
 					className={`viewer--viewer-app${this.isPreviewing
 						? ' is-previewing'
 						: ' is-not-previewing'}${this.state.navState.locked
-							? ' is-locked-nav'
-							: ' is-unlocked-nav'}${this.state.navState.open
-								? ' is-open-nav'
-								: ' is-closed-nav'}${this.state.navState.disabled
-									? ' is-disabled-nav'
-									: ' is-enabled-nav'} is-focus-state-${this.state.focusState.viewState}`}
+						? ' is-locked-nav'
+						: ' is-unlocked-nav'}${this.state.navState.open
+						? ' is-open-nav'
+						: ' is-closed-nav'}${this.state.navState.disabled
+						? ' is-disabled-nav'
+						: ' is-enabled-nav'} is-focus-state-${this.state.focusState.viewState}`}
 				>
 					<header>
 						<div className="pad">
@@ -325,25 +325,25 @@ export default class ViewerApp extends React.Component {
 					{nextEl}
 					{this.isPreviewing
 						? <div className="preview-banner">
-							<span>You are previewing this object - Assessments will not be counted</span>
-							<div className="controls">
-								<button
-									onClick={this.unlockNavigation.bind(this)}
-									disabled={!this.state.navState.locked}
-								>
-									Unlock navigation
+								<span>You are previewing this object - Assessments will not be counted</span>
+								<div className="controls">
+									<button
+										onClick={this.unlockNavigation.bind(this)}
+										disabled={!this.state.navState.locked}
+									>
+										Unlock navigation
 									</button>
-								<button onClick={this.resetAssessments.bind(this)}>
-									Reset assessments &amp; questions
+									<button onClick={this.resetAssessments.bind(this)}>
+										Reset assessments &amp; questions
 									</button>
+								</div>
 							</div>
-						</div>
 						: null}
 					<FocusBlocker moduleData={this.state} />
 					{modal
 						? <ModalContainer>
-							{modal}
-						</ModalContainer>
+								{modal}
+							</ModalContainer>
 						: null}
 				</div>
 			</IdleTimer>
