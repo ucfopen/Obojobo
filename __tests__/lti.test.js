@@ -1,5 +1,4 @@
 let lti
-let originalConsole = console
 let mockLTIEvent = {
 	id: 2,
 	lti_key: 'testkey',
@@ -10,36 +9,27 @@ let mockLTIEvent = {
 }
 
 describe('lti', () => {
-
 	beforeAll(() => {
+		global.console = { warn: jest.fn(), log: jest.fn(), error: jest.fn() }
 
-		global.console = {warn: jest.fn(), log: jest.fn(), error: jest.fn()}
-
-		jest.mock('../db');
+		jest.mock('../db')
 		jest.mock('ims-lti/lib/extensions/outcomes')
+		jest.mock('../logger')
 
 		let fs = require('fs')
-		fs.__setMockFileContents('./config/lti.json', '{"test":{"keys":{"testkey":"testsecret"}}}');
+		fs.__setMockFileContents('./config/lti.json', '{"test":{"keys":{"testkey":"testsecret"}}}')
 
 		lti = oboRequire('lti')
-	});
+	})
 
-	afterAll(() => {
-		global.console = originalConsole
+	afterAll(() => {})
 
-	});
-
-	beforeEach(() => {
-		console.log.mockClear()
-		console.warn.mockClear()
-		console.error.mockClear()
-	});
+	beforeEach(() => {})
 
 	afterEach(() => {
 		let outcomes = require('ims-lti/lib/extensions/outcomes')
 		outcomes.__resetCallbackForSend_replace_result()
-	});
-
+	})
 
 	it('should find the appropriate secret for a given key', () => {
 		let secret = lti.findSecretForKey('testkey')
@@ -53,21 +43,24 @@ describe('lti', () => {
 	})
 
 	it('should fail to replace result when the lti data couldnt be found', () => {
-		expect.assertions(2);
+		expect.assertions(2)
 
 		let db = oboRequire('db')
-		// mock the query to get lti data
-		db.one.mockImplementationOnce((query, vars) => {return Promise.reject()})
+		let logger = oboRequire('logger')
 
-		return lti.replaceResult(1, 2, 1)
-		.then((result) => {
-			expect(console.log).toBeCalledWith('No Relevent LTI Request found for user 1, on 2')
+		// mock the query to get lti data
+		db.one.mockImplementationOnce((query, vars) => {
+			return Promise.reject()
+		})
+
+		return lti.replaceResult(1, 2, 1).then(result => {
+			expect(logger.info).toBeCalledWith('No Relevent LTI Request found for user 1, on 2')
 			expect(result).toBe(false)
 		})
 	})
 
 	it('should send correct score to the outcome service', () => {
-		expect.assertions(1);
+		expect.assertions(1)
 
 		// bypass all the internals of outcomes, just returns true for success
 		let outcomes = require('ims-lti/lib/extensions/outcomes')
@@ -77,22 +70,27 @@ describe('lti', () => {
 		})
 		outcomes.__registerCallbackForSend_replace_result(send_replace_resultMock)
 
-
 		let db = oboRequire('db')
-		db.one.mockImplementationOnce(() => {return Promise.resolve(mockLTIEvent)}) // mock the query to get lti data
-		db.one.mockImplementationOnce(() => {return Promise.resolve(null)}) // mock insert event
+		db.one.mockImplementationOnce(() => {
+			return Promise.resolve(mockLTIEvent)
+		}) // mock the query to get lti data
+		db.one.mockImplementationOnce(() => {
+			return Promise.resolve(null)
+		}) // mock insert event
 
 		return lti.replaceResult(1, 2, 0.85)
 	})
 
 	it('should insert an event on success', () => {
-		expect.assertions(13);
+		expect.assertions(13)
 
 		// bypass all the internals of outcomes, just returns true for success
 		let outcomes = require('ims-lti/lib/extensions/outcomes')
 		let db = oboRequire('db')
 		// mock the query to get lti data
-		db.one.mockImplementationOnce(() => {return Promise.resolve(mockLTIEvent)})
+		db.one.mockImplementationOnce(() => {
+			return Promise.resolve(mockLTIEvent)
+		})
 
 		// mock the query to insert an event
 		db.one.mockImplementationOnce((query, insertObject) => {
@@ -118,7 +116,7 @@ describe('lti', () => {
 	})
 
 	it('should insert an event on failure', () => {
-		expect.assertions(7);
+		expect.assertions(7)
 
 		// bypass all the internals of outcomes, just returns true for success
 		let outcomes = require('ims-lti/lib/extensions/outcomes')
@@ -127,10 +125,13 @@ describe('lti', () => {
 		})
 		outcomes.__registerCallbackForSend_replace_result(send_replace_resultMock)
 
-
 		let db = oboRequire('db')
+		let logger = oboRequire('logger')
+
 		// mock the query to get lti data
-		db.one.mockImplementationOnce(() => {return Promise.resolve(mockLTIEvent)})
+		db.one.mockImplementationOnce(() => {
+			return Promise.resolve(mockLTIEvent)
+		})
 		// mock the query to insert an event
 		db.one.mockImplementationOnce((query, insertObject) => {
 			expect(insertObject.payload.result).toBeUndefined()
@@ -140,12 +141,12 @@ describe('lti', () => {
 			return Promise.resolve(null)
 		})
 
-		return lti.replaceResult(1, 2, 0.99)
-		.catch(err => {
+		return lti.replaceResult(1, 2, 0.99).catch(err => {
 			expect(err).toBeInstanceOf(Error)
-			expect(console.log).toBeCalledWith('SETTING LTI OUTCOME SCORE SET to 0.99 for user: 1 on sourcedid: test-sourcedid using key: testkey')
-			expect(console.log).toBeCalledWith('replaceResult error!', 'SOME_ERROR')
+			expect(logger.info).toBeCalledWith(
+				'SETTING LTI OUTCOME SCORE SET to 0.99 for user: 1 on sourcedid: test-sourcedid using key: testkey'
+			)
+			expect(logger.error).toBeCalledWith('replaceResult error!', 'SOME_ERROR')
 		})
 	})
-
 })

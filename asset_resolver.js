@@ -24,17 +24,17 @@ let path = require('path')
 const patternRegex = new RegExp(/\$\[(([^\|]+)\|)?(.+?)\]/)
 const assetForEnv = (assetPath, forceEnvTo = null) => {
 	let result
-	switch(getEnv(forceEnvTo)){
+	switch (getEnv(forceEnvTo)) {
 		case 'test':
 		case 'dev':
 		case 'development':
 			result = assetPath.replace(patternRegex, '$2')
-			break;
+			break
 
 		case 'prod':
 		case 'production':
 			result = assetPath.replace(patternRegex, '$3')
-			break;
+			break
 	}
 
 	return result

@@ -1,7 +1,9 @@
 describe('models draft', () => {
 	jest.mock('../../db')
+	jest.mock('../../logger')
+
 	let mockRawDraft = {
-		id:'whatever',
+		id: 'whatever',
 		version: 9,
 		draft_created_at: new Date().toISOString(),
 		content_created_at: new Date().toISOString(),
@@ -9,37 +11,31 @@ describe('models draft', () => {
 			id: 666,
 			stuff: true,
 			type: 'DraftNode',
-			content: {nothing:true},
+			content: { nothing: true },
 			children: [
 				{
 					id: 999,
 					type: 'DraftNode',
-					content: {otherStuff:true},
+					content: { otherStuff: true }
 				},
 				{
 					id: 222,
 					type: 'Some.Node.Type',
-					content: {yes:'no'}
+					content: { yes: 'no' }
 				}
 			]
 		}
 	}
 
-	let originalConsole = global.console
-
 	beforeAll(() => {})
 	afterAll(() => {})
-	beforeEach(() => {
-		global.console = {warn: jest.fn(), log: jest.fn(), error: jest.fn()}
-	});
-	afterEach(() => {
-		global.console = originalConsole
-	});
+	beforeEach(() => {})
+	afterEach(() => {})
 
 	it('initializes expected properties', () => {
 		let Draft = oboRequire('models/draft')
 		let DraftNode = oboRequire('models/draft_node')
-		let d = new Draft({});
+		let d = new Draft({})
 		expect(d.nodesById).toBeInstanceOf(Map)
 		expect(d.nodesByType).toBeInstanceOf(Map)
 		expect(d.root).toBeInstanceOf(DraftNode)
@@ -55,8 +51,7 @@ describe('models draft', () => {
 			return Promise.resolve(mockRawDraft)
 		})
 
-		return Draft.fetchById('whatever')
-		.then(model => {
+		return Draft.fetchById('whatever').then(model => {
 			expect(model).toBeInstanceOf(Draft)
 			expect(model.root).toBeInstanceOf(DraftNode)
 			expect(model.nodesById.size).toBe(3)
@@ -76,13 +71,13 @@ describe('models draft', () => {
 		})
 
 		return Draft.fetchById('whatever')
-		.then(model => {
-			expect(true).toBe('this should never be called')
-		})
-		.catch(err => {
-			expect(err).toBeInstanceOf(Error)
-			expect(err.message).toBe('not found in db')
-		})
+			.then(model => {
+				expect(true).toBe('this should never be called')
+			})
+			.catch(err => {
+				expect(err).toBeInstanceOf(Error)
+				expect(err.message).toBe('not found in db')
+			})
 	})
 
 	it('responds to get document', () => {
@@ -95,14 +90,15 @@ describe('models draft', () => {
 			return Promise.resolve(mockRawDraft)
 		})
 
-		return Draft.fetchById('whatever')
-		.then(model => {
-			expect(model.document).toEqual(expect.objectContaining({
-				children: expect.any(Array),
-				id: 666,
-				type: "DraftNode",
-				stuff: true
-			}))
+		return Draft.fetchById('whatever').then(model => {
+			expect(model.document).toEqual(
+				expect.objectContaining({
+					children: expect.any(Array),
+					id: 666,
+					type: 'DraftNode',
+					stuff: true
+				})
+			)
 		})
 	})
 
@@ -116,12 +112,11 @@ describe('models draft', () => {
 			return Promise.resolve(mockRawDraft)
 		})
 
-		return Draft.fetchById('whatever')
-		.then(model => {
+		return Draft.fetchById('whatever').then(model => {
 			expect(model.getChildNodeById(666)).toBeInstanceOf(DraftNode)
 			expect(model.getChildNodeById(666).node.id).toBe(666)
 			expect(model.getChildNodeById(666).node.stuff).toBe(true)
-			expect(model.getChildNodeById(666).node.type).toBe("DraftNode")
+			expect(model.getChildNodeById(666).node.type).toBe('DraftNode')
 		})
 	})
 
@@ -135,8 +130,7 @@ describe('models draft', () => {
 			return Promise.resolve(mockRawDraft)
 		})
 
-		return Draft.fetchById('whatever')
-		.then(model => {
+		return Draft.fetchById('whatever').then(model => {
 			expect(model.getChildNodesByType('DraftNode')).toBeInstanceOf(Array)
 			expect(model.getChildNodesByType('DraftNode')).toHaveLength(2)
 			expect(model.getChildNodesByType('DraftNode')[0]).toBeInstanceOf(DraftNode)
@@ -161,16 +155,15 @@ describe('models draft', () => {
 		})
 
 		return Draft.fetchById('whatever')
-		.then(model => {
-			childNode = model.getChildNodesByType('DraftNode')[0]
-			childNode.yell = jest.fn().mockImplementationOnce((event) => {
-				return [Promise.resolve()]
+			.then(model => {
+				childNode = model.getChildNodesByType('DraftNode')[0]
+				childNode.yell = jest.fn().mockImplementationOnce(event => {
+					return [Promise.resolve()]
+				})
+				return model.yell()
 			})
-			return model.yell()
-		})
-		.then(model => {
-			expect(childNode.yell).toHaveBeenCalledTimes(1)
-		})
+			.then(model => {
+				expect(childNode.yell).toHaveBeenCalledTimes(1)
+			})
 	})
-
 })

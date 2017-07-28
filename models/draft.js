@@ -1,5 +1,6 @@
-let db = oboRequire('db');
+let db = oboRequire('db')
 let draftNodeStore = oboRequire('draft_node_store')
+let logger = require('../logger.js')
 
 class Draft {
 	constructor(rawDraft) {
@@ -9,13 +10,12 @@ class Draft {
 	}
 
 	yell() {
-		return Promise.all(this.root.yell.apply(this.root, arguments))
-		.then(() => {
+		return Promise.all(this.root.yell.apply(this.root, arguments)).then(() => {
 			return this
 		})
 	}
 
-	processRawNode(rawNode){
+	processRawNode(rawNode) {
 		let initFn = () => {}
 
 		let draftClass = draftNodeStore.get(rawNode.type)
@@ -27,11 +27,11 @@ class Draft {
 		this.nodesById.set(draftNode.node.id, draftNode)
 
 		let nodesByType = this.nodesByType.get(rawNode.type)
-		if(!nodesByType) nodesByType = []
+		if (!nodesByType) nodesByType = []
 		nodesByType.push(draftNode)
 		this.nodesByType.set(rawNode.type, nodesByType)
 
-		for(let i in rawNode.children){
+		for (let i in rawNode.children) {
 			let childNode = this.processRawNode(rawNode.children[i])
 			draftNode.children.push(childNode)
 		}
@@ -40,7 +40,9 @@ class Draft {
 	}
 
 	static fetchById(id) {
-		return db.one(`
+		return db
+			.one(
+				`
 			SELECT
 				drafts.id AS id,
 				drafts_content.id AS version,
@@ -54,19 +56,21 @@ class Draft {
 				AND deleted = FALSE
 			ORDER BY version DESC
 			LIMIT 1
-			`, { id:id })
-		.then( result => {
-			result.content._id = result.id
-			result.content._rev = result.revision
-			return new Draft(result.content)
-		})
-		.catch( error => {
-			console.log('fetchById Error', error.message)
-			return Promise.reject(error)
-		})
+			`,
+				{ id: id }
+			)
+			.then(result => {
+				result.content._id = result.id
+				result.content._rev = result.revision
+				return new Draft(result.content)
+			})
+			.catch(error => {
+				logger.error('fetchById Error', error.message)
+				return Promise.reject(error)
+			})
 	}
 
-	get document(){
+	get document() {
 		return this.root.toObject()
 	}
 
@@ -77,7 +81,6 @@ class Draft {
 	getChildNodesByType(type) {
 		return this.nodesByType.get(type)
 	}
-
 }
 
 module.exports = Draft
