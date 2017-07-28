@@ -4,7 +4,6 @@ var oboEvents = oboRequire('obo_events')
 var insertEvent = oboRequire('insert_event')
 var createCaliperEventFromReq = require('./events/create_caliper_event_from_req')
 
-
 router.post('/', (req, res, next) => {
 	return req.requireCurrentUser()
 	.then(currentUser => {
@@ -30,7 +29,7 @@ router.post('/', (req, res, next) => {
 		.then(result => {
 			insertObject.createdAt = result.created_at;
 			oboEvents.emit(`client:${event.action}`, insertObject, req);
-			res.success({ createdAt:result.created_at });
+			res.success(caliperEvent);
 			return next();
 		})
 		.catch(err => {
@@ -45,7 +44,6 @@ router.post('/', (req, res, next) => {
 		next();
 		return Promise.reject(err)
 	})
-
 })
 
 module.exports = router;
