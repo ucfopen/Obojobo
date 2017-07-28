@@ -2,7 +2,7 @@ var express = require('express');
 var router = express.Router();
 var oboEvents = oboRequire('obo_events')
 var insertEvent = oboRequire('insert_event')
-var getCaliperEventFromReq = require('./events/get_caliper_event_from_req')
+var createCaliperEventFromReq = require('./events/create_caliper_event_from_req')
 
 
 router.post('/', (req, res, next) => {
@@ -13,7 +13,7 @@ router.post('/', (req, res, next) => {
 		// add data to the event
 		let event = req.body.event
 
-		let caliperEvent = getCaliperEventFromReq(req, currentUser)
+		let caliperEvent = createCaliperEventFromReq(req, currentUser)
 
 		let insertObject = {
 			actorTime: event.actor_time,
