@@ -1,5 +1,5 @@
 describe('models draft', () => {
-	jest.mock('../db')
+	jest.mock('../../db')
 	let mockRawDraft = {
 		id:'whatever',
 		version: 9,

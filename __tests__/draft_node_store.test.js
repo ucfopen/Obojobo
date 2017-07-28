@@ -3,7 +3,7 @@ jest.mock('test_node');
 let DraftNode = global.oboRequire('models/draft_node')
 let TestNode = require('test_node')
 
-let draft_node_store = require('./draft_node_store');
+let draft_node_store = oboRequire('draft_node_store');
 
 describe('draft_node_store', () => {
 

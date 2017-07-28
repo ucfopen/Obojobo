@@ -1,8 +1,8 @@
 jest.mock('fs')
 let fs = require('fs')
-fs.__setMockFileContents('./config/draft.json', '{"test":{"paths":["./test_draft_path/"]}}');
-fs.__setMockFileContents('./test_draft_path/', '{}');
-let oboPath = require('./obo_path')
+fs.__setMockFileContents('./config/draft.json', '{"test":{"paths":["./__tests__/test_draft_path/"]}}');
+fs.__setMockFileContents('./__tests__/test_draft_path/', '{}');
+let oboPath = oboRequire('obo_path')
 
 describe('obo path', () => {
 
@@ -18,7 +18,7 @@ describe('obo path', () => {
 	})
 
 	it('getDraftPath returns the path when there is a match', () => {
-		expect(oboPath.getDraftPath('./test_draft_path/')).toBe('./test_draft_path/')
+		expect(oboPath.getDraftPath('./test_draft_path/')).toBe('./__tests__/test_draft_path/')
 	})
 
 })

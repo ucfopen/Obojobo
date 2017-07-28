@@ -1,4 +1,4 @@
-let db = require('./db')
+let db = oboRequire('db')
 
 module.exports = (insertObject) => {
 	//@TODO - Delete me when every call to this method includes a caliperPayload

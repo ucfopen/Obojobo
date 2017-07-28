@@ -6,7 +6,7 @@ mockVirtual('./express_lti_launch')
 mockVirtual('./express_register_chunks')
 mockVirtual('./lti')
 mockVirtual('express-ims-lti')
-jest.mock('./db')
+jest.mock('db')
 
 let mockOn = jest.fn().mockImplementation((event, func) => {})
 let mockOnCallback
@@ -37,7 +37,7 @@ describe('obo express', () => {
 		// call this beforeAll because it only happens once on require
 		// and the tests are run in random order
 		mockExpress(mockOn)
-		let oe = require('./obo_express')
+		let oe = oboRequire('obo_express')
 		mockOnCallback = mockOn.mock.calls[0][1]
 	})
 	afterAll(() => {})
@@ -49,9 +49,9 @@ describe('obo express', () => {
 	})
 
 	it('implements expected middleware on parent app', () => {
-		let oe = require('./obo_express')
+		let oe = oboRequire('obo_express')
 		let mockApp = require('express')()
-		let registerChunks = require('./express_register_chunks')
+		let registerChunks = oboRequire('express_register_chunks')
 		mockOnCallback(mockApp)
 
 		expect(mockApp.on).toHaveBeenCalledWith('mount', expect.any(Function))
@@ -64,7 +64,7 @@ describe('obo express', () => {
 
 	it('returns an express application', () => {
 		mockExpress()
-		let oe = require('./obo_express')
+		let oe = oboRequire('obo_express')
 
 		expect(oe).toEqual(expect.objectContaining({
 			on: expect.any(Function),
