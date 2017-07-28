@@ -2,13 +2,13 @@ let fs = require('fs')
 let configuration = {}
 let env = 'development'
 
-if(process.env.NODE_ENV){
+if (process.env.NODE_ENV) {
 	env = process.env.NODE_ENV
 }
 
 let getConfigFileData = (configFile, type = null) => {
 	let json = JSON.parse(fs.readFileSync(configFile))
-	return (type ? json[type] : json)
+	return type ? json[type] : json
 }
 
 let addToConfig = function(configFile, type, propertyName) {
@@ -24,7 +24,7 @@ configuration.db = {
 	database: db.database,
 	user: db.user,
 	password: db.password
-};
+}
 
 addToConfig('./config/lti.json', env, 'lti')
 addToConfig('./config/permission_groups.json', env, 'permissions')
