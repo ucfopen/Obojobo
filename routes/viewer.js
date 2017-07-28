@@ -3,6 +3,7 @@ var router = express.Router();
 var OboGlobals = oboRequire('obo_globals')
 let DraftModel = oboRequire('models/draft')
 let assetForEnv = oboRequire('asset_resolver').assetForEnv
+let logger = oboRequire('logger')
 
 router.all('/example', (req, res, next) => {
 	if(req.app.get('env') === 'development'){
@@ -57,7 +58,7 @@ router.all('/:draftId*', (req, res, next) => {
 		next()
 	})
 	.catch(error => {
-		console.log(error)
+		logger.error(error)
 		next(error)
 		return Promise.reject(error)
 	})

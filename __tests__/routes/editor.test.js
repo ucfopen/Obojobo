@@ -86,7 +86,6 @@ describe('editor route', () => {
 
 		// mock the launch insert
 		db.any.mockImplementationOnce((query, vars) => {
-			console.log('REPLY')
 			return Promise.resolve({draft:true})
 		})
 

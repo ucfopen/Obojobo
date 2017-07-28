@@ -1,6 +1,7 @@
 jest.mock('../../../models/draft')
 jest.mock('../../../models/user')
 jest.mock('../../../db')
+jest.mock('../../../logger')
 
 let mockExpressMethods = {}
 let mockRouterMethods = {}
@@ -290,7 +291,6 @@ describe('api draft route', () => {
 			expect(true).toBe('never called')
 		})
 		.catch(err => {
-			console.log(err)
 			expect(mockRes.unexpected).toBeCalledWith('Insufficent permissions')
 			expect(mockNext).toBeCalledWith('Insufficent permissions')
 
@@ -322,7 +322,6 @@ describe('api draft route', () => {
 			expect(true).toBe('never called')
 		})
 		.catch(err => {
-			console.log(err)
 			expect(mockRes.unexpected).toBeCalledWith('error1')
 			expect(mockNext).toBeCalledWith('error1')
 		})
@@ -352,7 +351,6 @@ describe('api draft route', () => {
 			expect(true).toBe('never called')
 		})
 		.catch(err => {
-			console.log(err)
 			expect(mockRes.unexpected).toBeCalledWith('error1')
 			expect(mockNext).toBeCalledWith('error1')
 		})
@@ -386,7 +384,6 @@ describe('api draft route', () => {
 			expect(true).toBe('never called')
 		})
 		.catch(err => {
-			console.log(err)
 			expect(mockRes.unexpected).toBeCalledWith('Insufficent permissions')
 			expect(mockNext).toBeCalledWith('Insufficent permissions')
 		})
@@ -452,7 +449,6 @@ describe('api draft route', () => {
 			expect(true).toBe('never called')
 		})
 		.catch(err => {
-			console.log(err)
 			expect(mockRes.unexpected).toBeCalledWith('error1')
 			expect(mockNext).toBeCalledWith('error1')
 		})
@@ -484,7 +480,6 @@ describe('api draft route', () => {
 			expect(true).toBe('never called')
 		})
 		.catch(err => {
-			console.log(err)
 			expect(mockRes.unexpected).toBeCalledWith('Insufficent permissions')
 			expect(mockNext).toBeCalledWith('Insufficent permissions')
 		})

@@ -1,5 +1,6 @@
 let User = oboRequire('models/user')
 let GuestUser = oboRequire('models/guest_user')
+let logger = oboRequire('logger')
 
 let setCurrentUser = (req, user) => {
 	if( ! (user instanceof User)) throw new Error('Invalid User for Current user')
@@ -12,7 +13,7 @@ let getCurrentUser = (req, isRequired = false) => {
 
 	if( ! req.session || ! req.session.currentUserId ){
 		if(isRequired){
-			console.warn('No Session or Current User?', req.session instanceof Object, req.session.currentUserId)
+			logger.warn('No Session or Current User?', req.session instanceof Object, req.session.currentUserId)
 			return Promise.reject(new Error('Login Required'))
 		}
 		return Promise.resolve(new GuestUser());
@@ -24,7 +25,7 @@ let getCurrentUser = (req, isRequired = false) => {
 		return user
 	})
 	.catch(err => {
-		console.warn('getCurrentUser', err)
+		logger.warn('getCurrentUser', err)
 		if(isRequired) return Promise.reject(new Error('Login Required'))
 		return Promise.resolve(new GuestUser());
 	})
@@ -37,7 +38,7 @@ let requireCurrentUser = (req) => {
 		return user
 	})
 	.catch(err => {
-		console.warn('requireCurrentUser', err)
+		logger.warn('requireCurrentUser', err)
 		throw new Error('Login Required')
 	})
 }

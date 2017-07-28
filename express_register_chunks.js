@@ -4,6 +4,7 @@ let express = require('express')
 let draftNodeStore = oboRequire('draft_node_store')
 let assetForEnv = oboRequire('asset_resolver').assetForEnv
 const getInstalledModules = require('./obo_get_installed_modules')
+let logger = oboRequire('logger')
 
 module.exports = (app) => {
 	let isProd = app.get('env') === 'production'
@@ -17,7 +18,7 @@ module.exports = (app) => {
 
 	// =========== REGISTER CUSTOM EXPRESS MIDDLEWARE ===========
 	modules.express.forEach(expressFile => {
-		console.log('Registering express App', expressFile)
+		logger.info('Registering express App', expressFile)
 		app.use(require(expressFile));
 	})
 

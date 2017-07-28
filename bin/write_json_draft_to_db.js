@@ -1,6 +1,7 @@
 #!/usr/bin/env node
 global.oboRequire = (name) => {return require(`${__dirname}/../${name}`)}
 let fs = require('fs')
+let logger = oboRequire('logger')
 
 let usageError = new Error(`Usage:
 	node write_json_draft_to_db.js insert file.json [user_id] [draft_id]
@@ -37,12 +38,12 @@ try{
 				)
 			})
 			.then(()=>{
-				console.log('OK');
+				logger.debug('OK');
 				process.exit()
 				return
 			})
 			.catch(err => {
-				console.error(err.message)
+				logger.error(err.message)
 				process.exit(1)
 				return
 			})
@@ -53,12 +54,12 @@ try{
 
 			updateDraft(draftId, json)
 			.then(id => {
-				console.log('OK. id=' + id)
+				logger.debug('OK. id=' + id)
 				process.exit()
 				return
 			})
 			.catch(err => {
-				console.error(err.message)
+				logger.error(err.message)
 				process.exit(1)
 				return
 			})
@@ -70,7 +71,7 @@ try{
 	}
 }
 catch(e){
-	console.log('erroror')
-	console.error(e.message);
+	logger.error('erroror')
+	logger.error(e.message);
 	process.exit(1);
 }

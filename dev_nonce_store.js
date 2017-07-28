@@ -1,4 +1,5 @@
-let NonceStore = require('ims-lti').Stores.NonceStore,
+let NonceStore = require('ims-lti').Stores.NonceStore
+let logger = oboRequire('logger')
 
 EXPIRE_IN_SEC = 5 * 60
 
@@ -20,7 +21,7 @@ class DevNonceStore extends NonceStore{
 		let firstTimeSeen = this.used[nonce] === undefined
 
 		if(!firstTimeSeen){
-			console.warn(`Nonce already seen ${nonce}`)
+			logger.warn(`Nonce already seen ${nonce}`)
 			return next(null, true)
 		}
 
@@ -35,7 +36,7 @@ class DevNonceStore extends NonceStore{
 					next(null, true)
 				}
 				else{
-					console.warn(`Timestamp is Expired - current:${currentTime} - lti timestamp:${timestamp} <= age limit:${EXPIRE_IN_SEC} - epried: ${(currentTime - timestamp) - EXPIRE_IN_SEC}s ago`)
+					logger.warn(`Timestamp is Expired - current:${currentTime} - lti timestamp:${timestamp} <= age limit:${EXPIRE_IN_SEC} - epried: ${(currentTime - timestamp) - EXPIRE_IN_SEC}s ago`)
 					next(null, true)
 				}
 			}
@@ -53,7 +54,7 @@ class DevNonceStore extends NonceStore{
 	_clearExpiredNonces(){
 		let now = Math.round(Date.now() / 1000)
 		Object.keys(this.used).forEach((key) => {
-			console.log(`Clearing nonce memory for ${key}`)
+			logger.info(`Clearing nonce memory for ${key}`)
 			if(this.used[key] <= now) delete this.used[key]
 		})
 		return

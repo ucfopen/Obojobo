@@ -1,6 +1,7 @@
 const fs = require('fs')
 const path = require('path')
 const glob = require('glob')
+const logger = oboRequire('logger')
 
 let memoizedValues = {}
 
@@ -68,7 +69,7 @@ let getInstalledModules = (configEnv = 'production') => {
 					// Should we exclude this module?
 					if(moduleExludeRules.length){
 						if(moduleExludeRules.includes('*') || moduleExludeRules.includes(name)){
-							console.log(`🚫 Excluded ${moduleName}:${name}`)
+							logger.info(`🚫 Excluded ${moduleName}:${name}`)
 							return
 						}
 					}
@@ -82,7 +83,7 @@ let getInstalledModules = (configEnv = 'production') => {
 					}
 
 					// add to the manifest
-					console.log(`➕ Added ${moduleName}:${name}`)
+					logger.info(`➕ Added ${moduleName}:${name}`)
 					if(module.hasOwnProperty('viewerScript')) assetFiles.add(module.viewerScript)
 					if(module.hasOwnProperty('viewerCSS'))    assetFiles.add(module.viewerCSS)
 					if(module.hasOwnProperty('draftNode'))    draftNodes.set(name, module.draftNode)

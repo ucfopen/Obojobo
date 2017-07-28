@@ -1,6 +1,7 @@
 var express = require('express');
 var router = express.Router();
 let DraftModel = oboRequire('models/draft')
+let logger = require('../../logger')
 
 const xmlToDraftObject = require('obojobo-draft-xml-parser/xml-to-draft-object')
 
@@ -19,7 +20,7 @@ router.get('/:draftId', (req, res, next) => {
 		return next()
 	})
 	.catch(err => {
-		console.error(err)
+		logger.error(err)
 		res.missing('Draft not found')
 		next(err)
 		return Promise.reject(err)
@@ -81,14 +82,14 @@ router.post(/(\w{8}-\w{4}-\w{4}-\w{4}-\w{12})/, (req, res, next) => {
 				}
 				catch(e)
 				{
-					console.error('Parse XML Failed:', e, req.body)
+					logger.error('Parse XML Failed:', e, req.body)
 					// continue to intentional fall through
 				}
 
 				// intentional fall through
 
 			default:
-				console.error('Posting draft failed - format unexpected:', req.body)
+				logger.error('Posting draft failed - format unexpected:', req.body)
 				res.badInput('Posting draft failed - format unexpected')
 				return next()
 		}
@@ -100,7 +101,7 @@ router.post(/(\w{8}-\w{4}-\w{4}-\w{4}-\w{12})/, (req, res, next) => {
 		})
 	})
 	.catch(error => {
-		console.log(error)
+		logger.error(error)
 		res.unexpected(error)
 		next(error)
 		return Promise.reject(error)
@@ -158,7 +159,7 @@ router.get('/', (req, res, next) => {
 		return next()
 	})
 	.catch(err => {
-		console.log(err)
+		logger.error(err)
 		res.unexpected(err)
 		next(err)
 		return Promise.reject(err)

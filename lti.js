@@ -4,6 +4,7 @@ let config = oboRequire('config')
 let db = require('./db')
 let moment = require('moment')
 let insertEvent = oboRequire('insert_event')
+let logger = oboRequire('logger')
 
 let retrieveLtiRequestData = function(userId, draftId) {
 	return db.one(`
@@ -62,7 +63,7 @@ let replaceResult = function(userId, draftId, score) {
 				signer: new HMAC_SHA1()
 			})
 
-			console.log(`SETTING LTI OUTCOME SCORE SET to ${score} for user: ${userId} on sourcedid: ${ltiBody.lis_result_sourcedid} using key: ${ltiLaunchKey}`)
+			logger.info(`SETTING LTI OUTCOME SCORE SET to ${score} for user: ${userId} on sourcedid: ${ltiBody.lis_result_sourcedid} using key: ${ltiLaunchKey}`)
 
 			outcomeDocument.send_replace_result(score, (err, result) =>{
 				if(err) reject(err)
@@ -88,26 +89,26 @@ let replaceResult = function(userId, draftId, score) {
 					draftId: draftId
 				})
 				.catch(err => {
-					console.log('There was an error inserting the lti event')
+					logger.error('There was an error inserting the lti event')
 				})
 			})
 		})
 		.catch(error => {
 			// catch errors sending to the outcome service
-			console.log('replaceResult error!', error)
+			logger.error('replaceResult error!', error)
 			return Promise.reject({fatal: true})
 		})
 	})
 	.catch(error => {
 		// Fail if sending the score failed
-		console.error('LTI replaceResult Error', error)
+		logger.warn('LTI replaceResult Error', error)
 
 		if(error && error.fatal){
 			return Promise.reject(Error(`Unable to send score to LMS`))
 		}
 
 		// just continue if theres no launch data for this score
-		console.log(`No Relevent LTI Request found for user ${userId}, on ${draftId}`)
+		logger.info(`No Relevent LTI Request found for user ${userId}, on ${draftId}`)
 		return Promise.resolve(false)
 	})
 

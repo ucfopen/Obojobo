@@ -1,7 +1,6 @@
 const apiFunctions = ['success', 'missing', 'badInput', 'unexpected', 'reject', 'notAuthorized']
 const functionsWithMessages = ['missing', 'badInput', 'unexpected', 'reject', 'notAuthorized']
 let mockArgs // array of mocked express middleware request arguments
-let originalError = console.error
 
 describe('api response middleware', () => {
 
@@ -9,7 +8,6 @@ describe('api response middleware', () => {
 	afterAll(() => {})
 	beforeEach(() => {
 
-		console.error = jest.fn()
 		mockArgs = (() => {
 			let res = {}
 			let req = {}
@@ -32,7 +30,6 @@ describe('api response middleware', () => {
 		mockNext.mockClear()
 		mockStatus.mockClear()
 		mockJson.mockClear()
-		console.error = originalError
 	})
 
 	it('sets the expected properties on res', () => {

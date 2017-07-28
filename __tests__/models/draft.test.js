@@ -1,5 +1,7 @@
 describe('models draft', () => {
 	jest.mock('../../db')
+	jest.mock('../../logger')
+
 	let mockRawDraft = {
 		id:'whatever',
 		version: 9,
@@ -25,16 +27,10 @@ describe('models draft', () => {
 		}
 	}
 
-	let originalConsole = global.console
-
 	beforeAll(() => {})
 	afterAll(() => {})
-	beforeEach(() => {
-		global.console = {warn: jest.fn(), log: jest.fn(), error: jest.fn()}
-	});
-	afterEach(() => {
-		global.console = originalConsole
-	});
+	beforeEach(() => {});
+	afterEach(() => {});
 
 	it('initializes expected properties', () => {
 		let Draft = oboRequire('models/draft')
