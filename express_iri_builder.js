@@ -1,12 +1,12 @@
 let IRI = oboRequire('iri_builder')
 
-let IRIbuilder = (req) => {
+let IRIbuilder = req => {
 	return {
 		getCurrentUserIRI: () => {
 			return IRI.getUserIRI(req.hostname, req.currentUser.id)
 		},
 
-		getIRI: (path) => {
+		getIRI: path => {
 			return IRI.getIRI(req.hostname, path)
 		},
 
@@ -14,7 +14,7 @@ let IRIbuilder = (req) => {
 			return IRI.getSessionIRI(req.hostname, req.session.id)
 		},
 
-		getUserIRI: (id) => {
+		getUserIRI: id => {
 			return IRI.getUserIRI(req.hostname, id)
 		},
 
@@ -26,5 +26,5 @@ let IRIbuilder = (req) => {
 
 module.exports = (req, res, next) => {
 	req.iri = IRIbuilder(req)
-	next();
-};
+	next()
+}
