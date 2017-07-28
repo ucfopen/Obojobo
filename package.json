@@ -28,10 +28,16 @@
     "devXmlParser:link": "cd ./devsrc/obojobo-draft-xml-parser && yarn link && cd ../.. && yarn link obojobo-draft-xml-parser",
     "test": "jest --watch",
     "test:ci": "CI=true jest --coverage",
-    "precommit": "npm run test:ci"
+    "precommit": "yarn test:ci && lint-staged"
   },
   "engines": {
     "node": "^6.9.4"
+  },
+  "lint-staged": {
+    "*.js": [
+      "yarn prettier",
+      "git add"
+    ]
   },
   "dependencies": {
     "babel-preset-env": "^1.5.1",
@@ -71,6 +77,8 @@
     "babel-preset-env": "^1.4.0",
     "husky": "^0.13.3",
     "jest-cli": "^19.0.2",
+    "lint-staged": "^4.0.2",
+    "prettier": "^1.5.3",
     "webpack-dev-middleware": "^1.10.2"
   },
   "jest": {
