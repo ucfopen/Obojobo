@@ -13,6 +13,10 @@ const IRI = {
 		return createIRI(host, `${path}`)
 	},
 
+	getEdAppIRI: host => {
+		return createIRI(host, '/')
+	},
+
 	getSessionIRI: (host, sessionId) => {
 		return createIRI(host, `/sessions/${sessionId}`)
 	},
@@ -21,8 +25,8 @@ const IRI = {
 		return createIRI(host, `/users/${userId}`)
 	},
 
-	getViewIRI: (host, id, payload) => {
-		return createIRI(host, `/view/${id}/${payload}`)
+	getViewIRI: (host, draftId, oboNodeId) => {
+		return createIRI(host, `/view/${draftId}/${oboNodeId}`)
 	}
 }
 

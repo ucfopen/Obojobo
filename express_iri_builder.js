@@ -10,6 +10,10 @@ let IRIbuilder = req => {
 			return IRI.getIRI(req.hostname, path)
 		},
 
+		getEdAppIRI: () => {
+			return IRI.getEdAppIRI(req.hostname)
+		},
+
 		getSessionIRI: () => {
 			return IRI.getSessionIRI(req.hostname, req.session.id)
 		},
@@ -18,8 +22,8 @@ let IRIbuilder = req => {
 			return IRI.getUserIRI(req.hostname, id)
 		},
 
-		getViewIRI: (id, payload) => {
-			return IRI.getViewIRI(req.hostname, id, payload)
+		getViewIRI: (draftId, oboNodeId) => {
+			return IRI.getViewIRI(req.hostname, draftId, oboNodeId)
 		}
 	}
 }
