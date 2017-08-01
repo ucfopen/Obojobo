@@ -54,7 +54,7 @@ module.exports = (req, currentUser) => {
 		caliperEvent.id = 'urn:uuid:' + uuid()
 		caliperEvent.setEdApp(req.iri.getEdAppIRI())
 		caliperEvent.setEventTime(new Date().toISOString())
-		caliperEvent.setActor(req.iri.getUserIRI())
+		caliperEvent.setActor(req.iri.getCurrentUserIRI())
 		//@TODO - setfederatedSession to store lti launch id
 
 		if (req.session) {
