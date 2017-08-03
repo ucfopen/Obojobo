@@ -6264,6 +6264,9 @@
 
 					_this.onIdle = _this.onIdle.bind(_this)
 					_this.onReturnFromIdle = _this.onReturnFromIdle.bind(_this)
+					_this.onWindowClose = _this.onWindowClose.bind(_this)
+
+					window.onbeforeunload = _this.onWindowClose
 
 					_this.state = state
 					return _this
@@ -6427,6 +6430,12 @@
 							// TODO: Future onReturnFromIdle event callback from IdleTimer
 							// console.log("User has returned from idle state.")
 							_apiUtil2.default.postEvent(this.state.model, 'viewer:returnFromIdle', {})
+						}
+					},
+					{
+						key: 'onWindowClose',
+						value: function onWindowClose(e) {
+							_apiUtil2.default.postEvent(this.state.model, 'viewer:close', {})
 						}
 					},
 					{

@@ -92,6 +92,9 @@ export default class ViewerApp extends React.Component {
 
 		this.onIdle = this.onIdle.bind(this)
 		this.onReturnFromIdle = this.onReturnFromIdle.bind(this)
+		this.onWindowClose = this.onWindowClose.bind(this)
+
+		window.onbeforeunload = this.onWindowClose
 
 		this.state = state
 	}
@@ -218,6 +221,10 @@ export default class ViewerApp extends React.Component {
 		// TODO: Future onReturnFromIdle event callback from IdleTimer
 		// console.log("User has returned from idle state.")
 		APIUtil.postEvent(this.state.model, 'viewer:returnFromIdle', {})
+	}
+
+	onWindowClose(e) {
+		APIUtil.postEvent(this.state.model, 'viewer:close', {})
 	}
 
 	resetAssessments() {
