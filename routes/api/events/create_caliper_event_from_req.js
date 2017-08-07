@@ -34,7 +34,8 @@ module.exports = (req, currentUser) => {
 			caliperEvent.setAction(NavigationActions.NAVIGATED_TO)
 			caliperEvent.setObject(req.iri.getViewIRI(clientEvent.draft_id, clientEvent.payload.to))
 			caliperEvent.extensions = {
-				navType: clientEvent.action.split(':')[1]
+				navType: clientEvent.action.split(':')[1],
+				previewMode: currentUser.canViewEditor
 			}
 
 			break
