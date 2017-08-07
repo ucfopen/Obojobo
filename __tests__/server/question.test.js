@@ -53,4 +53,24 @@ describe('Question', () => {
 		)
 		expect(currentAttempt.addScore).toHaveBeenCalled()
 	})
+
+	it('throws error if given non-unique question response rows', () => {
+		const testAddScore = jest.fn((app, mcChoice, responses, addScore) => addScore(100))
+		let responseRecord = { question_id: mcChoice.node.id }
+		let responseRecord2 = { question_id: mcChoice.node.id }
+		let responseHistory = [responseRecord, responseRecord2]
+		rootNode.root.children.push(mcChoice)
+		testChild.registerEvents({ 'ObojoboDraft.Chunks.Question:calculateScore': testAddScore })
+		mcChoice.children.push(testChild)
+		expect(() => {
+			mcChoice.yell(
+				events.attemptEnd,
+				{ app: {} },
+				{},
+				rootNode.root,
+				responseHistory,
+				currentAttempt
+			)
+		}).toThrowError('Impossible response to MCAssessment question')
+	})
 })

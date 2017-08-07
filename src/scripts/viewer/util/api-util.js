@@ -40,7 +40,7 @@ var APIUtil = {
 	},
 
 	postEvent(lo, action, payload) {
-		createParsedJsonPromise(
+		return createParsedJsonPromise(
 			APIUtil.post('/api/events', {
 				event: {
 					action,
@@ -50,8 +50,13 @@ var APIUtil = {
 				}
 			})
 			// TODO: Send Caliper event to client host.
-		).then(caliperEvent => {
-			parent.postMessage(caliperEvent, '*')
+		).then(res => {
+			console.log('then', res)
+			if (res && res.status === 'ok' && res.value) {
+				parent.postMessage(res.value, '*')
+			}
+
+			return res
 		})
 	},
 

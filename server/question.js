@@ -23,11 +23,13 @@ class MCChoice extends DraftNode {
 
 		if (questionResponses.length === 0) return
 
+		if (questionResponses.length > 1) throw 'Impossible response to MCAssessment question'
+
 		return this.yell(
 			'ObojoboDraft.Chunks.Question:calculateScore',
 			req.app,
 			this,
-			questionResponses,
+			questionResponses[0],
 			function(score) {
 				currentAttempt.addScore(this.node.id, score)
 			}.bind(this)

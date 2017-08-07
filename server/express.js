@@ -501,8 +501,8 @@ app.get('/api/drafts/:draftId/attempts', (req, res, next) => {
 		})
 })
 
-oboEvents.on('client:assessment:recordResponse', (event, req) => {
-	let eventRecordResponse = 'client:assessment:recordResponse'
+oboEvents.on('client:assessment:setResponse', (event, req) => {
+	let eventRecordResponse = 'client:assessment:setResponse'
 
 	// check perms
 	// check input
@@ -510,8 +510,6 @@ oboEvents.on('client:assessment:recordResponse', (event, req) => {
 		return app.logError(eventRecordResponse, 'Missing Attempt ID', req, event)
 	if (!event.payload.questionId)
 		return app.logError(eventRecordResponse, 'Missing Question ID', req, event)
-	if (!event.payload.responderId)
-		return app.logError(eventRecordResponse, 'Missing Responder ID', req, event)
 	if (!event.payload.response)
 		return app.logError(eventRecordResponse, 'Missing Response', req, event)
 
@@ -519,12 +517,11 @@ oboEvents.on('client:assessment:recordResponse', (event, req) => {
 		.none(
 			`
 		INSERT INTO attempts_question_responses
-		(attempt_id, question_id, responder_id, response)
-		VALUES($[attemptId], $[questionId], $[responderId], $[response])
-		ON CONFLICT (attempt_id, question_id, responder_id) DO
+		(attempt_id, question_id, response)
+		VALUES($[attemptId], $[questionId], $[response])
+		ON CONFLICT (attempt_id, question_id) DO
 			UPDATE
 			SET
-				responder_id = $[responderId],
 				response = $[response],
 				updated_at = now()
 			WHERE attempts_question_responses.attempt_id = $[attemptId]
@@ -532,12 +529,10 @@ oboEvents.on('client:assessment:recordResponse', (event, req) => {
 			{
 				attemptId: event.payload.attemptId,
 				questionId: event.payload.questionId,
-				responderId: event.payload.responderId,
 				response: event.payload.response
 			}
 		)
 		.catch(error => {
-			console.log(error)
 			app.logError(eventRecordResponse, 'DB UNEXPECTED', req, error, error.toString())
 		})
 })

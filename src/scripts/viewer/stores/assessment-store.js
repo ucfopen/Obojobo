@@ -32,8 +32,8 @@ class AssessmentStore extends Store {
 			this.tryEndAttempt(payload.value.id)
 		})
 
-		Dispatcher.on('question:recordResponse', payload => {
-			this.tryRecordResponse(payload.value.id, payload.value.response)
+		Dispatcher.on('question:setResponse', payload => {
+			this.trySetResponse(payload.value.id, payload.value.response)
 		})
 	}
 
@@ -171,7 +171,7 @@ class AssessmentStore extends Store {
 		let model = OboModel.models[id]
 
 		assessment.current.state.questions.forEach(question => QuestionUtil.hideQuestion(question.id))
-		assessment.currentResponses.forEach(responderId => QuestionUtil.resetResponse(responderId))
+		assessment.currentResponses.forEach(questionId => QuestionUtil.clearResponse(questionId))
 		assessment.attempts.push(endAttemptResp)
 		assessment.current = null
 
@@ -179,24 +179,17 @@ class AssessmentStore extends Store {
 		Dispatcher.trigger('assessment:attemptEnded', id)
 	}
 
-	tryRecordResponse(id, response) {
-		let model = OboModel.models[id]
+	trySetResponse(questionId, response) {
+		let model = OboModel.models[questionId]
 		let assessment = AssessmentUtil.getAssessmentForModel(this.state, model)
 
-		if (!assessment) return
+		if (!assessment || !assessment.currentResponses) return Promise.reject()
 
-		if (assessment.currentResponses) {
-			assessment.currentResponses.push(id)
-		}
+		assessment.currentResponses.push(questionId)
 
-		if (!assessment.currentResponses) return
-
-		let questionModel = model.getParentOfType('ObojoboDraft.Chunks.Question')
-
-		return APIUtil.postEvent(model.getRoot(), 'assessment:recordResponse', {
+		return APIUtil.postEvent(model.getRoot(), 'assessment:setResponse', {
 			attemptId: assessment.current.attemptId,
-			questionId: questionModel.get('id'),
-			responderId: id,
+			questionId: questionId,
 			response: response
 		}).then(res => {
 			if (res.status === 'error') {

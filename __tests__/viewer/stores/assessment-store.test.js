@@ -305,11 +305,11 @@ describe('AssessmentStore', () => {
 
 		ErrorUtil.errorResponse = jest.fn()
 		QuestionUtil.hideQuestion = jest.fn()
-		QuestionUtil.resetReponse = jest.fn()
+		QuestionUtil.clearResponse = jest.fn()
 		OboModel.models.assessmentId.processTrigger = jest.fn()
 
 		return AssessmentStore.tryStartAttempt('assessmentId').then(() => {
-			AssessmentStore.tryRecordResponse('r1', { responseForR1: 'someValue' }).then(res => {
+			AssessmentStore.trySetResponse('q1', { responseForR1: 'someValue' }).then(res => {
 				AssessmentStore.tryEndAttempt('assessmentId')
 					.then(res => {
 						expect(ErrorUtil.errorResponse).toHaveBeenCalledTimes(0)
@@ -328,7 +328,7 @@ describe('AssessmentStore', () => {
 		})
 	})
 
-	test('recordResponse with a bad response will show an error message', done => {
+	test('setResponse with a bad response will show an error message', done => {
 		mockValidStartAttempt()
 		OboModel.create(getExampleAssessment())
 
@@ -344,7 +344,7 @@ describe('AssessmentStore', () => {
 		ErrorUtil.errorResponse = jest.fn()
 
 		return AssessmentStore.tryStartAttempt('assessmentId').then(() => {
-			AssessmentStore.tryRecordResponse('r1', { responseForR1: 'someValue' }).then(res => {
+			AssessmentStore.trySetResponse('q1', { responseForR1: 'someValue' }).then(res => {
 				expect(ErrorUtil.errorResponse).toHaveBeenCalledWith({
 					status: 'error',
 					value: {
@@ -357,7 +357,7 @@ describe('AssessmentStore', () => {
 		})
 	})
 
-	test('recordResponse will update state, post an event and trigger a change', done => {
+	test('setResponse will update state, post an event and trigger a change', done => {
 		mockValidStartAttempt()
 		OboModel.create(getExampleAssessment())
 
@@ -370,21 +370,21 @@ describe('AssessmentStore', () => {
 			})
 		})
 
+		NavUtil.rebuildMenu = jest.fn()
+		NavUtil.goto = jest.fn()
+
 		return AssessmentStore.tryStartAttempt('assessmentId').then(() => {
-			AssessmentStore.tryRecordResponse('r1', { responseForR1: 'someValue' }).then(res => {
+			AssessmentStore.trySetResponse('q1', ['some response']).then(res => {
 				expect(APIUtil.postEvent).toHaveBeenCalledWith(
 					OboModel.models.rootId,
-					'assessment:recordResponse',
+					'assessment:setResponse',
 					{
 						attemptId: 'attemptId',
 						questionId: 'q1',
-						responderId: 'r1',
-						response: {
-							responseForR1: 'someValue'
-						}
+						response: ['some response']
 					}
 				)
-				expect(AssessmentStore.getState().assessments.assessmentId.currentResponses).toEqual(['r1'])
+				expect(AssessmentStore.getState().assessments.assessmentId.currentResponses).toEqual(['q1'])
 				expect(AssessmentStore.triggerChange).toHaveBeenCalledTimes(2)
 
 				done()

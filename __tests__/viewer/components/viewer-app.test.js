@@ -206,9 +206,7 @@ describe('ViewerApp', () => {
 		expect(questionEl.find('button').length).toBe(3) // 'Solution' button
 
 		expect(QuestionStore.getState().responses).toEqual({
-			'pq1-mca-mc1': { set: false },
-			'pq1-mca-mc2': { set: false },
-			'pq1-mca-mc3': { set: true }
+			pq1: { ids: ['pq1-mca-mc3'] }
 		})
 		expect(ScoreStore.getState().scores).toEqual({
 			pq1: 0
@@ -239,9 +237,7 @@ describe('ViewerApp', () => {
 		expect(questionEl.find('button').length).toBe(3) // 'Solution' button
 
 		expect(QuestionStore.getState().responses).toEqual({
-			'pq1-mca-mc1': { set: true },
-			'pq1-mca-mc2': { set: false },
-			'pq1-mca-mc3': { set: false }
+			pq1: { ids: ['pq1-mca-mc1'] }
 		})
 		expect(ScoreStore.getState().scores).toEqual({
 			pq1: 100

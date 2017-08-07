@@ -87,7 +87,7 @@
 		/***/ function(module, exports, __webpack_require__) {
 			'use strict'
 
-			var isDate = __webpack_require__(12)
+			var isDate = __webpack_require__(13)
 
 			var MILLISECONDS_IN_HOUR = 3600000
 			var MILLISECONDS_IN_MINUTE = 60000
@@ -720,7 +720,7 @@
 					})
 				},
 				postEvent: function postEvent(lo, action, payload) {
-					createParsedJsonPromise(
+					return createParsedJsonPromise(
 						APIUtil.post('/api/events', {
 							event: {
 								action: action,
@@ -730,8 +730,13 @@
 							}
 						})
 						// TODO: Send Caliper event to client host.
-					).then(function(caliperEvent) {
-						parent.postMessage(caliperEvent, '*')
+					).then(function(res) {
+						console.log('then', res)
+						if (res && res.status === 'ok' && res.value) {
+							parent.postMessage(res.value, '*')
+						}
+
+						return res
 					})
 				},
 				saveState: function saveState(lo, state) {
@@ -967,6 +972,113 @@
 		/***/ function(module, exports, __webpack_require__) {
 			'use strict'
 
+			Object.defineProperty(exports, '__esModule', {
+				value: true
+			})
+
+			var _Common = __webpack_require__(0)
+
+			var _Common2 = _interopRequireDefault(_Common)
+
+			function _interopRequireDefault(obj) {
+				return obj && obj.__esModule ? obj : { default: obj }
+			}
+
+			var Dispatcher = _Common2.default.flux.Dispatcher
+			var OboModel = _Common2.default.models.OboModel
+
+			var QuestionUtil = {
+				setResponse: function setResponse(id, response) {
+					return Dispatcher.trigger('question:setResponse', {
+						value: {
+							id: id,
+							response: response
+						}
+					})
+				},
+				clearResponse: function clearResponse(id) {
+					return Dispatcher.trigger('question:clearResponse', {
+						value: {
+							id: id
+						}
+					})
+				},
+				setData: function setData(id, key, value) {
+					return Dispatcher.trigger('question:setData', {
+						value: {
+							key: id + ':' + key,
+							value: value
+						}
+					})
+				},
+				clearData: function clearData(id, key) {
+					return Dispatcher.trigger('question:clearData', {
+						value: {
+							key: id + ':' + key
+						}
+					})
+				},
+				showExplanation: function showExplanation(id) {
+					return Dispatcher.trigger('question:showExplanation', {
+						value: { id: id }
+					})
+				},
+				hideExplanation: function hideExplanation(id) {
+					return Dispatcher.trigger('question:hideExplanation', {
+						value: { id: id }
+					})
+				},
+				viewQuestion: function viewQuestion(id) {
+					return Dispatcher.trigger('question:view', {
+						value: {
+							id: id
+						}
+					})
+				},
+				hideQuestion: function hideQuestion(id) {
+					return Dispatcher.trigger('question:hide', {
+						value: {
+							id: id
+						}
+					})
+				},
+				retryQuestion: function retryQuestion(id) {
+					return Dispatcher.trigger('question:retry', {
+						value: {
+							id: id
+						}
+					})
+				},
+				getViewState: function getViewState(state, model) {
+					var modelId = model.get('id')
+
+					if (state.viewing === modelId) {
+						return 'active'
+					}
+					if (state.viewedQuestions[modelId]) {
+						return 'viewed'
+					}
+					return 'hidden'
+				},
+				getResponse: function getResponse(state, model) {
+					return state.responses[model.get('id')] || null
+				},
+				getData: function getData(state, model, key) {
+					return state.data[model.get('id') + ':' + key] || false
+				},
+				isShowingExplanation: function isShowingExplanation(state, model) {
+					return state.data[model.get('id') + ':showingExplanation'] || false
+				}
+			}
+
+			exports.default = QuestionUtil
+
+			/***/
+		},
+		/* 6 */
+		/***/ function(module, exports, __webpack_require__) {
+			'use strict'
+
 			var startOfWeek = __webpack_require__(34)
 
 			/**
@@ -995,7 +1107,7 @@
 
 			/***/
 		},
-		/* 6 */
+		/* 7 */
 		/***/ function(module, exports, __webpack_require__) {
 			'use strict'
 
@@ -1038,7 +1150,7 @@
 
 			/***/
 		},
-		/* 7 */
+		/* 8 */
 		/***/ function(module, exports, __webpack_require__) {
 			'use strict'
 			/* WEBPACK VAR INJECTION */ ;(function(process) {
@@ -1105,7 +1217,7 @@
 
 			/***/
 		},
-		/* 8 */
+		/* 9 */
 		/***/ function(module, exports, __webpack_require__) {
 			'use strict'
 			/**
@@ -1123,7 +1235,7 @@
 
 			/***/
 		},
-		/* 9 */
+		/* 10 */
 		/***/ function(module, exports, __webpack_require__) {
 			'use strict'
 
@@ -1493,7 +1605,7 @@
 
 			/***/
 		},
-		/* 10 */
+		/* 11 */
 		/***/ function(module, exports, __webpack_require__) {
 			'use strict'
 
@@ -1510,95 +1622,43 @@
 			}
 
 			var Dispatcher = _Common2.default.flux.Dispatcher
-			var OboModel = _Common2.default.models.OboModel
 
-			var QuestionUtil = {
-				recordResponse: function recordResponse(id, response) {
-					return Dispatcher.trigger('question:recordResponse', {
+			var ScoreUtil = {
+				getScoreForModel: function getScoreForModel(state, model) {
+					var score = state.scores[model.get('id')]
+					if (typeof score === 'undefined' || score === null) {
+						return null
+					}
+
+					return score
+				},
+				setScore: function setScore(id, score) {
+					return Dispatcher.trigger('score:set', {
 						value: {
 							id: id,
-							response: response
+							score: score
 						}
 					})
 				},
-				resetResponse: function resetResponse(id) {
-					return Dispatcher.trigger('question:resetResponse', {
+				clearScore: function clearScore(id) {
+					return Dispatcher.trigger('score:clear', {
 						value: {
 							id: id
 						}
 					})
-				},
-				setData: function setData(id, key, value) {
-					return Dispatcher.trigger('question:setData', {
-						value: {
-							key: id + ':' + key,
-							value: value
-						}
-					})
-				},
-				clearData: function clearData(id, key) {
-					return Dispatcher.trigger('question:clearData', {
-						value: {
-							key: id + ':' + key
-						}
-					})
-				},
-				showExplanation: function showExplanation(id) {
-					return Dispatcher.trigger('question:showExplanation', {
-						value: { key: id }
-					})
-				},
-				hideExplanation: function hideExplanation(id) {
-					return Dispatcher.trigger('question:hideExplanation', {
-						value: { key: id }
-					})
-				},
-				viewQuestion: function viewQuestion(id) {
-					return Dispatcher.trigger('question:view', {
-						value: {
-							id: id
-						}
-					})
-				},
-				hideQuestion: function hideQuestion(id) {
-					return Dispatcher.trigger('question:hide', {
-						value: {
-							id: id
-						}
-					})
-				},
-				getViewState: function getViewState(state, model) {
-					var modelId = model.get('id')
-
-					if (state.viewing === modelId) {
-						return 'active'
-					}
-					if (state.viewedQuestions[modelId]) {
-						return 'viewed'
-					}
-					return 'hidden'
-				},
-				getResponse: function getResponse(state, model) {
-					return state.responses[model.get('id')]
-				},
-				hasResponse: function hasResponse(state, model) {
-					return typeof state.responses[model.get('id')] !== 'undefined'
-				},
-				getData: function getData(state, model, key) {
-					return state.data[model.get('id') + ':' + key] || false
 				}
 			}
 
-			exports.default = QuestionUtil
+			exports.default = ScoreUtil
 
 			/***/
 		},
-		/* 11 */
+		/* 12 */
 		/***/ function(module, exports, __webpack_require__) {
 			'use strict'
 
 			var parse = __webpack_require__(1)
-			var startOfISOWeek = __webpack_require__(5)
+			var startOfISOWeek = __webpack_require__(6)
 
 			/**
  * @category ISO Week-Numbering Year Helpers
@@ -1645,7 +1705,7 @@
 
 			/***/
 		},
-		/* 12 */
+		/* 13 */
 		/***/ function(module, exports, __webpack_require__) {
 			'use strict'
 
@@ -1672,7 +1732,7 @@
 
 			/***/
 		},
-		/* 13 */
+		/* 14 */
 		/***/ function(module, exports, __webpack_require__) {
 			'use strict'
 			/* WEBPACK VAR INJECTION */ ;(function(process) {
@@ -1686,7 +1746,7 @@
  *
  */
 
-				var emptyFunction = __webpack_require__(6)
+				var emptyFunction = __webpack_require__(7)
 
 				/**
  * Similar to invariant but only logs a warning if the condition is not met.
@@ -1757,7 +1817,7 @@
 
 			/***/
 		},
-		/* 14 */
+		/* 15 */
 		/***/ function(module, exports, __webpack_require__) {
 			'use strict'
 
@@ -1871,7 +1931,7 @@
 
 			/***/
 		},
-		/* 15 */
+		/* 16 */
 		/***/ function(module, exports, __webpack_require__) {
 			'use strict'
 
@@ -1900,15 +1960,15 @@
 
 			var _Common2 = _interopRequireDefault(_Common)
 
-			var _assessmentUtil = __webpack_require__(18)
+			var _assessmentUtil = __webpack_require__(19)
 
 			var _assessmentUtil2 = _interopRequireDefault(_assessmentUtil)
 
-			var _scoreUtil = __webpack_require__(19)
+			var _scoreUtil = __webpack_require__(11)
 
 			var _scoreUtil2 = _interopRequireDefault(_scoreUtil)
 
-			var _questionUtil = __webpack_require__(10)
+			var _questionUtil = __webpack_require__(5)
 
 			var _questionUtil2 = _interopRequireDefault(_questionUtil)
 
@@ -1991,8 +2051,8 @@
 						_this.tryEndAttempt(payload.value.id)
 					})
 
-					Dispatcher.on('question:recordResponse', function(payload) {
-						_this.tryRecordResponse(payload.value.id, payload.value.response)
+					Dispatcher.on('question:setResponse', function(payload) {
+						_this.trySetResponse(payload.value.id, payload.value.response)
 					})
 					return _this
 				}
@@ -2260,8 +2320,8 @@
 							assessment.current.state.questions.forEach(function(question) {
 								return _questionUtil2.default.hideQuestion(question.id)
 							})
-							assessment.currentResponses.forEach(function(responderId) {
-								return _questionUtil2.default.resetResponse(responderId)
+							assessment.currentResponses.forEach(function(questionId) {
+								return _questionUtil2.default.clearResponse(questionId)
 							})
 							assessment.attempts.push(endAttemptResp)
 							assessment.current = null
@@ -2271,28 +2331,21 @@
 						}
 					},
 					{
-						key: 'tryRecordResponse',
-						value: function tryRecordResponse(id, response) {
+						key: 'trySetResponse',
+						value: function trySetResponse(questionId, response) {
 							var _this4 = this
 
-							var model = OboModel.models[id]
+							var model = OboModel.models[questionId]
 							var assessment = _assessmentUtil2.default.getAssessmentForModel(this.state, model)
 
-							if (!assessment) return
+							if (!assessment || !assessment.currentResponses) return Promise.reject()
 
-							if (assessment.currentResponses) {
-								assessment.currentResponses.push(id)
-							}
-
-							if (!assessment.currentResponses) return
-
-							var questionModel = model.getParentOfType('ObojoboDraft.Chunks.Question')
+							assessment.currentResponses.push(questionId)
 
 							return _apiUtil2.default
-								.postEvent(model.getRoot(), 'assessment:recordResponse', {
+								.postEvent(model.getRoot(), 'assessment:setResponse', {
 									attemptId: assessment.current.attemptId,
-									questionId: questionModel.get('id'),
-									responderId: id,
+									questionId: questionId,
 									response: response
 								})
 								.then(function(res) {
@@ -2325,7 +2378,7 @@
 
 			/***/
 		},
-		/* 16 */
+		/* 17 */
 		/***/ function(module, exports, __webpack_require__) {
 			'use strict'
 
@@ -2357,6 +2410,14 @@
 			var _apiUtil = __webpack_require__(3)
 
 			var _apiUtil2 = _interopRequireDefault(_apiUtil)
+
+			var _questionUtil = __webpack_require__(5)
+
+			var _questionUtil2 = _interopRequireDefault(_questionUtil)
+
+			var _scoreUtil = __webpack_require__(11)
+
+			var _scoreUtil2 = _interopRequireDefault(_scoreUtil)
 
 			function _interopRequireDefault(obj) {
 				return obj && obj.__esModule ? obj : { default: obj }
@@ -2409,27 +2470,20 @@
 					)
 
 					Dispatcher.on({
-						'question:recordResponse': function questionRecordResponse(payload) {
-							id = payload.value.id
-
+						'question:setResponse': function questionSetResponse(payload) {
+							var id = payload.value.id
 							var model = OboModel.models[id]
 
 							_this.state.responses[id] = payload.value.response
 							_this.triggerChange()
 
-							var questionModel = model.getParentOfType('ObojoboDraft.Chunks.Question')
-							return _apiUtil2.default.postEvent(
-								questionModel.getRoot(),
-								'question:recordResponse',
-								{
-									questionId: questionModel.get('id'),
-									responderId: id,
-									response: payload.value.response
-								}
-							)
+							_apiUtil2.default.postEvent(model.getRoot(), 'question:setResponse', {
+								questionId: id,
+								response: payload.value.response
+							})
 						},
 
-						'question:resetResponse': function questionResetResponse(payload) {
+						'question:clearResponse': function questionClearResponse(payload) {
 							delete _this.state.responses[payload.value.id]
 							return _this.triggerChange()
 						},
@@ -2440,13 +2494,23 @@
 						},
 
 						'question:showExplanation': function questionShowExplanation(payload) {
-							_this.state.data[payload.value.key + ':showingExplanation'] = true
-							return _this.triggerChange()
+							var root = OboModel.models[payload.value.id].getRoot()
+
+							_apiUtil2.default.postEvent(root, 'question:showExplanation', {
+								questionId: payload.value.id
+							})
+
+							_questionUtil2.default.setData(payload.value.id, 'showingExplanation', true)
 						},
 
 						'question:hideExplanation': function questionHideExplanation(payload) {
-							_this.state.data[payload.value.key + ':showingExplanation'] = false
-							return _this.triggerChange()
+							var root = OboModel.models[payload.value.id].getRoot()
+
+							_apiUtil2.default.postEvent(root, 'question:hideExplanation', {
+								questionId: payload.value.id
+							})
+
+							_this.hideExplanation(payload.value.id)
 						},
 
 						'question:clearData': function questionClearData(payload) {
@@ -2473,24 +2537,43 @@
 						},
 
 						'question:view': function questionView(payload) {
-							_apiUtil2.default.postEvent(
-								OboModel.models[payload.value.id].getRoot(),
-								'question:view',
-								{
-									questionId: payload.value.id
-								}
-							)
+							var root = OboModel.models[payload.value.id].getRoot()
+
+							_apiUtil2.default.postEvent(root, 'question:view', {
+								questionId: payload.value.id
+							})
 
 							_this.state.viewedQuestions[payload.value.id] = true
 							_this.state.viewing = payload.value.id
 
 							return _this.triggerChange()
+						},
+
+						'question:retry': function questionRetry(payload) {
+							var questionId = payload.value.id
+							var root = OboModel.models[questionId].getRoot()
+
+							_this.clearResponses(questionId)
+							_this.hideExplanation(questionId) // should trigger change
+							_scoreUtil2.default.clearScore(questionId) // should trigger change
 						}
 					})
 					return _this
 				}
 
 				_createClass(QuestionStore, [
+					{
+						key: 'clearResponses',
+						value: function clearResponses(questionId) {
+							delete this.state.responses[questionId]
+						}
+					},
+					{
+						key: 'hideExplanation',
+						value: function hideExplanation(questionId) {
+							_questionUtil2.default.clearData(questionId, 'showingExplanation')
+						}
+					},
 					{
 						key: 'init',
 						value: function init() {
@@ -2524,7 +2607,7 @@
 
 			/***/
 		},
-		/* 17 */
+		/* 18 */
 		/***/ function(module, exports, __webpack_require__) {
 			'use strict'
 
@@ -2668,7 +2751,7 @@
 
 			/***/
 		},
-		/* 18 */
+		/* 19 */
 		/***/ function(module, exports, __webpack_require__) {
 			'use strict'
 
@@ -2680,7 +2763,7 @@
 
 			var _Common2 = _interopRequireDefault(_Common)
 
-			var _questionUtil = __webpack_require__(10)
+			var _questionUtil = __webpack_require__(5)
 
 			var _questionUtil2 = _interopRequireDefault(_questionUtil)
 
@@ -2764,28 +2847,25 @@
 				// 	return assessment.attempts[assessment.attempts.length - 1];
 				// },
 
-				isCurrentAttemptComplete: function isCurrentAttemptComplete(
-					assessmentState,
-					questionState,
-					model
-				) {
-					console.log(
-						'@TODO: Function not working, responses stored by responseId, not by questionId. Do not use this method.'
-					)
-					var current = AssessmentUtil.getCurrentAttemptForModel(assessmentState, model)
-					if (!current) {
-						return null
-					}
+				// isCurrentAttemptComplete(assessmentState, questionState, model) {
+				// 	console.log(
+				// 		'@TODO: Function not working, responses stored by responseId, not by questionId. Do not use this method.'
+				// 	)
+				// 	let current = AssessmentUtil.getCurrentAttemptForModel(assessmentState, model)
+				// 	if (!current) {
+				// 		return null
+				// 	}
 
-					var models = model.children.at(1).children.models
+				// 	let models = model.children.at(1).children.models
 
-					return (
-						models.filter(function(questionModel) {
-							var resp = _questionUtil2.default.getResponse(questionState, questionModel)
-							return resp && resp.set === true
-						}).length === models.length
-					)
-				},
+				// 	return (
+				// 		models.filter(function(questionModel) {
+				// 			let resp = QuestionUtil.getResponse(questionState, questionModel)
+				// 			return resp && resp.set === true
+				// 		}).length === models.length
+				// 	)
+				// },
+
 				getNumberOfAttemptsCompletedForModel: function getNumberOfAttemptsCompletedForModel(
 					state,
 					model
@@ -2814,54 +2894,6 @@
 			}
 
 			exports.default = AssessmentUtil
-
-			/***/
-		},
-		/* 19 */
-		/***/ function(module, exports, __webpack_require__) {
-			'use strict'
-
-			Object.defineProperty(exports, '__esModule', {
-				value: true
-			})
-
-			var _Common = __webpack_require__(0)
-
-			var _Common2 = _interopRequireDefault(_Common)
-
-			function _interopRequireDefault(obj) {
-				return obj && obj.__esModule ? obj : { default: obj }
-			}
-
-			var Dispatcher = _Common2.default.flux.Dispatcher
-
-			var ScoreUtil = {
-				getScoreForModel: function getScoreForModel(state, model) {
-					var score = state.scores[model.get('id')]
-					if (typeof score === 'undefined' || score === null) {
-						return null
-					}
-
-					return score
-				},
-				setScore: function setScore(id, score) {
-					return Dispatcher.trigger('score:set', {
-						value: {
-							id: id,
-							score: score
-						}
-					})
-				},
-				clearScore: function clearScore(id) {
-					return Dispatcher.trigger('score:clear', {
-						value: {
-							id: id
-						}
-					})
-				}
-			}
-
-			exports.default = ScoreUtil
 
 			/***/
 		},
@@ -3424,7 +3456,7 @@
 
 			var getDayOfYear = __webpack_require__(25)
 			var getISOWeek = __webpack_require__(26)
-			var getISOYear = __webpack_require__(11)
+			var getISOYear = __webpack_require__(12)
 			var parse = __webpack_require__(1)
 			var isValid = __webpack_require__(27)
 			var enLocale = __webpack_require__(31)
@@ -3792,7 +3824,7 @@
 			'use strict'
 
 			var parse = __webpack_require__(1)
-			var startOfISOWeek = __webpack_require__(5)
+			var startOfISOWeek = __webpack_require__(6)
 			var startOfISOYear = __webpack_require__(33)
 
 			var MILLISECONDS_IN_WEEK = 604800000
@@ -3832,7 +3864,7 @@
 		/***/ function(module, exports, __webpack_require__) {
 			'use strict'
 
-			var isDate = __webpack_require__(12)
+			var isDate = __webpack_require__(13)
 
 			/**
  * @category Common Helpers
@@ -4217,8 +4249,8 @@
 		/***/ function(module, exports, __webpack_require__) {
 			'use strict'
 
-			var getISOYear = __webpack_require__(11)
-			var startOfISOWeek = __webpack_require__(5)
+			var getISOYear = __webpack_require__(12)
+			var startOfISOWeek = __webpack_require__(6)
 
 			/**
  * @category ISO Week-Numbering Year Helpers
@@ -4359,9 +4391,9 @@
 							}
 
 				if (process.env.NODE_ENV !== 'production') {
-					var invariant = __webpack_require__(7)
-					var warning = __webpack_require__(13)
-					var ReactPropTypesSecret = __webpack_require__(8)
+					var invariant = __webpack_require__(8)
+					var warning = __webpack_require__(14)
+					var ReactPropTypesSecret = __webpack_require__(9)
 					var loggedTypeFailures = {}
 				}
 
@@ -4456,9 +4488,9 @@
  * of patent rights can be found in the PATENTS file in the same directory.
  */
 
-			var emptyFunction = __webpack_require__(6)
-			var invariant = __webpack_require__(7)
-			var ReactPropTypesSecret = __webpack_require__(8)
+			var emptyFunction = __webpack_require__(7)
+			var invariant = __webpack_require__(8)
+			var ReactPropTypesSecret = __webpack_require__(9)
 
 			module.exports = function() {
 				function shim(props, propName, componentName, location, propFullName, secret) {
@@ -4534,11 +4566,11 @@
 									: typeof obj
 							}
 
-				var emptyFunction = __webpack_require__(6)
-				var invariant = __webpack_require__(7)
-				var warning = __webpack_require__(13)
+				var emptyFunction = __webpack_require__(7)
+				var invariant = __webpack_require__(8)
+				var warning = __webpack_require__(14)
 
-				var ReactPropTypesSecret = __webpack_require__(8)
+				var ReactPropTypesSecret = __webpack_require__(9)
 				var checkPropTypes = __webpack_require__(36)
 
 				module.exports = function(isValidElement, throwOnDirectAccess) {
@@ -5799,7 +5831,7 @@
 
 			__webpack_require__(47)
 
-			var _navStore = __webpack_require__(9)
+			var _navStore = __webpack_require__(10)
 
 			var _navStore2 = _interopRequireDefault(_navStore)
 
@@ -5807,7 +5839,7 @@
 
 			var _navUtil2 = _interopRequireDefault(_navUtil)
 
-			var _logo = __webpack_require__(14)
+			var _logo = __webpack_require__(15)
 
 			var _logo2 = _interopRequireDefault(_logo)
 
@@ -6103,23 +6135,23 @@
 
 			var _apiUtil2 = _interopRequireDefault(_apiUtil)
 
-			var _logo = __webpack_require__(14)
+			var _logo = __webpack_require__(15)
 
 			var _logo2 = _interopRequireDefault(_logo)
 
-			var _scoreStore = __webpack_require__(17)
+			var _scoreStore = __webpack_require__(18)
 
 			var _scoreStore2 = _interopRequireDefault(_scoreStore)
 
-			var _questionStore = __webpack_require__(16)
+			var _questionStore = __webpack_require__(17)
 
 			var _questionStore2 = _interopRequireDefault(_questionStore)
 
-			var _assessmentStore = __webpack_require__(15)
+			var _assessmentStore = __webpack_require__(16)
 
 			var _assessmentStore2 = _interopRequireDefault(_assessmentStore)
 
-			var _navStore = __webpack_require__(9)
+			var _navStore = __webpack_require__(10)
 
 			var _navStore2 = _interopRequireDefault(_navStore)
 
@@ -6623,23 +6655,23 @@
 
 			var _viewerApp2 = _interopRequireDefault(_viewerApp)
 
-			var _scoreStore = __webpack_require__(17)
+			var _scoreStore = __webpack_require__(18)
 
 			var _scoreStore2 = _interopRequireDefault(_scoreStore)
 
-			var _assessmentStore = __webpack_require__(15)
+			var _assessmentStore = __webpack_require__(16)
 
 			var _assessmentStore2 = _interopRequireDefault(_assessmentStore)
 
-			var _navStore = __webpack_require__(9)
+			var _navStore = __webpack_require__(10)
 
 			var _navStore2 = _interopRequireDefault(_navStore)
 
-			var _questionStore = __webpack_require__(16)
+			var _questionStore = __webpack_require__(17)
 
 			var _questionStore2 = _interopRequireDefault(_questionStore)
 
-			var _assessmentUtil = __webpack_require__(18)
+			var _assessmentUtil = __webpack_require__(19)
 
 			var _assessmentUtil2 = _interopRequireDefault(_assessmentUtil)
 
@@ -6647,7 +6679,7 @@
 
 			var _navUtil2 = _interopRequireDefault(_navUtil)
 
-			var _scoreUtil = __webpack_require__(19)
+			var _scoreUtil = __webpack_require__(11)
 
 			var _scoreUtil2 = _interopRequireDefault(_scoreUtil)
 
@@ -6655,7 +6687,7 @@
 
 			var _apiUtil2 = _interopRequireDefault(_apiUtil)
 
-			var _questionUtil = __webpack_require__(10)
+			var _questionUtil = __webpack_require__(5)
 
 			var _questionUtil2 = _interopRequireDefault(_questionUtil)
 

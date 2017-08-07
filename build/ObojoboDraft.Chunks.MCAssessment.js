@@ -570,10 +570,21 @@
 
 				_createClass(MCAssessment, [
 					{
+						key: 'getQuestionModel',
+						value: function getQuestionModel() {
+							return this.props.model.getParentOfType('ObojoboDraft.Chunks.Question')
+						}
+					},
+					{
 						key: 'getResponseData',
 						value: function getResponseData() {
+							var questionResponse = QuestionUtil.getResponse(
+								this.props.moduleData.questionState,
+								this.getQuestionModel()
+							) || { ids: [] }
 							var correct = new Set()
 							var responses = new Set()
+							var childId = void 0
 
 							var _iteratorNormalCompletion = true
 							var _didIteratorError = false
@@ -588,20 +599,14 @@
 								) {
 									var child = _step.value
 
+									childId = child.get('id')
+
 									if (child.modelState.score === 100) {
-										correct.add(child.get('id'))
+										correct.add(childId)
 									}
 
-									if (
-										__guard__(
-											QuestionUtil.getResponse(this.props.moduleData.questionState, child),
-											function(x) {
-												return x.set
-											}
-										)
-									) {
-										// return child.modelState.score
-										responses.add(child.get('id'))
+									if (questionResponse.ids.indexOf(childId) !== -1) {
+										responses.add(childId)
 									}
 								}
 							} catch (err) {
@@ -683,81 +688,63 @@
 						}
 					},
 					{
-						key: 'onClickSubmit',
-						value: function onClickSubmit(event) {
-							event.preventDefault()
-							return this.updateScore()
-						}
-					},
-					{
-						key: 'updateScore',
-						value: function updateScore() {
-							return ScoreUtil.setScore(this.props.model.parent.get('id'), this.calculateScore())
-						}
-					},
-					{
-						key: 'onClickShowExplanation',
-						value: function onClickShowExplanation(event) {
-							event.preventDefault()
-							QuestionUtil.showExplanation(this.props.model.get('id'))
-						}
-					},
-					{
-						key: 'onClickHideExplanation',
-						value: function onClickHideExplanation(event) {
-							event.preventDefault()
-							QuestionUtil.hideExplanation(this.props.model.get('id'))
-						}
-					},
-					{
 						key: 'isShowingExplanation',
 						value: function isShowingExplanation() {
-							return QuestionUtil.getData(
+							return QuestionUtil.isShowingExplanation(
 								this.props.moduleData.questionState,
-								this.props.model,
-								'showingExplanation'
+								this.getQuestionModel()
 							)
+						}
+					},
+					{
+						key: 'retry',
+						value: function retry() {
+							QuestionUtil.retryQuestion(this.getQuestionModel().get('id'))
+						}
+					},
+					{
+						key: 'hideExplanation',
+						value: function hideExplanation() {
+							QuestionUtil.hideExplanation(this.getQuestionModel().get('id'))
 						}
 					},
 					{
 						key: 'onClickReset',
 						value: function onClickReset(event) {
 							event.preventDefault()
-							return this.reset()
+
+							this.retry()
 						}
 					},
 					{
-						key: 'reset',
-						value: function reset() {
-							this.clearShowingExplanation()
-							this.clearResponses()
-							return this.clearScore()
+						key: 'onClickSubmit',
+						value: function onClickSubmit(event) {
+							event.preventDefault()
+
+							ScoreUtil.setScore(this.getQuestionModel().get('id'), this.calculateScore())
 						}
 					},
 					{
-						key: 'clearShowingExplanation',
-						value: function clearShowingExplanation() {
-							return QuestionUtil.clearData(this.props.model.get('id'), 'showingExplanation')
-						}
-						// QuestionUtil.clearData @props.model.get('id'), 'shuffledIds'
-					},
-					{
-						key: 'clearResponses',
-						value: function clearResponses() {
-							return Array.from(this.props.model.children.models).map(function(child) {
-								return QuestionUtil.resetResponse(child.get('id'))
-							})
+						key: 'onClickShowExplanation',
+						value: function onClickShowExplanation(event) {
+							event.preventDefault()
+
+							QuestionUtil.showExplanation(this.getQuestionModel().get('id'))
 						}
 					},
 					{
-						key: 'clearScore',
-						value: function clearScore() {
-							return ScoreUtil.clearScore(this.props.model.parent.get('id'))
+						key: 'onClickHideExplanation',
+						value: function onClickHideExplanation(event) {
+							event.preventDefault()
+
+							this.hideExplanation()
 						}
 					},
 					{
 						key: 'onClick',
 						value: function onClick(event) {
+							var response = void 0
+							var questionModel = this.getQuestionModel()
 							var mcChoiceEl = DOMUtil.findParentWithAttr(
 								event.target,
 								'data-type',
@@ -773,65 +760,34 @@
 							}
 
 							if (this.getScore() !== null) {
-								this.reset()
+								this.retry()
 							}
 
 							switch (this.props.model.modelState.responseType) {
 								case 'pick-all':
-									return QuestionUtil.recordResponse(mcChoiceId, {
-										set: !__guard__(
-											QuestionUtil.getResponse(
-												this.props.moduleData.questionState,
-												OboModel.models[mcChoiceId]
-											),
-											function(x) {
-												return x.set
-											}
-										)
-									})
+									response = QuestionUtil.getResponse(
+										this.props.moduleData.questionState,
+										questionModel
+									) || {
+										ids: []
+									}
+									var responseIndex = response.ids.indexOf(mcChoiceId)
+
+									if (responseIndex === -1) {
+										response.ids.push(mcChoiceId)
+									} else {
+										response.ids.splice(responseIndex, 1)
+									}
+									break
 
 								default:
-									// pick-one | pick-one-multiple-correct
-									var _iteratorNormalCompletion3 = true
-									var _didIteratorError3 = false
-									var _iteratorError3 = undefined
-
-									try {
-										for (
-											var _iterator3 = Array.from(this.props.model.children.models)[
-													Symbol.iterator
-												](),
-												_step3;
-											!(_iteratorNormalCompletion3 = (_step3 = _iterator3.next()).done);
-											_iteratorNormalCompletion3 = true
-										) {
-											var child = _step3.value
-
-											if (child.get('id') !== mcChoiceId) {
-												QuestionUtil.recordResponse(child.get('id'), {
-													set: false
-												})
-											}
-										}
-									} catch (err) {
-										_didIteratorError3 = true
-										_iteratorError3 = err
-									} finally {
-										try {
-											if (!_iteratorNormalCompletion3 && _iterator3.return) {
-												_iterator3.return()
-											}
-										} finally {
-											if (_didIteratorError3) {
-												throw _iteratorError3
-											}
-										}
+									response = {
+										ids: [mcChoiceId]
 									}
-
-									return QuestionUtil.recordResponse(mcChoiceId, {
-										set: true
-									})
+									break
 							}
+
+							QuestionUtil.setResponse(questionModel.get('id'), response)
 						}
 					},
 					{
@@ -839,13 +795,9 @@
 						value: function getScore() {
 							return ScoreUtil.getScoreForModel(
 								this.props.moduleData.scoreState,
-								this.props.model.parent
+								this.getQuestionModel()
 							)
 						}
-
-						// showSolution: (event) ->
-						// 	event.preventDefault()
-						// 	@setState { showingSolution:true }
 					},
 					{
 						key: 'componentWillReceiveProps',
@@ -1246,6 +1198,12 @@
 					MCChoice,
 					[
 						{
+							key: 'getQuestionModel',
+							value: function getQuestionModel() {
+								return this.props.model.getParentOfType('ObojoboDraft.Chunks.Question')
+							}
+						},
+						{
 							key: 'createFeedbackItem',
 							value: function createFeedbackItem(message) {
 								var feedback = OboModel.create('ObojoboDraft.Chunks.MCAssessment.MCFeedback')
@@ -1275,13 +1233,11 @@
 							value: function render() {
 								var _this2 = this
 
-								var isSelected =
-									__guard__(
-										QuestionUtil.getResponse(this.props.moduleData.questionState, this.props.model),
-										function(x) {
-											return x.set
-										}
-									) === true
+								var response = QuestionUtil.getResponse(
+									this.props.moduleData.questionState,
+									this.getQuestionModel()
+								) || { ids: [] }
+								var isSelected = response.ids.indexOf(this.props.model.get('id')) !== -1
 
 								return React.createElement(
 									OboComponent,

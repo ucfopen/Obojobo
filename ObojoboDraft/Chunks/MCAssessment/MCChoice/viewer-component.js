@@ -17,6 +17,10 @@ export default class MCChoice extends React.Component {
 		}
 	}
 
+	getQuestionModel() {
+		return this.props.model.getParentOfType('ObojoboDraft.Chunks.Question')
+	}
+
 	createFeedbackItem(message) {
 		let feedback = OboModel.create('ObojoboDraft.Chunks.MCAssessment.MCFeedback')
 		let text = OboModel.create('ObojoboDraft.Chunks.Text')
@@ -39,21 +43,21 @@ export default class MCChoice extends React.Component {
 	}
 
 	render() {
-		let isSelected =
-			__guard__(
-				QuestionUtil.getResponse(this.props.moduleData.questionState, this.props.model),
-				x => x.set
-			) === true
+		let response = QuestionUtil.getResponse(
+			this.props.moduleData.questionState,
+			this.getQuestionModel()
+		) || { ids: [] }
+		let isSelected = response.ids.indexOf(this.props.model.get('id')) !== -1
 
 		return (
 			<OboComponent
 				model={this.props.model}
 				moduleData={this.props.moduleData}
-				className={`obojobo-draft--chunks--mc-assessment--mc-choice${isSelected
-					? ' is-selected'
-					: ' is-not-selected'}${this.props.model.modelState.score === 100
-					? ' is-correct'
-					: ' is-incorrect'}`}
+				className={
+					'obojobo-draft--chunks--mc-assessment--mc-choice' +
+					(isSelected ? ' is-selected' : ' is-not-selected') +
+					(this.props.model.modelState.score === 100 ? ' is-correct' : ' is-incorrect')
+				}
 				data-choice-label={this.props.label}
 			>
 				<input

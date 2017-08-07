@@ -4,8 +4,8 @@ let { Dispatcher } = Common.flux
 let { OboModel } = Common.models
 
 let QuestionUtil = {
-	recordResponse(id, response) {
-		return Dispatcher.trigger('question:recordResponse', {
+	setResponse(id, response) {
+		return Dispatcher.trigger('question:setResponse', {
 			value: {
 				id,
 				response
@@ -13,8 +13,8 @@ let QuestionUtil = {
 		})
 	},
 
-	resetResponse(id) {
-		return Dispatcher.trigger('question:resetResponse', {
+	clearResponse(id) {
+		return Dispatcher.trigger('question:clearResponse', {
 			value: {
 				id
 			}
@@ -40,13 +40,13 @@ let QuestionUtil = {
 
 	showExplanation(id) {
 		return Dispatcher.trigger('question:showExplanation', {
-			value: { key: id }
+			value: { id }
 		})
 	},
 
 	hideExplanation(id) {
 		return Dispatcher.trigger('question:hideExplanation', {
-			value: { key: id }
+			value: { id }
 		})
 	},
 
@@ -66,6 +66,14 @@ let QuestionUtil = {
 		})
 	},
 
+	retryQuestion(id) {
+		return Dispatcher.trigger('question:retry', {
+			value: {
+				id
+			}
+		})
+	},
+
 	getViewState(state, model) {
 		let modelId = model.get('id')
 
@@ -79,15 +87,15 @@ let QuestionUtil = {
 	},
 
 	getResponse(state, model) {
-		return state.responses[model.get('id')]
-	},
-
-	hasResponse(state, model) {
-		return typeof state.responses[model.get('id')] !== 'undefined'
+		return state.responses[model.get('id')] || null
 	},
 
 	getData(state, model, key) {
 		return state.data[model.get('id') + ':' + key] || false
+	},
+
+	isShowingExplanation(state, model) {
+		return state.data[model.get('id') + ':showingExplanation'] || false
 	}
 }
 

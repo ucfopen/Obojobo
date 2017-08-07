@@ -30,20 +30,28 @@ export default class MCAssessment extends React.Component {
 		this.isShowingExplanation = this.isShowingExplanation.bind(this)
 	}
 
+	getQuestionModel() {
+		return this.props.model.getParentOfType('ObojoboDraft.Chunks.Question')
+	}
+
 	getResponseData() {
+		let questionResponse = QuestionUtil.getResponse(
+			this.props.moduleData.questionState,
+			this.getQuestionModel()
+		) || { ids: [] }
 		let correct = new Set()
 		let responses = new Set()
+		let childId
 
 		for (let child of Array.from(this.props.model.children.models)) {
+			childId = child.get('id')
+
 			if (child.modelState.score === 100) {
-				correct.add(child.get('id'))
+				correct.add(childId)
 			}
 
-			if (
-				__guard__(QuestionUtil.getResponse(this.props.moduleData.questionState, child), x => x.set)
-			) {
-				// return child.modelState.score
-				responses.add(child.get('id'))
+			if (questionResponse.ids.indexOf(childId) !== -1) {
+				responses.add(childId)
 			}
 		}
 
@@ -83,59 +91,48 @@ export default class MCAssessment extends React.Component {
 		}
 	}
 
-	onClickSubmit(event) {
-		event.preventDefault()
-		return this.updateScore()
+	isShowingExplanation() {
+		return QuestionUtil.isShowingExplanation(
+			this.props.moduleData.questionState,
+			this.getQuestionModel()
+		)
 	}
 
-	updateScore() {
-		return ScoreUtil.setScore(this.props.model.parent.get('id'), this.calculateScore())
+	retry() {
+		QuestionUtil.retryQuestion(this.getQuestionModel().get('id'))
+	}
+
+	hideExplanation() {
+		QuestionUtil.hideExplanation(this.getQuestionModel().get('id'))
+	}
+
+	onClickReset(event) {
+		event.preventDefault()
+
+		this.retry()
+	}
+
+	onClickSubmit(event) {
+		event.preventDefault()
+
+		ScoreUtil.setScore(this.getQuestionModel().get('id'), this.calculateScore())
 	}
 
 	onClickShowExplanation(event) {
 		event.preventDefault()
-		QuestionUtil.showExplanation(this.props.model.get('id'))
+
+		QuestionUtil.showExplanation(this.getQuestionModel().get('id'))
 	}
 
 	onClickHideExplanation(event) {
 		event.preventDefault()
-		QuestionUtil.hideExplanation(this.props.model.get('id'))
-	}
 
-	isShowingExplanation() {
-		return QuestionUtil.getData(
-			this.props.moduleData.questionState,
-			this.props.model,
-			'showingExplanation'
-		)
-	}
-	onClickReset(event) {
-		event.preventDefault()
-		return this.reset()
-	}
-
-	reset() {
-		this.clearShowingExplanation()
-		this.clearResponses()
-		return this.clearScore()
-	}
-
-	clearShowingExplanation() {
-		return QuestionUtil.clearData(this.props.model.get('id'), 'showingExplanation')
-	}
-	// QuestionUtil.clearData @props.model.get('id'), 'shuffledIds'
-
-	clearResponses() {
-		return Array.from(this.props.model.children.models).map(child =>
-			QuestionUtil.resetResponse(child.get('id'))
-		)
-	}
-
-	clearScore() {
-		return ScoreUtil.clearScore(this.props.model.parent.get('id'))
+		this.hideExplanation()
 	}
 
 	onClick(event) {
+		let response
+		let questionModel = this.getQuestionModel()
 		let mcChoiceEl = DOMUtil.findParentWithAttr(
 			event.target,
 			'data-type',
@@ -151,44 +148,36 @@ export default class MCAssessment extends React.Component {
 		}
 
 		if (this.getScore() !== null) {
-			this.reset()
+			this.retry()
 		}
 
 		switch (this.props.model.modelState.responseType) {
 			case 'pick-all':
-				return QuestionUtil.recordResponse(mcChoiceId, {
-					set: !__guard__(
-						QuestionUtil.getResponse(
-							this.props.moduleData.questionState,
-							OboModel.models[mcChoiceId]
-						),
-						x => x.set
-					)
-				})
+				response = QuestionUtil.getResponse(this.props.moduleData.questionState, questionModel) || {
+					ids: []
+				}
+				let responseIndex = response.ids.indexOf(mcChoiceId)
+
+				if (responseIndex === -1) {
+					response.ids.push(mcChoiceId)
+				} else {
+					response.ids.splice(responseIndex, 1)
+				}
+				break
 
 			default:
-				// pick-one | pick-one-multiple-correct
-				for (let child of Array.from(this.props.model.children.models)) {
-					if (child.get('id') !== mcChoiceId) {
-						QuestionUtil.recordResponse(child.get('id'), {
-							set: false
-						})
-					}
+				response = {
+					ids: [mcChoiceId]
 				}
-
-				return QuestionUtil.recordResponse(mcChoiceId, {
-					set: true
-				})
+				break
 		}
+
+		QuestionUtil.setResponse(questionModel.get('id'), response)
 	}
 
 	getScore() {
-		return ScoreUtil.getScoreForModel(this.props.moduleData.scoreState, this.props.model.parent)
+		return ScoreUtil.getScoreForModel(this.props.moduleData.scoreState, this.getQuestionModel())
 	}
-
-	// showSolution: (event) ->
-	// 	event.preventDefault()
-	// 	@setState { showingSolution:true }
 
 	componentWillReceiveProps() {
 		this.shuffle()

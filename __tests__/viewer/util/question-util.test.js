@@ -21,11 +21,11 @@ describe('QuestionUtil', () => {
 		QuestionStore.init()
 	})
 
-	it('should trigger question:recordResponse', () => {
-		QuestionUtil.recordResponse('testId', { response: 'A Response' })
+	it('should trigger question:setResponse', () => {
+		QuestionUtil.setResponse('testId', { response: 'A Response' })
 
 		expect(Dispatcher.trigger).toHaveBeenCalledTimes(1)
-		expect(Dispatcher.trigger).toHaveBeenCalledWith('question:recordResponse', {
+		expect(Dispatcher.trigger).toHaveBeenCalledWith('question:setResponse', {
 			value: {
 				id: 'testId',
 				response: { response: 'A Response' }
@@ -33,11 +33,11 @@ describe('QuestionUtil', () => {
 		})
 	})
 
-	it('should trigger question:resetResponse', () => {
-		QuestionUtil.resetResponse('testId')
+	it('should trigger question:clearResponse', () => {
+		QuestionUtil.clearResponse('testId')
 
 		expect(Dispatcher.trigger).toHaveBeenCalledTimes(1)
-		expect(Dispatcher.trigger).toHaveBeenCalledWith('question:resetResponse', {
+		expect(Dispatcher.trigger).toHaveBeenCalledWith('question:clearResponse', {
 			value: {
 				id: 'testId'
 			}
@@ -67,7 +67,7 @@ describe('QuestionUtil', () => {
 		})
 	})
 
-	it('should trigger question:view', () => {
+	it('should trigger question:viewQuestion', () => {
 		QuestionUtil.viewQuestion('testId')
 
 		expect(Dispatcher.trigger).toHaveBeenCalledTimes(1)
@@ -78,11 +78,44 @@ describe('QuestionUtil', () => {
 		})
 	})
 
-	it('should trigger question:hide', () => {
+	it('should trigger question:hideQuestion', () => {
 		QuestionUtil.hideQuestion('testId')
 
 		expect(Dispatcher.trigger).toHaveBeenCalledTimes(1)
 		expect(Dispatcher.trigger).toHaveBeenCalledWith('question:hide', {
+			value: {
+				id: 'testId'
+			}
+		})
+	})
+
+	it('should trigger question:showExplanation', () => {
+		QuestionUtil.showExplanation('testId')
+
+		expect(Dispatcher.trigger).toHaveBeenCalledTimes(1)
+		expect(Dispatcher.trigger).toHaveBeenCalledWith('question:showExplanation', {
+			value: {
+				id: 'testId'
+			}
+		})
+	})
+
+	it('should trigger question:hideExplanation', () => {
+		QuestionUtil.hideExplanation('testId')
+
+		expect(Dispatcher.trigger).toHaveBeenCalledTimes(1)
+		expect(Dispatcher.trigger).toHaveBeenCalledWith('question:hideExplanation', {
+			value: {
+				id: 'testId'
+			}
+		})
+	})
+
+	it('should trigger question:retryQuestion', () => {
+		QuestionUtil.retryQuestion('testId')
+
+		expect(Dispatcher.trigger).toHaveBeenCalledTimes(1)
+		expect(Dispatcher.trigger).toHaveBeenCalledWith('question:retry', {
 			value: {
 				id: 'testId'
 			}
@@ -137,28 +170,6 @@ describe('QuestionUtil', () => {
 		expect(res).toEqual('A Response')
 	})
 
-	it('should report if a response for a given model exists', () => {
-		let has = QuestionUtil.hasResponse(
-			{
-				responses: {
-					testId: false
-				}
-			},
-			testModel
-		)
-		let notHas = QuestionUtil.hasResponse(
-			{
-				responses: {
-					notTestId: false
-				}
-			},
-			testModel
-		)
-
-		expect(has).toBe(true)
-		expect(notHas).toBe(false)
-	})
-
 	it('should get data from state for a given model and key', () => {
 		let data = QuestionUtil.getData(
 			{
@@ -171,5 +182,40 @@ describe('QuestionUtil', () => {
 		)
 
 		expect(data).toEqual({ someData: true })
+	})
+
+	it('should report if it is showing an explanation', () => {
+		expect(
+			QuestionUtil.isShowingExplanation(
+				{
+					data: {
+						'testId:showingExplanation': false
+					}
+				},
+				testModel
+			)
+		).toBe(false)
+
+		expect(
+			QuestionUtil.isShowingExplanation(
+				{
+					data: {
+						'otherId:showingExplanation': true
+					}
+				},
+				testModel
+			)
+		).toBe(false)
+
+		expect(
+			QuestionUtil.isShowingExplanation(
+				{
+					data: {
+						'testId:showingExplanation': true
+					}
+				},
+				testModel
+			)
+		).toBe(true)
 	})
 })

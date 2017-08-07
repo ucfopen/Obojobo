@@ -8,25 +8,13 @@ class MCAssessment extends DraftNode {
 		})
 	}
 
-	onCalculateScore(app, question, responseRecords, setScore) {
+	onCalculateScore(app, question, responseRecord, setScore) {
 		if (!question.contains(this.node)) return
-
-		// console.log('RES RECS', responseRecords)
 
 		switch (this.node.content.responseType) {
 			case 'pick-one':
 			case 'pick-one-multiple-correct':
-				let selectedItems = responseRecords.filter(record => {
-					return record.response.set === true
-				})
-				//@TODO - Check to make sure there isn't more than one responseRecord (there shouldn't be for these type of questions)
-				if (selectedItems.length > 1)
-					throw 'Impossible response to non pick-all MCAssessment response'
-
-				if (selectedItems.length === 0) return setScore(0)
-
-				let mcChoice = this.draftTree.getChildNodeById(selectedItems[0].responder_id)
-				setScore(mcChoice.node.content.score)
+				setScore(this.draftTree.getChildNodeById(responseRecord.response.ids[0]).node.content.score)
 				break
 
 			case 'pick-all':
@@ -36,15 +24,7 @@ class MCAssessment extends DraftNode {
 					})
 				)
 
-				let responseIds = new Set(
-					responseRecords
-						.filter(record => {
-							return record.response.set === true
-						})
-						.map(record => {
-							return record.responder_id
-						})
-				)
+				let responseIds = new Set(responseRecord.response.ids)
 
 				if (correctIds.size !== responseIds.size) return setScore(0)
 

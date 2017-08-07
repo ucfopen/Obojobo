@@ -1,5 +1,6 @@
 import { Store } from '../../../src/scripts/common/store'
 import QuestionStore from '../../../src/scripts/viewer/stores/question-store'
+import ScoreUtil from '../../../src/scripts/viewer/util/score-util'
 import OboModel from '../../../__mocks__/_obo-model-with-chunks'
 import APIUtil from '../../../src/scripts/viewer/util/api-util'
 import Dispatcher from '../../../src/scripts/common/flux/dispatcher'
@@ -81,12 +82,12 @@ describe('QuestionStore', () => {
 		expect(QuestionStore.getState()).toEqual({ x: 1 })
 	})
 
-	it.only('should record responses, trigger a change and post an event', () => {
+	it('should record responses, trigger a change and post an event', () => {
 		__createModels()
 
-		Dispatcher.trigger('question:recordResponse', {
+		Dispatcher.trigger('question:setResponse', {
 			value: {
-				id: 'responderId',
+				id: 'questionId',
 				response: { customResponse: 'responseValue' }
 			}
 		})
@@ -94,18 +95,17 @@ describe('QuestionStore', () => {
 		expect(QuestionStore.triggerChange).toHaveBeenCalledTimes(1)
 		expect(APIUtil.postEvent).toHaveBeenCalledTimes(1)
 		expect(APIUtil.postEvent.mock.calls[0][0]).toBe(OboModel.models.questionId)
-		expect(APIUtil.postEvent.mock.calls[0][1]).toEqual('question:recordResponse')
+		expect(APIUtil.postEvent.mock.calls[0][1]).toEqual('question:setResponse')
 		expect(APIUtil.postEvent.mock.calls[0][2]).toEqual({
 			questionId: 'questionId',
-			responderId: 'responderId',
 			response: { customResponse: 'responseValue' }
 		})
 	})
 
-	it('should reset a reponse and trigger a change for a response that has been set', () => {
+	it('should clear a reponse and trigger a change for a response that has been set', () => {
 		QuestionStore.setState({ responses: { example: 'response' } })
 
-		Dispatcher.trigger('question:resetResponse', {
+		Dispatcher.trigger('question:clearResponse', {
 			value: {
 				id: 'example'
 			}
@@ -117,10 +117,10 @@ describe('QuestionStore', () => {
 		})
 	})
 
-	it("shouldn't reset a reponse but still trigger a change for a response that hasn't been set", () => {
+	it("shouldn't clear a reponse but still trigger a change for a response that hasn't been set", () => {
 		QuestionStore.setState({ responses: { example: 'response' } })
 
-		Dispatcher.trigger('question:resetResponse', {
+		Dispatcher.trigger('question:clearResponse', {
 			value: {
 				id: 'someOtherId'
 			}
@@ -310,6 +310,66 @@ describe('QuestionStore', () => {
 			viewedQuestions: {
 				responderId: true
 			}
+		})
+	})
+
+	it('shows and hides explanations', () => {
+		__createModels()
+
+		QuestionStore.setState({
+			data: {}
+		})
+
+		Dispatcher.trigger('question:showExplanation', {
+			value: {
+				id: 'questionId'
+			}
+		})
+
+		expect(QuestionStore.triggerChange).toHaveBeenCalledTimes(1)
+		expect(QuestionStore.getState()).toEqual({
+			data: {
+				'questionId:showingExplanation': true
+			}
+		})
+
+		Dispatcher.trigger('question:hideExplanation', {
+			value: {
+				id: 'questionId'
+			}
+		})
+
+		expect(QuestionStore.triggerChange).toHaveBeenCalledTimes(2)
+		expect(QuestionStore.getState()).toEqual({
+			data: {}
+		})
+	})
+
+	it('can retry questions which clears responses, hides explanations and clears scores', () => {
+		__createModels()
+
+		ScoreUtil.clearScore = jest.fn()
+
+		QuestionStore.setState({
+			viewing: 'questionId',
+			viewedQuestions: { questionId: true },
+			responses: { questionId: 'response' },
+			data: { 'questionId:showingExplanation': true }
+		})
+
+		Dispatcher.trigger('question:retry', {
+			value: {
+				id: 'questionId'
+			}
+		})
+
+		expect(QuestionStore.triggerChange).toHaveBeenCalled()
+		expect(ScoreUtil.clearScore).toHaveBeenCalled()
+		expect(QuestionStore.getState()).toEqual({
+			viewing: 'questionId',
+			viewedQuestions: { questionId: true },
+			responses: {},
+			data: {}
 		})
 	})
 })
