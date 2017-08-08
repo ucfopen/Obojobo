@@ -25,8 +25,20 @@ const IRI = {
 		return createIRI(host, `/users/${userId}`)
 	},
 
-	getViewIRI: (host, draftId, oboNodeId) => {
-		return createIRI(host, `/view/${draftId}/${oboNodeId}`)
+	getViewIRI: (host, draftId, oboNodeId = null) => {
+		let iri
+
+		if (oboNodeId === null) {
+			iri = createIRI(host, `/view/${draftId}`)
+		} else {
+			iri = createIRI(host, `/view/${draftId}#${oboNodeId}`)
+		}
+
+		return iri
+	},
+
+	getViewAttemptIRI: (host, draftId, assessmentId, attemptId) => {
+		return createIRI(host, `/view/${draftId}/assessment/${assessmentId}/attempt/${attemptId}`)
 	}
 }
 

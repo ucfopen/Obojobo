@@ -1,6 +1,6 @@
 let IRI = oboRequire('iri_builder')
 
-let IRIbuilder = req => {
+let IRIBuilder = req => {
 	return {
 		getCurrentUserIRI: () => {
 			return IRI.getUserIRI(req.hostname, req.currentUser.id)
@@ -24,11 +24,15 @@ let IRIbuilder = req => {
 
 		getViewIRI: (draftId, oboNodeId) => {
 			return IRI.getViewIRI(req.hostname, draftId, oboNodeId)
+		},
+
+		getViewAttemptIRI: (draftId, assessmentId, attemptId) => {
+			return IRI.getViewAttemptIRI(req.hostname, draftId, assessmentId, attemptId)
 		}
 	}
 }
 
 module.exports = (req, res, next) => {
-	req.iri = IRIbuilder(req)
+	req.iri = IRIBuilder(req)
 	next()
 }
