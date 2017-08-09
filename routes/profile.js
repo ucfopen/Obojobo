@@ -1,13 +1,11 @@
-var express = require('express');
-var router = express.Router();
+var express = require('express')
+var router = express.Router()
 
 router.get('/', (req, res, next) => {
-	return req.getCurrentUser()
-	.then(currentuser => {
+	return req.getCurrentUser().then(currentuser => {
 		let msg = `Hello ${currentuser.username}!`
-		res.send(msg);
-		next()
+		res.send(msg)
 	})
 })
 
-module.exports = router;
+module.exports = router
