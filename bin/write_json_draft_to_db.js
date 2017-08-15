@@ -3,7 +3,6 @@ global.oboRequire = name => {
 	return require(`${__dirname}/../${name}`)
 }
 let fs = require('fs')
-let logger = oboRequire('logger')
 
 let usageError = new Error(`Usage:
 	node write_json_draft_to_db.js insert file.json [user_id] [draft_id]
@@ -13,7 +12,7 @@ let db = oboRequire('db')
 let insertNewDraft = oboRequire('routes/api/drafts/insert_new_draft')
 let updateDraft = oboRequire('routes/api/drafts/update_draft')
 
-let draftId, userId
+let draftId, userId, generatedDraftId
 
 try {
 	if (process.argv.length <= 2) throw usageError
@@ -31,22 +30,39 @@ try {
 
 			insertNewDraft(userId, json)
 				.then(newDraft => {
-					return db.one(
-						`
-					UPDATE drafts
-					SET id = $[newId]
-					WHERE id = $[currentId]
-					`,
-						{ newId: draftId, currentId: newDraft.id }
-					)
+					if (draftId) {
+						generatedDraftId = newDraft.id
+						return db.none(
+							`
+							UPDATE drafts
+							SET id = $[newId]
+							WHERE id = $[currentId]
+							`,
+							{ newId: draftId, currentId: generatedDraftId }
+						)
+					}
+					return newDraft
+				})
+				.then(result => {
+					if (draftId)
+						return db.none(
+							`
+							UPDATE drafts_content
+							SET draft_id = $[newId]
+							WHERE draft_id = $[currentId]
+							`,
+							{ newId: draftId, currentId: generatedDraftId }
+						)
+					return result
 				})
 				.then(() => {
-					logger.debug('OK')
+					console.info('OK')
 					process.exit()
 					return
 				})
 				.catch(err => {
-					logger.error(err.message)
+					console.error(err.detail)
+					console.error(err.message)
 					process.exit(1)
 					return
 				})
@@ -57,12 +73,12 @@ try {
 
 			updateDraft(draftId, json)
 				.then(id => {
-					logger.debug('OK. id=' + id)
+					console.info('OK. id=' + id)
 					process.exit()
 					return
 				})
 				.catch(err => {
-					logger.error(err.message)
+					console.error(err.message)
 					process.exit(1)
 					return
 				})
@@ -73,7 +89,7 @@ try {
 			break
 	}
 } catch (e) {
-	logger.error('erroror')
-	logger.error(e.message)
+	console.error('erroror')
+	console.error(e.message)
 	process.exit(1)
 }
