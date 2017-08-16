@@ -31,37 +31,33 @@ try {
 			insertNewDraft(userId, json)
 				.then(newDraft => {
 					if (draftId) {
+						console.info(draftId)
 						generatedDraftId = newDraft.id
-						return db.none(
-							`
-							UPDATE drafts
-							SET id = $[newId]
-							WHERE id = $[currentId]
-							`,
-							{ newId: draftId, currentId: generatedDraftId }
-						)
+						return db.tx('Update if given id', t => {
+							return t.batch([
+								t.none(
+									`UPDATE drafts
+									SET id = $[newId]
+									WHERE id = $[currentId]`,
+									{ newId: draftId, currentId: generatedDraftId }
+								),
+								t.none(
+									`UPDATE drafts_content
+									SET draft_id = $[newId]
+									WHERE draft_id = $[currentId]`,
+									{ newId: draftId, currentId: generatedDraftId }
+								)
+							])
+						})
 					}
+					console.info(newDraft.id)
 					return newDraft
 				})
-				.then(result => {
-					if (draftId)
-						return db.none(
-							`
-							UPDATE drafts_content
-							SET draft_id = $[newId]
-							WHERE draft_id = $[currentId]
-							`,
-							{ newId: draftId, currentId: generatedDraftId }
-						)
-					return result
-				})
 				.then(() => {
-					console.info('OK')
 					process.exit()
 					return
 				})
 				.catch(err => {
-					console.error(err.detail)
 					console.error(err.message)
 					process.exit(1)
 					return
@@ -89,7 +85,6 @@ try {
 			break
 	}
 } catch (e) {
-	console.error('erroror')
 	console.error(e.message)
 	process.exit(1)
 }

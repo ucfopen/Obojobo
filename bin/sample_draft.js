@@ -15,7 +15,6 @@ let writeJsonDraftToDbPath = `${__dirname}/write_json_draft_to_db`
 
 try {
 	if (process.argv.length <= 2) throw usageError
-	console.log(sampleJsonPath)
 
 	switch (process.argv[2]) {
 		case 'seed':
@@ -28,11 +27,9 @@ try {
 						process.exit(1)
 					}
 
-					console.warn(
-						`Sample draft seeded at ${defaultId}, you must set the user ID to view the sample!`
-					)
+					console.info(`Sample draft seeded at:`)
+					console.info(stdout)
 
-					if (stdout) console.info(stdout)
 					if (stderr) console.error(stderr)
 					process.exit(0)
 				}
@@ -64,7 +61,6 @@ try {
 			break
 	}
 } catch (e) {
-	console.log('in main catch ', e)
 	console.error(e.message)
 	process.exit(1)
 }
