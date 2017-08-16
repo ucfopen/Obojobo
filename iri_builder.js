@@ -18,11 +18,15 @@ const IRI = {
 	},
 
 	getSessionIRI: (host, sessionId) => {
-		return createIRI(host, `/sessions/${sessionId}`)
+		return createIRI(host, `/session/${sessionId}`)
+	},
+
+	getFederatedSessionIRI: (host, launchId) => {
+		return createIRI(host, `/launch/${launchId}`)
 	},
 
 	getUserIRI: (host, userId) => {
-		return createIRI(host, `/users/${userId}`)
+		return createIRI(host, `/user/${userId}`)
 	},
 
 	getViewIRI: (host, draftId, oboNodeId = null) => {

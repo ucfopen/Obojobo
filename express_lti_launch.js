@@ -4,6 +4,8 @@ let User = oboRequire('models/user')
 let logger = oboRequire('logger')
 
 let storeLtiLaunch = (draftId, user, ip, ltiBody, ltiConsumerKey) => {
+	let insertLaunchResult = null
+
 	return db
 		.one(
 			`
@@ -20,16 +22,21 @@ let storeLtiLaunch = (draftId, user, ip, ltiBody, ltiConsumerKey) => {
 			}
 		)
 		.then(result => {
+			insertLaunchResult = result
+
 			// Insert Event
 			return insertEvent({
 				action: 'lti:launch',
 				actorTime: new Date().toISOString(),
-				payload: { launchId: result.id },
+				payload: { launchId: insertLaunchResult.id },
 				userId: user.id,
 				ip: ip,
 				metadata: {},
 				draftId: draftId
 			})
+		})
+		.then(() => {
+			return insertLaunchResult
 		})
 }
 
@@ -69,12 +76,18 @@ module.exports = (req, res, next) => {
 				req.lti.consumer_key
 			)
 		})
-		.then(createdAt => {
+		.then(launchResult => {
+			req.session.oboLti = {
+				launchId: launchResult.id,
+				body: req.lti.body
+			}
+
 			next()
 		})
 		.catch(error => {
 			logger.error('LTI Launch Error', error)
 			logger.error('LTI Body', req.lti && req.lti.body ? req.lti.body : 'No LTI Body')
+
 			next(new Error('There was a problem creating your account.'))
 		})
 }

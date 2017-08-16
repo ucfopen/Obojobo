@@ -18,6 +18,10 @@ let IRIBuilder = req => {
 			return IRI.getSessionIRI(req.hostname, req.session.id)
 		},
 
+		getFederatedSessionIRI: () => {
+			return IRI.getFederatedSessionIRI(req.hostname, req.session.oboLti.launchId)
+		},
+
 		getUserIRI: id => {
 			return IRI.getUserIRI(req.hostname, id)
 		},
