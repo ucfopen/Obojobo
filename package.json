@@ -5,14 +5,14 @@
   "scripts": {
     "start": "yarn express:prod",
     "dev": "yarn express:dev",
-		"db:createmigration": "node node_modules/db-migrate/bin/db-migrate create --config config/db.json",		
+    "db:createmigration": "node node_modules/db-migrate/bin/db-migrate create --config config/db.json",		
     "dev:docEngine": "concurrently \"yarn express:dev\" \"yarn devDocEngine:start\"",
-		"db:initdocker": "docker run --name db_postgres -d --restart=unless-stopped -p 5432:5432 postgres:9.6.1-alpine",
-		"db:migrateup": "node node_modules/db-migrate/bin/db-migrate up --config config/db.json",
+    "db:initdocker": "docker run --name db_postgres -d --restart=unless-stopped -p 5432:5432 postgres:9.6.1-alpine",
+    "db:migrateup": "node node_modules/db-migrate/bin/db-migrate up --config config/db.json",
     "db:migratedown": "node node_modules/db-migrate/bin/db-migrate down --config config/db.json",
-		"db:rebuild": "yarn db:remove && yarn db:initdocker && sleep 4 && yarn db:migrateup && yarn sampleDraft:seed",
-		"db:remove": "docker kill db_postgres && docker rm db_postgres",
-		"db:reset": "node node_modules/db-migrate/bin/db-migrate reset --config config/db.json",
+    "db:rebuild": "yarn db:remove && yarn db:initdocker && sleep 4 && yarn db:migrateup && yarn sampleDraft:seed",
+    "db:remove": "docker kill db_postgres && docker rm db_postgres",
+    "db:reset": "node node_modules/db-migrate/bin/db-migrate reset --config config/db.json",
     "sampleDraft:seed": "node ./bin/sample_draft.js seed",
     "sampleDraft:watch": "node ./bin/sample_draft.js watch",
     "express:dev": "pm2-dev start pm2_dev.yaml",
@@ -33,7 +33,7 @@
     "test:ci": "CI=true jest --coverage",
     "precommit": "yarn test:ci && lint-staged",
     "prettier": "prettier --single-quote --use-tabs --no-semi --print-width='100' --write '{*.js, {__tests__, __mocks__, bin, config, migrations, models, public, routes, views}/**/*.js}'",
-		"prettier:debug": "prettier --single-quote --use-tabs --no-semi --print-width='100' --debug-check '{*.js, {__tests__, __mocks__, bin, config, migrations, models, public, routes, views}/**/*.js}'"
+    "prettier:debug": "prettier --single-quote --use-tabs --no-semi --print-width='100' --debug-check '{*.js, {__tests__, __mocks__, bin, config, migrations, models, public, routes, views}/**/*.js}'"
   },
   "engines": {
     "node": "^6.9.4"
