@@ -51,13 +51,10 @@ router.all('/:draftId*', (req, res, next) => {
 					// assetForEnv('$[http://localhost:8090/webpack-dev-server.js]')
 				]
 			})
-
-			next()
 		})
 		.catch(error => {
 			logger.error(error)
 			next(error)
-			return Promise.reject(error)
 		})
 })
 

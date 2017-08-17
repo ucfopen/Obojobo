@@ -2,39 +2,10 @@ jest.mock('../../../models/draft')
 jest.mock('../../../models/user')
 jest.mock('../../../db')
 jest.mock('../../../logger')
+const { mockExpressMethods, mockRouterMethods } = require('../../../__mocks__/__mock_express')
 
-let mockExpressMethods = {}
-let mockRouterMethods = {}
 let mockInsertNewDraft = mockVirtual('./routes/api/drafts/insert_new_draft')
 let mockUpdateDraft = mockVirtual('./routes/api/drafts/update_draft')
-
-let mockExpress = () => {
-	jest.mock(
-		'express',
-		() => {
-			let module = () => {
-				let methods = ['on', 'use', 'get', 'post', 'put', 'delete', 'all', 'static']
-				let obj = {}
-				methods.forEach(m => {
-					obj[m] = mockExpressMethods[m] = jest.fn()
-				})
-				return obj
-			}
-
-			module.Router = () => {
-				let methods = ['all', 'get', 'post', 'delete', 'put']
-				let obj = {}
-				methods.forEach(m => {
-					obj[m] = mockRouterMethods[m] = jest.fn()
-				})
-				return obj
-			}
-
-			return module
-		},
-		{ virtual: true }
-	)
-}
 
 describe('api draft route', () => {
 	beforeAll(() => {})
@@ -43,8 +14,6 @@ describe('api draft route', () => {
 	afterEach(() => {})
 
 	test('registers the expected routes ', () => {
-		mockExpress()
-		require('express')
 		oboRequire('routes/api/drafts')
 		expect(mockRouterMethods.get).toHaveBeenCalledTimes(2)
 		expect(mockRouterMethods.post).toHaveBeenCalledTimes(2)
@@ -56,47 +25,9 @@ describe('api draft route', () => {
 		// expect(mockRouterMethods.all).toBeCalledWith('/:draftId*', expect.any(Function))
 	})
 
-	test('get draft calls next', () => {
-		expect.assertions(2)
-
-		mockExpress()
-		require('express')
-		let DraftModel = oboRequire('models/draft')
-		let mockYell = jest.fn().mockImplementationOnce(() => {
-			return {
-				document: `{"json":"value"}`,
-				yell: jest.fn().mockImplementationOnce(() => {
-					return 'fake draft'
-				})
-			}
-		})
-
-		DraftModel.__setMockYell(mockYell)
-
-		oboRequire('routes/api/drafts')
-		let routeFunction = mockRouterMethods.get.mock.calls[0][1]
-		let mockReq = {
-			params: { draftId: 555 },
-			app: { get: jest.fn() }
-		}
-
-		let mockRes = {
-			success: jest.fn()
-		}
-
-		let mockNext = jest.fn()
-
-		return routeFunction(mockReq, mockRes, mockNext).then(() => {
-			expect(mockRes.success).toBeCalledWith(`{"json":"value"}`)
-			expect(mockNext).toBeCalledWith()
-		})
-	})
-
 	test('get draft handles missing drafts', () => {
-		expect.assertions(2)
+		expect.assertions(1)
 
-		mockExpress()
-		require('express')
 		let DraftModel = oboRequire('models/draft')
 		DraftModel.fetchById.mockImplementationOnce(() => {
 			return Promise.reject('some error')
@@ -116,17 +47,18 @@ describe('api draft route', () => {
 
 		let mockNext = jest.fn()
 
-		return routeFunction(mockReq, mockRes, mockNext).catch(err => {
-			expect(mockRes.missing).toBeCalledWith('Draft not found')
-			expect(mockNext).toBeCalledWith('some error')
-		})
+		return routeFunction(mockReq, mockRes, mockNext)
+			.then(err => {
+				expect(mockRes.missing).toBeCalledWith('Draft not found')
+			})
+			.catch(err => {
+				expect(err).toBe('never called')
+			})
 	})
 
-	test('create draft calls next', () => {
-		expect.assertions(2)
+	test('create draft calls success', () => {
+		expect.assertions(1)
 
-		mockExpress()
-		require('express')
 		let User = oboRequire('models/user')
 		let DraftModel = oboRequire('models/draft')
 		let mockYell = jest.fn().mockImplementationOnce(() => {
@@ -163,17 +95,18 @@ describe('api draft route', () => {
 			return 'test_result'
 		})
 
-		return routeFunction(mockReq, mockRes, mockNext).then(() => {
-			expect(mockRes.success).toBeCalledWith('test_result')
-			expect(mockNext).toBeCalledWith()
-		})
+		return routeFunction(mockReq, mockRes, mockNext)
+			.then(() => {
+				expect(mockRes.success).toBeCalledWith('test_result')
+			})
+			.catch(err => {
+				expect(err).toBe('never called')
+			})
 	})
 
 	test('creates draft requires user', () => {
-		expect.assertions(2)
+		expect.assertions(1)
 
-		mockExpress()
-		require('express')
 		let User = oboRequire('models/user')
 		oboRequire('routes/api/drafts')
 		let routeFunction = mockRouterMethods.post.mock.calls[0][1]
@@ -200,21 +133,19 @@ describe('api draft route', () => {
 
 		return routeFunction(mockReq, mockRes, mockNext)
 			.then(() => {
-				expect(true).toBe('never called')
+				expect(mockRes.unexpected).toBeCalledWith('Insufficent permissions')
 			})
 			.catch(err => {
-				expect(mockRes.unexpected).toBeCalledWith('Insufficent permissions')
-				expect(mockNext).toBeCalledWith('Insufficent permissions')
+				expect(err).toBe('never called')
 			})
 	})
 
 	test('save draft calls next', () => {
-		expect.assertions(2)
+		expect.assertions(1)
 		mockUpdateDraft.mockImplementationOnce(() => {
 			return Promise.resolve(555)
 		})
-		mockExpress()
-		require('express')
+
 		let User = oboRequire('models/user')
 		let DraftModel = oboRequire('models/draft')
 		let mockYell = jest.fn().mockImplementationOnce(() => {
@@ -230,6 +161,7 @@ describe('api draft route', () => {
 
 		oboRequire('routes/api/drafts')
 		let routeFunction = mockRouterMethods.post.mock.calls[1][1]
+
 		let mockReq = {
 			params: { draftId: 555 },
 			app: { get: jest.fn() },
@@ -252,7 +184,6 @@ describe('api draft route', () => {
 		return routeFunction(mockReq, mockRes, mockNext)
 			.then(() => {
 				expect(mockRes.success).toBeCalledWith({ id: 555 })
-				expect(mockNext).toBeCalledWith()
 			})
 			.catch(err => {
 				expect(err).toBe('never called')
@@ -260,12 +191,12 @@ describe('api draft route', () => {
 	})
 
 	test('save draft requires perms', () => {
-		expect.assertions(2)
-		mockExpress()
-		require('express')
+		expect.assertions(1)
+
 		let User = oboRequire('models/user')
 		oboRequire('routes/api/drafts')
 		let routeFunction = mockRouterMethods.post.mock.calls[1][1]
+
 		let mockReq = {
 			params: { draftId: 555 },
 			app: { get: jest.fn() },
@@ -286,18 +217,15 @@ describe('api draft route', () => {
 
 		return routeFunction(mockReq, mockRes, mockNext)
 			.then(() => {
-				expect(true).toBe('never called')
+				expect(mockRes.unexpected).toBeCalledWith('Insufficent permissions')
 			})
 			.catch(err => {
-				expect(mockRes.unexpected).toBeCalledWith('Insufficent permissions')
-				expect(mockNext).toBeCalledWith('Insufficent permissions')
+				expect(err).toBe('never called')
 			})
 	})
 
 	test('save draft requires login', () => {
-		expect.assertions(2)
-		mockExpress()
-		require('express')
+		expect.assertions(1)
 
 		oboRequire('routes/api/drafts')
 		let routeFunction = mockRouterMethods.post.mock.calls[1][1]
@@ -317,18 +245,15 @@ describe('api draft route', () => {
 
 		return routeFunction(mockReq, mockRes, mockNext)
 			.then(() => {
-				expect(true).toBe('never called')
+				expect(mockRes.unexpected).toBeCalledWith('error1')
 			})
 			.catch(err => {
-				expect(mockRes.unexpected).toBeCalledWith('error1')
-				expect(mockNext).toBeCalledWith('error1')
+				expect(err).toBe('never called')
 			})
 	})
 
 	test('delete draft rejects guest', () => {
-		expect.assertions(2)
-		mockExpress()
-		require('express')
+		expect.assertions(1)
 
 		oboRequire('routes/api/drafts')
 		let routeFunction = mockRouterMethods.delete.mock.calls[0][1]
@@ -347,18 +272,15 @@ describe('api draft route', () => {
 
 		return routeFunction(mockReq, mockRes, mockNext)
 			.then(() => {
-				expect(true).toBe('never called')
+				expect(mockRes.unexpected).toBeCalledWith('error1')
 			})
 			.catch(err => {
-				expect(mockRes.unexpected).toBeCalledWith('error1')
-				expect(mockNext).toBeCalledWith('error1')
+				expect(err).toBe('never called')
 			})
 	})
 
 	test('delete draft requires canDeleteDrafts', () => {
-		expect.assertions(2)
-		mockExpress()
-		require('express')
+		expect.assertions(1)
 
 		oboRequire('routes/api/drafts')
 		let routeFunction = mockRouterMethods.delete.mock.calls[0][1]
@@ -379,18 +301,16 @@ describe('api draft route', () => {
 
 		return routeFunction(mockReq, mockRes, mockNext)
 			.then(() => {
-				expect(true).toBe('never called')
+				expect(mockRes.unexpected).toBeCalledWith('Insufficent permissions')
 			})
 			.catch(err => {
-				expect(mockRes.unexpected).toBeCalledWith('Insufficent permissions')
-				expect(mockNext).toBeCalledWith('Insufficent permissions')
+				expect(err).toBe('never called')
 			})
 	})
 
 	test('delete draft requires deletes', () => {
-		expect.assertions(2)
-		mockExpress()
-		require('express')
+		expect.assertions(1)
+
 		let db = oboRequire('db')
 		db.none.mockImplementationOnce(() => {
 			return Promise.resolve(5)
@@ -415,7 +335,6 @@ describe('api draft route', () => {
 		return routeFunction(mockReq, mockRes, mockNext)
 			.then(() => {
 				expect(mockRes.success).toBeCalledWith(5)
-				expect(mockNext).toBeCalledWith()
 			})
 			.catch(err => {
 				expect(err).toBe('never called')
@@ -423,9 +342,7 @@ describe('api draft route', () => {
 	})
 
 	test('list drafts rejects guest', () => {
-		expect.assertions(2)
-		mockExpress()
-		require('express')
+		expect.assertions(1)
 
 		oboRequire('routes/api/drafts')
 		let routeFunction = mockRouterMethods.get.mock.calls[1][1]
@@ -444,18 +361,15 @@ describe('api draft route', () => {
 
 		return routeFunction(mockReq, mockRes, mockNext)
 			.then(() => {
-				expect(true).toBe('never called')
+				expect(mockRes.unexpected).toBeCalledWith('error1')
 			})
 			.catch(err => {
-				expect(mockRes.unexpected).toBeCalledWith('error1')
-				expect(mockNext).toBeCalledWith('error1')
+				expect(err).toBe('never called')
 			})
 	})
 
 	test('list drafts requires canViewDrafts', () => {
-		expect.assertions(2)
-		mockExpress()
-		require('express')
+		expect.assertions(1)
 
 		oboRequire('routes/api/drafts')
 		let routeFunction = mockRouterMethods.get.mock.calls[1][1]
@@ -474,18 +388,16 @@ describe('api draft route', () => {
 
 		return routeFunction(mockReq, mockRes, mockNext)
 			.then(() => {
-				expect(true).toBe('never called')
+				expect(mockRes.unexpected).toBeCalledWith('Insufficent permissions')
 			})
 			.catch(err => {
-				expect(mockRes.unexpected).toBeCalledWith('Insufficent permissions')
-				expect(mockNext).toBeCalledWith('Insufficent permissions')
+				expect(err).toBe('never called')
 			})
 	})
 
 	test('list drafts renders results', () => {
-		expect.assertions(2)
-		mockExpress()
-		require('express')
+		expect.assertions(1)
+
 		let db = oboRequire('db')
 		db.any.mockImplementationOnce(() => {
 			return Promise.resolve(5)
@@ -510,7 +422,6 @@ describe('api draft route', () => {
 		return routeFunction(mockReq, mockRes, mockNext)
 			.then(() => {
 				expect(mockRes.success).toBeCalledWith(5)
-				expect(mockNext).toBeCalledWith()
 			})
 			.catch(err => {
 				expect(err).toBe('never called')

@@ -1,38 +1,9 @@
 jest.mock('../../../models/draft')
 jest.mock('../../../db')
+const { mockExpressMethods, mockRouterMethods } = require('../../../__mocks__/__mock_express')
 
-let mockExpressMethods = {}
-let mockRouterMethods = {}
 let mockInsertNewDraft = mockVirtual('./routes/api/drafts/insert_new_draft')
 let mockUpdateDraft = mockVirtual('./routes/api/drafts/update_draft')
-
-let mockExpress = () => {
-	jest.mock(
-		'express',
-		() => {
-			let module = () => {
-				let methods = ['on', 'use', 'get', 'post', 'put', 'delete', 'all', 'static']
-				let obj = {}
-				methods.forEach(m => {
-					obj[m] = mockExpressMethods[m] = jest.fn()
-				})
-				return obj
-			}
-
-			module.Router = () => {
-				let methods = ['all', 'get', 'post', 'delete', 'put']
-				let obj = {}
-				methods.forEach(m => {
-					obj[m] = mockRouterMethods[m] = jest.fn()
-				})
-				return obj
-			}
-
-			return module
-		},
-		{ virtual: true }
-	)
-}
 
 describe('api draft events route', () => {
 	beforeAll(() => {})
@@ -41,17 +12,13 @@ describe('api draft events route', () => {
 	afterEach(() => {})
 
 	test('registers the expected routes ', () => {
-		mockExpress()
-		require('express')
 		oboRequire('routes/api/events')
 		expect(mockRouterMethods.post).toHaveBeenCalledTimes(1)
 		expect(mockRouterMethods.post).toBeCalledWith('/', expect.any(Function))
 	})
 
 	test('requires current user', () => {
-		expect.assertions(3)
-		mockExpress()
-		require('express')
+		expect.assertions(1)
 
 		oboRequire('routes/api/events')
 		let routeFunction = mockRouterMethods.post.mock.calls[0][1]
@@ -71,20 +38,16 @@ describe('api draft events route', () => {
 
 		return routeFunction(mockReq, mockRes, mockNext)
 			.then(() => {
-				expect(true).toBe('never called')
+				expect(mockRes.notAuthorized).toBeCalledWith('no current user')
 			})
 			.catch(err => {
-				expect(mockRes.notAuthorized).toBeCalledWith('no current user')
-				expect(mockRes.unexpected).not.toBeCalled()
-				expect(mockNext).toBeCalledWith()
+				expect(true).toBe(false) // shouldn't get here
 			})
 	})
 
-	// TODO: This test is skipped until createCaliperEventFromReq is working properly.
-	test.skip('inserts event', () => {
-		expect.assertions(2)
-		mockExpress()
-		require('express')
+	test('inserts event', () => {
+		expect.assertions(1)
+
 		let db = oboRequire('db')
 		db.one.mockImplementationOnce(() => {
 			return Promise.resolve({ created_at: 1 })
@@ -114,23 +77,18 @@ describe('api draft events route', () => {
 
 		let mockNext = jest.fn()
 
-		console.log(createCaliperEventFromReq(mockReq, mockReq.requireCurrentUser()))
-
 		return routeFunction(mockReq, mockRes, mockNext)
 			.then(() => {
-				expect(mockRes.success).toBeCalledWith({ createdAt: 1 })
-				expect(mockNext).toBeCalledWith()
+				expect(mockRes.success).toBeCalledWith(null)
 			})
 			.catch(err => {
 				expect(err).toBe('never called')
-				console.error(err)
 			})
 	})
 
-	test('calls next when insert fails', () => {
-		expect.assertions(2)
-		mockExpress()
-		require('express')
+	test('calls res.unexpected when insert fails', () => {
+		expect.assertions(1)
+
 		let db = oboRequire('db')
 		db.one.mockImplementationOnce(() => {
 			return Promise.reject('db fail')
@@ -163,10 +121,9 @@ describe('api draft events route', () => {
 		return routeFunction(mockReq, mockRes, mockNext)
 			.then(() => {
 				expect(mockRes.unexpected).toBeCalledWith('db fail')
-				expect(mockNext).toBeCalledWith()
 			})
 			.catch(err => {
-				expect(true).toBe('never called')
+				expect(err).toBe('never called')
 			})
 	})
 })

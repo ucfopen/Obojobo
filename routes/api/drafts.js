@@ -1,11 +1,10 @@
 var express = require('express')
 var router = express.Router()
 let DraftModel = oboRequire('models/draft')
-let logger = require('../../logger')
+let logger = oboRequire('logger')
+let db = oboRequire('db')
 
 const xmlToDraftObject = require('obojobo-draft-xml-parser/xml-to-draft-object')
-
-var db = require('../../db')
 
 let insertNewDraft = require('./drafts/insert_new_draft')
 let updateDraft = require('./drafts/update_draft')
@@ -17,13 +16,11 @@ router.get('/:draftId', (req, res, next) => {
 		.then(draftTree => {
 			draftTree.root.yell('internal:sendToClient', req, res)
 			res.success(draftTree.document)
-			return next()
 		})
 		.catch(err => {
 			logger.error(err)
+			//@TODO call next with error
 			res.missing('Draft not found')
-			next(err)
-			return Promise.reject(err)
 		})
 })
 
@@ -45,12 +42,10 @@ router.post('/new', (req, res, next) => {
 		})
 		.then(newDraft => {
 			res.success(newDraft)
-			return next()
 		})
 		.catch(err => {
+			//@TODO have this call next with error
 			res.unexpected(err)
-			next(err)
-			return Promise.reject(err)
 		})
 })
 
@@ -89,19 +84,16 @@ router.post(/(\w{8}-\w{4}-\w{4}-\w{4}-\w{12})/, (req, res, next) => {
 				default:
 					logger.error('Posting draft failed - format unexpected:', req.body)
 					res.badInput('Posting draft failed - format unexpected')
-					return next()
 			}
 
 			return updateDraft(req.params[0], reqInput, xml || null).then(id => {
 				res.success({ id })
-				return next()
 			})
 		})
 		.catch(error => {
 			logger.error(error)
+			//@TODO call next with error
 			res.unexpected(error)
-			next(error)
-			return Promise.reject(error)
 		})
 })
 
@@ -126,12 +118,10 @@ router.delete('/:draftId', (req, res, next) => {
 		})
 		.then(id => {
 			res.success(id)
-			return next()
 		})
 		.catch(err => {
+			//@TODO call next with error
 			res.unexpected(err)
-			next(err)
-			return Promise.reject(err)
 		})
 })
 
@@ -161,13 +151,11 @@ router.get('/', (req, res, next) => {
 		})
 		.then(result => {
 			res.success(result)
-			return next()
 		})
 		.catch(err => {
 			logger.error(err)
+			//@TODO call next with error
 			res.unexpected(err)
-			next(err)
-			return Promise.reject(err)
 		})
 })
 

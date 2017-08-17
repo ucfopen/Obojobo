@@ -87,7 +87,7 @@ let unexpected = (req, res, next, message) => {
 
 module.exports = (req, res, next) => {
 	// use bind to wrap the function
-	// theoretically reduces some overhead of creating the whole funciton every request
+	// theoretically reduces some overhead of creating the whole function every request
 	res.success = success.bind(this, req, res, next)
 	res.missing = missing.bind(this, req, res, next)
 	res.badInput = badInput.bind(this, req, res, next)

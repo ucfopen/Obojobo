@@ -32,19 +32,17 @@ router.post('/', (req, res, next) => {
 					insertObject.createdAt = result.created_at
 					oboEvents.emit(`client:${event.action}`, insertObject, req)
 					res.success(caliperEvent)
-					return next()
 				})
 				.catch(err => {
 					logger.error('Insert Event Failure:', err)
+					// @TODO change to call next(err)
 					res.unexpected(err)
-					next()
 				})
 		})
 		.catch(err => {
 			logger.error(err)
+			// @TODO change to call next(err)
 			res.notAuthorized(err)
-			next()
-			return Promise.reject(err)
 		})
 })
 

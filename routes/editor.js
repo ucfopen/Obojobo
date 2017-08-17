@@ -1,19 +1,21 @@
-var express = require('express');
-var router = express.Router();
+var express = require('express')
+var router = express.Router()
 var db = require('../db')
 
 let displayEditor = (req, res, next) => {
 	// let oboGlobals = new OboGlobals();
 
-	return req.getCurrentUser(true)
-	.then(user => {
-		if(user.isGuest()) return Promise.reject(new Error('Login Required'))
-		if(!user.canViewEditor) {
-			res.status(404)
-			return next()
-		}
+	return req
+		.getCurrentUser(true)
+		.then(user => {
+			if (user.isGuest()) return Promise.reject(new Error('Login Required'))
+			if (!user.canViewEditor) {
+				return next()
+			}
 
-		return db.any(`
+			return db
+				.any(
+					`
 			SELECT DISTINCT ON (draft_id)
 				draft_id AS "draftId",
 				id AS "latestVersion",
@@ -28,25 +30,24 @@ let displayEditor = (req, res, next) => {
 				AND user_id = $[userId]
 			)
 			ORDER BY draft_id, id desc
-		`, {
-			userId: user.id
+		`,
+					{
+						userId: user.id
+					}
+				)
+				.then(drafts => {
+					res.render('editor.pug', {
+						title: 'Obojobo 3',
+						drafts: drafts
+					})
+				})
 		})
-		.then( drafts => {
-			res.render('editor.pug', {
-				title: 'Obojobo 3',
-				drafts: drafts
-			})
-
-			next()
+		.catch(error => {
+			next(error)
 		})
-
-	})
-	.catch(error => {
-		next(error)
-	})
 }
 
-router.post('/', displayEditor);
-router.get('/', displayEditor);
+router.post('/', displayEditor)
+router.get('/', displayEditor)
 
-module.exports = router;
+module.exports = router
