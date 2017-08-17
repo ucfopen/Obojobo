@@ -4,7 +4,6 @@ global.oboRequire = name => {
 }
 let fs = require('fs')
 let exec = require('child_process').exec
-let logger = oboRequire('logger')
 
 let usageError = new Error(`Usage:
 	node sample_draft.js seed
@@ -24,16 +23,14 @@ try {
 				{},
 				(err, stdout, stderr) => {
 					if (err) {
-						logger.error(err.message)
+						console.error(err.message)
 						process.exit(1)
 					}
 
-					logger.debug(
-						`Sample draft seeded at ${defaultId}, you must set the user ID to view the sample!`
-					)
+					console.info(`Sample draft seeded at:`)
+					console.info(stdout)
 
-					if (stdout) logger.info(stdout)
-					if (stderr) logger.error(stderr)
+					if (stderr) console.error(stderr)
 					process.exit(0)
 				}
 			)
@@ -46,14 +43,14 @@ try {
 					{},
 					(err, stdout, stderr) => {
 						if (err) {
-							logger.error(err.message)
+							console.error(err.message)
 							return
 						}
 
-						logger.info('Sample JSON Draft changed, updating...')
+						console.info('Sample JSON Draft changed, updating...')
 
-						if (stdout) logger.info(stdout)
-						if (stderr) logger.error(stderr)
+						if (stdout) console.info(stdout)
+						if (stderr) console.error(stderr)
 					}
 				)
 			})
@@ -64,6 +61,6 @@ try {
 			break
 	}
 } catch (e) {
-	logger.error(e.message)
+	console.error(e.message)
 	process.exit(1)
 }
