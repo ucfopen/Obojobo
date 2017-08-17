@@ -13,7 +13,8 @@ let { ErrorUtil } = Common.util
 let { SimpleDialog } = Common.components.modal
 let { ModalUtil } = Common.util
 
-let getNewAssessmentObject = () => ({
+let getNewAssessmentObject = assessmentId => ({
+	id: assessmentId,
 	current: null,
 	currentResponses: [],
 	attempts: []
@@ -53,7 +54,7 @@ class AssessmentStore extends Store {
 
 		for (let attempt of Array.from(history)) {
 			if (!this.state.assessments[attempt.assessmentId]) {
-				this.state.assessments[attempt.assessmentId] = getNewAssessmentObject()
+				this.state.assessments[attempt.assessmentId] = getNewAssessmentObject(attempt.assessmentId)
 			}
 
 			if (!attempt.endTime) {
@@ -135,7 +136,7 @@ class AssessmentStore extends Store {
 		}
 
 		if (!this.state.assessments[id]) {
-			this.state.assessments[id] = getNewAssessmentObject()
+			this.state.assessments[id] = getNewAssessmentObject(id)
 		}
 
 		this.state.assessments[id].current = startAttemptResp
@@ -188,6 +189,7 @@ class AssessmentStore extends Store {
 		assessment.currentResponses.push(questionId)
 
 		return APIUtil.postEvent(model.getRoot(), 'assessment:setResponse', {
+			assessmentId: assessment.id,
 			attemptId: assessment.current.attemptId,
 			questionId: questionId,
 			response: response

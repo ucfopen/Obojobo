@@ -2019,8 +2019,9 @@
 			var SimpleDialog = _Common2.default.components.modal.SimpleDialog
 			var ModalUtil = _Common2.default.util.ModalUtil
 
-			var getNewAssessmentObject = function getNewAssessmentObject() {
+			var getNewAssessmentObject = function getNewAssessmentObject(assessmentId) {
 				return {
+					id: assessmentId,
 					current: null,
 					currentResponses: [],
 					attempts: []
@@ -2089,7 +2090,9 @@
 									var attempt = _step.value
 
 									if (!this.state.assessments[attempt.assessmentId]) {
-										this.state.assessments[attempt.assessmentId] = getNewAssessmentObject()
+										this.state.assessments[attempt.assessmentId] = getNewAssessmentObject(
+											attempt.assessmentId
+										)
 									}
 
 									if (!attempt.endTime) {
@@ -2275,7 +2278,7 @@
 							}
 
 							if (!this.state.assessments[id]) {
-								this.state.assessments[id] = getNewAssessmentObject()
+								this.state.assessments[id] = getNewAssessmentObject(id)
 							}
 
 							this.state.assessments[id].current = startAttemptResp
@@ -2344,6 +2347,7 @@
 
 							return _apiUtil2.default
 								.postEvent(model.getRoot(), 'assessment:setResponse', {
+									assessmentId: assessment.id,
 									attemptId: assessment.current.attemptId,
 									questionId: questionId,
 									response: response

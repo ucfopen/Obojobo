@@ -150,6 +150,7 @@ describe('AssessmentStore', () => {
 		expect(AssessmentStore.getState()).toEqual({
 			assessments: {
 				assessmentId: {
+					id: 'assessmentId',
 					current: null,
 					currentResponses: [],
 					attempts: [
@@ -379,6 +380,7 @@ describe('AssessmentStore', () => {
 					OboModel.models.rootId,
 					'assessment:setResponse',
 					{
+						assessmentId: 'assessmentId',
 						attemptId: 'attemptId',
 						questionId: 'q1',
 						response: ['some response']
