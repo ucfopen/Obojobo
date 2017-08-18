@@ -6,6 +6,7 @@ let db = oboRequire('db')
 let Assessment = require('./assessment')
 let lti = oboRequire('lti')
 let insertEvent = oboRequire('insert_event')
+let createCaliperEvent = oboRequire('routes/api/events/create_caliper_event') //@TODO
 
 let logAndRespondToUnexpected = (errorMessage, res, req, jsError) => {
 	console.error('logAndRespondToUnexpected', jsError, errorMessage)
@@ -17,6 +18,7 @@ app.post('/api/assessments/attempt/start', (req, res, next) => {
 	let draftId = req.body.draftId
 	let draftTree
 	let attemptState
+	let numAttempts
 	let isPreviewing
 	let attemptHistory
 	let assessmentQBTree
@@ -47,7 +49,9 @@ app.post('/api/assessments/attempt/start', (req, res, next) => {
 				req.body.assessmentId
 			)
 		})
-		.then(numAttempts => {
+		.then(numAttemptsResult => {
+			numAttempts = numAttemptsResult
+
 			var assessment = draftTree.getChildNodeById(req.body.assessmentId)
 
 			if (
@@ -298,11 +302,19 @@ app.post('/api/assessments/attempt/start', (req, res, next) => {
 			insertEvent({
 				action: 'assessment:attemptStart',
 				actorTime: new Date().toISOString(),
-				payload: { attemptId: result.attemptId, number: attemptHistory.length + 1 },
+				payload: { attemptId: result.attemptId, number: numAttempts },
 				userId: currentUser.id,
 				ip: req.connection.remoteAddress,
 				metadata: {},
-				draftId: draftId
+				draftId: draftId,
+				caliperPayload: createCaliperEvent.createAssessmentAttemptStartedEvent(
+					req,
+					currentUser,
+					draftId,
+					req.body.assessmentId,
+					result.attemptId,
+					isPreviewing ? -1 : numAttempts + 1
+				)
 			})
 		})
 		.catch(error => {
@@ -329,6 +341,7 @@ app.post('/api/assessments/attempt/:attemptId/end', (req, res, next) => {
 	let assessmentId
 	let score
 	let attemptHistory
+	let numAttempts
 	let maxAttemptScore
 	let state
 	let currentUser
@@ -419,6 +432,7 @@ app.post('/api/assessments/attempt/:attemptId/end', (req, res, next) => {
 		})
 		.then(updateAttemptResult => {
 			updateResult = updateAttemptResult
+
 			return Assessment.getCompletedAssessmentAttemptHistory(
 				currentUser.id,
 				draftId,
@@ -426,7 +440,14 @@ app.post('/api/assessments/attempt/:attemptId/end', (req, res, next) => {
 				false
 			)
 		})
-		.then(attemptHistory => {
+		.then(attemptHistoryResult => {
+			attemptHistory = attemptHistoryResult
+
+			return Assessment.getNumberAttemptsTaken(currentUser.id, draftId, assessmentId)
+		})
+		.then(numAttemptsResult => {
+			numAttempts = numAttemptsResult
+
 			if (isPreviewing) return Promise.resolve(false)
 
 			let allScores = attemptHistory.map(attempt => {
@@ -449,7 +470,15 @@ app.post('/api/assessments/attempt/:attemptId/end', (req, res, next) => {
 				userId: currentUser.id,
 				ip: req.connection.remoteAddress,
 				metadata: {},
-				draftId: draftId
+				draftId: draftId,
+				caliperPayload: createCaliperEvent.createAssessmentAttemptSubmittedEvent(
+					req,
+					currentUser,
+					draftId,
+					assessmentId,
+					req.params.attemptId,
+					isPreviewing ? -1 : numAttempts
+				)
 			})
 		})
 		.catch(error => {
