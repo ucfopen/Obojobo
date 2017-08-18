@@ -41,7 +41,11 @@ const IRI = {
 		return iri
 	},
 
-	getViewAttemptIRI: (host, draftId, assessmentId, attemptId) => {
+	getAssessmentIRI: (host, draftId, assessmentId) => {
+		return createIRI(host, `/view/${draftId}/assessment/${assessmentId}`)
+	},
+
+	getAssessmentAttemptIRI: (host, draftId, assessmentId, attemptId) => {
 		return createIRI(host, `/view/${draftId}/assessment/${assessmentId}/attempt/${attemptId}`)
 	}
 }

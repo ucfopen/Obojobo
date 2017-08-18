@@ -30,8 +30,12 @@ let IRIBuilder = req => {
 			return IRI.getViewIRI(req.hostname, draftId, oboNodeId)
 		},
 
-		getViewAttemptIRI: (draftId, assessmentId, attemptId) => {
-			return IRI.getViewAttemptIRI(req.hostname, draftId, assessmentId, attemptId)
+		getAssessmentIRI: (draftId, assessmentId) => {
+			return IRI.getAssessmentIRI(req.hostname, draftId, assessmentId)
+		},
+
+		getAssessmentAttemptIRI: (draftId, assessmentId, attemptId) => {
+			return IRI.getAssessmentAttemptIRI(req.hostname, draftId, assessmentId, attemptId)
 		}
 	}
 }
