@@ -26,8 +26,12 @@ let IRIBuilder = req => {
 			return IRI.getUserIRI(req.hostname, id)
 		},
 
-		getViewIRI: (draftId, oboNodeId) => {
-			return IRI.getViewIRI(req.hostname, draftId, oboNodeId)
+		getViewIRI: (draftId, oboNodeId, frameName) => {
+			return IRI.getViewIRI(req.hostname, draftId, oboNodeId, frameName)
+		},
+
+		getPracticeQuestionAttemptIRI: (draftId, questionId) => {
+			return IRI.getPracticeQuestionAttemptIRI(req.hostname, draftId, questionId)
 		},
 
 		getAssessmentIRI: (draftId, assessmentId) => {
