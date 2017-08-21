@@ -297,8 +297,6 @@ app.post('/api/assessments/attempt/start', (req, res, next) => {
 		.then(result => {
 			res.success(result)
 
-			console.log('ATTEMPT HISTORY', attemptHistory.length)
-
 			insertEvent({
 				action: 'assessment:attemptStart',
 				actorTime: new Date().toISOString(),
@@ -339,10 +337,10 @@ app.post('/api/assessments/attempt/:attemptId/end', (req, res, next) => {
 	let attemptState
 	let draftId
 	let assessmentId
-	let score
+	let attemptScore
+	let highestAttemptScore
 	let attemptHistory
 	let numAttempts
-	let maxAttemptScore
 	let state
 	let currentUser
 	let isPreviewing
@@ -412,7 +410,7 @@ app.post('/api/assessments/attempt/:attemptId/end', (req, res, next) => {
 			return Promise.all(promises)
 		})
 		.then(() => {
-			score =
+			attemptScore =
 				state.scores.reduce((a, b) => {
 					return a + b
 				}) / state.questions.length
@@ -425,7 +423,7 @@ app.post('/api/assessments/attempt/:attemptId/end', (req, res, next) => {
 			})
 
 			let result = {
-				attemptScore: score,
+				attemptScore: attemptScore,
 				scores: scores
 			}
 			return Assessment.updateAttempt(result, req.params.attemptId)
@@ -448,25 +446,13 @@ app.post('/api/assessments/attempt/:attemptId/end', (req, res, next) => {
 		.then(numAttemptsResult => {
 			numAttempts = numAttemptsResult
 
-			if (isPreviewing) return Promise.resolve(false)
-
-			let allScores = attemptHistory.map(attempt => {
-				return parseFloat(attempt.result.attemptScore)
-			})
-			maxAttemptScore = Math.max(0, ...allScores)
-
-			return lti.replaceResult(currentUser.id, draftId, maxAttemptScore / 100)
-		})
-		.then(isScoreSent => {
-			updateResult.ltiOutcomes = {
-				sent: isScoreSent
-			}
-			res.success(updateResult)
-
 			insertEvent({
 				action: 'assessment:attemptEnd',
 				actorTime: new Date().toISOString(),
-				payload: { attemptId: req.params.attemptId },
+				payload: {
+					attemptId: req.params.attemptId,
+					attemptCount: isPreviewing ? -1 : numAttempts
+				},
 				userId: currentUser.id,
 				ip: req.connection.remoteAddress,
 				metadata: {},
@@ -478,6 +464,51 @@ app.post('/api/assessments/attempt/:attemptId/end', (req, res, next) => {
 					assessmentId,
 					req.params.attemptId,
 					isPreviewing ? -1 : numAttempts
+				)
+			})
+
+			if (isPreviewing) return Promise.resolve(false)
+
+			let allScores = attemptHistory.map(attempt => {
+				return parseFloat(attempt.result.attemptScore)
+			})
+			highestAttemptScore = Math.max(0, ...allScores) / 100
+
+			return lti.replaceResult(currentUser.id, draftId, highestAttemptScore)
+		})
+		.then(isScoreSent => {
+			updateResult.ltiOutcomes = {
+				sent: isScoreSent
+			}
+			res.success(updateResult)
+
+			insertEvent({
+				action: 'assessment:attemptScored',
+				actorTime: new Date().toISOString(),
+				payload: {
+					attemptId: req.params.attemptId,
+					attemptCount: isPreviewing ? -1 : numAttempts,
+					attemptScore: attemptScore,
+					highestAttemptScore: isPreviewing ? -1 : highestAttemptScore,
+					didSendLtiOutcome: isScoreSent
+				},
+				userId: currentUser.id,
+				ip: req.connection.remoteAddress,
+				metadata: {},
+				draftId: draftId,
+				caliperPayload: createCaliperEvent.createAssessmentAttemptScoredEvent(
+					req,
+					currentUser,
+					draftId,
+					assessmentId,
+					req.params.attemptId,
+					attemptScore,
+					{
+						attemptCount: isPreviewing ? -1 : numAttempts,
+						attemptScore: attemptScore,
+						highestAttemptScore: isPreviewing ? -1 : highestAttemptScore,
+						didSendLtiOutcome: isScoreSent
+					}
 				)
 			})
 		})
