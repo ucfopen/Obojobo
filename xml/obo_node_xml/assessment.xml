@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ObjoboDraftDoc>
+    <Assessment>
+        <Page>
+        </Page>
+        <QuestionBank>
+        </QuestionBank>
+        <scoreActions>
+            <scoreAction from="0" to="99">
+                <Page>
+                </Page>
+            </scoreAction>
+        </scoreActions>
+    </Assessment>
+</ObjoboDraftDoc>

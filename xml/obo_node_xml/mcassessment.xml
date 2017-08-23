@@ -1,0 +1,61 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ObjoboDraftDoc>
+    <Module>
+        <MCAssessment responseType="pick-one">
+            <MCChoice score="100">
+                <MCAnswer>
+                    <MathEquation latex="x=v_xt" align="left" />
+                </MCAnswer>
+            </MCChoice>
+            <MCChoice score="100">
+                <MCAnswer>
+                    <p>This is a test question.</p>
+                </MCAnswer>
+            </MCChoice>
+        </MCAssessment>
+        <MCAssessment responseType="pick-one-multiple-correct">
+            <MCChoice score="100">
+                <MCAnswer>
+                    <MathEquation latex="x=v_xt" align="right" />
+                </MCAnswer>
+            </MCChoice>
+            <MCChoice score="100">
+                <MCAnswer>
+                    <p>This is a test question.</p>
+                </MCAnswer>
+            </MCChoice>
+            <MCChoice score="0">
+                <MCAnswer>
+                    <p>This is a test question.</p>
+                </MCAnswer>
+            </MCChoice>
+            <MCChoice score="0">
+                <MCAnswer>
+                    <p>This is a test question.</p>
+                </MCAnswer>
+            </MCChoice>
+        </MCAssessment>
+        <MCAssessment responseType="pick-all">
+            <MCChoice score="100">
+                <MCAnswer>
+                    <MathEquation latex="x=v_xt" align="right" />
+                </MCAnswer>
+            </MCChoice>
+            <MCChoice score="100">
+                <MCAnswer>
+                    <p>This is a test question.</p>
+                </MCAnswer>
+            </MCChoice>
+            <MCChoice score="0">
+                <MCAnswer>
+                    <p>This is a test question.</p>
+                </MCAnswer>
+            </MCChoice>
+            <MCChoice score="0">
+                <MCAnswer>
+                    <p>This is a test question.</p>
+                </MCAnswer>
+            </MCChoice>
+        </MCAssessment>
+    </Module>
+</ObjoboDraftDoc>

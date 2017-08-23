@@ -26,6 +26,8 @@
 		"devXmlParser:clone": "git clone git@github.com:ucfcdl/Obojobo-Docment-XML-Parser.git devsrc/obojobo-draft-xml-parser || echo 'already cloned'",
 		"devXmlParser:nodemodules": "cd ./devsrc/obojobo-draft-xml-parser && yarn",
 		"devXmlParser:link": "cd ./devsrc/obojobo-draft-xml-parser && yarn link && cd ../.. && yarn link obojobo-draft-xml-parser",
+		"xml2draft": "node ./bin/xml2draft.js",
+		"xml2draft:watch": "node ./bin/xml2draft_watch",
 		"test": "jest --watch",
 		"test:ci": "CI=true jest --coverage",
 		"precommit": "yarn test:ci && lint-staged",
@@ -36,7 +38,10 @@
 		"node": "^6.9.4"
 	},
 	"lint-staged": {
-		"*.js": ["yarn prettier", "git add"]
+		"*.js": [
+			"yarn prettier",
+			"git add"
+		]
 	},
 	"dependencies": {
 		"babel-preset-env": "^1.5.1",
@@ -58,6 +63,7 @@
 		"extract-text-webpack-plugin": "^2.1.0",
 		"glob": "^7.1.1",
 		"json-inflector": "^1.1.0",
+		"minimist": "^1.2.0",
 		"moment": "^2.18.0",
 		"morgan": "~1.7.0",
 		"newrelic": "^1.38.2",
@@ -70,7 +76,8 @@
 		"pug": "^2.0.0-beta6",
 		"serve-favicon": "~2.3.0",
 		"style-loader": "^0.17.0",
-		"webpack": "^2.4.1"
+		"webpack": "^2.4.1",
+		"xml-js": "^1.4.1"
 	},
 	"devDependencies": {
 		"babel-preset-env": "^1.4.0",
@@ -90,8 +97,19 @@
 			"routes/**/*.js",
 			"controllers/**/*.js"
 		],
-		"coveragePathIgnorePatterns": ["/node_modules", "/app.js", "/dev_nonce_store.js"],
-		"coverageReporters": ["json", "lcov", "text", "html"],
-		"testPathIgnorePatterns": ["devsrc"]
+		"coveragePathIgnorePatterns": [
+			"/node_modules",
+			"/app.js",
+			"/dev_nonce_store.js"
+		],
+		"coverageReporters": [
+			"json",
+			"lcov",
+			"text",
+			"html"
+		],
+		"testPathIgnorePatterns": [
+			"devsrc"
+		]
 	}
 }
