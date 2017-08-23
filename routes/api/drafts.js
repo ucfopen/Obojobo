@@ -1,13 +1,18 @@
-var express = require('express')
-var router = express.Router()
-let DraftModel = oboRequire('models/draft')
-let logger = oboRequire('logger')
-let db = oboRequire('db')
-
+const express = require('express')
+const fs = require('fs')
+const router = express.Router()
+const DraftModel = oboRequire('models/draft')
+const logger = oboRequire('logger')
+const db = oboRequire('db')
 const xmlToDraftObject = require('../../xml/xml-to-draft-object')
 
-let insertNewDraft = require('./drafts/insert_new_draft')
-let updateDraft = require('./drafts/update_draft')
+const insertNewDraft = require('./drafts/insert_new_draft')
+const updateDraft = require('./drafts/update_draft')
+
+const draftTemplateXML = fs
+	.readFileSync('./node_modules/obojobo-draft-document-engine/documents/empty.xml')
+	.toString()
+const draftTemplate = xmlToDraftObject(draftTemplateXML, true)
 
 router.get('/:draftId', (req, res, next) => {
 	let draftId = req.params.draftId
@@ -38,7 +43,7 @@ router.post('/new', (req, res, next) => {
 			return db.none(`BEGIN`)
 		})
 		.then(() => {
-			return insertNewDraft(user.id)
+			return insertNewDraft(user.id, draftTemplate, draftTemplateXML)
 		})
 		.then(newDraft => {
 			res.success(newDraft)
