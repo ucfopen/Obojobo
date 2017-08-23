@@ -1,6 +1,6 @@
 {
 	"name": "obojobo-server",
-	"version": "3.0.7",
+	"version": "3.1.0",
 	"private": true,
 	"scripts": {
 		"start": "yarn express:prod",
@@ -36,7 +36,10 @@
 		"node": "^6.9.4"
 	},
 	"lint-staged": {
-		"*.js": ["yarn prettier", "git add"]
+		"*.js": [
+			"yarn prettier",
+			"git add"
+		]
 	},
 	"dependencies": {
 		"babel-preset-env": "^1.5.1",
@@ -90,8 +93,19 @@
 			"routes/**/*.js",
 			"controllers/**/*.js"
 		],
-		"coveragePathIgnorePatterns": ["/node_modules", "/app.js", "/dev_nonce_store.js"],
-		"coverageReporters": ["json", "lcov", "text", "html"],
-		"testPathIgnorePatterns": ["devsrc"]
+		"coveragePathIgnorePatterns": [
+			"/node_modules",
+			"/app.js",
+			"/dev_nonce_store.js"
+		],
+		"coverageReporters": [
+			"json",
+			"lcov",
+			"text",
+			"html"
+		],
+		"testPathIgnorePatterns": [
+			"devsrc"
+		]
 	}
 }
