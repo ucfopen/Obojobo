@@ -4,7 +4,7 @@ let DraftModel = oboRequire('models/draft')
 let logger = oboRequire('logger')
 let db = oboRequire('db')
 
-const xmlToDraftObject = require('obojobo-draft-xml-parser/xml-to-draft-object')
+const xmlToDraftObject = require('../../xml/xml-to-draft-object')
 
 let insertNewDraft = require('./drafts/insert_new_draft')
 let updateDraft = require('./drafts/update_draft')
