@@ -4,6 +4,7 @@ let uuid = require('uuid').v4
 let Event = require('caliper-js-public/src/events/event')
 let NavigationEvent = require('caliper-js-public/src/events/navigationEvent')
 let ViewEvent = require('caliper-js-public/src/events/viewEvent')
+let SessionEvent = require('caliper-js-public/src/events/sessionEvent')
 let AssessmentItemEvent = require('caliper-js-public/src/events/assessmentItemEvent')
 let AssessmentEvent = require('caliper-js-public/src/events/assessmentEvent')
 // This version doesn't have grade event:
@@ -11,14 +12,24 @@ let AssessmentEvent = require('caliper-js-public/src/events/assessmentEvent')
 
 let NavigationActions = require('caliper-js-public/src/actions/navigationActions')
 
-let getNewGeneratedId = () => 'urn:uuid:' + uuid()
+let getUrnFromUuid = uuid => 'urn:uuid:' + uuid
+let getNewGeneratedId = () => getUrnFromUuid(uuid())
 
-let createEvent = (classRef, req, currentUser) => {
+let createEvent = (classRef, req, currentUser, actor = 'user') => {
 	let caliperEvent = new classRef()
 	caliperEvent.id = getNewGeneratedId()
 	caliperEvent.setEdApp(req.iri.getEdAppIRI())
 	caliperEvent.setEventTime(new Date().toISOString())
-	caliperEvent.setActor(req.iri.getCurrentUserIRI())
+
+	switch (actor) {
+		case 'user':
+			caliperEvent.setActor(req.iri.getCurrentUserIRI())
+			break
+
+		case 'system':
+			caliperEvent.setActor(req.iri.getEdAppIRI())
+			break
+	}
 
 	if (req.session) {
 		caliperEvent.session = req.iri.getSessionIRI()
@@ -35,11 +46,11 @@ let createEvent = (classRef, req, currentUser) => {
 	return caliperEvent
 }
 
-let createScore = (req, attemptIRI, score) => {
+let createScore = (req, attemptIRI, scoreId, score) => {
 	return {
 		'@context': 'http://purl.imsglobal.org/ctx/caliper/v1p1',
 		'@type': 'Score',
-		id: getNewGeneratedId(),
+		id: getUrnFromUuid(scoreId),
 		attempt: attemptIRI,
 		maxScore: 100,
 		scoreGiven: score,
@@ -169,11 +180,10 @@ let createAssessmentAttemptScoredEvent = (
 	attemptScore,
 	extensions = {}
 ) => {
-	let caliperEvent = createEvent(Event, req, currentUser) //@TODO: Should be GradeEvent
+	let caliperEvent = createEvent(Event, req, currentUser, 'system') //@TODO: Should be GradeEvent
 
 	caliperEvent.setType('GradeEvent')
 
-	caliperEvent.setActor(req.iri.getEdAppIRI())
 	caliperEvent.setAction('Graded')
 	caliperEvent.setObject(req.iri.getAssessmentAttemptIRI(draftId, assessmentId, attemptId))
 	//@TODO - Caliper spec will have a Score entity but our version doesn't have this yet
@@ -219,21 +229,32 @@ let createPracticeGradeEvent = (
 	currentUser,
 	draftId,
 	questionId,
+	scoreId,
 	score,
-	assessmentId,
-	attemptId
+	extensions
 ) => {
-	let caliperEvent = createEvent(Event, req, currentUser) //@TODO: Should be GradeEvent
+	let caliperEvent = createEvent(Event, req, currentUser, 'system') //@TODO: Should be GradeEvent
 
 	caliperEvent.setType('GradeEvent')
 
-	caliperEvent.setActor(req.iri.getEdAppIRI())
 	caliperEvent.setAction('Graded')
 	caliperEvent.setObject(req.iri.getPracticeQuestionAttemptIRI(draftId, questionId))
 	//@TODO - Caliper spec will have a Score entity but our version doesn't have this yet
 	caliperEvent.setGenerated(
-		createScore(req, req.iri.getPracticeQuestionAttemptIRI(draftId, questionId), score)
+		createScore(req, req.iri.getPracticeQuestionAttemptIRI(draftId, questionId), scoreId, score)
 	)
+
+	Object.assign(caliperEvent.extensions, extensions)
+
+	return caliperEvent
+}
+
+let createPracticeUngradeEvent = (req, currentUser, draftId, questionId, scoreId, extensions) => {
+	let caliperEvent = createEvent(Event, req, currentUser, 'system')
+
+	caliperEvent.setAction('Reset')
+	caliperEvent.setObject(getUrnFromUuid(scoreId))
+	caliperEvent.setTarget(req.iri.getPracticeQuestionAttemptIRI(draftId, questionId))
 
 	Object.assign(caliperEvent.extensions, extensions)
 
@@ -262,11 +283,58 @@ let createViewerResumedEvent = (req, currentUser, draftId, extensions) => {
 	return caliperEvent
 }
 
-let createViewerEndedEvent = (req, currentUser, draftId, extensions) => {
+let createViewerHidEvent = (req, currentUser, draftId, extensions) => {
 	let caliperEvent = createEvent(Event, req, currentUser)
 
-	caliperEvent.setAction('Ended')
+	caliperEvent.setAction('Hid')
 	caliperEvent.setObject(req.iri.getViewIRI(draftId))
+
+	Object.assign(caliperEvent.extensions, extensions)
+
+	return caliperEvent
+}
+
+let createViewerShowedEvent = (req, currentUser, draftId, extensions) => {
+	let caliperEvent = createEvent(Event, req, currentUser)
+
+	caliperEvent.setAction('Showed')
+	caliperEvent.setObject(req.iri.getViewIRI(draftId))
+
+	Object.assign(caliperEvent.extensions, extensions)
+
+	return caliperEvent
+}
+
+let createViewerSessionLoggedInEvent = (req, currentUser, draftId, extensions) => {
+	let caliperEvent = createEvent(SessionEvent, req, currentUser)
+
+	caliperEvent.setAction('LoggedIn')
+	caliperEvent.setObject(req.iri.getEdAppIRI())
+	caliperEvent.setTarget(req.iri.getViewIRI(draftId))
+
+	Object.assign(caliperEvent.extensions, extensions)
+
+	return caliperEvent
+}
+
+let createViewerSessionLoggedOutEvent = (req, currentUser, draftId, extensions) => {
+	let caliperEvent = createEvent(SessionEvent, req, currentUser)
+
+	caliperEvent.setAction('LoggedOut')
+	caliperEvent.setObject(req.iri.getEdAppIRI())
+	caliperEvent.setTarget(req.iri.getViewIRI(draftId))
+
+	Object.assign(caliperEvent.extensions, extensions)
+
+	return caliperEvent
+}
+
+let createPracticeQuestionResetEvent = (req, currentUser, draftId, oboNodeId, extensions) => {
+	let caliperEvent = createEvent(Event, req, currentUser)
+
+	caliperEvent.setAction('Reset')
+	caliperEvent.setObject(req.iri.getViewIRI(draftId, oboNodeId))
+	caliperEvent.setTarget(req.iri.getPracticeQuestionAttemptIRI(draftId, oboNodeId))
 
 	Object.assign(caliperEvent.extensions, extensions)
 
@@ -281,8 +349,11 @@ module.exports = {
 	createAssessmentAttemptSubmittedEvent,
 	createAssessmentItemEvent,
 	createPracticeGradeEvent,
+	createPracticeUngradeEvent,
 	createAssessmentAttemptScoredEvent,
 	createViewerAbandonedEvent,
 	createViewerResumedEvent,
-	createViewerEndedEvent
+	createViewerSessionLoggedInEvent,
+	createViewerSessionLoggedOutEvent,
+	createPracticeQuestionResetEvent
 }

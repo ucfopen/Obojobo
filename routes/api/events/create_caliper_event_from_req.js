@@ -70,20 +70,57 @@ module.exports = (req, currentUser) => {
 				req,
 				currentUser,
 				clientEvent.draft_id,
+				clientEvent.payload.itemId,
 				clientEvent.payload.id,
-				clientEvent.payload.score,
-				clientEvent.payload.assessmentId,
-				clientEvent.payload.attemptId
+				clientEvent.payload.score
 			)
 
-		case 'viewer:idle':
-			return caliperEvents.createViewerAbandonedEvent(req, currentUser, clientEvent.draft_id)
+		case 'score:clear':
+			return caliperEvents.createPracticeUngradeEvent(
+				req,
+				currentUser,
+				clientEvent.draft_id,
+				clientEvent.payload.itemId,
+				clientEvent.payload.id
+			)
 
-		case 'viewer:returnFromIdle':
-			return caliperEvents.createViewerResumedEvent(req, currentUser, clientEvent.draft_id)
+		case 'question:retry':
+			return caliperEvents.createPracticeQuestionResetEvent(
+				req,
+				currentUser,
+				clientEvent.draft_id,
+				clientEvent.payload.id
+			)
+
+		// case 'viewer:inactive':
+		// 	return caliperEvents.createViewerAbandonedEvent(req, currentUser, clientEvent.draft_id, {
+		// 		type: 'inactive',
+		// 		lastActiveTime: clientEvent.payload.lastActiveTime,
+		// 		inactiveDuration: clientEvent.payload.inactiveDuration
+		// 	})
+
+		case 'viewer:returnFromInactive':
+			return caliperEvents.createViewerResumedEvent(req, currentUser, clientEvent.draft_id, {
+				type: 'returnFromInactive',
+				lastActiveTime: clientEvent.payload.lastActiveTime,
+				inactiveDuration: clientEvent.payload.inactiveDuration
+			})
+
+		case 'viewer:open':
+			return caliperEvents.createViewerSessionLoggedInEvent(req, currentUser, clientEvent.draft_id)
 
 		case 'viewer:close':
-			return caliperEvents.createViewerEndedEvent(req, currentUser, clientEvent.draft_id)
+			return caliperEvents.createViewerSessionLoggedOutEvent(req, currentUser, clientEvent.draft_id)
+
+		case 'viewer:leave':
+			return caliperEvents.createViewerAbandonedEvent(req, currentUser, clientEvent.draft_id, {
+				type: 'leave'
+			})
+
+		case 'viewer:return':
+			return caliperEvents.createViewerResumedEvent(req, currentUser, clientEvent.draft_id, {
+				type: 'return'
+			})
 	}
 
 	return null

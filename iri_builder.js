@@ -19,6 +19,10 @@ const IRI = {
 		return createIRI(host, '/')
 	},
 
+	// getViewerClientIRI: host => {
+	// 	return createIRI(host, '/viewer/client')
+	// },
+
 	getSessionIRI: (host, sessionId) => {
 		return createIRI(host, `/session/${sessionId}`)
 	},

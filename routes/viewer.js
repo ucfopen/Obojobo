@@ -4,6 +4,8 @@ var OboGlobals = oboRequire('obo_globals')
 let DraftModel = oboRequire('models/draft')
 let assetForEnv = oboRequire('asset_resolver').assetForEnv
 let logger = oboRequire('logger')
+let insertEvent = oboRequire('insert_event')
+let createCaliperEvent = oboRequire('routes/api/events/create_caliper_event')
 
 router.all('/example', (req, res, next) => {
 	if (req.app.get('env') === 'development') {
@@ -50,6 +52,21 @@ router.all('/:draftId*', (req, res, next) => {
 					assetForEnv('/static/caliperSensor.js')
 					// assetForEnv('$[http://localhost:8090/webpack-dev-server.js]')
 				]
+			})
+
+			insertEvent({
+				action: 'viewer:open',
+				actorTime: new Date().toISOString(),
+				userId: user.id,
+				ip: req.connection.remoteAddress,
+				metadata: {},
+				draftId: req.params.draftId,
+				payload: {},
+				caliperPayload: createCaliperEvent.createViewerSessionLoggedInEvent(
+					req,
+					user,
+					req.params.draftId
+				)
 			})
 		})
 		.catch(error => {
