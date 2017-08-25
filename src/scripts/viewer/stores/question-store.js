@@ -54,7 +54,7 @@ class QuestionStore extends Store {
 					questionId: payload.value.id
 				})
 
-				this.hideExplanation(payload.value.id)
+				QuestionUtil.clearData(payload.value.id, 'showingExplanation')
 			},
 
 			'question:clearData': payload => {
@@ -89,12 +89,31 @@ class QuestionStore extends Store {
 				return this.triggerChange()
 			},
 
+			'question:checkAnswer': payload => {
+				let questionId = payload.value.id
+				let questionModel = OboModel.models[questionId]
+				let root = questionModel.getRoot()
+
+				APIUtil.postEvent(root, 'question:checkAnswer', {
+					id: payload.value.id
+				})
+			},
+
 			'question:retry': payload => {
 				let questionId = payload.value.id
-				let root = OboModel.models[questionId].getRoot()
+				let questionModel = OboModel.models[questionId]
+				let root = questionModel.getRoot()
 
 				this.clearResponses(questionId)
-				this.hideExplanation(questionId) // should trigger change
+
+				APIUtil.postEvent(root, 'question:retry', {
+					id: payload.value.id
+				})
+
+				if (QuestionUtil.isShowingExplanation(this.state, questionModel)) {
+					QuestionUtil.hideExplanation(questionId, true)
+				}
+
 				ScoreUtil.clearScore(questionId) // should trigger change
 			}
 		})
@@ -102,10 +121,6 @@ class QuestionStore extends Store {
 
 	clearResponses(questionId) {
 		delete this.state.responses[questionId]
-	}
-
-	hideExplanation(questionId) {
-		QuestionUtil.clearData(questionId, 'showingExplanation')
 	}
 
 	init() {

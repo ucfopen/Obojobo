@@ -564,6 +564,7 @@
 					_this.onClickSubmit = _this.onClickSubmit.bind(_this)
 					_this.onClickReset = _this.onClickReset.bind(_this)
 					_this.onClick = _this.onClick.bind(_this)
+					_this.onCheckAnswer = _this.onCheckAnswer.bind(_this)
 					_this.isShowingExplanation = _this.isShowingExplanation.bind(_this)
 					return _this
 				}
@@ -721,7 +722,8 @@
 						value: function onClickSubmit(event) {
 							event.preventDefault()
 
-							ScoreUtil.setScore(this.getQuestionModel().get('id'), this.calculateScore())
+							// ScoreUtil.setScore(this.getQuestionModel().get('id'), this.calculateScore())
+							QuestionUtil.checkAnswer(this.getQuestionModel().get('id'))
 						}
 					},
 					{
@@ -803,6 +805,28 @@
 						key: 'componentWillReceiveProps',
 						value: function componentWillReceiveProps() {
 							this.shuffle()
+						}
+					},
+					{
+						key: 'componentDidMount',
+						value: function componentDidMount() {
+							Dispatcher.on('question:checkAnswer', this.onCheckAnswer)
+						}
+					},
+					{
+						key: 'componentWillUnmount',
+						value: function componentWillUnmount() {
+							Dispatcher.off('question:checkAnswer', this.onCheckAnswer)
+						}
+					},
+					{
+						key: 'onCheckAnswer',
+						value: function onCheckAnswer(payload) {
+							var questionId = this.getQuestionModel().get('id')
+
+							if (payload.value.id === questionId) {
+								ScoreUtil.setScore(questionId, this.calculateScore())
+							}
 						}
 					},
 					{

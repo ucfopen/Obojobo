@@ -51,7 +51,6 @@ var APIUtil = {
 			})
 			// TODO: Send Caliper event to client host.
 		).then(res => {
-			console.log('then', res)
 			if (res && res.status === 'ok' && res.value) {
 				parent.postMessage(res.value, '*')
 			}

@@ -27,6 +27,7 @@ export default class MCAssessment extends React.Component {
 		this.onClickSubmit = this.onClickSubmit.bind(this)
 		this.onClickReset = this.onClickReset.bind(this)
 		this.onClick = this.onClick.bind(this)
+		this.onCheckAnswer = this.onCheckAnswer.bind(this)
 		this.isShowingExplanation = this.isShowingExplanation.bind(this)
 	}
 
@@ -115,7 +116,8 @@ export default class MCAssessment extends React.Component {
 	onClickSubmit(event) {
 		event.preventDefault()
 
-		ScoreUtil.setScore(this.getQuestionModel().get('id'), this.calculateScore())
+		// ScoreUtil.setScore(this.getQuestionModel().get('id'), this.calculateScore())
+		QuestionUtil.checkAnswer(this.getQuestionModel().get('id'))
 	}
 
 	onClickShowExplanation(event) {
@@ -181,6 +183,22 @@ export default class MCAssessment extends React.Component {
 
 	componentWillReceiveProps() {
 		this.shuffle()
+	}
+
+	componentDidMount() {
+		Dispatcher.on('question:checkAnswer', this.onCheckAnswer)
+	}
+
+	componentWillUnmount() {
+		Dispatcher.off('question:checkAnswer', this.onCheckAnswer)
+	}
+
+	onCheckAnswer(payload) {
+		let questionId = this.getQuestionModel().get('id')
+
+		if (payload.value.id === questionId) {
+			ScoreUtil.setScore(questionId, this.calculateScore())
+		}
 	}
 
 	componentWillMount() {

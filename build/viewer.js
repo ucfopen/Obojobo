@@ -731,7 +731,6 @@
 						})
 						// TODO: Send Caliper event to client host.
 					).then(function(res) {
-						console.log('then', res)
 						if (res && res.status === 'ok' && res.value) {
 							parent.postMessage(res.value, '*')
 						}
@@ -1023,7 +1022,7 @@
 						value: { id: id }
 					})
 				},
-				hideExplanation: function hideExplanation(id) {
+				hideExplanation: function hideExplanation(id, asSystem) {
 					return Dispatcher.trigger('question:hideExplanation', {
 						value: { id: id }
 					})
@@ -1037,6 +1036,13 @@
 				},
 				hideQuestion: function hideQuestion(id) {
 					return Dispatcher.trigger('question:hide', {
+						value: {
+							id: id
+						}
+					})
+				},
+				checkAnswer: function checkAnswer(id) {
+					return Dispatcher.trigger('question:checkAnswer', {
 						value: {
 							id: id
 						}
@@ -1625,25 +1631,25 @@
 
 			var ScoreUtil = {
 				getScoreForModel: function getScoreForModel(state, model) {
-					var score = state.scores[model.get('id')]
-					if (typeof score === 'undefined' || score === null) {
+					var scoreItem = state.scores[model.get('id')]
+					if (typeof scoreItem === 'undefined' || scoreItem === null) {
 						return null
 					}
 
-					return score
+					return scoreItem.score
 				},
-				setScore: function setScore(id, score) {
+				setScore: function setScore(itemId, score) {
 					return Dispatcher.trigger('score:set', {
 						value: {
-							id: id,
+							itemId: itemId,
 							score: score
 						}
 					})
 				},
-				clearScore: function clearScore(id) {
+				clearScore: function clearScore(itemId) {
 					return Dispatcher.trigger('score:clear', {
 						value: {
-							id: id
+							itemId: itemId
 						}
 					})
 				}
@@ -2514,7 +2520,7 @@
 								questionId: payload.value.id
 							})
 
-							_this.hideExplanation(payload.value.id)
+							_questionUtil2.default.clearData(payload.value.id, 'showingExplanation')
 						},
 
 						'question:clearData': function questionClearData(payload) {
@@ -2553,12 +2559,31 @@
 							return _this.triggerChange()
 						},
 
+						'question:checkAnswer': function questionCheckAnswer(payload) {
+							var questionId = payload.value.id
+							var questionModel = OboModel.models[questionId]
+							var root = questionModel.getRoot()
+
+							_apiUtil2.default.postEvent(root, 'question:checkAnswer', {
+								id: payload.value.id
+							})
+						},
+
 						'question:retry': function questionRetry(payload) {
 							var questionId = payload.value.id
-							var root = OboModel.models[questionId].getRoot()
+							var questionModel = OboModel.models[questionId]
+							var root = questionModel.getRoot()
 
 							_this.clearResponses(questionId)
-							_this.hideExplanation(questionId) // should trigger change
+
+							_apiUtil2.default.postEvent(root, 'question:retry', {
+								id: payload.value.id
+							})
+
+							if (_questionUtil2.default.isShowingExplanation(_this.state, questionModel)) {
+								_questionUtil2.default.hideExplanation(questionId, true)
+							}
+
 							_scoreUtil2.default.clearScore(questionId) // should trigger change
 						}
 					})
@@ -2570,12 +2595,6 @@
 						key: 'clearResponses',
 						value: function clearResponses(questionId) {
 							delete this.state.responses[questionId]
-						}
-					},
-					{
-						key: 'hideExplanation',
-						value: function hideExplanation(questionId) {
-							_questionUtil2.default.clearData(questionId, 'showingExplanation')
 						}
 					},
 					{
@@ -2678,7 +2697,9 @@
 
 			var Store = _Common2.default.flux.Store
 			var Dispatcher = _Common2.default.flux.Dispatcher
-			var FocusUtil = _Common2.default.util.FocusUtil
+			var _Common$util = _Common2.default.util,
+				UUID = _Common$util.UUID,
+				FocusUtil = _Common$util.FocusUtil
 			var OboModel = _Common2.default.models.OboModel
 
 			var ScoreStore = (function(_Store) {
@@ -2696,7 +2717,13 @@
 
 					Dispatcher.on({
 						'score:set': function scoreSet(payload) {
-							_this.state.scores[payload.value.id] = payload.value.score
+							var scoreId = UUID()
+
+							_this.state.scores[payload.value.itemId] = {
+								id: scoreId,
+								score: payload.value.score,
+								itemId: payload.value.itemId
+							}
 
 							if (payload.value.score === 100) {
 								FocusUtil.unfocus()
@@ -2704,21 +2731,23 @@
 
 							_this.triggerChange()
 
-							model = OboModel.models[payload.value.id]
+							model = OboModel.models[payload.value.itemId]
 							return _apiUtil2.default.postEvent(model.getRoot(), 'score:set', {
-								id: payload.value.id,
+								id: scoreId,
+								itemId: payload.value.itemId,
 								score: payload.value.score
 							})
 						},
 
 						'score:clear': function scoreClear(payload) {
-							delete _this.state.scores[payload.value.id]
+							var scoreItem = _this.state.scores[payload.value.itemId]
+
+							model = OboModel.models[scoreItem.itemId]
+
+							delete _this.state.scores[payload.value.itemId]
 							_this.triggerChange()
 
-							model = OboModel.models[payload.value.id]
-							return _apiUtil2.default.postEvent(model.getRoot(), 'score:clear', {
-								id: payload.value.id
-							})
+							return _apiUtil2.default.postEvent(model.getRoot(), 'score:clear', scoreItem)
 						}
 					})
 					return _this
@@ -6195,6 +6224,8 @@
 						: (subClass.__proto__ = superClass)
 			}
 
+			var IDLE_TIMEOUT_DURATION_MS = 1800
+
 			var Legacy = _Common2.default.models.Legacy
 			var DOMUtil = _Common2.default.page.DOMUtil
 			var Screen = _Common2.default.page.Screen
@@ -6301,6 +6332,7 @@
 					_this.onIdle = _this.onIdle.bind(_this)
 					_this.onReturnFromIdle = _this.onReturnFromIdle.bind(_this)
 					_this.onWindowClose = _this.onWindowClose.bind(_this)
+					_this.onVisibilityChange = _this.onVisibilityChange.bind(_this)
 
 					window.onbeforeunload = _this.onWindowClose
 
@@ -6309,6 +6341,12 @@
 				}
 
 				_createClass(ViewerApp, [
+					{
+						key: 'componentDidMount',
+						value: function componentDidMount() {
+							document.addEventListener('visibilitychange', this.onVisibilityChange)
+						}
+					},
 					{
 						key: 'componentWillMount',
 						value: function componentWillMount() {
@@ -6330,6 +6368,8 @@
 							_assessmentStore2.default.offChange(this.onAssessmentStoreChange)
 							ModalStore.offChange(this.onModalStoreChange)
 							FocusStore.offChange(this.onFocusStoreChange)
+
+							document.removeEventListener('visibilitychange', this.onVisibilityChange)
 						}
 
 						// componentDidMount: ->
@@ -6360,6 +6400,16 @@
 								this.scrollToTop()
 
 								return delete this.needsScroll
+							}
+						}
+					},
+					{
+						key: 'onVisibilityChange',
+						value: function onVisibilityChange(event) {
+							if (document.hidden) {
+								_apiUtil2.default.postEvent(this.state.model, 'viewer:leave', {})
+							} else {
+								_apiUtil2.default.postEvent(this.state.model, 'viewer:return', {})
 							}
 						}
 					},
@@ -6455,17 +6505,23 @@
 					{
 						key: 'onIdle',
 						value: function onIdle() {
-							// TODO: Future onIdle event callback from IdleTimer
-							// console.log("User now idle.")
-							_apiUtil2.default.postEvent(this.state.model, 'viewer:idle', {})
+							this.lastActiveEpoch = this.refs.idleTimer.getLastActiveTime()
+
+							// APIUtil.postEvent(this.state.model, 'viewer:inactive', {
+							// 	lastActiveTime: this.lastActiveEpoch,
+							// 	inactiveDuration: IDLE_TIMEOUT_DURATION_MS
+							// })
 						}
 					},
 					{
 						key: 'onReturnFromIdle',
 						value: function onReturnFromIdle() {
-							// TODO: Future onReturnFromIdle event callback from IdleTimer
-							// console.log("User has returned from idle state.")
-							_apiUtil2.default.postEvent(this.state.model, 'viewer:returnFromIdle', {})
+							_apiUtil2.default.postEvent(this.state.model, 'viewer:returnFromInactive', {
+								lastActiveTime: this.lastActiveEpoch,
+								inactiveDuration: Date.now() - this.lastActiveEpoch
+							})
+
+							delete this.lastActiveEpoch
 						}
 					},
 					{
@@ -6559,7 +6615,7 @@
 								{
 									ref: 'idleTimer',
 									element: window,
-									timeout: 180000,
+									timeout: IDLE_TIMEOUT_DURATION_MS,
 									idleAction: this.onIdle,
 									activeAction: this.onReturnFromIdle
 								},

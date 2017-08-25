@@ -15,6 +15,8 @@ import AssessmentStore from '../../viewer/stores/assessment-store'
 import NavStore from '../../viewer/stores/nav-store'
 import Nav from './nav'
 
+const IDLE_TIMEOUT_DURATION_MS = 1800
+
 let { Legacy } = Common.models
 let { DOMUtil } = Common.page
 let { Screen } = Common.page
@@ -93,10 +95,15 @@ export default class ViewerApp extends React.Component {
 		this.onIdle = this.onIdle.bind(this)
 		this.onReturnFromIdle = this.onReturnFromIdle.bind(this)
 		this.onWindowClose = this.onWindowClose.bind(this)
+		this.onVisibilityChange = this.onVisibilityChange.bind(this)
 
 		window.onbeforeunload = this.onWindowClose
 
 		this.state = state
+	}
+
+	componentDidMount() {
+		document.addEventListener('visibilitychange', this.onVisibilityChange)
 	}
 
 	componentWillMount() {
@@ -116,6 +123,8 @@ export default class ViewerApp extends React.Component {
 		AssessmentStore.offChange(this.onAssessmentStoreChange)
 		ModalStore.offChange(this.onModalStoreChange)
 		FocusStore.offChange(this.onFocusStoreChange)
+
+		document.removeEventListener('visibilitychange', this.onVisibilityChange)
 	}
 
 	// componentDidMount: ->
@@ -141,6 +150,14 @@ export default class ViewerApp extends React.Component {
 			this.scrollToTop()
 
 			return delete this.needsScroll
+		}
+	}
+
+	onVisibilityChange(event) {
+		if (document.hidden) {
+			APIUtil.postEvent(this.state.model, 'viewer:leave', {})
+		} else {
+			APIUtil.postEvent(this.state.model, 'viewer:return', {})
 		}
 	}
 
@@ -212,15 +229,21 @@ export default class ViewerApp extends React.Component {
 	}
 
 	onIdle() {
-		// TODO: Future onIdle event callback from IdleTimer
-		// console.log("User now idle.")
-		APIUtil.postEvent(this.state.model, 'viewer:idle', {})
+		this.lastActiveEpoch = this.refs.idleTimer.getLastActiveTime()
+
+		// APIUtil.postEvent(this.state.model, 'viewer:inactive', {
+		// 	lastActiveTime: this.lastActiveEpoch,
+		// 	inactiveDuration: IDLE_TIMEOUT_DURATION_MS
+		// })
 	}
 
 	onReturnFromIdle() {
-		// TODO: Future onReturnFromIdle event callback from IdleTimer
-		// console.log("User has returned from idle state.")
-		APIUtil.postEvent(this.state.model, 'viewer:returnFromIdle', {})
+		APIUtil.postEvent(this.state.model, 'viewer:returnFromInactive', {
+			lastActiveTime: this.lastActiveEpoch,
+			inactiveDuration: Date.now() - this.lastActiveEpoch
+		})
+
+		delete this.lastActiveEpoch
 	}
 
 	onWindowClose(e) {
@@ -297,7 +320,7 @@ export default class ViewerApp extends React.Component {
 			<IdleTimer
 				ref="idleTimer"
 				element={window}
-				timeout={180000}
+				timeout={IDLE_TIMEOUT_DURATION_MS}
 				idleAction={this.onIdle}
 				activeAction={this.onReturnFromIdle}
 			>

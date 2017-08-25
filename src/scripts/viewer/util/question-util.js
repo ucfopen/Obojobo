@@ -44,7 +44,7 @@ let QuestionUtil = {
 		})
 	},
 
-	hideExplanation(id) {
+	hideExplanation(id, asSystem) {
 		return Dispatcher.trigger('question:hideExplanation', {
 			value: { id }
 		})
@@ -60,6 +60,14 @@ let QuestionUtil = {
 
 	hideQuestion(id) {
 		return Dispatcher.trigger('question:hide', {
+			value: {
+				id
+			}
+		})
+	},
+
+	checkAnswer(id) {
+		return Dispatcher.trigger('question:checkAnswer', {
 			value: {
 				id
 			}
