@@ -1,0 +1,24 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`Caliper event creator can create a navigation event 1`] = `
+Event {
+  "@context": "http://purl.imsglobal.org/ctx/caliper/v1/Context",
+  "@type": "http://purl.imsglobal.org/caliper/v1/NavigationEvent",
+  "action": "http://purl.imsglobal.org/vocab/caliper/v1/action#NavigatedTo",
+  "actor": "test actor",
+  "edApp": "test ed app",
+  "eventTime": "2017-08-29T16:57:14.500Z",
+  "extensions": Object {
+    "previewMode": true,
+  },
+  "federatedSession": "test federated session",
+  "generated": null,
+  "group": null,
+  "id": "urn:uuid:fb9826d0-3d7a-43b8-a5ad-3949ce620d91",
+  "membership": null,
+  "object": "test referrer",
+  "referrer": "test referrer",
+  "session": "test session",
+  "target": null,
+}
+`;
