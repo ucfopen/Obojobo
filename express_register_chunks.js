@@ -44,11 +44,11 @@ module.exports = app => {
 		registerAssetVersions('viewer-app', '.js')
 	} else {
 		// ===========  ASSETS FROM WEBPACK ===========
-		let webpackDevMiddleware = require('webpack-dev-middleware')
-		let webpack = require('webpack')
-		let webpackConfig = require('./webpack.config')
+		// let webpackDevMiddleware = require('webpack-dev-middleware')
+		// let webpack = require('webpack')
+		// let webpackConfig = require('./webpack.config')
 
 		// there's no need to register using express.static(), that happens automatically from the webpack config
-		app.use(webpackDevMiddleware(webpack(webpackConfig), { publicPath: '/static/' }))
+		// app.use(webpackDevMiddleware(webpack(webpackConfig), { publicPath: '/static/' }))
 	}
 }

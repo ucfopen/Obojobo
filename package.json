@@ -3,6 +3,7 @@
 	"version": "3.1.0",
 	"private": true,
 	"scripts": {
+		"protodev": "webpack-dev-server --config webpack.dev.config.js",
 		"start": "yarn express:prod",
 		"dev": "yarn express:dev",
 		"dev:docEngine": "concurrently \"yarn express:dev\" \"yarn devDocEngine:start\"",
@@ -81,7 +82,8 @@
 		"jest-cli": "^19.0.2",
 		"lint-staged": "^4.0.2",
 		"prettier": "^1.5.3",
-		"webpack-dev-middleware": "^1.10.2"
+		"webpack-dev-middleware": "^1.10.2",
+		"webpack-dev-server": "^2.7.1"
 	},
 	"jest": {
 		"verbose": true,
