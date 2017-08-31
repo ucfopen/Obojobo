@@ -1,5 +1,27 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
+exports[`Caliper event creator can create a hide event 1`] = `
+Event {
+  "@context": "http://purl.imsglobal.org/ctx/caliper/v1/Context",
+  "@type": null,
+  "action": "Hid",
+  "actor": "test actor",
+  "edApp": "test ed app",
+  "eventTime": "2017-08-29T16:57:14.500Z",
+  "extensions": Object {
+    "previewMode": true,
+  },
+  "federatedSession": "test federated session",
+  "generated": null,
+  "group": null,
+  "id": "urn:uuid:fb9826d0-3d7a-43b8-a5ad-3949ce620d91",
+  "membership": null,
+  "object": "test referrer",
+  "session": "test session",
+  "target": null,
+}
+`;
+
 exports[`Caliper event creator can create a navigation event 1`] = `
 Event {
   "@context": "http://purl.imsglobal.org/ctx/caliper/v1/Context",
@@ -20,5 +42,161 @@ Event {
   "referrer": "test referrer",
   "session": "test session",
   "target": null,
+}
+`;
+
+exports[`Caliper event creator can create a score 1`] = `
+Object {
+  "@context": "http://purl.imsglobal.org/ctx/caliper/v1p1",
+  "@type": "Score",
+  "attempt": "test attempt IRI",
+  "dateCreated": "2017-08-29T16:57:14.500Z",
+  "id": "urn:uuid:95",
+  "maxScore": 100,
+  "scoreGiven": "fb9826d0-3d7a-43b8-a5ad-3949ce620d91",
+  "scoredBy": "test ed app",
+}
+`;
+
+exports[`Caliper event creator can create a view event 1`] = `
+Event {
+  "@context": "http://purl.imsglobal.org/ctx/caliper/v1/Context",
+  "@type": "http://purl.imsglobal.org/caliper/v1/ViewEvent",
+  "action": "Viewed",
+  "actor": "test actor",
+  "edApp": "test ed app",
+  "eventTime": "2017-08-29T16:57:14.500Z",
+  "extensions": Object {
+    "previewMode": true,
+  },
+  "federatedSession": "test federated session",
+  "generated": null,
+  "group": null,
+  "id": "urn:uuid:fb9826d0-3d7a-43b8-a5ad-3949ce620d91",
+  "membership": null,
+  "object": "test referrer",
+  "session": "test session",
+  "target": null,
+}
+`;
+
+exports[`Caliper event creator can create an assessment attempt started event 1`] = `
+Event {
+  "@context": "http://purl.imsglobal.org/ctx/caliper/v1/Context",
+  "@type": "http://purl.imsglobal.org/caliper/v1/AssessmentEvent",
+  "action": "Started",
+  "actor": "test actor",
+  "count": 3,
+  "edApp": "test ed app",
+  "eventTime": "2017-08-29T16:57:14.500Z",
+  "extensions": Object {
+    "previewMode": true,
+  },
+  "federatedSession": "test federated session",
+  "generated": "test assessment attempt IRI",
+  "group": null,
+  "id": "urn:uuid:fb9826d0-3d7a-43b8-a5ad-3949ce620d91",
+  "membership": null,
+  "object": "test assessment IRI",
+  "session": "test session",
+  "target": null,
+}
+`;
+
+exports[`Caliper event creator can create an assessment attempt submitted event 1`] = `
+Event {
+  "@context": "http://purl.imsglobal.org/ctx/caliper/v1/Context",
+  "@type": "http://purl.imsglobal.org/caliper/v1/AssessmentEvent",
+  "action": "Submitted",
+  "actor": "test actor",
+  "count": Object {},
+  "edApp": "test ed app",
+  "eventTime": "2017-08-29T16:57:14.500Z",
+  "extensions": Object {
+    "previewMode": true,
+  },
+  "federatedSession": "test federated session",
+  "generated": "test assessment attempt IRI",
+  "group": null,
+  "id": "urn:uuid:fb9826d0-3d7a-43b8-a5ad-3949ce620d91",
+  "membership": null,
+  "object": "test assessment IRI",
+  "session": "test session",
+  "target": null,
+}
+`;
+
+exports[`Caliper event creator can create an attempt scored event 1`] = `
+Event {
+  "@context": "http://purl.imsglobal.org/ctx/caliper/v1/Context",
+  "@type": "GradeEvent",
+  "action": "Graded",
+  "actor": "test ed app",
+  "edApp": "test ed app",
+  "eventTime": "2017-08-29T16:57:14.500Z",
+  "extensions": Object {
+    "previewMode": true,
+  },
+  "federatedSession": "test federated session",
+  "generated": Object {
+    "@context": "http://purl.imsglobal.org/ctx/caliper/v1p1",
+    "@type": "Score",
+    "attempt": "test assessment attempt IRI",
+    "dateCreated": "2017-08-29T16:57:14.500Z",
+    "id": "urn:uuid:urn:uuid:fb9826d0-3d7a-43b8-a5ad-3949ce620d91",
+    "maxScore": 100,
+    "scoreGiven": 95,
+    "scoredBy": "test ed app",
+  },
+  "group": null,
+  "id": "urn:uuid:fb9826d0-3d7a-43b8-a5ad-3949ce620d91",
+  "membership": null,
+  "object": "test assessment attempt IRI",
+  "session": "test session",
+  "target": null,
+}
+`;
+
+exports[`Caliper event creator sets target of hide event when given framename arg 1`] = `
+Event {
+  "@context": "http://purl.imsglobal.org/ctx/caliper/v1/Context",
+  "@type": null,
+  "action": "Hid",
+  "actor": "test actor",
+  "edApp": "test ed app",
+  "eventTime": "2017-08-29T16:57:14.500Z",
+  "extensions": Object {
+    "previewMode": true,
+  },
+  "federatedSession": "test federated session",
+  "generated": null,
+  "group": null,
+  "id": "urn:uuid:fb9826d0-3d7a-43b8-a5ad-3949ce620d91",
+  "membership": null,
+  "object": "test referrer",
+  "session": "test session",
+  "target": "test referrer",
+}
+`;
+
+exports[`Caliper event creator sets target of view event when given framename arg 1`] = `
+Event {
+  "@context": "http://purl.imsglobal.org/ctx/caliper/v1/Context",
+  "@type": "http://purl.imsglobal.org/caliper/v1/ViewEvent",
+  "action": "Viewed",
+  "actor": "test actor",
+  "edApp": "test ed app",
+  "eventTime": "2017-08-29T16:57:14.500Z",
+  "extensions": Object {
+    "previewMode": true,
+  },
+  "federatedSession": "test federated session",
+  "generated": null,
+  "group": null,
+  "id": "urn:uuid:fb9826d0-3d7a-43b8-a5ad-3949ce620d91",
+  "membership": null,
+  "object": "test referrer",
+  "session": "test session",
+  "target": "test referrer",
 }
 `;

@@ -46,7 +46,7 @@ let createEvent = (classRef, req, currentUser, actor = 'user') => {
 	return caliperEvent
 }
 
-let createScore = (req, attemptIRI, scoreId, score) => {
+let createScore = (req, attemptIRI, score, scoreId = getNewGeneratedId()) => {
 	return {
 		'@context': 'http://purl.imsglobal.org/ctx/caliper/v1p1',
 		'@type': 'Score',
@@ -241,7 +241,7 @@ let createPracticeGradeEvent = (
 	caliperEvent.setObject(req.iri.getPracticeQuestionAttemptIRI(draftId, questionId))
 	//@TODO - Caliper spec will have a Score entity but our version doesn't have this yet
 	caliperEvent.setGenerated(
-		createScore(req, req.iri.getPracticeQuestionAttemptIRI(draftId, questionId), scoreId, score)
+		createScore(req, req.iri.getPracticeQuestionAttemptIRI(draftId, questionId), score, scoreId)
 	)
 
 	Object.assign(caliperEvent.extensions, extensions)
@@ -355,5 +355,6 @@ module.exports = {
 	createViewerResumedEvent,
 	createViewerSessionLoggedInEvent,
 	createViewerSessionLoggedOutEvent,
-	createPracticeQuestionResetEvent
+	createPracticeQuestionResetEvent,
+	createScore
 }
