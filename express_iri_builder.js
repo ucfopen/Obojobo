@@ -14,6 +14,14 @@ let IRIBuilder = req => {
 			return IRI.getEdAppIRI(req.hostname)
 		},
 
+		getViewerClientIRI: () => {
+			return IRI.getViewerClientIRI(req.hostname)
+		},
+
+		getAppServerIRI: () => {
+			return IRI.getAppServerIRI(req.hostname)
+		},
+
 		getSessionIRI: () => {
 			return IRI.getSessionIRI(req.hostname, req.session.id)
 		},
@@ -26,8 +34,8 @@ let IRIBuilder = req => {
 			return IRI.getUserIRI(req.hostname, id)
 		},
 
-		getViewIRI: (draftId, oboNodeId, frameName) => {
-			return IRI.getViewIRI(req.hostname, draftId, oboNodeId, frameName)
+		getDraftIRI: (draftId, oboNodeId, frameName) => {
+			return IRI.getDraftIRI(req.hostname, draftId, oboNodeId, frameName)
 		},
 
 		getPracticeQuestionAttemptIRI: (draftId, questionId) => {
@@ -38,8 +46,8 @@ let IRIBuilder = req => {
 			return IRI.getAssessmentIRI(req.hostname, draftId, assessmentId)
 		},
 
-		getAssessmentAttemptIRI: (draftId, assessmentId, attemptId) => {
-			return IRI.getAssessmentAttemptIRI(req.hostname, draftId, assessmentId, attemptId)
+		getAssessmentAttemptIRI: attemptId => {
+			return IRI.getAssessmentAttemptIRI(req.hostname, attemptId)
 		}
 	}
 }

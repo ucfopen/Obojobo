@@ -16,49 +16,53 @@ const IRI = {
 	},
 
 	getEdAppIRI: host => {
-		return createIRI(host, '/')
+		return createIRI(host, '/api/system')
 	},
 
-	// getViewerClientIRI: host => {
-	// 	return createIRI(host, '/viewer/client')
-	// },
+	getViewerClientIRI: host => {
+		return createIRI(host, '/api/viewer/client')
+	},
+
+	getAppServerIRI: host => {
+		return createIRI(host, '/api/server')
+	},
 
 	getSessionIRI: (host, sessionId) => {
-		return createIRI(host, `/session/${sessionId}`)
+		return createIRI(host, `/api/session/${sessionId}`)
 	},
 
 	getFederatedSessionIRI: (host, launchId) => {
-		return createIRI(host, `/launch/${launchId}`)
+		return createIRI(host, `/api/launch/${launchId}`)
 	},
 
 	getUserIRI: (host, userId) => {
-		return createIRI(host, `/user/${userId}`)
+		return createIRI(host, `/api/user/${userId}`)
 	},
 
-	getViewIRI: (host, draftId, oboNodeId = null, contextName = null) => {
+	getDraftIRI: (host, draftId, oboNodeId = null, contextName = null) => {
 		let iri
 
 		if (oboNodeId === null) {
-			iri = createIRI(host, `/view/${draftId}`)
+			iri = createIRI(host, `/api/draft/${draftId}`)
 		} else if (contextName === null) {
-			iri = createIRI(host, `/view/${draftId}`, `#${oboNodeId}`)
+			iri = createIRI(host, `/api/draft/${draftId}`, `#${oboNodeId}`)
 		} else {
-			iri = createIRI(host, `/view/${draftId}`, `#${oboNodeId}`, { context: contextName })
+			iri = createIRI(host, `/api/draft/${draftId}`, `#${oboNodeId}`, { context: contextName })
 		}
 
 		return iri
 	},
 
 	getPracticeQuestionAttemptIRI: (host, draftId, oboNodeId) => {
-		return createIRI(host, `/practice/${draftId}/${oboNodeId}`)
+		return createIRI(host, `/api/practice/${draftId}/${oboNodeId}`)
 	},
 
 	getAssessmentIRI: (host, draftId, assessmentId) => {
-		return createIRI(host, `/assessment/${draftId}/${assessmentId}`)
+		return createIRI(host, `/api/assessment/${draftId}/${assessmentId}`)
 	},
 
-	getAssessmentAttemptIRI: (host, draftId, assessmentId, attemptId) => {
-		return createIRI(host, `/assessment/${draftId}/${assessmentId}/attempt/${attemptId}`)
+	getAssessmentAttemptIRI: (host, attemptId) => {
+		return createIRI(host, `/api/attempt/${attemptId}`)
 	}
 }
 

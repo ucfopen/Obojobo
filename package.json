@@ -5,7 +5,7 @@
   "scripts": {
     "start": "yarn express:prod",
     "dev": "yarn express:dev",
-    "db:createmigration": "node node_modules/db-migrate/bin/db-migrate create --config config/db.json",		
+    "db:createmigration": "node node_modules/db-migrate/bin/db-migrate create --config config/db.json",
     "dev:docEngine": "concurrently \"yarn express:dev\" \"yarn devDocEngine:start\"",
     "db:initdocker": "docker run --name db_postgres -d --restart=unless-stopped -p 5432:5432 postgres:9.6.1-alpine",
     "db:migrateup": "node node_modules/db-migrate/bin/db-migrate up --config config/db.json",
@@ -46,6 +46,7 @@
   },
   "dependencies": {
     "body-parser": "^1.17.1",
+    "caliper-js-public": "git+ssh://git@github.com/IMSGlobal/caliper-js-public.git#v1.0.0",
     "compression": "^1.6.2",
     "concat-files": "^0.1.1",
     "concurrently": "^3.1.0",
@@ -75,8 +76,7 @@
     "pug": "^2.0.0-beta6",
     "serve-favicon": "~2.3.0",
     "style-loader": "^0.17.0",
-    "webpack": "^2.4.1",
-    "caliper-js-public": "git+ssh://git@github.com/IMSGlobal/caliper-js-public.git#v1.0.0"
+    "webpack": "^2.4.1"
   },
   "devDependencies": {
     "babel-preset-env": "^1.5.1",
