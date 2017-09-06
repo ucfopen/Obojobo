@@ -69,7 +69,7 @@ let createEvent = (classRef, req, currentUser, actor) => {
 	return caliperEvent
 }
 
-let createScore = (req, attemptIRI, scoreId, score) => {
+let createScore = (req, attemptIRI, score, scoreId = getNewGeneratedId()) => {
 	return {
 		'@context': 'http://purl.imsglobal.org/ctx/caliper/v1p1',
 		'@type': 'Score', //Term
@@ -90,7 +90,7 @@ let createScore = (req, attemptIRI, scoreId, score) => {
 let createNavigationEvent = (req, currentUser, draftId, from, to, extensions = {}, id = null) => {
 	let caliperEvent = createEvent(NavigationEvent, req, currentUser, ACTOR_USER)
 
-	caliperEvent.referrer = req.iri.getDraftIRI(draftId, from)
+	caliperEvent.referrer = req.iri.getAppServerIRI(draftId, from)
 	caliperEvent.setAction(NavigationActions.NAVIGATED_TO)
 	caliperEvent.setObject(req.iri.getDraftIRI(draftId, to))
 	Object.assign(caliperEvent.extensions, extensions)
@@ -468,5 +468,6 @@ module.exports = {
 	createViewerSessionLoggedInEvent,
 	createViewerSessionLoggedOutEvent,
 	createPracticeQuestionResetEvent,
-	createPracticeQuestionSubmittedEvent
+	createPracticeQuestionSubmittedEvent,
+	createScore
 }
