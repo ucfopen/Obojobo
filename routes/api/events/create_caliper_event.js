@@ -69,15 +69,15 @@ let createEvent = (classRef, req, currentUser, actor) => {
 	return caliperEvent
 }
 
-let createScore = (req, attemptIRI, score, scoreId = getNewGeneratedId()) => {
+let createScore = (req, attemptIRI, scoredBy, score, scoreId = getNewGeneratedId()) => {
 	return {
 		'@context': 'http://purl.imsglobal.org/ctx/caliper/v1p1',
 		'@type': 'Score', //Term
-		id: getUrnFromUuid(scoreId), //IRI
+		id: scoreId, //IRI
 		attempt: attemptIRI, //Attempt
 		maxScore: 100, //decimal
 		scoreGiven: score, //decimal
-		scoredBy: req.iri.getEdAppIRI(), //Agent
+		scoredBy: scoredBy, //Agent
 		dateCreated: new Date().toISOString() //DateTime
 	}
 }
@@ -90,7 +90,7 @@ let createScore = (req, attemptIRI, score, scoreId = getNewGeneratedId()) => {
 let createNavigationEvent = (req, currentUser, draftId, from, to, extensions = {}, id = null) => {
 	let caliperEvent = createEvent(NavigationEvent, req, currentUser, ACTOR_USER)
 
-	caliperEvent.referrer = req.iri.getAppServerIRI(draftId, from)
+	caliperEvent.referrer = req.iri.getDraftIRI(draftId, from)
 	caliperEvent.setAction(NavigationActions.NAVIGATED_TO)
 	caliperEvent.setObject(req.iri.getDraftIRI(draftId, to))
 	Object.assign(caliperEvent.extensions, extensions)
@@ -224,7 +224,12 @@ let createAssessmentAttemptScoredEvent = (
 	caliperEvent.setObject(req.iri.getAssessmentAttemptIRI(attemptId))
 	//@TODO - Caliper spec will have a Score entity but our version doesn't have this yet
 	caliperEvent.setGenerated(
-		createScore(req, req.iri.getAssessmentAttemptIRI(attemptId), attemptScore)
+		createScore(
+			req,
+			req.iri.getAssessmentAttemptIRI(attemptId),
+			req.iri.getAppServerIRI(),
+			attemptScore
+		)
 	)
 
 	Object.assign(caliperEvent.extensions, extensions)
@@ -254,7 +259,13 @@ let createPracticeGradeEvent = (
 	caliperEvent.setObject(req.iri.getPracticeQuestionAttemptIRI(draftId, questionId))
 	//@TODO - Caliper spec will have a Score entity but our version doesn't have this yet
 	caliperEvent.setGenerated(
-		createScore(req, req.iri.getPracticeQuestionAttemptIRI(draftId, questionId), scoreId, score)
+		createScore(
+			req,
+			req.iri.getPracticeQuestionAttemptIRI(draftId, questionId),
+			req.iri.getViewerClientIRI(),
+			score,
+			getUrnFromUuid(scoreId)
+		)
 	)
 
 	Object.assign(caliperEvent.extensions, extensions)

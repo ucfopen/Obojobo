@@ -41,7 +41,13 @@ Date = class extends Date {
 
 describe('Caliper event creator', () => {
 	it('can create a score', () => {
-		const scoreObj = caliperEvents.createScore(testReq, testAttemptIRI, uuid(), 95)
+		const scoreObj = caliperEvents.createScore(
+			testReq,
+			testAttemptIRI,
+			'test app server',
+			67,
+			'urn:uuid:some-uuid'
+		)
 		expect(scoreObj).toMatchSnapshot()
 	})
 

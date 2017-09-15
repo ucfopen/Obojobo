@@ -108,7 +108,7 @@ module.exports = (req, currentUser) => {
 				req,
 				currentUser,
 				clientEvent.draft_id,
-				clientEvent.payload.id
+				clientEvent.payload.questionId
 			)
 
 		case 'viewer:inactive':
