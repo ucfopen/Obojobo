@@ -311,7 +311,10 @@ app.post('/api/assessments/attempt/start', (req, res, next) => {
 					draftId,
 					req.body.assessmentId,
 					result.attemptId,
-					isPreviewing ? -1 : numAttempts + 1
+					isPreviewing ? -1 : numAttempts + 1,
+					{
+						count: numAttempts
+					}
 				)
 			})
 		})

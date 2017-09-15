@@ -95,7 +95,7 @@ class QuestionStore extends Store {
 				let root = questionModel.getRoot()
 
 				APIUtil.postEvent(root, 'question:checkAnswer', {
-					id: payload.value.id
+					questionId: payload.value.id
 				})
 			},
 
@@ -107,7 +107,7 @@ class QuestionStore extends Store {
 				this.clearResponses(questionId)
 
 				APIUtil.postEvent(root, 'question:retry', {
-					id: payload.value.id
+					questionId: payload.value.id
 				})
 
 				if (QuestionUtil.isShowingExplanation(this.state, questionModel)) {

@@ -155,9 +155,15 @@ export default class ViewerApp extends React.Component {
 
 	onVisibilityChange(event) {
 		if (document.hidden) {
-			APIUtil.postEvent(this.state.model, 'viewer:leave', {})
+			APIUtil.postEvent(this.state.model, 'viewer:leave', {}).then(res => {
+				this.leaveEvent = res.value
+			})
 		} else {
-			APIUtil.postEvent(this.state.model, 'viewer:return', {})
+			APIUtil.postEvent(this.state.model, 'viewer:return', {
+				relatedEventId: this.leaveEvent.id
+			})
+
+			delete this.leaveEvent
 		}
 	}
 
@@ -231,19 +237,23 @@ export default class ViewerApp extends React.Component {
 	onIdle() {
 		this.lastActiveEpoch = this.refs.idleTimer.getLastActiveTime()
 
-		// APIUtil.postEvent(this.state.model, 'viewer:inactive', {
-		// 	lastActiveTime: this.lastActiveEpoch,
-		// 	inactiveDuration: IDLE_TIMEOUT_DURATION_MS
-		// })
+		APIUtil.postEvent(this.state.model, 'viewer:inactive', {
+			lastActiveTime: this.lastActiveEpoch,
+			inactiveDuration: IDLE_TIMEOUT_DURATION_MS
+		}).then(res => {
+			this.inactiveEvent = res.value
+		})
 	}
 
 	onReturnFromIdle() {
 		APIUtil.postEvent(this.state.model, 'viewer:returnFromInactive', {
 			lastActiveTime: this.lastActiveEpoch,
-			inactiveDuration: Date.now() - this.lastActiveEpoch
+			inactiveDuration: Date.now() - this.lastActiveEpoch,
+			relatedEventId: this.inactiveEvent.id
 		})
 
 		delete this.lastActiveEpoch
+		delete this.inactiveEvent
 	}
 
 	onWindowClose(e) {

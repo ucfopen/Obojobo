@@ -2565,7 +2565,7 @@
 							var root = questionModel.getRoot()
 
 							_apiUtil2.default.postEvent(root, 'question:checkAnswer', {
-								id: payload.value.id
+								questionId: payload.value.id
 							})
 						},
 
@@ -2577,7 +2577,7 @@
 							_this.clearResponses(questionId)
 
 							_apiUtil2.default.postEvent(root, 'question:retry', {
-								id: payload.value.id
+								questionId: payload.value.id
 							})
 
 							if (_questionUtil2.default.isShowingExplanation(_this.state, questionModel)) {
@@ -6406,10 +6406,20 @@
 					{
 						key: 'onVisibilityChange',
 						value: function onVisibilityChange(event) {
+							var _this2 = this
+
 							if (document.hidden) {
-								_apiUtil2.default.postEvent(this.state.model, 'viewer:leave', {})
+								_apiUtil2.default
+									.postEvent(this.state.model, 'viewer:leave', {})
+									.then(function(res) {
+										_this2.leaveEvent = res.value
+									})
 							} else {
-								_apiUtil2.default.postEvent(this.state.model, 'viewer:return', {})
+								_apiUtil2.default.postEvent(this.state.model, 'viewer:return', {
+									relatedEventId: this.leaveEvent.id
+								})
+
+								delete this.leaveEvent
 							}
 						}
 					},
@@ -6505,12 +6515,18 @@
 					{
 						key: 'onIdle',
 						value: function onIdle() {
+							var _this3 = this
+
 							this.lastActiveEpoch = this.refs.idleTimer.getLastActiveTime()
 
-							// APIUtil.postEvent(this.state.model, 'viewer:inactive', {
-							// 	lastActiveTime: this.lastActiveEpoch,
-							// 	inactiveDuration: IDLE_TIMEOUT_DURATION_MS
-							// })
+							_apiUtil2.default
+								.postEvent(this.state.model, 'viewer:inactive', {
+									lastActiveTime: this.lastActiveEpoch,
+									inactiveDuration: IDLE_TIMEOUT_DURATION_MS
+								})
+								.then(function(res) {
+									_this3.inactiveEvent = res.value
+								})
 						}
 					},
 					{
@@ -6518,10 +6534,12 @@
 						value: function onReturnFromIdle() {
 							_apiUtil2.default.postEvent(this.state.model, 'viewer:returnFromInactive', {
 								lastActiveTime: this.lastActiveEpoch,
-								inactiveDuration: Date.now() - this.lastActiveEpoch
+								inactiveDuration: Date.now() - this.lastActiveEpoch,
+								relatedEventId: this.inactiveEvent.id
 							})
 
 							delete this.lastActiveEpoch
+							delete this.inactiveEvent
 						}
 					},
 					{
