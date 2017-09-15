@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ObojoboDraftDoc>
+	<!-- Sample Obojobo Draft Document -->
+	<!-- https://github.com/ucfcdl/Obojobo-Next/wiki/Obojobo-Document-XML-Format -->
+	<Module title="My Obojobo Module Title">
+
+		<Content>
+			<Page id="page-1" title="Example content page">
+				<h1>A Title</h1>
+				<p>Some very interesting contents.</p>
+			</Page>
+		</Content>
+
+		<Assessment id="assessment" attempts="1" title="Assessment">
+			<Page>
+				<h1>Assessment Intro Title</h1>
+				<p>Some overview before starting the Assessment.</p>
+			</Page>
+		</Assessment>
+
+	</Module>
+</ObojoboDraftDoc>
