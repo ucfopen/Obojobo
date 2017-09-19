@@ -1,5 +1,8 @@
 @import '~styles/includes';
 
-// .obojobo-draft--chunks--list
-// {
-// }
+.obojobo-draft--chunks--list {
+	ul,
+	ol {
+		padding-left: 2em;
+	}
+}
