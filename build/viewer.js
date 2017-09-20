@@ -3074,7 +3074,7 @@
 						window.location.pathname
 					)
 					_assessmentStore2.default.init(
-						OboGlobals.get('ObojoboDraft.Sections.Assessment:attemptHistory')
+						OboGlobals.get('ObojoboDraft.Sections.Assessment:attemptHistory', [])
 					)
 
 					state.navState = _navStore2.default.getState()
