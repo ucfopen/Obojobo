@@ -12,6 +12,9 @@
 		"db:migratedown": "node node_modules/db-migrate/bin/db-migrate down --config config/db.json",
 		"sampleDraft:seed": "node ./bin/sample_draft.js seed",
 		"sampleDraft:watch": "node ./bin/sample_draft.js watch",
+		"xml2draft": "node ./bin/xml2draft.js",
+		"xml2draft:watch": "node ./bin/xml2draft_watch",
+		"xml2draft:seed": "concurrently \"yarn xml2draft:watch\" \"yarn sampleDraft:watch\"",
 		"express:dev": "pm2-dev start pm2_dev.yaml",
 		"express:prod": "pm2 start pm2_prod.yaml",
 		"assets": "NODE_ENV=production webpack -p",
@@ -22,8 +25,6 @@
 		"devDocEngine:nodemodules": "cd ./devsrc/obojobo-draft-document-engine && yarn",
 		"devDocEngine:link": "cd ./devsrc/obojobo-draft-document-engine && yarn link && cd ../.. && yarn link obojobo-draft-document-engine",
 		"devDocEngine:unlink": "yarn unlink obojobo-draft-document-engine",
-		"xml2draft": "node ./bin/xml2draft.js",
-		"xml2draft:watch": "node ./bin/xml2draft_watch",
 		"test": "jest --watch",
 		"test:ci": "CI=true jest --coverage",
 		"precommit": "yarn test:ci && lint-staged",
@@ -34,10 +35,7 @@
 		"node": "^6.9.4"
 	},
 	"lint-staged": {
-		"*.js": [
-			"yarn prettier",
-			"git add"
-		]
+		"*.js": ["yarn prettier", "git add"]
 	},
 	"dependencies": {
 		"babel-preset-env": "^1.5.1",
@@ -93,19 +91,8 @@
 			"routes/**/*.js",
 			"controllers/**/*.js"
 		],
-		"coveragePathIgnorePatterns": [
-			"/node_modules",
-			"/app.js",
-			"/dev_nonce_store.js"
-		],
-		"coverageReporters": [
-			"json",
-			"lcov",
-			"text",
-			"html"
-		],
-		"testPathIgnorePatterns": [
-			"devsrc"
-		]
+		"coveragePathIgnorePatterns": ["/node_modules", "/app.js", "/dev_nonce_store.js"],
+		"coverageReporters": ["json", "lcov", "text", "html"],
+		"testPathIgnorePatterns": ["devsrc"]
 	}
 }

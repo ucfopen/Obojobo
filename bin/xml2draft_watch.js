@@ -3,9 +3,9 @@
 let fs = require('fs')
 let exec = require('child_process').exec
 
-fs.watch('./examples/test-object.xml', { encoding: 'buffer' }, (eventType, filename) => {
+fs.watch('./xml/examples/test-object.xml', { encoding: 'buffer' }, (eventType, filename) => {
 	exec(
-		'node ./bin/xml2draft.js ./examples/test-object.xml --generate-ids --spaces=2 > ../obojobo-3-node/devsrc/obojobo-draft-document-engine/test-object.json',
+		'node ./bin/xml2draft.js ./xml/examples/test-object.xml --generate-ids --spaces=2 > ../obojobo-3-node/devsrc/obojobo-draft-document-engine/test-object.json',
 		{},
 		(err, stdout, stderr) => {
 			if (err) {
