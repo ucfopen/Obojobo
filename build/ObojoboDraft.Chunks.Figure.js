@@ -1,296 +1,604 @@
-/******/ (function(modules) { // webpackBootstrap
-/******/ 	// The module cache
-/******/ 	var installedModules = {};
-
-/******/ 	// The require function
-/******/ 	function __webpack_require__(moduleId) {
-
-/******/ 		// Check if module is in cache
-/******/ 		if(installedModules[moduleId])
-/******/ 			return installedModules[moduleId].exports;
-
-/******/ 		// Create a new module (and put it into the cache)
-/******/ 		var module = installedModules[moduleId] = {
-/******/ 			exports: {},
-/******/ 			id: moduleId,
-/******/ 			loaded: false
-/******/ 		};
-
-/******/ 		// Execute the module function
-/******/ 		modules[moduleId].call(module.exports, module, module.exports, __webpack_require__);
-
-/******/ 		// Flag the module as loaded
-/******/ 		module.loaded = true;
-
-/******/ 		// Return the exports of the module
-/******/ 		return module.exports;
-/******/ 	}
-
-
-/******/ 	// expose the modules object (__webpack_modules__)
-/******/ 	__webpack_require__.m = modules;
-
-/******/ 	// expose the module cache
-/******/ 	__webpack_require__.c = installedModules;
-
-/******/ 	// __webpack_public_path__
-/******/ 	__webpack_require__.p = "build/";
-
-/******/ 	// Load entry module and return exports
-/******/ 	return __webpack_require__(0);
-/******/ })
-/************************************************************************/
-/******/ ({
-
-/***/ 0:
-/***/ function(module, exports, __webpack_require__) {
-
-	module.exports = __webpack_require__(110);
-
-
-/***/ },
-
-/***/ 106:
-/***/ function(module, exports) {
-
-	'use strict';
-
-	var Adapter, Common, TextGroupAdapter;
-
-	Common = window.ObojoboDraft.Common;
-
-	TextGroupAdapter = Common.chunk.textChunk.TextGroupAdapter;
-
-	Adapter = {
-	  construct: function construct(model, attrs) {
-	    var ref, ref1, ref2, ref3, ref4;
-	    TextGroupAdapter.construct(model, attrs);
-	    model.modelState.textGroup.maxItems = 1;
-	    if (attrs != null ? (ref = attrs.content) != null ? ref.url : void 0 : void 0) {
-	      model.modelState.url = attrs.content.url;
-	    } else {
-	      model.modelState.url = null;
-	    }
-	    if (attrs != null ? (ref1 = attrs.content) != null ? ref1.size : void 0 : void 0) {
-	      model.modelState.size = attrs.content.size;
-	    } else {
-	      model.modelState.size = 'small';
-	    }
-	    if (attrs != null ? (ref2 = attrs.content) != null ? ref2.width : void 0 : void 0) {
-	      model.modelState.width = attrs.content.width;
-	    } else {
-	      model.modelState.width = null;
-	    }
-	    if (attrs != null ? (ref3 = attrs.content) != null ? ref3.height : void 0 : void 0) {
-	      model.modelState.height = attrs.content.height;
-	    } else {
-	      model.modelState.height = null;
-	    }
-	    if (attrs != null ? (ref4 = attrs.content) != null ? ref4.alt : void 0 : void 0) {
-	      return model.modelState.alt = attrs.content.alt;
-	    } else {
-	      return model.modelState.alt = null;
-	    }
-	  },
-	  clone: function clone(model, _clone) {
-	    TextGroupAdapter.clone(model, _clone);
-	    _clone.modelState.url = model.modelState.url;
-	    _clone.modelState.size = model.modelState.size;
-	    _clone.modelState.width = model.modelState.width;
-	    _clone.modelState.height = model.modelState.height;
-	    return _clone.modelState.alt = model.modelState.alt;
-	  },
-	  toJSON: function toJSON(model, json) {
-	    TextGroupAdapter.toJSON(model, json);
-	    json.content.url = model.modelState.url;
-	    json.content.size = model.modelState.size;
-	    json.content.width = model.modelState.width;
-	    json.content.height = model.modelState.height;
-	    return json.content.alt = model.modelState.alt;
-	  },
-	  toText: function toText(model) {
-	    return 'Image: ' + model.modelState.url + "\n Caption:" + TextGroupAdapter.toText(model);
-	  }
-	};
-
-	module.exports = Adapter;
-
-/***/ },
-
-/***/ 107:
-/***/ function(module, exports, __webpack_require__) {
-
-	'use strict';
-
-	var Common, Image;
-
-	Common = window.ObojoboDraft.Common;
-
-	Image = React.createClass({
-	  displayName: 'Image',
-
-	  render: function render() {
-	    var data, imgStyles;
-	    data = this.props.chunk.modelState;
-	    if (data.url == null) {
-	      imgStyles = {
-	        backgroundImage: Common.util.getBackgroundImage(__webpack_require__(237)),
-	        backgroundSize: '16px',
-	        height: '300px'
-	      };
-	      return React.createElement('div', { className: 'img-placeholder', style: imgStyles });
-	    }
-	    switch (data.size) {
-	      case 'small':
-	      case 'medium':
-	      case 'large':
-	        return React.createElement('img', { src: data.url, unselectable: 'on', alt: data.alt });
-	      case 'custom':
-	        imgStyles = {};
-	        if (data.width != null) {
-	          imgStyles.width = data.width + 'px';
-	        }
-	        if (data.height != null) {
-	          imgStyles.height = data.height + 'px';
-	        }
-	        return React.createElement('img', { src: data.url, unselectable: 'on', alt: data.alt, style: imgStyles });
-	    }
-	  }
-	});
-
-	module.exports = Image;
-
-/***/ },
-
-/***/ 108:
-/***/ function(module, exports) {
-
-	"use strict";
-
-	var Chunk,
-	    Common,
-	    FocusableSelectionHandler,
-	    SelectionHandler,
-	    TextGroupSelectionHandler,
-	    extend = function extend(child, parent) {
-	  for (var key in parent) {
-	    if (hasProp.call(parent, key)) child[key] = parent[key];
-	  }function ctor() {
-	    this.constructor = child;
-	  }ctor.prototype = parent.prototype;child.prototype = new ctor();child.__super__ = parent.prototype;return child;
-	},
-	    hasProp = {}.hasOwnProperty;
-
-	Common = window.ObojoboDraft.Common;
-
-	TextGroupSelectionHandler = Common.chunk.textChunk.TextGroupSelectionHandler;
-
-	FocusableSelectionHandler = Common.chunk.focusableChunk.FocusableSelectionHandler;
-
-	Chunk = Common.models.Chunk;
-
-	module.exports = SelectionHandler = function (superClass) {
-	  extend(SelectionHandler, superClass);
-
-	  function SelectionHandler() {
-	    return SelectionHandler.__super__.constructor.apply(this, arguments);
-	  }
-
-	  SelectionHandler.prototype.selectStart = function (selection, chunk) {
-	    return FocusableSelectionHandler.prototype.selectStart(selection, chunk);
-	  };
-
-	  return SelectionHandler;
-	}(TextGroupSelectionHandler);
-
-/***/ },
-
-/***/ 109:
-/***/ function(module, exports, __webpack_require__) {
-
-	'use strict';
-
-	var Common, Figure, Image, NonEditableChunk, OboComponent, TextGroupEl;
-
-	__webpack_require__(202);
-
-	Image = __webpack_require__(107);
-
-	Common = window.ObojoboDraft.Common;
-
-	OboComponent = Common.components.OboComponent;
-
-	TextGroupEl = Common.chunk.textChunk.TextGroupEl;
-
-	NonEditableChunk = Common.chunk.NonEditableChunk;
-
-	Figure = React.createClass({
-		displayName: 'Figure',
-
-		render: function render() {
-			var data;
-			data = this.props.model.modelState;
-			return React.createElement(
-				OboComponent,
-				{ model: this.props.model, moduleData: this.props.moduleData },
-				React.createElement(
-					NonEditableChunk,
-					{ className: 'obojobo-draft--chunks--figure viewer ' + data.size, ref: 'component' },
-					React.createElement(
-						'div',
-						{ className: 'container' },
-						React.createElement(
-							'figure',
-							{ unselectable: 'on' },
-							React.createElement(Image, { chunk: this.props.model }),
-							data.textGroup.first.text.length > 0 ? React.createElement(
-								'figcaption',
-								{ ref: 'caption' },
-								React.createElement(TextGroupEl, { parentModel: this.props.model, textItem: data.textGroup.first, groupIndex: '0' })
-							) : null
-						)
-					)
-				)
-			);
+/******/ ;(function(modules) {
+	// webpackBootstrap
+	/******/ // The module cache
+	/******/ var installedModules = {} // The require function
+	/******/
+	/******/ /******/ function __webpack_require__(moduleId) {
+		/******/
+		/******/ // Check if module is in cache
+		/******/ if (installedModules[moduleId]) {
+			/******/ return installedModules[moduleId].exports
+			/******/
+		} // Create a new module (and put it into the cache)
+		/******/ /******/ var module = (installedModules[moduleId] = {
+			/******/ i: moduleId,
+			/******/ l: false,
+			/******/ exports: {}
+			/******/
+		}) // Execute the module function
+		/******/
+		/******/ /******/ modules[moduleId].call(
+			module.exports,
+			module,
+			module.exports,
+			__webpack_require__
+		) // Flag the module as loaded
+		/******/
+		/******/ /******/ module.l = true // Return the exports of the module
+		/******/
+		/******/ /******/ return module.exports
+		/******/
+	} // expose the modules object (__webpack_modules__)
+	/******/
+	/******/
+	/******/ /******/ __webpack_require__.m = modules // expose the module cache
+	/******/
+	/******/ /******/ __webpack_require__.c = installedModules // identity function for calling harmony imports with the correct context
+	/******/
+	/******/ /******/ __webpack_require__.i = function(value) {
+		return value
+	} // define getter function for harmony exports
+	/******/
+	/******/ /******/ __webpack_require__.d = function(exports, name, getter) {
+		/******/ if (!__webpack_require__.o(exports, name)) {
+			/******/ Object.defineProperty(exports, name, {
+				/******/ configurable: false,
+				/******/ enumerable: true,
+				/******/ get: getter
+				/******/
+			})
+			/******/
 		}
-	});
+		/******/
+	} // getDefaultExport function for compatibility with non-harmony modules
+	/******/
+	/******/ /******/ __webpack_require__.n = function(module) {
+		/******/ var getter =
+			module && module.__esModule
+				? /******/ function getDefault() {
+						return module['default']
+					}
+				: /******/ function getModuleExports() {
+						return module
+					}
+		/******/ __webpack_require__.d(getter, 'a', getter)
+		/******/ return getter
+		/******/
+	} // Object.prototype.hasOwnProperty.call
+	/******/
+	/******/ /******/ __webpack_require__.o = function(object, property) {
+		return Object.prototype.hasOwnProperty.call(object, property)
+	} // __webpack_public_path__
+	/******/
+	/******/ /******/ __webpack_require__.p = 'build/' // Load entry module and return exports
+	/******/
+	/******/ /******/ return __webpack_require__((__webpack_require__.s = 160))
+	/******/
+})(
+	/************************************************************************/
+	/******/ {
+		/***/ /***/ 0: function(module, exports) {
+			module.exports = Common
 
-	module.exports = Figure;
+			/***/
+		},
 
-/***/ },
+		/***/ /***/ 137: function(module, exports) {
+			// removed by extract-text-webpack-plugin
+			/***/
+		},
 
-/***/ 110:
-/***/ function(module, exports, __webpack_require__) {
+		/***/ /***/ 156: function(module, exports) {
+			module.exports =
+				"data:image/svg+xml,%3Csvg id='Layer_1' data-name='Layer 1' xmlns='http://www.w3.org/2000/svg' viewBox='0 0 12 12'%3E%3Cdefs%3E%3Cstyle%3E.cls-1%7Bopacity:0.03;%7D%3C/style%3E%3C/defs%3E%3Ctitle%3Ebg%3C/title%3E%3Crect class='cls-1' width='6' height='6'/%3E%3Crect class='cls-1' x='6' y='6' width='6' height='6'/%3E%3C/svg%3E"
 
-	'use strict';
+			/***/
+		},
 
-	var ObojoboDraft, SelectionHandler;
+		/***/ /***/ 160: function(module, exports, __webpack_require__) {
+			module.exports = __webpack_require__(28)
 
-	SelectionHandler = __webpack_require__(108);
+			/***/
+		},
 
-	ObojoboDraft = window.ObojoboDraft;
+		/***/ /***/ 28: function(module, exports, __webpack_require__) {
+			'use strict'
 
-	OBO.register('ObojoboDraft.Chunks.Figure', {
-	  type: 'chunk',
-	  adapter: __webpack_require__(106),
-	  componentClass: __webpack_require__(109),
-	  selectionHandler: new SelectionHandler()
-	});
+			var _Common = __webpack_require__(0)
 
-/***/ },
+			var _Common2 = _interopRequireDefault(_Common)
 
-/***/ 202:
-/***/ function(module, exports) {
+			var _selectionHandler = __webpack_require__(53)
 
-	// removed by extract-text-webpack-plugin
+			var _selectionHandler2 = _interopRequireDefault(_selectionHandler)
 
-/***/ },
+			var _adapter = __webpack_require__(51)
 
-/***/ 237:
-/***/ function(module, exports) {
+			var _adapter2 = _interopRequireDefault(_adapter)
 
-	module.exports = "data:image/svg+xml;charset=utf8,%3Csvg id='Layer_1' data-name='Layer 1' xmlns='http://www.w3.org/2000/svg' viewBox='0 0 12 12'%3E%3Cdefs%3E%3Cstyle%3E.cls-1%7Bopacity:0.03;%7D%3C/style%3E%3C/defs%3E%3Ctitle%3Ebg%3C/title%3E%3Crect class='cls-1' width='6' height='6'/%3E%3Crect class='cls-1' x='6' y='6' width='6' height='6'/%3E%3C/svg%3E"
+			var _viewerComponent = __webpack_require__(54)
 
-/***/ }
+			var _viewerComponent2 = _interopRequireDefault(_viewerComponent)
 
-/******/ });
+			function _interopRequireDefault(obj) {
+				return obj && obj.__esModule ? obj : { default: obj }
+			}
+
+			_Common2.default.Store.registerModel('ObojoboDraft.Chunks.Figure', {
+				type: 'chunk',
+				adapter: _adapter2.default,
+				componentClass: _viewerComponent2.default,
+				selectionHandler: new _selectionHandler2.default()
+			})
+
+			/***/
+		},
+
+		/***/ /***/ 51: function(module, exports, __webpack_require__) {
+			'use strict'
+
+			Object.defineProperty(exports, '__esModule', {
+				value: true
+			})
+
+			var _Common = __webpack_require__(0)
+
+			var _Common2 = _interopRequireDefault(_Common)
+
+			function _interopRequireDefault(obj) {
+				return obj && obj.__esModule ? obj : { default: obj }
+			}
+
+			var TextGroupAdapter = _Common2.default.chunk.textChunk.TextGroupAdapter
+
+			var Adapter = {
+				construct: function construct(model, attrs) {
+					TextGroupAdapter.construct(model, attrs)
+					model.modelState.textGroup.maxItems = 1
+
+					if (
+						__guard__(attrs != null ? attrs.content : undefined, function(x) {
+							return x.url
+						})
+					) {
+						model.modelState.url = attrs.content.url
+					} else {
+						model.modelState.url = null
+					}
+
+					if (
+						__guard__(attrs != null ? attrs.content : undefined, function(x1) {
+							return x1.size
+						})
+					) {
+						model.modelState.size = attrs.content.size
+					} else {
+						model.modelState.size = 'small'
+					}
+
+					if (
+						__guard__(attrs != null ? attrs.content : undefined, function(x2) {
+							return x2.width
+						})
+					) {
+						model.modelState.width = attrs.content.width
+					} else {
+						model.modelState.width = null
+					}
+
+					if (
+						__guard__(attrs != null ? attrs.content : undefined, function(x3) {
+							return x3.height
+						})
+					) {
+						model.modelState.height = attrs.content.height
+					} else {
+						model.modelState.height = null
+					}
+
+					if (
+						__guard__(attrs != null ? attrs.content : undefined, function(x4) {
+							return x4.alt
+						})
+					) {
+						model.modelState.alt = attrs.content.alt
+					} else {
+						model.modelState.alt = null
+					}
+				},
+				clone: function clone(model, _clone) {
+					TextGroupAdapter.clone(model, _clone)
+					_clone.modelState.url = model.modelState.url
+					_clone.modelState.size = model.modelState.size
+					_clone.modelState.width = model.modelState.width
+					_clone.modelState.height = model.modelState.height
+					_clone.modelState.alt = model.modelState.alt
+				},
+				toJSON: function toJSON(model, json) {
+					TextGroupAdapter.toJSON(model, json)
+					json.content.url = model.modelState.url
+					json.content.size = model.modelState.size
+					json.content.width = model.modelState.width
+					json.content.height = model.modelState.height
+					json.content.alt = model.modelState.alt
+				},
+				toText: function toText(model) {
+					return (
+						'Image: ' +
+						model.modelState.url +
+						'\n Caption: ' +
+						(TextGroupAdapter.toText(model) || model.modelState.alt)
+					)
+				}
+			}
+
+			exports.default = Adapter
+
+			function __guard__(value, transform) {
+				return typeof value !== 'undefined' && value !== null ? transform(value) : undefined
+			}
+
+			/***/
+		},
+
+		/***/ /***/ 52: function(module, exports, __webpack_require__) {
+			'use strict'
+
+			Object.defineProperty(exports, '__esModule', {
+				value: true
+			})
+
+			var _createClass = (function() {
+				function defineProperties(target, props) {
+					for (var i = 0; i < props.length; i++) {
+						var descriptor = props[i]
+						descriptor.enumerable = descriptor.enumerable || false
+						descriptor.configurable = true
+						if ('value' in descriptor) descriptor.writable = true
+						Object.defineProperty(target, descriptor.key, descriptor)
+					}
+				}
+				return function(Constructor, protoProps, staticProps) {
+					if (protoProps) defineProperties(Constructor.prototype, protoProps)
+					if (staticProps) defineProperties(Constructor, staticProps)
+					return Constructor
+				}
+			})()
+
+			var _Common = __webpack_require__(0)
+
+			var _Common2 = _interopRequireDefault(_Common)
+
+			function _interopRequireDefault(obj) {
+				return obj && obj.__esModule ? obj : { default: obj }
+			}
+
+			function _classCallCheck(instance, Constructor) {
+				if (!(instance instanceof Constructor)) {
+					throw new TypeError('Cannot call a class as a function')
+				}
+			}
+
+			function _possibleConstructorReturn(self, call) {
+				if (!self) {
+					throw new ReferenceError("this hasn't been initialised - super() hasn't been called")
+				}
+				return call && (typeof call === 'object' || typeof call === 'function') ? call : self
+			}
+
+			function _inherits(subClass, superClass) {
+				if (typeof superClass !== 'function' && superClass !== null) {
+					throw new TypeError(
+						'Super expression must either be null or a function, not ' + typeof superClass
+					)
+				}
+				subClass.prototype = Object.create(superClass && superClass.prototype, {
+					constructor: { value: subClass, enumerable: false, writable: true, configurable: true }
+				})
+				if (superClass)
+					Object.setPrototypeOf
+						? Object.setPrototypeOf(subClass, superClass)
+						: (subClass.__proto__ = superClass)
+			}
+
+			var Image = (function(_React$Component) {
+				_inherits(Image, _React$Component)
+
+				function Image() {
+					_classCallCheck(this, Image)
+
+					return _possibleConstructorReturn(
+						this,
+						(Image.__proto__ || Object.getPrototypeOf(Image)).apply(this, arguments)
+					)
+				}
+
+				_createClass(Image, [
+					{
+						key: 'render',
+						value: function render() {
+							var imgStyles = void 0
+							var data = this.props.chunk.modelState
+
+							if (data.url == null) {
+								imgStyles = {
+									backgroundImage: _Common2.default.util.getBackgroundImage(
+										__webpack_require__(156)
+									),
+									backgroundSize: '16px',
+									height: '300px'
+								}
+
+								return React.createElement('div', {
+									className: 'img-placeholder',
+									style: imgStyles
+								})
+							}
+
+							switch (data.size) {
+								case 'small':
+								case 'medium':
+								case 'large':
+									return React.createElement('img', {
+										src: data.url,
+										unselectable: 'on',
+										alt: data.alt
+									})
+								case 'custom':
+									imgStyles = {}
+
+									if (data.width != null) {
+										imgStyles.width = data.width + 'px'
+									}
+
+									if (data.height != null) {
+										imgStyles.height = data.height + 'px'
+									}
+
+									return React.createElement('img', {
+										src: data.url,
+										unselectable: 'on',
+										alt: data.alt,
+										style: imgStyles
+									})
+							}
+						}
+					}
+				])
+
+				return Image
+			})(React.Component)
+
+			exports.default = Image
+
+			/***/
+		},
+
+		/***/ /***/ 53: function(module, exports, __webpack_require__) {
+			'use strict'
+
+			Object.defineProperty(exports, '__esModule', {
+				value: true
+			})
+
+			var _createClass = (function() {
+				function defineProperties(target, props) {
+					for (var i = 0; i < props.length; i++) {
+						var descriptor = props[i]
+						descriptor.enumerable = descriptor.enumerable || false
+						descriptor.configurable = true
+						if ('value' in descriptor) descriptor.writable = true
+						Object.defineProperty(target, descriptor.key, descriptor)
+					}
+				}
+				return function(Constructor, protoProps, staticProps) {
+					if (protoProps) defineProperties(Constructor.prototype, protoProps)
+					if (staticProps) defineProperties(Constructor, staticProps)
+					return Constructor
+				}
+			})()
+
+			var _Common = __webpack_require__(0)
+
+			var _Common2 = _interopRequireDefault(_Common)
+
+			function _interopRequireDefault(obj) {
+				return obj && obj.__esModule ? obj : { default: obj }
+			}
+
+			function _classCallCheck(instance, Constructor) {
+				if (!(instance instanceof Constructor)) {
+					throw new TypeError('Cannot call a class as a function')
+				}
+			}
+
+			function _possibleConstructorReturn(self, call) {
+				if (!self) {
+					throw new ReferenceError("this hasn't been initialised - super() hasn't been called")
+				}
+				return call && (typeof call === 'object' || typeof call === 'function') ? call : self
+			}
+
+			function _inherits(subClass, superClass) {
+				if (typeof superClass !== 'function' && superClass !== null) {
+					throw new TypeError(
+						'Super expression must either be null or a function, not ' + typeof superClass
+					)
+				}
+				subClass.prototype = Object.create(superClass && superClass.prototype, {
+					constructor: { value: subClass, enumerable: false, writable: true, configurable: true }
+				})
+				if (superClass)
+					Object.setPrototypeOf
+						? Object.setPrototypeOf(subClass, superClass)
+						: (subClass.__proto__ = superClass)
+			}
+
+			var SelectionHandler = void 0
+			var TextGroupSelectionHandler = _Common2.default.chunk.textChunk.TextGroupSelectionHandler
+			var FocusableSelectionHandler =
+				_Common2.default.chunk.focusableChunk.FocusableSelectionHandler
+			var Chunk = _Common2.default.models.Chunk
+
+			exports.default = SelectionHandler = (function(_TextGroupSelectionHa) {
+				_inherits(SelectionHandler, _TextGroupSelectionHa)
+
+				function SelectionHandler() {
+					_classCallCheck(this, SelectionHandler)
+
+					return _possibleConstructorReturn(
+						this,
+						(SelectionHandler.__proto__ || Object.getPrototypeOf(SelectionHandler))
+							.apply(this, arguments)
+					)
+				}
+
+				_createClass(SelectionHandler, [
+					{
+						key: 'selectStart',
+						value: function selectStart(selection, chunk) {
+							return FocusableSelectionHandler.prototype.selectStart(selection, chunk)
+						}
+					}
+				])
+
+				return SelectionHandler
+			})(TextGroupSelectionHandler)
+
+			/***/
+		},
+
+		/***/ /***/ 54: function(module, exports, __webpack_require__) {
+			'use strict'
+
+			Object.defineProperty(exports, '__esModule', {
+				value: true
+			})
+
+			var _createClass = (function() {
+				function defineProperties(target, props) {
+					for (var i = 0; i < props.length; i++) {
+						var descriptor = props[i]
+						descriptor.enumerable = descriptor.enumerable || false
+						descriptor.configurable = true
+						if ('value' in descriptor) descriptor.writable = true
+						Object.defineProperty(target, descriptor.key, descriptor)
+					}
+				}
+				return function(Constructor, protoProps, staticProps) {
+					if (protoProps) defineProperties(Constructor.prototype, protoProps)
+					if (staticProps) defineProperties(Constructor, staticProps)
+					return Constructor
+				}
+			})()
+
+			__webpack_require__(137)
+
+			var _image = __webpack_require__(52)
+
+			var _image2 = _interopRequireDefault(_image)
+
+			var _Common = __webpack_require__(0)
+
+			var _Common2 = _interopRequireDefault(_Common)
+
+			function _interopRequireDefault(obj) {
+				return obj && obj.__esModule ? obj : { default: obj }
+			}
+
+			function _classCallCheck(instance, Constructor) {
+				if (!(instance instanceof Constructor)) {
+					throw new TypeError('Cannot call a class as a function')
+				}
+			}
+
+			function _possibleConstructorReturn(self, call) {
+				if (!self) {
+					throw new ReferenceError("this hasn't been initialised - super() hasn't been called")
+				}
+				return call && (typeof call === 'object' || typeof call === 'function') ? call : self
+			}
+
+			function _inherits(subClass, superClass) {
+				if (typeof superClass !== 'function' && superClass !== null) {
+					throw new TypeError(
+						'Super expression must either be null or a function, not ' + typeof superClass
+					)
+				}
+				subClass.prototype = Object.create(superClass && superClass.prototype, {
+					constructor: { value: subClass, enumerable: false, writable: true, configurable: true }
+				})
+				if (superClass)
+					Object.setPrototypeOf
+						? Object.setPrototypeOf(subClass, superClass)
+						: (subClass.__proto__ = superClass)
+			}
+
+			var OboComponent = _Common2.default.components.OboComponent
+			var TextGroupEl = _Common2.default.chunk.textChunk.TextGroupEl
+			var NonEditableChunk = _Common2.default.chunk.NonEditableChunk
+
+			var Figure = (function(_React$Component) {
+				_inherits(Figure, _React$Component)
+
+				function Figure() {
+					_classCallCheck(this, Figure)
+
+					return _possibleConstructorReturn(
+						this,
+						(Figure.__proto__ || Object.getPrototypeOf(Figure)).apply(this, arguments)
+					)
+				}
+
+				_createClass(Figure, [
+					{
+						key: 'render',
+						value: function render() {
+							var data = this.props.model.modelState
+
+							return React.createElement(
+								OboComponent,
+								{ model: this.props.model, moduleData: this.props.moduleData },
+								React.createElement(
+									NonEditableChunk,
+									{
+										className: 'obojobo-draft--chunks--figure viewer ' + data.size,
+										ref: 'component'
+									},
+									React.createElement(
+										'div',
+										{ className: 'container' },
+										React.createElement(
+											'figure',
+											{ unselectable: 'on' },
+											React.createElement(_image2.default, { chunk: this.props.model }),
+											data.textGroup.first.text.length > 0
+												? React.createElement(
+														'figcaption',
+														{ ref: 'caption' },
+														React.createElement(TextGroupEl, {
+															parentModel: this.props.model,
+															textItem: data.textGroup.first,
+															groupIndex: '0'
+														})
+													)
+												: null
+										)
+									)
+								)
+							)
+						}
+					}
+				])
+
+				return Figure
+			})(React.Component)
+
+			exports.default = Figure
+
+			/***/
+		}
+
+		/******/
+	}
+)

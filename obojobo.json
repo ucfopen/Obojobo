@@ -86,11 +86,6 @@
             "viewerCSS":"build/ObojoboDraft.Chunks.YouTube.css"
         },
         {
-            "name":"ObojoboDraft.Group",
-            "viewerScript":"build/ObojoboDraft.Group.js",
-            "viewerCSS":"build/ObojoboDraft.Group.css"
-        },
-        {
             "name":"ObojoboDraft.Modules.Module",
             "viewerScript":"build/ObojoboDraft.Modules.Module.js",
             "viewerCSS":"build/ObojoboDraft.Modules.Module.css"

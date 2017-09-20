@@ -1,0 +1,41 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`TextGroupEl TextGroupEl formatted 1`] = `
+<span
+  className="text align-undefined"
+  data-group-index={1}
+  data-indent={undefined}
+>
+  <span>
+    <span>
+      <span>
+        Some 
+      </span>
+      <b>
+        <span>
+          BOLD
+        </span>
+      </b>
+      <span>
+         text with a {{variable}} included
+      </span>
+    </span>
+  </span>
+</span>
+`;
+
+exports[`TextGroupEl TextGroupEl unformatted 1`] = `
+<span
+  className="text align-undefined"
+  data-group-index={0}
+  data-indent={undefined}
+>
+  <span>
+    <span>
+      <span>
+        First line
+      </span>
+    </span>
+  </span>
+</span>
+`;

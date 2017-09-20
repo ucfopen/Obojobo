@@ -1,1 +1,0 @@
-window.Viewer = require 'Viewer'

@@ -1,0 +1,22 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`IFrame IFrame component 1`] = `
+<div
+  className="component"
+  data-focussed={false}
+  data-id="id"
+  data-obo-component={true}
+  data-type="ObojoboDraft.Chunks.IFrame"
+  id="obo-id"
+>
+  <div
+    className="obojobo-draft--chunks--iframe viewer"
+  >
+    <iframe
+      allowFullScreen="true"
+      frameBorder="0"
+      src="http://www.example.com"
+    />
+  </div>
+</div>
+`;

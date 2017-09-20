@@ -1,0 +1,33 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`QuestionBank adapter can be constructed WITH attributes 1`] = `
+Object {
+  "modelState": Object {
+    "choose": 2,
+    "groupSize": 2,
+    "select": "random-all",
+    "shuffleGroup": true,
+  },
+}
+`;
+
+exports[`QuestionBank adapter can be constructed WITHOUT attributes 1`] = `
+Object {
+  "modelState": Object {
+    "choose": Infinity,
+    "groupSize": 1,
+    "select": "sequential",
+    "shuffleGroup": false,
+  },
+}
+`;
+
+exports[`QuestionBank adapter can be converted to JSON 1`] = `
+Object {
+  "content": Object {
+    "choose": 2,
+    "groupSize": 2,
+    "select": "random-all",
+  },
+}
+`;

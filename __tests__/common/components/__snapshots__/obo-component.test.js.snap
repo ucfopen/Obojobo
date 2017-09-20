@@ -1,0 +1,27 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`OboComponent 1`] = `
+<div
+  className="component"
+  data-focussed={false}
+  data-id="testId"
+  data-obo-component={true}
+  data-type="ObojoboDraft.Chunks.Text"
+  id="obo-testId"
+>
+  Test
+</div>
+`;
+
+exports[`OboComponent tag 1`] = `
+<pre
+  className="component"
+  data-focussed={false}
+  data-id="testId"
+  data-obo-component={true}
+  data-type="ObojoboDraft.Chunks.Text"
+  id="obo-testId"
+>
+  Test
+</pre>
+`;

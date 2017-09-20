@@ -1,0 +1,37 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`FocusableChunk 1`] = `
+<div
+  className="focusable-chunk anchor-container"
+  contentEditable={false}
+>
+  <span
+    className="anchor"
+    contentEditable={true}
+    data-group-index="anchor:main"
+    indent={0}
+    name="main"
+    spellcheck={true}
+    suppressContentEditableWarning={true}
+    tabIndex=""
+  />
+</div>
+`;
+
+exports[`FocusableChunk with indent and spellcheck 1`] = `
+<div
+  className="focusable-chunk anchor-container test-123"
+  contentEditable={false}
+>
+  <span
+    className="anchor"
+    contentEditable={true}
+    data-group-index="anchor:main"
+    indent={2}
+    name="main"
+    spellcheck={false}
+    suppressContentEditableWarning={true}
+    tabIndex=""
+  />
+</div>
+`;

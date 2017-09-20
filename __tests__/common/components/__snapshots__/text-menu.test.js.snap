@@ -1,0 +1,28 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`TextMenu 1`] = `null`;
+
+exports[`TextMenu with required props 1`] = `
+<div
+  className="editor--components--text-menu"
+  style={
+    Object {
+      "left": "0px",
+      "top": "0px",
+    }
+  }
+>
+  <a
+    onMouseDown={[Function]}
+  >
+    <div>
+      <span>
+        Label
+      </span>
+      <img
+        className="click-blocker"
+      />
+    </div>
+  </a>
+</div>
+`;

@@ -1,19 +1,12 @@
-var path = require('path');
+var path = require('path')
 var webpack = require('webpack')
-var glob = require('glob');
-var ExtractTextPlugin = require('extract-text-webpack-plugin');
-var bourbon = require('node-bourbon');
+var glob = require('glob')
+var ExtractTextPlugin = require('extract-text-webpack-plugin')
+var bourbon = require('node-bourbon')
 
-
-var config = {
+var obojoboDraftConfig = {
 	entry: {
-		'obo': [path.join(__dirname, 'src', 'scripts', 'obo.coffee')],
-		'obojobo-draft': [path.join(__dirname, 'src', 'scripts', 'obojobo-draft.coffee')],
-		// 'obojobo-draft-document-editor': [path.join(__dirname, 'src', 'scripts', 'editor', 'obojobo-draft-document-editor.coffee')],
-		// 'obojobo-draft-document-editor-app': [path.join(__dirname, 'src', 'scripts', 'editor', 'obojobo-draft-document-editor-app.coffee')],
-		// 'default-toolbar': [path.join(__dirname, 'src', 'scripts', 'editor', 'default-toolbar.coffee')],
-		'obojobo-draft-document-viewer': [path.join(__dirname, 'src', 'scripts', 'viewer', 'obojobo-draft-document-viewer.coffee')],
-		'obojobo-draft-document-viewer-app': ['whatwg-fetch', path.join(__dirname, 'src', 'scripts', 'viewer', 'obojobo-draft-document-viewer-app.coffee')],
+		common: [path.join(__dirname, 'src', 'scripts', 'common', 'dist.js')]
 	},
 	output: {
 		// must match config.webpack.output_dir
@@ -24,60 +17,162 @@ var config = {
 	module: {
 		loaders: [
 			{
-				test: /\.coffee?$/,
+				test: /\.js?$/,
 				exclude: '/node_modules',
-				loaders: ['babel?presets[]=react&presets[]=es2015', 'coffee-loader']
+				loaders: ['babel-loader?presets[]=react&presets[]=es2015']
 			},
 			{
 				test: /\.s?css$/,
-				loader: ExtractTextPlugin.extract(['css', 'sass?includePaths[]=' + bourbon.includePaths])
+				loader: ExtractTextPlugin.extract([
+					'css-loader',
+					'sass-loader?includePaths[]=' + bourbon.includePaths
+				])
 			}
 		]
 	},
 	externals: {
-		'react': 'React',
+		react: 'React',
 		'react-dom': 'ReactDOM',
-		'backbone': 'Backbone',
+		backbone: 'Backbone',
+		katex: 'katex'
 	},
-	plugins: [
-		// @TODO next 3 copied from old production do we need?
-		new webpack.NoErrorsPlugin(),
-		new webpack.optimize.DedupePlugin(),
-		new webpack.optimize.OccurenceOrderPlugin(),
-		// end todo
+	plugins: [new ExtractTextPlugin('[name].css')]
+}
 
-		// new webpack.optimize.CommonsChunkPlugin('common-'),
+var viewerConfig = {
+	entry: {
+		viewer: ['whatwg-fetch', path.join(__dirname, 'src', 'scripts', 'viewer', 'dist.js')]
+	},
+	output: {
+		// must match config.webpack.output_dir
+		path: path.join(__dirname, 'build'),
+		publicPath: 'build/',
+		filename: '[name].js'
+	},
+	module: {
+		loaders: [
+			{
+				test: /\.js?$/,
+				exclude: '/node_modules',
+				loaders: ['babel-loader?presets[]=react&presets[]=es2015']
+			},
+			{
+				test: /\.s?css$/,
+				loader: ExtractTextPlugin.extract([
+					'css-loader',
+					'sass-loader?includePaths[]=' + bourbon.includePaths
+				])
+			}
+		]
+	},
+	externals: {
+		react: 'React',
+		'react-dom': 'ReactDOM',
+		backbone: 'Backbone',
+		katex: 'katex',
+		Common: 'Common'
+	},
+	plugins: [new ExtractTextPlugin('[name].css')]
+}
 
-		new ExtractTextPlugin('[name].css')
-	],
+var mainConfig = {
+	entry: {
+		'viewer-app': ['whatwg-fetch', path.join(__dirname, 'src', 'scripts', 'viewer', 'app.js')],
+		'ObojoboDraft.Chunks.ActionButton': [
+			path.join(__dirname, 'ObojoboDraft', 'Chunks', 'ActionButton', 'viewer.js')
+		],
+		'ObojoboDraft.Chunks.Break': [
+			path.join(__dirname, 'ObojoboDraft', 'Chunks', 'Break', 'viewer.js')
+		],
+		'ObojoboDraft.Chunks.Code': [
+			path.join(__dirname, 'ObojoboDraft', 'Chunks', 'Code', 'viewer.js')
+		],
+		'ObojoboDraft.Chunks.Figure': [
+			path.join(__dirname, 'ObojoboDraft', 'Chunks', 'Figure', 'viewer.js')
+		],
+		'ObojoboDraft.Chunks.Heading': [
+			path.join(__dirname, 'ObojoboDraft', 'Chunks', 'Heading', 'viewer.js')
+		],
+		'ObojoboDraft.Chunks.HTML': [
+			path.join(__dirname, 'ObojoboDraft', 'Chunks', 'HTML', 'viewer.js')
+		],
+		'ObojoboDraft.Chunks.IFrame': [
+			path.join(__dirname, 'ObojoboDraft', 'Chunks', 'IFrame', 'viewer.js')
+		],
+		'ObojoboDraft.Chunks.List': [
+			path.join(__dirname, 'ObojoboDraft', 'Chunks', 'List', 'viewer.js')
+		],
+		'ObojoboDraft.Chunks.MathEquation': [
+			path.join(__dirname, 'ObojoboDraft', 'Chunks', 'MathEquation', 'viewer.js')
+		],
+		'ObojoboDraft.Chunks.MCAssessment': [
+			path.join(__dirname, 'ObojoboDraft', 'Chunks', 'MCAssessment', 'viewer.js')
+		],
+		'ObojoboDraft.Chunks.MCAssessment.MCChoice': [
+			path.join(__dirname, 'ObojoboDraft', 'Chunks', 'MCAssessment', 'MCChoice', 'viewer.js')
+		],
+		'ObojoboDraft.Chunks.Question': [
+			path.join(__dirname, 'ObojoboDraft', 'Chunks', 'Question', 'viewer.js')
+		],
+		'ObojoboDraft.Chunks.QuestionBank': [
+			path.join(__dirname, 'ObojoboDraft', 'Chunks', 'QuestionBank', 'viewer.js')
+		],
+		'ObojoboDraft.Chunks.Table': [
+			path.join(__dirname, 'ObojoboDraft', 'Chunks', 'Table', 'viewer.js')
+		],
+		'ObojoboDraft.Chunks.Text': [
+			path.join(__dirname, 'ObojoboDraft', 'Chunks', 'Text', 'viewer.js')
+		],
+		'ObojoboDraft.Chunks.YouTube': [
+			path.join(__dirname, 'ObojoboDraft', 'Chunks', 'YouTube', 'viewer.js')
+		],
+		'ObojoboDraft.Modules.Module': [
+			path.join(__dirname, 'ObojoboDraft', 'Modules', 'Module', 'viewer.js')
+		],
+		'ObojoboDraft.Pages.Page': [path.join(__dirname, 'ObojoboDraft', 'Pages', 'Page', 'viewer.js')],
+		'ObojoboDraft.Sections.Assessment': [
+			path.join(__dirname, 'ObojoboDraft', 'Sections', 'Assessment', 'viewer.js')
+		],
+		'ObojoboDraft.Sections.Content': [
+			path.join(__dirname, 'ObojoboDraft', 'Sections', 'Content', 'viewer.js')
+		]
+	},
+	output: {
+		// must match config.webpack.output_dir
+		path: path.join(__dirname, 'build'),
+		publicPath: 'build/',
+		filename: '[name].js'
+	},
+	module: {
+		loaders: [
+			{
+				test: /\.js?$/,
+				exclude: '/node_modules',
+				loaders: ['babel-loader?presets[]=react&presets[]=es2015']
+			},
+			{
+				test: /\.s?css$/,
+				loader: ExtractTextPlugin.extract([
+					'css-loader',
+					'sass-loader?includePaths[]=' + bourbon.includePaths
+				])
+			}
+		]
+	},
+	externals: {
+		react: 'React',
+		'react-dom': 'ReactDOM',
+		backbone: 'Backbone',
+		katex: 'katex',
+		Common: 'Common',
+		Viewer: 'Viewer'
+	},
+	plugins: [new ExtractTextPlugin('[name].css')],
 	resolve: {
-		extensions: ['', '.js', '.coffee']
+		alias: {
+			styles: path.join(__dirname, 'src', 'scss')
+		}
 	}
 }
 
-
-// var files = glob.sync(path.join(__dirname, 'src', 'scripts', 'node_modules', 'chunks', 'src', '**/editor.coffee'))
-// for(file in files)
-// {
-// 	var dir = files[file].split(path.sep)
-// 	var chunkName = dir[dir.length - 2];
-
-// 	config.entry[path.join('chunks', 'editor', chunkName)] = [files[file]]
-// }
-
-// var files = glob.sync(path.join(__dirname, 'src', 'scripts', 'node_modules', 'ObojoboDraft', 'Chunks', '**/viewer.coffee'))
-var files = glob.sync(path.join(__dirname, 'src', 'scripts', 'node_modules', 'ObojoboDraft', '**', 'viewer2.coffee'))
-for(file in files)
-{
-	var str = files[file]
-	var dir = str.substr(str.indexOf('ObojoboDraft')).split(path.sep)
-	dir.pop()
-	var itemName = dir.join('.')
-
-	config.entry[itemName] = [files[file]]
-}
-
-
-// config.entry.test = [path.join(__dirname, 'src', 'scripts', 'node_modules', 'chunks', 'src', 'core', 'base', 'Break', 'editor.coffee')]
-
-module.exports = config;
+module.exports = [obojoboDraftConfig, viewerConfig, mainConfig]

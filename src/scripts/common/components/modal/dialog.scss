@@ -1,0 +1,37 @@
+@import '../../../../scss/includes';
+
+.obojobo-draft--components--modal--dialog
+{
+	.obojobo-draft--components--modal--modal > .content
+	{
+		> .heading
+		{
+			margin: 0;
+			margin-bottom: 1em;
+			padding: 0;
+			font-size: 1.25em;
+		}
+
+		> .dialog-content
+		{
+			margin-bottom: 3em;
+		}
+
+		> .controls
+		{
+			text-align: center;
+
+			.obojobo-draft--components--button
+			{
+				margin-left: 0.5em;
+				margin-right: 0.5em;
+			}
+
+			.text
+			{
+				color: $color-text-minor;
+				font-size: 0.9em;
+			}
+		}
+	}
+}
