@@ -13,7 +13,8 @@ const testReq = {
 		getFederatedSessionIRI: jest.fn(() => 'test federated session'),
 		getAppServerIRI: jest.fn(() => 'test app server'),
 		getViewerClientIRI: jest.fn(() => 'test viewer client'),
-		getDraftIRI: jest.fn(() => 'test draft')
+		getDraftIRI: jest.fn(() => 'test draft'),
+		getPracticeQuestionAttemptIRI: jest.fn(() => 'test question attempt')
 	},
 	session: { oboLti: true }
 }
@@ -22,15 +23,18 @@ const testCurrentUser = {
 	canViewEditor: true
 }
 
+const testActor = 'user'
+const testAssessmentId = 'assessment:123'
 const testAttemptIRI = 'test attempt IRI'
 const testAttemptId = 'attempt:123'
-const testAssessmentId = 'assessment:123'
+const testDate = new Date('2017-08-29T16:57:14.500Z')
 const testDraftId = 'draftId:123'
-const testQuestionId = 'questionId:123'
+const testExtensions = { foo: 'bar' }
 const testNavFromField = 'navigation came from here'
 const testNavToField = 'navigation is going here'
-const testExtensions = {}
-const testDate = new Date('2017-08-29T16:57:14.500Z')
+const testQuestionId = 'questionId:123'
+const testScore = '50'
+const testScoreId = '123'
 
 Date = class extends Date {
 	constructor() {
@@ -45,8 +49,18 @@ describe('Caliper event creator', () => {
 			testReq,
 			testAttemptIRI,
 			'test app server',
-			67,
+			testScore,
 			'urn:uuid:some-uuid'
+		)
+		expect(scoreObj).toMatchSnapshot()
+	})
+
+	it('can create a score if not given scoreId', () => {
+		const scoreObj = caliperEvents.createScore(
+			testReq,
+			testAttemptIRI,
+			'test app server',
+			testScore
 		)
 		expect(scoreObj).toMatchSnapshot()
 	})
@@ -86,7 +100,7 @@ describe('Caliper event creator', () => {
 
 	it('can create a hide event', () => {
 		const hideEvent = caliperEvents.createHideEvent(
-			'user',
+			testActor,
 			testReq,
 			testCurrentUser,
 			testDraftId,
@@ -97,7 +111,7 @@ describe('Caliper event creator', () => {
 
 	it('sets target of hide event when given framename arg', () => {
 		const hideEvent = caliperEvents.createHideEvent(
-			'user',
+			testActor,
 			testReq,
 			testCurrentUser,
 			testDraftId,
@@ -114,7 +128,18 @@ describe('Caliper event creator', () => {
 			testDraftId,
 			testAssessmentId,
 			testAttemptId,
-			3
+			testExtensions
+		)
+		expect(attemptStarted).toMatchSnapshot()
+	})
+
+	it('can create an assessment attempt started event when extensions argument not provided', () => {
+		const attemptStarted = caliperEvents.createAssessmentAttemptStartedEvent(
+			testReq,
+			testCurrentUser,
+			testDraftId,
+			testAssessmentId,
+			testAttemptId
 		)
 		expect(attemptStarted).toMatchSnapshot()
 	})
@@ -137,8 +162,171 @@ describe('Caliper event creator', () => {
 			testDraftId,
 			testAssessmentId,
 			testAttemptId,
-			95
+			testScore
 		)
 		expect(attemptScored).toMatchSnapshot()
+	})
+
+	it('can create a practice grade event', () => {
+		const practiceGrade = caliperEvents.createPracticeGradeEvent(
+			testActor,
+			testReq,
+			testCurrentUser,
+			testDraftId,
+			testQuestionId,
+			testScoreId,
+			testScore,
+			testExtensions
+		)
+		expect(practiceGrade).toMatchSnapshot()
+	})
+
+	it('can create an assessment item event', () => {
+		const assessmentItem = caliperEvents.createAssessmentItemEvent(
+			testReq,
+			testCurrentUser,
+			testDraftId,
+			testQuestionId,
+			testAssessmentId,
+			testAttemptId,
+			testExtensions
+		)
+		expect(assessmentItem).toMatchSnapshot()
+	})
+
+	it('can create an assessment item event when assesmentId is null', () => {
+		const assessmentItem = caliperEvents.createAssessmentItemEvent(
+			testReq,
+			testCurrentUser,
+			testDraftId,
+			testQuestionId,
+			null,
+			testAttemptId,
+			testExtensions
+		)
+		expect(assessmentItem).toMatchSnapshot()
+	})
+
+	it('can create an assessment item event when attemptId is null', () => {
+		const assessmentItem = caliperEvents.createAssessmentItemEvent(
+			testReq,
+			testCurrentUser,
+			testDraftId,
+			testQuestionId,
+			testAssessmentId,
+			null,
+			testExtensions
+		)
+		expect(assessmentItem).toMatchSnapshot()
+	})
+
+	it('can create an assessment item event when assessmentId and attemptId are null', () => {
+		const assessmentItem = caliperEvents.createAssessmentItemEvent(
+			testReq,
+			testCurrentUser,
+			testDraftId,
+			testQuestionId,
+			null,
+			null,
+			testExtensions
+		)
+		expect(assessmentItem).toMatchSnapshot()
+	})
+
+	it('can create an assessment item event when assesmentId, attemptId, and extensions arguments are not provided', () => {
+		const assessmentItem = caliperEvents.createAssessmentItemEvent(
+			testReq,
+			testCurrentUser,
+			testDraftId,
+			testQuestionId
+		)
+		expect(assessmentItem).toMatchSnapshot()
+	})
+
+	it('can create a practice question submitted event', () => {
+		const practiceQuestionSubmitted = caliperEvents.createPracticeQuestionSubmittedEvent(
+			testActor,
+			testReq,
+			testCurrentUser,
+			testDraftId,
+			testQuestionId,
+			testExtensions
+		)
+		expect(practiceQuestionSubmitted).toMatchSnapshot()
+	})
+
+	it('can create a practice ungrade event', () => {
+		const practiceUngrade = caliperEvents.createPracticeUngradeEvent(
+			testActor,
+			testReq,
+			testCurrentUser,
+			testDraftId,
+			testQuestionId,
+			testScoreId,
+			testExtensions
+		)
+		expect(practiceUngrade).toMatchSnapshot()
+	})
+
+	it('can create a viewer abandoned event', () => {
+		const viewerAbandoned = caliperEvents.createViewerAbandonedEvent(
+			testReq,
+			testCurrentUser,
+			testDraftId,
+			testExtensions
+		)
+		expect(viewerAbandoned).toMatchSnapshot()
+	})
+
+	it('can create a viewer resumed event', () => {
+		const viewerResumed = caliperEvents.createViewerResumedEvent(
+			testReq,
+			testCurrentUser,
+			testDraftId,
+			testExtensions
+		)
+		expect(viewerResumed).toMatchSnapshot()
+	})
+
+	it('can create a viewer session logged in event', () => {
+		const viewerSessionLoggedIn = caliperEvents.createViewerSessionLoggedInEvent(
+			testReq,
+			testCurrentUser,
+			testDraftId,
+			testExtensions
+		)
+		expect(viewerSessionLoggedIn).toMatchSnapshot()
+	})
+
+	it('can create a viewer session logged out event', () => {
+		const viewerSessionLoggedOut = caliperEvents.createViewerSessionLoggedOutEvent(
+			testReq,
+			testCurrentUser,
+			testDraftId,
+			testExtensions
+		)
+		expect(viewerSessionLoggedOut).toMatchSnapshot()
+	})
+
+	it('can create a viewer session logged out event', () => {
+		const viewerSessionLoggedOut = caliperEvents.createViewerSessionLoggedOutEvent(
+			testReq,
+			testCurrentUser,
+			testDraftId,
+			testExtensions
+		)
+		expect(viewerSessionLoggedOut).toMatchSnapshot()
+	})
+
+	it('can create a practice questions reset event', () => {
+		const practiceQuestionReset = caliperEvents.createPracticeQuestionResetEvent(
+			testActor,
+			testReq,
+			testCurrentUser,
+			testDraftId,
+			testQuestionId,
+			testExtensions
+		)
+		expect(practiceQuestionReset).toMatchSnapshot()
 	})
 })

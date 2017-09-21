@@ -31,6 +31,7 @@ Event {
   "edApp": "test ed app",
   "eventTime": "2017-08-29T16:57:14.500Z",
   "extensions": Object {
+    "foo": "bar",
     "previewMode": true,
   },
   "federatedSession": "test federated session",
@@ -45,6 +46,107 @@ Event {
 }
 `;
 
+exports[`Caliper event creator can create a practice grade event 1`] = `
+Event {
+  "@context": "http://purl.imsglobal.org/ctx/caliper/v1/Context",
+  "@type": "GradeEvent",
+  "action": "Graded",
+  "actor": "test actor",
+  "edApp": "test ed app",
+  "eventTime": "2017-08-29T16:57:14.500Z",
+  "extensions": Object {
+    "foo": "bar",
+    "previewMode": true,
+  },
+  "federatedSession": "test federated session",
+  "generated": Object {
+    "@context": "http://purl.imsglobal.org/ctx/caliper/v1p1",
+    "@type": "Score",
+    "attempt": "test question attempt",
+    "dateCreated": "2017-08-29T16:57:14.500Z",
+    "id": "urn:uuid:123",
+    "maxScore": 100,
+    "scoreGiven": "50",
+    "scoredBy": "test viewer client",
+  },
+  "group": null,
+  "id": "urn:uuid:fb9826d0-3d7a-43b8-a5ad-3949ce620d91",
+  "membership": null,
+  "object": "test question attempt",
+  "session": "test session",
+  "target": null,
+}
+`;
+
+exports[`Caliper event creator can create a practice question submitted event 1`] = `
+Event {
+  "@context": "http://purl.imsglobal.org/ctx/caliper/v1/Context",
+  "@type": null,
+  "action": "Submitted",
+  "actor": "test actor",
+  "edApp": "test ed app",
+  "eventTime": "2017-08-29T16:57:14.500Z",
+  "extensions": Object {
+    "foo": "bar",
+    "previewMode": true,
+  },
+  "federatedSession": "test federated session",
+  "generated": null,
+  "group": null,
+  "id": "urn:uuid:fb9826d0-3d7a-43b8-a5ad-3949ce620d91",
+  "membership": null,
+  "object": "test question attempt",
+  "session": "test session",
+  "target": null,
+}
+`;
+
+exports[`Caliper event creator can create a practice questions reset event 1`] = `
+Event {
+  "@context": "http://purl.imsglobal.org/ctx/caliper/v1/Context",
+  "@type": null,
+  "action": "Reset",
+  "actor": "test actor",
+  "edApp": "test ed app",
+  "eventTime": "2017-08-29T16:57:14.500Z",
+  "extensions": Object {
+    "foo": "bar",
+    "previewMode": true,
+  },
+  "federatedSession": "test federated session",
+  "generated": null,
+  "group": null,
+  "id": "urn:uuid:fb9826d0-3d7a-43b8-a5ad-3949ce620d91",
+  "membership": null,
+  "object": "test draft",
+  "session": "test session",
+  "target": "test question attempt",
+}
+`;
+
+exports[`Caliper event creator can create a practice ungrade event 1`] = `
+Event {
+  "@context": "http://purl.imsglobal.org/ctx/caliper/v1/Context",
+  "@type": null,
+  "action": "Reset",
+  "actor": "test actor",
+  "edApp": "test ed app",
+  "eventTime": "2017-08-29T16:57:14.500Z",
+  "extensions": Object {
+    "foo": "bar",
+    "previewMode": true,
+  },
+  "federatedSession": "test federated session",
+  "generated": null,
+  "group": null,
+  "id": "urn:uuid:fb9826d0-3d7a-43b8-a5ad-3949ce620d91",
+  "membership": null,
+  "object": "urn:uuid:123",
+  "session": "test session",
+  "target": "test question attempt",
+}
+`;
+
 exports[`Caliper event creator can create a score 1`] = `
 Object {
   "@context": "http://purl.imsglobal.org/ctx/caliper/v1p1",
@@ -53,7 +155,20 @@ Object {
   "dateCreated": "2017-08-29T16:57:14.500Z",
   "id": "urn:uuid:some-uuid",
   "maxScore": 100,
-  "scoreGiven": 67,
+  "scoreGiven": "50",
+  "scoredBy": "test app server",
+}
+`;
+
+exports[`Caliper event creator can create a score if not given scoreId 1`] = `
+Object {
+  "@context": "http://purl.imsglobal.org/ctx/caliper/v1p1",
+  "@type": "Score",
+  "attempt": "test attempt IRI",
+  "dateCreated": "2017-08-29T16:57:14.500Z",
+  "id": "urn:uuid:fb9826d0-3d7a-43b8-a5ad-3949ce620d91",
+  "maxScore": 100,
+  "scoreGiven": "50",
   "scoredBy": "test app server",
 }
 `;
@@ -80,7 +195,145 @@ Event {
 }
 `;
 
+exports[`Caliper event creator can create a viewer abandoned event 1`] = `
+Event {
+  "@context": "http://purl.imsglobal.org/ctx/caliper/v1/Context",
+  "@type": null,
+  "action": "Abandoned",
+  "actor": "test actor",
+  "edApp": "test ed app",
+  "eventTime": "2017-08-29T16:57:14.500Z",
+  "extensions": Object {
+    "foo": "bar",
+    "previewMode": true,
+  },
+  "federatedSession": "test federated session",
+  "generated": null,
+  "group": null,
+  "id": "urn:uuid:fb9826d0-3d7a-43b8-a5ad-3949ce620d91",
+  "membership": null,
+  "object": "test draft",
+  "session": "test session",
+  "target": null,
+}
+`;
+
+exports[`Caliper event creator can create a viewer resumed event 1`] = `
+Event {
+  "@context": "http://purl.imsglobal.org/ctx/caliper/v1/Context",
+  "@type": null,
+  "action": "Resumed",
+  "actor": "test actor",
+  "edApp": "test ed app",
+  "eventTime": "2017-08-29T16:57:14.500Z",
+  "extensions": Object {
+    "foo": "bar",
+    "previewMode": true,
+  },
+  "federatedSession": "test federated session",
+  "generated": null,
+  "group": null,
+  "id": "urn:uuid:fb9826d0-3d7a-43b8-a5ad-3949ce620d91",
+  "membership": null,
+  "object": "test draft",
+  "session": "test session",
+  "target": null,
+}
+`;
+
+exports[`Caliper event creator can create a viewer session logged in event 1`] = `
+Event {
+  "@context": "http://purl.imsglobal.org/ctx/caliper/v1/Context",
+  "@type": "http://purl.imsglobal.org/caliper/v1/SessionEvent",
+  "action": "LoggedIn",
+  "actor": "test actor",
+  "edApp": "test ed app",
+  "eventTime": "2017-08-29T16:57:14.500Z",
+  "extensions": Object {
+    "foo": "bar",
+    "previewMode": true,
+  },
+  "federatedSession": "test federated session",
+  "generated": null,
+  "group": null,
+  "id": "urn:uuid:fb9826d0-3d7a-43b8-a5ad-3949ce620d91",
+  "membership": null,
+  "object": "test ed app",
+  "session": "test session",
+  "target": "test draft",
+}
+`;
+
+exports[`Caliper event creator can create a viewer session logged out event 1`] = `
+Event {
+  "@context": "http://purl.imsglobal.org/ctx/caliper/v1/Context",
+  "@type": "http://purl.imsglobal.org/caliper/v1/SessionEvent",
+  "action": "LoggedOut",
+  "actor": "test actor",
+  "edApp": "test ed app",
+  "eventTime": "2017-08-29T16:57:14.500Z",
+  "extensions": Object {
+    "foo": "bar",
+    "previewMode": true,
+  },
+  "federatedSession": "test federated session",
+  "generated": null,
+  "group": null,
+  "id": "urn:uuid:fb9826d0-3d7a-43b8-a5ad-3949ce620d91",
+  "membership": null,
+  "object": "test ed app",
+  "session": "test session",
+  "target": "test draft",
+}
+`;
+
+exports[`Caliper event creator can create a viewer session logged out event 2`] = `
+Event {
+  "@context": "http://purl.imsglobal.org/ctx/caliper/v1/Context",
+  "@type": "http://purl.imsglobal.org/caliper/v1/SessionEvent",
+  "action": "LoggedOut",
+  "actor": "test actor",
+  "edApp": "test ed app",
+  "eventTime": "2017-08-29T16:57:14.500Z",
+  "extensions": Object {
+    "foo": "bar",
+    "previewMode": true,
+  },
+  "federatedSession": "test federated session",
+  "generated": null,
+  "group": null,
+  "id": "urn:uuid:fb9826d0-3d7a-43b8-a5ad-3949ce620d91",
+  "membership": null,
+  "object": "test ed app",
+  "session": "test session",
+  "target": "test draft",
+}
+`;
+
 exports[`Caliper event creator can create an assessment attempt started event 1`] = `
+Event {
+  "@context": "http://purl.imsglobal.org/ctx/caliper/v1/Context",
+  "@type": "http://purl.imsglobal.org/caliper/v1/AssessmentEvent",
+  "action": "Started",
+  "actor": "test actor",
+  "edApp": "test ed app",
+  "eventTime": "2017-08-29T16:57:14.500Z",
+  "extensions": Object {
+    "foo": "bar",
+    "previewMode": true,
+  },
+  "federatedSession": "test federated session",
+  "generated": "test assessment attempt IRI",
+  "group": null,
+  "id": "urn:uuid:fb9826d0-3d7a-43b8-a5ad-3949ce620d91",
+  "membership": null,
+  "object": "test assessment IRI",
+  "session": "test session",
+  "target": null,
+}
+`;
+
+exports[`Caliper event creator can create an assessment attempt started event when extensions argument not provided 1`] = `
 Event {
   "@context": "http://purl.imsglobal.org/ctx/caliper/v1/Context",
   "@type": "http://purl.imsglobal.org/caliper/v1/AssessmentEvent",
@@ -124,6 +377,120 @@ Event {
 }
 `;
 
+exports[`Caliper event creator can create an assessment item event 1`] = `
+Event {
+  "@context": "http://purl.imsglobal.org/ctx/caliper/v1/Context",
+  "@type": "http://purl.imsglobal.org/caliper/v1/AssessmentItemEvent",
+  "action": "Completed",
+  "actor": "test actor",
+  "edApp": "test ed app",
+  "eventTime": "2017-08-29T16:57:14.500Z",
+  "extensions": Object {
+    "foo": "bar",
+    "previewMode": true,
+  },
+  "federatedSession": "test federated session",
+  "generated": null,
+  "group": null,
+  "id": "urn:uuid:fb9826d0-3d7a-43b8-a5ad-3949ce620d91",
+  "membership": null,
+  "object": "test assessment attempt IRI",
+  "session": "test session",
+  "target": "test draft",
+}
+`;
+
+exports[`Caliper event creator can create an assessment item event when assesmentId is null 1`] = `
+Event {
+  "@context": "http://purl.imsglobal.org/ctx/caliper/v1/Context",
+  "@type": "http://purl.imsglobal.org/caliper/v1/AssessmentItemEvent",
+  "action": "Completed",
+  "actor": "test actor",
+  "edApp": "test ed app",
+  "eventTime": "2017-08-29T16:57:14.500Z",
+  "extensions": Object {
+    "foo": "bar",
+    "previewMode": true,
+  },
+  "federatedSession": "test federated session",
+  "generated": null,
+  "group": null,
+  "id": "urn:uuid:fb9826d0-3d7a-43b8-a5ad-3949ce620d91",
+  "membership": null,
+  "object": "test question attempt",
+  "session": "test session",
+  "target": "test draft",
+}
+`;
+
+exports[`Caliper event creator can create an assessment item event when assesmentId, attemptId, and extensions arguments are not provided 1`] = `
+Event {
+  "@context": "http://purl.imsglobal.org/ctx/caliper/v1/Context",
+  "@type": "http://purl.imsglobal.org/caliper/v1/AssessmentItemEvent",
+  "action": "Completed",
+  "actor": "test actor",
+  "edApp": "test ed app",
+  "eventTime": "2017-08-29T16:57:14.500Z",
+  "extensions": Object {
+    "previewMode": true,
+  },
+  "federatedSession": "test federated session",
+  "generated": null,
+  "group": null,
+  "id": "urn:uuid:fb9826d0-3d7a-43b8-a5ad-3949ce620d91",
+  "membership": null,
+  "object": "test question attempt",
+  "session": "test session",
+  "target": "test draft",
+}
+`;
+
+exports[`Caliper event creator can create an assessment item event when assessmentId and attemptId are null 1`] = `
+Event {
+  "@context": "http://purl.imsglobal.org/ctx/caliper/v1/Context",
+  "@type": "http://purl.imsglobal.org/caliper/v1/AssessmentItemEvent",
+  "action": "Completed",
+  "actor": "test actor",
+  "edApp": "test ed app",
+  "eventTime": "2017-08-29T16:57:14.500Z",
+  "extensions": Object {
+    "foo": "bar",
+    "previewMode": true,
+  },
+  "federatedSession": "test federated session",
+  "generated": null,
+  "group": null,
+  "id": "urn:uuid:fb9826d0-3d7a-43b8-a5ad-3949ce620d91",
+  "membership": null,
+  "object": "test question attempt",
+  "session": "test session",
+  "target": "test draft",
+}
+`;
+
+exports[`Caliper event creator can create an assessment item event when attemptId is null 1`] = `
+Event {
+  "@context": "http://purl.imsglobal.org/ctx/caliper/v1/Context",
+  "@type": "http://purl.imsglobal.org/caliper/v1/AssessmentItemEvent",
+  "action": "Completed",
+  "actor": "test actor",
+  "edApp": "test ed app",
+  "eventTime": "2017-08-29T16:57:14.500Z",
+  "extensions": Object {
+    "foo": "bar",
+    "previewMode": true,
+  },
+  "federatedSession": "test federated session",
+  "generated": null,
+  "group": null,
+  "id": "urn:uuid:fb9826d0-3d7a-43b8-a5ad-3949ce620d91",
+  "membership": null,
+  "object": "test question attempt",
+  "session": "test session",
+  "target": "test draft",
+}
+`;
+
 exports[`Caliper event creator can create an attempt scored event 1`] = `
 Event {
   "@context": "http://purl.imsglobal.org/ctx/caliper/v1/Context",
@@ -143,7 +510,7 @@ Event {
     "dateCreated": "2017-08-29T16:57:14.500Z",
     "id": "urn:uuid:fb9826d0-3d7a-43b8-a5ad-3949ce620d91",
     "maxScore": 100,
-    "scoreGiven": 95,
+    "scoreGiven": "50",
     "scoredBy": "test app server",
   },
   "group": null,

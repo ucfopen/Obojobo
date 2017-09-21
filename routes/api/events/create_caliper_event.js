@@ -87,7 +87,7 @@ let createScore = (req, attemptIRI, scoredBy, score, scoreId = getNewGeneratedId
 // referrer: (DigitalResource | SoftwareApplication, Recommended) View IRI of where they came from
 // object: (DigitalResource | SoftwareApplication, REQUIRED) Viewer IRI of where they went to
 // actor: (Person, REQUIRED) Current user
-let createNavigationEvent = (req, currentUser, draftId, from, to, extensions = {}, id = null) => {
+let createNavigationEvent = (req, currentUser, draftId, from, to, extensions, id = null) => {
 	let caliperEvent = createEvent(NavigationEvent, req, currentUser, ACTOR_USER)
 
 	caliperEvent.referrer = req.iri.getDraftIRI(draftId, from)
@@ -103,7 +103,7 @@ let createNavigationEvent = (req, currentUser, draftId, from, to, extensions = {
 // object: (DigitalResource, REQUIRED) View IRI of the item being viewed
 // target: (Frame, Optional) A more specific IRI of which part of the object is being viewed
 // actor: (Person, REQUIRED) Current user
-let createViewEvent = (req, currentUser, draftId, itemId, frameName = null, extensions = {}) => {
+let createViewEvent = (req, currentUser, draftId, itemId, frameName = null, extensions) => {
 	let caliperEvent = createEvent(ViewEvent, req, currentUser, ACTOR_USER)
 
 	caliperEvent.setAction('Viewed')
@@ -127,7 +127,7 @@ let createHideEvent = (
 	draftId,
 	questionId,
 	frameName = null,
-	extensions = {}
+	extensions
 ) => {
 	let caliperEvent = createEvent(Event, req, currentUser, actor)
 
@@ -153,7 +153,7 @@ let createAssessmentEvent = (
 	assessmentId,
 	action,
 	attemptId,
-	extensions = {}
+	extensions
 ) => {
 	let caliperEvent = createEvent(AssessmentEvent, req, currentUser, ACTOR_USER)
 
@@ -171,7 +171,7 @@ let createAssessmentAttemptStartedEvent = (
 	draftId,
 	assessmentId,
 	attemptId,
-	extensions = {}
+	extensions
 ) => {
 	return createAssessmentEvent(
 		req,
@@ -190,7 +190,7 @@ let createAssessmentAttemptSubmittedEvent = (
 	draftId,
 	assessmentId,
 	attemptId,
-	extensions = {}
+	extensions
 ) => {
 	return createAssessmentEvent(
 		req,
@@ -214,7 +214,7 @@ let createAssessmentAttemptScoredEvent = (
 	assessmentId,
 	attemptId,
 	attemptScore,
-	extensions = {}
+	extensions
 ) => {
 	let caliperEvent = createEvent(Event, req, currentUser, ACTOR_SERVER_APP) //@TODO: Should be GradeEvent
 
@@ -285,7 +285,7 @@ let createAssessmentItemEvent = (
 	questionId,
 	assessmentId = null,
 	attemptId = null,
-	extensions = {}
+	extensions
 ) => {
 	let caliperEvent = createEvent(AssessmentItemEvent, req, currentUser, ACTOR_USER)
 
