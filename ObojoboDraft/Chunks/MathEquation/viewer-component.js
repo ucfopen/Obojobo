@@ -47,6 +47,11 @@ export default class MathEquation extends React.Component {
 						className="katex-container"
 						dangerouslySetInnerHTML={{ __html: this.state.katexHtml }}
 					/>
+					{this.props.model.modelState.label === ''
+						? null
+						: <div className="equation-label">
+								{this.props.model.modelState.label}
+							</div>}
 				</NonEditableChunk>
 			</OboComponent>
 		)

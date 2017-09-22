@@ -75,7 +75,7 @@ export default class ViewerApp extends React.Component {
 		FocusStore.init()
 
 		NavStore.init(state.model, state.model.modelState.start, window.location.pathname)
-		AssessmentStore.init(OboGlobals.get('ObojoboDraft.Sections.Assessment:attemptHistory'))
+		AssessmentStore.init(OboGlobals.get('ObojoboDraft.Sections.Assessment:attemptHistory', []))
 
 		state.navState = NavStore.getState()
 		state.scoreState = ScoreStore.getState()

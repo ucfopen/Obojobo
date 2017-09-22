@@ -9,3 +9,9 @@
 
 .obojobo-draft--chunks--math-equation.align-center .katex-display {
   text-align: center; }
+
+.obojobo-draft--chunks--math-equation .equation-label {
+  position: absolute;
+  top: 50%;
+  right: 3em;
+  transform: translate(0, -50%); }

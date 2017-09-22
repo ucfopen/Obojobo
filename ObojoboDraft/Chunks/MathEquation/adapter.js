@@ -11,16 +11,24 @@ let Adapter = {
 		} else {
 			model.modelState.align = 'center'
 		}
+
+		if (__guard__(attrs != null ? attrs.content : undefined, x1 => x1.label) != null) {
+			model.modelState.label = attrs.content.label
+		} else {
+			model.modelState.label = ''
+		}
 	},
 
 	clone(model, clone) {
 		clone.modelState.latex = model.modelState.latex
 		clone.modelState.align = model.modelState.align
+		clone.modelState.label = model.modelState.label
 	},
 
 	toJSON(model, json) {
 		json.content.latex = model.modelState.latex
 		json.content.align = model.modelState.align
+		json.content.label = model.modelState.label
 	},
 
 	toText(model) {
