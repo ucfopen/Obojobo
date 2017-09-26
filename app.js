@@ -22,7 +22,7 @@ app.set('views', path.join(__dirname, 'views'))
 app.use(favicon(path.join(__dirname, 'public', 'favicon.ico')))
 app.use(bodyParser.json(config.general.bodyParser.jsonOptions))
 app.use(bodyParser.urlencoded(config.general.bodyParser.urlencodedOptions))
-app.use(bodyParser.text())
+app.use(bodyParser.text(config.general.bodyParser.textOptions))
 
 app.use(
 	session({
