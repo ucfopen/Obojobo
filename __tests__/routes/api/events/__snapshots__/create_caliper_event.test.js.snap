@@ -51,7 +51,7 @@ Event {
   "@context": "http://purl.imsglobal.org/ctx/caliper/v1/Context",
   "@type": "GradeEvent",
   "action": "Graded",
-  "actor": "test actor",
+  "actor": "test viewer client",
   "edApp": "test ed app",
   "eventTime": "2017-08-29T16:57:14.500Z",
   "extensions": Object {
@@ -519,6 +519,51 @@ Event {
   "object": "test assessment attempt IRI",
   "session": "test session",
   "target": null,
+}
+`;
+
+exports[`Caliper event creator can create event without session 1`] = `
+Event {
+  "@context": "http://purl.imsglobal.org/ctx/caliper/v1/Context",
+  "@type": null,
+  "action": "Reset",
+  "actor": "test actor",
+  "edApp": "test ed app",
+  "eventTime": "2017-08-29T16:57:14.500Z",
+  "extensions": Object {
+    "foo": "bar",
+    "previewMode": true,
+  },
+  "federatedSession": null,
+  "generated": null,
+  "group": null,
+  "id": "urn:uuid:fb9826d0-3d7a-43b8-a5ad-3949ce620d91",
+  "membership": null,
+  "object": "test draft",
+  "target": "test question attempt",
+}
+`;
+
+exports[`Caliper event creator can create event without session 2`] = `
+Event {
+  "@context": "http://purl.imsglobal.org/ctx/caliper/v1/Context",
+  "@type": null,
+  "action": "Reset",
+  "actor": "test actor",
+  "edApp": "test ed app",
+  "eventTime": "2017-08-29T16:57:14.500Z",
+  "extensions": Object {
+    "foo": "bar",
+    "previewMode": true,
+  },
+  "federatedSession": null,
+  "generated": null,
+  "group": null,
+  "id": "urn:uuid:fb9826d0-3d7a-43b8-a5ad-3949ce620d91",
+  "membership": null,
+  "object": "test draft",
+  "session": "test session",
+  "target": "test question attempt",
 }
 `;
 

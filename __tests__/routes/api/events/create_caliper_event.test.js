@@ -169,7 +169,7 @@ describe('Caliper event creator', () => {
 
 	it('can create a practice grade event', () => {
 		const practiceGrade = caliperEvents.createPracticeGradeEvent(
-			testActor,
+			'viewerClient',
 			testReq,
 			testCurrentUser,
 			testDraftId,
@@ -328,5 +328,47 @@ describe('Caliper event creator', () => {
 			testExtensions
 		)
 		expect(practiceQuestionReset).toMatchSnapshot()
+	})
+
+	it('throws error given a bad actor', () => {
+		expect(() =>
+			caliperEvents.createPracticeQuestionResetEvent(
+				'badActor',
+				testReq,
+				testCurrentUser,
+				testDraftId,
+				testQuestionId,
+				testExtensions
+			)
+		).toThrow(`createEvent actor must be one of "user", "viewerClient" or "serverApp"`)
+	})
+
+	it('can create event without session', () => {
+		let reqNoSession = Object.assign({}, testReq)
+		let reqNoLti = Object.assign({}, testReq)
+
+		delete reqNoSession.session
+		reqNoLti.session = {}
+
+		let noSessionEvent = caliperEvents.createPracticeQuestionResetEvent(
+			testActor,
+			reqNoSession,
+			testCurrentUser,
+			testDraftId,
+			testQuestionId,
+			testExtensions
+		)
+
+		let noLtiEvent = caliperEvents.createPracticeQuestionResetEvent(
+			testActor,
+			reqNoLti,
+			testCurrentUser,
+			testDraftId,
+			testQuestionId,
+			testExtensions
+		)
+
+		expect(noSessionEvent).toMatchSnapshot()
+		expect(noLtiEvent).toMatchSnapshot()
 	})
 })

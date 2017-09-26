@@ -31,6 +31,7 @@
 		"devXmlParser:link": "cd ./devsrc/obojobo-draft-xml-parser && yarn link && cd ../.. && yarn link obojobo-draft-xml-parser",
 		"test": "jest --watch",
 		"test:ci": "CI=true jest --coverage",
+		"test:coverage": "jest --watch --coverage",
 		"precommit": "yarn test:ci && lint-staged",
 		"prettier": "prettier --single-quote --use-tabs --no-semi --print-width='100' --write '{*.js, {__tests__, __mocks__, bin, config, migrations, models, public, routes, views}/**/*.js}'",
 		"prettier:debug": "prettier --single-quote --use-tabs --no-semi --print-width='100' --debug-check '{*.js, {__tests__, __mocks__, bin, config, migrations, models, public, routes, views}/**/*.js}'"
@@ -39,7 +40,10 @@
 		"node": "^6.9.4"
 	},
 	"lint-staged": {
-		"*.js": ["yarn prettier", "git add"]
+		"*.js": [
+			"yarn prettier",
+			"git add"
+		]
 	},
 	"dependencies": {
 		"body-parser": "^1.17.1",
@@ -93,8 +97,19 @@
 			"routes/**/*.js",
 			"controllers/**/*.js"
 		],
-		"coveragePathIgnorePatterns": ["/node_modules", "/app.js", "/dev_nonce_store.js"],
-		"coverageReporters": ["json", "lcov", "text", "html"],
-		"testPathIgnorePatterns": ["devsrc"]
+		"coveragePathIgnorePatterns": [
+			"/node_modules",
+			"/app.js",
+			"/dev_nonce_store.js"
+		],
+		"coverageReporters": [
+			"json",
+			"lcov",
+			"text",
+			"html"
+		],
+		"testPathIgnorePatterns": [
+			"devsrc"
+		]
 	}
 }

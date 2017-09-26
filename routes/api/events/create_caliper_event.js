@@ -51,15 +51,11 @@ let createEvent = (classRef, req, currentUser, actor) => {
 			throw new Error(
 				`createEvent actor must be one of "${ACTOR_USER}", "${ACTOR_VIEWER_CLIENT}" or "${ACTOR_SERVER_APP}"`
 			)
-			break
 	}
 
 	if (req.session) {
 		caliperEvent.session = req.iri.getSessionIRI()
-	}
-
-	if (req.session.oboLti) {
-		caliperEvent.setFederatedSession(req.iri.getFederatedSessionIRI())
+		if (req.session.oboLti) caliperEvent.setFederatedSession(req.iri.getFederatedSessionIRI())
 	}
 
 	caliperEvent.extensions = {

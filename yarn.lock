@@ -4435,9 +4435,9 @@ object.values@^1.0.4:
     function-bind "^1.1.0"
     has "^1.0.1"
 
-"obojobo-draft-document-engine@git+ssh://git@github.com/ucfcdl/Obojobo-Document-Engine.git#v0.0.15":
-  version "0.0.15"
-  resolved "git+ssh://git@github.com/ucfcdl/Obojobo-Document-Engine.git#fc6c65f847806899dad8a81ae933c7f1d75ba272"
+"obojobo-draft-document-engine@git+ssh://git@github.com/ucfcdl/Obojobo-Document-Engine.git#v0.0.16":
+  version "0.0.16"
+  resolved "git+ssh://git@github.com/ucfcdl/Obojobo-Document-Engine.git#c1885078c6a69534f20854554a42d679a996a86a"
   dependencies:
     array-from "^2.1.1"
     babel-preset-env "^1.5.1"
