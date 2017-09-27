@@ -1,5 +1,6 @@
 let fs = require('fs')
 let path = require('path')
+const NODE_ENV = process.env.NODE_ENV || 'development'
 
 // Feed assetForEnv() asset urls with our special dev/prod markup
 // EX: 'public/compiled/obo-draft-viewer$[.full|.min].js'
@@ -41,7 +42,7 @@ const assetForEnv = (assetPath, forceEnvTo = null) => {
 }
 
 const getEnv = (forceEnvTo = null) => {
-	return (forceEnvTo ? forceEnvTo : process.env.NODE_ENV).toLowerCase()
+	return (forceEnvTo ? forceEnvTo : NODE_ENV).toLowerCase()
 }
 
 module.exports = {

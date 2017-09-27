@@ -9,6 +9,7 @@ let config = require('./config')
 let compression = require('compression')
 let logger = require('./logger')
 let ObojoboDocumentServer = require('./obo_express')
+const IS_WEBPACK = process.env.IS_WEBPACK || false;
 
 module.exports = (app) => {
 
@@ -51,10 +52,31 @@ module.exports = (app) => {
 	app.use('/profile', require('./routes/profile'))
 
 	// 404 handler
-	app.use(function(req, res, next) {
-		res.status(404)
-		res.render('404.pug')
-	})
+	app.use(function(req, res, next){
+		// let requests for webpack stuff (in /static/) fall through
+		// to webpack
+		if (IS_WEBPACK && req.path.startsWith('/static')){
+			next();
+			return;
+		}
+
+		res.status(404);
+
+		// respond with json
+		if (req.accepts('html')) {
+			res.render('404.pug');
+			return;
+		}
+
+		// respond with json
+		if (req.accepts('json')) {
+			res.json({error:'Not Found'});
+			return;
+		}
+
+		// default with html page
+		res.send('Not Found');
+	});
 
 	// other error handler
 	app.use(function(err, req, res, next) {

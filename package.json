@@ -3,7 +3,7 @@
 	"version": "3.1.0",
 	"private": true,
 	"scripts": {
-		"protodev": "webpack-dev-server --config webpack.dev.config.js",
+		"protodev": "IS_WEBPACK=true webpack-dev-server --config webpack.dev.config.js",
 		"start": "yarn express:prod",
 		"dev": "yarn express:dev",
 		"dev:docEngine": "concurrently \"yarn express:dev\" \"yarn devDocEngine:start\"",

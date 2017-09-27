@@ -19,7 +19,16 @@ console.log(`Building assets for ${optimize ? 'production' : 'development'}`)
 module.exports = {
 	target: 'web',
 	devServer: {
-		setup: ObojoboServer
+		https: true,
+		noInfo: true,
+		host: '127.0.0.1',
+		open: true,
+		setup: ObojoboServer,
+		publicPath: '/static/',
+		watchContentBase: true,
+		watchOptions:{
+			ignored: '/node_modules/',
+		}
 	},
 	entry: {
 		viewer: [
