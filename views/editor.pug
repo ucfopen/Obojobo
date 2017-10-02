@@ -26,10 +26,10 @@ html(lang="en")
 			ul > li > p, ul > li > a { display:inline-block; margin-right: 1em; }
 			button { font-size: 16pt; background-color: purple; color: white; font-weight: bold; border:none; }
 			#button-create-new-draft { width: 100%; }
-			#editor-container { position: absolute; top: 40px; bottom: 0; left: 400px; right: 0; }
+			#editor-container { position: absolute; top: 40px; bottom: 0; left: 300px; right: 0; }
 			#editor { display: none; position: absolute; left: 0; top: 0; right: 0; bottom: 0; }
 			#edit { position: absolute; left: 0; top: 0; right: 0; bottom: 40px; }
-			#sidebar { overflow: scroll; position: absolute; left: 0; top: 40px; bottom: 0; padding:0; width: 400px; border-right: 1px solid black; }
+			#sidebar { overflow: scroll; position: absolute; left: 0; top: 40px; bottom: 0; padding:0; width: 300px; border-right: 1px solid black; }
 			#sidebar ul { padding: 0; margin: 0; }
 			#sidebar li { list-style-type: none; border-bottom: 1px solid #e6e6e6; padding: 10px; box-sizing: border-box; cursor: pointer; position: relative; }
 			#sidebar li:hover { background:#f3faff; }
@@ -89,6 +89,8 @@ html(lang="en")
 				foldGutter: true,
 				lineWrapping: true,
 				indentWithTabs: true,
+				tabSize: 4,
+				indentUnit: 4,
 				gutters: ["CodeMirror-linenumbers", "CodeMirror-foldgutter"]
 			})
 
