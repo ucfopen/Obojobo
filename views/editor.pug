@@ -156,6 +156,8 @@ html(lang="en")
 			}
 
 			function edit(draftId) {
+				if(!draftId) return
+
 				document.getElementById('editor').style.display = 'block';
 				editingDraftId = draftId
 
