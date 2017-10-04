@@ -3,24 +3,23 @@
 	"version": "3.1.0",
 	"private": true,
 	"scripts": {
-		"protodev": "IS_WEBPACK=true webpack-dev-server --config webpack.dev.config.js",
 		"start": "yarn express:prod",
 		"dev": "yarn express:dev",
-		"dev:docEngine": "concurrently \"yarn express:dev\" \"yarn devDocEngine:start\"",
+		"dev:docEngine": "concurrently \"nodemon\" \"yarn devDocEngine:start\"",
 		"db:initdocker": "docker run --name db_postgres -d --restart=unless-stopped -p 5432:5432 postgres:9.6.1-alpine",
 		"db:reset": "node node_modules/db-migrate/bin/db-migrate reset --config config/db.json",
 		"db:migrateup": "node node_modules/db-migrate/bin/db-migrate up --config config/db.json",
 		"db:migratedown": "node node_modules/db-migrate/bin/db-migrate down --config config/db.json",
 		"sampleDraft:seed": "node ./bin/sample_draft.js seed",
 		"sampleDraft:watch": "node ./bin/sample_draft.js watch",
-		"express:dev": "pm2-dev start pm2_dev.yaml",
+		"express:dev": "IS_WEBPACK=true webpack-dev-server --config webpack.dev.config.js",
 		"express:prod": "pm2 start pm2_prod.yaml",
 		"assets": "NODE_ENV=production webpack -p",
 		"assets:dev": "webpack",
-		"devDocEngine:start": "cd ./node_modules/obojobo-draft-document-engine && yarn dev",
+		"devDocEngine:start": "cd ./node_modules/obojobo-draft-document-engine && yarn start",
 		"devDocEngine:setup": "yarn devDocEngine:clone && yarn devDocEngine:nodemodules",
 		"devDocEngine:clone": "git clone git@github.com:ucfcdl/Obojobo-Document-Engine.git devsrc/obojobo-draft-document-engine || echo 'already cloned'",
-		"devDocEngine:nodemodules": "cd ./devsrc/obojobo-draft-document-engine && yarn",
+		"devDocEngine:nodemodules": "cd ./devsrc/obojobo-draft-document-engine && yarn install",
 		"devDocEngine:link": "cd ./devsrc/obojobo-draft-document-engine && yarn link && cd ../.. && yarn link obojobo-draft-document-engine",
 		"devDocEngine:unlink": "yarn unlink obojobo-draft-document-engine",
 		"devXmlParser:setup": "yarn devXmlParser:clone && yarn devXmlParser:nodemodules",
@@ -47,7 +46,6 @@
 		"body-parser": "^1.17.1",
 		"compression": "^1.6.2",
 		"concat-files": "^0.1.1",
-		"concurrently": "^3.1.0",
 		"connect-pg-simple": "^3.1.2",
 		"css-loader": "^0.28.1",
 		"db-migrate": "^0.10.0-beta.20",
@@ -77,13 +75,32 @@
 		"webpack": "^2.4.1"
 	},
 	"devDependencies": {
-		"babel-preset-env": "^1.4.0",
+		"concurrently": "^3.5.0",
 		"husky": "^0.13.3",
 		"jest-cli": "^19.0.2",
 		"lint-staged": "^4.0.2",
+		"nodemon": "^1.12.1",
 		"prettier": "^1.5.3",
 		"webpack-dev-middleware": "^1.10.2",
 		"webpack-dev-server": "^2.7.1"
+	},
+	"nodemonConfig": {
+		"ext": "js",
+		"ignoreRoot": [
+			".git",
+			"coverage",
+			"__mocks__/*",
+			"__tests__/*",
+			"coverage/*",
+			"public/compiled/*"
+		],
+		"ignore":[
+			"node_modules/!(obojobo-draft-document-engine|obojobo-draft-xml-parser)/**/*",
+			"node_modules/obojobo-draft-document-engine/src",
+			"node_modules/obojobo-draft-document-engine/build",
+			"node_modules/obojobo-draft-document-engine/ObojoboDraft"
+		],
+		"exec": "yarn express:dev"
 	},
 	"jest": {
 		"verbose": true,
