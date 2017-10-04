@@ -5,14 +5,14 @@
 	"scripts": {
 		"start": "yarn express:prod",
 		"dev": "yarn express:dev",
-		"dev:docEngine": "concurrently \"nodemon\" \"yarn devDocEngine:start\"",
+		"dev:docEngine": "concurrently \"yarn express:dev\" \"yarn devDocEngine:start\"",
 		"db:initdocker": "docker run --name db_postgres -d --restart=unless-stopped -p 5432:5432 postgres:9.6.1-alpine",
 		"db:reset": "node node_modules/db-migrate/bin/db-migrate reset --config config/db.json",
 		"db:migrateup": "node node_modules/db-migrate/bin/db-migrate up --config config/db.json",
 		"db:migratedown": "node node_modules/db-migrate/bin/db-migrate down --config config/db.json",
 		"sampleDraft:seed": "node ./bin/sample_draft.js seed",
 		"sampleDraft:watch": "node ./bin/sample_draft.js watch",
-		"express:dev": "IS_WEBPACK=true webpack-dev-server --config webpack.dev.config.js",
+		"express:dev": "IS_WEBPACK=true nodemon ./node_modules/.bin/webpack-dev-server",
 		"express:prod": "pm2 start pm2_prod.yaml",
 		"assets": "NODE_ENV=production webpack -p",
 		"assets:dev": "webpack",
@@ -84,21 +84,16 @@
 	},
 	"nodemonConfig": {
 		"ext": "js",
-		"ignoreRoot": [
-			".git",
+		"ignore":[
 			"coverage",
 			"__mocks__/*",
 			"__tests__/*",
 			"coverage/*",
-			"public/compiled/*"
-		],
-		"ignore":[
-			"node_modules/!(obojobo-draft-document-engine|obojobo-draft-xml-parser)/**/*",
-			"node_modules/obojobo-draft-document-engine/src",
-			"node_modules/obojobo-draft-document-engine/build",
-			"node_modules/obojobo-draft-document-engine/ObojoboDraft"
-		],
-		"exec": "yarn express:dev"
+			"public/compiled/*",
+			"devsrc/obojobo-draft-document-engine/src/*",
+			"devsrc/obojobo-draft-document-engine/build/*",
+			"devsrc/obojobo-draft-document-engine/ObojoboDraft/*"
+		]
 	},
 	"jest": {
 		"verbose": true,

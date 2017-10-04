@@ -11,19 +11,31 @@ let docEngineBasePath = path.join(
 	__dirname,
 	'node_modules',
 	'obojobo-draft-document-engine',
-	'build/'
+	'build'
 )
 console.log(`Building assets for ${optimize ? 'production' : 'development'}`)
 
 module.exports = {
 	target: 'web',
+	devServer: {
+		https: true,
+		host: '127.0.0.1',
+		setup: app => {
+			require('./middleware.default')(app)
+		},
+		publicPath: '/static/',
+		watchContentBase: true,
+		watchOptions: {
+			ignored: '/node_modules/'
+		}
+	},
 	entry: {
 		viewer: [
-			`${docEngineBasePath}common.js`,
-			`${docEngineBasePath}common.css`,
-			`${docEngineBasePath}viewer.js`,
-			`${docEngineBasePath}viewer.css`,
-			`${docEngineBasePath}viewer-app.js`
+			`${docEngineBasePath}/common.js`,
+			`${docEngineBasePath}/common.css`,
+			`${docEngineBasePath}/viewer.js`,
+			`${docEngineBasePath}/viewer.css`,
+			`${docEngineBasePath}/viewer-app.js`
 		].concat(getInstalledModules(optimize ? 'production' : 'development').assets)
 	},
 	module: {
