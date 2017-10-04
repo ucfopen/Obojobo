@@ -24,7 +24,8 @@ module.exports = app => {
 	app.use(favicon(path.join(__dirname, 'public', 'favicon.ico')))
 	app.use(bodyParser.json(config.general.bodyParser.jsonOptions))
 	app.use(bodyParser.urlencoded(config.general.bodyParser.urlencodedOptions))
-	app.use(bodyParser.text())
+	app.use(bodyParser.text(config.general.bodyParser.textOptions))
+
 	app.use(
 		session({
 			store: new (pgSession(session))({
@@ -61,7 +62,7 @@ module.exports = app => {
 
 		res.status(404)
 
-		// respond with json
+		// respond with html
 		if (req.accepts('html')) {
 			res.render('404.pug')
 			return

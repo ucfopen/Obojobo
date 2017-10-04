@@ -1,6 +1,6 @@
 {
 	"name": "obojobo-server",
-	"version": "3.1.0",
+	"version": "3.1.5",
 	"private": true,
 	"scripts": {
 		"start": "yarn express:prod",
@@ -19,7 +19,7 @@
 		"devDocEngine:start": "cd ./node_modules/obojobo-draft-document-engine && yarn start",
 		"devDocEngine:setup": "yarn devDocEngine:clone && yarn devDocEngine:nodemodules",
 		"devDocEngine:clone": "git clone git@github.com:ucfcdl/Obojobo-Document-Engine.git devsrc/obojobo-draft-document-engine || echo 'already cloned'",
-		"devDocEngine:nodemodules": "cd ./devsrc/obojobo-draft-document-engine && yarn install",
+		"devDocEngine:nodemodules": "cd ./devsrc/obojobo-draft-document-engine && yarn",
 		"devDocEngine:link": "cd ./devsrc/obojobo-draft-document-engine && yarn link && cd ../.. && yarn link obojobo-draft-document-engine",
 		"devDocEngine:unlink": "yarn unlink obojobo-draft-document-engine",
 		"devXmlParser:setup": "yarn devXmlParser:clone && yarn devXmlParser:nodemodules",
@@ -36,14 +36,12 @@
 		"node": "^6.9.4"
 	},
 	"lint-staged": {
-		"*.js": [
-			"yarn prettier",
-			"git add"
-		]
+		"*.js": ["yarn prettier", "git add"]
 	},
 	"dependencies": {
 		"babel-preset-env": "^1.5.1",
 		"body-parser": "^1.17.1",
+		"codemirror": "^5.30.0",
 		"compression": "^1.6.2",
 		"concat-files": "^0.1.1",
 		"connect-pg-simple": "^3.1.2",
@@ -64,7 +62,7 @@
 		"morgan": "~1.7.0",
 		"newrelic": "^1.38.2",
 		"node-sass-middleware": "0.9.8",
-		"obojobo-draft-document-engine": "git+ssh://git@github.com/ucfcdl/Obojobo-Document-Engine.git#v0.0.15",
+		"obojobo-draft-document-engine": "git+ssh://git@github.com/ucfcdl/Obojobo-Document-Engine.git#v0.1.0",
 		"obojobo-draft-xml-parser": "git+ssh://git@github.com/ucfcdl/Obojobo-Docment-XML-Parser.git#v0.1.1",
 		"on-build-webpack": "^0.1.0",
 		"pg-promise": "^5.5.0",
@@ -112,19 +110,8 @@
 			"routes/**/*.js",
 			"controllers/**/*.js"
 		],
-		"coveragePathIgnorePatterns": [
-			"/node_modules",
-			"/app.js",
-			"/dev_nonce_store.js"
-		],
-		"coverageReporters": [
-			"json",
-			"lcov",
-			"text",
-			"html"
-		],
-		"testPathIgnorePatterns": [
-			"devsrc"
-		]
+		"coveragePathIgnorePatterns": ["/node_modules", "/app.js", "/dev_nonce_store.js"],
+		"coverageReporters": ["json", "lcov", "text", "html"],
+		"testPathIgnorePatterns": ["devsrc"]
 	}
 }
