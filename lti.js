@@ -21,7 +21,9 @@ let retrieveLtiRequestData = function(userId, draftId) {
 		{
 			userId: userId,
 			draftId: draftId,
-			oldestLaunchDate: moment().subtract(5, 'hours').toISOString()
+			oldestLaunchDate: moment()
+				.subtract(5, 'hours')
+				.toISOString()
 		}
 	)
 }
