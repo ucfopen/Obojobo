@@ -1,6 +1,6 @@
 {
 	"name": "obojobo-server",
-	"version": "3.1.1",
+	"version": "3.1.5",
 	"private": true,
 	"scripts": {
 		"start": "yarn express:prod",
@@ -16,11 +16,11 @@
 		"db:rebuild": "yarn db:remove && yarn db:initdocker && sleep 4 && yarn db:migrateup && yarn sampleDraft:seed",
 		"sampleDraft:seed": "node ./bin/sample_draft.js seed",
 		"sampleDraft:watch": "node ./bin/sample_draft.js watch",
-		"express:dev": "pm2-dev start pm2_dev.yaml",
+		"express:dev": "IS_WEBPACK=true nodemon ./node_modules/.bin/webpack-dev-server",
 		"express:prod": "pm2 start pm2_prod.yaml",
 		"assets": "NODE_ENV=production webpack -p",
 		"assets:dev": "webpack",
-		"devDocEngine:start": "cd ./node_modules/obojobo-draft-document-engine && yarn dev",
+		"devDocEngine:start": "cd ./node_modules/obojobo-draft-document-engine && yarn start",
 		"devDocEngine:setup": "yarn devDocEngine:clone && yarn devDocEngine:nodemodules",
 		"devDocEngine:clone":
 			"git clone git@github.com:ucfcdl/Obojobo-Document-Engine.git devsrc/obojobo-draft-document-engine || echo 'already cloned'",
@@ -53,7 +53,6 @@
 		"caliper-js-public": "git+ssh://git@github.com/IMSGlobal/caliper-js-public.git#v1.0.0",
 		"compression": "^1.6.2",
 		"concat-files": "^0.1.1",
-		"concurrently": "^3.1.0",
 		"connect-pg-simple": "^3.1.2",
 		"css-loader": "^0.28.1",
 		"db-migrate": "^0.10.0-beta.20",
@@ -74,7 +73,7 @@
 		"newrelic": "^1.38.2",
 		"node-sass-middleware": "0.9.8",
 		"obojobo-draft-document-engine":
-			"git+ssh://git@github.com/ucfcdl/Obojobo-Document-Engine.git#v0.0.17",
+			"git+ssh://git@github.com/ucfcdl/Obojobo-Document-Engine.git#v0.1.0",
 		"obojobo-draft-xml-parser":
 			"git+ssh://git@github.com/ucfcdl/Obojobo-Docment-XML-Parser.git#v0.1.1",
 		"on-build-webpack": "^0.1.0",
@@ -87,11 +86,27 @@
 	},
 	"devDependencies": {
 		"babel-preset-env": "^1.5.1",
+		"concurrently": "^3.5.0",
 		"husky": "^0.13.3",
 		"jest-cli": "^19.0.2",
 		"lint-staged": "^4.0.2",
+		"nodemon": "^1.12.1",
 		"prettier": "^1.5.3",
-		"webpack-dev-middleware": "^1.10.2"
+		"webpack-dev-middleware": "^1.10.2",
+		"webpack-dev-server": "^2.7.1"
+	},
+	"nodemonConfig": {
+		"ext": "js pug",
+		"ignore": [
+			"coverage",
+			"__mocks__/*",
+			"__tests__/*",
+			"coverage/*",
+			"public/compiled/*",
+			"devsrc/obojobo-draft-document-engine/src/*",
+			"devsrc/obojobo-draft-document-engine/build/*",
+			"devsrc/obojobo-draft-document-engine/ObojoboDraft/*"
+		]
 	},
 	"jest": {
 		"verbose": true,
