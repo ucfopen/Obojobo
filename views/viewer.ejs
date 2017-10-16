@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html lang="en">
+	<head>
+		<%
+			let title = 'HI'
+			let css = [
+				'/stylesheets/style.css',
+				'https://cdnjs.cloudflare.com/ajax/libs/KaTeX/0.7.1/katex.min.css'
+			]
+			let fonts = ['//fonts.googleapis.com/css?family=Libre+Franklin:400,400i,700,700i,900,900i|Roboto+Mono:400,400i,700,700i|Noto+Serif:400,400i,700,700i']
+		%>
+		<%- include ./partials/head %>
+	</head>
+	<body>
+		<div id="viewer-app">LOADING...</div>
+		<script><%- oboGlobals.renderScriptContent() %></script>
+		<%
+			if (typeof inlines !== 'undefined'){
+				inlines.forEach(function(inline){ %>
+					<script><%- js %></script>
+				<% })
+			}
+
+			if (typeof footerJs !== 'undefined'){
+				footerJs.forEach(function(href){ %>
+					<script src="<%= href %>"></script>
+				<% })
+			}
+		%>
+		<script>window.__oboViewerRender()</script>
+
+	</body>
+</html>

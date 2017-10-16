@@ -36,7 +36,7 @@ router.all('/:draftId*', (req, res, next) => {
 			return draft.yell('internal:renderViewer', req, res, oboGlobals)
 		})
 		.then(draft => {
-			res.render('viewer.pug', {
+			res.render('viewer', {
 				title: 'Obojobo Next Document Viewer',
 				oboGlobals: oboGlobals,
 				css: [assetForEnv('/static/viewer$[.min].css')],

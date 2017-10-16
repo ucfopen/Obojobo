@@ -17,7 +17,7 @@ module.exports = app => {
 	app.use(compression()) // enable gzip compression
 
 	// =========== VIEW ENGINES ================
-	app.set('view engine', 'pug')
+	app.set('view engine', 'ejs')
 	app.set('views', path.join(__dirname, 'views'))
 
 	// =========== SET UP MIDDLEWARE ================
@@ -64,7 +64,7 @@ module.exports = app => {
 
 		// respond with html
 		if (req.accepts('html')) {
-			res.render('404.pug')
+			res.render('404')
 			return
 		}
 
@@ -86,6 +86,6 @@ module.exports = app => {
 		logger.error(err)
 		// render the error page
 		res.status(err.status || 500)
-		res.render('error.pug')
+		res.render('error', { title: 'Error' })
 	})
 }
