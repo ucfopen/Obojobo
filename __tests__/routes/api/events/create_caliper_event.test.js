@@ -1,40 +1,23 @@
-const caliperEvents = require('../../../../routes/api/events/create_caliper_event')
-const CaliperEventFactory = require('../../../../routes/api/events/create_caliper_event_from_req')
-const uuid = require('../../../../__mocks__/uuid').v4
+const caliperEvents = require('../../../../routes/api/events/create_caliper_event')(
+	null,
+	'testHost'
+)
 
-// TODO: May want to create different types of test requests (for session, obolti, etc.)
-const testReq = {
-	iri: {
-		getCurrentUserIRI: jest.fn(() => 'test actor'),
-		getAssessmentIRI: jest.fn(() => 'test assessment IRI'),
-		getAssessmentAttemptIRI: jest.fn(() => 'test assessment attempt IRI'),
-		getEdAppIRI: jest.fn(() => 'test ed app'),
-		getSessionIRI: jest.fn(() => 'test session'),
-		getFederatedSessionIRI: jest.fn(() => 'test federated session'),
-		getAppServerIRI: jest.fn(() => 'test app server'),
-		getViewerClientIRI: jest.fn(() => 'test viewer client'),
-		getDraftIRI: jest.fn(() => 'test draft'),
-		getPracticeQuestionAttemptIRI: jest.fn(() => 'test question attempt')
-	},
-	session: { oboLti: true }
-}
-
-const testCurrentUser = {
-	canViewEditor: true
-}
-
-const testActor = 'user'
-const testAssessmentId = 'assessment:123'
-const testAttemptIRI = 'test attempt IRI'
-const testAttemptId = 'attempt:123'
+const actor = { type: 'user', id: 'testUserId' }
+const assessmentId = 'testAssessment'
+const attemptId = 'testAttemptId'
+const attemptIRI = 'testAttemptIRI'
+const draftId = 'testDraftId'
+const extensions = { foo: 'bar' }
+const frameName = 'testFramename'
+const from = 'navigation came from here'
+const itemId = 'testItemId'
+const questionId = 'testQuestionId'
+const score = '50'
+const scoreId = '123'
+const sessionIds = { sessionId: 'testSessionId', launchId: 'testOboLaunchId' }
 const testDate = new Date('2017-08-29T16:57:14.500Z')
-const testDraftId = 'draftId:123'
-const testExtensions = { foo: 'bar' }
-const testNavFromField = 'navigation came from here'
-const testNavToField = 'navigation is going here'
-const testQuestionId = 'questionId:123'
-const testScore = '50'
-const testScoreId = '123'
+const to = 'navigation is going here'
 
 Date = class extends Date {
 	constructor() {
@@ -44,289 +27,473 @@ Date = class extends Date {
 }
 
 describe('Caliper event creator', () => {
-	it('can create a score', () => {
-		const scoreObj = caliperEvents.createScore(
-			testReq,
-			testAttemptIRI,
-			'test app server',
-			testScore,
-			'urn:uuid:some-uuid'
-		)
-		expect(scoreObj).toMatchSnapshot()
-	})
-
-	it('can create a score if not given scoreId', () => {
-		const scoreObj = caliperEvents.createScore(
-			testReq,
-			testAttemptIRI,
-			'test app server',
-			testScore
-		)
-		expect(scoreObj).toMatchSnapshot()
-	})
-
-	it('can create a navigation event', () => {
-		const navEvent = caliperEvents.createNavigationEvent(
-			testReq,
-			testCurrentUser,
-			testDraftId,
-			testNavFromField,
-			testNavToField,
-			testExtensions
-		)
+	it('createNavigationEvent', () => {
+		const navEvent = caliperEvents.createNavigationEvent({
+			actor,
+			draftId,
+			from,
+			to,
+			sessionIds,
+			extensions
+		})
 		expect(navEvent).toMatchSnapshot()
 	})
 
-	it('can create a view event', () => {
-		const viewEvent = caliperEvents.createViewEvent(
-			testReq,
-			testCurrentUser,
-			testDraftId,
-			testQuestionId
+	it('createNavigationEvent - throws error given a bad actor', () => {
+		expect(() => {
+			caliperEvents.createNavigationEvent({
+				actor: { type: 'bad' },
+				draftId,
+				from,
+				to,
+				sessionIds,
+				extensions
+			})
+		}).toThrow(
+			`Invalid actor type. Must provide actor of type user\nMissing required arguments: actor.id`
 		)
+	})
+
+	///////////////////////////////////////////////////////////////////////////////////////////////////
+
+	it('createViewEvent', () => {
+		const viewEvent = caliperEvents.createViewEvent({
+			actor,
+			draftId,
+			itemId,
+			sessionIds,
+			extensions
+		})
 		expect(viewEvent).toMatchSnapshot()
 	})
 
-	it('sets target of view event when given framename arg', () => {
-		const viewEvent = caliperEvents.createViewEvent(
-			testReq,
-			testCurrentUser,
-			testDraftId,
-			testQuestionId,
-			'test framename'
-		)
+	it('createViewEvent - sets target of view event when given framename arg', () => {
+		const viewEvent = caliperEvents.createViewEvent({
+			actor,
+			draftId,
+			itemId,
+			frameName,
+			sessionIds,
+			extensions
+		})
 		expect(viewEvent).toMatchSnapshot()
 	})
 
-	it('can create a hide event', () => {
-		const hideEvent = caliperEvents.createHideEvent(
-			testActor,
-			testReq,
-			testCurrentUser,
-			testDraftId,
-			testQuestionId
+	it('createViewEvent - throws error given a bad actor', () => {
+		expect(() => {
+			caliperEvents.createViewEvent({
+				actor: { type: 'bad' },
+				draftId,
+				itemId,
+				frameName,
+				sessionIds,
+				extensions
+			})
+		}).toThrow(
+			`Invalid actor type. Must provide actor of type user\nMissing required arguments: actor.id`
 		)
+	})
+
+	///////////////////////////////////////////////////////////////////////////////////////////////////
+
+	it('createHideEvent', () => {
+		const hideEvent = caliperEvents.createHideEvent({
+			actor,
+			draftId,
+			questionId,
+			sessionIds,
+			extensions
+		})
 		expect(hideEvent).toMatchSnapshot()
 	})
 
-	it('sets target of hide event when given framename arg', () => {
-		const hideEvent = caliperEvents.createHideEvent(
-			testActor,
-			testReq,
-			testCurrentUser,
-			testDraftId,
-			testQuestionId,
-			'test framename'
-		)
+	it('createHideEvent - sets target of hide event when given framename arg', () => {
+		const hideEvent = caliperEvents.createHideEvent({
+			actor,
+			draftId,
+			questionId,
+			frameName,
+			sessionIds,
+			extensions
+		})
 		expect(hideEvent).toMatchSnapshot()
 	})
 
-	it('can create an assessment attempt started event', () => {
-		const attemptStarted = caliperEvents.createAssessmentAttemptStartedEvent(
-			testReq,
-			testCurrentUser,
-			testDraftId,
-			testAssessmentId,
-			testAttemptId,
-			testExtensions
+	it('createHideEvent - throws error given a bad actor', () => {
+		expect(() => {
+			caliperEvents.createHideEvent({
+				actor: { type: 'bad' },
+				draftId,
+				questionId,
+				frameName,
+				sessionIds,
+				extensions
+			})
+		}).toThrow(
+			`Invalid actor type. Must provide actor of type user\nMissing required arguments: actor.id`
 		)
+	})
+
+	///////////////////////////////////////////////////////////////////////////////////////////////////
+
+	it('createAssessmentAttemptStartedEvent', () => {
+		const attemptStarted = caliperEvents.createAssessmentAttemptStartedEvent({
+			actor,
+			draftId,
+			assessmentId,
+			attemptId,
+			sessionIds,
+			extensions
+		})
 		expect(attemptStarted).toMatchSnapshot()
 	})
 
-	it('can create an assessment attempt started event when extensions argument not provided', () => {
-		const attemptStarted = caliperEvents.createAssessmentAttemptStartedEvent(
-			testReq,
-			testCurrentUser,
-			testDraftId,
-			testAssessmentId,
-			testAttemptId
+	it('createAssessmentAttemptStartedEvent - throws error given a bad actor', () => {
+		expect(() => {
+			caliperEvents.createAssessmentAttemptStartedEvent({
+				actor: { type: 'bad' },
+				draftId,
+				assessmentId,
+				attemptId,
+				sessionIds,
+				extensions
+			})
+		}).toThrow(
+			`Invalid actor type. Must provide actor of type user\nMissing required arguments: actor.id`
 		)
-		expect(attemptStarted).toMatchSnapshot()
 	})
 
-	it('can create an assessment attempt submitted event', () => {
-		const attemptSubmitted = caliperEvents.createAssessmentAttemptSubmittedEvent(
-			testReq,
-			testCurrentUser,
-			testDraftId,
-			testAssessmentId,
-			testAttemptId
-		)
+	///////////////////////////////////////////////////////////////////////////////////////////////////
+
+	it('createAssessmentAttemptSubmittedEvent', () => {
+		const attemptSubmitted = caliperEvents.createAssessmentAttemptSubmittedEvent({
+			actor,
+			draftId,
+			assessmentId,
+			attemptId,
+			sessionIds,
+			extensions
+		})
 		expect(attemptSubmitted).toMatchSnapshot()
 	})
 
-	it('can create an attempt scored event', () => {
-		const attemptScored = caliperEvents.createAssessmentAttemptScoredEvent(
-			testReq,
-			testCurrentUser,
-			testDraftId,
-			testAssessmentId,
-			testAttemptId,
-			testScore
+	it('createAssessmentAttemptSubmittedEvent - throws error given a bad actor', () => {
+		expect(() => {
+			caliperEvents.createAssessmentAttemptSubmittedEvent({
+				actor: { type: 'bad' },
+				draftId,
+				assessmentId,
+				attemptId,
+				sessionIds,
+				extensions
+			})
+		}).toThrow(
+			`Invalid actor type. Must provide actor of type user\nMissing required arguments: actor.id`
 		)
+	})
+
+	///////////////////////////////////////////////////////////////////////////////////////////////////
+
+	it('createAssessmentAttemptScoredEvent', () => {
+		const attemptScored = caliperEvents.createAssessmentAttemptScoredEvent({
+			actor: { type: 'serverApp' },
+			draftId,
+			assessmentId,
+			attemptId,
+			sessionIds,
+			attemptScore: score
+		})
 		expect(attemptScored).toMatchSnapshot()
 	})
 
-	it('can create a practice grade event', () => {
-		const practiceGrade = caliperEvents.createPracticeGradeEvent(
-			testActor,
-			testReq,
-			testCurrentUser,
-			testDraftId,
-			testQuestionId,
-			testScoreId,
-			testScore,
-			testExtensions
-		)
+	it('createAssessmentAttemptScoredEvent - throws error given a bad actor', () => {
+		expect(() => {
+			caliperEvents.createAssessmentAttemptScoredEvent({
+				actor: { type: 'bad' },
+				draftId,
+				assessmentId,
+				attemptId,
+				sessionIds,
+				attemptScore: score
+			})
+		}).toThrow(`Invalid actor type. Must provide actor of type serverApp`)
+	})
+
+	///////////////////////////////////////////////////////////////////////////////////////////////////
+
+	it('createPracticeGradeEvent', () => {
+		const practiceGrade = caliperEvents.createPracticeGradeEvent({
+			actor: { type: 'viewerClient' },
+			draftId,
+			questionId,
+			scoreId,
+			score,
+			sessionIds,
+			extensions
+		})
 		expect(practiceGrade).toMatchSnapshot()
 	})
 
-	it('can create an assessment item event', () => {
-		const assessmentItem = caliperEvents.createAssessmentItemEvent(
-			testReq,
-			testCurrentUser,
-			testDraftId,
-			testQuestionId,
-			testAssessmentId,
-			testAttemptId,
-			testExtensions
-		)
+	it('createPracticeGradeEvent - throws error given a bad actor', () => {
+		expect(() => {
+			caliperEvents.createPracticeGradeEvent({
+				actor: { type: 'bad' },
+				draftId,
+				questionId,
+				scoreId,
+				score,
+				sessionIds,
+				extensions
+			})
+		}).toThrow(`Invalid actor type. Must provide actor of type viewerClient`)
+	})
+
+	///////////////////////////////////////////////////////////////////////////////////////////////////
+
+	it('createAssessmentItemEvent', () => {
+		const assessmentItem = caliperEvents.createAssessmentItemEvent({
+			actor,
+			draftId,
+			questionId,
+			assessmentId,
+			attemptId,
+			extensions
+		})
 		expect(assessmentItem).toMatchSnapshot()
 	})
 
-	it('can create an assessment item event when assesmentId is null', () => {
-		const assessmentItem = caliperEvents.createAssessmentItemEvent(
-			testReq,
-			testCurrentUser,
-			testDraftId,
-			testQuestionId,
-			null,
-			testAttemptId,
-			testExtensions
-		)
+	it('createAssessmentItemEvent - when assesmentId is null', () => {
+		const assessmentItem = caliperEvents.createAssessmentItemEvent({
+			actor,
+			draftId,
+			questionId,
+			assessmentId: null,
+			attemptId
+		})
 		expect(assessmentItem).toMatchSnapshot()
 	})
 
-	it('can create an assessment item event when attemptId is null', () => {
-		const assessmentItem = caliperEvents.createAssessmentItemEvent(
-			testReq,
-			testCurrentUser,
-			testDraftId,
-			testQuestionId,
-			testAssessmentId,
-			null,
-			testExtensions
-		)
+	it('createAssessmentItemEvent - when attemptId is null', () => {
+		const assessmentItem = caliperEvents.createAssessmentItemEvent({
+			actor,
+			draftId,
+			questionId,
+			assessmentId,
+			attemptId: null
+		})
 		expect(assessmentItem).toMatchSnapshot()
 	})
 
-	it('can create an assessment item event when assessmentId and attemptId are null', () => {
-		const assessmentItem = caliperEvents.createAssessmentItemEvent(
-			testReq,
-			testCurrentUser,
-			testDraftId,
-			testQuestionId,
-			null,
-			null,
-			testExtensions
-		)
+	it('createAssessmentItemEvent - when assessmentId and attemptId are null', () => {
+		const assessmentItem = caliperEvents.createAssessmentItemEvent({
+			actor,
+			draftId,
+			questionId,
+			assessmentId: null,
+			attemptId: null
+		})
 		expect(assessmentItem).toMatchSnapshot()
 	})
 
-	it('can create an assessment item event when assesmentId, attemptId, and extensions arguments are not provided', () => {
-		const assessmentItem = caliperEvents.createAssessmentItemEvent(
-			testReq,
-			testCurrentUser,
-			testDraftId,
-			testQuestionId
-		)
+	it('createAssessmentItemEvent - when assesmentId, attemptId arguments are not provided', () => {
+		const assessmentItem = caliperEvents.createAssessmentItemEvent({
+			actor,
+			draftId,
+			questionId
+		})
 		expect(assessmentItem).toMatchSnapshot()
 	})
 
-	it('can create a practice question submitted event', () => {
-		const practiceQuestionSubmitted = caliperEvents.createPracticeQuestionSubmittedEvent(
-			testActor,
-			testReq,
-			testCurrentUser,
-			testDraftId,
-			testQuestionId,
-			testExtensions
+	it('createAssessmentItemEvent - throws error given a bad actor', () => {
+		expect(() => {
+			caliperEvents.createAssessmentItemEvent({
+				actor: { type: 'bad' },
+				draftId,
+				questionId,
+				assessmentId,
+				attemptId,
+				extensions
+			})
+		}).toThrow(
+			`Invalid actor type. Must provide actor of type user\nMissing required arguments: actor.id`
 		)
+	})
+
+	///////////////////////////////////////////////////////////////////////////////////////////////////
+
+	it('createPracticeQuestionSubmittedEvent', () => {
+		const practiceQuestionSubmitted = caliperEvents.createPracticeQuestionSubmittedEvent({
+			actor,
+			draftId,
+			questionId,
+			sessionIds,
+			extensions
+		})
 		expect(practiceQuestionSubmitted).toMatchSnapshot()
 	})
 
-	it('can create a practice ungrade event', () => {
-		const practiceUngrade = caliperEvents.createPracticeUngradeEvent(
-			testActor,
-			testReq,
-			testCurrentUser,
-			testDraftId,
-			testQuestionId,
-			testScoreId,
-			testExtensions
+	it('createPracticeQuestionSubmittedEvent - throws error given a bad actor', () => {
+		expect(() => {
+			caliperEvents.createPracticeQuestionSubmittedEvent({
+				actor: { type: 'bad' },
+				draftId,
+				questionId,
+				sessionIds,
+				extensions
+			})
+		}).toThrow(
+			`Invalid actor type. Must provide actor of type user\nMissing required arguments: actor.id`
 		)
+	})
+
+	///////////////////////////////////////////////////////////////////////////////////////////////////
+
+	it('createPracticeUngradeEvent', () => {
+		const practiceUngrade = caliperEvents.createPracticeUngradeEvent({
+			actor: { type: 'serverApp' },
+			draftId,
+			questionId,
+			scoreId,
+			extensions
+		})
 		expect(practiceUngrade).toMatchSnapshot()
 	})
 
-	it('can create a viewer abandoned event', () => {
-		const viewerAbandoned = caliperEvents.createViewerAbandonedEvent(
-			testReq,
-			testCurrentUser,
-			testDraftId,
-			testExtensions
-		)
+	it('createPracticeUngradeEvent - throws error given a bad actor', () => {
+		expect(() => {
+			caliperEvents.createPracticeUngradeEvent({
+				actor: { type: 'bad' },
+				draftId,
+				questionId,
+				scoreId,
+				extensions
+			})
+		}).toThrow('Invalid actor type. Must provide actor of type serverApp')
+	})
+
+	///////////////////////////////////////////////////////////////////////////////////////////////////
+
+	it('createViewerAbandonedEvent', () => {
+		const viewerAbandoned = caliperEvents.createViewerAbandonedEvent({
+			actor,
+			draftId,
+			sessionIds,
+			extensions
+		})
 		expect(viewerAbandoned).toMatchSnapshot()
 	})
 
-	it('can create a viewer resumed event', () => {
-		const viewerResumed = caliperEvents.createViewerResumedEvent(
-			testReq,
-			testCurrentUser,
-			testDraftId,
-			testExtensions
+	it('createViewerAbandonedEvent  - throws error given a bad actor', () => {
+		expect(() =>
+			caliperEvents.createViewerAbandonedEvent({
+				actor: { type: 'bad' },
+				draftId,
+				sessionIds,
+				extensions
+			})
+		).toThrow(
+			`Invalid actor type. Must provide actor of type user\nMissing required arguments: actor.id`
 		)
+	})
+
+	///////////////////////////////////////////////////////////////////////////////////////////////////
+
+	it('createViewerResumedEvent', () => {
+		const viewerResumed = caliperEvents.createViewerResumedEvent({
+			actor,
+			draftId,
+			sessionIds,
+			extensions
+		})
 		expect(viewerResumed).toMatchSnapshot()
 	})
 
-	it('can create a viewer session logged in event', () => {
-		const viewerSessionLoggedIn = caliperEvents.createViewerSessionLoggedInEvent(
-			testReq,
-			testCurrentUser,
-			testDraftId,
-			testExtensions
+	it('createViewerResumedEvent  - throws error given a bad actor', () => {
+		expect(() =>
+			caliperEvents.createViewerResumedEvent({
+				actor: { type: 'bad' },
+				draftId,
+				sessionIds,
+				extensions
+			})
+		).toThrow(
+			`Invalid actor type. Must provide actor of type user\nMissing required arguments: actor.id`
 		)
+	})
+
+	///////////////////////////////////////////////////////////////////////////////////////////////////
+
+	it('createViewerSessionLoggedInEvent', () => {
+		const viewerSessionLoggedIn = caliperEvents.createViewerSessionLoggedInEvent({
+			actor,
+			draftId,
+			sessionIds,
+			extensions
+		})
 		expect(viewerSessionLoggedIn).toMatchSnapshot()
 	})
 
-	it('can create a viewer session logged out event', () => {
-		const viewerSessionLoggedOut = caliperEvents.createViewerSessionLoggedOutEvent(
-			testReq,
-			testCurrentUser,
-			testDraftId,
-			testExtensions
+	it('createViewerSessionLoggedInEvent  - throws error given a bad actor', () => {
+		expect(() =>
+			caliperEvents.createViewerSessionLoggedInEvent({
+				actor: { type: 'bad' },
+				draftId,
+				sessionIds,
+				extensions
+			})
+		).toThrow(
+			`Invalid actor type. Must provide actor of type user\nMissing required arguments: actor.id`
 		)
+	})
+
+	///////////////////////////////////////////////////////////////////////////////////////////////////
+
+	it('createViewerSessionLoggedOutEvent', () => {
+		const viewerSessionLoggedOut = caliperEvents.createViewerSessionLoggedOutEvent({
+			actor,
+			draftId,
+			sessionIds,
+			extensions
+		})
 		expect(viewerSessionLoggedOut).toMatchSnapshot()
 	})
 
-	it('can create a viewer session logged out event', () => {
-		const viewerSessionLoggedOut = caliperEvents.createViewerSessionLoggedOutEvent(
-			testReq,
-			testCurrentUser,
-			testDraftId,
-			testExtensions
+	it('createViewerSessionLoggedOutEvent  - throws error given a bad actor', () => {
+		expect(() =>
+			caliperEvents.createViewerSessionLoggedOutEvent({
+				actor: { type: 'bad' },
+				draftId,
+				sessionIds,
+				extensions
+			})
+		).toThrow(
+			`Invalid actor type. Must provide actor of type user\nMissing required arguments: actor.id`
 		)
-		expect(viewerSessionLoggedOut).toMatchSnapshot()
 	})
 
-	it('can create a practice questions reset event', () => {
-		const practiceQuestionReset = caliperEvents.createPracticeQuestionResetEvent(
-			testActor,
-			testReq,
-			testCurrentUser,
-			testDraftId,
-			testQuestionId,
-			testExtensions
-		)
+	///////////////////////////////////////////////////////////////////////////////////////////////////
+
+	it('createPracticeQuestionResetEvent', () => {
+		const practiceQuestionReset = caliperEvents.createPracticeQuestionResetEvent({
+			actor,
+			draftId,
+			questionId,
+			sessionIds,
+			extensions
+		})
 		expect(practiceQuestionReset).toMatchSnapshot()
+	})
+
+	it('createPracticeQuestionResetEvent - throws error given a bad actor', () => {
+		expect(() =>
+			caliperEvents.createPracticeQuestionResetEvent({
+				actor: { type: 'bad' },
+				draftId,
+				questionId,
+				extensions
+			})
+		).toThrow(
+			`Invalid actor type. Must provide actor of type user\nMissing required arguments: actor.id`
+		)
 	})
 })

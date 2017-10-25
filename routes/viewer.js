@@ -53,7 +53,7 @@ router.all('/:draftId*', (req, res, next) => {
 					// assetForEnv('$[http://localhost:8090/webpack-dev-server.js]')
 				]
 			})
-
+			let { createViewerSessionLoggedInEvent } = createCaliperEvent(req)
 			insertEvent({
 				action: 'viewer:open',
 				actorTime: new Date().toISOString(),
@@ -62,11 +62,7 @@ router.all('/:draftId*', (req, res, next) => {
 				metadata: {},
 				draftId: req.params.draftId,
 				payload: {},
-				caliperPayload: createCaliperEvent.createViewerSessionLoggedInEvent(
-					req,
-					user,
-					req.params.draftId
-				)
+				caliperPayload: createViewerSessionLoggedInEvent()
 			})
 		})
 		.catch(error => {

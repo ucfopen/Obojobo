@@ -4,143 +4,191 @@
 //the setting of the actor seems very haphazard
 //should all of these be in one file?
 
-let caliperEvents = require('./create_caliper_event')
+let { ACTOR_USER, ACTOR_VIEWER_CLIENT, ACTOR_SERVER_APP } = require('./caliper_constants')
 
-module.exports = (req, currentUser) => {
+module.exports = req => {
+	let caliperEvents = require('./create_caliper_event')(req, null, true)
+	let currentUser = req.currentUser || { id: null }
 	let clientEvent = req.body.event
+	let isPreviewMode = currentUser.canViewEditor || false
+	let sessionId, launchId
 
-	console.log('hey so', clientEvent.action)
+	if (req.session) {
+		if (req.session.id) sessionId = req.session.id
+		if (req.session.oboLti) launchId = req.session.oboLti.launchId
+	}
+
+	let actorUser = { type: ACTOR_USER, id: currentUser.id }
+	let sessionIds = { sessionId, launchId }
 
 	switch (clientEvent.action) {
 		case 'nav:goto':
 		case 'nav:gotoPath':
 		case 'nav:prev':
 		case 'nav:next':
-			return caliperEvents.createNavigationEvent(
-				req,
-				currentUser,
-				clientEvent.draft_id,
-				clientEvent.payload.from,
-				clientEvent.payload.to,
-				{ navType: clientEvent.action.split(':')[1], internalName: clientEvent.action }
-			)
+			return caliperEvents.createNavigationEvent({
+				actor: actorUser,
+				draftId: clientEvent.draft_id,
+				from: clientEvent.payload.from,
+				to: clientEvent.payload.to,
+				isPreviewMode,
+				sessionIds,
+				extensions: { navType: clientEvent.action.split(':')[1], internalName: clientEvent.action }
+			})
 
 		case 'question:view':
-			return caliperEvents.createViewEvent(
-				req,
-				currentUser,
-				clientEvent.draft_id,
-				clientEvent.payload.questionId
-			)
+			return caliperEvents.createViewEvent({
+				actor: actorUser,
+				draftId: clientEvent.draft_id,
+				itemId: clientEvent.payload.questionId,
+				isPreviewMode,
+				sessionIds
+			})
 
 		case 'question:hide':
-			return caliperEvents.createHideEvent(
-				caliperEvents.ACTOR_USER,
-				req,
-				currentUser,
-				clientEvent.draft_id,
-				clientEvent.payload.questionId
-			)
+			return caliperEvents.createHideEvent({
+				actor: actorUser,
+				draftId: clientEvent.draft_id,
+				questionId: clientEvent.payload.questionId,
+				isPreviewMode,
+				sessionIds
+			})
 
 		case 'question:checkAnswer':
-			return caliperEvents.createPracticeQuestionSubmittedEvent(
-				caliperEvents.ACTOR_USER,
-				req,
-				currentUser,
-				clientEvent.draft_id,
-				clientEvent.payload.questionId
-			)
+			return caliperEvents.createPracticeQuestionSubmittedEvent({
+				actor: actorUser,
+				draftId: clientEvent.draft_id,
+				questionId: clientEvent.payload.questionId,
+				isPreviewMode,
+				sessionIds
+			})
 
 		case 'question:showExplanation':
-			return caliperEvents.createViewEvent(
-				req,
-				currentUser,
-				clientEvent.draft_id,
-				clientEvent.payload.questionId,
-				'explanation'
-			)
+			return caliperEvents.createViewEvent({
+				actor: actorUser,
+				draftId: clientEvent.draft_id,
+				itemId: clientEvent.payload.questionId,
+				frameName: 'explanation',
+				isPreviewMode,
+				sessionIds
+			})
 
 		case 'question:hideExplanation':
-			return caliperEvents.createHideEvent(
-				caliperEvents.ACTOR_USER, //@TODO
-				req,
-				currentUser,
-				clientEvent.draft_id,
-				clientEvent.payload.questionId,
-				'explanation'
-			)
+			return caliperEvents.createHideEvent({
+				actor: actorUser, //@TODO
+				draftId: clientEvent.draft_id,
+				questionId: clientEvent.payload.questionId,
+				frameName: 'explanation',
+				isPreviewMode,
+				sessionIds
+			})
 
 		case 'question:setResponse':
 		case 'assessment:setResponse':
-			return caliperEvents.createAssessmentItemEvent(
-				req,
-				currentUser,
-				clientEvent.draft_id,
-				clientEvent.payload.questionId,
-				clientEvent.payload.assessmentId,
-				clientEvent.payload.attemptId
-			)
+			return caliperEvents.createAssessmentItemEvent({
+				actor: actorUser,
+				draftId: clientEvent.draft_id,
+				questionId: clientEvent.payload.questionId,
+				assessmentId: clientEvent.payload.assessmentId,
+				attemptId: clientEvent.payload.attemptId,
+				isPreviewMode,
+				sessionIds
+			})
 
 		case 'score:set':
-			return caliperEvents.createPracticeGradeEvent(
-				caliperEvents.ACTOR_VIEWER_CLIENT,
-				req,
-				currentUser,
-				clientEvent.draft_id,
-				clientEvent.payload.itemId,
-				clientEvent.payload.id,
-				clientEvent.payload.score
-			)
+			return caliperEvents.createPracticeGradeEvent({
+				actor: { type: ACTOR_VIEWER_CLIENT },
+				draftId: clientEvent.draft_id,
+				questionId: clientEvent.payload.itemId,
+				scoreId: clientEvent.payload.id,
+				score: clientEvent.payload.score,
+				isPreviewMode,
+				sessionIds
+			})
 
 		case 'score:clear':
-			return caliperEvents.createPracticeUngradeEvent(
-				caliperEvents.ACTOR_SERVER_APP,
-				req,
-				currentUser,
-				clientEvent.draft_id,
-				clientEvent.payload.itemId,
-				clientEvent.payload.id
-			)
+			return caliperEvents.createPracticeUngradeEvent({
+				actor: { type: ACTOR_SERVER_APP },
+				draftId: clientEvent.draft_id,
+				questionId: clientEvent.payload.itemId,
+				scoreId: clientEvent.payload.id,
+				isPreviewMode,
+				sessionIds
+			})
 
 		case 'question:retry':
-			return caliperEvents.createPracticeQuestionResetEvent(
-				caliperEvents.ACTOR_USER,
-				req,
-				currentUser,
-				clientEvent.draft_id,
-				clientEvent.payload.questionId
-			)
+			return caliperEvents.createPracticeQuestionResetEvent({
+				actor: actorUser,
+				draftId: clientEvent.draft_id,
+				questionId: clientEvent.payload.questionId,
+				isPreviewMode,
+				sessionIds
+			})
 
 		case 'viewer:inactive':
-			return caliperEvents.createViewerAbandonedEvent(req, currentUser, clientEvent.draft_id, {
-				type: 'inactive',
-				lastActiveTime: clientEvent.payload.lastActiveTime,
-				inactiveDuration: clientEvent.payload.inactiveDuration
+			return caliperEvents.createViewerAbandonedEvent({
+				actor: actorUser,
+				draftId: clientEvent.draft_id,
+				isPreviewMode,
+				sessionIds,
+				extensions: {
+					type: 'inactive',
+					lastActiveTime: clientEvent.payload.lastActiveTime,
+					inactiveDuration: clientEvent.payload.inactiveDuration
+				}
 			})
 
 		case 'viewer:returnFromInactive':
-			return caliperEvents.createViewerResumedEvent(req, currentUser, clientEvent.draft_id, {
-				type: 'returnFromInactive',
-				lastActiveTime: clientEvent.payload.lastActiveTime,
-				inactiveDuration: clientEvent.payload.inactiveDuration,
-				relatedEventId: clientEvent.payload.relatedEventId
+			return caliperEvents.createViewerResumedEvent({
+				actor: actorUser,
+				draftId: clientEvent.draft_id,
+				isPreviewMode,
+				sessionIds,
+				extensions: {
+					type: 'returnFromInactive',
+					lastActiveTime: clientEvent.payload.lastActiveTime,
+					inactiveDuration: clientEvent.payload.inactiveDuration,
+					relatedEventId: clientEvent.payload.relatedEventId
+				}
 			})
 
 		case 'viewer:open':
-			return caliperEvents.createViewerSessionLoggedInEvent(req, currentUser, clientEvent.draft_id)
+			return caliperEvents.createViewerSessionLoggedInEvent({
+				actor: actorUser,
+				draftId: clientEvent.draft_id,
+				isPreviewMode,
+				sessionIds
+			})
 
 		case 'viewer:close':
-			return caliperEvents.createViewerSessionLoggedOutEvent(req, currentUser, clientEvent.draft_id)
+			return caliperEvents.createViewerSessionLoggedOutEvent({
+				actor: actorUser,
+				draftId: clientEvent.draft_id,
+				isPreviewMode,
+				sessionIds
+			})
 
 		case 'viewer:leave':
-			return caliperEvents.createViewerAbandonedEvent(req, currentUser, clientEvent.draft_id, {
-				type: 'leave'
+			return caliperEvents.createViewerAbandonedEvent({
+				actor: actorUser,
+				draftId: clientEvent.draft_id,
+				isPreviewMode,
+				sessionIds,
+				extensions: {
+					type: 'leave'
+				}
 			})
 
 		case 'viewer:return':
-			return caliperEvents.createViewerResumedEvent(req, currentUser, clientEvent.draft_id, {
-				type: 'return',
-				relatedEventId: clientEvent.payload.relatedEventId
+			return caliperEvents.createViewerResumedEvent({
+				actor: actorUser,
+				draftId: clientEvent.draft_id,
+				isPreviewMode,
+				sessionIds,
+				extensions: {
+					type: 'return',
+					relatedEventId: clientEvent.payload.relatedEventId
+				}
 			})
 	}
 
