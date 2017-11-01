@@ -33,7 +33,10 @@ module.exports = req => {
 				to: clientEvent.payload.to,
 				isPreviewMode,
 				sessionIds,
-				extensions: { navType: clientEvent.action.split(':')[1], internalName: clientEvent.action }
+				extensions: {
+					navType: clientEvent.action.split(':')[1],
+					internalName: clientEvent.action
+				}
 			})
 
 		case 'question:view':
@@ -152,14 +155,6 @@ module.exports = req => {
 				}
 			})
 
-		case 'viewer:open':
-			return caliperEvents.createViewerSessionLoggedInEvent({
-				actor: actorUser,
-				draftId: clientEvent.draft_id,
-				isPreviewMode,
-				sessionIds
-			})
-
 		case 'viewer:close':
 			return caliperEvents.createViewerSessionLoggedOutEvent({
 				actor: actorUser,
@@ -191,6 +186,5 @@ module.exports = req => {
 				}
 			})
 	}
-
 	return null
 }

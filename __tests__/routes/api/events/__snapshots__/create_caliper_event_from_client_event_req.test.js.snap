@@ -302,28 +302,6 @@ Event {
 }
 `;
 
-exports[`Caliper event from req viewer_open 1`] = `
-Event {
-  "@context": "http://purl.imsglobal.org/ctx/caliper/v1/Context",
-  "@type": "http://purl.imsglobal.org/caliper/v1/SessionEvent",
-  "action": "LoggedIn",
-  "actor": "https://hostnameReq/api/user/testUserIdReq",
-  "edApp": "https://hostnameReq/api/system",
-  "eventTime": "2016-09-22T16:57:14.500Z",
-  "extensions": Object {
-    "previewMode": false,
-  },
-  "federatedSession": "https://hostnameReq/api/launch/OboLtiLaunchIdReq",
-  "generated": null,
-  "group": null,
-  "id": "urn:uuid:fb9826d0-3d7a-43b8-a5ad-3949ce620d91",
-  "membership": null,
-  "object": "https://hostnameReq/api/system",
-  "session": "https://hostnameReq/api/session/SessionIdReq",
-  "target": "https:///api/draft/testDraftIdReq",
-}
-`;
-
 exports[`Caliper event from req viewer_return 1`] = `
 Event {
   "@context": "http://purl.imsglobal.org/ctx/caliper/v1/Context",

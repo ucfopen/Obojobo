@@ -1,9 +1,5 @@
-let {
-	ACTOR_USER,
-	ACTOR_VIEWER_CLIENT,
-	ACTOR_SERVER_APP,
-	getNewGeneratedId
-} = require('./caliper_constants')
+let { ACTOR_USER, ACTOR_VIEWER_CLIENT, ACTOR_SERVER_APP } = require('./caliper_constants')
+let { getNewGeneratedId } = require('./caliper_utils')
 
 let createEvent = (
 	classRef,

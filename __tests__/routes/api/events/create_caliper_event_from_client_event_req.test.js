@@ -65,7 +65,6 @@ let reqObjects = {
 		lastActiveTime,
 		relatedEventId
 	}),
-	viewer_open: fillReqObj('viewer:open'),
 	viewer_close: fillReqObj('viewer:close'),
 	viewer_leave: fillReqObj('viewer:leave'),
 	viewer_return: fillReqObj('viewer:return', { relatedEventId })

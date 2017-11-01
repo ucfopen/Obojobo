@@ -1,16 +1,11 @@
 let iriFactory = require('../../../iri_builder')
-let createEvent = require('./create_base_event')
-let validateCaliperEvent = require('./validateCaliperEvent').validateArguments
-let assignCaliperOptions = require('./validateCaliperEvent').assignOptions
-let createCaliperEventFromReq = require('./create_caliper_event_from_req')
+let createEvent = require('./create_base_caliper_event')
+let validateCaliperEvent = require('./validate_caliper_event').validateArguments
+let assignCaliperOptions = require('./validate_caliper_event').assignOptions
+let createCaliperEventFromReq = require('./create_caliper_event_from_client_event_req')
 
-let {
-	ACTOR_USER,
-	ACTOR_VIEWER_CLIENT,
-	ACTOR_SERVER_APP,
-	getUrnFromUuid,
-	getNewGeneratedId
-} = require('./caliper_constants')
+let { ACTOR_USER, ACTOR_VIEWER_CLIENT, ACTOR_SERVER_APP } = require('./caliper_constants')
+let { getUrnFromUuid, getNewGeneratedId } = require('./caliper_utils')
 
 let AssessmentEvent = require('caliper-js-public/src/events/assessmentEvent')
 let AssessmentItemEvent = require('caliper-js-public/src/events/assessmentItemEvent')

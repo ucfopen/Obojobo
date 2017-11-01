@@ -6,6 +6,7 @@ let assetForEnv = oboRequire('asset_resolver').assetForEnv
 let logger = oboRequire('logger')
 let insertEvent = oboRequire('insert_event')
 let createCaliperEvent = oboRequire('routes/api/events/create_caliper_event')
+let { ACTOR_USER } = require('./api/events/caliper_constants')
 
 router.all('/example', (req, res, next) => {
 	if (req.app.get('env') === 'development') {
@@ -53,7 +54,7 @@ router.all('/:draftId*', (req, res, next) => {
 					// assetForEnv('$[http://localhost:8090/webpack-dev-server.js]')
 				]
 			})
-			let { createViewerSessionLoggedInEvent } = createCaliperEvent(req)
+			let { createViewerSessionLoggedInEvent } = createCaliperEvent(null, req.hostname)
 			insertEvent({
 				action: 'viewer:open',
 				actorTime: new Date().toISOString(),
@@ -62,7 +63,10 @@ router.all('/:draftId*', (req, res, next) => {
 				metadata: {},
 				draftId: req.params.draftId,
 				payload: {},
-				caliperPayload: createViewerSessionLoggedInEvent()
+				caliperPayload: createViewerSessionLoggedInEvent({
+					draftId: req.params.draftId,
+					actor: { type: ACTOR_USER, id: user.id }
+				})
 			})
 		})
 		.catch(error => {
