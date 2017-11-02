@@ -5,21 +5,17 @@
 //should all of these be in one file?
 
 let { ACTOR_USER, ACTOR_VIEWER_CLIENT, ACTOR_SERVER_APP } = require('./caliper_constants')
+let { getSessionIds } = require('./caliper_utils')
 
 module.exports = req => {
 	let caliperEvents = require('./create_caliper_event')(req, null, true)
 	let currentUser = req.currentUser || { id: null }
 	let clientEvent = req.body.event
-	let isPreviewMode = currentUser.canViewEditor || false
+	let isPreviewMode = currentUser.canViewEditor
 	let sessionId, launchId
 
-	if (req.session) {
-		if (req.session.id) sessionId = req.session.id
-		if (req.session.oboLti) launchId = req.session.oboLti.launchId
-	}
-
 	let actorUser = { type: ACTOR_USER, id: currentUser.id }
-	let sessionIds = { sessionId, launchId }
+	let sessionIds = getSessionIds(req.session)
 
 	switch (clientEvent.action) {
 		case 'nav:goto':

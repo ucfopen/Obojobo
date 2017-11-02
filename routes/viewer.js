@@ -7,6 +7,7 @@ let logger = oboRequire('logger')
 let insertEvent = oboRequire('insert_event')
 let createCaliperEvent = oboRequire('routes/api/events/create_caliper_event')
 let { ACTOR_USER } = require('./api/events/caliper_constants')
+let { getSessionIds } = require('./api/events/caliper_utils')
 
 router.all('/example', (req, res, next) => {
 	if (req.app.get('env') === 'development') {
@@ -55,6 +56,7 @@ router.all('/:draftId*', (req, res, next) => {
 				]
 			})
 			let { createViewerSessionLoggedInEvent } = createCaliperEvent(null, req.hostname)
+
 			insertEvent({
 				action: 'viewer:open',
 				actorTime: new Date().toISOString(),
@@ -65,7 +67,9 @@ router.all('/:draftId*', (req, res, next) => {
 				payload: {},
 				caliperPayload: createViewerSessionLoggedInEvent({
 					draftId: req.params.draftId,
-					actor: { type: ACTOR_USER, id: user.id }
+					actor: { type: ACTOR_USER, id: user.id },
+					isPreviewMode: user.canViewEditor,
+					sessionIds: getSessionIds(req.session)
 				})
 			})
 		})

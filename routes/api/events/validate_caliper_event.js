@@ -53,6 +53,7 @@ let validateArguments = (
 }
 
 let assignOptions = obj => {
+	if (obj.isPreviewMode == null) obj.isPreviewMode = false
 	let options = { isPreviewMode: obj.isPreviewMode }
 
 	if (obj.sessionIds) {
