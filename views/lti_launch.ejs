@@ -1,0 +1,10 @@
+<!DOCTYPE html>
+<html lang="en">
+	<head>
+		<%- include ./partials/head %>
+	</head>
+	<body>
+		<h1><%= title %></h1>
+		<p>Welcome <%= `#{user.firstName} #{user.lastName} (#{user.username})` %></p>
+	</body>
+</html>

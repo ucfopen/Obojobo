@@ -1,0 +1,14 @@
+<!DOCTYPE html>
+<html lang="en">
+	<head>
+		<%- include ./partials/head %>
+	</head>
+	<body>
+		<h1><%= title %></h1>
+		<div id="body"></div>
+		<script>
+			var elm = React.createElement('h1', {title: "#{title}"}, 'REACT IS WORKING!');
+			ReactDOM.render(elm, document.getElementById('body'));
+		</script>
+	</body>
+</html>

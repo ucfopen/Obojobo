@@ -160,10 +160,6 @@ describe('lti route', () => {
 				expect(mockRes.render).toBeCalledWith(
 					expect.any(String),
 					expect.objectContaining({
-						title: 'Obojobo Next Document Viewer',
-						css: expect.any(Array),
-						footerJs: expect.any(Array),
-						headerJs: expect.any(Array),
 						oboGlobals: expect.objectContaining({
 							entries: {
 								draft: `"{\"json\":\"value\"}"`,

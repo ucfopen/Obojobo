@@ -2,7 +2,6 @@ var express = require('express')
 var router = express.Router()
 var OboGlobals = oboRequire('obo_globals')
 let DraftModel = oboRequire('models/draft')
-let assetForEnv = oboRequire('asset_resolver').assetForEnv
 let logger = oboRequire('logger')
 let insertEvent = oboRequire('insert_event')
 let createCaliperEvent = oboRequire('routes/api/events/create_caliper_event')
@@ -38,20 +37,8 @@ router.all('/:draftId*', (req, res, next) => {
 			return draft.yell('internal:renderViewer', req, res, oboGlobals)
 		})
 		.then(draft => {
-			res.render('viewer.pug', {
-				title: 'Obojobo Next Document Viewer',
-				oboGlobals: oboGlobals,
-				css: [assetForEnv('/static/viewer$[.min].css')],
-				footerJs: [assetForEnv('/static/viewer$[.min].js')],
-				headerJs: [
-					assetForEnv('//fb.me/react-with-addons-15.0.2$[.min].js'),
-					assetForEnv('//fb.me/react-dom-15.0.2$[.min].js'),
-					assetForEnv('//cdnjs.cloudflare.com/ajax/libs/underscore.js/1.5.1/underscore$[-min].js'),
-					assetForEnv('//cdnjs.cloudflare.com/ajax/libs/backbone.js/1.3.3/backbone$[-min].js'),
-					assetForEnv('//cdnjs.cloudflare.com/ajax/libs/KaTeX/0.7.1/katex.min.js'),
-					assetForEnv('/static/caliperSensor.js')
-					// assetForEnv('$[http://localhost:8090/webpack-dev-server.js]')
-				]
+			res.render('viewer', {
+				oboGlobals: oboGlobals
 			})
 
 			insertEvent({
