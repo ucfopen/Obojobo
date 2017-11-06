@@ -987,11 +987,12 @@
 			var OboModel = _Common2.default.models.OboModel
 
 			var QuestionUtil = {
-				setResponse: function setResponse(id, response) {
+				setResponse: function setResponse(id, response, targetId) {
 					return Dispatcher.trigger('question:setResponse', {
 						value: {
 							id: id,
-							response: response
+							response: response,
+							targetId: targetId
 						}
 					})
 				},
@@ -2059,7 +2060,7 @@
 					})
 
 					Dispatcher.on('question:setResponse', function(payload) {
-						_this.trySetResponse(payload.value.id, payload.value.response)
+						_this.trySetResponse(payload.value.id, payload.value.response, payload.value.targetId)
 					})
 					return _this
 				}
@@ -2341,7 +2342,7 @@
 					},
 					{
 						key: 'trySetResponse',
-						value: function trySetResponse(questionId, response) {
+						value: function trySetResponse(questionId, response, targetId) {
 							var _this4 = this
 
 							var model = OboModel.models[questionId]
@@ -2356,7 +2357,8 @@
 									assessmentId: assessment.id,
 									attemptId: assessment.current.attemptId,
 									questionId: questionId,
-									response: response
+									response: response,
+									targetId: targetId
 								})
 								.then(function(res) {
 									if (res.status === 'error') {
@@ -2489,7 +2491,8 @@
 
 							_apiUtil2.default.postEvent(model.getRoot(), 'question:setResponse', {
 								questionId: id,
-								response: payload.value.response
+								response: payload.value.response,
+								targetId: payload.value.targetId
 							})
 						},
 

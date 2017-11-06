@@ -539,10 +539,8 @@
 			var OboModel = _Common2.default.models.OboModel
 			var Dispatcher = _Common2.default.flux.Dispatcher
 			var DOMUtil = _Common2.default.page.DOMUtil
-
 			// FocusUtil = Common.util.FocusUtil
 
-			OboModel = _Common2.default.models.OboModel
 			var QuestionUtil = _Viewer2.default.util.QuestionUtil
 			var ScoreUtil = _Viewer2.default.util.ScoreUtil
 
@@ -789,7 +787,7 @@
 									break
 							}
 
-							QuestionUtil.setResponse(questionModel.get('id'), response)
+							QuestionUtil.setResponse(questionModel.get('id'), response, mcChoiceId)
 						}
 					},
 					{
