@@ -36,10 +36,7 @@ let displayEditor = (req, res, next) => {
 					}
 				)
 				.then(drafts => {
-					res.render('editor.pug', {
-						title: 'Obojobo 3',
-						drafts: drafts
-					})
+					res.render('editor', { drafts: drafts })
 				})
 		})
 		.catch(error => {

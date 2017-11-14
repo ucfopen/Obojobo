@@ -45,8 +45,7 @@ describe('editor route', () => {
 			expect(mockRes.render).toBeCalledWith(
 				expect.any(String),
 				expect.objectContaining({
-					drafts: { draft: true },
-					title: expect.any(String)
+					drafts: { draft: true }
 				})
 			)
 		})

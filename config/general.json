@@ -1,10 +1,13 @@
 {
 	"development": {
-		"cookieSecret":"REPLACE_ME_WITH_YOUR_SECRET",
-		"cookieName":"obo_next",
-		"secureCookie":false,
+		"cookieSecret": "REPLACE_ME_WITH_YOUR_SECRET",
+		"cookieName": "obo_next",
+		"secureCookie": false,
 		"bodyParser": {
 			"jsonOptions": {
+				"limit": "1mb"
+			},
+			"textOptions": {
 				"limit": "1mb"
 			},
 			"urlencodedOptions": {
