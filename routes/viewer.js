@@ -49,6 +49,7 @@ router.all('/:draftId*', (req, res, next) => {
 				metadata: {},
 				draftId: req.params.draftId,
 				payload: {},
+				eventVersion: '3.0.0',
 				caliperPayload: createCaliperEvent.createViewerSessionLoggedInEvent(
 					req,
 					user,
