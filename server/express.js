@@ -305,6 +305,7 @@ app.post('/api/assessments/attempt/start', (req, res, next) => {
 				ip: req.connection.remoteAddress,
 				metadata: {},
 				draftId: draftId,
+				eventVersion: '3.0.1',
 				caliperPayload: createCaliperEvent.createAssessmentAttemptStartedEvent(
 					req,
 					currentUser,
@@ -460,6 +461,7 @@ app.post('/api/assessments/attempt/:attemptId/end', (req, res, next) => {
 				ip: req.connection.remoteAddress,
 				metadata: {},
 				draftId: draftId,
+				eventVersion: '3.0.1',
 				caliperPayload: createCaliperEvent.createAssessmentAttemptSubmittedEvent(
 					req,
 					currentUser,
@@ -499,6 +501,7 @@ app.post('/api/assessments/attempt/:attemptId/end', (req, res, next) => {
 				ip: req.connection.remoteAddress,
 				metadata: {},
 				draftId: draftId,
+				eventVersion: '3.0.1',
 				caliperPayload: createCaliperEvent.createAssessmentAttemptScoredEvent(
 					req,
 					currentUser,

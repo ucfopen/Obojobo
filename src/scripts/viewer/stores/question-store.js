@@ -21,7 +21,7 @@ class QuestionStore extends Store {
 				this.state.responses[id] = payload.value.response
 				this.triggerChange()
 
-				APIUtil.postEvent(model.getRoot(), 'question:setResponse', {
+				APIUtil.postEvent(model.getRoot(), 'question:setResponse', '3.1.0', {
 					questionId: id,
 					response: payload.value.response
 				})
@@ -40,7 +40,7 @@ class QuestionStore extends Store {
 			'question:showExplanation': payload => {
 				let root = OboModel.models[payload.value.id].getRoot()
 
-				APIUtil.postEvent(root, 'question:showExplanation', {
+				APIUtil.postEvent(root, 'question:showExplanation', '3.0.0', {
 					questionId: payload.value.id
 				})
 
@@ -50,7 +50,7 @@ class QuestionStore extends Store {
 			'question:hideExplanation': payload => {
 				let root = OboModel.models[payload.value.id].getRoot()
 
-				APIUtil.postEvent(root, 'question:hideExplanation', {
+				APIUtil.postEvent(root, 'question:hideExplanation', '3.0.0', {
 					questionId: payload.value.id
 				})
 
@@ -63,7 +63,7 @@ class QuestionStore extends Store {
 			},
 
 			'question:hide': payload => {
-				APIUtil.postEvent(OboModel.models[payload.value.id].getRoot(), 'question:hide', {
+				APIUtil.postEvent(OboModel.models[payload.value.id].getRoot(), 'question:hide', '3.0.0', {
 					questionId: payload.value.id
 				})
 
@@ -79,7 +79,7 @@ class QuestionStore extends Store {
 			'question:view': payload => {
 				let root = OboModel.models[payload.value.id].getRoot()
 
-				APIUtil.postEvent(root, 'question:view', {
+				APIUtil.postEvent(root, 'question:view', '3.0.0', {
 					questionId: payload.value.id
 				})
 
@@ -94,7 +94,7 @@ class QuestionStore extends Store {
 				let questionModel = OboModel.models[questionId]
 				let root = questionModel.getRoot()
 
-				APIUtil.postEvent(root, 'question:checkAnswer', {
+				APIUtil.postEvent(root, 'question:checkAnswer', '3.0.0', {
 					questionId: payload.value.id
 				})
 			},
@@ -106,7 +106,7 @@ class QuestionStore extends Store {
 
 				this.clearResponses(questionId)
 
-				APIUtil.postEvent(root, 'question:retry', {
+				APIUtil.postEvent(root, 'question:retry', '3.0.0', {
 					questionId: payload.value.id
 				})
 
