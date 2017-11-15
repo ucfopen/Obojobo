@@ -379,6 +379,7 @@ describe('AssessmentStore', () => {
 				expect(APIUtil.postEvent).toHaveBeenCalledWith(
 					OboModel.models.rootId,
 					'assessment:setResponse',
+					'3.1.0',
 					{
 						assessmentId: 'assessmentId',
 						attemptId: 'attemptId',
