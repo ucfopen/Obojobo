@@ -296,7 +296,7 @@ app.post('/api/assessments/attempt/start', (req, res, next) => {
 		})
 		.then(result => {
 			res.success(result)
-
+			let { createAssessmentAttemptStartedEvent } = createCaliperEvent(null, req.hostname)
 			insertEvent({
 				action: 'assessment:attemptStart',
 				actorTime: new Date().toISOString(),
@@ -305,17 +305,15 @@ app.post('/api/assessments/attempt/start', (req, res, next) => {
 				ip: req.connection.remoteAddress,
 				metadata: {},
 				draftId: draftId,
-				caliperPayload: createCaliperEvent.createAssessmentAttemptStartedEvent(
-					req,
-					currentUser,
+				caliperPayload: createAssessmentAttemptStartedEvent({
+					actor: { type: 'user', id: currentUser.id },
 					draftId,
-					req.body.assessmentId,
-					result.attemptId,
-					isPreviewing ? -1 : numAttempts + 1,
-					{
+					assessmentId: req.body.assessmentId,
+					attemptId: result.attemptId,
+					extensions: {
 						count: numAttempts
 					}
-				)
+				})
 			})
 		})
 		.catch(error => {
@@ -358,12 +356,12 @@ app.post('/api/assessments/attempt/:attemptId/end', (req, res, next) => {
 			// get draft and assessment ids for this attempt
 			return db.one(
 				`
-			SELECT drafts.id AS draft_id, attempts.assessment_id, attempts.state as attempt_state
-			FROM drafts
-			JOIN attempts
-			ON drafts.id = attempts.draft_id
-			WHERE attempts.id = $1
-		`,
+				SELECT drafts.id AS draft_id, attempts.assessment_id, attempts.state as attempt_state
+				FROM drafts
+				JOIN attempts
+				ON drafts.id = attempts.draft_id
+				WHERE attempts.id = $1
+			`,
 				[req.params.attemptId]
 			)
 		})
@@ -448,7 +446,7 @@ app.post('/api/assessments/attempt/:attemptId/end', (req, res, next) => {
 		})
 		.then(numAttemptsResult => {
 			numAttempts = numAttemptsResult
-
+			let { createAssessmentAttemptSubmittedEvent } = createCaliperEvent(null, req.hostname)
 			insertEvent({
 				action: 'assessment:attemptEnd',
 				actorTime: new Date().toISOString(),
@@ -460,14 +458,12 @@ app.post('/api/assessments/attempt/:attemptId/end', (req, res, next) => {
 				ip: req.connection.remoteAddress,
 				metadata: {},
 				draftId: draftId,
-				caliperPayload: createCaliperEvent.createAssessmentAttemptSubmittedEvent(
-					req,
-					currentUser,
+				caliperPayload: createAssessmentAttemptSubmittedEvent({
+					actor: { type: 'user', id: currentUser.id },
 					draftId,
 					assessmentId,
-					req.params.attemptId,
-					isPreviewing ? -1 : numAttempts
-				)
+					attemptId: req.params.attemptId
+				})
 			})
 
 			if (isPreviewing) return Promise.resolve(false)
@@ -484,7 +480,7 @@ app.post('/api/assessments/attempt/:attemptId/end', (req, res, next) => {
 				sent: isScoreSent
 			}
 			res.success(updateResult)
-
+			let { createAssessmentAttemptScoredEvent } = createCaliperEvent(null, req.hostname)
 			insertEvent({
 				action: 'assessment:attemptScored',
 				actorTime: new Date().toISOString(),
@@ -499,20 +495,19 @@ app.post('/api/assessments/attempt/:attemptId/end', (req, res, next) => {
 				ip: req.connection.remoteAddress,
 				metadata: {},
 				draftId: draftId,
-				caliperPayload: createCaliperEvent.createAssessmentAttemptScoredEvent(
-					req,
-					currentUser,
+				caliperPayload: createAssessmentAttemptScoredEvent({
+					actor: { type: 'serverApp' },
 					draftId,
 					assessmentId,
-					req.params.attemptId,
+					attemptId: req.params.attemptId,
 					attemptScore,
-					{
+					extensions: {
 						attemptCount: isPreviewing ? -1 : numAttempts,
 						attemptScore: attemptScore,
 						highestAttemptScore: isPreviewing ? -1 : highestAttemptScore,
 						didSendLtiOutcome: isScoreSent
 					}
-				)
+				})
 			})
 		})
 		.catch(error => {
@@ -536,17 +531,17 @@ app.get('/api/drafts/:draftId/attempts', (req, res, next) => {
 			// select
 			return db.manyOrNone(
 				`
-			SELECT
-				id AS "attemptId",
-				created_at as "startDate",
-				completed_at as "endDate",
-				assessment_id,
-				state,
-				score
-			FROM attempts
-			WHERE user_id = $[userId]
-				AND draft_id = $[draftId]
-			ORDER BY completed_at DESC`,
+				SELECT
+					id AS "attemptId",
+					created_at as "startDate",
+					completed_at as "endDate",
+					assessment_id,
+					state,
+					score
+				FROM attempts
+				WHERE user_id = $[userId]
+					AND draft_id = $[draftId]
+				ORDER BY completed_at DESC`,
 				{ userId: currentUser.id, draftId: req.params.draftId }
 			)
 		})
@@ -576,19 +571,19 @@ oboEvents.on('client:assessment:setResponse', (event, req) => {
 	if (!event.payload.response)
 		return app.logError(eventRecordResponse, 'Missing Response', req, event)
 
-	db
+	return db
 		.none(
 			`
-		INSERT INTO attempts_question_responses
-		(attempt_id, question_id, response)
-		VALUES($[attemptId], $[questionId], $[response])
-		ON CONFLICT (attempt_id, question_id) DO
-			UPDATE
-			SET
-				response = $[response],
-				updated_at = now()
-			WHERE attempts_question_responses.attempt_id = $[attemptId]
-				AND attempts_question_responses.question_id = $[questionId]`,
+			INSERT INTO attempts_question_responses
+			(attempt_id, question_id, response)
+			VALUES($[attemptId], $[questionId], $[response])
+			ON CONFLICT (attempt_id, question_id) DO
+				UPDATE
+				SET
+					response = $[response],
+					updated_at = now()
+				WHERE attempts_question_responses.attempt_id = $[attemptId]
+					AND attempts_question_responses.question_id = $[questionId]`,
 			{
 				attemptId: event.payload.attemptId,
 				questionId: event.payload.questionId,
