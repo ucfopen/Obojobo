@@ -31,6 +31,29 @@ let createScore = (attemptIRI, scoredBy, score, scoreId = getNewGeneratedId()) =
 	}
 }
 
+// Caliper-Spec Properties
+// type: (type: Term, REQUIRED) AssessmentEvent
+// action: (type: Term, REQUIRED) Started | Paused | Resumed | Restarted | Reset | Submitted
+// object: (type: Assessment, REQUIRED) Assessment IRI of the assessment being acted upon
+// generated: (type: Attempt, Recommended) IRI of the attempt of this assessment
+// actor: (type: Person, REQUIRED) Current user
+let createAssessmentEvent = (obj, IRI) => {
+	let required = ['action', 'assessmentId', 'attemptId', 'draftId']
+	validateCaliperEvent({ required }, obj, ACTOR_USER)
+
+	let options = assignCaliperOptions(obj)
+
+	let { actor, assessmentId, draftId, action, attemptId, extensions } = obj
+	let caliperEvent = createEvent(AssessmentEvent, actor, IRI, options)
+
+	caliperEvent.setAction(action)
+	caliperEvent.setObject(IRI.getAssessmentIRI(draftId, assessmentId))
+	caliperEvent.setGenerated(IRI.getAssessmentAttemptIRI(attemptId))
+	Object.assign(caliperEvent.extensions, extensions)
+
+	return caliperEvent
+}
+
 // Must provide a request object or a host
 // isFromReq is used internally for create_caliper_event_from_req
 const caliperEventFactory = (req, host = null, isFromReq = false) => {
@@ -114,37 +137,14 @@ const caliperEventFactory = (req, host = null, isFromReq = false) => {
 			return caliperEvent
 		},
 
-		// Caliper-Spec Properties
-		// type: (type: Term, REQUIRED) AssessmentEvent
-		// action: (type: Term, REQUIRED) Started | Paused | Resumed | Restarted | Reset | Submitted
-		// object: (type: Assessment, REQUIRED) Assessment IRI of the assessment being acted upon
-		// generated: (type: Attempt, Recommended) IRI of the attempt of this assessment
-		// actor: (type: Person, REQUIRED) Current user
-		createAssessmentEvent: obj => {
-			let required = ['action', 'assessmentId', 'attemptId', 'draftId']
-			validateCaliperEvent({ required }, obj, ACTOR_USER)
-
-			let options = assignCaliperOptions(obj)
-
-			let { actor, assessmentId, draftId, action, attemptId, extensions } = obj
-			let caliperEvent = createEvent(AssessmentEvent, actor, IRI, options)
-
-			caliperEvent.setAction(action)
-			caliperEvent.setObject(IRI.getAssessmentIRI(draftId, assessmentId))
-			caliperEvent.setGenerated(IRI.getAssessmentAttemptIRI(attemptId))
-			Object.assign(caliperEvent.extensions, extensions)
-
-			return caliperEvent
-		},
-
-		createAssessmentAttemptStartedEvent: function(obj) {
+		createAssessmentAttemptStartedEvent: obj => {
 			obj.action = 'Started'
-			return this.createAssessmentEvent(obj)
+			return createAssessmentEvent(obj, IRI)
 		},
 
-		createAssessmentAttemptSubmittedEvent: function(obj) {
+		createAssessmentAttemptSubmittedEvent: obj => {
 			obj.action = 'Submitted'
-			return this.createAssessmentEvent(obj)
+			return createAssessmentEvent(obj, IRI)
 		},
 
 		// Caliper-Spec Properties
