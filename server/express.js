@@ -310,6 +310,7 @@ app.post('/api/assessments/attempt/start', (req, res, next) => {
 					draftId,
 					assessmentId: req.body.assessmentId,
 					attemptId: result.attemptId,
+					isPreviewMode: isPreviewing,
 					extensions: {
 						count: numAttempts
 					}
@@ -462,7 +463,8 @@ app.post('/api/assessments/attempt/:attemptId/end', (req, res, next) => {
 					actor: { type: 'user', id: currentUser.id },
 					draftId,
 					assessmentId,
-					attemptId: req.params.attemptId
+					attemptId: req.params.attemptId,
+					isPreviewMode: isPreviewing
 				})
 			})
 
@@ -501,6 +503,7 @@ app.post('/api/assessments/attempt/:attemptId/end', (req, res, next) => {
 					assessmentId,
 					attemptId: req.params.attemptId,
 					attemptScore,
+					isPreviewMode: isPreviewing,
 					extensions: {
 						attemptCount: isPreviewing ? -1 : numAttempts,
 						attemptScore: attemptScore,
