@@ -1,200 +1,492 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
-exports[`Caliper event creator can create a hide event 1`] = `
-Event {
-  "@context": "http://purl.imsglobal.org/ctx/caliper/v1/Context",
-  "@type": null,
-  "action": "Hid",
-  "actor": "test actor",
-  "edApp": "test ed app",
-  "eventTime": "2017-08-29T16:57:14.500Z",
-  "extensions": Object {
-    "previewMode": true,
-  },
-  "federatedSession": "test federated session",
-  "generated": null,
-  "group": null,
-  "id": "urn:uuid:fb9826d0-3d7a-43b8-a5ad-3949ce620d91",
-  "membership": null,
-  "object": "test draft",
-  "session": "test session",
-  "target": null,
-}
-`;
-
-exports[`Caliper event creator can create a navigation event 1`] = `
-Event {
-  "@context": "http://purl.imsglobal.org/ctx/caliper/v1/Context",
-  "@type": "http://purl.imsglobal.org/caliper/v1/NavigationEvent",
-  "action": "http://purl.imsglobal.org/vocab/caliper/v1/action#NavigatedTo",
-  "actor": "test actor",
-  "edApp": "test ed app",
-  "eventTime": "2017-08-29T16:57:14.500Z",
-  "extensions": Object {
-    "previewMode": true,
-  },
-  "federatedSession": "test federated session",
-  "generated": null,
-  "group": null,
-  "id": "urn:uuid:fb9826d0-3d7a-43b8-a5ad-3949ce620d91",
-  "membership": null,
-  "object": "test draft",
-  "referrer": "test draft",
-  "session": "test session",
-  "target": null,
-}
-`;
-
-exports[`Caliper event creator can create a score 1`] = `
-Object {
-  "@context": "http://purl.imsglobal.org/ctx/caliper/v1p1",
-  "@type": "Score",
-  "attempt": "test attempt IRI",
-  "dateCreated": "2017-08-29T16:57:14.500Z",
-  "id": "urn:uuid:some-uuid",
-  "maxScore": 100,
-  "scoreGiven": 67,
-  "scoredBy": "test app server",
-}
-`;
-
-exports[`Caliper event creator can create a view event 1`] = `
-Event {
-  "@context": "http://purl.imsglobal.org/ctx/caliper/v1/Context",
-  "@type": "http://purl.imsglobal.org/caliper/v1/ViewEvent",
-  "action": "Viewed",
-  "actor": "test actor",
-  "edApp": "test ed app",
-  "eventTime": "2017-08-29T16:57:14.500Z",
-  "extensions": Object {
-    "previewMode": true,
-  },
-  "federatedSession": "test federated session",
-  "generated": null,
-  "group": null,
-  "id": "urn:uuid:fb9826d0-3d7a-43b8-a5ad-3949ce620d91",
-  "membership": null,
-  "object": "test draft",
-  "session": "test session",
-  "target": null,
-}
-`;
-
-exports[`Caliper event creator can create an assessment attempt started event 1`] = `
-Event {
-  "@context": "http://purl.imsglobal.org/ctx/caliper/v1/Context",
-  "@type": "http://purl.imsglobal.org/caliper/v1/AssessmentEvent",
-  "action": "Started",
-  "actor": "test actor",
-  "edApp": "test ed app",
-  "eventTime": "2017-08-29T16:57:14.500Z",
-  "extensions": Object {
-    "previewMode": true,
-  },
-  "federatedSession": "test federated session",
-  "generated": "test assessment attempt IRI",
-  "group": null,
-  "id": "urn:uuid:fb9826d0-3d7a-43b8-a5ad-3949ce620d91",
-  "membership": null,
-  "object": "test assessment IRI",
-  "session": "test session",
-  "target": null,
-}
-`;
-
-exports[`Caliper event creator can create an assessment attempt submitted event 1`] = `
-Event {
-  "@context": "http://purl.imsglobal.org/ctx/caliper/v1/Context",
-  "@type": "http://purl.imsglobal.org/caliper/v1/AssessmentEvent",
-  "action": "Submitted",
-  "actor": "test actor",
-  "edApp": "test ed app",
-  "eventTime": "2017-08-29T16:57:14.500Z",
-  "extensions": Object {
-    "previewMode": true,
-  },
-  "federatedSession": "test federated session",
-  "generated": "test assessment attempt IRI",
-  "group": null,
-  "id": "urn:uuid:fb9826d0-3d7a-43b8-a5ad-3949ce620d91",
-  "membership": null,
-  "object": "test assessment IRI",
-  "session": "test session",
-  "target": null,
-}
-`;
-
-exports[`Caliper event creator can create an attempt scored event 1`] = `
+exports[`Caliper event creator createAssessmentAttemptScoredEvent 1`] = `
 Event {
   "@context": "http://purl.imsglobal.org/ctx/caliper/v1/Context",
   "@type": "GradeEvent",
   "action": "Graded",
-  "actor": "test app server",
-  "edApp": "test ed app",
+  "actor": "https://testHost/api/server",
+  "edApp": "https://testHost/api/system",
   "eventTime": "2017-08-29T16:57:14.500Z",
   "extensions": Object {
-    "previewMode": true,
+    "previewMode": false,
   },
-  "federatedSession": "test federated session",
+  "federatedSession": "https://testHost/api/launch/testOboLaunchId",
   "generated": Object {
     "@context": "http://purl.imsglobal.org/ctx/caliper/v1p1",
     "@type": "Score",
-    "attempt": "test assessment attempt IRI",
+    "attempt": "https://testHost/api/attempt/testAttemptId",
     "dateCreated": "2017-08-29T16:57:14.500Z",
     "id": "urn:uuid:fb9826d0-3d7a-43b8-a5ad-3949ce620d91",
     "maxScore": 100,
-    "scoreGiven": 95,
-    "scoredBy": "test app server",
+    "scoreGiven": "50",
+    "scoredBy": "https://testHost/api/server",
   },
   "group": null,
   "id": "urn:uuid:fb9826d0-3d7a-43b8-a5ad-3949ce620d91",
   "membership": null,
-  "object": "test assessment attempt IRI",
-  "session": "test session",
+  "object": "https://testHost/api/attempt/testAttemptId",
+  "session": "https://testHost/api/session/testSessionId",
   "target": null,
 }
 `;
 
-exports[`Caliper event creator sets target of hide event when given framename arg 1`] = `
+exports[`Caliper event creator createAssessmentAttemptStartedEvent 1`] = `
+Event {
+  "@context": "http://purl.imsglobal.org/ctx/caliper/v1/Context",
+  "@type": "http://purl.imsglobal.org/caliper/v1/AssessmentEvent",
+  "action": "Started",
+  "actor": "https://testHost/api/user/testUserId",
+  "edApp": "https://testHost/api/system",
+  "eventTime": "2017-08-29T16:57:14.500Z",
+  "extensions": Object {
+    "foo": "bar",
+    "previewMode": false,
+  },
+  "federatedSession": "https://testHost/api/launch/testOboLaunchId",
+  "generated": "https://testHost/api/attempt/testAttemptId",
+  "group": null,
+  "id": "urn:uuid:fb9826d0-3d7a-43b8-a5ad-3949ce620d91",
+  "membership": null,
+  "object": "https://testHost/api/assessment/testDraftId/testAssessment",
+  "session": "https://testHost/api/session/testSessionId",
+  "target": null,
+}
+`;
+
+exports[`Caliper event creator createAssessmentAttemptSubmittedEvent 1`] = `
+Event {
+  "@context": "http://purl.imsglobal.org/ctx/caliper/v1/Context",
+  "@type": "http://purl.imsglobal.org/caliper/v1/AssessmentEvent",
+  "action": "Submitted",
+  "actor": "https://testHost/api/user/testUserId",
+  "edApp": "https://testHost/api/system",
+  "eventTime": "2017-08-29T16:57:14.500Z",
+  "extensions": Object {
+    "foo": "bar",
+    "previewMode": false,
+  },
+  "federatedSession": "https://testHost/api/launch/testOboLaunchId",
+  "generated": "https://testHost/api/attempt/testAttemptId",
+  "group": null,
+  "id": "urn:uuid:fb9826d0-3d7a-43b8-a5ad-3949ce620d91",
+  "membership": null,
+  "object": "https://testHost/api/assessment/testDraftId/testAssessment",
+  "session": "https://testHost/api/session/testSessionId",
+  "target": null,
+}
+`;
+
+exports[`Caliper event creator createAssessmentItemEvent - when assesmentId is null 1`] = `
+Event {
+  "@context": "http://purl.imsglobal.org/ctx/caliper/v1/Context",
+  "@type": "http://purl.imsglobal.org/caliper/v1/AssessmentItemEvent",
+  "action": "Completed",
+  "actor": "https://testHost/api/user/testUserId",
+  "edApp": "https://testHost/api/system",
+  "eventTime": "2017-08-29T16:57:14.500Z",
+  "extensions": Object {
+    "previewMode": false,
+  },
+  "federatedSession": null,
+  "generated": null,
+  "group": null,
+  "id": "urn:uuid:fb9826d0-3d7a-43b8-a5ad-3949ce620d91",
+  "membership": null,
+  "object": "https://testHost/api/practice/testDraftId/testQuestionId",
+  "target": "https://testHost/api/draft/testDraftId#testQuestionId",
+}
+`;
+
+exports[`Caliper event creator createAssessmentItemEvent - when assesmentId, attemptId arguments are not provided 1`] = `
+Event {
+  "@context": "http://purl.imsglobal.org/ctx/caliper/v1/Context",
+  "@type": "http://purl.imsglobal.org/caliper/v1/AssessmentItemEvent",
+  "action": "Completed",
+  "actor": "https://testHost/api/user/testUserId",
+  "edApp": "https://testHost/api/system",
+  "eventTime": "2017-08-29T16:57:14.500Z",
+  "extensions": Object {
+    "previewMode": false,
+  },
+  "federatedSession": null,
+  "generated": null,
+  "group": null,
+  "id": "urn:uuid:fb9826d0-3d7a-43b8-a5ad-3949ce620d91",
+  "membership": null,
+  "object": "https://testHost/api/practice/testDraftId/testQuestionId",
+  "target": "https://testHost/api/draft/testDraftId#testQuestionId",
+}
+`;
+
+exports[`Caliper event creator createAssessmentItemEvent - when assessmentId and attemptId are null 1`] = `
+Event {
+  "@context": "http://purl.imsglobal.org/ctx/caliper/v1/Context",
+  "@type": "http://purl.imsglobal.org/caliper/v1/AssessmentItemEvent",
+  "action": "Completed",
+  "actor": "https://testHost/api/user/testUserId",
+  "edApp": "https://testHost/api/system",
+  "eventTime": "2017-08-29T16:57:14.500Z",
+  "extensions": Object {
+    "previewMode": false,
+  },
+  "federatedSession": null,
+  "generated": null,
+  "group": null,
+  "id": "urn:uuid:fb9826d0-3d7a-43b8-a5ad-3949ce620d91",
+  "membership": null,
+  "object": "https://testHost/api/practice/testDraftId/testQuestionId",
+  "target": "https://testHost/api/draft/testDraftId#testQuestionId",
+}
+`;
+
+exports[`Caliper event creator createAssessmentItemEvent - when attemptId is null 1`] = `
+Event {
+  "@context": "http://purl.imsglobal.org/ctx/caliper/v1/Context",
+  "@type": "http://purl.imsglobal.org/caliper/v1/AssessmentItemEvent",
+  "action": "Completed",
+  "actor": "https://testHost/api/user/testUserId",
+  "edApp": "https://testHost/api/system",
+  "eventTime": "2017-08-29T16:57:14.500Z",
+  "extensions": Object {
+    "previewMode": false,
+  },
+  "federatedSession": null,
+  "generated": null,
+  "group": null,
+  "id": "urn:uuid:fb9826d0-3d7a-43b8-a5ad-3949ce620d91",
+  "membership": null,
+  "object": "https://testHost/api/practice/testDraftId/testQuestionId",
+  "target": "https://testHost/api/draft/testDraftId#testQuestionId",
+}
+`;
+
+exports[`Caliper event creator createAssessmentItemEvent 1`] = `
+Event {
+  "@context": "http://purl.imsglobal.org/ctx/caliper/v1/Context",
+  "@type": "http://purl.imsglobal.org/caliper/v1/AssessmentItemEvent",
+  "action": "Completed",
+  "actor": "https://testHost/api/user/testUserId",
+  "edApp": "https://testHost/api/system",
+  "eventTime": "2017-08-29T16:57:14.500Z",
+  "extensions": Object {
+    "foo": "bar",
+    "previewMode": false,
+  },
+  "federatedSession": null,
+  "generated": null,
+  "group": null,
+  "id": "urn:uuid:fb9826d0-3d7a-43b8-a5ad-3949ce620d91",
+  "membership": null,
+  "object": "https://testHost/api/attempt/testAttemptId",
+  "target": "https://testHost/api/draft/testDraftId#testQuestionId",
+}
+`;
+
+exports[`Caliper event creator createHideEvent - sets target of hide event when given framename arg 1`] = `
 Event {
   "@context": "http://purl.imsglobal.org/ctx/caliper/v1/Context",
   "@type": null,
   "action": "Hid",
-  "actor": "test actor",
-  "edApp": "test ed app",
+  "actor": "https://testHost/api/user/testUserId",
+  "edApp": "https://testHost/api/system",
   "eventTime": "2017-08-29T16:57:14.500Z",
   "extensions": Object {
-    "previewMode": true,
+    "foo": "bar",
+    "previewMode": false,
   },
-  "federatedSession": "test federated session",
+  "federatedSession": "https://testHost/api/launch/testOboLaunchId",
   "generated": null,
   "group": null,
   "id": "urn:uuid:fb9826d0-3d7a-43b8-a5ad-3949ce620d91",
   "membership": null,
-  "object": "test draft",
-  "session": "test session",
-  "target": "test draft",
+  "object": "https://testHost/api/draft/testDraftId#testQuestionId",
+  "session": "https://testHost/api/session/testSessionId",
+  "target": "https://testHost/api/draft/testDraftId?context=testFramename#testQuestionId",
 }
 `;
 
-exports[`Caliper event creator sets target of view event when given framename arg 1`] = `
+exports[`Caliper event creator createHideEvent 1`] = `
+Event {
+  "@context": "http://purl.imsglobal.org/ctx/caliper/v1/Context",
+  "@type": null,
+  "action": "Hid",
+  "actor": "https://testHost/api/user/testUserId",
+  "edApp": "https://testHost/api/system",
+  "eventTime": "2017-08-29T16:57:14.500Z",
+  "extensions": Object {
+    "foo": "bar",
+    "previewMode": false,
+  },
+  "federatedSession": "https://testHost/api/launch/testOboLaunchId",
+  "generated": null,
+  "group": null,
+  "id": "urn:uuid:fb9826d0-3d7a-43b8-a5ad-3949ce620d91",
+  "membership": null,
+  "object": "https://testHost/api/draft/testDraftId#testQuestionId",
+  "session": "https://testHost/api/session/testSessionId",
+  "target": null,
+}
+`;
+
+exports[`Caliper event creator createNavigationEvent 1`] = `
+Event {
+  "@context": "http://purl.imsglobal.org/ctx/caliper/v1/Context",
+  "@type": "http://purl.imsglobal.org/caliper/v1/NavigationEvent",
+  "action": "http://purl.imsglobal.org/vocab/caliper/v1/action#NavigatedTo",
+  "actor": "https://testHost/api/user/testUserId",
+  "edApp": "https://testHost/api/system",
+  "eventTime": "2017-08-29T16:57:14.500Z",
+  "extensions": Object {
+    "foo": "bar",
+    "previewMode": false,
+  },
+  "federatedSession": "https://testHost/api/launch/testOboLaunchId",
+  "generated": null,
+  "group": null,
+  "id": "urn:uuid:fb9826d0-3d7a-43b8-a5ad-3949ce620d91",
+  "membership": null,
+  "object": "https://testHost/api/draft/testDraftId#navigation is going here",
+  "referrer": "https://testHost/api/draft/testDraftId#navigation came from here",
+  "session": "https://testHost/api/session/testSessionId",
+  "target": null,
+}
+`;
+
+exports[`Caliper event creator createPracticeGradeEvent 1`] = `
+Event {
+  "@context": "http://purl.imsglobal.org/ctx/caliper/v1/Context",
+  "@type": "GradeEvent",
+  "action": "Graded",
+  "actor": "https://testHost/api/viewer/client",
+  "edApp": "https://testHost/api/system",
+  "eventTime": "2017-08-29T16:57:14.500Z",
+  "extensions": Object {
+    "foo": "bar",
+    "previewMode": false,
+  },
+  "federatedSession": "https://testHost/api/launch/testOboLaunchId",
+  "generated": Object {
+    "@context": "http://purl.imsglobal.org/ctx/caliper/v1p1",
+    "@type": "Score",
+    "attempt": "https://testHost/api/practice/testDraftId/testQuestionId",
+    "dateCreated": "2017-08-29T16:57:14.500Z",
+    "id": "urn:uuid:123",
+    "maxScore": 100,
+    "scoreGiven": "50",
+    "scoredBy": "https://testHost/api/viewer/client",
+  },
+  "group": null,
+  "id": "urn:uuid:fb9826d0-3d7a-43b8-a5ad-3949ce620d91",
+  "membership": null,
+  "object": "https://testHost/api/practice/testDraftId/testQuestionId",
+  "session": "https://testHost/api/session/testSessionId",
+  "target": null,
+}
+`;
+
+exports[`Caliper event creator createPracticeQuestionResetEvent 1`] = `
+Event {
+  "@context": "http://purl.imsglobal.org/ctx/caliper/v1/Context",
+  "@type": null,
+  "action": "Reset",
+  "actor": "https://testHost/api/user/testUserId",
+  "edApp": "https://testHost/api/system",
+  "eventTime": "2017-08-29T16:57:14.500Z",
+  "extensions": Object {
+    "foo": "bar",
+    "previewMode": false,
+  },
+  "federatedSession": "https://testHost/api/launch/testOboLaunchId",
+  "generated": null,
+  "group": null,
+  "id": "urn:uuid:fb9826d0-3d7a-43b8-a5ad-3949ce620d91",
+  "membership": null,
+  "object": "https://testHost/api/draft/testDraftId#testQuestionId",
+  "session": "https://testHost/api/session/testSessionId",
+  "target": "https://testHost/api/practice/testDraftId/testQuestionId",
+}
+`;
+
+exports[`Caliper event creator createPracticeQuestionSubmittedEvent 1`] = `
+Event {
+  "@context": "http://purl.imsglobal.org/ctx/caliper/v1/Context",
+  "@type": null,
+  "action": "Submitted",
+  "actor": "https://testHost/api/user/testUserId",
+  "edApp": "https://testHost/api/system",
+  "eventTime": "2017-08-29T16:57:14.500Z",
+  "extensions": Object {
+    "foo": "bar",
+    "previewMode": false,
+  },
+  "federatedSession": "https://testHost/api/launch/testOboLaunchId",
+  "generated": null,
+  "group": null,
+  "id": "urn:uuid:fb9826d0-3d7a-43b8-a5ad-3949ce620d91",
+  "membership": null,
+  "object": "https://testHost/api/practice/testDraftId/testQuestionId",
+  "session": "https://testHost/api/session/testSessionId",
+  "target": null,
+}
+`;
+
+exports[`Caliper event creator createPracticeUngradeEvent 1`] = `
+Event {
+  "@context": "http://purl.imsglobal.org/ctx/caliper/v1/Context",
+  "@type": null,
+  "action": "Reset",
+  "actor": "https://testHost/api/server",
+  "edApp": "https://testHost/api/system",
+  "eventTime": "2017-08-29T16:57:14.500Z",
+  "extensions": Object {
+    "foo": "bar",
+    "previewMode": false,
+  },
+  "federatedSession": null,
+  "generated": null,
+  "group": null,
+  "id": "urn:uuid:fb9826d0-3d7a-43b8-a5ad-3949ce620d91",
+  "membership": null,
+  "object": "urn:uuid:123",
+  "target": "https://testHost/api/practice/testDraftId/testQuestionId",
+}
+`;
+
+exports[`Caliper event creator createViewEvent - sets target of view event when given framename arg 1`] = `
 Event {
   "@context": "http://purl.imsglobal.org/ctx/caliper/v1/Context",
   "@type": "http://purl.imsglobal.org/caliper/v1/ViewEvent",
   "action": "Viewed",
-  "actor": "test actor",
-  "edApp": "test ed app",
+  "actor": "https://testHost/api/user/testUserId",
+  "edApp": "https://testHost/api/system",
   "eventTime": "2017-08-29T16:57:14.500Z",
   "extensions": Object {
-    "previewMode": true,
+    "foo": "bar",
+    "previewMode": false,
   },
-  "federatedSession": "test federated session",
+  "federatedSession": "https://testHost/api/launch/testOboLaunchId",
   "generated": null,
   "group": null,
   "id": "urn:uuid:fb9826d0-3d7a-43b8-a5ad-3949ce620d91",
   "membership": null,
-  "object": "test draft",
-  "session": "test session",
-  "target": "test draft",
+  "object": "https://testHost/api/draft/testDraftId#testItemId",
+  "session": "https://testHost/api/session/testSessionId",
+  "target": "https://testHost/api/draft/testDraftId?context=testFramename#testItemId",
+}
+`;
+
+exports[`Caliper event creator createViewEvent 1`] = `
+Event {
+  "@context": "http://purl.imsglobal.org/ctx/caliper/v1/Context",
+  "@type": "http://purl.imsglobal.org/caliper/v1/ViewEvent",
+  "action": "Viewed",
+  "actor": "https://testHost/api/user/testUserId",
+  "edApp": "https://testHost/api/system",
+  "eventTime": "2017-08-29T16:57:14.500Z",
+  "extensions": Object {
+    "foo": "bar",
+    "previewMode": false,
+  },
+  "federatedSession": "https://testHost/api/launch/testOboLaunchId",
+  "generated": null,
+  "group": null,
+  "id": "urn:uuid:fb9826d0-3d7a-43b8-a5ad-3949ce620d91",
+  "membership": null,
+  "object": "https://testHost/api/draft/testDraftId#testItemId",
+  "session": "https://testHost/api/session/testSessionId",
+  "target": null,
+}
+`;
+
+exports[`Caliper event creator createViewerAbandonedEvent 1`] = `
+Event {
+  "@context": "http://purl.imsglobal.org/ctx/caliper/v1/Context",
+  "@type": null,
+  "action": "Abandoned",
+  "actor": "https://testHost/api/user/testUserId",
+  "edApp": "https://testHost/api/system",
+  "eventTime": "2017-08-29T16:57:14.500Z",
+  "extensions": Object {
+    "foo": "bar",
+    "previewMode": false,
+  },
+  "federatedSession": "https://testHost/api/launch/testOboLaunchId",
+  "generated": null,
+  "group": null,
+  "id": "urn:uuid:fb9826d0-3d7a-43b8-a5ad-3949ce620d91",
+  "membership": null,
+  "object": "https:///api/draft/testDraftId",
+  "session": "https://testHost/api/session/testSessionId",
+  "target": null,
+}
+`;
+
+exports[`Caliper event creator createViewerResumedEvent 1`] = `
+Event {
+  "@context": "http://purl.imsglobal.org/ctx/caliper/v1/Context",
+  "@type": null,
+  "action": "Resumed",
+  "actor": "https://testHost/api/user/testUserId",
+  "edApp": "https://testHost/api/system",
+  "eventTime": "2017-08-29T16:57:14.500Z",
+  "extensions": Object {
+    "foo": "bar",
+    "previewMode": false,
+  },
+  "federatedSession": "https://testHost/api/launch/testOboLaunchId",
+  "generated": null,
+  "group": null,
+  "id": "urn:uuid:fb9826d0-3d7a-43b8-a5ad-3949ce620d91",
+  "membership": null,
+  "object": "https:///api/draft/testDraftId",
+  "session": "https://testHost/api/session/testSessionId",
+  "target": null,
+}
+`;
+
+exports[`Caliper event creator createViewerSessionLoggedInEvent 1`] = `
+Event {
+  "@context": "http://purl.imsglobal.org/ctx/caliper/v1/Context",
+  "@type": "http://purl.imsglobal.org/caliper/v1/SessionEvent",
+  "action": "LoggedIn",
+  "actor": "https://testHost/api/user/testUserId",
+  "edApp": "https://testHost/api/system",
+  "eventTime": "2017-08-29T16:57:14.500Z",
+  "extensions": Object {
+    "foo": "bar",
+    "previewMode": false,
+  },
+  "federatedSession": "https://testHost/api/launch/testOboLaunchId",
+  "generated": null,
+  "group": null,
+  "id": "urn:uuid:fb9826d0-3d7a-43b8-a5ad-3949ce620d91",
+  "membership": null,
+  "object": "https://testHost/api/system",
+  "session": "https://testHost/api/session/testSessionId",
+  "target": "https:///api/draft/testDraftId",
+}
+`;
+
+exports[`Caliper event creator createViewerSessionLoggedOutEvent 1`] = `
+Event {
+  "@context": "http://purl.imsglobal.org/ctx/caliper/v1/Context",
+  "@type": "http://purl.imsglobal.org/caliper/v1/SessionEvent",
+  "action": "LoggedOut",
+  "actor": "https://testHost/api/user/testUserId",
+  "edApp": "https://testHost/api/system",
+  "eventTime": "2017-08-29T16:57:14.500Z",
+  "extensions": Object {
+    "foo": "bar",
+    "previewMode": false,
+  },
+  "federatedSession": "https://testHost/api/launch/testOboLaunchId",
+  "generated": null,
+  "group": null,
+  "id": "urn:uuid:fb9826d0-3d7a-43b8-a5ad-3949ce620d91",
+  "membership": null,
+  "object": "https://testHost/api/system",
+  "session": "https://testHost/api/session/testSessionId",
+  "target": "https:///api/draft/testDraftId",
 }
 `;

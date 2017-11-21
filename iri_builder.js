@@ -10,60 +10,68 @@ const createIRI = (host, path, hash, query) => {
 	})
 }
 
-const IRI = {
-	getIRI: (host, path) => {
-		return createIRI(host, `${path}`)
-	},
+const iriFactory = (req, providedHost) => {
+	if (!req && !providedHost)
+		throw Error('Must provide a request object with hostname or provide a host')
 
-	getEdAppIRI: host => {
-		return createIRI(host, '/api/system')
-	},
+	let host
+	providedHost ? (host = providedHost) : (host = req.hostname)
 
-	getViewerClientIRI: host => {
-		return createIRI(host, '/api/viewer/client')
-	},
+	return {
+		getIRI: path => {
+			return createIRI(host, `${path}`)
+		},
 
-	getAppServerIRI: host => {
-		return createIRI(host, '/api/server')
-	},
+		getEdAppIRI: () => {
+			return createIRI(host, '/api/system')
+		},
 
-	getSessionIRI: (host, sessionId) => {
-		return createIRI(host, `/api/session/${sessionId}`)
-	},
+		getViewerClientIRI: () => {
+			return createIRI(host, '/api/viewer/client')
+		},
 
-	getFederatedSessionIRI: (host, launchId) => {
-		return createIRI(host, `/api/launch/${launchId}`)
-	},
+		getAppServerIRI: () => {
+			return createIRI(host, '/api/server')
+		},
 
-	getUserIRI: (host, userId) => {
-		return createIRI(host, `/api/user/${userId}`)
-	},
+		getSessionIRI: sessionId => {
+			return createIRI(host, `/api/session/${sessionId}`)
+		},
 
-	getDraftIRI: (host, draftId, oboNodeId = null, contextName = null) => {
-		let iri
+		getFederatedSessionIRI: launchId => {
+			return createIRI(host, `/api/launch/${launchId}`)
+		},
 
-		if (oboNodeId === null) {
-			iri = createIRI(host, `/api/draft/${draftId}`)
-		} else if (contextName === null) {
-			iri = createIRI(host, `/api/draft/${draftId}`, `#${oboNodeId}`)
-		} else {
-			iri = createIRI(host, `/api/draft/${draftId}`, `#${oboNodeId}`, { context: contextName })
+		getUserIRI: userId => {
+			return createIRI(host, `/api/user/${userId}`)
+		},
+
+		getDraftIRI: (draftId, oboNodeId = null, contextName = null) => {
+			let iri
+
+			if (oboNodeId === null) {
+				iri = createIRI(`/api/draft/${draftId}`)
+			} else if (contextName === null) {
+				iri = createIRI(host, `/api/draft/${draftId}`, `#${oboNodeId}`)
+			} else {
+				iri = createIRI(host, `/api/draft/${draftId}`, `#${oboNodeId}`, { context: contextName })
+			}
+
+			return iri
+		},
+
+		getPracticeQuestionAttemptIRI: (draftId, oboNodeId) => {
+			return createIRI(host, `/api/practice/${draftId}/${oboNodeId}`)
+		},
+
+		getAssessmentIRI: (draftId, assessmentId) => {
+			return createIRI(host, `/api/assessment/${draftId}/${assessmentId}`)
+		},
+
+		getAssessmentAttemptIRI: attemptId => {
+			return createIRI(host, `/api/attempt/${attemptId}`)
 		}
-
-		return iri
-	},
-
-	getPracticeQuestionAttemptIRI: (host, draftId, oboNodeId) => {
-		return createIRI(host, `/api/practice/${draftId}/${oboNodeId}`)
-	},
-
-	getAssessmentIRI: (host, draftId, assessmentId) => {
-		return createIRI(host, `/api/assessment/${draftId}/${assessmentId}`)
-	},
-
-	getAssessmentAttemptIRI: (host, attemptId) => {
-		return createIRI(host, `/api/attempt/${attemptId}`)
 	}
 }
 
-module.exports = IRI
+module.exports = iriFactory
