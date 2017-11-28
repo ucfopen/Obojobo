@@ -34,7 +34,9 @@ class AssessmentStore extends Store {
 		})
 
 		Dispatcher.on('question:setResponse', payload => {
-			this.trySetResponse(payload.value.id, payload.value.response)
+			this.trySetResponse(payload.value.id, payload.value.response).catch(err => {
+				console.error(err)
+			})
 		})
 	}
 
@@ -184,7 +186,8 @@ class AssessmentStore extends Store {
 		let model = OboModel.models[questionId]
 		let assessment = AssessmentUtil.getAssessmentForModel(this.state, model)
 
-		if (!assessment || !assessment.currentResponses) return Promise.reject()
+		if (!assessment || !assessment.currentResponses)
+			return Promise.reject(new Error('No assessment data available.'))
 
 		assessment.currentResponses.push(questionId)
 
