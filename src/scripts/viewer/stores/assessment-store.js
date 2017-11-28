@@ -35,7 +35,7 @@ class AssessmentStore extends Store {
 
 		Dispatcher.on('question:setResponse', payload => {
 			this.trySetResponse(payload.value.id, payload.value.response).catch(err => {
-				console.error(err)
+				console.log(err)
 			})
 		})
 	}

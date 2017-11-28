@@ -2060,7 +2060,7 @@
 
 					Dispatcher.on('question:setResponse', function(payload) {
 						_this.trySetResponse(payload.value.id, payload.value.response).catch(function(err) {
-							console.error(err)
+							console.log(err)
 						})
 					})
 					return _this
