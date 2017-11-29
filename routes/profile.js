@@ -8,4 +8,9 @@ router.get('/', (req, res, next) => {
 	})
 })
 
+router.get('/logout', (req, res, next) => {
+	req.resetCurrentUser()
+	res.send('Logged out')
+})
+
 module.exports = router
