@@ -49,8 +49,12 @@ let replaceResult = function(userId, draftId, score) {
 	let ltiReqData
 
 	return retrieveLtiRequestData(userId, draftId)
-		.then(result => {
-			ltiReqData = result
+		.then(ltiReqData => {
+			// locate the outcome service, if it doesnt exist, just don't do anything
+			if (!ltiReqData.data.lis_outcome_service_url) {
+				logger.info(`No outcome service for user: ${userId} on draft ${draftId}`)
+				return Promise.resolve(false) // false indicates the score wasn't sent
+			}
 
 			// Launch found, try to send the score to the outcome service
 			// wrap send_replace_result in a promise

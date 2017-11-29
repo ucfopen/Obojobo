@@ -14,7 +14,7 @@ let storeLtiLaunch = (draftId, user, ip, ltiBody, ltiConsumerKey) => {
 			{
 				draftId: draftId,
 				userId: user.id,
-				link: ltiBody.lis_outcome_service_url,
+				link: '',
 				lti_key: ltiConsumerKey,
 				data: ltiBody
 			}
@@ -70,7 +70,7 @@ module.exports = (req, res, next) => {
 			)
 		})
 		.then(createdAt => {
-			next()
+			return next()
 		})
 		.catch(error => {
 			logger.error('LTI Launch Error', error)
