@@ -240,7 +240,7 @@ const caliperEventFactory = (req, host = null, isFromReq = false) => {
 			caliperEvent.setGenerated({
 				id: getNewGeneratedId(),
 				type: 'Response',
-				attempt: IRI.getAssessmentAttemptIRI(attemptId),
+				attempt: attemptId ? IRI.getAssessmentAttemptIRI(attemptId) : null,
 				extensions: { response, targetId }
 			})
 
