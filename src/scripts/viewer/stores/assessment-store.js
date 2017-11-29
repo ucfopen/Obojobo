@@ -34,7 +34,7 @@ class AssessmentStore extends Store {
 		})
 
 		Dispatcher.on('question:setResponse', payload => {
-			this.trySetResponse(payload.value.id, payload.value.response)
+			this.trySetResponse(payload.value.id, payload.value.response, payload.value.targetId)
 		})
 	}
 
@@ -180,7 +180,7 @@ class AssessmentStore extends Store {
 		Dispatcher.trigger('assessment:attemptEnded', id)
 	}
 
-	trySetResponse(questionId, response) {
+	trySetResponse(questionId, response, targetId) {
 		let model = OboModel.models[questionId]
 		let assessment = AssessmentUtil.getAssessmentForModel(this.state, model)
 
@@ -191,8 +191,9 @@ class AssessmentStore extends Store {
 		return APIUtil.postEvent(model.getRoot(), 'assessment:setResponse', {
 			assessmentId: assessment.id,
 			attemptId: assessment.current.attemptId,
-			questionId: questionId,
-			response: response
+			questionId,
+			response,
+			targetId
 		}).then(res => {
 			if (res.status === 'error') {
 				return ErrorUtil.errorResponse(res)
