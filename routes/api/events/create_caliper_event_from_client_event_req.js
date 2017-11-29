@@ -90,6 +90,8 @@ module.exports = req => {
 				questionId: clientEvent.payload.questionId,
 				assessmentId: clientEvent.payload.assessmentId,
 				attemptId: clientEvent.payload.attemptId,
+				response: clientEvent.payload.response,
+				targetId: clientEvent.payload.targetId,
 				isPreviewMode,
 				sessionIds
 			})

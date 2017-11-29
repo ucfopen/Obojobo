@@ -125,13 +125,21 @@ Event {
     "previewMode": false,
   },
   "federatedSession": "https://hostnameReq/api/launch/OboLtiLaunchIdReq",
-  "generated": null,
+  "generated": Object {
+    "attempt": "https://hostnameReq/api/attempt/testAttemptIdReq",
+    "extensions": Object {
+      "response": undefined,
+      "targetId": undefined,
+    },
+    "id": "urn:uuid:fb9826d0-3d7a-43b8-a5ad-3949ce620d91",
+    "type": "Response",
+  },
   "group": null,
   "id": "urn:uuid:fb9826d0-3d7a-43b8-a5ad-3949ce620d91",
   "membership": null,
-  "object": "https://hostnameReq/api/attempt/testAttemptIdReq",
+  "object": "https://hostnameReq/api/draft/testDraftIdReq#testQuestionIdReq",
   "session": "https://hostnameReq/api/session/SessionIdReq",
-  "target": "https://hostnameReq/api/draft/testDraftIdReq#testQuestionIdReq",
+  "target": "https:///api/draft/testDraftIdReq",
 }
 `;
 

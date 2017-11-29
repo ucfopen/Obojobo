@@ -214,24 +214,37 @@ const caliperEventFactory = (req, host = null, isFromReq = false) => {
 		// object: (type: AssessmentItem, REQUIRED) Either an assessment attempt or practice attempt IRI
 		// actor: (type: Person, REQUIRED) Current user
 		createAssessmentItemEvent: obj => {
-			let required = ['draftId', 'questionId']
-			let optional = ['assessmentId', 'attemptId']
+			const required = ['draftId', 'questionId', 'targetId', 'response']
+			const optional = ['assessmentId', 'attemptId']
+
 			validateCaliperEvent({ required, optional }, obj, ACTOR_USER)
 
-			let options = assignCaliperOptions(obj)
-
-			let { actor, assessmentId, attemptId, draftId, questionId, extensions } = obj
-			let caliperEvent = createEvent(AssessmentItemEvent, actor, IRI, options)
+			const {
+				actor,
+				assessmentId,
+				attemptId,
+				draftId,
+				questionId,
+				targetId,
+				response,
+				extensions
+			} = obj
+			const options = assignCaliperOptions(obj)
+			const caliperEvent = createEvent(AssessmentItemEvent, actor, IRI, options)
+			const questionIdIRI = IRI.getDraftIRI(draftId, questionId)
+			const practiceQuesionAttemptIRI = IRI.getPracticeQuestionAttemptIRI(draftId, questionId)
 
 			caliperEvent.setAction('Completed')
-			caliperEvent.setTarget(IRI.getDraftIRI(draftId, questionId))
-			Object.assign(caliperEvent.extensions, extensions)
+			caliperEvent.setTarget(IRI.getDraftIRI(draftId, targetId))
+			caliperEvent.setObject(assessmentId && attemptId ? questionIdIRI : practiceQuesionAttemptIRI)
+			caliperEvent.setGenerated({
+				id: getNewGeneratedId(),
+				type: 'Response',
+				attempt: IRI.getAssessmentAttemptIRI(attemptId),
+				extensions: { response, targetId }
+			})
 
-			if (assessmentId != null && attemptId != null) {
-				caliperEvent.setObject(IRI.getAssessmentAttemptIRI(attemptId))
-			} else {
-				caliperEvent.setObject(IRI.getPracticeQuestionAttemptIRI(draftId, questionId))
-			}
+			Object.assign(caliperEvent.extensions, extensions)
 
 			return caliperEvent
 		},

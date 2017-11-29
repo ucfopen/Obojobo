@@ -89,12 +89,24 @@ Event {
     "previewMode": false,
   },
   "federatedSession": null,
-  "generated": null,
+  "generated": Object {
+    "attempt": "https://testHost/api/attempt/testAttemptId",
+    "extensions": Object {
+      "response": Object {
+        "ids": Array [
+          "testTargetId",
+        ],
+      },
+      "targetId": "testTargetId",
+    },
+    "id": "urn:uuid:fb9826d0-3d7a-43b8-a5ad-3949ce620d91",
+    "type": "Response",
+  },
   "group": null,
   "id": "urn:uuid:fb9826d0-3d7a-43b8-a5ad-3949ce620d91",
   "membership": null,
   "object": "https://testHost/api/practice/testDraftId/testQuestionId",
-  "target": "https://testHost/api/draft/testDraftId#testQuestionId",
+  "target": "https://testHost/api/draft/testDraftId#testTargetId",
 }
 `;
 
@@ -110,12 +122,24 @@ Event {
     "previewMode": false,
   },
   "federatedSession": null,
-  "generated": null,
+  "generated": Object {
+    "attempt": "https://testHost/api/attempt/undefined",
+    "extensions": Object {
+      "response": Object {
+        "ids": Array [
+          "testTargetId",
+        ],
+      },
+      "targetId": "testTargetId",
+    },
+    "id": "urn:uuid:fb9826d0-3d7a-43b8-a5ad-3949ce620d91",
+    "type": "Response",
+  },
   "group": null,
   "id": "urn:uuid:fb9826d0-3d7a-43b8-a5ad-3949ce620d91",
   "membership": null,
   "object": "https://testHost/api/practice/testDraftId/testQuestionId",
-  "target": "https://testHost/api/draft/testDraftId#testQuestionId",
+  "target": "https://testHost/api/draft/testDraftId#testTargetId",
 }
 `;
 
@@ -131,12 +155,24 @@ Event {
     "previewMode": false,
   },
   "federatedSession": null,
-  "generated": null,
+  "generated": Object {
+    "attempt": "https://testHost/api/attempt/null",
+    "extensions": Object {
+      "response": Object {
+        "ids": Array [
+          "testTargetId",
+        ],
+      },
+      "targetId": "testTargetId",
+    },
+    "id": "urn:uuid:fb9826d0-3d7a-43b8-a5ad-3949ce620d91",
+    "type": "Response",
+  },
   "group": null,
   "id": "urn:uuid:fb9826d0-3d7a-43b8-a5ad-3949ce620d91",
   "membership": null,
   "object": "https://testHost/api/practice/testDraftId/testQuestionId",
-  "target": "https://testHost/api/draft/testDraftId#testQuestionId",
+  "target": "https://testHost/api/draft/testDraftId#testTargetId",
 }
 `;
 
@@ -152,12 +188,24 @@ Event {
     "previewMode": false,
   },
   "federatedSession": null,
-  "generated": null,
+  "generated": Object {
+    "attempt": "https://testHost/api/attempt/null",
+    "extensions": Object {
+      "response": Object {
+        "ids": Array [
+          "testTargetId",
+        ],
+      },
+      "targetId": "testTargetId",
+    },
+    "id": "urn:uuid:fb9826d0-3d7a-43b8-a5ad-3949ce620d91",
+    "type": "Response",
+  },
   "group": null,
   "id": "urn:uuid:fb9826d0-3d7a-43b8-a5ad-3949ce620d91",
   "membership": null,
   "object": "https://testHost/api/practice/testDraftId/testQuestionId",
-  "target": "https://testHost/api/draft/testDraftId#testQuestionId",
+  "target": "https://testHost/api/draft/testDraftId#testTargetId",
 }
 `;
 
@@ -174,12 +222,24 @@ Event {
     "previewMode": false,
   },
   "federatedSession": null,
-  "generated": null,
+  "generated": Object {
+    "attempt": "https://testHost/api/attempt/testAttemptId",
+    "extensions": Object {
+      "response": Object {
+        "ids": Array [
+          "testTargetId",
+        ],
+      },
+      "targetId": "testTargetId",
+    },
+    "id": "urn:uuid:fb9826d0-3d7a-43b8-a5ad-3949ce620d91",
+    "type": "Response",
+  },
   "group": null,
   "id": "urn:uuid:fb9826d0-3d7a-43b8-a5ad-3949ce620d91",
   "membership": null,
-  "object": "https://testHost/api/attempt/testAttemptId",
-  "target": "https://testHost/api/draft/testDraftId#testQuestionId",
+  "object": "https://testHost/api/draft/testDraftId#testQuestionId",
+  "target": "https://testHost/api/draft/testDraftId#testTargetId",
 }
 `;
 
