@@ -14,27 +14,6 @@ describe('lti route', () => {
 		expect(mockRouterMethods.all).toBeCalledWith('/:draftId*', expect.any(Function))
 	})
 
-	test('example calls next', () => {
-		expect.assertions(2)
-
-		oboRequire('routes/viewer')
-		let routeFunction = mockRouterMethods.all.mock.calls[0][1]
-
-		let mockReq = {
-			app: { get: jest.fn() }
-		}
-
-		let mockRes = {
-			redirect: jest.fn()
-		}
-
-		let mockNext = jest.fn()
-
-		routeFunction(mockReq, mockRes, mockNext)
-		expect(mockRes.redirect).not.toBeCalled()
-		expect(mockNext).toBeCalledWith()
-	})
-
 	test('example in dev redirects to view', () => {
 		expect.assertions(1)
 		oboRequire('routes/viewer')
