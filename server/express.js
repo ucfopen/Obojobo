@@ -300,7 +300,7 @@ app.post('/api/assessments/attempt/start', (req, res, next) => {
 			insertEvent({
 				action: 'assessment:attemptStart',
 				actorTime: new Date().toISOString(),
-				payload: { attemptId: result.attemptId, number: numAttempts },
+				payload: { attemptId: result.attemptId, attemptCount: numAttempts },
 				userId: currentUser.id,
 				ip: req.connection.remoteAddress,
 				metadata: {},
