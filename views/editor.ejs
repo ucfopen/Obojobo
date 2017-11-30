@@ -51,6 +51,9 @@
 		</style>
 	</head>
 	<body>
+		<% drafts.sort(function(a, b) {
+ 			return a.content.content.title.toLowerCase() > b.content.content.title.toLowerCase()
+ 		}) %>
 		<div>
 			<h1>Obojobo Draft Manager</h1>
 			<div id="sidebar">
