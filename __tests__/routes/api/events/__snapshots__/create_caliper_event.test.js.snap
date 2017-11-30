@@ -106,7 +106,7 @@ Event {
   "id": "urn:uuid:fb9826d0-3d7a-43b8-a5ad-3949ce620d91",
   "membership": null,
   "object": "https://testHost/api/practice/testDraftId/testQuestionId",
-  "target": "https://testHost/api/draft/testDraftId#testTargetId",
+  "target": "https://testHost/api/draft/testDraftId#testQuestionId",
 }
 `;
 
@@ -123,7 +123,7 @@ Event {
   },
   "federatedSession": null,
   "generated": Object {
-    "attempt": null,
+    "attempt": "https://testHost/api/practice/testDraftId/testQuestionId",
     "extensions": Object {
       "response": Object {
         "ids": Array [
@@ -138,8 +138,8 @@ Event {
   "group": null,
   "id": "urn:uuid:fb9826d0-3d7a-43b8-a5ad-3949ce620d91",
   "membership": null,
-  "object": "https://testHost/api/practice/testDraftId/testQuestionId",
-  "target": "https://testHost/api/draft/testDraftId#testTargetId",
+  "object": "https://testHost/api/draft/testDraftId#testQuestionId",
+  "target": "https://testHost/api/draft/testDraftId#testQuestionId",
 }
 `;
 
@@ -156,7 +156,7 @@ Event {
   },
   "federatedSession": null,
   "generated": Object {
-    "attempt": null,
+    "attempt": "https://testHost/api/practice/testDraftId/testQuestionId",
     "extensions": Object {
       "response": Object {
         "ids": Array [
@@ -172,7 +172,7 @@ Event {
   "id": "urn:uuid:fb9826d0-3d7a-43b8-a5ad-3949ce620d91",
   "membership": null,
   "object": "https://testHost/api/practice/testDraftId/testQuestionId",
-  "target": "https://testHost/api/draft/testDraftId#testTargetId",
+  "target": "https://testHost/api/draft/testDraftId#testQuestionId",
 }
 `;
 
@@ -189,7 +189,7 @@ Event {
   },
   "federatedSession": null,
   "generated": Object {
-    "attempt": null,
+    "attempt": "https://testHost/api/practice/testDraftId/testQuestionId",
     "extensions": Object {
       "response": Object {
         "ids": Array [
@@ -205,7 +205,7 @@ Event {
   "id": "urn:uuid:fb9826d0-3d7a-43b8-a5ad-3949ce620d91",
   "membership": null,
   "object": "https://testHost/api/practice/testDraftId/testQuestionId",
-  "target": "https://testHost/api/draft/testDraftId#testTargetId",
+  "target": "https://testHost/api/draft/testDraftId#testQuestionId",
 }
 `;
 
@@ -239,7 +239,7 @@ Event {
   "id": "urn:uuid:fb9826d0-3d7a-43b8-a5ad-3949ce620d91",
   "membership": null,
   "object": "https://testHost/api/draft/testDraftId#testQuestionId",
-  "target": "https://testHost/api/draft/testDraftId#testTargetId",
+  "target": "https://testHost/api/draft/testDraftId#testQuestionId",
 }
 `;
 

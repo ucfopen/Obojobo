@@ -235,14 +235,19 @@ const caliperEventFactory = (req, host = null, isFromReq = false) => {
 			const practiceQuesionAttemptIRI = IRI.getPracticeQuestionAttemptIRI(draftId, questionId)
 
 			caliperEvent.setAction('Completed')
-			caliperEvent.setTarget(IRI.getDraftIRI(draftId, targetId))
-			caliperEvent.setObject(assessmentId && attemptId ? questionIdIRI : practiceQuesionAttemptIRI)
+			caliperEvent.setTarget(IRI.getDraftIRI(draftId, questionId))
 			caliperEvent.setGenerated({
 				id: getNewGeneratedId(),
 				type: 'Response',
-				attempt: attemptId ? IRI.getAssessmentAttemptIRI(attemptId) : null,
+				attempt: attemptId ? IRI.getAssessmentAttemptIRI(attemptId) : practiceQuesionAttemptIRI,
 				extensions: { response, targetId }
 			})
+
+			if (assessmentId !== null && attemptId !== null) {
+				caliperEvent.setObject(questionIdIRI)
+			} else {
+				caliperEvent.setObject(practiceQuesionAttemptIRI)
+			}
 
 			Object.assign(caliperEvent.extensions, extensions)
 

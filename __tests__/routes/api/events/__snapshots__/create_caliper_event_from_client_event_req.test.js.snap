@@ -139,7 +139,7 @@ Event {
   "membership": null,
   "object": "https://hostnameReq/api/draft/testDraftIdReq#testQuestionIdReq",
   "session": "https://hostnameReq/api/session/SessionIdReq",
-  "target": "https:///api/draft/testDraftIdReq",
+  "target": "https://hostnameReq/api/draft/testDraftIdReq#testQuestionIdReq",
 }
 `;
 
