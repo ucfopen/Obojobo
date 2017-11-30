@@ -2059,9 +2059,7 @@
 					})
 
 					Dispatcher.on('question:setResponse', function(payload) {
-						_this.trySetResponse(payload.value.id, payload.value.response).catch(function(err) {
-							console.log(err)
-						})
+						_this.trySetResponse(payload.value.id, payload.value.response)
 					})
 					return _this
 				}
@@ -2349,8 +2347,10 @@
 							var model = OboModel.models[questionId]
 							var assessment = _assessmentUtil2.default.getAssessmentForModel(this.state, model)
 
-							if (!assessment || !assessment.currentResponses)
-								return Promise.reject(new Error('No assessment data available.'))
+							if (!assessment || !assessment.currentResponses) {
+								// Resolve false if not an error but couldn't do anything because not in an attempt
+								return Promise.resolve(false)
+							}
 
 							assessment.currentResponses.push(questionId)
 
