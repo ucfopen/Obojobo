@@ -214,7 +214,7 @@ const caliperEventFactory = (req, host = null, isFromReq = false) => {
 		// object: (type: AssessmentItem, REQUIRED) Either an assessment attempt or practice attempt IRI
 		// actor: (type: Person, REQUIRED) Current user
 		createAssessmentItemEvent: obj => {
-			const required = ['draftId', 'questionId', 'targetId', 'response']
+			const required = ['draftId', 'questionId', 'targetId', 'selectedTargets']
 			const optional = ['assessmentId', 'attemptId']
 
 			validateCaliperEvent({ required, optional }, obj, ACTOR_USER)
@@ -226,7 +226,7 @@ const caliperEventFactory = (req, host = null, isFromReq = false) => {
 				draftId,
 				questionId,
 				targetId,
-				response,
+				selectedTargets,
 				extensions
 			} = obj
 			const options = assignCaliperOptions(obj)
@@ -235,12 +235,12 @@ const caliperEventFactory = (req, host = null, isFromReq = false) => {
 			const practiceQuesionAttemptIRI = IRI.getPracticeQuestionAttemptIRI(draftId, questionId)
 
 			caliperEvent.setAction('Completed')
-			caliperEvent.setTarget(IRI.getDraftIRI(draftId, questionId))
+			caliperEvent.setTarget(IRI.getDraftIRI(draftId, targetId))
 			caliperEvent.setGenerated({
 				id: getNewGeneratedId(),
 				type: 'Response',
 				attempt: attemptId ? IRI.getAssessmentAttemptIRI(attemptId) : practiceQuesionAttemptIRI,
-				extensions: { response, targetId }
+				extensions: { selectedTargets, targetId }
 			})
 
 			if (assessmentId !== null && attemptId !== null) {

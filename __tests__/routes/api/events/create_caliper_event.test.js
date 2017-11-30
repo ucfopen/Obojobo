@@ -14,7 +14,7 @@ const from = 'navigation came from here'
 const itemId = 'testItemId'
 const questionId = 'testQuestionId'
 const targetId = 'testTargetId'
-const response = { ids: [targetId] }
+const selectedTargets = { ids: [targetId] }
 const score = '50'
 const scoreId = '123'
 const sessionIds = { sessionId: 'testSessionId', launchId: 'testOboLaunchId' }
@@ -260,7 +260,7 @@ describe('Caliper event creator', () => {
 			assessmentId,
 			attemptId,
 			targetId,
-			response,
+			selectedTargets,
 			extensions
 		})
 		expect(assessmentItem).toMatchSnapshot()
@@ -274,7 +274,7 @@ describe('Caliper event creator', () => {
 			assessmentId: null,
 			attemptId,
 			targetId,
-			response
+			selectedTargets
 		})
 		expect(assessmentItem).toMatchSnapshot()
 	})
@@ -287,7 +287,7 @@ describe('Caliper event creator', () => {
 			assessmentId,
 			attemptId: null,
 			targetId,
-			response
+			selectedTargets
 		})
 		expect(assessmentItem).toMatchSnapshot()
 	})
@@ -300,7 +300,7 @@ describe('Caliper event creator', () => {
 			assessmentId: null,
 			attemptId: null,
 			targetId,
-			response
+			selectedTargets
 		})
 		expect(assessmentItem).toMatchSnapshot()
 	})
@@ -311,7 +311,7 @@ describe('Caliper event creator', () => {
 			draftId,
 			questionId,
 			targetId,
-			response
+			selectedTargets
 		})
 		expect(assessmentItem).toMatchSnapshot()
 	})
@@ -325,7 +325,7 @@ describe('Caliper event creator', () => {
 				assessmentId,
 				attemptId,
 				targetId,
-				response,
+				selectedTargets,
 				extensions
 			})
 		}).toThrow(

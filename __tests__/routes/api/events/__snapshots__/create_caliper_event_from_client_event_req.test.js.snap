@@ -128,7 +128,7 @@ Event {
   "generated": Object {
     "attempt": "https://hostnameReq/api/attempt/testAttemptIdReq",
     "extensions": Object {
-      "response": undefined,
+      "selectedTargets": undefined,
       "targetId": undefined,
     },
     "id": "urn:uuid:fb9826d0-3d7a-43b8-a5ad-3949ce620d91",
@@ -139,7 +139,7 @@ Event {
   "membership": null,
   "object": "https://hostnameReq/api/draft/testDraftIdReq#testQuestionIdReq",
   "session": "https://hostnameReq/api/session/SessionIdReq",
-  "target": "https://hostnameReq/api/draft/testDraftIdReq#testQuestionIdReq",
+  "target": "https:///api/draft/testDraftIdReq",
 }
 `;
 
