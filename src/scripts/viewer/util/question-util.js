@@ -4,11 +4,12 @@ let { Dispatcher } = Common.flux
 let { OboModel } = Common.models
 
 let QuestionUtil = {
-	setResponse(id, response) {
+	setResponse(id, response, targetId) {
 		return Dispatcher.trigger('question:setResponse', {
 			value: {
 				id,
-				response
+				response,
+				targetId
 			}
 		})
 	},

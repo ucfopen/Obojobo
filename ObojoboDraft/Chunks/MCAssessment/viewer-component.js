@@ -10,7 +10,6 @@ let { Button } = Common.components
 let { OboModel } = Common.models
 let { Dispatcher } = Common.flux
 let { DOMUtil } = Common.page
-;({ OboModel } = Common.models)
 // FocusUtil = Common.util.FocusUtil
 
 let { QuestionUtil } = Viewer.util
@@ -174,7 +173,7 @@ export default class MCAssessment extends React.Component {
 				break
 		}
 
-		QuestionUtil.setResponse(questionModel.get('id'), response)
+		QuestionUtil.setResponse(questionModel.get('id'), response, mcChoiceId)
 	}
 
 	getScore() {

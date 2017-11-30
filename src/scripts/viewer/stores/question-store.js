@@ -23,7 +23,8 @@ class QuestionStore extends Store {
 
 				APIUtil.postEvent(model.getRoot(), 'question:setResponse', '3.1.0', {
 					questionId: id,
-					response: payload.value.response
+					response: payload.value.response,
+					targetId: payload.value.targetId
 				})
 			},
 
