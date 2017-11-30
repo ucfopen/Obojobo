@@ -184,7 +184,10 @@ class AssessmentStore extends Store {
 		let model = OboModel.models[questionId]
 		let assessment = AssessmentUtil.getAssessmentForModel(this.state, model)
 
-		if (!assessment || !assessment.currentResponses) return Promise.reject()
+		if (!assessment || !assessment.currentResponses) {
+			// Resolve false if not an error but couldn't do anything because not in an attempt
+			return Promise.resolve(false)
+		}
 
 		assessment.currentResponses.push(questionId)
 
