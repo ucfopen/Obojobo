@@ -7,6 +7,11 @@ let setCurrentUser = (req, user) => {
 	req.session.currentUserId = user.id
 }
 
+let resetCurrentUser = req => {
+	req.session.currentUserId = null
+	req.currentUser = null
+}
+
 // returns a Promise!!!
 let getCurrentUser = (req, isRequired = false) => {
 	if (req.currentUser) return Promise.resolve(req.currentUser)
@@ -52,5 +57,6 @@ module.exports = (req, res, next) => {
 	req.setCurrentUser = setCurrentUser.bind(this, req)
 	req.getCurrentUser = getCurrentUser.bind(this, req)
 	req.requireCurrentUser = requireCurrentUser.bind(this, req)
+	req.resetCurrentUser = resetCurrentUser.bind(this, req)
 	next()
 }
