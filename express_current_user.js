@@ -9,6 +9,7 @@ let setCurrentUser = (req, user) => {
 
 let resetCurrentUser = req => {
 	req.session.currentUserId = null
+	req.currentUser = null
 }
 
 // returns a Promise!!!
