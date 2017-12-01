@@ -10,3 +10,4 @@ apps:
     env:
       NODE_ENV: production
       NEW_RELIC_HOME: './config/'
+      DEBUG: obojobo_server:error,obojobo_server:warn
