@@ -8,9 +8,16 @@ let createEvent = (
 	{ isPreviewMode = false, sessionId = null, launchId = null }
 ) => {
 	let caliperEvent = new classRef()
+
+	// Set @context manually to comply with Caliper 1.1 standard
+	caliperEvent['@context'] = 'http://purl.imsglobal.org/ctx/caliper/v1p1'
 	caliperEvent.id = getNewGeneratedId()
 	caliperEvent.setEdApp(IRI.getEdAppIRI())
 	caliperEvent.setEventTime(new Date().toISOString())
+
+	if (!caliperEvent['@type']) {
+		caliperEvent.setType('Event')
+	}
 
 	switch (actorObject.type) {
 		case ACTOR_USER:
