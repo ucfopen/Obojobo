@@ -58,6 +58,34 @@ describe('current user middleware', () => {
 		expect(req.session.currentUserId).toBe(999)
 	})
 
+	it('unsets the curent user', () => {
+		expect.assertions(6)
+		let [res, req, mockJson, mockStatus, mockNext] = mockArgs
+		let User = oboRequire('models/user')
+		let mockUser = new User({ id: 8 })
+		let GuestUser = oboRequire('models/guest_user')
+
+		User.fetchById = jest.fn().mockImplementation(id => {
+			return Promise.resolve(mockUser)
+		})
+		req.setCurrentUser(mockUser)
+
+		return req
+			.getCurrentUser()
+			.then(user => {
+				expect(User.fetchById).toBeCalledWith(8)
+				expect(user.id).toBe(8)
+				expect(user).toBeInstanceOf(User)
+				req.resetCurrentUser()
+				return req.getCurrentUser()
+			})
+			.then(user => {
+				expect(user.id).toBe(0)
+				expect(user).toBeInstanceOf(GuestUser)
+				expect(user.isGuest()).toBe(true)
+			})
+	})
+
 	it('setCurrentUser throws when not using a User', () => {
 		expect.assertions(1)
 

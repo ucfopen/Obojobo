@@ -9,11 +9,7 @@ let { ACTOR_USER } = require('./api/events/caliper_constants')
 let { getSessionIds } = require('./api/events/caliper_utils')
 
 router.all('/example', (req, res, next) => {
-	if (req.app.get('env') === 'development') {
-		res.redirect('/view/00000000-0000-0000-0000-000000000000')
-	} else {
-		next()
-	}
+	res.redirect('/view/00000000-0000-0000-0000-000000000000')
 })
 
 router.all('/:draftId*', (req, res, next) => {

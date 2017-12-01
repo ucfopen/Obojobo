@@ -16,7 +16,7 @@ let storeLtiLaunch = (draftId, user, ip, ltiBody, ltiConsumerKey) => {
 			{
 				draftId: draftId,
 				userId: user.id,
-				link: ltiBody.lis_outcome_service_url,
+				link: '',
 				lti_key: ltiConsumerKey,
 				data: ltiBody
 			}
@@ -49,6 +49,11 @@ module.exports = (req, res, next) => {
 	req.session.lti = null // clean req.session.lti created by express-ims-lti, it's problematic for multiple launches
 	let currentUser = null
 
+	// allows launches to redirect /view/example to /view/00000000-0000-0000-0000-000000000000
+	// the actual redirect happens in the route, this just handles the lti launch
+	let draftId =
+		req.params.draftId === 'example' ? '00000000-0000-0000-0000-000000000000' : req.params.draftId
+
 	return Promise.resolve(req.lti)
 		.then(lti => {
 			// Save/Create the user
@@ -66,10 +71,8 @@ module.exports = (req, res, next) => {
 			currentUser = user
 			req.setCurrentUser(currentUser)
 
-			// @TODO: perhaps we don't waint to fail if draftId is empty?
-			// if(!req.params.draftId) return Promise.resolve()
 			return storeLtiLaunch(
-				req.params.draftId,
+				draftId,
 				currentUser,
 				req.connection.remoteAddress,
 				req.lti.body,
@@ -82,7 +85,7 @@ module.exports = (req, res, next) => {
 				body: req.lti.body
 			}
 
-			next()
+			return next()
 		})
 		.catch(error => {
 			logger.error('LTI Launch Error', error)
