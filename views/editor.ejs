@@ -51,6 +51,20 @@
 		</style>
 	</head>
 	<body>
+		<% drafts.sort(function(a, b) {
+			if (
+				a.content
+				&& b.content
+				&& a.content.content 
+				&& b.content.content
+				&& a.content.content.title
+				&& b.content.content.title
+			) {
+				const aTitle = a.content.content.title.toString().toLowerCase()
+				const bTitle = b.content.content.title.toString().toLowerCase()
+				return aTitle > bTitle
+			}
+ 		}) %>
 		<div>
 			<h1>Obojobo Draft Manager</h1>
 			<div id="sidebar">
@@ -66,7 +80,7 @@
 									<p><%= draft.content.content.title %></p>
 									<span class="draft-id"><%= draft.draftId %></span>
 								<% } else { %>
-									<p>draft.draftId</p>
+									<p><%= draft.draftId %></p>
 									<span class="draft-id"><%= draft.draftId %></span>
 								<% } %>
 								<a target="_blank" class="link-preview" href="/view/<%= draft.draftId %>">Preview</a>
