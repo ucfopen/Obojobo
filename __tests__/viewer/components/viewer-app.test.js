@@ -44,6 +44,7 @@ jest.mock('../../../src/scripts/viewer/util/api-util', () => {
 APIUtil.postEvent = () => {
 	return Promise.resolve({ status: 'ok' })
 }
+
 APIUtil.startAttempt = () => {
 	return Promise.resolve(getAttemptStartServerResponse())
 }
@@ -356,5 +357,36 @@ describe('ViewerApp', () => {
 
 		let buttonEl = viewerEl.find('#obo-start-assessment-button')
 		buttonEl.find('button').simulate('click')
+	})
+
+	test('Emitting nav events produces the respective event for APIUtil postEvent', () => {
+		APIUtil.postEvent = jest.fn()
+		const testId = 'qb2.q2-mca-mc2'
+		const testPath = '#obo-qb1.q1'
+		const viewerEl = mount(<ViewerApp />)
+
+		NavUtil.goNext()
+		expect(APIUtil.postEvent).toHaveBeenLastCalledWith(OboModel.getRoot(), 'nav:next', {
+			from: 'page-1',
+			to: 'page-2'
+		})
+
+		NavUtil.goPrev()
+		expect(APIUtil.postEvent).toHaveBeenLastCalledWith(OboModel.getRoot(), 'nav:prev', {
+			from: 'page-2',
+			to: 'page-1'
+		})
+
+		NavUtil.goto(testId)
+		expect(APIUtil.postEvent).toHaveBeenLastCalledWith(OboModel.getRoot(), 'nav:goto', {
+			from: 'page-1',
+			to: 'qb2.q2-mca-mc2'
+		})
+
+		NavUtil.gotoPath(testPath)
+		expect(APIUtil.postEvent).toHaveBeenLastCalledWith(OboModel.getRoot(), 'nav:gotoPath', {
+			from: 'qb2.q2-mca-mc2',
+			to: 'qb1.q1'
+		})
 	})
 })
