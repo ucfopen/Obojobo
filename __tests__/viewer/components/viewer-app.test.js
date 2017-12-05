@@ -389,4 +389,33 @@ describe('ViewerApp', () => {
 			to: 'qb1.q1'
 		})
 	})
+
+	test('Emitting assessment events produces the respective event for APIUtil postEvent', done => {
+		APIUtil.postEvent = jest.fn(args => {
+			expect(args).toMatchSnapshot()
+			return Promise.resolve({ status: 'ok' })
+		})
+
+		const onAttemptStarted = () => {
+			Dispatcher.off('assessment:attemptStarted', onAttemptStarted)
+
+			const questionEl = viewerEl.find('#obo-qb1-q1')
+			questionEl.find('.flipper').simulate('click')
+
+			const choiceEl = viewerEl.find('#obo-qb1-q1-mca-mc1')
+			choiceEl.simulate('click')
+
+			expect(APIUtil.postEvent).toHaveBeenCalled()
+			viewerEl.unmount()
+			done()
+		}
+
+		const viewerEl = mount(<ViewerApp />)
+		NavUtil.goto('assessment')
+
+		Dispatcher.on('assessment:attemptStarted', onAttemptStarted)
+
+		const startAssessmentButton = viewerEl.find('#obo-start-assessment-button')
+		startAssessmentButton.find('button').simulate('click')
+	})
 })
