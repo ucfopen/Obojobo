@@ -359,7 +359,7 @@ describe('ViewerApp', () => {
 		buttonEl.find('button').simulate('click')
 	})
 
-	test('Emitting nav events produces the respective event for APIUtil postEvent', () => {
+	test('Emitting nav events produces the respective event for APIUtil.postEvent', () => {
 		APIUtil.postEvent = jest.fn()
 		const testId = 'qb2.q2-mca-mc2'
 		const testPath = '#obo-qb1.q1'
@@ -390,7 +390,7 @@ describe('ViewerApp', () => {
 		})
 	})
 
-	test('Emitting assessment events produces the respective event for APIUtil postEvent', done => {
+	test('Emitting assessment events produces the respective event for APIUtil.postEvent', done => {
 		APIUtil.postEvent = jest.fn(args => {
 			expect(args).toMatchSnapshot()
 			return Promise.resolve({ status: 'ok' })
@@ -417,5 +417,30 @@ describe('ViewerApp', () => {
 
 		const startAssessmentButton = viewerEl.find('#obo-start-assessment-button')
 		startAssessmentButton.find('button').simulate('click')
+	})
+
+	test.only('Emitting question events produces the respective event for APIUtil.postEvent', () => {
+		const viewerEl = mount(<ViewerApp />)
+		const testId = 'qb2.q2-mca-mc2'
+		APIUtil.postEvent = jest.fn()
+
+		QuestionUtil.recordResponse(testId, { set: true })
+		expect(APIUtil.postEvent).toHaveBeenCalledWith(OboModel.getRoot(), 'question:recordResponse', {
+			questionId: 'qb2.q2',
+			responderId: 'qb2.q2-mca-mc2',
+			response: {
+				set: true
+			}
+		})
+
+		QuestionUtil.hideQuestion(testId)
+		expect(APIUtil.postEvent).toHaveBeenLastCalledWith(OboModel.getRoot(), 'question:hide', {
+			questionId: 'qb2.q2-mca-mc2'
+		})
+
+		QuestionUtil.viewQuestion(testId)
+		expect(APIUtil.postEvent).toHaveBeenLastCalledWith(OboModel.getRoot(), 'question:view', {
+			questionId: 'qb2.q2-mca-mc2'
+		})
 	})
 })

@@ -1,6 +1,6 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
-exports[`ViewerApp Emitting assessment events produces the respective event for APIUtil postEvent 1`] = `
+exports[`ViewerApp Emitting assessment events produces the respective event for APIUtil.postEvent 1`] = `
 Object {
   "children": Array [
     Object {
@@ -4009,7 +4009,7 @@ Object {
 }
 `;
 
-exports[`ViewerApp Emitting assessment events produces the respective event for APIUtil postEvent 2`] = `
+exports[`ViewerApp Emitting assessment events produces the respective event for APIUtil.postEvent 2`] = `
 Object {
   "children": Array [
     Object {
@@ -8018,7 +8018,7 @@ Object {
 }
 `;
 
-exports[`ViewerApp Emitting assessment events produces the respective event for APIUtil postEvent 3`] = `
+exports[`ViewerApp Emitting assessment events produces the respective event for APIUtil.postEvent 3`] = `
 Object {
   "children": Array [
     Object {
@@ -11650,7 +11650,7 @@ Object {
 }
 `;
 
-exports[`ViewerApp Emitting assessment events produces the respective event for APIUtil postEvent 4`] = `
+exports[`ViewerApp Emitting assessment events produces the respective event for APIUtil.postEvent 4`] = `
 Object {
   "children": Array [
     Object {
@@ -15282,7 +15282,7 @@ Object {
 }
 `;
 
-exports[`ViewerApp Emitting assessment events produces the respective event for APIUtil postEvent 5`] = `
+exports[`ViewerApp Emitting assessment events produces the respective event for APIUtil.postEvent 5`] = `
 Object {
   "children": Array [
     Object {
@@ -18914,7 +18914,7 @@ Object {
 }
 `;
 
-exports[`ViewerApp Emitting assessment events produces the respective event for APIUtil postEvent 6`] = `
+exports[`ViewerApp Emitting assessment events produces the respective event for APIUtil.postEvent 6`] = `
 Object {
   "children": Array [
     Object {
