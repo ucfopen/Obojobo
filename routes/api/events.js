@@ -20,6 +20,7 @@ router.post('/', (req, res, next) => {
 				actorTime: event.actor_time,
 				action: event.action,
 				userId: currentUser.id,
+				eventVersion: event.event_version,
 				ip: req.connection.remoteAddress,
 				metadata: {},
 				payload: event.payload,
