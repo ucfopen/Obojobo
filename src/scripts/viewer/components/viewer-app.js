@@ -15,7 +15,7 @@ import AssessmentStore from '../../viewer/stores/assessment-store'
 import NavStore from '../../viewer/stores/nav-store'
 import Nav from './nav'
 
-const IDLE_TIMEOUT_DURATION_MS = 1800
+const IDLE_TIMEOUT_DURATION_MS = 600000 // 10 minutes
 
 let { Legacy } = Common.models
 let { DOMUtil } = Common.page

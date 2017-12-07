@@ -6232,7 +6232,7 @@
 						: (subClass.__proto__ = superClass)
 			}
 
-			var IDLE_TIMEOUT_DURATION_MS = 1800
+			var IDLE_TIMEOUT_DURATION_MS = 600000 // 10 minutes
 
 			var Legacy = _Common2.default.models.Legacy
 			var DOMUtil = _Common2.default.page.DOMUtil
