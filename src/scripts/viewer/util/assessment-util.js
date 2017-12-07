@@ -38,15 +38,13 @@ var AssessmentUtil = {
 		return assessment.attempts[assessment.attempts.length - 1].result.attemptScore
 	},
 
-	getHighestAttemptScoreForModel(state, model) {
+	getAssessmentScoreForModel(state, model) {
 		let assessment = AssessmentUtil.getAssessmentForModel(state, model)
 		if (!assessment) {
 			return null
 		}
 
-		return assessment.attempts
-			.map(attempt => attempt.result.attemptScore)
-			.reduce((a, b) => Math.max(a, b), 0)
+		return assessment.score
 	},
 
 	getLastAttemptScoresForModel(state, model) {
@@ -59,7 +57,7 @@ var AssessmentUtil = {
 			return []
 		}
 
-		return assessment.attempts[assessment.attempts.length - 1].result.scores
+		return assessment.attempts[assessment.attempts.length - 1].result.questionScores
 	},
 
 	getCurrentAttemptForModel(state, model) {

@@ -52,19 +52,22 @@ describe('QuestionUtil', () => {
 					{
 						result: {
 							attemptScore: 100,
-							scores: [{ attemptOneScores: 'goHere' }]
+							assessmentScore: 100,
+							questionScores: [{ attemptOneScores: 'goHere' }]
 						}
 					},
 					{
 						result: {
 							attemptScore: 50,
-							scores: [{ attemptTwoScores: 'goHere' }]
+							assessmentScore: 100,
+							questionScores: [{ attemptTwoScores: 'goHere' }]
 						}
 					}
 				],
 				current: {
 					attemptData: 'goesHere'
-				}
+				},
+				score: 100
 			}
 		}
 	}
@@ -73,7 +76,8 @@ describe('QuestionUtil', () => {
 		assessments: {
 			assessmentId: {
 				attempts: [],
-				current: null
+				current: null,
+				score: null
 			}
 		}
 	}
@@ -135,39 +139,30 @@ describe('QuestionUtil', () => {
 		).toBe(0)
 	})
 
-	test('gets the highest attempt score for a model', () => {
+	test('gets the assessment score for a model', () => {
 		AssessmentStore.setState(exampleAssessment)
 		OboModel.create(exampleDocument)
 
 		expect(
-			AssessmentUtil.getHighestAttemptScoreForModel(
-				AssessmentStore.getState(),
-				OboModel.models.pageId
-			)
+			AssessmentUtil.getAssessmentScoreForModel(AssessmentStore.getState(), OboModel.models.pageId)
 		).toBe(100)
 	})
 
-	test('returns null for the highest attempt score for a model if no assessment', () => {
+	test('returns null for the assessment score for a model if no assessment', () => {
 		OboModel.create(exampleDocument)
 
 		expect(
-			AssessmentUtil.getHighestAttemptScoreForModel(
-				AssessmentStore.getState(),
-				OboModel.models.pageId
-			)
+			AssessmentUtil.getAssessmentScoreForModel(AssessmentStore.getState(), OboModel.models.pageId)
 		).toBe(null)
 	})
 
-	test('returns 0 for the highest attempt score for a model if no attempts', () => {
+	test('returns null for the assessment score for a model if no attempts', () => {
 		AssessmentStore.setState(exampleAssessmentNoAttempts)
 		OboModel.create(exampleDocument)
 
 		expect(
-			AssessmentUtil.getHighestAttemptScoreForModel(
-				AssessmentStore.getState(),
-				OboModel.models.pageId
-			)
-		).toBe(0)
+			AssessmentUtil.getAssessmentScoreForModel(AssessmentStore.getState(), OboModel.models.pageId)
+		).toBe(null)
 	})
 
 	test('gets the last attempt scores for a model', () => {

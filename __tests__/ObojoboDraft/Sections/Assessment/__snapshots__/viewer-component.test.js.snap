@@ -363,10 +363,10 @@ exports[`Assessment Assessment page changes when attempt started and submitted 3
     className="score unlock"
   >
     <h1>
-      Your score is 0%
+      Your attempt score is 0%
     </h1>
     <h2>
-      This is your highest score
+      This is your recorded score
     </h2>
     <p>
       
@@ -456,10 +456,10 @@ exports[`Assessment Assessment page changes when attempt started and submitted 4
     className="score unlock"
   >
     <h1>
-      Your score is 100%
+      Your attempt score is 100%
     </h1>
     <h2>
-      This is your highest score
+      This is your recorded score
     </h2>
     <p>
       
@@ -549,10 +549,10 @@ exports[`Assessment Assessment page changes when attempt started and submitted 5
     className="score unlock"
   >
     <h1>
-      Your score is 0%
+      Your attempt score is 0%
     </h1>
     <h2>
-      Your highest score was 100%
+      Your recorded score is 100%
     </h2>
     <p>
       

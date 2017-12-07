@@ -91,11 +91,11 @@ export default class Assessment extends React.Component {
 	}
 
 	getScoreAction() {
-		let highestScore = AssessmentUtil.getHighestAttemptScoreForModel(
+		let assessmentScore = AssessmentUtil.getAssessmentScoreForModel(
 			this.props.moduleData.assessmentState,
 			this.props.model
 		)
-		let scoreAction = this.props.model.modelState.scoreActions.getActionForScore(highestScore)
+		let scoreAction = this.props.model.modelState.scoreActions.getActionForScore(assessmentScore)
 		if (scoreAction) {
 			return scoreAction
 		}
@@ -116,7 +116,7 @@ export default class Assessment extends React.Component {
 			this.props.moduleData.assessmentState,
 			this.props.model
 		)
-		let highestScore = AssessmentUtil.getHighestAttemptScoreForModel(
+		let assessmentScore = AssessmentUtil.getAssessmentScoreForModel(
 			this.props.moduleData.assessmentState,
 			this.props.model
 		)
@@ -194,10 +194,12 @@ export default class Assessment extends React.Component {
 
 					return (
 						<div className="score unlock">
-							<h1>{`Your score is ${Math.round(recentScore)}%`}</h1>
-							{recentScore === highestScore
-								? <h2>This is your highest score</h2>
-								: <h2>{`Your highest score was ${Math.round(highestScore)}%`}</h2>}
+							<h1>{`Your attempt score is ${Math.round(recentScore)}%`}</h1>
+							{recentScore === assessmentScore
+								? <h2>This is your recorded score</h2>
+								: <h2>{`Your recorded score is ${assessmentScore === null
+										? '--'
+										: Math.round(assessmentScore)}%`}</h2>}
 							{childEl}
 							<div className="review">
 								<p className="number-correct">{`You got ${numCorrect} out of ${questionScores.length} questions correct:`}</p>

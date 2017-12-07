@@ -17,7 +17,8 @@ let getNewAssessmentObject = assessmentId => ({
 	id: assessmentId,
 	current: null,
 	currentResponses: [],
-	attempts: []
+	attempts: [],
+	score: null
 })
 
 class AssessmentStore extends Store {
@@ -55,6 +56,10 @@ class AssessmentStore extends Store {
 		for (let attempt of Array.from(history)) {
 			if (!this.state.assessments[attempt.assessmentId]) {
 				this.state.assessments[attempt.assessmentId] = getNewAssessmentObject(attempt.assessmentId)
+			}
+
+			if (attempt.result && attempt.result.assessmentScore) {
+				this.state.assessments[attempt.assessmentId].score = attempt.result.assessmentScore
 			}
 
 			if (!attempt.endTime) {
@@ -175,6 +180,7 @@ class AssessmentStore extends Store {
 		assessment.currentResponses.forEach(questionId => QuestionUtil.clearResponse(questionId))
 		assessment.attempts.push(endAttemptResp)
 		assessment.current = null
+		assessment.score = endAttemptResp.result.assessmentScore
 
 		model.processTrigger('onEndAttempt')
 		Dispatcher.trigger('assessment:attemptEnded', id)

@@ -130,6 +130,9 @@ describe('AssessmentStore', () => {
 						{ id: 'question1', type: 'ObojoboDraft.Chunks.Question' },
 						{ id: 'question2', type: 'ObojoboDraft.Chunks.Question' }
 					]
+				},
+				result: {
+					assessmentScore: 100
 				}
 			},
 			{
@@ -163,9 +166,13 @@ describe('AssessmentStore', () => {
 									{ id: 'question1', type: 'ObojoboDraft.Chunks.Question' },
 									{ id: 'question2', type: 'ObojoboDraft.Chunks.Question' }
 								]
+							},
+							result: {
+								assessmentScore: 100
 							}
 						}
-					]
+					],
+					score: 100
 				}
 			}
 		})
@@ -291,7 +298,10 @@ describe('AssessmentStore', () => {
 			return Promise.resolve({
 				status: 'ok',
 				value: {
-					assessmentId: 'assessmentId'
+					assessmentId: 'assessmentId',
+					result: {
+						assessmentScore: 100
+					}
 				}
 			})
 		})

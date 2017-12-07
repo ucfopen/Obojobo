@@ -48,7 +48,7 @@ APIUtil.startAttempt = () => {
 	return Promise.resolve(getAttemptStartServerResponse())
 }
 APIUtil.endAttempt = () => {
-	return Promise.resolve(getAttemptEndServerResponse(100))
+	return Promise.resolve(getAttemptEndServerResponse(100, 100))
 }
 
 describe('ViewerApp', () => {
@@ -336,7 +336,8 @@ describe('ViewerApp', () => {
 			expect(assessment.attempts.length).toBe(1)
 			expect(attempt.result).toEqual({
 				attemptScore: 100,
-				scores: [
+				assessmentScore: 100,
+				questionScores: [
 					{
 						id: 'qb1-q1',
 						score: 100
