@@ -18,10 +18,34 @@ let ViewEvent = require('caliper-js-public/src/events/viewEvent')
 // This version doesn't have grade event:
 // let GradeEvent = require('caliper-js-public/src/events/gradeEvent')
 
+// @TODO: Remove this when we migrate to using the 1.1 Caliper library
+// (Will potentially want to retain the code that strips out null values)
+let updateEventToVersion1_1 = caliperEvent => {
+	if (caliperEvent['@type']) {
+		caliperEvent.type = caliperEvent['@type'].replace('http://purl.imsglobal.org/caliper/v1/', '')
+		delete caliperEvent['@type']
+	}
+
+	if (caliperEvent.action) {
+		caliperEvent.action = caliperEvent.action.replace(
+			'http://purl.imsglobal.org/vocab/caliper/v1/action#',
+			''
+		)
+	}
+
+	for (let propName in caliperEvent) {
+		if (caliperEvent[propName] === null) {
+			delete caliperEvent[propName]
+		}
+	}
+
+	return caliperEvent
+}
+
 let createScore = (attemptIRI, scoredBy, score, scoreId = getNewGeneratedId()) => {
 	return {
 		'@context': 'http://purl.imsglobal.org/ctx/caliper/v1p1',
-		'@type': 'Score', //Term
+		type: 'Score', //Term
 		id: scoreId, //IRI
 		attempt: attemptIRI, //Attempt
 		maxScore: 100, //decimal
@@ -51,7 +75,7 @@ let createAssessmentEvent = (obj, IRI) => {
 	caliperEvent.setGenerated(IRI.getAssessmentAttemptIRI(attemptId))
 	Object.assign(caliperEvent.extensions, extensions)
 
-	return caliperEvent
+	return updateEventToVersion1_1(caliperEvent)
 }
 
 // Must provide a request object or a host
@@ -83,7 +107,7 @@ const caliperEventFactory = (req, host = null, isFromReq = false) => {
 			caliperEvent.setObject(IRI.getDraftIRI(draftId, to))
 			Object.assign(caliperEvent.extensions, extensions)
 
-			return caliperEvent
+			return updateEventToVersion1_1(caliperEvent)
 		},
 
 		// Caliper-Spec Properties
@@ -109,7 +133,7 @@ const caliperEventFactory = (req, host = null, isFromReq = false) => {
 			}
 			Object.assign(caliperEvent.extensions, extensions)
 
-			return caliperEvent
+			return updateEventToVersion1_1(caliperEvent)
 		},
 
 		// Caliper-Spec Properties
@@ -134,7 +158,7 @@ const caliperEventFactory = (req, host = null, isFromReq = false) => {
 			}
 			Object.assign(caliperEvent.extensions, extensions)
 
-			return caliperEvent
+			return updateEventToVersion1_1(caliperEvent)
 		},
 
 		createAssessmentAttemptStartedEvent: obj => {
@@ -172,7 +196,7 @@ const caliperEventFactory = (req, host = null, isFromReq = false) => {
 
 			Object.assign(caliperEvent.extensions, extensions)
 
-			return caliperEvent
+			return updateEventToVersion1_1(caliperEvent)
 		},
 
 		// Caliper-Spec Properties
@@ -204,7 +228,7 @@ const caliperEventFactory = (req, host = null, isFromReq = false) => {
 
 			Object.assign(caliperEvent.extensions, extensions)
 
-			return caliperEvent
+			return updateEventToVersion1_1(caliperEvent)
 		},
 
 		// Caliper-Spec Properties
@@ -251,7 +275,7 @@ const caliperEventFactory = (req, host = null, isFromReq = false) => {
 
 			Object.assign(caliperEvent.extensions, extensions)
 
-			return caliperEvent
+			return updateEventToVersion1_1(caliperEvent)
 		},
 
 		// Caliper-Spec Properties
@@ -273,7 +297,7 @@ const caliperEventFactory = (req, host = null, isFromReq = false) => {
 
 			Object.assign(caliperEvent.extensions, extensions)
 
-			return caliperEvent
+			return updateEventToVersion1_1(caliperEvent)
 		},
 
 		// Caliper-Spec Properties
@@ -296,7 +320,7 @@ const caliperEventFactory = (req, host = null, isFromReq = false) => {
 
 			Object.assign(caliperEvent.extensions, extensions)
 
-			return caliperEvent
+			return updateEventToVersion1_1(caliperEvent)
 		},
 
 		// Caliper-Spec Properties
@@ -317,7 +341,7 @@ const caliperEventFactory = (req, host = null, isFromReq = false) => {
 
 			Object.assign(caliperEvent.extensions, extensions)
 
-			return caliperEvent
+			return updateEventToVersion1_1(caliperEvent)
 		},
 
 		// Caliper-Spec Properties
@@ -338,7 +362,7 @@ const caliperEventFactory = (req, host = null, isFromReq = false) => {
 
 			Object.assign(caliperEvent.extensions, extensions)
 
-			return caliperEvent
+			return updateEventToVersion1_1(caliperEvent)
 		},
 
 		// Caliper-Spec Properties
@@ -362,7 +386,7 @@ const caliperEventFactory = (req, host = null, isFromReq = false) => {
 
 			Object.assign(caliperEvent.extensions, extensions)
 
-			return caliperEvent
+			return updateEventToVersion1_1(caliperEvent)
 		},
 
 		// Caliper-Spec Properties
@@ -386,7 +410,7 @@ const caliperEventFactory = (req, host = null, isFromReq = false) => {
 
 			Object.assign(caliperEvent.extensions, extensions)
 
-			return caliperEvent
+			return updateEventToVersion1_1(caliperEvent)
 		},
 
 		// Caliper-Spec Properties
@@ -409,7 +433,7 @@ const caliperEventFactory = (req, host = null, isFromReq = false) => {
 
 			Object.assign(caliperEvent.extensions, extensions)
 
-			return caliperEvent
+			return updateEventToVersion1_1(caliperEvent)
 		}
 	}
 }

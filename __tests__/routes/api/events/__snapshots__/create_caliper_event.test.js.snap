@@ -2,8 +2,7 @@
 
 exports[`Caliper event creator createAssessmentAttemptScoredEvent 1`] = `
 Event {
-  "@context": "http://purl.imsglobal.org/ctx/caliper/v1/Context",
-  "@type": "GradeEvent",
+  "@context": "http://purl.imsglobal.org/ctx/caliper/v1p1",
   "action": "Graded",
   "actor": "https://testHost/api/server",
   "edApp": "https://testHost/api/system",
@@ -14,27 +13,24 @@ Event {
   "federatedSession": "https://testHost/api/launch/testOboLaunchId",
   "generated": Object {
     "@context": "http://purl.imsglobal.org/ctx/caliper/v1p1",
-    "@type": "Score",
     "attempt": "https://testHost/api/attempt/testAttemptId",
     "dateCreated": "2017-08-29T16:57:14.500Z",
     "id": "urn:uuid:fb9826d0-3d7a-43b8-a5ad-3949ce620d91",
     "maxScore": 100,
     "scoreGiven": "50",
     "scoredBy": "https://testHost/api/server",
+    "type": "Score",
   },
-  "group": null,
   "id": "urn:uuid:fb9826d0-3d7a-43b8-a5ad-3949ce620d91",
-  "membership": null,
   "object": "https://testHost/api/attempt/testAttemptId",
   "session": "https://testHost/api/session/testSessionId",
-  "target": null,
+  "type": "GradeEvent",
 }
 `;
 
 exports[`Caliper event creator createAssessmentAttemptStartedEvent 1`] = `
 Event {
-  "@context": "http://purl.imsglobal.org/ctx/caliper/v1/Context",
-  "@type": "http://purl.imsglobal.org/caliper/v1/AssessmentEvent",
+  "@context": "http://purl.imsglobal.org/ctx/caliper/v1p1",
   "action": "Started",
   "actor": "https://testHost/api/user/testUserId",
   "edApp": "https://testHost/api/system",
@@ -45,19 +41,16 @@ Event {
   },
   "federatedSession": "https://testHost/api/launch/testOboLaunchId",
   "generated": "https://testHost/api/attempt/testAttemptId",
-  "group": null,
   "id": "urn:uuid:fb9826d0-3d7a-43b8-a5ad-3949ce620d91",
-  "membership": null,
   "object": "https://testHost/api/assessment/testDraftId/testAssessment",
   "session": "https://testHost/api/session/testSessionId",
-  "target": null,
+  "type": "AssessmentEvent",
 }
 `;
 
 exports[`Caliper event creator createAssessmentAttemptSubmittedEvent 1`] = `
 Event {
-  "@context": "http://purl.imsglobal.org/ctx/caliper/v1/Context",
-  "@type": "http://purl.imsglobal.org/caliper/v1/AssessmentEvent",
+  "@context": "http://purl.imsglobal.org/ctx/caliper/v1p1",
   "action": "Submitted",
   "actor": "https://testHost/api/user/testUserId",
   "edApp": "https://testHost/api/system",
@@ -68,19 +61,16 @@ Event {
   },
   "federatedSession": "https://testHost/api/launch/testOboLaunchId",
   "generated": "https://testHost/api/attempt/testAttemptId",
-  "group": null,
   "id": "urn:uuid:fb9826d0-3d7a-43b8-a5ad-3949ce620d91",
-  "membership": null,
   "object": "https://testHost/api/assessment/testDraftId/testAssessment",
   "session": "https://testHost/api/session/testSessionId",
-  "target": null,
+  "type": "AssessmentEvent",
 }
 `;
 
 exports[`Caliper event creator createAssessmentItemEvent - when assesmentId is null 1`] = `
 Event {
-  "@context": "http://purl.imsglobal.org/ctx/caliper/v1/Context",
-  "@type": "http://purl.imsglobal.org/caliper/v1/AssessmentItemEvent",
+  "@context": "http://purl.imsglobal.org/ctx/caliper/v1p1",
   "action": "Completed",
   "actor": "https://testHost/api/user/testUserId",
   "edApp": "https://testHost/api/system",
@@ -88,7 +78,6 @@ Event {
   "extensions": Object {
     "previewMode": false,
   },
-  "federatedSession": null,
   "generated": Object {
     "attempt": "https://testHost/api/attempt/testAttemptId",
     "extensions": Object {
@@ -102,18 +91,16 @@ Event {
     "id": "urn:uuid:fb9826d0-3d7a-43b8-a5ad-3949ce620d91",
     "type": "Response",
   },
-  "group": null,
   "id": "urn:uuid:fb9826d0-3d7a-43b8-a5ad-3949ce620d91",
-  "membership": null,
   "object": "https://testHost/api/practice/testDraftId/testQuestionId",
   "target": "https://testHost/api/draft/testDraftId#testTargetId",
+  "type": "AssessmentItemEvent",
 }
 `;
 
 exports[`Caliper event creator createAssessmentItemEvent - when assesmentId, attemptId arguments are not provided 1`] = `
 Event {
-  "@context": "http://purl.imsglobal.org/ctx/caliper/v1/Context",
-  "@type": "http://purl.imsglobal.org/caliper/v1/AssessmentItemEvent",
+  "@context": "http://purl.imsglobal.org/ctx/caliper/v1p1",
   "action": "Completed",
   "actor": "https://testHost/api/user/testUserId",
   "edApp": "https://testHost/api/system",
@@ -121,7 +108,6 @@ Event {
   "extensions": Object {
     "previewMode": false,
   },
-  "federatedSession": null,
   "generated": Object {
     "attempt": "https://testHost/api/practice/testDraftId/testQuestionId",
     "extensions": Object {
@@ -135,18 +121,16 @@ Event {
     "id": "urn:uuid:fb9826d0-3d7a-43b8-a5ad-3949ce620d91",
     "type": "Response",
   },
-  "group": null,
   "id": "urn:uuid:fb9826d0-3d7a-43b8-a5ad-3949ce620d91",
-  "membership": null,
   "object": "https://testHost/api/draft/testDraftId#testQuestionId",
   "target": "https://testHost/api/draft/testDraftId#testTargetId",
+  "type": "AssessmentItemEvent",
 }
 `;
 
 exports[`Caliper event creator createAssessmentItemEvent - when assessmentId and attemptId are null 1`] = `
 Event {
-  "@context": "http://purl.imsglobal.org/ctx/caliper/v1/Context",
-  "@type": "http://purl.imsglobal.org/caliper/v1/AssessmentItemEvent",
+  "@context": "http://purl.imsglobal.org/ctx/caliper/v1p1",
   "action": "Completed",
   "actor": "https://testHost/api/user/testUserId",
   "edApp": "https://testHost/api/system",
@@ -154,7 +138,6 @@ Event {
   "extensions": Object {
     "previewMode": false,
   },
-  "federatedSession": null,
   "generated": Object {
     "attempt": "https://testHost/api/practice/testDraftId/testQuestionId",
     "extensions": Object {
@@ -168,18 +151,16 @@ Event {
     "id": "urn:uuid:fb9826d0-3d7a-43b8-a5ad-3949ce620d91",
     "type": "Response",
   },
-  "group": null,
   "id": "urn:uuid:fb9826d0-3d7a-43b8-a5ad-3949ce620d91",
-  "membership": null,
   "object": "https://testHost/api/practice/testDraftId/testQuestionId",
   "target": "https://testHost/api/draft/testDraftId#testTargetId",
+  "type": "AssessmentItemEvent",
 }
 `;
 
 exports[`Caliper event creator createAssessmentItemEvent - when attemptId is null 1`] = `
 Event {
-  "@context": "http://purl.imsglobal.org/ctx/caliper/v1/Context",
-  "@type": "http://purl.imsglobal.org/caliper/v1/AssessmentItemEvent",
+  "@context": "http://purl.imsglobal.org/ctx/caliper/v1p1",
   "action": "Completed",
   "actor": "https://testHost/api/user/testUserId",
   "edApp": "https://testHost/api/system",
@@ -187,7 +168,6 @@ Event {
   "extensions": Object {
     "previewMode": false,
   },
-  "federatedSession": null,
   "generated": Object {
     "attempt": "https://testHost/api/practice/testDraftId/testQuestionId",
     "extensions": Object {
@@ -201,18 +181,16 @@ Event {
     "id": "urn:uuid:fb9826d0-3d7a-43b8-a5ad-3949ce620d91",
     "type": "Response",
   },
-  "group": null,
   "id": "urn:uuid:fb9826d0-3d7a-43b8-a5ad-3949ce620d91",
-  "membership": null,
   "object": "https://testHost/api/practice/testDraftId/testQuestionId",
   "target": "https://testHost/api/draft/testDraftId#testTargetId",
+  "type": "AssessmentItemEvent",
 }
 `;
 
 exports[`Caliper event creator createAssessmentItemEvent 1`] = `
 Event {
-  "@context": "http://purl.imsglobal.org/ctx/caliper/v1/Context",
-  "@type": "http://purl.imsglobal.org/caliper/v1/AssessmentItemEvent",
+  "@context": "http://purl.imsglobal.org/ctx/caliper/v1p1",
   "action": "Completed",
   "actor": "https://testHost/api/user/testUserId",
   "edApp": "https://testHost/api/system",
@@ -221,7 +199,6 @@ Event {
     "foo": "bar",
     "previewMode": false,
   },
-  "federatedSession": null,
   "generated": Object {
     "attempt": "https://testHost/api/attempt/testAttemptId",
     "extensions": Object {
@@ -235,18 +212,16 @@ Event {
     "id": "urn:uuid:fb9826d0-3d7a-43b8-a5ad-3949ce620d91",
     "type": "Response",
   },
-  "group": null,
   "id": "urn:uuid:fb9826d0-3d7a-43b8-a5ad-3949ce620d91",
-  "membership": null,
   "object": "https://testHost/api/draft/testDraftId#testQuestionId",
   "target": "https://testHost/api/draft/testDraftId#testTargetId",
+  "type": "AssessmentItemEvent",
 }
 `;
 
 exports[`Caliper event creator createHideEvent - sets target of hide event when given framename arg 1`] = `
 Event {
-  "@context": "http://purl.imsglobal.org/ctx/caliper/v1/Context",
-  "@type": null,
+  "@context": "http://purl.imsglobal.org/ctx/caliper/v1p1",
   "action": "Hid",
   "actor": "https://testHost/api/user/testUserId",
   "edApp": "https://testHost/api/system",
@@ -256,20 +231,17 @@ Event {
     "previewMode": false,
   },
   "federatedSession": "https://testHost/api/launch/testOboLaunchId",
-  "generated": null,
-  "group": null,
   "id": "urn:uuid:fb9826d0-3d7a-43b8-a5ad-3949ce620d91",
-  "membership": null,
   "object": "https://testHost/api/draft/testDraftId#testQuestionId",
   "session": "https://testHost/api/session/testSessionId",
   "target": "https://testHost/api/draft/testDraftId?context=testFramename#testQuestionId",
+  "type": "Event",
 }
 `;
 
 exports[`Caliper event creator createHideEvent 1`] = `
 Event {
-  "@context": "http://purl.imsglobal.org/ctx/caliper/v1/Context",
-  "@type": null,
+  "@context": "http://purl.imsglobal.org/ctx/caliper/v1p1",
   "action": "Hid",
   "actor": "https://testHost/api/user/testUserId",
   "edApp": "https://testHost/api/system",
@@ -279,21 +251,17 @@ Event {
     "previewMode": false,
   },
   "federatedSession": "https://testHost/api/launch/testOboLaunchId",
-  "generated": null,
-  "group": null,
   "id": "urn:uuid:fb9826d0-3d7a-43b8-a5ad-3949ce620d91",
-  "membership": null,
   "object": "https://testHost/api/draft/testDraftId#testQuestionId",
   "session": "https://testHost/api/session/testSessionId",
-  "target": null,
+  "type": "Event",
 }
 `;
 
 exports[`Caliper event creator createNavigationEvent 1`] = `
 Event {
-  "@context": "http://purl.imsglobal.org/ctx/caliper/v1/Context",
-  "@type": "http://purl.imsglobal.org/caliper/v1/NavigationEvent",
-  "action": "http://purl.imsglobal.org/vocab/caliper/v1/action#NavigatedTo",
+  "@context": "http://purl.imsglobal.org/ctx/caliper/v1p1",
+  "action": "NavigatedTo",
   "actor": "https://testHost/api/user/testUserId",
   "edApp": "https://testHost/api/system",
   "eventTime": "2017-08-29T16:57:14.500Z",
@@ -302,21 +270,17 @@ Event {
     "previewMode": false,
   },
   "federatedSession": "https://testHost/api/launch/testOboLaunchId",
-  "generated": null,
-  "group": null,
   "id": "urn:uuid:fb9826d0-3d7a-43b8-a5ad-3949ce620d91",
-  "membership": null,
   "object": "https://testHost/api/draft/testDraftId#navigation is going here",
   "referrer": "https://testHost/api/draft/testDraftId#navigation came from here",
   "session": "https://testHost/api/session/testSessionId",
-  "target": null,
+  "type": "NavigationEvent",
 }
 `;
 
 exports[`Caliper event creator createPracticeGradeEvent 1`] = `
 Event {
-  "@context": "http://purl.imsglobal.org/ctx/caliper/v1/Context",
-  "@type": "GradeEvent",
+  "@context": "http://purl.imsglobal.org/ctx/caliper/v1p1",
   "action": "Graded",
   "actor": "https://testHost/api/viewer/client",
   "edApp": "https://testHost/api/system",
@@ -328,27 +292,24 @@ Event {
   "federatedSession": "https://testHost/api/launch/testOboLaunchId",
   "generated": Object {
     "@context": "http://purl.imsglobal.org/ctx/caliper/v1p1",
-    "@type": "Score",
     "attempt": "https://testHost/api/practice/testDraftId/testQuestionId",
     "dateCreated": "2017-08-29T16:57:14.500Z",
     "id": "urn:uuid:123",
     "maxScore": 100,
     "scoreGiven": "50",
     "scoredBy": "https://testHost/api/viewer/client",
+    "type": "Score",
   },
-  "group": null,
   "id": "urn:uuid:fb9826d0-3d7a-43b8-a5ad-3949ce620d91",
-  "membership": null,
   "object": "https://testHost/api/practice/testDraftId/testQuestionId",
   "session": "https://testHost/api/session/testSessionId",
-  "target": null,
+  "type": "GradeEvent",
 }
 `;
 
 exports[`Caliper event creator createPracticeQuestionResetEvent 1`] = `
 Event {
-  "@context": "http://purl.imsglobal.org/ctx/caliper/v1/Context",
-  "@type": null,
+  "@context": "http://purl.imsglobal.org/ctx/caliper/v1p1",
   "action": "Reset",
   "actor": "https://testHost/api/user/testUserId",
   "edApp": "https://testHost/api/system",
@@ -358,20 +319,17 @@ Event {
     "previewMode": false,
   },
   "federatedSession": "https://testHost/api/launch/testOboLaunchId",
-  "generated": null,
-  "group": null,
   "id": "urn:uuid:fb9826d0-3d7a-43b8-a5ad-3949ce620d91",
-  "membership": null,
   "object": "https://testHost/api/draft/testDraftId#testQuestionId",
   "session": "https://testHost/api/session/testSessionId",
   "target": "https://testHost/api/practice/testDraftId/testQuestionId",
+  "type": "Event",
 }
 `;
 
 exports[`Caliper event creator createPracticeQuestionSubmittedEvent 1`] = `
 Event {
-  "@context": "http://purl.imsglobal.org/ctx/caliper/v1/Context",
-  "@type": null,
+  "@context": "http://purl.imsglobal.org/ctx/caliper/v1p1",
   "action": "Submitted",
   "actor": "https://testHost/api/user/testUserId",
   "edApp": "https://testHost/api/system",
@@ -381,20 +339,16 @@ Event {
     "previewMode": false,
   },
   "federatedSession": "https://testHost/api/launch/testOboLaunchId",
-  "generated": null,
-  "group": null,
   "id": "urn:uuid:fb9826d0-3d7a-43b8-a5ad-3949ce620d91",
-  "membership": null,
   "object": "https://testHost/api/practice/testDraftId/testQuestionId",
   "session": "https://testHost/api/session/testSessionId",
-  "target": null,
+  "type": "Event",
 }
 `;
 
 exports[`Caliper event creator createPracticeUngradeEvent 1`] = `
 Event {
-  "@context": "http://purl.imsglobal.org/ctx/caliper/v1/Context",
-  "@type": null,
+  "@context": "http://purl.imsglobal.org/ctx/caliper/v1p1",
   "action": "Reset",
   "actor": "https://testHost/api/server",
   "edApp": "https://testHost/api/system",
@@ -403,20 +357,16 @@ Event {
     "foo": "bar",
     "previewMode": false,
   },
-  "federatedSession": null,
-  "generated": null,
-  "group": null,
   "id": "urn:uuid:fb9826d0-3d7a-43b8-a5ad-3949ce620d91",
-  "membership": null,
   "object": "urn:uuid:123",
   "target": "https://testHost/api/practice/testDraftId/testQuestionId",
+  "type": "Event",
 }
 `;
 
 exports[`Caliper event creator createViewEvent - sets target of view event when given framename arg 1`] = `
 Event {
-  "@context": "http://purl.imsglobal.org/ctx/caliper/v1/Context",
-  "@type": "http://purl.imsglobal.org/caliper/v1/ViewEvent",
+  "@context": "http://purl.imsglobal.org/ctx/caliper/v1p1",
   "action": "Viewed",
   "actor": "https://testHost/api/user/testUserId",
   "edApp": "https://testHost/api/system",
@@ -426,20 +376,17 @@ Event {
     "previewMode": false,
   },
   "federatedSession": "https://testHost/api/launch/testOboLaunchId",
-  "generated": null,
-  "group": null,
   "id": "urn:uuid:fb9826d0-3d7a-43b8-a5ad-3949ce620d91",
-  "membership": null,
   "object": "https://testHost/api/draft/testDraftId#testItemId",
   "session": "https://testHost/api/session/testSessionId",
   "target": "https://testHost/api/draft/testDraftId?context=testFramename#testItemId",
+  "type": "ViewEvent",
 }
 `;
 
 exports[`Caliper event creator createViewEvent 1`] = `
 Event {
-  "@context": "http://purl.imsglobal.org/ctx/caliper/v1/Context",
-  "@type": "http://purl.imsglobal.org/caliper/v1/ViewEvent",
+  "@context": "http://purl.imsglobal.org/ctx/caliper/v1p1",
   "action": "Viewed",
   "actor": "https://testHost/api/user/testUserId",
   "edApp": "https://testHost/api/system",
@@ -449,20 +396,16 @@ Event {
     "previewMode": false,
   },
   "federatedSession": "https://testHost/api/launch/testOboLaunchId",
-  "generated": null,
-  "group": null,
   "id": "urn:uuid:fb9826d0-3d7a-43b8-a5ad-3949ce620d91",
-  "membership": null,
   "object": "https://testHost/api/draft/testDraftId#testItemId",
   "session": "https://testHost/api/session/testSessionId",
-  "target": null,
+  "type": "ViewEvent",
 }
 `;
 
 exports[`Caliper event creator createViewerAbandonedEvent 1`] = `
 Event {
-  "@context": "http://purl.imsglobal.org/ctx/caliper/v1/Context",
-  "@type": null,
+  "@context": "http://purl.imsglobal.org/ctx/caliper/v1p1",
   "action": "Abandoned",
   "actor": "https://testHost/api/user/testUserId",
   "edApp": "https://testHost/api/system",
@@ -472,20 +415,16 @@ Event {
     "previewMode": false,
   },
   "federatedSession": "https://testHost/api/launch/testOboLaunchId",
-  "generated": null,
-  "group": null,
   "id": "urn:uuid:fb9826d0-3d7a-43b8-a5ad-3949ce620d91",
-  "membership": null,
   "object": "https:///api/draft/testDraftId",
   "session": "https://testHost/api/session/testSessionId",
-  "target": null,
+  "type": "Event",
 }
 `;
 
 exports[`Caliper event creator createViewerResumedEvent 1`] = `
 Event {
-  "@context": "http://purl.imsglobal.org/ctx/caliper/v1/Context",
-  "@type": null,
+  "@context": "http://purl.imsglobal.org/ctx/caliper/v1p1",
   "action": "Resumed",
   "actor": "https://testHost/api/user/testUserId",
   "edApp": "https://testHost/api/system",
@@ -495,20 +434,16 @@ Event {
     "previewMode": false,
   },
   "federatedSession": "https://testHost/api/launch/testOboLaunchId",
-  "generated": null,
-  "group": null,
   "id": "urn:uuid:fb9826d0-3d7a-43b8-a5ad-3949ce620d91",
-  "membership": null,
   "object": "https:///api/draft/testDraftId",
   "session": "https://testHost/api/session/testSessionId",
-  "target": null,
+  "type": "Event",
 }
 `;
 
 exports[`Caliper event creator createViewerSessionLoggedInEvent 1`] = `
 Event {
-  "@context": "http://purl.imsglobal.org/ctx/caliper/v1/Context",
-  "@type": "http://purl.imsglobal.org/caliper/v1/SessionEvent",
+  "@context": "http://purl.imsglobal.org/ctx/caliper/v1p1",
   "action": "LoggedIn",
   "actor": "https://testHost/api/user/testUserId",
   "edApp": "https://testHost/api/system",
@@ -518,20 +453,17 @@ Event {
     "previewMode": false,
   },
   "federatedSession": "https://testHost/api/launch/testOboLaunchId",
-  "generated": null,
-  "group": null,
   "id": "urn:uuid:fb9826d0-3d7a-43b8-a5ad-3949ce620d91",
-  "membership": null,
   "object": "https://testHost/api/system",
   "session": "https://testHost/api/session/testSessionId",
   "target": "https:///api/draft/testDraftId",
+  "type": "SessionEvent",
 }
 `;
 
 exports[`Caliper event creator createViewerSessionLoggedOutEvent 1`] = `
 Event {
-  "@context": "http://purl.imsglobal.org/ctx/caliper/v1/Context",
-  "@type": "http://purl.imsglobal.org/caliper/v1/SessionEvent",
+  "@context": "http://purl.imsglobal.org/ctx/caliper/v1p1",
   "action": "LoggedOut",
   "actor": "https://testHost/api/user/testUserId",
   "edApp": "https://testHost/api/system",
@@ -541,12 +473,10 @@ Event {
     "previewMode": false,
   },
   "federatedSession": "https://testHost/api/launch/testOboLaunchId",
-  "generated": null,
-  "group": null,
   "id": "urn:uuid:fb9826d0-3d7a-43b8-a5ad-3949ce620d91",
-  "membership": null,
   "object": "https://testHost/api/system",
   "session": "https://testHost/api/session/testSessionId",
   "target": "https:///api/draft/testDraftId",
+  "type": "SessionEvent",
 }
 `;

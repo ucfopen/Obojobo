@@ -2,9 +2,8 @@
 
 exports[`Caliper event from req nav_goto 1`] = `
 Event {
-  "@context": "http://purl.imsglobal.org/ctx/caliper/v1/Context",
-  "@type": "http://purl.imsglobal.org/caliper/v1/NavigationEvent",
-  "action": "http://purl.imsglobal.org/vocab/caliper/v1/action#NavigatedTo",
+  "@context": "http://purl.imsglobal.org/ctx/caliper/v1p1",
+  "action": "NavigatedTo",
   "actor": "https://hostnameReq/api/user/testUserIdReq",
   "edApp": "https://hostnameReq/api/system",
   "eventTime": "2016-09-22T16:57:14.500Z",
@@ -14,21 +13,17 @@ Event {
     "previewMode": false,
   },
   "federatedSession": "https://hostnameReq/api/launch/OboLtiLaunchIdReq",
-  "generated": null,
-  "group": null,
   "id": "urn:uuid:fb9826d0-3d7a-43b8-a5ad-3949ce620d91",
-  "membership": null,
   "object": "https://hostnameReq/api/draft/testDraftIdReq#toReq",
   "referrer": "https://hostnameReq/api/draft/testDraftIdReq#fromReq",
   "session": "https://hostnameReq/api/session/SessionIdReq",
-  "target": null,
+  "type": "NavigationEvent",
 }
 `;
 
 exports[`Caliper event from req question_checkAnswer 1`] = `
 Event {
-  "@context": "http://purl.imsglobal.org/ctx/caliper/v1/Context",
-  "@type": null,
+  "@context": "http://purl.imsglobal.org/ctx/caliper/v1p1",
   "action": "Submitted",
   "actor": "https://hostnameReq/api/user/testUserIdReq",
   "edApp": "https://hostnameReq/api/system",
@@ -37,20 +32,16 @@ Event {
     "previewMode": false,
   },
   "federatedSession": "https://hostnameReq/api/launch/OboLtiLaunchIdReq",
-  "generated": null,
-  "group": null,
   "id": "urn:uuid:fb9826d0-3d7a-43b8-a5ad-3949ce620d91",
-  "membership": null,
   "object": "https://hostnameReq/api/practice/testDraftIdReq/testQuestionIdReq",
   "session": "https://hostnameReq/api/session/SessionIdReq",
-  "target": null,
+  "type": "Event",
 }
 `;
 
 exports[`Caliper event from req question_hide 1`] = `
 Event {
-  "@context": "http://purl.imsglobal.org/ctx/caliper/v1/Context",
-  "@type": null,
+  "@context": "http://purl.imsglobal.org/ctx/caliper/v1p1",
   "action": "Hid",
   "actor": "https://hostnameReq/api/user/testUserIdReq",
   "edApp": "https://hostnameReq/api/system",
@@ -59,20 +50,16 @@ Event {
     "previewMode": false,
   },
   "federatedSession": "https://hostnameReq/api/launch/OboLtiLaunchIdReq",
-  "generated": null,
-  "group": null,
   "id": "urn:uuid:fb9826d0-3d7a-43b8-a5ad-3949ce620d91",
-  "membership": null,
   "object": "https://hostnameReq/api/draft/testDraftIdReq#testQuestionIdReq",
   "session": "https://hostnameReq/api/session/SessionIdReq",
-  "target": null,
+  "type": "Event",
 }
 `;
 
 exports[`Caliper event from req question_hideExplanation 1`] = `
 Event {
-  "@context": "http://purl.imsglobal.org/ctx/caliper/v1/Context",
-  "@type": null,
+  "@context": "http://purl.imsglobal.org/ctx/caliper/v1p1",
   "action": "Hid",
   "actor": "https://hostnameReq/api/user/testUserIdReq",
   "edApp": "https://hostnameReq/api/system",
@@ -81,20 +68,17 @@ Event {
     "previewMode": false,
   },
   "federatedSession": "https://hostnameReq/api/launch/OboLtiLaunchIdReq",
-  "generated": null,
-  "group": null,
   "id": "urn:uuid:fb9826d0-3d7a-43b8-a5ad-3949ce620d91",
-  "membership": null,
   "object": "https://hostnameReq/api/draft/testDraftIdReq#testQuestionIdReq",
   "session": "https://hostnameReq/api/session/SessionIdReq",
   "target": "https://hostnameReq/api/draft/testDraftIdReq?context=explanation#testQuestionIdReq",
+  "type": "Event",
 }
 `;
 
 exports[`Caliper event from req question_retry 1`] = `
 Event {
-  "@context": "http://purl.imsglobal.org/ctx/caliper/v1/Context",
-  "@type": null,
+  "@context": "http://purl.imsglobal.org/ctx/caliper/v1p1",
   "action": "Reset",
   "actor": "https://hostnameReq/api/user/testUserIdReq",
   "edApp": "https://hostnameReq/api/system",
@@ -103,20 +87,17 @@ Event {
     "previewMode": false,
   },
   "federatedSession": "https://hostnameReq/api/launch/OboLtiLaunchIdReq",
-  "generated": null,
-  "group": null,
   "id": "urn:uuid:fb9826d0-3d7a-43b8-a5ad-3949ce620d91",
-  "membership": null,
   "object": "https://hostnameReq/api/draft/testDraftIdReq#testQuestionIdReq",
   "session": "https://hostnameReq/api/session/SessionIdReq",
   "target": "https://hostnameReq/api/practice/testDraftIdReq/testQuestionIdReq",
+  "type": "Event",
 }
 `;
 
 exports[`Caliper event from req question_setResponse 1`] = `
 Event {
-  "@context": "http://purl.imsglobal.org/ctx/caliper/v1/Context",
-  "@type": "http://purl.imsglobal.org/caliper/v1/AssessmentItemEvent",
+  "@context": "http://purl.imsglobal.org/ctx/caliper/v1p1",
   "action": "Completed",
   "actor": "https://hostnameReq/api/user/testUserIdReq",
   "edApp": "https://hostnameReq/api/system",
@@ -134,19 +115,17 @@ Event {
     "id": "urn:uuid:fb9826d0-3d7a-43b8-a5ad-3949ce620d91",
     "type": "Response",
   },
-  "group": null,
   "id": "urn:uuid:fb9826d0-3d7a-43b8-a5ad-3949ce620d91",
-  "membership": null,
   "object": "https://hostnameReq/api/draft/testDraftIdReq#testQuestionIdReq",
   "session": "https://hostnameReq/api/session/SessionIdReq",
   "target": "https:///api/draft/testDraftIdReq",
+  "type": "AssessmentItemEvent",
 }
 `;
 
 exports[`Caliper event from req question_showExplanation 1`] = `
 Event {
-  "@context": "http://purl.imsglobal.org/ctx/caliper/v1/Context",
-  "@type": "http://purl.imsglobal.org/caliper/v1/ViewEvent",
+  "@context": "http://purl.imsglobal.org/ctx/caliper/v1p1",
   "action": "Viewed",
   "actor": "https://hostnameReq/api/user/testUserIdReq",
   "edApp": "https://hostnameReq/api/system",
@@ -155,20 +134,17 @@ Event {
     "previewMode": false,
   },
   "federatedSession": "https://hostnameReq/api/launch/OboLtiLaunchIdReq",
-  "generated": null,
-  "group": null,
   "id": "urn:uuid:fb9826d0-3d7a-43b8-a5ad-3949ce620d91",
-  "membership": null,
   "object": "https://hostnameReq/api/draft/testDraftIdReq#testQuestionIdReq",
   "session": "https://hostnameReq/api/session/SessionIdReq",
   "target": "https://hostnameReq/api/draft/testDraftIdReq?context=explanation#testQuestionIdReq",
+  "type": "ViewEvent",
 }
 `;
 
 exports[`Caliper event from req question_view 1`] = `
 Event {
-  "@context": "http://purl.imsglobal.org/ctx/caliper/v1/Context",
-  "@type": "http://purl.imsglobal.org/caliper/v1/ViewEvent",
+  "@context": "http://purl.imsglobal.org/ctx/caliper/v1p1",
   "action": "Viewed",
   "actor": "https://hostnameReq/api/user/testUserIdReq",
   "edApp": "https://hostnameReq/api/system",
@@ -177,20 +153,16 @@ Event {
     "previewMode": false,
   },
   "federatedSession": "https://hostnameReq/api/launch/OboLtiLaunchIdReq",
-  "generated": null,
-  "group": null,
   "id": "urn:uuid:fb9826d0-3d7a-43b8-a5ad-3949ce620d91",
-  "membership": null,
   "object": "https://hostnameReq/api/draft/testDraftIdReq#testQuestionIdReq",
   "session": "https://hostnameReq/api/session/SessionIdReq",
-  "target": null,
+  "type": "ViewEvent",
 }
 `;
 
 exports[`Caliper event from req score_clear 1`] = `
 Event {
-  "@context": "http://purl.imsglobal.org/ctx/caliper/v1/Context",
-  "@type": null,
+  "@context": "http://purl.imsglobal.org/ctx/caliper/v1p1",
   "action": "Reset",
   "actor": "https://hostnameReq/api/server",
   "edApp": "https://hostnameReq/api/system",
@@ -199,20 +171,17 @@ Event {
     "previewMode": false,
   },
   "federatedSession": "https://hostnameReq/api/launch/OboLtiLaunchIdReq",
-  "generated": null,
-  "group": null,
   "id": "urn:uuid:fb9826d0-3d7a-43b8-a5ad-3949ce620d91",
-  "membership": null,
   "object": "urn:uuid:testIdReq",
   "session": "https://hostnameReq/api/session/SessionIdReq",
   "target": "https://hostnameReq/api/practice/testDraftIdReq/testItemIdReq",
+  "type": "Event",
 }
 `;
 
 exports[`Caliper event from req score_set 1`] = `
 Event {
-  "@context": "http://purl.imsglobal.org/ctx/caliper/v1/Context",
-  "@type": "GradeEvent",
+  "@context": "http://purl.imsglobal.org/ctx/caliper/v1p1",
   "action": "Graded",
   "actor": "https://hostnameReq/api/viewer/client",
   "edApp": "https://hostnameReq/api/system",
@@ -223,27 +192,24 @@ Event {
   "federatedSession": "https://hostnameReq/api/launch/OboLtiLaunchIdReq",
   "generated": Object {
     "@context": "http://purl.imsglobal.org/ctx/caliper/v1p1",
-    "@type": "Score",
     "attempt": "https://hostnameReq/api/practice/testDraftIdReq/testItemIdReq",
     "dateCreated": "2016-09-22T16:57:14.500Z",
     "id": "urn:uuid:testIdReq",
     "maxScore": 100,
     "scoreGiven": "scoreReq",
     "scoredBy": "https://hostnameReq/api/viewer/client",
+    "type": "Score",
   },
-  "group": null,
   "id": "urn:uuid:fb9826d0-3d7a-43b8-a5ad-3949ce620d91",
-  "membership": null,
   "object": "https://hostnameReq/api/practice/testDraftIdReq/testItemIdReq",
   "session": "https://hostnameReq/api/session/SessionIdReq",
-  "target": null,
+  "type": "GradeEvent",
 }
 `;
 
 exports[`Caliper event from req viewer_close 1`] = `
 Event {
-  "@context": "http://purl.imsglobal.org/ctx/caliper/v1/Context",
-  "@type": "http://purl.imsglobal.org/caliper/v1/SessionEvent",
+  "@context": "http://purl.imsglobal.org/ctx/caliper/v1p1",
   "action": "LoggedOut",
   "actor": "https://hostnameReq/api/user/testUserIdReq",
   "edApp": "https://hostnameReq/api/system",
@@ -252,20 +218,17 @@ Event {
     "previewMode": false,
   },
   "federatedSession": "https://hostnameReq/api/launch/OboLtiLaunchIdReq",
-  "generated": null,
-  "group": null,
   "id": "urn:uuid:fb9826d0-3d7a-43b8-a5ad-3949ce620d91",
-  "membership": null,
   "object": "https://hostnameReq/api/system",
   "session": "https://hostnameReq/api/session/SessionIdReq",
   "target": "https:///api/draft/testDraftIdReq",
+  "type": "SessionEvent",
 }
 `;
 
 exports[`Caliper event from req viewer_inactive 1`] = `
 Event {
-  "@context": "http://purl.imsglobal.org/ctx/caliper/v1/Context",
-  "@type": null,
+  "@context": "http://purl.imsglobal.org/ctx/caliper/v1p1",
   "action": "Abandoned",
   "actor": "https://hostnameReq/api/user/testUserIdReq",
   "edApp": "https://hostnameReq/api/system",
@@ -277,20 +240,16 @@ Event {
     "type": "inactive",
   },
   "federatedSession": "https://hostnameReq/api/launch/OboLtiLaunchIdReq",
-  "generated": null,
-  "group": null,
   "id": "urn:uuid:fb9826d0-3d7a-43b8-a5ad-3949ce620d91",
-  "membership": null,
   "object": "https:///api/draft/testDraftIdReq",
   "session": "https://hostnameReq/api/session/SessionIdReq",
-  "target": null,
+  "type": "Event",
 }
 `;
 
 exports[`Caliper event from req viewer_leave 1`] = `
 Event {
-  "@context": "http://purl.imsglobal.org/ctx/caliper/v1/Context",
-  "@type": null,
+  "@context": "http://purl.imsglobal.org/ctx/caliper/v1p1",
   "action": "Abandoned",
   "actor": "https://hostnameReq/api/user/testUserIdReq",
   "edApp": "https://hostnameReq/api/system",
@@ -300,20 +259,16 @@ Event {
     "type": "leave",
   },
   "federatedSession": "https://hostnameReq/api/launch/OboLtiLaunchIdReq",
-  "generated": null,
-  "group": null,
   "id": "urn:uuid:fb9826d0-3d7a-43b8-a5ad-3949ce620d91",
-  "membership": null,
   "object": "https:///api/draft/testDraftIdReq",
   "session": "https://hostnameReq/api/session/SessionIdReq",
-  "target": null,
+  "type": "Event",
 }
 `;
 
 exports[`Caliper event from req viewer_return 1`] = `
 Event {
-  "@context": "http://purl.imsglobal.org/ctx/caliper/v1/Context",
-  "@type": null,
+  "@context": "http://purl.imsglobal.org/ctx/caliper/v1p1",
   "action": "Resumed",
   "actor": "https://hostnameReq/api/user/testUserIdReq",
   "edApp": "https://hostnameReq/api/system",
@@ -324,20 +279,16 @@ Event {
     "type": "return",
   },
   "federatedSession": "https://hostnameReq/api/launch/OboLtiLaunchIdReq",
-  "generated": null,
-  "group": null,
   "id": "urn:uuid:fb9826d0-3d7a-43b8-a5ad-3949ce620d91",
-  "membership": null,
   "object": "https:///api/draft/testDraftIdReq",
   "session": "https://hostnameReq/api/session/SessionIdReq",
-  "target": null,
+  "type": "Event",
 }
 `;
 
 exports[`Caliper event from req viewer_returnFromInactive 1`] = `
 Event {
-  "@context": "http://purl.imsglobal.org/ctx/caliper/v1/Context",
-  "@type": null,
+  "@context": "http://purl.imsglobal.org/ctx/caliper/v1p1",
   "action": "Resumed",
   "actor": "https://hostnameReq/api/user/testUserIdReq",
   "edApp": "https://hostnameReq/api/system",
@@ -350,12 +301,9 @@ Event {
     "type": "returnFromInactive",
   },
   "federatedSession": "https://hostnameReq/api/launch/OboLtiLaunchIdReq",
-  "generated": null,
-  "group": null,
   "id": "urn:uuid:fb9826d0-3d7a-43b8-a5ad-3949ce620d91",
-  "membership": null,
   "object": "https:///api/draft/testDraftIdReq",
   "session": "https://hostnameReq/api/session/SessionIdReq",
-  "target": null,
+  "type": "Event",
 }
 `;
