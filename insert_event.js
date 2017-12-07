@@ -1,16 +1,26 @@
 let db = oboRequire('db')
 
 module.exports = insertObject => {
-	//@TODO - Delete me when every call to this method includes a caliperPayload
-	if (insertObject && !insertObject.caliperPayload)
-		insertObject.caliperPayload = { todo: 'send caliper event!' }
-
-	return db.one(
-		`
+	return db
+		.one(
+			`
 		INSERT INTO events
-		(actor_time, action, actor, ip, metadata, payload, draft_id, caliper_payload, version)
-		VALUES ($[actorTime], $[action], $[userId], $[ip], $[metadata], $[payload], $[draftId], $[caliperPayload], $[eventVersion])
+		(actor_time, action, actor, ip, metadata, payload, draft_id, version)
+		VALUES ($[actorTime], $[action], $[userId], $[ip], $[metadata], $[payload], $[draftId], $[eventVersion])
 		RETURNING created_at`,
-		insertObject
-	)
+			insertObject
+		)
+		.then(createdAt => {
+			if (insertObject.caliperPayload) {
+				db.none(
+					`
+					INSERT INTO caliper_store
+					(payload)
+					VALUES ($[caliperPayload])`,
+					insertObject
+				)
+			}
+
+			return createdAt
+		})
 }
