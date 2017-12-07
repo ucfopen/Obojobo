@@ -29,7 +29,7 @@ class ScoreStore extends Store {
 				this.triggerChange()
 
 				model = OboModel.models[payload.value.itemId]
-				return APIUtil.postEvent(model.getRoot(), 'score:set', {
+				return APIUtil.postEvent(model.getRoot(), 'score:set', '3.0.0', {
 					id: scoreId,
 					itemId: payload.value.itemId,
 					score: payload.value.score
@@ -44,7 +44,7 @@ class ScoreStore extends Store {
 				delete this.state.scores[payload.value.itemId]
 				this.triggerChange()
 
-				return APIUtil.postEvent(model.getRoot(), 'score:clear', scoreItem)
+				return APIUtil.postEvent(model.getRoot(), 'score:clear', '3.0.0', scoreItem)
 			}
 		})
 	}

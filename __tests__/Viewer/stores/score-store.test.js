@@ -63,7 +63,8 @@ describe('ScoreStore', () => {
 		expect(ScoreStore.triggerChange).toHaveBeenCalled()
 		expect(APIUtil.postEvent).toHaveBeenCalled()
 		expect(APIUtil.postEvent.mock.calls[0][1]).toEqual('score:set')
-		expect(APIUtil.postEvent.mock.calls[0][2]).toEqual({
+		expect(APIUtil.postEvent.mock.calls[0][2]).toEqual('3.0.0')
+		expect(APIUtil.postEvent.mock.calls[0][3]).toEqual({
 			itemId: 'test',
 			score: 25,
 			id: testState.id
@@ -90,7 +91,8 @@ describe('ScoreStore', () => {
 		expect(ScoreStore.triggerChange).toHaveBeenCalled()
 		expect(APIUtil.postEvent).toHaveBeenCalled()
 		expect(APIUtil.postEvent.mock.calls[0][1]).toEqual('score:set')
-		expect(APIUtil.postEvent.mock.calls[0][2]).toEqual({
+		expect(APIUtil.postEvent.mock.calls[0][2]).toEqual('3.0.0')
+		expect(APIUtil.postEvent.mock.calls[0][3]).toEqual({
 			itemId: 'test',
 			score: 100,
 			id: testState.id
@@ -140,6 +142,7 @@ describe('ScoreStore', () => {
 		})
 		expect(APIUtil.postEvent).toHaveBeenCalled()
 		expect(APIUtil.postEvent.mock.calls[0][1]).toEqual('score:clear')
-		expect(APIUtil.postEvent.mock.calls[0][2]).toEqual({ itemId: 'test', id: 'uuid1', score: 10 })
+		expect(APIUtil.postEvent.mock.calls[0][2]).toEqual('3.0.0')
+		expect(APIUtil.postEvent.mock.calls[0][3]).toEqual({ itemId: 'test', id: 'uuid1', score: 10 })
 	})
 })

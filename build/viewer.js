@@ -719,13 +719,14 @@
 						}
 					})
 				},
-				postEvent: function postEvent(lo, action, payload) {
+				postEvent: function postEvent(lo, action, eventVersion, payload) {
 					return createParsedJsonPromise(
 						APIUtil.post('/api/events', {
 							event: {
 								action: action,
 								draft_id: lo.get('_id'),
 								actor_time: new Date().toISOString(),
+								event_version: eventVersion,
 								payload: payload
 							}
 						})
@@ -1338,7 +1339,7 @@
 							'nav:gotoPath': function navGotoPath(payload) {
 								oldNavTargetId = _this.state.navTargetId
 								if (_this.gotoItem(_this.state.itemsByPath[payload.value.path])) {
-									return _apiUtil2.default.postEvent(OboModel.getRoot(), 'nav:gotoPath', {
+									return _apiUtil2.default.postEvent(OboModel.getRoot(), 'nav:gotoPath', '3.0.0', {
 										from: oldNavTargetId,
 										to: _this.state.itemsByPath[payload.value.path].id
 									})
@@ -1355,7 +1356,7 @@
 								oldNavTargetId = _this.state.navTargetId
 								var prev = _navUtil2.default.getPrev(_this.state)
 								if (_this.gotoItem(prev)) {
-									return _apiUtil2.default.postEvent(OboModel.getRoot(), 'nav:prev', {
+									return _apiUtil2.default.postEvent(OboModel.getRoot(), 'nav:prev', '3.0.0', {
 										from: oldNavTargetId,
 										to: prev.id
 									})
@@ -1365,7 +1366,7 @@
 								oldNavTargetId = _this.state.navTargetId
 								var next = _navUtil2.default.getNext(_this.state)
 								if (_this.gotoItem(next)) {
-									return _apiUtil2.default.postEvent(OboModel.getRoot(), 'nav:next', {
+									return _apiUtil2.default.postEvent(OboModel.getRoot(), 'nav:next', '3.0.0', {
 										from: oldNavTargetId,
 										to: next.id
 									})
@@ -1374,7 +1375,7 @@
 							'nav:goto': function navGoto(payload) {
 								oldNavTargetId = _this.state.navTargetId
 								if (_this.gotoItem(_this.state.itemsById[payload.value.id])) {
-									return _apiUtil2.default.postEvent(OboModel.getRoot(), 'nav:goto', {
+									return _apiUtil2.default.postEvent(OboModel.getRoot(), 'nav:goto', '3.0.0', {
 										from: oldNavTargetId,
 										to: _this.state.itemsById[payload.value.id].id
 									})
@@ -2356,7 +2357,7 @@
 							assessment.currentResponses.push(questionId)
 
 							return _apiUtil2.default
-								.postEvent(model.getRoot(), 'assessment:setResponse', {
+								.postEvent(model.getRoot(), 'assessment:setResponse', '3.1.0', {
 									assessmentId: assessment.id,
 									attemptId: assessment.current.attemptId,
 									questionId: questionId,
@@ -2492,7 +2493,7 @@
 							_this.state.responses[id] = payload.value.response
 							_this.triggerChange()
 
-							_apiUtil2.default.postEvent(model.getRoot(), 'question:setResponse', {
+							_apiUtil2.default.postEvent(model.getRoot(), 'question:setResponse', '3.1.0', {
 								questionId: id,
 								response: payload.value.response,
 								targetId: payload.value.targetId
@@ -2512,7 +2513,7 @@
 						'question:showExplanation': function questionShowExplanation(payload) {
 							var root = OboModel.models[payload.value.id].getRoot()
 
-							_apiUtil2.default.postEvent(root, 'question:showExplanation', {
+							_apiUtil2.default.postEvent(root, 'question:showExplanation', '3.0.0', {
 								questionId: payload.value.id
 							})
 
@@ -2522,7 +2523,7 @@
 						'question:hideExplanation': function questionHideExplanation(payload) {
 							var root = OboModel.models[payload.value.id].getRoot()
 
-							_apiUtil2.default.postEvent(root, 'question:hideExplanation', {
+							_apiUtil2.default.postEvent(root, 'question:hideExplanation', '3.0.0', {
 								questionId: payload.value.id
 							})
 
@@ -2538,6 +2539,7 @@
 							_apiUtil2.default.postEvent(
 								OboModel.models[payload.value.id].getRoot(),
 								'question:hide',
+								'3.0.0',
 								{
 									questionId: payload.value.id
 								}
@@ -2555,7 +2557,7 @@
 						'question:view': function questionView(payload) {
 							var root = OboModel.models[payload.value.id].getRoot()
 
-							_apiUtil2.default.postEvent(root, 'question:view', {
+							_apiUtil2.default.postEvent(root, 'question:view', '3.0.0', {
 								questionId: payload.value.id
 							})
 
@@ -2570,7 +2572,7 @@
 							var questionModel = OboModel.models[questionId]
 							var root = questionModel.getRoot()
 
-							_apiUtil2.default.postEvent(root, 'question:checkAnswer', {
+							_apiUtil2.default.postEvent(root, 'question:checkAnswer', '3.0.0', {
 								questionId: payload.value.id
 							})
 						},
@@ -2582,7 +2584,7 @@
 
 							_this.clearResponses(questionId)
 
-							_apiUtil2.default.postEvent(root, 'question:retry', {
+							_apiUtil2.default.postEvent(root, 'question:retry', '3.0.0', {
 								questionId: payload.value.id
 							})
 
@@ -2738,7 +2740,7 @@
 							_this.triggerChange()
 
 							model = OboModel.models[payload.value.itemId]
-							return _apiUtil2.default.postEvent(model.getRoot(), 'score:set', {
+							return _apiUtil2.default.postEvent(model.getRoot(), 'score:set', '3.0.0', {
 								id: scoreId,
 								itemId: payload.value.itemId,
 								score: payload.value.score
@@ -2753,7 +2755,7 @@
 							delete _this.state.scores[payload.value.itemId]
 							_this.triggerChange()
 
-							return _apiUtil2.default.postEvent(model.getRoot(), 'score:clear', scoreItem)
+							return _apiUtil2.default.postEvent(model.getRoot(), 'score:clear', '3.0.0', scoreItem)
 						}
 					})
 					return _this
@@ -6416,12 +6418,12 @@
 
 							if (document.hidden) {
 								_apiUtil2.default
-									.postEvent(this.state.model, 'viewer:leave', {})
+									.postEvent(this.state.model, 'viewer:leave', '3.0.0', {})
 									.then(function(res) {
 										_this2.leaveEvent = res.value
 									})
 							} else {
-								_apiUtil2.default.postEvent(this.state.model, 'viewer:return', {
+								_apiUtil2.default.postEvent(this.state.model, 'viewer:return', '3.0.0', {
 									relatedEventId: this.leaveEvent.id
 								})
 
@@ -6526,7 +6528,7 @@
 							this.lastActiveEpoch = this.refs.idleTimer.getLastActiveTime()
 
 							_apiUtil2.default
-								.postEvent(this.state.model, 'viewer:inactive', {
+								.postEvent(this.state.model, 'viewer:inactive', '3.0.0', {
 									lastActiveTime: this.lastActiveEpoch,
 									inactiveDuration: IDLE_TIMEOUT_DURATION_MS
 								})
@@ -6538,7 +6540,7 @@
 					{
 						key: 'onReturnFromIdle',
 						value: function onReturnFromIdle() {
-							_apiUtil2.default.postEvent(this.state.model, 'viewer:returnFromInactive', {
+							_apiUtil2.default.postEvent(this.state.model, 'viewer:returnFromInactive', '3.0.0', {
 								lastActiveTime: this.lastActiveEpoch,
 								inactiveDuration: Date.now() - this.lastActiveEpoch,
 								relatedEventId: this.inactiveEvent.id
@@ -6551,7 +6553,7 @@
 					{
 						key: 'onWindowClose',
 						value: function onWindowClose(e) {
-							_apiUtil2.default.postEvent(this.state.model, 'viewer:close', {})
+							_apiUtil2.default.postEvent(this.state.model, 'viewer:close', '3.0.0', {})
 						}
 					},
 					{

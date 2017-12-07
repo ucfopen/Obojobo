@@ -21,7 +21,7 @@ class NavStore extends Store {
 				'nav:gotoPath': payload => {
 					oldNavTargetId = this.state.navTargetId
 					if (this.gotoItem(this.state.itemsByPath[payload.value.path])) {
-						return APIUtil.postEvent(OboModel.getRoot(), 'nav:gotoPath', {
+						return APIUtil.postEvent(OboModel.getRoot(), 'nav:gotoPath', '3.0.0', {
 							from: oldNavTargetId,
 							to: this.state.itemsByPath[payload.value.path].id
 						})
@@ -37,7 +37,7 @@ class NavStore extends Store {
 					oldNavTargetId = this.state.navTargetId
 					let prev = NavUtil.getPrev(this.state)
 					if (this.gotoItem(prev)) {
-						return APIUtil.postEvent(OboModel.getRoot(), 'nav:prev', {
+						return APIUtil.postEvent(OboModel.getRoot(), 'nav:prev', '3.0.0', {
 							from: oldNavTargetId,
 							to: prev.id
 						})
@@ -47,7 +47,7 @@ class NavStore extends Store {
 					oldNavTargetId = this.state.navTargetId
 					let next = NavUtil.getNext(this.state)
 					if (this.gotoItem(next)) {
-						return APIUtil.postEvent(OboModel.getRoot(), 'nav:next', {
+						return APIUtil.postEvent(OboModel.getRoot(), 'nav:next', '3.0.0', {
 							from: oldNavTargetId,
 							to: next.id
 						})
@@ -56,7 +56,7 @@ class NavStore extends Store {
 				'nav:goto': payload => {
 					oldNavTargetId = this.state.navTargetId
 					if (this.gotoItem(this.state.itemsById[payload.value.id])) {
-						return APIUtil.postEvent(OboModel.getRoot(), 'nav:goto', {
+						return APIUtil.postEvent(OboModel.getRoot(), 'nav:goto', '3.0.0', {
 							from: oldNavTargetId,
 							to: this.state.itemsById[payload.value.id].id
 						})
