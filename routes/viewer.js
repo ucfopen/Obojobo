@@ -48,7 +48,7 @@ router.all('/:draftId*', (req, res, next) => {
 				metadata: {},
 				draftId: req.params.draftId,
 				payload: {},
-				eventVersion: '3.0.0',
+				eventVersion: '1.0.0',
 				caliperPayload: createViewerSessionLoggedInEvent({
 					draftId: req.params.draftId,
 					actor: { type: ACTOR_USER, id: user.id },

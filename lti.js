@@ -95,7 +95,7 @@ let replaceResult = function(userId, draftId, score) {
 						},
 						userId: userId,
 						ip: '',
-						eventVersion: '3.0.0',
+						eventVersion: '1.0.0',
 						metadata: {},
 						draftId: draftId
 					}).catch(err => {

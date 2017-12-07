@@ -32,7 +32,7 @@ let storeLtiLaunch = (draftId, user, ip, ltiBody, ltiConsumerKey) => {
 				userId: user.id,
 				ip: ip,
 				metadata: {},
-				eventVersion: '3.0.0',
+				eventVersion: '1.0.0',
 				draftId: draftId
 			})
 		})

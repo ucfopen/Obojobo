@@ -24,7 +24,7 @@ exports.up = function(db) {
 			return db.addIndex('events', 'events_version', ['version'])
 		})
 		.then(result => {
-			return db.runSql("UPDATE events SET version='3.0.0' WHERE TRUE")
+			return db.runSql("UPDATE events SET version='1.0.0' WHERE TRUE")
 		})
 		.then(result => {
 			return db.changeColumn('events', 'version', {
