@@ -197,7 +197,7 @@ class AssessmentStore extends Store {
 
 		assessment.currentResponses.push(questionId)
 
-		return APIUtil.postEvent(model.getRoot(), 'assessment:setResponse', {
+		return APIUtil.postEvent(model.getRoot(), 'assessment:setResponse', '2.0.0', {
 			assessmentId: assessment.id,
 			attemptId: assessment.current.attemptId,
 			questionId,

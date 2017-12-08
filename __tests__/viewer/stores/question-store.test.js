@@ -96,7 +96,8 @@ describe('QuestionStore', () => {
 		expect(APIUtil.postEvent).toHaveBeenCalledTimes(1)
 		expect(APIUtil.postEvent.mock.calls[0][0]).toBe(OboModel.models.questionId)
 		expect(APIUtil.postEvent.mock.calls[0][1]).toEqual('question:setResponse')
-		expect(APIUtil.postEvent.mock.calls[0][2]).toEqual({
+		expect(APIUtil.postEvent.mock.calls[0][2]).toEqual('2.0.0')
+		expect(APIUtil.postEvent.mock.calls[0][3]).toEqual({
 			questionId: 'questionId',
 			response: { customResponse: 'responseValue' }
 		})

@@ -215,6 +215,7 @@ let insertAttemptEndEvents = (
 		ip: remoteAddress,
 		metadata: {},
 		draftId: draftId,
+		eventVersion: '1.1.0',
 		caliperPayload: createAssessmentAttemptSubmittedEvent({
 			actor: { type: 'user', id: user.id },
 			draftId,
@@ -258,6 +259,7 @@ let insertAttemptScoredEvents = (
 		ip: remoteAddress,
 		metadata: {},
 		draftId: draftId,
+		eventVersion: '1.1.0',
 		caliperPayload: createAssessmentAttemptScoredEvent({
 			actor: { type: 'serverApp' },
 			draftId,

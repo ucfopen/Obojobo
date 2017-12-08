@@ -306,6 +306,7 @@ app.post('/api/assessments/attempt/start', (req, res, next) => {
 				ip: req.connection.remoteAddress,
 				metadata: {},
 				draftId: draftId,
+				eventVersion: '1.1.0',
 				caliperPayload: createAssessmentAttemptStartedEvent({
 					actor: { type: 'user', id: currentUser.id },
 					draftId,

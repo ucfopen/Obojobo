@@ -39,13 +39,14 @@ var APIUtil = {
 		})
 	},
 
-	postEvent(lo, action, payload) {
+	postEvent(lo, action, eventVersion, payload) {
 		return createParsedJsonPromise(
 			APIUtil.post('/api/events', {
 				event: {
 					action,
 					draft_id: lo.get('_id'),
 					actor_time: new Date().toISOString(),
+					event_version: eventVersion,
 					payload
 				}
 			})
