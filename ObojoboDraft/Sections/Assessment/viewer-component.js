@@ -34,6 +34,13 @@ export default class Assessment extends React.Component {
 		if (assessment.current !== null) {
 			return 'takingTest'
 		}
+		// TODO: Also check if assessmentReview is true, or turned on. If it's false, this needs to
+		// fall through.
+		if (
+			!AssessmentUtil.hasAttemptsRemaining(this.props.moduleData.assessmentState, this.props.model)
+		) {
+			return 'review'
+		}
 		if (assessment.attempts.length > 0) {
 			return 'scoreSubmitted'
 		}
@@ -111,6 +118,19 @@ export default class Assessment extends React.Component {
 		}
 	}
 
+	getNumCorrect(questionScores) {
+		return questionScores.reduce(
+			function(acc, questionScore) {
+				let n = 0
+				if (parseInt(questionScore.score, 10) === 100) {
+					n = 1
+				}
+				return parseInt(acc, 10) + n
+			},
+			[0]
+		)
+	}
+
 	render() {
 		let recentScore = AssessmentUtil.getLastAttemptScoreForModel(
 			this.props.moduleData.assessmentState,
@@ -161,23 +181,12 @@ export default class Assessment extends React.Component {
 					)
 
 				case 'scoreSubmitted':
-					let scoreAction = this.getScoreAction()
-
-					let questionScores = AssessmentUtil.getLastAttemptScoresForModel(
+					const questionScores = AssessmentUtil.getLastAttemptScoresForModel(
 						this.props.moduleData.assessmentState,
 						this.props.model
 					)
-
-					let numCorrect = questionScores.reduce(
-						function(acc, questionScore) {
-							let n = 0
-							if (parseInt(questionScore.score, 10) === 100) {
-								n = 1
-							}
-							return parseInt(acc, 10) + n
-						},
-						[0]
-					)
+					const scoreAction = this.getScoreAction()
+					const numCorrect = this.getNumCorrect(questionScores)
 
 					if (scoreAction.page != null) {
 						let pageModel = OboModel.create(scoreAction.page)
@@ -201,29 +210,14 @@ export default class Assessment extends React.Component {
 							{childEl}
 							<div className="review">
 								<p className="number-correct">{`You got ${numCorrect} out of ${questionScores.length} questions correct:`}</p>
-								{questionScores.map((questionScore, index) => {
-									let questionModel = OboModel.models[questionScore.id]
-									let QuestionComponent = questionModel.getComponentClass()
-
-									return (
-										<div
-											key={index}
-											className={questionScore.score === 100 ? 'is-correct' : 'is-not-correct'}
-										>
-											<p>{`Question ${index + 1} - ${questionScore.score === 100
-												? 'Correct:'
-												: 'Incorrect:'}`}</p>
-											<QuestionComponent
-												model={questionModel}
-												moduleData={this.props.moduleData}
-												showContentOnly
-											/>
-										</div>
-									)
-								})}
+								{questionScores.map((questionScore, index) =>
+									questionResult(this.props, questionScore, index)
+								)}
 							</div>
 						</div>
 					)
+				case 'review':
+					return renderAssessmentReviewView(this.props, { recentScore, highestScore })
 			}
 		})()
 
@@ -237,4 +231,37 @@ export default class Assessment extends React.Component {
 			</OboComponent>
 		)
 	}
+}
+
+// TODO: These functions here are temporary and can be abstracted to other files as necessary.
+const renderAssessmentReviewView = (props, scores) => {
+	const attempts = AssessmentUtil.getAllAttempts(props.moduleData.assessmentState, props.model)
+	return (
+		<div className="score unlock">
+			<h1>{`Your score is ${Math.round(scores.recentScore)}%`}</h1>
+			{scores.recentScore === scores.highestScore
+				? <h2>This is your highest score</h2>
+				: <h2>{`Your highest score was ${Math.round(scores.highestScore)}%`}</h2>}
+			{// TODO: Carousel could wrap the assessment attempts.
+			attempts.map(attempt => {
+				const scores = attempt.result.scores
+				console.log(attempt, scores, props)
+
+				// TODO: Return attempt with incorrect/correct answers.
+				return <div>this is an attempt</div>
+			})}
+		</div>
+	)
+}
+
+const questionResult = (props, questionScore, index) => {
+	const questionModel = OboModel.models[questionScore.id]
+	const QuestionComponent = questionModel.getComponentClass()
+
+	return (
+		<div key={index} className={questionScore.score === 100 ? 'is-correct' : 'is-not-correct'}>
+			<p>{`Question ${index + 1} - ${questionScore.score === 100 ? 'Correct:' : 'Incorrect:'}`}</p>
+			<QuestionComponent model={questionModel} moduleData={props.moduleData} showContentOnly />
+		</div>
+	)
 }

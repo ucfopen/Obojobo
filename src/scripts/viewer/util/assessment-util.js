@@ -71,6 +71,16 @@ var AssessmentUtil = {
 		return assessment.current
 	},
 
+	getAllAttempts(state, model) {
+		return this.getAssessmentForModel(state, model).attempts
+	},
+
+	hasAttemptsRemaining(state, model) {
+		return (
+			this.getAssessmentForModel(state, model).attempts.length - model.modelState.attempts !== 0
+		)
+	},
+
 	// getLastAttemptForModel(state, model) {
 	// 	let assessment = AssessmentUtil.getAssessmentForModel(state, model);
 	// 	if (!assessment || (assessment.attempts.length === 0)) { return null; }

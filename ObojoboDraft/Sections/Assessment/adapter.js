@@ -2,20 +2,17 @@ import ScoreActions from './score-actions'
 
 let Adapter = {
 	construct(model, attrs) {
-		if (__guard__(attrs != null ? attrs.content : undefined, x => x.attempts) != null) {
-			if (attrs.content.attempts === 'unlimited') {
-				model.modelState.attempts = Infinity
-			} else {
-				model.modelState.attempts = parseInt(attrs.content.attempts, 10)
-			}
-		} else {
-			model.modelState.attempts = Infinity
-		}
+		// Default state.
+		model.modelState.attempts = Infinity
+		model.modelState.assessmentReview = false
+		model.modelState.scoreActions = new ScoreActions()
 
-		if (__guard__(attrs != null ? attrs.content : undefined, x1 => x1.scoreActions) != null) {
-			return (model.modelState.scoreActions = new ScoreActions(attrs.content.scoreActions))
-		} else {
-			return (model.modelState.scoreActions = new ScoreActions())
+		// Set state if XML has the attributes.
+		if (attrs && attrs.content) {
+			model.modelState.attempts =
+				attrs.content.attempts === 'unlimited' ? Infinity : parseInt(attrs.content.attempts, 10)
+			model.modelState.assessmentReview = attrs.content.assessmentReview || false
+			model.modelState.scoreActions = new ScoreActions(attrs.content.scoreActions || null)
 		}
 	},
 

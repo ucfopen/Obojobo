@@ -193,24 +193,16 @@ function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { de
 
 var Adapter = {
 	construct: function construct(model, attrs) {
-		if (__guard__(attrs != null ? attrs.content : undefined, function (x) {
-			return x.attempts;
-		}) != null) {
-			if (attrs.content.attempts === 'unlimited') {
-				model.modelState.attempts = Infinity;
-			} else {
-				model.modelState.attempts = parseInt(attrs.content.attempts, 10);
-			}
-		} else {
-			model.modelState.attempts = Infinity;
-		}
+		// Default state.
+		model.modelState.attempts = Infinity;
+		model.modelState.assessmentReview = false;
+		model.modelState.scoreActions = new _scoreActions2.default();
 
-		if (__guard__(attrs != null ? attrs.content : undefined, function (x1) {
-			return x1.scoreActions;
-		}) != null) {
-			return model.modelState.scoreActions = new _scoreActions2.default(attrs.content.scoreActions);
-		} else {
-			return model.modelState.scoreActions = new _scoreActions2.default();
+		// Set state if XML has the attributes.
+		if (attrs && attrs.content) {
+			model.modelState.attempts = attrs.content.attempts === 'unlimited' ? Infinity : parseInt(attrs.content.attempts, 10);
+			model.modelState.assessmentReview = attrs.content.assessmentReview || false;
+			model.modelState.scoreActions = new _scoreActions2.default(attrs.content.scoreActions || null);
 		}
 	},
 
@@ -472,6 +464,11 @@ var Assessment = function (_React$Component) {
 			if (assessment.current !== null) {
 				return 'takingTest';
 			}
+			// TODO: Also check if assessmentReview is true, or turned on. If it's false, this needs to
+			// fall through.
+			if (!AssessmentUtil.hasAttemptsRemaining(this.props.moduleData.assessmentState, this.props.model)) {
+				return 'review';
+			}
 			if (assessment.attempts.length > 0) {
 				return 'scoreSubmitted';
 			}
@@ -553,6 +550,17 @@ var Assessment = function (_React$Component) {
 			};
 		}
 	}, {
+		key: 'getNumCorrect',
+		value: function getNumCorrect(questionScores) {
+			return questionScores.reduce(function (acc, questionScore) {
+				var n = 0;
+				if (parseInt(questionScore.score, 10) === 100) {
+					n = 1;
+				}
+				return parseInt(acc, 10) + n;
+			}, [0]);
+		}
+	}, {
 		key: 'render',
 		value: function render() {
 			var _this2 = this;
@@ -598,17 +606,9 @@ var Assessment = function (_React$Component) {
 						);
 
 					case 'scoreSubmitted':
-						var scoreAction = _this2.getScoreAction();
-
 						var questionScores = AssessmentUtil.getLastAttemptScoresForModel(_this2.props.moduleData.assessmentState, _this2.props.model);
-
-						var numCorrect = questionScores.reduce(function (acc, questionScore) {
-							var n = 0;
-							if (parseInt(questionScore.score, 10) === 100) {
-								n = 1;
-							}
-							return parseInt(acc, 10) + n;
-						}, [0]);
+						var scoreAction = _this2.getScoreAction();
+						var numCorrect = _this2.getNumCorrect(questionScores);
 
 						if (scoreAction.page != null) {
 							var pageModel = OboModel.create(scoreAction.page);
@@ -650,29 +650,12 @@ var Assessment = function (_React$Component) {
 									'You got ' + numCorrect + ' out of ' + questionScores.length + ' questions correct:'
 								),
 								questionScores.map(function (questionScore, index) {
-									var questionModel = OboModel.models[questionScore.id];
-									var QuestionComponent = questionModel.getComponentClass();
-
-									return React.createElement(
-										'div',
-										{
-											key: index,
-											className: questionScore.score === 100 ? 'is-correct' : 'is-not-correct'
-										},
-										React.createElement(
-											'p',
-											null,
-											'Question ' + (index + 1) + ' - ' + (questionScore.score === 100 ? 'Correct:' : 'Incorrect:')
-										),
-										React.createElement(QuestionComponent, {
-											model: questionModel,
-											moduleData: _this2.props.moduleData,
-											showContentOnly: true
-										})
-									);
+									return questionResult(_this2.props, questionScore, index);
 								})
 							)
 						);
+					case 'review':
+						return renderAssessmentReviewView(_this2.props, { recentScore: recentScore, highestScore: highestScore });
 				}
 			}();
 
@@ -691,7 +674,59 @@ var Assessment = function (_React$Component) {
 	return Assessment;
 }(React.Component);
 
+// TODO: These functions here are temporary and can be abstracted to other files as necessary.
+
+
 exports.default = Assessment;
+var renderAssessmentReviewView = function renderAssessmentReviewView(props, scores) {
+	var attempts = AssessmentUtil.getAllAttempts(props.moduleData.assessmentState, props.model);
+	return React.createElement(
+		'div',
+		{ className: 'score unlock' },
+		React.createElement(
+			'h1',
+			null,
+			'Your score is ' + Math.round(scores.recentScore) + '%'
+		),
+		scores.recentScore === scores.highestScore ? React.createElement(
+			'h2',
+			null,
+			'This is your highest score'
+		) : React.createElement(
+			'h2',
+			null,
+			'Your highest score was ' + Math.round(scores.highestScore) + '%'
+		),
+		// TODO: Carousel could wrap the assessment attempts.
+		attempts.map(function (attempt) {
+			var scores = attempt.result.scores;
+			console.log(attempt, scores, props);
+
+			// TODO: Return attempt with incorrect/correct answers.
+			return React.createElement(
+				'div',
+				null,
+				'this is an attempt'
+			);
+		})
+	);
+};
+
+var questionResult = function questionResult(props, questionScore, index) {
+	var questionModel = OboModel.models[questionScore.id];
+	var QuestionComponent = questionModel.getComponentClass();
+
+	return React.createElement(
+		'div',
+		{ key: index, className: questionScore.score === 100 ? 'is-correct' : 'is-not-correct' },
+		React.createElement(
+			'p',
+			null,
+			'Question ' + (index + 1) + ' - ' + (questionScore.score === 100 ? 'Correct:' : 'Incorrect:')
+		),
+		React.createElement(QuestionComponent, { model: questionModel, moduleData: props.moduleData, showContentOnly: true })
+	);
+};
 
 /***/ })
 

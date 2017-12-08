@@ -3753,6 +3753,15 @@
 				Z: function Z(date) {
 					return formatTimezone(date.getTimezoneOffset(), ':')
 				},
+				getAllAttempts: function getAllAttempts(state, model) {
+					return this.getAssessmentForModel(state, model).attempts
+				},
+				hasAttemptsRemaining: function hasAttemptsRemaining(state, model) {
+					return (
+						this.getAssessmentForModel(state, model).attempts.length - model.modelState.attempts !==
+						0
+					)
+				},
 
 				// Timezone: -0100, +0000, ... +1200
 				ZZ: function ZZ(date) {
