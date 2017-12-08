@@ -8,3 +8,5 @@ const app = express()
 
 // add the middleware to Express
 app.use(DefaultObojoboMiddleware)
+
+module.exports = app
