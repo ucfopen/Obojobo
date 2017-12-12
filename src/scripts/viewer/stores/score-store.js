@@ -4,7 +4,7 @@ import APIUtil from '../../viewer/util/api-util'
 
 let { Store } = Common.flux
 let { Dispatcher } = Common.flux
-let { FocusUtil } = Common.util
+let { UUID, FocusUtil } = Common.util
 let { OboModel } = Common.models
 
 class ScoreStore extends Store {
@@ -14,7 +14,13 @@ class ScoreStore extends Store {
 
 		Dispatcher.on({
 			'score:set': payload => {
-				this.state.scores[payload.value.id] = payload.value.score
+				let scoreId = UUID()
+
+				this.state.scores[payload.value.itemId] = {
+					id: scoreId,
+					score: payload.value.score,
+					itemId: payload.value.itemId
+				}
 
 				if (payload.value.score === 100) {
 					FocusUtil.unfocus()
@@ -22,21 +28,23 @@ class ScoreStore extends Store {
 
 				this.triggerChange()
 
-				model = OboModel.models[payload.value.id]
-				return APIUtil.postEvent(model.getRoot(), 'score:set', {
-					id: payload.value.id,
+				model = OboModel.models[payload.value.itemId]
+				return APIUtil.postEvent(model.getRoot(), 'score:set', '1.0.0', {
+					id: scoreId,
+					itemId: payload.value.itemId,
 					score: payload.value.score
 				})
 			},
 
 			'score:clear': payload => {
-				delete this.state.scores[payload.value.id]
+				let scoreItem = this.state.scores[payload.value.itemId]
+
+				model = OboModel.models[scoreItem.itemId]
+
+				delete this.state.scores[payload.value.itemId]
 				this.triggerChange()
 
-				model = OboModel.models[payload.value.id]
-				return APIUtil.postEvent(model.getRoot(), 'score:clear', {
-					id: payload.value.id
-				})
+				return APIUtil.postEvent(model.getRoot(), 'score:clear', '1.0.0', scoreItem)
 			}
 		})
 	}

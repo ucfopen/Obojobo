@@ -48,7 +48,11 @@ describe('ScoreUtil', () => {
 
 		ScoreStore.setState({
 			scores: {
-				test: 50
+				test: {
+					id: 'uuid',
+					itemId: 'test',
+					score: 50
+				}
 			}
 		})
 
@@ -64,7 +68,7 @@ describe('ScoreUtil', () => {
 			'score:set',
 			expect.objectContaining({
 				value: {
-					id: 'test',
+					itemId: 'test',
 					score: 50
 				}
 			})

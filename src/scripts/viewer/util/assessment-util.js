@@ -78,24 +78,24 @@ var AssessmentUtil = {
 	// 	return assessment.attempts[assessment.attempts.length - 1];
 	// },
 
-	isCurrentAttemptComplete(assessmentState, questionState, model) {
-		console.log(
-			'@TODO: Function not working, responses stored by responseId, not by questionId. Do not use this method.'
-		)
-		let current = AssessmentUtil.getCurrentAttemptForModel(assessmentState, model)
-		if (!current) {
-			return null
-		}
+	// isCurrentAttemptComplete(assessmentState, questionState, model) {
+	// 	console.log(
+	// 		'@TODO: Function not working, responses stored by responseId, not by questionId. Do not use this method.'
+	// 	)
+	// 	let current = AssessmentUtil.getCurrentAttemptForModel(assessmentState, model)
+	// 	if (!current) {
+	// 		return null
+	// 	}
 
-		let models = model.children.at(1).children.models
+	// 	let models = model.children.at(1).children.models
 
-		return (
-			models.filter(function(questionModel) {
-				let resp = QuestionUtil.getResponse(questionState, questionModel)
-				return resp && resp.set === true
-			}).length === models.length
-		)
-	},
+	// 	return (
+	// 		models.filter(function(questionModel) {
+	// 			let resp = QuestionUtil.getResponse(questionState, questionModel)
+	// 			return resp && resp.set === true
+	// 		}).length === models.length
+	// 	)
+	// },
 
 	getNumberOfAttemptsCompletedForModel(state, model) {
 		let assessment = AssessmentUtil.getAssessmentForModel(state, model)

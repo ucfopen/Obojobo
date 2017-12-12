@@ -208,6 +208,11 @@ var MCChoice = function (_React$Component) {
 	}
 
 	_createClass(MCChoice, [{
+		key: 'getQuestionModel',
+		value: function getQuestionModel() {
+			return this.props.model.getParentOfType('ObojoboDraft.Chunks.Question');
+		}
+	}, {
 		key: 'createFeedbackItem',
 		value: function createFeedbackItem(message) {
 			var feedback = OboModel.create('ObojoboDraft.Chunks.MCAssessment.MCFeedback');
@@ -235,9 +240,8 @@ var MCChoice = function (_React$Component) {
 		value: function render() {
 			var _this2 = this;
 
-			var isSelected = __guard__(QuestionUtil.getResponse(this.props.moduleData.questionState, this.props.model), function (x) {
-				return x.set;
-			}) === true;
+			var response = QuestionUtil.getResponse(this.props.moduleData.questionState, this.getQuestionModel()) || { ids: [] };
+			var isSelected = response.ids.indexOf(this.props.model.get('id')) !== -1;
 
 			return React.createElement(
 				OboComponent,

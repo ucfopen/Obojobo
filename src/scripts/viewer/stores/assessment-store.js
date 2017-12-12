@@ -13,7 +13,8 @@ let { ErrorUtil } = Common.util
 let { SimpleDialog } = Common.components.modal
 let { ModalUtil } = Common.util
 
-let getNewAssessmentObject = () => ({
+let getNewAssessmentObject = assessmentId => ({
+	id: assessmentId,
 	current: null,
 	currentResponses: [],
 	attempts: []
@@ -32,8 +33,8 @@ class AssessmentStore extends Store {
 			this.tryEndAttempt(payload.value.id)
 		})
 
-		Dispatcher.on('question:recordResponse', payload => {
-			this.tryRecordResponse(payload.value.id, payload.value.response)
+		Dispatcher.on('question:setResponse', payload => {
+			this.trySetResponse(payload.value.id, payload.value.response, payload.value.targetId)
 		})
 	}
 
@@ -53,7 +54,7 @@ class AssessmentStore extends Store {
 
 		for (let attempt of Array.from(history)) {
 			if (!this.state.assessments[attempt.assessmentId]) {
-				this.state.assessments[attempt.assessmentId] = getNewAssessmentObject()
+				this.state.assessments[attempt.assessmentId] = getNewAssessmentObject(attempt.assessmentId)
 			}
 
 			if (!attempt.endTime) {
@@ -135,7 +136,7 @@ class AssessmentStore extends Store {
 		}
 
 		if (!this.state.assessments[id]) {
-			this.state.assessments[id] = getNewAssessmentObject()
+			this.state.assessments[id] = getNewAssessmentObject(id)
 		}
 
 		this.state.assessments[id].current = startAttemptResp
@@ -171,7 +172,7 @@ class AssessmentStore extends Store {
 		let model = OboModel.models[id]
 
 		assessment.current.state.questions.forEach(question => QuestionUtil.hideQuestion(question.id))
-		assessment.currentResponses.forEach(responderId => QuestionUtil.resetResponse(responderId))
+		assessment.currentResponses.forEach(questionId => QuestionUtil.clearResponse(questionId))
 		assessment.attempts.push(endAttemptResp)
 		assessment.current = null
 
@@ -179,25 +180,23 @@ class AssessmentStore extends Store {
 		Dispatcher.trigger('assessment:attemptEnded', id)
 	}
 
-	tryRecordResponse(id, response) {
-		let model = OboModel.models[id]
+	trySetResponse(questionId, response, targetId) {
+		let model = OboModel.models[questionId]
 		let assessment = AssessmentUtil.getAssessmentForModel(this.state, model)
 
-		if (!assessment) return
-
-		if (assessment.currentResponses) {
-			assessment.currentResponses.push(id)
+		if (!assessment || !assessment.currentResponses) {
+			// Resolve false if not an error but couldn't do anything because not in an attempt
+			return Promise.resolve(false)
 		}
 
-		if (!assessment.currentResponses) return
+		assessment.currentResponses.push(questionId)
 
-		let questionModel = model.getParentOfType('ObojoboDraft.Chunks.Question')
-
-		return APIUtil.postEvent(model.getRoot(), 'assessment:recordResponse', {
+		return APIUtil.postEvent(model.getRoot(), 'assessment:setResponse', '2.0.0', {
+			assessmentId: assessment.id,
 			attemptId: assessment.current.attemptId,
-			questionId: questionModel.get('id'),
-			responderId: id,
-			response: response
+			questionId,
+			response,
+			targetId
 		}).then(res => {
 			if (res.status === 'error') {
 				return ErrorUtil.errorResponse(res)

@@ -4,27 +4,27 @@ let { Dispatcher } = Common.flux
 
 let ScoreUtil = {
 	getScoreForModel(state, model) {
-		let score = state.scores[model.get('id')]
-		if (typeof score === 'undefined' || score === null) {
+		let scoreItem = state.scores[model.get('id')]
+		if (typeof scoreItem === 'undefined' || scoreItem === null) {
 			return null
 		}
 
-		return score
+		return scoreItem.score
 	},
 
-	setScore(id, score) {
+	setScore(itemId, score) {
 		return Dispatcher.trigger('score:set', {
 			value: {
-				id,
+				itemId,
 				score
 			}
 		})
 	},
 
-	clearScore(id) {
+	clearScore(itemId) {
 		return Dispatcher.trigger('score:clear', {
 			value: {
-				id
+				itemId
 			}
 		})
 	}

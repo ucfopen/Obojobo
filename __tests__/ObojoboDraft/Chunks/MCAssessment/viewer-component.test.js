@@ -180,7 +180,7 @@ describe('MCAssessment', () => {
 		expect(tree).toMatchSnapshot()
 
 		APIUtil.postEvent = jest.fn()
-		QuestionUtil.recordResponse('choice1', { set: true })
+		QuestionUtil.setResponse('parent', { ids: ['choice1'] })
 		const component2 = renderer.create(<MCAssessment model={model} moduleData={moduleData} />)
 		let tree2 = component2.toJSON()
 

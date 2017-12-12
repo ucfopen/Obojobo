@@ -207,13 +207,14 @@ describe('ViewerApp', () => {
 		expect(questionEl.find('button').length).toBe(3) // 'Solution' button
 
 		expect(QuestionStore.getState().responses).toEqual({
-			'pq1-mca-mc1': { set: false },
-			'pq1-mca-mc2': { set: false },
-			'pq1-mca-mc3': { set: true }
+			pq1: { ids: ['pq1-mca-mc3'] }
 		})
-		expect(ScoreStore.getState().scores).toEqual({
-			pq1: 0
-		})
+
+		let scores = ScoreStore.getState().scores
+		expect(scores.pq1).toBeDefined()
+		expect(Object.keys(scores.pq1).sort()).toEqual(['id', 'itemId', 'score'])
+		expect(scores.pq1.itemId).toEqual('pq1')
+		expect(scores.pq1.score).toEqual(0)
 
 		viewerEl.unmount()
 	})
@@ -240,13 +241,14 @@ describe('ViewerApp', () => {
 		expect(questionEl.find('button').length).toBe(3) // 'Solution' button
 
 		expect(QuestionStore.getState().responses).toEqual({
-			'pq1-mca-mc1': { set: true },
-			'pq1-mca-mc2': { set: false },
-			'pq1-mca-mc3': { set: false }
+			pq1: { ids: ['pq1-mca-mc1'] }
 		})
-		expect(ScoreStore.getState().scores).toEqual({
-			pq1: 100
-		})
+
+		let scores = ScoreStore.getState().scores
+		expect(scores.pq1).toBeDefined()
+		expect(Object.keys(scores.pq1).sort()).toEqual(['id', 'itemId', 'score'])
+		expect(scores.pq1.itemId).toEqual('pq1')
+		expect(scores.pq1.score).toEqual(100)
 
 		viewerEl.unmount()
 	})
