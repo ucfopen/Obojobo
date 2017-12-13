@@ -2747,7 +2747,7 @@
 							_this.triggerChange()
 
 							model = OboModel.models[payload.value.itemId]
-							return _apiUtil2.default.postEvent(model.getRoot(), 'score:set', '1.0.0', {
+							return _apiUtil2.default.postEvent(model.getRoot(), 'score:set', '2.0.0', {
 								id: scoreId,
 								itemId: payload.value.itemId,
 								score: payload.value.score
@@ -2762,7 +2762,7 @@
 							delete _this.state.scores[payload.value.itemId]
 							_this.triggerChange()
 
-							return _apiUtil2.default.postEvent(model.getRoot(), 'score:clear', '1.0.0', scoreItem)
+							return _apiUtil2.default.postEvent(model.getRoot(), 'score:clear', '2.0.0', scoreItem)
 						}
 					})
 					return _this
