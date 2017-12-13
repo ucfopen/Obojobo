@@ -41,6 +41,10 @@ jest.mock('../../../src/scripts/viewer/util/api-util', () => {
 	}
 })
 
+jest.mock('../../../src/scripts/common/util/uuid', () => {
+	return () => 'deadbeef-0000-0000-0000-000000000000'
+})
+
 APIUtil.postEvent = () => {
 	return Promise.resolve({ status: 'ok' })
 }
@@ -368,25 +372,27 @@ describe('ViewerApp', () => {
 		const viewerEl = mount(<ViewerApp />)
 
 		NavUtil.goNext()
-		expect(APIUtil.postEvent).toHaveBeenLastCalledWith(OboModel.getRoot(), 'nav:next', {
+		expect(APIUtil.postEvent).toHaveBeenLastCalledWith(OboModel.getRoot(), 'nav:next', '1.0.0', {
 			from: 'page-1',
 			to: 'page-2'
 		})
 
 		NavUtil.goPrev()
-		expect(APIUtil.postEvent).toHaveBeenLastCalledWith(OboModel.getRoot(), 'nav:prev', {
+		expect(APIUtil.postEvent).toHaveBeenLastCalledWith(OboModel.getRoot(), 'nav:prev', '1.0.0', {
 			from: 'page-2',
 			to: 'page-1'
 		})
 
 		NavUtil.goto(testId)
-		expect(APIUtil.postEvent).toHaveBeenLastCalledWith(OboModel.getRoot(), 'nav:goto', {
+		expect(APIUtil.postEvent).toHaveBeenLastCalledWith(OboModel.getRoot(), 'nav:goto', '1.0.0', {
 			from: 'page-1',
 			to: 'qb2.q2-mca-mc2'
 		})
 
 		NavUtil.gotoPath(testPath)
-		expect(APIUtil.postEvent).toHaveBeenLastCalledWith(OboModel.getRoot(), 'nav:gotoPath', {
+		expect(
+			APIUtil.postEvent
+		).toHaveBeenLastCalledWith(OboModel.getRoot(), 'nav:gotoPath', '1.0.0', {
 			from: 'qb2.q2-mca-mc2',
 			to: 'qb1.q1'
 		})
@@ -426,22 +432,26 @@ describe('ViewerApp', () => {
 		const testId = 'qb2.q2-mca-mc2'
 		APIUtil.postEvent = jest.fn()
 
-		QuestionUtil.recordResponse(testId, { set: true })
-		expect(APIUtil.postEvent).toHaveBeenCalledWith(OboModel.getRoot(), 'question:recordResponse', {
+		QuestionUtil.setResponse('qb2.q2', { ids: [testId] }, testId)
+		expect(
+			APIUtil.postEvent
+		).toHaveBeenCalledWith(OboModel.getRoot(), 'question:setResponse', '2.0.0', {
 			questionId: 'qb2.q2',
-			responderId: 'qb2.q2-mca-mc2',
-			response: {
-				set: true
-			}
+			targetId: testId,
+			response: { ids: [testId] }
 		})
 
 		QuestionUtil.hideQuestion(testId)
-		expect(APIUtil.postEvent).toHaveBeenLastCalledWith(OboModel.getRoot(), 'question:hide', {
+		expect(
+			APIUtil.postEvent
+		).toHaveBeenLastCalledWith(OboModel.getRoot(), 'question:hide', '1.0.0', {
 			questionId: 'qb2.q2-mca-mc2'
 		})
 
 		QuestionUtil.viewQuestion(testId)
-		expect(APIUtil.postEvent).toHaveBeenLastCalledWith(OboModel.getRoot(), 'question:view', {
+		expect(
+			APIUtil.postEvent
+		).toHaveBeenLastCalledWith(OboModel.getRoot(), 'question:view', '1.0.0', {
 			questionId: 'qb2.q2-mca-mc2'
 		})
 	})
@@ -453,14 +463,17 @@ describe('ViewerApp', () => {
 		APIUtil.postEvent = jest.fn()
 
 		ScoreUtil.setScore(testId, testScore)
-		expect(APIUtil.postEvent).toHaveBeenCalledWith(OboModel.getRoot(), 'score:set', {
-			id: 'qb2.q2-mca-mc2',
+		expect(APIUtil.postEvent).toHaveBeenCalledWith(OboModel.getRoot(), 'score:set', '1.0.0', {
+			id: 'deadbeef-0000-0000-0000-000000000000',
+			itemId: 'qb2.q2-mca-mc2',
 			score: 100
 		})
 
 		ScoreUtil.clearScore(testId)
-		expect(APIUtil.postEvent).toHaveBeenLastCalledWith(OboModel.getRoot(), 'score:clear', {
-			id: 'qb2.q2-mca-mc2'
+		expect(APIUtil.postEvent).toHaveBeenLastCalledWith(OboModel.getRoot(), 'score:clear', '1.0.0', {
+			id: 'deadbeef-0000-0000-0000-000000000000',
+			itemId: 'qb2.q2-mca-mc2',
+			score: 100
 		})
 	})
 })
