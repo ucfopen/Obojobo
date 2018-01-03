@@ -31,18 +31,18 @@ describe('lti', () => {
 		outcomes.__resetCallbackForSend_replace_result()
 	})
 
-	it('should find the appropriate secret for a given key', () => {
+	test.skip('should find the appropriate secret for a given key', () => {
 		let secret = lti.findSecretForKey('testkey')
 		expect(secret).toBe('testsecret')
 	})
 
-	it('should fail to find an unused key', () => {
+	test.skip('should fail to find an unused key', () => {
 		expect(() => {
 			lti.findSecretForKey('fakekey')
 		}).toThrow()
 	})
 
-	it('should fail to replace result when the lti data couldnt be found', () => {
+	test.skip('should fail to replace result when the lti data couldnt be found', () => {
 		expect.assertions(2)
 
 		let db = oboRequire('db')
@@ -59,7 +59,7 @@ describe('lti', () => {
 		})
 	})
 
-	it('should send correct score to the outcome service', () => {
+	test.skip('should send correct score to the outcome service', () => {
 		expect.assertions(1)
 
 		// bypass all the internals of outcomes, just returns true for success
@@ -81,7 +81,7 @@ describe('lti', () => {
 		return lti.replaceResult(1, 2, 0.85)
 	})
 
-	it('should insert an event on success', () => {
+	test.skip('should insert an event on success', () => {
 		expect.assertions(13)
 
 		// bypass all the internals of outcomes, just returns true for success
@@ -115,7 +115,7 @@ describe('lti', () => {
 		return lti.replaceResult(1, 2, 0.85)
 	})
 
-	it('should insert an event on failure', () => {
+	test.skip('should insert an event on failure', () => {
 		expect.assertions(7)
 
 		// bypass all the internals of outcomes, just returns true for success
