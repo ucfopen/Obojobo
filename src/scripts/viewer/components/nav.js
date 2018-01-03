@@ -47,7 +47,7 @@ export default class Nav extends React.Component {
 	}
 
 	setAlert() {
-		return NavUtil.setRedAlert(true)
+		return NavUtil.setRedAlert(!this.props.navState.redAlert)
 	}
 
 	renderLabel(label) {

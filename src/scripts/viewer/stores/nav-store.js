@@ -90,7 +90,7 @@ class NavStore extends Store {
 					return NavUtil.setFlag(payload.value.id, 'correct', payload.value.score === 100)
 				},
 				'nav:redAlert': payload => {
-					this.state.redAlert = !this.state.redAlert
+					this.state.redAlert = payload.value.alertStatus
 					this.triggerChange()
 					return APIUtil.postEvent(OboModel.getRoot(), 'nav:redAlert', {
 						alertStatus: this.state.redAlert

@@ -637,7 +637,7 @@
 								)
 							},
 							'nav:redAlert': function navRedAlert(payload) {
-								_this.state.redAlert = !_this.state.redAlert
+								_this.state.redAlert = payload.value.alertStatus
 								_this.triggerChange()
 								return _apiUtil2.default.postEvent(OboModel.getRoot(), 'nav:redAlert', {
 									alertStatus: _this.state.redAlert
@@ -2792,7 +2792,7 @@
 					{
 						key: 'setAlert',
 						value: function setAlert() {
-							return _navUtil2.default.setRedAlert(true)
+							return _navUtil2.default.setRedAlert(!this.props.navState.redAlert)
 						}
 					},
 					{
