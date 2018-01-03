@@ -23,7 +23,7 @@ export default class Assessment extends React.Component {
 	}
 
 	getCurrentStep() {
-		let assessment = AssessmentUtil.getAssessmentForModel(
+		const assessment = AssessmentUtil.getAssessmentForModel(
 			this.props.moduleData.assessmentState,
 			this.props.model
 		)
@@ -35,10 +35,13 @@ export default class Assessment extends React.Component {
 			return 'takingTest'
 		}
 
-		// TODO: Also check if assessmentReview is true, or turned on. If it's false, this needs to
-		// fall through.
+		// TODO: This is for debugging purposes and will come from the document in the future.
+		this.props.model.modelState.assessmentReview = true
 		if (
-			!AssessmentUtil.hasAttemptsRemaining(this.props.moduleData.assessmentState, this.props.model)
+			!AssessmentUtil.hasAttemptsRemaining(
+				this.props.moduleData.assessmentState,
+				this.props.model
+			) && this.props.model.modelState.assessmentReview
 		) {
 			return 'review'
 		}
@@ -137,14 +140,17 @@ export default class Assessment extends React.Component {
 		// DEBUG
 		// alert(@state.step+ ','+ @getCurrentStep())
 
-		let childEl = (() => {
+		const childEl = (() => {
 			switch (this.getCurrentStep()) {
 				case 'untested':
 					return untestedView(this)
+
 				case 'takingTest':
 					return takingTestView(this)
+
 				case 'scoreSubmitted':
 					return scoreSubmittedView(this)
+
 				case 'review':
 					return assessmentReviewView(this)
 			}
@@ -194,7 +200,7 @@ const assessmentReviewView = (assessment) => {
 			{// TODO: Carousel could wrap the assessment attempts.
 				attempts.map(attempt => {
 					const scores = attempt.result.scores
-					console.log(attempt, scores, assessment.props)
+					console.log(scores)
 
 					// TODO: Return attempt with incorrect/correct answers.
 					return <div>this is an attempt</div>
