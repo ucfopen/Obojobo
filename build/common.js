@@ -123,9 +123,9 @@
 						}
 					: function(obj) {
 							return obj &&
-							typeof Symbol === 'function' &&
-							obj.constructor === Symbol &&
-							obj !== Symbol.prototype
+								typeof Symbol === 'function' &&
+								obj.constructor === Symbol &&
+								obj !== Symbol.prototype
 								? 'symbol'
 								: typeof obj
 						}
@@ -862,8 +862,10 @@
 
 					return _possibleConstructorReturn(
 						this,
-						(OboModelCollection.__proto__ || Object.getPrototypeOf(OboModelCollection))
-							.apply(this, arguments)
+						(OboModelCollection.__proto__ || Object.getPrototypeOf(OboModelCollection)).apply(
+							this,
+							arguments
+						)
 					)
 				}
 
@@ -1758,51 +1760,60 @@
 
 							var j = 0
 							return Array.from(this.styleList.styles).map(function(style) {
-								return (s1 =
-									(style.type + '          ').substr(0, 10) + '|'), (s2 = ''), (function() {
-									var result = []
-									for (
-										i = 0, end1 = style.start, asc1 = 0 <= end1;
-										asc1 ? i < end1 : i > end1;
-										asc1 ? i++ : i--
-									) {
-										var asc1, end1
-										result.push((s2 += '·'))
-									}
-									return result
-								})(), (s2 += '<'), (function() {
-									var result1 = []
-									for (
-										start = style.start + 1, i = start, end2 = style.end, asc2 = start <= end2;
-										asc2 ? i < end2 : i > end2;
-										asc2 ? i++ : i--
-									) {
-										var asc2, end2
-										result1.push((s2 += '='))
-									}
-									return result1
-								})(), (s2 += '>'), (function() {
-									var result2 = []
-									for (
-										start1 = style.end + 1, i = start1, end3 = fill.length, asc3 = start1 <= end3;
-										asc3 ? i < end3 : i > end3;
-										asc3 ? i++ : i--
-									) {
-										var asc3, end3, start1
-										result2.push((s2 += '·'))
-									}
-									return result2
-								})(), console.log(
-									(j + '   ').substr(0, 3) +
-										'|' +
-										(s1 + s2 + fill).substr(0, fill.length + 1) +
-										'|' +
-										style.start +
-										',' +
-										style.end +
-										'|' +
-										JSON.stringify(style.data)
-								), j++ // + '|' + style.__debug
+								return (
+									(s1 = (style.type + '          ').substr(0, 10) + '|'),
+									(s2 = ''),
+									(function() {
+										var result = []
+										for (
+											i = 0, end1 = style.start, asc1 = 0 <= end1;
+											asc1 ? i < end1 : i > end1;
+											asc1 ? i++ : i--
+										) {
+											var asc1, end1
+											result.push((s2 += '·'))
+										}
+										return result
+									})(),
+									(s2 += '<'),
+									(function() {
+										var result1 = []
+										for (
+											start = style.start + 1, i = start, end2 = style.end, asc2 = start <= end2;
+											asc2 ? i < end2 : i > end2;
+											asc2 ? i++ : i--
+										) {
+											var asc2, end2
+											result1.push((s2 += '='))
+										}
+										return result1
+									})(),
+									(s2 += '>'),
+									(function() {
+										var result2 = []
+										for (
+											start1 = style.end + 1, i = start1, end3 = fill.length, asc3 = start1 <= end3;
+											asc3 ? i < end3 : i > end3;
+											asc3 ? i++ : i--
+										) {
+											var asc3, end3, start1
+											result2.push((s2 += '·'))
+										}
+										return result2
+									})(),
+									console.log(
+										(j + '   ').substr(0, 3) +
+											'|' +
+											(s1 + s2 + fill).substr(0, fill.length + 1) +
+											'|' +
+											style.start +
+											',' +
+											style.end +
+											'|' +
+											JSON.stringify(style.data)
+									), // + '|' + style.__debug
+									j++
+								)
 							})
 						}
 					}
@@ -2836,9 +2847,9 @@ object-assign
 						}
 					: function(obj) {
 							return obj &&
-							typeof Symbol === 'function' &&
-							obj.constructor === Symbol &&
-							obj !== Symbol.prototype
+								typeof Symbol === 'function' &&
+								obj.constructor === Symbol &&
+								obj !== Symbol.prototype
 								? 'symbol'
 								: typeof obj
 						}
@@ -2990,9 +3001,10 @@ object-assign
 
 					return _possibleConstructorReturn(
 						this,
-						(FocusableSelectionHandler.__proto__ ||
-							Object.getPrototypeOf(FocusableSelectionHandler))
-							.apply(this, arguments)
+						(
+							FocusableSelectionHandler.__proto__ ||
+							Object.getPrototypeOf(FocusableSelectionHandler)
+						).apply(this, arguments)
 					)
 				}
 
@@ -6610,9 +6622,9 @@ object-assign
 								contains: [],
 								left: [],
 								right: []
-							}
 
-							//@TODO - optimize
+								//@TODO - optimize
+							}
 							var _iteratorNormalCompletion7 = true
 							var _didIteratorError7 = false
 							var _iteratorError7 = undefined
@@ -7120,8 +7132,9 @@ object-assign
 
 					return _possibleConstructorReturn(
 						this,
-						(StyleableTextComponent.__proto__ || Object.getPrototypeOf(StyleableTextComponent))
-							.apply(this, arguments)
+						(
+							StyleableTextComponent.__proto__ || Object.getPrototypeOf(StyleableTextComponent)
+						).apply(this, arguments)
 					)
 				}
 
@@ -7266,7 +7279,10 @@ object-assign
 			) {
 				if (stateObj.curNode.nodeType === 'element') {
 					return Array.from(stateObj.curNode.children).map(function(child) {
-						return (stateObj.curNode = child), getTextNodeFragmentDescriptorsAtHelper(stateObj, targetStartIndex, targetEndIndex)
+						return (
+							(stateObj.curNode = child),
+							getTextNodeFragmentDescriptorsAtHelper(stateObj, targetStartIndex, targetEndIndex)
+						)
 					})
 				} else {
 					var charsRead = stateObj.charsRead + stateObj.curNode.text.length
@@ -7871,8 +7887,10 @@ object-assign
 
 					return _possibleConstructorReturn(
 						this,
-						(FocusableChunk.__proto__ || Object.getPrototypeOf(FocusableChunk))
-							.apply(this, arguments)
+						(FocusableChunk.__proto__ || Object.getPrototypeOf(FocusableChunk)).apply(
+							this,
+							arguments
+						)
 					)
 				}
 
@@ -8014,8 +8032,9 @@ object-assign
 
 					var _this = _possibleConstructorReturn(
 						this,
-						(ToggleSelectionHandler.__proto__ || Object.getPrototypeOf(ToggleSelectionHandler))
-							.call(this)
+						(
+							ToggleSelectionHandler.__proto__ || Object.getPrototypeOf(ToggleSelectionHandler)
+						).call(this)
 					)
 
 					_this.textSelectionHandler = textSelectionHandler
@@ -8193,8 +8212,10 @@ object-assign
 
 					return _possibleConstructorReturn(
 						this,
-						(NonEditableChunk.__proto__ || Object.getPrototypeOf(NonEditableChunk))
-							.apply(this, arguments)
+						(NonEditableChunk.__proto__ || Object.getPrototypeOf(NonEditableChunk)).apply(
+							this,
+							arguments
+						)
 					)
 				}
 
@@ -8801,8 +8822,10 @@ object-assign
 
 								while ((match = varRegex.exec(text.value)) !== null) {
 									var variable = match[1]
-									var event = { text: '' }
-									// window.Common.Store.getTextForVariable(event, variable, @props.parentModel, this.props.moduleData)
+									var event = {
+										text: ''
+										// window.Common.Store.getTextForVariable(event, variable, @props.parentModel, this.props.moduleData)
+									}
 									_dispatcher2.default.trigger(
 										'getTextForVariable',
 										event,
@@ -8914,9 +8937,10 @@ object-assign
 
 					return _possibleConstructorReturn(
 						this,
-						(TextGroupSelectionHandler.__proto__ ||
-							Object.getPrototypeOf(TextGroupSelectionHandler))
-							.apply(this, arguments)
+						(
+							TextGroupSelectionHandler.__proto__ ||
+							Object.getPrototypeOf(TextGroupSelectionHandler)
+						).apply(this, arguments)
 					)
 				}
 
@@ -9585,8 +9609,10 @@ object-assign
 
 					return _possibleConstructorReturn(
 						this,
-						(ModalContainer.__proto__ || Object.getPrototypeOf(ModalContainer))
-							.apply(this, arguments)
+						(ModalContainer.__proto__ || Object.getPrototypeOf(ModalContainer)).apply(
+							this,
+							arguments
+						)
 					)
 				}
 
@@ -9681,8 +9707,10 @@ object-assign
 
 					return _possibleConstructorReturn(
 						this,
-						(SingleInputBubble.__proto__ || Object.getPrototypeOf(SingleInputBubble))
-							.apply(this, arguments)
+						(SingleInputBubble.__proto__ || Object.getPrototypeOf(SingleInputBubble)).apply(
+							this,
+							arguments
+						)
 					)
 				}
 
@@ -11082,20 +11110,24 @@ object-assign
 					}
 
 					return Array.from(urls).map(function(url) {
-						return (type = url.substr(url.lastIndexOf('.') + 1)), console.log(type), (function() {
-							switch (type) {
-								case 'js':
-									var script = document.createElement('script')
-									script.setAttribute('src', url)
-									return addEl(url, script, onLoad, onError)
+						return (
+							(type = url.substr(url.lastIndexOf('.') + 1)),
+							console.log(type),
+							(function() {
+								switch (type) {
+									case 'js':
+										var script = document.createElement('script')
+										script.setAttribute('src', url)
+										return addEl(url, script, onLoad, onError)
 
-								case 'css':
-									var link = document.createElement('link')
-									link.setAttribute('rel', 'stylesheet')
-									link.setAttribute('href', url)
-									return addEl(url, link, onLoad, onError)
-							}
-						})()
+									case 'css':
+										var link = document.createElement('link')
+										link.setAttribute('rel', 'stylesheet')
+										link.setAttribute('href', url)
+										return addEl(url, link, onLoad, onError)
+								}
+							})()
+						)
 					})
 				}
 			}

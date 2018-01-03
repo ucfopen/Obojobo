@@ -107,6 +107,18 @@ var NavUtil = {
 		})
 	},
 
+	setRedAlert(alertStatus) {
+		return Dispatcher.trigger('nav:redAlert', {
+			value: {
+				alertStatus
+			}
+		})
+	},
+
+	isRedAlertEnabled(state) {
+		return state.redAlert
+	},
+
 	// getNavItemForModel: (state, model) ->
 	// 	state.itemsById[model.get('id')]
 

@@ -354,6 +354,8 @@ body {
       transform: translate(0, -50%); }
     .viewer--components--nav .is-selected .lock-icon {
       display: none; }
+  .viewer--components--nav.is-red-alert {
+    background-color: red; }
   .viewer--components--nav .lock-icon {
     position: absolute;
     right: -1.2rem;

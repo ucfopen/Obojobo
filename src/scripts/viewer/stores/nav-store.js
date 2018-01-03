@@ -9,7 +9,7 @@ let { OboModel } = Common.models
 
 class NavStore extends Store {
 	constructor() {
-		let item, oldNavTargetId
+		let item, oldNavTargetId, isRedAlert
 		super('navstore')
 
 		Dispatcher.on(
@@ -88,6 +88,13 @@ class NavStore extends Store {
 					}
 
 					return NavUtil.setFlag(payload.value.id, 'correct', payload.value.score === 100)
+				},
+				'nav:redAlert': payload => {
+					this.state.redAlert = !this.state.redAlert
+					this.triggerChange()
+					return APIUtil.postEvent(OboModel.getRoot(), 'nav:redAlert', {
+						alertStatus: this.state.redAlert
+					})
 				}
 			},
 			this
@@ -103,7 +110,8 @@ class NavStore extends Store {
 			navTargetHistory: [],
 			navTargetId: null,
 			locked: false,
-			open: true
+			open: true,
+			redAlert: false
 		}
 
 		this.buildMenu(model)

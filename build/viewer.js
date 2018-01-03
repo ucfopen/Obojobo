@@ -219,6 +219,16 @@
 						}
 					})
 				},
+				setRedAlert: function setRedAlert(alertStatus) {
+					return Dispatcher.trigger('nav:redAlert', {
+						value: {
+							alertStatus: alertStatus
+						}
+					})
+				},
+				isRedAlertEnabled: function isRedAlertEnabled(state) {
+					return state.redAlert
+				},
 
 				// getNavItemForModel: (state, model) ->
 				// 	state.itemsById[model.get('id')]
@@ -378,8 +388,8 @@
 						credentials: 'include',
 						headers: {
 							Accept: 'application/json',
-							'Content-Type': 'application/json'
-						} //@TODO - Do I need this?
+							'Content-Type': 'application/json' //@TODO - Do I need this?
+						}
 					})
 				},
 				post: function post(endpoint, body) {
@@ -526,7 +536,8 @@
 					_classCallCheck(this, NavStore)
 
 					var item = void 0,
-						oldNavTargetId = void 0
+						oldNavTargetId = void 0,
+						isRedAlert = void 0
 
 					var _this = _possibleConstructorReturn(
 						this,
@@ -624,6 +635,13 @@
 									'correct',
 									payload.value.score === 100
 								)
+							},
+							'nav:redAlert': function navRedAlert(payload) {
+								_this.state.redAlert = !_this.state.redAlert
+								_this.triggerChange()
+								return _apiUtil2.default.postEvent(OboModel.getRoot(), 'nav:redAlert', {
+									alertStatus: _this.state.redAlert
+								})
 							}
 						},
 						_this
@@ -643,7 +661,8 @@
 								navTargetHistory: [],
 								navTargetId: null,
 								locked: false,
-								open: true
+								open: true,
+								redAlert: false
 							}
 
 							this.buildMenu(model)
@@ -1128,8 +1147,10 @@
 
 					var _this = _possibleConstructorReturn(
 						this,
-						(AssessmentStore.__proto__ || Object.getPrototypeOf(AssessmentStore))
-							.call(this, 'assessmentstore')
+						(AssessmentStore.__proto__ || Object.getPrototypeOf(AssessmentStore)).call(
+							this,
+							'assessmentstore'
+						)
 					)
 
 					Dispatcher.on('assessment:startAttempt', function(payload) {
@@ -1553,8 +1574,10 @@
 
 					var _this = _possibleConstructorReturn(
 						this,
-						(QuestionStore.__proto__ || Object.getPrototypeOf(QuestionStore))
-							.call(this, 'questionStore')
+						(QuestionStore.__proto__ || Object.getPrototypeOf(QuestionStore)).call(
+							this,
+							'questionStore'
+						)
 					)
 
 					Dispatcher.on({
@@ -2369,14 +2392,17 @@
 
 				function decode(body) {
 					var form = new FormData()
-					body.trim().split('&').forEach(function(bytes) {
-						if (bytes) {
-							var split = bytes.split('=')
-							var name = split.shift().replace(/\+/g, ' ')
-							var value = split.join('=').replace(/\+/g, ' ')
-							form.append(decodeURIComponent(name), decodeURIComponent(value))
-						}
-					})
+					body
+						.trim()
+						.split('&')
+						.forEach(function(bytes) {
+							if (bytes) {
+								var split = bytes.split('=')
+								var name = split.shift().replace(/\+/g, ' ')
+								var value = split.join('=').replace(/\+/g, ' ')
+								form.append(decodeURIComponent(name), decodeURIComponent(value))
+							}
+						})
 					return form
 				}
 
@@ -2574,8 +2600,10 @@
 
 					return _possibleConstructorReturn(
 						this,
-						(InlineNavButton.__proto__ || Object.getPrototypeOf(InlineNavButton))
-							.apply(this, arguments)
+						(InlineNavButton.__proto__ || Object.getPrototypeOf(InlineNavButton)).apply(
+							this,
+							arguments
+						)
 					)
 				}
 
@@ -2762,6 +2790,12 @@
 						}
 					},
 					{
+						key: 'setAlert',
+						value: function setAlert() {
+							return _navUtil2.default.setRedAlert(true)
+						}
+					},
+					{
 						key: 'renderLabel',
 						value: function renderLabel(label) {
 							if (label instanceof StyleableText) {
@@ -2803,8 +2837,19 @@
 										'viewer--components--nav' +
 										(this.props.navState.locked ? ' is-locked' : ' is-unlocked') +
 										(this.props.navState.open ? ' is-open' : ' is-closed') +
-										(this.props.navState.disabled ? ' is-disabled' : ' is-enabled')
+										(this.props.navState.disabled ? ' is-disabled' : ' is-enabled') +
+										(this.props.navState.redAlert ? ' is-red-alert' : ' is-not-red-alert')
 								},
+								React.createElement(
+									'button',
+									{
+										className: 'red-alert-button',
+										onClick: this.setAlert.bind(this),
+										onMouseOver: this.onMouseOver.bind(this),
+										onMouseOut: this.onMouseOut.bind(this)
+									},
+									'Toggle Red Alert'
+								),
 								React.createElement(
 									'button',
 									{
