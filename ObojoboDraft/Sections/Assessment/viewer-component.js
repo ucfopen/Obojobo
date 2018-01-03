@@ -34,6 +34,7 @@ export default class Assessment extends React.Component {
 		if (assessment.current !== null) {
 			return 'takingTest'
 		}
+
 		// TODO: Also check if assessmentReview is true, or turned on. If it's false, this needs to
 		// fall through.
 		if (
@@ -41,6 +42,7 @@ export default class Assessment extends React.Component {
 		) {
 			return 'review'
 		}
+
 		if (assessment.attempts.length > 0) {
 			return 'scoreSubmitted'
 		}
@@ -120,7 +122,7 @@ export default class Assessment extends React.Component {
 
 	getNumCorrect(questionScores) {
 		return questionScores.reduce(
-			function(acc, questionScore) {
+			function (acc, questionScore) {
 				let n = 0
 				if (parseInt(questionScore.score, 10) === 100) {
 					n = 1
@@ -132,92 +134,19 @@ export default class Assessment extends React.Component {
 	}
 
 	render() {
-		let recentScore = AssessmentUtil.getLastAttemptScoreForModel(
-			this.props.moduleData.assessmentState,
-			this.props.model
-		)
-		let highestScore = AssessmentUtil.getHighestAttemptScoreForModel(
-			this.props.moduleData.assessmentState,
-			this.props.model
-		)
-
+		// DEBUG
 		// alert(@state.step+ ','+ @getCurrentStep())
 
-		var childEl = (() => {
+		let childEl = (() => {
 			switch (this.getCurrentStep()) {
 				case 'untested':
-					let child = this.props.model.children.at(0)
-					let Component = child.getComponentClass()
-
-					return (
-						<div className="untested">
-							<Component model={child} moduleData={this.props.moduleData} />
-						</div>
-					)
-
+					return untestedView(this)
 				case 'takingTest':
-					child = this.props.model.children.at(1)
-					Component = child.getComponentClass()
-
-					return (
-						<div className="test">
-							<Component
-								className="untested"
-								model={child}
-								moduleData={this.props.moduleData}
-								showScore={recentScore !== null}
-							/>
-							<div className="submit-button">
-								<Button
-									onClick={this.onClickSubmit.bind(this)}
-									value={
-										this.isAttemptComplete()
-											? 'Submit'
-											: 'Submit (Not all questions have been answered)'
-									}
-								/>
-							</div>
-						</div>
-					)
-
+					return takingTestView(this)
 				case 'scoreSubmitted':
-					const questionScores = AssessmentUtil.getLastAttemptScoresForModel(
-						this.props.moduleData.assessmentState,
-						this.props.model
-					)
-					const scoreAction = this.getScoreAction()
-					const numCorrect = this.getNumCorrect(questionScores)
-
-					if (scoreAction.page != null) {
-						let pageModel = OboModel.create(scoreAction.page)
-						pageModel.parent = this.props.model //'@TODO - FIGURE OUT A BETTER WAY TO DO THIS - THIS IS NEEDED TO GET {{VARIABLES}} WORKING')
-						let PageComponent = pageModel.getComponentClass()
-						childEl = <PageComponent model={pageModel} moduleData={this.props.moduleData} />
-					} else {
-						childEl = (
-							<p>
-								{scoreAction.message}
-							</p>
-						)
-					}
-
-					return (
-						<div className="score unlock">
-							<h1>{`Your score is ${Math.round(recentScore)}%`}</h1>
-							{recentScore === highestScore
-								? <h2>This is your highest score</h2>
-								: <h2>{`Your highest score was ${Math.round(highestScore)}%`}</h2>}
-							{childEl}
-							<div className="review">
-								<p className="number-correct">{`You got ${numCorrect} out of ${questionScores.length} questions correct:`}</p>
-								{questionScores.map((questionScore, index) =>
-									questionResult(this.props, questionScore, index)
-								)}
-							</div>
-						</div>
-					)
+					return scoreSubmittedView(this)
 				case 'review':
-					return renderAssessmentReviewView(this.props, { recentScore, highestScore })
+					return assessmentReviewView(this)
 			}
 		})()
 
@@ -233,28 +162,126 @@ export default class Assessment extends React.Component {
 	}
 }
 
-// TODO: These functions here are temporary and can be abstracted to other files as necessary.
-const renderAssessmentReviewView = (props, scores) => {
-	const attempts = AssessmentUtil.getAllAttempts(props.moduleData.assessmentState, props.model)
-	return (
-		<div className="score unlock">
-			<h1>{`Your score is ${Math.round(scores.recentScore)}%`}</h1>
-			{scores.recentScore === scores.highestScore
-				? <h2>This is your highest score</h2>
-				: <h2>{`Your highest score was ${Math.round(scores.highestScore)}%`}</h2>}
-			{// TODO: Carousel could wrap the assessment attempts.
-			attempts.map(attempt => {
-				const scores = attempt.result.scores
-				console.log(attempt, scores, props)
+// TODO: These functions can be abstracted to other components/files as necessary.
+const untestedView = assessment => {
+	let child = assessment.props.model.children.at(0)
+	let Component = child.getComponentClass()
 
-				// TODO: Return attempt with incorrect/correct answers.
-				return <div>this is an attempt</div>
-			})}
+	return (
+		<div className="untested">
+			<Component model={child} moduleData={assessment.props.moduleData} />
 		</div>
 	)
 }
 
-const questionResult = (props, questionScore, index) => {
+const assessmentReviewView = (assessment) => {
+	const recentScore = AssessmentUtil.getLastAttemptScoreForModel(
+		assessment.props.moduleData.assessmentState,
+		assessment.props.model
+	)
+	const highestScore = AssessmentUtil.getHighestAttemptScoreForModel(
+		assessment.props.moduleData.assessmentState,
+		assessment.props.model
+	)
+	const attempts = AssessmentUtil.getAllAttempts(assessment.props.moduleData.assessmentState, assessment.props.model)
+
+	return (
+		<div className="score unlock">
+			<h1>{`Your score is ${Math.round(recentScore)}%`}</h1>
+			{recentScore === highestScore
+				? <h2>This is your highest score</h2>
+				: <h2>{`Your highest score was ${Math.round(highestScore)}%`}</h2>}
+			{// TODO: Carousel could wrap the assessment attempts.
+				attempts.map(attempt => {
+					const scores = attempt.result.scores
+					console.log(attempt, scores, assessment.props)
+
+					// TODO: Return attempt with incorrect/correct answers.
+					return <div>this is an attempt</div>
+				})}
+		</div>
+	)
+}
+
+const takingTestView = assessment => {
+	const moduleData = assessment.props.moduleData
+	const recentScore = AssessmentUtil.getLastAttemptScoreForModel(
+		assessment.props.moduleData.assessmentState,
+		assessment.props.model
+	)
+	const child = assessment.props.model.children.at(1)
+	const Component = child.getComponentClass()
+	return (
+		<div className="test">
+			<Component
+				className="untested"
+				model={child}
+				moduleData={moduleData}
+				showScore={recentScore !== null}
+			/>
+			<div className="submit-button">
+				<Button
+					onClick={assessment.onClickSubmit.bind(assessment)}
+					value={
+						assessment.isAttemptComplete()
+							? 'Submit'
+							: 'Submit (Not all questions have been answered)'
+					}
+				/>
+			</div>
+		</div>
+	)
+}
+
+const scoreSubmittedView = assessment => {
+	const questionScores = AssessmentUtil.getLastAttemptScoresForModel(
+		assessment.props.moduleData.assessmentState,
+		assessment.props.model
+	)
+	const recentScore = AssessmentUtil.getLastAttemptScoreForModel(
+		assessment.props.moduleData.assessmentState,
+		assessment.props.model
+	)
+	const highestScore = AssessmentUtil.getHighestAttemptScoreForModel(
+		assessment.props.moduleData.assessmentState,
+		assessment.props.model
+	)
+	const scoreAction = assessment.getScoreAction()
+	const numCorrect = assessment.getNumCorrect(questionScores)
+
+	let childEl
+
+	if (scoreAction.page != null) {
+		let pageModel = OboModel.create(scoreAction.page)
+		pageModel.parent = assessment.props.model //'@TODO - FIGURE OUT A BETTER WAY TO DO THIS - THIS IS NEEDED TO GET {{VARIABLES}} WORKING')
+		let PageComponent = pageModel.getComponentClass()
+		childEl = <PageComponent model={pageModel} moduleData={assessment.props.moduleData} />
+	} else {
+		childEl = (
+			<p>
+				{scoreAction.message}
+			</p>
+		)
+	}
+
+	return (
+		<div className="score unlock">
+			<h1>{`Your score is ${Math.round(recentScore)}%`}</h1>
+			{recentScore === highestScore
+				? <h2>This is your highest score</h2>
+				: <h2>{`Your highest score was ${Math.round(highestScore)}%`}</h2>}
+			{childEl}
+			<div className="review">
+				<p className="number-correct">{`You got ${numCorrect} out of ${questionScores.length} questions correct:`}</p>
+				{questionScores.map((questionScore, index) =>
+					questionResultView(assessment.props, questionScore, index)
+				)}
+			</div>
+		</div>
+	)
+}
+
+const questionResultView = (props, questionScore, index) => {
 	const questionModel = OboModel.models[questionScore.id]
 	const QuestionComponent = questionModel.getComponentClass()
 
