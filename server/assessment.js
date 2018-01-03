@@ -98,6 +98,39 @@ class Assessment extends DraftNode {
 		)
 	}
 
+	static insertAssessmentScore(
+		userId,
+		draftId,
+		assessmentId,
+		launchId,
+		score,
+		ltiScoreSent,
+		ltiScoreRead,
+		ltiScoreSentStatus,
+		ltiError,
+		isPreview
+	) {
+		return db.one(
+			`
+				INSERT INTO assessment_scores (user_id, draft_id, assessment_id, launch_id, score, lti_score_sent, lti_score_read, lti_score_sent_status, lti_error, preview)
+				VALUES($[userId], $[draftId], $[assessmentId], $[launchId], $[score], $[ltiScoreSent], $[ltiScoreRead], $[ltiScoreSentStatus], $[ltiError], $[isPreview])
+				RETURNING id
+			`,
+			{
+				userId,
+				draftId,
+				assessmentId,
+				launchId,
+				score,
+				ltiScoreSent,
+				ltiScoreRead,
+				ltiScoreSentStatus,
+				ltiError,
+				isPreview
+			}
+		)
+	}
+
 	// @TODO: most things touching the db should end up in models. figure this out
 	static updateAttempt(result, attemptId) {
 		return db.one(

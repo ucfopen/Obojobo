@@ -650,6 +650,10 @@
 						}
 					},
 					{
+						key: 'onClickResendScore',
+						value: function onClickResendScore() {}
+					},
+					{
 						key: 'endAttempt',
 						value: function endAttempt() {
 							return AssessmentUtil.endAttempt(this.props.model)
@@ -787,6 +791,7 @@
 										return React.createElement(
 											'div',
 											{ className: 'score unlock' },
+											React.createElement('p', null, 'i put this in here'),
 											React.createElement(
 												'h1',
 												null,
@@ -801,6 +806,11 @@
 															(assessmentScore === null ? '--' : Math.round(assessmentScore)) +
 															'%'
 													),
+											React.createElement(
+												Button,
+												{ onClick: _this2.onClickResendScore },
+												'Resend Score'
+											),
 											childEl,
 											React.createElement(
 												'div',

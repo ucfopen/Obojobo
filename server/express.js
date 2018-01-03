@@ -391,6 +391,8 @@ app.get('/api/drafts/:draftId/attempts', (req, res, next) => {
 		})
 })
 
+app.post('/api/assessments/attempt/:attemptId/score/send', (req, res, next) => {})
+
 oboEvents.on('client:assessment:setResponse', (event, req) => {
 	let eventRecordResponse = 'client:assessment:setResponse'
 
@@ -402,6 +404,9 @@ oboEvents.on('client:assessment:setResponse', (event, req) => {
 		return app.logError(eventRecordResponse, 'Missing Question ID', req, event)
 	if (!event.payload.response)
 		return app.logError(eventRecordResponse, 'Missing Response', req, event)
+
+	console.log('INSERT INTO ATTEMPTS QUESTION RESPONSES')
+	console.log(event.payload)
 
 	return db
 		.none(
@@ -423,6 +428,7 @@ oboEvents.on('client:assessment:setResponse', (event, req) => {
 			}
 		)
 		.catch(error => {
+			console.log(error)
 			app.logError(eventRecordResponse, 'DB UNEXPECTED', req, error, error.toString())
 		})
 })

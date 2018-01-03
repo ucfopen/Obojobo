@@ -13,69 +13,100 @@ let endAttempt = (req, res, user, attemptId, isPreviewing) => {
 	let attemptResult
 	let updateAttemptData
 	let attemptNumber
+	let response
 
-	return getAttemptInfo(attemptId)
-		.then(attemptInfoResult => {
-			attemptInfo = attemptInfoResult
-			return getAttemptHistory(user.id, attemptInfo.draftId, attemptInfo.assessmentId)
-		})
-		.then(attemptHistoryResult => {
-			attemptHistory = attemptHistoryResult
-			return getResponseHistory(attemptId)
-		})
-		.then(responseHistoryResult => {
-			responseHistory = responseHistoryResult
-			attemptNumber = responseHistory.length + 1
-			return getCalculatedScores(
-				req,
-				res,
-				attemptInfo.assessmentModel,
-				attemptInfo.attemptState,
-				attemptHistory,
-				responseHistory
-			)
-		})
-		.then(attemptResultResult => {
-			attemptResult = attemptResultResult
-			return updateAttempt(attemptId, attemptResult)
-		})
-		.then(updateAttemptDataResult => {
-			updateAttemptData = updateAttemptDataResult
-			return insertAttemptEndEvents(
-				user,
-				attemptInfo.draftId,
-				attemptInfo.assessmentId,
-				attemptId,
-				attemptNumber,
-				isPreviewing,
-				req.hostname,
-				req.connection.remoteAddress
-			)
-		})
-		.then(() => {
-			return sendLTIScore(user, attemptInfo.draftId, attemptResult.ltiScore)
-		})
-		.then(isScoreSent => {
-			updateAttemptData.ltiOutcomes = {
-				sent: isScoreSent
-			}
+	/*
+	let SCORE_SENT_STATUS_NOT_ATTEMPTED = 'not_attempted'
+let SCORE_SENT_STATUS_SENT_BUT_UNVERIFIED = 'sent_but_unverified'
+let SCORE_SENT_STATUS_SUCCESS = 'success'
+let SCORE_SENT_STATUS_READ_MISMATCH = 'read_mismatch'
+let SCORE_SENT_STATUS_ERROR = 'error'
+	*/
 
-			insertAttemptScoredEvents(
-				user,
-				attemptInfo.draftId,
-				attemptInfo.assessmentId,
-				attemptId,
-				attemptNumber,
-				attemptResult.attemptScore,
-				attemptResult.assessmentScore,
-				isPreviewing,
-				isScoreSent,
-				req.hostname,
-				req.connection.remoteAddress
-			)
+	return (
+		getAttemptInfo(attemptId)
+			.then(attemptInfoResult => {
+				attemptInfo = attemptInfoResult
+				return getAttemptHistory(user.id, attemptInfo.draftId, attemptInfo.assessmentId)
+			})
+			.then(attemptHistoryResult => {
+				attemptHistory = attemptHistoryResult
+				return getResponseHistory(attemptId)
+			})
+			.then(responseHistoryResult => {
+				responseHistory = responseHistoryResult
+				attemptNumber = responseHistory.length + 1
+				return getCalculatedScores(
+					req,
+					res,
+					attemptInfo.assessmentModel,
+					attemptInfo.attemptState,
+					attemptHistory,
+					responseHistory
+				)
+			})
+			.then(attemptResultResult => {
+				attemptResult = attemptResultResult
+				return sendLTIScore(user, attemptInfo.draftId, attemptResult.ltiScore)
+			})
+			.then(ltiRequestResult => {
+				attemptResult.lti = ltiRequestResult
+				return updateAttempt(attemptId, attemptResult)
+			})
+			.then(updateAttemptResult => {
+				response = updateAttemptResult
 
-			return updateAttemptData
-		})
+				return insertAttemptEndEvents(
+					user,
+					attemptInfo.draftId,
+					attemptInfo.assessmentId,
+					attemptId,
+					attemptNumber,
+					isPreviewing,
+					req.hostname,
+					req.connection.remoteAddress
+				)
+			})
+			// .then(() => {
+			// 	return sendLTIScore(user, attemptInfo.draftId, attemptResult.ltiScore)
+			// })
+			.then(ltiRequestResult => {
+				console.log('put onto')
+				console.log(response) //@todo put an error here for testing purps
+				response.result.lti = ltiRequestResult
+
+				Assessment.insertAssessmentScore(
+					user.id,
+					attemptInfo.draftId,
+					attemptInfo.assessmentId,
+					response.result.lti.launchId,
+					attemptResult.assessmentScore,
+					response.result.lti.scoreSent,
+					response.result.lti.scoreRead,
+					response.result.lti.status,
+					response.result.lti.error,
+					isPreviewing
+				)
+			})
+			.then(isScoreSent => {
+				insertAttemptScoredEvents(
+					user,
+					attemptInfo.draftId,
+					attemptInfo.assessmentId,
+					attemptId,
+					attemptNumber,
+					attemptResult.attemptScore,
+					attemptResult.assessmentScore,
+					response.result.lti.scoreSent,
+					response.result.lti.scoreRead,
+					response.result.lti.status,
+					req.hostname,
+					req.connection.remoteAddress
+				)
+
+				return response
+			})
+	)
 }
 
 let getAttemptInfo = attemptId => {
@@ -148,6 +179,7 @@ let getCalculatedScores = (
 				return scoreInfo.questions
 			},
 			addScore: (questionId, score) => {
+				console.log('ADD SCORE', questionId, score)
 				scoreInfo.scores.push(score)
 				scoreInfo.scoresByQuestionId[questionId] = score
 			}
@@ -160,6 +192,10 @@ let getCalculatedScores = (
 }
 
 let calculateScores = (assessmentModel, attemptHistory, scoreInfo) => {
+	console.log('calc scores', assessmentModel)
+	console.log('2', attemptHistory)
+	console.log('3', scoreInfo)
+
 	let questionScores = scoreInfo.questions.map(question => {
 		return {
 			id: question.id,
@@ -177,6 +213,9 @@ let calculateScores = (assessmentModel, attemptHistory, scoreInfo) => {
 			return parseFloat(attempt.result.attemptScore)
 		})
 	)
+
+	console.log('questionScores', questionScores)
+	console.log('allScores', allScores)
 
 	let asc = new AssessmentScoreConditions(assessmentModel.node.content.scoreConditions)
 	let assessmentScore = asc.getAssessmentScore(assessmentModel.node.content.attempts, allScores)
@@ -231,6 +270,28 @@ let sendLTIScore = (user, draftId, score) => {
 	return lti.replaceResult(user.id, draftId, score)
 }
 
+// let insertAssessmentScore = (user, draftId, assessmentId,
+// 	launchId,
+// 	score,
+// 	ltiScoreSent,
+// 	ltiScoreRead,
+// 	ltiStatus,
+// 	ltiError,
+// 	isPreviewing) => {
+// 	return Assessment.insertAssessmentScore(
+// 		user.id,
+// 		draftId,
+// 		assessmentId,
+// 		launchId,
+// 		score,
+// 		ltiScoreSent,
+// 		ltiScoreRead,
+// 		ltiStatus,
+// 		ltiError,
+// 		isPreviewing
+// 	)
+// }
+
 let insertAttemptScoredEvents = (
 	user,
 	draftId,
@@ -240,7 +301,9 @@ let insertAttemptScoredEvents = (
 	attemptScore,
 	assessmentScore,
 	isPreviewing,
-	isScoreSent,
+	ltiScoreSent,
+	ltiScoreRead,
+	ltiScoreStatus,
 	hostname,
 	remoteAddress
 ) => {
@@ -253,7 +316,9 @@ let insertAttemptScoredEvents = (
 			attemptCount: isPreviewing ? -1 : attemptNumber,
 			attemptScore: attemptScore,
 			assessmentScore: isPreviewing ? -1 : assessmentScore,
-			didSendLtiOutcome: isScoreSent
+			ltiScoreSent: ltiScoreSent,
+			ltiScoreRead: ltiScoreRead,
+			ltiScoreStatus: ltiScoreStatus
 		},
 		userId: user.id,
 		ip: remoteAddress,
@@ -271,7 +336,9 @@ let insertAttemptScoredEvents = (
 				attemptCount: isPreviewing ? -1 : attemptNumber,
 				attemptScore: attemptScore,
 				assessmentScore: isPreviewing ? -1 : assessmentScore,
-				didSendLtiOutcome: isScoreSent
+				ltiScoreSent: ltiScoreSent,
+				ltiScoreRead: ltiScoreRead,
+				ltiScoreStatus: ltiScoreStatus
 			}
 		})
 	})

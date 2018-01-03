@@ -71,6 +71,8 @@ export default class Assessment extends React.Component {
 		return this.endAttempt()
 	}
 
+	onClickResendScore() {}
+
 	endAttempt() {
 		return AssessmentUtil.endAttempt(this.props.model)
 	}
@@ -194,12 +196,14 @@ export default class Assessment extends React.Component {
 
 					return (
 						<div className="score unlock">
+							<p>i put this in here</p>
 							<h1>{`Your attempt score is ${Math.round(recentScore)}%`}</h1>
 							{recentScore === assessmentScore
 								? <h2>This is your recorded score</h2>
 								: <h2>{`Your recorded score is ${assessmentScore === null
 										? '--'
 										: Math.round(assessmentScore)}%`}</h2>}
+							<Button onClick={this.onClickResendScore}>Resend Score</Button>
 							{childEl}
 							<div className="review">
 								<p className="number-correct">{`You got ${numCorrect} out of ${questionScores.length} questions correct:`}</p>
