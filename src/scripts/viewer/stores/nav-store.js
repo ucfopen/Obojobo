@@ -102,7 +102,7 @@ class NavStore extends Store {
 		)
 	}
 
-	init(model, startingId, startingPath) {
+	init(model, startingId, startingPath, alertStatus) {
 		this.state = {
 			items: {},
 			itemsById: {},
@@ -112,7 +112,7 @@ class NavStore extends Store {
 			navTargetId: null,
 			locked: false,
 			open: true,
-			redAlert: OboGlobals.get('red_alert_status', false)
+			redAlert: alertStatus
 		}
 
 		this.buildMenu(model)

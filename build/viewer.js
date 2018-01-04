@@ -653,7 +653,7 @@
 				_createClass(NavStore, [
 					{
 						key: 'init',
-						value: function init(model, startingId, startingPath) {
+						value: function init(model, startingId, startingPath, alertStatus) {
 							this.state = {
 								items: {},
 								itemsById: {},
@@ -663,7 +663,7 @@
 								navTargetId: null,
 								locked: false,
 								open: true,
-								redAlert: OboGlobals.get('red_alert_status', false)
+								redAlert: alertStatus
 							}
 
 							this.buildMenu(model)
@@ -3117,7 +3117,8 @@
 					_navStore2.default.init(
 						state.model,
 						state.model.modelState.start,
-						window.location.pathname
+						window.location.pathname,
+						OboGlobals.get('red_alert_status', false)
 					)
 					_assessmentStore2.default.init(
 						OboGlobals.get('ObojoboDraft.Sections.Assessment:attemptHistory', [])

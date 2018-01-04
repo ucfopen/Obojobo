@@ -70,7 +70,12 @@ export default class ViewerApp extends React.Component {
 		ModalStore.init()
 		FocusStore.init()
 
-		NavStore.init(state.model, state.model.modelState.start, window.location.pathname)
+		NavStore.init(
+			state.model,
+			state.model.modelState.start,
+			window.location.pathname,
+			OboGlobals.get('red_alert_status', false)
+		)
 		AssessmentStore.init(OboGlobals.get('ObojoboDraft.Sections.Assessment:attemptHistory', []))
 
 		state.navState = NavStore.getState()
@@ -274,23 +279,18 @@ export default class ViewerApp extends React.Component {
 				ref="container"
 				onMouseDown={this.onMouseDown.bind(this)}
 				onScroll={this.onScroll.bind(this)}
-				className={`viewer--viewer-app${this.isPreviewing
-					? ' is-previewing'
-					: ' is-not-previewing'}${this.state.navState.locked
-					? ' is-locked-nav'
-					: ' is-unlocked-nav'}${this.state.navState.open ? ' is-open-nav' : ' is-closed-nav'}${this
-					.state.navState.disabled
-					? ' is-disabled-nav'
-					: ' is-enabled-nav'} is-focus-state-${this.state.focusState.viewState}`}
+				className={`viewer--viewer-app${
+					this.isPreviewing ? ' is-previewing' : ' is-not-previewing'
+				}${this.state.navState.locked ? ' is-locked-nav' : ' is-unlocked-nav'}${
+					this.state.navState.open ? ' is-open-nav' : ' is-closed-nav'
+				}${this.state.navState.disabled ? ' is-disabled-nav' : ' is-enabled-nav'} is-focus-state-${
+					this.state.focusState.viewState
+				}`}
 			>
 				<header>
 					<div className="pad">
-						<span className="module-title">
-							{this.state.model.title}
-						</span>
-						<span className="location">
-							{navTargetTitle}
-						</span>
+						<span className="module-title">{this.state.model.title}</span>
+						<span className="location">{navTargetTitle}</span>
 						<Logo />
 					</div>
 				</header>
@@ -298,28 +298,24 @@ export default class ViewerApp extends React.Component {
 				{prevEl}
 				<ModuleComponent model={this.state.model} moduleData={this.state} />
 				{nextEl}
-				{this.isPreviewing
-					? <div className="preview-banner">
-							<span>You are previewing this object - Assessments will not be counted</span>
-							<div className="controls">
-								<button
-									onClick={this.unlockNavigation.bind(this)}
-									disabled={!this.state.navState.locked}
-								>
-									Unlock navigation
-								</button>
-								<button onClick={this.resetAssessments.bind(this)}>
-									Reset assessments &amp; questions
-								</button>
-							</div>
+				{this.isPreviewing ? (
+					<div className="preview-banner">
+						<span>You are previewing this object - Assessments will not be counted</span>
+						<div className="controls">
+							<button
+								onClick={this.unlockNavigation.bind(this)}
+								disabled={!this.state.navState.locked}
+							>
+								Unlock navigation
+							</button>
+							<button onClick={this.resetAssessments.bind(this)}>
+								Reset assessments &amp; questions
+							</button>
 						</div>
-					: null}
+					</div>
+				) : null}
 				<FocusBlocker moduleData={this.state} />
-				{modal
-					? <ModalContainer>
-							{modal}
-						</ModalContainer>
-					: null}
+				{modal ? <ModalContainer>{modal}</ModalContainer> : null}
 			</div>
 		)
 	}
