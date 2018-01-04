@@ -6,6 +6,7 @@ import APIUtil from '../../viewer/util/api-util'
 let { Store } = Common.flux
 let { Dispatcher } = Common.flux
 let { OboModel } = Common.models
+let { OboGlobals } = Common.util
 
 class NavStore extends Store {
 	constructor() {
@@ -111,7 +112,7 @@ class NavStore extends Store {
 			navTargetId: null,
 			locked: false,
 			open: true,
-			redAlert: false
+			redAlert: OboGlobals.get('red_alert_status', false)
 		}
 
 		this.buildMenu(model)

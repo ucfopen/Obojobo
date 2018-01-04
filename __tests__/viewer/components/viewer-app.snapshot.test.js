@@ -47,6 +47,7 @@ describe('ViewerApp', () => {
 		window.__oboGlobals.draft = json
 		window.__oboGlobals.previewing = 'false'
 		window.__oboGlobals['ObojoboDraft.Sections.Assessment:attemptHistory'] = []
+		window.__oboGlobals.red_alert_status = 'false'
 
 		// viewerEl = mount(<ViewerApp />)
 	})

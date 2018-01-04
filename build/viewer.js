@@ -528,6 +528,7 @@
 			var Store = _Common2.default.flux.Store
 			var Dispatcher = _Common2.default.flux.Dispatcher
 			var OboModel = _Common2.default.models.OboModel
+			var OboGlobals = _Common2.default.util.OboGlobals
 
 			var NavStore = (function(_Store) {
 				_inherits(NavStore, _Store)
@@ -662,7 +663,7 @@
 								navTargetId: null,
 								locked: false,
 								open: true,
-								redAlert: false
+								redAlert: OboGlobals.get('red_alert_status', false)
 							}
 
 							this.buildMenu(model)

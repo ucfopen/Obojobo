@@ -61,6 +61,7 @@ describe('ViewerApp', () => {
 		window.__oboGlobals.draft = json
 		window.__oboGlobals.previewing = 'false'
 		window.__oboGlobals['ObojoboDraft.Sections.Assessment:attemptHistory'] = []
+		window.__oboGlobals.red_alert_status = 'false'
 
 		// viewerEl = mount(<ViewerApp />)
 	})
@@ -263,7 +264,10 @@ describe('ViewerApp', () => {
 		questionEl.find('#obo-pq1-mca-mc3').simulate('click') // wrong answer choice
 		questionEl.find('.submit button').simulate('click') // Check your answer button
 		// expect(questionEl.find('button').at(1)).toBe(1)
-		questionEl.find('button').at(1).simulate('click') // Show solution button
+		questionEl
+			.find('button')
+			.at(1)
+			.simulate('click') // Show solution button
 
 		expect(questionEl.find('.solution-container').length).toBe(1)
 
@@ -320,7 +324,10 @@ describe('ViewerApp', () => {
 
 			c1.simulate('click')
 
-			viewerEl.find('.submit-button').find('button').simulate('click')
+			viewerEl
+				.find('.submit-button')
+				.find('button')
+				.simulate('click')
 		}
 
 		let onAttemptEnded = () => {
