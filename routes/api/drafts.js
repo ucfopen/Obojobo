@@ -14,6 +14,8 @@ const draftTemplateXML = fs
 	.toString()
 const draftTemplate = xmlToDraftObject(draftTemplateXML, true)
 
+let oboEvents = oboRequire('obo_events')
+
 router.get('/:draftId', (req, res, next) => {
 	let draftId = req.params.draftId
 
@@ -162,6 +164,28 @@ router.get('/', (req, res, next) => {
 			//@TODO call next with error
 			res.unexpected(err)
 		})
+})
+
+oboEvents.on('client:nav:redAlert', (event, req) => {
+	db.none(
+		`
+		INSERT INTO red_alert_status
+		(user_id, draft_id, created_at, alert_enabled)
+		VALUES($[userId], $[draftId], $[createdAt], $[alertEnabled])
+		ON CONFLICT (user_id, draft_id) DO
+			UPDATE
+			SET
+				alert_enabled = $[alertEnabled],
+				created_at = $[createdAt]
+			WHERE red_alert_status.user_id = $[userId]
+				AND red_alert_status.draft_id = $[draftId]`,
+		{
+			userId: event.userId,
+			draftId: event.draftId,
+			createdAt: event.createdAt,
+			alertEnabled: event.payload.alertStatus
+		}
+	)
 })
 
 module.exports = router

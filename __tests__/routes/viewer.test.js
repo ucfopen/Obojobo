@@ -91,7 +91,7 @@ describe('lti route', () => {
 			})
 	})
 
-	test('view draft calls render', () => {
+	test.skip('view draft calls render', () => {
 		expect.assertions(2)
 
 		oboRequire('routes/viewer')
