@@ -14,6 +14,10 @@ let { AssessmentUtil } = Viewer.util
 let { NavUtil } = Viewer.util
 
 import AttemptIncompleteDialog from './attempt-incomplete-dialog'
+import untestedView from './viewer-component-untested'
+import assessmentReviewView from './viewer-component-review'
+import scoreSubmittedView from './viewer-component-score-submitted'
+import takingTestView from './viewer-component-taking-test'
 
 export default class Assessment extends React.Component {
 	constructor() {
@@ -35,16 +39,16 @@ export default class Assessment extends React.Component {
 			return 'takingTest'
 		}
 
-		// TODO: This is for debugging purposes and will come from the document in the future.
-		this.props.model.modelState.assessmentReview = true
-		if (
-			!AssessmentUtil.hasAttemptsRemaining(
-				this.props.moduleData.assessmentState,
-				this.props.model
-			) && this.props.model.modelState.assessmentReview
-		) {
-			return 'review'
-		}
+		// TODO: Assessment review
+		// this.props.model.modelState.assessmentReview = true
+		// if (
+		// 	!AssessmentUtil.hasAttemptsRemaining(
+		// 		this.props.moduleData.assessmentState,
+		// 		this.props.model
+		// 	) && this.props.model.modelState.assessmentReview
+		// ) {
+		// 	return 'review'
+		// }
 
 		if (assessment.attempts.length > 0) {
 			return 'scoreSubmitted'
@@ -125,7 +129,7 @@ export default class Assessment extends React.Component {
 
 	getNumCorrect(questionScores) {
 		return questionScores.reduce(
-			function (acc, questionScore) {
+			function(acc, questionScore) {
 				let n = 0
 				if (parseInt(questionScore.score, 10) === 100) {
 					n = 1
@@ -166,135 +170,4 @@ export default class Assessment extends React.Component {
 			</OboComponent>
 		)
 	}
-}
-
-// TODO: These functions can be abstracted to other components/files as necessary.
-const untestedView = assessment => {
-	let child = assessment.props.model.children.at(0)
-	let Component = child.getComponentClass()
-
-	return (
-		<div className="untested">
-			<Component model={child} moduleData={assessment.props.moduleData} />
-		</div>
-	)
-}
-
-const assessmentReviewView = (assessment) => {
-	const recentScore = AssessmentUtil.getLastAttemptScoreForModel(
-		assessment.props.moduleData.assessmentState,
-		assessment.props.model
-	)
-	const highestScore = AssessmentUtil.getHighestAttemptScoreForModel(
-		assessment.props.moduleData.assessmentState,
-		assessment.props.model
-	)
-	const attempts = AssessmentUtil.getAllAttempts(assessment.props.moduleData.assessmentState, assessment.props.model)
-
-	return (
-		<div className="score unlock">
-			<h1>{`Your score is ${Math.round(recentScore)}%`}</h1>
-			{recentScore === highestScore
-				? <h2>This is your highest score</h2>
-				: <h2>{`Your highest score was ${Math.round(highestScore)}%`}</h2>}
-			{// TODO: Carousel could wrap the assessment attempts.
-				attempts.map(attempt => {
-					const scores = attempt.result.scores
-					console.log(scores)
-
-					// TODO: Return attempt with incorrect/correct answers.
-					return <div>this is an attempt</div>
-				})}
-		</div>
-	)
-}
-
-const takingTestView = assessment => {
-	const moduleData = assessment.props.moduleData
-	const recentScore = AssessmentUtil.getLastAttemptScoreForModel(
-		assessment.props.moduleData.assessmentState,
-		assessment.props.model
-	)
-	const child = assessment.props.model.children.at(1)
-	const Component = child.getComponentClass()
-	return (
-		<div className="test">
-			<Component
-				className="untested"
-				model={child}
-				moduleData={moduleData}
-				showScore={recentScore !== null}
-			/>
-			<div className="submit-button">
-				<Button
-					onClick={assessment.onClickSubmit.bind(assessment)}
-					value={
-						assessment.isAttemptComplete()
-							? 'Submit'
-							: 'Submit (Not all questions have been answered)'
-					}
-				/>
-			</div>
-		</div>
-	)
-}
-
-const scoreSubmittedView = assessment => {
-	const questionScores = AssessmentUtil.getLastAttemptScoresForModel(
-		assessment.props.moduleData.assessmentState,
-		assessment.props.model
-	)
-	const recentScore = AssessmentUtil.getLastAttemptScoreForModel(
-		assessment.props.moduleData.assessmentState,
-		assessment.props.model
-	)
-	const highestScore = AssessmentUtil.getHighestAttemptScoreForModel(
-		assessment.props.moduleData.assessmentState,
-		assessment.props.model
-	)
-	const scoreAction = assessment.getScoreAction()
-	const numCorrect = assessment.getNumCorrect(questionScores)
-
-	let childEl
-
-	if (scoreAction.page != null) {
-		let pageModel = OboModel.create(scoreAction.page)
-		pageModel.parent = assessment.props.model //'@TODO - FIGURE OUT A BETTER WAY TO DO THIS - THIS IS NEEDED TO GET {{VARIABLES}} WORKING')
-		let PageComponent = pageModel.getComponentClass()
-		childEl = <PageComponent model={pageModel} moduleData={assessment.props.moduleData} />
-	} else {
-		childEl = (
-			<p>
-				{scoreAction.message}
-			</p>
-		)
-	}
-
-	return (
-		<div className="score unlock">
-			<h1>{`Your score is ${Math.round(recentScore)}%`}</h1>
-			{recentScore === highestScore
-				? <h2>This is your highest score</h2>
-				: <h2>{`Your highest score was ${Math.round(highestScore)}%`}</h2>}
-			{childEl}
-			<div className="review">
-				<p className="number-correct">{`You got ${numCorrect} out of ${questionScores.length} questions correct:`}</p>
-				{questionScores.map((questionScore, index) =>
-					questionResultView(assessment.props, questionScore, index)
-				)}
-			</div>
-		</div>
-	)
-}
-
-const questionResultView = (props, questionScore, index) => {
-	const questionModel = OboModel.models[questionScore.id]
-	const QuestionComponent = questionModel.getComponentClass()
-
-	return (
-		<div key={index} className={questionScore.score === 100 ? 'is-correct' : 'is-not-correct'}>
-			<p>{`Question ${index + 1} - ${questionScore.score === 100 ? 'Correct:' : 'Incorrect:'}`}</p>
-			<QuestionComponent model={questionModel} moduleData={props.moduleData} showContentOnly />
-		</div>
-	)
 }

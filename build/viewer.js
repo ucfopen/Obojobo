@@ -2880,6 +2880,15 @@
 
 					return assessment.current
 				},
+				getAllAttempts: function getAllAttempts(state, model) {
+					return this.getAssessmentForModel(state, model).attempts
+				},
+				hasAttemptsRemaining: function hasAttemptsRemaining(state, model) {
+					return (
+						this.getAssessmentForModel(state, model).attempts.length - model.modelState.attempts !==
+						0
+					)
+				},
 
 				// getLastAttemptForModel(state, model) {
 				// 	let assessment = AssessmentUtil.getAssessmentForModel(state, model);
@@ -3752,15 +3761,6 @@
 				// Timezone: -01:00, +00:00, ... +12:00
 				Z: function Z(date) {
 					return formatTimezone(date.getTimezoneOffset(), ':')
-				},
-				getAllAttempts: function getAllAttempts(state, model) {
-					return this.getAssessmentForModel(state, model).attempts
-				},
-				hasAttemptsRemaining: function hasAttemptsRemaining(state, model) {
-					return (
-						this.getAssessmentForModel(state, model).attempts.length - model.modelState.attempts !==
-						0
-					)
 				},
 
 				// Timezone: -0100, +0000, ... +1200
