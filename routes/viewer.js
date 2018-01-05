@@ -1,5 +1,8 @@
 var express = require('express')
 var router = express.Router()
+let db = oboRequire('db')
+let viewerState = oboRequire('viewer/viewer_state')
+let oboEvents = oboRequire('obo_events')
 var OboGlobals = oboRequire('obo_globals')
 let DraftModel = oboRequire('models/draft')
 let logger = oboRequire('logger')
@@ -32,7 +35,13 @@ router.all('/:draftId*', (req, res, next) => {
 			oboGlobals.set('draft', draft.document)
 			oboGlobals.set('draftId', req.params.draftId)
 			oboGlobals.set('previewing', user.canViewEditor)
-			return draft.yell('internal:renderViewer', req, res, oboGlobals)
+			return viewerState.get(user.id, req.params.draftId)
+		})
+		.then(viewState => {
+			if (!viewState) viewState = {}
+			else viewState = viewState.payload
+			oboEvents.emit('internal:renderViewer', req, res, oboGlobals, viewState)
+			return draft.yell('internal:renderViewer', req, res, oboGlobals, viewState)
 		})
 		.then(draft => {
 			res.render('viewer', {

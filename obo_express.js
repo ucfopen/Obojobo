@@ -20,6 +20,7 @@ let currentUserMiddleware = oboRequire('express_current_user')
 let ltiLaunchMiddleware = oboRequire('express_lti_launch')
 let registerChunks = oboRequire('express_register_chunks')
 let oboLtiMiddleware = oboRequire('obo_ims_lti')
+let viewerMiddleware = oboRequire('viewer_events')
 
 // when the parent app is mounted
 app.on('mount', app => {
@@ -27,6 +28,7 @@ app.on('mount', app => {
 	app.use(loadBalancerHelperMiddleware)
 	app.use(currentUserMiddleware)
 	app.use(oboLtiMiddleware)
+	app.use(viewerMiddleware) //basically now for nav listeners
 	app.use('/view/:draftId*', ltiLaunchMiddleware)
 	app.use('/api', apiResponseDecorator)
 
