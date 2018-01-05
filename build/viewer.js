@@ -1382,19 +1382,29 @@
 								}
 							},
 							'nav:lock': function navLock(payload) {
-								return _this.setAndTrigger({ locked: true })
+								var updatedState = { locked: true }
+								_apiUtil2.default.postEvent(OboModel.getRoot(), 'nav:lock', '1.0.0')
+								_this.setAndTrigger(updatedState)
 							},
 							'nav:unlock': function navUnlock(payload) {
-								return _this.setAndTrigger({ locked: false })
+								var updatedState = { locked: false }
+								_apiUtil2.default.postEvent(OboModel.getRoot(), 'nav:unlock', '1.0.0')
+								_this.setAndTrigger(updatedState)
 							},
 							'nav:close': function navClose(payload) {
-								return _this.setAndTrigger({ open: false })
+								var updatedState = { open: false }
+								_apiUtil2.default.postEvent(OboModel.getRoot(), 'nav:close', '1.0.0')
+								_this.setAndTrigger(updatedState)
 							},
 							'nav:open': function navOpen(payload) {
-								return _this.setAndTrigger({ open: true })
+								var updatedState = { open: true }
+								_apiUtil2.default.postEvent(OboModel.getRoot(), 'nav:open', '1.0.0')
+								_this.setAndTrigger(updatedState)
 							},
 							'nav:toggle': function navToggle(payload) {
-								return _this.setAndTrigger({ open: !_this.state.open })
+								var updatedState = { open: !_this.state.open }
+								_apiUtil2.default.postEvent(OboModel.getRoot(), 'nav:toggle', '1.0.0', updatedState)
+								_this.setAndTrigger(updatedState)
 							},
 							'nav:openExternalLink': function navOpenExternalLink(payload) {
 								window.open(payload.value.url)
@@ -1430,8 +1440,17 @@
 
 				_createClass(NavStore, [
 					{
+						key: 'applyViewState',
+						value: function applyViewState(key, defaultValue) {
+							if (key != null) return key.value
+							return defaultValue
+						}
+					},
+					{
 						key: 'init',
 						value: function init(model, startingId, startingPath) {
+							var viewState = arguments.length > 3 && arguments[3] !== undefined ? arguments[3] : {}
+
 							this.state = {
 								items: {},
 								itemsById: {},
@@ -1439,8 +1458,8 @@
 								itemsByFullPath: {},
 								navTargetHistory: [],
 								navTargetId: null,
-								locked: false,
-								open: true
+								locked: this.applyViewState(viewState['nav:isLocked'], false),
+								open: this.applyViewState(viewState['nav:isOpen'], true)
 							}
 
 							this.buildMenu(model)
@@ -6305,7 +6324,8 @@
 					_navStore2.default.init(
 						state.model,
 						state.model.modelState.start,
-						window.location.pathname
+						window.location.pathname,
+						OboGlobals.get('navViewState', {})
 					)
 					_assessmentStore2.default.init(
 						OboGlobals.get('ObojoboDraft.Sections.Assessment:attemptHistory', [])

@@ -62,11 +62,31 @@ class NavStore extends Store {
 						})
 					}
 				},
-				'nav:lock': payload => this.setAndTrigger({ locked: true }),
-				'nav:unlock': payload => this.setAndTrigger({ locked: false }),
-				'nav:close': payload => this.setAndTrigger({ open: false }),
-				'nav:open': payload => this.setAndTrigger({ open: true }),
-				'nav:toggle': payload => this.setAndTrigger({ open: !this.state.open }),
+				'nav:lock': payload => {
+					let updatedState = { locked: true }
+					APIUtil.postEvent(OboModel.getRoot(), 'nav:lock', '1.0.0')
+					this.setAndTrigger(updatedState)
+				},
+				'nav:unlock': payload => {
+					let updatedState = { locked: false }
+					APIUtil.postEvent(OboModel.getRoot(), 'nav:unlock', '1.0.0')
+					this.setAndTrigger(updatedState)
+				},
+				'nav:close': payload => {
+					let updatedState = { open: false }
+					APIUtil.postEvent(OboModel.getRoot(), 'nav:close', '1.0.0')
+					this.setAndTrigger(updatedState)
+				},
+				'nav:open': payload => {
+					let updatedState = { open: true }
+					APIUtil.postEvent(OboModel.getRoot(), 'nav:open', '1.0.0')
+					this.setAndTrigger(updatedState)
+				},
+				'nav:toggle': payload => {
+					let updatedState = { open: !this.state.open }
+					APIUtil.postEvent(OboModel.getRoot(), 'nav:toggle', '1.0.0', updatedState)
+					this.setAndTrigger(updatedState)
+				},
 				'nav:openExternalLink': payload => {
 					window.open(payload.value.url)
 					return this.triggerChange()
@@ -94,7 +114,12 @@ class NavStore extends Store {
 		)
 	}
 
-	init(model, startingId, startingPath) {
+	applyViewState(key, defaultValue) {
+		if (key != null) return key.value
+		return defaultValue
+	}
+
+	init(model, startingId, startingPath, viewState = {}) {
 		this.state = {
 			items: {},
 			itemsById: {},
@@ -102,8 +127,8 @@ class NavStore extends Store {
 			itemsByFullPath: {},
 			navTargetHistory: [],
 			navTargetId: null,
-			locked: false,
-			open: true
+			locked: this.applyViewState(viewState['nav:isLocked'], false),
+			open: this.applyViewState(viewState['nav:isOpen'], true)
 		}
 
 		this.buildMenu(model)

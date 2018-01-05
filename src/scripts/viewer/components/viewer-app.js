@@ -74,7 +74,12 @@ export default class ViewerApp extends React.Component {
 		ModalStore.init()
 		FocusStore.init()
 
-		NavStore.init(state.model, state.model.modelState.start, window.location.pathname)
+		NavStore.init(
+			state.model,
+			state.model.modelState.start,
+			window.location.pathname,
+			OboGlobals.get('navViewState', {})
+		)
 		AssessmentStore.init(OboGlobals.get('ObojoboDraft.Sections.Assessment:attemptHistory', []))
 
 		state.navState = NavStore.getState()
