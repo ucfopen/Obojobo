@@ -111,12 +111,37 @@ let sendReplaceResultRequest = (outcomeService, score) => {
 	})
 }
 
+let insertLTIAssessmentScore = (
+	assessmentScoreId,
+	launchId,
+	scoreSent,
+	scoreRead,
+	scoreSentStatus,
+	error
+) => {
+	return db.one(
+		`
+			INSERT INTO assessment_scores (assessment_score_id, launch_id, score_sent, score_read, score_sent_status, error)
+			VALUES($[assessmentScoreId], $[launchId], $[launchId], $[score], $[scoreSent], $[scoreRead], $[scoreSentStatus], $[error])
+			RETURNING id
+		`,
+		{
+			assessmentScoreId,
+			launchId,
+			scoreSent,
+			scoreRead,
+			scoreSentStatus,
+			error
+		}
+	)
+}
+
 /* Returns a Promise<boolean>
    Resolves with Boolean - the result was sent to the outcome service
    Rejects with Error Object only when we tried to send to the service and it failed
 */
 
-let replaceResult = function(userId, draftId, score) {
+let sendAssessmentScore = function(userId, draftId, score, assessmentScoreId) {
 	let launch
 	let outcomeService
 
@@ -140,7 +165,7 @@ let replaceResult = function(userId, draftId, score) {
 			logger.info(
 				`LTI attempting replaceResult of score:"${score}" for user:"${userId}", draft:"${draftId}", assessment:"${assessmentId}" on sourcedid:"${launch
 					.reqVars.lis_result_sourcedid}" to url:"${launch.reqVars
-					.lis_outcome_service_url}" using key:"${launch.key}"`
+					.lis_outcome_service_url}" using key:"${launch.key}" (assessment_score_id:"${assessmentScoreId}")`
 			)
 			return sendReplaceResultRequest(outcomeService, score)
 		})
@@ -152,7 +177,17 @@ let replaceResult = function(userId, draftId, score) {
 			logger.info(`LTI replaceResult success`, ltiRequestResult)
 
 			insertReplaceResultEvent(userId, draftId, launch, result)
-
+		})
+		.then(() => {
+			insertLTIAssessmentScore(
+				assessmentScoreId,
+				result.launchId,
+				result.scoreSent,
+				result.scoreRead,
+				result.status
+			)
+		})
+		.then(ltiAssessmentScoreId => {
 			return result
 		})
 		.catch(error => {
@@ -182,6 +217,6 @@ let replaceResult = function(userId, draftId, score) {
 }
 
 module.exports = {
-	replaceResult: replaceResult,
+	sendAssessmentScore: sendAssessmentScore,
 	findSecretForKey: findSecretForKey
 }
