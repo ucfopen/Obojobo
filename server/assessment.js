@@ -98,22 +98,11 @@ class Assessment extends DraftNode {
 		)
 	}
 
-	static insertAssessmentScore(
-		userId,
-		draftId,
-		assessmentId,
-		launchId,
-		score,
-		ltiScoreSent,
-		ltiScoreRead,
-		ltiScoreSentStatus,
-		ltiError,
-		isPreview
-	) {
+	static insertAssessmentScore(userId, draftId, assessmentId, launchId, score, isPreview) {
 		return db.one(
 			`
-				INSERT INTO assessment_scores (user_id, draft_id, assessment_id, launch_id, score, lti_score_sent, lti_score_read, lti_score_sent_status, lti_error, preview)
-				VALUES($[userId], $[draftId], $[assessmentId], $[launchId], $[score], $[ltiScoreSent], $[ltiScoreRead], $[ltiScoreSentStatus], $[ltiError], $[isPreview])
+				INSERT INTO assessment_scores (user_id, draft_id, assessment_id, launch_id, score preview)
+				VALUES($[userId], $[draftId], $[assessmentId], $[launchId], $[score], $[isPreview])
 				RETURNING id
 			`,
 			{
@@ -122,10 +111,6 @@ class Assessment extends DraftNode {
 				assessmentId,
 				launchId,
 				score,
-				ltiScoreSent,
-				ltiScoreRead,
-				ltiScoreSentStatus,
-				ltiError,
 				isPreview
 			}
 		)

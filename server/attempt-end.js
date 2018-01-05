@@ -265,9 +265,9 @@ let insertAttemptEndEvents = (
 	})
 }
 
-let sendLTIScore = (user, draftId, score) => {
+let sendLTIScore = (user, draftId, score, assessmentScoreId) => {
 	if (score === null) return Promise.resolve(false)
-	return lti.replaceResult(user.id, draftId, score)
+	return lti.sendAssessmentScore(user.id, draftId, score, assessmentScoreId)
 }
 
 // let insertAssessmentScore = (user, draftId, assessmentId,
