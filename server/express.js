@@ -570,12 +570,10 @@ oboEvents.on('client:assessment:setResponse', (event, req) => {
 
 	// check perms
 	// check input
-	if (!event.payload.attemptId)
-		return app.logError(eventRecordResponse, 'Missing Attempt ID', req, event)
+	if (!event.payload.attemptId) console.error(eventRecordResponse, 'Missing Attempt ID', req, event)
 	if (!event.payload.questionId)
-		return app.logError(eventRecordResponse, 'Missing Question ID', req, event)
-	if (!event.payload.response)
-		return app.logError(eventRecordResponse, 'Missing Response', req, event)
+		console.error(eventRecordResponse, 'Missing Question ID', req, event)
+	if (!event.payload.response) console.error(eventRecordResponse, 'Missing Response', req, event)
 
 	return db
 		.none(
@@ -597,7 +595,7 @@ oboEvents.on('client:assessment:setResponse', (event, req) => {
 			}
 		)
 		.catch(error => {
-			app.logError(eventRecordResponse, 'DB UNEXPECTED', req, error, error.toString())
+			console.error(eventRecordResponse, 'DB UNEXPECTED', req, error, error.toString())
 		})
 })
 
