@@ -38,8 +38,6 @@ router.all('/:draftId*', (req, res, next) => {
 			return viewerState.get(user.id, req.params.draftId)
 		})
 		.then(viewState => {
-			if (!viewState) viewState = {}
-			else viewState = viewState.payload
 			oboEvents.emit('internal:renderViewer', req, res, oboGlobals, viewState)
 			return draft.yell('internal:renderViewer', req, res, oboGlobals, viewState)
 		})

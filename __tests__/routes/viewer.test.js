@@ -1,4 +1,6 @@
 jest.mock('../../models/draft')
+jest.mock('../../viewer/viewer_state')
+
 const { mockExpressMethods, mockRouterMethods } = require('../../__mocks__/__mock_express')
 
 describe('lti route', () => {
@@ -20,14 +22,7 @@ describe('lti route', () => {
 		let User = oboRequire('models/user')
 		let routeFunction = mockRouterMethods.all.mock.calls[0][1]
 
-		//  mock app.get('env') to return 'development'
-		let mockReq = {
-			app: {
-				get: jest.fn().mockImplementationOnce(() => {
-					return 'development'
-				})
-			}
-		}
+		let mockReq = {}
 
 		let mockRes = {
 			redirect: jest.fn()

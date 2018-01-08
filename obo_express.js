@@ -28,7 +28,7 @@ app.on('mount', app => {
 	app.use(loadBalancerHelperMiddleware)
 	app.use(currentUserMiddleware)
 	app.use(oboLtiMiddleware)
-	app.use(viewerMiddleware) //basically now for nav listeners
+	app.use(viewerMiddleware)
 	app.use('/view/:draftId*', ltiLaunchMiddleware)
 	app.use('/api', apiResponseDecorator)
 

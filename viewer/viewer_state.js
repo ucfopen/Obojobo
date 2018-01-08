@@ -36,6 +36,10 @@ function get(userId, draftId) {
 			{
 				user_id: userId,
 				draft_id: draftId
+			},
+			result => {
+				// return payload or empty object if undefined from query
+				return result != null ? result.payload : {}
 			}
 		)
 		.catch(error => {
