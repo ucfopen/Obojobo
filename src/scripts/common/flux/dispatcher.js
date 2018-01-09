@@ -6,12 +6,12 @@ _.extend(Dispatcher, Backbone.Events)
 
 let ex = Dispatcher.on
 let ex2 = Dispatcher.trigger
-Dispatcher.on = function() {
+Dispatcher.on = function () {
 	// console.log 'ON', arguments
 	return ex.apply(this, arguments)
 }
 
-Dispatcher.trigger = function() {
+Dispatcher.trigger = function () {
 	// console.log 'TRIGGER', arguments
 	return ex2.apply(this, arguments)
 }

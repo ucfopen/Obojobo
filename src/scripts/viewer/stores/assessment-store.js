@@ -36,6 +36,12 @@ class AssessmentStore extends Store {
 		Dispatcher.on('question:setResponse', payload => {
 			this.trySetResponse(payload.value.id, payload.value.response, payload.value.targetId)
 		})
+
+		Dispatcher.on('assessment:end', payload => {
+			// TODO: Handle the case where the client is out of attempts. Consider how to allow
+			// the UI to update accordingly (assessment review).
+			console.log(payload)
+		})
 	}
 
 	init(history) {
@@ -178,6 +184,14 @@ class AssessmentStore extends Store {
 
 		model.processTrigger('onEndAttempt')
 		Dispatcher.trigger('assessment:attemptEnded', id)
+
+		if (!AssessmentUtil.hasAttemptsRemaining(this.getState(), model)) {
+			Dispatcher.trigger('assessment:end', {
+				value: {
+					id: model.get('id')
+				}
+			})
+		}
 	}
 
 	trySetResponse(questionId, response, targetId) {

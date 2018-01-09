@@ -40,15 +40,15 @@ export default class Assessment extends React.Component {
 		}
 
 		// TODO: Assessment review
-		// this.props.model.modelState.assessmentReview = true
-		// if (
-		// 	!AssessmentUtil.hasAttemptsRemaining(
-		// 		this.props.moduleData.assessmentState,
-		// 		this.props.model
-		// 	) && this.props.model.modelState.assessmentReview
-		// ) {
-		// 	return 'review'
-		// }
+		this.props.model.modelState.assessmentReview = true
+		if (
+			!AssessmentUtil.hasAttemptsRemaining(
+				this.props.moduleData.assessmentState,
+				this.props.model
+			) && this.props.model.modelState.assessmentReview
+		) {
+			return 'review'
+		}
 
 		if (assessment.attempts.length > 0) {
 			return 'scoreSubmitted'
@@ -78,6 +78,10 @@ export default class Assessment extends React.Component {
 		// return AssessmentUtil.isCurrentAttemptComplete(this.props.moduleData.assessmentState, this.props.moduleData.questionState, this.props.model);
 	}
 
+	isAssessmentComplete() {
+		return AssessmentUtil.hasAttemptsRemaining(this.props.moduleData.assessmentState, this.props.model)
+	}
+
 	onClickSubmit() {
 		if (!this.isAttemptComplete()) {
 			ModalUtil.show(<AttemptIncompleteDialog onSubmit={this.endAttempt} />)
@@ -102,7 +106,7 @@ export default class Assessment extends React.Component {
 				return NavUtil.goPrev()
 
 			default:
-				return NavUtil.goto(scoreAction.action.value)
+				return NavUtil.goto(scoreAction.actionx.value)
 		}
 	}
 
@@ -129,7 +133,7 @@ export default class Assessment extends React.Component {
 
 	getNumCorrect(questionScores) {
 		return questionScores.reduce(
-			function(acc, questionScore) {
+			function (acc, questionScore) {
 				let n = 0
 				if (parseInt(questionScore.score, 10) === 100) {
 					n = 1
