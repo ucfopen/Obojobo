@@ -61,7 +61,7 @@ describe('ViewerApp', () => {
 		window.__oboGlobals.draft = json
 		window.__oboGlobals.previewing = 'false'
 		window.__oboGlobals['ObojoboDraft.Sections.Assessment:attemptHistory'] = []
-		window.__oboGlobals.red_alert_status = 'false'
+		window.__oboGlobals.red_alert_status = false
 
 		// viewerEl = mount(<ViewerApp />)
 	})
@@ -364,4 +364,48 @@ describe('ViewerApp', () => {
 		let buttonEl = viewerEl.find('#obo-start-assessment-button')
 		buttonEl.find('button').simulate('click')
 	})
+
+	test('Clicking red alert toggles the navbar class between is-red-alert and is-not-red-alert', done => {
+		let viewerEl = mount(<ViewerApp />)
+
+		let navBar = viewerEl.find('.viewer--components--nav')
+		expect(viewerEl.find('.is-not-red-alert').length).toBe(1)
+
+		let redAlertButton = navBar.find('.red-alert-button')
+		redAlertButton.simulate('click')
+		expect(viewerEl.find('.is-red-alert').length).toBe(1)
+
+		redAlertButton.simulate('click')
+		expect(viewerEl.find('.is-not-red-alert').length).toBe(1)
+
+		viewerEl.unmount()
+		done()
+	})
+
+	/* This currently doesn't work with how Obo-globals is set up, was told to skip by Zach!
+
+	test('Red Alert status is correctly set with true variable', () => {
+		window.__oboGlobals.red_alert_status = true
+		let viewerEl = mount(<ViewerApp />)
+		let navBar = viewerEl.find(".viewer--components--nav")
+		expect(viewerEl.find('.is-red-alert').length).toBe(1)
+		viewerEl.unmount()
+	})
+
+	test('Red Alert status is correctly set with null variable', () => {
+		window.__oboGlobals.red_alert_status = null
+		let viewerEl = mount(<ViewerApp />)
+		let navBar = viewerEl.find(".viewer--components--nav")
+		expect(viewerEl.find('.is-not-red-alert').length).toBe(1)
+		viewerEl.unmount()
+	})
+	
+	test('Red Alert status is correctly set with false variable', () => {
+		window.__oboGlobals.red_alert_status = false
+		let viewerEl = mount(<ViewerApp />)
+		let navBar = viewerEl.find(".viewer--components--nav")
+		expect(viewerEl.find('.is-not-red-alert').length).toBe(1)
+		viewerEl.unmount()
+	})
+	*/
 })

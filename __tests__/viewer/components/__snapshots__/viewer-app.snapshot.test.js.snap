@@ -33,7 +33,7 @@ exports[`ViewerApp ViewerApp 1`] = `
     </div>
   </header>
   <div
-    className="viewer--components--nav is-unlocked is-open is-enabled is-red-alert"
+    className="viewer--components--nav is-unlocked is-open is-enabled is-not-red-alert"
   >
     <button
       className="red-alert-button"
