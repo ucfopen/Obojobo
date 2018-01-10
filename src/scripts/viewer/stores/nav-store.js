@@ -123,7 +123,7 @@ class NavStore extends Store {
 			navTargetHistory: [],
 			navTargetId: null,
 			locked: viewState['nav:isLocked'] != null ? viewState['nav:isLocked'] : false,
-			open: viewState['nav:isOpen'] != null ? viewState['nav:Open'] : true
+			open: viewState['nav:isOpen'] != null ? viewState['nav:isOpen'] : true
 		}
 
 		this.buildMenu(model)
