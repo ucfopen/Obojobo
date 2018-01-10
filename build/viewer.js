@@ -1440,13 +1440,6 @@
 
 				_createClass(NavStore, [
 					{
-						key: 'applyViewState',
-						value: function applyViewState(key, defaultValue) {
-							if (key != null) return key.value
-							return defaultValue
-						}
-					},
-					{
 						key: 'init',
 						value: function init(model, startingId, startingPath) {
 							var viewState = arguments.length > 3 && arguments[3] !== undefined ? arguments[3] : {}
@@ -1458,8 +1451,8 @@
 								itemsByFullPath: {},
 								navTargetHistory: [],
 								navTargetId: null,
-								locked: this.applyViewState(viewState['nav:isLocked'], false),
-								open: this.applyViewState(viewState['nav:isOpen'], true)
+								locked: viewState['nav:isLocked'] != null ? viewState['nav:isLocked'] : false,
+								open: viewState['nav:isOpen'] != null ? viewState['nav:Open'] : true
 							}
 
 							this.buildMenu(model)

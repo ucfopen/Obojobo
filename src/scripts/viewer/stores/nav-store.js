@@ -114,11 +114,6 @@ class NavStore extends Store {
 		)
 	}
 
-	applyViewState(key, defaultValue) {
-		if (key != null) return key.value
-		return defaultValue
-	}
-
 	init(model, startingId, startingPath, viewState = {}) {
 		this.state = {
 			items: {},
@@ -127,8 +122,8 @@ class NavStore extends Store {
 			itemsByFullPath: {},
 			navTargetHistory: [],
 			navTargetId: null,
-			locked: this.applyViewState(viewState['nav:isLocked'], false),
-			open: this.applyViewState(viewState['nav:isOpen'], true)
+			locked: viewState['nav:isLocked'] != null ? viewState['nav:isLocked'] : false,
+			open: viewState['nav:isOpen'] != null ? viewState['nav:Open'] : true
 		}
 
 		this.buildMenu(model)
