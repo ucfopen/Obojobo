@@ -581,8 +581,8 @@ oboEvents.on('client:assessment:setResponse', (event, req) => {
 		.none(
 			`
 			INSERT INTO attempts_question_responses
-			(attempt_id, question_id, response)
-			VALUES($[attemptId], $[questionId], $[response])
+			(attempt_id, question_id, response, assessment_id)
+			VALUES($[attemptId], $[questionId], $[response], $[assessmentId])
 			ON CONFLICT (attempt_id, question_id) DO
 				UPDATE
 				SET
@@ -591,6 +591,7 @@ oboEvents.on('client:assessment:setResponse', (event, req) => {
 				WHERE attempts_question_responses.attempt_id = $[attemptId]
 					AND attempts_question_responses.question_id = $[questionId]`,
 			{
+				assessmentId: event.payload.assessmentId,
 				attemptId: event.payload.attemptId,
 				questionId: event.payload.questionId,
 				response: event.payload.response
