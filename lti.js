@@ -5,18 +5,27 @@ let db = require('./db')
 let moment = require('moment')
 let insertEvent = oboRequire('insert_event')
 let logger = oboRequire('logger')
+let uuid = require('uuid').v4
 
-// Errors
 let ERROR_NO_SECRET_FOR_KEY = new Error('No LTI secret found for key')
+let ERROR_NO_LAUNCH_FOUND = new Error('No launch found')
 let ERROR_NO_OUTCOME_SERVICE_FOR_LAUNCH = new Error('No LTI outcome service found for launch')
+let ERROR_SCORE_IS_NULL = new Error('LTI score is null')
+let ERROR_SCORE_IS_INVALID = new Error('LTI score is invalid')
 
-// Score sent statuses:
-let SCORE_SENT_STATUS_NOT_ATTEMPTED = 'not_attempted'
-let SCORE_SENT_STATUS_SUCCESS = 'success'
-let SCORE_SENT_STATUS_READ_MISMATCH = 'read_mismatch'
-let SCORE_SENT_STATUS_ERROR = 'error'
+let ERROR_TYPE_NO_SECRET_FOR_KEY = 'no_secret_for_key'
+let ERROR_TYPE_NO_LAUNCH_FOUND = 'no_launch_found'
+let ERROR_TYPE_NO_OUTCOME_FOR_LAUNCH = 'no_outcome_service_for_launch'
+let ERROR_TYPE_SCORE_IS_NULL = 'score_is_null'
+let ERROR_TYPE_SCORE_IS_INVALID = 'score_is_invalid'
+let ERROR_TYPE_UNEXPECTED = 'unexpected'
 
-let retrieveLtiLaunch = function(userId, draftId) {
+let STATUS_TYPE_NOT_ATTEMPTED = 'not_attempted'
+let STATUS_TYPE_SUCCESS = 'success'
+let STATUS_TYPE_READ_MISMATCH = 'read_mismatch'
+let STATUS_TYPE_ERROR = 'error'
+
+let tryRetrieveLtiLaunch = function(userId, draftId, logId) {
 	return db
 		.one(
 			`
@@ -44,10 +53,14 @@ let retrieveLtiLaunch = function(userId, draftId) {
 				key: result.lti_key
 			}
 		})
+		.catch(error => {
+			logger.error(`LTI error attempting to retrieve launch`, error, logId)
+			throw ERROR_NO_LAUNCH_FOUND
+		})
 }
 
 // Throws error if no key is found
-let findSecretForKey = key => {
+let tryFindSecretForKey = (key, logId) => {
 	// locate a matching key/secret pair
 	let keys = Object.keys(config.lti.keys)
 	for (var i = keys.length - 1; i >= 0; i--) {
@@ -56,7 +69,7 @@ let findSecretForKey = key => {
 		}
 	}
 
-	logger.error('LTI ERROR: No secret found for key: ${key}')
+	logger.error('LTI ERROR: No secret found for key: ${key}', logId)
 	throw ERROR_NO_SECRET_FOR_KEY
 }
 
@@ -65,7 +78,7 @@ let findSecretForKey = key => {
 // }
 
 // Note that this method can throw two possible errors
-let tryGetOutcomeServiceForLaunch = function(launch) {
+let tryGetOutcomeServiceForLaunch = function(launch, logId) {
 	if (!launch.reqVars.lis_outcome_service_url) throw ERROR_NO_OUTCOME_SERVICE_FOR_LAUNCH
 
 	return new OutcomeService({
@@ -74,7 +87,7 @@ let tryGetOutcomeServiceForLaunch = function(launch) {
 			lis_result_sourcedid: launch.reqVars.lis_result_sourcedid
 		},
 		consumer_key: launch.key,
-		consumer_secret: findSecretForKey(launch.key),
+		consumer_secret: tryFindSecretForKey(launch.key, logId),
 		signer: new HMAC_SHA1()
 	})
 }
@@ -117,24 +130,34 @@ let insertLTIAssessmentScore = (
 	scoreSent,
 	scoreRead,
 	scoreSentStatus,
-	error
+	error,
+	errorDetails,
+	logId
 ) => {
-	return db.one(
-		`
-			INSERT INTO assessment_scores (assessment_score_id, launch_id, score_sent, score_read, score_sent_status, error)
-			VALUES($[assessmentScoreId], $[launchId], $[launchId], $[score], $[scoreSent], $[scoreRead], $[scoreSentStatus], $[error])
+	return db
+		.one(
+			`
+			INSERT INTO lti_assessment_scores (assessment_score_id, launch_id, score_sent, score_read, status, error, error_details, log_id)
+			VALUES($[assessmentScoreId], $[launchId], $[scoreSent], $[scoreRead], $[scoreSentStatus], $[error], $[errorDetails], $[logId])
 			RETURNING id
 		`,
-		{
-			assessmentScoreId,
-			launchId,
-			scoreSent,
-			scoreRead,
-			scoreSentStatus,
-			error
-		}
-	)
+			{
+				assessmentScoreId,
+				launchId,
+				scoreSent,
+				scoreRead,
+				scoreSentStatus,
+				error,
+				errorDetails,
+				logId
+			}
+		)
+		.then(result => {
+			return result.id
+		})
 }
+
+let getLTIAssessmentInfo = assessmentScoreId => {}
 
 /* Returns a Promise<boolean>
    Resolves with Boolean - the result was sent to the outcome service
@@ -142,74 +165,149 @@ let insertLTIAssessmentScore = (
 */
 
 let sendAssessmentScore = function(userId, draftId, score, assessmentScoreId) {
-	let launch
-	let outcomeService
+	let logId = uuid()
+
+	let launch = null
+	let outcomeService = null
+	let ltiAssessmentScoreId = null
+	let didInsertAssessmentScore = false
 
 	let result = {
 		launchId: null,
 		scoreSent: null,
 		scoreRead: null,
-		status: SCORE_SENT_STATUS_NOT_ATTEMPTED,
-		error: null
+		status: STATUS_TYPE_NOT_ATTEMPTED,
+		error: null,
+		errorDetails: null
 	}
 
+	logger.info(
+		`LTI attempt sendAssessmentScore for user:"${userId}", draft:"${draftId}", score:"${score}", assessmentScoreId:"${assessmentScoreId}"`,
+		logId
+	)
+
 	// return getLtiRequestInfo(userId, draftId)
-	return retrieveLtiLaunch(userId, draftId)
+	return tryRetrieveLtiLaunch(userId, draftId, logId)
 		.then(ltiLaunch => {
+			logger.info(`LTI launch with id:"${ltiLaunch.id}" retrieved!`, logId)
 			launch = ltiLaunch
 			result.launchId = launch.id
 
-			outcomeService = tryGetOutcomeServiceForLaunch(launch)
+			if (score === null) throw ERROR_SCORE_IS_NULL
+			if (!Number.isFinite(score) || score < 0 || score > 1) throw ERROR_SCORE_IS_INVALID
+
+			outcomeService = tryGetOutcomeServiceForLaunch(launch, logId)
 
 			result.scoreSent = score
 			logger.info(
-				`LTI attempting replaceResult of score:"${score}" for user:"${userId}", draft:"${draftId}", assessment:"${assessmentId}" on sourcedid:"${launch
-					.reqVars.lis_result_sourcedid}" to url:"${launch.reqVars
-					.lis_outcome_service_url}" using key:"${launch.key}" (assessment_score_id:"${assessmentScoreId}")`
+				`LTI attempting replaceResult of score:"${score}" for assessmentScoreId:"${assessmentScoreId}" for user:"${userId}", draft:"${draftId}", sourcedid:"${launch
+					.reqVars.lis_result_sourcedid}", url:"${launch.reqVars
+					.lis_outcome_service_url}" using key:"${launch.key}"`,
+				logId
 			)
 			return sendReplaceResultRequest(outcomeService, score)
 		})
 		.then(ltiRequestResult => {
-			result.status = SCORE_SENT_STATUS_SUCCESS
+			result.status = STATUS_TYPE_SUCCESS
 
 			// @TODO - do a read!
 			// @TODO - what is in ltiRequestResult?
-			logger.info(`LTI replaceResult success`, ltiRequestResult)
+			logger.info(`LTI replaceResult success`, ltiRequestResult, logId)
 
 			insertReplaceResultEvent(userId, draftId, launch, result)
 		})
 		.then(() => {
-			insertLTIAssessmentScore(
+			return insertLTIAssessmentScore(
 				assessmentScoreId,
 				result.launchId,
 				result.scoreSent,
 				result.scoreRead,
-				result.status
+				result.status,
+				result.error,
+				result.errorDetails,
+				logId
 			)
 		})
-		.then(ltiAssessmentScoreId => {
+		.then(scoreId => {
+			didInsertAssessmentScore = true
+			ltiAssessmentScoreId = scoreId
+			logger.info(`LTI store "${result.status}" success - id:"${ltiAssessmentScoreId}"`, logId)
 			return result
 		})
 		.catch(error => {
-			logger.warn('LTI replaceResult failed:', error)
+			logger.warn('LTI replaceResult failed:', error, logId)
 
 			// Handle errors
 			switch (error) {
-				case ERROR_NO_OUTCOME_SERVICE_FOR_LAUNCH:
-					result.error = { message: error.message }
-					logger.info(`LTI No outcome service for user:"${userId}" on draft:"${draftId}"!`)
+				case ERROR_NO_SECRET_FOR_KEY:
+					result.error = ERROR_TYPE_NO_SECRET_FOR_KEY
+					logger.info(`LTI No request found for user:"${userId}" on draft:"${draftId}"!`, logId)
 					break
 
-				case ERROR_NO_SECRET_FOR_KEY:
-					result.error = { message: error.message }
-					logger.info(`LTI No request found for user:"${userId}" on draft:"${draftId}"!`)
+				case ERROR_NO_LAUNCH_FOUND:
+					result.error = ERROR_TYPE_NO_LAUNCH_FOUND
+					logger.info(`LTI No launch found for user:"${userId}" on draft:"${draftId}"!`, logId)
+					break
+
+				case ERROR_NO_OUTCOME_SERVICE_FOR_LAUNCH:
+					result.error = ERROR_TYPE_NO_OUTCOME_FOR_LAUNCH
+					logger.info(`LTI No outcome service for user:"${userId}" on draft:"${draftId}"!`, logId)
+					break
+
+				case ERROR_SCORE_IS_NULL:
+					result.error = ERROR_TYPE_SCORE_IS_NULL
+					logger.info(
+						`LTI not sending null score for user:"${userId}" on draft:"${draftId}"!`,
+						logId
+					)
+					break
+
+				case ERROR_SCORE_IS_INVALID:
+					result.error = ERROR_TYPE_SCORE_IS_INVALID
+					logger.info(
+						`LTI not sending invalid score "{$score}" for user:"${userId}" on draft:"${draftId}"!`,
+						logId
+					)
 					break
 
 				default:
-					result.status = SCORE_SENT_STATUS_ERROR
-					result.error = { message: error.message, trace: error.stack }
-					logger.error(`LTI error was unexpected - Stack trace: ${error.stack}`)
+					result.status = STATUS_TYPE_ERROR
+					result.error = ERROR_TYPE_UNEXPECTED
+					result.errorDetails = { message: error.message }
+					logger.error(`LTI error was **unexpected** :( Stack trace:`, error.stack, logId)
 					break
+			}
+
+			if (!didInsertAssessmentScore) {
+				return insertLTIAssessmentScore(
+					assessmentScoreId,
+					result.launchId,
+					result.scoreSent,
+					result.scoreRead,
+					result.status,
+					result.error,
+					result.errorDetails,
+					logId
+				)
+					.then(scoreId => {
+						ltiAssessmentScoreId = scoreId
+
+						logger.info(
+							`LTI store "${result.status}" success - id:"${ltiAssessmentScoreId}"`,
+							logId
+						)
+
+						return result
+					})
+					.catch(result => {
+						logger.error(
+							`LTI fatal error! Unable to store record assessment record!`,
+							result,
+							logId
+						)
+
+						return result
+					})
 			}
 
 			return result
@@ -218,5 +316,5 @@ let sendAssessmentScore = function(userId, draftId, score, assessmentScoreId) {
 
 module.exports = {
 	sendAssessmentScore: sendAssessmentScore,
-	findSecretForKey: findSecretForKey
+	tryFindSecretForKey: tryFindSecretForKey
 }

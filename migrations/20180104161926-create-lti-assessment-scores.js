@@ -24,10 +24,11 @@ exports.up = function(db) {
 				defaultValue: new String('now()')
 			},
 			assessment_score_id: { type: 'bigint', notNull: true },
-			launch_id: { type: 'bigserial', notNull: true },
-			score_sent: { type: 'decimal', notNull: true },
+			launch_id: { type: 'bigint' },
+			score_sent: { type: 'decimal' },
 			score_read: { type: 'decimal' },
-			error: { type: 'jsonb' }
+			error_details: { type: 'jsonb' },
+			log_id: { type: 'UUID', notNull: true }
 		})
 		.then(result => {
 			// dbmigrate doesn't support enums so we create it manually:
@@ -47,6 +48,24 @@ exports.up = function(db) {
     `)
 		})
 		.then(result => {
+			// dbmigrate doesn't support enums so we create it manually:
+			return db.runSql(`
+      CREATE TYPE lti_assessment_scores_error_values AS ENUM (
+        'no_secret_for_key',
+        'no_launch_found',
+        'no_outcome_service_for_launch',
+        'score_is_null',
+				'score_is_invalid',
+				'unexpected'
+      );`)
+		})
+		.then(result => {
+			return db.runSql(`
+      ALTER TABLE lti_assessment_scores
+      ADD COLUMN error lti_assessment_scores_error_values;
+    `)
+		})
+		.then(result => {
 			return db.addIndex(
 				'lti_assessment_scores',
 				'lti_assessment_scores_assessment_score_id_index',
@@ -61,12 +80,23 @@ exports.up = function(db) {
 		.then(result => {
 			return db.addIndex('lti_assessment_scores', 'lti_assessment_scores_status_index', ['status'])
 		})
+		.then(result => {
+			return db.addIndex('lti_assessment_scores', 'lti_assessment_scores_error_index', ['error'])
+		})
+		.then(result => {
+			return db.addIndex('lti_assessment_scores', 'lti_assessment_scores_log_id_index', ['log_id'])
+		})
 }
 
 exports.down = function(db) {
-	return db.dropTable('lti_assessment_scores').then(() => {
-		return db.runSql(`DROP TYPE lti_assessment_scores_status_values`)
-	})
+	return db
+		.dropTable('lti_assessment_scores')
+		.then(() => {
+			return db.runSql(`DROP TYPE lti_assessment_scores_status_values`)
+		})
+		.then(() => {
+			return db.runSql(`DROP TYPE lti_assessment_scores_error_values`)
+		})
 }
 
 exports._meta = {

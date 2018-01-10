@@ -26,7 +26,8 @@ exports.up = function(db) {
 			user_id: { type: 'bigint', notNull: true },
 			draft_id: { type: 'UUID', notNull: true },
 			assessment_id: { type: 'varchar', length: 100 },
-			score: { type: 'decimal', defaultValue: '0' },
+			attempt_id: { type: 'UUID', notNull: true },
+			score: { type: 'decimal' },
 			preview: {
 				type: 'boolean',
 				notNull: true,
@@ -40,6 +41,9 @@ exports.up = function(db) {
 			return db.addIndex('assessment_scores', 'assessment_scores_assessment_id_index', [
 				'assessment_id'
 			])
+		})
+		.then(result => {
+			return db.addIndex('assessment_scores', 'assessment_scores_attempt_id_index', ['attempt_id'])
 		})
 		.then(result => {
 			return db.addIndex('assessment_scores', 'assessment_scores_draft_id_index', ['draft_id'])
