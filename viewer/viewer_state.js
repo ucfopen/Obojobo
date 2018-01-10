@@ -1,4 +1,5 @@
 let db = oboRequire('db')
+let logger = oboRequire('logger')
 
 function set(userId, draftId, key, version, value) {
 	return db
@@ -21,7 +22,7 @@ function set(userId, draftId, key, version, value) {
 			}
 		)
 		.catch(error => {
-			console.log('DB UNEXPECTED on viewer_state.set', error, error.toString())
+			logger.error('DB UNEXPECTED on viewer_state.set', error, error.toString())
 		})
 }
 
@@ -43,7 +44,7 @@ function get(userId, draftId) {
 			}
 		)
 		.catch(error => {
-			console.log('DB UNEXPECTED on viewer_state.get', error, error.toString())
+			logger.error('DB UNEXPECTED on viewer_state.get', error, error.toString())
 		})
 }
 
