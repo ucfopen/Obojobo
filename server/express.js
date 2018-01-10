@@ -570,10 +570,12 @@ oboEvents.on('client:assessment:setResponse', (event, req) => {
 
 	// check perms
 	// check input
-	if (!event.payload.attemptId) console.error(eventRecordResponse, 'Missing Attempt ID', req, event)
+	if (!event.payload.attemptId)
+		return console.error(eventRecordResponse, 'Missing Attempt ID', req, event)
 	if (!event.payload.questionId)
-		console.error(eventRecordResponse, 'Missing Question ID', req, event)
-	if (!event.payload.response) console.error(eventRecordResponse, 'Missing Response', req, event)
+		return console.error(eventRecordResponse, 'Missing Question ID', req, event)
+	if (!event.payload.response)
+		return console.error(eventRecordResponse, 'Missing Response', req, event)
 
 	return db
 		.none(
