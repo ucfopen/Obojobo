@@ -210,7 +210,10 @@ export default class MCAssessment extends React.Component {
 			this.props.model,
 			'shuffledIds'
 		)
-		if (!shuffledIds) {
+		if (!shuffledIds && !this.props.model.parent.modelState.shuffle) {
+			shuffledIds = this.props.model.children.models.map(model => model.get('id'))
+			QuestionUtil.setData(this.props.model.get('id'), 'shuffledIds', shuffledIds)
+		} else if (!shuffledIds) {
 			shuffledIds = _.shuffle(this.props.model.children.models).map(model => model.get('id'))
 			QuestionUtil.setData(this.props.model.get('id'), 'shuffledIds', shuffledIds)
 		}
@@ -297,29 +300,32 @@ export default class MCAssessment extends React.Component {
 				})}
 				{
 					<div className="submit">
-						{questionSubmitted
-							? <Button altAction onClick={this.onClickReset} value="Try Again" />
-							: <Button
-									onClick={this.onClickSubmit}
-									value="Check Your Answer"
-									disabled={!questionAnswered}
-								/>}
+						{questionSubmitted ? (
+							<Button altAction onClick={this.onClickReset} value="Try Again" />
+						) : (
+							<Button
+								onClick={this.onClickSubmit}
+								value="Check Your Answer"
+								disabled={!questionAnswered}
+							/>
+						)}
 
-						{questionSubmitted
-							? score === 100
-								? <div className="result-container">
-										<p className="result correct">Correct!</p>
-									</div>
-								: <div className="result-container">
-										<p className="result incorrect">Incorrect</p>
-										{responseType === 'pick-all'
-											? <span className="pick-all-instructions">
-													You have either missed some correct answers or selected some incorrect
-													answers
-												</span>
-											: null}
-									</div>
-							: null}
+						{questionSubmitted ? (
+							score === 100 ? (
+								<div className="result-container">
+									<p className="result correct">Correct!</p>
+								</div>
+							) : (
+								<div className="result-container">
+									<p className="result incorrect">Incorrect</p>
+									{responseType === 'pick-all' ? (
+										<span className="pick-all-instructions">
+											You have either missed some correct answers or selected some incorrect answers
+										</span>
+									) : null}
+								</div>
+							)
+						) : null}
 					</div>
 				}
 				<ReactCSSTransitionGroup
@@ -328,61 +334,59 @@ export default class MCAssessment extends React.Component {
 					transitionEnterTimeout={800}
 					transitionLeaveTimeout={800}
 				>
-					{questionSubmitted && (feedbacks.length > 0 || solution)
-						? <div className="solution" key="solution">
-								<div className="score">
-									{feedbacks.length === 0
-										? null
-										: <div
-												className={`feedback${responseType === 'pick-all'
-													? ' is-pick-all-feedback'
-													: ' is-not-pick-all-feedback'}`}
-											>
-												{feedbacks.map(model => {
-													let Component = model.getComponentClass()
-													return (
-														<Component
-															key={model.get('id')}
-															model={model}
-															moduleData={this.props.moduleData}
-															responseType={responseType}
-															isShowingExplanation
-															questionSubmitted
-															label={String.fromCharCode(
-																shuffledIds.indexOf(model.parent.get('id')) + 65
-															)}
-														/>
-													)
-												})}
-											</div>}
-								</div>
-								{isShowingExplanation
-									? <Button
-											altAction
-											onClick={this.onClickHideExplanation}
-											value="Hide Explanation"
-										/>
-									: solution
-										? <Button
-												altAction
-												onClick={this.onClickShowExplanation}
-												value="Read an explanation of the answer"
-											/>
-										: null}
-								<ReactCSSTransitionGroup
-									component="div"
-									transitionName="solution"
-									transitionEnterTimeout={800}
-									transitionLeaveTimeout={800}
-								>
-									{isShowingExplanation
-										? <div className="solution-container" key="solution-component">
-												<SolutionComponent model={solution} moduleData={this.props.moduleData} />
-											</div>
-										: null}
-								</ReactCSSTransitionGroup>
+					{questionSubmitted && (feedbacks.length > 0 || solution) ? (
+						<div className="solution" key="solution">
+							<div className="score">
+								{feedbacks.length === 0 ? null : (
+									<div
+										className={`feedback${
+											responseType === 'pick-all'
+												? ' is-pick-all-feedback'
+												: ' is-not-pick-all-feedback'
+										}`}
+									>
+										{feedbacks.map(model => {
+											let Component = model.getComponentClass()
+											return (
+												<Component
+													key={model.get('id')}
+													model={model}
+													moduleData={this.props.moduleData}
+													responseType={responseType}
+													isShowingExplanation
+													questionSubmitted
+													label={String.fromCharCode(
+														shuffledIds.indexOf(model.parent.get('id')) + 65
+													)}
+												/>
+											)
+										})}
+									</div>
+								)}
 							</div>
-						: null}
+							{isShowingExplanation ? (
+								<Button altAction onClick={this.onClickHideExplanation} value="Hide Explanation" />
+							) : solution ? (
+								<Button
+									altAction
+									onClick={this.onClickShowExplanation}
+									value="Read an explanation of the answer"
+								/>
+							) : null}
+							<ReactCSSTransitionGroup
+								component="div"
+								transitionName="solution"
+								transitionEnterTimeout={800}
+								transitionLeaveTimeout={800}
+							>
+								{isShowingExplanation ? (
+									<div className="solution-container" key="solution-component">
+										<SolutionComponent model={solution} moduleData={this.props.moduleData} />
+									</div>
+								) : null}
+							</ReactCSSTransitionGroup>
+						</div>
+					) : null}
 				</ReactCSSTransitionGroup>
 			</OboComponent>
 		)
