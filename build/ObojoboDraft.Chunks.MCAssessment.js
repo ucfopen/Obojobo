@@ -704,7 +704,7 @@
 					{
 						key: 'hideExplanation',
 						value: function hideExplanation() {
-							QuestionUtil.hideExplanation(this.getQuestionModel().get('id'))
+							QuestionUtil.hideExplanation(this.getQuestionModel().get('id'), 'user')
 						}
 					},
 					{

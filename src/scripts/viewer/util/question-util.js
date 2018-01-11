@@ -45,9 +45,9 @@ let QuestionUtil = {
 		})
 	},
 
-	hideExplanation(id, asSystem) {
+	hideExplanation(id, actor) {
 		return Dispatcher.trigger('question:hideExplanation', {
-			value: { id }
+			value: { id, actor }
 		})
 	},
 

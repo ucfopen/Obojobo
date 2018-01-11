@@ -52,7 +52,8 @@ class QuestionStore extends Store {
 				let root = OboModel.models[payload.value.id].getRoot()
 
 				APIUtil.postEvent(root, 'question:hideExplanation', '1.0.0', {
-					questionId: payload.value.id
+					questionId: payload.value.id,
+					actor: payload.value.actor
 				})
 
 				QuestionUtil.clearData(payload.value.id, 'showingExplanation')
@@ -112,7 +113,7 @@ class QuestionStore extends Store {
 				})
 
 				if (QuestionUtil.isShowingExplanation(this.state, questionModel)) {
-					QuestionUtil.hideExplanation(questionId, true)
+					QuestionUtil.hideExplanation(questionId, 'viewerClient')
 				}
 
 				ScoreUtil.clearScore(questionId) // should trigger change
