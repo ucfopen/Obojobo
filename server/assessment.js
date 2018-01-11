@@ -75,6 +75,26 @@ class Assessment extends DraftNode {
 		)
 	}
 
+	static getAssessmentScore(userId, draftId, assessmentId) {
+		return db
+			.manyOrNone(
+				`
+				SELECT *
+				FROM assessment_scores
+				WHERE
+					user_id = $[userId]
+					AND draft_id = $[draftId]
+					AND assessment_id = $[assessmentId]
+					AND preview = FALSE
+				ORDER BY completed_at DESC LIMIT 1
+			`
+			)
+			.then(result => {
+				if (typeof result === undefined) return null
+				return result.score
+			})
+	}
+
 	static insertNewAttempt(userId, draftId, assessmentId, state, isPreview) {
 		return db.one(
 			`
@@ -98,25 +118,91 @@ class Assessment extends DraftNode {
 		)
 	}
 
-	// @TODO: most things touching the db should end up in models. figure this out
-	static updateAttempt(result, attemptId) {
+	static insertAssessmentScore(userId, draftId, assessmentId, launchId, score, isPreview) {
 		return db.one(
 			`
-				UPDATE attempts
-				SET
-					completed_at = now(),
-					result = $[result]
-				WHERE id = $[attemptId]
-				RETURNING
-					id AS "attemptId",
-					created_at as "startTime",
-					completed_at as "endTime",
-					assessment_id as "assessmentId",
-					state,
-					result
+				INSERT INTO assessment_scores (user_id, draft_id, assessment_id, launch_id, score preview)
+				VALUES($[userId], $[draftId], $[assessmentId], $[launchId], $[score], $[isPreview])
+				RETURNING id
 			`,
-			{ result: result, attemptId: attemptId }
+			{
+				userId,
+				draftId,
+				assessmentId,
+				launchId,
+				score,
+				isPreview
+			}
 		)
+	}
+
+	// @TODO: most things touching the db should end up in models. figure this out
+
+	// Finish an attempt and write a new assessment score record
+	static completeAttempt(assessmentId, attemptId, userId, draftId, calculatedScores, preview) {
+		return db
+			.tx(t => {
+				const q1 = db.one(
+					`
+					UPDATE attempts
+					SET
+						completed_at = now(),
+						result = $[result]
+					WHERE id = $[attemptId]
+					RETURNING
+						id AS "attemptId",
+						created_at as "startTime",
+						completed_at as "endTime",
+						assessment_id as "assessmentId",
+						state,
+						result as "scores"
+				`,
+					{ result: calculatedScores, attemptId: attemptId }
+				)
+
+				const q2 = db.one(
+					`
+					INSERT INTO assessment_scores (user_id, draft_id, assessment_id, attempt_id, score, preview)
+					VALUES($[userId], $[draftId], $[assessmentId], $[attemptId], $[score], $[preview])
+					RETURNING id
+				`,
+					{
+						userId,
+						draftId,
+						assessmentId,
+						attemptId,
+						score: calculatedScores.assessmentScore,
+						preview
+					}
+				)
+
+				return t.batch([q1, q2])
+			})
+			.then(result => {
+				return {
+					attemptData: result[0],
+					assessmentScoreId: result[1].id
+				}
+			})
+	}
+
+	static insertNewAssessmentScore(userId, draftId, assessmentId, score, preview) {
+		return db
+			.one(
+				`
+				INSERT INTO assessment_scores (user_id, draft_id, assessment_id, score, preview)
+				VALUES($[userId], $[draftId], $[assessmentId], $[score], $[preview])
+				RETURNING id
+			`,
+				{
+					userId,
+					draftId,
+					assessmentId,
+					score,
+					preview
+				}
+			)
+			.then(result => result.id)
 	}
 
 	constructor(draftTree, node, initFn) {

@@ -916,6 +916,10 @@
 						}
 					},
 					{
+						key: 'onClickResendScore',
+						value: function onClickResendScore() {}
+					},
+					{
 						key: 'endAttempt',
 						value: function endAttempt() {
 							return AssessmentUtil.endAttempt(this.props.model)
@@ -941,12 +945,12 @@
 					{
 						key: 'getScoreAction',
 						value: function getScoreAction() {
-							var highestScore = AssessmentUtil.getHighestAttemptScoreForModel(
+							var assessmentScore = AssessmentUtil.getAssessmentScoreForModel(
 								this.props.moduleData.assessmentState,
 								this.props.model
 							)
 							var scoreAction = this.props.model.modelState.scoreActions.getActionForScore(
-								highestScore
+								assessmentScore
 							)
 							if (scoreAction) {
 								return scoreAction
@@ -983,8 +987,18 @@
 						value: function render() {
 							var _this2 = this
 
-							// DEBUG
-							// alert(@state.step+ ','+ @getCurrentStep())
+							var recentScore = AssessmentUtil.getLastAttemptScoreForModel(
+								this.props.moduleData.assessmentState,
+								this.props.model
+							)
+							var assessmentScore = AssessmentUtil.getAssessmentScoreForModel(
+								this.props.moduleData.assessmentState,
+								this.props.model
+							)
+							var ltiStatus = AssessmentUtil.getLTIStatusForModel(
+								this.props.moduleData.assessmentState,
+								this.props.model
+							)
 
 							var childEl = (function() {
 								switch (_this2.getCurrentStep()) {

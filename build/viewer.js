@@ -2032,7 +2032,9 @@
 					id: assessmentId,
 					current: null,
 					currentResponses: [],
-					attempts: []
+					attempts: [],
+					score: null,
+					lti: null
 				}
 			}
 
@@ -2101,6 +2103,11 @@
 										this.state.assessments[attempt.assessmentId] = getNewAssessmentObject(
 											attempt.assessmentId
 										)
+									}
+
+									if (attempt.scores && attempt.scores.assessmentScore) {
+										this.state.assessments[attempt.assessmentId].score =
+											attempt.scores.assessmentScore
 									}
 
 									if (!attempt.endTime) {
@@ -2324,7 +2331,7 @@
 					{
 						key: 'endAttempt',
 						value: function endAttempt(endAttemptResp) {
-							var id = endAttemptResp.assessmentId
+							var id = endAttemptResp.attempt.assessmentId
 							var assessment = this.state.assessments[id]
 							var model = OboModel.models[id]
 
@@ -2334,8 +2341,10 @@
 							assessment.currentResponses.forEach(function(questionId) {
 								return _questionUtil2.default.clearResponse(questionId)
 							})
-							assessment.attempts.push(endAttemptResp)
+							assessment.attempts.push(endAttemptResp.attempt)
 							assessment.current = null
+							assessment.score = endAttemptResp.assessmentScore
+							assessment.lti = endAttemptResp.lti
 
 							model.processTrigger('onEndAttempt')
 							Dispatcher.trigger('assessment:attemptEnded', id)
@@ -2844,21 +2853,15 @@
 						return 0
 					}
 
-					return assessment.attempts[assessment.attempts.length - 1].result.attemptScore
+					return assessment.attempts[assessment.attempts.length - 1].scores.attemptScore
 				},
-				getHighestAttemptScoreForModel: function getHighestAttemptScoreForModel(state, model) {
+				getAssessmentScoreForModel: function getAssessmentScoreForModel(state, model) {
 					var assessment = AssessmentUtil.getAssessmentForModel(state, model)
 					if (!assessment) {
 						return null
 					}
 
-					return assessment.attempts
-						.map(function(attempt) {
-							return attempt.result.attemptScore
-						})
-						.reduce(function(a, b) {
-							return Math.max(a, b)
-						}, 0)
+					return assessment.score
 				},
 				getLastAttemptScoresForModel: function getLastAttemptScoresForModel(state, model) {
 					var assessment = AssessmentUtil.getAssessmentForModel(state, model)
@@ -2870,7 +2873,7 @@
 						return []
 					}
 
-					return assessment.attempts[assessment.attempts.length - 1].result.scores
+					return assessment.attempts[assessment.attempts.length - 1].scores.questionScores
 				},
 				getCurrentAttemptForModel: function getCurrentAttemptForModel(state, model) {
 					var assessment = AssessmentUtil.getAssessmentForModel(state, model)
@@ -2888,6 +2891,13 @@
 						this.getAssessmentForModel(state, model).attempts.length - model.modelState.attempts !==
 						0
 					)
+				},
+				getLTIStatusForModel: function getLTIStatusForModel(state, model) {
+					var assessment = AssessmentUtil.getAssessmentForModel(state, model)
+					if (!assessment) {
+						return null
+					}
+					return assessment.lti
 				},
 
 				// getLastAttemptForModel(state, model) {

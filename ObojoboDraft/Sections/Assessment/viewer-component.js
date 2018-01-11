@@ -87,6 +87,8 @@ export default class Assessment extends React.Component {
 		return this.endAttempt()
 	}
 
+	onClickResendScore() {}
+
 	endAttempt() {
 		return AssessmentUtil.endAttempt(this.props.model)
 	}
@@ -107,11 +109,11 @@ export default class Assessment extends React.Component {
 	}
 
 	getScoreAction() {
-		let highestScore = AssessmentUtil.getHighestAttemptScoreForModel(
+		let assessmentScore = AssessmentUtil.getAssessmentScoreForModel(
 			this.props.moduleData.assessmentState,
 			this.props.model
 		)
-		let scoreAction = this.props.model.modelState.scoreActions.getActionForScore(highestScore)
+		let scoreAction = this.props.model.modelState.scoreActions.getActionForScore(assessmentScore)
 		if (scoreAction) {
 			return scoreAction
 		}
@@ -141,8 +143,18 @@ export default class Assessment extends React.Component {
 	}
 
 	render() {
-		// DEBUG
-		// alert(@state.step+ ','+ @getCurrentStep())
+		let recentScore = AssessmentUtil.getLastAttemptScoreForModel(
+			this.props.moduleData.assessmentState,
+			this.props.model
+		)
+		let assessmentScore = AssessmentUtil.getAssessmentScoreForModel(
+			this.props.moduleData.assessmentState,
+			this.props.model
+		)
+		let ltiStatus = AssessmentUtil.getLTIStatusForModel(
+			this.props.moduleData.assessmentState,
+			this.props.model
+		)
 
 		const childEl = (() => {
 			switch (this.getCurrentStep()) {
