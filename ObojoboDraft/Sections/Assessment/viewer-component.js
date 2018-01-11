@@ -79,7 +79,7 @@ export default class Assessment extends React.Component {
 	}
 
 	isAssessmentComplete() {
-		return AssessmentUtil.hasAttemptsRemaining(this.props.moduleData.assessmentState, this.props.model)
+		return !AssessmentUtil.hasAttemptsRemaining(this.props.moduleData.assessmentState, this.props.model)
 	}
 
 	onClickSubmit() {
@@ -106,7 +106,7 @@ export default class Assessment extends React.Component {
 				return NavUtil.goPrev()
 
 			default:
-				return NavUtil.goto(scoreAction.actionx.value)
+				return NavUtil.goto(scoreAction.action.value)
 		}
 	}
 
@@ -129,19 +129,6 @@ export default class Assessment extends React.Component {
 				value: '_next'
 			}
 		}
-	}
-
-	getNumCorrect(questionScores) {
-		return questionScores.reduce(
-			function (acc, questionScore) {
-				let n = 0
-				if (parseInt(questionScore.score, 10) === 100) {
-					n = 1
-				}
-				return parseInt(acc, 10) + n
-			},
-			[0]
-		)
 	}
 
 	render() {

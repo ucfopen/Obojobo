@@ -18,7 +18,7 @@ const scoreSubmittedView = assessment => {
 		assessment.props.model
 	)
 	const scoreAction = assessment.getScoreAction()
-	const numCorrect = assessment.getNumCorrect(questionScores)
+	const numCorrect = AssessmentUtil.getNumCorrect(questionScores)
 
 	let childEl
 
