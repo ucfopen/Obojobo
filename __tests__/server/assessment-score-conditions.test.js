@@ -437,4 +437,103 @@ describe('AssessmentScoreConditions', () => {
 		expect(asc.getAssessmentScore(3, [99.99])).toEqual(100)
 		expect(asc.getAssessmentScore(3, [100])).toEqual(null)
 	})
+
+	test('allows for a catch-all case', () => {
+		let asc = new AssessmentScoreConditions([
+			{
+				onHighestAttemptScore: '[90,100]',
+				setAssessmentScore: '100'
+			},
+			{
+				setAssessmentScore: '90'
+			}
+		])
+
+		expect(asc.getAssessmentScore(3, [80])).toEqual(90)
+		expect(asc.getAssessmentScore(3, [80, 90])).toEqual(100)
+	})
+
+	test('throws errors for weird values', () => {
+		let asc = new AssessmentScoreConditions([
+			{
+				setAssessmentScore: 't'
+			}
+		])
+
+		try {
+			asc.getAssessmentScore(3, [80])
+			expect('This line should not be ran').toBe('Not ran')
+		} catch (e) {
+			expect(e.message).toBe('Unable to parse "t": Got "NaN" - Unsure how to proceed')
+		}
+
+		asc = new AssessmentScoreConditions([
+			{
+				onHighestAttemptScore: '[dogs,cats]',
+				setAssessmentScore: '99'
+			}
+		])
+
+		try {
+			asc.getAssessmentScore(3, [80])
+			expect('This line should not be ran').toBe('Not ran')
+		} catch (e) {
+			expect(e.message).toBe('Unable to parse "dogs": Got "NaN" - Unsure how to proceed')
+		}
+
+		asc = new AssessmentScoreConditions([
+			{
+				onHighestAttemptScore: 'steve',
+				setAssessmentScore: '99'
+			}
+		])
+
+		try {
+			asc.getAssessmentScore(3, [80])
+			expect('This line should not be ran').toBe('Not ran')
+		} catch (e) {
+			expect(e.message).toBe('Unable to parse "steve": Got "NaN" - Unsure how to proceed')
+		}
+
+		asc = new AssessmentScoreConditions([
+			{
+				onHighestAttemptScore: '[null,100]',
+				setAssessmentScore: '99'
+			}
+		])
+
+		try {
+			asc.getAssessmentScore(3, [80])
+			expect('This line should not be ran').toBe('Not ran')
+		} catch (e) {
+			expect(e.message).toBe('Unable to parse "null": Got "NaN" - Unsure how to proceed')
+		}
+	})
+
+	test('Allows setting assessment scores to null', () => {
+		let asc = new AssessmentScoreConditions([
+			{
+				onHighestAttemptScore: '[90,100]',
+				setAssessmentScore: null
+			},
+			{
+				onHighestAttemptScore: '[80,90)',
+				setAssessmentScore: '90'
+			}
+		])
+
+		expect(asc.getAssessmentScore(3, [80])).toEqual(90)
+		expect(asc.getAssessmentScore(3, [80, 90])).toEqual(90)
+		expect(asc.getAssessmentScore(3, [90])).toEqual(null)
+	})
+
+	test('handles numbers instead of strings', () => {
+		let asc = new AssessmentScoreConditions([
+			{
+				setAssessmentScore: 66
+			}
+		])
+
+		expect(asc.getAssessmentScore(3, [80])).toEqual(66)
+	})
 })

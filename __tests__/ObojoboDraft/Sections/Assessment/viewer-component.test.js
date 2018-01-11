@@ -110,7 +110,7 @@ describe('Assessment', () => {
 		expect(el3.textContent).toBe('You have unlimited attempts remaining out of unlimited.')
 	})
 
-	test('Assessment page changes when attempt started and submitted', () => {
+	test.skip('Assessment page changes when attempt started and submitted', () => {
 		// New assessment:
 		const component = renderer.create(<Assessment model={model} moduleData={moduleData} />)
 		let tree = component.toJSON()

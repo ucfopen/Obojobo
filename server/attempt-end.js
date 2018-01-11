@@ -10,9 +10,10 @@ let endAttempt = (req, res, user, attemptId, isPreviewing) => {
 	let attemptInfo
 	let attemptHistory
 	let responseHistory
-	let attemptResult
+	let calculatedScores
 	let updateAttemptData
 	let attemptNumber
+	let assessmentScoreId
 	let response
 
 	/*
@@ -24,6 +25,9 @@ let SCORE_SENT_STATUS_ERROR = 'error'
 	*/
 
 	return (
+		//
+		// Collect info
+		//
 		getAttemptInfo(attemptId)
 			.then(attemptInfoResult => {
 				attemptInfo = attemptInfoResult
@@ -45,16 +49,29 @@ let SCORE_SENT_STATUS_ERROR = 'error'
 					responseHistory
 				)
 			})
-			.then(attemptResultResult => {
-				attemptResult = attemptResultResult
-				return sendLTIScore(user, attemptInfo.draftId, attemptResult.ltiScore)
+			//
+			// Update attempt and send event
+			//
+			.then(calculatedScoresResult => {
+				// calculatedScores.lti = ltiRequestResult
+				calculatedScores = calculatedScoresResult
+
+				return completeAttempt(
+					attemptInfo.assessmentId,
+					attemptId,
+					user.id,
+					attemptInfo.draftId,
+					calculatedScores,
+					isPreviewing
+				)
 			})
-			.then(ltiRequestResult => {
-				attemptResult.lti = ltiRequestResult
-				return updateAttempt(attemptId, attemptResult)
-			})
-			.then(updateAttemptResult => {
-				response = updateAttemptResult
+			.then(completeAttemptResult => {
+				assessmentScoreId = completeAttemptResult.assessmentScoreId
+				response = {
+					attempt: completeAttemptResult.attemptData,
+					assessmentScore: completeAttemptResult.attemptData.scores.assessmentScore,
+					lti: null
+				}
 
 				return insertAttemptEndEvents(
 					user,
@@ -67,39 +84,39 @@ let SCORE_SENT_STATUS_ERROR = 'error'
 					req.connection.remoteAddress
 				)
 			})
-			// .then(() => {
-			// 	return sendLTIScore(user, attemptInfo.draftId, attemptResult.ltiScore)
+			//
+			// Update assessment, send LTI score and send event
+			//
+			// .then(updateAttemptResult => {
+			// 	return Assessment.insertNewAssessmentScore(
+			// 		user.id,
+			// 		attemptInfo.draftId,
+			// 		attemptInfo.assessmentId,
+			// 		calculatedScores.assessmentScore,
+			// 		isPreviewing
+			// 	)
+			// })
+			.then(() => {
+				return sendLTIScore(user, attemptInfo.draftId, calculatedScores.ltiScore, assessmentScoreId)
+			})
+			// .then(ltiRequestResult => {
+			// 	calculatedScores.lti = ltiRequestResult
+			// 	return updateAttempt(attemptId, calculatedScores)
 			// })
 			.then(ltiRequestResult => {
-				console.log('put onto')
-				console.log(response) //@todo put an error here for testing purps
-				response.result.lti = ltiRequestResult
+				response.lti = ltiRequestResult
 
-				Assessment.insertAssessmentScore(
-					user.id,
-					attemptInfo.draftId,
-					attemptInfo.assessmentId,
-					response.result.lti.launchId,
-					attemptResult.assessmentScore,
-					response.result.lti.scoreSent,
-					response.result.lti.scoreRead,
-					response.result.lti.status,
-					response.result.lti.error,
-					isPreviewing
-				)
-			})
-			.then(isScoreSent => {
 				insertAttemptScoredEvents(
 					user,
 					attemptInfo.draftId,
 					attemptInfo.assessmentId,
 					attemptId,
 					attemptNumber,
-					attemptResult.attemptScore,
-					attemptResult.assessmentScore,
-					response.result.lti.scoreSent,
-					response.result.lti.scoreRead,
-					response.result.lti.status,
+					calculatedScores.attemptScore,
+					calculatedScores.assessmentScore,
+					response.lti.scoreSent,
+					response.lti.scoreRead,
+					response.lti.status,
 					req.hostname,
 					req.connection.remoteAddress
 				)
@@ -228,8 +245,16 @@ let calculateScores = (assessmentModel, attemptHistory, scoreInfo) => {
 	}
 }
 
-let updateAttempt = (attemptId, attemptResult) => {
-	return Assessment.updateAttempt(attemptResult, attemptId)
+let completeAttempt = (assessmentId, attemptId, userId, draftId, calculatedScores, preview) => {
+	console.log('complete attempt', calculatedScores)
+	return Assessment.completeAttempt(
+		assessmentId,
+		attemptId,
+		userId,
+		draftId,
+		calculatedScores,
+		preview
+	)
 }
 
 let insertAttemptEndEvents = (
@@ -266,7 +291,6 @@ let insertAttemptEndEvents = (
 }
 
 let sendLTIScore = (user, draftId, score, assessmentScoreId) => {
-	if (score === null) return Promise.resolve(false)
 	return lti.sendAssessmentScore(user.id, draftId, score, assessmentScoreId)
 }
 
@@ -351,7 +375,7 @@ module.exports = {
 	getResponseHistory,
 	getCalculatedScores,
 	calculateScores,
-	updateAttempt,
+	completeAttempt,
 	insertAttemptEndEvents,
 	sendLTIScore,
 	insertAttemptScoredEvents

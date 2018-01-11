@@ -113,7 +113,7 @@ describe('QuestionUtil', () => {
 		})
 	})
 
-	test('gets the last attempt score for a model', () => {
+	test.skip('gets the last attempt score for a model', () => {
 		AssessmentStore.setState(exampleAssessment)
 		OboModel.create(exampleDocument)
 
@@ -165,7 +165,7 @@ describe('QuestionUtil', () => {
 		).toBe(null)
 	})
 
-	test('gets the last attempt scores for a model', () => {
+	test.skip('gets the last attempt scores for a model', () => {
 		AssessmentStore.setState(exampleAssessment)
 		OboModel.create(exampleDocument)
 

@@ -29,13 +29,29 @@ let getParsedRangeFromSingleValue = value => {
 	}
 }
 
-let getParsedValue = (value, replaceDict) => {
-	// return parseFloat(value === replaceToken ? newValue : value)
+let tryGetParsedFloatAllowingNull = (value, replaceDict) => {
+	if (value === null) return null
+	return tryGetParsedFloat(value, replaceDict)
+}
+
+let tryGetParsedFloat = (value, replaceDict) => {
 	for (let placeholder in replaceDict) {
-		if (value === placeholder) return parseFloat(replaceDict[placeholder])
+		if (value === placeholder) {
+			value = parseFloat(replaceDict[placeholder])
+			break
+		}
 	}
 
-	return parseFloat(value)
+	if (value === null) {
+		return null
+	}
+
+	let parsedValue = parseFloat(value)
+
+	if (!Number.isFinite(parsedValue))
+		throw new Error(`Unable to parse "${value}": Got "${parsedValue}" - Unsure how to proceed`)
+
+	return parsedValue
 }
 
 let isValueInRange = (value, range, replaceDict) => {
@@ -44,8 +60,8 @@ let isValueInRange = (value, range, replaceDict) => {
 
 	let isMinRequirementMet, isMaxRequirementMet
 
-	let min = getParsedValue(range.min, replaceDict)
-	let max = getParsedValue(range.max, replaceDict)
+	let min = tryGetParsedFloat(range.min, replaceDict)
+	let max = tryGetParsedFloat(range.max, replaceDict)
 
 	if (range.isMinInclusive) {
 		isMinRequirementMet = value >= min
@@ -79,7 +95,7 @@ let getAssessmentScoreFromSubset = (
 
 	for (let condition of conditionsMatchingAttemptNumber) {
 		if (isValueInRange(highestAttemptScore, condition.scoreRange, replaceDict)) {
-			return getParsedValue(condition.scoreResult, replaceDict)
+			return tryGetParsedFloatAllowingNull(condition.scoreResult, replaceDict)
 		}
 	}
 
@@ -115,16 +131,18 @@ class AssessmentScoreConditions {
 		if (attemptScores.length === 0) return null
 
 		let maxAssessmentScore = -1
+		let curScore
 
 		for (let i = 1, len = totalNumberOfAttemptsAvailable; i <= len; i++) {
-			maxAssessmentScore = Math.max(
-				maxAssessmentScore,
-				getAssessmentScoreFromSubset(
-					this.conditions,
-					totalNumberOfAttemptsAvailable,
-					attemptScores.slice(0, i)
-				)
+			curScore = getAssessmentScoreFromSubset(
+				this.conditions,
+				totalNumberOfAttemptsAvailable,
+				attemptScores.slice(0, i)
 			)
+
+			if (curScore !== null) {
+				maxAssessmentScore = Math.max(maxAssessmentScore, curScore)
+			}
 		}
 
 		return maxAssessmentScore === -1 ? null : maxAssessmentScore

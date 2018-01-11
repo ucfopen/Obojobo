@@ -714,8 +714,10 @@
 								this.props.moduleData.assessmentState,
 								this.props.model
 							)
-
-							// alert(@state.step+ ','+ @getCurrentStep())
+							var ltiStatus = AssessmentUtil.getLTIStatusForModel(
+								this.props.moduleData.assessmentState,
+								this.props.model
+							)
 
 							var childEl = (function() {
 								switch (_this2.getCurrentStep()) {
@@ -791,7 +793,19 @@
 										return React.createElement(
 											'div',
 											{ className: 'score unlock' },
-											React.createElement('p', null, 'i put this in here'),
+											React.createElement(
+												'div',
+												{ style: { background: 'gray' } },
+												React.createElement('p', null, 'lti status'),
+												React.createElement('p', null, ltiStatus.scoreSent),
+												React.createElement('p', null, ltiStatus.scoreRead),
+												React.createElement('p', null, ltiStatus.status),
+												React.createElement(
+													Button,
+													{ onClick: _this2.onClickResendScore },
+													"Resend Score (Doesn't Work Yet)"
+												)
+											),
 											React.createElement(
 												'h1',
 												null,
@@ -806,11 +820,6 @@
 															(assessmentScore === null ? '--' : Math.round(assessmentScore)) +
 															'%'
 													),
-											React.createElement(
-												Button,
-												{ onClick: _this2.onClickResendScore },
-												'Resend Score'
-											),
 											childEl,
 											React.createElement(
 												'div',

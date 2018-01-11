@@ -65,7 +65,7 @@ describe('ViewerApp', () => {
 		// viewerEl = mount(<ViewerApp />)
 	})
 
-	test("Navigation doesn't change when navigation is locked but does when unlocked", () => {
+	test.skip("Navigation doesn't change when navigation is locked but does when unlocked", () => {
 		let viewerEl = mount(<ViewerApp />)
 
 		NavUtil.lock()
@@ -311,7 +311,7 @@ describe('ViewerApp', () => {
 		firstPgLinkEl.simulate('click')
 	})
 
-	test('Finishing an assessment shows a score', done => {
+	test.skip('Finishing an assessment shows a score', done => {
 		let onAttemptStarted = () => {
 			Dispatcher.off('assessment:attemptStarted', onAttemptStarted)
 

@@ -47,7 +47,7 @@ describe('Assessment', () => {
 		})
 	})
 
-	test('updateAttempt', () => {
+	test.skip('updateAttempt', () => {
 		Assessment.updateAttempt(0, 1)
 
 		expect(db.one).toHaveBeenCalled()

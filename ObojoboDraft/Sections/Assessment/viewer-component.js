@@ -122,8 +122,10 @@ export default class Assessment extends React.Component {
 			this.props.moduleData.assessmentState,
 			this.props.model
 		)
-
-		// alert(@state.step+ ','+ @getCurrentStep())
+		let ltiStatus = AssessmentUtil.getLTIStatusForModel(
+			this.props.moduleData.assessmentState,
+			this.props.model
+		)
 
 		var childEl = (() => {
 			switch (this.getCurrentStep()) {
@@ -196,14 +198,26 @@ export default class Assessment extends React.Component {
 
 					return (
 						<div className="score unlock">
-							<p>i put this in here</p>
+							<div style={{ background: 'gray' }}>
+								<p>lti status</p>
+								<p>
+									{ltiStatus.scoreSent}
+								</p>
+								<p>
+									{ltiStatus.scoreRead}
+								</p>
+								<p>
+									{ltiStatus.status}
+								</p>
+								<Button onClick={this.onClickResendScore}>Resend Score (Doesn't Work Yet)</Button>
+							</div>
 							<h1>{`Your attempt score is ${Math.round(recentScore)}%`}</h1>
 							{recentScore === assessmentScore
 								? <h2>This is your recorded score</h2>
 								: <h2>{`Your recorded score is ${assessmentScore === null
 										? '--'
 										: Math.round(assessmentScore)}%`}</h2>}
-							<Button onClick={this.onClickResendScore}>Resend Score</Button>
+
 							{childEl}
 							<div className="review">
 								<p className="number-correct">{`You got ${numCorrect} out of ${questionScores.length} questions correct:`}</p>

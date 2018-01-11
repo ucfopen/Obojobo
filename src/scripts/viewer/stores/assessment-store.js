@@ -18,7 +18,8 @@ let getNewAssessmentObject = assessmentId => ({
 	current: null,
 	currentResponses: [],
 	attempts: [],
-	score: null
+	score: null,
+	lti: null
 })
 
 class AssessmentStore extends Store {
@@ -58,8 +59,8 @@ class AssessmentStore extends Store {
 				this.state.assessments[attempt.assessmentId] = getNewAssessmentObject(attempt.assessmentId)
 			}
 
-			if (attempt.result && attempt.result.assessmentScore) {
-				this.state.assessments[attempt.assessmentId].score = attempt.result.assessmentScore
+			if (attempt.scores && attempt.scores.assessmentScore) {
+				this.state.assessments[attempt.assessmentId].score = attempt.scores.assessmentScore
 			}
 
 			if (!attempt.endTime) {
@@ -172,15 +173,16 @@ class AssessmentStore extends Store {
 	}
 
 	endAttempt(endAttemptResp) {
-		let id = endAttemptResp.assessmentId
+		let id = endAttemptResp.attempt.assessmentId
 		let assessment = this.state.assessments[id]
 		let model = OboModel.models[id]
 
 		assessment.current.state.questions.forEach(question => QuestionUtil.hideQuestion(question.id))
 		assessment.currentResponses.forEach(questionId => QuestionUtil.clearResponse(questionId))
-		assessment.attempts.push(endAttemptResp)
+		assessment.attempts.push(endAttemptResp.attempt)
 		assessment.current = null
-		assessment.score = endAttemptResp.result.assessmentScore
+		assessment.score = endAttemptResp.assessmentScore
+		assessment.lti = endAttemptResp.lti
 
 		model.processTrigger('onEndAttempt')
 		Dispatcher.trigger('assessment:attemptEnded', id)
