@@ -39,13 +39,14 @@ export default class Assessment extends React.Component {
 			return 'takingTest'
 		}
 
-		// TODO: Assessment review
+		// TODO: Assessment review (see assessment:review event)
 		this.props.model.modelState.assessmentReview = true
 		if (
 			!AssessmentUtil.hasAttemptsRemaining(
 				this.props.moduleData.assessmentState,
 				this.props.model
-			) && this.props.model.modelState.assessmentReview
+			) &&
+			this.props.model.modelState.assessmentReview
 		) {
 			return 'review'
 		}
@@ -79,7 +80,10 @@ export default class Assessment extends React.Component {
 	}
 
 	isAssessmentComplete() {
-		return !AssessmentUtil.hasAttemptsRemaining(this.props.moduleData.assessmentState, this.props.model)
+		return !AssessmentUtil.hasAttemptsRemaining(
+			this.props.moduleData.assessmentState,
+			this.props.model
+		)
 	}
 
 	onClickSubmit() {
@@ -92,7 +96,7 @@ export default class Assessment extends React.Component {
 	}
 
 	endAttempt() {
-		return AssessmentUtil.endAttempt(this.props.model)
+		return AssessmentUtil.endAttempt(this.props.model, this.props.model.modelState.assessmentReview)
 	}
 
 	exitAssessment() {

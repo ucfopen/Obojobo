@@ -30,17 +30,17 @@ class AssessmentStore extends Store {
 		})
 
 		Dispatcher.on('assessment:endAttempt', payload => {
-			this.tryEndAttempt(payload.value.id)
+			this.tryEndAttempt(payload.value.id, payload.value.hasAssessmentReview)
 		})
 
 		Dispatcher.on('question:setResponse', payload => {
 			this.trySetResponse(payload.value.id, payload.value.response, payload.value.targetId)
 		})
 
-		Dispatcher.on('assessment:end', payload => {
+		Dispatcher.on('assessment:review', payload => {
 			// TODO: Handle the case where the client is out of attempts. Consider how to allow
-			// the UI to update accordingly (assessment review).
-			console.log(payload)
+			// the UI to update accordingly (assessment review). We'll need to fetch the appropriate
+			// review data from our attempt end endpoint.
 		})
 	}
 
@@ -154,7 +154,7 @@ class AssessmentStore extends Store {
 		Dispatcher.trigger('assessment:attemptStarted', id)
 	}
 
-	tryEndAttempt(id) {
+	tryEndAttempt(id, hasAssessmentReview) {
 		let model = OboModel.models[id]
 		let assessment = this.state.assessments[id]
 
@@ -164,7 +164,7 @@ class AssessmentStore extends Store {
 					return ErrorUtil.errorResponse(res)
 				}
 
-				this.endAttempt(res.value)
+				this.endAttempt(res.value, hasAssessmentReview)
 				return this.triggerChange()
 			})
 			.catch(e => {
@@ -172,7 +172,7 @@ class AssessmentStore extends Store {
 			})
 	}
 
-	endAttempt(endAttemptResp) {
+	endAttempt(endAttemptResp, hasAssessmentReview) {
 		let id = endAttemptResp.assessmentId
 		let assessment = this.state.assessments[id]
 		let model = OboModel.models[id]
@@ -185,8 +185,8 @@ class AssessmentStore extends Store {
 		model.processTrigger('onEndAttempt')
 		Dispatcher.trigger('assessment:attemptEnded', id)
 
-		if (!AssessmentUtil.hasAttemptsRemaining(this.getState(), model)) {
-			Dispatcher.trigger('assessment:end', {
+		if (!AssessmentUtil.hasAttemptsRemaining(this.getState(), model) && hasAssessmentReview) {
+			Dispatcher.trigger('assessment:review', {
 				value: {
 					id: model.get('id')
 				}

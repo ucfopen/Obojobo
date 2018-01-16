@@ -579,7 +579,7 @@
 					assessment.props.model
 				)
 				var scoreAction = assessment.getScoreAction()
-				var numCorrect = assessment.getNumCorrect(questionScores)
+				var numCorrect = AssessmentUtil.getNumCorrect(questionScores)
 
 				var childEl = void 0
 
@@ -855,16 +855,17 @@
 								return 'takingTest'
 							}
 
-							// TODO: Assessment review
-							// this.props.model.modelState.assessmentReview = true
-							// if (
-							// 	!AssessmentUtil.hasAttemptsRemaining(
-							// 		this.props.moduleData.assessmentState,
-							// 		this.props.model
-							// 	) && this.props.model.modelState.assessmentReview
-							// ) {
-							// 	return 'review'
-							// }
+							// TODO: Assessment review (see assessment:review event)
+							this.props.model.modelState.assessmentReview = true
+							if (
+								!AssessmentUtil.hasAttemptsRemaining(
+									this.props.moduleData.assessmentState,
+									this.props.model
+								) &&
+								this.props.model.modelState.assessmentReview
+							) {
+								return 'review'
+							}
 
 							if (assessment.attempts.length > 0) {
 								return 'scoreSubmitted'
@@ -901,6 +902,15 @@
 						}
 					},
 					{
+						key: 'isAssessmentComplete',
+						value: function isAssessmentComplete() {
+							return !AssessmentUtil.hasAttemptsRemaining(
+								this.props.moduleData.assessmentState,
+								this.props.model
+							)
+						}
+					},
+					{
 						key: 'onClickSubmit',
 						value: function onClickSubmit() {
 							if (!this.isAttemptComplete()) {
@@ -918,7 +928,10 @@
 					{
 						key: 'endAttempt',
 						value: function endAttempt() {
-							return AssessmentUtil.endAttempt(this.props.model)
+							return AssessmentUtil.endAttempt(
+								this.props.model,
+								this.props.model.modelState.assessmentReview
+							)
 						}
 					},
 					{
@@ -961,21 +974,6 @@
 									value: '_next'
 								}
 							}
-						}
-					},
-					{
-						key: 'getNumCorrect',
-						value: function getNumCorrect(questionScores) {
-							return questionScores.reduce(
-								function(acc, questionScore) {
-									var n = 0
-									if (parseInt(questionScore.score, 10) === 100) {
-										n = 1
-									}
-									return parseInt(acc, 10) + n
-								},
-								[0]
-							)
 						}
 					},
 					{
