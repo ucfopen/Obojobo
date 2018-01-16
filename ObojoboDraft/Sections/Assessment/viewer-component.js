@@ -57,14 +57,16 @@ export default class Assessment extends React.Component {
 	}
 
 	isAttemptComplete() {
-		return true
-		//@TODO: isCurrentAttemptComplete not functional, returning true which was the status quo for the pilot
-		// return AssessmentUtil.isCurrentAttemptComplete(this.props.moduleData.assessmentState, this.props.moduleData.questionState, this.props.model);
+		return AssessmentUtil.isCurrentAttemptComplete(
+			this.props.moduleData.assessmentState,
+			this.props.moduleData.questionState,
+			this.props.model
+		)
 	}
 
 	onClickSubmit() {
 		if (!this.isAttemptComplete()) {
-			ModalUtil.show(<AttemptIncompleteDialog onSubmit={this.endAttempt} />)
+			ModalUtil.show(<AttemptIncompleteDialog onSubmit={this.endAttempt.bind(this)} />)
 			return
 		}
 
@@ -185,22 +187,22 @@ export default class Assessment extends React.Component {
 						let PageComponent = pageModel.getComponentClass()
 						childEl = <PageComponent model={pageModel} moduleData={this.props.moduleData} />
 					} else {
-						childEl = (
-							<p>
-								{scoreAction.message}
-							</p>
-						)
+						childEl = <p>{scoreAction.message}</p>
 					}
 
 					return (
 						<div className="score unlock">
 							<h1>{`Your score is ${Math.round(recentScore)}%`}</h1>
-							{recentScore === highestScore
-								? <h2>This is your highest score</h2>
-								: <h2>{`Your highest score was ${Math.round(highestScore)}%`}</h2>}
+							{recentScore === highestScore ? (
+								<h2>This is your highest score</h2>
+							) : (
+								<h2>{`Your highest score was ${Math.round(highestScore)}%`}</h2>
+							)}
 							{childEl}
 							<div className="review">
-								<p className="number-correct">{`You got ${numCorrect} out of ${questionScores.length} questions correct:`}</p>
+								<p className="number-correct">{`You got ${numCorrect} out of ${
+									questionScores.length
+								} questions correct:`}</p>
 								{questionScores.map((questionScore, index) => {
 									let questionModel = OboModel.models[questionScore.id]
 									let QuestionComponent = questionModel.getComponentClass()
@@ -210,9 +212,9 @@ export default class Assessment extends React.Component {
 											key={index}
 											className={questionScore.score === 100 ? 'is-correct' : 'is-not-correct'}
 										>
-											<p>{`Question ${index + 1} - ${questionScore.score === 100
-												? 'Correct:'
-												: 'Incorrect:'}`}</p>
+											<p>{`Question ${index + 1} - ${
+												questionScore.score === 100 ? 'Correct:' : 'Incorrect:'
+											}`}</p>
 											<QuestionComponent
 												model={questionModel}
 												moduleData={this.props.moduleData}
