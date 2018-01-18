@@ -1,13 +1,27 @@
 @import '~styles/includes';
 
-.obojobo-draft--chunks--break
+div.non-editable-chunk.obojobo-draft--chunks--break.viewer
 {
-	hr
+	&.width-normal
 	{
-		border: none;
-		border-bottom: 1px solid $color-shadow;
-		margin-bottom: 1em;
-		margin-top: 1em;
-		width: 30%;
+		hr
+		{
+			border: none;
+			border-bottom: 1px solid $color-shadow;
+			margin-bottom: 1em;
+			margin-top: 1em;
+			width: 30%;
+		}
+	}
+
+	&.width-large
+	{
+		hr 
+		{
+			border: none;
+			border-bottom: 1px solid $color-shadow;
+			margin-bottom: 1em;
+			margin-top: 1em; 
+		}
 	}
 }
