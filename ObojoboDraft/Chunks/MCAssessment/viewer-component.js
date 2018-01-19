@@ -28,6 +28,13 @@ export default class MCAssessment extends React.Component {
 		this.onClick = this.onClick.bind(this)
 		this.onCheckAnswer = this.onCheckAnswer.bind(this)
 		this.isShowingExplanation = this.isShowingExplanation.bind(this)
+		this.correctFeedbackOptions = [
+			"Correct!",
+			"Perfect!",
+			"You got it!",
+			"Great job!",
+			"That's right!"
+		]
 	}
 
 	getQuestionModel() {
@@ -185,6 +192,7 @@ export default class MCAssessment extends React.Component {
 	}
 
 	componentDidMount() {
+		this.randomCorrectFeedback = this.getRandomCorrectFeedback()
 		Dispatcher.on('question:checkAnswer', this.onCheckAnswer)
 	}
 
@@ -214,6 +222,10 @@ export default class MCAssessment extends React.Component {
 			shuffledIds = _.shuffle(this.props.model.children.models).map(model => model.get('id'))
 			QuestionUtil.setData(this.props.model.get('id'), 'shuffledIds', shuffledIds)
 		}
+	}
+
+	getRandomCorrectFeedback() {
+		return this.correctFeedbackOptions[Math.floor(Math.random() * this.correctFeedbackOptions.length)]
 	}
 
 	render() {
@@ -308,7 +320,7 @@ export default class MCAssessment extends React.Component {
 						{questionSubmitted
 							? score === 100
 								? <div className="result-container">
-										<p className="result correct">Correct!</p>
+										<p className="result correct">{this.randomCorrectFeedback}</p>
 									</div>
 								: <div className="result-container">
 										<p className="result incorrect">Incorrect</p>
