@@ -8,10 +8,11 @@ let lti = oboRequire('lti')
 let insertEvent = oboRequire('insert_event')
 let createCaliperEvent = oboRequire('routes/api/events/create_caliper_event') //@TODO
 let endAttempt = require('./attempt-end').endAttempt
+let logger = oboRequire('logger')
 
-let logAndRespondToUnexpected = (errorMessage, res, req, jsError) => {
-	console.error('logAndRespondToUnexpected', jsError, errorMessage)
-	res.unexpected(jsError)
+let logAndRespondToUnexpected = (res, originalError, errorForResponse) => {
+	logger.error('logAndRespondToUnexpected', originalError)
+	res.unexpected(errorForResponse)
 }
 
 app.post('/api/assessments/attempt/start', (req, res, next) => {
@@ -327,7 +328,11 @@ app.post('/api/assessments/attempt/start', (req, res, next) => {
 					return res.reject('Attempt limit reached')
 
 				default:
-					logAndRespondToUnexpected('Unexpected DB error', res, req, error)
+					logAndRespondToUnexpected(
+						res,
+						error,
+						new Error('Unexpected error starting a new attempt')
+					)
 			}
 		})
 })
@@ -339,59 +344,91 @@ app.post('/api/assessments/attempt/:attemptId/end', (req, res, next) => {
 			let isPreviewing = currentUser.canViewEditor
 			return endAttempt(req, res, currentUser, req.params.attemptId, isPreviewing)
 		})
-		.then(updateResult => {
-			res.success(updateResult)
+		.then(resp => {
+			res.success(resp)
 		})
 		.catch(error => {
-			console.log('error', error, error.toString())
-			logAndRespondToUnexpected(
-				'Unexpected error',
-				res,
-				req,
-				Error('Unexpected Error Completing your attempt.')
-			)
+			logAndRespondToUnexpected(res, error, new Error('Unexpected error completing your attempt'))
 		})
 })
 
-// gets the current user's attempts for all assessments for a specific draft
-app.get('/api/drafts/:draftId/attempts', (req, res, next) => {
+app.get('/api/assessments/:draftId/:assessmentId/attempt/:attemptId', (req, res, next) => {
 	// check perms
 	req
 		.requireCurrentUser()
 		.then(currentUser => {
 			// check input
 			// select
-			return db.manyOrNone(
-				`
-				SELECT
-					id AS "attemptId",
-					created_at as "startDate",
-					completed_at as "endDate",
-					assessment_id,
-					state,
-					score
-				FROM attempts
-				WHERE user_id = $[userId]
-					AND draft_id = $[draftId]
-				ORDER BY completed_at DESC`,
-				{ userId: currentUser.id, draftId: req.params.draftId }
+			return Assessment.getAttempt(
+				currentUser.id,
+				req.params.draftId,
+				req.params.assessmentId,
+				req.params.attemptId
 			)
 		})
 		.then(result => {
-			res.success({ attempts: result })
+			console.log('result', result)
+			res.success(result)
 		})
 		.catch(error => {
 			console.log('error', error, error.toString())
 			logAndRespondToUnexpected(
-				'Unexpected error',
 				res,
-				req,
-				Error('Unexpected Error Loading attempts.')
+				error,
+				new Error('Unexpected Error Loading attempt "${:attemptId}"')
 			)
 		})
 })
 
-app.post('/api/assessments/attempt/:attemptId/score/send', (req, res, next) => {})
+app.get('/api/assessments/:draftId/attempts', (req, res, next) => {
+	// check perms
+	req
+		.requireCurrentUser()
+		.then(currentUser => {
+			// check input
+			// select
+			return Assessment.getAttempts(currentUser.id, req.params.draftId)
+		})
+		.then(result => {
+			console.log('result', result)
+			res.success(result)
+		})
+		.catch(error => {
+			switch (error.message) {
+				case 'Login Required':
+					res.notAuthorized(error.message)
+					return next()
+
+				default:
+					logAndRespondToUnexpected(res, error, Error('Unexpected error loading attempts'))
+			}
+		})
+})
+
+app.get('/api/assessment/:draftId/:assessmentId/attempts', (req, res, next) => {
+	// check perms
+	req
+		.requireCurrentUser()
+		.then(currentUser => {
+			// check input
+			// select
+			return Assessment.getAttempts(currentUser.id, req.params.draftId, req.params.assessmentId)
+		})
+		.then(result => {
+			console.log('result', result)
+			res.success(result)
+		})
+		.catch(error => {
+			switch (error.message) {
+				case 'Login Required':
+					res.notAuthorized(error.message)
+					return next()
+
+				default:
+					logAndRespondToUnexpected(res, error, Error('Unexpected error loading attempts'))
+			}
+		})
+})
 
 oboEvents.on('client:assessment:setResponse', (event, req) => {
 	let eventRecordResponse = 'client:assessment:setResponse'

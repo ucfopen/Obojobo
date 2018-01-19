@@ -72,7 +72,7 @@
 	/******/
 	/******/ /******/ __webpack_require__.p = 'build/' // Load entry module and return exports
 	/******/
-	/******/ /******/ return __webpack_require__((__webpack_require__.s = 165))
+	/******/ /******/ return __webpack_require__((__webpack_require__.s = 174))
 	/******/
 })(
 	/************************************************************************/
@@ -89,29 +89,18 @@
 			/***/
 		},
 
-		/***/ /***/ 15: function(module, exports) {
-			// removed by extract-text-webpack-plugin
-			/***/
-		},
-
-		/***/ /***/ 165: function(module, exports, __webpack_require__) {
-			module.exports = __webpack_require__(7)
-
-			/***/
-		},
-
-		/***/ /***/ 7: function(module, exports, __webpack_require__) {
+		/***/ /***/ 10: function(module, exports, __webpack_require__) {
 			'use strict'
 
 			var _Common = __webpack_require__(0)
 
 			var _Common2 = _interopRequireDefault(_Common)
 
-			var _adapter = __webpack_require__(8)
+			var _adapter = __webpack_require__(11)
 
 			var _adapter2 = _interopRequireDefault(_adapter)
 
-			var _viewerComponent = __webpack_require__(9)
+			var _viewerComponent = __webpack_require__(12)
 
 			var _viewerComponent2 = _interopRequireDefault(_viewerComponent)
 
@@ -131,7 +120,7 @@
 			/***/
 		},
 
-		/***/ /***/ 8: function(module, exports, __webpack_require__) {
+		/***/ /***/ 11: function(module, exports, __webpack_require__) {
 			'use strict'
 
 			Object.defineProperty(exports, '__esModule', {
@@ -167,7 +156,7 @@
 			/***/
 		},
 
-		/***/ /***/ 9: function(module, exports, __webpack_require__) {
+		/***/ /***/ 12: function(module, exports, __webpack_require__) {
 			'use strict'
 
 			Object.defineProperty(exports, '__esModule', {
@@ -191,7 +180,7 @@
 				}
 			})()
 
-			__webpack_require__(15)
+			__webpack_require__(16)
 
 			var _Common = __webpack_require__(0)
 
@@ -357,6 +346,17 @@
 			function __guard__(value, transform) {
 				return typeof value !== 'undefined' && value !== null ? transform(value) : undefined
 			}
+
+			/***/
+		},
+
+		/***/ /***/ 16: function(module, exports) {
+			// removed by extract-text-webpack-plugin
+			/***/
+		},
+
+		/***/ /***/ 174: function(module, exports, __webpack_require__) {
+			module.exports = __webpack_require__(10)
 
 			/***/
 		}

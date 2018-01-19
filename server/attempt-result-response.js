@@ -5,10 +5,9 @@ let AssessmentScoreConditions = require('./assessment-score-conditions')
 let createCaliperEvent = oboRequire('routes/api/events/create_caliper_event') //@TODO
 let insertEvent = oboRequire('insert_event')
 let lti = oboRequire('lti')
-let logger = oboRequire('logger')
 
 let endAttempt = (req, res, user, attemptId, isPreviewing) => {
-	let attempt
+	let attemptInfo
 	let attemptHistory
 	let responseHistory
 	let calculatedScores
@@ -25,60 +24,48 @@ let SCORE_SENT_STATUS_READ_MISMATCH = 'read_mismatch'
 let SCORE_SENT_STATUS_ERROR = 'error'
 	*/
 
-	logger.info(`End attempt "${attemptId}" begin for user "${user.id}" (Preview="${isPreviewing}")`)
-
 	return (
 		//
 		// Collect info
 		//
-
-		getAttempt(attemptId)
-			.then(attemptResult => {
-				logger.info(`End attempt "${attemptId}" - getAttempt success`)
-
-				attempt = attemptResult
-				return getAttemptHistory(user.id, attempt.draftId, attempt.assessmentId)
+		getAttemptInfo(attemptId)
+			.then(attemptInfoResult => {
+				attemptInfo = attemptInfoResult
+				return getAttemptHistory(user.id, attemptInfo.draftId, attemptInfo.assessmentId)
 			})
 			.then(attemptHistoryResult => {
-				logger.info(`End attempt "${attemptId}" - getAttemptHistory success`)
-
 				attemptHistory = attemptHistoryResult
-				return getResponsesForAttempt(attemptId)
+				return getResponseHistory(attemptId)
 			})
-			.then(responsesForAttemptResult => {
-				logger.info(`End attempt "${attemptId}" - getResponsesForAttempt success`)
-
-				responsesForAttempt = responsesForAttemptResult
+			.then(responseHistoryResult => {
+				responseHistory = responseHistoryResult
+				attemptNumber = responseHistory.length + 1
 				return getCalculatedScores(
 					req,
 					res,
-					attempt.assessmentModel,
-					attempt.attemptState,
+					attemptInfo.assessmentModel,
+					attemptInfo.attemptState,
 					attemptHistory,
-					responsesForAttempt
+					responseHistory
 				)
 			})
 			//
 			// Update attempt and send event
 			//
 			.then(calculatedScoresResult => {
-				logger.info(`End attempt "${attemptId}" - getCalculatedScores success`)
-
 				// calculatedScores.lti = ltiRequestResult
 				calculatedScores = calculatedScoresResult
 
 				return completeAttempt(
-					attempt.assessmentId,
+					attemptInfo.assessmentId,
 					attemptId,
 					user.id,
-					attempt.draftId,
+					attemptInfo.draftId,
 					calculatedScores,
 					isPreviewing
 				)
 			})
 			.then(completeAttemptResult => {
-				logger.info(`End attempt "${attemptId}" - completeAttempt success`)
-
 				assessmentScoreId = completeAttemptResult.assessmentScoreId
 				response = {
 					attempt: completeAttemptResult.attemptData,
@@ -88,10 +75,10 @@ let SCORE_SENT_STATUS_ERROR = 'error'
 
 				return insertAttemptEndEvents(
 					user,
-					attempt.draftId,
-					attempt.assessmentId,
+					attemptInfo.draftId,
+					attemptInfo.assessmentId,
 					attemptId,
-					attempt.number,
+					attemptNumber,
 					isPreviewing,
 					req.hostname,
 					req.connection.remoteAddress
@@ -103,30 +90,26 @@ let SCORE_SENT_STATUS_ERROR = 'error'
 			// .then(updateAttemptResult => {
 			// 	return Assessment.insertNewAssessmentScore(
 			// 		user.id,
-			// 		attempt.draftId,
-			// 		attempt.assessmentId,
+			// 		attemptInfo.draftId,
+			// 		attemptInfo.assessmentId,
 			// 		calculatedScores.assessmentScore,
 			// 		isPreviewing
 			// 	)
 			// })
 			.then(() => {
-				logger.info(`End attempt "${attemptId}" - insertAttemptEndEvent success`)
-
-				return sendLTIScore(user, attempt.draftId, calculatedScores.ltiScore, assessmentScoreId)
+				return sendLTIScore(user, attemptInfo.draftId, calculatedScores.ltiScore, assessmentScoreId)
 			})
 			// .then(ltiRequestResult => {
 			// 	calculatedScores.lti = ltiRequestResult
 			// 	return updateAttempt(attemptId, calculatedScores)
 			// })
 			.then(ltiRequestResult => {
-				logger.info(`End attempt "${attemptId}" - sendLTIScore success`)
-
 				response.lti = ltiRequestResult
 
 				insertAttemptScoredEvents(
 					user,
-					attempt.draftId,
-					attempt.assessmentId,
+					attemptInfo.draftId,
+					attemptInfo.assessmentId,
 					attemptId,
 					attemptNumber,
 					calculatedScores.attemptScore,
@@ -137,30 +120,34 @@ let SCORE_SENT_STATUS_ERROR = 'error'
 					req.hostname,
 					req.connection.remoteAddress
 				)
-			})
-			.then(() => {
-				return Assessment.getAttempts(user.id, attempt.draftId, attempt.assessmentId)
+
+				return response
 			})
 	)
 }
 
-let getAttempt = attemptId => {
+let getAttemptInfo = attemptId => {
 	let result
 
-	return Assessment.getAttempt(attemptId)
+	return db
+		.one(
+			`
+		SELECT drafts.id AS draft_id, attempts.assessment_id, attempts.state as attempt_state
+		FROM drafts
+		JOIN attempts
+		ON drafts.id = attempts.draft_id
+		WHERE attempts.id = $1
+	`,
+			[attemptId]
+		)
 		.then(selectResult => {
 			result = selectResult
-			return Assessment.getAttemptNumber(result.user_id, result.draft_id, attemptId)
-		})
-		.then(attemptNumber => {
-			result.attemptNumber = attemptNumber
 			return DraftModel.fetchById(result.draft_id)
 		})
 		.then(draftModel => {
 			return {
 				assessmentId: result.assessment_id,
-				number: result.attemptNumber,
-				attemptState: result.state,
+				attemptState: result.attempt_state,
 				draftId: result.draft_id,
 				model: draftModel,
 				assessmentModel: draftModel.getChildNodeById(result.assessment_id)
@@ -172,8 +159,16 @@ let getAttemptHistory = (userId, draftId, assessmentId) => {
 	return Assessment.getCompletedAssessmentAttemptHistory(userId, draftId, assessmentId, false)
 }
 
-let getResponsesForAttempt = (userId, draftId) => {
-	return Assessment.getResponsesForAttempt(userId, draftId)
+let getResponseHistory = attemptId => {
+	return db.any(
+		`
+	SELECT *
+	FROM attempts_question_responses
+	WHERE attempt_id = $1
+	`,
+		[attemptId]
+	)
+	// return Assessment.getResponseHistory([attemptId])
 }
 
 let getCalculatedScores = (
@@ -375,9 +370,9 @@ let insertAttemptScoredEvents = (
 
 module.exports = {
 	endAttempt,
-	getAttempt,
+	getAttemptInfo,
 	getAttemptHistory,
-	getResponsesForAttempt,
+	getResponseHistory,
 	getCalculatedScores,
 	calculateScores,
 	completeAttempt,

@@ -35,7 +35,7 @@ var AssessmentUtil = {
 			return 0
 		}
 
-		return assessment.attempts[assessment.attempts.length - 1].scores.attemptScore
+		return assessment.attempts[assessment.attempts.length - 1].attemptScore
 	},
 
 	getAssessmentScoreForModel(state, model) {
@@ -57,7 +57,7 @@ var AssessmentUtil = {
 			return []
 		}
 
-		return assessment.attempts[assessment.attempts.length - 1].scores.questionScores
+		return assessment.attempts[assessment.attempts.length - 1].questionScores
 	},
 
 	getCurrentAttemptForModel(state, model) {
