@@ -324,7 +324,8 @@ export default class ViewerApp extends React.Component {
 			}
 		}
 
-		let modal = ModalUtil.getCurrentModal(this.state.modalState)
+		let modalItem = ModalUtil.getCurrentModal(this.state.modalState)
+		let hideViewer = modalItem && modalItem.hideViewer
 
 		return (
 			<IdleTimer
@@ -348,21 +349,23 @@ export default class ViewerApp extends React.Component {
 						? ' is-disabled-nav'
 						: ' is-enabled-nav'} is-focus-state-${this.state.focusState.viewState}`}
 				>
-					<header>
-						<div className="pad">
-							<span className="module-title">
-								{this.state.model.title}
-							</span>
-							<span className="location">
-								{navTargetTitle}
-							</span>
-							<Logo />
-						</div>
-					</header>
-					<Nav navState={this.state.navState} />
-					{prevEl}
-					<ModuleComponent model={this.state.model} moduleData={this.state} />
-					{nextEl}
+					{hideViewer
+						? null
+						: <header>
+								<div className="pad">
+									<span className="module-title">
+										{this.state.model.title}
+									</span>
+									<span className="location">
+										{navTargetTitle}
+									</span>
+									<Logo />
+								</div>
+							</header>}
+					{hideViewer ? null : <Nav navState={this.state.navState} />}
+					{hideViewer ? null : prevEl}
+					{hideViewer ? null : <ModuleComponent model={this.state.model} moduleData={this.state} />}
+					{hideViewer ? null : nextEl}
 					{this.isPreviewing
 						? <div className="preview-banner">
 								<span>You are previewing this object - Assessments will not be counted</span>
@@ -380,9 +383,9 @@ export default class ViewerApp extends React.Component {
 							</div>
 						: null}
 					<FocusBlocker moduleData={this.state} />
-					{modal
+					{modalItem && modalItem.component
 						? <ModalContainer>
-								{modal}
+								{modalItem.component}
 							</ModalContainer>
 						: null}
 				</div>

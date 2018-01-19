@@ -96,7 +96,8 @@ class AssessmentStore extends Store {
 					<p>
 						It looks like you were in the middle of an attempt. We'll resume you where you left off.
 					</p>
-				</SimpleDialog>
+				</SimpleDialog>,
+				true
 			)
 		}
 	}

@@ -7731,8 +7731,10 @@ object-assign
 
 			var ModalUtil = {
 				show: function show(component) {
+					var hideViewer = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : false
+
 					_dispatcher2.default.trigger('modal:show', {
-						value: { component: component }
+						value: { component: component, hideViewer: hideViewer }
 					})
 				},
 				hide: function hide() {
@@ -12038,7 +12040,7 @@ object-assign
 					)
 
 					_dispatcher2.default.on('modal:show', function(payload) {
-						_this._show(payload.value.component)
+						_this._show(payload.value)
 					})
 
 					_dispatcher2.default.on('modal:hide', _this._hide.bind(_this))
@@ -12056,8 +12058,8 @@ object-assign
 					},
 					{
 						key: '_show',
-						value: function _show(component) {
-							this.state.modals.push(component)
+						value: function _show(modalItem) {
+							this.state.modals.push(modalItem)
 							this.triggerChange()
 						}
 					},

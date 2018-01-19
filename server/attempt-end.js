@@ -98,17 +98,8 @@ let SCORE_SENT_STATUS_ERROR = 'error'
 				)
 			})
 			//
-			// Update assessment, send LTI score and send event
+			// Send LTI score and send event
 			//
-			// .then(updateAttemptResult => {
-			// 	return Assessment.insertNewAssessmentScore(
-			// 		user.id,
-			// 		attempt.draftId,
-			// 		attempt.assessmentId,
-			// 		calculatedScores.assessmentScore,
-			// 		isPreviewing
-			// 	)
-			// })
 			.then(() => {
 				logger.info(`End attempt "${attemptId}" - insertAttemptEndEvent success`)
 
