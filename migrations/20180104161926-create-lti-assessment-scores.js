@@ -26,7 +26,6 @@ exports.up = function(db) {
 			assessment_score_id: { type: 'bigint', notNull: true },
 			launch_id: { type: 'bigint' },
 			score_sent: { type: 'decimal' },
-			score_read: { type: 'decimal' },
 			error_details: { type: 'jsonb' },
 			log_id: { type: 'UUID', notNull: true }
 		})
@@ -36,7 +35,6 @@ exports.up = function(db) {
       CREATE TYPE lti_assessment_scores_status_values AS ENUM (
         'not_attempted',
         'success',
-        'read_mismatch',
         'error'
       );`)
 		})
@@ -100,5 +98,5 @@ exports.down = function(db) {
 }
 
 exports._meta = {
-	version: 1
+	version: 2
 }

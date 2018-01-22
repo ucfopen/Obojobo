@@ -188,6 +188,7 @@ const caliperEventFactory = (req, host = null, isFromReq = false) => {
 			caliperEvent.setType('GradeEvent')
 			caliperEvent.setAction('Graded')
 			caliperEvent.setObject(IRI.getAssessmentAttemptIRI(attemptId))
+			caliperEvent.setTarget(IRI.getAssessmentIRI(draftId, assessmentId))
 
 			//@TODO - Caliper spec will have a Score entity but our version doesn't have this yet
 			caliperEvent.setGenerated(

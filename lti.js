@@ -22,7 +22,6 @@ let ERROR_TYPE_UNEXPECTED = 'unexpected'
 
 let STATUS_TYPE_NOT_ATTEMPTED = 'not_attempted'
 let STATUS_TYPE_SUCCESS = 'success'
-let STATUS_TYPE_READ_MISMATCH = 'read_mismatch'
 let STATUS_TYPE_ERROR = 'error'
 
 let tryRetrieveLtiLaunch = function(userId, draftId, logId) {
@@ -72,10 +71,6 @@ let tryFindSecretForKey = (key, logId) => {
 	logger.error('LTI ERROR: No secret found for key: ${key}', logId)
 	throw ERROR_NO_SECRET_FOR_KEY
 }
-
-// let readResult = function() {
-// 	OutcomeService.prototype.send_read_result = function(callback) {
-// }
 
 // Note that this method can throw two possible errors
 let tryGetOutcomeServiceForLaunch = function(launch, logId) {
@@ -128,7 +123,6 @@ let insertLTIAssessmentScore = (
 	assessmentScoreId,
 	launchId,
 	scoreSent,
-	scoreRead,
 	scoreSentStatus,
 	error,
 	errorDetails,
@@ -137,15 +131,14 @@ let insertLTIAssessmentScore = (
 	return db
 		.one(
 			`
-			INSERT INTO lti_assessment_scores (assessment_score_id, launch_id, score_sent, score_read, status, error, error_details, log_id)
-			VALUES($[assessmentScoreId], $[launchId], $[scoreSent], $[scoreRead], $[scoreSentStatus], $[error], $[errorDetails], $[logId])
+			INSERT INTO lti_assessment_scores (assessment_score_id, launch_id, score_sent, status, error, error_details, log_id)
+			VALUES($[assessmentScoreId], $[launchId], $[scoreSent], $[scoreSentStatus], $[error], $[errorDetails], $[logId])
 			RETURNING id
 		`,
 			{
 				assessmentScoreId,
 				launchId,
 				scoreSent,
-				scoreRead,
 				scoreSentStatus,
 				error,
 				errorDetails,
@@ -169,16 +162,15 @@ let sendAssessmentScore = function(userId, draftId, score, assessmentScoreId) {
 
 	let launch = null
 	let outcomeService = null
-	let ltiAssessmentScoreId = null
 	let didInsertAssessmentScore = false
 
 	let result = {
 		launchId: null,
 		scoreSent: null,
-		scoreRead: null,
 		status: STATUS_TYPE_NOT_ATTEMPTED,
 		error: null,
-		errorDetails: null
+		errorDetails: null,
+		ltiAssessmentScoreId: null
 	}
 
 	logger.info(
@@ -221,7 +213,6 @@ let sendAssessmentScore = function(userId, draftId, score, assessmentScoreId) {
 				assessmentScoreId,
 				result.launchId,
 				result.scoreSent,
-				result.scoreRead,
 				result.status,
 				result.error,
 				result.errorDetails,
@@ -230,8 +221,11 @@ let sendAssessmentScore = function(userId, draftId, score, assessmentScoreId) {
 		})
 		.then(scoreId => {
 			didInsertAssessmentScore = true
-			ltiAssessmentScoreId = scoreId
-			logger.info(`LTI store "${result.status}" success - id:"${ltiAssessmentScoreId}"`, logId)
+			result.ltiAssessmentScoreId = scoreId
+			logger.info(
+				`LTI store "${result.status}" success - id:"${result.ltiAssessmentScoreId}"`,
+				logId
+			)
 			return result
 		})
 		.catch(error => {
@@ -283,17 +277,16 @@ let sendAssessmentScore = function(userId, draftId, score, assessmentScoreId) {
 					assessmentScoreId,
 					result.launchId,
 					result.scoreSent,
-					result.scoreRead,
 					result.status,
 					result.error,
 					result.errorDetails,
 					logId
 				)
 					.then(scoreId => {
-						ltiAssessmentScoreId = scoreId
+						result.ltiAssessmentScoreId = scoreId
 
 						logger.info(
-							`LTI store "${result.status}" success - id:"${ltiAssessmentScoreId}"`,
+							`LTI store "${result.status}" success - id:"${result.ltiAssessmentScoreId}"`,
 							logId
 						)
 
