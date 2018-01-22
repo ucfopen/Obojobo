@@ -120,7 +120,6 @@ class Assessment extends DraftNode {
 					SCO.id AS "assessment_score_id",
 					SCO.score AS "assessment_score",
 					LTI.score_sent,
-					LTI.score_read,
 					LTI.error_details,
 					LTI.status,
 					LTI.error
@@ -130,8 +129,7 @@ class Assessment extends DraftNode {
 				LEFT JOIN lti_assessment_scores LTI
 				ON SCO.id = LTI.assessment_score_id
 				WHERE
-					ATT.preview = false
-					AND ATT.user_id = $[userId]
+					ATT.user_id = $[userId]
 					AND ATT.draft_id = $[draftId]
 					${optionalAssessmentId !== null
 						? "AND ATT.assessment_id = '" + optionalAssessmentId + "'"
@@ -199,10 +197,12 @@ class Assessment extends DraftNode {
 	}
 
 	static getAttemptNumber(userId, draftId, attemptId) {
+		console.log('GAN', userId, draftId, attemptId)
 		return Assessment.getAttemptIdsForUserForDraft(userId, draftId).then(attempts => {
-			attempts.forEach(attempt => {
+			console.log('GAN attempts', attempts)
+			for (let attempt of attempts) {
 				if (attempt.id === attemptId) return attempt.attempt_number
-			})
+			}
 
 			return null
 		})

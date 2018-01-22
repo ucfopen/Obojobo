@@ -204,9 +204,6 @@ export default class Assessment extends React.Component {
 									{ltiStatus.scoreSent}
 								</p>
 								<p>
-									{ltiStatus.scoreRead}
-								</p>
-								<p>
 									{ltiStatus.status}
 								</p>
 								<Button onClick={this.onClickResendScore}>Resend Score (Doesn't Work Yet)</Button>

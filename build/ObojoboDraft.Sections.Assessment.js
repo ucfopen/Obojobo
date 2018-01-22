@@ -798,7 +798,6 @@
 												{ style: { background: 'gray' } },
 												React.createElement('p', null, 'lti status'),
 												React.createElement('p', null, ltiStatus.scoreSent),
-												React.createElement('p', null, ltiStatus.scoreRead),
 												React.createElement('p', null, ltiStatus.status),
 												React.createElement(
 													Button,
