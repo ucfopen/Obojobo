@@ -32,7 +32,8 @@ class OboModel extends Backbone.Model {
 		if (adapter == null) {
 			adapter = {}
 		}
-		super()
+
+		super(attrs)
 
 		this.parent = null
 		this.children = new OboModelCollection()
@@ -48,8 +49,6 @@ class OboModel extends Backbone.Model {
 		if (attrs.id == null) {
 			attrs.id = this.createNewLocalId()
 		}
-
-		super(attrs)
 
 		this.adapter = Object.assign(Object.assign({}, DefaultAdapter), adapter)
 		this.adapter.construct(this, attrs)

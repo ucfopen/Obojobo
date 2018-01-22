@@ -139,7 +139,7 @@
 
 					if (model.title) {
 						label = model.title
-					} else if (model.modelState.practice) {
+					} else if (model.modelState.mode === 'practice') {
 						label = 'Practice Question ' + (questions.indexOf(model) + 1)
 					} else {
 						label = 'Question ' + (questions.indexOf(model) + 1)
@@ -296,12 +296,12 @@
 
 					if (
 						__guard__(attrs != null ? attrs.content : undefined, function(x2) {
-							return x2.practice
+							return x2.mode
 						}) != null
 					) {
-						model.modelState.practice = attrs.content.practice
+						model.modelState.mode = attrs.content.mode
 					} else {
-						model.modelState.practice = true
+						model.modelState.mode = 'practice'
 					}
 
 					if (
@@ -317,7 +317,7 @@
 				clone: function clone(model, _clone) {
 					_clone.modelState.shuffle = model.modelState.shuffle
 					_clone.modelState.type = model.modelState.type
-					_clone.modelState.practice = model.modelState.practice
+					_clone.modelState.mode = model.modelState.mode
 					_clone.modelState.limit = model.modelState.limit
 					_clone.modelState.solution = null
 
@@ -442,7 +442,7 @@
 						value: function onClickBlocker() {
 							QuestionUtil.viewQuestion(this.props.model.get('id'))
 
-							if (this.props.model.modelState.practice) {
+							if (this.props.model.modelState.mode === 'practice') {
 								return FocusUtil.focusComponent(this.props.model.get('id'))
 							}
 						}
@@ -456,7 +456,8 @@
 
 							var score = ScoreUtil.getScoreForModel(
 								this.props.moduleData.scoreState,
-								this.props.model
+								this.props.model,
+								this.props.scoreContext
 							)
 							var viewState = QuestionUtil.getViewState(
 								this.props.moduleData.questionState,
@@ -476,9 +477,8 @@
 									className:
 										'flip-container obojobo-draft--chunks--question' +
 										(score === null ? '' : score === 100 ? ' is-correct' : ' is-incorrect') +
-										' is-' +
-										viewState +
-										(this.props.model.modelState.practice ? ' is-practice' : ' is-not-practice')
+										' ' +
+										(this.props.isReview ? 'is-active' : 'is-' + viewState)
 								},
 								React.createElement(
 									'div',
@@ -493,7 +493,9 @@
 										React.createElement(AssessmentComponent, {
 											key: assessment.get('id'),
 											model: assessment,
-											moduleData: this.props.moduleData
+											moduleData: this.props.moduleData,
+											scoreContext: this.props.scoreContext,
+											mode: this.props.isReview ? 'review' : this.props.model.modelState.mode
 										})
 									),
 									React.createElement(
@@ -504,7 +506,10 @@
 											onClick: this.onClickBlocker.bind(this)
 										},
 										React.createElement(Button, {
-											value: this.props.model.modelState.practice ? 'Try Question' : 'View Question'
+											value:
+												this.props.model.modelState.mode === 'practice'
+													? 'Try Question'
+													: 'View Question'
 										})
 									)
 								)
@@ -516,13 +521,13 @@
 						value: function renderContentOnly() {
 							var score = ScoreUtil.getScoreForModel(
 								this.props.moduleData.scoreState,
-								this.props.model
+								this.props.model,
+								this.props.scoreContext
 							)
 							var viewState = QuestionUtil.getViewState(
 								this.props.moduleData.questionState,
 								this.props.model
 							)
-
 							return React.createElement(
 								OboComponent,
 								{
@@ -531,8 +536,8 @@
 									className:
 										'flip-container obojobo-draft--chunks--question' +
 										(score === null ? '' : score === 100 ? ' is-correct' : ' is-incorrect') +
-										' is-active' +
-										(this.props.model.modelState.practice ? ' is-practice' : ' is-not-practice')
+										' is-active is-' +
+										this.props.model.modelState.mode
 								},
 								React.createElement(
 									'div',

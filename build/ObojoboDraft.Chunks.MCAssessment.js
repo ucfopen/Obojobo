@@ -720,7 +720,11 @@
 						value: function onClickSubmit(event) {
 							event.preventDefault()
 
-							// ScoreUtil.setScore(this.getQuestionModel().get('id'), this.calculateScore())
+							ScoreUtil.setScore(
+								this.getQuestionModel().get('id'),
+								this.calculateScore(),
+								this.props.scoreContext
+							)
 							QuestionUtil.checkAnswer(this.getQuestionModel().get('id'))
 						}
 					},
@@ -795,7 +799,8 @@
 						value: function getScore() {
 							return ScoreUtil.getScoreForModel(
 								this.props.moduleData.scoreState,
-								this.getQuestionModel()
+								this.getQuestionModel(),
+								this.props.scoreContext
 							)
 						}
 					},
@@ -823,7 +828,7 @@
 							var questionId = this.getQuestionModel().get('id')
 
 							if (payload.value.id === questionId) {
-								ScoreUtil.setScore(questionId, this.calculateScore())
+								ScoreUtil.setScore(questionId, this.calculateScore(), this.props.scoreContext)
 							}
 						}
 					},
@@ -891,7 +896,7 @@
 								{
 									model: this.props.model,
 									moduleData: this.props.moduleData,
-									onClick: this.onClick,
+									onClick: this.props.mode !== 'review' ? this.onClick : null,
 									tag: 'form',
 									className:
 										'obojobo-draft--chunks--mc-assessment' +
@@ -899,7 +904,8 @@
 										(isShowingExplanation
 											? ' is-showing-explanation'
 											: ' is-not-showing-explantion') +
-										(score === null ? ' is-unscored' : ' is-scored')
+										(score === null ? ' is-unscored' : ' is-scored') +
+										(' is-' + this.props.mode)
 								},
 								React.createElement(
 									'span',
@@ -934,24 +940,34 @@
 										moduleData: _this2.props.moduleData,
 										responseType: responseType,
 										isShowingExplanation: true,
+										isReview: _this2.props.mode === 'review',
 										questionSubmitted: questionSubmitted,
 										label: String.fromCharCode(index + 65)
 									})
 								}),
 								React.createElement(
 									'div',
-									{ className: 'submit' },
+									{ className: 'submit-and-result-container' },
 									questionSubmitted
-										? React.createElement(Button, {
-												altAction: true,
-												onClick: this.onClickReset,
-												value: 'Try Again'
-											})
-										: React.createElement(Button, {
-												onClick: this.onClickSubmit,
-												value: 'Check Your Answer',
-												disabled: !questionAnswered
-											}),
+										? React.createElement(
+												'div',
+												{ className: 'submit' },
+												' ',
+												React.createElement(Button, {
+													altAction: true,
+													onClick: this.onClickReset,
+													value: 'Try Again'
+												})
+											)
+										: React.createElement(
+												'div',
+												{ className: 'submit' },
+												React.createElement(Button, {
+													onClick: this.onClickSubmit,
+													value: 'Check Your Answer',
+													disabled: !questionAnswered
+												})
+											),
 									questionSubmitted
 										? score === 100
 											? React.createElement(
@@ -1269,7 +1285,10 @@
 										className:
 											'obojobo-draft--chunks--mc-assessment--mc-choice' +
 											(isSelected ? ' is-selected' : ' is-not-selected') +
-											(this.props.model.modelState.score === 100 ? ' is-correct' : ' is-incorrect'),
+											(this.props.model.modelState.score === 100
+												? ' is-correct'
+												: ' is-incorrect') +
+											(this.props.isReview ? ' is-review' : ' is-not-review'),
 										'data-choice-label': this.props.label
 									},
 									React.createElement('input', {

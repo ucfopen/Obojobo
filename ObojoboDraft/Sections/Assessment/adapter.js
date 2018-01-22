@@ -4,14 +4,14 @@ let Adapter = {
 	construct(model, attrs) {
 		// Default state.
 		model.modelState.attempts = Infinity
-		model.modelState.assessmentReview = false
+		model.modelState.review = false
 		model.modelState.scoreActions = new ScoreActions()
 
 		// Set state if XML has the attributes.
 		if (attrs && attrs.content) {
 			model.modelState.attempts =
 				attrs.content.attempts === 'unlimited' ? Infinity : parseInt(attrs.content.attempts, 10)
-			model.modelState.assessmentReview = attrs.content.assessmentReview || false
+			model.modelState.review = attrs.content.review || false
 			model.modelState.scoreActions = new ScoreActions(attrs.content.scoreActions || null)
 		}
 	},

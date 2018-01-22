@@ -9,7 +9,6 @@ let { Button } = Common.components
 let { Dispatcher } = Common.flux
 let { ModalUtil } = Common.util
 
-let { ScoreStore } = Viewer.stores
 let { AssessmentUtil } = Viewer.util
 let { NavUtil } = Viewer.util
 
@@ -39,16 +38,15 @@ export default class Assessment extends React.Component {
 			return 'takingTest'
 		}
 
-		// TODO: Assessment review
-		// this.props.model.modelState.assessmentReview = true
-		// if (
-		// 	!AssessmentUtil.hasAttemptsRemaining(
-		// 		this.props.moduleData.assessmentState,
-		// 		this.props.model
-		// 	) && this.props.model.modelState.assessmentReview
-		// ) {
-		// 	return 'review'
-		// }
+		if (
+			!AssessmentUtil.hasAttemptsRemaining(
+				this.props.moduleData.assessmentState,
+				this.props.model
+			) &&
+			this.props.model.modelState.review
+		) {
+			return 'review'
+		}
 
 		if (assessment.attempts.length > 0) {
 			return 'scoreSubmitted'

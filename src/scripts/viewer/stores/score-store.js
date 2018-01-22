@@ -16,10 +16,13 @@ class ScoreStore extends Store {
 			'score:set': payload => {
 				let scoreId = UUID()
 
-				this.state.scores[payload.value.itemId] = {
+				if (!payload.value[payload.value.context]) this.state.scores[payload.value.context] = {}
+
+				this.state.scores[payload.value.context][payload.value.itemId] = {
 					id: scoreId,
 					score: payload.value.score,
-					itemId: payload.value.itemId
+					itemId: payload.value.itemId,
+					context: payload.value.context
 				}
 
 				if (payload.value.score === 100) {
@@ -32,16 +35,33 @@ class ScoreStore extends Store {
 				return APIUtil.postEvent(model.getRoot(), 'score:set', '2.0.0', {
 					id: scoreId,
 					itemId: payload.value.itemId,
-					score: payload.value.score
+					score: payload.value.score,
+					context: payload.value.context
+				})
+			},
+
+			'score:populate': payload => {
+				let scoreId = UUID()
+				payload.forEach(attempt => {
+					let context = `assessmentReview:${attempt.attemptId}`
+					if (!this.state.scores[context]) this.state.scores[context] = {}
+					attempt.questionScores.forEach(questionScore => {
+						this.state.scores[context][questionScore.id] = {
+							id: scoreId,
+							score: questionScore.score,
+							itemId: questionScore.id,
+							context
+						}
+					})
 				})
 			},
 
 			'score:clear': payload => {
-				let scoreItem = this.state.scores[payload.value.itemId]
+				let scoreItem = this.state.scores[payload.value.context][payload.value.itemId]
 
 				model = OboModel.models[scoreItem.itemId]
 
-				delete this.state.scores[payload.value.itemId]
+				delete this.state.scores[payload.value.context][payload.value.itemId]
 				this.triggerChange()
 
 				return APIUtil.postEvent(model.getRoot(), 'score:clear', '2.0.0', scoreItem)
@@ -50,9 +70,9 @@ class ScoreStore extends Store {
 	}
 
 	init() {
-		return (this.state = {
+		this.state = {
 			scores: {}
-		})
+		}
 	}
 
 	getState() {
@@ -60,7 +80,7 @@ class ScoreStore extends Store {
 	}
 
 	setState(newState) {
-		return (this.state = newState)
+		this.state = newState
 	}
 }
 

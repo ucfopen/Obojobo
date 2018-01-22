@@ -302,7 +302,10 @@
 										className:
 											'obojobo-draft--chunks--mc-assessment--mc-choice' +
 											(isSelected ? ' is-selected' : ' is-not-selected') +
-											(this.props.model.modelState.score === 100 ? ' is-correct' : ' is-incorrect'),
+											(this.props.model.modelState.score === 100
+												? ' is-correct'
+												: ' is-incorrect') +
+											(this.props.isReview ? ' is-review' : ' is-not-review'),
 										'data-choice-label': this.props.label
 									},
 									React.createElement('input', {

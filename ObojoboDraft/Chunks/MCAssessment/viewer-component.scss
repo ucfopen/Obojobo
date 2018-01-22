@@ -117,6 +117,28 @@
 		}
 	}
 
+	&.is-review,
+	&.is-assessment
+	{
+		.submit
+		{
+			display: inline-block;
+			visibility: hidden;
+		}
+		.result-container
+		{
+			position: absolute;
+			left: 0;
+			top: 50%;
+			transform: translate(0,-50%);
+		}
+
+		.result
+		{
+			margin: 0;
+		}
+	}
+
 	$border: 1px solid transparentize($color-shadow, 0.25);
 
 	.instructions
@@ -137,7 +159,7 @@
 		border-bottom: $border;
 	}
 
-	.submit
+	.submit-and-result-container
 	{
 		margin-left: 3em;
 		margin-right: 3em;
@@ -389,6 +411,13 @@
 		}
 	}
 
+	.is-review
+	{
+		.is-revie
+		{
+
+		}
+	}
 
 	.obojobo-draft--chunks--mc-assessment--mc-choice
 	{

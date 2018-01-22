@@ -115,7 +115,7 @@ class QuestionStore extends Store {
 					QuestionUtil.hideExplanation(questionId, true)
 				}
 
-				ScoreUtil.clearScore(questionId) // should trigger change
+				ScoreUtil.clearScore(questionId, payload.value.context) // should trigger change
 			}
 		})
 	}

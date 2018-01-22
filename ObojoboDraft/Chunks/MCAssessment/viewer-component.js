@@ -115,7 +115,11 @@ export default class MCAssessment extends React.Component {
 	onClickSubmit(event) {
 		event.preventDefault()
 
-		// ScoreUtil.setScore(this.getQuestionModel().get('id'), this.calculateScore())
+		ScoreUtil.setScore(
+			this.getQuestionModel().get('id'),
+			this.calculateScore(),
+			this.props.scoreContext
+		)
 		QuestionUtil.checkAnswer(this.getQuestionModel().get('id'))
 	}
 
@@ -177,7 +181,11 @@ export default class MCAssessment extends React.Component {
 	}
 
 	getScore() {
-		return ScoreUtil.getScoreForModel(this.props.moduleData.scoreState, this.getQuestionModel())
+		return ScoreUtil.getScoreForModel(
+			this.props.moduleData.scoreState,
+			this.getQuestionModel(),
+			this.props.scoreContext
+		)
 	}
 
 	componentWillReceiveProps() {
@@ -196,7 +204,7 @@ export default class MCAssessment extends React.Component {
 		let questionId = this.getQuestionModel().get('id')
 
 		if (payload.value.id === questionId) {
-			ScoreUtil.setScore(questionId, this.calculateScore())
+			ScoreUtil.setScore(questionId, this.calculateScore(), this.props.scoreContext)
 		}
 	}
 
@@ -251,13 +259,14 @@ export default class MCAssessment extends React.Component {
 			<OboComponent
 				model={this.props.model}
 				moduleData={this.props.moduleData}
-				onClick={this.onClick}
+				onClick={this.props.mode !== 'review' ? this.onClick : null}
 				tag="form"
 				className={
 					'obojobo-draft--chunks--mc-assessment' +
 					` is-response-type-${this.props.model.modelState.responseType}` +
 					(isShowingExplanation ? ' is-showing-explanation' : ' is-not-showing-explantion') +
-					(score === null ? ' is-unscored' : ' is-scored')
+					(score === null ? ' is-unscored' : ' is-scored') +
+					(' is-' + this.props.mode)
 				}
 			>
 				<span className="instructions">
@@ -290,20 +299,25 @@ export default class MCAssessment extends React.Component {
 							moduleData={this.props.moduleData}
 							responseType={responseType}
 							isShowingExplanation
+							isReview={this.props.mode === 'review'}
 							questionSubmitted={questionSubmitted}
 							label={String.fromCharCode(index + 65)}
 						/>
 					)
 				})}
 				{
-					<div className="submit">
+					<div className="submit-and-result-container">
 						{questionSubmitted
-							? <Button altAction onClick={this.onClickReset} value="Try Again" />
-							: <Button
-									onClick={this.onClickSubmit}
-									value="Check Your Answer"
-									disabled={!questionAnswered}
-								/>}
+							? <div className="submit">
+									{' '}<Button altAction onClick={this.onClickReset} value="Try Again" />
+								</div>
+							: <div className="submit">
+									<Button
+										onClick={this.onClickSubmit}
+										value="Check Your Answer"
+										disabled={!questionAnswered}
+									/>
+								</div>}
 
 						{questionSubmitted
 							? score === 100

@@ -63,9 +63,6 @@
 .obojobo-draft--chunks--question.is-practice.is-incorrect .flipper {
   border: 1px solid #c21f00; }
 
-.obojobo-draft--chunks--question.is-not-practice .submit {
-  display: none; }
-
 .obojobo-draft--chunks--question .blocker {
   position: absolute;
   left: 0;

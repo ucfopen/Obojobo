@@ -6,8 +6,6 @@
   font-family: "Libre Franklin", Arial, sans-serif;
   padding-bottom: 1em;
   cursor: pointer; }
-  .obojobo-draft--chunks--mc-assessment--mc-choice:hover {
-    background: rgba(147, 198, 255, 0.15); }
   .obojobo-draft--chunks--mc-assessment--mc-choice input {
     font-size: inherit;
     position: absolute;
@@ -56,6 +54,16 @@
       left: 0.5em; }
   .obojobo-draft--chunks--mc-assessment--mc-choice.is-selected {
     background: rgba(147, 198, 255, 0.25); }
+  .obojobo-draft--chunks--mc-assessment--mc-choice.is-review {
+    cursor: default; }
+    .obojobo-draft--chunks--mc-assessment--mc-choice.is-review input {
+      display: none; }
+    .obojobo-draft--chunks--mc-assessment--mc-choice.is-review .children {
+      margin-left: 0; }
+    .obojobo-draft--chunks--mc-assessment--mc-choice.is-review:hover {
+      cursor: default; }
+  .obojobo-draft--chunks--mc-assessment--mc-choice.is-not-review:hover {
+    background: rgba(147, 198, 255, 0.15); }
 .obojobo-draft--chunks--mc-assessment--mc-feedback {
   font-size: 0.8em;
   padding-left: 0.7em;
@@ -137,6 +145,16 @@
     top: 1.5em;
     letter-spacing: 0.2em;
     content: "\2716" attr(data-choice-label); }
+  .obojobo-draft--chunks--mc-assessment.is-review .submit, .obojobo-draft--chunks--mc-assessment.is-assessment .submit {
+    display: inline-block;
+    visibility: hidden; }
+  .obojobo-draft--chunks--mc-assessment.is-review .result-container, .obojobo-draft--chunks--mc-assessment.is-assessment .result-container {
+    position: absolute;
+    left: 0;
+    top: 50%;
+    transform: translate(0, -50%); }
+  .obojobo-draft--chunks--mc-assessment.is-review .result, .obojobo-draft--chunks--mc-assessment.is-assessment .result {
+    margin: 0; }
   .obojobo-draft--chunks--mc-assessment .instructions {
     padding-left: 3em;
     padding-right: 3em;
@@ -147,26 +165,26 @@
     font-size: 1em;
     font-weight: normal;
     border-bottom: 1px solid rgba(0, 0, 0, 0.05); }
-  .obojobo-draft--chunks--mc-assessment .submit {
+  .obojobo-draft--chunks--mc-assessment .submit-and-result-container {
     margin-left: 3em;
     margin-right: 3em;
     position: relative; }
-    .obojobo-draft--chunks--mc-assessment .submit button {
+    .obojobo-draft--chunks--mc-assessment .submit-and-result-container button {
       cursor: pointer;
       font-size: 0.85em;
       margin-bottom: 1em;
       margin-top: 1em;
       min-width: 10.5em; }
-    .obojobo-draft--chunks--mc-assessment .submit .divider {
+    .obojobo-draft--chunks--mc-assessment .submit-and-result-container .divider {
       color: rgba(0, 0, 0, 0.3);
       display: inline-block;
       padding: 0 0.4em;
       transform: scale(2, 0.9); }
-    .obojobo-draft--chunks--mc-assessment .submit .obojobo-draft--components--button:first-child {
+    .obojobo-draft--chunks--mc-assessment .submit-and-result-container .obojobo-draft--components--button:first-child {
       margin-right: 1em; }
-    .obojobo-draft--chunks--mc-assessment .submit .result-container {
+    .obojobo-draft--chunks--mc-assessment .submit-and-result-container .result-container {
       display: inline-block; }
-    .obojobo-draft--chunks--mc-assessment .submit .result {
+    .obojobo-draft--chunks--mc-assessment .submit-and-result-container .result {
       font-family: "Libre Franklin", Arial, sans-serif;
       color: white;
       font-weight: bold;
@@ -178,11 +196,11 @@
       font-size: 0.8em;
       margin-bottom: 1em;
       animation: bounce .4s; }
-      .obojobo-draft--chunks--mc-assessment .submit .result.correct {
+      .obojobo-draft--chunks--mc-assessment .submit-and-result-container .result.correct {
         background-color: #38ae24; }
-      .obojobo-draft--chunks--mc-assessment .submit .result.incorrect {
+      .obojobo-draft--chunks--mc-assessment .submit-and-result-container .result.incorrect {
         background-color: #c21f00; }
-    .obojobo-draft--chunks--mc-assessment .submit .pick-all-instructions {
+    .obojobo-draft--chunks--mc-assessment .submit-and-result-container .pick-all-instructions {
       font-family: "Libre Franklin", Arial, sans-serif;
       font-size: .8em;
       font-weight: bold;

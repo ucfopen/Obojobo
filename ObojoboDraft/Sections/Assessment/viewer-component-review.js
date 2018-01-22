@@ -1,16 +1,18 @@
 import Viewer from 'Viewer'
+import Common from 'Common'
 
 const { AssessmentUtil } = Viewer.util
+const { OboModel } = Common.models
 
 const assessmentReviewView = assessment => {
-	const recentScore = AssessmentUtil.getLastAttemptScoreForModel(
-		assessment.props.moduleData.assessmentState,
-		assessment.props.model
-	)
-	const highestScore = AssessmentUtil.getHighestAttemptScoreForModel(
-		assessment.props.moduleData.assessmentState,
-		assessment.props.model
-	)
+	// const recentScore = AssessmentUtil.getLastAttemptScoreForModel(
+	// 	assessment.props.moduleData.assessmentState,
+	// 	assessment.props.model
+	// )
+	// const highestScore = AssessmentUtil.getHighestAttemptScoreForModel(
+	// 	assessment.props.moduleData.assessmentState,
+	// 	assessment.props.model
+	// )
 	const attempts = AssessmentUtil.getAllAttempts(
 		assessment.props.moduleData.assessmentState,
 		assessment.props.model
@@ -18,19 +20,37 @@ const assessmentReviewView = assessment => {
 
 	return (
 		<div className="score unlock">
-			<h1>{`Your score is ${Math.round(recentScore)}%`}</h1>
-			{recentScore === highestScore
-				? <h2>This is your highest score</h2>
-				: <h2>{`Your highest score was ${Math.round(highestScore)}%`}</h2>}
-			{attempts.map(attempt => {
-				return attemptReviewComponent(attempt)
+			{attempts.map((attempt, index) => {
+				let scoreTotal = attempts[index].scores.questionScores.reduce(
+					(prev, curr) => prev + curr.score,
+					0
+				)
+				let reviewScore = scoreTotal / attempts[index].scores.questionScores.length
+				return attemptReviewComponent(attempt, reviewScore, assessment, index + 1)
 			})}
 		</div>
 	)
 }
 
-const attemptReviewComponent = attemptData => {
-	return <div className="review">Placeholder attempt review component</div>
+const attemptReviewComponent = (attempt, reviewScore, assessment, attemptNumber) => {
+	return (
+		<div className="review">
+			<h1>{`Attempt ${attemptNumber}`}</h1>
+			<h2>{`Score: ${reviewScore}`}</h2>
+			{attempt.scores.questionScores.map(scoreObj => {
+				const questionModel = OboModel.models[scoreObj.id]
+				const QuestionComponent = questionModel.getComponentClass()
+				return (
+					<QuestionComponent
+						model={questionModel}
+						moduleData={assessment.props.moduleData}
+						isReview
+						scoreContext={`assessmentReview:${attempt.attemptId}`}
+					/>
+				)
+			})}
+		</div>
+	)
 }
 
 export default assessmentReviewView

@@ -1633,25 +1633,36 @@
 
 			var ScoreUtil = {
 				getScoreForModel: function getScoreForModel(state, model) {
-					var scoreItem = state.scores[model.get('id')]
-					if (typeof scoreItem === 'undefined' || scoreItem === null) {
+					var context =
+						arguments.length > 2 && arguments[2] !== undefined ? arguments[2] : 'practice'
+
+					var scoreItem = void 0
+					if (state.scores[context] != null) scoreItem = state.scores[context][model.get('id')]
+					if (scoreItem == null) {
 						return null
 					}
-
 					return scoreItem.score
 				},
 				setScore: function setScore(itemId, score) {
+					var context =
+						arguments.length > 2 && arguments[2] !== undefined ? arguments[2] : 'practice'
+
 					return Dispatcher.trigger('score:set', {
 						value: {
 							itemId: itemId,
-							score: score
+							score: score,
+							context: context
 						}
 					})
 				},
 				clearScore: function clearScore(itemId) {
+					var context =
+						arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : 'practice'
+
 					return Dispatcher.trigger('score:clear', {
 						value: {
-							itemId: itemId
+							itemId: itemId,
+							context: context
 						}
 					})
 				}
@@ -2335,12 +2346,16 @@
 							var assessment = this.state.assessments[id]
 							var model = OboModel.models[id]
 
-							assessment.current.state.questions.forEach(function(question) {
-								return _questionUtil2.default.hideQuestion(question.id)
-							})
-							assessment.currentResponses.forEach(function(questionId) {
-								return _questionUtil2.default.clearResponse(questionId)
-							})
+							// @TODO remove this
+							if (!model.modelState.review) {
+								assessment.current.state.questions.forEach(function(question) {
+									return _questionUtil2.default.hideQuestion(question.id)
+								})
+								assessment.currentResponses.forEach(function(questionId) {
+									return _questionUtil2.default.clearResponse(questionId)
+								})
+							}
+
 							assessment.attempts.push(endAttemptResp.attempt)
 							assessment.current = null
 							assessment.score = endAttemptResp.assessmentScore
@@ -2348,6 +2363,16 @@
 
 							model.processTrigger('onEndAttempt')
 							Dispatcher.trigger('assessment:attemptEnded', id)
+
+							var attemptsToSend = [
+								{
+									attemptId: endAttemptResp.attempt.attemptId,
+									score: endAttemptResp.attempt.scores.attemptScore,
+									questionScores: endAttemptResp.attempt.scores.questionScores,
+									context: 'assessmentReview:' + endAttemptResp.attempt.attemptId
+								}
+							]
+							Dispatcher.trigger('score:populate', attemptsToSend)
 						}
 					},
 					{
@@ -2601,7 +2626,7 @@
 								_questionUtil2.default.hideExplanation(questionId, true)
 							}
 
-							_scoreUtil2.default.clearScore(questionId) // should trigger change
+							_scoreUtil2.default.clearScore(questionId, payload.value.context) // should trigger change
 						}
 					})
 					return _this
@@ -2736,10 +2761,14 @@
 						'score:set': function scoreSet(payload) {
 							var scoreId = UUID()
 
-							_this.state.scores[payload.value.itemId] = {
+							if (!payload.value[payload.value.context])
+								_this.state.scores[payload.value.context] = {}
+
+							_this.state.scores[payload.value.context][payload.value.itemId] = {
 								id: scoreId,
 								score: payload.value.score,
-								itemId: payload.value.itemId
+								itemId: payload.value.itemId,
+								context: payload.value.context
 							}
 
 							if (payload.value.score === 100) {
@@ -2752,16 +2781,33 @@
 							return _apiUtil2.default.postEvent(model.getRoot(), 'score:set', '2.0.0', {
 								id: scoreId,
 								itemId: payload.value.itemId,
-								score: payload.value.score
+								score: payload.value.score,
+								context: payload.value.context
+							})
+						},
+
+						'score:populate': function scorePopulate(payload) {
+							var scoreId = UUID()
+							payload.forEach(function(attempt) {
+								var context = 'assessmentReview:' + attempt.attemptId
+								if (!_this.state.scores[context]) _this.state.scores[context] = {}
+								attempt.questionScores.forEach(function(questionScore) {
+									_this.state.scores[context][questionScore.id] = {
+										id: scoreId,
+										score: questionScore.score,
+										itemId: questionScore.id,
+										context: context
+									}
+								})
 							})
 						},
 
 						'score:clear': function scoreClear(payload) {
-							var scoreItem = _this.state.scores[payload.value.itemId]
+							var scoreItem = _this.state.scores[payload.value.context][payload.value.itemId]
 
 							model = OboModel.models[scoreItem.itemId]
 
-							delete _this.state.scores[payload.value.itemId]
+							delete _this.state.scores[payload.value.context][payload.value.itemId]
 							_this.triggerChange()
 
 							return _apiUtil2.default.postEvent(model.getRoot(), 'score:clear', '2.0.0', scoreItem)
@@ -2774,9 +2820,9 @@
 					{
 						key: 'init',
 						value: function init() {
-							return (this.state = {
+							this.state = {
 								scores: {}
-							})
+							}
 						}
 					},
 					{
@@ -2788,7 +2834,7 @@
 					{
 						key: 'setState',
 						value: function setState(newState) {
-							return (this.state = newState)
+							this.state = newState
 						}
 					}
 				])

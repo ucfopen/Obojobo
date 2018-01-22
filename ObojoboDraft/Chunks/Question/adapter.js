@@ -16,10 +16,10 @@ let Adapter = {
 			model.modelState.limit = 0
 		}
 
-		if (__guard__(attrs != null ? attrs.content : undefined, x2 => x2.practice) != null) {
-			model.modelState.practice = attrs.content.practice
+		if (__guard__(attrs != null ? attrs.content : undefined, x2 => x2.mode) != null) {
+			model.modelState.mode = attrs.content.mode
 		} else {
-			model.modelState.practice = true
+			model.modelState.mode = 'practice'
 		}
 
 		if (__guard__(attrs != null ? attrs.content : undefined, x3 => x3.solution) != null) {
@@ -32,7 +32,7 @@ let Adapter = {
 	clone(model, clone) {
 		clone.modelState.shuffle = model.modelState.shuffle
 		clone.modelState.type = model.modelState.type
-		clone.modelState.practice = model.modelState.practice
+		clone.modelState.mode = model.modelState.mode
 		clone.modelState.limit = model.modelState.limit
 		clone.modelState.solution = null
 

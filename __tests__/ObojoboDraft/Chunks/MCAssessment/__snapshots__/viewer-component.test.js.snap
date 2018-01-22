@@ -2,7 +2,7 @@
 
 exports[`MCAssessment MCAssessment component 1`] = `
 <form
-  className="component obojobo-draft--chunks--mc-assessment is-response-type- is-not-showing-explantion is-unscored"
+  className="component obojobo-draft--chunks--mc-assessment is-response-type- is-not-showing-explantion is-unscored is-assessment"
   data-focussed={false}
   data-id="id"
   data-obo-component={true}
@@ -14,7 +14,7 @@ exports[`MCAssessment MCAssessment component 1`] = `
     className="instructions"
   />
   <div
-    className="component obojobo-draft--chunks--mc-assessment--mc-choice is-not-selected is-correct"
+    className="component obojobo-draft--chunks--mc-assessment--mc-choice is-not-selected is-correct is-not-review"
     data-choice-label="A"
     data-focussed={false}
     data-id="choice1"
@@ -70,7 +70,7 @@ exports[`MCAssessment MCAssessment component 1`] = `
     </div>
   </div>
   <div
-    className="component obojobo-draft--chunks--mc-assessment--mc-choice is-not-selected is-incorrect"
+    className="component obojobo-draft--chunks--mc-assessment--mc-choice is-not-selected is-incorrect is-not-review"
     data-choice-label="B"
     data-focussed={false}
     data-id="choice2"
@@ -126,18 +126,22 @@ exports[`MCAssessment MCAssessment component 1`] = `
     </div>
   </div>
   <div
-    className="submit"
+    className="submit-and-result-container"
   >
     <div
-      className="obojobo-draft--components--button align-center"
+      className="submit"
     >
-      <button
-        disabled={true}
-        onClick={[Function]}
-        tabIndex={undefined}
+      <div
+        className="obojobo-draft--components--button align-center"
       >
-        Check Your Answer
-      </button>
+        <button
+          disabled={true}
+          onClick={[Function]}
+          tabIndex={undefined}
+        >
+          Check Your Answer
+        </button>
+      </div>
     </div>
   </div>
   <div />
@@ -146,7 +150,7 @@ exports[`MCAssessment MCAssessment component 1`] = `
 
 exports[`MCAssessment MCAssessment with a set score 1`] = `
 <form
-  className="component obojobo-draft--chunks--mc-assessment is-response-type- is-not-showing-explantion is-unscored"
+  className="component obojobo-draft--chunks--mc-assessment is-response-type- is-not-showing-explantion is-unscored is-assessment"
   data-focussed={false}
   data-id="id"
   data-obo-component={true}
@@ -158,7 +162,7 @@ exports[`MCAssessment MCAssessment with a set score 1`] = `
     className="instructions"
   />
   <div
-    className="component obojobo-draft--chunks--mc-assessment--mc-choice is-not-selected is-correct"
+    className="component obojobo-draft--chunks--mc-assessment--mc-choice is-not-selected is-correct is-not-review"
     data-choice-label="A"
     data-focussed={false}
     data-id="choice1"
@@ -214,7 +218,7 @@ exports[`MCAssessment MCAssessment with a set score 1`] = `
     </div>
   </div>
   <div
-    className="component obojobo-draft--chunks--mc-assessment--mc-choice is-not-selected is-incorrect"
+    className="component obojobo-draft--chunks--mc-assessment--mc-choice is-not-selected is-incorrect is-not-review"
     data-choice-label="B"
     data-focussed={false}
     data-id="choice2"
@@ -270,18 +274,22 @@ exports[`MCAssessment MCAssessment with a set score 1`] = `
     </div>
   </div>
   <div
-    className="submit"
+    className="submit-and-result-container"
   >
     <div
-      className="obojobo-draft--components--button align-center"
+      className="submit"
     >
-      <button
-        disabled={true}
-        onClick={[Function]}
-        tabIndex={undefined}
+      <div
+        className="obojobo-draft--components--button align-center"
       >
-        Check Your Answer
-      </button>
+        <button
+          disabled={true}
+          onClick={[Function]}
+          tabIndex={undefined}
+        >
+          Check Your Answer
+        </button>
+      </div>
     </div>
   </div>
   <div />
@@ -290,7 +298,7 @@ exports[`MCAssessment MCAssessment with a set score 1`] = `
 
 exports[`MCAssessment MCAssessment with a set score 2`] = `
 <form
-  className="component obojobo-draft--chunks--mc-assessment is-response-type- is-not-showing-explantion is-unscored"
+  className="component obojobo-draft--chunks--mc-assessment is-response-type- is-not-showing-explantion is-unscored is-assessment"
   data-focussed={false}
   data-id="id"
   data-obo-component={true}
@@ -302,7 +310,7 @@ exports[`MCAssessment MCAssessment with a set score 2`] = `
     className="instructions"
   />
   <div
-    className="component obojobo-draft--chunks--mc-assessment--mc-choice is-not-selected is-correct"
+    className="component obojobo-draft--chunks--mc-assessment--mc-choice is-not-selected is-correct is-not-review"
     data-choice-label="A"
     data-focussed={false}
     data-id="choice1"
@@ -358,7 +366,7 @@ exports[`MCAssessment MCAssessment with a set score 2`] = `
     </div>
   </div>
   <div
-    className="component obojobo-draft--chunks--mc-assessment--mc-choice is-not-selected is-incorrect"
+    className="component obojobo-draft--chunks--mc-assessment--mc-choice is-not-selected is-incorrect is-not-review"
     data-choice-label="B"
     data-focussed={false}
     data-id="choice2"
@@ -414,18 +422,22 @@ exports[`MCAssessment MCAssessment with a set score 2`] = `
     </div>
   </div>
   <div
-    className="submit"
+    className="submit-and-result-container"
   >
     <div
-      className="obojobo-draft--components--button align-center"
+      className="submit"
     >
-      <button
-        disabled={true}
-        onClick={[Function]}
-        tabIndex={undefined}
+      <div
+        className="obojobo-draft--components--button align-center"
       >
-        Check Your Answer
-      </button>
+        <button
+          disabled={true}
+          onClick={[Function]}
+          tabIndex={undefined}
+        >
+          Check Your Answer
+        </button>
+      </div>
     </div>
   </div>
   <div />
@@ -434,7 +446,7 @@ exports[`MCAssessment MCAssessment with a set score 2`] = `
 
 exports[`MCAssessment MCAssessment with response 1`] = `
 <form
-  className="component obojobo-draft--chunks--mc-assessment is-response-type- is-not-showing-explantion is-unscored"
+  className="component obojobo-draft--chunks--mc-assessment is-response-type- is-not-showing-explantion is-unscored is-assessment"
   data-focussed={false}
   data-id="id"
   data-obo-component={true}
@@ -446,7 +458,7 @@ exports[`MCAssessment MCAssessment with response 1`] = `
     className="instructions"
   />
   <div
-    className="component obojobo-draft--chunks--mc-assessment--mc-choice is-not-selected is-correct"
+    className="component obojobo-draft--chunks--mc-assessment--mc-choice is-not-selected is-correct is-not-review"
     data-choice-label="A"
     data-focussed={false}
     data-id="choice1"
@@ -502,7 +514,7 @@ exports[`MCAssessment MCAssessment with response 1`] = `
     </div>
   </div>
   <div
-    className="component obojobo-draft--chunks--mc-assessment--mc-choice is-not-selected is-incorrect"
+    className="component obojobo-draft--chunks--mc-assessment--mc-choice is-not-selected is-incorrect is-not-review"
     data-choice-label="B"
     data-focussed={false}
     data-id="choice2"
@@ -558,18 +570,22 @@ exports[`MCAssessment MCAssessment with response 1`] = `
     </div>
   </div>
   <div
-    className="submit"
+    className="submit-and-result-container"
   >
     <div
-      className="obojobo-draft--components--button align-center"
+      className="submit"
     >
-      <button
-        disabled={true}
-        onClick={[Function]}
-        tabIndex={undefined}
+      <div
+        className="obojobo-draft--components--button align-center"
       >
-        Check Your Answer
-      </button>
+        <button
+          disabled={true}
+          onClick={[Function]}
+          tabIndex={undefined}
+        >
+          Check Your Answer
+        </button>
+      </div>
     </div>
   </div>
   <div />
@@ -578,7 +594,7 @@ exports[`MCAssessment MCAssessment with response 1`] = `
 
 exports[`MCAssessment MCAssessment with response 2`] = `
 <form
-  className="component obojobo-draft--chunks--mc-assessment is-response-type- is-not-showing-explantion is-unscored"
+  className="component obojobo-draft--chunks--mc-assessment is-response-type- is-not-showing-explantion is-unscored is-assessment"
   data-focussed={false}
   data-id="id"
   data-obo-component={true}
@@ -590,7 +606,7 @@ exports[`MCAssessment MCAssessment with response 2`] = `
     className="instructions"
   />
   <div
-    className="component obojobo-draft--chunks--mc-assessment--mc-choice is-selected is-correct"
+    className="component obojobo-draft--chunks--mc-assessment--mc-choice is-selected is-correct is-not-review"
     data-choice-label="A"
     data-focussed={false}
     data-id="choice1"
@@ -646,7 +662,7 @@ exports[`MCAssessment MCAssessment with response 2`] = `
     </div>
   </div>
   <div
-    className="component obojobo-draft--chunks--mc-assessment--mc-choice is-not-selected is-incorrect"
+    className="component obojobo-draft--chunks--mc-assessment--mc-choice is-not-selected is-incorrect is-not-review"
     data-choice-label="B"
     data-focussed={false}
     data-id="choice2"
@@ -702,18 +718,22 @@ exports[`MCAssessment MCAssessment with response 2`] = `
     </div>
   </div>
   <div
-    className="submit"
+    className="submit-and-result-container"
   >
     <div
-      className="obojobo-draft--components--button align-center"
+      className="submit"
     >
-      <button
-        disabled={undefined}
-        onClick={[Function]}
-        tabIndex={undefined}
+      <div
+        className="obojobo-draft--components--button align-center"
       >
-        Check Your Answer
-      </button>
+        <button
+          disabled={undefined}
+          onClick={[Function]}
+          tabIndex={undefined}
+        >
+          Check Your Answer
+        </button>
+      </div>
     </div>
   </div>
   <div />
@@ -722,7 +742,7 @@ exports[`MCAssessment MCAssessment with response 2`] = `
 
 exports[`MCAssessment MCAssessment with revealAll 1`] = `
 <form
-  className="component obojobo-draft--chunks--mc-assessment is-response-type- is-not-showing-explantion is-unscored"
+  className="component obojobo-draft--chunks--mc-assessment is-response-type- is-not-showing-explantion is-unscored is-assessment"
   data-focussed={false}
   data-id="id"
   data-obo-component={true}
@@ -734,7 +754,7 @@ exports[`MCAssessment MCAssessment with revealAll 1`] = `
     className="instructions"
   />
   <div
-    className="component obojobo-draft--chunks--mc-assessment--mc-choice is-not-selected is-correct"
+    className="component obojobo-draft--chunks--mc-assessment--mc-choice is-not-selected is-correct is-not-review"
     data-choice-label="A"
     data-focussed={false}
     data-id="choice1"
@@ -790,7 +810,7 @@ exports[`MCAssessment MCAssessment with revealAll 1`] = `
     </div>
   </div>
   <div
-    className="component obojobo-draft--chunks--mc-assessment--mc-choice is-not-selected is-incorrect"
+    className="component obojobo-draft--chunks--mc-assessment--mc-choice is-not-selected is-incorrect is-not-review"
     data-choice-label="B"
     data-focussed={false}
     data-id="choice2"
@@ -846,18 +866,22 @@ exports[`MCAssessment MCAssessment with revealAll 1`] = `
     </div>
   </div>
   <div
-    className="submit"
+    className="submit-and-result-container"
   >
     <div
-      className="obojobo-draft--components--button align-center"
+      className="submit"
     >
-      <button
-        disabled={true}
-        onClick={[Function]}
-        tabIndex={undefined}
+      <div
+        className="obojobo-draft--components--button align-center"
       >
-        Check Your Answer
-      </button>
+        <button
+          disabled={true}
+          onClick={[Function]}
+          tabIndex={undefined}
+        >
+          Check Your Answer
+        </button>
+      </div>
     </div>
   </div>
   <div />
@@ -866,7 +890,7 @@ exports[`MCAssessment MCAssessment with revealAll 1`] = `
 
 exports[`MCAssessment MCAssessment with revealAll 2`] = `
 <form
-  className="component obojobo-draft--chunks--mc-assessment is-response-type- is-not-showing-explantion is-unscored"
+  className="component obojobo-draft--chunks--mc-assessment is-response-type- is-not-showing-explantion is-unscored is-assessment"
   data-focussed={false}
   data-id="id"
   data-obo-component={true}
@@ -878,7 +902,7 @@ exports[`MCAssessment MCAssessment with revealAll 2`] = `
     className="instructions"
   />
   <div
-    className="component obojobo-draft--chunks--mc-assessment--mc-choice is-not-selected is-correct"
+    className="component obojobo-draft--chunks--mc-assessment--mc-choice is-not-selected is-correct is-not-review"
     data-choice-label="A"
     data-focussed={false}
     data-id="choice1"
@@ -934,7 +958,7 @@ exports[`MCAssessment MCAssessment with revealAll 2`] = `
     </div>
   </div>
   <div
-    className="component obojobo-draft--chunks--mc-assessment--mc-choice is-not-selected is-incorrect"
+    className="component obojobo-draft--chunks--mc-assessment--mc-choice is-not-selected is-incorrect is-not-review"
     data-choice-label="B"
     data-focussed={false}
     data-id="choice2"
@@ -990,18 +1014,22 @@ exports[`MCAssessment MCAssessment with revealAll 2`] = `
     </div>
   </div>
   <div
-    className="submit"
+    className="submit-and-result-container"
   >
     <div
-      className="obojobo-draft--components--button align-center"
+      className="submit"
     >
-      <button
-        disabled={true}
-        onClick={[Function]}
-        tabIndex={undefined}
+      <div
+        className="obojobo-draft--components--button align-center"
       >
-        Check Your Answer
-      </button>
+        <button
+          disabled={true}
+          onClick={[Function]}
+          tabIndex={undefined}
+        >
+          Check Your Answer
+        </button>
+      </div>
     </div>
   </div>
   <div />

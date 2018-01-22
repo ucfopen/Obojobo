@@ -177,8 +177,12 @@ class AssessmentStore extends Store {
 		let assessment = this.state.assessments[id]
 		let model = OboModel.models[id]
 
-		assessment.current.state.questions.forEach(question => QuestionUtil.hideQuestion(question.id))
-		assessment.currentResponses.forEach(questionId => QuestionUtil.clearResponse(questionId))
+		// @TODO remove this
+		if (!model.modelState.review) {
+			assessment.current.state.questions.forEach(question => QuestionUtil.hideQuestion(question.id))
+			assessment.currentResponses.forEach(questionId => QuestionUtil.clearResponse(questionId))
+		}
+
 		assessment.attempts.push(endAttemptResp.attempt)
 		assessment.current = null
 		assessment.score = endAttemptResp.assessmentScore
@@ -186,6 +190,16 @@ class AssessmentStore extends Store {
 
 		model.processTrigger('onEndAttempt')
 		Dispatcher.trigger('assessment:attemptEnded', id)
+
+		let attemptsToSend = [
+			{
+				attemptId: endAttemptResp.attempt.attemptId,
+				score: endAttemptResp.attempt.scores.attemptScore,
+				questionScores: endAttemptResp.attempt.scores.questionScores,
+				context: `assessmentReview:${endAttemptResp.attempt.attemptId}`
+			}
+		]
+		Dispatcher.trigger('score:populate', attemptsToSend)
 	}
 
 	trySetResponse(questionId, response, targetId) {

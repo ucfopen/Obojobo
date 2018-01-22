@@ -3,28 +3,30 @@ import Common from 'Common'
 let { Dispatcher } = Common.flux
 
 let ScoreUtil = {
-	getScoreForModel(state, model) {
-		let scoreItem = state.scores[model.get('id')]
-		if (typeof scoreItem === 'undefined' || scoreItem === null) {
+	getScoreForModel(state, model, context = 'practice') {
+		let scoreItem
+		if (state.scores[context] != null) scoreItem = state.scores[context][model.get('id')]
+		if (scoreItem == null) {
 			return null
 		}
-
 		return scoreItem.score
 	},
 
-	setScore(itemId, score) {
+	setScore(itemId, score, context = 'practice') {
 		return Dispatcher.trigger('score:set', {
 			value: {
 				itemId,
-				score
+				score,
+				context
 			}
 		})
 	},
 
-	clearScore(itemId) {
+	clearScore(itemId, context = 'practice') {
 		return Dispatcher.trigger('score:clear', {
 			value: {
-				itemId
+				itemId,
+				context
 			}
 		})
 	}
