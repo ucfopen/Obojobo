@@ -40,7 +40,68 @@ class AssessmentStore extends Store {
 		})
 	}
 
-	init(history) {
+	init(attemptsByAssessment) {
+		this.state = {
+			assessments: {}
+		}
+
+		if (!attemptsByAssessment) return
+		this.updateAttempts(attemptsByAssessment)
+	}
+
+	updateAttempts(attemptsByAssessment) {
+		let unfinishedAttempt = null
+		let nonExistantQuestions = []
+		let assessments = this.state.assessments
+		let assessment
+
+		attemptsByAssessment.forEach(assessmentItem => {
+			let assessId = assessmentItem.assessmentId
+			let attempts = assessmentItem.attempts
+
+			if (!assessments[assessId]) {
+				assessments[assessId] = getNewAssessmentObject(assessId)
+			} else {
+				assessments[assessId].attempts = []
+			}
+
+			attempts.forEach(attempt => {
+				assessment = assessments[attempt.assessmentId]
+
+				assessment.score = attempt.assessmentScore
+
+				if (!attempt.isFinished) {
+					unfinishedAttempt = attempt
+				} else {
+					assessment.attempts.push(attempt)
+				}
+
+				attempt.state.questions.forEach(question => {
+					if (!OboModel.models[question.id]) {
+						OboModel.create(question)
+					}
+				})
+
+				assessment.lti = attempt.ltiState
+			})
+		})
+
+		if (unfinishedAttempt) {
+			return ModalUtil.show(
+				<SimpleDialog
+					ok
+					title="Resume Attempt"
+					onConfirm={this.onResumeAttemptConfirm.bind(this, unfinishedAttempt)}
+				>
+					<p>
+						It looks like you were in the middle of an attempt. We'll resume you where you left off.
+					</p>
+				</SimpleDialog>
+			)
+		}
+	}
+
+	_init_OLD_DELETE_ME(history) {
 		let question
 		if (history == null) {
 			history = []
@@ -173,9 +234,9 @@ class AssessmentStore extends Store {
 	}
 
 	endAttempt(endAttemptResp) {
-		let id = endAttemptResp.attempt.assessmentId
-		let assessment = this.state.assessments[id]
-		let model = OboModel.models[id]
+		let assessId = endAttemptResp.assessmentId
+		let assessment = this.state.assessments[assessId]
+		let model = OboModel.models[assessId]
 
 		// @TODO remove this
 		if (!model.modelState.review) {
@@ -185,10 +246,12 @@ class AssessmentStore extends Store {
 
 		assessment.attempts.push(endAttemptResp.attempt)
 		assessment.current = null
-		assessment.score = endAttemptResp.assessmentScore
-		assessment.lti = endAttemptResp.lti
+		// assessment.score = endAttemptResp.assessmentScore
+		// assessment.lti = endAttemptResp.lti
+		this.updateAttempts([endAttemptResp])
 
 		model.processTrigger('onEndAttempt')
+
 		Dispatcher.trigger('assessment:attemptEnded', id)
 
 		let attemptsToSend = [
@@ -200,6 +263,7 @@ class AssessmentStore extends Store {
 			}
 		]
 		Dispatcher.trigger('score:populate', attemptsToSend)
+		// Dispatcher.trigger('assessment:attemptEnded', assessId)
 	}
 
 	trySetResponse(questionId, response, targetId) {

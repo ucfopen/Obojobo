@@ -745,9 +745,11 @@
 				fetchDraft: function fetchDraft(id) {
 					return createParsedJsonPromise(fetch('/api/drafts/' + id))
 				},
-				getAttempts: function getAttempts(lo) {
-					return createParsedJsonPromise(APIUtil.get('/api/drafts/' + lo.get('_id') + '/attempts'))
-				},
+
+				// getAttempts(lo) {
+				// 	return createParsedJsonPromise(APIUtil.get(`/api/drafts/${lo.get('_id')}/attempts`))
+				// },
+
 				startAttempt: function startAttempt(lo, assessment, questions) {
 					return createParsedJsonPromise(
 						APIUtil.post('/api/assessments/attempt/start', {
@@ -2082,7 +2084,76 @@
 				_createClass(AssessmentStore, [
 					{
 						key: 'init',
-						value: function init(history) {
+						value: function init(attemptsByAssessment) {
+							this.state = {
+								assessments: {}
+							}
+
+							if (!attemptsByAssessment) return
+							this.updateAttempts(attemptsByAssessment)
+						}
+					},
+					{
+						key: 'updateAttempts',
+						value: function updateAttempts(attemptsByAssessment) {
+							var unfinishedAttempt = null
+							var nonExistantQuestions = []
+							var assessments = this.state.assessments
+							var assessment = void 0
+
+							attemptsByAssessment.forEach(function(assessmentItem) {
+								var assessId = assessmentItem.assessmentId
+								var attempts = assessmentItem.attempts
+
+								if (!assessments[assessId]) {
+									assessments[assessId] = getNewAssessmentObject(assessId)
+								} else {
+									assessments[assessId].attempts = []
+								}
+
+								attempts.forEach(function(attempt) {
+									assessment = assessments[attempt.assessmentId]
+
+									assessment.score = attempt.assessmentScore
+
+									if (!attempt.isFinished) {
+										unfinishedAttempt = attempt
+									} else {
+										assessment.attempts.push(attempt)
+									}
+
+									attempt.state.questions.forEach(function(question) {
+										if (!OboModel.models[question.id]) {
+											OboModel.create(question)
+										}
+									})
+
+									assessment.lti = attempt.ltiState
+								})
+							})
+
+							if (unfinishedAttempt) {
+								return ModalUtil.show(
+									React.createElement(
+										SimpleDialog,
+										{
+											ok: true,
+											title: 'Resume Attempt',
+											onConfirm: this.onResumeAttemptConfirm.bind(this, unfinishedAttempt)
+										},
+										React.createElement(
+											'p',
+											null,
+											"It looks like you were in the middle of an attempt. We'll resume you where you left off."
+										)
+									)
+								)
+							}
+						}
+					},
+					{
+						key: '_init_OLD_DELETE_ME',
+						value: function _init_OLD_DELETE_ME(history) {
 							var question = void 0
 							if (history == null) {
 								history = []
@@ -2342,9 +2413,9 @@
 					{
 						key: 'endAttempt',
 						value: function endAttempt(endAttemptResp) {
-							var id = endAttemptResp.attempt.assessmentId
-							var assessment = this.state.assessments[id]
-							var model = OboModel.models[id]
+							var assessId = endAttemptResp.assessmentId
+							var assessment = this.state.assessments[assessId]
+							var model = OboModel.models[assessId]
 
 							// @TODO remove this
 							if (!model.modelState.review) {
@@ -2358,10 +2429,12 @@
 
 							assessment.attempts.push(endAttemptResp.attempt)
 							assessment.current = null
-							assessment.score = endAttemptResp.assessmentScore
-							assessment.lti = endAttemptResp.lti
+							// assessment.score = endAttemptResp.assessmentScore
+							// assessment.lti = endAttemptResp.lti
+							this.updateAttempts([endAttemptResp])
 
 							model.processTrigger('onEndAttempt')
+
 							Dispatcher.trigger('assessment:attemptEnded', id)
 
 							var attemptsToSend = [
@@ -2373,6 +2446,7 @@
 								}
 							]
 							Dispatcher.trigger('score:populate', attemptsToSend)
+							// Dispatcher.trigger('assessment:attemptEnded', assessId)
 						}
 					},
 					{
@@ -2899,7 +2973,7 @@
 						return 0
 					}
 
-					return assessment.attempts[assessment.attempts.length - 1].scores.attemptScore
+					return assessment.attempts[assessment.attempts.length - 1].attemptScore
 				},
 				getAssessmentScoreForModel: function getAssessmentScoreForModel(state, model) {
 					var assessment = AssessmentUtil.getAssessmentForModel(state, model)
@@ -2919,7 +2993,7 @@
 						return []
 					}
 
-					return assessment.attempts[assessment.attempts.length - 1].scores.questionScores
+					return assessment.attempts[assessment.attempts.length - 1].questionScores
 				},
 				getCurrentAttemptForModel: function getCurrentAttemptForModel(state, model) {
 					var assessment = AssessmentUtil.getAssessmentForModel(state, model)
@@ -6373,7 +6447,7 @@
 						window.location.pathname
 					)
 					_assessmentStore2.default.init(
-						OboGlobals.get('ObojoboDraft.Sections.Assessment:attemptHistory', [])
+						OboGlobals.get('ObojoboDraft.Sections.Assessment:attempts', [])
 					)
 
 					state.navState = _navStore2.default.getState()

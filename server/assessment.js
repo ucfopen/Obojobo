@@ -55,23 +55,205 @@ class Assessment extends DraftNode {
 	}
 
 	// @TODO: most things touching the db should end up in models. figure this out
-	static getAttemptHistory(userId, draftId) {
+	// @TODO: Remove this method (getAttempts should be used instead)
+	// static getAttemptHistory(userId, draftId) {
+	// 	return db.manyOrNone(
+	// 		`
+	// 			SELECT
+	// 				id AS "attemptId",
+	// 				created_at as "startTime",
+	// 				completed_at as "endTime",
+	// 				assessment_id as "assessmentId",
+	// 				state,
+	// 				result
+	// 			FROM attempts
+	// 			WHERE
+	// 				user_id = $[userId]
+	// 				AND draft_id = $[draftId]
+	// 				AND preview = FALSE
+	// 			ORDER BY completed_at DESC`,
+	// 		{ userId: userId, draftId: draftId }
+	// 	)
+	// }
+
+	static createAttemptResponse(userId, draftId, attempt) {
+		return {
+			userId: userId,
+			draftId: draftId,
+			attemptId: attempt.attempt_id,
+			attemptNumber: parseInt(attempt.attempt_number, 10),
+			assessmentId: attempt.assessment_id,
+			startTime: attempt.created_at,
+			finishTime: attempt.completed_at,
+			isFinished: attempt.completed_at !== null,
+			state: attempt.state,
+			questionScores: attempt.result.questionScores,
+			attemptScore: attempt.result.attemptScore,
+			assessmentScore: parseInt(attempt.assessment_score, 10),
+			ltiState: {
+				score: attempt.score_sent,
+				status: attempt.status,
+				error: {
+					type: attempt.error,
+					details: attempt.error_details
+				}
+			}
+		}
+	}
+
+	static getAttempts(userId, draftId, optionalAssessmentId = null) {
+		return db
+			.manyOrNone(
+				`
+				SELECT
+					ROW_NUMBER () OVER (
+						PARTITION by ATT.assessment_id
+						ORDER BY ATT.completed_at
+					) AS "attempt_number",
+					ATT.id AS "attempt_id",
+					ATT.assessment_id,
+					ATT.created_at,
+					ATT.updated_at,
+					ATT.completed_at,
+					ATT.state,
+					ATT.result,
+					SCO.id AS "assessment_score_id",
+					SCO.score AS "assessment_score",
+					LTI.score_sent,
+					LTI.score_read,
+					LTI.error_details,
+					LTI.status,
+					LTI.error
+				FROM attempts ATT
+				JOIN assessment_scores SCO
+				ON ATT.id = SCO.attempt_id
+				JOIN lti_assessment_scores LTI
+				ON SCO.id = LTI.assessment_score_id
+				WHERE
+					ATT.preview = false
+					AND ATT.user_id = $[userId]
+					AND ATT.draft_id = $[draftId]
+					${optionalAssessmentId !== null
+						? "AND ATT.assessment_id = '" + optionalAssessmentId + "'"
+						: ''}
+				ORDER BY ATT.completed_at`,
+				{
+					userId,
+					draftId
+				}
+			)
+			.then(result => {
+				let assessments = {}
+
+				result.forEach(attempt => {
+					attempt = Assessment.createAttemptResponse(userId, draftId, attempt)
+
+					if (!assessments[attempt.assessmentId]) {
+						assessments[attempt.assessmentId] = {
+							assessmentId: attempt.assessmentId,
+							attempts: []
+						}
+					}
+
+					assessments[attempt.assessmentId].attempts.push(attempt)
+				})
+
+				let assessmentsArr = []
+				for (let assessmentId in assessments) {
+					assessmentsArr.push(assessments[assessmentId])
+				}
+
+				if (optionalAssessmentId !== null) {
+					if (assessmentsArr.length > 0) {
+						return assessmentsArr[0]
+					} else {
+						return {
+							assessmentId: optionalAssessmentId,
+							attempts: []
+						}
+					}
+				}
+
+				return assessmentsArr
+			})
+	}
+
+	static getAttemptIdsForUserForDraft(userId, draftId) {
 		return db.manyOrNone(
 			`
-				SELECT
-					id AS "attemptId",
-					created_at as "startTime",
-					completed_at as "endTime",
-					assessment_id as "assessmentId",
-					state,
-					result
-				FROM attempts
-				WHERE
-					user_id = $[userId]
+			SELECT
+			ROW_NUMBER () OVER (
+				PARTITION by assessment_id
+			  ORDER BY completed_at
+			) AS "attempt_number",
+			id
+			FROM attempts
+			WHERE
+				preview = FALSE
+				AND user_id = $[userId]
+			AND draft_id = $[draftId]
+			ORDER BY completed_at
+			`,
+			{ userId, draftId }
+		)
+	}
+
+	static getAttemptNumber(userId, draftId, attemptId) {
+		return Assessment.getAttemptIdsForUserForDraft(userId, draftId).then(attempts => {
+			attempts.forEach(attempt => {
+				if (attempt.id === attemptId) return attempt.attempt_number
+			})
+
+			return null
+		})
+	}
+
+	static getAttempt(attemptId) {
+		return db.oneOrNone(
+			`
+			SELECT *
+			FROM attempts
+			WHERE id = $[attemptId]
+			`,
+			{ attemptId }
+		)
+	}
+
+	//@TODO
+	static getResponseHistory__TODO__IS_THIS_USED(userId, draftId) {
+		return db
+			.manyOrNone(
+				`
+				SELECT *
+				FROM attempts_question_responses
+				WHERE attempt_id IN (
+					SELECT attempt_id
+					FROM attempts
+					WHERE user_id = $[userId]
 					AND draft_id = $[draftId]
-					AND preview = FALSE
-				ORDER BY completed_at DESC`,
-			{ userId: userId, draftId: draftId }
+				) ORDER BY updated_at`,
+				{ userId: userId, draftId: draftId }
+			)
+			.then(result => {
+				let history = {}
+
+				result.forEach(row => {
+					if (!history[row.attempt_id]) history[row.attempt_id] = []
+					history[row.attempt_id].push(row)
+				})
+
+				return history
+			})
+	}
+
+	static getResponsesForAttempt(attemptId) {
+		return db.manyOrNone(
+			`
+				SELECT *
+				FROM attempts_question_responses
+				WHERE attempt_id = $[attemptId]
+				ORDER BY updated_at`,
+			{ attemptId }
 		)
 	}
 
@@ -221,10 +403,10 @@ class Assessment extends DraftNode {
 		return req
 			.requireCurrentUser()
 			.then(currentUser => {
-				return this.constructor.getAttemptHistory(currentUser.id, req.params.draftId)
+				return this.constructor.getAttempts(currentUser.id, req.params.draftId)
 			})
-			.then(attemptHistory => {
-				oboGlobals.set('ObojoboDraft.Sections.Assessment:attemptHistory', attemptHistory)
+			.then(attempts => {
+				oboGlobals.set('ObojoboDraft.Sections.Assessment:attempts', attempts)
 				return Promise.resolve()
 			})
 			.catch(err => {

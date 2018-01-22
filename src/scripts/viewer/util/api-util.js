@@ -68,9 +68,9 @@ var APIUtil = {
 		return createParsedJsonPromise(fetch(`/api/drafts/${id}`))
 	},
 
-	getAttempts(lo) {
-		return createParsedJsonPromise(APIUtil.get(`/api/drafts/${lo.get('_id')}/attempts`))
-	},
+	// getAttempts(lo) {
+	// 	return createParsedJsonPromise(APIUtil.get(`/api/drafts/${lo.get('_id')}/attempts`))
+	// },
 
 	startAttempt(lo, assessment, questions) {
 		return createParsedJsonPromise(
