@@ -15,14 +15,6 @@ let endAttempt = (req, res, user, attemptId, isPreviewing) => {
 	let updateAttemptData
 	let assessmentScoreId
 
-	/*
-	let SCORE_SENT_STATUS_NOT_ATTEMPTED = 'not_attempted'
-let SCORE_SENT_STATUS_SENT_BUT_UNVERIFIED = 'sent_but_unverified'
-let SCORE_SENT_STATUS_SUCCESS = 'success'
-let SCORE_SENT_STATUS_READ_MISMATCH = 'read_mismatch'
-let SCORE_SENT_STATUS_ERROR = 'error'
-	*/
-
 	logger.info(`End attempt "${attemptId}" begin for user "${user.id}" (Preview="${isPreviewing}")`)
 
 	return (
@@ -62,7 +54,6 @@ let SCORE_SENT_STATUS_ERROR = 'error'
 			.then(calculatedScoresResult => {
 				logger.info(`End attempt "${attemptId}" - getCalculatedScores success`)
 
-				// calculatedScores.lti = ltiRequestResult
 				calculatedScores = calculatedScoresResult
 
 				return completeAttempt(
@@ -271,28 +262,6 @@ let insertAttemptEndEvents = (
 let sendLTIScore = (user, draftId, score, assessmentScoreId) => {
 	return lti.sendAssessmentScore(user.id, draftId, score, assessmentScoreId)
 }
-
-// let insertAssessmentScore = (user, draftId, assessmentId,
-// 	launchId,
-// 	score,
-// 	ltiScoreSent,
-// 	ltiScoreRead,
-// 	ltiStatus,
-// 	ltiError,
-// 	isPreviewing) => {
-// 	return Assessment.insertAssessmentScore(
-// 		user.id,
-// 		draftId,
-// 		assessmentId,
-// 		launchId,
-// 		score,
-// 		ltiScoreSent,
-// 		ltiScoreRead,
-// 		ltiStatus,
-// 		ltiError,
-// 		isPreviewing
-// 	)
-// }
 
 let insertAttemptScoredEvents = (
 	user,
