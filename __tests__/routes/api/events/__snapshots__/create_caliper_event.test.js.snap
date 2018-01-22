@@ -24,6 +24,7 @@ Event {
   "id": "urn:uuid:fb9826d0-3d7a-43b8-a5ad-3949ce620d91",
   "object": "https://testHost/api/attempt/testAttemptId",
   "session": "https://testHost/api/session/testSessionId",
+  "target": "https://testHost/api/assessment/testDraftId/testAssessment",
   "type": "GradeEvent",
 }
 `;

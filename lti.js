@@ -150,12 +150,31 @@ let insertLTIAssessmentScore = (
 		})
 }
 
-let getLTIAssessmentInfo = assessmentScoreId => {}
+let insertLTIAssessmentScoreAndReplaceResultEvent = (
+	userId,
+	draftId,
+	assessmentScoreId,
+	launch,
+	result,
+	logId
+) => {
+	return insertLTIAssessmentScore(
+		assessmentScoreId,
+		result.launchId,
+		result.scoreSent,
+		result.status,
+		result.error,
+		result.errorDetails,
+		logId
+	).then(scoreId => {
+		result.ltiAssessmentScoreId = scoreId
+		logger.info(`LTI store "${result.status}" success - id:"${result.ltiAssessmentScoreId}"`, logId)
 
-/* Returns a Promise<boolean>
-   Resolves with Boolean - the result was sent to the outcome service
-   Rejects with Error Object only when we tried to send to the service and it failed
-*/
+		insertReplaceResultEvent(userId, draftId, launch, result)
+
+		return result
+	})
+}
 
 let sendAssessmentScore = function(userId, draftId, score, assessmentScoreId) {
 	let logId = uuid()
@@ -205,31 +224,23 @@ let sendAssessmentScore = function(userId, draftId, score, assessmentScoreId) {
 			// @TODO - do a read!
 			// @TODO - what is in ltiRequestResult?
 			logger.info(`LTI replaceResult success`, ltiRequestResult, logId)
-
-			insertReplaceResultEvent(userId, draftId, launch, result)
 		})
 		.then(() => {
-			return insertLTIAssessmentScore(
+			return insertLTIAssessmentScoreAndReplaceResultEvent(
+				userId,
+				draftId,
 				assessmentScoreId,
-				result.launchId,
-				result.scoreSent,
-				result.status,
-				result.error,
-				result.errorDetails,
+				launch,
+				result,
 				logId
 			)
 		})
-		.then(scoreId => {
+		.then(result => {
 			didInsertAssessmentScore = true
-			result.ltiAssessmentScoreId = scoreId
-			logger.info(
-				`LTI store "${result.status}" success - id:"${result.ltiAssessmentScoreId}"`,
-				logId
-			)
 			return result
 		})
 		.catch(error => {
-			logger.warn('LTI replaceResult failed:', error, logId)
+			logger.warn('LTI error:', error, logId)
 
 			// Handle errors
 			switch (error) {
@@ -273,34 +284,18 @@ let sendAssessmentScore = function(userId, draftId, score, assessmentScoreId) {
 			}
 
 			if (!didInsertAssessmentScore) {
-				return insertLTIAssessmentScore(
+				return insertLTIAssessmentScoreAndReplaceResultEvent(
+					userId,
+					draftId,
 					assessmentScoreId,
-					result.launchId,
-					result.scoreSent,
-					result.status,
-					result.error,
-					result.errorDetails,
+					launch,
+					result,
 					logId
-				)
-					.then(scoreId => {
-						result.ltiAssessmentScoreId = scoreId
+				).catch(result => {
+					logger.error(`LTI fatal error! Unable to store record assessment record!`, result, logId)
 
-						logger.info(
-							`LTI store "${result.status}" success - id:"${result.ltiAssessmentScoreId}"`,
-							logId
-						)
-
-						return result
-					})
-					.catch(result => {
-						logger.error(
-							`LTI fatal error! Unable to store record assessment record!`,
-							result,
-							logId
-						)
-
-						return result
-					})
+					return result
+				})
 			}
 
 			return result
