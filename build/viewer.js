@@ -2435,18 +2435,17 @@
 
 							model.processTrigger('onEndAttempt')
 
-							Dispatcher.trigger('assessment:attemptEnded', id)
-
-							var attemptsToSend = [
-								{
-									attemptId: endAttemptResp.attempt.attemptId,
-									score: endAttemptResp.attempt.scores.attemptScore,
-									questionScores: endAttemptResp.attempt.scores.questionScores,
-									context: 'assessmentReview:' + endAttemptResp.attempt.attemptId
+							var attemptsToSend = endAttemptResp.attempts.map(function(attempt) {
+								return {
+									attemptId: attempt.attemptId,
+									score: attempt.attemptScore,
+									questionScores: attempt.questionScores,
+									context: 'assessmentReview:' + attempt.attemptId
 								}
-							]
+							})
+
 							Dispatcher.trigger('score:populate', attemptsToSend)
-							// Dispatcher.trigger('assessment:attemptEnded', assessId)
+							Dispatcher.trigger('assessment:attemptEnded', assessId)
 						}
 					},
 					{
@@ -3008,8 +3007,7 @@
 				},
 				hasAttemptsRemaining: function hasAttemptsRemaining(state, model) {
 					return (
-						this.getAssessmentForModel(state, model).attempts.length - model.modelState.attempts !==
-						0
+						model.modelState.attempts - this.getAssessmentForModel(state, model).attempts.length > 0
 					)
 				},
 				getLTIStatusForModel: function getLTIStatusForModel(state, model) {

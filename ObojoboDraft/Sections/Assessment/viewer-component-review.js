@@ -21,11 +21,8 @@ const assessmentReviewView = assessment => {
 	return (
 		<div className="score unlock">
 			{attempts.map((attempt, index) => {
-				let scoreTotal = attempts[index].scores.questionScores.reduce(
-					(prev, curr) => prev + curr.score,
-					0
-				)
-				let reviewScore = scoreTotal / attempts[index].scores.questionScores.length
+				let scoreTotal = attempts[index].questionScores.reduce((prev, curr) => prev + curr.score, 0)
+				let reviewScore = scoreTotal / attempts[index].questionScores.length
 				return attemptReviewComponent(attempt, reviewScore, assessment, index + 1)
 			})}
 		</div>
@@ -37,7 +34,7 @@ const attemptReviewComponent = (attempt, reviewScore, assessment, attemptNumber)
 		<div className="review">
 			<h1>{`Attempt ${attemptNumber}`}</h1>
 			<h2>{`Score: ${reviewScore}`}</h2>
-			{attempt.scores.questionScores.map(scoreObj => {
+			{attempt.questionScores.map(scoreObj => {
 				const questionModel = OboModel.models[scoreObj.id]
 				const QuestionComponent = questionModel.getComponentClass()
 				return (

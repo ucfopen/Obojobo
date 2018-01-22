@@ -130,8 +130,8 @@ class Assessment extends DraftNode {
 				JOIN lti_assessment_scores LTI
 				ON SCO.id = LTI.assessment_score_id
 				WHERE
-					ATT.preview = false
-					AND ATT.user_id = $[userId]
+
+					ATT.user_id = $[userId]
 					AND ATT.draft_id = $[draftId]
 					${optionalAssessmentId !== null
 						? "AND ATT.assessment_id = '" + optionalAssessmentId + "'"

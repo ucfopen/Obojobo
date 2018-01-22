@@ -74,9 +74,7 @@ var AssessmentUtil = {
 	},
 
 	hasAttemptsRemaining(state, model) {
-		return (
-			this.getAssessmentForModel(state, model).attempts.length - model.modelState.attempts !== 0
-		)
+		return model.modelState.attempts - this.getAssessmentForModel(state, model).attempts.length > 0
 	},
 
 	getLTIStatusForModel(state, model) {

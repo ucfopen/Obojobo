@@ -252,18 +252,17 @@ class AssessmentStore extends Store {
 
 		model.processTrigger('onEndAttempt')
 
-		Dispatcher.trigger('assessment:attemptEnded', id)
-
-		let attemptsToSend = [
-			{
-				attemptId: endAttemptResp.attempt.attemptId,
-				score: endAttemptResp.attempt.scores.attemptScore,
-				questionScores: endAttemptResp.attempt.scores.questionScores,
-				context: `assessmentReview:${endAttemptResp.attempt.attemptId}`
+		let attemptsToSend = endAttemptResp.attempts.map(attempt => {
+			return {
+				attemptId: attempt.attemptId,
+				score: attempt.attemptScore,
+				questionScores: attempt.questionScores,
+				context: `assessmentReview:${attempt.attemptId}`
 			}
-		]
+		})
+
 		Dispatcher.trigger('score:populate', attemptsToSend)
-		// Dispatcher.trigger('assessment:attemptEnded', assessId)
+		Dispatcher.trigger('assessment:attemptEnded', assessId)
 	}
 
 	trySetResponse(questionId, response, targetId) {
