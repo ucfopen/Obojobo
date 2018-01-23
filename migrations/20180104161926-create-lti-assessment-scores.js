@@ -49,12 +49,14 @@ exports.up = function(db) {
 			// dbmigrate doesn't support enums so we create it manually:
 			return db.runSql(`
       CREATE TYPE lti_assessment_scores_error_values AS ENUM (
-        'no_secret_for_key',
-        'no_launch_found',
-        'no_outcome_service_for_launch',
-        'score_is_null',
-				'score_is_invalid',
-				'unexpected'
+				'no_outcome_service_for_launch',
+				'score_is_null',
+				'fatal_no_assessment_score_found',
+				'fatal_launch_expired',
+        'fatal_no_secret_for_key',
+        'fatal_no_launch_found',
+				'fatal_score_is_invalid',
+				'fatal_unexpected'
       );`)
 		})
 		.then(result => {
@@ -98,5 +100,5 @@ exports.down = function(db) {
 }
 
 exports._meta = {
-	version: 2
+	version: 3
 }
