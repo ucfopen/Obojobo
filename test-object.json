@@ -2443,6 +2443,7 @@
       "type": "ObojoboDraft.Sections.Assessment",
       "content": {
         "attempts": 3,
+        "review": true,
         "triggers": [
           {
             "type": "onStartAttempt",

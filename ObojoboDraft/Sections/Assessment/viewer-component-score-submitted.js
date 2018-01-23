@@ -21,7 +21,7 @@ const scoreSubmittedView = assessment => {
 	const highestScore = 100
 
 	const scoreAction = assessment.getScoreAction()
-	const numCorrect = assessment.getNumCorrect(questionScores)
+	const numCorrect = AssessmentUtil.getNumCorrect(questionScores)
 
 	let childEl
 

@@ -120,6 +120,19 @@ var AssessmentUtil = {
 		return assessment.attempts.length
 	},
 
+	getNumCorrect(questionScores) {
+		return questionScores.reduce(
+			function(acc, questionScore) {
+				let n = 0
+				if (parseInt(questionScore.score, 10) === 100) {
+					n = 1
+				}
+				return parseInt(acc, 10) + n
+			},
+			[0]
+		)
+	},
+
 	startAttempt(model) {
 		return Dispatcher.trigger('assessment:startAttempt', {
 			value: {
@@ -128,10 +141,11 @@ var AssessmentUtil = {
 		})
 	},
 
-	endAttempt(model) {
+	endAttempt(model, hasAssessmentReview) {
 		return Dispatcher.trigger('assessment:endAttempt', {
 			value: {
-				id: model.get('id')
+				id: model.get('id'),
+				hasAssessmentReview
 			}
 		})
 	}

@@ -599,7 +599,7 @@
 				var highestScore = 100
 
 				var scoreAction = assessment.getScoreAction()
-				var numCorrect = assessment.getNumCorrect(questionScores)
+				var numCorrect = AssessmentUtil.getNumCorrect(questionScores)
 
 				var childEl = void 0
 
@@ -874,13 +874,7 @@
 								return 'takingTest'
 							}
 
-							if (
-								!AssessmentUtil.hasAttemptsRemaining(
-									this.props.moduleData.assessmentState,
-									this.props.model
-								) &&
-								this.props.model.modelState.review
-							) {
+							if (this.props.model.modelState.review && this.isAssessmentComplete()) {
 								return 'review'
 							}
 
@@ -919,6 +913,15 @@
 						}
 					},
 					{
+						key: 'isAssessmentComplete',
+						value: function isAssessmentComplete() {
+							return !AssessmentUtil.hasAttemptsRemaining(
+								this.props.moduleData.assessmentState,
+								this.props.model
+							)
+						}
+					},
+					{
 						key: 'onClickSubmit',
 						value: function onClickSubmit() {
 							if (!this.isAttemptComplete()) {
@@ -940,7 +943,7 @@
 					{
 						key: 'endAttempt',
 						value: function endAttempt() {
-							return AssessmentUtil.endAttempt(this.props.model)
+							return AssessmentUtil.endAttempt(this.props.model, this.props.model.modelState.review)
 						}
 					},
 					{
@@ -983,21 +986,6 @@
 									value: '_next'
 								}
 							}
-						}
-					},
-					{
-						key: 'getNumCorrect',
-						value: function getNumCorrect(questionScores) {
-							return questionScores.reduce(
-								function(acc, questionScore) {
-									var n = 0
-									if (parseInt(questionScore.score, 10) === 100) {
-										n = 1
-									}
-									return parseInt(acc, 10) + n
-								},
-								[0]
-							)
 						}
 					},
 					{

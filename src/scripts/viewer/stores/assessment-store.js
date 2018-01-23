@@ -32,11 +32,17 @@ class AssessmentStore extends Store {
 		})
 
 		Dispatcher.on('assessment:endAttempt', payload => {
-			this.tryEndAttempt(payload.value.id)
+			this.tryEndAttempt(payload.value.id, payload.value.hasAssessmentReview)
 		})
 
 		Dispatcher.on('question:setResponse', payload => {
 			this.trySetResponse(payload.value.id, payload.value.response, payload.value.targetId)
+		})
+
+		Dispatcher.on('assessment:review', payload => {
+			// TODO: Handle the case where the client is out of attempts. Consider how to allow
+			// the UI to update accordingly (assessment review). We'll need to fetch the appropriate
+			// review data from our attempt end endpoint.
 		})
 	}
 
@@ -216,7 +222,7 @@ class AssessmentStore extends Store {
 		Dispatcher.trigger('assessment:attemptStarted', id)
 	}
 
-	tryEndAttempt(id) {
+	tryEndAttempt(id, hasAssessmentReview) {
 		let model = OboModel.models[id]
 		let assessment = this.state.assessments[id]
 
@@ -226,7 +232,7 @@ class AssessmentStore extends Store {
 					return ErrorUtil.errorResponse(res)
 				}
 
-				this.endAttempt(res.value)
+				this.endAttempt(res.value, hasAssessmentReview)
 				return this.triggerChange()
 			})
 			.catch(e => {
@@ -234,7 +240,7 @@ class AssessmentStore extends Store {
 			})
 	}
 
-	endAttempt(endAttemptResp) {
+	endAttempt(endAttemptResp, hasAssessmentReview) {
 		let assessId = endAttemptResp.assessmentId
 		let assessment = this.state.assessments[assessId]
 		let model = OboModel.models[assessId]
@@ -262,8 +268,16 @@ class AssessmentStore extends Store {
 			}
 		})
 
-		Dispatcher.trigger('score:populate', attemptsToSend)
 		Dispatcher.trigger('assessment:attemptEnded', assessId)
+
+		if (hasAssessmentReview && !AssessmentUtil.hasAttemptsRemaining(this.getState(), model)) {
+			Dispatcher.trigger('score:populate', attemptsToSend)
+			Dispatcher.trigger('assessment:review', {
+				value: {
+					id: model.get('id')
+				}
+			})
+		}
 	}
 
 	trySetResponse(questionId, response, targetId) {

@@ -2072,11 +2072,17 @@
 					})
 
 					Dispatcher.on('assessment:endAttempt', function(payload) {
-						_this.tryEndAttempt(payload.value.id)
+						_this.tryEndAttempt(payload.value.id, payload.value.hasAssessmentReview)
 					})
 
 					Dispatcher.on('question:setResponse', function(payload) {
 						_this.trySetResponse(payload.value.id, payload.value.response, payload.value.targetId)
+					})
+
+					Dispatcher.on('assessment:review', function(payload) {
+						// TODO: Handle the case where the client is out of attempts. Consider how to allow
+						// the UI to update accordingly (assessment review). We'll need to fetch the appropriate
+						// review data from our attempt end endpoint.
 					})
 					return _this
 				}
@@ -2390,7 +2396,7 @@
 					},
 					{
 						key: 'tryEndAttempt',
-						value: function tryEndAttempt(id) {
+						value: function tryEndAttempt(id, hasAssessmentReview) {
 							var _this3 = this
 
 							var model = OboModel.models[id]
@@ -2403,7 +2409,7 @@
 										return ErrorUtil.errorResponse(res)
 									}
 
-									_this3.endAttempt(res.value)
+									_this3.endAttempt(res.value, hasAssessmentReview)
 									return _this3.triggerChange()
 								})
 								.catch(function(e) {
@@ -2413,7 +2419,7 @@
 					},
 					{
 						key: 'endAttempt',
-						value: function endAttempt(endAttemptResp) {
+						value: function endAttempt(endAttemptResp, hasAssessmentReview) {
 							var assessId = endAttemptResp.assessmentId
 							var assessment = this.state.assessments[assessId]
 							var model = OboModel.models[assessId]
@@ -2445,8 +2451,19 @@
 								}
 							})
 
-							Dispatcher.trigger('score:populate', attemptsToSend)
 							Dispatcher.trigger('assessment:attemptEnded', assessId)
+
+							if (
+								hasAssessmentReview &&
+								!_assessmentUtil2.default.hasAttemptsRemaining(this.getState(), model)
+							) {
+								Dispatcher.trigger('score:populate', attemptsToSend)
+								Dispatcher.trigger('assessment:review', {
+									value: {
+										id: model.get('id')
+									}
+								})
+							}
 						}
 					},
 					{
@@ -3056,6 +3073,18 @@
 
 					return assessment.attempts.length
 				},
+				getNumCorrect: function getNumCorrect(questionScores) {
+					return questionScores.reduce(
+						function(acc, questionScore) {
+							var n = 0
+							if (parseInt(questionScore.score, 10) === 100) {
+								n = 1
+							}
+							return parseInt(acc, 10) + n
+						},
+						[0]
+					)
+				},
 				startAttempt: function startAttempt(model) {
 					return Dispatcher.trigger('assessment:startAttempt', {
 						value: {
@@ -3063,10 +3092,11 @@
 						}
 					})
 				},
-				endAttempt: function endAttempt(model) {
+				endAttempt: function endAttempt(model, hasAssessmentReview) {
 					return Dispatcher.trigger('assessment:endAttempt', {
 						value: {
-							id: model.get('id')
+							id: model.get('id'),
+							hasAssessmentReview: hasAssessmentReview
 						}
 					})
 				}

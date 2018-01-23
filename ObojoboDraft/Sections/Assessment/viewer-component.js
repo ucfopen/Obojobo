@@ -38,13 +38,7 @@ export default class Assessment extends React.Component {
 			return 'takingTest'
 		}
 
-		if (
-			!AssessmentUtil.hasAttemptsRemaining(
-				this.props.moduleData.assessmentState,
-				this.props.model
-			) &&
-			this.props.model.modelState.review
-		) {
+		if (this.props.model.modelState.review && this.isAssessmentComplete()) {
 			return 'review'
 		}
 
@@ -76,6 +70,13 @@ export default class Assessment extends React.Component {
 		// return AssessmentUtil.isCurrentAttemptComplete(this.props.moduleData.assessmentState, this.props.moduleData.questionState, this.props.model);
 	}
 
+	isAssessmentComplete() {
+		return !AssessmentUtil.hasAttemptsRemaining(
+			this.props.moduleData.assessmentState,
+			this.props.model
+		)
+	}
+
 	onClickSubmit() {
 		if (!this.isAttemptComplete()) {
 			ModalUtil.show(<AttemptIncompleteDialog onSubmit={this.endAttempt} />)
@@ -88,7 +89,7 @@ export default class Assessment extends React.Component {
 	onClickResendScore() {}
 
 	endAttempt() {
-		return AssessmentUtil.endAttempt(this.props.model)
+		return AssessmentUtil.endAttempt(this.props.model, this.props.model.modelState.review)
 	}
 
 	exitAssessment() {
@@ -125,19 +126,6 @@ export default class Assessment extends React.Component {
 				value: '_next'
 			}
 		}
-	}
-
-	getNumCorrect(questionScores) {
-		return questionScores.reduce(
-			function(acc, questionScore) {
-				let n = 0
-				if (parseInt(questionScore.score, 10) === 100) {
-					n = 1
-				}
-				return parseInt(acc, 10) + n
-			},
-			[0]
-		)
 	}
 
 	render() {
