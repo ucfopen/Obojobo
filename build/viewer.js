@@ -2146,7 +2146,8 @@
 											null,
 											"It looks like you were in the middle of an attempt. We'll resume you where you left off."
 										)
-									)
+									),
+									true
 								)
 							}
 						}
@@ -6771,7 +6772,8 @@
 								}
 							}
 
-							var modal = ModalUtil.getCurrentModal(this.state.modalState)
+							var modalItem = ModalUtil.getCurrentModal(this.state.modalState)
+							var hideViewer = modalItem && modalItem.hideViewer
 
 							return _react2.default.createElement(
 								_reactIdleTimer2.default,
@@ -6797,32 +6799,40 @@
 											' is-focus-state-' +
 											this.state.focusState.viewState
 									},
-									_react2.default.createElement(
-										'header',
-										null,
-										_react2.default.createElement(
-											'div',
-											{ className: 'pad' },
-											_react2.default.createElement(
-												'span',
-												{ className: 'module-title' },
-												this.state.model.title
+									hideViewer
+										? null
+										: _react2.default.createElement(
+												'header',
+												null,
+												_react2.default.createElement(
+													'div',
+													{ className: 'pad' },
+													_react2.default.createElement(
+														'span',
+														{ className: 'module-title' },
+														this.state.model.title
+													),
+													_react2.default.createElement(
+														'span',
+														{ className: 'location' },
+														navTargetTitle
+													),
+													_react2.default.createElement(_logo2.default, null)
+												)
 											),
-											_react2.default.createElement(
-												'span',
-												{ className: 'location' },
-												navTargetTitle
-											),
-											_react2.default.createElement(_logo2.default, null)
-										)
-									),
-									_react2.default.createElement(_nav2.default, { navState: this.state.navState }),
-									prevEl,
-									_react2.default.createElement(ModuleComponent, {
-										model: this.state.model,
-										moduleData: this.state
-									}),
-									nextEl,
+									hideViewer
+										? null
+										: _react2.default.createElement(_nav2.default, {
+												navState: this.state.navState
+											}),
+									hideViewer ? null : prevEl,
+									hideViewer
+										? null
+										: _react2.default.createElement(ModuleComponent, {
+												model: this.state.model,
+												moduleData: this.state
+											}),
+									hideViewer ? null : nextEl,
 									this.isPreviewing
 										? _react2.default.createElement(
 												'div',
@@ -6852,7 +6862,9 @@
 											)
 										: null,
 									_react2.default.createElement(FocusBlocker, { moduleData: this.state }),
-									modal ? _react2.default.createElement(ModalContainer, null, modal) : null
+									modalItem && modalItem.component
+										? _react2.default.createElement(ModalContainer, null, modalItem.component)
+										: null
 								)
 							)
 						}

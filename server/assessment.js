@@ -87,8 +87,8 @@ class Assessment extends DraftNode {
 			finishTime: attempt.completed_at,
 			isFinished: attempt.completed_at !== null,
 			state: attempt.state,
-			questionScores: attempt.result.questionScores,
-			attemptScore: attempt.result.attemptScore,
+			questionScores: attempt.result ? attempt.result.questionScores : [],
+			attemptScore: attempt.result ? attempt.result.attemptScore : null,
 			assessmentScore: parseInt(attempt.assessment_score, 10),
 			ltiState: {
 				score: attempt.score_sent,
@@ -120,17 +120,15 @@ class Assessment extends DraftNode {
 					SCO.id AS "assessment_score_id",
 					SCO.score AS "assessment_score",
 					LTI.score_sent,
-					LTI.score_read,
 					LTI.error_details,
 					LTI.status,
 					LTI.error
 				FROM attempts ATT
-				JOIN assessment_scores SCO
+				LEFT JOIN assessment_scores SCO
 				ON ATT.id = SCO.attempt_id
-				JOIN lti_assessment_scores LTI
+				LEFT JOIN lti_assessment_scores LTI
 				ON SCO.id = LTI.assessment_score_id
 				WHERE
-
 					ATT.user_id = $[userId]
 					AND ATT.draft_id = $[draftId]
 					${optionalAssessmentId !== null
@@ -199,10 +197,12 @@ class Assessment extends DraftNode {
 	}
 
 	static getAttemptNumber(userId, draftId, attemptId) {
+		console.log('GAN', userId, draftId, attemptId)
 		return Assessment.getAttemptIdsForUserForDraft(userId, draftId).then(attempts => {
-			attempts.forEach(attempt => {
+			console.log('GAN attempts', attempts)
+			for (let attempt of attempts) {
 				if (attempt.id === attemptId) return attempt.attempt_number
-			})
+			}
 
 			return null
 		})
