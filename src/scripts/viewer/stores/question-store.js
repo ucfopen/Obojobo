@@ -51,7 +51,7 @@ class QuestionStore extends Store {
 			'question:hideExplanation': payload => {
 				let root = OboModel.models[payload.value.id].getRoot()
 
-				APIUtil.postEvent(root, 'question:hideExplanation', '1.0.0', {
+				APIUtil.postEvent(root, 'question:hideExplanation', '1.1.0', {
 					questionId: payload.value.id,
 					actor: payload.value.actor
 				})

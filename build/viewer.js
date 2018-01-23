@@ -2523,7 +2523,7 @@
 						'question:hideExplanation': function questionHideExplanation(payload) {
 							var root = OboModel.models[payload.value.id].getRoot()
 
-							_apiUtil2.default.postEvent(root, 'question:hideExplanation', '1.0.0', {
+							_apiUtil2.default.postEvent(root, 'question:hideExplanation', '1.1.0', {
 								questionId: payload.value.id,
 								actor: payload.value.actor
 							})
