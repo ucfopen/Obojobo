@@ -68,6 +68,8 @@ let endAttempt = (req, res, user, attemptId, isPreviewing) => {
 			.then(completeAttemptResult => {
 				logger.info(`End attempt "${attemptId}" - completeAttempt success`)
 
+				console.log('CAR', completeAttemptResult)
+
 				assessmentScoreId = completeAttemptResult.assessmentScoreId
 
 				return insertAttemptEndEvents(
@@ -87,10 +89,10 @@ let endAttempt = (req, res, user, attemptId, isPreviewing) => {
 			.then(() => {
 				logger.info(`End attempt "${attemptId}" - insertAttemptEndEvent success`)
 
-				return sendLTIScore(user, attempt.draftId, calculatedScores.ltiScore, assessmentScoreId)
+				return sendLTIScore(assessmentScoreId)
 			})
 			.then(ltiRequestResult => {
-				logger.info(`End attempt "${attemptId}" - sendLTIScore success`)
+				logger.info(`End attempt "${attemptId}" - sendLTIScore was executed`)
 
 				insertAttemptScoredEvents(
 					user,
@@ -210,7 +212,6 @@ let calculateScores = (assessmentModel, attemptHistory, scoreInfo) => {
 	return {
 		attemptScore: attemptScore,
 		assessmentScore: assessmentScore,
-		ltiScore: assessmentScore === null ? null : assessmentScore / 100,
 		questionScores: questionScores
 	}
 }
@@ -259,8 +260,8 @@ let insertAttemptEndEvents = (
 	})
 }
 
-let sendLTIScore = (user, draftId, score, assessmentScoreId) => {
-	return lti.sendAssessmentScore(user.id, draftId, score, assessmentScoreId)
+let sendLTIScore = assessmentScoreId => {
+	return lti.sendAssessmentScore(assessmentScoreId)
 }
 
 let insertAttemptScoredEvents = (

@@ -257,26 +257,6 @@ class Assessment extends DraftNode {
 		)
 	}
 
-	static getAssessmentScore(userId, draftId, assessmentId) {
-		return db
-			.manyOrNone(
-				`
-				SELECT *
-				FROM assessment_scores
-				WHERE
-					user_id = $[userId]
-					AND draft_id = $[draftId]
-					AND assessment_id = $[assessmentId]
-					AND preview = FALSE
-				ORDER BY completed_at DESC LIMIT 1
-			`
-			)
-			.then(result => {
-				if (typeof result === undefined) return null
-				return result.score
-			})
-	}
-
 	static insertNewAttempt(userId, draftId, assessmentId, state, isPreview) {
 		return db.one(
 			`
