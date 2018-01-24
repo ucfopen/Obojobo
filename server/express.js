@@ -6,10 +6,11 @@ let db = oboRequire('db')
 let Assessment = require('./assessment')
 let lti = oboRequire('lti')
 let insertEvent = oboRequire('insert_event')
+let logger = oboRequire('logger')
 let createCaliperEvent = oboRequire('routes/api/events/create_caliper_event') //@TODO
 
 let logAndRespondToUnexpected = (errorMessage, res, req, jsError) => {
-	console.error('logAndRespondToUnexpected', jsError, errorMessage)
+	logger.error('logAndRespondToUnexpected', jsError, errorMessage)
 	res.unexpected(jsError)
 }
 
@@ -130,13 +131,13 @@ app.post('/api/assessments/attempt/start', (req, res, next) => {
 				if (attemptHistory[i].state.qb) constructUses(attemptHistory[i].state.qb)
 			}
 
-			console.log('uses___', uses)
+			logger.log('uses___', uses)
 
 			assessmentQBTree = assessment.children[1].toObject()
 			// console.log('assessmentQBTree', assessmentQBTree)
 
 			let chooseChildren = function(choose, select, node) {
-				console.log('choose children', choose, select, node.id)
+				logger.log('choose children', choose, select, node.id)
 
 				let draftNode = assessment.draftTree.getChildNodeById(node.id)
 				let myChildren = [...draftNode.immediateChildrenSet]
@@ -185,7 +186,7 @@ app.post('/api/assessments/attempt/start', (req, res, next) => {
 						break
 				}
 
-				console.log(
+				logger.log(
 					'i chose',
 					slice.map(function(dn) {
 						return dn.id
@@ -197,7 +198,7 @@ app.post('/api/assessments/attempt/start', (req, res, next) => {
 
 			let trimTree = function(node) {
 				if (node.type === 'ObojoboDraft.Chunks.QuestionBank') {
-					console.log('TEST', node.id, node.content, node.content.choose)
+					logger.log('TEST', node.id, node.content, node.content.choose)
 					let opts = getBankOptions(node)
 					node.children = chooseChildren(opts.choose, opts.select, node)
 				}
@@ -517,7 +518,7 @@ app.post('/api/assessments/attempt/:attemptId/end', (req, res, next) => {
 			})
 		})
 		.catch(error => {
-			console.log('error', error, error.toString())
+			logger.error('error', error, error.toString())
 			logAndRespondToUnexpected(
 				'Unexpected error',
 				res,
@@ -555,7 +556,7 @@ app.get('/api/drafts/:draftId/attempts', (req, res, next) => {
 			res.success({ attempts: result })
 		})
 		.catch(error => {
-			console.log('error', error, error.toString())
+			logger.error('error', error, error.toString())
 			logAndRespondToUnexpected(
 				'Unexpected error',
 				res,
@@ -571,11 +572,11 @@ oboEvents.on('client:assessment:setResponse', (event, req) => {
 	// check perms
 	// check input
 	if (!event.payload.attemptId)
-		return console.error(eventRecordResponse, 'Missing Attempt ID', req, event)
+		return logger.error(eventRecordResponse, 'Missing Attempt ID', req, event)
 	if (!event.payload.questionId)
-		return console.error(eventRecordResponse, 'Missing Question ID', req, event)
+		return logger.error(eventRecordResponse, 'Missing Question ID', req, event)
 	if (!event.payload.response)
-		return console.error(eventRecordResponse, 'Missing Response', req, event)
+		return logger.error(eventRecordResponse, 'Missing Response', req, event)
 
 	return db
 		.none(
@@ -597,7 +598,7 @@ oboEvents.on('client:assessment:setResponse', (event, req) => {
 			}
 		)
 		.catch(error => {
-			console.error(eventRecordResponse, 'DB UNEXPECTED', req, error, error.toString())
+			logger.error(eventRecordResponse, 'DB UNEXPECTED', req, error, error.toString())
 		})
 })
 
