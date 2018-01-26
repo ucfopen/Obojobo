@@ -9,7 +9,13 @@ describe('MCAssessment adapter', () => {
 
 	it('can be constructed WITH attributes', () => {
 		let model = { modelState: {} }
-		let attrs = { content: { responseType: 'pick-one' } }
+		let attrs = {
+			content: {
+				responseType: 'pick-one',
+				correctFeedbacks: 'Correct!|Great job!',
+				incorrectFeedbacks: 'Incorrect|wrong'
+			}
+		}
 
 		MCAssessmentAdapter.construct(model, attrs)
 

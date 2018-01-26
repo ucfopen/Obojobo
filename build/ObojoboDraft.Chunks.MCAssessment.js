@@ -437,6 +437,8 @@
 			Object.defineProperty(exports, '__esModule', {
 				value: true
 			})
+			// TODO: Parse correct/incorrect feedbacks that will be able to come from the document.
+			// Example: <MCAssessment correctFeedbacks="Correct!|You did it!|Got 'em!" incorrectFeedbacks="Incorrect|Try again">
 			var Adapter = {
 				construct: function construct(model, attrs) {
 					if (
@@ -448,9 +450,21 @@
 					} else {
 						model.modelState.responseType = ''
 					}
+
+					if (attrs && attrs.content) {
+						model.modelState.correctFeedbacks =
+							attrs.content.correctFeedbacks === undefined ? '' : attrs.content.correctFeedbacks
+						model.modelState.incorrectfeedbacks =
+							attrs.content.incorrectfeedbacks === undefined ? '' : attrs.content.incorrectfeedbacks
+					} else {
+						model.modelState.correctFeedbacks = ''
+						model.modelState.incorrectFeedbacks = ''
+					}
 				},
 				clone: function clone(model, _clone) {
 					_clone.modelState.responseType = model.modelState.responseType
+					_clone.modelState.correctFeedbacks = model.modelState.correctFeedbacks
+					_clone.modelState.incorrectFeedbacks = model.modelState.incorrectFeedbacks
 				},
 				toJSON: function toJSON(model, json) {
 					json.content.responseType = model.modelState.responseType
@@ -564,6 +578,15 @@
 					_this.onClick = _this.onClick.bind(_this)
 					_this.onCheckAnswer = _this.onCheckAnswer.bind(_this)
 					_this.isShowingExplanation = _this.isShowingExplanation.bind(_this)
+					_this.correctFeedbackOptions = [
+						'Correct!',
+						'Perfect!',
+						'You got it!',
+						'Great job!',
+						"That's right!"
+					]
+					_this.correctFeedbackToShow = null
+					_this.incorrectFeedbackToShow = null
 					return _this
 				}
 
@@ -808,6 +831,21 @@
 					{
 						key: 'componentDidMount',
 						value: function componentDidMount() {
+							var _props$model$modelSta = this.props.model.modelState,
+								correctFeedbacks = _props$model$modelSta.correctFeedbacks,
+								incorrectFeedbacks = _props$model$modelSta.incorrectFeedbacks
+
+							console.log(correctFeedbacks)
+							this.correctFeedbackToShow =
+								correctFeedbacks && correctFeedbacks !== ''
+									? this.getRandomFeedback(correctFeedbacks.split('|'))
+									: this.getRandomFeedback(this.correctFeedbackOptions)
+
+							this.incorrectFeedbackToShow =
+								incorrectFeedbacks && incorrectFeedbacks !== ''
+									? this.getRandomFeedback(incorrectFeedbacks.split('|'))
+									: 'Incorrect'
+
 							Dispatcher.on('question:checkAnswer', this.onCheckAnswer)
 						}
 					},
@@ -847,6 +885,12 @@
 								})
 								QuestionUtil.setData(this.props.model.get('id'), 'shuffledIds', shuffledIds)
 							}
+						}
+					},
+					{
+						key: 'getRandomFeedback',
+						value: function getRandomFeedback(arrayOfOptions) {
+							return arrayOfOptions[Math.floor(Math.random() * arrayOfOptions.length)]
 						}
 					},
 					{
@@ -957,12 +1001,20 @@
 											? React.createElement(
 													'div',
 													{ className: 'result-container' },
-													React.createElement('p', { className: 'result correct' }, 'Correct!')
+													React.createElement(
+														'p',
+														{ className: 'result correct' },
+														this.correctFeedbackToShow
+													)
 												)
 											: React.createElement(
 													'div',
 													{ className: 'result-container' },
-													React.createElement('p', { className: 'result incorrect' }, 'Incorrect'),
+													React.createElement(
+														'p',
+														{ className: 'result incorrect' },
+														this.incorrectFeedbackToShow
+													),
 													responseType === 'pick-all'
 														? React.createElement(
 																'span',

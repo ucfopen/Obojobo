@@ -1731,9 +1731,7 @@ exports[`MCAssessment Question with a set score 2`] = `
           >
             <p
               className="result correct"
-            >
-              Correct!
-            </p>
+            />
           </div>
         </div>
         <div>

@@ -29,12 +29,14 @@ export default class MCAssessment extends React.Component {
 		this.onCheckAnswer = this.onCheckAnswer.bind(this)
 		this.isShowingExplanation = this.isShowingExplanation.bind(this)
 		this.correctFeedbackOptions = [
-			"Correct!",
-			"Perfect!",
-			"You got it!",
-			"Great job!",
+			'Correct!',
+			'Perfect!',
+			'You got it!',
+			'Great job!',
 			"That's right!"
 		]
+		this.correctFeedbackToShow = null
+		this.incorrectFeedbackToShow = null
 	}
 
 	getQuestionModel() {
@@ -192,7 +194,18 @@ export default class MCAssessment extends React.Component {
 	}
 
 	componentDidMount() {
-		this.randomCorrectFeedback = this.getRandomCorrectFeedback()
+		const { correctFeedbacks, incorrectFeedbacks } = this.props.model.modelState
+		console.log(correctFeedbacks)
+		this.correctFeedbackToShow =
+			correctFeedbacks && correctFeedbacks !== ''
+				? this.getRandomFeedback(correctFeedbacks.split('|'))
+				: this.getRandomFeedback(this.correctFeedbackOptions)
+
+		this.incorrectFeedbackToShow =
+			incorrectFeedbacks && incorrectFeedbacks !== ''
+				? this.getRandomFeedback(incorrectFeedbacks.split('|'))
+				: 'Incorrect'
+
 		Dispatcher.on('question:checkAnswer', this.onCheckAnswer)
 	}
 
@@ -224,8 +237,8 @@ export default class MCAssessment extends React.Component {
 		}
 	}
 
-	getRandomCorrectFeedback() {
-		return this.correctFeedbackOptions[Math.floor(Math.random() * this.correctFeedbackOptions.length)]
+	getRandomFeedback(arrayOfOptions) {
+		return arrayOfOptions[Math.floor(Math.random() * arrayOfOptions.length)]
 	}
 
 	render() {
@@ -320,10 +333,14 @@ export default class MCAssessment extends React.Component {
 						{questionSubmitted
 							? score === 100
 								? <div className="result-container">
-										<p className="result correct">{this.randomCorrectFeedback}</p>
+										<p className="result correct">
+											{this.correctFeedbackToShow}
+										</p>
 									</div>
 								: <div className="result-container">
-										<p className="result incorrect">Incorrect</p>
+										<p className="result incorrect">
+											{this.incorrectFeedbackToShow}
+										</p>
 										{responseType === 'pick-all'
 											? <span className="pick-all-instructions">
 													You have either missed some correct answers or selected some incorrect
