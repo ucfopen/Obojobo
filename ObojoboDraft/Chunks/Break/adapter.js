@@ -4,7 +4,6 @@ let { OboModel } = Common.models
 
 let Adapter = {
 	construct(model, attrs) {
-		console.log('Attrs are: ' + JSON.stringify(attrs))
 		if (__guard__(attrs != null ? attrs.content : undefined, x => x.width) != null) {
 			model.modelState.width = attrs.content.width
 		} else {

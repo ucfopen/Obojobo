@@ -144,7 +144,6 @@
 
 			var Adapter = {
 				construct: function construct(model, attrs) {
-					console.log('Attrs are: ' + JSON.stringify(attrs))
 					if (
 						__guard__(attrs != null ? attrs.content : undefined, function(x) {
 							return x.width
