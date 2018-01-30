@@ -72,51 +72,51 @@
 	/******/
 	/******/ /******/ __webpack_require__.p = 'build/' // Load entry module and return exports
 	/******/
-	/******/ /******/ return __webpack_require__((__webpack_require__.s = 169))
+	/******/ /******/ return __webpack_require__((__webpack_require__.s = 160))
 	/******/
 })(
 	/************************************************************************/
 	/******/ {
-		/***/ 0: /***/ function(module, exports) {
+		/***/ /***/ 0: function(module, exports) {
 			module.exports = Common
 
 			/***/
 		},
 
-		/***/ 146: /***/ function(module, exports) {
+		/***/ /***/ 137: function(module, exports) {
 			// removed by extract-text-webpack-plugin
 			/***/
 		},
 
-		/***/ 165: /***/ function(module, exports) {
+		/***/ /***/ 156: function(module, exports) {
 			module.exports =
 				"data:image/svg+xml,%3Csvg id='Layer_1' data-name='Layer 1' xmlns='http://www.w3.org/2000/svg' viewBox='0 0 12 12'%3E%3Cdefs%3E%3Cstyle%3E.cls-1%7Bopacity:0.03;%7D%3C/style%3E%3C/defs%3E%3Ctitle%3Ebg%3C/title%3E%3Crect class='cls-1' width='6' height='6'/%3E%3Crect class='cls-1' x='6' y='6' width='6' height='6'/%3E%3C/svg%3E"
 
 			/***/
 		},
 
-		/***/ 169: /***/ function(module, exports, __webpack_require__) {
-			module.exports = __webpack_require__(31)
+		/***/ /***/ 160: function(module, exports, __webpack_require__) {
+			module.exports = __webpack_require__(28)
 
 			/***/
 		},
 
-		/***/ 31: /***/ function(module, exports, __webpack_require__) {
+		/***/ /***/ 28: function(module, exports, __webpack_require__) {
 			'use strict'
 
 			var _Common = __webpack_require__(0)
 
 			var _Common2 = _interopRequireDefault(_Common)
 
-			var _selectionHandler = __webpack_require__(56)
+			var _selectionHandler = __webpack_require__(53)
 
 			var _selectionHandler2 = _interopRequireDefault(_selectionHandler)
 
-			var _adapter = __webpack_require__(54)
+			var _adapter = __webpack_require__(51)
 
 			var _adapter2 = _interopRequireDefault(_adapter)
 
-			var _viewerComponent = __webpack_require__(57)
+			var _viewerComponent = __webpack_require__(54)
 
 			var _viewerComponent2 = _interopRequireDefault(_viewerComponent)
 
@@ -134,7 +134,7 @@
 			/***/
 		},
 
-		/***/ 54: /***/ function(module, exports, __webpack_require__) {
+		/***/ /***/ 51: function(module, exports, __webpack_require__) {
 			'use strict'
 
 			Object.defineProperty(exports, '__esModule', {
@@ -241,7 +241,7 @@
 			/***/
 		},
 
-		/***/ 55: /***/ function(module, exports, __webpack_require__) {
+		/***/ /***/ 52: function(module, exports, __webpack_require__) {
 			'use strict'
 
 			Object.defineProperty(exports, '__esModule', {
@@ -323,7 +323,7 @@
 							if (data.url == null) {
 								imgStyles = {
 									backgroundImage: _Common2.default.util.getBackgroundImage(
-										__webpack_require__(165)
+										__webpack_require__(156)
 									),
 									backgroundSize: '16px',
 									height: '300px'
@@ -374,7 +374,7 @@
 			/***/
 		},
 
-		/***/ 56: /***/ function(module, exports, __webpack_require__) {
+		/***/ /***/ 53: function(module, exports, __webpack_require__) {
 			'use strict'
 
 			Object.defineProperty(exports, '__esModule', {
@@ -448,10 +448,8 @@
 
 					return _possibleConstructorReturn(
 						this,
-						(SelectionHandler.__proto__ || Object.getPrototypeOf(SelectionHandler)).apply(
-							this,
-							arguments
-						)
+						(SelectionHandler.__proto__ || Object.getPrototypeOf(SelectionHandler))
+							.apply(this, arguments)
 					)
 				}
 
@@ -470,7 +468,7 @@
 			/***/
 		},
 
-		/***/ 57: /***/ function(module, exports, __webpack_require__) {
+		/***/ /***/ 54: function(module, exports, __webpack_require__) {
 			'use strict'
 
 			Object.defineProperty(exports, '__esModule', {
@@ -494,9 +492,9 @@
 				}
 			})()
 
-			__webpack_require__(146)
+			__webpack_require__(137)
 
-			var _image = __webpack_require__(55)
+			var _image = __webpack_require__(52)
 
 			var _image2 = _interopRequireDefault(_image)
 

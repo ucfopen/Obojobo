@@ -72,46 +72,46 @@
 	/******/
 	/******/ /******/ __webpack_require__.p = 'build/' // Load entry module and return exports
 	/******/
-	/******/ /******/ return __webpack_require__((__webpack_require__.s = 176))
+	/******/ /******/ return __webpack_require__((__webpack_require__.s = 167))
 	/******/
 })(
 	/************************************************************************/
 	/******/ {
-		/***/ 0: /***/ function(module, exports) {
+		/***/ /***/ 0: function(module, exports) {
 			module.exports = Common
 
 			/***/
 		},
 
-		/***/ 154: /***/ function(module, exports) {
+		/***/ /***/ 145: function(module, exports) {
 			// removed by extract-text-webpack-plugin
 			/***/
 		},
 
-		/***/ 17: /***/ function(module, exports) {
+		/***/ /***/ 16: function(module, exports) {
 			module.exports = katex
 
 			/***/
 		},
 
-		/***/ 176: /***/ function(module, exports, __webpack_require__) {
-			module.exports = __webpack_require__(37)
+		/***/ /***/ 167: function(module, exports, __webpack_require__) {
+			module.exports = __webpack_require__(34)
 
 			/***/
 		},
 
-		/***/ 37: /***/ function(module, exports, __webpack_require__) {
+		/***/ /***/ 34: function(module, exports, __webpack_require__) {
 			'use strict'
 
 			var _Common = __webpack_require__(0)
 
 			var _Common2 = _interopRequireDefault(_Common)
 
-			var _adapter = __webpack_require__(72)
+			var _adapter = __webpack_require__(69)
 
 			var _adapter2 = _interopRequireDefault(_adapter)
 
-			var _viewerComponent = __webpack_require__(73)
+			var _viewerComponent = __webpack_require__(70)
 
 			var _viewerComponent2 = _interopRequireDefault(_viewerComponent)
 
@@ -132,7 +132,7 @@
 			/***/
 		},
 
-		/***/ 72: /***/ function(module, exports, __webpack_require__) {
+		/***/ /***/ 69: function(module, exports, __webpack_require__) {
 			'use strict'
 
 			Object.defineProperty(exports, '__esModule', {
@@ -194,7 +194,7 @@
 			/***/
 		},
 
-		/***/ 73: /***/ function(module, exports, __webpack_require__) {
+		/***/ /***/ 70: function(module, exports, __webpack_require__) {
 			'use strict'
 
 			Object.defineProperty(exports, '__esModule', {
@@ -218,9 +218,9 @@
 				}
 			})()
 
-			__webpack_require__(154)
+			__webpack_require__(145)
 
-			var _katex = __webpack_require__(17)
+			var _katex = __webpack_require__(16)
 
 			var _katex2 = _interopRequireDefault(_katex)
 
