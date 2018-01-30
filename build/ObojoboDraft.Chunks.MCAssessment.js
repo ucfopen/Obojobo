@@ -835,7 +835,6 @@
 								correctFeedbacks = _props$model$modelSta.correctFeedbacks,
 								incorrectFeedbacks = _props$model$modelSta.incorrectFeedbacks
 
-							console.log(correctFeedbacks)
 							this.correctFeedbackToShow =
 								correctFeedbacks && correctFeedbacks !== ''
 									? this.getRandomFeedback(correctFeedbacks.split('|'))

@@ -195,7 +195,6 @@ export default class MCAssessment extends React.Component {
 
 	componentDidMount() {
 		const { correctFeedbacks, incorrectFeedbacks } = this.props.model.modelState
-		console.log(correctFeedbacks)
 		this.correctFeedbackToShow =
 			correctFeedbacks && correctFeedbacks !== ''
 				? this.getRandomFeedback(correctFeedbacks.split('|'))
