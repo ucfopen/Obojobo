@@ -8,7 +8,13 @@ export default class IFrame extends React.Component {
 		return (
 			<OboComponent model={this.props.model} moduleData={this.props.moduleData}>
 				<div className="obojobo-draft--chunks--iframe viewer">
-					<iframe src={this.props.model.modelState.src} frameBorder="0" allowFullScreen="true" />
+					<iframe
+						is
+						src={this.props.model.modelState.src}
+						frameBorder="0"
+						allowFullScreen="true"
+						allow={this.props.model.modelState.allow}
+					/>
 				</div>
 			</OboComponent>
 		)
