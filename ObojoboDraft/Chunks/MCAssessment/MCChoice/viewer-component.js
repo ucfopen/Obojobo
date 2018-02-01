@@ -58,7 +58,7 @@ export default class MCChoice extends React.Component {
 					(isSelected ? ' is-selected' : ' is-not-selected') +
 					(this.props.model.modelState.score === 100 ? ' is-correct' : ' is-incorrect')
 				}
-				data-choice-label={this.props.label}
+				data-choice-label={this.props.model.children.at(1) != null ? this.props.label : ''}
 			>
 				<input
 					ref="input"

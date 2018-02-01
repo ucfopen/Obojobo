@@ -184,7 +184,7 @@ exports[`Assessment Assessment page changes when attempt started and submitted 2
               </span>
               <div
                 className="component obojobo-draft--chunks--mc-assessment--mc-choice is-not-selected is-correct"
-                data-choice-label="A"
+                data-choice-label=""
                 data-focussed={false}
                 data-id="qb1-q1-mca-mc1"
                 data-obo-component={true}
