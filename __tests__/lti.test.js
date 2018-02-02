@@ -14,19 +14,14 @@ import { TableName } from 'pg-promise'
 
 // let lti = require('lti')
 let moment = require('moment')
-let db = require('../db')
 jest.mock('../db')
+let db = oboRequire('db')
 jest.mock('uuid')
 // let db
 jest.mock('../logger')
 let logger = oboRequire('logger')
 let logId = 'DEADBEEF-0000-DEAD-BEEF-1234DEADBEEF'
 let _DateToISOString
-
-mockVirtual('../insert_event', () => {
-	// return jest.fn(() => Promise.resolve())
-})
-// let insertEvent = require('../insert_event')
 
 // jest.mock('../insert_event', () => {
 // 	let p = jest.fn()
@@ -176,8 +171,6 @@ jest.mock('../config', () => {
 
 describe('lti', () => {
 	beforeAll(() => {
-		global.console = { warn: jest.fn(), log: jest.fn(), error: jest.fn() }
-
 		// db = require('../db')
 		// jest.mock('../db')
 		jest.mock('ims-lti/lib/extensions/outcomes')
@@ -1405,7 +1398,7 @@ describe('lti', () => {
 		})
 	})
 
-	test('invalid score for no outcome launch results in "not_attempted_no_outcome_service_for_launch" and "ok_no_outcome_service"', done => {
+	test('i2nvalid score for no outcome launch results in "not_attempted_no_outcome_service_for_launch" and "ok_no_outcome_service"', done => {
 		mockSendAssessScoreDBCalls('doggo', 1, moment().toISOString(), true, false)
 
 		lti.sendAssessmentScore('assessment-score-id').then(result => {
@@ -1471,52 +1464,50 @@ describe('lti', () => {
 		})
 	})
 
-	// test.only('invalid score for no outcome launch results in "not_attempted_no_outcome_service_for_launch" and "ok_no_outcome_service"', done => {
-	// 	let insertEvent = oboRequire('insert_event')
+	test.only('invalid score for no outcome launch results in "not_attempted_no_outcome_service_for_launch" and "ok_no_outcome_service"', done => {
+		mockSendAssessScoreDBCalls(100, 1, moment().toISOString(), true, true)
+		mockDate()
 
-	// 	mockSendAssessScoreDBCalls(100, 1, moment().toISOString(), true, true)
+		lti.sendAssessmentScore('assessment-score-id').then(result => {
+			let expected = {
+				action: 'lti:replaceResult',
+				actorTime: 'MOCKED-ISO-DATE-STRING',
+				payload: {
+					launchId: 'launch-id',
+					launchKey: 'testkey',
+					body: {
+						lis_outcome_service_url: 'lis_outcome_service_url',
+						lis_result_sourcedid: 'lis_result_sourcedid'
+					},
+					assessmentScore: {
+						id: 'assessment-score-id',
+						userId: 'user-id',
+						draftId: 'draft-id',
+						assessmentId: 'assessment-id',
+						attemptId: 'attempt-id',
+						score: 100,
+						preview: false,
+						error: null
+					},
+					result: {
+						launchId: 'launch-id',
+						scoreSent: 1,
+						status: 'success',
+						statusDetails: null,
+						gradebookStatus: 'ok_gradebook_matches_assessment_score',
+						dbStatus: 'recorded', // this should be 'recorded'
+						ltiAssessmentScoreId: 'new-lti-assessment-score-id'
+					}
+				},
+				userId: 'user-id',
+				ip: '',
+				eventVersion: '2.0.0',
+				metadata: {},
+				draftId: 'draft-id'
+			}
 
-	// 	mockDate()
-
-	// 	lti.sendAssessmentScore('assessment-score-id').then(result => {
-	// 		expect(insertEvent).lastCalledWith({
-	// 			action: 'lti:replaceResult',
-	// 			actorTime: 'MOCKED-ISO-DATE-STRING',
-	// 			payload: {
-	// 				launchId: 'launch-id',
-	// 				launchKey: 'testkey',
-	// 				body: {
-	// 					lis_outcome_service_url: 'lis_outcome_service_url',
-	// 					lis_result_sourcedid: 'lis_result_sourcedid'
-	// 				},
-	// 				assessmentScore: {
-	// 					id: 'assessment-score-id',
-	// 					userId: 'user-id',
-	// 					draftId: 'draft-id',
-	// 					assessmentId: 'assessment-id',
-	// 					attemptId: 'attempt-id',
-	// 					score: 100,
-	// 					preview: false,
-	// 					error: null
-	// 				},
-	// 				result: {
-	// 					launchId: 'launch-id',
-	// 					scoreSent: 1,
-	// 					status: 'success',
-	// 					statusDetails: null,
-	// 					gradebookStatus: 'ok_gradebook_matches_assessment_score',
-	// 					dbStatus: 'error', // this should be 'recorded'
-	// 					ltiAssessmentScoreId: 'new-lti-assessment-score-id'
-	// 				}
-	// 			},
-	// 			userId: 'user-id',
-	// 			ip: '',
-	// 			eventVersion: '2.0.0',
-	// 			metadata: {},
-	// 			draftId: 'draft-id'
-	// 		})
-
-	// 		done()
-	// 	})
-	// })
+			expect(db.one).toHaveBeenCalledWith(expect.any(String), expected)
+			done()
+		})
+	})
 })
