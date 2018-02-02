@@ -68,8 +68,6 @@ let endAttempt = (req, res, user, attemptId, isPreviewing) => {
 			.then(completeAttemptResult => {
 				logger.info(`End attempt "${attemptId}" - completeAttempt success`)
 
-				console.log('CAR', completeAttemptResult)
-
 				assessmentScoreId = completeAttemptResult.assessmentScoreId
 
 				return insertAttemptEndEvents(

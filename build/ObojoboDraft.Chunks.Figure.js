@@ -72,7 +72,7 @@
 	/******/
 	/******/ /******/ __webpack_require__.p = 'build/' // Load entry module and return exports
 	/******/
-	/******/ /******/ return __webpack_require__((__webpack_require__.s = 169))
+	/******/ /******/ return __webpack_require__((__webpack_require__.s = 171))
 	/******/
 })(
 	/************************************************************************/
@@ -83,19 +83,19 @@
 			/***/
 		},
 
-		/***/ /***/ 146: function(module, exports) {
+		/***/ /***/ 147: function(module, exports) {
 			// removed by extract-text-webpack-plugin
 			/***/
 		},
 
-		/***/ /***/ 165: function(module, exports) {
+		/***/ /***/ 167: function(module, exports) {
 			module.exports =
 				"data:image/svg+xml,%3Csvg id='Layer_1' data-name='Layer 1' xmlns='http://www.w3.org/2000/svg' viewBox='0 0 12 12'%3E%3Cdefs%3E%3Cstyle%3E.cls-1%7Bopacity:0.03;%7D%3C/style%3E%3C/defs%3E%3Ctitle%3Ebg%3C/title%3E%3Crect class='cls-1' width='6' height='6'/%3E%3Crect class='cls-1' x='6' y='6' width='6' height='6'/%3E%3C/svg%3E"
 
 			/***/
 		},
 
-		/***/ /***/ 169: function(module, exports, __webpack_require__) {
+		/***/ /***/ 171: function(module, exports, __webpack_require__) {
 			module.exports = __webpack_require__(31)
 
 			/***/
@@ -323,7 +323,7 @@
 							if (data.url == null) {
 								imgStyles = {
 									backgroundImage: _Common2.default.util.getBackgroundImage(
-										__webpack_require__(165)
+										__webpack_require__(167)
 									),
 									backgroundSize: '16px',
 									height: '300px'
@@ -492,7 +492,7 @@
 				}
 			})()
 
-			__webpack_require__(146)
+			__webpack_require__(147)
 
 			var _image = __webpack_require__(55)
 

@@ -15,6 +15,58 @@ let logAndRespondToUnexpected = (res, originalError, errorForResponse) => {
 	res.unexpected(errorForResponse)
 }
 
+app.post('/api/lti/sendAssessmentScore', (req, res, next) => {
+	logger.info('API sendAssessmentScore', req.body)
+
+	let currentUser
+	let ltiScoreResult
+	let assessmentScoreId
+	let draftId = req.body.draftId
+	let assessmentId = req.body.assessmentId
+
+	req
+		.requireCurrentUser()
+		.then(user => {
+			currentUser = user
+
+			logger.info(
+				`API sendAssessmentScore with userId="${user.id}", draftId="${draftId}", assessmentId="${assessmentId}"`
+			)
+
+			return Assessment.getLatestAssessmentScoreRecord(currentUser.id, draftId, assessmentId)
+		})
+		.then(assessmentScoreRecord => {
+			// 	console.log('WE GOT', assessmentScoreRecord)
+			if (!assessmentScoreRecord) {
+				res.badInput('No assessment score found')
+				return
+			}
+
+			assessmentScoreId = assessmentScoreRecord.id
+
+			return lti.sendAssessmentScore(assessmentScoreId)
+		})
+		.then(result => {
+			ltiScoreResult = result
+
+			// 	return Assessment.getLatestSuccessfulLTIAssessmentScoreRecord(assessmentScoreId)
+			// })
+			// .then(latestSuccessfulLTIAssessmentScoreRecord => {
+			res.success({
+				score: ltiScoreResult.scoreSent,
+				status: ltiScoreResult.status,
+				statusDetails: ltiScoreResult.statusDetails,
+				dbStatus: ltiScoreResult.dbStatus,
+				gradebookStatus: ltiScoreResult.gradebookStatus
+			})
+		})
+		.catch(e => {
+			logAndRespondToUnexpected(res, e, new Error('Unexpected error starting a new attempt'))
+
+			// return next()
+		})
+})
+
 app.post('/api/assessments/attempt/start', (req, res, next) => {
 	let currentUser
 	let draftId = req.body.draftId

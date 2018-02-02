@@ -69,13 +69,22 @@ var AssessmentUtil = {
 		return assessment.current
 	},
 
-	getLTIStatusForModel(state, model) {
+	getLTIStateForModel(state, model) {
 		let assessment = AssessmentUtil.getAssessmentForModel(state, model)
 		if (!assessment) {
 			return null
 		}
 
 		return assessment.lti
+	},
+
+	getLTINetworkStateForModel(state, model) {
+		let assessment = AssessmentUtil.getAssessmentForModel(state, model)
+		if (!assessment) {
+			return null
+		}
+
+		return assessment.ltiNetworkState
 	},
 
 	// getLastAttemptForModel(state, model) {
@@ -123,6 +132,14 @@ var AssessmentUtil = {
 
 	endAttempt(model) {
 		return Dispatcher.trigger('assessment:endAttempt', {
+			value: {
+				id: model.get('id')
+			}
+		})
+	},
+
+	resendLTIScore(model) {
+		return Dispatcher.trigger('assessment:resendLTIScore', {
 			value: {
 				id: model.get('id')
 			}

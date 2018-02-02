@@ -93,10 +93,7 @@ class Assessment extends DraftNode {
 			ltiState: {
 				score: attempt.score_sent,
 				status: attempt.status,
-				error: {
-					type: attempt.error,
-					details: attempt.error_details
-				}
+				statusDetails: attempt.error_details
 			}
 		}
 	}
@@ -126,7 +123,17 @@ class Assessment extends DraftNode {
 				FROM attempts ATT
 				LEFT JOIN assessment_scores SCO
 				ON ATT.id = SCO.attempt_id
-				LEFT JOIN lti_assessment_scores LTI
+				LEFT JOIN
+				(
+					SELECT DISTINCT ON (assessment_score_id)
+						assessment_score_id,
+						score_sent,
+						error_details,
+						status,
+						error
+					FROM lti_assessment_scores
+					ORDER BY assessment_score_id, created_at DESC
+				) LTI
 				ON SCO.id = LTI.assessment_score_id
 				WHERE
 					ATT.user_id = $[userId]
@@ -365,6 +372,26 @@ class Assessment extends DraftNode {
 				}
 			)
 			.then(result => result.id)
+	}
+
+	static getLatestAssessmentScoreRecord(userId, draftId, assessmentId) {
+		return db.oneOrNone(
+			`
+				SELECT *
+				FROM assessment_scores
+				WHERE
+					user_id = $[userId]
+					AND draft_id = $[draftId]
+					AND assessment_id = $[assessmentId]
+				ORDER BY created_at DESC
+				LIMIT 1
+				`,
+			{
+				userId,
+				draftId,
+				assessmentId
+			}
+		)
 	}
 
 	constructor(draftTree, node, initFn) {

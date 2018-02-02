@@ -76,9 +76,7 @@ var APIUtil = {
 		return createParsedJsonPromise(
 			APIUtil.post('/api/assessments/attempt/start', {
 				draftId: lo.get('_id'),
-				assessmentId: assessment.get('id'),
-				actor: 4,
-				questions: '@TODO'
+				assessmentId: assessment.get('id')
 			})
 		)
 	},
@@ -86,6 +84,15 @@ var APIUtil = {
 	endAttempt(attempt) {
 		return createParsedJsonPromise(
 			APIUtil.post(`/api/assessments/attempt/${attempt.attemptId}/end`)
+		)
+	},
+
+	resendLTIAssessmentScore(lo, assessment) {
+		return createParsedJsonPromise(
+			APIUtil.post('/api/lti/sendAssessmentScore', {
+				draftId: lo.get('_id'),
+				assessmentId: assessment.get('id')
+			})
 		)
 	}
 }

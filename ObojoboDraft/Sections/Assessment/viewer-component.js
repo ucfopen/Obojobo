@@ -13,7 +13,11 @@ let { ScoreStore } = Viewer.stores
 let { AssessmentUtil } = Viewer.util
 let { NavUtil } = Viewer.util
 
+//@TODO
+let APIUtil = Viewer.util.APIUtil
+
 import AttemptIncompleteDialog from './attempt-incomplete-dialog'
+import LTIStatus from './lti-status'
 
 export default class Assessment extends React.Component {
 	constructor() {
@@ -71,7 +75,11 @@ export default class Assessment extends React.Component {
 		return this.endAttempt()
 	}
 
-	onClickResendScore() {}
+	onClickResendScore() {
+		console.log('RESEND SCORE!!!!!!!!!!!!!!', APIUtil)
+
+		AssessmentUtil.resendLTIScore(this.props.model)
+	}
 
 	endAttempt() {
 		return AssessmentUtil.endAttempt(this.props.model)
@@ -122,10 +130,15 @@ export default class Assessment extends React.Component {
 			this.props.moduleData.assessmentState,
 			this.props.model
 		)
-		let ltiStatus = AssessmentUtil.getLTIStatusForModel(
+		let ltiState = AssessmentUtil.getLTIStateForModel(
 			this.props.moduleData.assessmentState,
 			this.props.model
 		)
+		let ltiNetworkState = AssessmentUtil.getLTINetworkStateForModel(
+			this.props.moduleData.assessmentState,
+			this.props.model
+		)
+		console.log('RENDER', ltiState)
 
 		var childEl = (() => {
 			switch (this.getCurrentStep()) {
@@ -198,16 +211,11 @@ export default class Assessment extends React.Component {
 
 					return (
 						<div className="score unlock">
-							<div style={{ background: 'gray' }}>
-								<p>lti status</p>
-								<p>
-									{ltiStatus.scoreSent}
-								</p>
-								<p>
-									{ltiStatus.status}
-								</p>
-								<Button onClick={this.onClickResendScore}>Resend Score (Doesn't Work Yet)</Button>
-							</div>
+							<LTIStatus
+								ltiState={ltiState}
+								ltiNetworkState={ltiNetworkState}
+								onClickResendScore={this.onClickResendScore.bind(this)}
+							/>
 							<h1>{`Your attempt score is ${Math.round(recentScore)}%`}</h1>
 							{recentScore === assessmentScore
 								? <h2>This is your recorded score</h2>

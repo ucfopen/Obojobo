@@ -72,7 +72,7 @@
 	/******/
 	/******/ /******/ __webpack_require__.p = 'build/' // Load entry module and return exports
 	/******/
-	/******/ /******/ return __webpack_require__((__webpack_require__.s = 179))
+	/******/ /******/ return __webpack_require__((__webpack_require__.s = 181))
 	/******/
 })(
 	/************************************************************************/
@@ -83,12 +83,12 @@
 			/***/
 		},
 
-		/***/ /***/ 158: function(module, exports) {
+		/***/ /***/ 159: function(module, exports) {
 			// removed by extract-text-webpack-plugin
 			/***/
 		},
 
-		/***/ /***/ 179: function(module, exports, __webpack_require__) {
+		/***/ /***/ 181: function(module, exports, __webpack_require__) {
 			module.exports = __webpack_require__(40)
 
 			/***/
@@ -765,7 +765,7 @@
 				}
 			})()
 
-			__webpack_require__(158)
+			__webpack_require__(159)
 
 			var _gridTextGroup = __webpack_require__(19)
 
