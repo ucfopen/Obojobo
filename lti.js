@@ -7,32 +7,302 @@ let insertEvent = oboRequire('insert_event')
 let logger = oboRequire('logger')
 let uuid = require('uuid').v4
 
-let HOURS_EXPIRED_LAUNCH = 5
+const MINUTES_EXPIRED_LAUNCH = 300
 
-let ERROR_NO_OUTCOME_SERVICE_FOR_LAUNCH = new Error('No LTI outcome service found for launch')
-let ERROR_SCORE_IS_NULL = new Error('LTI score is null')
-let ERROR_FATAL_NO_ASSESSMENT_SCORE_FOUND = new Error('No assessment score found')
-let ERROR_FATAL_NO_SECRET_FOR_KEY = new Error('No LTI secret found for key')
-let ERROR_FATAL_NO_LAUNCH_FOUND = new Error('No launch found')
-let ERROR_FATAL_LAUNCH_EXPIRED = new Error('Launch expired')
-let ERROR_FATAL_SCORE_IS_INVALID = new Error('LTI score is invalid')
+const ERROR_NO_OUTCOME_SERVICE_FOR_LAUNCH /*  */ = new Error('No outcome service found for launch')
+const ERROR_SCORE_IS_NULL /*                  */ = new Error('LTI score is null')
+const ERROR_FATAL_REPLACE_RESULT_FAILED /*    */ = new Error('Replace result failed')
+const ERROR_FATAL_NO_ASSESSMENT_SCORE_FOUND /**/ = new Error('No assessment score found')
+const ERROR_FATAL_NO_SECRET_FOR_KEY /*        */ = new Error('No LTI secret found for key')
+const ERROR_FATAL_NO_LAUNCH_FOUND /*          */ = new Error('No launch found')
+const ERROR_FATAL_LAUNCH_EXPIRED /*           */ = new Error('Launch expired')
+const ERROR_FATAL_SCORE_IS_INVALID /*         */ = new Error('LTI score is invalid')
 
-let ERROR_TYPE_NO_OUTCOME_FOR_LAUNCH = 'no_outcome_service_for_launch'
-let ERROR_TYPE_SCORE_IS_NULL = 'score_is_null'
-let ERROR_TYPE_FATAL_NO_ASSESSMENT_SCORE_FOUND = 'fatal_no_assessment_score_found'
-let ERROR_TYPE_FATAL_NO_SECRET_FOR_KEY = 'fatal_no_secret_for_key'
-let ERROR_TYPE_FATAL_NO_LAUNCH_FOUND = 'fatal_no_launch_found'
-let ERROR_TYPE_FATAL_LAUNCH_EXPIRED = 'fatal_launch_expired'
-let ERROR_TYPE_FATAL_SCORE_IS_INVALID = 'fatal_score_is_invalid'
-let ERROR_TYPE_FATAL_UNEXPECTED = 'fatal_unexpected'
+const STATUS_SUCCESS /*                             */ = 'success'
+const STATUS_NOT_ATTEMPTED_NO_OUTCOME_FOR_LAUNCH /* */ =
+	'not_attempted_no_outcome_service_for_launch'
+const STATUS_NOT_ATTEMPTED_SCORE_IS_NULL /*         */ = 'not_attempted_score_is_null'
+const STATUS_ERROR_LAUNCH_EXPIRED /*                */ = 'error_launch_expired'
+const STATUS_ERROR_REPLACE_RESULT_FAILED /*         */ = 'error_replace_result_failed'
+const STATUS_ERROR_NO_ASSESSMENT_SCORE_FOUND /*     */ = 'error_no_assessment_score_found'
+const STATUS_ERROR_NO_SECRET_FOR_KEY /*             */ = 'error_no_secret_for_key'
+const STATUS_ERROR_NO_LAUNCH_FOUND /*               */ = 'error_no_launch_found'
+const STATUS_ERROR_SCORE_IS_INVALID /*              */ = 'error_score_is_invalid'
+const STATUS_ERROR_UNEXPECTED /*                    */ = 'error_unexpected'
 
-let STATUS_TYPE_NOT_ATTEMPTED = 'not_attempted'
-let STATUS_TYPE_SUCCESS = 'success'
-let STATUS_TYPE_ERROR = 'error'
+const DB_STATUS_RECORDED = 'recorded'
+const DB_STATUS_ERROR = 'error'
 
-let tryRetrieveLtiLaunch = function(userId, draftId, logId) {
+const GRADEBOOK_STATUS_ERROR_NEWER_SCORE_UNSENT /*  */ = 'error_newer_assessment_score_unsent'
+const GRADEBOOK_STATUS_ERROR_STATE_UNKNOWN /*       */ = 'error_state_unknown'
+const GRADEBOOK_STATUS_ERROR_INVALID /*             */ = 'error_invalid'
+const GRADEBOOK_STATUS_OK_NULL_SCORE_NOT_SENT /*    */ = 'ok_null_score_not_sent'
+const GRADEBOOK_STATUS_OK_GRADEBOOK_MATCHES_SCORE /**/ = 'ok_gradebook_matches_assessment_score'
+const GRADEBOOK_STATUS_OK_NO_OUTCOME_SERVICE /*     */ = 'ok_no_outcome_service'
+
+const OUTCOME_TYPE_UNKNOWN = 'unknownOutcome'
+const OUTCOME_TYPE_NO_OUTCOME = 'noOutcome'
+const OUTCOME_TYPE_HAS_OUTCOME = 'hasOutcome'
+
+const SCORE_TYPE_NULL = 'nullScore'
+const SCORE_TYPE_INVALID = 'invalidScore'
+const SCORE_TYPE_SAME = 'sameScore'
+const SCORE_TYPE_DIFFERENT = 'differentScore'
+
+//
+// Helper methods
+//
+let isScoreValid = score => {
+	return Number.isFinite(score) && score >= 0 && score <= 1
+}
+
+let isLaunchExpired = launchDate => {
+	let minsSinceLaunch = moment.duration(moment().diff(moment(launchDate))).asMinutes()
+	return minsSinceLaunch > MINUTES_EXPIRED_LAUNCH
+}
+
+let getGradebookStatus = function(outcomeType, scoreType, replaceResultWasSentSuccessfully) {
+	// Check to make sure this function wasn't called with weird and invalid inputs.
+	// In other words, replaceResultWasSentSuccessfully can only be true under some conditions.
+	// If these conditions are not met then we have invalid inputs and don't want to allow this.
+	if (
+		replaceResultWasSentSuccessfully &&
+		(outcomeType !== OUTCOME_TYPE_HAS_OUTCOME ||
+			scoreType === SCORE_TYPE_INVALID ||
+			scoreType === SCORE_TYPE_NULL)
+	) {
+		// Should never get here!
+		return GRADEBOOK_STATUS_ERROR_INVALID
+	}
+
+	if (outcomeType === OUTCOME_TYPE_NO_OUTCOME) {
+		return GRADEBOOK_STATUS_OK_NO_OUTCOME_SERVICE
+	}
+
+	if (scoreType === SCORE_TYPE_NULL) {
+		return GRADEBOOK_STATUS_OK_NULL_SCORE_NOT_SENT
+	}
+
+	if (scoreType === SCORE_TYPE_SAME || replaceResultWasSentSuccessfully) {
+		return GRADEBOOK_STATUS_OK_GRADEBOOK_MATCHES_SCORE
+	}
+
+	if (outcomeType === OUTCOME_TYPE_HAS_OUTCOME && scoreType === SCORE_TYPE_DIFFERENT) {
+		return GRADEBOOK_STATUS_ERROR_NEWER_SCORE_UNSENT
+	}
+
+	// if (
+	// 	requiredDataError !== null ||
+	// 	(outcomeDataError !== null && outcomeDataError !== ERROR_FATAL_NO_SECRET_FOR_KEY)
+	// ) {
+	// 	return GRADEBOOK_STATUS_ERROR_STATE_UNKNOWN
+	// }
+
+	// return GRADEBOOK_STATUS_ERROR_NEWER_SCORE_UNSENT
+
+	return GRADEBOOK_STATUS_ERROR_STATE_UNKNOWN
+}
+
+//
+// Fetch methods
+//
+let getAssessmentScoreById = assessmentScoreId => {
+	let result = {
+		id: null,
+		userId: null,
+		draftId: null,
+		assessmentId: null,
+		attemptId: null,
+		score: null,
+		preview: null,
+		error: null
+	}
+
 	return db
-		.one(
+		.oneOrNone(
+			`
+			SELECT *
+			FROM assessment_scores
+			WHERE id = $[assessmentScoreId]
+			`,
+			{ assessmentScoreId }
+		)
+		.then(dbResult => {
+			if (!dbResult) {
+				throw ERROR_FATAL_NO_ASSESSMENT_SCORE_FOUND
+			}
+
+			result.id = dbResult.id
+			result.userId = dbResult.user_id
+			result.draftId = dbResult.draft_id
+			result.assessmentId = dbResult.assessment_id
+			result.attemptId = dbResult.attempt_id
+			result.score = dbResult.score
+			result.preview = dbResult.preview
+
+			return result
+		})
+		.catch(e => {
+			result.error = e
+
+			return result
+		})
+}
+
+let getLatestSuccessfulLTIAssessmentScoreRecord = assessmentScoreId => {
+	return db.oneOrNone(
+		`
+			SELECT *
+			FROM lti_assessment_scores
+			WHERE
+				assessment_score_id = $[assessmentScoreId]
+				AND status = 'success'
+			ORDER BY created_at DESC
+			LIMIT 1
+			`,
+		{
+			assessmentScoreId
+		}
+	)
+}
+
+// The 'error' property for this method can contain one of the following:
+//	* ERROR_FATAL_NO_ASSESSMENT_SCORE_FOUND
+//	* ERROR_FATAL_NO_LAUNCH_FOUND
+//	* ERROR_FATAL_SCORE_IS_INVALID
+//	* ERROR_FATAL_LAUNCH_EXPIRED
+//	* (Or some unexpected error)
+let getRequiredDataForReplaceResult = function(assessmentScoreId, logId) {
+	// get assess score
+	// get last success
+	// get launch
+
+	let result = {
+		error: null,
+		assessmentScoreRecord: null,
+		lastSuccessfulSentScore: -1,
+		ltiScoreToSend: -2,
+		scoreType: null,
+		launch: null
+	}
+
+	return getAssessmentScoreById(assessmentScoreId)
+		.then(assessmentScoreResult => {
+			result.assessmentScoreRecord = assessmentScoreResult
+
+			if (assessmentScoreResult.error) {
+				throw assessmentScoreResult.error
+			}
+
+			logger.info(
+				`LTI found assessment score. Details: user:"${result.assessmentScoreRecord
+					.userId}", draft:"${result.assessmentScoreRecord.draftId}", score:"${result
+					.assessmentScoreRecord
+					.score}", assessmentScoreId:"${assessmentScoreId}", attemptId:"${result
+					.assessmentScoreRecord.attemptId}", preview:"${result.assessmentScoreRecord.preview}"`,
+				logId
+			)
+
+			return getLatestSuccessfulLTIAssessmentScoreRecord(assessmentScoreId)
+		})
+		.then(latest => {
+			let scoreRecord = result.assessmentScoreRecord
+
+			result.lastSuccessfulSentScore = latest ? latest.score_sent : null
+			result.ltiScoreToSend = scoreRecord.score === null ? null : scoreRecord.score / 100
+
+			if (result.ltiScoreToSend === null) {
+				result.scoreType = SCORE_TYPE_NULL
+			} else if (!isScoreValid(result.ltiScoreToSend)) {
+				result.scoreType = SCORE_TYPE_INVALID
+			} else if (result.lastSuccessfulSentScore === result.ltiScoreToSend) {
+				result.scoreType = SCORE_TYPE_SAME
+			} else {
+				result.scoreType = SCORE_TYPE_DIFFERENT
+			}
+
+			return retrieveLtiLaunch(scoreRecord.userId, scoreRecord.draftId, logId)
+		})
+		.then(ltiLaunch => {
+			if (ltiLaunch.id !== null) {
+				logger.info(`LTI launch with id:"${ltiLaunch.id}" retrieved!`, logId)
+			}
+
+			result.launch = ltiLaunch
+
+			if (result.scoreType === SCORE_TYPE_INVALID) {
+				throw ERROR_FATAL_SCORE_IS_INVALID
+			}
+			if (ltiLaunch.error !== null) {
+				throw ltiLaunch.error
+			}
+
+			return result
+		})
+		.catch(e => {
+			result.error = e
+
+			return result
+		})
+}
+
+// The error property for this function can contain the following:
+//	* ERROR_FATAL_NO_LAUNCH_FOUND
+//	* ERROR_FATAL_NO_SECRET_FOR_KEY
+//	* Or some other unexpected error
+let getOutcomeServiceForLaunch = function(launch) {
+	let result = {
+		error: null,
+		outcomeService: null,
+		type: OUTCOME_TYPE_UNKNOWN
+	}
+
+	try {
+		if (!launch || !launch.reqVars) {
+			result.type = OUTCOME_TYPE_UNKNOWN
+			result.error = ERROR_FATAL_NO_LAUNCH_FOUND
+			return result
+		} else if (!launch.reqVars.lis_outcome_service_url) {
+			result.type = OUTCOME_TYPE_NO_OUTCOME
+			return result
+		}
+
+		result.type = OUTCOME_TYPE_HAS_OUTCOME
+
+		let secret = findSecretForKey(launch.key)
+		if (!secret) {
+			result.error = ERROR_FATAL_NO_SECRET_FOR_KEY
+			return result
+		}
+
+		result.outcomeService = new OutcomeService({
+			body: {
+				lis_outcome_service_url: launch.reqVars.lis_outcome_service_url,
+				lis_result_sourcedid: launch.reqVars.lis_result_sourcedid
+			},
+			consumer_key: launch.key,
+			consumer_secret: secret,
+			signer: new HMAC_SHA1()
+		})
+
+		return result
+	} catch (e) {
+		result.error = e
+		return result
+	}
+}
+
+let retrieveLtiLaunch = function(userId, draftId, logId) {
+	let result = {
+		id: null,
+		reqVars: null,
+		key: null,
+		createdAt: null,
+		error: null
+	}
+
+	return db
+		.oneOrNone(
 			`
 		SELECT id, data, lti_key, created_at
 		FROM launches
@@ -47,22 +317,31 @@ let tryRetrieveLtiLaunch = function(userId, draftId, logId) {
 				draftId: draftId
 			}
 		)
-		.then(result => {
-			return {
-				id: result.id,
-				reqVars: result.data,
-				key: result.lti_key,
-				createdAt: result.created_at
+		.then(dbResult => {
+			if (!dbResult) {
+				logger.error(`LTI error attempting to retrieve launch`, logId)
+				result.error = ERROR_FATAL_NO_LAUNCH_FOUND
+			} else {
+				result.id = dbResult.id
+				result.reqVars = dbResult.data
+				result.key = dbResult.lti_key
+				result.createdAt = dbResult.created_at
 			}
+
+			if (isLaunchExpired(result.createdAt)) {
+				throw ERROR_FATAL_LAUNCH_EXPIRED
+			}
+
+			return result
 		})
-		.catch(error => {
-			logger.error(`LTI error attempting to retrieve launch`, error, logId)
-			throw ERROR_FATAL_NO_LAUNCH_FOUND
+		.catch(e => {
+			result.error = e
+
+			return result
 		})
 }
 
-// Throws error if no key is found
-let tryFindSecretForKey = (key, logId) => {
+let findSecretForKey = key => {
 	// locate a matching key/secret pair
 	let keys = Object.keys(config.lti.keys)
 	for (var i = keys.length - 1; i >= 0; i--) {
@@ -71,51 +350,37 @@ let tryFindSecretForKey = (key, logId) => {
 		}
 	}
 
-	logger.error('LTI ERROR: No secret found for key: ${key}', logId)
-	throw ERROR_FATAL_NO_SECRET_FOR_KEY
+	logger.error(`LTI ERROR: No secret found for key:"${key}"`)
+
+	return null
 }
 
-// Note that this method can throw two possible errors
-let tryGetOutcomeServiceForLaunch = function(launch, logId) {
-	if (!launch.reqVars.lis_outcome_service_url) throw ERROR_NO_OUTCOME_SERVICE_FOR_LAUNCH
+//
+// LTI communication methods
+//
 
-	return new OutcomeService({
-		body: {
-			lis_outcome_service_url: launch.reqVars.lis_outcome_service_url,
-			lis_result_sourcedid: launch.reqVars.lis_result_sourcedid
-		},
-		consumer_key: launch.key,
-		consumer_secret: tryFindSecretForKey(launch.key, logId),
-		signer: new HMAC_SHA1()
+let sendReplaceResultRequest = (outcomeService, score) => {
+	logger.info(`LTI sendReplaceResult to "${outcomeService.service_url}" with "${score}"`)
+
+	return new Promise((resolve, reject) => {
+		outcomeService.send_replace_result(score, (err, result) => {
+			if (err) reject(err)
+			else resolve(result)
+		})
 	})
 }
 
-let tryGetAssessmentScoreById = assessmentScoreId => {
-	return db
-		.oneOrNone(
-			`
-			SELECT *
-			FROM assessment_scores
-			WHERE id = $[assessmentScoreId]
-			`,
-			{ assessmentScoreId }
-		)
-		.then(result => {
-			if (!result) throw ERROR_FATAL_NO_ASSESSMENT_SCORE_FOUND
-
-			return {
-				id: result.id,
-				userId: result.user_id,
-				draftId: result.draft_id,
-				assessmentId: result.assessment_id,
-				attemptId: result.attempt_id,
-				score: result.score,
-				preview: result.preview
-			}
-		})
-}
+//
+// DB write methods
+//
 
 let insertReplaceResultEvent = (userId, draftId, launch, assessmentScoreData, ltiResult) => {
+	// let x = insertEvent({ a: 1 })
+	// let y = x.then(100)
+	// console.log('wtf')
+	// console.log(x)
+	// console.log(y)
+
 	insertEvent({
 		action: 'lti:replaceResult',
 		actorTime: new Date().toISOString(),
@@ -123,8 +388,9 @@ let insertReplaceResultEvent = (userId, draftId, launch, assessmentScoreData, lt
 			launchId: launch ? launch.id : null,
 			launchKey: launch ? launch.key : null,
 			body: {
-				lis_outcome_service_url: launch ? launch.reqVars.lis_outcome_service_url : null,
-				lis_result_sourcedid: launch ? launch.reqVars.lis_result_sourcedid : null
+				lis_outcome_service_url:
+					launch && launch.reqVars ? launch.reqVars.lis_outcome_service_url : null,
+				lis_result_sourcedid: launch && launch.reqVars ? launch.reqVars.lis_result_sourcedid : null
 			},
 			assessmentScore: assessmentScoreData,
 			result: ltiResult
@@ -134,18 +400,13 @@ let insertReplaceResultEvent = (userId, draftId, launch, assessmentScoreData, lt
 		eventVersion: '2.0.0',
 		metadata: {},
 		draftId: draftId
-	}).catch(err => {
-		logger.error('There was an error inserting the lti event')
 	})
-}
-
-let sendReplaceResultRequest = (outcomeService, score) => {
-	return new Promise((resolve, reject) => {
-		outcomeService.send_replace_result(score, (err, result) => {
-			if (err) reject(err)
-			else resolve(result)
+		// .then(() => {
+		// 	logger.info('yeah ok')
+		// })
+		.catch(err => {
+			logger.error('There was an error inserting the lti event')
 		})
-	})
 }
 
 let insertLTIAssessmentScore = (
@@ -153,15 +414,15 @@ let insertLTIAssessmentScore = (
 	launchId,
 	scoreSent,
 	scoreSentStatus,
-	error,
-	errorDetails,
+	statusDetails,
+	gradebookStatus,
 	logId
 ) => {
 	return db
 		.one(
 			`
-			INSERT INTO lti_assessment_scores (assessment_score_id, launch_id, score_sent, status, error, error_details, log_id)
-			VALUES($[assessmentScoreId], $[launchId], $[scoreSent], $[scoreSentStatus], $[error], $[errorDetails], $[logId])
+			INSERT INTO lti_assessment_scores (assessment_score_id, launch_id, score_sent, status, status_details, gradebook_status, log_id)
+			VALUES($[assessmentScoreId], $[launchId], $[scoreSent], $[scoreSentStatus], $[statusDetails], $[gradebookStatus], $[logId])
 			RETURNING id
 		`,
 			{
@@ -169,8 +430,8 @@ let insertLTIAssessmentScore = (
 				launchId,
 				scoreSent,
 				scoreSentStatus,
-				error,
-				errorDetails,
+				statusDetails,
+				gradebookStatus,
 				logId
 			}
 		)
@@ -179,216 +440,218 @@ let insertLTIAssessmentScore = (
 		})
 }
 
-let insertLTIAssessmentScoreAndReplaceResultEvent = (
-	assessmentScoreData,
-	launch,
-	result,
-	logId
-) => {
-	return insertLTIAssessmentScore(
-		assessmentScoreData.id,
-		result.launchId,
-		result.scoreSent,
-		result.status,
-		result.error,
-		result.errorDetails,
-		logId
-	).then(scoreId => {
-		result.ltiAssessmentScoreId = scoreId
-		logger.info(`LTI store "${result.status}" success - id:"${result.ltiAssessmentScoreId}"`, logId)
+//
+// Error handling methods
+//
 
-		insertReplaceResultEvent(
-			assessmentScoreData.userId,
-			assessmentScoreData.draftId,
-			launch,
-			assessmentScoreData,
-			result
-		)
+let logAndGetStatusForError = function(error, requiredData, logId) {
+	let scoreRecord = requiredData.assessmentScoreRecord
+	let userId = scoreRecord ? scoreRecord.userId : null
+	let draftId = scoreRecord ? scoreRecord.draftId : null
+	let ltiScoreToSend = requiredData.ltiScoreToSend
+	let launchId = requiredData.launch ? requiredData.launch.id : null
+	let launchKey = requiredData.launch ? requiredData.launch.key : null
 
-		return result
-	})
+	let result = {
+		status: null,
+		statusDetails: null
+	}
+
+	// Handle errors
+	switch (error) {
+		//
+		// Expected possible errors:
+		//
+		case ERROR_NO_OUTCOME_SERVICE_FOR_LAUNCH:
+			result.status = STATUS_NOT_ATTEMPTED_NO_OUTCOME_FOR_LAUNCH
+			logger.info(`LTI No outcome service for user:"${userId}" on draft:"${draftId}"`, logId)
+			break
+
+		case ERROR_SCORE_IS_NULL:
+			result.status = STATUS_NOT_ATTEMPTED_SCORE_IS_NULL
+			logger.info(`LTI not sending null score for user:"${userId}" on draft:"${draftId}"`, logId)
+			break
+		//
+		// Bad unexpected errors:
+		// In these cases we didn't expect for any of these errors to happen
+		//
+		case ERROR_FATAL_REPLACE_RESULT_FAILED:
+			result.status = STATUS_ERROR_REPLACE_RESULT_FAILED
+			logger.error(`LTI replaceResult failed for user:"${userId}" on draft:"${draftId}"!`, logId)
+			break
+
+		case ERROR_FATAL_NO_SECRET_FOR_KEY:
+			result.status = STATUS_ERROR_NO_SECRET_FOR_KEY
+			logger.error(`LTI No secret found for key:"${launchKey}"!`, logId)
+			break
+
+		case ERROR_FATAL_SCORE_IS_INVALID:
+			result.status = STATUS_ERROR_SCORE_IS_INVALID
+			logger.error(
+				`LTI not sending invalid score "${ltiScoreToSend}" for user:"${userId}" on draft:"${draftId}"!`,
+				logId
+			)
+			break
+
+		case ERROR_FATAL_NO_LAUNCH_FOUND:
+			result.status = STATUS_ERROR_NO_LAUNCH_FOUND
+			logger.error(`LTI No launch found for user:"${userId}" on draft:"${draftId}"!`, logId)
+			break
+
+		case ERROR_FATAL_LAUNCH_EXPIRED:
+			result.status = STATUS_ERROR_LAUNCH_EXPIRED
+			logger.error(`LTI launch expired for launch:"${launchId}"!`, logId)
+			break
+
+		case ERROR_FATAL_NO_ASSESSMENT_SCORE_FOUND:
+			result.status = STATUS_ERROR_NO_ASSESSMENT_SCORE_FOUND
+			logger.error(`LTI no assessment score found, unable to proceed!`, logId)
+			break
+
+		default:
+			//Unexpected error
+			result.status = STATUS_ERROR_UNEXPECTED
+			result.statusDetails = { message: error.message }
+			logger.error(`LTI bad error, was **unexpected** :( Stack trace:`, error, error.stack, logId)
+			break
+	}
+
+	return result
 }
+
+//
+// MAIN METHOD:
+//
 
 let sendAssessmentScore = function(assessmentScoreId) {
 	let logId = uuid()
 
-	let launch = null
-	let outcomeService = null
-	let ltiScore = null
-
-	let assessmentScoreData = {
-		id: assessmentScoreId,
-		userId: null,
-		draftId: null,
-		assessmentId: null,
-		attemptId: null,
-		score: null,
-		preview: null
-	}
+	let requiredData = null
+	let outcomeData = null
 
 	let result = {
 		launchId: null,
 		scoreSent: null,
-		status: STATUS_TYPE_NOT_ATTEMPTED,
-		error: null,
-		errorDetails: null,
+		status: null,
+		statusDetails: null,
+		gradebookStatus: null,
+		dbStatus: null,
 		ltiAssessmentScoreId: null
 	}
 
 	logger.info(`LTI begin sendAssessmentScore for assessmentScoreId:"${assessmentScoreId}"`, logId)
 
-	return tryGetAssessmentScoreById(assessmentScoreId)
-		.then(assessmentScoreResult => {
-			assessmentScoreData = assessmentScoreResult
+	return getRequiredDataForReplaceResult(assessmentScoreId, logId)
+		.then(requiredDataResult => {
+			result.launchId = requiredDataResult.launch ? requiredDataResult.launch.id : null
 
-			logger.info(
-				`LTI found assessment score. Details: user:"${assessmentScoreData.userId}", draft:"${assessmentScoreData.draftId}", score:"${assessmentScoreData.score}", assessmentScoreId:"${assessmentScoreId}", attemptId:"${assessmentScoreData.attemptId}", preview:"${assessmentScoreData.preview}"`,
-				logId
-			)
+			requiredData = requiredDataResult
+			outcomeData = getOutcomeServiceForLaunch(requiredData.launch)
 
-			return tryRetrieveLtiLaunch(assessmentScoreData.userId, assessmentScoreData.draftId, logId)
-		})
-		.then(ltiLaunch => {
-			logger.info(`LTI launch with id:"${ltiLaunch.id}" retrieved!`, logId)
-			logger.info(ltiLaunch)
-			launch = ltiLaunch
-			result.launchId = launch.id
-
-			let hoursSinceLaunch = moment.duration(moment().diff(moment(ltiLaunch.createdAt))).asHours()
-			if (hoursSinceLaunch > HOURS_EXPIRED_LAUNCH) {
-				throw ERROR_FATAL_LAUNCH_EXPIRED
+			if (requiredData.ltiScoreToSend === null) {
+				throw ERROR_SCORE_IS_NULL
+			} else if (outcomeData.type === OUTCOME_TYPE_NO_OUTCOME) {
+				throw ERROR_NO_OUTCOME_SERVICE_FOR_LAUNCH
+			} else if (requiredData.error !== null) {
+				throw requiredData.error
+			} else if (outcomeData.error !== null) {
+				throw outcomeData.error
 			}
 
-			if (assessmentScoreData.score === null) throw ERROR_SCORE_IS_NULL
+			result.scoreSent = requiredData.ltiScoreToSend
 
-			ltiScore = assessmentScoreData.score / 100
-
-			if (!Number.isFinite(ltiScore) || ltiScore < 0 || ltiScore > 1)
-				throw ERROR_FATAL_SCORE_IS_INVALID
-
-			outcomeService = tryGetOutcomeServiceForLaunch(launch, logId)
-
-			result.scoreSent = ltiScore
 			logger.info(
-				`LTI attempting replaceResult of score:"${ltiScore}" for assessmentScoreId:"${assessmentScoreId}" for user:"${assessmentScoreData.userId}", draft:"${assessmentScoreData.draftId}", sourcedid:"${launch
-					.reqVars.lis_result_sourcedid}", url:"${launch.reqVars
-					.lis_outcome_service_url}" using key:"${launch.key}"`,
+				`LTI attempting replaceResult of score:"${result.scoreSent}" for assessmentScoreId:"${assessmentScoreId}" for user:"${requiredData
+					.assessmentScoreRecord.userId}", draft:"${requiredData.assessmentScoreRecord
+					.draftId}", sourcedid:"${requiredData.launch.reqVars
+					.lis_result_sourcedid}", url:"${requiredData.launch.reqVars
+					.lis_outcome_service_url}" using key:"${requiredData.launch.key}"`,
 				logId
 			)
-			return sendReplaceResultRequest(outcomeService, ltiScore)
+
+			return sendReplaceResultRequest(outcomeData.outcomeService, requiredData.ltiScoreToSend)
 		})
 		.then(ltiRequestResult => {
-			result.status = STATUS_TYPE_SUCCESS
+			logger.info(`LTI replaceResult response`, ltiRequestResult, logId)
 
-			logger.info(`LTI replaceResult success`, ltiRequestResult, logId)
+			if (ltiRequestResult !== true) {
+				throw ERROR_FATAL_REPLACE_RESULT_FAILED
+			}
+
+			result.status = STATUS_SUCCESS
+		})
+		.catch(error => {
+			let errorResult = logAndGetStatusForError(error, requiredData, logId)
+
+			result.status = errorResult.status
+			result.statusDetails = errorResult.statusDetails
+
+			return
 		})
 		.then(() => {
-			return insertLTIAssessmentScoreAndReplaceResultEvent(
-				assessmentScoreData,
-				launch,
-				result,
+			result.gradebookStatus = getGradebookStatus(
+				outcomeData.type,
+				requiredData.scoreType,
+				result.status === STATUS_SUCCESS
+			)
+
+			logger.info(`LTI gradebook status is "${result.gradebookStatus}"`, logId)
+
+			return insertLTIAssessmentScore(
+				requiredData.assessmentScoreRecord.id,
+				result.launchId,
+				result.scoreSent,
+				result.status,
+				result.statusDetails,
+				result.gradebookStatus,
 				logId
 			)
 		})
-		.then(result => {
-			return result
+		.catch(error => {
+			logger.error(`LTI bad error attempting to update database! :(`, error.stack, logId)
+
+			result.dbStatus = DB_STATUS_ERROR
+
+			return Promise.resolve() // Go to next then
+		})
+		.then(scoreId => {
+			logger.info(`LTI store "${result.status}" success - id:"${scoreId}"`, logId)
+
+			result.ltiAssessmentScoreId = scoreId
+			result.dbStatus = DB_STATUS_RECORDED
+
+			insertReplaceResultEvent(
+				requiredData.assessmentScoreRecord.userId,
+				requiredData.assessmentScoreRecord.draftId,
+				requiredData.launch,
+				requiredData.assessmentScoreRecord,
+				result
+			)
+
+			return Promise.resolve() // Go to next then
 		})
 		.catch(error => {
-			logger.warn('LTI error:', error, logId)
-
-			// Handle errors
-			switch (error) {
-				//
-				// Expected possible errors:
-				// In these cases we simply don't attempt to send the score.
-				//
-				case ERROR_NO_OUTCOME_SERVICE_FOR_LAUNCH:
-					result.error = ERROR_TYPE_NO_OUTCOME_FOR_LAUNCH
-					logger.info(
-						`LTI No outcome service for user:"${assessmentScoreData.userId}" on draft:"${assessmentScoreData.draftId}"!`,
-						logId
-					)
-					break
-
-				case ERROR_SCORE_IS_NULL:
-					result.error = ERROR_TYPE_SCORE_IS_NULL
-					logger.info(
-						`LTI not sending null score for user:"${assessmentScoreData.userId}" on draft:"${assessmentScoreData.draftId}"!`,
-						logId
-					)
-					break
-				//
-				// Bad unexpected errors:
-				// In these cases we didn't expect for any of these errors to happen,
-				// so we set result.status to 'error'
-				//
-				case ERROR_FATAL_NO_SECRET_FOR_KEY:
-					result.status = STATUS_TYPE_ERROR
-					result.error = ERROR_TYPE_FATAL_NO_SECRET_FOR_KEY
-					logger.info(
-						`LTI No request found for user:"${assessmentScoreData.userId}" on draft:"${assessmentScoreData.draftId}"!`,
-						logId
-					)
-					break
-
-				case ERROR_FATAL_SCORE_IS_INVALID:
-					result.status = STATUS_TYPE_ERROR
-					result.error = ERROR_TYPE_FATAL_SCORE_IS_INVALID
-					logger.info(
-						`LTI not sending invalid score "${ltiScore}" for user:"${assessmentScoreData.userId}" on draft:"${assessmentScoreData.draftId}"!`,
-						logId
-					)
-					break
-
-				case ERROR_FATAL_NO_LAUNCH_FOUND:
-					result.status = STATUS_TYPE_ERROR
-					result.error = ERROR_TYPE_FATAL_NO_LAUNCH_FOUND
-					logger.info(
-						`LTI No launch found for user:"${assessmentScoreData.userId}" on draft:"${assessmentScoreData.draftId}"!`,
-						logId
-					)
-					break
-
-				case ERROR_FATAL_LAUNCH_EXPIRED:
-					result.status = STATUS_TYPE_ERROR
-					result.error = ERROR_TYPE_FATAL_LAUNCH_EXPIRED
-					logger.error(`LTI launch expired for launch:"${launch.id}"!`, logId)
-					break
-
-				case ERROR_FATAL_NO_ASSESSMENT_SCORE_FOUND:
-					result.status = STATUS_TYPE_ERROR
-					result.error = ERROR_TYPE_FATAL_NO_ASSESSMENT_SCORE_FOUND
-					logger.error(
-						`LTI no assessment score for assessmentScoreId:"${assessmentScoreId}" found, unable to proceed!`,
-						logId
-					)
-					break
-
-				default:
-					//Unexpected error
-					result.status = STATUS_TYPE_ERROR
-					result.error = ERROR_TYPE_FATAL_UNEXPECTED
-					result.errorDetails = { message: error.message }
-					logger.error(`LTI error was **unexpected** :( Stack trace:`, error.stack, logId)
-					break
-			}
-
-			return insertLTIAssessmentScoreAndReplaceResultEvent(
-				assessmentScoreData,
-				launch,
-				result,
-				logId
-			).catch(result => {
-				logger.error(`LTI fatal error! Unable to store record assessment record!`, result, logId)
-
-				return result
-			})
-
+			logger.error(`LTI error with insertReplaceResultEvent`, error.message, logId)
+			return Promise.resolve() // Go to next then
+		})
+		.then(() => {
+			logger.info(`LTI complete`, logId)
 			return result
 		})
 }
 
 module.exports = {
-	sendAssessmentScore: sendAssessmentScore,
-	tryFindSecretForKey: tryFindSecretForKey
+	isScoreValid,
+	isLaunchExpired,
+	getGradebookStatus,
+	getAssessmentScoreById,
+	getLatestSuccessfulLTIAssessmentScoreRecord,
+	getRequiredDataForReplaceResult,
+	getOutcomeServiceForLaunch,
+	retrieveLtiLaunch,
+	findSecretForKey,
+	sendReplaceResultRequest,
+	insertReplaceResultEvent,
+	logAndGetStatusForError,
+	sendAssessmentScore
 }

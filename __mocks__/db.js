@@ -5,6 +5,11 @@ db.one.mockImplementation((query, vars) => {
 	return Promise.resolve(null)
 })
 
+db.oneOrNone = jest.fn()
+db.oneOrNone.mockImplementation((query, vars) => {
+	return Promise.resolve(null)
+})
+
 db.any = jest.fn()
 db.any.mockImplementation((query, vars) => {
 	return Promise.resolve(null)
@@ -15,4 +20,4 @@ db.none.mockImplementation((query, vars) => {
 	return Promise.resolve(null)
 })
 
-module.exports = db;
+module.exports = db

@@ -1,4 +1,4 @@
-let db = oboRequire('db')
+let db = require('../db')
 let draftNodeStore = oboRequire('draft_node_store')
 let logger = require('../logger.js')
 

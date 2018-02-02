@@ -10,12 +10,13 @@ let logger = oboRequire('logger')
 module.exports = ltiMiddleware({
 	nonceStore: new DevNonceStore(),
 	credentials: (key, callback) => {
-		try {
-			let secret = ltiUtil.tryFindSecretForKey(key)
-			callback(null, key, secret)
-		} catch (err) {
+		let secret = ltiUtil.findSecretForKey(key)
+
+		if (!secret) {
 			logger.error('LTI unable to find secret for key', err)
-			callback(new Error('Invalid LTI credentials'))
+			return callback(new Error('Invalid LTI credentials'))
 		}
+
+		callback(null, key, secret)
 	}
 })
