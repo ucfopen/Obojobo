@@ -87,6 +87,334 @@
 		/***/ function(module, exports, __webpack_require__) {
 			'use strict'
 
+			var isDate = __webpack_require__(13)
+
+			var MILLISECONDS_IN_HOUR = 3600000
+			var MILLISECONDS_IN_MINUTE = 60000
+			var DEFAULT_ADDITIONAL_DIGITS = 2
+
+			var parseTokenDateTimeDelimeter = /[T ]/
+			var parseTokenPlainTime = /:/
+
+			// year tokens
+			var parseTokenYY = /^(\d{2})$/
+			var parseTokensYYY = [
+				/^([+-]\d{2})$/, // 0 additional digits
+				/^([+-]\d{3})$/, // 1 additional digit
+				/^([+-]\d{4})$/ // 2 additional digits
+			]
+
+			var parseTokenYYYY = /^(\d{4})/
+			var parseTokensYYYYY = [
+				/^([+-]\d{4})/, // 0 additional digits
+				/^([+-]\d{5})/, // 1 additional digit
+				/^([+-]\d{6})/ // 2 additional digits
+			]
+
+			// date tokens
+			var parseTokenMM = /^-(\d{2})$/
+			var parseTokenDDD = /^-?(\d{3})$/
+			var parseTokenMMDD = /^-?(\d{2})-?(\d{2})$/
+			var parseTokenWww = /^-?W(\d{2})$/
+			var parseTokenWwwD = /^-?W(\d{2})-?(\d{1})$/
+
+			// time tokens
+			var parseTokenHH = /^(\d{2}([.,]\d*)?)$/
+			var parseTokenHHMM = /^(\d{2}):?(\d{2}([.,]\d*)?)$/
+			var parseTokenHHMMSS = /^(\d{2}):?(\d{2}):?(\d{2}([.,]\d*)?)$/
+
+			// timezone tokens
+			var parseTokenTimezone = /([Z+-].*)$/
+			var parseTokenTimezoneZ = /^(Z)$/
+			var parseTokenTimezoneHH = /^([+-])(\d{2})$/
+			var parseTokenTimezoneHHMM = /^([+-])(\d{2}):?(\d{2})$/
+
+			/**
+ * @category Common Helpers
+ * @summary Convert the given argument to an instance of Date.
+ *
+ * @description
+ * Convert the given argument to an instance of Date.
+ *
+ * If the argument is an instance of Date, the function returns its clone.
+ *
+ * If the argument is a number, it is treated as a timestamp.
+ *
+ * If an argument is a string, the function tries to parse it.
+ * Function accepts complete ISO 8601 formats as well as partial implementations.
+ * ISO 8601: http://en.wikipedia.org/wiki/ISO_8601
+ *
+ * If all above fails, the function passes the given argument to Date constructor.
+ *
+ * @param {Date|String|Number} argument - the value to convert
+ * @param {Object} [options] - the object with options
+ * @param {0 | 1 | 2} [options.additionalDigits=2] - the additional number of digits in the extended year format
+ * @returns {Date} the parsed date in the local time zone
+ *
+ * @example
+ * // Convert string '2014-02-11T11:30:30' to date:
+ * var result = parse('2014-02-11T11:30:30')
+ * //=> Tue Feb 11 2014 11:30:30
+ *
+ * @example
+ * // Parse string '+02014101',
+ * // if the additional number of digits in the extended year format is 1:
+ * var result = parse('+02014101', {additionalDigits: 1})
+ * //=> Fri Apr 11 2014 00:00:00
+ */
+			function parse(argument, dirtyOptions) {
+				if (isDate(argument)) {
+					// Prevent the date to lose the milliseconds when passed to new Date() in IE10
+					return new Date(argument.getTime())
+				} else if (typeof argument !== 'string') {
+					return new Date(argument)
+				}
+
+				var options = dirtyOptions || {}
+				var additionalDigits = options.additionalDigits
+				if (additionalDigits == null) {
+					additionalDigits = DEFAULT_ADDITIONAL_DIGITS
+				} else {
+					additionalDigits = Number(additionalDigits)
+				}
+
+				var dateStrings = splitDateString(argument)
+
+				var parseYearResult = parseYear(dateStrings.date, additionalDigits)
+				var year = parseYearResult.year
+				var restDateString = parseYearResult.restDateString
+
+				var date = parseDate(restDateString, year)
+
+				if (date) {
+					var timestamp = date.getTime()
+					var time = 0
+					var offset
+
+					if (dateStrings.time) {
+						time = parseTime(dateStrings.time)
+					}
+
+					if (dateStrings.timezone) {
+						offset = parseTimezone(dateStrings.timezone)
+					} else {
+						// get offset accurate to hour in timezones that change offset
+						offset = new Date(timestamp + time).getTimezoneOffset()
+						offset = new Date(
+							timestamp + time + offset * MILLISECONDS_IN_MINUTE
+						).getTimezoneOffset()
+					}
+
+					return new Date(timestamp + time + offset * MILLISECONDS_IN_MINUTE)
+				} else {
+					return new Date(argument)
+				}
+			}
+
+			function splitDateString(dateString) {
+				var dateStrings = {}
+				var array = dateString.split(parseTokenDateTimeDelimeter)
+				var timeString
+
+				if (parseTokenPlainTime.test(array[0])) {
+					dateStrings.date = null
+					timeString = array[0]
+				} else {
+					dateStrings.date = array[0]
+					timeString = array[1]
+				}
+
+				if (timeString) {
+					var token = parseTokenTimezone.exec(timeString)
+					if (token) {
+						dateStrings.time = timeString.replace(token[1], '')
+						dateStrings.timezone = token[1]
+					} else {
+						dateStrings.time = timeString
+					}
+				}
+
+				return dateStrings
+			}
+
+			function parseYear(dateString, additionalDigits) {
+				var parseTokenYYY = parseTokensYYY[additionalDigits]
+				var parseTokenYYYYY = parseTokensYYYYY[additionalDigits]
+
+				var token
+
+				// YYYY or ±YYYYY
+				token = parseTokenYYYY.exec(dateString) || parseTokenYYYYY.exec(dateString)
+				if (token) {
+					var yearString = token[1]
+					return {
+						year: parseInt(yearString, 10),
+						restDateString: dateString.slice(yearString.length)
+					}
+				}
+
+				// YY or ±YYY
+				token = parseTokenYY.exec(dateString) || parseTokenYYY.exec(dateString)
+				if (token) {
+					var centuryString = token[1]
+					return {
+						year: parseInt(centuryString, 10) * 100,
+						restDateString: dateString.slice(centuryString.length)
+					}
+				}
+
+				// Invalid ISO-formatted year
+				return {
+					year: null
+				}
+			}
+
+			function parseDate(dateString, year) {
+				// Invalid ISO-formatted year
+				if (year === null) {
+					return null
+				}
+
+				var token
+				var date
+				var month
+				var week
+
+				// YYYY
+				if (dateString.length === 0) {
+					date = new Date(0)
+					date.setUTCFullYear(year)
+					return date
+				}
+
+				// YYYY-MM
+				token = parseTokenMM.exec(dateString)
+				if (token) {
+					date = new Date(0)
+					month = parseInt(token[1], 10) - 1
+					date.setUTCFullYear(year, month)
+					return date
+				}
+
+				// YYYY-DDD or YYYYDDD
+				token = parseTokenDDD.exec(dateString)
+				if (token) {
+					date = new Date(0)
+					var dayOfYear = parseInt(token[1], 10)
+					date.setUTCFullYear(year, 0, dayOfYear)
+					return date
+				}
+
+				// YYYY-MM-DD or YYYYMMDD
+				token = parseTokenMMDD.exec(dateString)
+				if (token) {
+					date = new Date(0)
+					month = parseInt(token[1], 10) - 1
+					var day = parseInt(token[2], 10)
+					date.setUTCFullYear(year, month, day)
+					return date
+				}
+
+				// YYYY-Www or YYYYWww
+				token = parseTokenWww.exec(dateString)
+				if (token) {
+					week = parseInt(token[1], 10) - 1
+					return dayOfISOYear(year, week)
+				}
+
+				// YYYY-Www-D or YYYYWwwD
+				token = parseTokenWwwD.exec(dateString)
+				if (token) {
+					week = parseInt(token[1], 10) - 1
+					var dayOfWeek = parseInt(token[2], 10) - 1
+					return dayOfISOYear(year, week, dayOfWeek)
+				}
+
+				// Invalid ISO-formatted date
+				return null
+			}
+
+			function parseTime(timeString) {
+				var token
+				var hours
+				var minutes
+
+				// hh
+				token = parseTokenHH.exec(timeString)
+				if (token) {
+					hours = parseFloat(token[1].replace(',', '.'))
+					return hours % 24 * MILLISECONDS_IN_HOUR
+				}
+
+				// hh:mm or hhmm
+				token = parseTokenHHMM.exec(timeString)
+				if (token) {
+					hours = parseInt(token[1], 10)
+					minutes = parseFloat(token[2].replace(',', '.'))
+					return hours % 24 * MILLISECONDS_IN_HOUR + minutes * MILLISECONDS_IN_MINUTE
+				}
+
+				// hh:mm:ss or hhmmss
+				token = parseTokenHHMMSS.exec(timeString)
+				if (token) {
+					hours = parseInt(token[1], 10)
+					minutes = parseInt(token[2], 10)
+					var seconds = parseFloat(token[3].replace(',', '.'))
+					return (
+						hours % 24 * MILLISECONDS_IN_HOUR + minutes * MILLISECONDS_IN_MINUTE + seconds * 1000
+					)
+				}
+
+				// Invalid ISO-formatted time
+				return null
+			}
+
+			function parseTimezone(timezoneString) {
+				var token
+				var absoluteOffset
+
+				// Z
+				token = parseTokenTimezoneZ.exec(timezoneString)
+				if (token) {
+					return 0
+				}
+
+				// ±hh
+				token = parseTokenTimezoneHH.exec(timezoneString)
+				if (token) {
+					absoluteOffset = parseInt(token[2], 10) * 60
+					return token[1] === '+' ? -absoluteOffset : absoluteOffset
+				}
+
+				// ±hh:mm or ±hhmm
+				token = parseTokenTimezoneHHMM.exec(timezoneString)
+				if (token) {
+					absoluteOffset = parseInt(token[2], 10) * 60 + parseInt(token[3], 10)
+					return token[1] === '+' ? -absoluteOffset : absoluteOffset
+				}
+
+				return 0
+			}
+
+			function dayOfISOYear(isoYear, week, day) {
+				week = week || 0
+				day = day || 0
+				var date = new Date(0)
+				date.setUTCFullYear(isoYear, 0, 4)
+				var fourthOfJanuaryDay = date.getUTCDay() || 7
+				var diff = week * 7 + day + 1 - fourthOfJanuaryDay
+				date.setUTCDate(date.getUTCDate() + diff)
+				return date
+			}
+
+			module.exports = parse
+
+			/***/
+		},
+		/* 2 */
+		/***/ function(module, exports, __webpack_require__) {
+			'use strict'
+
 			Object.defineProperty(exports, '__esModule', {
 				value: true
 			})
@@ -340,334 +668,6 @@
 			}
 
 			exports.default = NavUtil
-
-			/***/
-		},
-		/* 2 */
-		/***/ function(module, exports, __webpack_require__) {
-			'use strict'
-
-			var isDate = __webpack_require__(18)
-
-			var MILLISECONDS_IN_HOUR = 3600000
-			var MILLISECONDS_IN_MINUTE = 60000
-			var DEFAULT_ADDITIONAL_DIGITS = 2
-
-			var parseTokenDateTimeDelimeter = /[T ]/
-			var parseTokenPlainTime = /:/
-
-			// year tokens
-			var parseTokenYY = /^(\d{2})$/
-			var parseTokensYYY = [
-				/^([+-]\d{2})$/, // 0 additional digits
-				/^([+-]\d{3})$/, // 1 additional digit
-				/^([+-]\d{4})$/ // 2 additional digits
-			]
-
-			var parseTokenYYYY = /^(\d{4})/
-			var parseTokensYYYYY = [
-				/^([+-]\d{4})/, // 0 additional digits
-				/^([+-]\d{5})/, // 1 additional digit
-				/^([+-]\d{6})/ // 2 additional digits
-			]
-
-			// date tokens
-			var parseTokenMM = /^-(\d{2})$/
-			var parseTokenDDD = /^-?(\d{3})$/
-			var parseTokenMMDD = /^-?(\d{2})-?(\d{2})$/
-			var parseTokenWww = /^-?W(\d{2})$/
-			var parseTokenWwwD = /^-?W(\d{2})-?(\d{1})$/
-
-			// time tokens
-			var parseTokenHH = /^(\d{2}([.,]\d*)?)$/
-			var parseTokenHHMM = /^(\d{2}):?(\d{2}([.,]\d*)?)$/
-			var parseTokenHHMMSS = /^(\d{2}):?(\d{2}):?(\d{2}([.,]\d*)?)$/
-
-			// timezone tokens
-			var parseTokenTimezone = /([Z+-].*)$/
-			var parseTokenTimezoneZ = /^(Z)$/
-			var parseTokenTimezoneHH = /^([+-])(\d{2})$/
-			var parseTokenTimezoneHHMM = /^([+-])(\d{2}):?(\d{2})$/
-
-			/**
-			 * @category Common Helpers
-			 * @summary Convert the given argument to an instance of Date.
-			 *
-			 * @description
-			 * Convert the given argument to an instance of Date.
-			 *
-			 * If the argument is an instance of Date, the function returns its clone.
-			 *
-			 * If the argument is a number, it is treated as a timestamp.
-			 *
-			 * If an argument is a string, the function tries to parse it.
-			 * Function accepts complete ISO 8601 formats as well as partial implementations.
-			 * ISO 8601: http://en.wikipedia.org/wiki/ISO_8601
-			 *
-			 * If all above fails, the function passes the given argument to Date constructor.
-			 *
-			 * @param {Date|String|Number} argument - the value to convert
-			 * @param {Object} [options] - the object with options
-			 * @param {0 | 1 | 2} [options.additionalDigits=2] - the additional number of digits in the extended year format
-			 * @returns {Date} the parsed date in the local time zone
-			 *
-			 * @example
-			 * // Convert string '2014-02-11T11:30:30' to date:
-			 * var result = parse('2014-02-11T11:30:30')
-			 * //=> Tue Feb 11 2014 11:30:30
-			 *
-			 * @example
-			 * // Parse string '+02014101',
-			 * // if the additional number of digits in the extended year format is 1:
-			 * var result = parse('+02014101', {additionalDigits: 1})
-			 * //=> Fri Apr 11 2014 00:00:00
-			 */
-			function parse(argument, dirtyOptions) {
-				if (isDate(argument)) {
-					// Prevent the date to lose the milliseconds when passed to new Date() in IE10
-					return new Date(argument.getTime())
-				} else if (typeof argument !== 'string') {
-					return new Date(argument)
-				}
-
-				var options = dirtyOptions || {}
-				var additionalDigits = options.additionalDigits
-				if (additionalDigits == null) {
-					additionalDigits = DEFAULT_ADDITIONAL_DIGITS
-				} else {
-					additionalDigits = Number(additionalDigits)
-				}
-
-				var dateStrings = splitDateString(argument)
-
-				var parseYearResult = parseYear(dateStrings.date, additionalDigits)
-				var year = parseYearResult.year
-				var restDateString = parseYearResult.restDateString
-
-				var date = parseDate(restDateString, year)
-
-				if (date) {
-					var timestamp = date.getTime()
-					var time = 0
-					var offset
-
-					if (dateStrings.time) {
-						time = parseTime(dateStrings.time)
-					}
-
-					if (dateStrings.timezone) {
-						offset = parseTimezone(dateStrings.timezone)
-					} else {
-						// get offset accurate to hour in timezones that change offset
-						offset = new Date(timestamp + time).getTimezoneOffset()
-						offset = new Date(
-							timestamp + time + offset * MILLISECONDS_IN_MINUTE
-						).getTimezoneOffset()
-					}
-
-					return new Date(timestamp + time + offset * MILLISECONDS_IN_MINUTE)
-				} else {
-					return new Date(argument)
-				}
-			}
-
-			function splitDateString(dateString) {
-				var dateStrings = {}
-				var array = dateString.split(parseTokenDateTimeDelimeter)
-				var timeString
-
-				if (parseTokenPlainTime.test(array[0])) {
-					dateStrings.date = null
-					timeString = array[0]
-				} else {
-					dateStrings.date = array[0]
-					timeString = array[1]
-				}
-
-				if (timeString) {
-					var token = parseTokenTimezone.exec(timeString)
-					if (token) {
-						dateStrings.time = timeString.replace(token[1], '')
-						dateStrings.timezone = token[1]
-					} else {
-						dateStrings.time = timeString
-					}
-				}
-
-				return dateStrings
-			}
-
-			function parseYear(dateString, additionalDigits) {
-				var parseTokenYYY = parseTokensYYY[additionalDigits]
-				var parseTokenYYYYY = parseTokensYYYYY[additionalDigits]
-
-				var token
-
-				// YYYY or ±YYYYY
-				token = parseTokenYYYY.exec(dateString) || parseTokenYYYYY.exec(dateString)
-				if (token) {
-					var yearString = token[1]
-					return {
-						year: parseInt(yearString, 10),
-						restDateString: dateString.slice(yearString.length)
-					}
-				}
-
-				// YY or ±YYY
-				token = parseTokenYY.exec(dateString) || parseTokenYYY.exec(dateString)
-				if (token) {
-					var centuryString = token[1]
-					return {
-						year: parseInt(centuryString, 10) * 100,
-						restDateString: dateString.slice(centuryString.length)
-					}
-				}
-
-				// Invalid ISO-formatted year
-				return {
-					year: null
-				}
-			}
-
-			function parseDate(dateString, year) {
-				// Invalid ISO-formatted year
-				if (year === null) {
-					return null
-				}
-
-				var token
-				var date
-				var month
-				var week
-
-				// YYYY
-				if (dateString.length === 0) {
-					date = new Date(0)
-					date.setUTCFullYear(year)
-					return date
-				}
-
-				// YYYY-MM
-				token = parseTokenMM.exec(dateString)
-				if (token) {
-					date = new Date(0)
-					month = parseInt(token[1], 10) - 1
-					date.setUTCFullYear(year, month)
-					return date
-				}
-
-				// YYYY-DDD or YYYYDDD
-				token = parseTokenDDD.exec(dateString)
-				if (token) {
-					date = new Date(0)
-					var dayOfYear = parseInt(token[1], 10)
-					date.setUTCFullYear(year, 0, dayOfYear)
-					return date
-				}
-
-				// YYYY-MM-DD or YYYYMMDD
-				token = parseTokenMMDD.exec(dateString)
-				if (token) {
-					date = new Date(0)
-					month = parseInt(token[1], 10) - 1
-					var day = parseInt(token[2], 10)
-					date.setUTCFullYear(year, month, day)
-					return date
-				}
-
-				// YYYY-Www or YYYYWww
-				token = parseTokenWww.exec(dateString)
-				if (token) {
-					week = parseInt(token[1], 10) - 1
-					return dayOfISOYear(year, week)
-				}
-
-				// YYYY-Www-D or YYYYWwwD
-				token = parseTokenWwwD.exec(dateString)
-				if (token) {
-					week = parseInt(token[1], 10) - 1
-					var dayOfWeek = parseInt(token[2], 10) - 1
-					return dayOfISOYear(year, week, dayOfWeek)
-				}
-
-				// Invalid ISO-formatted date
-				return null
-			}
-
-			function parseTime(timeString) {
-				var token
-				var hours
-				var minutes
-
-				// hh
-				token = parseTokenHH.exec(timeString)
-				if (token) {
-					hours = parseFloat(token[1].replace(',', '.'))
-					return (hours % 24) * MILLISECONDS_IN_HOUR
-				}
-
-				// hh:mm or hhmm
-				token = parseTokenHHMM.exec(timeString)
-				if (token) {
-					hours = parseInt(token[1], 10)
-					minutes = parseFloat(token[2].replace(',', '.'))
-					return (hours % 24) * MILLISECONDS_IN_HOUR + minutes * MILLISECONDS_IN_MINUTE
-				}
-
-				// hh:mm:ss or hhmmss
-				token = parseTokenHHMMSS.exec(timeString)
-				if (token) {
-					hours = parseInt(token[1], 10)
-					minutes = parseInt(token[2], 10)
-					var seconds = parseFloat(token[3].replace(',', '.'))
-					return (
-						(hours % 24) * MILLISECONDS_IN_HOUR + minutes * MILLISECONDS_IN_MINUTE + seconds * 1000
-					)
-				}
-
-				// Invalid ISO-formatted time
-				return null
-			}
-
-			function parseTimezone(timezoneString) {
-				var token
-				var absoluteOffset
-
-				// Z
-				token = parseTokenTimezoneZ.exec(timezoneString)
-				if (token) {
-					return 0
-				}
-
-				// ±hh
-				token = parseTokenTimezoneHH.exec(timezoneString)
-				if (token) {
-					absoluteOffset = parseInt(token[2], 10) * 60
-					return token[1] === '+' ? -absoluteOffset : absoluteOffset
-				}
-
-				// ±hh:mm or ±hhmm
-				token = parseTokenTimezoneHHMM.exec(timezoneString)
-				if (token) {
-					absoluteOffset = parseInt(token[2], 10) * 60 + parseInt(token[3], 10)
-					return token[1] === '+' ? -absoluteOffset : absoluteOffset
-				}
-
-				return 0
-			}
-
-			function dayOfISOYear(isoYear, week, day) {
-				week = week || 0
-				day = day || 0
-				var date = new Date(0)
-				date.setUTCFullYear(isoYear, 0, 4)
-				var fourthOfJanuaryDay = date.getUTCDay() || 7
-				var diff = week * 7 + day + 1 - fourthOfJanuaryDay
-				date.setUTCDate(date.getUTCDate() + diff)
-				return date
-			}
-
-			module.exports = parse
 
 			/***/
 		},
@@ -1087,6 +1087,160 @@
 		/***/ function(module, exports, __webpack_require__) {
 			'use strict'
 
+			var startOfWeek = __webpack_require__(34)
+
+			/**
+ * @category ISO Week Helpers
+ * @summary Return the start of an ISO week for the given date.
+ *
+ * @description
+ * Return the start of an ISO week for the given date.
+ * The result will be in the local timezone.
+ *
+ * ISO week-numbering year: http://en.wikipedia.org/wiki/ISO_week_date
+ *
+ * @param {Date|String|Number} date - the original date
+ * @returns {Date} the start of an ISO week
+ *
+ * @example
+ * // The start of an ISO week for 2 September 2014 11:55:00:
+ * var result = startOfISOWeek(new Date(2014, 8, 2, 11, 55, 0))
+ * //=> Mon Sep 01 2014 00:00:00
+ */
+			function startOfISOWeek(dirtyDate) {
+				return startOfWeek(dirtyDate, { weekStartsOn: 1 })
+			}
+
+			module.exports = startOfISOWeek
+
+			/***/
+		},
+		/* 7 */
+		/***/ function(module, exports, __webpack_require__) {
+			'use strict'
+
+			/**
+ * Copyright (c) 2013-present, Facebook, Inc.
+ *
+ * This source code is licensed under the MIT license found in the
+ * LICENSE file in the root directory of this source tree.
+ *
+ * 
+ */
+
+			function makeEmptyFunction(arg) {
+				return function() {
+					return arg
+				}
+			}
+
+			/**
+ * This function accepts and discards inputs; it has no side effects. This is
+ * primarily useful idiomatically for overridable function endpoints which
+ * always need to be callable, since JS lacks a null-call idiom ala Cocoa.
+ */
+			var emptyFunction = function emptyFunction() {}
+
+			emptyFunction.thatReturns = makeEmptyFunction
+			emptyFunction.thatReturnsFalse = makeEmptyFunction(false)
+			emptyFunction.thatReturnsTrue = makeEmptyFunction(true)
+			emptyFunction.thatReturnsNull = makeEmptyFunction(null)
+			emptyFunction.thatReturnsThis = function() {
+				return this
+			}
+			emptyFunction.thatReturnsArgument = function(arg) {
+				return arg
+			}
+
+			module.exports = emptyFunction
+
+			/***/
+		},
+		/* 8 */
+		/***/ function(module, exports, __webpack_require__) {
+			'use strict'
+			/* WEBPACK VAR INJECTION */ ;(function(process) {
+				/**
+ * Copyright (c) 2013-present, Facebook, Inc.
+ *
+ * This source code is licensed under the MIT license found in the
+ * LICENSE file in the root directory of this source tree.
+ *
+ */
+
+				/**
+ * Use invariant() to assert state which your program assumes to be true.
+ *
+ * Provide sprintf-style format (only %s is supported) and arguments
+ * to provide information about what broke and what you were
+ * expecting.
+ *
+ * The invariant message will be stripped in production, but the invariant
+ * will remain to ensure logic does not differ in production.
+ */
+
+				var validateFormat = function validateFormat(format) {}
+
+				if (process.env.NODE_ENV !== 'production') {
+					validateFormat = function validateFormat(format) {
+						if (format === undefined) {
+							throw new Error('invariant requires an error message argument')
+						}
+					}
+				}
+
+				function invariant(condition, format, a, b, c, d, e, f) {
+					validateFormat(format)
+
+					if (!condition) {
+						var error
+						if (format === undefined) {
+							error = new Error(
+								'Minified exception occurred; use the non-minified dev environment ' +
+									'for the full error message and additional helpful warnings.'
+							)
+						} else {
+							var args = [a, b, c, d, e, f]
+							var argIndex = 0
+							error = new Error(
+								format.replace(/%s/g, function() {
+									return args[argIndex++]
+								})
+							)
+							error.name = 'Invariant Violation'
+						}
+
+						error.framesToPop = 1 // we don't care about invariant's own frame
+						throw error
+					}
+				}
+
+				module.exports = invariant
+				/* WEBPACK VAR INJECTION */
+			}.call(exports, __webpack_require__(4)))
+
+			/***/
+		},
+		/* 9 */
+		/***/ function(module, exports, __webpack_require__) {
+			'use strict'
+			/**
+ * Copyright (c) 2013-present, Facebook, Inc.
+ *
+ * This source code is licensed under the MIT license found in the
+ * LICENSE file in the root directory of this source tree.
+ */
+
+			var ReactPropTypesSecret = 'SECRET_DO_NOT_PASS_THIS_OR_YOU_WILL_BE_FIRED'
+
+			module.exports = ReactPropTypesSecret
+
+			/***/
+		},
+		/* 10 */
+		/***/ function(module, exports, __webpack_require__) {
+			'use strict'
+
 			Object.defineProperty(exports, '__esModule', {
 				value: true
 			})
@@ -1112,7 +1266,7 @@
 
 			var _Common2 = _interopRequireDefault(_Common)
 
-			var _navUtil = __webpack_require__(1)
+			var _navUtil = __webpack_require__(2)
 
 			var _navUtil2 = _interopRequireDefault(_navUtil)
 
@@ -1453,7 +1607,7 @@
 
 			/***/
 		},
-		/* 7 */
+		/* 11 */
 		/***/ function(module, exports, __webpack_require__) {
 			'use strict'
 
@@ -1501,161 +1655,167 @@
 
 			/***/
 		},
-		/* 8 */
+		/* 12 */
 		/***/ function(module, exports, __webpack_require__) {
 			'use strict'
 
-			var startOfWeek = __webpack_require__(38)
+			var parse = __webpack_require__(1)
+			var startOfISOWeek = __webpack_require__(6)
 
 			/**
-			 * @category ISO Week Helpers
-			 * @summary Return the start of an ISO week for the given date.
-			 *
-			 * @description
-			 * Return the start of an ISO week for the given date.
-			 * The result will be in the local timezone.
-			 *
-			 * ISO week-numbering year: http://en.wikipedia.org/wiki/ISO_week_date
-			 *
-			 * @param {Date|String|Number} date - the original date
-			 * @returns {Date} the start of an ISO week
-			 *
-			 * @example
-			 * // The start of an ISO week for 2 September 2014 11:55:00:
-			 * var result = startOfISOWeek(new Date(2014, 8, 2, 11, 55, 0))
-			 * //=> Mon Sep 01 2014 00:00:00
-			 */
-			function startOfISOWeek(dirtyDate) {
-				return startOfWeek(dirtyDate, { weekStartsOn: 1 })
-			}
+ * @category ISO Week-Numbering Year Helpers
+ * @summary Get the ISO week-numbering year of the given date.
+ *
+ * @description
+ * Get the ISO week-numbering year of the given date,
+ * which always starts 3 days before the year's first Thursday.
+ *
+ * ISO week-numbering year: http://en.wikipedia.org/wiki/ISO_week_date
+ *
+ * @param {Date|String|Number} date - the given date
+ * @returns {Number} the ISO week-numbering year
+ *
+ * @example
+ * // Which ISO-week numbering year is 2 January 2005?
+ * var result = getISOYear(new Date(2005, 0, 2))
+ * //=> 2004
+ */
+			function getISOYear(dirtyDate) {
+				var date = parse(dirtyDate)
+				var year = date.getFullYear()
 
-			module.exports = startOfISOWeek
+				var fourthOfJanuaryOfNextYear = new Date(0)
+				fourthOfJanuaryOfNextYear.setFullYear(year + 1, 0, 4)
+				fourthOfJanuaryOfNextYear.setHours(0, 0, 0, 0)
+				var startOfNextYear = startOfISOWeek(fourthOfJanuaryOfNextYear)
 
-			/***/
-		},
-		/* 9 */
-		/***/ function(module, exports, __webpack_require__) {
-			'use strict'
+				var fourthOfJanuaryOfThisYear = new Date(0)
+				fourthOfJanuaryOfThisYear.setFullYear(year, 0, 4)
+				fourthOfJanuaryOfThisYear.setHours(0, 0, 0, 0)
+				var startOfThisYear = startOfISOWeek(fourthOfJanuaryOfThisYear)
 
-			/**
-			 * Copyright (c) 2013-present, Facebook, Inc.
-			 *
-			 * This source code is licensed under the MIT license found in the
-			 * LICENSE file in the root directory of this source tree.
-			 *
-			 *
-			 */
-
-			function makeEmptyFunction(arg) {
-				return function() {
-					return arg
+				if (date.getTime() >= startOfNextYear.getTime()) {
+					return year + 1
+				} else if (date.getTime() >= startOfThisYear.getTime()) {
+					return year
+				} else {
+					return year - 1
 				}
 			}
 
-			/**
-			 * This function accepts and discards inputs; it has no side effects. This is
-			 * primarily useful idiomatically for overridable function endpoints which
-			 * always need to be callable, since JS lacks a null-call idiom ala Cocoa.
-			 */
-			var emptyFunction = function emptyFunction() {}
-
-			emptyFunction.thatReturns = makeEmptyFunction
-			emptyFunction.thatReturnsFalse = makeEmptyFunction(false)
-			emptyFunction.thatReturnsTrue = makeEmptyFunction(true)
-			emptyFunction.thatReturnsNull = makeEmptyFunction(null)
-			emptyFunction.thatReturnsThis = function() {
-				return this
-			}
-			emptyFunction.thatReturnsArgument = function(arg) {
-				return arg
-			}
-
-			module.exports = emptyFunction
+			module.exports = getISOYear
 
 			/***/
 		},
-		/* 10 */
+		/* 13 */
+		/***/ function(module, exports, __webpack_require__) {
+			'use strict'
+
+			/**
+ * @category Common Helpers
+ * @summary Is the given argument an instance of Date?
+ *
+ * @description
+ * Is the given argument an instance of Date?
+ *
+ * @param {*} argument - the argument to check
+ * @returns {Boolean} the given argument is an instance of Date
+ *
+ * @example
+ * // Is 'mayonnaise' a Date?
+ * var result = isDate('mayonnaise')
+ * //=> false
+ */
+			function isDate(argument) {
+				return argument instanceof Date
+			}
+
+			module.exports = isDate
+
+			/***/
+		},
+		/* 14 */
 		/***/ function(module, exports, __webpack_require__) {
 			'use strict'
 			/* WEBPACK VAR INJECTION */ ;(function(process) {
 				/**
-				 * Copyright (c) 2013-present, Facebook, Inc.
-				 *
-				 * This source code is licensed under the MIT license found in the
-				 * LICENSE file in the root directory of this source tree.
-				 *
-				 */
+ * Copyright (c) 2014-present, Facebook, Inc.
+ *
+ * This source code is licensed under the MIT license found in the
+ * LICENSE file in the root directory of this source tree.
+ *
+ */
+
+				var emptyFunction = __webpack_require__(7)
 
 				/**
-				 * Use invariant() to assert state which your program assumes to be true.
-				 *
-				 * Provide sprintf-style format (only %s is supported) and arguments
-				 * to provide information about what broke and what you were
-				 * expecting.
-				 *
-				 * The invariant message will be stripped in production, but the invariant
-				 * will remain to ensure logic does not differ in production.
-				 */
+ * Similar to invariant but only logs a warning if the condition is not met.
+ * This can be used to log issues in development environments in critical
+ * paths. Removing the logging code for production environments will keep the
+ * same logic and follow the same code paths.
+ */
 
-				var validateFormat = function validateFormat(format) {}
+				var warning = emptyFunction
 
 				if (process.env.NODE_ENV !== 'production') {
-					validateFormat = function validateFormat(format) {
+					var printWarning = function printWarning(format) {
+						for (
+							var _len = arguments.length, args = Array(_len > 1 ? _len - 1 : 0), _key = 1;
+							_key < _len;
+							_key++
+						) {
+							args[_key - 1] = arguments[_key]
+						}
+
+						var argIndex = 0
+						var message =
+							'Warning: ' +
+							format.replace(/%s/g, function() {
+								return args[argIndex++]
+							})
+						if (typeof console !== 'undefined') {
+							console.error(message)
+						}
+						try {
+							// --- Welcome to debugging React ---
+							// This error was thrown as a convenience so that you can use this stack
+							// to find the callsite that caused this warning to fire.
+							throw new Error(message)
+						} catch (x) {}
+					}
+
+					warning = function warning(condition, format) {
 						if (format === undefined) {
-							throw new Error('invariant requires an error message argument')
+							throw new Error(
+								'`warning(condition, format, ...args)` requires a warning ' + 'message argument'
+							)
+						}
+
+						if (format.indexOf('Failed Composite propType: ') === 0) {
+							return // Ignore CompositeComponent proptype check.
+						}
+
+						if (!condition) {
+							for (
+								var _len2 = arguments.length, args = Array(_len2 > 2 ? _len2 - 2 : 0), _key2 = 2;
+								_key2 < _len2;
+								_key2++
+							) {
+								args[_key2 - 2] = arguments[_key2]
+							}
+
+							printWarning.apply(undefined, [format].concat(args))
 						}
 					}
 				}
 
-				function invariant(condition, format, a, b, c, d, e, f) {
-					validateFormat(format)
-
-					if (!condition) {
-						var error
-						if (format === undefined) {
-							error = new Error(
-								'Minified exception occurred; use the non-minified dev environment ' +
-									'for the full error message and additional helpful warnings.'
-							)
-						} else {
-							var args = [a, b, c, d, e, f]
-							var argIndex = 0
-							error = new Error(
-								format.replace(/%s/g, function() {
-									return args[argIndex++]
-								})
-							)
-							error.name = 'Invariant Violation'
-						}
-
-						error.framesToPop = 1 // we don't care about invariant's own frame
-						throw error
-					}
-				}
-
-				module.exports = invariant
+				module.exports = warning
 				/* WEBPACK VAR INJECTION */
 			}.call(exports, __webpack_require__(4)))
 
 			/***/
 		},
-		/* 11 */
-		/***/ function(module, exports, __webpack_require__) {
-			'use strict'
-			/**
-			 * Copyright (c) 2013-present, Facebook, Inc.
-			 *
-			 * This source code is licensed under the MIT license found in the
-			 * LICENSE file in the root directory of this source tree.
-			 */
-
-			var ReactPropTypesSecret = 'SECRET_DO_NOT_PASS_THIS_OR_YOU_WILL_BE_FIRED'
-
-			module.exports = ReactPropTypesSecret
-
-			/***/
-		},
-		/* 12 */
+		/* 15 */
 		/***/ function(module, exports, __webpack_require__) {
 			'use strict'
 
@@ -1682,7 +1842,7 @@
 
 			__webpack_require__(47)
 
-			var _navUtil = __webpack_require__(1)
+			var _navUtil = __webpack_require__(2)
 
 			var _navUtil2 = _interopRequireDefault(_navUtil)
 
@@ -1769,7 +1929,7 @@
 
 			/***/
 		},
-		/* 13 */
+		/* 16 */
 		/***/ function(module, exports, __webpack_require__) {
 			'use strict'
 
@@ -1798,11 +1958,11 @@
 
 			var _Common2 = _interopRequireDefault(_Common)
 
-			var _assessmentUtil = __webpack_require__(16)
+			var _assessmentUtil = __webpack_require__(19)
 
 			var _assessmentUtil2 = _interopRequireDefault(_assessmentUtil)
 
-			var _scoreUtil = __webpack_require__(7)
+			var _scoreUtil = __webpack_require__(11)
 
 			var _scoreUtil2 = _interopRequireDefault(_scoreUtil)
 
@@ -1814,7 +1974,7 @@
 
 			var _apiUtil2 = _interopRequireDefault(_apiUtil)
 
-			var _navUtil = __webpack_require__(1)
+			var _navUtil = __webpack_require__(2)
 
 			var _navUtil2 = _interopRequireDefault(_navUtil)
 
@@ -1878,10 +2038,8 @@
 
 					var _this = _possibleConstructorReturn(
 						this,
-						(AssessmentStore.__proto__ || Object.getPrototypeOf(AssessmentStore)).call(
-							this,
-							'assessmentstore'
-						)
+						(AssessmentStore.__proto__ || Object.getPrototypeOf(AssessmentStore))
+							.call(this, 'assessmentstore')
 					)
 
 					Dispatcher.on('assessment:startAttempt', function(payload) {
@@ -2226,7 +2384,7 @@
 
 			/***/
 		},
-		/* 14 */
+		/* 17 */
 		/***/ function(module, exports, __webpack_require__) {
 			'use strict'
 
@@ -2263,7 +2421,7 @@
 
 			var _questionUtil2 = _interopRequireDefault(_questionUtil)
 
-			var _scoreUtil = __webpack_require__(7)
+			var _scoreUtil = __webpack_require__(11)
 
 			var _scoreUtil2 = _interopRequireDefault(_scoreUtil)
 
@@ -2313,10 +2471,8 @@
 
 					var _this = _possibleConstructorReturn(
 						this,
-						(QuestionStore.__proto__ || Object.getPrototypeOf(QuestionStore)).call(
-							this,
-							'questionStore'
-						)
+						(QuestionStore.__proto__ || Object.getPrototypeOf(QuestionStore))
+							.call(this, 'questionStore')
 					)
 
 					Dispatcher.on({
@@ -2472,7 +2628,7 @@
 
 			/***/
 		},
-		/* 15 */
+		/* 18 */
 		/***/ function(module, exports, __webpack_require__) {
 			'use strict'
 
@@ -2626,7 +2782,7 @@
 
 			/***/
 		},
-		/* 16 */
+		/* 19 */
 		/***/ function(module, exports, __webpack_require__) {
 			'use strict'
 
@@ -2769,166 +2925,6 @@
 			}
 
 			exports.default = AssessmentUtil
-
-			/***/
-		},
-		/* 17 */
-		/***/ function(module, exports, __webpack_require__) {
-			'use strict'
-
-			var parse = __webpack_require__(2)
-			var startOfISOWeek = __webpack_require__(8)
-
-			/**
-			 * @category ISO Week-Numbering Year Helpers
-			 * @summary Get the ISO week-numbering year of the given date.
-			 *
-			 * @description
-			 * Get the ISO week-numbering year of the given date,
-			 * which always starts 3 days before the year's first Thursday.
-			 *
-			 * ISO week-numbering year: http://en.wikipedia.org/wiki/ISO_week_date
-			 *
-			 * @param {Date|String|Number} date - the given date
-			 * @returns {Number} the ISO week-numbering year
-			 *
-			 * @example
-			 * // Which ISO-week numbering year is 2 January 2005?
-			 * var result = getISOYear(new Date(2005, 0, 2))
-			 * //=> 2004
-			 */
-			function getISOYear(dirtyDate) {
-				var date = parse(dirtyDate)
-				var year = date.getFullYear()
-
-				var fourthOfJanuaryOfNextYear = new Date(0)
-				fourthOfJanuaryOfNextYear.setFullYear(year + 1, 0, 4)
-				fourthOfJanuaryOfNextYear.setHours(0, 0, 0, 0)
-				var startOfNextYear = startOfISOWeek(fourthOfJanuaryOfNextYear)
-
-				var fourthOfJanuaryOfThisYear = new Date(0)
-				fourthOfJanuaryOfThisYear.setFullYear(year, 0, 4)
-				fourthOfJanuaryOfThisYear.setHours(0, 0, 0, 0)
-				var startOfThisYear = startOfISOWeek(fourthOfJanuaryOfThisYear)
-
-				if (date.getTime() >= startOfNextYear.getTime()) {
-					return year + 1
-				} else if (date.getTime() >= startOfThisYear.getTime()) {
-					return year
-				} else {
-					return year - 1
-				}
-			}
-
-			module.exports = getISOYear
-
-			/***/
-		},
-		/* 18 */
-		/***/ function(module, exports, __webpack_require__) {
-			'use strict'
-
-			/**
-			 * @category Common Helpers
-			 * @summary Is the given argument an instance of Date?
-			 *
-			 * @description
-			 * Is the given argument an instance of Date?
-			 *
-			 * @param {*} argument - the argument to check
-			 * @returns {Boolean} the given argument is an instance of Date
-			 *
-			 * @example
-			 * // Is 'mayonnaise' a Date?
-			 * var result = isDate('mayonnaise')
-			 * //=> false
-			 */
-			function isDate(argument) {
-				return argument instanceof Date
-			}
-
-			module.exports = isDate
-
-			/***/
-		},
-		/* 19 */
-		/***/ function(module, exports, __webpack_require__) {
-			'use strict'
-			/* WEBPACK VAR INJECTION */ ;(function(process) {
-				/**
-				 * Copyright (c) 2014-present, Facebook, Inc.
-				 *
-				 * This source code is licensed under the MIT license found in the
-				 * LICENSE file in the root directory of this source tree.
-				 *
-				 */
-
-				var emptyFunction = __webpack_require__(9)
-
-				/**
-				 * Similar to invariant but only logs a warning if the condition is not met.
-				 * This can be used to log issues in development environments in critical
-				 * paths. Removing the logging code for production environments will keep the
-				 * same logic and follow the same code paths.
-				 */
-
-				var warning = emptyFunction
-
-				if (process.env.NODE_ENV !== 'production') {
-					var printWarning = function printWarning(format) {
-						for (
-							var _len = arguments.length, args = Array(_len > 1 ? _len - 1 : 0), _key = 1;
-							_key < _len;
-							_key++
-						) {
-							args[_key - 1] = arguments[_key]
-						}
-
-						var argIndex = 0
-						var message =
-							'Warning: ' +
-							format.replace(/%s/g, function() {
-								return args[argIndex++]
-							})
-						if (typeof console !== 'undefined') {
-							console.error(message)
-						}
-						try {
-							// --- Welcome to debugging React ---
-							// This error was thrown as a convenience so that you can use this stack
-							// to find the callsite that caused this warning to fire.
-							throw new Error(message)
-						} catch (x) {}
-					}
-
-					warning = function warning(condition, format) {
-						if (format === undefined) {
-							throw new Error(
-								'`warning(condition, format, ...args)` requires a warning ' + 'message argument'
-							)
-						}
-
-						if (format.indexOf('Failed Composite propType: ') === 0) {
-							return // Ignore CompositeComponent proptype check.
-						}
-
-						if (!condition) {
-							for (
-								var _len2 = arguments.length, args = Array(_len2 > 2 ? _len2 - 2 : 0), _key2 = 2;
-								_key2 < _len2;
-								_key2++
-							) {
-								args[_key2 - 2] = arguments[_key2]
-							}
-
-							printWarning.apply(undefined, [format].concat(args))
-						}
-					}
-				}
-
-				module.exports = warning
-				/* WEBPACK VAR INJECTION */
-			}.call(exports, __webpack_require__(4)))
 
 			/***/
 		},
@@ -3303,17 +3299,14 @@
 
 				function decode(body) {
 					var form = new FormData()
-					body
-						.trim()
-						.split('&')
-						.forEach(function(bytes) {
-							if (bytes) {
-								var split = bytes.split('=')
-								var name = split.shift().replace(/\+/g, ' ')
-								var value = split.join('=').replace(/\+/g, ' ')
-								form.append(decodeURIComponent(name), decodeURIComponent(value))
-							}
-						})
+					body.trim().split('&').forEach(function(bytes) {
+						if (bytes) {
+							var split = bytes.split('=')
+							var name = split.shift().replace(/\+/g, ' ')
+							var value = split.join('=').replace(/\+/g, ' ')
+							form.append(decodeURIComponent(name), decodeURIComponent(value))
+						}
+					})
 					return form
 				}
 
@@ -3428,7 +3421,7 @@
 		/***/ function(module, exports, __webpack_require__) {
 			'use strict'
 
-			var _index = __webpack_require__(26)
+			var _index = __webpack_require__(45)
 
 			var _index2 = _interopRequireDefault(_index)
 
@@ -3444,1110 +3437,31 @@
 		/***/ function(module, exports, __webpack_require__) {
 			'use strict'
 
-			Object.defineProperty(exports, '__esModule', {
-				value: true
-			})
-
-			var _createClass = (function() {
-				function defineProperties(target, props) {
-					for (var i = 0; i < props.length; i++) {
-						var descriptor = props[i]
-						descriptor.enumerable = descriptor.enumerable || false
-						descriptor.configurable = true
-						if ('value' in descriptor) descriptor.writable = true
-						Object.defineProperty(target, descriptor.key, descriptor)
-					}
-				}
-				return function(Constructor, protoProps, staticProps) {
-					if (protoProps) defineProperties(Constructor.prototype, protoProps)
-					if (staticProps) defineProperties(Constructor, staticProps)
-					return Constructor
-				}
-			})()
-
-			__webpack_require__(46)
-
-			var _navUtil = __webpack_require__(1)
-
-			var _navUtil2 = _interopRequireDefault(_navUtil)
-
-			function _interopRequireDefault(obj) {
-				return obj && obj.__esModule ? obj : { default: obj }
-			}
-
-			function _classCallCheck(instance, Constructor) {
-				if (!(instance instanceof Constructor)) {
-					throw new TypeError('Cannot call a class as a function')
-				}
-			}
-
-			function _possibleConstructorReturn(self, call) {
-				if (!self) {
-					throw new ReferenceError("this hasn't been initialised - super() hasn't been called")
-				}
-				return call && (typeof call === 'object' || typeof call === 'function') ? call : self
-			}
-
-			function _inherits(subClass, superClass) {
-				if (typeof superClass !== 'function' && superClass !== null) {
-					throw new TypeError(
-						'Super expression must either be null or a function, not ' + typeof superClass
-					)
-				}
-				subClass.prototype = Object.create(superClass && superClass.prototype, {
-					constructor: { value: subClass, enumerable: false, writable: true, configurable: true }
-				})
-				if (superClass)
-					Object.setPrototypeOf
-						? Object.setPrototypeOf(subClass, superClass)
-						: (subClass.__proto__ = superClass)
-			}
-
-			var InlineNavButton = (function(_React$Component) {
-				_inherits(InlineNavButton, _React$Component)
-
-				function InlineNavButton() {
-					_classCallCheck(this, InlineNavButton)
-
-					return _possibleConstructorReturn(
-						this,
-						(InlineNavButton.__proto__ || Object.getPrototypeOf(InlineNavButton)).apply(
-							this,
-							arguments
-						)
-					)
-				}
-
-				_createClass(InlineNavButton, [
-					{
-						key: 'onClick',
-						value: function onClick() {
-							if (this.props.disabled) {
-								return
-							}
-
-							switch (this.props.type) {
-								case 'prev':
-									return _navUtil2.default.goPrev()
-
-								case 'next':
-									return _navUtil2.default.goNext()
-							}
-						}
-					},
-					{
-						key: 'render',
-						value: function render() {
-							return React.createElement(
-								'div',
-								{
-									className:
-										'viewer--components--inline-nav-button is-' +
-										this.props.type +
-										(this.props.disabled ? ' is-disabled' : ' is-enabled'),
-									onClick: this.onClick.bind(this)
-								},
-								this.props.title
-							)
-						}
-					}
-				])
-
-				return InlineNavButton
-			})(React.Component)
-
-			exports.default = InlineNavButton
-
-			/***/
-		},
-		/* 24 */
-		/***/ function(module, exports, __webpack_require__) {
-			'use strict'
-
-			Object.defineProperty(exports, '__esModule', {
-				value: true
-			})
-
-			var _createClass = (function() {
-				function defineProperties(target, props) {
-					for (var i = 0; i < props.length; i++) {
-						var descriptor = props[i]
-						descriptor.enumerable = descriptor.enumerable || false
-						descriptor.configurable = true
-						if ('value' in descriptor) descriptor.writable = true
-						Object.defineProperty(target, descriptor.key, descriptor)
-					}
-				}
-				return function(Constructor, protoProps, staticProps) {
-					if (protoProps) defineProperties(Constructor.prototype, protoProps)
-					if (staticProps) defineProperties(Constructor, staticProps)
-					return Constructor
-				}
-			})()
-
-			__webpack_require__(48)
-
-			var _navStore = __webpack_require__(6)
-
-			var _navStore2 = _interopRequireDefault(_navStore)
-
-			var _navUtil = __webpack_require__(1)
-
-			var _navUtil2 = _interopRequireDefault(_navUtil)
-
-			var _logo = __webpack_require__(12)
-
-			var _logo2 = _interopRequireDefault(_logo)
-
-			var _hamburger = __webpack_require__(52)
-
-			var _hamburger2 = _interopRequireDefault(_hamburger)
-
-			var _arrow = __webpack_require__(51)
-
-			var _arrow2 = _interopRequireDefault(_arrow)
-
-			var _lockIcon = __webpack_require__(53)
-
-			var _lockIcon2 = _interopRequireDefault(_lockIcon)
-
-			var _Common = __webpack_require__(0)
-
-			var _Common2 = _interopRequireDefault(_Common)
-
-			function _interopRequireDefault(obj) {
-				return obj && obj.__esModule ? obj : { default: obj }
-			}
-
-			function _classCallCheck(instance, Constructor) {
-				if (!(instance instanceof Constructor)) {
-					throw new TypeError('Cannot call a class as a function')
-				}
-			}
-
-			function _possibleConstructorReturn(self, call) {
-				if (!self) {
-					throw new ReferenceError("this hasn't been initialised - super() hasn't been called")
-				}
-				return call && (typeof call === 'object' || typeof call === 'function') ? call : self
-			}
-
-			function _inherits(subClass, superClass) {
-				if (typeof superClass !== 'function' && superClass !== null) {
-					throw new TypeError(
-						'Super expression must either be null or a function, not ' + typeof superClass
-					)
-				}
-				subClass.prototype = Object.create(superClass && superClass.prototype, {
-					constructor: { value: subClass, enumerable: false, writable: true, configurable: true }
-				})
-				if (superClass)
-					Object.setPrototypeOf
-						? Object.setPrototypeOf(subClass, superClass)
-						: (subClass.__proto__ = superClass)
-			}
-
-			var getBackgroundImage = _Common2.default.util.getBackgroundImage
-			var OboModel = _Common2.default.models.OboModel
-			var StyleableText = _Common2.default.text.StyleableText
-			var StyleableTextComponent = _Common2.default.text.StyleableTextComponent
-
-			var Nav = (function(_React$Component) {
-				_inherits(Nav, _React$Component)
-
-				function Nav(props) {
-					_classCallCheck(this, Nav)
-
-					var _this = _possibleConstructorReturn(
-						this,
-						(Nav.__proto__ || Object.getPrototypeOf(Nav)).call(this, props)
-					)
-
-					_this.state = {
-						hover: false
-					}
-					return _this
-				}
-
-				_createClass(Nav, [
-					{
-						key: 'onClick',
-						value: function onClick(item) {
-							if (item.type === 'link') {
-								if (!_navUtil2.default.canNavigate(this.props.navState)) return
-								return _navUtil2.default.gotoPath(item.fullPath)
-							} else if (item.type === 'sub-link') {
-								var el = OboModel.models[item.id].getDomEl()
-								return el.scrollIntoView({ behavior: 'smooth' })
-							}
-						}
-					},
-					{
-						key: 'hideNav',
-						value: function hideNav() {
-							return _navUtil2.default.toggle()
-						}
-					},
-					{
-						key: 'onMouseOver',
-						value: function onMouseOver() {
-							return this.setState({ hover: true })
-						}
-					},
-					{
-						key: 'onMouseOut',
-						value: function onMouseOut() {
-							return this.setState({ hover: false })
-						}
-					},
-					{
-						key: 'renderLabel',
-						value: function renderLabel(label) {
-							if (label instanceof StyleableText) {
-								return React.createElement(StyleableTextComponent, { text: label })
-							} else {
-								return React.createElement('a', null, label)
-							}
-						}
-					},
-					{
-						key: 'render',
-						value: function render() {
-							var _this2 = this
-
-							var bg = void 0,
-								lockEl = void 0
-							if (this.props.navState.open || this.state.hover) {
-								bg = getBackgroundImage(_arrow2.default)
-							} else {
-								bg = getBackgroundImage(_hamburger2.default)
-							}
-
-							if (this.props.navState.locked) {
-								lockEl = React.createElement(
-									'div',
-									{ className: 'lock-icon' },
-									React.createElement('img', { src: _lockIcon2.default })
-								)
-							} else {
-								lockEl = null
-							}
-
-							var list = _navUtil2.default.getOrderedList(this.props.navState)
-
-							return React.createElement(
-								'div',
-								{
-									className:
-										'viewer--components--nav' +
-										(this.props.navState.locked ? ' is-locked' : ' is-unlocked') +
-										(this.props.navState.open ? ' is-open' : ' is-closed') +
-										(this.props.navState.disabled ? ' is-disabled' : ' is-enabled')
-								},
-								React.createElement(
-									'button',
-									{
-										className: 'toggle-button',
-										onClick: this.hideNav.bind(this),
-										onMouseOver: this.onMouseOver.bind(this),
-										onMouseOut: this.onMouseOut.bind(this),
-										style: {
-											backgroundImage: bg,
-											transform:
-												!this.props.navState.open && this.state.hover ? 'rotate(180deg)' : '',
-											filter: this.props.navState.open ? 'invert(100%)' : 'invert(0%)'
-										}
-									},
-									'Toggle Navigation Menu'
-								),
-								React.createElement(
-									'ul',
-									null,
-									list.map(function(item, index) {
-										switch (item.type) {
-											case 'heading':
-												var isSelected = false
-												return React.createElement(
-													'li',
-													{
-														key: index,
-														className: 'heading' + (isSelected ? ' is-selected' : ' is-not-select')
-													},
-													_this2.renderLabel(item.label)
-												)
-												break
-
-											case 'link':
-												var isSelected = _this2.props.navState.navTargetId === item.id
-												//var isPrevVisited = this.props.navState.navTargetHistory.indexOf(item.id) > -1
-												return React.createElement(
-													'li',
-													{
-														key: index,
-														onClick: _this2.onClick.bind(_this2, item),
-														className:
-															'link' +
-															(isSelected ? ' is-selected' : ' is-not-select') +
-															(item.flags.visited ? ' is-visited' : ' is-not-visited') +
-															(item.flags.complete ? ' is-complete' : ' is-not-complete') +
-															(item.flags.correct ? ' is-correct' : ' is-not-correct')
-													},
-													_this2.renderLabel(item.label),
-													lockEl
-												)
-												break
-
-											case 'sub-link':
-												var isSelected = _this2.props.navState.navTargetIndex === index
-
-												return React.createElement(
-													'li',
-													{
-														key: index,
-														onClick: _this2.onClick.bind(_this2, item),
-														className:
-															'sub-link' +
-															(isSelected ? ' is-selected' : ' is-not-select') +
-															(item.flags.correct ? ' is-correct' : ' is-not-correct')
-													},
-													_this2.renderLabel(item.label),
-													lockEl
-												)
-												break
-
-											case 'seperator':
-												return React.createElement(
-													'li',
-													{ key: index, className: 'seperator' },
-													React.createElement('hr', null)
-												)
-												break
-										}
-									})
-								),
-								React.createElement(_logo2.default, { inverted: true })
-							)
-						}
-					}
-				])
-
-				return Nav
-			})(React.Component)
-
-			exports.default = Nav
-
-			/***/
-		},
-		/* 25 */
-		/***/ function(module, exports, __webpack_require__) {
-			'use strict'
-
-			Object.defineProperty(exports, '__esModule', {
-				value: true
-			})
-
-			var _createClass = (function() {
-				function defineProperties(target, props) {
-					for (var i = 0; i < props.length; i++) {
-						var descriptor = props[i]
-						descriptor.enumerable = descriptor.enumerable || false
-						descriptor.configurable = true
-						if ('value' in descriptor) descriptor.writable = true
-						Object.defineProperty(target, descriptor.key, descriptor)
-					}
-				}
-				return function(Constructor, protoProps, staticProps) {
-					if (protoProps) defineProperties(Constructor.prototype, protoProps)
-					if (staticProps) defineProperties(Constructor, staticProps)
-					return Constructor
-				}
-			})()
-
-			__webpack_require__(50)
-
-			__webpack_require__(49)
-
-			var _Common = __webpack_require__(0)
-
-			var _Common2 = _interopRequireDefault(_Common)
-
-			var _react = __webpack_require__(20)
-
-			var _react2 = _interopRequireDefault(_react)
-
-			var _reactIdleTimer = __webpack_require__(45)
-
-			var _reactIdleTimer2 = _interopRequireDefault(_reactIdleTimer)
-
-			var _inlineNavButton = __webpack_require__(23)
-
-			var _inlineNavButton2 = _interopRequireDefault(_inlineNavButton)
-
-			var _navUtil = __webpack_require__(1)
-
-			var _navUtil2 = _interopRequireDefault(_navUtil)
-
-			var _apiUtil = __webpack_require__(3)
-
-			var _apiUtil2 = _interopRequireDefault(_apiUtil)
-
-			var _logo = __webpack_require__(12)
-
-			var _logo2 = _interopRequireDefault(_logo)
-
-			var _scoreStore = __webpack_require__(15)
-
-			var _scoreStore2 = _interopRequireDefault(_scoreStore)
-
-			var _questionStore = __webpack_require__(14)
-
-			var _questionStore2 = _interopRequireDefault(_questionStore)
-
-			var _assessmentStore = __webpack_require__(13)
-
-			var _assessmentStore2 = _interopRequireDefault(_assessmentStore)
-
-			var _navStore = __webpack_require__(6)
-
-			var _navStore2 = _interopRequireDefault(_navStore)
-
-			var _nav = __webpack_require__(24)
-
-			var _nav2 = _interopRequireDefault(_nav)
-
-			function _interopRequireDefault(obj) {
-				return obj && obj.__esModule ? obj : { default: obj }
-			}
-
-			function _classCallCheck(instance, Constructor) {
-				if (!(instance instanceof Constructor)) {
-					throw new TypeError('Cannot call a class as a function')
-				}
-			}
-
-			function _possibleConstructorReturn(self, call) {
-				if (!self) {
-					throw new ReferenceError("this hasn't been initialised - super() hasn't been called")
-				}
-				return call && (typeof call === 'object' || typeof call === 'function') ? call : self
-			}
-
-			function _inherits(subClass, superClass) {
-				if (typeof superClass !== 'function' && superClass !== null) {
-					throw new TypeError(
-						'Super expression must either be null or a function, not ' + typeof superClass
-					)
-				}
-				subClass.prototype = Object.create(superClass && superClass.prototype, {
-					constructor: { value: subClass, enumerable: false, writable: true, configurable: true }
-				})
-				if (superClass)
-					Object.setPrototypeOf
-						? Object.setPrototypeOf(subClass, superClass)
-						: (subClass.__proto__ = superClass)
-			}
-
-			var IDLE_TIMEOUT_DURATION_MS = 600000 // 10 minutes
-
-			var Legacy = _Common2.default.models.Legacy
-			var DOMUtil = _Common2.default.page.DOMUtil
-			var Screen = _Common2.default.page.Screen
-			var OboModel = _Common2.default.models.OboModel
-			var Dispatcher = _Common2.default.flux.Dispatcher
-			var ModalContainer = _Common2.default.components.ModalContainer
-			var SimpleDialog = _Common2.default.components.modal.SimpleDialog
-			var ModalUtil = _Common2.default.util.ModalUtil
-			var FocusBlocker = _Common2.default.components.FocusBlocker
-			var ModalStore = _Common2.default.stores.ModalStore
-			var FocusStore = _Common2.default.stores.FocusStore
-			var FocusUtil = _Common2.default.util.FocusUtil
-			var OboGlobals = _Common2.default.util.OboGlobals
-
-			// Dispatcher.on 'all', (eventName, payload) -> console.log 'EVENT TRIGGERED', eventName
-
-			Dispatcher.on('viewer:alert', function(payload) {
-				return ModalUtil.show(
-					_react2.default.createElement(
-						SimpleDialog,
-						{ ok: true, title: payload.value.title },
-						payload.value.message
-					)
-				)
-			})
-
-			var ViewerApp = (function(_React$Component) {
-				_inherits(ViewerApp, _React$Component)
-
-				// === REACT LIFECYCLE METHODS ===
-
-				function ViewerApp(props) {
-					_classCallCheck(this, ViewerApp)
-
-					var _this = _possibleConstructorReturn(
-						this,
-						(ViewerApp.__proto__ || Object.getPrototypeOf(ViewerApp)).call(this, props)
-					)
-
-					_Common2.default.Store.loadDependency(
-						'https://cdnjs.cloudflare.com/ajax/libs/KaTeX/0.5.1/katex.min.css'
-					)
-
-					Dispatcher.on('viewer:scrollTo', function(payload) {
-						return (ReactDOM.findDOMNode(_this.refs.container).scrollTop = payload.value)
-					})
-
-					Dispatcher.on('viewer:scrollToTop', _this.scrollToTop.bind(_this))
-					Dispatcher.on('getTextForVariable', _this.getTextForVariable.bind(_this))
-
-					_this.isPreviewing = OboGlobals.get('previewing')
-
-					var state = {
-						model: OboModel.create(OboGlobals.get('draft')),
-						navState: null,
-						scoreState: null,
-						questionState: null,
-						assessmentState: null,
-						modalState: null,
-						focusState: null,
-						navTargetId: null
-					}
-
-					_scoreStore2.default.init()
-					_questionStore2.default.init()
-					ModalStore.init()
-					FocusStore.init()
-
-					_navStore2.default.init(
-						state.model,
-						state.model.modelState.start,
-						window.location.pathname
-					)
-					_assessmentStore2.default.init(
-						OboGlobals.get('ObojoboDraft.Sections.Assessment:attemptHistory', [])
-					)
-
-					state.navState = _navStore2.default.getState()
-					state.scoreState = _scoreStore2.default.getState()
-					state.questionState = _questionStore2.default.getState()
-					state.assessmentState = _assessmentStore2.default.getState()
-					state.modalState = ModalStore.getState()
-					state.focusState = FocusStore.getState()
-
-					_this.onNavStoreChange = function() {
-						return _this.setState({ navState: _navStore2.default.getState() })
-					}
-					_this.onScoreStoreChange = function() {
-						return _this.setState({ scoreState: _scoreStore2.default.getState() })
-					}
-					_this.onQuestionStoreChange = function() {
-						return _this.setState({ questionState: _questionStore2.default.getState() })
-					}
-					_this.onAssessmentStoreChange = function() {
-						return _this.setState({ assessmentState: _assessmentStore2.default.getState() })
-					}
-					_this.onModalStoreChange = function() {
-						return _this.setState({ modalState: ModalStore.getState() })
-					}
-					_this.onFocusStoreChange = function() {
-						return _this.setState({ focusState: FocusStore.getState() })
-					}
-
-					_this.onIdle = _this.onIdle.bind(_this)
-					_this.onReturnFromIdle = _this.onReturnFromIdle.bind(_this)
-					_this.onWindowClose = _this.onWindowClose.bind(_this)
-					_this.onVisibilityChange = _this.onVisibilityChange.bind(_this)
-
-					window.onbeforeunload = _this.onWindowClose
-
-					_this.state = state
-					return _this
-				}
-
-				_createClass(ViewerApp, [
-					{
-						key: 'componentDidMount',
-						value: function componentDidMount() {
-							document.addEventListener('visibilitychange', this.onVisibilityChange)
-						}
-					},
-					{
-						key: 'componentWillMount',
-						value: function componentWillMount() {
-							// === SET UP DATA STORES ===
-							_navStore2.default.onChange(this.onNavStoreChange)
-							_scoreStore2.default.onChange(this.onScoreStoreChange)
-							_questionStore2.default.onChange(this.onQuestionStoreChange)
-							_assessmentStore2.default.onChange(this.onAssessmentStoreChange)
-							ModalStore.onChange(this.onModalStoreChange)
-							FocusStore.onChange(this.onFocusStoreChange)
-						}
-					},
-					{
-						key: 'componentWillUnmount',
-						value: function componentWillUnmount() {
-							_navStore2.default.offChange(this.onNavStoreChange)
-							_scoreStore2.default.offChange(this.onScoreStoreChange)
-							_questionStore2.default.offChange(this.onQuestionStoreChange)
-							_assessmentStore2.default.offChange(this.onAssessmentStoreChange)
-							ModalStore.offChange(this.onModalStoreChange)
-							FocusStore.offChange(this.onFocusStoreChange)
-
-							document.removeEventListener('visibilitychange', this.onVisibilityChange)
-						}
-
-						// componentDidMount: ->
-						// NavUtil.gotoPath window.location.pathname
-					},
-					{
-						key: 'componentWillUpdate',
-						value: function componentWillUpdate(nextProps, nextState) {
-							var navTargetId = this.state.navTargetId
-
-							var nextNavTargetId = this.state.navState.navTargetId
-
-							if (navTargetId !== nextNavTargetId) {
-								this.needsScroll = true
-								return this.setState({ navTargetId: nextNavTargetId })
-							}
-						}
-					},
-					{
-						key: 'componentDidUpdate',
-						value: function componentDidUpdate() {
-							// alert 'here, fixme'
-							if (this.lastCanNavigate !== _navUtil2.default.canNavigate(this.state.navState)) {
-								this.needsScroll = true
-							}
-							this.lastCanNavigate = _navUtil2.default.canNavigate(this.state.navState)
-							if (this.needsScroll != null) {
-								this.scrollToTop()
-
-								return delete this.needsScroll
-							}
-						}
-					},
-					{
-						key: 'onVisibilityChange',
-						value: function onVisibilityChange(event) {
-							var _this2 = this
-
-							if (document.hidden) {
-								_apiUtil2.default
-									.postEvent(this.state.model, 'viewer:leave', '1.0.0', {})
-									.then(function(res) {
-										_this2.leaveEvent = res.value
-									})
-							} else {
-								_apiUtil2.default.postEvent(this.state.model, 'viewer:return', '1.0.0', {
-									relatedEventId: this.leaveEvent.id
-								})
-
-								delete this.leaveEvent
-							}
-						}
-					},
-					{
-						key: 'getTextForVariable',
-						value: function getTextForVariable(event, variable, textModel) {
-							return (event.text = _Common2.default.Store.getTextForVariable(
-								variable,
-								textModel,
-								this.state
-							))
-						}
-					},
-					{
-						key: 'scrollToTop',
-						value: function scrollToTop() {
-							var el = ReactDOM.findDOMNode(this.refs.prev)
-							var container = ReactDOM.findDOMNode(this.refs.container)
-
-							if (!container) return
-
-							if (el) {
-								return (container.scrollTop = ReactDOM.findDOMNode(
-									el
-								).getBoundingClientRect().height)
-							} else {
-								return (container.scrollTop = 0)
-							}
-						}
-
-						// === NON REACT LIFECYCLE METHODS ===
-					},
-					{
-						key: 'update',
-						value: function update(json) {
-							try {
-								var o = void 0
-								return (o = JSON.parse(json))
-							} catch (e) {
-								alert('Error parsing JSON')
-								this.setState({ model: this.state.model })
-								return
-							}
-						}
-					},
-					{
-						key: 'onBack',
-						value: function onBack() {
-							return _navUtil2.default.goPrev()
-						}
-					},
-					{
-						key: 'onNext',
-						value: function onNext() {
-							return _navUtil2.default.goNext()
-						}
-					},
-					{
-						key: 'onMouseDown',
-						value: function onMouseDown(event) {
-							if (this.state.focusState.focussedId == null) {
-								return
-							}
-							if (
-								!DOMUtil.findParentComponentIds(event.target).has(this.state.focusState.focussedId)
-							) {
-								return FocusUtil.unfocus()
-							}
-						}
-					},
-					{
-						key: 'onScroll',
-						value: function onScroll(event) {
-							if (this.state.focusState.focussedId == null) {
-								return
-							}
-
-							var component = FocusUtil.getFocussedComponent(this.state.focusState)
-							if (component == null) {
-								return
-							}
-
-							var el = component.getDomEl()
-							if (!el) {
-								return
-							}
-
-							if (!Screen.isElementVisible(el)) {
-								return FocusUtil.unfocus()
-							}
-						}
-					},
-					{
-						key: 'onIdle',
-						value: function onIdle() {
-							var _this3 = this
-
-							this.lastActiveEpoch = new Date(this.refs.idleTimer.getLastActiveTime())
-
-							_apiUtil2.default
-								.postEvent(this.state.model, 'viewer:inactive', '1.0.0', {
-									lastActiveTime: this.lastActiveEpoch,
-									inactiveDuration: IDLE_TIMEOUT_DURATION_MS
-								})
-								.then(function(res) {
-									_this3.inactiveEvent = res.value
-								})
-						}
-					},
-					{
-						key: 'onReturnFromIdle',
-						value: function onReturnFromIdle() {
-							_apiUtil2.default.postEvent(this.state.model, 'viewer:returnFromInactive', '1.0.0', {
-								lastActiveTime: this.lastActiveEpoch,
-								inactiveDuration: Date.now() - this.lastActiveEpoch,
-								relatedEventId: this.inactiveEvent.id
-							})
-
-							delete this.lastActiveEpoch
-							delete this.inactiveEvent
-						}
-					},
-					{
-						key: 'onWindowClose',
-						value: function onWindowClose(e) {
-							_apiUtil2.default.postEvent(this.state.model, 'viewer:close', '1.0.0', {})
-						}
-					},
-					{
-						key: 'resetAssessments',
-						value: function resetAssessments() {
-							_assessmentStore2.default.init()
-							_questionStore2.default.init()
-							_scoreStore2.default.init()
-
-							_assessmentStore2.default.triggerChange()
-							_questionStore2.default.triggerChange()
-							_scoreStore2.default.triggerChange()
-
-							return ModalUtil.show(
-								_react2.default.createElement(
-									SimpleDialog,
-									{ ok: true, width: '15em' },
-									'Assessment attempts and all question responses have been reset.'
-								)
-							)
-						}
-					},
-					{
-						key: 'unlockNavigation',
-						value: function unlockNavigation() {
-							return _navUtil2.default.unlock()
-						}
-					},
-					{
-						key: 'render',
-						value: function render() {
-							var nextEl = void 0,
-								nextModel = void 0,
-								prevEl = void 0
-							window.__lo = this.state.model
-							window.__s = this.state
-
-							var ModuleComponent = this.state.model.getComponentClass()
-
-							var navTargetModel = _navUtil2.default.getNavTargetModel(this.state.navState)
-							var navTargetTitle = '?'
-							if (navTargetModel != null) {
-								navTargetTitle = navTargetModel.title
-							}
-
-							var prevModel = (nextModel = null)
-							if (_navUtil2.default.canNavigate(this.state.navState)) {
-								prevModel = _navUtil2.default.getPrevModel(this.state.navState)
-								if (prevModel) {
-									prevEl = _react2.default.createElement(_inlineNavButton2.default, {
-										ref: 'prev',
-										type: 'prev',
-										title: 'Back: ' + prevModel.title
-									})
-								} else {
-									prevEl = _react2.default.createElement(_inlineNavButton2.default, {
-										ref: 'prev',
-										type: 'prev',
-										title: 'Start of ' + this.state.model.title,
-										disabled: true
-									})
-								}
-
-								nextModel = _navUtil2.default.getNextModel(this.state.navState)
-								if (nextModel) {
-									nextEl = _react2.default.createElement(_inlineNavButton2.default, {
-										ref: 'next',
-										type: 'next',
-										title: 'Next: ' + nextModel.title
-									})
-								} else {
-									nextEl = _react2.default.createElement(_inlineNavButton2.default, {
-										ref: 'next',
-										type: 'next',
-										title: 'End of ' + this.state.model.title,
-										disabled: true
-									})
-								}
-							}
-
-							var modal = ModalUtil.getCurrentModal(this.state.modalState)
-
-							return _react2.default.createElement(
-								_reactIdleTimer2.default,
-								{
-									ref: 'idleTimer',
-									element: window,
-									timeout: IDLE_TIMEOUT_DURATION_MS,
-									idleAction: this.onIdle,
-									activeAction: this.onReturnFromIdle
-								},
-								_react2.default.createElement(
-									'div',
-									{
-										ref: 'container',
-										onMouseDown: this.onMouseDown.bind(this),
-										onScroll: this.onScroll.bind(this),
-										className:
-											'viewer--viewer-app' +
-											(this.isPreviewing ? ' is-previewing' : ' is-not-previewing') +
-											(this.state.navState.locked ? ' is-locked-nav' : ' is-unlocked-nav') +
-											(this.state.navState.open ? ' is-open-nav' : ' is-closed-nav') +
-											(this.state.navState.disabled ? ' is-disabled-nav' : ' is-enabled-nav') +
-											' is-focus-state-' +
-											this.state.focusState.viewState
-									},
-									_react2.default.createElement(
-										'header',
-										null,
-										_react2.default.createElement(
-											'div',
-											{ className: 'pad' },
-											_react2.default.createElement(
-												'span',
-												{ className: 'module-title' },
-												this.state.model.title
-											),
-											_react2.default.createElement(
-												'span',
-												{ className: 'location' },
-												navTargetTitle
-											),
-											_react2.default.createElement(_logo2.default, null)
-										)
-									),
-									_react2.default.createElement(_nav2.default, { navState: this.state.navState }),
-									prevEl,
-									_react2.default.createElement(ModuleComponent, {
-										model: this.state.model,
-										moduleData: this.state
-									}),
-									nextEl,
-									this.isPreviewing
-										? _react2.default.createElement(
-												'div',
-												{ className: 'preview-banner' },
-												_react2.default.createElement(
-													'span',
-													null,
-													'You are previewing this object - Assessments will not be counted'
-												),
-												_react2.default.createElement(
-													'div',
-													{ className: 'controls' },
-													_react2.default.createElement(
-														'button',
-														{
-															onClick: this.unlockNavigation.bind(this),
-															disabled: !this.state.navState.locked
-														},
-														'Unlock navigation'
-													),
-													_react2.default.createElement(
-														'button',
-														{ onClick: this.resetAssessments.bind(this) },
-														'Reset assessments & questions'
-													)
-												)
-											)
-										: null,
-									_react2.default.createElement(FocusBlocker, { moduleData: this.state }),
-									modal ? _react2.default.createElement(ModalContainer, null, modal) : null
-								)
-							)
-						}
-					}
-				])
-
-				return ViewerApp
-			})(_react2.default.Component)
-
-			exports.default = ViewerApp
-
-			/***/
-		},
-		/* 26 */
-		/***/ function(module, exports, __webpack_require__) {
-			'use strict'
-
-			Object.defineProperty(exports, '__esModule', {
-				value: true
-			})
-
-			var _viewerApp = __webpack_require__(25)
-
-			var _viewerApp2 = _interopRequireDefault(_viewerApp)
-
-			var _scoreStore = __webpack_require__(15)
-
-			var _scoreStore2 = _interopRequireDefault(_scoreStore)
-
-			var _assessmentStore = __webpack_require__(13)
-
-			var _assessmentStore2 = _interopRequireDefault(_assessmentStore)
-
-			var _navStore = __webpack_require__(6)
-
-			var _navStore2 = _interopRequireDefault(_navStore)
-
-			var _questionStore = __webpack_require__(14)
-
-			var _questionStore2 = _interopRequireDefault(_questionStore)
-
-			var _assessmentUtil = __webpack_require__(16)
-
-			var _assessmentUtil2 = _interopRequireDefault(_assessmentUtil)
-
-			var _navUtil = __webpack_require__(1)
-
-			var _navUtil2 = _interopRequireDefault(_navUtil)
-
-			var _scoreUtil = __webpack_require__(7)
-
-			var _scoreUtil2 = _interopRequireDefault(_scoreUtil)
-
-			var _apiUtil = __webpack_require__(3)
-
-			var _apiUtil2 = _interopRequireDefault(_apiUtil)
-
-			var _questionUtil = __webpack_require__(5)
-
-			var _questionUtil2 = _interopRequireDefault(_questionUtil)
-
-			function _interopRequireDefault(obj) {
-				return obj && obj.__esModule ? obj : { default: obj }
-			}
-
-			exports.default = {
-				components: {
-					ViewerApp: _viewerApp2.default
-				},
-
-				stores: {
-					ScoreStore: _scoreStore2.default,
-					AssessmentStore: _assessmentStore2.default,
-					NavStore: _navStore2.default,
-					QuestionStore: _questionStore2.default
-				},
-
-				util: {
-					AssessmentUtil: _assessmentUtil2.default,
-					NavUtil: _navUtil2.default,
-					ScoreUtil: _scoreUtil2.default,
-					APIUtil: _apiUtil2.default,
-					QuestionUtil: _questionUtil2.default
-				}
-			}
-
-			/***/
-		},
-		/* 27 */
-		/***/ function(module, exports, __webpack_require__) {
-			'use strict'
-
-			var startOfDay = __webpack_require__(36)
+			var startOfDay = __webpack_require__(32)
 
 			var MILLISECONDS_IN_MINUTE = 60000
 			var MILLISECONDS_IN_DAY = 86400000
 
 			/**
-			 * @category Day Helpers
-			 * @summary Get the number of calendar days between the given dates.
-			 *
-			 * @description
-			 * Get the number of calendar days between the given dates.
-			 *
-			 * @param {Date|String|Number} dateLeft - the later date
-			 * @param {Date|String|Number} dateRight - the earlier date
-			 * @returns {Number} the number of calendar days
-			 *
-			 * @example
-			 * // How many calendar days are between
-			 * // 2 July 2011 23:00:00 and 2 July 2012 00:00:00?
-			 * var result = differenceInCalendarDays(
-			 *   new Date(2012, 6, 2, 0, 0),
-			 *   new Date(2011, 6, 2, 23, 0)
-			 * )
-			 * //=> 366
-			 */
+ * @category Day Helpers
+ * @summary Get the number of calendar days between the given dates.
+ *
+ * @description
+ * Get the number of calendar days between the given dates.
+ *
+ * @param {Date|String|Number} dateLeft - the later date
+ * @param {Date|String|Number} dateRight - the earlier date
+ * @returns {Number} the number of calendar days
+ *
+ * @example
+ * // How many calendar days are between
+ * // 2 July 2011 23:00:00 and 2 July 2012 00:00:00?
+ * var result = differenceInCalendarDays(
+ *   new Date(2012, 6, 2, 0, 0),
+ *   new Date(2011, 6, 2, 23, 0)
+ * )
+ * //=> 366
+ */
 			function differenceInCalendarDays(dirtyDateLeft, dirtyDateRight) {
 				var startOfDayLeft = startOfDay(dirtyDateLeft)
 				var startOfDayRight = startOfDay(dirtyDateRight)
@@ -4567,100 +3481,100 @@
 
 			/***/
 		},
-		/* 28 */
+		/* 24 */
 		/***/ function(module, exports, __webpack_require__) {
 			'use strict'
 
-			var getDayOfYear = __webpack_require__(29)
-			var getISOWeek = __webpack_require__(30)
-			var getISOYear = __webpack_require__(17)
-			var parse = __webpack_require__(2)
-			var isValid = __webpack_require__(31)
-			var enLocale = __webpack_require__(35)
+			var getDayOfYear = __webpack_require__(25)
+			var getISOWeek = __webpack_require__(26)
+			var getISOYear = __webpack_require__(12)
+			var parse = __webpack_require__(1)
+			var isValid = __webpack_require__(27)
+			var enLocale = __webpack_require__(31)
 
 			/**
-			 * @category Common Helpers
-			 * @summary Format the date.
-			 *
-			 * @description
-			 * Return the formatted date string in the given format.
-			 *
-			 * Accepted tokens:
-			 * | Unit                    | Token | Result examples                  |
-			 * |-------------------------|-------|----------------------------------|
-			 * | Month                   | M     | 1, 2, ..., 12                    |
-			 * |                         | Mo    | 1st, 2nd, ..., 12th              |
-			 * |                         | MM    | 01, 02, ..., 12                  |
-			 * |                         | MMM   | Jan, Feb, ..., Dec               |
-			 * |                         | MMMM  | January, February, ..., December |
-			 * | Quarter                 | Q     | 1, 2, 3, 4                       |
-			 * |                         | Qo    | 1st, 2nd, 3rd, 4th               |
-			 * | Day of month            | D     | 1, 2, ..., 31                    |
-			 * |                         | Do    | 1st, 2nd, ..., 31st              |
-			 * |                         | DD    | 01, 02, ..., 31                  |
-			 * | Day of year             | DDD   | 1, 2, ..., 366                   |
-			 * |                         | DDDo  | 1st, 2nd, ..., 366th             |
-			 * |                         | DDDD  | 001, 002, ..., 366               |
-			 * | Day of week             | d     | 0, 1, ..., 6                     |
-			 * |                         | do    | 0th, 1st, ..., 6th               |
-			 * |                         | dd    | Su, Mo, ..., Sa                  |
-			 * |                         | ddd   | Sun, Mon, ..., Sat               |
-			 * |                         | dddd  | Sunday, Monday, ..., Saturday    |
-			 * | Day of ISO week         | E     | 1, 2, ..., 7                     |
-			 * | ISO week                | W     | 1, 2, ..., 53                    |
-			 * |                         | Wo    | 1st, 2nd, ..., 53rd              |
-			 * |                         | WW    | 01, 02, ..., 53                  |
-			 * | Year                    | YY    | 00, 01, ..., 99                  |
-			 * |                         | YYYY  | 1900, 1901, ..., 2099            |
-			 * | ISO week-numbering year | GG    | 00, 01, ..., 99                  |
-			 * |                         | GGGG  | 1900, 1901, ..., 2099            |
-			 * | AM/PM                   | A     | AM, PM                           |
-			 * |                         | a     | am, pm                           |
-			 * |                         | aa    | a.m., p.m.                       |
-			 * | Hour                    | H     | 0, 1, ... 23                     |
-			 * |                         | HH    | 00, 01, ... 23                   |
-			 * |                         | h     | 1, 2, ..., 12                    |
-			 * |                         | hh    | 01, 02, ..., 12                  |
-			 * | Minute                  | m     | 0, 1, ..., 59                    |
-			 * |                         | mm    | 00, 01, ..., 59                  |
-			 * | Second                  | s     | 0, 1, ..., 59                    |
-			 * |                         | ss    | 00, 01, ..., 59                  |
-			 * | 1/10 of second          | S     | 0, 1, ..., 9                     |
-			 * | 1/100 of second         | SS    | 00, 01, ..., 99                  |
-			 * | Millisecond             | SSS   | 000, 001, ..., 999               |
-			 * | Timezone                | Z     | -01:00, +00:00, ... +12:00       |
-			 * |                         | ZZ    | -0100, +0000, ..., +1200         |
-			 * | Seconds timestamp       | X     | 512969520                        |
-			 * | Milliseconds timestamp  | x     | 512969520900                     |
-			 *
-			 * The characters wrapped in square brackets are escaped.
-			 *
-			 * The result may vary by locale.
-			 *
-			 * @param {Date|String|Number} date - the original date
-			 * @param {String} [format='YYYY-MM-DDTHH:mm:ss.SSSZ'] - the string of tokens
-			 * @param {Object} [options] - the object with options
-			 * @param {Object} [options.locale=enLocale] - the locale object
-			 * @returns {String} the formatted date string
-			 *
-			 * @example
-			 * // Represent 11 February 2014 in middle-endian format:
-			 * var result = format(
-			 *   new Date(2014, 1, 11),
-			 *   'MM/DD/YYYY'
-			 * )
-			 * //=> '02/11/2014'
-			 *
-			 * @example
-			 * // Represent 2 July 2014 in Esperanto:
-			 * var eoLocale = require('date-fns/locale/eo')
-			 * var result = format(
-			 *   new Date(2014, 6, 2),
-			 *   'Do [de] MMMM YYYY',
-			 *   {locale: eoLocale}
-			 * )
-			 * //=> '2-a de julio 2014'
-			 */
+ * @category Common Helpers
+ * @summary Format the date.
+ *
+ * @description
+ * Return the formatted date string in the given format.
+ *
+ * Accepted tokens:
+ * | Unit                    | Token | Result examples                  |
+ * |-------------------------|-------|----------------------------------|
+ * | Month                   | M     | 1, 2, ..., 12                    |
+ * |                         | Mo    | 1st, 2nd, ..., 12th              |
+ * |                         | MM    | 01, 02, ..., 12                  |
+ * |                         | MMM   | Jan, Feb, ..., Dec               |
+ * |                         | MMMM  | January, February, ..., December |
+ * | Quarter                 | Q     | 1, 2, 3, 4                       |
+ * |                         | Qo    | 1st, 2nd, 3rd, 4th               |
+ * | Day of month            | D     | 1, 2, ..., 31                    |
+ * |                         | Do    | 1st, 2nd, ..., 31st              |
+ * |                         | DD    | 01, 02, ..., 31                  |
+ * | Day of year             | DDD   | 1, 2, ..., 366                   |
+ * |                         | DDDo  | 1st, 2nd, ..., 366th             |
+ * |                         | DDDD  | 001, 002, ..., 366               |
+ * | Day of week             | d     | 0, 1, ..., 6                     |
+ * |                         | do    | 0th, 1st, ..., 6th               |
+ * |                         | dd    | Su, Mo, ..., Sa                  |
+ * |                         | ddd   | Sun, Mon, ..., Sat               |
+ * |                         | dddd  | Sunday, Monday, ..., Saturday    |
+ * | Day of ISO week         | E     | 1, 2, ..., 7                     |
+ * | ISO week                | W     | 1, 2, ..., 53                    |
+ * |                         | Wo    | 1st, 2nd, ..., 53rd              |
+ * |                         | WW    | 01, 02, ..., 53                  |
+ * | Year                    | YY    | 00, 01, ..., 99                  |
+ * |                         | YYYY  | 1900, 1901, ..., 2099            |
+ * | ISO week-numbering year | GG    | 00, 01, ..., 99                  |
+ * |                         | GGGG  | 1900, 1901, ..., 2099            |
+ * | AM/PM                   | A     | AM, PM                           |
+ * |                         | a     | am, pm                           |
+ * |                         | aa    | a.m., p.m.                       |
+ * | Hour                    | H     | 0, 1, ... 23                     |
+ * |                         | HH    | 00, 01, ... 23                   |
+ * |                         | h     | 1, 2, ..., 12                    |
+ * |                         | hh    | 01, 02, ..., 12                  |
+ * | Minute                  | m     | 0, 1, ..., 59                    |
+ * |                         | mm    | 00, 01, ..., 59                  |
+ * | Second                  | s     | 0, 1, ..., 59                    |
+ * |                         | ss    | 00, 01, ..., 59                  |
+ * | 1/10 of second          | S     | 0, 1, ..., 9                     |
+ * | 1/100 of second         | SS    | 00, 01, ..., 99                  |
+ * | Millisecond             | SSS   | 000, 001, ..., 999               |
+ * | Timezone                | Z     | -01:00, +00:00, ... +12:00       |
+ * |                         | ZZ    | -0100, +0000, ..., +1200         |
+ * | Seconds timestamp       | X     | 512969520                        |
+ * | Milliseconds timestamp  | x     | 512969520900                     |
+ *
+ * The characters wrapped in square brackets are escaped.
+ *
+ * The result may vary by locale.
+ *
+ * @param {Date|String|Number} date - the original date
+ * @param {String} [format='YYYY-MM-DDTHH:mm:ss.SSSZ'] - the string of tokens
+ * @param {Object} [options] - the object with options
+ * @param {Object} [options.locale=enLocale] - the locale object
+ * @returns {String} the formatted date string
+ *
+ * @example
+ * // Represent 11 February 2014 in middle-endian format:
+ * var result = format(
+ *   new Date(2014, 1, 11),
+ *   'MM/DD/YYYY'
+ * )
+ * //=> '02/11/2014'
+ *
+ * @example
+ * // Represent 2 July 2014 in Esperanto:
+ * var eoLocale = require('date-fns/locale/eo')
+ * var result = format(
+ *   new Date(2014, 6, 2),
+ *   'Do [de] MMMM YYYY',
+ *   {locale: eoLocale}
+ * )
+ * //=> '2-a de julio 2014'
+ */
 			function format(dirtyDate, dirtyFormatStr, dirtyOptions) {
 				var formatStr = dirtyFormatStr ? String(dirtyFormatStr) : 'YYYY-MM-DDTHH:mm:ss.SSSZ'
 				var options = dirtyOptions || {}
@@ -4902,29 +3816,29 @@
 
 			/***/
 		},
-		/* 29 */
+		/* 25 */
 		/***/ function(module, exports, __webpack_require__) {
 			'use strict'
 
-			var parse = __webpack_require__(2)
-			var startOfYear = __webpack_require__(39)
-			var differenceInCalendarDays = __webpack_require__(27)
+			var parse = __webpack_require__(1)
+			var startOfYear = __webpack_require__(35)
+			var differenceInCalendarDays = __webpack_require__(23)
 
 			/**
-			 * @category Day Helpers
-			 * @summary Get the day of the year of the given date.
-			 *
-			 * @description
-			 * Get the day of the year of the given date.
-			 *
-			 * @param {Date|String|Number} date - the given date
-			 * @returns {Number} the day of year
-			 *
-			 * @example
-			 * // Which day of the year is 2 July 2014?
-			 * var result = getDayOfYear(new Date(2014, 6, 2))
-			 * //=> 183
-			 */
+ * @category Day Helpers
+ * @summary Get the day of the year of the given date.
+ *
+ * @description
+ * Get the day of the year of the given date.
+ *
+ * @param {Date|String|Number} date - the given date
+ * @returns {Number} the day of year
+ *
+ * @example
+ * // Which day of the year is 2 July 2014?
+ * var result = getDayOfYear(new Date(2014, 6, 2))
+ * //=> 183
+ */
 			function getDayOfYear(dirtyDate) {
 				var date = parse(dirtyDate)
 				var diff = differenceInCalendarDays(date, startOfYear(date))
@@ -4936,33 +3850,33 @@
 
 			/***/
 		},
-		/* 30 */
+		/* 26 */
 		/***/ function(module, exports, __webpack_require__) {
 			'use strict'
 
-			var parse = __webpack_require__(2)
-			var startOfISOWeek = __webpack_require__(8)
-			var startOfISOYear = __webpack_require__(37)
+			var parse = __webpack_require__(1)
+			var startOfISOWeek = __webpack_require__(6)
+			var startOfISOYear = __webpack_require__(33)
 
 			var MILLISECONDS_IN_WEEK = 604800000
 
 			/**
-			 * @category ISO Week Helpers
-			 * @summary Get the ISO week of the given date.
-			 *
-			 * @description
-			 * Get the ISO week of the given date.
-			 *
-			 * ISO week-numbering year: http://en.wikipedia.org/wiki/ISO_week_date
-			 *
-			 * @param {Date|String|Number} date - the given date
-			 * @returns {Number} the ISO week
-			 *
-			 * @example
-			 * // Which week of the ISO-week numbering year is 2 January 2005?
-			 * var result = getISOWeek(new Date(2005, 0, 2))
-			 * //=> 53
-			 */
+ * @category ISO Week Helpers
+ * @summary Get the ISO week of the given date.
+ *
+ * @description
+ * Get the ISO week of the given date.
+ *
+ * ISO week-numbering year: http://en.wikipedia.org/wiki/ISO_week_date
+ *
+ * @param {Date|String|Number} date - the given date
+ * @returns {Number} the ISO week
+ *
+ * @example
+ * // Which week of the ISO-week numbering year is 2 January 2005?
+ * var result = getISOWeek(new Date(2005, 0, 2))
+ * //=> 53
+ */
 			function getISOWeek(dirtyDate) {
 				var date = parse(dirtyDate)
 				var diff = startOfISOWeek(date).getTime() - startOfISOYear(date).getTime()
@@ -4977,36 +3891,36 @@
 
 			/***/
 		},
-		/* 31 */
+		/* 27 */
 		/***/ function(module, exports, __webpack_require__) {
 			'use strict'
 
-			var isDate = __webpack_require__(18)
+			var isDate = __webpack_require__(13)
 
 			/**
-			 * @category Common Helpers
-			 * @summary Is the given date valid?
-			 *
-			 * @description
-			 * Returns false if argument is Invalid Date and true otherwise.
-			 * Invalid Date is a Date, whose time value is NaN.
-			 *
-			 * Time value of Date: http://es5.github.io/#x15.9.1.1
-			 *
-			 * @param {Date} date - the date to check
-			 * @returns {Boolean} the date is valid
-			 * @throws {TypeError} argument must be an instance of Date
-			 *
-			 * @example
-			 * // For the valid date:
-			 * var result = isValid(new Date(2014, 1, 31))
-			 * //=> true
-			 *
-			 * @example
-			 * // For the invalid date:
-			 * var result = isValid(new Date(''))
-			 * //=> false
-			 */
+ * @category Common Helpers
+ * @summary Is the given date valid?
+ *
+ * @description
+ * Returns false if argument is Invalid Date and true otherwise.
+ * Invalid Date is a Date, whose time value is NaN.
+ *
+ * Time value of Date: http://es5.github.io/#x15.9.1.1
+ *
+ * @param {Date} date - the date to check
+ * @returns {Boolean} the date is valid
+ * @throws {TypeError} argument must be an instance of Date
+ *
+ * @example
+ * // For the valid date:
+ * var result = isValid(new Date(2014, 1, 31))
+ * //=> true
+ *
+ * @example
+ * // For the invalid date:
+ * var result = isValid(new Date(''))
+ * //=> false
+ */
 			function isValid(dirtyDate) {
 				if (isDate(dirtyDate)) {
 					return !isNaN(dirtyDate)
@@ -5019,7 +3933,7 @@
 
 			/***/
 		},
-		/* 32 */
+		/* 28 */
 		/***/ function(module, exports, __webpack_require__) {
 			'use strict'
 
@@ -5064,10 +3978,7 @@
 					}
 				}
 
-				var formattingTokens = commonFormatterKeys
-					.concat(formatterKeys)
-					.sort()
-					.reverse()
+				var formattingTokens = commonFormatterKeys.concat(formatterKeys).sort().reverse()
 				var formattingTokensRegExp = new RegExp(
 					'(\\[[^\\[]*\\])|(\\\\)?' + '(' + formattingTokens.join('|') + '|.)',
 					'g'
@@ -5080,7 +3991,7 @@
 
 			/***/
 		},
-		/* 33 */
+		/* 29 */
 		/***/ function(module, exports, __webpack_require__) {
 			'use strict'
 
@@ -5186,11 +4097,11 @@
 
 			/***/
 		},
-		/* 34 */
+		/* 30 */
 		/***/ function(module, exports, __webpack_require__) {
 			'use strict'
 
-			var buildFormattingTokensRegExp = __webpack_require__(32)
+			var buildFormattingTokensRegExp = __webpack_require__(28)
 
 			function buildFormatLocale() {
 				// Note: in English, the names of days of the week and months are capitalized.
@@ -5315,17 +4226,17 @@
 
 			/***/
 		},
-		/* 35 */
+		/* 31 */
 		/***/ function(module, exports, __webpack_require__) {
 			'use strict'
 
-			var buildDistanceInWordsLocale = __webpack_require__(33)
-			var buildFormatLocale = __webpack_require__(34)
+			var buildDistanceInWordsLocale = __webpack_require__(29)
+			var buildFormatLocale = __webpack_require__(30)
 
 			/**
-			 * @category Locales
-			 * @summary English locale.
-			 */
+ * @category Locales
+ * @summary English locale.
+ */
 			module.exports = {
 				distanceInWords: buildDistanceInWordsLocale(),
 				format: buildFormatLocale()
@@ -5333,28 +4244,28 @@
 
 			/***/
 		},
-		/* 36 */
+		/* 32 */
 		/***/ function(module, exports, __webpack_require__) {
 			'use strict'
 
-			var parse = __webpack_require__(2)
+			var parse = __webpack_require__(1)
 
 			/**
-			 * @category Day Helpers
-			 * @summary Return the start of a day for the given date.
-			 *
-			 * @description
-			 * Return the start of a day for the given date.
-			 * The result will be in the local timezone.
-			 *
-			 * @param {Date|String|Number} date - the original date
-			 * @returns {Date} the start of a day
-			 *
-			 * @example
-			 * // The start of a day for 2 September 2014 11:55:00:
-			 * var result = startOfDay(new Date(2014, 8, 2, 11, 55, 0))
-			 * //=> Tue Sep 02 2014 00:00:00
-			 */
+ * @category Day Helpers
+ * @summary Return the start of a day for the given date.
+ *
+ * @description
+ * Return the start of a day for the given date.
+ * The result will be in the local timezone.
+ *
+ * @param {Date|String|Number} date - the original date
+ * @returns {Date} the start of a day
+ *
+ * @example
+ * // The start of a day for 2 September 2014 11:55:00:
+ * var result = startOfDay(new Date(2014, 8, 2, 11, 55, 0))
+ * //=> Tue Sep 02 2014 00:00:00
+ */
 			function startOfDay(dirtyDate) {
 				var date = parse(dirtyDate)
 				date.setHours(0, 0, 0, 0)
@@ -5365,32 +4276,32 @@
 
 			/***/
 		},
-		/* 37 */
+		/* 33 */
 		/***/ function(module, exports, __webpack_require__) {
 			'use strict'
 
-			var getISOYear = __webpack_require__(17)
-			var startOfISOWeek = __webpack_require__(8)
+			var getISOYear = __webpack_require__(12)
+			var startOfISOWeek = __webpack_require__(6)
 
 			/**
-			 * @category ISO Week-Numbering Year Helpers
-			 * @summary Return the start of an ISO week-numbering year for the given date.
-			 *
-			 * @description
-			 * Return the start of an ISO week-numbering year,
-			 * which always starts 3 days before the year's first Thursday.
-			 * The result will be in the local timezone.
-			 *
-			 * ISO week-numbering year: http://en.wikipedia.org/wiki/ISO_week_date
-			 *
-			 * @param {Date|String|Number} date - the original date
-			 * @returns {Date} the start of an ISO year
-			 *
-			 * @example
-			 * // The start of an ISO week-numbering year for 2 July 2005:
-			 * var result = startOfISOYear(new Date(2005, 6, 2))
-			 * //=> Mon Jan 03 2005 00:00:00
-			 */
+ * @category ISO Week-Numbering Year Helpers
+ * @summary Return the start of an ISO week-numbering year for the given date.
+ *
+ * @description
+ * Return the start of an ISO week-numbering year,
+ * which always starts 3 days before the year's first Thursday.
+ * The result will be in the local timezone.
+ *
+ * ISO week-numbering year: http://en.wikipedia.org/wiki/ISO_week_date
+ *
+ * @param {Date|String|Number} date - the original date
+ * @returns {Date} the start of an ISO year
+ *
+ * @example
+ * // The start of an ISO week-numbering year for 2 July 2005:
+ * var result = startOfISOYear(new Date(2005, 6, 2))
+ * //=> Mon Jan 03 2005 00:00:00
+ */
 			function startOfISOYear(dirtyDate) {
 				var year = getISOYear(dirtyDate)
 				var fourthOfJanuary = new Date(0)
@@ -5404,35 +4315,35 @@
 
 			/***/
 		},
-		/* 38 */
+		/* 34 */
 		/***/ function(module, exports, __webpack_require__) {
 			'use strict'
 
-			var parse = __webpack_require__(2)
+			var parse = __webpack_require__(1)
 
 			/**
-			 * @category Week Helpers
-			 * @summary Return the start of a week for the given date.
-			 *
-			 * @description
-			 * Return the start of a week for the given date.
-			 * The result will be in the local timezone.
-			 *
-			 * @param {Date|String|Number} date - the original date
-			 * @param {Object} [options] - the object with options
-			 * @param {Number} [options.weekStartsOn=0] - the index of the first day of the week (0 - Sunday)
-			 * @returns {Date} the start of a week
-			 *
-			 * @example
-			 * // The start of a week for 2 September 2014 11:55:00:
-			 * var result = startOfWeek(new Date(2014, 8, 2, 11, 55, 0))
-			 * //=> Sun Aug 31 2014 00:00:00
-			 *
-			 * @example
-			 * // If the week starts on Monday, the start of the week for 2 September 2014 11:55:00:
-			 * var result = startOfWeek(new Date(2014, 8, 2, 11, 55, 0), {weekStartsOn: 1})
-			 * //=> Mon Sep 01 2014 00:00:00
-			 */
+ * @category Week Helpers
+ * @summary Return the start of a week for the given date.
+ *
+ * @description
+ * Return the start of a week for the given date.
+ * The result will be in the local timezone.
+ *
+ * @param {Date|String|Number} date - the original date
+ * @param {Object} [options] - the object with options
+ * @param {Number} [options.weekStartsOn=0] - the index of the first day of the week (0 - Sunday)
+ * @returns {Date} the start of a week
+ *
+ * @example
+ * // The start of a week for 2 September 2014 11:55:00:
+ * var result = startOfWeek(new Date(2014, 8, 2, 11, 55, 0))
+ * //=> Sun Aug 31 2014 00:00:00
+ *
+ * @example
+ * // If the week starts on Monday, the start of the week for 2 September 2014 11:55:00:
+ * var result = startOfWeek(new Date(2014, 8, 2, 11, 55, 0), {weekStartsOn: 1})
+ * //=> Mon Sep 01 2014 00:00:00
+ */
 			function startOfWeek(dirtyDate, dirtyOptions) {
 				var weekStartsOn = dirtyOptions ? Number(dirtyOptions.weekStartsOn) || 0 : 0
 
@@ -5449,28 +4360,28 @@
 
 			/***/
 		},
-		/* 39 */
+		/* 35 */
 		/***/ function(module, exports, __webpack_require__) {
 			'use strict'
 
-			var parse = __webpack_require__(2)
+			var parse = __webpack_require__(1)
 
 			/**
-			 * @category Year Helpers
-			 * @summary Return the start of a year for the given date.
-			 *
-			 * @description
-			 * Return the start of a year for the given date.
-			 * The result will be in the local timezone.
-			 *
-			 * @param {Date|String|Number} date - the original date
-			 * @returns {Date} the start of a year
-			 *
-			 * @example
-			 * // The start of a year for 2 September 2014 11:55:00:
-			 * var result = startOfYear(new Date(2014, 8, 2, 11, 55, 00))
-			 * //=> Wed Jan 01 2014 00:00:00
-			 */
+ * @category Year Helpers
+ * @summary Return the start of a year for the given date.
+ *
+ * @description
+ * Return the start of a year for the given date.
+ * The result will be in the local timezone.
+ *
+ * @param {Date|String|Number} date - the original date
+ * @returns {Date} the start of a year
+ *
+ * @example
+ * // The start of a year for 2 September 2014 11:55:00:
+ * var result = startOfYear(new Date(2014, 8, 2, 11, 55, 00))
+ * //=> Wed Jan 01 2014 00:00:00
+ */
 			function startOfYear(dirtyDate) {
 				var cleanDate = parse(dirtyDate)
 				var date = new Date(0)
@@ -5483,7 +4394,7 @@
 
 			/***/
 		},
-		/* 40 */
+		/* 36 */
 		/***/ function(module, exports, __webpack_require__) {
 			'use strict'
 			/*
@@ -5580,16 +4491,16 @@ object-assign
 
 			/***/
 		},
-		/* 41 */
+		/* 37 */
 		/***/ function(module, exports, __webpack_require__) {
 			'use strict'
 			/* WEBPACK VAR INJECTION */ ;(function(process) {
 				/**
-				 * Copyright (c) 2013-present, Facebook, Inc.
-				 *
-				 * This source code is licensed under the MIT license found in the
-				 * LICENSE file in the root directory of this source tree.
-				 */
+ * Copyright (c) 2013-present, Facebook, Inc.
+ *
+ * This source code is licensed under the MIT license found in the
+ * LICENSE file in the root directory of this source tree.
+ */
 
 				var _typeof =
 					typeof Symbol === 'function' && typeof Symbol.iterator === 'symbol'
@@ -5598,31 +4509,31 @@ object-assign
 							}
 						: function(obj) {
 								return obj &&
-									typeof Symbol === 'function' &&
-									obj.constructor === Symbol &&
-									obj !== Symbol.prototype
+								typeof Symbol === 'function' &&
+								obj.constructor === Symbol &&
+								obj !== Symbol.prototype
 									? 'symbol'
 									: typeof obj
 							}
 
 				if (process.env.NODE_ENV !== 'production') {
-					var invariant = __webpack_require__(10)
-					var warning = __webpack_require__(19)
-					var ReactPropTypesSecret = __webpack_require__(11)
+					var invariant = __webpack_require__(8)
+					var warning = __webpack_require__(14)
+					var ReactPropTypesSecret = __webpack_require__(9)
 					var loggedTypeFailures = {}
 				}
 
 				/**
-				 * Assert that the values match with the type specs.
-				 * Error messages are memorized and will only be shown once.
-				 *
-				 * @param {object} typeSpecs Map of name to a ReactPropType
-				 * @param {object} values Runtime values that need to be type-checked
-				 * @param {string} location e.g. "prop", "context", "child context"
-				 * @param {string} componentName Name of the component for error messages.
-				 * @param {?Function} getStack Returns the component stack.
-				 * @private
-				 */
+ * Assert that the values match with the type specs.
+ * Error messages are memorized and will only be shown once.
+ *
+ * @param {object} typeSpecs Map of name to a ReactPropType
+ * @param {object} values Runtime values that need to be type-checked
+ * @param {string} location e.g. "prop", "context", "child context"
+ * @param {string} componentName Name of the component for error messages.
+ * @param {?Function} getStack Returns the component stack.
+ * @private
+ */
 				function checkPropTypes(typeSpecs, values, location, componentName, getStack) {
 					if (process.env.NODE_ENV !== 'production') {
 						for (var typeSpecName in typeSpecs) {
@@ -5692,19 +4603,19 @@ object-assign
 
 			/***/
 		},
-		/* 42 */
+		/* 38 */
 		/***/ function(module, exports, __webpack_require__) {
 			'use strict'
 			/**
-			 * Copyright (c) 2013-present, Facebook, Inc.
-			 *
-			 * This source code is licensed under the MIT license found in the
-			 * LICENSE file in the root directory of this source tree.
-			 */
+ * Copyright (c) 2013-present, Facebook, Inc.
+ *
+ * This source code is licensed under the MIT license found in the
+ * LICENSE file in the root directory of this source tree.
+ */
 
-			var emptyFunction = __webpack_require__(9)
-			var invariant = __webpack_require__(10)
-			var ReactPropTypesSecret = __webpack_require__(11)
+			var emptyFunction = __webpack_require__(7)
+			var invariant = __webpack_require__(8)
+			var ReactPropTypesSecret = __webpack_require__(9)
 
 			module.exports = function() {
 				function shim(props, propName, componentName, location, propFullName, secret) {
@@ -5754,16 +4665,16 @@ object-assign
 
 			/***/
 		},
-		/* 43 */
+		/* 39 */
 		/***/ function(module, exports, __webpack_require__) {
 			'use strict'
 			/* WEBPACK VAR INJECTION */ ;(function(process) {
 				/**
-				 * Copyright (c) 2013-present, Facebook, Inc.
-				 *
-				 * This source code is licensed under the MIT license found in the
-				 * LICENSE file in the root directory of this source tree.
-				 */
+ * Copyright (c) 2013-present, Facebook, Inc.
+ *
+ * This source code is licensed under the MIT license found in the
+ * LICENSE file in the root directory of this source tree.
+ */
 
 				var _typeof =
 					typeof Symbol === 'function' && typeof Symbol.iterator === 'symbol'
@@ -5772,20 +4683,20 @@ object-assign
 							}
 						: function(obj) {
 								return obj &&
-									typeof Symbol === 'function' &&
-									obj.constructor === Symbol &&
-									obj !== Symbol.prototype
+								typeof Symbol === 'function' &&
+								obj.constructor === Symbol &&
+								obj !== Symbol.prototype
 									? 'symbol'
 									: typeof obj
 							}
 
-				var emptyFunction = __webpack_require__(9)
-				var invariant = __webpack_require__(10)
-				var warning = __webpack_require__(19)
-				var assign = __webpack_require__(40)
+				var emptyFunction = __webpack_require__(7)
+				var invariant = __webpack_require__(8)
+				var warning = __webpack_require__(14)
+				var assign = __webpack_require__(36)
 
-				var ReactPropTypesSecret = __webpack_require__(11)
-				var checkPropTypes = __webpack_require__(41)
+				var ReactPropTypesSecret = __webpack_require__(9)
+				var checkPropTypes = __webpack_require__(37)
 
 				module.exports = function(isValidElement, throwOnDirectAccess) {
 					/* global Symbol */
@@ -5793,19 +4704,19 @@ object-assign
 					var FAUX_ITERATOR_SYMBOL = '@@iterator' // Before Symbol spec.
 
 					/**
-					 * Returns the iterator method function contained on the iterable object.
-					 *
-					 * Be sure to invoke the function with the iterable as context:
-					 *
-					 *     var iteratorFn = getIteratorFn(myIterable);
-					 *     if (iteratorFn) {
-					 *       var iterator = iteratorFn.call(myIterable);
-					 *       ...
-					 *     }
-					 *
-					 * @param {?object} maybeIterable
-					 * @return {?function}
-					 */
+   * Returns the iterator method function contained on the iterable object.
+   *
+   * Be sure to invoke the function with the iterable as context:
+   *
+   *     var iteratorFn = getIteratorFn(myIterable);
+   *     if (iteratorFn) {
+   *       var iterator = iteratorFn.call(myIterable);
+   *       ...
+   *     }
+   *
+   * @param {?object} maybeIterable
+   * @return {?function}
+   */
 					function getIteratorFn(maybeIterable) {
 						var iteratorFn =
 							maybeIterable &&
@@ -5817,51 +4728,51 @@ object-assign
 					}
 
 					/**
-					 * Collection of methods that allow declaration and validation of props that are
-					 * supplied to React components. Example usage:
-					 *
-					 *   var Props = require('ReactPropTypes');
-					 *   var MyArticle = React.createClass({
-					 *     propTypes: {
-					 *       // An optional string prop named "description".
-					 *       description: Props.string,
-					 *
-					 *       // A required enum prop named "category".
-					 *       category: Props.oneOf(['News','Photos']).isRequired,
-					 *
-					 *       // A prop named "dialog" that requires an instance of Dialog.
-					 *       dialog: Props.instanceOf(Dialog).isRequired
-					 *     },
-					 *     render: function() { ... }
-					 *   });
-					 *
-					 * A more formal specification of how these methods are used:
-					 *
-					 *   type := array|bool|func|object|number|string|oneOf([...])|instanceOf(...)
-					 *   decl := ReactPropTypes.{type}(.isRequired)?
-					 *
-					 * Each and every declaration produces a function with the same signature. This
-					 * allows the creation of custom validation functions. For example:
-					 *
-					 *  var MyLink = React.createClass({
-					 *    propTypes: {
-					 *      // An optional string or URI prop named "href".
-					 *      href: function(props, propName, componentName) {
-					 *        var propValue = props[propName];
-					 *        if (propValue != null && typeof propValue !== 'string' &&
-					 *            !(propValue instanceof URI)) {
-					 *          return new Error(
-					 *            'Expected a string or an URI for ' + propName + ' in ' +
-					 *            componentName
-					 *          );
-					 *        }
-					 *      }
-					 *    },
-					 *    render: function() {...}
-					 *  });
-					 *
-					 * @internal
-					 */
+   * Collection of methods that allow declaration and validation of props that are
+   * supplied to React components. Example usage:
+   *
+   *   var Props = require('ReactPropTypes');
+   *   var MyArticle = React.createClass({
+   *     propTypes: {
+   *       // An optional string prop named "description".
+   *       description: Props.string,
+   *
+   *       // A required enum prop named "category".
+   *       category: Props.oneOf(['News','Photos']).isRequired,
+   *
+   *       // A prop named "dialog" that requires an instance of Dialog.
+   *       dialog: Props.instanceOf(Dialog).isRequired
+   *     },
+   *     render: function() { ... }
+   *   });
+   *
+   * A more formal specification of how these methods are used:
+   *
+   *   type := array|bool|func|object|number|string|oneOf([...])|instanceOf(...)
+   *   decl := ReactPropTypes.{type}(.isRequired)?
+   *
+   * Each and every declaration produces a function with the same signature. This
+   * allows the creation of custom validation functions. For example:
+   *
+   *  var MyLink = React.createClass({
+   *    propTypes: {
+   *      // An optional string or URI prop named "href".
+   *      href: function(props, propName, componentName) {
+   *        var propValue = props[propName];
+   *        if (propValue != null && typeof propValue !== 'string' &&
+   *            !(propValue instanceof URI)) {
+   *          return new Error(
+   *            'Expected a string or an URI for ' + propName + ' in ' +
+   *            componentName
+   *          );
+   *        }
+   *      }
+   *    },
+   *    render: function() {...}
+   *  });
+   *
+   * @internal
+   */
 
 					var ANONYMOUS = '<<anonymous>>'
 
@@ -5889,9 +4800,9 @@ object-assign
 					}
 
 					/**
-					 * inlined Object.is polyfill to avoid requiring consumers ship their own
-					 * https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Object/is
-					 */
+   * inlined Object.is polyfill to avoid requiring consumers ship their own
+   * https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Object/is
+   */
 					/*eslint-disable no-self-compare*/
 					function is(x, y) {
 						// SameValue algorithm
@@ -5907,12 +4818,12 @@ object-assign
 					/*eslint-enable no-self-compare*/
 
 					/**
-					 * We use an Error-like object for backward compatibility as people may call
-					 * PropTypes directly and inspect their output. However, we don't use real
-					 * Errors anymore. We don't inspect their stack anyway, and creating them
-					 * is prohibitively expensive if they are created too often, such as what
-					 * happens in oneOfType() for any type before the one that matched.
-					 */
+   * We use an Error-like object for backward compatibility as people may call
+   * PropTypes directly and inspect their output. However, we don't use real
+   * Errors anymore. We don't inspect their stack anyway, and creating them
+   * is prohibitively expensive if they are created too often, such as what
+   * happens in oneOfType() for any type before the one that matched.
+   */
 					function PropTypeError(message) {
 						this.message = message
 						this.stack = ''
@@ -6497,7 +5408,7 @@ object-assign
 
 			/***/
 		},
-		/* 44 */
+		/* 40 */
 		/***/ function(module, exports, __webpack_require__) {
 			'use strict'
 			/* WEBPACK VAR INJECTION */ ;(function(process) {
@@ -6508,19 +5419,19 @@ object-assign
 							}
 						: function(obj) {
 								return obj &&
-									typeof Symbol === 'function' &&
-									obj.constructor === Symbol &&
-									obj !== Symbol.prototype
+								typeof Symbol === 'function' &&
+								obj.constructor === Symbol &&
+								obj !== Symbol.prototype
 									? 'symbol'
 									: typeof obj
 							}
 
 				/**
-				 * Copyright (c) 2013-present, Facebook, Inc.
-				 *
-				 * This source code is licensed under the MIT license found in the
-				 * LICENSE file in the root directory of this source tree.
-				 */
+ * Copyright (c) 2013-present, Facebook, Inc.
+ *
+ * This source code is licensed under the MIT license found in the
+ * LICENSE file in the root directory of this source tree.
+ */
 
 				if (process.env.NODE_ENV !== 'production') {
 					var REACT_ELEMENT_TYPE =
@@ -6537,18 +5448,18 @@ object-assign
 					// By explicitly using `prop-types` you are opting into new development behavior.
 					// http://fb.me/prop-types-in-prod
 					var throwOnDirectAccess = true
-					module.exports = __webpack_require__(43)(isValidElement, throwOnDirectAccess)
+					module.exports = __webpack_require__(39)(isValidElement, throwOnDirectAccess)
 				} else {
 					// By explicitly using `prop-types` you are opting into new production behavior.
 					// http://fb.me/prop-types-in-prod
-					module.exports = __webpack_require__(42)()
+					module.exports = __webpack_require__(38)()
 				}
 				/* WEBPACK VAR INJECTION */
 			}.call(exports, __webpack_require__(4)))
 
 			/***/
 		},
-		/* 45 */
+		/* 41 */
 		/***/ function(module, exports, __webpack_require__) {
 			'use strict'
 
@@ -6559,9 +5470,9 @@ object-assign
 						}
 					: function(obj) {
 							return obj &&
-								typeof Symbol === 'function' &&
-								obj.constructor === Symbol &&
-								obj !== Symbol.prototype
+							typeof Symbol === 'function' &&
+							obj.constructor === Symbol &&
+							obj !== Symbol.prototype
 								? 'symbol'
 								: typeof obj
 						}
@@ -6573,9 +5484,9 @@ object-assign
 						}
 					: function(obj) {
 							return obj &&
-								typeof Symbol === 'function' &&
-								obj.constructor === Symbol &&
-								obj !== Symbol.prototype
+							typeof Symbol === 'function' &&
+							obj.constructor === Symbol &&
+							obj !== Symbol.prototype
 								? 'symbol'
 								: typeof obj === 'undefined' ? 'undefined' : _typeof2(obj)
 						}
@@ -6605,11 +5516,11 @@ object-assign
 
 			var _react2 = _interopRequireDefault(_react)
 
-			var _propTypes = __webpack_require__(44)
+			var _propTypes = __webpack_require__(40)
 
 			var _propTypes2 = _interopRequireDefault(_propTypes)
 
-			var _format = __webpack_require__(28)
+			var _format = __webpack_require__(24)
 
 			var _format2 = _interopRequireDefault(_format)
 
@@ -6628,8 +5539,8 @@ object-assign
 					throw new ReferenceError("this hasn't been initialised - super() hasn't been called")
 				}
 				return call &&
-					((typeof call === 'undefined' ? 'undefined' : _typeof2(call)) === 'object' ||
-						typeof call === 'function')
+				((typeof call === 'undefined' ? 'undefined' : _typeof2(call)) === 'object' ||
+					typeof call === 'function')
 					? call
 					: self
 			}
@@ -6649,12 +5560,12 @@ object-assign
 						? Object.setPrototypeOf(subClass, superClass)
 						: (subClass.__proto__ = superClass)
 			} /**
-			 * React Idle Timer
-			 *
-			 * @author  Randy Lebeau
-			 * @class   IdleTimer
-			 *
-			 */
+   * React Idle Timer
+   *
+   * @author  Randy Lebeau
+   * @class   IdleTimer
+   *
+   */
 
 			var IdleTimer = (function(_Component) {
 				_inherits(IdleTimer, _Component)
@@ -6670,15 +5581,17 @@ object-assign
 						args[_key] = arguments[_key]
 					}
 
-					return (
-						(_ret = ((_temp = ((_this = _possibleConstructorReturn(
-							this,
-							(_Object$getPrototypeO = Object.getPrototypeOf(IdleTimer)).call.apply(
-								_Object$getPrototypeO,
-								[this].concat(args)
-							)
+					return (_ret = (
+						(_temp = (
+							(_this = _possibleConstructorReturn(
+								this,
+								(_Object$getPrototypeO = Object.getPrototypeOf(IdleTimer)).call.apply(
+									_Object$getPrototypeO,
+									[this].concat(args)
+								)
+							)),
+							_this
 						)),
-						_this)),
 						(_this.state = {
 							idle: false,
 							oldDate: +new Date(),
@@ -6724,9 +5637,8 @@ object-assign
 								_this.props.timeout // set a new timeout
 							)
 						}),
-						_temp)),
-						_possibleConstructorReturn(_this, _ret)
-					)
+						_temp
+					)), _possibleConstructorReturn(_this, _ret)
 				}
 
 				_createClass(IdleTimer, [
@@ -6772,11 +5684,11 @@ object-assign
 						/////////////////////
 
 						/**
-						 * Toggles the idle state and calls the proper action
-						 *
-						 * @return {void}
-						 *
-						 */
+     * Toggles the idle state and calls the proper action
+     *
+     * @return {void}
+     *
+     */
 					},
 					{
 						key: '_toggleIdleState',
@@ -6792,12 +5704,12 @@ object-assign
 						}
 
 						/**
-						 * Event handler for supported event types
-						 *
-						 * @param  {Object} e event object
-						 * @return {void}
-						 *
-						 */
+     * Event handler for supported event types
+     *
+     * @param  {Object} e event object
+     * @return {void}
+     *
+     */
 					},
 					{
 						key: 'reset',
@@ -6807,11 +5719,11 @@ object-assign
 						////////////////
 
 						/**
-						 * Restore initial settings and restart timer
-						 *
-						 * @return {Void}
-						 *
-						 */
+     * Restore initial settings and restart timer
+     *
+     * @return {Void}
+     *
+     */
 
 						value: function reset() {
 							// reset timers
@@ -6830,12 +5742,12 @@ object-assign
 						}
 
 						/**
-						 * Store remaining time and stop timer.
-						 * You can pause from idle or active state.
-						 *
-						 * @return {Void}
-						 *
-						 */
+     * Store remaining time and stop timer.
+     * You can pause from idle or active state.
+     *
+     * @return {Void}
+     *
+     */
 					},
 					{
 						key: 'pause',
@@ -6859,11 +5771,11 @@ object-assign
 						}
 
 						/**
-						 * Resumes a stopped timer
-						 *
-						 * @return {Void}
-						 *
-						 */
+     * Resumes a stopped timer
+     *
+     * @return {Void}
+     *
+     */
 					},
 					{
 						key: 'resume',
@@ -6884,11 +5796,11 @@ object-assign
 						}
 
 						/**
-						 * Time remaining before idle
-						 *
-						 * @return {Number} Milliseconds remaining
-						 *
-						 */
+     * Time remaining before idle
+     *
+     * @return {Number} Milliseconds remaining
+     *
+     */
 					},
 					{
 						key: 'getRemainingTime',
@@ -6914,11 +5826,11 @@ object-assign
 						}
 
 						/**
-						 * How much time has elapsed
-						 *
-						 * @return {Timestamp}
-						 *
-						 */
+     * How much time has elapsed
+     *
+     * @return {Timestamp}
+     *
+     */
 					},
 					{
 						key: 'getElapsedTime',
@@ -6927,11 +5839,11 @@ object-assign
 						}
 
 						/**
-						 * Last time the user was active
-						 *
-						 * @return {Timestamp}
-						 *
-						 */
+     * Last time the user was active
+     *
+     * @return {Timestamp}
+     *
+     */
 					},
 					{
 						key: 'getLastActiveTime',
@@ -6943,11 +5855,11 @@ object-assign
 						}
 
 						/**
-						 * Is the user idle
-						 *
-						 * @return {Boolean}
-						 *
-						 */
+     * Is the user idle
+     *
+     * @return {Boolean}
+     *
+     */
 					},
 					{
 						key: 'isIdle',
@@ -6997,6 +5909,1083 @@ object-assign
 				startOnLoad: true
 			}
 			exports.default = IdleTimer
+
+			/***/
+		},
+		/* 42 */
+		/***/ function(module, exports, __webpack_require__) {
+			'use strict'
+
+			Object.defineProperty(exports, '__esModule', {
+				value: true
+			})
+
+			var _createClass = (function() {
+				function defineProperties(target, props) {
+					for (var i = 0; i < props.length; i++) {
+						var descriptor = props[i]
+						descriptor.enumerable = descriptor.enumerable || false
+						descriptor.configurable = true
+						if ('value' in descriptor) descriptor.writable = true
+						Object.defineProperty(target, descriptor.key, descriptor)
+					}
+				}
+				return function(Constructor, protoProps, staticProps) {
+					if (protoProps) defineProperties(Constructor.prototype, protoProps)
+					if (staticProps) defineProperties(Constructor, staticProps)
+					return Constructor
+				}
+			})()
+
+			__webpack_require__(46)
+
+			var _navUtil = __webpack_require__(2)
+
+			var _navUtil2 = _interopRequireDefault(_navUtil)
+
+			function _interopRequireDefault(obj) {
+				return obj && obj.__esModule ? obj : { default: obj }
+			}
+
+			function _classCallCheck(instance, Constructor) {
+				if (!(instance instanceof Constructor)) {
+					throw new TypeError('Cannot call a class as a function')
+				}
+			}
+
+			function _possibleConstructorReturn(self, call) {
+				if (!self) {
+					throw new ReferenceError("this hasn't been initialised - super() hasn't been called")
+				}
+				return call && (typeof call === 'object' || typeof call === 'function') ? call : self
+			}
+
+			function _inherits(subClass, superClass) {
+				if (typeof superClass !== 'function' && superClass !== null) {
+					throw new TypeError(
+						'Super expression must either be null or a function, not ' + typeof superClass
+					)
+				}
+				subClass.prototype = Object.create(superClass && superClass.prototype, {
+					constructor: { value: subClass, enumerable: false, writable: true, configurable: true }
+				})
+				if (superClass)
+					Object.setPrototypeOf
+						? Object.setPrototypeOf(subClass, superClass)
+						: (subClass.__proto__ = superClass)
+			}
+
+			var InlineNavButton = (function(_React$Component) {
+				_inherits(InlineNavButton, _React$Component)
+
+				function InlineNavButton() {
+					_classCallCheck(this, InlineNavButton)
+
+					return _possibleConstructorReturn(
+						this,
+						(InlineNavButton.__proto__ || Object.getPrototypeOf(InlineNavButton))
+							.apply(this, arguments)
+					)
+				}
+
+				_createClass(InlineNavButton, [
+					{
+						key: 'onClick',
+						value: function onClick() {
+							if (this.props.disabled) {
+								return
+							}
+
+							switch (this.props.type) {
+								case 'prev':
+									return _navUtil2.default.goPrev()
+
+								case 'next':
+									return _navUtil2.default.goNext()
+							}
+						}
+					},
+					{
+						key: 'render',
+						value: function render() {
+							return React.createElement(
+								'div',
+								{
+									className:
+										'viewer--components--inline-nav-button is-' +
+										this.props.type +
+										(this.props.disabled ? ' is-disabled' : ' is-enabled'),
+									onClick: this.onClick.bind(this)
+								},
+								this.props.title
+							)
+						}
+					}
+				])
+
+				return InlineNavButton
+			})(React.Component)
+
+			exports.default = InlineNavButton
+
+			/***/
+		},
+		/* 43 */
+		/***/ function(module, exports, __webpack_require__) {
+			'use strict'
+
+			Object.defineProperty(exports, '__esModule', {
+				value: true
+			})
+
+			var _createClass = (function() {
+				function defineProperties(target, props) {
+					for (var i = 0; i < props.length; i++) {
+						var descriptor = props[i]
+						descriptor.enumerable = descriptor.enumerable || false
+						descriptor.configurable = true
+						if ('value' in descriptor) descriptor.writable = true
+						Object.defineProperty(target, descriptor.key, descriptor)
+					}
+				}
+				return function(Constructor, protoProps, staticProps) {
+					if (protoProps) defineProperties(Constructor.prototype, protoProps)
+					if (staticProps) defineProperties(Constructor, staticProps)
+					return Constructor
+				}
+			})()
+
+			__webpack_require__(48)
+
+			var _navStore = __webpack_require__(10)
+
+			var _navStore2 = _interopRequireDefault(_navStore)
+
+			var _navUtil = __webpack_require__(2)
+
+			var _navUtil2 = _interopRequireDefault(_navUtil)
+
+			var _logo = __webpack_require__(15)
+
+			var _logo2 = _interopRequireDefault(_logo)
+
+			var _hamburger = __webpack_require__(52)
+
+			var _hamburger2 = _interopRequireDefault(_hamburger)
+
+			var _arrow = __webpack_require__(51)
+
+			var _arrow2 = _interopRequireDefault(_arrow)
+
+			var _lockIcon = __webpack_require__(53)
+
+			var _lockIcon2 = _interopRequireDefault(_lockIcon)
+
+			var _Common = __webpack_require__(0)
+
+			var _Common2 = _interopRequireDefault(_Common)
+
+			function _interopRequireDefault(obj) {
+				return obj && obj.__esModule ? obj : { default: obj }
+			}
+
+			function _classCallCheck(instance, Constructor) {
+				if (!(instance instanceof Constructor)) {
+					throw new TypeError('Cannot call a class as a function')
+				}
+			}
+
+			function _possibleConstructorReturn(self, call) {
+				if (!self) {
+					throw new ReferenceError("this hasn't been initialised - super() hasn't been called")
+				}
+				return call && (typeof call === 'object' || typeof call === 'function') ? call : self
+			}
+
+			function _inherits(subClass, superClass) {
+				if (typeof superClass !== 'function' && superClass !== null) {
+					throw new TypeError(
+						'Super expression must either be null or a function, not ' + typeof superClass
+					)
+				}
+				subClass.prototype = Object.create(superClass && superClass.prototype, {
+					constructor: { value: subClass, enumerable: false, writable: true, configurable: true }
+				})
+				if (superClass)
+					Object.setPrototypeOf
+						? Object.setPrototypeOf(subClass, superClass)
+						: (subClass.__proto__ = superClass)
+			}
+
+			var getBackgroundImage = _Common2.default.util.getBackgroundImage
+			var OboModel = _Common2.default.models.OboModel
+			var StyleableText = _Common2.default.text.StyleableText
+			var StyleableTextComponent = _Common2.default.text.StyleableTextComponent
+
+			var Nav = (function(_React$Component) {
+				_inherits(Nav, _React$Component)
+
+				function Nav(props) {
+					_classCallCheck(this, Nav)
+
+					var _this = _possibleConstructorReturn(
+						this,
+						(Nav.__proto__ || Object.getPrototypeOf(Nav)).call(this, props)
+					)
+
+					_this.state = {
+						hover: false
+					}
+					return _this
+				}
+
+				_createClass(Nav, [
+					{
+						key: 'onClick',
+						value: function onClick(item) {
+							if (item.type === 'link') {
+								if (!_navUtil2.default.canNavigate(this.props.navState)) return
+								return _navUtil2.default.gotoPath(item.fullPath)
+							} else if (item.type === 'sub-link') {
+								var el = OboModel.models[item.id].getDomEl()
+								return el.scrollIntoView({ behavior: 'smooth' })
+							}
+						}
+					},
+					{
+						key: 'hideNav',
+						value: function hideNav() {
+							return _navUtil2.default.toggle()
+						}
+					},
+					{
+						key: 'onMouseOver',
+						value: function onMouseOver() {
+							return this.setState({ hover: true })
+						}
+					},
+					{
+						key: 'onMouseOut',
+						value: function onMouseOut() {
+							return this.setState({ hover: false })
+						}
+					},
+					{
+						key: 'renderLabel',
+						value: function renderLabel(label) {
+							if (label instanceof StyleableText) {
+								return React.createElement(StyleableTextComponent, { text: label })
+							} else {
+								return React.createElement('a', null, label)
+							}
+						}
+					},
+					{
+						key: 'render',
+						value: function render() {
+							var _this2 = this
+
+							var bg = void 0,
+								lockEl = void 0
+							if (this.props.navState.open || this.state.hover) {
+								bg = getBackgroundImage(_arrow2.default)
+							} else {
+								bg = getBackgroundImage(_hamburger2.default)
+							}
+
+							if (this.props.navState.locked) {
+								lockEl = React.createElement(
+									'div',
+									{ className: 'lock-icon' },
+									React.createElement('img', { src: _lockIcon2.default })
+								)
+							} else {
+								lockEl = null
+							}
+
+							var list = _navUtil2.default.getOrderedList(this.props.navState)
+
+							return React.createElement(
+								'div',
+								{
+									className:
+										'viewer--components--nav' +
+										(this.props.navState.locked ? ' is-locked' : ' is-unlocked') +
+										(this.props.navState.open ? ' is-open' : ' is-closed') +
+										(this.props.navState.disabled ? ' is-disabled' : ' is-enabled')
+								},
+								React.createElement(
+									'button',
+									{
+										className: 'toggle-button',
+										onClick: this.hideNav.bind(this),
+										onMouseOver: this.onMouseOver.bind(this),
+										onMouseOut: this.onMouseOut.bind(this),
+										style: {
+											backgroundImage: bg,
+											transform:
+												!this.props.navState.open && this.state.hover ? 'rotate(180deg)' : '',
+											filter: this.props.navState.open ? 'invert(100%)' : 'invert(0%)'
+										}
+									},
+									'Toggle Navigation Menu'
+								),
+								React.createElement(
+									'ul',
+									null,
+									list.map(function(item, index) {
+										switch (item.type) {
+											case 'heading':
+												var isSelected = false
+												return React.createElement(
+													'li',
+													{
+														key: index,
+														className: 'heading' + (isSelected ? ' is-selected' : ' is-not-select')
+													},
+													_this2.renderLabel(item.label)
+												)
+												break
+
+											case 'link':
+												var isSelected = _this2.props.navState.navTargetId === item.id
+												//var isPrevVisited = this.props.navState.navTargetHistory.indexOf(item.id) > -1
+												return React.createElement(
+													'li',
+													{
+														key: index,
+														onClick: _this2.onClick.bind(_this2, item),
+														className:
+															'link' +
+															(isSelected ? ' is-selected' : ' is-not-select') +
+															(item.flags.visited ? ' is-visited' : ' is-not-visited') +
+															(item.flags.complete ? ' is-complete' : ' is-not-complete') +
+															(item.flags.correct ? ' is-correct' : ' is-not-correct')
+													},
+													_this2.renderLabel(item.label),
+													lockEl
+												)
+												break
+
+											case 'sub-link':
+												var isSelected = _this2.props.navState.navTargetIndex === index
+
+												return React.createElement(
+													'li',
+													{
+														key: index,
+														onClick: _this2.onClick.bind(_this2, item),
+														className:
+															'sub-link' +
+															(isSelected ? ' is-selected' : ' is-not-select') +
+															(item.flags.correct ? ' is-correct' : ' is-not-correct')
+													},
+													_this2.renderLabel(item.label),
+													lockEl
+												)
+												break
+
+											case 'seperator':
+												return React.createElement(
+													'li',
+													{ key: index, className: 'seperator' },
+													React.createElement('hr', null)
+												)
+												break
+										}
+									})
+								),
+								React.createElement(_logo2.default, { inverted: true })
+							)
+						}
+					}
+				])
+
+				return Nav
+			})(React.Component)
+
+			exports.default = Nav
+
+			/***/
+		},
+		/* 44 */
+		/***/ function(module, exports, __webpack_require__) {
+			'use strict'
+
+			Object.defineProperty(exports, '__esModule', {
+				value: true
+			})
+
+			var _createClass = (function() {
+				function defineProperties(target, props) {
+					for (var i = 0; i < props.length; i++) {
+						var descriptor = props[i]
+						descriptor.enumerable = descriptor.enumerable || false
+						descriptor.configurable = true
+						if ('value' in descriptor) descriptor.writable = true
+						Object.defineProperty(target, descriptor.key, descriptor)
+					}
+				}
+				return function(Constructor, protoProps, staticProps) {
+					if (protoProps) defineProperties(Constructor.prototype, protoProps)
+					if (staticProps) defineProperties(Constructor, staticProps)
+					return Constructor
+				}
+			})()
+
+			__webpack_require__(50)
+
+			__webpack_require__(49)
+
+			var _Common = __webpack_require__(0)
+
+			var _Common2 = _interopRequireDefault(_Common)
+
+			var _react = __webpack_require__(20)
+
+			var _react2 = _interopRequireDefault(_react)
+
+			var _reactIdleTimer = __webpack_require__(41)
+
+			var _reactIdleTimer2 = _interopRequireDefault(_reactIdleTimer)
+
+			var _inlineNavButton = __webpack_require__(42)
+
+			var _inlineNavButton2 = _interopRequireDefault(_inlineNavButton)
+
+			var _navUtil = __webpack_require__(2)
+
+			var _navUtil2 = _interopRequireDefault(_navUtil)
+
+			var _apiUtil = __webpack_require__(3)
+
+			var _apiUtil2 = _interopRequireDefault(_apiUtil)
+
+			var _logo = __webpack_require__(15)
+
+			var _logo2 = _interopRequireDefault(_logo)
+
+			var _scoreStore = __webpack_require__(18)
+
+			var _scoreStore2 = _interopRequireDefault(_scoreStore)
+
+			var _questionStore = __webpack_require__(17)
+
+			var _questionStore2 = _interopRequireDefault(_questionStore)
+
+			var _assessmentStore = __webpack_require__(16)
+
+			var _assessmentStore2 = _interopRequireDefault(_assessmentStore)
+
+			var _navStore = __webpack_require__(10)
+
+			var _navStore2 = _interopRequireDefault(_navStore)
+
+			var _nav = __webpack_require__(43)
+
+			var _nav2 = _interopRequireDefault(_nav)
+
+			function _interopRequireDefault(obj) {
+				return obj && obj.__esModule ? obj : { default: obj }
+			}
+
+			function _classCallCheck(instance, Constructor) {
+				if (!(instance instanceof Constructor)) {
+					throw new TypeError('Cannot call a class as a function')
+				}
+			}
+
+			function _possibleConstructorReturn(self, call) {
+				if (!self) {
+					throw new ReferenceError("this hasn't been initialised - super() hasn't been called")
+				}
+				return call && (typeof call === 'object' || typeof call === 'function') ? call : self
+			}
+
+			function _inherits(subClass, superClass) {
+				if (typeof superClass !== 'function' && superClass !== null) {
+					throw new TypeError(
+						'Super expression must either be null or a function, not ' + typeof superClass
+					)
+				}
+				subClass.prototype = Object.create(superClass && superClass.prototype, {
+					constructor: { value: subClass, enumerable: false, writable: true, configurable: true }
+				})
+				if (superClass)
+					Object.setPrototypeOf
+						? Object.setPrototypeOf(subClass, superClass)
+						: (subClass.__proto__ = superClass)
+			}
+
+			var IDLE_TIMEOUT_DURATION_MS = 600000 // 10 minutes
+
+			var Legacy = _Common2.default.models.Legacy
+			var DOMUtil = _Common2.default.page.DOMUtil
+			var Screen = _Common2.default.page.Screen
+			var OboModel = _Common2.default.models.OboModel
+			var Dispatcher = _Common2.default.flux.Dispatcher
+			var ModalContainer = _Common2.default.components.ModalContainer
+			var SimpleDialog = _Common2.default.components.modal.SimpleDialog
+			var ModalUtil = _Common2.default.util.ModalUtil
+			var FocusBlocker = _Common2.default.components.FocusBlocker
+			var ModalStore = _Common2.default.stores.ModalStore
+			var FocusStore = _Common2.default.stores.FocusStore
+			var FocusUtil = _Common2.default.util.FocusUtil
+			var OboGlobals = _Common2.default.util.OboGlobals
+
+			// Dispatcher.on 'all', (eventName, payload) -> console.log 'EVENT TRIGGERED', eventName
+
+			Dispatcher.on('viewer:alert', function(payload) {
+				return ModalUtil.show(
+					_react2.default.createElement(
+						SimpleDialog,
+						{ ok: true, title: payload.value.title },
+						payload.value.message
+					)
+				)
+			})
+
+			var ViewerApp = (function(_React$Component) {
+				_inherits(ViewerApp, _React$Component)
+
+				// === REACT LIFECYCLE METHODS ===
+
+				function ViewerApp(props) {
+					_classCallCheck(this, ViewerApp)
+
+					var _this = _possibleConstructorReturn(
+						this,
+						(ViewerApp.__proto__ || Object.getPrototypeOf(ViewerApp)).call(this, props)
+					)
+
+					_Common2.default.Store.loadDependency(
+						'https://cdnjs.cloudflare.com/ajax/libs/KaTeX/0.5.1/katex.min.css'
+					)
+
+					Dispatcher.on('viewer:scrollTo', function(payload) {
+						return (ReactDOM.findDOMNode(_this.refs.container).scrollTop = payload.value)
+					})
+
+					Dispatcher.on('viewer:scrollToTop', _this.scrollToTop.bind(_this))
+					Dispatcher.on('getTextForVariable', _this.getTextForVariable.bind(_this))
+
+					_this.isPreviewing = OboGlobals.get('previewing')
+
+					var state = {
+						model: OboModel.create(OboGlobals.get('draft')),
+						navState: null,
+						scoreState: null,
+						questionState: null,
+						assessmentState: null,
+						modalState: null,
+						focusState: null,
+						navTargetId: null
+					}
+
+					_scoreStore2.default.init()
+					_questionStore2.default.init()
+					ModalStore.init()
+					FocusStore.init()
+
+					_navStore2.default.init(
+						state.model,
+						state.model.modelState.start,
+						window.location.pathname
+					)
+					_assessmentStore2.default.init(
+						OboGlobals.get('ObojoboDraft.Sections.Assessment:attemptHistory', [])
+					)
+
+					state.navState = _navStore2.default.getState()
+					state.scoreState = _scoreStore2.default.getState()
+					state.questionState = _questionStore2.default.getState()
+					state.assessmentState = _assessmentStore2.default.getState()
+					state.modalState = ModalStore.getState()
+					state.focusState = FocusStore.getState()
+
+					_this.onNavStoreChange = function() {
+						return _this.setState({ navState: _navStore2.default.getState() })
+					}
+					_this.onScoreStoreChange = function() {
+						return _this.setState({ scoreState: _scoreStore2.default.getState() })
+					}
+					_this.onQuestionStoreChange = function() {
+						return _this.setState({ questionState: _questionStore2.default.getState() })
+					}
+					_this.onAssessmentStoreChange = function() {
+						return _this.setState({ assessmentState: _assessmentStore2.default.getState() })
+					}
+					_this.onModalStoreChange = function() {
+						return _this.setState({ modalState: ModalStore.getState() })
+					}
+					_this.onFocusStoreChange = function() {
+						return _this.setState({ focusState: FocusStore.getState() })
+					}
+
+					_this.onIdle = _this.onIdle.bind(_this)
+					_this.onReturnFromIdle = _this.onReturnFromIdle.bind(_this)
+					_this.onWindowClose = _this.onWindowClose.bind(_this)
+					_this.onVisibilityChange = _this.onVisibilityChange.bind(_this)
+
+					window.onbeforeunload = _this.onWindowClose
+
+					_this.state = state
+					return _this
+				}
+
+				_createClass(ViewerApp, [
+					{
+						key: 'componentDidMount',
+						value: function componentDidMount() {
+							document.addEventListener('visibilitychange', this.onVisibilityChange)
+						}
+					},
+					{
+						key: 'componentWillMount',
+						value: function componentWillMount() {
+							// === SET UP DATA STORES ===
+							_navStore2.default.onChange(this.onNavStoreChange)
+							_scoreStore2.default.onChange(this.onScoreStoreChange)
+							_questionStore2.default.onChange(this.onQuestionStoreChange)
+							_assessmentStore2.default.onChange(this.onAssessmentStoreChange)
+							ModalStore.onChange(this.onModalStoreChange)
+							FocusStore.onChange(this.onFocusStoreChange)
+						}
+					},
+					{
+						key: 'componentWillUnmount',
+						value: function componentWillUnmount() {
+							_navStore2.default.offChange(this.onNavStoreChange)
+							_scoreStore2.default.offChange(this.onScoreStoreChange)
+							_questionStore2.default.offChange(this.onQuestionStoreChange)
+							_assessmentStore2.default.offChange(this.onAssessmentStoreChange)
+							ModalStore.offChange(this.onModalStoreChange)
+							FocusStore.offChange(this.onFocusStoreChange)
+
+							document.removeEventListener('visibilitychange', this.onVisibilityChange)
+						}
+
+						// componentDidMount: ->
+						// NavUtil.gotoPath window.location.pathname
+					},
+					{
+						key: 'componentWillUpdate',
+						value: function componentWillUpdate(nextProps, nextState) {
+							var navTargetId = this.state.navTargetId
+
+							var nextNavTargetId = this.state.navState.navTargetId
+
+							if (navTargetId !== nextNavTargetId) {
+								this.needsScroll = true
+								return this.setState({ navTargetId: nextNavTargetId })
+							}
+						}
+					},
+					{
+						key: 'componentDidUpdate',
+						value: function componentDidUpdate() {
+							// alert 'here, fixme'
+							if (this.lastCanNavigate !== _navUtil2.default.canNavigate(this.state.navState)) {
+								this.needsScroll = true
+							}
+							this.lastCanNavigate = _navUtil2.default.canNavigate(this.state.navState)
+							if (this.needsScroll != null) {
+								this.scrollToTop()
+
+								return delete this.needsScroll
+							}
+						}
+					},
+					{
+						key: 'onVisibilityChange',
+						value: function onVisibilityChange(event) {
+							var _this2 = this
+
+							if (document.hidden) {
+								_apiUtil2.default
+									.postEvent(this.state.model, 'viewer:leave', '1.0.0', {})
+									.then(function(res) {
+										_this2.leaveEvent = res.value
+									})
+							} else {
+								_apiUtil2.default.postEvent(this.state.model, 'viewer:return', '1.0.0', {
+									relatedEventId: this.leaveEvent.id
+								})
+
+								delete this.leaveEvent
+							}
+						}
+					},
+					{
+						key: 'getTextForVariable',
+						value: function getTextForVariable(event, variable, textModel) {
+							return (event.text = _Common2.default.Store.getTextForVariable(
+								variable,
+								textModel,
+								this.state
+							))
+						}
+					},
+					{
+						key: 'scrollToTop',
+						value: function scrollToTop() {
+							var el = ReactDOM.findDOMNode(this.refs.prev)
+							var container = ReactDOM.findDOMNode(this.refs.container)
+
+							if (!container) return
+
+							if (el) {
+								return (container.scrollTop = ReactDOM.findDOMNode(
+									el
+								).getBoundingClientRect().height)
+							} else {
+								return (container.scrollTop = 0)
+							}
+						}
+
+						// === NON REACT LIFECYCLE METHODS ===
+					},
+					{
+						key: 'update',
+						value: function update(json) {
+							try {
+								var o = void 0
+								return (o = JSON.parse(json))
+							} catch (e) {
+								alert('Error parsing JSON')
+								this.setState({ model: this.state.model })
+								return
+							}
+						}
+					},
+					{
+						key: 'onBack',
+						value: function onBack() {
+							return _navUtil2.default.goPrev()
+						}
+					},
+					{
+						key: 'onNext',
+						value: function onNext() {
+							return _navUtil2.default.goNext()
+						}
+					},
+					{
+						key: 'onMouseDown',
+						value: function onMouseDown(event) {
+							if (this.state.focusState.focussedId == null) {
+								return
+							}
+							if (
+								!DOMUtil.findParentComponentIds(event.target).has(this.state.focusState.focussedId)
+							) {
+								return FocusUtil.unfocus()
+							}
+						}
+					},
+					{
+						key: 'onScroll',
+						value: function onScroll(event) {
+							if (this.state.focusState.focussedId == null) {
+								return
+							}
+
+							var component = FocusUtil.getFocussedComponent(this.state.focusState)
+							if (component == null) {
+								return
+							}
+
+							var el = component.getDomEl()
+							if (!el) {
+								return
+							}
+
+							if (!Screen.isElementVisible(el)) {
+								return FocusUtil.unfocus()
+							}
+						}
+					},
+					{
+						key: 'onIdle',
+						value: function onIdle() {
+							var _this3 = this
+
+							this.lastActiveEpoch = new Date(this.refs.idleTimer.getLastActiveTime())
+
+							_apiUtil2.default
+								.postEvent(this.state.model, 'viewer:inactive', '1.0.0', {
+									lastActiveTime: this.lastActiveEpoch,
+									inactiveDuration: IDLE_TIMEOUT_DURATION_MS
+								})
+								.then(function(res) {
+									_this3.inactiveEvent = res.value
+								})
+						}
+					},
+					{
+						key: 'onReturnFromIdle',
+						value: function onReturnFromIdle() {
+							_apiUtil2.default.postEvent(this.state.model, 'viewer:returnFromInactive', '1.0.0', {
+								lastActiveTime: this.lastActiveEpoch,
+								inactiveDuration: Date.now() - this.lastActiveEpoch,
+								relatedEventId: this.inactiveEvent.id
+							})
+
+							delete this.lastActiveEpoch
+							delete this.inactiveEvent
+						}
+					},
+					{
+						key: 'onWindowClose',
+						value: function onWindowClose(e) {
+							_apiUtil2.default.postEvent(this.state.model, 'viewer:close', '1.0.0', {})
+						}
+					},
+					{
+						key: 'resetAssessments',
+						value: function resetAssessments() {
+							_assessmentStore2.default.init()
+							_questionStore2.default.init()
+							_scoreStore2.default.init()
+
+							_assessmentStore2.default.triggerChange()
+							_questionStore2.default.triggerChange()
+							_scoreStore2.default.triggerChange()
+
+							return ModalUtil.show(
+								_react2.default.createElement(
+									SimpleDialog,
+									{ ok: true, width: '15em' },
+									'Assessment attempts and all question responses have been reset.'
+								)
+							)
+						}
+					},
+					{
+						key: 'unlockNavigation',
+						value: function unlockNavigation() {
+							return _navUtil2.default.unlock()
+						}
+					},
+					{
+						key: 'render',
+						value: function render() {
+							var nextEl = void 0,
+								nextModel = void 0,
+								prevEl = void 0
+							window.__lo = this.state.model
+							window.__s = this.state
+
+							var ModuleComponent = this.state.model.getComponentClass()
+
+							var navTargetModel = _navUtil2.default.getNavTargetModel(this.state.navState)
+							var navTargetTitle = '?'
+							if (navTargetModel != null) {
+								navTargetTitle = navTargetModel.title
+							}
+
+							var prevModel = (nextModel = null)
+							if (_navUtil2.default.canNavigate(this.state.navState)) {
+								prevModel = _navUtil2.default.getPrevModel(this.state.navState)
+								if (prevModel) {
+									prevEl = _react2.default.createElement(_inlineNavButton2.default, {
+										ref: 'prev',
+										type: 'prev',
+										title: 'Back: ' + prevModel.title
+									})
+								} else {
+									prevEl = _react2.default.createElement(_inlineNavButton2.default, {
+										ref: 'prev',
+										type: 'prev',
+										title: 'Start of ' + this.state.model.title,
+										disabled: true
+									})
+								}
+
+								nextModel = _navUtil2.default.getNextModel(this.state.navState)
+								if (nextModel) {
+									nextEl = _react2.default.createElement(_inlineNavButton2.default, {
+										ref: 'next',
+										type: 'next',
+										title: 'Next: ' + nextModel.title
+									})
+								} else {
+									nextEl = _react2.default.createElement(_inlineNavButton2.default, {
+										ref: 'next',
+										type: 'next',
+										title: 'End of ' + this.state.model.title,
+										disabled: true
+									})
+								}
+							}
+
+							var modal = ModalUtil.getCurrentModal(this.state.modalState)
+
+							return _react2.default.createElement(
+								_reactIdleTimer2.default,
+								{
+									ref: 'idleTimer',
+									element: window,
+									timeout: IDLE_TIMEOUT_DURATION_MS,
+									idleAction: this.onIdle,
+									activeAction: this.onReturnFromIdle
+								},
+								_react2.default.createElement(
+									'div',
+									{
+										ref: 'container',
+										onMouseDown: this.onMouseDown.bind(this),
+										onScroll: this.onScroll.bind(this),
+										className:
+											'viewer--viewer-app' +
+											(this.isPreviewing ? ' is-previewing' : ' is-not-previewing') +
+											(this.state.navState.locked ? ' is-locked-nav' : ' is-unlocked-nav') +
+											(this.state.navState.open ? ' is-open-nav' : ' is-closed-nav') +
+											(this.state.navState.disabled ? ' is-disabled-nav' : ' is-enabled-nav') +
+											' is-focus-state-' +
+											this.state.focusState.viewState
+									},
+									_react2.default.createElement(
+										'header',
+										null,
+										_react2.default.createElement(
+											'div',
+											{ className: 'pad' },
+											_react2.default.createElement(
+												'span',
+												{ className: 'module-title' },
+												this.state.model.title
+											),
+											_react2.default.createElement(
+												'span',
+												{ className: 'location' },
+												navTargetTitle
+											),
+											_react2.default.createElement(_logo2.default, null)
+										)
+									),
+									_react2.default.createElement(_nav2.default, { navState: this.state.navState }),
+									prevEl,
+									_react2.default.createElement(ModuleComponent, {
+										model: this.state.model,
+										moduleData: this.state
+									}),
+									nextEl,
+									this.isPreviewing
+										? _react2.default.createElement(
+												'div',
+												{ className: 'preview-banner' },
+												_react2.default.createElement(
+													'span',
+													null,
+													'You are previewing this object - Assessments will not be counted'
+												),
+												_react2.default.createElement(
+													'div',
+													{ className: 'controls' },
+													_react2.default.createElement(
+														'button',
+														{
+															onClick: this.unlockNavigation.bind(this),
+															disabled: !this.state.navState.locked
+														},
+														'Unlock navigation'
+													),
+													_react2.default.createElement(
+														'button',
+														{ onClick: this.resetAssessments.bind(this) },
+														'Reset assessments & questions'
+													)
+												)
+											)
+										: null,
+									_react2.default.createElement(FocusBlocker, { moduleData: this.state }),
+									modal ? _react2.default.createElement(ModalContainer, null, modal) : null
+								)
+							)
+						}
+					}
+				])
+
+				return ViewerApp
+			})(_react2.default.Component)
+
+			exports.default = ViewerApp
+
+			/***/
+		},
+		/* 45 */
+		/***/ function(module, exports, __webpack_require__) {
+			'use strict'
+
+			Object.defineProperty(exports, '__esModule', {
+				value: true
+			})
+
+			var _viewerApp = __webpack_require__(44)
+
+			var _viewerApp2 = _interopRequireDefault(_viewerApp)
+
+			var _scoreStore = __webpack_require__(18)
+
+			var _scoreStore2 = _interopRequireDefault(_scoreStore)
+
+			var _assessmentStore = __webpack_require__(16)
+
+			var _assessmentStore2 = _interopRequireDefault(_assessmentStore)
+
+			var _navStore = __webpack_require__(10)
+
+			var _navStore2 = _interopRequireDefault(_navStore)
+
+			var _questionStore = __webpack_require__(17)
+
+			var _questionStore2 = _interopRequireDefault(_questionStore)
+
+			var _assessmentUtil = __webpack_require__(19)
+
+			var _assessmentUtil2 = _interopRequireDefault(_assessmentUtil)
+
+			var _navUtil = __webpack_require__(2)
+
+			var _navUtil2 = _interopRequireDefault(_navUtil)
+
+			var _scoreUtil = __webpack_require__(11)
+
+			var _scoreUtil2 = _interopRequireDefault(_scoreUtil)
+
+			var _apiUtil = __webpack_require__(3)
+
+			var _apiUtil2 = _interopRequireDefault(_apiUtil)
+
+			var _questionUtil = __webpack_require__(5)
+
+			var _questionUtil2 = _interopRequireDefault(_questionUtil)
+
+			function _interopRequireDefault(obj) {
+				return obj && obj.__esModule ? obj : { default: obj }
+			}
+
+			exports.default = {
+				components: {
+					ViewerApp: _viewerApp2.default
+				},
+
+				stores: {
+					ScoreStore: _scoreStore2.default,
+					AssessmentStore: _assessmentStore2.default,
+					NavStore: _navStore2.default,
+					QuestionStore: _questionStore2.default
+				},
+
+				util: {
+					AssessmentUtil: _assessmentUtil2.default,
+					NavUtil: _navUtil2.default,
+					ScoreUtil: _scoreUtil2.default,
+					APIUtil: _apiUtil2.default,
+					QuestionUtil: _questionUtil2.default
+				}
+			}
 
 			/***/
 		},

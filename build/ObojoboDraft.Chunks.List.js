@@ -77,24 +77,24 @@
 })(
 	/************************************************************************/
 	/******/ {
-		/***/ 0: /***/ function(module, exports) {
+		/***/ /***/ 0: function(module, exports) {
 			module.exports = Common
 
 			/***/
 		},
 
-		/***/ 150: /***/ function(module, exports) {
+		/***/ /***/ 150: function(module, exports) {
 			// removed by extract-text-webpack-plugin
 			/***/
 		},
 
-		/***/ 173: /***/ function(module, exports, __webpack_require__) {
+		/***/ /***/ 173: function(module, exports, __webpack_require__) {
 			module.exports = __webpack_require__(35)
 
 			/***/
 		},
 
-		/***/ 18: /***/ function(module, exports, __webpack_require__) {
+		/***/ /***/ 18: function(module, exports, __webpack_require__) {
 			'use strict'
 
 			Object.defineProperty(exports, '__esModule', {
@@ -309,7 +309,7 @@
 			/***/
 		},
 
-		/***/ 35: /***/ function(module, exports, __webpack_require__) {
+		/***/ /***/ 35: function(module, exports, __webpack_require__) {
 			'use strict'
 
 			var _Common = __webpack_require__(0)
@@ -340,7 +340,7 @@
 			/***/
 		},
 
-		/***/ 64: /***/ function(module, exports, __webpack_require__) {
+		/***/ /***/ 64: function(module, exports, __webpack_require__) {
 			'use strict'
 
 			Object.defineProperty(exports, '__esModule', {
@@ -432,7 +432,7 @@
 			/***/
 		},
 
-		/***/ 65: /***/ function(module, exports, __webpack_require__) {
+		/***/ /***/ 65: function(module, exports, __webpack_require__) {
 			'use strict'
 
 			Object.defineProperty(exports, '__esModule', {

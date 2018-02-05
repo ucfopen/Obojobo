@@ -236,9 +236,9 @@
 						}
 					: function(obj) {
 							return obj &&
-								typeof Symbol === 'function' &&
-								obj.constructor === Symbol &&
-								obj !== Symbol.prototype
+							typeof Symbol === 'function' &&
+							obj.constructor === Symbol &&
+							obj !== Symbol.prototype
 								? 'symbol'
 								: typeof obj
 						}
@@ -968,17 +968,14 @@
 
 				function decode(body) {
 					var form = new FormData()
-					body
-						.trim()
-						.split('&')
-						.forEach(function(bytes) {
-							if (bytes) {
-								var split = bytes.split('=')
-								var name = split.shift().replace(/\+/g, ' ')
-								var value = split.join('=').replace(/\+/g, ' ')
-								form.append(decodeURIComponent(name), decodeURIComponent(value))
-							}
-						})
+					body.trim().split('&').forEach(function(bytes) {
+						if (bytes) {
+							var split = bytes.split('=')
+							var name = split.shift().replace(/\+/g, ' ')
+							var value = split.join('=').replace(/\+/g, ' ')
+							form.append(decodeURIComponent(name), decodeURIComponent(value))
+						}
+					})
 					return form
 				}
 
@@ -1231,9 +1228,9 @@
 						}
 					: function(obj) {
 							return obj &&
-								typeof Symbol === 'function' &&
-								obj.constructor === Symbol &&
-								obj !== Symbol.prototype
+							typeof Symbol === 'function' &&
+							obj.constructor === Symbol &&
+							obj !== Symbol.prototype
 								? 'symbol'
 								: typeof obj
 						}
@@ -1965,9 +1962,9 @@
 						}
 					: function(obj) {
 							return obj &&
-								typeof Symbol === 'function' &&
-								obj.constructor === Symbol &&
-								obj !== Symbol.prototype
+							typeof Symbol === 'function' &&
+							obj.constructor === Symbol &&
+							obj !== Symbol.prototype
 								? 'symbol'
 								: typeof obj
 						}
@@ -2459,9 +2456,9 @@
 						}
 					: function(obj) {
 							return obj &&
-								typeof Symbol === 'function' &&
-								obj.constructor === Symbol &&
-								obj !== Symbol.prototype
+							typeof Symbol === 'function' &&
+							obj.constructor === Symbol &&
+							obj !== Symbol.prototype
 								? 'symbol'
 								: typeof obj
 						}
@@ -2499,9 +2496,9 @@
 						}
 					: function(obj) {
 							return obj &&
-								typeof Symbol === 'function' &&
-								obj.constructor === Symbol &&
-								obj !== Symbol.prototype
+							typeof Symbol === 'function' &&
+							obj.constructor === Symbol &&
+							obj !== Symbol.prototype
 								? 'symbol'
 								: typeof obj
 						}
@@ -2528,9 +2525,9 @@
 						}
 					: function(obj) {
 							return obj &&
-								typeof Symbol === 'function' &&
-								obj.constructor === Symbol &&
-								obj !== Symbol.prototype
+							typeof Symbol === 'function' &&
+							obj.constructor === Symbol &&
+							obj !== Symbol.prototype
 								? 'symbol'
 								: typeof obj
 						}
@@ -2721,9 +2718,9 @@
 						}
 					: function(obj) {
 							return obj &&
-								typeof Symbol === 'function' &&
-								obj.constructor === Symbol &&
-								obj !== Symbol.prototype
+							typeof Symbol === 'function' &&
+							obj.constructor === Symbol &&
+							obj !== Symbol.prototype
 								? 'symbol'
 								: typeof obj
 						}
@@ -3073,9 +3070,9 @@
 							}
 						: function(obj) {
 								return obj &&
-									typeof Symbol === 'function' &&
-									obj.constructor === Symbol &&
-									obj !== Symbol.prototype
+								typeof Symbol === 'function' &&
+								obj.constructor === Symbol &&
+								obj !== Symbol.prototype
 									? 'symbol'
 									: typeof obj
 							}
@@ -3189,11 +3186,11 @@
 					}
 
 					/**
-					 * Take a potentially misbehaving resolver function and make sure
-					 * onFulfilled and onRejected are only called once.
-					 *
-					 * Makes no guarantees about asynchrony.
-					 */
+   * Take a potentially misbehaving resolver function and make sure
+   * onFulfilled and onRejected are only called once.
+   *
+   * Makes no guarantees about asynchrony.
+   */
 					function doResolve(fn, self) {
 						var done = false
 						try {
@@ -3314,19 +3311,19 @@
 					}
 
 					/**
-					 * Set the immediate function to execute callbacks
-					 * @param fn {function} Function to execute
-					 * @deprecated
-					 */
+   * Set the immediate function to execute callbacks
+   * @param fn {function} Function to execute
+   * @deprecated
+   */
 					Promise._setImmediateFn = function _setImmediateFn(fn) {
 						Promise._immediateFn = fn
 					}
 
 					/**
-					 * Change the function to execute on unhandled rejection
-					 * @param {function} fn Function to execute on unhandled rejection
-					 * @deprecated
-					 */
+   * Change the function to execute on unhandled rejection
+   * @param {function} fn Function to execute on unhandled rejection
+   * @deprecated
+   */
 					Promise._setUnhandledRejectionFn = function _setUnhandledRejectionFn(fn) {
 						Promise._unhandledRejectionFn = fn
 					}
@@ -3550,9 +3547,9 @@
 						}
 					: function(obj) {
 							return obj &&
-								typeof Symbol === 'function' &&
-								obj.constructor === Symbol &&
-								obj !== Symbol.prototype
+							typeof Symbol === 'function' &&
+							obj.constructor === Symbol &&
+							obj !== Symbol.prototype
 								? 'symbol'
 								: typeof obj
 						}
@@ -3604,32 +3601,32 @@
 						w.performance && w.performance.now ? w.performance.now.bind(w.performance) : Date.now
 
 					/**
-					 * changes scroll position inside an element
-					 * @method scrollElement
-					 * @param {Number} x
-					 * @param {Number} y
-					 */
+     * changes scroll position inside an element
+     * @method scrollElement
+     * @param {Number} x
+     * @param {Number} y
+     */
 					function scrollElement(x, y) {
 						this.scrollLeft = x
 						this.scrollTop = y
 					}
 
 					/**
-					 * returns result of applying ease math function to a number
-					 * @method ease
-					 * @param {Number} k
-					 * @returns {Number}
-					 */
+     * returns result of applying ease math function to a number
+     * @method ease
+     * @param {Number} k
+     * @returns {Number}
+     */
 					function ease(k) {
 						return 0.5 * (1 - Math.cos(Math.PI * k))
 					}
 
 					/**
-					 * indicates if a smooth behavior should be applied
-					 * @method shouldBailOut
-					 * @param {Number|Object} x
-					 * @returns {Boolean}
-					 */
+     * indicates if a smooth behavior should be applied
+     * @method shouldBailOut
+     * @param {Number|Object} x
+     * @returns {Boolean}
+     */
 					function shouldBailOut(x) {
 						if (
 							(typeof x === 'undefined' ? 'undefined' : _typeof(x)) !== 'object' ||
@@ -3656,11 +3653,11 @@
 					}
 
 					/**
-					 * finds scrollable parent of an element
-					 * @method findScrollableParent
-					 * @param {Node} el
-					 * @returns {Node} el
-					 */
+     * finds scrollable parent of an element
+     * @method findScrollableParent
+     * @param {Node} el
+     * @returns {Node} el
+     */
 					function findScrollableParent(el) {
 						var isBody
 						var hasScrollableSpace
@@ -3682,10 +3679,10 @@
 					}
 
 					/**
-					 * self invoked function that, given a context, steps through scrolling
-					 * @method step
-					 * @param {Object} context
-					 */
+     * self invoked function that, given a context, steps through scrolling
+     * @method step
+     * @param {Object} context
+     */
 					function step(context) {
 						var time = now()
 						var value
@@ -3711,12 +3708,12 @@
 					}
 
 					/**
-					 * scrolls window with a smooth behavior
-					 * @method smoothScroll
-					 * @param {Object|Node} el
-					 * @param {Number} x
-					 * @param {Number} y
-					 */
+     * scrolls window with a smooth behavior
+     * @method smoothScroll
+     * @param {Object|Node} el
+     * @param {Number} x
+     * @param {Number} y
+     */
 					function smoothScroll(el, x, y) {
 						var scrollable
 						var startX
@@ -3947,9 +3944,9 @@
 						}
 					: function(obj) {
 							return obj &&
-								typeof Symbol === 'function' &&
-								obj.constructor === Symbol &&
-								obj !== Symbol.prototype
+							typeof Symbol === 'function' &&
+							obj.constructor === Symbol &&
+							obj !== Symbol.prototype
 								? 'symbol'
 								: typeof obj
 						}

@@ -77,30 +77,30 @@
 })(
 	/************************************************************************/
 	/******/ {
-		/***/ 0: /***/ function(module, exports) {
+		/***/ /***/ 0: function(module, exports) {
 			module.exports = Common
 
 			/***/
 		},
 
-		/***/ 1: /***/ function(module, exports) {
+		/***/ /***/ 1: function(module, exports) {
 			module.exports = Viewer
 
 			/***/
 		},
 
-		/***/ 161: /***/ function(module, exports) {
+		/***/ /***/ 161: function(module, exports) {
 			// removed by extract-text-webpack-plugin
 			/***/
 		},
 
-		/***/ 182: /***/ function(module, exports, __webpack_require__) {
+		/***/ /***/ 182: function(module, exports, __webpack_require__) {
 			module.exports = __webpack_require__(43)
 
 			/***/
 		},
 
-		/***/ 43: /***/ function(module, exports, __webpack_require__) {
+		/***/ /***/ 43: function(module, exports, __webpack_require__) {
 			'use strict'
 
 			var _Common = __webpack_require__(0)
@@ -145,7 +145,7 @@
 			/***/
 		},
 
-		/***/ 84: /***/ function(module, exports, __webpack_require__) {
+		/***/ /***/ 84: function(module, exports, __webpack_require__) {
 			'use strict'
 
 			Object.defineProperty(exports, '__esModule', {
@@ -182,7 +182,7 @@
 			/***/
 		},
 
-		/***/ 85: /***/ function(module, exports, __webpack_require__) {
+		/***/ /***/ 85: function(module, exports, __webpack_require__) {
 			'use strict'
 
 			Object.defineProperty(exports, '__esModule', {

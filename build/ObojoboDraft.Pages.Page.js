@@ -77,30 +77,30 @@
 })(
 	/************************************************************************/
 	/******/ {
-		/***/ 0: /***/ function(module, exports) {
+		/***/ /***/ 0: function(module, exports) {
 			module.exports = Common
 
 			/***/
 		},
 
-		/***/ 1: /***/ function(module, exports) {
+		/***/ /***/ 1: function(module, exports) {
 			module.exports = Viewer
 
 			/***/
 		},
 
-		/***/ 162: /***/ function(module, exports) {
+		/***/ /***/ 162: function(module, exports) {
 			// removed by extract-text-webpack-plugin
 			/***/
 		},
 
-		/***/ 183: /***/ function(module, exports, __webpack_require__) {
+		/***/ /***/ 183: function(module, exports, __webpack_require__) {
 			module.exports = __webpack_require__(44)
 
 			/***/
 		},
 
-		/***/ 44: /***/ function(module, exports, __webpack_require__) {
+		/***/ /***/ 44: function(module, exports, __webpack_require__) {
 			'use strict'
 
 			var _Common = __webpack_require__(0)
@@ -142,7 +142,7 @@
 			/***/
 		},
 
-		/***/ 86: /***/ function(module, exports, __webpack_require__) {
+		/***/ /***/ 86: function(module, exports, __webpack_require__) {
 			'use strict'
 
 			Object.defineProperty(exports, '__esModule', {
