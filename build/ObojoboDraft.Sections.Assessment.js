@@ -77,30 +77,30 @@
 })(
 	/************************************************************************/
 	/******/ {
-		/***/ 0: /***/ function(module, exports) {
+		/***/ /***/ 0: function(module, exports) {
 			module.exports = Common
 
 			/***/
 		},
 
-		/***/ 1: /***/ function(module, exports) {
+		/***/ /***/ 1: function(module, exports) {
 			module.exports = Viewer
 
 			/***/
 		},
 
-		/***/ 163: /***/ function(module, exports) {
+		/***/ /***/ 163: function(module, exports) {
 			// removed by extract-text-webpack-plugin
 			/***/
 		},
 
-		/***/ 184: /***/ function(module, exports, __webpack_require__) {
+		/***/ /***/ 184: function(module, exports, __webpack_require__) {
 			module.exports = __webpack_require__(45)
 
 			/***/
 		},
 
-		/***/ 45: /***/ function(module, exports, __webpack_require__) {
+		/***/ /***/ 45: function(module, exports, __webpack_require__) {
 			'use strict'
 
 			var _Common = __webpack_require__(0)
@@ -186,7 +186,7 @@
 			/***/
 		},
 
-		/***/ 87: /***/ function(module, exports, __webpack_require__) {
+		/***/ /***/ 87: function(module, exports, __webpack_require__) {
 			'use strict'
 
 			Object.defineProperty(exports, '__esModule', {
@@ -263,7 +263,7 @@
 			/***/
 		},
 
-		/***/ 88: /***/ function(module, exports, __webpack_require__) {
+		/***/ /***/ 88: function(module, exports, __webpack_require__) {
 			'use strict'
 
 			Object.defineProperty(exports, '__esModule', {
@@ -334,9 +334,8 @@
 
 					return _possibleConstructorReturn(
 						this,
-						(
-							AttemptIncompleteDialog.__proto__ || Object.getPrototypeOf(AttemptIncompleteDialog)
-						).apply(this, arguments)
+						(AttemptIncompleteDialog.__proto__ || Object.getPrototypeOf(AttemptIncompleteDialog))
+							.apply(this, arguments)
 					)
 				}
 
@@ -392,7 +391,7 @@
 			/***/
 		},
 
-		/***/ 89: /***/ function(module, exports, __webpack_require__) {
+		/***/ /***/ 89: function(module, exports, __webpack_require__) {
 			'use strict'
 
 			Object.defineProperty(exports, '__esModule', {
@@ -492,7 +491,7 @@
 			/***/
 		},
 
-		/***/ 90: /***/ function(module, exports, __webpack_require__) {
+		/***/ /***/ 90: function(module, exports, __webpack_require__) {
 			'use strict'
 
 			Object.defineProperty(exports, '__esModule', {
