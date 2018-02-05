@@ -51,9 +51,7 @@ describe('Caliper event creator', () => {
 				sessionIds,
 				extensions
 			})
-		}).toThrow(
-			`Invalid actor type. Must provide actor of type user\nMissing required arguments: actor.id`
-		)
+		}).toThrow(`Invalid actor type. Must provide actor of type user`)
 	})
 
 	///////////////////////////////////////////////////////////////////////////////////////////////////
@@ -91,9 +89,7 @@ describe('Caliper event creator', () => {
 				sessionIds,
 				extensions
 			})
-		}).toThrow(
-			`Invalid actor type. Must provide actor of type user\nMissing required arguments: actor.id`
-		)
+		}).toThrow(`Invalid actor type. Must provide actor of type user`)
 	})
 
 	///////////////////////////////////////////////////////////////////////////////////////////////////
@@ -132,7 +128,7 @@ describe('Caliper event creator', () => {
 				extensions
 			})
 		}).toThrow(
-			`Invalid actor type. Must provide actor of type user\nMissing required arguments: actor.id`
+			`createEvent actor must be one of "user", "viewerClient" or "serverApp". Instead was given "bad".`
 		)
 	})
 
@@ -160,9 +156,7 @@ describe('Caliper event creator', () => {
 				sessionIds,
 				extensions
 			})
-		}).toThrow(
-			`Invalid actor type. Must provide actor of type user\nMissing required arguments: actor.id`
-		)
+		}).toThrow(`Invalid actor type. Must provide actor of type user`)
 	})
 
 	///////////////////////////////////////////////////////////////////////////////////////////////////
@@ -189,9 +183,7 @@ describe('Caliper event creator', () => {
 				sessionIds,
 				extensions
 			})
-		}).toThrow(
-			`Invalid actor type. Must provide actor of type user\nMissing required arguments: actor.id`
-		)
+		}).toThrow(`Invalid actor type. Must provide actor of type user`)
 	})
 
 	///////////////////////////////////////////////////////////////////////////////////////////////////
@@ -328,9 +320,7 @@ describe('Caliper event creator', () => {
 				selectedTargets,
 				extensions
 			})
-		}).toThrow(
-			`Invalid actor type. Must provide actor of type user\nMissing required arguments: actor.id`
-		)
+		}).toThrow(`Invalid actor type. Must provide actor of type user`)
 	})
 
 	///////////////////////////////////////////////////////////////////////////////////////////////////
@@ -355,9 +345,7 @@ describe('Caliper event creator', () => {
 				sessionIds,
 				extensions
 			})
-		}).toThrow(
-			`Invalid actor type. Must provide actor of type user\nMissing required arguments: actor.id`
-		)
+		}).toThrow(`Invalid actor type. Must provide actor of type user`)
 	})
 
 	///////////////////////////////////////////////////////////////////////////////////////////////////
@@ -405,9 +393,7 @@ describe('Caliper event creator', () => {
 				sessionIds,
 				extensions
 			})
-		).toThrow(
-			`Invalid actor type. Must provide actor of type user\nMissing required arguments: actor.id`
-		)
+		).toThrow(`Invalid actor type. Must provide actor of type user`)
 	})
 
 	///////////////////////////////////////////////////////////////////////////////////////////////////
@@ -430,9 +416,7 @@ describe('Caliper event creator', () => {
 				sessionIds,
 				extensions
 			})
-		).toThrow(
-			`Invalid actor type. Must provide actor of type user\nMissing required arguments: actor.id`
-		)
+		).toThrow(`Invalid actor type. Must provide actor of type user`)
 	})
 
 	///////////////////////////////////////////////////////////////////////////////////////////////////
@@ -455,9 +439,7 @@ describe('Caliper event creator', () => {
 				sessionIds,
 				extensions
 			})
-		).toThrow(
-			`Invalid actor type. Must provide actor of type user\nMissing required arguments: actor.id`
-		)
+		).toThrow(`Invalid actor type. Must provide actor of type user`)
 	})
 
 	///////////////////////////////////////////////////////////////////////////////////////////////////
@@ -480,9 +462,7 @@ describe('Caliper event creator', () => {
 				sessionIds,
 				extensions
 			})
-		).toThrow(
-			`Invalid actor type. Must provide actor of type user\nMissing required arguments: actor.id`
-		)
+		).toThrow(`Invalid actor type. Must provide actor of type user`)
 	})
 
 	///////////////////////////////////////////////////////////////////////////////////////////////////
@@ -506,8 +486,6 @@ describe('Caliper event creator', () => {
 				questionId,
 				extensions
 			})
-		).toThrow(
-			`Invalid actor type. Must provide actor of type user\nMissing required arguments: actor.id`
-		)
+		).toThrow(`Invalid actor type. Must provide actor of type user`)
 	})
 })

@@ -1,5 +1,6 @@
 const caliperEvent = require('../../../../routes/api/events/create_caliper_event')
 
+const actor = 'user'
 const assessmentId = 'testAssessmentReq'
 const attemptId = 'testAttemptIdReq'
 const attemptIRI = 'testAttemptIRIReq'
@@ -54,7 +55,7 @@ let reqObjects = {
 	question_hide: fillReqObj('question:hide', { questionId }),
 	question_checkAnswer: fillReqObj('question:checkAnswer', { questionId }),
 	question_showExplanation: fillReqObj('question:showExplanation', { questionId }),
-	question_hideExplanation: fillReqObj('question:hideExplanation', { questionId }),
+	question_hideExplanation: fillReqObj('question:hideExplanation', { questionId, actor }),
 	question_setResponse: fillReqObj('question:setResponse', { assessmentId, attemptId, questionId }),
 	score_set: fillReqObj('score:set', { id, itemId, score }),
 	score_clear: fillReqObj('score:clear', { id, itemId }),

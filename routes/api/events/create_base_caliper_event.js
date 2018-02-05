@@ -34,7 +34,7 @@ let createEvent = (
 
 		default:
 			throw new Error(
-				`createEvent actor must be one of "${ACTOR_USER}", "${ACTOR_VIEWER_CLIENT}" or "${ACTOR_SERVER_APP}"`
+				`createEvent actor must be one of "${ACTOR_USER}", "${ACTOR_VIEWER_CLIENT}" or "${ACTOR_SERVER_APP}". Instead was given "${actorObject.type}".`
 			)
 	}
 
