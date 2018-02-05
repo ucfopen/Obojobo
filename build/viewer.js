@@ -1024,9 +1024,9 @@
 						value: { id: id }
 					})
 				},
-				hideExplanation: function hideExplanation(id, asSystem) {
+				hideExplanation: function hideExplanation(id, actor) {
 					return Dispatcher.trigger('question:hideExplanation', {
-						value: { id: id }
+						value: { id: id, actor: actor }
 					})
 				},
 				viewQuestion: function viewQuestion(id) {
@@ -2513,8 +2513,9 @@
 						'question:hideExplanation': function questionHideExplanation(payload) {
 							var root = OboModel.models[payload.value.id].getRoot()
 
-							_apiUtil2.default.postEvent(root, 'question:hideExplanation', '1.0.0', {
-								questionId: payload.value.id
+							_apiUtil2.default.postEvent(root, 'question:hideExplanation', '1.1.0', {
+								questionId: payload.value.id,
+								actor: payload.value.actor
 							})
 
 							_questionUtil2.default.clearData(payload.value.id, 'showingExplanation')
@@ -2579,7 +2580,7 @@
 							})
 
 							if (_questionUtil2.default.isShowingExplanation(_this.state, questionModel)) {
-								_questionUtil2.default.hideExplanation(questionId, true)
+								_questionUtil2.default.hideExplanation(questionId, 'viewerClient')
 							}
 
 							_scoreUtil2.default.clearScore(questionId) // should trigger change

@@ -103,7 +103,7 @@ export default class MCAssessment extends React.Component {
 	}
 
 	hideExplanation() {
-		QuestionUtil.hideExplanation(this.getQuestionModel().get('id'))
+		QuestionUtil.hideExplanation(this.getQuestionModel().get('id'), 'user')
 	}
 
 	onClickReset(event) {

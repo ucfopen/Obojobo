@@ -101,12 +101,13 @@ describe('QuestionUtil', () => {
 	})
 
 	it('should trigger question:hideExplanation', () => {
-		QuestionUtil.hideExplanation('testId')
+		QuestionUtil.hideExplanation('testId', 'testActor')
 
 		expect(Dispatcher.trigger).toHaveBeenCalledTimes(1)
 		expect(Dispatcher.trigger).toHaveBeenCalledWith('question:hideExplanation', {
 			value: {
-				id: 'testId'
+				id: 'testId',
+				actor: 'testActor'
 			}
 		})
 	})
