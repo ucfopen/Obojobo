@@ -4,7 +4,7 @@ let { OboModel } = Common.models
 
 let Adapter = {
 	construct(model, attrs) {
-		if (__guard__(attrs != null ? attrs.content : undefined, x => x.width) != null) {
+		if (__guard__(attrs != null ? attrs.content : undefined, x => x.width) == 'large') {
 			model.modelState.width = attrs.content.width
 		} else {
 			model.modelState.width = 'normal'
