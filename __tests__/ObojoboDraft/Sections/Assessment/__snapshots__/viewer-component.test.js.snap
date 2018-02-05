@@ -342,7 +342,7 @@ exports[`Assessment Assessment page changes when attempt started and submitted 2
           onClick={[Function]}
           tabIndex={undefined}
         >
-          Submit
+          Submit (Not all questions have been answered)
         </button>
       </div>
     </div>
