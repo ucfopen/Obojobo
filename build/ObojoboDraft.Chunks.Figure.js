@@ -96,27 +96,27 @@
 		},
 
 		/***/ 169: /***/ function(module, exports, __webpack_require__) {
-			module.exports = __webpack_require__(31)
+			module.exports = __webpack_require__(32)
 
 			/***/
 		},
 
-		/***/ 31: /***/ function(module, exports, __webpack_require__) {
+		/***/ 32: /***/ function(module, exports, __webpack_require__) {
 			'use strict'
 
 			var _Common = __webpack_require__(0)
 
 			var _Common2 = _interopRequireDefault(_Common)
 
-			var _selectionHandler = __webpack_require__(56)
+			var _selectionHandler = __webpack_require__(57)
 
 			var _selectionHandler2 = _interopRequireDefault(_selectionHandler)
 
-			var _adapter = __webpack_require__(54)
+			var _adapter = __webpack_require__(55)
 
 			var _adapter2 = _interopRequireDefault(_adapter)
 
-			var _viewerComponent = __webpack_require__(57)
+			var _viewerComponent = __webpack_require__(58)
 
 			var _viewerComponent2 = _interopRequireDefault(_viewerComponent)
 
@@ -134,7 +134,7 @@
 			/***/
 		},
 
-		/***/ 54: /***/ function(module, exports, __webpack_require__) {
+		/***/ 55: /***/ function(module, exports, __webpack_require__) {
 			'use strict'
 
 			Object.defineProperty(exports, '__esModule', {
@@ -241,7 +241,7 @@
 			/***/
 		},
 
-		/***/ 55: /***/ function(module, exports, __webpack_require__) {
+		/***/ 56: /***/ function(module, exports, __webpack_require__) {
 			'use strict'
 
 			Object.defineProperty(exports, '__esModule', {
@@ -374,7 +374,7 @@
 			/***/
 		},
 
-		/***/ 56: /***/ function(module, exports, __webpack_require__) {
+		/***/ 57: /***/ function(module, exports, __webpack_require__) {
 			'use strict'
 
 			Object.defineProperty(exports, '__esModule', {
@@ -470,7 +470,7 @@
 			/***/
 		},
 
-		/***/ 57: /***/ function(module, exports, __webpack_require__) {
+		/***/ 58: /***/ function(module, exports, __webpack_require__) {
 			'use strict'
 
 			Object.defineProperty(exports, '__esModule', {
@@ -496,7 +496,7 @@
 
 			__webpack_require__(146)
 
-			var _image = __webpack_require__(55)
+			var _image = __webpack_require__(56)
 
 			var _image2 = _interopRequireDefault(_image)
 

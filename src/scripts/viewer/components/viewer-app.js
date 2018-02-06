@@ -311,8 +311,8 @@ export default class ViewerApp extends React.Component {
 
 			nextModel = NavUtil.getNextModel(this.state.navState)
 			if (nextModel) {
-				if (nextModel.id == 'assessment')
-					nextEl = <InlineNavButton ref="next" type="next" title={`Next: Assessment`} />
+				if (typeof nextModel.title == 'undefined' || nextModel.title == null)
+					nextEl = <InlineNavButton ref="next" type="next" title={`Next`} />
 				else nextEl = <InlineNavButton ref="next" type="next" title={`Next: ${nextModel.title}`} />
 			} else {
 				nextEl = (
