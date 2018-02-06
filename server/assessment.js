@@ -123,7 +123,7 @@ class Assessment extends DraftNode {
 		super(draftTree, node, initFn)
 		this.registerEvents({
 			'internal:sendToClient': this.onSendToClient,
-			'internal:renderViewer': this.onRenderViewer
+			'internal:startVisit': this.onStartVisit
 		})
 	}
 
@@ -131,14 +131,14 @@ class Assessment extends DraftNode {
 		return this.yell('ObojoboDraft.Sections.Assessment:sendToClient', req, res)
 	}
 
-	onRenderViewer(req, res, oboGlobals) {
+	onStartVisit(req, res, resultContainer) {
 		return req
 			.requireCurrentUser()
 			.then(currentUser => {
 				return this.constructor.getAttemptHistory(currentUser.id, req.params.draftId)
 			})
 			.then(attemptHistory => {
-				oboGlobals.set('ObojoboDraft.Sections.Assessment:attemptHistory', attemptHistory)
+				resultContainer.attemptHistory = attemptHistory
 				return Promise.resolve()
 			})
 			.catch(err => {

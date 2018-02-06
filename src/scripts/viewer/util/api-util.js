@@ -44,7 +44,7 @@ var APIUtil = {
 			APIUtil.post('/api/events', {
 				event: {
 					action,
-					draft_id: lo.get('_id'),
+					draft_id: lo.get('draftId'),
 					actor_time: new Date().toISOString(),
 					event_version: eventVersion,
 					payload
@@ -64,18 +64,27 @@ var APIUtil = {
 		return APIUtil.postEvent(lo, 'saveState', state)
 	},
 
-	fetchDraft(id) {
+	getDraft(id) {
 		return createParsedJsonPromise(fetch(`/api/drafts/${id}`))
 	},
 
 	getAttempts(lo) {
-		return createParsedJsonPromise(APIUtil.get(`/api/drafts/${lo.get('_id')}/attempts`))
+		return createParsedJsonPromise(APIUtil.get(`/api/drafts/${lo.get('draftId')}/attempts`))
+	},
+
+	requestStart(visitId, draftId) {
+		return createParsedJsonPromise(
+			APIUtil.post('/api/visits/start', {
+				visitId,
+				draftId
+			})
+		)
 	},
 
 	startAttempt(lo, assessment, questions) {
 		return createParsedJsonPromise(
 			APIUtil.post('/api/assessments/attempt/start', {
-				draftId: lo.get('_id'),
+				draftId: lo.get('draftId'),
 				assessmentId: assessment.get('id'),
 				actor: 4,
 				questions: '@TODO'

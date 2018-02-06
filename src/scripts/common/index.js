@@ -68,7 +68,6 @@ import ModalUtil from './util/modal-util'
 import FocusUtil from './util/focus-util'
 import ErrorUtil from './util/error-util'
 import UUID from './util/uuid'
-import OboGlobals from './util/obo-globals'
 
 export default {
 	Store: Store,
@@ -184,7 +183,6 @@ export default {
 		ModalUtil: ModalUtil,
 		FocusUtil: FocusUtil,
 		ErrorUtil: ErrorUtil,
-		UUID: UUID,
-		OboGlobals: OboGlobals
+		UUID: UUID
 	}
 }

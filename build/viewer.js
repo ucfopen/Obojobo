@@ -724,7 +724,7 @@
 						APIUtil.post('/api/events', {
 							event: {
 								action: action,
-								draft_id: lo.get('_id'),
+								draft_id: lo.get('draftId'),
 								actor_time: new Date().toISOString(),
 								event_version: eventVersion,
 								payload: payload
@@ -742,16 +742,26 @@
 				saveState: function saveState(lo, state) {
 					return APIUtil.postEvent(lo, 'saveState', state)
 				},
-				fetchDraft: function fetchDraft(id) {
+				getDraft: function getDraft(id) {
 					return createParsedJsonPromise(fetch('/api/drafts/' + id))
 				},
 				getAttempts: function getAttempts(lo) {
-					return createParsedJsonPromise(APIUtil.get('/api/drafts/' + lo.get('_id') + '/attempts'))
+					return createParsedJsonPromise(
+						APIUtil.get('/api/drafts/' + lo.get('draftId') + '/attempts')
+					)
+				},
+				requestStart: function requestStart(visitId, draftId) {
+					return createParsedJsonPromise(
+						APIUtil.post('/api/visits/start', {
+							visitId: visitId,
+							draftId: draftId
+						})
+					)
 				},
 				startAttempt: function startAttempt(lo, assessment, questions) {
 					return createParsedJsonPromise(
 						APIUtil.post('/api/assessments/attempt/start', {
-							draftId: lo.get('_id'),
+							draftId: lo.get('draftId'),
 							assessmentId: assessment.get('id'),
 							actor: 4,
 							questions: '@TODO'
@@ -1431,7 +1441,7 @@
 				_createClass(NavStore, [
 					{
 						key: 'init',
-						value: function init(model, startingId, startingPath) {
+						value: function init(model, startingId, startingPath, visitId) {
 							this.state = {
 								items: {},
 								itemsById: {},
@@ -1440,7 +1450,8 @@
 								navTargetHistory: [],
 								navTargetId: null,
 								locked: false,
-								open: true
+								open: true,
+								visitId: visitId
 							}
 
 							this.buildMenu(model)
@@ -1564,9 +1575,13 @@
 									// flatPath = ['view', model.getRoot().get('_id'), childNavItem.fullPath.join('/')].join('/')
 									var flatPath = childNavItem.fullPath.join('/')
 									childNavItem.flatPath = flatPath
-									childNavItem.fullFlatPath = ['/view', model.getRoot().get('_id'), flatPath].join(
-										'/'
-									)
+									childNavItem.fullFlatPath = [
+										'/view',
+										model.getRoot().get('draftId'),
+										'visit',
+										this.state.visitId,
+										flatPath
+									].join('/')
 									this.state.itemsByPath[flatPath] = childNavItem
 									this.state.itemsByFullPath[childNavItem.fullFlatPath] = childNavItem
 								}
@@ -6246,7 +6261,6 @@
 			var ModalStore = _Common2.default.stores.ModalStore
 			var FocusStore = _Common2.default.stores.FocusStore
 			var FocusUtil = _Common2.default.util.FocusUtil
-			var OboGlobals = _Common2.default.util.OboGlobals
 
 			// Dispatcher.on 'all', (eventName, payload) -> console.log 'EVENT TRIGGERED', eventName
 
@@ -6284,39 +6298,19 @@
 					Dispatcher.on('viewer:scrollToTop', _this.scrollToTop.bind(_this))
 					Dispatcher.on('getTextForVariable', _this.getTextForVariable.bind(_this))
 
-					_this.isPreviewing = OboGlobals.get('previewing')
-
 					var state = {
-						model: OboModel.create(OboGlobals.get('draft')),
+						model: null,
 						navState: null,
 						scoreState: null,
 						questionState: null,
 						assessmentState: null,
 						modalState: null,
 						focusState: null,
-						navTargetId: null
+						navTargetId: null,
+						loading: true,
+						requestStatus: 'unknown',
+						isPreviewing: false
 					}
-
-					_scoreStore2.default.init()
-					_questionStore2.default.init()
-					ModalStore.init()
-					FocusStore.init()
-
-					_navStore2.default.init(
-						state.model,
-						state.model.modelState.start,
-						window.location.pathname
-					)
-					_assessmentStore2.default.init(
-						OboGlobals.get('ObojoboDraft.Sections.Assessment:attemptHistory', [])
-					)
-
-					state.navState = _navStore2.default.getState()
-					state.scoreState = _scoreStore2.default.getState()
-					state.questionState = _questionStore2.default.getState()
-					state.assessmentState = _assessmentStore2.default.getState()
-					state.modalState = ModalStore.getState()
-					state.focusState = FocusStore.getState()
 
 					_this.onNavStoreChange = function() {
 						return _this.setState({ navState: _navStore2.default.getState() })
@@ -6342,8 +6336,6 @@
 					_this.onWindowClose = _this.onWindowClose.bind(_this)
 					_this.onVisibilityChange = _this.onVisibilityChange.bind(_this)
 
-					window.onbeforeunload = _this.onWindowClose
-
 					_this.state = state
 					return _this
 				}
@@ -6352,7 +6344,72 @@
 					{
 						key: 'componentDidMount',
 						value: function componentDidMount() {
+							var _this2 = this
+
 							document.addEventListener('visibilitychange', this.onVisibilityChange)
+							var visitIdFromUrl = void 0,
+								visitIdFromApi = void 0,
+								draftIdFromUrl = void 0,
+								attemptHistory = void 0,
+								isPreviewing = void 0
+							var visitMatchRegex = /visit\/(\d+)/.exec(document.location.href)
+							var draftMatchRegex = /(\w{8}-\w{4}-\w{4}-\w{4}-\w{12})/.exec(document.location.href)
+
+							if (visitMatchRegex) {
+								visitIdFromUrl = visitMatchRegex[1]
+							}
+							if (draftMatchRegex) {
+								draftIdFromUrl = draftMatchRegex[1]
+							}
+
+							Dispatcher.trigger('viewer:loading')
+
+							_apiUtil2.default
+								.requestStart(visitIdFromUrl, draftIdFromUrl)
+								.then(function(visit) {
+									if (visit.status !== 'ok') throw 'Invalid Visit Id'
+									visitIdFromApi = visit.value.visitId
+									attemptHistory = visit.value.attemptHistory
+									isPreviewing = visit.value.isPreviewing
+									return _apiUtil2.default.getDraft(draftIdFromUrl)
+								})
+								.then(function(_ref) {
+									var draftModel = _ref.value
+
+									_this2.state.model = OboModel.create(draftModel)
+
+									_scoreStore2.default.init()
+									_questionStore2.default.init()
+									ModalStore.init()
+									FocusStore.init()
+									_navStore2.default.init(
+										_this2.state.model,
+										_this2.state.model.modelState.start,
+										window.location.pathname,
+										visitIdFromApi
+									)
+									_assessmentStore2.default.init(attemptHistory)
+
+									_this2.state.navState = _navStore2.default.getState()
+									_this2.state.scoreState = _scoreStore2.default.getState()
+									_this2.state.questionState = _questionStore2.default.getState()
+									_this2.state.assessmentState = _assessmentStore2.default.getState()
+									_this2.state.modalState = ModalStore.getState()
+									_this2.state.focusState = FocusStore.getState()
+
+									window.onbeforeunload = _this2.onWindowClose
+									_this2.setState(
+										{ loading: false, requestStatus: 'ok', isPreviewing: isPreviewing },
+										function() {
+											Dispatcher.trigger('viewer:loaded', true)
+										}
+									)
+								})
+								.catch(function(err) {
+									_this2.setState({ loading: false, requestStatus: 'invalid' }, function() {
+										return Dispatcher.trigger('viewer:loaded', false)
+									})
+								})
 						}
 					},
 					{
@@ -6379,54 +6436,59 @@
 
 							document.removeEventListener('visibilitychange', this.onVisibilityChange)
 						}
-
-						// componentDidMount: ->
-						// NavUtil.gotoPath window.location.pathname
+					},
+					{
+						key: 'shouldComponentUpdate',
+						value: function shouldComponentUpdate(nextProps, nextState) {
+							return nextState.loading ? false : true
+						}
 					},
 					{
 						key: 'componentWillUpdate',
 						value: function componentWillUpdate(nextProps, nextState) {
-							var navTargetId = this.state.navTargetId
+							if (this.state.requestStatus === 'ok') {
+								var navTargetId = this.state.navTargetId
 
-							var nextNavTargetId = this.state.navState.navTargetId
+								var nextNavTargetId = this.state.navState.navTargetId
 
-							if (navTargetId !== nextNavTargetId) {
-								this.needsScroll = true
-								return this.setState({ navTargetId: nextNavTargetId })
+								if (navTargetId !== nextNavTargetId) {
+									this.needsScroll = true
+									return this.setState({ navTargetId: nextNavTargetId })
+								}
 							}
 						}
 					},
 					{
 						key: 'componentDidUpdate',
 						value: function componentDidUpdate() {
-							// alert 'here, fixme'
-							if (this.lastCanNavigate !== _navUtil2.default.canNavigate(this.state.navState)) {
-								this.needsScroll = true
-							}
-							this.lastCanNavigate = _navUtil2.default.canNavigate(this.state.navState)
-							if (this.needsScroll != null) {
-								this.scrollToTop()
+							if (this.state.requestStatus === 'ok') {
+								if (this.lastCanNavigate !== _navUtil2.default.canNavigate(this.state.navState)) {
+									this.needsScroll = true
+								}
+								this.lastCanNavigate = _navUtil2.default.canNavigate(this.state.navState)
+								if (this.needsScroll != null) {
+									this.scrollToTop()
 
-								return delete this.needsScroll
+									return delete this.needsScroll
+								}
 							}
 						}
 					},
 					{
 						key: 'onVisibilityChange',
 						value: function onVisibilityChange(event) {
-							var _this2 = this
+							var _this3 = this
 
 							if (document.hidden) {
 								_apiUtil2.default
 									.postEvent(this.state.model, 'viewer:leave', '1.0.0', {})
 									.then(function(res) {
-										_this2.leaveEvent = res.value
+										_this3.leaveEvent = res.value
 									})
 							} else {
 								_apiUtil2.default.postEvent(this.state.model, 'viewer:return', '1.0.0', {
 									relatedEventId: this.leaveEvent.id
 								})
-
 								delete this.leaveEvent
 							}
 						}
@@ -6523,7 +6585,7 @@
 					{
 						key: 'onIdle',
 						value: function onIdle() {
-							var _this3 = this
+							var _this4 = this
 
 							this.lastActiveEpoch = this.refs.idleTimer.getLastActiveTime()
 
@@ -6533,7 +6595,7 @@
 									inactiveDuration: IDLE_TIMEOUT_DURATION_MS
 								})
 								.then(function(res) {
-									_this3.inactiveEvent = res.value
+									_this4.inactiveEvent = res.value
 								})
 						}
 					},
@@ -6585,6 +6647,18 @@
 					{
 						key: 'render',
 						value: function render() {
+							// @TODO loading component
+							if (this.state.loading == true) {
+								return _react2.default.createElement(
+									'div',
+									{ className: 'is-loading' },
+									'...Loading'
+								)
+							}
+
+							if (this.state.requestStatus === 'invalid')
+								return _react2.default.createElement('div', null, 'Invalid')
+
 							var nextEl = void 0,
 								nextModel = void 0,
 								prevEl = void 0
@@ -6653,7 +6727,7 @@
 										onScroll: this.onScroll.bind(this),
 										className:
 											'viewer--viewer-app' +
-											(this.isPreviewing ? ' is-previewing' : ' is-not-previewing') +
+											(this.state.isPreviewing ? ' is-previewing' : ' is-not-previewing') +
 											(this.state.navState.locked ? ' is-locked-nav' : ' is-unlocked-nav') +
 											(this.state.navState.open ? ' is-open-nav' : ' is-closed-nav') +
 											(this.state.navState.disabled ? ' is-disabled-nav' : ' is-enabled-nav') +
@@ -6686,7 +6760,7 @@
 										moduleData: this.state
 									}),
 									nextEl,
-									this.isPreviewing
+									this.state.isPreviewing
 										? _react2.default.createElement(
 												'div',
 												{ className: 'preview-banner' },

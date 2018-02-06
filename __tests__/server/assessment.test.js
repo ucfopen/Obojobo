@@ -72,7 +72,7 @@ describe('Assessment', () => {
 
 		expect(assessment.registerEvents).toHaveBeenCalledWith({
 			'internal:sendToClient': assessment.onSendToClient,
-			'internal:renderViewer': assessment.onRenderViewer
+			'internal:startVisit': assessment.onStartVisit
 		})
 	})
 
@@ -96,54 +96,6 @@ describe('Assessment', () => {
 			'req',
 			'res'
 		)
-	})
-
-	test('onRenderView sets global attemptHistory', done => {
-		Assessment.getAttemptHistory = () => {
-			return Promise.resolve({ history: 'test123' })
-		}
-
-		let assessment = new Assessment(
-			{
-				draftTree: true
-			},
-			{
-				node: true
-			},
-			jest.fn()
-		)
-
-		let requireCurrentUser = () => {
-			return Promise.resolve({ id: 1 })
-		}
-
-		let oboGlobalsMockSetFn = jest.fn()
-
-		assessment
-			.onRenderViewer(
-				{
-					requireCurrentUser: requireCurrentUser,
-					params: {
-						draftId: 123
-					}
-				},
-				'res',
-				{
-					set: oboGlobalsMockSetFn
-				}
-			)
-			.then(() => {
-				expect(
-					oboGlobalsMockSetFn
-				).toHaveBeenCalledWith('ObojoboDraft.Sections.Assessment:attemptHistory', {
-					history: 'test123'
-				})
-
-				done()
-			})
-			.catch(e => {
-				expect(1).toBe(2) // shouldn't get here
-			})
 	})
 
 	test('getNumberAttemptsTaken calls db', done => {

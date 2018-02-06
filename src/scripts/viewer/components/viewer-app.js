@@ -29,7 +29,6 @@ let { FocusBlocker } = Common.components
 let { ModalStore } = Common.stores
 let { FocusStore } = Common.stores
 let { FocusUtil } = Common.util
-let { OboGlobals } = Common.util
 
 // Dispatcher.on 'all', (eventName, payload) -> console.log 'EVENT TRIGGERED', eventName
 
@@ -56,33 +55,19 @@ export default class ViewerApp extends React.Component {
 		Dispatcher.on('viewer:scrollToTop', this.scrollToTop.bind(this))
 		Dispatcher.on('getTextForVariable', this.getTextForVariable.bind(this))
 
-		this.isPreviewing = OboGlobals.get('previewing')
-
 		let state = {
-			model: OboModel.create(OboGlobals.get('draft')),
+			model: null,
 			navState: null,
 			scoreState: null,
 			questionState: null,
 			assessmentState: null,
 			modalState: null,
 			focusState: null,
-			navTargetId: null
+			navTargetId: null,
+			loading: true,
+			requestStatus: 'unknown',
+			isPreviewing: false
 		}
-
-		ScoreStore.init()
-		QuestionStore.init()
-		ModalStore.init()
-		FocusStore.init()
-
-		NavStore.init(state.model, state.model.modelState.start, window.location.pathname)
-		AssessmentStore.init(OboGlobals.get('ObojoboDraft.Sections.Assessment:attemptHistory', []))
-
-		state.navState = NavStore.getState()
-		state.scoreState = ScoreStore.getState()
-		state.questionState = QuestionStore.getState()
-		state.assessmentState = AssessmentStore.getState()
-		state.modalState = ModalStore.getState()
-		state.focusState = FocusStore.getState()
 
 		this.onNavStoreChange = () => this.setState({ navState: NavStore.getState() })
 		this.onScoreStoreChange = () => this.setState({ scoreState: ScoreStore.getState() })
@@ -97,13 +82,64 @@ export default class ViewerApp extends React.Component {
 		this.onWindowClose = this.onWindowClose.bind(this)
 		this.onVisibilityChange = this.onVisibilityChange.bind(this)
 
-		window.onbeforeunload = this.onWindowClose
-
 		this.state = state
 	}
 
 	componentDidMount() {
 		document.addEventListener('visibilitychange', this.onVisibilityChange)
+		let visitIdFromUrl, visitIdFromApi, draftIdFromUrl, attemptHistory, isPreviewing
+		let visitMatchRegex = /visit\/(\d+)/.exec(document.location.href)
+		let draftMatchRegex = /(\w{8}-\w{4}-\w{4}-\w{4}-\w{12})/.exec(document.location.href)
+
+		if (visitMatchRegex) {
+			visitIdFromUrl = visitMatchRegex[1]
+		}
+		if (draftMatchRegex) {
+			draftIdFromUrl = draftMatchRegex[1]
+		}
+
+		Dispatcher.trigger('viewer:loading')
+
+		APIUtil.requestStart(visitIdFromUrl, draftIdFromUrl)
+			.then(visit => {
+				if (visit.status !== 'ok') throw 'Invalid Visit Id'
+				visitIdFromApi = visit.value.visitId
+				attemptHistory = visit.value.attemptHistory
+				isPreviewing = visit.value.isPreviewing
+				return APIUtil.getDraft(draftIdFromUrl)
+			})
+			.then(({ value: draftModel }) => {
+				this.state.model = OboModel.create(draftModel)
+
+				ScoreStore.init()
+				QuestionStore.init()
+				ModalStore.init()
+				FocusStore.init()
+				NavStore.init(
+					this.state.model,
+					this.state.model.modelState.start,
+					window.location.pathname,
+					visitIdFromApi
+				)
+				AssessmentStore.init(attemptHistory)
+
+				this.state.navState = NavStore.getState()
+				this.state.scoreState = ScoreStore.getState()
+				this.state.questionState = QuestionStore.getState()
+				this.state.assessmentState = AssessmentStore.getState()
+				this.state.modalState = ModalStore.getState()
+				this.state.focusState = FocusStore.getState()
+
+				window.onbeforeunload = this.onWindowClose
+				this.setState({ loading: false, requestStatus: 'ok', isPreviewing }, () => {
+					Dispatcher.trigger('viewer:loaded', true)
+				})
+			})
+			.catch(err => {
+				this.setState({ loading: false, requestStatus: 'invalid' }, () =>
+					Dispatcher.trigger('viewer:loaded', false)
+				)
+			})
 	}
 
 	componentWillMount() {
@@ -127,29 +163,33 @@ export default class ViewerApp extends React.Component {
 		document.removeEventListener('visibilitychange', this.onVisibilityChange)
 	}
 
-	// componentDidMount: ->
-	// NavUtil.gotoPath window.location.pathname
+	shouldComponentUpdate(nextProps, nextState) {
+		return nextState.loading ? false : true
+	}
 
 	componentWillUpdate(nextProps, nextState) {
-		let { navTargetId } = this.state
-		let nextNavTargetId = this.state.navState.navTargetId
+		if (this.state.requestStatus === 'ok') {
+			let { navTargetId } = this.state
+			let nextNavTargetId = this.state.navState.navTargetId
 
-		if (navTargetId !== nextNavTargetId) {
-			this.needsScroll = true
-			return this.setState({ navTargetId: nextNavTargetId })
+			if (navTargetId !== nextNavTargetId) {
+				this.needsScroll = true
+				return this.setState({ navTargetId: nextNavTargetId })
+			}
 		}
 	}
 
 	componentDidUpdate() {
-		// alert 'here, fixme'
-		if (this.lastCanNavigate !== NavUtil.canNavigate(this.state.navState)) {
-			this.needsScroll = true
-		}
-		this.lastCanNavigate = NavUtil.canNavigate(this.state.navState)
-		if (this.needsScroll != null) {
-			this.scrollToTop()
+		if (this.state.requestStatus === 'ok') {
+			if (this.lastCanNavigate !== NavUtil.canNavigate(this.state.navState)) {
+				this.needsScroll = true
+			}
+			this.lastCanNavigate = NavUtil.canNavigate(this.state.navState)
+			if (this.needsScroll != null) {
+				this.scrollToTop()
 
-			return delete this.needsScroll
+				return delete this.needsScroll
+			}
 		}
 	}
 
@@ -162,7 +202,6 @@ export default class ViewerApp extends React.Component {
 			APIUtil.postEvent(this.state.model, 'viewer:return', '1.0.0', {
 				relatedEventId: this.leaveEvent.id
 			})
-
 			delete this.leaveEvent
 		}
 	}
@@ -281,6 +320,13 @@ export default class ViewerApp extends React.Component {
 	}
 
 	render() {
+		// @TODO loading component
+		if (this.state.loading == true) {
+			return <div className="is-loading">...Loading</div>
+		}
+
+		if (this.state.requestStatus === 'invalid') return <div>Invalid</div>
+
 		let nextEl, nextModel, prevEl
 		window.__lo = this.state.model
 		window.__s = this.state
@@ -338,7 +384,7 @@ export default class ViewerApp extends React.Component {
 					ref="container"
 					onMouseDown={this.onMouseDown.bind(this)}
 					onScroll={this.onScroll.bind(this)}
-					className={`viewer--viewer-app${this.isPreviewing
+					className={`viewer--viewer-app${this.state.isPreviewing
 						? ' is-previewing'
 						: ' is-not-previewing'}${this.state.navState.locked
 						? ' is-locked-nav'
@@ -363,7 +409,7 @@ export default class ViewerApp extends React.Component {
 					{prevEl}
 					<ModuleComponent model={this.state.model} moduleData={this.state} />
 					{nextEl}
-					{this.isPreviewing
+					{this.state.isPreviewing
 						? <div className="preview-banner">
 								<span>You are previewing this object - Assessments will not be counted</span>
 								<div className="controls">
