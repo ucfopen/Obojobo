@@ -87,267 +87,7 @@
 		/***/ function(module, exports, __webpack_require__) {
 			'use strict'
 
-			Object.defineProperty(exports, '__esModule', {
-				value: true
-			})
-
-			var _Common = __webpack_require__(0)
-
-			var _Common2 = _interopRequireDefault(_Common)
-
-			function _interopRequireDefault(obj) {
-				return obj && obj.__esModule ? obj : { default: obj }
-			}
-
-			var Dispatcher = _Common2.default.flux.Dispatcher
-			var OboModel = _Common2.default.models.OboModel
-
-			var getFlatList = function getFlatList(item) {
-				var list = []
-				if (item.type !== 'hidden') {
-					list.push(item)
-				}
-
-				if (item.showChildren) {
-					var _iteratorNormalCompletion = true
-					var _didIteratorError = false
-					var _iteratorError = undefined
-
-					try {
-						for (
-							var _iterator = Array.from(item.children)[Symbol.iterator](), _step;
-							!(_iteratorNormalCompletion = (_step = _iterator.next()).done);
-							_iteratorNormalCompletion = true
-						) {
-							var child = _step.value
-
-							list = list.concat(getFlatList(child))
-						}
-					} catch (err) {
-						_didIteratorError = true
-						_iteratorError = err
-					} finally {
-						try {
-							if (!_iteratorNormalCompletion && _iterator.return) {
-								_iterator.return()
-							}
-						} finally {
-							if (_didIteratorError) {
-								throw _iteratorError
-							}
-						}
-					}
-				}
-
-				return list
-			}
-
-			var NavUtil = {
-				rebuildMenu: function rebuildMenu(model) {
-					return Dispatcher.trigger('nav:rebuildMenu', {
-						value: {
-							model: model
-						}
-					})
-				},
-				gotoPath: function gotoPath(path) {
-					return Dispatcher.trigger('nav:gotoPath', {
-						value: {
-							path: path
-						}
-					})
-				},
-
-				// gotoCurrentPathname: () ->
-				// 	window.location.pathname
-
-				setFlag: function setFlag(id, flagName, flagValue) {
-					return Dispatcher.trigger('nav:setFlag', {
-						value: {
-							id: id,
-							flagName: flagName,
-							flagValue: flagValue
-						}
-					})
-				},
-				goPrev: function goPrev() {
-					return Dispatcher.trigger('nav:prev')
-				},
-				goNext: function goNext() {
-					return Dispatcher.trigger('nav:next')
-				},
-				goto: function goto(id) {
-					return Dispatcher.trigger('nav:goto', {
-						value: {
-							id: id
-						}
-					})
-				},
-				lock: function lock() {
-					return Dispatcher.trigger('nav:lock')
-				},
-				unlock: function unlock() {
-					return Dispatcher.trigger('nav:unlock')
-				},
-				close: function close() {
-					return Dispatcher.trigger('nav:close')
-				},
-				open: function open() {
-					return Dispatcher.trigger('nav:open')
-				},
-				toggle: function toggle() {
-					return Dispatcher.trigger('nav:toggle')
-				},
-				openExternalLink: function openExternalLink(url) {
-					return Dispatcher.trigger('nav:openExternalLink', {
-						value: {
-							url: url
-						}
-					})
-				},
-				showChildren: function showChildren(id) {
-					return Dispatcher.trigger('nav:showChildren', {
-						value: {
-							id: id
-						}
-					})
-				},
-				hideChildren: function hideChildren(id) {
-					return Dispatcher.trigger('nav:hideChildren', {
-						value: {
-							id: id
-						}
-					})
-				},
-
-				// getNavItemForModel: (state, model) ->
-				// 	state.itemsById[model.get('id')]
-
-				getNavTarget: function getNavTarget(state) {
-					return state.itemsById[state.navTargetId]
-				},
-				getNavTargetModel: function getNavTargetModel(state) {
-					var navTarget = NavUtil.getNavTarget(state)
-					if (!navTarget) {
-						return null
-					}
-
-					return OboModel.models[navTarget.id]
-				},
-				getFirst: function getFirst(state) {
-					var list = NavUtil.getOrderedList(state)
-
-					var _iteratorNormalCompletion2 = true
-					var _didIteratorError2 = false
-					var _iteratorError2 = undefined
-
-					try {
-						for (
-							var _iterator2 = Array.from(list)[Symbol.iterator](), _step2;
-							!(_iteratorNormalCompletion2 = (_step2 = _iterator2.next()).done);
-							_iteratorNormalCompletion2 = true
-						) {
-							var item = _step2.value
-
-							if (item.type === 'link') {
-								return item
-							}
-						}
-					} catch (err) {
-						_didIteratorError2 = true
-						_iteratorError2 = err
-					} finally {
-						try {
-							if (!_iteratorNormalCompletion2 && _iterator2.return) {
-								_iterator2.return()
-							}
-						} finally {
-							if (_didIteratorError2) {
-								throw _iteratorError2
-							}
-						}
-					}
-
-					return null
-				},
-				getPrev: function getPrev(state) {
-					// state.items[NavUtil.getPrevIndex(state)]
-					var list = NavUtil.getOrderedList(state)
-					var navTarget = NavUtil.getNavTarget(state)
-					var index = list.indexOf(navTarget)
-
-					if (index === -1) {
-						return null
-					}
-
-					index--
-					while (index >= 0) {
-						var item = list[index]
-						if (item.type === 'link') {
-							return item
-						}
-
-						index--
-					}
-
-					return null
-				},
-				getNext: function getNext(state) {
-					// state.items[NavUtil.getPrevIndex(state)]
-					var list = NavUtil.getOrderedList(state)
-					var navTarget = NavUtil.getNavTarget(state)
-					var index = list.indexOf(navTarget)
-
-					if (index === -1) {
-						return null
-					}
-
-					index++
-					var len = list.length
-					while (index < len) {
-						var item = list[index]
-						if (item.type === 'link') {
-							return item
-						}
-
-						index++
-					}
-
-					return null
-				},
-				getPrevModel: function getPrevModel(state) {
-					var prevItem = NavUtil.getPrev(state)
-					if (!prevItem) {
-						return null
-					}
-
-					return OboModel.models[prevItem.id]
-				},
-				getNextModel: function getNextModel(state) {
-					var nextItem = NavUtil.getNext(state)
-					if (!nextItem) {
-						return null
-					}
-
-					return OboModel.models[nextItem.id]
-				},
-				canNavigate: function canNavigate(state) {
-					return !state.locked
-				},
-				getOrderedList: function getOrderedList(state) {
-					return getFlatList(state.items)
-				}
-			}
-
-			exports.default = NavUtil
-
-			/***/
-		},
-		/* 2 */
-		/***/ function(module, exports, __webpack_require__) {
-			'use strict'
-
-			var isDate = __webpack_require__(18)
+			var isDate = __webpack_require__(13)
 
 			var MILLISECONDS_IN_HOUR = 3600000
 			var MILLISECONDS_IN_MINUTE = 60000
@@ -668,6 +408,266 @@
 			}
 
 			module.exports = parse
+
+			/***/
+		},
+		/* 2 */
+		/***/ function(module, exports, __webpack_require__) {
+			'use strict'
+
+			Object.defineProperty(exports, '__esModule', {
+				value: true
+			})
+
+			var _Common = __webpack_require__(0)
+
+			var _Common2 = _interopRequireDefault(_Common)
+
+			function _interopRequireDefault(obj) {
+				return obj && obj.__esModule ? obj : { default: obj }
+			}
+
+			var Dispatcher = _Common2.default.flux.Dispatcher
+			var OboModel = _Common2.default.models.OboModel
+
+			var getFlatList = function getFlatList(item) {
+				var list = []
+				if (item.type !== 'hidden') {
+					list.push(item)
+				}
+
+				if (item.showChildren) {
+					var _iteratorNormalCompletion = true
+					var _didIteratorError = false
+					var _iteratorError = undefined
+
+					try {
+						for (
+							var _iterator = Array.from(item.children)[Symbol.iterator](), _step;
+							!(_iteratorNormalCompletion = (_step = _iterator.next()).done);
+							_iteratorNormalCompletion = true
+						) {
+							var child = _step.value
+
+							list = list.concat(getFlatList(child))
+						}
+					} catch (err) {
+						_didIteratorError = true
+						_iteratorError = err
+					} finally {
+						try {
+							if (!_iteratorNormalCompletion && _iterator.return) {
+								_iterator.return()
+							}
+						} finally {
+							if (_didIteratorError) {
+								throw _iteratorError
+							}
+						}
+					}
+				}
+
+				return list
+			}
+
+			var NavUtil = {
+				rebuildMenu: function rebuildMenu(model) {
+					return Dispatcher.trigger('nav:rebuildMenu', {
+						value: {
+							model: model
+						}
+					})
+				},
+				gotoPath: function gotoPath(path) {
+					return Dispatcher.trigger('nav:gotoPath', {
+						value: {
+							path: path
+						}
+					})
+				},
+
+				// gotoCurrentPathname: () ->
+				// 	window.location.pathname
+
+				setFlag: function setFlag(id, flagName, flagValue) {
+					return Dispatcher.trigger('nav:setFlag', {
+						value: {
+							id: id,
+							flagName: flagName,
+							flagValue: flagValue
+						}
+					})
+				},
+				goPrev: function goPrev() {
+					return Dispatcher.trigger('nav:prev')
+				},
+				goNext: function goNext() {
+					return Dispatcher.trigger('nav:next')
+				},
+				goto: function goto(id) {
+					return Dispatcher.trigger('nav:goto', {
+						value: {
+							id: id
+						}
+					})
+				},
+				lock: function lock() {
+					return Dispatcher.trigger('nav:lock')
+				},
+				unlock: function unlock() {
+					return Dispatcher.trigger('nav:unlock')
+				},
+				close: function close() {
+					return Dispatcher.trigger('nav:close')
+				},
+				open: function open() {
+					return Dispatcher.trigger('nav:open')
+				},
+				toggle: function toggle() {
+					return Dispatcher.trigger('nav:toggle')
+				},
+				openExternalLink: function openExternalLink(url) {
+					return Dispatcher.trigger('nav:openExternalLink', {
+						value: {
+							url: url
+						}
+					})
+				},
+				showChildren: function showChildren(id) {
+					return Dispatcher.trigger('nav:showChildren', {
+						value: {
+							id: id
+						}
+					})
+				},
+				hideChildren: function hideChildren(id) {
+					return Dispatcher.trigger('nav:hideChildren', {
+						value: {
+							id: id
+						}
+					})
+				},
+
+				// getNavItemForModel: (state, model) ->
+				// 	state.itemsById[model.get('id')]
+
+				getNavTarget: function getNavTarget(state) {
+					return state.itemsById[state.navTargetId]
+				},
+				getNavTargetModel: function getNavTargetModel(state) {
+					var navTarget = NavUtil.getNavTarget(state)
+					if (!navTarget) {
+						return null
+					}
+
+					return OboModel.models[navTarget.id]
+				},
+				getFirst: function getFirst(state) {
+					var list = NavUtil.getOrderedList(state)
+
+					var _iteratorNormalCompletion2 = true
+					var _didIteratorError2 = false
+					var _iteratorError2 = undefined
+
+					try {
+						for (
+							var _iterator2 = Array.from(list)[Symbol.iterator](), _step2;
+							!(_iteratorNormalCompletion2 = (_step2 = _iterator2.next()).done);
+							_iteratorNormalCompletion2 = true
+						) {
+							var item = _step2.value
+
+							if (item.type === 'link') {
+								return item
+							}
+						}
+					} catch (err) {
+						_didIteratorError2 = true
+						_iteratorError2 = err
+					} finally {
+						try {
+							if (!_iteratorNormalCompletion2 && _iterator2.return) {
+								_iterator2.return()
+							}
+						} finally {
+							if (_didIteratorError2) {
+								throw _iteratorError2
+							}
+						}
+					}
+
+					return null
+				},
+				getPrev: function getPrev(state) {
+					// state.items[NavUtil.getPrevIndex(state)]
+					var list = NavUtil.getOrderedList(state)
+					var navTarget = NavUtil.getNavTarget(state)
+					var index = list.indexOf(navTarget)
+
+					if (index === -1) {
+						return null
+					}
+
+					index--
+					while (index >= 0) {
+						var item = list[index]
+						if (item.type === 'link') {
+							return item
+						}
+
+						index--
+					}
+
+					return null
+				},
+				getNext: function getNext(state) {
+					// state.items[NavUtil.getPrevIndex(state)]
+					var list = NavUtil.getOrderedList(state)
+					var navTarget = NavUtil.getNavTarget(state)
+					var index = list.indexOf(navTarget)
+
+					if (index === -1) {
+						return null
+					}
+
+					index++
+					var len = list.length
+					while (index < len) {
+						var item = list[index]
+						if (item.type === 'link') {
+							return item
+						}
+
+						index++
+					}
+
+					return null
+				},
+				getPrevModel: function getPrevModel(state) {
+					var prevItem = NavUtil.getPrev(state)
+					if (!prevItem) {
+						return null
+					}
+
+					return OboModel.models[prevItem.id]
+				},
+				getNextModel: function getNextModel(state) {
+					var nextItem = NavUtil.getNext(state)
+					if (!nextItem) {
+						return null
+					}
+
+					return OboModel.models[nextItem.id]
+				},
+				canNavigate: function canNavigate(state) {
+					return !state.locked
+				},
+				getOrderedList: function getOrderedList(state) {
+					return getFlatList(state.items)
+				}
+			}
+
+			exports.default = NavUtil
 
 			/***/
 		},
@@ -1087,6 +1087,160 @@
 		/***/ function(module, exports, __webpack_require__) {
 			'use strict'
 
+			var startOfWeek = __webpack_require__(34)
+
+			/**
+			 * @category ISO Week Helpers
+			 * @summary Return the start of an ISO week for the given date.
+			 *
+			 * @description
+			 * Return the start of an ISO week for the given date.
+			 * The result will be in the local timezone.
+			 *
+			 * ISO week-numbering year: http://en.wikipedia.org/wiki/ISO_week_date
+			 *
+			 * @param {Date|String|Number} date - the original date
+			 * @returns {Date} the start of an ISO week
+			 *
+			 * @example
+			 * // The start of an ISO week for 2 September 2014 11:55:00:
+			 * var result = startOfISOWeek(new Date(2014, 8, 2, 11, 55, 0))
+			 * //=> Mon Sep 01 2014 00:00:00
+			 */
+			function startOfISOWeek(dirtyDate) {
+				return startOfWeek(dirtyDate, { weekStartsOn: 1 })
+			}
+
+			module.exports = startOfISOWeek
+
+			/***/
+		},
+		/* 7 */
+		/***/ function(module, exports, __webpack_require__) {
+			'use strict'
+
+			/**
+			 * Copyright (c) 2013-present, Facebook, Inc.
+			 *
+			 * This source code is licensed under the MIT license found in the
+			 * LICENSE file in the root directory of this source tree.
+			 *
+			 *
+			 */
+
+			function makeEmptyFunction(arg) {
+				return function() {
+					return arg
+				}
+			}
+
+			/**
+			 * This function accepts and discards inputs; it has no side effects. This is
+			 * primarily useful idiomatically for overridable function endpoints which
+			 * always need to be callable, since JS lacks a null-call idiom ala Cocoa.
+			 */
+			var emptyFunction = function emptyFunction() {}
+
+			emptyFunction.thatReturns = makeEmptyFunction
+			emptyFunction.thatReturnsFalse = makeEmptyFunction(false)
+			emptyFunction.thatReturnsTrue = makeEmptyFunction(true)
+			emptyFunction.thatReturnsNull = makeEmptyFunction(null)
+			emptyFunction.thatReturnsThis = function() {
+				return this
+			}
+			emptyFunction.thatReturnsArgument = function(arg) {
+				return arg
+			}
+
+			module.exports = emptyFunction
+
+			/***/
+		},
+		/* 8 */
+		/***/ function(module, exports, __webpack_require__) {
+			'use strict'
+			/* WEBPACK VAR INJECTION */ ;(function(process) {
+				/**
+				 * Copyright (c) 2013-present, Facebook, Inc.
+				 *
+				 * This source code is licensed under the MIT license found in the
+				 * LICENSE file in the root directory of this source tree.
+				 *
+				 */
+
+				/**
+				 * Use invariant() to assert state which your program assumes to be true.
+				 *
+				 * Provide sprintf-style format (only %s is supported) and arguments
+				 * to provide information about what broke and what you were
+				 * expecting.
+				 *
+				 * The invariant message will be stripped in production, but the invariant
+				 * will remain to ensure logic does not differ in production.
+				 */
+
+				var validateFormat = function validateFormat(format) {}
+
+				if (process.env.NODE_ENV !== 'production') {
+					validateFormat = function validateFormat(format) {
+						if (format === undefined) {
+							throw new Error('invariant requires an error message argument')
+						}
+					}
+				}
+
+				function invariant(condition, format, a, b, c, d, e, f) {
+					validateFormat(format)
+
+					if (!condition) {
+						var error
+						if (format === undefined) {
+							error = new Error(
+								'Minified exception occurred; use the non-minified dev environment ' +
+									'for the full error message and additional helpful warnings.'
+							)
+						} else {
+							var args = [a, b, c, d, e, f]
+							var argIndex = 0
+							error = new Error(
+								format.replace(/%s/g, function() {
+									return args[argIndex++]
+								})
+							)
+							error.name = 'Invariant Violation'
+						}
+
+						error.framesToPop = 1 // we don't care about invariant's own frame
+						throw error
+					}
+				}
+
+				module.exports = invariant
+				/* WEBPACK VAR INJECTION */
+			}.call(exports, __webpack_require__(4)))
+
+			/***/
+		},
+		/* 9 */
+		/***/ function(module, exports, __webpack_require__) {
+			'use strict'
+			/**
+			 * Copyright (c) 2013-present, Facebook, Inc.
+			 *
+			 * This source code is licensed under the MIT license found in the
+			 * LICENSE file in the root directory of this source tree.
+			 */
+
+			var ReactPropTypesSecret = 'SECRET_DO_NOT_PASS_THIS_OR_YOU_WILL_BE_FIRED'
+
+			module.exports = ReactPropTypesSecret
+
+			/***/
+		},
+		/* 10 */
+		/***/ function(module, exports, __webpack_require__) {
+			'use strict'
+
 			Object.defineProperty(exports, '__esModule', {
 				value: true
 			})
@@ -1112,7 +1266,7 @@
 
 			var _Common2 = _interopRequireDefault(_Common)
 
-			var _navUtil = __webpack_require__(1)
+			var _navUtil = __webpack_require__(2)
 
 			var _navUtil2 = _interopRequireDefault(_navUtil)
 
@@ -1453,7 +1607,7 @@
 
 			/***/
 		},
-		/* 7 */
+		/* 11 */
 		/***/ function(module, exports, __webpack_require__) {
 			'use strict'
 
@@ -1501,161 +1655,167 @@
 
 			/***/
 		},
-		/* 8 */
+		/* 12 */
 		/***/ function(module, exports, __webpack_require__) {
 			'use strict'
 
-			var startOfWeek = __webpack_require__(38)
+			var parse = __webpack_require__(1)
+			var startOfISOWeek = __webpack_require__(6)
 
 			/**
-			 * @category ISO Week Helpers
-			 * @summary Return the start of an ISO week for the given date.
+			 * @category ISO Week-Numbering Year Helpers
+			 * @summary Get the ISO week-numbering year of the given date.
 			 *
 			 * @description
-			 * Return the start of an ISO week for the given date.
-			 * The result will be in the local timezone.
+			 * Get the ISO week-numbering year of the given date,
+			 * which always starts 3 days before the year's first Thursday.
 			 *
 			 * ISO week-numbering year: http://en.wikipedia.org/wiki/ISO_week_date
 			 *
-			 * @param {Date|String|Number} date - the original date
-			 * @returns {Date} the start of an ISO week
+			 * @param {Date|String|Number} date - the given date
+			 * @returns {Number} the ISO week-numbering year
 			 *
 			 * @example
-			 * // The start of an ISO week for 2 September 2014 11:55:00:
-			 * var result = startOfISOWeek(new Date(2014, 8, 2, 11, 55, 0))
-			 * //=> Mon Sep 01 2014 00:00:00
+			 * // Which ISO-week numbering year is 2 January 2005?
+			 * var result = getISOYear(new Date(2005, 0, 2))
+			 * //=> 2004
 			 */
-			function startOfISOWeek(dirtyDate) {
-				return startOfWeek(dirtyDate, { weekStartsOn: 1 })
+			function getISOYear(dirtyDate) {
+				var date = parse(dirtyDate)
+				var year = date.getFullYear()
+
+				var fourthOfJanuaryOfNextYear = new Date(0)
+				fourthOfJanuaryOfNextYear.setFullYear(year + 1, 0, 4)
+				fourthOfJanuaryOfNextYear.setHours(0, 0, 0, 0)
+				var startOfNextYear = startOfISOWeek(fourthOfJanuaryOfNextYear)
+
+				var fourthOfJanuaryOfThisYear = new Date(0)
+				fourthOfJanuaryOfThisYear.setFullYear(year, 0, 4)
+				fourthOfJanuaryOfThisYear.setHours(0, 0, 0, 0)
+				var startOfThisYear = startOfISOWeek(fourthOfJanuaryOfThisYear)
+
+				if (date.getTime() >= startOfNextYear.getTime()) {
+					return year + 1
+				} else if (date.getTime() >= startOfThisYear.getTime()) {
+					return year
+				} else {
+					return year - 1
+				}
 			}
 
-			module.exports = startOfISOWeek
+			module.exports = getISOYear
 
 			/***/
 		},
-		/* 9 */
+		/* 13 */
 		/***/ function(module, exports, __webpack_require__) {
 			'use strict'
 
 			/**
-			 * Copyright (c) 2013-present, Facebook, Inc.
+			 * @category Common Helpers
+			 * @summary Is the given argument an instance of Date?
 			 *
-			 * This source code is licensed under the MIT license found in the
-			 * LICENSE file in the root directory of this source tree.
+			 * @description
+			 * Is the given argument an instance of Date?
 			 *
+			 * @param {*} argument - the argument to check
+			 * @returns {Boolean} the given argument is an instance of Date
 			 *
+			 * @example
+			 * // Is 'mayonnaise' a Date?
+			 * var result = isDate('mayonnaise')
+			 * //=> false
 			 */
-
-			function makeEmptyFunction(arg) {
-				return function() {
-					return arg
-				}
+			function isDate(argument) {
+				return argument instanceof Date
 			}
 
-			/**
-			 * This function accepts and discards inputs; it has no side effects. This is
-			 * primarily useful idiomatically for overridable function endpoints which
-			 * always need to be callable, since JS lacks a null-call idiom ala Cocoa.
-			 */
-			var emptyFunction = function emptyFunction() {}
-
-			emptyFunction.thatReturns = makeEmptyFunction
-			emptyFunction.thatReturnsFalse = makeEmptyFunction(false)
-			emptyFunction.thatReturnsTrue = makeEmptyFunction(true)
-			emptyFunction.thatReturnsNull = makeEmptyFunction(null)
-			emptyFunction.thatReturnsThis = function() {
-				return this
-			}
-			emptyFunction.thatReturnsArgument = function(arg) {
-				return arg
-			}
-
-			module.exports = emptyFunction
+			module.exports = isDate
 
 			/***/
 		},
-		/* 10 */
+		/* 14 */
 		/***/ function(module, exports, __webpack_require__) {
 			'use strict'
 			/* WEBPACK VAR INJECTION */ ;(function(process) {
 				/**
-				 * Copyright (c) 2013-present, Facebook, Inc.
+				 * Copyright (c) 2014-present, Facebook, Inc.
 				 *
 				 * This source code is licensed under the MIT license found in the
 				 * LICENSE file in the root directory of this source tree.
 				 *
 				 */
 
+				var emptyFunction = __webpack_require__(7)
+
 				/**
-				 * Use invariant() to assert state which your program assumes to be true.
-				 *
-				 * Provide sprintf-style format (only %s is supported) and arguments
-				 * to provide information about what broke and what you were
-				 * expecting.
-				 *
-				 * The invariant message will be stripped in production, but the invariant
-				 * will remain to ensure logic does not differ in production.
+				 * Similar to invariant but only logs a warning if the condition is not met.
+				 * This can be used to log issues in development environments in critical
+				 * paths. Removing the logging code for production environments will keep the
+				 * same logic and follow the same code paths.
 				 */
 
-				var validateFormat = function validateFormat(format) {}
+				var warning = emptyFunction
 
 				if (process.env.NODE_ENV !== 'production') {
-					validateFormat = function validateFormat(format) {
+					var printWarning = function printWarning(format) {
+						for (
+							var _len = arguments.length, args = Array(_len > 1 ? _len - 1 : 0), _key = 1;
+							_key < _len;
+							_key++
+						) {
+							args[_key - 1] = arguments[_key]
+						}
+
+						var argIndex = 0
+						var message =
+							'Warning: ' +
+							format.replace(/%s/g, function() {
+								return args[argIndex++]
+							})
+						if (typeof console !== 'undefined') {
+							console.error(message)
+						}
+						try {
+							// --- Welcome to debugging React ---
+							// This error was thrown as a convenience so that you can use this stack
+							// to find the callsite that caused this warning to fire.
+							throw new Error(message)
+						} catch (x) {}
+					}
+
+					warning = function warning(condition, format) {
 						if (format === undefined) {
-							throw new Error('invariant requires an error message argument')
+							throw new Error(
+								'`warning(condition, format, ...args)` requires a warning ' + 'message argument'
+							)
+						}
+
+						if (format.indexOf('Failed Composite propType: ') === 0) {
+							return // Ignore CompositeComponent proptype check.
+						}
+
+						if (!condition) {
+							for (
+								var _len2 = arguments.length, args = Array(_len2 > 2 ? _len2 - 2 : 0), _key2 = 2;
+								_key2 < _len2;
+								_key2++
+							) {
+								args[_key2 - 2] = arguments[_key2]
+							}
+
+							printWarning.apply(undefined, [format].concat(args))
 						}
 					}
 				}
 
-				function invariant(condition, format, a, b, c, d, e, f) {
-					validateFormat(format)
-
-					if (!condition) {
-						var error
-						if (format === undefined) {
-							error = new Error(
-								'Minified exception occurred; use the non-minified dev environment ' +
-									'for the full error message and additional helpful warnings.'
-							)
-						} else {
-							var args = [a, b, c, d, e, f]
-							var argIndex = 0
-							error = new Error(
-								format.replace(/%s/g, function() {
-									return args[argIndex++]
-								})
-							)
-							error.name = 'Invariant Violation'
-						}
-
-						error.framesToPop = 1 // we don't care about invariant's own frame
-						throw error
-					}
-				}
-
-				module.exports = invariant
+				module.exports = warning
 				/* WEBPACK VAR INJECTION */
 			}.call(exports, __webpack_require__(4)))
 
 			/***/
 		},
-		/* 11 */
-		/***/ function(module, exports, __webpack_require__) {
-			'use strict'
-			/**
-			 * Copyright (c) 2013-present, Facebook, Inc.
-			 *
-			 * This source code is licensed under the MIT license found in the
-			 * LICENSE file in the root directory of this source tree.
-			 */
-
-			var ReactPropTypesSecret = 'SECRET_DO_NOT_PASS_THIS_OR_YOU_WILL_BE_FIRED'
-
-			module.exports = ReactPropTypesSecret
-
-			/***/
-		},
-		/* 12 */
+		/* 15 */
 		/***/ function(module, exports, __webpack_require__) {
 			'use strict'
 
@@ -1682,7 +1842,7 @@
 
 			__webpack_require__(47)
 
-			var _navUtil = __webpack_require__(1)
+			var _navUtil = __webpack_require__(2)
 
 			var _navUtil2 = _interopRequireDefault(_navUtil)
 
@@ -1769,7 +1929,7 @@
 
 			/***/
 		},
-		/* 13 */
+		/* 16 */
 		/***/ function(module, exports, __webpack_require__) {
 			'use strict'
 
@@ -1798,11 +1958,11 @@
 
 			var _Common2 = _interopRequireDefault(_Common)
 
-			var _assessmentUtil = __webpack_require__(16)
+			var _assessmentUtil = __webpack_require__(19)
 
 			var _assessmentUtil2 = _interopRequireDefault(_assessmentUtil)
 
-			var _scoreUtil = __webpack_require__(7)
+			var _scoreUtil = __webpack_require__(11)
 
 			var _scoreUtil2 = _interopRequireDefault(_scoreUtil)
 
@@ -1814,7 +1974,7 @@
 
 			var _apiUtil2 = _interopRequireDefault(_apiUtil)
 
-			var _navUtil = __webpack_require__(1)
+			var _navUtil = __webpack_require__(2)
 
 			var _navUtil2 = _interopRequireDefault(_navUtil)
 
@@ -2226,7 +2386,7 @@
 
 			/***/
 		},
-		/* 14 */
+		/* 17 */
 		/***/ function(module, exports, __webpack_require__) {
 			'use strict'
 
@@ -2263,7 +2423,7 @@
 
 			var _questionUtil2 = _interopRequireDefault(_questionUtil)
 
-			var _scoreUtil = __webpack_require__(7)
+			var _scoreUtil = __webpack_require__(11)
 
 			var _scoreUtil2 = _interopRequireDefault(_scoreUtil)
 
@@ -2472,7 +2632,7 @@
 
 			/***/
 		},
-		/* 15 */
+		/* 18 */
 		/***/ function(module, exports, __webpack_require__) {
 			'use strict'
 
@@ -2626,7 +2786,7 @@
 
 			/***/
 		},
-		/* 16 */
+		/* 19 */
 		/***/ function(module, exports, __webpack_require__) {
 			'use strict'
 
@@ -2769,166 +2929,6 @@
 			}
 
 			exports.default = AssessmentUtil
-
-			/***/
-		},
-		/* 17 */
-		/***/ function(module, exports, __webpack_require__) {
-			'use strict'
-
-			var parse = __webpack_require__(2)
-			var startOfISOWeek = __webpack_require__(8)
-
-			/**
-			 * @category ISO Week-Numbering Year Helpers
-			 * @summary Get the ISO week-numbering year of the given date.
-			 *
-			 * @description
-			 * Get the ISO week-numbering year of the given date,
-			 * which always starts 3 days before the year's first Thursday.
-			 *
-			 * ISO week-numbering year: http://en.wikipedia.org/wiki/ISO_week_date
-			 *
-			 * @param {Date|String|Number} date - the given date
-			 * @returns {Number} the ISO week-numbering year
-			 *
-			 * @example
-			 * // Which ISO-week numbering year is 2 January 2005?
-			 * var result = getISOYear(new Date(2005, 0, 2))
-			 * //=> 2004
-			 */
-			function getISOYear(dirtyDate) {
-				var date = parse(dirtyDate)
-				var year = date.getFullYear()
-
-				var fourthOfJanuaryOfNextYear = new Date(0)
-				fourthOfJanuaryOfNextYear.setFullYear(year + 1, 0, 4)
-				fourthOfJanuaryOfNextYear.setHours(0, 0, 0, 0)
-				var startOfNextYear = startOfISOWeek(fourthOfJanuaryOfNextYear)
-
-				var fourthOfJanuaryOfThisYear = new Date(0)
-				fourthOfJanuaryOfThisYear.setFullYear(year, 0, 4)
-				fourthOfJanuaryOfThisYear.setHours(0, 0, 0, 0)
-				var startOfThisYear = startOfISOWeek(fourthOfJanuaryOfThisYear)
-
-				if (date.getTime() >= startOfNextYear.getTime()) {
-					return year + 1
-				} else if (date.getTime() >= startOfThisYear.getTime()) {
-					return year
-				} else {
-					return year - 1
-				}
-			}
-
-			module.exports = getISOYear
-
-			/***/
-		},
-		/* 18 */
-		/***/ function(module, exports, __webpack_require__) {
-			'use strict'
-
-			/**
-			 * @category Common Helpers
-			 * @summary Is the given argument an instance of Date?
-			 *
-			 * @description
-			 * Is the given argument an instance of Date?
-			 *
-			 * @param {*} argument - the argument to check
-			 * @returns {Boolean} the given argument is an instance of Date
-			 *
-			 * @example
-			 * // Is 'mayonnaise' a Date?
-			 * var result = isDate('mayonnaise')
-			 * //=> false
-			 */
-			function isDate(argument) {
-				return argument instanceof Date
-			}
-
-			module.exports = isDate
-
-			/***/
-		},
-		/* 19 */
-		/***/ function(module, exports, __webpack_require__) {
-			'use strict'
-			/* WEBPACK VAR INJECTION */ ;(function(process) {
-				/**
-				 * Copyright (c) 2014-present, Facebook, Inc.
-				 *
-				 * This source code is licensed under the MIT license found in the
-				 * LICENSE file in the root directory of this source tree.
-				 *
-				 */
-
-				var emptyFunction = __webpack_require__(9)
-
-				/**
-				 * Similar to invariant but only logs a warning if the condition is not met.
-				 * This can be used to log issues in development environments in critical
-				 * paths. Removing the logging code for production environments will keep the
-				 * same logic and follow the same code paths.
-				 */
-
-				var warning = emptyFunction
-
-				if (process.env.NODE_ENV !== 'production') {
-					var printWarning = function printWarning(format) {
-						for (
-							var _len = arguments.length, args = Array(_len > 1 ? _len - 1 : 0), _key = 1;
-							_key < _len;
-							_key++
-						) {
-							args[_key - 1] = arguments[_key]
-						}
-
-						var argIndex = 0
-						var message =
-							'Warning: ' +
-							format.replace(/%s/g, function() {
-								return args[argIndex++]
-							})
-						if (typeof console !== 'undefined') {
-							console.error(message)
-						}
-						try {
-							// --- Welcome to debugging React ---
-							// This error was thrown as a convenience so that you can use this stack
-							// to find the callsite that caused this warning to fire.
-							throw new Error(message)
-						} catch (x) {}
-					}
-
-					warning = function warning(condition, format) {
-						if (format === undefined) {
-							throw new Error(
-								'`warning(condition, format, ...args)` requires a warning ' + 'message argument'
-							)
-						}
-
-						if (format.indexOf('Failed Composite propType: ') === 0) {
-							return // Ignore CompositeComponent proptype check.
-						}
-
-						if (!condition) {
-							for (
-								var _len2 = arguments.length, args = Array(_len2 > 2 ? _len2 - 2 : 0), _key2 = 2;
-								_key2 < _len2;
-								_key2++
-							) {
-								args[_key2 - 2] = arguments[_key2]
-							}
-
-							printWarning.apply(undefined, [format].concat(args))
-						}
-					}
-				}
-
-				module.exports = warning
-				/* WEBPACK VAR INJECTION */
-			}.call(exports, __webpack_require__(4)))
 
 			/***/
 		},
@@ -3428,7 +3428,7 @@
 		/***/ function(module, exports, __webpack_require__) {
 			'use strict'
 
-			var _index = __webpack_require__(26)
+			var _index = __webpack_require__(45)
 
 			var _index2 = _interopRequireDefault(_index)
 
@@ -3444,1086 +3444,7 @@
 		/***/ function(module, exports, __webpack_require__) {
 			'use strict'
 
-			Object.defineProperty(exports, '__esModule', {
-				value: true
-			})
-
-			var _createClass = (function() {
-				function defineProperties(target, props) {
-					for (var i = 0; i < props.length; i++) {
-						var descriptor = props[i]
-						descriptor.enumerable = descriptor.enumerable || false
-						descriptor.configurable = true
-						if ('value' in descriptor) descriptor.writable = true
-						Object.defineProperty(target, descriptor.key, descriptor)
-					}
-				}
-				return function(Constructor, protoProps, staticProps) {
-					if (protoProps) defineProperties(Constructor.prototype, protoProps)
-					if (staticProps) defineProperties(Constructor, staticProps)
-					return Constructor
-				}
-			})()
-
-			__webpack_require__(46)
-
-			var _navUtil = __webpack_require__(1)
-
-			var _navUtil2 = _interopRequireDefault(_navUtil)
-
-			function _interopRequireDefault(obj) {
-				return obj && obj.__esModule ? obj : { default: obj }
-			}
-
-			function _classCallCheck(instance, Constructor) {
-				if (!(instance instanceof Constructor)) {
-					throw new TypeError('Cannot call a class as a function')
-				}
-			}
-
-			function _possibleConstructorReturn(self, call) {
-				if (!self) {
-					throw new ReferenceError("this hasn't been initialised - super() hasn't been called")
-				}
-				return call && (typeof call === 'object' || typeof call === 'function') ? call : self
-			}
-
-			function _inherits(subClass, superClass) {
-				if (typeof superClass !== 'function' && superClass !== null) {
-					throw new TypeError(
-						'Super expression must either be null or a function, not ' + typeof superClass
-					)
-				}
-				subClass.prototype = Object.create(superClass && superClass.prototype, {
-					constructor: { value: subClass, enumerable: false, writable: true, configurable: true }
-				})
-				if (superClass)
-					Object.setPrototypeOf
-						? Object.setPrototypeOf(subClass, superClass)
-						: (subClass.__proto__ = superClass)
-			}
-
-			var InlineNavButton = (function(_React$Component) {
-				_inherits(InlineNavButton, _React$Component)
-
-				function InlineNavButton() {
-					_classCallCheck(this, InlineNavButton)
-
-					return _possibleConstructorReturn(
-						this,
-						(InlineNavButton.__proto__ || Object.getPrototypeOf(InlineNavButton)).apply(
-							this,
-							arguments
-						)
-					)
-				}
-
-				_createClass(InlineNavButton, [
-					{
-						key: 'onClick',
-						value: function onClick() {
-							if (this.props.disabled) {
-								return
-							}
-
-							switch (this.props.type) {
-								case 'prev':
-									return _navUtil2.default.goPrev()
-
-								case 'next':
-									return _navUtil2.default.goNext()
-							}
-						}
-					},
-					{
-						key: 'render',
-						value: function render() {
-							return React.createElement(
-								'div',
-								{
-									className:
-										'viewer--components--inline-nav-button is-' +
-										this.props.type +
-										(this.props.disabled ? ' is-disabled' : ' is-enabled'),
-									onClick: this.onClick.bind(this)
-								},
-								this.props.title
-							)
-						}
-					}
-				])
-
-				return InlineNavButton
-			})(React.Component)
-
-			exports.default = InlineNavButton
-
-			/***/
-		},
-		/* 24 */
-		/***/ function(module, exports, __webpack_require__) {
-			'use strict'
-
-			Object.defineProperty(exports, '__esModule', {
-				value: true
-			})
-
-			var _createClass = (function() {
-				function defineProperties(target, props) {
-					for (var i = 0; i < props.length; i++) {
-						var descriptor = props[i]
-						descriptor.enumerable = descriptor.enumerable || false
-						descriptor.configurable = true
-						if ('value' in descriptor) descriptor.writable = true
-						Object.defineProperty(target, descriptor.key, descriptor)
-					}
-				}
-				return function(Constructor, protoProps, staticProps) {
-					if (protoProps) defineProperties(Constructor.prototype, protoProps)
-					if (staticProps) defineProperties(Constructor, staticProps)
-					return Constructor
-				}
-			})()
-
-			__webpack_require__(48)
-
-			var _navStore = __webpack_require__(6)
-
-			var _navStore2 = _interopRequireDefault(_navStore)
-
-			var _navUtil = __webpack_require__(1)
-
-			var _navUtil2 = _interopRequireDefault(_navUtil)
-
-			var _logo = __webpack_require__(12)
-
-			var _logo2 = _interopRequireDefault(_logo)
-
-			var _hamburger = __webpack_require__(52)
-
-			var _hamburger2 = _interopRequireDefault(_hamburger)
-
-			var _arrow = __webpack_require__(51)
-
-			var _arrow2 = _interopRequireDefault(_arrow)
-
-			var _lockIcon = __webpack_require__(53)
-
-			var _lockIcon2 = _interopRequireDefault(_lockIcon)
-
-			var _Common = __webpack_require__(0)
-
-			var _Common2 = _interopRequireDefault(_Common)
-
-			function _interopRequireDefault(obj) {
-				return obj && obj.__esModule ? obj : { default: obj }
-			}
-
-			function _classCallCheck(instance, Constructor) {
-				if (!(instance instanceof Constructor)) {
-					throw new TypeError('Cannot call a class as a function')
-				}
-			}
-
-			function _possibleConstructorReturn(self, call) {
-				if (!self) {
-					throw new ReferenceError("this hasn't been initialised - super() hasn't been called")
-				}
-				return call && (typeof call === 'object' || typeof call === 'function') ? call : self
-			}
-
-			function _inherits(subClass, superClass) {
-				if (typeof superClass !== 'function' && superClass !== null) {
-					throw new TypeError(
-						'Super expression must either be null or a function, not ' + typeof superClass
-					)
-				}
-				subClass.prototype = Object.create(superClass && superClass.prototype, {
-					constructor: { value: subClass, enumerable: false, writable: true, configurable: true }
-				})
-				if (superClass)
-					Object.setPrototypeOf
-						? Object.setPrototypeOf(subClass, superClass)
-						: (subClass.__proto__ = superClass)
-			}
-
-			var getBackgroundImage = _Common2.default.util.getBackgroundImage
-			var OboModel = _Common2.default.models.OboModel
-			var StyleableText = _Common2.default.text.StyleableText
-			var StyleableTextComponent = _Common2.default.text.StyleableTextComponent
-
-			var Nav = (function(_React$Component) {
-				_inherits(Nav, _React$Component)
-
-				function Nav(props) {
-					_classCallCheck(this, Nav)
-
-					var _this = _possibleConstructorReturn(
-						this,
-						(Nav.__proto__ || Object.getPrototypeOf(Nav)).call(this, props)
-					)
-
-					_this.state = {
-						hover: false
-					}
-					return _this
-				}
-
-				_createClass(Nav, [
-					{
-						key: 'onClick',
-						value: function onClick(item) {
-							if (item.type === 'link') {
-								if (!_navUtil2.default.canNavigate(this.props.navState)) return
-								return _navUtil2.default.gotoPath(item.fullPath)
-							} else if (item.type === 'sub-link') {
-								var el = OboModel.models[item.id].getDomEl()
-								return el.scrollIntoView({ behavior: 'smooth' })
-							}
-						}
-					},
-					{
-						key: 'hideNav',
-						value: function hideNav() {
-							return _navUtil2.default.toggle()
-						}
-					},
-					{
-						key: 'onMouseOver',
-						value: function onMouseOver() {
-							return this.setState({ hover: true })
-						}
-					},
-					{
-						key: 'onMouseOut',
-						value: function onMouseOut() {
-							return this.setState({ hover: false })
-						}
-					},
-					{
-						key: 'renderLabel',
-						value: function renderLabel(label) {
-							if (label instanceof StyleableText) {
-								return React.createElement(StyleableTextComponent, { text: label })
-							} else {
-								return React.createElement('a', null, label)
-							}
-						}
-					},
-					{
-						key: 'render',
-						value: function render() {
-							var _this2 = this
-
-							var bg = void 0,
-								lockEl = void 0
-							if (this.props.navState.open || this.state.hover) {
-								bg = getBackgroundImage(_arrow2.default)
-							} else {
-								bg = getBackgroundImage(_hamburger2.default)
-							}
-
-							if (this.props.navState.locked) {
-								lockEl = React.createElement(
-									'div',
-									{ className: 'lock-icon' },
-									React.createElement('img', { src: _lockIcon2.default })
-								)
-							} else {
-								lockEl = null
-							}
-
-							var list = _navUtil2.default.getOrderedList(this.props.navState)
-
-							return React.createElement(
-								'div',
-								{
-									className:
-										'viewer--components--nav' +
-										(this.props.navState.locked ? ' is-locked' : ' is-unlocked') +
-										(this.props.navState.open ? ' is-open' : ' is-closed') +
-										(this.props.navState.disabled ? ' is-disabled' : ' is-enabled')
-								},
-								React.createElement(
-									'button',
-									{
-										className: 'toggle-button',
-										onClick: this.hideNav.bind(this),
-										onMouseOver: this.onMouseOver.bind(this),
-										onMouseOut: this.onMouseOut.bind(this),
-										style: {
-											backgroundImage: bg,
-											transform:
-												!this.props.navState.open && this.state.hover ? 'rotate(180deg)' : '',
-											filter: this.props.navState.open ? 'invert(100%)' : 'invert(0%)'
-										}
-									},
-									'Toggle Navigation Menu'
-								),
-								React.createElement(
-									'ul',
-									null,
-									list.map(function(item, index) {
-										switch (item.type) {
-											case 'heading':
-												var isSelected = false
-												return React.createElement(
-													'li',
-													{
-														key: index,
-														className: 'heading' + (isSelected ? ' is-selected' : ' is-not-select')
-													},
-													_this2.renderLabel(item.label)
-												)
-												break
-
-											case 'link':
-												var isSelected = _this2.props.navState.navTargetId === item.id
-												//var isPrevVisited = this.props.navState.navTargetHistory.indexOf(item.id) > -1
-												return React.createElement(
-													'li',
-													{
-														key: index,
-														onClick: _this2.onClick.bind(_this2, item),
-														className:
-															'link' +
-															(isSelected ? ' is-selected' : ' is-not-select') +
-															(item.flags.visited ? ' is-visited' : ' is-not-visited') +
-															(item.flags.complete ? ' is-complete' : ' is-not-complete') +
-															(item.flags.correct ? ' is-correct' : ' is-not-correct')
-													},
-													_this2.renderLabel(item.label),
-													lockEl
-												)
-												break
-
-											case 'sub-link':
-												var isSelected = _this2.props.navState.navTargetIndex === index
-
-												return React.createElement(
-													'li',
-													{
-														key: index,
-														onClick: _this2.onClick.bind(_this2, item),
-														className:
-															'sub-link' +
-															(isSelected ? ' is-selected' : ' is-not-select') +
-															(item.flags.correct ? ' is-correct' : ' is-not-correct')
-													},
-													_this2.renderLabel(item.label),
-													lockEl
-												)
-												break
-
-											case 'seperator':
-												return React.createElement(
-													'li',
-													{ key: index, className: 'seperator' },
-													React.createElement('hr', null)
-												)
-												break
-										}
-									})
-								),
-								React.createElement(_logo2.default, { inverted: true })
-							)
-						}
-					}
-				])
-
-				return Nav
-			})(React.Component)
-
-			exports.default = Nav
-
-			/***/
-		},
-		/* 25 */
-		/***/ function(module, exports, __webpack_require__) {
-			'use strict'
-
-			Object.defineProperty(exports, '__esModule', {
-				value: true
-			})
-
-			var _createClass = (function() {
-				function defineProperties(target, props) {
-					for (var i = 0; i < props.length; i++) {
-						var descriptor = props[i]
-						descriptor.enumerable = descriptor.enumerable || false
-						descriptor.configurable = true
-						if ('value' in descriptor) descriptor.writable = true
-						Object.defineProperty(target, descriptor.key, descriptor)
-					}
-				}
-				return function(Constructor, protoProps, staticProps) {
-					if (protoProps) defineProperties(Constructor.prototype, protoProps)
-					if (staticProps) defineProperties(Constructor, staticProps)
-					return Constructor
-				}
-			})()
-
-			__webpack_require__(50)
-
-			__webpack_require__(49)
-
-			var _Common = __webpack_require__(0)
-
-			var _Common2 = _interopRequireDefault(_Common)
-
-			var _react = __webpack_require__(20)
-
-			var _react2 = _interopRequireDefault(_react)
-
-			var _reactIdleTimer = __webpack_require__(45)
-
-			var _reactIdleTimer2 = _interopRequireDefault(_reactIdleTimer)
-
-			var _inlineNavButton = __webpack_require__(23)
-
-			var _inlineNavButton2 = _interopRequireDefault(_inlineNavButton)
-
-			var _navUtil = __webpack_require__(1)
-
-			var _navUtil2 = _interopRequireDefault(_navUtil)
-
-			var _apiUtil = __webpack_require__(3)
-
-			var _apiUtil2 = _interopRequireDefault(_apiUtil)
-
-			var _logo = __webpack_require__(12)
-
-			var _logo2 = _interopRequireDefault(_logo)
-
-			var _scoreStore = __webpack_require__(15)
-
-			var _scoreStore2 = _interopRequireDefault(_scoreStore)
-
-			var _questionStore = __webpack_require__(14)
-
-			var _questionStore2 = _interopRequireDefault(_questionStore)
-
-			var _assessmentStore = __webpack_require__(13)
-
-			var _assessmentStore2 = _interopRequireDefault(_assessmentStore)
-
-			var _navStore = __webpack_require__(6)
-
-			var _navStore2 = _interopRequireDefault(_navStore)
-
-			var _nav = __webpack_require__(24)
-
-			var _nav2 = _interopRequireDefault(_nav)
-
-			function _interopRequireDefault(obj) {
-				return obj && obj.__esModule ? obj : { default: obj }
-			}
-
-			function _classCallCheck(instance, Constructor) {
-				if (!(instance instanceof Constructor)) {
-					throw new TypeError('Cannot call a class as a function')
-				}
-			}
-
-			function _possibleConstructorReturn(self, call) {
-				if (!self) {
-					throw new ReferenceError("this hasn't been initialised - super() hasn't been called")
-				}
-				return call && (typeof call === 'object' || typeof call === 'function') ? call : self
-			}
-
-			function _inherits(subClass, superClass) {
-				if (typeof superClass !== 'function' && superClass !== null) {
-					throw new TypeError(
-						'Super expression must either be null or a function, not ' + typeof superClass
-					)
-				}
-				subClass.prototype = Object.create(superClass && superClass.prototype, {
-					constructor: { value: subClass, enumerable: false, writable: true, configurable: true }
-				})
-				if (superClass)
-					Object.setPrototypeOf
-						? Object.setPrototypeOf(subClass, superClass)
-						: (subClass.__proto__ = superClass)
-			}
-
-			var IDLE_TIMEOUT_DURATION_MS = 600000 // 10 minutes
-
-			var Legacy = _Common2.default.models.Legacy
-			var DOMUtil = _Common2.default.page.DOMUtil
-			var Screen = _Common2.default.page.Screen
-			var OboModel = _Common2.default.models.OboModel
-			var Dispatcher = _Common2.default.flux.Dispatcher
-			var ModalContainer = _Common2.default.components.ModalContainer
-			var SimpleDialog = _Common2.default.components.modal.SimpleDialog
-			var ModalUtil = _Common2.default.util.ModalUtil
-			var FocusBlocker = _Common2.default.components.FocusBlocker
-			var ModalStore = _Common2.default.stores.ModalStore
-			var FocusStore = _Common2.default.stores.FocusStore
-			var FocusUtil = _Common2.default.util.FocusUtil
-			var OboGlobals = _Common2.default.util.OboGlobals
-
-			// Dispatcher.on 'all', (eventName, payload) -> console.log 'EVENT TRIGGERED', eventName
-
-			Dispatcher.on('viewer:alert', function(payload) {
-				return ModalUtil.show(
-					_react2.default.createElement(
-						SimpleDialog,
-						{ ok: true, title: payload.value.title },
-						payload.value.message
-					)
-				)
-			})
-
-			var ViewerApp = (function(_React$Component) {
-				_inherits(ViewerApp, _React$Component)
-
-				// === REACT LIFECYCLE METHODS ===
-
-				function ViewerApp(props) {
-					_classCallCheck(this, ViewerApp)
-
-					var _this = _possibleConstructorReturn(
-						this,
-						(ViewerApp.__proto__ || Object.getPrototypeOf(ViewerApp)).call(this, props)
-					)
-
-					_Common2.default.Store.loadDependency(
-						'https://cdnjs.cloudflare.com/ajax/libs/KaTeX/0.5.1/katex.min.css'
-					)
-
-					Dispatcher.on('viewer:scrollTo', function(payload) {
-						return (ReactDOM.findDOMNode(_this.refs.container).scrollTop = payload.value)
-					})
-
-					Dispatcher.on('viewer:scrollToTop', _this.scrollToTop.bind(_this))
-					Dispatcher.on('getTextForVariable', _this.getTextForVariable.bind(_this))
-
-					_this.isPreviewing = OboGlobals.get('previewing')
-
-					var state = {
-						model: OboModel.create(OboGlobals.get('draft')),
-						navState: null,
-						scoreState: null,
-						questionState: null,
-						assessmentState: null,
-						modalState: null,
-						focusState: null,
-						navTargetId: null
-					}
-
-					_scoreStore2.default.init()
-					_questionStore2.default.init()
-					ModalStore.init()
-					FocusStore.init()
-
-					_navStore2.default.init(
-						state.model,
-						state.model.modelState.start,
-						window.location.pathname
-					)
-					_assessmentStore2.default.init(
-						OboGlobals.get('ObojoboDraft.Sections.Assessment:attemptHistory', [])
-					)
-
-					state.navState = _navStore2.default.getState()
-					state.scoreState = _scoreStore2.default.getState()
-					state.questionState = _questionStore2.default.getState()
-					state.assessmentState = _assessmentStore2.default.getState()
-					state.modalState = ModalStore.getState()
-					state.focusState = FocusStore.getState()
-
-					_this.onNavStoreChange = function() {
-						return _this.setState({ navState: _navStore2.default.getState() })
-					}
-					_this.onScoreStoreChange = function() {
-						return _this.setState({ scoreState: _scoreStore2.default.getState() })
-					}
-					_this.onQuestionStoreChange = function() {
-						return _this.setState({ questionState: _questionStore2.default.getState() })
-					}
-					_this.onAssessmentStoreChange = function() {
-						return _this.setState({ assessmentState: _assessmentStore2.default.getState() })
-					}
-					_this.onModalStoreChange = function() {
-						return _this.setState({ modalState: ModalStore.getState() })
-					}
-					_this.onFocusStoreChange = function() {
-						return _this.setState({ focusState: FocusStore.getState() })
-					}
-
-					_this.onIdle = _this.onIdle.bind(_this)
-					_this.onReturnFromIdle = _this.onReturnFromIdle.bind(_this)
-					_this.onWindowClose = _this.onWindowClose.bind(_this)
-					_this.onVisibilityChange = _this.onVisibilityChange.bind(_this)
-
-					window.onbeforeunload = _this.onWindowClose
-
-					_this.state = state
-					return _this
-				}
-
-				_createClass(ViewerApp, [
-					{
-						key: 'componentDidMount',
-						value: function componentDidMount() {
-							document.addEventListener('visibilitychange', this.onVisibilityChange)
-						}
-					},
-					{
-						key: 'componentWillMount',
-						value: function componentWillMount() {
-							// === SET UP DATA STORES ===
-							_navStore2.default.onChange(this.onNavStoreChange)
-							_scoreStore2.default.onChange(this.onScoreStoreChange)
-							_questionStore2.default.onChange(this.onQuestionStoreChange)
-							_assessmentStore2.default.onChange(this.onAssessmentStoreChange)
-							ModalStore.onChange(this.onModalStoreChange)
-							FocusStore.onChange(this.onFocusStoreChange)
-						}
-					},
-					{
-						key: 'componentWillUnmount',
-						value: function componentWillUnmount() {
-							_navStore2.default.offChange(this.onNavStoreChange)
-							_scoreStore2.default.offChange(this.onScoreStoreChange)
-							_questionStore2.default.offChange(this.onQuestionStoreChange)
-							_assessmentStore2.default.offChange(this.onAssessmentStoreChange)
-							ModalStore.offChange(this.onModalStoreChange)
-							FocusStore.offChange(this.onFocusStoreChange)
-
-							document.removeEventListener('visibilitychange', this.onVisibilityChange)
-						}
-
-						// componentDidMount: ->
-						// NavUtil.gotoPath window.location.pathname
-					},
-					{
-						key: 'componentWillUpdate',
-						value: function componentWillUpdate(nextProps, nextState) {
-							var navTargetId = this.state.navTargetId
-
-							var nextNavTargetId = this.state.navState.navTargetId
-
-							if (navTargetId !== nextNavTargetId) {
-								this.needsScroll = true
-								return this.setState({ navTargetId: nextNavTargetId })
-							}
-						}
-					},
-					{
-						key: 'componentDidUpdate',
-						value: function componentDidUpdate() {
-							// alert 'here, fixme'
-							if (this.lastCanNavigate !== _navUtil2.default.canNavigate(this.state.navState)) {
-								this.needsScroll = true
-							}
-							this.lastCanNavigate = _navUtil2.default.canNavigate(this.state.navState)
-							if (this.needsScroll != null) {
-								this.scrollToTop()
-
-								return delete this.needsScroll
-							}
-						}
-					},
-					{
-						key: 'onVisibilityChange',
-						value: function onVisibilityChange(event) {
-							var _this2 = this
-
-							if (document.hidden) {
-								_apiUtil2.default
-									.postEvent(this.state.model, 'viewer:leave', '1.0.0', {})
-									.then(function(res) {
-										_this2.leaveEvent = res.value
-									})
-							} else {
-								_apiUtil2.default.postEvent(this.state.model, 'viewer:return', '1.0.0', {
-									relatedEventId: this.leaveEvent.id
-								})
-
-								delete this.leaveEvent
-							}
-						}
-					},
-					{
-						key: 'getTextForVariable',
-						value: function getTextForVariable(event, variable, textModel) {
-							return (event.text = _Common2.default.Store.getTextForVariable(
-								variable,
-								textModel,
-								this.state
-							))
-						}
-					},
-					{
-						key: 'scrollToTop',
-						value: function scrollToTop() {
-							var el = ReactDOM.findDOMNode(this.refs.prev)
-							var container = ReactDOM.findDOMNode(this.refs.container)
-
-							if (!container) return
-
-							if (el) {
-								return (container.scrollTop = ReactDOM.findDOMNode(
-									el
-								).getBoundingClientRect().height)
-							} else {
-								return (container.scrollTop = 0)
-							}
-						}
-
-						// === NON REACT LIFECYCLE METHODS ===
-					},
-					{
-						key: 'update',
-						value: function update(json) {
-							try {
-								var o = void 0
-								return (o = JSON.parse(json))
-							} catch (e) {
-								alert('Error parsing JSON')
-								this.setState({ model: this.state.model })
-								return
-							}
-						}
-					},
-					{
-						key: 'onBack',
-						value: function onBack() {
-							return _navUtil2.default.goPrev()
-						}
-					},
-					{
-						key: 'onNext',
-						value: function onNext() {
-							return _navUtil2.default.goNext()
-						}
-					},
-					{
-						key: 'onMouseDown',
-						value: function onMouseDown(event) {
-							if (this.state.focusState.focussedId == null) {
-								return
-							}
-							if (
-								!DOMUtil.findParentComponentIds(event.target).has(this.state.focusState.focussedId)
-							) {
-								return FocusUtil.unfocus()
-							}
-						}
-					},
-					{
-						key: 'onScroll',
-						value: function onScroll(event) {
-							if (this.state.focusState.focussedId == null) {
-								return
-							}
-
-							var component = FocusUtil.getFocussedComponent(this.state.focusState)
-							if (component == null) {
-								return
-							}
-
-							var el = component.getDomEl()
-							if (!el) {
-								return
-							}
-
-							if (!Screen.isElementVisible(el)) {
-								return FocusUtil.unfocus()
-							}
-						}
-					},
-					{
-						key: 'onIdle',
-						value: function onIdle() {
-							var _this3 = this
-
-							this.lastActiveEpoch = this.refs.idleTimer.getLastActiveTime()
-
-							_apiUtil2.default
-								.postEvent(this.state.model, 'viewer:inactive', '1.0.0', {
-									lastActiveTime: this.lastActiveEpoch,
-									inactiveDuration: IDLE_TIMEOUT_DURATION_MS
-								})
-								.then(function(res) {
-									_this3.inactiveEvent = res.value
-								})
-						}
-					},
-					{
-						key: 'onReturnFromIdle',
-						value: function onReturnFromIdle() {
-							_apiUtil2.default.postEvent(this.state.model, 'viewer:returnFromInactive', '1.0.0', {
-								lastActiveTime: this.lastActiveEpoch,
-								inactiveDuration: Date.now() - this.lastActiveEpoch,
-								relatedEventId: this.inactiveEvent.id
-							})
-
-							delete this.lastActiveEpoch
-							delete this.inactiveEvent
-						}
-					},
-					{
-						key: 'onWindowClose',
-						value: function onWindowClose(e) {
-							_apiUtil2.default.postEvent(this.state.model, 'viewer:close', '1.0.0', {})
-						}
-					},
-					{
-						key: 'resetAssessments',
-						value: function resetAssessments() {
-							_assessmentStore2.default.init()
-							_questionStore2.default.init()
-							_scoreStore2.default.init()
-
-							_assessmentStore2.default.triggerChange()
-							_questionStore2.default.triggerChange()
-							_scoreStore2.default.triggerChange()
-
-							return ModalUtil.show(
-								_react2.default.createElement(
-									SimpleDialog,
-									{ ok: true, width: '15em' },
-									'Assessment attempts and all question responses have been reset.'
-								)
-							)
-						}
-					},
-					{
-						key: 'unlockNavigation',
-						value: function unlockNavigation() {
-							return _navUtil2.default.unlock()
-						}
-					},
-					{
-						key: 'render',
-						value: function render() {
-							var nextEl = void 0,
-								nextModel = void 0,
-								prevEl = void 0
-							window.__lo = this.state.model
-							window.__s = this.state
-
-							var ModuleComponent = this.state.model.getComponentClass()
-
-							var navTargetModel = _navUtil2.default.getNavTargetModel(this.state.navState)
-							var navTargetTitle = '?'
-							if (navTargetModel != null) {
-								navTargetTitle = navTargetModel.title
-							}
-
-							var prevModel = (nextModel = null)
-							if (_navUtil2.default.canNavigate(this.state.navState)) {
-								prevModel = _navUtil2.default.getPrevModel(this.state.navState)
-								if (prevModel) {
-									prevEl = _react2.default.createElement(_inlineNavButton2.default, {
-										ref: 'prev',
-										type: 'prev',
-										title: 'Back: ' + prevModel.title
-									})
-								} else {
-									prevEl = _react2.default.createElement(_inlineNavButton2.default, {
-										ref: 'prev',
-										type: 'prev',
-										title: 'Start of ' + this.state.model.title,
-										disabled: true
-									})
-								}
-
-								nextModel = _navUtil2.default.getNextModel(this.state.navState)
-								if (nextModel) {
-									nextEl = _react2.default.createElement(_inlineNavButton2.default, {
-										ref: 'next',
-										type: 'next',
-										title: 'Next: ' + nextModel.title
-									})
-								} else {
-									nextEl = _react2.default.createElement(_inlineNavButton2.default, {
-										ref: 'next',
-										type: 'next',
-										title: 'End of ' + this.state.model.title,
-										disabled: true
-									})
-								}
-							}
-
-							var modal = ModalUtil.getCurrentModal(this.state.modalState)
-
-							return _react2.default.createElement(
-								_reactIdleTimer2.default,
-								{
-									ref: 'idleTimer',
-									element: window,
-									timeout: IDLE_TIMEOUT_DURATION_MS,
-									idleAction: this.onIdle,
-									activeAction: this.onReturnFromIdle
-								},
-								_react2.default.createElement(
-									'div',
-									{
-										ref: 'container',
-										onMouseDown: this.onMouseDown.bind(this),
-										onScroll: this.onScroll.bind(this),
-										className:
-											'viewer--viewer-app' +
-											(this.isPreviewing ? ' is-previewing' : ' is-not-previewing') +
-											(this.state.navState.locked ? ' is-locked-nav' : ' is-unlocked-nav') +
-											(this.state.navState.open ? ' is-open-nav' : ' is-closed-nav') +
-											(this.state.navState.disabled ? ' is-disabled-nav' : ' is-enabled-nav') +
-											' is-focus-state-' +
-											this.state.focusState.viewState
-									},
-									_react2.default.createElement(
-										'header',
-										null,
-										_react2.default.createElement(
-											'div',
-											{ className: 'pad' },
-											_react2.default.createElement(
-												'span',
-												{ className: 'module-title' },
-												this.state.model.title
-											),
-											_react2.default.createElement(
-												'span',
-												{ className: 'location' },
-												navTargetTitle
-											),
-											_react2.default.createElement(_logo2.default, null)
-										)
-									),
-									_react2.default.createElement(_nav2.default, { navState: this.state.navState }),
-									prevEl,
-									_react2.default.createElement(ModuleComponent, {
-										model: this.state.model,
-										moduleData: this.state
-									}),
-									nextEl,
-									this.isPreviewing
-										? _react2.default.createElement(
-												'div',
-												{ className: 'preview-banner' },
-												_react2.default.createElement(
-													'span',
-													null,
-													'You are previewing this object - Assessments will not be counted'
-												),
-												_react2.default.createElement(
-													'div',
-													{ className: 'controls' },
-													_react2.default.createElement(
-														'button',
-														{
-															onClick: this.unlockNavigation.bind(this),
-															disabled: !this.state.navState.locked
-														},
-														'Unlock navigation'
-													),
-													_react2.default.createElement(
-														'button',
-														{ onClick: this.resetAssessments.bind(this) },
-														'Reset assessments & questions'
-													)
-												)
-											)
-										: null,
-									_react2.default.createElement(FocusBlocker, { moduleData: this.state }),
-									modal ? _react2.default.createElement(ModalContainer, null, modal) : null
-								)
-							)
-						}
-					}
-				])
-
-				return ViewerApp
-			})(_react2.default.Component)
-
-			exports.default = ViewerApp
-
-			/***/
-		},
-		/* 26 */
-		/***/ function(module, exports, __webpack_require__) {
-			'use strict'
-
-			Object.defineProperty(exports, '__esModule', {
-				value: true
-			})
-
-			var _viewerApp = __webpack_require__(25)
-
-			var _viewerApp2 = _interopRequireDefault(_viewerApp)
-
-			var _scoreStore = __webpack_require__(15)
-
-			var _scoreStore2 = _interopRequireDefault(_scoreStore)
-
-			var _assessmentStore = __webpack_require__(13)
-
-			var _assessmentStore2 = _interopRequireDefault(_assessmentStore)
-
-			var _navStore = __webpack_require__(6)
-
-			var _navStore2 = _interopRequireDefault(_navStore)
-
-			var _questionStore = __webpack_require__(14)
-
-			var _questionStore2 = _interopRequireDefault(_questionStore)
-
-			var _assessmentUtil = __webpack_require__(16)
-
-			var _assessmentUtil2 = _interopRequireDefault(_assessmentUtil)
-
-			var _navUtil = __webpack_require__(1)
-
-			var _navUtil2 = _interopRequireDefault(_navUtil)
-
-			var _scoreUtil = __webpack_require__(7)
-
-			var _scoreUtil2 = _interopRequireDefault(_scoreUtil)
-
-			var _apiUtil = __webpack_require__(3)
-
-			var _apiUtil2 = _interopRequireDefault(_apiUtil)
-
-			var _questionUtil = __webpack_require__(5)
-
-			var _questionUtil2 = _interopRequireDefault(_questionUtil)
-
-			function _interopRequireDefault(obj) {
-				return obj && obj.__esModule ? obj : { default: obj }
-			}
-
-			exports.default = {
-				components: {
-					ViewerApp: _viewerApp2.default
-				},
-
-				stores: {
-					ScoreStore: _scoreStore2.default,
-					AssessmentStore: _assessmentStore2.default,
-					NavStore: _navStore2.default,
-					QuestionStore: _questionStore2.default
-				},
-
-				util: {
-					AssessmentUtil: _assessmentUtil2.default,
-					NavUtil: _navUtil2.default,
-					ScoreUtil: _scoreUtil2.default,
-					APIUtil: _apiUtil2.default,
-					QuestionUtil: _questionUtil2.default
-				}
-			}
-
-			/***/
-		},
-		/* 27 */
-		/***/ function(module, exports, __webpack_require__) {
-			'use strict'
-
-			var startOfDay = __webpack_require__(36)
+			var startOfDay = __webpack_require__(32)
 
 			var MILLISECONDS_IN_MINUTE = 60000
 			var MILLISECONDS_IN_DAY = 86400000
@@ -4567,16 +3488,16 @@
 
 			/***/
 		},
-		/* 28 */
+		/* 24 */
 		/***/ function(module, exports, __webpack_require__) {
 			'use strict'
 
-			var getDayOfYear = __webpack_require__(29)
-			var getISOWeek = __webpack_require__(30)
-			var getISOYear = __webpack_require__(17)
-			var parse = __webpack_require__(2)
-			var isValid = __webpack_require__(31)
-			var enLocale = __webpack_require__(35)
+			var getDayOfYear = __webpack_require__(25)
+			var getISOWeek = __webpack_require__(26)
+			var getISOYear = __webpack_require__(12)
+			var parse = __webpack_require__(1)
+			var isValid = __webpack_require__(27)
+			var enLocale = __webpack_require__(31)
 
 			/**
 			 * @category Common Helpers
@@ -4902,13 +3823,13 @@
 
 			/***/
 		},
-		/* 29 */
+		/* 25 */
 		/***/ function(module, exports, __webpack_require__) {
 			'use strict'
 
-			var parse = __webpack_require__(2)
-			var startOfYear = __webpack_require__(39)
-			var differenceInCalendarDays = __webpack_require__(27)
+			var parse = __webpack_require__(1)
+			var startOfYear = __webpack_require__(35)
+			var differenceInCalendarDays = __webpack_require__(23)
 
 			/**
 			 * @category Day Helpers
@@ -4936,13 +3857,13 @@
 
 			/***/
 		},
-		/* 30 */
+		/* 26 */
 		/***/ function(module, exports, __webpack_require__) {
 			'use strict'
 
-			var parse = __webpack_require__(2)
-			var startOfISOWeek = __webpack_require__(8)
-			var startOfISOYear = __webpack_require__(37)
+			var parse = __webpack_require__(1)
+			var startOfISOWeek = __webpack_require__(6)
+			var startOfISOYear = __webpack_require__(33)
 
 			var MILLISECONDS_IN_WEEK = 604800000
 
@@ -4977,11 +3898,11 @@
 
 			/***/
 		},
-		/* 31 */
+		/* 27 */
 		/***/ function(module, exports, __webpack_require__) {
 			'use strict'
 
-			var isDate = __webpack_require__(18)
+			var isDate = __webpack_require__(13)
 
 			/**
 			 * @category Common Helpers
@@ -5019,7 +3940,7 @@
 
 			/***/
 		},
-		/* 32 */
+		/* 28 */
 		/***/ function(module, exports, __webpack_require__) {
 			'use strict'
 
@@ -5080,7 +4001,7 @@
 
 			/***/
 		},
-		/* 33 */
+		/* 29 */
 		/***/ function(module, exports, __webpack_require__) {
 			'use strict'
 
@@ -5186,11 +4107,11 @@
 
 			/***/
 		},
-		/* 34 */
+		/* 30 */
 		/***/ function(module, exports, __webpack_require__) {
 			'use strict'
 
-			var buildFormattingTokensRegExp = __webpack_require__(32)
+			var buildFormattingTokensRegExp = __webpack_require__(28)
 
 			function buildFormatLocale() {
 				// Note: in English, the names of days of the week and months are capitalized.
@@ -5315,12 +4236,12 @@
 
 			/***/
 		},
-		/* 35 */
+		/* 31 */
 		/***/ function(module, exports, __webpack_require__) {
 			'use strict'
 
-			var buildDistanceInWordsLocale = __webpack_require__(33)
-			var buildFormatLocale = __webpack_require__(34)
+			var buildDistanceInWordsLocale = __webpack_require__(29)
+			var buildFormatLocale = __webpack_require__(30)
 
 			/**
 			 * @category Locales
@@ -5333,11 +4254,11 @@
 
 			/***/
 		},
-		/* 36 */
+		/* 32 */
 		/***/ function(module, exports, __webpack_require__) {
 			'use strict'
 
-			var parse = __webpack_require__(2)
+			var parse = __webpack_require__(1)
 
 			/**
 			 * @category Day Helpers
@@ -5365,12 +4286,12 @@
 
 			/***/
 		},
-		/* 37 */
+		/* 33 */
 		/***/ function(module, exports, __webpack_require__) {
 			'use strict'
 
-			var getISOYear = __webpack_require__(17)
-			var startOfISOWeek = __webpack_require__(8)
+			var getISOYear = __webpack_require__(12)
+			var startOfISOWeek = __webpack_require__(6)
 
 			/**
 			 * @category ISO Week-Numbering Year Helpers
@@ -5404,11 +4325,11 @@
 
 			/***/
 		},
-		/* 38 */
+		/* 34 */
 		/***/ function(module, exports, __webpack_require__) {
 			'use strict'
 
-			var parse = __webpack_require__(2)
+			var parse = __webpack_require__(1)
 
 			/**
 			 * @category Week Helpers
@@ -5449,11 +4370,11 @@
 
 			/***/
 		},
-		/* 39 */
+		/* 35 */
 		/***/ function(module, exports, __webpack_require__) {
 			'use strict'
 
-			var parse = __webpack_require__(2)
+			var parse = __webpack_require__(1)
 
 			/**
 			 * @category Year Helpers
@@ -5483,7 +4404,7 @@
 
 			/***/
 		},
-		/* 40 */
+		/* 36 */
 		/***/ function(module, exports, __webpack_require__) {
 			'use strict'
 			/*
@@ -5580,7 +4501,7 @@ object-assign
 
 			/***/
 		},
-		/* 41 */
+		/* 37 */
 		/***/ function(module, exports, __webpack_require__) {
 			'use strict'
 			/* WEBPACK VAR INJECTION */ ;(function(process) {
@@ -5606,9 +4527,9 @@ object-assign
 							}
 
 				if (process.env.NODE_ENV !== 'production') {
-					var invariant = __webpack_require__(10)
-					var warning = __webpack_require__(19)
-					var ReactPropTypesSecret = __webpack_require__(11)
+					var invariant = __webpack_require__(8)
+					var warning = __webpack_require__(14)
+					var ReactPropTypesSecret = __webpack_require__(9)
 					var loggedTypeFailures = {}
 				}
 
@@ -5692,7 +4613,7 @@ object-assign
 
 			/***/
 		},
-		/* 42 */
+		/* 38 */
 		/***/ function(module, exports, __webpack_require__) {
 			'use strict'
 			/**
@@ -5702,9 +4623,9 @@ object-assign
 			 * LICENSE file in the root directory of this source tree.
 			 */
 
-			var emptyFunction = __webpack_require__(9)
-			var invariant = __webpack_require__(10)
-			var ReactPropTypesSecret = __webpack_require__(11)
+			var emptyFunction = __webpack_require__(7)
+			var invariant = __webpack_require__(8)
+			var ReactPropTypesSecret = __webpack_require__(9)
 
 			module.exports = function() {
 				function shim(props, propName, componentName, location, propFullName, secret) {
@@ -5754,7 +4675,7 @@ object-assign
 
 			/***/
 		},
-		/* 43 */
+		/* 39 */
 		/***/ function(module, exports, __webpack_require__) {
 			'use strict'
 			/* WEBPACK VAR INJECTION */ ;(function(process) {
@@ -5779,13 +4700,13 @@ object-assign
 									: typeof obj
 							}
 
-				var emptyFunction = __webpack_require__(9)
-				var invariant = __webpack_require__(10)
-				var warning = __webpack_require__(19)
-				var assign = __webpack_require__(40)
+				var emptyFunction = __webpack_require__(7)
+				var invariant = __webpack_require__(8)
+				var warning = __webpack_require__(14)
+				var assign = __webpack_require__(36)
 
-				var ReactPropTypesSecret = __webpack_require__(11)
-				var checkPropTypes = __webpack_require__(41)
+				var ReactPropTypesSecret = __webpack_require__(9)
+				var checkPropTypes = __webpack_require__(37)
 
 				module.exports = function(isValidElement, throwOnDirectAccess) {
 					/* global Symbol */
@@ -6497,7 +5418,7 @@ object-assign
 
 			/***/
 		},
-		/* 44 */
+		/* 40 */
 		/***/ function(module, exports, __webpack_require__) {
 			'use strict'
 			/* WEBPACK VAR INJECTION */ ;(function(process) {
@@ -6537,18 +5458,18 @@ object-assign
 					// By explicitly using `prop-types` you are opting into new development behavior.
 					// http://fb.me/prop-types-in-prod
 					var throwOnDirectAccess = true
-					module.exports = __webpack_require__(43)(isValidElement, throwOnDirectAccess)
+					module.exports = __webpack_require__(39)(isValidElement, throwOnDirectAccess)
 				} else {
 					// By explicitly using `prop-types` you are opting into new production behavior.
 					// http://fb.me/prop-types-in-prod
-					module.exports = __webpack_require__(42)()
+					module.exports = __webpack_require__(38)()
 				}
 				/* WEBPACK VAR INJECTION */
 			}.call(exports, __webpack_require__(4)))
 
 			/***/
 		},
-		/* 45 */
+		/* 41 */
 		/***/ function(module, exports, __webpack_require__) {
 			'use strict'
 
@@ -6605,11 +5526,11 @@ object-assign
 
 			var _react2 = _interopRequireDefault(_react)
 
-			var _propTypes = __webpack_require__(44)
+			var _propTypes = __webpack_require__(40)
 
 			var _propTypes2 = _interopRequireDefault(_propTypes)
 
-			var _format = __webpack_require__(28)
+			var _format = __webpack_require__(24)
 
 			var _format2 = _interopRequireDefault(_format)
 
@@ -6997,6 +5918,1085 @@ object-assign
 				startOnLoad: true
 			}
 			exports.default = IdleTimer
+
+			/***/
+		},
+		/* 42 */
+		/***/ function(module, exports, __webpack_require__) {
+			'use strict'
+
+			Object.defineProperty(exports, '__esModule', {
+				value: true
+			})
+
+			var _createClass = (function() {
+				function defineProperties(target, props) {
+					for (var i = 0; i < props.length; i++) {
+						var descriptor = props[i]
+						descriptor.enumerable = descriptor.enumerable || false
+						descriptor.configurable = true
+						if ('value' in descriptor) descriptor.writable = true
+						Object.defineProperty(target, descriptor.key, descriptor)
+					}
+				}
+				return function(Constructor, protoProps, staticProps) {
+					if (protoProps) defineProperties(Constructor.prototype, protoProps)
+					if (staticProps) defineProperties(Constructor, staticProps)
+					return Constructor
+				}
+			})()
+
+			__webpack_require__(46)
+
+			var _navUtil = __webpack_require__(2)
+
+			var _navUtil2 = _interopRequireDefault(_navUtil)
+
+			function _interopRequireDefault(obj) {
+				return obj && obj.__esModule ? obj : { default: obj }
+			}
+
+			function _classCallCheck(instance, Constructor) {
+				if (!(instance instanceof Constructor)) {
+					throw new TypeError('Cannot call a class as a function')
+				}
+			}
+
+			function _possibleConstructorReturn(self, call) {
+				if (!self) {
+					throw new ReferenceError("this hasn't been initialised - super() hasn't been called")
+				}
+				return call && (typeof call === 'object' || typeof call === 'function') ? call : self
+			}
+
+			function _inherits(subClass, superClass) {
+				if (typeof superClass !== 'function' && superClass !== null) {
+					throw new TypeError(
+						'Super expression must either be null or a function, not ' + typeof superClass
+					)
+				}
+				subClass.prototype = Object.create(superClass && superClass.prototype, {
+					constructor: { value: subClass, enumerable: false, writable: true, configurable: true }
+				})
+				if (superClass)
+					Object.setPrototypeOf
+						? Object.setPrototypeOf(subClass, superClass)
+						: (subClass.__proto__ = superClass)
+			}
+
+			var InlineNavButton = (function(_React$Component) {
+				_inherits(InlineNavButton, _React$Component)
+
+				function InlineNavButton() {
+					_classCallCheck(this, InlineNavButton)
+
+					return _possibleConstructorReturn(
+						this,
+						(InlineNavButton.__proto__ || Object.getPrototypeOf(InlineNavButton)).apply(
+							this,
+							arguments
+						)
+					)
+				}
+
+				_createClass(InlineNavButton, [
+					{
+						key: 'onClick',
+						value: function onClick() {
+							if (this.props.disabled) {
+								return
+							}
+
+							switch (this.props.type) {
+								case 'prev':
+									return _navUtil2.default.goPrev()
+
+								case 'next':
+									return _navUtil2.default.goNext()
+							}
+						}
+					},
+					{
+						key: 'render',
+						value: function render() {
+							return React.createElement(
+								'div',
+								{
+									className:
+										'viewer--components--inline-nav-button is-' +
+										this.props.type +
+										(this.props.disabled ? ' is-disabled' : ' is-enabled'),
+									onClick: this.onClick.bind(this)
+								},
+								this.props.title
+							)
+						}
+					}
+				])
+
+				return InlineNavButton
+			})(React.Component)
+
+			exports.default = InlineNavButton
+
+			/***/
+		},
+		/* 43 */
+		/***/ function(module, exports, __webpack_require__) {
+			'use strict'
+
+			Object.defineProperty(exports, '__esModule', {
+				value: true
+			})
+
+			var _createClass = (function() {
+				function defineProperties(target, props) {
+					for (var i = 0; i < props.length; i++) {
+						var descriptor = props[i]
+						descriptor.enumerable = descriptor.enumerable || false
+						descriptor.configurable = true
+						if ('value' in descriptor) descriptor.writable = true
+						Object.defineProperty(target, descriptor.key, descriptor)
+					}
+				}
+				return function(Constructor, protoProps, staticProps) {
+					if (protoProps) defineProperties(Constructor.prototype, protoProps)
+					if (staticProps) defineProperties(Constructor, staticProps)
+					return Constructor
+				}
+			})()
+
+			__webpack_require__(48)
+
+			var _navStore = __webpack_require__(10)
+
+			var _navStore2 = _interopRequireDefault(_navStore)
+
+			var _navUtil = __webpack_require__(2)
+
+			var _navUtil2 = _interopRequireDefault(_navUtil)
+
+			var _logo = __webpack_require__(15)
+
+			var _logo2 = _interopRequireDefault(_logo)
+
+			var _hamburger = __webpack_require__(52)
+
+			var _hamburger2 = _interopRequireDefault(_hamburger)
+
+			var _arrow = __webpack_require__(51)
+
+			var _arrow2 = _interopRequireDefault(_arrow)
+
+			var _lockIcon = __webpack_require__(53)
+
+			var _lockIcon2 = _interopRequireDefault(_lockIcon)
+
+			var _Common = __webpack_require__(0)
+
+			var _Common2 = _interopRequireDefault(_Common)
+
+			function _interopRequireDefault(obj) {
+				return obj && obj.__esModule ? obj : { default: obj }
+			}
+
+			function _classCallCheck(instance, Constructor) {
+				if (!(instance instanceof Constructor)) {
+					throw new TypeError('Cannot call a class as a function')
+				}
+			}
+
+			function _possibleConstructorReturn(self, call) {
+				if (!self) {
+					throw new ReferenceError("this hasn't been initialised - super() hasn't been called")
+				}
+				return call && (typeof call === 'object' || typeof call === 'function') ? call : self
+			}
+
+			function _inherits(subClass, superClass) {
+				if (typeof superClass !== 'function' && superClass !== null) {
+					throw new TypeError(
+						'Super expression must either be null or a function, not ' + typeof superClass
+					)
+				}
+				subClass.prototype = Object.create(superClass && superClass.prototype, {
+					constructor: { value: subClass, enumerable: false, writable: true, configurable: true }
+				})
+				if (superClass)
+					Object.setPrototypeOf
+						? Object.setPrototypeOf(subClass, superClass)
+						: (subClass.__proto__ = superClass)
+			}
+
+			var getBackgroundImage = _Common2.default.util.getBackgroundImage
+			var OboModel = _Common2.default.models.OboModel
+			var StyleableText = _Common2.default.text.StyleableText
+			var StyleableTextComponent = _Common2.default.text.StyleableTextComponent
+
+			var Nav = (function(_React$Component) {
+				_inherits(Nav, _React$Component)
+
+				function Nav(props) {
+					_classCallCheck(this, Nav)
+
+					var _this = _possibleConstructorReturn(
+						this,
+						(Nav.__proto__ || Object.getPrototypeOf(Nav)).call(this, props)
+					)
+
+					_this.state = {
+						hover: false
+					}
+					return _this
+				}
+
+				_createClass(Nav, [
+					{
+						key: 'onClick',
+						value: function onClick(item) {
+							if (item.type === 'link') {
+								if (!_navUtil2.default.canNavigate(this.props.navState)) return
+								return _navUtil2.default.gotoPath(item.fullPath)
+							} else if (item.type === 'sub-link') {
+								var el = OboModel.models[item.id].getDomEl()
+								return el.scrollIntoView({ behavior: 'smooth' })
+							}
+						}
+					},
+					{
+						key: 'hideNav',
+						value: function hideNav() {
+							return _navUtil2.default.toggle()
+						}
+					},
+					{
+						key: 'onMouseOver',
+						value: function onMouseOver() {
+							return this.setState({ hover: true })
+						}
+					},
+					{
+						key: 'onMouseOut',
+						value: function onMouseOut() {
+							return this.setState({ hover: false })
+						}
+					},
+					{
+						key: 'renderLabel',
+						value: function renderLabel(label) {
+							if (label instanceof StyleableText) {
+								return React.createElement(StyleableTextComponent, { text: label })
+							} else {
+								return React.createElement('a', null, label)
+							}
+						}
+					},
+					{
+						key: 'render',
+						value: function render() {
+							var _this2 = this
+
+							var bg = void 0,
+								lockEl = void 0
+							if (this.props.navState.open || this.state.hover) {
+								bg = getBackgroundImage(_arrow2.default)
+							} else {
+								bg = getBackgroundImage(_hamburger2.default)
+							}
+
+							if (this.props.navState.locked) {
+								lockEl = React.createElement(
+									'div',
+									{ className: 'lock-icon' },
+									React.createElement('img', { src: _lockIcon2.default })
+								)
+							} else {
+								lockEl = null
+							}
+
+							var list = _navUtil2.default.getOrderedList(this.props.navState)
+
+							return React.createElement(
+								'div',
+								{
+									className:
+										'viewer--components--nav' +
+										(this.props.navState.locked ? ' is-locked' : ' is-unlocked') +
+										(this.props.navState.open ? ' is-open' : ' is-closed') +
+										(this.props.navState.disabled ? ' is-disabled' : ' is-enabled')
+								},
+								React.createElement(
+									'button',
+									{
+										className: 'toggle-button',
+										onClick: this.hideNav.bind(this),
+										onMouseOver: this.onMouseOver.bind(this),
+										onMouseOut: this.onMouseOut.bind(this),
+										style: {
+											backgroundImage: bg,
+											transform:
+												!this.props.navState.open && this.state.hover ? 'rotate(180deg)' : '',
+											filter: this.props.navState.open ? 'invert(100%)' : 'invert(0%)'
+										}
+									},
+									'Toggle Navigation Menu'
+								),
+								React.createElement(
+									'ul',
+									null,
+									list.map(function(item, index) {
+										switch (item.type) {
+											case 'heading':
+												var isSelected = false
+												return React.createElement(
+													'li',
+													{
+														key: index,
+														className: 'heading' + (isSelected ? ' is-selected' : ' is-not-select')
+													},
+													_this2.renderLabel(item.label)
+												)
+												break
+
+											case 'link':
+												var isSelected = _this2.props.navState.navTargetId === item.id
+												//var isPrevVisited = this.props.navState.navTargetHistory.indexOf(item.id) > -1
+												return React.createElement(
+													'li',
+													{
+														key: index,
+														onClick: _this2.onClick.bind(_this2, item),
+														className:
+															'link' +
+															(isSelected ? ' is-selected' : ' is-not-select') +
+															(item.flags.visited ? ' is-visited' : ' is-not-visited') +
+															(item.flags.complete ? ' is-complete' : ' is-not-complete') +
+															(item.flags.correct ? ' is-correct' : ' is-not-correct')
+													},
+													_this2.renderLabel(item.label),
+													lockEl
+												)
+												break
+
+											case 'sub-link':
+												var isSelected = _this2.props.navState.navTargetIndex === index
+
+												return React.createElement(
+													'li',
+													{
+														key: index,
+														onClick: _this2.onClick.bind(_this2, item),
+														className:
+															'sub-link' +
+															(isSelected ? ' is-selected' : ' is-not-select') +
+															(item.flags.correct ? ' is-correct' : ' is-not-correct')
+													},
+													_this2.renderLabel(item.label),
+													lockEl
+												)
+												break
+
+											case 'seperator':
+												return React.createElement(
+													'li',
+													{ key: index, className: 'seperator' },
+													React.createElement('hr', null)
+												)
+												break
+										}
+									})
+								),
+								React.createElement(_logo2.default, { inverted: true })
+							)
+						}
+					}
+				])
+
+				return Nav
+			})(React.Component)
+
+			exports.default = Nav
+
+			/***/
+		},
+		/* 44 */
+		/***/ function(module, exports, __webpack_require__) {
+			'use strict'
+
+			Object.defineProperty(exports, '__esModule', {
+				value: true
+			})
+
+			var _createClass = (function() {
+				function defineProperties(target, props) {
+					for (var i = 0; i < props.length; i++) {
+						var descriptor = props[i]
+						descriptor.enumerable = descriptor.enumerable || false
+						descriptor.configurable = true
+						if ('value' in descriptor) descriptor.writable = true
+						Object.defineProperty(target, descriptor.key, descriptor)
+					}
+				}
+				return function(Constructor, protoProps, staticProps) {
+					if (protoProps) defineProperties(Constructor.prototype, protoProps)
+					if (staticProps) defineProperties(Constructor, staticProps)
+					return Constructor
+				}
+			})()
+
+			__webpack_require__(50)
+
+			__webpack_require__(49)
+
+			var _Common = __webpack_require__(0)
+
+			var _Common2 = _interopRequireDefault(_Common)
+
+			var _react = __webpack_require__(20)
+
+			var _react2 = _interopRequireDefault(_react)
+
+			var _reactIdleTimer = __webpack_require__(41)
+
+			var _reactIdleTimer2 = _interopRequireDefault(_reactIdleTimer)
+
+			var _inlineNavButton = __webpack_require__(42)
+
+			var _inlineNavButton2 = _interopRequireDefault(_inlineNavButton)
+
+			var _navUtil = __webpack_require__(2)
+
+			var _navUtil2 = _interopRequireDefault(_navUtil)
+
+			var _apiUtil = __webpack_require__(3)
+
+			var _apiUtil2 = _interopRequireDefault(_apiUtil)
+
+			var _logo = __webpack_require__(15)
+
+			var _logo2 = _interopRequireDefault(_logo)
+
+			var _scoreStore = __webpack_require__(18)
+
+			var _scoreStore2 = _interopRequireDefault(_scoreStore)
+
+			var _questionStore = __webpack_require__(17)
+
+			var _questionStore2 = _interopRequireDefault(_questionStore)
+
+			var _assessmentStore = __webpack_require__(16)
+
+			var _assessmentStore2 = _interopRequireDefault(_assessmentStore)
+
+			var _navStore = __webpack_require__(10)
+
+			var _navStore2 = _interopRequireDefault(_navStore)
+
+			var _nav = __webpack_require__(43)
+
+			var _nav2 = _interopRequireDefault(_nav)
+
+			function _interopRequireDefault(obj) {
+				return obj && obj.__esModule ? obj : { default: obj }
+			}
+
+			function _classCallCheck(instance, Constructor) {
+				if (!(instance instanceof Constructor)) {
+					throw new TypeError('Cannot call a class as a function')
+				}
+			}
+
+			function _possibleConstructorReturn(self, call) {
+				if (!self) {
+					throw new ReferenceError("this hasn't been initialised - super() hasn't been called")
+				}
+				return call && (typeof call === 'object' || typeof call === 'function') ? call : self
+			}
+
+			function _inherits(subClass, superClass) {
+				if (typeof superClass !== 'function' && superClass !== null) {
+					throw new TypeError(
+						'Super expression must either be null or a function, not ' + typeof superClass
+					)
+				}
+				subClass.prototype = Object.create(superClass && superClass.prototype, {
+					constructor: { value: subClass, enumerable: false, writable: true, configurable: true }
+				})
+				if (superClass)
+					Object.setPrototypeOf
+						? Object.setPrototypeOf(subClass, superClass)
+						: (subClass.__proto__ = superClass)
+			}
+
+			var IDLE_TIMEOUT_DURATION_MS = 600000 // 10 minutes
+
+			var Legacy = _Common2.default.models.Legacy
+			var DOMUtil = _Common2.default.page.DOMUtil
+			var Screen = _Common2.default.page.Screen
+			var OboModel = _Common2.default.models.OboModel
+			var Dispatcher = _Common2.default.flux.Dispatcher
+			var ModalContainer = _Common2.default.components.ModalContainer
+			var SimpleDialog = _Common2.default.components.modal.SimpleDialog
+			var ModalUtil = _Common2.default.util.ModalUtil
+			var FocusBlocker = _Common2.default.components.FocusBlocker
+			var ModalStore = _Common2.default.stores.ModalStore
+			var FocusStore = _Common2.default.stores.FocusStore
+			var FocusUtil = _Common2.default.util.FocusUtil
+			var OboGlobals = _Common2.default.util.OboGlobals
+
+			// Dispatcher.on 'all', (eventName, payload) -> console.log 'EVENT TRIGGERED', eventName
+
+			Dispatcher.on('viewer:alert', function(payload) {
+				return ModalUtil.show(
+					_react2.default.createElement(
+						SimpleDialog,
+						{ ok: true, title: payload.value.title },
+						payload.value.message
+					)
+				)
+			})
+
+			var ViewerApp = (function(_React$Component) {
+				_inherits(ViewerApp, _React$Component)
+
+				// === REACT LIFECYCLE METHODS ===
+
+				function ViewerApp(props) {
+					_classCallCheck(this, ViewerApp)
+
+					var _this = _possibleConstructorReturn(
+						this,
+						(ViewerApp.__proto__ || Object.getPrototypeOf(ViewerApp)).call(this, props)
+					)
+
+					_Common2.default.Store.loadDependency(
+						'https://cdnjs.cloudflare.com/ajax/libs/KaTeX/0.5.1/katex.min.css'
+					)
+
+					Dispatcher.on('viewer:scrollTo', function(payload) {
+						return (ReactDOM.findDOMNode(_this.refs.container).scrollTop = payload.value)
+					})
+
+					Dispatcher.on('viewer:scrollToTop', _this.scrollToTop.bind(_this))
+					Dispatcher.on('getTextForVariable', _this.getTextForVariable.bind(_this))
+
+					_this.isPreviewing = OboGlobals.get('previewing')
+
+					var state = {
+						model: OboModel.create(OboGlobals.get('draft')),
+						navState: null,
+						scoreState: null,
+						questionState: null,
+						assessmentState: null,
+						modalState: null,
+						focusState: null,
+						navTargetId: null
+					}
+
+					_scoreStore2.default.init()
+					_questionStore2.default.init()
+					ModalStore.init()
+					FocusStore.init()
+
+					_navStore2.default.init(
+						state.model,
+						state.model.modelState.start,
+						window.location.pathname
+					)
+					_assessmentStore2.default.init(
+						OboGlobals.get('ObojoboDraft.Sections.Assessment:attemptHistory', [])
+					)
+
+					state.navState = _navStore2.default.getState()
+					state.scoreState = _scoreStore2.default.getState()
+					state.questionState = _questionStore2.default.getState()
+					state.assessmentState = _assessmentStore2.default.getState()
+					state.modalState = ModalStore.getState()
+					state.focusState = FocusStore.getState()
+
+					_this.onNavStoreChange = function() {
+						return _this.setState({ navState: _navStore2.default.getState() })
+					}
+					_this.onScoreStoreChange = function() {
+						return _this.setState({ scoreState: _scoreStore2.default.getState() })
+					}
+					_this.onQuestionStoreChange = function() {
+						return _this.setState({ questionState: _questionStore2.default.getState() })
+					}
+					_this.onAssessmentStoreChange = function() {
+						return _this.setState({ assessmentState: _assessmentStore2.default.getState() })
+					}
+					_this.onModalStoreChange = function() {
+						return _this.setState({ modalState: ModalStore.getState() })
+					}
+					_this.onFocusStoreChange = function() {
+						return _this.setState({ focusState: FocusStore.getState() })
+					}
+
+					_this.onIdle = _this.onIdle.bind(_this)
+					_this.onReturnFromIdle = _this.onReturnFromIdle.bind(_this)
+					_this.onWindowClose = _this.onWindowClose.bind(_this)
+					_this.onVisibilityChange = _this.onVisibilityChange.bind(_this)
+
+					window.onbeforeunload = _this.onWindowClose
+
+					_this.state = state
+					return _this
+				}
+
+				_createClass(ViewerApp, [
+					{
+						key: 'componentDidMount',
+						value: function componentDidMount() {
+							document.addEventListener('visibilitychange', this.onVisibilityChange)
+						}
+					},
+					{
+						key: 'componentWillMount',
+						value: function componentWillMount() {
+							// === SET UP DATA STORES ===
+							_navStore2.default.onChange(this.onNavStoreChange)
+							_scoreStore2.default.onChange(this.onScoreStoreChange)
+							_questionStore2.default.onChange(this.onQuestionStoreChange)
+							_assessmentStore2.default.onChange(this.onAssessmentStoreChange)
+							ModalStore.onChange(this.onModalStoreChange)
+							FocusStore.onChange(this.onFocusStoreChange)
+						}
+					},
+					{
+						key: 'componentWillUnmount',
+						value: function componentWillUnmount() {
+							_navStore2.default.offChange(this.onNavStoreChange)
+							_scoreStore2.default.offChange(this.onScoreStoreChange)
+							_questionStore2.default.offChange(this.onQuestionStoreChange)
+							_assessmentStore2.default.offChange(this.onAssessmentStoreChange)
+							ModalStore.offChange(this.onModalStoreChange)
+							FocusStore.offChange(this.onFocusStoreChange)
+
+							document.removeEventListener('visibilitychange', this.onVisibilityChange)
+						}
+
+						// componentDidMount: ->
+						// NavUtil.gotoPath window.location.pathname
+					},
+					{
+						key: 'componentWillUpdate',
+						value: function componentWillUpdate(nextProps, nextState) {
+							var navTargetId = this.state.navTargetId
+
+							var nextNavTargetId = this.state.navState.navTargetId
+
+							if (navTargetId !== nextNavTargetId) {
+								this.needsScroll = true
+								return this.setState({ navTargetId: nextNavTargetId })
+							}
+						}
+					},
+					{
+						key: 'componentDidUpdate',
+						value: function componentDidUpdate() {
+							// alert 'here, fixme'
+							if (this.lastCanNavigate !== _navUtil2.default.canNavigate(this.state.navState)) {
+								this.needsScroll = true
+							}
+							this.lastCanNavigate = _navUtil2.default.canNavigate(this.state.navState)
+							if (this.needsScroll != null) {
+								this.scrollToTop()
+
+								return delete this.needsScroll
+							}
+						}
+					},
+					{
+						key: 'onVisibilityChange',
+						value: function onVisibilityChange(event) {
+							var _this2 = this
+
+							if (document.hidden) {
+								_apiUtil2.default
+									.postEvent(this.state.model, 'viewer:leave', '1.0.0', {})
+									.then(function(res) {
+										_this2.leaveEvent = res.value
+									})
+							} else {
+								_apiUtil2.default.postEvent(this.state.model, 'viewer:return', '1.0.0', {
+									relatedEventId: this.leaveEvent.id
+								})
+
+								delete this.leaveEvent
+							}
+						}
+					},
+					{
+						key: 'getTextForVariable',
+						value: function getTextForVariable(event, variable, textModel) {
+							return (event.text = _Common2.default.Store.getTextForVariable(
+								variable,
+								textModel,
+								this.state
+							))
+						}
+					},
+					{
+						key: 'scrollToTop',
+						value: function scrollToTop() {
+							var el = ReactDOM.findDOMNode(this.refs.prev)
+							var container = ReactDOM.findDOMNode(this.refs.container)
+
+							if (!container) return
+
+							if (el) {
+								return (container.scrollTop = ReactDOM.findDOMNode(
+									el
+								).getBoundingClientRect().height)
+							} else {
+								return (container.scrollTop = 0)
+							}
+						}
+
+						// === NON REACT LIFECYCLE METHODS ===
+					},
+					{
+						key: 'update',
+						value: function update(json) {
+							try {
+								var o = void 0
+								return (o = JSON.parse(json))
+							} catch (e) {
+								alert('Error parsing JSON')
+								this.setState({ model: this.state.model })
+								return
+							}
+						}
+					},
+					{
+						key: 'onBack',
+						value: function onBack() {
+							return _navUtil2.default.goPrev()
+						}
+					},
+					{
+						key: 'onNext',
+						value: function onNext() {
+							return _navUtil2.default.goNext()
+						}
+					},
+					{
+						key: 'onMouseDown',
+						value: function onMouseDown(event) {
+							if (this.state.focusState.focussedId == null) {
+								return
+							}
+							if (
+								!DOMUtil.findParentComponentIds(event.target).has(this.state.focusState.focussedId)
+							) {
+								return FocusUtil.unfocus()
+							}
+						}
+					},
+					{
+						key: 'onScroll',
+						value: function onScroll(event) {
+							if (this.state.focusState.focussedId == null) {
+								return
+							}
+
+							var component = FocusUtil.getFocussedComponent(this.state.focusState)
+							if (component == null) {
+								return
+							}
+
+							var el = component.getDomEl()
+							if (!el) {
+								return
+							}
+
+							if (!Screen.isElementVisible(el)) {
+								return FocusUtil.unfocus()
+							}
+						}
+					},
+					{
+						key: 'onIdle',
+						value: function onIdle() {
+							var _this3 = this
+
+							this.lastActiveEpoch = this.refs.idleTimer.getLastActiveTime()
+
+							_apiUtil2.default
+								.postEvent(this.state.model, 'viewer:inactive', '1.0.0', {
+									lastActiveTime: this.lastActiveEpoch,
+									inactiveDuration: IDLE_TIMEOUT_DURATION_MS
+								})
+								.then(function(res) {
+									_this3.inactiveEvent = res.value
+								})
+						}
+					},
+					{
+						key: 'onReturnFromIdle',
+						value: function onReturnFromIdle() {
+							_apiUtil2.default.postEvent(this.state.model, 'viewer:returnFromInactive', '1.0.0', {
+								lastActiveTime: this.lastActiveEpoch,
+								inactiveDuration: Date.now() - this.lastActiveEpoch,
+								relatedEventId: this.inactiveEvent.id
+							})
+
+							delete this.lastActiveEpoch
+							delete this.inactiveEvent
+						}
+					},
+					{
+						key: 'onWindowClose',
+						value: function onWindowClose(e) {
+							_apiUtil2.default.postEvent(this.state.model, 'viewer:close', '1.0.0', {})
+						}
+					},
+					{
+						key: 'resetAssessments',
+						value: function resetAssessments() {
+							_assessmentStore2.default.init()
+							_questionStore2.default.init()
+							_scoreStore2.default.init()
+
+							_assessmentStore2.default.triggerChange()
+							_questionStore2.default.triggerChange()
+							_scoreStore2.default.triggerChange()
+
+							return ModalUtil.show(
+								_react2.default.createElement(
+									SimpleDialog,
+									{ ok: true, width: '15em' },
+									'Assessment attempts and all question responses have been reset.'
+								)
+							)
+						}
+					},
+					{
+						key: 'unlockNavigation',
+						value: function unlockNavigation() {
+							return _navUtil2.default.unlock()
+						}
+					},
+					{
+						key: 'render',
+						value: function render() {
+							var nextEl = void 0,
+								nextModel = void 0,
+								prevEl = void 0
+							window.__lo = this.state.model
+							window.__s = this.state
+
+							var ModuleComponent = this.state.model.getComponentClass()
+
+							var navTargetModel = _navUtil2.default.getNavTargetModel(this.state.navState)
+							var navTargetTitle = '?'
+							if (navTargetModel != null) {
+								navTargetTitle = navTargetModel.title
+							}
+
+							var prevModel = (nextModel = null)
+							if (_navUtil2.default.canNavigate(this.state.navState)) {
+								prevModel = _navUtil2.default.getPrevModel(this.state.navState)
+								if (prevModel) {
+									prevEl = _react2.default.createElement(_inlineNavButton2.default, {
+										ref: 'prev',
+										type: 'prev',
+										title: 'Back: ' + prevModel.title
+									})
+								} else {
+									prevEl = _react2.default.createElement(_inlineNavButton2.default, {
+										ref: 'prev',
+										type: 'prev',
+										title: 'Start of ' + this.state.model.title,
+										disabled: true
+									})
+								}
+
+								nextModel = _navUtil2.default.getNextModel(this.state.navState)
+								if (nextModel) {
+									nextEl = _react2.default.createElement(_inlineNavButton2.default, {
+										ref: 'next',
+										type: 'next',
+										title: 'Next: ' + nextModel.title
+									})
+								} else {
+									nextEl = _react2.default.createElement(_inlineNavButton2.default, {
+										ref: 'next',
+										type: 'next',
+										title: 'End of ' + this.state.model.title,
+										disabled: true
+									})
+								}
+							}
+
+							var modal = ModalUtil.getCurrentModal(this.state.modalState)
+
+							return _react2.default.createElement(
+								_reactIdleTimer2.default,
+								{
+									ref: 'idleTimer',
+									element: window,
+									timeout: IDLE_TIMEOUT_DURATION_MS,
+									idleAction: this.onIdle,
+									activeAction: this.onReturnFromIdle
+								},
+								_react2.default.createElement(
+									'div',
+									{
+										ref: 'container',
+										onMouseDown: this.onMouseDown.bind(this),
+										onScroll: this.onScroll.bind(this),
+										className:
+											'viewer--viewer-app' +
+											(this.isPreviewing ? ' is-previewing' : ' is-not-previewing') +
+											(this.state.navState.locked ? ' is-locked-nav' : ' is-unlocked-nav') +
+											(this.state.navState.open ? ' is-open-nav' : ' is-closed-nav') +
+											(this.state.navState.disabled ? ' is-disabled-nav' : ' is-enabled-nav') +
+											' is-focus-state-' +
+											this.state.focusState.viewState
+									},
+									_react2.default.createElement(
+										'header',
+										null,
+										_react2.default.createElement(
+											'div',
+											{ className: 'pad' },
+											_react2.default.createElement(
+												'span',
+												{ className: 'module-title' },
+												this.state.model.title
+											),
+											_react2.default.createElement(
+												'span',
+												{ className: 'location' },
+												navTargetTitle
+											),
+											_react2.default.createElement(_logo2.default, null)
+										)
+									),
+									_react2.default.createElement(_nav2.default, { navState: this.state.navState }),
+									prevEl,
+									_react2.default.createElement(ModuleComponent, {
+										model: this.state.model,
+										moduleData: this.state
+									}),
+									nextEl,
+									this.isPreviewing
+										? _react2.default.createElement(
+												'div',
+												{ className: 'preview-banner' },
+												_react2.default.createElement(
+													'span',
+													null,
+													'You are previewing this object - Assessments will not be counted'
+												),
+												_react2.default.createElement(
+													'div',
+													{ className: 'controls' },
+													_react2.default.createElement(
+														'button',
+														{
+															onClick: this.unlockNavigation.bind(this),
+															disabled: !this.state.navState.locked
+														},
+														'Unlock navigation'
+													),
+													_react2.default.createElement(
+														'button',
+														{ onClick: this.resetAssessments.bind(this) },
+														'Reset assessments & questions'
+													)
+												)
+											)
+										: null,
+									_react2.default.createElement(FocusBlocker, { moduleData: this.state }),
+									modal ? _react2.default.createElement(ModalContainer, null, modal) : null
+								)
+							)
+						}
+					}
+				])
+
+				return ViewerApp
+			})(_react2.default.Component)
+
+			exports.default = ViewerApp
+
+			/***/
+		},
+		/* 45 */
+		/***/ function(module, exports, __webpack_require__) {
+			'use strict'
+
+			Object.defineProperty(exports, '__esModule', {
+				value: true
+			})
+
+			var _viewerApp = __webpack_require__(44)
+
+			var _viewerApp2 = _interopRequireDefault(_viewerApp)
+
+			var _scoreStore = __webpack_require__(18)
+
+			var _scoreStore2 = _interopRequireDefault(_scoreStore)
+
+			var _assessmentStore = __webpack_require__(16)
+
+			var _assessmentStore2 = _interopRequireDefault(_assessmentStore)
+
+			var _navStore = __webpack_require__(10)
+
+			var _navStore2 = _interopRequireDefault(_navStore)
+
+			var _questionStore = __webpack_require__(17)
+
+			var _questionStore2 = _interopRequireDefault(_questionStore)
+
+			var _assessmentUtil = __webpack_require__(19)
+
+			var _assessmentUtil2 = _interopRequireDefault(_assessmentUtil)
+
+			var _navUtil = __webpack_require__(2)
+
+			var _navUtil2 = _interopRequireDefault(_navUtil)
+
+			var _scoreUtil = __webpack_require__(11)
+
+			var _scoreUtil2 = _interopRequireDefault(_scoreUtil)
+
+			var _apiUtil = __webpack_require__(3)
+
+			var _apiUtil2 = _interopRequireDefault(_apiUtil)
+
+			var _questionUtil = __webpack_require__(5)
+
+			var _questionUtil2 = _interopRequireDefault(_questionUtil)
+
+			function _interopRequireDefault(obj) {
+				return obj && obj.__esModule ? obj : { default: obj }
+			}
+
+			exports.default = {
+				components: {
+					ViewerApp: _viewerApp2.default
+				},
+
+				stores: {
+					ScoreStore: _scoreStore2.default,
+					AssessmentStore: _assessmentStore2.default,
+					NavStore: _navStore2.default,
+					QuestionStore: _questionStore2.default
+				},
+
+				util: {
+					AssessmentUtil: _assessmentUtil2.default,
+					NavUtil: _navUtil2.default,
+					ScoreUtil: _scoreUtil2.default,
+					APIUtil: _apiUtil2.default,
+					QuestionUtil: _questionUtil2.default
+				}
+			}
 
 			/***/
 		},

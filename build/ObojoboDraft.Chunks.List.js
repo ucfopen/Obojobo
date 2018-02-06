@@ -89,7 +89,7 @@
 		},
 
 		/***/ 173: /***/ function(module, exports, __webpack_require__) {
-			module.exports = __webpack_require__(35)
+			module.exports = __webpack_require__(36)
 
 			/***/
 		},
@@ -309,18 +309,18 @@
 			/***/
 		},
 
-		/***/ 35: /***/ function(module, exports, __webpack_require__) {
+		/***/ 36: /***/ function(module, exports, __webpack_require__) {
 			'use strict'
 
 			var _Common = __webpack_require__(0)
 
 			var _Common2 = _interopRequireDefault(_Common)
 
-			var _adapter = __webpack_require__(64)
+			var _adapter = __webpack_require__(65)
 
 			var _adapter2 = _interopRequireDefault(_adapter)
 
-			var _viewerComponent = __webpack_require__(65)
+			var _viewerComponent = __webpack_require__(66)
 
 			var _viewerComponent2 = _interopRequireDefault(_viewerComponent)
 
@@ -340,7 +340,7 @@
 			/***/
 		},
 
-		/***/ 64: /***/ function(module, exports, __webpack_require__) {
+		/***/ 65: /***/ function(module, exports, __webpack_require__) {
 			'use strict'
 
 			Object.defineProperty(exports, '__esModule', {
@@ -432,7 +432,7 @@
 			/***/
 		},
 
-		/***/ 65: /***/ function(module, exports, __webpack_require__) {
+		/***/ 66: /***/ function(module, exports, __webpack_require__) {
 			'use strict'
 
 			Object.defineProperty(exports, '__esModule', {

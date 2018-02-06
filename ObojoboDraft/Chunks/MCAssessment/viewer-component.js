@@ -181,7 +181,7 @@ export default class MCAssessment extends React.Component {
 	}
 
 	componentWillReceiveProps() {
-		this.shuffle()
+		this.sortIds()
 	}
 
 	componentDidMount() {
@@ -201,21 +201,14 @@ export default class MCAssessment extends React.Component {
 	}
 
 	componentWillMount() {
-		this.shuffle()
+		this.sortIds()
 	}
 
-	shuffle() {
-		let shuffledIds = QuestionUtil.getData(
-			this.props.moduleData.questionState,
-			this.props.model,
-			'shuffledIds'
-		)
-		if (!shuffledIds && !this.props.model.parent.modelState.shuffle) {
-			shuffledIds = this.props.model.children.models.map(model => model.get('id'))
-			QuestionUtil.setData(this.props.model.get('id'), 'shuffledIds', shuffledIds)
-		} else if (!shuffledIds) {
-			shuffledIds = _.shuffle(this.props.model.children.models).map(model => model.get('id'))
-			QuestionUtil.setData(this.props.model.get('id'), 'shuffledIds', shuffledIds)
+	sortIds() {
+		if (!QuestionUtil.getData(this.props.moduleData.questionState, this.props.model, 'sortedIds')) {
+			let ids = this.props.model.children.models.map(model => model.get('id'))
+			if (this.props.model.modelState.shuffle) ids = _.shuffle(ids)
+			QuestionUtil.setData(this.props.model.get('id'), 'sortedIds', ids)
 		}
 	}
 
@@ -225,21 +218,21 @@ export default class MCAssessment extends React.Component {
 		let score = this.getScore()
 		let questionSubmitted = score !== null
 		let questionAnswered = this.getResponseData().responses.size >= 1
-		let shuffledIds = QuestionUtil.getData(
+		let sortedIds = QuestionUtil.getData(
 			this.props.moduleData.questionState,
 			this.props.model,
-			'shuffledIds'
+			'sortedIds'
 		)
-		// shuffledIds = _.shuffle(@props.model.children.models).map (model) -> model.get('id')
+		// sortedIds = _.shuffle(@props.model.children.models).map (model) -> model.get('id')
 
-		if (!shuffledIds) return false
+		if (!sortedIds) return false
 
 		let feedbacks = Array.from(this.getResponseData().responses)
 			.filter(mcChoiceId => {
 				return OboModel.models[mcChoiceId].children.length > 1
 			})
 			.sort((id1, id2) => {
-				return shuffledIds.indexOf(id1) - shuffledIds.indexOf(id2)
+				return sortedIds.indexOf(id1) - sortedIds.indexOf(id2)
 			})
 			.map(mcChoiceId => {
 				return OboModel.models[mcChoiceId].children.at(1)
@@ -279,7 +272,7 @@ export default class MCAssessment extends React.Component {
 						}
 					})()}
 				</span>
-				{shuffledIds.map((id, index) => {
+				{sortedIds.map((id, index) => {
 					let child = OboModel.models[id]
 					if (child.get('type') !== 'ObojoboDraft.Chunks.MCAssessment.MCChoice') {
 						return null
@@ -356,7 +349,7 @@ export default class MCAssessment extends React.Component {
 													isShowingExplanation
 													questionSubmitted
 													label={String.fromCharCode(
-														shuffledIds.indexOf(model.parent.get('id')) + 65
+														sortedIds.indexOf(model.parent.get('id')) + 65
 													)}
 												/>
 											)

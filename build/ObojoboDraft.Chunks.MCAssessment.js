@@ -371,12 +371,12 @@
 		},
 
 		/***/ 175: /***/ function(module, exports, __webpack_require__) {
-			module.exports = __webpack_require__(36)
+			module.exports = __webpack_require__(37)
 
 			/***/
 		},
 
-		/***/ 36: /***/ function(module, exports, __webpack_require__) {
+		/***/ 37: /***/ function(module, exports, __webpack_require__) {
 			'use strict'
 
 			var _Common = __webpack_require__(0)
@@ -385,15 +385,15 @@
 
 			__webpack_require__(10)
 
-			__webpack_require__(67)
+			__webpack_require__(68)
 
-			__webpack_require__(69)
+			__webpack_require__(70)
 
-			var _adapter = __webpack_require__(70)
+			var _adapter = __webpack_require__(71)
 
 			var _adapter2 = _interopRequireDefault(_adapter)
 
-			var _viewerComponent = __webpack_require__(71)
+			var _viewerComponent = __webpack_require__(72)
 
 			var _viewerComponent2 = _interopRequireDefault(_viewerComponent)
 
@@ -413,7 +413,7 @@
 			/***/
 		},
 
-		/***/ 66: /***/ function(module, exports, __webpack_require__) {
+		/***/ 67: /***/ function(module, exports, __webpack_require__) {
 			'use strict'
 
 			Object.defineProperty(exports, '__esModule', {
@@ -523,14 +523,14 @@
 			/***/
 		},
 
-		/***/ 67: /***/ function(module, exports, __webpack_require__) {
+		/***/ 68: /***/ function(module, exports, __webpack_require__) {
 			'use strict'
 
 			var _Common = __webpack_require__(0)
 
 			var _Common2 = _interopRequireDefault(_Common)
 
-			var _viewerComponent = __webpack_require__(66)
+			var _viewerComponent = __webpack_require__(67)
 
 			var _viewerComponent2 = _interopRequireDefault(_viewerComponent)
 
@@ -550,7 +550,7 @@
 			/***/
 		},
 
-		/***/ 68: /***/ function(module, exports, __webpack_require__) {
+		/***/ 69: /***/ function(module, exports, __webpack_require__) {
 			'use strict'
 
 			Object.defineProperty(exports, '__esModule', {
@@ -665,14 +665,14 @@
 			/***/
 		},
 
-		/***/ 69: /***/ function(module, exports, __webpack_require__) {
+		/***/ 70: /***/ function(module, exports, __webpack_require__) {
 			'use strict'
 
 			var _Common = __webpack_require__(0)
 
 			var _Common2 = _interopRequireDefault(_Common)
 
-			var _viewerComponent = __webpack_require__(68)
+			var _viewerComponent = __webpack_require__(69)
 
 			var _viewerComponent2 = _interopRequireDefault(_viewerComponent)
 
@@ -692,7 +692,7 @@
 			/***/
 		},
 
-		/***/ 70: /***/ function(module, exports, __webpack_require__) {
+		/***/ 71: /***/ function(module, exports, __webpack_require__) {
 			'use strict'
 
 			Object.defineProperty(exports, '__esModule', {
@@ -709,9 +709,20 @@
 					} else {
 						model.modelState.responseType = ''
 					}
+
+					if (
+						__guard__(attrs != null ? attrs.content : undefined, function(x) {
+							return x.shuffle
+						}) == false
+					) {
+						model.modelState.shuffle = attrs.content.shuffle
+					} else {
+						model.modelState.shuffle = true
+					}
 				},
 				clone: function clone(model, _clone) {
 					_clone.modelState.responseType = model.modelState.responseType
+					_clone.modelState.shuffle = model.modelState.shuffle
 				},
 				toJSON: function toJSON(model, json) {
 					json.content.responseType = model.modelState.responseType
@@ -727,7 +738,7 @@
 			/***/
 		},
 
-		/***/ 71: /***/ function(module, exports, __webpack_require__) {
+		/***/ 72: /***/ function(module, exports, __webpack_require__) {
 			'use strict'
 
 			Object.defineProperty(exports, '__esModule', {
@@ -1063,7 +1074,7 @@
 					{
 						key: 'componentWillReceiveProps',
 						value: function componentWillReceiveProps() {
-							this.shuffle()
+							this.sortIds()
 						}
 					},
 					{
@@ -1091,27 +1102,24 @@
 					{
 						key: 'componentWillMount',
 						value: function componentWillMount() {
-							this.shuffle()
+							this.sortIds()
 						}
 					},
 					{
-						key: 'shuffle',
-						value: function shuffle() {
-							var shuffledIds = QuestionUtil.getData(
-								this.props.moduleData.questionState,
-								this.props.model,
-								'shuffledIds'
-							)
-							if (!shuffledIds && !this.props.model.parent.modelState.shuffle) {
-								shuffledIds = this.props.model.children.models.map(function(model) {
+						key: 'sortIds',
+						value: function sortIds() {
+							if (
+								!QuestionUtil.getData(
+									this.props.moduleData.questionState,
+									this.props.model,
+									'sortedIds'
+								)
+							) {
+								var ids = this.props.model.children.models.map(function(model) {
 									return model.get('id')
 								})
-								QuestionUtil.setData(this.props.model.get('id'), 'shuffledIds', shuffledIds)
-							} else if (!shuffledIds) {
-								shuffledIds = _.shuffle(this.props.model.children.models).map(function(model) {
-									return model.get('id')
-								})
-								QuestionUtil.setData(this.props.model.get('id'), 'shuffledIds', shuffledIds)
+								if (this.props.model.modelState.shuffle) ids = _.shuffle(ids)
+								QuestionUtil.setData(this.props.model.get('id'), 'sortedIds', ids)
 							}
 						}
 					},
@@ -1126,21 +1134,21 @@
 							var score = this.getScore()
 							var questionSubmitted = score !== null
 							var questionAnswered = this.getResponseData().responses.size >= 1
-							var shuffledIds = QuestionUtil.getData(
+							var sortedIds = QuestionUtil.getData(
 								this.props.moduleData.questionState,
 								this.props.model,
-								'shuffledIds'
+								'sortedIds'
 							)
-							// shuffledIds = _.shuffle(@props.model.children.models).map (model) -> model.get('id')
+							// sortedIds = _.shuffle(@props.model.children.models).map (model) -> model.get('id')
 
-							if (!shuffledIds) return false
+							if (!sortedIds) return false
 
 							var feedbacks = Array.from(this.getResponseData().responses)
 								.filter(function(mcChoiceId) {
 									return OboModel.models[mcChoiceId].children.length > 1
 								})
 								.sort(function(id1, id2) {
-									return shuffledIds.indexOf(id1) - shuffledIds.indexOf(id2)
+									return sortedIds.indexOf(id1) - sortedIds.indexOf(id2)
 								})
 								.map(function(mcChoiceId) {
 									return OboModel.models[mcChoiceId].children.at(1)
@@ -1187,7 +1195,7 @@
 										}
 									})()
 								),
-								shuffledIds.map(function(id, index) {
+								sortedIds.map(function(id, index) {
 									var child = OboModel.models[id]
 									if (child.get('type') !== 'ObojoboDraft.Chunks.MCAssessment.MCChoice') {
 										return null
@@ -1275,7 +1283,7 @@
 																		isShowingExplanation: true,
 																		questionSubmitted: true,
 																		label: String.fromCharCode(
-																			shuffledIds.indexOf(model.parent.get('id')) + 65
+																			sortedIds.indexOf(model.parent.get('id')) + 65
 																		)
 																	})
 																})

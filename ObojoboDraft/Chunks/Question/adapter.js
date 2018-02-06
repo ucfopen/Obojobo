@@ -4,12 +4,6 @@ let { OboModel } = Common.models
 
 let Adapter = {
 	construct(model, attrs) {
-		if (__guard__(attrs != null ? attrs.content : undefined, x => x.shuffle) != null) {
-			model.modelState.shuffle = attrs.content.shuffle
-		} else {
-			model.modelState.shuffle = false
-		}
-
 		if (__guard__(attrs != null ? attrs.content : undefined, x1 => x1.limit) != null) {
 			model.modelState.limit = attrs.content.limit
 		} else {
