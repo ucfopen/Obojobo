@@ -81,7 +81,7 @@ module.exports = (req, res, next) => {
 			)
 		})
 		.then(launchResult => {
-			req.session.oboLti = {
+			req.oboLti = {
 				launchId: launchResult.id,
 				body: req.lti.body
 			}

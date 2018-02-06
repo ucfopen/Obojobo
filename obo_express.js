@@ -40,6 +40,7 @@ app.on('mount', app => {
 	app.use('/api/drafts', oboRequire('routes/api/drafts'))
 	app.use('/api/events', oboRequire('routes/api/events'))
 	app.use('/api/states', oboRequire('routes/api/states'))
+	app.use('/api/visits', oboRequire('routes/api/visits'))
 })
 
 module.exports = app

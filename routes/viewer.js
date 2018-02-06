@@ -1,19 +1,57 @@
 var express = require('express')
 var router = express.Router()
-var OboGlobals = oboRequire('obo_globals')
 let DraftModel = oboRequire('models/draft')
 let logger = oboRequire('logger')
 let insertEvent = oboRequire('insert_event')
 let createCaliperEvent = oboRequire('routes/api/events/create_caliper_event')
 let { ACTOR_USER } = require('./api/events/caliper_constants')
 let { getSessionIds } = require('./api/events/caliper_utils')
+let db = oboRequire('db')
 
-router.all('/example', (req, res, next) => {
-	res.redirect('/view/00000000-0000-0000-0000-000000000000')
+router.post('/:draftId', (req, res, next) => {
+	let user = null
+	let draft = null
+	let visitId = null
+
+	return req
+		.getCurrentUser(true)
+		.then(currentUser => {
+			user = currentUser
+			if (user.isGuest()) throw new Error('Login Required')
+			return db.none(
+				`UPDATE visits
+				SET is_active = false
+				WHERE user_id = $[userId]
+				AND draft_id = $[draftId]`,
+				{
+					draftId: req.params.draftId,
+					userId: user.id
+				}
+			)
+		})
+		.then(() => {
+			return db.one(
+				`INSERT INTO visits
+					(draft_id, user_id, launch_id, resource_link_id, is_active)
+					VALUES ($[draftId], $[userId], $[launchId], $[resourceLinkId], true)
+					RETURNING id`,
+				{
+					draftId: req.params.draftId,
+					userId: user.id,
+					resourceLinkId: req.lti.body.resource_link_id,
+					launchId: req.oboLti.launchId
+				}
+			)
+		})
+		.then(visit => {
+			res.redirect(`/view/${req.params.draftId}/visit/${visit.id}`)
+		})
+		.catch(error => {
+			next(error)
+		})
 })
 
-router.all('/:draftId*', (req, res, next) => {
-	let oboGlobals = new OboGlobals()
+router.get('/:draftId/visit/:visitId*', (req, res, next) => {
 	let user = null
 	let draft = null
 
@@ -29,15 +67,7 @@ router.all('/:draftId*', (req, res, next) => {
 			return draft.yell('internal:sendToClient', req, res)
 		})
 		.then(draft => {
-			oboGlobals.set('draft', draft.document)
-			oboGlobals.set('draftId', req.params.draftId)
-			oboGlobals.set('previewing', user.canViewEditor)
-			return draft.yell('internal:renderViewer', req, res, oboGlobals)
-		})
-		.then(draft => {
-			res.render('viewer', {
-				oboGlobals: oboGlobals
-			})
+			res.render('viewer')
 			let { createViewerSessionLoggedInEvent } = createCaliperEvent(null, req.hostname)
 
 			insertEvent({
@@ -58,7 +88,6 @@ router.all('/:draftId*', (req, res, next) => {
 			})
 		})
 		.catch(error => {
-			logger.error(error)
 			next(error)
 		})
 })
