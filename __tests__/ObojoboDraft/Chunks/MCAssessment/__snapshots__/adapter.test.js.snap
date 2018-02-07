@@ -3,8 +3,11 @@
 exports[`MCAssessment adapter can be constructed WITH attributes 1`] = `
 Object {
   "modelState": Object {
-    "correctFeedbacks": "Correct!|Great job!",
-    "incorrectfeedbacks": "",
+    "correctFeedbacks": Array [
+      "Correct!",
+      "Great job!",
+    ],
+    "incorrectfeedbacks": null,
     "responseType": "pick-one",
   },
 }
@@ -13,8 +16,8 @@ Object {
 exports[`MCAssessment adapter can be constructed WITHOUT attributes 1`] = `
 Object {
   "modelState": Object {
-    "correctFeedbacks": "",
-    "incorrectFeedbacks": "",
+    "correctFeedbacks": null,
+    "incorrectFeedbacks": null,
     "responseType": "",
   },
 }
@@ -23,6 +26,8 @@ Object {
 exports[`MCAssessment adapter can convert to JSON 1`] = `
 Object {
   "content": Object {
+    "correctFeedbacks": null,
+    "incorrectFeedbacks": null,
     "responseType": "pick-one",
   },
 }

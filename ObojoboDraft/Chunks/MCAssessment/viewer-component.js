@@ -21,6 +21,8 @@ export default class MCAssessment extends React.Component {
 	constructor(props) {
 		super(props)
 
+		const { correctFeedbacks, incorrectFeedbacks } = this.props.model.modelState
+
 		this.onClickShowExplanation = this.onClickShowExplanation.bind(this)
 		this.onClickHideExplanation = this.onClickHideExplanation.bind(this)
 		this.onClickSubmit = this.onClickSubmit.bind(this)
@@ -28,15 +30,12 @@ export default class MCAssessment extends React.Component {
 		this.onClick = this.onClick.bind(this)
 		this.onCheckAnswer = this.onCheckAnswer.bind(this)
 		this.isShowingExplanation = this.isShowingExplanation.bind(this)
-		this.correctFeedbackOptions = [
-			'Correct!',
-			'Perfect!',
-			'You got it!',
-			'Great job!',
-			"That's right!"
-		]
-		this.correctFeedbackToShow = null
-		this.incorrectFeedbackToShow = null
+		this.correctFeedbackOptions = correctFeedbacks
+			? correctFeedbacks
+			: ['Correct!', 'Perfect!', 'You got it!', 'Great job!', "That's right!"]
+		this.incorrectFeedbackOptions = incorrectFeedbacks ? incorrectFeedbacks : ['Incorrect']
+		this.correctFeedbackToShow = this.getRandomFeedback(this.correctFeedbackOptions)
+		this.incorrectFeedbackToShow = this.getRandomFeedback(this.incorrectFeedbackOptions)
 	}
 
 	getQuestionModel() {
@@ -194,17 +193,6 @@ export default class MCAssessment extends React.Component {
 	}
 
 	componentDidMount() {
-		const { correctFeedbacks, incorrectFeedbacks } = this.props.model.modelState
-		this.correctFeedbackToShow =
-			correctFeedbacks && correctFeedbacks !== ''
-				? this.getRandomFeedback(correctFeedbacks.split('|'))
-				: this.getRandomFeedback(this.correctFeedbackOptions)
-
-		this.incorrectFeedbackToShow =
-			incorrectFeedbacks && incorrectFeedbacks !== ''
-				? this.getRandomFeedback(incorrectFeedbacks.split('|'))
-				: 'Incorrect'
-
 		Dispatcher.on('question:checkAnswer', this.onCheckAnswer)
 	}
 

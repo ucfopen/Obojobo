@@ -10,23 +10,41 @@ let Adapter = {
 
 		if (attrs && attrs.content) {
 			model.modelState.correctFeedbacks =
-				attrs.content.correctFeedbacks === undefined ? '' : attrs.content.correctFeedbacks
+				attrs.content.correctFeedbacks === undefined
+					? null
+					: attrs.content.correctFeedbacks.split('|')
 			model.modelState.incorrectfeedbacks =
-				attrs.content.incorrectfeedbacks === undefined ? '' : attrs.content.incorrectfeedbacks
+				attrs.content.incorrectfeedbacks === undefined
+					? null
+					: attrs.content.incorrectfeedbacks.split('|')
 		} else {
-			model.modelState.correctFeedbacks = ''
-			model.modelState.incorrectFeedbacks = ''
+			model.modelState.correctFeedbacks = null
+			model.modelState.incorrectFeedbacks = null
 		}
 	},
 
 	clone(model, clone) {
 		clone.modelState.responseType = model.modelState.responseType
+
 		clone.modelState.correctFeedbacks = model.modelState.correctFeedbacks
+			? model.modelState.correctFeedbacks.slice(0)
+			: null
+
 		clone.modelState.incorrectFeedbacks = model.modelState.incorrectFeedbacks
+			? model.modelState.incorrectFeedbacks.slice(0)
+			: null
 	},
 
 	toJSON(model, json) {
 		json.content.responseType = model.modelState.responseType
+
+		json.content.correctFeedbacks = model.modelState.correctFeedbacks
+			? model.modelState.correctFeedbacks.join('|')
+			: null
+
+		json.content.incorrectFeedbacks = model.modelState.incorrectFeedbacks
+			? model.modelState.incorrectFeedbacks.join('|')
+			: null
 	}
 }
 
