@@ -144,7 +144,7 @@ const caliperEventFactory = (req, host = null, isFromReq = false) => {
 		createHideEvent: obj => {
 			let required = ['draftId', 'questionId']
 			let optional = ['frameName']
-			validateCaliperEvent({ required, optional }, obj, ACTOR_USER)
+			validateCaliperEvent({ required, optional }, obj)
 
 			let options = assignCaliperOptions(obj)
 
