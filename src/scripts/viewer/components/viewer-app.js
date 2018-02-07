@@ -297,7 +297,9 @@ export default class ViewerApp extends React.Component {
 		if (NavUtil.canNavigate(this.state.navState)) {
 			prevModel = NavUtil.getPrevModel(this.state.navState)
 			if (prevModel) {
-				prevEl = <InlineNavButton ref="prev" type="prev" title={`Back: ${prevModel.title}`} />
+				if (typeof prevModel.title == 'undefined' || prevModel.title == null)
+					prevEl = <InlineNavButton ref="prev" type="prev" title={`Back`} />
+				else prevEl = <InlineNavButton ref="prev" type="prev" title={`Back: ${prevModel.title}`} />
 			} else {
 				prevEl = (
 					<InlineNavButton

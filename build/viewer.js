@@ -6799,11 +6799,18 @@ object-assign
 							if (_navUtil2.default.canNavigate(this.state.navState)) {
 								prevModel = _navUtil2.default.getPrevModel(this.state.navState)
 								if (prevModel) {
-									prevEl = _react2.default.createElement(_inlineNavButton2.default, {
-										ref: 'prev',
-										type: 'prev',
-										title: 'Back: ' + prevModel.title
-									})
+									if (typeof prevModel.title == 'undefined' || prevModel.title == null)
+										prevEl = _react2.default.createElement(_inlineNavButton2.default, {
+											ref: 'prev',
+											type: 'prev',
+											title: 'Back'
+										})
+									else
+										prevEl = _react2.default.createElement(_inlineNavButton2.default, {
+											ref: 'prev',
+											type: 'prev',
+											title: 'Back: ' + prevModel.title
+										})
 								} else {
 									prevEl = _react2.default.createElement(_inlineNavButton2.default, {
 										ref: 'prev',
