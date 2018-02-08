@@ -93,7 +93,7 @@ class Assessment extends DraftNode {
 			ltiState: {
 				score: attempt.score_sent,
 				status: attempt.status,
-				statusDetails: attempt.error_details
+				statusDetails: attempt.status_details
 			}
 		}
 	}
@@ -117,9 +117,8 @@ class Assessment extends DraftNode {
 					SCO.id AS "assessment_score_id",
 					SCO.score AS "assessment_score",
 					LTI.score_sent,
-					LTI.error_details,
-					LTI.status,
-					LTI.error
+					LTI.status_details,
+					LTI.status
 				FROM attempts ATT
 				LEFT JOIN assessment_scores SCO
 				ON ATT.id = SCO.attempt_id
@@ -128,9 +127,8 @@ class Assessment extends DraftNode {
 					SELECT DISTINCT ON (assessment_score_id)
 						assessment_score_id,
 						score_sent,
-						error_details,
-						status,
-						error
+						status_details,
+						status
 					FROM lti_assessment_scores
 					ORDER BY assessment_score_id, created_at DESC
 				) LTI
