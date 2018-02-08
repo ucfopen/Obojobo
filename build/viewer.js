@@ -130,38 +130,38 @@
 			var parseTokenTimezoneHHMM = /^([+-])(\d{2}):?(\d{2})$/
 
 			/**
- * @category Common Helpers
- * @summary Convert the given argument to an instance of Date.
- *
- * @description
- * Convert the given argument to an instance of Date.
- *
- * If the argument is an instance of Date, the function returns its clone.
- *
- * If the argument is a number, it is treated as a timestamp.
- *
- * If an argument is a string, the function tries to parse it.
- * Function accepts complete ISO 8601 formats as well as partial implementations.
- * ISO 8601: http://en.wikipedia.org/wiki/ISO_8601
- *
- * If all above fails, the function passes the given argument to Date constructor.
- *
- * @param {Date|String|Number} argument - the value to convert
- * @param {Object} [options] - the object with options
- * @param {0 | 1 | 2} [options.additionalDigits=2] - the additional number of digits in the extended year format
- * @returns {Date} the parsed date in the local time zone
- *
- * @example
- * // Convert string '2014-02-11T11:30:30' to date:
- * var result = parse('2014-02-11T11:30:30')
- * //=> Tue Feb 11 2014 11:30:30
- *
- * @example
- * // Parse string '+02014101',
- * // if the additional number of digits in the extended year format is 1:
- * var result = parse('+02014101', {additionalDigits: 1})
- * //=> Fri Apr 11 2014 00:00:00
- */
+			 * @category Common Helpers
+			 * @summary Convert the given argument to an instance of Date.
+			 *
+			 * @description
+			 * Convert the given argument to an instance of Date.
+			 *
+			 * If the argument is an instance of Date, the function returns its clone.
+			 *
+			 * If the argument is a number, it is treated as a timestamp.
+			 *
+			 * If an argument is a string, the function tries to parse it.
+			 * Function accepts complete ISO 8601 formats as well as partial implementations.
+			 * ISO 8601: http://en.wikipedia.org/wiki/ISO_8601
+			 *
+			 * If all above fails, the function passes the given argument to Date constructor.
+			 *
+			 * @param {Date|String|Number} argument - the value to convert
+			 * @param {Object} [options] - the object with options
+			 * @param {0 | 1 | 2} [options.additionalDigits=2] - the additional number of digits in the extended year format
+			 * @returns {Date} the parsed date in the local time zone
+			 *
+			 * @example
+			 * // Convert string '2014-02-11T11:30:30' to date:
+			 * var result = parse('2014-02-11T11:30:30')
+			 * //=> Tue Feb 11 2014 11:30:30
+			 *
+			 * @example
+			 * // Parse string '+02014101',
+			 * // if the additional number of digits in the extended year format is 1:
+			 * var result = parse('+02014101', {additionalDigits: 1})
+			 * //=> Fri Apr 11 2014 00:00:00
+			 */
 			function parse(argument, dirtyOptions) {
 				if (isDate(argument)) {
 					// Prevent the date to lose the milliseconds when passed to new Date() in IE10
@@ -343,7 +343,7 @@
 				token = parseTokenHH.exec(timeString)
 				if (token) {
 					hours = parseFloat(token[1].replace(',', '.'))
-					return hours % 24 * MILLISECONDS_IN_HOUR
+					return (hours % 24) * MILLISECONDS_IN_HOUR
 				}
 
 				// hh:mm or hhmm
@@ -351,7 +351,7 @@
 				if (token) {
 					hours = parseInt(token[1], 10)
 					minutes = parseFloat(token[2].replace(',', '.'))
-					return hours % 24 * MILLISECONDS_IN_HOUR + minutes * MILLISECONDS_IN_MINUTE
+					return (hours % 24) * MILLISECONDS_IN_HOUR + minutes * MILLISECONDS_IN_MINUTE
 				}
 
 				// hh:mm:ss or hhmmss
@@ -361,7 +361,7 @@
 					minutes = parseInt(token[2], 10)
 					var seconds = parseFloat(token[3].replace(',', '.'))
 					return (
-						hours % 24 * MILLISECONDS_IN_HOUR + minutes * MILLISECONDS_IN_MINUTE + seconds * 1000
+						(hours % 24) * MILLISECONDS_IN_HOUR + minutes * MILLISECONDS_IN_MINUTE + seconds * 1000
 					)
 				}
 
@@ -1090,23 +1090,23 @@
 			var startOfWeek = __webpack_require__(34)
 
 			/**
- * @category ISO Week Helpers
- * @summary Return the start of an ISO week for the given date.
- *
- * @description
- * Return the start of an ISO week for the given date.
- * The result will be in the local timezone.
- *
- * ISO week-numbering year: http://en.wikipedia.org/wiki/ISO_week_date
- *
- * @param {Date|String|Number} date - the original date
- * @returns {Date} the start of an ISO week
- *
- * @example
- * // The start of an ISO week for 2 September 2014 11:55:00:
- * var result = startOfISOWeek(new Date(2014, 8, 2, 11, 55, 0))
- * //=> Mon Sep 01 2014 00:00:00
- */
+			 * @category ISO Week Helpers
+			 * @summary Return the start of an ISO week for the given date.
+			 *
+			 * @description
+			 * Return the start of an ISO week for the given date.
+			 * The result will be in the local timezone.
+			 *
+			 * ISO week-numbering year: http://en.wikipedia.org/wiki/ISO_week_date
+			 *
+			 * @param {Date|String|Number} date - the original date
+			 * @returns {Date} the start of an ISO week
+			 *
+			 * @example
+			 * // The start of an ISO week for 2 September 2014 11:55:00:
+			 * var result = startOfISOWeek(new Date(2014, 8, 2, 11, 55, 0))
+			 * //=> Mon Sep 01 2014 00:00:00
+			 */
 			function startOfISOWeek(dirtyDate) {
 				return startOfWeek(dirtyDate, { weekStartsOn: 1 })
 			}
@@ -1120,13 +1120,13 @@
 			'use strict'
 
 			/**
- * Copyright (c) 2013-present, Facebook, Inc.
- *
- * This source code is licensed under the MIT license found in the
- * LICENSE file in the root directory of this source tree.
- *
- * 
- */
+			 * Copyright (c) 2013-present, Facebook, Inc.
+			 *
+			 * This source code is licensed under the MIT license found in the
+			 * LICENSE file in the root directory of this source tree.
+			 *
+			 *
+			 */
 
 			function makeEmptyFunction(arg) {
 				return function() {
@@ -1135,10 +1135,10 @@
 			}
 
 			/**
- * This function accepts and discards inputs; it has no side effects. This is
- * primarily useful idiomatically for overridable function endpoints which
- * always need to be callable, since JS lacks a null-call idiom ala Cocoa.
- */
+			 * This function accepts and discards inputs; it has no side effects. This is
+			 * primarily useful idiomatically for overridable function endpoints which
+			 * always need to be callable, since JS lacks a null-call idiom ala Cocoa.
+			 */
 			var emptyFunction = function emptyFunction() {}
 
 			emptyFunction.thatReturns = makeEmptyFunction
@@ -1161,23 +1161,23 @@
 			'use strict'
 			/* WEBPACK VAR INJECTION */ ;(function(process) {
 				/**
- * Copyright (c) 2013-present, Facebook, Inc.
- *
- * This source code is licensed under the MIT license found in the
- * LICENSE file in the root directory of this source tree.
- *
- */
+				 * Copyright (c) 2013-present, Facebook, Inc.
+				 *
+				 * This source code is licensed under the MIT license found in the
+				 * LICENSE file in the root directory of this source tree.
+				 *
+				 */
 
 				/**
- * Use invariant() to assert state which your program assumes to be true.
- *
- * Provide sprintf-style format (only %s is supported) and arguments
- * to provide information about what broke and what you were
- * expecting.
- *
- * The invariant message will be stripped in production, but the invariant
- * will remain to ensure logic does not differ in production.
- */
+				 * Use invariant() to assert state which your program assumes to be true.
+				 *
+				 * Provide sprintf-style format (only %s is supported) and arguments
+				 * to provide information about what broke and what you were
+				 * expecting.
+				 *
+				 * The invariant message will be stripped in production, but the invariant
+				 * will remain to ensure logic does not differ in production.
+				 */
 
 				var validateFormat = function validateFormat(format) {}
 
@@ -1225,11 +1225,11 @@
 		/***/ function(module, exports, __webpack_require__) {
 			'use strict'
 			/**
- * Copyright (c) 2013-present, Facebook, Inc.
- *
- * This source code is licensed under the MIT license found in the
- * LICENSE file in the root directory of this source tree.
- */
+			 * Copyright (c) 2013-present, Facebook, Inc.
+			 *
+			 * This source code is licensed under the MIT license found in the
+			 * LICENSE file in the root directory of this source tree.
+			 */
 
 			var ReactPropTypesSecret = 'SECRET_DO_NOT_PASS_THIS_OR_YOU_WILL_BE_FIRED'
 
@@ -1663,23 +1663,23 @@
 			var startOfISOWeek = __webpack_require__(6)
 
 			/**
- * @category ISO Week-Numbering Year Helpers
- * @summary Get the ISO week-numbering year of the given date.
- *
- * @description
- * Get the ISO week-numbering year of the given date,
- * which always starts 3 days before the year's first Thursday.
- *
- * ISO week-numbering year: http://en.wikipedia.org/wiki/ISO_week_date
- *
- * @param {Date|String|Number} date - the given date
- * @returns {Number} the ISO week-numbering year
- *
- * @example
- * // Which ISO-week numbering year is 2 January 2005?
- * var result = getISOYear(new Date(2005, 0, 2))
- * //=> 2004
- */
+			 * @category ISO Week-Numbering Year Helpers
+			 * @summary Get the ISO week-numbering year of the given date.
+			 *
+			 * @description
+			 * Get the ISO week-numbering year of the given date,
+			 * which always starts 3 days before the year's first Thursday.
+			 *
+			 * ISO week-numbering year: http://en.wikipedia.org/wiki/ISO_week_date
+			 *
+			 * @param {Date|String|Number} date - the given date
+			 * @returns {Number} the ISO week-numbering year
+			 *
+			 * @example
+			 * // Which ISO-week numbering year is 2 January 2005?
+			 * var result = getISOYear(new Date(2005, 0, 2))
+			 * //=> 2004
+			 */
 			function getISOYear(dirtyDate) {
 				var date = parse(dirtyDate)
 				var year = date.getFullYear()
@@ -1712,20 +1712,20 @@
 			'use strict'
 
 			/**
- * @category Common Helpers
- * @summary Is the given argument an instance of Date?
- *
- * @description
- * Is the given argument an instance of Date?
- *
- * @param {*} argument - the argument to check
- * @returns {Boolean} the given argument is an instance of Date
- *
- * @example
- * // Is 'mayonnaise' a Date?
- * var result = isDate('mayonnaise')
- * //=> false
- */
+			 * @category Common Helpers
+			 * @summary Is the given argument an instance of Date?
+			 *
+			 * @description
+			 * Is the given argument an instance of Date?
+			 *
+			 * @param {*} argument - the argument to check
+			 * @returns {Boolean} the given argument is an instance of Date
+			 *
+			 * @example
+			 * // Is 'mayonnaise' a Date?
+			 * var result = isDate('mayonnaise')
+			 * //=> false
+			 */
 			function isDate(argument) {
 				return argument instanceof Date
 			}
@@ -1739,21 +1739,21 @@
 			'use strict'
 			/* WEBPACK VAR INJECTION */ ;(function(process) {
 				/**
- * Copyright (c) 2014-present, Facebook, Inc.
- *
- * This source code is licensed under the MIT license found in the
- * LICENSE file in the root directory of this source tree.
- *
- */
+				 * Copyright (c) 2014-present, Facebook, Inc.
+				 *
+				 * This source code is licensed under the MIT license found in the
+				 * LICENSE file in the root directory of this source tree.
+				 *
+				 */
 
 				var emptyFunction = __webpack_require__(7)
 
 				/**
- * Similar to invariant but only logs a warning if the condition is not met.
- * This can be used to log issues in development environments in critical
- * paths. Removing the logging code for production environments will keep the
- * same logic and follow the same code paths.
- */
+				 * Similar to invariant but only logs a warning if the condition is not met.
+				 * This can be used to log issues in development environments in critical
+				 * paths. Removing the logging code for production environments will keep the
+				 * same logic and follow the same code paths.
+				 */
 
 				var warning = emptyFunction
 
@@ -2038,8 +2038,10 @@
 
 					var _this = _possibleConstructorReturn(
 						this,
-						(AssessmentStore.__proto__ || Object.getPrototypeOf(AssessmentStore))
-							.call(this, 'assessmentstore')
+						(AssessmentStore.__proto__ || Object.getPrototypeOf(AssessmentStore)).call(
+							this,
+							'assessmentstore'
+						)
 					)
 
 					Dispatcher.on('assessment:startAttempt', function(payload) {
@@ -2471,8 +2473,10 @@
 
 					var _this = _possibleConstructorReturn(
 						this,
-						(QuestionStore.__proto__ || Object.getPrototypeOf(QuestionStore))
-							.call(this, 'questionStore')
+						(QuestionStore.__proto__ || Object.getPrototypeOf(QuestionStore)).call(
+							this,
+							'questionStore'
+						)
 					)
 
 					Dispatcher.on({
@@ -3298,14 +3302,17 @@
 
 				function decode(body) {
 					var form = new FormData()
-					body.trim().split('&').forEach(function(bytes) {
-						if (bytes) {
-							var split = bytes.split('=')
-							var name = split.shift().replace(/\+/g, ' ')
-							var value = split.join('=').replace(/\+/g, ' ')
-							form.append(decodeURIComponent(name), decodeURIComponent(value))
-						}
-					})
+					body
+						.trim()
+						.split('&')
+						.forEach(function(bytes) {
+							if (bytes) {
+								var split = bytes.split('=')
+								var name = split.shift().replace(/\+/g, ' ')
+								var value = split.join('=').replace(/\+/g, ' ')
+								form.append(decodeURIComponent(name), decodeURIComponent(value))
+							}
+						})
 					return form
 				}
 
@@ -3442,25 +3449,25 @@
 			var MILLISECONDS_IN_DAY = 86400000
 
 			/**
- * @category Day Helpers
- * @summary Get the number of calendar days between the given dates.
- *
- * @description
- * Get the number of calendar days between the given dates.
- *
- * @param {Date|String|Number} dateLeft - the later date
- * @param {Date|String|Number} dateRight - the earlier date
- * @returns {Number} the number of calendar days
- *
- * @example
- * // How many calendar days are between
- * // 2 July 2011 23:00:00 and 2 July 2012 00:00:00?
- * var result = differenceInCalendarDays(
- *   new Date(2012, 6, 2, 0, 0),
- *   new Date(2011, 6, 2, 23, 0)
- * )
- * //=> 366
- */
+			 * @category Day Helpers
+			 * @summary Get the number of calendar days between the given dates.
+			 *
+			 * @description
+			 * Get the number of calendar days between the given dates.
+			 *
+			 * @param {Date|String|Number} dateLeft - the later date
+			 * @param {Date|String|Number} dateRight - the earlier date
+			 * @returns {Number} the number of calendar days
+			 *
+			 * @example
+			 * // How many calendar days are between
+			 * // 2 July 2011 23:00:00 and 2 July 2012 00:00:00?
+			 * var result = differenceInCalendarDays(
+			 *   new Date(2012, 6, 2, 0, 0),
+			 *   new Date(2011, 6, 2, 23, 0)
+			 * )
+			 * //=> 366
+			 */
 			function differenceInCalendarDays(dirtyDateLeft, dirtyDateRight) {
 				var startOfDayLeft = startOfDay(dirtyDateLeft)
 				var startOfDayRight = startOfDay(dirtyDateRight)
@@ -3492,88 +3499,88 @@
 			var enLocale = __webpack_require__(31)
 
 			/**
- * @category Common Helpers
- * @summary Format the date.
- *
- * @description
- * Return the formatted date string in the given format.
- *
- * Accepted tokens:
- * | Unit                    | Token | Result examples                  |
- * |-------------------------|-------|----------------------------------|
- * | Month                   | M     | 1, 2, ..., 12                    |
- * |                         | Mo    | 1st, 2nd, ..., 12th              |
- * |                         | MM    | 01, 02, ..., 12                  |
- * |                         | MMM   | Jan, Feb, ..., Dec               |
- * |                         | MMMM  | January, February, ..., December |
- * | Quarter                 | Q     | 1, 2, 3, 4                       |
- * |                         | Qo    | 1st, 2nd, 3rd, 4th               |
- * | Day of month            | D     | 1, 2, ..., 31                    |
- * |                         | Do    | 1st, 2nd, ..., 31st              |
- * |                         | DD    | 01, 02, ..., 31                  |
- * | Day of year             | DDD   | 1, 2, ..., 366                   |
- * |                         | DDDo  | 1st, 2nd, ..., 366th             |
- * |                         | DDDD  | 001, 002, ..., 366               |
- * | Day of week             | d     | 0, 1, ..., 6                     |
- * |                         | do    | 0th, 1st, ..., 6th               |
- * |                         | dd    | Su, Mo, ..., Sa                  |
- * |                         | ddd   | Sun, Mon, ..., Sat               |
- * |                         | dddd  | Sunday, Monday, ..., Saturday    |
- * | Day of ISO week         | E     | 1, 2, ..., 7                     |
- * | ISO week                | W     | 1, 2, ..., 53                    |
- * |                         | Wo    | 1st, 2nd, ..., 53rd              |
- * |                         | WW    | 01, 02, ..., 53                  |
- * | Year                    | YY    | 00, 01, ..., 99                  |
- * |                         | YYYY  | 1900, 1901, ..., 2099            |
- * | ISO week-numbering year | GG    | 00, 01, ..., 99                  |
- * |                         | GGGG  | 1900, 1901, ..., 2099            |
- * | AM/PM                   | A     | AM, PM                           |
- * |                         | a     | am, pm                           |
- * |                         | aa    | a.m., p.m.                       |
- * | Hour                    | H     | 0, 1, ... 23                     |
- * |                         | HH    | 00, 01, ... 23                   |
- * |                         | h     | 1, 2, ..., 12                    |
- * |                         | hh    | 01, 02, ..., 12                  |
- * | Minute                  | m     | 0, 1, ..., 59                    |
- * |                         | mm    | 00, 01, ..., 59                  |
- * | Second                  | s     | 0, 1, ..., 59                    |
- * |                         | ss    | 00, 01, ..., 59                  |
- * | 1/10 of second          | S     | 0, 1, ..., 9                     |
- * | 1/100 of second         | SS    | 00, 01, ..., 99                  |
- * | Millisecond             | SSS   | 000, 001, ..., 999               |
- * | Timezone                | Z     | -01:00, +00:00, ... +12:00       |
- * |                         | ZZ    | -0100, +0000, ..., +1200         |
- * | Seconds timestamp       | X     | 512969520                        |
- * | Milliseconds timestamp  | x     | 512969520900                     |
- *
- * The characters wrapped in square brackets are escaped.
- *
- * The result may vary by locale.
- *
- * @param {Date|String|Number} date - the original date
- * @param {String} [format='YYYY-MM-DDTHH:mm:ss.SSSZ'] - the string of tokens
- * @param {Object} [options] - the object with options
- * @param {Object} [options.locale=enLocale] - the locale object
- * @returns {String} the formatted date string
- *
- * @example
- * // Represent 11 February 2014 in middle-endian format:
- * var result = format(
- *   new Date(2014, 1, 11),
- *   'MM/DD/YYYY'
- * )
- * //=> '02/11/2014'
- *
- * @example
- * // Represent 2 July 2014 in Esperanto:
- * var eoLocale = require('date-fns/locale/eo')
- * var result = format(
- *   new Date(2014, 6, 2),
- *   'Do [de] MMMM YYYY',
- *   {locale: eoLocale}
- * )
- * //=> '2-a de julio 2014'
- */
+			 * @category Common Helpers
+			 * @summary Format the date.
+			 *
+			 * @description
+			 * Return the formatted date string in the given format.
+			 *
+			 * Accepted tokens:
+			 * | Unit                    | Token | Result examples                  |
+			 * |-------------------------|-------|----------------------------------|
+			 * | Month                   | M     | 1, 2, ..., 12                    |
+			 * |                         | Mo    | 1st, 2nd, ..., 12th              |
+			 * |                         | MM    | 01, 02, ..., 12                  |
+			 * |                         | MMM   | Jan, Feb, ..., Dec               |
+			 * |                         | MMMM  | January, February, ..., December |
+			 * | Quarter                 | Q     | 1, 2, 3, 4                       |
+			 * |                         | Qo    | 1st, 2nd, 3rd, 4th               |
+			 * | Day of month            | D     | 1, 2, ..., 31                    |
+			 * |                         | Do    | 1st, 2nd, ..., 31st              |
+			 * |                         | DD    | 01, 02, ..., 31                  |
+			 * | Day of year             | DDD   | 1, 2, ..., 366                   |
+			 * |                         | DDDo  | 1st, 2nd, ..., 366th             |
+			 * |                         | DDDD  | 001, 002, ..., 366               |
+			 * | Day of week             | d     | 0, 1, ..., 6                     |
+			 * |                         | do    | 0th, 1st, ..., 6th               |
+			 * |                         | dd    | Su, Mo, ..., Sa                  |
+			 * |                         | ddd   | Sun, Mon, ..., Sat               |
+			 * |                         | dddd  | Sunday, Monday, ..., Saturday    |
+			 * | Day of ISO week         | E     | 1, 2, ..., 7                     |
+			 * | ISO week                | W     | 1, 2, ..., 53                    |
+			 * |                         | Wo    | 1st, 2nd, ..., 53rd              |
+			 * |                         | WW    | 01, 02, ..., 53                  |
+			 * | Year                    | YY    | 00, 01, ..., 99                  |
+			 * |                         | YYYY  | 1900, 1901, ..., 2099            |
+			 * | ISO week-numbering year | GG    | 00, 01, ..., 99                  |
+			 * |                         | GGGG  | 1900, 1901, ..., 2099            |
+			 * | AM/PM                   | A     | AM, PM                           |
+			 * |                         | a     | am, pm                           |
+			 * |                         | aa    | a.m., p.m.                       |
+			 * | Hour                    | H     | 0, 1, ... 23                     |
+			 * |                         | HH    | 00, 01, ... 23                   |
+			 * |                         | h     | 1, 2, ..., 12                    |
+			 * |                         | hh    | 01, 02, ..., 12                  |
+			 * | Minute                  | m     | 0, 1, ..., 59                    |
+			 * |                         | mm    | 00, 01, ..., 59                  |
+			 * | Second                  | s     | 0, 1, ..., 59                    |
+			 * |                         | ss    | 00, 01, ..., 59                  |
+			 * | 1/10 of second          | S     | 0, 1, ..., 9                     |
+			 * | 1/100 of second         | SS    | 00, 01, ..., 99                  |
+			 * | Millisecond             | SSS   | 000, 001, ..., 999               |
+			 * | Timezone                | Z     | -01:00, +00:00, ... +12:00       |
+			 * |                         | ZZ    | -0100, +0000, ..., +1200         |
+			 * | Seconds timestamp       | X     | 512969520                        |
+			 * | Milliseconds timestamp  | x     | 512969520900                     |
+			 *
+			 * The characters wrapped in square brackets are escaped.
+			 *
+			 * The result may vary by locale.
+			 *
+			 * @param {Date|String|Number} date - the original date
+			 * @param {String} [format='YYYY-MM-DDTHH:mm:ss.SSSZ'] - the string of tokens
+			 * @param {Object} [options] - the object with options
+			 * @param {Object} [options.locale=enLocale] - the locale object
+			 * @returns {String} the formatted date string
+			 *
+			 * @example
+			 * // Represent 11 February 2014 in middle-endian format:
+			 * var result = format(
+			 *   new Date(2014, 1, 11),
+			 *   'MM/DD/YYYY'
+			 * )
+			 * //=> '02/11/2014'
+			 *
+			 * @example
+			 * // Represent 2 July 2014 in Esperanto:
+			 * var eoLocale = require('date-fns/locale/eo')
+			 * var result = format(
+			 *   new Date(2014, 6, 2),
+			 *   'Do [de] MMMM YYYY',
+			 *   {locale: eoLocale}
+			 * )
+			 * //=> '2-a de julio 2014'
+			 */
 			function format(dirtyDate, dirtyFormatStr, dirtyOptions) {
 				var formatStr = dirtyFormatStr ? String(dirtyFormatStr) : 'YYYY-MM-DDTHH:mm:ss.SSSZ'
 				var options = dirtyOptions || {}
@@ -3824,20 +3831,20 @@
 			var differenceInCalendarDays = __webpack_require__(23)
 
 			/**
- * @category Day Helpers
- * @summary Get the day of the year of the given date.
- *
- * @description
- * Get the day of the year of the given date.
- *
- * @param {Date|String|Number} date - the given date
- * @returns {Number} the day of year
- *
- * @example
- * // Which day of the year is 2 July 2014?
- * var result = getDayOfYear(new Date(2014, 6, 2))
- * //=> 183
- */
+			 * @category Day Helpers
+			 * @summary Get the day of the year of the given date.
+			 *
+			 * @description
+			 * Get the day of the year of the given date.
+			 *
+			 * @param {Date|String|Number} date - the given date
+			 * @returns {Number} the day of year
+			 *
+			 * @example
+			 * // Which day of the year is 2 July 2014?
+			 * var result = getDayOfYear(new Date(2014, 6, 2))
+			 * //=> 183
+			 */
 			function getDayOfYear(dirtyDate) {
 				var date = parse(dirtyDate)
 				var diff = differenceInCalendarDays(date, startOfYear(date))
@@ -3860,22 +3867,22 @@
 			var MILLISECONDS_IN_WEEK = 604800000
 
 			/**
- * @category ISO Week Helpers
- * @summary Get the ISO week of the given date.
- *
- * @description
- * Get the ISO week of the given date.
- *
- * ISO week-numbering year: http://en.wikipedia.org/wiki/ISO_week_date
- *
- * @param {Date|String|Number} date - the given date
- * @returns {Number} the ISO week
- *
- * @example
- * // Which week of the ISO-week numbering year is 2 January 2005?
- * var result = getISOWeek(new Date(2005, 0, 2))
- * //=> 53
- */
+			 * @category ISO Week Helpers
+			 * @summary Get the ISO week of the given date.
+			 *
+			 * @description
+			 * Get the ISO week of the given date.
+			 *
+			 * ISO week-numbering year: http://en.wikipedia.org/wiki/ISO_week_date
+			 *
+			 * @param {Date|String|Number} date - the given date
+			 * @returns {Number} the ISO week
+			 *
+			 * @example
+			 * // Which week of the ISO-week numbering year is 2 January 2005?
+			 * var result = getISOWeek(new Date(2005, 0, 2))
+			 * //=> 53
+			 */
 			function getISOWeek(dirtyDate) {
 				var date = parse(dirtyDate)
 				var diff = startOfISOWeek(date).getTime() - startOfISOYear(date).getTime()
@@ -3897,29 +3904,29 @@
 			var isDate = __webpack_require__(13)
 
 			/**
- * @category Common Helpers
- * @summary Is the given date valid?
- *
- * @description
- * Returns false if argument is Invalid Date and true otherwise.
- * Invalid Date is a Date, whose time value is NaN.
- *
- * Time value of Date: http://es5.github.io/#x15.9.1.1
- *
- * @param {Date} date - the date to check
- * @returns {Boolean} the date is valid
- * @throws {TypeError} argument must be an instance of Date
- *
- * @example
- * // For the valid date:
- * var result = isValid(new Date(2014, 1, 31))
- * //=> true
- *
- * @example
- * // For the invalid date:
- * var result = isValid(new Date(''))
- * //=> false
- */
+			 * @category Common Helpers
+			 * @summary Is the given date valid?
+			 *
+			 * @description
+			 * Returns false if argument is Invalid Date and true otherwise.
+			 * Invalid Date is a Date, whose time value is NaN.
+			 *
+			 * Time value of Date: http://es5.github.io/#x15.9.1.1
+			 *
+			 * @param {Date} date - the date to check
+			 * @returns {Boolean} the date is valid
+			 * @throws {TypeError} argument must be an instance of Date
+			 *
+			 * @example
+			 * // For the valid date:
+			 * var result = isValid(new Date(2014, 1, 31))
+			 * //=> true
+			 *
+			 * @example
+			 * // For the invalid date:
+			 * var result = isValid(new Date(''))
+			 * //=> false
+			 */
 			function isValid(dirtyDate) {
 				if (isDate(dirtyDate)) {
 					return !isNaN(dirtyDate)
@@ -3977,7 +3984,10 @@
 					}
 				}
 
-				var formattingTokens = commonFormatterKeys.concat(formatterKeys).sort().reverse()
+				var formattingTokens = commonFormatterKeys
+					.concat(formatterKeys)
+					.sort()
+					.reverse()
 				var formattingTokensRegExp = new RegExp(
 					'(\\[[^\\[]*\\])|(\\\\)?' + '(' + formattingTokens.join('|') + '|.)',
 					'g'
@@ -4233,9 +4243,9 @@
 			var buildFormatLocale = __webpack_require__(30)
 
 			/**
- * @category Locales
- * @summary English locale.
- */
+			 * @category Locales
+			 * @summary English locale.
+			 */
 			module.exports = {
 				distanceInWords: buildDistanceInWordsLocale(),
 				format: buildFormatLocale()
@@ -4250,21 +4260,21 @@
 			var parse = __webpack_require__(1)
 
 			/**
- * @category Day Helpers
- * @summary Return the start of a day for the given date.
- *
- * @description
- * Return the start of a day for the given date.
- * The result will be in the local timezone.
- *
- * @param {Date|String|Number} date - the original date
- * @returns {Date} the start of a day
- *
- * @example
- * // The start of a day for 2 September 2014 11:55:00:
- * var result = startOfDay(new Date(2014, 8, 2, 11, 55, 0))
- * //=> Tue Sep 02 2014 00:00:00
- */
+			 * @category Day Helpers
+			 * @summary Return the start of a day for the given date.
+			 *
+			 * @description
+			 * Return the start of a day for the given date.
+			 * The result will be in the local timezone.
+			 *
+			 * @param {Date|String|Number} date - the original date
+			 * @returns {Date} the start of a day
+			 *
+			 * @example
+			 * // The start of a day for 2 September 2014 11:55:00:
+			 * var result = startOfDay(new Date(2014, 8, 2, 11, 55, 0))
+			 * //=> Tue Sep 02 2014 00:00:00
+			 */
 			function startOfDay(dirtyDate) {
 				var date = parse(dirtyDate)
 				date.setHours(0, 0, 0, 0)
@@ -4283,24 +4293,24 @@
 			var startOfISOWeek = __webpack_require__(6)
 
 			/**
- * @category ISO Week-Numbering Year Helpers
- * @summary Return the start of an ISO week-numbering year for the given date.
- *
- * @description
- * Return the start of an ISO week-numbering year,
- * which always starts 3 days before the year's first Thursday.
- * The result will be in the local timezone.
- *
- * ISO week-numbering year: http://en.wikipedia.org/wiki/ISO_week_date
- *
- * @param {Date|String|Number} date - the original date
- * @returns {Date} the start of an ISO year
- *
- * @example
- * // The start of an ISO week-numbering year for 2 July 2005:
- * var result = startOfISOYear(new Date(2005, 6, 2))
- * //=> Mon Jan 03 2005 00:00:00
- */
+			 * @category ISO Week-Numbering Year Helpers
+			 * @summary Return the start of an ISO week-numbering year for the given date.
+			 *
+			 * @description
+			 * Return the start of an ISO week-numbering year,
+			 * which always starts 3 days before the year's first Thursday.
+			 * The result will be in the local timezone.
+			 *
+			 * ISO week-numbering year: http://en.wikipedia.org/wiki/ISO_week_date
+			 *
+			 * @param {Date|String|Number} date - the original date
+			 * @returns {Date} the start of an ISO year
+			 *
+			 * @example
+			 * // The start of an ISO week-numbering year for 2 July 2005:
+			 * var result = startOfISOYear(new Date(2005, 6, 2))
+			 * //=> Mon Jan 03 2005 00:00:00
+			 */
 			function startOfISOYear(dirtyDate) {
 				var year = getISOYear(dirtyDate)
 				var fourthOfJanuary = new Date(0)
@@ -4321,28 +4331,28 @@
 			var parse = __webpack_require__(1)
 
 			/**
- * @category Week Helpers
- * @summary Return the start of a week for the given date.
- *
- * @description
- * Return the start of a week for the given date.
- * The result will be in the local timezone.
- *
- * @param {Date|String|Number} date - the original date
- * @param {Object} [options] - the object with options
- * @param {Number} [options.weekStartsOn=0] - the index of the first day of the week (0 - Sunday)
- * @returns {Date} the start of a week
- *
- * @example
- * // The start of a week for 2 September 2014 11:55:00:
- * var result = startOfWeek(new Date(2014, 8, 2, 11, 55, 0))
- * //=> Sun Aug 31 2014 00:00:00
- *
- * @example
- * // If the week starts on Monday, the start of the week for 2 September 2014 11:55:00:
- * var result = startOfWeek(new Date(2014, 8, 2, 11, 55, 0), {weekStartsOn: 1})
- * //=> Mon Sep 01 2014 00:00:00
- */
+			 * @category Week Helpers
+			 * @summary Return the start of a week for the given date.
+			 *
+			 * @description
+			 * Return the start of a week for the given date.
+			 * The result will be in the local timezone.
+			 *
+			 * @param {Date|String|Number} date - the original date
+			 * @param {Object} [options] - the object with options
+			 * @param {Number} [options.weekStartsOn=0] - the index of the first day of the week (0 - Sunday)
+			 * @returns {Date} the start of a week
+			 *
+			 * @example
+			 * // The start of a week for 2 September 2014 11:55:00:
+			 * var result = startOfWeek(new Date(2014, 8, 2, 11, 55, 0))
+			 * //=> Sun Aug 31 2014 00:00:00
+			 *
+			 * @example
+			 * // If the week starts on Monday, the start of the week for 2 September 2014 11:55:00:
+			 * var result = startOfWeek(new Date(2014, 8, 2, 11, 55, 0), {weekStartsOn: 1})
+			 * //=> Mon Sep 01 2014 00:00:00
+			 */
 			function startOfWeek(dirtyDate, dirtyOptions) {
 				var weekStartsOn = dirtyOptions ? Number(dirtyOptions.weekStartsOn) || 0 : 0
 
@@ -4366,21 +4376,21 @@
 			var parse = __webpack_require__(1)
 
 			/**
- * @category Year Helpers
- * @summary Return the start of a year for the given date.
- *
- * @description
- * Return the start of a year for the given date.
- * The result will be in the local timezone.
- *
- * @param {Date|String|Number} date - the original date
- * @returns {Date} the start of a year
- *
- * @example
- * // The start of a year for 2 September 2014 11:55:00:
- * var result = startOfYear(new Date(2014, 8, 2, 11, 55, 00))
- * //=> Wed Jan 01 2014 00:00:00
- */
+			 * @category Year Helpers
+			 * @summary Return the start of a year for the given date.
+			 *
+			 * @description
+			 * Return the start of a year for the given date.
+			 * The result will be in the local timezone.
+			 *
+			 * @param {Date|String|Number} date - the original date
+			 * @returns {Date} the start of a year
+			 *
+			 * @example
+			 * // The start of a year for 2 September 2014 11:55:00:
+			 * var result = startOfYear(new Date(2014, 8, 2, 11, 55, 00))
+			 * //=> Wed Jan 01 2014 00:00:00
+			 */
 			function startOfYear(dirtyDate) {
 				var cleanDate = parse(dirtyDate)
 				var date = new Date(0)
@@ -4495,11 +4505,11 @@ object-assign
 			'use strict'
 			/* WEBPACK VAR INJECTION */ ;(function(process) {
 				/**
- * Copyright (c) 2013-present, Facebook, Inc.
- *
- * This source code is licensed under the MIT license found in the
- * LICENSE file in the root directory of this source tree.
- */
+				 * Copyright (c) 2013-present, Facebook, Inc.
+				 *
+				 * This source code is licensed under the MIT license found in the
+				 * LICENSE file in the root directory of this source tree.
+				 */
 
 				var _typeof =
 					typeof Symbol === 'function' && typeof Symbol.iterator === 'symbol'
@@ -4508,9 +4518,9 @@ object-assign
 							}
 						: function(obj) {
 								return obj &&
-								typeof Symbol === 'function' &&
-								obj.constructor === Symbol &&
-								obj !== Symbol.prototype
+									typeof Symbol === 'function' &&
+									obj.constructor === Symbol &&
+									obj !== Symbol.prototype
 									? 'symbol'
 									: typeof obj
 							}
@@ -4523,16 +4533,16 @@ object-assign
 				}
 
 				/**
- * Assert that the values match with the type specs.
- * Error messages are memorized and will only be shown once.
- *
- * @param {object} typeSpecs Map of name to a ReactPropType
- * @param {object} values Runtime values that need to be type-checked
- * @param {string} location e.g. "prop", "context", "child context"
- * @param {string} componentName Name of the component for error messages.
- * @param {?Function} getStack Returns the component stack.
- * @private
- */
+				 * Assert that the values match with the type specs.
+				 * Error messages are memorized and will only be shown once.
+				 *
+				 * @param {object} typeSpecs Map of name to a ReactPropType
+				 * @param {object} values Runtime values that need to be type-checked
+				 * @param {string} location e.g. "prop", "context", "child context"
+				 * @param {string} componentName Name of the component for error messages.
+				 * @param {?Function} getStack Returns the component stack.
+				 * @private
+				 */
 				function checkPropTypes(typeSpecs, values, location, componentName, getStack) {
 					if (process.env.NODE_ENV !== 'production') {
 						for (var typeSpecName in typeSpecs) {
@@ -4606,11 +4616,11 @@ object-assign
 		/***/ function(module, exports, __webpack_require__) {
 			'use strict'
 			/**
- * Copyright (c) 2013-present, Facebook, Inc.
- *
- * This source code is licensed under the MIT license found in the
- * LICENSE file in the root directory of this source tree.
- */
+			 * Copyright (c) 2013-present, Facebook, Inc.
+			 *
+			 * This source code is licensed under the MIT license found in the
+			 * LICENSE file in the root directory of this source tree.
+			 */
 
 			var emptyFunction = __webpack_require__(7)
 			var invariant = __webpack_require__(8)
@@ -4669,11 +4679,11 @@ object-assign
 			'use strict'
 			/* WEBPACK VAR INJECTION */ ;(function(process) {
 				/**
- * Copyright (c) 2013-present, Facebook, Inc.
- *
- * This source code is licensed under the MIT license found in the
- * LICENSE file in the root directory of this source tree.
- */
+				 * Copyright (c) 2013-present, Facebook, Inc.
+				 *
+				 * This source code is licensed under the MIT license found in the
+				 * LICENSE file in the root directory of this source tree.
+				 */
 
 				var _typeof =
 					typeof Symbol === 'function' && typeof Symbol.iterator === 'symbol'
@@ -4682,9 +4692,9 @@ object-assign
 							}
 						: function(obj) {
 								return obj &&
-								typeof Symbol === 'function' &&
-								obj.constructor === Symbol &&
-								obj !== Symbol.prototype
+									typeof Symbol === 'function' &&
+									obj.constructor === Symbol &&
+									obj !== Symbol.prototype
 									? 'symbol'
 									: typeof obj
 							}
@@ -4703,19 +4713,19 @@ object-assign
 					var FAUX_ITERATOR_SYMBOL = '@@iterator' // Before Symbol spec.
 
 					/**
-   * Returns the iterator method function contained on the iterable object.
-   *
-   * Be sure to invoke the function with the iterable as context:
-   *
-   *     var iteratorFn = getIteratorFn(myIterable);
-   *     if (iteratorFn) {
-   *       var iterator = iteratorFn.call(myIterable);
-   *       ...
-   *     }
-   *
-   * @param {?object} maybeIterable
-   * @return {?function}
-   */
+					 * Returns the iterator method function contained on the iterable object.
+					 *
+					 * Be sure to invoke the function with the iterable as context:
+					 *
+					 *     var iteratorFn = getIteratorFn(myIterable);
+					 *     if (iteratorFn) {
+					 *       var iterator = iteratorFn.call(myIterable);
+					 *       ...
+					 *     }
+					 *
+					 * @param {?object} maybeIterable
+					 * @return {?function}
+					 */
 					function getIteratorFn(maybeIterable) {
 						var iteratorFn =
 							maybeIterable &&
@@ -4727,51 +4737,51 @@ object-assign
 					}
 
 					/**
-   * Collection of methods that allow declaration and validation of props that are
-   * supplied to React components. Example usage:
-   *
-   *   var Props = require('ReactPropTypes');
-   *   var MyArticle = React.createClass({
-   *     propTypes: {
-   *       // An optional string prop named "description".
-   *       description: Props.string,
-   *
-   *       // A required enum prop named "category".
-   *       category: Props.oneOf(['News','Photos']).isRequired,
-   *
-   *       // A prop named "dialog" that requires an instance of Dialog.
-   *       dialog: Props.instanceOf(Dialog).isRequired
-   *     },
-   *     render: function() { ... }
-   *   });
-   *
-   * A more formal specification of how these methods are used:
-   *
-   *   type := array|bool|func|object|number|string|oneOf([...])|instanceOf(...)
-   *   decl := ReactPropTypes.{type}(.isRequired)?
-   *
-   * Each and every declaration produces a function with the same signature. This
-   * allows the creation of custom validation functions. For example:
-   *
-   *  var MyLink = React.createClass({
-   *    propTypes: {
-   *      // An optional string or URI prop named "href".
-   *      href: function(props, propName, componentName) {
-   *        var propValue = props[propName];
-   *        if (propValue != null && typeof propValue !== 'string' &&
-   *            !(propValue instanceof URI)) {
-   *          return new Error(
-   *            'Expected a string or an URI for ' + propName + ' in ' +
-   *            componentName
-   *          );
-   *        }
-   *      }
-   *    },
-   *    render: function() {...}
-   *  });
-   *
-   * @internal
-   */
+					 * Collection of methods that allow declaration and validation of props that are
+					 * supplied to React components. Example usage:
+					 *
+					 *   var Props = require('ReactPropTypes');
+					 *   var MyArticle = React.createClass({
+					 *     propTypes: {
+					 *       // An optional string prop named "description".
+					 *       description: Props.string,
+					 *
+					 *       // A required enum prop named "category".
+					 *       category: Props.oneOf(['News','Photos']).isRequired,
+					 *
+					 *       // A prop named "dialog" that requires an instance of Dialog.
+					 *       dialog: Props.instanceOf(Dialog).isRequired
+					 *     },
+					 *     render: function() { ... }
+					 *   });
+					 *
+					 * A more formal specification of how these methods are used:
+					 *
+					 *   type := array|bool|func|object|number|string|oneOf([...])|instanceOf(...)
+					 *   decl := ReactPropTypes.{type}(.isRequired)?
+					 *
+					 * Each and every declaration produces a function with the same signature. This
+					 * allows the creation of custom validation functions. For example:
+					 *
+					 *  var MyLink = React.createClass({
+					 *    propTypes: {
+					 *      // An optional string or URI prop named "href".
+					 *      href: function(props, propName, componentName) {
+					 *        var propValue = props[propName];
+					 *        if (propValue != null && typeof propValue !== 'string' &&
+					 *            !(propValue instanceof URI)) {
+					 *          return new Error(
+					 *            'Expected a string or an URI for ' + propName + ' in ' +
+					 *            componentName
+					 *          );
+					 *        }
+					 *      }
+					 *    },
+					 *    render: function() {...}
+					 *  });
+					 *
+					 * @internal
+					 */
 
 					var ANONYMOUS = '<<anonymous>>'
 
@@ -4799,9 +4809,9 @@ object-assign
 					}
 
 					/**
-   * inlined Object.is polyfill to avoid requiring consumers ship their own
-   * https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Object/is
-   */
+					 * inlined Object.is polyfill to avoid requiring consumers ship their own
+					 * https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Object/is
+					 */
 					/*eslint-disable no-self-compare*/
 					function is(x, y) {
 						// SameValue algorithm
@@ -4817,12 +4827,12 @@ object-assign
 					/*eslint-enable no-self-compare*/
 
 					/**
-   * We use an Error-like object for backward compatibility as people may call
-   * PropTypes directly and inspect their output. However, we don't use real
-   * Errors anymore. We don't inspect their stack anyway, and creating them
-   * is prohibitively expensive if they are created too often, such as what
-   * happens in oneOfType() for any type before the one that matched.
-   */
+					 * We use an Error-like object for backward compatibility as people may call
+					 * PropTypes directly and inspect their output. However, we don't use real
+					 * Errors anymore. We don't inspect their stack anyway, and creating them
+					 * is prohibitively expensive if they are created too often, such as what
+					 * happens in oneOfType() for any type before the one that matched.
+					 */
 					function PropTypeError(message) {
 						this.message = message
 						this.stack = ''
@@ -5418,19 +5428,19 @@ object-assign
 							}
 						: function(obj) {
 								return obj &&
-								typeof Symbol === 'function' &&
-								obj.constructor === Symbol &&
-								obj !== Symbol.prototype
+									typeof Symbol === 'function' &&
+									obj.constructor === Symbol &&
+									obj !== Symbol.prototype
 									? 'symbol'
 									: typeof obj
 							}
 
 				/**
- * Copyright (c) 2013-present, Facebook, Inc.
- *
- * This source code is licensed under the MIT license found in the
- * LICENSE file in the root directory of this source tree.
- */
+				 * Copyright (c) 2013-present, Facebook, Inc.
+				 *
+				 * This source code is licensed under the MIT license found in the
+				 * LICENSE file in the root directory of this source tree.
+				 */
 
 				if (process.env.NODE_ENV !== 'production') {
 					var REACT_ELEMENT_TYPE =
@@ -5469,9 +5479,9 @@ object-assign
 						}
 					: function(obj) {
 							return obj &&
-							typeof Symbol === 'function' &&
-							obj.constructor === Symbol &&
-							obj !== Symbol.prototype
+								typeof Symbol === 'function' &&
+								obj.constructor === Symbol &&
+								obj !== Symbol.prototype
 								? 'symbol'
 								: typeof obj
 						}
@@ -5483,9 +5493,9 @@ object-assign
 						}
 					: function(obj) {
 							return obj &&
-							typeof Symbol === 'function' &&
-							obj.constructor === Symbol &&
-							obj !== Symbol.prototype
+								typeof Symbol === 'function' &&
+								obj.constructor === Symbol &&
+								obj !== Symbol.prototype
 								? 'symbol'
 								: typeof obj === 'undefined' ? 'undefined' : _typeof2(obj)
 						}
@@ -5538,8 +5548,8 @@ object-assign
 					throw new ReferenceError("this hasn't been initialised - super() hasn't been called")
 				}
 				return call &&
-				((typeof call === 'undefined' ? 'undefined' : _typeof2(call)) === 'object' ||
-					typeof call === 'function')
+					((typeof call === 'undefined' ? 'undefined' : _typeof2(call)) === 'object' ||
+						typeof call === 'function')
 					? call
 					: self
 			}
@@ -5559,12 +5569,12 @@ object-assign
 						? Object.setPrototypeOf(subClass, superClass)
 						: (subClass.__proto__ = superClass)
 			} /**
-   * React Idle Timer
-   *
-   * @author  Randy Lebeau
-   * @class   IdleTimer
-   *
-   */
+			 * React Idle Timer
+			 *
+			 * @author  Randy Lebeau
+			 * @class   IdleTimer
+			 *
+			 */
 
 			var IdleTimer = (function(_Component) {
 				_inherits(IdleTimer, _Component)
@@ -5580,17 +5590,15 @@ object-assign
 						args[_key] = arguments[_key]
 					}
 
-					return (_ret = (
-						(_temp = (
-							(_this = _possibleConstructorReturn(
-								this,
-								(_Object$getPrototypeO = Object.getPrototypeOf(IdleTimer)).call.apply(
-									_Object$getPrototypeO,
-									[this].concat(args)
-								)
-							)),
-							_this
+					return (
+						(_ret = ((_temp = ((_this = _possibleConstructorReturn(
+							this,
+							(_Object$getPrototypeO = Object.getPrototypeOf(IdleTimer)).call.apply(
+								_Object$getPrototypeO,
+								[this].concat(args)
+							)
 						)),
+						_this)),
 						(_this.state = {
 							idle: false,
 							oldDate: +new Date(),
@@ -5636,8 +5644,9 @@ object-assign
 								_this.props.timeout // set a new timeout
 							)
 						}),
-						_temp
-					)), _possibleConstructorReturn(_this, _ret)
+						_temp)),
+						_possibleConstructorReturn(_this, _ret)
+					)
 				}
 
 				_createClass(IdleTimer, [
@@ -5683,11 +5692,11 @@ object-assign
 						/////////////////////
 
 						/**
-     * Toggles the idle state and calls the proper action
-     *
-     * @return {void}
-     *
-     */
+						 * Toggles the idle state and calls the proper action
+						 *
+						 * @return {void}
+						 *
+						 */
 					},
 					{
 						key: '_toggleIdleState',
@@ -5703,12 +5712,12 @@ object-assign
 						}
 
 						/**
-     * Event handler for supported event types
-     *
-     * @param  {Object} e event object
-     * @return {void}
-     *
-     */
+						 * Event handler for supported event types
+						 *
+						 * @param  {Object} e event object
+						 * @return {void}
+						 *
+						 */
 					},
 					{
 						key: 'reset',
@@ -5718,11 +5727,11 @@ object-assign
 						////////////////
 
 						/**
-     * Restore initial settings and restart timer
-     *
-     * @return {Void}
-     *
-     */
+						 * Restore initial settings and restart timer
+						 *
+						 * @return {Void}
+						 *
+						 */
 
 						value: function reset() {
 							// reset timers
@@ -5741,12 +5750,12 @@ object-assign
 						}
 
 						/**
-     * Store remaining time and stop timer.
-     * You can pause from idle or active state.
-     *
-     * @return {Void}
-     *
-     */
+						 * Store remaining time and stop timer.
+						 * You can pause from idle or active state.
+						 *
+						 * @return {Void}
+						 *
+						 */
 					},
 					{
 						key: 'pause',
@@ -5770,11 +5779,11 @@ object-assign
 						}
 
 						/**
-     * Resumes a stopped timer
-     *
-     * @return {Void}
-     *
-     */
+						 * Resumes a stopped timer
+						 *
+						 * @return {Void}
+						 *
+						 */
 					},
 					{
 						key: 'resume',
@@ -5795,11 +5804,11 @@ object-assign
 						}
 
 						/**
-     * Time remaining before idle
-     *
-     * @return {Number} Milliseconds remaining
-     *
-     */
+						 * Time remaining before idle
+						 *
+						 * @return {Number} Milliseconds remaining
+						 *
+						 */
 					},
 					{
 						key: 'getRemainingTime',
@@ -5825,11 +5834,11 @@ object-assign
 						}
 
 						/**
-     * How much time has elapsed
-     *
-     * @return {Timestamp}
-     *
-     */
+						 * How much time has elapsed
+						 *
+						 * @return {Timestamp}
+						 *
+						 */
 					},
 					{
 						key: 'getElapsedTime',
@@ -5838,11 +5847,11 @@ object-assign
 						}
 
 						/**
-     * Last time the user was active
-     *
-     * @return {Timestamp}
-     *
-     */
+						 * Last time the user was active
+						 *
+						 * @return {Timestamp}
+						 *
+						 */
 					},
 					{
 						key: 'getLastActiveTime',
@@ -5854,11 +5863,11 @@ object-assign
 						}
 
 						/**
-     * Is the user idle
-     *
-     * @return {Boolean}
-     *
-     */
+						 * Is the user idle
+						 *
+						 * @return {Boolean}
+						 *
+						 */
 					},
 					{
 						key: 'isIdle',
@@ -5982,8 +5991,10 @@ object-assign
 
 					return _possibleConstructorReturn(
 						this,
-						(InlineNavButton.__proto__ || Object.getPrototypeOf(InlineNavButton))
-							.apply(this, arguments)
+						(InlineNavButton.__proto__ || Object.getPrototypeOf(InlineNavButton)).apply(
+							this,
+							arguments
+						)
 					)
 				}
 
