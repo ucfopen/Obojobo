@@ -167,11 +167,11 @@ exports[`Assessment Assessment page changes when attempt started and submitted 2
               </div>
             </div>
             <form
-              className="component obojobo-draft--chunks--mc-assessment is-response-type-pick-one is-not-showing-explantion is-unscored"
+              className="component obojobo-draft--chunks--mc-interaction is-response-type-pick-one is-not-showing-explantion is-unscored"
               data-focussed={false}
               data-id="qb1-q1-mca"
               data-obo-component={true}
-              data-type="ObojoboDraft.Chunks.MCAssessment"
+              data-type="ObojoboDraft.Chunks.MCInteraction"
               id="obo-qb1-q1-mca"
               onClick={[Function]}
             >
@@ -183,12 +183,12 @@ exports[`Assessment Assessment page changes when attempt started and submitted 2
                 </span>
               </span>
               <div
-                className="component obojobo-draft--chunks--mc-assessment--mc-choice is-not-selected is-correct"
+                className="component obojobo-draft--chunks--mc-interaction--mc-choice is-not-selected is-correct"
                 data-choice-label="A"
                 data-focussed={false}
                 data-id="qb1-q1-mca-mc1"
                 data-obo-component={true}
-                data-type="ObojoboDraft.Chunks.MCAssessment.MCChoice"
+                data-type="ObojoboDraft.Chunks.MCInteraction.MCChoice"
                 id="obo-qb1-q1-mca-mc1"
               >
                 <input
@@ -202,11 +202,11 @@ exports[`Assessment Assessment page changes when attempt started and submitted 2
                   className="children"
                 >
                   <div
-                    className="component obojobo-draft--chunks--mc-assessment--mc-answer"
+                    className="component obojobo-draft--chunks--mc-interaction--mc-answer"
                     data-focussed={false}
                     data-id="qb1-q1-mca-mc1-ans"
                     data-obo-component={true}
-                    data-type="ObojoboDraft.Chunks.MCAssessment.MCAnswer"
+                    data-type="ObojoboDraft.Chunks.MCInteraction.MCAnswer"
                     id="obo-qb1-q1-mca-mc1-ans"
                   >
                     <div
@@ -239,12 +239,12 @@ exports[`Assessment Assessment page changes when attempt started and submitted 2
                 </div>
               </div>
               <div
-                className="component obojobo-draft--chunks--mc-assessment--mc-choice is-not-selected is-incorrect"
+                className="component obojobo-draft--chunks--mc-interaction--mc-choice is-not-selected is-incorrect"
                 data-choice-label="B"
                 data-focussed={false}
                 data-id="qb1-q1-mca-mc2"
                 data-obo-component={true}
-                data-type="ObojoboDraft.Chunks.MCAssessment.MCChoice"
+                data-type="ObojoboDraft.Chunks.MCInteraction.MCChoice"
                 id="obo-qb1-q1-mca-mc2"
               >
                 <input
@@ -258,11 +258,11 @@ exports[`Assessment Assessment page changes when attempt started and submitted 2
                   className="children"
                 >
                   <div
-                    className="component obojobo-draft--chunks--mc-assessment--mc-answer"
+                    className="component obojobo-draft--chunks--mc-interaction--mc-answer"
                     data-focussed={false}
                     data-id="qb1-q1-mca-mc2-ans"
                     data-obo-component={true}
-                    data-type="ObojoboDraft.Chunks.MCAssessment.MCAnswer"
+                    data-type="ObojoboDraft.Chunks.MCInteraction.MCAnswer"
                     id="obo-qb1-q1-mca-mc2-ans"
                   >
                     <div

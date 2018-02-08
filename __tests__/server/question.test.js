@@ -71,6 +71,6 @@ describe('Question', () => {
 				responseHistory,
 				currentAttempt
 			)
-		}).toThrowError('Impossible response to MCAssessment question')
+		}).toThrowError('Impossible response to MCInteraction question')
 	})
 })

@@ -1,0 +1,408 @@
+@import '~styles/includes';
+
+.obojobo-draft--chunks--mc-interaction
+{
+	@keyframes fadein {
+		0%   { opacity: 0; }
+		100% { opacity: 1; }
+	}
+
+	@keyframes bounce {
+		0%   { transform: scale(0); }
+		50%  { transform: scale(1.1); }
+		80%  { transform: scale(0.9); }
+		100% { transform: scale(1); }
+	}
+
+	@mixin correct()
+	{
+		content: "✔";
+		position: absolute;
+		top: 0.65em;
+		display: block;
+		color: $color-correct;
+		font-size: 2.5em;
+		transform: translate(-50%, -50%);
+		left: 0.6em;
+		animation: fadein $duration-animation-default*2;
+	}
+
+	@mixin incorrect()
+	{
+		content: "✖";
+		position: absolute;
+		top: 0.65em;
+		display: block;
+		color: $color-incorrect;
+		font-size: 2.5em;
+		transform: translate(-50%, -50%);
+		left: 0.6em;
+		animation: fadein $duration-animation-default*2;
+	}
+
+
+	padding-bottom: 0;
+	// .obojobo-draft--chunks--mc-interaction--mc-choice
+	// {
+	// 	&.is-selected
+	// 	{
+	// 		background: transparentize($color-highlight, 0.3);
+	// 	}
+	// }
+
+
+	&.is-scored
+	{
+		// These two rules, one for pick-all and one for the others, could be combined but
+		// don't - IE11 has a bug that applies multiple sizes in pseudo elements :(
+		&.is-response-type-pick-one .obojobo-draft--chunks--mc-interaction--mc-choice,
+		&.is-response-type-pick-one-multiple-correct .obojobo-draft--chunks--mc-interaction--mc-choice
+		{
+			&.is-selected
+			{
+				&.is-correct
+				{
+					&:before
+					{
+						@include correct();
+					}
+
+					background: transparentize($color-correct, .9);
+				}
+
+				&.is-incorrect
+				{
+					&:before
+					{
+						@include incorrect();
+					}
+
+					background: transparentize($color-incorrect, .9);
+				}
+			}
+		}
+
+		&.is-response-type-pick-all .obojobo-draft--chunks--mc-interaction--mc-choice
+		{
+			&.is-selected
+			{
+				@mixin smaller()
+				{
+					font-size: 1.25em;
+					left: 1.25em;
+					top: 1.5em;
+					letter-spacing: 0.2em;
+				}
+
+				&.is-correct
+				{
+					&:before
+					{
+						@include correct();
+						@include smaller();
+						content: "✔" attr(data-choice-label);
+					}
+				}
+
+				&.is-incorrect
+				{
+					&:before
+					{
+						@include incorrect();
+						@include smaller();
+						content: "✖" attr(data-choice-label);
+					}
+				}
+			}
+		}
+	}
+
+	$border: 1px solid transparentize($color-shadow, 0.25);
+
+	.instructions
+	{
+		$font-size: 1em;
+
+		padding-left: $dimension-padding;
+		padding-right: $dimension-padding;
+
+		content: 'Practice';
+		display: block;
+		font-family: $font-default;
+
+		color: $color-action;
+		font-size: $font-size;
+		font-weight: normal;
+
+		border-bottom: $border;
+	}
+
+	.submit
+	{
+		margin-left: 3em;
+		margin-right: 3em;
+		position: relative;
+
+		button
+		{
+			cursor: pointer;
+			font-size: 0.85em;
+			margin-bottom: 1em;
+			// margin-right: 1em;
+			margin-top: 1em;
+			min-width: 10.5em;
+		}
+
+		.divider
+		{
+			color: $color-shadow;
+			display: inline-block;
+			padding: 0 0.4em;
+			transform: scale(2, 0.9);
+		}
+
+		.obojobo-draft--components--button:first-child
+		{
+			margin-right: 1em;
+		}
+
+		.result-container
+		{
+			display: inline-block;
+		}
+
+		.result
+		{
+			font-family: $font-default;
+			color: invert($color-text);
+			font-weight: bold;
+			box-sizing: border-box;
+			margin: 0;
+			display: inline-block;
+			border-radius: 9999px;
+			padding: 0 1.5em;
+			font-size: 0.8em;
+			margin-bottom: 1em;
+			animation: bounce .4s;
+
+			&.correct
+			{
+				background-color: $color-correct;
+			}
+
+			&.incorrect
+			{
+				background-color: $color-incorrect;
+			}
+		}
+
+		.pick-all-instructions
+		{
+			font-family: $font-default;
+			font-size: .8em;
+			font-weight: bold;
+			color: $color-incorrect;
+			width: 24em;
+			display: inline-block;
+			line-height: 1.5em;
+			vertical-align: middle;
+			margin-left: 1.25em;
+		}
+	}
+
+	.solution
+	{
+		background: $color-bg2;
+		border-top: 1px solid $color-shadow;
+		position: relative;
+		border-bottom-left-radius: 0.3em;
+		border-bottom-right-radius: 0.3em;
+		padding-bottom: 1px;
+
+		&.submit-enter
+		{
+			opacity: 0;
+			max-height: 0;
+			overflow: hidden;
+		}
+		&.submit-enter.submit-enter-active
+		{
+			opacity: 1;
+			max-height: 16em;
+			transition: opacity $duration-animation-default*2, max-height $duration-animation-default*2;
+		}
+		&.submit-leave
+		{
+			opacity: 1;
+			max-height: 16em;
+			overflow: hidden;
+		}
+		&.submit-leave.submit-leave-active
+		{
+			opacity: 0;
+			max-height: 0;
+			transition: opacity $duration-animation-default*2, max-height $duration-animation-default*2;
+		}
+
+		> .score
+		{
+			padding: 0;
+			position: relative;
+			text-align: left;
+			padding-top: 1em;
+
+			.feedback
+			{
+				min-height: 1em;
+				margin-bottom: 1em;
+
+				&:before
+				{
+					content: "Feedback:";
+					font-family: $font-default;
+					font-size: .7em;
+					margin-left: 3em * (1 / .7);
+					font-weight: bold;
+					color: transparentize($color-text, 0.5);
+					display: block;
+				}
+
+				> .obojobo-draft--chunks--mc-interaction--mc-feedback
+				{
+					padding-top: 0;
+					padding-bottom: 0;
+					position: relative;
+					// margin-top: -1em;
+				}
+
+				&.is-pick-all-feedback
+				{
+					> .obojobo-draft--chunks--mc-interaction--mc-feedback
+					{
+						padding-left: 4em;
+
+						&:before
+						{
+							display: block;
+							position: absolute;
+							top: 1em;
+							left: 4em;
+							font-family: $font-default;
+							font-size: 1em;
+							letter-spacing: 0.25em;
+						}
+
+						&.is-correct-feedback:before
+						{
+							content: "✔" attr(data-choice-label);
+							color: $color-correct;
+						}
+
+						&.is-incorrect-feedback:before
+						{
+							content: "✖" attr(data-choice-label);
+							color: $color-incorrect;
+						}
+					}
+				}
+			}
+		}
+
+		> .obojobo-draft--components--button
+		{
+			margin-bottom: 1em;
+			margin-left: 3em;
+
+			button
+			{
+				min-width: 10.5em;
+			}
+		}
+
+		.solution-container
+		{
+			background: $color-bg;
+			text-align: left;
+			padding: 0;
+			margin-bottom: $dimension-padding / 3;
+			margin-left: $dimension-padding / 3;
+			margin-right: $dimension-padding / 3;
+			border: 1px solid $color-shadow;
+
+			&:before
+			{
+				content: "Full explanation:";
+				font-family: $font-default;
+				font-size: 1em;
+				font-weight: bold;
+				color: transparentize($color-text, 0.25);
+				margin-top: 1em;
+				margin-left: 2em;
+				margin-bottom: -1em;
+				display: block;
+				transform: scale(0.7);
+				transform-origin: top left;
+			}
+
+			&.solution-enter
+			{
+				max-height: 0;
+				overflow: hidden;
+				border: 0 solid $color-transparent;
+				margin-bottom: 0;
+				opacity: 0;
+			}
+
+			&.solution-enter.solution-enter-active
+			{
+				max-height: 60em;
+				margin-bottom: 1em;
+				border: 1px solid $color-shadow;
+				opacity: 1;
+				transition: max-height $duration-animation-default*2, margin-bottom $duration-animation-default*2, border $duration-animation-default*2, opacity $duration-animation-default*2;
+
+			}
+
+			&.solution-leave
+			{
+				max-height: 60em;
+				margin-bottom: 1em;
+				border: 1px solid $color-shadow;
+				overflow: hidden;
+				opacity: 1;
+			}
+
+			&.solution-leave.solution-leave-active
+			{
+				max-height: 0;
+				margin-bottom: 0;
+				border: 0 solid $color-transparent;
+				opacity: 0;
+				transition: max-height $duration-animation-default*2, margin-bottom $duration-animation-default*2, border $duration-animation-default*2, opacity $duration-animation-default*2;
+			}
+
+			> .component
+			{
+				margin-left: -1em;
+				margin-right: -1em;
+			}
+		}
+	}
+
+
+	.obojobo-draft--chunks--mc-interaction--mc-choice
+	{
+		border-bottom: $border;
+
+		// padding-top: 1em;
+		padding-top: 0;
+		padding-bottom: 0;
+	}
+
+	.obojobo-draft--chunks--mc-interaction--mc-answer
+	{
+		padding-top: 0;
+		padding-bottom: 0;
+	}
+
+}

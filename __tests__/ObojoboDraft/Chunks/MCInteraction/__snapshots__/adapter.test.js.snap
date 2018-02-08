@@ -1,0 +1,25 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`MCInteraction adapter can be constructed WITH attributes 1`] = `
+Object {
+  "modelState": Object {
+    "responseType": "pick-one",
+  },
+}
+`;
+
+exports[`MCInteraction adapter can be constructed WITHOUT attributes 1`] = `
+Object {
+  "modelState": Object {
+    "responseType": "",
+  },
+}
+`;
+
+exports[`MCInteraction adapter can convert to JSON 1`] = `
+Object {
+  "content": Object {
+    "responseType": "pick-one",
+  },
+}
+`;

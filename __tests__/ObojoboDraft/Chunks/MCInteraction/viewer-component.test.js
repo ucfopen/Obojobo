@@ -1,9 +1,8 @@
 import React from 'react'
 import renderer from 'react-test-renderer'
 
-import Question from '../../../../ObojoboDraft/Chunks/Question/viewer-component'
+import MCInteraction from '../../../../ObojoboDraft/Chunks/MCInteraction/viewer-component'
 import FocusStore from '../../../../src/scripts/common/stores/focus-store'
-import FocusUtil from '../../../../src/scripts/common/util/focus-util'
 import QuestionStore from '../../../../src/scripts/viewer/stores/question-store'
 import NavStore from '../../../../src/scripts/viewer/stores/nav-store'
 import ScoreStore from '../../../../src/scripts/viewer/stores/score-store'
@@ -17,7 +16,7 @@ describe('MCInteraction', () => {
 	_.shuffle = a => a
 
 	OboModel.create({
-		id: 'id',
+		id: 'parent',
 		type: 'ObojoboDraft.Chunks.Question',
 		content: {
 			title: 'Title',
@@ -43,7 +42,7 @@ describe('MCInteraction', () => {
 		},
 		children: [
 			{
-				id: 'mc-interaction-id',
+				id: 'id',
 				type: 'ObojoboDraft.Chunks.MCInteraction',
 				children: [
 					{
@@ -54,11 +53,11 @@ describe('MCInteraction', () => {
 						},
 						children: [
 							{
-								id: 'choice1-answer1',
+								id: 'choice1-answer',
 								type: 'ObojoboDraft.Chunks.MCInteraction.MCAnswer',
 								children: [
 									{
-										id: 'choice1-answer-1-text',
+										id: 'choice1-answer-text',
 										type: 'ObojoboDraft.Chunks.Text',
 										content: {
 											textGroup: [
@@ -73,11 +72,11 @@ describe('MCInteraction', () => {
 								]
 							},
 							{
-								id: 'choice1-answer2',
-								type: 'ObojoboDraft.Chunks.MCInteraction.MCAnswer',
+								id: 'choice1-feedback',
+								type: 'ObojoboDraft.Chunks.MCInteraction.MCFeedback',
 								children: [
 									{
-										id: 'choice1-answer-2-text',
+										id: 'choice1-feedback-text',
 										type: 'ObojoboDraft.Chunks.Text',
 										content: {
 											textGroup: [
@@ -101,11 +100,11 @@ describe('MCInteraction', () => {
 						},
 						children: [
 							{
-								id: 'choice2-answer1',
+								id: 'choice2-answer',
 								type: 'ObojoboDraft.Chunks.MCInteraction.MCAnswer',
 								children: [
 									{
-										id: 'choice1-answer-1-text',
+										id: 'choice1-answer-text',
 										type: 'ObojoboDraft.Chunks.Text',
 										content: {
 											textGroup: [
@@ -120,11 +119,11 @@ describe('MCInteraction', () => {
 								]
 							},
 							{
-								id: 'choice2-answer2',
-								type: 'ObojoboDraft.Chunks.MCInteraction.MCAnswer',
+								id: 'choice2-feedback',
+								type: 'ObojoboDraft.Chunks.MCInteraction.MCFeedback',
 								children: [
 									{
-										id: 'choice1-answer-1-text',
+										id: 'choice1-feedback-text',
 										type: 'ObojoboDraft.Chunks.Text',
 										content: {
 											textGroup: [
@@ -165,24 +164,24 @@ describe('MCInteraction', () => {
 		}
 	}
 
-	test('Question component', () => {
+	test('MCInteraction component', () => {
 		let moduleData = getModuleData()
-		const component = renderer.create(<Question model={model} moduleData={moduleData} />)
+		const component = renderer.create(<MCInteraction model={model} moduleData={moduleData} />)
 		let tree = component.toJSON()
 
 		expect(tree).toMatchSnapshot()
 	})
 
-	test('Question with response', () => {
+	test('MCInteraction with response', () => {
 		let moduleData = getModuleData()
-		const component = renderer.create(<Question model={model} moduleData={moduleData} />)
+		const component = renderer.create(<MCInteraction model={model} moduleData={moduleData} />)
 		let tree = component.toJSON()
 
 		expect(tree).toMatchSnapshot()
 
 		APIUtil.postEvent = jest.fn()
-		QuestionUtil.setResponse('id', { ids: ['choice1'] })
-		const component2 = renderer.create(<Question model={model} moduleData={moduleData} />)
+		QuestionUtil.setResponse('parent', { ids: ['choice1'] })
+		const component2 = renderer.create(<MCInteraction model={model} moduleData={moduleData} />)
 		let tree2 = component2.toJSON()
 
 		expect(tree2).toMatchSnapshot()
@@ -190,15 +189,15 @@ describe('MCInteraction', () => {
 		expect(tree).not.toEqual(tree2)
 	})
 
-	test('Question with revealAll', () => {
+	test('MCInteraction with revealAll', () => {
 		let moduleData = getModuleData()
-		const component = renderer.create(<Question model={model} moduleData={moduleData} />)
+		const component = renderer.create(<MCInteraction model={model} moduleData={moduleData} />)
 		let tree = component.toJSON()
 
 		expect(tree).toMatchSnapshot()
 
 		QuestionUtil.setData('id', 'revealAll', true)
-		const component2 = renderer.create(<Question model={model} moduleData={moduleData} />)
+		const component2 = renderer.create(<MCInteraction model={model} moduleData={moduleData} />)
 		let tree2 = component2.toJSON()
 
 		expect(tree2).toMatchSnapshot()
@@ -206,48 +205,15 @@ describe('MCInteraction', () => {
 		expect(tree).not.toEqual(tree2)
 	})
 
-	test('Question with a set score', () => {
+	test('MCInteraction with a set score', () => {
 		let moduleData = getModuleData()
-		const component = renderer.create(<Question model={model} moduleData={moduleData} />)
+		const component = renderer.create(<MCInteraction model={model} moduleData={moduleData} />)
 		let tree = component.toJSON()
 
 		expect(tree).toMatchSnapshot()
 
 		ScoreUtil.setScore('id', 100)
-		const component2 = renderer.create(<Question model={model} moduleData={moduleData} />)
-		let tree2 = component2.toJSON()
-
-		expect(tree2).toMatchSnapshot()
-
-		expect(tree).not.toEqual(tree2)
-	})
-
-	test('Question view question', () => {
-		let moduleData = getModuleData()
-		const component = renderer.create(<Question model={model} moduleData={moduleData} />)
-		let tree = component.toJSON()
-
-		expect(tree).toMatchSnapshot()
-
-		QuestionUtil.viewQuestion('id')
-		const component2 = renderer.create(<Question model={model} moduleData={moduleData} />)
-		let tree2 = component2.toJSON()
-
-		expect(tree2).toMatchSnapshot()
-
-		expect(tree).not.toEqual(tree2)
-	})
-
-	test('Question view & focus question', () => {
-		let moduleData = getModuleData()
-		const component = renderer.create(<Question model={model} moduleData={moduleData} />)
-		let tree = component.toJSON()
-
-		expect(tree).toMatchSnapshot()
-
-		QuestionUtil.viewQuestion('id')
-		FocusUtil.focusComponent('id')
-		const component2 = renderer.create(<Question model={model} moduleData={moduleData} />)
+		const component2 = renderer.create(<MCInteraction model={model} moduleData={moduleData} />)
 		let tree2 = component2.toJSON()
 
 		expect(tree2).toMatchSnapshot()

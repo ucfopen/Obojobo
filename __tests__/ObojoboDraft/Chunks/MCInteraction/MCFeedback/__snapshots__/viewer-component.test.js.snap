@@ -1,0 +1,25 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`MCFeedback MCFeedback for a correct item 1`] = `
+<div
+  className="component obojobo-draft--chunks--mc-interaction--mc-feedback is-correct-feedback"
+  data-choice-label={undefined}
+  data-focussed={false}
+  data-id="self"
+  data-obo-component={true}
+  data-type="ObojoboDraft.Chunks.MCInteraction.MCFeedback"
+  id="obo-self"
+/>
+`;
+
+exports[`MCFeedback MCFeedback for an incorrect item 1`] = `
+<div
+  className="component obojobo-draft--chunks--mc-interaction--mc-feedback is-incorrect-feedback"
+  data-choice-label={undefined}
+  data-focussed={false}
+  data-id="self"
+  data-obo-component={true}
+  data-type="ObojoboDraft.Chunks.MCInteraction.MCFeedback"
+  id="obo-self"
+/>
+`;

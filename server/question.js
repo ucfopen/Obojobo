@@ -23,7 +23,7 @@ class MCChoice extends DraftNode {
 
 		if (questionResponses.length === 0) return
 
-		if (questionResponses.length > 1) throw 'Impossible response to MCAssessment question'
+		if (questionResponses.length > 1) throw 'Impossible response to MCInteraction question'
 
 		return this.yell(
 			'ObojoboDraft.Chunks.Question:calculateScore',

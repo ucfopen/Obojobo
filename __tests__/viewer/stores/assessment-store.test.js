@@ -68,7 +68,7 @@ describe('AssessmentStore', () => {
 								children: [
 									{
 										id: 'r1',
-										type: 'ObojoboDraft.Chunks.MCAssessment'
+										type: 'ObojoboDraft.Chunks.MCInteraction'
 									}
 								]
 							},
@@ -78,7 +78,7 @@ describe('AssessmentStore', () => {
 								children: [
 									{
 										id: 'r2',
-										type: 'ObojoboDraft.Chunks.MCAssessment'
+										type: 'ObojoboDraft.Chunks.MCInteraction'
 									}
 								]
 							}

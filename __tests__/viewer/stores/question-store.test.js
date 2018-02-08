@@ -35,15 +35,15 @@ describe('QuestionStore', () => {
 					content: {
 						score: 100
 					},
-					type: 'ObojoboDraft.Chunks.MCAssessment',
+					type: 'ObojoboDraft.Chunks.MCInteraction',
 					children: [
 						{
 							id: 'c1-id',
-							type: 'ObojoboDraft.Chunks.MCAssessment.MCChoice',
+							type: 'ObojoboDraft.Chunks.MCInteraction.MCChoice',
 							children: [
 								{
 									id: 'c1-a1-id',
-									type: 'ObojoboDraft.Chunks.MCAssessment.MCAnswer'
+									type: 'ObojoboDraft.Chunks.MCInteraction.MCAnswer'
 								}
 							]
 						}

@@ -52,7 +52,7 @@ let getQuestions = (oboNode, assessmentState) => {
 }
 
 let zeroOutScores = oboNode => {
-	if (oboNode.type === 'ObojoboDraft.Chunks.MCAssessment.MCChoice') {
+	if (oboNode.type === 'ObojoboDraft.Chunks.MCInteraction.MCChoice') {
 		oboNode.content.score = 0
 	}
 

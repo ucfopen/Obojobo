@@ -48,21 +48,21 @@ let getAttemptStartServerResponse = () => {
 										},
 										{
 											id: 'qb1-q1-mca',
-											type: 'ObojoboDraft.Chunks.MCAssessment',
+											type: 'ObojoboDraft.Chunks.MCInteraction',
 											content: {
 												responseType: 'pick-one'
 											},
 											children: [
 												{
 													id: 'qb1-q1-mca-mc1',
-													type: 'ObojoboDraft.Chunks.MCAssessment.MCChoice',
+													type: 'ObojoboDraft.Chunks.MCInteraction.MCChoice',
 													content: {
 														score: 100
 													},
 													children: [
 														{
 															id: 'qb1-q1-mca-mc1-ans',
-															type: 'ObojoboDraft.Chunks.MCAssessment.MCAnswer',
+															type: 'ObojoboDraft.Chunks.MCInteraction.MCAnswer',
 															content: {},
 															children: [
 																{
@@ -85,7 +85,7 @@ let getAttemptStartServerResponse = () => {
 														},
 														{
 															id: 'qb1-q1-mca-mc1-fb',
-															type: 'ObojoboDraft.Chunks.MCAssessment.MCFeedback',
+															type: 'ObojoboDraft.Chunks.MCInteraction.MCFeedback',
 															content: {},
 															children: [
 																{
@@ -110,14 +110,14 @@ let getAttemptStartServerResponse = () => {
 												},
 												{
 													id: 'qb1-q1-mca-mc2',
-													type: 'ObojoboDraft.Chunks.MCAssessment.MCChoice',
+													type: 'ObojoboDraft.Chunks.MCInteraction.MCChoice',
 													content: {
 														score: 0
 													},
 													children: [
 														{
 															id: 'qb1-q1-mca-mc2-ans',
-															type: 'ObojoboDraft.Chunks.MCAssessment.MCAnswer',
+															type: 'ObojoboDraft.Chunks.MCInteraction.MCAnswer',
 															content: {},
 															children: [
 																{
@@ -140,7 +140,7 @@ let getAttemptStartServerResponse = () => {
 														},
 														{
 															id: 'qb1-q1-mca-mc2-fb',
-															type: 'ObojoboDraft.Chunks.MCAssessment.MCFeedback',
+															type: 'ObojoboDraft.Chunks.MCInteraction.MCFeedback',
 															content: {},
 															children: [
 																{
@@ -191,21 +191,21 @@ let getAttemptStartServerResponse = () => {
 										},
 										{
 											id: 'qb1-q2-mca',
-											type: 'ObojoboDraft.Chunks.MCAssessment',
+											type: 'ObojoboDraft.Chunks.MCInteraction',
 											content: {
 												responseType: 'pick-one'
 											},
 											children: [
 												{
 													id: 'qb1-q2-mca-mc1',
-													type: 'ObojoboDraft.Chunks.MCAssessment.MCChoice',
+													type: 'ObojoboDraft.Chunks.MCInteraction.MCChoice',
 													content: {
 														score: 100
 													},
 													children: [
 														{
 															id: 'qb1-q2-mca-mc1-ans',
-															type: 'ObojoboDraft.Chunks.MCAssessment.MCAnswer',
+															type: 'ObojoboDraft.Chunks.MCInteraction.MCAnswer',
 															content: {},
 															children: [
 																{
@@ -230,14 +230,14 @@ let getAttemptStartServerResponse = () => {
 												},
 												{
 													id: 'qb1-q2-mca-mc2',
-													type: 'ObojoboDraft.Chunks.MCAssessment.MCChoice',
+													type: 'ObojoboDraft.Chunks.MCInteraction.MCChoice',
 													content: {
 														score: 0
 													},
 													children: [
 														{
 															id: 'qb1-q2-mca-mc2-ans',
-															type: 'ObojoboDraft.Chunks.MCAssessment.MCAnswer',
+															type: 'ObojoboDraft.Chunks.MCInteraction.MCAnswer',
 															content: {},
 															children: [
 																{
@@ -295,21 +295,21 @@ let getAttemptStartServerResponse = () => {
 										},
 										{
 											id: 'qb2.q1-mca',
-											type: 'ObojoboDraft.Chunks.MCAssessment',
+											type: 'ObojoboDraft.Chunks.MCInteraction',
 											content: {
 												responseType: 'pick-one'
 											},
 											children: [
 												{
 													id: 'qb2.q1-mca-mc1',
-													type: 'ObojoboDraft.Chunks.MCAssessment.MCChoice',
+													type: 'ObojoboDraft.Chunks.MCInteraction.MCChoice',
 													content: {
 														score: 100
 													},
 													children: [
 														{
 															id: 'qb2.q1-mca-mc1-ans',
-															type: 'ObojoboDraft.Chunks.MCAssessment.MCAnswer',
+															type: 'ObojoboDraft.Chunks.MCInteraction.MCAnswer',
 															content: {},
 															children: [
 																{
@@ -334,14 +334,14 @@ let getAttemptStartServerResponse = () => {
 												},
 												{
 													id: 'qb2.q1-mca-mc2',
-													type: 'ObojoboDraft.Chunks.MCAssessment.MCChoice',
+													type: 'ObojoboDraft.Chunks.MCInteraction.MCChoice',
 													content: {
 														score: 0
 													},
 													children: [
 														{
 															id: 'qb2.q1-mca-mc2-ans',
-															type: 'ObojoboDraft.Chunks.MCAssessment.MCAnswer',
+															type: 'ObojoboDraft.Chunks.MCInteraction.MCAnswer',
 															content: {},
 															children: [
 																{
@@ -392,21 +392,21 @@ let getAttemptStartServerResponse = () => {
 										},
 										{
 											id: 'qb2.q2-mca',
-											type: 'ObojoboDraft.Chunks.MCAssessment',
+											type: 'ObojoboDraft.Chunks.MCInteraction',
 											content: {
 												responseType: 'pick-one'
 											},
 											children: [
 												{
 													id: 'qb2.q2-mca-mc1',
-													type: 'ObojoboDraft.Chunks.MCAssessment.MCChoice',
+													type: 'ObojoboDraft.Chunks.MCInteraction.MCChoice',
 													content: {
 														score: 100
 													},
 													children: [
 														{
 															id: 'qb2.q2-mca-mc1-ans',
-															type: 'ObojoboDraft.Chunks.MCAssessment.MCAnswer',
+															type: 'ObojoboDraft.Chunks.MCInteraction.MCAnswer',
 															content: {},
 															children: [
 																{
@@ -431,14 +431,14 @@ let getAttemptStartServerResponse = () => {
 												},
 												{
 													id: 'qb2.q2-mca-mc2',
-													type: 'ObojoboDraft.Chunks.MCAssessment.MCChoice',
+													type: 'ObojoboDraft.Chunks.MCInteraction.MCChoice',
 													content: {
 														score: 0
 													},
 													children: [
 														{
 															id: 'qb2.q2-mca-mc2-ans',
-															type: 'ObojoboDraft.Chunks.MCAssessment.MCAnswer',
+															type: 'ObojoboDraft.Chunks.MCInteraction.MCAnswer',
 															content: {},
 															children: [
 																{
@@ -493,21 +493,21 @@ let getAttemptStartServerResponse = () => {
 							},
 							{
 								id: 'qb1-q1-mca',
-								type: 'ObojoboDraft.Chunks.MCAssessment',
+								type: 'ObojoboDraft.Chunks.MCInteraction',
 								content: {
 									responseType: 'pick-one'
 								},
 								children: [
 									{
 										id: 'qb1-q1-mca-mc1',
-										type: 'ObojoboDraft.Chunks.MCAssessment.MCChoice',
+										type: 'ObojoboDraft.Chunks.MCInteraction.MCChoice',
 										content: {
 											score: 100
 										},
 										children: [
 											{
 												id: 'qb1-q1-mca-mc1-ans',
-												type: 'ObojoboDraft.Chunks.MCAssessment.MCAnswer',
+												type: 'ObojoboDraft.Chunks.MCInteraction.MCAnswer',
 												content: {},
 												children: [
 													{
@@ -532,14 +532,14 @@ let getAttemptStartServerResponse = () => {
 									},
 									{
 										id: 'qb1-q1-mca-mc2',
-										type: 'ObojoboDraft.Chunks.MCAssessment.MCChoice',
+										type: 'ObojoboDraft.Chunks.MCInteraction.MCChoice',
 										content: {
 											score: 0
 										},
 										children: [
 											{
 												id: 'qb1-q1-mca-mc2-ans',
-												type: 'ObojoboDraft.Chunks.MCAssessment.MCAnswer',
+												type: 'ObojoboDraft.Chunks.MCInteraction.MCAnswer',
 												content: {},
 												children: [
 													{
@@ -562,7 +562,7 @@ let getAttemptStartServerResponse = () => {
 											},
 											{
 												id: 'qb1-q1-mca-mc2-fb',
-												type: 'ObojoboDraft.Chunks.MCAssessment.MCFeedback',
+												type: 'ObojoboDraft.Chunks.MCInteraction.MCFeedback',
 												content: {},
 												children: [
 													{
