@@ -111,6 +111,51 @@ const caliperEventFactory = (req, host = null, isFromReq = false) => {
 		},
 
 		// Caliper-Spec Properties
+		// type: (type: Term, REQUIRED) Event
+		// action: (type: Term, REQUIRED) Showed | Hid
+		// object: (type: DigitalResource | SoftwareApplication, REQUIRED) Viewer IRI of the element
+		// actor: (type: Person, REQUIRED) Current user
+		createNavigationShowedHidEvent: obj => {
+			let required = ['draftId', 'showed']
+			validateCaliperEvent({ required }, obj, ACTOR_USER)
+
+			let options = assignCaliperOptions(obj)
+
+			let { actor, draftId, showed, extensions } = obj
+			let caliperEvent = createEvent(Event, actor, IRI, options)
+
+			let ACTION = showed ? 'Showed' : 'Hid'
+
+			caliperEvent.setAction(ACTION)
+			caliperEvent.setObject(IRI.getViewerClientIRI(draftId, 'nav'))
+			Object.assign(caliperEvent.extensions, extensions)
+
+			return updateEventToVersion1_1(caliperEvent)
+		},
+
+		// Caliper-Spec Properties
+		// type: (type: Term, REQUIRED) Event
+		// action: (type: Term, REQUIRED) Activated | Deactivated
+		// object: (type: DigitalResource | SoftwareApplication, REQUIRED) Viewer IRI of the element
+		// actor: (type: Person, REQUIRED) Current user
+		createNavigationActivatedDeactivatedEvent: obj => {
+			let required = ['draftId', 'activated']
+			validateCaliperEvent({ required }, obj, ACTOR_VIEWER_CLIENT)
+
+			let options = assignCaliperOptions(obj)
+
+			let { actor, draftId, activated, extensions } = obj
+			let caliperEvent = createEvent(Event, actor, IRI, options)
+
+			let ACTION = activated ? 'Activated' : 'Deactivated'
+
+			caliperEvent.setAction(ACTION)
+			caliperEvent.setObject(IRI.getViewerClientIRI(draftId, 'nav'))
+			Object.assign(caliperEvent.extensions, extensions)
+			return updateEventToVersion1_1(caliperEvent)
+		},
+
+		// Caliper-Spec Properties
 		// type: (type: Term, REQUIRED) ViewEvent
 		// action: (type: Term, REQUIRED) Viewed
 		// object: (type: DigitalResource, REQUIRED) View IRI of the item being viewed

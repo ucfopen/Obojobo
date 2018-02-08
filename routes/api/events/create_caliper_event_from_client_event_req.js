@@ -39,6 +39,39 @@ module.exports = req => {
 				}
 			})
 
+		case 'nav:open':
+		case 'nav:close':
+		case 'nav:toggle': {
+			let navType = clientEvent.action.split(':')[1]
+			return caliperEvents.createNavigationShowedHidEvent({
+				actor: actorFromType(ACTOR_USER),
+				draftId: clientEvent.draft_id,
+				showed: navType === 'toggle' ? clientEvent.payload.open : navType === 'open' ? true : false,
+				isPreviewMode,
+				sessionIds,
+				extensions: {
+					navType,
+					internalName: clientEvent.action
+				}
+			})
+		}
+
+		case 'nav:lock':
+		case 'nav:unlock': {
+			let navType = clientEvent.action.split(':')[1]
+			return caliperEvents.createNavigationActivatedDeactivatedEvent({
+				actor: actorFromType(ACTOR_VIEWER_CLIENT),
+				draftId: clientEvent.draft_id,
+				activated: navType === 'unlock' ? true : false,
+				isPreviewMode,
+				sessionIds,
+				extensions: {
+					navType,
+					internalName: clientEvent.action
+				}
+			})
+		}
+
 		case 'question:view':
 			return caliperEvents.createViewEvent({
 				actor: actorFromType(ACTOR_USER),
