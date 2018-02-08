@@ -1382,29 +1382,25 @@
 								}
 							},
 							'nav:lock': function navLock(payload) {
-								var updatedState = { locked: true }
 								_apiUtil2.default.postEvent(OboModel.getRoot(), 'nav:lock', '1.0.0')
-								_this.setAndTrigger(updatedState)
+								return _this.setAndTrigger({ locked: true })
 							},
 							'nav:unlock': function navUnlock(payload) {
-								var updatedState = { locked: false }
 								_apiUtil2.default.postEvent(OboModel.getRoot(), 'nav:unlock', '1.0.0')
-								_this.setAndTrigger(updatedState)
+								return _this.setAndTrigger({ locked: false })
 							},
 							'nav:close': function navClose(payload) {
-								var updatedState = { open: false }
 								_apiUtil2.default.postEvent(OboModel.getRoot(), 'nav:close', '1.0.0')
-								_this.setAndTrigger(updatedState)
+								return _this.setAndTrigger({ open: false })
 							},
 							'nav:open': function navOpen(payload) {
-								var updatedState = { open: true }
 								_apiUtil2.default.postEvent(OboModel.getRoot(), 'nav:open', '1.0.0')
-								_this.setAndTrigger(updatedState)
+								return _this.setAndTrigger({ open: true })
 							},
 							'nav:toggle': function navToggle(payload) {
 								var updatedState = { open: !_this.state.open }
 								_apiUtil2.default.postEvent(OboModel.getRoot(), 'nav:toggle', '1.0.0', updatedState)
-								_this.setAndTrigger(updatedState)
+								return _this.setAndTrigger(updatedState)
 							},
 							'nav:openExternalLink': function navOpenExternalLink(payload) {
 								window.open(payload.value.url)
@@ -1451,8 +1447,8 @@
 								itemsByFullPath: {},
 								navTargetHistory: [],
 								navTargetId: null,
-								locked: viewState['nav:isLocked'] != null ? viewState['nav:isLocked'] : false,
-								open: viewState['nav:isOpen'] != null ? viewState['nav:isOpen'] : true
+								locked: viewState['nav:isLocked'] != null ? viewState['nav:isLocked'].value : false,
+								open: viewState['nav:isOpen'] != null ? viewState['nav:isOpen'].value : true
 							}
 
 							this.buildMenu(model)
@@ -5980,8 +5976,8 @@
 						}
 					},
 					{
-						key: 'hideNav',
-						value: function hideNav() {
+						key: 'toggleNav',
+						value: function toggleNav() {
 							return _navUtil2.default.toggle()
 						}
 					},
@@ -6045,7 +6041,7 @@
 									'button',
 									{
 										className: 'toggle-button',
-										onClick: this.hideNav.bind(this),
+										onClick: this.toggleNav.bind(this),
 										onMouseOver: this.onMouseOver.bind(this),
 										onMouseOut: this.onMouseOut.bind(this),
 										style: {

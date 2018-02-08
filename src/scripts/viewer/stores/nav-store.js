@@ -63,29 +63,25 @@ class NavStore extends Store {
 					}
 				},
 				'nav:lock': payload => {
-					let updatedState = { locked: true }
 					APIUtil.postEvent(OboModel.getRoot(), 'nav:lock', '1.0.0')
-					this.setAndTrigger(updatedState)
+					return this.setAndTrigger({ locked: true })
 				},
 				'nav:unlock': payload => {
-					let updatedState = { locked: false }
 					APIUtil.postEvent(OboModel.getRoot(), 'nav:unlock', '1.0.0')
-					this.setAndTrigger(updatedState)
+					return this.setAndTrigger({ locked: false })
 				},
 				'nav:close': payload => {
-					let updatedState = { open: false }
 					APIUtil.postEvent(OboModel.getRoot(), 'nav:close', '1.0.0')
-					this.setAndTrigger(updatedState)
+					return this.setAndTrigger({ open: false })
 				},
 				'nav:open': payload => {
-					let updatedState = { open: true }
 					APIUtil.postEvent(OboModel.getRoot(), 'nav:open', '1.0.0')
-					this.setAndTrigger(updatedState)
+					return this.setAndTrigger({ open: true })
 				},
 				'nav:toggle': payload => {
 					let updatedState = { open: !this.state.open }
 					APIUtil.postEvent(OboModel.getRoot(), 'nav:toggle', '1.0.0', updatedState)
-					this.setAndTrigger(updatedState)
+					return this.setAndTrigger(updatedState)
 				},
 				'nav:openExternalLink': payload => {
 					window.open(payload.value.url)
@@ -122,8 +118,8 @@ class NavStore extends Store {
 			itemsByFullPath: {},
 			navTargetHistory: [],
 			navTargetId: null,
-			locked: viewState['nav:isLocked'] != null ? viewState['nav:isLocked'] : false,
-			open: viewState['nav:isOpen'] != null ? viewState['nav:isOpen'] : true
+			locked: viewState['nav:isLocked'] != null ? viewState['nav:isLocked'].value : false,
+			open: viewState['nav:isOpen'] != null ? viewState['nav:isOpen'].value : true
 		}
 
 		this.buildMenu(model)
