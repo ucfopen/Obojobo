@@ -500,6 +500,12 @@ int Fibonacci(int n)
 					</Page>
 				</scoreAction>
 			</scoreActions>
+			<rubric type="pass-fail" passingAttemptScore="80" passingResult="100" failingResult="0" failingLastAttemptResult="$highest_attempt_score">
+				<mods>
+					<mod attemptCondition="1" passCondition="true" reward="5" />
+					<mod attemptCondition="2" passCondition="true" reward="2" />
+				</mods>
+			</rubric>
 			<triggers>
 				<trigger type="onStartAttempt">
 					<actions>
