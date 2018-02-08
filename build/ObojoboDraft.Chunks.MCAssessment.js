@@ -726,6 +726,7 @@
 				},
 				toJSON: function toJSON(model, json) {
 					json.content.responseType = model.modelState.responseType
+					json.content.shuffle = model.modelState.shuffle
 				}
 			}
 

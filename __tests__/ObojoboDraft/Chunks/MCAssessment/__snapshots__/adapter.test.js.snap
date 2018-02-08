@@ -18,10 +18,29 @@ Object {
 }
 `;
 
+exports[`MCAssessment adapter can be constructed WITHOUT responseType 1`] = `
+Object {
+  "modelState": Object {
+    "responseType": "",
+    "shuffle": true,
+  },
+}
+`;
+
+exports[`MCAssessment adapter can be constructed WITHOUT shuffle 1`] = `
+Object {
+  "modelState": Object {
+    "responseType": "pick-one",
+    "shuffle": true,
+  },
+}
+`;
+
 exports[`MCAssessment adapter can convert to JSON 1`] = `
 Object {
   "content": Object {
     "responseType": "pick-one",
+    "shuffle": true,
   },
 }
 `;
