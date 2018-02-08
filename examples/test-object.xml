@@ -86,7 +86,7 @@ int Fibonacci(int n)
 				<p>This question is a <b>pick-one-multiple-correct</b> type question with feedback and an included <b>solution</b>:</p>
 				<Question id="pq1" title="A custom question title">
 					<h1>Which equation describes horizontal displacement of projectile motion?</h1>
-					<MCAssessment id="pq1.mca" responseType="pick-one-multiple-correct">
+					<MCInteraction id="pq1.mca" responseType="pick-one-multiple-correct">
 						<MCChoice id="pq1-mca-mc1" score="100">
 							<MCAnswer id="pq1-mca-mc1-ans">
 								<MathEquation latex="x=v_xt" align="left" />
@@ -109,7 +109,7 @@ int Fibonacci(int n)
 								<p>The <latex>a_x</latex> term representing horizontal acceleration is always 0 so this equation is simply <latex>x = 0</latex>.</p>
 							</MCFeedback>
 						</MCChoice>
-					</MCAssessment>
+					</MCInteraction>
 					<solution>
 						<Page>
 							<p>Here is an example explanation. Let the projectile be launched with an initial velocity v_0 which can be expressed as the sum of horizontal and vertical components as follows:</p>
@@ -130,7 +130,7 @@ int Fibonacci(int n)
 						<li>Here is a list</li>
 						<li>With two items</li>
 					</ol>
-					<MCAssessment id="pq2-mca" responseType="pick-all">
+					<MCInteraction id="pq2-mca" responseType="pick-all">
 						<MCChoice id="pq2-mca-mc1" score="100">
 							<MCAnswer id="pq2-mca-mc1-ans">
 								<p>This is a correct answer choice</p>
@@ -155,12 +155,12 @@ int Fibonacci(int n)
 								<p>Nope!</p>
 							</MCFeedback>
 						</MCChoice>
-					</MCAssessment>
+					</MCInteraction>
 				</Question>
 				<p>Finally here is a <b>pick-one</b> type question:</p>
 				<Question id="pq3">
 					<p>What is 2+2 = ?</p>
-					<MCAssessment id="pq3-mca" responseType="pick-one">
+					<MCInteraction id="pq3-mca" responseType="pick-one">
 						<MCChoice id="pq3-mca-mc1" score="0">
 							<MCAnswer id="pq3-mca-mc1-ans">
 								<p>2</p>
@@ -171,7 +171,7 @@ int Fibonacci(int n)
 								<p>4</p>
 							</MCAnswer>
 						</MCChoice>
-					</MCAssessment>
+					</MCInteraction>
 				</Question>
 				<h2>HTML</h2>
 				<p>In general HTML usage is not recommended since Obojobo cannot easily parse or understand HTML content and text selection is not accurate. However HTML allows you to do things which are not possible with standard Obojobo components.</p>
@@ -398,7 +398,7 @@ int Fibonacci(int n)
 				<QuestionBank id="qb1" choose="1" select="sequential">
 					<Question id="qb1.q1">
 						<p>Question Bank 1 Question 1 - This is the first question you'll see</p>
-						<MCAssessment id="qb1-q1-mca" responseType="pick-one">
+						<MCInteraction id="qb1-q1-mca" responseType="pick-one">
 							<MCChoice id="qb1-q1-mca-mc1" score="100">
 								<MCAnswer id="qb1-q1-mca-mc1-ans">
 									<p>Correct</p>
@@ -409,11 +409,11 @@ int Fibonacci(int n)
 									<p>Incorrect</p>
 								</MCAnswer>
 							</MCChoice>
-						</MCAssessment>
+						</MCInteraction>
 					</Question>
 					<Question id="qb1.q2">
 						<p>Question Bank 1 Question 2 - This is the fourth question you'll see</p>
-						<MCAssessment id="qb1.q2.mca" responseType="pick-one">
+						<MCInteraction id="qb1.q2.mca" responseType="pick-one">
 							<MCChoice id="qb1.q2-mca-mc1" score="100">
 								<MCAnswer id="qb1.q2-mca-mc1-ans">
 									<p>Correct</p>
@@ -424,13 +424,13 @@ int Fibonacci(int n)
 									<p>Incorrect</p>
 								</MCAnswer>
 							</MCChoice>
-						</MCAssessment>
+						</MCInteraction>
 					</Question>
 				</QuestionBank>
 				<QuestionBank id="qb2">
 					<Question id="qb2.q1">
 						<p>Question Bank 2 Question 1 - This is the second question you'll see</p>
-						<MCAssessment id="qb2-q1-mca" responseType="pick-one">
+						<MCInteraction id="qb2-q1-mca" responseType="pick-one">
 							<MCChoice id="qb2-q1-mca-mc1" score="100">
 								<MCAnswer id="qb2-q1-mca-mc1-ans">
 									<p>Correct</p>
@@ -441,11 +441,11 @@ int Fibonacci(int n)
 									<p>Incorrect</p>
 								</MCAnswer>
 							</MCChoice>
-						</MCAssessment>
+						</MCInteraction>
 					</Question>
 					<Question id="qb2.q2">
 						<p>Question Bank 2 Question 2 - This is the third question you'll see</p>
-						<MCAssessment id="qb2.q2.mca" responseType="pick-one">
+						<MCInteraction id="qb2.q2.mca" responseType="pick-one">
 							<MCChoice id="qb2.q2-mca-mc1" score="100">
 								<MCAnswer id="qb2.q2-mca-mc1-ans">
 									<p>Correct</p>
@@ -456,7 +456,7 @@ int Fibonacci(int n)
 									<p>Incorrect</p>
 								</MCAnswer>
 							</MCChoice>
-						</MCAssessment>
+						</MCInteraction>
 					</Question>
 				</QuestionBank>
 			</QuestionBank>

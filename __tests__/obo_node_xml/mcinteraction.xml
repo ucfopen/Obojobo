@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <ObjoboDraftDoc>
     <Module>
-        <MCAssessment responseType="pick-one">
+        <MCInteraction responseType="pick-one">
             <MCChoice score="100">
                 <MCAnswer>
                     <MathEquation latex="x=v_xt" align="left" />
@@ -12,8 +12,8 @@
                     <p>This is a test question.</p>
                 </MCAnswer>
             </MCChoice>
-        </MCAssessment>
-        <MCAssessment responseType="pick-one-multiple-correct">
+        </MCInteraction>
+        <MCInteraction responseType="pick-one-multiple-correct">
             <MCChoice score="100">
                 <MCAnswer>
                     <MathEquation latex="x=v_xt" align="right" />
@@ -34,8 +34,8 @@
                     <p>This is a test question.</p>
                 </MCAnswer>
             </MCChoice>
-        </MCAssessment>
-        <MCAssessment responseType="pick-all">
+        </MCInteraction>
+        <MCInteraction responseType="pick-all">
             <MCChoice score="100">
                 <MCAnswer>
                     <MathEquation latex="x=v_xt" align="right" />
@@ -56,6 +56,6 @@
                     <p>This is a test question.</p>
                 </MCAnswer>
             </MCChoice>
-        </MCAssessment>
+        </MCInteraction>
     </Module>
 </ObjoboDraftDoc>

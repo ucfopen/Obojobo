@@ -2,7 +2,7 @@
 <ObojoboDraftDoc>
     <Question>
         <p>test</p>
-        <MCAssessment responseType="pick-one">
+        <MCInteraction responseType="pick-one">
             <MCChoice score="100">
                 <MCAnswer>
                     <p>Correct</p>
@@ -16,7 +16,7 @@
                     <p>Incorrect</p>
                 </MCAnswer>
             </MCChoice>
-        </MCAssessment>
+        </MCInteraction>
         <solution>
             <Page>
                 <p>This is a description of the solution to the problem.</p>

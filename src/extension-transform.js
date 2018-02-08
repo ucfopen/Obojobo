@@ -112,7 +112,7 @@ let extensionTransform = (node) => {
 
 				question.elements.push({
 					type: 'element',
-					name: 'ObojoboDraft.Chunks.MCAssessment',
+					name: 'ObojoboDraft.Chunks.MCInteraction',
 					elements: choicegroup.elements.map( (choiceEl) => {
 						let choicehint
 						choiceEl.elements.forEach( (childEl, index) => {
@@ -125,14 +125,14 @@ let extensionTransform = (node) => {
 
 						let choice = {
 							type: 'element',
-							name: 'ObojoboDraft.Chunks.MCAssessment.MCChoice',
+							name: 'ObojoboDraft.Chunks.MCInteraction.MCChoice',
 							attributes: {
 								score: choiceEl.attributes.correct === 'true' ? 100 : 0
 							},
 							elements: [
 								{
 									type: 'element',
-									name: 'ObojoboDraft.Chunks.MCAssessment.MCAnswer',
+									name: 'ObojoboDraft.Chunks.MCInteraction.MCAnswer',
 									elements: [
 										{
 											type: 'element',
@@ -154,7 +154,7 @@ let extensionTransform = (node) => {
 
 							choice.elements.push({
 								type: 'element',
-								name: 'ObojoboDraft.Chunks.MCAssessment.MCFeedback',
+								name: 'ObojoboDraft.Chunks.MCInteraction.MCFeedback',
 								elements: [
 									{
 										type: 'element',
