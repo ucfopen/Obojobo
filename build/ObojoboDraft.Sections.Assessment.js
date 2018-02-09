@@ -350,7 +350,6 @@
 							return React.createElement(
 								Dialog,
 								{
-									width: '32rem',
 									buttons: [
 										{
 											value: 'Submit as incomplete',
@@ -907,9 +906,11 @@
 					{
 						key: 'isAttemptComplete',
 						value: function isAttemptComplete() {
-							return true
-							//@TODO: isCurrentAttemptComplete not functional, returning true which was the status quo for the pilot
-							// return AssessmentUtil.isCurrentAttemptComplete(this.props.moduleData.assessmentState, this.props.moduleData.questionState, this.props.model);
+							return AssessmentUtil.isCurrentAttemptComplete(
+								this.props.moduleData.assessmentState,
+								this.props.moduleData.questionState,
+								this.props.model
+							)
 						}
 					},
 					{
@@ -927,7 +928,7 @@
 							if (!this.isAttemptComplete()) {
 								ModalUtil.show(
 									React.createElement(_attemptIncompleteDialog2.default, {
-										onSubmit: this.endAttempt
+										onSubmit: this.endAttempt.bind(this)
 									})
 								)
 								return

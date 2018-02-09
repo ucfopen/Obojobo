@@ -1026,9 +1026,9 @@
 						value: { id: id }
 					})
 				},
-				hideExplanation: function hideExplanation(id, asSystem) {
+				hideExplanation: function hideExplanation(id, actor) {
 					return Dispatcher.trigger('question:hideExplanation', {
-						value: { id: id }
+						value: { id: id, actor: actor }
 					})
 				},
 				viewQuestion: function viewQuestion(id) {
@@ -2648,8 +2648,9 @@
 						'question:hideExplanation': function questionHideExplanation(payload) {
 							var root = OboModel.models[payload.value.id].getRoot()
 
-							_apiUtil2.default.postEvent(root, 'question:hideExplanation', '1.0.0', {
-								questionId: payload.value.id
+							_apiUtil2.default.postEvent(root, 'question:hideExplanation', '1.1.0', {
+								questionId: payload.value.id,
+								actor: payload.value.actor
 							})
 
 							_questionUtil2.default.clearData(payload.value.id, 'showingExplanation')
@@ -2714,7 +2715,7 @@
 							})
 
 							if (_questionUtil2.default.isShowingExplanation(_this.state, questionModel)) {
-								_questionUtil2.default.hideExplanation(questionId, true)
+								_questionUtil2.default.hideExplanation(questionId, 'viewerClient')
 							}
 
 							_scoreUtil2.default.clearScore(questionId, payload.value.context) // should trigger change
@@ -3043,25 +3044,23 @@
 				// 	return assessment.attempts[assessment.attempts.length - 1];
 				// },
 
-				// isCurrentAttemptComplete(assessmentState, questionState, model) {
-				// 	console.log(
-				// 		'@TODO: Function not working, responses stored by responseId, not by questionId. Do not use this method.'
-				// 	)
-				// 	let current = AssessmentUtil.getCurrentAttemptForModel(assessmentState, model)
-				// 	if (!current) {
-				// 		return null
-				// 	}
-
-				// 	let models = model.children.at(1).children.models
-
-				// 	return (
-				// 		models.filter(function(questionModel) {
-				// 			let resp = QuestionUtil.getResponse(questionState, questionModel)
-				// 			return resp && resp.set === true
-				// 		}).length === models.length
-				// 	)
-				// },
-
+				isCurrentAttemptComplete: function isCurrentAttemptComplete(
+					assessmentState,
+					questionState,
+					model
+				) {
+					var current = AssessmentUtil.getCurrentAttemptForModel(assessmentState, model)
+					if (!current) {
+						return null
+					}
+					var models = model.children.at(1).children.models
+					return (
+						models.filter(function(questionModel) {
+							var resp = _questionUtil2.default.getResponse(questionState, questionModel)
+							return resp
+						}).length === models.length
+					)
+				},
 				getNumberOfAttemptsCompletedForModel: function getNumberOfAttemptsCompletedForModel(
 					state,
 					model
@@ -6693,7 +6692,7 @@
 						value: function onIdle() {
 							var _this3 = this
 
-							this.lastActiveEpoch = this.refs.idleTimer.getLastActiveTime()
+							this.lastActiveEpoch = new Date(this.refs.idleTimer.getLastActiveTime())
 
 							_apiUtil2.default
 								.postEvent(this.state.model, 'viewer:inactive', '1.0.0', {

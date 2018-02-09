@@ -1,7 +1,7 @@
 let DraftNode = oboRequire('models/draft_node')
 // import DraftNode from '../../../models/draft_node'
 
-class MCChoice extends DraftNode {
+class Question extends DraftNode {
 	constructor(draftTree, node, initFn) {
 		super(draftTree, node, initFn)
 		this.registerEvents({
@@ -37,4 +37,4 @@ class MCChoice extends DraftNode {
 	}
 }
 
-module.exports = MCChoice
+module.exports = Question
