@@ -1,7 +1,7 @@
 let db = oboRequire('db')
 let DraftModel = oboRequire('models/draft')
 let Assessment = require('./assessment')
-let AssessmentScoreConditions = require('./assessment-score-conditions')
+let AssessmentRubric = require('./assessment-rubric')
 let createCaliperEvent = oboRequire('routes/api/events/create_caliper_event') //@TODO
 let insertEvent = oboRequire('insert_event')
 let lti = oboRequire('lti')
@@ -204,23 +204,30 @@ let calculateScores = (assessmentModel, attemptHistory, scoreInfo) => {
 		})
 	)
 
-	let asc = new AssessmentScoreConditions(assessmentModel.node.content.scoreConditions)
-	let assessmentScore = asc.getAssessmentScore(assessmentModel.node.content.attempts, allScores)
+	let rubric = new AssessmentRubric(assessmentModel.node.content.rubric)
+	let assessmentScoreDetails = rubric.getHighestAssessmentScoreItem(
+		assessmentModel.node.content.attempts,
+		allScores
+	)
 
 	return {
-		attemptScore: attemptScore,
-		assessmentScore: assessmentScore,
-		questionScores: questionScores
+		attempt: {
+			attemptScore,
+			questionScores
+		},
+		assessmentScoreDetails
 	}
 }
 
 let completeAttempt = (assessmentId, attemptId, userId, draftId, calculatedScores, preview) => {
+	console.log('CA', calculatedScores.attempt)
 	return Assessment.completeAttempt(
 		assessmentId,
 		attemptId,
 		userId,
 		draftId,
-		calculatedScores,
+		calculatedScores.attempt,
+		calculatedScores.assessmentScoreDetails,
 		preview
 	)
 }

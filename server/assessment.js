@@ -306,7 +306,16 @@ class Assessment extends DraftNode {
 	// @TODO: most things touching the db should end up in models. figure this out
 
 	// Finish an attempt and write a new assessment score record
-	static completeAttempt(assessmentId, attemptId, userId, draftId, calculatedScores, preview) {
+	static completeAttempt(
+		assessmentId,
+		attemptId,
+		userId,
+		draftId,
+		attemptScoreResult,
+		assessmentScoreDetails,
+		preview
+	) {
+		console.log('INS', attemptScoreResult)
 		return db
 			.tx(t => {
 				const q1 = db.one(
@@ -324,13 +333,13 @@ class Assessment extends DraftNode {
 						state,
 						result as "scores"
 				`,
-					{ result: calculatedScores, attemptId: attemptId }
+					{ result: attemptScoreResult, attemptId: attemptId }
 				)
 
 				const q2 = db.one(
 					`
-					INSERT INTO assessment_scores (user_id, draft_id, assessment_id, attempt_id, score, preview)
-					VALUES($[userId], $[draftId], $[assessmentId], $[attemptId], $[score], $[preview])
+					INSERT INTO assessment_scores (user_id, draft_id, assessment_id, attempt_id, score, score_details, preview)
+					VALUES($[userId], $[draftId], $[assessmentId], $[attemptId], $[score], $[scoreDetails], $[preview])
 					RETURNING id
 				`,
 					{
@@ -338,7 +347,8 @@ class Assessment extends DraftNode {
 						draftId,
 						assessmentId,
 						attemptId,
-						score: calculatedScores.assessmentScore,
+						score: assessmentScoreDetails.assessmentModdedScore,
+						scoreDetails: assessmentScoreDetails,
 						preview
 					}
 				)
