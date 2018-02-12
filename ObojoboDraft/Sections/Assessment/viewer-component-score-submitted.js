@@ -4,6 +4,8 @@ import Viewer from 'Viewer'
 const { OboModel } = Common.models
 const { AssessmentUtil } = Viewer.util
 
+import LTIStatus from './lti-status'
+
 const scoreSubmittedView = assessment => {
 	const questionScores = AssessmentUtil.getLastAttemptScoresForModel(
 		assessment.props.moduleData.assessmentState,
@@ -23,6 +25,20 @@ const scoreSubmittedView = assessment => {
 	const scoreAction = assessment.getScoreAction()
 	const numCorrect = AssessmentUtil.getNumCorrect(questionScores)
 
+	let onClickResendScore = () => {
+		console.log('RESEND SCORE!!!!!!!!!!!!!!', APIUtil)
+		AssessmentUtil.resendLTIScore(assessment.model)
+	}
+
+	let ltiState = AssessmentUtil.getLTIStateForModel(
+		assessment.props.moduleData.assessmentState,
+		assessment.props.model
+	)
+	let ltiNetworkState = AssessmentUtil.getLTINetworkStateForModel(
+		assessment.props.moduleData.assessmentState,
+		assessment.props.model
+	)
+
 	let childEl
 
 	if (scoreAction.page != null) {
@@ -40,6 +56,12 @@ const scoreSubmittedView = assessment => {
 
 	return (
 		<div className="score unlock">
+			<LTIStatus
+				ltiState={ltiState}
+				ltiNetworkState={ltiNetworkState}
+				onClickResendScore={onClickResendScore}
+			/>
+
 			<h1>{`Your score is ${Math.round(recentScore)}%`}</h1>
 			{recentScore === highestScore
 				? <h2>This is your highest score</h2>

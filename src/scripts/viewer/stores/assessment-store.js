@@ -5,6 +5,7 @@ import ScoreUtil from '../../viewer/util/score-util'
 import QuestionUtil from '../../viewer/util/question-util'
 import APIUtil from '../../viewer/util/api-util'
 import NavUtil from '../../viewer/util/nav-util'
+import LTINetworkStates from './assessment-store/lti-network-states'
 
 let { Store } = Common.flux
 let { Dispatcher } = Common.flux
@@ -19,7 +20,8 @@ let getNewAssessmentObject = assessmentId => ({
 	currentResponses: [],
 	attempts: [],
 	score: null,
-	lti: null
+	lti: null,
+	ltiNetworkState: LTINetworkStates.IDLE
 })
 
 class AssessmentStore extends Store {
@@ -33,6 +35,10 @@ class AssessmentStore extends Store {
 
 		Dispatcher.on('assessment:endAttempt', payload => {
 			this.tryEndAttempt(payload.value.id, payload.value.hasAssessmentReview)
+		})
+
+		Dispatcher.on('assessment:resendLTIScore', payload => {
+			this.tryResendLTIScore(payload.value.id)
 		})
 
 		Dispatcher.on('question:setResponse', payload => {
@@ -278,6 +284,45 @@ class AssessmentStore extends Store {
 				}
 			})
 		}
+	}
+
+	tryResendLTIScore(assessmentId) {
+		console.log('TRLS', assessmentId)
+
+		let assessmentModel = OboModel.models[assessmentId]
+		let assessment = AssessmentUtil.getAssessmentForModel(this.state, assessmentModel)
+
+		console.log('RLS', assessmentId, assessment)
+
+		assessment.ltiNetworkState = LTINetworkStates.AWAITING_SEND_ASSESSMENT_SCORE_RESPONSE
+		this.triggerChange()
+
+		return APIUtil.resendLTIAssessmentScore(assessmentModel.getRoot(), assessmentModel)
+			.then(res => {
+				assessment.ltiNetworkState = LTINetworkStates.IDLE
+
+				if (res.status === 'error') {
+					return ErrorUtil.errorResponse(res)
+				}
+
+				console.log('assessmentModelModel', assessmentModel)
+
+				this.updateLTIScore(
+					AssessmentUtil.getAssessmentForModel(this.state, assessmentModel),
+					res.value
+				)
+				return this.triggerChange()
+			})
+			.catch(e => {
+				console.error(e)
+			})
+	}
+
+	updateLTIScore(assessment, updateLTIScoreResp) {
+		console.log('update lti score', updateLTIScoreResp, assessment.lti.status)
+		assessment.lti = updateLTIScoreResp
+		console.log('update lti score 2', assessment.lti.status)
+		// Dispatcher.trigger('assessment:ltiScore')
 	}
 
 	trySetResponse(questionId, response, targetId) {

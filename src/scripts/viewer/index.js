@@ -1,6 +1,7 @@
 import ViewerApp from './components/viewer-app'
 import ScoreStore from './stores/score-store'
 import AssessmentStore from './stores/assessment-store'
+import LTINetworkStates from './stores/assessment-store/lti-network-states'
 import NavStore from './stores/nav-store'
 import QuestionStore from './stores/question-store'
 import AssessmentUtil from './util/assessment-util'
@@ -17,6 +18,9 @@ export default {
 	stores: {
 		ScoreStore: ScoreStore,
 		AssessmentStore: AssessmentStore,
+		assessmentStore: {
+			LTINetworkStates
+		},
 		NavStore: NavStore,
 		QuestionStore: QuestionStore
 	},

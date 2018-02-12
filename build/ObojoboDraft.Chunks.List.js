@@ -72,7 +72,7 @@
 	/******/
 	/******/ /******/ __webpack_require__.p = 'build/' // Load entry module and return exports
 	/******/
-	/******/ /******/ return __webpack_require__((__webpack_require__.s = 168))
+	/******/ /******/ return __webpack_require__((__webpack_require__.s = 170))
 	/******/
 })(
 	/************************************************************************/
@@ -83,14 +83,8 @@
 			/***/
 		},
 
-		/***/ /***/ 145: function(module, exports) {
+		/***/ /***/ 146: function(module, exports) {
 			// removed by extract-text-webpack-plugin
-			/***/
-		},
-
-		/***/ /***/ 168: function(module, exports, __webpack_require__) {
-			module.exports = __webpack_require__(32)
-
 			/***/
 		},
 
@@ -309,6 +303,12 @@
 			/***/
 		},
 
+		/***/ /***/ 170: function(module, exports, __webpack_require__) {
+			module.exports = __webpack_require__(32)
+
+			/***/
+		},
+
 		/***/ /***/ 32: function(module, exports, __webpack_require__) {
 			'use strict'
 
@@ -456,7 +456,7 @@
 				}
 			})()
 
-			__webpack_require__(145)
+			__webpack_require__(146)
 
 			var _listStyles = __webpack_require__(17)
 

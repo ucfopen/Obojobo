@@ -12,7 +12,11 @@ let { ModalUtil } = Common.util
 let { AssessmentUtil } = Viewer.util
 let { NavUtil } = Viewer.util
 
+//@TODO
+let APIUtil = Viewer.util.APIUtil
+
 import AttemptIncompleteDialog from './attempt-incomplete-dialog'
+
 import untestedView from './viewer-component-untested'
 import assessmentReviewView from './viewer-component-review'
 import scoreSubmittedView from './viewer-component-score-submitted'
@@ -88,8 +92,6 @@ export default class Assessment extends React.Component {
 		return this.endAttempt()
 	}
 
-	onClickResendScore() {}
-
 	endAttempt() {
 		return AssessmentUtil.endAttempt(this.props.model, this.props.model.modelState.review)
 	}
@@ -136,10 +138,6 @@ export default class Assessment extends React.Component {
 			this.props.model
 		)
 		let assessmentScore = AssessmentUtil.getAssessmentScoreForModel(
-			this.props.moduleData.assessmentState,
-			this.props.model
-		)
-		let ltiStatus = AssessmentUtil.getLTIStatusForModel(
 			this.props.moduleData.assessmentState,
 			this.props.model
 		)

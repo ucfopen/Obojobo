@@ -76,13 +76,21 @@ var AssessmentUtil = {
 	hasAttemptsRemaining(state, model) {
 		return model.modelState.attempts - this.getAssessmentForModel(state, model).attempts.length > 0
 	},
-
-	getLTIStatusForModel(state, model) {
+	getLTIStateForModel(state, model) {
 		let assessment = AssessmentUtil.getAssessmentForModel(state, model)
 		if (!assessment) {
 			return null
 		}
 		return assessment.lti
+	},
+
+	getLTINetworkStateForModel(state, model) {
+		let assessment = AssessmentUtil.getAssessmentForModel(state, model)
+		if (!assessment) {
+			return null
+		}
+
+		return assessment.ltiNetworkState
 	},
 
 	// getLastAttemptForModel(state, model) {
@@ -141,6 +149,14 @@ var AssessmentUtil = {
 			value: {
 				id: model.get('id'),
 				hasAssessmentReview
+			}
+		})
+	},
+
+	resendLTIScore(model) {
+		return Dispatcher.trigger('assessment:resendLTIScore', {
+			value: {
+				id: model.get('id')
 			}
 		})
 	}

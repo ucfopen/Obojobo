@@ -72,7 +72,7 @@
 	/******/
 	/******/ /******/ __webpack_require__.p = 'build/' // Load entry module and return exports
 	/******/
-	/******/ /******/ return __webpack_require__((__webpack_require__.s = 179))
+	/******/ /******/ return __webpack_require__((__webpack_require__.s = 181))
 	/******/
 })(
 	/************************************************************************/
@@ -89,12 +89,17 @@
 			/***/
 		},
 
-		/***/ /***/ 158: function(module, exports) {
+		/***/ /***/ 159: function(module, exports) {
 			// removed by extract-text-webpack-plugin
 			/***/
 		},
 
-		/***/ /***/ 179: function(module, exports, __webpack_require__) {
+		/***/ /***/ 160: function(module, exports) {
+			// removed by extract-text-webpack-plugin
+			/***/
+		},
+
+		/***/ /***/ 181: function(module, exports, __webpack_require__) {
 			module.exports = __webpack_require__(42)
 
 			/***/
@@ -115,7 +120,7 @@
 
 			var _adapter2 = _interopRequireDefault(_adapter)
 
-			var _viewerComponent = __webpack_require__(91)
+			var _viewerComponent = __webpack_require__(92)
 
 			var _viewerComponent2 = _interopRequireDefault(_viewerComponent)
 
@@ -193,7 +198,7 @@
 				value: true
 			})
 
-			var _scoreActions = __webpack_require__(86)
+			var _scoreActions = __webpack_require__(87)
 
 			var _scoreActions2 = _interopRequireDefault(_scoreActions)
 
@@ -405,6 +410,243 @@
 				}
 			})()
 
+			__webpack_require__(159)
+
+			var _Common = __webpack_require__(0)
+
+			var _Common2 = _interopRequireDefault(_Common)
+
+			var _Viewer = __webpack_require__(1)
+
+			var _Viewer2 = _interopRequireDefault(_Viewer)
+
+			function _interopRequireDefault(obj) {
+				return obj && obj.__esModule ? obj : { default: obj }
+			}
+
+			function _classCallCheck(instance, Constructor) {
+				if (!(instance instanceof Constructor)) {
+					throw new TypeError('Cannot call a class as a function')
+				}
+			}
+
+			function _possibleConstructorReturn(self, call) {
+				if (!self) {
+					throw new ReferenceError("this hasn't been initialised - super() hasn't been called")
+				}
+				return call && (typeof call === 'object' || typeof call === 'function') ? call : self
+			}
+
+			function _inherits(subClass, superClass) {
+				if (typeof superClass !== 'function' && superClass !== null) {
+					throw new TypeError(
+						'Super expression must either be null or a function, not ' + typeof superClass
+					)
+				}
+				subClass.prototype = Object.create(superClass && superClass.prototype, {
+					constructor: { value: subClass, enumerable: false, writable: true, configurable: true }
+				})
+				if (superClass)
+					Object.setPrototypeOf
+						? Object.setPrototypeOf(subClass, superClass)
+						: (subClass.__proto__ = superClass)
+			}
+
+			var Button = _Common2.default.components.Button
+
+			var LTINetworkStates = _Viewer2.default.stores.assessmentStore.LTINetworkStates
+
+			var LTIStatus = (function(_React$Component) {
+				_inherits(LTIStatus, _React$Component)
+
+				function LTIStatus() {
+					_classCallCheck(this, LTIStatus)
+
+					var _this = _possibleConstructorReturn(
+						this,
+						(LTIStatus.__proto__ || Object.getPrototypeOf(LTIStatus)).call(this)
+					)
+
+					_this.statusRender = {
+						success: _this.renderSuccess.bind(_this),
+						not_attempted_no_outcome_service_for_launch: _this.renderNoOutcomeService.bind(_this),
+						not_attempted_score_is_null: _this.renderScoreIsNull.bind(_this),
+						error_launch_expired: _this.renderError.bind(_this),
+						error_replace_result_failed: _this.renderError.bind(_this),
+						error_no_launch_found: _this.renderError.bind(_this),
+						error_no_assessment_score_found: _this.renderError.bind(_this),
+						error_no_secret_for_key: _this.renderError.bind(_this),
+						error_score_is_invalid: _this.renderError.bind(_this),
+						error_unexpected: _this.renderError.bind(_this),
+						null: _this.renderError.bind(_this)
+					}
+					return _this
+				}
+
+				_createClass(LTIStatus, [
+					{
+						key: 'onClickResendScore',
+						value: function onClickResendScore() {
+							console.log('RESEND SCORE!!!!!!!!!!!!!!', APIUtil)
+
+							AssessmentUtil.resendLTIScore(this.props.model)
+						}
+					},
+					{
+						key: 'render',
+						value: function render() {
+							var childEl = void 0
+							var ltiState = this.props.ltiState
+							var ltiNetworkState = this.props.ltiNetworkState
+
+							console.log('LTI NET STATE', ltiNetworkState)
+
+							switch (ltiNetworkState) {
+								case LTINetworkStates.AWAITING_SEND_ASSESSMENT_SCORE_RESPONSE:
+								case LTINetworkStates.AWAITING_READ_RESULT_RESPONSE:
+									childEl = this.renderLoading()
+									break
+
+								case LTINetworkStates.IDLE:
+								default:
+									if (!ltiState || ltiState.gradebookStatus === 'ok_no_outcome_service') {
+										childEl = null
+									} else if (ltiState.gradebookStatus === 'ok_gradebook_matches_assessment_score') {
+										childEl = this.renderSynced()
+									} else if (ltiState.gradebookStatus === 'ok_null_score_not_sent') {
+										childEl = this.renderNotPassed()
+									} else {
+										childEl = this.renderStatus(ltiState)
+									}
+
+									break
+							}
+
+							if (childEl === null) return null
+
+							return React.createElement(
+								'div',
+								{ className: 'obojobo-draft--sections--assessment--lti-status' },
+								childEl
+							)
+						}
+					},
+					{
+						key: 'renderLoading',
+						value: function renderLoading() {
+							return React.createElement('div', { className: 'is-loading' }, 'LOADING...')
+						}
+					},
+					{
+						key: 'renderSynced',
+						value: function renderSynced() {
+							return React.createElement('div', { className: 'is-synced' }, 'Your score is synced')
+						}
+					},
+					{
+						key: 'renderNotPassed',
+						value: function renderNotPassed() {
+							return React.createElement('div', { className: 'is-not-passed' }, 'Not passed')
+						}
+					},
+					{
+						key: 'renderStatus',
+						value: function renderStatus(ltiState) {
+							return React.createElement(
+								'div',
+								{ className: 'is-status-' + (ltiState.status || 'null').replace(/_/g, '-') },
+								this.statusRender[ltiState.status]()
+							)
+						}
+					},
+					{
+						key: 'renderSuccess',
+						value: function renderSuccess() {
+							return React.createElement('p', null, 'good')
+						}
+					},
+					{
+						key: 'renderNoOutcomeService',
+						value: function renderNoOutcomeService() {
+							return React.createElement('p', null, 'module item?')
+						}
+					},
+					{
+						key: 'renderScoreIsNull',
+						value: function renderScoreIsNull() {
+							return React.createElement('p', null, 'have not passed')
+						}
+					},
+					{
+						key: 'renderError',
+						value: function renderError() {
+							return React.createElement(
+								'div',
+								null,
+								React.createElement(
+									'h2',
+									null,
+									'There was a problem sending your score to the gradebook.'
+								),
+								React.createElement(
+									'p',
+									null,
+									'Close this assignment, reopen it and then click the button below to resend your score.'
+								),
+								React.createElement(
+									Button,
+									{ onClick: this.props.onClickResendScore },
+									'Resend Score'
+								),
+								React.createElement(
+									'p',
+									null,
+									'If the problem persists try again later - The gradebook may be down temporarily.'
+								),
+								React.createElement(
+									'p',
+									null,
+									'If this still doesn\'t solve the issue contact technical support (error code "',
+									btoa(this.props.ltiState.status),
+									'")'
+								)
+							)
+						}
+					}
+				])
+
+				return LTIStatus
+			})(React.Component)
+
+			exports.default = LTIStatus
+
+			/***/
+		},
+
+		/***/ /***/ 87: function(module, exports, __webpack_require__) {
+			'use strict'
+
+			Object.defineProperty(exports, '__esModule', {
+				value: true
+			})
+
+			var _createClass = (function() {
+				function defineProperties(target, props) {
+					for (var i = 0; i < props.length; i++) {
+						var descriptor = props[i]
+						descriptor.enumerable = descriptor.enumerable || false
+						descriptor.configurable = true
+						if ('value' in descriptor) descriptor.writable = true
+						Object.defineProperty(target, descriptor.key, descriptor)
+					}
+				}
+				return function(Constructor, protoProps, staticProps) {
+					if (protoProps) defineProperties(Constructor.prototype, protoProps)
+					if (staticProps) defineProperties(Constructor, staticProps)
+					return Constructor
+				}
+			})()
+
 			function _classCallCheck(instance, Constructor) {
 				if (!(instance instanceof Constructor)) {
 					throw new TypeError('Cannot call a class as a function')
@@ -481,7 +723,7 @@
 			/***/
 		},
 
-		/***/ /***/ 87: function(module, exports, __webpack_require__) {
+		/***/ /***/ 88: function(module, exports, __webpack_require__) {
 			'use strict'
 
 			Object.defineProperty(exports, '__esModule', {
@@ -559,7 +801,7 @@
 			/***/
 		},
 
-		/***/ /***/ 88: function(module, exports, __webpack_require__) {
+		/***/ /***/ 89: function(module, exports, __webpack_require__) {
 			'use strict'
 
 			Object.defineProperty(exports, '__esModule', {
@@ -573,6 +815,10 @@
 			var _Viewer = __webpack_require__(1)
 
 			var _Viewer2 = _interopRequireDefault(_Viewer)
+
+			var _ltiStatus = __webpack_require__(86)
+
+			var _ltiStatus2 = _interopRequireDefault(_ltiStatus)
 
 			function _interopRequireDefault(obj) {
 				return obj && obj.__esModule ? obj : { default: obj }
@@ -600,6 +846,20 @@
 				var scoreAction = assessment.getScoreAction()
 				var numCorrect = AssessmentUtil.getNumCorrect(questionScores)
 
+				var onClickResendScore = function onClickResendScore() {
+					console.log('RESEND SCORE!!!!!!!!!!!!!!', APIUtil)
+					AssessmentUtil.resendLTIScore(assessment.model)
+				}
+
+				var ltiState = AssessmentUtil.getLTIStateForModel(
+					assessment.props.moduleData.assessmentState,
+					assessment.props.model
+				)
+				var ltiNetworkState = AssessmentUtil.getLTINetworkStateForModel(
+					assessment.props.moduleData.assessmentState,
+					assessment.props.model
+				)
+
 				var childEl = void 0
 
 				if (scoreAction.page != null) {
@@ -617,6 +877,11 @@
 				return React.createElement(
 					'div',
 					{ className: 'score unlock' },
+					React.createElement(_ltiStatus2.default, {
+						ltiState: ltiState,
+						ltiNetworkState: ltiNetworkState,
+						onClickResendScore: onClickResendScore
+					}),
 					React.createElement('h1', null, 'Your score is ' + Math.round(recentScore) + '%'),
 					recentScore === highestScore
 						? React.createElement('h2', null, 'This is your highest score')
@@ -669,7 +934,7 @@
 			/***/
 		},
 
-		/***/ /***/ 89: function(module, exports, __webpack_require__) {
+		/***/ /***/ 90: function(module, exports, __webpack_require__) {
 			'use strict'
 
 			Object.defineProperty(exports, '__esModule', {
@@ -726,7 +991,7 @@
 			/***/
 		},
 
-		/***/ /***/ 90: function(module, exports, __webpack_require__) {
+		/***/ /***/ 91: function(module, exports, __webpack_require__) {
 			'use strict'
 
 			Object.defineProperty(exports, '__esModule', {
@@ -748,7 +1013,7 @@
 			/***/
 		},
 
-		/***/ /***/ 91: function(module, exports, __webpack_require__) {
+		/***/ /***/ 92: function(module, exports, __webpack_require__) {
 			'use strict'
 
 			Object.defineProperty(exports, '__esModule', {
@@ -772,7 +1037,7 @@
 				}
 			})()
 
-			__webpack_require__(158)
+			__webpack_require__(160)
 
 			var _Common = __webpack_require__(0)
 
@@ -786,19 +1051,19 @@
 
 			var _attemptIncompleteDialog2 = _interopRequireDefault(_attemptIncompleteDialog)
 
-			var _viewerComponentUntested = __webpack_require__(90)
+			var _viewerComponentUntested = __webpack_require__(91)
 
 			var _viewerComponentUntested2 = _interopRequireDefault(_viewerComponentUntested)
 
-			var _viewerComponentReview = __webpack_require__(87)
+			var _viewerComponentReview = __webpack_require__(88)
 
 			var _viewerComponentReview2 = _interopRequireDefault(_viewerComponentReview)
 
-			var _viewerComponentScoreSubmitted = __webpack_require__(88)
+			var _viewerComponentScoreSubmitted = __webpack_require__(89)
 
 			var _viewerComponentScoreSubmitted2 = _interopRequireDefault(_viewerComponentScoreSubmitted)
 
-			var _viewerComponentTakingTest = __webpack_require__(89)
+			var _viewerComponentTakingTest = __webpack_require__(90)
 
 			var _viewerComponentTakingTest2 = _interopRequireDefault(_viewerComponentTakingTest)
 
@@ -841,6 +1106,10 @@
 			var ModalUtil = _Common2.default.util.ModalUtil
 			var AssessmentUtil = _Viewer2.default.util.AssessmentUtil
 			var NavUtil = _Viewer2.default.util.NavUtil
+
+			//@TODO
+
+			var APIUtil = _Viewer2.default.util.APIUtil
 
 			var Assessment = (function(_React$Component) {
 				_inherits(Assessment, _React$Component)
@@ -938,10 +1207,6 @@
 						}
 					},
 					{
-						key: 'onClickResendScore',
-						value: function onClickResendScore() {}
-					},
-					{
 						key: 'endAttempt',
 						value: function endAttempt() {
 							return AssessmentUtil.endAttempt(this.props.model, this.props.model.modelState.review)
@@ -999,10 +1264,6 @@
 								this.props.model
 							)
 							var assessmentScore = AssessmentUtil.getAssessmentScoreForModel(
-								this.props.moduleData.assessmentState,
-								this.props.model
-							)
-							var ltiStatus = AssessmentUtil.getLTIStatusForModel(
 								this.props.moduleData.assessmentState,
 								this.props.model
 							)
