@@ -1,6 +1,7 @@
 let ltiMiddleware = require('express-ims-lti')
 let DevNonceStore = oboRequire('dev_nonce_store')
 let ltiUtil = oboRequire('lti')
+let logger = oboRequire('logger')
 
 /*
  Obojobo LTI Middleware abstraction
@@ -9,11 +10,13 @@ let ltiUtil = oboRequire('lti')
 module.exports = ltiMiddleware({
 	nonceStore: new DevNonceStore(),
 	credentials: (key, callback) => {
-		try {
-			let secret = ltiUtil.findSecretForKey(key)
-			callback(null, key, secret)
-		} catch (err) {
-			callback(new Error('Invalid LTI credentials'))
+		let secret = ltiUtil.findSecretForKey(key)
+
+		if (!secret) {
+			logger.error('LTI unable to find secret for key', err)
+			return callback(new Error('Invalid LTI credentials'))
 		}
+
+		callback(null, key, secret)
 	}
 })
