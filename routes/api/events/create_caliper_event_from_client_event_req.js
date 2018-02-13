@@ -40,33 +40,62 @@ module.exports = req => {
 			})
 
 		case 'nav:open':
-		case 'nav:close':
-		case 'nav:toggle': {
-			let navType = clientEvent.action.split(':')[1]
-			return caliperEvents.createNavigationShowedHidEvent({
+			return caliperEvents.createNavMenuShowedEvent({
 				actor: actorFromType(ACTOR_USER),
 				draftId: clientEvent.draft_id,
-				showed: navType === 'toggle' ? clientEvent.payload.open : navType === 'open' ? true : false,
 				isPreviewMode,
 				sessionIds,
 				extensions: {
-					navType,
+					navType: clientEvent.action.split(':')[1],
 					internalName: clientEvent.action
 				}
 			})
-		}
 
-		case 'nav:lock':
-		case 'nav:unlock': {
-			let navType = clientEvent.action.split(':')[1]
-			return caliperEvents.createNavigationActivatedDeactivatedEvent({
-				actor: actorFromType(ACTOR_VIEWER_CLIENT),
+		case 'nav:close':
+			return caliperEvents.createNavMenuHidEvent({
+				actor: actorFromType(ACTOR_USER),
 				draftId: clientEvent.draft_id,
-				activated: navType === 'unlock' ? true : false,
 				isPreviewMode,
 				sessionIds,
 				extensions: {
-					navType,
+					navType: clientEvent.action.split(':')[1],
+					internalName: clientEvent.action
+				}
+			})
+
+		case 'nav:toggle':
+			return caliperEvents.createNavMenuToggledEvent({
+				actor: actorFromType(ACTOR_USER),
+				draftId: clientEvent.draft_id,
+				isPreviewMode,
+				sessionIds,
+				extensions: {
+					navType: clientEvent.action.split(':')[1],
+					internalName: clientEvent.action,
+					isOpen: clientEvent.payload.open
+				}
+			})
+
+		case 'nav:lock':
+			return caliperEvents.createNavMenuDeactivatedEvent({
+				actor: actorFromType(ACTOR_VIEWER_CLIENT),
+				draftId: clientEvent.draft_id,
+				isPreviewMode,
+				sessionIds,
+				extensions: {
+					navType: clientEvent.action.split(':')[1],
+					internalName: clientEvent.action
+				}
+			})
+
+		case 'nav:unlock': {
+			return caliperEvents.createNavMenuActivatedEvent({
+				actor: actorFromType(ACTOR_VIEWER_CLIENT),
+				draftId: clientEvent.draft_id,
+				isPreviewMode,
+				sessionIds,
+				extensions: {
+					navType: clientEvent.action.split(':')[1],
 					internalName: clientEvent.action
 				}
 			})
