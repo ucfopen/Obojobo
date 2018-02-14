@@ -27,4 +27,19 @@ router.get('/config.xml', (req, res, next) => {
 	res.render('lti_config_xml', viewParams)
 })
 
+router.all('/pick', (req, res, next) => {
+	return req.getCurrentUser(true)
+	.then(user => {
+		res.render('lti_picker', {
+			ltiToken: 'fff',
+			returnUrl: req.lti.body.content_item_return_url,
+			webUrl: '/'
+		})
+	})
+	.catch(error => {
+		console.log('reject', req.lti)
+		next(error)
+	})
+})
+
 module.exports = router

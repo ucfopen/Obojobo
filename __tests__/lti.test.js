@@ -13,7 +13,7 @@ describe('lti', () => {
 		global.console = { warn: jest.fn(), log: jest.fn(), error: jest.fn() }
 
 		jest.mock('../db')
-		jest.mock('ims-lti/lib/extensions/outcomes')
+		jest.mock('ims-lti/src/extensions/outcomes')
 		jest.mock('../logger')
 
 		let fs = require('fs')
@@ -27,7 +27,7 @@ describe('lti', () => {
 	beforeEach(() => {})
 
 	afterEach(() => {
-		let outcomes = require('ims-lti/lib/extensions/outcomes')
+		let outcomes = require('ims-lti/src/extensions/outcomes')
 		outcomes.__resetCallbackForSend_replace_result()
 	})
 
@@ -63,7 +63,7 @@ describe('lti', () => {
 		expect.assertions(1)
 
 		// bypass all the internals of outcomes, just returns true for success
-		let outcomes = require('ims-lti/lib/extensions/outcomes')
+		let outcomes = require('ims-lti/src/extensions/outcomes')
 		let send_replace_resultMock = jest.fn().mockImplementationOnce((score, callback) => {
 			expect(score).toBe(0.85)
 			callback(null, true)
@@ -85,7 +85,7 @@ describe('lti', () => {
 		expect.assertions(13)
 
 		// bypass all the internals of outcomes, just returns true for success
-		let outcomes = require('ims-lti/lib/extensions/outcomes')
+		let outcomes = require('ims-lti/src/extensions/outcomes')
 		let db = oboRequire('db')
 		// mock the query to get lti data
 		db.one.mockImplementationOnce(() => {
@@ -119,7 +119,7 @@ describe('lti', () => {
 		expect.assertions(7)
 
 		// bypass all the internals of outcomes, just returns true for success
-		let outcomes = require('ims-lti/lib/extensions/outcomes')
+		let outcomes = require('ims-lti/src/extensions/outcomes')
 		let send_replace_resultMock = jest.fn().mockImplementationOnce((score, callback) => {
 			callback('SOME_ERROR')
 		})

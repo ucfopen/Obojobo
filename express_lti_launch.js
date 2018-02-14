@@ -46,7 +46,6 @@ let storeLtiLaunch = (draftId, user, ip, ltiBody, ltiConsumerKey) => {
 // If a launch is happening, this will overwrite the current user
 module.exports = (req, res, next) => {
 	if (!req.lti) return next() // bypass, no lti launch data
-	req.session.lti = null // clean req.session.lti created by express-ims-lti, it's problematic for multiple launches
 	let currentUser = null
 
 	// allows launches to redirect /view/example to /view/00000000-0000-0000-0000-000000000000
