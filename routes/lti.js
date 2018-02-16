@@ -1,43 +1,58 @@
 let express = require('express')
 let router = express.Router()
+let config = oboRequire('config')
 
 // LTI Instructions
 router.get('/', (req, res, next) => {
-	let baseUrl = `${req.protocol}://${req.hostname}:${req.app.get('port')}`
+	let hostname = config.general.hostname
 	res.render('lti_launch_static', {
 		title: 'Obojobo LTI Launch',
-		launch_url: `${baseUrl}/lti/launch`,
-		xml_url: `${baseUrl}/lti/config.xml`
+		xml_url: `https://${hostname}/lti/config.xml`,
+		launch_url: `https://${hostname}/lti`,
+		course_navigation_url: `https://${hostname}/lti/canvas/course_navigation`,
+		assignment_selection_url: `https://${hostname}/lti/canvas/assignment_selection`,
+		consumer_key: Object.keys(config.lti.keys)[0]
 	})
 })
 
 // LTI Configuration
 router.get('/config.xml', (req, res, next) => {
 	res.type('xml')
+
+	let hostname = config.general.hostname
 	let viewParams = {
-		title: 'Obojobo 3',
-		description: 'description_value',
-		launch_url: 'launch_url_value',
-		platform: 'platform_value',
-		domain: 'domain_value',
-		grade_passback: 'grade_passback_value',
-		privacy_level: 'privacy_level_value',
-		picker_url: 'picker_url_value'
+		title: 'Obojobo Next',
+		description: 'Advanced Learning Modules',
+		domain: hostname.split(":")[0],
+		launch_url: `https://${hostname}/lti`,
+		course_navigation_url: `https://${hostname}/lti/canvas/course_navigation`,
+		assignment_selection_url: `https://${hostname}/lti/canvas/assignment_selection`
 	}
 	res.render('lti_config_xml', viewParams)
 })
 
-router.all('/pick', (req, res, next) => {
+router.post('/canvas/course_navigation', (req, res, next) => {
 	return req.getCurrentUser(true)
 	.then(user => {
-		res.render('lti_picker', {
-			ltiToken: 'fff',
-			returnUrl: req.lti.body.content_item_return_url,
-			webUrl: '/'
-		})
+		if(user.canViewEditor){
+			res.redirect('/editor')
+		}
+		else{
+			res.redirect('/')
+		}
 	})
 	.catch(error => {
-		console.log('reject', req.lti)
+		next(error)
+	})
+})
+
+router.post('/canvas/assignment_selection', (req, res, next) => {
+	return req.getCurrentUser(true)
+	.then(user => {
+		let returnUrl = (req.lti && req.lti.body && req.lti.body.content_item_return_url ? req.lti.body.content_item_return_url : null)
+		res.render('lti_picker', { returnUrl })
+	})
+	.catch(error => {
 		next(error)
 	})
 })

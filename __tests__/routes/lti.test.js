@@ -10,12 +10,22 @@ describe('lti route', () => {
 	test('registers the expected routes ', () => {
 		let editor = oboRequire('routes/lti')
 		expect(mockRouterMethods.get).toHaveBeenCalledTimes(2)
+		expect(mockRouterMethods.post).toHaveBeenCalledTimes(2)
+		expect(mockRouterMethods.delete).toHaveBeenCalledTimes(0)
+		expect(mockRouterMethods.all).toHaveBeenCalledTimes(0)
 		expect(mockRouterMethods.get).toBeCalledWith('/', expect.any(Function))
 		expect(mockRouterMethods.get).toBeCalledWith('/config.xml', expect.any(Function))
+		expect(mockRouterMethods.post).toBeCalledWith('/canvas/course_navigation', expect.any(Function))
+		expect(mockRouterMethods.post).toBeCalledWith('/canvas/assignment_selection', expect.any(Function))
 	})
 
 	test('index calls render', () => {
 		let editor = oboRequire('routes/lti')
+
+		mockRouterMethods.get
+		mockRouterMethods.get.mock
+		mockRouterMethods.get.mock.calls
+		mockRouterMethods.get.mock.calls[0]
 		let routeFunction = mockRouterMethods.get.mock.calls[0][1]
 
 		let mockReq = {

@@ -35,7 +35,7 @@ describe('index route', () => {
 		expect(mockRes.render).toBeCalledWith(
 			expect.any(String),
 			expect.objectContaining({
-				title: 'Obojobo 3'
+				title: 'Obojobo Next'
 			})
 		)
 	})

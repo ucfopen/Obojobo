@@ -16,10 +16,9 @@ a {
 }
 
 header {
-	height: 66px;
-	width: 100%;
 	background: #f2f2f2;
 	text-align: center;
+	padding: 35px;
 }
 
 header .blue-flourish {
@@ -29,19 +28,6 @@ header .blue-flourish {
 	left: 0;
 	right: 0;
 	top: 0;
-}
-
-header .logo-text {
-	background: url('/picker/logo.png') no-repeat 0 100%;
-	height: 26px;
-	width: 92px;
-	text-indent: 100%;
-	white-space: nowrap;
-	overflow: hidden;
-	display: inline-block;
-	position: absolute;
-	left: 20px;
-	top: 20px;
 }
 
 .button {
@@ -83,10 +69,6 @@ header .logo-text {
 	background-color: #bfcae0
 }
 
-.highlighted {
-	background-color: #ffd800;
-}
-
 #error-window,
 #confirm-window,
 #confirm-select-instance-window {
@@ -95,16 +77,6 @@ header .logo-text {
 
 #success {
 	display: none;
-}
-
-#logo {
-	width: 85px;
-	height: 20px;
-	position: absolute;
-	top: 15px;
-	left: 30px;
-	background: url('/assets/images/lti/logo.png') center center no-repeat;
-	z-index: 10;
 }
 
 .no-items {
@@ -179,6 +151,7 @@ header .logo-text {
 }
 
 #tabs {
+	display: none;
 	position: absolute;
 	left: 30px;
 	top: 0;
@@ -241,13 +214,12 @@ header .logo-text {
 	font-size: 10pt;
 }
 
-.community-library-section #tabs ul li.my-objects-tab,
-.community-library-section #tabs ul li.my-instances-tab
+.community-library-section #tabs ul li.my-modules-tab,
 {
 	display: none;
 }
 
-.my-objects-section #tabs ul li.community-library-tab,
+.my-modules-section #tabs ul li.community-library-tab,
 .my-instances-section #tabs ul li.community-library-tab
 {
 	display: none;
@@ -314,13 +286,6 @@ header .logo-text {
 	background-color: #ffcb68;
 }
 
-.obo-item.selected {
-	min-height: 90px;
-}
-
-.obo-item.selected .learning-objective {
-	display: block;
-}
 
 .obo-item .description {
 	display: inline-block;
@@ -335,15 +300,20 @@ header .logo-text {
 
 .obo-item .buttons {
 	position: absolute;
-	top: 0;
+	top: 20px;
 	right: 30px;
-	width: 210px;
-	height: 10px;
-	display: none;
+	display: block;
 }
 
-.obo-item.selected .buttons {
-	display: block;
+.obo-item .buttons a {
+	opacity: .5;
+}
+
+.obo-item .buttons a:hover {
+	opacity: 1;
+}
+.obo-item .buttons a{
+	margin-left: 20px;
 }
 
 .obo-item h2 {
@@ -355,101 +325,9 @@ header .logo-text {
 	font-weight: 600;
 }
 
-.obo-item h2 .version {
+.obo-item .draft-id{
+	font-size: .8em;
 	color: gray;
-}
-
-.obo-item.draft h2 {
-	margin-top: 3px;
-	color: gray;
-}
-
-.obo-item h3 {
-	font-size: 10pt;
-	margin-left: 80px;
-	margin-top: 0;
-	font-weight: normal;
-	color: #555555;
-}
-
-.obo-item.draft h3 {
-	color: gray;
-	margin-bottom: 5px;
-}
-
-.obo-item .preview {
-	display: none;
-	position: absolute;
-	right: 0;
-	top: 72px;
-}
-
-.obo-item:hover .preview,.obo-item.selected .preview {
-	display: block;
-}
-
-.obo-item .embed-button {
-	display: none;
-	position: absolute;
-	right: 0;
-	top: 22px;
-}
-
-.obo-item:hover .embed-button,.obo-item.selected .embed-button {
-	display: inline-block;
-}
-
-.obo-item .learning-objective,.obo-item .availabilty {
-	font-size: 10pt;
-	display: none;
-}
-
-.obo-item.unavailable {
-	-ms-filter: "progid:DXImageTransform.Microsoft.Alpha(Opacity=50)";
-	filter: alpha(opacity=50);
-	opacity: .5;
-	background: #d8d8d8;
-}
-
-.my-instances .obo-item .availabilty {
-	display: block;
-}
-
-.my-instances .obo-item.click-to-expand .availabilty {
-	display: none;
-}
-
-.draft-label {
-	border-radius: 2px;
-	background: gray;
-	color: white;
-	font-family: 'Source Sans Pro', Arial, sans-serif;
-	padding: 1px 8px 1px 8px;
-	font-size: 9pt;
-	font-weight: bold;
-	margin-left: 80px;
-}
-
-footer {
-	position: absolute;
-	background: white;
-	bottom: 0;
-	left: 0;
-	right: 0;
-	padding-left: 30px;
-	height: 42px;
-	padding-top: 7px;
-}
-
-footer .button {
-	font-size: 10pt;
-}
-
-.cancel-button {
-	position: absolute;
-	top: 15px;
-	right: 15px;
-	display: none;
 }
 
 #select-object {
@@ -607,13 +485,7 @@ footer .button {
 	text-align: center;
 }
 
-#wizard header {
-	height: 116px;
-	width: 100%;
-	background: #f2f2f2;
-	text-align: center;
-}
-
+#progress header .blue-flourish,
 #wizard header .blue-flourish {
 	height: 4px;
 	background: #4e6c84;
@@ -623,32 +495,16 @@ footer .button {
 	top: 0;
 }
 
-#wizard header .heading-container {
-	display: inline-block;
-	height: 116px;
-}
-
+#progress header .heading-container h1,
 #wizard header .heading-container h1 {
 	font-family: 'Source Sans Pro', Arial, sans-serif;
 	font-size: 17pt;
 	font-weight: 300;
-	padding-top: 48px;
 	margin: 0;
-	display: inline-block;
 }
 
-#wizard header .heading-container h1 .logo-text {
-	background: url('/picker/logo.png') no-repeat 0 100%;
-	height: 26px;
-	width: 92px;
-	text-indent: 100%;
-	white-space: nowrap;
-	overflow: hidden;
-	display: inline-block;
-	vertical-align: top;
-	margin-right: 3px;
-	position: static;
-}
+
+#progress header .heading-container h1 .remaining-tagline,
 #wizard header .heading-container h1 .remaining-tagline {
 	display: inline-block;
 	height: 26px;
@@ -666,7 +522,7 @@ footer .button {
 #wizard > p {
 	font-weight: bold;
 	font-size: 12pt;
-	margin: 2.5em;
+	margin: 1.5em;
 }
 
 #wizard .wizard-button-container {
@@ -676,15 +532,29 @@ footer .button {
 	vertical-align: top;
 	color: black;
 	cursor: pointer;
+	border-right: 1px dotted #cccccc;
+}
+
+#wizard .wizard-button-container.disabled {
+	 pointer-events: none;
+}
+
+#wizard .wizard-button-container.disabled .wizard-button{
+	opacity: .3;
+	-webkit-filter: grayscale(1);
+	-webkit-filter: grayscale(100%);
+	filter: gray;
+	filter: grayscale(100%);
 }
 
 #wizard .wizard-button-container p {
 	font-size: 10pt;
 	margin-top: 2em;
+
 }
 
-#wizard .community-library-button-container {
-	border-right: 1px dotted #cccccc;
+#wizard .wizard-button-container:last-child {
+	border-right: 0;
 }
 
 #wizard .wizard-button {
@@ -816,16 +686,9 @@ footer .button {
 	display: none;
 }
 
-#progress h1 {
-	font-weight: 200;
-	font-size: 24pt;
-	text-align: center;
-	margin-top: 1.5em;
-}
-
 #progress .progress-container {
 	width: 580px;
-	margin: 0 auto;
+	margin: 10px auto;
 	padding: 4em 1em 5em 1em;
 	box-sizing: border-box;
 	border: 1px solid #c5c5c5;
@@ -844,11 +707,6 @@ footer .button {
 	color: #37c89c;
 }
 
-
-.about-obo {
-	margin-top: 1.5em;
-	margin-bottom: -0.5em;
-}
 
 /* jQuery UI */
 .ui-dialog {
@@ -915,81 +773,6 @@ footer .button {
 
 .ui-spinner-down {
 	bottom: -8px;
-}
-
-#ui-datepicker-div {
-	background: #f0f0f0;
-	padding: 1em;
-	border-radius: 2px;
-
-	-webkit-box-shadow: 0 1px 1px rgba(0, 0, 0, .3);
-	box-shadow: 0 1px 1px rgba(0, 0, 0, .3);
-	font-size: 10pt;
-	display: none;
-}
-
-.ui-datepicker td a {
-	display: block;
-	padding: 0.2em;
-	text-align: right;
-	text-decoration: none;
-	border-radius: 2px;
-	cursor: pointer;
-}
-
-.ui-datepicker td a:hover {
-	background: white;
-}
-
-.ui-datepicker-title {
-	text-align: center;
-	margin-bottom: 10px;
-	padding-bottom: 10px;
-	border-bottom: 1px solid #ccc;
-}
-
-.ui-datepicker-prev {
-	position: absolute;
-	left: 17px;
-	top: 11px;
-	background: url('/assets/images/lti/datepicker-icons.png') -4px -5px;
-}
-
-.ui-datepicker-prev:hover {
-	-ms-filter: "progid:DXImageTransform.Microsoft.Alpha(Opacity=50)";
-	filter: alpha(opacity=50);
-	opacity: .5;
-}
-
-.ui-datepicker-next {
-	position: absolute;
-	right: 17px;
-	top: 11px;
-	background: url('/assets/images/lti/datepicker-icons.png') 25px -5px;
-}
-
-.ui-datepicker-next:hover {
-	-ms-filter: "progid:DXImageTransform.Microsoft.Alpha(Opacity=50)";
-	filter: alpha(opacity=50);
-	opacity: .5;
-}
-
-.ui-datepicker-current-day {
-	background: orange;
-}
-
-.ui-datepicker-today a {
-	color: black;
-	font-weight: bold;
-}
-
-.ui-datepicker .ui-icon {
-	text-indent: -99999px;
-	overflow: hidden;
-	display: block;
-	width: 20px;
-	height: 20px;
-	cursor: pointer;
 }
 
 .ui-progressbar {

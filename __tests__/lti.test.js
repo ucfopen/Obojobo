@@ -16,9 +16,6 @@ describe('lti', () => {
 		jest.mock('ims-lti/src/extensions/outcomes')
 		jest.mock('../logger')
 
-		let fs = require('fs')
-		fs.__setMockFileContents('./config/lti.json', '{"test":{"keys":{"testkey":"testsecret"}}}')
-
 		lti = oboRequire('lti')
 	})
 
@@ -32,8 +29,8 @@ describe('lti', () => {
 	})
 
 	it('should find the appropriate secret for a given key', () => {
-		let secret = lti.findSecretForKey('testkey')
-		expect(secret).toBe('testsecret')
+		let secret = lti.findSecretForKey('jesttestkey')
+		expect(secret).toBe('jesttestsecret')
 	})
 
 	it('should fail to find an unused key', () => {

@@ -26,10 +26,6 @@ obo.lti = function()
 	var $createInstanceForm = $('#create-instance');
 	var $search = $('#search');
 
-	var ltiUrl = null;
-
-	// disable logs by defualt
-
 	// searching:
 	function search()
 	{
@@ -59,7 +55,6 @@ obo.lti = function()
 		$('#search').val('');
 		data.items = data.allItems;
 		data.last = 0;
-		////populateSection(section);
 		$search.attr('data-last-search', '');
 	}
 
@@ -128,8 +123,6 @@ obo.lti = function()
 	{
 		if(sectionId === 'create-instance')
 		{
-			var draftId = $('.obo-item.selected').attr('data-lo-id');
-			ltiUrl = __returnUrl + '?embed_type=basic_lti&url=' + encodeURI(`https://localhost:8080/view/${draftId}`);
 			showProgress();
 		}
 		else if(sectionId === 'success')
@@ -217,17 +210,7 @@ obo.lti = function()
 			if(stops.tick >= 10)
 			{
 				clearInterval(intervalId);
-
-				// Either end the progress bar or continue to wait if no response
-				// has been returned
-				if(ltiUrl !== null)
-				{
-					finishProgressBarAndSetLocation();
-				}
-				else
-				{
-					ltiUrl = 'pending';
-				}
+				finishProgressBarAndSubmit();
 			}
 		}, 200);
 
@@ -240,21 +223,23 @@ obo.lti = function()
 		})
 	}
 
-	function finishProgressBarAndSetLocation()
+	function finishProgressBarAndSubmit()
 	{
 		$('.progress-container').addClass('success');
 		$('.progress-container').find('span').html('Success!');
 		$('.progressbar').progressbar('value', 100);
 		setTimeout(function() {
-			window.location = ltiUrl;
+			let ltiData = buildContentItem(selectedItem.title, buildLaunchUrl(selectedItem.draftId))
+			let $form = $('#submit-form')
+			$form.find('input[name=content_items]').val(JSON.stringify(ltiData))
+			$form.attr('action', __returnUrl)
+			$form.submit()
 		}, 1000);
 	}
 
-
-
-
-
-
+	function buildLaunchUrl(draftId){
+		return `${window.location.protocol}//${window.location.host}/view/${draftId}`
+	}
 
 
 	// utility
@@ -265,25 +250,17 @@ obo.lti = function()
 	}
 
 
-
-
-
-
-
-
-
-
 	// list pages
 	function appendListItem(lo, $list)
 	{
 		var $clone = $template.clone();
 		$clone.removeClass('template');
-		$clone.find('.title').html( lo.title ? lo.title  : 'Untitled')
+		$clone.find('.title').html( lo.title ? lo.title : 'Untitled')
+		$clone.find('.draft-id').html(`id: ${lo.draftId}`)
 		$clone.find('.preview').attr('href', `/view/${lo.draftId}`)
 		$clone.attr('data-lo-id', lo.draftId)
 
 		$clone.find('.button').click(onSelectClick);
-		$clone.click(onItemClick);
 
 		$list.append($clone);
 
@@ -297,73 +274,7 @@ obo.lti = function()
 
 		switch(section)
 		{
-			case 'My Instances':
-				if(typeof data.items === 'undefined')
-				{
-					$('.my-instances')
-						.show()
-						.addClass('loading');
-
-					data.items = 'pending';
-
-					fetch('/api/drafts/', {credentials: 'same-origin'})
-					.then(resp => resp.json())
-					.then(respJson => {
-						if(respJson.status != 'ok') throw 'Failed loading drafts'
-
-						data.items = data.allItems = respJson.value;
-						populateSection(section);
-
-						$('.my-instances').removeClass('loading');
-						if($search.val() !== '')
-						{
-							search();
-						}
-					})
-					.catch(error => {
-						handleError(error)
-					})
-
-				}
-				else
-				{
-					showList($('.my-instances'));
-				}
-			break;
-
-			case 'Community Library':
-				if(typeof data.items === 'undefined')
-				{
-					$('.community-library')
-						.show()
-						.addClass('loading');
-					data.items = 'pending';
-
-					fetch('/api/drafts/', {credentials: 'same-origin'})
-					.then(resp => resp.json())
-					.then(respJson => {
-						if(respJson.status != 'ok') throw 'Failed loading drafts'
-
-						data.allItems = data.items = respJson.value;
-						populateSection(section);
-
-						$('.community-library').removeClass('loading');
-						if($search.val() !== '')
-						{
-							search();
-						}
-					})
-					.catch(error => {
-						handleError(error)
-					})
-				}
-				else
-				{
-					showList($('.community-library'));
-				}
-			break;
-
-			case 'My Objects':
+			case 'My Modules':
 				if(typeof data.items === 'undefined')
 				{
 					//$listContainer.addClass('loading');
@@ -371,7 +282,6 @@ obo.lti = function()
 						.show()
 						.addClass('loading');
 					data.items = 'pending';
-
 
 					fetch('/api/drafts/', {credentials: 'same-origin'})
 					.then(resp => resp.json())
@@ -480,8 +390,6 @@ obo.lti = function()
 			}
 		});
 
-
-
 		$('#refresh').click(function(event) {
 			event.preventDefault();
 
@@ -514,16 +422,16 @@ obo.lti = function()
 		});
 
 		// wizard
-		$('.community-library-button-container').click(function(event) {
-			event.preventDefault();
-			gotoSection('select-object');
-			gotoTab('Community Library');
-		});
+		// $('.community-library-button-container').click(function(event) {
+		// 	event.preventDefault();
+		// 	gotoSection('select-object');
+		// 	gotoTab('Community Library');
+		// });
 
 		$('.personal-library-button-container').click(function(event) {
 			event.preventDefault();
 			gotoSection('select-object');
-			gotoTab('My Objects');
+			gotoTab('My Modules');
 		});
 	}
 
@@ -534,7 +442,6 @@ obo.lti = function()
 		var $this = $(this);
 		var $oboItem = $this.parent().parent();
 		selectedItem = getDraftById($oboItem.attr('data-inst-id'))
-		console.log(selectedItem)
 
 		gotoSection('create-instance');
 		$('#instance-name').val($oboItem.find('.title').text());
@@ -550,19 +457,6 @@ obo.lti = function()
 
 	}
 
-	function onItemClick(event)
-	{
-		if(!$(event.target).hasClass('preview'))
-		{
-			event.preventDefault();
-		}
-
-		var $this = $(this);
-
-		$('.obo-item').removeClass('selected');
-		$this.addClass('selected');
-
-	}
 
 	function successfulResponse(response)
 	{
@@ -608,6 +502,22 @@ obo.lti = function()
 				gotoSection('wizard');
 			}
 		});
+	}
+
+	function buildContentItem(title, url){
+		return {
+			"@context" : "http://purl.imsglobal.org/ctx/lti/v1/ContentItem",
+			"@graph" : [
+				{
+					"@type" : "LtiLinkItem",
+					url : url,
+					title : title,
+					placementAdvice : {
+						presentationDocumentTarget : "window"
+					}
+				}
+			]
+		}
 	}
 
 	function killPage(message)
