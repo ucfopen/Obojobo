@@ -10,12 +10,13 @@ describe('lti route', () => {
 	test('registers the expected routes ', () => {
 		let editor = oboRequire('routes/lti')
 		expect(mockRouterMethods.get).toHaveBeenCalledTimes(2)
-		expect(mockRouterMethods.post).toHaveBeenCalledTimes(2)
+		expect(mockRouterMethods.post).toHaveBeenCalledTimes(4)
 		expect(mockRouterMethods.delete).toHaveBeenCalledTimes(0)
 		expect(mockRouterMethods.all).toHaveBeenCalledTimes(0)
 		expect(mockRouterMethods.get).toBeCalledWith('/', expect.any(Function))
 		expect(mockRouterMethods.get).toBeCalledWith('/config.xml', expect.any(Function))
 		expect(mockRouterMethods.post).toBeCalledWith('/canvas/course_navigation', expect.any(Function))
+		expect(mockRouterMethods.post).toBeCalledWith('/canvas/editor_button', expect.any(Function))
 		expect(mockRouterMethods.post).toBeCalledWith(
 			'/canvas/assignment_selection',
 			expect.any(Function)

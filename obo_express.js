@@ -28,8 +28,9 @@ app.on('mount', app => {
 	app.use(currentUserMiddleware)
 	app.use(oboLtiMiddleware)
 	app.use('/view/:draftId*', ltiLaunch.assignment)
-	app.use('/lti/canvas/assignment_selection', ltiLaunch.assignmentSelection)
+	app.use('/lti/canvas/editor_button', ltiLaunch.assignmentSelection)
 	app.use('/lti/canvas/course_navigation', ltiLaunch.courseNavlaunch)
+	app.use('/lti/canvas/resource_selection', ltiLaunch.assignmentSelection)
 	app.use('/api', apiResponseDecorator)
 
 	// =========== REGISTER OBOJOBO DRAFT CHUNKS ===========

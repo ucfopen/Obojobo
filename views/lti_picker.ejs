@@ -44,18 +44,12 @@
 	</section>
 
 	<section id="select-object">
-		<div id="controls">
-			<nav id="tabs">
-				<ul>
-					<li class="tab community-library-tab"><a href="#">Community Library</a></li>
-					<li class="tab my-modules-tab"><a href="#">My Modules</a></li>
-				</ul>
-			</nav>
-			<a href="#" role="button" class="back-button">Choose a different collection</a>
-		</div>
 		<div id="list-overlay">
-			<a id="refresh" href="#">Refresh</a>
+			<a href="#" role="button" class="back-button">Back</a>
+			<a href="/editor" role="button" class="button" target="_blank" id="new-module">Create a new module</a>
+			<a id="refresh" role="button" href="#">Refresh</a>
 			<input type="text" id="search"></div>
+			<div class="blue-flourish"></div>
 		</div>
 
 		<div id="list-container">
@@ -140,6 +134,7 @@
 
 	<script type="text/javascript">
 		window.__returnUrl = '<%= returnUrl %>';
+		window.__isAssignment = <%= isAssignment ? 'true' : 'false' %>
 	</script>
 	<script type="text/javascript" src="/picker/lti.js"></script>
 </body>
