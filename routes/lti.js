@@ -23,38 +23,53 @@ router.get('/config.xml', (req, res, next) => {
 	let viewParams = {
 		title: 'Obojobo Next',
 		description: 'Advanced Learning Modules',
-		domain: hostname.split(":")[0],
+		domain: hostname.split(':')[0],
 		launch_url: `https://${hostname}/lti`,
 		course_navigation_url: `https://${hostname}/lti/canvas/course_navigation`,
-		assignment_selection_url: `https://${hostname}/lti/canvas/assignment_selection`
+		assignment_selection_url: `https://${hostname}/lti/canvas/assignment_selection`,
+		icon: `https://${hostname}/picker/obojobo-editor-icon.png`
 	}
 	res.render('lti_config_xml', viewParams)
 })
 
 router.post('/canvas/course_navigation', (req, res, next) => {
-	return req.getCurrentUser(true)
-	.then(user => {
-		if(user.canViewEditor){
-			res.redirect('/editor')
-		}
-		else{
-			res.redirect('/')
-		}
-	})
-	.catch(error => {
-		next(error)
-	})
+	return req
+		.getCurrentUser(true)
+		.then(user => {
+			if (user.canViewEditor) {
+				res.redirect('/editor')
+			} else {
+				res.redirect('/')
+			}
+		})
+		.catch(error => {
+			next(error)
+		})
 })
 
 router.post('/canvas/assignment_selection', (req, res, next) => {
-	return req.getCurrentUser(true)
-	.then(user => {
-		let returnUrl = (req.lti && req.lti.body && req.lti.body.content_item_return_url ? req.lti.body.content_item_return_url : null)
-		res.render('lti_picker', { returnUrl })
-	})
-	.catch(error => {
-		next(error)
-	})
+	return req
+		.getCurrentUser(true)
+		.then(user => {
+			let returnUrl = null
+			if (req.lti && req.lti.body) {
+				returnUrl = req.lti.body.content_item_return_url
+					? req.lti.body.content_item_return_url
+					: null
+				returnUrl = req.lti.body.ext_content_return_url
+					? req.lti.body.ext_content_return_url
+					: returnUrl
+			}
+
+			if (returnUrl === null) {
+				throw 'Unkown return url for assignment selection'
+			}
+
+			res.render('lti_picker', { returnUrl })
+		})
+		.catch(error => {
+			next(error)
+		})
 })
 
 module.exports = router

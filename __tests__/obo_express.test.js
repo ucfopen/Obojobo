@@ -11,28 +11,31 @@ jest.mock('db')
 let mockOn = jest.fn().mockImplementation((event, func) => {})
 let mockOnCallback
 let mockExpress = (mockOn = false, mockStatic = false) => {
-	jest.mock('express', () => {
-		let module = () => ({
-			on: (mockOn ? mockOn : jest.fn()),
-			use: jest.fn(),
-			get: jest.fn(),
-			post: jest.fn(),
-			delete: jest.fn(),
-			static: (mockStatic ? mockStatic : jest.fn())
-		})
-		module.Router = () => ({
-			all: jest.fn(),
-			get: jest.fn(),
-			post: jest.fn(),
-			delete: jest.fn()
-		})
+	jest.mock(
+		'express',
+		() => {
+			let module = () => ({
+				on: mockOn ? mockOn : jest.fn(),
+				use: jest.fn(),
+				get: jest.fn(),
+				post: jest.fn(),
+				delete: jest.fn(),
+				static: mockStatic ? mockStatic : jest.fn()
+			})
+			module.Router = () => ({
+				all: jest.fn(),
+				get: jest.fn(),
+				post: jest.fn(),
+				delete: jest.fn()
+			})
 
-		return module
-	}, {virtual: true});
+			return module
+		},
+		{ virtual: true }
+	)
 }
 
 describe('obo express', () => {
-
 	beforeAll(() => {
 		// call this beforeAll because it only happens once on require
 		// and the tests are run in random order
@@ -58,18 +61,33 @@ describe('obo express', () => {
 		expect(registerChunks).toHaveBeenCalledWith(mockApp)
 		expect(mockApp.use).toHaveBeenCalledWith(oboRequire('express_load_balancer_helper'))
 		expect(mockApp.use).toHaveBeenCalledWith(oboRequire('express_current_user'))
-		expect(mockApp.use).toHaveBeenCalledWith(expect.any(String), oboRequire('api_response_decorator'))
-		expect(mockApp.use).toHaveBeenCalledWith(expect.any(String), oboRequire('express_lti_launch'))
+		expect(mockApp.use).toHaveBeenCalledWith(
+			expect.any(String),
+			oboRequire('api_response_decorator')
+		)
+		expect(mockApp.use).toHaveBeenCalledWith(
+			expect.any(String),
+			oboRequire('express_lti_launch').assignmentSelection
+		)
+		expect(mockApp.use).toHaveBeenCalledWith(
+			expect.any(String),
+			oboRequire('express_lti_launch').assignment
+		)
+		expect(mockApp.use).toHaveBeenCalledWith(
+			expect.any(String),
+			oboRequire('express_lti_launch').courseNavlaunch
+		)
 	})
 
 	it('returns an express application', () => {
 		mockExpress()
 		let oe = oboRequire('obo_express')
 
-		expect(oe).toEqual(expect.objectContaining({
-			on: expect.any(Function),
-			static: expect.any(Function)
-		}))
+		expect(oe).toEqual(
+			expect.objectContaining({
+				on: expect.any(Function),
+				static: expect.any(Function)
+			})
+		)
 	})
-
 })
