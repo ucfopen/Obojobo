@@ -1,7 +1,7 @@
 let lti
 let mockLTIEvent = {
 	id: 2,
-	lti_key: 'testkey',
+	lti_key: 'jesttestkey',
 	data: {
 		lis_outcome_service_url: 'http://test.test.test',
 		lis_result_sourcedid: 'test-sourcedid'
@@ -10,8 +10,6 @@ let mockLTIEvent = {
 
 describe('lti', () => {
 	beforeAll(() => {
-		global.console = { warn: jest.fn(), log: jest.fn(), error: jest.fn() }
-
 		jest.mock('../db')
 		jest.mock('ims-lti/src/extensions/outcomes')
 		jest.mock('../logger')
@@ -141,7 +139,7 @@ describe('lti', () => {
 		return lti.replaceResult(1, 2, 0.99).catch(err => {
 			expect(err).toBeInstanceOf(Error)
 			expect(logger.info).toBeCalledWith(
-				'SETTING LTI OUTCOME SCORE SET to 0.99 for user: 1 on sourcedid: test-sourcedid using key: testkey'
+				'SETTING LTI OUTCOME SCORE SET to 0.99 for user: 1 on sourcedid: test-sourcedid using key: jesttestkey'
 			)
 			expect(logger.error).toBeCalledWith('replaceResult error!', 'SOME_ERROR')
 		})
