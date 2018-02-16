@@ -28,7 +28,10 @@ fs.__setMockFileContents('./config/db.json', JSON.stringify(dbJson))
 fs.__setMockFileContents('./config/lti.json', '{"test":{"keys":{"jesttestkey":"jesttestsecret"}}}')
 fs.__setMockFileContents('./config/draft.json', '{"test":{"paths":[]}}')
 fs.__setMockFileContents('./config/permission_groups.json', '{"test":{"canDoThing":["roleName"]}}')
-fs.__setMockFileContents('./config/general.json', '{"test":{"key":"value","hostname":"obojobo.ucf.edu"}}')
+fs.__setMockFileContents(
+	'./config/general.json',
+	'{"test":{"key":"value","hostname":"obojobo.ucf.edu"}}'
+)
 fs.__setMockFileContents(emptyXmlPath, emptyXmlStream)
 
 global.mockVirtual = mock => {
