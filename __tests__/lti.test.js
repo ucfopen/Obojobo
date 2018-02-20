@@ -79,15 +79,6 @@ jest.mock('ims-lti/lib/extensions/outcomes', () => {
 let OutcomeService = require('ims-lti/lib/extensions/outcomes').OutcomeService
 
 let mockDate = () => {
-	// global.Date = () => {
-	// 	return {
-	// 		toISOString: () => 'MOCKED-ISO-DATE-STRING',
-	// 		getTime: () => 0
-	// 	}
-	// }
-	// global.Date = Object.assign(global.Date.prototype, {
-	// 	toISOString: () => 'MOCKED-ISO-DATE-STRING'
-	// })
 	global.Date.prototype.toISOString = () => 'MOCKED-ISO-DATE-STRING'
 }
 
@@ -201,126 +192,16 @@ describe('lti', () => {
 		global.Date.prototype.toISOString = _DateToISOString
 	})
 
-	test.skip('should find the appropriate secret for a given key', () => {
+	test('should find the appropriate secret for a given key', () => {
 		let secret = lti.findSecretForKey('testkey')
 		expect(secret).toBe('testsecret')
 	})
 
-	test.skip('should fail to find an unused key', () => {
-		expect(() => {
-			lti.findSecretForKey('fakekey')
-		}).toThrow()
+	test('should fail to find an unused key', () => {
+		expect(lti.findSecretForKey('fakekey')).toBe(null)
 	})
 
-	test.skip('should fail to replace result when the lti data couldnt be found', () => {
-		expect.assertions(2)
-
-		// let db = oboRequire('db')
-		let logger = oboRequire('logger')
-
-		// mock the query to get lti data
-		db.one.mockImplementationOnce((query, vars) => {
-			return Promise.reject()
-		})
-
-		return lti.replaceResult(1, 2, 1).then(result => {
-			expect(logger.info).toBeCalledWith('No Relevent LTI Request found for user 1, on 2')
-			expect(result).toBe(false)
-		})
-	})
-
-	test.skip('should send correct score to the outcome service', () => {
-		expect.assertions(1)
-
-		// bypass all the internals of outcomes, just returns true for success
-		let outcomes = require('ims-lti/lib/extensions/outcomes')
-		let send_replace_resultMock = jest.fn().mockImplementationOnce((score, callback) => {
-			expect(score).toBe(0.85)
-			callback(null, true)
-		})
-		outcomes.__registerCallbackForSend_replace_result(send_replace_resultMock)
-
-		// let db = oboRequire('db')
-		db.one.mockImplementationOnce(() => {
-			return Promise.resolve(mockLTIEvent)
-		}) // mock the query to get lti data
-		db.one.mockImplementationOnce(() => {
-			return Promise.resolve(null)
-		}) // mock insert event
-
-		return lti.replaceResult(1, 2, 0.85)
-	})
-
-	test.skip('should insert an event on success', () => {
-		expect.assertions(13)
-
-		// bypass all the internals of outcomes, just returns true for success
-		let outcomes = require('ims-lti/lib/extensions/outcomes')
-		// let db = oboRequire('db')
-		// mock the query to get lti data
-		db.one.mockImplementationOnce(() => {
-			return Promise.resolve(mockLTIEvent)
-		})
-
-		// mock the query to insert an event
-		db.one.mockImplementationOnce((query, insertObject) => {
-			expect(insertObject).toHaveProperty('actorTime')
-			expect(insertObject).toHaveProperty('ip')
-			expect(insertObject).toHaveProperty('metadata')
-			expect(insertObject).toHaveProperty('draftId')
-			expect(insertObject).toHaveProperty('payload.launchId')
-			expect(insertObject).toHaveProperty('payload.launchKey')
-			expect(insertObject).toHaveProperty('payload.error')
-
-			expect(insertObject.payload.body.lis_outcome_service_url).toBe('http://test.test.test')
-			expect(insertObject.payload.body.lis_result_sourcedid).toBe('test-sourcedid')
-			expect(insertObject.payload.score).toBe(0.85)
-			expect(insertObject.payload.result).toBe(true)
-			expect(insertObject.userId).toBe(1)
-			expect(insertObject.action).toBe('lti:replaceResult')
-
-			return Promise.resolve(null)
-		})
-
-		return lti.replaceResult(1, 2, 0.85)
-	})
-
-	test.skip('should insert an event on failure', () => {
-		expect.assertions(7)
-
-		// bypass all the internals of outcomes, just returns true for success
-		let outcomes = require('ims-lti/lib/extensions/outcomes')
-		let send_replace_resultMock = jest.fn().mockImplementationOnce((score, callback) => {
-			callback('SOME_ERROR')
-		})
-		outcomes.__registerCallbackForSend_replace_result(send_replace_resultMock)
-
-		// let db = oboRequire('db')
-		let logger = oboRequire('logger')
-
-		// mock the query to get lti data
-		db.one.mockImplementationOnce(() => {
-			return Promise.resolve(mockLTIEvent)
-		})
-		// mock the query to insert an event
-		db.one.mockImplementationOnce((query, insertObject) => {
-			expect(insertObject.payload.result).toBeUndefined()
-			expect(insertObject.action).toBe('lti:replaceResult')
-			expect(insertObject.payload.score).toBe(0.99)
-			expect(insertObject.payload.error).toBe('SOME_ERROR')
-			return Promise.resolve(null)
-		})
-
-		return lti.replaceResult(1, 2, 0.99).catch(err => {
-			expect(err).toBeInstanceOf(Error)
-			expect(logger.info).toBeCalledWith(
-				'SETTING LTI OUTCOME SCORE SET to 0.99 for user: 1 on sourcedid: test-sourcedid using key: testkey'
-			)
-			expect(logger.error).toBeCalledWith('replaceResult error!', 'SOME_ERROR')
-		})
-	})
-
-	test.skip('isScoreValid ensures scores are valid', () => {
+	test('isScoreValid ensures scores are valid', () => {
 		let isScoreValid = lti.isScoreValid
 
 		expect(isScoreValid(0)).toBe(true)
@@ -342,7 +223,7 @@ describe('lti', () => {
 		expect(isScoreValid(-Infinity)).toBe(false)
 	})
 
-	test.skip('isLaunchExpired checks if a launch is expired after 5 hours', () => {
+	test('isLaunchExpired checks if a launch is expired after 5 hours', () => {
 		let isLaunchExpired = lti.isLaunchExpired
 
 		expect(isLaunchExpired(moment().toISOString())).toBe(false)
@@ -369,7 +250,7 @@ describe('lti', () => {
 		).toBe(true)
 	})
 
-	test.skip('getGradebookStatus returns the proper status', () => {
+	test('getGradebookStatus returns the proper status', () => {
 		let ggs = lti.getGradebookStatus
 
 		// ARGUMENTS:
@@ -427,8 +308,8 @@ describe('lti', () => {
 		expect(ggs('hasOutcome', 'differentScore', true)).toBe(match)
 	})
 
-	test.skip('getAssessmentScoreById returns an object with expected properties', done => {
-		let getAssessmentScoreById = lti.getAssessmentScoreById
+	test('getLatestHighestAssessmentScoreRecord returns an object with expected properties', done => {
+		let getLatestHighestAssessmentScoreRecord = lti.getLatestHighestAssessmentScoreRecord
 
 		db.oneOrNone.mockImplementationOnce((query, vars) => {
 			return Promise.resolve({
@@ -442,7 +323,7 @@ describe('lti', () => {
 			})
 		})
 
-		getAssessmentScoreById(123).then(result => {
+		getLatestHighestAssessmentScoreRecord(123).then(result => {
 			expect(result).toEqual({
 				id: 'id',
 				userId: 'user_id',
@@ -458,21 +339,25 @@ describe('lti', () => {
 		})
 	})
 
-	test.skip('getAssessmentScoreById includes error if nothing returned', done => {
-		let getAssessmentScoreById = lti.getAssessmentScoreById
+	test('getLatestHighestAssessmentScoreRecord returns error if nothing returned', done => {
+		let getLatestHighestAssessmentScoreRecord = lti.getLatestHighestAssessmentScoreRecord
 
 		db.oneOrNone.mockImplementationOnce((query, vars) => {
 			return Promise.resolve(null)
 		})
 
-		getAssessmentScoreById(123).then(result => {
-			expect(result.error.message).toEqual('No assessment score found')
-
-			done()
-		})
+		getLatestHighestAssessmentScoreRecord(123)
+			.then(result => {
+				expect(result.error.message).toBe('No assessment score found')
+				done()
+			})
+			.catch(e => {
+				expect('this to never').toBe('called')
+				done()
+			})
 	})
 
-	test.skip('getLatestSuccessfulLTIAssessmentScoreRecord returns a record with expected values', done => {
+	test('getLatestSuccessfulLTIAssessmentScoreRecord returns a record with expected values', done => {
 		db.oneOrNone.mockImplementationOnce((query, vars) => {
 			return Promise.resolve({
 				properties: 'properties'
@@ -488,12 +373,12 @@ describe('lti', () => {
 		})
 	})
 
-	test.skip('send same assessment score results in "success" and "ok_gradebook_matches_assessment"', done => {
+	test('send same assessment score results in "success" and "ok_gradebook_matches_assessment"', done => {
 		mockSendAssessScoreDBCalls(100, 1, moment().toISOString(), true, true)
 
-		lti.sendHighestAssessmentScore('assessment-score-id').then(result => {
+		lti.sendHighestAssessmentScore('user-id', 'draft-id', 'assessment-id').then(result => {
 			expect(logger.info.mock.calls[0]).toEqual([
-				'LTI begin sendHighestAssessmentScore for assessmentScoreId:"assessment-score-id"',
+				'LTI begin sendHighestAssessmentScore for userId:"user-id", draftId:"draft-id", assessmentId:"assessment-id"',
 				logId
 			])
 			expect(logger.info.mock.calls[1]).toEqual([
@@ -573,12 +458,12 @@ describe('lti', () => {
 		})
 	})
 
-	test.skip('send different assessment score results in "success" and "ok_gradebook_matches_assessment"', done => {
+	test('send different assessment score results in "success" and "ok_gradebook_matches_assessment"', done => {
 		mockSendAssessScoreDBCalls(100, 0.5, moment().toISOString(), true, true)
 
-		lti.sendHighestAssessmentScore('assessment-score-id').then(result => {
+		lti.sendHighestAssessmentScore('user-id', 'draft-id', 'assessment-id').then(result => {
 			expect(logger.info.mock.calls[0]).toEqual([
-				'LTI begin sendHighestAssessmentScore for assessmentScoreId:"assessment-score-id"',
+				'LTI begin sendHighestAssessmentScore for userId:"user-id", draftId:"draft-id", assessmentId:"assessment-id"',
 				logId
 			])
 			expect(logger.info.mock.calls[1]).toEqual([
@@ -621,12 +506,12 @@ describe('lti', () => {
 		})
 	})
 
-	test.skip('send first assessment score results in "success" and "ok_gradebook_matches_assessment"', done => {
+	test('send first assessment score results in "success" and "ok_gradebook_matches_assessment"', done => {
 		mockSendAssessScoreDBCalls(100, null, moment().toISOString(), true, true)
 
-		lti.sendHighestAssessmentScore('assessment-score-id').then(result => {
+		lti.sendHighestAssessmentScore('user-id', 'draft-id', 'assessment-id').then(result => {
 			expect(logger.info.mock.calls[0]).toEqual([
-				'LTI begin sendHighestAssessmentScore for assessmentScoreId:"assessment-score-id"',
+				'LTI begin sendHighestAssessmentScore for userId:"user-id", draftId:"draft-id", assessmentId:"assessment-id"',
 				logId
 			])
 			expect(logger.info.mock.calls[1]).toEqual([
@@ -669,12 +554,12 @@ describe('lti', () => {
 		})
 	})
 
-	test.skip('send null assessment score results in "not_attempted_score_is_null" and "ok_null_score_not_sent"', done => {
+	test('send null assessment score results in "not_attempted_score_is_null" and "ok_null_score_not_sent"', done => {
 		mockSendAssessScoreDBCalls(null, null, moment().toISOString(), true, true)
 
-		lti.sendHighestAssessmentScore('assessment-score-id').then(result => {
+		lti.sendHighestAssessmentScore('user-id', 'draft-id', 'assessment-id').then(result => {
 			expect(logger.info.mock.calls[0]).toEqual([
-				'LTI begin sendHighestAssessmentScore for assessmentScoreId:"assessment-score-id"',
+				'LTI begin sendHighestAssessmentScore for userId:"user-id", draftId:"draft-id", assessmentId:"assessment-id"',
 				logId
 			])
 			expect(logger.info.mock.calls[1]).toEqual([
@@ -713,12 +598,12 @@ describe('lti', () => {
 		})
 	})
 
-	test.skip('send assessment score with no outcome results in "not_attempted_no_outcome_service_for_launch" and "ok_no_outcome_service"', done => {
+	test('send assessment score with no outcome results in "not_attempted_no_outcome_service_for_launch" and "ok_no_outcome_service"', done => {
 		mockSendAssessScoreDBCalls(null, null, moment().toISOString(), true, true)
 
-		lti.sendHighestAssessmentScore('assessment-score-id').then(result => {
+		lti.sendHighestAssessmentScore('user-id', 'draft-id', 'assessment-id').then(result => {
 			expect(logger.info.mock.calls[0]).toEqual([
-				'LTI begin sendHighestAssessmentScore for assessmentScoreId:"assessment-score-id"',
+				'LTI begin sendHighestAssessmentScore for userId:"user-id", draftId:"draft-id", assessmentId:"assessment-id"',
 				logId
 			])
 			expect(logger.info.mock.calls[1]).toEqual([
@@ -757,12 +642,12 @@ describe('lti', () => {
 		})
 	})
 
-	test.skip('replaceResult fail for same score results in "error_replace_result_failed" and "ok_gradebook_matches_assessment_score"', done => {
+	test('replaceResult fail for same score results in "error_replace_result_failed" and "ok_gradebook_matches_assessment_score"', done => {
 		mockSendAssessScoreDBCalls(100, 1, moment().toISOString(), false, true)
 
-		lti.sendHighestAssessmentScore('assessment-score-id').then(result => {
+		lti.sendHighestAssessmentScore('user-id', 'draft-id', 'assessment-id').then(result => {
 			expect(logger.info.mock.calls[0]).toEqual([
-				'LTI begin sendHighestAssessmentScore for assessmentScoreId:"assessment-score-id"',
+				'LTI begin sendHighestAssessmentScore for userId:"user-id", draftId:"draft-id", assessmentId:"assessment-id"',
 				logId
 			])
 			expect(logger.info.mock.calls[1]).toEqual([
@@ -809,12 +694,12 @@ describe('lti', () => {
 		})
 	})
 
-	test.skip('replaceResult fail for different score results in "error_replace_result_failed" and "error_newer_assessment_score_unsent"', done => {
+	test('replaceResult fail for different score results in "error_replace_result_failed" and "error_newer_assessment_score_unsent"', done => {
 		mockSendAssessScoreDBCalls(100, 0.5, moment().toISOString(), false, true)
 
-		lti.sendHighestAssessmentScore('assessment-score-id').then(result => {
+		lti.sendHighestAssessmentScore('user-id', 'draft-id', 'assessment-id').then(result => {
 			expect(logger.info.mock.calls[0]).toEqual([
-				'LTI begin sendHighestAssessmentScore for assessmentScoreId:"assessment-score-id"',
+				'LTI begin sendHighestAssessmentScore for userId:"user-id", draftId:"draft-id", assessmentId:"assessment-id"',
 				logId
 			])
 			expect(logger.info.mock.calls[1]).toEqual([
@@ -861,12 +746,12 @@ describe('lti', () => {
 		})
 	})
 
-	test.skip('missing key for newer assessment score results in "error_no_secret_for_key" and "error_newer_assessment_score_unsent"', done => {
+	test('missing key for newer assessment score results in "error_no_secret_for_key" and "error_newer_assessment_score_unsent"', done => {
 		mockSendAssessScoreDBCalls(100, null, moment().toISOString(), true, true, 'nokey')
 
-		lti.sendHighestAssessmentScore('assessment-score-id').then(result => {
+		lti.sendHighestAssessmentScore('user-id', 'draft-id', 'assessment-id').then(result => {
 			expect(logger.info.mock.calls[0]).toEqual([
-				'LTI begin sendHighestAssessmentScore for assessmentScoreId:"assessment-score-id"',
+				'LTI begin sendHighestAssessmentScore for userId:"user-id", draftId:"draft-id", assessmentId:"assessment-id"',
 				logId
 			])
 			expect(logger.info.mock.calls[1]).toEqual([
@@ -903,14 +788,14 @@ describe('lti', () => {
 		})
 	})
 
-	test.skip('missing key for same assessment score results in "error_no_secret_for_key" and "ok_gradebook_matches_assessment_score"', done => {
+	test('missing key for same assessment score results in "error_no_secret_for_key" and "ok_gradebook_matches_assessment_score"', done => {
 		mockSendAssessScoreDBCalls(100, 1, moment().toISOString(), true, true, 'nokey')
 
 		// expect(logger.error.mock.calls).toBe(1)
 
-		lti.sendHighestAssessmentScore('assessment-score-id').then(result => {
+		lti.sendHighestAssessmentScore('user-id', 'draft-id', 'assessment-id').then(result => {
 			expect(logger.info.mock.calls[0]).toEqual([
-				'LTI begin sendHighestAssessmentScore for assessmentScoreId:"assessment-score-id"',
+				'LTI begin sendHighestAssessmentScore for userId:"user-id", draftId:"draft-id", assessmentId:"assessment-id"',
 				logId
 			])
 			expect(logger.info.mock.calls[1]).toEqual([
@@ -948,13 +833,13 @@ describe('lti', () => {
 	})
 
 	//@TODO
-	test.skip('no assessment score results in "error_no_assessment_score_found" and "error_state_unknown"', done => {
+	test('no assessment score results in "error_no_assessment_score_found" and "error_state_unknown"', done => {
 		mockSendAssessScoreDBCalls('missing', 1, moment().toISOString(), true, true)
 
-		lti.sendHighestAssessmentScore('assessment-score-id').then(result => {
+		lti.sendHighestAssessmentScore('user-id', 'draft-id', 'assessment-id').then(result => {
 			// expect(logger.error.mock.calls).toBe(1)
 			expect(logger.info.mock.calls[0]).toEqual([
-				'LTI begin sendHighestAssessmentScore for assessmentScoreId:"assessment-score-id"',
+				'LTI begin sendHighestAssessmentScore for userId:"user-id", draftId:"draft-id", assessmentId:"assessment-id"',
 				logId
 			])
 			expect(logger.error.mock.calls[0]).toEqual([
@@ -985,13 +870,13 @@ describe('lti', () => {
 		})
 	})
 
-	test.skip('no launch for different score results in "error_no_launch_found" and "error_state_unknown"', done => {
+	test('no launch for different score results in "error_no_launch_found" and "error_state_unknown"', done => {
 		mockSendAssessScoreDBCalls(100, 0.5, moment().toISOString(), false, 'missing')
 
-		lti.sendHighestAssessmentScore('assessment-score-id').then(result => {
+		lti.sendHighestAssessmentScore('user-id', 'draft-id', 'assessment-id').then(result => {
 			// expect(logger.error.mock.calls).toBe(1)
 			expect(logger.info.mock.calls[0]).toEqual([
-				'LTI begin sendHighestAssessmentScore for assessmentScoreId:"assessment-score-id"',
+				'LTI begin sendHighestAssessmentScore for userId:"user-id", draftId:"draft-id", assessmentId:"assessment-id"',
 				logId
 			])
 			expect(logger.info.mock.calls[1]).toEqual([
@@ -1023,13 +908,13 @@ describe('lti', () => {
 		})
 	})
 
-	test.skip('no launch for same score results in "error_no_launch_found" and "ok_gradebook_matches_assessment_score"', done => {
+	test('no launch for same score results in "error_no_launch_found" and "ok_gradebook_matches_assessment_score"', done => {
 		mockSendAssessScoreDBCalls(100, 1, moment().toISOString(), false, 'missing')
 
-		lti.sendHighestAssessmentScore('assessment-score-id').then(result => {
+		lti.sendHighestAssessmentScore('user-id', 'draft-id', 'assessment-id').then(result => {
 			// expect(logger.error.mock.calls).toBe(1)
 			expect(logger.info.mock.calls[0]).toEqual([
-				'LTI begin sendHighestAssessmentScore for assessmentScoreId:"assessment-score-id"',
+				'LTI begin sendHighestAssessmentScore for userId:"user-id", draftId:"draft-id", assessmentId:"assessment-id"',
 				logId
 			])
 			expect(logger.info.mock.calls[1]).toEqual([
@@ -1061,13 +946,13 @@ describe('lti', () => {
 		})
 	})
 
-	test.skip('no launch for null score results in "not_attempted_score_is_null" and "ok_null_score_not_sent"', done => {
+	test('no launch for null score results in "not_attempted_score_is_null" and "ok_null_score_not_sent"', done => {
 		mockSendAssessScoreDBCalls(null, 1, moment().toISOString(), false, 'missing')
 
-		lti.sendHighestAssessmentScore('assessment-score-id').then(result => {
+		lti.sendHighestAssessmentScore('user-id', 'draft-id', 'assessment-id').then(result => {
 			// expect(logger.error.mock.calls).toBe(1)
 			expect(logger.info.mock.calls[0]).toEqual([
-				'LTI begin sendHighestAssessmentScore for assessmentScoreId:"assessment-score-id"',
+				'LTI begin sendHighestAssessmentScore for userId:"user-id", draftId:"draft-id", assessmentId:"assessment-id"',
 				logId
 			])
 			expect(logger.info.mock.calls[1]).toEqual([
@@ -1103,7 +988,7 @@ describe('lti', () => {
 		})
 	})
 
-	test.skip('expired launch for same score results in "error_launch_expired" and "ok_gradebook_matches_assessment_score"', done => {
+	test('expired launch for same score results in "error_launch_expired" and "ok_gradebook_matches_assessment_score"', done => {
 		mockSendAssessScoreDBCalls(
 			100,
 			1,
@@ -1114,10 +999,10 @@ describe('lti', () => {
 			true
 		)
 
-		lti.sendHighestAssessmentScore('assessment-score-id').then(result => {
+		lti.sendHighestAssessmentScore('user-id', 'draft-id', 'assessment-id').then(result => {
 			// expect(logger.error.mock.calls).toBe(1)
 			expect(logger.info.mock.calls[0]).toEqual([
-				'LTI begin sendHighestAssessmentScore for assessmentScoreId:"assessment-score-id"',
+				'LTI begin sendHighestAssessmentScore for userId:"user-id", draftId:"draft-id", assessmentId:"assessment-id"',
 				logId
 			])
 			expect(logger.info.mock.calls[1]).toEqual([
@@ -1152,7 +1037,7 @@ describe('lti', () => {
 		})
 	})
 
-	test.skip('expired launch for different score results in "error_launch_expired" and "error_newer_assessment_score_unsent"', done => {
+	test('expired launch for different score results in "error_launch_expired" and "error_newer_assessment_score_unsent"', done => {
 		mockSendAssessScoreDBCalls(
 			100,
 			0.5,
@@ -1163,10 +1048,10 @@ describe('lti', () => {
 			true
 		)
 
-		lti.sendHighestAssessmentScore('assessment-score-id').then(result => {
+		lti.sendHighestAssessmentScore('user-id', 'draft-id', 'assessment-id').then(result => {
 			// expect(logger.error.mock.calls).toBe(1)
 			expect(logger.info.mock.calls[0]).toEqual([
-				'LTI begin sendHighestAssessmentScore for assessmentScoreId:"assessment-score-id"',
+				'LTI begin sendHighestAssessmentScore for userId:"user-id", draftId:"draft-id", assessmentId:"assessment-id"',
 				logId
 			])
 			expect(logger.info.mock.calls[1]).toEqual([
@@ -1201,7 +1086,7 @@ describe('lti', () => {
 		})
 	})
 
-	test.skip('expired launch for null score results in "not_attempted_score_is_null" and "ok_null_score_not_sent"', done => {
+	test('expired launch for null score results in "not_attempted_score_is_null" and "ok_null_score_not_sent"', done => {
 		mockSendAssessScoreDBCalls(
 			null,
 			1,
@@ -1212,10 +1097,10 @@ describe('lti', () => {
 			true
 		)
 
-		lti.sendHighestAssessmentScore('assessment-score-id').then(result => {
+		lti.sendHighestAssessmentScore('user-id', 'draft-id', 'assessment-id').then(result => {
 			// expect(logger.error.mock.calls).toBe(1)
 			expect(logger.info.mock.calls[0]).toEqual([
-				'LTI begin sendHighestAssessmentScore for assessmentScoreId:"assessment-score-id"',
+				'LTI begin sendHighestAssessmentScore for userId:"user-id", draftId:"draft-id", assessmentId:"assessment-id"',
 				logId
 			])
 			expect(logger.info.mock.calls[1]).toEqual([
@@ -1254,7 +1139,7 @@ describe('lti', () => {
 		})
 	})
 
-	test.skip('expired launch for null score results in "not_attempted_score_is_null" and "ok_null_score_not_sent"', done => {
+	test('expired launch for null score results in "not_attempted_score_is_null" and "ok_null_score_not_sent"', done => {
 		mockSendAssessScoreDBCalls(
 			null,
 			1,
@@ -1265,10 +1150,10 @@ describe('lti', () => {
 			true
 		)
 
-		lti.sendHighestAssessmentScore('assessment-score-id').then(result => {
+		lti.sendHighestAssessmentScore('user-id', 'draft-id', 'assessment-id').then(result => {
 			// expect(logger.error.mock.calls).toBe(1)
 			expect(logger.info.mock.calls[0]).toEqual([
-				'LTI begin sendHighestAssessmentScore for assessmentScoreId:"assessment-score-id"',
+				'LTI begin sendHighestAssessmentScore for userId:"user-id", draftId:"draft-id", assessmentId:"assessment-id"',
 				logId
 			])
 			expect(logger.info.mock.calls[1]).toEqual([
@@ -1307,7 +1192,7 @@ describe('lti', () => {
 		})
 	})
 
-	test.skip('expired launch for no outcome launch results in "not_attempted_no_outcome_service_for_launch" and "ok_no_outcome_service"', done => {
+	test('expired launch for no outcome launch results in "not_attempted_no_outcome_service_for_launch" and "ok_no_outcome_service"', done => {
 		mockSendAssessScoreDBCalls(
 			'doggo',
 			1,
@@ -1318,10 +1203,10 @@ describe('lti', () => {
 			false
 		)
 
-		lti.sendHighestAssessmentScore('assessment-score-id').then(result => {
+		lti.sendHighestAssessmentScore('user-id', 'draft-id', 'assessment-id').then(result => {
 			// expect(logger.error.mock.calls).toBe(1)
 			expect(logger.info.mock.calls[0]).toEqual([
-				'LTI begin sendHighestAssessmentScore for assessmentScoreId:"assessment-score-id"',
+				'LTI begin sendHighestAssessmentScore for userId:"user-id", draftId:"draft-id", assessmentId:"assessment-id"',
 				logId
 			])
 			expect(logger.info.mock.calls[1]).toEqual([
@@ -1360,13 +1245,13 @@ describe('lti', () => {
 		})
 	})
 
-	test.skip('invalid score results in "error_score_is_invalid" and "error_state_unknown"', done => {
+	test('invalid score results in "error_score_is_invalid" and "error_state_unknown"', done => {
 		mockSendAssessScoreDBCalls('doggo', 1, moment().toISOString(), true, true)
 
-		lti.sendHighestAssessmentScore('assessment-score-id').then(result => {
+		lti.sendHighestAssessmentScore('user-id', 'draft-id', 'assessment-id').then(result => {
 			// expect(logger.error.mock.calls).toBe(1)
 			expect(logger.info.mock.calls[0]).toEqual([
-				'LTI begin sendHighestAssessmentScore for assessmentScoreId:"assessment-score-id"',
+				'LTI begin sendHighestAssessmentScore for userId:"user-id", draftId:"draft-id", assessmentId:"assessment-id"',
 				logId
 			])
 			expect(logger.info.mock.calls[1]).toEqual([
@@ -1405,13 +1290,13 @@ describe('lti', () => {
 		})
 	})
 
-	test.skip('invalid score for no outcome launch results in "not_attempted_no_outcome_service_for_launch" and "ok_no_outcome_service"', done => {
+	test('invalid score for no outcome launch results in "not_attempted_no_outcome_service_for_launch" and "ok_no_outcome_service"', done => {
 		mockSendAssessScoreDBCalls('doggo', 1, moment().toISOString(), true, false)
 
-		lti.sendHighestAssessmentScore('assessment-score-id').then(result => {
+		lti.sendHighestAssessmentScore('user-id', 'draft-id', 'assessment-id').then(result => {
 			// expect(logger.error.mock.calls).toBe(1)
 			expect(logger.info.mock.calls[0]).toEqual([
-				'LTI begin sendHighestAssessmentScore for assessmentScoreId:"assessment-score-id"',
+				'LTI begin sendHighestAssessmentScore for userId:"user-id", draftId:"draft-id", assessmentId:"assessment-id"',
 				logId
 			])
 			expect(logger.info.mock.calls[1]).toEqual([
@@ -1478,7 +1363,7 @@ describe('lti', () => {
 
 	// 	mockDate()
 
-	// 	lti.sendHighestAssessmentScore('assessment-score-id').then(result => {
+	// 	lti.sendHighestAssessmentScore('user-id', 'draft-id', 'assessment-id').then(result => {
 	// 		expect(insertEvent).lastCalledWith({
 	// 			action: 'lti:replaceResult',
 	// 			actorTime: 'MOCKED-ISO-DATE-STRING',

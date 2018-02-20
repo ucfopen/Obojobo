@@ -154,6 +154,7 @@ let getLatestHighestAssessmentScoreRecord = (userId, draftId, assessmentId) => {
 			result.assessmentId = dbResult.assessment_id
 			result.attemptId = dbResult.attempt_id
 			result.score = dbResult.score
+			result.scoreDetails = dbResult.score_details
 			result.preview = dbResult.preview
 
 			return result
