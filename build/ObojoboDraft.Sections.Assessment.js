@@ -72,7 +72,7 @@
 	/******/
 	/******/ /******/ __webpack_require__.p = 'build/' // Load entry module and return exports
 	/******/
-	/******/ /******/ return __webpack_require__((__webpack_require__.s = 186))
+	/******/ /******/ return __webpack_require__((__webpack_require__.s = 177))
 	/******/
 })(
 	/************************************************************************/
@@ -89,23 +89,23 @@
 			/***/
 		},
 
-		/***/ /***/ 164: function(module, exports) {
+		/***/ /***/ 155: function(module, exports) {
 			// removed by extract-text-webpack-plugin
 			/***/
 		},
 
-		/***/ /***/ 165: function(module, exports) {
+		/***/ /***/ 156: function(module, exports) {
 			// removed by extract-text-webpack-plugin
 			/***/
 		},
 
-		/***/ /***/ 186: function(module, exports, __webpack_require__) {
-			module.exports = __webpack_require__(45)
+		/***/ /***/ 177: function(module, exports, __webpack_require__) {
+			module.exports = __webpack_require__(42)
 
 			/***/
 		},
 
-		/***/ /***/ 45: function(module, exports, __webpack_require__) {
+		/***/ /***/ 42: function(module, exports, __webpack_require__) {
 			'use strict'
 
 			var _Common = __webpack_require__(0)
@@ -116,11 +116,11 @@
 
 			var _Viewer2 = _interopRequireDefault(_Viewer)
 
-			var _adapter = __webpack_require__(87)
+			var _adapter = __webpack_require__(84)
 
 			var _adapter2 = _interopRequireDefault(_adapter)
 
-			var _viewerComponent = __webpack_require__(91)
+			var _viewerComponent = __webpack_require__(88)
 
 			var _viewerComponent2 = _interopRequireDefault(_viewerComponent)
 
@@ -191,14 +191,14 @@
 			/***/
 		},
 
-		/***/ /***/ 87: function(module, exports, __webpack_require__) {
+		/***/ /***/ 84: function(module, exports, __webpack_require__) {
 			'use strict'
 
 			Object.defineProperty(exports, '__esModule', {
 				value: true
 			})
 
-			var _scoreActions = __webpack_require__(90)
+			var _scoreActions = __webpack_require__(87)
 
 			var _scoreActions2 = _interopRequireDefault(_scoreActions)
 
@@ -268,7 +268,7 @@
 			/***/
 		},
 
-		/***/ /***/ 88: function(module, exports, __webpack_require__) {
+		/***/ /***/ 85: function(module, exports, __webpack_require__) {
 			'use strict'
 
 			Object.defineProperty(exports, '__esModule', {
@@ -396,7 +396,7 @@
 			/***/
 		},
 
-		/***/ /***/ 89: function(module, exports, __webpack_require__) {
+		/***/ /***/ 86: function(module, exports, __webpack_require__) {
 			'use strict'
 
 			Object.defineProperty(exports, '__esModule', {
@@ -420,7 +420,7 @@
 				}
 			})()
 
-			__webpack_require__(164)
+			__webpack_require__(155)
 
 			var _Common = __webpack_require__(0)
 
@@ -497,8 +497,6 @@
 					{
 						key: 'onClickResendScore',
 						value: function onClickResendScore() {
-							console.log('RESEND SCORE!!!!!!!!!!!!!!', APIUtil)
-
 							AssessmentUtil.resendLTIScore(this.props.model)
 						}
 					},
@@ -509,11 +507,9 @@
 							var ltiState = this.props.ltiState
 							var ltiNetworkState = this.props.ltiNetworkState
 
-							console.log('LTI NET STATE', ltiNetworkState)
-
 							switch (ltiNetworkState) {
 								case LTINetworkStates.AWAITING_SEND_ASSESSMENT_SCORE_RESPONSE:
-								case LTINetworkStates.AWAITING_READ_RESULT_RESPONSE:
+									//case LTINetworkStates.AWAITING_READ_RESULT_RESPONSE:
 									childEl = this.renderLoading()
 									break
 
@@ -633,7 +629,7 @@
 			/***/
 		},
 
-		/***/ /***/ 90: function(module, exports, __webpack_require__) {
+		/***/ /***/ 87: function(module, exports, __webpack_require__) {
 			'use strict'
 
 			Object.defineProperty(exports, '__esModule', {
@@ -733,7 +729,7 @@
 			/***/
 		},
 
-		/***/ /***/ 91: function(module, exports, __webpack_require__) {
+		/***/ /***/ 88: function(module, exports, __webpack_require__) {
 			'use strict'
 
 			Object.defineProperty(exports, '__esModule', {
@@ -757,7 +753,7 @@
 				}
 			})()
 
-			__webpack_require__(165)
+			__webpack_require__(156)
 
 			var _Common = __webpack_require__(0)
 
@@ -767,11 +763,11 @@
 
 			var _Viewer2 = _interopRequireDefault(_Viewer)
 
-			var _attemptIncompleteDialog = __webpack_require__(88)
+			var _attemptIncompleteDialog = __webpack_require__(85)
 
 			var _attemptIncompleteDialog2 = _interopRequireDefault(_attemptIncompleteDialog)
 
-			var _ltiStatus = __webpack_require__(89)
+			var _ltiStatus = __webpack_require__(86)
 
 			var _ltiStatus2 = _interopRequireDefault(_ltiStatus)
 
@@ -976,7 +972,6 @@
 								this.props.moduleData.assessmentState,
 								this.props.model
 							)
-							console.log('RENDER', ltiState)
 
 							var childEl = (function() {
 								switch (_this2.getCurrentStep()) {

@@ -122,12 +122,12 @@ describe('AssessmentRubric', () => {
 		})
 	})
 
-	test('pass-fail rewards null when using $no_score variable', () => {
+	test('pass-fail rewards null when using no-score', () => {
 		let ar = new AssessmentRubric({
 			type: 'pass-fail',
 			passingAttemptScore: 80,
 			passedResult: 100,
-			failedResult: '$no_score'
+			failedResult: 'no-score'
 		})
 
 		expect(ar.getAssessmentScoreInfoForLatestAttempt(10, [0])).toEqual({
@@ -148,7 +148,7 @@ describe('AssessmentRubric', () => {
 			type: 'pass-fail',
 			passingAttemptScore: 80,
 			passedResult: '$attempt_score',
-			failedResult: '$no_score'
+			failedResult: 'no-score'
 		})
 
 		expect(ar.getAssessmentScoreInfoForLatestAttempt(10, [80])).toEqual({
@@ -185,7 +185,7 @@ describe('AssessmentRubric', () => {
 			type: 'pass-fail',
 			passingAttemptScore: 80,
 			passedResult: '$attempt_score',
-			failedResult: '$no_score',
+			failedResult: 'no-score',
 			unableToPassResult: '$highest_attempt_score'
 		})
 

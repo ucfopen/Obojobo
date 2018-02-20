@@ -72,7 +72,7 @@
 	/******/
 	/******/ /******/ __webpack_require__.p = 'build/' // Load entry module and return exports
 	/******/
-	/******/ /******/ return __webpack_require__((__webpack_require__.s = 168))
+	/******/ /******/ return __webpack_require__((__webpack_require__.s = 159))
 	/******/
 })(
 	/************************************************************************/
@@ -83,25 +83,25 @@
 			/***/
 		},
 
-		/***/ /***/ 144: function(module, exports) {
+		/***/ /***/ 135: function(module, exports) {
 			// removed by extract-text-webpack-plugin
 			/***/
 		},
 
-		/***/ /***/ 168: function(module, exports, __webpack_require__) {
-			module.exports = __webpack_require__(28)
+		/***/ /***/ 159: function(module, exports, __webpack_require__) {
+			module.exports = __webpack_require__(25)
 
 			/***/
 		},
 
-		/***/ /***/ 28: function(module, exports, __webpack_require__) {
+		/***/ /***/ 25: function(module, exports, __webpack_require__) {
 			'use strict'
 
-			var _adapter = __webpack_require__(49)
+			var _adapter = __webpack_require__(46)
 
 			var _adapter2 = _interopRequireDefault(_adapter)
 
-			var _viewerComponent = __webpack_require__(50)
+			var _viewerComponent = __webpack_require__(47)
 
 			var _viewerComponent2 = _interopRequireDefault(_viewerComponent)
 
@@ -125,7 +125,7 @@
 			/***/
 		},
 
-		/***/ /***/ 49: function(module, exports, __webpack_require__) {
+		/***/ /***/ 46: function(module, exports, __webpack_require__) {
 			'use strict'
 
 			Object.defineProperty(exports, '__esModule', {
@@ -202,7 +202,7 @@
 			/***/
 		},
 
-		/***/ /***/ 50: function(module, exports, __webpack_require__) {
+		/***/ /***/ 47: function(module, exports, __webpack_require__) {
 			'use strict'
 
 			Object.defineProperty(exports, '__esModule', {
@@ -226,7 +226,7 @@
 				}
 			})()
 
-			__webpack_require__(144)
+			__webpack_require__(135)
 
 			var _Common = __webpack_require__(0)
 

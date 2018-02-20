@@ -15,6 +15,21 @@ let logAndRespondToUnexpected = (res, originalError, errorForResponse) => {
 	res.unexpected(errorForResponse)
 }
 
+app.get('/api/lti/state/draft/:draftId', (req, res, next) => {
+	let currentUser
+
+	req
+		.requireCurrentUser()
+		.then(user => {
+			currentUser = user
+
+			return lti.getLTIStatesByAssessmentIdForUserAndDraft(currentUser.id, req.params.draftId)
+		})
+		.then(result => {
+			res.success(result)
+		})
+})
+
 app.post('/api/lti/sendAssessmentScore', (req, res, next) => {
 	logger.info('API sendAssessmentScore', req.body)
 
@@ -33,18 +48,7 @@ app.post('/api/lti/sendAssessmentScore', (req, res, next) => {
 				`API sendAssessmentScore with userId="${user.id}", draftId="${draftId}", assessmentId="${assessmentId}"`
 			)
 
-			return Assessment.getLatestAssessmentScoreRecord(currentUser.id, draftId, assessmentId)
-		})
-		.then(assessmentScoreRecord => {
-			// 	console.log('WE GOT', assessmentScoreRecord)
-			if (!assessmentScoreRecord) {
-				res.badInput('No assessment score found')
-				return
-			}
-
-			assessmentScoreId = assessmentScoreRecord.id
-
-			return lti.sendAssessmentScore(assessmentScoreId)
+			return lti.sendHighestAssessmentScore(currentUser.id, draftId, assessmentId)
 		})
 		.then(result => {
 			ltiScoreResult = result

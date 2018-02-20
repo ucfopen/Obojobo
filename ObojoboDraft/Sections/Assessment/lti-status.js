@@ -26,8 +26,6 @@ export default class LTIStatus extends React.Component {
 	}
 
 	onClickResendScore() {
-		console.log('RESEND SCORE!!!!!!!!!!!!!!', APIUtil)
-
 		AssessmentUtil.resendLTIScore(this.props.model)
 	}
 
@@ -36,11 +34,9 @@ export default class LTIStatus extends React.Component {
 		let ltiState = this.props.ltiState
 		let ltiNetworkState = this.props.ltiNetworkState
 
-		console.log('LTI NET STATE', ltiNetworkState)
-
 		switch (ltiNetworkState) {
 			case LTINetworkStates.AWAITING_SEND_ASSESSMENT_SCORE_RESPONSE:
-			case LTINetworkStates.AWAITING_READ_RESULT_RESPONSE:
+				//case LTINetworkStates.AWAITING_READ_RESULT_RESPONSE:
 				childEl = this.renderLoading()
 				break
 

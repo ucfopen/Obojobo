@@ -87,7 +87,7 @@ let endAttempt = (req, res, user, attemptId, isPreviewing) => {
 			.then(() => {
 				logger.info(`End attempt "${attemptId}" - insertAttemptEndEvent success`)
 
-				return sendLTIScore(assessmentScoreId)
+				return sendLTIHighestAssessmentScore(user.id, attempt.draftId, attempt.assessmentId)
 			})
 			.then(ltiRequestResult => {
 				logger.info(`End attempt "${attemptId}" - sendLTIScore was executed`)
@@ -205,7 +205,7 @@ let calculateScores = (assessmentModel, attemptHistory, scoreInfo) => {
 	)
 
 	let rubric = new AssessmentRubric(assessmentModel.node.content.rubric)
-	let assessmentScoreDetails = rubric.getHighestAssessmentScoreItem(
+	let assessmentScoreDetails = rubric.getAssessmentScoreInfoForLatestAttempt(
 		assessmentModel.node.content.attempts,
 		allScores
 	)
@@ -265,8 +265,8 @@ let insertAttemptEndEvents = (
 	})
 }
 
-let sendLTIScore = assessmentScoreId => {
-	return lti.sendAssessmentScore(assessmentScoreId)
+let sendLTIHighestAssessmentScore = (userId, draftId, assessmentId) => {
+	return lti.sendHighestAssessmentScore(userId, draftId, assessmentId)
 }
 
 let insertAttemptScoredEvents = (
@@ -334,6 +334,6 @@ module.exports = {
 	calculateScores,
 	completeAttempt,
 	insertAttemptEndEvents,
-	sendLTIScore,
+	sendLTIHighestAssessmentScore,
 	insertAttemptScoredEvents
 }

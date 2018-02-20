@@ -72,7 +72,7 @@
 	/******/
 	/******/ /******/ __webpack_require__.p = 'build/' // Load entry module and return exports
 	/******/
-	/******/ /******/ return __webpack_require__((__webpack_require__.s = 175))
+	/******/ /******/ return __webpack_require__((__webpack_require__.s = 166))
 	/******/
 })(
 	/************************************************************************/
@@ -83,18 +83,18 @@
 			/***/
 		},
 
-		/***/ /***/ 151: function(module, exports) {
+		/***/ /***/ 142: function(module, exports) {
 			// removed by extract-text-webpack-plugin
 			/***/
 		},
 
-		/***/ /***/ 175: function(module, exports, __webpack_require__) {
-			module.exports = __webpack_require__(35)
+		/***/ /***/ 166: function(module, exports, __webpack_require__) {
+			module.exports = __webpack_require__(32)
 
 			/***/
 		},
 
-		/***/ /***/ 18: function(module, exports, __webpack_require__) {
+		/***/ /***/ 17: function(module, exports, __webpack_require__) {
 			'use strict'
 
 			Object.defineProperty(exports, '__esModule', {
@@ -309,18 +309,18 @@
 			/***/
 		},
 
-		/***/ /***/ 35: function(module, exports, __webpack_require__) {
+		/***/ /***/ 32: function(module, exports, __webpack_require__) {
 			'use strict'
 
 			var _Common = __webpack_require__(0)
 
 			var _Common2 = _interopRequireDefault(_Common)
 
-			var _adapter = __webpack_require__(64)
+			var _adapter = __webpack_require__(61)
 
 			var _adapter2 = _interopRequireDefault(_adapter)
 
-			var _viewerComponent = __webpack_require__(65)
+			var _viewerComponent = __webpack_require__(62)
 
 			var _viewerComponent2 = _interopRequireDefault(_viewerComponent)
 
@@ -340,14 +340,14 @@
 			/***/
 		},
 
-		/***/ /***/ 64: function(module, exports, __webpack_require__) {
+		/***/ /***/ 61: function(module, exports, __webpack_require__) {
 			'use strict'
 
 			Object.defineProperty(exports, '__esModule', {
 				value: true
 			})
 
-			var _listStyles = __webpack_require__(18)
+			var _listStyles = __webpack_require__(17)
 
 			var _listStyles2 = _interopRequireDefault(_listStyles)
 
@@ -432,7 +432,7 @@
 			/***/
 		},
 
-		/***/ /***/ 65: function(module, exports, __webpack_require__) {
+		/***/ /***/ 62: function(module, exports, __webpack_require__) {
 			'use strict'
 
 			Object.defineProperty(exports, '__esModule', {
@@ -456,9 +456,9 @@
 				}
 			})()
 
-			__webpack_require__(151)
+			__webpack_require__(142)
 
-			var _listStyles = __webpack_require__(18)
+			var _listStyles = __webpack_require__(17)
 
 			var _listStyles2 = _interopRequireDefault(_listStyles)
 

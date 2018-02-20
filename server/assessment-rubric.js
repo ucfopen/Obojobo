@@ -36,6 +36,8 @@ ScoreRange:
 
 */
 
+let MOD_AMOUNT_LIMIT = 20
+
 let getParsedRange = range => {
 	if (typeof range === 'undefined' || range === null) return null
 
@@ -151,7 +153,7 @@ let isValueInRange = (value, range, replaceDict) => {
 // 			break
 
 // 		case AssessmentRubric.STATUS_FAILED:
-// 			scoreReplaceDict[AssessmentRubric.VAR_NO_SCORE] = null
+// 			scoreReplaceDict[AssessmentRubric.NO_SCORE] = null
 // 			assessmentScore = tryGetParsedFloat(rubric.failedResult, scoreReplaceDict, true)
 // 			break
 
@@ -222,7 +224,7 @@ let createRubric = rubric => {
 //export default
 class AssessmentRubric {
 	constructor(rubric) {
-		let mods = rubric && rubric.mods ? rubric.mods : []
+		let mods = rubric && rubric.mods ? rubric.mods.slice(0, MOD_AMOUNT_LIMIT) : []
 
 		this.rubric = createRubric(rubric)
 
@@ -269,7 +271,7 @@ class AssessmentRubric {
 		// replaceDict[AssessmentRubric.VAR_LAST_ATTEMPT] = totalNumberOfAttemptsAvailable
 		// replaceDict[AssessmentRubric.VAR_ATTEMPT_SCORE] = latestAttemptScore
 		// replaceDict[AssessmentRubric.VAR_HIGHEST_ATTEMPT_SCORE] = highestAttemptScore
-		// replaceDict[AssessmentRubric.VAR_NO_SCORE] = null
+		// replaceDict[AssessmentRubric.NO_SCORE] = null
 
 		// return getModsAndRewardTotal(
 		// 	this.rubric,
@@ -293,7 +295,7 @@ class AssessmentRubric {
 
 		let scoreReplaceDict = {}
 		scoreReplaceDict[AssessmentRubric.VAR_ATTEMPT_SCORE] = latestAttemptScore
-		// scoreReplaceDict[AssessmentRubric.VAR_NO_SCORE] = null
+		// scoreReplaceDict[AssessmentRubric.NO_SCORE] = null
 		// replaceDict[AssessmentRubric.VAR_HIGHEST_ATTEMPT_SCORE] = highestAttemptScore
 
 		if (latestAttemptScore >= this.rubric.passingAttemptScore) {
@@ -311,14 +313,14 @@ class AssessmentRubric {
 		switch (status) {
 			case AssessmentRubric.STATUS_UNABLE_TO_PASS:
 				scoreReplaceDict[AssessmentRubric.VAR_HIGHEST_ATTEMPT_SCORE] = highestAttemptScore
-				scoreReplaceDict[AssessmentRubric.VAR_NO_SCORE] = null
+				scoreReplaceDict[AssessmentRubric.NO_SCORE] = null
 
 				assessmentScore = tryGetParsedFloat(this.rubric.unableToPassResult, scoreReplaceDict, true)
 				break
 
 			case AssessmentRubric.STATUS_FAILED:
 				scoreReplaceDict[AssessmentRubric.VAR_HIGHEST_ATTEMPT_SCORE] = highestAttemptScore
-				scoreReplaceDict[AssessmentRubric.VAR_NO_SCORE] = null
+				scoreReplaceDict[AssessmentRubric.NO_SCORE] = null
 
 				assessmentScore = tryGetParsedFloat(this.rubric.failedResult, scoreReplaceDict, true)
 				break
@@ -363,7 +365,11 @@ AssessmentRubric.STATUS_UNABLE_TO_PASS = 'unableToPass'
 AssessmentRubric.VAR_HIGHEST_ATTEMPT_SCORE = '$highest_attempt_score'
 AssessmentRubric.VAR_ATTEMPT_SCORE = '$attempt_score'
 AssessmentRubric.VAR_LAST_ATTEMPT = '$last_attempt'
-AssessmentRubric.VAR_NO_SCORE = '$no_score'
+
+AssessmentRubric.NO_SCORE = 'no-score'
 // AssessmentRubric.VAR_CLOSE_DATE = '$close_date'
+
+// consdier removing scoreCondition, not sure what it could be used for
+// consider a limit to the number of mods!
 
 module.exports = AssessmentRubric

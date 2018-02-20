@@ -138,7 +138,6 @@ export default class Assessment extends React.Component {
 			this.props.moduleData.assessmentState,
 			this.props.model
 		)
-		console.log('RENDER', ltiState)
 
 		var childEl = (() => {
 			switch (this.getCurrentStep()) {

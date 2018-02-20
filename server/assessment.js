@@ -1,5 +1,6 @@
 let DraftNode = oboRequire('models/draft_node')
 let db = oboRequire('db')
+let lti = oboRequire('lti')
 let express = require('express')
 let app = express()
 
@@ -81,6 +82,7 @@ class Assessment extends DraftNode {
 			userId: userId,
 			draftId: draftId,
 			attemptId: attempt.attempt_id,
+			assessmentScoreId: attempt.assessment_score_id,
 			attemptNumber: parseInt(attempt.attempt_number, 10),
 			assessmentId: attempt.assessment_id,
 			startTime: attempt.created_at,
@@ -90,15 +92,18 @@ class Assessment extends DraftNode {
 			questionScores: attempt.result ? attempt.result.questionScores : [],
 			attemptScore: attempt.result ? attempt.result.attemptScore : null,
 			assessmentScore: parseInt(attempt.assessment_score, 10),
-			ltiState: {
-				score: attempt.score_sent,
-				status: attempt.status,
-				statusDetails: attempt.status_details
-			}
+			assessmentScoreDetails: attempt.score_details //,
+			// ltiState: {
+			// 	score: attempt.score_sent,
+			// 	status: attempt.status,
+			// 	statusDetails: attempt.status_details
+			// }
 		}
 	}
 
 	static getAttempts(userId, draftId, optionalAssessmentId = null) {
+		let assessmentsArr = []
+
 		return db
 			.manyOrNone(
 				`
@@ -116,23 +121,10 @@ class Assessment extends DraftNode {
 					ATT.result,
 					SCO.id AS "assessment_score_id",
 					SCO.score AS "assessment_score",
-					LTI.score_sent,
-					LTI.status_details,
-					LTI.status
+					SCO.score_details AS "score_details"
 				FROM attempts ATT
 				LEFT JOIN assessment_scores SCO
 				ON ATT.id = SCO.attempt_id
-				LEFT JOIN
-				(
-					SELECT DISTINCT ON (assessment_score_id)
-						assessment_score_id,
-						score_sent,
-						status_details,
-						status
-					FROM lti_assessment_scores
-					ORDER BY assessment_score_id, created_at DESC
-				) LTI
-				ON SCO.id = LTI.assessment_score_id
 				WHERE
 					ATT.user_id = $[userId]
 					AND ATT.draft_id = $[draftId]
@@ -149,6 +141,7 @@ class Assessment extends DraftNode {
 				let assessments = {}
 
 				result.forEach(attempt => {
+					console.log('***************attempt be all', attempt)
 					attempt = Assessment.createAttemptResponse(userId, draftId, attempt)
 
 					if (!assessments[attempt.assessmentId]) {
@@ -161,23 +154,49 @@ class Assessment extends DraftNode {
 					assessments[attempt.assessmentId].attempts.push(attempt)
 				})
 
-				let assessmentsArr = []
 				for (let assessmentId in assessments) {
 					assessmentsArr.push(assessments[assessmentId])
 				}
 
-				if (optionalAssessmentId !== null) {
-					if (assessmentsArr.length > 0) {
-						return assessmentsArr[0]
-					} else {
-						return {
-							assessmentId: optionalAssessmentId,
-							attempts: []
-						}
-					}
-				}
+				// if (optionalAssessmentId !== null) {
+				// 	if (assessmentsArr.length > 0) {
+				// 		return assessmentsArr[0]
+				// 	} else {
+				// 		return {
+				// 			assessmentId: optionalAssessmentId,
+				// 			attempts: []
+				// 		}
+				// 	}
+				// }
 
 				return assessmentsArr
+			})
+			.then(assessmentsArr => {
+				return lti.getLTIStatesByAssessmentIdForUserAndDraft(userId, draftId, optionalAssessmentId)
+			})
+			.then(ltiStates => {
+				assessmentsArr.forEach(assessmentItem => {
+					let ltiState = ltiStates[assessmentItem.assessmentId]
+					assessmentItem.ltiState = {
+						scoreSent: ltiState.scoreSent,
+						sentDate: ltiState.sentDate,
+						status: ltiState.status,
+						gradebookStatus: ltiState.gradebookStatus,
+						statusDetails: ltiState.statusDetails
+					}
+				})
+
+				if (optionalAssessmentId === null) {
+					return assessmentsArr
+				} else if (optionalAssessmentId !== null && assessmentsArr.length > 0) {
+					return assessmentsArr[0]
+				} else {
+					return {
+						assessmentId: optionalAssessmentId,
+						attempts: [],
+						ltiState: null
+					}
+				}
 			})
 	}
 
@@ -382,25 +401,25 @@ class Assessment extends DraftNode {
 			.then(result => result.id)
 	}
 
-	static getLatestAssessmentScoreRecord(userId, draftId, assessmentId) {
-		return db.oneOrNone(
-			`
-				SELECT *
-				FROM assessment_scores
-				WHERE
-					user_id = $[userId]
-					AND draft_id = $[draftId]
-					AND assessment_id = $[assessmentId]
-				ORDER BY created_at DESC
-				LIMIT 1
-				`,
-			{
-				userId,
-				draftId,
-				assessmentId
-			}
-		)
-	}
+	// static getHighestLatestAssessmentScoreRecord(userId, draftId, assessmentId) {
+	// 	return db.oneOrNone(
+	// 		`
+	// 			SELECT *
+	// 			FROM assessment_scores
+	// 			WHERE
+	// 				user_id = $[userId]
+	// 				AND draft_id = $[draftId]
+	// 				AND assessment_id = $[assessmentId]
+	// 			ORDER BY created_at DESC
+	// 			LIMIT 1
+	// 		`,
+	// 		{
+	// 			userId,
+	// 			draftId,
+	// 			assessmentId
+	// 		}
+	// 	)
+	// }
 
 	constructor(draftTree, node, initFn) {
 		super(draftTree, node, initFn)
@@ -415,12 +434,31 @@ class Assessment extends DraftNode {
 	}
 
 	onRenderViewer(req, res, oboGlobals) {
+		let attempts
+		let userId
+
 		return req
 			.requireCurrentUser()
 			.then(currentUser => {
-				return this.constructor.getAttempts(currentUser.id, req.params.draftId)
+				userId = currentUser.id
+
+				return this.constructor.getAttempts(userId, req.params.draftId)
 			})
 			.then(attempts => {
+				// 	attempts = attemptsResult
+
+				// 	//@TODO attempts is a bad name, it's actually an array of objects that contain an 'attempts' array
+
+				// 	return lti.getLTIStatesByAssessmentIdForUserAndDraft(userId, req.params.draftId)
+				// })
+				// .then(ltiStatesByAssessmentId => {
+				// 	console.log('GOT BACKAH', ltiStatesByAssessmentId)
+				// 	attempts.forEach(attempt => {
+				// 		attempt.ltiState = ltiStatesByAssessmentId[attempt.assessmentId]
+				// 			? ltiStatesByAssessmentId[attempt.assessmentId]
+				// 			: {}
+				// 	})
+
 				oboGlobals.set('ObojoboDraft.Sections.Assessment:attempts', attempts)
 				return Promise.resolve()
 			})
