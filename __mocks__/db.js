@@ -10,6 +10,11 @@ db.oneOrNone.mockImplementation((query, vars) => {
 	return Promise.resolve(null)
 })
 
+db.manyOrNone = jest.fn()
+db.oneOrNone.mockImplementation((query, vars) => {
+	return Promise.resolve(null)
+})
+
 db.any = jest.fn()
 db.any.mockImplementation((query, vars) => {
 	return Promise.resolve(null)

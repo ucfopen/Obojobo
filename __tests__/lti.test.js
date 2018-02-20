@@ -23,6 +23,14 @@ let logger = oboRequire('logger')
 let logId = 'DEADBEEF-0000-DEAD-BEEF-1234DEADBEEF'
 let _DateToISOString
 
+// jest.mock('ims-lti/lib/extensions/outcomes', () => {
+// 	return {
+// 		OutcomeService: () => {
+// 			throw new Error('OutcomeService Error!')
+// 		}
+// 	}
+// })
+
 mockVirtual('../insert_event', () => {
 	// return jest.fn(() => Promise.resolve())
 })
@@ -67,9 +75,17 @@ jest.mock('ims-lti/lib/extensions/outcomes', () => {
 	OutcomeService.__setNextSendReplaceResultReturn = function(rtnValue) {
 		OutcomeService.__send_replace_result_value = rtnValue
 	}
+	OutcomeService.__setNextSendReplaceResultError = function(e) {
+		OutcomeService.__send_replace_result_error = e
+	}
 	OutcomeService.prototype.send_replace_result = function(score, cb) {
-		cb(null, OutcomeService.__send_replace_result_value)
-		delete OutcomeService.__send_replace_result_value
+		if (OutcomeService.__send_replace_result_error) {
+			cb(OutcomeService.__send_replace_result_error, null)
+			delete OutcomeService.__send_replace_result_error
+		} else {
+			cb(null, OutcomeService.__send_replace_result_value)
+			delete OutcomeService.__send_replace_result_value
+		}
 	}
 
 	return {
@@ -1352,6 +1368,86 @@ describe('lti', () => {
 				ltiAssessmentScoreId: 'new-lti-assessment-score-id'
 			})
 
+			done()
+		})
+	})
+
+	test('getLTIStatesByAssessmentIdForUserAndDraft returns expected values', done => {
+		db.manyOrNone.mockImplementationOnce((query, vars) => {
+			return Promise.resolve([
+				{
+					assessment_id: 'assessmentid',
+					assessment_score_id: 'assessment-score-id',
+					score_sent: 'score-sent',
+					lti_sent_date: 'lti-sent-date',
+					status: 'status',
+					gradebook_status: 'gradebook-status',
+					status_details: 'status-details'
+				}
+			])
+		})
+
+		lti.getLTIStatesByAssessmentIdForUserAndDraft('user-id', 'draft-id').then(result => {
+			expect(result).toEqual({
+				assessmentid: {
+					assessmentId: 'assessmentid',
+					assessmentScoreId: 'assessment-score-id',
+					scoreSent: 'score-sent',
+					sentDate: 'lti-sent-date',
+					status: 'status',
+					gradebookStatus: 'gradebook-status',
+					statusDetails: 'status-details'
+				}
+			})
+
+			done()
+		})
+	})
+
+	test('getLTIStatesByAssessmentIdForUserAndDraft returns empty object when nothing returned from database', done => {
+		db.manyOrNone.mockImplementationOnce((query, vars) => {
+			return Promise.resolve(null)
+		})
+
+		lti.getLTIStatesByAssessmentIdForUserAndDraft('user-id', 'draft-id').then(result => {
+			expect(result).toEqual({})
+
+			done()
+		})
+	})
+
+	test('getOutcomeServiceForLaunch returns error if unexpected error occurs', () => {
+		// reqVars should be a plain js object but by making it an instance of
+		// this class below I can cause an error to be thrown when getOutcomeServiceForLaunch
+		// tries to get lis_outcome_service_url. I just need to get some error to be
+		// thrown in getOutcomeServiceForLaunch so that it can be caught.
+		class MockedReqVars {
+			get lis_outcome_service_url() {
+				throw new Error('Some Unexpected Error')
+			}
+		}
+
+		let rtn = lti.getOutcomeServiceForLaunch({
+			key: 'testkey',
+			reqVars: new MockedReqVars()
+		})
+
+		expect(rtn.error.message).toBe('Some Unexpected Error')
+	})
+
+	test('sendReplaceResultRequest returns false when OutcomeService returns error, logs error', done => {
+		OutcomeService.__setNextSendReplaceResultError(new Error('Internal Outcome Service Error'))
+		// OutcomeService.__setNextSendReplaceResultReturn('rv')
+
+		let os = new OutcomeService()
+		os.service_url = 'service-url'
+
+		lti.sendReplaceResultRequest(os, 1).then(result => {
+			expect(result).toBe(false)
+			expect(logger.info).toHaveBeenCalledWith('LTI sendReplaceResult to "service-url" with "1"')
+			expect(logger.info).toHaveBeenCalledWith(
+				'LTI sendReplaceResult threw error: "Error: Internal Outcome Service Error"'
+			)
 			done()
 		})
 	})
