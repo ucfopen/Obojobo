@@ -118,8 +118,6 @@ let getLatestHighestAssessmentScoreRecord = (userId, draftId, assessmentId) => {
 		error: null
 	}
 
-	console.log('GLHASR', userId, draftId, assessmentId)
-
 	return db
 		.oneOrNone(
 			`
@@ -143,7 +141,6 @@ let getLatestHighestAssessmentScoreRecord = (userId, draftId, assessmentId) => {
 			}
 		)
 		.then(dbResult => {
-			console.log('dbResult be all', dbResult)
 			if (!dbResult) {
 				throw ERROR_FATAL_NO_ASSESSMENT_SCORE_FOUND
 			}
@@ -223,10 +220,7 @@ let getLTIStatesByAssessmentIdForUserAndDraft = (userId, draftId, optionalAssess
 				return ltiStatesByAssessmentId
 			}
 
-			console.log('result be all', result)
-
 			result.forEach(row => {
-				console.log('row be all', row)
 				ltiStatesByAssessmentId[row.assessment_id] = {
 					assessmentId: row.assessment_id,
 					assessmentScoreId: row.assessment_score_id,
@@ -273,8 +267,6 @@ let getRequiredDataForReplaceResult = function(userId, draftId, assessmentId, lo
 			if (assessmentScoreResult.error) {
 				throw assessmentScoreResult.error
 			}
-
-			console.log('ASR', assessmentScoreResult)
 
 			logger.info(
 				`LTI found assessment score. Details: user:"${result.assessmentScoreRecord
@@ -460,12 +452,6 @@ let sendReplaceResultRequest = (outcomeService, score) => {
 //
 
 let insertReplaceResultEvent = (userId, draftId, launch, assessmentScoreData, ltiResult) => {
-	// let x = insertEvent({ a: 1 })
-	// let y = x.then(100)
-	// console.log('wtf')
-	// console.log(x)
-	// console.log(y)
-
 	insertEvent({
 		action: 'lti:replaceResult',
 		actorTime: new Date().toISOString(),
@@ -636,8 +622,6 @@ let sendHighestAssessmentScore = function(userId, draftId, assessmentId) {
 			requiredData = requiredDataResult
 			outcomeData = getOutcomeServiceForLaunch(requiredData.launch)
 
-			console.log('outData', outcomeData)
-
 			if (requiredData.ltiScoreToSend === null) {
 				throw ERROR_SCORE_IS_NULL
 			} else if (outcomeData.type === OUTCOME_TYPE_NO_OUTCOME) {
@@ -698,6 +682,14 @@ let sendHighestAssessmentScore = function(userId, draftId, assessmentId) {
 				logId
 			)
 		})
+		.then(scoreId => {
+			logger.info(`LTI store "${result.status}" success - id:"${scoreId}"`, logId)
+
+			result.ltiAssessmentScoreId = scoreId
+			result.dbStatus = DB_STATUS_RECORDED
+
+			return Promise.resolve() // Go to next then
+		})
 		.catch(error => {
 			logger.error(`LTI bad error attempting to update database! :(`, error.stack, logId)
 
@@ -706,11 +698,6 @@ let sendHighestAssessmentScore = function(userId, draftId, assessmentId) {
 			return Promise.resolve() // Go to next then
 		})
 		.then(scoreId => {
-			logger.info(`LTI store "${result.status}" success - id:"${scoreId}"`, logId)
-
-			result.ltiAssessmentScoreId = scoreId
-			result.dbStatus = DB_STATUS_RECORDED
-
 			insertReplaceResultEvent(
 				requiredData.assessmentScoreRecord.userId,
 				requiredData.assessmentScoreRecord.draftId,

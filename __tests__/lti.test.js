@@ -23,50 +23,11 @@ let logger = oboRequire('logger')
 let logId = 'DEADBEEF-0000-DEAD-BEEF-1234DEADBEEF'
 let _DateToISOString
 
-// jest.mock('ims-lti/lib/extensions/outcomes', () => {
-// 	return {
-// 		OutcomeService: () => {
-// 			throw new Error('OutcomeService Error!')
-// 		}
-// 	}
-// })
-
-mockVirtual('../insert_event', () => {
-	// return jest.fn(() => Promise.resolve())
-})
-// let insertEvent = require('../insert_event')
-
-// jest.mock('../insert_event', () => {
-// 	let p = jest.fn()
-
-// 	class P {
-// 		then() {
-// 			return new P()
-// 		}
-
-// 		catch() {
-// 			return new P()
-// 		}
-// 	}
-
-// 	p.mockImplementation(() => {
-// 		return new P()
-// 	})
-
-// 	let f = jest.fn()
-// 	// f.then = jest.fn()
-// 	f.catch = jest.fn()
-
-// 	return jest.fn(() => {
-// 		return f
-// 	})
-
-// 	// return f
-
-// 	// 	// return jest.fn(() => {
-// 	// 	// 	return new P()
-// 	// 	// })
-//})
+class MockedBadReqVars {
+	get lis_outcome_service_url() {
+		throw new Error('Some Unexpected Error')
+	}
+}
 
 jest.mock('ims-lti/lib/extensions/outcomes', () => {
 	let OutcomeService = function() {
@@ -104,8 +65,9 @@ let mockSendAssessScoreDBCalls = (
 	ltiPrevRecordScoreSent,
 	creationDate,
 	sendReplaceResultSuccessful,
-	ltiHasOutcome, // Use 'missing' to indicate no launch
-	ltiKey = 'testkey'
+	ltiHasOutcome, // Use 'missing' to indicate no launch, 'error' to throw an error
+	ltiKey = 'testkey',
+	insertLTIAssessmentScoreSucceeds = true
 ) => {
 	// mock get assessment_score
 	if (assessmentScore === 'missing') {
@@ -147,6 +109,15 @@ let mockSendAssessScoreDBCalls = (
 		// mock tryRetrieveLtiLaunch:
 		if (ltiHasOutcome === 'missing') {
 			db.oneOrNone.mockReturnValueOnce(Promise.resolve(false))
+		} else if (ltiHasOutcome === 'error') {
+			db.oneOrNone.mockReturnValueOnce(
+				Promise.resolve({
+					id: 'launch-id',
+					data: new MockedBadReqVars(),
+					lti_key: ltiKey,
+					created_at: creationDate
+				})
+			)
 		} else {
 			db.oneOrNone.mockReturnValueOnce(
 				Promise.resolve({
@@ -163,7 +134,15 @@ let mockSendAssessScoreDBCalls = (
 	}
 
 	// mock insertLTIAssessmentScore:
-	db.one.mockReturnValueOnce(Promise.resolve({ id: 'new-lti-assessment-score-id' }))
+	if (insertLTIAssessmentScoreSucceeds) {
+		db.one.mockReturnValueOnce(Promise.resolve({ id: 'new-lti-assessment-score-id' }))
+	} else {
+		db.one.mockReturnValueOnce(
+			new Promise(() => {
+				throw new Error('insertLTIAssessmentScore failed')
+			})
+		)
+	}
 
 	// mock insertEvent
 	db.one.mockReturnValueOnce(Promise.resolve(true))
@@ -183,7 +162,7 @@ jest.mock('../config', () => {
 
 describe('lti', () => {
 	beforeAll(() => {
-		global.console = { warn: jest.fn(), log: jest.fn(), error: jest.fn() }
+		// global.console = { warn: jest.fn(), log: jest.fn(), error: jest.fn() }
 
 		// db = require('../db')
 		// jest.mock('../db')
@@ -432,43 +411,6 @@ describe('lti', () => {
 				dbStatus: 'recorded',
 				ltiAssessmentScoreId: 'new-lti-assessment-score-id'
 			})
-
-			// expect(insertEvent).lastCalledWith({
-			// 	action: 'lti:replaceResult',
-			// 	actorTime: 'MOCKED-ISO-DATE-STRING',
-			// 	payload: {
-			// 		launchId: 'launch-id',
-			// 		launchKey: 'testkey',
-			// 		body: {
-			// 			lis_outcome_service_url: 'lis_outcome_service_url',
-			// 			lis_result_sourcedid: 'lis_result_sourcedid'
-			// 		},
-			// 		assessmentScore: {
-			// 			id: 'assessment-score-id',
-			// 			userId: 'user-id',
-			// 			draftId: 'draft-id',
-			// 			assessmentId: 'assessment-id',
-			// 			attemptId: 'attempt-id',
-			// 			score: 100,
-			// 			preview: false,
-			// 			error: null
-			// 		},
-			// 		result: {
-			// 			launchId: 'launch-id',
-			// 			scoreSent: 1,
-			// 			status: 'success',
-			// 			statusDetails: null,
-			// 			gradebookStatus: 'ok_gradebook_matches_assessment_score',
-			// 			dbStatus: 'recorded',
-			// 			ltiAssessmentScoreId: 'new-lti-assessment-score-id'
-			// 		}
-			// 	},
-			// 	userId: 'user-id',
-			// 	ip: '',
-			// 	eventVersion: '2.0.0',
-			// 	metadata: {},
-			// 	draftId: 'draft-id'
-			// })
 
 			done()
 		})
@@ -1421,15 +1363,10 @@ describe('lti', () => {
 		// this class below I can cause an error to be thrown when getOutcomeServiceForLaunch
 		// tries to get lis_outcome_service_url. I just need to get some error to be
 		// thrown in getOutcomeServiceForLaunch so that it can be caught.
-		class MockedReqVars {
-			get lis_outcome_service_url() {
-				throw new Error('Some Unexpected Error')
-			}
-		}
 
 		let rtn = lti.getOutcomeServiceForLaunch({
 			key: 'testkey',
-			reqVars: new MockedReqVars()
+			reqVars: new MockedBadReqVars()
 		})
 
 		expect(rtn.error.message).toBe('Some Unexpected Error')
@@ -1452,52 +1389,101 @@ describe('lti', () => {
 		})
 	})
 
-	// test.only('invalid score for no outcome launch results in "not_attempted_no_outcome_service_for_launch" and "ok_no_outcome_service"', done => {
-	// 	let insertEvent = oboRequire('insert_event')
+	test('failing to insert the assessment score fails and logs as expected', done => {
+		mockSendAssessScoreDBCalls(100, 1, moment().toISOString(), true, true, 'testkey', false)
 
-	// 	mockSendAssessScoreDBCalls(100, 1, moment().toISOString(), true, true)
+		lti.sendHighestAssessmentScore('user-id', 'draft-id', 'assessment-id').then(result => {
+			expect(logger.info.mock.calls[0]).toEqual([
+				'LTI begin sendHighestAssessmentScore for userId:"user-id", draftId:"draft-id", assessmentId:"assessment-id"',
+				logId
+			])
+			expect(logger.info.mock.calls[1]).toEqual([
+				'LTI found assessment score. Details: user:"user-id", draft:"draft-id", score:"100", assessmentScoreId:"assessment-score-id", attemptId:"attempt-id", preview:"false"',
+				logId
+			])
+			expect(logger.info.mock.calls[2]).toEqual([
+				'LTI launch with id:"launch-id" retrieved!',
+				logId
+			])
+			expect(logger.info.mock.calls[3]).toEqual([
+				'LTI attempting replaceResult of score:"1" for assessmentScoreId:"assessment-score-id" for user:"user-id", draft:"draft-id", sourcedid:"lis_result_sourcedid", url:"lis_outcome_service_url" using key:"testkey"',
+				logId
+			])
+			expect(logger.info.mock.calls[4]).toEqual([
+				'LTI sendReplaceResult to "lis_outcome_service_url" with "1"'
+			])
+			expect(logger.info.mock.calls[5]).toEqual(['LTI replaceResult response', true, logId])
+			expect(logger.info.mock.calls[6]).toEqual([
+				'LTI gradebook status is "ok_gradebook_matches_assessment_score"',
+				logId
+			])
+			expect(logger.error.mock.calls[0][0]).toBe('LTI bad error attempting to update database! :(')
+			expect(logger.info.mock.calls[7]).toEqual(['LTI complete', logId])
 
-	// 	mockDate()
+			// expect(logger.info.mock.calls).toBe(false)
 
-	// 	lti.sendHighestAssessmentScore('user-id', 'draft-id', 'assessment-id').then(result => {
-	// 		expect(insertEvent).lastCalledWith({
-	// 			action: 'lti:replaceResult',
-	// 			actorTime: 'MOCKED-ISO-DATE-STRING',
-	// 			payload: {
-	// 				launchId: 'launch-id',
-	// 				launchKey: 'testkey',
-	// 				body: {
-	// 					lis_outcome_service_url: 'lis_outcome_service_url',
-	// 					lis_result_sourcedid: 'lis_result_sourcedid'
-	// 				},
-	// 				assessmentScore: {
-	// 					id: 'assessment-score-id',
-	// 					userId: 'user-id',
-	// 					draftId: 'draft-id',
-	// 					assessmentId: 'assessment-id',
-	// 					attemptId: 'attempt-id',
-	// 					score: 100,
-	// 					preview: false,
-	// 					error: null
-	// 				},
-	// 				result: {
-	// 					launchId: 'launch-id',
-	// 					scoreSent: 1,
-	// 					status: 'success',
-	// 					statusDetails: null,
-	// 					gradebookStatus: 'ok_gradebook_matches_assessment_score',
-	// 					dbStatus: 'error', // this should be 'recorded'
-	// 					ltiAssessmentScoreId: 'new-lti-assessment-score-id'
-	// 				}
-	// 			},
-	// 			userId: 'user-id',
-	// 			ip: '',
-	// 			eventVersion: '2.0.0',
-	// 			metadata: {},
-	// 			draftId: 'draft-id'
-	// 		})
+			expect(result).toEqual({
+				launchId: 'launch-id',
+				scoreSent: 1,
+				status: 'success',
+				statusDetails: null,
+				gradebookStatus: 'ok_gradebook_matches_assessment_score',
+				dbStatus: 'error',
+				ltiAssessmentScoreId: null
+			})
 
-	// 		done()
-	// 	})
-	// })
+			done()
+		})
+	})
+
+	test('unexpected error works as expected', done => {
+		mockSendAssessScoreDBCalls(100, 1, moment().toISOString(), true, 'error')
+
+		lti.sendHighestAssessmentScore('user-id', 'draft-id', 'assessment-id').then(result => {
+			expect(logger.info.mock.calls[0]).toEqual([
+				'LTI begin sendHighestAssessmentScore for userId:"user-id", draftId:"draft-id", assessmentId:"assessment-id"',
+				logId
+			])
+			expect(logger.info.mock.calls[1]).toEqual([
+				'LTI found assessment score. Details: user:"user-id", draft:"draft-id", score:"100", assessmentScoreId:"assessment-score-id", attemptId:"attempt-id", preview:"false"',
+				logId
+			])
+			expect(logger.info.mock.calls[2]).toEqual([
+				'LTI launch with id:"launch-id" retrieved!',
+				logId
+			])
+			// expect(logger.info.mock.calls[3]).toEqual([
+			// 	'LTI attempting replaceResult of score:"1" for assessmentScoreId:"assessment-score-id" for user:"user-id", draft:"draft-id", sourcedid:"lis_result_sourcedid", url:"lis_outcome_service_url" using key:"testkey"',
+			// 	logId
+			// ])
+			// expect(logger.info.mock.calls[4]).toEqual([
+			// 	'LTI sendReplaceResult to "lis_outcome_service_url" with "1"'
+			// ])
+			// expect(logger.info.mock.calls[5]).toEqual(['LTI replaceResult response', true, logId])
+			expect(logger.info.mock.calls[3]).toEqual([
+				'LTI gradebook status is "ok_gradebook_matches_assessment_score"',
+				logId
+			])
+			expect(logger.error.mock.calls[0][0]).toBe(
+				'LTI bad error, was **unexpected** :( Stack trace:'
+			)
+			expect(logger.info.mock.calls[4]).toEqual([
+				'LTI store "error_unexpected" success - id:"new-lti-assessment-score-id"',
+				logId
+			])
+			expect(logger.info.mock.calls[5]).toEqual(['LTI complete', logId])
+
+			expect(result).toEqual({
+				launchId: 'launch-id',
+				scoreSent: null,
+				status: 'error_unexpected',
+				statusDetails: { message: 'Some Unexpected Error' },
+				gradebookStatus: 'ok_gradebook_matches_assessment_score',
+				dbStatus: 'recorded',
+				ltiAssessmentScoreId: 'new-lti-assessment-score-id'
+			})
+
+			done()
+		})
+	})
 })
