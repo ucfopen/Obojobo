@@ -1,333 +1,229 @@
-let express = require('express')
-let app = express()
-let oboEvents = oboRequire('obo_events')
-let DraftModel = oboRequire('models/draft')
-let db = oboRequire('db')
-let Assessment = require('./assessment')
-let lti = oboRequire('lti')
-let insertEvent = oboRequire('insert_event')
-let logger = oboRequire('logger')
-let createCaliperEvent = oboRequire('routes/api/events/create_caliper_event') //@TODO
+const express = require('express')
+const app = express()
+const oboEvents = oboRequire('obo_events')
+const DraftModel = oboRequire('models/draft')
+const db = oboRequire('db')
+const Assessment = require('./assessment')
+const lti = oboRequire('lti')
+const insertEvent = oboRequire('insert_event')
+const logger = oboRequire('logger')
+const createCaliperEvent = oboRequire('routes/api/events/create_caliper_event') //@TODO
+const _ = require('underscore')
 
-let logAndRespondToUnexpected = (errorMessage, res, req, jsError) => {
+const QUESTION_BANK_NODE_TYPE = 'ObojoboDraft.Chunks.QuestionBank'
+const QUESTION_NODE_TYPE = 'ObojoboDraft.Chunks.Question'
+const ACTION_ASSESSMENT_ATTEMPT_START = 'assessment:attemptStart'
+const ACTION_ASSESSMENT_SEND_TO_ASSESSMENT = 'ObojoboDraft.Sections.Assessment:sendToAssessment'
+const ERROR_ATTEMPT_LIMIT_REACHED = 'Attempt limit reached'
+const ERROR_UNEXPECTED_DB_ERROR = 'Unexpected DB error'
+
+const logAndRespondToUnexpected = (errorMessage, res, req, jsError) => {
 	logger.error('logAndRespondToUnexpected', jsError, errorMessage)
 	res.unexpected(jsError)
 }
 
+const getQuestionBankProperties = questionBankNode => ({
+	choose: questionBankNode.content.choose || Infinity,
+	select: questionBankNode.content.select || 'sequential'
+})
+
+// This map will be used to keep track of the questions we have used/have
+// left to display.
+const getAssessmentChildrenMap = assessmentProperties => {
+	const assessmentChildrenMap = new Map()
+	assessmentProperties.nodeChildrenIds.forEach(id => {
+		const type = assessmentProperties.draftTree.getChildNodeById(id).node.type
+		if (type === QUESTION_BANK_NODE_TYPE || QUESTION_NODE_TYPE)
+			assessmentChildrenMap.set(id, 0)
+	})
+
+	return assessmentChildrenMap
+}
+
+// When a question has been used, we will increment the value
+// pointed to by the node's id in our usedMap (a.k.a childrenMap).
+// This will allow us to know which questions to show next.
+const incrementUsedQuestionIds = (node, usedMap) => {
+	if (usedMap.has(node.id))
+		usedMap.set(node.id, usedMap.get(node.id) + 1)
+
+	for (let child of node.children)
+		incrementUsedQuestionIds(child, usedMap)
+}
+
+const chooseQuestionsSequentially = (numQuestionsPerAttempt, node, assessmentProperties) => {
+	const { childrenMap } = assessmentProperties
+	const draftNode = assessmentProperties.node.draftTree.getChildNodeById(node.id)
+	const nodeChildren = [...draftNode.immediateChildrenSet]
+
+	// Sort the questions by how many times they were used (after incrementing
+	// with incrementUsedQuestionIds).
+	const nodeChildrenDraftNodes = nodeChildren
+		.sort((a, b) => childrenMap.get(a) - childrenMap.get(b))
+		.map(id => assessmentProperties.node.draftTree.getChildNodeById(id).toObject())
+
+	return nodeChildrenDraftNodes.slice(0, numQuestionsPerAttempt)
+}
+
+// This will narrow down the assessment tree to question banks
+// with their respectively selected questions.
+const createChosenQuestionTree = (node, assessmentProperties) => {
+	if (node.type === QUESTION_BANK_NODE_TYPE) {
+		logger.log('TEST', node.id, node.content, node.content.choose)
+		const qbProperties = getQuestionBankProperties(node)
+
+		node.children = chooseQuestionsSequentially(qbProperties.choose, node, assessmentProperties)
+	}
+
+	for (let child of node.children)
+		createChosenQuestionTree(child, assessmentProperties)
+}
+
+// Return an array of question type nodes from a node tree.
+const getNodeQuestions = (node, assessmentNode, questions) => {
+	if (node.type === QUESTION_NODE_TYPE) {
+		questions.push(assessmentNode.draftTree.getChildNodeById(node.id))
+	}
+
+	for (let child of node.children) {
+		questions.concat(getNodeQuestions(child, assessmentNode, questions))
+	}
+
+	return questions
+}
+
+// Return an array of promises that could be the result of yelling an
+// assessment:sendToAssessment event.
+const getSendToClientPromises = (attemptState, req, res) => {
+	let promises = []
+	for (let q of attemptState.questions) {
+		promises = promises.concat(q.yell(ACTION_ASSESSMENT_SEND_TO_ASSESSMENT, req, res))
+	}
+
+	return promises
+}
+
+const updateAssessmentProperties = (currentProps, nextProps) => {
+	return Object.assign(currentProps, nextProps)
+}
+
 app.post('/api/assessments/attempt/start', (req, res, next) => {
-	let currentUser
-	let draftId = req.body.draftId
-	let draftTree
+	let assessmentProperties = {}
 	let attemptState
-	let numAttempts
-	let isPreviewing
-	let attemptHistory
-	let assessmentQBTree
 
-	req
-		.requireCurrentUser()
+	req.requireCurrentUser()
 		.then(user => {
-			currentUser = user
-			isPreviewing = currentUser.canViewEditor
+			assessmentProperties = updateAssessmentProperties(assessmentProperties, {
+				user,
+				isPreviewing: user.canViewEditor
+			})
 
-			return DraftModel.fetchById(draftId)
+			return DraftModel.fetchById(req.body.draftId)
 		})
-		.then(draft => {
-			draftTree = draft
+		.then(draftTree => {
+			const assessmentNode = draftTree.getChildNodeById(req.body.assessmentId)
+
+			assessmentProperties = updateAssessmentProperties(assessmentProperties, {
+				draftTree,
+				id: req.body.assessmentId,
+				node: assessmentNode,
+				nodeChildrenIds: assessmentNode.children[1].childrenSet,
+				assessmentQBTree: assessmentNode.children[1].toObject()
+			})
 
 			return Assessment.getCompletedAssessmentAttemptHistory(
-				currentUser.id,
+				assessmentProperties.user.id,
 				req.body.draftId,
 				req.body.assessmentId,
 				true
 			)
 		})
-		.then(result => {
-			attemptHistory = result
+		.then(attemptHistory => {
+			assessmentProperties = updateAssessmentProperties(assessmentProperties, { attemptHistory })
+
 			return Assessment.getNumberAttemptsTaken(
-				currentUser.id,
+				assessmentProperties.user.id,
 				req.body.draftId,
 				req.body.assessmentId
 			)
 		})
-		.then(numAttemptsResult => {
-			numAttempts = numAttemptsResult
+		.then(numAttemptsTaken => {
+			assessmentProperties = updateAssessmentProperties(assessmentProperties, { numAttemptsTaken })
 
-			var assessment = draftTree.getChildNodeById(req.body.assessmentId)
-
+			// If we're in preview mode, allow unlimited attempts, else throw an error
+			// when trying to start an assessment with no attempts left.
 			if (
-				!isPreviewing &&
-				assessment.node.content.attempts &&
-				numAttempts >= assessment.node.content.attempts
-			) {
-				throw new Error('Attempt limit reached')
-			}
+				!assessmentProperties.isPreviewing
+				&& assessmentProperties.node.content.attempts
+				&& assessmentProperties.numAttemptsTaken >= assessmentProperties.node.content.attempts
+			)
+				throw new Error(ERROR_ATTEMPT_LIMIT_REACHED)
 
-			// 1. create a tree structure from the assessment question bank
-			// 2. create another tree structure from the attempt history
-			// 3. use the attempt history and node settings to trim the tree,
-			//  leaving only the nodes to send to the client
-			// 4. flatten the tree to only questions
-
-			let getBankOptions = questionBankNode => {
-				let content = questionBankNode.content
-
-				return {
-					choose: content.choose || Infinity,
-					select: content.select || 'sequential'
-				}
-			}
-
-			let shuffleArray = function(array) {
-				var currentIndex = array.length,
-					temporaryValue,
-					randomIndex
-
-				// While there remain elements to shuffle...
-				while (0 !== currentIndex) {
-					// Pick a remaining element...
-					randomIndex = Math.floor(Math.random() * currentIndex)
-					currentIndex -= 1
-
-					// And swap it with the current element.
-					temporaryValue = array[currentIndex]
-					array[currentIndex] = array[randomIndex]
-					array[randomIndex] = temporaryValue
-				}
-
-				return array
-			}
-
-			let childrenIds = assessment.children[1].childrenSet
-
-			// console.log('childrenSet', childrenIds)
-
-			let uses = new Map()
-			childrenIds.forEach(id => {
-				let type = assessment.draftTree.getChildNodeById(id).node.type
-				if (
-					type === 'ObojoboDraft.Chunks.QuestionBank' ||
-					type === 'ObojoboDraft.Chunks.Question'
-				) {
-					uses.set(id, 0)
-				}
+			assessmentProperties = updateAssessmentProperties(assessmentProperties, {
+				childrenMap: getAssessmentChildrenMap(assessmentProperties)
 			})
 
-			historyTree = assessment.children[1].toObject()
-
-			let constructUses = function(node) {
-				// console.log('CU', node)
-				if (uses.has(node.id)) {
-					uses.set(node.id, uses.get(node.id) + 1)
-				}
-
-				for (let i in node.children) {
-					constructUses(node.children[i])
+			for (let attempt of assessmentProperties.attemptHistory) {
+				if (attempt.state.qb) {
+					incrementUsedQuestionIds(attempt.state.qb, assessmentProperties.childrenMap)
 				}
 			}
 
-			for (let i in attemptHistory) {
-				// console.log('hisotry', attemptHistory[i])
-				if (attemptHistory[i].state.qb) constructUses(attemptHistory[i].state.qb)
-			}
-
-			logger.log('uses___', uses)
-
-			assessmentQBTree = assessment.children[1].toObject()
-			// console.log('assessmentQBTree', assessmentQBTree)
-
-			let chooseChildren = function(choose, select, node) {
-				logger.log('choose children', choose, select, node.id)
-
-				let draftNode = assessment.draftTree.getChildNodeById(node.id)
-				let myChildren = [...draftNode.immediateChildrenSet]
-
-				if (!select) select = 'sequential'
-
-				switch (select) {
-					case 'sequential':
-						myChildren.sort(function(a, b) {
-							return uses.get(a) - uses.get(b)
-						})
-
-						var myChildrenDraftNodes = myChildren.map(id => {
-							return assessment.draftTree.getChildNodeById(id).toObject()
-						})
-
-						var slice = myChildrenDraftNodes.slice(0, choose)
-
-						break
-
-					case 'random-all':
-						myChildren = shuffleArray(myChildren)
-
-						var myChildrenDraftNodes = myChildren.map(id => {
-							return assessment.draftTree.getChildNodeById(id).toObject()
-						})
-
-						var slice = myChildrenDraftNodes.slice(0, choose)
-
-						break
-
-					case 'random-unseen':
-						myChildren.sort(function(a, b) {
-							if (uses.get(a) === uses.get(b)) {
-								return Math.random() < 0.5 ? -1 : 1
-							}
-							return uses.get(a) - uses.get(b)
-						})
-
-						var myChildrenDraftNodes = myChildren.map(id => {
-							return assessment.draftTree.getChildNodeById(id).toObject()
-						})
-
-						var slice = myChildrenDraftNodes.slice(0, choose)
-
-						break
-				}
-
-				logger.log(
-					'i chose',
-					slice.map(function(dn) {
-						return dn.id
-					})
-				)
-
-				return slice
-			}
-
-			let trimTree = function(node) {
-				if (node.type === 'ObojoboDraft.Chunks.QuestionBank') {
-					logger.log('TEST', node.id, node.content, node.content.choose)
-					let opts = getBankOptions(node)
-					node.children = chooseChildren(opts.choose, opts.select, node)
-				}
-
-				for (let i in node.children) {
-					trimTree(node.children[i])
-				}
-			}
-
-			trimTree(assessmentQBTree)
-
-			let questions = []
-			let flattenTree = function(node) {
-				if (node.type === 'ObojoboDraft.Chunks.Question') {
-					questions.push(assessment.draftTree.getChildNodeById(node.id))
-				}
-
-				for (let i in node.children) {
-					flattenTree(node.children[i])
-				}
-			}
-
-			flattenTree(assessmentQBTree)
-
-			// console.log('FLAT TREE', questions)
-			// return;
-
-			// let buildAssessmentTree = (draftNode) => {
-			// 	console.log('BAT', draftNode)
-			// 	let o = {
-			// 		id: draftNode.node.id,
-			// 		children: []
-			// 	}
-
-			// 	for(i in draftNode.children)
-			// 	{
-			// 		let child = draftNode.draftTree.getChildNodeById(draftNode.children[i])
-			// 		o.children.push(buildAssessmentTree(child))
-			// 	}
-
-			// 	return o
-			// }
-
-			// let questionTree = buildAssessmentTree(assessment.children[1])
-
-			// console.log('QT', questionTree)
+			createChosenQuestionTree(assessmentProperties.assessmentQBTree, assessmentProperties)
 
 			attemptState = {
-				qb: assessmentQBTree,
-				questions: questions,
+				qb: assessmentProperties.assessmentQBTree,
+				questions: getNodeQuestions(assessmentProperties.assessmentQBTree, assessmentProperties.node, []),
 				data: {}
 			}
 
-			// console.log('ObojoboDraft.Sections.Assessment:attemptStart BEGIN', assessment.children[1].node.id)
-
-			// let promises = assessment.yell('ObojoboDraft.Sections.Assessment:attemptStart', req, res, assessment, attemptHistory, {
-			// 	getQuestions: function() { return attemptState.questions },
-			// 	setQuestions: function(q) { attemptState.questions = q },
-			// 	getData:      function() { return attemptState.data },
-			// 	setData:      function(d) { attemptState.data = d },
-			// })
-
-			// console.log('ObojoboDraft.Sections.Assessment:attemptStart END', attemptState.questions.length)
-
-			// return Promise.all(promises)
-			// 	return true
-			// })
-			// .then(() => {
-			let promises = []
-			for (let i in attemptState.questions) {
-				promises = promises.concat(
-					attemptState.questions[i].yell(
-						'ObojoboDraft.Sections.Assessment:sendToAssessment',
-						req,
-						res
-					)
-				)
-			}
-			return Promise.all(promises)
+			return Promise.all(getSendToClientPromises(attemptState, req, res))
 		})
 		.then(() => {
-			let questionObjects = attemptState.questions.map(question => {
-				return question.toObject()
-			})
+			const questionObjects = attemptState.questions.map(q => q.toObject())
+
 			return Assessment.insertNewAttempt(
-				currentUser.id,
+				assessmentProperties.user.id,
 				req.body.draftId,
 				req.body.assessmentId,
 				{
 					questions: questionObjects,
 					data: attemptState.data,
-					qb: assessmentQBTree
+					qb: assessmentProperties.assessmentQBTree
 				},
-				isPreviewing
+				assessmentProperties.isPreviewing
 			)
 		})
 		.then(result => {
 			res.success(result)
-			let { createAssessmentAttemptStartedEvent } = createCaliperEvent(null, req.hostname)
+			const { createAssessmentAttemptStartedEvent } = createCaliperEvent(null, req.hostname)
 			insertEvent({
-				action: 'assessment:attemptStart',
+				action: ACTION_ASSESSMENT_ATTEMPT_START,
 				actorTime: new Date().toISOString(),
-				payload: { attemptId: result.attemptId, attemptCount: numAttempts },
-				userId: currentUser.id,
+				payload: { attemptId: result.attemptId, attemptCount: assessmentProperties.numAttemptsTaken },
+				userId: assessmentProperties.user.id,
 				ip: req.connection.remoteAddress,
 				metadata: {},
-				draftId: draftId,
+				draftId: req.body.draftId,
 				eventVersion: '1.1.0',
 				caliperPayload: createAssessmentAttemptStartedEvent({
-					actor: { type: 'user', id: currentUser.id },
-					draftId,
+					actor: { type: 'user', id: assessmentProperties.user.id },
+					draftId: req.body.draftId,
 					assessmentId: req.body.assessmentId,
 					attemptId: result.attemptId,
-					isPreviewMode: isPreviewing,
+					isPreviewMode: assessmentProperties.isPreviewing,
 					extensions: {
-						count: numAttempts
+						count: assessmentProperties.numAttemptsaken
 					}
 				})
 			})
 		})
 		.catch(error => {
-			// console.log('attempt start error', error)
-
 			switch (error.message) {
-				case 'Attempt limit reached':
-					return res.reject('Attempt limit reached')
-
+				case ERROR_ATTEMPT_LIMIT_REACHED:
+					return res.reject(ERROR_ATTEMPT_LIMIT_REACHED)
 				default:
-					logAndRespondToUnexpected('Unexpected DB error', res, req, error)
+					logAndRespondToUnexpected(ERROR_UNEXPECTED_DB_ERROR, res, req, error)
 			}
 		})
 })
@@ -580,7 +476,7 @@ oboEvents.on('client:assessment:setResponse', (event, req) => {
 
 	return db
 		.none(
-			`
+		`
 			INSERT INTO attempts_question_responses
 			(attempt_id, question_id, response, assessment_id)
 			VALUES($[attemptId], $[questionId], $[response], $[assessmentId])
@@ -591,12 +487,12 @@ oboEvents.on('client:assessment:setResponse', (event, req) => {
 					updated_at = now()
 				WHERE attempts_question_responses.attempt_id = $[attemptId]
 					AND attempts_question_responses.question_id = $[questionId]`,
-			{
-				assessmentId: event.payload.assessmentId,
-				attemptId: event.payload.attemptId,
-				questionId: event.payload.questionId,
-				response: event.payload.response
-			}
+		{
+			assessmentId: event.payload.assessmentId,
+			attemptId: event.payload.attemptId,
+			questionId: event.payload.questionId,
+			response: event.payload.response
+		}
 		)
 		.catch(error => {
 			logger.error(eventRecordResponse, 'DB UNEXPECTED', req, error, error.toString())
