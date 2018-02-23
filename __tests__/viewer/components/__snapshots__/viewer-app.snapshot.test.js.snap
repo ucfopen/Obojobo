@@ -276,6 +276,11 @@ exports[`ViewerApp ViewerApp 1`] = `
           data-obo-component={true}
           data-type="ObojoboDraft.Chunks.MathEquation"
           id="obo-9f015bee-0455-4369-bb06-e8ab63941e70"
+          style={
+            Object {
+              "fontSize": "1em",
+            }
+          }
         >
           <div
             className="non-editable-chunk"

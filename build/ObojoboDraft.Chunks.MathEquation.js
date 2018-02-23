@@ -175,9 +175,9 @@
 							return x1.size
 						}) != null
 					) {
-						model.modelState.size = attrs.content.size
+						model.modelState.size = attrs.content.size + 'px'
 					} else {
-						model.modelState.size = 'normal'
+						model.modelState.size = '1em'
 					}
 				},
 				clone: function clone(model, _clone) {
@@ -321,11 +321,12 @@
 								{
 									model: this.props.model,
 									moduleData: this.props.moduleData,
+									style: {
+										fontSize: this.props.model.modelState.size
+									},
 									className:
 										'obojobo-draft--chunks--math-equation pad align-' +
-										this.props.model.modelState.align +
-										' size-' +
-										this.props.model.modelState.size
+										this.props.model.modelState.align
 								},
 								React.createElement(
 									NonEditableChunk,

@@ -39,9 +39,12 @@ export default class MathEquation extends React.Component {
 			<OboComponent
 				model={this.props.model}
 				moduleData={this.props.moduleData}
+				style={{
+					fontSize: this.props.model.modelState.size
+				}}
 				className={`obojobo-draft--chunks--math-equation pad align-${
 					this.props.model.modelState.align
-				} size-${this.props.model.modelState.size}`}
+				}`}
 			>
 				<NonEditableChunk>
 					<div
