@@ -77,24 +77,24 @@
 })(
 	/************************************************************************/
 	/******/ {
-		/***/ /***/ 0: function(module, exports) {
+		/***/ 0: /***/ function(module, exports) {
 			module.exports = Common
 
 			/***/
 		},
 
-		/***/ /***/ 158: function(module, exports) {
+		/***/ 158: /***/ function(module, exports) {
 			// removed by extract-text-webpack-plugin
 			/***/
 		},
 
-		/***/ /***/ 179: function(module, exports, __webpack_require__) {
-			module.exports = __webpack_require__(40)
+		/***/ 179: /***/ function(module, exports, __webpack_require__) {
+			module.exports = __webpack_require__(41)
 
 			/***/
 		},
 
-		/***/ /***/ 19: function(module, exports, __webpack_require__) {
+		/***/ 19: /***/ function(module, exports, __webpack_require__) {
 			'use strict'
 
 			Object.defineProperty(exports, '__esModule', {
@@ -168,8 +168,12 @@
 
 					var _this = _possibleConstructorReturn(
 						this,
-						(GridTextGroup.__proto__ || Object.getPrototypeOf(GridTextGroup))
-							.call(this, numRows * numCols, dataTemplate, initialItems)
+						(GridTextGroup.__proto__ || Object.getPrototypeOf(GridTextGroup)).call(
+							this,
+							numRows * numCols,
+							dataTemplate,
+							initialItems
+						)
 					)
 
 					_this.numRows = numRows
@@ -377,12 +381,15 @@
 								console.log('========================')
 								return __range__(0, this.numRows, false).map(function(row) {
 									return (// console.log 'row', row
-										(s = []), __range__(0, _this2.numCols, false).map(function(col) {
+										(s = []),
+										__range__(0, _this2.numCols, false).map(function(col) {
 											return (// console.log '  col', col
-												(i = row * _this2.numCols + col), // console.log '    i', i
-												(item =
-													_this2.items[i]), s.push((item.text.value + '          ').substr(0, 10)) )
-										}), console.log(s) )
+												(i = row * _this2.numCols + col),
+												// console.log '    i', i
+												(item = _this2.items[i]),
+												s.push((item.text.value + '          ').substr(0, 10)) )
+										}),
+										console.log(s) )
 								})
 							}
 						}
@@ -485,7 +492,7 @@
 			/***/
 		},
 
-		/***/ /***/ 20: function(module, exports, __webpack_require__) {
+		/***/ 20: /***/ function(module, exports, __webpack_require__) {
 			'use strict'
 
 			Object.defineProperty(exports, '__esModule', {
@@ -558,8 +565,10 @@
 
 					return _possibleConstructorReturn(
 						this,
-						(SelectionHandler.__proto__ || Object.getPrototypeOf(SelectionHandler))
-							.apply(this, arguments)
+						(SelectionHandler.__proto__ || Object.getPrototypeOf(SelectionHandler)).apply(
+							this,
+							arguments
+						)
 					)
 				}
 
@@ -584,7 +593,7 @@
 			/***/
 		},
 
-		/***/ /***/ 40: function(module, exports, __webpack_require__) {
+		/***/ 41: /***/ function(module, exports, __webpack_require__) {
 			'use strict'
 
 			var _Common = __webpack_require__(0)
@@ -595,11 +604,11 @@
 
 			var _selectionHandler2 = _interopRequireDefault(_selectionHandler)
 
-			var _adapter = __webpack_require__(79)
+			var _adapter = __webpack_require__(80)
 
 			var _adapter2 = _interopRequireDefault(_adapter)
 
-			var _viewerComponent = __webpack_require__(80)
+			var _viewerComponent = __webpack_require__(81)
 
 			var _viewerComponent2 = _interopRequireDefault(_viewerComponent)
 
@@ -617,7 +626,7 @@
 			/***/
 		},
 
-		/***/ /***/ 79: function(module, exports, __webpack_require__) {
+		/***/ 80: /***/ function(module, exports, __webpack_require__) {
 			'use strict'
 
 			Object.defineProperty(exports, '__esModule', {
@@ -741,7 +750,7 @@
 			/***/
 		},
 
-		/***/ /***/ 80: function(module, exports, __webpack_require__) {
+		/***/ 81: /***/ function(module, exports, __webpack_require__) {
 			'use strict'
 
 			Object.defineProperty(exports, '__esModule', {

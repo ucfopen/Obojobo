@@ -117,7 +117,7 @@
 		/***/ function(module, exports, __webpack_require__) {
 			'use strict'
 
-			module.exports = __webpack_require__(131)() ? Symbol : __webpack_require__(133)
+			module.exports = __webpack_require__(132)() ? Symbol : __webpack_require__(134)
 
 			/***/
 		},
@@ -127,7 +127,7 @@
 
 			var assign = __webpack_require__(13),
 				normalizeOpts = __webpack_require__(24),
-				isCallable = __webpack_require__(113),
+				isCallable = __webpack_require__(114),
 				contains = __webpack_require__(14),
 				d
 
@@ -236,9 +236,9 @@
 						}
 					: function(obj) {
 							return obj &&
-							typeof Symbol === 'function' &&
-							obj.constructor === Symbol &&
-							obj !== Symbol.prototype
+								typeof Symbol === 'function' &&
+								obj.constructor === Symbol &&
+								obj !== Symbol.prototype
 								? 'symbol'
 								: typeof obj
 						}
@@ -265,7 +265,7 @@
 		/***/ function(module, exports, __webpack_require__) {
 			'use strict'
 
-			module.exports = __webpack_require__(108)() ? Object.assign : __webpack_require__(109)
+			module.exports = __webpack_require__(109)() ? Object.assign : __webpack_require__(110)
 
 			/***/
 		},
@@ -273,9 +273,9 @@
 		/***/ function(module, exports, __webpack_require__) {
 			'use strict'
 
-			module.exports = __webpack_require__(119)()
+			module.exports = __webpack_require__(120)()
 				? String.prototype.contains
-				: __webpack_require__(120)
+				: __webpack_require__(121)
 
 			/***/
 		},
@@ -288,7 +288,7 @@
 				callable = __webpack_require__(2),
 				value = __webpack_require__(3),
 				d = __webpack_require__(5),
-				autoBind = __webpack_require__(94),
+				autoBind = __webpack_require__(95),
 				_Symbol = __webpack_require__(4)
 
 			var defineProperty = Object.defineProperty,
@@ -427,7 +427,7 @@
 		/***/ function(module, exports, __webpack_require__) {
 			'use strict'
 
-			var toInteger = __webpack_require__(106),
+			var toInteger = __webpack_require__(107),
 				max = Math.max
 
 			module.exports = function(value) {
@@ -489,7 +489,7 @@
 			// Big thanks to @WebReflection for sorting this out
 			// https://gist.github.com/WebReflection/5593554
 
-			var isObject = __webpack_require__(114),
+			var isObject = __webpack_require__(115),
 				value = __webpack_require__(3),
 				objIsPrototypeOf = Object.prototype.isPrototypeOf,
 				defineProperty = Object.defineProperty,
@@ -567,7 +567,7 @@
 				})()
 			)
 
-			__webpack_require__(111)
+			__webpack_require__(112)
 
 			/***/
 		},
@@ -575,7 +575,7 @@
 		/***/ function(module, exports, __webpack_require__) {
 			'use strict'
 
-			var isIterable = __webpack_require__(124)
+			var isIterable = __webpack_require__(125)
 
 			module.exports = function(value) {
 				if (!isIterable(value)) throw new TypeError(value + ' is not iterable')
@@ -584,6 +584,47 @@
 
 			/***/
 		},
+		/* 28 */
+		/***/ function(module, exports, __webpack_require__) {
+			'use strict'
+
+			var _typeof =
+				typeof Symbol === 'function' && typeof Symbol.iterator === 'symbol'
+					? function(obj) {
+							return typeof obj
+						}
+					: function(obj) {
+							return obj &&
+								typeof Symbol === 'function' &&
+								obj.constructor === Symbol &&
+								obj !== Symbol.prototype
+								? 'symbol'
+								: typeof obj
+						}
+
+			var g
+
+			// This works in non-strict mode
+			g = (function() {
+				return this
+			})()
+
+			try {
+				// This works if eval is allowed (see CSP)
+				g = g || Function('return this')() || (1, eval)('this')
+			} catch (e) {
+				// This works if the window reference is available
+				if ((typeof window === 'undefined' ? 'undefined' : _typeof(window)) === 'object') g = window
+			}
+
+			// g can still be undefined, but nothing to do about it...
+			// We return undefined, instead of nothing here, so it's
+			// easier to handle this case. if(!global) { ...}
+
+			module.exports = g
+
+			/***/
+		},
 		,
 		,
 		,
@@ -603,7 +644,7 @@
 		,
 		,
 		,
-		/* 28 */ /* 29 */ /* 30 */ /* 31 */ /* 32 */ /* 33 */ /* 34 */ /* 35 */ /* 36 */ /* 37 */ /* 38 */ /* 39 */ /* 40 */ /* 41 */ /* 42 */ /* 43 */ /* 44 */ /* 45 */ /* 46 */ /* 47 */
+		/* 29 */ /* 30 */ /* 31 */ /* 32 */ /* 33 */ /* 34 */ /* 35 */ /* 36 */ /* 37 */ /* 38 */ /* 39 */ /* 40 */ /* 41 */ /* 42 */ /* 43 */ /* 44 */ /* 45 */ /* 46 */ /* 47 */ /* 48 */
 		/***/ function(module, exports, __webpack_require__) {
 			'use strict'
 
@@ -968,14 +1009,17 @@
 
 				function decode(body) {
 					var form = new FormData()
-					body.trim().split('&').forEach(function(bytes) {
-						if (bytes) {
-							var split = bytes.split('=')
-							var name = split.shift().replace(/\+/g, ' ')
-							var value = split.join('=').replace(/\+/g, ' ')
-							form.append(decodeURIComponent(name), decodeURIComponent(value))
-						}
-					})
+					body
+						.trim()
+						.split('&')
+						.forEach(function(bytes) {
+							if (bytes) {
+								var split = bytes.split('=')
+								var name = split.shift().replace(/\+/g, ' ')
+								var value = split.join('=').replace(/\+/g, ' ')
+								form.append(decodeURIComponent(name), decodeURIComponent(value))
+							}
+						})
 					return form
 				}
 
@@ -1086,7 +1130,7 @@
 
 			/***/
 		},
-		/* 48 */
+		/* 49 */
 		/***/ function(module, exports, __webpack_require__) {
 			'use strict'
 
@@ -1209,15 +1253,15 @@
 		,
 		,
 		,
-		/* 49 */ /* 50 */ /* 51 */ /* 52 */ /* 53 */ /* 54 */ /* 55 */ /* 56 */ /* 57 */ /* 58 */ /* 59 */ /* 60 */ /* 61 */ /* 62 */ /* 63 */ /* 64 */ /* 65 */ /* 66 */ /* 67 */ /* 68 */ /* 69 */ /* 70 */ /* 71 */ /* 72 */ /* 73 */ /* 74 */ /* 75 */ /* 76 */ /* 77 */ /* 78 */ /* 79 */ /* 80 */ /* 81 */ /* 82 */ /* 83 */ /* 84 */ /* 85 */ /* 86 */ /* 87 */ /* 88 */ /* 89 */ /* 90 */ /* 91 */ /* 92 */
+		/* 50 */ /* 51 */ /* 52 */ /* 53 */ /* 54 */ /* 55 */ /* 56 */ /* 57 */ /* 58 */ /* 59 */ /* 60 */ /* 61 */ /* 62 */ /* 63 */ /* 64 */ /* 65 */ /* 66 */ /* 67 */ /* 68 */ /* 69 */ /* 70 */ /* 71 */ /* 72 */ /* 73 */ /* 74 */ /* 75 */ /* 76 */ /* 77 */ /* 78 */ /* 79 */ /* 80 */ /* 81 */ /* 82 */ /* 83 */ /* 84 */ /* 85 */ /* 86 */ /* 87 */ /* 88 */ /* 89 */ /* 90 */ /* 91 */ /* 92 */ /* 93 */
 		/***/ function(module, exports, __webpack_require__) {
 			'use strict'
 
-			module.exports = typeof Array.from === 'function' ? Array.from : __webpack_require__(93)
+			module.exports = typeof Array.from === 'function' ? Array.from : __webpack_require__(94)
 
 			/***/
 		},
-		/* 93 */
+		/* 94 */
 		/***/ function(module, exports, __webpack_require__) {
 			'use strict'
 
@@ -1228,9 +1272,9 @@
 						}
 					: function(obj) {
 							return obj &&
-							typeof Symbol === 'function' &&
-							obj.constructor === Symbol &&
-							obj !== Symbol.prototype
+								typeof Symbol === 'function' &&
+								obj.constructor === Symbol &&
+								obj !== Symbol.prototype
 								? 'symbol'
 								: typeof obj
 						}
@@ -1452,14 +1496,14 @@
 
 			/***/
 		},
-		/* 94 */
+		/* 95 */
 		/***/ function(module, exports, __webpack_require__) {
 			'use strict'
 
-			var copy = __webpack_require__(110),
+			var copy = __webpack_require__(111),
 				normalizeOptions = __webpack_require__(24),
 				ensureCallable = __webpack_require__(2),
-				map = __webpack_require__(118),
+				map = __webpack_require__(119),
 				callable = __webpack_require__(2),
 				validValue = __webpack_require__(3),
 				bind = Function.prototype.bind,
@@ -1495,11 +1539,11 @@
 
 			/***/
 		},
-		/* 95 */
+		/* 96 */
 		/***/ function(module, exports, __webpack_require__) {
 			'use strict'
 
-			var numberIsNaN = __webpack_require__(103),
+			var numberIsNaN = __webpack_require__(104),
 				toPosInt = __webpack_require__(23),
 				value = __webpack_require__(3),
 				indexOf = Array.prototype.indexOf,
@@ -1528,15 +1572,15 @@
 
 			/***/
 		},
-		/* 96 */
+		/* 97 */
 		/***/ function(module, exports, __webpack_require__) {
 			'use strict'
 
-			module.exports = __webpack_require__(97)() ? Array.from : __webpack_require__(98)
+			module.exports = __webpack_require__(98)() ? Array.from : __webpack_require__(99)
 
 			/***/
 		},
-		/* 97 */
+		/* 98 */
 		/***/ function(module, exports, __webpack_require__) {
 			'use strict'
 
@@ -1552,13 +1596,13 @@
 
 			/***/
 		},
-		/* 98 */
+		/* 99 */
 		/***/ function(module, exports, __webpack_require__) {
 			'use strict'
 
 			var iteratorSymbol = __webpack_require__(4).iterator,
 				isArguments = __webpack_require__(7),
-				isFunction = __webpack_require__(99),
+				isFunction = __webpack_require__(100),
 				toPosInt = __webpack_require__(23),
 				callable = __webpack_require__(2),
 				validValue = __webpack_require__(3),
@@ -1678,7 +1722,7 @@
 
 			/***/
 		},
-		/* 99 */
+		/* 100 */
 		/***/ function(module, exports, __webpack_require__) {
 			'use strict'
 
@@ -1691,15 +1735,15 @@
 
 			/***/
 		},
-		/* 100 */
+		/* 101 */
 		/***/ function(module, exports, __webpack_require__) {
 			'use strict'
 
-			module.exports = __webpack_require__(101)() ? Math.sign : __webpack_require__(102)
+			module.exports = __webpack_require__(102)() ? Math.sign : __webpack_require__(103)
 
 			/***/
 		},
-		/* 101 */
+		/* 102 */
 		/***/ function(module, exports, __webpack_require__) {
 			'use strict'
 
@@ -1711,7 +1755,7 @@
 
 			/***/
 		},
-		/* 102 */
+		/* 103 */
 		/***/ function(module, exports, __webpack_require__) {
 			'use strict'
 
@@ -1723,15 +1767,15 @@
 
 			/***/
 		},
-		/* 103 */
+		/* 104 */
 		/***/ function(module, exports, __webpack_require__) {
 			'use strict'
 
-			module.exports = __webpack_require__(104)() ? Number.isNaN : __webpack_require__(105)
+			module.exports = __webpack_require__(105)() ? Number.isNaN : __webpack_require__(106)
 
 			/***/
 		},
-		/* 104 */
+		/* 105 */
 		/***/ function(module, exports, __webpack_require__) {
 			'use strict'
 
@@ -1743,7 +1787,7 @@
 
 			/***/
 		},
-		/* 105 */
+		/* 106 */
 		/***/ function(module, exports, __webpack_require__) {
 			'use strict'
 
@@ -1754,11 +1798,11 @@
 
 			/***/
 		},
-		/* 106 */
+		/* 107 */
 		/***/ function(module, exports, __webpack_require__) {
 			'use strict'
 
-			var sign = __webpack_require__(100),
+			var sign = __webpack_require__(101),
 				abs = Math.abs,
 				floor = Math.floor
 
@@ -1771,7 +1815,7 @@
 
 			/***/
 		},
-		/* 107 */
+		/* 108 */
 		/***/ function(module, exports, __webpack_require__) {
 			'use strict'
 			// Internal method, used by iteration functions.
@@ -1807,7 +1851,7 @@
 
 			/***/
 		},
-		/* 108 */
+		/* 109 */
 		/***/ function(module, exports, __webpack_require__) {
 			'use strict'
 
@@ -1822,11 +1866,11 @@
 
 			/***/
 		},
-		/* 109 */
+		/* 110 */
 		/***/ function(module, exports, __webpack_require__) {
 			'use strict'
 
-			var keys = __webpack_require__(115),
+			var keys = __webpack_require__(116),
 				value = __webpack_require__(3),
 				max = Math.max
 
@@ -1853,11 +1897,11 @@
 
 			/***/
 		},
-		/* 110 */
+		/* 111 */
 		/***/ function(module, exports, __webpack_require__) {
 			'use strict'
 
-			var aFrom = __webpack_require__(96),
+			var aFrom = __webpack_require__(97),
 				assign = __webpack_require__(13),
 				value = __webpack_require__(3)
 
@@ -1879,7 +1923,7 @@
 
 			/***/
 		},
-		/* 111 */
+		/* 112 */
 		/***/ function(module, exports, __webpack_require__) {
 			'use strict'
 			// Workaround for http://code.google.com/p/v8/issues/detail?id=2804
@@ -1932,15 +1976,15 @@
 
 			/***/
 		},
-		/* 112 */
+		/* 113 */
 		/***/ function(module, exports, __webpack_require__) {
 			'use strict'
 
-			module.exports = __webpack_require__(107)('forEach')
+			module.exports = __webpack_require__(108)('forEach')
 
 			/***/
 		},
-		/* 113 */
+		/* 114 */
 		/***/ function(module, exports, __webpack_require__) {
 			'use strict'
 			// Deprecated
@@ -1951,7 +1995,7 @@
 
 			/***/
 		},
-		/* 114 */
+		/* 115 */
 		/***/ function(module, exports, __webpack_require__) {
 			'use strict'
 
@@ -1962,9 +2006,9 @@
 						}
 					: function(obj) {
 							return obj &&
-							typeof Symbol === 'function' &&
-							obj.constructor === Symbol &&
-							obj !== Symbol.prototype
+								typeof Symbol === 'function' &&
+								obj.constructor === Symbol &&
+								obj !== Symbol.prototype
 								? 'symbol'
 								: typeof obj
 						}
@@ -1982,15 +2026,15 @@
 
 			/***/
 		},
-		/* 115 */
+		/* 116 */
 		/***/ function(module, exports, __webpack_require__) {
 			'use strict'
 
-			module.exports = __webpack_require__(116)() ? Object.keys : __webpack_require__(117)
+			module.exports = __webpack_require__(117)() ? Object.keys : __webpack_require__(118)
 
 			/***/
 		},
-		/* 116 */
+		/* 117 */
 		/***/ function(module, exports, __webpack_require__) {
 			'use strict'
 
@@ -2005,7 +2049,7 @@
 
 			/***/
 		},
-		/* 117 */
+		/* 118 */
 		/***/ function(module, exports, __webpack_require__) {
 			'use strict'
 
@@ -2019,12 +2063,12 @@
 
 			/***/
 		},
-		/* 118 */
+		/* 119 */
 		/***/ function(module, exports, __webpack_require__) {
 			'use strict'
 
 			var callable = __webpack_require__(2),
-				forEach = __webpack_require__(112),
+				forEach = __webpack_require__(113),
 				call = Function.prototype.call
 
 			module.exports = function(obj, cb /*, thisArg*/) {
@@ -2039,7 +2083,7 @@
 
 			/***/
 		},
-		/* 119 */
+		/* 120 */
 		/***/ function(module, exports, __webpack_require__) {
 			'use strict'
 
@@ -2052,7 +2096,7 @@
 
 			/***/
 		},
-		/* 120 */
+		/* 121 */
 		/***/ function(module, exports, __webpack_require__) {
 			'use strict'
 
@@ -2064,7 +2108,7 @@
 
 			/***/
 		},
-		/* 121 */
+		/* 122 */
 		/***/ function(module, exports, __webpack_require__) {
 			'use strict'
 
@@ -2102,14 +2146,14 @@
 
 			/***/
 		},
-		/* 122 */
+		/* 123 */
 		/***/ function(module, exports, __webpack_require__) {
 			'use strict'
 
 			var isArguments = __webpack_require__(7),
 				callable = __webpack_require__(2),
 				isString = __webpack_require__(9),
-				get = __webpack_require__(123)
+				get = __webpack_require__(124)
 
 			var isArray = Array.isArray,
 				call = Function.prototype.call,
@@ -2164,14 +2208,14 @@
 
 			/***/
 		},
-		/* 123 */
+		/* 124 */
 		/***/ function(module, exports, __webpack_require__) {
 			'use strict'
 
 			var isArguments = __webpack_require__(7),
 				isString = __webpack_require__(9),
-				ArrayIterator = __webpack_require__(121),
-				StringIterator = __webpack_require__(125),
+				ArrayIterator = __webpack_require__(122),
+				StringIterator = __webpack_require__(126),
 				iterable = __webpack_require__(27),
 				iteratorSymbol = __webpack_require__(4).iterator
 
@@ -2184,7 +2228,7 @@
 
 			/***/
 		},
-		/* 124 */
+		/* 125 */
 		/***/ function(module, exports, __webpack_require__) {
 			'use strict'
 
@@ -2205,7 +2249,7 @@
 
 			/***/
 		},
-		/* 125 */
+		/* 126 */
 		/***/ function(module, exports, __webpack_require__) {
 			'use strict'
 			// Thanks @mathiasbynens
@@ -2250,15 +2294,15 @@
 
 			/***/
 		},
-		/* 126 */
+		/* 127 */
 		/***/ function(module, exports, __webpack_require__) {
 			'use strict'
 
-			module.exports = __webpack_require__(127)() ? Set : __webpack_require__(130)
+			module.exports = __webpack_require__(128)() ? Set : __webpack_require__(131)
 
 			/***/
 		},
-		/* 127 */
+		/* 128 */
 		/***/ function(module, exports, __webpack_require__) {
 			'use strict'
 
@@ -2287,7 +2331,7 @@
 
 			/***/
 		},
-		/* 128 */
+		/* 129 */
 		/***/ function(module, exports, __webpack_require__) {
 			'use strict'
 			// Exports true if environment provides native `Set` implementation,
@@ -2300,7 +2344,7 @@
 
 			/***/
 		},
-		/* 129 */
+		/* 130 */
 		/***/ function(module, exports, __webpack_require__) {
 			'use strict'
 
@@ -2336,21 +2380,21 @@
 
 			/***/
 		},
-		/* 130 */
+		/* 131 */
 		/***/ function(module, exports, __webpack_require__) {
 			'use strict'
 
 			var clear = __webpack_require__(21),
-				eIndexOf = __webpack_require__(95),
+				eIndexOf = __webpack_require__(96),
 				setPrototypeOf = __webpack_require__(8),
 				callable = __webpack_require__(2),
 				d = __webpack_require__(5),
-				ee = __webpack_require__(135),
+				ee = __webpack_require__(136),
 				_Symbol = __webpack_require__(4),
 				iterator = __webpack_require__(27),
-				forOf = __webpack_require__(122),
-				Iterator = __webpack_require__(129),
-				isNative = __webpack_require__(128),
+				forOf = __webpack_require__(123),
+				Iterator = __webpack_require__(130),
+				isNative = __webpack_require__(129),
 				call = Function.prototype.call,
 				defineProperty = Object.defineProperty,
 				getPrototypeOf = Object.getPrototypeOf,
@@ -2445,7 +2489,7 @@
 
 			/***/
 		},
-		/* 131 */
+		/* 132 */
 		/***/ function(module, exports, __webpack_require__) {
 			'use strict'
 
@@ -2456,9 +2500,9 @@
 						}
 					: function(obj) {
 							return obj &&
-							typeof Symbol === 'function' &&
-							obj.constructor === Symbol &&
-							obj !== Symbol.prototype
+								typeof Symbol === 'function' &&
+								obj.constructor === Symbol &&
+								obj !== Symbol.prototype
 								? 'symbol'
 								: typeof obj
 						}
@@ -2485,7 +2529,7 @@
 
 			/***/
 		},
-		/* 132 */
+		/* 133 */
 		/***/ function(module, exports, __webpack_require__) {
 			'use strict'
 
@@ -2496,9 +2540,9 @@
 						}
 					: function(obj) {
 							return obj &&
-							typeof Symbol === 'function' &&
-							obj.constructor === Symbol &&
-							obj !== Symbol.prototype
+								typeof Symbol === 'function' &&
+								obj.constructor === Symbol &&
+								obj !== Symbol.prototype
 								? 'symbol'
 								: typeof obj
 						}
@@ -2513,7 +2557,7 @@
 
 			/***/
 		},
-		/* 133 */
+		/* 134 */
 		/***/ function(module, exports, __webpack_require__) {
 			'use strict'
 			// ES2015 Symbol polyfill for environments that do not (or partially) support it
@@ -2525,15 +2569,15 @@
 						}
 					: function(obj) {
 							return obj &&
-							typeof Symbol === 'function' &&
-							obj.constructor === Symbol &&
-							obj !== Symbol.prototype
+								typeof Symbol === 'function' &&
+								obj.constructor === Symbol &&
+								obj !== Symbol.prototype
 								? 'symbol'
 								: typeof obj
 						}
 
 			var d = __webpack_require__(5),
-				validateSymbol = __webpack_require__(134),
+				validateSymbol = __webpack_require__(135),
 				create = Object.create,
 				defineProperties = Object.defineProperties,
 				defineProperty = Object.defineProperty,
@@ -2694,11 +2738,11 @@
 
 			/***/
 		},
-		/* 134 */
+		/* 135 */
 		/***/ function(module, exports, __webpack_require__) {
 			'use strict'
 
-			var isSymbol = __webpack_require__(132)
+			var isSymbol = __webpack_require__(133)
 
 			module.exports = function(value) {
 				if (!isSymbol(value)) throw new TypeError(value + ' is not a symbol')
@@ -2707,7 +2751,7 @@
 
 			/***/
 		},
-		/* 135 */
+		/* 136 */
 		/***/ function(module, exports, __webpack_require__) {
 			'use strict'
 
@@ -2718,9 +2762,9 @@
 						}
 					: function(obj) {
 							return obj &&
-							typeof Symbol === 'function' &&
-							obj.constructor === Symbol &&
-							obj !== Symbol.prototype
+								typeof Symbol === 'function' &&
+								obj.constructor === Symbol &&
+								obj !== Symbol.prototype
 								? 'symbol'
 								: typeof obj
 						}
@@ -2867,7 +2911,7 @@
 
 			/***/
 		},
-		/* 136 */
+		/* 137 */
 		/***/ function(module, exports, __webpack_require__) {
 			'use strict'
 
@@ -3059,7 +3103,7 @@
 
 			/***/
 		},
-		/* 137 */
+		/* 138 */
 		/***/ function(module, exports, __webpack_require__) {
 			'use strict'
 			/* WEBPACK VAR INJECTION */ ;(function(setImmediate) {
@@ -3070,9 +3114,9 @@
 							}
 						: function(obj) {
 								return obj &&
-								typeof Symbol === 'function' &&
-								obj.constructor === Symbol &&
-								obj !== Symbol.prototype
+									typeof Symbol === 'function' &&
+									obj.constructor === Symbol &&
+									obj !== Symbol.prototype
 									? 'symbol'
 									: typeof obj
 							}
@@ -3186,11 +3230,11 @@
 					}
 
 					/**
-   * Take a potentially misbehaving resolver function and make sure
-   * onFulfilled and onRejected are only called once.
-   *
-   * Makes no guarantees about asynchrony.
-   */
+					 * Take a potentially misbehaving resolver function and make sure
+					 * onFulfilled and onRejected are only called once.
+					 *
+					 * Makes no guarantees about asynchrony.
+					 */
 					function doResolve(fn, self) {
 						var done = false
 						try {
@@ -3311,19 +3355,19 @@
 					}
 
 					/**
-   * Set the immediate function to execute callbacks
-   * @param fn {function} Function to execute
-   * @deprecated
-   */
+					 * Set the immediate function to execute callbacks
+					 * @param fn {function} Function to execute
+					 * @deprecated
+					 */
 					Promise._setImmediateFn = function _setImmediateFn(fn) {
 						Promise._immediateFn = fn
 					}
 
 					/**
-   * Change the function to execute on unhandled rejection
-   * @param {function} fn Function to execute on unhandled rejection
-   * @deprecated
-   */
+					 * Change the function to execute on unhandled rejection
+					 * @param {function} fn Function to execute on unhandled rejection
+					 * @deprecated
+					 */
 					Promise._setUnhandledRejectionFn = function _setUnhandledRejectionFn(fn) {
 						Promise._unhandledRejectionFn = fn
 					}
@@ -3335,11 +3379,11 @@
 					}
 				})(undefined)
 				/* WEBPACK VAR INJECTION */
-			}.call(exports, __webpack_require__(140).setImmediate))
+			}.call(exports, __webpack_require__(141).setImmediate))
 
 			/***/
 		},
-		/* 138 */
+		/* 139 */
 		/***/ function(module, exports, __webpack_require__) {
 			'use strict'
 			/* WEBPACK VAR INJECTION */ ;(function(global, process) {
@@ -3532,11 +3576,11 @@
 					typeof self === 'undefined' ? (typeof global === 'undefined' ? undefined : global) : self
 				)
 				/* WEBPACK VAR INJECTION */
-			}.call(exports, __webpack_require__(141), __webpack_require__(136)))
+			}.call(exports, __webpack_require__(28), __webpack_require__(137)))
 
 			/***/
 		},
-		/* 139 */
+		/* 140 */
 		/***/ function(module, exports, __webpack_require__) {
 			'use strict'
 
@@ -3547,9 +3591,9 @@
 						}
 					: function(obj) {
 							return obj &&
-							typeof Symbol === 'function' &&
-							obj.constructor === Symbol &&
-							obj !== Symbol.prototype
+								typeof Symbol === 'function' &&
+								obj.constructor === Symbol &&
+								obj !== Symbol.prototype
 								? 'symbol'
 								: typeof obj
 						}
@@ -3601,32 +3645,32 @@
 						w.performance && w.performance.now ? w.performance.now.bind(w.performance) : Date.now
 
 					/**
-     * changes scroll position inside an element
-     * @method scrollElement
-     * @param {Number} x
-     * @param {Number} y
-     */
+					 * changes scroll position inside an element
+					 * @method scrollElement
+					 * @param {Number} x
+					 * @param {Number} y
+					 */
 					function scrollElement(x, y) {
 						this.scrollLeft = x
 						this.scrollTop = y
 					}
 
 					/**
-     * returns result of applying ease math function to a number
-     * @method ease
-     * @param {Number} k
-     * @returns {Number}
-     */
+					 * returns result of applying ease math function to a number
+					 * @method ease
+					 * @param {Number} k
+					 * @returns {Number}
+					 */
 					function ease(k) {
 						return 0.5 * (1 - Math.cos(Math.PI * k))
 					}
 
 					/**
-     * indicates if a smooth behavior should be applied
-     * @method shouldBailOut
-     * @param {Number|Object} x
-     * @returns {Boolean}
-     */
+					 * indicates if a smooth behavior should be applied
+					 * @method shouldBailOut
+					 * @param {Number|Object} x
+					 * @returns {Boolean}
+					 */
 					function shouldBailOut(x) {
 						if (
 							(typeof x === 'undefined' ? 'undefined' : _typeof(x)) !== 'object' ||
@@ -3653,11 +3697,11 @@
 					}
 
 					/**
-     * finds scrollable parent of an element
-     * @method findScrollableParent
-     * @param {Node} el
-     * @returns {Node} el
-     */
+					 * finds scrollable parent of an element
+					 * @method findScrollableParent
+					 * @param {Node} el
+					 * @returns {Node} el
+					 */
 					function findScrollableParent(el) {
 						var isBody
 						var hasScrollableSpace
@@ -3679,10 +3723,10 @@
 					}
 
 					/**
-     * self invoked function that, given a context, steps through scrolling
-     * @method step
-     * @param {Object} context
-     */
+					 * self invoked function that, given a context, steps through scrolling
+					 * @method step
+					 * @param {Object} context
+					 */
 					function step(context) {
 						var time = now()
 						var value
@@ -3708,12 +3752,12 @@
 					}
 
 					/**
-     * scrolls window with a smooth behavior
-     * @method smoothScroll
-     * @param {Object|Node} el
-     * @param {Number} x
-     * @param {Number} y
-     */
+					 * scrolls window with a smooth behavior
+					 * @method smoothScroll
+					 * @param {Object|Node} el
+					 * @param {Number} x
+					 * @param {Number} y
+					 */
 					function smoothScroll(el, x, y) {
 						var scrollable
 						var startX
@@ -3875,102 +3919,72 @@
 
 			/***/
 		},
-		/* 140 */
-		/***/ function(module, exports, __webpack_require__) {
-			'use strict'
-
-			var apply = Function.prototype.apply
-
-			// DOM APIs, for completeness
-
-			exports.setTimeout = function() {
-				return new Timeout(apply.call(setTimeout, window, arguments), clearTimeout)
-			}
-			exports.setInterval = function() {
-				return new Timeout(apply.call(setInterval, window, arguments), clearInterval)
-			}
-			exports.clearTimeout = exports.clearInterval = function(timeout) {
-				if (timeout) {
-					timeout.close()
-				}
-			}
-
-			function Timeout(id, clearFn) {
-				this._id = id
-				this._clearFn = clearFn
-			}
-			Timeout.prototype.unref = Timeout.prototype.ref = function() {}
-			Timeout.prototype.close = function() {
-				this._clearFn.call(window, this._id)
-			}
-
-			// Does not start the time, just sets up the members needed.
-			exports.enroll = function(item, msecs) {
-				clearTimeout(item._idleTimeoutId)
-				item._idleTimeout = msecs
-			}
-
-			exports.unenroll = function(item) {
-				clearTimeout(item._idleTimeoutId)
-				item._idleTimeout = -1
-			}
-
-			exports._unrefActive = exports.active = function(item) {
-				clearTimeout(item._idleTimeoutId)
-
-				var msecs = item._idleTimeout
-				if (msecs >= 0) {
-					item._idleTimeoutId = setTimeout(function onTimeout() {
-						if (item._onTimeout) item._onTimeout()
-					}, msecs)
-				}
-			}
-
-			// setimmediate attaches itself to the global object
-			__webpack_require__(138)
-			exports.setImmediate = setImmediate
-			exports.clearImmediate = clearImmediate
-
-			/***/
-		},
 		/* 141 */
 		/***/ function(module, exports, __webpack_require__) {
 			'use strict'
+			/* WEBPACK VAR INJECTION */ ;(function(global) {
+				var apply = Function.prototype.apply
 
-			var _typeof =
-				typeof Symbol === 'function' && typeof Symbol.iterator === 'symbol'
-					? function(obj) {
-							return typeof obj
-						}
-					: function(obj) {
-							return obj &&
-							typeof Symbol === 'function' &&
-							obj.constructor === Symbol &&
-							obj !== Symbol.prototype
-								? 'symbol'
-								: typeof obj
-						}
+				// DOM APIs, for completeness
 
-			var g
+				exports.setTimeout = function() {
+					return new Timeout(apply.call(setTimeout, window, arguments), clearTimeout)
+				}
+				exports.setInterval = function() {
+					return new Timeout(apply.call(setInterval, window, arguments), clearInterval)
+				}
+				exports.clearTimeout = exports.clearInterval = function(timeout) {
+					if (timeout) {
+						timeout.close()
+					}
+				}
 
-			// This works in non-strict mode
-			g = (function() {
-				return this
-			})()
+				function Timeout(id, clearFn) {
+					this._id = id
+					this._clearFn = clearFn
+				}
+				Timeout.prototype.unref = Timeout.prototype.ref = function() {}
+				Timeout.prototype.close = function() {
+					this._clearFn.call(window, this._id)
+				}
 
-			try {
-				// This works if eval is allowed (see CSP)
-				g = g || Function('return this')() || (1, eval)('this')
-			} catch (e) {
-				// This works if the window reference is available
-				if ((typeof window === 'undefined' ? 'undefined' : _typeof(window)) === 'object') g = window
-			}
+				// Does not start the time, just sets up the members needed.
+				exports.enroll = function(item, msecs) {
+					clearTimeout(item._idleTimeoutId)
+					item._idleTimeout = msecs
+				}
 
-			// g can still be undefined, but nothing to do about it...
-			// We return undefined, instead of nothing here, so it's
-			// easier to handle this case. if(!global) { ...}
+				exports.unenroll = function(item) {
+					clearTimeout(item._idleTimeoutId)
+					item._idleTimeout = -1
+				}
 
-			module.exports = g
+				exports._unrefActive = exports.active = function(item) {
+					clearTimeout(item._idleTimeoutId)
+
+					var msecs = item._idleTimeout
+					if (msecs >= 0) {
+						item._idleTimeoutId = setTimeout(function onTimeout() {
+							if (item._onTimeout) item._onTimeout()
+						}, msecs)
+					}
+				}
+
+				// setimmediate attaches itself to the global object
+				__webpack_require__(139)
+				// On some exotic environments, it's not clear which object `setimmeidate` was
+				// able to install onto.  Search each possibility in the same order as the
+				// `setimmediate` library.
+				exports.setImmediate =
+					(typeof self !== 'undefined' && self.setImmediate) ||
+					(typeof global !== 'undefined' && global.setImmediate) ||
+					(undefined && undefined.setImmediate)
+				exports.clearImmediate =
+					(typeof self !== 'undefined' && self.clearImmediate) ||
+					(typeof global !== 'undefined' && global.clearImmediate) ||
+					(undefined && undefined.clearImmediate)
+				/* WEBPACK VAR INJECTION */
+			}.call(exports, __webpack_require__(28)))
 
 			/***/
 		},
@@ -3978,19 +3992,19 @@
 		/***/ function(module, exports, __webpack_require__) {
 			'use strict'
 
-			var _es6Set = __webpack_require__(126)
+			var _es6Set = __webpack_require__(127)
 
 			var _es6Set2 = _interopRequireDefault(_es6Set)
 
-			var _arrayFrom = __webpack_require__(92)
+			var _arrayFrom = __webpack_require__(93)
 
 			var _arrayFrom2 = _interopRequireDefault(_arrayFrom)
 
-			var _promisePolyfill = __webpack_require__(137)
+			var _promisePolyfill = __webpack_require__(138)
 
 			var _promisePolyfill2 = _interopRequireDefault(_promisePolyfill)
 
-			var _smoothscrollPolyfill = __webpack_require__(139)
+			var _smoothscrollPolyfill = __webpack_require__(140)
 
 			var _smoothscrollPolyfill2 = _interopRequireDefault(_smoothscrollPolyfill)
 
@@ -4093,8 +4107,8 @@
 		,
 		/* 143 */ /* 144 */ /* 145 */ /* 146 */ /* 147 */ /* 148 */ /* 149 */ /* 150 */ /* 151 */ /* 152 */ /* 153 */ /* 154 */ /* 155 */ /* 156 */ /* 157 */ /* 158 */ /* 159 */ /* 160 */ /* 161 */ /* 162 */ /* 163 */ /* 164 */ /* 165 */ /* 166 */ /* 167 */ /* 168 */ /* 169 */ /* 170 */ /* 171 */ /* 172 */ /* 173 */ /* 174 */ /* 175 */ /* 176 */ /* 177 */ /* 178 */ /* 179 */ /* 180 */ /* 181 */ /* 182 */ /* 183 */ /* 184 */ /* 185 */ /* 186 */
 		/***/ function(module, exports, __webpack_require__) {
-			__webpack_require__(47)
-			module.exports = __webpack_require__(48)
+			__webpack_require__(48)
+			module.exports = __webpack_require__(49)
 
 			/***/
 		}
