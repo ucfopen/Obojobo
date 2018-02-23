@@ -77,41 +77,41 @@
 })(
 	/************************************************************************/
 	/******/ {
-		/***/ /***/ 0: function(module, exports) {
+		/***/ 0: /***/ function(module, exports) {
 			module.exports = Common
 
 			/***/
 		},
 
-		/***/ /***/ 147: function(module, exports) {
+		/***/ 147: /***/ function(module, exports) {
 			// removed by extract-text-webpack-plugin
 			/***/
 		},
 
-		/***/ /***/ 17: function(module, exports) {
+		/***/ 17: /***/ function(module, exports) {
 			module.exports = katex
 
 			/***/
 		},
 
-		/***/ /***/ 170: function(module, exports, __webpack_require__) {
-			module.exports = __webpack_require__(32)
+		/***/ 170: /***/ function(module, exports, __webpack_require__) {
+			module.exports = __webpack_require__(33)
 
 			/***/
 		},
 
-		/***/ /***/ 32: function(module, exports, __webpack_require__) {
+		/***/ 33: /***/ function(module, exports, __webpack_require__) {
 			'use strict'
 
 			var _Common = __webpack_require__(0)
 
 			var _Common2 = _interopRequireDefault(_Common)
 
-			var _adapter = __webpack_require__(58)
+			var _adapter = __webpack_require__(59)
 
 			var _adapter2 = _interopRequireDefault(_adapter)
 
-			var _viewerComponent = __webpack_require__(59)
+			var _viewerComponent = __webpack_require__(60)
 
 			var _viewerComponent2 = _interopRequireDefault(_viewerComponent)
 
@@ -131,7 +131,7 @@
 			/***/
 		},
 
-		/***/ /***/ 58: function(module, exports, __webpack_require__) {
+		/***/ 59: /***/ function(module, exports, __webpack_require__) {
 			'use strict'
 
 			Object.defineProperty(exports, '__esModule', {
@@ -184,7 +184,7 @@
 			/***/
 		},
 
-		/***/ /***/ 59: function(module, exports, __webpack_require__) {
+		/***/ 60: /***/ function(module, exports, __webpack_require__) {
 			'use strict'
 
 			Object.defineProperty(exports, '__esModule', {

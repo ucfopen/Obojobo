@@ -77,41 +77,41 @@
 })(
 	/************************************************************************/
 	/******/ {
-		/***/ /***/ 0: function(module, exports) {
+		/***/ 0: /***/ function(module, exports) {
 			module.exports = Common
 
 			/***/
 		},
 
-		/***/ /***/ 154: function(module, exports) {
+		/***/ 154: /***/ function(module, exports) {
 			// removed by extract-text-webpack-plugin
 			/***/
 		},
 
-		/***/ /***/ 17: function(module, exports) {
+		/***/ 17: /***/ function(module, exports) {
 			module.exports = katex
 
 			/***/
 		},
 
-		/***/ /***/ 176: function(module, exports, __webpack_require__) {
-			module.exports = __webpack_require__(37)
+		/***/ 176: /***/ function(module, exports, __webpack_require__) {
+			module.exports = __webpack_require__(38)
 
 			/***/
 		},
 
-		/***/ /***/ 37: function(module, exports, __webpack_require__) {
+		/***/ 38: /***/ function(module, exports, __webpack_require__) {
 			'use strict'
 
 			var _Common = __webpack_require__(0)
 
 			var _Common2 = _interopRequireDefault(_Common)
 
-			var _adapter = __webpack_require__(72)
+			var _adapter = __webpack_require__(73)
 
 			var _adapter2 = _interopRequireDefault(_adapter)
 
-			var _viewerComponent = __webpack_require__(73)
+			var _viewerComponent = __webpack_require__(74)
 
 			var _viewerComponent2 = _interopRequireDefault(_viewerComponent)
 
@@ -132,7 +132,7 @@
 			/***/
 		},
 
-		/***/ /***/ 72: function(module, exports, __webpack_require__) {
+		/***/ 73: /***/ function(module, exports, __webpack_require__) {
 			'use strict'
 
 			Object.defineProperty(exports, '__esModule', {
@@ -169,16 +169,28 @@
 					} else {
 						model.modelState.label = ''
 					}
+
+					if (
+						__guard__(attrs != null ? attrs.content : undefined, function(x1) {
+							return x1.size
+						}) != null
+					) {
+						model.modelState.size = attrs.content.size
+					} else {
+						model.modelState.size = 'normal'
+					}
 				},
 				clone: function clone(model, _clone) {
 					_clone.modelState.latex = model.modelState.latex
 					_clone.modelState.align = model.modelState.align
 					_clone.modelState.label = model.modelState.label
+					_clone.modelState.size = model.modelState.size
 				},
 				toJSON: function toJSON(model, json) {
 					json.content.latex = model.modelState.latex
 					json.content.align = model.modelState.align
 					json.content.label = model.modelState.label
+					json.content.size = model.modelState.size
 				},
 				toText: function toText(model) {
 					return model.modelState.latex
@@ -194,7 +206,7 @@
 			/***/
 		},
 
-		/***/ /***/ 73: function(module, exports, __webpack_require__) {
+		/***/ 74: /***/ function(module, exports, __webpack_require__) {
 			'use strict'
 
 			Object.defineProperty(exports, '__esModule', {
@@ -311,7 +323,9 @@
 									moduleData: this.props.moduleData,
 									className:
 										'obojobo-draft--chunks--math-equation pad align-' +
-										this.props.model.modelState.align
+										this.props.model.modelState.align +
+										' size-' +
+										this.props.model.modelState.size
 								},
 								React.createElement(
 									NonEditableChunk,

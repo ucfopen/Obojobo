@@ -17,6 +17,14 @@
 		text-align: center;
 	}
 
+	&.size-small {
+		font-size: 0.7em; 
+	}
+
+	&.size-large {
+		font-size: 1.5em;
+	}
+
 	.equation-label {
 		position: absolute;
 		top: 50%;
