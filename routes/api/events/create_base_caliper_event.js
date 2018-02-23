@@ -21,15 +21,15 @@ let createEvent = (
 
 	switch (actorObject.type) {
 		case ACTOR_USER:
-			caliperEvent.setActor(IRI.getUserIRI(actorObject.id))
+			caliperEvent.setActor(actorObject.type)
 			break
 
 		case ACTOR_VIEWER_CLIENT:
-			caliperEvent.setActor(IRI.getViewerClientIRI())
+			caliperEvent.setActor(actorObject.type)
 			break
 
 		case ACTOR_SERVER_APP:
-			caliperEvent.setActor(IRI.getAppServerIRI())
+			caliperEvent.setActor(actorObject.type)
 			break
 
 		default:

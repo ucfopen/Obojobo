@@ -43,6 +43,7 @@ router.all('/:draftId*', (req, res, next) => {
 			insertEvent({
 				action: 'viewer:open',
 				actorTime: new Date().toISOString(),
+				actor: ACTOR_USER,
 				userId: user.id,
 				ip: req.connection.remoteAddress,
 				metadata: {},

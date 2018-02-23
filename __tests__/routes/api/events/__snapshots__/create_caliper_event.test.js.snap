@@ -4,7 +4,7 @@ exports[`Caliper event creator createAssessmentAttemptScoredEvent 1`] = `
 Event {
   "@context": "http://purl.imsglobal.org/ctx/caliper/v1p1",
   "action": "Graded",
-  "actor": "https://testHost/api/server",
+  "actor": "serverApp",
   "edApp": "https://testHost/api/system",
   "eventTime": "2017-08-29T16:57:14.500Z",
   "extensions": Object {
@@ -32,7 +32,7 @@ exports[`Caliper event creator createAssessmentAttemptStartedEvent 1`] = `
 Event {
   "@context": "http://purl.imsglobal.org/ctx/caliper/v1p1",
   "action": "Started",
-  "actor": "https://testHost/api/user/testUserId",
+  "actor": "user",
   "edApp": "https://testHost/api/system",
   "eventTime": "2017-08-29T16:57:14.500Z",
   "extensions": Object {
@@ -52,7 +52,7 @@ exports[`Caliper event creator createAssessmentAttemptSubmittedEvent 1`] = `
 Event {
   "@context": "http://purl.imsglobal.org/ctx/caliper/v1p1",
   "action": "Submitted",
-  "actor": "https://testHost/api/user/testUserId",
+  "actor": "user",
   "edApp": "https://testHost/api/system",
   "eventTime": "2017-08-29T16:57:14.500Z",
   "extensions": Object {
@@ -72,7 +72,7 @@ exports[`Caliper event creator createAssessmentItemEvent - when assesmentId is n
 Event {
   "@context": "http://purl.imsglobal.org/ctx/caliper/v1p1",
   "action": "Completed",
-  "actor": "https://testHost/api/user/testUserId",
+  "actor": "user",
   "edApp": "https://testHost/api/system",
   "eventTime": "2017-08-29T16:57:14.500Z",
   "extensions": Object {
@@ -102,7 +102,7 @@ exports[`Caliper event creator createAssessmentItemEvent - when assesmentId, att
 Event {
   "@context": "http://purl.imsglobal.org/ctx/caliper/v1p1",
   "action": "Completed",
-  "actor": "https://testHost/api/user/testUserId",
+  "actor": "user",
   "edApp": "https://testHost/api/system",
   "eventTime": "2017-08-29T16:57:14.500Z",
   "extensions": Object {
@@ -132,7 +132,7 @@ exports[`Caliper event creator createAssessmentItemEvent - when assessmentId and
 Event {
   "@context": "http://purl.imsglobal.org/ctx/caliper/v1p1",
   "action": "Completed",
-  "actor": "https://testHost/api/user/testUserId",
+  "actor": "user",
   "edApp": "https://testHost/api/system",
   "eventTime": "2017-08-29T16:57:14.500Z",
   "extensions": Object {
@@ -162,7 +162,7 @@ exports[`Caliper event creator createAssessmentItemEvent - when attemptId is nul
 Event {
   "@context": "http://purl.imsglobal.org/ctx/caliper/v1p1",
   "action": "Completed",
-  "actor": "https://testHost/api/user/testUserId",
+  "actor": "user",
   "edApp": "https://testHost/api/system",
   "eventTime": "2017-08-29T16:57:14.500Z",
   "extensions": Object {
@@ -192,7 +192,7 @@ exports[`Caliper event creator createAssessmentItemEvent 1`] = `
 Event {
   "@context": "http://purl.imsglobal.org/ctx/caliper/v1p1",
   "action": "Completed",
-  "actor": "https://testHost/api/user/testUserId",
+  "actor": "user",
   "edApp": "https://testHost/api/system",
   "eventTime": "2017-08-29T16:57:14.500Z",
   "extensions": Object {
@@ -223,7 +223,7 @@ exports[`Caliper event creator createHideEvent - sets target of hide event when 
 Event {
   "@context": "http://purl.imsglobal.org/ctx/caliper/v1p1",
   "action": "Hid",
-  "actor": "https://testHost/api/user/testUserId",
+  "actor": "user",
   "edApp": "https://testHost/api/system",
   "eventTime": "2017-08-29T16:57:14.500Z",
   "extensions": Object {
@@ -243,7 +243,7 @@ exports[`Caliper event creator createHideEvent 1`] = `
 Event {
   "@context": "http://purl.imsglobal.org/ctx/caliper/v1p1",
   "action": "Hid",
-  "actor": "https://testHost/api/user/testUserId",
+  "actor": "user",
   "edApp": "https://testHost/api/system",
   "eventTime": "2017-08-29T16:57:14.500Z",
   "extensions": Object {
@@ -262,7 +262,7 @@ exports[`Caliper event creator createNavigationEvent 1`] = `
 Event {
   "@context": "http://purl.imsglobal.org/ctx/caliper/v1p1",
   "action": "NavigatedTo",
-  "actor": "https://testHost/api/user/testUserId",
+  "actor": "user",
   "edApp": "https://testHost/api/system",
   "eventTime": "2017-08-29T16:57:14.500Z",
   "extensions": Object {
@@ -282,7 +282,7 @@ exports[`Caliper event creator createPracticeGradeEvent 1`] = `
 Event {
   "@context": "http://purl.imsglobal.org/ctx/caliper/v1p1",
   "action": "Graded",
-  "actor": "https://testHost/api/viewer/client",
+  "actor": "viewerClient",
   "edApp": "https://testHost/api/system",
   "eventTime": "2017-08-29T16:57:14.500Z",
   "extensions": Object {
@@ -311,7 +311,7 @@ exports[`Caliper event creator createPracticeQuestionResetEvent 1`] = `
 Event {
   "@context": "http://purl.imsglobal.org/ctx/caliper/v1p1",
   "action": "Reset",
-  "actor": "https://testHost/api/user/testUserId",
+  "actor": "user",
   "edApp": "https://testHost/api/system",
   "eventTime": "2017-08-29T16:57:14.500Z",
   "extensions": Object {
@@ -331,7 +331,7 @@ exports[`Caliper event creator createPracticeQuestionSubmittedEvent 1`] = `
 Event {
   "@context": "http://purl.imsglobal.org/ctx/caliper/v1p1",
   "action": "Submitted",
-  "actor": "https://testHost/api/user/testUserId",
+  "actor": "user",
   "edApp": "https://testHost/api/system",
   "eventTime": "2017-08-29T16:57:14.500Z",
   "extensions": Object {
@@ -350,7 +350,7 @@ exports[`Caliper event creator createPracticeUngradeEvent 1`] = `
 Event {
   "@context": "http://purl.imsglobal.org/ctx/caliper/v1p1",
   "action": "Reset",
-  "actor": "https://testHost/api/server",
+  "actor": "serverApp",
   "edApp": "https://testHost/api/system",
   "eventTime": "2017-08-29T16:57:14.500Z",
   "extensions": Object {
@@ -368,7 +368,7 @@ exports[`Caliper event creator createViewEvent - sets target of view event when 
 Event {
   "@context": "http://purl.imsglobal.org/ctx/caliper/v1p1",
   "action": "Viewed",
-  "actor": "https://testHost/api/user/testUserId",
+  "actor": "user",
   "edApp": "https://testHost/api/system",
   "eventTime": "2017-08-29T16:57:14.500Z",
   "extensions": Object {
@@ -388,7 +388,7 @@ exports[`Caliper event creator createViewEvent 1`] = `
 Event {
   "@context": "http://purl.imsglobal.org/ctx/caliper/v1p1",
   "action": "Viewed",
-  "actor": "https://testHost/api/user/testUserId",
+  "actor": "user",
   "edApp": "https://testHost/api/system",
   "eventTime": "2017-08-29T16:57:14.500Z",
   "extensions": Object {
@@ -407,7 +407,7 @@ exports[`Caliper event creator createViewerAbandonedEvent 1`] = `
 Event {
   "@context": "http://purl.imsglobal.org/ctx/caliper/v1p1",
   "action": "Abandoned",
-  "actor": "https://testHost/api/user/testUserId",
+  "actor": "user",
   "edApp": "https://testHost/api/system",
   "eventTime": "2017-08-29T16:57:14.500Z",
   "extensions": Object {
@@ -426,7 +426,7 @@ exports[`Caliper event creator createViewerResumedEvent 1`] = `
 Event {
   "@context": "http://purl.imsglobal.org/ctx/caliper/v1p1",
   "action": "Resumed",
-  "actor": "https://testHost/api/user/testUserId",
+  "actor": "user",
   "edApp": "https://testHost/api/system",
   "eventTime": "2017-08-29T16:57:14.500Z",
   "extensions": Object {
@@ -445,7 +445,7 @@ exports[`Caliper event creator createViewerSessionLoggedInEvent 1`] = `
 Event {
   "@context": "http://purl.imsglobal.org/ctx/caliper/v1p1",
   "action": "LoggedIn",
-  "actor": "https://testHost/api/user/testUserId",
+  "actor": "user",
   "edApp": "https://testHost/api/system",
   "eventTime": "2017-08-29T16:57:14.500Z",
   "extensions": Object {
@@ -465,7 +465,7 @@ exports[`Caliper event creator createViewerSessionLoggedOutEvent 1`] = `
 Event {
   "@context": "http://purl.imsglobal.org/ctx/caliper/v1p1",
   "action": "LoggedOut",
-  "actor": "https://testHost/api/user/testUserId",
+  "actor": "user",
   "edApp": "https://testHost/api/system",
   "eventTime": "2017-08-29T16:57:14.500Z",
   "extensions": Object {

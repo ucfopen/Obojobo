@@ -26,6 +26,7 @@ let storeLtiLaunch = (draftId, user, ip, ltiBody, ltiConsumerKey) => {
 			// Insert Event
 			return insertEvent({
 				action: 'lti:launch',
+				actor: 'serverApp',
 				actorTime: new Date().toISOString(),
 				payload: { launchId: insertLaunchResult.id },
 				userId: user.id,

@@ -13,11 +13,12 @@ router.post('/', (req, res, next) => {
 
 			// add data to the event
 			let event = req.body.event
-
+			let actor = 'none'
 			let caliperEvent = createCaliperEvent(req)
-
+			if (caliperEvent != null) actor = caliperEvent.actor
 			let insertObject = {
 				actorTime: event.actor_time,
+				actor: actor,
 				action: event.action,
 				userId: currentUser.id,
 				eventVersion: event.event_version,

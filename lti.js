@@ -82,6 +82,7 @@ let replaceResult = function(userId, draftId, score) {
 					insertEvent({
 						action: 'lti:replaceResult',
 						actorTime: new Date().toISOString(),
+						actor: 'serverApp',
 						payload: {
 							launchId: ltiReqData.id,
 							launchKey: ltiLaunchKey,

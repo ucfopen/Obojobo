@@ -5,8 +5,8 @@ module.exports = insertObject => {
 		.one(
 			`
 		INSERT INTO events
-		(actor_time, action, actor, ip, metadata, payload, draft_id, version)
-		VALUES ($[actorTime], $[action], $[userId], $[ip], $[metadata], $[payload], $[draftId], $[eventVersion])
+		(actor_time, action, actor, user_id, ip, metadata, payload, draft_id, version)
+		VALUES ($[actorTime], $[action], $[actor], $[userId], $[ip], $[metadata], $[payload], $[draftId], $[eventVersion])
 		RETURNING created_at`,
 			insertObject
 		)

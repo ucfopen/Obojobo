@@ -4,7 +4,7 @@ exports[`Caliper event from req nav_goto 1`] = `
 Event {
   "@context": "http://purl.imsglobal.org/ctx/caliper/v1p1",
   "action": "NavigatedTo",
-  "actor": "https://hostnameReq/api/user/testUserIdReq",
+  "actor": "user",
   "edApp": "https://hostnameReq/api/system",
   "eventTime": "2016-09-22T16:57:14.500Z",
   "extensions": Object {
@@ -25,7 +25,7 @@ exports[`Caliper event from req question_checkAnswer 1`] = `
 Event {
   "@context": "http://purl.imsglobal.org/ctx/caliper/v1p1",
   "action": "Submitted",
-  "actor": "https://hostnameReq/api/user/testUserIdReq",
+  "actor": "user",
   "edApp": "https://hostnameReq/api/system",
   "eventTime": "2016-09-22T16:57:14.500Z",
   "extensions": Object {
@@ -43,7 +43,7 @@ exports[`Caliper event from req question_hide 1`] = `
 Event {
   "@context": "http://purl.imsglobal.org/ctx/caliper/v1p1",
   "action": "Hid",
-  "actor": "https://hostnameReq/api/user/testUserIdReq",
+  "actor": "user",
   "edApp": "https://hostnameReq/api/system",
   "eventTime": "2016-09-22T16:57:14.500Z",
   "extensions": Object {
@@ -61,7 +61,7 @@ exports[`Caliper event from req question_hideExplanation 1`] = `
 Event {
   "@context": "http://purl.imsglobal.org/ctx/caliper/v1p1",
   "action": "Hid",
-  "actor": "https://hostnameReq/api/user/testUserIdReq",
+  "actor": "user",
   "edApp": "https://hostnameReq/api/system",
   "eventTime": "2016-09-22T16:57:14.500Z",
   "extensions": Object {
@@ -80,7 +80,7 @@ exports[`Caliper event from req question_retry 1`] = `
 Event {
   "@context": "http://purl.imsglobal.org/ctx/caliper/v1p1",
   "action": "Reset",
-  "actor": "https://hostnameReq/api/user/testUserIdReq",
+  "actor": "user",
   "edApp": "https://hostnameReq/api/system",
   "eventTime": "2016-09-22T16:57:14.500Z",
   "extensions": Object {
@@ -99,7 +99,7 @@ exports[`Caliper event from req question_setResponse 1`] = `
 Event {
   "@context": "http://purl.imsglobal.org/ctx/caliper/v1p1",
   "action": "Completed",
-  "actor": "https://hostnameReq/api/user/testUserIdReq",
+  "actor": "user",
   "edApp": "https://hostnameReq/api/system",
   "eventTime": "2016-09-22T16:57:14.500Z",
   "extensions": Object {
@@ -127,7 +127,7 @@ exports[`Caliper event from req question_showExplanation 1`] = `
 Event {
   "@context": "http://purl.imsglobal.org/ctx/caliper/v1p1",
   "action": "Viewed",
-  "actor": "https://hostnameReq/api/user/testUserIdReq",
+  "actor": "user",
   "edApp": "https://hostnameReq/api/system",
   "eventTime": "2016-09-22T16:57:14.500Z",
   "extensions": Object {
@@ -146,7 +146,7 @@ exports[`Caliper event from req question_view 1`] = `
 Event {
   "@context": "http://purl.imsglobal.org/ctx/caliper/v1p1",
   "action": "Viewed",
-  "actor": "https://hostnameReq/api/user/testUserIdReq",
+  "actor": "user",
   "edApp": "https://hostnameReq/api/system",
   "eventTime": "2016-09-22T16:57:14.500Z",
   "extensions": Object {
@@ -164,7 +164,7 @@ exports[`Caliper event from req score_clear 1`] = `
 Event {
   "@context": "http://purl.imsglobal.org/ctx/caliper/v1p1",
   "action": "Reset",
-  "actor": "https://hostnameReq/api/server",
+  "actor": "serverApp",
   "edApp": "https://hostnameReq/api/system",
   "eventTime": "2016-09-22T16:57:14.500Z",
   "extensions": Object {
@@ -183,7 +183,7 @@ exports[`Caliper event from req score_set 1`] = `
 Event {
   "@context": "http://purl.imsglobal.org/ctx/caliper/v1p1",
   "action": "Graded",
-  "actor": "https://hostnameReq/api/viewer/client",
+  "actor": "viewerClient",
   "edApp": "https://hostnameReq/api/system",
   "eventTime": "2016-09-22T16:57:14.500Z",
   "extensions": Object {
@@ -211,7 +211,7 @@ exports[`Caliper event from req viewer_close 1`] = `
 Event {
   "@context": "http://purl.imsglobal.org/ctx/caliper/v1p1",
   "action": "LoggedOut",
-  "actor": "https://hostnameReq/api/user/testUserIdReq",
+  "actor": "user",
   "edApp": "https://hostnameReq/api/system",
   "eventTime": "2016-09-22T16:57:14.500Z",
   "extensions": Object {
@@ -230,7 +230,7 @@ exports[`Caliper event from req viewer_inactive 1`] = `
 Event {
   "@context": "http://purl.imsglobal.org/ctx/caliper/v1p1",
   "action": "Abandoned",
-  "actor": "https://hostnameReq/api/user/testUserIdReq",
+  "actor": "user",
   "edApp": "https://hostnameReq/api/system",
   "eventTime": "2016-09-22T16:57:14.500Z",
   "extensions": Object {
@@ -251,7 +251,7 @@ exports[`Caliper event from req viewer_leave 1`] = `
 Event {
   "@context": "http://purl.imsglobal.org/ctx/caliper/v1p1",
   "action": "Abandoned",
-  "actor": "https://hostnameReq/api/user/testUserIdReq",
+  "actor": "user",
   "edApp": "https://hostnameReq/api/system",
   "eventTime": "2016-09-22T16:57:14.500Z",
   "extensions": Object {
@@ -270,7 +270,7 @@ exports[`Caliper event from req viewer_return 1`] = `
 Event {
   "@context": "http://purl.imsglobal.org/ctx/caliper/v1p1",
   "action": "Resumed",
-  "actor": "https://hostnameReq/api/user/testUserIdReq",
+  "actor": "user",
   "edApp": "https://hostnameReq/api/system",
   "eventTime": "2016-09-22T16:57:14.500Z",
   "extensions": Object {
@@ -290,7 +290,7 @@ exports[`Caliper event from req viewer_returnFromInactive 1`] = `
 Event {
   "@context": "http://purl.imsglobal.org/ctx/caliper/v1p1",
   "action": "Resumed",
-  "actor": "https://hostnameReq/api/user/testUserIdReq",
+  "actor": "user",
   "edApp": "https://hostnameReq/api/system",
   "eventTime": "2016-09-22T16:57:14.500Z",
   "extensions": Object {
