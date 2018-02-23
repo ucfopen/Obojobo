@@ -206,6 +206,14 @@ var NavUtil = {
 
 	getOrderedList(state) {
 		return getFlatList(state.items)
+	},
+
+	setContext(context) {
+		return Dispatcher.trigger('nav:setContext', {
+			value: {
+				context
+			}
+		})
 	}
 }
 

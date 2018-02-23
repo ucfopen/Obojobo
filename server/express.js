@@ -482,8 +482,9 @@ app.get('/api/assessment/:draftId/:assessmentId/attempts', (req, res, next) => {
 		})
 })
 
-oboEvents.on('client:assessment:setResponse', (event, req) => {
-	let eventRecordResponse = 'client:assessment:setResponse'
+oboEvents.on('client:question:setResponse', (event, req) => {
+	if (!event.payload.context) return
+	let eventRecordResponse = 'client:question:setResponse'
 
 	// check perms
 	// check input

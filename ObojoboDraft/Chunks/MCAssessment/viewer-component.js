@@ -4,6 +4,7 @@ let ReactCSSTransitionGroup = React.addons.CSSTransitionGroup
 
 import Common from 'Common'
 import Viewer from 'Viewer'
+import navUtil from '../../../src/scripts/viewer/util/nav-util'
 
 let { OboComponent } = Common.components
 let { Button } = Common.components
@@ -37,8 +38,10 @@ export default class MCAssessment extends React.Component {
 	getResponseData() {
 		let questionResponse = QuestionUtil.getResponse(
 			this.props.moduleData.questionState,
-			this.getQuestionModel()
+			this.getQuestionModel(),
+			this.props.context
 		) || { ids: [] }
+
 		let correct = new Set()
 		let responses = new Set()
 		let childId
@@ -115,11 +118,7 @@ export default class MCAssessment extends React.Component {
 	onClickSubmit(event) {
 		event.preventDefault()
 
-		ScoreUtil.setScore(
-			this.getQuestionModel().get('id'),
-			this.calculateScore(),
-			this.props.scoreContext
-		)
+		ScoreUtil.setScore(this.getQuestionModel().get('id'), this.calculateScore(), this.props.context)
 		QuestionUtil.checkAnswer(this.getQuestionModel().get('id'))
 	}
 
@@ -158,7 +157,11 @@ export default class MCAssessment extends React.Component {
 
 		switch (this.props.model.modelState.responseType) {
 			case 'pick-all':
-				response = QuestionUtil.getResponse(this.props.moduleData.questionState, questionModel) || {
+				response = QuestionUtil.getResponse(
+					this.props.moduleData.questionState,
+					questionModel,
+					this.props.context
+				) || {
 					ids: []
 				}
 				let responseIndex = response.ids.indexOf(mcChoiceId)
@@ -177,14 +180,21 @@ export default class MCAssessment extends React.Component {
 				break
 		}
 
-		QuestionUtil.setResponse(questionModel.get('id'), response, mcChoiceId)
+		QuestionUtil.setResponse(
+			questionModel.get('id'),
+			response,
+			mcChoiceId,
+			this.props.moduleData.navState.context || 'practice',
+			this.props.moduleData.navState.context.split(':')[1],
+			this.props.moduleData.navState.context.split(':')[2]
+		)
 	}
 
 	getScore() {
 		return ScoreUtil.getScoreForModel(
-			this.props.moduleData.scoreState,
+			this.props.moduleData.questionState,
 			this.getQuestionModel(),
-			this.props.scoreContext
+			this.props.context
 		)
 	}
 
@@ -204,7 +214,7 @@ export default class MCAssessment extends React.Component {
 		let questionId = this.getQuestionModel().get('id')
 
 		if (payload.value.id === questionId) {
-			ScoreUtil.setScore(questionId, this.calculateScore(), this.props.scoreContext)
+			ScoreUtil.setScore(questionId, this.calculateScore(), this.props.context)
 		}
 	}
 
@@ -219,6 +229,7 @@ export default class MCAssessment extends React.Component {
 			'shuffledIds'
 		)
 		if (!shuffledIds) {
+			// Shuffle MCChoice
 			shuffledIds = _.shuffle(this.props.model.children.models).map(model => model.get('id'))
 			QuestionUtil.setData(this.props.model.get('id'), 'shuffledIds', shuffledIds)
 		}
@@ -302,6 +313,7 @@ export default class MCAssessment extends React.Component {
 							isReview={this.props.mode === 'review'}
 							questionSubmitted={questionSubmitted}
 							label={String.fromCharCode(index + 65)}
+							context={this.props.context}
 						/>
 					)
 				})}

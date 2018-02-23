@@ -72,7 +72,7 @@
 	/******/
 	/******/ /******/ __webpack_require__.p = 'build/' // Load entry module and return exports
 	/******/
-	/******/ /******/ return __webpack_require__((__webpack_require__.s = 174))
+	/******/ /******/ return __webpack_require__((__webpack_require__.s = 175))
 	/******/
 })(
 	/************************************************************************/
@@ -89,17 +89,17 @@
 			/***/
 		},
 
-		/***/ /***/ 151: function(module, exports) {
-			// removed by extract-text-webpack-plugin
-			/***/
-		},
-
 		/***/ /***/ 152: function(module, exports) {
 			// removed by extract-text-webpack-plugin
 			/***/
 		},
 
-		/***/ /***/ 174: function(module, exports, __webpack_require__) {
+		/***/ /***/ 153: function(module, exports) {
+			// removed by extract-text-webpack-plugin
+			/***/
+		},
+
+		/***/ /***/ 175: function(module, exports, __webpack_require__) {
 			module.exports = __webpack_require__(35)
 
 			/***/
@@ -180,7 +180,7 @@
 				}
 			})()
 
-			__webpack_require__(151)
+			__webpack_require__(152)
 
 			function _classCallCheck(instance, Constructor) {
 				if (!(instance instanceof Constructor)) {
@@ -369,7 +369,7 @@
 				}
 			})()
 
-			__webpack_require__(152)
+			__webpack_require__(153)
 
 			var _Common = __webpack_require__(0)
 
@@ -455,9 +455,9 @@
 							}
 
 							var score = ScoreUtil.getScoreForModel(
-								this.props.moduleData.scoreState,
+								this.props.moduleData.questionState,
 								this.props.model,
-								this.props.scoreContext
+								this.props.context || this.props.moduleData.navState.context
 							)
 							var viewState = QuestionUtil.getViewState(
 								this.props.moduleData.questionState,
@@ -494,7 +494,7 @@
 											key: assessment.get('id'),
 											model: assessment,
 											moduleData: this.props.moduleData,
-											scoreContext: this.props.scoreContext,
+											context: this.props.context || this.props.moduleData.navState.context,
 											mode: this.props.isReview ? 'review' : this.props.model.modelState.mode
 										})
 									),
@@ -518,11 +518,11 @@
 					},
 					{
 						key: 'renderContentOnly',
-						value: function renderContentOnly() {
+						value: function renderContentOnly(context) {
 							var score = ScoreUtil.getScoreForModel(
-								this.props.moduleData.scoreState,
+								this.props.moduleData.questionState,
 								this.props.model,
-								this.props.scoreContext
+								this.props.context || this.props.moduleData.navState.context
 							)
 							var viewState = QuestionUtil.getViewState(
 								this.props.moduleData.questionState,

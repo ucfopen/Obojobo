@@ -664,6 +664,13 @@
 				},
 				getOrderedList: function getOrderedList(state) {
 					return getFlatList(state.items)
+				},
+				setContext: function setContext(context) {
+					return Dispatcher.trigger('nav:setContext', {
+						value: {
+							context: context
+						}
+					})
 				}
 			}
 
@@ -672,119 +679,6 @@
 			/***/
 		},
 		/* 3 */
-		/***/ function(module, exports, __webpack_require__) {
-			'use strict'
-
-			Object.defineProperty(exports, '__esModule', {
-				value: true
-			})
-			var createParsedJsonPromise = function createParsedJsonPromise(promise) {
-				return new Promise(function(resolve, reject) {
-					return promise
-						.then(function(res) {
-							return res.json()
-						})
-						.then(function(json) {
-							if (json.status === 'error') console.log(json.value)
-							return resolve(json)
-						})
-						.catch(function(error) {
-							return reject(error)
-						})
-				})
-			}
-
-			var APIUtil = {
-				get: function get(endpoint) {
-					return fetch(endpoint, {
-						method: 'GET',
-						credentials: 'include',
-						headers: {
-							Accept: 'application/json',
-							'Content-Type': 'application/json'
-						} //@TODO - Do I need this?
-					})
-				},
-				post: function post(endpoint, body) {
-					if (body == null) {
-						body = {}
-					}
-					return fetch(endpoint, {
-						method: 'POST',
-						credentials: 'include',
-						body: JSON.stringify(body),
-						headers: {
-							Accept: 'application/json',
-							'Content-Type': 'application/json'
-						}
-					})
-				},
-				postEvent: function postEvent(lo, action, eventVersion, payload) {
-					return createParsedJsonPromise(
-						APIUtil.post('/api/events', {
-							event: {
-								action: action,
-								draft_id: lo.get('_id'),
-								actor_time: new Date().toISOString(),
-								event_version: eventVersion,
-								payload: payload
-							}
-						})
-						// TODO: Send Caliper event to client host.
-					).then(function(res) {
-						if (res && res.status === 'ok' && res.value) {
-							parent.postMessage(res.value, '*')
-						}
-
-						return res
-					})
-				},
-				saveState: function saveState(lo, state) {
-					return APIUtil.postEvent(lo, 'saveState', state)
-				},
-				fetchDraft: function fetchDraft(id) {
-					return createParsedJsonPromise(fetch('/api/drafts/' + id))
-				},
-
-				// getAttempts(lo) {
-				// 	return createParsedJsonPromise(APIUtil.get(`/api/drafts/${lo.get('_id')}/attempts`))
-				// },
-
-				startAttempt: function startAttempt(lo, assessment, questions) {
-					return createParsedJsonPromise(
-						APIUtil.post('/api/assessments/attempt/start', {
-							draftId: lo.get('_id'),
-							assessmentId: assessment.get('id')
-						})
-					)
-				},
-				endAttempt: function endAttempt(attempt) {
-					return createParsedJsonPromise(
-						APIUtil.post('/api/assessments/attempt/' + attempt.attemptId + '/end')
-					)
-				},
-				resendLTIAssessmentScore: function resendLTIAssessmentScore(lo, assessment) {
-					return createParsedJsonPromise(
-						APIUtil.post('/api/lti/sendAssessmentScore', {
-							draftId: lo.get('_id'),
-							assessmentId: assessment.get('id')
-						})
-					)
-				}
-			}
-
-			// recordQuestionResponse: (attempt, question, response) ->
-			// 	console.clear()
-			// 	console.log arguments
-			// 	createParsedJsonPromise APIUtil.post "/api/assessments/attempt/#{attempt.id}/question/#{question.get('id')}", {
-			// 		response: response
-			// 	}
-
-			exports.default = APIUtil
-
-			/***/
-		},
-		/* 4 */
 		/***/ function(module, exports, __webpack_require__) {
 			'use strict'
 
@@ -976,6 +870,119 @@
 
 			/***/
 		},
+		/* 4 */
+		/***/ function(module, exports, __webpack_require__) {
+			'use strict'
+
+			Object.defineProperty(exports, '__esModule', {
+				value: true
+			})
+			var createParsedJsonPromise = function createParsedJsonPromise(promise) {
+				return new Promise(function(resolve, reject) {
+					return promise
+						.then(function(res) {
+							return res.json()
+						})
+						.then(function(json) {
+							if (json.status === 'error') console.log(json.value)
+							return resolve(json)
+						})
+						.catch(function(error) {
+							return reject(error)
+						})
+				})
+			}
+
+			var APIUtil = {
+				get: function get(endpoint) {
+					return fetch(endpoint, {
+						method: 'GET',
+						credentials: 'include',
+						headers: {
+							Accept: 'application/json',
+							'Content-Type': 'application/json'
+						} //@TODO - Do I need this?
+					})
+				},
+				post: function post(endpoint, body) {
+					if (body == null) {
+						body = {}
+					}
+					return fetch(endpoint, {
+						method: 'POST',
+						credentials: 'include',
+						body: JSON.stringify(body),
+						headers: {
+							Accept: 'application/json',
+							'Content-Type': 'application/json'
+						}
+					})
+				},
+				postEvent: function postEvent(lo, action, eventVersion, payload) {
+					return createParsedJsonPromise(
+						APIUtil.post('/api/events', {
+							event: {
+								action: action,
+								draft_id: lo.get('_id'),
+								actor_time: new Date().toISOString(),
+								event_version: eventVersion,
+								payload: payload
+							}
+						})
+						// TODO: Send Caliper event to client host.
+					).then(function(res) {
+						if (res && res.status === 'ok' && res.value) {
+							parent.postMessage(res.value, '*')
+						}
+
+						return res
+					})
+				},
+				saveState: function saveState(lo, state) {
+					return APIUtil.postEvent(lo, 'saveState', state)
+				},
+				fetchDraft: function fetchDraft(id) {
+					return createParsedJsonPromise(fetch('/api/drafts/' + id))
+				},
+
+				// getAttempts(lo) {
+				// 	return createParsedJsonPromise(APIUtil.get(`/api/drafts/${lo.get('_id')}/attempts`))
+				// },
+
+				startAttempt: function startAttempt(lo, assessment, questions) {
+					return createParsedJsonPromise(
+						APIUtil.post('/api/assessments/attempt/start', {
+							draftId: lo.get('_id'),
+							assessmentId: assessment.get('id')
+						})
+					)
+				},
+				endAttempt: function endAttempt(attempt) {
+					return createParsedJsonPromise(
+						APIUtil.post('/api/assessments/attempt/' + attempt.attemptId + '/end')
+					)
+				},
+				resendLTIAssessmentScore: function resendLTIAssessmentScore(lo, assessment) {
+					return createParsedJsonPromise(
+						APIUtil.post('/api/lti/sendAssessmentScore', {
+							draftId: lo.get('_id'),
+							assessmentId: assessment.get('id')
+						})
+					)
+				}
+			}
+
+			// recordQuestionResponse: (attempt, question, response) ->
+			// 	console.clear()
+			// 	console.log arguments
+			// 	createParsedJsonPromise APIUtil.post "/api/assessments/attempt/#{attempt.id}/question/#{question.get('id')}", {
+			// 		response: response
+			// 	}
+
+			exports.default = APIUtil
+
+			/***/
+		},
 		/* 5 */
 		/***/ function(module, exports, __webpack_require__) {
 			'use strict'
@@ -996,19 +1003,30 @@
 			var OboModel = _Common2.default.models.OboModel
 
 			var QuestionUtil = {
-				setResponse: function setResponse(id, response, targetId) {
+				setResponse: function setResponse(
+					id,
+					response,
+					targetId,
+					context,
+					assessmentId,
+					attemptId
+				) {
 					return Dispatcher.trigger('question:setResponse', {
 						value: {
 							id: id,
 							response: response,
-							targetId: targetId
+							targetId: targetId,
+							context: context,
+							assessmentId: assessmentId,
+							attemptId: attemptId
 						}
 					})
 				},
-				clearResponse: function clearResponse(id) {
+				clearResponse: function clearResponse(id, context) {
 					return Dispatcher.trigger('question:clearResponse', {
 						value: {
-							id: id
+							id: id,
+							context: context
 						}
 					})
 				},
@@ -1059,9 +1077,13 @@
 					})
 				},
 				retryQuestion: function retryQuestion(id) {
+					var context =
+						arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : 'practice'
+
 					return Dispatcher.trigger('question:retry', {
 						value: {
-							id: id
+							id: id,
+							context: context
 						}
 					})
 				},
@@ -1076,8 +1098,12 @@
 					}
 					return 'hidden'
 				},
-				getResponse: function getResponse(state, model) {
-					return state.responses[model.get('id')] || null
+				populate: function populate(attempts) {
+					return Dispatcher.trigger('score:populate', attempts)
+				},
+				getResponse: function getResponse(state, model, context) {
+					if (!state.responses[context]) return null
+					return state.responses[context][model.get('id')] || null
 				},
 				getData: function getData(state, model, key) {
 					return state.data[model.get('id') + ':' + key] || false
@@ -1095,7 +1121,7 @@
 		/***/ function(module, exports, __webpack_require__) {
 			'use strict'
 
-			var startOfWeek = __webpack_require__(35)
+			var startOfWeek = __webpack_require__(34)
 
 			/**
  * @category ISO Week Helpers
@@ -1229,7 +1255,7 @@
 
 				module.exports = invariant
 				/* WEBPACK VAR INJECTION */
-			}.call(exports, __webpack_require__(4)))
+			}.call(exports, __webpack_require__(3)))
 
 			/***/
 		},
@@ -1284,7 +1310,7 @@
 
 			var _navUtil2 = _interopRequireDefault(_navUtil)
 
-			var _apiUtil = __webpack_require__(3)
+			var _apiUtil = __webpack_require__(4)
 
 			var _apiUtil2 = _interopRequireDefault(_apiUtil)
 
@@ -1340,6 +1366,10 @@
 
 					Dispatcher.on(
 						{
+							'nav:setContext': function navSetContext(payload) {
+								_this.state.context = payload.value.context
+								return _this.triggerChange()
+							},
 							'nav:rebuildMenu': function navRebuildMenu(payload) {
 								_this.buildMenu(payload.value.model)
 								return _this.triggerChange()
@@ -1448,7 +1478,8 @@
 								navTargetHistory: [],
 								navTargetId: null,
 								locked: false,
-								open: true
+								open: true,
+								context: 'practice'
 							}
 
 							this.buildMenu(model)
@@ -1840,7 +1871,7 @@
 
 				module.exports = warning
 				/* WEBPACK VAR INJECTION */
-			}.call(exports, __webpack_require__(4)))
+			}.call(exports, __webpack_require__(3)))
 
 			/***/
 		},
@@ -1987,7 +2018,7 @@
 
 			var _Common2 = _interopRequireDefault(_Common)
 
-			var _assessmentUtil = __webpack_require__(20)
+			var _assessmentUtil = __webpack_require__(19)
 
 			var _assessmentUtil2 = _interopRequireDefault(_assessmentUtil)
 
@@ -1999,7 +2030,7 @@
 
 			var _questionUtil2 = _interopRequireDefault(_questionUtil)
 
-			var _apiUtil = __webpack_require__(3)
+			var _apiUtil = __webpack_require__(4)
 
 			var _apiUtil2 = _interopRequireDefault(_apiUtil)
 
@@ -2083,7 +2114,11 @@
 					})
 
 					Dispatcher.on('assessment:endAttempt', function(payload) {
-						_this.tryEndAttempt(payload.value.id, payload.value.hasAssessmentReview)
+						_this.tryEndAttempt(
+							payload.value.id,
+							payload.value.hasAssessmentReview,
+							payload.value.context
+						)
 					})
 
 					Dispatcher.on('assessment:resendLTIScore', function(payload) {
@@ -2110,6 +2145,7 @@
 								assessments: {}
 							}
 
+							// necessary?
 							if (!attemptsByAssessment) return
 							this.updateAttempts(attemptsByAssessment)
 						}
@@ -2135,6 +2171,7 @@
 								attempts.forEach(function(attempt) {
 									assessment = assessments[attempt.assessmentId]
 
+									// isn't this only concerned with last score?
 									assessment.score = attempt.assessmentScore
 
 									if (!attempt.isFinished) {
@@ -2152,6 +2189,8 @@
 									assessment.lti = attempt.ltiState
 								})
 							})
+
+							_questionUtil2.default.populate(assessments)
 
 							if (unfinishedAttempt) {
 								return ModalUtil.show(
@@ -2402,6 +2441,9 @@
 
 							this.state.assessments[id].current = startAttemptResp
 
+							_navUtil2.default.setContext(
+								'assessment:' + startAttemptResp.assessmentId + ':' + startAttemptResp.attemptId
+							)
 							_navUtil2.default.rebuildMenu(model.getRoot())
 							_navUtil2.default.goto(id)
 
@@ -2411,7 +2453,7 @@
 					},
 					{
 						key: 'tryEndAttempt',
-						value: function tryEndAttempt(id, hasAssessmentReview) {
+						value: function tryEndAttempt(id, hasAssessmentReview, context) {
 							var _this3 = this
 
 							var model = OboModel.models[id]
@@ -2424,7 +2466,7 @@
 										return ErrorUtil.errorResponse(res)
 									}
 
-									_this3.endAttempt(res.value, hasAssessmentReview)
+									_this3.endAttempt(res.value, hasAssessmentReview, context)
 									return _this3.triggerChange()
 								})
 								.catch(function(e) {
@@ -2434,45 +2476,32 @@
 					},
 					{
 						key: 'endAttempt',
-						value: function endAttempt(endAttemptResp, hasAssessmentReview) {
+						value: function endAttempt(endAttemptResp, hasAssessmentReview, context) {
 							var assessId = endAttemptResp.assessmentId
 							var assessment = this.state.assessments[assessId]
 							var model = OboModel.models[assessId]
 
-							// @TODO remove this
-							if (!model.modelState.review) {
-								assessment.current.state.questions.forEach(function(question) {
-									return _questionUtil2.default.hideQuestion(question.id)
-								})
-								assessment.currentResponses.forEach(function(questionId) {
-									return _questionUtil2.default.clearResponse(questionId)
-								})
-							}
-
-							assessment.attempts.push(endAttemptResp.attempt)
+							assessment.current.state.questions.forEach(function(question) {
+								return _questionUtil2.default.hideQuestion(question.id)
+							})
+							assessment.currentResponses.forEach(function(questionId) {
+								return _questionUtil2.default.clearResponse(questionId, context)
+							})
+							assessment.attempts = endAttemptResp.attempts || {}
 							assessment.current = null
-							// assessment.score = endAttemptResp.assessmentScore
-							// assessment.lti = endAttemptResp.lti
+
 							this.updateAttempts([endAttemptResp])
 
 							model.processTrigger('onEndAttempt')
 
-							var attemptsToSend = endAttemptResp.attempts.map(function(attempt) {
-								return {
-									attemptId: attempt.attemptId,
-									score: attempt.attemptScore,
-									questionScores: attempt.questionScores,
-									context: 'assessmentReview:' + attempt.attemptId
-								}
-							})
-
 							Dispatcher.trigger('assessment:attemptEnded', assessId)
+
+							_navUtil2.default.setContext('practice')
 
 							if (
 								hasAssessmentReview &&
 								!_assessmentUtil2.default.hasAttemptsRemaining(this.getState(), model)
 							) {
-								Dispatcher.trigger('score:populate', attemptsToSend)
 								Dispatcher.trigger('assessment:review', {
 									value: {
 										id: model.get('id')
@@ -2534,8 +2563,6 @@
 					{
 						key: 'trySetResponse',
 						value: function trySetResponse(questionId, response, targetId) {
-							var _this5 = this
-
 							var model = OboModel.models[questionId]
 							var assessment = _assessmentUtil2.default.getAssessmentForModel(this.state, model)
 
@@ -2545,21 +2572,7 @@
 							}
 
 							assessment.currentResponses.push(questionId)
-
-							return _apiUtil2.default
-								.postEvent(model.getRoot(), 'assessment:setResponse', '2.0.0', {
-									assessmentId: assessment.id,
-									attemptId: assessment.current.attemptId,
-									questionId: questionId,
-									response: response,
-									targetId: targetId
-								})
-								.then(function(res) {
-									if (res.status === 'error') {
-										return ErrorUtil.errorResponse(res)
-									}
-									_this5.triggerChange()
-								})
+							this.triggerChange()
 						}
 					},
 					{
@@ -2628,7 +2641,7 @@
 
 			var _Common2 = _interopRequireDefault(_Common)
 
-			var _apiUtil = __webpack_require__(3)
+			var _apiUtil = __webpack_require__(4)
 
 			var _apiUtil2 = _interopRequireDefault(_apiUtil)
 
@@ -2639,6 +2652,10 @@
 			var _scoreUtil = __webpack_require__(11)
 
 			var _scoreUtil2 = _interopRequireDefault(_scoreUtil)
+
+			var _uuid = __webpack_require__(41)
+
+			var _uuid2 = _interopRequireDefault(_uuid)
 
 			function _interopRequireDefault(obj) {
 				return obj && obj.__esModule ? obj : { default: obj }
@@ -2675,6 +2692,7 @@
 			var Store = _Common2.default.flux.Store
 			var Dispatcher = _Common2.default.flux.Dispatcher
 			var OboModel = _Common2.default.models.OboModel
+			var FocusUtil = _Common2.default.util.FocusUtil
 
 			var QuestionStore = (function(_Store) {
 				_inherits(QuestionStore, _Store)
@@ -2683,6 +2701,7 @@
 					_classCallCheck(this, QuestionStore)
 
 					var id = void 0
+					var model = void 0
 
 					var _this = _possibleConstructorReturn(
 						this,
@@ -2693,20 +2712,29 @@
 					Dispatcher.on({
 						'question:setResponse': function questionSetResponse(payload) {
 							var id = payload.value.id
+							var context = payload.value.context
 							var model = OboModel.models[id]
-
-							_this.state.responses[id] = payload.value.response
+							if (!_this.state.responses[context]) _this.state.responses[context] = {}
+							_this.state.responses[context][id] = payload.value.response
 							_this.triggerChange()
 
 							_apiUtil2.default.postEvent(model.getRoot(), 'question:setResponse', '2.0.0', {
 								questionId: id,
 								response: payload.value.response,
-								targetId: payload.value.targetId
+								targetId: payload.value.targetId,
+								context: context,
+								assessmentId: payload.value.assessmentId,
+								attemptId: payload.value.attemptId
 							})
 						},
 
 						'question:clearResponse': function questionClearResponse(payload) {
-							delete _this.state.responses[payload.value.id]
+							delete _this.state.responses[payload.value.context][payload.value.id]
+							return _this.triggerChange()
+						},
+
+						'assessment:endAttempt': function assessmentEndAttempt(payload) {
+							delete _this.state.responses[payload.value.context][payload.value.id]
 							return _this.triggerChange()
 						},
 
@@ -2788,7 +2816,7 @@
 							var questionModel = OboModel.models[questionId]
 							var root = questionModel.getRoot()
 
-							_this.clearResponses(questionId)
+							_this.clearResponses(questionId, payload.value.context)
 
 							_apiUtil2.default.postEvent(root, 'question:retry', '1.0.0', {
 								questionId: payload.value.id
@@ -2798,140 +2826,11 @@
 								_questionUtil2.default.hideExplanation(questionId, 'viewerClient')
 							}
 
-							_scoreUtil2.default.clearScore(questionId, payload.value.context) // should trigger change
-						}
-					})
-					return _this
-				}
+							_scoreUtil2.default.clearScore(questionId, payload.value.context)
+						},
 
-				_createClass(QuestionStore, [
-					{
-						key: 'clearResponses',
-						value: function clearResponses(questionId) {
-							delete this.state.responses[questionId]
-						}
-					},
-					{
-						key: 'init',
-						value: function init() {
-							return (this.state = {
-								viewing: null,
-								viewedQuestions: {},
-								responses: {},
-								data: {}
-							})
-						}
-					},
-					{
-						key: 'getState',
-						value: function getState() {
-							return this.state
-						}
-					},
-					{
-						key: 'setState',
-						value: function setState(newState) {
-							return (this.state = newState)
-						}
-					}
-				])
-
-				return QuestionStore
-			})(Store)
-
-			var questionStore = new QuestionStore()
-			exports.default = questionStore
-
-			/***/
-		},
-		/* 19 */
-		/***/ function(module, exports, __webpack_require__) {
-			'use strict'
-
-			Object.defineProperty(exports, '__esModule', {
-				value: true
-			})
-
-			var _createClass = (function() {
-				function defineProperties(target, props) {
-					for (var i = 0; i < props.length; i++) {
-						var descriptor = props[i]
-						descriptor.enumerable = descriptor.enumerable || false
-						descriptor.configurable = true
-						if ('value' in descriptor) descriptor.writable = true
-						Object.defineProperty(target, descriptor.key, descriptor)
-					}
-				}
-				return function(Constructor, protoProps, staticProps) {
-					if (protoProps) defineProperties(Constructor.prototype, protoProps)
-					if (staticProps) defineProperties(Constructor, staticProps)
-					return Constructor
-				}
-			})()
-
-			var _Common = __webpack_require__(0)
-
-			var _Common2 = _interopRequireDefault(_Common)
-
-			var _apiUtil = __webpack_require__(3)
-
-			var _apiUtil2 = _interopRequireDefault(_apiUtil)
-
-			function _interopRequireDefault(obj) {
-				return obj && obj.__esModule ? obj : { default: obj }
-			}
-
-			function _classCallCheck(instance, Constructor) {
-				if (!(instance instanceof Constructor)) {
-					throw new TypeError('Cannot call a class as a function')
-				}
-			}
-
-			function _possibleConstructorReturn(self, call) {
-				if (!self) {
-					throw new ReferenceError("this hasn't been initialised - super() hasn't been called")
-				}
-				return call && (typeof call === 'object' || typeof call === 'function') ? call : self
-			}
-
-			function _inherits(subClass, superClass) {
-				if (typeof superClass !== 'function' && superClass !== null) {
-					throw new TypeError(
-						'Super expression must either be null or a function, not ' + typeof superClass
-					)
-				}
-				subClass.prototype = Object.create(superClass && superClass.prototype, {
-					constructor: { value: subClass, enumerable: false, writable: true, configurable: true }
-				})
-				if (superClass)
-					Object.setPrototypeOf
-						? Object.setPrototypeOf(subClass, superClass)
-						: (subClass.__proto__ = superClass)
-			}
-
-			var Store = _Common2.default.flux.Store
-			var Dispatcher = _Common2.default.flux.Dispatcher
-			var _Common$util = _Common2.default.util,
-				UUID = _Common$util.UUID,
-				FocusUtil = _Common$util.FocusUtil
-			var OboModel = _Common2.default.models.OboModel
-
-			var ScoreStore = (function(_Store) {
-				_inherits(ScoreStore, _Store)
-
-				function ScoreStore() {
-					_classCallCheck(this, ScoreStore)
-
-					var model = void 0
-
-					var _this = _possibleConstructorReturn(
-						this,
-						(ScoreStore.__proto__ || Object.getPrototypeOf(ScoreStore)).call(this, 'scoreStore')
-					)
-
-					Dispatcher.on({
 						'score:set': function scoreSet(payload) {
-							var scoreId = UUID()
+							var scoreId = (0, _uuid2.default)()
 
 							if (!payload.value[payload.value.context])
 								_this.state.scores[payload.value.context] = {}
@@ -2939,8 +2838,7 @@
 							_this.state.scores[payload.value.context][payload.value.itemId] = {
 								id: scoreId,
 								score: payload.value.score,
-								itemId: payload.value.itemId,
-								context: payload.value.context
+								itemId: payload.value.itemId
 							}
 
 							if (payload.value.score === 100) {
@@ -2959,19 +2857,28 @@
 						},
 
 						'score:populate': function scorePopulate(payload) {
-							var scoreId = UUID()
-							payload.forEach(function(attempt) {
+							if (
+								payload == null ||
+								// empty object
+								(Object.keys(payload).length === 0 && payload.constructor === Object)
+							) {
+								return
+							}
+							// assessment id hardcoded for now
+							payload['assessment'].attempts.forEach(function(attempt) {
 								var context = 'assessmentReview:' + attempt.attemptId
 								if (!_this.state.scores[context]) _this.state.scores[context] = {}
 								attempt.questionScores.forEach(function(questionScore) {
 									_this.state.scores[context][questionScore.id] = {
-										id: scoreId,
-										score: questionScore.score,
-										itemId: questionScore.id,
-										context: context
+										id: questionScore.id,
+										score: questionScore.score
 									}
+									if (!_this.state.responses[context]) _this.state.responses[context] = {}
+									_this.state.responses[context][questionScore.id] =
+										attempt.responses[questionScore.id]
 								})
 							})
+							_this.triggerChange()
 						},
 
 						'score:clear': function scoreClear(payload) {
@@ -2988,13 +2895,23 @@
 					return _this
 				}
 
-				_createClass(ScoreStore, [
+				_createClass(QuestionStore, [
+					{
+						key: 'clearResponses',
+						value: function clearResponses(questionId, context) {
+							delete this.state.responses[context][questionId]
+						}
+					},
 					{
 						key: 'init',
 						value: function init() {
-							this.state = {
-								scores: {}
-							}
+							return (this.state = {
+								viewing: null,
+								viewedQuestions: {},
+								scores: {},
+								responses: {},
+								data: {}
+							})
 						}
 					},
 					{
@@ -3011,15 +2928,15 @@
 					}
 				])
 
-				return ScoreStore
+				return QuestionStore
 			})(Store)
 
-			var scoreStore = new ScoreStore()
-			exports.default = scoreStore
+			var questionStore = new QuestionStore()
+			exports.default = questionStore
 
 			/***/
 		},
-		/* 20 */
+		/* 19 */
 		/***/ function(module, exports, __webpack_require__) {
 			'use strict'
 
@@ -3135,7 +3052,8 @@
 				isCurrentAttemptComplete: function isCurrentAttemptComplete(
 					assessmentState,
 					questionState,
-					model
+					model,
+					context
 				) {
 					var current = AssessmentUtil.getCurrentAttemptForModel(assessmentState, model)
 					if (!current) {
@@ -3144,7 +3062,7 @@
 					var models = model.children.at(1).children.models
 					return (
 						models.filter(function(questionModel) {
-							var resp = _questionUtil2.default.getResponse(questionState, questionModel)
+							var resp = _questionUtil2.default.getResponse(questionState, questionModel, context)
 							return resp
 						}).length === models.length
 					)
@@ -3179,11 +3097,12 @@
 						}
 					})
 				},
-				endAttempt: function endAttempt(model, hasAssessmentReview) {
+				endAttempt: function endAttempt(model, hasAssessmentReview, context) {
 					return Dispatcher.trigger('assessment:endAttempt', {
 						value: {
 							id: model.get('id'),
-							hasAssessmentReview: hasAssessmentReview
+							hasAssessmentReview: hasAssessmentReview,
+							context: context
 						}
 					})
 				},
@@ -3200,13 +3119,13 @@
 
 			/***/
 		},
-		/* 21 */
+		/* 20 */
 		/***/ function(module, exports) {
 			module.exports = React
 
 			/***/
 		},
-		/* 22 */
+		/* 21 */
 		/***/ function(module, exports, __webpack_require__) {
 			'use strict'
 
@@ -3689,7 +3608,7 @@
 
 			/***/
 		},
-		/* 23 */
+		/* 22 */
 		/***/ function(module, exports, __webpack_require__) {
 			'use strict'
 
@@ -3705,11 +3624,11 @@
 
 			/***/
 		},
-		/* 24 */
+		/* 23 */
 		/***/ function(module, exports, __webpack_require__) {
 			'use strict'
 
-			var startOfDay = __webpack_require__(33)
+			var startOfDay = __webpack_require__(32)
 
 			var MILLISECONDS_IN_MINUTE = 60000
 			var MILLISECONDS_IN_DAY = 86400000
@@ -3753,16 +3672,16 @@
 
 			/***/
 		},
-		/* 25 */
+		/* 24 */
 		/***/ function(module, exports, __webpack_require__) {
 			'use strict'
 
-			var getDayOfYear = __webpack_require__(26)
-			var getISOWeek = __webpack_require__(27)
+			var getDayOfYear = __webpack_require__(25)
+			var getISOWeek = __webpack_require__(26)
 			var getISOYear = __webpack_require__(12)
 			var parse = __webpack_require__(1)
-			var isValid = __webpack_require__(28)
-			var enLocale = __webpack_require__(32)
+			var isValid = __webpack_require__(27)
+			var enLocale = __webpack_require__(31)
 
 			/**
  * @category Common Helpers
@@ -4088,13 +4007,13 @@
 
 			/***/
 		},
-		/* 26 */
+		/* 25 */
 		/***/ function(module, exports, __webpack_require__) {
 			'use strict'
 
 			var parse = __webpack_require__(1)
-			var startOfYear = __webpack_require__(36)
-			var differenceInCalendarDays = __webpack_require__(24)
+			var startOfYear = __webpack_require__(35)
+			var differenceInCalendarDays = __webpack_require__(23)
 
 			/**
  * @category Day Helpers
@@ -4122,13 +4041,13 @@
 
 			/***/
 		},
-		/* 27 */
+		/* 26 */
 		/***/ function(module, exports, __webpack_require__) {
 			'use strict'
 
 			var parse = __webpack_require__(1)
 			var startOfISOWeek = __webpack_require__(6)
-			var startOfISOYear = __webpack_require__(34)
+			var startOfISOYear = __webpack_require__(33)
 
 			var MILLISECONDS_IN_WEEK = 604800000
 
@@ -4163,7 +4082,7 @@
 
 			/***/
 		},
-		/* 28 */
+		/* 27 */
 		/***/ function(module, exports, __webpack_require__) {
 			'use strict'
 
@@ -4205,7 +4124,7 @@
 
 			/***/
 		},
-		/* 29 */
+		/* 28 */
 		/***/ function(module, exports, __webpack_require__) {
 			'use strict'
 
@@ -4263,7 +4182,7 @@
 
 			/***/
 		},
-		/* 30 */
+		/* 29 */
 		/***/ function(module, exports, __webpack_require__) {
 			'use strict'
 
@@ -4369,11 +4288,11 @@
 
 			/***/
 		},
-		/* 31 */
+		/* 30 */
 		/***/ function(module, exports, __webpack_require__) {
 			'use strict'
 
-			var buildFormattingTokensRegExp = __webpack_require__(29)
+			var buildFormattingTokensRegExp = __webpack_require__(28)
 
 			function buildFormatLocale() {
 				// Note: in English, the names of days of the week and months are capitalized.
@@ -4498,12 +4417,12 @@
 
 			/***/
 		},
-		/* 32 */
+		/* 31 */
 		/***/ function(module, exports, __webpack_require__) {
 			'use strict'
 
-			var buildDistanceInWordsLocale = __webpack_require__(30)
-			var buildFormatLocale = __webpack_require__(31)
+			var buildDistanceInWordsLocale = __webpack_require__(29)
+			var buildFormatLocale = __webpack_require__(30)
 
 			/**
  * @category Locales
@@ -4516,7 +4435,7 @@
 
 			/***/
 		},
-		/* 33 */
+		/* 32 */
 		/***/ function(module, exports, __webpack_require__) {
 			'use strict'
 
@@ -4548,7 +4467,7 @@
 
 			/***/
 		},
-		/* 34 */
+		/* 33 */
 		/***/ function(module, exports, __webpack_require__) {
 			'use strict'
 
@@ -4587,7 +4506,7 @@
 
 			/***/
 		},
-		/* 35 */
+		/* 34 */
 		/***/ function(module, exports, __webpack_require__) {
 			'use strict'
 
@@ -4632,7 +4551,7 @@
 
 			/***/
 		},
-		/* 36 */
+		/* 35 */
 		/***/ function(module, exports, __webpack_require__) {
 			'use strict'
 
@@ -4666,7 +4585,7 @@
 
 			/***/
 		},
-		/* 37 */
+		/* 36 */
 		/***/ function(module, exports, __webpack_require__) {
 			'use strict'
 			/* WEBPACK VAR INJECTION */ ;(function(process) {
@@ -4775,11 +4694,11 @@
 
 				module.exports = checkPropTypes
 				/* WEBPACK VAR INJECTION */
-			}.call(exports, __webpack_require__(4)))
+			}.call(exports, __webpack_require__(3)))
 
 			/***/
 		},
-		/* 38 */
+		/* 37 */
 		/***/ function(module, exports, __webpack_require__) {
 			'use strict'
 			/**
@@ -4842,7 +4761,7 @@
 
 			/***/
 		},
-		/* 39 */
+		/* 38 */
 		/***/ function(module, exports, __webpack_require__) {
 			'use strict'
 			/* WEBPACK VAR INJECTION */ ;(function(process) {
@@ -4874,7 +4793,7 @@
 				var warning = __webpack_require__(14)
 
 				var ReactPropTypesSecret = __webpack_require__(9)
-				var checkPropTypes = __webpack_require__(37)
+				var checkPropTypes = __webpack_require__(36)
 
 				module.exports = function(isValidElement, throwOnDirectAccess) {
 					/* global Symbol */
@@ -5525,11 +5444,11 @@
 					return ReactPropTypes
 				}
 				/* WEBPACK VAR INJECTION */
-			}.call(exports, __webpack_require__(4)))
+			}.call(exports, __webpack_require__(3)))
 
 			/***/
 		},
-		/* 40 */
+		/* 39 */
 		/***/ function(module, exports, __webpack_require__) {
 			'use strict'
 			/* WEBPACK VAR INJECTION */ ;(function(process) {
@@ -5571,18 +5490,18 @@
 					// By explicitly using `prop-types` you are opting into new development behavior.
 					// http://fb.me/prop-types-in-prod
 					var throwOnDirectAccess = true
-					module.exports = __webpack_require__(39)(isValidElement, throwOnDirectAccess)
+					module.exports = __webpack_require__(38)(isValidElement, throwOnDirectAccess)
 				} else {
 					// By explicitly using `prop-types` you are opting into new production behavior.
 					// http://fb.me/prop-types-in-prod
-					module.exports = __webpack_require__(38)()
+					module.exports = __webpack_require__(37)()
 				}
 				/* WEBPACK VAR INJECTION */
-			}.call(exports, __webpack_require__(4)))
+			}.call(exports, __webpack_require__(3)))
 
 			/***/
 		},
-		/* 41 */
+		/* 40 */
 		/***/ function(module, exports, __webpack_require__) {
 			'use strict'
 
@@ -5635,15 +5554,15 @@
 				value: true
 			})
 
-			var _react = __webpack_require__(21)
+			var _react = __webpack_require__(20)
 
 			var _react2 = _interopRequireDefault(_react)
 
-			var _propTypes = __webpack_require__(40)
+			var _propTypes = __webpack_require__(39)
 
 			var _propTypes2 = _interopRequireDefault(_propTypes)
 
-			var _format = __webpack_require__(25)
+			var _format = __webpack_require__(24)
 
 			var _format2 = _interopRequireDefault(_format)
 
@@ -5986,6 +5905,28 @@
 				startOnLoad: true
 			}
 			exports.default = IdleTimer
+
+			/***/
+		},
+		/* 41 */
+		/***/ function(module, exports, __webpack_require__) {
+			'use strict'
+
+			Object.defineProperty(exports, '__esModule', {
+				value: true
+			})
+
+			exports.default = function() {
+				//https://gist.github.com/jed/982883
+				var getId = function getId(a) {
+					if (a) {
+						return (a ^ ((Math.random() * 16) >> (a / 4))).toString(16)
+					} else {
+						return ([1e7] + -1e3 + -4e3 + -8e3 + -1e11).replace(/[018]/g, getId)
+					}
+				}
+				return getId()
+			}
 
 			/***/
 		},
@@ -6418,11 +6359,11 @@
 
 			var _Common2 = _interopRequireDefault(_Common)
 
-			var _react = __webpack_require__(21)
+			var _react = __webpack_require__(20)
 
 			var _react2 = _interopRequireDefault(_react)
 
-			var _reactIdleTimer = __webpack_require__(41)
+			var _reactIdleTimer = __webpack_require__(40)
 
 			var _reactIdleTimer2 = _interopRequireDefault(_reactIdleTimer)
 
@@ -6434,17 +6375,13 @@
 
 			var _navUtil2 = _interopRequireDefault(_navUtil)
 
-			var _apiUtil = __webpack_require__(3)
+			var _apiUtil = __webpack_require__(4)
 
 			var _apiUtil2 = _interopRequireDefault(_apiUtil)
 
 			var _logo = __webpack_require__(15)
 
 			var _logo2 = _interopRequireDefault(_logo)
-
-			var _scoreStore = __webpack_require__(19)
-
-			var _scoreStore2 = _interopRequireDefault(_scoreStore)
 
 			var _questionStore = __webpack_require__(18)
 
@@ -6551,7 +6488,6 @@
 					var state = {
 						model: OboModel.create(OboGlobals.get('draft')),
 						navState: null,
-						scoreState: null,
 						questionState: null,
 						assessmentState: null,
 						modalState: null,
@@ -6559,7 +6495,6 @@
 						navTargetId: null
 					}
 
-					_scoreStore2.default.init()
 					_questionStore2.default.init()
 					ModalStore.init()
 					FocusStore.init()
@@ -6574,7 +6509,6 @@
 					)
 
 					state.navState = _navStore2.default.getState()
-					state.scoreState = _scoreStore2.default.getState()
 					state.questionState = _questionStore2.default.getState()
 					state.assessmentState = _assessmentStore2.default.getState()
 					state.modalState = ModalStore.getState()
@@ -6582,9 +6516,6 @@
 
 					_this.onNavStoreChange = function() {
 						return _this.setState({ navState: _navStore2.default.getState() })
-					}
-					_this.onScoreStoreChange = function() {
-						return _this.setState({ scoreState: _scoreStore2.default.getState() })
 					}
 					_this.onQuestionStoreChange = function() {
 						return _this.setState({ questionState: _questionStore2.default.getState() })
@@ -6622,7 +6553,6 @@
 						value: function componentWillMount() {
 							// === SET UP DATA STORES ===
 							_navStore2.default.onChange(this.onNavStoreChange)
-							_scoreStore2.default.onChange(this.onScoreStoreChange)
 							_questionStore2.default.onChange(this.onQuestionStoreChange)
 							_assessmentStore2.default.onChange(this.onAssessmentStoreChange)
 							ModalStore.onChange(this.onModalStoreChange)
@@ -6633,7 +6563,6 @@
 						key: 'componentWillUnmount',
 						value: function componentWillUnmount() {
 							_navStore2.default.offChange(this.onNavStoreChange)
-							_scoreStore2.default.offChange(this.onScoreStoreChange)
 							_questionStore2.default.offChange(this.onQuestionStoreChange)
 							_assessmentStore2.default.offChange(this.onAssessmentStoreChange)
 							ModalStore.offChange(this.onModalStoreChange)
@@ -6823,11 +6752,9 @@
 						value: function resetAssessments() {
 							_assessmentStore2.default.init()
 							_questionStore2.default.init()
-							_scoreStore2.default.init()
 
 							_assessmentStore2.default.triggerChange()
 							_questionStore2.default.triggerChange()
-							_scoreStore2.default.triggerChange()
 
 							return ModalUtil.show(
 								_react2.default.createElement(
@@ -7014,10 +6941,6 @@
 
 			var _viewerApp2 = _interopRequireDefault(_viewerApp)
 
-			var _scoreStore = __webpack_require__(19)
-
-			var _scoreStore2 = _interopRequireDefault(_scoreStore)
-
 			var _assessmentStore = __webpack_require__(16)
 
 			var _assessmentStore2 = _interopRequireDefault(_assessmentStore)
@@ -7034,7 +6957,7 @@
 
 			var _questionStore2 = _interopRequireDefault(_questionStore)
 
-			var _assessmentUtil = __webpack_require__(20)
+			var _assessmentUtil = __webpack_require__(19)
 
 			var _assessmentUtil2 = _interopRequireDefault(_assessmentUtil)
 
@@ -7046,7 +6969,7 @@
 
 			var _scoreUtil2 = _interopRequireDefault(_scoreUtil)
 
-			var _apiUtil = __webpack_require__(3)
+			var _apiUtil = __webpack_require__(4)
 
 			var _apiUtil2 = _interopRequireDefault(_apiUtil)
 
@@ -7064,7 +6987,6 @@
 				},
 
 				stores: {
-					ScoreStore: _scoreStore2.default,
 					AssessmentStore: _assessmentStore2.default,
 					assessmentStore: {
 						LTINetworkStates: _ltiNetworkStates2.default
@@ -7139,8 +7061,8 @@
 		},
 		/* 55 */
 		/***/ function(module, exports, __webpack_require__) {
-			__webpack_require__(22)
-			module.exports = __webpack_require__(23)
+			__webpack_require__(21)
+			module.exports = __webpack_require__(22)
 
 			/***/
 		}

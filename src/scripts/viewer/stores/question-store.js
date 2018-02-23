@@ -4,32 +4,45 @@ import APIUtil from '../../viewer/util/api-util'
 import QuestionUtil from '../../viewer/util/question-util'
 import ScoreUtil from '../../viewer/util/score-util'
 
+import UUID from '../../common/util/uuid'
+
 let { Store } = Common.flux
 let { Dispatcher } = Common.flux
 let { OboModel } = Common.models
+let { FocusUtil } = Common.util
 
 class QuestionStore extends Store {
 	constructor() {
 		let id
+		let model
 		super('questionStore')
 
 		Dispatcher.on({
 			'question:setResponse': payload => {
 				let id = payload.value.id
+				let context = payload.value.context
 				let model = OboModel.models[id]
-
-				this.state.responses[id] = payload.value.response
+				if (!this.state.responses[context]) this.state.responses[context] = {}
+				this.state.responses[context][id] = payload.value.response
 				this.triggerChange()
 
 				APIUtil.postEvent(model.getRoot(), 'question:setResponse', '2.0.0', {
 					questionId: id,
 					response: payload.value.response,
-					targetId: payload.value.targetId
+					targetId: payload.value.targetId,
+					context,
+					assessmentId: payload.value.assessmentId,
+					attemptId: payload.value.attemptId
 				})
 			},
 
 			'question:clearResponse': payload => {
-				delete this.state.responses[payload.value.id]
+				delete this.state.responses[payload.value.context][payload.value.id]
+				return this.triggerChange()
+			},
+
+			'assessment:endAttempt': payload => {
+				delete this.state.responses[payload.value.context][payload.value.id]
 				return this.triggerChange()
 			},
 
@@ -106,7 +119,7 @@ class QuestionStore extends Store {
 				let questionModel = OboModel.models[questionId]
 				let root = questionModel.getRoot()
 
-				this.clearResponses(questionId)
+				this.clearResponses(questionId, payload.value.context)
 
 				APIUtil.postEvent(root, 'question:retry', '1.0.0', {
 					questionId: payload.value.id
@@ -116,19 +129,81 @@ class QuestionStore extends Store {
 					QuestionUtil.hideExplanation(questionId, 'viewerClient')
 				}
 
-				ScoreUtil.clearScore(questionId, payload.value.context) // should trigger change
+				ScoreUtil.clearScore(questionId, payload.value.context)
+			},
+
+			'score:set': payload => {
+				let scoreId = UUID()
+
+				if (!payload.value[payload.value.context]) this.state.scores[payload.value.context] = {}
+
+				this.state.scores[payload.value.context][payload.value.itemId] = {
+					id: scoreId,
+					score: payload.value.score,
+					itemId: payload.value.itemId
+				}
+
+				if (payload.value.score === 100) {
+					FocusUtil.unfocus()
+				}
+
+				this.triggerChange()
+
+				model = OboModel.models[payload.value.itemId]
+				return APIUtil.postEvent(model.getRoot(), 'score:set', '2.0.0', {
+					id: scoreId,
+					itemId: payload.value.itemId,
+					score: payload.value.score,
+					context: payload.value.context
+				})
+			},
+
+			'score:populate': payload => {
+				if (
+					payload == null ||
+					// empty object
+					(Object.keys(payload).length === 0 && payload.constructor === Object)
+				) {
+					return
+				}
+				// assessment id hardcoded for now
+				payload['assessment'].attempts.forEach(attempt => {
+					let context = `assessmentReview:${attempt.attemptId}`
+					if (!this.state.scores[context]) this.state.scores[context] = {}
+					attempt.questionScores.forEach(questionScore => {
+						this.state.scores[context][questionScore.id] = {
+							id: questionScore.id,
+							score: questionScore.score
+						}
+						if (!this.state.responses[context]) this.state.responses[context] = {}
+						this.state.responses[context][questionScore.id] = attempt.responses[questionScore.id]
+					})
+				})
+				this.triggerChange()
+			},
+
+			'score:clear': payload => {
+				let scoreItem = this.state.scores[payload.value.context][payload.value.itemId]
+
+				model = OboModel.models[scoreItem.itemId]
+
+				delete this.state.scores[payload.value.context][payload.value.itemId]
+				this.triggerChange()
+
+				return APIUtil.postEvent(model.getRoot(), 'score:clear', '2.0.0', scoreItem)
 			}
 		})
 	}
 
-	clearResponses(questionId) {
-		delete this.state.responses[questionId]
+	clearResponses(questionId, context) {
+		delete this.state.responses[context][questionId]
 	}
 
 	init() {
 		return (this.state = {
 			viewing: null,
 			viewedQuestions: {},
+			scores: {},
 			responses: {},
 			data: {}
 		})
@@ -139,7 +214,7 @@ class QuestionStore extends Store {
 	}
 
 	setState(newState) {
-		return (this.state = newState)
+		this.state = newState
 	}
 }
 

@@ -14,6 +14,10 @@ class NavStore extends Store {
 
 		Dispatcher.on(
 			{
+				'nav:setContext': payload => {
+					this.state.context = payload.value.context
+					return this.triggerChange()
+				},
 				'nav:rebuildMenu': payload => {
 					this.buildMenu(payload.value.model)
 					return this.triggerChange()
@@ -103,7 +107,8 @@ class NavStore extends Store {
 			navTargetHistory: [],
 			navTargetId: null,
 			locked: false,
-			open: true
+			open: true,
+			context: 'practice'
 		}
 
 		this.buildMenu(model)

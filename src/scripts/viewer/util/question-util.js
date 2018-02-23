@@ -4,20 +4,24 @@ let { Dispatcher } = Common.flux
 let { OboModel } = Common.models
 
 let QuestionUtil = {
-	setResponse(id, response, targetId) {
+	setResponse(id, response, targetId, context, assessmentId, attemptId) {
 		return Dispatcher.trigger('question:setResponse', {
 			value: {
 				id,
 				response,
-				targetId
+				targetId,
+				context,
+				assessmentId,
+				attemptId
 			}
 		})
 	},
 
-	clearResponse(id) {
+	clearResponse(id, context) {
 		return Dispatcher.trigger('question:clearResponse', {
 			value: {
-				id
+				id,
+				context
 			}
 		})
 	},
@@ -75,10 +79,11 @@ let QuestionUtil = {
 		})
 	},
 
-	retryQuestion(id) {
+	retryQuestion(id, context = 'practice') {
 		return Dispatcher.trigger('question:retry', {
 			value: {
-				id
+				id,
+				context
 			}
 		})
 	},
@@ -95,8 +100,13 @@ let QuestionUtil = {
 		return 'hidden'
 	},
 
-	getResponse(state, model) {
-		return state.responses[model.get('id')] || null
+	populate(attempts) {
+		return Dispatcher.trigger('score:populate', attempts)
+	},
+
+	getResponse(state, model, context) {
+		if (!state.responses[context]) return null
+		return state.responses[context][model.get('id')] || null
 	},
 
 	getData(state, model, key) {

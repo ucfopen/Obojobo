@@ -13,7 +13,7 @@ jest.mock('../../../src/scripts/common/flux/dispatcher', () => {
 	}
 })
 
-describe('QuestionUtil', () => {
+describe.skip('QuestionUtil', () => {
 	let exampleDocument = {
 		id: 'rootId',
 		type: 'ObojoboDraft.Modules.Module',

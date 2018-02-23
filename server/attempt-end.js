@@ -17,6 +17,8 @@ let endAttempt = (req, res, user, attemptId, isPreviewing) => {
 
 	logger.info(`End attempt "${attemptId}" begin for user "${user.id}" (Preview="${isPreviewing}")`)
 
+	let everyAttempt
+
 	return (
 		//
 		// Collect info
@@ -25,7 +27,6 @@ let endAttempt = (req, res, user, attemptId, isPreviewing) => {
 		getAttempt(attemptId)
 			.then(attemptResult => {
 				logger.info(`End attempt "${attemptId}" - getAttempt success`)
-
 				attempt = attemptResult
 				return getAttemptHistory(user.id, attempt.draftId, attempt.assessmentId)
 			})
@@ -37,15 +38,13 @@ let endAttempt = (req, res, user, attemptId, isPreviewing) => {
 			})
 			.then(responsesForAttemptResult => {
 				logger.info(`End attempt "${attemptId}" - getResponsesForAttempt success`)
-
-				responsesForAttempt = responsesForAttemptResult
 				return getCalculatedScores(
 					req,
 					res,
 					attempt.assessmentModel,
 					attempt.attemptState,
 					attemptHistory,
-					responsesForAttempt
+					responsesForAttemptResult
 				)
 			})
 			//

@@ -11,7 +11,7 @@ jest.mock('../../../src/scripts/viewer/util/api-util', () => {
 	}
 })
 
-describe('QuestionStore', () => {
+describe.skip('QuestionStore', () => {
 	let __createModels = () => {
 		return OboModel.create({
 			id: 'questionId',

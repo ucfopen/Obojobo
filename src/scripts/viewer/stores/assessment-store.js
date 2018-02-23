@@ -34,7 +34,7 @@ class AssessmentStore extends Store {
 		})
 
 		Dispatcher.on('assessment:endAttempt', payload => {
-			this.tryEndAttempt(payload.value.id, payload.value.hasAssessmentReview)
+			this.tryEndAttempt(payload.value.id, payload.value.hasAssessmentReview, payload.value.context)
 		})
 
 		Dispatcher.on('assessment:resendLTIScore', payload => {
@@ -57,6 +57,7 @@ class AssessmentStore extends Store {
 			assessments: {}
 		}
 
+		// necessary?
 		if (!attemptsByAssessment) return
 		this.updateAttempts(attemptsByAssessment)
 	}
@@ -80,6 +81,7 @@ class AssessmentStore extends Store {
 			attempts.forEach(attempt => {
 				assessment = assessments[attempt.assessmentId]
 
+				// isn't this only concerned with last score?
 				assessment.score = attempt.assessmentScore
 
 				if (!attempt.isFinished) {
@@ -97,6 +99,8 @@ class AssessmentStore extends Store {
 				assessment.lti = attempt.ltiState
 			})
 		})
+
+		QuestionUtil.populate(assessments)
 
 		if (unfinishedAttempt) {
 			return ModalUtil.show(
@@ -221,6 +225,7 @@ class AssessmentStore extends Store {
 
 		this.state.assessments[id].current = startAttemptResp
 
+		NavUtil.setContext(`assessment:${startAttemptResp.assessmentId}:${startAttemptResp.attemptId}`)
 		NavUtil.rebuildMenu(model.getRoot())
 		NavUtil.goto(id)
 
@@ -228,7 +233,7 @@ class AssessmentStore extends Store {
 		Dispatcher.trigger('assessment:attemptStarted', id)
 	}
 
-	tryEndAttempt(id, hasAssessmentReview) {
+	tryEndAttempt(id, hasAssessmentReview, context) {
 		let model = OboModel.models[id]
 		let assessment = this.state.assessments[id]
 
@@ -238,7 +243,7 @@ class AssessmentStore extends Store {
 					return ErrorUtil.errorResponse(res)
 				}
 
-				this.endAttempt(res.value, hasAssessmentReview)
+				this.endAttempt(res.value, hasAssessmentReview, context)
 				return this.triggerChange()
 			})
 			.catch(e => {
@@ -246,38 +251,27 @@ class AssessmentStore extends Store {
 			})
 	}
 
-	endAttempt(endAttemptResp, hasAssessmentReview) {
+	endAttempt(endAttemptResp, hasAssessmentReview, context) {
 		let assessId = endAttemptResp.assessmentId
 		let assessment = this.state.assessments[assessId]
 		let model = OboModel.models[assessId]
 
-		// @TODO remove this
-		if (!model.modelState.review) {
-			assessment.current.state.questions.forEach(question => QuestionUtil.hideQuestion(question.id))
-			assessment.currentResponses.forEach(questionId => QuestionUtil.clearResponse(questionId))
-		}
-
-		assessment.attempts.push(endAttemptResp.attempt)
+		assessment.current.state.questions.forEach(question => QuestionUtil.hideQuestion(question.id))
+		assessment.currentResponses.forEach(questionId =>
+			QuestionUtil.clearResponse(questionId, context)
+		)
+		assessment.attempts = endAttemptResp.attempts || {}
 		assessment.current = null
-		// assessment.score = endAttemptResp.assessmentScore
-		// assessment.lti = endAttemptResp.lti
+
 		this.updateAttempts([endAttemptResp])
 
 		model.processTrigger('onEndAttempt')
 
-		let attemptsToSend = endAttemptResp.attempts.map(attempt => {
-			return {
-				attemptId: attempt.attemptId,
-				score: attempt.attemptScore,
-				questionScores: attempt.questionScores,
-				context: `assessmentReview:${attempt.attemptId}`
-			}
-		})
-
 		Dispatcher.trigger('assessment:attemptEnded', assessId)
 
+		NavUtil.setContext('practice')
+
 		if (hasAssessmentReview && !AssessmentUtil.hasAttemptsRemaining(this.getState(), model)) {
-			Dispatcher.trigger('score:populate', attemptsToSend)
 			Dispatcher.trigger('assessment:review', {
 				value: {
 					id: model.get('id')
@@ -335,19 +329,7 @@ class AssessmentStore extends Store {
 		}
 
 		assessment.currentResponses.push(questionId)
-
-		return APIUtil.postEvent(model.getRoot(), 'assessment:setResponse', '2.0.0', {
-			assessmentId: assessment.id,
-			attemptId: assessment.current.attemptId,
-			questionId,
-			response,
-			targetId
-		}).then(res => {
-			if (res.status === 'error') {
-				return ErrorUtil.errorResponse(res)
-			}
-			this.triggerChange()
-		})
+		this.triggerChange()
 	}
 
 	getState() {

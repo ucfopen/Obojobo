@@ -29,10 +29,10 @@ Common.Store.registerModel('ObojoboDraft.Sections.Assessment', {
 				return 'unlimited'
 			}
 
-			return (
+			let attemptsRemaining =
 				assessmentModel.modelState.attempts -
 				AssessmentUtil.getNumberOfAttemptsCompletedForModel(viewerProps.assessmentState, textModel)
-			)
+			return attemptsRemaining > 0 ? attemptsRemaining : 0
 		},
 		'assessment:attemptsAmount'(textModel, viewerProps) {
 			let assessmentModel = textModel.getParentOfType('ObojoboDraft.Sections.Assessment')

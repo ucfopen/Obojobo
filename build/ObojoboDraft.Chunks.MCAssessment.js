@@ -72,7 +72,7 @@
 	/******/
 	/******/ /******/ __webpack_require__.p = 'build/' // Load entry module and return exports
 	/******/
-	/******/ /******/ return __webpack_require__((__webpack_require__.s = 172))
+	/******/ /******/ return __webpack_require__((__webpack_require__.s = 173))
 	/******/
 })(
 	/************************************************************************/
@@ -89,8 +89,270 @@
 			/***/
 		},
 
-		/***/ /***/ 147: function(module, exports) {
-			// removed by extract-text-webpack-plugin
+		/***/ /***/ 139: function(module, exports, __webpack_require__) {
+			'use strict'
+
+			Object.defineProperty(exports, '__esModule', {
+				value: true
+			})
+
+			var _Common = __webpack_require__(0)
+
+			var _Common2 = _interopRequireDefault(_Common)
+
+			function _interopRequireDefault(obj) {
+				return obj && obj.__esModule ? obj : { default: obj }
+			}
+
+			var Dispatcher = _Common2.default.flux.Dispatcher
+			var OboModel = _Common2.default.models.OboModel
+
+			var getFlatList = function getFlatList(item) {
+				var list = []
+				if (item.type !== 'hidden') {
+					list.push(item)
+				}
+
+				if (item.showChildren) {
+					var _iteratorNormalCompletion = true
+					var _didIteratorError = false
+					var _iteratorError = undefined
+
+					try {
+						for (
+							var _iterator = Array.from(item.children)[Symbol.iterator](), _step;
+							!(_iteratorNormalCompletion = (_step = _iterator.next()).done);
+							_iteratorNormalCompletion = true
+						) {
+							var child = _step.value
+
+							list = list.concat(getFlatList(child))
+						}
+					} catch (err) {
+						_didIteratorError = true
+						_iteratorError = err
+					} finally {
+						try {
+							if (!_iteratorNormalCompletion && _iterator.return) {
+								_iterator.return()
+							}
+						} finally {
+							if (_didIteratorError) {
+								throw _iteratorError
+							}
+						}
+					}
+				}
+
+				return list
+			}
+
+			var NavUtil = {
+				rebuildMenu: function rebuildMenu(model) {
+					return Dispatcher.trigger('nav:rebuildMenu', {
+						value: {
+							model: model
+						}
+					})
+				},
+				gotoPath: function gotoPath(path) {
+					return Dispatcher.trigger('nav:gotoPath', {
+						value: {
+							path: path
+						}
+					})
+				},
+
+				// gotoCurrentPathname: () ->
+				// 	window.location.pathname
+
+				setFlag: function setFlag(id, flagName, flagValue) {
+					return Dispatcher.trigger('nav:setFlag', {
+						value: {
+							id: id,
+							flagName: flagName,
+							flagValue: flagValue
+						}
+					})
+				},
+				goPrev: function goPrev() {
+					return Dispatcher.trigger('nav:prev')
+				},
+				goNext: function goNext() {
+					return Dispatcher.trigger('nav:next')
+				},
+				goto: function goto(id) {
+					return Dispatcher.trigger('nav:goto', {
+						value: {
+							id: id
+						}
+					})
+				},
+				lock: function lock() {
+					return Dispatcher.trigger('nav:lock')
+				},
+				unlock: function unlock() {
+					return Dispatcher.trigger('nav:unlock')
+				},
+				close: function close() {
+					return Dispatcher.trigger('nav:close')
+				},
+				open: function open() {
+					return Dispatcher.trigger('nav:open')
+				},
+				toggle: function toggle() {
+					return Dispatcher.trigger('nav:toggle')
+				},
+				openExternalLink: function openExternalLink(url) {
+					return Dispatcher.trigger('nav:openExternalLink', {
+						value: {
+							url: url
+						}
+					})
+				},
+				showChildren: function showChildren(id) {
+					return Dispatcher.trigger('nav:showChildren', {
+						value: {
+							id: id
+						}
+					})
+				},
+				hideChildren: function hideChildren(id) {
+					return Dispatcher.trigger('nav:hideChildren', {
+						value: {
+							id: id
+						}
+					})
+				},
+
+				// getNavItemForModel: (state, model) ->
+				// 	state.itemsById[model.get('id')]
+
+				getNavTarget: function getNavTarget(state) {
+					return state.itemsById[state.navTargetId]
+				},
+				getNavTargetModel: function getNavTargetModel(state) {
+					var navTarget = NavUtil.getNavTarget(state)
+					if (!navTarget) {
+						return null
+					}
+
+					return OboModel.models[navTarget.id]
+				},
+				getFirst: function getFirst(state) {
+					var list = NavUtil.getOrderedList(state)
+
+					var _iteratorNormalCompletion2 = true
+					var _didIteratorError2 = false
+					var _iteratorError2 = undefined
+
+					try {
+						for (
+							var _iterator2 = Array.from(list)[Symbol.iterator](), _step2;
+							!(_iteratorNormalCompletion2 = (_step2 = _iterator2.next()).done);
+							_iteratorNormalCompletion2 = true
+						) {
+							var item = _step2.value
+
+							if (item.type === 'link') {
+								return item
+							}
+						}
+					} catch (err) {
+						_didIteratorError2 = true
+						_iteratorError2 = err
+					} finally {
+						try {
+							if (!_iteratorNormalCompletion2 && _iterator2.return) {
+								_iterator2.return()
+							}
+						} finally {
+							if (_didIteratorError2) {
+								throw _iteratorError2
+							}
+						}
+					}
+
+					return null
+				},
+				getPrev: function getPrev(state) {
+					// state.items[NavUtil.getPrevIndex(state)]
+					var list = NavUtil.getOrderedList(state)
+					var navTarget = NavUtil.getNavTarget(state)
+					var index = list.indexOf(navTarget)
+
+					if (index === -1) {
+						return null
+					}
+
+					index--
+					while (index >= 0) {
+						var item = list[index]
+						if (item.type === 'link') {
+							return item
+						}
+
+						index--
+					}
+
+					return null
+				},
+				getNext: function getNext(state) {
+					// state.items[NavUtil.getPrevIndex(state)]
+					var list = NavUtil.getOrderedList(state)
+					var navTarget = NavUtil.getNavTarget(state)
+					var index = list.indexOf(navTarget)
+
+					if (index === -1) {
+						return null
+					}
+
+					index++
+					var len = list.length
+					while (index < len) {
+						var item = list[index]
+						if (item.type === 'link') {
+							return item
+						}
+
+						index++
+					}
+
+					return null
+				},
+				getPrevModel: function getPrevModel(state) {
+					var prevItem = NavUtil.getPrev(state)
+					if (!prevItem) {
+						return null
+					}
+
+					return OboModel.models[prevItem.id]
+				},
+				getNextModel: function getNextModel(state) {
+					var nextItem = NavUtil.getNext(state)
+					if (!nextItem) {
+						return null
+					}
+
+					return OboModel.models[nextItem.id]
+				},
+				canNavigate: function canNavigate(state) {
+					return !state.locked
+				},
+				getOrderedList: function getOrderedList(state) {
+					return getFlatList(state.items)
+				},
+				setContext: function setContext(context) {
+					return Dispatcher.trigger('nav:setContext', {
+						value: {
+							context: context
+						}
+					})
+				}
+			}
+
+			exports.default = NavUtil
+
 			/***/
 		},
 
@@ -109,7 +371,12 @@
 			/***/
 		},
 
-		/***/ /***/ 172: function(module, exports, __webpack_require__) {
+		/***/ /***/ 150: function(module, exports) {
+			// removed by extract-text-webpack-plugin
+			/***/
+		},
+
+		/***/ /***/ 173: function(module, exports, __webpack_require__) {
 			module.exports = __webpack_require__(33)
 
 			/***/
@@ -176,7 +443,7 @@
 				}
 			})()
 
-			__webpack_require__(147)
+			__webpack_require__(148)
 
 			var _Common = __webpack_require__(0)
 
@@ -313,7 +580,7 @@
 				}
 			})()
 
-			__webpack_require__(148)
+			__webpack_require__(149)
 
 			var _Common = __webpack_require__(0)
 
@@ -490,7 +757,7 @@
 				}
 			})()
 
-			__webpack_require__(149)
+			__webpack_require__(150)
 
 			var _Common = __webpack_require__(0)
 
@@ -499,6 +766,10 @@
 			var _Viewer = __webpack_require__(1)
 
 			var _Viewer2 = _interopRequireDefault(_Viewer)
+
+			var _navUtil = __webpack_require__(139)
+
+			var _navUtil2 = _interopRequireDefault(_navUtil)
 
 			function _interopRequireDefault(obj) {
 				return obj && obj.__esModule ? obj : { default: obj }
@@ -579,8 +850,10 @@
 						value: function getResponseData() {
 							var questionResponse = QuestionUtil.getResponse(
 								this.props.moduleData.questionState,
-								this.getQuestionModel()
+								this.getQuestionModel(),
+								this.props.context
 							) || { ids: [] }
+
 							var correct = new Set()
 							var responses = new Set()
 							var childId = void 0
@@ -723,7 +996,7 @@
 							ScoreUtil.setScore(
 								this.getQuestionModel().get('id'),
 								this.calculateScore(),
-								this.props.scoreContext
+								this.props.context
 							)
 							QuestionUtil.checkAnswer(this.getQuestionModel().get('id'))
 						}
@@ -771,7 +1044,8 @@
 								case 'pick-all':
 									response = QuestionUtil.getResponse(
 										this.props.moduleData.questionState,
-										questionModel
+										questionModel,
+										this.props.context
 									) || {
 										ids: []
 									}
@@ -791,16 +1065,23 @@
 									break
 							}
 
-							QuestionUtil.setResponse(questionModel.get('id'), response, mcChoiceId)
+							QuestionUtil.setResponse(
+								questionModel.get('id'),
+								response,
+								mcChoiceId,
+								this.props.moduleData.navState.context || 'practice',
+								this.props.moduleData.navState.context.split(':')[1],
+								this.props.moduleData.navState.context.split(':')[2]
+							)
 						}
 					},
 					{
 						key: 'getScore',
 						value: function getScore() {
 							return ScoreUtil.getScoreForModel(
-								this.props.moduleData.scoreState,
+								this.props.moduleData.questionState,
 								this.getQuestionModel(),
-								this.props.scoreContext
+								this.props.context
 							)
 						}
 					},
@@ -828,7 +1109,7 @@
 							var questionId = this.getQuestionModel().get('id')
 
 							if (payload.value.id === questionId) {
-								ScoreUtil.setScore(questionId, this.calculateScore(), this.props.scoreContext)
+								ScoreUtil.setScore(questionId, this.calculateScore(), this.props.context)
 							}
 						}
 					},
@@ -847,6 +1128,7 @@
 								'shuffledIds'
 							)
 							if (!shuffledIds) {
+								// Shuffle MCChoice
 								shuffledIds = _.shuffle(this.props.model.children.models).map(function(model) {
 									return model.get('id')
 								})
@@ -942,7 +1224,8 @@
 										isShowingExplanation: true,
 										isReview: _this2.props.mode === 'review',
 										questionSubmitted: questionSubmitted,
-										label: String.fromCharCode(index + 65)
+										label: String.fromCharCode(index + 65),
+										context: _this2.props.context
 									})
 								}),
 								React.createElement(
@@ -1271,11 +1554,23 @@
 							value: function render() {
 								var _this2 = this
 
+								var questionId = this.getQuestionModel().id
 								var response = QuestionUtil.getResponse(
 									this.props.moduleData.questionState,
-									this.getQuestionModel()
+									this.getQuestionModel(),
+									this.props.context
 								) || { ids: [] }
+
 								var isSelected = response.ids.indexOf(this.props.model.get('id')) !== -1
+
+								var isCorrect = void 0
+								if (this.props.isReview) {
+									if (!this.props.moduleData.questionState.scores[this.props.context])
+										return React.createElement('div', null)
+									isCorrect =
+										this.props.moduleData.questionState.scores[this.props.context][questionId]
+											.score === 100
+								} else isCorrect = this.props.model.modelState.score === 100
 
 								return React.createElement(
 									OboComponent,
@@ -1285,9 +1580,7 @@
 										className:
 											'obojobo-draft--chunks--mc-assessment--mc-choice' +
 											(isSelected ? ' is-selected' : ' is-not-selected') +
-											(this.props.model.modelState.score === 100
-												? ' is-correct'
-												: ' is-incorrect') +
+											(isCorrect ? ' is-correct' : ' is-incorrect') +
 											(this.props.isReview ? ' is-review' : ' is-not-review'),
 										'data-choice-label': this.props.label
 									},

@@ -72,7 +72,8 @@ export default class Assessment extends React.Component {
 		return AssessmentUtil.isCurrentAttemptComplete(
 			this.props.moduleData.assessmentState,
 			this.props.moduleData.questionState,
-			this.props.model
+			this.props.model,
+			this.props.moduleData.navState.context
 		)
 	}
 
@@ -88,12 +89,15 @@ export default class Assessment extends React.Component {
 			ModalUtil.show(<AttemptIncompleteDialog onSubmit={this.endAttempt.bind(this)} />)
 			return
 		}
-
 		return this.endAttempt()
 	}
 
 	endAttempt() {
-		return AssessmentUtil.endAttempt(this.props.model, this.props.model.modelState.review)
+		return AssessmentUtil.endAttempt(
+			this.props.model,
+			this.props.model.modelState.review,
+			this.props.moduleData.navState.context
+		)
 	}
 
 	exitAssessment() {

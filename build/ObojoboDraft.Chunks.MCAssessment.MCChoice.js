@@ -72,7 +72,7 @@
 	/******/
 	/******/ /******/ __webpack_require__.p = 'build/' // Load entry module and return exports
 	/******/
-	/******/ /******/ return __webpack_require__((__webpack_require__.s = 171))
+	/******/ /******/ return __webpack_require__((__webpack_require__.s = 172))
 	/******/
 })(
 	/************************************************************************/
@@ -94,7 +94,7 @@
 			/***/
 		},
 
-		/***/ /***/ 171: function(module, exports, __webpack_require__) {
+		/***/ /***/ 172: function(module, exports, __webpack_require__) {
 			module.exports = __webpack_require__(7)
 
 			/***/
@@ -288,11 +288,23 @@
 							value: function render() {
 								var _this2 = this
 
+								var questionId = this.getQuestionModel().id
 								var response = QuestionUtil.getResponse(
 									this.props.moduleData.questionState,
-									this.getQuestionModel()
+									this.getQuestionModel(),
+									this.props.context
 								) || { ids: [] }
+
 								var isSelected = response.ids.indexOf(this.props.model.get('id')) !== -1
+
+								var isCorrect = void 0
+								if (this.props.isReview) {
+									if (!this.props.moduleData.questionState.scores[this.props.context])
+										return React.createElement('div', null)
+									isCorrect =
+										this.props.moduleData.questionState.scores[this.props.context][questionId]
+											.score === 100
+								} else isCorrect = this.props.model.modelState.score === 100
 
 								return React.createElement(
 									OboComponent,
@@ -302,9 +314,7 @@
 										className:
 											'obojobo-draft--chunks--mc-assessment--mc-choice' +
 											(isSelected ? ' is-selected' : ' is-not-selected') +
-											(this.props.model.modelState.score === 100
-												? ' is-correct'
-												: ' is-incorrect') +
+											(isCorrect ? ' is-correct' : ' is-incorrect') +
 											(this.props.isReview ? ' is-review' : ' is-not-review'),
 										'data-choice-label': this.props.label
 									},

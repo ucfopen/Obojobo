@@ -39,7 +39,6 @@ if (ie) {
 let moduleData = {
 	model: null,
 	navState: null,
-	scoreState: null,
 	questionState: null,
 	assessmentState: null,
 	modalState: null

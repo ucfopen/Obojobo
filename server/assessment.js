@@ -88,6 +88,7 @@ class Assessment extends DraftNode {
 			isFinished: attempt.completed_at !== null,
 			state: attempt.state,
 			questionScores: attempt.result ? attempt.result.questionScores : [],
+			responses: {},
 			attemptScore: attempt.result ? attempt.result.attemptScore : null,
 			assessmentScore: parseInt(attempt.assessment_score, 10),
 			ltiState: {
@@ -99,6 +100,7 @@ class Assessment extends DraftNode {
 	}
 
 	static getAttempts(userId, draftId, optionalAssessmentId = null) {
+		let assessments
 		return db
 			.manyOrNone(
 				`
@@ -146,10 +148,10 @@ class Assessment extends DraftNode {
 				}
 			)
 			.then(result => {
-				let assessments = {}
+				assessments = {}
 
-				result.forEach(attempt => {
-					attempt = Assessment.createAttemptResponse(userId, draftId, attempt)
+				result.forEach(attemptFromDb => {
+					let attempt = Assessment.createAttemptResponse(userId, draftId, attemptFromDb)
 
 					if (!assessments[attempt.assessmentId]) {
 						assessments[attempt.assessmentId] = {
@@ -159,6 +161,24 @@ class Assessment extends DraftNode {
 					}
 
 					assessments[attempt.assessmentId].attempts.push(attempt)
+				})
+
+				let returnPromises = result.map(attemptResult => {
+					return Assessment.getResponsesForAttempt(attemptResult.attempt_id)
+				})
+				return Promise.all(returnPromises)
+			})
+			.then(attempts => {
+				attempts.forEach(attemptResponses => {
+					attemptResponses.forEach(response => {
+						let attemptForResponseIndex = assessments[response.assessment_id].attempts.findIndex(
+							x => x.attemptId === response.attempt_id
+						)
+						assessments[response.assessment_id].attempts[attemptForResponseIndex].responses[
+							response.question_id
+						] =
+							response.response
+					})
 				})
 
 				let assessmentsArr = []

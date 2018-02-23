@@ -72,7 +72,7 @@
 	/******/
 	/******/ /******/ __webpack_require__.p = 'build/' // Load entry module and return exports
 	/******/
-	/******/ /******/ return __webpack_require__((__webpack_require__.s = 181))
+	/******/ /******/ return __webpack_require__((__webpack_require__.s = 182))
 	/******/
 })(
 	/************************************************************************/
@@ -89,17 +89,17 @@
 			/***/
 		},
 
-		/***/ /***/ 159: function(module, exports) {
-			// removed by extract-text-webpack-plugin
-			/***/
-		},
-
 		/***/ /***/ 160: function(module, exports) {
 			// removed by extract-text-webpack-plugin
 			/***/
 		},
 
-		/***/ /***/ 181: function(module, exports, __webpack_require__) {
+		/***/ /***/ 161: function(module, exports) {
+			// removed by extract-text-webpack-plugin
+			/***/
+		},
+
+		/***/ /***/ 182: function(module, exports, __webpack_require__) {
 			module.exports = __webpack_require__(42)
 
 			/***/
@@ -157,13 +157,13 @@
 							return 'unlimited'
 						}
 
-						return (
+						var attemptsRemaining =
 							assessmentModel.modelState.attempts -
 							AssessmentUtil.getNumberOfAttemptsCompletedForModel(
 								viewerProps.assessmentState,
 								textModel
 							)
-						)
+						return attemptsRemaining > 0 ? attemptsRemaining : 0
 					},
 					'assessment:attemptsAmount': function assessmentAttemptsAmount(textModel, viewerProps) {
 						var assessmentModel = textModel.getParentOfType('ObojoboDraft.Sections.Assessment')
@@ -410,7 +410,7 @@
 				}
 			})()
 
-			__webpack_require__(159)
+			__webpack_require__(160)
 
 			var _Common = __webpack_require__(0)
 
@@ -790,7 +790,7 @@
 							model: questionModel,
 							moduleData: assessment.props.moduleData,
 							isReview: true,
-							scoreContext: 'assessmentReview:' + attempt.attemptId
+							context: 'assessmentReview:' + attempt.attemptId
 						})
 					})
 				)
@@ -1037,7 +1037,7 @@
 				}
 			})()
 
-			__webpack_require__(160)
+			__webpack_require__(161)
 
 			var _Common = __webpack_require__(0)
 
@@ -1178,7 +1178,8 @@
 							return AssessmentUtil.isCurrentAttemptComplete(
 								this.props.moduleData.assessmentState,
 								this.props.moduleData.questionState,
-								this.props.model
+								this.props.model,
+								this.props.moduleData.navState.context
 							)
 						}
 					},
@@ -1202,14 +1203,17 @@
 								)
 								return
 							}
-
 							return this.endAttempt()
 						}
 					},
 					{
 						key: 'endAttempt',
 						value: function endAttempt() {
-							return AssessmentUtil.endAttempt(this.props.model, this.props.model.modelState.review)
+							return AssessmentUtil.endAttempt(
+								this.props.model,
+								this.props.model.modelState.review,
+								this.props.moduleData.navState.context
+							)
 						}
 					},
 					{

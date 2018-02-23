@@ -100,7 +100,7 @@ var AssessmentUtil = {
 	// 	return assessment.attempts[assessment.attempts.length - 1];
 	// },
 
-	isCurrentAttemptComplete(assessmentState, questionState, model) {
+	isCurrentAttemptComplete(assessmentState, questionState, model, context) {
 		let current = AssessmentUtil.getCurrentAttemptForModel(assessmentState, model)
 		if (!current) {
 			return null
@@ -108,7 +108,7 @@ var AssessmentUtil = {
 		let models = model.children.at(1).children.models
 		return (
 			models.filter(function(questionModel) {
-				let resp = QuestionUtil.getResponse(questionState, questionModel)
+				let resp = QuestionUtil.getResponse(questionState, questionModel, context)
 				return resp
 			}).length === models.length
 		)
@@ -144,11 +144,12 @@ var AssessmentUtil = {
 		})
 	},
 
-	endAttempt(model, hasAssessmentReview) {
+	endAttempt(model, hasAssessmentReview, context) {
 		return Dispatcher.trigger('assessment:endAttempt', {
 			value: {
 				id: model.get('id'),
-				hasAssessmentReview
+				hasAssessmentReview,
+				context
 			}
 		})
 	},

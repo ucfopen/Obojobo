@@ -6,7 +6,6 @@ import FocusStore from '../../../../src/scripts/common/stores/focus-store'
 import FocusUtil from '../../../../src/scripts/common/util/focus-util'
 import QuestionStore from '../../../../src/scripts/viewer/stores/question-store'
 import NavStore from '../../../../src/scripts/viewer/stores/nav-store'
-import ScoreStore from '../../../../src/scripts/viewer/stores/score-store'
 import AssessmentStore from '../../../../src/scripts/viewer/stores/assessment-store'
 import QuestionUtil from '../../../../src/scripts/viewer/util/question-util'
 import ScoreUtil from '../../../../src/scripts/viewer/util/score-util'
@@ -149,7 +148,6 @@ describe('MCAssessment', () => {
 
 	let getModuleData = () => {
 		QuestionStore.init()
-		ScoreStore.init()
 		AssessmentStore.init()
 		FocusStore.init()
 		NavStore.setState({
@@ -159,7 +157,6 @@ describe('MCAssessment', () => {
 		return {
 			focusState: FocusStore.getState(),
 			questionState: QuestionStore.getState(),
-			scoreState: ScoreStore.getState(),
 			assessmentState: AssessmentStore.getState(),
 			navState: NavStore.getState()
 		}

@@ -9,7 +9,6 @@ import InlineNavButton from '../../viewer/components/inline-nav-button'
 import NavUtil from '../../viewer/util/nav-util'
 import APIUtil from '../../viewer/util/api-util'
 import Logo from '../../viewer/components/logo'
-import ScoreStore from '../../viewer/stores/score-store'
 import QuestionStore from '../../viewer/stores/question-store'
 import AssessmentStore from '../../viewer/stores/assessment-store'
 import NavStore from '../../viewer/stores/nav-store'
@@ -61,7 +60,6 @@ export default class ViewerApp extends React.Component {
 		let state = {
 			model: OboModel.create(OboGlobals.get('draft')),
 			navState: null,
-			scoreState: null,
 			questionState: null,
 			assessmentState: null,
 			modalState: null,
@@ -69,7 +67,6 @@ export default class ViewerApp extends React.Component {
 			navTargetId: null
 		}
 
-		ScoreStore.init()
 		QuestionStore.init()
 		ModalStore.init()
 		FocusStore.init()
@@ -78,14 +75,12 @@ export default class ViewerApp extends React.Component {
 		AssessmentStore.init(OboGlobals.get('ObojoboDraft.Sections.Assessment:attempts', []))
 
 		state.navState = NavStore.getState()
-		state.scoreState = ScoreStore.getState()
 		state.questionState = QuestionStore.getState()
 		state.assessmentState = AssessmentStore.getState()
 		state.modalState = ModalStore.getState()
 		state.focusState = FocusStore.getState()
 
 		this.onNavStoreChange = () => this.setState({ navState: NavStore.getState() })
-		this.onScoreStoreChange = () => this.setState({ scoreState: ScoreStore.getState() })
 		this.onQuestionStoreChange = () => this.setState({ questionState: QuestionStore.getState() })
 		this.onAssessmentStoreChange = () =>
 			this.setState({ assessmentState: AssessmentStore.getState() })
@@ -109,7 +104,6 @@ export default class ViewerApp extends React.Component {
 	componentWillMount() {
 		// === SET UP DATA STORES ===
 		NavStore.onChange(this.onNavStoreChange)
-		ScoreStore.onChange(this.onScoreStoreChange)
 		QuestionStore.onChange(this.onQuestionStoreChange)
 		AssessmentStore.onChange(this.onAssessmentStoreChange)
 		ModalStore.onChange(this.onModalStoreChange)
@@ -118,7 +112,6 @@ export default class ViewerApp extends React.Component {
 
 	componentWillUnmount() {
 		NavStore.offChange(this.onNavStoreChange)
-		ScoreStore.offChange(this.onScoreStoreChange)
 		QuestionStore.offChange(this.onQuestionStoreChange)
 		AssessmentStore.offChange(this.onAssessmentStoreChange)
 		ModalStore.offChange(this.onModalStoreChange)
@@ -263,11 +256,9 @@ export default class ViewerApp extends React.Component {
 	resetAssessments() {
 		AssessmentStore.init()
 		QuestionStore.init()
-		ScoreStore.init()
 
 		AssessmentStore.triggerChange()
 		QuestionStore.triggerChange()
-		ScoreStore.triggerChange()
 
 		return ModalUtil.show(
 			<SimpleDialog ok width="15em">
