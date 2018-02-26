@@ -310,7 +310,7 @@ export default class MCAssessment extends React.Component {
 							moduleData={this.props.moduleData}
 							responseType={responseType}
 							isShowingExplanation
-							isReview={this.props.mode === 'review'}
+							mode={this.props.mode}
 							questionSubmitted={questionSubmitted}
 							label={String.fromCharCode(index + 65)}
 							context={this.props.context}

@@ -54,13 +54,13 @@
       left: 0.5em; }
   .obojobo-draft--chunks--mc-assessment--mc-choice.is-selected {
     background: rgba(147, 198, 255, 0.25); }
-  .obojobo-draft--chunks--mc-assessment--mc-choice.is-review {
+  .obojobo-draft--chunks--mc-assessment--mc-choice.is-mode-review {
     cursor: default; }
-    .obojobo-draft--chunks--mc-assessment--mc-choice.is-review input {
+    .obojobo-draft--chunks--mc-assessment--mc-choice.is-mode-review input {
       display: none; }
-    .obojobo-draft--chunks--mc-assessment--mc-choice.is-review .children {
+    .obojobo-draft--chunks--mc-assessment--mc-choice.is-mode-review .children {
       margin-left: 0; }
-    .obojobo-draft--chunks--mc-assessment--mc-choice.is-review:hover {
+    .obojobo-draft--chunks--mc-assessment--mc-choice.is-mode-review:hover {
       cursor: default; }
-  .obojobo-draft--chunks--mc-assessment--mc-choice.is-not-review:hover {
+  .obojobo-draft--chunks--mc-assessment--mc-choice:hover {
     background: rgba(147, 198, 255, 0.15); }

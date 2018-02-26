@@ -41,7 +41,7 @@ const attemptReviewComponent = (attempt, reviewScore, assessment, attemptNumber)
 					<QuestionComponent
 						model={questionModel}
 						moduleData={assessment.props.moduleData}
-						isReview
+						mode={'review'}
 						context={`assessmentReview:${attempt.attemptId}`}
 					/>
 				)

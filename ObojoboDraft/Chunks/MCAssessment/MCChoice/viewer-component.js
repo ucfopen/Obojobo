@@ -53,7 +53,7 @@ export default class MCChoice extends React.Component {
 		let isSelected = response.ids.indexOf(this.props.model.get('id')) !== -1
 
 		let isCorrect
-		if (this.props.isReview) {
+		if (this.props.mode === 'review') {
 			if (!this.props.moduleData.questionState.scores[this.props.context]) return <div />
 			isCorrect =
 				this.props.moduleData.questionState.scores[this.props.context][questionId].score === 100
@@ -67,7 +67,8 @@ export default class MCChoice extends React.Component {
 					'obojobo-draft--chunks--mc-assessment--mc-choice' +
 					(isSelected ? ' is-selected' : ' is-not-selected') +
 					(isCorrect ? ' is-correct' : ' is-incorrect') +
-					(this.props.isReview ? ' is-review' : ' is-not-review')
+					' is-mode-' +
+					this.props.mode
 				}
 				data-choice-label={this.props.label}
 			>

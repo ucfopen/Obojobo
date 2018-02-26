@@ -45,7 +45,7 @@ export default class Question extends React.Component {
 				moduleData={this.props.moduleData}
 				className={`flip-container obojobo-draft--chunks--question${score === null
 					? ''
-					: score === 100 ? ' is-correct' : ' is-incorrect'} ${this.props.isReview
+					: score === 100 ? ' is-correct' : ' is-incorrect'} ${this.props.mode === 'review'
 					? 'is-active'
 					: `is-${viewState}`}`}
 			>
@@ -57,7 +57,7 @@ export default class Question extends React.Component {
 							model={assessment}
 							moduleData={this.props.moduleData}
 							context={this.props.context || this.props.moduleData.navState.context}
-							mode={this.props.isReview ? 'review' : this.props.model.modelState.mode}
+							mode={this.props.mode ? this.props.mode : this.props.model.modelState.mode}
 						/>
 					</div>
 					<div className="blocker front" key="blocker" onClick={this.onClickBlocker.bind(this)}>

@@ -135,7 +135,7 @@
 		background: transparentize($color-highlight, 0.75);
 	}
 
-	&.is-review {
+	&.is-mode-review {
 		input {
 			display: none
 		}
@@ -147,9 +147,8 @@
 		}
 		cursor: default
 	}
-	&.is-not-review {
-		&:hover {
-			background: transparentize($color-highlight, 0.85);
-		}
+
+	&:hover {
+		background: transparentize($color-highlight, 0.85);
 	}
 }

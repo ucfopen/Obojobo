@@ -298,7 +298,7 @@
 								var isSelected = response.ids.indexOf(this.props.model.get('id')) !== -1
 
 								var isCorrect = void 0
-								if (this.props.isReview) {
+								if (this.props.mode === 'review') {
 									if (!this.props.moduleData.questionState.scores[this.props.context])
 										return React.createElement('div', null)
 									isCorrect =
@@ -315,7 +315,8 @@
 											'obojobo-draft--chunks--mc-assessment--mc-choice' +
 											(isSelected ? ' is-selected' : ' is-not-selected') +
 											(isCorrect ? ' is-correct' : ' is-incorrect') +
-											(this.props.isReview ? ' is-review' : ' is-not-review'),
+											' is-mode-' +
+											this.props.mode,
 										'data-choice-label': this.props.label
 									},
 									React.createElement('input', {

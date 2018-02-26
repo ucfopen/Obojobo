@@ -478,7 +478,7 @@
 										'flip-container obojobo-draft--chunks--question' +
 										(score === null ? '' : score === 100 ? ' is-correct' : ' is-incorrect') +
 										' ' +
-										(this.props.isReview ? 'is-active' : 'is-' + viewState)
+										(this.props.mode === 'review' ? 'is-active' : 'is-' + viewState)
 								},
 								React.createElement(
 									'div',
@@ -495,7 +495,7 @@
 											model: assessment,
 											moduleData: this.props.moduleData,
 											context: this.props.context || this.props.moduleData.navState.context,
-											mode: this.props.isReview ? 'review' : this.props.model.modelState.mode
+											mode: this.props.mode ? this.props.mode : this.props.model.modelState.mode
 										})
 									),
 									React.createElement(

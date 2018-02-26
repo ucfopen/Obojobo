@@ -785,7 +785,7 @@
 						return React.createElement(QuestionComponent, {
 							model: questionModel,
 							moduleData: assessment.props.moduleData,
-							isReview: true,
+							mode: 'review',
 							context: 'assessmentReview:' + attempt.attemptId
 						})
 					})

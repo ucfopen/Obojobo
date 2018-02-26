@@ -54,15 +54,15 @@
       left: 0.5em; }
   .obojobo-draft--chunks--mc-assessment--mc-choice.is-selected {
     background: rgba(147, 198, 255, 0.25); }
-  .obojobo-draft--chunks--mc-assessment--mc-choice.is-review {
+  .obojobo-draft--chunks--mc-assessment--mc-choice.is-mode-review {
     cursor: default; }
-    .obojobo-draft--chunks--mc-assessment--mc-choice.is-review input {
+    .obojobo-draft--chunks--mc-assessment--mc-choice.is-mode-review input {
       display: none; }
-    .obojobo-draft--chunks--mc-assessment--mc-choice.is-review .children {
+    .obojobo-draft--chunks--mc-assessment--mc-choice.is-mode-review .children {
       margin-left: 0; }
-    .obojobo-draft--chunks--mc-assessment--mc-choice.is-review:hover {
+    .obojobo-draft--chunks--mc-assessment--mc-choice.is-mode-review:hover {
       cursor: default; }
-  .obojobo-draft--chunks--mc-assessment--mc-choice.is-not-review:hover {
+  .obojobo-draft--chunks--mc-assessment--mc-choice:hover {
     background: rgba(147, 198, 255, 0.15); }
 .obojobo-draft--chunks--mc-assessment--mc-feedback {
   font-size: 0.8em;
@@ -145,15 +145,15 @@
     top: 1.5em;
     letter-spacing: 0.2em;
     content: "\2716" attr(data-choice-label); }
-  .obojobo-draft--chunks--mc-assessment.is-review .submit, .obojobo-draft--chunks--mc-assessment.is-assessment .submit {
+  .obojobo-draft--chunks--mc-assessment.is-mode-review .submit, .obojobo-draft--chunks--mc-assessment.is-assessment .submit {
     display: inline-block;
     visibility: hidden; }
-  .obojobo-draft--chunks--mc-assessment.is-review .result-container, .obojobo-draft--chunks--mc-assessment.is-assessment .result-container {
+  .obojobo-draft--chunks--mc-assessment.is-mode-review .result-container, .obojobo-draft--chunks--mc-assessment.is-assessment .result-container {
     position: absolute;
     left: 0;
     top: 50%;
     transform: translate(0, -50%); }
-  .obojobo-draft--chunks--mc-assessment.is-review .result, .obojobo-draft--chunks--mc-assessment.is-assessment .result {
+  .obojobo-draft--chunks--mc-assessment.is-mode-review .result, .obojobo-draft--chunks--mc-assessment.is-assessment .result {
     margin: 0; }
   .obojobo-draft--chunks--mc-assessment .instructions {
     padding-left: 3em;
