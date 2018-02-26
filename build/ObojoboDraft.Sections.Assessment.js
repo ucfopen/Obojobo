@@ -505,9 +505,8 @@
 						value: function render() {
 							var childEl = void 0
 							var ltiState = this.props.ltiState
-							var ltiNetworkState = this.props.ltiNetworkState
 
-							switch (ltiNetworkState) {
+							switch (ltiState.networkState) {
 								case LTINetworkStates.AWAITING_SEND_ASSESSMENT_SCORE_RESPONSE:
 									//case LTINetworkStates.AWAITING_READ_RESULT_RESPONSE:
 									childEl = this.renderLoading()
@@ -515,14 +514,19 @@
 
 								case LTINetworkStates.IDLE:
 								default:
-									if (!ltiState || ltiState.gradebookStatus === 'ok_no_outcome_service') {
+									if (
+										!ltiState.state ||
+										ltiState.state.gradebookStatus === 'ok_no_outcome_service'
+									) {
 										childEl = null
-									} else if (ltiState.gradebookStatus === 'ok_gradebook_matches_assessment_score') {
+									} else if (
+										ltiState.state.gradebookStatus === 'ok_gradebook_matches_assessment_score'
+									) {
 										childEl = this.renderSynced()
-									} else if (ltiState.gradebookStatus === 'ok_null_score_not_sent') {
+									} else if (ltiState.state.gradebookStatus === 'ok_null_score_not_sent') {
 										childEl = this.renderNotPassed()
 									} else {
-										childEl = this.renderStatus(ltiState)
+										childEl = this.renderStatus(ltiState.state.status)
 									}
 
 									break
@@ -533,6 +537,7 @@
 							return React.createElement(
 								'div',
 								{ className: 'obojobo-draft--sections--assessment--lti-status' },
+								React.createElement('p', null, this.props.ltiState.errorCount),
 								childEl
 							)
 						}
@@ -557,11 +562,11 @@
 					},
 					{
 						key: 'renderStatus',
-						value: function renderStatus(ltiState) {
+						value: function renderStatus(status) {
 							return React.createElement(
 								'div',
-								{ className: 'is-status-' + (ltiState.status || 'null').replace(/_/g, '-') },
-								this.statusRender[ltiState.status]()
+								{ className: 'is-status-' + (status || 'null').replace(/_/g, '-') },
+								this.statusRender[status]()
 							)
 						}
 					},
@@ -597,25 +602,26 @@
 								React.createElement(
 									'p',
 									null,
-									'Close this assignment, reopen it and then click the button below to resend your score.'
+									'Don\u2019t worry - your score is safely recorded here but we weren\u2019t able to send it to your gradebook. Click the button below to resend your score:'
 								),
 								React.createElement(
 									Button,
 									{ onClick: this.props.onClickResendScore },
 									'Resend Score'
 								),
-								React.createElement(
-									'p',
-									null,
-									'If the problem persists try again later - The gradebook may be down temporarily.'
-								),
-								React.createElement(
-									'p',
-									null,
-									'If this still doesn\'t solve the issue contact technical support (error code "',
-									btoa(this.props.ltiState.status),
-									'")'
-								)
+								this.props.ltiState.errorCount === 0
+									? null
+									: React.createElement(
+											'div',
+											null,
+											React.createElement(
+												'p',
+												null,
+												React.createElement('strong', null, 'Sorry!'),
+												' Please close this assignment, reopen it, return to this page and try again'
+											),
+											React.createElement('a', null, 'THING')
+										)
 							)
 						}
 					}
@@ -968,10 +974,6 @@
 								this.props.moduleData.assessmentState,
 								this.props.model
 							)
-							var ltiNetworkState = AssessmentUtil.getLTINetworkStateForModel(
-								this.props.moduleData.assessmentState,
-								this.props.model
-							)
 
 							var childEl = (function() {
 								switch (_this2.getCurrentStep()) {
@@ -1049,7 +1051,6 @@
 											{ className: 'score unlock' },
 											React.createElement(_ltiStatus2.default, {
 												ltiState: ltiState,
-												ltiNetworkState: ltiNetworkState,
 												onClickResendScore: _this2.onClickResendScore.bind(_this2)
 											}),
 											React.createElement(

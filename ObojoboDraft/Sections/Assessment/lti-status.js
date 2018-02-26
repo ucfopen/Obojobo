@@ -32,9 +32,8 @@ export default class LTIStatus extends React.Component {
 	render() {
 		let childEl
 		let ltiState = this.props.ltiState
-		let ltiNetworkState = this.props.ltiNetworkState
 
-		switch (ltiNetworkState) {
+		switch (ltiState.networkState) {
 			case LTINetworkStates.AWAITING_SEND_ASSESSMENT_SCORE_RESPONSE:
 				//case LTINetworkStates.AWAITING_READ_RESULT_RESPONSE:
 				childEl = this.renderLoading()
@@ -42,14 +41,14 @@ export default class LTIStatus extends React.Component {
 
 			case LTINetworkStates.IDLE:
 			default:
-				if (!ltiState || ltiState.gradebookStatus === 'ok_no_outcome_service') {
+				if (!ltiState.state || ltiState.state.gradebookStatus === 'ok_no_outcome_service') {
 					childEl = null
-				} else if (ltiState.gradebookStatus === 'ok_gradebook_matches_assessment_score') {
+				} else if (ltiState.state.gradebookStatus === 'ok_gradebook_matches_assessment_score') {
 					childEl = this.renderSynced()
-				} else if (ltiState.gradebookStatus === 'ok_null_score_not_sent') {
+				} else if (ltiState.state.gradebookStatus === 'ok_null_score_not_sent') {
 					childEl = this.renderNotPassed()
 				} else {
-					childEl = this.renderStatus(ltiState)
+					childEl = this.renderStatus(ltiState.state.status)
 				}
 
 				break
@@ -59,6 +58,9 @@ export default class LTIStatus extends React.Component {
 
 		return (
 			<div className={`obojobo-draft--sections--assessment--lti-status`}>
+				<p>
+					{this.props.ltiState.errorCount}
+				</p>
 				{childEl}
 			</div>
 		)
@@ -76,10 +78,10 @@ export default class LTIStatus extends React.Component {
 		return <div className="is-not-passed">Not passed</div>
 	}
 
-	renderStatus(ltiState) {
+	renderStatus(status) {
 		return (
-			<div className={'is-status-' + (ltiState.status || 'null').replace(/_/g, '-')}>
-				{this.statusRender[ltiState.status]()}
+			<div className={'is-status-' + (status || 'null').replace(/_/g, '-')}>
+				{this.statusRender[status]()}
 			</div>
 		)
 	}
@@ -101,13 +103,19 @@ export default class LTIStatus extends React.Component {
 			<div>
 				<h2>There was a problem sending your score to the gradebook.</h2>
 				<p>
-					Close this assignment, reopen it and then click the button below to resend your score.
+					Don’t worry - your score is safely recorded here but we weren’t able to send it to your
+					gradebook. Click the button below to resend your score:
 				</p>
 				<Button onClick={this.props.onClickResendScore}>Resend Score</Button>
-				<p>If the problem persists try again later - The gradebook may be down temporarily.</p>
-				<p>
-					If this still doesn't solve the issue contact technical support (error code "{btoa(this.props.ltiState.status)}")
-				</p>
+				{this.props.ltiState.errorCount === 0
+					? null
+					: <div>
+							<p>
+								<strong>Sorry!</strong> Please close this assignment, reopen it, return to this page
+								and try again
+							</p>
+							<a>THING</a>
+						</div>}
 			</div>
 		)
 	}

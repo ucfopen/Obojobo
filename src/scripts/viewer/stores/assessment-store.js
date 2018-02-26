@@ -21,7 +21,8 @@ let getNewAssessmentObject = assessmentId => ({
 	attempts: [],
 	score: null,
 	lti: null,
-	ltiNetworkState: LTINetworkStates.IDLE
+	ltiNetworkState: LTINetworkStates.IDLE,
+	ltiErrorCount: 0
 })
 
 class AssessmentStore extends Store {
@@ -285,6 +286,13 @@ class AssessmentStore extends Store {
 
 	updateLTIScore(assessment, updateLTIScoreResp) {
 		assessment.lti = updateLTIScoreResp
+
+		let assessmentModel = OboModel.models[assessment.id]
+		if (AssessmentUtil.isLTIScoreNeedingToBeResynced(this.state, assessmentModel)) {
+			assessment.ltiErrorCount++
+		} else {
+			assessment.ltiErrorCount = 0
+		}
 		// Dispatcher.trigger('assessment:ltiScore')
 	}
 

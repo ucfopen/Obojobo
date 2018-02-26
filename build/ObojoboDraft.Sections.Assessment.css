@@ -10,8 +10,8 @@
     margin-bottom: 0;
     text-align: center;
     font-size: 1em; }
-  .obojobo-draft--sections--assessment .untested p,
-  .obojobo-draft--sections--assessment .score p {
+  .obojobo-draft--sections--assessment .untested .review > p,
+  .obojobo-draft--sections--assessment .score .review > p {
     margin-bottom: 3em; }
 
 .obojobo-draft--sections--assessment .review {
@@ -55,3 +55,20 @@
   width: 44em; }
   .obojobo-draft--sections--assessment .submit-button button {
     min-width: 9em; }
+.obojobo-draft--sections--assessment--lti-status {
+  width: 100%;
+  background-color: #ffe9c3;
+  border-radius: 0.25em;
+  font-family: "Libre Franklin", Arial, sans-serif;
+  padding: 1.5em 3em;
+  box-sizing: border-box; }
+  .obojobo-draft--sections--assessment--lti-status > div > div > h2 {
+    color: #000000;
+    font-size: 1em;
+    font-weight: bold; }
+  .obojobo-draft--sections--assessment--lti-status > div > div > p,
+  .obojobo-draft--sections--assessment--lti-status > div > div > div > p {
+    font-size: 0.9em;
+    line-height: 1.4em; }
+  .obojobo-draft--sections--assessment--lti-status > div > div > .obojobo-draft--components--button > button {
+    background-color: #D40000; }

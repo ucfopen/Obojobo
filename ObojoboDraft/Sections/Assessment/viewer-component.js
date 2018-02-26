@@ -134,10 +134,6 @@ export default class Assessment extends React.Component {
 			this.props.moduleData.assessmentState,
 			this.props.model
 		)
-		let ltiNetworkState = AssessmentUtil.getLTINetworkStateForModel(
-			this.props.moduleData.assessmentState,
-			this.props.model
-		)
 
 		var childEl = (() => {
 			switch (this.getCurrentStep()) {
@@ -212,7 +208,6 @@ export default class Assessment extends React.Component {
 						<div className="score unlock">
 							<LTIStatus
 								ltiState={ltiState}
-								ltiNetworkState={ltiNetworkState}
 								onClickResendScore={this.onClickResendScore.bind(this)}
 							/>
 							<h1>{`Your attempt score is ${Math.round(recentScore)}%`}</h1>

@@ -75,16 +75,47 @@ var AssessmentUtil = {
 			return null
 		}
 
-		return assessment.lti
+		return {
+			state: assessment.lti,
+			networkState: assessment.ltiNetworkState,
+			errorCount: assessment.ltiErrorCount
+		}
 	},
 
-	getLTINetworkStateForModel(state, model) {
+	// getLTINetworkStateForModel(state, model) {
+	// 	let assessment = AssessmentUtil.getAssessmentForModel(state, model)
+	// 	if (!assessment) {
+	// 		return null
+	// 	}
+
+	// 	return assessment.ltiNetworkState
+	// },
+
+	// getLTIErrorCountForModel(state, model) {
+	// 	let assessment = AssessmentUtil.getAssessmentForModel(state, model)
+	// 	if (!assessment) {
+	// 		return null
+	// 	}
+
+	// 	return assessment.ltiErrorCount
+	// },
+
+	isLTIScoreNeedingToBeResynced(state, model) {
 		let assessment = AssessmentUtil.getAssessmentForModel(state, model)
-		if (!assessment) {
-			return null
+
+		if (!assessment || !assessment.lti || !assessment.lti.gradebookStatus) {
+			return false
 		}
 
-		return assessment.ltiNetworkState
+		switch (assessment.lti.gradebookStatus) {
+			case 'ok_no_outcome_service':
+			case 'ok_gradebook_matches_assessment_score':
+			case 'ok_null_score_not_sent':
+				return false
+
+			default:
+				return true
+		}
 	},
 
 	// getLastAttemptForModel(state, model) {
