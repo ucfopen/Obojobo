@@ -1,7 +1,7 @@
 let db = oboRequire('db')
 let DraftModel = oboRequire('models/draft')
 let Assessment = require('./assessment')
-let AssessmentScoreConditions = require('./assessment-score-conditions')
+let AssessmentRubric = require('./assessment-rubric')
 let createCaliperEvent = oboRequire('routes/api/events/create_caliper_event') //@TODO
 let insertEvent = oboRequire('insert_event')
 let lti = oboRequire('lti')
@@ -86,7 +86,7 @@ let endAttempt = (req, res, user, attemptId, isPreviewing) => {
 			.then(() => {
 				logger.info(`End attempt "${attemptId}" - insertAttemptEndEvent success`)
 
-				return sendLTIScore(assessmentScoreId)
+				return sendLTIHighestAssessmentScore(user.id, attempt.draftId, attempt.assessmentId)
 			})
 			.then(ltiRequestResult => {
 				logger.info(`End attempt "${attemptId}" - sendLTIScore was executed`)
@@ -203,23 +203,30 @@ let calculateScores = (assessmentModel, attemptHistory, scoreInfo) => {
 		})
 	)
 
-	let asc = new AssessmentScoreConditions(assessmentModel.node.content.scoreConditions)
-	let assessmentScore = asc.getAssessmentScore(assessmentModel.node.content.attempts, allScores)
+	let rubric = new AssessmentRubric(assessmentModel.node.content.rubric)
+	let assessmentScoreDetails = rubric.getAssessmentScoreInfoForLatestAttempt(
+		assessmentModel.node.content.attempts,
+		allScores
+	)
 
 	return {
-		attemptScore: attemptScore,
-		assessmentScore: assessmentScore,
-		questionScores: questionScores
+		attempt: {
+			attemptScore,
+			questionScores
+		},
+		assessmentScoreDetails
 	}
 }
 
 let completeAttempt = (assessmentId, attemptId, userId, draftId, calculatedScores, preview) => {
+	console.log('CA', calculatedScores.attempt)
 	return Assessment.completeAttempt(
 		assessmentId,
 		attemptId,
 		userId,
 		draftId,
-		calculatedScores,
+		calculatedScores.attempt,
+		calculatedScores.assessmentScoreDetails,
 		preview
 	)
 }
@@ -257,8 +264,8 @@ let insertAttemptEndEvents = (
 	})
 }
 
-let sendLTIScore = assessmentScoreId => {
-	return lti.sendAssessmentScore(assessmentScoreId)
+let sendLTIHighestAssessmentScore = (userId, draftId, assessmentId) => {
+	return lti.sendHighestAssessmentScore(userId, draftId, assessmentId)
 }
 
 let insertAttemptScoredEvents = (
@@ -326,6 +333,6 @@ module.exports = {
 	calculateScores,
 	completeAttempt,
 	insertAttemptEndEvents,
-	sendLTIScore,
+	sendLTIHighestAssessmentScore,
 	insertAttemptScoredEvents
 }

@@ -145,6 +145,14 @@ export default class Assessment extends React.Component {
 			this.props.moduleData.assessmentState,
 			this.props.model
 		)
+		let ltiState = AssessmentUtil.getLTIStateForModel(
+			this.props.moduleData.assessmentState,
+			this.props.model
+		)
+		let ltiNetworkState = AssessmentUtil.getLTINetworkStateForModel(
+			this.props.moduleData.assessmentState,
+			this.props.model
+		)
 
 		const childEl = (() => {
 			switch (this.getCurrentStep()) {

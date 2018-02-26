@@ -78,6 +78,8 @@ class AssessmentStore extends Store {
 				assessments[assessId].attempts = []
 			}
 
+			assessments[assessId].lti = assessmentItem.ltiState
+
 			attempts.forEach(attempt => {
 				assessment = assessments[attempt.assessmentId]
 
@@ -95,8 +97,6 @@ class AssessmentStore extends Store {
 						OboModel.create(question)
 					}
 				})
-
-				assessment.lti = attempt.ltiState
 			})
 		})
 
@@ -281,12 +281,8 @@ class AssessmentStore extends Store {
 	}
 
 	tryResendLTIScore(assessmentId) {
-		console.log('TRLS', assessmentId)
-
 		let assessmentModel = OboModel.models[assessmentId]
 		let assessment = AssessmentUtil.getAssessmentForModel(this.state, assessmentModel)
-
-		console.log('RLS', assessmentId, assessment)
 
 		assessment.ltiNetworkState = LTINetworkStates.AWAITING_SEND_ASSESSMENT_SCORE_RESPONSE
 		this.triggerChange()
@@ -298,8 +294,6 @@ class AssessmentStore extends Store {
 				if (res.status === 'error') {
 					return ErrorUtil.errorResponse(res)
 				}
-
-				console.log('assessmentModelModel', assessmentModel)
 
 				this.updateLTIScore(
 					AssessmentUtil.getAssessmentForModel(this.state, assessmentModel),
@@ -313,9 +307,7 @@ class AssessmentStore extends Store {
 	}
 
 	updateLTIScore(assessment, updateLTIScoreResp) {
-		console.log('update lti score', updateLTIScoreResp, assessment.lti.status)
 		assessment.lti = updateLTIScoreResp
-		console.log('update lti score 2', assessment.lti.status)
 		// Dispatcher.trigger('assessment:ltiScore')
 	}
 

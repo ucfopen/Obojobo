@@ -17,11 +17,13 @@ import Assessment from '../../server/assessment'
 import insertEvent from '../../../../insert_event'
 import lti from '../../../../lti'
 
-jest.mock('../../../../routes/api/events/caliper_utils', () => {
-	return {
-		getNewGeneratedId: () => 'test-uuid'
-	}
-})
+jest.mock('uuid')
+
+// jest.mock('../../../../routes/api/events/caliper_utils', () => {
+// 	return {
+// 		getNewGeneratedId: () => 'test-uuid'
+// 	}
+// })
 
 jest.mock('../../../../config', () => {
 	return {

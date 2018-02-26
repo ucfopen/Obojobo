@@ -1,6 +1,10 @@
 import Assessment from '../../server/assessment'
 import db from '../../../../db'
 
+jest.mock('../../../../config', () => {
+	return {}
+})
+
 jest.mock('../../../../db', () => {
 	return {
 		one: jest.fn(),

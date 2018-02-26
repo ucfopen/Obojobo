@@ -487,8 +487,6 @@
 					{
 						key: 'onClickResendScore',
 						value: function onClickResendScore() {
-							console.log('RESEND SCORE!!!!!!!!!!!!!!', APIUtil)
-
 							AssessmentUtil.resendLTIScore(this.props.model)
 						}
 					},
@@ -499,11 +497,9 @@
 							var ltiState = this.props.ltiState
 							var ltiNetworkState = this.props.ltiNetworkState
 
-							console.log('LTI NET STATE', ltiNetworkState)
-
 							switch (ltiNetworkState) {
 								case LTINetworkStates.AWAITING_SEND_ASSESSMENT_SCORE_RESPONSE:
-								case LTINetworkStates.AWAITING_READ_RESULT_RESPONSE:
+									//case LTINetworkStates.AWAITING_READ_RESULT_RESPONSE:
 									childEl = this.renderLoading()
 									break
 
@@ -1268,6 +1264,14 @@
 								this.props.model
 							)
 							var assessmentScore = AssessmentUtil.getAssessmentScoreForModel(
+								this.props.moduleData.assessmentState,
+								this.props.model
+							)
+							var ltiState = AssessmentUtil.getLTIStateForModel(
+								this.props.moduleData.assessmentState,
+								this.props.model
+							)
+							var ltiNetworkState = AssessmentUtil.getLTINetworkStateForModel(
 								this.props.moduleData.assessmentState,
 								this.props.model
 							)

@@ -2168,6 +2168,8 @@
 									assessments[assessId].attempts = []
 								}
 
+								assessments[assessId].lti = assessmentItem.ltiState
+
 								attempts.forEach(function(attempt) {
 									assessment = assessments[attempt.assessmentId]
 
@@ -2185,8 +2187,6 @@
 											OboModel.create(question)
 										}
 									})
-
-									assessment.lti = attempt.ltiState
 								})
 							})
 
@@ -2515,15 +2515,11 @@
 						value: function tryResendLTIScore(assessmentId) {
 							var _this4 = this
 
-							console.log('TRLS', assessmentId)
-
 							var assessmentModel = OboModel.models[assessmentId]
 							var assessment = _assessmentUtil2.default.getAssessmentForModel(
 								this.state,
 								assessmentModel
 							)
-
-							console.log('RLS', assessmentId, assessment)
 
 							assessment.ltiNetworkState =
 								_ltiNetworkStates2.default.AWAITING_SEND_ASSESSMENT_SCORE_RESPONSE
@@ -2537,8 +2533,6 @@
 									if (res.status === 'error') {
 										return ErrorUtil.errorResponse(res)
 									}
-
-									console.log('assessmentModelModel', assessmentModel)
 
 									_this4.updateLTIScore(
 										_assessmentUtil2.default.getAssessmentForModel(_this4.state, assessmentModel),
@@ -2554,9 +2548,7 @@
 					{
 						key: 'updateLTIScore',
 						value: function updateLTIScore(assessment, updateLTIScoreResp) {
-							console.log('update lti score', updateLTIScoreResp, assessment.lti.status)
 							assessment.lti = updateLTIScoreResp
-							console.log('update lti score 2', assessment.lti.status)
 							// Dispatcher.trigger('assessment:ltiScore')
 						}
 					},
@@ -2606,8 +2598,8 @@
 			})
 			exports.default = {
 				IDLE: 'idle',
-				AWAITING_SEND_ASSESSMENT_SCORE_RESPONSE: 'awaitingSendAssessmentScoreResponse',
-				AWAITING_READ_RESULT_RESPONSE: 'awaitingReadResultResponse'
+				AWAITING_SEND_ASSESSMENT_SCORE_RESPONSE: 'awaitingSendAssessmentScoreResponse'
+				//AWAITING_READ_RESULT_RESPONSE: 'awaitingReadResultResponse'
 			}
 
 			/***/
