@@ -114,6 +114,7 @@ let getLatestHighestAssessmentScoreRecord = (userId, draftId, assessmentId) => {
 		assessmentId: null,
 		attemptId: null,
 		score: null,
+		scoreDetails: null,
 		preview: null,
 		error: null
 	}
@@ -471,13 +472,9 @@ let insertReplaceResultEvent = (userId, draftId, launch, assessmentScoreData, lt
 		eventVersion: '2.0.0',
 		metadata: {},
 		draftId: draftId
+	}).catch(err => {
+		logger.error('There was an error inserting the lti event')
 	})
-		// .then(() => {
-		// 	logger.info('yeah ok')
-		// })
-		.catch(err => {
-			logger.error('There was an error inserting the lti event')
-		})
 }
 
 let insertLTIAssessmentScore = (
@@ -699,8 +696,8 @@ let sendHighestAssessmentScore = function(userId, draftId, assessmentId) {
 		})
 		.then(scoreId => {
 			insertReplaceResultEvent(
-				requiredData.assessmentScoreRecord.userId,
-				requiredData.assessmentScoreRecord.draftId,
+				userId,
+				draftId,
 				requiredData.launch,
 				requiredData.assessmentScoreRecord,
 				result
