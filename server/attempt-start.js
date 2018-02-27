@@ -145,7 +145,7 @@ const getAssessmentChildrenMap = assessmentProperties => {
   const assessmentChildrenMap = new Map()
   assessmentProperties.nodeChildrenIds.forEach(id => {
     const type = assessmentProperties.draftTree.getChildNodeById(id).node.type
-    if (type === QUESTION_BANK_NODE_TYPE || QUESTION_NODE_TYPE)
+    if (type === QUESTION_BANK_NODE_TYPE || type === QUESTION_NODE_TYPE)
       assessmentChildrenMap.set(id, 0)
   })
 
