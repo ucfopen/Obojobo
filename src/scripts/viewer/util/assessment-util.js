@@ -73,9 +73,17 @@ var AssessmentUtil = {
 		return this.getAssessmentForModel(state, model).attempts
 	},
 
-	hasAttemptsRemaining(state, model) {
-		return model.modelState.attempts - this.getAssessmentForModel(state, model).attempts.length > 0
+	getAttemptsRemaining(state, model) {
+		return Math.max(
+			model.modelState.attempts - this.getNumberOfAttemptsCompletedForModel(state, model),
+			0
+		)
 	},
+
+	hasAttemptsRemaining(state, model) {
+		return model.modelState.attempts - this.getNumberOfAttemptsCompletedForModel(state, model) > 0
+	},
+
 	getLTIStateForModel(state, model) {
 		let assessment = AssessmentUtil.getAssessmentForModel(state, model)
 		if (!assessment) {

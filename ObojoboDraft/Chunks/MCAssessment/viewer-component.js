@@ -321,7 +321,7 @@ export default class MCAssessment extends React.Component {
 					<div className="submit-and-result-container">
 						{questionSubmitted
 							? <div className="submit">
-									{' '}<Button altAction onClick={this.onClickReset} value="Try Again" />
+									<Button altAction onClick={this.onClickReset} value="Try Again" />
 								</div>
 							: <div className="submit">
 									<Button

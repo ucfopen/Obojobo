@@ -31,7 +31,7 @@ exports[`MCAssessment Question component 1`] = `
           className="instructions"
         />
         <div
-          className="component obojobo-draft--chunks--mc-assessment--mc-choice is-not-selected is-correct is-not-review"
+          className="component obojobo-draft--chunks--mc-assessment--mc-choice is-not-selected is-correct is-mode-practice"
           data-choice-label="A"
           data-focussed={false}
           data-id="choice1"
@@ -122,7 +122,7 @@ exports[`MCAssessment Question component 1`] = `
           </div>
         </div>
         <div
-          className="component obojobo-draft--chunks--mc-assessment--mc-choice is-not-selected is-incorrect is-not-review"
+          className="component obojobo-draft--chunks--mc-assessment--mc-choice is-not-selected is-incorrect is-mode-practice"
           data-choice-label="B"
           data-focussed={false}
           data-id="choice2"
@@ -285,7 +285,7 @@ exports[`MCAssessment Question view & focus question 1`] = `
           className="instructions"
         />
         <div
-          className="component obojobo-draft--chunks--mc-assessment--mc-choice is-not-selected is-correct is-not-review"
+          className="component obojobo-draft--chunks--mc-assessment--mc-choice is-not-selected is-correct is-mode-practice"
           data-choice-label="A"
           data-focussed={false}
           data-id="choice1"
@@ -376,7 +376,7 @@ exports[`MCAssessment Question view & focus question 1`] = `
           </div>
         </div>
         <div
-          className="component obojobo-draft--chunks--mc-assessment--mc-choice is-not-selected is-incorrect is-not-review"
+          className="component obojobo-draft--chunks--mc-assessment--mc-choice is-not-selected is-incorrect is-mode-practice"
           data-choice-label="B"
           data-focussed={false}
           data-id="choice2"
@@ -539,7 +539,7 @@ exports[`MCAssessment Question view & focus question 2`] = `
           className="instructions"
         />
         <div
-          className="component obojobo-draft--chunks--mc-assessment--mc-choice is-not-selected is-correct is-not-review"
+          className="component obojobo-draft--chunks--mc-assessment--mc-choice is-not-selected is-correct is-mode-practice"
           data-choice-label="A"
           data-focussed={false}
           data-id="choice1"
@@ -630,7 +630,7 @@ exports[`MCAssessment Question view & focus question 2`] = `
           </div>
         </div>
         <div
-          className="component obojobo-draft--chunks--mc-assessment--mc-choice is-not-selected is-incorrect is-not-review"
+          className="component obojobo-draft--chunks--mc-assessment--mc-choice is-not-selected is-incorrect is-mode-practice"
           data-choice-label="B"
           data-focussed={false}
           data-id="choice2"
@@ -793,7 +793,7 @@ exports[`MCAssessment Question view question 1`] = `
           className="instructions"
         />
         <div
-          className="component obojobo-draft--chunks--mc-assessment--mc-choice is-not-selected is-correct is-not-review"
+          className="component obojobo-draft--chunks--mc-assessment--mc-choice is-not-selected is-correct is-mode-practice"
           data-choice-label="A"
           data-focussed={false}
           data-id="choice1"
@@ -884,7 +884,7 @@ exports[`MCAssessment Question view question 1`] = `
           </div>
         </div>
         <div
-          className="component obojobo-draft--chunks--mc-assessment--mc-choice is-not-selected is-incorrect is-not-review"
+          className="component obojobo-draft--chunks--mc-assessment--mc-choice is-not-selected is-incorrect is-mode-practice"
           data-choice-label="B"
           data-focussed={false}
           data-id="choice2"
@@ -1047,7 +1047,7 @@ exports[`MCAssessment Question view question 2`] = `
           className="instructions"
         />
         <div
-          className="component obojobo-draft--chunks--mc-assessment--mc-choice is-not-selected is-correct is-not-review"
+          className="component obojobo-draft--chunks--mc-assessment--mc-choice is-not-selected is-correct is-mode-practice"
           data-choice-label="A"
           data-focussed={false}
           data-id="choice1"
@@ -1138,7 +1138,7 @@ exports[`MCAssessment Question view question 2`] = `
           </div>
         </div>
         <div
-          className="component obojobo-draft--chunks--mc-assessment--mc-choice is-not-selected is-incorrect is-not-review"
+          className="component obojobo-draft--chunks--mc-assessment--mc-choice is-not-selected is-incorrect is-mode-practice"
           data-choice-label="B"
           data-focussed={false}
           data-id="choice2"
@@ -1301,7 +1301,7 @@ exports[`MCAssessment Question with a set score 1`] = `
           className="instructions"
         />
         <div
-          className="component obojobo-draft--chunks--mc-assessment--mc-choice is-not-selected is-correct is-not-review"
+          className="component obojobo-draft--chunks--mc-assessment--mc-choice is-not-selected is-correct is-mode-practice"
           data-choice-label="A"
           data-focussed={false}
           data-id="choice1"
@@ -1392,7 +1392,7 @@ exports[`MCAssessment Question with a set score 1`] = `
           </div>
         </div>
         <div
-          className="component obojobo-draft--chunks--mc-assessment--mc-choice is-not-selected is-incorrect is-not-review"
+          className="component obojobo-draft--chunks--mc-assessment--mc-choice is-not-selected is-incorrect is-mode-practice"
           data-choice-label="B"
           data-focussed={false}
           data-id="choice2"
@@ -1555,7 +1555,7 @@ exports[`MCAssessment Question with a set score 2`] = `
           className="instructions"
         />
         <div
-          className="component obojobo-draft--chunks--mc-assessment--mc-choice is-not-selected is-correct is-not-review"
+          className="component obojobo-draft--chunks--mc-assessment--mc-choice is-not-selected is-correct is-mode-practice"
           data-choice-label="A"
           data-focussed={false}
           data-id="choice1"
@@ -1646,7 +1646,7 @@ exports[`MCAssessment Question with a set score 2`] = `
           </div>
         </div>
         <div
-          className="component obojobo-draft--chunks--mc-assessment--mc-choice is-not-selected is-incorrect is-not-review"
+          className="component obojobo-draft--chunks--mc-assessment--mc-choice is-not-selected is-incorrect is-mode-practice"
           data-choice-label="B"
           data-focussed={false}
           data-id="choice2"
@@ -1742,7 +1742,6 @@ exports[`MCAssessment Question with a set score 2`] = `
           <div
             className="submit"
           >
-             
             <div
               className="obojobo-draft--components--button alt-action align-center"
             >
@@ -1839,7 +1838,7 @@ exports[`MCAssessment Question with response 1`] = `
           className="instructions"
         />
         <div
-          className="component obojobo-draft--chunks--mc-assessment--mc-choice is-not-selected is-correct is-not-review"
+          className="component obojobo-draft--chunks--mc-assessment--mc-choice is-not-selected is-correct is-mode-practice"
           data-choice-label="A"
           data-focussed={false}
           data-id="choice1"
@@ -1930,7 +1929,7 @@ exports[`MCAssessment Question with response 1`] = `
           </div>
         </div>
         <div
-          className="component obojobo-draft--chunks--mc-assessment--mc-choice is-not-selected is-incorrect is-not-review"
+          className="component obojobo-draft--chunks--mc-assessment--mc-choice is-not-selected is-incorrect is-mode-practice"
           data-choice-label="B"
           data-focussed={false}
           data-id="choice2"
@@ -2093,7 +2092,7 @@ exports[`MCAssessment Question with response 2`] = `
           className="instructions"
         />
         <div
-          className="component obojobo-draft--chunks--mc-assessment--mc-choice is-selected is-correct is-not-review"
+          className="component obojobo-draft--chunks--mc-assessment--mc-choice is-selected is-correct is-mode-practice"
           data-choice-label="A"
           data-focussed={false}
           data-id="choice1"
@@ -2184,7 +2183,7 @@ exports[`MCAssessment Question with response 2`] = `
           </div>
         </div>
         <div
-          className="component obojobo-draft--chunks--mc-assessment--mc-choice is-not-selected is-incorrect is-not-review"
+          className="component obojobo-draft--chunks--mc-assessment--mc-choice is-not-selected is-incorrect is-mode-practice"
           data-choice-label="B"
           data-focussed={false}
           data-id="choice2"
@@ -2347,7 +2346,7 @@ exports[`MCAssessment Question with revealAll 1`] = `
           className="instructions"
         />
         <div
-          className="component obojobo-draft--chunks--mc-assessment--mc-choice is-not-selected is-correct is-not-review"
+          className="component obojobo-draft--chunks--mc-assessment--mc-choice is-not-selected is-correct is-mode-practice"
           data-choice-label="A"
           data-focussed={false}
           data-id="choice1"
@@ -2438,7 +2437,7 @@ exports[`MCAssessment Question with revealAll 1`] = `
           </div>
         </div>
         <div
-          className="component obojobo-draft--chunks--mc-assessment--mc-choice is-not-selected is-incorrect is-not-review"
+          className="component obojobo-draft--chunks--mc-assessment--mc-choice is-not-selected is-incorrect is-mode-practice"
           data-choice-label="B"
           data-focussed={false}
           data-id="choice2"
@@ -2601,7 +2600,7 @@ exports[`MCAssessment Question with revealAll 2`] = `
           className="instructions"
         />
         <div
-          className="component obojobo-draft--chunks--mc-assessment--mc-choice is-not-selected is-correct is-not-review"
+          className="component obojobo-draft--chunks--mc-assessment--mc-choice is-not-selected is-correct is-mode-practice"
           data-choice-label="A"
           data-focussed={false}
           data-id="choice1"
@@ -2692,7 +2691,7 @@ exports[`MCAssessment Question with revealAll 2`] = `
           </div>
         </div>
         <div
-          className="component obojobo-draft--chunks--mc-assessment--mc-choice is-not-selected is-incorrect is-not-review"
+          className="component obojobo-draft--chunks--mc-assessment--mc-choice is-not-selected is-incorrect is-mode-practice"
           data-choice-label="B"
           data-focussed={false}
           data-id="choice2"

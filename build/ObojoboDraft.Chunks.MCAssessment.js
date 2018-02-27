@@ -1235,7 +1235,6 @@
 										? React.createElement(
 												'div',
 												{ className: 'submit' },
-												' ',
 												React.createElement(Button, {
 													altAction: true,
 													onClick: this.onClickReset,

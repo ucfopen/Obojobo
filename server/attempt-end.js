@@ -17,8 +17,6 @@ let endAttempt = (req, res, user, attemptId, isPreviewing) => {
 
 	logger.info(`End attempt "${attemptId}" begin for user "${user.id}" (Preview="${isPreviewing}")`)
 
-	let everyAttempt
-
 	return (
 		//
 		// Collect info

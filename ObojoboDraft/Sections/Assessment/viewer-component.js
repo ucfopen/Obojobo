@@ -167,6 +167,9 @@ export default class Assessment extends React.Component {
 
 				case 'review':
 					return assessmentReviewView(this)
+
+				default:
+					return null
 			}
 		})()
 

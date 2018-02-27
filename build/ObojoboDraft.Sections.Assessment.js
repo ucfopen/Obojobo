@@ -157,13 +157,7 @@
 							return 'unlimited'
 						}
 
-						var attemptsRemaining =
-							assessmentModel.modelState.attempts -
-							AssessmentUtil.getNumberOfAttemptsCompletedForModel(
-								viewerProps.assessmentState,
-								textModel
-							)
-						return attemptsRemaining > 0 ? attemptsRemaining : 0
+						return AssessmentUtil.getAttemptsRemaining(viewerProps.assessmentState, assessmentModel)
 					},
 					'assessment:attemptsAmount': function assessmentAttemptsAmount(textModel, viewerProps) {
 						var assessmentModel = textModel.getParentOfType('ObojoboDraft.Sections.Assessment')
@@ -759,18 +753,13 @@
 					'div',
 					{ className: 'score unlock' },
 					attempts.map(function(attempt, index) {
-						var scoreTotal = attempts[index].questionScores.reduce(function(prev, curr) {
-							return prev + curr.score
-						}, 0)
-						var reviewScore = scoreTotal / attempts[index].questionScores.length
-						return attemptReviewComponent(attempt, reviewScore, assessment, index + 1)
+						return attemptReviewComponent(attempt, assessment, index + 1)
 					})
 				)
 			}
 
 			var attemptReviewComponent = function attemptReviewComponent(
 				attempt,
-				reviewScore,
 				assessment,
 				attemptNumber
 			) {
@@ -778,7 +767,7 @@
 					'div',
 					{ className: 'review' },
 					React.createElement('h1', null, 'Attempt ' + attemptNumber),
-					React.createElement('h2', null, 'Score: ' + reviewScore),
+					React.createElement('h2', null, 'Score: ' + attempt.score),
 					attempt.questionScores.map(function(scoreObj) {
 						var questionModel = OboModel.models[scoreObj.id]
 						var QuestionComponent = questionModel.getComponentClass()
@@ -1289,6 +1278,9 @@
 
 									case 'review':
 										return (0, _viewerComponentReview2.default)(_this2)
+
+									default:
+										return null
 								}
 							})()
 

@@ -3013,9 +3013,15 @@
 				getAllAttempts: function getAllAttempts(state, model) {
 					return this.getAssessmentForModel(state, model).attempts
 				},
+				getAttemptsRemaining: function getAttemptsRemaining(state, model) {
+					return Math.max(
+						model.modelState.attempts - this.getNumberOfAttemptsCompletedForModel(state, model),
+						0
+					)
+				},
 				hasAttemptsRemaining: function hasAttemptsRemaining(state, model) {
 					return (
-						model.modelState.attempts - this.getAssessmentForModel(state, model).attempts.length > 0
+						model.modelState.attempts - this.getNumberOfAttemptsCompletedForModel(state, model) > 0
 					)
 				},
 				getLTIStateForModel: function getLTIStateForModel(state, model) {
