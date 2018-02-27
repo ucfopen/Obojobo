@@ -1,0 +1,24 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`start attempt route can initialize a map to track use of assessment questions 1`] = `
+Map {
+  "test" => 0,
+  "test1" => 0,
+  "test2" => 0,
+  "test3" => 0,
+}
+`;
+
+exports[`start attempt route can retrieve question bank properties with NO attributes set 1`] = `
+Object {
+  "choose": Infinity,
+  "select": "sequential",
+}
+`;
+
+exports[`start attempt route can retrieve question bank properties with attributes set 1`] = `
+Object {
+  "choose": 2,
+  "select": "sequential",
+}
+`;
