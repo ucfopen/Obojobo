@@ -2121,7 +2121,9 @@
 								attempts.forEach(function(attempt) {
 									assessment = assessments[attempt.assessmentId]
 
-									assessment.score = attempt.assessmentScore
+									if (attempt.assessmentScore !== null) {
+										assessment.score = Math.max(attempt.assessmentScore, assessment.score)
+									}
 
 									if (!attempt.isFinished) {
 										unfinishedAttempt = attempt
