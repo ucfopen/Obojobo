@@ -57,15 +57,7 @@ let mockDate = () => {
 
 class MockedBadReqVars {
 	get lis_outcome_service_url() {
-		// This function will throw an error on the first attempt to access it,
-		// which is useful in our tests which sometimes access this property
-		// more than once.
-		if (!this.__errorThrown) {
-			this.__errorThrown = true
-			throw new Error('Some Unexpected Error')
-		} else {
-			return 'lis_outcome_service_url'
-		}
+		throw new Error('Some Unexpected Error')
 	}
 
 	get lis_result_sourcedid() {
@@ -441,7 +433,8 @@ describe('lti', () => {
 						statusDetails: null,
 						gradebookStatus: 'ok_gradebook_matches_assessment_score',
 						dbStatus: 'recorded',
-						ltiAssessmentScoreId: 'new-lti-assessment-score-id'
+						ltiAssessmentScoreId: 'new-lti-assessment-score-id',
+						outcomeServiceURL: 'lis_outcome_service_url'
 					}
 				},
 				userId: 'user-id',
@@ -458,7 +451,8 @@ describe('lti', () => {
 				statusDetails: null,
 				gradebookStatus: 'ok_gradebook_matches_assessment_score',
 				dbStatus: 'recorded',
-				ltiAssessmentScoreId: 'new-lti-assessment-score-id'
+				ltiAssessmentScoreId: 'new-lti-assessment-score-id',
+				outcomeServiceURL: 'lis_outcome_service_url'
 			})
 
 			done()
@@ -536,7 +530,8 @@ describe('lti', () => {
 						statusDetails: null,
 						gradebookStatus: 'ok_gradebook_matches_assessment_score',
 						dbStatus: 'recorded',
-						ltiAssessmentScoreId: 'new-lti-assessment-score-id'
+						ltiAssessmentScoreId: 'new-lti-assessment-score-id',
+						outcomeServiceURL: 'lis_outcome_service_url'
 					}
 				},
 				userId: 'user-id',
@@ -553,7 +548,8 @@ describe('lti', () => {
 				statusDetails: null,
 				gradebookStatus: 'ok_gradebook_matches_assessment_score',
 				dbStatus: 'recorded',
-				ltiAssessmentScoreId: 'new-lti-assessment-score-id'
+				ltiAssessmentScoreId: 'new-lti-assessment-score-id',
+				outcomeServiceURL: 'lis_outcome_service_url'
 			})
 
 			done()
@@ -631,7 +627,8 @@ describe('lti', () => {
 						statusDetails: null,
 						gradebookStatus: 'ok_gradebook_matches_assessment_score',
 						dbStatus: 'recorded',
-						ltiAssessmentScoreId: 'new-lti-assessment-score-id'
+						ltiAssessmentScoreId: 'new-lti-assessment-score-id',
+						outcomeServiceURL: 'lis_outcome_service_url'
 					}
 				},
 				userId: 'user-id',
@@ -648,7 +645,8 @@ describe('lti', () => {
 				statusDetails: null,
 				gradebookStatus: 'ok_gradebook_matches_assessment_score',
 				dbStatus: 'recorded',
-				ltiAssessmentScoreId: 'new-lti-assessment-score-id'
+				ltiAssessmentScoreId: 'new-lti-assessment-score-id',
+				outcomeServiceURL: 'lis_outcome_service_url'
 			})
 
 			done()
@@ -722,7 +720,8 @@ describe('lti', () => {
 						statusDetails: null,
 						gradebookStatus: 'ok_null_score_not_sent',
 						dbStatus: 'recorded',
-						ltiAssessmentScoreId: 'new-lti-assessment-score-id'
+						ltiAssessmentScoreId: 'new-lti-assessment-score-id',
+						outcomeServiceURL: 'lis_outcome_service_url'
 					}
 				},
 				userId: 'user-id',
@@ -739,7 +738,8 @@ describe('lti', () => {
 				statusDetails: null,
 				gradebookStatus: 'ok_null_score_not_sent',
 				dbStatus: 'recorded',
-				ltiAssessmentScoreId: 'new-lti-assessment-score-id'
+				ltiAssessmentScoreId: 'new-lti-assessment-score-id',
+				outcomeServiceURL: 'lis_outcome_service_url'
 			})
 
 			done()
@@ -813,7 +813,8 @@ describe('lti', () => {
 						statusDetails: null,
 						gradebookStatus: 'ok_null_score_not_sent',
 						dbStatus: 'recorded',
-						ltiAssessmentScoreId: 'new-lti-assessment-score-id'
+						ltiAssessmentScoreId: 'new-lti-assessment-score-id',
+						outcomeServiceURL: 'lis_outcome_service_url'
 					}
 				},
 				userId: 'user-id',
@@ -830,7 +831,8 @@ describe('lti', () => {
 				statusDetails: null,
 				gradebookStatus: 'ok_null_score_not_sent',
 				dbStatus: 'recorded',
-				ltiAssessmentScoreId: 'new-lti-assessment-score-id'
+				ltiAssessmentScoreId: 'new-lti-assessment-score-id',
+				outcomeServiceURL: 'lis_outcome_service_url'
 			})
 
 			done()
@@ -912,7 +914,8 @@ describe('lti', () => {
 						statusDetails: null,
 						gradebookStatus: 'ok_gradebook_matches_assessment_score',
 						dbStatus: 'recorded',
-						ltiAssessmentScoreId: 'new-lti-assessment-score-id'
+						ltiAssessmentScoreId: 'new-lti-assessment-score-id',
+						outcomeServiceURL: 'lis_outcome_service_url'
 					}
 				},
 				userId: 'user-id',
@@ -929,7 +932,8 @@ describe('lti', () => {
 				statusDetails: null,
 				gradebookStatus: 'ok_gradebook_matches_assessment_score',
 				dbStatus: 'recorded',
-				ltiAssessmentScoreId: 'new-lti-assessment-score-id'
+				ltiAssessmentScoreId: 'new-lti-assessment-score-id',
+				outcomeServiceURL: 'lis_outcome_service_url'
 			})
 
 			done()
@@ -1011,7 +1015,8 @@ describe('lti', () => {
 						statusDetails: null,
 						gradebookStatus: 'error_newer_assessment_score_unsent',
 						dbStatus: 'recorded',
-						ltiAssessmentScoreId: 'new-lti-assessment-score-id'
+						ltiAssessmentScoreId: 'new-lti-assessment-score-id',
+						outcomeServiceURL: 'lis_outcome_service_url'
 					}
 				},
 				userId: 'user-id',
@@ -1028,7 +1033,8 @@ describe('lti', () => {
 				statusDetails: null,
 				gradebookStatus: 'error_newer_assessment_score_unsent',
 				dbStatus: 'recorded',
-				ltiAssessmentScoreId: 'new-lti-assessment-score-id'
+				ltiAssessmentScoreId: 'new-lti-assessment-score-id',
+				outcomeServiceURL: 'lis_outcome_service_url'
 			})
 
 			done()
@@ -1100,7 +1106,8 @@ describe('lti', () => {
 						statusDetails: null,
 						gradebookStatus: 'error_newer_assessment_score_unsent',
 						dbStatus: 'recorded',
-						ltiAssessmentScoreId: 'new-lti-assessment-score-id'
+						ltiAssessmentScoreId: 'new-lti-assessment-score-id',
+						outcomeServiceURL: 'lis_outcome_service_url'
 					}
 				},
 				userId: 'user-id',
@@ -1117,7 +1124,8 @@ describe('lti', () => {
 				statusDetails: null,
 				gradebookStatus: 'error_newer_assessment_score_unsent',
 				dbStatus: 'recorded',
-				ltiAssessmentScoreId: 'new-lti-assessment-score-id'
+				ltiAssessmentScoreId: 'new-lti-assessment-score-id',
+				outcomeServiceURL: 'lis_outcome_service_url'
 			})
 
 			done()
@@ -1191,7 +1199,8 @@ describe('lti', () => {
 						statusDetails: null,
 						gradebookStatus: 'ok_gradebook_matches_assessment_score',
 						dbStatus: 'recorded',
-						ltiAssessmentScoreId: 'new-lti-assessment-score-id'
+						ltiAssessmentScoreId: 'new-lti-assessment-score-id',
+						outcomeServiceURL: 'lis_outcome_service_url'
 					}
 				},
 				userId: 'user-id',
@@ -1208,7 +1217,8 @@ describe('lti', () => {
 				statusDetails: null,
 				gradebookStatus: 'ok_gradebook_matches_assessment_score',
 				dbStatus: 'recorded',
-				ltiAssessmentScoreId: 'new-lti-assessment-score-id'
+				ltiAssessmentScoreId: 'new-lti-assessment-score-id',
+				outcomeServiceURL: 'lis_outcome_service_url'
 			})
 
 			done()
@@ -1268,7 +1278,8 @@ describe('lti', () => {
 						statusDetails: null,
 						gradebookStatus: 'error_state_unknown',
 						dbStatus: 'recorded',
-						ltiAssessmentScoreId: 'new-lti-assessment-score-id'
+						ltiAssessmentScoreId: 'new-lti-assessment-score-id',
+						outcomeServiceURL: null
 					}
 				},
 				userId: 'user-id',
@@ -1285,7 +1296,8 @@ describe('lti', () => {
 				statusDetails: null,
 				gradebookStatus: 'error_state_unknown',
 				dbStatus: 'recorded',
-				ltiAssessmentScoreId: 'new-lti-assessment-score-id'
+				ltiAssessmentScoreId: 'new-lti-assessment-score-id',
+				outcomeServiceURL: null
 			})
 
 			done()
@@ -1353,7 +1365,8 @@ describe('lti', () => {
 						statusDetails: null,
 						gradebookStatus: 'error_state_unknown',
 						dbStatus: 'recorded',
-						ltiAssessmentScoreId: 'new-lti-assessment-score-id'
+						ltiAssessmentScoreId: 'new-lti-assessment-score-id',
+						outcomeServiceURL: null
 					}
 				},
 				userId: 'user-id',
@@ -1370,7 +1383,8 @@ describe('lti', () => {
 				statusDetails: null,
 				gradebookStatus: 'error_state_unknown',
 				dbStatus: 'recorded',
-				ltiAssessmentScoreId: 'new-lti-assessment-score-id'
+				ltiAssessmentScoreId: 'new-lti-assessment-score-id',
+				outcomeServiceURL: null
 			})
 
 			done()
@@ -1438,7 +1452,8 @@ describe('lti', () => {
 						statusDetails: null,
 						gradebookStatus: 'ok_gradebook_matches_assessment_score',
 						dbStatus: 'recorded',
-						ltiAssessmentScoreId: 'new-lti-assessment-score-id'
+						ltiAssessmentScoreId: 'new-lti-assessment-score-id',
+						outcomeServiceURL: null
 					}
 				},
 				userId: 'user-id',
@@ -1455,7 +1470,8 @@ describe('lti', () => {
 				statusDetails: null,
 				gradebookStatus: 'ok_gradebook_matches_assessment_score',
 				dbStatus: 'recorded',
-				ltiAssessmentScoreId: 'new-lti-assessment-score-id'
+				ltiAssessmentScoreId: 'new-lti-assessment-score-id',
+				outcomeServiceURL: null
 			})
 
 			done()
@@ -1527,7 +1543,8 @@ describe('lti', () => {
 						statusDetails: null,
 						gradebookStatus: 'ok_null_score_not_sent',
 						dbStatus: 'recorded',
-						ltiAssessmentScoreId: 'new-lti-assessment-score-id'
+						ltiAssessmentScoreId: 'new-lti-assessment-score-id',
+						outcomeServiceURL: null
 					}
 				},
 				userId: 'user-id',
@@ -1544,7 +1561,8 @@ describe('lti', () => {
 				statusDetails: null,
 				gradebookStatus: 'ok_null_score_not_sent',
 				dbStatus: 'recorded',
-				ltiAssessmentScoreId: 'new-lti-assessment-score-id'
+				ltiAssessmentScoreId: 'new-lti-assessment-score-id',
+				outcomeServiceURL: null
 			})
 
 			done()
@@ -1623,7 +1641,8 @@ describe('lti', () => {
 						statusDetails: null,
 						gradebookStatus: 'ok_gradebook_matches_assessment_score',
 						dbStatus: 'recorded',
-						ltiAssessmentScoreId: 'new-lti-assessment-score-id'
+						ltiAssessmentScoreId: 'new-lti-assessment-score-id',
+						outcomeServiceURL: 'lis_outcome_service_url'
 					}
 				},
 				userId: 'user-id',
@@ -1640,7 +1659,8 @@ describe('lti', () => {
 				statusDetails: null,
 				gradebookStatus: 'ok_gradebook_matches_assessment_score',
 				dbStatus: 'recorded',
-				ltiAssessmentScoreId: 'new-lti-assessment-score-id'
+				ltiAssessmentScoreId: 'new-lti-assessment-score-id',
+				outcomeServiceURL: 'lis_outcome_service_url'
 			})
 
 			done()
@@ -1719,7 +1739,8 @@ describe('lti', () => {
 						statusDetails: null,
 						gradebookStatus: 'error_newer_assessment_score_unsent',
 						dbStatus: 'recorded',
-						ltiAssessmentScoreId: 'new-lti-assessment-score-id'
+						ltiAssessmentScoreId: 'new-lti-assessment-score-id',
+						outcomeServiceURL: 'lis_outcome_service_url'
 					}
 				},
 				userId: 'user-id',
@@ -1736,7 +1757,8 @@ describe('lti', () => {
 				statusDetails: null,
 				gradebookStatus: 'error_newer_assessment_score_unsent',
 				dbStatus: 'recorded',
-				ltiAssessmentScoreId: 'new-lti-assessment-score-id'
+				ltiAssessmentScoreId: 'new-lti-assessment-score-id',
+				outcomeServiceURL: 'lis_outcome_service_url'
 			})
 
 			done()
@@ -1819,7 +1841,8 @@ describe('lti', () => {
 						statusDetails: null,
 						gradebookStatus: 'ok_null_score_not_sent',
 						dbStatus: 'recorded',
-						ltiAssessmentScoreId: 'new-lti-assessment-score-id'
+						ltiAssessmentScoreId: 'new-lti-assessment-score-id',
+						outcomeServiceURL: 'lis_outcome_service_url'
 					}
 				},
 				userId: 'user-id',
@@ -1836,7 +1859,8 @@ describe('lti', () => {
 				statusDetails: null,
 				gradebookStatus: 'ok_null_score_not_sent',
 				dbStatus: 'recorded',
-				ltiAssessmentScoreId: 'new-lti-assessment-score-id'
+				ltiAssessmentScoreId: 'new-lti-assessment-score-id',
+				outcomeServiceURL: 'lis_outcome_service_url'
 			})
 
 			done()
@@ -1890,7 +1914,8 @@ describe('lti', () => {
 				statusDetails: null,
 				gradebookStatus: 'ok_null_score_not_sent',
 				dbStatus: 'recorded',
-				ltiAssessmentScoreId: 'new-lti-assessment-score-id'
+				ltiAssessmentScoreId: 'new-lti-assessment-score-id',
+				outcomeServiceURL: 'lis_outcome_service_url'
 			})
 
 			expect(insertEvent).lastCalledWith({
@@ -1929,7 +1954,8 @@ describe('lti', () => {
 						statusDetails: null,
 						gradebookStatus: 'ok_null_score_not_sent',
 						dbStatus: 'recorded',
-						ltiAssessmentScoreId: 'new-lti-assessment-score-id'
+						ltiAssessmentScoreId: 'new-lti-assessment-score-id',
+						outcomeServiceURL: 'lis_outcome_service_url'
 					}
 				},
 				userId: 'user-id',
@@ -2019,7 +2045,8 @@ describe('lti', () => {
 						statusDetails: null,
 						gradebookStatus: 'ok_no_outcome_service',
 						dbStatus: 'recorded',
-						ltiAssessmentScoreId: 'new-lti-assessment-score-id'
+						ltiAssessmentScoreId: 'new-lti-assessment-score-id',
+						outcomeServiceURL: null
 					}
 				},
 				userId: 'user-id',
@@ -2036,7 +2063,8 @@ describe('lti', () => {
 				statusDetails: null,
 				gradebookStatus: 'ok_no_outcome_service',
 				dbStatus: 'recorded',
-				ltiAssessmentScoreId: 'new-lti-assessment-score-id'
+				ltiAssessmentScoreId: 'new-lti-assessment-score-id',
+				outcomeServiceURL: null
 			})
 
 			done()
@@ -2111,7 +2139,8 @@ describe('lti', () => {
 						statusDetails: null,
 						gradebookStatus: 'error_state_unknown',
 						dbStatus: 'recorded',
-						ltiAssessmentScoreId: 'new-lti-assessment-score-id'
+						ltiAssessmentScoreId: 'new-lti-assessment-score-id',
+						outcomeServiceURL: 'lis_outcome_service_url'
 					}
 				},
 				userId: 'user-id',
@@ -2128,7 +2157,8 @@ describe('lti', () => {
 				statusDetails: null,
 				gradebookStatus: 'error_state_unknown',
 				dbStatus: 'recorded',
-				ltiAssessmentScoreId: 'new-lti-assessment-score-id'
+				ltiAssessmentScoreId: 'new-lti-assessment-score-id',
+				outcomeServiceURL: 'lis_outcome_service_url'
 			})
 
 			done()
@@ -2204,7 +2234,8 @@ describe('lti', () => {
 						statusDetails: null,
 						gradebookStatus: 'ok_no_outcome_service',
 						dbStatus: 'recorded',
-						ltiAssessmentScoreId: 'new-lti-assessment-score-id'
+						ltiAssessmentScoreId: 'new-lti-assessment-score-id',
+						outcomeServiceURL: null
 					}
 				},
 				userId: 'user-id',
@@ -2221,7 +2252,8 @@ describe('lti', () => {
 				statusDetails: null,
 				gradebookStatus: 'ok_no_outcome_service',
 				dbStatus: 'recorded',
-				ltiAssessmentScoreId: 'new-lti-assessment-score-id'
+				ltiAssessmentScoreId: 'new-lti-assessment-score-id',
+				outcomeServiceURL: null
 			})
 
 			done()
@@ -2371,7 +2403,8 @@ describe('lti', () => {
 						statusDetails: null,
 						gradebookStatus: 'ok_gradebook_matches_assessment_score',
 						dbStatus: 'error',
-						ltiAssessmentScoreId: null
+						ltiAssessmentScoreId: null,
+						outcomeServiceURL: 'lis_outcome_service_url'
 					}
 				},
 				userId: 'user-id',
@@ -2388,7 +2421,8 @@ describe('lti', () => {
 				statusDetails: null,
 				gradebookStatus: 'ok_gradebook_matches_assessment_score',
 				dbStatus: 'error',
-				ltiAssessmentScoreId: null
+				ltiAssessmentScoreId: null,
+				outcomeServiceURL: 'lis_outcome_service_url'
 			})
 
 			done()
@@ -2432,7 +2466,7 @@ describe('lti', () => {
 					launchId: 'launch-id',
 					launchKey: 'testkey',
 					body: {
-						lis_outcome_service_url: 'lis_outcome_service_url',
+						lis_outcome_service_url: null, // Shouldn't be null but is due to MockedBadReqVars
 						lis_result_sourcedid: 'lis_result_sourcedid'
 					},
 					assessmentScore: {
@@ -2461,7 +2495,8 @@ describe('lti', () => {
 						statusDetails: { message: 'Some Unexpected Error' },
 						gradebookStatus: 'ok_gradebook_matches_assessment_score',
 						dbStatus: 'recorded',
-						ltiAssessmentScoreId: 'new-lti-assessment-score-id'
+						ltiAssessmentScoreId: 'new-lti-assessment-score-id',
+						outcomeServiceURL: null
 					}
 				},
 				userId: 'user-id',
@@ -2478,7 +2513,8 @@ describe('lti', () => {
 				statusDetails: { message: 'Some Unexpected Error' },
 				gradebookStatus: 'ok_gradebook_matches_assessment_score',
 				dbStatus: 'recorded',
-				ltiAssessmentScoreId: 'new-lti-assessment-score-id'
+				ltiAssessmentScoreId: 'new-lti-assessment-score-id',
+				outcomeServiceURL: null
 			})
 
 			done()

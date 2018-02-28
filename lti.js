@@ -193,10 +193,11 @@ let getLTIStatesByAssessmentIdForUserAndDraft = (userId, draftId, optionalAssess
 				T1.lti_sent_date,
 				T1.status,
 				T1.gradebook_status,
-				T1.status_details
+				T1.status_details,
+				T1.lti_id
 			FROM
 			(
-				SELECT  DISTINCT ON (S.id) S.*, L.*, L.created_at AS "lti_sent_date"
+				SELECT S.*, L.*, L.created_at AS "lti_sent_date", L.id as "lti_id"
 				FROM assessment_scores S
 				LEFT JOIN lti_assessment_scores L
 				ON S.id = L.assessment_score_id
@@ -206,7 +207,7 @@ let getLTIStatesByAssessmentIdForUserAndDraft = (userId, draftId, optionalAssess
 				AND L.id IS NOT NULL
 				ORDER BY S.id DESC
 			) T1
-			ORDER BY T1.assessment_id
+			ORDER BY T1.assessment_id, T1.lti_id DESC
 		`,
 			{
 				userId,
@@ -329,8 +330,12 @@ let getOutcomeServiceForLaunch = function(launch) {
 	let result = {
 		error: null,
 		outcomeService: null,
+		serviceURL: null,
+		resultSourcedId: null,
 		type: OUTCOME_TYPE_UNKNOWN
 	}
+
+	result.resultSourcedId = launch && launch.reqVars ? launch.reqVars.lis_result_sourcedid : null
 
 	try {
 		if (!launch || !launch.reqVars) {
@@ -343,6 +348,7 @@ let getOutcomeServiceForLaunch = function(launch) {
 		}
 
 		result.type = OUTCOME_TYPE_HAS_OUTCOME
+		result.serviceURL = launch.reqVars.lis_outcome_service_url
 
 		let secret = findSecretForKey(launch.key)
 		if (!secret) {
@@ -452,7 +458,14 @@ let sendReplaceResultRequest = (outcomeService, score) => {
 // DB write methods
 //
 
-let insertReplaceResultEvent = (userId, draftId, launch, assessmentScoreData, ltiResult) => {
+let insertReplaceResultEvent = (
+	userId,
+	draftId,
+	launch,
+	assessmentScoreData,
+	outcomeData,
+	ltiResult
+) => {
 	insertEvent({
 		action: 'lti:replaceResult',
 		actorTime: new Date().toISOString(),
@@ -460,9 +473,8 @@ let insertReplaceResultEvent = (userId, draftId, launch, assessmentScoreData, lt
 			launchId: launch ? launch.id : null,
 			launchKey: launch ? launch.key : null,
 			body: {
-				lis_outcome_service_url:
-					launch && launch.reqVars ? launch.reqVars.lis_outcome_service_url : null,
-				lis_result_sourcedid: launch && launch.reqVars ? launch.reqVars.lis_result_sourcedid : null
+				lis_outcome_service_url: outcomeData.serviceURL,
+				lis_result_sourcedid: outcomeData.resultSourcedId
 			},
 			assessmentScore: assessmentScoreData,
 			result: ltiResult
@@ -604,7 +616,8 @@ let sendHighestAssessmentScore = function(userId, draftId, assessmentId) {
 		statusDetails: null,
 		gradebookStatus: null,
 		dbStatus: null,
-		ltiAssessmentScoreId: null
+		ltiAssessmentScoreId: null,
+		outcomeServiceURL: null
 	}
 
 	logger.info(
@@ -618,6 +631,8 @@ let sendHighestAssessmentScore = function(userId, draftId, assessmentId) {
 
 			requiredData = requiredDataResult
 			outcomeData = getOutcomeServiceForLaunch(requiredData.launch)
+
+			result.outcomeServiceURL = outcomeData.serviceURL
 
 			if (requiredData.ltiScoreToSend === null) {
 				throw ERROR_SCORE_IS_NULL
@@ -635,9 +650,8 @@ let sendHighestAssessmentScore = function(userId, draftId, assessmentId) {
 				`LTI attempting replaceResult of score:"${result.scoreSent}" for assessmentScoreId:"${requiredData
 					.assessmentScoreRecord.id}" for user:"${requiredData.assessmentScoreRecord
 					.userId}", draft:"${requiredData.assessmentScoreRecord
-					.draftId}", sourcedid:"${requiredData.launch.reqVars
-					.lis_result_sourcedid}", url:"${requiredData.launch.reqVars
-					.lis_outcome_service_url}" using key:"${requiredData.launch.key}"`,
+					.draftId}", sourcedid:"${outcomeData.resultSourcedId}", url:"${outcomeData.serviceURL}" using key:"${requiredData
+					.launch.key}"`,
 				logId
 			)
 
@@ -700,6 +714,7 @@ let sendHighestAssessmentScore = function(userId, draftId, assessmentId) {
 				draftId,
 				requiredData.launch,
 				requiredData.assessmentScoreRecord,
+				outcomeData,
 				result
 			)
 
