@@ -1076,10 +1076,7 @@
 						}
 					})
 				},
-				retryQuestion: function retryQuestion(id) {
-					var context =
-						arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : 'practice'
-
+				retryQuestion: function retryQuestion(id, context) {
 					return Dispatcher.trigger('question:retry', {
 						value: {
 							id: id,
@@ -1682,10 +1679,7 @@
 					}
 					return scoreItem.score
 				},
-				setScore: function setScore(itemId, score) {
-					var context =
-						arguments.length > 2 && arguments[2] !== undefined ? arguments[2] : 'practice'
-
+				setScore: function setScore(itemId, score, context) {
 					return Dispatcher.trigger('score:set', {
 						value: {
 							itemId: itemId,
@@ -1694,10 +1688,7 @@
 						}
 					})
 				},
-				clearScore: function clearScore(itemId) {
-					var context =
-						arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : 'practice'
-
+				clearScore: function clearScore(itemId, context) {
 					return Dispatcher.trigger('score:clear', {
 						value: {
 							itemId: itemId,
@@ -2495,8 +2486,6 @@
 							model.processTrigger('onEndAttempt')
 
 							Dispatcher.trigger('assessment:attemptEnded', assessId)
-
-							_navUtil2.default.setContext('practice')
 
 							if (
 								hasAssessmentReview &&

@@ -72,7 +72,7 @@
 	/******/
 	/******/ /******/ __webpack_require__.p = 'build/' // Load entry module and return exports
 	/******/
-	/******/ /******/ return __webpack_require__((__webpack_require__.s = 175))
+	/******/ /******/ return __webpack_require__((__webpack_require__.s = 174))
 	/******/
 })(
 	/************************************************************************/
@@ -89,17 +89,17 @@
 			/***/
 		},
 
+		/***/ /***/ 151: function(module, exports) {
+			// removed by extract-text-webpack-plugin
+			/***/
+		},
+
 		/***/ /***/ 152: function(module, exports) {
 			// removed by extract-text-webpack-plugin
 			/***/
 		},
 
-		/***/ /***/ 153: function(module, exports) {
-			// removed by extract-text-webpack-plugin
-			/***/
-		},
-
-		/***/ /***/ 175: function(module, exports, __webpack_require__) {
+		/***/ /***/ 174: function(module, exports, __webpack_require__) {
 			module.exports = __webpack_require__(35)
 
 			/***/
@@ -180,7 +180,7 @@
 				}
 			})()
 
-			__webpack_require__(152)
+			__webpack_require__(151)
 
 			function _classCallCheck(instance, Constructor) {
 				if (!(instance instanceof Constructor)) {
@@ -369,7 +369,7 @@
 				}
 			})()
 
-			__webpack_require__(153)
+			__webpack_require__(152)
 
 			var _Common = __webpack_require__(0)
 
@@ -457,7 +457,7 @@
 							var score = ScoreUtil.getScoreForModel(
 								this.props.moduleData.questionState,
 								this.props.model,
-								this.props.context || this.props.moduleData.navState.context
+								this.props.moduleData.navState.context
 							)
 							var viewState = QuestionUtil.getViewState(
 								this.props.moduleData.questionState,
@@ -494,7 +494,6 @@
 											key: assessment.get('id'),
 											model: assessment,
 											moduleData: this.props.moduleData,
-											context: this.props.context || this.props.moduleData.navState.context,
 											mode: this.props.mode ? this.props.mode : this.props.model.modelState.mode
 										})
 									),
@@ -522,7 +521,7 @@
 							var score = ScoreUtil.getScoreForModel(
 								this.props.moduleData.questionState,
 								this.props.model,
-								this.props.context || this.props.moduleData.navState.context
+								this.props.moduleData.navState.context
 							)
 							var viewState = QuestionUtil.getViewState(
 								this.props.moduleData.questionState,

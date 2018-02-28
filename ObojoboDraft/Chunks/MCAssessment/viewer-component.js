@@ -4,7 +4,6 @@ let ReactCSSTransitionGroup = React.addons.CSSTransitionGroup
 
 import Common from 'Common'
 import Viewer from 'Viewer'
-import navUtil from '../../../src/scripts/viewer/util/nav-util'
 
 let { OboComponent } = Common.components
 let { Button } = Common.components
@@ -15,6 +14,7 @@ let { DOMUtil } = Common.page
 
 let { QuestionUtil } = Viewer.util
 let { ScoreUtil } = Viewer.util
+let { NavUtil } = Viewer.util
 
 // @TODO - This wont update if new children are passed in via props
 
@@ -39,7 +39,7 @@ export default class MCAssessment extends React.Component {
 		let questionResponse = QuestionUtil.getResponse(
 			this.props.moduleData.questionState,
 			this.getQuestionModel(),
-			this.props.context
+			this.props.moduleData.navState.context
 		) || { ids: [] }
 
 		let correct = new Set()
@@ -102,7 +102,10 @@ export default class MCAssessment extends React.Component {
 	}
 
 	retry() {
-		QuestionUtil.retryQuestion(this.getQuestionModel().get('id'))
+		QuestionUtil.retryQuestion(
+			this.getQuestionModel().get('id'),
+			this.props.moduleData.navState.context
+		)
 	}
 
 	hideExplanation() {
@@ -118,7 +121,11 @@ export default class MCAssessment extends React.Component {
 	onClickSubmit(event) {
 		event.preventDefault()
 
-		ScoreUtil.setScore(this.getQuestionModel().get('id'), this.calculateScore(), this.props.context)
+		ScoreUtil.setScore(
+			this.getQuestionModel().get('id'),
+			this.calculateScore(),
+			this.props.moduleData.navState.context
+		)
 		QuestionUtil.checkAnswer(this.getQuestionModel().get('id'))
 	}
 
@@ -160,7 +167,7 @@ export default class MCAssessment extends React.Component {
 				response = QuestionUtil.getResponse(
 					this.props.moduleData.questionState,
 					questionModel,
-					this.props.context
+					this.props.moduleData.navState.context
 				) || {
 					ids: []
 				}
@@ -184,7 +191,7 @@ export default class MCAssessment extends React.Component {
 			questionModel.get('id'),
 			response,
 			mcChoiceId,
-			this.props.moduleData.navState.context || 'practice',
+			this.props.moduleData.navState.context,
 			this.props.moduleData.navState.context.split(':')[1],
 			this.props.moduleData.navState.context.split(':')[2]
 		)
@@ -194,7 +201,7 @@ export default class MCAssessment extends React.Component {
 		return ScoreUtil.getScoreForModel(
 			this.props.moduleData.questionState,
 			this.getQuestionModel(),
-			this.props.context
+			this.props.moduleData.navState.context
 		)
 	}
 
@@ -214,7 +221,7 @@ export default class MCAssessment extends React.Component {
 		let questionId = this.getQuestionModel().get('id')
 
 		if (payload.value.id === questionId) {
-			ScoreUtil.setScore(questionId, this.calculateScore(), this.props.context)
+			ScoreUtil.setScore(questionId, this.calculateScore(), this.props.moduleData.navState.context)
 		}
 	}
 
@@ -313,7 +320,6 @@ export default class MCAssessment extends React.Component {
 							mode={this.props.mode}
 							questionSubmitted={questionSubmitted}
 							label={String.fromCharCode(index + 65)}
-							context={this.props.context}
 						/>
 					)
 				})}

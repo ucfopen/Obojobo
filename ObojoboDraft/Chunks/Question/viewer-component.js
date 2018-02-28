@@ -32,7 +32,7 @@ export default class Question extends React.Component {
 		let score = ScoreUtil.getScoreForModel(
 			this.props.moduleData.questionState,
 			this.props.model,
-			this.props.context || this.props.moduleData.navState.context
+			this.props.moduleData.navState.context
 		)
 		let viewState = QuestionUtil.getViewState(this.props.moduleData.questionState, this.props.model)
 
@@ -56,7 +56,6 @@ export default class Question extends React.Component {
 							key={assessment.get('id')}
 							model={assessment}
 							moduleData={this.props.moduleData}
-							context={this.props.context || this.props.moduleData.navState.context}
 							mode={this.props.mode ? this.props.mode : this.props.model.modelState.mode}
 						/>
 					</div>
@@ -76,7 +75,7 @@ export default class Question extends React.Component {
 		let score = ScoreUtil.getScoreForModel(
 			this.props.moduleData.questionState,
 			this.props.model,
-			this.props.context || this.props.moduleData.navState.context
+			this.props.moduleData.navState.context
 		)
 		let viewState = QuestionUtil.getViewState(this.props.moduleData.questionState, this.props.model)
 		return (

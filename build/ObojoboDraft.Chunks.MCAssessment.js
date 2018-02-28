@@ -72,7 +72,7 @@
 	/******/
 	/******/ /******/ __webpack_require__.p = 'build/' // Load entry module and return exports
 	/******/
-	/******/ /******/ return __webpack_require__((__webpack_require__.s = 173))
+	/******/ /******/ return __webpack_require__((__webpack_require__.s = 172))
 	/******/
 })(
 	/************************************************************************/
@@ -89,270 +89,8 @@
 			/***/
 		},
 
-		/***/ /***/ 139: function(module, exports, __webpack_require__) {
-			'use strict'
-
-			Object.defineProperty(exports, '__esModule', {
-				value: true
-			})
-
-			var _Common = __webpack_require__(0)
-
-			var _Common2 = _interopRequireDefault(_Common)
-
-			function _interopRequireDefault(obj) {
-				return obj && obj.__esModule ? obj : { default: obj }
-			}
-
-			var Dispatcher = _Common2.default.flux.Dispatcher
-			var OboModel = _Common2.default.models.OboModel
-
-			var getFlatList = function getFlatList(item) {
-				var list = []
-				if (item.type !== 'hidden') {
-					list.push(item)
-				}
-
-				if (item.showChildren) {
-					var _iteratorNormalCompletion = true
-					var _didIteratorError = false
-					var _iteratorError = undefined
-
-					try {
-						for (
-							var _iterator = Array.from(item.children)[Symbol.iterator](), _step;
-							!(_iteratorNormalCompletion = (_step = _iterator.next()).done);
-							_iteratorNormalCompletion = true
-						) {
-							var child = _step.value
-
-							list = list.concat(getFlatList(child))
-						}
-					} catch (err) {
-						_didIteratorError = true
-						_iteratorError = err
-					} finally {
-						try {
-							if (!_iteratorNormalCompletion && _iterator.return) {
-								_iterator.return()
-							}
-						} finally {
-							if (_didIteratorError) {
-								throw _iteratorError
-							}
-						}
-					}
-				}
-
-				return list
-			}
-
-			var NavUtil = {
-				rebuildMenu: function rebuildMenu(model) {
-					return Dispatcher.trigger('nav:rebuildMenu', {
-						value: {
-							model: model
-						}
-					})
-				},
-				gotoPath: function gotoPath(path) {
-					return Dispatcher.trigger('nav:gotoPath', {
-						value: {
-							path: path
-						}
-					})
-				},
-
-				// gotoCurrentPathname: () ->
-				// 	window.location.pathname
-
-				setFlag: function setFlag(id, flagName, flagValue) {
-					return Dispatcher.trigger('nav:setFlag', {
-						value: {
-							id: id,
-							flagName: flagName,
-							flagValue: flagValue
-						}
-					})
-				},
-				goPrev: function goPrev() {
-					return Dispatcher.trigger('nav:prev')
-				},
-				goNext: function goNext() {
-					return Dispatcher.trigger('nav:next')
-				},
-				goto: function goto(id) {
-					return Dispatcher.trigger('nav:goto', {
-						value: {
-							id: id
-						}
-					})
-				},
-				lock: function lock() {
-					return Dispatcher.trigger('nav:lock')
-				},
-				unlock: function unlock() {
-					return Dispatcher.trigger('nav:unlock')
-				},
-				close: function close() {
-					return Dispatcher.trigger('nav:close')
-				},
-				open: function open() {
-					return Dispatcher.trigger('nav:open')
-				},
-				toggle: function toggle() {
-					return Dispatcher.trigger('nav:toggle')
-				},
-				openExternalLink: function openExternalLink(url) {
-					return Dispatcher.trigger('nav:openExternalLink', {
-						value: {
-							url: url
-						}
-					})
-				},
-				showChildren: function showChildren(id) {
-					return Dispatcher.trigger('nav:showChildren', {
-						value: {
-							id: id
-						}
-					})
-				},
-				hideChildren: function hideChildren(id) {
-					return Dispatcher.trigger('nav:hideChildren', {
-						value: {
-							id: id
-						}
-					})
-				},
-
-				// getNavItemForModel: (state, model) ->
-				// 	state.itemsById[model.get('id')]
-
-				getNavTarget: function getNavTarget(state) {
-					return state.itemsById[state.navTargetId]
-				},
-				getNavTargetModel: function getNavTargetModel(state) {
-					var navTarget = NavUtil.getNavTarget(state)
-					if (!navTarget) {
-						return null
-					}
-
-					return OboModel.models[navTarget.id]
-				},
-				getFirst: function getFirst(state) {
-					var list = NavUtil.getOrderedList(state)
-
-					var _iteratorNormalCompletion2 = true
-					var _didIteratorError2 = false
-					var _iteratorError2 = undefined
-
-					try {
-						for (
-							var _iterator2 = Array.from(list)[Symbol.iterator](), _step2;
-							!(_iteratorNormalCompletion2 = (_step2 = _iterator2.next()).done);
-							_iteratorNormalCompletion2 = true
-						) {
-							var item = _step2.value
-
-							if (item.type === 'link') {
-								return item
-							}
-						}
-					} catch (err) {
-						_didIteratorError2 = true
-						_iteratorError2 = err
-					} finally {
-						try {
-							if (!_iteratorNormalCompletion2 && _iterator2.return) {
-								_iterator2.return()
-							}
-						} finally {
-							if (_didIteratorError2) {
-								throw _iteratorError2
-							}
-						}
-					}
-
-					return null
-				},
-				getPrev: function getPrev(state) {
-					// state.items[NavUtil.getPrevIndex(state)]
-					var list = NavUtil.getOrderedList(state)
-					var navTarget = NavUtil.getNavTarget(state)
-					var index = list.indexOf(navTarget)
-
-					if (index === -1) {
-						return null
-					}
-
-					index--
-					while (index >= 0) {
-						var item = list[index]
-						if (item.type === 'link') {
-							return item
-						}
-
-						index--
-					}
-
-					return null
-				},
-				getNext: function getNext(state) {
-					// state.items[NavUtil.getPrevIndex(state)]
-					var list = NavUtil.getOrderedList(state)
-					var navTarget = NavUtil.getNavTarget(state)
-					var index = list.indexOf(navTarget)
-
-					if (index === -1) {
-						return null
-					}
-
-					index++
-					var len = list.length
-					while (index < len) {
-						var item = list[index]
-						if (item.type === 'link') {
-							return item
-						}
-
-						index++
-					}
-
-					return null
-				},
-				getPrevModel: function getPrevModel(state) {
-					var prevItem = NavUtil.getPrev(state)
-					if (!prevItem) {
-						return null
-					}
-
-					return OboModel.models[prevItem.id]
-				},
-				getNextModel: function getNextModel(state) {
-					var nextItem = NavUtil.getNext(state)
-					if (!nextItem) {
-						return null
-					}
-
-					return OboModel.models[nextItem.id]
-				},
-				canNavigate: function canNavigate(state) {
-					return !state.locked
-				},
-				getOrderedList: function getOrderedList(state) {
-					return getFlatList(state.items)
-				},
-				setContext: function setContext(context) {
-					return Dispatcher.trigger('nav:setContext', {
-						value: {
-							context: context
-						}
-					})
-				}
-			}
-
-			exports.default = NavUtil
-
+		/***/ /***/ 147: function(module, exports) {
+			// removed by extract-text-webpack-plugin
 			/***/
 		},
 
@@ -371,12 +109,7 @@
 			/***/
 		},
 
-		/***/ /***/ 150: function(module, exports) {
-			// removed by extract-text-webpack-plugin
-			/***/
-		},
-
-		/***/ /***/ 173: function(module, exports, __webpack_require__) {
+		/***/ /***/ 172: function(module, exports, __webpack_require__) {
 			module.exports = __webpack_require__(33)
 
 			/***/
@@ -443,7 +176,7 @@
 				}
 			})()
 
-			__webpack_require__(148)
+			__webpack_require__(147)
 
 			var _Common = __webpack_require__(0)
 
@@ -580,7 +313,7 @@
 				}
 			})()
 
-			__webpack_require__(149)
+			__webpack_require__(148)
 
 			var _Common = __webpack_require__(0)
 
@@ -757,7 +490,7 @@
 				}
 			})()
 
-			__webpack_require__(150)
+			__webpack_require__(149)
 
 			var _Common = __webpack_require__(0)
 
@@ -766,10 +499,6 @@
 			var _Viewer = __webpack_require__(1)
 
 			var _Viewer2 = _interopRequireDefault(_Viewer)
-
-			var _navUtil = __webpack_require__(139)
-
-			var _navUtil2 = _interopRequireDefault(_navUtil)
 
 			function _interopRequireDefault(obj) {
 				return obj && obj.__esModule ? obj : { default: obj }
@@ -814,6 +543,7 @@
 
 			var QuestionUtil = _Viewer2.default.util.QuestionUtil
 			var ScoreUtil = _Viewer2.default.util.ScoreUtil
+			var NavUtil = _Viewer2.default.util.NavUtil
 
 			// @TODO - This wont update if new children are passed in via props
 
@@ -851,7 +581,7 @@
 							var questionResponse = QuestionUtil.getResponse(
 								this.props.moduleData.questionState,
 								this.getQuestionModel(),
-								this.props.context
+								this.props.moduleData.navState.context
 							) || { ids: [] }
 
 							var correct = new Set()
@@ -971,7 +701,10 @@
 					{
 						key: 'retry',
 						value: function retry() {
-							QuestionUtil.retryQuestion(this.getQuestionModel().get('id'))
+							QuestionUtil.retryQuestion(
+								this.getQuestionModel().get('id'),
+								this.props.moduleData.navState.context
+							)
 						}
 					},
 					{
@@ -996,7 +729,7 @@
 							ScoreUtil.setScore(
 								this.getQuestionModel().get('id'),
 								this.calculateScore(),
-								this.props.context
+								this.props.moduleData.navState.context
 							)
 							QuestionUtil.checkAnswer(this.getQuestionModel().get('id'))
 						}
@@ -1045,7 +778,7 @@
 									response = QuestionUtil.getResponse(
 										this.props.moduleData.questionState,
 										questionModel,
-										this.props.context
+										this.props.moduleData.navState.context
 									) || {
 										ids: []
 									}
@@ -1069,7 +802,7 @@
 								questionModel.get('id'),
 								response,
 								mcChoiceId,
-								this.props.moduleData.navState.context || 'practice',
+								this.props.moduleData.navState.context,
 								this.props.moduleData.navState.context.split(':')[1],
 								this.props.moduleData.navState.context.split(':')[2]
 							)
@@ -1081,7 +814,7 @@
 							return ScoreUtil.getScoreForModel(
 								this.props.moduleData.questionState,
 								this.getQuestionModel(),
-								this.props.context
+								this.props.moduleData.navState.context
 							)
 						}
 					},
@@ -1109,7 +842,11 @@
 							var questionId = this.getQuestionModel().get('id')
 
 							if (payload.value.id === questionId) {
-								ScoreUtil.setScore(questionId, this.calculateScore(), this.props.context)
+								ScoreUtil.setScore(
+									questionId,
+									this.calculateScore(),
+									this.props.moduleData.navState.context
+								)
 							}
 						}
 					},
@@ -1224,8 +961,7 @@
 										isShowingExplanation: true,
 										mode: _this2.props.mode,
 										questionSubmitted: questionSubmitted,
-										label: String.fromCharCode(index + 65),
-										context: _this2.props.context
+										label: String.fromCharCode(index + 65)
 									})
 								}),
 								React.createElement(
@@ -1557,18 +1293,23 @@
 								var response = QuestionUtil.getResponse(
 									this.props.moduleData.questionState,
 									this.getQuestionModel(),
-									this.props.context
+									this.props.moduleData.navState.context
 								) || { ids: [] }
 
 								var isSelected = response.ids.indexOf(this.props.model.get('id')) !== -1
 
 								var isCorrect = void 0
 								if (this.props.mode === 'review') {
-									if (!this.props.moduleData.questionState.scores[this.props.context])
+									if (
+										!this.props.moduleData.questionState.scores[
+											this.props.moduleData.navState.context
+										]
+									)
 										return React.createElement('div', null)
 									isCorrect =
-										this.props.moduleData.questionState.scores[this.props.context][questionId]
-											.score === 100
+										this.props.moduleData.questionState.scores[
+											this.props.moduleData.navState.context
+										][questionId].score === 100
 								} else isCorrect = this.props.model.modelState.score === 100
 
 								return React.createElement(

@@ -72,7 +72,7 @@
 	/******/
 	/******/ /******/ __webpack_require__.p = 'build/' // Load entry module and return exports
 	/******/
-	/******/ /******/ return __webpack_require__((__webpack_require__.s = 172))
+	/******/ /******/ return __webpack_require__((__webpack_require__.s = 171))
 	/******/
 })(
 	/************************************************************************/
@@ -94,7 +94,7 @@
 			/***/
 		},
 
-		/***/ /***/ 172: function(module, exports, __webpack_require__) {
+		/***/ /***/ 171: function(module, exports, __webpack_require__) {
 			module.exports = __webpack_require__(7)
 
 			/***/
@@ -292,18 +292,23 @@
 								var response = QuestionUtil.getResponse(
 									this.props.moduleData.questionState,
 									this.getQuestionModel(),
-									this.props.context
+									this.props.moduleData.navState.context
 								) || { ids: [] }
 
 								var isSelected = response.ids.indexOf(this.props.model.get('id')) !== -1
 
 								var isCorrect = void 0
 								if (this.props.mode === 'review') {
-									if (!this.props.moduleData.questionState.scores[this.props.context])
+									if (
+										!this.props.moduleData.questionState.scores[
+											this.props.moduleData.navState.context
+										]
+									)
 										return React.createElement('div', null)
 									isCorrect =
-										this.props.moduleData.questionState.scores[this.props.context][questionId]
-											.score === 100
+										this.props.moduleData.questionState.scores[
+											this.props.moduleData.navState.context
+										][questionId].score === 100
 								} else isCorrect = this.props.model.modelState.score === 100
 
 								return React.createElement(

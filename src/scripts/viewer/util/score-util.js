@@ -12,7 +12,7 @@ let ScoreUtil = {
 		return scoreItem.score
 	},
 
-	setScore(itemId, score, context = 'practice') {
+	setScore(itemId, score, context) {
 		return Dispatcher.trigger('score:set', {
 			value: {
 				itemId,
@@ -22,7 +22,7 @@ let ScoreUtil = {
 		})
 	},
 
-	clearScore(itemId, context = 'practice') {
+	clearScore(itemId, context) {
 		return Dispatcher.trigger('score:clear', {
 			value: {
 				itemId,

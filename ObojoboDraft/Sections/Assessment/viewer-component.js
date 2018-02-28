@@ -29,6 +29,10 @@ export default class Assessment extends React.Component {
 		this.state = { step: null }
 	}
 
+	componentWillUnmount() {
+		NavUtil.setContext('practice')
+	}
+
 	getCurrentStep() {
 		const assessment = AssessmentUtil.getAssessmentForModel(
 			this.props.moduleData.assessmentState,

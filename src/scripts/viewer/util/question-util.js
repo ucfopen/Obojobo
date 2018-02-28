@@ -79,7 +79,7 @@ let QuestionUtil = {
 		})
 	},
 
-	retryQuestion(id, context = 'practice') {
+	retryQuestion(id, context) {
 		return Dispatcher.trigger('question:retry', {
 			value: {
 				id,

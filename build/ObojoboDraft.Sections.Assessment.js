@@ -72,7 +72,7 @@
 	/******/
 	/******/ /******/ __webpack_require__.p = 'build/' // Load entry module and return exports
 	/******/
-	/******/ /******/ return __webpack_require__((__webpack_require__.s = 182))
+	/******/ /******/ return __webpack_require__((__webpack_require__.s = 181))
 	/******/
 })(
 	/************************************************************************/
@@ -89,17 +89,17 @@
 			/***/
 		},
 
+		/***/ /***/ 159: function(module, exports) {
+			// removed by extract-text-webpack-plugin
+			/***/
+		},
+
 		/***/ /***/ 160: function(module, exports) {
 			// removed by extract-text-webpack-plugin
 			/***/
 		},
 
-		/***/ /***/ 161: function(module, exports) {
-			// removed by extract-text-webpack-plugin
-			/***/
-		},
-
-		/***/ /***/ 182: function(module, exports, __webpack_require__) {
+		/***/ /***/ 181: function(module, exports, __webpack_require__) {
 			module.exports = __webpack_require__(42)
 
 			/***/
@@ -404,7 +404,7 @@
 				}
 			})()
 
-			__webpack_require__(160)
+			__webpack_require__(159)
 
 			var _Common = __webpack_require__(0)
 
@@ -733,6 +733,7 @@
 			}
 
 			var AssessmentUtil = _Viewer2.default.util.AssessmentUtil
+			var NavUtil = _Viewer2.default.util.NavUtil
 			var OboModel = _Common2.default.models.OboModel
 
 			var assessmentReviewView = function assessmentReviewView(assessment) {
@@ -744,40 +745,63 @@
 				// 	assessment.props.moduleData.assessmentState,
 				// 	assessment.props.model
 				// )
+
+				var attemptReviewComponents = {}
+
 				var attempts = AssessmentUtil.getAllAttempts(
 					assessment.props.moduleData.assessmentState,
 					assessment.props.model
 				)
 
+				var attemptReviewComponent = function attemptReviewComponent(attempt, assessment) {
+					return React.createElement(
+						'div',
+						{ className: 'review' },
+						React.createElement('h1', null, 'Attempt ' + attempt.attemptNumber),
+						React.createElement('h2', null, 'Score: ' + attempt.attemptScore),
+						attempt.questionScores.map(function(scoreObj) {
+							var questionModel = OboModel.models[scoreObj.id]
+							var QuestionComponent = questionModel.getComponentClass()
+							return React.createElement(QuestionComponent, {
+								model: questionModel,
+								moduleData: assessment.props.moduleData,
+								mode: 'review'
+							})
+						})
+					)
+				}
+
+				attempts.forEach(function(attempt) {
+					attemptReviewComponents['assessmentReview:' + attempt.attemptId] = attemptReviewComponent(
+						attempt,
+						assessment
+					)
+				})
+
+				var context = assessment.props.moduleData.navState.context
+				if (context.split(':')[0] !== 'assessmentReview')
+					// show most recent attempt
+					NavUtil.setContext('assessmentReview:' + attempts[attempts.length - 1].attemptId)
+
+				var attemptButtons = attempts.map(function(attempt, index) {
+					return React.createElement(
+						'button',
+						{
+							onClick: function onClick() {
+								return NavUtil.setContext('assessmentReview:' + attempt.attemptId)
+							}
+						},
+						'Attempt #',
+						attempt.attemptNumber
+					)
+				})
+
 				return React.createElement(
 					'div',
 					{ className: 'score unlock' },
-					attempts.map(function(attempt, index) {
-						return attemptReviewComponent(attempt, assessment, index + 1)
-					})
-				)
-			}
-
-			var attemptReviewComponent = function attemptReviewComponent(
-				attempt,
-				assessment,
-				attemptNumber
-			) {
-				return React.createElement(
-					'div',
-					{ className: 'review' },
-					React.createElement('h1', null, 'Attempt ' + attemptNumber),
-					React.createElement('h2', null, 'Score: ' + attempt.score),
-					attempt.questionScores.map(function(scoreObj) {
-						var questionModel = OboModel.models[scoreObj.id]
-						var QuestionComponent = questionModel.getComponentClass()
-						return React.createElement(QuestionComponent, {
-							model: questionModel,
-							moduleData: assessment.props.moduleData,
-							mode: 'review',
-							context: 'assessmentReview:' + attempt.attemptId
-						})
-					})
+					attemptButtons,
+					attemptReviewComponents[context],
+					attemptButtons
 				)
 			}
 
@@ -1022,7 +1046,7 @@
 				}
 			})()
 
-			__webpack_require__(161)
+			__webpack_require__(160)
 
 			var _Common = __webpack_require__(0)
 
@@ -1112,6 +1136,12 @@
 				}
 
 				_createClass(Assessment, [
+					{
+						key: 'componentWillUnmount',
+						value: function componentWillUnmount() {
+							NavUtil.setContext('practice')
+						}
+					},
 					{
 						key: 'getCurrentStep',
 						value: function getCurrentStep() {

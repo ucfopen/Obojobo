@@ -269,8 +269,6 @@ class AssessmentStore extends Store {
 
 		Dispatcher.trigger('assessment:attemptEnded', assessId)
 
-		NavUtil.setContext('practice')
-
 		if (hasAssessmentReview && !AssessmentUtil.hasAttemptsRemaining(this.getState(), model)) {
 			Dispatcher.trigger('assessment:review', {
 				value: {

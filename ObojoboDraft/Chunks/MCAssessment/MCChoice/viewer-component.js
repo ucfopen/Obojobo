@@ -47,16 +47,19 @@ export default class MCChoice extends React.Component {
 		let response = QuestionUtil.getResponse(
 			this.props.moduleData.questionState,
 			this.getQuestionModel(),
-			this.props.context
+			this.props.moduleData.navState.context
 		) || { ids: [] }
 
 		let isSelected = response.ids.indexOf(this.props.model.get('id')) !== -1
 
 		let isCorrect
 		if (this.props.mode === 'review') {
-			if (!this.props.moduleData.questionState.scores[this.props.context]) return <div />
+			if (!this.props.moduleData.questionState.scores[this.props.moduleData.navState.context])
+				return <div />
 			isCorrect =
-				this.props.moduleData.questionState.scores[this.props.context][questionId].score === 100
+				this.props.moduleData.questionState.scores[this.props.moduleData.navState.context][
+					questionId
+				].score === 100
 		} else isCorrect = this.props.model.modelState.score === 100
 
 		return (

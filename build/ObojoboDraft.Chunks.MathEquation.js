@@ -72,7 +72,7 @@
 	/******/
 	/******/ /******/ __webpack_require__.p = 'build/' // Load entry module and return exports
 	/******/
-	/******/ /******/ return __webpack_require__((__webpack_require__.s = 174))
+	/******/ /******/ return __webpack_require__((__webpack_require__.s = 173))
 	/******/
 })(
 	/************************************************************************/
@@ -83,7 +83,7 @@
 			/***/
 		},
 
-		/***/ /***/ 151: function(module, exports) {
+		/***/ /***/ 150: function(module, exports) {
 			// removed by extract-text-webpack-plugin
 			/***/
 		},
@@ -94,7 +94,7 @@
 			/***/
 		},
 
-		/***/ /***/ 174: function(module, exports, __webpack_require__) {
+		/***/ /***/ 173: function(module, exports, __webpack_require__) {
 			module.exports = __webpack_require__(34)
 
 			/***/
@@ -218,7 +218,7 @@
 				}
 			})()
 
-			__webpack_require__(151)
+			__webpack_require__(150)
 
 			var _katex = __webpack_require__(16)
 

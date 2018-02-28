@@ -72,7 +72,7 @@
 	/******/
 	/******/ /******/ __webpack_require__.p = 'build/' // Load entry module and return exports
 	/******/
-	/******/ /******/ return __webpack_require__((__webpack_require__.s = 183))
+	/******/ /******/ return __webpack_require__((__webpack_require__.s = 182))
 	/******/
 })(
 	/************************************************************************/
@@ -89,12 +89,12 @@
 			/***/
 		},
 
-		/***/ /***/ 162: function(module, exports) {
+		/***/ /***/ 161: function(module, exports) {
 			// removed by extract-text-webpack-plugin
 			/***/
 		},
 
-		/***/ /***/ 183: function(module, exports, __webpack_require__) {
+		/***/ /***/ 182: function(module, exports, __webpack_require__) {
 			module.exports = __webpack_require__(43)
 
 			/***/
@@ -174,7 +174,7 @@
 				}
 			})()
 
-			__webpack_require__(162)
+			__webpack_require__(161)
 
 			var _Common = __webpack_require__(0)
 
