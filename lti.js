@@ -122,17 +122,28 @@ let getLatestHighestAssessmentScoreRecord = (userId, draftId, assessmentId) => {
 	return db
 		.oneOrNone(
 			`
-				SELECT *
-				FROM assessment_scores
-				WHERE
-					user_id = $[userId]
-					AND draft_id = $[draftId]
-					AND assessment_id = $[assessmentId]
-					AND score = (
-						SELECT MAX(score)
-						FROM assessment_scores
-					)
-				ORDER BY created_at DESC
+				SELECT
+					T1.id,
+					T1.created_at,
+					T1.user_id,
+					T1.draft_id,
+					T1.assessment_id,
+					T1.attempt_id,
+					T1.score,
+					T1.preview,
+					T1.score_details
+				FROM
+				(
+					SELECT *, COALESCE(score, -1) AS coalesced_score
+					FROM assessment_scores
+					WHERE
+						user_id = $[userId]
+						AND draft_id = $[draftId]
+						AND assessment_id = $[assessmentId]
+				) T1
+				ORDER BY
+					T1.coalesced_score DESC,
+					T1.created_at DESC
 				LIMIT 1
 			`,
 			{

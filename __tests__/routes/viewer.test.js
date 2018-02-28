@@ -142,7 +142,8 @@ describe('lti route', () => {
 						oboGlobals: expect.objectContaining({
 							entries: {
 								draft: `"{\"json\":\"value\"}"`,
-								draftId: 555
+								draftId: 555,
+								ltiLaunch: '{}'
 							}
 						})
 					})
