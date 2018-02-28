@@ -71,7 +71,7 @@ describe('lti launch middleware', () => {
 
 	it('calls next with no lti data', () => {
 		let [res, req, mockJson, mockStatus, mockNext] = mockArgs()
-		oboRequire('express_lti_launch')(req, res, mockNext)
+		oboRequire('express_lti_launch').assignment(req, res, mockNext)
 		expect(mockNext).toBeCalledWith()
 	})
 
@@ -81,34 +81,36 @@ describe('lti launch middleware', () => {
 		let db = mockDBForLaunch()
 
 		let [res, req, mockJson, mockStatus, mockNext] = mockArgs(true)
-		return oboRequire('express_lti_launch')(req, res, mockNext).then(() => {
-			expect(db.one.mock.calls[0][1]).toEqual(
-				expect.objectContaining({
-					data: {
-						lis_person_contact_email_primary: 'mann@internet.com',
-						lis_person_name_family: 'Mann',
-						lis_person_name_given: 'Hugh',
-						lis_person_sourcedid: '2020',
-						roles: ['saviour', 'explorer', 'doctor']
-					},
-					draftId: '999',
-					userId: 0
-				})
-			)
-			expect(db.one.mock.calls[1][1]).toEqual(
-				expect.objectContaining({
-					action: 'lti:launch',
-					actorTime: expect.any(String),
-					draftId: '999',
-					ip: '1.1.1.1',
-					metadata: {},
-					payload: {
-						launchId: 88
-					},
-					userId: 0
-				})
-			)
-		})
+		return oboRequire('express_lti_launch')
+			.assignment(req, res, mockNext)
+			.then(() => {
+				expect(db.one.mock.calls[0][1]).toEqual(
+					expect.objectContaining({
+						data: {
+							lis_person_contact_email_primary: 'mann@internet.com',
+							lis_person_name_family: 'Mann',
+							lis_person_name_given: 'Hugh',
+							lis_person_sourcedid: '2020',
+							roles: ['saviour', 'explorer', 'doctor']
+						},
+						draftId: '999',
+						userId: 0
+					})
+				)
+				expect(db.one.mock.calls[1][1]).toEqual(
+					expect.objectContaining({
+						action: 'lti:launch',
+						actorTime: expect.any(String),
+						draftId: '999',
+						ip: '1.1.1.1',
+						metadata: {},
+						payload: {
+							launchId: 88
+						},
+						userId: 0
+					})
+				)
+			})
 	})
 
 	it('calls next with lti data', () => {
@@ -117,9 +119,11 @@ describe('lti launch middleware', () => {
 		mockDBForLaunch()
 
 		let [res, req, mockJson, mockStatus, mockNext] = mockArgs(true)
-		return oboRequire('express_lti_launch')(req, res, mockNext).then(() => {
-			expect(mockNext).toBeCalledWith()
-		})
+		return oboRequire('express_lti_launch')
+			.assignment(req, res, mockNext)
+			.then(() => {
+				expect(mockNext).toBeCalledWith()
+			})
 	})
 
 	it('calls next error with lti data when insert event fails', () => {
@@ -128,9 +132,11 @@ describe('lti launch middleware', () => {
 		mockDBForLaunch(true, false)
 
 		let [res, req, mockJson, mockStatus, mockNext] = mockArgs(true)
-		return oboRequire('express_lti_launch')(req, res, mockNext).then(() => {
-			expect(mockNext).toBeCalledWith(expect.any(Error))
-		})
+		return oboRequire('express_lti_launch')
+			.assignment(req, res, mockNext)
+			.then(() => {
+				expect(mockNext).toBeCalledWith(expect.any(Error))
+			})
 	})
 
 	it('calls next error with lti data when insert event fails', () => {
@@ -139,9 +145,11 @@ describe('lti launch middleware', () => {
 		mockDBForLaunch(false, false)
 
 		let [res, req, mockJson, mockStatus, mockNext] = mockArgs(true)
-		return oboRequire('express_lti_launch')(req, res, mockNext).then(() => {
-			expect(mockNext).toBeCalledWith(expect.any(Error))
-		})
+		return oboRequire('express_lti_launch')
+			.assignment(req, res, mockNext)
+			.then(() => {
+				expect(mockNext).toBeCalledWith(expect.any(Error))
+			})
 	})
 
 	it('sets the current user', () => {
@@ -151,17 +159,19 @@ describe('lti launch middleware', () => {
 		let User = oboRequire('models/user')
 
 		let [res, req, mockJson, mockStatus, mockNext] = mockArgs(true)
-		return oboRequire('express_lti_launch')(req, res, mockNext).then(() => {
-			expect(req.setCurrentUser).toBeCalledWith(expect.any(User))
-			expect(req.setCurrentUser).toBeCalledWith(
-				expect.objectContaining({
-					username: '2020',
-					email: 'mann@internet.com',
-					firstName: 'Hugh',
-					lastName: 'Mann',
-					roles: expect.any(Array)
-				})
-			)
-		})
+		return oboRequire('express_lti_launch')
+			.assignment(req, res, mockNext)
+			.then(() => {
+				expect(req.setCurrentUser).toBeCalledWith(expect.any(User))
+				expect(req.setCurrentUser).toBeCalledWith(
+					expect.objectContaining({
+						username: '2020',
+						email: 'mann@internet.com',
+						firstName: 'Hugh',
+						lastName: 'Mann',
+						roles: expect.any(Array)
+					})
+				)
+			})
 	})
 })

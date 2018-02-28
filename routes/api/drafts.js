@@ -130,6 +130,7 @@ router.delete('/:draftId', (req, res, next) => {
 		})
 })
 
+// list all my drafts
 router.get('/', (req, res, next) => {
 	return req
 		.requireCurrentUser()
@@ -141,7 +142,7 @@ router.get('/', (req, res, next) => {
 				draft_id AS "draftId",
 				id AS "latestVersion",
 				created_at AS "createdAt",
-				content
+				content->'content'->>'title' AS "title"
 			FROM drafts_content
 			WHERE draft_id IN (
 				SELECT id

@@ -4,13 +4,11 @@
 		<%- include ./partials/head %>
 	</head>
 	<body>
-		<h1><%= title %></h1>
-
-		<div id="body">
-			<script>
-				var elm = React.createElement('h2', {className: "<%= title %>"}, 'React is working!');
-				ReactDOM.render(elm, document.getElementById('body'));
-			</script>
-		</div>
+		<div id="container"></div>
 	</body>
+
+	<script>
+		var elm = React.createElement('h1', {}, 'Welcome to <%= title %>');
+		ReactDOM.render(elm, document.getElementById('container'));
+	</script>
 </html>
