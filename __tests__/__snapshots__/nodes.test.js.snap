@@ -42,6 +42,27 @@ Object {
     },
   ],
   "content": Object {
+    "rubric": Object {
+      "failedResult": "0",
+      "mods": Array [
+        Object {
+          "attemptCondition": "1",
+          "passCondition": "true",
+          "reward": "5",
+          "scoreCondition": undefined,
+        },
+        Object {
+          "attemptCondition": undefined,
+          "passCondition": undefined,
+          "reward": "2",
+          "scoreCondition": "[80,100]",
+        },
+      ],
+      "passedResult": "100",
+      "passingAttemptScore": "80",
+      "type": "pass-fail",
+      "unableToPassResult": "$highest_attempt_score",
+    },
     "scoreActions": Array [
       Object {
         "from": "0",

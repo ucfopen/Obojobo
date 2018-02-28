@@ -11,7 +11,7 @@
                 </Page>
             </scoreAction>
         </scoreActions>
-        <rubric type="pass-fail" passingAttemptScore="80" passingResult="100" failingResult="0" failingLastAttemptResult="$highest_attempt_score">
+        <rubric type="pass-fail" passingAttemptScore="80" passedResult="100" failedResult="0" unableToPassResult="$highest_attempt_score">
             <mods>
                 <mod attemptCondition="1" passCondition="true" reward="5" />
                 <mod scoreCondition="[80,100]" reward="2" />

@@ -8,14 +8,11 @@ let parseRubric = (el) => {
 	return {
 		type: el.attributes.type,
 		passingAttemptScore: el.attributes.passingAttemptScore,
-		passingResult: el.attributes.passingResult,
-		failingResult: el.attributes.failingResult,
-		failingLastAttemptResult: el.attributes.failingLastAttemptResult,
+		passedResult: el.attributes.passedResult,
+		failedResult: el.attributes.failedResult,
+		unableToPassResult: el.attributes.unableToPassResult,
 		mods
 	}
-	return (
-		el.elements.map( (child) => { return child.value } )
-	)
 }
 
 let parseMod = (el) => {
