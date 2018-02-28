@@ -154,14 +154,13 @@ class Assessment extends DraftNode {
 					assessments[attempt.assessmentId].attempts.push(attempt)
 				})
 
-				let returnPromises = result.map(attemptResult => {
-					return Assessment.getResponsesForAttempt(attemptResult.attempt_id)
-				})
-				return Promise.all(returnPromises)
+				return Assessment.getResponseHistory(userId, draftId)
 			})
-			.then(attempts => {
-				attempts.forEach(attemptResponses => {
-					attemptResponses.forEach(response => {
+			.then(responseHistory => {
+				for (let attemptId in responseHistory) {
+					let responsesForAttempt = responseHistory[attemptId]
+
+					responsesForAttempt.forEach(response => {
 						let attemptForResponseIndex = assessments[response.assessment_id].attempts.findIndex(
 							x => x.attemptId === response.attempt_id
 						)
@@ -170,7 +169,7 @@ class Assessment extends DraftNode {
 						] =
 							response.response
 					})
-				})
+				}
 
 				for (let assessmentId in assessments) {
 					assessmentsArr.push(assessments[assessmentId])
@@ -261,8 +260,7 @@ class Assessment extends DraftNode {
 		)
 	}
 
-	//@TODO
-	static getResponseHistory__TODO__IS_THIS_USED(userId, draftId) {
+	static getResponseHistory(userId, draftId) {
 		return db
 			.manyOrNone(
 				`
