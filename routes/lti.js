@@ -11,7 +11,7 @@ router.get('/', (req, res, next) => {
 		launch_url: `https://${hostname}/lti`,
 		course_navigation_url: `https://${hostname}/lti/canvas/course_navigation`,
 		assignment_selection_url: `https://${hostname}/lti/canvas/assignment_selection`,
-		consumer_key: Object.keys(config.lti.keys)[0]
+		keys: Object.keys(config.lti.keys)
 	})
 })
 

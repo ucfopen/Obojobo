@@ -15,19 +15,25 @@
 			<li>Visit the <a href="http://lti.tools/saltire/tc" target="_blank">IMS LTI Tool Consumer Emulator</a></li>
 			<li>Set <b>Message Type</b> to one of:
 				<ul>
-					<li>basic-lti-launch-request</li>
-					<li>ContentItemSelectionRequest</li>
+					<li><code>basic-lti-launch-request</code></li>
+					<li><code>ContentItemSelectionRequest</code></li>
 				</ul>
 			</li>
 			<li>Set <b>Message URL</b> to one of:
 				<ul>
-					<li><%= launch_url %></li>
-					<li><%= course_navigation_url %></li>
-					<li><%= assignment_selection_url %></li>
+					<li><code><%= launch_url %></code></li>
+					<li><code><%= course_navigation_url %></code></li>
+					<li><code><%= assignment_selection_url %></code></li>
 				</ul>
 			</li>
-			<li>Set <b>Consmer key</b> to <span>"<%= consumer_key %>"</span></li>
-			<li>Set <b>Shared secret</b> to the value defined in <span>config/lti.json</span></li>
+			<li>Set <b>Consmer key</b> to one of the available keys (as defined in <span>config/lti.json</span>):
+				<ul>
+					<% for (var i = 0; i < keys.length; i++) { %>
+					<li><code><%= keys[i] %></code></li>
+					<% } %>
+				</ul>
+			</li>
+			<li>Set <b>Shared secret</b> to the value associated with the key (as defined in <span>config/lti.json</span>)</li>
 		</ol>
 	</body>
 </html>
