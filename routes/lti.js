@@ -37,11 +37,12 @@ router.post('/canvas/course_navigation', (req, res, next) => {
 	return req
 		.getCurrentUser(true)
 		.then(user => {
-			if (user.canViewEditor) {
-				res.redirect('/editor')
-			} else {
-				res.redirect('/')
+			if (!user.canViewEditor) {
+				res.status(403).send('Unauthorized') //@TODO
+				return
 			}
+
+			res.redirect('/editor')
 		})
 		.catch(error => {
 			next(error)
@@ -52,6 +53,11 @@ let showModuleSelector = (req, res, next) => {
 	return req
 		.getCurrentUser(true)
 		.then(user => {
+			if (!user.canViewEditor) {
+				res.status(403).send('Unauthorized') //@TODO
+				return
+			}
+
 			let returnUrl = null
 			let isAssignment = false
 			if (req.lti && req.lti.body) {
@@ -68,7 +74,7 @@ let showModuleSelector = (req, res, next) => {
 			}
 
 			if (returnUrl === null) {
-				throw 'Unkown return url for assignment selection'
+				throw 'Unknown return url for assignment selection'
 			}
 
 			res.render('lti_picker', { returnUrl, isAssignment })
