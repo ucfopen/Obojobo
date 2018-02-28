@@ -423,7 +423,6 @@ app.get('/api/assessments/:draftId/:assessmentId/attempt/:attemptId', (req, res,
 			)
 		})
 		.then(result => {
-			console.log('result', result)
 			res.success(result)
 		})
 		.catch(error => {
@@ -446,7 +445,6 @@ app.get('/api/assessments/:draftId/attempts', (req, res, next) => {
 			return Assessment.getAttempts(currentUser.id, req.params.draftId)
 		})
 		.then(result => {
-			console.log('result', result)
 			res.success(result)
 		})
 		.catch(error => {
@@ -471,7 +469,6 @@ app.get('/api/assessment/:draftId/:assessmentId/attempts', (req, res, next) => {
 			return Assessment.getAttempts(currentUser.id, req.params.draftId, req.params.assessmentId)
 		})
 		.then(result => {
-			console.log('result', result)
 			res.success(result)
 		})
 		.catch(error => {
@@ -497,9 +494,6 @@ oboEvents.on('client:assessment:setResponse', (event, req) => {
 		return app.logError(eventRecordResponse, 'Missing Question ID', req, event)
 	if (!event.payload.response)
 		return app.logError(eventRecordResponse, 'Missing Response', req, event)
-
-	console.log('INSERT INTO ATTEMPTS QUESTION RESPONSES')
-	console.log(event.payload)
 
 	return db
 		.none(

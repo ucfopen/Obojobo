@@ -77,8 +77,6 @@ export default class Assessment extends React.Component {
 	}
 
 	onClickResendScore() {
-		console.log('RESEND SCORE!!!!!!!!!!!!!!', APIUtil)
-
 		AssessmentUtil.resendLTIScore(this.props.model)
 	}
 
@@ -206,8 +204,6 @@ export default class Assessment extends React.Component {
 							</p>
 						)
 					}
-
-					console.log('assessmentScore', assessmentScore)
 
 					return (
 						<div className="score unlock">

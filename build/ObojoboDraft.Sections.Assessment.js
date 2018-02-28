@@ -840,8 +840,6 @@
 					{
 						key: 'onClickResendScore',
 						value: function onClickResendScore() {
-							console.log('RESEND SCORE!!!!!!!!!!!!!!', APIUtil)
-
 							AssessmentUtil.resendLTIScore(this.props.model)
 						}
 					},
@@ -983,8 +981,6 @@
 										} else {
 											childEl = React.createElement('p', null, scoreAction.message)
 										}
-
-										console.log('assessmentScore', assessmentScore)
 
 										return React.createElement(
 											'div',
