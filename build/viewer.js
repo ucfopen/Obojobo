@@ -6486,6 +6486,7 @@
 						(ViewerApp.__proto__ || Object.getPrototypeOf(ViewerApp)).call(this, props)
 					)
 
+					_Common2.default.Launch.init(OboGlobals.get('ltiLaunch'))
 					_Common2.default.Store.loadDependency(
 						'https://cdnjs.cloudflare.com/ajax/libs/KaTeX/0.5.1/katex.min.css'
 					)

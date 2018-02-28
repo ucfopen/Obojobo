@@ -3,31 +3,35 @@
 .obojobo-draft--sections--assessment--lti-status
 {
 	width: 100%;
-	background-color: #ffe9c3;
 	border-radius: 0.25em;
 	font-family: $font-default;
+	margin-bottom: 3em;
 	padding: $dimension-padding/2 $dimension-padding;
 	box-sizing: border-box;
+	background-color: #ffe9c3;
 
-	> div > div
+	> h2
 	{
+		color: $color-text;
+		font-size: 1em;
+		font-weight: bold
+	}
+
+	> p,
+	> div > p
+	{
+		font-size: 0.9em;
+		line-height: 1.4em;
+	}
+
+	&.is-synced
+	{
+		text-align: center;
+		background-color: transparentize($color-correct, .9);
+
 		> h2
 		{
-			color: $color-text;
-			font-size: 1em;
-			font-weight: bold
-		}
-
-		> p,
-		> div > p
-		{
-			font-size: 0.9em;
-			line-height: 1.4em;
-		}
-
-		> .obojobo-draft--components--button > button
-		{
-			background-color: $color-dangerous;
+			margin-bottom: 1em;
 		}
 	}
 }

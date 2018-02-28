@@ -1,4 +1,5 @@
 import { Store } from './store'
+import Launch from './launch'
 import BaseSelectionHandler from './chunk/base-selection-handler'
 import FocusableChunk from './chunk/focusable-chunk'
 import FocusableSelectionHandler from './chunk/focusable-chunk/focusable-selection-handler'
@@ -71,7 +72,8 @@ import UUID from './util/uuid'
 import OboGlobals from './util/obo-globals'
 
 export default {
-	Store: Store,
+	Store,
+
 	chunk: {
 		BaseSelectionHandler: BaseSelectionHandler,
 		FocusableChunk: FocusableChunk,
@@ -186,5 +188,7 @@ export default {
 		ErrorUtil: ErrorUtil,
 		UUID: UUID,
 		OboGlobals: OboGlobals
-	}
+	},
+
+	Launch
 }

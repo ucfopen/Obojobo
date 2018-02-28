@@ -5,6 +5,7 @@
 	@mixin disabled()
 	{
 		background-color: $color-bg2;
+		cursor: default;
 		color: $color-text-minor;
 		border: 1px solid $color-transparent;
 		border-bottom: 1px solid $color-transparent;

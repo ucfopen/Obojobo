@@ -8,6 +8,7 @@ let { OboModel } = Common.models
 let { Button } = Common.components
 let { Dispatcher } = Common.flux
 let { ModalUtil } = Common.util
+let Launch = Common.Launch
 
 let { ScoreStore } = Viewer.stores
 let { AssessmentUtil } = Viewer.util
@@ -135,6 +136,8 @@ export default class Assessment extends React.Component {
 			this.props.model
 		)
 
+		let externalSystemLabel = Launch.getOutcomeServiceHostname()
+
 		var childEl = (() => {
 			switch (this.getCurrentStep()) {
 				case 'untested':
@@ -204,18 +207,43 @@ export default class Assessment extends React.Component {
 						)
 					}
 
+					console.log('assessmentScore', assessmentScore)
+
 					return (
 						<div className="score unlock">
 							<LTIStatus
 								ltiState={ltiState}
+								launch={Launch}
 								onClickResendScore={this.onClickResendScore.bind(this)}
 							/>
 							<h1>{`Your attempt score is ${Math.round(recentScore)}%`}</h1>
-							{recentScore === assessmentScore
-								? <h2>This is your recorded score</h2>
-								: <h2>{`Your recorded score is ${assessmentScore === null
-										? '--'
-										: Math.round(assessmentScore)}%`}</h2>}
+							<h2>
+								Your overall score for this assessment is{' '}
+								<strong>{assessmentScore === null ? '--' : Math.round(assessmentScore)}% </strong>
+								{(() => {
+									switch (ltiState.state.gradebookStatus) {
+										case 'ok_no_outcome_service':
+										case 'ok_null_score_not_sent':
+											return null
+
+										case 'ok_gradebook_matches_assessment_score':
+											return (
+												<span className="lti-sync-message is-synced">
+													({`sent to ${externalSystemLabel} `}
+													<span>✔</span>)
+												</span>
+											)
+
+										default:
+											return (
+												<span className="lti-sync-message is-not-synced">
+													({`not sent to ${externalSystemLabel} `}
+													<span>✖</span>)
+												</span>
+											)
+									}
+								})()}
+							</h2>
 
 							{childEl}
 							<div className="review">
