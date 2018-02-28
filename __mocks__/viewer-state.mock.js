@@ -6,7 +6,6 @@ import FocusStore from '../src/scripts/common/stores/focus-store'
 import AssessmentUtil from '../src/scripts/viewer/util/assessment-util'
 import NavUtil from '../src/scripts/viewer/util/nav-util'
 import QuestionUtil from '../src/scripts/viewer/util/question-util'
-import ScoreUtil from '../src/scripts/viewer/util/score-util'
 import ModalUtil from '../src/scripts/common/util/modal-util'
 import FocusUtil from '../src/scripts/common/util/focus-util'
 
@@ -53,7 +52,6 @@ export {
 	AssessmentUtil,
 	NavUtil,
 	QuestionUtil,
-	ScoreUtil,
 	ModalUtil,
 	FocusUtil
 }

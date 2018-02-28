@@ -2,7 +2,6 @@ import Common from 'Common'
 
 import APIUtil from '../../viewer/util/api-util'
 import QuestionUtil from '../../viewer/util/question-util'
-import ScoreUtil from '../../viewer/util/score-util'
 
 import UUID from '../../common/util/uuid'
 
@@ -129,7 +128,7 @@ class QuestionStore extends Store {
 					QuestionUtil.hideExplanation(questionId, 'viewerClient')
 				}
 
-				ScoreUtil.clearScore(questionId, payload.value.context)
+				QuestionUtil.clearScore(questionId, payload.value.context)
 			},
 
 			'score:set': payload => {

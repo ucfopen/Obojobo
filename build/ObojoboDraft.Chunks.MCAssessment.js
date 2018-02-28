@@ -542,7 +542,6 @@
 			// FocusUtil = Common.util.FocusUtil
 
 			var QuestionUtil = _Viewer2.default.util.QuestionUtil
-			var ScoreUtil = _Viewer2.default.util.ScoreUtil
 			var NavUtil = _Viewer2.default.util.NavUtil
 
 			// @TODO - This wont update if new children are passed in via props
@@ -726,7 +725,7 @@
 						value: function onClickSubmit(event) {
 							event.preventDefault()
 
-							ScoreUtil.setScore(
+							QuestionUtil.setScore(
 								this.getQuestionModel().get('id'),
 								this.calculateScore(),
 								this.props.moduleData.navState.context
@@ -811,7 +810,7 @@
 					{
 						key: 'getScore',
 						value: function getScore() {
-							return ScoreUtil.getScoreForModel(
+							return QuestionUtil.getScoreForModel(
 								this.props.moduleData.questionState,
 								this.getQuestionModel(),
 								this.props.moduleData.navState.context
@@ -842,7 +841,7 @@
 							var questionId = this.getQuestionModel().get('id')
 
 							if (payload.value.id === questionId) {
-								ScoreUtil.setScore(
+								QuestionUtil.setScore(
 									questionId,
 									this.calculateScore(),
 									this.props.moduleData.navState.context

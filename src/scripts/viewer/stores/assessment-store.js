@@ -1,7 +1,6 @@
 import Common from 'Common'
 
 import AssessmentUtil from '../../viewer/util/assessment-util'
-import ScoreUtil from '../../viewer/util/score-util'
 import QuestionUtil from '../../viewer/util/question-util'
 import APIUtil from '../../viewer/util/api-util'
 import NavUtil from '../../viewer/util/nav-util'

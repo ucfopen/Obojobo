@@ -115,6 +115,34 @@ let QuestionUtil = {
 
 	isShowingExplanation(state, model) {
 		return state.data[model.get('id') + ':showingExplanation'] || false
+	},
+
+	getScoreForModel(state, model, context = 'practice') {
+		let scoreItem
+		if (state.scores[context] != null) scoreItem = state.scores[context][model.get('id')]
+		if (scoreItem == null) {
+			return null
+		}
+		return scoreItem.score
+	},
+
+	setScore(itemId, score, context) {
+		return Dispatcher.trigger('score:set', {
+			value: {
+				itemId,
+				score,
+				context
+			}
+		})
+	},
+
+	clearScore(itemId, context) {
+		return Dispatcher.trigger('score:clear', {
+			value: {
+				itemId,
+				context
+			}
+		})
 	}
 }
 

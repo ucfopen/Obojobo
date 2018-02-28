@@ -16,7 +16,6 @@ import {
 	AssessmentUtil,
 	NavUtil,
 	QuestionUtil,
-	ScoreUtil,
 	ModalUtil,
 	FocusUtil
 } from '../../../__mocks__/viewer-state.mock'

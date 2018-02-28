@@ -5,7 +5,6 @@ import NavStore from './stores/nav-store'
 import QuestionStore from './stores/question-store'
 import AssessmentUtil from './util/assessment-util'
 import NavUtil from './util/nav-util'
-import ScoreUtil from './util/score-util'
 import APIUtil from './util/api-util'
 import QuestionUtil from './util/question-util'
 
@@ -26,7 +25,6 @@ export default {
 	util: {
 		AssessmentUtil: AssessmentUtil,
 		NavUtil: NavUtil,
-		ScoreUtil: ScoreUtil,
 		APIUtil: APIUtil,
 		QuestionUtil: QuestionUtil
 	}

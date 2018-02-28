@@ -421,7 +421,6 @@
 			var Dispatcher = _Common2.default.flux.Dispatcher
 			var FocusUtil = _Common2.default.util.FocusUtil
 			var Button = _Common2.default.components.Button
-			var ScoreUtil = _Viewer2.default.util.ScoreUtil
 			var QuestionUtil = _Viewer2.default.util.QuestionUtil
 
 			var Question = (function(_React$Component) {
@@ -454,7 +453,7 @@
 								return this.renderContentOnly()
 							}
 
-							var score = ScoreUtil.getScoreForModel(
+							var score = QuestionUtil.getScoreForModel(
 								this.props.moduleData.questionState,
 								this.props.model,
 								this.props.moduleData.navState.context
@@ -518,7 +517,7 @@
 					{
 						key: 'renderContentOnly',
 						value: function renderContentOnly(context) {
-							var score = ScoreUtil.getScoreForModel(
+							var score = QuestionUtil.getScoreForModel(
 								this.props.moduleData.questionState,
 								this.props.model,
 								this.props.moduleData.navState.context

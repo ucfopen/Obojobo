@@ -8,7 +8,6 @@ import QuestionStore from '../../../../src/scripts/viewer/stores/question-store'
 import NavStore from '../../../../src/scripts/viewer/stores/nav-store'
 import AssessmentStore from '../../../../src/scripts/viewer/stores/assessment-store'
 import QuestionUtil from '../../../../src/scripts/viewer/util/question-util'
-import ScoreUtil from '../../../../src/scripts/viewer/util/score-util'
 import OboModel from '../../../../__mocks__/_obo-model-with-chunks'
 import APIUtil from '../../../../src/scripts/viewer/util/api-util'
 
@@ -210,7 +209,7 @@ describe('MCAssessment', () => {
 
 		expect(tree).toMatchSnapshot()
 
-		ScoreUtil.setScore('id', 100)
+		QuestionUtil.setScore('id', 100)
 		const component2 = renderer.create(<Question model={model} moduleData={moduleData} />)
 		let tree2 = component2.toJSON()
 

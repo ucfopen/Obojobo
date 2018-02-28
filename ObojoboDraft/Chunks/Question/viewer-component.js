@@ -10,7 +10,6 @@ let { Dispatcher } = Common.flux
 let { FocusUtil } = Common.util
 let { Button } = Common.components
 
-let { ScoreUtil } = Viewer.util
 let { QuestionUtil } = Viewer.util
 
 import QuestionContent from './Content/viewer-component'
@@ -29,7 +28,7 @@ export default class Question extends React.Component {
 			return this.renderContentOnly()
 		}
 
-		let score = ScoreUtil.getScoreForModel(
+		let score = QuestionUtil.getScoreForModel(
 			this.props.moduleData.questionState,
 			this.props.model,
 			this.props.moduleData.navState.context
@@ -72,7 +71,7 @@ export default class Question extends React.Component {
 	}
 
 	renderContentOnly(context) {
-		let score = ScoreUtil.getScoreForModel(
+		let score = QuestionUtil.getScoreForModel(
 			this.props.moduleData.questionState,
 			this.props.model,
 			this.props.moduleData.navState.context

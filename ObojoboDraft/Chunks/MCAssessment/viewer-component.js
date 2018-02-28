@@ -13,7 +13,6 @@ let { DOMUtil } = Common.page
 // FocusUtil = Common.util.FocusUtil
 
 let { QuestionUtil } = Viewer.util
-let { ScoreUtil } = Viewer.util
 let { NavUtil } = Viewer.util
 
 // @TODO - This wont update if new children are passed in via props
@@ -121,7 +120,7 @@ export default class MCAssessment extends React.Component {
 	onClickSubmit(event) {
 		event.preventDefault()
 
-		ScoreUtil.setScore(
+		QuestionUtil.setScore(
 			this.getQuestionModel().get('id'),
 			this.calculateScore(),
 			this.props.moduleData.navState.context
@@ -198,7 +197,7 @@ export default class MCAssessment extends React.Component {
 	}
 
 	getScore() {
-		return ScoreUtil.getScoreForModel(
+		return QuestionUtil.getScoreForModel(
 			this.props.moduleData.questionState,
 			this.getQuestionModel(),
 			this.props.moduleData.navState.context
@@ -221,7 +220,11 @@ export default class MCAssessment extends React.Component {
 		let questionId = this.getQuestionModel().get('id')
 
 		if (payload.value.id === questionId) {
-			ScoreUtil.setScore(questionId, this.calculateScore(), this.props.moduleData.navState.context)
+			QuestionUtil.setScore(
+				questionId,
+				this.calculateScore(),
+				this.props.moduleData.navState.context
+			)
 		}
 	}
 

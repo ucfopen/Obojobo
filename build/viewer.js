@@ -72,7 +72,7 @@
 	/******/
 	/******/ /******/ __webpack_require__.p = 'build/' // Load entry module and return exports
 	/******/
-	/******/ /******/ return __webpack_require__((__webpack_require__.s = 55))
+	/******/ /******/ return __webpack_require__((__webpack_require__.s = 54))
 	/******/
 })(
 	/************************************************************************/
@@ -87,7 +87,7 @@
 		/***/ function(module, exports, __webpack_require__) {
 			'use strict'
 
-			var isDate = __webpack_require__(13)
+			var isDate = __webpack_require__(12)
 
 			var MILLISECONDS_IN_HOUR = 3600000
 			var MILLISECONDS_IN_MINUTE = 60000
@@ -1107,6 +1107,34 @@
 				},
 				isShowingExplanation: function isShowingExplanation(state, model) {
 					return state.data[model.get('id') + ':showingExplanation'] || false
+				},
+				getScoreForModel: function getScoreForModel(state, model) {
+					var context =
+						arguments.length > 2 && arguments[2] !== undefined ? arguments[2] : 'practice'
+
+					var scoreItem = void 0
+					if (state.scores[context] != null) scoreItem = state.scores[context][model.get('id')]
+					if (scoreItem == null) {
+						return null
+					}
+					return scoreItem.score
+				},
+				setScore: function setScore(itemId, score, context) {
+					return Dispatcher.trigger('score:set', {
+						value: {
+							itemId: itemId,
+							score: score,
+							context: context
+						}
+					})
+				},
+				clearScore: function clearScore(itemId, context) {
+					return Dispatcher.trigger('score:clear', {
+						value: {
+							itemId: itemId,
+							context: context
+						}
+					})
 				}
 			}
 
@@ -1118,7 +1146,7 @@
 		/***/ function(module, exports, __webpack_require__) {
 			'use strict'
 
-			var startOfWeek = __webpack_require__(34)
+			var startOfWeek = __webpack_require__(33)
 
 			/**
  * @category ISO Week Helpers
@@ -1653,59 +1681,6 @@
 		/***/ function(module, exports, __webpack_require__) {
 			'use strict'
 
-			Object.defineProperty(exports, '__esModule', {
-				value: true
-			})
-
-			var _Common = __webpack_require__(0)
-
-			var _Common2 = _interopRequireDefault(_Common)
-
-			function _interopRequireDefault(obj) {
-				return obj && obj.__esModule ? obj : { default: obj }
-			}
-
-			var Dispatcher = _Common2.default.flux.Dispatcher
-
-			var ScoreUtil = {
-				getScoreForModel: function getScoreForModel(state, model) {
-					var context =
-						arguments.length > 2 && arguments[2] !== undefined ? arguments[2] : 'practice'
-
-					var scoreItem = void 0
-					if (state.scores[context] != null) scoreItem = state.scores[context][model.get('id')]
-					if (scoreItem == null) {
-						return null
-					}
-					return scoreItem.score
-				},
-				setScore: function setScore(itemId, score, context) {
-					return Dispatcher.trigger('score:set', {
-						value: {
-							itemId: itemId,
-							score: score,
-							context: context
-						}
-					})
-				},
-				clearScore: function clearScore(itemId, context) {
-					return Dispatcher.trigger('score:clear', {
-						value: {
-							itemId: itemId,
-							context: context
-						}
-					})
-				}
-			}
-
-			exports.default = ScoreUtil
-
-			/***/
-		},
-		/* 12 */
-		/***/ function(module, exports, __webpack_require__) {
-			'use strict'
-
 			var parse = __webpack_require__(1)
 			var startOfISOWeek = __webpack_require__(6)
 
@@ -1754,7 +1729,7 @@
 
 			/***/
 		},
-		/* 13 */
+		/* 12 */
 		/***/ function(module, exports, __webpack_require__) {
 			'use strict'
 
@@ -1781,7 +1756,7 @@
 
 			/***/
 		},
-		/* 14 */
+		/* 13 */
 		/***/ function(module, exports, __webpack_require__) {
 			'use strict'
 			/* WEBPACK VAR INJECTION */ ;(function(process) {
@@ -1866,7 +1841,7 @@
 
 			/***/
 		},
-		/* 15 */
+		/* 14 */
 		/***/ function(module, exports, __webpack_require__) {
 			'use strict'
 
@@ -1891,13 +1866,13 @@
 				}
 			})()
 
-			__webpack_require__(47)
+			__webpack_require__(46)
 
 			var _navUtil = __webpack_require__(2)
 
 			var _navUtil2 = _interopRequireDefault(_navUtil)
 
-			var _obojoboLogo = __webpack_require__(54)
+			var _obojoboLogo = __webpack_require__(53)
 
 			var _obojoboLogo2 = _interopRequireDefault(_obojoboLogo)
 
@@ -1980,7 +1955,7 @@
 
 			/***/
 		},
-		/* 16 */
+		/* 15 */
 		/***/ function(module, exports, __webpack_require__) {
 			'use strict'
 
@@ -2009,13 +1984,9 @@
 
 			var _Common2 = _interopRequireDefault(_Common)
 
-			var _assessmentUtil = __webpack_require__(19)
+			var _assessmentUtil = __webpack_require__(18)
 
 			var _assessmentUtil2 = _interopRequireDefault(_assessmentUtil)
-
-			var _scoreUtil = __webpack_require__(11)
-
-			var _scoreUtil2 = _interopRequireDefault(_scoreUtil)
 
 			var _questionUtil = __webpack_require__(5)
 
@@ -2029,7 +2000,7 @@
 
 			var _navUtil2 = _interopRequireDefault(_navUtil)
 
-			var _ltiNetworkStates = __webpack_require__(17)
+			var _ltiNetworkStates = __webpack_require__(16)
 
 			var _ltiNetworkStates2 = _interopRequireDefault(_ltiNetworkStates)
 
@@ -2578,7 +2549,7 @@
 
 			/***/
 		},
-		/* 17 */
+		/* 16 */
 		/***/ function(module, exports, __webpack_require__) {
 			'use strict'
 
@@ -2593,7 +2564,7 @@
 
 			/***/
 		},
-		/* 18 */
+		/* 17 */
 		/***/ function(module, exports, __webpack_require__) {
 			'use strict'
 
@@ -2630,11 +2601,7 @@
 
 			var _questionUtil2 = _interopRequireDefault(_questionUtil)
 
-			var _scoreUtil = __webpack_require__(11)
-
-			var _scoreUtil2 = _interopRequireDefault(_scoreUtil)
-
-			var _uuid = __webpack_require__(41)
+			var _uuid = __webpack_require__(40)
 
 			var _uuid2 = _interopRequireDefault(_uuid)
 
@@ -2807,7 +2774,7 @@
 								_questionUtil2.default.hideExplanation(questionId, 'viewerClient')
 							}
 
-							_scoreUtil2.default.clearScore(questionId, payload.value.context)
+							_questionUtil2.default.clearScore(questionId, payload.value.context)
 						},
 
 						'score:set': function scoreSet(payload) {
@@ -2917,7 +2884,7 @@
 
 			/***/
 		},
-		/* 19 */
+		/* 18 */
 		/***/ function(module, exports, __webpack_require__) {
 			'use strict'
 
@@ -3106,13 +3073,13 @@
 
 			/***/
 		},
-		/* 20 */
+		/* 19 */
 		/***/ function(module, exports) {
 			module.exports = React
 
 			/***/
 		},
-		/* 21 */
+		/* 20 */
 		/***/ function(module, exports, __webpack_require__) {
 			'use strict'
 
@@ -3595,11 +3562,11 @@
 
 			/***/
 		},
-		/* 22 */
+		/* 21 */
 		/***/ function(module, exports, __webpack_require__) {
 			'use strict'
 
-			var _index = __webpack_require__(45)
+			var _index = __webpack_require__(44)
 
 			var _index2 = _interopRequireDefault(_index)
 
@@ -3611,11 +3578,11 @@
 
 			/***/
 		},
-		/* 23 */
+		/* 22 */
 		/***/ function(module, exports, __webpack_require__) {
 			'use strict'
 
-			var startOfDay = __webpack_require__(32)
+			var startOfDay = __webpack_require__(31)
 
 			var MILLISECONDS_IN_MINUTE = 60000
 			var MILLISECONDS_IN_DAY = 86400000
@@ -3659,16 +3626,16 @@
 
 			/***/
 		},
-		/* 24 */
+		/* 23 */
 		/***/ function(module, exports, __webpack_require__) {
 			'use strict'
 
-			var getDayOfYear = __webpack_require__(25)
-			var getISOWeek = __webpack_require__(26)
-			var getISOYear = __webpack_require__(12)
+			var getDayOfYear = __webpack_require__(24)
+			var getISOWeek = __webpack_require__(25)
+			var getISOYear = __webpack_require__(11)
 			var parse = __webpack_require__(1)
-			var isValid = __webpack_require__(27)
-			var enLocale = __webpack_require__(31)
+			var isValid = __webpack_require__(26)
+			var enLocale = __webpack_require__(30)
 
 			/**
  * @category Common Helpers
@@ -3994,13 +3961,13 @@
 
 			/***/
 		},
-		/* 25 */
+		/* 24 */
 		/***/ function(module, exports, __webpack_require__) {
 			'use strict'
 
 			var parse = __webpack_require__(1)
-			var startOfYear = __webpack_require__(35)
-			var differenceInCalendarDays = __webpack_require__(23)
+			var startOfYear = __webpack_require__(34)
+			var differenceInCalendarDays = __webpack_require__(22)
 
 			/**
  * @category Day Helpers
@@ -4028,13 +3995,13 @@
 
 			/***/
 		},
-		/* 26 */
+		/* 25 */
 		/***/ function(module, exports, __webpack_require__) {
 			'use strict'
 
 			var parse = __webpack_require__(1)
 			var startOfISOWeek = __webpack_require__(6)
-			var startOfISOYear = __webpack_require__(33)
+			var startOfISOYear = __webpack_require__(32)
 
 			var MILLISECONDS_IN_WEEK = 604800000
 
@@ -4069,11 +4036,11 @@
 
 			/***/
 		},
-		/* 27 */
+		/* 26 */
 		/***/ function(module, exports, __webpack_require__) {
 			'use strict'
 
-			var isDate = __webpack_require__(13)
+			var isDate = __webpack_require__(12)
 
 			/**
  * @category Common Helpers
@@ -4111,7 +4078,7 @@
 
 			/***/
 		},
-		/* 28 */
+		/* 27 */
 		/***/ function(module, exports, __webpack_require__) {
 			'use strict'
 
@@ -4169,7 +4136,7 @@
 
 			/***/
 		},
-		/* 29 */
+		/* 28 */
 		/***/ function(module, exports, __webpack_require__) {
 			'use strict'
 
@@ -4275,11 +4242,11 @@
 
 			/***/
 		},
-		/* 30 */
+		/* 29 */
 		/***/ function(module, exports, __webpack_require__) {
 			'use strict'
 
-			var buildFormattingTokensRegExp = __webpack_require__(28)
+			var buildFormattingTokensRegExp = __webpack_require__(27)
 
 			function buildFormatLocale() {
 				// Note: in English, the names of days of the week and months are capitalized.
@@ -4404,12 +4371,12 @@
 
 			/***/
 		},
-		/* 31 */
+		/* 30 */
 		/***/ function(module, exports, __webpack_require__) {
 			'use strict'
 
-			var buildDistanceInWordsLocale = __webpack_require__(29)
-			var buildFormatLocale = __webpack_require__(30)
+			var buildDistanceInWordsLocale = __webpack_require__(28)
+			var buildFormatLocale = __webpack_require__(29)
 
 			/**
  * @category Locales
@@ -4422,7 +4389,7 @@
 
 			/***/
 		},
-		/* 32 */
+		/* 31 */
 		/***/ function(module, exports, __webpack_require__) {
 			'use strict'
 
@@ -4454,11 +4421,11 @@
 
 			/***/
 		},
-		/* 33 */
+		/* 32 */
 		/***/ function(module, exports, __webpack_require__) {
 			'use strict'
 
-			var getISOYear = __webpack_require__(12)
+			var getISOYear = __webpack_require__(11)
 			var startOfISOWeek = __webpack_require__(6)
 
 			/**
@@ -4493,7 +4460,7 @@
 
 			/***/
 		},
-		/* 34 */
+		/* 33 */
 		/***/ function(module, exports, __webpack_require__) {
 			'use strict'
 
@@ -4538,7 +4505,7 @@
 
 			/***/
 		},
-		/* 35 */
+		/* 34 */
 		/***/ function(module, exports, __webpack_require__) {
 			'use strict'
 
@@ -4572,7 +4539,7 @@
 
 			/***/
 		},
-		/* 36 */
+		/* 35 */
 		/***/ function(module, exports, __webpack_require__) {
 			'use strict'
 			/* WEBPACK VAR INJECTION */ ;(function(process) {
@@ -4601,7 +4568,7 @@
 
 				if (process.env.NODE_ENV !== 'production') {
 					var invariant = __webpack_require__(8)
-					var warning = __webpack_require__(14)
+					var warning = __webpack_require__(13)
 					var ReactPropTypesSecret = __webpack_require__(9)
 					var loggedTypeFailures = {}
 				}
@@ -4685,7 +4652,7 @@
 
 			/***/
 		},
-		/* 37 */
+		/* 36 */
 		/***/ function(module, exports, __webpack_require__) {
 			'use strict'
 			/**
@@ -4748,7 +4715,7 @@
 
 			/***/
 		},
-		/* 38 */
+		/* 37 */
 		/***/ function(module, exports, __webpack_require__) {
 			'use strict'
 			/* WEBPACK VAR INJECTION */ ;(function(process) {
@@ -4777,10 +4744,10 @@
 
 				var emptyFunction = __webpack_require__(7)
 				var invariant = __webpack_require__(8)
-				var warning = __webpack_require__(14)
+				var warning = __webpack_require__(13)
 
 				var ReactPropTypesSecret = __webpack_require__(9)
-				var checkPropTypes = __webpack_require__(36)
+				var checkPropTypes = __webpack_require__(35)
 
 				module.exports = function(isValidElement, throwOnDirectAccess) {
 					/* global Symbol */
@@ -5435,7 +5402,7 @@
 
 			/***/
 		},
-		/* 39 */
+		/* 38 */
 		/***/ function(module, exports, __webpack_require__) {
 			'use strict'
 			/* WEBPACK VAR INJECTION */ ;(function(process) {
@@ -5477,18 +5444,18 @@
 					// By explicitly using `prop-types` you are opting into new development behavior.
 					// http://fb.me/prop-types-in-prod
 					var throwOnDirectAccess = true
-					module.exports = __webpack_require__(38)(isValidElement, throwOnDirectAccess)
+					module.exports = __webpack_require__(37)(isValidElement, throwOnDirectAccess)
 				} else {
 					// By explicitly using `prop-types` you are opting into new production behavior.
 					// http://fb.me/prop-types-in-prod
-					module.exports = __webpack_require__(37)()
+					module.exports = __webpack_require__(36)()
 				}
 				/* WEBPACK VAR INJECTION */
 			}.call(exports, __webpack_require__(3)))
 
 			/***/
 		},
-		/* 40 */
+		/* 39 */
 		/***/ function(module, exports, __webpack_require__) {
 			'use strict'
 
@@ -5541,15 +5508,15 @@
 				value: true
 			})
 
-			var _react = __webpack_require__(20)
+			var _react = __webpack_require__(19)
 
 			var _react2 = _interopRequireDefault(_react)
 
-			var _propTypes = __webpack_require__(39)
+			var _propTypes = __webpack_require__(38)
 
 			var _propTypes2 = _interopRequireDefault(_propTypes)
 
-			var _format = __webpack_require__(24)
+			var _format = __webpack_require__(23)
 
 			var _format2 = _interopRequireDefault(_format)
 
@@ -5895,7 +5862,7 @@
 
 			/***/
 		},
-		/* 41 */
+		/* 40 */
 		/***/ function(module, exports, __webpack_require__) {
 			'use strict'
 
@@ -5917,7 +5884,7 @@
 
 			/***/
 		},
-		/* 42 */
+		/* 41 */
 		/***/ function(module, exports, __webpack_require__) {
 			'use strict'
 
@@ -5942,7 +5909,7 @@
 				}
 			})()
 
-			__webpack_require__(46)
+			__webpack_require__(45)
 
 			var _navUtil = __webpack_require__(2)
 
@@ -6035,7 +6002,7 @@
 
 			/***/
 		},
-		/* 43 */
+		/* 42 */
 		/***/ function(module, exports, __webpack_require__) {
 			'use strict'
 
@@ -6060,7 +6027,7 @@
 				}
 			})()
 
-			__webpack_require__(48)
+			__webpack_require__(47)
 
 			var _navStore = __webpack_require__(10)
 
@@ -6070,19 +6037,19 @@
 
 			var _navUtil2 = _interopRequireDefault(_navUtil)
 
-			var _logo = __webpack_require__(15)
+			var _logo = __webpack_require__(14)
 
 			var _logo2 = _interopRequireDefault(_logo)
 
-			var _hamburger = __webpack_require__(52)
+			var _hamburger = __webpack_require__(51)
 
 			var _hamburger2 = _interopRequireDefault(_hamburger)
 
-			var _arrow = __webpack_require__(51)
+			var _arrow = __webpack_require__(50)
 
 			var _arrow2 = _interopRequireDefault(_arrow)
 
-			var _lockIcon = __webpack_require__(53)
+			var _lockIcon = __webpack_require__(52)
 
 			var _lockIcon2 = _interopRequireDefault(_lockIcon)
 
@@ -6313,7 +6280,7 @@
 
 			/***/
 		},
-		/* 44 */
+		/* 43 */
 		/***/ function(module, exports, __webpack_require__) {
 			'use strict'
 
@@ -6338,23 +6305,23 @@
 				}
 			})()
 
-			__webpack_require__(50)
-
 			__webpack_require__(49)
+
+			__webpack_require__(48)
 
 			var _Common = __webpack_require__(0)
 
 			var _Common2 = _interopRequireDefault(_Common)
 
-			var _react = __webpack_require__(20)
+			var _react = __webpack_require__(19)
 
 			var _react2 = _interopRequireDefault(_react)
 
-			var _reactIdleTimer = __webpack_require__(40)
+			var _reactIdleTimer = __webpack_require__(39)
 
 			var _reactIdleTimer2 = _interopRequireDefault(_reactIdleTimer)
 
-			var _inlineNavButton = __webpack_require__(42)
+			var _inlineNavButton = __webpack_require__(41)
 
 			var _inlineNavButton2 = _interopRequireDefault(_inlineNavButton)
 
@@ -6366,15 +6333,15 @@
 
 			var _apiUtil2 = _interopRequireDefault(_apiUtil)
 
-			var _logo = __webpack_require__(15)
+			var _logo = __webpack_require__(14)
 
 			var _logo2 = _interopRequireDefault(_logo)
 
-			var _questionStore = __webpack_require__(18)
+			var _questionStore = __webpack_require__(17)
 
 			var _questionStore2 = _interopRequireDefault(_questionStore)
 
-			var _assessmentStore = __webpack_require__(16)
+			var _assessmentStore = __webpack_require__(15)
 
 			var _assessmentStore2 = _interopRequireDefault(_assessmentStore)
 
@@ -6382,7 +6349,7 @@
 
 			var _navStore2 = _interopRequireDefault(_navStore)
 
-			var _nav = __webpack_require__(43)
+			var _nav = __webpack_require__(42)
 
 			var _nav2 = _interopRequireDefault(_nav)
 
@@ -6916,7 +6883,7 @@
 
 			/***/
 		},
-		/* 45 */
+		/* 44 */
 		/***/ function(module, exports, __webpack_require__) {
 			'use strict'
 
@@ -6924,15 +6891,15 @@
 				value: true
 			})
 
-			var _viewerApp = __webpack_require__(44)
+			var _viewerApp = __webpack_require__(43)
 
 			var _viewerApp2 = _interopRequireDefault(_viewerApp)
 
-			var _assessmentStore = __webpack_require__(16)
+			var _assessmentStore = __webpack_require__(15)
 
 			var _assessmentStore2 = _interopRequireDefault(_assessmentStore)
 
-			var _ltiNetworkStates = __webpack_require__(17)
+			var _ltiNetworkStates = __webpack_require__(16)
 
 			var _ltiNetworkStates2 = _interopRequireDefault(_ltiNetworkStates)
 
@@ -6940,21 +6907,17 @@
 
 			var _navStore2 = _interopRequireDefault(_navStore)
 
-			var _questionStore = __webpack_require__(18)
+			var _questionStore = __webpack_require__(17)
 
 			var _questionStore2 = _interopRequireDefault(_questionStore)
 
-			var _assessmentUtil = __webpack_require__(19)
+			var _assessmentUtil = __webpack_require__(18)
 
 			var _assessmentUtil2 = _interopRequireDefault(_assessmentUtil)
 
 			var _navUtil = __webpack_require__(2)
 
 			var _navUtil2 = _interopRequireDefault(_navUtil)
-
-			var _scoreUtil = __webpack_require__(11)
-
-			var _scoreUtil2 = _interopRequireDefault(_scoreUtil)
 
 			var _apiUtil = __webpack_require__(4)
 
@@ -6985,12 +6948,16 @@
 				util: {
 					AssessmentUtil: _assessmentUtil2.default,
 					NavUtil: _navUtil2.default,
-					ScoreUtil: _scoreUtil2.default,
 					APIUtil: _apiUtil2.default,
 					QuestionUtil: _questionUtil2.default
 				}
 			}
 
+			/***/
+		},
+		/* 45 */
+		/***/ function(module, exports) {
+			// removed by extract-text-webpack-plugin
 			/***/
 		},
 		/* 46 */
@@ -7015,41 +6982,36 @@
 		},
 		/* 50 */
 		/***/ function(module, exports) {
-			// removed by extract-text-webpack-plugin
-			/***/
-		},
-		/* 51 */
-		/***/ function(module, exports) {
 			module.exports =
 				"data:image/svg+xml,%3C?xml version='1.0' encoding='utf-8'?%3E %3C!-- Generator: Adobe Illustrator 19.0.0, SVG Export Plug-In . SVG Version: 6.00 Build 0) --%3E %3Csvg version='1.1' id='Layer_1' xmlns='http://www.w3.org/2000/svg' xmlns:xlink='http://www.w3.org/1999/xlink' x='0px' y='0px' viewBox='-290 387 30 20' style='enable-background:new -290 387 30 20;' xml:space='preserve'%3E %3Cpath d='M-272.5,405.4l-12.1-7.4c-0.6-0.4-0.6-1.7,0-2.1l12.1-7.4c0.5-0.3,1,0.3,1,1.1v14.7C-271.4,405.2-272,405.7-272.5,405.4z' fill='rgba(0, 0, 0, .2)' transform='translate(2, 0)'/%3E %3C/svg%3E"
 
 			/***/
 		},
-		/* 52 */
+		/* 51 */
 		/***/ function(module, exports) {
 			module.exports =
 				"data:image/svg+xml,%3Csvg width='20' height='10' viewBox='0 0 100 100' xmlns='http://www.w3.org/2000/svg' version='1.1'%3E %3Cline x1='0' y1='10' x2='100' y2='10' stroke='rgba(0, 0, 0, .2)' stroke-width='20' stroke-linecap='round' /%3E %3Cline x1='0' y1='50' x2='100' y2='50' stroke='rgba(0, 0, 0, .2)' stroke-width='20' stroke-linecap='round' /%3E %3Cline x1='0' y1='90' x2='100' y2='90' stroke='rgba(0, 0, 0, .2)' stroke-width='20' stroke-linecap='round' /%3E %3C/svg%3E"
 
 			/***/
 		},
-		/* 53 */
+		/* 52 */
 		/***/ function(module, exports) {
 			module.exports =
 				"data:image/svg+xml,%3C?xml version='1.0' encoding='utf-8'?%3E %3Csvg version='1.1' xmlns='http://www.w3.org/2000/svg' xmlns:xlink='http://www.w3.org/1999/xlink' viewBox='0 0 10 16' style='enable-background:new 0 0 10 16;' xml:space='preserve'%3E %3Cpath fill='white' id='XMLID_6_' d='M9.1,6H8.5V3.5C8.5,1.5,6.9,0,5,0C3.1,0,1.6,1.5,1.6,3.5l0,2.5H0.9C0.4,6,0,6.4,0,6.9v8.2 C0,15.6,0.4,16,0.9,16h8.2c0.5,0,0.9-0.4,0.9-0.9V6.9C10,6.4,9.6,6,9.1,6z M3.3,3.4c0-0.9,0.8-1.6,1.7-1.6c0.9,0,1.7,0.8,1.7,1.7V6 H3.3V3.4z'/%3E %3C/svg%3E"
 
 			/***/
 		},
-		/* 54 */
+		/* 53 */
 		/***/ function(module, exports) {
 			module.exports =
 				"data:image/svg+xml,%3C?xml version='1.0' encoding='utf-8'?%3E %3C!-- Generator: Adobe Illustrator 15.0.2, SVG Export Plug-In . SVG Version: 6.00 Build 0) --%3E %3C!DOCTYPE svg PUBLIC '-//W3C//DTD SVG 1.1//EN' 'http://www.w3.org/Graphics/SVG/1.1/DTD/svg11.dtd'%3E %3Csvg version='1.1' id='Layer_1' xmlns='http://www.w3.org/2000/svg' xmlns:xlink='http://www.w3.org/1999/xlink' x='0px' y='0px' width='253px' height='64.577px' viewBox='0 0 253 64.577' enable-background='new 0 0 253 64.577' xml:space='preserve' fill='black'%3E %3Cpath d='M18.399,53.629c-0.01,0-0.021,0-0.031,0C7.023,53.396,0,43.151,0,33.793c0-10.79,8.426-19.905,18.399-19.905 c11.006,0,18.399,10.292,18.399,19.905c0,10.719-8.239,19.617-18.367,19.835C18.421,53.629,18.41,53.629,18.399,53.629z M18.399,18.257c-8.393,0-14.031,8.033-14.031,15.536c0.295,7.574,5.625,15.468,14.031,15.468c8.393,0,14.031-7.998,14.031-15.468 C32.43,25.372,26.005,18.257,18.399,18.257z'/%3E %3Cpath d='M58.15,53.629c-6.02,0-13.502-3.57-16.154-10.394c-0.287-0.733-0.603-1.542-0.603-3.281l0-38.454 c0-0.398,0.158-0.779,0.439-1.061S42.495,0,42.893,0h1.369c0.829,0,1.5,0.671,1.5,1.5v18.495c3.827-4.056,8.188-6.106,13.004-6.106 c11.111,0,17.989,10.332,17.989,19.905C76.444,44.75,68.099,53.629,58.15,53.629z M45.761,27.446v12.437 c0,4.652,7.208,9.378,12.389,9.378c8.516,0,14.236-7.998,14.236-15.468c0-7.472-5.208-15.536-13.621-15.536 C51.235,18.257,47.065,24.927,45.761,27.446z'/%3E %3Cpath d='M99.064,53.629c-0.01,0-0.021,0-0.031,0c-11.346-0.233-18.369-10.478-18.369-19.835 c0-10.79,8.426-19.905,18.399-19.905c11.005,0,18.398,10.292,18.398,19.905c0,10.719-8.239,19.617-18.366,19.835 C99.086,53.629,99.075,53.629,99.064,53.629z M99.064,18.257c-8.393,0-14.031,8.033-14.031,15.536 c0.294,7.574,5.624,15.468,14.031,15.468c8.393,0,14.031-7.998,14.031-15.468C113.096,25.372,106.67,18.257,99.064,18.257z'/%3E %3Cpath d='M153.252,53.629c-0.01,0-0.021,0-0.031,0c-11.346-0.233-18.369-10.478-18.369-19.835 c0-10.79,8.426-19.905,18.399-19.905c11.006,0,18.399,10.292,18.399,19.905c0,10.719-8.239,19.617-18.367,19.835 C153.273,53.629,153.263,53.629,153.252,53.629z M153.252,18.257c-8.393,0-14.031,8.033-14.031,15.536 c0.294,7.574,5.624,15.468,14.031,15.468c8.393,0,14.031-7.998,14.031-15.468C167.283,25.372,160.858,18.257,153.252,18.257z'/%3E %3Cpath d='M234.601,53.629c-0.01,0-0.021,0-0.031,0c-11.345-0.233-18.367-10.478-18.367-19.835 c0-10.79,8.426-19.905,18.398-19.905c11.006,0,18.399,10.292,18.399,19.905c0,10.719-8.239,19.617-18.367,19.835 C234.622,53.629,234.611,53.629,234.601,53.629z M234.601,18.257c-8.393,0-14.03,8.033-14.03,15.536 c0.294,7.574,5.624,15.468,14.03,15.468c8.394,0,14.031-7.998,14.031-15.468C248.632,25.372,242.206,18.257,234.601,18.257z'/%3E %3Cpath d='M193.62,53.629c-6.021,0-13.503-3.57-16.155-10.394l-0.098-0.239c-0.254-0.607-0.603-1.438-0.603-3.042 c0.002-15.911,0.098-38.237,0.099-38.461c0.003-0.826,0.674-1.494,1.5-1.494h1.368c0.829,0,1.5,0.671,1.5,1.5v18.495 c3.827-4.055,8.188-6.106,13.005-6.106c11.111,0,17.988,10.332,17.988,19.904C211.915,44.75,203.569,53.629,193.62,53.629z M181.231,27.446v12.437c0,4.652,7.208,9.378,12.389,9.378c8.515,0,14.235-7.998,14.235-15.468c0-7.472-5.207-15.536-13.619-15.536 C186.705,18.257,182.535,24.927,181.231,27.446z'/%3E %3Cpath d='M118.017,64.577c-0.013,0-0.026,0-0.039,0c-2.437-0.063-5.533-0.434-7.865-2.765 c-0.308-0.308-0.467-0.734-0.436-1.167c0.031-0.434,0.249-0.833,0.597-1.094l1.096-0.821c0.566-0.425,1.353-0.396,1.887,0.072 c1.083,0.947,2.617,1.408,4.691,1.408c2.913,0,6.3-2.752,6.3-6.3V16.073c0-0.829,0.671-1.5,1.5-1.5h1.368c0.829,0,1.5,0.671,1.5,1.5 v37.835C128.616,60.195,123.03,64.577,118.017,64.577z M127.116,8.268h-1.368c-0.829,0-1.5-0.671-1.5-1.5V2.389 c0-0.829,0.671-1.5,1.5-1.5h1.368c0.829,0,1.5,0.671,1.5,1.5v4.379C128.616,7.597,127.945,8.268,127.116,8.268z'/%3E %3C/svg%3E"
 
 			/***/
 		},
-		/* 55 */
+		/* 54 */
 		/***/ function(module, exports, __webpack_require__) {
-			__webpack_require__(21)
-			module.exports = __webpack_require__(22)
+			__webpack_require__(20)
+			module.exports = __webpack_require__(21)
 
 			/***/
 		}
