@@ -111,62 +111,6 @@ class AssessmentStore extends Store {
 		}
 	}
 
-	_init_OLD_DELETE_ME(history) {
-		let question
-		if (history == null) {
-			history = []
-		}
-		this.state = {
-			assessments: {}
-		}
-
-		history.sort((a, b) => new Date(a.startTime).getTime() > new Date(b.startTime).getTime())
-
-		let unfinishedAttempt = null
-		let nonExistantQuestions = []
-
-		for (let attempt of Array.from(history)) {
-			if (!this.state.assessments[attempt.assessmentId]) {
-				this.state.assessments[attempt.assessmentId] = getNewAssessmentObject(attempt.assessmentId)
-			}
-
-			if (attempt.scores && attempt.scores.assessmentScore) {
-				this.state.assessments[attempt.assessmentId].score = attempt.scores.assessmentScore
-			}
-
-			if (!attempt.endTime) {
-				// @state.assessments[attempt.assessmentId].current = attempt
-				unfinishedAttempt = attempt
-			} else {
-				this.state.assessments[attempt.assessmentId].attempts.push(attempt)
-			}
-
-			for (question of Array.from(attempt.state.questions)) {
-				if (!OboModel.models[question.id]) {
-					nonExistantQuestions.push(question)
-				}
-			}
-		}
-
-		for (question of Array.from(nonExistantQuestions)) {
-			OboModel.create(question)
-		}
-
-		if (unfinishedAttempt) {
-			return ModalUtil.show(
-				<SimpleDialog
-					ok
-					title="Resume Attempt"
-					onConfirm={this.onResumeAttemptConfirm.bind(this, unfinishedAttempt)}
-				>
-					<p>
-						It looks like you were in the middle of an attempt. We'll resume you where you left off.
-					</p>
-				</SimpleDialog>
-			)
-		}
-	}
-
 	onResumeAttemptConfirm(unfinishedAttempt) {
 		ModalUtil.hide()
 
@@ -250,10 +194,8 @@ class AssessmentStore extends Store {
 
 		assessment.current.state.questions.forEach(question => QuestionUtil.hideQuestion(question.id))
 		assessment.currentResponses.forEach(questionId => QuestionUtil.clearResponse(questionId))
-		// assessment.attempts.push(endAttemptResp.attempt)
 		assessment.current = null
-		// assessment.score = endAttemptResp.assessmentScore
-		// assessment.lti = endAttemptResp.lti
+
 		this.updateAttempts([endAttemptResp])
 
 		model.processTrigger('onEndAttempt')

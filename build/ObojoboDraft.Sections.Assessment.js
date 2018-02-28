@@ -754,10 +754,6 @@
 			var AssessmentUtil = _Viewer2.default.util.AssessmentUtil
 			var NavUtil = _Viewer2.default.util.NavUtil
 
-			//@TODO
-
-			var APIUtil = _Viewer2.default.util.APIUtil
-
 			var Assessment = (function(_React$Component) {
 				_inherits(Assessment, _React$Component)
 

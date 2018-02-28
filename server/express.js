@@ -53,9 +53,6 @@ app.post('/api/lti/sendAssessmentScore', (req, res, next) => {
 		.then(result => {
 			ltiScoreResult = result
 
-			// 	return Assessment.getLatestSuccessfulLTIAssessmentScoreRecord(assessmentScoreId)
-			// })
-			// .then(latestSuccessfulLTIAssessmentScoreRecord => {
 			res.success({
 				score: ltiScoreResult.scoreSent,
 				status: ltiScoreResult.status,
@@ -66,8 +63,6 @@ app.post('/api/lti/sendAssessmentScore', (req, res, next) => {
 		})
 		.catch(e => {
 			logAndRespondToUnexpected(res, e, new Error('Unexpected error starting a new attempt'))
-
-			// return next()
 		})
 })
 

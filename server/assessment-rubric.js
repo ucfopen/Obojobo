@@ -13,8 +13,8 @@ Expected input for type 'pass-fail':
 	type: 'pass-file',
 	*passingAttemptScore: 0-100 [Default = 100],
 	*passedResult: (0-100 | '$attempt_score') [Default = 100],
-	*failedResult: (0-100 | '$no_score' | '$attempt_score' | '$highest_attempt_score' ) [Default = 0],
-	*unableToPassResult: (0-100 | '$no_score' | '$attempt_score' | '$highest_attempt_score' | null) [Default = null],
+	*failedResult: (0-100 | 'no-score' | '$attempt_score' | '$highest_attempt_score' ) [Default = 0],
+	*unableToPassResult: (0-100 | 'no-score' | '$attempt_score' | '$highest_attempt_score' | null) [Default = null],
 	*mods: Array<Mod> (Default = [])
 }
 
@@ -112,80 +112,6 @@ let isValueInRange = (value, range, replaceDict) => {
 	return isMinRequirementMet && isMaxRequirementMet
 }
 
-// let getModsAndRewardTotal = (
-// 	rubric,
-// 	modsAvailable,
-// 	attemptNumber,
-// 	isLastAttempt,
-// 	attemptScore,
-// 	highestAttemptScore,
-// 	totalNumberOfAttemptsAvailable
-// ) => {
-// 	let rewardedMods = []
-// 	let rewardedModsIndicies = []
-// 	let rewardTotal = 0
-// 	let assessmentScore
-// 	let status
-
-// 	let attemptReplaceDict = {}
-// 	attemptReplaceDict[AssessmentRubric.VAR_LAST_ATTEMPT] = totalNumberOfAttemptsAvailable
-
-// 	let scoreReplaceDict = {}
-// 	scoreReplaceDict[AssessmentRubric.VAR_ATTEMPT_SCORE] = latestAttemptScore
-
-// 	// replaceDict[AssessmentRubric.VAR_HIGHEST_ATTEMPT_SCORE] = highestAttemptScore
-
-// 	if (attemptScore >= rubric.passingAttemptScore) {
-// 		status = AssessmentRubric.STATUS_PASSED
-// 	} else if (
-// 		isLastAttempt &&
-// 		rubric.unableToPassResult !== null &&
-// 		highestAttemptScore < rubric.passingAttemptScore
-// 	) {
-// 		status = AssessmentRubric.STATUS_UNABLE_TO_PASS
-// 	} else {
-// 		status = AssessmentRubric.STATUS_FAILED
-// 	}
-
-// 	switch (status) {
-// 		case AssessmentRubric.STATUS_UNABLE_TO_PASS:
-// 			assessmentScore = tryGetParsedFloat(rubric.unableToPassResult, scoreReplaceDict, true)
-// 			break
-
-// 		case AssessmentRubric.STATUS_FAILED:
-// 			scoreReplaceDict[AssessmentRubric.NO_SCORE] = null
-// 			assessmentScore = tryGetParsedFloat(rubric.failedResult, scoreReplaceDict, true)
-// 			break
-
-// 		case AssessmentRubric.STATUS_PASSED:
-// 			assessmentScore = tryGetParsedFloat(rubric.passedResult, scoreReplaceDict, true)
-
-// 			// find matching mods and apply them
-// 			modsAvailable.forEach((mod, i) => {
-// 				if (
-// 					isValueInRange(attemptNumber, mod.attemptCondition, attemptReplaceDict) &&
-// 					isValueInRange(attemptScore, mod.scoreCondition, scoreReplaceDict)
-// 				) {
-// 					rewardedMods.push(mod)
-// 					rewardedModsIndicies.push(i)
-// 				}
-// 			})
-
-// 			rewardTotal = rewardedMods.reduce((acc, mod) => acc + tryGetParsedFloat(mod.reward), 0)
-// 			break
-// 	}
-
-// 	return {
-// 		attemptNumber,
-// 		attemptScore,
-// 		assessmentScore,
-// 		rewardedMods: rewardedModsIndicies,
-// 		rewardTotal,
-// 		assessmentModdedScore: assessmentScore === null ? null : assessmentScore + rewardTotal,
-// 		status
-// 	}
-// }
-
 let createRubric = rubric => {
 	let rubricType
 	if (!rubric || !rubric.type) {
@@ -221,7 +147,6 @@ let createRubric = rubric => {
 	return rubric
 }
 
-//export default
 class AssessmentRubric {
 	constructor(rubric) {
 		let mods = rubric && rubric.mods ? rubric.mods.slice(0, MOD_AMOUNT_LIMIT) : []
@@ -267,23 +192,6 @@ class AssessmentRubric {
 		let attemptNumber = attemptScores.length
 		let isLastAttempt = attemptNumber === totalNumberOfAttemptsAvailable
 
-		// let replaceDict = {}
-		// replaceDict[AssessmentRubric.VAR_LAST_ATTEMPT] = totalNumberOfAttemptsAvailable
-		// replaceDict[AssessmentRubric.VAR_ATTEMPT_SCORE] = latestAttemptScore
-		// replaceDict[AssessmentRubric.VAR_HIGHEST_ATTEMPT_SCORE] = highestAttemptScore
-		// replaceDict[AssessmentRubric.NO_SCORE] = null
-
-		// return getModsAndRewardTotal(
-		// 	this.rubric,
-		// 	this.mods,
-		// 	attemptScores.length,
-		// 	attemptScores.length === totalNumberOfAttemptsAvailable,
-		// 	latestAttemptScore,
-		// 	highestAttemptScore,
-		// 	totalNumberOfAttemptsAvailable
-		// 	// replaceDict
-		// )
-
 		let rewardedMods = []
 		let rewardedModsIndicies = []
 		let rewardTotal = 0
@@ -295,8 +203,6 @@ class AssessmentRubric {
 
 		let scoreReplaceDict = {}
 		scoreReplaceDict[AssessmentRubric.VAR_ATTEMPT_SCORE] = latestAttemptScore
-		// scoreReplaceDict[AssessmentRubric.NO_SCORE] = null
-		// replaceDict[AssessmentRubric.VAR_HIGHEST_ATTEMPT_SCORE] = highestAttemptScore
 
 		if (latestAttemptScore >= this.rubric.passingAttemptScore) {
 			status = AssessmentRubric.STATUS_PASSED
@@ -368,8 +274,5 @@ AssessmentRubric.VAR_LAST_ATTEMPT = '$last_attempt'
 
 AssessmentRubric.NO_SCORE = 'no-score'
 // AssessmentRubric.VAR_CLOSE_DATE = '$close_date'
-
-// consdier removing scoreCondition, not sure what it could be used for
-// consider a limit to the number of mods!
 
 module.exports = AssessmentRubric

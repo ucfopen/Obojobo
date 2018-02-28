@@ -14,9 +14,6 @@ let { ScoreStore } = Viewer.stores
 let { AssessmentUtil } = Viewer.util
 let { NavUtil } = Viewer.util
 
-//@TODO
-let APIUtil = Viewer.util.APIUtil
-
 import AttemptIncompleteDialog from './attempt-incomplete-dialog'
 import LTIStatus from './lti-status'
 

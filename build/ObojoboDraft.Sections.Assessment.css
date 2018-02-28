@@ -80,8 +80,3 @@
   .obojobo-draft--sections--assessment--lti-status > div > p {
     font-size: 0.9em;
     line-height: 1.4em; }
-  .obojobo-draft--sections--assessment--lti-status.is-synced {
-    text-align: center;
-    background-color: rgba(56, 174, 36, 0.1); }
-    .obojobo-draft--sections--assessment--lti-status.is-synced > h2 {
-      margin-bottom: 1em; }

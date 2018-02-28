@@ -55,28 +55,6 @@ class Assessment extends DraftNode {
 			})
 	}
 
-	// @TODO: most things touching the db should end up in models. figure this out
-	// @TODO: Remove this method (getAttempts should be used instead)
-	// static getAttemptHistory(userId, draftId) {
-	// 	return db.manyOrNone(
-	// 		`
-	// 			SELECT
-	// 				id AS "attemptId",
-	// 				created_at as "startTime",
-	// 				completed_at as "endTime",
-	// 				assessment_id as "assessmentId",
-	// 				state,
-	// 				result
-	// 			FROM attempts
-	// 			WHERE
-	// 				user_id = $[userId]
-	// 				AND draft_id = $[draftId]
-	// 				AND preview = FALSE
-	// 			ORDER BY completed_at DESC`,
-	// 		{ userId: userId, draftId: draftId }
-	// 	)
-	// }
-
 	static createAttemptResponse(userId, draftId, attempt) {
 		return {
 			userId: userId,
@@ -92,12 +70,7 @@ class Assessment extends DraftNode {
 			questionScores: attempt.result ? attempt.result.questionScores : [],
 			attemptScore: attempt.result ? attempt.result.attemptScore : null,
 			assessmentScore: parseInt(attempt.assessment_score, 10),
-			assessmentScoreDetails: attempt.score_details //,
-			// ltiState: {
-			// 	score: attempt.score_sent,
-			// 	status: attempt.status,
-			// 	statusDetails: attempt.status_details
-			// }
+			assessmentScoreDetails: attempt.score_details
 		}
 	}
 
@@ -141,7 +114,6 @@ class Assessment extends DraftNode {
 				let assessments = {}
 
 				result.forEach(attempt => {
-					console.log('***************attempt be all', attempt)
 					attempt = Assessment.createAttemptResponse(userId, draftId, attempt)
 
 					if (!assessments[attempt.assessmentId]) {
@@ -157,17 +129,6 @@ class Assessment extends DraftNode {
 				for (let assessmentId in assessments) {
 					assessmentsArr.push(assessments[assessmentId])
 				}
-
-				// if (optionalAssessmentId !== null) {
-				// 	if (assessmentsArr.length > 0) {
-				// 		return assessmentsArr[0]
-				// 	} else {
-				// 		return {
-				// 			assessmentId: optionalAssessmentId,
-				// 			attempts: []
-				// 		}
-				// 	}
-				// }
 
 				return assessmentsArr
 			})
@@ -221,9 +182,7 @@ class Assessment extends DraftNode {
 	}
 
 	static getAttemptNumber(userId, draftId, attemptId) {
-		console.log('GAN', userId, draftId, attemptId)
 		return Assessment.getAttemptIdsForUserForDraft(userId, draftId).then(attempts => {
-			console.log('GAN attempts', attempts)
 			for (let attempt of attempts) {
 				if (attempt.id === attemptId) return attempt.attempt_number
 			}
@@ -334,7 +293,6 @@ class Assessment extends DraftNode {
 		assessmentScoreDetails,
 		preview
 	) {
-		console.log('INS', attemptScoreResult)
 		return db
 			.tx(t => {
 				const q1 = db.one(
@@ -401,26 +359,6 @@ class Assessment extends DraftNode {
 			.then(result => result.id)
 	}
 
-	// static getHighestLatestAssessmentScoreRecord(userId, draftId, assessmentId) {
-	// 	return db.oneOrNone(
-	// 		`
-	// 			SELECT *
-	// 			FROM assessment_scores
-	// 			WHERE
-	// 				user_id = $[userId]
-	// 				AND draft_id = $[draftId]
-	// 				AND assessment_id = $[assessmentId]
-	// 			ORDER BY created_at DESC
-	// 			LIMIT 1
-	// 		`,
-	// 		{
-	// 			userId,
-	// 			draftId,
-	// 			assessmentId
-	// 		}
-	// 	)
-	// }
-
 	constructor(draftTree, node, initFn) {
 		super(draftTree, node, initFn)
 		this.registerEvents({
@@ -445,20 +383,6 @@ class Assessment extends DraftNode {
 				return this.constructor.getAttempts(userId, req.params.draftId)
 			})
 			.then(attempts => {
-				// 	attempts = attemptsResult
-
-				// 	//@TODO attempts is a bad name, it's actually an array of objects that contain an 'attempts' array
-
-				// 	return lti.getLTIStatesByAssessmentIdForUserAndDraft(userId, req.params.draftId)
-				// })
-				// .then(ltiStatesByAssessmentId => {
-				// 	console.log('GOT BACKAH', ltiStatesByAssessmentId)
-				// 	attempts.forEach(attempt => {
-				// 		attempt.ltiState = ltiStatesByAssessmentId[attempt.assessmentId]
-				// 			? ltiStatesByAssessmentId[attempt.assessmentId]
-				// 			: {}
-				// 	})
-
 				oboGlobals.set('ObojoboDraft.Sections.Assessment:attempts', attempts)
 				return Promise.resolve()
 			})

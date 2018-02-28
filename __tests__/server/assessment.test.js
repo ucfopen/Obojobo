@@ -28,15 +28,15 @@ describe('Assessment', () => {
 		})
 	})
 
-	// test('getAttemptHistory', () => {
-	// 	Assessment.getAttemptHistory(0, 1)
+	test.skip('getAttemptHistory', () => {
+		Assessment.getAttemptHistory(0, 1)
 
-	// 	expect(db.manyOrNone).toHaveBeenCalled()
-	// 	expect(db.manyOrNone.mock.calls[0][1]).toEqual({
-	// 		userId: 0,
-	// 		draftId: 1
-	// 	})
-	// })
+		expect(db.manyOrNone).toHaveBeenCalled()
+		expect(db.manyOrNone.mock.calls[0][1]).toEqual({
+			userId: 0,
+			draftId: 1
+		})
+	})
 
 	test('insertNewAttempt', () => {
 		Assessment.insertNewAttempt(0, 1, 2, 3, 4)

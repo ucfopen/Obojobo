@@ -19,12 +19,6 @@ import lti from '../../../../lti'
 
 jest.mock('uuid')
 
-// jest.mock('../../../../routes/api/events/caliper_utils', () => {
-// 	return {
-// 		getNewGeneratedId: () => 'test-uuid'
-// 	}
-// })
-
 jest.mock('../../../../config', () => {
 	return {
 		db: {

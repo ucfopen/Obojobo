@@ -23,15 +23,4 @@
 		font-size: 0.9em;
 		line-height: 1.4em;
 	}
-
-	&.is-synced
-	{
-		text-align: center;
-		background-color: transparentize($color-correct, .9);
-
-		> h2
-		{
-			margin-bottom: 1em;
-		}
-	}
 }
