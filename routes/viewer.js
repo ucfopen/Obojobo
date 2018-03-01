@@ -7,6 +7,7 @@ let insertEvent = oboRequire('insert_event')
 let createCaliperEvent = oboRequire('routes/api/events/create_caliper_event')
 let { ACTOR_USER } = require('./api/events/caliper_constants')
 let { getSessionIds } = require('./api/events/caliper_utils')
+let config = oboRequire('config')
 
 router.all('/example', (req, res, next) => {
 	res.redirect('/view/00000000-0000-0000-0000-000000000000')
@@ -38,7 +39,7 @@ router.all('/:draftId*', (req, res, next) => {
 			res.render('viewer', {
 				oboGlobals: oboGlobals
 			})
-			let { createViewerSessionLoggedInEvent } = createCaliperEvent(null, req.hostname)
+			let { createViewerSessionLoggedInEvent } = createCaliperEvent(null, config.general.hostname)
 
 			insertEvent({
 				action: 'viewer:open',

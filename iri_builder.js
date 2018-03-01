@@ -1,4 +1,5 @@
 let url = require('url')
+let config = oboRequire('config')
 
 const createIRI = (host, path, hash, query) => {
 	return url.format({
@@ -15,7 +16,7 @@ const iriFactory = (req, providedHost) => {
 		throw Error('Must provide a request object with hostname or provide a host')
 
 	let host
-	providedHost ? (host = providedHost) : (host = req.hostname)
+	providedHost ? (host = providedHost) : (host = config.general.hostname)
 
 	return {
 		getIRI: path => {
