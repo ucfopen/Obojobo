@@ -1,273 +1,227 @@
-/******/ ;(function(modules) {
-	// webpackBootstrap
-	/******/ // The module cache
-	/******/ var installedModules = {} // The require function
-	/******/
-	/******/ /******/ function __webpack_require__(moduleId) {
-		/******/
-		/******/ // Check if module is in cache
-		/******/ if (installedModules[moduleId]) {
-			/******/ return installedModules[moduleId].exports
-			/******/
-		} // Create a new module (and put it into the cache)
-		/******/ /******/ var module = (installedModules[moduleId] = {
-			/******/ i: moduleId,
-			/******/ l: false,
-			/******/ exports: {}
-			/******/
-		}) // Execute the module function
-		/******/
-		/******/ /******/ modules[moduleId].call(
-			module.exports,
-			module,
-			module.exports,
-			__webpack_require__
-		) // Flag the module as loaded
-		/******/
-		/******/ /******/ module.l = true // Return the exports of the module
-		/******/
-		/******/ /******/ return module.exports
-		/******/
-	} // expose the modules object (__webpack_modules__)
-	/******/
-	/******/
-	/******/ /******/ __webpack_require__.m = modules // expose the module cache
-	/******/
-	/******/ /******/ __webpack_require__.c = installedModules // identity function for calling harmony imports with the correct context
-	/******/
-	/******/ /******/ __webpack_require__.i = function(value) {
-		return value
-	} // define getter function for harmony exports
-	/******/
-	/******/ /******/ __webpack_require__.d = function(exports, name, getter) {
-		/******/ if (!__webpack_require__.o(exports, name)) {
-			/******/ Object.defineProperty(exports, name, {
-				/******/ configurable: false,
-				/******/ enumerable: true,
-				/******/ get: getter
-				/******/
-			})
-			/******/
-		}
-		/******/
-	} // getDefaultExport function for compatibility with non-harmony modules
-	/******/
-	/******/ /******/ __webpack_require__.n = function(module) {
-		/******/ var getter =
-			module && module.__esModule
-				? /******/ function getDefault() {
-						return module['default']
-					}
-				: /******/ function getModuleExports() {
-						return module
-					}
-		/******/ __webpack_require__.d(getter, 'a', getter)
-		/******/ return getter
-		/******/
-	} // Object.prototype.hasOwnProperty.call
-	/******/
-	/******/ /******/ __webpack_require__.o = function(object, property) {
-		return Object.prototype.hasOwnProperty.call(object, property)
-	} // __webpack_public_path__
-	/******/
-	/******/ /******/ __webpack_require__.p = 'build/' // Load entry module and return exports
-	/******/
-	/******/ /******/ return __webpack_require__((__webpack_require__.s = 163))
-	/******/
-})(
-	/************************************************************************/
-	/******/ {
-		/***/ /***/ 0: function(module, exports) {
-			module.exports = Common
+/******/ (function(modules) { // webpackBootstrap
+/******/ 	// The module cache
+/******/ 	var installedModules = {};
+/******/
+/******/ 	// The require function
+/******/ 	function __webpack_require__(moduleId) {
+/******/
+/******/ 		// Check if module is in cache
+/******/ 		if(installedModules[moduleId]) {
+/******/ 			return installedModules[moduleId].exports;
+/******/ 		}
+/******/ 		// Create a new module (and put it into the cache)
+/******/ 		var module = installedModules[moduleId] = {
+/******/ 			i: moduleId,
+/******/ 			l: false,
+/******/ 			exports: {}
+/******/ 		};
+/******/
+/******/ 		// Execute the module function
+/******/ 		modules[moduleId].call(module.exports, module, module.exports, __webpack_require__);
+/******/
+/******/ 		// Flag the module as loaded
+/******/ 		module.l = true;
+/******/
+/******/ 		// Return the exports of the module
+/******/ 		return module.exports;
+/******/ 	}
+/******/
+/******/
+/******/ 	// expose the modules object (__webpack_modules__)
+/******/ 	__webpack_require__.m = modules;
+/******/
+/******/ 	// expose the module cache
+/******/ 	__webpack_require__.c = installedModules;
+/******/
+/******/ 	// identity function for calling harmony imports with the correct context
+/******/ 	__webpack_require__.i = function(value) { return value; };
+/******/
+/******/ 	// define getter function for harmony exports
+/******/ 	__webpack_require__.d = function(exports, name, getter) {
+/******/ 		if(!__webpack_require__.o(exports, name)) {
+/******/ 			Object.defineProperty(exports, name, {
+/******/ 				configurable: false,
+/******/ 				enumerable: true,
+/******/ 				get: getter
+/******/ 			});
+/******/ 		}
+/******/ 	};
+/******/
+/******/ 	// getDefaultExport function for compatibility with non-harmony modules
+/******/ 	__webpack_require__.n = function(module) {
+/******/ 		var getter = module && module.__esModule ?
+/******/ 			function getDefault() { return module['default']; } :
+/******/ 			function getModuleExports() { return module; };
+/******/ 		__webpack_require__.d(getter, 'a', getter);
+/******/ 		return getter;
+/******/ 	};
+/******/
+/******/ 	// Object.prototype.hasOwnProperty.call
+/******/ 	__webpack_require__.o = function(object, property) { return Object.prototype.hasOwnProperty.call(object, property); };
+/******/
+/******/ 	// __webpack_public_path__
+/******/ 	__webpack_require__.p = "build/";
+/******/
+/******/ 	// Load entry module and return exports
+/******/ 	return __webpack_require__(__webpack_require__.s = 163);
+/******/ })
+/************************************************************************/
+/******/ ({
 
-			/***/
-		},
+/***/ 0:
+/***/ (function(module, exports) {
 
-		/***/ /***/ 140: function(module, exports) {
-			// removed by extract-text-webpack-plugin
-			/***/
-		},
+module.exports = Common;
 
-		/***/ /***/ 163: function(module, exports, __webpack_require__) {
-			module.exports = __webpack_require__(31)
+/***/ }),
 
-			/***/
-		},
+/***/ 140:
+/***/ (function(module, exports) {
 
-		/***/ /***/ 31: function(module, exports, __webpack_require__) {
-			'use strict'
+// removed by extract-text-webpack-plugin
 
-			var _Common = __webpack_require__(0)
+/***/ }),
 
-			var _Common2 = _interopRequireDefault(_Common)
+/***/ 163:
+/***/ (function(module, exports, __webpack_require__) {
 
-			var _adapter = __webpack_require__(59)
+module.exports = __webpack_require__(31);
 
-			var _adapter2 = _interopRequireDefault(_adapter)
 
-			var _viewerComponent = __webpack_require__(60)
+/***/ }),
 
-			var _viewerComponent2 = _interopRequireDefault(_viewerComponent)
+/***/ 31:
+/***/ (function(module, exports, __webpack_require__) {
 
-			function _interopRequireDefault(obj) {
-				return obj && obj.__esModule ? obj : { default: obj }
-			}
+"use strict";
 
-			var SelectionHandler = _Common2.default.chunk.focusableChunk.FocusableSelectionHandler
 
-			_Common2.default.Store.registerModel('ObojoboDraft.Chunks.IFrame', {
-				type: 'chunk',
-				adapter: _adapter2.default,
-				componentClass: _viewerComponent2.default,
-				selectionHandler: new SelectionHandler()
-			})
+var _Common = __webpack_require__(0);
 
-			/***/
-		},
+var _Common2 = _interopRequireDefault(_Common);
 
-		/***/ /***/ 59: function(module, exports, __webpack_require__) {
-			'use strict'
+var _adapter = __webpack_require__(59);
 
-			Object.defineProperty(exports, '__esModule', {
-				value: true
-			})
-			exports.default = {
-				construct: function construct(model, attrs) {
-					if (attrs && attrs.content && attrs.content.src) {
-						model.modelState.src = attrs.content.src
-					} else {
-						model.modelState.src = null
-					}
+var _adapter2 = _interopRequireDefault(_adapter);
 
-					if (attrs && attrs.content && attrs.content.allow) {
-						model.modelState.allow = attrs.content.allow
-					} else {
-						model.modelState.allow = null
-					}
-				},
-				clone: function clone(model, _clone) {
-					_clone.modelState.src = model.modelState.src
-					_clone.modelState.allow = model.modelState.allow
-				},
-				toJSON: function toJSON(model, json) {
-					json.content.src = model.modelState.src
-					json.content.allow = model.modelState.allow
-				},
-				toText: function toText(model) {
-					return model.modelState.src + ' ' + model.modelState.allow
-				}
-			}
+var _viewerComponent = __webpack_require__(60);
 
-			/***/
-		},
+var _viewerComponent2 = _interopRequireDefault(_viewerComponent);
 
-		/***/ /***/ 60: function(module, exports, __webpack_require__) {
-			'use strict'
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
-			Object.defineProperty(exports, '__esModule', {
-				value: true
-			})
+var SelectionHandler = _Common2.default.chunk.focusableChunk.FocusableSelectionHandler;
 
-			var _createClass = (function() {
-				function defineProperties(target, props) {
-					for (var i = 0; i < props.length; i++) {
-						var descriptor = props[i]
-						descriptor.enumerable = descriptor.enumerable || false
-						descriptor.configurable = true
-						if ('value' in descriptor) descriptor.writable = true
-						Object.defineProperty(target, descriptor.key, descriptor)
-					}
-				}
-				return function(Constructor, protoProps, staticProps) {
-					if (protoProps) defineProperties(Constructor.prototype, protoProps)
-					if (staticProps) defineProperties(Constructor, staticProps)
-					return Constructor
-				}
-			})()
+_Common2.default.Store.registerModel('ObojoboDraft.Chunks.IFrame', {
+	type: 'chunk',
+	adapter: _adapter2.default,
+	componentClass: _viewerComponent2.default,
+	selectionHandler: new SelectionHandler()
+});
 
-			__webpack_require__(140)
+/***/ }),
 
-			var _Common = __webpack_require__(0)
+/***/ 59:
+/***/ (function(module, exports, __webpack_require__) {
 
-			var _Common2 = _interopRequireDefault(_Common)
+"use strict";
 
-			function _interopRequireDefault(obj) {
-				return obj && obj.__esModule ? obj : { default: obj }
-			}
 
-			function _classCallCheck(instance, Constructor) {
-				if (!(instance instanceof Constructor)) {
-					throw new TypeError('Cannot call a class as a function')
-				}
-			}
-
-			function _possibleConstructorReturn(self, call) {
-				if (!self) {
-					throw new ReferenceError("this hasn't been initialised - super() hasn't been called")
-				}
-				return call && (typeof call === 'object' || typeof call === 'function') ? call : self
-			}
-
-			function _inherits(subClass, superClass) {
-				if (typeof superClass !== 'function' && superClass !== null) {
-					throw new TypeError(
-						'Super expression must either be null or a function, not ' + typeof superClass
-					)
-				}
-				subClass.prototype = Object.create(superClass && superClass.prototype, {
-					constructor: { value: subClass, enumerable: false, writable: true, configurable: true }
-				})
-				if (superClass)
-					Object.setPrototypeOf
-						? Object.setPrototypeOf(subClass, superClass)
-						: (subClass.__proto__ = superClass)
-			}
-
-			var OboComponent = _Common2.default.components.OboComponent
-
-			var IFrame = (function(_React$Component) {
-				_inherits(IFrame, _React$Component)
-
-				function IFrame() {
-					_classCallCheck(this, IFrame)
-
-					return _possibleConstructorReturn(
-						this,
-						(IFrame.__proto__ || Object.getPrototypeOf(IFrame)).apply(this, arguments)
-					)
-				}
-
-				_createClass(IFrame, [
-					{
-						key: 'render',
-						value: function render() {
-							return React.createElement(
-								OboComponent,
-								{ model: this.props.model, moduleData: this.props.moduleData },
-								React.createElement(
-									'div',
-									{ className: 'obojobo-draft--chunks--iframe viewer' },
-									React.createElement('iframe', {
-										is: true,
-										src: this.props.model.modelState.src,
-										frameBorder: '0',
-										allowFullScreen: 'true',
-										allow: this.props.model.modelState.allow
-									})
-								)
-							)
-						}
-					}
-				])
-
-				return IFrame
-			})(React.Component)
-
-			exports.default = IFrame
-
-			/***/
+Object.defineProperty(exports, "__esModule", {
+	value: true
+});
+exports.default = {
+	construct: function construct(model, attrs) {
+		if (attrs && attrs.content && attrs.content.src) {
+			model.modelState.src = attrs.content.src;
+		} else {
+			model.modelState.src = null;
 		}
 
-		/******/
+		if (attrs && attrs.content && attrs.content.allow) {
+			model.modelState.allow = attrs.content.allow;
+		} else {
+			model.modelState.allow = null;
+		}
+	},
+	clone: function clone(model, _clone) {
+		_clone.modelState.src = model.modelState.src;
+		_clone.modelState.allow = model.modelState.allow;
+	},
+	toJSON: function toJSON(model, json) {
+		json.content.src = model.modelState.src;
+		json.content.allow = model.modelState.allow;
+	},
+	toText: function toText(model) {
+		return model.modelState.src + ' ' + model.modelState.allow;
 	}
-)
+};
+
+/***/ }),
+
+/***/ 60:
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+Object.defineProperty(exports, "__esModule", {
+	value: true
+});
+
+var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+
+__webpack_require__(140);
+
+var _Common = __webpack_require__(0);
+
+var _Common2 = _interopRequireDefault(_Common);
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
+
+function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
+
+var OboComponent = _Common2.default.components.OboComponent;
+
+var IFrame = function (_React$Component) {
+	_inherits(IFrame, _React$Component);
+
+	function IFrame() {
+		_classCallCheck(this, IFrame);
+
+		return _possibleConstructorReturn(this, (IFrame.__proto__ || Object.getPrototypeOf(IFrame)).apply(this, arguments));
+	}
+
+	_createClass(IFrame, [{
+		key: 'render',
+		value: function render() {
+			return React.createElement(
+				OboComponent,
+				{ model: this.props.model, moduleData: this.props.moduleData },
+				React.createElement(
+					'div',
+					{ className: 'obojobo-draft--chunks--iframe viewer' },
+					React.createElement('iframe', {
+						is: true,
+						src: this.props.model.modelState.src,
+						frameBorder: '0',
+						allowFullScreen: 'true',
+						allow: this.props.model.modelState.allow
+					})
+				)
+			);
+		}
+	}]);
+
+	return IFrame;
+}(React.Component);
+
+exports.default = IFrame;
+
+/***/ })
+
+/******/ });
