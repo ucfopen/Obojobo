@@ -55,6 +55,9 @@ let storeLtiPickerLaunch = (user, ip, ltiBody, ltiConsumerKey) => {
 
 let userFromLaunch = (req, ltiBody) => {
 	// Save/Create the user
+	if (ltiBody.lis_person_sourcedid == null) {
+		throw new Error('sourcedid Required')
+	}
 	let newUser = new User({
 		username: ltiBody.lis_person_sourcedid,
 		email: ltiBody.lis_person_contact_email_primary,
@@ -103,8 +106,12 @@ exports.assignment = (req, res, next) => {
 		.catch(error => {
 			logger.error('LTI Launch Error', error)
 			logger.error('LTI Body', req.lti && req.lti.body ? req.lti.body : 'No LTI Body')
-
-			next(new Error('There was a problem creating your account.'))
+			if (req.lti.body.lis_person_sourcedid == null) {
+				logger.error('No LTI sourcedid', error)
+				next(new Error('sourcedid Required'))
+			} else {
+				next(new Error('There was a problem creating your account.'))
+			}
 		})
 }
 

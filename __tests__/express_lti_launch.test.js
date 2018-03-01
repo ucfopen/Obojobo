@@ -174,4 +174,25 @@ describe('lti launch middleware', () => {
 				)
 			})
 	})
+
+	it('calls next error when lti data has no sourcedid', () => {
+		expect.assertions(1)
+
+		mockDBForLaunch()
+
+		let [res, req, mockJson, mockStatus, mockNext] = mockArgs(true)
+		req.lti = {
+			body: {
+				lis_person_contact_email_primary: 'mann@internet.com',
+				lis_person_name_given: 'Hugh',
+				lis_person_name_family: 'Mann',
+				roles: ['saviour', 'explorer', 'doctor']
+			}
+		}
+		return oboRequire('express_lti_launch')
+			.assignment(req, res, mockNext)
+			.then(() => {
+				expect(mockNext).toBeCalledWith(expect.any(Error))
+			})
+	})
 })
