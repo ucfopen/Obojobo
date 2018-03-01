@@ -226,7 +226,7 @@ describe('lti', () => {
 		expect.assertions(1)
 
 		// bypass all the internals of outcomes, just returns true for success
-		let outcomes = require('ims-lti/lib/extensions/outcomes')
+		let outcomes = require('ims-lti/src/extensions/outcomes')
 		let send_replace_resultMock = jest.fn().mockImplementationOnce((score, callback) => {
 			expect(score).toBe(0.85)
 			callback(null, true)
@@ -282,7 +282,7 @@ describe('lti', () => {
 		expect.assertions(7)
 
 		// bypass all the internals of outcomes, just returns true for success
-		let outcomes = require('ims-lti/lib/extensions/outcomes')
+		let outcomes = require('ims-lti/src/extensions/outcomes')
 		let send_replace_resultMock = jest.fn().mockImplementationOnce((score, callback) => {
 			callback('SOME_ERROR')
 		})
@@ -307,7 +307,7 @@ describe('lti', () => {
 		return lti.replaceResult(1, 2, 0.99).catch(err => {
 			expect(err).toBeInstanceOf(Error)
 			expect(logger.info).toBeCalledWith(
-				'SETTING LTI OUTCOME SCORE SET to 0.99 for user: 1 on sourcedid: test-sourcedid using key: testkey'
+				'SETTING LTI OUTCOME SCORE SET to 0.99 for user: 1 on sourcedid: test-sourcedid using key: jesttestkey'
 			)
 			expect(logger.error).toBeCalledWith('replaceResult error!', 'SOME_ERROR')
 		})
