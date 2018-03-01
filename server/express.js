@@ -6,6 +6,7 @@ let db = oboRequire('db')
 let Assessment = require('./assessment')
 let lti = oboRequire('lti')
 let insertEvent = oboRequire('insert_event')
+let logger = oboRequire('logger')
 let createCaliperEvent = oboRequire('routes/api/events/create_caliper_event') //@TODO
 let endAttempt = require('./attempt-end').endAttempt
 let logger = oboRequire('logger')
@@ -183,13 +184,13 @@ app.post('/api/assessments/attempt/start', (req, res, next) => {
 				if (attemptHistory[i].state.qb) constructUses(attemptHistory[i].state.qb)
 			}
 
-			console.log('uses___', uses)
+			logger.log('uses___', uses)
 
 			assessmentQBTree = assessment.children[1].toObject()
 			// console.log('assessmentQBTree', assessmentQBTree)
 
 			let chooseChildren = function(choose, select, node) {
-				console.log('choose children', choose, select, node.id)
+				logger.log('choose children', choose, select, node.id)
 
 				let draftNode = assessment.draftTree.getChildNodeById(node.id)
 				let myChildren = [...draftNode.immediateChildrenSet]
@@ -238,7 +239,7 @@ app.post('/api/assessments/attempt/start', (req, res, next) => {
 						break
 				}
 
-				console.log(
+				logger.log(
 					'i chose',
 					slice.map(function(dn) {
 						return dn.id
@@ -250,7 +251,7 @@ app.post('/api/assessments/attempt/start', (req, res, next) => {
 
 			let trimTree = function(node) {
 				if (node.type === 'ObojoboDraft.Chunks.QuestionBank') {
-					console.log('TEST', node.id, node.content, node.content.choose)
+					logger.log('TEST', node.id, node.content, node.content.choose)
 					let opts = getBankOptions(node)
 					node.children = chooseChildren(opts.choose, opts.select, node)
 				}
@@ -484,18 +485,18 @@ oboEvents.on('client:assessment:setResponse', (event, req) => {
 	// check perms
 	// check input
 	if (!event.payload.attemptId)
-		return app.logError(eventRecordResponse, 'Missing Attempt ID', req, event)
+		return logger.error(eventRecordResponse, 'Missing Attempt ID', req, event)
 	if (!event.payload.questionId)
-		return app.logError(eventRecordResponse, 'Missing Question ID', req, event)
+		return logger.error(eventRecordResponse, 'Missing Question ID', req, event)
 	if (!event.payload.response)
-		return app.logError(eventRecordResponse, 'Missing Response', req, event)
+		return logger.error(eventRecordResponse, 'Missing Response', req, event)
 
 	return db
 		.none(
 			`
 			INSERT INTO attempts_question_responses
-			(attempt_id, question_id, response)
-			VALUES($[attemptId], $[questionId], $[response])
+			(attempt_id, question_id, response, assessment_id)
+			VALUES($[attemptId], $[questionId], $[response], $[assessmentId])
 			ON CONFLICT (attempt_id, question_id) DO
 				UPDATE
 				SET
@@ -504,14 +505,14 @@ oboEvents.on('client:assessment:setResponse', (event, req) => {
 				WHERE attempts_question_responses.attempt_id = $[attemptId]
 					AND attempts_question_responses.question_id = $[questionId]`,
 			{
+				assessmentId: event.payload.assessmentId,
 				attemptId: event.payload.attemptId,
 				questionId: event.payload.questionId,
 				response: event.payload.response
 			}
 		)
 		.catch(error => {
-			console.log(error)
-			app.logError(eventRecordResponse, 'DB UNEXPECTED', req, error, error.toString())
+			logger.error(eventRecordResponse, 'DB UNEXPECTED', req, error, error.toString())
 		})
 })
 

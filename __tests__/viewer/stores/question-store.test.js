@@ -336,7 +336,8 @@ describe('QuestionStore', () => {
 
 		Dispatcher.trigger('question:hideExplanation', {
 			value: {
-				id: 'questionId'
+				id: 'questionId',
+				actor: 'testActor'
 			}
 		})
 

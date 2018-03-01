@@ -275,16 +275,6 @@
 			var Adapter = {
 				construct: function construct(model, attrs) {
 					if (
-						__guard__(attrs != null ? attrs.content : undefined, function(x) {
-							return x.shuffle
-						}) != null
-					) {
-						model.modelState.shuffle = attrs.content.shuffle
-					} else {
-						model.modelState.shuffle = false
-					}
-
-					if (
 						__guard__(attrs != null ? attrs.content : undefined, function(x1) {
 							return x1.limit
 						}) != null
@@ -315,7 +305,6 @@
 					}
 				},
 				clone: function clone(model, _clone) {
-					_clone.modelState.shuffle = model.modelState.shuffle
 					_clone.modelState.type = model.modelState.type
 					_clone.modelState.practice = model.modelState.practice
 					_clone.modelState.limit = model.modelState.limit
@@ -326,7 +315,6 @@
 					}
 				},
 				toJSON: function toJSON(model, json) {
-					json.content.shuffle = model.modelState.shuffle
 					json.content.type = model.modelState.type
 					json.content.solution = null
 

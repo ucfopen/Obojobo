@@ -100,6 +100,20 @@ var AssessmentUtil = {
 		}
 	},
 
+	isCurrentAttemptComplete(assessmentState, questionState, model) {
+		let current = AssessmentUtil.getCurrentAttemptForModel(assessmentState, model)
+		if (!current) {
+			return null
+		}
+		let models = model.children.at(1).children.models
+		return (
+			models.filter(function(questionModel) {
+				let resp = QuestionUtil.getResponse(questionState, questionModel)
+				return resp
+			}).length === models.length
+		)
+	},
+
 	getNumberOfAttemptsCompletedForModel(state, model) {
 		let assessment = AssessmentUtil.getAssessmentForModel(state, model)
 		if (!assessment || assessment.attempts.length === 0) {

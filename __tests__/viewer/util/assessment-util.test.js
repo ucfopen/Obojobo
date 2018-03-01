@@ -219,7 +219,7 @@ describe('QuestionUtil', () => {
 		).toEqual(null)
 	})
 
-	test.skip('knows if incomplete current attempt is incomplete', () => {
+	test('knows if incomplete current attempt is incomplete', () => {
 		AssessmentStore.setState(exampleAssessment)
 		QuestionStore.setState({
 			responses: {
@@ -237,7 +237,7 @@ describe('QuestionUtil', () => {
 		).toBe(false)
 	})
 
-	test.skip('knows if completed current attempt is completed', () => {
+	test('knows if completed current attempt is completed', () => {
 		AssessmentStore.setState(exampleAssessment)
 		QuestionStore.setState({
 			responses: {
@@ -256,7 +256,7 @@ describe('QuestionUtil', () => {
 		).toBe(true)
 	})
 
-	test.skip('returns null for isCurrentAttemptCompleted if no assessment', () => {
+	test('returns null for isCurrentAttemptCompleted if no assessment', () => {
 		OboModel.create(exampleDocument)
 
 		expect(
