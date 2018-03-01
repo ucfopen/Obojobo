@@ -72,40 +72,40 @@
 	/******/
 	/******/ /******/ __webpack_require__.p = 'build/' // Load entry module and return exports
 	/******/
-	/******/ /******/ return __webpack_require__((__webpack_require__.s = 171))
+	/******/ /******/ return __webpack_require__((__webpack_require__.s = 162))
 	/******/
 })(
 	/************************************************************************/
 	/******/ {
-		/***/ 0: /***/ function(module, exports) {
+		/***/ /***/ 0: function(module, exports) {
 			module.exports = Common
 
 			/***/
 		},
 
-		/***/ 148: /***/ function(module, exports) {
+		/***/ /***/ 139: function(module, exports) {
 			// removed by extract-text-webpack-plugin
 			/***/
 		},
 
-		/***/ 171: /***/ function(module, exports, __webpack_require__) {
-			module.exports = __webpack_require__(34)
+		/***/ /***/ 162: function(module, exports, __webpack_require__) {
+			module.exports = __webpack_require__(30)
 
 			/***/
 		},
 
-		/***/ 34: /***/ function(module, exports, __webpack_require__) {
+		/***/ /***/ 30: function(module, exports, __webpack_require__) {
 			'use strict'
 
 			var _Common = __webpack_require__(0)
 
 			var _Common2 = _interopRequireDefault(_Common)
 
-			var _adapter = __webpack_require__(61)
+			var _adapter = __webpack_require__(57)
 
 			var _adapter2 = _interopRequireDefault(_adapter)
 
-			var _viewerComponent = __webpack_require__(62)
+			var _viewerComponent = __webpack_require__(58)
 
 			var _viewerComponent2 = _interopRequireDefault(_viewerComponent)
 
@@ -137,12 +137,7 @@
 							return {
 								type: 'sub-link',
 								label: model.modelState.textGroup.first.text,
-								path: [
-									model
-										.toText()
-										.toLowerCase()
-										.replace(/ /g, '-')
-								],
+								path: [model.toText().toLowerCase().replace(/ /g, '-')],
 								showChildren: false
 							}
 
@@ -155,7 +150,7 @@
 			/***/
 		},
 
-		/***/ 61: /***/ function(module, exports, __webpack_require__) {
+		/***/ /***/ 57: function(module, exports, __webpack_require__) {
 			'use strict'
 
 			Object.defineProperty(exports, '__esModule', {
@@ -221,7 +216,7 @@
 			/***/
 		},
 
-		/***/ 62: /***/ function(module, exports, __webpack_require__) {
+		/***/ /***/ 58: function(module, exports, __webpack_require__) {
 			'use strict'
 
 			Object.defineProperty(exports, '__esModule', {
@@ -245,7 +240,7 @@
 				}
 			})()
 
-			__webpack_require__(148)
+			__webpack_require__(139)
 
 			var _Common = __webpack_require__(0)
 

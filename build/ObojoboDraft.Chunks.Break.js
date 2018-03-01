@@ -72,40 +72,40 @@
 	/******/
 	/******/ /******/ __webpack_require__.p = 'build/' // Load entry module and return exports
 	/******/
-	/******/ /******/ return __webpack_require__((__webpack_require__.s = 167))
+	/******/ /******/ return __webpack_require__((__webpack_require__.s = 158))
 	/******/
 })(
 	/************************************************************************/
 	/******/ {
-		/***/ 0: /***/ function(module, exports) {
+		/***/ /***/ 0: function(module, exports) {
 			module.exports = Common
 
 			/***/
 		},
 
-		/***/ 144: /***/ function(module, exports) {
+		/***/ /***/ 135: function(module, exports) {
 			// removed by extract-text-webpack-plugin
 			/***/
 		},
 
-		/***/ 167: /***/ function(module, exports, __webpack_require__) {
-			module.exports = __webpack_require__(30)
+		/***/ /***/ 158: function(module, exports, __webpack_require__) {
+			module.exports = __webpack_require__(26)
 
 			/***/
 		},
 
-		/***/ 30: /***/ function(module, exports, __webpack_require__) {
+		/***/ /***/ 26: function(module, exports, __webpack_require__) {
 			'use strict'
 
 			var _Common = __webpack_require__(0)
 
 			var _Common2 = _interopRequireDefault(_Common)
 
-			var _adapter = __webpack_require__(52)
+			var _adapter = __webpack_require__(48)
 
 			var _adapter2 = _interopRequireDefault(_adapter)
 
-			var _viewerComponent = __webpack_require__(53)
+			var _viewerComponent = __webpack_require__(49)
 
 			var _viewerComponent2 = _interopRequireDefault(_viewerComponent)
 
@@ -125,7 +125,7 @@
 			/***/
 		},
 
-		/***/ 52: /***/ function(module, exports, __webpack_require__) {
+		/***/ /***/ 48: function(module, exports, __webpack_require__) {
 			'use strict'
 
 			Object.defineProperty(exports, '__esModule', {
@@ -168,7 +168,7 @@
 			/***/
 		},
 
-		/***/ 53: /***/ function(module, exports, __webpack_require__) {
+		/***/ /***/ 49: function(module, exports, __webpack_require__) {
 			'use strict'
 
 			Object.defineProperty(exports, '__esModule', {
@@ -192,7 +192,7 @@
 				}
 			})()
 
-			__webpack_require__(144)
+			__webpack_require__(135)
 
 			var _Common = __webpack_require__(0)
 
