@@ -22,3 +22,12 @@ Object {
   "select": "sequential",
 }
 `;
+
+exports[`start attempt route can track use of assessment questions using an initialized question map 1`] = `
+Map {
+  "test" => 1,
+  "test1" => 1,
+  "test2" => 1,
+  "test3" => 1,
+}
+`;
