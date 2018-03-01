@@ -9,7 +9,7 @@ describe('MCAssessment adapter', () => {
 
 	it('can be constructed WITH attributes', () => {
 		let model = { modelState: {} }
-		let attrs = { content: { responseType: 'pick-one', shuffle: 'false' } }
+		let attrs = { content: { responseType: 'pick-one', shuffle: false } }
 
 		MCAssessmentAdapter.construct(model, attrs)
 
@@ -27,7 +27,7 @@ describe('MCAssessment adapter', () => {
 
 	it('can be constructed WITHOUT responseType', () => {
 		let model = { modelState: {} }
-		let attrs = { content: { shuffle: 'false' } }
+		let attrs = { content: { shuffle: false } }
 
 		MCAssessmentAdapter.construct(model, attrs)
 

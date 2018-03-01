@@ -72,35 +72,35 @@
 	/******/
 	/******/ /******/ __webpack_require__.p = 'build/' // Load entry module and return exports
 	/******/
-	/******/ /******/ return __webpack_require__((__webpack_require__.s = 184))
+	/******/ /******/ return __webpack_require__((__webpack_require__.s = 175))
 	/******/
 })(
 	/************************************************************************/
 	/******/ {
-		/***/ 0: /***/ function(module, exports) {
+		/***/ /***/ 0: function(module, exports) {
 			module.exports = Common
 
 			/***/
 		},
 
-		/***/ 1: /***/ function(module, exports) {
+		/***/ /***/ 1: function(module, exports) {
 			module.exports = Viewer
 
 			/***/
 		},
 
-		/***/ 163: /***/ function(module, exports) {
+		/***/ /***/ 154: function(module, exports) {
 			// removed by extract-text-webpack-plugin
 			/***/
 		},
 
-		/***/ 184: /***/ function(module, exports, __webpack_require__) {
-			module.exports = __webpack_require__(46)
+		/***/ /***/ 175: function(module, exports, __webpack_require__) {
+			module.exports = __webpack_require__(42)
 
 			/***/
 		},
 
-		/***/ 46: /***/ function(module, exports, __webpack_require__) {
+		/***/ /***/ 42: function(module, exports, __webpack_require__) {
 			'use strict'
 
 			var _Common = __webpack_require__(0)
@@ -111,11 +111,11 @@
 
 			var _Viewer2 = _interopRequireDefault(_Viewer)
 
-			var _adapter = __webpack_require__(88)
+			var _adapter = __webpack_require__(84)
 
 			var _adapter2 = _interopRequireDefault(_adapter)
 
-			var _viewerComponent = __webpack_require__(91)
+			var _viewerComponent = __webpack_require__(87)
 
 			var _viewerComponent2 = _interopRequireDefault(_viewerComponent)
 
@@ -186,14 +186,14 @@
 			/***/
 		},
 
-		/***/ 88: /***/ function(module, exports, __webpack_require__) {
+		/***/ /***/ 84: function(module, exports, __webpack_require__) {
 			'use strict'
 
 			Object.defineProperty(exports, '__esModule', {
 				value: true
 			})
 
-			var _scoreActions = __webpack_require__(90)
+			var _scoreActions = __webpack_require__(86)
 
 			var _scoreActions2 = _interopRequireDefault(_scoreActions)
 
@@ -263,7 +263,7 @@
 			/***/
 		},
 
-		/***/ 89: /***/ function(module, exports, __webpack_require__) {
+		/***/ /***/ 85: function(module, exports, __webpack_require__) {
 			'use strict'
 
 			Object.defineProperty(exports, '__esModule', {
@@ -334,9 +334,8 @@
 
 					return _possibleConstructorReturn(
 						this,
-						(
-							AttemptIncompleteDialog.__proto__ || Object.getPrototypeOf(AttemptIncompleteDialog)
-						).apply(this, arguments)
+						(AttemptIncompleteDialog.__proto__ || Object.getPrototypeOf(AttemptIncompleteDialog))
+							.apply(this, arguments)
 					)
 				}
 
@@ -392,7 +391,7 @@
 			/***/
 		},
 
-		/***/ 90: /***/ function(module, exports, __webpack_require__) {
+		/***/ /***/ 86: function(module, exports, __webpack_require__) {
 			'use strict'
 
 			Object.defineProperty(exports, '__esModule', {
@@ -492,7 +491,7 @@
 			/***/
 		},
 
-		/***/ 91: /***/ function(module, exports, __webpack_require__) {
+		/***/ /***/ 87: function(module, exports, __webpack_require__) {
 			'use strict'
 
 			Object.defineProperty(exports, '__esModule', {
@@ -516,7 +515,7 @@
 				}
 			})()
 
-			__webpack_require__(163)
+			__webpack_require__(154)
 
 			var _Common = __webpack_require__(0)
 
@@ -526,7 +525,7 @@
 
 			var _Viewer2 = _interopRequireDefault(_Viewer)
 
-			var _attemptIncompleteDialog = __webpack_require__(89)
+			var _attemptIncompleteDialog = __webpack_require__(85)
 
 			var _attemptIncompleteDialog2 = _interopRequireDefault(_attemptIncompleteDialog)
 

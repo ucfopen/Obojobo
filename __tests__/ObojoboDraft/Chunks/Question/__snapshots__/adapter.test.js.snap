@@ -42,7 +42,6 @@ Object {
 exports[`Question adapter can be converted to JSON 1`] = `
 Object {
   "content": Object {
-    "shuffle": undefined,
     "solution": Object {
       "children": Array [
         Object {

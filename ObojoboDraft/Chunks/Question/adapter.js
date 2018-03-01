@@ -24,7 +24,6 @@ let Adapter = {
 	},
 
 	clone(model, clone) {
-		clone.modelState.shuffle = model.modelState.shuffle
 		clone.modelState.type = model.modelState.type
 		clone.modelState.practice = model.modelState.practice
 		clone.modelState.limit = model.modelState.limit
@@ -36,7 +35,6 @@ let Adapter = {
 	},
 
 	toJSON(model, json) {
-		json.content.shuffle = model.modelState.shuffle
 		json.content.type = model.modelState.type
 		json.content.solution = null
 
