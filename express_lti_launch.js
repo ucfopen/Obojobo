@@ -10,13 +10,12 @@ let storeLtiLaunch = (draftId, user, ip, ltiBody, ltiConsumerKey) => {
 		.one(
 			`
 		INSERT INTO launches
-		(draft_id, user_id, type, link, lti_key, data)
-		VALUES ($[draftId], $[userId], 'lti', $[link], $[lti_key], $[data])
+		(draft_id, user_id, type, lti_key, data)
+		VALUES ($[draftId], $[userId], 'lti', $[lti_key], $[data])
 		RETURNING id`,
 			{
 				draftId: draftId,
 				userId: user.id,
-				link: '',
 				lti_key: ltiConsumerKey,
 				data: ltiBody
 			}
