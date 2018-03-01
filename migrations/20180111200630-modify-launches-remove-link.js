@@ -19,9 +19,9 @@ exports.up = function(db) {
 }
 
 exports.down = function(db) {
-	return db.addColumn('launches', 'link')
+	return db.addColumn('launches', 'link', { type: 'varchar', length: 500, notNull: true })
 }
 
 exports._meta = {
-	version: 1
+	version: 2
 }
