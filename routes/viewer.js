@@ -32,6 +32,7 @@ router.all('/:draftId*', (req, res, next) => {
 			oboGlobals.set('draft', draft.document)
 			oboGlobals.set('draftId', req.params.draftId)
 			oboGlobals.set('previewing', user.canViewEditor)
+			oboGlobals.set('ltiLaunch', req.session && req.session.oboLti ? req.session.oboLti.body : {})
 			return draft.yell('internal:renderViewer', req, res, oboGlobals)
 		})
 		.then(draft => {
