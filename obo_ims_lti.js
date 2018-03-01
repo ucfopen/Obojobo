@@ -9,6 +9,7 @@ let logger = oboRequire('logger')
 
 module.exports = ltiMiddleware({
 	nonceStore: new DevNonceStore(),
+	addToSession: false,
 	credentials: (key, callback) => {
 		let secret = ltiUtil.findSecretForKey(key)
 
