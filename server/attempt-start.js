@@ -163,18 +163,14 @@ const incrementUsedQuestionIds = (node, usedMap) => {
     incrementUsedQuestionIds(child, usedMap)
 }
 
-const chooseQuestionsSequentially = (numQuestionsPerAttempt, node, assessmentProperties) => {
-  const { childrenMap } = assessmentProperties
-  const draftNode = assessmentProperties.node.draftTree.getChildNodeById(node.id)
-  const nodeChildren = [...draftNode.immediateChildrenSet]
-
-  // Sort the questions by how many times they were used (after incrementing
-  // with incrementUsedQuestionIds).
-  const nodeChildrenDraftNodes = nodeChildren
+// Sort the questions sequentially, get their nodes from the tree via id, and only return up to
+// the desired amount of questions per attempt (choose property).
+const chooseQuestionsSequentially = (assessmentProperties, rootId, numQuestionsPerAttempt) => {
+  const { node, childrenMap } = assessmentProperties
+  return [...node.draftTree.getChildNodeById(rootId).immediateChildrenSet]
     .sort((a, b) => childrenMap.get(a) - childrenMap.get(b))
-    .map(id => assessmentProperties.node.draftTree.getChildNodeById(id).toObject())
-
-  return nodeChildrenDraftNodes.slice(0, numQuestionsPerAttempt)
+    .map(id => node.draftTree.getChildNodeById(id).toObject())
+    .slice(0, numQuestionsPerAttempt)
 }
 
 // This will narrow down the assessment tree to question banks
@@ -185,7 +181,7 @@ const createChosenQuestionTree = (node, assessmentProperties) => {
     const qbProperties = getQuestionBankProperties(node)
 
     // TODO: 'random-all' and 'random-unseen' selects need to be taken care of as well.
-    node.children = chooseQuestionsSequentially(qbProperties.choose, node, assessmentProperties)
+    node.children = chooseQuestionsSequentially(assessmentProperties, node.id, qbProperties.choose)
   }
 
   for (let child of node.children)
