@@ -347,27 +347,25 @@ _Common2.default.Store.registerModel('ObojoboDraft.Chunks.MCAssessment.MCFeedbac
 Object.defineProperty(exports, "__esModule", {
 	value: true
 });
-// TODO: Parse correct/incorrect feedbacks that will be able to come from the document.
-// Example: <MCAssessment correctFeedbacks="Correct!|You did it!|Got 'em!" incorrectFeedbacks="Incorrect|Try again">
 var Adapter = {
 	construct: function construct(model, attrs) {
 		var content = attrs && attrs.content ? attrs.content : {};
 
 		model.modelState.responseType = content.responseType || '';
-		model.modelState.correctFeedbacks = content.correctFeedbacks ? content.correctFeedbacks.split('|') : null;
-		model.modelState.incorrectFeedbacks = content.incorrectFeedbacks ? content.incorrectFeedbacks.split('|') : null;
+		model.modelState.correctLabels = content.correctLabels ? content.correctLabels.split('|') : null;
+		model.modelState.incorrectLabels = content.incorrectLabels ? content.incorrectLabels.split('|') : null;
 		model.modelState.shuffle = content.shuffle !== false;
 	},
 	clone: function clone(model, _clone) {
 		_clone.modelState.responseType = model.modelState.responseType;
-		_clone.modelState.correctFeedbacks = model.modelState.correctFeedbacks ? model.modelState.correctFeedbacks.slice(0) : null;
-		_clone.modelState.incorrectFeedbacks = model.modelState.incorrectFeedbacks ? model.modelState.incorrectFeedbacks.slice(0) : null;
+		_clone.modelState.correctLabels = model.modelState.correctLabels ? model.modelState.correctLabels.slice(0) : null;
+		_clone.modelState.incorrectLabels = model.modelState.incorrectLabels ? model.modelState.incorrectLabels.slice(0) : null;
 		_clone.modelState.shuffle = model.modelState.shuffle;
 	},
 	toJSON: function toJSON(model, json) {
 		json.content.responseType = model.modelState.responseType;
-		json.content.correctFeedbacks = model.modelState.correctFeedbacks ? model.modelState.correctFeedbacks.join('|') : null;
-		json.content.incorrectFeedbacks = model.modelState.incorrectFeedbacks ? model.modelState.incorrectFeedbacks.join('|') : null;
+		json.content.correctLabels = model.modelState.correctLabels ? model.modelState.correctLabels.join('|') : null;
+		json.content.incorrectLabels = model.modelState.incorrectLabels ? model.modelState.incorrectLabels.join('|') : null;
 		json.content.shuffle = model.modelState.shuffle;
 	}
 };
@@ -429,8 +427,8 @@ var MCAssessment = function (_React$Component) {
 		var _this = _possibleConstructorReturn(this, (MCAssessment.__proto__ || Object.getPrototypeOf(MCAssessment)).call(this, props));
 
 		var _this$props$model$mod = _this.props.model.modelState,
-		    correctFeedbacks = _this$props$model$mod.correctFeedbacks,
-		    incorrectFeedbacks = _this$props$model$mod.incorrectFeedbacks;
+		    correctLabels = _this$props$model$mod.correctLabels,
+		    incorrectLabels = _this$props$model$mod.incorrectLabels;
 
 
 		_this.onClickShowExplanation = _this.onClickShowExplanation.bind(_this);
@@ -440,9 +438,9 @@ var MCAssessment = function (_React$Component) {
 		_this.onClick = _this.onClick.bind(_this);
 		_this.onCheckAnswer = _this.onCheckAnswer.bind(_this);
 		_this.isShowingExplanation = _this.isShowingExplanation.bind(_this);
-		_this.correctFeedbackOptions = correctFeedbacks ? correctFeedbacks : ['Correct!', 'You got it!', 'Great job!', "That's right!"];
-		_this.incorrectFeedbackOptions = incorrectFeedbacks ? incorrectFeedbacks : ['Incorrect'];
-		_this.updateCorrectIncorrectFeedback();
+		_this.correctLabels = correctLabels ? correctLabels : ['Correct!', 'You got it!', 'Great job!', "That's right!"];
+		_this.incorrectLabels = incorrectLabels ? incorrectLabels : ['Incorrect'];
+		_this.updateFeedbackLabels();
 		return _this;
 	}
 
@@ -578,7 +576,7 @@ var MCAssessment = function (_React$Component) {
 			event.preventDefault();
 
 			// ScoreUtil.setScore(this.getQuestionModel().get('id'), this.calculateScore())
-			this.updateCorrectIncorrectFeedback();
+			this.updateFeedbackLabels();
 			QuestionUtil.checkAnswer(this.getQuestionModel().get('id'));
 		}
 	}, {
@@ -683,10 +681,10 @@ var MCAssessment = function (_React$Component) {
 			}
 		}
 	}, {
-		key: 'updateCorrectIncorrectFeedback',
-		value: function updateCorrectIncorrectFeedback() {
-			this.correctFeedbackToShow = this.getRandomItem(this.correctFeedbackOptions);
-			this.incorrectFeedbackToShow = this.getRandomItem(this.incorrectFeedbackOptions);
+		key: 'updateFeedbackLabels',
+		value: function updateFeedbackLabels() {
+			this.correctLabelToShow = this.getRandomItem(this.correctLabels);
+			this.incorrectLabelToShow = this.getRandomItem(this.incorrectLabels);
 		}
 	}, {
 		key: 'getRandomItem',
@@ -709,7 +707,7 @@ var MCAssessment = function (_React$Component) {
 
 			if (!sortedIds) return false;
 
-			var feedbacks = Array.from(this.getResponseData().responses).filter(function (mcChoiceId) {
+			var Labels = Array.from(this.getResponseData().responses).filter(function (mcChoiceId) {
 				return OboModel.models[mcChoiceId].children.length > 1;
 			}).sort(function (id1, id2) {
 				return sortedIds.indexOf(id1) - sortedIds.indexOf(id2);
@@ -795,7 +793,7 @@ var MCAssessment = function (_React$Component) {
 						React.createElement(
 							'p',
 							{ className: 'result correct' },
-							this.correctFeedbackToShow
+							this.correctLabelToShow
 						)
 					) : React.createElement(
 						'div',
@@ -803,7 +801,7 @@ var MCAssessment = function (_React$Component) {
 						React.createElement(
 							'p',
 							{ className: 'result incorrect' },
-							this.incorrectFeedbackToShow
+							this.incorrectLabelToShow
 						),
 						responseType === 'pick-all' ? React.createElement(
 							'span',
@@ -820,18 +818,18 @@ var MCAssessment = function (_React$Component) {
 						transitionEnterTimeout: 800,
 						transitionLeaveTimeout: 800
 					},
-					questionSubmitted && (feedbacks.length > 0 || solution) ? React.createElement(
+					questionSubmitted && (Labels.length > 0 || solution) ? React.createElement(
 						'div',
 						{ className: 'solution', key: 'solution' },
 						React.createElement(
 							'div',
 							{ className: 'score' },
-							feedbacks.length === 0 ? null : React.createElement(
+							Labels.length === 0 ? null : React.createElement(
 								'div',
 								{
 									className: 'feedback' + (responseType === 'pick-all' ? ' is-pick-all-feedback' : ' is-not-pick-all-feedback')
 								},
-								feedbacks.map(function (model) {
+								Labels.map(function (model) {
 									var Component = model.getComponentClass();
 									return React.createElement(Component, {
 										key: model.get('id'),

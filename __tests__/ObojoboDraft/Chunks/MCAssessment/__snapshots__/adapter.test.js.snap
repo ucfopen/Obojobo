@@ -3,11 +3,11 @@
 exports[`MCAssessment adapter can be constructed WITH attributes 1`] = `
 Object {
   "modelState": Object {
-    "correctFeedbacks": Array [
+    "correctLabels": Array [
       "Correct!",
       "Great job!",
     ],
-    "incorrectFeedbacks": Array [
+    "incorrectLabels": Array [
       "Incorrect",
       "wrong",
     ],
@@ -17,25 +17,25 @@ Object {
 }
 `;
 
-exports[`MCAssessment adapter can be constructed WITH correctFeedbacks 1`] = `
+exports[`MCAssessment adapter can be constructed WITH correctLabels 1`] = `
 Object {
   "modelState": Object {
-    "correctFeedbacks": Array [
+    "correctLabels": Array [
       "Correct!",
       "Great job!",
     ],
-    "incorrectFeedbacks": null,
+    "incorrectLabels": null,
     "responseType": "",
     "shuffle": true,
   },
 }
 `;
 
-exports[`MCAssessment adapter can be constructed WITH incorrectFeedbacks 1`] = `
+exports[`MCAssessment adapter can be constructed WITH incorrectLabels 1`] = `
 Object {
   "modelState": Object {
-    "correctFeedbacks": null,
-    "incorrectFeedbacks": Array [
+    "correctLabels": null,
+    "incorrectLabels": Array [
       "Incorrect",
       "wrong",
     ],
@@ -48,8 +48,8 @@ Object {
 exports[`MCAssessment adapter can be constructed WITH responseType 1`] = `
 Object {
   "modelState": Object {
-    "correctFeedbacks": null,
-    "incorrectFeedbacks": null,
+    "correctLabels": null,
+    "incorrectLabels": null,
     "responseType": "pick-one",
     "shuffle": true,
   },
@@ -59,8 +59,8 @@ Object {
 exports[`MCAssessment adapter can be constructed WITH shuffle 1`] = `
 Object {
   "modelState": Object {
-    "correctFeedbacks": null,
-    "incorrectFeedbacks": null,
+    "correctLabels": null,
+    "incorrectLabels": null,
     "responseType": "",
     "shuffle": false,
   },
@@ -70,8 +70,8 @@ Object {
 exports[`MCAssessment adapter can be constructed WITHOUT attributes 1`] = `
 Object {
   "modelState": Object {
-    "correctFeedbacks": null,
-    "incorrectFeedbacks": null,
+    "correctLabels": null,
+    "incorrectLabels": null,
     "responseType": "",
     "shuffle": true,
   },
@@ -81,8 +81,8 @@ Object {
 exports[`MCAssessment adapter can convert to JSON 1`] = `
 Object {
   "content": Object {
-    "correctFeedbacks": null,
-    "incorrectFeedbacks": null,
+    "correctLabels": null,
+    "incorrectLabels": null,
     "responseType": "pick-one",
     "shuffle": true,
   },
@@ -92,8 +92,8 @@ Object {
 exports[`MCAssessment adapter can convert to JSON WITH attributes 1`] = `
 Object {
   "content": Object {
-    "correctFeedbacks": "Correct!|Great job!",
-    "incorrectFeedbacks": "Incorrect|wrong",
+    "correctLabels": "Correct!|Great job!",
+    "incorrectLabels": "Incorrect|wrong",
     "responseType": "pick-one",
     "shuffle": false,
   },

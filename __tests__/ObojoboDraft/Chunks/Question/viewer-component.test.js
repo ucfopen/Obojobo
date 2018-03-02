@@ -46,7 +46,7 @@ describe('MCAssessment', () => {
 				id: 'mc-assessment-id',
 				type: 'ObojoboDraft.Chunks.MCAssessment',
 				content: {
-					correctFeedbacks: 'test'
+					correctLabels: 'test'
 				},
 				children: [
 					{

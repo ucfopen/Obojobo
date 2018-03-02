@@ -21,7 +21,7 @@ export default class MCAssessment extends React.Component {
 	constructor(props) {
 		super(props)
 
-		const { correctFeedbacks, incorrectFeedbacks } = this.props.model.modelState
+		const { correctLabels, incorrectLabels } = this.props.model.modelState
 
 		this.onClickShowExplanation = this.onClickShowExplanation.bind(this)
 		this.onClickHideExplanation = this.onClickHideExplanation.bind(this)
@@ -30,11 +30,11 @@ export default class MCAssessment extends React.Component {
 		this.onClick = this.onClick.bind(this)
 		this.onCheckAnswer = this.onCheckAnswer.bind(this)
 		this.isShowingExplanation = this.isShowingExplanation.bind(this)
-		this.correctFeedbackOptions = correctFeedbacks
-			? correctFeedbacks
+		this.correctLabels = correctLabels
+			? correctLabels
 			: ['Correct!', 'You got it!', 'Great job!', "That's right!"]
-		this.incorrectFeedbackOptions = incorrectFeedbacks ? incorrectFeedbacks : ['Incorrect']
-		this.updateCorrectIncorrectFeedback()
+		this.incorrectLabels = incorrectLabels ? incorrectLabels : ['Incorrect']
+		this.updateFeedbackLabels()
 	}
 
 	getQuestionModel() {
@@ -123,7 +123,7 @@ export default class MCAssessment extends React.Component {
 		event.preventDefault()
 
 		// ScoreUtil.setScore(this.getQuestionModel().get('id'), this.calculateScore())
-		this.updateCorrectIncorrectFeedback()
+		this.updateFeedbackLabels()
 		QuestionUtil.checkAnswer(this.getQuestionModel().get('id'))
 	}
 
@@ -220,9 +220,9 @@ export default class MCAssessment extends React.Component {
 		}
 	}
 
-	updateCorrectIncorrectFeedback() {
-		this.correctFeedbackToShow = this.getRandomItem(this.correctFeedbackOptions)
-		this.incorrectFeedbackToShow = this.getRandomItem(this.incorrectFeedbackOptions)
+	updateFeedbackLabels() {
+		this.correctLabelToShow = this.getRandomItem(this.correctLabels)
+		this.incorrectLabelToShow = this.getRandomItem(this.incorrectLabels)
 	}
 
 	getRandomItem(arrayOfOptions) {
@@ -244,7 +244,7 @@ export default class MCAssessment extends React.Component {
 
 		if (!sortedIds) return false
 
-		let feedbacks = Array.from(this.getResponseData().responses)
+		let Labels = Array.from(this.getResponseData().responses)
 			.filter(mcChoiceId => {
 				return OboModel.models[mcChoiceId].children.length > 1
 			})
@@ -322,12 +322,12 @@ export default class MCAssessment extends React.Component {
 							? score === 100
 								? <div className="result-container">
 										<p className="result correct">
-											{this.correctFeedbackToShow}
+											{this.correctLabelToShow}
 										</p>
 									</div>
 								: <div className="result-container">
 										<p className="result incorrect">
-											{this.incorrectFeedbackToShow}
+											{this.incorrectLabelToShow}
 										</p>
 										{responseType === 'pick-all'
 											? <span className="pick-all-instructions">
@@ -345,17 +345,17 @@ export default class MCAssessment extends React.Component {
 					transitionEnterTimeout={800}
 					transitionLeaveTimeout={800}
 				>
-					{questionSubmitted && (feedbacks.length > 0 || solution)
+					{questionSubmitted && (Labels.length > 0 || solution)
 						? <div className="solution" key="solution">
 								<div className="score">
-									{feedbacks.length === 0
+									{Labels.length === 0
 										? null
 										: <div
 												className={`feedback${responseType === 'pick-all'
 													? ' is-pick-all-feedback'
 													: ' is-not-pick-all-feedback'}`}
 											>
-												{feedbacks.map(model => {
+												{Labels.map(model => {
 													let Component = model.getComponentClass()
 													return (
 														<Component

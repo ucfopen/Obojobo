@@ -12,8 +12,8 @@ describe('MCAssessment adapter', () => {
 		let attrs = {
 			content: {
 				responseType: 'pick-one',
-				correctFeedbacks: 'Correct!|Great job!',
-				incorrectFeedbacks: 'Incorrect|wrong',
+				correctLabels: 'Correct!|Great job!',
+				incorrectLabels: 'Incorrect|wrong',
 				shuffle: false
 			}
 		}
@@ -36,11 +36,11 @@ describe('MCAssessment adapter', () => {
 		expect(model).toMatchSnapshot()
 	})
 
-	it('can be constructed WITH correctFeedbacks', () => {
+	it('can be constructed WITH correctLabels', () => {
 		let model = { modelState: {} }
 		let attrs = {
 			content: {
-				correctFeedbacks: 'Correct!|Great job!'
+				correctLabels: 'Correct!|Great job!'
 			}
 		}
 
@@ -49,11 +49,11 @@ describe('MCAssessment adapter', () => {
 		expect(model).toMatchSnapshot()
 	})
 
-	it('can be constructed WITH incorrectFeedbacks', () => {
+	it('can be constructed WITH incorrectLabels', () => {
 		let model = { modelState: {} }
 		let attrs = {
 			content: {
-				incorrectFeedbacks: 'Incorrect|wrong'
+				incorrectLabels: 'Incorrect|wrong'
 			}
 		}
 
@@ -90,16 +90,16 @@ describe('MCAssessment adapter', () => {
 		let a = {
 			modelState: {
 				responseType: 'pick-one',
-				correctFeedbacks: 'Correct!|Great job!',
-				incorrectFeedbacks: 'Incorrect|wrong',
+				correctLabels: 'Correct!|Great job!',
+				incorrectLabels: 'Incorrect|wrong',
 				shuffle: false
 			}
 		}
 		let b = {
 			modelState: {
 				responseType: 'pick-one',
-				correctFeedbacks: 'Correct!|Great job!',
-				incorrectFeedbacks: 'Incorrect|wrong',
+				correctLabels: 'Correct!|Great job!',
+				incorrectLabels: 'Incorrect|wrong',
 				shuffle: false
 			}
 		}
@@ -127,8 +127,8 @@ describe('MCAssessment adapter', () => {
 		let attrs = {
 			content: {
 				responseType: 'pick-one',
-				correctFeedbacks: 'Correct!|Great job!',
-				incorrectFeedbacks: 'Incorrect|wrong',
+				correctLabels: 'Correct!|Great job!',
+				incorrectLabels: 'Incorrect|wrong',
 				shuffle: false
 			}
 		}
