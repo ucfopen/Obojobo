@@ -9,7 +9,25 @@ describe('MCAssessment adapter', () => {
 
 	it('can be constructed WITH attributes', () => {
 		let model = { modelState: {} }
+		let attrs = { content: { responseType: 'pick-one', shuffle: false } }
+
+		MCAssessmentAdapter.construct(model, attrs)
+
+		expect(model).toMatchSnapshot()
+	})
+
+	it('can be constructed WITHOUT shuffle', () => {
+		let model = { modelState: {} }
 		let attrs = { content: { responseType: 'pick-one' } }
+
+		MCAssessmentAdapter.construct(model, attrs)
+
+		expect(model).toMatchSnapshot()
+	})
+
+	it('can be constructed WITHOUT responseType', () => {
+		let model = { modelState: {} }
+		let attrs = { content: { shuffle: false } }
 
 		MCAssessmentAdapter.construct(model, attrs)
 
