@@ -17,7 +17,7 @@ exports.setup = function(options, seedLink) {
 exports.up = function(db) {
 	return db
 		.createTable('visits', {
-			id: { type: 'bigserial', primaryKey: true },
+			id: { type: 'UUID', primaryKey: true, defaultValue: new String('uuid_generate_v4()') },
 			created_at: {
 				type: 'timestamp WITH TIME ZONE',
 				notNull: true,
@@ -46,5 +46,5 @@ exports.down = function(db) {
 }
 
 exports._meta = {
-	version: 1
+	version: 2
 }

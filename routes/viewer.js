@@ -47,6 +47,7 @@ router.post('/:draftId', (req, res, next) => {
 			res.redirect(`/view/${req.params.draftId}/visit/${visit.id}`)
 		})
 		.catch(error => {
+			logger.error(error)
 			next(error)
 		})
 })
@@ -88,6 +89,7 @@ router.get('/:draftId/visit/:visitId*', (req, res, next) => {
 			})
 		})
 		.catch(error => {
+			logger.error(error)
 			next(error)
 		})
 })

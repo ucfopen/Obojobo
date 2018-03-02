@@ -1,13 +1,16 @@
 const express = require('express')
 const router = express.Router()
 const db = oboRequire('db')
-let DraftModel = oboRequire('models/draft')
+const logger = oboRequire('logger')
+const DraftModel = oboRequire('models/draft')
 
 router.post('/start', (req, res, next) => {
-	let user, visitId
+	let user
+	let visitId
 	let resultContainer = {
 		attemptHistory: []
 	}
+
 	return req
 		.requireCurrentUser()
 		.then(userFromReq => {
@@ -43,6 +46,7 @@ router.post('/start', (req, res, next) => {
 			})
 		})
 		.catch(err => {
+			logger.error(err)
 			res.reject(err)
 		})
 })
