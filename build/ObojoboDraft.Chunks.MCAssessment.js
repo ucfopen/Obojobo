@@ -351,43 +351,28 @@ Object.defineProperty(exports, "__esModule", {
 // Example: <MCAssessment correctFeedbacks="Correct!|You did it!|Got 'em!" incorrectFeedbacks="Incorrect|Try again">
 var Adapter = {
 	construct: function construct(model, attrs) {
-		if (__guard__(attrs != null ? attrs.content : undefined, function (x) {
-			return x.responseType;
-		}) != null) {
-			model.modelState.responseType = attrs.content.responseType;
-		} else {
-			model.modelState.responseType = '';
-		}
+		var content = attrs && attrs.content ? attrs.content : {};
 
-		if (attrs && attrs.content) {
-			model.modelState.correctFeedbacks = attrs.content.correctFeedbacks === undefined ? null : attrs.content.correctFeedbacks.split('|');
-			model.modelState.incorrectfeedbacks = attrs.content.incorrectfeedbacks === undefined ? null : attrs.content.incorrectfeedbacks.split('|');
-		} else {
-			model.modelState.correctFeedbacks = null;
-			model.modelState.incorrectFeedbacks = null;
-		}
+		model.modelState.responseType = content.responseType || '';
+		model.modelState.correctFeedbacks = content.correctFeedbacks ? content.correctFeedbacks.split('|') : null;
+		model.modelState.incorrectFeedbacks = content.incorrectFeedbacks ? content.incorrectFeedbacks.split('|') : null;
+		model.modelState.shuffle = content.shuffle !== false;
 	},
 	clone: function clone(model, _clone) {
 		_clone.modelState.responseType = model.modelState.responseType;
-
 		_clone.modelState.correctFeedbacks = model.modelState.correctFeedbacks ? model.modelState.correctFeedbacks.slice(0) : null;
-
 		_clone.modelState.incorrectFeedbacks = model.modelState.incorrectFeedbacks ? model.modelState.incorrectFeedbacks.slice(0) : null;
+		_clone.modelState.shuffle = model.modelState.shuffle;
 	},
 	toJSON: function toJSON(model, json) {
 		json.content.responseType = model.modelState.responseType;
-
 		json.content.correctFeedbacks = model.modelState.correctFeedbacks ? model.modelState.correctFeedbacks.join('|') : null;
-
 		json.content.incorrectFeedbacks = model.modelState.incorrectFeedbacks ? model.modelState.incorrectFeedbacks.join('|') : null;
+		json.content.shuffle = model.modelState.shuffle;
 	}
 };
 
 exports.default = Adapter;
-
-function __guard__(value, transform) {
-	return typeof value !== 'undefined' && value !== null ? transform(value) : undefined;
-}
 
 /***/ }),
 
@@ -455,10 +440,9 @@ var MCAssessment = function (_React$Component) {
 		_this.onClick = _this.onClick.bind(_this);
 		_this.onCheckAnswer = _this.onCheckAnswer.bind(_this);
 		_this.isShowingExplanation = _this.isShowingExplanation.bind(_this);
-		_this.correctFeedbackOptions = correctFeedbacks ? correctFeedbacks : ['Correct!', 'Perfect!', 'You got it!', 'Great job!', "That's right!"];
+		_this.correctFeedbackOptions = correctFeedbacks ? correctFeedbacks : ['Correct!', 'You got it!', 'Great job!', "That's right!"];
 		_this.incorrectFeedbackOptions = incorrectFeedbacks ? incorrectFeedbacks : ['Incorrect'];
-		_this.correctFeedbackToShow = _this.getRandomFeedback(_this.correctFeedbackOptions);
-		_this.incorrectFeedbackToShow = _this.getRandomFeedback(_this.incorrectFeedbackOptions);
+		_this.updateCorrectIncorrectFeedback();
 		return _this;
 	}
 
@@ -579,7 +563,7 @@ var MCAssessment = function (_React$Component) {
 	}, {
 		key: 'hideExplanation',
 		value: function hideExplanation() {
-			QuestionUtil.hideExplanation(this.getQuestionModel().get('id'));
+			QuestionUtil.hideExplanation(this.getQuestionModel().get('id'), 'user');
 		}
 	}, {
 		key: 'onClickReset',
@@ -594,6 +578,7 @@ var MCAssessment = function (_React$Component) {
 			event.preventDefault();
 
 			// ScoreUtil.setScore(this.getQuestionModel().get('id'), this.calculateScore())
+			this.updateCorrectIncorrectFeedback();
 			QuestionUtil.checkAnswer(this.getQuestionModel().get('id'));
 		}
 	}, {
@@ -660,7 +645,7 @@ var MCAssessment = function (_React$Component) {
 	}, {
 		key: 'componentWillReceiveProps',
 		value: function componentWillReceiveProps() {
-			this.shuffle();
+			this.sortIds();
 		}
 	}, {
 		key: 'componentDidMount',
@@ -684,22 +669,28 @@ var MCAssessment = function (_React$Component) {
 	}, {
 		key: 'componentWillMount',
 		value: function componentWillMount() {
-			this.shuffle();
+			this.sortIds();
 		}
 	}, {
-		key: 'shuffle',
-		value: function shuffle() {
-			var shuffledIds = QuestionUtil.getData(this.props.moduleData.questionState, this.props.model, 'shuffledIds');
-			if (!shuffledIds) {
-				shuffledIds = _.shuffle(this.props.model.children.models).map(function (model) {
+		key: 'sortIds',
+		value: function sortIds() {
+			if (!QuestionUtil.getData(this.props.moduleData.questionState, this.props.model, 'sortedIds')) {
+				var ids = this.props.model.children.models.map(function (model) {
 					return model.get('id');
 				});
-				QuestionUtil.setData(this.props.model.get('id'), 'shuffledIds', shuffledIds);
+				if (this.props.model.modelState.shuffle) ids = _.shuffle(ids);
+				QuestionUtil.setData(this.props.model.get('id'), 'sortedIds', ids);
 			}
 		}
 	}, {
-		key: 'getRandomFeedback',
-		value: function getRandomFeedback(arrayOfOptions) {
+		key: 'updateCorrectIncorrectFeedback',
+		value: function updateCorrectIncorrectFeedback() {
+			this.correctFeedbackToShow = this.getRandomItem(this.correctFeedbackOptions);
+			this.incorrectFeedbackToShow = this.getRandomItem(this.incorrectFeedbackOptions);
+		}
+	}, {
+		key: 'getRandomItem',
+		value: function getRandomItem(arrayOfOptions) {
 			return arrayOfOptions[Math.floor(Math.random() * arrayOfOptions.length)];
 		}
 	}, {
@@ -713,15 +704,15 @@ var MCAssessment = function (_React$Component) {
 			var score = this.getScore();
 			var questionSubmitted = score !== null;
 			var questionAnswered = this.getResponseData().responses.size >= 1;
-			var shuffledIds = QuestionUtil.getData(this.props.moduleData.questionState, this.props.model, 'shuffledIds');
-			// shuffledIds = _.shuffle(@props.model.children.models).map (model) -> model.get('id')
+			var sortedIds = QuestionUtil.getData(this.props.moduleData.questionState, this.props.model, 'sortedIds');
+			// sortedIds = _.shuffle(@props.model.children.models).map (model) -> model.get('id')
 
-			if (!shuffledIds) return false;
+			if (!sortedIds) return false;
 
 			var feedbacks = Array.from(this.getResponseData().responses).filter(function (mcChoiceId) {
 				return OboModel.models[mcChoiceId].children.length > 1;
 			}).sort(function (id1, id2) {
-				return shuffledIds.indexOf(id1) - shuffledIds.indexOf(id2);
+				return sortedIds.indexOf(id1) - sortedIds.indexOf(id2);
 			}).map(function (mcChoiceId) {
 				return OboModel.models[mcChoiceId].children.at(1);
 			});
@@ -773,7 +764,7 @@ var MCAssessment = function (_React$Component) {
 						}
 					}()
 				),
-				shuffledIds.map(function (id, index) {
+				sortedIds.map(function (id, index) {
 					var child = OboModel.models[id];
 					if (child.get('type') !== 'ObojoboDraft.Chunks.MCAssessment.MCChoice') {
 						return null;
@@ -849,7 +840,7 @@ var MCAssessment = function (_React$Component) {
 										responseType: responseType,
 										isShowingExplanation: true,
 										questionSubmitted: true,
-										label: String.fromCharCode(shuffledIds.indexOf(model.parent.get('id')) + 65)
+										label: String.fromCharCode(sortedIds.indexOf(model.parent.get('id')) + 65)
 									});
 								})
 							)

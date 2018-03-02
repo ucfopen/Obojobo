@@ -130,13 +130,36 @@ _Common2.default.Store.registerModel('ObojoboDraft.Chunks.Break', {
 Object.defineProperty(exports, "__esModule", {
 	value: true
 });
+
+var _Common = __webpack_require__(0);
+
+var _Common2 = _interopRequireDefault(_Common);
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+var OboModel = _Common2.default.models.OboModel;
+
+
 var Adapter = {
+	construct: function construct(model, attrs) {
+		if (__guard__(attrs != null ? attrs.content : undefined, function (x) {
+			return x.width;
+		}) == 'large') {
+			model.modelState.width = attrs.content.width;
+		} else {
+			model.modelState.width = 'normal';
+		}
+	},
 	toText: function toText(model) {
 		return '---';
 	}
 };
 
 exports.default = Adapter;
+
+function __guard__(value, transform) {
+	return typeof value !== 'undefined' && value !== null ? transform(value) : undefined;
+}
 
 /***/ }),
 
@@ -186,7 +209,9 @@ var Break = function (_React$Component) {
 				{ model: this.props.model, moduleData: this.props.moduleData },
 				React.createElement(
 					NonEditableChunk,
-					{ className: 'obojobo-draft--chunks--break viewer' },
+					{
+						className: 'obojobo-draft--chunks--break viewer width-' + this.props.model.modelState.width
+					},
 					React.createElement('hr', null)
 				)
 			);

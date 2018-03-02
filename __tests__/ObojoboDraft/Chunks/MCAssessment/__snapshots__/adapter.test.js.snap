@@ -7,8 +7,62 @@ Object {
       "Correct!",
       "Great job!",
     ],
-    "incorrectfeedbacks": null,
+    "incorrectFeedbacks": Array [
+      "Incorrect",
+      "wrong",
+    ],
     "responseType": "pick-one",
+    "shuffle": false,
+  },
+}
+`;
+
+exports[`MCAssessment adapter can be constructed WITH correctFeedbacks 1`] = `
+Object {
+  "modelState": Object {
+    "correctFeedbacks": Array [
+      "Correct!",
+      "Great job!",
+    ],
+    "incorrectFeedbacks": null,
+    "responseType": "",
+    "shuffle": true,
+  },
+}
+`;
+
+exports[`MCAssessment adapter can be constructed WITH incorrectFeedbacks 1`] = `
+Object {
+  "modelState": Object {
+    "correctFeedbacks": null,
+    "incorrectFeedbacks": Array [
+      "Incorrect",
+      "wrong",
+    ],
+    "responseType": "",
+    "shuffle": true,
+  },
+}
+`;
+
+exports[`MCAssessment adapter can be constructed WITH responseType 1`] = `
+Object {
+  "modelState": Object {
+    "correctFeedbacks": null,
+    "incorrectFeedbacks": null,
+    "responseType": "pick-one",
+    "shuffle": true,
+  },
+}
+`;
+
+exports[`MCAssessment adapter can be constructed WITH shuffle 1`] = `
+Object {
+  "modelState": Object {
+    "correctFeedbacks": null,
+    "incorrectFeedbacks": null,
+    "responseType": "",
+    "shuffle": false,
   },
 }
 `;
@@ -19,6 +73,7 @@ Object {
     "correctFeedbacks": null,
     "incorrectFeedbacks": null,
     "responseType": "",
+    "shuffle": true,
   },
 }
 `;
@@ -29,6 +84,18 @@ Object {
     "correctFeedbacks": null,
     "incorrectFeedbacks": null,
     "responseType": "pick-one",
+    "shuffle": true,
+  },
+}
+`;
+
+exports[`MCAssessment adapter can convert to JSON WITH attributes 1`] = `
+Object {
+  "content": Object {
+    "correctFeedbacks": "Correct!|Great job!",
+    "incorrectFeedbacks": "Incorrect|wrong",
+    "responseType": "pick-one",
+    "shuffle": false,
   },
 }
 `;

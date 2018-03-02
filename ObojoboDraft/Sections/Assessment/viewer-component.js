@@ -57,14 +57,16 @@ export default class Assessment extends React.Component {
 	}
 
 	isAttemptComplete() {
-		return true
-		//@TODO: isCurrentAttemptComplete not functional, returning true which was the status quo for the pilot
-		// return AssessmentUtil.isCurrentAttemptComplete(this.props.moduleData.assessmentState, this.props.moduleData.questionState, this.props.model);
+		return AssessmentUtil.isCurrentAttemptComplete(
+			this.props.moduleData.assessmentState,
+			this.props.moduleData.questionState,
+			this.props.model
+		)
 	}
 
 	onClickSubmit() {
 		if (!this.isAttemptComplete()) {
-			ModalUtil.show(<AttemptIncompleteDialog onSubmit={this.endAttempt} />)
+			ModalUtil.show(<AttemptIncompleteDialog onSubmit={this.endAttempt.bind(this)} />)
 			return
 		}
 

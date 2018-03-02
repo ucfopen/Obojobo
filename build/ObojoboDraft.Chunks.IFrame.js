@@ -137,15 +137,23 @@ exports.default = {
 		} else {
 			model.modelState.src = null;
 		}
+
+		if (attrs && attrs.content && attrs.content.allow) {
+			model.modelState.allow = attrs.content.allow;
+		} else {
+			model.modelState.allow = null;
+		}
 	},
 	clone: function clone(model, _clone) {
 		_clone.modelState.src = model.modelState.src;
+		_clone.modelState.allow = model.modelState.allow;
 	},
 	toJSON: function toJSON(model, json) {
 		json.content.src = model.modelState.src;
+		json.content.allow = model.modelState.allow;
 	},
 	toText: function toText(model) {
-		return model.modelState.src;
+		return model.modelState.src + ' ' + model.modelState.allow;
 	}
 };
 
@@ -197,7 +205,13 @@ var IFrame = function (_React$Component) {
 				React.createElement(
 					'div',
 					{ className: 'obojobo-draft--chunks--iframe viewer' },
-					React.createElement('iframe', { src: this.props.model.modelState.src, frameBorder: '0', allowFullScreen: 'true' })
+					React.createElement('iframe', {
+						is: true,
+						src: this.props.model.modelState.src,
+						frameBorder: '0',
+						allowFullScreen: 'true',
+						allow: this.props.model.modelState.allow
+					})
 				)
 			);
 		}
