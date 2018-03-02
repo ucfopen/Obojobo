@@ -297,9 +297,11 @@ export default class ViewerApp extends React.Component {
 		if (NavUtil.canNavigate(this.state.navState)) {
 			prevModel = NavUtil.getPrevModel(this.state.navState)
 			if (prevModel) {
-				if (typeof prevModel.title == 'undefined' || prevModel.title == null)
-					prevEl = <InlineNavButton ref="prev" type="prev" title={`Back`} />
-				else prevEl = <InlineNavButton ref="prev" type="prev" title={`Back: ${prevModel.title}`} />
+				let navText =
+					typeof prevModel.title !== 'undefined' && prevModel.title !== null
+						? 'Back: ' + prevModel.title
+						: 'Back'
+				prevEl = <InlineNavButton ref="prev" type="prev" title={`${navText}`} />
 			} else {
 				prevEl = (
 					<InlineNavButton
@@ -313,9 +315,11 @@ export default class ViewerApp extends React.Component {
 
 			nextModel = NavUtil.getNextModel(this.state.navState)
 			if (nextModel) {
-				if (typeof nextModel.title == 'undefined' || nextModel.title == null)
-					nextEl = <InlineNavButton ref="next" type="next" title={`Next`} />
-				else nextEl = <InlineNavButton ref="next" type="next" title={`Next: ${nextModel.title}`} />
+				let navText =
+					typeof nextModel.title !== 'undefined' && nextModel.title !== null
+						? 'Next: ' + nextModel.title
+						: 'Next'
+				nextEl = <InlineNavButton ref="next" type="next" title={`${navText}`} />
 			} else {
 				nextEl = (
 					<InlineNavButton
