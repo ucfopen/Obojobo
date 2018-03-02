@@ -87,16 +87,13 @@ export default class ViewerApp extends React.Component {
 
 	componentDidMount() {
 		document.addEventListener('visibilitychange', this.onVisibilityChange)
-		let visitIdFromUrl, visitIdFromApi, draftIdFromUrl, attemptHistory, isPreviewing
-		let visitMatchRegex = /visit\/(\d+)/.exec(document.location.href)
-		let draftMatchRegex = /(\w{8}-\w{4}-\w{4}-\w{4}-\w{12})/.exec(document.location.href)
+		let visitIdFromApi
+		let attemptHistory
+		let isPreviewing
 
-		if (visitMatchRegex) {
-			visitIdFromUrl = visitMatchRegex[1]
-		}
-		if (draftMatchRegex) {
-			draftIdFromUrl = draftMatchRegex[1]
-		}
+		let urlTokens = document.location.pathname.split('/')
+		let visitIdFromUrl = urlTokens[4] ? urlTokens[4] : null
+		let draftIdFromUrl = urlTokens[2] ? urlTokens[2] : null
 
 		Dispatcher.trigger('viewer:loading')
 
@@ -136,6 +133,7 @@ export default class ViewerApp extends React.Component {
 				})
 			})
 			.catch(err => {
+				console.log(err)
 				this.setState({ loading: false, requestStatus: 'invalid' }, () =>
 					Dispatcher.trigger('viewer:loaded', false)
 				)
