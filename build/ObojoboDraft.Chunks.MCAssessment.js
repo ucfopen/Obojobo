@@ -707,7 +707,7 @@ var MCAssessment = function (_React$Component) {
 
 			if (!sortedIds) return false;
 
-			var Labels = Array.from(this.getResponseData().responses).filter(function (mcChoiceId) {
+			var feedbacks = Array.from(this.getResponseData().responses).filter(function (mcChoiceId) {
 				return OboModel.models[mcChoiceId].children.length > 1;
 			}).sort(function (id1, id2) {
 				return sortedIds.indexOf(id1) - sortedIds.indexOf(id2);
@@ -818,18 +818,18 @@ var MCAssessment = function (_React$Component) {
 						transitionEnterTimeout: 800,
 						transitionLeaveTimeout: 800
 					},
-					questionSubmitted && (Labels.length > 0 || solution) ? React.createElement(
+					questionSubmitted && (feedbacks.length > 0 || solution) ? React.createElement(
 						'div',
 						{ className: 'solution', key: 'solution' },
 						React.createElement(
 							'div',
 							{ className: 'score' },
-							Labels.length === 0 ? null : React.createElement(
+							feedbacks.length === 0 ? null : React.createElement(
 								'div',
 								{
 									className: 'feedback' + (responseType === 'pick-all' ? ' is-pick-all-feedback' : ' is-not-pick-all-feedback')
 								},
-								Labels.map(function (model) {
+								feedbacks.map(function (model) {
 									var Component = model.getComponentClass();
 									return React.createElement(Component, {
 										key: model.get('id'),

@@ -244,7 +244,7 @@ export default class MCAssessment extends React.Component {
 
 		if (!sortedIds) return false
 
-		let Labels = Array.from(this.getResponseData().responses)
+		let feedbacks = Array.from(this.getResponseData().responses)
 			.filter(mcChoiceId => {
 				return OboModel.models[mcChoiceId].children.length > 1
 			})
@@ -345,17 +345,17 @@ export default class MCAssessment extends React.Component {
 					transitionEnterTimeout={800}
 					transitionLeaveTimeout={800}
 				>
-					{questionSubmitted && (Labels.length > 0 || solution)
+					{questionSubmitted && (feedbacks.length > 0 || solution)
 						? <div className="solution" key="solution">
 								<div className="score">
-									{Labels.length === 0
+									{feedbacks.length === 0
 										? null
 										: <div
 												className={`feedback${responseType === 'pick-all'
 													? ' is-pick-all-feedback'
 													: ' is-not-pick-all-feedback'}`}
 											>
-												{Labels.map(model => {
+												{feedbacks.map(model => {
 													let Component = model.getComponentClass()
 													return (
 														<Component
