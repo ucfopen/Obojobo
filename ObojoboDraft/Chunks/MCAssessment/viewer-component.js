@@ -21,6 +21,8 @@ export default class MCAssessment extends React.Component {
 	constructor(props) {
 		super(props)
 
+		const { correctLabels, incorrectLabels } = this.props.model.modelState
+
 		this.onClickShowExplanation = this.onClickShowExplanation.bind(this)
 		this.onClickHideExplanation = this.onClickHideExplanation.bind(this)
 		this.onClickSubmit = this.onClickSubmit.bind(this)
@@ -28,6 +30,11 @@ export default class MCAssessment extends React.Component {
 		this.onClick = this.onClick.bind(this)
 		this.onCheckAnswer = this.onCheckAnswer.bind(this)
 		this.isShowingExplanation = this.isShowingExplanation.bind(this)
+		this.correctLabels = correctLabels
+			? correctLabels
+			: ['Correct!', 'You got it!', 'Great job!', "That's right!"]
+		this.incorrectLabels = incorrectLabels ? incorrectLabels : ['Incorrect']
+		this.updateFeedbackLabels()
 	}
 
 	getQuestionModel() {
@@ -116,6 +123,7 @@ export default class MCAssessment extends React.Component {
 		event.preventDefault()
 
 		// ScoreUtil.setScore(this.getQuestionModel().get('id'), this.calculateScore())
+		this.updateFeedbackLabels()
 		QuestionUtil.checkAnswer(this.getQuestionModel().get('id'))
 	}
 
@@ -212,6 +220,15 @@ export default class MCAssessment extends React.Component {
 		}
 	}
 
+	updateFeedbackLabels() {
+		this.correctLabelToShow = this.getRandomItem(this.correctLabels)
+		this.incorrectLabelToShow = this.getRandomItem(this.incorrectLabels)
+	}
+
+	getRandomItem(arrayOfOptions) {
+		return arrayOfOptions[Math.floor(Math.random() * arrayOfOptions.length)]
+	}
+
 	render() {
 		let { responseType } = this.props.model.modelState
 		let isShowingExplanation = this.isShowingExplanation()
@@ -304,10 +321,14 @@ export default class MCAssessment extends React.Component {
 						{questionSubmitted
 							? score === 100
 								? <div className="result-container">
-										<p className="result correct">Correct!</p>
+										<p className="result correct">
+											{this.correctLabelToShow}
+										</p>
 									</div>
 								: <div className="result-container">
-										<p className="result incorrect">Incorrect</p>
+										<p className="result incorrect">
+											{this.incorrectLabelToShow}
+										</p>
 										{responseType === 'pick-all'
 											? <span className="pick-all-instructions">
 													You have either missed some correct answers or selected some incorrect
