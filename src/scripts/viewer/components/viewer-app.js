@@ -87,7 +87,11 @@ export default class ViewerApp extends React.Component {
 
 	componentDidMount() {
 		document.addEventListener('visibilitychange', this.onVisibilityChange)
-		let visitIdFromUrl, visitIdFromApi, draftIdFromUrl, attemptHistory, isPreviewing
+		let visitIdFromUrl
+		let visitIdFromApi
+		let draftIdFromUrl
+		let attemptHistory
+		let isPreviewing
 		let visitMatchRegex = /visit\/(\d+)/.exec(document.location.href)
 		let draftMatchRegex = /(\w{8}-\w{4}-\w{4}-\w{4}-\w{12})/.exec(document.location.href)
 
@@ -164,12 +168,12 @@ export default class ViewerApp extends React.Component {
 	}
 
 	shouldComponentUpdate(nextProps, nextState) {
-		return nextState.loading ? false : true
+		return !nextState.loading
 	}
 
 	componentWillUpdate(nextProps, nextState) {
 		if (this.state.requestStatus === 'ok') {
-			let { navTargetId } = this.state
+			let navTargetId = this.state.navTargetId
 			let nextNavTargetId = this.state.navState.navTargetId
 
 			if (navTargetId !== nextNavTargetId) {
