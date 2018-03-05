@@ -13,28 +13,35 @@ const ERROR_ATTEMPT_LIMIT_REACHED = 'Attempt limit reached'
 const ERROR_UNEXPECTED_DB_ERROR = 'Unexpected DB error'
 
 const startAttempt = (req, res) => {
-  let assessmentProperties = {}
+  let assessmentProperties = {
+    user: null,
+    isPreviewing: null,
+    draftTree: null,
+    id: null,
+    node: null,
+    nodeChildrenIds: null,
+    assessmentQBTree: null,
+    attemptHistory: null,
+    numAttemptsaken: null,
+    childrenMap: null
+  }
   let attemptState
 
   req.requireCurrentUser()
     .then(user => {
-      assessmentProperties = updateAssessmentProperties(assessmentProperties, {
-        user,
-        isPreviewing: user.canViewEditor
-      })
+      assessmentProperties.user = user
+      assessmentProperties.isPreviewing = user.canViewEditor
 
       return DraftModel.fetchById(req.body.draftId)
     })
     .then(draftTree => {
       const assessmentNode = draftTree.getChildNodeById(req.body.assessmentId)
 
-      assessmentProperties = updateAssessmentProperties(assessmentProperties, {
-        draftTree,
-        id: req.body.assessmentId,
-        node: assessmentNode,
-        nodeChildrenIds: assessmentNode.children[1].childrenSet,
-        assessmentQBTree: assessmentNode.children[1].toObject()
-      })
+      assessmentProperties.draftTree = draftTree
+      assessmentProperties.id = req.body.assessmentId
+      assessmentProperties.node = assessmentNode
+      assessmentProperties.nodeChildrenIds = assessmentNode.children[1].childrenSet
+      assessmentProperties.assessmentQBTree = assessmentNode.children[1].toObject()
 
       return Assessment.getCompletedAssessmentAttemptHistory(
         assessmentProperties.user.id,
@@ -44,7 +51,7 @@ const startAttempt = (req, res) => {
       )
     })
     .then(attemptHistory => {
-      assessmentProperties = updateAssessmentProperties(assessmentProperties, { attemptHistory })
+      assessmentProperties.attemptHistory = attemptHistory
 
       return Assessment.getNumberAttemptsTaken(
         assessmentProperties.user.id,
@@ -53,7 +60,7 @@ const startAttempt = (req, res) => {
       )
     })
     .then(numAttemptsTaken => {
-      assessmentProperties = updateAssessmentProperties(assessmentProperties, { numAttemptsTaken })
+      assessmentProperties.numAttemptsaken = numAttemptsTaken
 
       // If we're in preview mode, allow unlimited attempts, else throw an error
       // when trying to start an assessment with no attempts left.
@@ -64,9 +71,7 @@ const startAttempt = (req, res) => {
       )
         throw new Error(ERROR_ATTEMPT_LIMIT_REACHED)
 
-      assessmentProperties = updateAssessmentProperties(assessmentProperties, {
-        childrenMap: getAssessmentChildrenMap(assessmentProperties)
-      })
+      assessmentProperties.childrenMap = getAssessmentChildrenMap(assessmentProperties)
 
       for (let attempt of assessmentProperties.attemptHistory) {
         if (attempt.state.qb) {
@@ -212,10 +217,6 @@ const getSendToClientPromises = (attemptState, req, res) => {
   return promises
 }
 
-const updateAssessmentProperties = (currentProps, nextProps) => {
-  return Object.assign(currentProps, nextProps)
-}
-
 module.exports = {
   startAttempt,
   getQuestionBankProperties,
@@ -224,6 +225,5 @@ module.exports = {
   chooseQuestionsSequentially,
   createChosenQuestionTree,
   getNodeQuestions,
-  getSendToClientPromises,
-  updateAssessmentProperties
+  getSendToClientPromises
 }
