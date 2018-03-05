@@ -6347,20 +6347,14 @@
 							var _this2 = this
 
 							document.addEventListener('visibilitychange', this.onVisibilityChange)
-							var visitIdFromUrl = void 0
+
 							var visitIdFromApi = void 0
-							var draftIdFromUrl = void 0
 							var attemptHistory = void 0
 							var isPreviewing = void 0
-							var visitMatchRegex = /visit\/(\d+)/.exec(document.location.href)
-							var draftMatchRegex = /(\w{8}-\w{4}-\w{4}-\w{4}-\w{12})/.exec(document.location.href)
 
-							if (visitMatchRegex) {
-								visitIdFromUrl = visitMatchRegex[1]
-							}
-							if (draftMatchRegex) {
-								draftIdFromUrl = draftMatchRegex[1]
-							}
+							var urlTokens = document.location.pathname.split('/')
+							var visitIdFromUrl = urlTokens[4] ? urlTokens[4] : null
+							var draftIdFromUrl = urlTokens[2] ? urlTokens[2] : null
 
 							Dispatcher.trigger('viewer:loading')
 
@@ -6406,6 +6400,7 @@
 									)
 								})
 								.catch(function(err) {
+									console.log(err)
 									_this2.setState({ loading: false, requestStatus: 'invalid' }, function() {
 										return Dispatcher.trigger('viewer:loaded', false)
 									})
