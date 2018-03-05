@@ -25,7 +25,7 @@ jest.mock('../config', () => {
 	}
 })
 
-jest.mock('ims-lti/lib/extensions/outcomes', () => {
+jest.mock('ims-lti/src/extensions/outcomes', () => {
 	let OutcomeService = function() {
 		this.service_url = 'lis_outcome_service_url'
 	}
@@ -49,7 +49,7 @@ jest.mock('ims-lti/lib/extensions/outcomes', () => {
 		OutcomeService
 	}
 })
-let OutcomeService = require('ims-lti/lib/extensions/outcomes').OutcomeService
+let OutcomeService = require('ims-lti/src/extensions/outcomes').OutcomeService
 
 let mockDate = () => {
 	global.Date.prototype.toISOString = () => 'MOCKED-ISO-DATE-STRING'
@@ -167,7 +167,7 @@ let mockSendAssessScoreDBCalls = (
 
 describe('lti', () => {
 	beforeAll(() => {
-		jest.mock('ims-lti/lib/extensions/outcomes')
+		jest.mock('ims-lti/src/extensions/outcomes')
 	})
 
 	afterAll(() => {})
