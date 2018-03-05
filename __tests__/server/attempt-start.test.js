@@ -81,24 +81,8 @@ describe('start attempt route', () => {
   })
 
   it('can choose to display questions sequentially', () => {
-    // const root = new Draft(testJson)
-    // const fakeTree = { 'test': new DraftNode({}, {}, {}) }
-    // fakeTree['test'].children = [
-
-    // ]
-
-    // const mockAssessmentProperties = {
-    //   childrenMap: createTestAssessmentChildMap(),
-    //   node: {
-    //     draftTree: {
-    //       getChildNodeById: jest.fn(id => {
-
-    //       })
-    //     }
-    //   }
-    // }
-    // const testTree = createTestTree()
-
-    // console.log();
+    // TODO: Use the test-object.json and test the method on the tree.
+    const mockDraft = new Draft(testJson)
+    const assessmentNode = mockDraft.getChildNodeById('assessment')
   })
 })
