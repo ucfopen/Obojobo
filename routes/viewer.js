@@ -14,10 +14,9 @@ router.post('/:draftId', (req, res, next) => {
 	let visitId = null
 
 	return req
-		.getCurrentUser(true)
+		.requireCurrentUser()
 		.then(currentUser => {
 			user = currentUser
-			if (user.isGuest()) throw new Error('Login Required')
 			return db.none(
 				`UPDATE visits
 				SET is_active = false
@@ -57,7 +56,7 @@ router.get('/:draftId/visit/:visitId*', (req, res, next) => {
 	let draft = null
 
 	return req
-		.getCurrentUser(true)
+		.requireCurrentUser()
 		.then(currentUser => {
 			user = currentUser
 			if (user.isGuest()) throw new Error('Login Required')

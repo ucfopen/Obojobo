@@ -23,7 +23,7 @@ describe('lti route', () => {
 		let routeFunction = mockRouterMethods.get.mock.calls[0][1]
 
 		let mockReq = {
-			getCurrentUser: () => {
+			requireCurrentUser: () => {
 				return Promise.resolve(new GuestUser())
 			}
 		}
@@ -48,7 +48,7 @@ describe('lti route', () => {
 		let routeFunction = mockRouterMethods.get.mock.calls[0][1]
 
 		let mockReq = {
-			getCurrentUser: val => {
+			requireCurrentUser: val => {
 				return Promise.reject('not logged in')
 			}
 		}
@@ -73,7 +73,7 @@ describe('lti route', () => {
 		let routeFunction = mockRouterMethods.get.mock.calls[0][1]
 
 		let mockReq = {
-			getCurrentUser: val => {
+			requireCurrentUser: val => {
 				return Promise.reject('not logged in')
 			}
 		}
@@ -101,7 +101,7 @@ describe('lti route', () => {
 		let routeFunction = mockRouterMethods.get.mock.calls[0][1]
 
 		let mockReq = {
-			getCurrentUser: () => {
+			requireCurrentUser: () => {
 				return Promise.resolve(new User())
 			},
 			params: { draftId: 555 },
