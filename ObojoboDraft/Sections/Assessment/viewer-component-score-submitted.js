@@ -15,12 +15,10 @@ const scoreSubmittedView = assessment => {
 		assessment.props.moduleData.assessmentState,
 		assessment.props.model
 	)
-	// @TODO make this in AssessmentUtil
-	// const highestScore = AssessmentUtil.getHighestAttemptScoreForModel(
-	// 	assessment.props.moduleData.assessmentState,
-	// 	assessment.props.model
-	// )
-	const highestScore = 100
+	const highestScore = AssessmentUtil.getHighestAttemptScoreForModel(
+		assessment.props.moduleData.assessmentState,
+		assessment.props.model
+	)
 
 	const scoreAction = assessment.getScoreAction()
 	const numCorrect = AssessmentUtil.getNumCorrect(questionScores)

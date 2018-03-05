@@ -100,10 +100,6 @@ let QuestionUtil = {
 		return 'hidden'
 	},
 
-	populate(attempts) {
-		return Dispatcher.trigger('score:populate', attempts)
-	},
-
 	getResponse(state, model, context) {
 		if (!state.responses[context]) return null
 		return state.responses[context][model.get('id')] || null
@@ -117,7 +113,7 @@ let QuestionUtil = {
 		return state.data[model.get('id') + ':showingExplanation'] || false
 	},
 
-	getScoreForModel(state, model, context = 'practice') {
+	getScoreForModel(state, model, context) {
 		let scoreItem
 		if (state.scores[context] != null) scoreItem = state.scores[context][model.get('id')]
 		if (scoreItem == null) {
@@ -127,7 +123,7 @@ let QuestionUtil = {
 	},
 
 	setScore(itemId, score, context) {
-		return Dispatcher.trigger('score:set', {
+		return Dispatcher.trigger('question:scoreSet', {
 			value: {
 				itemId,
 				score,
@@ -137,7 +133,7 @@ let QuestionUtil = {
 	},
 
 	clearScore(itemId, context) {
-		return Dispatcher.trigger('score:clear', {
+		return Dispatcher.trigger('question:scoreClear', {
 			value: {
 				itemId,
 				context

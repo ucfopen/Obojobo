@@ -2575,6 +2575,15 @@ object-assign
 						value: function setState(newState) {
 							return (this.state = Object.assign({}, newState))
 						}
+					},
+					{
+						key: 'updateStateByContext',
+						value: function updateStateByContext(obj, context) {
+							for (var key in obj) {
+								if (!this.state[key]) this.state[key] = {}
+								this.state[key][context] = obj[key]
+							}
+						}
 					}
 				])
 

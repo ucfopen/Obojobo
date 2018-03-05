@@ -6,6 +6,8 @@ import APIUtil from '../../viewer/util/api-util'
 import NavUtil from '../../viewer/util/nav-util'
 import LTINetworkStates from './assessment-store/lti-network-states'
 
+import QuestionStore from './question-store'
+
 let { Store } = Common.flux
 let { Dispatcher } = Common.flux
 let { OboModel } = Common.models
@@ -99,7 +101,19 @@ class AssessmentStore extends Store {
 			})
 		})
 
-		QuestionUtil.populate(assessments)
+		for (let assessment in assessments) {
+			assessments[assessment].attempts.forEach(attempt => {
+				let scoreObject = {}
+				attempt.questionScores.forEach(score => {
+					scoreObject[score.id] = score
+				})
+				let stateToUpdate = {
+					scores: scoreObject,
+					responses: attempt.responses
+				}
+				QuestionStore.updateStateByContext(stateToUpdate, `assessmentReview:${attempt.attemptId}`)
+			})
+		}
 
 		if (unfinishedAttempt) {
 			return ModalUtil.show(

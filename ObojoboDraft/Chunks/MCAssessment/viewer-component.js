@@ -328,17 +328,19 @@ export default class MCAssessment extends React.Component {
 				})}
 				{
 					<div className="submit-and-result-container">
-						{questionSubmitted
-							? <div className="submit">
-									<Button altAction onClick={this.onClickReset} value="Try Again" />
-								</div>
-							: <div className="submit">
-									<Button
-										onClick={this.onClickSubmit}
-										value="Check Your Answer"
-										disabled={!questionAnswered}
-									/>
-								</div>}
+						{this.props.mode === 'practice'
+							? questionSubmitted
+								? <div className="submit">
+										<Button altAction onClick={this.onClickReset} value="Try Again" />
+									</div>
+								: <div className="submit">
+										<Button
+											onClick={this.onClickSubmit}
+											value="Check Your Answer"
+											disabled={!questionAnswered}
+										/>
+									</div>
+							: null}
 
 						{questionSubmitted
 							? score === 100

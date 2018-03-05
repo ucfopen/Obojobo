@@ -131,7 +131,7 @@ class QuestionStore extends Store {
 				QuestionUtil.clearScore(questionId, payload.value.context)
 			},
 
-			'score:set': payload => {
+			'question:scoreSet': payload => {
 				let scoreId = UUID()
 
 				if (!payload.value[payload.value.context]) this.state.scores[payload.value.context] = {}
@@ -157,31 +157,7 @@ class QuestionStore extends Store {
 				})
 			},
 
-			'score:populate': payload => {
-				if (
-					payload == null ||
-					// empty object
-					(Object.keys(payload).length === 0 && payload.constructor === Object)
-				) {
-					return
-				}
-				// assessment id hardcoded for now
-				payload['assessment'].attempts.forEach(attempt => {
-					let context = `assessmentReview:${attempt.attemptId}`
-					if (!this.state.scores[context]) this.state.scores[context] = {}
-					attempt.questionScores.forEach(questionScore => {
-						this.state.scores[context][questionScore.id] = {
-							id: questionScore.id,
-							score: questionScore.score
-						}
-						if (!this.state.responses[context]) this.state.responses[context] = {}
-						this.state.responses[context][questionScore.id] = attempt.responses[questionScore.id]
-					})
-				})
-				this.triggerChange()
-			},
-
-			'score:clear': payload => {
+			'question:scoreClear': payload => {
 				let scoreItem = this.state.scores[payload.value.context][payload.value.itemId]
 
 				model = OboModel.models[scoreItem.itemId]

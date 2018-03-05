@@ -127,23 +127,7 @@ exports[`MCAssessment MCAssessment component 1`] = `
   </div>
   <div
     className="submit-and-result-container"
-  >
-    <div
-      className="submit"
-    >
-      <div
-        className="obojobo-draft--components--button align-center"
-      >
-        <button
-          disabled={true}
-          onClick={[Function]}
-          tabIndex={undefined}
-        >
-          Check Your Answer
-        </button>
-      </div>
-    </div>
-  </div>
+  />
   <div />
 </form>
 `;
@@ -275,23 +259,7 @@ exports[`MCAssessment MCAssessment with a set score 1`] = `
   </div>
   <div
     className="submit-and-result-container"
-  >
-    <div
-      className="submit"
-    >
-      <div
-        className="obojobo-draft--components--button align-center"
-      >
-        <button
-          disabled={true}
-          onClick={[Function]}
-          tabIndex={undefined}
-        >
-          Check Your Answer
-        </button>
-      </div>
-    </div>
-  </div>
+  />
   <div />
 </form>
 `;
@@ -423,23 +391,7 @@ exports[`MCAssessment MCAssessment with a set score 2`] = `
   </div>
   <div
     className="submit-and-result-container"
-  >
-    <div
-      className="submit"
-    >
-      <div
-        className="obojobo-draft--components--button align-center"
-      >
-        <button
-          disabled={true}
-          onClick={[Function]}
-          tabIndex={undefined}
-        >
-          Check Your Answer
-        </button>
-      </div>
-    </div>
-  </div>
+  />
   <div />
 </form>
 `;
@@ -571,23 +523,7 @@ exports[`MCAssessment MCAssessment with response 1`] = `
   </div>
   <div
     className="submit-and-result-container"
-  >
-    <div
-      className="submit"
-    >
-      <div
-        className="obojobo-draft--components--button align-center"
-      >
-        <button
-          disabled={true}
-          onClick={[Function]}
-          tabIndex={undefined}
-        >
-          Check Your Answer
-        </button>
-      </div>
-    </div>
-  </div>
+  />
   <div />
 </form>
 `;
@@ -719,23 +655,7 @@ exports[`MCAssessment MCAssessment with response 2`] = `
   </div>
   <div
     className="submit-and-result-container"
-  >
-    <div
-      className="submit"
-    >
-      <div
-        className="obojobo-draft--components--button align-center"
-      >
-        <button
-          disabled={undefined}
-          onClick={[Function]}
-          tabIndex={undefined}
-        >
-          Check Your Answer
-        </button>
-      </div>
-    </div>
-  </div>
+  />
   <div />
 </form>
 `;
@@ -867,23 +787,7 @@ exports[`MCAssessment MCAssessment with revealAll 1`] = `
   </div>
   <div
     className="submit-and-result-container"
-  >
-    <div
-      className="submit"
-    >
-      <div
-        className="obojobo-draft--components--button align-center"
-      >
-        <button
-          disabled={true}
-          onClick={[Function]}
-          tabIndex={undefined}
-        >
-          Check Your Answer
-        </button>
-      </div>
-    </div>
-  </div>
+  />
   <div />
 </form>
 `;
@@ -1015,23 +919,7 @@ exports[`MCAssessment MCAssessment with revealAll 2`] = `
   </div>
   <div
     className="submit-and-result-container"
-  >
-    <div
-      className="submit"
-    >
-      <div
-        className="obojobo-draft--components--button align-center"
-      >
-        <button
-          disabled={true}
-          onClick={[Function]}
-          tabIndex={undefined}
-        >
-          Check Your Answer
-        </button>
-      </div>
-    </div>
-  </div>
+  />
   <div />
 </form>
 `;

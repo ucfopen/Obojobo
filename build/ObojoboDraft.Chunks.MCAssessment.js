@@ -966,25 +966,27 @@
 								React.createElement(
 									'div',
 									{ className: 'submit-and-result-container' },
-									questionSubmitted
-										? React.createElement(
-												'div',
-												{ className: 'submit' },
-												React.createElement(Button, {
-													altAction: true,
-													onClick: this.onClickReset,
-													value: 'Try Again'
-												})
-											)
-										: React.createElement(
-												'div',
-												{ className: 'submit' },
-												React.createElement(Button, {
-													onClick: this.onClickSubmit,
-													value: 'Check Your Answer',
-													disabled: !questionAnswered
-												})
-											),
+									this.props.mode === 'practice'
+										? questionSubmitted
+											? React.createElement(
+													'div',
+													{ className: 'submit' },
+													React.createElement(Button, {
+														altAction: true,
+														onClick: this.onClickReset,
+														value: 'Try Again'
+													})
+												)
+											: React.createElement(
+													'div',
+													{ className: 'submit' },
+													React.createElement(Button, {
+														onClick: this.onClickSubmit,
+														value: 'Check Your Answer',
+														disabled: !questionAnswered
+													})
+												)
+										: null,
 									questionSubmitted
 										? score === 100
 											? React.createElement(

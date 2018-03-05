@@ -845,12 +845,10 @@
 					assessment.props.moduleData.assessmentState,
 					assessment.props.model
 				)
-				// @TODO make this in AssessmentUtil
-				// const highestScore = AssessmentUtil.getHighestAttemptScoreForModel(
-				// 	assessment.props.moduleData.assessmentState,
-				// 	assessment.props.model
-				// )
-				var highestScore = 100
+				var highestScore = AssessmentUtil.getHighestAttemptScoreForModel(
+					assessment.props.moduleData.assessmentState,
+					assessment.props.model
+				)
 
 				var scoreAction = assessment.getScoreAction()
 				var numCorrect = AssessmentUtil.getNumCorrect(questionScores)

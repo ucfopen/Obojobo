@@ -1526,7 +1526,7 @@ exports[`MCAssessment Question with a set score 1`] = `
 
 exports[`MCAssessment Question with a set score 2`] = `
 <div
-  className="component flip-container obojobo-draft--chunks--question is-hidden"
+  className="component flip-container obojobo-draft--chunks--question is-correct is-hidden"
   data-focussed={false}
   data-id="id"
   data-obo-component={true}
@@ -1543,7 +1543,7 @@ exports[`MCAssessment Question with a set score 2`] = `
         className="obojobo-draft--chunks--mc-question--content"
       />
       <form
-        className="component obojobo-draft--chunks--mc-assessment is-response-type- is-not-showing-explantion is-unscored is-practice"
+        className="component obojobo-draft--chunks--mc-assessment is-response-type- is-not-showing-explantion is-scored is-practice"
         data-focussed={false}
         data-id="mc-assessment-id"
         data-obo-component={true}
@@ -1743,19 +1743,48 @@ exports[`MCAssessment Question with a set score 2`] = `
             className="submit"
           >
             <div
-              className="obojobo-draft--components--button align-center"
+              className="obojobo-draft--components--button alt-action align-center"
             >
               <button
-                disabled={true}
+                disabled={undefined}
                 onClick={[Function]}
                 tabIndex={undefined}
               >
-                Check Your Answer
+                Try Again
               </button>
             </div>
           </div>
+          <div
+            className="result-container"
+          >
+            <p
+              className="result correct"
+            >
+              Correct!
+            </p>
+          </div>
         </div>
-        <div />
+        <div>
+          <div
+            className="solution"
+          >
+            <div
+              className="score"
+            />
+            <div
+              className="obojobo-draft--components--button alt-action align-center"
+            >
+              <button
+                disabled={undefined}
+                onClick={[Function]}
+                tabIndex={undefined}
+              >
+                Read an explanation of the answer
+              </button>
+            </div>
+            <div />
+          </div>
+        </div>
       </form>
     </div>
     <div

@@ -85,7 +85,7 @@ class NavStore extends Store {
 					item.showChildren = false
 					return this.triggerChange()
 				},
-				'score:set': payload => {
+				'question:scoreSet': payload => {
 					let navItem = this.state.itemsById[payload.value.id]
 					if (!navItem) {
 						return
