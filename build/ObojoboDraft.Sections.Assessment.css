@@ -10,8 +10,17 @@
     margin-bottom: 0;
     text-align: center;
     font-size: 1em; }
-  .obojobo-draft--sections--assessment .untested p,
-  .obojobo-draft--sections--assessment .score p {
+    .obojobo-draft--sections--assessment .untested > h2 > .lti-sync-message,
+    .obojobo-draft--sections--assessment .score > h2 > .lti-sync-message {
+      color: #999999; }
+      .obojobo-draft--sections--assessment .untested > h2 > .lti-sync-message.is-synced > span,
+      .obojobo-draft--sections--assessment .score > h2 > .lti-sync-message.is-synced > span {
+        color: #38ae24; }
+      .obojobo-draft--sections--assessment .untested > h2 > .lti-sync-message.is-not-synced > span,
+      .obojobo-draft--sections--assessment .score > h2 > .lti-sync-message.is-not-synced > span {
+        color: #c21f00; }
+  .obojobo-draft--sections--assessment .untested .review > p,
+  .obojobo-draft--sections--assessment .score .review > p {
     margin-bottom: 3em; }
 
 .obojobo-draft--sections--assessment .review {
@@ -55,3 +64,19 @@
   width: 44em; }
   .obojobo-draft--sections--assessment .submit-button button {
     min-width: 9em; }
+.obojobo-draft--sections--assessment--lti-status {
+  width: 100%;
+  border-radius: 0.25em;
+  font-family: "Libre Franklin", Arial, sans-serif;
+  margin-bottom: 3em;
+  padding: 1.5em 3em;
+  box-sizing: border-box;
+  background-color: #ffe9c3; }
+  .obojobo-draft--sections--assessment--lti-status > h2 {
+    color: #000000;
+    font-size: 1em;
+    font-weight: bold; }
+  .obojobo-draft--sections--assessment--lti-status > p,
+  .obojobo-draft--sections--assessment--lti-status > div > p {
+    font-size: 0.9em;
+    line-height: 1.4em; }

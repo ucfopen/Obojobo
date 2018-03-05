@@ -3,6 +3,7 @@ import Viewer from 'Viewer'
 
 const { OboModel } = Common.models
 const { AssessmentUtil } = Viewer.util
+const Launch = Common.Launch
 
 import LTIStatus from './lti-status'
 
@@ -15,27 +16,29 @@ const scoreSubmittedView = assessment => {
 		assessment.props.moduleData.assessmentState,
 		assessment.props.model
 	)
-	const highestScore = AssessmentUtil.getHighestAttemptScoreForModel(
-		assessment.props.moduleData.assessmentState,
-		assessment.props.model
-	)
+	// const highestScore = AssessmentUtil.getHighestAttemptScoreForModel(
+	// 	assessment.props.moduleData.assessmentState,
+	// 	assessment.props.model
+	// )
 
 	const scoreAction = assessment.getScoreAction()
 	const numCorrect = AssessmentUtil.getNumCorrect(questionScores)
 
+	let assessmentScore = AssessmentUtil.getAssessmentScoreForModel(
+		assessment.props.moduleData.assessmentState,
+		assessment.props.model
+	)
+
 	let onClickResendScore = () => {
-		console.log('RESEND SCORE!!!!!!!!!!!!!!', APIUtil)
-		AssessmentUtil.resendLTIScore(assessment.model)
+		AssessmentUtil.resendLTIScore(assessment.props.model)
 	}
 
 	let ltiState = AssessmentUtil.getLTIStateForModel(
 		assessment.props.moduleData.assessmentState,
 		assessment.props.model
 	)
-	let ltiNetworkState = AssessmentUtil.getLTINetworkStateForModel(
-		assessment.props.moduleData.assessmentState,
-		assessment.props.model
-	)
+
+	let externalSystemLabel = Launch.getOutcomeServiceHostname()
 
 	let childEl
 
@@ -54,16 +57,36 @@ const scoreSubmittedView = assessment => {
 
 	return (
 		<div className="score unlock">
-			<LTIStatus
-				ltiState={ltiState}
-				ltiNetworkState={ltiNetworkState}
-				onClickResendScore={onClickResendScore}
-			/>
+			<LTIStatus ltiState={ltiState} launch={Launch} onClickResendScore={onClickResendScore} />
 
-			<h1>{`Your score is ${Math.round(recentScore)}%`}</h1>
-			{recentScore === highestScore
-				? <h2>This is your highest score</h2>
-				: <h2>{`Your highest score was ${Math.round(highestScore)}%`}</h2>}
+			<h1>{`Your attempt score is ${Math.round(recentScore)}%`}</h1>
+			<h2>
+				Your overall score for this assessment is{' '}
+				<strong>{assessmentScore === null ? '--' : Math.round(assessmentScore)}% </strong>
+				{(() => {
+					switch (ltiState.state.gradebookStatus) {
+						case 'ok_no_outcome_service':
+						case 'ok_null_score_not_sent':
+							return null
+
+						case 'ok_gradebook_matches_assessment_score':
+							return (
+								<span className="lti-sync-message is-synced">
+									({`sent to ${externalSystemLabel} `}
+									<span>✔</span>)
+								</span>
+							)
+
+						default:
+							return (
+								<span className="lti-sync-message is-not-synced">
+									({`not sent to ${externalSystemLabel} `}
+									<span>✖</span>)
+								</span>
+							)
+					}
+				})()}
+			</h2>
 			{childEl}
 			<div className="review">
 				<p className="number-correct">{`You got ${numCorrect} out of ${questionScores.length} questions correct:`}</p>

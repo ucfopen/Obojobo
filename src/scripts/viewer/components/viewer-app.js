@@ -46,6 +46,7 @@ export default class ViewerApp extends React.Component {
 	constructor(props) {
 		super(props)
 
+		Common.Launch.init(OboGlobals.get('ltiLaunch'))
 		Common.Store.loadDependency('https://cdnjs.cloudflare.com/ajax/libs/KaTeX/0.5.1/katex.min.css')
 
 		Dispatcher.on('viewer:scrollTo', payload => {

@@ -944,11 +944,6 @@
 				fetchDraft: function fetchDraft(id) {
 					return createParsedJsonPromise(fetch('/api/drafts/' + id))
 				},
-
-				// getAttempts(lo) {
-				// 	return createParsedJsonPromise(APIUtil.get(`/api/drafts/${lo.get('_id')}/attempts`))
-				// },
-
 				startAttempt: function startAttempt(lo, assessment, questions) {
 					return createParsedJsonPromise(
 						APIUtil.post('/api/assessments/attempt/start', {
@@ -1784,6 +1779,7 @@
 						},
 
 						'question:clearResponse': function questionClearResponse(payload) {
+							console.log('CR', payload)
 							delete _this.state.responses[payload.value.context][payload.value.id]
 							return _this.triggerChange()
 						},
@@ -2344,7 +2340,8 @@
 					attempts: [],
 					score: null,
 					lti: null,
-					ltiNetworkState: _ltiNetworkStates2.default.IDLE
+					ltiNetworkState: _ltiNetworkStates2.default.IDLE,
+					ltiErrorCount: 0
 				}
 			}
 
@@ -2428,8 +2425,9 @@
 								attempts.forEach(function(attempt) {
 									assessment = assessments[attempt.assessmentId]
 
-									// isn't this only concerned with last score?
-									assessment.score = attempt.assessmentScore
+									if (attempt.assessmentScore !== null) {
+										assessment.score = Math.max(attempt.assessmentScore, assessment.score)
+									}
 
 									if (!attempt.isFinished) {
 										unfinishedAttempt = attempt
@@ -2483,149 +2481,6 @@
 						}
 					},
 					{
-						key: '_init_OLD_DELETE_ME',
-						value: function _init_OLD_DELETE_ME(history) {
-							var question = void 0
-							if (history == null) {
-								history = []
-							}
-							this.state = {
-								assessments: {}
-							}
-
-							history.sort(function(a, b) {
-								return new Date(a.startTime).getTime() > new Date(b.startTime).getTime()
-							})
-
-							var unfinishedAttempt = null
-							var nonExistantQuestions = []
-
-							var _iteratorNormalCompletion = true
-							var _didIteratorError = false
-							var _iteratorError = undefined
-
-							try {
-								for (
-									var _iterator = Array.from(history)[Symbol.iterator](), _step;
-									!(_iteratorNormalCompletion = (_step = _iterator.next()).done);
-									_iteratorNormalCompletion = true
-								) {
-									var attempt = _step.value
-
-									if (!this.state.assessments[attempt.assessmentId]) {
-										this.state.assessments[attempt.assessmentId] = getNewAssessmentObject(
-											attempt.assessmentId
-										)
-									}
-
-									if (attempt.scores && attempt.scores.assessmentScore) {
-										this.state.assessments[attempt.assessmentId].score =
-											attempt.scores.assessmentScore
-									}
-
-									if (!attempt.endTime) {
-										// @state.assessments[attempt.assessmentId].current = attempt
-										unfinishedAttempt = attempt
-									} else {
-										this.state.assessments[attempt.assessmentId].attempts.push(attempt)
-									}
-
-									var _iteratorNormalCompletion3 = true
-									var _didIteratorError3 = false
-									var _iteratorError3 = undefined
-
-									try {
-										for (
-											var _iterator3 = Array.from(attempt.state.questions)[Symbol.iterator](),
-												_step3;
-											!(_iteratorNormalCompletion3 = (_step3 = _iterator3.next()).done);
-											_iteratorNormalCompletion3 = true
-										) {
-											question = _step3.value
-
-											if (!OboModel.models[question.id]) {
-												nonExistantQuestions.push(question)
-											}
-										}
-									} catch (err) {
-										_didIteratorError3 = true
-										_iteratorError3 = err
-									} finally {
-										try {
-											if (!_iteratorNormalCompletion3 && _iterator3.return) {
-												_iterator3.return()
-											}
-										} finally {
-											if (_didIteratorError3) {
-												throw _iteratorError3
-											}
-										}
-									}
-								}
-							} catch (err) {
-								_didIteratorError = true
-								_iteratorError = err
-							} finally {
-								try {
-									if (!_iteratorNormalCompletion && _iterator.return) {
-										_iterator.return()
-									}
-								} finally {
-									if (_didIteratorError) {
-										throw _iteratorError
-									}
-								}
-							}
-
-							var _iteratorNormalCompletion2 = true
-							var _didIteratorError2 = false
-							var _iteratorError2 = undefined
-
-							try {
-								for (
-									var _iterator2 = Array.from(nonExistantQuestions)[Symbol.iterator](), _step2;
-									!(_iteratorNormalCompletion2 = (_step2 = _iterator2.next()).done);
-									_iteratorNormalCompletion2 = true
-								) {
-									question = _step2.value
-
-									OboModel.create(question)
-								}
-							} catch (err) {
-								_didIteratorError2 = true
-								_iteratorError2 = err
-							} finally {
-								try {
-									if (!_iteratorNormalCompletion2 && _iterator2.return) {
-										_iterator2.return()
-									}
-								} finally {
-									if (_didIteratorError2) {
-										throw _iteratorError2
-									}
-								}
-							}
-
-							if (unfinishedAttempt) {
-								return ModalUtil.show(
-									React.createElement(
-										SimpleDialog,
-										{
-											ok: true,
-											title: 'Resume Attempt',
-											onConfirm: this.onResumeAttemptConfirm.bind(this, unfinishedAttempt)
-										},
-										React.createElement(
-											'p',
-											null,
-											"It looks like you were in the middle of an attempt. We'll resume you where you left off."
-										)
-									)
-								)
-							}
-						}
-					},
-					{
 						key: 'onResumeAttemptConfirm',
 						value: function onResumeAttemptConfirm(unfinishedAttempt) {
 							ModalUtil.hide()
@@ -2674,33 +2529,33 @@
 							var model = OboModel.models[id]
 
 							model.children.at(1).children.reset()
-							var _iteratorNormalCompletion4 = true
-							var _didIteratorError4 = false
-							var _iteratorError4 = undefined
+							var _iteratorNormalCompletion = true
+							var _didIteratorError = false
+							var _iteratorError = undefined
 
 							try {
 								for (
-									var _iterator4 = Array.from(startAttemptResp.state.questions)[Symbol.iterator](),
-										_step4;
-									!(_iteratorNormalCompletion4 = (_step4 = _iterator4.next()).done);
-									_iteratorNormalCompletion4 = true
+									var _iterator = Array.from(startAttemptResp.state.questions)[Symbol.iterator](),
+										_step;
+									!(_iteratorNormalCompletion = (_step = _iterator.next()).done);
+									_iteratorNormalCompletion = true
 								) {
-									var child = _step4.value
+									var child = _step.value
 
 									var c = OboModel.create(child)
 									model.children.at(1).children.add(c)
 								}
 							} catch (err) {
-								_didIteratorError4 = true
-								_iteratorError4 = err
+								_didIteratorError = true
+								_iteratorError = err
 							} finally {
 								try {
-									if (!_iteratorNormalCompletion4 && _iterator4.return) {
-										_iterator4.return()
+									if (!_iteratorNormalCompletion && _iterator.return) {
+										_iterator.return()
 									}
 								} finally {
-									if (_didIteratorError4) {
-										throw _iteratorError4
+									if (_didIteratorError) {
+										throw _iteratorError
 									}
 								}
 							}
@@ -2757,7 +2612,6 @@
 							assessment.currentResponses.forEach(function(questionId) {
 								return _questionUtil2.default.clearResponse(questionId, context)
 							})
-							assessment.attempts = endAttemptResp.attempts || {}
 							assessment.current = null
 
 							this.updateAttempts([endAttemptResp])
@@ -2817,6 +2671,15 @@
 						key: 'updateLTIScore',
 						value: function updateLTIScore(assessment, updateLTIScoreResp) {
 							assessment.lti = updateLTIScoreResp
+
+							var assessmentModel = OboModel.models[assessment.id]
+							if (
+								_assessmentUtil2.default.isLTIScoreNeedingToBeResynced(this.state, assessmentModel)
+							) {
+								assessment.ltiErrorCount++
+							} else {
+								assessment.ltiErrorCount = 0
+							}
 							// Dispatcher.trigger('assessment:ltiScore')
 						}
 					},
@@ -2985,24 +2848,30 @@
 					if (!assessment) {
 						return null
 					}
-					return assessment.lti
+
+					return {
+						state: assessment.lti,
+						networkState: assessment.ltiNetworkState,
+						errorCount: assessment.ltiErrorCount
+					}
 				},
-				getLTINetworkStateForModel: function getLTINetworkStateForModel(state, model) {
+				isLTIScoreNeedingToBeResynced: function isLTIScoreNeedingToBeResynced(state, model) {
 					var assessment = AssessmentUtil.getAssessmentForModel(state, model)
-					if (!assessment) {
-						return null
+
+					if (!assessment || !assessment.lti || !assessment.lti.gradebookStatus) {
+						return false
 					}
 
-					return assessment.ltiNetworkState
+					switch (assessment.lti.gradebookStatus) {
+						case 'ok_no_outcome_service':
+						case 'ok_gradebook_matches_assessment_score':
+						case 'ok_null_score_not_sent':
+							return false
+
+						default:
+							return true
+					}
 				},
-
-				// getLastAttemptForModel(state, model) {
-				// 	let assessment = AssessmentUtil.getAssessmentForModel(state, model);
-				// 	if (!assessment || (assessment.attempts.length === 0)) { return null; }
-
-				// 	return assessment.attempts[assessment.attempts.length - 1];
-				// },
-
 				isCurrentAttemptComplete: function isCurrentAttemptComplete(
 					assessmentState,
 					questionState,
@@ -6426,6 +6295,7 @@
 						(ViewerApp.__proto__ || Object.getPrototypeOf(ViewerApp)).call(this, props)
 					)
 
+					_Common2.default.Launch.init(OboGlobals.get('ltiLaunch'))
 					_Common2.default.Store.loadDependency(
 						'https://cdnjs.cloudflare.com/ajax/libs/KaTeX/0.5.1/katex.min.css'
 					)

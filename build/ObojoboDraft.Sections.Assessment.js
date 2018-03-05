@@ -456,25 +456,10 @@
 				function LTIStatus() {
 					_classCallCheck(this, LTIStatus)
 
-					var _this = _possibleConstructorReturn(
+					return _possibleConstructorReturn(
 						this,
-						(LTIStatus.__proto__ || Object.getPrototypeOf(LTIStatus)).call(this)
+						(LTIStatus.__proto__ || Object.getPrototypeOf(LTIStatus)).apply(this, arguments)
 					)
-
-					_this.statusRender = {
-						success: _this.renderSuccess.bind(_this),
-						not_attempted_no_outcome_service_for_launch: _this.renderNoOutcomeService.bind(_this),
-						not_attempted_score_is_null: _this.renderScoreIsNull.bind(_this),
-						error_launch_expired: _this.renderError.bind(_this),
-						error_replace_result_failed: _this.renderError.bind(_this),
-						error_no_launch_found: _this.renderError.bind(_this),
-						error_no_assessment_score_found: _this.renderError.bind(_this),
-						error_no_secret_for_key: _this.renderError.bind(_this),
-						error_score_is_invalid: _this.renderError.bind(_this),
-						error_unexpected: _this.renderError.bind(_this),
-						null: _this.renderError.bind(_this)
-					}
-					return _this
 				}
 
 				_createClass(LTIStatus, [
@@ -487,119 +472,73 @@
 					{
 						key: 'render',
 						value: function render() {
-							var childEl = void 0
 							var ltiState = this.props.ltiState
-							var ltiNetworkState = this.props.ltiNetworkState
 
-							switch (ltiNetworkState) {
-								case LTINetworkStates.AWAITING_SEND_ASSESSMENT_SCORE_RESPONSE:
-									//case LTINetworkStates.AWAITING_READ_RESULT_RESPONSE:
-									childEl = this.renderLoading()
-									break
+							if (!ltiState.state) return null
 
-								case LTINetworkStates.IDLE:
+							switch (ltiState.state.gradebookStatus) {
+								case 'ok_no_outcome_service':
+								case 'ok_gradebook_matches_assessment_score':
+								case 'ok_null_score_not_sent':
+									return null
+
 								default:
-									if (!ltiState || ltiState.gradebookStatus === 'ok_no_outcome_service') {
-										childEl = null
-									} else if (ltiState.gradebookStatus === 'ok_gradebook_matches_assessment_score') {
-										childEl = this.renderSynced()
-									} else if (ltiState.gradebookStatus === 'ok_null_score_not_sent') {
-										childEl = this.renderNotPassed()
-									} else {
-										childEl = this.renderStatus(ltiState)
-									}
-
-									break
+									return this.renderError()
 							}
-
-							if (childEl === null) return null
-
-							return React.createElement(
-								'div',
-								{ className: 'obojobo-draft--sections--assessment--lti-status' },
-								childEl
-							)
-						}
-					},
-					{
-						key: 'renderLoading',
-						value: function renderLoading() {
-							return React.createElement('div', { className: 'is-loading' }, 'LOADING...')
-						}
-					},
-					{
-						key: 'renderSynced',
-						value: function renderSynced() {
-							return React.createElement('div', { className: 'is-synced' }, 'Your score is synced')
-						}
-					},
-					{
-						key: 'renderNotPassed',
-						value: function renderNotPassed() {
-							return React.createElement('div', { className: 'is-not-passed' }, 'Not passed')
-						}
-					},
-					{
-						key: 'renderStatus',
-						value: function renderStatus(ltiState) {
-							return React.createElement(
-								'div',
-								{ className: 'is-status-' + (ltiState.status || 'null').replace(/_/g, '-') },
-								this.statusRender[ltiState.status]()
-							)
-						}
-					},
-					{
-						key: 'renderSuccess',
-						value: function renderSuccess() {
-							return React.createElement('p', null, 'good')
-						}
-					},
-					{
-						key: 'renderNoOutcomeService',
-						value: function renderNoOutcomeService() {
-							return React.createElement('p', null, 'module item?')
-						}
-					},
-					{
-						key: 'renderScoreIsNull',
-						value: function renderScoreIsNull() {
-							return React.createElement('p', null, 'have not passed')
 						}
 					},
 					{
 						key: 'renderError',
 						value: function renderError() {
+							var _this2 = this
+
+							var ltiState = this.props.ltiState
+							var location = this.props.launch.getOutcomeServiceHostname()
+
 							return React.createElement(
 								'div',
-								null,
+								{ className: 'obojobo-draft--sections--assessment--lti-status' },
 								React.createElement(
 									'h2',
 									null,
-									'There was a problem sending your score to the gradebook.'
+									'There was a problem sending your score to ' + location + '.'
 								),
 								React.createElement(
 									'p',
 									null,
-									'Close this assignment, reopen it and then click the button below to resend your score.'
+									'Don\u2019t worry - your score is safely recorded here. We just weren\u2019t able to send it to ' +
+										location +
+										'. Click the button below to resend your score:'
 								),
-								React.createElement(
-									Button,
-									{ onClick: this.props.onClickResendScore },
-									'Resend Score'
-								),
-								React.createElement(
-									'p',
-									null,
-									'If the problem persists try again later - The gradebook may be down temporarily.'
-								),
-								React.createElement(
-									'p',
-									null,
-									'If this still doesn\'t solve the issue contact technical support (error code "',
-									btoa(this.props.ltiState.status),
-									'")'
-								)
+								this.props.ltiState.errorCount === 0 ||
+								ltiState.networkState !== LTINetworkStates.IDLE
+									? null
+									: React.createElement(
+											'p',
+											null,
+											React.createElement('strong', null, "Sorry - That didn't work."),
+											' Most likely the connection to ' +
+												location +
+												' has expired and just needs to be refreshed. Please close this tab or window, reopen this module from ' +
+												location +
+												', return to this page and then resend your score.'
+										),
+								(function() {
+									switch (ltiState.networkState) {
+										case LTINetworkStates.AWAITING_SEND_ASSESSMENT_SCORE_RESPONSE:
+											return React.createElement(Button, { disabled: true }, 'Resending Score...')
+											break
+
+										case LTINetworkStates.IDLE:
+										default:
+											return React.createElement(
+												Button,
+												{ dangerous: true, onClick: _this2.props.onClickResendScore },
+												_this2.props.ltiState.errorCount === 0 ? 'Resend score' : 'Try again anyway'
+											)
+											break
+									}
+								})()
 							)
 						}
 					}
@@ -836,6 +775,8 @@
 			var OboModel = _Common2.default.models.OboModel
 			var AssessmentUtil = _Viewer2.default.util.AssessmentUtil
 
+			var Launch = _Common2.default.Launch
+
 			var scoreSubmittedView = function scoreSubmittedView(assessment) {
 				var questionScores = AssessmentUtil.getLastAttemptScoresForModel(
 					assessment.props.moduleData.assessmentState,
@@ -845,27 +786,29 @@
 					assessment.props.moduleData.assessmentState,
 					assessment.props.model
 				)
-				var highestScore = AssessmentUtil.getHighestAttemptScoreForModel(
-					assessment.props.moduleData.assessmentState,
-					assessment.props.model
-				)
+				// const highestScore = AssessmentUtil.getHighestAttemptScoreForModel(
+				// 	assessment.props.moduleData.assessmentState,
+				// 	assessment.props.model
+				// )
 
 				var scoreAction = assessment.getScoreAction()
 				var numCorrect = AssessmentUtil.getNumCorrect(questionScores)
 
+				var assessmentScore = AssessmentUtil.getAssessmentScoreForModel(
+					assessment.props.moduleData.assessmentState,
+					assessment.props.model
+				)
+
 				var onClickResendScore = function onClickResendScore() {
-					console.log('RESEND SCORE!!!!!!!!!!!!!!', APIUtil)
-					AssessmentUtil.resendLTIScore(assessment.model)
+					AssessmentUtil.resendLTIScore(assessment.props.model)
 				}
 
 				var ltiState = AssessmentUtil.getLTIStateForModel(
 					assessment.props.moduleData.assessmentState,
 					assessment.props.model
 				)
-				var ltiNetworkState = AssessmentUtil.getLTINetworkStateForModel(
-					assessment.props.moduleData.assessmentState,
-					assessment.props.model
-				)
+
+				var externalSystemLabel = Launch.getOutcomeServiceHostname()
 
 				var childEl = void 0
 
@@ -886,17 +829,49 @@
 					{ className: 'score unlock' },
 					React.createElement(_ltiStatus2.default, {
 						ltiState: ltiState,
-						ltiNetworkState: ltiNetworkState,
+						launch: Launch,
 						onClickResendScore: onClickResendScore
 					}),
-					React.createElement('h1', null, 'Your score is ' + Math.round(recentScore) + '%'),
-					recentScore === highestScore
-						? React.createElement('h2', null, 'This is your highest score')
-						: React.createElement(
-								'h2',
-								null,
-								'Your highest score was ' + Math.round(highestScore) + '%'
-							),
+					React.createElement('h1', null, 'Your attempt score is ' + Math.round(recentScore) + '%'),
+					React.createElement(
+						'h2',
+						null,
+						'Your overall score for this assessment is',
+						' ',
+						React.createElement(
+							'strong',
+							null,
+							assessmentScore === null ? '--' : Math.round(assessmentScore),
+							'% '
+						),
+						(function() {
+							switch (ltiState.state.gradebookStatus) {
+								case 'ok_no_outcome_service':
+								case 'ok_null_score_not_sent':
+									return null
+
+								case 'ok_gradebook_matches_assessment_score':
+									return React.createElement(
+										'span',
+										{ className: 'lti-sync-message is-synced' },
+										'(',
+										'sent to ' + externalSystemLabel + ' ',
+										React.createElement('span', null, '\u2714'),
+										')'
+									)
+
+								default:
+									return React.createElement(
+										'span',
+										{ className: 'lti-sync-message is-not-synced' },
+										'(',
+										'not sent to ' + externalSystemLabel + ' ',
+										React.createElement('span', null, '\u2716'),
+										')'
+									)
+							}
+						})()
+					),
 					childEl,
 					React.createElement(
 						'div',
@@ -1111,12 +1086,11 @@
 			var Button = _Common2.default.components.Button
 			var Dispatcher = _Common2.default.flux.Dispatcher
 			var ModalUtil = _Common2.default.util.ModalUtil
+
+			var Launch = _Common2.default.Launch
+
 			var AssessmentUtil = _Viewer2.default.util.AssessmentUtil
 			var NavUtil = _Viewer2.default.util.NavUtil
-
-			//@TODO
-
-			var APIUtil = _Viewer2.default.util.APIUtil
 
 			var Assessment = (function(_React$Component) {
 				_inherits(Assessment, _React$Component)
@@ -1220,6 +1194,12 @@
 						}
 					},
 					{
+						key: 'onClickResendScore',
+						value: function onClickResendScore() {
+							AssessmentUtil.resendLTIScore(this.props.model)
+						}
+					},
+					{
 						key: 'endAttempt',
 						value: function endAttempt() {
 							return AssessmentUtil.endAttempt(
@@ -1288,10 +1268,8 @@
 								this.props.moduleData.assessmentState,
 								this.props.model
 							)
-							var ltiNetworkState = AssessmentUtil.getLTINetworkStateForModel(
-								this.props.moduleData.assessmentState,
-								this.props.model
-							)
+
+							var externalSystemLabel = Launch.getOutcomeServiceHostname()
 
 							var childEl = (function() {
 								switch (_this2.getCurrentStep()) {

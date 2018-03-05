@@ -44,7 +44,8 @@ describe('ViewerApp', () => {
 		jest.clearAllMocks()
 
 		window.__oboGlobals.draft = json
-		window.__oboGlobals.previewing = 'false'
+		window.__oboGlobals.previewing = true
+		window.__oboGlobals.ltiLaunch = {}
 		window.__oboGlobals['ObojoboDraft.Sections.Assessment:attemptHistory'] = []
 
 		// viewerEl = mount(<ViewerApp />)

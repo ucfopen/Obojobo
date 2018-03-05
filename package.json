@@ -16,14 +16,15 @@
 		"karma": "./node_modules/karma/bin/karma start ./karma.conf.js",
 		"karma-coverage": "./node_modules/karma/bin/karma start ./karma-coverage.conf.js",
 		"generateModuleManifest": "node ./bin/generate_module_manifest.js",
-		"prettier":
-			"prettier --single-quote --use-tabs --no-semi --print-width='100' --write '{src,server,__{tests,mocks}__,ObojoboDraft}/**/*.js'",
-		"prettier:debug":
-			"prettier --single-quote --use-tabs --no-semi --print-width='100' --debug-check '{src,server,__{tests,mocks}__,ObojoboDraft}/**/*.js'",
+		"prettier": "prettier --single-quote --use-tabs --no-semi --print-width='100' --write '{src,server,__{tests,mocks}__,ObojoboDraft}/**/*.js'",
+		"prettier:debug": "prettier --single-quote --use-tabs --no-semi --print-width='100' --debug-check '{src,server,__{tests,mocks}__,ObojoboDraft}/**/*.js'",
 		"precommit": "yarn test && yarn build && yarn build:gitadd && lint-staged"
 	},
 	"lint-staged": {
-		"*.js": ["yarn prettier", "git add"]
+		"*.js": [
+			"yarn prettier",
+			"git add"
+		]
 	},
 	"author": "",
 	"devDependencies": {
@@ -76,11 +77,14 @@
 		"react-transition-group": "^1.1.3",
 		"smoothscroll-polyfill": "^0.3.4",
 		"underscore": "1.5.1",
+		"url-parse": "^1.2.0",
 		"whatwg-fetch": "^2.0.3"
 	},
 	"jest": {
 		"testURL": "http://localhost:3000/view/00000000-0000-0000-0000-000000000000",
-		"setupFiles": ["./setupTests.js"],
+		"setupFiles": [
+			"./setupTests.js"
+		],
 		"verbose": true,
 		"moduleNameMapper": {
 			"^Common(.*)$": "<rootDir>/src/scripts/common$1",
@@ -88,7 +92,11 @@
 			"\\.scss$": "<rootDir>/__mocks__/ignore-file-stub.js",
 			"\\.svg$": "<rootDir>/__mocks__/ignore-file-stub.js"
 		},
-		"collectCoverageFrom": ["src/scripts/**", "ObojoboDraft/**", "server/**"],
+		"collectCoverageFrom": [
+			"src/scripts/**",
+			"ObojoboDraft/**",
+			"server/**"
+		],
 		"coveragePathIgnorePatterns": [
 			"command-handler.js",
 			"selection-handler.js",

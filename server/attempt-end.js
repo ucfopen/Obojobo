@@ -217,7 +217,6 @@ let calculateScores = (assessmentModel, attemptHistory, scoreInfo) => {
 }
 
 let completeAttempt = (assessmentId, attemptId, userId, draftId, calculatedScores, preview) => {
-	console.log('CA', calculatedScores.attempt)
 	return Assessment.completeAttempt(
 		assessmentId,
 		attemptId,

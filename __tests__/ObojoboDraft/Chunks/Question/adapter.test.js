@@ -15,7 +15,6 @@ describe('Question adapter', () => {
 		let model = { modelState: {} }
 		let attrs = {
 			content: {
-				shuffle: true,
 				limit: 2,
 				practice: false,
 				solution: {
@@ -53,7 +52,6 @@ describe('Question adapter', () => {
 		let b = { modelState: {} }
 		let attrs = {
 			content: {
-				shuffle: true,
 				limit: 2,
 				practice: false,
 				solution: {
@@ -94,7 +92,6 @@ describe('Question adapter', () => {
 		let json = { content: {} }
 		let attrs = {
 			content: {
-				shuffle: true,
 				limit: 2,
 				practice: false,
 				solution: {

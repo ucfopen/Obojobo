@@ -8,12 +8,10 @@ let { OboModel } = Common.models
 let { Button } = Common.components
 let { Dispatcher } = Common.flux
 let { ModalUtil } = Common.util
+let Launch = Common.Launch
 
 let { AssessmentUtil } = Viewer.util
 let { NavUtil } = Viewer.util
-
-//@TODO
-let APIUtil = Viewer.util.APIUtil
 
 import AttemptIncompleteDialog from './attempt-incomplete-dialog'
 
@@ -96,6 +94,10 @@ export default class Assessment extends React.Component {
 		return this.endAttempt()
 	}
 
+	onClickResendScore() {
+		AssessmentUtil.resendLTIScore(this.props.model)
+	}
+
 	endAttempt() {
 		return AssessmentUtil.endAttempt(
 			this.props.model,
@@ -153,10 +155,8 @@ export default class Assessment extends React.Component {
 			this.props.moduleData.assessmentState,
 			this.props.model
 		)
-		let ltiNetworkState = AssessmentUtil.getLTINetworkStateForModel(
-			this.props.moduleData.assessmentState,
-			this.props.model
-		)
+
+		let externalSystemLabel = Launch.getOutcomeServiceHostname()
 
 		const childEl = (() => {
 			switch (this.getCurrentStep()) {

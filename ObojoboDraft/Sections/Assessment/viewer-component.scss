@@ -19,12 +19,29 @@
 			margin-bottom: 0;
 			text-align: center;
 			font-size: 1em;
+
+			> .lti-sync-message
+			{
+				color: $color-text-minor;
+
+				&.is-synced > span
+				{
+					color: $color-correct;
+				}
+
+				&.is-not-synced > span
+				{
+					color: $color-incorrect;
+				}
+			}
 		}
 
-		p
+		.review > p
 		{
 			margin-bottom: 3em;
 		}
+
+
 	}
 
 	.review

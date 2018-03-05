@@ -53,9 +53,6 @@ app.post('/api/lti/sendAssessmentScore', (req, res, next) => {
 		.then(result => {
 			ltiScoreResult = result
 
-			// 	return Assessment.getLatestSuccessfulLTIAssessmentScoreRecord(assessmentScoreId)
-			// })
-			// .then(latestSuccessfulLTIAssessmentScoreRecord => {
 			res.success({
 				score: ltiScoreResult.scoreSent,
 				status: ltiScoreResult.status,
@@ -66,8 +63,6 @@ app.post('/api/lti/sendAssessmentScore', (req, res, next) => {
 		})
 		.catch(e => {
 			logAndRespondToUnexpected(res, e, new Error('Unexpected error starting a new attempt'))
-
-			// return next()
 		})
 })
 
@@ -423,7 +418,6 @@ app.get('/api/assessments/:draftId/:assessmentId/attempt/:attemptId', (req, res,
 			)
 		})
 		.then(result => {
-			console.log('result', result)
 			res.success(result)
 		})
 		.catch(error => {
@@ -446,7 +440,6 @@ app.get('/api/assessments/:draftId/attempts', (req, res, next) => {
 			return Assessment.getAttempts(currentUser.id, req.params.draftId)
 		})
 		.then(result => {
-			console.log('result', result)
 			res.success(result)
 		})
 		.catch(error => {
@@ -471,7 +464,6 @@ app.get('/api/assessment/:draftId/:assessmentId/attempts', (req, res, next) => {
 			return Assessment.getAttempts(currentUser.id, req.params.draftId, req.params.assessmentId)
 		})
 		.then(result => {
-			console.log('result', result)
 			res.success(result)
 		})
 		.catch(error => {
@@ -498,9 +490,6 @@ oboEvents.on('client:question:setResponse', (event, req) => {
 		return logger.error(eventRecordResponse, 'Missing Question ID', req, event)
 	if (!event.payload.response)
 		return logger.error(eventRecordResponse, 'Missing Response', req, event)
-
-	console.log('INSERT INTO ATTEMPTS QUESTION RESPONSES')
-	console.log(event.payload)
 
 	return db
 		.none(
