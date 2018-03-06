@@ -71,11 +71,11 @@ const startAttempt = (req, res) => {
       )
         throw new Error(ERROR_ATTEMPT_LIMIT_REACHED)
 
-      assessmentProperties.childrenMap = getAssessmentChildrenMap(assessmentProperties)
+      assessmentProperties.childrenMap = createAssessmentUsedQuestionMap(assessmentProperties)
 
       for (let attempt of assessmentProperties.attemptHistory) {
         if (attempt.state.qb) {
-          incrementUsedQuestionIds(attempt.state.qb, assessmentProperties.childrenMap)
+          initAssessmentUsedQuestions(attempt.state.qb, assessmentProperties.childrenMap)
         }
       }
 
@@ -144,9 +144,9 @@ const getQuestionBankProperties = questionBankNode => ({
   select: questionBankNode.content.select || 'sequential'
 })
 
-// This map will be used to keep track of the questions we have used/have
-// left to display.
-const getAssessmentChildrenMap = assessmentProperties => {
+// Maps an assessment's questions id's to the amount of times
+// the questions have been used (0 until initAssessmentUsedQuestions is called).
+const createAssessmentUsedQuestionMap = assessmentProperties => {
   const assessmentChildrenMap = new Map()
   assessmentProperties.nodeChildrenIds.forEach(id => {
     const type = assessmentProperties.draftTree.getChildNodeById(id).node.type
@@ -158,14 +158,13 @@ const getAssessmentChildrenMap = assessmentProperties => {
 }
 
 // When a question has been used, we will increment the value
-// pointed to by the node's id in our usedMap (a.k.a childrenMap).
-// This will allow us to know which questions to show next.
-const incrementUsedQuestionIds = (node, usedMap) => {
-  if (usedMap.has(node.id))
-    usedMap.set(node.id, usedMap.get(node.id) + 1)
+// pointed to by the node's id in our usedMap.
+const initAssessmentUsedQuestions = (node, usedQuestionMap) => {
+  if (usedQuestionMap.has(node.id))
+    usedQuestionMap.set(node.id, usedQuestionMap.get(node.id) + 1)
 
   for (let child of node.children)
-    incrementUsedQuestionIds(child, usedMap)
+    initAssessmentUsedQuestions(child, usedQuestionMap)
 }
 
 // Sort the questions sequentially, get their nodes from the tree via id, and only return up to
@@ -220,8 +219,8 @@ const getSendToClientPromises = (attemptState, req, res) => {
 module.exports = {
   startAttempt,
   getQuestionBankProperties,
-  getAssessmentChildrenMap,
-  incrementUsedQuestionIds,
+  createAssessmentUsedQuestionMap,
+  initAssessmentUsedQuestions,
   chooseQuestionsSequentially,
   createChosenQuestionTree,
   getNodeQuestions,
