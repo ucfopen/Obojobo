@@ -129,15 +129,6 @@
 			var OboModel = _Common2.default.models.OboModel
 
 			var assessmentReviewView = function assessmentReviewView(assessment) {
-				// const recentScore = AssessmentUtil.getLastAttemptScoreForModel(
-				// 	assessment.props.moduleData.assessmentState,
-				// 	assessment.props.model
-				// )
-				// const highestScore = AssessmentUtil.getHighestAttemptScoreForModel(
-				// 	assessment.props.moduleData.assessmentState,
-				// 	assessment.props.model
-				// )
-
 				var attemptReviewComponents = {}
 
 				var attempts = AssessmentUtil.getAllAttempts(

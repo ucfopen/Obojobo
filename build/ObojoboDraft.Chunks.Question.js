@@ -522,7 +522,7 @@
 									className:
 										'flip-container obojobo-draft--chunks--question' +
 										(score === null ? '' : score === 100 ? ' is-correct' : ' is-incorrect') +
-										' is-active is-' +
+										' is-active is-mode' +
 										this.props.model.modelState.mode
 								},
 								React.createElement(

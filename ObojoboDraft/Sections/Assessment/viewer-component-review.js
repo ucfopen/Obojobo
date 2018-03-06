@@ -6,15 +6,6 @@ const { NavUtil } = Viewer.util
 const { OboModel } = Common.models
 
 const assessmentReviewView = assessment => {
-	// const recentScore = AssessmentUtil.getLastAttemptScoreForModel(
-	// 	assessment.props.moduleData.assessmentState,
-	// 	assessment.props.model
-	// )
-	// const highestScore = AssessmentUtil.getHighestAttemptScoreForModel(
-	// 	assessment.props.moduleData.assessmentState,
-	// 	assessment.props.model
-	// )
-
 	let attemptReviewComponents = {}
 
 	let attempts = AssessmentUtil.getAllAttempts(

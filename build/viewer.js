@@ -2776,18 +2776,6 @@
 
 					return assessment.attempts[assessment.attempts.length - 1].attemptScore
 				},
-				getHighestAttemptScoreForModel: function getHighestAttemptScoreForModel(state, model) {
-					var assessment = AssessmentUtil.getAssessmentForModel(state, model)
-					if (!assessment) {
-						return null
-					}
-
-					if (assessment.attempts.length === 0) {
-						return 0
-					}
-
-					return assessment.attempts[assessment.attempts.length - 1].assessmentScore
-				},
 				getAssessmentScoreForModel: function getAssessmentScoreForModel(state, model) {
 					var assessment = AssessmentUtil.getAssessmentForModel(state, model)
 					if (!assessment) {

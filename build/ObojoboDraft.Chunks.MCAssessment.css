@@ -145,15 +145,15 @@
     top: 1.5em;
     letter-spacing: 0.2em;
     content: "\2716" attr(data-choice-label); }
-  .obojobo-draft--chunks--mc-assessment.is-mode-review .submit, .obojobo-draft--chunks--mc-assessment.is-assessment .submit {
+  .obojobo-draft--chunks--mc-assessment.is-mode-review .submit {
     display: inline-block;
     visibility: hidden; }
-  .obojobo-draft--chunks--mc-assessment.is-mode-review .result-container, .obojobo-draft--chunks--mc-assessment.is-assessment .result-container {
+  .obojobo-draft--chunks--mc-assessment.is-mode-review .result-container {
     position: absolute;
     left: 0;
     top: 50%;
     transform: translate(0, -50%); }
-  .obojobo-draft--chunks--mc-assessment.is-mode-review .result, .obojobo-draft--chunks--mc-assessment.is-assessment .result {
+  .obojobo-draft--chunks--mc-assessment.is-mode-review .result {
     margin: 0; }
   .obojobo-draft--chunks--mc-assessment .instructions {
     padding-left: 3em;
