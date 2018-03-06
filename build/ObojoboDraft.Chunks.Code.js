@@ -89,19 +89,19 @@
 		},
 
 		/***/ /***/ 165: function(module, exports, __webpack_require__) {
-			module.exports = __webpack_require__(27)
+			module.exports = __webpack_require__(28)
 
 			/***/
 		},
 
-		/***/ /***/ 27: function(module, exports, __webpack_require__) {
+		/***/ /***/ 28: function(module, exports, __webpack_require__) {
 			'use strict'
 
 			var _Common = __webpack_require__(0)
 
 			var _Common2 = _interopRequireDefault(_Common)
 
-			var _viewerComponent = __webpack_require__(50)
+			var _viewerComponent = __webpack_require__(51)
 
 			var _viewerComponent2 = _interopRequireDefault(_viewerComponent)
 
@@ -123,7 +123,7 @@
 			/***/
 		},
 
-		/***/ /***/ 50: function(module, exports, __webpack_require__) {
+		/***/ /***/ 51: function(module, exports, __webpack_require__) {
 			'use strict'
 
 			Object.defineProperty(exports, '__esModule', {

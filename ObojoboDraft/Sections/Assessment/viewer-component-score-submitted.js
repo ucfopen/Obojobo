@@ -7,6 +7,8 @@ const Launch = Common.Launch
 
 import LTIStatus from './lti-status'
 
+import fullReview from './viewer-component-review'
+
 const scoreSubmittedView = assessment => {
 	const questionScores = AssessmentUtil.getLastAttemptScoresForModel(
 		assessment.props.moduleData.assessmentState,
@@ -16,10 +18,12 @@ const scoreSubmittedView = assessment => {
 		assessment.props.moduleData.assessmentState,
 		assessment.props.model
 	)
-	// const highestScore = AssessmentUtil.getHighestAttemptScoreForModel(
-	// 	assessment.props.moduleData.assessmentState,
-	// 	assessment.props.model
-	// )
+	const isAssessmentComplete = () => {
+		return !AssessmentUtil.hasAttemptsRemaining(
+			assessment.props.moduleData.assessmentState,
+			assessment.props.model
+		)
+	}
 
 	const scoreAction = assessment.getScoreAction()
 	const numCorrect = AssessmentUtil.getNumCorrect(questionScores)
@@ -55,10 +59,20 @@ const scoreSubmittedView = assessment => {
 		)
 	}
 
+	let showFullReview = (reviewType => {
+		switch (reviewType) {
+			case 'always':
+				return true
+			case 'never':
+				return false
+			case 'afterAttempts':
+				return isAssessmentComplete()
+		}
+	})(assessment.props.model.modelState.review)
+
 	return (
 		<div className="score unlock">
 			<LTIStatus ltiState={ltiState} launch={Launch} onClickResendScore={onClickResendScore} />
-
 			<h1>{`Your attempt score is ${Math.round(recentScore)}%`}</h1>
 			<h2>
 				Your overall score for this assessment is{' '}
@@ -88,12 +102,14 @@ const scoreSubmittedView = assessment => {
 				})()}
 			</h2>
 			{childEl}
-			<div className="review">
-				<p className="number-correct">{`You got ${numCorrect} out of ${questionScores.length} questions correct:`}</p>
-				{questionScores.map((questionScore, index) =>
-					questionResultView(assessment.props, questionScore, index)
-				)}
-			</div>
+			{showFullReview
+				? fullReview(assessment)
+				: <div className="review">
+						<p className="number-correct">{`You got ${numCorrect} out of ${questionScores.length} questions correct:`}</p>
+						{questionScores.map((questionScore, index) =>
+							questionResultView(assessment.props, questionScore, index)
+						)}
+					</div>}
 		</div>
 	)
 }

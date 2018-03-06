@@ -36,7 +36,7 @@ class AssessmentStore extends Store {
 		})
 
 		Dispatcher.on('assessment:endAttempt', payload => {
-			this.tryEndAttempt(payload.value.id, payload.value.hasAssessmentReview, payload.value.context)
+			this.tryEndAttempt(payload.value.id, payload.value.context)
 		})
 
 		Dispatcher.on('assessment:resendLTIScore', payload => {
@@ -192,7 +192,7 @@ class AssessmentStore extends Store {
 		Dispatcher.trigger('assessment:attemptStarted', id)
 	}
 
-	tryEndAttempt(id, hasAssessmentReview, context) {
+	tryEndAttempt(id, context) {
 		let model = OboModel.models[id]
 		let assessment = this.state.assessments[id]
 
@@ -202,7 +202,7 @@ class AssessmentStore extends Store {
 					return ErrorUtil.errorResponse(res)
 				}
 
-				this.endAttempt(res.value, hasAssessmentReview, context)
+				this.endAttempt(res.value, context)
 				return this.triggerChange()
 			})
 			.catch(e => {
@@ -210,7 +210,7 @@ class AssessmentStore extends Store {
 			})
 	}
 
-	endAttempt(endAttemptResp, hasAssessmentReview, context) {
+	endAttempt(endAttemptResp, context) {
 		let assessId = endAttemptResp.assessmentId
 		let assessment = this.state.assessments[assessId]
 		let model = OboModel.models[assessId]
@@ -226,14 +226,6 @@ class AssessmentStore extends Store {
 		model.processTrigger('onEndAttempt')
 
 		Dispatcher.trigger('assessment:attemptEnded', assessId)
-
-		if (hasAssessmentReview && !AssessmentUtil.hasAttemptsRemaining(this.getState(), model)) {
-			Dispatcher.trigger('assessment:review', {
-				value: {
-					id: model.get('id')
-				}
-			})
-		}
 	}
 
 	tryResendLTIScore(assessmentId) {

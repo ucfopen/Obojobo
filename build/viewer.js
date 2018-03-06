@@ -1785,8 +1785,10 @@
 						},
 
 						'assessment:endAttempt': function assessmentEndAttempt(payload) {
-							delete _this.state.responses[payload.value.context][payload.value.id]
-							return _this.triggerChange()
+							if (_this.state.responses[payload.value.context]) {
+								delete _this.state.responses[payload.value.context][payload.value.id]
+								return _this.triggerChange()
+							}
 						},
 
 						'question:setData': function questionSetData(payload) {
@@ -2366,11 +2368,7 @@
 					})
 
 					Dispatcher.on('assessment:endAttempt', function(payload) {
-						_this.tryEndAttempt(
-							payload.value.id,
-							payload.value.hasAssessmentReview,
-							payload.value.context
-						)
+						_this.tryEndAttempt(payload.value.id, payload.value.context)
 					})
 
 					Dispatcher.on('assessment:resendLTIScore', function(payload) {
@@ -2578,7 +2576,7 @@
 					},
 					{
 						key: 'tryEndAttempt',
-						value: function tryEndAttempt(id, hasAssessmentReview, context) {
+						value: function tryEndAttempt(id, context) {
 							var _this3 = this
 
 							var model = OboModel.models[id]
@@ -2591,7 +2589,7 @@
 										return ErrorUtil.errorResponse(res)
 									}
 
-									_this3.endAttempt(res.value, hasAssessmentReview, context)
+									_this3.endAttempt(res.value, context)
 									return _this3.triggerChange()
 								})
 								.catch(function(e) {
@@ -2601,7 +2599,7 @@
 					},
 					{
 						key: 'endAttempt',
-						value: function endAttempt(endAttemptResp, hasAssessmentReview, context) {
+						value: function endAttempt(endAttemptResp, context) {
 							var assessId = endAttemptResp.assessmentId
 							var assessment = this.state.assessments[assessId]
 							var model = OboModel.models[assessId]
@@ -2619,17 +2617,6 @@
 							model.processTrigger('onEndAttempt')
 
 							Dispatcher.trigger('assessment:attemptEnded', assessId)
-
-							if (
-								hasAssessmentReview &&
-								!_assessmentUtil2.default.hasAttemptsRemaining(this.getState(), model)
-							) {
-								Dispatcher.trigger('assessment:review', {
-									value: {
-										id: model.get('id')
-									}
-								})
-							}
 						}
 					},
 					{
@@ -2920,11 +2907,10 @@
 						}
 					})
 				},
-				endAttempt: function endAttempt(model, hasAssessmentReview, context) {
+				endAttempt: function endAttempt(model, context) {
 					return Dispatcher.trigger('assessment:endAttempt', {
 						value: {
 							id: model.get('id'),
-							hasAssessmentReview: hasAssessmentReview,
 							context: context
 						}
 					})

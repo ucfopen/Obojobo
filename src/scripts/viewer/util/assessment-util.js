@@ -172,11 +172,10 @@ var AssessmentUtil = {
 		})
 	},
 
-	endAttempt(model, hasAssessmentReview, context) {
+	endAttempt(model, context) {
 		return Dispatcher.trigger('assessment:endAttempt', {
 			value: {
 				id: model.get('id'),
-				hasAssessmentReview,
 				context
 			}
 		})

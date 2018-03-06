@@ -42,8 +42,10 @@ class QuestionStore extends Store {
 			},
 
 			'assessment:endAttempt': payload => {
-				delete this.state.responses[payload.value.context][payload.value.id]
-				return this.triggerChange()
+				if (this.state.responses[payload.value.context]) {
+					delete this.state.responses[payload.value.context][payload.value.id]
+					return this.triggerChange()
+				}
 			},
 
 			'question:setData': payload => {

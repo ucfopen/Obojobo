@@ -44,10 +44,6 @@ export default class Assessment extends React.Component {
 			return 'takingTest'
 		}
 
-		if (this.props.model.modelState.review && this.isAssessmentComplete()) {
-			return 'review'
-		}
-
 		if (assessment.attempts.length > 0) {
 			return 'scoreSubmitted'
 		}
@@ -99,11 +95,7 @@ export default class Assessment extends React.Component {
 	}
 
 	endAttempt() {
-		return AssessmentUtil.endAttempt(
-			this.props.model,
-			this.props.model.modelState.review,
-			this.props.moduleData.navState.context
-		)
+		return AssessmentUtil.endAttempt(this.props.model, this.props.moduleData.navState.context)
 	}
 
 	exitAssessment() {

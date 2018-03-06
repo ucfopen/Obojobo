@@ -100,12 +100,109 @@
 		},
 
 		/***/ /***/ 181: function(module, exports, __webpack_require__) {
-			module.exports = __webpack_require__(42)
+			module.exports = __webpack_require__(43)
 
 			/***/
 		},
 
-		/***/ /***/ 42: function(module, exports, __webpack_require__) {
+		/***/ /***/ 20: function(module, exports, __webpack_require__) {
+			'use strict'
+
+			Object.defineProperty(exports, '__esModule', {
+				value: true
+			})
+
+			var _Viewer = __webpack_require__(1)
+
+			var _Viewer2 = _interopRequireDefault(_Viewer)
+
+			var _Common = __webpack_require__(0)
+
+			var _Common2 = _interopRequireDefault(_Common)
+
+			function _interopRequireDefault(obj) {
+				return obj && obj.__esModule ? obj : { default: obj }
+			}
+
+			var AssessmentUtil = _Viewer2.default.util.AssessmentUtil
+			var NavUtil = _Viewer2.default.util.NavUtil
+			var OboModel = _Common2.default.models.OboModel
+
+			var assessmentReviewView = function assessmentReviewView(assessment) {
+				// const recentScore = AssessmentUtil.getLastAttemptScoreForModel(
+				// 	assessment.props.moduleData.assessmentState,
+				// 	assessment.props.model
+				// )
+				// const highestScore = AssessmentUtil.getHighestAttemptScoreForModel(
+				// 	assessment.props.moduleData.assessmentState,
+				// 	assessment.props.model
+				// )
+
+				var attemptReviewComponents = {}
+
+				var attempts = AssessmentUtil.getAllAttempts(
+					assessment.props.moduleData.assessmentState,
+					assessment.props.model
+				)
+
+				var attemptReviewComponent = function attemptReviewComponent(attempt, assessment) {
+					return React.createElement(
+						'div',
+						{ className: 'review' },
+						React.createElement('h1', null, 'Attempt ' + attempt.attemptNumber),
+						React.createElement('h2', null, 'Score: ' + attempt.attemptScore),
+						attempt.questionScores.map(function(scoreObj) {
+							var questionModel = OboModel.models[scoreObj.id]
+							var QuestionComponent = questionModel.getComponentClass()
+							return React.createElement(QuestionComponent, {
+								model: questionModel,
+								moduleData: assessment.props.moduleData,
+								mode: 'review'
+							})
+						})
+					)
+				}
+
+				attempts.forEach(function(attempt) {
+					attemptReviewComponents['assessmentReview:' + attempt.attemptId] = attemptReviewComponent(
+						attempt,
+						assessment
+					)
+				})
+
+				var context = assessment.props.moduleData.navState.context
+				if (context.split(':')[0] !== 'assessmentReview')
+					// show most recent attempt
+					NavUtil.setContext('assessmentReview:' + attempts[attempts.length - 1].attemptId)
+
+				var attemptButtons = attempts.map(function(attempt, index) {
+					return React.createElement(
+						'button',
+						{
+							onClick: function onClick() {
+								return NavUtil.setContext('assessmentReview:' + attempt.attemptId)
+							}
+						},
+						'Attempt #',
+						attempt.attemptNumber
+					)
+				})
+
+				return React.createElement(
+					'div',
+					{ className: 'score unlock' },
+					attemptButtons,
+					attemptReviewComponents[context],
+					attemptButtons
+				)
+			}
+
+			exports.default = assessmentReviewView
+
+			/***/
+		},
+
+		/***/ /***/ 43: function(module, exports, __webpack_require__) {
 			'use strict'
 
 			var _Common = __webpack_require__(0)
@@ -116,7 +213,7 @@
 
 			var _Viewer2 = _interopRequireDefault(_Viewer)
 
-			var _adapter = __webpack_require__(84)
+			var _adapter = __webpack_require__(85)
 
 			var _adapter2 = _interopRequireDefault(_adapter)
 
@@ -185,14 +282,14 @@
 			/***/
 		},
 
-		/***/ /***/ 84: function(module, exports, __webpack_require__) {
+		/***/ /***/ 85: function(module, exports, __webpack_require__) {
 			'use strict'
 
 			Object.defineProperty(exports, '__esModule', {
 				value: true
 			})
 
-			var _scoreActions = __webpack_require__(87)
+			var _scoreActions = __webpack_require__(88)
 
 			var _scoreActions2 = _interopRequireDefault(_scoreActions)
 
@@ -204,7 +301,7 @@
 				construct: function construct(model, attrs) {
 					// Default state.
 					model.modelState.attempts = Infinity
-					model.modelState.review = false
+					model.modelState.review = 'never'
 					model.modelState.scoreActions = new _scoreActions2.default()
 
 					// Set state if XML has the attributes.
@@ -213,7 +310,7 @@
 							attrs.content.attempts === 'unlimited'
 								? Infinity
 								: parseInt(attrs.content.attempts, 10)
-						model.modelState.review = attrs.content.review || false
+						model.modelState.review = attrs.content.review || 'never'
 						model.modelState.scoreActions = new _scoreActions2.default(
 							attrs.content.scoreActions || null
 						)
@@ -253,7 +350,7 @@
 			/***/
 		},
 
-		/***/ /***/ 85: function(module, exports, __webpack_require__) {
+		/***/ /***/ 86: function(module, exports, __webpack_require__) {
 			'use strict'
 
 			Object.defineProperty(exports, '__esModule', {
@@ -380,7 +477,7 @@
 			/***/
 		},
 
-		/***/ /***/ 86: function(module, exports, __webpack_require__) {
+		/***/ /***/ 87: function(module, exports, __webpack_require__) {
 			'use strict'
 
 			Object.defineProperty(exports, '__esModule', {
@@ -552,7 +649,7 @@
 			/***/
 		},
 
-		/***/ /***/ 87: function(module, exports, __webpack_require__) {
+		/***/ /***/ 88: function(module, exports, __webpack_require__) {
 			'use strict'
 
 			Object.defineProperty(exports, '__esModule', {
@@ -652,103 +749,6 @@
 			/***/
 		},
 
-		/***/ /***/ 88: function(module, exports, __webpack_require__) {
-			'use strict'
-
-			Object.defineProperty(exports, '__esModule', {
-				value: true
-			})
-
-			var _Viewer = __webpack_require__(1)
-
-			var _Viewer2 = _interopRequireDefault(_Viewer)
-
-			var _Common = __webpack_require__(0)
-
-			var _Common2 = _interopRequireDefault(_Common)
-
-			function _interopRequireDefault(obj) {
-				return obj && obj.__esModule ? obj : { default: obj }
-			}
-
-			var AssessmentUtil = _Viewer2.default.util.AssessmentUtil
-			var NavUtil = _Viewer2.default.util.NavUtil
-			var OboModel = _Common2.default.models.OboModel
-
-			var assessmentReviewView = function assessmentReviewView(assessment) {
-				// const recentScore = AssessmentUtil.getLastAttemptScoreForModel(
-				// 	assessment.props.moduleData.assessmentState,
-				// 	assessment.props.model
-				// )
-				// const highestScore = AssessmentUtil.getHighestAttemptScoreForModel(
-				// 	assessment.props.moduleData.assessmentState,
-				// 	assessment.props.model
-				// )
-
-				var attemptReviewComponents = {}
-
-				var attempts = AssessmentUtil.getAllAttempts(
-					assessment.props.moduleData.assessmentState,
-					assessment.props.model
-				)
-
-				var attemptReviewComponent = function attemptReviewComponent(attempt, assessment) {
-					return React.createElement(
-						'div',
-						{ className: 'review' },
-						React.createElement('h1', null, 'Attempt ' + attempt.attemptNumber),
-						React.createElement('h2', null, 'Score: ' + attempt.attemptScore),
-						attempt.questionScores.map(function(scoreObj) {
-							var questionModel = OboModel.models[scoreObj.id]
-							var QuestionComponent = questionModel.getComponentClass()
-							return React.createElement(QuestionComponent, {
-								model: questionModel,
-								moduleData: assessment.props.moduleData,
-								mode: 'review'
-							})
-						})
-					)
-				}
-
-				attempts.forEach(function(attempt) {
-					attemptReviewComponents['assessmentReview:' + attempt.attemptId] = attemptReviewComponent(
-						attempt,
-						assessment
-					)
-				})
-
-				var context = assessment.props.moduleData.navState.context
-				if (context.split(':')[0] !== 'assessmentReview')
-					// show most recent attempt
-					NavUtil.setContext('assessmentReview:' + attempts[attempts.length - 1].attemptId)
-
-				var attemptButtons = attempts.map(function(attempt, index) {
-					return React.createElement(
-						'button',
-						{
-							onClick: function onClick() {
-								return NavUtil.setContext('assessmentReview:' + attempt.attemptId)
-							}
-						},
-						'Attempt #',
-						attempt.attemptNumber
-					)
-				})
-
-				return React.createElement(
-					'div',
-					{ className: 'score unlock' },
-					attemptButtons,
-					attemptReviewComponents[context],
-					attemptButtons
-				)
-			}
-
-			exports.default = assessmentReviewView
-
-			/***/
-		},
-
 		/***/ /***/ 89: function(module, exports, __webpack_require__) {
 			'use strict'
 
@@ -764,9 +764,13 @@
 
 			var _Viewer2 = _interopRequireDefault(_Viewer)
 
-			var _ltiStatus = __webpack_require__(86)
+			var _ltiStatus = __webpack_require__(87)
 
 			var _ltiStatus2 = _interopRequireDefault(_ltiStatus)
+
+			var _viewerComponentReview = __webpack_require__(20)
+
+			var _viewerComponentReview2 = _interopRequireDefault(_viewerComponentReview)
 
 			function _interopRequireDefault(obj) {
 				return obj && obj.__esModule ? obj : { default: obj }
@@ -786,10 +790,12 @@
 					assessment.props.moduleData.assessmentState,
 					assessment.props.model
 				)
-				// const highestScore = AssessmentUtil.getHighestAttemptScoreForModel(
-				// 	assessment.props.moduleData.assessmentState,
-				// 	assessment.props.model
-				// )
+				var isAssessmentComplete = function isAssessmentComplete() {
+					return !AssessmentUtil.hasAttemptsRemaining(
+						assessment.props.moduleData.assessmentState,
+						assessment.props.model
+					)
+				}
 
 				var scoreAction = assessment.getScoreAction()
 				var numCorrect = AssessmentUtil.getNumCorrect(questionScores)
@@ -823,6 +829,17 @@
 				} else {
 					childEl = React.createElement('p', null, scoreAction.message)
 				}
+
+				var showFullReview = (function(reviewType) {
+					switch (reviewType) {
+						case 'always':
+							return true
+						case 'never':
+							return false
+						case 'afterAttempts':
+							return isAssessmentComplete()
+					}
+				})(assessment.props.model.modelState.review)
 
 				return React.createElement(
 					'div',
@@ -873,18 +890,24 @@
 						})()
 					),
 					childEl,
-					React.createElement(
-						'div',
-						{ className: 'review' },
-						React.createElement(
-							'p',
-							{ className: 'number-correct' },
-							'You got ' + numCorrect + ' out of ' + questionScores.length + ' questions correct:'
-						),
-						questionScores.map(function(questionScore, index) {
-							return questionResultView(assessment.props, questionScore, index)
-						})
-					)
+					showFullReview
+						? (0, _viewerComponentReview2.default)(assessment)
+						: React.createElement(
+								'div',
+								{ className: 'review' },
+								React.createElement(
+									'p',
+									{ className: 'number-correct' },
+									'You got ' +
+										numCorrect +
+										' out of ' +
+										questionScores.length +
+										' questions correct:'
+								),
+								questionScores.map(function(questionScore, index) {
+									return questionResultView(assessment.props, questionScore, index)
+								})
+							)
 				)
 			}
 
@@ -1029,7 +1052,7 @@
 
 			var _Viewer2 = _interopRequireDefault(_Viewer)
 
-			var _attemptIncompleteDialog = __webpack_require__(85)
+			var _attemptIncompleteDialog = __webpack_require__(86)
 
 			var _attemptIncompleteDialog2 = _interopRequireDefault(_attemptIncompleteDialog)
 
@@ -1037,7 +1060,7 @@
 
 			var _viewerComponentUntested2 = _interopRequireDefault(_viewerComponentUntested)
 
-			var _viewerComponentReview = __webpack_require__(88)
+			var _viewerComponentReview = __webpack_require__(20)
 
 			var _viewerComponentReview2 = _interopRequireDefault(_viewerComponentReview)
 
@@ -1129,10 +1152,6 @@
 								return 'takingTest'
 							}
 
-							if (this.props.model.modelState.review && this.isAssessmentComplete()) {
-								return 'review'
-							}
-
 							if (assessment.attempts.length > 0) {
 								return 'scoreSubmitted'
 							}
@@ -1204,7 +1223,6 @@
 						value: function endAttempt() {
 							return AssessmentUtil.endAttempt(
 								this.props.model,
-								this.props.model.modelState.review,
 								this.props.moduleData.navState.context
 							)
 						}
