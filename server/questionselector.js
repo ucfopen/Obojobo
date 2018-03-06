@@ -92,10 +92,6 @@ let getQuestions = (questionHistoryArray, questionBank, choose) => {
 		.filter(questionItem => {
 			let question = questionBank.draftTree.getChildNodeById(questionItem.id)
 			let content = question.node.content
-			let limitExceeded =
-				content.limit && content.limit !== 0 && questionItem.timesUsed >= content.limit
-
-			return !limitExceeded
 		})
 		.slice(0, choose)
 		.map(questionItem => {

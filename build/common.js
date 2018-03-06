@@ -5259,10 +5259,9 @@ var ChunkStyleList = function () {
 				contains: [],
 				left: [],
 				right: []
-			};
 
-			//@TODO - optimize
-			var _iteratorNormalCompletion7 = true;
+				//@TODO - optimize
+			};var _iteratorNormalCompletion7 = true;
 			var _didIteratorError7 = false;
 			var _iteratorError7 = undefined;
 
@@ -7006,9 +7005,9 @@ var TextGroupEl = function (_React$Component) {
 
 				while ((match = varRegex.exec(text.value)) !== null) {
 					var variable = match[1];
-					var event = { text: '' };
-					// window.Common.Store.getTextForVariable(event, variable, @props.parentModel, this.props.moduleData)
-					_dispatcher2.default.trigger('getTextForVariable', event, variable, this.props.parentModel);
+					var event = { text: ''
+						// window.Common.Store.getTextForVariable(event, variable, @props.parentModel, this.props.moduleData)
+					};_dispatcher2.default.trigger('getTextForVariable', event, variable, this.props.parentModel);
 					if (event.text === null) {
 						event.text = match[1];
 					}

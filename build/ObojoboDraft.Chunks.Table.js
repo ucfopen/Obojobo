@@ -63,7 +63,7 @@
 /******/ 	__webpack_require__.p = "build/";
 /******/
 /******/ 	// Load entry module and return exports
-/******/ 	return __webpack_require__(__webpack_require__.s = 170);
+/******/ 	return __webpack_require__(__webpack_require__.s = 179);
 /******/ })
 /************************************************************************/
 /******/ ({
@@ -75,22 +75,22 @@ module.exports = Common;
 
 /***/ }),
 
-/***/ 149:
+/***/ 158:
 /***/ (function(module, exports) {
 
 // removed by extract-text-webpack-plugin
 
 /***/ }),
 
-/***/ 170:
+/***/ 179:
 /***/ (function(module, exports, __webpack_require__) {
 
-module.exports = __webpack_require__(37);
+module.exports = __webpack_require__(41);
 
 
 /***/ }),
 
-/***/ 18:
+/***/ 19:
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -388,7 +388,7 @@ function __range__(left, right, inclusive) {
 
 /***/ }),
 
-/***/ 19:
+/***/ 20:
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -444,7 +444,7 @@ exports.default = SelectionHandler = function (_TextGroupSelectionHa) {
 
 /***/ }),
 
-/***/ 37:
+/***/ 41:
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -454,15 +454,15 @@ var _Common = __webpack_require__(0);
 
 var _Common2 = _interopRequireDefault(_Common);
 
-var _selectionHandler = __webpack_require__(19);
+var _selectionHandler = __webpack_require__(20);
 
 var _selectionHandler2 = _interopRequireDefault(_selectionHandler);
 
-var _adapter = __webpack_require__(76);
+var _adapter = __webpack_require__(80);
 
 var _adapter2 = _interopRequireDefault(_adapter);
 
-var _viewerComponent = __webpack_require__(77);
+var _viewerComponent = __webpack_require__(81);
 
 var _viewerComponent2 = _interopRequireDefault(_viewerComponent);
 
@@ -477,7 +477,7 @@ _Common2.default.Store.registerModel('ObojoboDraft.Chunks.Table', {
 
 /***/ }),
 
-/***/ 76:
+/***/ 80:
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -487,7 +487,7 @@ Object.defineProperty(exports, "__esModule", {
 	value: true
 });
 
-var _gridTextGroup = __webpack_require__(18);
+var _gridTextGroup = __webpack_require__(19);
 
 var _gridTextGroup2 = _interopRequireDefault(_gridTextGroup);
 
@@ -580,7 +580,7 @@ function __guard__(value, transform) {
 
 /***/ }),
 
-/***/ 77:
+/***/ 81:
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -592,13 +592,13 @@ Object.defineProperty(exports, "__esModule", {
 
 var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
 
-__webpack_require__(149);
+__webpack_require__(158);
 
-var _gridTextGroup = __webpack_require__(18);
+var _gridTextGroup = __webpack_require__(19);
 
 var _gridTextGroup2 = _interopRequireDefault(_gridTextGroup);
 
-var _selectionHandler = __webpack_require__(19);
+var _selectionHandler = __webpack_require__(20);
 
 var _selectionHandler2 = _interopRequireDefault(_selectionHandler);
 
