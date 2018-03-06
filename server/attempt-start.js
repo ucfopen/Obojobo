@@ -13,28 +13,35 @@ const ERROR_ATTEMPT_LIMIT_REACHED = 'Attempt limit reached'
 const ERROR_UNEXPECTED_DB_ERROR = 'Unexpected DB error'
 
 const startAttempt = (req, res) => {
-  let assessmentProperties = {}
+  let assessmentProperties = {
+    user: null,
+    isPreviewing: null,
+    draftTree: null,
+    id: null,
+    node: null,
+    nodeChildrenIds: null,
+    assessmentQBTree: null,
+    attemptHistory: null,
+    numAttemptsaken: null,
+    childrenMap: null
+  }
   let attemptState
 
   req.requireCurrentUser()
     .then(user => {
-      assessmentProperties = updateAssessmentProperties(assessmentProperties, {
-        user,
-        isPreviewing: user.canViewEditor
-      })
+      assessmentProperties.user = user
+      assessmentProperties.isPreviewing = user.canViewEditor
 
       return DraftModel.fetchById(req.body.draftId)
     })
     .then(draftTree => {
       const assessmentNode = draftTree.getChildNodeById(req.body.assessmentId)
 
-      assessmentProperties = updateAssessmentProperties(assessmentProperties, {
-        draftTree,
-        id: req.body.assessmentId,
-        node: assessmentNode,
-        nodeChildrenIds: assessmentNode.children[1].childrenSet,
-        assessmentQBTree: assessmentNode.children[1].toObject()
-      })
+      assessmentProperties.draftTree = draftTree
+      assessmentProperties.id = req.body.assessmentId
+      assessmentProperties.node = assessmentNode
+      assessmentProperties.nodeChildrenIds = assessmentNode.children[1].childrenSet
+      assessmentProperties.assessmentQBTree = assessmentNode.children[1].toObject()
 
       return Assessment.getCompletedAssessmentAttemptHistory(
         assessmentProperties.user.id,
@@ -44,7 +51,7 @@ const startAttempt = (req, res) => {
       )
     })
     .then(attemptHistory => {
-      assessmentProperties = updateAssessmentProperties(assessmentProperties, { attemptHistory })
+      assessmentProperties.attemptHistory = attemptHistory
 
       return Assessment.getNumberAttemptsTaken(
         assessmentProperties.user.id,
@@ -53,7 +60,7 @@ const startAttempt = (req, res) => {
       )
     })
     .then(numAttemptsTaken => {
-      assessmentProperties = updateAssessmentProperties(assessmentProperties, { numAttemptsTaken })
+      assessmentProperties.numAttemptsaken = numAttemptsTaken
 
       // If we're in preview mode, allow unlimited attempts, else throw an error
       // when trying to start an assessment with no attempts left.
@@ -64,13 +71,11 @@ const startAttempt = (req, res) => {
       )
         throw new Error(ERROR_ATTEMPT_LIMIT_REACHED)
 
-      assessmentProperties = updateAssessmentProperties(assessmentProperties, {
-        childrenMap: getAssessmentChildrenMap(assessmentProperties)
-      })
+      assessmentProperties.childrenMap = createAssessmentUsedQuestionMap(assessmentProperties)
 
       for (let attempt of assessmentProperties.attemptHistory) {
         if (attempt.state.qb) {
-          incrementUsedQuestionIds(attempt.state.qb, assessmentProperties.childrenMap)
+          initAssessmentUsedQuestions(attempt.state.qb, assessmentProperties.childrenMap)
         }
       }
 
@@ -139,9 +144,9 @@ const getQuestionBankProperties = questionBankNode => ({
   select: questionBankNode.content.select || 'sequential'
 })
 
-// This map will be used to keep track of the questions we have used/have
-// left to display.
-const getAssessmentChildrenMap = assessmentProperties => {
+// Maps an assessment's questions id's to the amount of times
+// the questions have been used (0 until initAssessmentUsedQuestions is called).
+const createAssessmentUsedQuestionMap = assessmentProperties => {
   const assessmentChildrenMap = new Map()
   assessmentProperties.nodeChildrenIds.forEach(id => {
     const type = assessmentProperties.draftTree.getChildNodeById(id).node.type
@@ -153,14 +158,13 @@ const getAssessmentChildrenMap = assessmentProperties => {
 }
 
 // When a question has been used, we will increment the value
-// pointed to by the node's id in our usedMap (a.k.a childrenMap).
-// This will allow us to know which questions to show next.
-const incrementUsedQuestionIds = (node, usedMap) => {
-  if (usedMap.has(node.id))
-    usedMap.set(node.id, usedMap.get(node.id) + 1)
+// pointed to by the node's id in our usedMap.
+const initAssessmentUsedQuestions = (node, usedQuestionMap) => {
+  if (usedQuestionMap.has(node.id))
+    usedQuestionMap.set(node.id, usedQuestionMap.get(node.id) + 1)
 
   for (let child of node.children)
-    incrementUsedQuestionIds(child, usedMap)
+    initAssessmentUsedQuestions(child, usedQuestionMap)
 }
 
 // Sort the questions sequentially, get their nodes from the tree via id, and only return up to
@@ -212,18 +216,13 @@ const getSendToClientPromises = (attemptState, req, res) => {
   return promises
 }
 
-const updateAssessmentProperties = (currentProps, nextProps) => {
-  return Object.assign(currentProps, nextProps)
-}
-
 module.exports = {
   startAttempt,
   getQuestionBankProperties,
-  getAssessmentChildrenMap,
-  incrementUsedQuestionIds,
+  createAssessmentUsedQuestionMap,
+  initAssessmentUsedQuestions,
   chooseQuestionsSequentially,
   createChosenQuestionTree,
   getNodeQuestions,
-  getSendToClientPromises,
-  updateAssessmentProperties
+  getSendToClientPromises
 }

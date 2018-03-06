@@ -5,14 +5,22 @@ let Adapter = {
 		} else {
 			model.modelState.responseType = ''
 		}
+
+		if (__guard__(attrs != null ? attrs.content : undefined, x => x.shuffle) == false) {
+			model.modelState.shuffle = attrs.content.shuffle
+		} else {
+			model.modelState.shuffle = true
+		}
 	},
 
 	clone(model, clone) {
 		clone.modelState.responseType = model.modelState.responseType
+		clone.modelState.shuffle = model.modelState.shuffle
 	},
 
 	toJSON(model, json) {
 		json.content.responseType = model.modelState.responseType
+		json.content.shuffle = model.modelState.shuffle
 	}
 }
 

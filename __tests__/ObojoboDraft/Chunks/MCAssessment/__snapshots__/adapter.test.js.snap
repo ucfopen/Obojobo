@@ -4,6 +4,7 @@ exports[`MCAssessment adapter can be constructed WITH attributes 1`] = `
 Object {
   "modelState": Object {
     "responseType": "pick-one",
+    "shuffle": false,
   },
 }
 `;
@@ -12,6 +13,25 @@ exports[`MCAssessment adapter can be constructed WITHOUT attributes 1`] = `
 Object {
   "modelState": Object {
     "responseType": "",
+    "shuffle": true,
+  },
+}
+`;
+
+exports[`MCAssessment adapter can be constructed WITHOUT responseType 1`] = `
+Object {
+  "modelState": Object {
+    "responseType": "",
+    "shuffle": false,
+  },
+}
+`;
+
+exports[`MCAssessment adapter can be constructed WITHOUT shuffle 1`] = `
+Object {
+  "modelState": Object {
+    "responseType": "pick-one",
+    "shuffle": true,
   },
 }
 `;
@@ -20,6 +40,7 @@ exports[`MCAssessment adapter can convert to JSON 1`] = `
 Object {
   "content": Object {
     "responseType": "pick-one",
+    "shuffle": true,
   },
 }
 `;
