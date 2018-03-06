@@ -935,8 +935,7 @@
 										(isShowingExplanation
 											? ' is-showing-explanation'
 											: ' is-not-showing-explantion') +
-										(score === null ? ' is-unscored' : ' is-scored') +
-										(' is-' + this.props.mode)
+										(score === null ? ' is-unscored' : ' is-scored')
 								},
 								React.createElement(
 									'span',

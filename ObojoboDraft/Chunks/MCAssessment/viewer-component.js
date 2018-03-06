@@ -281,8 +281,7 @@ export default class MCAssessment extends React.Component {
 					'obojobo-draft--chunks--mc-assessment' +
 					` is-response-type-${this.props.model.modelState.responseType}` +
 					(isShowingExplanation ? ' is-showing-explanation' : ' is-not-showing-explantion') +
-					(score === null ? ' is-unscored' : ' is-scored') +
-					(' is-' + this.props.mode)
+					(score === null ? ' is-unscored' : ' is-scored')
 				}
 			>
 				<span className="instructions">

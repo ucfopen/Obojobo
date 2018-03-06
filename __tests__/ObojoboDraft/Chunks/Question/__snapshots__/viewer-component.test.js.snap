@@ -19,7 +19,7 @@ exports[`MCAssessment Question component 1`] = `
         className="obojobo-draft--chunks--mc-question--content"
       />
       <form
-        className="component obojobo-draft--chunks--mc-assessment is-response-type- is-not-showing-explantion is-unscored is-practice"
+        className="component obojobo-draft--chunks--mc-assessment is-response-type- is-not-showing-explantion is-unscored"
         data-focussed={false}
         data-id="mc-assessment-id"
         data-obo-component={true}
@@ -273,7 +273,7 @@ exports[`MCAssessment Question view & focus question 1`] = `
         className="obojobo-draft--chunks--mc-question--content"
       />
       <form
-        className="component obojobo-draft--chunks--mc-assessment is-response-type- is-not-showing-explantion is-unscored is-practice"
+        className="component obojobo-draft--chunks--mc-assessment is-response-type- is-not-showing-explantion is-unscored"
         data-focussed={false}
         data-id="mc-assessment-id"
         data-obo-component={true}
@@ -527,7 +527,7 @@ exports[`MCAssessment Question view & focus question 2`] = `
         className="obojobo-draft--chunks--mc-question--content"
       />
       <form
-        className="component obojobo-draft--chunks--mc-assessment is-response-type- is-not-showing-explantion is-unscored is-practice"
+        className="component obojobo-draft--chunks--mc-assessment is-response-type- is-not-showing-explantion is-unscored"
         data-focussed={false}
         data-id="mc-assessment-id"
         data-obo-component={true}
@@ -781,7 +781,7 @@ exports[`MCAssessment Question view question 1`] = `
         className="obojobo-draft--chunks--mc-question--content"
       />
       <form
-        className="component obojobo-draft--chunks--mc-assessment is-response-type- is-not-showing-explantion is-unscored is-practice"
+        className="component obojobo-draft--chunks--mc-assessment is-response-type- is-not-showing-explantion is-unscored"
         data-focussed={false}
         data-id="mc-assessment-id"
         data-obo-component={true}
@@ -1035,7 +1035,7 @@ exports[`MCAssessment Question view question 2`] = `
         className="obojobo-draft--chunks--mc-question--content"
       />
       <form
-        className="component obojobo-draft--chunks--mc-assessment is-response-type- is-not-showing-explantion is-unscored is-practice"
+        className="component obojobo-draft--chunks--mc-assessment is-response-type- is-not-showing-explantion is-unscored"
         data-focussed={false}
         data-id="mc-assessment-id"
         data-obo-component={true}
@@ -1289,7 +1289,7 @@ exports[`MCAssessment Question with a set score 1`] = `
         className="obojobo-draft--chunks--mc-question--content"
       />
       <form
-        className="component obojobo-draft--chunks--mc-assessment is-response-type- is-not-showing-explantion is-unscored is-practice"
+        className="component obojobo-draft--chunks--mc-assessment is-response-type- is-not-showing-explantion is-unscored"
         data-focussed={false}
         data-id="mc-assessment-id"
         data-obo-component={true}
@@ -1543,7 +1543,7 @@ exports[`MCAssessment Question with a set score 2`] = `
         className="obojobo-draft--chunks--mc-question--content"
       />
       <form
-        className="component obojobo-draft--chunks--mc-assessment is-response-type- is-not-showing-explantion is-scored is-practice"
+        className="component obojobo-draft--chunks--mc-assessment is-response-type- is-not-showing-explantion is-scored"
         data-focussed={false}
         data-id="mc-assessment-id"
         data-obo-component={true}
@@ -1826,7 +1826,7 @@ exports[`MCAssessment Question with response 1`] = `
         className="obojobo-draft--chunks--mc-question--content"
       />
       <form
-        className="component obojobo-draft--chunks--mc-assessment is-response-type- is-not-showing-explantion is-unscored is-practice"
+        className="component obojobo-draft--chunks--mc-assessment is-response-type- is-not-showing-explantion is-unscored"
         data-focussed={false}
         data-id="mc-assessment-id"
         data-obo-component={true}
@@ -2080,7 +2080,7 @@ exports[`MCAssessment Question with response 2`] = `
         className="obojobo-draft--chunks--mc-question--content"
       />
       <form
-        className="component obojobo-draft--chunks--mc-assessment is-response-type- is-not-showing-explantion is-unscored is-practice"
+        className="component obojobo-draft--chunks--mc-assessment is-response-type- is-not-showing-explantion is-unscored"
         data-focussed={false}
         data-id="mc-assessment-id"
         data-obo-component={true}
@@ -2334,7 +2334,7 @@ exports[`MCAssessment Question with revealAll 1`] = `
         className="obojobo-draft--chunks--mc-question--content"
       />
       <form
-        className="component obojobo-draft--chunks--mc-assessment is-response-type- is-not-showing-explantion is-unscored is-practice"
+        className="component obojobo-draft--chunks--mc-assessment is-response-type- is-not-showing-explantion is-unscored"
         data-focussed={false}
         data-id="mc-assessment-id"
         data-obo-component={true}
@@ -2588,7 +2588,7 @@ exports[`MCAssessment Question with revealAll 2`] = `
         className="obojobo-draft--chunks--mc-question--content"
       />
       <form
-        className="component obojobo-draft--chunks--mc-assessment is-response-type- is-not-showing-explantion is-unscored is-practice"
+        className="component obojobo-draft--chunks--mc-assessment is-response-type- is-not-showing-explantion is-unscored"
         data-focussed={false}
         data-id="mc-assessment-id"
         data-obo-component={true}
