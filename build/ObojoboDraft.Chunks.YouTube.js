@@ -63,7 +63,7 @@
 /******/ 	__webpack_require__.p = "build/";
 /******/
 /******/ 	// Load entry module and return exports
-/******/ 	return __webpack_require__(__webpack_require__.s = 172);
+/******/ 	return __webpack_require__(__webpack_require__.s = 181);
 /******/ })
 /************************************************************************/
 /******/ ({
@@ -75,22 +75,22 @@ module.exports = Common;
 
 /***/ }),
 
-/***/ 151:
+/***/ 160:
 /***/ (function(module, exports) {
 
 // removed by extract-text-webpack-plugin
 
 /***/ }),
 
-/***/ 172:
+/***/ 181:
 /***/ (function(module, exports, __webpack_require__) {
 
-module.exports = __webpack_require__(39);
+module.exports = __webpack_require__(43);
 
 
 /***/ }),
 
-/***/ 39:
+/***/ 43:
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -100,11 +100,11 @@ var _Common = __webpack_require__(0);
 
 var _Common2 = _interopRequireDefault(_Common);
 
-var _adapter = __webpack_require__(79);
+var _adapter = __webpack_require__(83);
 
 var _adapter2 = _interopRequireDefault(_adapter);
 
-var _viewerComponent = __webpack_require__(80);
+var _viewerComponent = __webpack_require__(84);
 
 var _viewerComponent2 = _interopRequireDefault(_viewerComponent);
 
@@ -121,7 +121,7 @@ _Common2.default.Store.registerModel('ObojoboDraft.Chunks.YouTube', {
 
 /***/ }),
 
-/***/ 79:
+/***/ 83:
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -159,7 +159,7 @@ function __guard__(value, transform) {
 
 /***/ }),
 
-/***/ 80:
+/***/ 84:
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -171,7 +171,7 @@ Object.defineProperty(exports, "__esModule", {
 
 var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
 
-__webpack_require__(151);
+__webpack_require__(160);
 
 var _Common = __webpack_require__(0);
 

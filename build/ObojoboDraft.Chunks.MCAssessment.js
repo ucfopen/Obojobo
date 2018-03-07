@@ -63,7 +63,7 @@
 /******/ 	__webpack_require__.p = "build/";
 /******/
 /******/ 	// Load entry module and return exports
-/******/ 	return __webpack_require__(__webpack_require__.s = 166);
+/******/ 	return __webpack_require__(__webpack_require__.s = 175);
 /******/ })
 /************************************************************************/
 /******/ ({
@@ -82,43 +82,7 @@ module.exports = Viewer;
 
 /***/ }),
 
-/***/ 142:
-/***/ (function(module, exports) {
-
-// removed by extract-text-webpack-plugin
-
-/***/ }),
-
-/***/ 143:
-/***/ (function(module, exports) {
-
-// removed by extract-text-webpack-plugin
-
-/***/ }),
-
-/***/ 144:
-/***/ (function(module, exports) {
-
-// removed by extract-text-webpack-plugin
-
-/***/ }),
-
-/***/ 15:
-/***/ (function(module, exports) {
-
-// removed by extract-text-webpack-plugin
-
-/***/ }),
-
-/***/ 166:
-/***/ (function(module, exports, __webpack_require__) {
-
-module.exports = __webpack_require__(33);
-
-
-/***/ }),
-
-/***/ 33:
+/***/ 10:
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -128,17 +92,254 @@ var _Common = __webpack_require__(0);
 
 var _Common2 = _interopRequireDefault(_Common);
 
-__webpack_require__(7);
-
-__webpack_require__(64);
-
-__webpack_require__(66);
-
-var _adapter = __webpack_require__(67);
+var _adapter = __webpack_require__(11);
 
 var _adapter2 = _interopRequireDefault(_adapter);
 
-var _viewerComponent = __webpack_require__(68);
+var _viewerComponent = __webpack_require__(12);
+
+var _viewerComponent2 = _interopRequireDefault(_viewerComponent);
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+var SelectionHandler = _Common2.default.chunk.textChunk.TextGroupSelectionHandler;
+
+_Common2.default.Store.registerModel('ObojoboDraft.Chunks.MCAssessment.MCChoice', {
+	type: 'chunk',
+	adapter: _adapter2.default,
+	componentClass: _viewerComponent2.default,
+	selectionHandler: new SelectionHandler()
+});
+
+/***/ }),
+
+/***/ 11:
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+Object.defineProperty(exports, "__esModule", {
+	value: true
+});
+var Adapter = {
+	construct: function construct(model, attrs) {
+		if (__guard__(attrs != null ? attrs.content : undefined, function (x) {
+			return x.score;
+		}) != null) {
+			model.modelState.score = attrs.content.score;
+			return model.modelState._score = attrs.content.score;
+		} else {
+			return model.modelState.score = '';
+		}
+	},
+	clone: function clone(model, _clone) {
+		return _clone.modelState.score = model.modelState.score;
+	},
+	toJSON: function toJSON(model, json) {
+		return json.content.score = model.modelState.score;
+	}
+};
+
+exports.default = Adapter;
+
+function __guard__(value, transform) {
+	return typeof value !== 'undefined' && value !== null ? transform(value) : undefined;
+}
+
+/***/ }),
+
+/***/ 12:
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+Object.defineProperty(exports, "__esModule", {
+	value: true
+});
+
+var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+
+__webpack_require__(16);
+
+var _Common = __webpack_require__(0);
+
+var _Common2 = _interopRequireDefault(_Common);
+
+var _Viewer = __webpack_require__(1);
+
+var _Viewer2 = _interopRequireDefault(_Viewer);
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
+
+function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
+
+var OboComponent = _Common2.default.components.OboComponent;
+var OboModel = _Common2.default.models.OboModel;
+var QuestionUtil = _Viewer2.default.util.QuestionUtil;
+
+var MCChoice = function (_React$Component) {
+	_inherits(MCChoice, _React$Component);
+
+	function MCChoice() {
+		_classCallCheck(this, MCChoice);
+
+		return _possibleConstructorReturn(this, (MCChoice.__proto__ || Object.getPrototypeOf(MCChoice)).apply(this, arguments));
+	}
+
+	_createClass(MCChoice, [{
+		key: 'getQuestionModel',
+		value: function getQuestionModel() {
+			return this.props.model.getParentOfType('ObojoboDraft.Chunks.Question');
+		}
+	}, {
+		key: 'createFeedbackItem',
+		value: function createFeedbackItem(message) {
+			var feedback = OboModel.create('ObojoboDraft.Chunks.MCAssessment.MCFeedback');
+			var text = OboModel.create('ObojoboDraft.Chunks.Text');
+			// console.log('text', text)
+			text.modelState.textGroup.first.text.insertText(0, message);
+			// console.log('feedback', feedback)
+			feedback.children.add(text);
+
+			return feedback;
+		}
+	}, {
+		key: 'getInputType',
+		value: function getInputType() {
+			switch (this.props.responseType) {
+				case 'pick-all':
+					return 'checkbox';
+				default:
+					//'pick-one', 'pick-one-multiple-correct'
+					return 'radio';
+			}
+		}
+	}, {
+		key: 'render',
+		value: function render() {
+			var _this2 = this;
+
+			var response = QuestionUtil.getResponse(this.props.moduleData.questionState, this.getQuestionModel()) || { ids: [] };
+			var isSelected = response.ids.indexOf(this.props.model.get('id')) !== -1;
+
+			return React.createElement(
+				OboComponent,
+				{
+					model: this.props.model,
+					moduleData: this.props.moduleData,
+					className: 'obojobo-draft--chunks--mc-assessment--mc-choice' + (isSelected ? ' is-selected' : ' is-not-selected') + (this.props.model.modelState.score === 100 ? ' is-correct' : ' is-incorrect'),
+					'data-choice-label': this.props.label
+				},
+				React.createElement('input', {
+					ref: 'input',
+					type: this.getInputType(),
+					value: this.props.model.get('id'),
+					checked: isSelected,
+					onChange: function onChange() {},
+					name: this.props.model.parent.get('id')
+				}),
+				React.createElement(
+					'div',
+					{ className: 'children' },
+					this.props.model.children.map(function (child, index) {
+						var type = child.get('type');
+						var isAnswerItem = type === 'ObojoboDraft.Chunks.MCAssessment.MCAnswer';
+						var isFeedbackItem = type === 'ObojoboDraft.Chunks.MCAssessment.MCFeedback';
+
+						if (isAnswerItem) {
+							var Component = child.getComponentClass();
+							return React.createElement(Component, { key: child.get('id'), model: child, moduleData: _this2.props.moduleData });
+						}
+					})
+				)
+			);
+		}
+	}], [{
+		key: 'defaultProps',
+		get: function get() {
+			return {
+				responseType: null,
+				revealAll: false,
+				questionSubmitted: false
+			};
+		}
+	}]);
+
+	return MCChoice;
+}(React.Component);
+
+exports.default = MCChoice;
+
+
+function __guard__(value, transform) {
+	return typeof value !== 'undefined' && value !== null ? transform(value) : undefined;
+}
+
+/***/ }),
+
+/***/ 151:
+/***/ (function(module, exports) {
+
+// removed by extract-text-webpack-plugin
+
+/***/ }),
+
+/***/ 152:
+/***/ (function(module, exports) {
+
+// removed by extract-text-webpack-plugin
+
+/***/ }),
+
+/***/ 153:
+/***/ (function(module, exports) {
+
+// removed by extract-text-webpack-plugin
+
+/***/ }),
+
+/***/ 16:
+/***/ (function(module, exports) {
+
+// removed by extract-text-webpack-plugin
+
+/***/ }),
+
+/***/ 175:
+/***/ (function(module, exports, __webpack_require__) {
+
+module.exports = __webpack_require__(37);
+
+
+/***/ }),
+
+/***/ 37:
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+var _Common = __webpack_require__(0);
+
+var _Common2 = _interopRequireDefault(_Common);
+
+__webpack_require__(10);
+
+__webpack_require__(68);
+
+__webpack_require__(70);
+
+var _adapter = __webpack_require__(71);
+
+var _adapter2 = _interopRequireDefault(_adapter);
+
+var _viewerComponent = __webpack_require__(72);
 
 var _viewerComponent2 = _interopRequireDefault(_viewerComponent);
 
@@ -155,7 +356,7 @@ _Common2.default.Store.registerModel('ObojoboDraft.Chunks.MCAssessment', {
 
 /***/ }),
 
-/***/ 63:
+/***/ 67:
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -167,7 +368,7 @@ Object.defineProperty(exports, "__esModule", {
 
 var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
 
-__webpack_require__(142);
+__webpack_require__(151);
 
 var _Common = __webpack_require__(0);
 
@@ -219,7 +420,7 @@ exports.default = MCAnswer;
 
 /***/ }),
 
-/***/ 64:
+/***/ 68:
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -229,7 +430,7 @@ var _Common = __webpack_require__(0);
 
 var _Common2 = _interopRequireDefault(_Common);
 
-var _viewerComponent = __webpack_require__(63);
+var _viewerComponent = __webpack_require__(67);
 
 var _viewerComponent2 = _interopRequireDefault(_viewerComponent);
 
@@ -246,7 +447,7 @@ _Common2.default.Store.registerModel('ObojoboDraft.Chunks.MCAssessment.MCAnswer'
 
 /***/ }),
 
-/***/ 65:
+/***/ 69:
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -258,7 +459,7 @@ Object.defineProperty(exports, "__esModule", {
 
 var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
 
-__webpack_require__(143);
+__webpack_require__(152);
 
 var _Common = __webpack_require__(0);
 
@@ -311,7 +512,7 @@ exports.default = MCFeedback;
 
 /***/ }),
 
-/***/ 66:
+/***/ 70:
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -321,7 +522,7 @@ var _Common = __webpack_require__(0);
 
 var _Common2 = _interopRequireDefault(_Common);
 
-var _viewerComponent = __webpack_require__(65);
+var _viewerComponent = __webpack_require__(69);
 
 var _viewerComponent2 = _interopRequireDefault(_viewerComponent);
 
@@ -338,7 +539,7 @@ _Common2.default.Store.registerModel('ObojoboDraft.Chunks.MCAssessment.MCFeedbac
 
 /***/ }),
 
-/***/ 67:
+/***/ 71:
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -374,7 +575,7 @@ exports.default = Adapter;
 
 /***/ }),
 
-/***/ 68:
+/***/ 72:
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -386,7 +587,7 @@ Object.defineProperty(exports, "__esModule", {
 
 var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
 
-__webpack_require__(144);
+__webpack_require__(153);
 
 var _Common = __webpack_require__(0);
 
@@ -876,207 +1077,6 @@ var MCAssessment = function (_React$Component) {
 }(React.Component);
 
 exports.default = MCAssessment;
-
-
-function __guard__(value, transform) {
-	return typeof value !== 'undefined' && value !== null ? transform(value) : undefined;
-}
-
-/***/ }),
-
-/***/ 7:
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-
-
-var _Common = __webpack_require__(0);
-
-var _Common2 = _interopRequireDefault(_Common);
-
-var _adapter = __webpack_require__(8);
-
-var _adapter2 = _interopRequireDefault(_adapter);
-
-var _viewerComponent = __webpack_require__(9);
-
-var _viewerComponent2 = _interopRequireDefault(_viewerComponent);
-
-function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
-
-var SelectionHandler = _Common2.default.chunk.textChunk.TextGroupSelectionHandler;
-
-_Common2.default.Store.registerModel('ObojoboDraft.Chunks.MCAssessment.MCChoice', {
-	type: 'chunk',
-	adapter: _adapter2.default,
-	componentClass: _viewerComponent2.default,
-	selectionHandler: new SelectionHandler()
-});
-
-/***/ }),
-
-/***/ 8:
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-
-
-Object.defineProperty(exports, "__esModule", {
-	value: true
-});
-var Adapter = {
-	construct: function construct(model, attrs) {
-		if (__guard__(attrs != null ? attrs.content : undefined, function (x) {
-			return x.score;
-		}) != null) {
-			model.modelState.score = attrs.content.score;
-			return model.modelState._score = attrs.content.score;
-		} else {
-			return model.modelState.score = '';
-		}
-	},
-	clone: function clone(model, _clone) {
-		return _clone.modelState.score = model.modelState.score;
-	},
-	toJSON: function toJSON(model, json) {
-		return json.content.score = model.modelState.score;
-	}
-};
-
-exports.default = Adapter;
-
-function __guard__(value, transform) {
-	return typeof value !== 'undefined' && value !== null ? transform(value) : undefined;
-}
-
-/***/ }),
-
-/***/ 9:
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-
-
-Object.defineProperty(exports, "__esModule", {
-	value: true
-});
-
-var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
-
-__webpack_require__(15);
-
-var _Common = __webpack_require__(0);
-
-var _Common2 = _interopRequireDefault(_Common);
-
-var _Viewer = __webpack_require__(1);
-
-var _Viewer2 = _interopRequireDefault(_Viewer);
-
-function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
-
-function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
-
-function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
-
-function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
-
-var OboComponent = _Common2.default.components.OboComponent;
-var OboModel = _Common2.default.models.OboModel;
-var QuestionUtil = _Viewer2.default.util.QuestionUtil;
-
-var MCChoice = function (_React$Component) {
-	_inherits(MCChoice, _React$Component);
-
-	function MCChoice() {
-		_classCallCheck(this, MCChoice);
-
-		return _possibleConstructorReturn(this, (MCChoice.__proto__ || Object.getPrototypeOf(MCChoice)).apply(this, arguments));
-	}
-
-	_createClass(MCChoice, [{
-		key: 'getQuestionModel',
-		value: function getQuestionModel() {
-			return this.props.model.getParentOfType('ObojoboDraft.Chunks.Question');
-		}
-	}, {
-		key: 'createFeedbackItem',
-		value: function createFeedbackItem(message) {
-			var feedback = OboModel.create('ObojoboDraft.Chunks.MCAssessment.MCFeedback');
-			var text = OboModel.create('ObojoboDraft.Chunks.Text');
-			// console.log('text', text)
-			text.modelState.textGroup.first.text.insertText(0, message);
-			// console.log('feedback', feedback)
-			feedback.children.add(text);
-
-			return feedback;
-		}
-	}, {
-		key: 'getInputType',
-		value: function getInputType() {
-			switch (this.props.responseType) {
-				case 'pick-all':
-					return 'checkbox';
-				default:
-					//'pick-one', 'pick-one-multiple-correct'
-					return 'radio';
-			}
-		}
-	}, {
-		key: 'render',
-		value: function render() {
-			var _this2 = this;
-
-			var response = QuestionUtil.getResponse(this.props.moduleData.questionState, this.getQuestionModel()) || { ids: [] };
-			var isSelected = response.ids.indexOf(this.props.model.get('id')) !== -1;
-
-			return React.createElement(
-				OboComponent,
-				{
-					model: this.props.model,
-					moduleData: this.props.moduleData,
-					className: 'obojobo-draft--chunks--mc-assessment--mc-choice' + (isSelected ? ' is-selected' : ' is-not-selected') + (this.props.model.modelState.score === 100 ? ' is-correct' : ' is-incorrect'),
-					'data-choice-label': this.props.label
-				},
-				React.createElement('input', {
-					ref: 'input',
-					type: this.getInputType(),
-					value: this.props.model.get('id'),
-					checked: isSelected,
-					onChange: function onChange() {},
-					name: this.props.model.parent.get('id')
-				}),
-				React.createElement(
-					'div',
-					{ className: 'children' },
-					this.props.model.children.map(function (child, index) {
-						var type = child.get('type');
-						var isAnswerItem = type === 'ObojoboDraft.Chunks.MCAssessment.MCAnswer';
-						var isFeedbackItem = type === 'ObojoboDraft.Chunks.MCAssessment.MCFeedback';
-
-						if (isAnswerItem) {
-							var Component = child.getComponentClass();
-							return React.createElement(Component, { key: child.get('id'), model: child, moduleData: _this2.props.moduleData });
-						}
-					})
-				)
-			);
-		}
-	}], [{
-		key: 'defaultProps',
-		get: function get() {
-			return {
-				responseType: null,
-				revealAll: false,
-				questionSubmitted: false
-			};
-		}
-	}]);
-
-	return MCChoice;
-}(React.Component);
-
-exports.default = MCChoice;
 
 
 function __guard__(value, transform) {
