@@ -1,7 +1,5 @@
-module.exports = jest.fn().mockImplementation((env) => {
-	return {
-		express: [],
-		assets: [],
-		draftNodes: new Map()
-	}
-})
+module.exports = jest.fn().mockImplementation(() => ({
+	express: [],
+	assets: [],
+	draftNodes: new Map()
+}))
