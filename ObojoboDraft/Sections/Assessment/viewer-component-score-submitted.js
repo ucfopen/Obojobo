@@ -4,6 +4,7 @@ import Viewer from 'Viewer'
 const { OboModel } = Common.models
 const { AssessmentUtil } = Viewer.util
 const Launch = Common.Launch
+const NavUtil = Viewer.util.NavUtil
 
 import LTIStatus from './lti-status'
 
@@ -24,6 +25,10 @@ const scoreSubmittedView = assessment => {
 			assessment.props.model
 		)
 	}
+	const attemptsRemaining = AssessmentUtil.getAttemptsRemaining(
+		assessment.props.moduleData.assessmentState,
+		assessment.props.model
+	)
 
 	const scoreAction = assessment.getScoreAction()
 	const numCorrect = AssessmentUtil.getNumCorrect(questionScores)
@@ -39,6 +44,11 @@ const scoreSubmittedView = assessment => {
 
 	let ltiState = AssessmentUtil.getLTIStateForModel(
 		assessment.props.moduleData.assessmentState,
+		assessment.props.model
+	)
+
+	let assessmentLabel = NavUtil.getNavLabelForModel(
+		assessment.props.moduleData.navState,
 		assessment.props.model
 	)
 
@@ -72,35 +82,39 @@ const scoreSubmittedView = assessment => {
 
 	return (
 		<div className="score unlock">
-			<LTIStatus ltiState={ltiState} launch={Launch} onClickResendScore={onClickResendScore} />
-			<h1>{`Your attempt score is ${Math.round(recentScore)}%`}</h1>
-			<h2>
-				Your overall score for this assessment is{' '}
-				<strong>{assessmentScore === null ? '--' : Math.round(assessmentScore)}% </strong>
-				{(() => {
-					switch (ltiState.state.gradebookStatus) {
-						case 'ok_no_outcome_service':
-						case 'ok_null_score_not_sent':
-							return null
-
-						case 'ok_gradebook_matches_assessment_score':
-							return (
-								<span className="lti-sync-message is-synced">
-									({`sent to ${externalSystemLabel} `}
-									<span>✔</span>)
-								</span>
-							)
-
-						default:
-							return (
-								<span className="lti-sync-message is-not-synced">
-									({`not sent to ${externalSystemLabel} `}
-									<span>✖</span>)
-								</span>
-							)
-					}
-				})()}
-			</h2>
+			<div className="results-bar">
+				<h1>
+					{assessmentLabel} - How You Did
+				</h1>
+				<table>
+					<thead>
+						<tr>
+							<th>Last Attempt Score</th>
+							<th>Retained Score</th>
+							<th>Attempts Remaining</th>
+						</tr>
+					</thead>
+					<tbody>
+						<tr>
+							<td>
+								{Math.round(recentScore)}%
+							</td>
+							<td>
+								{assessmentScore === null ? '--' : Math.round(assessmentScore)}%
+							</td>
+							<td>
+								{attemptsRemaining}
+							</td>
+						</tr>
+					</tbody>
+				</table>
+				<LTIStatus
+					ltiState={ltiState}
+					launch={Launch}
+					onClickResendScore={onClickResendScore}
+					assessmentScore={assessmentScore}
+				/>
+			</div>
 			{childEl}
 			{showFullReview
 				? fullReview(assessment)

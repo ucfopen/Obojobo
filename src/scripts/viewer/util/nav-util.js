@@ -107,9 +107,6 @@ var NavUtil = {
 		})
 	},
 
-	// getNavItemForModel: (state, model) ->
-	// 	state.itemsById[model.get('id')]
-
 	getNavTarget(state) {
 		return state.itemsById[state.navTargetId]
 	},
@@ -198,6 +195,24 @@ var NavUtil = {
 		}
 
 		return OboModel.models[nextItem.id]
+	},
+
+	getNavItemForModel(state, model) {
+		let item = state.itemsById[model.get('id')]
+		if (!item) {
+			return null
+		}
+
+		return item
+	},
+
+	getNavLabelForModel(state, model) {
+		let item = NavUtil.getNavItemForModel(state, model)
+		if (!item) {
+			return null
+		}
+
+		return item.label
 	},
 
 	canNavigate(state) {

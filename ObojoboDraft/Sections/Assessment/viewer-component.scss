@@ -2,8 +2,7 @@
 
 .obojobo-draft--sections--assessment
 {
-	.untested,
-	.score
+	.untested
 	{
 		// text-align: center;
 		padding-top: 1em;
@@ -20,28 +19,53 @@
 			text-align: center;
 			font-size: 1em;
 
-			> .lti-sync-message
-			{
-				color: $color-text-minor;
 
-				&.is-synced > span
+		}
+	}
+
+	> .score
+	{
+		> .results-bar
+		{
+			font-family: $font-default;
+			text-align: center;
+			background-color: $color-bg2;
+			border-radius: $dimension-rounded-radius;
+
+			> h1
+			{
+				width: 100%;
+				max-width: ($dimension-column-width / 1.35) - $dimension-padding - $dimension-padding;
+				display: inline-block;
+				font-weight: normal;
+				font-size: 1.35em;
+				border-bottom: 1px solid $color-shadow;
+				padding: 1em 0;
+				margin: 0 $dimension-padding;
+				box-sizing: border-box;
+			}
+
+			table
+			{
+				width: 100%;
+				// margin: 0 auto;
+				max-width: $dimension-column-width - $dimension-padding - $dimension-padding;
+				padding: 1em 0;
+				margin: 0 $dimension-padding;
+				box-sizing: border-box;
+
+				th
 				{
-					color: $color-correct;
+					font-size: 0.9em;
+					padding-bottom: 0.5em;
 				}
 
-				&.is-not-synced > span
+				td
 				{
-					color: $color-incorrect;
+					font-size: 2em;
 				}
 			}
 		}
-
-		.review > p
-		{
-			margin-bottom: 3em;
-		}
-
-
 	}
 
 	.review

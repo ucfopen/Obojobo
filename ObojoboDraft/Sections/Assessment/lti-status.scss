@@ -2,25 +2,38 @@
 
 .obojobo-draft--sections--assessment--lti-status
 {
-	width: 100%;
-	border-radius: 0.25em;
-	font-family: $font-default;
-	margin-bottom: 3em;
-	padding: $dimension-padding/2 $dimension-padding;
-	box-sizing: border-box;
-	background-color: #ffe9c3;
-
-	> h2
+	&.is-synced
 	{
-		color: $color-text;
-		font-size: 1em;
-		font-weight: bold
+		font-size: 0.7em;
+		padding-bottom: 1em;
+		color: $color-text-minor;
 	}
 
-	> p,
-	> div > p
+	&.is-error
 	{
-		font-size: 0.9em;
-		line-height: 1.4em;
+		width: 100%;
+		border-radius: $dimension-rounded-radius;
+		border-top-left-radius: 0;
+		border-top-right-radius: 0;
+		font-family: $font-default;
+		margin-bottom: 3em;
+		padding: $dimension-padding/2 $dimension-padding;
+		box-sizing: border-box;
+		background-color: #ffe9c3;
+
+		> h2
+		{
+			color: $color-dangerous;
+			font-size: 1em;
+			font-weight: bold
+		}
+
+		> p,
+		> div > p
+		{
+			font-size: 0.9em;
+			line-height: 1.4em;
+			text-align: justify;
+		}
 	}
 }

@@ -566,13 +566,30 @@
 
 							switch (ltiState.state.gradebookStatus) {
 								case 'ok_no_outcome_service':
-								case 'ok_gradebook_matches_assessment_score':
 								case 'ok_null_score_not_sent':
 									return null
+
+								case 'ok_gradebook_matches_assessment_score':
+									return this.renderSynced()
 
 								default:
 									return this.renderError()
 							}
+						}
+					},
+					{
+						key: 'renderSynced',
+						value: function renderSynced() {
+							var location = this.props.launch.getOutcomeServiceHostname()
+
+							return React.createElement(
+								'div',
+								{ className: 'obojobo-draft--sections--assessment--lti-status is-synced' },
+								'\u2714 Your retained score of ' +
+									Math.round(this.props.assessmentScore) +
+									'% was sent to ' +
+									location
+							)
 						}
 					},
 					{
@@ -585,7 +602,7 @@
 
 							return React.createElement(
 								'div',
-								{ className: 'obojobo-draft--sections--assessment--lti-status' },
+								{ className: 'obojobo-draft--sections--assessment--lti-status is-error' },
 								React.createElement(
 									'h2',
 									null,
@@ -771,6 +788,7 @@
 			var AssessmentUtil = _Viewer2.default.util.AssessmentUtil
 
 			var Launch = _Common2.default.Launch
+			var NavUtil = _Viewer2.default.util.NavUtil
 
 			var scoreSubmittedView = function scoreSubmittedView(assessment) {
 				var questionScores = AssessmentUtil.getLastAttemptScoresForModel(
@@ -787,6 +805,10 @@
 						assessment.props.model
 					)
 				}
+				var attemptsRemaining = AssessmentUtil.getAttemptsRemaining(
+					assessment.props.moduleData.assessmentState,
+					assessment.props.model
+				)
 
 				var scoreAction = assessment.getScoreAction()
 				var numCorrect = AssessmentUtil.getNumCorrect(questionScores)
@@ -802,6 +824,11 @@
 
 				var ltiState = AssessmentUtil.getLTIStateForModel(
 					assessment.props.moduleData.assessmentState,
+					assessment.props.model
+				)
+
+				var assessmentLabel = NavUtil.getNavLabelForModel(
+					assessment.props.moduleData.navState,
 					assessment.props.model
 				)
 
@@ -835,50 +862,47 @@
 				return React.createElement(
 					'div',
 					{ className: 'score unlock' },
-					React.createElement(_ltiStatus2.default, {
-						ltiState: ltiState,
-						launch: Launch,
-						onClickResendScore: onClickResendScore
-					}),
-					React.createElement('h1', null, 'Your attempt score is ' + Math.round(recentScore) + '%'),
 					React.createElement(
-						'h2',
-						null,
-						'Your overall score for this assessment is',
-						' ',
+						'div',
+						{ className: 'results-bar' },
+						React.createElement('h1', null, assessmentLabel, ' - How You Did'),
 						React.createElement(
-							'strong',
+							'table',
 							null,
-							assessmentScore === null ? '--' : Math.round(assessmentScore),
-							'% '
+							React.createElement(
+								'thead',
+								null,
+								React.createElement(
+									'tr',
+									null,
+									React.createElement('th', null, 'Last Attempt Score'),
+									React.createElement('th', null, 'Retained Score'),
+									React.createElement('th', null, 'Attempts Remaining')
+								)
+							),
+							React.createElement(
+								'tbody',
+								null,
+								React.createElement(
+									'tr',
+									null,
+									React.createElement('td', null, Math.round(recentScore), '%'),
+									React.createElement(
+										'td',
+										null,
+										assessmentScore === null ? '--' : Math.round(assessmentScore),
+										'%'
+									),
+									React.createElement('td', null, attemptsRemaining)
+								)
+							)
 						),
-						(function() {
-							switch (ltiState.state.gradebookStatus) {
-								case 'ok_no_outcome_service':
-								case 'ok_null_score_not_sent':
-									return null
-
-								case 'ok_gradebook_matches_assessment_score':
-									return React.createElement(
-										'span',
-										{ className: 'lti-sync-message is-synced' },
-										'(',
-										'sent to ' + externalSystemLabel + ' ',
-										React.createElement('span', null, '\u2714'),
-										')'
-									)
-
-								default:
-									return React.createElement(
-										'span',
-										{ className: 'lti-sync-message is-not-synced' },
-										'(',
-										'not sent to ' + externalSystemLabel + ' ',
-										React.createElement('span', null, '\u2716'),
-										')'
-									)
-							}
-						})()
+						React.createElement(_ltiStatus2.default, {
+							ltiState: ltiState,
+							launch: Launch,
+							onClickResendScore: onClickResendScore,
+							assessmentScore: assessmentScore
+						})
 					),
 					childEl,
 					showFullReview

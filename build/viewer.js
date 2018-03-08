@@ -547,10 +547,6 @@
 						}
 					})
 				},
-
-				// getNavItemForModel: (state, model) ->
-				// 	state.itemsById[model.get('id')]
-
 				getNavTarget: function getNavTarget(state) {
 					return state.itemsById[state.navTargetId]
 				},
@@ -658,6 +654,22 @@
 					}
 
 					return OboModel.models[nextItem.id]
+				},
+				getNavItemForModel: function getNavItemForModel(state, model) {
+					var item = state.itemsById[model.get('id')]
+					if (!item) {
+						return null
+					}
+
+					return item
+				},
+				getNavLabelForModel: function getNavLabelForModel(state, model) {
+					var item = NavUtil.getNavItemForModel(state, model)
+					if (!item) {
+						return null
+					}
+
+					return item.label
 				},
 				canNavigate: function canNavigate(state) {
 					return !state.locked

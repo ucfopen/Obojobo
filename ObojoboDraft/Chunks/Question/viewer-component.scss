@@ -61,7 +61,7 @@
 	$color-sep: rgba(0, 0, 0, 0.1);
 
 	background: $color-bg;
-	border-radius: 0.25em;
+	border-radius: $dimension-rounded-radius;
 
 	padding: 0;
 	// padding-top: 2em;
@@ -123,7 +123,7 @@
 		background: $color-bg;
 		cursor: pointer;
 		// transition: opacity $duration-animation-default;
-		border-radius: 0.25em;
+		border-radius: $dimension-rounded-radius;
 
 		&:hover
 		{

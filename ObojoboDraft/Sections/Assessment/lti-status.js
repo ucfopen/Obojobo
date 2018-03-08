@@ -18,13 +18,27 @@ export default class LTIStatus extends React.Component {
 
 		switch (ltiState.state.gradebookStatus) {
 			case 'ok_no_outcome_service':
-			case 'ok_gradebook_matches_assessment_score':
 			case 'ok_null_score_not_sent':
 				return null
+
+			case 'ok_gradebook_matches_assessment_score':
+				return this.renderSynced()
 
 			default:
 				return this.renderError()
 		}
+	}
+
+	renderSynced() {
+		let location = this.props.launch.getOutcomeServiceHostname()
+
+		return (
+			<div className="obojobo-draft--sections--assessment--lti-status is-synced">
+				{`✔ Your retained score of ${Math.round(
+					this.props.assessmentScore
+				)}% was sent to ${location}`}
+			</div>
+		)
 	}
 
 	renderError() {
@@ -32,7 +46,7 @@ export default class LTIStatus extends React.Component {
 		let location = this.props.launch.getOutcomeServiceHostname()
 
 		return (
-			<div className="obojobo-draft--sections--assessment--lti-status">
+			<div className="obojobo-draft--sections--assessment--lti-status is-error">
 				<h2>{`There was a problem sending your score to ${location}.`}</h2>
 				<p>
 					{`Don’t worry - your score is safely recorded here. We just weren’t able to send it to ${location}. Click the button below to resend your score:`}
