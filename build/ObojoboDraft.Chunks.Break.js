@@ -63,7 +63,7 @@
 /******/ 	__webpack_require__.p = "build/";
 /******/
 /******/ 	// Load entry module and return exports
-/******/ 	return __webpack_require__(__webpack_require__.s = 167);
+/******/ 	return __webpack_require__(__webpack_require__.s = 256);
 /******/ })
 /************************************************************************/
 /******/ ({
@@ -75,53 +75,7 @@ module.exports = Common;
 
 /***/ }),
 
-/***/ 144:
-/***/ (function(module, exports) {
-
-// removed by extract-text-webpack-plugin
-
-/***/ }),
-
-/***/ 167:
-/***/ (function(module, exports, __webpack_require__) {
-
-module.exports = __webpack_require__(30);
-
-
-/***/ }),
-
-/***/ 30:
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-
-
-var _Common = __webpack_require__(0);
-
-var _Common2 = _interopRequireDefault(_Common);
-
-var _adapter = __webpack_require__(52);
-
-var _adapter2 = _interopRequireDefault(_adapter);
-
-var _viewerComponent = __webpack_require__(53);
-
-var _viewerComponent2 = _interopRequireDefault(_viewerComponent);
-
-function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
-
-var SelectionHandler = _Common2.default.chunk.focusableChunk.FocusableSelectionHandler;
-
-_Common2.default.Store.registerModel('ObojoboDraft.Chunks.Break', {
-	type: 'chunk',
-	adapter: _adapter2.default,
-	componentClass: _viewerComponent2.default,
-	selectionHandler: new SelectionHandler()
-});
-
-/***/ }),
-
-/***/ 52:
+/***/ 119:
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -163,7 +117,7 @@ function __guard__(value, transform) {
 
 /***/ }),
 
-/***/ 53:
+/***/ 120:
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -175,7 +129,7 @@ Object.defineProperty(exports, "__esModule", {
 
 var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
 
-__webpack_require__(144);
+__webpack_require__(233);
 
 var _Common = __webpack_require__(0);
 
@@ -222,6 +176,52 @@ var Break = function (_React$Component) {
 }(React.Component);
 
 exports.default = Break;
+
+/***/ }),
+
+/***/ 233:
+/***/ (function(module, exports) {
+
+// removed by extract-text-webpack-plugin
+
+/***/ }),
+
+/***/ 256:
+/***/ (function(module, exports, __webpack_require__) {
+
+module.exports = __webpack_require__(97);
+
+
+/***/ }),
+
+/***/ 97:
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+var _Common = __webpack_require__(0);
+
+var _Common2 = _interopRequireDefault(_Common);
+
+var _adapter = __webpack_require__(119);
+
+var _adapter2 = _interopRequireDefault(_adapter);
+
+var _viewerComponent = __webpack_require__(120);
+
+var _viewerComponent2 = _interopRequireDefault(_viewerComponent);
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+var SelectionHandler = _Common2.default.chunk.focusableChunk.FocusableSelectionHandler;
+
+_Common2.default.Store.registerModel('ObojoboDraft.Chunks.Break', {
+	type: 'chunk',
+	adapter: _adapter2.default,
+	componentClass: _viewerComponent2.default,
+	selectionHandler: new SelectionHandler()
+});
 
 /***/ })
 

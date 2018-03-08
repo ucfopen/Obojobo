@@ -11,62 +11,62 @@ ShallowWrapper {
   "node": <div
     className="obojobo-draft--chunks--table--table-menu row"
     style={
-      Object {
-        "backgroundImage": "",
-      }
+        Object {
+            "backgroundImage": "",
+          }
     }
-  >
+>
     <ul>
-      <li
-        className="insert-above"
-        onClick={[Function]}
-      >
-        Insert 1 row above
-      </li>
-      <li
-        className="insert-below"
-        onClick={[Function]}
-      >
-        Insert 1 row below
-      </li>
-      <li
-        className="delete"
-        onClick={[Function]}
-      >
-        Delete this row
-      </li>
+        <li
+            className="insert-above"
+            onClick={[Function]}
+        >
+            Insert 1 row above
+        </li>
+        <li
+            className="insert-below"
+            onClick={[Function]}
+        >
+            Insert 1 row below
+        </li>
+        <li
+            className="delete"
+            onClick={[Function]}
+        >
+            Delete this row
+        </li>
     </ul>
-  </div>,
+</div>,
   "nodes": Array [
     <div
       className="obojobo-draft--chunks--table--table-menu row"
       style={
-        Object {
-          "backgroundImage": "",
-        }
+            Object {
+                  "backgroundImage": "",
+                }
       }
-    >
+>
       <ul>
-        <li
-          className="insert-above"
-          onClick={[Function]}
-        >
-          Insert 1 row above
-        </li>
-        <li
-          className="insert-below"
-          onClick={[Function]}
-        >
-          Insert 1 row below
-        </li>
-        <li
-          className="delete"
-          onClick={[Function]}
-        >
-          Delete this row
-        </li>
+            <li
+                  className="insert-above"
+                  onClick={[Function]}
+            >
+                  Insert 1 row above
+            </li>
+            <li
+                  className="insert-below"
+                  onClick={[Function]}
+            >
+                  Insert 1 row below
+            </li>
+            <li
+                  className="delete"
+                  onClick={[Function]}
+            >
+                  Delete this row
+            </li>
       </ul>
-    </div>,
+</div>,
   ],
   "options": Object {},
   "renderer": ReactShallowRenderer {
@@ -76,10 +76,10 @@ ShallowWrapper {
       "_context": Object {},
       "_currentElement": <TableMenu
         col={0}
-        onMenuCommand={[MockFunction]}
+        onMenuCommand={[Function]}
         row={0}
         type="row"
-      />,
+/>,
       "_debugID": 1,
       "_hostContainerInfo": null,
       "_hostParent": null,
@@ -88,7 +88,7 @@ ShallowWrapper {
         "context": Object {},
         "props": Object {
           "col": 0,
-          "onMenuCommand": [MockFunction],
+          "onMenuCommand": [Function],
           "row": 0,
           "type": "row",
         },
@@ -115,62 +115,62 @@ ShallowWrapper {
         "_currentElement": <div
           className="obojobo-draft--chunks--table--table-menu row"
           style={
-            Object {
-              "backgroundImage": "",
-            }
+                    Object {
+                              "backgroundImage": "",
+                            }
           }
-        >
+>
           <ul>
-            <li
-              className="insert-above"
-              onClick={[Function]}
-            >
-              Insert 1 row above
-            </li>
-            <li
-              className="insert-below"
-              onClick={[Function]}
-            >
-              Insert 1 row below
-            </li>
-            <li
-              className="delete"
-              onClick={[Function]}
-            >
-              Delete this row
-            </li>
+                    <li
+                              className="insert-above"
+                              onClick={[Function]}
+                    >
+                              Insert 1 row above
+                    </li>
+                    <li
+                              className="insert-below"
+                              onClick={[Function]}
+                    >
+                              Insert 1 row below
+                    </li>
+                    <li
+                              className="delete"
+                              onClick={[Function]}
+                    >
+                              Delete this row
+                    </li>
           </ul>
-        </div>,
+</div>,
         "_debugID": 2,
         "_renderedOutput": <div
           className="obojobo-draft--chunks--table--table-menu row"
           style={
-            Object {
-              "backgroundImage": "",
-            }
+                    Object {
+                              "backgroundImage": "",
+                            }
           }
-        >
+>
           <ul>
-            <li
-              className="insert-above"
-              onClick={[Function]}
-            >
-              Insert 1 row above
-            </li>
-            <li
-              className="insert-below"
-              onClick={[Function]}
-            >
-              Insert 1 row below
-            </li>
-            <li
-              className="delete"
-              onClick={[Function]}
-            >
-              Delete this row
-            </li>
+                    <li
+                              className="insert-above"
+                              onClick={[Function]}
+                    >
+                              Insert 1 row above
+                    </li>
+                    <li
+                              className="insert-below"
+                              onClick={[Function]}
+                    >
+                              Insert 1 row below
+                    </li>
+                    <li
+                              className="delete"
+                              onClick={[Function]}
+                    >
+                              Delete this row
+                    </li>
           </ul>
-        </div>,
+</div>,
       },
       "_renderedNodeType": 0,
       "_rootNodeID": 0,
@@ -184,9 +184,9 @@ ShallowWrapper {
   "root": [Circular],
   "unrendered": <TableMenu
     col={0}
-    onMenuCommand={[MockFunction]}
+    onMenuCommand={[Function]}
     row={0}
     type="row"
-  />,
+/>,
 }
 `;

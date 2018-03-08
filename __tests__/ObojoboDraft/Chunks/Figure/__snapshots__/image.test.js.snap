@@ -12,25 +12,25 @@ ShallowWrapper {
     alt={undefined}
     src="url"
     style={
-      Object {
-        "height": "100px",
-        "width": "100px",
-      }
+        Object {
+            "height": "100px",
+            "width": "100px",
+          }
     }
     unselectable="on"
-  />,
+/>,
   "nodes": Array [
     <img
       alt={undefined}
       src="url"
       style={
-        Object {
-          "height": "100px",
-          "width": "100px",
-        }
+            Object {
+                  "height": "100px",
+                  "width": "100px",
+                }
       }
       unselectable="on"
-    />,
+/>,
   ],
   "options": Object {},
   "renderer": ReactShallowRenderer {
@@ -40,16 +40,16 @@ ShallowWrapper {
       "_context": Object {},
       "_currentElement": <Image
         chunk={
-          Object {
-            "modelState": Object {
-              "height": 100,
-              "size": "custom",
-              "url": "url",
-              "width": 100,
-            },
-          }
+                Object {
+                        "modelState": Object {
+                          "height": 100,
+                          "size": "custom",
+                          "url": "url",
+                          "width": 100,
+                        },
+                      }
         }
-      />,
+/>,
       "_debugID": 5,
       "_hostContainerInfo": null,
       "_hostParent": null,
@@ -90,25 +90,25 @@ ShallowWrapper {
           alt={undefined}
           src="url"
           style={
-            Object {
-              "height": "100px",
-              "width": "100px",
-            }
+                    Object {
+                              "height": "100px",
+                              "width": "100px",
+                            }
           }
           unselectable="on"
-        />,
+/>,
         "_debugID": 6,
         "_renderedOutput": <img
           alt={undefined}
           src="url"
           style={
-            Object {
-              "height": "100px",
-              "width": "100px",
-            }
+                    Object {
+                              "height": "100px",
+                              "width": "100px",
+                            }
           }
           unselectable="on"
-        />,
+/>,
       },
       "_renderedNodeType": 0,
       "_rootNodeID": 0,
@@ -122,16 +122,16 @@ ShallowWrapper {
   "root": [Circular],
   "unrendered": <Image
     chunk={
-      Object {
-        "modelState": Object {
-          "height": 100,
-          "size": "custom",
-          "url": "url",
-          "width": 100,
-        },
-      }
+        Object {
+            "modelState": Object {
+              "height": 100,
+              "size": "custom",
+              "url": "url",
+              "width": 100,
+            },
+          }
     }
-  />,
+/>,
 }
 `;
 
@@ -147,13 +147,13 @@ ShallowWrapper {
     alt="alt text"
     src="url"
     unselectable="on"
-  />,
+/>,
   "nodes": Array [
     <img
       alt="alt text"
       src="url"
       unselectable="on"
-    />,
+/>,
   ],
   "options": Object {},
   "renderer": ReactShallowRenderer {
@@ -163,15 +163,15 @@ ShallowWrapper {
       "_context": Object {},
       "_currentElement": <Image
         chunk={
-          Object {
-            "modelState": Object {
-              "alt": "alt text",
-              "size": "small",
-              "url": "url",
-            },
-          }
+                Object {
+                        "modelState": Object {
+                          "alt": "alt text",
+                          "size": "small",
+                          "url": "url",
+                        },
+                      }
         }
-      />,
+/>,
       "_debugID": 3,
       "_hostContainerInfo": null,
       "_hostParent": null,
@@ -211,13 +211,13 @@ ShallowWrapper {
           alt="alt text"
           src="url"
           unselectable="on"
-        />,
+/>,
         "_debugID": 4,
         "_renderedOutput": <img
           alt="alt text"
           src="url"
           unselectable="on"
-        />,
+/>,
       },
       "_renderedNodeType": 0,
       "_rootNodeID": 0,
@@ -231,15 +231,15 @@ ShallowWrapper {
   "root": [Circular],
   "unrendered": <Image
     chunk={
-      Object {
-        "modelState": Object {
-          "alt": "alt text",
-          "size": "small",
-          "url": "url",
-        },
-      }
+        Object {
+            "modelState": Object {
+              "alt": "alt text",
+              "size": "small",
+              "url": "url",
+            },
+          }
     }
-  />,
+/>,
 }
 `;
 
@@ -254,24 +254,24 @@ ShallowWrapper {
   "node": <div
     className="img-placeholder"
     style={
-      Object {
-        "backgroundImage": "",
-        "backgroundSize": "16px",
-        "height": "300px",
-      }
+        Object {
+            "backgroundImage": "",
+            "backgroundSize": "16px",
+            "height": "300px",
+          }
     }
-  />,
+/>,
   "nodes": Array [
     <div
       className="img-placeholder"
       style={
-        Object {
-          "backgroundImage": "",
-          "backgroundSize": "16px",
-          "height": "300px",
-        }
+            Object {
+                  "backgroundImage": "",
+                  "backgroundSize": "16px",
+                  "height": "300px",
+                }
       }
-    />,
+/>,
   ],
   "options": Object {},
   "renderer": ReactShallowRenderer {
@@ -281,14 +281,14 @@ ShallowWrapper {
       "_context": Object {},
       "_currentElement": <Image
         chunk={
-          Object {
-            "modelState": Object {
-              "alt": "alt text",
-              "size": "small",
-            },
-          }
+                Object {
+                        "modelState": Object {
+                          "alt": "alt text",
+                          "size": "small",
+                        },
+                      }
         }
-      />,
+/>,
       "_debugID": 1,
       "_hostContainerInfo": null,
       "_hostParent": null,
@@ -326,24 +326,24 @@ ShallowWrapper {
         "_currentElement": <div
           className="img-placeholder"
           style={
-            Object {
-              "backgroundImage": "",
-              "backgroundSize": "16px",
-              "height": "300px",
-            }
+                    Object {
+                              "backgroundImage": "",
+                              "backgroundSize": "16px",
+                              "height": "300px",
+                            }
           }
-        />,
+/>,
         "_debugID": 2,
         "_renderedOutput": <div
           className="img-placeholder"
           style={
-            Object {
-              "backgroundImage": "",
-              "backgroundSize": "16px",
-              "height": "300px",
-            }
+                    Object {
+                              "backgroundImage": "",
+                              "backgroundSize": "16px",
+                              "height": "300px",
+                            }
           }
-        />,
+/>,
       },
       "_renderedNodeType": 0,
       "_rootNodeID": 0,
@@ -357,13 +357,13 @@ ShallowWrapper {
   "root": [Circular],
   "unrendered": <Image
     chunk={
-      Object {
-        "modelState": Object {
-          "alt": "alt text",
-          "size": "small",
-        },
-      }
+        Object {
+            "modelState": Object {
+              "alt": "alt text",
+              "size": "small",
+            },
+          }
     }
-  />,
+/>,
 }
 `;

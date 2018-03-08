@@ -37,7 +37,7 @@ exports[`SimpleDialog cancelOk 1`] = `
           >
             <button
               disabled={undefined}
-              onClick={[MockFunction]}
+              onClick={[Function]}
               tabIndex={undefined}
             >
               Cancel
@@ -48,7 +48,7 @@ exports[`SimpleDialog cancelOk 1`] = `
           >
             <button
               disabled={undefined}
-              onClick={[MockFunction]}
+              onClick={[Function]}
               tabIndex={undefined}
             >
               OK
@@ -103,7 +103,7 @@ exports[`SimpleDialog noOrYes 1`] = `
           >
             <button
               disabled={undefined}
-              onClick={[MockFunction]}
+              onClick={[Function]}
               tabIndex={undefined}
             >
               No
@@ -119,7 +119,7 @@ exports[`SimpleDialog noOrYes 1`] = `
           >
             <button
               disabled={undefined}
-              onClick={[MockFunction]}
+              onClick={[Function]}
               tabIndex={undefined}
             >
               Yes
@@ -174,7 +174,7 @@ exports[`SimpleDialog ok 1`] = `
           >
             <button
               disabled={undefined}
-              onClick={[MockFunction]}
+              onClick={[Function]}
               tabIndex={undefined}
             >
               OK
@@ -229,7 +229,7 @@ exports[`SimpleDialog yesOrNo 1`] = `
           >
             <button
               disabled={undefined}
-              onClick={[MockFunction]}
+              onClick={[Function]}
               tabIndex={undefined}
             >
               Yes
@@ -245,7 +245,7 @@ exports[`SimpleDialog yesOrNo 1`] = `
           >
             <button
               disabled={undefined}
-              onClick={[MockFunction]}
+              onClick={[Function]}
               tabIndex={undefined}
             >
               No

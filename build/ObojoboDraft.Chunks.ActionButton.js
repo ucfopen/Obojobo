@@ -63,7 +63,7 @@
 /******/ 	__webpack_require__.p = "build/";
 /******/
 /******/ 	// Load entry module and return exports
-/******/ 	return __webpack_require__(__webpack_require__.s = 166);
+/******/ 	return __webpack_require__(__webpack_require__.s = 255);
 /******/ })
 /************************************************************************/
 /******/ ({
@@ -75,53 +75,7 @@ module.exports = Common;
 
 /***/ }),
 
-/***/ 143:
-/***/ (function(module, exports) {
-
-// removed by extract-text-webpack-plugin
-
-/***/ }),
-
-/***/ 166:
-/***/ (function(module, exports, __webpack_require__) {
-
-module.exports = __webpack_require__(29);
-
-
-/***/ }),
-
-/***/ 29:
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-
-
-var _adapter = __webpack_require__(50);
-
-var _adapter2 = _interopRequireDefault(_adapter);
-
-var _viewerComponent = __webpack_require__(51);
-
-var _viewerComponent2 = _interopRequireDefault(_viewerComponent);
-
-var _Common = __webpack_require__(0);
-
-var _Common2 = _interopRequireDefault(_Common);
-
-function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
-
-var SelectionHandler = _Common2.default.chunk.textChunk.TextGroupSelectionHandler;
-
-_Common2.default.Store.registerModel('ObojoboDraft.Chunks.ActionButton', {
-	type: 'chunk',
-	adapter: _adapter2.default,
-	componentClass: _viewerComponent2.default,
-	selectionHandler: new SelectionHandler() //@TODO
-});
-
-/***/ }),
-
-/***/ 50:
+/***/ 117:
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -184,7 +138,7 @@ function __guard__(value, transform) {
 
 /***/ }),
 
-/***/ 51:
+/***/ 118:
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -196,7 +150,7 @@ Object.defineProperty(exports, "__esModule", {
 
 var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
 
-__webpack_require__(143);
+__webpack_require__(232);
 
 var _Common = __webpack_require__(0);
 
@@ -257,6 +211,52 @@ var ActionButton = function (_React$Component) {
 }(React.Component);
 
 exports.default = ActionButton;
+
+/***/ }),
+
+/***/ 232:
+/***/ (function(module, exports) {
+
+// removed by extract-text-webpack-plugin
+
+/***/ }),
+
+/***/ 255:
+/***/ (function(module, exports, __webpack_require__) {
+
+module.exports = __webpack_require__(96);
+
+
+/***/ }),
+
+/***/ 96:
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+var _adapter = __webpack_require__(117);
+
+var _adapter2 = _interopRequireDefault(_adapter);
+
+var _viewerComponent = __webpack_require__(118);
+
+var _viewerComponent2 = _interopRequireDefault(_viewerComponent);
+
+var _Common = __webpack_require__(0);
+
+var _Common2 = _interopRequireDefault(_Common);
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+var SelectionHandler = _Common2.default.chunk.textChunk.TextGroupSelectionHandler;
+
+_Common2.default.Store.registerModel('ObojoboDraft.Chunks.ActionButton', {
+	type: 'chunk',
+	adapter: _adapter2.default,
+	componentClass: _viewerComponent2.default,
+	selectionHandler: new SelectionHandler() //@TODO
+});
 
 /***/ })
 
