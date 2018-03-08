@@ -1,5 +1,4 @@
 let OutcomeService = require('ims-lti/src/extensions/outcomes').OutcomeService
-let HMAC_SHA1 = require('ims-lti/src/hmac-sha1')
 let config = oboRequire('config')
 let db = require('./db')
 let moment = require('moment')
@@ -368,13 +367,10 @@ let getOutcomeServiceForLaunch = function(launch) {
 		}
 
 		result.outcomeService = new OutcomeService({
-			body: {
-				lis_outcome_service_url: launch.reqVars.lis_outcome_service_url,
-				lis_result_sourcedid: launch.reqVars.lis_result_sourcedid
-			},
+			service_url: launch.reqVars.lis_outcome_service_url,
+			source_did: launch.reqVars.lis_result_sourcedid,
 			consumer_key: launch.key,
-			consumer_secret: secret,
-			signer: new HMAC_SHA1()
+			consumer_secret: secret
 		})
 
 		return result
