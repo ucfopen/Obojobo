@@ -1,5 +1,106 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
+exports[`start attempt route can choose to display questions sequentially 1`] = `
+Array [
+  Object {
+    "children": Array [
+      Object {
+        "children": Array [],
+        "content": Object {
+          "textGroup": Array [
+            Object {
+              "data": null,
+              "text": Object {
+                "styleList": Array [],
+                "value": "Question Bank 1 Question 1 - This is the first question you'll see",
+              },
+            },
+          ],
+        },
+        "id": "e3d455d5-80dd-4df8-87cf-594218016f44",
+        "type": "ObojoboDraft.Chunks.Text",
+      },
+      Object {
+        "children": Array [
+          Object {
+            "children": Array [
+              Object {
+                "children": Array [
+                  Object {
+                    "children": Array [],
+                    "content": Object {
+                      "textGroup": Array [
+                        Object {
+                          "data": null,
+                          "text": Object {
+                            "styleList": Array [],
+                            "value": "Correct",
+                          },
+                        },
+                      ],
+                    },
+                    "id": "eb1df6ac-27e5-4b0c-865e-fea3ef790623",
+                    "type": "ObojoboDraft.Chunks.Text",
+                  },
+                ],
+                "content": Object {},
+                "id": "qb1-q1-mca-mc1-ans",
+                "type": "ObojoboDraft.Chunks.MCAssessment.MCAnswer",
+              },
+            ],
+            "content": Object {
+              "score": 100,
+            },
+            "id": "qb1-q1-mca-mc1",
+            "type": "ObojoboDraft.Chunks.MCAssessment.MCChoice",
+          },
+          Object {
+            "children": Array [
+              Object {
+                "children": Array [
+                  Object {
+                    "children": Array [],
+                    "content": Object {
+                      "textGroup": Array [
+                        Object {
+                          "data": null,
+                          "text": Object {
+                            "styleList": Array [],
+                            "value": "Incorrect",
+                          },
+                        },
+                      ],
+                    },
+                    "id": "2e332c06-58d1-42f9-a8b5-64fc0b1825fc",
+                    "type": "ObojoboDraft.Chunks.Text",
+                  },
+                ],
+                "content": Object {},
+                "id": "qb1-q1-mca-mc2-ans",
+                "type": "ObojoboDraft.Chunks.MCAssessment.MCAnswer",
+              },
+            ],
+            "content": Object {
+              "score": 0,
+            },
+            "id": "qb1-q1-mca-mc2",
+            "type": "ObojoboDraft.Chunks.MCAssessment.MCChoice",
+          },
+        ],
+        "content": Object {
+          "responseType": "pick-one",
+        },
+        "id": "qb1-q1-mca",
+        "type": "ObojoboDraft.Chunks.MCAssessment",
+      },
+    ],
+    "content": Object {},
+    "id": "qb1.q1",
+    "type": "ObojoboDraft.Chunks.Question",
+  },
+]
+`;
+
 exports[`start attempt route can initialize a map to track use of assessment questions 1`] = `
 Map {
   "test" => 0,
