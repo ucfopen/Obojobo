@@ -67,7 +67,7 @@
 		"eventemitter": "^0.3.3",
 		"express": "~4.14.0",
 		"express-ims-lti":
-			"git+ssh://git@github.com/ucfcdl/express-ims-lti.git#ac7d1f4e9c5afa6470185d107b32ffdbaf28cd32",
+			"git+ssh://git@github.com/ucfcdl/express-ims-lti.git#20e4f025cf498b31bd21a981fe1af0707d2028b5",
 		"express-session": "^1.15.1",
 		"extract-text-webpack-plugin": "^2.1.0",
 		"glob": "^7.1.1",
@@ -106,6 +106,7 @@
 			"__tests__/*",
 			"coverage/*",
 			"public/compiled/*",
+			"public/picker",
 			"devsrc/obojobo-draft-document-engine/src/*",
 			"devsrc/obojobo-draft-document-engine/build/*",
 			"devsrc/obojobo-draft-document-engine/ObojoboDraft/*"

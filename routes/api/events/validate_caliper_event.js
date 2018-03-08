@@ -30,11 +30,8 @@ let validateArguments = (
 		// Validate Actor Object
 		if (key === 'actor' && params.actor) {
 			if (!params.actor.type) missingRequired.push('actor.type')
-			else {
-				if (actorType) {
-					if (actorType === ACTOR_USER && !params.actor.id) missingRequired.push('actor.id')
-				}
-
+			if (params.actor.type === ACTOR_USER && !params.actor.id) missingRequired.push('actor.id')
+			if (actorType) {
 				if (params.actor.type !== actorType) invalidActor.push(actorType)
 			}
 		}
