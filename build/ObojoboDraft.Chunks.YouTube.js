@@ -57,10 +57,10 @@
 			module && module.__esModule
 				? /******/ function getDefault() {
 						return module['default']
-					}
+				  }
 				: /******/ function getModuleExports() {
 						return module
-					}
+				  }
 		/******/ __webpack_require__.d(getter, 'a', getter)
 		/******/ return getter
 		/******/
@@ -72,40 +72,40 @@
 	/******/
 	/******/ /******/ __webpack_require__.p = 'build/' // Load entry module and return exports
 	/******/
-	/******/ /******/ return __webpack_require__((__webpack_require__.s = 178))
+	/******/ /******/ return __webpack_require__((__webpack_require__.s = 187))
 	/******/
 })(
 	/************************************************************************/
 	/******/ {
-		/***/ /***/ 0: function(module, exports) {
+		/***/ 0: /***/ function(module, exports) {
 			module.exports = Common
 
 			/***/
 		},
 
-		/***/ /***/ 156: function(module, exports) {
+		/***/ 165: /***/ function(module, exports) {
 			// removed by extract-text-webpack-plugin
 			/***/
 		},
 
-		/***/ /***/ 178: function(module, exports, __webpack_require__) {
-			module.exports = __webpack_require__(40)
+		/***/ 187: /***/ function(module, exports, __webpack_require__) {
+			module.exports = __webpack_require__(44)
 
 			/***/
 		},
 
-		/***/ /***/ 40: function(module, exports, __webpack_require__) {
+		/***/ 44: /***/ function(module, exports, __webpack_require__) {
 			'use strict'
 
 			var _Common = __webpack_require__(0)
 
 			var _Common2 = _interopRequireDefault(_Common)
 
-			var _adapter = __webpack_require__(80)
+			var _adapter = __webpack_require__(84)
 
 			var _adapter2 = _interopRequireDefault(_adapter)
 
-			var _viewerComponent = __webpack_require__(81)
+			var _viewerComponent = __webpack_require__(85)
 
 			var _viewerComponent2 = _interopRequireDefault(_viewerComponent)
 
@@ -125,7 +125,7 @@
 			/***/
 		},
 
-		/***/ /***/ 80: function(module, exports, __webpack_require__) {
+		/***/ 84: /***/ function(module, exports, __webpack_require__) {
 			'use strict'
 
 			Object.defineProperty(exports, '__esModule', {
@@ -163,7 +163,7 @@
 			/***/
 		},
 
-		/***/ /***/ 81: function(module, exports, __webpack_require__) {
+		/***/ 85: /***/ function(module, exports, __webpack_require__) {
 			'use strict'
 
 			Object.defineProperty(exports, '__esModule', {
@@ -187,7 +187,7 @@
 				}
 			})()
 
-			__webpack_require__(156)
+			__webpack_require__(165)
 
 			var _Common = __webpack_require__(0)
 

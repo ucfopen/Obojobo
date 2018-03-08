@@ -57,10 +57,10 @@
 			module && module.__esModule
 				? /******/ function getDefault() {
 						return module['default']
-					}
+				  }
 				: /******/ function getModuleExports() {
 						return module
-					}
+				  }
 		/******/ __webpack_require__.d(getter, 'a', getter)
 		/******/ return getter
 		/******/
@@ -72,40 +72,40 @@
 	/******/
 	/******/ /******/ __webpack_require__.p = 'build/' // Load entry module and return exports
 	/******/
-	/******/ /******/ return __webpack_require__((__webpack_require__.s = 181))
+	/******/ /******/ return __webpack_require__((__webpack_require__.s = 190))
 	/******/
 })(
 	/************************************************************************/
 	/******/ {
-		/***/ /***/ 0: function(module, exports) {
+		/***/ 0: /***/ function(module, exports) {
 			module.exports = Common
 
 			/***/
 		},
 
-		/***/ /***/ 1: function(module, exports) {
+		/***/ 1: /***/ function(module, exports) {
 			module.exports = Viewer
 
 			/***/
 		},
 
-		/***/ /***/ 159: function(module, exports) {
+		/***/ 168: /***/ function(module, exports) {
 			// removed by extract-text-webpack-plugin
 			/***/
 		},
 
-		/***/ /***/ 160: function(module, exports) {
+		/***/ 169: /***/ function(module, exports) {
 			// removed by extract-text-webpack-plugin
 			/***/
 		},
 
-		/***/ /***/ 181: function(module, exports, __webpack_require__) {
-			module.exports = __webpack_require__(43)
+		/***/ 190: /***/ function(module, exports, __webpack_require__) {
+			module.exports = __webpack_require__(47)
 
 			/***/
 		},
 
-		/***/ /***/ 20: function(module, exports, __webpack_require__) {
+		/***/ 21: /***/ function(module, exports, __webpack_require__) {
 			'use strict'
 
 			Object.defineProperty(exports, '__esModule', {
@@ -193,7 +193,7 @@
 			/***/
 		},
 
-		/***/ /***/ 43: function(module, exports, __webpack_require__) {
+		/***/ 47: /***/ function(module, exports, __webpack_require__) {
 			'use strict'
 
 			var _Common = __webpack_require__(0)
@@ -204,11 +204,11 @@
 
 			var _Viewer2 = _interopRequireDefault(_Viewer)
 
-			var _adapter = __webpack_require__(85)
+			var _adapter = __webpack_require__(89)
 
 			var _adapter2 = _interopRequireDefault(_adapter)
 
-			var _viewerComponent = __webpack_require__(92)
+			var _viewerComponent = __webpack_require__(96)
 
 			var _viewerComponent2 = _interopRequireDefault(_viewerComponent)
 
@@ -273,14 +273,14 @@
 			/***/
 		},
 
-		/***/ /***/ 85: function(module, exports, __webpack_require__) {
+		/***/ 89: /***/ function(module, exports, __webpack_require__) {
 			'use strict'
 
 			Object.defineProperty(exports, '__esModule', {
 				value: true
 			})
 
-			var _scoreActions = __webpack_require__(88)
+			var _scoreActions = __webpack_require__(92)
 
 			var _scoreActions2 = _interopRequireDefault(_scoreActions)
 
@@ -341,7 +341,7 @@
 			/***/
 		},
 
-		/***/ /***/ 86: function(module, exports, __webpack_require__) {
+		/***/ 90: /***/ function(module, exports, __webpack_require__) {
 			'use strict'
 
 			Object.defineProperty(exports, '__esModule', {
@@ -412,8 +412,9 @@
 
 					return _possibleConstructorReturn(
 						this,
-						(AttemptIncompleteDialog.__proto__ || Object.getPrototypeOf(AttemptIncompleteDialog))
-							.apply(this, arguments)
+						(
+							AttemptIncompleteDialog.__proto__ || Object.getPrototypeOf(AttemptIncompleteDialog)
+						).apply(this, arguments)
 					)
 				}
 
@@ -468,7 +469,7 @@
 			/***/
 		},
 
-		/***/ /***/ 87: function(module, exports, __webpack_require__) {
+		/***/ 91: /***/ function(module, exports, __webpack_require__) {
 			'use strict'
 
 			Object.defineProperty(exports, '__esModule', {
@@ -492,7 +493,7 @@
 				}
 			})()
 
-			__webpack_require__(159)
+			__webpack_require__(168)
 
 			var _Common = __webpack_require__(0)
 
@@ -627,7 +628,7 @@
 												' has expired and just needs to be refreshed. Please close this tab or window, reopen this module from ' +
 												location +
 												', return to this page and then resend your score.'
-										),
+									  ),
 								(function() {
 									switch (ltiState.networkState) {
 										case LTINetworkStates.AWAITING_SEND_ASSESSMENT_SCORE_RESPONSE:
@@ -657,7 +658,7 @@
 			/***/
 		},
 
-		/***/ /***/ 88: function(module, exports, __webpack_require__) {
+		/***/ 92: /***/ function(module, exports, __webpack_require__) {
 			'use strict'
 
 			Object.defineProperty(exports, '__esModule', {
@@ -757,7 +758,7 @@
 			/***/
 		},
 
-		/***/ /***/ 89: function(module, exports, __webpack_require__) {
+		/***/ 93: /***/ function(module, exports, __webpack_require__) {
 			'use strict'
 
 			Object.defineProperty(exports, '__esModule', {
@@ -772,11 +773,11 @@
 
 			var _Viewer2 = _interopRequireDefault(_Viewer)
 
-			var _ltiStatus = __webpack_require__(87)
+			var _ltiStatus = __webpack_require__(91)
 
 			var _ltiStatus2 = _interopRequireDefault(_ltiStatus)
 
-			var _viewerComponentReview = __webpack_require__(20)
+			var _viewerComponentReview = __webpack_require__(21)
 
 			var _viewerComponentReview2 = _interopRequireDefault(_viewerComponentReview)
 
@@ -922,7 +923,7 @@
 								questionScores.map(function(questionScore, index) {
 									return questionResultView(assessment.props, questionScore, index)
 								})
-							)
+						  )
 				)
 			}
 
@@ -954,7 +955,7 @@
 			/***/
 		},
 
-		/***/ /***/ 90: function(module, exports, __webpack_require__) {
+		/***/ 94: /***/ function(module, exports, __webpack_require__) {
 			'use strict'
 
 			Object.defineProperty(exports, '__esModule', {
@@ -1011,7 +1012,7 @@
 			/***/
 		},
 
-		/***/ /***/ 91: function(module, exports, __webpack_require__) {
+		/***/ 95: /***/ function(module, exports, __webpack_require__) {
 			'use strict'
 
 			Object.defineProperty(exports, '__esModule', {
@@ -1033,7 +1034,7 @@
 			/***/
 		},
 
-		/***/ /***/ 92: function(module, exports, __webpack_require__) {
+		/***/ 96: /***/ function(module, exports, __webpack_require__) {
 			'use strict'
 
 			Object.defineProperty(exports, '__esModule', {
@@ -1057,7 +1058,7 @@
 				}
 			})()
 
-			__webpack_require__(160)
+			__webpack_require__(169)
 
 			var _Common = __webpack_require__(0)
 
@@ -1067,23 +1068,23 @@
 
 			var _Viewer2 = _interopRequireDefault(_Viewer)
 
-			var _attemptIncompleteDialog = __webpack_require__(86)
+			var _attemptIncompleteDialog = __webpack_require__(90)
 
 			var _attemptIncompleteDialog2 = _interopRequireDefault(_attemptIncompleteDialog)
 
-			var _viewerComponentUntested = __webpack_require__(91)
+			var _viewerComponentUntested = __webpack_require__(95)
 
 			var _viewerComponentUntested2 = _interopRequireDefault(_viewerComponentUntested)
 
-			var _viewerComponentReview = __webpack_require__(20)
+			var _viewerComponentReview = __webpack_require__(21)
 
 			var _viewerComponentReview2 = _interopRequireDefault(_viewerComponentReview)
 
-			var _viewerComponentScoreSubmitted = __webpack_require__(89)
+			var _viewerComponentScoreSubmitted = __webpack_require__(93)
 
 			var _viewerComponentScoreSubmitted2 = _interopRequireDefault(_viewerComponentScoreSubmitted)
 
-			var _viewerComponentTakingTest = __webpack_require__(90)
+			var _viewerComponentTakingTest = __webpack_require__(94)
 
 			var _viewerComponentTakingTest2 = _interopRequireDefault(_viewerComponentTakingTest)
 

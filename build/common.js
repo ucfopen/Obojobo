@@ -57,10 +57,10 @@
 			module && module.__esModule
 				? /******/ function getDefault() {
 						return module['default']
-					}
+				  }
 				: /******/ function getModuleExports() {
 						return module
-					}
+				  }
 		/******/ __webpack_require__.d(getter, 'a', getter)
 		/******/ return getter
 		/******/
@@ -120,15 +120,15 @@
 				typeof Symbol === 'function' && typeof Symbol.iterator === 'symbol'
 					? function(obj) {
 							return typeof obj
-						}
+					  }
 					: function(obj) {
 							return obj &&
-							typeof Symbol === 'function' &&
-							obj.constructor === Symbol &&
-							obj !== Symbol.prototype
+								typeof Symbol === 'function' &&
+								obj.constructor === Symbol &&
+								obj !== Symbol.prototype
 								? 'symbol'
 								: typeof obj
-						}
+					  }
 
 			var _get = function get(object, property, receiver) {
 				if (object === null) object = Function.prototype
@@ -857,8 +857,10 @@
 
 					return _possibleConstructorReturn(
 						this,
-						(OboModelCollection.__proto__ || Object.getPrototypeOf(OboModelCollection))
-							.apply(this, arguments)
+						(OboModelCollection.__proto__ || Object.getPrototypeOf(OboModelCollection)).apply(
+							this,
+							arguments
+						)
 					)
 				}
 
@@ -1753,51 +1755,60 @@
 
 							var j = 0
 							return Array.from(this.styleList.styles).map(function(style) {
-								return (s1 =
-									(style.type + '          ').substr(0, 10) + '|'), (s2 = ''), (function() {
-									var result = []
-									for (
-										i = 0, end1 = style.start, asc1 = 0 <= end1;
-										asc1 ? i < end1 : i > end1;
-										asc1 ? i++ : i--
-									) {
-										var asc1, end1
-										result.push((s2 += '·'))
-									}
-									return result
-								})(), (s2 += '<'), (function() {
-									var result1 = []
-									for (
-										start = style.start + 1, i = start, end2 = style.end, asc2 = start <= end2;
-										asc2 ? i < end2 : i > end2;
-										asc2 ? i++ : i--
-									) {
-										var asc2, end2
-										result1.push((s2 += '='))
-									}
-									return result1
-								})(), (s2 += '>'), (function() {
-									var result2 = []
-									for (
-										start1 = style.end + 1, i = start1, end3 = fill.length, asc3 = start1 <= end3;
-										asc3 ? i < end3 : i > end3;
-										asc3 ? i++ : i--
-									) {
-										var asc3, end3, start1
-										result2.push((s2 += '·'))
-									}
-									return result2
-								})(), console.log(
-									(j + '   ').substr(0, 3) +
-										'|' +
-										(s1 + s2 + fill).substr(0, fill.length + 1) +
-										'|' +
-										style.start +
-										',' +
-										style.end +
-										'|' +
-										JSON.stringify(style.data)
-								), j++ // + '|' + style.__debug
+								return (
+									(s1 = (style.type + '          ').substr(0, 10) + '|'),
+									(s2 = ''),
+									(function() {
+										var result = []
+										for (
+											i = 0, end1 = style.start, asc1 = 0 <= end1;
+											asc1 ? i < end1 : i > end1;
+											asc1 ? i++ : i--
+										) {
+											var asc1, end1
+											result.push((s2 += '·'))
+										}
+										return result
+									})(),
+									(s2 += '<'),
+									(function() {
+										var result1 = []
+										for (
+											start = style.start + 1, i = start, end2 = style.end, asc2 = start <= end2;
+											asc2 ? i < end2 : i > end2;
+											asc2 ? i++ : i--
+										) {
+											var asc2, end2
+											result1.push((s2 += '='))
+										}
+										return result1
+									})(),
+									(s2 += '>'),
+									(function() {
+										var result2 = []
+										for (
+											start1 = style.end + 1, i = start1, end3 = fill.length, asc3 = start1 <= end3;
+											asc3 ? i < end3 : i > end3;
+											asc3 ? i++ : i--
+										) {
+											var asc3, end3, start1
+											result2.push((s2 += '·'))
+										}
+										return result2
+									})(),
+									console.log(
+										(j + '   ').substr(0, 3) +
+											'|' +
+											(s1 + s2 + fill).substr(0, fill.length + 1) +
+											'|' +
+											style.start +
+											',' +
+											style.end +
+											'|' +
+											JSON.stringify(style.data)
+									), // + '|' + style.__debug
+									j++
+								)
 							})
 						}
 					}
@@ -2070,7 +2081,7 @@ object-assign
 						}
 
 						return to
-					}
+				  }
 
 			/***/
 		},
@@ -2837,15 +2848,15 @@ object-assign
 				typeof Symbol === 'function' && typeof Symbol.iterator === 'symbol'
 					? function(obj) {
 							return typeof obj
-						}
+					  }
 					: function(obj) {
 							return obj &&
-							typeof Symbol === 'function' &&
-							obj.constructor === Symbol &&
-							obj !== Symbol.prototype
+								typeof Symbol === 'function' &&
+								obj.constructor === Symbol &&
+								obj !== Symbol.prototype
 								? 'symbol'
 								: typeof obj
-						}
+					  }
 
 			var _objectAssign = __webpack_require__(7)
 
@@ -2994,9 +3005,10 @@ object-assign
 
 					return _possibleConstructorReturn(
 						this,
-						(FocusableSelectionHandler.__proto__ ||
-							Object.getPrototypeOf(FocusableSelectionHandler))
-							.apply(this, arguments)
+						(
+							FocusableSelectionHandler.__proto__ ||
+							Object.getPrototypeOf(FocusableSelectionHandler)
+						).apply(this, arguments)
 					)
 				}
 
@@ -3554,7 +3566,7 @@ object-assign
 														style: { textAlign: this.props.centered ? 'center' : null }
 													},
 													this.props.title
-												)
+											  )
 											: null,
 										React.createElement(
 											'div',
@@ -3833,7 +3845,7 @@ object-assign
 									? React.createElement(_deleteButton2.default, {
 											ref: 'closeButton',
 											onClick: this.props.onClose
-										})
+									  })
 									: null,
 								React.createElement('div', { className: 'content' }, this.props.children),
 								React.createElement('input', {
@@ -6614,9 +6626,9 @@ object-assign
 								contains: [],
 								left: [],
 								right: []
-							}
 
-							//@TODO - optimize
+								//@TODO - optimize
+							}
 							var _iteratorNormalCompletion7 = true
 							var _didIteratorError7 = false
 							var _iteratorError7 = undefined
@@ -7124,8 +7136,9 @@ object-assign
 
 					return _possibleConstructorReturn(
 						this,
-						(StyleableTextComponent.__proto__ || Object.getPrototypeOf(StyleableTextComponent))
-							.apply(this, arguments)
+						(
+							StyleableTextComponent.__proto__ || Object.getPrototypeOf(StyleableTextComponent)
+						).apply(this, arguments)
 					)
 				}
 
@@ -7270,7 +7283,10 @@ object-assign
 			) {
 				if (stateObj.curNode.nodeType === 'element') {
 					return Array.from(stateObj.curNode.children).map(function(child) {
-						return (stateObj.curNode = child), getTextNodeFragmentDescriptorsAtHelper(stateObj, targetStartIndex, targetEndIndex)
+						return (
+							(stateObj.curNode = child),
+							getTextNodeFragmentDescriptorsAtHelper(stateObj, targetStartIndex, targetEndIndex)
+						)
 					})
 				} else {
 					var charsRead = stateObj.charsRead + stateObj.curNode.text.length
@@ -7801,23 +7817,23 @@ object-assign
 			var has = Object.prototype.hasOwnProperty
 
 			/**
- * Decode a URI encoded string.
- *
- * @param {String} input The URI encoded string.
- * @returns {String} The decoded string.
- * @api private
- */
+			 * Decode a URI encoded string.
+			 *
+			 * @param {String} input The URI encoded string.
+			 * @returns {String} The decoded string.
+			 * @api private
+			 */
 			function decode(input) {
 				return decodeURIComponent(input.replace(/\+/g, ' '))
 			}
 
 			/**
- * Simple query string parser.
- *
- * @param {String} query The query string that needs to be parsed.
- * @returns {Object}
- * @api public
- */
+			 * Simple query string parser.
+			 *
+			 * @param {String} query The query string that needs to be parsed.
+			 * @returns {Object}
+			 * @api public
+			 */
 			function querystring(query) {
 				var parser = /([^=?&]+)=?([^&]*)/g,
 					result = {},
@@ -7834,13 +7850,13 @@ object-assign
 			}
 
 			/**
- * Transform a query string to an object.
- *
- * @param {Object} obj Object that should be transformed.
- * @param {String} prefix Optional prefix.
- * @returns {String}
- * @api public
- */
+			 * Transform a query string to an object.
+			 *
+			 * @param {Object} obj Object that should be transformed.
+			 * @param {String} prefix Optional prefix.
+			 * @returns {String}
+			 * @api public
+			 */
 			function querystringify(obj, prefix) {
 				prefix = prefix || ''
 
@@ -7873,14 +7889,14 @@ object-assign
 			'use strict'
 
 			/**
- * Check if we're required to add a port number.
- *
- * @see https://url.spec.whatwg.org/#default-port
- * @param {Number|String} port Port number we need to check
- * @param {String} protocol Protocol we need to check against.
- * @returns {Boolean} Is it a default port for the given protocol
- * @api private
- */
+			 * Check if we're required to add a port number.
+			 *
+			 * @see https://url.spec.whatwg.org/#default-port
+			 * @param {Number|String} port Port number we need to check
+			 * @param {String} protocol Protocol we need to check against.
+			 * @returns {Boolean} Is it a default port for the given protocol
+			 * @api private
+			 */
 
 			module.exports = function required(port, protocol) {
 				protocol = protocol.split(':')[0]
@@ -7920,15 +7936,15 @@ object-assign
 					typeof Symbol === 'function' && typeof Symbol.iterator === 'symbol'
 						? function(obj) {
 								return typeof obj
-							}
+						  }
 						: function(obj) {
 								return obj &&
-								typeof Symbol === 'function' &&
-								obj.constructor === Symbol &&
-								obj !== Symbol.prototype
+									typeof Symbol === 'function' &&
+									obj.constructor === Symbol &&
+									obj !== Symbol.prototype
 									? 'symbol'
 									: typeof obj
-							}
+						  }
 
 				var required = __webpack_require__(42),
 					qs = __webpack_require__(41),
@@ -7936,17 +7952,17 @@ object-assign
 					slashes = /^[A-Za-z][A-Za-z0-9+-.]*:\/\//
 
 				/**
- * These are the parse rules for the URL parser, it informs the parser
- * about:
- *
- * 0. The char it Needs to parse, if it's a string it should be done using
- *    indexOf, RegExp using exec and NaN means set as current value.
- * 1. The property we should set when parsing this value.
- * 2. Indication if it's backwards or forward parsing, when set as number it's
- *    the value of extra chars that should be split off.
- * 3. Inherit from location if non existing in the parser.
- * 4. `toLowerCase` the resulting value.
- */
+				 * These are the parse rules for the URL parser, it informs the parser
+				 * about:
+				 *
+				 * 0. The char it Needs to parse, if it's a string it should be done using
+				 *    indexOf, RegExp using exec and NaN means set as current value.
+				 * 1. The property we should set when parsing this value.
+				 * 2. Indication if it's backwards or forward parsing, when set as number it's
+				 *    the value of extra chars that should be split off.
+				 * 3. Inherit from location if non existing in the parser.
+				 * 4. `toLowerCase` the resulting value.
+				 */
 				var rules = [
 					['#', 'hash'], // Extract from the back.
 					['?', 'query'], // Extract from the back.
@@ -7958,27 +7974,27 @@ object-assign
 				]
 
 				/**
- * These properties should not be copied or inherited from. This is only needed
- * for all non blob URL's as a blob URL does not include a hash, only the
- * origin.
- *
- * @type {Object}
- * @private
- */
+				 * These properties should not be copied or inherited from. This is only needed
+				 * for all non blob URL's as a blob URL does not include a hash, only the
+				 * origin.
+				 *
+				 * @type {Object}
+				 * @private
+				 */
 				var ignore = { hash: 1, query: 1 }
 
 				/**
- * The location object differs when your code is loaded through a normal page,
- * Worker or through a worker using a blob. And with the blobble begins the
- * trouble as the location object will contain the URL of the blob, not the
- * location of the page where our code is loaded in. The actual origin is
- * encoded in the `pathname` so we can thankfully generate a good "default"
- * location from it so we can generate proper relative URL's again.
- *
- * @param {Object|String} loc Optional default location object.
- * @returns {Object} lolcation object.
- * @api public
- */
+				 * The location object differs when your code is loaded through a normal page,
+				 * Worker or through a worker using a blob. And with the blobble begins the
+				 * trouble as the location object will contain the URL of the blob, not the
+				 * location of the page where our code is loaded in. The actual origin is
+				 * encoded in the `pathname` so we can thankfully generate a good "default"
+				 * location from it so we can generate proper relative URL's again.
+				 *
+				 * @param {Object|String} loc Optional default location object.
+				 * @returns {Object} lolcation object.
+				 * @api public
+				 */
 				function lolcation(loc) {
 					loc = loc || global.location || {}
 
@@ -8008,20 +8024,20 @@ object-assign
 				}
 
 				/**
- * @typedef ProtocolExtract
- * @type Object
- * @property {String} protocol Protocol matched in the URL, in lowercase.
- * @property {Boolean} slashes `true` if protocol is followed by "//", else `false`.
- * @property {String} rest Rest of the URL that is not part of the protocol.
- */
+				 * @typedef ProtocolExtract
+				 * @type Object
+				 * @property {String} protocol Protocol matched in the URL, in lowercase.
+				 * @property {Boolean} slashes `true` if protocol is followed by "//", else `false`.
+				 * @property {String} rest Rest of the URL that is not part of the protocol.
+				 */
 
 				/**
- * Extract protocol information from a URL with/without double slash ("//").
- *
- * @param {String} address URL we want to extract from.
- * @return {ProtocolExtract} Extracted information.
- * @api private
- */
+				 * Extract protocol information from a URL with/without double slash ("//").
+				 *
+				 * @param {String} address URL we want to extract from.
+				 * @return {ProtocolExtract} Extracted information.
+				 * @api private
+				 */
 				function extractProtocol(address) {
 					var match = protocolre.exec(address)
 
@@ -8033,15 +8049,18 @@ object-assign
 				}
 
 				/**
- * Resolve a relative URL pathname against a base URL pathname.
- *
- * @param {String} relative Pathname of the relative URL.
- * @param {String} base Pathname of the base URL.
- * @return {String} Resolved pathname.
- * @api private
- */
+				 * Resolve a relative URL pathname against a base URL pathname.
+				 *
+				 * @param {String} relative Pathname of the relative URL.
+				 * @param {String} base Pathname of the base URL.
+				 * @return {String} Resolved pathname.
+				 * @api private
+				 */
 				function resolve(relative, base) {
-					var path = (base || '/').split('/').slice(0, -1).concat(relative.split('/')),
+					var path = (base || '/')
+							.split('/')
+							.slice(0, -1)
+							.concat(relative.split('/')),
 						i = path.length,
 						last = path[i - 1],
 						unshift = false,
@@ -8067,16 +8086,16 @@ object-assign
 				}
 
 				/**
- * The actual URL instance. Instead of returning an object we've opted-in to
- * create an actual constructor as it's much more memory efficient and
- * faster and it pleases my OCD.
- *
- * @constructor
- * @param {String} address URL we want to parse.
- * @param {Object|String} location Location defaults for relative paths.
- * @param {Boolean|Function} parser Parser for the query string.
- * @api public
- */
+				 * The actual URL instance. Instead of returning an object we've opted-in to
+				 * create an actual constructor as it's much more memory efficient and
+				 * faster and it pleases my OCD.
+				 *
+				 * @constructor
+				 * @param {String} address URL we want to parse.
+				 * @param {Object|String} location Location defaults for relative paths.
+				 * @param {Boolean|Function} parser Parser for the query string.
+				 * @api public
+				 */
 				function URL(address, location, parser) {
 					if (!(this instanceof URL)) {
 						return new URL(address, location, parser)
@@ -8210,18 +8229,18 @@ object-assign
 				}
 
 				/**
- * This is convenience method for changing properties in the URL instance to
- * insure that they all propagate correctly.
- *
- * @param {String} part          Property we need to adjust.
- * @param {Mixed} value          The newly assigned value.
- * @param {Boolean|Function} fn  When setting the query, it will be the function
- *                               used to parse the query.
- *                               When setting the protocol, double slash will be
- *                               removed from the final url if it is true.
- * @returns {URL}
- * @api public
- */
+				 * This is convenience method for changing properties in the URL instance to
+				 * insure that they all propagate correctly.
+				 *
+				 * @param {String} part          Property we need to adjust.
+				 * @param {Mixed} value          The newly assigned value.
+				 * @param {Boolean|Function} fn  When setting the query, it will be the function
+				 *                               used to parse the query.
+				 *                               When setting the protocol, double slash will be
+				 *                               removed from the final url if it is true.
+				 * @returns {URL}
+				 * @api public
+				 */
 				function set(part, value, fn) {
 					var url = this
 
@@ -8303,12 +8322,12 @@ object-assign
 				}
 
 				/**
- * Transform the properties back in to a valid and full URL string.
- *
- * @param {Function} stringify Optional query stringify function.
- * @returns {String}
- * @api public
- */
+				 * Transform the properties back in to a valid and full URL string.
+				 *
+				 * @param {Function} stringify Optional query stringify function.
+				 * @returns {String}
+				 * @api public
+				 */
 				function toString(stringify) {
 					if (!stringify || 'function' !== typeof stringify) stringify = qs.stringify
 
@@ -8360,15 +8379,15 @@ object-assign
 				typeof Symbol === 'function' && typeof Symbol.iterator === 'symbol'
 					? function(obj) {
 							return typeof obj
-						}
+					  }
 					: function(obj) {
 							return obj &&
-							typeof Symbol === 'function' &&
-							obj.constructor === Symbol &&
-							obj !== Symbol.prototype
+								typeof Symbol === 'function' &&
+								obj.constructor === Symbol &&
+								obj !== Symbol.prototype
 								? 'symbol'
 								: typeof obj
-						}
+					  }
 
 			var g
 
@@ -8476,8 +8495,10 @@ object-assign
 
 					return _possibleConstructorReturn(
 						this,
-						(FocusableChunk.__proto__ || Object.getPrototypeOf(FocusableChunk))
-							.apply(this, arguments)
+						(FocusableChunk.__proto__ || Object.getPrototypeOf(FocusableChunk)).apply(
+							this,
+							arguments
+						)
 					)
 				}
 
@@ -8619,8 +8640,9 @@ object-assign
 
 					var _this = _possibleConstructorReturn(
 						this,
-						(ToggleSelectionHandler.__proto__ || Object.getPrototypeOf(ToggleSelectionHandler))
-							.call(this)
+						(
+							ToggleSelectionHandler.__proto__ || Object.getPrototypeOf(ToggleSelectionHandler)
+						).call(this)
 					)
 
 					_this.textSelectionHandler = textSelectionHandler
@@ -8798,8 +8820,10 @@ object-assign
 
 					return _possibleConstructorReturn(
 						this,
-						(NonEditableChunk.__proto__ || Object.getPrototypeOf(NonEditableChunk))
-							.apply(this, arguments)
+						(NonEditableChunk.__proto__ || Object.getPrototypeOf(NonEditableChunk)).apply(
+							this,
+							arguments
+						)
 					)
 				}
 
@@ -9406,8 +9430,10 @@ object-assign
 
 								while ((match = varRegex.exec(text.value)) !== null) {
 									var variable = match[1]
-									var event = { text: '' }
-									// window.Common.Store.getTextForVariable(event, variable, @props.parentModel, this.props.moduleData)
+									var event = {
+										text: ''
+										// window.Common.Store.getTextForVariable(event, variable, @props.parentModel, this.props.moduleData)
+									}
 									_dispatcher2.default.trigger(
 										'getTextForVariable',
 										event,
@@ -9519,9 +9545,10 @@ object-assign
 
 					return _possibleConstructorReturn(
 						this,
-						(TextGroupSelectionHandler.__proto__ ||
-							Object.getPrototypeOf(TextGroupSelectionHandler))
-							.apply(this, arguments)
+						(
+							TextGroupSelectionHandler.__proto__ ||
+							Object.getPrototypeOf(TextGroupSelectionHandler)
+						).apply(this, arguments)
 					)
 				}
 
@@ -10190,8 +10217,10 @@ object-assign
 
 					return _possibleConstructorReturn(
 						this,
-						(ModalContainer.__proto__ || Object.getPrototypeOf(ModalContainer))
-							.apply(this, arguments)
+						(ModalContainer.__proto__ || Object.getPrototypeOf(ModalContainer)).apply(
+							this,
+							arguments
+						)
 					)
 				}
 
@@ -10286,8 +10315,10 @@ object-assign
 
 					return _possibleConstructorReturn(
 						this,
-						(SingleInputBubble.__proto__ || Object.getPrototypeOf(SingleInputBubble))
-							.apply(this, arguments)
+						(SingleInputBubble.__proto__ || Object.getPrototypeOf(SingleInputBubble)).apply(
+							this,
+							arguments
+						)
 					)
 				}
 
@@ -11769,20 +11800,24 @@ object-assign
 					}
 
 					return Array.from(urls).map(function(url) {
-						return (type = url.substr(url.lastIndexOf('.') + 1)), console.log(type), (function() {
-							switch (type) {
-								case 'js':
-									var script = document.createElement('script')
-									script.setAttribute('src', url)
-									return addEl(url, script, onLoad, onError)
+						return (
+							(type = url.substr(url.lastIndexOf('.') + 1)),
+							console.log(type),
+							(function() {
+								switch (type) {
+									case 'js':
+										var script = document.createElement('script')
+										script.setAttribute('src', url)
+										return addEl(url, script, onLoad, onError)
 
-								case 'css':
-									var link = document.createElement('link')
-									link.setAttribute('rel', 'stylesheet')
-									link.setAttribute('href', url)
-									return addEl(url, link, onLoad, onError)
-							}
-						})()
+									case 'css':
+										var link = document.createElement('link')
+										link.setAttribute('rel', 'stylesheet')
+										link.setAttribute('href', url)
+										return addEl(url, link, onLoad, onError)
+								}
+							})()
+						)
 					})
 				}
 			}

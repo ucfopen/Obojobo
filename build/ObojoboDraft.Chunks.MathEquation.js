@@ -57,10 +57,10 @@
 			module && module.__esModule
 				? /******/ function getDefault() {
 						return module['default']
-					}
+				  }
 				: /******/ function getModuleExports() {
 						return module
-					}
+				  }
 		/******/ __webpack_require__.d(getter, 'a', getter)
 		/******/ return getter
 		/******/
@@ -72,46 +72,46 @@
 	/******/
 	/******/ /******/ __webpack_require__.p = 'build/' // Load entry module and return exports
 	/******/
-	/******/ /******/ return __webpack_require__((__webpack_require__.s = 173))
+	/******/ /******/ return __webpack_require__((__webpack_require__.s = 182))
 	/******/
 })(
 	/************************************************************************/
 	/******/ {
-		/***/ /***/ 0: function(module, exports) {
+		/***/ 0: /***/ function(module, exports) {
 			module.exports = Common
 
 			/***/
 		},
 
-		/***/ /***/ 150: function(module, exports) {
+		/***/ 159: /***/ function(module, exports) {
 			// removed by extract-text-webpack-plugin
 			/***/
 		},
 
-		/***/ /***/ 16: function(module, exports) {
+		/***/ 17: /***/ function(module, exports) {
 			module.exports = katex
 
 			/***/
 		},
 
-		/***/ /***/ 173: function(module, exports, __webpack_require__) {
-			module.exports = __webpack_require__(35)
+		/***/ 182: /***/ function(module, exports, __webpack_require__) {
+			module.exports = __webpack_require__(39)
 
 			/***/
 		},
 
-		/***/ /***/ 35: function(module, exports, __webpack_require__) {
+		/***/ 39: /***/ function(module, exports, __webpack_require__) {
 			'use strict'
 
 			var _Common = __webpack_require__(0)
 
 			var _Common2 = _interopRequireDefault(_Common)
 
-			var _adapter = __webpack_require__(70)
+			var _adapter = __webpack_require__(74)
 
 			var _adapter2 = _interopRequireDefault(_adapter)
 
-			var _viewerComponent = __webpack_require__(71)
+			var _viewerComponent = __webpack_require__(75)
 
 			var _viewerComponent2 = _interopRequireDefault(_viewerComponent)
 
@@ -132,7 +132,7 @@
 			/***/
 		},
 
-		/***/ /***/ 70: function(module, exports, __webpack_require__) {
+		/***/ 74: /***/ function(module, exports, __webpack_require__) {
 			'use strict'
 
 			Object.defineProperty(exports, '__esModule', {
@@ -194,7 +194,7 @@
 			/***/
 		},
 
-		/***/ /***/ 71: function(module, exports, __webpack_require__) {
+		/***/ 75: /***/ function(module, exports, __webpack_require__) {
 			'use strict'
 
 			Object.defineProperty(exports, '__esModule', {
@@ -218,9 +218,9 @@
 				}
 			})()
 
-			__webpack_require__(150)
+			__webpack_require__(159)
 
-			var _katex = __webpack_require__(16)
+			var _katex = __webpack_require__(17)
 
 			var _katex2 = _interopRequireDefault(_katex)
 
@@ -326,7 +326,7 @@
 												'div',
 												{ className: 'equation-label' },
 												this.props.model.modelState.label
-											)
+										  )
 								)
 							)
 						}

@@ -14,20 +14,17 @@
   background-color: #F4F4F4;
   border-radius: 0.25em; }
   .obojobo-draft--sections--assessment > .score > .results-bar > h1 {
-    width: 100%;
-    max-width: 26.59259em;
+    width: calc(100% - 6em / 1.35);
     display: inline-block;
     font-weight: normal;
     font-size: 1.35em;
     border-bottom: 1px solid rgba(0, 0, 0, 0.3);
     padding: 1em 0;
-    margin: 0 3em;
     box-sizing: border-box; }
   .obojobo-draft--sections--assessment > .score > .results-bar table {
     width: 100%;
-    max-width: 38em;
-    padding: 1em 0;
-    margin: 0 3em;
+    padding: 1em 3em;
+    margin: 0 auto;
     box-sizing: border-box; }
     .obojobo-draft--sections--assessment > .score > .results-bar table th {
       font-size: 0.9em;
@@ -98,5 +95,4 @@
   .obojobo-draft--sections--assessment--lti-status.is-error > p,
   .obojobo-draft--sections--assessment--lti-status.is-error > div > p {
     font-size: 0.9em;
-    line-height: 1.4em;
-    text-align: justify; }
+    line-height: 1.4em; }

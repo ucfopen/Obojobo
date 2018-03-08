@@ -34,24 +34,20 @@
 
 			> h1
 			{
-				width: 100%;
-				max-width: ($dimension-column-width / 1.35) - $dimension-padding - $dimension-padding;
+				width: calc(100% - #{$dimension-padding * 2} / 1.35);
 				display: inline-block;
 				font-weight: normal;
 				font-size: 1.35em;
 				border-bottom: 1px solid $color-shadow;
 				padding: 1em 0;
-				margin: 0 $dimension-padding;
 				box-sizing: border-box;
 			}
 
 			table
 			{
 				width: 100%;
-				// margin: 0 auto;
-				max-width: $dimension-column-width - $dimension-padding - $dimension-padding;
-				padding: 1em 0;
-				margin: 0 $dimension-padding;
+				padding: 1em 3em;
+				margin: 0 auto;
 				box-sizing: border-box;
 
 				th
