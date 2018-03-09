@@ -9,44 +9,21 @@ describe('lti route', () => {
 
 	test('registers the expected routes ', () => {
 		oboRequire('routes/viewer')
-		expect(mockRouterMethods.all).toHaveBeenCalledTimes(2)
-		expect(mockRouterMethods.all).toBeCalledWith('/example', expect.any(Function))
-		expect(mockRouterMethods.all).toBeCalledWith('/:draftId*', expect.any(Function))
+		expect(mockRouterMethods.get).toHaveBeenCalledTimes(1)
+		expect(mockRouterMethods.post).toHaveBeenCalledTimes(1)
+		expect(mockRouterMethods.post).toBeCalledWith('/:draftId', expect.any(Function))
+		expect(mockRouterMethods.get).toBeCalledWith('/:draftId/visit/:visitId*', expect.any(Function))
 	})
 
-	test('example in dev redirects to view', () => {
+	test('view/draft/visit rejects guest', () => {
 		expect.assertions(1)
-		oboRequire('routes/viewer')
-		let User = oboRequire('models/user')
-		let routeFunction = mockRouterMethods.all.mock.calls[0][1]
-
-		//  mock app.get('env') to return 'development'
-		let mockReq = {
-			app: {
-				get: jest.fn().mockImplementationOnce(() => {
-					return 'development'
-				})
-			}
-		}
-
-		let mockRes = {
-			redirect: jest.fn()
-		}
-
-		let mockNext = jest.fn()
-
-		routeFunction(mockReq, mockRes, mockNext)
-		expect(mockRes.redirect).toBeCalledWith('/view/00000000-0000-0000-0000-000000000000')
-	})
-
-	test('view draft rejects guest', () => {
-		expect.assertions(2)
 
 		oboRequire('routes/viewer')
 		let GuestUser = oboRequire('models/guest_user')
-		let routeFunction = mockRouterMethods.all.mock.calls[1][1]
+		let routeFunction = mockRouterMethods.get.mock.calls[0][1]
+
 		let mockReq = {
-			getCurrentUser: () => {
+			requireCurrentUser: () => {
 				return Promise.resolve(new GuestUser())
 			}
 		}
@@ -57,7 +34,6 @@ describe('lti route', () => {
 
 		return routeFunction(mockReq, mockRes, mockNext)
 			.then(result => {
-				expect(mockRes.render).not.toBeCalled()
 				expect(mockNext).toBeCalledWith(Error('Login Required'))
 			})
 			.catch(err => {
@@ -65,14 +41,39 @@ describe('lti route', () => {
 			})
 	})
 
-	test('view draft rejects non-logged in users', () => {
+	test('view/draft/visit rejects non-logged in users', () => {
+		expect.assertions(1)
+
+		oboRequire('routes/viewer')
+		let routeFunction = mockRouterMethods.get.mock.calls[0][1]
+
+		let mockReq = {
+			requireCurrentUser: val => {
+				return Promise.reject('not logged in')
+			}
+		}
+
+		let mockRes = { render: jest.fn() }
+
+		let mockNext = jest.fn()
+
+		return routeFunction(mockReq, mockRes, mockNext)
+			.then(result => {
+				expect(mockNext).toBeCalledWith('not logged in')
+			})
+			.catch(err => {
+				expect(err).toBe('never called')
+			})
+	})
+
+	test('view/draft/visit rejects non-logged in users', () => {
 		expect.assertions(2)
 
 		oboRequire('routes/viewer')
-		let routeFunction = mockRouterMethods.all.mock.calls[1][1]
+		let routeFunction = mockRouterMethods.get.mock.calls[0][1]
 
 		let mockReq = {
-			getCurrentUser: val => {
+			requireCurrentUser: val => {
 				return Promise.reject('not logged in')
 			}
 		}
@@ -91,16 +92,16 @@ describe('lti route', () => {
 			})
 	})
 
-	test('view draft calls render', () => {
+	test('view/draft/visit calls render', () => {
 		expect.assertions(2)
 
 		oboRequire('routes/viewer')
 		let DraftModel = oboRequire('models/draft')
 		let User = oboRequire('models/user')
-		let routeFunction = mockRouterMethods.all.mock.calls[1][1]
+		let routeFunction = mockRouterMethods.get.mock.calls[0][1]
 
 		let mockReq = {
-			getCurrentUser: () => {
+			requireCurrentUser: () => {
 				return Promise.resolve(new User())
 			},
 			params: { draftId: 555 },
@@ -136,17 +137,7 @@ describe('lti route', () => {
 					expect.any(Object),
 					expect.any(Object)
 				)
-				expect(mockRes.render).toBeCalledWith(
-					expect.any(String),
-					expect.objectContaining({
-						oboGlobals: expect.objectContaining({
-							entries: {
-								draft: `"{\"json\":\"value\"}"`,
-								draftId: 555
-							}
-						})
-					})
-				)
+				expect(mockRes.render).toBeCalledWith('viewer')
 			})
 			.catch(err => {
 				expect(err).toBe('never called')

@@ -60,7 +60,7 @@ class Draft {
 				{ id: id }
 			)
 			.then(result => {
-				result.content._id = result.id
+				result.content.draftId = result.id
 				result.content._rev = result.revision
 				return new Draft(result.content)
 			})
