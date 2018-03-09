@@ -1,5 +1,5 @@
-let OutcomeDocument = require('ims-lti/lib/extensions/outcomes').OutcomeService
-let HMAC_SHA1 = require('ims-lti/lib/hmac-sha1')
+let OutcomeDocument = require('ims-lti/src/extensions/outcomes').OutcomeService
+let HMAC_SHA1 = require('ims-lti/src/hmac-sha1')
 let config = oboRequire('config')
 let db = require('./db')
 let moment = require('moment')

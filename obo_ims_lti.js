@@ -8,6 +8,7 @@ let ltiUtil = oboRequire('lti')
 
 module.exports = ltiMiddleware({
 	nonceStore: new DevNonceStore(),
+	addToSession: false,
 	credentials: (key, callback) => {
 		try {
 			let secret = ltiUtil.findSecretForKey(key)

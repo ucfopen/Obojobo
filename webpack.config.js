@@ -27,7 +27,8 @@ module.exports = {
 		watchContentBase: true,
 		watchOptions: {
 			ignored: '/node_modules/'
-		}
+		},
+		stats: { children: false }
 	},
 	entry: {
 		viewer: [
