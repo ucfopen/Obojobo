@@ -247,7 +247,10 @@ describe('ViewerApp', () => {
 		updateQuestion()
 		questionEl.find('.submit button').simulate('click') // Check your answer button
 		updateQuestion()
-		questionEl.find('button').at(1).simulate('click') // Show solution button
+		questionEl
+			.find('button')
+			.at(1)
+			.simulate('click') // Show solution button
 		updateQuestion()
 
 		expect(questionEl.find('.solution-container').length).toBe(1)
@@ -294,7 +297,10 @@ describe('ViewerApp', () => {
 			let c1 = viewerEl.find('#obo-qb1-q1-mca-mc1')
 			c1.simulate('click')
 
-			viewerEl.find('.submit-button').find('button').simulate('click')
+			viewerEl
+				.find('.submit-button')
+				.find('button')
+				.simulate('click')
 		}
 
 		let onAttemptEnded = () => {

@@ -80,32 +80,28 @@ export default class TableControls extends React.Component {
 		let bgInsert = Common.util.getBackgroundImage(insertButton)
 		let { getCellPosition } = this
 
-		let rows = __range__(0, this.props.chunk.modelState.textGroup.numRows, false).map(index =>
+		let rows = __range__(0, this.props.chunk.modelState.textGroup.numRows, false).map(index => (
 			<TableMenu
 				onMenuCommand={onTableMenuCommand}
 				type="row"
 				row={index}
 				ref={`menu_row_${index}`}
 			/>
-		)
+		))
 
-		let cols = __range__(0, this.props.chunk.modelState.textGroup.numCols, false).map(index =>
+		let cols = __range__(0, this.props.chunk.modelState.textGroup.numCols, false).map(index => (
 			<TableMenu
 				onMenuCommand={onTableMenuCommand}
 				type="col"
 				col={index}
 				ref={`menu_col_${index}`}
 			/>
-		)
+		))
 
 		return (
 			<div className="obojobo-draft--chunks--table--table-controls" ref="self">
-				<div className="rows">
-					{rows}
-				</div>
-				<div className="cols">
-					{cols}
-				</div>
+				<div className="rows">{rows}</div>
+				<div className="cols">{cols}</div>
 				<button
 					className="add-row"
 					key="0"

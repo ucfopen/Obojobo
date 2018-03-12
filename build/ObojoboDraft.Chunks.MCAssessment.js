@@ -832,11 +832,7 @@ var MCAssessment = function (_React$Component) {
 								})
 							)
 						),
-						isShowingExplanation ? React.createElement(Button, {
-							altAction: true,
-							onClick: this.onClickHideExplanation,
-							value: 'Hide Explanation'
-						}) : solution ? React.createElement(Button, {
+						isShowingExplanation ? React.createElement(Button, { altAction: true, onClick: this.onClickHideExplanation, value: 'Hide Explanation' }) : solution ? React.createElement(Button, {
 							altAction: true,
 							onClick: this.onClickShowExplanation,
 							value: 'Read an explanation of the answer'

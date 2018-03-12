@@ -45,7 +45,9 @@ app.post('/api/lti/sendAssessmentScore', (req, res, next) => {
 			currentUser = user
 
 			logger.info(
-				`API sendAssessmentScore with userId="${user.id}", draftId="${draftId}", assessmentId="${assessmentId}"`
+				`API sendAssessmentScore with userId="${
+					user.id
+				}", draftId="${draftId}", assessmentId="${assessmentId}"`
 			)
 
 			return lti.sendHighestAssessmentScore(currentUser.id, draftId, assessmentId)

@@ -5,9 +5,7 @@ export default class TextMenu extends React.Component {
 		if (command.image == null) {
 			return (
 				<div>
-					<span>
-						{command.label}
-					</span>
+					<span>{command.label}</span>
 					<img className="click-blocker" />
 				</div>
 			)

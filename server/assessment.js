@@ -101,9 +101,7 @@ class Assessment extends DraftNode {
 				WHERE
 					ATT.user_id = $[userId]
 					AND ATT.draft_id = $[draftId]
-					${optionalAssessmentId !== null
-						? "AND ATT.assessment_id = '" + optionalAssessmentId + "'"
-						: ''}
+					${optionalAssessmentId !== null ? "AND ATT.assessment_id = '" + optionalAssessmentId + "'" : ''}
 				ORDER BY ATT.completed_at`,
 				{
 					userId,

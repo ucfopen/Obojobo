@@ -182,389 +182,371 @@ describe('Attempt End', () => {
 		expect(Assessment.updateAttempt).toHaveBeenLastCalledWith('attemptResult', 'attemptId')
 	})
 
-	test.skip(
-		'insertAttemptEndEvents calls insertEvent with expected params (preview mode = true)',
-		done => {
-			let toISOString = Date.prototype.toISOString
+	test.skip('insertAttemptEndEvents calls insertEvent with expected params (preview mode = true)', done => {
+		let toISOString = Date.prototype.toISOString
 
-			Date.prototype.toISOString = () => 'date'
+		Date.prototype.toISOString = () => 'date'
 
-			insertAttemptEndEvents(
-				{ id: 'userId' },
-				'draftId',
-				'assessmentId',
-				'attemptId',
-				'attemptNumber',
-				true,
-				'hostname',
-				'remoteAddress'
-			)
+		insertAttemptEndEvents(
+			{ id: 'userId' },
+			'draftId',
+			'assessmentId',
+			'attemptId',
+			'attemptNumber',
+			true,
+			'hostname',
+			'remoteAddress'
+		)
 
-			Date.prototype.toISOString = toISOString
+		Date.prototype.toISOString = toISOString
 
-			expect(insertEvent).toHaveBeenLastCalledWith({
-				action: 'assessment:attemptEnd',
-				actorTime: 'date',
-				payload: {
-					attemptId: 'attemptId',
-					attemptCount: -1
-				},
-				userId: 'userId',
-				ip: 'remoteAddress',
-				metadata: {},
-				draftId: 'draftId',
-				eventVersion: '1.1.0',
-				caliperPayload: {
+		expect(insertEvent).toHaveBeenLastCalledWith({
+			action: 'assessment:attemptEnd',
+			actorTime: 'date',
+			payload: {
+				attemptId: 'attemptId',
+				attemptCount: -1
+			},
+			userId: 'userId',
+			ip: 'remoteAddress',
+			metadata: {},
+			draftId: 'draftId',
+			eventVersion: '1.1.0',
+			caliperPayload: {
+				'@context': 'http://purl.imsglobal.org/ctx/caliper/v1p1',
+				actor: 'https://hostname/api/user/userId',
+				action: 'Submitted',
+				object: 'https://hostname/api/assessment/draftId/assessmentId',
+				generated: 'https://hostname/api/attempt/attemptId',
+				eventTime: 'date',
+				edApp: 'https://hostname/api/system',
+				id: 'test-uuid',
+				extensions: { previewMode: true },
+				type: 'AssessmentEvent'
+			}
+		})
+
+		done()
+	})
+
+	test.skip('insertAttemptEndEvents calls insertEvent with expected params (preview mode = false)', done => {
+		let toISOString = Date.prototype.toISOString
+
+		Date.prototype.toISOString = () => 'date'
+
+		insertAttemptEndEvents(
+			{ id: 'userId' },
+			'draftId',
+			'assessmentId',
+			'attemptId',
+			'attemptNumber',
+			false,
+			'hostname',
+			'remoteAddress'
+		)
+
+		Date.prototype.toISOString = toISOString
+
+		expect(insertEvent).toHaveBeenLastCalledWith({
+			action: 'assessment:attemptEnd',
+			actorTime: 'date',
+			payload: {
+				attemptId: 'attemptId',
+				attemptCount: 'attemptNumber'
+			},
+			userId: 'userId',
+			ip: 'remoteAddress',
+			metadata: {},
+			draftId: 'draftId',
+			eventVersion: '1.1.0',
+			caliperPayload: {
+				'@context': 'http://purl.imsglobal.org/ctx/caliper/v1p1',
+				actor: 'https://hostname/api/user/userId',
+				action: 'Submitted',
+				object: 'https://hostname/api/assessment/draftId/assessmentId',
+				generated: 'https://hostname/api/attempt/attemptId',
+				eventTime: 'date',
+				edApp: 'https://hostname/api/system',
+				id: 'test-uuid',
+				extensions: { previewMode: false },
+				type: 'AssessmentEvent'
+			}
+		})
+
+		done()
+	})
+
+	test.skip('insertAttemptScoredEvents calls insertEvent with expected params (preview mode = true, isScoreSent = false)', done => {
+		let toISOString = Date.prototype.toISOString
+
+		Date.prototype.toISOString = () => 'date'
+
+		insertAttemptScoredEvents(
+			{ id: 'userId' },
+			'draftId',
+			'assessmentId',
+			'attemptId',
+			'attemptNumber',
+			55,
+			65,
+			true,
+			false,
+			'hostname',
+			'remoteAddress'
+		)
+
+		Date.prototype.toISOString = toISOString
+
+		expect(insertEvent).toHaveBeenLastCalledWith({
+			action: 'assessment:attemptScored',
+			actorTime: 'date',
+			payload: {
+				attemptId: 'attemptId',
+				attemptCount: -1,
+				attemptScore: 55,
+				assessmentScore: -1,
+				didSendLtiOutcome: false
+			},
+			userId: 'userId',
+			ip: 'remoteAddress',
+			metadata: {},
+			draftId: 'draftId',
+			eventVersion: '1.1.0',
+			caliperPayload: {
+				'@context': 'http://purl.imsglobal.org/ctx/caliper/v1p1',
+				actor: 'https://hostname/api/server',
+				action: 'Graded',
+				object: 'https://hostname/api/attempt/attemptId',
+				generated: {
 					'@context': 'http://purl.imsglobal.org/ctx/caliper/v1p1',
-					actor: 'https://hostname/api/user/userId',
-					action: 'Submitted',
-					object: 'https://hostname/api/assessment/draftId/assessmentId',
-					generated: 'https://hostname/api/attempt/attemptId',
-					eventTime: 'date',
-					edApp: 'https://hostname/api/system',
+					attempt: 'https://hostname/api/attempt/attemptId',
+					dateCreated: 'date',
 					id: 'test-uuid',
-					extensions: { previewMode: true },
-					type: 'AssessmentEvent'
-				}
-			})
-
-			done()
-		}
-	)
-
-	test.skip(
-		'insertAttemptEndEvents calls insertEvent with expected params (preview mode = false)',
-		done => {
-			let toISOString = Date.prototype.toISOString
-
-			Date.prototype.toISOString = () => 'date'
-
-			insertAttemptEndEvents(
-				{ id: 'userId' },
-				'draftId',
-				'assessmentId',
-				'attemptId',
-				'attemptNumber',
-				false,
-				'hostname',
-				'remoteAddress'
-			)
-
-			Date.prototype.toISOString = toISOString
-
-			expect(insertEvent).toHaveBeenLastCalledWith({
-				action: 'assessment:attemptEnd',
-				actorTime: 'date',
-				payload: {
-					attemptId: 'attemptId',
-					attemptCount: 'attemptNumber'
+					maxScore: 100,
+					scoreGiven: 55,
+					scoredBy: 'https://hostname/api/server',
+					type: 'Score'
 				},
-				userId: 'userId',
-				ip: 'remoteAddress',
-				metadata: {},
-				draftId: 'draftId',
-				eventVersion: '1.1.0',
-				caliperPayload: {
-					'@context': 'http://purl.imsglobal.org/ctx/caliper/v1p1',
-					actor: 'https://hostname/api/user/userId',
-					action: 'Submitted',
-					object: 'https://hostname/api/assessment/draftId/assessmentId',
-					generated: 'https://hostname/api/attempt/attemptId',
-					eventTime: 'date',
-					edApp: 'https://hostname/api/system',
-					id: 'test-uuid',
-					extensions: { previewMode: false },
-					type: 'AssessmentEvent'
-				}
-			})
-
-			done()
-		}
-	)
-
-	test.skip(
-		'insertAttemptScoredEvents calls insertEvent with expected params (preview mode = true, isScoreSent = false)',
-		done => {
-			let toISOString = Date.prototype.toISOString
-
-			Date.prototype.toISOString = () => 'date'
-
-			insertAttemptScoredEvents(
-				{ id: 'userId' },
-				'draftId',
-				'assessmentId',
-				'attemptId',
-				'attemptNumber',
-				55,
-				65,
-				true,
-				false,
-				'hostname',
-				'remoteAddress'
-			)
-
-			Date.prototype.toISOString = toISOString
-
-			expect(insertEvent).toHaveBeenLastCalledWith({
-				action: 'assessment:attemptScored',
-				actorTime: 'date',
-				payload: {
-					attemptId: 'attemptId',
+				eventTime: 'date',
+				edApp: 'https://hostname/api/system',
+				id: 'test-uuid',
+				extensions: {
+					previewMode: true,
 					attemptCount: -1,
 					attemptScore: 55,
 					assessmentScore: -1,
 					didSendLtiOutcome: false
 				},
-				userId: 'userId',
-				ip: 'remoteAddress',
-				metadata: {},
-				draftId: 'draftId',
-				eventVersion: '1.1.0',
-				caliperPayload: {
+				type: 'GradeEvent'
+			}
+		})
+
+		done()
+	})
+
+	test.skip('insertAttemptScoredEvents calls insertEvent with expected params (preview mode = true, isScoreSent = true)', done => {
+		let toISOString = Date.prototype.toISOString
+
+		Date.prototype.toISOString = () => 'date'
+
+		insertAttemptScoredEvents(
+			{ id: 'userId' },
+			'draftId',
+			'assessmentId',
+			'attemptId',
+			'attemptNumber',
+			55,
+			65,
+			true,
+			true,
+			'hostname',
+			'remoteAddress'
+		)
+
+		Date.prototype.toISOString = toISOString
+
+		expect(insertEvent).toHaveBeenLastCalledWith({
+			action: 'assessment:attemptScored',
+			actorTime: 'date',
+			payload: {
+				attemptId: 'attemptId',
+				attemptCount: -1,
+				attemptScore: 55,
+				assessmentScore: -1,
+				didSendLtiOutcome: true
+			},
+			userId: 'userId',
+			ip: 'remoteAddress',
+			metadata: {},
+			draftId: 'draftId',
+			eventVersion: '1.1.0',
+			caliperPayload: {
+				'@context': 'http://purl.imsglobal.org/ctx/caliper/v1p1',
+				actor: 'https://hostname/api/server',
+				action: 'Graded',
+				object: 'https://hostname/api/attempt/attemptId',
+				generated: {
 					'@context': 'http://purl.imsglobal.org/ctx/caliper/v1p1',
-					actor: 'https://hostname/api/server',
-					action: 'Graded',
-					object: 'https://hostname/api/attempt/attemptId',
-					generated: {
-						'@context': 'http://purl.imsglobal.org/ctx/caliper/v1p1',
-						attempt: 'https://hostname/api/attempt/attemptId',
-						dateCreated: 'date',
-						id: 'test-uuid',
-						maxScore: 100,
-						scoreGiven: 55,
-						scoredBy: 'https://hostname/api/server',
-						type: 'Score'
-					},
-					eventTime: 'date',
-					edApp: 'https://hostname/api/system',
+					attempt: 'https://hostname/api/attempt/attemptId',
+					dateCreated: 'date',
 					id: 'test-uuid',
-					extensions: {
-						previewMode: true,
-						attemptCount: -1,
-						attemptScore: 55,
-						assessmentScore: -1,
-						didSendLtiOutcome: false
-					},
-					type: 'GradeEvent'
-				}
-			})
-
-			done()
-		}
-	)
-
-	test.skip(
-		'insertAttemptScoredEvents calls insertEvent with expected params (preview mode = true, isScoreSent = true)',
-		done => {
-			let toISOString = Date.prototype.toISOString
-
-			Date.prototype.toISOString = () => 'date'
-
-			insertAttemptScoredEvents(
-				{ id: 'userId' },
-				'draftId',
-				'assessmentId',
-				'attemptId',
-				'attemptNumber',
-				55,
-				65,
-				true,
-				true,
-				'hostname',
-				'remoteAddress'
-			)
-
-			Date.prototype.toISOString = toISOString
-
-			expect(insertEvent).toHaveBeenLastCalledWith({
-				action: 'assessment:attemptScored',
-				actorTime: 'date',
-				payload: {
-					attemptId: 'attemptId',
+					maxScore: 100,
+					scoreGiven: 55,
+					scoredBy: 'https://hostname/api/server',
+					type: 'Score'
+				},
+				eventTime: 'date',
+				edApp: 'https://hostname/api/system',
+				id: 'test-uuid',
+				extensions: {
+					previewMode: true,
 					attemptCount: -1,
 					attemptScore: 55,
 					assessmentScore: -1,
 					didSendLtiOutcome: true
 				},
-				userId: 'userId',
-				ip: 'remoteAddress',
-				metadata: {},
-				draftId: 'draftId',
-				eventVersion: '1.1.0',
-				caliperPayload: {
+				type: 'GradeEvent'
+			}
+		})
+
+		done()
+	})
+
+	test.skip('insertAttemptScoredEvents calls insertEvent with expected params (preview mode = false, isScoreSent = false)', done => {
+		let toISOString = Date.prototype.toISOString
+
+		Date.prototype.toISOString = () => 'date'
+
+		insertAttemptScoredEvents(
+			{ id: 'userId' },
+			'draftId',
+			'assessmentId',
+			'attemptId',
+			'attemptNumber',
+			55,
+			65,
+			false,
+			false,
+			'hostname',
+			'remoteAddress'
+		)
+
+		Date.prototype.toISOString = toISOString
+
+		expect(insertEvent).toHaveBeenLastCalledWith({
+			action: 'assessment:attemptScored',
+			actorTime: 'date',
+			payload: {
+				attemptId: 'attemptId',
+				attemptCount: 'attemptNumber',
+				attemptScore: 55,
+				assessmentScore: 65,
+				didSendLtiOutcome: false
+			},
+			userId: 'userId',
+			ip: 'remoteAddress',
+			metadata: {},
+			draftId: 'draftId',
+			eventVersion: '1.1.0',
+			caliperPayload: {
+				'@context': 'http://purl.imsglobal.org/ctx/caliper/v1p1',
+				actor: 'https://hostname/api/server',
+				action: 'Graded',
+				object: 'https://hostname/api/attempt/attemptId',
+				generated: {
 					'@context': 'http://purl.imsglobal.org/ctx/caliper/v1p1',
-					actor: 'https://hostname/api/server',
-					action: 'Graded',
-					object: 'https://hostname/api/attempt/attemptId',
-					generated: {
-						'@context': 'http://purl.imsglobal.org/ctx/caliper/v1p1',
-						attempt: 'https://hostname/api/attempt/attemptId',
-						dateCreated: 'date',
-						id: 'test-uuid',
-						maxScore: 100,
-						scoreGiven: 55,
-						scoredBy: 'https://hostname/api/server',
-						type: 'Score'
-					},
-					eventTime: 'date',
-					edApp: 'https://hostname/api/system',
+					attempt: 'https://hostname/api/attempt/attemptId',
+					dateCreated: 'date',
 					id: 'test-uuid',
-					extensions: {
-						previewMode: true,
-						attemptCount: -1,
-						attemptScore: 55,
-						assessmentScore: -1,
-						didSendLtiOutcome: true
-					},
-					type: 'GradeEvent'
-				}
-			})
-
-			done()
-		}
-	)
-
-	test.skip(
-		'insertAttemptScoredEvents calls insertEvent with expected params (preview mode = false, isScoreSent = false)',
-		done => {
-			let toISOString = Date.prototype.toISOString
-
-			Date.prototype.toISOString = () => 'date'
-
-			insertAttemptScoredEvents(
-				{ id: 'userId' },
-				'draftId',
-				'assessmentId',
-				'attemptId',
-				'attemptNumber',
-				55,
-				65,
-				false,
-				false,
-				'hostname',
-				'remoteAddress'
-			)
-
-			Date.prototype.toISOString = toISOString
-
-			expect(insertEvent).toHaveBeenLastCalledWith({
-				action: 'assessment:attemptScored',
-				actorTime: 'date',
-				payload: {
-					attemptId: 'attemptId',
+					maxScore: 100,
+					scoreGiven: 55,
+					scoredBy: 'https://hostname/api/server',
+					type: 'Score'
+				},
+				eventTime: 'date',
+				edApp: 'https://hostname/api/system',
+				id: 'test-uuid',
+				extensions: {
+					previewMode: false,
 					attemptCount: 'attemptNumber',
 					attemptScore: 55,
 					assessmentScore: 65,
 					didSendLtiOutcome: false
 				},
-				userId: 'userId',
-				ip: 'remoteAddress',
-				metadata: {},
-				draftId: 'draftId',
-				eventVersion: '1.1.0',
-				caliperPayload: {
+				type: 'GradeEvent'
+			}
+		})
+
+		done()
+	})
+
+	test.skip('insertAttemptScoredEvents calls insertEvent with expected params (preview mode = false, isScoreSent = true)', done => {
+		let toISOString = Date.prototype.toISOString
+
+		Date.prototype.toISOString = () => 'date'
+
+		insertAttemptScoredEvents(
+			{ id: 'userId' },
+			'draftId',
+			'assessmentId',
+			'attemptId',
+			'attemptNumber',
+			55,
+			65,
+			false,
+			true,
+			'hostname',
+			'remoteAddress'
+		)
+
+		Date.prototype.toISOString = toISOString
+
+		expect(insertEvent).toHaveBeenLastCalledWith({
+			action: 'assessment:attemptScored',
+			actorTime: 'date',
+			payload: {
+				attemptId: 'attemptId',
+				attemptCount: 'attemptNumber',
+				attemptScore: 55,
+				assessmentScore: 65,
+				didSendLtiOutcome: true
+			},
+			userId: 'userId',
+			ip: 'remoteAddress',
+			metadata: {},
+			draftId: 'draftId',
+			eventVersion: '1.1.0',
+			caliperPayload: {
+				'@context': 'http://purl.imsglobal.org/ctx/caliper/v1p1',
+				actor: 'https://hostname/api/server',
+				action: 'Graded',
+				object: 'https://hostname/api/attempt/attemptId',
+				generated: {
 					'@context': 'http://purl.imsglobal.org/ctx/caliper/v1p1',
-					actor: 'https://hostname/api/server',
-					action: 'Graded',
-					object: 'https://hostname/api/attempt/attemptId',
-					generated: {
-						'@context': 'http://purl.imsglobal.org/ctx/caliper/v1p1',
-						attempt: 'https://hostname/api/attempt/attemptId',
-						dateCreated: 'date',
-						id: 'test-uuid',
-						maxScore: 100,
-						scoreGiven: 55,
-						scoredBy: 'https://hostname/api/server',
-						type: 'Score'
-					},
-					eventTime: 'date',
-					edApp: 'https://hostname/api/system',
+					attempt: 'https://hostname/api/attempt/attemptId',
+					dateCreated: 'date',
 					id: 'test-uuid',
-					extensions: {
-						previewMode: false,
-						attemptCount: 'attemptNumber',
-						attemptScore: 55,
-						assessmentScore: 65,
-						didSendLtiOutcome: false
-					},
-					type: 'GradeEvent'
-				}
-			})
-
-			done()
-		}
-	)
-
-	test.skip(
-		'insertAttemptScoredEvents calls insertEvent with expected params (preview mode = false, isScoreSent = true)',
-		done => {
-			let toISOString = Date.prototype.toISOString
-
-			Date.prototype.toISOString = () => 'date'
-
-			insertAttemptScoredEvents(
-				{ id: 'userId' },
-				'draftId',
-				'assessmentId',
-				'attemptId',
-				'attemptNumber',
-				55,
-				65,
-				false,
-				true,
-				'hostname',
-				'remoteAddress'
-			)
-
-			Date.prototype.toISOString = toISOString
-
-			expect(insertEvent).toHaveBeenLastCalledWith({
-				action: 'assessment:attemptScored',
-				actorTime: 'date',
-				payload: {
-					attemptId: 'attemptId',
+					maxScore: 100,
+					scoreGiven: 55,
+					scoredBy: 'https://hostname/api/server',
+					type: 'Score'
+				},
+				eventTime: 'date',
+				edApp: 'https://hostname/api/system',
+				id: 'test-uuid',
+				extensions: {
+					previewMode: false,
 					attemptCount: 'attemptNumber',
 					attemptScore: 55,
 					assessmentScore: 65,
 					didSendLtiOutcome: true
 				},
-				userId: 'userId',
-				ip: 'remoteAddress',
-				metadata: {},
-				draftId: 'draftId',
-				eventVersion: '1.1.0',
-				caliperPayload: {
-					'@context': 'http://purl.imsglobal.org/ctx/caliper/v1p1',
-					actor: 'https://hostname/api/server',
-					action: 'Graded',
-					object: 'https://hostname/api/attempt/attemptId',
-					generated: {
-						'@context': 'http://purl.imsglobal.org/ctx/caliper/v1p1',
-						attempt: 'https://hostname/api/attempt/attemptId',
-						dateCreated: 'date',
-						id: 'test-uuid',
-						maxScore: 100,
-						scoreGiven: 55,
-						scoredBy: 'https://hostname/api/server',
-						type: 'Score'
-					},
-					eventTime: 'date',
-					edApp: 'https://hostname/api/system',
-					id: 'test-uuid',
-					extensions: {
-						previewMode: false,
-						attemptCount: 'attemptNumber',
-						attemptScore: 55,
-						assessmentScore: 65,
-						didSendLtiOutcome: true
-					},
-					type: 'GradeEvent'
-				}
-			})
+				type: 'GradeEvent'
+			}
+		})
 
-			done()
-		}
-	)
+		done()
+	})
 
 	test.skip('sendLTIScore resolves as false if no score given', done => {
 		sendLTIScore({ id: 'userId' }, 'draftId', null).then(result => {

@@ -197,11 +197,7 @@ export default class Assessment extends React.Component {
 						let PageComponent = pageModel.getComponentClass()
 						childEl = <PageComponent model={pageModel} moduleData={this.props.moduleData} />
 					} else {
-						childEl = (
-							<p>
-								{scoreAction.message}
-							</p>
-						)
+						childEl = <p>{scoreAction.message}</p>
 					}
 
 					return (
@@ -242,7 +238,9 @@ export default class Assessment extends React.Component {
 
 							{childEl}
 							<div className="review">
-								<p className="number-correct">{`You got ${numCorrect} out of ${questionScores.length} questions correct:`}</p>
+								<p className="number-correct">{`You got ${numCorrect} out of ${
+									questionScores.length
+								} questions correct:`}</p>
 								{questionScores.map((questionScore, index) => {
 									let questionModel = OboModel.models[questionScore.id]
 									let QuestionComponent = questionModel.getComponentClass()
@@ -252,9 +250,9 @@ export default class Assessment extends React.Component {
 											key={index}
 											className={questionScore.score === 100 ? 'is-correct' : 'is-not-correct'}
 										>
-											<p>{`Question ${index + 1} - ${questionScore.score === 100
-												? 'Correct:'
-												: 'Incorrect:'}`}</p>
+											<p>{`Question ${index + 1} - ${
+												questionScore.score === 100 ? 'Correct:' : 'Incorrect:'
+											}`}</p>
 											<QuestionComponent
 												model={questionModel}
 												moduleData={this.props.moduleData}

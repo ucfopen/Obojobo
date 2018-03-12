@@ -39,19 +39,18 @@ export default class MathEquation extends React.Component {
 			<OboComponent
 				model={this.props.model}
 				moduleData={this.props.moduleData}
-				className={`obojobo-draft--chunks--math-equation pad align-${this.props.model.modelState
-					.align}`}
+				className={`obojobo-draft--chunks--math-equation pad align-${
+					this.props.model.modelState.align
+				}`}
 			>
 				<NonEditableChunk>
 					<div
 						className="katex-container"
 						dangerouslySetInnerHTML={{ __html: this.state.katexHtml }}
 					/>
-					{this.props.model.modelState.label === ''
-						? null
-						: <div className="equation-label">
-								{this.props.model.modelState.label}
-							</div>}
+					{this.props.model.modelState.label === '' ? null : (
+						<div className="equation-label">{this.props.model.modelState.label}</div>
+					)}
 				</NonEditableChunk>
 			</OboComponent>
 		)

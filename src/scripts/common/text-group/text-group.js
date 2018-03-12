@@ -22,7 +22,10 @@ let addChildToGroup = function(itemOrItems, group, atIndex) {
 	if (atIndex === null) {
 		group.items = group.items.concat(items)
 	} else {
-		group.items = group.items.slice(0, atIndex).concat(items).concat(group.items.slice(atIndex))
+		group.items = group.items
+			.slice(0, atIndex)
+			.concat(items)
+			.concat(group.items.slice(atIndex))
 	}
 
 	return Array.from(items).map(item => (item.parent = group))

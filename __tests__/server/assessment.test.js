@@ -138,11 +138,12 @@ describe('Assessment', () => {
 				}
 			)
 			.then(() => {
-				expect(
-					oboGlobalsMockSetFn
-				).toHaveBeenCalledWith('ObojoboDraft.Sections.Assessment:attempts', {
-					history: 'test123'
-				})
+				expect(oboGlobalsMockSetFn).toHaveBeenCalledWith(
+					'ObojoboDraft.Sections.Assessment:attempts',
+					{
+						history: 'test123'
+					}
+				)
 
 				done()
 			})
