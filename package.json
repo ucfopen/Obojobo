@@ -16,15 +16,21 @@
 		"karma": "./node_modules/karma/bin/karma start ./karma.conf.js",
 		"karma-coverage": "./node_modules/karma/bin/karma start ./karma-coverage.conf.js",
 		"generateModuleManifest": "node ./bin/generate_module_manifest.js",
-		"prettier:run": "prettier --single-quote --use-tabs --no-semi --print-width='100' --write '{src,server,__{tests,mocks}__,ObojoboDraft}/**/*.js'",
-		"prettier:debug": "prettier --single-quote --use-tabs --no-semi --print-width='100' --debug-check '{src,server,__{tests,mocks}__,ObojoboDraft}/**/*.js'",
+		"prettier:run": "prettier --write '{src,server,__{tests,mocks}__,ObojoboDraft}/**/*.js'",
+		"prettier:debug": "prettier -l '{src,server,__{tests,mocks}__,ObojoboDraft}/**/*.js'",
 		"precommit": "yarn test && yarn build && yarn build:gitadd && lint-staged"
 	},
+	"prettier":{
+		"printWidth": 100,
+		"semi": false,
+		"useTabs": true,
+		"singleQuote": true
+	},
 	"lint-staged": {
-		"linters": {
-			"*.js": ["yarn prettier:run", "git add"]
-		},
-		"ignore": ["build/**/*.js"]
+		"{src,server,__{tests,mocks}__,ObojoboDraft}/**/*.js": [
+			"yarn prettier --write --",
+			"git add"
+		]
 	},
 	"author": "",
 	"devDependencies": {
@@ -56,7 +62,7 @@
 		"node-bourbon": "^4.2.8",
 		"node-sass": "^3.4.2",
 		"object-assign": "^4.1.0",
-		"prettier": "1.5.2",
+		"prettier": "1.11.1",
 		"sass-loader": "^6.0.5",
 		"style-loader": "^0.17.0",
 		"svg-url-loader": "^2.0.2",
