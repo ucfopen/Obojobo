@@ -94,7 +94,7 @@ class NavStore extends Store {
 		)
 	}
 
-	init(model, startingId, startingPath) {
+	init(model, startingId, startingPath, visitId) {
 		this.state = {
 			items: {},
 			itemsById: {},
@@ -103,7 +103,8 @@ class NavStore extends Store {
 			navTargetHistory: [],
 			navTargetId: null,
 			locked: false,
-			open: true
+			open: true,
+			visitId
 		}
 
 		this.buildMenu(model)
@@ -203,7 +204,13 @@ class NavStore extends Store {
 			// flatPath = ['view', model.getRoot().get('_id'), childNavItem.fullPath.join('/')].join('/')
 			let flatPath = childNavItem.fullPath.join('/')
 			childNavItem.flatPath = flatPath
-			childNavItem.fullFlatPath = ['/view', model.getRoot().get('_id'), flatPath].join('/')
+			childNavItem.fullFlatPath = [
+				'/view',
+				model.getRoot().get('draftId'),
+				'visit',
+				this.state.visitId,
+				flatPath
+			].join('/')
 			this.state.itemsByPath[flatPath] = childNavItem
 			this.state.itemsByFullPath[childNavItem.fullFlatPath] = childNavItem
 		}
