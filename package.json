@@ -16,13 +16,13 @@
 		"karma": "./node_modules/karma/bin/karma start ./karma.conf.js",
 		"karma-coverage": "./node_modules/karma/bin/karma start ./karma-coverage.conf.js",
 		"generateModuleManifest": "node ./bin/generate_module_manifest.js",
-		"prettier": "prettier --single-quote --use-tabs --no-semi --print-width='100' --write '{src,server,__{tests,mocks}__,ObojoboDraft}/**/*.js'",
+		"prettier:run": "prettier --single-quote --use-tabs --no-semi --print-width='100' --write '{src,server,__{tests,mocks}__,ObojoboDraft}/**/*.js'",
 		"prettier:debug": "prettier --single-quote --use-tabs --no-semi --print-width='100' --debug-check '{src,server,__{tests,mocks}__,ObojoboDraft}/**/*.js'",
 		"precommit": "yarn test && yarn build && yarn build:gitadd && lint-staged"
 	},
 	"lint-staged": {
 		"linters": {
-			"*.js": ["yarn runPrettier", "git add"]
+			"*.js": ["yarn prettier:run", "git add"]
 		},
 		"ignore": ["build/**/*.js"]
 	},
