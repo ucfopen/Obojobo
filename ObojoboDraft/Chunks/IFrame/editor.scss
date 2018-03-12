@@ -1,56 +1,46 @@
 @import '../../../../../../../scss/includes';
 
-.component[data-component-type="ObojoboDraft.Chunks.IFrame"]
-{
+.component[data-component-type='ObojoboDraft.Chunks.IFrame'] {
 	&.selection-contains,
 	&.selection-inside,
 	&.selection-start,
-	&.selection-end
-	{
-		.obojobo-draft--components--delete-button
-		{
+	&.selection-end {
+		.obojobo-draft--components--delete-button {
 			display: block;
 		}
 	}
 }
 
-.obojobo-draft--chunks--iframe
-{
+.obojobo-draft--chunks--iframe {
 	min-height: 1em;
 
-	.anchor
-	{
+	.anchor {
 		z-index: 2;
 	}
 
-	> .container
-	{
+	> .container {
 		position: relative;
 	}
 
 	.placeholder,
 	.edit,
 	img,
-	iframe
-	{
+	iframe {
 		height: 100%;
 		margin: 0 auto;
 		width: 100%;
 	}
 
-	.placeholder
-	{
+	.placeholder {
 		@include placeholder(20rem);
 	}
 
-	.edit
-	{
+	.edit {
 		position: relative;
 		z-index: 3;
 	}
 
-	.obojobo-draft--components--delete-button
-	{
+	.obojobo-draft--components--delete-button {
 		display: none;
 		position: absolute;
 		right: 0;
@@ -59,8 +49,7 @@
 		z-index: 3;
 	}
 
-	.obojobo-draft--components--edit-button
-	{
+	.obojobo-draft--components--edit-button {
 		position: absolute;
 		right: 1em;
 		top: 1em;

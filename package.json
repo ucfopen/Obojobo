@@ -16,8 +16,8 @@
 		"karma": "./node_modules/karma/bin/karma start ./karma.conf.js",
 		"karma-coverage": "./node_modules/karma/bin/karma start ./karma-coverage.conf.js",
 		"generateModuleManifest": "node ./bin/generate_module_manifest.js",
-		"prettier:run": "prettier --write '{src,server,__{tests,mocks}__,ObojoboDraft}/**/*.js'",
-		"prettier:debug": "prettier -l '{src,server,__{tests,mocks}__,ObojoboDraft}/**/*.js'",
+		"prettier:run": "prettier --write '{src,server,__{tests,mocks}__,ObojoboDraft}/**/*.{js,scss}'",
+		"prettier:debug": "prettier -l '{src,server,__{tests,mocks}__,ObojoboDraft}/**/*.{js,scss}'",
 		"precommit": "yarn test && yarn build && yarn build:gitadd && lint-staged"
 	},
 	"prettier":{
@@ -27,7 +27,7 @@
 		"singleQuote": true
 	},
 	"lint-staged": {
-		"{src,server,__{tests,mocks}__,ObojoboDraft}/**/*.js": [
+		"{src,server,__{tests,mocks}__,ObojoboDraft}/**/*.{js,scss}": [
 			"yarn prettier --write --",
 			"git add"
 		]

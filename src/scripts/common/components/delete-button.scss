@@ -1,11 +1,9 @@
 @import '../../../scss/includes';
 
-.obojobo-draft--components--delete-button
-{
+.obojobo-draft--components--delete-button {
 	$default-size: 1.5em;
 
-	button
-	{
+	button {
 		background: $color-bg2;
 		border: none;
 		border-radius: $default-size;
@@ -21,8 +19,7 @@
 		transition: background $duration-animation-default ease, color $duration-animation-default ease;
 		width: $default-size;
 
-		&::after
-		{
+		&::after {
 			color: $color-action-minor;
 			content: '+';
 			font-size: $default-size;
@@ -33,12 +30,10 @@
 			transform: translate(-50%, -50%) rotate(45deg);
 		}
 
-		&:hover
-		{
+		&:hover {
 			background: $color-action;
 
-			&::after
-			{
+			&::after {
 				color: $color-bg;
 			}
 		}

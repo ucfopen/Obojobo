@@ -1,51 +1,42 @@
 @import '../../../../../../../scss/includes';
 
-.component[data-component-type="ObojoboDraft.Chunks.Table"]
-{
+.component[data-component-type='ObojoboDraft.Chunks.Table'] {
 	&.selection-contains,
 	&.selection-inside,
 	&.selection-start,
-	&.selection-end
-	{
-		.obojobo-draft--components--delete-button
-		{
+	&.selection-end {
+		.obojobo-draft--components--delete-button {
 			display: block;
 		}
 	}
 }
 
-.obojobo-draft--chunks--table.preview
-{
+.obojobo-draft--chunks--table.preview {
 	margin-left: $dimension-padding;
 	margin-right: $dimension-padding;
 
-	.anchor
-	{
+	.anchor {
 		z-index: 2;
 	}
 
-	.container
-	{
+	.container {
 		position: relative;
 	}
 
-	.viewer
-	{
+	.viewer {
 		margin-bottom: 0;
 		margin-left: 0;
 		margin-right: 0;
 	}
 
-	.obojobo-draft--components--edit-button
-	{
+	.obojobo-draft--components--edit-button {
 		position: absolute;
 		right: 0.5em;
 		top: 0.5em;
 		z-index: 2;
 	}
 
-	.obojobo-draft--components--delete-button
-	{
+	.obojobo-draft--components--delete-button {
 		display: none;
 		position: absolute;
 		right: 0;
@@ -55,15 +46,12 @@
 	}
 }
 
-.obojobo-draft--chunks--table.editor
-{
-	.container
-	{
+.obojobo-draft--chunks--table.editor {
+	.container {
 		position: relative;
 	}
 
-	.edit-table
-	{
+	.edit-table {
 		background: $color-bg;
 		border: 1px solid $color-shadow;
 		border-collapse: collapse;
@@ -72,31 +60,26 @@
 		table-layout: fixed;
 		width: 100%;
 
-		&:focus
-		{
+		&:focus {
 			outline: none;
 		}
 
-		thead tr:first-child
-		{
+		thead tr:first-child {
 			line-height: inherit;
 		}
 
 		th,
-		td
-		{
+		td {
 			border: 1px solid $color-shadow;
 			padding: 0.2em 0.5em;
 			text-align: left;
 
-			&:first-child
-			{
+			&:first-child {
 				width: auto;
 			}
 		}
 
-		th
-		{
+		th {
 			background: $color-bg2;
 			font-family: $font-default;
 			font-size: 0.9em;
@@ -104,8 +87,7 @@
 		}
 	}
 
-	.obojobo-draft--components--button
-	{
+	.obojobo-draft--components--button {
 		bottom: 0;
 		left: 50%;
 		position: absolute;
