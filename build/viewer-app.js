@@ -1060,7 +1060,6 @@
 			}
 
 			var APIUtil = _Viewer2.default.util.APIUtil
-			var OboGlobals = _Common2.default.util.OboGlobals
 
 			var debounce = function debounce(ms, cb) {
 				clearTimeout(debounce.id)
@@ -1112,12 +1111,6 @@
 					document.getElementById('viewer-app')
 				)
 			}
-
-			history.replaceState(
-				'',
-				document.title,
-				'/view/' + OboGlobals.get('draftId') + window.location.search
-			)
 
 			/***/
 		},

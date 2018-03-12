@@ -76,7 +76,7 @@ describe('Assessment', () => {
 
 		expect(assessment.registerEvents).toHaveBeenCalledWith({
 			'internal:sendToClient': assessment.onSendToClient,
-			'internal:renderViewer': assessment.onRenderViewer
+			'internal:startVisit': assessment.onStartVisit
 		})
 	})
 

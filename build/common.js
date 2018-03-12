@@ -72,7 +72,7 @@
 	/******/
 	/******/ /******/ __webpack_require__.p = 'build/' // Load entry module and return exports
 	/******/
-	/******/ /******/ return __webpack_require__((__webpack_require__.s = 94))
+	/******/ /******/ return __webpack_require__((__webpack_require__.s = 93))
 	/******/
 })(
 	/************************************************************************/
@@ -2403,7 +2403,7 @@ object-assign
 				}
 			})()
 
-			__webpack_require__(81)
+			__webpack_require__(80)
 
 			function _classCallCheck(instance, Constructor) {
 				if (!(instance instanceof Constructor)) {
@@ -3207,7 +3207,7 @@ object-assign
 				}
 			})()
 
-			__webpack_require__(80)
+			__webpack_require__(79)
 
 			function _classCallCheck(instance, Constructor) {
 				if (!(instance instanceof Constructor)) {
@@ -3338,7 +3338,7 @@ object-assign
 				}
 			})()
 
-			__webpack_require__(85)
+			__webpack_require__(84)
 
 			function _classCallCheck(instance, Constructor) {
 				if (!(instance instanceof Constructor)) {
@@ -3439,7 +3439,7 @@ object-assign
 				}
 			})()
 
-			__webpack_require__(87)
+			__webpack_require__(86)
 
 			var _button = __webpack_require__(18)
 
@@ -3625,7 +3625,7 @@ object-assign
 				}
 			})()
 
-			__webpack_require__(88)
+			__webpack_require__(87)
 
 			var _simpleDialog = __webpack_require__(23)
 
@@ -3724,7 +3724,7 @@ object-assign
 				}
 			})()
 
-			__webpack_require__(89)
+			__webpack_require__(88)
 
 			var _deleteButton = __webpack_require__(10)
 
@@ -3875,7 +3875,7 @@ object-assign
 				}
 			})()
 
-			__webpack_require__(90)
+			__webpack_require__(89)
 
 			var _modalUtil = __webpack_require__(38)
 
@@ -7219,7 +7219,7 @@ object-assign
 
 			var _objectAssign2 = _interopRequireDefault(_objectAssign)
 
-			var _katex = __webpack_require__(93)
+			var _katex = __webpack_require__(92)
 
 			var _katex2 = _interopRequireDefault(_katex)
 
@@ -9934,13 +9934,13 @@ object-assign
 				}
 			})()
 
-			__webpack_require__(82)
+			__webpack_require__(81)
 
 			var _getBackgroundImage = __webpack_require__(36)
 
 			var _getBackgroundImage2 = _interopRequireDefault(_getBackgroundImage)
 
-			var _edit = __webpack_require__(92)
+			var _edit = __webpack_require__(91)
 
 			var _edit2 = _interopRequireDefault(_edit)
 
@@ -10057,7 +10057,7 @@ object-assign
 				}
 			})()
 
-			__webpack_require__(83)
+			__webpack_require__(82)
 
 			var _focusUtil = __webpack_require__(15)
 
@@ -10148,7 +10148,7 @@ object-assign
 				}
 			})()
 
-			__webpack_require__(84)
+			__webpack_require__(83)
 
 			function _classCallCheck(instance, Constructor) {
 				if (!(instance instanceof Constructor)) {
@@ -10236,7 +10236,7 @@ object-assign
 				}
 			})()
 
-			__webpack_require__(86)
+			__webpack_require__(85)
 
 			var _bubble = __webpack_require__(19)
 
@@ -10738,7 +10738,7 @@ object-assign
 				}
 			})()
 
-			__webpack_require__(91)
+			__webpack_require__(90)
 
 			function _classCallCheck(instance, Constructor) {
 				if (!(instance instanceof Constructor)) {
@@ -11153,14 +11153,11 @@ object-assign
 
 			var _uuid2 = _interopRequireDefault(_uuid)
 
-			var _oboGlobals = __webpack_require__(79)
-
-			var _oboGlobals2 = _interopRequireDefault(_oboGlobals)
-
 			function _interopRequireDefault(obj) {
 				return obj && obj.__esModule ? obj : { default: obj }
 			}
 
+			// @TODO
 			exports.default = {
 				Store: _store.Store,
 
@@ -11276,12 +11273,11 @@ object-assign
 					ModalUtil: _modalUtil2.default,
 					FocusUtil: _focusUtil2.default,
 					ErrorUtil: _errorUtil2.default,
-					UUID: _uuid2.default,
-					OboGlobals: _oboGlobals2.default
+					UUID: _uuid2.default
 				},
 
 				Launch: _launch2.default
-			} // @TODO
+			}
 
 			/***/
 		},
@@ -12923,38 +12919,8 @@ object-assign
 			/***/
 		},
 		/* 79 */
-		/***/ function(module, exports, __webpack_require__) {
-			'use strict'
-
-			Object.defineProperty(exports, '__esModule', {
-				value: true
-			})
-			var GLOBAL_KEY = '__oboGlobals'
-			var globals = new Map()
-
-			exports.default = {
-				get: function get(key, defaultValue) {
-					// If we have stored the value return it right away
-					if (globals.has(key)) return globals.get(key)
-
-					if (typeof window[GLOBAL_KEY][key] !== 'undefined') {
-						// Set the value from window if we can find the value on window
-						globals.set(key, window[GLOBAL_KEY][key])
-
-						// Remove from window so this class becomes the single source of truth
-						// (and prevent tampering with the value):
-						delete window[GLOBAL_KEY][key]
-					} else if (typeof defaultValue !== 'undefined') {
-						// else set the value from the optional defaultValue argument (if defined)
-						globals.set(key, defaultValue)
-					}
-
-					if (!globals.has(key)) throw 'No Obo Global found for key ' + key
-
-					return globals.get(key)
-				}
-			}
-
+		/***/ function(module, exports) {
+			// removed by extract-text-webpack-plugin
 			/***/
 		},
 		/* 80 */
@@ -13014,23 +12980,18 @@ object-assign
 		},
 		/* 91 */
 		/***/ function(module, exports) {
-			// removed by extract-text-webpack-plugin
-			/***/
-		},
-		/* 92 */
-		/***/ function(module, exports) {
 			module.exports =
 				"data:image/svg+xml,%3Csvg id='Layer_10' data-name='Layer 10' xmlns='http://www.w3.org/2000/svg' viewBox='0 0 20.48 20.48'%3E %3Cdefs%3E %3Cstyle%3E .cls-1 %7B fill: %236714bd; %7D %3C/style%3E %3C/defs%3E %3Ctitle%3Etoolbar-icons%3C/title%3E %3Cg%3E %3Crect class='cls-1' x='15.15' y='4.57' width='5.75' height='18.82' rx='1.13' ry='1.13' transform='translate(9.4 -14.41) rotate(45)'/%3E %3Cpath class='cls-1' d='M11.06,25l-5.3,1.23L7,20.94a1.12,1.12,0,0,1,1.59,0l2.47,2.47A1.13,1.13,0,0,1,11.06,25Z' transform='translate(-5.76 -5.76)'/%3E %3C/g%3E %3C/svg%3E"
 
 			/***/
 		},
-		/* 93 */
+		/* 92 */
 		/***/ function(module, exports) {
 			module.exports = katex
 
 			/***/
 		},
-		/* 94 */
+		/* 93 */
 		/***/ function(module, exports, __webpack_require__) {
 			module.exports = __webpack_require__(40)
 
