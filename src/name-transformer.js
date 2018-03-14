@@ -35,7 +35,10 @@ let nameTable = {
 	'Table': 'ObojoboDraft.Chunks.Table',
 	'Break': 'ObojoboDraft.Chunks.Break',
 	'HTML': 'ObojoboDraft.Chunks.HTML',
-	'IFrame': 'ObojoboDraft.Chunks.IFrame'
+	'IFrame': 'ObojoboDraft.Chunks.IFrame',
+	'SheetMusic': 'ObojoboDraft.Chunks.SheetMusic',
+	'Audio': 'ObojoboDraft.Chunks.Audio',
+	'Passage': 'ObojoboDraft.Chunks.Passage',
 }
 
 module.exports = nameTransform;
