@@ -9,7 +9,6 @@ let insertEvent = oboRequire('insert_event')
 let logger = oboRequire('logger')
 let createCaliperEvent = oboRequire('routes/api/events/create_caliper_event') //@TODO
 let endAttempt = require('./attempt-end').endAttempt
-let logger = oboRequire('logger')
 
 let logAndRespondToUnexpected = (res, originalError, errorForResponse) => {
 	logger.error('logAndRespondToUnexpected', originalError)
