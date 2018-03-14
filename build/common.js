@@ -8273,13 +8273,8 @@ object-assign
 							break
 
 						case 'pathname':
-						case 'hash':
-							if (value) {
-								var char = part === 'pathname' ? '/' : '#'
-								url[part] = value.charAt(0) !== char ? char + value : value
-							} else {
-								url[part] = value
-							}
+							url.pathname = value.length && value.charAt(0) !== '/' ? '/' + value : value
+
 							break
 
 						default:
