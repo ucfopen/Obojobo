@@ -1,0 +1,15 @@
+@import '~styles/includes';
+
+.obojobo-draft--chunks--sheet-music
+{
+	text-align: center;
+
+	// background: red;
+
+	&.is-style-paper {
+		> .container {
+			background-color: #f9f6ec;
+			border-bottom: 1px solid $color-shadow;
+		}
+	}
+}

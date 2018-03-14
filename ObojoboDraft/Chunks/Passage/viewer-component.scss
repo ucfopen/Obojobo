@@ -1,0 +1,55 @@
+@import '~styles/includes';
+
+.obojobo-draft--chunks--passage
+{
+	margin-left: $dimension-padding * 2;
+	margin-right: $dimension-padding * 2;
+	text-align: center;
+	padding: 2em 3em;
+
+
+	&.is-style-paper
+	{
+		border-bottom: 1px solid rgba(0, 0, 0, 0.15);
+		background-color: #fdfcf7;
+
+		text-align: left;
+
+		.text.align-left
+		{
+			text-align: left !important;
+		}
+	}
+
+	p
+	{
+		margin: 0;
+	}
+
+	.text
+	{
+		display: block;
+		font-size: 0.85em;
+		font-family: Palatino, Garamond;
+
+		&.align-left
+		{
+			text-align: center;
+		}
+	}
+
+	> h1
+	{
+		font-size: 1.3em;
+		font-weight: normal;
+		margin-bottom: 0.3em;
+		font-style: italic;
+	}
+
+	> h2
+	{
+		color: $color-text;
+		font-size: 0.8em;
+		margin-bottom: 2em;
+	}
+}
