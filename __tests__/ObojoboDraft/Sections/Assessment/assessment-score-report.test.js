@@ -112,7 +112,7 @@ describe('AssessmentScoreReport', () => {
 				unableToPassResult: 50,
 				mods: [
 					{
-						attemptCondition: '[1-2]',
+						attemptCondition: '[1,2]',
 						reward: 5
 					}
 				]
@@ -185,7 +185,7 @@ describe('AssessmentScoreReport', () => {
 				unableToPassResult: 50,
 				mods: [
 					{
-						attemptCondition: '[1-2]',
+						attemptCondition: '[1,2]',
 						reward: 5
 					}
 				]
@@ -260,7 +260,7 @@ describe('AssessmentScoreReport', () => {
 				unableToPassResult: 50,
 				mods: [
 					{
-						attemptCondition: '[1-2]',
+						attemptCondition: '[1,2]',
 						reward: 5
 					}
 				]
@@ -333,7 +333,7 @@ describe('AssessmentScoreReport', () => {
 				unableToPassResult: 50,
 				mods: [
 					{
-						attemptCondition: '[1-2]',
+						attemptCondition: '[1,2]',
 						reward: 5
 					}
 				]
@@ -671,18 +671,18 @@ describe('AssessmentScoreReport', () => {
 				{ attemptCondition: '1', reward: 0 },
 				{ attemptCondition: '2', reward: -1 },
 				{ attemptCondition: '$last_attempt', reward: 2 },
-				{ attemptCondition: '[1-2]', reward: -3 },
-				{ attemptCondition: '(1-2]', reward: 4 },
-				{ attemptCondition: '[1-2)', reward: -5 },
-				{ attemptCondition: '(1-2)', reward: 6 },
-				{ attemptCondition: '[2-3]', reward: -7 },
-				{ attemptCondition: '(2-3]', reward: 8 },
-				{ attemptCondition: '[2-3)', reward: -9 },
-				{ attemptCondition: '(2-3)', reward: 10 },
-				{ attemptCondition: '[3-$last_attempt]', reward: -11 },
-				{ attemptCondition: '(3-$last_attempt]', reward: 12 },
-				{ attemptCondition: '[3-$last_attempt)', reward: -13 },
-				{ attemptCondition: '(3-$last_attempt)', reward: 14 }
+				{ attemptCondition: '[1,2]', reward: -3 },
+				{ attemptCondition: '(1,2]', reward: 4 },
+				{ attemptCondition: '[1,2)', reward: -5 },
+				{ attemptCondition: '(1,2)', reward: 6 },
+				{ attemptCondition: '[2,3]', reward: -7 },
+				{ attemptCondition: '(2,3]', reward: 8 },
+				{ attemptCondition: '[2,3)', reward: -9 },
+				{ attemptCondition: '(2,3)', reward: 10 },
+				{ attemptCondition: '[3,$last_attempt]', reward: -11 },
+				{ attemptCondition: '(3,$last_attempt]', reward: 12 },
+				{ attemptCondition: '[3,$last_attempt)', reward: -13 },
+				{ attemptCondition: '(3,$last_attempt)', reward: 14 }
 			]
 		})
 

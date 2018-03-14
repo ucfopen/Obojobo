@@ -12,10 +12,10 @@ let getModText = (attemptCondition, numOfAttemptsAvailable) => {
 	attemptCondition = ('' + attemptCondition).replace('$last_attempt', '' + numOfAttemptsAvailable)
 
 	let range = []
-	if (attemptCondition.indexOf('-') === -1) {
+	if (attemptCondition.indexOf(',') === -1) {
 		range.push(parseInt(attemptCondition, 10))
 	} else {
-		let tokens = attemptCondition.split('-')
+		let tokens = attemptCondition.split(',')
 		range.push(parseInt(tokens[0].substr(1), 10))
 		range.push(parseInt(tokens[1].substr(0, tokens[1].length - 1), 10))
 

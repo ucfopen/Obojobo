@@ -1,4 +1,6 @@
 import ScoreActions from './score-actions'
+// @TODO: Importing from the server code, we shouldn't do this:
+import AssessmentRubric from '../../../server/assessment-rubric'
 
 let Adapter = {
 	construct(model, attrs) {
@@ -6,6 +8,7 @@ let Adapter = {
 		model.modelState.attempts = Infinity
 		model.modelState.review = 'never'
 		model.modelState.scoreActions = new ScoreActions()
+		model.modelState.rubric = new AssessmentRubric(attrs.content.rubric)
 
 		// Set state if XML has the attributes.
 		if (attrs && attrs.content) {
@@ -24,7 +27,8 @@ let Adapter = {
 	clone(model, clone) {
 		clone.modelState.attempts = model.modelState.attempts
 		clone.modelState.hideNav = model.modelState.hideNav
-		return (clone.modelState.scoreActions = model.modelState.scoreActions.clone())
+		clone.modelState.scoreActions = model.modelState.scoreActions.clone()
+		clone.modelState.rubric = model.modelState.rubric.clone()
 	},
 
 	//@TODO - necessary?
@@ -36,11 +40,9 @@ let Adapter = {
 	toJSON(model, json) {
 		json.content.attempts = model.modelState.attempts
 		json.content.hideNav = model.modelState.hideNav
-		return (json.content.scoreActions = model.modelState.scoreActions.toObject())
+		json.content.scoreActions = model.modelState.scoreActions.toObject()
+		json.content.rubric = model.modelState.rubric.toObject()
 	}
 }
 
 export default Adapter
-function __guard__(value, transform) {
-	return typeof value !== 'undefined' && value !== null ? transform(value) : undefined
-}
