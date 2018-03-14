@@ -202,7 +202,7 @@ let calculateScores = (assessmentModel, attemptHistory, scoreInfo) => {
 	)
 
 	let rubric = new AssessmentRubric(assessmentModel.node.content.rubric)
-	let assessmentScoreDetails = rubric.getAssessmentScoreInfoForLatestAttempt(
+	let assessmentScoreDetails = rubric.getAssessmentScoreInfoForAttempt(
 		assessmentModel.node.content.attempts,
 		allScores
 	)
