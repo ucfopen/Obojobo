@@ -21,21 +21,21 @@
 		cursor: pointer;
 		font-family: $font-default;
 		font-size: 0.85em;
-		opacity: 0.8;
+		// opacity: 0.8;
 		position: relative;
 		min-width: 3.25em;
-		// margin-bottom: 1em;
-		// margin-top: 1em;
 		border-radius: .2em;
 		padding: .6rem 1em;
-		background-color: $color-action;
+		background-color: lighten($color-action, 20% );
+		// background-color: $color-action;
 		color: $color-bg;
 		border: 1px solid $color-transparent;
 		border-bottom: 1px solid darken($color-action, 20%);
 
 		&:hover
 		{
-			opacity: 1;
+			background-color: $color-action;
+			// opacity: 1;
 		}
 
 		&:disabled

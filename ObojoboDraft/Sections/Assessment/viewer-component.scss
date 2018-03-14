@@ -31,10 +31,11 @@
 			text-align: center;
 			background-color: $color-bg2;
 			border-radius: $dimension-rounded-radius;
+			padding: 3em;
 
 			> h1
 			{
-				width: calc(100% - #{$dimension-padding * 2} / 1.35);
+				width:100%;
 				display: inline-block;
 				font-weight: normal;
 				font-size: 1.35em;
@@ -43,24 +44,92 @@
 				box-sizing: border-box;
 			}
 
-			table
-			{
-				width: 100%;
-				padding: 1em 3em;
-				margin: 0 auto;
-				box-sizing: border-box;
+		}
+	}
 
-				th
-				{
-					font-size: 0.9em;
-					padding-bottom: 0.5em;
-				}
+	.attempt-header {
+		display: flex;
+		justify-content: space-between;
 
-				td
-				{
-					font-size: 2em;
+		> .attempt-info-container {
+			padding-left: 60px;
+			> ul {
+				margin: 0;
+				list-style-type: none;
+				font-size: .8em;
+			}
+
+			>.attempt-info-content {
+				display:flex;
+				list-style-type: none;
+
+				>ul {
+					list-style-type: none;
+					padding: 0;
+					margin: 0;
 				}
 			}
+		}
+
+		> .score-section {
+			padding-right: 40px;
+			> ul {
+				margin: 0;
+				margin-right: 2em;
+				padding: 0;
+				list-style-type: none;
+				font-size: .7em;
+				color: gray;
+			}
+
+			display: flex;
+			align-items: center;
+			flex-direction: row;
+			justify-content: space-between;
+			> .credit-breakdown {
+				flex-direction: column;
+			}
+		}
+	}
+
+	#attempt-percent {
+		display: inline-block;
+		font-size: .6em;
+		transform: translateY(-35%)
+	}
+
+	.attempt-review-container {
+		position: relative;
+	}
+
+	.attempt-button-container {
+		position: absolute;
+		top:0;
+		left:50%;
+		transform: translate(-50%, -50%);
+		button {
+			margin: 2px;
+		}
+	}
+
+	.assessment-flex-container {
+		display: flex;
+		justify-content: space-around;
+		margin-top: 1em;
+
+		> .last-attempt {
+
+		}
+
+		> .retained-score {
+			background-color: white;
+			flex: 2;
+			border-radius: 5%;
+			margin: 0 1em;
+		}
+
+		> .attempts-remaining {
+
 		}
 	}
 
@@ -74,6 +143,7 @@
 		margin-top: 3em;
 		background: #fdfdfd;
 		border-radius: .2em;
+		font-size: .8em;
 
 		.number-correct
 		{

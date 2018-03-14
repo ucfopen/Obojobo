@@ -57,10 +57,10 @@
 			module && module.__esModule
 				? /******/ function getDefault() {
 						return module['default']
-				  }
+					}
 				: /******/ function getModuleExports() {
 						return module
-				  }
+					}
 		/******/ __webpack_require__.d(getter, 'a', getter)
 		/******/ return getter
 		/******/
@@ -72,42 +72,42 @@
 	/******/
 	/******/ /******/ __webpack_require__.p = 'build/' // Load entry module and return exports
 	/******/
-	/******/ /******/ return __webpack_require__((__webpack_require__.s = 191))
+	/******/ /******/ return __webpack_require__((__webpack_require__.s = 183))
 	/******/
 })(
 	/************************************************************************/
 	/******/ {
-		/***/ 0: /***/ function(module, exports) {
+		/***/ /***/ 0: function(module, exports) {
 			module.exports = Common
 
 			/***/
 		},
 
-		/***/ 1: /***/ function(module, exports) {
+		/***/ /***/ 1: function(module, exports) {
 			module.exports = Viewer
 
 			/***/
 		},
 
-		/***/ 170: /***/ function(module, exports) {
+		/***/ /***/ 162: function(module, exports) {
 			// removed by extract-text-webpack-plugin
 			/***/
 		},
 
-		/***/ 191: /***/ function(module, exports, __webpack_require__) {
-			module.exports = __webpack_require__(48)
+		/***/ /***/ 183: function(module, exports, __webpack_require__) {
+			module.exports = __webpack_require__(44)
 
 			/***/
 		},
 
-		/***/ 48: /***/ function(module, exports, __webpack_require__) {
+		/***/ /***/ 44: function(module, exports, __webpack_require__) {
 			'use strict'
 
 			var _Common = __webpack_require__(0)
 
 			var _Common2 = _interopRequireDefault(_Common)
 
-			var _viewerComponent = __webpack_require__(97)
+			var _viewerComponent = __webpack_require__(94)
 
 			var _viewerComponent2 = _interopRequireDefault(_viewerComponent)
 
@@ -150,7 +150,7 @@
 			/***/
 		},
 
-		/***/ 97: /***/ function(module, exports, __webpack_require__) {
+		/***/ /***/ 94: function(module, exports, __webpack_require__) {
 			'use strict'
 
 			Object.defineProperty(exports, '__esModule', {
@@ -174,7 +174,7 @@
 				}
 			})()
 
-			__webpack_require__(170)
+			__webpack_require__(162)
 
 			var _Common = __webpack_require__(0)
 

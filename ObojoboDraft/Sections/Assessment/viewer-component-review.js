@@ -1,9 +1,12 @@
 import Viewer from 'Viewer'
 import Common from 'Common'
+// import ReviewIcon from 'svg-url-loader?noquotes!./review-icon.svg'
+import ReviewIcon from './review-icon.js'
 
 const { AssessmentUtil } = Viewer.util
 const { NavUtil } = Viewer.util
 const { OboModel } = Common.models
+const { Button } = Common.components
 
 const assessmentReviewView = assessment => {
 	let attemptReviewComponents = {}
@@ -16,8 +19,38 @@ const assessmentReviewView = assessment => {
 	let attemptReviewComponent = (attempt, assessment) => {
 		return (
 			<div className="review">
-				<h1>{`Attempt ${attempt.attemptNumber}`}</h1>
-				<h2>{`Score: ${attempt.attemptScore}`}</h2>
+				<div className="attempt-header">
+					<ReviewIcon
+						height="50px"
+						width="50px"
+						css={{
+							position: 'absolute',
+							transform: 'translate(-5px,10px)'
+						}}
+					/>
+					<div className="attempt-info-container">
+						<h4>
+							<strong>{`Attempt ${attempt.attemptNumber}`}</strong>
+						</h4>
+						<div className="attempt-info-content">
+							<ul>
+								<li>Completed 4/15/18 at 5:15pm</li>
+								<li>1 out of 4 questions correct</li>
+							</ul>
+						</div>
+					</div>
+					<div className="score-section">
+						<ul className="credit-breakdown">
+							<li>Attempt Score: 20%</li>
+							<li>+ Extra Credit: 5%</li>
+							<li>+ Extra Credit: 5%</li>
+						</ul>
+						<h1>
+							{`${attempt.attemptScore}`}
+							<div id="attempt-percent">%</div>
+						</h1>
+					</div>
+				</div>
 				{attempt.questionScores.map(scoreObj => {
 					const questionModel = OboModel.models[scoreObj.id]
 					const QuestionComponent = questionModel.getComponentClass()
@@ -47,17 +80,18 @@ const assessmentReviewView = assessment => {
 
 	let attemptButtons = attempts.map((attempt, index) => {
 		return (
-			<button onClick={() => NavUtil.setContext(`assessmentReview:${attempt.attemptId}`)}>
-				Attempt #{attempt.attemptNumber}
-			</button>
+			<Button onClick={() => NavUtil.setContext(`assessmentReview:${attempt.attemptId}`)}>
+				{attempt.attemptNumber}
+			</Button>
 		)
 	})
 
 	return (
-		<div className="score unlock">
-			{attemptButtons}
+		<div className="attempt-review-container">
+			<div className="attempt-button-container">
+				{attemptButtons}
+			</div>
 			{attemptReviewComponents[context]}
-			{attemptButtons}
 		</div>
 	)
 }

@@ -57,10 +57,10 @@
 			module && module.__esModule
 				? /******/ function getDefault() {
 						return module['default']
-				  }
+					}
 				: /******/ function getModuleExports() {
 						return module
-				  }
+					}
 		/******/ __webpack_require__.d(getter, 'a', getter)
 		/******/ return getter
 		/******/
@@ -72,40 +72,40 @@
 	/******/
 	/******/ /******/ __webpack_require__.p = 'build/' // Load entry module and return exports
 	/******/
-	/******/ /******/ return __webpack_require__((__webpack_require__.s = 190))
+	/******/ /******/ return __webpack_require__((__webpack_require__.s = 182))
 	/******/
 })(
 	/************************************************************************/
 	/******/ {
-		/***/ 0: /***/ function(module, exports) {
+		/***/ /***/ 0: function(module, exports) {
 			module.exports = Common
 
 			/***/
 		},
 
-		/***/ 1: /***/ function(module, exports) {
+		/***/ /***/ 1: function(module, exports) {
 			module.exports = Viewer
 
 			/***/
 		},
 
-		/***/ 168: /***/ function(module, exports) {
+		/***/ /***/ 160: function(module, exports) {
 			// removed by extract-text-webpack-plugin
 			/***/
 		},
 
-		/***/ 169: /***/ function(module, exports) {
+		/***/ /***/ 161: function(module, exports) {
 			// removed by extract-text-webpack-plugin
 			/***/
 		},
 
-		/***/ 190: /***/ function(module, exports, __webpack_require__) {
-			module.exports = __webpack_require__(47)
+		/***/ /***/ 182: function(module, exports, __webpack_require__) {
+			module.exports = __webpack_require__(43)
 
 			/***/
 		},
 
-		/***/ 21: /***/ function(module, exports, __webpack_require__) {
+		/***/ /***/ 20: function(module, exports, __webpack_require__) {
 			'use strict'
 
 			Object.defineProperty(exports, '__esModule', {
@@ -120,13 +120,20 @@
 
 			var _Common2 = _interopRequireDefault(_Common)
 
+			var _reviewIcon = __webpack_require__(88)
+
+			var _reviewIcon2 = _interopRequireDefault(_reviewIcon)
+
 			function _interopRequireDefault(obj) {
 				return obj && obj.__esModule ? obj : { default: obj }
 			}
 
 			var AssessmentUtil = _Viewer2.default.util.AssessmentUtil
+			// import ReviewIcon from 'svg-url-loader?noquotes!./review-icon.svg'
+
 			var NavUtil = _Viewer2.default.util.NavUtil
 			var OboModel = _Common2.default.models.OboModel
+			var Button = _Common2.default.components.Button
 
 			var assessmentReviewView = function assessmentReviewView(assessment) {
 				var attemptReviewComponents = {}
@@ -140,8 +147,54 @@
 					return React.createElement(
 						'div',
 						{ className: 'review' },
-						React.createElement('h1', null, 'Attempt ' + attempt.attemptNumber),
-						React.createElement('h2', null, 'Score: ' + attempt.attemptScore),
+						React.createElement(
+							'div',
+							{ className: 'attempt-header' },
+							React.createElement(_reviewIcon2.default, {
+								height: '50px',
+								width: '50px',
+								css: {
+									position: 'absolute',
+									transform: 'translate(-5px,10px)'
+								}
+							}),
+							React.createElement(
+								'div',
+								{ className: 'attempt-info-container' },
+								React.createElement(
+									'h4',
+									null,
+									React.createElement('strong', null, 'Attempt ' + attempt.attemptNumber)
+								),
+								React.createElement(
+									'div',
+									{ className: 'attempt-info-content' },
+									React.createElement(
+										'ul',
+										null,
+										React.createElement('li', null, 'Completed 4/15/18 at 5:15pm'),
+										React.createElement('li', null, '1 out of 4 questions correct')
+									)
+								)
+							),
+							React.createElement(
+								'div',
+								{ className: 'score-section' },
+								React.createElement(
+									'ul',
+									{ className: 'credit-breakdown' },
+									React.createElement('li', null, 'Attempt Score: 20%'),
+									React.createElement('li', null, '+ Extra Credit: 5%'),
+									React.createElement('li', null, '+ Extra Credit: 5%')
+								),
+								React.createElement(
+									'h1',
+									null,
+									'' + attempt.attemptScore,
+									React.createElement('div', { id: 'attempt-percent' }, '%')
+								)
+							)
+						),
 						attempt.questionScores.map(function(scoreObj) {
 							var questionModel = OboModel.models[scoreObj.id]
 							var QuestionComponent = questionModel.getComponentClass()
@@ -168,23 +221,21 @@
 
 				var attemptButtons = attempts.map(function(attempt, index) {
 					return React.createElement(
-						'button',
+						Button,
 						{
 							onClick: function onClick() {
 								return NavUtil.setContext('assessmentReview:' + attempt.attemptId)
 							}
 						},
-						'Attempt #',
 						attempt.attemptNumber
 					)
 				})
 
 				return React.createElement(
 					'div',
-					{ className: 'score unlock' },
-					attemptButtons,
-					attemptReviewComponents[context],
-					attemptButtons
+					{ className: 'attempt-review-container' },
+					React.createElement('div', { className: 'attempt-button-container' }, attemptButtons),
+					attemptReviewComponents[context]
 				)
 			}
 
@@ -193,7 +244,7 @@
 			/***/
 		},
 
-		/***/ 47: /***/ function(module, exports, __webpack_require__) {
+		/***/ /***/ 43: function(module, exports, __webpack_require__) {
 			'use strict'
 
 			var _Common = __webpack_require__(0)
@@ -204,11 +255,11 @@
 
 			var _Viewer2 = _interopRequireDefault(_Viewer)
 
-			var _adapter = __webpack_require__(89)
+			var _adapter = __webpack_require__(85)
 
 			var _adapter2 = _interopRequireDefault(_adapter)
 
-			var _viewerComponent = __webpack_require__(96)
+			var _viewerComponent = __webpack_require__(93)
 
 			var _viewerComponent2 = _interopRequireDefault(_viewerComponent)
 
@@ -273,14 +324,14 @@
 			/***/
 		},
 
-		/***/ 89: /***/ function(module, exports, __webpack_require__) {
+		/***/ /***/ 85: function(module, exports, __webpack_require__) {
 			'use strict'
 
 			Object.defineProperty(exports, '__esModule', {
 				value: true
 			})
 
-			var _scoreActions = __webpack_require__(92)
+			var _scoreActions = __webpack_require__(89)
 
 			var _scoreActions2 = _interopRequireDefault(_scoreActions)
 
@@ -341,7 +392,7 @@
 			/***/
 		},
 
-		/***/ 90: /***/ function(module, exports, __webpack_require__) {
+		/***/ /***/ 86: function(module, exports, __webpack_require__) {
 			'use strict'
 
 			Object.defineProperty(exports, '__esModule', {
@@ -412,9 +463,8 @@
 
 					return _possibleConstructorReturn(
 						this,
-						(
-							AttemptIncompleteDialog.__proto__ || Object.getPrototypeOf(AttemptIncompleteDialog)
-						).apply(this, arguments)
+						(AttemptIncompleteDialog.__proto__ || Object.getPrototypeOf(AttemptIncompleteDialog))
+							.apply(this, arguments)
 					)
 				}
 
@@ -469,7 +519,7 @@
 			/***/
 		},
 
-		/***/ 91: /***/ function(module, exports, __webpack_require__) {
+		/***/ /***/ 87: function(module, exports, __webpack_require__) {
 			'use strict'
 
 			Object.defineProperty(exports, '__esModule', {
@@ -493,7 +543,7 @@
 				}
 			})()
 
-			__webpack_require__(168)
+			__webpack_require__(160)
 
 			var _Common = __webpack_require__(0)
 
@@ -628,7 +678,7 @@
 												' has expired and just needs to be refreshed. Please close this tab or window, reopen this module from ' +
 												location +
 												', return to this page and then resend your score.'
-									  ),
+										),
 								(function() {
 									switch (ltiState.networkState) {
 										case LTINetworkStates.AWAITING_SEND_ASSESSMENT_SCORE_RESPONSE:
@@ -658,7 +708,113 @@
 			/***/
 		},
 
-		/***/ 92: /***/ function(module, exports, __webpack_require__) {
+		/***/ /***/ 88: function(module, exports, __webpack_require__) {
+			'use strict'
+
+			Object.defineProperty(exports, '__esModule', {
+				value: true
+			})
+
+			exports.default = function(props) {
+				console.log('props', props)
+				return React.createElement(
+					'svg',
+					{
+						xmlns: 'http://www.w3.org/2000/svg',
+						viewBox: '0 0 114.33 114.33',
+						height: props.height,
+						width: props.width,
+						style: props.css
+					},
+					React.createElement(
+						'defs',
+						null,
+						React.createElement(
+							'style',
+							null,
+							'.cls-1{fill:#eadff6;}.cls-2{fill:#fff;}.cls-3{fill:#d7c6ed;}.cls-4{fill:#8fb9eb;}.cls-5{fill:#e8f3e2;}.cls-6{fill:#77b851;}'
+						)
+					),
+					React.createElement('title', null, 'obo-assessment-review-icon'),
+					React.createElement('circle', {
+						className: 'cls-1',
+						cx: '57.17',
+						cy: '57.17',
+						r: '57.17'
+					}),
+					React.createElement('rect', {
+						className: 'cls-2',
+						x: '32.5',
+						y: '28.87',
+						width: '49.33',
+						height: '56.6',
+						rx: '3.72',
+						ry: '3.72'
+					}),
+					React.createElement('path', {
+						className: 'cls-3',
+						d:
+							'M43.15,39.35a4.06,4.06,0,1,0,4.06,4.06A4.06,4.06,0,0,0,43.15,39.35Zm0,6.31a2.25,2.25,0,1,1,2.25-2.25A2.25,2.25,0,0,1,43.15,45.67Z'
+					}),
+					React.createElement('rect', {
+						className: 'cls-3',
+						x: '51.5',
+						y: '41.29',
+						width: '23.75',
+						height: '4.25',
+						rx: '2.12',
+						ry: '2.12'
+					}),
+					React.createElement('path', {
+						className: 'cls-3',
+						d:
+							'M43.15,53.1a4.06,4.06,0,1,0,4.06,4.06A4.06,4.06,0,0,0,43.15,53.1Zm0,6.31a2.25,2.25,0,1,1,2.25-2.25A2.25,2.25,0,0,1,43.15,59.42Z'
+					}),
+					React.createElement('rect', {
+						className: 'cls-3',
+						x: '51.5',
+						y: '55.04',
+						width: '23.75',
+						height: '4.25',
+						rx: '2.12',
+						ry: '2.12'
+					}),
+					React.createElement('path', {
+						className: 'cls-3',
+						d: 'M43.15,66.85a4.06,4.06,0,1,0,4.06,4.06A4.06,4.06,0,0,0,43.15,66.85Z'
+					}),
+					React.createElement('rect', {
+						className: 'cls-3',
+						x: '51.5',
+						y: '68.79',
+						width: '23.75',
+						height: '4.25',
+						rx: '2.12',
+						ry: '2.12'
+					}),
+					React.createElement('path', {
+						className: 'cls-2',
+						d:
+							'M91.27,81.5l-5.39-5.39a15.3,15.3,0,1,0-7.65,7.74l5.35,5.35a3.53,3.53,0,0,0,5,0l2.72-2.72A3.53,3.53,0,0,0,91.27,81.5Z'
+					}),
+					React.createElement('path', {
+						className: 'cls-4',
+						d:
+							'M88.24,83.1,82,76.86A11.87,11.87,0,1,0,78.82,80l6.24,6.24a1.25,1.25,0,0,0,1.76,0l1.42-1.42A1.25,1.25,0,0,0,88.24,83.1Z'
+					}),
+					React.createElement('circle', { className: 'cls-5', cx: '72.16', cy: '70.2', r: '8.79' }),
+					React.createElement('path', {
+						className: 'cls-6',
+						d:
+							'M78.18,67.41l-1.75-1.75a.67.67,0,0,0-.94,0l-4.17,4.17L69.46,68a.67.67,0,0,0-.94,0l-1.75,1.75a.67.67,0,0,0,0,.94l2.72,2.72h0l1.35,1.35a.67.67,0,0,0,.94,0l6.39-6.39A.67.67,0,0,0,78.18,67.41Z'
+					})
+				)
+			}
+
+			/***/
+		},
+
+		/***/ /***/ 89: function(module, exports, __webpack_require__) {
 			'use strict'
 
 			Object.defineProperty(exports, '__esModule', {
@@ -758,7 +914,7 @@
 			/***/
 		},
 
-		/***/ 93: /***/ function(module, exports, __webpack_require__) {
+		/***/ /***/ 90: function(module, exports, __webpack_require__) {
 			'use strict'
 
 			Object.defineProperty(exports, '__esModule', {
@@ -773,11 +929,11 @@
 
 			var _Viewer2 = _interopRequireDefault(_Viewer)
 
-			var _ltiStatus = __webpack_require__(91)
+			var _ltiStatus = __webpack_require__(87)
 
 			var _ltiStatus2 = _interopRequireDefault(_ltiStatus)
 
-			var _viewerComponentReview = __webpack_require__(21)
+			var _viewerComponentReview = __webpack_require__(20)
 
 			var _viewerComponentReview2 = _interopRequireDefault(_viewerComponentReview)
 
@@ -868,34 +1024,30 @@
 						{ className: 'results-bar' },
 						React.createElement('h1', null, assessmentLabel, ' - How You Did'),
 						React.createElement(
-							'table',
-							null,
+							'div',
+							{ className: 'assessment-flex-container' },
 							React.createElement(
-								'thead',
-								null,
+								'div',
+								{ className: 'last-attempt' },
+								React.createElement('div', null, 'Last Attempt Score'),
+								React.createElement('div', null, Math.round(recentScore), '%')
+							),
+							React.createElement(
+								'div',
+								{ className: 'retained-score' },
+								React.createElement('div', null, 'Retained Score'),
 								React.createElement(
-									'tr',
+									'div',
 									null,
-									React.createElement('th', null, 'Last Attempt Score'),
-									React.createElement('th', null, 'Retained Score'),
-									React.createElement('th', null, 'Attempts Remaining')
+									assessmentScore === null ? '--' : Math.round(assessmentScore),
+									'%'
 								)
 							),
 							React.createElement(
-								'tbody',
-								null,
-								React.createElement(
-									'tr',
-									null,
-									React.createElement('td', null, Math.round(recentScore), '%'),
-									React.createElement(
-										'td',
-										null,
-										assessmentScore === null ? '--' : Math.round(assessmentScore),
-										'%'
-									),
-									React.createElement('td', null, attemptsRemaining)
-								)
+								'div',
+								{ className: 'attempts-remaining' },
+								React.createElement('div', null, 'Attempts Remaining'),
+								React.createElement('div', null, attemptsRemaining)
 							)
 						),
 						React.createElement(_ltiStatus2.default, {
@@ -923,7 +1075,7 @@
 								questionScores.map(function(questionScore, index) {
 									return questionResultView(assessment.props, questionScore, index)
 								})
-						  )
+							)
 				)
 			}
 
@@ -955,7 +1107,7 @@
 			/***/
 		},
 
-		/***/ 94: /***/ function(module, exports, __webpack_require__) {
+		/***/ /***/ 91: function(module, exports, __webpack_require__) {
 			'use strict'
 
 			Object.defineProperty(exports, '__esModule', {
@@ -1012,7 +1164,7 @@
 			/***/
 		},
 
-		/***/ 95: /***/ function(module, exports, __webpack_require__) {
+		/***/ /***/ 92: function(module, exports, __webpack_require__) {
 			'use strict'
 
 			Object.defineProperty(exports, '__esModule', {
@@ -1034,7 +1186,7 @@
 			/***/
 		},
 
-		/***/ 96: /***/ function(module, exports, __webpack_require__) {
+		/***/ /***/ 93: function(module, exports, __webpack_require__) {
 			'use strict'
 
 			Object.defineProperty(exports, '__esModule', {
@@ -1058,7 +1210,7 @@
 				}
 			})()
 
-			__webpack_require__(169)
+			__webpack_require__(161)
 
 			var _Common = __webpack_require__(0)
 
@@ -1068,23 +1220,23 @@
 
 			var _Viewer2 = _interopRequireDefault(_Viewer)
 
-			var _attemptIncompleteDialog = __webpack_require__(90)
+			var _attemptIncompleteDialog = __webpack_require__(86)
 
 			var _attemptIncompleteDialog2 = _interopRequireDefault(_attemptIncompleteDialog)
 
-			var _viewerComponentUntested = __webpack_require__(95)
+			var _viewerComponentUntested = __webpack_require__(92)
 
 			var _viewerComponentUntested2 = _interopRequireDefault(_viewerComponentUntested)
 
-			var _viewerComponentReview = __webpack_require__(21)
+			var _viewerComponentReview = __webpack_require__(20)
 
 			var _viewerComponentReview2 = _interopRequireDefault(_viewerComponentReview)
 
-			var _viewerComponentScoreSubmitted = __webpack_require__(93)
+			var _viewerComponentScoreSubmitted = __webpack_require__(90)
 
 			var _viewerComponentScoreSubmitted2 = _interopRequireDefault(_viewerComponentScoreSubmitted)
 
-			var _viewerComponentTakingTest = __webpack_require__(94)
+			var _viewerComponentTakingTest = __webpack_require__(91)
 
 			var _viewerComponentTakingTest2 = _interopRequireDefault(_viewerComponentTakingTest)
 

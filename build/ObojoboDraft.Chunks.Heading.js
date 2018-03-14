@@ -57,10 +57,10 @@
 			module && module.__esModule
 				? /******/ function getDefault() {
 						return module['default']
-				  }
+					}
 				: /******/ function getModuleExports() {
 						return module
-				  }
+					}
 		/******/ __webpack_require__.d(getter, 'a', getter)
 		/******/ return getter
 		/******/
@@ -72,40 +72,40 @@
 	/******/
 	/******/ /******/ __webpack_require__.p = 'build/' // Load entry module and return exports
 	/******/
-	/******/ /******/ return __webpack_require__((__webpack_require__.s = 177))
+	/******/ /******/ return __webpack_require__((__webpack_require__.s = 169))
 	/******/
 })(
 	/************************************************************************/
 	/******/ {
-		/***/ 0: /***/ function(module, exports) {
+		/***/ /***/ 0: function(module, exports) {
 			module.exports = Common
 
 			/***/
 		},
 
-		/***/ 153: /***/ function(module, exports) {
+		/***/ /***/ 145: function(module, exports) {
 			// removed by extract-text-webpack-plugin
 			/***/
 		},
 
-		/***/ 177: /***/ function(module, exports, __webpack_require__) {
-			module.exports = __webpack_require__(35)
+		/***/ /***/ 169: function(module, exports, __webpack_require__) {
+			module.exports = __webpack_require__(31)
 
 			/***/
 		},
 
-		/***/ 35: /***/ function(module, exports, __webpack_require__) {
+		/***/ /***/ 31: function(module, exports, __webpack_require__) {
 			'use strict'
 
 			var _Common = __webpack_require__(0)
 
 			var _Common2 = _interopRequireDefault(_Common)
 
-			var _adapter = __webpack_require__(62)
+			var _adapter = __webpack_require__(58)
 
 			var _adapter2 = _interopRequireDefault(_adapter)
 
-			var _viewerComponent = __webpack_require__(63)
+			var _viewerComponent = __webpack_require__(59)
 
 			var _viewerComponent2 = _interopRequireDefault(_viewerComponent)
 
@@ -137,12 +137,7 @@
 							return {
 								type: 'sub-link',
 								label: model.modelState.textGroup.first.text,
-								path: [
-									model
-										.toText()
-										.toLowerCase()
-										.replace(/ /g, '-')
-								],
+								path: [model.toText().toLowerCase().replace(/ /g, '-')],
 								showChildren: false
 							}
 
@@ -155,7 +150,7 @@
 			/***/
 		},
 
-		/***/ 62: /***/ function(module, exports, __webpack_require__) {
+		/***/ /***/ 58: function(module, exports, __webpack_require__) {
 			'use strict'
 
 			Object.defineProperty(exports, '__esModule', {
@@ -221,7 +216,7 @@
 			/***/
 		},
 
-		/***/ 63: /***/ function(module, exports, __webpack_require__) {
+		/***/ /***/ 59: function(module, exports, __webpack_require__) {
 			'use strict'
 
 			Object.defineProperty(exports, '__esModule', {
@@ -245,7 +240,7 @@
 				}
 			})()
 
-			__webpack_require__(153)
+			__webpack_require__(145)
 
 			var _Common = __webpack_require__(0)
 

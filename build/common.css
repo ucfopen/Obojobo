@@ -64,17 +64,16 @@
     cursor: pointer;
     font-family: "Libre Franklin", Arial, sans-serif;
     font-size: 0.85em;
-    opacity: 0.8;
     position: relative;
     min-width: 3.25em;
     border-radius: .2em;
     padding: .6rem 1em;
-    background-color: #6714BD;
+    background-color: #9a4bec;
     color: #FFFFFF;
     border: 1px solid transparent;
     border-bottom: 1px solid #350a61; }
     .obojobo-draft--components--button button:hover {
-      opacity: 1; }
+      background-color: #6714BD; }
     .obojobo-draft--components--button button:disabled {
       background-color: #F4F4F4;
       cursor: default;

@@ -57,10 +57,10 @@
 			module && module.__esModule
 				? /******/ function getDefault() {
 						return module['default']
-				  }
+					}
 				: /******/ function getModuleExports() {
 						return module
-				  }
+					}
 		/******/ __webpack_require__.d(getter, 'a', getter)
 		/******/ return getter
 		/******/
@@ -72,29 +72,29 @@
 	/******/
 	/******/ /******/ __webpack_require__.p = 'build/' // Load entry module and return exports
 	/******/
-	/******/ /******/ return __webpack_require__((__webpack_require__.s = 185))
+	/******/ /******/ return __webpack_require__((__webpack_require__.s = 177))
 	/******/
 })(
 	/************************************************************************/
 	/******/ {
-		/***/ 0: /***/ function(module, exports) {
+		/***/ /***/ 0: function(module, exports) {
 			module.exports = Common
 
 			/***/
 		},
 
-		/***/ 163: /***/ function(module, exports) {
+		/***/ /***/ 155: function(module, exports) {
 			// removed by extract-text-webpack-plugin
 			/***/
 		},
 
-		/***/ 185: /***/ function(module, exports, __webpack_require__) {
-			module.exports = __webpack_require__(42)
+		/***/ /***/ 177: function(module, exports, __webpack_require__) {
+			module.exports = __webpack_require__(38)
 
 			/***/
 		},
 
-		/***/ 19: /***/ function(module, exports, __webpack_require__) {
+		/***/ /***/ 18: function(module, exports, __webpack_require__) {
 			'use strict'
 
 			Object.defineProperty(exports, '__esModule', {
@@ -168,12 +168,8 @@
 
 					var _this = _possibleConstructorReturn(
 						this,
-						(GridTextGroup.__proto__ || Object.getPrototypeOf(GridTextGroup)).call(
-							this,
-							numRows * numCols,
-							dataTemplate,
-							initialItems
-						)
+						(GridTextGroup.__proto__ || Object.getPrototypeOf(GridTextGroup))
+							.call(this, numRows * numCols, dataTemplate, initialItems)
 					)
 
 					_this.numRows = numRows
@@ -380,20 +376,13 @@
 									item = void 0
 								console.log('========================')
 								return __range__(0, this.numRows, false).map(function(row) {
-									return (
-										// console.log 'row', row
-										(s = []),
-										__range__(0, _this2.numCols, false).map(function(col) {
-											return (
-												// console.log '  col', col
-												(i = row * _this2.numCols + col),
-												// console.log '    i', i
-												(item = _this2.items[i]),
-												s.push((item.text.value + '          ').substr(0, 10))
-											)
-										}),
-										console.log(s)
-									)
+									return (// console.log 'row', row
+										(s = []), __range__(0, _this2.numCols, false).map(function(col) {
+											return (// console.log '  col', col
+												(i = row * _this2.numCols + col), // console.log '    i', i
+												(item =
+													_this2.items[i]), s.push((item.text.value + '          ').substr(0, 10)) )
+										}), console.log(s) )
 								})
 							}
 						}
@@ -496,7 +485,7 @@
 			/***/
 		},
 
-		/***/ 20: /***/ function(module, exports, __webpack_require__) {
+		/***/ /***/ 19: function(module, exports, __webpack_require__) {
 			'use strict'
 
 			Object.defineProperty(exports, '__esModule', {
@@ -569,10 +558,8 @@
 
 					return _possibleConstructorReturn(
 						this,
-						(SelectionHandler.__proto__ || Object.getPrototypeOf(SelectionHandler)).apply(
-							this,
-							arguments
-						)
+						(SelectionHandler.__proto__ || Object.getPrototypeOf(SelectionHandler))
+							.apply(this, arguments)
 					)
 				}
 
@@ -597,22 +584,22 @@
 			/***/
 		},
 
-		/***/ 42: /***/ function(module, exports, __webpack_require__) {
+		/***/ /***/ 38: function(module, exports, __webpack_require__) {
 			'use strict'
 
 			var _Common = __webpack_require__(0)
 
 			var _Common2 = _interopRequireDefault(_Common)
 
-			var _selectionHandler = __webpack_require__(20)
+			var _selectionHandler = __webpack_require__(19)
 
 			var _selectionHandler2 = _interopRequireDefault(_selectionHandler)
 
-			var _adapter = __webpack_require__(81)
+			var _adapter = __webpack_require__(77)
 
 			var _adapter2 = _interopRequireDefault(_adapter)
 
-			var _viewerComponent = __webpack_require__(82)
+			var _viewerComponent = __webpack_require__(78)
 
 			var _viewerComponent2 = _interopRequireDefault(_viewerComponent)
 
@@ -630,14 +617,14 @@
 			/***/
 		},
 
-		/***/ 81: /***/ function(module, exports, __webpack_require__) {
+		/***/ /***/ 77: function(module, exports, __webpack_require__) {
 			'use strict'
 
 			Object.defineProperty(exports, '__esModule', {
 				value: true
 			})
 
-			var _gridTextGroup = __webpack_require__(19)
+			var _gridTextGroup = __webpack_require__(18)
 
 			var _gridTextGroup2 = _interopRequireDefault(_gridTextGroup)
 
@@ -754,7 +741,7 @@
 			/***/
 		},
 
-		/***/ 82: /***/ function(module, exports, __webpack_require__) {
+		/***/ /***/ 78: function(module, exports, __webpack_require__) {
 			'use strict'
 
 			Object.defineProperty(exports, '__esModule', {
@@ -778,13 +765,13 @@
 				}
 			})()
 
-			__webpack_require__(163)
+			__webpack_require__(155)
 
-			var _gridTextGroup = __webpack_require__(19)
+			var _gridTextGroup = __webpack_require__(18)
 
 			var _gridTextGroup2 = _interopRequireDefault(_gridTextGroup)
 
-			var _selectionHandler = __webpack_require__(20)
+			var _selectionHandler = __webpack_require__(19)
 
 			var _selectionHandler2 = _interopRequireDefault(_selectionHandler)
 

@@ -57,10 +57,10 @@
 			module && module.__esModule
 				? /******/ function getDefault() {
 						return module['default']
-				  }
+					}
 				: /******/ function getModuleExports() {
 						return module
-				  }
+					}
 		/******/ __webpack_require__.d(getter, 'a', getter)
 		/******/ return getter
 		/******/
@@ -72,46 +72,46 @@
 	/******/
 	/******/ /******/ __webpack_require__.p = 'build/' // Load entry module and return exports
 	/******/
-	/******/ /******/ return __webpack_require__((__webpack_require__.s = 176))
+	/******/ /******/ return __webpack_require__((__webpack_require__.s = 168))
 	/******/
 })(
 	/************************************************************************/
 	/******/ {
-		/***/ 0: /***/ function(module, exports) {
+		/***/ /***/ 0: function(module, exports) {
 			module.exports = Common
 
 			/***/
 		},
 
-		/***/ 152: /***/ function(module, exports) {
+		/***/ /***/ 144: function(module, exports) {
 			// removed by extract-text-webpack-plugin
 			/***/
 		},
 
-		/***/ 17: /***/ function(module, exports) {
+		/***/ /***/ 16: function(module, exports) {
 			module.exports = katex
 
 			/***/
 		},
 
-		/***/ 176: /***/ function(module, exports, __webpack_require__) {
-			module.exports = __webpack_require__(34)
+		/***/ /***/ 168: function(module, exports, __webpack_require__) {
+			module.exports = __webpack_require__(30)
 
 			/***/
 		},
 
-		/***/ 34: /***/ function(module, exports, __webpack_require__) {
+		/***/ /***/ 30: function(module, exports, __webpack_require__) {
 			'use strict'
 
 			var _Common = __webpack_require__(0)
 
 			var _Common2 = _interopRequireDefault(_Common)
 
-			var _adapter = __webpack_require__(60)
+			var _adapter = __webpack_require__(56)
 
 			var _adapter2 = _interopRequireDefault(_adapter)
 
-			var _viewerComponent = __webpack_require__(61)
+			var _viewerComponent = __webpack_require__(57)
 
 			var _viewerComponent2 = _interopRequireDefault(_viewerComponent)
 
@@ -131,7 +131,7 @@
 			/***/
 		},
 
-		/***/ 60: /***/ function(module, exports, __webpack_require__) {
+		/***/ /***/ 56: function(module, exports, __webpack_require__) {
 			'use strict'
 
 			Object.defineProperty(exports, '__esModule', {
@@ -184,7 +184,7 @@
 			/***/
 		},
 
-		/***/ 61: /***/ function(module, exports, __webpack_require__) {
+		/***/ /***/ 57: function(module, exports, __webpack_require__) {
 			'use strict'
 
 			Object.defineProperty(exports, '__esModule', {
@@ -208,9 +208,9 @@
 				}
 			})()
 
-			__webpack_require__(152)
+			__webpack_require__(144)
 
-			var _katex = __webpack_require__(17)
+			var _katex = __webpack_require__(16)
 
 			var _katex2 = _interopRequireDefault(_katex)
 

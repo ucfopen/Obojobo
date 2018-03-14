@@ -86,28 +86,28 @@ const scoreSubmittedView = assessment => {
 				<h1>
 					{assessmentLabel} - How You Did
 				</h1>
-				<table>
-					<thead>
-						<tr>
-							<th>Last Attempt Score</th>
-							<th>Retained Score</th>
-							<th>Attempts Remaining</th>
-						</tr>
-					</thead>
-					<tbody>
-						<tr>
-							<td>
-								{Math.round(recentScore)}%
-							</td>
-							<td>
-								{assessmentScore === null ? '--' : Math.round(assessmentScore)}%
-							</td>
-							<td>
-								{attemptsRemaining}
-							</td>
-						</tr>
-					</tbody>
-				</table>
+
+				<div className="assessment-flex-container">
+					<div className="last-attempt">
+						<div>Last Attempt Score</div>
+						<div>
+							{Math.round(recentScore)}%
+						</div>
+					</div>
+					<div className="retained-score">
+						<div>Retained Score</div>
+						<div>
+							{assessmentScore === null ? '--' : Math.round(assessmentScore)}%
+						</div>
+					</div>
+					<div className="attempts-remaining">
+						<div>Attempts Remaining</div>
+						<div>
+							{attemptsRemaining}
+						</div>
+					</div>
+				</div>
+
 				<LTIStatus
 					ltiState={ltiState}
 					launch={Launch}

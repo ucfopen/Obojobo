@@ -12,25 +12,74 @@
   font-family: "Libre Franklin", Arial, sans-serif;
   text-align: center;
   background-color: #F4F4F4;
-  border-radius: 0.25em; }
+  border-radius: 0.25em;
+  padding: 3em; }
   .obojobo-draft--sections--assessment > .score > .results-bar > h1 {
-    width: calc(100% - 6em / 1.35);
+    width: 100%;
     display: inline-block;
     font-weight: normal;
     font-size: 1.35em;
     border-bottom: 1px solid rgba(0, 0, 0, 0.3);
     padding: 1em 0;
     box-sizing: border-box; }
-  .obojobo-draft--sections--assessment > .score > .results-bar table {
-    width: 100%;
-    padding: 1em 3em;
-    margin: 0 auto;
-    box-sizing: border-box; }
-    .obojobo-draft--sections--assessment > .score > .results-bar table th {
-      font-size: 0.9em;
-      padding-bottom: 0.5em; }
-    .obojobo-draft--sections--assessment > .score > .results-bar table td {
-      font-size: 2em; }
+
+.obojobo-draft--sections--assessment .attempt-header {
+  display: flex;
+  justify-content: space-between; }
+  .obojobo-draft--sections--assessment .attempt-header > .attempt-info-container {
+    padding-left: 60px; }
+    .obojobo-draft--sections--assessment .attempt-header > .attempt-info-container > ul {
+      margin: 0;
+      list-style-type: none;
+      font-size: .8em; }
+    .obojobo-draft--sections--assessment .attempt-header > .attempt-info-container > .attempt-info-content {
+      display: flex;
+      list-style-type: none; }
+      .obojobo-draft--sections--assessment .attempt-header > .attempt-info-container > .attempt-info-content > ul {
+        list-style-type: none;
+        padding: 0;
+        margin: 0; }
+  .obojobo-draft--sections--assessment .attempt-header > .score-section {
+    padding-right: 40px;
+    display: flex;
+    align-items: center;
+    flex-direction: row;
+    justify-content: space-between; }
+    .obojobo-draft--sections--assessment .attempt-header > .score-section > ul {
+      margin: 0;
+      margin-right: 2em;
+      padding: 0;
+      list-style-type: none;
+      font-size: .7em;
+      color: gray; }
+    .obojobo-draft--sections--assessment .attempt-header > .score-section > .credit-breakdown {
+      flex-direction: column; }
+
+.obojobo-draft--sections--assessment #attempt-percent {
+  display: inline-block;
+  font-size: .6em;
+  transform: translateY(-35%); }
+
+.obojobo-draft--sections--assessment .attempt-review-container {
+  position: relative; }
+
+.obojobo-draft--sections--assessment .attempt-button-container {
+  position: absolute;
+  top: 0;
+  left: 50%;
+  transform: translate(-50%, -50%); }
+  .obojobo-draft--sections--assessment .attempt-button-container button {
+    margin: 2px; }
+
+.obojobo-draft--sections--assessment .assessment-flex-container {
+  display: flex;
+  justify-content: space-around;
+  margin-top: 1em; }
+  .obojobo-draft--sections--assessment .assessment-flex-container > .retained-score {
+    background-color: white;
+    flex: 2;
+    border-radius: 5%;
+    margin: 0 1em; }
 
 .obojobo-draft--sections--assessment .review {
   text-align: left;
@@ -40,7 +89,8 @@
   padding: 3em;
   margin-top: 3em;
   background: #fdfdfd;
-  border-radius: .2em; }
+  border-radius: .2em;
+  font-size: .8em; }
   .obojobo-draft--sections--assessment .review .number-correct {
     font-family: "Libre Franklin", Arial, sans-serif;
     margin-top: 0;
