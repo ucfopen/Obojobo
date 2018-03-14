@@ -72,7 +72,7 @@
 	/******/
 	/******/ /******/ __webpack_require__.p = 'build/' // Load entry module and return exports
 	/******/
-	/******/ /******/ return __webpack_require__((__webpack_require__.s = 181))
+	/******/ /******/ return __webpack_require__((__webpack_require__.s = 182))
 	/******/
 })(
 	/************************************************************************/
@@ -89,8 +89,403 @@
 			/***/
 		},
 
-		/***/ /***/ 159: function(module, exports) {
-			// removed by extract-text-webpack-plugin
+		/***/ /***/ 138: function(module, exports, __webpack_require__) {
+			'use strict'
+
+			var _createClass = (function() {
+				function defineProperties(target, props) {
+					for (var i = 0; i < props.length; i++) {
+						var descriptor = props[i]
+						descriptor.enumerable = descriptor.enumerable || false
+						descriptor.configurable = true
+						if ('value' in descriptor) descriptor.writable = true
+						Object.defineProperty(target, descriptor.key, descriptor)
+					}
+				}
+				return function(Constructor, protoProps, staticProps) {
+					if (protoProps) defineProperties(Constructor.prototype, protoProps)
+					if (staticProps) defineProperties(Constructor, staticProps)
+					return Constructor
+				}
+			})()
+
+			function _classCallCheck(instance, Constructor) {
+				if (!(instance instanceof Constructor)) {
+					throw new TypeError('Cannot call a class as a function')
+				}
+			}
+
+			/*
+
+* = Optional
+
+Expected input for type 'attempt':
+{
+	type: 'attempt',
+	*mods: Array<Mod> (Default = [])
+}
+
+Expected input for type 'pass-fail':
+{
+	type: 'pass-file',
+	*passingAttemptScore: 0-100 [Default = 100],
+	*passedResult: (0-100 | '$attempt_score') [Default = 100],
+	*failedResult: (0-100 | 'no-score' | '$highest_attempt_score' ) [Default = 0],
+	*unableToPassResult: (0-100 | 'no-score' | '$attempt_score' | '$highest_attempt_score' | null) [Default = null],
+	*mods: Array<Mod> (Default = [])
+}
+
+Mod:
+
+{
+	*attemptCondition: (Number | AttemptRange) [Default = '[1-$last_attempt]'],
+	*scoreCondition: (Number | ScoreRange) [Default = '[0-100]'],
+	reward: Number
+}
+
+AttemptRange:
+	("[" | "(") + (>=1 | '$last_attempt') + "," + (>=1 | '$last_attempt') + ("]" | ")")
+
+ScoreRange:
+	("[" | "(") + (0-100) + "," + (0-100) + ("]" | ")")
+
+(Mods are only applied if PASSING. Mods must contain at least one condition)
+
+*/
+
+			var MOD_AMOUNT_LIMIT = 20
+
+			var getParsedRange = function getParsedRange(range) {
+				if (typeof range === 'undefined' || range === null) return null
+
+				if (range.indexOf(',') === -1) return getParsedRangeFromSingleValue(range)
+
+				var ints = range.replace(/[\(\[\)\] ]+/g, '')
+				var rangeValues = ints.split(',')
+
+				return {
+					min: rangeValues[0],
+					isMinInclusive: range.charAt(0) === '[',
+					max: rangeValues[1],
+					isMaxInclusive: range.charAt(range.length - 1) === ']'
+				}
+			}
+
+			var getParsedRangeFromSingleValue = function getParsedRangeFromSingleValue(value) {
+				if (typeof value === 'undefined' || value === null) return null
+
+				return {
+					min: value,
+					isMinInclusive: true,
+					max: value,
+					isMaxInclusive: true
+				}
+			}
+
+			var getRangeString = function getRangeString(range) {
+				if (range.min === range.max && range.isMinInclusive && range.isMaxInclusive) {
+					return '' + range.min
+				}
+
+				var lhs = range.isMinInclusive ? '[' : '('
+				var rhs = range.isMaxInclusive ? ']' : ')'
+
+				return lhs + range.min + ',' + range.max + rhs
+			}
+
+			var tryGetParsedFloat = function tryGetParsedFloat(value) {
+				var replaceDict = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : {}
+				var allowNull = arguments.length > 2 && arguments[2] !== undefined ? arguments[2] : false
+
+				var replaceDictValue = void 0
+
+				for (var placeholder in replaceDict) {
+					if (value === placeholder) {
+						replaceDictValue = replaceDict[placeholder]
+						value = replaceDictValue === null ? null : parseFloat(replaceDictValue)
+						break
+					}
+				}
+
+				if (allowNull && value === null) {
+					return null
+				}
+
+				var parsedValue = parseFloat(value)
+
+				if (!Number.isFinite(parsedValue))
+					throw new Error(
+						'Unable to parse "' + value + '": Got "' + parsedValue + '" - Unsure how to proceed'
+					)
+
+				return parsedValue
+			}
+
+			var isValueInRange = function isValueInRange(value, range, replaceDict) {
+				// By default a null range is defined to be all-inclusive
+				if (range === null) return true
+
+				var isMinRequirementMet = void 0,
+					isMaxRequirementMet = void 0
+
+				var min = tryGetParsedFloat(range.min, replaceDict)
+				var max = tryGetParsedFloat(range.max, replaceDict)
+
+				if (range.isMinInclusive) {
+					isMinRequirementMet = value >= min
+				} else {
+					isMinRequirementMet = value > min
+				}
+
+				if (range.isMaxInclusive) {
+					isMaxRequirementMet = value <= max
+				} else {
+					isMaxRequirementMet = value < max
+				}
+
+				return isMinRequirementMet && isMaxRequirementMet
+			}
+
+			var getRubricType = function getRubricType(rubric) {
+				return !rubric || !rubric.type ? AssessmentRubric.TYPE_ATTEMPT : rubric.type
+			}
+
+			var createWhitelistedRubric = function createWhitelistedRubric(rubric) {
+				var rubricType = getRubricType(rubric)
+
+				var whitelistedRubric = void 0
+
+				switch (rubricType) {
+					case AssessmentRubric.TYPE_PASS_FAIL:
+						whitelistedRubric = Object.assign(
+							{
+								passingAttemptScore: 100,
+								passedResult: 100,
+								failedResult: 0,
+								unableToPassResult: null
+							},
+							rubric
+						)
+						break
+
+					case AssessmentRubric.TYPE_ATTEMPT:
+					default:
+						whitelistedRubric = {
+							passingAttemptScore: 0,
+							passedResult: AssessmentRubric.VAR_ATTEMPT_SCORE,
+							failedResult: 0,
+							unableToPassResult: null
+						}
+						break
+				}
+
+				return whitelistedRubric
+			}
+
+			var createWhitelistedMod = function createWhitelistedMod(mod) {
+				var parsedReward = void 0
+
+				// Ensure at least one condition exists:
+				if (!(mod.attemptCondition || mod.scoreCondition)) {
+					return null
+				}
+
+				mod = Object.assign(
+					{
+						attemptCondition: '[0,$last_attempt]',
+						scoreCondition: '[0,100]'
+						// dateCondition: null,
+					},
+					mod
+				)
+
+				return {
+					attemptCondition: getParsedRange(mod.attemptCondition.toString()),
+					scoreCondition: getParsedRange(mod.scoreCondition.toString()),
+					reward: mod.reward
+				}
+			}
+
+			var modToObject = function modToObject(whitelistedMod) {
+				return {
+					attemptCondition: getRangeString(whitelistedMod.attemptCondition),
+					scoreCondition: getRangeString(whitelistedMod.scoreCondition),
+					reward: whitelistedMod.reward
+				}
+			}
+
+			var AssessmentRubric = (function() {
+				function AssessmentRubric(rubric) {
+					_classCallCheck(this, AssessmentRubric)
+
+					this.originalRubric = Object.assign(rubric || {})
+
+					var mods = rubric && rubric.mods ? rubric.mods.slice(0, MOD_AMOUNT_LIMIT) : []
+					var parsedScoreRange = void 0,
+						parsedAttemptRange = void 0
+
+					this.rubric = createWhitelistedRubric(rubric)
+					this.type = getRubricType(rubric)
+					this.mods = mods.map(createWhitelistedMod).filter(function(mod) {
+						return mod !== null
+					})
+				}
+
+				_createClass(AssessmentRubric, [
+					{
+						key: 'toObject',
+						value: function toObject() {
+							return {
+								type: this.type,
+								passingAttemptScore: this.rubric.passingAttemptScore,
+								passedResult: this.rubric.passedResult,
+								failedResult: this.rubric.failedResult,
+								unableToPassResult: this.rubric.unableToPassResult,
+								mods: this.mods.map(modToObject)
+							}
+						}
+					},
+					{
+						key: 'clone',
+						value: function clone() {
+							return new AssessmentRubric(this.originalRubric)
+						}
+					},
+					{
+						key: 'getAssessmentScoreInfoForAttempt',
+						value: function getAssessmentScoreInfoForAttempt(
+							totalNumberOfAttemptsAvailable,
+							attemptScores
+						) {
+							if (attemptScores.length === 0) return null
+
+							var highestAttemptScore = Math.max.apply(null, attemptScores)
+							var highestAttemptNumber =
+								attemptScores.reduce(function(iMax, x, i, arr) {
+									return x >= arr[iMax] ? i : iMax
+								}, 0) + 1
+							var latestAttemptScore = attemptScores[attemptScores.length - 1]
+							var attemptNumber = attemptScores.length
+							var isLastAttempt = attemptNumber === totalNumberOfAttemptsAvailable
+
+							var rewardedMods = []
+							var rewardedModsIndicies = []
+							var rewardTotal = 0
+							var assessmentScore = void 0
+							var status = void 0
+							var attemptScore = void 0
+
+							var attemptReplaceDict = {}
+							attemptReplaceDict[AssessmentRubric.VAR_LAST_ATTEMPT] = totalNumberOfAttemptsAvailable
+
+							var scoreReplaceDict = {}
+
+							if (latestAttemptScore >= this.rubric.passingAttemptScore) {
+								status = AssessmentRubric.STATUS_PASSED
+							} else if (
+								isLastAttempt &&
+								this.rubric.unableToPassResult !== null &&
+								highestAttemptScore < this.rubric.passingAttemptScore
+							) {
+								status = AssessmentRubric.STATUS_UNABLE_TO_PASS
+							} else {
+								status = AssessmentRubric.STATUS_FAILED
+							}
+
+							switch (status) {
+								case AssessmentRubric.STATUS_UNABLE_TO_PASS:
+									scoreReplaceDict[AssessmentRubric.VAR_HIGHEST_ATTEMPT_SCORE] = highestAttemptScore
+									scoreReplaceDict[AssessmentRubric.NO_SCORE] = null
+
+									if (
+										this.rubric.unableToPassResult === AssessmentRubric.VAR_HIGHEST_ATTEMPT_SCORE
+									) {
+										attemptNumber = highestAttemptNumber
+										attemptScore = highestAttemptScore
+									} else {
+										attemptScore = latestAttemptScore
+									}
+									assessmentScore = tryGetParsedFloat(
+										this.rubric.unableToPassResult,
+										scoreReplaceDict,
+										true
+									)
+
+									break
+
+								case AssessmentRubric.STATUS_FAILED:
+									scoreReplaceDict[AssessmentRubric.NO_SCORE] = null
+
+									attemptScore = latestAttemptScore
+									assessmentScore = tryGetParsedFloat(
+										this.rubric.failedResult,
+										scoreReplaceDict,
+										true
+									)
+									break
+
+								case AssessmentRubric.STATUS_PASSED:
+									scoreReplaceDict[AssessmentRubric.VAR_ATTEMPT_SCORE] = latestAttemptScore
+
+									attemptScore = latestAttemptScore
+									assessmentScore = tryGetParsedFloat(
+										this.rubric.passedResult,
+										scoreReplaceDict,
+										true
+									)
+
+									// find matching mods and apply them
+									this.mods.forEach(function(mod, i) {
+										if (
+											isValueInRange(attemptNumber, mod.attemptCondition, attemptReplaceDict) &&
+											isValueInRange(latestAttemptScore, mod.scoreCondition)
+										) {
+											rewardedMods.push(mod)
+											rewardedModsIndicies.push(i)
+										}
+									})
+
+									rewardTotal = rewardedMods.reduce(function(acc, mod) {
+										return acc + tryGetParsedFloat(mod.reward)
+									}, 0)
+									break
+							}
+
+							return {
+								attemptNumber: attemptNumber,
+								attemptScore: attemptScore,
+								assessmentScore: assessmentScore,
+								rewardedMods: rewardedModsIndicies,
+								rewardTotal: rewardTotal,
+								assessmentModdedScore:
+									assessmentScore === null
+										? null
+										: Math.min(100, Math.max(0, assessmentScore + rewardTotal)),
+								status: status
+							}
+						}
+					}
+				])
+
+				return AssessmentRubric
+			})()
+
+			AssessmentRubric.TYPE_ATTEMPT = 'attempt'
+			AssessmentRubric.TYPE_PASS_FAIL = 'pass-fail'
+
+			AssessmentRubric.STATUS_PASSED = 'passed'
+			AssessmentRubric.STATUS_FAILED = 'failed'
+			AssessmentRubric.STATUS_UNABLE_TO_PASS = 'unableToPass'
+
+			AssessmentRubric.VAR_HIGHEST_ATTEMPT_SCORE = '$highest_attempt_score'
+			AssessmentRubric.VAR_ATTEMPT_SCORE = '$attempt_score'
+			AssessmentRubric.VAR_LAST_ATTEMPT = '$last_attempt'
+
+			AssessmentRubric.NO_SCORE = 'no-score'
+			// AssessmentRubric.VAR_CLOSE_DATE = '$close_date'
+
+			module.exports = AssessmentRubric
+
 			/***/
 		},
 
@@ -99,7 +494,12 @@
 			/***/
 		},
 
-		/***/ /***/ 181: function(module, exports, __webpack_require__) {
+		/***/ /***/ 161: function(module, exports) {
+			// removed by extract-text-webpack-plugin
+			/***/
+		},
+
+		/***/ /***/ 182: function(module, exports, __webpack_require__) {
 			module.exports = __webpack_require__(43)
 
 			/***/
@@ -284,6 +684,10 @@
 
 			var _scoreActions2 = _interopRequireDefault(_scoreActions)
 
+			var _assessmentRubric = __webpack_require__(138)
+
+			var _assessmentRubric2 = _interopRequireDefault(_assessmentRubric)
+
 			function _interopRequireDefault(obj) {
 				return obj && obj.__esModule ? obj : { default: obj }
 			}
@@ -294,6 +698,7 @@
 					model.modelState.attempts = Infinity
 					model.modelState.review = 'never'
 					model.modelState.scoreActions = new _scoreActions2.default()
+					model.modelState.rubric = new _assessmentRubric2.default(attrs.content.rubric)
 
 					// Set state if XML has the attributes.
 					if (attrs && attrs.content) {
@@ -316,7 +721,8 @@
 				clone: function clone(model, _clone) {
 					_clone.modelState.attempts = model.modelState.attempts
 					_clone.modelState.hideNav = model.modelState.hideNav
-					return (_clone.modelState.scoreActions = model.modelState.scoreActions.clone())
+					_clone.modelState.scoreActions = model.modelState.scoreActions.clone()
+					_clone.modelState.rubric = model.modelState.rubric.clone()
 				},
 
 				//@TODO - necessary?
@@ -328,15 +734,12 @@
 				toJSON: function toJSON(model, json) {
 					json.content.attempts = model.modelState.attempts
 					json.content.hideNav = model.modelState.hideNav
-					return (json.content.scoreActions = model.modelState.scoreActions.toObject())
+					json.content.scoreActions = model.modelState.scoreActions.toObject()
+					json.content.rubric = model.modelState.rubric.toObject()
 				}
 			}
-
+			// @TODO: Importing from the server code, we shouldn't do this:
 			exports.default = Adapter
-
-			function __guard__(value, transform) {
-				return typeof value !== 'undefined' && value !== null ? transform(value) : undefined
-			}
 
 			/***/
 		},
@@ -492,7 +895,7 @@
 				}
 			})()
 
-			__webpack_require__(159)
+			__webpack_require__(160)
 
 			var _Common = __webpack_require__(0)
 
@@ -1057,7 +1460,7 @@
 				}
 			})()
 
-			__webpack_require__(160)
+			__webpack_require__(161)
 
 			var _Common = __webpack_require__(0)
 

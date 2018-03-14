@@ -550,4 +550,134 @@ describe('AssessmentRubric', () => {
 			rewardedMods: [0]
 		})
 	})
+
+	test('Stores original passed in rubric', () => {
+		let ar = new AssessmentRubric({
+			type: 'pass-fail',
+			ignorableValue: 1234
+		})
+
+		expect(ar.originalRubric).toEqual({
+			type: 'pass-fail',
+			ignorableValue: 1234
+		})
+	})
+
+	test('toObject returns a complete rubric', () => {
+		let ar = new AssessmentRubric()
+
+		expect(ar.toObject()).toEqual({
+			type: 'attempt',
+			passingAttemptScore: 0,
+			passedResult: '$attempt_score',
+			failedResult: 0,
+			unableToPassResult: null,
+			mods: []
+		})
+
+		ar = new AssessmentRubric({
+			type: 'pass-fail',
+			mods: [
+				{
+					attemptCondition: '$last_attempt',
+					reward: 0
+				},
+				{
+					attemptCondition: '1',
+					reward: 5
+				},
+				{
+					attemptCondition: '(2  ,  $last_attempt]',
+					reward: 10
+				},
+				{
+					attemptCondition: '(3,4]',
+					reward: 15
+				}
+			]
+		})
+
+		expect(ar.toObject()).toEqual({
+			type: 'pass-fail',
+			passingAttemptScore: 100,
+			passedResult: 100,
+			failedResult: 0,
+			unableToPassResult: null,
+			mods: [
+				{
+					attemptCondition: '$last_attempt',
+					scoreCondition: '[0,100]',
+					reward: 0
+				},
+				{
+					attemptCondition: '1',
+					scoreCondition: '[0,100]',
+					reward: 5
+				},
+				{
+					attemptCondition: '(2,$last_attempt]',
+					scoreCondition: '[0,100]',
+					reward: 10
+				},
+				{
+					attemptCondition: '(3,4]',
+					scoreCondition: '[0,100]',
+					reward: 15
+				}
+			]
+		})
+
+		ar = new AssessmentRubric({
+			type: 'pass-fail',
+			passingAttemptScore: 50,
+			passedResult: '$attempt_score',
+			failedResult: 'no-score',
+			unableToPassResult: '$highest_attempt_score'
+		})
+
+		expect(ar.toObject()).toEqual({
+			type: 'pass-fail',
+			passingAttemptScore: 50,
+			passedResult: '$attempt_score',
+			failedResult: 'no-score',
+			unableToPassResult: '$highest_attempt_score',
+			mods: []
+		})
+	})
+
+	test('clone clones', () => {
+		let ar = new AssessmentRubric()
+
+		expect(ar.clone()).toEqual(ar)
+
+		ar = new AssessmentRubric({
+			type: 'pass-fail',
+			mods: [
+				{
+					attemptCondition: '1',
+					reward: 5
+				},
+				{
+					attemptCondition: '(2,4]',
+					reward: 10
+				},
+				{
+					attemptCondition: '(3,4]',
+					reward: 15
+				}
+			]
+		})
+
+		expect(ar.clone()).toEqual(ar)
+
+		ar = new AssessmentRubric({
+			type: 'pass-fail',
+			passingAttemptScore: 50,
+			passedResult: '$attempt_score',
+			failedResult: 'no-score',
+			unableToPassResult: '$highest_attempt_score'
+		})
+
+		expect(ar.clone()).toEqual(ar)
+	})
 })

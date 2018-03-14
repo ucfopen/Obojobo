@@ -13,7 +13,7 @@ Expected input for type 'pass-fail':
 	type: 'pass-file',
 	*passingAttemptScore: 0-100 [Default = 100],
 	*passedResult: (0-100 | '$attempt_score') [Default = 100],
-	*failedResult: (0-100 | 'no-score' | '$attempt_score' | '$highest_attempt_score' ) [Default = 0],
+	*failedResult: (0-100 | 'no-score' | '$highest_attempt_score' ) [Default = 0],
 	*unableToPassResult: (0-100 | 'no-score' | '$attempt_score' | '$highest_attempt_score' | null) [Default = null],
 	*mods: Array<Mod> (Default = [])
 }
@@ -65,6 +65,17 @@ let getParsedRangeFromSingleValue = value => {
 	}
 }
 
+let getRangeString = range => {
+	if (range.min === range.max && range.isMinInclusive && range.isMaxInclusive) {
+		return '' + range.min
+	}
+
+	let lhs = range.isMinInclusive ? '[' : '('
+	let rhs = range.isMaxInclusive ? ']' : ')'
+
+	return lhs + range.min + ',' + range.max + rhs
+}
+
 let tryGetParsedFloat = (value, replaceDict = {}, allowNull = false) => {
 	let replaceDictValue
 
@@ -112,17 +123,17 @@ let isValueInRange = (value, range, replaceDict) => {
 	return isMinRequirementMet && isMaxRequirementMet
 }
 
-let createRubric = rubric => {
-	let rubricType
-	if (!rubric || !rubric.type) {
-		rubricType = AssessmentRubric.TYPE_ATTEMPT
-	} else {
-		rubricType = rubric.type
-	}
+let getRubricType = rubric =>
+	!rubric || !rubric.type ? AssessmentRubric.TYPE_ATTEMPT : rubric.type
+
+let createWhitelistedRubric = rubric => {
+	let rubricType = getRubricType(rubric)
+
+	let whitelistedRubric
 
 	switch (rubricType) {
 		case AssessmentRubric.TYPE_PASS_FAIL:
-			rubric = Object.assign(
+			whitelistedRubric = Object.assign(
 				{
 					passingAttemptScore: 100,
 					passedResult: 100,
@@ -135,7 +146,7 @@ let createRubric = rubric => {
 
 		case AssessmentRubric.TYPE_ATTEMPT:
 		default:
-			rubric = {
+			whitelistedRubric = {
 				passingAttemptScore: 0,
 				passedResult: AssessmentRubric.VAR_ATTEMPT_SCORE,
 				failedResult: 0,
@@ -144,44 +155,66 @@ let createRubric = rubric => {
 			break
 	}
 
-	return rubric
+	return whitelistedRubric
+}
+
+let createWhitelistedMod = mod => {
+	let parsedReward
+
+	// Ensure at least one condition exists:
+	if (!(mod.attemptCondition || mod.scoreCondition)) {
+		return null
+	}
+
+	mod = Object.assign(
+		{
+			attemptCondition: '[0,$last_attempt]',
+			scoreCondition: '[0,100]'
+			// dateCondition: null,
+		},
+		mod
+	)
+
+	return {
+		attemptCondition: getParsedRange(mod.attemptCondition.toString()),
+		scoreCondition: getParsedRange(mod.scoreCondition.toString()),
+		reward: mod.reward
+	}
+}
+
+let modToObject = whitelistedMod => {
+	return {
+		attemptCondition: getRangeString(whitelistedMod.attemptCondition),
+		scoreCondition: getRangeString(whitelistedMod.scoreCondition),
+		reward: whitelistedMod.reward
+	}
 }
 
 class AssessmentRubric {
 	constructor(rubric) {
+		this.originalRubric = Object.assign(rubric || {})
+
 		let mods = rubric && rubric.mods ? rubric.mods.slice(0, MOD_AMOUNT_LIMIT) : []
-
-		this.rubric = createRubric(rubric)
-
 		let parsedScoreRange, parsedAttemptRange
 
-		this.mods = []
-		mods.forEach(mod => {
-			let parsedReward
+		this.rubric = createWhitelistedRubric(rubric)
+		this.type = getRubricType(rubric)
+		this.mods = mods.map(createWhitelistedMod).filter(mod => mod !== null)
+	}
 
-			// Ensure at least one condition exists:
-			if (!(mod.attemptCondition || mod.scoreCondition)) {
-				return
-			}
+	toObject() {
+		return {
+			type: this.type,
+			passingAttemptScore: this.rubric.passingAttemptScore,
+			passedResult: this.rubric.passedResult,
+			failedResult: this.rubric.failedResult,
+			unableToPassResult: this.rubric.unableToPassResult,
+			mods: this.mods.map(modToObject)
+		}
+	}
 
-			mod = Object.assign(
-				{
-					attemptCondition: '[0,$last_attempt]',
-					scoreCondition: '[0,100]'
-					// dateCondition: null,
-					// passCondition: false
-				},
-				mod
-			)
-
-			mod = {
-				attemptCondition: getParsedRange(mod.attemptCondition.toString()),
-				scoreCondition: getParsedRange(mod.scoreCondition.toString()),
-				reward: mod.reward
-			}
-
-			this.mods.push(mod)
-		})
+	clone() {
+		return new AssessmentRubric(this.originalRubric)
 	}
 
 	getAssessmentScoreInfoForAttempt(totalNumberOfAttemptsAvailable, attemptScores) {
