@@ -198,11 +198,11 @@ let calculateScores = (assessmentModel, attemptHistory, scoreInfo) => {
 			return a + b
 		}) / scoreInfo.questions.length
 
-	let allScores = [attemptScore].concat(
-		attemptHistory.map(attempt => {
+	let allScores = attemptHistory
+		.map(attempt => {
 			return parseFloat(attempt.result.attemptScore)
 		})
-	)
+		.concat(attemptScore)
 
 	let rubric = new AssessmentRubric(assessmentModel.node.content.rubric)
 	let assessmentScoreDetails = rubric.getAssessmentScoreInfoForAttempt(

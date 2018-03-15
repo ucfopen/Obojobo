@@ -29,7 +29,7 @@ class Assessment extends DraftNode {
 					AND assessment_id = $[assessmentId]
 					AND completed_at IS NOT NULL
 					${previewSql}
-				ORDER BY completed_at DESC`,
+				ORDER BY completed_at`,
 			{ userId: userId, draftId: draftId, assessmentId: assessmentId }
 		)
 	}
