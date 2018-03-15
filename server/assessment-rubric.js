@@ -21,16 +21,12 @@ Expected input for type 'pass-fail':
 Mod:
 
 {
-	*attemptCondition: (Number | AttemptRange) [Default = '[1-$last_attempt]'],
-	*scoreCondition: (Number | ScoreRange) [Default = '[0-100]'],
+	attemptCondition: (Number | AttemptRange) [Default = '[1-$last_attempt]'],
 	reward: Number
 }
 
 AttemptRange:
 	("[" | "(") + (>=1 | '$last_attempt') + "," + (>=1 | '$last_attempt') + ("]" | ")")
-
-ScoreRange:
-	("[" | "(") + (0-100) + "," + (0-100) + ("]" | ")")
 
 (Mods are only applied if PASSING. Mods must contain at least one condition)
 
@@ -162,14 +158,13 @@ let createWhitelistedMod = mod => {
 	let parsedReward
 
 	// Ensure at least one condition exists:
-	if (!(mod.attemptCondition || mod.scoreCondition)) {
+	if (!mod.attemptCondition) {
 		return null
 	}
 
 	mod = Object.assign(
 		{
-			attemptCondition: '[0,$last_attempt]',
-			scoreCondition: '[0,100]'
+			attemptCondition: '[0,$last_attempt]'
 			// dateCondition: null,
 		},
 		mod
@@ -177,7 +172,6 @@ let createWhitelistedMod = mod => {
 
 	return {
 		attemptCondition: getParsedRange(mod.attemptCondition.toString()),
-		scoreCondition: getParsedRange(mod.scoreCondition.toString()),
 		reward: mod.reward
 	}
 }
@@ -185,7 +179,6 @@ let createWhitelistedMod = mod => {
 let modToObject = whitelistedMod => {
 	return {
 		attemptCondition: getRangeString(whitelistedMod.attemptCondition),
-		scoreCondition: getRangeString(whitelistedMod.scoreCondition),
 		reward: whitelistedMod.reward
 	}
 }
@@ -195,7 +188,6 @@ class AssessmentRubric {
 		this.originalRubric = Object.assign(rubric || {})
 
 		let mods = rubric && rubric.mods ? rubric.mods.slice(0, MOD_AMOUNT_LIMIT) : []
-		let parsedScoreRange, parsedAttemptRange
 
 		this.rubric = createWhitelistedRubric(rubric)
 		this.type = getRubricType(rubric)
@@ -281,10 +273,7 @@ class AssessmentRubric {
 
 				// find matching mods and apply them
 				this.mods.forEach((mod, i) => {
-					if (
-						isValueInRange(attemptNumber, mod.attemptCondition, attemptReplaceDict) &&
-						isValueInRange(latestAttemptScore, mod.scoreCondition)
-					) {
+					if (isValueInRange(attemptNumber, mod.attemptCondition, attemptReplaceDict)) {
 						rewardedMods.push(mod)
 						rewardedModsIndicies.push(i)
 					}
