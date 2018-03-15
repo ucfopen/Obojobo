@@ -13,8 +13,8 @@
         </scoreActions>
         <rubric type="pass-fail" passingAttemptScore="80" passedResult="100" failedResult="0" unableToPassResult="$highest_attempt_score">
             <mods>
-                <mod attemptCondition="1" passCondition="true" reward="5" />
-                <mod scoreCondition="[80,100]" reward="2" />
+                <mod attemptCondition="1" reward="5" />
+                <mod attemptCondition="(80,100]" reward="2" />
             </mods>
         </rubric>
     </Assessment>

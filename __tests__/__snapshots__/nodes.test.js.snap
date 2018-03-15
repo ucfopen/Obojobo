@@ -47,15 +47,11 @@ Object {
       "mods": Array [
         Object {
           "attemptCondition": "1",
-          "passCondition": "true",
           "reward": "5",
-          "scoreCondition": undefined,
         },
         Object {
-          "attemptCondition": undefined,
-          "passCondition": undefined,
+          "attemptCondition": "(80,100]",
           "reward": "2",
-          "scoreCondition": "[80,100]",
         },
       ],
       "passedResult": "100",

@@ -18,8 +18,6 @@ let parseRubric = (el) => {
 let parseMod = (el) => {
 	return {
 		attemptCondition: el.attributes.attemptCondition,
-		passCondition: el.attributes.passCondition,
-		scoreCondition: el.attributes.scoreCondition,
 		reward: el.attributes.reward
 	}
 }
