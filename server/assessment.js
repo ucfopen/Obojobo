@@ -374,7 +374,7 @@ class Assessment extends DraftNode {
 			.requireCurrentUser()
 			.then(currentUser => this.constructor.getAttempts(currentUser.id, req.params.draftId))
 			.then(attempts => {
-				resultContainer.attempts = attemptHistory
+				resultContainer.attempts = attempts
 			})
 	}
 }
