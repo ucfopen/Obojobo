@@ -716,7 +716,6 @@
 			})
 
 			exports.default = function(props) {
-				console.log('props', props)
 				return React.createElement(
 					'svg',
 					{
@@ -947,6 +946,116 @@
 			var Launch = _Common2.default.Launch
 			var NavUtil = _Viewer2.default.util.NavUtil
 
+			var testThing = [
+				{
+					type: 'value',
+					text: 'Attempt 2 score',
+					value: '50'
+				},
+				{
+					type: 'penalty',
+					text: 'Passed on attempt 2',
+					value: '1'
+				},
+				{
+					type: 'penalty',
+					text: 'Passed on attempts 1 to 2',
+					value: '3'
+				},
+				{
+					type: 'extra-credit',
+					text: 'Passed on attempt 2',
+					value: '4'
+				},
+				{
+					type: 'penalty',
+					text: 'Passed on attempts 2 to 3',
+					value: '7'
+				},
+				{
+					type: 'penalty',
+					text: 'Passed on attempt 2',
+					value: '9'
+				},
+				{
+					type: 'total',
+					text: 'Total',
+					value: '34'
+				}
+			]
+
+			var getElementStyle = function getElementStyle(type) {
+				switch (type) {
+					case 'penalty':
+						return { color: 'red', display: 'inline-block' }
+					case 'extra-credit':
+						return { color: 'green', display: 'inline-block' }
+					default:
+						return { display: 'inline-block' }
+				}
+			}
+
+			var ulStyle = {
+				padding: 0,
+				listStyleType: 'none',
+				borderTop: '1px solid LightGray'
+			}
+
+			var modsTextList = function modsTextList(givenObj) {
+				var modsList = givenObj.map(function(obj, index) {
+					var type = obj.type
+
+					var style = getElementStyle(type)
+
+					if (index === 0) {
+						return React.createElement(
+							'li',
+							null,
+							React.createElement('div', { style: style }, obj.text)
+						)
+					}
+
+					return React.createElement(
+						'li',
+						null,
+						React.createElement(
+							'div',
+							{ style: style },
+							type.charAt(0).toUpperCase() + type.substr(1)
+						),
+						' - ',
+						obj.text,
+						':'
+					)
+				})
+
+				return React.createElement('ul', { style: ulStyle }, modsList)
+			}
+
+			var modsScoreList = function modsScoreList(givenObj) {
+				var getOperator = function getOperator(type) {
+					switch (type) {
+						case 'extra-credit':
+							return '+'
+						case 'penalty':
+							return '-'
+						case 'value':
+							return ''
+						case 'total':
+							return '='
+					}
+				}
+				var modsList = givenObj.map(function(obj) {
+					return React.createElement(
+						'li',
+						null,
+						React.createElement('strong', null, getOperator(obj.type), obj.value, '%')
+					)
+				})
+
+				return React.createElement('ul', { style: ulStyle }, modsList)
+			}
+
 			var scoreSubmittedView = function scoreSubmittedView(assessment) {
 				var questionScores = AssessmentUtil.getLastAttemptScoresForModel(
 					assessment.props.moduleData.assessmentState,
@@ -1035,12 +1144,13 @@
 							React.createElement(
 								'div',
 								{ className: 'retained-score' },
-								React.createElement('div', null, 'Retained Score'),
+								React.createElement('div', { style: { paddingTop: '10px' } }, 'Retained Score'),
+								React.createElement('h1', null, '100%'),
 								React.createElement(
 									'div',
-									null,
-									assessmentScore === null ? '--' : Math.round(assessmentScore),
-									'%'
+									{ className: 'mod-breakdown' },
+									modsTextList(testThing),
+									modsScoreList(testThing)
 								)
 							),
 							React.createElement(

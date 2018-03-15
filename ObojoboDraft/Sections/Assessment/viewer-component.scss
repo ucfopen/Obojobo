@@ -126,6 +126,13 @@
 			flex: 2;
 			border-radius: 5%;
 			margin: 0 1em;
+
+			> .mod-breakdown {
+				display: flex;
+				justify-content: center;
+				font-size: .7em;
+				// list-style-type: none;
+			}
 		}
 
 		> .attempts-remaining {

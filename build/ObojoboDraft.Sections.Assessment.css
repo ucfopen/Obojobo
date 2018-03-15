@@ -80,6 +80,10 @@
     flex: 2;
     border-radius: 5%;
     margin: 0 1em; }
+    .obojobo-draft--sections--assessment .assessment-flex-container > .retained-score > .mod-breakdown {
+      display: flex;
+      justify-content: center;
+      font-size: .7em; }
 
 .obojobo-draft--sections--assessment .review {
   text-align: left;
