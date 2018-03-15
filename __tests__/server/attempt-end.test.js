@@ -559,4 +559,8 @@ describe('Attempt End', () => {
 		sendLTIScore({ id: 'userId' }, 'draftId', 78)
 		expect(lti.replaceResult).toHaveBeenLastCalledWith('userId', 'draftId', 78)
 	})
+
+	it.skip('calculateScores keeps all scores in order', () => {
+		// this needs to make sure sends allScores into getAssessmentScoreInfoForAttempt IN ORDER (oldest to newest)
+	})
 })
