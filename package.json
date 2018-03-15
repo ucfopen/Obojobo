@@ -18,7 +18,7 @@
 		"generateModuleManifest": "node ./bin/generate_module_manifest.js",
 		"prettier:run": "prettier --write '{src,server,__{tests,mocks}__,ObojoboDraft}/**/*.{js,scss}'",
 		"prettier:debug": "prettier -l '{src,server,__{tests,mocks}__,ObojoboDraft}/**/*.{js,scss}'",
-		"precommit": "yarn test && yarn build && yarn build:gitadd && lint-staged"
+		"precommit": "yarn test && lint-staged && yarn build && yarn build:gitadd"
 	},
 	"prettier":{
 		"printWidth": 100,
@@ -58,7 +58,7 @@
 		"karma-coverage": "^1.1.1",
 		"karma-jasmine": "^0.1.6",
 		"katex": "^0.5.1",
-		"lint-staged": "^4.0.2",
+		"lint-staged": "^6.1.1",
 		"node-bourbon": "^4.2.8",
 		"node-sass": "^3.4.2",
 		"object-assign": "^4.1.0",
