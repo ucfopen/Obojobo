@@ -3520,6 +3520,11 @@ if (!window.Promise) {
 // Smooth scrollTo (non-FF)
 _smoothscrollPolyfill2.default.polyfill();
 
+// Number.isFinite (IE)
+Number.isFinite = Number.isFinite || function (n) {
+	return typeof n === 'number' && isFinite(n);
+};
+
 /***/ }),
 /* 135 */,
 /* 136 */,

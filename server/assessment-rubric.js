@@ -21,8 +21,7 @@ Expected input for type 'pass-fail':
 Mod:
 
 {
-	*attemptCondition: (Number | AttemptRange) [Default = '[1-$last_attempt]'],
-	*scoreCondition: (Number | ScoreRange) [Default = '[0-100]'],
+	attemptCondition: (Number | AttemptRange) [Default = '[1-$last_attempt]'],
 	reward: Number
 }
 
@@ -160,14 +159,13 @@ class AssessmentRubric {
 			let parsedReward
 
 			// Ensure at least one condition exists:
-			if (!(mod.attemptCondition || mod.scoreCondition)) {
+			if (!mod.attemptCondition) {
 				return
 			}
 
 			mod = Object.assign(
 				{
-					attemptCondition: '[0,$last_attempt]',
-					scoreCondition: '[0,100]'
+					attemptCondition: '[0,$last_attempt]'
 					// dateCondition: null,
 					// passCondition: false
 				},
@@ -176,7 +174,6 @@ class AssessmentRubric {
 
 			mod = {
 				attemptCondition: getParsedRange(mod.attemptCondition.toString()),
-				scoreCondition: getParsedRange(mod.scoreCondition.toString()),
 				reward: mod.reward
 			}
 
@@ -184,10 +181,12 @@ class AssessmentRubric {
 		})
 	}
 
-	getAssessmentScoreInfoForLatestAttempt(totalNumberOfAttemptsAvailable, attemptScores) {
+	getAssessmentScoreInfoForAttempt(totalNumberOfAttemptsAvailable, attemptScores) {
 		if (attemptScores.length === 0) return null
 
 		let highestAttemptScore = Math.max.apply(null, attemptScores)
+		let highestAttemptNumber =
+			attemptScores.reduce((iMax, x, i, arr) => (x >= arr[iMax] ? i : iMax), 0) + 1
 		let latestAttemptScore = attemptScores[attemptScores.length - 1]
 		let attemptNumber = attemptScores.length
 		let isLastAttempt = attemptNumber === totalNumberOfAttemptsAvailable
@@ -197,12 +196,12 @@ class AssessmentRubric {
 		let rewardTotal = 0
 		let assessmentScore
 		let status
+		let attemptScore
 
 		let attemptReplaceDict = {}
 		attemptReplaceDict[AssessmentRubric.VAR_LAST_ATTEMPT] = totalNumberOfAttemptsAvailable
 
 		let scoreReplaceDict = {}
-		scoreReplaceDict[AssessmentRubric.VAR_ATTEMPT_SCORE] = latestAttemptScore
 
 		if (latestAttemptScore >= this.rubric.passingAttemptScore) {
 			status = AssessmentRubric.STATUS_PASSED
@@ -221,25 +220,32 @@ class AssessmentRubric {
 				scoreReplaceDict[AssessmentRubric.VAR_HIGHEST_ATTEMPT_SCORE] = highestAttemptScore
 				scoreReplaceDict[AssessmentRubric.NO_SCORE] = null
 
+				if (this.rubric.unableToPassResult === AssessmentRubric.VAR_HIGHEST_ATTEMPT_SCORE) {
+					attemptNumber = highestAttemptNumber
+					attemptScore = highestAttemptScore
+				} else {
+					attemptScore = latestAttemptScore
+				}
 				assessmentScore = tryGetParsedFloat(this.rubric.unableToPassResult, scoreReplaceDict, true)
+
 				break
 
 			case AssessmentRubric.STATUS_FAILED:
-				scoreReplaceDict[AssessmentRubric.VAR_HIGHEST_ATTEMPT_SCORE] = highestAttemptScore
 				scoreReplaceDict[AssessmentRubric.NO_SCORE] = null
 
+				attemptScore = latestAttemptScore
 				assessmentScore = tryGetParsedFloat(this.rubric.failedResult, scoreReplaceDict, true)
 				break
 
 			case AssessmentRubric.STATUS_PASSED:
+				scoreReplaceDict[AssessmentRubric.VAR_ATTEMPT_SCORE] = latestAttemptScore
+
+				attemptScore = latestAttemptScore
 				assessmentScore = tryGetParsedFloat(this.rubric.passedResult, scoreReplaceDict, true)
 
 				// find matching mods and apply them
 				this.mods.forEach((mod, i) => {
-					if (
-						isValueInRange(attemptNumber, mod.attemptCondition, attemptReplaceDict) &&
-						isValueInRange(latestAttemptScore, mod.scoreCondition)
-					) {
+					if (isValueInRange(attemptNumber, mod.attemptCondition, attemptReplaceDict)) {
 						rewardedMods.push(mod)
 						rewardedModsIndicies.push(i)
 					}
@@ -251,11 +257,12 @@ class AssessmentRubric {
 
 		return {
 			attemptNumber,
-			attemptScore: latestAttemptScore,
+			attemptScore,
 			assessmentScore,
 			rewardedMods: rewardedModsIndicies,
 			rewardTotal,
-			assessmentModdedScore: assessmentScore === null ? null : assessmentScore + rewardTotal,
+			assessmentModdedScore:
+				assessmentScore === null ? null : Math.min(100, Math.max(0, assessmentScore + rewardTotal)),
 			status
 		}
 	}

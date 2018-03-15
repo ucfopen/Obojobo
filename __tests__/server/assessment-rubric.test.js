@@ -8,13 +8,13 @@ describe('AssessmentRubric', () => {
 	test('Default case with no scores returns null', () => {
 		let ar = new AssessmentRubric()
 
-		expect(ar.getAssessmentScoreInfoForLatestAttempt(10, [])).toEqual(null)
+		expect(ar.getAssessmentScoreInfoForAttempt(10, [])).toEqual(null)
 	})
 
 	test('Default case with scores returns highest score', () => {
 		let ar = new AssessmentRubric()
 
-		expect(ar.getAssessmentScoreInfoForLatestAttempt(10, [0])).toEqual({
+		expect(ar.getAssessmentScoreInfoForAttempt(10, [0])).toEqual({
 			attemptNumber: 1,
 			attemptScore: 0,
 			status: 'passed',
@@ -23,7 +23,7 @@ describe('AssessmentRubric', () => {
 			assessmentModdedScore: 0,
 			rewardedMods: []
 		})
-		expect(ar.getAssessmentScoreInfoForLatestAttempt(10, [0, 20])).toEqual({
+		expect(ar.getAssessmentScoreInfoForAttempt(10, [0, 20])).toEqual({
 			attemptNumber: 2,
 			attemptScore: 20,
 			status: 'passed',
@@ -32,7 +32,7 @@ describe('AssessmentRubric', () => {
 			assessmentModdedScore: 20,
 			rewardedMods: []
 		})
-		expect(ar.getAssessmentScoreInfoForLatestAttempt(10, [0, 20, 10])).toEqual({
+		expect(ar.getAssessmentScoreInfoForAttempt(10, [0, 20, 10])).toEqual({
 			attemptNumber: 3,
 			attemptScore: 10,
 			status: 'passed',
@@ -47,14 +47,14 @@ describe('AssessmentRubric', () => {
 		let ar1 = new AssessmentRubric()
 		let ar2 = new AssessmentRubric({ type: 'attempt' })
 
-		expect(ar1.getAssessmentScoreInfoForLatestAttempt(10, [0])).toEqual(
-			ar2.getAssessmentScoreInfoForLatestAttempt(10, [0])
+		expect(ar1.getAssessmentScoreInfoForAttempt(10, [0])).toEqual(
+			ar2.getAssessmentScoreInfoForAttempt(10, [0])
 		)
-		expect(ar1.getAssessmentScoreInfoForLatestAttempt(10, [0, 20])).toEqual(
-			ar2.getAssessmentScoreInfoForLatestAttempt(10, [0, 20])
+		expect(ar1.getAssessmentScoreInfoForAttempt(10, [0, 20])).toEqual(
+			ar2.getAssessmentScoreInfoForAttempt(10, [0, 20])
 		)
-		expect(ar1.getAssessmentScoreInfoForLatestAttempt(10, [0, 20, 10])).toEqual(
-			ar2.getAssessmentScoreInfoForLatestAttempt(10, [0, 20, 10])
+		expect(ar1.getAssessmentScoreInfoForAttempt(10, [0, 20, 10])).toEqual(
+			ar2.getAssessmentScoreInfoForAttempt(10, [0, 20, 10])
 		)
 	})
 
@@ -66,7 +66,7 @@ describe('AssessmentRubric', () => {
 			failedResult: 0
 		})
 
-		expect(ar.getAssessmentScoreInfoForLatestAttempt(10, [0])).toEqual({
+		expect(ar.getAssessmentScoreInfoForAttempt(10, [0])).toEqual({
 			attemptNumber: 1,
 			attemptScore: 0,
 			status: 'failed',
@@ -75,7 +75,7 @@ describe('AssessmentRubric', () => {
 			assessmentModdedScore: 0,
 			rewardedMods: []
 		})
-		expect(ar.getAssessmentScoreInfoForLatestAttempt(10, [79])).toEqual({
+		expect(ar.getAssessmentScoreInfoForAttempt(10, [79])).toEqual({
 			attemptNumber: 1,
 			attemptScore: 79,
 			status: 'failed',
@@ -84,7 +84,7 @@ describe('AssessmentRubric', () => {
 			assessmentModdedScore: 0,
 			rewardedMods: []
 		})
-		expect(ar.getAssessmentScoreInfoForLatestAttempt(10, [79.999])).toEqual({
+		expect(ar.getAssessmentScoreInfoForAttempt(10, [79.999])).toEqual({
 			attemptNumber: 1,
 			attemptScore: 79.999,
 			status: 'failed',
@@ -93,7 +93,7 @@ describe('AssessmentRubric', () => {
 			assessmentModdedScore: 0,
 			rewardedMods: []
 		})
-		expect(ar.getAssessmentScoreInfoForLatestAttempt(10, [80])).toEqual({
+		expect(ar.getAssessmentScoreInfoForAttempt(10, [80])).toEqual({
 			attemptNumber: 1,
 			attemptScore: 80,
 			status: 'passed',
@@ -102,7 +102,7 @@ describe('AssessmentRubric', () => {
 			assessmentModdedScore: 100,
 			rewardedMods: []
 		})
-		expect(ar.getAssessmentScoreInfoForLatestAttempt(10, [80.01])).toEqual({
+		expect(ar.getAssessmentScoreInfoForAttempt(10, [80.01])).toEqual({
 			attemptNumber: 1,
 			attemptScore: 80.01,
 			status: 'passed',
@@ -111,7 +111,7 @@ describe('AssessmentRubric', () => {
 			assessmentModdedScore: 100,
 			rewardedMods: []
 		})
-		expect(ar.getAssessmentScoreInfoForLatestAttempt(10, [0, 0, 80, 0])).toEqual({
+		expect(ar.getAssessmentScoreInfoForAttempt(10, [0, 0, 80, 0])).toEqual({
 			attemptNumber: 4,
 			attemptScore: 0,
 			status: 'failed',
@@ -130,7 +130,7 @@ describe('AssessmentRubric', () => {
 			failedResult: 'no-score'
 		})
 
-		expect(ar.getAssessmentScoreInfoForLatestAttempt(10, [0])).toEqual({
+		expect(ar.getAssessmentScoreInfoForAttempt(10, [0])).toEqual({
 			attemptNumber: 1,
 			attemptScore: 0,
 			status: 'failed',
@@ -140,7 +140,7 @@ describe('AssessmentRubric', () => {
 			rewardedMods: []
 		})
 
-		// expect(ar.getAssessmentScoreInfoForLatestAttempt(10, [0]).toEqual(null)
+		// expect(ar.getAssessmentScoreInfoForAttempt(10, [0]).toEqual(null)
 	})
 
 	test('pass-fail rewards attempt score when using $attempt_score variable', () => {
@@ -151,7 +151,7 @@ describe('AssessmentRubric', () => {
 			failedResult: 'no-score'
 		})
 
-		expect(ar.getAssessmentScoreInfoForLatestAttempt(10, [80])).toEqual({
+		expect(ar.getAssessmentScoreInfoForAttempt(10, [80])).toEqual({
 			attemptNumber: 1,
 			attemptScore: 80,
 			status: 'passed',
@@ -160,7 +160,7 @@ describe('AssessmentRubric', () => {
 			assessmentModdedScore: 80,
 			rewardedMods: []
 		})
-		expect(ar.getAssessmentScoreInfoForLatestAttempt(10, [80, 90])).toEqual({
+		expect(ar.getAssessmentScoreInfoForAttempt(10, [80, 90])).toEqual({
 			attemptNumber: 2,
 			attemptScore: 90,
 			status: 'passed',
@@ -169,7 +169,7 @@ describe('AssessmentRubric', () => {
 			assessmentModdedScore: 90,
 			rewardedMods: []
 		})
-		expect(ar.getAssessmentScoreInfoForLatestAttempt(10, [80, 90, 100])).toEqual({
+		expect(ar.getAssessmentScoreInfoForAttempt(10, [80, 90, 100])).toEqual({
 			attemptNumber: 3,
 			attemptScore: 100,
 			status: 'passed',
@@ -189,7 +189,7 @@ describe('AssessmentRubric', () => {
 			unableToPassResult: '$highest_attempt_score'
 		})
 
-		expect(ar.getAssessmentScoreInfoForLatestAttempt(3, [79])).toEqual({
+		expect(ar.getAssessmentScoreInfoForAttempt(3, [79])).toEqual({
 			attemptNumber: 1,
 			attemptScore: 79,
 			status: 'failed',
@@ -199,7 +199,7 @@ describe('AssessmentRubric', () => {
 			rewardedMods: []
 		})
 
-		expect(ar.getAssessmentScoreInfoForLatestAttempt(3, [79, 79])).toEqual({
+		expect(ar.getAssessmentScoreInfoForAttempt(3, [79, 79])).toEqual({
 			attemptNumber: 2,
 			attemptScore: 79,
 			status: 'failed',
@@ -208,7 +208,7 @@ describe('AssessmentRubric', () => {
 			assessmentModdedScore: null,
 			rewardedMods: []
 		})
-		expect(ar.getAssessmentScoreInfoForLatestAttempt(3, [79, 79, 79])).toEqual({
+		expect(ar.getAssessmentScoreInfoForAttempt(3, [79, 79, 79])).toEqual({
 			attemptNumber: 3,
 			attemptScore: 79,
 			status: 'unableToPass',
@@ -218,7 +218,7 @@ describe('AssessmentRubric', () => {
 			rewardedMods: []
 		})
 
-		expect(ar.getAssessmentScoreInfoForLatestAttempt(3, [79, 80])).toEqual({
+		expect(ar.getAssessmentScoreInfoForAttempt(3, [79, 80])).toEqual({
 			attemptNumber: 2,
 			attemptScore: 80,
 			status: 'passed',
@@ -227,13 +227,22 @@ describe('AssessmentRubric', () => {
 			assessmentModdedScore: 80,
 			rewardedMods: []
 		})
-		expect(ar.getAssessmentScoreInfoForLatestAttempt(3, [79, 80, 79])).toEqual({
+		expect(ar.getAssessmentScoreInfoForAttempt(3, [79, 80, 79])).toEqual({
 			attemptNumber: 3,
 			attemptScore: 79,
 			status: 'failed',
 			assessmentScore: null,
 			rewardTotal: 0,
 			assessmentModdedScore: null,
+			rewardedMods: []
+		})
+		expect(ar.getAssessmentScoreInfoForAttempt(3, [70, 60, 50])).toEqual({
+			attemptNumber: 1,
+			attemptScore: 70,
+			status: 'unableToPass',
+			assessmentScore: 70,
+			rewardTotal: 0,
+			assessmentModdedScore: 70,
 			rewardedMods: []
 		})
 	})
@@ -250,14 +259,14 @@ describe('AssessmentRubric', () => {
 			type: 'attempt'
 		})
 
-		expect(ar1.getAssessmentScoreInfoForLatestAttempt(10, [80])).toEqual(
-			ar2.getAssessmentScoreInfoForLatestAttempt(10, [80])
+		expect(ar1.getAssessmentScoreInfoForAttempt(10, [80])).toEqual(
+			ar2.getAssessmentScoreInfoForAttempt(10, [80])
 		)
-		expect(ar1.getAssessmentScoreInfoForLatestAttempt(10, [80, 90])).toEqual(
-			ar2.getAssessmentScoreInfoForLatestAttempt(10, [80, 90])
+		expect(ar1.getAssessmentScoreInfoForAttempt(10, [80, 90])).toEqual(
+			ar2.getAssessmentScoreInfoForAttempt(10, [80, 90])
 		)
-		expect(ar1.getAssessmentScoreInfoForLatestAttempt(10, [100, 80, 90])).toEqual(
-			ar2.getAssessmentScoreInfoForLatestAttempt(10, [100, 80, 90])
+		expect(ar1.getAssessmentScoreInfoForAttempt(10, [100, 80, 90])).toEqual(
+			ar2.getAssessmentScoreInfoForAttempt(10, [100, 80, 90])
 		)
 	})
 
@@ -269,14 +278,14 @@ describe('AssessmentRubric', () => {
 			type: 'attempt'
 		})
 
-		expect(ar1.getAssessmentScoreInfoForLatestAttempt(10, [80])).toEqual(
-			ar2.getAssessmentScoreInfoForLatestAttempt(10, [80])
+		expect(ar1.getAssessmentScoreInfoForAttempt(10, [80])).toEqual(
+			ar2.getAssessmentScoreInfoForAttempt(10, [80])
 		)
-		expect(ar1.getAssessmentScoreInfoForLatestAttempt(10, [80, 90])).toEqual(
-			ar2.getAssessmentScoreInfoForLatestAttempt(10, [80, 90])
+		expect(ar1.getAssessmentScoreInfoForAttempt(10, [80, 90])).toEqual(
+			ar2.getAssessmentScoreInfoForAttempt(10, [80, 90])
 		)
-		expect(ar1.getAssessmentScoreInfoForLatestAttempt(10, [100, 80, 90])).toEqual(
-			ar2.getAssessmentScoreInfoForLatestAttempt(10, [100, 80, 90])
+		expect(ar1.getAssessmentScoreInfoForAttempt(10, [100, 80, 90])).toEqual(
+			ar2.getAssessmentScoreInfoForAttempt(10, [100, 80, 90])
 		)
 	})
 
@@ -290,18 +299,16 @@ describe('AssessmentRubric', () => {
 				},
 				{
 					attemptCondition: 2,
-					scoreCondition: '[80,100]',
 					reward: 3
 				},
 				{
 					attemptCondition: '[2,3]',
-					scoreCondition: 50,
 					reward: 7
 				}
 			]
 		})
 
-		expect(ar.getAssessmentScoreInfoForLatestAttempt(10, [80])).toEqual({
+		expect(ar.getAssessmentScoreInfoForAttempt(10, [80])).toEqual({
 			attemptNumber: 1,
 			attemptScore: 80,
 			status: 'passed',
@@ -310,32 +317,32 @@ describe('AssessmentRubric', () => {
 			assessmentModdedScore: 81,
 			rewardedMods: [0]
 		})
-		expect(ar.getAssessmentScoreInfoForLatestAttempt(10, [80, 80])).toEqual({
+		expect(ar.getAssessmentScoreInfoForAttempt(10, [80, 80])).toEqual({
 			attemptNumber: 2,
 			attemptScore: 80,
 			status: 'passed',
 			assessmentScore: 80,
-			rewardTotal: 3,
-			assessmentModdedScore: 83,
-			rewardedMods: [1]
+			rewardTotal: 10,
+			assessmentModdedScore: 90,
+			rewardedMods: [1, 2]
 		})
-		expect(ar.getAssessmentScoreInfoForLatestAttempt(10, [80, 50])).toEqual({
+		expect(ar.getAssessmentScoreInfoForAttempt(10, [80, 50])).toEqual({
 			attemptNumber: 2,
 			attemptScore: 50,
 			status: 'passed',
 			assessmentScore: 50,
-			rewardTotal: 7,
-			assessmentModdedScore: 57,
-			rewardedMods: [2]
+			rewardTotal: 10,
+			assessmentModdedScore: 60,
+			rewardedMods: [1, 2]
 		})
-		expect(ar.getAssessmentScoreInfoForLatestAttempt(10, [80, 51])).toEqual({
-			attemptNumber: 2,
-			attemptScore: 51,
+		expect(ar.getAssessmentScoreInfoForAttempt(10, [80, 51, 70])).toEqual({
+			attemptNumber: 3,
+			attemptScore: 70,
 			status: 'passed',
-			assessmentScore: 51,
-			rewardTotal: 0,
-			assessmentModdedScore: 51,
-			rewardedMods: []
+			assessmentScore: 70,
+			rewardTotal: 7,
+			assessmentModdedScore: 77,
+			rewardedMods: [2]
 		})
 	})
 
@@ -344,27 +351,27 @@ describe('AssessmentRubric', () => {
 			type: 'attempt',
 			mods: [
 				{
-					scoreCondition: '[60,80)',
+					attemptCondition: '[1,3)', //1, 2
 					reward: 1
 				},
 				{
-					scoreCondition: '[80,100]',
+					attemptCondition: '(3,4]', //4
 					reward: 2
 				}
 			]
 		})
 
-		expect(ar.getAssessmentScoreInfoForLatestAttempt(10, [59])).toEqual({
+		expect(ar.getAssessmentScoreInfoForAttempt(10, [59])).toEqual({
 			attemptNumber: 1,
 			attemptScore: 59,
 			status: 'passed',
 			assessmentScore: 59,
-			rewardTotal: 0,
-			assessmentModdedScore: 59,
-			rewardedMods: []
+			rewardTotal: 1,
+			assessmentModdedScore: 60,
+			rewardedMods: [0]
 		})
-		expect(ar.getAssessmentScoreInfoForLatestAttempt(10, [60])).toEqual({
-			attemptNumber: 1,
+		expect(ar.getAssessmentScoreInfoForAttempt(10, [59, 60])).toEqual({
+			attemptNumber: 2,
 			attemptScore: 60,
 			status: 'passed',
 			assessmentScore: 60,
@@ -372,22 +379,22 @@ describe('AssessmentRubric', () => {
 			assessmentModdedScore: 61,
 			rewardedMods: [0]
 		})
-		expect(ar.getAssessmentScoreInfoForLatestAttempt(10, [79.999])).toEqual({
-			attemptNumber: 1,
-			attemptScore: 79.999,
+		expect(ar.getAssessmentScoreInfoForAttempt(10, [59, 60, 61])).toEqual({
+			attemptNumber: 3,
+			attemptScore: 61,
 			status: 'passed',
-			assessmentScore: 79.999,
-			rewardTotal: 1,
-			assessmentModdedScore: 80.999,
-			rewardedMods: [0]
+			assessmentScore: 61,
+			rewardTotal: 0,
+			assessmentModdedScore: 61,
+			rewardedMods: []
 		})
-		expect(ar.getAssessmentScoreInfoForLatestAttempt(10, [80])).toEqual({
-			attemptNumber: 1,
-			attemptScore: 80,
+		expect(ar.getAssessmentScoreInfoForAttempt(10, [59, 60, 61, 62])).toEqual({
+			attemptNumber: 4,
+			attemptScore: 62,
 			status: 'passed',
-			assessmentScore: 80,
+			assessmentScore: 62,
 			rewardTotal: 2,
-			assessmentModdedScore: 82,
+			assessmentModdedScore: 64,
 			rewardedMods: [1]
 		})
 	})
@@ -396,14 +403,6 @@ describe('AssessmentRubric', () => {
 		let ar = new AssessmentRubric({
 			type: 'attempt',
 			mods: [
-				{
-					scoreCondition: '[60,80)',
-					reward: 1
-				},
-				{
-					scoreCondition: '[70,100]',
-					reward: 2
-				},
 				{
 					attemptCondition: '(1,2]',
 					reward: 3
@@ -415,7 +414,7 @@ describe('AssessmentRubric', () => {
 			]
 		})
 
-		expect(ar.getAssessmentScoreInfoForLatestAttempt(10, [59])).toEqual({
+		expect(ar.getAssessmentScoreInfoForAttempt(10, [59])).toEqual({
 			attemptNumber: 1,
 			attemptScore: 59,
 			status: 'passed',
@@ -424,41 +423,41 @@ describe('AssessmentRubric', () => {
 			assessmentModdedScore: 59,
 			rewardedMods: []
 		})
-		expect(ar.getAssessmentScoreInfoForLatestAttempt(10, [60])).toEqual({
+		expect(ar.getAssessmentScoreInfoForAttempt(10, [60])).toEqual({
 			attemptNumber: 1,
 			attemptScore: 60,
 			status: 'passed',
 			assessmentScore: 60,
-			rewardTotal: 1,
-			assessmentModdedScore: 61,
-			rewardedMods: [0]
+			rewardTotal: 0,
+			assessmentModdedScore: 60,
+			rewardedMods: []
 		})
-		expect(ar.getAssessmentScoreInfoForLatestAttempt(10, [70])).toEqual({
+		expect(ar.getAssessmentScoreInfoForAttempt(10, [70])).toEqual({
 			attemptNumber: 1,
 			attemptScore: 70,
 			status: 'passed',
 			assessmentScore: 70,
-			rewardTotal: 3,
-			assessmentModdedScore: 73,
-			rewardedMods: [0, 1]
+			rewardTotal: 0,
+			assessmentModdedScore: 70,
+			rewardedMods: []
 		})
-		expect(ar.getAssessmentScoreInfoForLatestAttempt(10, [0, 70])).toEqual({
+		expect(ar.getAssessmentScoreInfoForAttempt(10, [0, 70])).toEqual({
 			attemptNumber: 2,
-			attemptScore: 70,
-			status: 'passed',
-			assessmentScore: 70,
-			rewardTotal: 10,
-			assessmentModdedScore: 80,
-			rewardedMods: [0, 1, 2, 3]
-		})
-		expect(ar.getAssessmentScoreInfoForLatestAttempt(10, [0, 0, 70])).toEqual({
-			attemptNumber: 3,
 			attemptScore: 70,
 			status: 'passed',
 			assessmentScore: 70,
 			rewardTotal: 7,
 			assessmentModdedScore: 77,
-			rewardedMods: [0, 1, 3]
+			rewardedMods: [0, 1]
+		})
+		expect(ar.getAssessmentScoreInfoForAttempt(10, [0, 0, 70])).toEqual({
+			attemptNumber: 3,
+			attemptScore: 70,
+			status: 'passed',
+			assessmentScore: 70,
+			rewardTotal: 4,
+			assessmentModdedScore: 74,
+			rewardedMods: [1]
 		})
 	})
 
@@ -477,7 +476,7 @@ describe('AssessmentRubric', () => {
 			]
 		})
 
-		expect(ar.getAssessmentScoreInfoForLatestAttempt(2, [80])).toEqual({
+		expect(ar.getAssessmentScoreInfoForAttempt(2, [80])).toEqual({
 			attemptNumber: 1,
 			attemptScore: 80,
 			status: 'passed',
@@ -487,7 +486,7 @@ describe('AssessmentRubric', () => {
 			rewardedMods: [1]
 		})
 
-		expect(ar.getAssessmentScoreInfoForLatestAttempt(2, [80, 80])).toEqual({
+		expect(ar.getAssessmentScoreInfoForAttempt(2, [80, 80])).toEqual({
 			attemptNumber: 2,
 			attemptScore: 80,
 			status: 'passed',
@@ -495,6 +494,50 @@ describe('AssessmentRubric', () => {
 			rewardTotal: 3,
 			assessmentModdedScore: 83,
 			rewardedMods: [0, 1]
+		})
+	})
+
+	test('assessment score ceiling at 100', () => {
+		let ar = new AssessmentRubric({
+			type: 'attempt',
+			mods: [
+				{
+					attemptCondition: 1,
+					reward: 100
+				}
+			]
+		})
+
+		expect(ar.getAssessmentScoreInfoForAttempt(10, [80])).toEqual({
+			attemptNumber: 1,
+			attemptScore: 80,
+			status: 'passed',
+			assessmentScore: 80,
+			rewardTotal: 100,
+			assessmentModdedScore: 100,
+			rewardedMods: [0]
+		})
+	})
+
+	test('assessment score floor at 0', () => {
+		let ar = new AssessmentRubric({
+			type: 'attempt',
+			mods: [
+				{
+					attemptCondition: 1,
+					reward: -100
+				}
+			]
+		})
+
+		expect(ar.getAssessmentScoreInfoForAttempt(10, [80])).toEqual({
+			attemptNumber: 1,
+			attemptScore: 80,
+			status: 'passed',
+			assessmentScore: 80,
+			rewardTotal: -100,
+			assessmentModdedScore: 0,
+			rewardedMods: [0]
 		})
 	})
 })
