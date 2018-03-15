@@ -21,8 +21,7 @@ Expected input for type 'pass-fail':
 Mod:
 
 {
-	*attemptCondition: (Number | AttemptRange) [Default = '[1-$last_attempt]'],
-	*scoreCondition: (Number | ScoreRange) [Default = '[0-100]'],
+	attemptCondition: (Number | AttemptRange) [Default = '[1-$last_attempt]'],
 	reward: Number
 }
 
@@ -160,14 +159,13 @@ class AssessmentRubric {
 			let parsedReward
 
 			// Ensure at least one condition exists:
-			if (!(mod.attemptCondition || mod.scoreCondition)) {
+			if (!mod.attemptCondition) {
 				return
 			}
 
 			mod = Object.assign(
 				{
-					attemptCondition: '[0,$last_attempt]',
-					scoreCondition: '[0,100]'
+					attemptCondition: '[0,$last_attempt]'
 					// dateCondition: null,
 					// passCondition: false
 				},
@@ -176,7 +174,6 @@ class AssessmentRubric {
 
 			mod = {
 				attemptCondition: getParsedRange(mod.attemptCondition.toString()),
-				scoreCondition: getParsedRange(mod.scoreCondition.toString()),
 				reward: mod.reward
 			}
 
@@ -248,10 +245,7 @@ class AssessmentRubric {
 
 				// find matching mods and apply them
 				this.mods.forEach((mod, i) => {
-					if (
-						isValueInRange(attemptNumber, mod.attemptCondition, attemptReplaceDict) &&
-						isValueInRange(latestAttemptScore, mod.scoreCondition)
-					) {
+					if (isValueInRange(attemptNumber, mod.attemptCondition, attemptReplaceDict)) {
 						rewardedMods.push(mod)
 						rewardedModsIndicies.push(i)
 					}
