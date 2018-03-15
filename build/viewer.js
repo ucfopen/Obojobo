@@ -1873,6 +1873,12 @@ var AssessmentStore = function (_Store) {
 		Dispatcher.on('question:setResponse', function (payload) {
 			_this.trySetResponse(payload.value.id, payload.value.response, payload.value.targetId);
 		});
+
+		Dispatcher.on('viewer:closeAttempted', function (shouldPrompt) {
+			if (_assessmentUtil2.default.isInAssessment(_this.state)) {
+				shouldPrompt();
+			}
+		});
 		return _this;
 	}
 
@@ -2568,6 +2574,15 @@ var AssessmentUtil = {
 			var resp = _questionUtil2.default.getResponse(questionState, questionModel);
 			return resp;
 		}).length === models.length;
+	},
+	isInAssessment: function isInAssessment(state) {
+		for (var assessmentName in state.assessments) {
+			if (state.assessments[assessmentName].current !== null) {
+				return true;
+			}
+		}
+
+		return false;
 	},
 	getNumberOfAttemptsCompletedForModel: function getNumberOfAttemptsCompletedForModel(state, model) {
 		var assessment = AssessmentUtil.getAssessmentForModel(state, model);
@@ -5421,10 +5436,12 @@ var ViewerApp = function (_React$Component) {
 
 		_this.onIdle = _this.onIdle.bind(_this);
 		_this.onReturnFromIdle = _this.onReturnFromIdle.bind(_this);
+		_this.onBeforeWindowClose = _this.onBeforeWindowClose.bind(_this);
 		_this.onWindowClose = _this.onWindowClose.bind(_this);
 		_this.onVisibilityChange = _this.onVisibilityChange.bind(_this);
 
-		window.onbeforeunload = _this.onWindowClose;
+		window.onbeforeunload = _this.onBeforeWindowClose;
+		window.onunload = _this.onWindowClose;
 
 		_this.state = state;
 		return _this;
@@ -5605,6 +5622,22 @@ var ViewerApp = function (_React$Component) {
 
 			delete this.lastActiveEpoch;
 			delete this.inactiveEvent;
+		}
+	}, {
+		key: 'onBeforeWindowClose',
+		value: function onBeforeWindowClose(e) {
+			var closePrevented = false;
+			var preventClose = function preventClose() {
+				return closePrevented = true;
+			};
+
+			Dispatcher.trigger('viewer:closeAttempted', preventClose);
+
+			if (closePrevented) {
+				return true; // Returning true will cause browser to ask user to confirm leaving page
+			}
+
+			return undefined; // Returning undefined will allow browser to close normally
 		}
 	}, {
 		key: 'onWindowClose',
