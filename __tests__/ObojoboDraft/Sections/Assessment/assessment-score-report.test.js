@@ -112,7 +112,7 @@ describe('AssessmentScoreReport', () => {
 				unableToPassResult: 50,
 				mods: [
 					{
-						attemptCondition: '[1-2]',
+						attemptCondition: '[1,2]',
 						reward: 5
 					}
 				]
@@ -185,7 +185,7 @@ describe('AssessmentScoreReport', () => {
 				unableToPassResult: 50,
 				mods: [
 					{
-						attemptCondition: '[1-2]',
+						attemptCondition: '[1,2]',
 						reward: 5
 					}
 				]
@@ -260,7 +260,7 @@ describe('AssessmentScoreReport', () => {
 				unableToPassResult: 50,
 				mods: [
 					{
-						attemptCondition: '[1-2]',
+						attemptCondition: '[1,2]',
 						reward: 5
 					}
 				]
@@ -333,7 +333,7 @@ describe('AssessmentScoreReport', () => {
 				unableToPassResult: 50,
 				mods: [
 					{
-						attemptCondition: '[1-2]',
+						attemptCondition: '[1,2]',
 						reward: 5
 					}
 				]
@@ -671,18 +671,18 @@ describe('AssessmentScoreReport', () => {
 				{ attemptCondition: '1', reward: 0 },
 				{ attemptCondition: '2', reward: -1 },
 				{ attemptCondition: '$last_attempt', reward: 2 },
-				{ attemptCondition: '[1-2]', reward: -3 },
-				{ attemptCondition: '(1-2]', reward: 4 },
-				{ attemptCondition: '[1-2)', reward: -5 },
-				{ attemptCondition: '(1-2)', reward: 6 },
-				{ attemptCondition: '[2-3]', reward: -7 },
-				{ attemptCondition: '(2-3]', reward: 8 },
-				{ attemptCondition: '[2-3)', reward: -9 },
-				{ attemptCondition: '(2-3)', reward: 10 },
-				{ attemptCondition: '[3-$last_attempt]', reward: -11 },
-				{ attemptCondition: '(3-$last_attempt]', reward: 12 },
-				{ attemptCondition: '[3-$last_attempt)', reward: -13 },
-				{ attemptCondition: '(3-$last_attempt)', reward: 14 }
+				{ attemptCondition: '[1,2]', reward: -3 },
+				{ attemptCondition: '(1,2]', reward: 4 },
+				{ attemptCondition: '[1,2)', reward: -5 },
+				{ attemptCondition: '(1,2)', reward: 6 },
+				{ attemptCondition: '[2,3]', reward: -7 },
+				{ attemptCondition: '(2,3]', reward: 8 },
+				{ attemptCondition: '[2,3)', reward: -9 },
+				{ attemptCondition: '(2,3)', reward: 10 },
+				{ attemptCondition: '[3,$last_attempt]', reward: -11 },
+				{ attemptCondition: '(3,$last_attempt]', reward: 12 },
+				{ attemptCondition: '[3,$last_attempt)', reward: -13 },
+				{ attemptCondition: '(3,$last_attempt)', reward: 14 }
 			]
 		})
 
@@ -898,44 +898,30 @@ describe('AssessmentScoreReport', () => {
 		])
 	})
 
-	test('renders percentages', () => {
-		expect(
+	test('throws error when given bad input', () => {
+		try {
 			new AssessmentScoreReport({
-				type: 'attempt',
-				mods: [
-					{
-						attemptCondition: 1,
-						reward: 5.123
-					}
-				]
+				type: 'pass-fail',
+				passedResult: 'invalid-value'
 			}).getTextItems(
 				{
 					attemptNumber: 1,
-					attemptScore: 66.666666,
-					assessmentScore: 66.666666,
-					rewardedMods: [0],
-					rewardTotal: 5.123,
-					assessmentModdedScore: 71.789666,
+					attemptScore: 100,
+					assessmentScore: 100,
+					rewardedMods: [],
+					rewardTotal: 0,
+					assessmentModdedScore: 100,
 					status: 'passed'
 				},
 				10
 			)
-		).toEqual([
-			{
-				type: 'value',
-				text: 'Attempt 1 score',
-				value: '66.67'
-			},
-			{
-				type: 'extra-credit',
-				text: 'Passed on first attempt',
-				value: '5.12'
-			},
-			{
-				type: 'total',
-				text: 'Total',
-				value: '71.79'
-			}
-		])
+
+			expect('this').toBe('not called')
+		} catch (e) {
+			expect(e.message).toBe('Unknown assessment rubric and score state')
+			return
+		}
+
+		expect('this').toBe('not called')
 	})
 })

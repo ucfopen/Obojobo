@@ -72,7 +72,7 @@
 	/******/
 	/******/ /******/ __webpack_require__.p = 'build/' // Load entry module and return exports
 	/******/
-	/******/ /******/ return __webpack_require__((__webpack_require__.s = 173))
+	/******/ /******/ return __webpack_require__((__webpack_require__.s = 174))
 	/******/
 })(
 	/************************************************************************/
@@ -86,11 +86,6 @@
 		/***/ /***/ 1: function(module, exports) {
 			module.exports = Viewer
 
-			/***/
-		},
-
-		/***/ /***/ 148: function(module, exports) {
-			// removed by extract-text-webpack-plugin
 			/***/
 		},
 
@@ -109,7 +104,12 @@
 			/***/
 		},
 
-		/***/ /***/ 173: function(module, exports, __webpack_require__) {
+		/***/ /***/ 151: function(module, exports) {
+			// removed by extract-text-webpack-plugin
+			/***/
+		},
+
+		/***/ /***/ 174: function(module, exports, __webpack_require__) {
 			module.exports = __webpack_require__(34)
 
 			/***/
@@ -176,7 +176,7 @@
 				}
 			})()
 
-			__webpack_require__(148)
+			__webpack_require__(149)
 
 			var _Common = __webpack_require__(0)
 
@@ -313,7 +313,7 @@
 				}
 			})()
 
-			__webpack_require__(149)
+			__webpack_require__(150)
 
 			var _Common = __webpack_require__(0)
 
@@ -502,7 +502,7 @@
 				}
 			})()
 
-			__webpack_require__(150)
+			__webpack_require__(151)
 
 			var _Common = __webpack_require__(0)
 

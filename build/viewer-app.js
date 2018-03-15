@@ -72,7 +72,7 @@
 	/******/
 	/******/ /******/ __webpack_require__.p = 'build/' // Load entry module and return exports
 	/******/
-	/******/ /******/ return __webpack_require__((__webpack_require__.s = 184))
+	/******/ /******/ return __webpack_require__((__webpack_require__.s = 185))
 	/******/
 })(
 	/************************************************************************/
@@ -1054,7 +1054,7 @@
 
 			var _Viewer2 = _interopRequireDefault(_Viewer)
 
-			__webpack_require__(139)
+			__webpack_require__(140)
 
 			function _interopRequireDefault(obj) {
 				return obj && obj.__esModule ? obj : { default: obj }
@@ -3720,7 +3720,8 @@
 
 			/***/
 		},
-		/* 139 */
+		,
+		/* 139 */ /* 140 */
 		/***/ function(module, exports, __webpack_require__) {
 			'use strict'
 
@@ -3792,6 +3793,13 @@
 			// Smooth scrollTo (non-FF)
 			_smoothscrollPolyfill2.default.polyfill()
 
+			// Number.isFinite (IE)
+			Number.isFinite =
+				Number.isFinite ||
+				function(n) {
+					return typeof n === 'number' && isFinite(n)
+				}
+
 			/***/
 		},
 		,
@@ -3838,7 +3846,7 @@
 		,
 		,
 		,
-		/* 140 */ /* 141 */ /* 142 */ /* 143 */ /* 144 */ /* 145 */ /* 146 */ /* 147 */ /* 148 */ /* 149 */ /* 150 */ /* 151 */ /* 152 */ /* 153 */ /* 154 */ /* 155 */ /* 156 */ /* 157 */ /* 158 */ /* 159 */ /* 160 */ /* 161 */ /* 162 */ /* 163 */ /* 164 */ /* 165 */ /* 166 */ /* 167 */ /* 168 */ /* 169 */ /* 170 */ /* 171 */ /* 172 */ /* 173 */ /* 174 */ /* 175 */ /* 176 */ /* 177 */ /* 178 */ /* 179 */ /* 180 */ /* 181 */ /* 182 */ /* 183 */ /* 184 */
+		/* 141 */ /* 142 */ /* 143 */ /* 144 */ /* 145 */ /* 146 */ /* 147 */ /* 148 */ /* 149 */ /* 150 */ /* 151 */ /* 152 */ /* 153 */ /* 154 */ /* 155 */ /* 156 */ /* 157 */ /* 158 */ /* 159 */ /* 160 */ /* 161 */ /* 162 */ /* 163 */ /* 164 */ /* 165 */ /* 166 */ /* 167 */ /* 168 */ /* 169 */ /* 170 */ /* 171 */ /* 172 */ /* 173 */ /* 174 */ /* 175 */ /* 176 */ /* 177 */ /* 178 */ /* 179 */ /* 180 */ /* 181 */ /* 182 */ /* 183 */ /* 184 */ /* 185 */
 		/***/ function(module, exports, __webpack_require__) {
 			__webpack_require__(45)
 			module.exports = __webpack_require__(46)

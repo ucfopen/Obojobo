@@ -1,22 +1,3 @@
-// let AssessmentRubric = require('./assessment-rubric');
-
-// let rubric =
-// let ar = new AssessmentRubric(rubric)
-
-// let assessmentScoreInfo = ar.getAssessmentScoreInfoForLatestAttempt(10, [10])
-
-// lang should be of type 'single' or 'multi'
-// {"status": "passed", "rewardTotal": 0, "attemptScore": 0, "rewardedMods": [], "attemptNumber": 1, "assessmentScore": 0, "assessmentModdedScore": 0}
-/*
-{ attemptNumber: 1,
-  attemptScore: 10,
-  assessmentScore: 0,
-  rewardedMods: [],
-  rewardTotal: 0,
-  assessmentModdedScore: 0,
-  status: 'failed' }
-*/
-
 let getDisplayFriendlyScore = n => {
 	if (n === null) return '--'
 	return n.toFixed(2).replace('.00', '')
@@ -27,25 +8,14 @@ let getPassingRange = passingNumber => {
 	return getDisplayFriendlyScore(passingNumber) + '-100%'
 }
 
-// '1st attempt'
-// '1st to 2nd attempt'
-// 'last attempt'
-// '1st to 3rd attempt'
-// '9th to last attempt'
 let getModText = (attemptCondition, numOfAttemptsAvailable) => {
-	// let info = {
-	// 	isRange: null,
-	// 	startsAtFirst: null,
-	// 	endsAtLast: null
-	// }
-
 	attemptCondition = ('' + attemptCondition).replace('$last_attempt', '' + numOfAttemptsAvailable)
 
 	let range = []
-	if (attemptCondition.indexOf('-') === -1) {
+	if (attemptCondition.indexOf(',') === -1) {
 		range.push(parseInt(attemptCondition, 10))
 	} else {
-		let tokens = attemptCondition.split('-')
+		let tokens = attemptCondition.split(',')
 		range.push(parseInt(tokens[0].substr(1), 10))
 		range.push(parseInt(tokens[1].substr(0, tokens[1].length - 1), 10))
 
@@ -70,16 +40,6 @@ export default class AssessmentScoreReport {
 	}
 
 	getTextItems(assessmentScoreInfo, numOfAttemptsAvailable) {
-		// switch(this.assessmentRubric.type)
-		// {
-		// 	case 'attempt':
-		// }
-
-		// if(assessmentScoreInfo.status === 'failed')
-		// if(assessmentScoreInfo.rewardedMods.length === 0)
-		// {
-
-		// }
 		let rubric = this.assessmentRubric
 
 		let passingAttemptScore =
@@ -88,136 +48,135 @@ export default class AssessmentScoreReport {
 		let failedResult = typeof rubric.failedResult !== 'undefined' ? rubric.failedResult : 0
 		let unableToPassResult =
 			typeof rubric.unableToPassResult !== 'undefined' ? rubric.unableToPassResult : 0
-		let modsRewarded = assessmentScoreInfo.rewardedMods.length > 0
+		let isRewardedMods = assessmentScoreInfo.rewardedMods.length > 0
+		let status = assessmentScoreInfo.status
+		let attemptNum = assessmentScoreInfo.attemptNumber
 
 		let items = []
 		let attemptScore = getDisplayFriendlyScore(assessmentScoreInfo.attemptScore)
 		let assessScore = getDisplayFriendlyScore(assessmentScoreInfo.assessmentModdedScore)
 
-		// console.log('ASI.rM', assessmentScoreInfo)
-
-		switch (rubric.type) {
-			case 'attempt':
-				if (modsRewarded) {
-					items.push({
-						type: 'value',
-						text: 'Attempt ' + assessmentScoreInfo.attemptNumber + ' score',
-						value: attemptScore
-					})
-				} else {
-					items.push({
-						type: 'line',
-						text:
-							'This is your highest attempt score (Attempt ' +
-							assessmentScoreInfo.attemptNumber +
-							')'
-					})
-				}
-				break
-
-			case 'pass-fail':
-				switch (assessmentScoreInfo.status) {
-					case 'passed':
-						if (passedResult === '$attempt_score') {
-							if (modsRewarded) {
-								items.push({
-									type: 'value',
-									text:
-										'Passing (' +
-										getPassingRange(passingAttemptScore) +
-										') attempt ' +
-										assessmentScoreInfo.attemptNumber +
-										' score',
-									value: attemptScore
-								})
-							} else {
-								items.push({
-									type: 'line',
-									text:
-										'This is your highest passing (' +
-										getPassingRange(passingAttemptScore) +
-										') attempt ' +
-										assessmentScoreInfo.attemptNumber +
-										' score'
-								})
-							}
-						} else {
-							if (modsRewarded) {
-								items.push({
-									type: 'value',
-									text:
-										'Reward for your passing (' +
-										getPassingRange(passingAttemptScore) +
-										') attempt ' +
-										assessmentScoreInfo.attemptNumber +
-										' score',
-									value: getDisplayFriendlyScore(passedResult)
-								})
-							} else {
-								items.push({
-									type: 'line',
-									text:
-										'This is your rewarded score for your passing (' +
-										getPassingRange(passingAttemptScore) +
-										') attempt ' +
-										assessmentScoreInfo.attemptNumber +
-										' score'
-								})
-							}
-						}
-						break
-
-					case 'failed':
-						if (failedResult === 'no-score') {
-							items.push({
-								type: 'line',
-								text:
-									'You need an attempt score of ' +
-									getPassingRange(passingAttemptScore) +
-									' to pass'
-							})
-						} else {
-							items.push({
-								type: 'value',
-								text:
-									'Given score for a non-passing (less than ' +
-									getDisplayFriendlyScore(passingAttemptScore) +
-									'%) attempt',
-								value: getDisplayFriendlyScore(failedResult)
-							})
-						}
-						break
-
-					case 'unableToPass':
-						if (unableToPassResult === 'no-score') {
-							items.push({
-								type: 'line',
-								text:
-									'You needed an attempt score of ' +
-									getPassingRange(passingAttemptScore) +
-									' to pass'
-							})
-						} else if (unableToPassResult === '$highest_attempt_score') {
-							items.push({
-								type: 'line',
-								text:
-									'This is your highest attempt score (Attempt ' +
-									assessmentScoreInfo.attemptNumber +
-									')'
-							})
-						} else {
-							items.push({
-								type: 'value',
-								text:
-									'Given score for not achieving a passing (' +
-									getPassingRange(passingAttemptScore) +
-									') attempt',
-								value: getDisplayFriendlyScore(unableToPassResult)
-							})
-						}
-						break
-				}
-				break
+		if (rubric.type === 'attempt' && isRewardedMods) {
+			items.push({
+				type: 'value',
+				text: 'Attempt ' + attemptNum + ' score',
+				value: attemptScore
+			})
+		} else if (rubric.type === 'attempt' && !isRewardedMods) {
+			items.push({
+				type: 'line',
+				text: 'This is your highest attempt score (Attempt ' + attemptNum + ')'
+			})
+			//
+		} else if (
+			rubric.type === 'pass-fail' &&
+			status === 'passed' &&
+			passedResult === '$attempt_score' &&
+			isRewardedMods
+		) {
+			items.push({
+				type: 'value',
+				text:
+					'Passing (' + getPassingRange(passingAttemptScore) + ') attempt ' + attemptNum + ' score',
+				value: attemptScore
+			})
+		} else if (
+			rubric.type === 'pass-fail' &&
+			status === 'passed' &&
+			passedResult === '$attempt_score' &&
+			!isRewardedMods
+		) {
+			items.push({
+				type: 'line',
+				text:
+					'This is your highest passing (' +
+					getPassingRange(passingAttemptScore) +
+					') attempt ' +
+					attemptNum +
+					' score'
+			})
+		} else if (
+			rubric.type === 'pass-fail' &&
+			status === 'passed' &&
+			Number.isFinite(parseFloat(passedResult)) &&
+			isRewardedMods
+		) {
+			items.push({
+				type: 'value',
+				text:
+					'Reward for your passing (' +
+					getPassingRange(passingAttemptScore) +
+					') attempt ' +
+					attemptNum +
+					' score',
+				value: getDisplayFriendlyScore(passedResult)
+			})
+		} else if (
+			rubric.type === 'pass-fail' &&
+			status === 'passed' &&
+			Number.isFinite(parseFloat(passedResult)) &&
+			!isRewardedMods
+		) {
+			items.push({
+				type: 'line',
+				text:
+					'This is your rewarded score for your passing (' +
+					getPassingRange(passingAttemptScore) +
+					') attempt ' +
+					attemptNum +
+					' score'
+			})
+		} else if (rubric.type === 'pass-fail' && status === 'failed' && failedResult === 'no-score') {
+			items.push({
+				type: 'line',
+				text: 'You need an attempt score of ' + getPassingRange(passingAttemptScore) + ' to pass'
+			})
+		} else if (
+			rubric.type === 'pass-fail' &&
+			status === 'failed' &&
+			Number.isFinite(parseFloat(failedResult))
+		) {
+			items.push({
+				type: 'value',
+				text:
+					'Given score for a non-passing (less than ' +
+					getDisplayFriendlyScore(passingAttemptScore) +
+					'%) attempt',
+				value: getDisplayFriendlyScore(failedResult)
+			})
+		} else if (
+			rubric.type === 'pass-fail' &&
+			status === 'unableToPass' &&
+			unableToPassResult === 'no-score'
+		) {
+			items.push({
+				type: 'line',
+				text: 'You needed an attempt score of ' + getPassingRange(passingAttemptScore) + ' to pass'
+			})
+		} else if (
+			rubric.type === 'pass-fail' &&
+			status === 'unableToPass' &&
+			unableToPassResult === '$highest_attempt_score'
+		) {
+			items.push({
+				type: 'line',
+				text: 'This is your highest attempt score (Attempt ' + attemptNum + ')'
+			})
+		} else if (
+			rubric.type === 'pass-fail' &&
+			status === 'unableToPass' &&
+			Number.isFinite(parseFloat(unableToPassResult))
+		) {
+			items.push({
+				type: 'value',
+				text:
+					'Given score for not achieving a passing (' +
+					getPassingRange(passingAttemptScore) +
+					') attempt',
+				value: getDisplayFriendlyScore(unableToPassResult)
+			})
+		} else {
+			throw new Error('Unknown assessment rubric and score state')
 		}
 
 		if (assessmentScoreInfo.rewardedMods.length > 0) {
@@ -225,12 +184,7 @@ export default class AssessmentScoreReport {
 				assessmentScoreInfo.rewardedMods.map(modIndex => {
 					let mod = rubric.mods[modIndex]
 
-					// Passed on first attempt
-					// Passed on last attempt
-					// Passed on attempts 1-2
-
 					//@TODO - for now assumes attemptCondition - will change to type
-					console.log('mod be all', mod)
 
 					return {
 						type: parseInt(mod.reward) >= 0 ? 'extra-credit' : 'penalty',
@@ -240,13 +194,11 @@ export default class AssessmentScoreReport {
 				})
 			)
 
+			let isScoreOver100 = assessmentScoreInfo.attemptScore + assessmentScoreInfo.rewardTotal > 100
+
 			items.push({
 				type: 'total',
-				text:
-					'Total' +
-					(assessmentScoreInfo.attemptScore + assessmentScoreInfo.rewardTotal > 100
-						? ' (Max 100%)'
-						: ''), //@TODO
+				text: 'Total' + (isScoreOver100 ? ' (Max 100%)' : ''),
 				value: assessScore
 			})
 		}
