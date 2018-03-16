@@ -17,9 +17,7 @@ export default class Heading extends React.Component {
 
 		return (
 			<OboComponent model={this.props.model} moduleData={this.props.moduleData}>
-				<TextChunk className="obojobo-draft--chunks--heading pad">
-					{inner}
-				</TextChunk>
+				<TextChunk className="obojobo-draft--chunks--heading pad">{inner}</TextChunk>
 			</OboComponent>
 		)
 	}

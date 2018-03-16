@@ -1,14 +1,11 @@
 @import '../../../../../scss/includes';
 
-.obojobo-draft--components--modal--bubble .single-input-bubble
-{
-	.interactable
-	{
+.obojobo-draft--components--modal--bubble .single-input-bubble {
+	.interactable {
 		margin-bottom: 0.3em;
 	}
 
-	input
-	{
+	input {
 		border: 1px solid $color-action;
 		box-sizing: border-box;
 		font-family: $font-monospace;
@@ -18,8 +15,7 @@
 		width: 75%;
 	}
 
-	button
-	{
+	button {
 		background: $color-action;
 		border: none;
 		border-radius: 0 0.3rem 0.3rem 0;
@@ -36,8 +32,7 @@
 		width: 25%;
 	}
 
-	.label
-	{
+	.label {
 		color: $color-text-minor;
 		display: block;
 		font-family: $font-default;

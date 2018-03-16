@@ -1,22 +1,36 @@
 let Adapter = {
 	construct(model, attrs) {
-		if (__guard__(attrs != null ? attrs.content : undefined, x => x.responseType) != null) {
-			model.modelState.responseType = attrs.content.responseType
-		} else {
-			model.modelState.responseType = ''
-		}
+		let content = attrs && attrs.content ? attrs.content : {}
+
+		model.modelState.responseType = content.responseType || ''
+		model.modelState.correctLabels = content.correctLabels ? content.correctLabels.split('|') : null
+		model.modelState.incorrectLabels = content.incorrectLabels
+			? content.incorrectLabels.split('|')
+			: null
+		model.modelState.shuffle = content.shuffle !== false
 	},
 
 	clone(model, clone) {
 		clone.modelState.responseType = model.modelState.responseType
+		clone.modelState.correctLabels = model.modelState.correctLabels
+			? model.modelState.correctLabels.slice(0)
+			: null
+		clone.modelState.incorrectLabels = model.modelState.incorrectLabels
+			? model.modelState.incorrectLabels.slice(0)
+			: null
+		clone.modelState.shuffle = model.modelState.shuffle
 	},
 
 	toJSON(model, json) {
 		json.content.responseType = model.modelState.responseType
+		json.content.correctLabels = model.modelState.correctLabels
+			? model.modelState.correctLabels.join('|')
+			: null
+		json.content.incorrectLabels = model.modelState.incorrectLabels
+			? model.modelState.incorrectLabels.join('|')
+			: null
+		json.content.shuffle = model.modelState.shuffle
 	}
 }
 
 export default Adapter
-function __guard__(value, transform) {
-	return typeof value !== 'undefined' && value !== null ? transform(value) : undefined
-}

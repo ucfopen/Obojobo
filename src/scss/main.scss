@@ -2,23 +2,24 @@
 @import '../scss/indents';
 
 html {
-  height: 100%;
-  width: 100%;
-  overflow: hidden;
-  // -webkit-overflow-scrolling: touch;
+	height: 100%;
+	width: 100%;
+	overflow: hidden;
+	// -webkit-overflow-scrolling: touch;
 }
 
 a {
-  color: inherit;
+	color: inherit;
+	text-decoration-skip-ink: auto;
 }
 
 body {
-  height: 100%;
-  padding: 0;
+	height: 100%;
+	padding: 0;
 
-  margin: 0;
-  -webkit-overflow-scrolling: touch;
-  font-size: $font-size;
+	margin: 0;
+	-webkit-overflow-scrolling: touch;
+	font-size: $font-size;
 }
 
 // .component-container > .component:first-child
@@ -33,13 +34,11 @@ body {
 // 	border: 1px solid green;
 // }
 
-#viewer-app
-{
+#viewer-app {
 	height: 100%;
 	overflow: auto;
 
-	.root
-	{
+	.root {
 		height: 100%;
 	}
 }
@@ -61,15 +60,11 @@ body {
 // 	// border: 2px solid green;
 // }
 
-.component
-{
+.component {
 	// border: 2px solid gray;
-
-
 }
 
-.component
-{
+.component {
 	box-sizing: border-box;
 	color: black;
 	display: block;
@@ -84,19 +79,15 @@ body {
 	padding-top: 1em;
 	padding-bottom: 1em;
 
-
-	&.first
-	{
+	&.first {
 		padding-top: 0;
 	}
 
-	&.last
-	{
+	&.last {
 		padding-bottom: 0;
 	}
 
-	.pad
-	{
+	.pad {
 		// max-width: $dimension-column-width;
 		// margin-left: auto;
 		// margin-right: auto;
@@ -104,30 +95,30 @@ body {
 		padding-right: $dimension-padding;
 	}
 
-	h1, h2, h3, h4, h5, h6
-	{
+	h1,
+	h2,
+	h3,
+	h4,
+	h5,
+	h6 {
 		/*font-family: 'Open Sans';*/
 		font-family: $font-default;
 		font-weight: normal;
 		margin: 0;
-
 	}
-	h1
-	{
+	h1 {
 		line-height: 1em;
 		font-weight: 700;
 
 		b,
-		strong
-		{
+		strong {
 			font-weight: 900;
 		}
 	}
 
-	h2
-	{
+	h2 {
 		line-height: 1em;
-		color: #A20E83;
+		color: #a20e83;
 		font-size: 1.5em;
 		// margin-bottom: 0;
 	}
@@ -135,50 +126,40 @@ body {
 	pre,
 	code,
 	pre code,
-	textarea
-	{
+	textarea {
 		font-family: $font-monospace;
 		// tab-size: 8;
 		font-size: 1em;
 		letter-spacing: -0.01em;
 	}
 
-	a
-	{
+	a {
 		color: #bd1438;
 	}
 
-	.obojobo-draft--chunks--question .question
-	{
+	.obojobo-draft--chunks--question .question {
 		font-weight: 700;
 
 		b,
-		strong
-		{
+		strong {
 			font-weight: 900;
 		}
 	}
 
-	.text
-	{
-		&.align-left
-		{
+	.text {
+		&.align-left {
 			text-align: left;
 		}
 
-		&.align-right
-		{
+		&.align-right {
 			text-align: right;
 		}
 
-		&.align-center
-		{
+		&.align-center {
 			text-align: center;
 		}
 	}
 }
 
-.document
-{
-
+.document {
 }

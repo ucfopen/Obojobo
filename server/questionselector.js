@@ -88,19 +88,9 @@ let getSequentialQuestions = (questionHistory, questionBank) => {
 let getQuestions = (questionHistoryArray, questionBank, choose) => {
 	console.log('   GET QUESTIONS', choose)
 
-	let result = questionHistoryArray
-		.filter(questionItem => {
-			let question = questionBank.draftTree.getChildNodeById(questionItem.id)
-			let content = question.node.content
-			let limitExceeded =
-				content.limit && content.limit !== 0 && questionItem.timesUsed >= content.limit
-
-			return !limitExceeded
-		})
-		.slice(0, choose)
-		.map(questionItem => {
-			return questionBank.draftTree.getChildNodeById(questionItem.id)
-		})
+	let result = questionHistoryArray.slice(0, choose).map(questionItem => {
+		return questionBank.draftTree.getChildNodeById(questionItem.id)
+	})
 
 	console.log('   result')
 	for (let i in result) {

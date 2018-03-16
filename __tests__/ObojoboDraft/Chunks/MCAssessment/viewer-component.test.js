@@ -220,4 +220,27 @@ describe('MCAssessment', () => {
 
 		expect(tree).not.toEqual(tree2)
 	})
+
+	test('MCAssessment with shuffle not set', () => {
+		_.shuffle = jest.fn()
+		let moduleData = getModuleData()
+		const component = renderer.create(<MCAssessment model={model} moduleData={moduleData} />)
+		expect(_.shuffle).toBeCalled()
+	})
+
+	test('MCAssessment with shuffle set to true', () => {
+		_.shuffle = jest.fn()
+		let moduleData = getModuleData()
+		model.modelState.shuffle = true
+		const component = renderer.create(<MCAssessment model={model} moduleData={moduleData} />)
+		expect(_.shuffle).toBeCalled()
+	})
+
+	test('MCAssessment with shuffle set to false', () => {
+		_.shuffle = jest.fn()
+		let moduleData = getModuleData()
+		model.modelState.shuffle = false
+		const component = renderer.create(<MCAssessment model={model} moduleData={moduleData} />)
+		expect(_.shuffle).not.toBeCalled()
+	})
 })

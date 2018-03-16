@@ -1,7 +1,6 @@
 @import '../../../../../scss/includes';
 
-.obojobo-draft--components--modal--bubble
-{
+.obojobo-draft--components--modal--bubble {
 	$tip-size: 1em;
 	$border: 1px solid $color-shadow;
 
@@ -19,8 +18,7 @@
 	transform: translate(-50%, 120%);
 	z-index: 10;
 
-	&::before
-	{
+	&::before {
 		background: $color-bg;
 		border-left: $border;
 		border-top: $border;
@@ -33,8 +31,7 @@
 		width: $tip-size;
 	}
 
-	.container
-	{
+	.container {
 		position: relative;
 	}
 }

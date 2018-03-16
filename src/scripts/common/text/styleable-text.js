@@ -1,5 +1,3 @@
-import ObjectAssign from 'object-assign'
-
 import ChunkStyleList from './chunk-style-list'
 import StyleRange from './style-range'
 import StyleType from './style-type'

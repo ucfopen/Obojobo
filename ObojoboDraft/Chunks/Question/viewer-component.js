@@ -39,12 +39,11 @@ export default class Question extends React.Component {
 			<OboComponent
 				model={this.props.model}
 				moduleData={this.props.moduleData}
-				className={`flip-container obojobo-draft--chunks--question${score === null
-					? ''
-					: score === 100 ? ' is-correct' : ' is-incorrect'} is-${viewState}${this.props.model
-					.modelState.practice
-					? ' is-practice'
-					: ' is-not-practice'}`}
+				className={`flip-container obojobo-draft--chunks--question${
+					score === null ? '' : score === 100 ? ' is-correct' : ' is-incorrect'
+				} is-${viewState}${
+					this.props.model.modelState.practice ? ' is-practice' : ' is-not-practice'
+				}`}
 			>
 				<div className="flipper">
 					<div className="content back">
@@ -73,12 +72,9 @@ export default class Question extends React.Component {
 			<OboComponent
 				model={this.props.model}
 				moduleData={this.props.moduleData}
-				className={`flip-container obojobo-draft--chunks--question${score === null
-					? ''
-					: score === 100 ? ' is-correct' : ' is-incorrect'} is-active${this.props.model.modelState
-					.practice
-					? ' is-practice'
-					: ' is-not-practice'}`}
+				className={`flip-container obojobo-draft--chunks--question${
+					score === null ? '' : score === 100 ? ' is-correct' : ' is-incorrect'
+				} is-active${this.props.model.modelState.practice ? ' is-practice' : ' is-not-practice'}`}
 			>
 				<div className="flipper">
 					<div className="content back">
