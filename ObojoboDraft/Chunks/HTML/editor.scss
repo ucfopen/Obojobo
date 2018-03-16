@@ -1,28 +1,26 @@
 @import '../../../../../../../scss/includes';
 
-.obojobo-draft--chunks--html
-{
-	.anchor
-	{
+.obojobo-draft--chunks--html {
+	.anchor {
 		z-index: 2;
 	}
 
-	> .container
-	{
+	> .container {
 		margin: 0 auto;
 		position: relative;
 		z-index: 3;
 	}
 
-	.placeholder, .edit, img, iframe
-	{
+	.placeholder,
+	.edit,
+	img,
+	iframe {
 		height: 100%;
 		margin: 0 auto;
 		width: 100%;
 	}
 
-	.placeholder
-	{
+	.placeholder {
 		background: $color-bg2;
 		box-sizing: border-box;
 		color: $color-text-minor;
@@ -34,8 +32,7 @@
 		text-align: center;
 	}
 
-	textarea
-	{
+	textarea {
 		box-sizing: border-box;
 		font-size: 0.9em;
 		height: 400px;
@@ -43,8 +40,7 @@
 		width: 100%;
 	}
 
-	.obojobo-draft--components--delete-button
-	{
+	.obojobo-draft--components--delete-button {
 		position: absolute;
 		right: 0;
 		top: 0;
@@ -52,8 +48,7 @@
 		z-index: 3;
 	}
 
-	.obojobo-draft--components--edit-button
-	{
+	.obojobo-draft--components--edit-button {
 		position: absolute;
 		right: 1em;
 		top: 1em;

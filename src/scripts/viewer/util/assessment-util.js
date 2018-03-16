@@ -35,18 +35,16 @@ var AssessmentUtil = {
 			return 0
 		}
 
-		return assessment.attempts[assessment.attempts.length - 1].result.attemptScore
+		return assessment.attempts[assessment.attempts.length - 1].attemptScore
 	},
 
-	getHighestAttemptScoreForModel(state, model) {
+	getAssessmentScoreForModel(state, model) {
 		let assessment = AssessmentUtil.getAssessmentForModel(state, model)
 		if (!assessment) {
 			return null
 		}
 
-		return assessment.attempts
-			.map(attempt => attempt.result.attemptScore)
-			.reduce((a, b) => Math.max(a, b), 0)
+		return assessment.score
 	},
 
 	getLastAttemptScoresForModel(state, model) {
@@ -59,7 +57,7 @@ var AssessmentUtil = {
 			return []
 		}
 
-		return assessment.attempts[assessment.attempts.length - 1].result.scores
+		return assessment.attempts[assessment.attempts.length - 1].questionScores
 	},
 
 	getCurrentAttemptForModel(state, model) {
@@ -71,12 +69,36 @@ var AssessmentUtil = {
 		return assessment.current
 	},
 
-	// getLastAttemptForModel(state, model) {
-	// 	let assessment = AssessmentUtil.getAssessmentForModel(state, model);
-	// 	if (!assessment || (assessment.attempts.length === 0)) { return null; }
+	getLTIStateForModel(state, model) {
+		let assessment = AssessmentUtil.getAssessmentForModel(state, model)
+		if (!assessment) {
+			return null
+		}
 
-	// 	return assessment.attempts[assessment.attempts.length - 1];
-	// },
+		return {
+			state: assessment.lti,
+			networkState: assessment.ltiNetworkState,
+			errorCount: assessment.ltiErrorCount
+		}
+	},
+
+	isLTIScoreNeedingToBeResynced(state, model) {
+		let assessment = AssessmentUtil.getAssessmentForModel(state, model)
+
+		if (!assessment || !assessment.lti || !assessment.lti.gradebookStatus) {
+			return false
+		}
+
+		switch (assessment.lti.gradebookStatus) {
+			case 'ok_no_outcome_service':
+			case 'ok_gradebook_matches_assessment_score':
+			case 'ok_null_score_not_sent':
+				return false
+
+			default:
+				return true
+		}
+	},
 
 	isCurrentAttemptComplete(assessmentState, questionState, model) {
 		let current = AssessmentUtil.getCurrentAttemptForModel(assessmentState, model)
@@ -121,6 +143,14 @@ var AssessmentUtil = {
 
 	endAttempt(model) {
 		return Dispatcher.trigger('assessment:endAttempt', {
+			value: {
+				id: model.get('id')
+			}
+		})
+	},
+
+	resendLTIScore(model) {
+		return Dispatcher.trigger('assessment:resendLTIScore', {
 			value: {
 				id: model.get('id')
 			}

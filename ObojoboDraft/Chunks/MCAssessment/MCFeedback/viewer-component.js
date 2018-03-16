@@ -10,10 +10,11 @@ export default class MCFeedback extends React.Component {
 			<OboComponent
 				model={this.props.model}
 				moduleData={this.props.moduleData}
-				className={`obojobo-draft--chunks--mc-assessment--mc-feedback${this.props.model.parent
-					.modelState.score === 100
-					? ' is-correct-feedback'
-					: ' is-incorrect-feedback'}`}
+				className={`obojobo-draft--chunks--mc-assessment--mc-feedback${
+					this.props.model.parent.modelState.score === 100
+						? ' is-correct-feedback'
+						: ' is-incorrect-feedback'
+				}`}
 				data-choice-label={this.props.label}
 			>
 				{this.props.model.children.models.map((child, index) => {

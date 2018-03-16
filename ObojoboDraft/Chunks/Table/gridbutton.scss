@@ -7,16 +7,14 @@
 		position: relative;
 		vertical-align: top;
 
-		.table-container
-		{
+		.table-container {
 			position: absolute;
 			top: 40px;
 			width: 133px;
 			z-index: 9999;
 		}
 
-		table
-		{
+		table {
 			background: white;
 			border: 1px solid rgba(0, 0, 0, 0.2);
 			box-shadow: 0 2px 2px rgba(0, 0, 0, 0.25);
@@ -28,8 +26,7 @@
 			padding: 0;
 			width: 100%;
 
-			td
-			{
+			td {
 				border: 1px solid rgba(0, 0, 0, 0.2);
 				cursor: pointer;
 				display: inline-block;
@@ -39,15 +36,13 @@
 				margin: 1px;
 				width: 15px;
 
-				&.selected
-				{
-					background: #CAE4FF;
+				&.selected {
+					background: #cae4ff;
 				}
 			}
 		}
 
-		.tooltip
-		{
+		.tooltip {
 			background: black;
 			border-radius: 10px;
 			box-sizing: border-box;

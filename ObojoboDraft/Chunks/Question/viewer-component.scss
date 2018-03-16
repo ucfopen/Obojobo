@@ -6,19 +6,19 @@
 // 	padding-bottom: 2em;
 // }
 
-
 /* entire container, keeps perspective */
 .flip-container {
 	perspective: 1000px;
 	// width: $dimension-editor;
 	margin: 0 auto;
 }
-	/* flip the pane when hovered */
-	// .flip-container:hover .flipper, .flip-container.hover .flipper {
+/* flip the pane when hovered */
+// .flip-container:hover .flipper, .flip-container.hover .flipper {
 
-	// }
+// }
 
-.front, .back {
+.front,
+.back {
 	width: 100%;
 	// height: 480px;
 }
@@ -33,7 +33,8 @@
 }
 
 /* hide back of pane during swap */
-.front, .back {
+.front,
+.back {
 	@include backface-visibility(hidden);
 	-ms-backface-visibility: visible;
 }
@@ -54,10 +55,7 @@
 	transform: rotateY(180deg);
 }
 
-
-
-.obojobo-draft--chunks--question .flipper
-{
+.obojobo-draft--chunks--question .flipper {
 	$color-sep: rgba(0, 0, 0, 0.1);
 
 	//background: $color-bg; //@FIX: #92
@@ -76,17 +74,13 @@
 	max-width: $dimension-column-width;
 }
 
-.obojobo-draft--chunks--question
-{
-	&.is-hidden .flipper
-	{
+.obojobo-draft--chunks--question {
+	&.is-hidden .flipper {
 		border: 1px solid $color-action;
 	}
 
-	&.is-practice
-	{
-		.back::before
-		{
+	&.is-practice {
+		.back::before {
 			color: $color-text-minor;
 			content: 'Practice';
 			display: block;
@@ -94,34 +88,28 @@
 
 			position: absolute;
 
-
 			left: 3.15em;
 			top: -0.5em;
 			transform: scale(0.7);
 			transform-origin: top left;
 		}
 
-		&.is-correct .flipper
-		{
+		&.is-correct .flipper {
 			border: 1px solid $color-correct;
 		}
 
-		&.is-incorrect .flipper
-		{
+		&.is-incorrect .flipper {
 			border: 1px solid $color-incorrect;
 		}
 	}
 
-	&.is-not-practice
-	{
-		.submit
-		{
+	&.is-not-practice {
+		.submit {
 			display: none;
 		}
 	}
 
-	.blocker
-	{
+	.blocker {
 		position: absolute;
 		left: 0;
 		top: 0;
@@ -133,16 +121,13 @@
 		// transition: opacity $duration-animation-default;
 		border-radius: 0.25em;
 
-		&:hover
-		{
-			.obojobo-draft--components--button
-			{
+		&:hover {
+			.obojobo-draft--components--button {
 				transform: translate(-50%, -50%) scale(1.1, 1.1);
 			}
 		}
 
-		.obojobo-draft--components--button
-		{
+		.obojobo-draft--components--button {
 			transition: transform $duration-animation-default;
 			font-family: $font-default;
 			color: $color-action;
@@ -155,22 +140,18 @@
 	}
 
 	&.is-active,
-	&.is-viewed
-	{
-		.blocker
-		{
+	&.is-viewed {
+		.blocker {
 			opacity: 0;
 			pointer-events: none;
 		}
 
-		.flipper
-		{
+		.flipper {
 			transform: rotateY(-180deg);
 		}
 	}
 
-	.responses-hidden
-	{
+	.responses-hidden {
 		font-family: $font-default;
 		font-size: 0.9em;
 		text-align: center;
@@ -198,8 +179,4 @@
 	// 	top: 0;
 	// 	transform: translate(-$dimension-editor / 2, 0) translate(3rem, 0);
 	// }
-
-
-
-
 }

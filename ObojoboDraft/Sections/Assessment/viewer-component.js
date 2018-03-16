@@ -14,6 +14,7 @@ let { AssessmentUtil } = Viewer.util
 let { NavUtil } = Viewer.util
 
 import AttemptIncompleteDialog from './attempt-incomplete-dialog'
+import LTIStatus from './lti-status'
 
 export default class Assessment extends React.Component {
 	constructor() {
@@ -73,6 +74,10 @@ export default class Assessment extends React.Component {
 		return this.endAttempt()
 	}
 
+	onClickResendScore() {
+		AssessmentUtil.resendLTIScore(this.props.model)
+	}
+
 	endAttempt() {
 		return AssessmentUtil.endAttempt(this.props.model)
 	}
@@ -93,11 +98,11 @@ export default class Assessment extends React.Component {
 	}
 
 	getScoreAction() {
-		let highestScore = AssessmentUtil.getHighestAttemptScoreForModel(
+		let assessmentScore = AssessmentUtil.getAssessmentScoreForModel(
 			this.props.moduleData.assessmentState,
 			this.props.model
 		)
-		let scoreAction = this.props.model.modelState.scoreActions.getActionForScore(highestScore)
+		let scoreAction = this.props.model.modelState.scoreActions.getActionForScore(assessmentScore)
 		if (scoreAction) {
 			return scoreAction
 		}
@@ -118,12 +123,16 @@ export default class Assessment extends React.Component {
 			this.props.moduleData.assessmentState,
 			this.props.model
 		)
-		let highestScore = AssessmentUtil.getHighestAttemptScoreForModel(
+		let assessmentScore = AssessmentUtil.getAssessmentScoreForModel(
+			this.props.moduleData.assessmentState,
+			this.props.model
+		)
+		let ltiState = AssessmentUtil.getLTIStateForModel(
 			this.props.moduleData.assessmentState,
 			this.props.model
 		)
 
-		// alert(@state.step+ ','+ @getCurrentStep())
+		let externalSystemLabel = this.props.moduleData.lti.outcomeServiceHostname
 
 		var childEl = (() => {
 			switch (this.getCurrentStep()) {
@@ -187,22 +196,49 @@ export default class Assessment extends React.Component {
 						let PageComponent = pageModel.getComponentClass()
 						childEl = <PageComponent model={pageModel} moduleData={this.props.moduleData} />
 					} else {
-						childEl = (
-							<p>
-								{scoreAction.message}
-							</p>
-						)
+						childEl = <p>{scoreAction.message}</p>
 					}
 
 					return (
 						<div className="score unlock">
-							<h1>{`Your score is ${Math.round(recentScore)}%`}</h1>
-							{recentScore === highestScore
-								? <h2>This is your highest score</h2>
-								: <h2>{`Your highest score was ${Math.round(highestScore)}%`}</h2>}
+							<LTIStatus
+								ltiState={ltiState}
+								onClickResendScore={this.onClickResendScore.bind(this)}
+							/>
+							<h1>{`Your attempt score is ${Math.round(recentScore)}%`}</h1>
+							<h2>
+								Your overall score for this assessment is{' '}
+								<strong>{assessmentScore === null ? '--' : Math.round(assessmentScore)}% </strong>
+								{(() => {
+									switch (ltiState.state.gradebookStatus) {
+										case 'ok_no_outcome_service':
+										case 'ok_null_score_not_sent':
+											return null
+
+										case 'ok_gradebook_matches_assessment_score':
+											return (
+												<span className="lti-sync-message is-synced">
+													({`sent to ${externalSystemLabel} `}
+													<span>✔</span>)
+												</span>
+											)
+
+										default:
+											return (
+												<span className="lti-sync-message is-not-synced">
+													({`not sent to ${externalSystemLabel} `}
+													<span>✖</span>)
+												</span>
+											)
+									}
+								})()}
+							</h2>
+
 							{childEl}
 							<div className="review">
-								<p className="number-correct">{`You got ${numCorrect} out of ${questionScores.length} questions correct:`}</p>
+								<p className="number-correct">{`You got ${numCorrect} out of ${
+									questionScores.length
+								} questions correct:`}</p>
 								{questionScores.map((questionScore, index) => {
 									let questionModel = OboModel.models[questionScore.id]
 									let QuestionComponent = questionModel.getComponentClass()
@@ -212,9 +248,9 @@ export default class Assessment extends React.Component {
 											key={index}
 											className={questionScore.score === 100 ? 'is-correct' : 'is-not-correct'}
 										>
-											<p>{`Question ${index + 1} - ${questionScore.score === 100
-												? 'Correct:'
-												: 'Incorrect:'}`}</p>
+											<p>{`Question ${index + 1} - ${
+												questionScore.score === 100 ? 'Correct:' : 'Incorrect:'
+											}`}</p>
 											<QuestionComponent
 												model={questionModel}
 												moduleData={this.props.moduleData}

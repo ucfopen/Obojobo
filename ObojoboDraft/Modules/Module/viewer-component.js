@@ -25,9 +25,7 @@ export default class Module extends React.Component {
 				moduleData={this.props.moduleData}
 				className="obojobo-draft--modules--module"
 			>
-				<div>
-					{childEl}
-				</div>
+				<div>{childEl}</div>
 			</OboComponent>
 		)
 	}

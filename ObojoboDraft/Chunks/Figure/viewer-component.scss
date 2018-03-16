@@ -5,97 +5,78 @@
 // 	width: 100%;
 // }
 
-.obojobo-draft--chunks--figure
-{
+.obojobo-draft--chunks--figure {
 	text-align: center;
 
-	figure
-	{
+	figure {
 		margin: 0;
 		padding: 0;
 	}
 
-	.container
-	{
-
+	.container {
 		display: inline-block;
 		height: auto;
 		position: relative;
 
-		img
-		{
+		img {
 			background: $color-bg;
 			border: none;
 			display: block;
 		}
 
-		.img-placeholder
-		{
+		.img-placeholder {
 			border: 1px solid $color-shadow;
 		}
 	}
 
-	figcaption
-	{
+	figcaption {
 		font-family: $font-default;
 		font-size: 0.8em;
 		color: $color-text-minor;
 	}
 
-	&.custom
-	{
+	&.custom {
 		@include pad();
 
-		.container
-		{
+		.container {
 			width: 100%;
 
-			img
-			{
+			img {
 				margin: 0 auto;
 				max-width: 100%;
 			}
 		}
 	}
 
-	&.small
-	{
+	&.small {
 		@include pad();
 
-		.container
-		{
+		.container {
 			width: 18em;
 
-			img
-			{
+			img {
 				width: 100%;
 			}
 		}
 	}
 
-	&.medium
-	{
+	&.medium {
 		@include pad();
 
-		.container
-		{
+		.container {
 			width: 100%;
 
-			img
-			{
+			img {
 				width: 100%;
 			}
 		}
 	}
 
-	&.large
-	{
-		.container
-		{
+	&.large {
+		.container {
 			width: 100%;
 
-			img
-			{
+			img {
 				width: 100%;
 			}
 		}

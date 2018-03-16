@@ -10,8 +10,9 @@ export default class Break extends React.Component {
 		return (
 			<OboComponent model={this.props.model} moduleData={this.props.moduleData}>
 				<NonEditableChunk
-					className={`obojobo-draft--chunks--break viewer width-${this.props.model.modelState
-						.width}`}
+					className={`obojobo-draft--chunks--break viewer width-${
+						this.props.model.modelState.width
+					}`}
 				>
 					<hr />
 				</NonEditableChunk>

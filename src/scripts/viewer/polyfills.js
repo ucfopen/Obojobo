@@ -49,3 +49,6 @@ if (!window.Promise) {
 
 // Smooth scrollTo (non-FF)
 smoothScroll.polyfill()
+
+// Number.isFinite (IE)
+Number.isFinite = Number.isFinite || (n => typeof n === 'number' && isFinite(n))
