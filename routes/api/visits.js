@@ -9,9 +9,7 @@ router.post('/start', (req, res, next) => {
 	let user
 	let visitId
 	let ltiOutcomeServiceUrl
-	let resultContainer = {
-		attemptHistory: []
-	}
+	let visitStartReturnExtensionsProps = {}
 
 	return req
 		.requireCurrentUser()
@@ -42,7 +40,14 @@ router.post('/start', (req, res, next) => {
 			return DraftModel.fetchById(req.body.draftId)
 		})
 		.then(draft => {
-			return draft.yell('internal:startVisit', req, res, resultContainer)
+			return draft.yell(
+				'internal:startVisit',
+				req,
+				res,
+				req.body.draftId,
+				req.body.visitId,
+				visitStartReturnExtensionsProps
+			)
 		})
 		.then(() => {
 			res.success({
@@ -51,7 +56,7 @@ router.post('/start', (req, res, next) => {
 				lti: {
 					lis_outcome_service_url: ltiOutcomeServiceUrl
 				},
-				attemptHistory: resultContainer.attemptHistory
+				extensions: visitStartReturnExtensionsProps
 			})
 		})
 		.catch(err => {
