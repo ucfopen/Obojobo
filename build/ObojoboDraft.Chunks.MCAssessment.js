@@ -63,7 +63,7 @@
 /******/ 	__webpack_require__.p = "build/";
 /******/
 /******/ 	// Load entry module and return exports
-/******/ 	return __webpack_require__(__webpack_require__.s = 168);
+/******/ 	return __webpack_require__(__webpack_require__.s = 266);
 /******/ })
 /************************************************************************/
 /******/ ({
@@ -82,43 +82,7 @@ module.exports = Viewer;
 
 /***/ }),
 
-/***/ 143:
-/***/ (function(module, exports) {
-
-// removed by extract-text-webpack-plugin
-
-/***/ }),
-
-/***/ 144:
-/***/ (function(module, exports) {
-
-// removed by extract-text-webpack-plugin
-
-/***/ }),
-
-/***/ 145:
-/***/ (function(module, exports) {
-
-// removed by extract-text-webpack-plugin
-
-/***/ }),
-
-/***/ 15:
-/***/ (function(module, exports) {
-
-// removed by extract-text-webpack-plugin
-
-/***/ }),
-
-/***/ 168:
-/***/ (function(module, exports, __webpack_require__) {
-
-module.exports = __webpack_require__(33);
-
-
-/***/ }),
-
-/***/ 33:
+/***/ 104:
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -128,17 +92,17 @@ var _Common = __webpack_require__(0);
 
 var _Common2 = _interopRequireDefault(_Common);
 
-__webpack_require__(7);
+__webpack_require__(38);
 
-__webpack_require__(64);
+__webpack_require__(135);
 
-__webpack_require__(66);
+__webpack_require__(137);
 
-var _adapter = __webpack_require__(67);
+var _adapter = __webpack_require__(138);
 
 var _adapter2 = _interopRequireDefault(_adapter);
 
-var _viewerComponent = __webpack_require__(68);
+var _viewerComponent = __webpack_require__(139);
 
 var _viewerComponent2 = _interopRequireDefault(_viewerComponent);
 
@@ -155,7 +119,7 @@ _Common2.default.Store.registerModel('ObojoboDraft.Chunks.MCAssessment', {
 
 /***/ }),
 
-/***/ 63:
+/***/ 134:
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -167,7 +131,7 @@ Object.defineProperty(exports, "__esModule", {
 
 var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
 
-__webpack_require__(143);
+__webpack_require__(241);
 
 var _Common = __webpack_require__(0);
 
@@ -219,7 +183,7 @@ exports.default = MCAnswer;
 
 /***/ }),
 
-/***/ 64:
+/***/ 135:
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -229,7 +193,7 @@ var _Common = __webpack_require__(0);
 
 var _Common2 = _interopRequireDefault(_Common);
 
-var _viewerComponent = __webpack_require__(63);
+var _viewerComponent = __webpack_require__(134);
 
 var _viewerComponent2 = _interopRequireDefault(_viewerComponent);
 
@@ -246,7 +210,7 @@ _Common2.default.Store.registerModel('ObojoboDraft.Chunks.MCAssessment.MCAnswer'
 
 /***/ }),
 
-/***/ 65:
+/***/ 136:
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -258,7 +222,7 @@ Object.defineProperty(exports, "__esModule", {
 
 var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
 
-__webpack_require__(144);
+__webpack_require__(242);
 
 var _Common = __webpack_require__(0);
 
@@ -311,7 +275,7 @@ exports.default = MCFeedback;
 
 /***/ }),
 
-/***/ 66:
+/***/ 137:
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -321,7 +285,7 @@ var _Common = __webpack_require__(0);
 
 var _Common2 = _interopRequireDefault(_Common);
 
-var _viewerComponent = __webpack_require__(65);
+var _viewerComponent = __webpack_require__(136);
 
 var _viewerComponent2 = _interopRequireDefault(_viewerComponent);
 
@@ -338,7 +302,7 @@ _Common2.default.Store.registerModel('ObojoboDraft.Chunks.MCAssessment.MCFeedbac
 
 /***/ }),
 
-/***/ 67:
+/***/ 138:
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -374,7 +338,7 @@ exports.default = Adapter;
 
 /***/ }),
 
-/***/ 68:
+/***/ 139:
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -386,7 +350,7 @@ Object.defineProperty(exports, "__esModule", {
 
 var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
 
-__webpack_require__(145);
+__webpack_require__(243);
 
 var _Common = __webpack_require__(0);
 
@@ -880,7 +844,36 @@ function __guard__(value, transform) {
 
 /***/ }),
 
-/***/ 7:
+/***/ 241:
+/***/ (function(module, exports) {
+
+// removed by extract-text-webpack-plugin
+
+/***/ }),
+
+/***/ 242:
+/***/ (function(module, exports) {
+
+// removed by extract-text-webpack-plugin
+
+/***/ }),
+
+/***/ 243:
+/***/ (function(module, exports) {
+
+// removed by extract-text-webpack-plugin
+
+/***/ }),
+
+/***/ 266:
+/***/ (function(module, exports, __webpack_require__) {
+
+module.exports = __webpack_require__(104);
+
+
+/***/ }),
+
+/***/ 38:
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -890,11 +883,11 @@ var _Common = __webpack_require__(0);
 
 var _Common2 = _interopRequireDefault(_Common);
 
-var _adapter = __webpack_require__(8);
+var _adapter = __webpack_require__(39);
 
 var _adapter2 = _interopRequireDefault(_adapter);
 
-var _viewerComponent = __webpack_require__(9);
+var _viewerComponent = __webpack_require__(40);
 
 var _viewerComponent2 = _interopRequireDefault(_viewerComponent);
 
@@ -911,7 +904,7 @@ _Common2.default.Store.registerModel('ObojoboDraft.Chunks.MCAssessment.MCChoice'
 
 /***/ }),
 
-/***/ 8:
+/***/ 39:
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -947,7 +940,7 @@ function __guard__(value, transform) {
 
 /***/ }),
 
-/***/ 9:
+/***/ 40:
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -959,7 +952,7 @@ Object.defineProperty(exports, "__esModule", {
 
 var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
 
-__webpack_require__(15);
+__webpack_require__(60);
 
 var _Common = __webpack_require__(0);
 
@@ -1078,6 +1071,13 @@ exports.default = MCChoice;
 function __guard__(value, transform) {
 	return typeof value !== 'undefined' && value !== null ? transform(value) : undefined;
 }
+
+/***/ }),
+
+/***/ 60:
+/***/ (function(module, exports) {
+
+// removed by extract-text-webpack-plugin
 
 /***/ })
 

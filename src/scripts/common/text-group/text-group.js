@@ -3,8 +3,6 @@ import StyleableText from '../../common/text/styleable-text'
 import Util from './text-group-util'
 import TextGroupItem from './text-group-item'
 
-import ObjectAssign from 'object-assign'
-
 let getItemsArray = function(itemOrItems) {
 	if (itemOrItems instanceof TextGroupItem) {
 		return [itemOrItems]
@@ -76,7 +74,7 @@ class TextGroup {
 			initialItems = []
 		}
 		this.items = []
-		this.dataTemplate = Object.freeze(ObjectAssign({}, dataTemplate))
+		this.dataTemplate = Object.freeze(Object.assign({}, dataTemplate))
 
 		for (let item of Array.from(initialItems)) {
 			this.add(item.text, item.data)

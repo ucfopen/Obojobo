@@ -63,7 +63,7 @@
 /******/ 	__webpack_require__.p = "build/";
 /******/
 /******/ 	// Load entry module and return exports
-/******/ 	return __webpack_require__(__webpack_require__.s = 60);
+/******/ 	return __webpack_require__(__webpack_require__.s = 61);
 /******/ })
 /************************************************************************/
 /******/ ([
@@ -679,9 +679,8 @@ var APIUtil = {
 			credentials: 'include',
 			headers: {
 				Accept: 'application/json',
-				'Content-Type': 'application/json'
-			} //@TODO - Do I need this?
-		});
+				'Content-Type': 'application/json' //@TODO - Do I need this?
+			} });
 	},
 	post: function post(endpoint, body) {
 		if (body == null) {
@@ -1096,15 +1095,31 @@ module.exports = startOfISOWeek;
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
+/**
+ * Copyright (c) 2013-present, Facebook, Inc.
+ *
+ * This source code is licensed under the MIT license found in the
+ * LICENSE file in the root directory of this source tree.
+ */
+
+
+
+var ReactPropTypesSecret = 'SECRET_DO_NOT_PASS_THIS_OR_YOU_WILL_BE_FIRED';
+
+module.exports = ReactPropTypesSecret;
+
+/***/ }),
+/* 8 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
 
 
 /**
  * Copyright (c) 2013-present, Facebook, Inc.
- * All rights reserved.
  *
- * This source code is licensed under the BSD-style license found in the
- * LICENSE file in the root directory of this source tree. An additional grant
- * of patent rights can be found in the PATENTS file in the same directory.
+ * This source code is licensed under the MIT license found in the
+ * LICENSE file in the root directory of this source tree.
  *
  * 
  */
@@ -1136,17 +1151,15 @@ emptyFunction.thatReturnsArgument = function (arg) {
 module.exports = emptyFunction;
 
 /***/ }),
-/* 8 */
+/* 9 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
 /* WEBPACK VAR INJECTION */(function(process) {/**
  * Copyright (c) 2013-present, Facebook, Inc.
- * All rights reserved.
  *
- * This source code is licensed under the BSD-style license found in the
- * LICENSE file in the root directory of this source tree. An additional grant
- * of patent rights can be found in the PATENTS file in the same directory.
+ * This source code is licensed under the MIT license found in the
+ * LICENSE file in the root directory of this source tree.
  *
  */
 
@@ -1196,26 +1209,6 @@ function invariant(condition, format, a, b, c, d, e, f) {
 
 module.exports = invariant;
 /* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(4)))
-
-/***/ }),
-/* 9 */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-/**
- * Copyright 2013-present, Facebook, Inc.
- * All rights reserved.
- *
- * This source code is licensed under the BSD-style license found in the
- * LICENSE file in the root directory of this source tree. An additional grant
- * of patent rights can be found in the PATENTS file in the same directory.
- */
-
-
-
-var ReactPropTypesSecret = 'SECRET_DO_NOT_PASS_THIS_OR_YOU_WILL_BE_FIRED';
-
-module.exports = ReactPropTypesSecret;
 
 /***/ }),
 /* 10 */
@@ -1656,18 +1649,16 @@ module.exports = isDate;
 
 "use strict";
 /* WEBPACK VAR INJECTION */(function(process) {/**
- * Copyright 2014-2015, Facebook, Inc.
- * All rights reserved.
+ * Copyright (c) 2014-present, Facebook, Inc.
  *
- * This source code is licensed under the BSD-style license found in the
- * LICENSE file in the root directory of this source tree. An additional grant
- * of patent rights can be found in the PATENTS file in the same directory.
+ * This source code is licensed under the MIT license found in the
+ * LICENSE file in the root directory of this source tree.
  *
  */
 
 
 
-var emptyFunction = __webpack_require__(7);
+var emptyFunction = __webpack_require__(8);
 
 /**
  * Similar to invariant but only logs a warning if the condition is not met.
@@ -1679,45 +1670,43 @@ var emptyFunction = __webpack_require__(7);
 var warning = emptyFunction;
 
 if (process.env.NODE_ENV !== 'production') {
-  (function () {
-    var printWarning = function printWarning(format) {
-      for (var _len = arguments.length, args = Array(_len > 1 ? _len - 1 : 0), _key = 1; _key < _len; _key++) {
-        args[_key - 1] = arguments[_key];
+  var printWarning = function printWarning(format) {
+    for (var _len = arguments.length, args = Array(_len > 1 ? _len - 1 : 0), _key = 1; _key < _len; _key++) {
+      args[_key - 1] = arguments[_key];
+    }
+
+    var argIndex = 0;
+    var message = 'Warning: ' + format.replace(/%s/g, function () {
+      return args[argIndex++];
+    });
+    if (typeof console !== 'undefined') {
+      console.error(message);
+    }
+    try {
+      // --- Welcome to debugging React ---
+      // This error was thrown as a convenience so that you can use this stack
+      // to find the callsite that caused this warning to fire.
+      throw new Error(message);
+    } catch (x) {}
+  };
+
+  warning = function warning(condition, format) {
+    if (format === undefined) {
+      throw new Error('`warning(condition, format, ...args)` requires a warning ' + 'message argument');
+    }
+
+    if (format.indexOf('Failed Composite propType: ') === 0) {
+      return; // Ignore CompositeComponent proptype check.
+    }
+
+    if (!condition) {
+      for (var _len2 = arguments.length, args = Array(_len2 > 2 ? _len2 - 2 : 0), _key2 = 2; _key2 < _len2; _key2++) {
+        args[_key2 - 2] = arguments[_key2];
       }
 
-      var argIndex = 0;
-      var message = 'Warning: ' + format.replace(/%s/g, function () {
-        return args[argIndex++];
-      });
-      if (typeof console !== 'undefined') {
-        console.error(message);
-      }
-      try {
-        // --- Welcome to debugging React ---
-        // This error was thrown as a convenience so that you can use this stack
-        // to find the callsite that caused this warning to fire.
-        throw new Error(message);
-      } catch (x) {}
-    };
-
-    warning = function warning(condition, format) {
-      if (format === undefined) {
-        throw new Error('`warning(condition, format, ...args)` requires a warning ' + 'message argument');
-      }
-
-      if (format.indexOf('Failed Composite propType: ') === 0) {
-        return; // Ignore CompositeComponent proptype check.
-      }
-
-      if (!condition) {
-        for (var _len2 = arguments.length, args = Array(_len2 > 2 ? _len2 - 2 : 0), _key2 = 2; _key2 < _len2; _key2++) {
-          args[_key2 - 2] = arguments[_key2];
-        }
-
-        printWarning.apply(undefined, [format].concat(args));
-      }
-    };
-  })();
+      printWarning.apply(undefined, [format].concat(args));
+    }
+  };
 }
 
 module.exports = warning;
@@ -1736,13 +1725,13 @@ Object.defineProperty(exports, "__esModule", {
 
 var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
 
-__webpack_require__(52);
+__webpack_require__(53);
 
 var _navUtil = __webpack_require__(2);
 
 var _navUtil2 = _interopRequireDefault(_navUtil);
 
-var _obojoboLogo = __webpack_require__(59);
+var _obojoboLogo = __webpack_require__(60);
 
 var _obojoboLogo2 = _interopRequireDefault(_obojoboLogo);
 
@@ -2668,7 +2657,7 @@ exports.default = function (url) {
 	return hostname;
 };
 
-var _urlParse = __webpack_require__(45);
+var _urlParse = __webpack_require__(46);
 
 var _urlParse2 = _interopRequireDefault(_urlParse);
 
@@ -3152,7 +3141,7 @@ module.exports = React;
 "use strict";
 
 
-var _index = __webpack_require__(50);
+var _index = __webpack_require__(51);
 
 var _index2 = _interopRequireDefault(_index);
 
@@ -3858,10 +3847,9 @@ function buildFormatLocale() {
     'aa': function aa(date) {
       return date.getHours() / 12 >= 1 ? meridiemFull[1] : meridiemFull[0];
     }
-  };
 
-  // Generate ordinal version of formatters: M -> Mo, D -> Do, etc.
-  var ordinalFormatters = ['M', 'D', 'DDD', 'd', 'Q', 'W'];
+    // Generate ordinal version of formatters: M -> Mo, D -> Do, etc.
+  };var ordinalFormatters = ['M', 'D', 'DDD', 'd', 'Q', 'W'];
   ordinalFormatters.forEach(function (formatterToken) {
     formatters[formatterToken + 'o'] = function (date, formatters) {
       return ordinal(formatters[formatterToken](date));
@@ -4069,13 +4057,107 @@ module.exports = startOfYear;
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
+/*
+object-assign
+(c) Sindre Sorhus
+@license MIT
+*/
+
+
+/* eslint-disable no-unused-vars */
+
+var getOwnPropertySymbols = Object.getOwnPropertySymbols;
+var hasOwnProperty = Object.prototype.hasOwnProperty;
+var propIsEnumerable = Object.prototype.propertyIsEnumerable;
+
+function toObject(val) {
+	if (val === null || val === undefined) {
+		throw new TypeError('Object.assign cannot be called with null or undefined');
+	}
+
+	return Object(val);
+}
+
+function shouldUseNative() {
+	try {
+		if (!Object.assign) {
+			return false;
+		}
+
+		// Detect buggy property enumeration order in older V8 versions.
+
+		// https://bugs.chromium.org/p/v8/issues/detail?id=4118
+		var test1 = new String('abc'); // eslint-disable-line no-new-wrappers
+		test1[5] = 'de';
+		if (Object.getOwnPropertyNames(test1)[0] === '5') {
+			return false;
+		}
+
+		// https://bugs.chromium.org/p/v8/issues/detail?id=3056
+		var test2 = {};
+		for (var i = 0; i < 10; i++) {
+			test2['_' + String.fromCharCode(i)] = i;
+		}
+		var order2 = Object.getOwnPropertyNames(test2).map(function (n) {
+			return test2[n];
+		});
+		if (order2.join('') !== '0123456789') {
+			return false;
+		}
+
+		// https://bugs.chromium.org/p/v8/issues/detail?id=3056
+		var test3 = {};
+		'abcdefghijklmnopqrst'.split('').forEach(function (letter) {
+			test3[letter] = letter;
+		});
+		if (Object.keys(Object.assign({}, test3)).join('') !== 'abcdefghijklmnopqrst') {
+			return false;
+		}
+
+		return true;
+	} catch (err) {
+		// We don't expect any of the above to throw, but better to be safe.
+		return false;
+	}
+}
+
+module.exports = shouldUseNative() ? Object.assign : function (target, source) {
+	var from;
+	var to = toObject(target);
+	var symbols;
+
+	for (var s = 1; s < arguments.length; s++) {
+		from = Object(arguments[s]);
+
+		for (var key in from) {
+			if (hasOwnProperty.call(from, key)) {
+				to[key] = from[key];
+			}
+		}
+
+		if (getOwnPropertySymbols) {
+			symbols = getOwnPropertySymbols(from);
+			for (var i = 0; i < symbols.length; i++) {
+				if (propIsEnumerable.call(from, symbols[i])) {
+					to[symbols[i]] = from[symbols[i]];
+				}
+			}
+		}
+	}
+
+	return to;
+};
+
+/***/ }),
+/* 39 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
 /* WEBPACK VAR INJECTION */(function(process) {/**
- * Copyright 2013-present, Facebook, Inc.
- * All rights reserved.
+ * Copyright (c) 2013-present, Facebook, Inc.
  *
- * This source code is licensed under the BSD-style license found in the
- * LICENSE file in the root directory of this source tree. An additional grant
- * of patent rights can be found in the PATENTS file in the same directory.
+ * This source code is licensed under the MIT license found in the
+ * LICENSE file in the root directory of this source tree.
  */
 
 
@@ -4083,9 +4165,9 @@ module.exports = startOfYear;
 var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol" ? function (obj) { return typeof obj; } : function (obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; };
 
 if (process.env.NODE_ENV !== 'production') {
-  var invariant = __webpack_require__(8);
+  var invariant = __webpack_require__(9);
   var warning = __webpack_require__(14);
-  var ReactPropTypesSecret = __webpack_require__(9);
+  var ReactPropTypesSecret = __webpack_require__(7);
   var loggedTypeFailures = {};
 }
 
@@ -4111,7 +4193,7 @@ function checkPropTypes(typeSpecs, values, location, componentName, getStack) {
         try {
           // This is intentionally an invariant that gets caught. It's the same
           // behavior as without this statement except with a better message.
-          invariant(typeof typeSpecs[typeSpecName] === 'function', '%s: %s type `%s` is invalid; it must be a function, usually from ' + 'React.PropTypes.', componentName || 'React class', location, typeSpecName);
+          invariant(typeof typeSpecs[typeSpecName] === 'function', '%s: %s type `%s` is invalid; it must be a function, usually from ' + 'the `prop-types` package, but received `%s`.', componentName || 'React class', location, typeSpecName, _typeof(typeSpecs[typeSpecName]));
           error = typeSpecs[typeSpecName](values, typeSpecName, componentName, location, null, ReactPropTypesSecret);
         } catch (ex) {
           error = ex;
@@ -4135,24 +4217,22 @@ module.exports = checkPropTypes;
 /* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(4)))
 
 /***/ }),
-/* 39 */
+/* 40 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
 /**
- * Copyright 2013-present, Facebook, Inc.
- * All rights reserved.
+ * Copyright (c) 2013-present, Facebook, Inc.
  *
- * This source code is licensed under the BSD-style license found in the
- * LICENSE file in the root directory of this source tree. An additional grant
- * of patent rights can be found in the PATENTS file in the same directory.
+ * This source code is licensed under the MIT license found in the
+ * LICENSE file in the root directory of this source tree.
  */
 
 
 
-var emptyFunction = __webpack_require__(7);
-var invariant = __webpack_require__(8);
-var ReactPropTypesSecret = __webpack_require__(9);
+var emptyFunction = __webpack_require__(8);
+var invariant = __webpack_require__(9);
+var ReactPropTypesSecret = __webpack_require__(7);
 
 module.exports = function () {
   function shim(props, propName, componentName, location, propFullName, secret) {
@@ -4185,7 +4265,8 @@ module.exports = function () {
     objectOf: getShim,
     oneOf: getShim,
     oneOfType: getShim,
-    shape: getShim
+    shape: getShim,
+    exact: getShim
   };
 
   ReactPropTypes.checkPropTypes = emptyFunction;
@@ -4195,29 +4276,28 @@ module.exports = function () {
 };
 
 /***/ }),
-/* 40 */
+/* 41 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
 /* WEBPACK VAR INJECTION */(function(process) {/**
- * Copyright 2013-present, Facebook, Inc.
- * All rights reserved.
+ * Copyright (c) 2013-present, Facebook, Inc.
  *
- * This source code is licensed under the BSD-style license found in the
- * LICENSE file in the root directory of this source tree. An additional grant
- * of patent rights can be found in the PATENTS file in the same directory.
+ * This source code is licensed under the MIT license found in the
+ * LICENSE file in the root directory of this source tree.
  */
 
 
 
 var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol" ? function (obj) { return typeof obj; } : function (obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; };
 
-var emptyFunction = __webpack_require__(7);
-var invariant = __webpack_require__(8);
+var emptyFunction = __webpack_require__(8);
+var invariant = __webpack_require__(9);
 var warning = __webpack_require__(14);
+var assign = __webpack_require__(38);
 
-var ReactPropTypesSecret = __webpack_require__(9);
-var checkPropTypes = __webpack_require__(38);
+var ReactPropTypesSecret = __webpack_require__(7);
+var checkPropTypes = __webpack_require__(39);
 
 module.exports = function (isValidElement, throwOnDirectAccess) {
   /* global Symbol */
@@ -4313,7 +4393,8 @@ module.exports = function (isValidElement, throwOnDirectAccess) {
     objectOf: createObjectOfTypeChecker,
     oneOf: createEnumTypeChecker,
     oneOfType: createUnionTypeChecker,
-    shape: createShapeTypeChecker
+    shape: createShapeTypeChecker,
+    exact: createStrictShapeTypeChecker
   };
 
   /**
@@ -4510,7 +4591,7 @@ module.exports = function (isValidElement, throwOnDirectAccess) {
     for (var i = 0; i < arrayOfTypeCheckers.length; i++) {
       var checker = arrayOfTypeCheckers[i];
       if (typeof checker !== 'function') {
-        warning(false, 'Invalid argument supplid to oneOfType. Expected an array of check functions, but ' + 'received %s at index %s.', getPostfixForTypeWarning(checker), i);
+        warning(false, 'Invalid argument supplied to oneOfType. Expected an array of check functions, but ' + 'received %s at index %s.', getPostfixForTypeWarning(checker), i);
         return emptyFunction.thatReturnsNull;
       }
     }
@@ -4557,6 +4638,32 @@ module.exports = function (isValidElement, throwOnDirectAccess) {
       }
       return null;
     }
+    return createChainableTypeChecker(validate);
+  }
+
+  function createStrictShapeTypeChecker(shapeTypes) {
+    function validate(props, propName, componentName, location, propFullName) {
+      var propValue = props[propName];
+      var propType = getPropType(propValue);
+      if (propType !== 'object') {
+        return new PropTypeError('Invalid ' + location + ' `' + propFullName + '` of type `' + propType + '` ' + ('supplied to `' + componentName + '`, expected `object`.'));
+      }
+      // We need to check all keys in case some are required but missing from
+      // props.
+      var allKeys = assign({}, props[propName], shapeTypes);
+      for (var key in allKeys) {
+        var checker = shapeTypes[key];
+        if (!checker) {
+          return new PropTypeError('Invalid ' + location + ' `' + propFullName + '` key `' + key + '` supplied to `' + componentName + '`.' + '\nBad object: ' + JSON.stringify(props[propName], null, '  ') + '\nValid keys: ' + JSON.stringify(Object.keys(shapeTypes), null, '  '));
+        }
+        var error = checker(propValue, key, componentName, location, propFullName + '.' + key, ReactPropTypesSecret);
+        if (error) {
+          return error;
+        }
+      }
+      return null;
+    }
+
     return createChainableTypeChecker(validate);
   }
 
@@ -4694,7 +4801,7 @@ module.exports = function (isValidElement, throwOnDirectAccess) {
 /* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(4)))
 
 /***/ }),
-/* 41 */
+/* 42 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -4703,12 +4810,10 @@ module.exports = function (isValidElement, throwOnDirectAccess) {
 var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol" ? function (obj) { return typeof obj; } : function (obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; };
 
 /**
- * Copyright 2013-present, Facebook, Inc.
- * All rights reserved.
+ * Copyright (c) 2013-present, Facebook, Inc.
  *
- * This source code is licensed under the BSD-style license found in the
- * LICENSE file in the root directory of this source tree. An additional grant
- * of patent rights can be found in the PATENTS file in the same directory.
+ * This source code is licensed under the MIT license found in the
+ * LICENSE file in the root directory of this source tree.
  */
 
 if (process.env.NODE_ENV !== 'production') {
@@ -4721,16 +4826,16 @@ if (process.env.NODE_ENV !== 'production') {
   // By explicitly using `prop-types` you are opting into new development behavior.
   // http://fb.me/prop-types-in-prod
   var throwOnDirectAccess = true;
-  module.exports = __webpack_require__(40)(isValidElement, throwOnDirectAccess);
+  module.exports = __webpack_require__(41)(isValidElement, throwOnDirectAccess);
 } else {
   // By explicitly using `prop-types` you are opting into new production behavior.
   // http://fb.me/prop-types-in-prod
-  module.exports = __webpack_require__(39)();
+  module.exports = __webpack_require__(40)();
 }
 /* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(4)))
 
 /***/ }),
-/* 42 */
+/* 43 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -4805,7 +4910,7 @@ exports.stringify = querystringify;
 exports.parse = querystring;
 
 /***/ }),
-/* 43 */
+/* 44 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -4837,7 +4942,7 @@ var _react = __webpack_require__(22);
 
 var _react2 = _interopRequireDefault(_react);
 
-var _propTypes = __webpack_require__(41);
+var _propTypes = __webpack_require__(42);
 
 var _propTypes2 = _interopRequireDefault(_propTypes);
 
@@ -4892,18 +4997,9 @@ var IdleTimer = function (_Component) {
       oldDate: +new Date(),
       lastActive: +new Date(),
       remaining: null,
-      tId: null,
       pageX: null,
       pageY: null
-    }, _this._toggleIdleState = function () {
-      // Set the state
-      _this.setState({
-        idle: !_this.state.idle
-      });
-
-      // Fire the appropriate action
-      if (!_this.state.idle) _this.props.activeAction();else _this.props.idleAction();
-    }, _this._handleEvent = function (e) {
+    }, _this.tId = null, _this._handleEvent = function (e) {
 
       // Already idle, ignore events
       if (_this.state.remaining) return;
@@ -4915,76 +5011,27 @@ var IdleTimer = function (_Component) {
         // if coord don't exist how could it move
         if (typeof e.pageX === 'undefined' && typeof e.pageY === 'undefined') return;
         // under 200 ms is hard to do, and you would have to stop, as continuous activity will bypass this
-        var elapsed = +new Date() - _this.state.oldDate;
+        var elapsed = _this.getElapsedTime();
         if (elapsed < 200) return;
       }
 
       // clear any existing timeout
-      clearTimeout(_this.state.tId
+      clearTimeout(_this.tId
 
       // if the idle timer is enabled, flip
-      );if (_this.state.idle) _this._toggleIdleState(e);
+      );if (_this.state.idle) {
+        _this._toggleIdleState(e);
+      }
 
       _this.setState({
         lastActive: +new Date(), // store when user was last active
         pageX: e.pageX, // update mouse coord
-        pageY: e.pageY,
-        tId: setTimeout(_this._toggleIdleState, _this.props.timeout // set a new timeout
-        ) });
-    }, _this.reset = function () {
-      // reset timers
-      clearTimeout(_this.state.tId);
-
-      // reset settings
-      _this.setState({
-        idle: false,
-        oldDate: +new Date(),
-        lastActive: _this.state.oldDate,
-        remaining: null,
-        tId: setTimeout(_this._toggleIdleState, _this.props.timeout)
+        pageY: e.pageY
       });
-    }, _this.pause = function () {
-      // this is already paused
-      if (_this.state.remaining !== null) return;
 
-      // clear any existing timeout
-      clearTimeout(_this.state.tId
+      _this.tId = setTimeout(_this._toggleIdleState.bind(_this), _this.props.timeout // set a new timeout
 
-      // define how much is left on the timer
-      );_this.setState({
-        remaining: _this.props.timeout - (+new Date() - _this.state.oldDate)
-      });
-    }, _this.resume = function () {
-      // this isn't paused yet
-      if (_this.state.remaining === null) return;
-
-      // start timer and clear remaining
-      if (!_this.state.idle) {
-        _this.setState({
-          tId: setTimeout(_this._toggleIdleState, _this.state.remaining),
-          remaining: null
-        });
-      }
-    }, _this.getRemainingTime = function () {
-      // If idle there is no time remaining
-      if (_this.state.idle) return 0;
-
-      // If its paused just return that
-      if (_this.state.remaining != null) return _this.state.remaining;
-
-      // Determine remaining, if negative idle didn't finish flipping, just return 0
-      var remaining = _this.props.timeout - (+new Date() - _this.state.lastActive);
-      if (remaining < 0) remaining = 0;
-
-      // If this is paused return that number, else return current remaining
-      return remaining;
-    }, _this.getElapsedTime = function () {
-      return +new Date() - _this.state.oldDate;
-    }, _this.getLastActiveTime = function () {
-      if (_this.props.format) return (0, _format2.default)(_this.state.lastActive, _this.props.format);
-      return _this.state.lastActive;
-    }, _this.isIdle = function () {
-      return _this.state.idle;
+      );
     }, _temp), _possibleConstructorReturn(_this, _ret);
   }
 
@@ -5000,7 +5047,9 @@ var IdleTimer = function (_Component) {
   }, {
     key: 'componentDidMount',
     value: function componentDidMount() {
-      if (this.props.startOnLoad) this.reset();
+      if (this.props.startOnLoad) {
+        this.reset();
+      }
     }
   }, {
     key: 'componentWillUnmount',
@@ -5008,7 +5057,7 @@ var IdleTimer = function (_Component) {
       var _this3 = this;
 
       // Clear timeout to prevent delayed state changes
-      clearTimeout(this.state.tId);
+      clearTimeout(this.tId);
       // Unbind all events
       this.props.events.forEach(function (e) {
         return _this3.props.element.removeEventListener(e, _this3._handleEvent);
@@ -5031,6 +5080,18 @@ var IdleTimer = function (_Component) {
      *
      */
 
+  }, {
+    key: '_toggleIdleState',
+    value: function _toggleIdleState() {
+      // Set the state
+      this.setState({
+        idle: !this.state.idle
+      });
+
+      // Fire the appropriate action
+      if (!this.state.idle) this.props.activeAction();else this.props.idleAction();
+    }
+
     /**
      * Event handler for supported event types
      *
@@ -5038,6 +5099,9 @@ var IdleTimer = function (_Component) {
      * @return {void}
      *
      */
+
+  }, {
+    key: 'reset',
 
     ////////////////
     // Public API //
@@ -5050,6 +5114,22 @@ var IdleTimer = function (_Component) {
      *
      */
 
+    value: function reset() {
+      // reset timers
+      clearTimeout(this.tId);
+
+      // reset settings
+      this.setState({
+        idle: false,
+        oldDate: +new Date(),
+        lastActive: this.state.oldDate,
+        remaining: null
+      });
+
+      // Set timeout
+      this.tId = setTimeout(this._toggleIdleState.bind(this), this.props.timeout);
+    }
+
     /**
      * Store remaining time and stop timer.
      * You can pause from idle or active state.
@@ -5058,12 +5138,49 @@ var IdleTimer = function (_Component) {
      *
      */
 
+  }, {
+    key: 'pause',
+    value: function pause() {
+      // this is already paused
+      if (this.state.remaining !== null) {
+        return;
+      }
+
+      console.log('pausing');
+
+      // clear any existing timeout
+      clearTimeout(this.tId
+
+      // define how much is left on the timer
+      );this.setState({
+        remaining: this.getRemainingTime()
+      });
+    }
+
     /**
      * Resumes a stopped timer
      *
      * @return {Void}
      *
      */
+
+  }, {
+    key: 'resume',
+    value: function resume() {
+      // this isn't paused yet
+      if (this.state.remaining === null) {
+        return;
+      }
+
+      // start timer and clear remaining
+      if (!this.state.idle) {
+        this.setState({
+          remaining: null
+        });
+        // Set a new timeout
+        this.tId = setTimeout(this._toggleIdleState.bind(this), this.state.remaining);
+      }
+    }
 
     /**
      * Time remaining before idle
@@ -5072,12 +5189,41 @@ var IdleTimer = function (_Component) {
      *
      */
 
+  }, {
+    key: 'getRemainingTime',
+    value: function getRemainingTime() {
+      // If idle there is no time remaining
+      if (this.state.idle) {
+        return 0;
+      }
+
+      // If its paused just return that
+      if (this.state.remaining !== null) {
+        return this.state.remaining;
+      }
+
+      // Determine remaining, if negative idle didn't finish flipping, just return 0
+      var remaining = this.props.timeout - (+new Date() - this.state.lastActive);
+      if (remaining < 0) {
+        remaining = 0;
+      }
+
+      // If this is paused return that number, else return current remaining
+      return remaining;
+    }
+
     /**
      * How much time has elapsed
      *
      * @return {Timestamp}
      *
      */
+
+  }, {
+    key: 'getElapsedTime',
+    value: function getElapsedTime() {
+      return +new Date() - this.state.oldDate;
+    }
 
     /**
      * Last time the user was active
@@ -5086,6 +5232,15 @@ var IdleTimer = function (_Component) {
      *
      */
 
+  }, {
+    key: 'getLastActiveTime',
+    value: function getLastActiveTime() {
+      if (this.props.format) {
+        return (0, _format2.default)(this.state.lastActive, this.props.format);
+      }
+      return this.state.lastActive;
+    }
+
     /**
      * Is the user idle
      *
@@ -5093,6 +5248,11 @@ var IdleTimer = function (_Component) {
      *
      */
 
+  }, {
+    key: 'isIdle',
+    value: function isIdle() {
+      return this.state.idle;
+    }
   }]);
 
   return IdleTimer;
@@ -5118,7 +5278,7 @@ IdleTimer.defaultProps = {
 exports.default = IdleTimer;
 
 /***/ }),
-/* 44 */
+/* 45 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -5163,7 +5323,7 @@ module.exports = function required(port, protocol) {
 };
 
 /***/ }),
-/* 45 */
+/* 46 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -5171,8 +5331,8 @@ module.exports = function required(port, protocol) {
 
 var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol" ? function (obj) { return typeof obj; } : function (obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; };
 
-var required = __webpack_require__(44),
-    qs = __webpack_require__(42),
+var required = __webpack_require__(45),
+    qs = __webpack_require__(43),
     protocolre = /^([a-z][a-z0-9.+-]*:)?(\/\/)?([\S\s]*)/i,
     slashes = /^[A-Za-z][A-Za-z0-9+-.]*:\/\//;
 
@@ -5576,10 +5736,10 @@ URL.location = lolcation;
 URL.qs = qs;
 
 module.exports = URL;
-/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(46)))
+/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(47)))
 
 /***/ }),
-/* 46 */
+/* 47 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -5609,7 +5769,7 @@ try {
 module.exports = g;
 
 /***/ }),
-/* 47 */
+/* 48 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -5621,7 +5781,7 @@ Object.defineProperty(exports, "__esModule", {
 
 var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
 
-__webpack_require__(51);
+__webpack_require__(52);
 
 var _navUtil = __webpack_require__(2);
 
@@ -5679,7 +5839,7 @@ var InlineNavButton = function (_React$Component) {
 exports.default = InlineNavButton;
 
 /***/ }),
-/* 48 */
+/* 49 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -5691,7 +5851,7 @@ Object.defineProperty(exports, "__esModule", {
 
 var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
 
-__webpack_require__(53);
+__webpack_require__(54);
 
 var _navStore = __webpack_require__(10);
 
@@ -5705,15 +5865,15 @@ var _logo = __webpack_require__(15);
 
 var _logo2 = _interopRequireDefault(_logo);
 
-var _hamburger = __webpack_require__(57);
+var _hamburger = __webpack_require__(58);
 
 var _hamburger2 = _interopRequireDefault(_hamburger);
 
-var _arrow = __webpack_require__(56);
+var _arrow = __webpack_require__(57);
 
 var _arrow2 = _interopRequireDefault(_arrow);
 
-var _lockIcon = __webpack_require__(58);
+var _lockIcon = __webpack_require__(59);
 
 var _lockIcon2 = _interopRequireDefault(_lockIcon);
 
@@ -5900,7 +6060,7 @@ var Nav = function (_React$Component) {
 exports.default = Nav;
 
 /***/ }),
-/* 49 */
+/* 50 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -5912,9 +6072,9 @@ Object.defineProperty(exports, "__esModule", {
 
 var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
 
-__webpack_require__(55);
+__webpack_require__(56);
 
-__webpack_require__(54);
+__webpack_require__(55);
 
 var _Common = __webpack_require__(0);
 
@@ -5924,11 +6084,11 @@ var _react = __webpack_require__(22);
 
 var _react2 = _interopRequireDefault(_react);
 
-var _reactIdleTimer = __webpack_require__(43);
+var _reactIdleTimer = __webpack_require__(44);
 
 var _reactIdleTimer2 = _interopRequireDefault(_reactIdleTimer);
 
-var _inlineNavButton = __webpack_require__(47);
+var _inlineNavButton = __webpack_require__(48);
 
 var _inlineNavButton2 = _interopRequireDefault(_inlineNavButton);
 
@@ -5960,7 +6120,7 @@ var _navStore = __webpack_require__(10);
 
 var _navStore2 = _interopRequireDefault(_navStore);
 
-var _nav = __webpack_require__(48);
+var _nav = __webpack_require__(49);
 
 var _nav2 = _interopRequireDefault(_nav);
 
@@ -6486,7 +6646,7 @@ var ViewerApp = function (_React$Component) {
 exports.default = ViewerApp;
 
 /***/ }),
-/* 50 */
+/* 51 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -6496,7 +6656,7 @@ Object.defineProperty(exports, "__esModule", {
 	value: true
 });
 
-var _viewerApp = __webpack_require__(49);
+var _viewerApp = __webpack_require__(50);
 
 var _viewerApp2 = _interopRequireDefault(_viewerApp);
 
@@ -6572,12 +6732,6 @@ exports.default = {
 };
 
 /***/ }),
-/* 51 */
-/***/ (function(module, exports) {
-
-// removed by extract-text-webpack-plugin
-
-/***/ }),
 /* 52 */
 /***/ (function(module, exports) {
 
@@ -6605,28 +6759,34 @@ exports.default = {
 /* 56 */
 /***/ (function(module, exports) {
 
-module.exports = "data:image/svg+xml,%3C?xml version='1.0' encoding='utf-8'?%3E %3C!-- Generator: Adobe Illustrator 19.0.0, SVG Export Plug-In . SVG Version: 6.00 Build 0) --%3E %3Csvg version='1.1' id='Layer_1' xmlns='http://www.w3.org/2000/svg' xmlns:xlink='http://www.w3.org/1999/xlink' x='0px' y='0px' viewBox='-290 387 30 20' style='enable-background:new -290 387 30 20;' xml:space='preserve'%3E %3Cpath d='M-272.5,405.4l-12.1-7.4c-0.6-0.4-0.6-1.7,0-2.1l12.1-7.4c0.5-0.3,1,0.3,1,1.1v14.7C-271.4,405.2-272,405.7-272.5,405.4z' fill='rgba(0, 0, 0, .2)' transform='translate(2, 0)'/%3E %3C/svg%3E"
+// removed by extract-text-webpack-plugin
 
 /***/ }),
 /* 57 */
 /***/ (function(module, exports) {
 
-module.exports = "data:image/svg+xml,%3Csvg width='20' height='10' viewBox='0 0 100 100' xmlns='http://www.w3.org/2000/svg' version='1.1'%3E %3Cline x1='0' y1='10' x2='100' y2='10' stroke='rgba(0, 0, 0, .2)' stroke-width='20' stroke-linecap='round' /%3E %3Cline x1='0' y1='50' x2='100' y2='50' stroke='rgba(0, 0, 0, .2)' stroke-width='20' stroke-linecap='round' /%3E %3Cline x1='0' y1='90' x2='100' y2='90' stroke='rgba(0, 0, 0, .2)' stroke-width='20' stroke-linecap='round' /%3E %3C/svg%3E"
+module.exports = "data:image/svg+xml,%3C?xml version='1.0' encoding='utf-8'?%3E %3C!-- Generator: Adobe Illustrator 19.0.0, SVG Export Plug-In . SVG Version: 6.00 Build 0) --%3E %3Csvg version='1.1' id='Layer_1' xmlns='http://www.w3.org/2000/svg' xmlns:xlink='http://www.w3.org/1999/xlink' x='0px' y='0px' viewBox='-290 387 30 20' style='enable-background:new -290 387 30 20;' xml:space='preserve'%3E %3Cpath d='M-272.5,405.4l-12.1-7.4c-0.6-0.4-0.6-1.7,0-2.1l12.1-7.4c0.5-0.3,1,0.3,1,1.1v14.7C-271.4,405.2-272,405.7-272.5,405.4z' fill='rgba(0, 0, 0, .2)' transform='translate(2, 0)'/%3E %3C/svg%3E"
 
 /***/ }),
 /* 58 */
 /***/ (function(module, exports) {
 
-module.exports = "data:image/svg+xml,%3C?xml version='1.0' encoding='utf-8'?%3E %3Csvg version='1.1' xmlns='http://www.w3.org/2000/svg' xmlns:xlink='http://www.w3.org/1999/xlink' viewBox='0 0 10 16' style='enable-background:new 0 0 10 16;' xml:space='preserve'%3E %3Cpath fill='white' id='XMLID_6_' d='M9.1,6H8.5V3.5C8.5,1.5,6.9,0,5,0C3.1,0,1.6,1.5,1.6,3.5l0,2.5H0.9C0.4,6,0,6.4,0,6.9v8.2 C0,15.6,0.4,16,0.9,16h8.2c0.5,0,0.9-0.4,0.9-0.9V6.9C10,6.4,9.6,6,9.1,6z M3.3,3.4c0-0.9,0.8-1.6,1.7-1.6c0.9,0,1.7,0.8,1.7,1.7V6 H3.3V3.4z'/%3E %3C/svg%3E"
+module.exports = "data:image/svg+xml,%3Csvg width='20' height='10' viewBox='0 0 100 100' xmlns='http://www.w3.org/2000/svg' version='1.1'%3E %3Cline x1='0' y1='10' x2='100' y2='10' stroke='rgba(0, 0, 0, .2)' stroke-width='20' stroke-linecap='round' /%3E %3Cline x1='0' y1='50' x2='100' y2='50' stroke='rgba(0, 0, 0, .2)' stroke-width='20' stroke-linecap='round' /%3E %3Cline x1='0' y1='90' x2='100' y2='90' stroke='rgba(0, 0, 0, .2)' stroke-width='20' stroke-linecap='round' /%3E %3C/svg%3E"
 
 /***/ }),
 /* 59 */
 /***/ (function(module, exports) {
 
-module.exports = "data:image/svg+xml,%3C?xml version='1.0' encoding='utf-8'?%3E %3C!-- Generator: Adobe Illustrator 15.0.2, SVG Export Plug-In . SVG Version: 6.00 Build 0) --%3E %3C!DOCTYPE svg PUBLIC '-//W3C//DTD SVG 1.1//EN' 'http://www.w3.org/Graphics/SVG/1.1/DTD/svg11.dtd'%3E %3Csvg version='1.1' id='Layer_1' xmlns='http://www.w3.org/2000/svg' xmlns:xlink='http://www.w3.org/1999/xlink' x='0px' y='0px' width='253px' height='64.577px' viewBox='0 0 253 64.577' enable-background='new 0 0 253 64.577' xml:space='preserve' fill='black'%3E %3Cpath d='M18.399,53.629c-0.01,0-0.021,0-0.031,0C7.023,53.396,0,43.151,0,33.793c0-10.79,8.426-19.905,18.399-19.905 c11.006,0,18.399,10.292,18.399,19.905c0,10.719-8.239,19.617-18.367,19.835C18.421,53.629,18.41,53.629,18.399,53.629z M18.399,18.257c-8.393,0-14.031,8.033-14.031,15.536c0.295,7.574,5.625,15.468,14.031,15.468c8.393,0,14.031-7.998,14.031-15.468 C32.43,25.372,26.005,18.257,18.399,18.257z'/%3E %3Cpath d='M58.15,53.629c-6.02,0-13.502-3.57-16.154-10.394c-0.287-0.733-0.603-1.542-0.603-3.281l0-38.454 c0-0.398,0.158-0.779,0.439-1.061S42.495,0,42.893,0h1.369c0.829,0,1.5,0.671,1.5,1.5v18.495c3.827-4.056,8.188-6.106,13.004-6.106 c11.111,0,17.989,10.332,17.989,19.905C76.444,44.75,68.099,53.629,58.15,53.629z M45.761,27.446v12.437 c0,4.652,7.208,9.378,12.389,9.378c8.516,0,14.236-7.998,14.236-15.468c0-7.472-5.208-15.536-13.621-15.536 C51.235,18.257,47.065,24.927,45.761,27.446z'/%3E %3Cpath d='M99.064,53.629c-0.01,0-0.021,0-0.031,0c-11.346-0.233-18.369-10.478-18.369-19.835 c0-10.79,8.426-19.905,18.399-19.905c11.005,0,18.398,10.292,18.398,19.905c0,10.719-8.239,19.617-18.366,19.835 C99.086,53.629,99.075,53.629,99.064,53.629z M99.064,18.257c-8.393,0-14.031,8.033-14.031,15.536 c0.294,7.574,5.624,15.468,14.031,15.468c8.393,0,14.031-7.998,14.031-15.468C113.096,25.372,106.67,18.257,99.064,18.257z'/%3E %3Cpath d='M153.252,53.629c-0.01,0-0.021,0-0.031,0c-11.346-0.233-18.369-10.478-18.369-19.835 c0-10.79,8.426-19.905,18.399-19.905c11.006,0,18.399,10.292,18.399,19.905c0,10.719-8.239,19.617-18.367,19.835 C153.273,53.629,153.263,53.629,153.252,53.629z M153.252,18.257c-8.393,0-14.031,8.033-14.031,15.536 c0.294,7.574,5.624,15.468,14.031,15.468c8.393,0,14.031-7.998,14.031-15.468C167.283,25.372,160.858,18.257,153.252,18.257z'/%3E %3Cpath d='M234.601,53.629c-0.01,0-0.021,0-0.031,0c-11.345-0.233-18.367-10.478-18.367-19.835 c0-10.79,8.426-19.905,18.398-19.905c11.006,0,18.399,10.292,18.399,19.905c0,10.719-8.239,19.617-18.367,19.835 C234.622,53.629,234.611,53.629,234.601,53.629z M234.601,18.257c-8.393,0-14.03,8.033-14.03,15.536 c0.294,7.574,5.624,15.468,14.03,15.468c8.394,0,14.031-7.998,14.031-15.468C248.632,25.372,242.206,18.257,234.601,18.257z'/%3E %3Cpath d='M193.62,53.629c-6.021,0-13.503-3.57-16.155-10.394l-0.098-0.239c-0.254-0.607-0.603-1.438-0.603-3.042 c0.002-15.911,0.098-38.237,0.099-38.461c0.003-0.826,0.674-1.494,1.5-1.494h1.368c0.829,0,1.5,0.671,1.5,1.5v18.495 c3.827-4.055,8.188-6.106,13.005-6.106c11.111,0,17.988,10.332,17.988,19.904C211.915,44.75,203.569,53.629,193.62,53.629z M181.231,27.446v12.437c0,4.652,7.208,9.378,12.389,9.378c8.515,0,14.235-7.998,14.235-15.468c0-7.472-5.207-15.536-13.619-15.536 C186.705,18.257,182.535,24.927,181.231,27.446z'/%3E %3Cpath d='M118.017,64.577c-0.013,0-0.026,0-0.039,0c-2.437-0.063-5.533-0.434-7.865-2.765 c-0.308-0.308-0.467-0.734-0.436-1.167c0.031-0.434,0.249-0.833,0.597-1.094l1.096-0.821c0.566-0.425,1.353-0.396,1.887,0.072 c1.083,0.947,2.617,1.408,4.691,1.408c2.913,0,6.3-2.752,6.3-6.3V16.073c0-0.829,0.671-1.5,1.5-1.5h1.368c0.829,0,1.5,0.671,1.5,1.5 v37.835C128.616,60.195,123.03,64.577,118.017,64.577z M127.116,8.268h-1.368c-0.829,0-1.5-0.671-1.5-1.5V2.389 c0-0.829,0.671-1.5,1.5-1.5h1.368c0.829,0,1.5,0.671,1.5,1.5v4.379C128.616,7.597,127.945,8.268,127.116,8.268z'/%3E %3C/svg%3E"
+module.exports = "data:image/svg+xml,%3C?xml version='1.0' encoding='utf-8'?%3E %3Csvg version='1.1' xmlns='http://www.w3.org/2000/svg' xmlns:xlink='http://www.w3.org/1999/xlink' viewBox='0 0 10 16' style='enable-background:new 0 0 10 16;' xml:space='preserve'%3E %3Cpath fill='white' id='XMLID_6_' d='M9.1,6H8.5V3.5C8.5,1.5,6.9,0,5,0C3.1,0,1.6,1.5,1.6,3.5l0,2.5H0.9C0.4,6,0,6.4,0,6.9v8.2 C0,15.6,0.4,16,0.9,16h8.2c0.5,0,0.9-0.4,0.9-0.9V6.9C10,6.4,9.6,6,9.1,6z M3.3,3.4c0-0.9,0.8-1.6,1.7-1.6c0.9,0,1.7,0.8,1.7,1.7V6 H3.3V3.4z'/%3E %3C/svg%3E"
 
 /***/ }),
 /* 60 */
+/***/ (function(module, exports) {
+
+module.exports = "data:image/svg+xml,%3C?xml version='1.0' encoding='utf-8'?%3E %3C!-- Generator: Adobe Illustrator 15.0.2, SVG Export Plug-In . SVG Version: 6.00 Build 0) --%3E %3C!DOCTYPE svg PUBLIC '-//W3C//DTD SVG 1.1//EN' 'http://www.w3.org/Graphics/SVG/1.1/DTD/svg11.dtd'%3E %3Csvg version='1.1' id='Layer_1' xmlns='http://www.w3.org/2000/svg' xmlns:xlink='http://www.w3.org/1999/xlink' x='0px' y='0px' width='253px' height='64.577px' viewBox='0 0 253 64.577' enable-background='new 0 0 253 64.577' xml:space='preserve' fill='black'%3E %3Cpath d='M18.399,53.629c-0.01,0-0.021,0-0.031,0C7.023,53.396,0,43.151,0,33.793c0-10.79,8.426-19.905,18.399-19.905 c11.006,0,18.399,10.292,18.399,19.905c0,10.719-8.239,19.617-18.367,19.835C18.421,53.629,18.41,53.629,18.399,53.629z M18.399,18.257c-8.393,0-14.031,8.033-14.031,15.536c0.295,7.574,5.625,15.468,14.031,15.468c8.393,0,14.031-7.998,14.031-15.468 C32.43,25.372,26.005,18.257,18.399,18.257z'/%3E %3Cpath d='M58.15,53.629c-6.02,0-13.502-3.57-16.154-10.394c-0.287-0.733-0.603-1.542-0.603-3.281l0-38.454 c0-0.398,0.158-0.779,0.439-1.061S42.495,0,42.893,0h1.369c0.829,0,1.5,0.671,1.5,1.5v18.495c3.827-4.056,8.188-6.106,13.004-6.106 c11.111,0,17.989,10.332,17.989,19.905C76.444,44.75,68.099,53.629,58.15,53.629z M45.761,27.446v12.437 c0,4.652,7.208,9.378,12.389,9.378c8.516,0,14.236-7.998,14.236-15.468c0-7.472-5.208-15.536-13.621-15.536 C51.235,18.257,47.065,24.927,45.761,27.446z'/%3E %3Cpath d='M99.064,53.629c-0.01,0-0.021,0-0.031,0c-11.346-0.233-18.369-10.478-18.369-19.835 c0-10.79,8.426-19.905,18.399-19.905c11.005,0,18.398,10.292,18.398,19.905c0,10.719-8.239,19.617-18.366,19.835 C99.086,53.629,99.075,53.629,99.064,53.629z M99.064,18.257c-8.393,0-14.031,8.033-14.031,15.536 c0.294,7.574,5.624,15.468,14.031,15.468c8.393,0,14.031-7.998,14.031-15.468C113.096,25.372,106.67,18.257,99.064,18.257z'/%3E %3Cpath d='M153.252,53.629c-0.01,0-0.021,0-0.031,0c-11.346-0.233-18.369-10.478-18.369-19.835 c0-10.79,8.426-19.905,18.399-19.905c11.006,0,18.399,10.292,18.399,19.905c0,10.719-8.239,19.617-18.367,19.835 C153.273,53.629,153.263,53.629,153.252,53.629z M153.252,18.257c-8.393,0-14.031,8.033-14.031,15.536 c0.294,7.574,5.624,15.468,14.031,15.468c8.393,0,14.031-7.998,14.031-15.468C167.283,25.372,160.858,18.257,153.252,18.257z'/%3E %3Cpath d='M234.601,53.629c-0.01,0-0.021,0-0.031,0c-11.345-0.233-18.367-10.478-18.367-19.835 c0-10.79,8.426-19.905,18.398-19.905c11.006,0,18.399,10.292,18.399,19.905c0,10.719-8.239,19.617-18.367,19.835 C234.622,53.629,234.611,53.629,234.601,53.629z M234.601,18.257c-8.393,0-14.03,8.033-14.03,15.536 c0.294,7.574,5.624,15.468,14.03,15.468c8.394,0,14.031-7.998,14.031-15.468C248.632,25.372,242.206,18.257,234.601,18.257z'/%3E %3Cpath d='M193.62,53.629c-6.021,0-13.503-3.57-16.155-10.394l-0.098-0.239c-0.254-0.607-0.603-1.438-0.603-3.042 c0.002-15.911,0.098-38.237,0.099-38.461c0.003-0.826,0.674-1.494,1.5-1.494h1.368c0.829,0,1.5,0.671,1.5,1.5v18.495 c3.827-4.055,8.188-6.106,13.005-6.106c11.111,0,17.988,10.332,17.988,19.904C211.915,44.75,203.569,53.629,193.62,53.629z M181.231,27.446v12.437c0,4.652,7.208,9.378,12.389,9.378c8.515,0,14.235-7.998,14.235-15.468c0-7.472-5.207-15.536-13.619-15.536 C186.705,18.257,182.535,24.927,181.231,27.446z'/%3E %3Cpath d='M118.017,64.577c-0.013,0-0.026,0-0.039,0c-2.437-0.063-5.533-0.434-7.865-2.765 c-0.308-0.308-0.467-0.734-0.436-1.167c0.031-0.434,0.249-0.833,0.597-1.094l1.096-0.821c0.566-0.425,1.353-0.396,1.887,0.072 c1.083,0.947,2.617,1.408,4.691,1.408c2.913,0,6.3-2.752,6.3-6.3V16.073c0-0.829,0.671-1.5,1.5-1.5h1.368c0.829,0,1.5,0.671,1.5,1.5 v37.835C128.616,60.195,123.03,64.577,118.017,64.577z M127.116,8.268h-1.368c-0.829,0-1.5-0.671-1.5-1.5V2.389 c0-0.829,0.671-1.5,1.5-1.5h1.368c0.829,0,1.5,0.671,1.5,1.5v4.379C128.616,7.597,127.945,8.268,127.116,8.268z'/%3E %3C/svg%3E"
+
+/***/ }),
+/* 61 */
 /***/ (function(module, exports, __webpack_require__) {
 
 __webpack_require__(23);

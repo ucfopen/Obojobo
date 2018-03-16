@@ -63,7 +63,7 @@
 /******/ 	__webpack_require__.p = "build/";
 /******/
 /******/ 	// Load entry module and return exports
-/******/ 	return __webpack_require__(__webpack_require__.s = 177);
+/******/ 	return __webpack_require__(__webpack_require__.s = 275);
 /******/ })
 /************************************************************************/
 /******/ ({
@@ -82,29 +82,7 @@ module.exports = Viewer;
 
 /***/ }),
 
-/***/ 155:
-/***/ (function(module, exports) {
-
-// removed by extract-text-webpack-plugin
-
-/***/ }),
-
-/***/ 156:
-/***/ (function(module, exports) {
-
-// removed by extract-text-webpack-plugin
-
-/***/ }),
-
-/***/ 177:
-/***/ (function(module, exports, __webpack_require__) {
-
-module.exports = __webpack_require__(42);
-
-
-/***/ }),
-
-/***/ 42:
+/***/ 113:
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -118,11 +96,11 @@ var _Viewer = __webpack_require__(1);
 
 var _Viewer2 = _interopRequireDefault(_Viewer);
 
-var _adapter = __webpack_require__(84);
+var _adapter = __webpack_require__(155);
 
 var _adapter2 = _interopRequireDefault(_adapter);
 
-var _viewerComponent = __webpack_require__(88);
+var _viewerComponent = __webpack_require__(159);
 
 var _viewerComponent2 = _interopRequireDefault(_viewerComponent);
 
@@ -182,7 +160,7 @@ _Common2.default.Store.registerModel('ObojoboDraft.Sections.Assessment', {
 
 /***/ }),
 
-/***/ 84:
+/***/ 155:
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -192,7 +170,7 @@ Object.defineProperty(exports, "__esModule", {
 	value: true
 });
 
-var _scoreActions = __webpack_require__(87);
+var _scoreActions = __webpack_require__(158);
 
 var _scoreActions2 = _interopRequireDefault(_scoreActions);
 
@@ -255,7 +233,7 @@ function __guard__(value, transform) {
 
 /***/ }),
 
-/***/ 85:
+/***/ 156:
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -337,7 +315,7 @@ exports.default = AttemptIncompleteDialog;
 
 /***/ }),
 
-/***/ 86:
+/***/ 157:
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -349,7 +327,7 @@ Object.defineProperty(exports, "__esModule", {
 
 var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
 
-__webpack_require__(155);
+__webpack_require__(253);
 
 var _Common = __webpack_require__(0);
 
@@ -464,7 +442,7 @@ exports.default = LTIStatus;
 
 /***/ }),
 
-/***/ 87:
+/***/ 158:
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -539,7 +517,7 @@ exports.default = ScoreActions;
 
 /***/ }),
 
-/***/ 88:
+/***/ 159:
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -551,7 +529,7 @@ Object.defineProperty(exports, "__esModule", {
 
 var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
 
-__webpack_require__(156);
+__webpack_require__(254);
 
 var _Common = __webpack_require__(0);
 
@@ -561,11 +539,11 @@ var _Viewer = __webpack_require__(1);
 
 var _Viewer2 = _interopRequireDefault(_Viewer);
 
-var _attemptIncompleteDialog = __webpack_require__(85);
+var _attemptIncompleteDialog = __webpack_require__(156);
 
 var _attemptIncompleteDialog2 = _interopRequireDefault(_attemptIncompleteDialog);
 
-var _ltiStatus = __webpack_require__(86);
+var _ltiStatus = __webpack_require__(157);
 
 var _ltiStatus2 = _interopRequireDefault(_ltiStatus);
 
@@ -875,6 +853,28 @@ var Assessment = function (_React$Component) {
 }(React.Component);
 
 exports.default = Assessment;
+
+/***/ }),
+
+/***/ 253:
+/***/ (function(module, exports) {
+
+// removed by extract-text-webpack-plugin
+
+/***/ }),
+
+/***/ 254:
+/***/ (function(module, exports) {
+
+// removed by extract-text-webpack-plugin
+
+/***/ }),
+
+/***/ 275:
+/***/ (function(module, exports, __webpack_require__) {
+
+module.exports = __webpack_require__(113);
+
 
 /***/ })
 
