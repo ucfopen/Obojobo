@@ -29,19 +29,19 @@ export default class LTIStatus extends React.Component {
 
 	renderError() {
 		let ltiState = this.props.ltiState
-		let location = this.props.launch.getOutcomeServiceHostname()
+		let systemLabel = this.props.externalSystemLabel
 
 		return (
 			<div className="obojobo-draft--sections--assessment--lti-status">
-				<h2>{`There was a problem sending your score to ${location}.`}</h2>
+				<h2>{`There was a problem sending your score to ${systemLabel}.`}</h2>
 				<p>
-					{`Don’t worry - your score is safely recorded here. We just weren’t able to send it to ${location}. Click the button below to resend your score:`}
+					{`Don’t worry - your score is safely recorded here. We just weren’t able to send it to ${systemLabel}. Click the button below to resend your score:`}
 				</p>
 				{this.props.ltiState.errorCount === 0 ||
 				ltiState.networkState !== LTINetworkStates.IDLE ? null : (
 					<p>
 						<strong>Sorry - That didn't work.</strong>
-						{` Most likely the connection to ${location} has expired and just needs to be refreshed. Please close this tab or window, reopen this module from ${location}, return to this page and then resend your score.`}
+						{` Most likely the connection to ${systemLabel} has expired and just needs to be refreshed. Please close this tab or window, reopen this module from ${systemLabel}, return to this page and then resend your score.`}
 					</p>
 				)}
 				{(() => {

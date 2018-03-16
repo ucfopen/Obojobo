@@ -203,6 +203,7 @@ export default class Assessment extends React.Component {
 						<div className="score unlock">
 							<LTIStatus
 								ltiState={ltiState}
+								externalSystemLabel={externalSystemLabel}
 								onClickResendScore={this.onClickResendScore.bind(this)}
 							/>
 							<h1>{`Your attempt score is ${Math.round(recentScore)}%`}</h1>
