@@ -22,10 +22,6 @@ oboEvents.on('client:nav:toggle', (event, req) => {
 	setNavOpen(event.userId, event.draftId, event.payload.open)
 })
 
-oboEvents.on('internal:renderViewer', (req, res, oboGlobals, state) => {
-	oboGlobals.set('navViewState', state)
-})
-
 function setNavOpen(userId, draftId, value) {
 	viewerState.set(userId, draftId, 'nav:isOpen', 1, value)
 }

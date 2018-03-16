@@ -16,38 +16,69 @@ exports.setup = function(options, seedLink) {
 
 exports.up = function(db) {
 	return db
-		.removeColumn('view_state', 'metadata')
+		.dropTable('view_state')
 		.then(result => {
-			return db.addColumn('view_state', 'draft_id', {
-				type: 'UUID',
-				notNull: true
-			})
-		})
-		.then(result => {
-			return db.addColumn('view_state', 'id', {
-				type: 'bigserial',
-				primaryKey: true
+			return db.createTable('view_state', {
+				id: {
+					type: 'bigserial',
+					primaryKey: true
+				},
+				created_at: {
+					type: 'timestamp WITH TIME ZONE',
+					notNull: true,
+					defaultValue: new String('now()')
+				},
+				updated_at: {
+					type: 'timestamp WITH TIME ZONE',
+					notNull: true,
+					defaultValue: new String('now()')
+				},
+				user_id: { type: 'bigint', notNull: true },
+				draft_id: {
+					type: 'UUID',
+					notNull: true
+				},
+				payload: { type: 'jsonb' }
 			})
 		})
 		.then(result => {
 			return db.addIndex('view_state', 'user_draft_unique', ['user_id', 'draft_id'], true)
 		})
+		.then(result => {
+			return db.addIndex('view_state', 'view_state_user_id_index', ['user_id'])
+		})
+		.then(result => {
+			return db.addIndex('view_state', 'view_state_updated_at_index', ['updated_at'])
+		})
 }
 
 exports.down = function(db) {
-	return db
-		.addColumn('view_state', 'metadata', { type: 'jsonb' })
-		.then(result => {
-			return db.removeIndex('view_state', 'user_draft_unique')
-		})
-		.then(result => {
-			return db.removeColumn('view_state', 'draft_id')
-		})
-		.then(result => {
-			return db.removeColumn('view_state', 'id')
-		})
+	return db.dropTable('view_state').then(result => {
+		return db
+			.createTable('view_state', {
+				created_at: {
+					type: 'timestamp WITH TIME ZONE',
+					notNull: true,
+					defaultValue: new String('now()')
+				},
+				updated_at: {
+					type: 'timestamp WITH TIME ZONE',
+					notNull: true,
+					defaultValue: new String('now()')
+				},
+				user_id: { type: 'bigint', notNull: true },
+				metadata: { type: 'jsonb' },
+				payload: { type: 'jsonb' }
+			})
+			.then(result => {
+				return db.addIndex('view_state', 'view_state_user_id_index', ['user_id'])
+			})
+			.then(result => {
+				return db.addIndex('view_state', 'view_state_updated_at_index', ['updated_at'])
+			})
+	})
 }
 
 exports._meta = {
-	version: 1
+	version: 2
 }

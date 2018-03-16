@@ -3,9 +3,6 @@ require('../viewer_events')
 jest.mock('../viewer/viewer_state', () => ({ set: jest.fn() }))
 let vs = oboRequire('viewer/viewer_state')
 
-jest.mock('../obo_globals.js', () => ({ set: jest.fn() }))
-let oboGlobals = oboRequire('obo_globals')
-
 let oboEvents = oboRequire('obo_events')
 
 let mockEvent = { userId: 1, draftId: 2 }
@@ -45,11 +42,5 @@ describe('viewer events', () => {
 		let toggleEvent = Object.assign({}, mockEvent, { payload: { open: true } })
 		oboEvents.emit(`client:nav:toggle`, toggleEvent)
 		expect(vs.set).toBeCalledWith(1, 2, 'nav:isOpen', 1, true)
-	})
-
-	test('internal:renderViewer', () => {
-		let state = 'testState'
-		oboEvents.emit(`internal:renderViewer`, null, null, oboGlobals, state)
-		expect(oboGlobals.set).toBeCalledWith('navViewState', 'testState')
 	})
 })

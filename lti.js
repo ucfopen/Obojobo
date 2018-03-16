@@ -1,5 +1,4 @@
-let OutcomeService = require('ims-lti/lib/extensions/outcomes').OutcomeService
-let HMAC_SHA1 = require('ims-lti/lib/hmac-sha1')
+let OutcomeService = require('ims-lti/src/extensions/outcomes').OutcomeService
 let config = oboRequire('config')
 let db = require('./db')
 let moment = require('moment')
@@ -106,7 +105,7 @@ let getGradebookStatus = function(outcomeType, scoreType, replaceResultWasSentSu
 //
 // Fetch methods
 //
-let getAssessmentScoreById = assessmentScoreId => {
+let getLatestHighestAssessmentScoreRecord = (userId, draftId, assessmentId) => {
 	let result = {
 		id: null,
 		userId: null,
@@ -114,6 +113,7 @@ let getAssessmentScoreById = assessmentScoreId => {
 		assessmentId: null,
 		attemptId: null,
 		score: null,
+		scoreDetails: null,
 		preview: null,
 		error: null
 	}
@@ -121,11 +121,35 @@ let getAssessmentScoreById = assessmentScoreId => {
 	return db
 		.oneOrNone(
 			`
-			SELECT *
-			FROM assessment_scores
-			WHERE id = $[assessmentScoreId]
+				SELECT
+					T1.id,
+					T1.created_at,
+					T1.user_id,
+					T1.draft_id,
+					T1.assessment_id,
+					T1.attempt_id,
+					T1.score,
+					T1.preview,
+					T1.score_details
+				FROM
+				(
+					SELECT *, COALESCE(score, -1) AS coalesced_score
+					FROM assessment_scores
+					WHERE
+						user_id = $[userId]
+						AND draft_id = $[draftId]
+						AND assessment_id = $[assessmentId]
+				) T1
+				ORDER BY
+					T1.coalesced_score DESC,
+					T1.created_at DESC
+				LIMIT 1
 			`,
-			{ assessmentScoreId }
+			{
+				userId,
+				draftId,
+				assessmentId
+			}
 		)
 		.then(dbResult => {
 			if (!dbResult) {
@@ -138,6 +162,7 @@ let getAssessmentScoreById = assessmentScoreId => {
 			result.assessmentId = dbResult.assessment_id
 			result.attemptId = dbResult.attempt_id
 			result.score = dbResult.score
+			result.scoreDetails = dbResult.score_details
 			result.preview = dbResult.preview
 
 			return result
@@ -166,13 +191,74 @@ let getLatestSuccessfulLTIAssessmentScoreRecord = assessmentScoreId => {
 	)
 }
 
+let getLTIStatesByAssessmentIdForUserAndDraft = (userId, draftId, optionalAssessmentId) => {
+	return db
+		.manyOrNone(
+			`
+			SELECT
+				DISTINCT ON (T1.assessment_id)
+				T1.assessment_id,
+				T1.assessment_score_id,
+				T1.score_sent,
+				T1.lti_sent_date,
+				T1.status,
+				T1.gradebook_status,
+				T1.status_details,
+				T1.lti_id
+			FROM
+			(
+				SELECT S.*, L.*, L.created_at AS "lti_sent_date", L.id as "lti_id"
+				FROM assessment_scores S
+				LEFT JOIN lti_assessment_scores L
+				ON S.id = L.assessment_score_id
+				WHERE S.draft_id = $[draftId]
+				AND S.user_id = $[userId]
+				${optionalAssessmentId ? "AND S.assessment_id = '" + optionalAssessmentId + "'" : ''}
+				AND L.id IS NOT NULL
+				ORDER BY S.id DESC
+			) T1
+			ORDER BY T1.assessment_id, T1.lti_id DESC
+		`,
+			{
+				userId,
+				draftId,
+				optionalAssessmentId
+			}
+		)
+		.then(result => {
+			let ltiStatesByAssessmentId = {}
+
+			if (!result || !result.length || result.length === 0) {
+				return ltiStatesByAssessmentId
+			}
+
+			result.forEach(row => {
+				ltiStatesByAssessmentId[row.assessment_id] = {
+					assessmentId: row.assessment_id,
+					assessmentScoreId: row.assessment_score_id,
+					scoreSent: row.score_sent,
+					sentDate: row.lti_sent_date,
+					status: row.status,
+					gradebookStatus: row.gradebook_status,
+					statusDetails: row.status_details
+				}
+			})
+
+			// if (optionalAssessmentId) {
+			// 	return ltiStatesByAssessmentId[optionalAssessmentId]
+			// }
+
+			return ltiStatesByAssessmentId
+		})
+}
+
 // The 'error' property for this method can contain one of the following:
 //	* ERROR_FATAL_NO_ASSESSMENT_SCORE_FOUND
 //	* ERROR_FATAL_NO_LAUNCH_FOUND
 //	* ERROR_FATAL_SCORE_IS_INVALID
 //	* ERROR_FATAL_LAUNCH_EXPIRED
 //	* (Or some unexpected error)
-let getRequiredDataForReplaceResult = function(assessmentScoreId, logId) {
+let getRequiredDataForReplaceResult = function(userId, draftId, assessmentId, logId) {
 	// get assess score
 	// get last success
 	// get launch
@@ -186,7 +272,7 @@ let getRequiredDataForReplaceResult = function(assessmentScoreId, logId) {
 		launch: null
 	}
 
-	return getAssessmentScoreById(assessmentScoreId)
+	return getLatestHighestAssessmentScoreRecord(userId, draftId, assessmentId)
 		.then(assessmentScoreResult => {
 			result.assessmentScoreRecord = assessmentScoreResult
 
@@ -198,12 +284,12 @@ let getRequiredDataForReplaceResult = function(assessmentScoreId, logId) {
 				`LTI found assessment score. Details: user:"${result.assessmentScoreRecord
 					.userId}", draft:"${result.assessmentScoreRecord.draftId}", score:"${result
 					.assessmentScoreRecord
-					.score}", assessmentScoreId:"${assessmentScoreId}", attemptId:"${result
+					.score}", assessmentScoreId:"${assessmentScoreResult.id}", attemptId:"${result
 					.assessmentScoreRecord.attemptId}", preview:"${result.assessmentScoreRecord.preview}"`,
 				logId
 			)
 
-			return getLatestSuccessfulLTIAssessmentScoreRecord(assessmentScoreId)
+			return getLatestSuccessfulLTIAssessmentScoreRecord(assessmentScoreResult.id)
 		})
 		.then(latest => {
 			let scoreRecord = result.assessmentScoreRecord
@@ -254,8 +340,12 @@ let getOutcomeServiceForLaunch = function(launch) {
 	let result = {
 		error: null,
 		outcomeService: null,
+		serviceURL: null,
+		resultSourcedId: null,
 		type: OUTCOME_TYPE_UNKNOWN
 	}
+
+	result.resultSourcedId = launch && launch.reqVars ? launch.reqVars.lis_result_sourcedid : null
 
 	try {
 		if (!launch || !launch.reqVars) {
@@ -268,6 +358,7 @@ let getOutcomeServiceForLaunch = function(launch) {
 		}
 
 		result.type = OUTCOME_TYPE_HAS_OUTCOME
+		result.serviceURL = launch.reqVars.lis_outcome_service_url
 
 		let secret = findSecretForKey(launch.key)
 		if (!secret) {
@@ -276,13 +367,10 @@ let getOutcomeServiceForLaunch = function(launch) {
 		}
 
 		result.outcomeService = new OutcomeService({
-			body: {
-				lis_outcome_service_url: launch.reqVars.lis_outcome_service_url,
-				lis_result_sourcedid: launch.reqVars.lis_result_sourcedid
-			},
+			service_url: launch.reqVars.lis_outcome_service_url,
+			source_did: launch.reqVars.lis_result_sourcedid,
 			consumer_key: launch.key,
-			consumer_secret: secret,
-			signer: new HMAC_SHA1()
+			consumer_secret: secret
 		})
 
 		return result
@@ -367,6 +455,9 @@ let sendReplaceResultRequest = (outcomeService, score) => {
 			if (err) reject(err)
 			else resolve(result)
 		})
+	}).catch(e => {
+		logger.info(`LTI sendReplaceResult threw error: "${e}"`)
+		return false
 	})
 }
 
@@ -374,13 +465,14 @@ let sendReplaceResultRequest = (outcomeService, score) => {
 // DB write methods
 //
 
-let insertReplaceResultEvent = (userId, draftId, launch, assessmentScoreData, ltiResult) => {
-	// let x = insertEvent({ a: 1 })
-	// let y = x.then(100)
-	// console.log('wtf')
-	// console.log(x)
-	// console.log(y)
-
+let insertReplaceResultEvent = (
+	userId,
+	draftId,
+	launch,
+	assessmentScoreData,
+	outcomeData,
+	ltiResult
+) => {
 	insertEvent({
 		action: 'lti:replaceResult',
 		actorTime: new Date().toISOString(),
@@ -388,9 +480,8 @@ let insertReplaceResultEvent = (userId, draftId, launch, assessmentScoreData, lt
 			launchId: launch ? launch.id : null,
 			launchKey: launch ? launch.key : null,
 			body: {
-				lis_outcome_service_url:
-					launch && launch.reqVars ? launch.reqVars.lis_outcome_service_url : null,
-				lis_result_sourcedid: launch && launch.reqVars ? launch.reqVars.lis_result_sourcedid : null
+				lis_outcome_service_url: outcomeData.serviceURL,
+				lis_result_sourcedid: outcomeData.resultSourcedId
 			},
 			assessmentScore: assessmentScoreData,
 			result: ltiResult
@@ -400,13 +491,9 @@ let insertReplaceResultEvent = (userId, draftId, launch, assessmentScoreData, lt
 		eventVersion: '2.0.0',
 		metadata: {},
 		draftId: draftId
+	}).catch(err => {
+		logger.error('There was an error inserting the lti event')
 	})
-		// .then(() => {
-		// 	logger.info('yeah ok')
-		// })
-		.catch(err => {
-			logger.error('There was an error inserting the lti event')
-		})
 }
 
 let insertLTIAssessmentScore = (
@@ -522,8 +609,8 @@ let logAndGetStatusForError = function(error, requiredData, logId) {
 //
 // MAIN METHOD:
 //
-
-let sendAssessmentScore = function(assessmentScoreId) {
+// let sendHighestAssessmentScore = function(assessmentScoreId) {
+let sendHighestAssessmentScore = function(userId, draftId, assessmentId) {
 	let logId = uuid()
 
 	let requiredData = null
@@ -536,17 +623,23 @@ let sendAssessmentScore = function(assessmentScoreId) {
 		statusDetails: null,
 		gradebookStatus: null,
 		dbStatus: null,
-		ltiAssessmentScoreId: null
+		ltiAssessmentScoreId: null,
+		outcomeServiceURL: null
 	}
 
-	logger.info(`LTI begin sendAssessmentScore for assessmentScoreId:"${assessmentScoreId}"`, logId)
+	logger.info(
+		`LTI begin sendHighestAssessmentScore for userId:"${userId}", draftId:"${draftId}", assessmentId:"${assessmentId}"`,
+		logId
+	)
 
-	return getRequiredDataForReplaceResult(assessmentScoreId, logId)
+	return getRequiredDataForReplaceResult(userId, draftId, assessmentId, logId)
 		.then(requiredDataResult => {
 			result.launchId = requiredDataResult.launch ? requiredDataResult.launch.id : null
 
 			requiredData = requiredDataResult
 			outcomeData = getOutcomeServiceForLaunch(requiredData.launch)
+
+			result.outcomeServiceURL = outcomeData.serviceURL
 
 			if (requiredData.ltiScoreToSend === null) {
 				throw ERROR_SCORE_IS_NULL
@@ -561,11 +654,11 @@ let sendAssessmentScore = function(assessmentScoreId) {
 			result.scoreSent = requiredData.ltiScoreToSend
 
 			logger.info(
-				`LTI attempting replaceResult of score:"${result.scoreSent}" for assessmentScoreId:"${assessmentScoreId}" for user:"${requiredData
-					.assessmentScoreRecord.userId}", draft:"${requiredData.assessmentScoreRecord
-					.draftId}", sourcedid:"${requiredData.launch.reqVars
-					.lis_result_sourcedid}", url:"${requiredData.launch.reqVars
-					.lis_outcome_service_url}" using key:"${requiredData.launch.key}"`,
+				`LTI attempting replaceResult of score:"${result.scoreSent}" for assessmentScoreId:"${requiredData
+					.assessmentScoreRecord.id}" for user:"${requiredData.assessmentScoreRecord
+					.userId}", draft:"${requiredData.assessmentScoreRecord
+					.draftId}", sourcedid:"${outcomeData.resultSourcedId}", url:"${outcomeData.serviceURL}" using key:"${requiredData
+					.launch.key}"`,
 				logId
 			)
 
@@ -607,6 +700,14 @@ let sendAssessmentScore = function(assessmentScoreId) {
 				logId
 			)
 		})
+		.then(scoreId => {
+			logger.info(`LTI store "${result.status}" success - id:"${scoreId}"`, logId)
+
+			result.ltiAssessmentScoreId = scoreId
+			result.dbStatus = DB_STATUS_RECORDED
+
+			return Promise.resolve() // Go to next then
+		})
 		.catch(error => {
 			logger.error(`LTI bad error attempting to update database! :(`, error.stack, logId)
 
@@ -615,16 +716,12 @@ let sendAssessmentScore = function(assessmentScoreId) {
 			return Promise.resolve() // Go to next then
 		})
 		.then(scoreId => {
-			logger.info(`LTI store "${result.status}" success - id:"${scoreId}"`, logId)
-
-			result.ltiAssessmentScoreId = scoreId
-			result.dbStatus = DB_STATUS_RECORDED
-
 			insertReplaceResultEvent(
-				requiredData.assessmentScoreRecord.userId,
-				requiredData.assessmentScoreRecord.draftId,
+				userId,
+				draftId,
 				requiredData.launch,
 				requiredData.assessmentScoreRecord,
+				outcomeData,
 				result
 			)
 
@@ -644,8 +741,9 @@ module.exports = {
 	isScoreValid,
 	isLaunchExpired,
 	getGradebookStatus,
-	getAssessmentScoreById,
+	getLatestHighestAssessmentScoreRecord,
 	getLatestSuccessfulLTIAssessmentScoreRecord,
+	getLTIStatesByAssessmentIdForUserAndDraft,
 	getRequiredDataForReplaceResult,
 	getOutcomeServiceForLaunch,
 	retrieveLtiLaunch,
@@ -653,5 +751,5 @@ module.exports = {
 	sendReplaceResultRequest,
 	insertReplaceResultEvent,
 	logAndGetStatusForError,
-	sendAssessmentScore
+	sendHighestAssessmentScore
 }

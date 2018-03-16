@@ -48,6 +48,7 @@
 			.link-preview { font-size: 9pt; }
 			.link-delete, .link-delete:visited { color: gray; position: absolute; right: 0; top:10px; text-decoration:none; font-size: 11pt; }
 			.link-delete:hover { color:red; }
+			.add-question-btn { position: absolute; top: 5px; left: 341px; }
 		</style>
 	</head>
 	<body>
@@ -55,7 +56,7 @@
 			if (
 				a.content
 				&& b.content
-				&& a.content.content 
+				&& a.content.content
 				&& b.content.content
 				&& a.content.content.title
 				&& b.content.content.title
@@ -67,6 +68,7 @@
  		}) %>
 		<div>
 			<h1>Obojobo Draft Manager</h1>
+			<button onClick="addQuestion()" class="add-question-btn">Insert MC Question</button>
 			<div id="sidebar">
 				<button id="button-create-new-draft">+ Create new draft</button>
 				<ul>
@@ -166,6 +168,44 @@
 			})
 
 			document.getElementById('button-save-draft').addEventListener('click', saveDraft)
+
+			function addQuestion() {
+
+				let cursor = editor.getCursor()
+				let line = editor.getLine(cursor.line)
+				let textBeforeCaret = line.substr(0, cursor.ch).replace(/\S/g, '')
+
+				let questionText = `<Question>
+${textBeforeCaret}	<h1>Your question here</h1>
+${textBeforeCaret}	<MCAssessment responseType="pick-one" shuffle="true">
+${textBeforeCaret}		<MCChoice score="100">
+${textBeforeCaret}			<MCAnswer>
+${textBeforeCaret}				<p>Answer 1 text</p>
+${textBeforeCaret}			</MCAnswer>
+${textBeforeCaret}			<MCFeedback>
+${textBeforeCaret}				<p>Optional answer 1 feedback</p>
+${textBeforeCaret}			</MCFeedback>
+${textBeforeCaret}		</MCChoice>
+${textBeforeCaret}		<MCChoice score="0">
+${textBeforeCaret}			<MCAnswer>
+${textBeforeCaret}				<p>Answer 2 text</p>
+${textBeforeCaret}			</MCAnswer>
+${textBeforeCaret}			<MCFeedback>
+${textBeforeCaret}				<p>Optional answer 2 feedback</p>
+${textBeforeCaret}			</MCFeedback>
+${textBeforeCaret}		</MCChoice>
+${textBeforeCaret}	</MCAssessment>
+${textBeforeCaret}	<!-- Optional solution: -->
+${textBeforeCaret}	<solution>
+${textBeforeCaret}		<Page>
+${textBeforeCaret}			<p>Add additional information here</p>
+${textBeforeCaret}		</Page>
+${textBeforeCaret}	</solution>
+${textBeforeCaret}</Question>`
+				editor.replaceSelection(questionText)
+
+				setTimeout(() => editor.focus(), 100)
+			}
 
 			function saveDraft() {
 				if(!editingDraftId) return
