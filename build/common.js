@@ -63,7 +63,7 @@
 /******/ 	__webpack_require__.p = "build/";
 /******/
 /******/ 	// Load entry module and return exports
-/******/ 	return __webpack_require__(__webpack_require__.s = 93);
+/******/ 	return __webpack_require__(__webpack_require__.s = 88);
 /******/ })
 /************************************************************************/
 /******/ ([
@@ -2038,7 +2038,7 @@ Object.defineProperty(exports, "__esModule", {
 
 var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
 
-__webpack_require__(80);
+__webpack_require__(75);
 
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
@@ -2605,7 +2605,7 @@ Object.defineProperty(exports, "__esModule", {
 
 var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
 
-__webpack_require__(79);
+__webpack_require__(74);
 
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
@@ -2684,7 +2684,7 @@ Object.defineProperty(exports, "__esModule", {
 
 var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
 
-__webpack_require__(84);
+__webpack_require__(79);
 
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
@@ -2736,7 +2736,7 @@ var _extends = Object.assign || function (target) { for (var i = 1; i < argument
 
 var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
 
-__webpack_require__(86);
+__webpack_require__(81);
 
 var _button = __webpack_require__(18);
 
@@ -2863,7 +2863,7 @@ Object.defineProperty(exports, "__esModule", {
 
 var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
 
-__webpack_require__(87);
+__webpack_require__(82);
 
 var _simpleDialog = __webpack_require__(23);
 
@@ -2919,7 +2919,7 @@ Object.defineProperty(exports, "__esModule", {
 
 var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
 
-__webpack_require__(88);
+__webpack_require__(83);
 
 var _deleteButton = __webpack_require__(10);
 
@@ -3022,7 +3022,7 @@ Object.defineProperty(exports, "__esModule", {
 
 var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
 
-__webpack_require__(89);
+__webpack_require__(84);
 
 var _modalUtil = __webpack_require__(38);
 
@@ -5784,7 +5784,7 @@ var _objectAssign = __webpack_require__(7);
 
 var _objectAssign2 = _interopRequireDefault(_objectAssign);
 
-var _katex = __webpack_require__(92);
+var _katex = __webpack_require__(87);
 
 var _katex2 = _interopRequireDefault(_katex);
 
@@ -6286,7 +6286,7 @@ exports.default = function () {
 "use strict";
 
 
-var _index = __webpack_require__(65);
+var _index = __webpack_require__(61);
 
 var _index2 = _interopRequireDefault(_index);
 
@@ -6296,572 +6296,6 @@ window.Common = _index2.default;
 
 /***/ }),
 /* 41 */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-
-
-var has = Object.prototype.hasOwnProperty;
-
-/**
- * Decode a URI encoded string.
- *
- * @param {String} input The URI encoded string.
- * @returns {String} The decoded string.
- * @api private
- */
-function decode(input) {
-  return decodeURIComponent(input.replace(/\+/g, ' '));
-}
-
-/**
- * Simple query string parser.
- *
- * @param {String} query The query string that needs to be parsed.
- * @returns {Object}
- * @api public
- */
-function querystring(query) {
-  var parser = /([^=?&]+)=?([^&]*)/g,
-      result = {},
-      part;
-
-  //
-  // Little nifty parsing hack, leverage the fact that RegExp.exec increments
-  // the lastIndex property so we can continue executing this loop until we've
-  // parsed all results.
-  //
-  for (; part = parser.exec(query); result[decode(part[1])] = decode(part[2])) {}
-
-  return result;
-}
-
-/**
- * Transform a query string to an object.
- *
- * @param {Object} obj Object that should be transformed.
- * @param {String} prefix Optional prefix.
- * @returns {String}
- * @api public
- */
-function querystringify(obj, prefix) {
-  prefix = prefix || '';
-
-  var pairs = [];
-
-  //
-  // Optionally prefix with a '?' if needed
-  //
-  if ('string' !== typeof prefix) prefix = '?';
-
-  for (var key in obj) {
-    if (has.call(obj, key)) {
-      pairs.push(encodeURIComponent(key) + '=' + encodeURIComponent(obj[key]));
-    }
-  }
-
-  return pairs.length ? prefix + pairs.join('&') : '';
-}
-
-//
-// Expose the module.
-//
-exports.stringify = querystringify;
-exports.parse = querystring;
-
-/***/ }),
-/* 42 */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-
-
-/**
- * Check if we're required to add a port number.
- *
- * @see https://url.spec.whatwg.org/#default-port
- * @param {Number|String} port Port number we need to check
- * @param {String} protocol Protocol we need to check against.
- * @returns {Boolean} Is it a default port for the given protocol
- * @api private
- */
-
-module.exports = function required(port, protocol) {
-  protocol = protocol.split(':')[0];
-  port = +port;
-
-  if (!port) return false;
-
-  switch (protocol) {
-    case 'http':
-    case 'ws':
-      return port !== 80;
-
-    case 'https':
-    case 'wss':
-      return port !== 443;
-
-    case 'ftp':
-      return port !== 21;
-
-    case 'gopher':
-      return port !== 70;
-
-    case 'file':
-      return false;
-  }
-
-  return port !== 0;
-};
-
-/***/ }),
-/* 43 */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-/* WEBPACK VAR INJECTION */(function(global) {
-
-var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol" ? function (obj) { return typeof obj; } : function (obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; };
-
-var required = __webpack_require__(42),
-    qs = __webpack_require__(41),
-    protocolre = /^([a-z][a-z0-9.+-]*:)?(\/\/)?([\S\s]*)/i,
-    slashes = /^[A-Za-z][A-Za-z0-9+-.]*:\/\//;
-
-/**
- * These are the parse rules for the URL parser, it informs the parser
- * about:
- *
- * 0. The char it Needs to parse, if it's a string it should be done using
- *    indexOf, RegExp using exec and NaN means set as current value.
- * 1. The property we should set when parsing this value.
- * 2. Indication if it's backwards or forward parsing, when set as number it's
- *    the value of extra chars that should be split off.
- * 3. Inherit from location if non existing in the parser.
- * 4. `toLowerCase` the resulting value.
- */
-var rules = [['#', 'hash'], // Extract from the back.
-['?', 'query'], // Extract from the back.
-['/', 'pathname'], // Extract from the back.
-['@', 'auth', 1], // Extract from the front.
-[NaN, 'host', undefined, 1, 1], // Set left over value.
-[/:(\d+)$/, 'port', undefined, 1], // RegExp the back.
-[NaN, 'hostname', undefined, 1, 1] // Set left over.
-];
-
-/**
- * These properties should not be copied or inherited from. This is only needed
- * for all non blob URL's as a blob URL does not include a hash, only the
- * origin.
- *
- * @type {Object}
- * @private
- */
-var ignore = { hash: 1, query: 1 };
-
-/**
- * The location object differs when your code is loaded through a normal page,
- * Worker or through a worker using a blob. And with the blobble begins the
- * trouble as the location object will contain the URL of the blob, not the
- * location of the page where our code is loaded in. The actual origin is
- * encoded in the `pathname` so we can thankfully generate a good "default"
- * location from it so we can generate proper relative URL's again.
- *
- * @param {Object|String} loc Optional default location object.
- * @returns {Object} lolcation object.
- * @api public
- */
-function lolcation(loc) {
-  loc = loc || global.location || {};
-
-  var finaldestination = {},
-      type = typeof loc === 'undefined' ? 'undefined' : _typeof(loc),
-      key;
-
-  if ('blob:' === loc.protocol) {
-    finaldestination = new URL(unescape(loc.pathname), {});
-  } else if ('string' === type) {
-    finaldestination = new URL(loc, {});
-    for (key in ignore) {
-      delete finaldestination[key];
-    }
-  } else if ('object' === type) {
-    for (key in loc) {
-      if (key in ignore) continue;
-      finaldestination[key] = loc[key];
-    }
-
-    if (finaldestination.slashes === undefined) {
-      finaldestination.slashes = slashes.test(loc.href);
-    }
-  }
-
-  return finaldestination;
-}
-
-/**
- * @typedef ProtocolExtract
- * @type Object
- * @property {String} protocol Protocol matched in the URL, in lowercase.
- * @property {Boolean} slashes `true` if protocol is followed by "//", else `false`.
- * @property {String} rest Rest of the URL that is not part of the protocol.
- */
-
-/**
- * Extract protocol information from a URL with/without double slash ("//").
- *
- * @param {String} address URL we want to extract from.
- * @return {ProtocolExtract} Extracted information.
- * @api private
- */
-function extractProtocol(address) {
-  var match = protocolre.exec(address);
-
-  return {
-    protocol: match[1] ? match[1].toLowerCase() : '',
-    slashes: !!match[2],
-    rest: match[3]
-  };
-}
-
-/**
- * Resolve a relative URL pathname against a base URL pathname.
- *
- * @param {String} relative Pathname of the relative URL.
- * @param {String} base Pathname of the base URL.
- * @return {String} Resolved pathname.
- * @api private
- */
-function resolve(relative, base) {
-  var path = (base || '/').split('/').slice(0, -1).concat(relative.split('/')),
-      i = path.length,
-      last = path[i - 1],
-      unshift = false,
-      up = 0;
-
-  while (i--) {
-    if (path[i] === '.') {
-      path.splice(i, 1);
-    } else if (path[i] === '..') {
-      path.splice(i, 1);
-      up++;
-    } else if (up) {
-      if (i === 0) unshift = true;
-      path.splice(i, 1);
-      up--;
-    }
-  }
-
-  if (unshift) path.unshift('');
-  if (last === '.' || last === '..') path.push('');
-
-  return path.join('/');
-}
-
-/**
- * The actual URL instance. Instead of returning an object we've opted-in to
- * create an actual constructor as it's much more memory efficient and
- * faster and it pleases my OCD.
- *
- * @constructor
- * @param {String} address URL we want to parse.
- * @param {Object|String} location Location defaults for relative paths.
- * @param {Boolean|Function} parser Parser for the query string.
- * @api public
- */
-function URL(address, location, parser) {
-  if (!(this instanceof URL)) {
-    return new URL(address, location, parser);
-  }
-
-  var relative,
-      extracted,
-      parse,
-      instruction,
-      index,
-      key,
-      instructions = rules.slice(),
-      type = typeof location === 'undefined' ? 'undefined' : _typeof(location),
-      url = this,
-      i = 0;
-
-  //
-  // The following if statements allows this module two have compatibility with
-  // 2 different API:
-  //
-  // 1. Node.js's `url.parse` api which accepts a URL, boolean as arguments
-  //    where the boolean indicates that the query string should also be parsed.
-  //
-  // 2. The `URL` interface of the browser which accepts a URL, object as
-  //    arguments. The supplied object will be used as default values / fall-back
-  //    for relative paths.
-  //
-  if ('object' !== type && 'string' !== type) {
-    parser = location;
-    location = null;
-  }
-
-  if (parser && 'function' !== typeof parser) parser = qs.parse;
-
-  location = lolcation(location);
-
-  //
-  // Extract protocol information before running the instructions.
-  //
-  extracted = extractProtocol(address || '');
-  relative = !extracted.protocol && !extracted.slashes;
-  url.slashes = extracted.slashes || relative && location.slashes;
-  url.protocol = extracted.protocol || location.protocol || '';
-  address = extracted.rest;
-
-  //
-  // When the authority component is absent the URL starts with a path
-  // component.
-  //
-  if (!extracted.slashes) instructions[2] = [/(.*)/, 'pathname'];
-
-  for (; i < instructions.length; i++) {
-    instruction = instructions[i];
-    parse = instruction[0];
-    key = instruction[1];
-
-    if (parse !== parse) {
-      url[key] = address;
-    } else if ('string' === typeof parse) {
-      if (~(index = address.indexOf(parse))) {
-        if ('number' === typeof instruction[2]) {
-          url[key] = address.slice(0, index);
-          address = address.slice(index + instruction[2]);
-        } else {
-          url[key] = address.slice(index);
-          address = address.slice(0, index);
-        }
-      }
-    } else if (index = parse.exec(address)) {
-      url[key] = index[1];
-      address = address.slice(0, index.index);
-    }
-
-    url[key] = url[key] || (relative && instruction[3] ? location[key] || '' : '');
-
-    //
-    // Hostname, host and protocol should be lowercased so they can be used to
-    // create a proper `origin`.
-    //
-    if (instruction[4]) url[key] = url[key].toLowerCase();
-  }
-
-  //
-  // Also parse the supplied query string in to an object. If we're supplied
-  // with a custom parser as function use that instead of the default build-in
-  // parser.
-  //
-  if (parser) url.query = parser(url.query);
-
-  //
-  // If the URL is relative, resolve the pathname against the base URL.
-  //
-  if (relative && location.slashes && url.pathname.charAt(0) !== '/' && (url.pathname !== '' || location.pathname !== '')) {
-    url.pathname = resolve(url.pathname, location.pathname);
-  }
-
-  //
-  // We should not add port numbers if they are already the default port number
-  // for a given protocol. As the host also contains the port number we're going
-  // override it with the hostname which contains no port number.
-  //
-  if (!required(url.port, url.protocol)) {
-    url.host = url.hostname;
-    url.port = '';
-  }
-
-  //
-  // Parse down the `auth` for the username and password.
-  //
-  url.username = url.password = '';
-  if (url.auth) {
-    instruction = url.auth.split(':');
-    url.username = instruction[0] || '';
-    url.password = instruction[1] || '';
-  }
-
-  url.origin = url.protocol && url.host && url.protocol !== 'file:' ? url.protocol + '//' + url.host : 'null';
-
-  //
-  // The href is just the compiled result.
-  //
-  url.href = url.toString();
-}
-
-/**
- * This is convenience method for changing properties in the URL instance to
- * insure that they all propagate correctly.
- *
- * @param {String} part          Property we need to adjust.
- * @param {Mixed} value          The newly assigned value.
- * @param {Boolean|Function} fn  When setting the query, it will be the function
- *                               used to parse the query.
- *                               When setting the protocol, double slash will be
- *                               removed from the final url if it is true.
- * @returns {URL}
- * @api public
- */
-function set(part, value, fn) {
-  var url = this;
-
-  switch (part) {
-    case 'query':
-      if ('string' === typeof value && value.length) {
-        value = (fn || qs.parse)(value);
-      }
-
-      url[part] = value;
-      break;
-
-    case 'port':
-      url[part] = value;
-
-      if (!required(value, url.protocol)) {
-        url.host = url.hostname;
-        url[part] = '';
-      } else if (value) {
-        url.host = url.hostname + ':' + value;
-      }
-
-      break;
-
-    case 'hostname':
-      url[part] = value;
-
-      if (url.port) value += ':' + url.port;
-      url.host = value;
-      break;
-
-    case 'host':
-      url[part] = value;
-
-      if (/:\d+$/.test(value)) {
-        value = value.split(':');
-        url.port = value.pop();
-        url.hostname = value.join(':');
-      } else {
-        url.hostname = value;
-        url.port = '';
-      }
-
-      break;
-
-    case 'protocol':
-      url.protocol = value.toLowerCase();
-      url.slashes = !fn;
-      break;
-
-    case 'pathname':
-    case 'hash':
-      if (value) {
-        var char = part === 'pathname' ? '/' : '#';
-        url[part] = value.charAt(0) !== char ? char + value : value;
-      } else {
-        url[part] = value;
-      }
-      break;
-
-    default:
-      url[part] = value;
-  }
-
-  for (var i = 0; i < rules.length; i++) {
-    var ins = rules[i];
-
-    if (ins[4]) url[ins[1]] = url[ins[1]].toLowerCase();
-  }
-
-  url.origin = url.protocol && url.host && url.protocol !== 'file:' ? url.protocol + '//' + url.host : 'null';
-
-  url.href = url.toString();
-
-  return url;
-}
-
-/**
- * Transform the properties back in to a valid and full URL string.
- *
- * @param {Function} stringify Optional query stringify function.
- * @returns {String}
- * @api public
- */
-function toString(stringify) {
-  if (!stringify || 'function' !== typeof stringify) stringify = qs.stringify;
-
-  var query,
-      url = this,
-      protocol = url.protocol;
-
-  if (protocol && protocol.charAt(protocol.length - 1) !== ':') protocol += ':';
-
-  var result = protocol + (url.slashes ? '//' : '');
-
-  if (url.username) {
-    result += url.username;
-    if (url.password) result += ':' + url.password;
-    result += '@';
-  }
-
-  result += url.host + url.pathname;
-
-  query = 'object' === _typeof(url.query) ? stringify(url.query) : url.query;
-  if (query) result += '?' !== query.charAt(0) ? '?' + query : query;
-
-  if (url.hash) result += url.hash;
-
-  return result;
-}
-
-URL.prototype = { set: set, toString: toString };
-
-//
-// Expose the URL parser and some additional properties that might be useful for
-// others or testing.
-//
-URL.extractProtocol = extractProtocol;
-URL.location = lolcation;
-URL.qs = qs;
-
-module.exports = URL;
-/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(44)))
-
-/***/ }),
-/* 44 */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-
-
-var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol" ? function (obj) { return typeof obj; } : function (obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; };
-
-var g;
-
-// This works in non-strict mode
-g = function () {
-	return this;
-}();
-
-try {
-	// This works if eval is allowed (see CSP)
-	g = g || Function("return this")() || (1, eval)("this");
-} catch (e) {
-	// This works if the window reference is available
-	if ((typeof window === "undefined" ? "undefined" : _typeof(window)) === "object") g = window;
-}
-
-// g can still be undefined, but nothing to do about it...
-// We return undefined, instead of nothing here, so it's
-// easier to handle this case. if(!global) { ...}
-
-module.exports = g;
-
-/***/ }),
-/* 45 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -6947,7 +6381,7 @@ var FocusableChunk = function (_React$Component) {
 exports.default = FocusableChunk;
 
 /***/ }),
-/* 46 */
+/* 42 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -7087,7 +6521,7 @@ var ToggleSelectionHandler = function (_BaseSelectionHandler) {
 exports.default = ToggleSelectionHandler;
 
 /***/ }),
-/* 47 */
+/* 43 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -7140,7 +6574,7 @@ var NonEditableChunk = function (_React$Component) {
 exports.default = NonEditableChunk;
 
 /***/ }),
-/* 48 */
+/* 44 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -7189,7 +6623,7 @@ var TextChunk = function (_React$Component) {
 exports.default = TextChunk;
 
 /***/ }),
-/* 49 */
+/* 45 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -7399,7 +6833,7 @@ var regex = new RegExp(
 );
 
 /***/ }),
-/* 50 */
+/* 46 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -7443,7 +6877,7 @@ function __guard__(value, transform) {
 }
 
 /***/ }),
-/* 51 */
+/* 47 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -7521,7 +6955,7 @@ var getDomPosition = function getDomPosition(virtualCursor) {
 exports.default = { getDomPosition: getDomPosition, getTextElement: getTextElement, getTextElementAtCursor: getTextElementAtCursor };
 
 /***/ }),
-/* 52 */
+/* 48 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -7605,7 +7039,7 @@ var TextGroupEl = function (_React$Component) {
 exports.default = TextGroupEl;
 
 /***/ }),
-/* 53 */
+/* 49 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -7625,7 +7059,7 @@ var _textGroupSelection = __webpack_require__(31);
 
 var _textGroupSelection2 = _interopRequireDefault(_textGroupSelection);
 
-var _textGroupElUtil = __webpack_require__(51);
+var _textGroupElUtil = __webpack_require__(47);
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
@@ -7741,7 +7175,7 @@ var TextGroupSelectionHandler = function (_BaseSelectionHandler) {
 exports.default = TextGroupSelectionHandler;
 
 /***/ }),
-/* 54 */
+/* 50 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -7889,7 +7323,7 @@ exports.activateStyle = activateStyle;
 exports.replaceTextsWithinSelection = replaceTextsWithinSelection;
 
 /***/ }),
-/* 55 */
+/* 51 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -7931,7 +7365,7 @@ var _oboModel2 = _interopRequireDefault(_oboModel);
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 /***/ }),
-/* 56 */
+/* 52 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -7965,7 +7399,7 @@ var _oboModel2 = _interopRequireDefault(_oboModel);
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 /***/ }),
-/* 57 */
+/* 53 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -7977,13 +7411,13 @@ Object.defineProperty(exports, "__esModule", {
 
 var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
 
-__webpack_require__(81);
+__webpack_require__(76);
 
 var _getBackgroundImage = __webpack_require__(36);
 
 var _getBackgroundImage2 = _interopRequireDefault(_getBackgroundImage);
 
-var _edit = __webpack_require__(91);
+var _edit = __webpack_require__(86);
 
 var _edit2 = _interopRequireDefault(_edit);
 
@@ -8037,7 +7471,7 @@ var EditButton = function (_React$Component) {
 exports.default = EditButton;
 
 /***/ }),
-/* 58 */
+/* 54 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -8049,7 +7483,7 @@ Object.defineProperty(exports, "__esModule", {
 
 var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
 
-__webpack_require__(82);
+__webpack_require__(77);
 
 var _focusUtil = __webpack_require__(15);
 
@@ -8085,7 +7519,7 @@ var FocusBlocker = function (_React$Component) {
 exports.default = FocusBlocker;
 
 /***/ }),
-/* 59 */
+/* 55 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -8097,7 +7531,7 @@ Object.defineProperty(exports, "__esModule", {
 
 var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
 
-__webpack_require__(83);
+__webpack_require__(78);
 
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
@@ -8135,7 +7569,7 @@ var ModalContainer = function (_React$Component) {
 exports.default = ModalContainer;
 
 /***/ }),
-/* 60 */
+/* 56 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -8147,7 +7581,7 @@ Object.defineProperty(exports, "__esModule", {
 
 var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
 
-__webpack_require__(85);
+__webpack_require__(80);
 
 var _bubble = __webpack_require__(19);
 
@@ -8239,7 +7673,7 @@ var SingleInputBubble = function (_React$Component) {
 exports.default = SingleInputBubble;
 
 /***/ }),
-/* 61 */
+/* 57 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -8299,7 +7733,7 @@ var Question = function (_React$Component) {
 exports.default = Question;
 
 /***/ }),
-/* 62 */
+/* 58 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -8352,7 +7786,7 @@ var SimpleMessage = function (_React$Component) {
 exports.default = SimpleMessage;
 
 /***/ }),
-/* 63 */
+/* 59 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -8455,7 +7889,7 @@ var OboComponent = function (_React$Component) {
 exports.default = OboComponent;
 
 /***/ }),
-/* 64 */
+/* 60 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -8467,7 +7901,7 @@ Object.defineProperty(exports, "__esModule", {
 
 var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
 
-__webpack_require__(90);
+__webpack_require__(85);
 
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
@@ -8559,7 +7993,7 @@ var TextMenu = function (_React$Component) {
 exports.default = TextMenu;
 
 /***/ }),
-/* 65 */
+/* 61 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -8571,15 +8005,11 @@ Object.defineProperty(exports, "__esModule", {
 
 var _store = __webpack_require__(28);
 
-var _launch = __webpack_require__(66);
-
-var _launch2 = _interopRequireDefault(_launch);
-
 var _baseSelectionHandler = __webpack_require__(8);
 
 var _baseSelectionHandler2 = _interopRequireDefault(_baseSelectionHandler);
 
-var _focusableChunk = __webpack_require__(45);
+var _focusableChunk = __webpack_require__(41);
 
 var _focusableChunk2 = _interopRequireDefault(_focusableChunk);
 
@@ -8587,47 +8017,47 @@ var _focusableSelectionHandler = __webpack_require__(16);
 
 var _focusableSelectionHandler2 = _interopRequireDefault(_focusableSelectionHandler);
 
-var _toggleSelectionHandler = __webpack_require__(46);
+var _toggleSelectionHandler = __webpack_require__(42);
 
 var _toggleSelectionHandler2 = _interopRequireDefault(_toggleSelectionHandler);
 
-var _nonEditableChunk = __webpack_require__(47);
+var _nonEditableChunk = __webpack_require__(43);
 
 var _nonEditableChunk2 = _interopRequireDefault(_nonEditableChunk);
 
-var _textChunk = __webpack_require__(48);
+var _textChunk = __webpack_require__(44);
 
 var _textChunk2 = _interopRequireDefault(_textChunk);
 
-var _textGroupSelectionHandler = __webpack_require__(53);
+var _textGroupSelectionHandler = __webpack_require__(49);
 
 var _textGroupSelectionHandler2 = _interopRequireDefault(_textGroupSelectionHandler);
 
-var _textGroupEl = __webpack_require__(52);
+var _textGroupEl = __webpack_require__(48);
 
 var _textGroupEl2 = _interopRequireDefault(_textGroupEl);
 
-var _linkify = __webpack_require__(49);
+var _linkify = __webpack_require__(45);
 
 var _linkify2 = _interopRequireDefault(_linkify);
 
-var _textGroupAdapter = __webpack_require__(50);
+var _textGroupAdapter = __webpack_require__(46);
 
 var _textGroupAdapter2 = _interopRequireDefault(_textGroupAdapter);
 
-var _chunkUtil = __webpack_require__(54);
+var _chunkUtil = __webpack_require__(50);
 
 var _chunkUtil2 = _interopRequireDefault(_chunkUtil);
 
-var _insert = __webpack_require__(56);
+var _insert = __webpack_require__(52);
 
 var _insert2 = _interopRequireDefault(_insert);
 
-var _insertWithText = __webpack_require__(55);
+var _insertWithText = __webpack_require__(51);
 
 var _insertWithText2 = _interopRequireDefault(_insertWithText);
 
-var _oboComponent = __webpack_require__(63);
+var _oboComponent = __webpack_require__(59);
 
 var _oboComponent2 = _interopRequireDefault(_oboComponent);
 
@@ -8639,7 +8069,7 @@ var _deleteButton = __webpack_require__(10);
 
 var _deleteButton2 = _interopRequireDefault(_deleteButton);
 
-var _editButton = __webpack_require__(57);
+var _editButton = __webpack_require__(53);
 
 var _editButton2 = _interopRequireDefault(_editButton);
 
@@ -8651,15 +8081,15 @@ var _bubble = __webpack_require__(19);
 
 var _bubble2 = _interopRequireDefault(_bubble);
 
-var _singleInputBubble = __webpack_require__(60);
+var _singleInputBubble = __webpack_require__(56);
 
 var _singleInputBubble2 = _interopRequireDefault(_singleInputBubble);
 
-var _question = __webpack_require__(61);
+var _question = __webpack_require__(57);
 
 var _question2 = _interopRequireDefault(_question);
 
-var _simpleMessage = __webpack_require__(62);
+var _simpleMessage = __webpack_require__(58);
 
 var _simpleMessage2 = _interopRequireDefault(_simpleMessage);
 
@@ -8679,15 +8109,15 @@ var _errorDialog = __webpack_require__(21);
 
 var _errorDialog2 = _interopRequireDefault(_errorDialog);
 
-var _textMenu = __webpack_require__(64);
+var _textMenu = __webpack_require__(60);
 
 var _textMenu2 = _interopRequireDefault(_textMenu);
 
-var _modalContainer = __webpack_require__(59);
+var _modalContainer = __webpack_require__(55);
 
 var _modalContainer2 = _interopRequireDefault(_modalContainer);
 
-var _focusBlocker = __webpack_require__(58);
+var _focusBlocker = __webpack_require__(54);
 
 var _focusBlocker2 = _interopRequireDefault(_focusBlocker);
 
@@ -8711,15 +8141,15 @@ var _oboModel = __webpack_require__(1);
 
 var _oboModel2 = _interopRequireDefault(_oboModel);
 
-var _legacy = __webpack_require__(67);
+var _legacy = __webpack_require__(62);
 
 var _legacy2 = _interopRequireDefault(_legacy);
 
-var _api = __webpack_require__(68);
+var _api = __webpack_require__(63);
 
 var _api2 = _interopRequireDefault(_api);
 
-var _chunkSelection = __webpack_require__(72);
+var _chunkSelection = __webpack_require__(67);
 
 var _chunkSelection2 = _interopRequireDefault(_chunkSelection);
 
@@ -8735,7 +8165,7 @@ var _oboSelectionRect = __webpack_require__(12);
 
 var _oboSelectionRect2 = _interopRequireDefault(_oboSelectionRect);
 
-var _selection = __webpack_require__(73);
+var _selection = __webpack_require__(68);
 
 var _selection2 = _interopRequireDefault(_selection);
 
@@ -8743,7 +8173,7 @@ var _virtualCursor = __webpack_require__(13);
 
 var _virtualCursor2 = _interopRequireDefault(_virtualCursor);
 
-var _virtualCursorData = __webpack_require__(74);
+var _virtualCursorData = __webpack_require__(69);
 
 var _virtualCursorData2 = _interopRequireDefault(_virtualCursorData);
 
@@ -8751,11 +8181,11 @@ var _virtualSelection = __webpack_require__(27);
 
 var _virtualSelection2 = _interopRequireDefault(_virtualSelection);
 
-var _modalStore = __webpack_require__(76);
+var _modalStore = __webpack_require__(71);
 
 var _modalStore2 = _interopRequireDefault(_modalStore);
 
-var _focusStore = __webpack_require__(75);
+var _focusStore = __webpack_require__(70);
 
 var _focusStore2 = _interopRequireDefault(_focusStore);
 
@@ -8763,15 +8193,15 @@ var _domUtil = __webpack_require__(2);
 
 var _domUtil2 = _interopRequireDefault(_domUtil);
 
-var _head = __webpack_require__(69);
+var _head = __webpack_require__(64);
 
 var _head2 = _interopRequireDefault(_head);
 
-var _keyboard = __webpack_require__(70);
+var _keyboard = __webpack_require__(65);
 
 var _keyboard2 = _interopRequireDefault(_keyboard);
 
-var _screen = __webpack_require__(71);
+var _screen = __webpack_require__(66);
 
 var _screen2 = _interopRequireDefault(_screen);
 
@@ -8823,7 +8253,7 @@ var _textGroupUtil = __webpack_require__(14);
 
 var _textGroupUtil2 = _interopRequireDefault(_textGroupUtil);
 
-var _console = __webpack_require__(77);
+var _console = __webpack_require__(72);
 
 var _console2 = _interopRequireDefault(_console);
 
@@ -8843,7 +8273,7 @@ var _focusUtil = __webpack_require__(15);
 
 var _focusUtil2 = _interopRequireDefault(_focusUtil);
 
-var _errorUtil = __webpack_require__(78);
+var _errorUtil = __webpack_require__(73);
 
 var _errorUtil2 = _interopRequireDefault(_errorUtil);
 
@@ -8970,64 +8400,11 @@ exports.default = {
 		FocusUtil: _focusUtil2.default,
 		ErrorUtil: _errorUtil2.default,
 		UUID: _uuid2.default
-	},
-
-	Launch: _launch2.default
+	}
 };
 
 /***/ }),
-/* 66 */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-
-
-Object.defineProperty(exports, "__esModule", {
-	value: true
-});
-
-var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
-
-var _urlParse = __webpack_require__(43);
-
-var _urlParse2 = _interopRequireDefault(_urlParse);
-
-function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
-
-function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
-
-var Launch = function () {
-	function Launch() {
-		_classCallCheck(this, Launch);
-	}
-
-	_createClass(Launch, [{
-		key: 'init',
-		value: function init(ltiReqVars) {
-			for (var varName in ltiReqVars) {
-				this[varName] = ltiReqVars[varName];
-				Object.freeze(this[varName]);
-			}
-
-			Object.freeze(this);
-		}
-	}, {
-		key: 'getOutcomeServiceHostname',
-		value: function getOutcomeServiceHostname() {
-			var hostname = (0, _urlParse2.default)(this.lis_outcome_service_url || '', {}).hostname;
-
-			if (hostname === '' || !hostname) return 'the external system';
-			return hostname;
-		}
-	}]);
-
-	return Launch;
-}();
-
-exports.default = new Launch();
-
-/***/ }),
-/* 67 */
+/* 62 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -9232,7 +8609,7 @@ var Legacy = {
 exports.default = Legacy;
 
 /***/ }),
-/* 68 */
+/* 63 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -9329,7 +8706,7 @@ Object.defineProperties(API.prototype, {
 exports.default = new API();
 
 /***/ }),
-/* 69 */
+/* 64 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -9407,7 +8784,7 @@ exports.default = {
 };
 
 /***/ }),
-/* 70 */
+/* 65 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -9433,7 +8810,7 @@ exports.default = {
 };
 
 /***/ }),
-/* 71 */
+/* 66 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -9584,7 +8961,7 @@ window.__screen = Screen; //@todo
 exports.default = Screen;
 
 /***/ }),
-/* 72 */
+/* 67 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -9802,7 +9179,7 @@ ChunkSelection.getFromDOMSelection = function (module, domSelection) {
 exports.default = ChunkSelection;
 
 /***/ }),
-/* 73 */
+/* 68 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -9942,7 +9319,7 @@ Object.defineProperties(Selection.prototype, {
 exports.default = Selection;
 
 /***/ }),
-/* 74 */
+/* 69 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -9979,7 +9356,7 @@ var VirtualCursorData = function () {
 exports.default = VirtualCursorData;
 
 /***/ }),
-/* 75 */
+/* 70 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -10083,7 +9460,7 @@ var focusStore = new FocusStore();
 exports.default = focusStore;
 
 /***/ }),
-/* 76 */
+/* 71 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -10165,7 +9542,7 @@ var modalStore = new ModalStore();
 exports.default = modalStore;
 
 /***/ }),
-/* 77 */
+/* 72 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -10265,7 +9642,7 @@ exports.default = {
 };
 
 /***/ }),
-/* 78 */
+/* 73 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -10316,6 +9693,36 @@ var ErrorUtil = {
 exports.default = ErrorUtil;
 
 /***/ }),
+/* 74 */
+/***/ (function(module, exports) {
+
+// removed by extract-text-webpack-plugin
+
+/***/ }),
+/* 75 */
+/***/ (function(module, exports) {
+
+// removed by extract-text-webpack-plugin
+
+/***/ }),
+/* 76 */
+/***/ (function(module, exports) {
+
+// removed by extract-text-webpack-plugin
+
+/***/ }),
+/* 77 */
+/***/ (function(module, exports) {
+
+// removed by extract-text-webpack-plugin
+
+/***/ }),
+/* 78 */
+/***/ (function(module, exports) {
+
+// removed by extract-text-webpack-plugin
+
+/***/ }),
 /* 79 */
 /***/ (function(module, exports) {
 
@@ -10361,46 +9768,16 @@ exports.default = ErrorUtil;
 /* 86 */
 /***/ (function(module, exports) {
 
-// removed by extract-text-webpack-plugin
+module.exports = "data:image/svg+xml,%3Csvg id='Layer_10' data-name='Layer 10' xmlns='http://www.w3.org/2000/svg' viewBox='0 0 20.48 20.48'%3E %3Cdefs%3E %3Cstyle%3E .cls-1 %7B fill: %236714bd; %7D %3C/style%3E %3C/defs%3E %3Ctitle%3Etoolbar-icons%3C/title%3E %3Cg%3E %3Crect class='cls-1' x='15.15' y='4.57' width='5.75' height='18.82' rx='1.13' ry='1.13' transform='translate(9.4 -14.41) rotate(45)'/%3E %3Cpath class='cls-1' d='M11.06,25l-5.3,1.23L7,20.94a1.12,1.12,0,0,1,1.59,0l2.47,2.47A1.13,1.13,0,0,1,11.06,25Z' transform='translate(-5.76 -5.76)'/%3E %3C/g%3E %3C/svg%3E"
 
 /***/ }),
 /* 87 */
 /***/ (function(module, exports) {
 
-// removed by extract-text-webpack-plugin
-
-/***/ }),
-/* 88 */
-/***/ (function(module, exports) {
-
-// removed by extract-text-webpack-plugin
-
-/***/ }),
-/* 89 */
-/***/ (function(module, exports) {
-
-// removed by extract-text-webpack-plugin
-
-/***/ }),
-/* 90 */
-/***/ (function(module, exports) {
-
-// removed by extract-text-webpack-plugin
-
-/***/ }),
-/* 91 */
-/***/ (function(module, exports) {
-
-module.exports = "data:image/svg+xml,%3Csvg id='Layer_10' data-name='Layer 10' xmlns='http://www.w3.org/2000/svg' viewBox='0 0 20.48 20.48'%3E %3Cdefs%3E %3Cstyle%3E .cls-1 %7B fill: %236714bd; %7D %3C/style%3E %3C/defs%3E %3Ctitle%3Etoolbar-icons%3C/title%3E %3Cg%3E %3Crect class='cls-1' x='15.15' y='4.57' width='5.75' height='18.82' rx='1.13' ry='1.13' transform='translate(9.4 -14.41) rotate(45)'/%3E %3Cpath class='cls-1' d='M11.06,25l-5.3,1.23L7,20.94a1.12,1.12,0,0,1,1.59,0l2.47,2.47A1.13,1.13,0,0,1,11.06,25Z' transform='translate(-5.76 -5.76)'/%3E %3C/g%3E %3C/svg%3E"
-
-/***/ }),
-/* 92 */
-/***/ (function(module, exports) {
-
 module.exports = katex;
 
 /***/ }),
-/* 93 */
+/* 88 */
 /***/ (function(module, exports, __webpack_require__) {
 
 module.exports = __webpack_require__(40);

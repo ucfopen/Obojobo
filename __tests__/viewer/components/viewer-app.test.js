@@ -36,7 +36,16 @@ APIUtil.endAttempt = () => {
 APIUtil.requestStart = () => {
 	return Promise.resolve({
 		status: 'ok',
-		value: { visitId: 123, attemptHistory: [], isPreviewing: true }
+		value: {
+			visitId: 123,
+			lti: {
+				lisOutcomeServiceUrl: 'http://lis-outcome-service-url.test/example.php'
+			},
+			isPreviewing: true,
+			extensions: {
+				':ObojoboDraft.Sections.Assessment:attemptHistory': []
+			}
+		}
 	})
 }
 

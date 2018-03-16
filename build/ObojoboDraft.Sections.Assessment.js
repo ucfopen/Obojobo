@@ -582,9 +582,6 @@ var OboModel = _Common2.default.models.OboModel;
 var Button = _Common2.default.components.Button;
 var Dispatcher = _Common2.default.flux.Dispatcher;
 var ModalUtil = _Common2.default.util.ModalUtil;
-
-var Launch = _Common2.default.Launch;
-
 var ScoreStore = _Viewer2.default.stores.ScoreStore;
 var AssessmentUtil = _Viewer2.default.util.AssessmentUtil;
 var NavUtil = _Viewer2.default.util.NavUtil;
@@ -704,7 +701,7 @@ var Assessment = function (_React$Component) {
 			var assessmentScore = AssessmentUtil.getAssessmentScoreForModel(this.props.moduleData.assessmentState, this.props.model);
 			var ltiState = AssessmentUtil.getLTIStateForModel(this.props.moduleData.assessmentState, this.props.model);
 
-			var externalSystemLabel = Launch.getOutcomeServiceHostname();
+			var externalSystemLabel = this.props.moduleData.lti.outcomeServiceHostname;
 
 			var childEl = function () {
 				switch (_this2.getCurrentStep()) {
@@ -772,7 +769,6 @@ var Assessment = function (_React$Component) {
 							{ className: 'score unlock' },
 							React.createElement(_ltiStatus2.default, {
 								ltiState: ltiState,
-								launch: Launch,
 								onClickResendScore: _this2.onClickResendScore.bind(_this2)
 							}),
 							React.createElement(

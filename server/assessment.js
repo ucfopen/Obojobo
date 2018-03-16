@@ -369,12 +369,12 @@ class Assessment extends DraftNode {
 		return this.yell('ObojoboDraft.Sections.Assessment:sendToClient', req, res)
 	}
 
-	onStartVisit(req, res, resultContainer) {
+	onStartVisit(req, res, draftId, visitId, extensionsProps) {
 		return req
 			.requireCurrentUser()
-			.then(currentUser => this.constructor.getAttempts(currentUser.id, req.params.draftId))
+			.then(currentUser => this.constructor.getAttempts(currentUser.id, draftId))
 			.then(attempts => {
-				resultContainer.attempts = attempts
+				extensionsProps[':ObojoboDraft.Sections.Assessment:attemptHistory'] = attempts
 			})
 	}
 }

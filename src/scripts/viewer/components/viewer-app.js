@@ -14,6 +14,7 @@ import QuestionStore from '../../viewer/stores/question-store'
 import AssessmentStore from '../../viewer/stores/assessment-store'
 import NavStore from '../../viewer/stores/nav-store'
 import Nav from './nav'
+import getLTIOutcomeServiceHostname from '../../viewer/util/get-lti-outcome-service-hostname'
 
 const IDLE_TIMEOUT_DURATION_MS = 600000 // 10 minutes
 
@@ -66,7 +67,10 @@ export default class ViewerApp extends React.Component {
 			navTargetId: null,
 			loading: true,
 			requestStatus: 'unknown',
-			isPreviewing: false
+			isPreviewing: false,
+			lti: {
+				outcomeServiceHostname: null
+			}
 		}
 		this.onNavStoreChange = () => this.setState({ navState: NavStore.getState() })
 		this.onScoreStoreChange = () => this.setState({ scoreState: ScoreStore.getState() })
@@ -90,6 +94,7 @@ export default class ViewerApp extends React.Component {
 		let visitIdFromApi
 		let attemptHistory
 		let isPreviewing
+		let outcomeServiceURL
 
 		let urlTokens = document.location.pathname.split('/')
 		let visitIdFromUrl = urlTokens[4] ? urlTokens[4] : null
@@ -101,8 +106,10 @@ export default class ViewerApp extends React.Component {
 			.then(visit => {
 				if (visit.status !== 'ok') throw 'Invalid Visit Id'
 				visitIdFromApi = visit.value.visitId
-				attemptHistory = visit.value.attemptHistory
+				attemptHistory = visit.value.extensions[':ObojoboDraft.Sections.Assessment:attemptHistory']
 				isPreviewing = visit.value.isPreviewing
+				outcomeServiceURL = visit.value.lti.lisOutcomeServiceUrl
+
 				return APIUtil.getDraft(draftIdFromUrl)
 			})
 			.then(({ value: draftModel }) => {
@@ -126,6 +133,7 @@ export default class ViewerApp extends React.Component {
 				this.state.assessmentState = AssessmentStore.getState()
 				this.state.modalState = ModalStore.getState()
 				this.state.focusState = FocusStore.getState()
+				this.state.lti.outcomeServiceHostname = getLTIOutcomeServiceHostname(outcomeServiceURL)
 
 				window.onbeforeunload = this.onWindowClose
 				this.setState({ loading: false, requestStatus: 'ok', isPreviewing }, () => {

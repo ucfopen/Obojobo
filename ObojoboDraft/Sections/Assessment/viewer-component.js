@@ -8,7 +8,6 @@ let { OboModel } = Common.models
 let { Button } = Common.components
 let { Dispatcher } = Common.flux
 let { ModalUtil } = Common.util
-let Launch = Common.Launch
 
 let { ScoreStore } = Viewer.stores
 let { AssessmentUtil } = Viewer.util
@@ -133,7 +132,7 @@ export default class Assessment extends React.Component {
 			this.props.model
 		)
 
-		let externalSystemLabel = Launch.getOutcomeServiceHostname()
+		let externalSystemLabel = this.props.moduleData.lti.outcomeServiceHostname
 
 		var childEl = (() => {
 			switch (this.getCurrentStep()) {
@@ -204,7 +203,6 @@ export default class Assessment extends React.Component {
 						<div className="score unlock">
 							<LTIStatus
 								ltiState={ltiState}
-								launch={Launch}
 								onClickResendScore={this.onClickResendScore.bind(this)}
 							/>
 							<h1>{`Your attempt score is ${Math.round(recentScore)}%`}</h1>
