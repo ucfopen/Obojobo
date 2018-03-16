@@ -63,7 +63,7 @@
 /******/ 	__webpack_require__.p = "build/";
 /******/
 /******/ 	// Load entry module and return exports
-/******/ 	return __webpack_require__(__webpack_require__.s = 55);
+/******/ 	return __webpack_require__(__webpack_require__.s = 61);
 /******/ })
 /************************************************************************/
 /******/ ([
@@ -700,7 +700,7 @@ var APIUtil = {
 		return createParsedJsonPromise(APIUtil.post('/api/events', {
 			event: {
 				action: action,
-				draft_id: lo.get('_id'),
+				draft_id: lo.get('draftId'),
 				actor_time: new Date().toISOString(),
 				event_version: eventVersion,
 				payload: payload
@@ -718,31 +718,34 @@ var APIUtil = {
 	saveState: function saveState(lo, state) {
 		return APIUtil.postEvent(lo, 'saveState', state);
 	},
-	fetchDraft: function fetchDraft(id) {
+	getDraft: function getDraft(id) {
 		return createParsedJsonPromise(fetch('/api/drafts/' + id));
 	},
 	getAttempts: function getAttempts(lo) {
-		return createParsedJsonPromise(APIUtil.get('/api/drafts/' + lo.get('_id') + '/attempts'));
+		return createParsedJsonPromise(APIUtil.get('/api/drafts/' + lo.get('draftId') + '/attempts'));
+	},
+	requestStart: function requestStart(visitId, draftId) {
+		return createParsedJsonPromise(APIUtil.post('/api/visits/start', {
+			visitId: visitId,
+			draftId: draftId
+		}));
 	},
 	startAttempt: function startAttempt(lo, assessment, questions) {
 		return createParsedJsonPromise(APIUtil.post('/api/assessments/attempt/start', {
-			draftId: lo.get('_id'),
-			assessmentId: assessment.get('id'),
-			actor: 4,
-			questions: '@TODO'
+			draftId: lo.get('draftId'),
+			assessmentId: assessment.get('id')
 		}));
 	},
 	endAttempt: function endAttempt(attempt) {
 		return createParsedJsonPromise(APIUtil.post('/api/assessments/attempt/' + attempt.attemptId + '/end'));
+	},
+	resendLTIAssessmentScore: function resendLTIAssessmentScore(lo, assessment) {
+		return createParsedJsonPromise(APIUtil.post('/api/lti/sendAssessmentScore', {
+			draftId: lo.get('_id'),
+			assessmentId: assessment.get('id')
+		}));
 	}
 };
-
-// recordQuestionResponse: (attempt, question, response) ->
-// 	console.clear()
-// 	console.log arguments
-// 	createParsedJsonPromise APIUtil.post "/api/assessments/attempt/#{attempt.id}/question/#{question.get('id')}", {
-// 		response: response
-// 	}
 
 exports.default = APIUtil;
 
@@ -1061,7 +1064,7 @@ exports.default = QuestionUtil;
 "use strict";
 
 
-var startOfWeek = __webpack_require__(34);
+var startOfWeek = __webpack_require__(36);
 
 /**
  * @category ISO Week Helpers
@@ -1089,6 +1092,24 @@ module.exports = startOfISOWeek;
 
 /***/ }),
 /* 7 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+/**
+ * Copyright (c) 2013-present, Facebook, Inc.
+ *
+ * This source code is licensed under the MIT license found in the
+ * LICENSE file in the root directory of this source tree.
+ */
+
+
+
+var ReactPropTypesSecret = 'SECRET_DO_NOT_PASS_THIS_OR_YOU_WILL_BE_FIRED';
+
+module.exports = ReactPropTypesSecret;
+
+/***/ }),
+/* 8 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -1130,7 +1151,7 @@ emptyFunction.thatReturnsArgument = function (arg) {
 module.exports = emptyFunction;
 
 /***/ }),
-/* 8 */
+/* 9 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -1188,24 +1209,6 @@ function invariant(condition, format, a, b, c, d, e, f) {
 
 module.exports = invariant;
 /* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(4)))
-
-/***/ }),
-/* 9 */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-/**
- * Copyright (c) 2013-present, Facebook, Inc.
- *
- * This source code is licensed under the MIT license found in the
- * LICENSE file in the root directory of this source tree.
- */
-
-
-
-var ReactPropTypesSecret = 'SECRET_DO_NOT_PASS_THIS_OR_YOU_WILL_BE_FIRED';
-
-module.exports = ReactPropTypesSecret;
 
 /***/ }),
 /* 10 */
@@ -1348,7 +1351,7 @@ var NavStore = function (_Store) {
 
 	_createClass(NavStore, [{
 		key: 'init',
-		value: function init(model, startingId, startingPath) {
+		value: function init(model, startingId, startingPath, visitId) {
 			this.state = {
 				items: {},
 				itemsById: {},
@@ -1357,7 +1360,8 @@ var NavStore = function (_Store) {
 				navTargetHistory: [],
 				navTargetId: null,
 				locked: false,
-				open: true
+				open: true,
+				visitId: visitId
 			};
 
 			this.buildMenu(model);
@@ -1466,7 +1470,7 @@ var NavStore = function (_Store) {
 					// flatPath = ['view', model.getRoot().get('_id'), childNavItem.fullPath.join('/')].join('/')
 					var flatPath = childNavItem.fullPath.join('/');
 					childNavItem.flatPath = flatPath;
-					childNavItem.fullFlatPath = ['/view', model.getRoot().get('_id'), flatPath].join('/');
+					childNavItem.fullFlatPath = ['/view', model.getRoot().get('draftId'), 'visit', this.state.visitId, flatPath].join('/');
 					this.state.itemsByPath[flatPath] = childNavItem;
 					this.state.itemsByFullPath[childNavItem.fullFlatPath] = childNavItem;
 				}
@@ -1654,7 +1658,7 @@ module.exports = isDate;
 
 
 
-var emptyFunction = __webpack_require__(7);
+var emptyFunction = __webpack_require__(8);
 
 /**
  * Similar to invariant but only logs a warning if the condition is not met.
@@ -1721,13 +1725,13 @@ Object.defineProperty(exports, "__esModule", {
 
 var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
 
-__webpack_require__(47);
+__webpack_require__(53);
 
 var _navUtil = __webpack_require__(2);
 
 var _navUtil2 = _interopRequireDefault(_navUtil);
 
-var _obojoboLogo = __webpack_require__(54);
+var _obojoboLogo = __webpack_require__(60);
 
 var _obojoboLogo2 = _interopRequireDefault(_obojoboLogo);
 
@@ -1794,7 +1798,7 @@ var _Common = __webpack_require__(0);
 
 var _Common2 = _interopRequireDefault(_Common);
 
-var _assessmentUtil = __webpack_require__(19);
+var _assessmentUtil = __webpack_require__(20);
 
 var _assessmentUtil2 = _interopRequireDefault(_assessmentUtil);
 
@@ -1813,6 +1817,10 @@ var _apiUtil2 = _interopRequireDefault(_apiUtil);
 var _navUtil = __webpack_require__(2);
 
 var _navUtil2 = _interopRequireDefault(_navUtil);
+
+var _ltiNetworkStates = __webpack_require__(17);
+
+var _ltiNetworkStates2 = _interopRequireDefault(_ltiNetworkStates);
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
@@ -1835,7 +1843,11 @@ var getNewAssessmentObject = function getNewAssessmentObject(assessmentId) {
 		id: assessmentId,
 		current: null,
 		currentResponses: [],
-		attempts: []
+		attempts: [],
+		score: null,
+		lti: null,
+		ltiNetworkState: _ltiNetworkStates2.default.IDLE,
+		ltiErrorCount: 0
 	};
 };
 
@@ -1859,115 +1871,72 @@ var AssessmentStore = function (_Store) {
 			_this.tryEndAttempt(payload.value.id);
 		});
 
+		Dispatcher.on('assessment:resendLTIScore', function (payload) {
+			_this.tryResendLTIScore(payload.value.id);
+		});
+
 		Dispatcher.on('question:setResponse', function (payload) {
 			_this.trySetResponse(payload.value.id, payload.value.response, payload.value.targetId);
+		});
+
+		Dispatcher.on('viewer:closeAttempted', function (shouldPrompt) {
+			if (_assessmentUtil2.default.isInAssessment(_this.state)) {
+				shouldPrompt();
+			}
 		});
 		return _this;
 	}
 
 	_createClass(AssessmentStore, [{
 		key: 'init',
-		value: function init(history) {
-			var question = void 0;
-			if (history == null) {
-				history = [];
-			}
+		value: function init(attemptsByAssessment) {
 			this.state = {
 				assessments: {}
 			};
 
-			history.sort(function (a, b) {
-				return new Date(a.startTime).getTime() > new Date(b.startTime).getTime();
-			});
-
+			if (!attemptsByAssessment) return;
+			this.updateAttempts(attemptsByAssessment);
+		}
+	}, {
+		key: 'updateAttempts',
+		value: function updateAttempts(attemptsByAssessment) {
 			var unfinishedAttempt = null;
 			var nonExistantQuestions = [];
+			var assessments = this.state.assessments;
+			var assessment = void 0;
 
-			var _iteratorNormalCompletion = true;
-			var _didIteratorError = false;
-			var _iteratorError = undefined;
+			attemptsByAssessment.forEach(function (assessmentItem) {
+				var assessId = assessmentItem.assessmentId;
+				var attempts = assessmentItem.attempts;
 
-			try {
-				for (var _iterator = Array.from(history)[Symbol.iterator](), _step; !(_iteratorNormalCompletion = (_step = _iterator.next()).done); _iteratorNormalCompletion = true) {
-					var attempt = _step.value;
+				if (!assessments[assessId]) {
+					assessments[assessId] = getNewAssessmentObject(assessId);
+				} else {
+					assessments[assessId].attempts = [];
+				}
 
-					if (!this.state.assessments[attempt.assessmentId]) {
-						this.state.assessments[attempt.assessmentId] = getNewAssessmentObject(attempt.assessmentId);
+				assessments[assessId].lti = assessmentItem.ltiState;
+
+				attempts.forEach(function (attempt) {
+					assessment = assessments[attempt.assessmentId];
+
+					if (attempt.assessmentScore !== null) {
+						assessment.score = Math.max(attempt.assessmentScore, assessment.score);
 					}
 
-					if (!attempt.endTime) {
-						// @state.assessments[attempt.assessmentId].current = attempt
+					if (!attempt.isFinished) {
 						unfinishedAttempt = attempt;
 					} else {
-						this.state.assessments[attempt.assessmentId].attempts.push(attempt);
+						assessment.attempts.push(attempt);
 					}
 
-					var _iteratorNormalCompletion3 = true;
-					var _didIteratorError3 = false;
-					var _iteratorError3 = undefined;
-
-					try {
-						for (var _iterator3 = Array.from(attempt.state.questions)[Symbol.iterator](), _step3; !(_iteratorNormalCompletion3 = (_step3 = _iterator3.next()).done); _iteratorNormalCompletion3 = true) {
-							question = _step3.value;
-
-							if (!OboModel.models[question.id]) {
-								nonExistantQuestions.push(question);
-							}
+					attempt.state.questions.forEach(function (question) {
+						if (!OboModel.models[question.id]) {
+							OboModel.create(question);
 						}
-					} catch (err) {
-						_didIteratorError3 = true;
-						_iteratorError3 = err;
-					} finally {
-						try {
-							if (!_iteratorNormalCompletion3 && _iterator3.return) {
-								_iterator3.return();
-							}
-						} finally {
-							if (_didIteratorError3) {
-								throw _iteratorError3;
-							}
-						}
-					}
-				}
-			} catch (err) {
-				_didIteratorError = true;
-				_iteratorError = err;
-			} finally {
-				try {
-					if (!_iteratorNormalCompletion && _iterator.return) {
-						_iterator.return();
-					}
-				} finally {
-					if (_didIteratorError) {
-						throw _iteratorError;
-					}
-				}
-			}
-
-			var _iteratorNormalCompletion2 = true;
-			var _didIteratorError2 = false;
-			var _iteratorError2 = undefined;
-
-			try {
-				for (var _iterator2 = Array.from(nonExistantQuestions)[Symbol.iterator](), _step2; !(_iteratorNormalCompletion2 = (_step2 = _iterator2.next()).done); _iteratorNormalCompletion2 = true) {
-					question = _step2.value;
-
-					OboModel.create(question);
-				}
-			} catch (err) {
-				_didIteratorError2 = true;
-				_iteratorError2 = err;
-			} finally {
-				try {
-					if (!_iteratorNormalCompletion2 && _iterator2.return) {
-						_iterator2.return();
-					}
-				} finally {
-					if (_didIteratorError2) {
-						throw _iteratorError2;
-					}
-				}
-			}
+					});
+				});
+			});
 
 			if (unfinishedAttempt) {
 				return ModalUtil.show(React.createElement(
@@ -1982,7 +1951,7 @@ var AssessmentStore = function (_Store) {
 						null,
 						'It looks like you were in the middle of an attempt. We\'ll resume you where you left off.'
 					)
-				));
+				), true);
 			}
 		}
 	}, {
@@ -2026,28 +1995,28 @@ var AssessmentStore = function (_Store) {
 			var model = OboModel.models[id];
 
 			model.children.at(1).children.reset();
-			var _iteratorNormalCompletion4 = true;
-			var _didIteratorError4 = false;
-			var _iteratorError4 = undefined;
+			var _iteratorNormalCompletion = true;
+			var _didIteratorError = false;
+			var _iteratorError = undefined;
 
 			try {
-				for (var _iterator4 = Array.from(startAttemptResp.state.questions)[Symbol.iterator](), _step4; !(_iteratorNormalCompletion4 = (_step4 = _iterator4.next()).done); _iteratorNormalCompletion4 = true) {
-					var child = _step4.value;
+				for (var _iterator = Array.from(startAttemptResp.state.questions)[Symbol.iterator](), _step; !(_iteratorNormalCompletion = (_step = _iterator.next()).done); _iteratorNormalCompletion = true) {
+					var child = _step.value;
 
 					var c = OboModel.create(child);
 					model.children.at(1).children.add(c);
 				}
 			} catch (err) {
-				_didIteratorError4 = true;
-				_iteratorError4 = err;
+				_didIteratorError = true;
+				_iteratorError = err;
 			} finally {
 				try {
-					if (!_iteratorNormalCompletion4 && _iterator4.return) {
-						_iterator4.return();
+					if (!_iteratorNormalCompletion && _iterator.return) {
+						_iterator.return();
 					}
 				} finally {
-					if (_didIteratorError4) {
-						throw _iteratorError4;
+					if (_didIteratorError) {
+						throw _iteratorError;
 					}
 				}
 			}
@@ -2086,9 +2055,9 @@ var AssessmentStore = function (_Store) {
 	}, {
 		key: 'endAttempt',
 		value: function endAttempt(endAttemptResp) {
-			var id = endAttemptResp.assessmentId;
-			var assessment = this.state.assessments[id];
-			var model = OboModel.models[id];
+			var assessId = endAttemptResp.assessmentId;
+			var assessment = this.state.assessments[assessId];
+			var model = OboModel.models[assessId];
 
 			assessment.current.state.questions.forEach(function (question) {
 				return _questionUtil2.default.hideQuestion(question.id);
@@ -2096,16 +2065,54 @@ var AssessmentStore = function (_Store) {
 			assessment.currentResponses.forEach(function (questionId) {
 				return _questionUtil2.default.clearResponse(questionId);
 			});
-			assessment.attempts.push(endAttemptResp);
 			assessment.current = null;
 
+			this.updateAttempts([endAttemptResp]);
+
 			model.processTrigger('onEndAttempt');
-			Dispatcher.trigger('assessment:attemptEnded', id);
+			Dispatcher.trigger('assessment:attemptEnded', assessId);
+		}
+	}, {
+		key: 'tryResendLTIScore',
+		value: function tryResendLTIScore(assessmentId) {
+			var _this4 = this;
+
+			var assessmentModel = OboModel.models[assessmentId];
+			var assessment = _assessmentUtil2.default.getAssessmentForModel(this.state, assessmentModel);
+
+			assessment.ltiNetworkState = _ltiNetworkStates2.default.AWAITING_SEND_ASSESSMENT_SCORE_RESPONSE;
+			this.triggerChange();
+
+			return _apiUtil2.default.resendLTIAssessmentScore(assessmentModel.getRoot(), assessmentModel).then(function (res) {
+				assessment.ltiNetworkState = _ltiNetworkStates2.default.IDLE;
+
+				if (res.status === 'error') {
+					return ErrorUtil.errorResponse(res);
+				}
+
+				_this4.updateLTIScore(_assessmentUtil2.default.getAssessmentForModel(_this4.state, assessmentModel), res.value);
+				return _this4.triggerChange();
+			}).catch(function (e) {
+				console.error(e);
+			});
+		}
+	}, {
+		key: 'updateLTIScore',
+		value: function updateLTIScore(assessment, updateLTIScoreResp) {
+			assessment.lti = updateLTIScoreResp;
+
+			var assessmentModel = OboModel.models[assessment.id];
+			if (_assessmentUtil2.default.isLTIScoreNeedingToBeResynced(this.state, assessmentModel)) {
+				assessment.ltiErrorCount++;
+			} else {
+				assessment.ltiErrorCount = 0;
+			}
+			// Dispatcher.trigger('assessment:ltiScore')
 		}
 	}, {
 		key: 'trySetResponse',
 		value: function trySetResponse(questionId, response, targetId) {
-			var _this4 = this;
+			var _this5 = this;
 
 			var model = OboModel.models[questionId];
 			var assessment = _assessmentUtil2.default.getAssessmentForModel(this.state, model);
@@ -2127,7 +2134,7 @@ var AssessmentStore = function (_Store) {
 				if (res.status === 'error') {
 					return ErrorUtil.errorResponse(res);
 				}
-				_this4.triggerChange();
+				_this5.triggerChange();
 			});
 		}
 	}, {
@@ -2150,6 +2157,22 @@ exports.default = assessmentStore;
 
 /***/ }),
 /* 17 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+Object.defineProperty(exports, "__esModule", {
+	value: true
+});
+exports.default = {
+	IDLE: 'idle',
+	AWAITING_SEND_ASSESSMENT_SCORE_RESPONSE: 'awaitingSendAssessmentScoreResponse'
+	//AWAITING_READ_RESULT_RESPONSE: 'awaitingReadResultResponse'
+};
+
+/***/ }),
+/* 18 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -2342,7 +2365,7 @@ var questionStore = new QuestionStore();
 exports.default = questionStore;
 
 /***/ }),
-/* 18 */
+/* 19 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -2451,7 +2474,7 @@ var scoreStore = new ScoreStore();
 exports.default = scoreStore;
 
 /***/ }),
-/* 19 */
+/* 20 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -2504,19 +2527,15 @@ var AssessmentUtil = {
 			return 0;
 		}
 
-		return assessment.attempts[assessment.attempts.length - 1].result.attemptScore;
+		return assessment.attempts[assessment.attempts.length - 1].attemptScore;
 	},
-	getHighestAttemptScoreForModel: function getHighestAttemptScoreForModel(state, model) {
+	getAssessmentScoreForModel: function getAssessmentScoreForModel(state, model) {
 		var assessment = AssessmentUtil.getAssessmentForModel(state, model);
 		if (!assessment) {
 			return null;
 		}
 
-		return assessment.attempts.map(function (attempt) {
-			return attempt.result.attemptScore;
-		}).reduce(function (a, b) {
-			return Math.max(a, b);
-		}, 0);
+		return assessment.score;
 	},
 	getLastAttemptScoresForModel: function getLastAttemptScoresForModel(state, model) {
 		var assessment = AssessmentUtil.getAssessmentForModel(state, model);
@@ -2528,7 +2547,7 @@ var AssessmentUtil = {
 			return [];
 		}
 
-		return assessment.attempts[assessment.attempts.length - 1].result.scores;
+		return assessment.attempts[assessment.attempts.length - 1].questionScores;
 	},
 	getCurrentAttemptForModel: function getCurrentAttemptForModel(state, model) {
 		var assessment = AssessmentUtil.getAssessmentForModel(state, model);
@@ -2538,15 +2557,35 @@ var AssessmentUtil = {
 
 		return assessment.current;
 	},
+	getLTIStateForModel: function getLTIStateForModel(state, model) {
+		var assessment = AssessmentUtil.getAssessmentForModel(state, model);
+		if (!assessment) {
+			return null;
+		}
 
+		return {
+			state: assessment.lti,
+			networkState: assessment.ltiNetworkState,
+			errorCount: assessment.ltiErrorCount
+		};
+	},
+	isLTIScoreNeedingToBeResynced: function isLTIScoreNeedingToBeResynced(state, model) {
+		var assessment = AssessmentUtil.getAssessmentForModel(state, model);
 
-	// getLastAttemptForModel(state, model) {
-	// 	let assessment = AssessmentUtil.getAssessmentForModel(state, model);
-	// 	if (!assessment || (assessment.attempts.length === 0)) { return null; }
+		if (!assessment || !assessment.lti || !assessment.lti.gradebookStatus) {
+			return false;
+		}
 
-	// 	return assessment.attempts[assessment.attempts.length - 1];
-	// },
+		switch (assessment.lti.gradebookStatus) {
+			case 'ok_no_outcome_service':
+			case 'ok_gradebook_matches_assessment_score':
+			case 'ok_null_score_not_sent':
+				return false;
 
+			default:
+				return true;
+		}
+	},
 	isCurrentAttemptComplete: function isCurrentAttemptComplete(assessmentState, questionState, model) {
 		var current = AssessmentUtil.getCurrentAttemptForModel(assessmentState, model);
 		if (!current) {
@@ -2557,6 +2596,15 @@ var AssessmentUtil = {
 			var resp = _questionUtil2.default.getResponse(questionState, questionModel);
 			return resp;
 		}).length === models.length;
+	},
+	isInAssessment: function isInAssessment(state) {
+		for (var assessmentName in state.assessments) {
+			if (state.assessments[assessmentName].current !== null) {
+				return true;
+			}
+		}
+
+		return false;
 	},
 	getNumberOfAttemptsCompletedForModel: function getNumberOfAttemptsCompletedForModel(state, model) {
 		var assessment = AssessmentUtil.getAssessmentForModel(state, model);
@@ -2579,19 +2627,50 @@ var AssessmentUtil = {
 				id: model.get('id')
 			}
 		});
+	},
+	resendLTIScore: function resendLTIScore(model) {
+		return Dispatcher.trigger('assessment:resendLTIScore', {
+			value: {
+				id: model.get('id')
+			}
+		});
 	}
 };
 
 exports.default = AssessmentUtil;
 
 /***/ }),
-/* 20 */
+/* 21 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+Object.defineProperty(exports, "__esModule", {
+	value: true
+});
+
+exports.default = function (url) {
+	var hostname = (0, _urlParse2.default)(url || '', {}).hostname;
+
+	if (hostname === '' || !hostname) return 'the external system';
+	return hostname;
+};
+
+var _urlParse = __webpack_require__(46);
+
+var _urlParse2 = _interopRequireDefault(_urlParse);
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+/***/ }),
+/* 22 */
 /***/ (function(module, exports) {
 
 module.exports = React;
 
 /***/ }),
-/* 21 */
+/* 23 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -3056,13 +3135,13 @@ module.exports = React;
 })(typeof self !== 'undefined' ? self : undefined);
 
 /***/ }),
-/* 22 */
+/* 24 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
 
 
-var _index = __webpack_require__(45);
+var _index = __webpack_require__(51);
 
 var _index2 = _interopRequireDefault(_index);
 
@@ -3071,13 +3150,13 @@ function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { de
 window.Viewer = _index2.default;
 
 /***/ }),
-/* 23 */
+/* 25 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
 
 
-var startOfDay = __webpack_require__(32);
+var startOfDay = __webpack_require__(34);
 
 var MILLISECONDS_IN_MINUTE = 60000;
 var MILLISECONDS_IN_DAY = 86400000;
@@ -3118,18 +3197,18 @@ function differenceInCalendarDays(dirtyDateLeft, dirtyDateRight) {
 module.exports = differenceInCalendarDays;
 
 /***/ }),
-/* 24 */
+/* 26 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
 
 
-var getDayOfYear = __webpack_require__(25);
-var getISOWeek = __webpack_require__(26);
+var getDayOfYear = __webpack_require__(27);
+var getISOWeek = __webpack_require__(28);
 var getISOYear = __webpack_require__(12);
 var parse = __webpack_require__(1);
-var isValid = __webpack_require__(27);
-var enLocale = __webpack_require__(31);
+var isValid = __webpack_require__(29);
+var enLocale = __webpack_require__(33);
 
 /**
  * @category Common Helpers
@@ -3454,15 +3533,15 @@ function addLeadingZeros(number, targetLength) {
 module.exports = format;
 
 /***/ }),
-/* 25 */
+/* 27 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
 
 
 var parse = __webpack_require__(1);
-var startOfYear = __webpack_require__(35);
-var differenceInCalendarDays = __webpack_require__(23);
+var startOfYear = __webpack_require__(37);
+var differenceInCalendarDays = __webpack_require__(25);
 
 /**
  * @category Day Helpers
@@ -3489,7 +3568,7 @@ function getDayOfYear(dirtyDate) {
 module.exports = getDayOfYear;
 
 /***/ }),
-/* 26 */
+/* 28 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -3497,7 +3576,7 @@ module.exports = getDayOfYear;
 
 var parse = __webpack_require__(1);
 var startOfISOWeek = __webpack_require__(6);
-var startOfISOYear = __webpack_require__(33);
+var startOfISOYear = __webpack_require__(35);
 
 var MILLISECONDS_IN_WEEK = 604800000;
 
@@ -3531,7 +3610,7 @@ function getISOWeek(dirtyDate) {
 module.exports = getISOWeek;
 
 /***/ }),
-/* 27 */
+/* 29 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -3574,7 +3653,7 @@ function isValid(dirtyDate) {
 module.exports = isValid;
 
 /***/ }),
-/* 28 */
+/* 30 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -3599,7 +3678,7 @@ function buildFormattingTokensRegExp(formatters) {
 module.exports = buildFormattingTokensRegExp;
 
 /***/ }),
-/* 29 */
+/* 31 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -3706,13 +3785,13 @@ function buildDistanceInWordsLocale() {
 module.exports = buildDistanceInWordsLocale;
 
 /***/ }),
-/* 30 */
+/* 32 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
 
 
-var buildFormattingTokensRegExp = __webpack_require__(28);
+var buildFormattingTokensRegExp = __webpack_require__(30);
 
 function buildFormatLocale() {
   // Note: in English, the names of days of the week and months are capitalized.
@@ -3801,14 +3880,14 @@ function ordinal(number) {
 module.exports = buildFormatLocale;
 
 /***/ }),
-/* 31 */
+/* 33 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
 
 
-var buildDistanceInWordsLocale = __webpack_require__(29);
-var buildFormatLocale = __webpack_require__(30);
+var buildDistanceInWordsLocale = __webpack_require__(31);
+var buildFormatLocale = __webpack_require__(32);
 
 /**
  * @category Locales
@@ -3820,7 +3899,7 @@ module.exports = {
 };
 
 /***/ }),
-/* 32 */
+/* 34 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -3853,7 +3932,7 @@ function startOfDay(dirtyDate) {
 module.exports = startOfDay;
 
 /***/ }),
-/* 33 */
+/* 35 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -3893,7 +3972,7 @@ function startOfISOYear(dirtyDate) {
 module.exports = startOfISOYear;
 
 /***/ }),
-/* 34 */
+/* 36 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -3939,7 +4018,7 @@ function startOfWeek(dirtyDate, dirtyOptions) {
 module.exports = startOfWeek;
 
 /***/ }),
-/* 35 */
+/* 37 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -3974,7 +4053,7 @@ function startOfYear(dirtyDate) {
 module.exports = startOfYear;
 
 /***/ }),
-/* 36 */
+/* 38 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -4070,7 +4149,7 @@ module.exports = shouldUseNative() ? Object.assign : function (target, source) {
 };
 
 /***/ }),
-/* 37 */
+/* 39 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -4086,9 +4165,9 @@ module.exports = shouldUseNative() ? Object.assign : function (target, source) {
 var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol" ? function (obj) { return typeof obj; } : function (obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; };
 
 if (process.env.NODE_ENV !== 'production') {
-  var invariant = __webpack_require__(8);
+  var invariant = __webpack_require__(9);
   var warning = __webpack_require__(14);
-  var ReactPropTypesSecret = __webpack_require__(9);
+  var ReactPropTypesSecret = __webpack_require__(7);
   var loggedTypeFailures = {};
 }
 
@@ -4138,7 +4217,7 @@ module.exports = checkPropTypes;
 /* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(4)))
 
 /***/ }),
-/* 38 */
+/* 40 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -4151,9 +4230,9 @@ module.exports = checkPropTypes;
 
 
 
-var emptyFunction = __webpack_require__(7);
-var invariant = __webpack_require__(8);
-var ReactPropTypesSecret = __webpack_require__(9);
+var emptyFunction = __webpack_require__(8);
+var invariant = __webpack_require__(9);
+var ReactPropTypesSecret = __webpack_require__(7);
 
 module.exports = function () {
   function shim(props, propName, componentName, location, propFullName, secret) {
@@ -4197,7 +4276,7 @@ module.exports = function () {
 };
 
 /***/ }),
-/* 39 */
+/* 41 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -4212,13 +4291,13 @@ module.exports = function () {
 
 var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol" ? function (obj) { return typeof obj; } : function (obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; };
 
-var emptyFunction = __webpack_require__(7);
-var invariant = __webpack_require__(8);
+var emptyFunction = __webpack_require__(8);
+var invariant = __webpack_require__(9);
 var warning = __webpack_require__(14);
-var assign = __webpack_require__(36);
+var assign = __webpack_require__(38);
 
-var ReactPropTypesSecret = __webpack_require__(9);
-var checkPropTypes = __webpack_require__(37);
+var ReactPropTypesSecret = __webpack_require__(7);
+var checkPropTypes = __webpack_require__(39);
 
 module.exports = function (isValidElement, throwOnDirectAccess) {
   /* global Symbol */
@@ -4722,7 +4801,7 @@ module.exports = function (isValidElement, throwOnDirectAccess) {
 /* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(4)))
 
 /***/ }),
-/* 40 */
+/* 42 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -4747,16 +4826,91 @@ if (process.env.NODE_ENV !== 'production') {
   // By explicitly using `prop-types` you are opting into new development behavior.
   // http://fb.me/prop-types-in-prod
   var throwOnDirectAccess = true;
-  module.exports = __webpack_require__(39)(isValidElement, throwOnDirectAccess);
+  module.exports = __webpack_require__(41)(isValidElement, throwOnDirectAccess);
 } else {
   // By explicitly using `prop-types` you are opting into new production behavior.
   // http://fb.me/prop-types-in-prod
-  module.exports = __webpack_require__(38)();
+  module.exports = __webpack_require__(40)();
 }
 /* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(4)))
 
 /***/ }),
-/* 41 */
+/* 43 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+var has = Object.prototype.hasOwnProperty;
+
+/**
+ * Decode a URI encoded string.
+ *
+ * @param {String} input The URI encoded string.
+ * @returns {String} The decoded string.
+ * @api private
+ */
+function decode(input) {
+  return decodeURIComponent(input.replace(/\+/g, ' '));
+}
+
+/**
+ * Simple query string parser.
+ *
+ * @param {String} query The query string that needs to be parsed.
+ * @returns {Object}
+ * @api public
+ */
+function querystring(query) {
+  var parser = /([^=?&]+)=?([^&]*)/g,
+      result = {},
+      part;
+
+  //
+  // Little nifty parsing hack, leverage the fact that RegExp.exec increments
+  // the lastIndex property so we can continue executing this loop until we've
+  // parsed all results.
+  //
+  for (; part = parser.exec(query); result[decode(part[1])] = decode(part[2])) {}
+
+  return result;
+}
+
+/**
+ * Transform a query string to an object.
+ *
+ * @param {Object} obj Object that should be transformed.
+ * @param {String} prefix Optional prefix.
+ * @returns {String}
+ * @api public
+ */
+function querystringify(obj, prefix) {
+  prefix = prefix || '';
+
+  var pairs = [];
+
+  //
+  // Optionally prefix with a '?' if needed
+  //
+  if ('string' !== typeof prefix) prefix = '?';
+
+  for (var key in obj) {
+    if (has.call(obj, key)) {
+      pairs.push(encodeURIComponent(key) + '=' + encodeURIComponent(obj[key]));
+    }
+  }
+
+  return pairs.length ? prefix + pairs.join('&') : '';
+}
+
+//
+// Expose the module.
+//
+exports.stringify = querystringify;
+exports.parse = querystring;
+
+/***/ }),
+/* 44 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -4784,15 +4938,15 @@ Object.defineProperty(exports, "__esModule", {
   value: true
 });
 
-var _react = __webpack_require__(20);
+var _react = __webpack_require__(22);
 
 var _react2 = _interopRequireDefault(_react);
 
-var _propTypes = __webpack_require__(40);
+var _propTypes = __webpack_require__(42);
 
 var _propTypes2 = _interopRequireDefault(_propTypes);
 
-var _format = __webpack_require__(24);
+var _format = __webpack_require__(26);
 
 var _format2 = _interopRequireDefault(_format);
 
@@ -5124,7 +5278,498 @@ IdleTimer.defaultProps = {
 exports.default = IdleTimer;
 
 /***/ }),
-/* 42 */
+/* 45 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+/**
+ * Check if we're required to add a port number.
+ *
+ * @see https://url.spec.whatwg.org/#default-port
+ * @param {Number|String} port Port number we need to check
+ * @param {String} protocol Protocol we need to check against.
+ * @returns {Boolean} Is it a default port for the given protocol
+ * @api private
+ */
+
+module.exports = function required(port, protocol) {
+  protocol = protocol.split(':')[0];
+  port = +port;
+
+  if (!port) return false;
+
+  switch (protocol) {
+    case 'http':
+    case 'ws':
+      return port !== 80;
+
+    case 'https':
+    case 'wss':
+      return port !== 443;
+
+    case 'ftp':
+      return port !== 21;
+
+    case 'gopher':
+      return port !== 70;
+
+    case 'file':
+      return false;
+  }
+
+  return port !== 0;
+};
+
+/***/ }),
+/* 46 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+/* WEBPACK VAR INJECTION */(function(global) {
+
+var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol" ? function (obj) { return typeof obj; } : function (obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; };
+
+var required = __webpack_require__(45),
+    qs = __webpack_require__(43),
+    protocolre = /^([a-z][a-z0-9.+-]*:)?(\/\/)?([\S\s]*)/i,
+    slashes = /^[A-Za-z][A-Za-z0-9+-.]*:\/\//;
+
+/**
+ * These are the parse rules for the URL parser, it informs the parser
+ * about:
+ *
+ * 0. The char it Needs to parse, if it's a string it should be done using
+ *    indexOf, RegExp using exec and NaN means set as current value.
+ * 1. The property we should set when parsing this value.
+ * 2. Indication if it's backwards or forward parsing, when set as number it's
+ *    the value of extra chars that should be split off.
+ * 3. Inherit from location if non existing in the parser.
+ * 4. `toLowerCase` the resulting value.
+ */
+var rules = [['#', 'hash'], // Extract from the back.
+['?', 'query'], // Extract from the back.
+['/', 'pathname'], // Extract from the back.
+['@', 'auth', 1], // Extract from the front.
+[NaN, 'host', undefined, 1, 1], // Set left over value.
+[/:(\d+)$/, 'port', undefined, 1], // RegExp the back.
+[NaN, 'hostname', undefined, 1, 1] // Set left over.
+];
+
+/**
+ * These properties should not be copied or inherited from. This is only needed
+ * for all non blob URL's as a blob URL does not include a hash, only the
+ * origin.
+ *
+ * @type {Object}
+ * @private
+ */
+var ignore = { hash: 1, query: 1 };
+
+/**
+ * The location object differs when your code is loaded through a normal page,
+ * Worker or through a worker using a blob. And with the blobble begins the
+ * trouble as the location object will contain the URL of the blob, not the
+ * location of the page where our code is loaded in. The actual origin is
+ * encoded in the `pathname` so we can thankfully generate a good "default"
+ * location from it so we can generate proper relative URL's again.
+ *
+ * @param {Object|String} loc Optional default location object.
+ * @returns {Object} lolcation object.
+ * @api public
+ */
+function lolcation(loc) {
+  loc = loc || global.location || {};
+
+  var finaldestination = {},
+      type = typeof loc === 'undefined' ? 'undefined' : _typeof(loc),
+      key;
+
+  if ('blob:' === loc.protocol) {
+    finaldestination = new URL(unescape(loc.pathname), {});
+  } else if ('string' === type) {
+    finaldestination = new URL(loc, {});
+    for (key in ignore) {
+      delete finaldestination[key];
+    }
+  } else if ('object' === type) {
+    for (key in loc) {
+      if (key in ignore) continue;
+      finaldestination[key] = loc[key];
+    }
+
+    if (finaldestination.slashes === undefined) {
+      finaldestination.slashes = slashes.test(loc.href);
+    }
+  }
+
+  return finaldestination;
+}
+
+/**
+ * @typedef ProtocolExtract
+ * @type Object
+ * @property {String} protocol Protocol matched in the URL, in lowercase.
+ * @property {Boolean} slashes `true` if protocol is followed by "//", else `false`.
+ * @property {String} rest Rest of the URL that is not part of the protocol.
+ */
+
+/**
+ * Extract protocol information from a URL with/without double slash ("//").
+ *
+ * @param {String} address URL we want to extract from.
+ * @return {ProtocolExtract} Extracted information.
+ * @api private
+ */
+function extractProtocol(address) {
+  var match = protocolre.exec(address);
+
+  return {
+    protocol: match[1] ? match[1].toLowerCase() : '',
+    slashes: !!match[2],
+    rest: match[3]
+  };
+}
+
+/**
+ * Resolve a relative URL pathname against a base URL pathname.
+ *
+ * @param {String} relative Pathname of the relative URL.
+ * @param {String} base Pathname of the base URL.
+ * @return {String} Resolved pathname.
+ * @api private
+ */
+function resolve(relative, base) {
+  var path = (base || '/').split('/').slice(0, -1).concat(relative.split('/')),
+      i = path.length,
+      last = path[i - 1],
+      unshift = false,
+      up = 0;
+
+  while (i--) {
+    if (path[i] === '.') {
+      path.splice(i, 1);
+    } else if (path[i] === '..') {
+      path.splice(i, 1);
+      up++;
+    } else if (up) {
+      if (i === 0) unshift = true;
+      path.splice(i, 1);
+      up--;
+    }
+  }
+
+  if (unshift) path.unshift('');
+  if (last === '.' || last === '..') path.push('');
+
+  return path.join('/');
+}
+
+/**
+ * The actual URL instance. Instead of returning an object we've opted-in to
+ * create an actual constructor as it's much more memory efficient and
+ * faster and it pleases my OCD.
+ *
+ * @constructor
+ * @param {String} address URL we want to parse.
+ * @param {Object|String} location Location defaults for relative paths.
+ * @param {Boolean|Function} parser Parser for the query string.
+ * @api public
+ */
+function URL(address, location, parser) {
+  if (!(this instanceof URL)) {
+    return new URL(address, location, parser);
+  }
+
+  var relative,
+      extracted,
+      parse,
+      instruction,
+      index,
+      key,
+      instructions = rules.slice(),
+      type = typeof location === 'undefined' ? 'undefined' : _typeof(location),
+      url = this,
+      i = 0;
+
+  //
+  // The following if statements allows this module two have compatibility with
+  // 2 different API:
+  //
+  // 1. Node.js's `url.parse` api which accepts a URL, boolean as arguments
+  //    where the boolean indicates that the query string should also be parsed.
+  //
+  // 2. The `URL` interface of the browser which accepts a URL, object as
+  //    arguments. The supplied object will be used as default values / fall-back
+  //    for relative paths.
+  //
+  if ('object' !== type && 'string' !== type) {
+    parser = location;
+    location = null;
+  }
+
+  if (parser && 'function' !== typeof parser) parser = qs.parse;
+
+  location = lolcation(location);
+
+  //
+  // Extract protocol information before running the instructions.
+  //
+  extracted = extractProtocol(address || '');
+  relative = !extracted.protocol && !extracted.slashes;
+  url.slashes = extracted.slashes || relative && location.slashes;
+  url.protocol = extracted.protocol || location.protocol || '';
+  address = extracted.rest;
+
+  //
+  // When the authority component is absent the URL starts with a path
+  // component.
+  //
+  if (!extracted.slashes) instructions[2] = [/(.*)/, 'pathname'];
+
+  for (; i < instructions.length; i++) {
+    instruction = instructions[i];
+    parse = instruction[0];
+    key = instruction[1];
+
+    if (parse !== parse) {
+      url[key] = address;
+    } else if ('string' === typeof parse) {
+      if (~(index = address.indexOf(parse))) {
+        if ('number' === typeof instruction[2]) {
+          url[key] = address.slice(0, index);
+          address = address.slice(index + instruction[2]);
+        } else {
+          url[key] = address.slice(index);
+          address = address.slice(0, index);
+        }
+      }
+    } else if (index = parse.exec(address)) {
+      url[key] = index[1];
+      address = address.slice(0, index.index);
+    }
+
+    url[key] = url[key] || (relative && instruction[3] ? location[key] || '' : '');
+
+    //
+    // Hostname, host and protocol should be lowercased so they can be used to
+    // create a proper `origin`.
+    //
+    if (instruction[4]) url[key] = url[key].toLowerCase();
+  }
+
+  //
+  // Also parse the supplied query string in to an object. If we're supplied
+  // with a custom parser as function use that instead of the default build-in
+  // parser.
+  //
+  if (parser) url.query = parser(url.query);
+
+  //
+  // If the URL is relative, resolve the pathname against the base URL.
+  //
+  if (relative && location.slashes && url.pathname.charAt(0) !== '/' && (url.pathname !== '' || location.pathname !== '')) {
+    url.pathname = resolve(url.pathname, location.pathname);
+  }
+
+  //
+  // We should not add port numbers if they are already the default port number
+  // for a given protocol. As the host also contains the port number we're going
+  // override it with the hostname which contains no port number.
+  //
+  if (!required(url.port, url.protocol)) {
+    url.host = url.hostname;
+    url.port = '';
+  }
+
+  //
+  // Parse down the `auth` for the username and password.
+  //
+  url.username = url.password = '';
+  if (url.auth) {
+    instruction = url.auth.split(':');
+    url.username = instruction[0] || '';
+    url.password = instruction[1] || '';
+  }
+
+  url.origin = url.protocol && url.host && url.protocol !== 'file:' ? url.protocol + '//' + url.host : 'null';
+
+  //
+  // The href is just the compiled result.
+  //
+  url.href = url.toString();
+}
+
+/**
+ * This is convenience method for changing properties in the URL instance to
+ * insure that they all propagate correctly.
+ *
+ * @param {String} part          Property we need to adjust.
+ * @param {Mixed} value          The newly assigned value.
+ * @param {Boolean|Function} fn  When setting the query, it will be the function
+ *                               used to parse the query.
+ *                               When setting the protocol, double slash will be
+ *                               removed from the final url if it is true.
+ * @returns {URL}
+ * @api public
+ */
+function set(part, value, fn) {
+  var url = this;
+
+  switch (part) {
+    case 'query':
+      if ('string' === typeof value && value.length) {
+        value = (fn || qs.parse)(value);
+      }
+
+      url[part] = value;
+      break;
+
+    case 'port':
+      url[part] = value;
+
+      if (!required(value, url.protocol)) {
+        url.host = url.hostname;
+        url[part] = '';
+      } else if (value) {
+        url.host = url.hostname + ':' + value;
+      }
+
+      break;
+
+    case 'hostname':
+      url[part] = value;
+
+      if (url.port) value += ':' + url.port;
+      url.host = value;
+      break;
+
+    case 'host':
+      url[part] = value;
+
+      if (/:\d+$/.test(value)) {
+        value = value.split(':');
+        url.port = value.pop();
+        url.hostname = value.join(':');
+      } else {
+        url.hostname = value;
+        url.port = '';
+      }
+
+      break;
+
+    case 'protocol':
+      url.protocol = value.toLowerCase();
+      url.slashes = !fn;
+      break;
+
+    case 'pathname':
+    case 'hash':
+      if (value) {
+        var char = part === 'pathname' ? '/' : '#';
+        url[part] = value.charAt(0) !== char ? char + value : value;
+      } else {
+        url[part] = value;
+      }
+      break;
+
+    default:
+      url[part] = value;
+  }
+
+  for (var i = 0; i < rules.length; i++) {
+    var ins = rules[i];
+
+    if (ins[4]) url[ins[1]] = url[ins[1]].toLowerCase();
+  }
+
+  url.origin = url.protocol && url.host && url.protocol !== 'file:' ? url.protocol + '//' + url.host : 'null';
+
+  url.href = url.toString();
+
+  return url;
+}
+
+/**
+ * Transform the properties back in to a valid and full URL string.
+ *
+ * @param {Function} stringify Optional query stringify function.
+ * @returns {String}
+ * @api public
+ */
+function toString(stringify) {
+  if (!stringify || 'function' !== typeof stringify) stringify = qs.stringify;
+
+  var query,
+      url = this,
+      protocol = url.protocol;
+
+  if (protocol && protocol.charAt(protocol.length - 1) !== ':') protocol += ':';
+
+  var result = protocol + (url.slashes ? '//' : '');
+
+  if (url.username) {
+    result += url.username;
+    if (url.password) result += ':' + url.password;
+    result += '@';
+  }
+
+  result += url.host + url.pathname;
+
+  query = 'object' === _typeof(url.query) ? stringify(url.query) : url.query;
+  if (query) result += '?' !== query.charAt(0) ? '?' + query : query;
+
+  if (url.hash) result += url.hash;
+
+  return result;
+}
+
+URL.prototype = { set: set, toString: toString };
+
+//
+// Expose the URL parser and some additional properties that might be useful for
+// others or testing.
+//
+URL.extractProtocol = extractProtocol;
+URL.location = lolcation;
+URL.qs = qs;
+
+module.exports = URL;
+/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(47)))
+
+/***/ }),
+/* 47 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol" ? function (obj) { return typeof obj; } : function (obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; };
+
+var g;
+
+// This works in non-strict mode
+g = function () {
+	return this;
+}();
+
+try {
+	// This works if eval is allowed (see CSP)
+	g = g || Function("return this")() || (1, eval)("this");
+} catch (e) {
+	// This works if the window reference is available
+	if ((typeof window === "undefined" ? "undefined" : _typeof(window)) === "object") g = window;
+}
+
+// g can still be undefined, but nothing to do about it...
+// We return undefined, instead of nothing here, so it's
+// easier to handle this case. if(!global) { ...}
+
+module.exports = g;
+
+/***/ }),
+/* 48 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -5136,7 +5781,7 @@ Object.defineProperty(exports, "__esModule", {
 
 var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
 
-__webpack_require__(46);
+__webpack_require__(52);
 
 var _navUtil = __webpack_require__(2);
 
@@ -5194,7 +5839,7 @@ var InlineNavButton = function (_React$Component) {
 exports.default = InlineNavButton;
 
 /***/ }),
-/* 43 */
+/* 49 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -5206,7 +5851,7 @@ Object.defineProperty(exports, "__esModule", {
 
 var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
 
-__webpack_require__(48);
+__webpack_require__(54);
 
 var _navStore = __webpack_require__(10);
 
@@ -5220,15 +5865,15 @@ var _logo = __webpack_require__(15);
 
 var _logo2 = _interopRequireDefault(_logo);
 
-var _hamburger = __webpack_require__(52);
+var _hamburger = __webpack_require__(58);
 
 var _hamburger2 = _interopRequireDefault(_hamburger);
 
-var _arrow = __webpack_require__(51);
+var _arrow = __webpack_require__(57);
 
 var _arrow2 = _interopRequireDefault(_arrow);
 
-var _lockIcon = __webpack_require__(53);
+var _lockIcon = __webpack_require__(59);
 
 var _lockIcon2 = _interopRequireDefault(_lockIcon);
 
@@ -5415,7 +6060,7 @@ var Nav = function (_React$Component) {
 exports.default = Nav;
 
 /***/ }),
-/* 44 */
+/* 50 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -5427,23 +6072,23 @@ Object.defineProperty(exports, "__esModule", {
 
 var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
 
-__webpack_require__(50);
+__webpack_require__(56);
 
-__webpack_require__(49);
+__webpack_require__(55);
 
 var _Common = __webpack_require__(0);
 
 var _Common2 = _interopRequireDefault(_Common);
 
-var _react = __webpack_require__(20);
+var _react = __webpack_require__(22);
 
 var _react2 = _interopRequireDefault(_react);
 
-var _reactIdleTimer = __webpack_require__(41);
+var _reactIdleTimer = __webpack_require__(44);
 
 var _reactIdleTimer2 = _interopRequireDefault(_reactIdleTimer);
 
-var _inlineNavButton = __webpack_require__(42);
+var _inlineNavButton = __webpack_require__(48);
 
 var _inlineNavButton2 = _interopRequireDefault(_inlineNavButton);
 
@@ -5459,11 +6104,11 @@ var _logo = __webpack_require__(15);
 
 var _logo2 = _interopRequireDefault(_logo);
 
-var _scoreStore = __webpack_require__(18);
+var _scoreStore = __webpack_require__(19);
 
 var _scoreStore2 = _interopRequireDefault(_scoreStore);
 
-var _questionStore = __webpack_require__(17);
+var _questionStore = __webpack_require__(18);
 
 var _questionStore2 = _interopRequireDefault(_questionStore);
 
@@ -5475,9 +6120,13 @@ var _navStore = __webpack_require__(10);
 
 var _navStore2 = _interopRequireDefault(_navStore);
 
-var _nav = __webpack_require__(43);
+var _nav = __webpack_require__(49);
 
 var _nav2 = _interopRequireDefault(_nav);
+
+var _getLtiOutcomeServiceHostname = __webpack_require__(21);
+
+var _getLtiOutcomeServiceHostname2 = _interopRequireDefault(_getLtiOutcomeServiceHostname);
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
@@ -5501,7 +6150,6 @@ var FocusBlocker = _Common2.default.components.FocusBlocker;
 var ModalStore = _Common2.default.stores.ModalStore;
 var FocusStore = _Common2.default.stores.FocusStore;
 var FocusUtil = _Common2.default.util.FocusUtil;
-var OboGlobals = _Common2.default.util.OboGlobals;
 
 // Dispatcher.on 'all', (eventName, payload) -> console.log 'EVENT TRIGGERED', eventName
 
@@ -5532,34 +6180,22 @@ var ViewerApp = function (_React$Component) {
 		Dispatcher.on('viewer:scrollToTop', _this.scrollToTop.bind(_this));
 		Dispatcher.on('getTextForVariable', _this.getTextForVariable.bind(_this));
 
-		_this.isPreviewing = OboGlobals.get('previewing');
-
 		var state = {
-			model: OboModel.create(OboGlobals.get('draft')),
+			model: null,
 			navState: null,
 			scoreState: null,
 			questionState: null,
 			assessmentState: null,
 			modalState: null,
 			focusState: null,
-			navTargetId: null
+			navTargetId: null,
+			loading: true,
+			requestStatus: 'unknown',
+			isPreviewing: false,
+			lti: {
+				outcomeServiceHostname: null
+			}
 		};
-
-		_scoreStore2.default.init();
-		_questionStore2.default.init();
-		ModalStore.init();
-		FocusStore.init();
-
-		_navStore2.default.init(state.model, state.model.modelState.start, window.location.pathname);
-		_assessmentStore2.default.init(OboGlobals.get('ObojoboDraft.Sections.Assessment:attemptHistory', []));
-
-		state.navState = _navStore2.default.getState();
-		state.scoreState = _scoreStore2.default.getState();
-		state.questionState = _questionStore2.default.getState();
-		state.assessmentState = _assessmentStore2.default.getState();
-		state.modalState = ModalStore.getState();
-		state.focusState = FocusStore.getState();
-
 		_this.onNavStoreChange = function () {
 			return _this.setState({ navState: _navStore2.default.getState() });
 		};
@@ -5581,10 +6217,12 @@ var ViewerApp = function (_React$Component) {
 
 		_this.onIdle = _this.onIdle.bind(_this);
 		_this.onReturnFromIdle = _this.onReturnFromIdle.bind(_this);
+		_this.onBeforeWindowClose = _this.onBeforeWindowClose.bind(_this);
 		_this.onWindowClose = _this.onWindowClose.bind(_this);
 		_this.onVisibilityChange = _this.onVisibilityChange.bind(_this);
 
-		window.onbeforeunload = _this.onWindowClose;
+		window.onbeforeunload = _this.onBeforeWindowClose;
+		window.onunload = _this.onWindowClose;
 
 		_this.state = state;
 		return _this;
@@ -5593,7 +6231,59 @@ var ViewerApp = function (_React$Component) {
 	_createClass(ViewerApp, [{
 		key: 'componentDidMount',
 		value: function componentDidMount() {
+			var _this2 = this;
+
 			document.addEventListener('visibilitychange', this.onVisibilityChange);
+
+			var visitIdFromApi = void 0;
+			var attemptHistory = void 0;
+			var isPreviewing = void 0;
+			var outcomeServiceURL = void 0;
+
+			var urlTokens = document.location.pathname.split('/');
+			var visitIdFromUrl = urlTokens[4] ? urlTokens[4] : null;
+			var draftIdFromUrl = urlTokens[2] ? urlTokens[2] : null;
+
+			Dispatcher.trigger('viewer:loading');
+
+			_apiUtil2.default.requestStart(visitIdFromUrl, draftIdFromUrl).then(function (visit) {
+				if (visit.status !== 'ok') throw 'Invalid Visit Id';
+				visitIdFromApi = visit.value.visitId;
+				attemptHistory = visit.value.extensions[':ObojoboDraft.Sections.Assessment:attemptHistory'];
+				isPreviewing = visit.value.isPreviewing;
+				outcomeServiceURL = visit.value.lti.lisOutcomeServiceUrl;
+
+				return _apiUtil2.default.getDraft(draftIdFromUrl);
+			}).then(function (_ref) {
+				var draftModel = _ref.value;
+
+				_this2.state.model = OboModel.create(draftModel);
+
+				_scoreStore2.default.init();
+				_questionStore2.default.init();
+				ModalStore.init();
+				FocusStore.init();
+				_navStore2.default.init(_this2.state.model, _this2.state.model.modelState.start, window.location.pathname, visitIdFromApi);
+				_assessmentStore2.default.init(attemptHistory);
+
+				_this2.state.navState = _navStore2.default.getState();
+				_this2.state.scoreState = _scoreStore2.default.getState();
+				_this2.state.questionState = _questionStore2.default.getState();
+				_this2.state.assessmentState = _assessmentStore2.default.getState();
+				_this2.state.modalState = ModalStore.getState();
+				_this2.state.focusState = FocusStore.getState();
+				_this2.state.lti.outcomeServiceHostname = (0, _getLtiOutcomeServiceHostname2.default)(outcomeServiceURL);
+
+				window.onbeforeunload = _this2.onWindowClose;
+				_this2.setState({ loading: false, requestStatus: 'ok', isPreviewing: isPreviewing }, function () {
+					Dispatcher.trigger('viewer:loaded', true);
+				});
+			}).catch(function (err) {
+				console.log(err);
+				_this2.setState({ loading: false, requestStatus: 'invalid' }, function () {
+					return Dispatcher.trigger('viewer:loaded', false);
+				});
+			});
 		}
 	}, {
 		key: 'componentWillMount',
@@ -5618,50 +6308,52 @@ var ViewerApp = function (_React$Component) {
 
 			document.removeEventListener('visibilitychange', this.onVisibilityChange);
 		}
-
-		// componentDidMount: ->
-		// NavUtil.gotoPath window.location.pathname
-
+	}, {
+		key: 'shouldComponentUpdate',
+		value: function shouldComponentUpdate(nextProps, nextState) {
+			return !nextState.loading;
+		}
 	}, {
 		key: 'componentWillUpdate',
 		value: function componentWillUpdate(nextProps, nextState) {
-			var navTargetId = this.state.navTargetId;
+			if (this.state.requestStatus === 'ok') {
+				var navTargetId = this.state.navTargetId;
+				var nextNavTargetId = this.state.navState.navTargetId;
 
-			var nextNavTargetId = this.state.navState.navTargetId;
-
-			if (navTargetId !== nextNavTargetId) {
-				this.needsScroll = true;
-				return this.setState({ navTargetId: nextNavTargetId });
+				if (navTargetId !== nextNavTargetId) {
+					this.needsScroll = true;
+					return this.setState({ navTargetId: nextNavTargetId });
+				}
 			}
 		}
 	}, {
 		key: 'componentDidUpdate',
 		value: function componentDidUpdate() {
-			// alert 'here, fixme'
-			if (this.lastCanNavigate !== _navUtil2.default.canNavigate(this.state.navState)) {
-				this.needsScroll = true;
-			}
-			this.lastCanNavigate = _navUtil2.default.canNavigate(this.state.navState);
-			if (this.needsScroll != null) {
-				this.scrollToTop();
+			if (this.state.requestStatus === 'ok') {
+				if (this.lastCanNavigate !== _navUtil2.default.canNavigate(this.state.navState)) {
+					this.needsScroll = true;
+				}
+				this.lastCanNavigate = _navUtil2.default.canNavigate(this.state.navState);
+				if (this.needsScroll != null) {
+					this.scrollToTop();
 
-				return delete this.needsScroll;
+					return delete this.needsScroll;
+				}
 			}
 		}
 	}, {
 		key: 'onVisibilityChange',
 		value: function onVisibilityChange(event) {
-			var _this2 = this;
+			var _this3 = this;
 
 			if (document.hidden) {
 				_apiUtil2.default.postEvent(this.state.model, 'viewer:leave', '1.0.0', {}).then(function (res) {
-					_this2.leaveEvent = res.value;
+					_this3.leaveEvent = res.value;
 				});
 			} else {
 				_apiUtil2.default.postEvent(this.state.model, 'viewer:return', '1.0.0', {
 					relatedEventId: this.leaveEvent.id
 				});
-
 				delete this.leaveEvent;
 			}
 		}
@@ -5743,7 +6435,7 @@ var ViewerApp = function (_React$Component) {
 	}, {
 		key: 'onIdle',
 		value: function onIdle() {
-			var _this3 = this;
+			var _this4 = this;
 
 			this.lastActiveEpoch = new Date(this.refs.idleTimer.getLastActiveTime());
 
@@ -5751,7 +6443,7 @@ var ViewerApp = function (_React$Component) {
 				lastActiveTime: this.lastActiveEpoch,
 				inactiveDuration: IDLE_TIMEOUT_DURATION_MS
 			}).then(function (res) {
-				_this3.inactiveEvent = res.value;
+				_this4.inactiveEvent = res.value;
 			});
 		}
 	}, {
@@ -5765,6 +6457,22 @@ var ViewerApp = function (_React$Component) {
 
 			delete this.lastActiveEpoch;
 			delete this.inactiveEvent;
+		}
+	}, {
+		key: 'onBeforeWindowClose',
+		value: function onBeforeWindowClose(e) {
+			var closePrevented = false;
+			var preventClose = function preventClose() {
+				return closePrevented = true;
+			};
+
+			Dispatcher.trigger('viewer:closeAttempted', preventClose);
+
+			if (closePrevented) {
+				return true; // Returning true will cause browser to ask user to confirm leaving page
+			}
+
+			return undefined; // Returning undefined will allow browser to close normally
 		}
 	}, {
 		key: 'onWindowClose',
@@ -5796,6 +6504,21 @@ var ViewerApp = function (_React$Component) {
 	}, {
 		key: 'render',
 		value: function render() {
+			// @TODO loading component
+			if (this.state.loading == true) {
+				return _react2.default.createElement(
+					'div',
+					{ className: 'is-loading' },
+					'...Loading'
+				);
+			}
+
+			if (this.state.requestStatus === 'invalid') return _react2.default.createElement(
+				'div',
+				null,
+				'Invalid'
+			);
+
 			var nextEl = void 0,
 			    nextModel = void 0,
 			    prevEl = void 0;
@@ -5837,7 +6560,8 @@ var ViewerApp = function (_React$Component) {
 				}
 			}
 
-			var modal = ModalUtil.getCurrentModal(this.state.modalState);
+			var modalItem = ModalUtil.getCurrentModal(this.state.modalState);
+			var hideViewer = modalItem && modalItem.hideViewer;
 
 			return _react2.default.createElement(
 				_reactIdleTimer2.default,
@@ -5854,9 +6578,9 @@ var ViewerApp = function (_React$Component) {
 						ref: 'container',
 						onMouseDown: this.onMouseDown.bind(this),
 						onScroll: this.onScroll.bind(this),
-						className: 'viewer--viewer-app' + (this.isPreviewing ? ' is-previewing' : ' is-not-previewing') + (this.state.navState.locked ? ' is-locked-nav' : ' is-unlocked-nav') + (this.state.navState.open ? ' is-open-nav' : ' is-closed-nav') + (this.state.navState.disabled ? ' is-disabled-nav' : ' is-enabled-nav') + ' is-focus-state-' + this.state.focusState.viewState
+						className: 'viewer--viewer-app' + (this.state.isPreviewing ? ' is-previewing' : ' is-not-previewing') + (this.state.navState.locked ? ' is-locked-nav' : ' is-unlocked-nav') + (this.state.navState.open ? ' is-open-nav' : ' is-closed-nav') + (this.state.navState.disabled ? ' is-disabled-nav' : ' is-enabled-nav') + ' is-focus-state-' + this.state.focusState.viewState
 					},
-					_react2.default.createElement(
+					hideViewer ? null : _react2.default.createElement(
 						'header',
 						null,
 						_react2.default.createElement(
@@ -5875,11 +6599,11 @@ var ViewerApp = function (_React$Component) {
 							_react2.default.createElement(_logo2.default, null)
 						)
 					),
-					_react2.default.createElement(_nav2.default, { navState: this.state.navState }),
-					prevEl,
-					_react2.default.createElement(ModuleComponent, { model: this.state.model, moduleData: this.state }),
-					nextEl,
-					this.isPreviewing ? _react2.default.createElement(
+					hideViewer ? null : _react2.default.createElement(_nav2.default, { navState: this.state.navState }),
+					hideViewer ? null : prevEl,
+					hideViewer ? null : _react2.default.createElement(ModuleComponent, { model: this.state.model, moduleData: this.state }),
+					hideViewer ? null : nextEl,
+					this.state.isPreviewing ? _react2.default.createElement(
 						'div',
 						{ className: 'preview-banner' },
 						_react2.default.createElement(
@@ -5906,10 +6630,10 @@ var ViewerApp = function (_React$Component) {
 						)
 					) : null,
 					_react2.default.createElement(FocusBlocker, { moduleData: this.state }),
-					modal ? _react2.default.createElement(
+					modalItem && modalItem.component ? _react2.default.createElement(
 						ModalContainer,
 						null,
-						modal
+						modalItem.component
 					) : null
 				)
 			);
@@ -5922,7 +6646,7 @@ var ViewerApp = function (_React$Component) {
 exports.default = ViewerApp;
 
 /***/ }),
-/* 45 */
+/* 51 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -5932,11 +6656,11 @@ Object.defineProperty(exports, "__esModule", {
 	value: true
 });
 
-var _viewerApp = __webpack_require__(44);
+var _viewerApp = __webpack_require__(50);
 
 var _viewerApp2 = _interopRequireDefault(_viewerApp);
 
-var _scoreStore = __webpack_require__(18);
+var _scoreStore = __webpack_require__(19);
 
 var _scoreStore2 = _interopRequireDefault(_scoreStore);
 
@@ -5944,15 +6668,19 @@ var _assessmentStore = __webpack_require__(16);
 
 var _assessmentStore2 = _interopRequireDefault(_assessmentStore);
 
+var _ltiNetworkStates = __webpack_require__(17);
+
+var _ltiNetworkStates2 = _interopRequireDefault(_ltiNetworkStates);
+
 var _navStore = __webpack_require__(10);
 
 var _navStore2 = _interopRequireDefault(_navStore);
 
-var _questionStore = __webpack_require__(17);
+var _questionStore = __webpack_require__(18);
 
 var _questionStore2 = _interopRequireDefault(_questionStore);
 
-var _assessmentUtil = __webpack_require__(19);
+var _assessmentUtil = __webpack_require__(20);
 
 var _assessmentUtil2 = _interopRequireDefault(_assessmentUtil);
 
@@ -5972,6 +6700,10 @@ var _questionUtil = __webpack_require__(5);
 
 var _questionUtil2 = _interopRequireDefault(_questionUtil);
 
+var _getLtiOutcomeServiceHostname = __webpack_require__(21);
+
+var _getLtiOutcomeServiceHostname2 = _interopRequireDefault(_getLtiOutcomeServiceHostname);
+
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 exports.default = {
@@ -5982,6 +6714,9 @@ exports.default = {
 	stores: {
 		ScoreStore: _scoreStore2.default,
 		AssessmentStore: _assessmentStore2.default,
+		assessmentStore: {
+			LTINetworkStates: _ltiNetworkStates2.default
+		},
 		NavStore: _navStore2.default,
 		QuestionStore: _questionStore2.default
 	},
@@ -5991,70 +6726,71 @@ exports.default = {
 		NavUtil: _navUtil2.default,
 		ScoreUtil: _scoreUtil2.default,
 		APIUtil: _apiUtil2.default,
-		QuestionUtil: _questionUtil2.default
+		QuestionUtil: _questionUtil2.default,
+		getLTIOutcomeServiceHostname: _getLtiOutcomeServiceHostname2.default
 	}
 };
-
-/***/ }),
-/* 46 */
-/***/ (function(module, exports) {
-
-// removed by extract-text-webpack-plugin
-
-/***/ }),
-/* 47 */
-/***/ (function(module, exports) {
-
-// removed by extract-text-webpack-plugin
-
-/***/ }),
-/* 48 */
-/***/ (function(module, exports) {
-
-// removed by extract-text-webpack-plugin
-
-/***/ }),
-/* 49 */
-/***/ (function(module, exports) {
-
-// removed by extract-text-webpack-plugin
-
-/***/ }),
-/* 50 */
-/***/ (function(module, exports) {
-
-// removed by extract-text-webpack-plugin
-
-/***/ }),
-/* 51 */
-/***/ (function(module, exports) {
-
-module.exports = "data:image/svg+xml,%3C?xml version='1.0' encoding='utf-8'?%3E %3C!-- Generator: Adobe Illustrator 19.0.0, SVG Export Plug-In . SVG Version: 6.00 Build 0) --%3E %3Csvg version='1.1' id='Layer_1' xmlns='http://www.w3.org/2000/svg' xmlns:xlink='http://www.w3.org/1999/xlink' x='0px' y='0px' viewBox='-290 387 30 20' style='enable-background:new -290 387 30 20;' xml:space='preserve'%3E %3Cpath d='M-272.5,405.4l-12.1-7.4c-0.6-0.4-0.6-1.7,0-2.1l12.1-7.4c0.5-0.3,1,0.3,1,1.1v14.7C-271.4,405.2-272,405.7-272.5,405.4z' fill='rgba(0, 0, 0, .2)' transform='translate(2, 0)'/%3E %3C/svg%3E"
 
 /***/ }),
 /* 52 */
 /***/ (function(module, exports) {
 
-module.exports = "data:image/svg+xml,%3Csvg width='20' height='10' viewBox='0 0 100 100' xmlns='http://www.w3.org/2000/svg' version='1.1'%3E %3Cline x1='0' y1='10' x2='100' y2='10' stroke='rgba(0, 0, 0, .2)' stroke-width='20' stroke-linecap='round' /%3E %3Cline x1='0' y1='50' x2='100' y2='50' stroke='rgba(0, 0, 0, .2)' stroke-width='20' stroke-linecap='round' /%3E %3Cline x1='0' y1='90' x2='100' y2='90' stroke='rgba(0, 0, 0, .2)' stroke-width='20' stroke-linecap='round' /%3E %3C/svg%3E"
+// removed by extract-text-webpack-plugin
 
 /***/ }),
 /* 53 */
 /***/ (function(module, exports) {
 
-module.exports = "data:image/svg+xml,%3C?xml version='1.0' encoding='utf-8'?%3E %3Csvg version='1.1' xmlns='http://www.w3.org/2000/svg' xmlns:xlink='http://www.w3.org/1999/xlink' viewBox='0 0 10 16' style='enable-background:new 0 0 10 16;' xml:space='preserve'%3E %3Cpath fill='white' id='XMLID_6_' d='M9.1,6H8.5V3.5C8.5,1.5,6.9,0,5,0C3.1,0,1.6,1.5,1.6,3.5l0,2.5H0.9C0.4,6,0,6.4,0,6.9v8.2 C0,15.6,0.4,16,0.9,16h8.2c0.5,0,0.9-0.4,0.9-0.9V6.9C10,6.4,9.6,6,9.1,6z M3.3,3.4c0-0.9,0.8-1.6,1.7-1.6c0.9,0,1.7,0.8,1.7,1.7V6 H3.3V3.4z'/%3E %3C/svg%3E"
+// removed by extract-text-webpack-plugin
 
 /***/ }),
 /* 54 */
 /***/ (function(module, exports) {
 
-module.exports = "data:image/svg+xml,%3C?xml version='1.0' encoding='utf-8'?%3E %3C!-- Generator: Adobe Illustrator 15.0.2, SVG Export Plug-In . SVG Version: 6.00 Build 0) --%3E %3C!DOCTYPE svg PUBLIC '-//W3C//DTD SVG 1.1//EN' 'http://www.w3.org/Graphics/SVG/1.1/DTD/svg11.dtd'%3E %3Csvg version='1.1' id='Layer_1' xmlns='http://www.w3.org/2000/svg' xmlns:xlink='http://www.w3.org/1999/xlink' x='0px' y='0px' width='253px' height='64.577px' viewBox='0 0 253 64.577' enable-background='new 0 0 253 64.577' xml:space='preserve' fill='black'%3E %3Cpath d='M18.399,53.629c-0.01,0-0.021,0-0.031,0C7.023,53.396,0,43.151,0,33.793c0-10.79,8.426-19.905,18.399-19.905 c11.006,0,18.399,10.292,18.399,19.905c0,10.719-8.239,19.617-18.367,19.835C18.421,53.629,18.41,53.629,18.399,53.629z M18.399,18.257c-8.393,0-14.031,8.033-14.031,15.536c0.295,7.574,5.625,15.468,14.031,15.468c8.393,0,14.031-7.998,14.031-15.468 C32.43,25.372,26.005,18.257,18.399,18.257z'/%3E %3Cpath d='M58.15,53.629c-6.02,0-13.502-3.57-16.154-10.394c-0.287-0.733-0.603-1.542-0.603-3.281l0-38.454 c0-0.398,0.158-0.779,0.439-1.061S42.495,0,42.893,0h1.369c0.829,0,1.5,0.671,1.5,1.5v18.495c3.827-4.056,8.188-6.106,13.004-6.106 c11.111,0,17.989,10.332,17.989,19.905C76.444,44.75,68.099,53.629,58.15,53.629z M45.761,27.446v12.437 c0,4.652,7.208,9.378,12.389,9.378c8.516,0,14.236-7.998,14.236-15.468c0-7.472-5.208-15.536-13.621-15.536 C51.235,18.257,47.065,24.927,45.761,27.446z'/%3E %3Cpath d='M99.064,53.629c-0.01,0-0.021,0-0.031,0c-11.346-0.233-18.369-10.478-18.369-19.835 c0-10.79,8.426-19.905,18.399-19.905c11.005,0,18.398,10.292,18.398,19.905c0,10.719-8.239,19.617-18.366,19.835 C99.086,53.629,99.075,53.629,99.064,53.629z M99.064,18.257c-8.393,0-14.031,8.033-14.031,15.536 c0.294,7.574,5.624,15.468,14.031,15.468c8.393,0,14.031-7.998,14.031-15.468C113.096,25.372,106.67,18.257,99.064,18.257z'/%3E %3Cpath d='M153.252,53.629c-0.01,0-0.021,0-0.031,0c-11.346-0.233-18.369-10.478-18.369-19.835 c0-10.79,8.426-19.905,18.399-19.905c11.006,0,18.399,10.292,18.399,19.905c0,10.719-8.239,19.617-18.367,19.835 C153.273,53.629,153.263,53.629,153.252,53.629z M153.252,18.257c-8.393,0-14.031,8.033-14.031,15.536 c0.294,7.574,5.624,15.468,14.031,15.468c8.393,0,14.031-7.998,14.031-15.468C167.283,25.372,160.858,18.257,153.252,18.257z'/%3E %3Cpath d='M234.601,53.629c-0.01,0-0.021,0-0.031,0c-11.345-0.233-18.367-10.478-18.367-19.835 c0-10.79,8.426-19.905,18.398-19.905c11.006,0,18.399,10.292,18.399,19.905c0,10.719-8.239,19.617-18.367,19.835 C234.622,53.629,234.611,53.629,234.601,53.629z M234.601,18.257c-8.393,0-14.03,8.033-14.03,15.536 c0.294,7.574,5.624,15.468,14.03,15.468c8.394,0,14.031-7.998,14.031-15.468C248.632,25.372,242.206,18.257,234.601,18.257z'/%3E %3Cpath d='M193.62,53.629c-6.021,0-13.503-3.57-16.155-10.394l-0.098-0.239c-0.254-0.607-0.603-1.438-0.603-3.042 c0.002-15.911,0.098-38.237,0.099-38.461c0.003-0.826,0.674-1.494,1.5-1.494h1.368c0.829,0,1.5,0.671,1.5,1.5v18.495 c3.827-4.055,8.188-6.106,13.005-6.106c11.111,0,17.988,10.332,17.988,19.904C211.915,44.75,203.569,53.629,193.62,53.629z M181.231,27.446v12.437c0,4.652,7.208,9.378,12.389,9.378c8.515,0,14.235-7.998,14.235-15.468c0-7.472-5.207-15.536-13.619-15.536 C186.705,18.257,182.535,24.927,181.231,27.446z'/%3E %3Cpath d='M118.017,64.577c-0.013,0-0.026,0-0.039,0c-2.437-0.063-5.533-0.434-7.865-2.765 c-0.308-0.308-0.467-0.734-0.436-1.167c0.031-0.434,0.249-0.833,0.597-1.094l1.096-0.821c0.566-0.425,1.353-0.396,1.887,0.072 c1.083,0.947,2.617,1.408,4.691,1.408c2.913,0,6.3-2.752,6.3-6.3V16.073c0-0.829,0.671-1.5,1.5-1.5h1.368c0.829,0,1.5,0.671,1.5,1.5 v37.835C128.616,60.195,123.03,64.577,118.017,64.577z M127.116,8.268h-1.368c-0.829,0-1.5-0.671-1.5-1.5V2.389 c0-0.829,0.671-1.5,1.5-1.5h1.368c0.829,0,1.5,0.671,1.5,1.5v4.379C128.616,7.597,127.945,8.268,127.116,8.268z'/%3E %3C/svg%3E"
+// removed by extract-text-webpack-plugin
 
 /***/ }),
 /* 55 */
+/***/ (function(module, exports) {
+
+// removed by extract-text-webpack-plugin
+
+/***/ }),
+/* 56 */
+/***/ (function(module, exports) {
+
+// removed by extract-text-webpack-plugin
+
+/***/ }),
+/* 57 */
+/***/ (function(module, exports) {
+
+module.exports = "data:image/svg+xml,%3C?xml version='1.0' encoding='utf-8'?%3E %3C!-- Generator: Adobe Illustrator 19.0.0, SVG Export Plug-In . SVG Version: 6.00 Build 0) --%3E %3Csvg version='1.1' id='Layer_1' xmlns='http://www.w3.org/2000/svg' xmlns:xlink='http://www.w3.org/1999/xlink' x='0px' y='0px' viewBox='-290 387 30 20' style='enable-background:new -290 387 30 20;' xml:space='preserve'%3E %3Cpath d='M-272.5,405.4l-12.1-7.4c-0.6-0.4-0.6-1.7,0-2.1l12.1-7.4c0.5-0.3,1,0.3,1,1.1v14.7C-271.4,405.2-272,405.7-272.5,405.4z' fill='rgba(0, 0, 0, .2)' transform='translate(2, 0)'/%3E %3C/svg%3E"
+
+/***/ }),
+/* 58 */
+/***/ (function(module, exports) {
+
+module.exports = "data:image/svg+xml,%3Csvg width='20' height='10' viewBox='0 0 100 100' xmlns='http://www.w3.org/2000/svg' version='1.1'%3E %3Cline x1='0' y1='10' x2='100' y2='10' stroke='rgba(0, 0, 0, .2)' stroke-width='20' stroke-linecap='round' /%3E %3Cline x1='0' y1='50' x2='100' y2='50' stroke='rgba(0, 0, 0, .2)' stroke-width='20' stroke-linecap='round' /%3E %3Cline x1='0' y1='90' x2='100' y2='90' stroke='rgba(0, 0, 0, .2)' stroke-width='20' stroke-linecap='round' /%3E %3C/svg%3E"
+
+/***/ }),
+/* 59 */
+/***/ (function(module, exports) {
+
+module.exports = "data:image/svg+xml,%3C?xml version='1.0' encoding='utf-8'?%3E %3Csvg version='1.1' xmlns='http://www.w3.org/2000/svg' xmlns:xlink='http://www.w3.org/1999/xlink' viewBox='0 0 10 16' style='enable-background:new 0 0 10 16;' xml:space='preserve'%3E %3Cpath fill='white' id='XMLID_6_' d='M9.1,6H8.5V3.5C8.5,1.5,6.9,0,5,0C3.1,0,1.6,1.5,1.6,3.5l0,2.5H0.9C0.4,6,0,6.4,0,6.9v8.2 C0,15.6,0.4,16,0.9,16h8.2c0.5,0,0.9-0.4,0.9-0.9V6.9C10,6.4,9.6,6,9.1,6z M3.3,3.4c0-0.9,0.8-1.6,1.7-1.6c0.9,0,1.7,0.8,1.7,1.7V6 H3.3V3.4z'/%3E %3C/svg%3E"
+
+/***/ }),
+/* 60 */
+/***/ (function(module, exports) {
+
+module.exports = "data:image/svg+xml,%3C?xml version='1.0' encoding='utf-8'?%3E %3C!-- Generator: Adobe Illustrator 15.0.2, SVG Export Plug-In . SVG Version: 6.00 Build 0) --%3E %3C!DOCTYPE svg PUBLIC '-//W3C//DTD SVG 1.1//EN' 'http://www.w3.org/Graphics/SVG/1.1/DTD/svg11.dtd'%3E %3Csvg version='1.1' id='Layer_1' xmlns='http://www.w3.org/2000/svg' xmlns:xlink='http://www.w3.org/1999/xlink' x='0px' y='0px' width='253px' height='64.577px' viewBox='0 0 253 64.577' enable-background='new 0 0 253 64.577' xml:space='preserve' fill='black'%3E %3Cpath d='M18.399,53.629c-0.01,0-0.021,0-0.031,0C7.023,53.396,0,43.151,0,33.793c0-10.79,8.426-19.905,18.399-19.905 c11.006,0,18.399,10.292,18.399,19.905c0,10.719-8.239,19.617-18.367,19.835C18.421,53.629,18.41,53.629,18.399,53.629z M18.399,18.257c-8.393,0-14.031,8.033-14.031,15.536c0.295,7.574,5.625,15.468,14.031,15.468c8.393,0,14.031-7.998,14.031-15.468 C32.43,25.372,26.005,18.257,18.399,18.257z'/%3E %3Cpath d='M58.15,53.629c-6.02,0-13.502-3.57-16.154-10.394c-0.287-0.733-0.603-1.542-0.603-3.281l0-38.454 c0-0.398,0.158-0.779,0.439-1.061S42.495,0,42.893,0h1.369c0.829,0,1.5,0.671,1.5,1.5v18.495c3.827-4.056,8.188-6.106,13.004-6.106 c11.111,0,17.989,10.332,17.989,19.905C76.444,44.75,68.099,53.629,58.15,53.629z M45.761,27.446v12.437 c0,4.652,7.208,9.378,12.389,9.378c8.516,0,14.236-7.998,14.236-15.468c0-7.472-5.208-15.536-13.621-15.536 C51.235,18.257,47.065,24.927,45.761,27.446z'/%3E %3Cpath d='M99.064,53.629c-0.01,0-0.021,0-0.031,0c-11.346-0.233-18.369-10.478-18.369-19.835 c0-10.79,8.426-19.905,18.399-19.905c11.005,0,18.398,10.292,18.398,19.905c0,10.719-8.239,19.617-18.366,19.835 C99.086,53.629,99.075,53.629,99.064,53.629z M99.064,18.257c-8.393,0-14.031,8.033-14.031,15.536 c0.294,7.574,5.624,15.468,14.031,15.468c8.393,0,14.031-7.998,14.031-15.468C113.096,25.372,106.67,18.257,99.064,18.257z'/%3E %3Cpath d='M153.252,53.629c-0.01,0-0.021,0-0.031,0c-11.346-0.233-18.369-10.478-18.369-19.835 c0-10.79,8.426-19.905,18.399-19.905c11.006,0,18.399,10.292,18.399,19.905c0,10.719-8.239,19.617-18.367,19.835 C153.273,53.629,153.263,53.629,153.252,53.629z M153.252,18.257c-8.393,0-14.031,8.033-14.031,15.536 c0.294,7.574,5.624,15.468,14.031,15.468c8.393,0,14.031-7.998,14.031-15.468C167.283,25.372,160.858,18.257,153.252,18.257z'/%3E %3Cpath d='M234.601,53.629c-0.01,0-0.021,0-0.031,0c-11.345-0.233-18.367-10.478-18.367-19.835 c0-10.79,8.426-19.905,18.398-19.905c11.006,0,18.399,10.292,18.399,19.905c0,10.719-8.239,19.617-18.367,19.835 C234.622,53.629,234.611,53.629,234.601,53.629z M234.601,18.257c-8.393,0-14.03,8.033-14.03,15.536 c0.294,7.574,5.624,15.468,14.03,15.468c8.394,0,14.031-7.998,14.031-15.468C248.632,25.372,242.206,18.257,234.601,18.257z'/%3E %3Cpath d='M193.62,53.629c-6.021,0-13.503-3.57-16.155-10.394l-0.098-0.239c-0.254-0.607-0.603-1.438-0.603-3.042 c0.002-15.911,0.098-38.237,0.099-38.461c0.003-0.826,0.674-1.494,1.5-1.494h1.368c0.829,0,1.5,0.671,1.5,1.5v18.495 c3.827-4.055,8.188-6.106,13.005-6.106c11.111,0,17.988,10.332,17.988,19.904C211.915,44.75,203.569,53.629,193.62,53.629z M181.231,27.446v12.437c0,4.652,7.208,9.378,12.389,9.378c8.515,0,14.235-7.998,14.235-15.468c0-7.472-5.207-15.536-13.619-15.536 C186.705,18.257,182.535,24.927,181.231,27.446z'/%3E %3Cpath d='M118.017,64.577c-0.013,0-0.026,0-0.039,0c-2.437-0.063-5.533-0.434-7.865-2.765 c-0.308-0.308-0.467-0.734-0.436-1.167c0.031-0.434,0.249-0.833,0.597-1.094l1.096-0.821c0.566-0.425,1.353-0.396,1.887,0.072 c1.083,0.947,2.617,1.408,4.691,1.408c2.913,0,6.3-2.752,6.3-6.3V16.073c0-0.829,0.671-1.5,1.5-1.5h1.368c0.829,0,1.5,0.671,1.5,1.5 v37.835C128.616,60.195,123.03,64.577,118.017,64.577z M127.116,8.268h-1.368c-0.829,0-1.5-0.671-1.5-1.5V2.389 c0-0.829,0.671-1.5,1.5-1.5h1.368c0.829,0,1.5,0.671,1.5,1.5v4.379C128.616,7.597,127.945,8.268,127.116,8.268z'/%3E %3C/svg%3E"
+
+/***/ }),
+/* 61 */
 /***/ (function(module, exports, __webpack_require__) {
 
-__webpack_require__(21);
-module.exports = __webpack_require__(22);
+__webpack_require__(23);
+module.exports = __webpack_require__(24);
 
 
 /***/ })

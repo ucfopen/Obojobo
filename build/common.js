@@ -63,7 +63,7 @@
 /******/ 	__webpack_require__.p = "build/";
 /******/
 /******/ 	// Load entry module and return exports
-/******/ 	return __webpack_require__(__webpack_require__.s = 88);
+/******/ 	return __webpack_require__(__webpack_require__.s = 87);
 /******/ })
 /************************************************************************/
 /******/ ([
@@ -1938,7 +1938,7 @@ Object.defineProperty(exports, "__esModule", {
 
 var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
 
-__webpack_require__(75);
+__webpack_require__(74);
 
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
@@ -2499,7 +2499,7 @@ Object.defineProperty(exports, "__esModule", {
 
 var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
 
-__webpack_require__(74);
+__webpack_require__(73);
 
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
@@ -2578,7 +2578,7 @@ Object.defineProperty(exports, "__esModule", {
 
 var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
 
-__webpack_require__(79);
+__webpack_require__(78);
 
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
@@ -2630,7 +2630,7 @@ var _extends = Object.assign || function (target) { for (var i = 1; i < argument
 
 var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
 
-__webpack_require__(81);
+__webpack_require__(80);
 
 var _button = __webpack_require__(17);
 
@@ -2757,7 +2757,7 @@ Object.defineProperty(exports, "__esModule", {
 
 var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
 
-__webpack_require__(82);
+__webpack_require__(81);
 
 var _simpleDialog = __webpack_require__(22);
 
@@ -2813,7 +2813,7 @@ Object.defineProperty(exports, "__esModule", {
 
 var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
 
-__webpack_require__(83);
+__webpack_require__(82);
 
 var _deleteButton = __webpack_require__(9);
 
@@ -2916,7 +2916,7 @@ Object.defineProperty(exports, "__esModule", {
 
 var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
 
-__webpack_require__(84);
+__webpack_require__(83);
 
 var _modalUtil = __webpack_require__(37);
 
@@ -5669,7 +5669,7 @@ Object.defineProperty(exports, "__esModule", {
 	value: true
 });
 
-var _katex = __webpack_require__(87);
+var _katex = __webpack_require__(86);
 
 var _katex2 = _interopRequireDefault(_katex);
 
@@ -6124,8 +6124,10 @@ function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { de
 
 var ModalUtil = {
 	show: function show(component) {
+		var hideViewer = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : false;
+
 		_dispatcher2.default.trigger('modal:show', {
-			value: { component: component }
+			value: { component: component, hideViewer: hideViewer }
 		});
 	},
 	hide: function hide() {
@@ -7296,13 +7298,13 @@ Object.defineProperty(exports, "__esModule", {
 
 var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
 
-__webpack_require__(76);
+__webpack_require__(75);
 
 var _getBackgroundImage = __webpack_require__(35);
 
 var _getBackgroundImage2 = _interopRequireDefault(_getBackgroundImage);
 
-var _edit = __webpack_require__(86);
+var _edit = __webpack_require__(85);
 
 var _edit2 = _interopRequireDefault(_edit);
 
@@ -7368,7 +7370,7 @@ Object.defineProperty(exports, "__esModule", {
 
 var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
 
-__webpack_require__(77);
+__webpack_require__(76);
 
 var _focusUtil = __webpack_require__(14);
 
@@ -7416,7 +7418,7 @@ Object.defineProperty(exports, "__esModule", {
 
 var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
 
-__webpack_require__(78);
+__webpack_require__(77);
 
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
@@ -7466,7 +7468,7 @@ Object.defineProperty(exports, "__esModule", {
 
 var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
 
-__webpack_require__(80);
+__webpack_require__(79);
 
 var _bubble = __webpack_require__(18);
 
@@ -7786,7 +7788,7 @@ Object.defineProperty(exports, "__esModule", {
 
 var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
 
-__webpack_require__(85);
+__webpack_require__(84);
 
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
@@ -8166,14 +8168,12 @@ var _uuid = __webpack_require__(38);
 
 var _uuid2 = _interopRequireDefault(_uuid);
 
-var _oboGlobals = __webpack_require__(73);
-
-var _oboGlobals2 = _interopRequireDefault(_oboGlobals);
-
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
+// @TODO
 exports.default = {
 	Store: _store.Store,
+
 	chunk: {
 		BaseSelectionHandler: _baseSelectionHandler2.default,
 		FocusableChunk: _focusableChunk2.default,
@@ -8286,10 +8286,9 @@ exports.default = {
 		ModalUtil: _modalUtil2.default,
 		FocusUtil: _focusUtil2.default,
 		ErrorUtil: _errorUtil2.default,
-		UUID: _uuid2.default,
-		OboGlobals: _oboGlobals2.default
+		UUID: _uuid2.default
 	}
-}; // @TODO
+};
 
 /***/ }),
 /* 61 */
@@ -9385,7 +9384,7 @@ var ModalStore = function (_Store) {
 		var _this = _possibleConstructorReturn(this, (ModalStore.__proto__ || Object.getPrototypeOf(ModalStore)).call(this, 'modalstore'));
 
 		_dispatcher2.default.on('modal:show', function (payload) {
-			_this._show(payload.value.component);
+			_this._show(payload.value);
 		});
 
 		_dispatcher2.default.on('modal:hide', _this._hide.bind(_this));
@@ -9401,8 +9400,8 @@ var ModalStore = function (_Store) {
 		}
 	}, {
 		key: '_show',
-		value: function _show(component) {
-			this.state.modals.push(component);
+		value: function _show(modalItem) {
+			this.state.modals.push(modalItem);
 			this.triggerChange();
 		}
 	}, {
@@ -9582,39 +9581,9 @@ exports.default = ErrorUtil;
 
 /***/ }),
 /* 73 */
-/***/ (function(module, exports, __webpack_require__) {
+/***/ (function(module, exports) {
 
-"use strict";
-
-
-Object.defineProperty(exports, "__esModule", {
-	value: true
-});
-var GLOBAL_KEY = '__oboGlobals';
-var globals = new Map();
-
-exports.default = {
-	get: function get(key, defaultValue) {
-		// If we have stored the value return it right away
-		if (globals.has(key)) return globals.get(key);
-
-		if (typeof window[GLOBAL_KEY][key] !== 'undefined') {
-			// Set the value from window if we can find the value on window
-			globals.set(key, window[GLOBAL_KEY][key]);
-
-			// Remove from window so this class becomes the single source of truth
-			// (and prevent tampering with the value):
-			delete window[GLOBAL_KEY][key];
-		} else if (typeof defaultValue !== 'undefined') {
-			// else set the value from the optional defaultValue argument (if defined)
-			globals.set(key, defaultValue);
-		}
-
-		if (!globals.has(key)) throw 'No Obo Global found for key ' + key;
-
-		return globals.get(key);
-	}
-};
+// removed by extract-text-webpack-plugin
 
 /***/ }),
 /* 74 */
@@ -9686,22 +9655,16 @@ exports.default = {
 /* 85 */
 /***/ (function(module, exports) {
 
-// removed by extract-text-webpack-plugin
+module.exports = "data:image/svg+xml,%3Csvg id='Layer_10' data-name='Layer 10' xmlns='http://www.w3.org/2000/svg' viewBox='0 0 20.48 20.48'%3E %3Cdefs%3E %3Cstyle%3E .cls-1 %7B fill: %236714bd; %7D %3C/style%3E %3C/defs%3E %3Ctitle%3Etoolbar-icons%3C/title%3E %3Cg%3E %3Crect class='cls-1' x='15.15' y='4.57' width='5.75' height='18.82' rx='1.13' ry='1.13' transform='translate(9.4 -14.41) rotate(45)'/%3E %3Cpath class='cls-1' d='M11.06,25l-5.3,1.23L7,20.94a1.12,1.12,0,0,1,1.59,0l2.47,2.47A1.13,1.13,0,0,1,11.06,25Z' transform='translate(-5.76 -5.76)'/%3E %3C/g%3E %3C/svg%3E"
 
 /***/ }),
 /* 86 */
 /***/ (function(module, exports) {
 
-module.exports = "data:image/svg+xml,%3Csvg id='Layer_10' data-name='Layer 10' xmlns='http://www.w3.org/2000/svg' viewBox='0 0 20.48 20.48'%3E %3Cdefs%3E %3Cstyle%3E .cls-1 %7B fill: %236714bd; %7D %3C/style%3E %3C/defs%3E %3Ctitle%3Etoolbar-icons%3C/title%3E %3Cg%3E %3Crect class='cls-1' x='15.15' y='4.57' width='5.75' height='18.82' rx='1.13' ry='1.13' transform='translate(9.4 -14.41) rotate(45)'/%3E %3Cpath class='cls-1' d='M11.06,25l-5.3,1.23L7,20.94a1.12,1.12,0,0,1,1.59,0l2.47,2.47A1.13,1.13,0,0,1,11.06,25Z' transform='translate(-5.76 -5.76)'/%3E %3C/g%3E %3C/svg%3E"
-
-/***/ }),
-/* 87 */
-/***/ (function(module, exports) {
-
 module.exports = katex;
 
 /***/ }),
-/* 88 */
+/* 87 */
 /***/ (function(module, exports, __webpack_require__) {
 
 module.exports = __webpack_require__(39);

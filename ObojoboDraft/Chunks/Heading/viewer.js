@@ -27,7 +27,12 @@ Common.Store.registerModel('ObojoboDraft.Chunks.Heading', {
 				return {
 					type: 'sub-link',
 					label: model.modelState.textGroup.first.text,
-					path: [model.toText().toLowerCase().replace(/ /g, '-')],
+					path: [
+						model
+							.toText()
+							.toLowerCase()
+							.replace(/ /g, '-')
+					],
 					showChildren: false
 				}
 

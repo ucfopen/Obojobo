@@ -16,15 +16,21 @@
 		"karma": "./node_modules/karma/bin/karma start ./karma.conf.js",
 		"karma-coverage": "./node_modules/karma/bin/karma start ./karma-coverage.conf.js",
 		"generateModuleManifest": "node ./bin/generate_module_manifest.js",
-		"runPrettier": "prettier --single-quote --use-tabs --no-semi --print-width='100' --write '{src,server,__{tests,mocks}__,ObojoboDraft}/**/*.js'",
-		"runPrettier:debug": "prettier --single-quote --use-tabs --no-semi --print-width='100' --debug-check '{src,server,__{tests,mocks}__,ObojoboDraft}/**/*.js'",
+		"prettier:run": "prettier --write '{src,server,__{tests,mocks}__,ObojoboDraft}/**/*.{js,scss}'",
+		"prettier:debug": "prettier -l '{src,server,__{tests,mocks}__,ObojoboDraft}/**/*.{js,scss}'",
 		"precommit": "yarn test && lint-staged && yarn build && yarn build:gitadd"
 	},
+	"prettier": {
+		"printWidth": 100,
+		"semi": false,
+		"useTabs": true,
+		"singleQuote": true
+	},
 	"lint-staged": {
-		"linters": {
-			"*.js": ["yarn runPrettier", "git add"]
-		},
-		"ignore": ["build/**/*.js"]
+		"{src,server,__{tests,mocks}__,ObojoboDraft}/**/*.{js,scss}": [
+			"yarn prettier --write --",
+			"git add"
+		]
 	},
 	"author": "",
 	"devDependencies": {
@@ -35,7 +41,8 @@
 		"babel-preset-react": "^6.5.0",
 		"bourbon": "^4.2.7",
 		"css-loader": "^0.28.1",
-		"enzyme": "^2.8.2",
+		"enzyme": "^3.3.0",
+		"enzyme-adapter-react-15": "^1.0.5",
 		"extract-text-webpack-plugin": "^2.1.0",
 		"husky": "^0.14.3",
 		"jest": "^19.0.2",
@@ -43,7 +50,7 @@
 		"lint-staged": "^6.1.1",
 		"node-bourbon": "^4.2.8",
 		"node-sass": "^3.4.2",
-		"prettier": "^1.5.2",
+		"prettier": "1.11.1",
 		"react-test-renderer": "^15.5.4",
 		"sass-loader": "^6.0.5",
 		"style-loader": "^0.17.0",
@@ -62,10 +69,11 @@
 		"react-transition-group": "^1.1.3",
 		"smoothscroll-polyfill": "^0.3.4",
 		"underscore": "1.5.1",
+		"url-parse": "^1.2.0",
 		"whatwg-fetch": "^2.0.3"
 	},
 	"jest": {
-		"testURL": "http://localhost:3000/view/00000000-0000-0000-0000-000000000000",
+		"testURL": "http://localhost:3000/view/00000000-0000-0000-0000-000000000000/visit/1",
 		"setupFiles": ["./setupTests.js"],
 		"verbose": true,
 		"moduleNameMapper": {

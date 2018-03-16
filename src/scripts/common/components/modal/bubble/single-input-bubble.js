@@ -39,9 +39,7 @@ export default class SingleInputBubble extends React.Component {
 						/>
 						<button onClick={this.onSubmit.bind(this)}>Ok</button>
 					</form>
-					<span className="label">
-						{this.props.label}
-					</span>
+					<span className="label">{this.props.label}</span>
 				</label>
 			</Bubble>
 		)
