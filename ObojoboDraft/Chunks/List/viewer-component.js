@@ -117,9 +117,7 @@ export default class List extends React.Component {
 		return (
 			<OboComponent model={this.props.model} moduleData={this.props.moduleData}>
 				<TextChunk className="obojobo-draft--chunks--list pad">
-					<div data-indent={data.indent}>
-						{this.renderEl(rootUl, 0, 0)}
-					</div>
+					<div data-indent={data.indent}>{this.renderEl(rootUl, 0, 0)}</div>
 				</TextChunk>
 			</OboComponent>
 		)

@@ -63,7 +63,7 @@
 /******/ 	__webpack_require__.p = "build/";
 /******/
 /******/ 	// Load entry module and return exports
-/******/ 	return __webpack_require__(__webpack_require__.s = 166);
+/******/ 	return __webpack_require__(__webpack_require__.s = 266);
 /******/ })
 /************************************************************************/
 /******/ ({
@@ -82,43 +82,7 @@ module.exports = Viewer;
 
 /***/ }),
 
-/***/ 142:
-/***/ (function(module, exports) {
-
-// removed by extract-text-webpack-plugin
-
-/***/ }),
-
-/***/ 143:
-/***/ (function(module, exports) {
-
-// removed by extract-text-webpack-plugin
-
-/***/ }),
-
-/***/ 144:
-/***/ (function(module, exports) {
-
-// removed by extract-text-webpack-plugin
-
-/***/ }),
-
-/***/ 15:
-/***/ (function(module, exports) {
-
-// removed by extract-text-webpack-plugin
-
-/***/ }),
-
-/***/ 166:
-/***/ (function(module, exports, __webpack_require__) {
-
-module.exports = __webpack_require__(33);
-
-
-/***/ }),
-
-/***/ 33:
+/***/ 104:
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -128,17 +92,17 @@ var _Common = __webpack_require__(0);
 
 var _Common2 = _interopRequireDefault(_Common);
 
-__webpack_require__(7);
+__webpack_require__(38);
 
-__webpack_require__(64);
+__webpack_require__(135);
 
-__webpack_require__(66);
+__webpack_require__(137);
 
-var _adapter = __webpack_require__(67);
+var _adapter = __webpack_require__(138);
 
 var _adapter2 = _interopRequireDefault(_adapter);
 
-var _viewerComponent = __webpack_require__(68);
+var _viewerComponent = __webpack_require__(139);
 
 var _viewerComponent2 = _interopRequireDefault(_viewerComponent);
 
@@ -155,7 +119,7 @@ _Common2.default.Store.registerModel('ObojoboDraft.Chunks.MCAssessment', {
 
 /***/ }),
 
-/***/ 63:
+/***/ 134:
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -167,7 +131,7 @@ Object.defineProperty(exports, "__esModule", {
 
 var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
 
-__webpack_require__(142);
+__webpack_require__(241);
 
 var _Common = __webpack_require__(0);
 
@@ -219,7 +183,7 @@ exports.default = MCAnswer;
 
 /***/ }),
 
-/***/ 64:
+/***/ 135:
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -229,7 +193,7 @@ var _Common = __webpack_require__(0);
 
 var _Common2 = _interopRequireDefault(_Common);
 
-var _viewerComponent = __webpack_require__(63);
+var _viewerComponent = __webpack_require__(134);
 
 var _viewerComponent2 = _interopRequireDefault(_viewerComponent);
 
@@ -246,7 +210,7 @@ _Common2.default.Store.registerModel('ObojoboDraft.Chunks.MCAssessment.MCAnswer'
 
 /***/ }),
 
-/***/ 65:
+/***/ 136:
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -258,7 +222,7 @@ Object.defineProperty(exports, "__esModule", {
 
 var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
 
-__webpack_require__(143);
+__webpack_require__(242);
 
 var _Common = __webpack_require__(0);
 
@@ -311,7 +275,7 @@ exports.default = MCFeedback;
 
 /***/ }),
 
-/***/ 66:
+/***/ 137:
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -321,7 +285,7 @@ var _Common = __webpack_require__(0);
 
 var _Common2 = _interopRequireDefault(_Common);
 
-var _viewerComponent = __webpack_require__(65);
+var _viewerComponent = __webpack_require__(136);
 
 var _viewerComponent2 = _interopRequireDefault(_viewerComponent);
 
@@ -338,7 +302,7 @@ _Common2.default.Store.registerModel('ObojoboDraft.Chunks.MCAssessment.MCFeedbac
 
 /***/ }),
 
-/***/ 67:
+/***/ 138:
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -349,41 +313,32 @@ Object.defineProperty(exports, "__esModule", {
 });
 var Adapter = {
 	construct: function construct(model, attrs) {
-		if (__guard__(attrs != null ? attrs.content : undefined, function (x) {
-			return x.responseType;
-		}) != null) {
-			model.modelState.responseType = attrs.content.responseType;
-		} else {
-			model.modelState.responseType = '';
-		}
+		var content = attrs && attrs.content ? attrs.content : {};
 
-		if (__guard__(attrs != null ? attrs.content : undefined, function (x) {
-			return x.shuffle;
-		}) == false) {
-			model.modelState.shuffle = attrs.content.shuffle;
-		} else {
-			model.modelState.shuffle = true;
-		}
+		model.modelState.responseType = content.responseType || '';
+		model.modelState.correctLabels = content.correctLabels ? content.correctLabels.split('|') : null;
+		model.modelState.incorrectLabels = content.incorrectLabels ? content.incorrectLabels.split('|') : null;
+		model.modelState.shuffle = content.shuffle !== false;
 	},
 	clone: function clone(model, _clone) {
 		_clone.modelState.responseType = model.modelState.responseType;
+		_clone.modelState.correctLabels = model.modelState.correctLabels ? model.modelState.correctLabels.slice(0) : null;
+		_clone.modelState.incorrectLabels = model.modelState.incorrectLabels ? model.modelState.incorrectLabels.slice(0) : null;
 		_clone.modelState.shuffle = model.modelState.shuffle;
 	},
 	toJSON: function toJSON(model, json) {
 		json.content.responseType = model.modelState.responseType;
+		json.content.correctLabels = model.modelState.correctLabels ? model.modelState.correctLabels.join('|') : null;
+		json.content.incorrectLabels = model.modelState.incorrectLabels ? model.modelState.incorrectLabels.join('|') : null;
 		json.content.shuffle = model.modelState.shuffle;
 	}
 };
 
 exports.default = Adapter;
 
-function __guard__(value, transform) {
-	return typeof value !== 'undefined' && value !== null ? transform(value) : undefined;
-}
-
 /***/ }),
 
-/***/ 68:
+/***/ 139:
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -395,7 +350,7 @@ Object.defineProperty(exports, "__esModule", {
 
 var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
 
-__webpack_require__(144);
+__webpack_require__(243);
 
 var _Common = __webpack_require__(0);
 
@@ -435,6 +390,11 @@ var MCAssessment = function (_React$Component) {
 
 		var _this = _possibleConstructorReturn(this, (MCAssessment.__proto__ || Object.getPrototypeOf(MCAssessment)).call(this, props));
 
+		var _this$props$model$mod = _this.props.model.modelState,
+		    correctLabels = _this$props$model$mod.correctLabels,
+		    incorrectLabels = _this$props$model$mod.incorrectLabels;
+
+
 		_this.onClickShowExplanation = _this.onClickShowExplanation.bind(_this);
 		_this.onClickHideExplanation = _this.onClickHideExplanation.bind(_this);
 		_this.onClickSubmit = _this.onClickSubmit.bind(_this);
@@ -442,6 +402,9 @@ var MCAssessment = function (_React$Component) {
 		_this.onClick = _this.onClick.bind(_this);
 		_this.onCheckAnswer = _this.onCheckAnswer.bind(_this);
 		_this.isShowingExplanation = _this.isShowingExplanation.bind(_this);
+		_this.correctLabels = correctLabels ? correctLabels : ['Correct!', 'You got it!', 'Great job!', "That's right!"];
+		_this.incorrectLabels = incorrectLabels ? incorrectLabels : ['Incorrect'];
+		_this.updateFeedbackLabels();
 		return _this;
 	}
 
@@ -577,6 +540,7 @@ var MCAssessment = function (_React$Component) {
 			event.preventDefault();
 
 			// ScoreUtil.setScore(this.getQuestionModel().get('id'), this.calculateScore())
+			this.updateFeedbackLabels();
 			QuestionUtil.checkAnswer(this.getQuestionModel().get('id'));
 		}
 	}, {
@@ -681,6 +645,17 @@ var MCAssessment = function (_React$Component) {
 			}
 		}
 	}, {
+		key: 'updateFeedbackLabels',
+		value: function updateFeedbackLabels() {
+			this.correctLabelToShow = this.getRandomItem(this.correctLabels);
+			this.incorrectLabelToShow = this.getRandomItem(this.incorrectLabels);
+		}
+	}, {
+		key: 'getRandomItem',
+		value: function getRandomItem(arrayOfOptions) {
+			return arrayOfOptions[Math.floor(Math.random() * arrayOfOptions.length)];
+		}
+	}, {
 		key: 'render',
 		value: function render() {
 			var _this2 = this;
@@ -782,7 +757,7 @@ var MCAssessment = function (_React$Component) {
 						React.createElement(
 							'p',
 							{ className: 'result correct' },
-							'Correct!'
+							this.correctLabelToShow
 						)
 					) : React.createElement(
 						'div',
@@ -790,7 +765,7 @@ var MCAssessment = function (_React$Component) {
 						React.createElement(
 							'p',
 							{ className: 'result incorrect' },
-							'Incorrect'
+							this.incorrectLabelToShow
 						),
 						responseType === 'pick-all' ? React.createElement(
 							'span',
@@ -832,11 +807,7 @@ var MCAssessment = function (_React$Component) {
 								})
 							)
 						),
-						isShowingExplanation ? React.createElement(Button, {
-							altAction: true,
-							onClick: this.onClickHideExplanation,
-							value: 'Hide Explanation'
-						}) : solution ? React.createElement(Button, {
+						isShowingExplanation ? React.createElement(Button, { altAction: true, onClick: this.onClickHideExplanation, value: 'Hide Explanation' }) : solution ? React.createElement(Button, {
 							altAction: true,
 							onClick: this.onClickShowExplanation,
 							value: 'Read an explanation of the answer'
@@ -873,7 +844,36 @@ function __guard__(value, transform) {
 
 /***/ }),
 
-/***/ 7:
+/***/ 241:
+/***/ (function(module, exports) {
+
+// removed by extract-text-webpack-plugin
+
+/***/ }),
+
+/***/ 242:
+/***/ (function(module, exports) {
+
+// removed by extract-text-webpack-plugin
+
+/***/ }),
+
+/***/ 243:
+/***/ (function(module, exports) {
+
+// removed by extract-text-webpack-plugin
+
+/***/ }),
+
+/***/ 266:
+/***/ (function(module, exports, __webpack_require__) {
+
+module.exports = __webpack_require__(104);
+
+
+/***/ }),
+
+/***/ 38:
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -883,11 +883,11 @@ var _Common = __webpack_require__(0);
 
 var _Common2 = _interopRequireDefault(_Common);
 
-var _adapter = __webpack_require__(8);
+var _adapter = __webpack_require__(39);
 
 var _adapter2 = _interopRequireDefault(_adapter);
 
-var _viewerComponent = __webpack_require__(9);
+var _viewerComponent = __webpack_require__(40);
 
 var _viewerComponent2 = _interopRequireDefault(_viewerComponent);
 
@@ -904,7 +904,7 @@ _Common2.default.Store.registerModel('ObojoboDraft.Chunks.MCAssessment.MCChoice'
 
 /***/ }),
 
-/***/ 8:
+/***/ 39:
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -940,7 +940,7 @@ function __guard__(value, transform) {
 
 /***/ }),
 
-/***/ 9:
+/***/ 40:
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -952,7 +952,7 @@ Object.defineProperty(exports, "__esModule", {
 
 var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
 
-__webpack_require__(15);
+__webpack_require__(60);
 
 var _Common = __webpack_require__(0);
 
@@ -1071,6 +1071,13 @@ exports.default = MCChoice;
 function __guard__(value, transform) {
 	return typeof value !== 'undefined' && value !== null ? transform(value) : undefined;
 }
+
+/***/ }),
+
+/***/ 60:
+/***/ (function(module, exports) {
+
+// removed by extract-text-webpack-plugin
 
 /***/ })
 

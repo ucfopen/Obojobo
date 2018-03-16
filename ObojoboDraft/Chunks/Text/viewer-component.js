@@ -24,9 +24,7 @@ export default class Text extends React.Component {
 
 		return (
 			<OboComponent model={this.props.model} moduleData={this.props.moduleData}>
-				<TextChunk className="obojobo-draft--chunks--single-text pad">
-					{texts}
-				</TextChunk>
+				<TextChunk className="obojobo-draft--chunks--single-text pad">{texts}</TextChunk>
 			</OboComponent>
 		)
 	}

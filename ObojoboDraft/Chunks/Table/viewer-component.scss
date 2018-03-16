@@ -1,17 +1,14 @@
 @import '~styles/includes';
 
-.obojobo-draft--chunks--table.viewer
-{
-	.view
-	{
+.obojobo-draft--chunks--table.viewer {
+	.view {
 		border-collapse: collapse;
 		table-layout: fixed;
 		user-select: none;
 		width: 100%;
 
 		th,
-		td
-		{
+		td {
 			border: 1px solid $color-shadow;
 			box-sizing: border-box;
 			font-size: 1em;
@@ -23,8 +20,7 @@
 			width: auto;
 		}
 
-		th
-		{
+		th {
 			background: $color-bg2;
 			font-family: $font-default;
 			font-size: 0.9em;

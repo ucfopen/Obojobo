@@ -1,7 +1,6 @@
 @import '../../../../../scss/includes';
 
-.obojobo-draft--chunks--error
-{
+.obojobo-draft--chunks--error {
 	background: lighten($color-error, 45%);
 	border: 1px solid $color-error;
 	color: $color-error;

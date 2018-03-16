@@ -1,0 +1,23 @@
+@import '~styles/includes';
+
+.obojobo-draft--sections--assessment--lti-status {
+	width: 100%;
+	border-radius: 0.25em;
+	font-family: $font-default;
+	margin-bottom: 3em;
+	padding: $dimension-padding/2 $dimension-padding;
+	box-sizing: border-box;
+	background-color: #ffe9c3;
+
+	> h2 {
+		color: $color-text;
+		font-size: 1em;
+		font-weight: bold;
+	}
+
+	> p,
+	> div > p {
+		font-size: 0.9em;
+		line-height: 1.4em;
+	}
+}
