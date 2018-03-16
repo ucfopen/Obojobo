@@ -137,6 +137,7 @@ describe('lti route', () => {
 					expect.any(Object),
 					expect.any(Object)
 				)
+
 				expect(mockRes.render).toBeCalledWith('viewer')
 			})
 			.catch(err => {

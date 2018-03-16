@@ -3,13 +3,13 @@ const router = express.Router()
 const db = oboRequire('db')
 const logger = oboRequire('logger')
 const DraftModel = oboRequire('models/draft')
+const ltiUtil = oboRequire('lti')
 
 router.post('/start', (req, res, next) => {
 	let user
 	let visitId
-	let resultContainer = {
-		attemptHistory: []
-	}
+	let ltiOutcomeServiceUrl
+	let visitStartReturnExtensionsProps = {}
 
 	return req
 		.requireCurrentUser()
@@ -33,16 +33,30 @@ router.post('/start', (req, res, next) => {
 			)
 		})
 		.then(() => {
+			return ltiUtil.retrieveLtiLaunch(user.id, req.body.draftId, 'START_VISIT_API')
+		})
+		.then(launch => {
+			ltiOutcomeServiceUrl = launch.reqVars.lis_outcome_service_url
 			return DraftModel.fetchById(req.body.draftId)
 		})
 		.then(draft => {
-			return draft.yell('internal:startVisit', req, res, resultContainer)
+			return draft.yell(
+				'internal:startVisit',
+				req,
+				res,
+				req.body.draftId,
+				req.body.visitId,
+				visitStartReturnExtensionsProps
+			)
 		})
 		.then(() => {
 			res.success({
 				visitId,
 				isPreviewing: user.canViewEditor,
-				attemptHistory: resultContainer.attemptHistory
+				lti: {
+					lis_outcome_service_url: ltiOutcomeServiceUrl
+				},
+				extensions: visitStartReturnExtensionsProps
 			})
 		})
 		.catch(err => {

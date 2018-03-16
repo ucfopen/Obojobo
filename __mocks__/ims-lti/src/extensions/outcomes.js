@@ -7,15 +7,14 @@ let __resetCallbackForSend_replace_result = () => {
 	})
 }
 
-let __registerCallbackForSend_replace_result = (callback) => {
+let __registerCallbackForSend_replace_result = callback => {
 	send_replace_resultCallback = callback
 }
 
 class OutcomeService {
-	constructor(object){
+	constructor(object) {
 		this.send_replace_result = send_replace_resultCallback
 	}
-
 }
 
 __resetCallbackForSend_replace_result()
