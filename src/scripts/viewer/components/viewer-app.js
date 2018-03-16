@@ -97,6 +97,7 @@ export default class ViewerApp extends React.Component {
 
 		let visitIdFromApi
 		let attemptHistory
+		let viewState
 		let isPreviewing
 		let outcomeServiceURL
 
@@ -110,6 +111,7 @@ export default class ViewerApp extends React.Component {
 			.then(visit => {
 				if (visit.status !== 'ok') throw 'Invalid Visit Id'
 				visitIdFromApi = visit.value.visitId
+				viewState = visit.value.viewState
 				attemptHistory = visit.value.extensions[':ObojoboDraft.Sections.Assessment:attemptHistory']
 				isPreviewing = visit.value.isPreviewing
 				outcomeServiceURL = visit.value.lti.lisOutcomeServiceUrl
@@ -127,7 +129,8 @@ export default class ViewerApp extends React.Component {
 					this.state.model,
 					this.state.model.modelState.start,
 					window.location.pathname,
-					visitIdFromApi
+					visitIdFromApi,
+					viewState
 				)
 				AssessmentStore.init(attemptHistory)
 

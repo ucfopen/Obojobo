@@ -1309,19 +1309,25 @@ var NavStore = function (_Store) {
 				}
 			},
 			'nav:lock': function navLock(payload) {
+				_apiUtil2.default.postEvent(OboModel.getRoot(), 'nav:lock', '1.0.0');
 				return _this.setAndTrigger({ locked: true });
 			},
 			'nav:unlock': function navUnlock(payload) {
+				_apiUtil2.default.postEvent(OboModel.getRoot(), 'nav:unlock', '1.0.0');
 				return _this.setAndTrigger({ locked: false });
 			},
 			'nav:close': function navClose(payload) {
+				_apiUtil2.default.postEvent(OboModel.getRoot(), 'nav:close', '1.0.0');
 				return _this.setAndTrigger({ open: false });
 			},
 			'nav:open': function navOpen(payload) {
+				_apiUtil2.default.postEvent(OboModel.getRoot(), 'nav:open', '1.0.0');
 				return _this.setAndTrigger({ open: true });
 			},
 			'nav:toggle': function navToggle(payload) {
-				return _this.setAndTrigger({ open: !_this.state.open });
+				var updatedState = { open: !_this.state.open };
+				_apiUtil2.default.postEvent(OboModel.getRoot(), 'nav:toggle', '1.0.0', updatedState);
+				return _this.setAndTrigger(updatedState);
 			},
 			'nav:openExternalLink': function navOpenExternalLink(payload) {
 				window.open(payload.value.url);
@@ -1352,6 +1358,8 @@ var NavStore = function (_Store) {
 	_createClass(NavStore, [{
 		key: 'init',
 		value: function init(model, startingId, startingPath, visitId) {
+			var viewState = arguments.length > 4 && arguments[4] !== undefined ? arguments[4] : {};
+
 			this.state = {
 				items: {},
 				itemsById: {},
@@ -1359,8 +1367,8 @@ var NavStore = function (_Store) {
 				itemsByFullPath: {},
 				navTargetHistory: [],
 				navTargetId: null,
-				locked: false,
-				open: true,
+				locked: viewState['nav:isLocked'] != null ? viewState['nav:isLocked'].value : false,
+				open: viewState['nav:isOpen'] != null ? viewState['nav:isOpen'].value : true,
 				visitId: visitId
 			};
 
@@ -5920,8 +5928,8 @@ var Nav = function (_React$Component) {
 			}
 		}
 	}, {
-		key: 'hideNav',
-		value: function hideNav() {
+		key: 'toggleNav',
+		value: function toggleNav() {
 			return _navUtil2.default.toggle();
 		}
 	}, {
@@ -5981,7 +5989,7 @@ var Nav = function (_React$Component) {
 					'button',
 					{
 						className: 'toggle-button',
-						onClick: this.hideNav.bind(this),
+						onClick: this.toggleNav.bind(this),
 						onMouseOver: this.onMouseOver.bind(this),
 						onMouseOut: this.onMouseOut.bind(this),
 						style: {
@@ -6237,6 +6245,7 @@ var ViewerApp = function (_React$Component) {
 
 			var visitIdFromApi = void 0;
 			var attemptHistory = void 0;
+			var viewState = void 0;
 			var isPreviewing = void 0;
 			var outcomeServiceURL = void 0;
 
@@ -6249,6 +6258,7 @@ var ViewerApp = function (_React$Component) {
 			_apiUtil2.default.requestStart(visitIdFromUrl, draftIdFromUrl).then(function (visit) {
 				if (visit.status !== 'ok') throw 'Invalid Visit Id';
 				visitIdFromApi = visit.value.visitId;
+				viewState = visit.value.viewState;
 				attemptHistory = visit.value.extensions[':ObojoboDraft.Sections.Assessment:attemptHistory'];
 				isPreviewing = visit.value.isPreviewing;
 				outcomeServiceURL = visit.value.lti.lisOutcomeServiceUrl;
@@ -6263,7 +6273,7 @@ var ViewerApp = function (_React$Component) {
 				_questionStore2.default.init();
 				ModalStore.init();
 				FocusStore.init();
-				_navStore2.default.init(_this2.state.model, _this2.state.model.modelState.start, window.location.pathname, visitIdFromApi);
+				_navStore2.default.init(_this2.state.model, _this2.state.model.modelState.start, window.location.pathname, visitIdFromApi, viewState);
 				_assessmentStore2.default.init(attemptHistory);
 
 				_this2.state.navState = _navStore2.default.getState();

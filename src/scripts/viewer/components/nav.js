@@ -34,7 +34,7 @@ export default class Nav extends React.Component {
 		}
 	}
 
-	hideNav() {
+	toggleNav() {
 		return NavUtil.toggle()
 	}
 
@@ -84,7 +84,7 @@ export default class Nav extends React.Component {
 			>
 				<button
 					className="toggle-button"
-					onClick={this.hideNav.bind(this)}
+					onClick={this.toggleNav.bind(this)}
 					onMouseOver={this.onMouseOver.bind(this)}
 					onMouseOut={this.onMouseOut.bind(this)}
 					style={{
