@@ -206,14 +206,6 @@ var OboModel = _Common2.default.models.OboModel;
 
 var Adapter = {
 	construct: function construct(model, attrs) {
-		if (__guard__(attrs != null ? attrs.content : undefined, function (x1) {
-			return x1.limit;
-		}) != null) {
-			model.modelState.limit = attrs.content.limit;
-		} else {
-			model.modelState.limit = 0;
-		}
-
 		if (__guard__(attrs != null ? attrs.content : undefined, function (x2) {
 			return x2.practice;
 		}) != null) {
@@ -233,7 +225,6 @@ var Adapter = {
 	clone: function clone(model, _clone) {
 		_clone.modelState.type = model.modelState.type;
 		_clone.modelState.practice = model.modelState.practice;
-		_clone.modelState.limit = model.modelState.limit;
 		_clone.modelState.solution = null;
 
 		if (model.modelState.solution != null) {

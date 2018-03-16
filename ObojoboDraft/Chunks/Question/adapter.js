@@ -4,12 +4,6 @@ let { OboModel } = Common.models
 
 let Adapter = {
 	construct(model, attrs) {
-		if (__guard__(attrs != null ? attrs.content : undefined, x1 => x1.limit) != null) {
-			model.modelState.limit = attrs.content.limit
-		} else {
-			model.modelState.limit = 0
-		}
-
 		if (__guard__(attrs != null ? attrs.content : undefined, x2 => x2.practice) != null) {
 			model.modelState.practice = attrs.content.practice
 		} else {
@@ -26,7 +20,6 @@ let Adapter = {
 	clone(model, clone) {
 		clone.modelState.type = model.modelState.type
 		clone.modelState.practice = model.modelState.practice
-		clone.modelState.limit = model.modelState.limit
 		clone.modelState.solution = null
 
 		if (model.modelState.solution != null) {
