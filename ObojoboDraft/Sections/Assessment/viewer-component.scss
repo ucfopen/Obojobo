@@ -47,32 +47,34 @@
 		}
 	}
 
+	.attempt-info-content {
+		display:flex;
+		list-style-type: none;
+
+		>ul {
+			list-style-type: none;
+			padding: 0;
+			margin: 0;
+		}
+	}
+
 	.attempt-header {
 		display: flex;
-		justify-content: space-between;
+		justify-content: space-around;
 
 		> .attempt-info-container {
-			padding-left: 60px;
+			display: flex;
+			align-items: center;
+			justify-content: center;
 			> ul {
 				margin: 0;
 				list-style-type: none;
 				font-size: .8em;
 			}
 
-			>.attempt-info-content {
-				display:flex;
-				list-style-type: none;
-
-				>ul {
-					list-style-type: none;
-					padding: 0;
-					margin: 0;
-				}
-			}
 		}
 
 		> .score-section {
-			padding-right: 40px;
 			> ul {
 				margin: 0;
 				margin-right: 2em;
@@ -112,6 +114,19 @@
 		}
 	}
 
+	.retained-score {
+		background-color: white;
+		flex: 2;
+		border-radius: 5%;
+		margin: 0 1em;
+	}
+
+	.mod-breakdown {
+		display: flex;
+		justify-content: center;
+		font-size: .7em;
+	}
+
 	.assessment-flex-container {
 		display: flex;
 		justify-content: space-around;
@@ -119,20 +134,6 @@
 
 		> .last-attempt {
 
-		}
-
-		> .retained-score {
-			background-color: white;
-			flex: 2;
-			border-radius: 5%;
-			margin: 0 1em;
-
-			> .mod-breakdown {
-				display: flex;
-				justify-content: center;
-				font-size: .7em;
-				// list-style-type: none;
-			}
 		}
 
 		> .attempts-remaining {

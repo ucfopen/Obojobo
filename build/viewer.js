@@ -87,7 +87,7 @@
 		/***/ function(module, exports, __webpack_require__) {
 			'use strict'
 
-			var isDate = __webpack_require__(13)
+			var isDate = __webpack_require__(14)
 
 			var MILLISECONDS_IN_HOUR = 3600000
 			var MILLISECONDS_IN_MINUTE = 60000
@@ -1147,38 +1147,6 @@
 		/***/ function(module, exports, __webpack_require__) {
 			'use strict'
 
-			var startOfWeek = __webpack_require__(33)
-
-			/**
- * @category ISO Week Helpers
- * @summary Return the start of an ISO week for the given date.
- *
- * @description
- * Return the start of an ISO week for the given date.
- * The result will be in the local timezone.
- *
- * ISO week-numbering year: http://en.wikipedia.org/wiki/ISO_week_date
- *
- * @param {Date|String|Number} date - the original date
- * @returns {Date} the start of an ISO week
- *
- * @example
- * // The start of an ISO week for 2 September 2014 11:55:00:
- * var result = startOfISOWeek(new Date(2014, 8, 2, 11, 55, 0))
- * //=> Mon Sep 01 2014 00:00:00
- */
-			function startOfISOWeek(dirtyDate) {
-				return startOfWeek(dirtyDate, { weekStartsOn: 1 })
-			}
-
-			module.exports = startOfISOWeek
-
-			/***/
-		},
-		/* 7 */
-		/***/ function(module, exports, __webpack_require__) {
-			'use strict'
-
 			/**
  * Copyright (c) 2013-present, Facebook, Inc.
  * All rights reserved.
@@ -1218,7 +1186,7 @@
 
 			/***/
 		},
-		/* 8 */
+		/* 7 */
 		/***/ function(module, exports, __webpack_require__) {
 			'use strict'
 			/* WEBPACK VAR INJECTION */ ;(function(process) {
@@ -1285,7 +1253,7 @@
 
 			/***/
 		},
-		/* 9 */
+		/* 8 */
 		/***/ function(module, exports, __webpack_require__) {
 			'use strict'
 			/**
@@ -1300,6 +1268,38 @@
 			var ReactPropTypesSecret = 'SECRET_DO_NOT_PASS_THIS_OR_YOU_WILL_BE_FIRED'
 
 			module.exports = ReactPropTypesSecret
+
+			/***/
+		},
+		/* 9 */
+		/***/ function(module, exports, __webpack_require__) {
+			'use strict'
+
+			var startOfWeek = __webpack_require__(38)
+
+			/**
+ * @category ISO Week Helpers
+ * @summary Return the start of an ISO week for the given date.
+ *
+ * @description
+ * Return the start of an ISO week for the given date.
+ * The result will be in the local timezone.
+ *
+ * ISO week-numbering year: http://en.wikipedia.org/wiki/ISO_week_date
+ *
+ * @param {Date|String|Number} date - the original date
+ * @returns {Date} the start of an ISO week
+ *
+ * @example
+ * // The start of an ISO week for 2 September 2014 11:55:00:
+ * var result = startOfISOWeek(new Date(2014, 8, 2, 11, 55, 0))
+ * //=> Mon Sep 01 2014 00:00:00
+ */
+			function startOfISOWeek(dirtyDate) {
+				return startOfWeek(dirtyDate, { weekStartsOn: 1 })
+			}
+
+			module.exports = startOfISOWeek
 
 			/***/
 		},
@@ -1979,85 +1979,6 @@
 		/* 12 */
 		/***/ function(module, exports, __webpack_require__) {
 			'use strict'
-
-			var parse = __webpack_require__(1)
-			var startOfISOWeek = __webpack_require__(6)
-
-			/**
- * @category ISO Week-Numbering Year Helpers
- * @summary Get the ISO week-numbering year of the given date.
- *
- * @description
- * Get the ISO week-numbering year of the given date,
- * which always starts 3 days before the year's first Thursday.
- *
- * ISO week-numbering year: http://en.wikipedia.org/wiki/ISO_week_date
- *
- * @param {Date|String|Number} date - the given date
- * @returns {Number} the ISO week-numbering year
- *
- * @example
- * // Which ISO-week numbering year is 2 January 2005?
- * var result = getISOYear(new Date(2005, 0, 2))
- * //=> 2004
- */
-			function getISOYear(dirtyDate) {
-				var date = parse(dirtyDate)
-				var year = date.getFullYear()
-
-				var fourthOfJanuaryOfNextYear = new Date(0)
-				fourthOfJanuaryOfNextYear.setFullYear(year + 1, 0, 4)
-				fourthOfJanuaryOfNextYear.setHours(0, 0, 0, 0)
-				var startOfNextYear = startOfISOWeek(fourthOfJanuaryOfNextYear)
-
-				var fourthOfJanuaryOfThisYear = new Date(0)
-				fourthOfJanuaryOfThisYear.setFullYear(year, 0, 4)
-				fourthOfJanuaryOfThisYear.setHours(0, 0, 0, 0)
-				var startOfThisYear = startOfISOWeek(fourthOfJanuaryOfThisYear)
-
-				if (date.getTime() >= startOfNextYear.getTime()) {
-					return year + 1
-				} else if (date.getTime() >= startOfThisYear.getTime()) {
-					return year
-				} else {
-					return year - 1
-				}
-			}
-
-			module.exports = getISOYear
-
-			/***/
-		},
-		/* 13 */
-		/***/ function(module, exports, __webpack_require__) {
-			'use strict'
-
-			/**
- * @category Common Helpers
- * @summary Is the given argument an instance of Date?
- *
- * @description
- * Is the given argument an instance of Date?
- *
- * @param {*} argument - the argument to check
- * @returns {Boolean} the given argument is an instance of Date
- *
- * @example
- * // Is 'mayonnaise' a Date?
- * var result = isDate('mayonnaise')
- * //=> false
- */
-			function isDate(argument) {
-				return argument instanceof Date
-			}
-
-			module.exports = isDate
-
-			/***/
-		},
-		/* 14 */
-		/***/ function(module, exports, __webpack_require__) {
-			'use strict'
 			/* WEBPACK VAR INJECTION */ ;(function(process) {
 				/**
  * Copyright 2014-2015, Facebook, Inc.
@@ -2069,7 +1990,7 @@
  *
  */
 
-				var emptyFunction = __webpack_require__(7)
+				var emptyFunction = __webpack_require__(6)
 
 				/**
  * Similar to invariant but only logs a warning if the condition is not met.
@@ -2137,6 +2058,85 @@
 				module.exports = warning
 				/* WEBPACK VAR INJECTION */
 			}.call(exports, __webpack_require__(3)))
+
+			/***/
+		},
+		/* 13 */
+		/***/ function(module, exports, __webpack_require__) {
+			'use strict'
+
+			var parse = __webpack_require__(1)
+			var startOfISOWeek = __webpack_require__(9)
+
+			/**
+ * @category ISO Week-Numbering Year Helpers
+ * @summary Get the ISO week-numbering year of the given date.
+ *
+ * @description
+ * Get the ISO week-numbering year of the given date,
+ * which always starts 3 days before the year's first Thursday.
+ *
+ * ISO week-numbering year: http://en.wikipedia.org/wiki/ISO_week_date
+ *
+ * @param {Date|String|Number} date - the given date
+ * @returns {Number} the ISO week-numbering year
+ *
+ * @example
+ * // Which ISO-week numbering year is 2 January 2005?
+ * var result = getISOYear(new Date(2005, 0, 2))
+ * //=> 2004
+ */
+			function getISOYear(dirtyDate) {
+				var date = parse(dirtyDate)
+				var year = date.getFullYear()
+
+				var fourthOfJanuaryOfNextYear = new Date(0)
+				fourthOfJanuaryOfNextYear.setFullYear(year + 1, 0, 4)
+				fourthOfJanuaryOfNextYear.setHours(0, 0, 0, 0)
+				var startOfNextYear = startOfISOWeek(fourthOfJanuaryOfNextYear)
+
+				var fourthOfJanuaryOfThisYear = new Date(0)
+				fourthOfJanuaryOfThisYear.setFullYear(year, 0, 4)
+				fourthOfJanuaryOfThisYear.setHours(0, 0, 0, 0)
+				var startOfThisYear = startOfISOWeek(fourthOfJanuaryOfThisYear)
+
+				if (date.getTime() >= startOfNextYear.getTime()) {
+					return year + 1
+				} else if (date.getTime() >= startOfThisYear.getTime()) {
+					return year
+				} else {
+					return year - 1
+				}
+			}
+
+			module.exports = getISOYear
+
+			/***/
+		},
+		/* 14 */
+		/***/ function(module, exports, __webpack_require__) {
+			'use strict'
+
+			/**
+ * @category Common Helpers
+ * @summary Is the given argument an instance of Date?
+ *
+ * @description
+ * Is the given argument an instance of Date?
+ *
+ * @param {*} argument - the argument to check
+ * @returns {Boolean} the given argument is an instance of Date
+ *
+ * @example
+ * // Is 'mayonnaise' a Date?
+ * var result = isDate('mayonnaise')
+ * //=> false
+ */
+			function isDate(argument) {
+				return argument instanceof Date
+			}
+
+			module.exports = isDate
 
 			/***/
 		},
@@ -3436,967 +3436,6 @@
 		/* 22 */
 		/***/ function(module, exports, __webpack_require__) {
 			'use strict'
-
-			var startOfDay = __webpack_require__(31)
-
-			var MILLISECONDS_IN_MINUTE = 60000
-			var MILLISECONDS_IN_DAY = 86400000
-
-			/**
- * @category Day Helpers
- * @summary Get the number of calendar days between the given dates.
- *
- * @description
- * Get the number of calendar days between the given dates.
- *
- * @param {Date|String|Number} dateLeft - the later date
- * @param {Date|String|Number} dateRight - the earlier date
- * @returns {Number} the number of calendar days
- *
- * @example
- * // How many calendar days are between
- * // 2 July 2011 23:00:00 and 2 July 2012 00:00:00?
- * var result = differenceInCalendarDays(
- *   new Date(2012, 6, 2, 0, 0),
- *   new Date(2011, 6, 2, 23, 0)
- * )
- * //=> 366
- */
-			function differenceInCalendarDays(dirtyDateLeft, dirtyDateRight) {
-				var startOfDayLeft = startOfDay(dirtyDateLeft)
-				var startOfDayRight = startOfDay(dirtyDateRight)
-
-				var timestampLeft =
-					startOfDayLeft.getTime() - startOfDayLeft.getTimezoneOffset() * MILLISECONDS_IN_MINUTE
-				var timestampRight =
-					startOfDayRight.getTime() - startOfDayRight.getTimezoneOffset() * MILLISECONDS_IN_MINUTE
-
-				// Round the number of days to the nearest integer
-				// because the number of milliseconds in a day is not constant
-				// (e.g. it's different in the day of the daylight saving time clock shift)
-				return Math.round((timestampLeft - timestampRight) / MILLISECONDS_IN_DAY)
-			}
-
-			module.exports = differenceInCalendarDays
-
-			/***/
-		},
-		/* 23 */
-		/***/ function(module, exports, __webpack_require__) {
-			'use strict'
-
-			var getDayOfYear = __webpack_require__(24)
-			var getISOWeek = __webpack_require__(25)
-			var getISOYear = __webpack_require__(12)
-			var parse = __webpack_require__(1)
-			var isValid = __webpack_require__(26)
-			var enLocale = __webpack_require__(30)
-
-			/**
- * @category Common Helpers
- * @summary Format the date.
- *
- * @description
- * Return the formatted date string in the given format.
- *
- * Accepted tokens:
- * | Unit                    | Token | Result examples                  |
- * |-------------------------|-------|----------------------------------|
- * | Month                   | M     | 1, 2, ..., 12                    |
- * |                         | Mo    | 1st, 2nd, ..., 12th              |
- * |                         | MM    | 01, 02, ..., 12                  |
- * |                         | MMM   | Jan, Feb, ..., Dec               |
- * |                         | MMMM  | January, February, ..., December |
- * | Quarter                 | Q     | 1, 2, 3, 4                       |
- * |                         | Qo    | 1st, 2nd, 3rd, 4th               |
- * | Day of month            | D     | 1, 2, ..., 31                    |
- * |                         | Do    | 1st, 2nd, ..., 31st              |
- * |                         | DD    | 01, 02, ..., 31                  |
- * | Day of year             | DDD   | 1, 2, ..., 366                   |
- * |                         | DDDo  | 1st, 2nd, ..., 366th             |
- * |                         | DDDD  | 001, 002, ..., 366               |
- * | Day of week             | d     | 0, 1, ..., 6                     |
- * |                         | do    | 0th, 1st, ..., 6th               |
- * |                         | dd    | Su, Mo, ..., Sa                  |
- * |                         | ddd   | Sun, Mon, ..., Sat               |
- * |                         | dddd  | Sunday, Monday, ..., Saturday    |
- * | Day of ISO week         | E     | 1, 2, ..., 7                     |
- * | ISO week                | W     | 1, 2, ..., 53                    |
- * |                         | Wo    | 1st, 2nd, ..., 53rd              |
- * |                         | WW    | 01, 02, ..., 53                  |
- * | Year                    | YY    | 00, 01, ..., 99                  |
- * |                         | YYYY  | 1900, 1901, ..., 2099            |
- * | ISO week-numbering year | GG    | 00, 01, ..., 99                  |
- * |                         | GGGG  | 1900, 1901, ..., 2099            |
- * | AM/PM                   | A     | AM, PM                           |
- * |                         | a     | am, pm                           |
- * |                         | aa    | a.m., p.m.                       |
- * | Hour                    | H     | 0, 1, ... 23                     |
- * |                         | HH    | 00, 01, ... 23                   |
- * |                         | h     | 1, 2, ..., 12                    |
- * |                         | hh    | 01, 02, ..., 12                  |
- * | Minute                  | m     | 0, 1, ..., 59                    |
- * |                         | mm    | 00, 01, ..., 59                  |
- * | Second                  | s     | 0, 1, ..., 59                    |
- * |                         | ss    | 00, 01, ..., 59                  |
- * | 1/10 of second          | S     | 0, 1, ..., 9                     |
- * | 1/100 of second         | SS    | 00, 01, ..., 99                  |
- * | Millisecond             | SSS   | 000, 001, ..., 999               |
- * | Timezone                | Z     | -01:00, +00:00, ... +12:00       |
- * |                         | ZZ    | -0100, +0000, ..., +1200         |
- * | Seconds timestamp       | X     | 512969520                        |
- * | Milliseconds timestamp  | x     | 512969520900                     |
- *
- * The characters wrapped in square brackets are escaped.
- *
- * The result may vary by locale.
- *
- * @param {Date|String|Number} date - the original date
- * @param {String} [format='YYYY-MM-DDTHH:mm:ss.SSSZ'] - the string of tokens
- * @param {Object} [options] - the object with options
- * @param {Object} [options.locale=enLocale] - the locale object
- * @returns {String} the formatted date string
- *
- * @example
- * // Represent 11 February 2014 in middle-endian format:
- * var result = format(
- *   new Date(2014, 1, 11),
- *   'MM/DD/YYYY'
- * )
- * //=> '02/11/2014'
- *
- * @example
- * // Represent 2 July 2014 in Esperanto:
- * var eoLocale = require('date-fns/locale/eo')
- * var result = format(
- *   new Date(2014, 6, 2),
- *   'Do [de] MMMM YYYY',
- *   {locale: eoLocale}
- * )
- * //=> '2-a de julio 2014'
- */
-			function format(dirtyDate, dirtyFormatStr, dirtyOptions) {
-				var formatStr = dirtyFormatStr ? String(dirtyFormatStr) : 'YYYY-MM-DDTHH:mm:ss.SSSZ'
-				var options = dirtyOptions || {}
-
-				var locale = options.locale
-				var localeFormatters = enLocale.format.formatters
-				var formattingTokensRegExp = enLocale.format.formattingTokensRegExp
-				if (locale && locale.format && locale.format.formatters) {
-					localeFormatters = locale.format.formatters
-
-					if (locale.format.formattingTokensRegExp) {
-						formattingTokensRegExp = locale.format.formattingTokensRegExp
-					}
-				}
-
-				var date = parse(dirtyDate)
-
-				if (!isValid(date)) {
-					return 'Invalid Date'
-				}
-
-				var formatFn = buildFormatFn(formatStr, localeFormatters, formattingTokensRegExp)
-
-				return formatFn(date)
-			}
-
-			var formatters = {
-				// Month: 1, 2, ..., 12
-				M: function M(date) {
-					return date.getMonth() + 1
-				},
-
-				// Month: 01, 02, ..., 12
-				MM: function MM(date) {
-					return addLeadingZeros(date.getMonth() + 1, 2)
-				},
-
-				// Quarter: 1, 2, 3, 4
-				Q: function Q(date) {
-					return Math.ceil((date.getMonth() + 1) / 3)
-				},
-
-				// Day of month: 1, 2, ..., 31
-				D: function D(date) {
-					return date.getDate()
-				},
-
-				// Day of month: 01, 02, ..., 31
-				DD: function DD(date) {
-					return addLeadingZeros(date.getDate(), 2)
-				},
-
-				// Day of year: 1, 2, ..., 366
-				DDD: function DDD(date) {
-					return getDayOfYear(date)
-				},
-
-				// Day of year: 001, 002, ..., 366
-				DDDD: function DDDD(date) {
-					return addLeadingZeros(getDayOfYear(date), 3)
-				},
-
-				// Day of week: 0, 1, ..., 6
-				d: function d(date) {
-					return date.getDay()
-				},
-
-				// Day of ISO week: 1, 2, ..., 7
-				E: function E(date) {
-					return date.getDay() || 7
-				},
-
-				// ISO week: 1, 2, ..., 53
-				W: function W(date) {
-					return getISOWeek(date)
-				},
-
-				// ISO week: 01, 02, ..., 53
-				WW: function WW(date) {
-					return addLeadingZeros(getISOWeek(date), 2)
-				},
-
-				// Year: 00, 01, ..., 99
-				YY: function YY(date) {
-					return addLeadingZeros(date.getFullYear(), 4).substr(2)
-				},
-
-				// Year: 1900, 1901, ..., 2099
-				YYYY: function YYYY(date) {
-					return addLeadingZeros(date.getFullYear(), 4)
-				},
-
-				// ISO week-numbering year: 00, 01, ..., 99
-				GG: function GG(date) {
-					return String(getISOYear(date)).substr(2)
-				},
-
-				// ISO week-numbering year: 1900, 1901, ..., 2099
-				GGGG: function GGGG(date) {
-					return getISOYear(date)
-				},
-
-				// Hour: 0, 1, ... 23
-				H: function H(date) {
-					return date.getHours()
-				},
-
-				// Hour: 00, 01, ..., 23
-				HH: function HH(date) {
-					return addLeadingZeros(date.getHours(), 2)
-				},
-
-				// Hour: 1, 2, ..., 12
-				h: function h(date) {
-					var hours = date.getHours()
-					if (hours === 0) {
-						return 12
-					} else if (hours > 12) {
-						return hours % 12
-					} else {
-						return hours
-					}
-				},
-
-				// Hour: 01, 02, ..., 12
-				hh: function hh(date) {
-					return addLeadingZeros(formatters['h'](date), 2)
-				},
-
-				// Minute: 0, 1, ..., 59
-				m: function m(date) {
-					return date.getMinutes()
-				},
-
-				// Minute: 00, 01, ..., 59
-				mm: function mm(date) {
-					return addLeadingZeros(date.getMinutes(), 2)
-				},
-
-				// Second: 0, 1, ..., 59
-				s: function s(date) {
-					return date.getSeconds()
-				},
-
-				// Second: 00, 01, ..., 59
-				ss: function ss(date) {
-					return addLeadingZeros(date.getSeconds(), 2)
-				},
-
-				// 1/10 of second: 0, 1, ..., 9
-				S: function S(date) {
-					return Math.floor(date.getMilliseconds() / 100)
-				},
-
-				// 1/100 of second: 00, 01, ..., 99
-				SS: function SS(date) {
-					return addLeadingZeros(Math.floor(date.getMilliseconds() / 10), 2)
-				},
-
-				// Millisecond: 000, 001, ..., 999
-				SSS: function SSS(date) {
-					return addLeadingZeros(date.getMilliseconds(), 3)
-				},
-
-				// Timezone: -01:00, +00:00, ... +12:00
-				Z: function Z(date) {
-					return formatTimezone(date.getTimezoneOffset(), ':')
-				},
-
-				// Timezone: -0100, +0000, ... +1200
-				ZZ: function ZZ(date) {
-					return formatTimezone(date.getTimezoneOffset())
-				},
-
-				// Seconds timestamp: 512969520
-				X: function X(date) {
-					return Math.floor(date.getTime() / 1000)
-				},
-
-				// Milliseconds timestamp: 512969520900
-				x: function x(date) {
-					return date.getTime()
-				}
-			}
-
-			function buildFormatFn(formatStr, localeFormatters, formattingTokensRegExp) {
-				var array = formatStr.match(formattingTokensRegExp)
-				var length = array.length
-
-				var i
-				var formatter
-				for (i = 0; i < length; i++) {
-					formatter = localeFormatters[array[i]] || formatters[array[i]]
-					if (formatter) {
-						array[i] = formatter
-					} else {
-						array[i] = removeFormattingTokens(array[i])
-					}
-				}
-
-				return function(date) {
-					var output = ''
-					for (var i = 0; i < length; i++) {
-						if (array[i] instanceof Function) {
-							output += array[i](date, formatters)
-						} else {
-							output += array[i]
-						}
-					}
-					return output
-				}
-			}
-
-			function removeFormattingTokens(input) {
-				if (input.match(/\[[\s\S]/)) {
-					return input.replace(/^\[|]$/g, '')
-				}
-				return input.replace(/\\/g, '')
-			}
-
-			function formatTimezone(offset, delimeter) {
-				delimeter = delimeter || ''
-				var sign = offset > 0 ? '-' : '+'
-				var absOffset = Math.abs(offset)
-				var hours = Math.floor(absOffset / 60)
-				var minutes = absOffset % 60
-				return sign + addLeadingZeros(hours, 2) + delimeter + addLeadingZeros(minutes, 2)
-			}
-
-			function addLeadingZeros(number, targetLength) {
-				var output = Math.abs(number).toString()
-				while (output.length < targetLength) {
-					output = '0' + output
-				}
-				return output
-			}
-
-			module.exports = format
-
-			/***/
-		},
-		/* 24 */
-		/***/ function(module, exports, __webpack_require__) {
-			'use strict'
-
-			var parse = __webpack_require__(1)
-			var startOfYear = __webpack_require__(34)
-			var differenceInCalendarDays = __webpack_require__(22)
-
-			/**
- * @category Day Helpers
- * @summary Get the day of the year of the given date.
- *
- * @description
- * Get the day of the year of the given date.
- *
- * @param {Date|String|Number} date - the given date
- * @returns {Number} the day of year
- *
- * @example
- * // Which day of the year is 2 July 2014?
- * var result = getDayOfYear(new Date(2014, 6, 2))
- * //=> 183
- */
-			function getDayOfYear(dirtyDate) {
-				var date = parse(dirtyDate)
-				var diff = differenceInCalendarDays(date, startOfYear(date))
-				var dayOfYear = diff + 1
-				return dayOfYear
-			}
-
-			module.exports = getDayOfYear
-
-			/***/
-		},
-		/* 25 */
-		/***/ function(module, exports, __webpack_require__) {
-			'use strict'
-
-			var parse = __webpack_require__(1)
-			var startOfISOWeek = __webpack_require__(6)
-			var startOfISOYear = __webpack_require__(32)
-
-			var MILLISECONDS_IN_WEEK = 604800000
-
-			/**
- * @category ISO Week Helpers
- * @summary Get the ISO week of the given date.
- *
- * @description
- * Get the ISO week of the given date.
- *
- * ISO week-numbering year: http://en.wikipedia.org/wiki/ISO_week_date
- *
- * @param {Date|String|Number} date - the given date
- * @returns {Number} the ISO week
- *
- * @example
- * // Which week of the ISO-week numbering year is 2 January 2005?
- * var result = getISOWeek(new Date(2005, 0, 2))
- * //=> 53
- */
-			function getISOWeek(dirtyDate) {
-				var date = parse(dirtyDate)
-				var diff = startOfISOWeek(date).getTime() - startOfISOYear(date).getTime()
-
-				// Round the number of days to the nearest integer
-				// because the number of milliseconds in a week is not constant
-				// (e.g. it's different in the week of the daylight saving time clock shift)
-				return Math.round(diff / MILLISECONDS_IN_WEEK) + 1
-			}
-
-			module.exports = getISOWeek
-
-			/***/
-		},
-		/* 26 */
-		/***/ function(module, exports, __webpack_require__) {
-			'use strict'
-
-			var isDate = __webpack_require__(13)
-
-			/**
- * @category Common Helpers
- * @summary Is the given date valid?
- *
- * @description
- * Returns false if argument is Invalid Date and true otherwise.
- * Invalid Date is a Date, whose time value is NaN.
- *
- * Time value of Date: http://es5.github.io/#x15.9.1.1
- *
- * @param {Date} date - the date to check
- * @returns {Boolean} the date is valid
- * @throws {TypeError} argument must be an instance of Date
- *
- * @example
- * // For the valid date:
- * var result = isValid(new Date(2014, 1, 31))
- * //=> true
- *
- * @example
- * // For the invalid date:
- * var result = isValid(new Date(''))
- * //=> false
- */
-			function isValid(dirtyDate) {
-				if (isDate(dirtyDate)) {
-					return !isNaN(dirtyDate)
-				} else {
-					throw new TypeError(toString.call(dirtyDate) + ' is not an instance of Date')
-				}
-			}
-
-			module.exports = isValid
-
-			/***/
-		},
-		/* 27 */
-		/***/ function(module, exports, __webpack_require__) {
-			'use strict'
-
-			var commonFormatterKeys = [
-				'M',
-				'MM',
-				'Q',
-				'D',
-				'DD',
-				'DDD',
-				'DDDD',
-				'd',
-				'E',
-				'W',
-				'WW',
-				'YY',
-				'YYYY',
-				'GG',
-				'GGGG',
-				'H',
-				'HH',
-				'h',
-				'hh',
-				'm',
-				'mm',
-				's',
-				'ss',
-				'S',
-				'SS',
-				'SSS',
-				'Z',
-				'ZZ',
-				'X',
-				'x'
-			]
-
-			function buildFormattingTokensRegExp(formatters) {
-				var formatterKeys = []
-				for (var key in formatters) {
-					if (formatters.hasOwnProperty(key)) {
-						formatterKeys.push(key)
-					}
-				}
-
-				var formattingTokens = commonFormatterKeys.concat(formatterKeys).sort().reverse()
-				var formattingTokensRegExp = new RegExp(
-					'(\\[[^\\[]*\\])|(\\\\)?' + '(' + formattingTokens.join('|') + '|.)',
-					'g'
-				)
-
-				return formattingTokensRegExp
-			}
-
-			module.exports = buildFormattingTokensRegExp
-
-			/***/
-		},
-		/* 28 */
-		/***/ function(module, exports, __webpack_require__) {
-			'use strict'
-
-			function buildDistanceInWordsLocale() {
-				var distanceInWordsLocale = {
-					lessThanXSeconds: {
-						one: 'less than a second',
-						other: 'less than {{count}} seconds'
-					},
-
-					xSeconds: {
-						one: '1 second',
-						other: '{{count}} seconds'
-					},
-
-					halfAMinute: 'half a minute',
-
-					lessThanXMinutes: {
-						one: 'less than a minute',
-						other: 'less than {{count}} minutes'
-					},
-
-					xMinutes: {
-						one: '1 minute',
-						other: '{{count}} minutes'
-					},
-
-					aboutXHours: {
-						one: 'about 1 hour',
-						other: 'about {{count}} hours'
-					},
-
-					xHours: {
-						one: '1 hour',
-						other: '{{count}} hours'
-					},
-
-					xDays: {
-						one: '1 day',
-						other: '{{count}} days'
-					},
-
-					aboutXMonths: {
-						one: 'about 1 month',
-						other: 'about {{count}} months'
-					},
-
-					xMonths: {
-						one: '1 month',
-						other: '{{count}} months'
-					},
-
-					aboutXYears: {
-						one: 'about 1 year',
-						other: 'about {{count}} years'
-					},
-
-					xYears: {
-						one: '1 year',
-						other: '{{count}} years'
-					},
-
-					overXYears: {
-						one: 'over 1 year',
-						other: 'over {{count}} years'
-					},
-
-					almostXYears: {
-						one: 'almost 1 year',
-						other: 'almost {{count}} years'
-					}
-				}
-
-				function localize(token, count, options) {
-					options = options || {}
-
-					var result
-					if (typeof distanceInWordsLocale[token] === 'string') {
-						result = distanceInWordsLocale[token]
-					} else if (count === 1) {
-						result = distanceInWordsLocale[token].one
-					} else {
-						result = distanceInWordsLocale[token].other.replace('{{count}}', count)
-					}
-
-					if (options.addSuffix) {
-						if (options.comparison > 0) {
-							return 'in ' + result
-						} else {
-							return result + ' ago'
-						}
-					}
-
-					return result
-				}
-
-				return {
-					localize: localize
-				}
-			}
-
-			module.exports = buildDistanceInWordsLocale
-
-			/***/
-		},
-		/* 29 */
-		/***/ function(module, exports, __webpack_require__) {
-			'use strict'
-
-			var buildFormattingTokensRegExp = __webpack_require__(27)
-
-			function buildFormatLocale() {
-				// Note: in English, the names of days of the week and months are capitalized.
-				// If you are making a new locale based on this one, check if the same is true for the language you're working on.
-				// Generally, formatted dates should look like they are in the middle of a sentence,
-				// e.g. in Spanish language the weekdays and months should be in the lowercase.
-				var months3char = [
-					'Jan',
-					'Feb',
-					'Mar',
-					'Apr',
-					'May',
-					'Jun',
-					'Jul',
-					'Aug',
-					'Sep',
-					'Oct',
-					'Nov',
-					'Dec'
-				]
-				var monthsFull = [
-					'January',
-					'February',
-					'March',
-					'April',
-					'May',
-					'June',
-					'July',
-					'August',
-					'September',
-					'October',
-					'November',
-					'December'
-				]
-				var weekdays2char = ['Su', 'Mo', 'Tu', 'We', 'Th', 'Fr', 'Sa']
-				var weekdays3char = ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat']
-				var weekdaysFull = [
-					'Sunday',
-					'Monday',
-					'Tuesday',
-					'Wednesday',
-					'Thursday',
-					'Friday',
-					'Saturday'
-				]
-				var meridiemUppercase = ['AM', 'PM']
-				var meridiemLowercase = ['am', 'pm']
-				var meridiemFull = ['a.m.', 'p.m.']
-
-				var formatters = {
-					// Month: Jan, Feb, ..., Dec
-					MMM: function MMM(date) {
-						return months3char[date.getMonth()]
-					},
-
-					// Month: January, February, ..., December
-					MMMM: function MMMM(date) {
-						return monthsFull[date.getMonth()]
-					},
-
-					// Day of week: Su, Mo, ..., Sa
-					dd: function dd(date) {
-						return weekdays2char[date.getDay()]
-					},
-
-					// Day of week: Sun, Mon, ..., Sat
-					ddd: function ddd(date) {
-						return weekdays3char[date.getDay()]
-					},
-
-					// Day of week: Sunday, Monday, ..., Saturday
-					dddd: function dddd(date) {
-						return weekdaysFull[date.getDay()]
-					},
-
-					// AM, PM
-					A: function A(date) {
-						return date.getHours() / 12 >= 1 ? meridiemUppercase[1] : meridiemUppercase[0]
-					},
-
-					// am, pm
-					a: function a(date) {
-						return date.getHours() / 12 >= 1 ? meridiemLowercase[1] : meridiemLowercase[0]
-					},
-
-					// a.m., p.m.
-					aa: function aa(date) {
-						return date.getHours() / 12 >= 1 ? meridiemFull[1] : meridiemFull[0]
-					}
-				}
-
-				// Generate ordinal version of formatters: M -> Mo, D -> Do, etc.
-				var ordinalFormatters = ['M', 'D', 'DDD', 'd', 'Q', 'W']
-				ordinalFormatters.forEach(function(formatterToken) {
-					formatters[formatterToken + 'o'] = function(date, formatters) {
-						return ordinal(formatters[formatterToken](date))
-					}
-				})
-
-				return {
-					formatters: formatters,
-					formattingTokensRegExp: buildFormattingTokensRegExp(formatters)
-				}
-			}
-
-			function ordinal(number) {
-				var rem100 = number % 100
-				if (rem100 > 20 || rem100 < 10) {
-					switch (rem100 % 10) {
-						case 1:
-							return number + 'st'
-						case 2:
-							return number + 'nd'
-						case 3:
-							return number + 'rd'
-					}
-				}
-				return number + 'th'
-			}
-
-			module.exports = buildFormatLocale
-
-			/***/
-		},
-		/* 30 */
-		/***/ function(module, exports, __webpack_require__) {
-			'use strict'
-
-			var buildDistanceInWordsLocale = __webpack_require__(28)
-			var buildFormatLocale = __webpack_require__(29)
-
-			/**
- * @category Locales
- * @summary English locale.
- */
-			module.exports = {
-				distanceInWords: buildDistanceInWordsLocale(),
-				format: buildFormatLocale()
-			}
-
-			/***/
-		},
-		/* 31 */
-		/***/ function(module, exports, __webpack_require__) {
-			'use strict'
-
-			var parse = __webpack_require__(1)
-
-			/**
- * @category Day Helpers
- * @summary Return the start of a day for the given date.
- *
- * @description
- * Return the start of a day for the given date.
- * The result will be in the local timezone.
- *
- * @param {Date|String|Number} date - the original date
- * @returns {Date} the start of a day
- *
- * @example
- * // The start of a day for 2 September 2014 11:55:00:
- * var result = startOfDay(new Date(2014, 8, 2, 11, 55, 0))
- * //=> Tue Sep 02 2014 00:00:00
- */
-			function startOfDay(dirtyDate) {
-				var date = parse(dirtyDate)
-				date.setHours(0, 0, 0, 0)
-				return date
-			}
-
-			module.exports = startOfDay
-
-			/***/
-		},
-		/* 32 */
-		/***/ function(module, exports, __webpack_require__) {
-			'use strict'
-
-			var getISOYear = __webpack_require__(12)
-			var startOfISOWeek = __webpack_require__(6)
-
-			/**
- * @category ISO Week-Numbering Year Helpers
- * @summary Return the start of an ISO week-numbering year for the given date.
- *
- * @description
- * Return the start of an ISO week-numbering year,
- * which always starts 3 days before the year's first Thursday.
- * The result will be in the local timezone.
- *
- * ISO week-numbering year: http://en.wikipedia.org/wiki/ISO_week_date
- *
- * @param {Date|String|Number} date - the original date
- * @returns {Date} the start of an ISO year
- *
- * @example
- * // The start of an ISO week-numbering year for 2 July 2005:
- * var result = startOfISOYear(new Date(2005, 6, 2))
- * //=> Mon Jan 03 2005 00:00:00
- */
-			function startOfISOYear(dirtyDate) {
-				var year = getISOYear(dirtyDate)
-				var fourthOfJanuary = new Date(0)
-				fourthOfJanuary.setFullYear(year, 0, 4)
-				fourthOfJanuary.setHours(0, 0, 0, 0)
-				var date = startOfISOWeek(fourthOfJanuary)
-				return date
-			}
-
-			module.exports = startOfISOYear
-
-			/***/
-		},
-		/* 33 */
-		/***/ function(module, exports, __webpack_require__) {
-			'use strict'
-
-			var parse = __webpack_require__(1)
-
-			/**
- * @category Week Helpers
- * @summary Return the start of a week for the given date.
- *
- * @description
- * Return the start of a week for the given date.
- * The result will be in the local timezone.
- *
- * @param {Date|String|Number} date - the original date
- * @param {Object} [options] - the object with options
- * @param {Number} [options.weekStartsOn=0] - the index of the first day of the week (0 - Sunday)
- * @returns {Date} the start of a week
- *
- * @example
- * // The start of a week for 2 September 2014 11:55:00:
- * var result = startOfWeek(new Date(2014, 8, 2, 11, 55, 0))
- * //=> Sun Aug 31 2014 00:00:00
- *
- * @example
- * // If the week starts on Monday, the start of the week for 2 September 2014 11:55:00:
- * var result = startOfWeek(new Date(2014, 8, 2, 11, 55, 0), {weekStartsOn: 1})
- * //=> Mon Sep 01 2014 00:00:00
- */
-			function startOfWeek(dirtyDate, dirtyOptions) {
-				var weekStartsOn = dirtyOptions ? Number(dirtyOptions.weekStartsOn) || 0 : 0
-
-				var date = parse(dirtyDate)
-				var day = date.getDay()
-				var diff = (day < weekStartsOn ? 7 : 0) + day - weekStartsOn
-
-				date.setDate(date.getDate() - diff)
-				date.setHours(0, 0, 0, 0)
-				return date
-			}
-
-			module.exports = startOfWeek
-
-			/***/
-		},
-		/* 34 */
-		/***/ function(module, exports, __webpack_require__) {
-			'use strict'
-
-			var parse = __webpack_require__(1)
-
-			/**
- * @category Year Helpers
- * @summary Return the start of a year for the given date.
- *
- * @description
- * Return the start of a year for the given date.
- * The result will be in the local timezone.
- *
- * @param {Date|String|Number} date - the original date
- * @returns {Date} the start of a year
- *
- * @example
- * // The start of a year for 2 September 2014 11:55:00:
- * var result = startOfYear(new Date(2014, 8, 2, 11, 55, 00))
- * //=> Wed Jan 01 2014 00:00:00
- */
-			function startOfYear(dirtyDate) {
-				var cleanDate = parse(dirtyDate)
-				var date = new Date(0)
-				date.setFullYear(cleanDate.getFullYear(), 0, 1)
-				date.setHours(0, 0, 0, 0)
-				return date
-			}
-
-			module.exports = startOfYear
-
-			/***/
-		},
-		/* 35 */
-		/***/ function(module, exports, __webpack_require__) {
-			'use strict'
 			/* WEBPACK VAR INJECTION */ ;(function(process) {
 				/**
  * Copyright 2013-present, Facebook, Inc.
@@ -4422,9 +3461,9 @@
 							}
 
 				if (process.env.NODE_ENV !== 'production') {
-					var invariant = __webpack_require__(8)
-					var warning = __webpack_require__(14)
-					var ReactPropTypesSecret = __webpack_require__(9)
+					var invariant = __webpack_require__(7)
+					var warning = __webpack_require__(12)
+					var ReactPropTypesSecret = __webpack_require__(8)
 					var loggedTypeFailures = {}
 				}
 
@@ -4507,7 +3546,7 @@
 
 			/***/
 		},
-		/* 36 */
+		/* 23 */
 		/***/ function(module, exports, __webpack_require__) {
 			'use strict'
 			/**
@@ -4519,9 +3558,9 @@
  * of patent rights can be found in the PATENTS file in the same directory.
  */
 
-			var emptyFunction = __webpack_require__(7)
-			var invariant = __webpack_require__(8)
-			var ReactPropTypesSecret = __webpack_require__(9)
+			var emptyFunction = __webpack_require__(6)
+			var invariant = __webpack_require__(7)
+			var ReactPropTypesSecret = __webpack_require__(8)
 
 			module.exports = function() {
 				function shim(props, propName, componentName, location, propFullName, secret) {
@@ -4570,7 +3609,7 @@
 
 			/***/
 		},
-		/* 37 */
+		/* 24 */
 		/***/ function(module, exports, __webpack_require__) {
 			'use strict'
 			/* WEBPACK VAR INJECTION */ ;(function(process) {
@@ -4597,12 +3636,12 @@
 									: typeof obj
 							}
 
-				var emptyFunction = __webpack_require__(7)
-				var invariant = __webpack_require__(8)
-				var warning = __webpack_require__(14)
+				var emptyFunction = __webpack_require__(6)
+				var invariant = __webpack_require__(7)
+				var warning = __webpack_require__(12)
 
-				var ReactPropTypesSecret = __webpack_require__(9)
-				var checkPropTypes = __webpack_require__(35)
+				var ReactPropTypesSecret = __webpack_require__(8)
+				var checkPropTypes = __webpack_require__(22)
 
 				module.exports = function(isValidElement, throwOnDirectAccess) {
 					/* global Symbol */
@@ -5257,7 +4296,7 @@
 
 			/***/
 		},
-		/* 38 */
+		/* 25 */
 		/***/ function(module, exports, __webpack_require__) {
 			'use strict'
 			/* WEBPACK VAR INJECTION */ ;(function(process) {
@@ -5299,18 +4338,18 @@
 					// By explicitly using `prop-types` you are opting into new development behavior.
 					// http://fb.me/prop-types-in-prod
 					var throwOnDirectAccess = true
-					module.exports = __webpack_require__(37)(isValidElement, throwOnDirectAccess)
+					module.exports = __webpack_require__(24)(isValidElement, throwOnDirectAccess)
 				} else {
 					// By explicitly using `prop-types` you are opting into new production behavior.
 					// http://fb.me/prop-types-in-prod
-					module.exports = __webpack_require__(36)()
+					module.exports = __webpack_require__(23)()
 				}
 				/* WEBPACK VAR INJECTION */
 			}.call(exports, __webpack_require__(3)))
 
 			/***/
 		},
-		/* 39 */
+		/* 26 */
 		/***/ function(module, exports, __webpack_require__) {
 			'use strict'
 
@@ -5367,11 +4406,11 @@
 
 			var _react2 = _interopRequireDefault(_react)
 
-			var _propTypes = __webpack_require__(38)
+			var _propTypes = __webpack_require__(25)
 
 			var _propTypes2 = _interopRequireDefault(_propTypes)
 
-			var _format = __webpack_require__(23)
+			var _format = __webpack_require__(28)
 
 			var _format2 = _interopRequireDefault(_format)
 
@@ -5714,6 +4753,967 @@
 				startOnLoad: true
 			}
 			exports.default = IdleTimer
+
+			/***/
+		},
+		/* 27 */
+		/***/ function(module, exports, __webpack_require__) {
+			'use strict'
+
+			var startOfDay = __webpack_require__(36)
+
+			var MILLISECONDS_IN_MINUTE = 60000
+			var MILLISECONDS_IN_DAY = 86400000
+
+			/**
+ * @category Day Helpers
+ * @summary Get the number of calendar days between the given dates.
+ *
+ * @description
+ * Get the number of calendar days between the given dates.
+ *
+ * @param {Date|String|Number} dateLeft - the later date
+ * @param {Date|String|Number} dateRight - the earlier date
+ * @returns {Number} the number of calendar days
+ *
+ * @example
+ * // How many calendar days are between
+ * // 2 July 2011 23:00:00 and 2 July 2012 00:00:00?
+ * var result = differenceInCalendarDays(
+ *   new Date(2012, 6, 2, 0, 0),
+ *   new Date(2011, 6, 2, 23, 0)
+ * )
+ * //=> 366
+ */
+			function differenceInCalendarDays(dirtyDateLeft, dirtyDateRight) {
+				var startOfDayLeft = startOfDay(dirtyDateLeft)
+				var startOfDayRight = startOfDay(dirtyDateRight)
+
+				var timestampLeft =
+					startOfDayLeft.getTime() - startOfDayLeft.getTimezoneOffset() * MILLISECONDS_IN_MINUTE
+				var timestampRight =
+					startOfDayRight.getTime() - startOfDayRight.getTimezoneOffset() * MILLISECONDS_IN_MINUTE
+
+				// Round the number of days to the nearest integer
+				// because the number of milliseconds in a day is not constant
+				// (e.g. it's different in the day of the daylight saving time clock shift)
+				return Math.round((timestampLeft - timestampRight) / MILLISECONDS_IN_DAY)
+			}
+
+			module.exports = differenceInCalendarDays
+
+			/***/
+		},
+		/* 28 */
+		/***/ function(module, exports, __webpack_require__) {
+			'use strict'
+
+			var getDayOfYear = __webpack_require__(29)
+			var getISOWeek = __webpack_require__(30)
+			var getISOYear = __webpack_require__(13)
+			var parse = __webpack_require__(1)
+			var isValid = __webpack_require__(31)
+			var enLocale = __webpack_require__(35)
+
+			/**
+ * @category Common Helpers
+ * @summary Format the date.
+ *
+ * @description
+ * Return the formatted date string in the given format.
+ *
+ * Accepted tokens:
+ * | Unit                    | Token | Result examples                  |
+ * |-------------------------|-------|----------------------------------|
+ * | Month                   | M     | 1, 2, ..., 12                    |
+ * |                         | Mo    | 1st, 2nd, ..., 12th              |
+ * |                         | MM    | 01, 02, ..., 12                  |
+ * |                         | MMM   | Jan, Feb, ..., Dec               |
+ * |                         | MMMM  | January, February, ..., December |
+ * | Quarter                 | Q     | 1, 2, 3, 4                       |
+ * |                         | Qo    | 1st, 2nd, 3rd, 4th               |
+ * | Day of month            | D     | 1, 2, ..., 31                    |
+ * |                         | Do    | 1st, 2nd, ..., 31st              |
+ * |                         | DD    | 01, 02, ..., 31                  |
+ * | Day of year             | DDD   | 1, 2, ..., 366                   |
+ * |                         | DDDo  | 1st, 2nd, ..., 366th             |
+ * |                         | DDDD  | 001, 002, ..., 366               |
+ * | Day of week             | d     | 0, 1, ..., 6                     |
+ * |                         | do    | 0th, 1st, ..., 6th               |
+ * |                         | dd    | Su, Mo, ..., Sa                  |
+ * |                         | ddd   | Sun, Mon, ..., Sat               |
+ * |                         | dddd  | Sunday, Monday, ..., Saturday    |
+ * | Day of ISO week         | E     | 1, 2, ..., 7                     |
+ * | ISO week                | W     | 1, 2, ..., 53                    |
+ * |                         | Wo    | 1st, 2nd, ..., 53rd              |
+ * |                         | WW    | 01, 02, ..., 53                  |
+ * | Year                    | YY    | 00, 01, ..., 99                  |
+ * |                         | YYYY  | 1900, 1901, ..., 2099            |
+ * | ISO week-numbering year | GG    | 00, 01, ..., 99                  |
+ * |                         | GGGG  | 1900, 1901, ..., 2099            |
+ * | AM/PM                   | A     | AM, PM                           |
+ * |                         | a     | am, pm                           |
+ * |                         | aa    | a.m., p.m.                       |
+ * | Hour                    | H     | 0, 1, ... 23                     |
+ * |                         | HH    | 00, 01, ... 23                   |
+ * |                         | h     | 1, 2, ..., 12                    |
+ * |                         | hh    | 01, 02, ..., 12                  |
+ * | Minute                  | m     | 0, 1, ..., 59                    |
+ * |                         | mm    | 00, 01, ..., 59                  |
+ * | Second                  | s     | 0, 1, ..., 59                    |
+ * |                         | ss    | 00, 01, ..., 59                  |
+ * | 1/10 of second          | S     | 0, 1, ..., 9                     |
+ * | 1/100 of second         | SS    | 00, 01, ..., 99                  |
+ * | Millisecond             | SSS   | 000, 001, ..., 999               |
+ * | Timezone                | Z     | -01:00, +00:00, ... +12:00       |
+ * |                         | ZZ    | -0100, +0000, ..., +1200         |
+ * | Seconds timestamp       | X     | 512969520                        |
+ * | Milliseconds timestamp  | x     | 512969520900                     |
+ *
+ * The characters wrapped in square brackets are escaped.
+ *
+ * The result may vary by locale.
+ *
+ * @param {Date|String|Number} date - the original date
+ * @param {String} [format='YYYY-MM-DDTHH:mm:ss.SSSZ'] - the string of tokens
+ * @param {Object} [options] - the object with options
+ * @param {Object} [options.locale=enLocale] - the locale object
+ * @returns {String} the formatted date string
+ *
+ * @example
+ * // Represent 11 February 2014 in middle-endian format:
+ * var result = format(
+ *   new Date(2014, 1, 11),
+ *   'MM/DD/YYYY'
+ * )
+ * //=> '02/11/2014'
+ *
+ * @example
+ * // Represent 2 July 2014 in Esperanto:
+ * var eoLocale = require('date-fns/locale/eo')
+ * var result = format(
+ *   new Date(2014, 6, 2),
+ *   'Do [de] MMMM YYYY',
+ *   {locale: eoLocale}
+ * )
+ * //=> '2-a de julio 2014'
+ */
+			function format(dirtyDate, dirtyFormatStr, dirtyOptions) {
+				var formatStr = dirtyFormatStr ? String(dirtyFormatStr) : 'YYYY-MM-DDTHH:mm:ss.SSSZ'
+				var options = dirtyOptions || {}
+
+				var locale = options.locale
+				var localeFormatters = enLocale.format.formatters
+				var formattingTokensRegExp = enLocale.format.formattingTokensRegExp
+				if (locale && locale.format && locale.format.formatters) {
+					localeFormatters = locale.format.formatters
+
+					if (locale.format.formattingTokensRegExp) {
+						formattingTokensRegExp = locale.format.formattingTokensRegExp
+					}
+				}
+
+				var date = parse(dirtyDate)
+
+				if (!isValid(date)) {
+					return 'Invalid Date'
+				}
+
+				var formatFn = buildFormatFn(formatStr, localeFormatters, formattingTokensRegExp)
+
+				return formatFn(date)
+			}
+
+			var formatters = {
+				// Month: 1, 2, ..., 12
+				M: function M(date) {
+					return date.getMonth() + 1
+				},
+
+				// Month: 01, 02, ..., 12
+				MM: function MM(date) {
+					return addLeadingZeros(date.getMonth() + 1, 2)
+				},
+
+				// Quarter: 1, 2, 3, 4
+				Q: function Q(date) {
+					return Math.ceil((date.getMonth() + 1) / 3)
+				},
+
+				// Day of month: 1, 2, ..., 31
+				D: function D(date) {
+					return date.getDate()
+				},
+
+				// Day of month: 01, 02, ..., 31
+				DD: function DD(date) {
+					return addLeadingZeros(date.getDate(), 2)
+				},
+
+				// Day of year: 1, 2, ..., 366
+				DDD: function DDD(date) {
+					return getDayOfYear(date)
+				},
+
+				// Day of year: 001, 002, ..., 366
+				DDDD: function DDDD(date) {
+					return addLeadingZeros(getDayOfYear(date), 3)
+				},
+
+				// Day of week: 0, 1, ..., 6
+				d: function d(date) {
+					return date.getDay()
+				},
+
+				// Day of ISO week: 1, 2, ..., 7
+				E: function E(date) {
+					return date.getDay() || 7
+				},
+
+				// ISO week: 1, 2, ..., 53
+				W: function W(date) {
+					return getISOWeek(date)
+				},
+
+				// ISO week: 01, 02, ..., 53
+				WW: function WW(date) {
+					return addLeadingZeros(getISOWeek(date), 2)
+				},
+
+				// Year: 00, 01, ..., 99
+				YY: function YY(date) {
+					return addLeadingZeros(date.getFullYear(), 4).substr(2)
+				},
+
+				// Year: 1900, 1901, ..., 2099
+				YYYY: function YYYY(date) {
+					return addLeadingZeros(date.getFullYear(), 4)
+				},
+
+				// ISO week-numbering year: 00, 01, ..., 99
+				GG: function GG(date) {
+					return String(getISOYear(date)).substr(2)
+				},
+
+				// ISO week-numbering year: 1900, 1901, ..., 2099
+				GGGG: function GGGG(date) {
+					return getISOYear(date)
+				},
+
+				// Hour: 0, 1, ... 23
+				H: function H(date) {
+					return date.getHours()
+				},
+
+				// Hour: 00, 01, ..., 23
+				HH: function HH(date) {
+					return addLeadingZeros(date.getHours(), 2)
+				},
+
+				// Hour: 1, 2, ..., 12
+				h: function h(date) {
+					var hours = date.getHours()
+					if (hours === 0) {
+						return 12
+					} else if (hours > 12) {
+						return hours % 12
+					} else {
+						return hours
+					}
+				},
+
+				// Hour: 01, 02, ..., 12
+				hh: function hh(date) {
+					return addLeadingZeros(formatters['h'](date), 2)
+				},
+
+				// Minute: 0, 1, ..., 59
+				m: function m(date) {
+					return date.getMinutes()
+				},
+
+				// Minute: 00, 01, ..., 59
+				mm: function mm(date) {
+					return addLeadingZeros(date.getMinutes(), 2)
+				},
+
+				// Second: 0, 1, ..., 59
+				s: function s(date) {
+					return date.getSeconds()
+				},
+
+				// Second: 00, 01, ..., 59
+				ss: function ss(date) {
+					return addLeadingZeros(date.getSeconds(), 2)
+				},
+
+				// 1/10 of second: 0, 1, ..., 9
+				S: function S(date) {
+					return Math.floor(date.getMilliseconds() / 100)
+				},
+
+				// 1/100 of second: 00, 01, ..., 99
+				SS: function SS(date) {
+					return addLeadingZeros(Math.floor(date.getMilliseconds() / 10), 2)
+				},
+
+				// Millisecond: 000, 001, ..., 999
+				SSS: function SSS(date) {
+					return addLeadingZeros(date.getMilliseconds(), 3)
+				},
+
+				// Timezone: -01:00, +00:00, ... +12:00
+				Z: function Z(date) {
+					return formatTimezone(date.getTimezoneOffset(), ':')
+				},
+
+				// Timezone: -0100, +0000, ... +1200
+				ZZ: function ZZ(date) {
+					return formatTimezone(date.getTimezoneOffset())
+				},
+
+				// Seconds timestamp: 512969520
+				X: function X(date) {
+					return Math.floor(date.getTime() / 1000)
+				},
+
+				// Milliseconds timestamp: 512969520900
+				x: function x(date) {
+					return date.getTime()
+				}
+			}
+
+			function buildFormatFn(formatStr, localeFormatters, formattingTokensRegExp) {
+				var array = formatStr.match(formattingTokensRegExp)
+				var length = array.length
+
+				var i
+				var formatter
+				for (i = 0; i < length; i++) {
+					formatter = localeFormatters[array[i]] || formatters[array[i]]
+					if (formatter) {
+						array[i] = formatter
+					} else {
+						array[i] = removeFormattingTokens(array[i])
+					}
+				}
+
+				return function(date) {
+					var output = ''
+					for (var i = 0; i < length; i++) {
+						if (array[i] instanceof Function) {
+							output += array[i](date, formatters)
+						} else {
+							output += array[i]
+						}
+					}
+					return output
+				}
+			}
+
+			function removeFormattingTokens(input) {
+				if (input.match(/\[[\s\S]/)) {
+					return input.replace(/^\[|]$/g, '')
+				}
+				return input.replace(/\\/g, '')
+			}
+
+			function formatTimezone(offset, delimeter) {
+				delimeter = delimeter || ''
+				var sign = offset > 0 ? '-' : '+'
+				var absOffset = Math.abs(offset)
+				var hours = Math.floor(absOffset / 60)
+				var minutes = absOffset % 60
+				return sign + addLeadingZeros(hours, 2) + delimeter + addLeadingZeros(minutes, 2)
+			}
+
+			function addLeadingZeros(number, targetLength) {
+				var output = Math.abs(number).toString()
+				while (output.length < targetLength) {
+					output = '0' + output
+				}
+				return output
+			}
+
+			module.exports = format
+
+			/***/
+		},
+		/* 29 */
+		/***/ function(module, exports, __webpack_require__) {
+			'use strict'
+
+			var parse = __webpack_require__(1)
+			var startOfYear = __webpack_require__(39)
+			var differenceInCalendarDays = __webpack_require__(27)
+
+			/**
+ * @category Day Helpers
+ * @summary Get the day of the year of the given date.
+ *
+ * @description
+ * Get the day of the year of the given date.
+ *
+ * @param {Date|String|Number} date - the given date
+ * @returns {Number} the day of year
+ *
+ * @example
+ * // Which day of the year is 2 July 2014?
+ * var result = getDayOfYear(new Date(2014, 6, 2))
+ * //=> 183
+ */
+			function getDayOfYear(dirtyDate) {
+				var date = parse(dirtyDate)
+				var diff = differenceInCalendarDays(date, startOfYear(date))
+				var dayOfYear = diff + 1
+				return dayOfYear
+			}
+
+			module.exports = getDayOfYear
+
+			/***/
+		},
+		/* 30 */
+		/***/ function(module, exports, __webpack_require__) {
+			'use strict'
+
+			var parse = __webpack_require__(1)
+			var startOfISOWeek = __webpack_require__(9)
+			var startOfISOYear = __webpack_require__(37)
+
+			var MILLISECONDS_IN_WEEK = 604800000
+
+			/**
+ * @category ISO Week Helpers
+ * @summary Get the ISO week of the given date.
+ *
+ * @description
+ * Get the ISO week of the given date.
+ *
+ * ISO week-numbering year: http://en.wikipedia.org/wiki/ISO_week_date
+ *
+ * @param {Date|String|Number} date - the given date
+ * @returns {Number} the ISO week
+ *
+ * @example
+ * // Which week of the ISO-week numbering year is 2 January 2005?
+ * var result = getISOWeek(new Date(2005, 0, 2))
+ * //=> 53
+ */
+			function getISOWeek(dirtyDate) {
+				var date = parse(dirtyDate)
+				var diff = startOfISOWeek(date).getTime() - startOfISOYear(date).getTime()
+
+				// Round the number of days to the nearest integer
+				// because the number of milliseconds in a week is not constant
+				// (e.g. it's different in the week of the daylight saving time clock shift)
+				return Math.round(diff / MILLISECONDS_IN_WEEK) + 1
+			}
+
+			module.exports = getISOWeek
+
+			/***/
+		},
+		/* 31 */
+		/***/ function(module, exports, __webpack_require__) {
+			'use strict'
+
+			var isDate = __webpack_require__(14)
+
+			/**
+ * @category Common Helpers
+ * @summary Is the given date valid?
+ *
+ * @description
+ * Returns false if argument is Invalid Date and true otherwise.
+ * Invalid Date is a Date, whose time value is NaN.
+ *
+ * Time value of Date: http://es5.github.io/#x15.9.1.1
+ *
+ * @param {Date} date - the date to check
+ * @returns {Boolean} the date is valid
+ * @throws {TypeError} argument must be an instance of Date
+ *
+ * @example
+ * // For the valid date:
+ * var result = isValid(new Date(2014, 1, 31))
+ * //=> true
+ *
+ * @example
+ * // For the invalid date:
+ * var result = isValid(new Date(''))
+ * //=> false
+ */
+			function isValid(dirtyDate) {
+				if (isDate(dirtyDate)) {
+					return !isNaN(dirtyDate)
+				} else {
+					throw new TypeError(toString.call(dirtyDate) + ' is not an instance of Date')
+				}
+			}
+
+			module.exports = isValid
+
+			/***/
+		},
+		/* 32 */
+		/***/ function(module, exports, __webpack_require__) {
+			'use strict'
+
+			var commonFormatterKeys = [
+				'M',
+				'MM',
+				'Q',
+				'D',
+				'DD',
+				'DDD',
+				'DDDD',
+				'd',
+				'E',
+				'W',
+				'WW',
+				'YY',
+				'YYYY',
+				'GG',
+				'GGGG',
+				'H',
+				'HH',
+				'h',
+				'hh',
+				'm',
+				'mm',
+				's',
+				'ss',
+				'S',
+				'SS',
+				'SSS',
+				'Z',
+				'ZZ',
+				'X',
+				'x'
+			]
+
+			function buildFormattingTokensRegExp(formatters) {
+				var formatterKeys = []
+				for (var key in formatters) {
+					if (formatters.hasOwnProperty(key)) {
+						formatterKeys.push(key)
+					}
+				}
+
+				var formattingTokens = commonFormatterKeys.concat(formatterKeys).sort().reverse()
+				var formattingTokensRegExp = new RegExp(
+					'(\\[[^\\[]*\\])|(\\\\)?' + '(' + formattingTokens.join('|') + '|.)',
+					'g'
+				)
+
+				return formattingTokensRegExp
+			}
+
+			module.exports = buildFormattingTokensRegExp
+
+			/***/
+		},
+		/* 33 */
+		/***/ function(module, exports, __webpack_require__) {
+			'use strict'
+
+			function buildDistanceInWordsLocale() {
+				var distanceInWordsLocale = {
+					lessThanXSeconds: {
+						one: 'less than a second',
+						other: 'less than {{count}} seconds'
+					},
+
+					xSeconds: {
+						one: '1 second',
+						other: '{{count}} seconds'
+					},
+
+					halfAMinute: 'half a minute',
+
+					lessThanXMinutes: {
+						one: 'less than a minute',
+						other: 'less than {{count}} minutes'
+					},
+
+					xMinutes: {
+						one: '1 minute',
+						other: '{{count}} minutes'
+					},
+
+					aboutXHours: {
+						one: 'about 1 hour',
+						other: 'about {{count}} hours'
+					},
+
+					xHours: {
+						one: '1 hour',
+						other: '{{count}} hours'
+					},
+
+					xDays: {
+						one: '1 day',
+						other: '{{count}} days'
+					},
+
+					aboutXMonths: {
+						one: 'about 1 month',
+						other: 'about {{count}} months'
+					},
+
+					xMonths: {
+						one: '1 month',
+						other: '{{count}} months'
+					},
+
+					aboutXYears: {
+						one: 'about 1 year',
+						other: 'about {{count}} years'
+					},
+
+					xYears: {
+						one: '1 year',
+						other: '{{count}} years'
+					},
+
+					overXYears: {
+						one: 'over 1 year',
+						other: 'over {{count}} years'
+					},
+
+					almostXYears: {
+						one: 'almost 1 year',
+						other: 'almost {{count}} years'
+					}
+				}
+
+				function localize(token, count, options) {
+					options = options || {}
+
+					var result
+					if (typeof distanceInWordsLocale[token] === 'string') {
+						result = distanceInWordsLocale[token]
+					} else if (count === 1) {
+						result = distanceInWordsLocale[token].one
+					} else {
+						result = distanceInWordsLocale[token].other.replace('{{count}}', count)
+					}
+
+					if (options.addSuffix) {
+						if (options.comparison > 0) {
+							return 'in ' + result
+						} else {
+							return result + ' ago'
+						}
+					}
+
+					return result
+				}
+
+				return {
+					localize: localize
+				}
+			}
+
+			module.exports = buildDistanceInWordsLocale
+
+			/***/
+		},
+		/* 34 */
+		/***/ function(module, exports, __webpack_require__) {
+			'use strict'
+
+			var buildFormattingTokensRegExp = __webpack_require__(32)
+
+			function buildFormatLocale() {
+				// Note: in English, the names of days of the week and months are capitalized.
+				// If you are making a new locale based on this one, check if the same is true for the language you're working on.
+				// Generally, formatted dates should look like they are in the middle of a sentence,
+				// e.g. in Spanish language the weekdays and months should be in the lowercase.
+				var months3char = [
+					'Jan',
+					'Feb',
+					'Mar',
+					'Apr',
+					'May',
+					'Jun',
+					'Jul',
+					'Aug',
+					'Sep',
+					'Oct',
+					'Nov',
+					'Dec'
+				]
+				var monthsFull = [
+					'January',
+					'February',
+					'March',
+					'April',
+					'May',
+					'June',
+					'July',
+					'August',
+					'September',
+					'October',
+					'November',
+					'December'
+				]
+				var weekdays2char = ['Su', 'Mo', 'Tu', 'We', 'Th', 'Fr', 'Sa']
+				var weekdays3char = ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat']
+				var weekdaysFull = [
+					'Sunday',
+					'Monday',
+					'Tuesday',
+					'Wednesday',
+					'Thursday',
+					'Friday',
+					'Saturday'
+				]
+				var meridiemUppercase = ['AM', 'PM']
+				var meridiemLowercase = ['am', 'pm']
+				var meridiemFull = ['a.m.', 'p.m.']
+
+				var formatters = {
+					// Month: Jan, Feb, ..., Dec
+					MMM: function MMM(date) {
+						return months3char[date.getMonth()]
+					},
+
+					// Month: January, February, ..., December
+					MMMM: function MMMM(date) {
+						return monthsFull[date.getMonth()]
+					},
+
+					// Day of week: Su, Mo, ..., Sa
+					dd: function dd(date) {
+						return weekdays2char[date.getDay()]
+					},
+
+					// Day of week: Sun, Mon, ..., Sat
+					ddd: function ddd(date) {
+						return weekdays3char[date.getDay()]
+					},
+
+					// Day of week: Sunday, Monday, ..., Saturday
+					dddd: function dddd(date) {
+						return weekdaysFull[date.getDay()]
+					},
+
+					// AM, PM
+					A: function A(date) {
+						return date.getHours() / 12 >= 1 ? meridiemUppercase[1] : meridiemUppercase[0]
+					},
+
+					// am, pm
+					a: function a(date) {
+						return date.getHours() / 12 >= 1 ? meridiemLowercase[1] : meridiemLowercase[0]
+					},
+
+					// a.m., p.m.
+					aa: function aa(date) {
+						return date.getHours() / 12 >= 1 ? meridiemFull[1] : meridiemFull[0]
+					}
+				}
+
+				// Generate ordinal version of formatters: M -> Mo, D -> Do, etc.
+				var ordinalFormatters = ['M', 'D', 'DDD', 'd', 'Q', 'W']
+				ordinalFormatters.forEach(function(formatterToken) {
+					formatters[formatterToken + 'o'] = function(date, formatters) {
+						return ordinal(formatters[formatterToken](date))
+					}
+				})
+
+				return {
+					formatters: formatters,
+					formattingTokensRegExp: buildFormattingTokensRegExp(formatters)
+				}
+			}
+
+			function ordinal(number) {
+				var rem100 = number % 100
+				if (rem100 > 20 || rem100 < 10) {
+					switch (rem100 % 10) {
+						case 1:
+							return number + 'st'
+						case 2:
+							return number + 'nd'
+						case 3:
+							return number + 'rd'
+					}
+				}
+				return number + 'th'
+			}
+
+			module.exports = buildFormatLocale
+
+			/***/
+		},
+		/* 35 */
+		/***/ function(module, exports, __webpack_require__) {
+			'use strict'
+
+			var buildDistanceInWordsLocale = __webpack_require__(33)
+			var buildFormatLocale = __webpack_require__(34)
+
+			/**
+ * @category Locales
+ * @summary English locale.
+ */
+			module.exports = {
+				distanceInWords: buildDistanceInWordsLocale(),
+				format: buildFormatLocale()
+			}
+
+			/***/
+		},
+		/* 36 */
+		/***/ function(module, exports, __webpack_require__) {
+			'use strict'
+
+			var parse = __webpack_require__(1)
+
+			/**
+ * @category Day Helpers
+ * @summary Return the start of a day for the given date.
+ *
+ * @description
+ * Return the start of a day for the given date.
+ * The result will be in the local timezone.
+ *
+ * @param {Date|String|Number} date - the original date
+ * @returns {Date} the start of a day
+ *
+ * @example
+ * // The start of a day for 2 September 2014 11:55:00:
+ * var result = startOfDay(new Date(2014, 8, 2, 11, 55, 0))
+ * //=> Tue Sep 02 2014 00:00:00
+ */
+			function startOfDay(dirtyDate) {
+				var date = parse(dirtyDate)
+				date.setHours(0, 0, 0, 0)
+				return date
+			}
+
+			module.exports = startOfDay
+
+			/***/
+		},
+		/* 37 */
+		/***/ function(module, exports, __webpack_require__) {
+			'use strict'
+
+			var getISOYear = __webpack_require__(13)
+			var startOfISOWeek = __webpack_require__(9)
+
+			/**
+ * @category ISO Week-Numbering Year Helpers
+ * @summary Return the start of an ISO week-numbering year for the given date.
+ *
+ * @description
+ * Return the start of an ISO week-numbering year,
+ * which always starts 3 days before the year's first Thursday.
+ * The result will be in the local timezone.
+ *
+ * ISO week-numbering year: http://en.wikipedia.org/wiki/ISO_week_date
+ *
+ * @param {Date|String|Number} date - the original date
+ * @returns {Date} the start of an ISO year
+ *
+ * @example
+ * // The start of an ISO week-numbering year for 2 July 2005:
+ * var result = startOfISOYear(new Date(2005, 6, 2))
+ * //=> Mon Jan 03 2005 00:00:00
+ */
+			function startOfISOYear(dirtyDate) {
+				var year = getISOYear(dirtyDate)
+				var fourthOfJanuary = new Date(0)
+				fourthOfJanuary.setFullYear(year, 0, 4)
+				fourthOfJanuary.setHours(0, 0, 0, 0)
+				var date = startOfISOWeek(fourthOfJanuary)
+				return date
+			}
+
+			module.exports = startOfISOYear
+
+			/***/
+		},
+		/* 38 */
+		/***/ function(module, exports, __webpack_require__) {
+			'use strict'
+
+			var parse = __webpack_require__(1)
+
+			/**
+ * @category Week Helpers
+ * @summary Return the start of a week for the given date.
+ *
+ * @description
+ * Return the start of a week for the given date.
+ * The result will be in the local timezone.
+ *
+ * @param {Date|String|Number} date - the original date
+ * @param {Object} [options] - the object with options
+ * @param {Number} [options.weekStartsOn=0] - the index of the first day of the week (0 - Sunday)
+ * @returns {Date} the start of a week
+ *
+ * @example
+ * // The start of a week for 2 September 2014 11:55:00:
+ * var result = startOfWeek(new Date(2014, 8, 2, 11, 55, 0))
+ * //=> Sun Aug 31 2014 00:00:00
+ *
+ * @example
+ * // If the week starts on Monday, the start of the week for 2 September 2014 11:55:00:
+ * var result = startOfWeek(new Date(2014, 8, 2, 11, 55, 0), {weekStartsOn: 1})
+ * //=> Mon Sep 01 2014 00:00:00
+ */
+			function startOfWeek(dirtyDate, dirtyOptions) {
+				var weekStartsOn = dirtyOptions ? Number(dirtyOptions.weekStartsOn) || 0 : 0
+
+				var date = parse(dirtyDate)
+				var day = date.getDay()
+				var diff = (day < weekStartsOn ? 7 : 0) + day - weekStartsOn
+
+				date.setDate(date.getDate() - diff)
+				date.setHours(0, 0, 0, 0)
+				return date
+			}
+
+			module.exports = startOfWeek
+
+			/***/
+		},
+		/* 39 */
+		/***/ function(module, exports, __webpack_require__) {
+			'use strict'
+
+			var parse = __webpack_require__(1)
+
+			/**
+ * @category Year Helpers
+ * @summary Return the start of a year for the given date.
+ *
+ * @description
+ * Return the start of a year for the given date.
+ * The result will be in the local timezone.
+ *
+ * @param {Date|String|Number} date - the original date
+ * @returns {Date} the start of a year
+ *
+ * @example
+ * // The start of a year for 2 September 2014 11:55:00:
+ * var result = startOfYear(new Date(2014, 8, 2, 11, 55, 00))
+ * //=> Wed Jan 01 2014 00:00:00
+ */
+			function startOfYear(dirtyDate) {
+				var cleanDate = parse(dirtyDate)
+				var date = new Date(0)
+				date.setFullYear(cleanDate.getFullYear(), 0, 1)
+				date.setHours(0, 0, 0, 0)
+				return date
+			}
+
+			module.exports = startOfYear
 
 			/***/
 		},
@@ -6172,7 +6172,7 @@
 
 			var _react2 = _interopRequireDefault(_react)
 
-			var _reactIdleTimer = __webpack_require__(39)
+			var _reactIdleTimer = __webpack_require__(26)
 
 			var _reactIdleTimer2 = _interopRequireDefault(_reactIdleTimer)
 

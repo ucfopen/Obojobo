@@ -72,7 +72,7 @@
 	/******/
 	/******/ /******/ __webpack_require__.p = 'build/' // Load entry module and return exports
 	/******/
-	/******/ /******/ return __webpack_require__((__webpack_require__.s = 173))
+	/******/ /******/ return __webpack_require__((__webpack_require__.s = 191))
 	/******/
 })(
 	/************************************************************************/
@@ -89,85 +89,7 @@
 			/***/
 		},
 
-		/***/ /***/ 15: function(module, exports) {
-			// removed by extract-text-webpack-plugin
-			/***/
-		},
-
-		/***/ /***/ 173: function(module, exports, __webpack_require__) {
-			module.exports = __webpack_require__(7)
-
-			/***/
-		},
-
-		/***/ /***/ 7: function(module, exports, __webpack_require__) {
-			'use strict'
-
-			var _Common = __webpack_require__(0)
-
-			var _Common2 = _interopRequireDefault(_Common)
-
-			var _adapter = __webpack_require__(8)
-
-			var _adapter2 = _interopRequireDefault(_adapter)
-
-			var _viewerComponent = __webpack_require__(9)
-
-			var _viewerComponent2 = _interopRequireDefault(_viewerComponent)
-
-			function _interopRequireDefault(obj) {
-				return obj && obj.__esModule ? obj : { default: obj }
-			}
-
-			var SelectionHandler = _Common2.default.chunk.textChunk.TextGroupSelectionHandler
-
-			_Common2.default.Store.registerModel('ObojoboDraft.Chunks.MCAssessment.MCChoice', {
-				type: 'chunk',
-				adapter: _adapter2.default,
-				componentClass: _viewerComponent2.default,
-				selectionHandler: new SelectionHandler()
-			})
-
-			/***/
-		},
-
-		/***/ /***/ 8: function(module, exports, __webpack_require__) {
-			'use strict'
-
-			Object.defineProperty(exports, '__esModule', {
-				value: true
-			})
-			var Adapter = {
-				construct: function construct(model, attrs) {
-					if (
-						__guard__(attrs != null ? attrs.content : undefined, function(x) {
-							return x.score
-						}) != null
-					) {
-						model.modelState.score = attrs.content.score
-						return (model.modelState._score = attrs.content.score)
-					} else {
-						return (model.modelState.score = '')
-					}
-				},
-				clone: function clone(model, _clone) {
-					return (_clone.modelState.score = model.modelState.score)
-				},
-				toJSON: function toJSON(model, json) {
-					return (json.content.score = model.modelState.score)
-				}
-			}
-
-			exports.default = Adapter
-
-			function __guard__(value, transform) {
-				return typeof value !== 'undefined' && value !== null ? transform(value) : undefined
-			}
-
-			/***/
-		},
-
-		/***/ /***/ 9: function(module, exports, __webpack_require__) {
+		/***/ /***/ 10: function(module, exports, __webpack_require__) {
 			'use strict'
 
 			Object.defineProperty(exports, '__esModule', {
@@ -191,7 +113,7 @@
 				}
 			})()
 
-			__webpack_require__(15)
+			__webpack_require__(17)
 
 			var _Common = __webpack_require__(0)
 
@@ -372,6 +294,84 @@
 			})(React.Component)
 
 			exports.default = MCChoice
+
+			function __guard__(value, transform) {
+				return typeof value !== 'undefined' && value !== null ? transform(value) : undefined
+			}
+
+			/***/
+		},
+
+		/***/ /***/ 17: function(module, exports) {
+			// removed by extract-text-webpack-plugin
+			/***/
+		},
+
+		/***/ /***/ 191: function(module, exports, __webpack_require__) {
+			module.exports = __webpack_require__(8)
+
+			/***/
+		},
+
+		/***/ /***/ 8: function(module, exports, __webpack_require__) {
+			'use strict'
+
+			var _Common = __webpack_require__(0)
+
+			var _Common2 = _interopRequireDefault(_Common)
+
+			var _adapter = __webpack_require__(9)
+
+			var _adapter2 = _interopRequireDefault(_adapter)
+
+			var _viewerComponent = __webpack_require__(10)
+
+			var _viewerComponent2 = _interopRequireDefault(_viewerComponent)
+
+			function _interopRequireDefault(obj) {
+				return obj && obj.__esModule ? obj : { default: obj }
+			}
+
+			var SelectionHandler = _Common2.default.chunk.textChunk.TextGroupSelectionHandler
+
+			_Common2.default.Store.registerModel('ObojoboDraft.Chunks.MCAssessment.MCChoice', {
+				type: 'chunk',
+				adapter: _adapter2.default,
+				componentClass: _viewerComponent2.default,
+				selectionHandler: new SelectionHandler()
+			})
+
+			/***/
+		},
+
+		/***/ /***/ 9: function(module, exports, __webpack_require__) {
+			'use strict'
+
+			Object.defineProperty(exports, '__esModule', {
+				value: true
+			})
+			var Adapter = {
+				construct: function construct(model, attrs) {
+					if (
+						__guard__(attrs != null ? attrs.content : undefined, function(x) {
+							return x.score
+						}) != null
+					) {
+						model.modelState.score = attrs.content.score
+						return (model.modelState._score = attrs.content.score)
+					} else {
+						return (model.modelState.score = '')
+					}
+				},
+				clone: function clone(model, _clone) {
+					return (_clone.modelState.score = model.modelState.score)
+				},
+				toJSON: function toJSON(model, json) {
+					return (json.content.score = model.modelState.score)
+				}
+			}
+
+			exports.default = Adapter
 
 			function __guard__(value, transform) {
 				return typeof value !== 'undefined' && value !== null ? transform(value) : undefined

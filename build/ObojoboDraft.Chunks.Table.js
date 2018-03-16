@@ -72,7 +72,7 @@
 	/******/
 	/******/ /******/ __webpack_require__.p = 'build/' // Load entry module and return exports
 	/******/
-	/******/ /******/ return __webpack_require__((__webpack_require__.s = 178))
+	/******/ /******/ return __webpack_require__((__webpack_require__.s = 196))
 	/******/
 })(
 	/************************************************************************/
@@ -83,18 +83,18 @@
 			/***/
 		},
 
-		/***/ /***/ 156: function(module, exports) {
+		/***/ /***/ 174: function(module, exports) {
 			// removed by extract-text-webpack-plugin
 			/***/
 		},
 
-		/***/ /***/ 178: function(module, exports, __webpack_require__) {
-			module.exports = __webpack_require__(38)
+		/***/ /***/ 196: function(module, exports, __webpack_require__) {
+			module.exports = __webpack_require__(43)
 
 			/***/
 		},
 
-		/***/ /***/ 18: function(module, exports, __webpack_require__) {
+		/***/ /***/ 20: function(module, exports, __webpack_require__) {
 			'use strict'
 
 			Object.defineProperty(exports, '__esModule', {
@@ -485,7 +485,7 @@
 			/***/
 		},
 
-		/***/ /***/ 19: function(module, exports, __webpack_require__) {
+		/***/ /***/ 21: function(module, exports, __webpack_require__) {
 			'use strict'
 
 			Object.defineProperty(exports, '__esModule', {
@@ -584,22 +584,22 @@
 			/***/
 		},
 
-		/***/ /***/ 38: function(module, exports, __webpack_require__) {
+		/***/ /***/ 43: function(module, exports, __webpack_require__) {
 			'use strict'
 
 			var _Common = __webpack_require__(0)
 
 			var _Common2 = _interopRequireDefault(_Common)
 
-			var _selectionHandler = __webpack_require__(19)
+			var _selectionHandler = __webpack_require__(21)
 
 			var _selectionHandler2 = _interopRequireDefault(_selectionHandler)
 
-			var _adapter = __webpack_require__(77)
+			var _adapter = __webpack_require__(82)
 
 			var _adapter2 = _interopRequireDefault(_adapter)
 
-			var _viewerComponent = __webpack_require__(78)
+			var _viewerComponent = __webpack_require__(83)
 
 			var _viewerComponent2 = _interopRequireDefault(_viewerComponent)
 
@@ -617,14 +617,14 @@
 			/***/
 		},
 
-		/***/ /***/ 77: function(module, exports, __webpack_require__) {
+		/***/ /***/ 82: function(module, exports, __webpack_require__) {
 			'use strict'
 
 			Object.defineProperty(exports, '__esModule', {
 				value: true
 			})
 
-			var _gridTextGroup = __webpack_require__(18)
+			var _gridTextGroup = __webpack_require__(20)
 
 			var _gridTextGroup2 = _interopRequireDefault(_gridTextGroup)
 
@@ -741,7 +741,7 @@
 			/***/
 		},
 
-		/***/ /***/ 78: function(module, exports, __webpack_require__) {
+		/***/ /***/ 83: function(module, exports, __webpack_require__) {
 			'use strict'
 
 			Object.defineProperty(exports, '__esModule', {
@@ -765,13 +765,13 @@
 				}
 			})()
 
-			__webpack_require__(156)
+			__webpack_require__(174)
 
-			var _gridTextGroup = __webpack_require__(18)
+			var _gridTextGroup = __webpack_require__(20)
 
 			var _gridTextGroup2 = _interopRequireDefault(_gridTextGroup)
 
-			var _selectionHandler = __webpack_require__(19)
+			var _selectionHandler = __webpack_require__(21)
 
 			var _selectionHandler2 = _interopRequireDefault(_selectionHandler)
 

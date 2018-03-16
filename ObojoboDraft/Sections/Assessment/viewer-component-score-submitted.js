@@ -8,122 +8,7 @@ const NavUtil = Viewer.util.NavUtil
 
 import LTIStatus from './lti-status'
 import fullReview from './viewer-component-review'
-
-const testThing = [
-	{
-		type: 'value',
-		text: 'Attempt 2 score',
-		value: '50'
-	},
-	{
-		type: 'penalty',
-		text: 'Passed on attempt 2',
-		value: '1'
-	},
-	{
-		type: 'penalty',
-		text: 'Passed on attempts 1 to 2',
-		value: '3'
-	},
-	{
-		type: 'extra-credit',
-		text: 'Passed on attempt 2',
-		value: '4'
-	},
-	{
-		type: 'penalty',
-		text: 'Passed on attempts 2 to 3',
-		value: '7'
-	},
-	{
-		type: 'penalty',
-		text: 'Passed on attempt 2',
-		value: '9'
-	},
-
-	{
-		type: 'total',
-		text: 'Total',
-		value: '34'
-	}
-]
-
-const getElementStyle = type => {
-	switch (type) {
-		case 'penalty':
-			return { color: 'red', display: 'inline-block' }
-		case 'extra-credit':
-			return { color: 'green', display: 'inline-block' }
-		default:
-			return { display: 'inline-block' }
-	}
-}
-
-const ulStyle = {
-	padding: 0,
-	listStyleType: 'none',
-	borderTop: '1px solid LightGray'
-}
-
-const modsTextList = givenObj => {
-	const modsList = givenObj.map((obj, index) => {
-		let { type } = obj
-		let style = getElementStyle(type)
-
-		if (index === 0) {
-			return (
-				<li>
-					<div style={style}>
-						{obj.text}
-					</div>
-				</li>
-			)
-		}
-
-		return (
-			<li>
-				<div style={style}>{type.charAt(0).toUpperCase() + type.substr(1)}</div> - {obj.text}:
-			</li>
-		)
-	})
-
-	return (
-		<ul style={ulStyle}>
-			{modsList}
-		</ul>
-	)
-}
-
-const modsScoreList = givenObj => {
-	const getOperator = type => {
-		switch (type) {
-			case 'extra-credit':
-				return '+'
-			case 'penalty':
-				return '-'
-			case 'value':
-				return ''
-			case 'total':
-				return '='
-		}
-	}
-	const modsList = givenObj.map(obj => {
-		return (
-			<li>
-				<strong>
-					{getOperator(obj.type)}
-					{obj.value}%
-				</strong>
-			</li>
-		)
-	})
-
-	return (
-		<ul style={ulStyle}>
-			{modsList}
-		</ul>
-	)
-}
+import ScoreOverview from './viewer-component-score-overview'
 
 const scoreSubmittedView = assessment => {
 	const questionScores = AssessmentUtil.getLastAttemptScoresForModel(
@@ -195,6 +80,12 @@ const scoreSubmittedView = assessment => {
 		}
 	})(assessment.props.model.modelState.review)
 
+	let scoreOverviewProps = {
+		assessmentLabel,
+		recentScore,
+		attemptsRemaining
+	}
+
 	return (
 		<div className="score unlock">
 			<div className="results-bar">
@@ -209,15 +100,7 @@ const scoreSubmittedView = assessment => {
 							{Math.round(recentScore)}%
 						</div>
 					</div>
-					<div className="retained-score">
-						<div style={{ paddingTop: '10px' }}>Retained Score</div>
-						<h1>100%</h1>
-						<div className="mod-breakdown">
-							{modsTextList(testThing)}
-							{modsScoreList(testThing)}
-							{/* {assessmentScore === null ? '--' : Math.round(assessmentScore)}% */}
-						</div>
-					</div>
+					<ScoreOverview showRetainedScore />
 					<div className="attempts-remaining">
 						<div>Attempts Remaining</div>
 						<div>
@@ -225,7 +108,6 @@ const scoreSubmittedView = assessment => {
 						</div>
 					</div>
 				</div>
-
 				<LTIStatus
 					ltiState={ltiState}
 					launch={Launch}

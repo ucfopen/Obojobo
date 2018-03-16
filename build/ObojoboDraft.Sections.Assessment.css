@@ -23,24 +23,26 @@
     padding: 1em 0;
     box-sizing: border-box; }
 
+.obojobo-draft--sections--assessment .attempt-info-content {
+  display: flex;
+  list-style-type: none; }
+  .obojobo-draft--sections--assessment .attempt-info-content > ul {
+    list-style-type: none;
+    padding: 0;
+    margin: 0; }
+
 .obojobo-draft--sections--assessment .attempt-header {
   display: flex;
-  justify-content: space-between; }
+  justify-content: space-around; }
   .obojobo-draft--sections--assessment .attempt-header > .attempt-info-container {
-    padding-left: 60px; }
+    display: flex;
+    align-items: center;
+    justify-content: center; }
     .obojobo-draft--sections--assessment .attempt-header > .attempt-info-container > ul {
       margin: 0;
       list-style-type: none;
       font-size: .8em; }
-    .obojobo-draft--sections--assessment .attempt-header > .attempt-info-container > .attempt-info-content {
-      display: flex;
-      list-style-type: none; }
-      .obojobo-draft--sections--assessment .attempt-header > .attempt-info-container > .attempt-info-content > ul {
-        list-style-type: none;
-        padding: 0;
-        margin: 0; }
   .obojobo-draft--sections--assessment .attempt-header > .score-section {
-    padding-right: 40px;
     display: flex;
     align-items: center;
     flex-direction: row;
@@ -71,19 +73,21 @@
   .obojobo-draft--sections--assessment .attempt-button-container button {
     margin: 2px; }
 
+.obojobo-draft--sections--assessment .retained-score {
+  background-color: white;
+  flex: 2;
+  border-radius: 5%;
+  margin: 0 1em; }
+
+.obojobo-draft--sections--assessment .mod-breakdown {
+  display: flex;
+  justify-content: center;
+  font-size: .7em; }
+
 .obojobo-draft--sections--assessment .assessment-flex-container {
   display: flex;
   justify-content: space-around;
   margin-top: 1em; }
-  .obojobo-draft--sections--assessment .assessment-flex-container > .retained-score {
-    background-color: white;
-    flex: 2;
-    border-radius: 5%;
-    margin: 0 1em; }
-    .obojobo-draft--sections--assessment .assessment-flex-container > .retained-score > .mod-breakdown {
-      display: flex;
-      justify-content: center;
-      font-size: .7em; }
 
 .obojobo-draft--sections--assessment .review {
   text-align: left;
