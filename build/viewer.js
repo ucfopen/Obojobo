@@ -6537,7 +6537,8 @@ var ViewerApp = function (_React$Component) {
 			if (_navUtil2.default.canNavigate(this.state.navState)) {
 				prevModel = _navUtil2.default.getPrevModel(this.state.navState);
 				if (prevModel) {
-					prevEl = _react2.default.createElement(_inlineNavButton2.default, { ref: 'prev', type: 'prev', title: 'Back: ' + prevModel.title });
+					var navText = typeof prevModel.title !== 'undefined' && prevModel.title !== null ? 'Back: ' + prevModel.title : 'Back';
+					prevEl = _react2.default.createElement(_inlineNavButton2.default, { ref: 'prev', type: 'prev', title: '' + navText });
 				} else {
 					prevEl = _react2.default.createElement(_inlineNavButton2.default, {
 						ref: 'prev',
@@ -6549,7 +6550,8 @@ var ViewerApp = function (_React$Component) {
 
 				nextModel = _navUtil2.default.getNextModel(this.state.navState);
 				if (nextModel) {
-					nextEl = _react2.default.createElement(_inlineNavButton2.default, { ref: 'next', type: 'next', title: 'Next: ' + nextModel.title });
+					var _navText = typeof nextModel.title !== 'undefined' && nextModel.title !== null ? 'Next: ' + nextModel.title : 'Next';
+					nextEl = _react2.default.createElement(_inlineNavButton2.default, { ref: 'next', type: 'next', title: '' + _navText });
 				} else {
 					nextEl = _react2.default.createElement(_inlineNavButton2.default, {
 						ref: 'next',
