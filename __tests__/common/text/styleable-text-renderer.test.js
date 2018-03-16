@@ -18,9 +18,9 @@ let mockElToHTMLString = el => {
 		attrs = ''
 	}
 
-	return `<${el.type}${attrs}>${el.children
-		.map(child => mockElToHTMLString(child))
-		.join('')}</${el.type}>`
+	return `<${el.type}${attrs}>${el.children.map(child => mockElToHTMLString(child)).join('')}</${
+		el.type
+	}>`
 }
 
 describe('styleableTextRenderer', () => {

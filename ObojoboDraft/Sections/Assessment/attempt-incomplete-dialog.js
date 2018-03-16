@@ -16,7 +16,6 @@ export default class AttemptIncompleteDialog extends React.Component {
 	render() {
 		return (
 			<Dialog
-				width="32rem"
 				buttons={[
 					{
 						value: 'Submit as incomplete',

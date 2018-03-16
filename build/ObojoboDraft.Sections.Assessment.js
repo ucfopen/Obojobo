@@ -63,7 +63,7 @@
 /******/ 	__webpack_require__.p = "build/";
 /******/
 /******/ 	// Load entry module and return exports
-/******/ 	return __webpack_require__(__webpack_require__.s = 175);
+/******/ 	return __webpack_require__(__webpack_require__.s = 275);
 /******/ })
 /************************************************************************/
 /******/ ({
@@ -82,22 +82,7 @@ module.exports = Viewer;
 
 /***/ }),
 
-/***/ 154:
-/***/ (function(module, exports) {
-
-// removed by extract-text-webpack-plugin
-
-/***/ }),
-
-/***/ 175:
-/***/ (function(module, exports, __webpack_require__) {
-
-module.exports = __webpack_require__(42);
-
-
-/***/ }),
-
-/***/ 42:
+/***/ 113:
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -111,11 +96,11 @@ var _Viewer = __webpack_require__(1);
 
 var _Viewer2 = _interopRequireDefault(_Viewer);
 
-var _adapter = __webpack_require__(84);
+var _adapter = __webpack_require__(155);
 
 var _adapter2 = _interopRequireDefault(_adapter);
 
-var _viewerComponent = __webpack_require__(87);
+var _viewerComponent = __webpack_require__(159);
 
 var _viewerComponent2 = _interopRequireDefault(_viewerComponent);
 
@@ -175,7 +160,7 @@ _Common2.default.Store.registerModel('ObojoboDraft.Sections.Assessment', {
 
 /***/ }),
 
-/***/ 84:
+/***/ 155:
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -185,7 +170,7 @@ Object.defineProperty(exports, "__esModule", {
 	value: true
 });
 
-var _scoreActions = __webpack_require__(86);
+var _scoreActions = __webpack_require__(158);
 
 var _scoreActions2 = _interopRequireDefault(_scoreActions);
 
@@ -248,7 +233,7 @@ function __guard__(value, transform) {
 
 /***/ }),
 
-/***/ 85:
+/***/ 156:
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -301,7 +286,6 @@ var AttemptIncompleteDialog = function (_React$Component) {
 			return React.createElement(
 				Dialog,
 				{
-					width: '32rem',
 					buttons: [{
 						value: 'Submit as incomplete',
 						altAction: true,
@@ -331,7 +315,134 @@ exports.default = AttemptIncompleteDialog;
 
 /***/ }),
 
-/***/ 86:
+/***/ 157:
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+Object.defineProperty(exports, "__esModule", {
+	value: true
+});
+
+var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+
+__webpack_require__(253);
+
+var _Common = __webpack_require__(0);
+
+var _Common2 = _interopRequireDefault(_Common);
+
+var _Viewer = __webpack_require__(1);
+
+var _Viewer2 = _interopRequireDefault(_Viewer);
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
+
+function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
+
+var Button = _Common2.default.components.Button;
+
+var LTINetworkStates = _Viewer2.default.stores.assessmentStore.LTINetworkStates;
+
+var LTIStatus = function (_React$Component) {
+	_inherits(LTIStatus, _React$Component);
+
+	function LTIStatus() {
+		_classCallCheck(this, LTIStatus);
+
+		return _possibleConstructorReturn(this, (LTIStatus.__proto__ || Object.getPrototypeOf(LTIStatus)).apply(this, arguments));
+	}
+
+	_createClass(LTIStatus, [{
+		key: 'onClickResendScore',
+		value: function onClickResendScore() {
+			AssessmentUtil.resendLTIScore(this.props.model);
+		}
+	}, {
+		key: 'render',
+		value: function render() {
+			var ltiState = this.props.ltiState;
+
+			if (!ltiState.state) return null;
+
+			switch (ltiState.state.gradebookStatus) {
+				case 'ok_no_outcome_service':
+				case 'ok_gradebook_matches_assessment_score':
+				case 'ok_null_score_not_sent':
+					return null;
+
+				default:
+					return this.renderError();
+			}
+		}
+	}, {
+		key: 'renderError',
+		value: function renderError() {
+			var _this2 = this;
+
+			var ltiState = this.props.ltiState;
+			var location = this.props.launch.getOutcomeServiceHostname();
+
+			return React.createElement(
+				'div',
+				{ className: 'obojobo-draft--sections--assessment--lti-status' },
+				React.createElement(
+					'h2',
+					null,
+					'There was a problem sending your score to ' + location + '.'
+				),
+				React.createElement(
+					'p',
+					null,
+					'Don\u2019t worry - your score is safely recorded here. We just weren\u2019t able to send it to ' + location + '. Click the button below to resend your score:'
+				),
+				this.props.ltiState.errorCount === 0 || ltiState.networkState !== LTINetworkStates.IDLE ? null : React.createElement(
+					'p',
+					null,
+					React.createElement(
+						'strong',
+						null,
+						'Sorry - That didn\'t work.'
+					),
+					' Most likely the connection to ' + location + ' has expired and just needs to be refreshed. Please close this tab or window, reopen this module from ' + location + ', return to this page and then resend your score.'
+				),
+				function () {
+					switch (ltiState.networkState) {
+						case LTINetworkStates.AWAITING_SEND_ASSESSMENT_SCORE_RESPONSE:
+							return React.createElement(
+								Button,
+								{ disabled: true },
+								'Resending Score...'
+							);
+							break;
+
+						case LTINetworkStates.IDLE:
+						default:
+							return React.createElement(
+								Button,
+								{ dangerous: true, onClick: _this2.props.onClickResendScore },
+								_this2.props.ltiState.errorCount === 0 ? 'Resend score' : 'Try again anyway'
+							);
+							break;
+					}
+				}()
+			);
+		}
+	}]);
+
+	return LTIStatus;
+}(React.Component);
+
+exports.default = LTIStatus;
+
+/***/ }),
+
+/***/ 158:
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -406,7 +517,7 @@ exports.default = ScoreActions;
 
 /***/ }),
 
-/***/ 87:
+/***/ 159:
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -418,7 +529,7 @@ Object.defineProperty(exports, "__esModule", {
 
 var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
 
-__webpack_require__(154);
+__webpack_require__(254);
 
 var _Common = __webpack_require__(0);
 
@@ -428,9 +539,13 @@ var _Viewer = __webpack_require__(1);
 
 var _Viewer2 = _interopRequireDefault(_Viewer);
 
-var _attemptIncompleteDialog = __webpack_require__(85);
+var _attemptIncompleteDialog = __webpack_require__(156);
 
 var _attemptIncompleteDialog2 = _interopRequireDefault(_attemptIncompleteDialog);
+
+var _ltiStatus = __webpack_require__(157);
+
+var _ltiStatus2 = _interopRequireDefault(_ltiStatus);
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
@@ -498,19 +613,22 @@ var Assessment = function (_React$Component) {
 	}, {
 		key: 'isAttemptComplete',
 		value: function isAttemptComplete() {
-			return true;
-			//@TODO: isCurrentAttemptComplete not functional, returning true which was the status quo for the pilot
-			// return AssessmentUtil.isCurrentAttemptComplete(this.props.moduleData.assessmentState, this.props.moduleData.questionState, this.props.model);
+			return AssessmentUtil.isCurrentAttemptComplete(this.props.moduleData.assessmentState, this.props.moduleData.questionState, this.props.model);
 		}
 	}, {
 		key: 'onClickSubmit',
 		value: function onClickSubmit() {
 			if (!this.isAttemptComplete()) {
-				ModalUtil.show(React.createElement(_attemptIncompleteDialog2.default, { onSubmit: this.endAttempt }));
+				ModalUtil.show(React.createElement(_attemptIncompleteDialog2.default, { onSubmit: this.endAttempt.bind(this) }));
 				return;
 			}
 
 			return this.endAttempt();
+		}
+	}, {
+		key: 'onClickResendScore',
+		value: function onClickResendScore() {
+			AssessmentUtil.resendLTIScore(this.props.model);
 		}
 	}, {
 		key: 'endAttempt',
@@ -536,8 +654,8 @@ var Assessment = function (_React$Component) {
 	}, {
 		key: 'getScoreAction',
 		value: function getScoreAction() {
-			var highestScore = AssessmentUtil.getHighestAttemptScoreForModel(this.props.moduleData.assessmentState, this.props.model);
-			var scoreAction = this.props.model.modelState.scoreActions.getActionForScore(highestScore);
+			var assessmentScore = AssessmentUtil.getAssessmentScoreForModel(this.props.moduleData.assessmentState, this.props.model);
+			var scoreAction = this.props.model.modelState.scoreActions.getActionForScore(assessmentScore);
 			if (scoreAction) {
 				return scoreAction;
 			}
@@ -558,9 +676,10 @@ var Assessment = function (_React$Component) {
 			var _this2 = this;
 
 			var recentScore = AssessmentUtil.getLastAttemptScoreForModel(this.props.moduleData.assessmentState, this.props.model);
-			var highestScore = AssessmentUtil.getHighestAttemptScoreForModel(this.props.moduleData.assessmentState, this.props.model);
+			var assessmentScore = AssessmentUtil.getAssessmentScoreForModel(this.props.moduleData.assessmentState, this.props.model);
+			var ltiState = AssessmentUtil.getLTIStateForModel(this.props.moduleData.assessmentState, this.props.model);
 
-			// alert(@state.step+ ','+ @getCurrentStep())
+			var externalSystemLabel = this.props.moduleData.lti.outcomeServiceHostname;
 
 			var childEl = function () {
 				switch (_this2.getCurrentStep()) {
@@ -626,19 +745,61 @@ var Assessment = function (_React$Component) {
 						return React.createElement(
 							'div',
 							{ className: 'score unlock' },
+							React.createElement(_ltiStatus2.default, {
+								ltiState: ltiState,
+								onClickResendScore: _this2.onClickResendScore.bind(_this2)
+							}),
 							React.createElement(
 								'h1',
 								null,
-								'Your score is ' + Math.round(recentScore) + '%'
+								'Your attempt score is ' + Math.round(recentScore) + '%'
 							),
-							recentScore === highestScore ? React.createElement(
+							React.createElement(
 								'h2',
 								null,
-								'This is your highest score'
-							) : React.createElement(
-								'h2',
-								null,
-								'Your highest score was ' + Math.round(highestScore) + '%'
+								'Your overall score for this assessment is',
+								' ',
+								React.createElement(
+									'strong',
+									null,
+									assessmentScore === null ? '--' : Math.round(assessmentScore),
+									'% '
+								),
+								function () {
+									switch (ltiState.state.gradebookStatus) {
+										case 'ok_no_outcome_service':
+										case 'ok_null_score_not_sent':
+											return null;
+
+										case 'ok_gradebook_matches_assessment_score':
+											return React.createElement(
+												'span',
+												{ className: 'lti-sync-message is-synced' },
+												'(',
+												'sent to ' + externalSystemLabel + ' ',
+												React.createElement(
+													'span',
+													null,
+													'\u2714'
+												),
+												')'
+											);
+
+										default:
+											return React.createElement(
+												'span',
+												{ className: 'lti-sync-message is-not-synced' },
+												'(',
+												'not sent to ' + externalSystemLabel + ' ',
+												React.createElement(
+													'span',
+													null,
+													'\u2716'
+												),
+												')'
+											);
+									}
+								}()
 							),
 							childEl,
 							React.createElement(
@@ -692,6 +853,28 @@ var Assessment = function (_React$Component) {
 }(React.Component);
 
 exports.default = Assessment;
+
+/***/ }),
+
+/***/ 253:
+/***/ (function(module, exports) {
+
+// removed by extract-text-webpack-plugin
+
+/***/ }),
+
+/***/ 254:
+/***/ (function(module, exports) {
+
+// removed by extract-text-webpack-plugin
+
+/***/ }),
+
+/***/ 275:
+/***/ (function(module, exports, __webpack_require__) {
+
+module.exports = __webpack_require__(113);
+
 
 /***/ })
 

@@ -1,7 +1,6 @@
 @import '../../../scss/includes';
 
-.viewer--components--focus-blocker
-{
+.viewer--components--focus-blocker {
 	position: fixed;
 	left: 0;
 	top: 0;
@@ -37,18 +36,14 @@
 
 // }
 
-.component[data-focussed="true"]
-{
+.component[data-focussed='true'] {
 	z-index: 2;
 }
 
-.viewer--viewer-app
-{
+.viewer--viewer-app {
 	&.is-focus-state-enter,
-	&.is-focus-state-active
-	{
-		.viewer--components--focus-blocker
-		{
+	&.is-focus-state-active {
+		.viewer--components--focus-blocker {
 			opacity: 0.9;
 		}
 	}

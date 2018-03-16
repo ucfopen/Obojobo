@@ -23,9 +23,7 @@ export default class Content extends React.Component {
 				moduleData={this.props.moduleData}
 				className="obojobo-draft--sections--content"
 			>
-				<div>
-					{childEl}
-				</div>
+				<div>{childEl}</div>
 			</OboComponent>
 		)
 	}
