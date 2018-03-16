@@ -386,7 +386,7 @@ var LTIStatus = function (_React$Component) {
 			var _this2 = this;
 
 			var ltiState = this.props.ltiState;
-			var location = this.props.launch.getOutcomeServiceHostname();
+			var systemLabel = this.props.externalSystemLabel;
 
 			return React.createElement(
 				'div',
@@ -394,12 +394,12 @@ var LTIStatus = function (_React$Component) {
 				React.createElement(
 					'h2',
 					null,
-					'There was a problem sending your score to ' + location + '.'
+					'There was a problem sending your score to ' + systemLabel + '.'
 				),
 				React.createElement(
 					'p',
 					null,
-					'Don\u2019t worry - your score is safely recorded here. We just weren\u2019t able to send it to ' + location + '. Click the button below to resend your score:'
+					'Don\u2019t worry - your score is safely recorded here. We just weren\u2019t able to send it to ' + systemLabel + '. Click the button below to resend your score:'
 				),
 				this.props.ltiState.errorCount === 0 || ltiState.networkState !== LTINetworkStates.IDLE ? null : React.createElement(
 					'p',
@@ -409,7 +409,7 @@ var LTIStatus = function (_React$Component) {
 						null,
 						'Sorry - That didn\'t work.'
 					),
-					' Most likely the connection to ' + location + ' has expired and just needs to be refreshed. Please close this tab or window, reopen this module from ' + location + ', return to this page and then resend your score.'
+					' Most likely the connection to ' + systemLabel + ' has expired and just needs to be refreshed. Please close this tab or window, reopen this module from ' + systemLabel + ', return to this page and then resend your score.'
 				),
 				function () {
 					switch (ltiState.networkState) {
@@ -747,6 +747,7 @@ var Assessment = function (_React$Component) {
 							{ className: 'score unlock' },
 							React.createElement(_ltiStatus2.default, {
 								ltiState: ltiState,
+								externalSystemLabel: externalSystemLabel,
 								onClickResendScore: _this2.onClickResendScore.bind(_this2)
 							}),
 							React.createElement(
