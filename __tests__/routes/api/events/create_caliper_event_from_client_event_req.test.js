@@ -51,6 +51,11 @@ const fillReqObj = (action, payload = {}) => {
 
 let reqObjects = {
 	nav_goto: fillReqObj('nav:goto', { from, to }),
+	nav_open: fillReqObj('nav:open'),
+	nav_close: fillReqObj('nav:close'),
+	nav_toggle: fillReqObj('nav:toggle', { isOpen: true }),
+	nav_lock: fillReqObj('nav:lock'),
+	nav_unlock: fillReqObj('nav:unlock'),
 	question_view: fillReqObj('question:view', { questionId }),
 	question_hide: fillReqObj('question:hide', { questionId }),
 	question_checkAnswer: fillReqObj('question:checkAnswer', { questionId }),

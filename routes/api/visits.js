@@ -4,11 +4,13 @@ const db = oboRequire('db')
 const logger = oboRequire('logger')
 const DraftModel = oboRequire('models/draft')
 const ltiUtil = oboRequire('lti')
+const viewerState = oboRequire('viewer/viewer_state')
 
 router.post('/start', (req, res, next) => {
 	let user
 	let visitId
-	let ltiOutcomeServiceUrl
+	let viewerStateData = null
+	let ltiOutcomeServiceUrl = null
 	let visitStartReturnExtensionsProps = {}
 
 	return req
@@ -37,6 +39,12 @@ router.post('/start', (req, res, next) => {
 		})
 		.then(launch => {
 			ltiOutcomeServiceUrl = launch.reqVars.lis_outcome_service_url
+
+			return viewerState.get(user.id, req.body.draftId)
+		})
+		.then(viewerStateForDraft => {
+			viewerStateData = viewerStateForDraft
+
 			return DraftModel.fetchById(req.body.draftId)
 		})
 		.then(draft => {
@@ -56,6 +64,7 @@ router.post('/start', (req, res, next) => {
 				lti: {
 					lis_outcome_service_url: ltiOutcomeServiceUrl
 				},
+				viewState: viewerStateData,
 				extensions: visitStartReturnExtensionsProps
 			})
 		})

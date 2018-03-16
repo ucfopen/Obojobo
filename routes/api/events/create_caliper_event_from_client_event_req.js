@@ -39,6 +39,68 @@ module.exports = req => {
 				}
 			})
 
+		case 'nav:open':
+			return caliperEvents.createNavMenuShowedEvent({
+				actor: actorFromType(ACTOR_USER),
+				draftId: clientEvent.draft_id,
+				isPreviewMode,
+				sessionIds,
+				extensions: {
+					navType: clientEvent.action.split(':')[1],
+					internalName: clientEvent.action
+				}
+			})
+
+		case 'nav:close':
+			return caliperEvents.createNavMenuHidEvent({
+				actor: actorFromType(ACTOR_USER),
+				draftId: clientEvent.draft_id,
+				isPreviewMode,
+				sessionIds,
+				extensions: {
+					navType: clientEvent.action.split(':')[1],
+					internalName: clientEvent.action
+				}
+			})
+
+		case 'nav:toggle':
+			return caliperEvents.createNavMenuToggledEvent({
+				actor: actorFromType(ACTOR_USER),
+				draftId: clientEvent.draft_id,
+				isPreviewMode,
+				sessionIds,
+				extensions: {
+					navType: clientEvent.action.split(':')[1],
+					internalName: clientEvent.action,
+					isOpen: clientEvent.payload.open
+				}
+			})
+
+		case 'nav:lock':
+			return caliperEvents.createNavMenuDeactivatedEvent({
+				actor: actorFromType(ACTOR_VIEWER_CLIENT),
+				draftId: clientEvent.draft_id,
+				isPreviewMode,
+				sessionIds,
+				extensions: {
+					navType: clientEvent.action.split(':')[1],
+					internalName: clientEvent.action
+				}
+			})
+
+		case 'nav:unlock': {
+			return caliperEvents.createNavMenuActivatedEvent({
+				actor: actorFromType(ACTOR_VIEWER_CLIENT),
+				draftId: clientEvent.draft_id,
+				isPreviewMode,
+				sessionIds,
+				extensions: {
+					navType: clientEvent.action.split(':')[1],
+					internalName: clientEvent.action
+				}
+			})
+		}
+
 		case 'question:view':
 			return caliperEvents.createViewEvent({
 				actor: actorFromType(ACTOR_USER),

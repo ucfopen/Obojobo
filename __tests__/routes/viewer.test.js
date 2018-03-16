@@ -1,4 +1,6 @@
 jest.mock('../../models/draft')
+jest.mock('../../viewer/viewer_state')
+
 const { mockExpressMethods, mockRouterMethods } = require('../../__mocks__/__mock_express')
 
 describe('lti route', () => {

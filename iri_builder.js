@@ -26,8 +26,11 @@ const iriFactory = (req, providedHost) => {
 			return createIRI(host, '/api/system')
 		},
 
-		getViewerClientIRI: () => {
-			return createIRI(host, '/api/viewer/client')
+		getViewerClientIRI: (draftId, element) => {
+			if (element && draftId)
+				return createIRI(host, `/api/viewer/client/${element}?draftId=${draftId}`)
+			if (draftId) return createIRI(host, `/api/viewer/client?draftId=${draftId}`)
+			else return createIRI(host, '/api/viewer/client')
 		},
 
 		getAppServerIRI: () => {

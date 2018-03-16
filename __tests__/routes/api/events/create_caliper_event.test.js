@@ -488,4 +488,129 @@ describe('Caliper event creator', () => {
 			})
 		).toThrow(`Invalid actor type. Must provide actor of type user`)
 	})
+
+	///////////////////////////////////////////////////////////////////////////////////////////////////
+
+	it('createNavMenuHidEvent', () => {
+		const createNavMenuHidEvent = caliperEvents.createNavMenuHidEvent({
+			actor,
+			draftId,
+			sessionIds,
+			extensions
+		})
+		expect(createNavMenuHidEvent).toMatchSnapshot()
+	})
+
+	it('createNavMenuHidEvent - throws error given a bad actor', () => {
+		expect(() =>
+			caliperEvents.createNavMenuHidEvent({
+				actor: { type: 'bad' },
+				draftId,
+				sessionIds,
+				extensions
+			})
+		).toThrow(
+			`createEvent actor must be one of "user", "viewerClient" or "serverApp". Instead was given "bad".`
+		)
+	})
+
+	///////////////////////////////////////////////////////////////////////////////////////////////////
+
+	it('createNavMenuShowedEvent', () => {
+		const createNavMenuShowedEvent = caliperEvents.createNavMenuShowedEvent({
+			actor,
+			draftId,
+			sessionIds,
+			extensions
+		})
+		expect(createNavMenuShowedEvent).toMatchSnapshot()
+	})
+
+	it('createNavMenuShowedEvent - throws error given a bad actor', () => {
+		expect(() =>
+			caliperEvents.createNavMenuShowedEvent({
+				actor: { type: 'bad' },
+				draftId,
+				sessionIds,
+				extensions
+			})
+		).toThrow(
+			`createEvent actor must be one of "user", "viewerClient" or "serverApp". Instead was given "bad".`
+		)
+	})
+
+	///////////////////////////////////////////////////////////////////////////////////////////////////
+
+	it('createNavMenuToggledEvent', () => {
+		const createNavMenuToggledEvent = caliperEvents.createNavMenuToggledEvent({
+			actor,
+			draftId,
+			sessionIds,
+			extensions
+		})
+		expect(createNavMenuToggledEvent).toMatchSnapshot()
+	})
+
+	it('createNavMenuToggledEvent - throws error given a bad actor', () => {
+		expect(() =>
+			caliperEvents.createNavMenuToggledEvent({
+				actor: { type: 'bad' },
+				draftId,
+				sessionIds,
+				extensions
+			})
+		).toThrow(
+			`createEvent actor must be one of "user", "viewerClient" or "serverApp". Instead was given "bad".`
+		)
+	})
+
+	///////////////////////////////////////////////////////////////////////////////////////////////////
+
+	it('createNavMenuActivatedEvent', () => {
+		const createNavMenuActivatedEvent = caliperEvents.createNavMenuActivatedEvent({
+			actor,
+			draftId,
+			sessionIds,
+			extensions
+		})
+		expect(createNavMenuActivatedEvent).toMatchSnapshot()
+	})
+
+	it('createNavMenuActivatedEvent - throws error given a bad actor', () => {
+		expect(() =>
+			caliperEvents.createNavMenuActivatedEvent({
+				actor: { type: 'bad' },
+				draftId,
+				sessionIds,
+				extensions
+			})
+		).toThrow(
+			`createEvent actor must be one of "user", "viewerClient" or "serverApp". Instead was given "bad".`
+		)
+	})
+
+	///////////////////////////////////////////////////////////////////////////////////////////////////
+
+	it('createNavMenuDectivatedEvent', () => {
+		const createNavMenuDeactivatedEvent = caliperEvents.createNavMenuDeactivatedEvent({
+			actor,
+			draftId,
+			sessionIds,
+			extensions
+		})
+		expect(createNavMenuDeactivatedEvent).toMatchSnapshot()
+	})
+
+	it('createNavMenuDeactivatedEvent - throws error given a bad actor', () => {
+		expect(() =>
+			caliperEvents.createNavMenuDeactivatedEvent({
+				actor: { type: 'bad' },
+				draftId,
+				sessionIds,
+				extensions
+			})
+		).toThrow(
+			`createEvent actor must be one of "user", "viewerClient" or "serverApp". Instead was given "bad".`
+		)
+	})
 })

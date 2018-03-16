@@ -20,6 +20,7 @@ let currentUserMiddleware = oboRequire('express_current_user')
 let ltiLaunch = oboRequire('express_lti_launch')
 let registerChunks = oboRequire('express_register_chunks')
 let oboLtiMiddleware = oboRequire('obo_ims_lti')
+let viewerMiddleware = oboRequire('viewer_events')
 
 // when the parent app is mounted
 app.on('mount', app => {
