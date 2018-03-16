@@ -5,14 +5,7 @@ let express = require('express')
 let app = express()
 
 class Assessment extends DraftNode {
-	static getCompletedAssessmentAttemptHistory(
-		userId,
-		draftId,
-		assessmentId,
-		includePreviewAttempts
-	) {
-		let previewSql = includePreviewAttempts ? '' : 'AND preview = FALSE'
-
+	static getCompletedAssessmentAttemptHistory(userId, draftId, assessmentId) {
 		return db.manyOrNone(
 			`
 				SELECT
@@ -28,7 +21,6 @@ class Assessment extends DraftNode {
 					AND draft_id = $[draftId]
 					AND assessment_id = $[assessmentId]
 					AND completed_at IS NOT NULL
-					${previewSql}
 				ORDER BY completed_at`,
 			{ userId: userId, draftId: draftId, assessmentId: assessmentId }
 		)
@@ -46,7 +38,6 @@ class Assessment extends DraftNode {
 					AND draft_id = $[draftId]
 					AND assessment_id = $[assessmentId]
 					AND completed_at IS NOT NULL
-					AND preview = false
 			`,
 				{ userId: userId, draftId: draftId, assessmentId: assessmentId }
 			)
@@ -170,8 +161,7 @@ class Assessment extends DraftNode {
 			id
 			FROM attempts
 			WHERE
-				preview = FALSE
-				AND user_id = $[userId]
+				user_id = $[userId]
 			AND draft_id = $[draftId]
 			ORDER BY completed_at
 			`,

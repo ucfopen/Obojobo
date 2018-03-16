@@ -405,6 +405,114 @@ app.post('/api/assessments/attempt/:attemptId/end', (req, res, next) => {
 		})
 })
 
+app.post('/api/assessments/clear-preview-scores', (req, res, next) => {
+	req
+		.requireCurrentUser()
+		.then(currentUser => {
+			let isPreviewing = currentUser.canViewEditor
+
+			if (!isPreviewing) {
+				return res.notAuthorized('Not in preview mode')
+			}
+
+			// delete from assessment_scores where user_id, draft_id, preview
+			//	join lti_assessment_scores
+			// delete from attempts where user_id, draft_id, preview,
+			//	join attempts_question_responses
+			//
+
+			return db
+				.manyOrNone(
+					`
+				SELECT id
+				FROM assessment_scores
+				WHERE user_id = $[userId]
+				AND draft_id = $[draftId]
+				AND preview = true
+			`,
+					{
+						userId: currentUser.id,
+						draftId: req.body.draftId
+					}
+				)
+				.then(assessmentScoreIds => {
+					if (assessmentScoreIds.length === 0) return
+
+					return db.none(
+						`
+					DELETE FROM lti_assessment_scores
+					WHERE assessment_score_id IN ($1:csv)
+				`,
+						assessmentScoreIds.map(i => i.id)
+					)
+				})
+				.then(() => {
+					return db.manyOrNone(
+						`
+					SELECT id
+					FROM attempts
+					WHERE user_id = $[userId]
+					AND draft_id = $[draftId]
+					AND preview = true
+				`,
+						{
+							userId: currentUser.id,
+							draftId: req.body.draftId
+						}
+					)
+				})
+				.then(attemptIds => {
+					if (attemptIds.length === 0) return
+
+					return db.none(
+						`
+					DELETE FROM attempts_question_responses
+					WHERE attempt_id IN ($1:csv)
+				`,
+						attemptIds.map(i => i.id)
+					)
+				})
+				.then(() => {
+					return db.none(
+						`
+					DELETE FROM assessment_scores
+					WHERE user_id = $[userId]
+					AND draft_id = $[draftId]
+					AND preview = true
+				`,
+						{
+							userId: currentUser.id,
+							draftId: req.body.draftId
+						}
+					)
+				})
+				.then(() => {
+					return db.none(
+						`
+					DELETE FROM attempts
+					WHERE user_id = $[userId]
+					AND draft_id = $[draftId]
+					AND preview = true
+				`,
+						{
+							userId: currentUser.id,
+							draftId: req.body.draftId
+						}
+					)
+				})
+				.then(() => {
+					return res.success()
+				})
+
+			// return endAttempt(req, res, currentUser, req.params.attemptId, isPreviewing)
+			// return Assessment.getAttempts(currentUser.id, req.body.draftId)
+		})
+
+		.catch(error => {
+			logAndRespondToUnexpected(res, error, new Error('Unexpected error completing your attempt'))
+		})
+})
+
 app.get('/api/assessments/:draftId/:assessmentId/attempt/:attemptId', (req, res, next) => {
 	// check perms
 	req

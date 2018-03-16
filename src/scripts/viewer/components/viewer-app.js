@@ -325,20 +325,22 @@ export default class ViewerApp extends React.Component {
 		APIUtil.postEvent(this.state.model, 'viewer:close', '1.0.0', {})
 	}
 
-	resetAssessments() {
-		AssessmentStore.init()
-		QuestionStore.init()
-		ScoreStore.init()
+	clearPreviewScores() {
+		APIUtil.clearPreviewScores(this.state.model).then(res => {
+			AssessmentStore.init()
+			QuestionStore.init()
+			ScoreStore.init()
 
-		AssessmentStore.triggerChange()
-		QuestionStore.triggerChange()
-		ScoreStore.triggerChange()
+			AssessmentStore.triggerChange()
+			QuestionStore.triggerChange()
+			ScoreStore.triggerChange()
 
-		return ModalUtil.show(
-			<SimpleDialog ok width="15em">
-				Assessment attempts and all question responses have been reset.
-			</SimpleDialog>
-		)
+			return ModalUtil.show(
+				<SimpleDialog ok width="15em">
+					Assessment attempts and all question responses have been reset.
+				</SimpleDialog>
+			)
+		})
 	}
 
 	unlockNavigation() {
@@ -442,18 +444,20 @@ export default class ViewerApp extends React.Component {
 					{hideViewer ? null : nextEl}
 					{this.state.isPreviewing ? (
 						<div className="preview-banner">
-							<span>You are previewing this object - Assessments will not be counted</span>
+							<span>You are previewing this module</span>
 							<div className="controls">
+								<span>Preview options:</span>
 								<button
 									onClick={this.unlockNavigation.bind(this)}
 									disabled={!this.state.navState.locked}
 								>
 									Unlock navigation
 								</button>
-								<button onClick={this.resetAssessments.bind(this)}>
+								<button onClick={this.clearPreviewScores.bind(this)}>
 									Reset assessments &amp; questions
 								</button>
 							</div>
+							<div className="border" />
 						</div>
 					) : null}
 					<FocusBlocker moduleData={this.state} />

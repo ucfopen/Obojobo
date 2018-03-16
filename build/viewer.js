@@ -744,6 +744,11 @@ var APIUtil = {
 			draftId: lo.get('_id'),
 			assessmentId: assessment.get('id')
 		}));
+	},
+	clearPreviewScores: function clearPreviewScores(lo) {
+		return createParsedJsonPromise(APIUtil.post('/api/assessments/clear-preview-scores', {
+			draftId: lo.get('draftId')
+		}));
 	}
 };
 
@@ -6490,21 +6495,23 @@ var ViewerApp = function (_React$Component) {
 			_apiUtil2.default.postEvent(this.state.model, 'viewer:close', '1.0.0', {});
 		}
 	}, {
-		key: 'resetAssessments',
-		value: function resetAssessments() {
-			_assessmentStore2.default.init();
-			_questionStore2.default.init();
-			_scoreStore2.default.init();
+		key: 'clearPreviewScores',
+		value: function clearPreviewScores() {
+			_apiUtil2.default.clearPreviewScores(this.state.model).then(function (res) {
+				_assessmentStore2.default.init();
+				_questionStore2.default.init();
+				_scoreStore2.default.init();
 
-			_assessmentStore2.default.triggerChange();
-			_questionStore2.default.triggerChange();
-			_scoreStore2.default.triggerChange();
+				_assessmentStore2.default.triggerChange();
+				_questionStore2.default.triggerChange();
+				_scoreStore2.default.triggerChange();
 
-			return ModalUtil.show(_react2.default.createElement(
-				SimpleDialog,
-				{ ok: true, width: '15em' },
-				'Assessment attempts and all question responses have been reset.'
-			));
+				return ModalUtil.show(_react2.default.createElement(
+					SimpleDialog,
+					{ ok: true, width: '15em' },
+					'Assessment attempts and all question responses have been reset.'
+				));
+			});
 		}
 	}, {
 		key: 'unlockNavigation',
@@ -6621,11 +6628,16 @@ var ViewerApp = function (_React$Component) {
 						_react2.default.createElement(
 							'span',
 							null,
-							'You are previewing this object - Assessments will not be counted'
+							'You are previewing this module'
 						),
 						_react2.default.createElement(
 							'div',
 							{ className: 'controls' },
+							_react2.default.createElement(
+								'span',
+								null,
+								'Preview options:'
+							),
 							_react2.default.createElement(
 								'button',
 								{
@@ -6636,10 +6648,11 @@ var ViewerApp = function (_React$Component) {
 							),
 							_react2.default.createElement(
 								'button',
-								{ onClick: this.resetAssessments.bind(this) },
+								{ onClick: this.clearPreviewScores.bind(this) },
 								'Reset assessments & questions'
 							)
-						)
+						),
+						_react2.default.createElement('div', { className: 'border' })
 					) : null,
 					_react2.default.createElement(FocusBlocker, { moduleData: this.state }),
 					modalItem && modalItem.component ? _react2.default.createElement(
