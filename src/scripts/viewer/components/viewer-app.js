@@ -82,8 +82,12 @@ export default class ViewerApp extends React.Component {
 
 		this.onIdle = this.onIdle.bind(this)
 		this.onReturnFromIdle = this.onReturnFromIdle.bind(this)
+		this.onBeforeWindowClose = this.onBeforeWindowClose.bind(this)
 		this.onWindowClose = this.onWindowClose.bind(this)
 		this.onVisibilityChange = this.onVisibilityChange.bind(this)
+
+		window.onbeforeunload = this.onBeforeWindowClose
+		window.onunload = this.onWindowClose
 
 		this.state = state
 	}
@@ -299,6 +303,19 @@ export default class ViewerApp extends React.Component {
 
 		delete this.lastActiveEpoch
 		delete this.inactiveEvent
+	}
+
+	onBeforeWindowClose(e) {
+		let closePrevented = false
+		let preventClose = () => (closePrevented = true)
+
+		Dispatcher.trigger('viewer:closeAttempted', preventClose)
+
+		if (closePrevented) {
+			return true // Returning true will cause browser to ask user to confirm leaving page
+		}
+
+		return undefined // Returning undefined will allow browser to close normally
 	}
 
 	onWindowClose(e) {

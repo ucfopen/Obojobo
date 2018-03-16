@@ -349,37 +349,28 @@ Object.defineProperty(exports, "__esModule", {
 });
 var Adapter = {
 	construct: function construct(model, attrs) {
-		if (__guard__(attrs != null ? attrs.content : undefined, function (x) {
-			return x.responseType;
-		}) != null) {
-			model.modelState.responseType = attrs.content.responseType;
-		} else {
-			model.modelState.responseType = '';
-		}
+		var content = attrs && attrs.content ? attrs.content : {};
 
-		if (__guard__(attrs != null ? attrs.content : undefined, function (x) {
-			return x.shuffle;
-		}) == false) {
-			model.modelState.shuffle = attrs.content.shuffle;
-		} else {
-			model.modelState.shuffle = true;
-		}
+		model.modelState.responseType = content.responseType || '';
+		model.modelState.correctLabels = content.correctLabels ? content.correctLabels.split('|') : null;
+		model.modelState.incorrectLabels = content.incorrectLabels ? content.incorrectLabels.split('|') : null;
+		model.modelState.shuffle = content.shuffle !== false;
 	},
 	clone: function clone(model, _clone) {
 		_clone.modelState.responseType = model.modelState.responseType;
+		_clone.modelState.correctLabels = model.modelState.correctLabels ? model.modelState.correctLabels.slice(0) : null;
+		_clone.modelState.incorrectLabels = model.modelState.incorrectLabels ? model.modelState.incorrectLabels.slice(0) : null;
 		_clone.modelState.shuffle = model.modelState.shuffle;
 	},
 	toJSON: function toJSON(model, json) {
 		json.content.responseType = model.modelState.responseType;
+		json.content.correctLabels = model.modelState.correctLabels ? model.modelState.correctLabels.join('|') : null;
+		json.content.incorrectLabels = model.modelState.incorrectLabels ? model.modelState.incorrectLabels.join('|') : null;
 		json.content.shuffle = model.modelState.shuffle;
 	}
 };
 
 exports.default = Adapter;
-
-function __guard__(value, transform) {
-	return typeof value !== 'undefined' && value !== null ? transform(value) : undefined;
-}
 
 /***/ }),
 
@@ -435,6 +426,11 @@ var MCAssessment = function (_React$Component) {
 
 		var _this = _possibleConstructorReturn(this, (MCAssessment.__proto__ || Object.getPrototypeOf(MCAssessment)).call(this, props));
 
+		var _this$props$model$mod = _this.props.model.modelState,
+		    correctLabels = _this$props$model$mod.correctLabels,
+		    incorrectLabels = _this$props$model$mod.incorrectLabels;
+
+
 		_this.onClickShowExplanation = _this.onClickShowExplanation.bind(_this);
 		_this.onClickHideExplanation = _this.onClickHideExplanation.bind(_this);
 		_this.onClickSubmit = _this.onClickSubmit.bind(_this);
@@ -442,6 +438,9 @@ var MCAssessment = function (_React$Component) {
 		_this.onClick = _this.onClick.bind(_this);
 		_this.onCheckAnswer = _this.onCheckAnswer.bind(_this);
 		_this.isShowingExplanation = _this.isShowingExplanation.bind(_this);
+		_this.correctLabels = correctLabels ? correctLabels : ['Correct!', 'You got it!', 'Great job!', "That's right!"];
+		_this.incorrectLabels = incorrectLabels ? incorrectLabels : ['Incorrect'];
+		_this.updateFeedbackLabels();
 		return _this;
 	}
 
@@ -577,6 +576,7 @@ var MCAssessment = function (_React$Component) {
 			event.preventDefault();
 
 			// ScoreUtil.setScore(this.getQuestionModel().get('id'), this.calculateScore())
+			this.updateFeedbackLabels();
 			QuestionUtil.checkAnswer(this.getQuestionModel().get('id'));
 		}
 	}, {
@@ -681,6 +681,17 @@ var MCAssessment = function (_React$Component) {
 			}
 		}
 	}, {
+		key: 'updateFeedbackLabels',
+		value: function updateFeedbackLabels() {
+			this.correctLabelToShow = this.getRandomItem(this.correctLabels);
+			this.incorrectLabelToShow = this.getRandomItem(this.incorrectLabels);
+		}
+	}, {
+		key: 'getRandomItem',
+		value: function getRandomItem(arrayOfOptions) {
+			return arrayOfOptions[Math.floor(Math.random() * arrayOfOptions.length)];
+		}
+	}, {
 		key: 'render',
 		value: function render() {
 			var _this2 = this;
@@ -782,7 +793,7 @@ var MCAssessment = function (_React$Component) {
 						React.createElement(
 							'p',
 							{ className: 'result correct' },
-							'Correct!'
+							this.correctLabelToShow
 						)
 					) : React.createElement(
 						'div',
@@ -790,7 +801,7 @@ var MCAssessment = function (_React$Component) {
 						React.createElement(
 							'p',
 							{ className: 'result incorrect' },
-							'Incorrect'
+							this.incorrectLabelToShow
 						),
 						responseType === 'pick-all' ? React.createElement(
 							'span',

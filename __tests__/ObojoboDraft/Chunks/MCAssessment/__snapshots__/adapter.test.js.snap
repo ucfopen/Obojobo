@@ -3,7 +3,65 @@
 exports[`MCAssessment adapter can be constructed WITH attributes 1`] = `
 Object {
   "modelState": Object {
+    "correctLabels": Array [
+      "Correct!",
+      "Great job!",
+    ],
+    "incorrectLabels": Array [
+      "Incorrect",
+      "wrong",
+    ],
     "responseType": "pick-one",
+    "shuffle": false,
+  },
+}
+`;
+
+exports[`MCAssessment adapter can be constructed WITH correctLabels 1`] = `
+Object {
+  "modelState": Object {
+    "correctLabels": Array [
+      "Correct!",
+      "Great job!",
+    ],
+    "incorrectLabels": null,
+    "responseType": "",
+    "shuffle": true,
+  },
+}
+`;
+
+exports[`MCAssessment adapter can be constructed WITH incorrectLabels 1`] = `
+Object {
+  "modelState": Object {
+    "correctLabels": null,
+    "incorrectLabels": Array [
+      "Incorrect",
+      "wrong",
+    ],
+    "responseType": "",
+    "shuffle": true,
+  },
+}
+`;
+
+exports[`MCAssessment adapter can be constructed WITH responseType 1`] = `
+Object {
+  "modelState": Object {
+    "correctLabels": null,
+    "incorrectLabels": null,
+    "responseType": "pick-one",
+    "shuffle": true,
+  },
+}
+`;
+
+exports[`MCAssessment adapter can be constructed WITH shuffle 1`] = `
+Object {
+  "modelState": Object {
+    "correctLabels": null,
+    "incorrectLabels": null,
+    "responseType": "",
     "shuffle": false,
   },
 }
@@ -12,25 +70,9 @@ Object {
 exports[`MCAssessment adapter can be constructed WITHOUT attributes 1`] = `
 Object {
   "modelState": Object {
+    "correctLabels": null,
+    "incorrectLabels": null,
     "responseType": "",
-    "shuffle": true,
-  },
-}
-`;
-
-exports[`MCAssessment adapter can be constructed WITHOUT responseType 1`] = `
-Object {
-  "modelState": Object {
-    "responseType": "",
-    "shuffle": false,
-  },
-}
-`;
-
-exports[`MCAssessment adapter can be constructed WITHOUT shuffle 1`] = `
-Object {
-  "modelState": Object {
-    "responseType": "pick-one",
     "shuffle": true,
   },
 }
@@ -39,8 +81,21 @@ Object {
 exports[`MCAssessment adapter can convert to JSON 1`] = `
 Object {
   "content": Object {
+    "correctLabels": null,
+    "incorrectLabels": null,
     "responseType": "pick-one",
     "shuffle": true,
+  },
+}
+`;
+
+exports[`MCAssessment adapter can convert to JSON WITH attributes 1`] = `
+Object {
+  "content": Object {
+    "correctLabels": "Correct!|Great job!",
+    "incorrectLabels": "Incorrect|wrong",
+    "responseType": "pick-one",
+    "shuffle": false,
   },
 }
 `;
