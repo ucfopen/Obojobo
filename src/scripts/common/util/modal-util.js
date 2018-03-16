@@ -1,9 +1,9 @@
 import Dispatcher from '../../common/flux/dispatcher'
 
 let ModalUtil = {
-	show(component) {
+	show(component, hideViewer = false) {
 		Dispatcher.trigger('modal:show', {
-			value: { component }
+			value: { component, hideViewer }
 		})
 	},
 

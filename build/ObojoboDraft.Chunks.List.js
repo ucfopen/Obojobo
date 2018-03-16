@@ -63,7 +63,7 @@
 /******/ 	__webpack_require__.p = "build/";
 /******/
 /******/ 	// Load entry module and return exports
-/******/ 	return __webpack_require__(__webpack_require__.s = 173);
+/******/ 	return __webpack_require__(__webpack_require__.s = 264);
 /******/ })
 /************************************************************************/
 /******/ ({
@@ -75,196 +75,7 @@ module.exports = Common;
 
 /***/ }),
 
-/***/ 150:
-/***/ (function(module, exports) {
-
-// removed by extract-text-webpack-plugin
-
-/***/ }),
-
-/***/ 173:
-/***/ (function(module, exports, __webpack_require__) {
-
-module.exports = __webpack_require__(36);
-
-
-/***/ }),
-
-/***/ 18:
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-
-
-Object.defineProperty(exports, "__esModule", {
-	value: true
-});
-
-var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
-
-function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
-
-var getDefaultBulletStyle = function getDefaultBulletStyle(indent, type) {
-	var defaults = type === 'ordered' ? orderedDefaultBulletStyles : unorderedDefaultBulletStyles;
-	return defaults[indent % defaults.length];
-};
-
-var getStyleWithDefaults = function getStyleWithDefaults(indent, defaultType, style) {
-	if (style == null) {
-		style = null;
-	}
-	var styleWithDefaults = new ListStyle();
-
-	styleWithDefaults.type = (style != null ? style.type : undefined) ? style.type : defaultType;
-	styleWithDefaults.start = (style != null ? style.start : undefined) ? style.start : 1;
-	styleWithDefaults.bulletStyle = (style != null ? style.bulletStyle : undefined) ? style.bulletStyle : getDefaultBulletStyle(indent, styleWithDefaults.type);
-
-	return styleWithDefaults;
-};
-
-var ListStyle = function () {
-	function ListStyle(opts) {
-		_classCallCheck(this, ListStyle);
-
-		if (opts == null) {
-			opts = {};
-		}
-		this.type = opts.type || null;
-		this.start = opts.start || null;
-		this.bulletStyle = opts.bulletStyle || null;
-	}
-
-	_createClass(ListStyle, [{
-		key: 'toDescriptor',
-		value: function toDescriptor() {
-			return {
-				type: this.type || null,
-				start: this.start || null,
-				bulletStyle: this.bulletStyle || null
-			};
-		}
-	}, {
-		key: 'clone',
-		value: function clone() {
-			return new ListStyle(this);
-		}
-	}]);
-
-	return ListStyle;
-}();
-
-var ListStyles = function () {
-	function ListStyles(type) {
-		_classCallCheck(this, ListStyles);
-
-		this.type = type;
-		this.styles = {};
-	}
-
-	_createClass(ListStyles, [{
-		key: 'init',
-		value: function init() {
-			this.type = ListStyles.TYPE_UNORDERED;
-			return this.styles = {};
-		}
-	}, {
-		key: 'set',
-		value: function set(indent, opts) {
-			return this.styles[indent] = new ListStyle(opts);
-		}
-	}, {
-		key: 'get',
-		value: function get(indent) {
-			return getStyleWithDefaults(indent, this.type, this.styles[indent]);
-		}
-	}, {
-		key: 'getSetStyles',
-		value: function getSetStyles(indent) {
-			var style = this.styles[indent];
-			if (!style) {
-				return new ListStyle();
-			}
-
-			return style;
-		}
-	}, {
-		key: 'toDescriptor',
-		value: function toDescriptor() {
-			var desc = {
-				type: this.type,
-				indents: {}
-			};
-
-			for (var indent in this.styles) {
-				var style = this.styles[indent];
-				desc.indents[indent] = style.toDescriptor();
-			}
-
-			return desc;
-		}
-	}, {
-		key: 'clone',
-		value: function clone() {
-			var clone = new ListStyles(this.type);
-
-			for (var indent in this.styles) {
-				var style = this.styles[indent];
-				clone.styles[indent] = style.clone();
-			}
-
-			return clone;
-		}
-	}, {
-		key: 'map',
-		value: function map(fn) {
-			var result = [];
-
-			for (var indent in this.styles) {
-				var style = this.styles[indent];
-				result.push(fn(style, indent));
-			}
-
-			return result;
-		}
-	}]);
-
-	return ListStyles;
-}();
-
-ListStyles.fromDescriptor = function (descriptor) {
-	var styles = new ListStyles(descriptor.type);
-
-	for (var indent in descriptor.indents) {
-		var style = descriptor.indents[indent];
-		styles.set(indent, style);
-	}
-
-	return styles;
-};
-
-ListStyles.TYPE_ORDERED = 'ordered';
-ListStyles.TYPE_UNORDERED = 'unordered';
-
-ListStyles.STYLE_FILLED_CIRCLE = 'disc';
-ListStyles.STYLE_HOLLOW_CIRCLE = 'circle';
-ListStyles.STYLE_SQUARE = 'square';
-
-ListStyles.STYLE_NUMERIC = 'decimal';
-ListStyles.STYLE_LEAD_ZERO_NUMERIC = 'decimal-leading-zero';
-ListStyles.STYLE_LOWERCASE_LETTER = 'lower-alpha';
-ListStyles.STYLE_UPPERCASE_LETTER = 'upper-alpha';
-ListStyles.STYLE_LOWERCASE_ROMAN = 'lower-roman';
-ListStyles.STYLE_UPPERCASE_ROMAN = 'upper-roman';
-
-var unorderedDefaultBulletStyles = [ListStyles.STYLE_FILLED_CIRCLE, ListStyles.STYLE_HOLLOW_CIRCLE, ListStyles.STYLE_SQUARE];
-
-var orderedDefaultBulletStyles = [ListStyles.STYLE_NUMERIC, ListStyles.STYLE_UPPERCASE_LETTER, ListStyles.STYLE_UPPERCASE_ROMAN, ListStyles.STYLE_LOWERCASE_LETTER, ListStyles.STYLE_LOWERCASE_ROMAN];
-
-exports.default = ListStyles;
-
-/***/ }),
-
-/***/ 36:
+/***/ 103:
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -274,11 +85,11 @@ var _Common = __webpack_require__(0);
 
 var _Common2 = _interopRequireDefault(_Common);
 
-var _adapter = __webpack_require__(65);
+var _adapter = __webpack_require__(132);
 
 var _adapter2 = _interopRequireDefault(_adapter);
 
-var _viewerComponent = __webpack_require__(66);
+var _viewerComponent = __webpack_require__(133);
 
 var _viewerComponent2 = _interopRequireDefault(_viewerComponent);
 
@@ -295,7 +106,7 @@ _Common2.default.Store.registerModel('ObojoboDraft.Chunks.List', {
 
 /***/ }),
 
-/***/ 65:
+/***/ 132:
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -305,7 +116,7 @@ Object.defineProperty(exports, "__esModule", {
 	value: true
 });
 
-var _listStyles = __webpack_require__(18);
+var _listStyles = __webpack_require__(62);
 
 var _listStyles2 = _interopRequireDefault(_listStyles);
 
@@ -379,7 +190,7 @@ function __guard__(value, transform) {
 
 /***/ }),
 
-/***/ 66:
+/***/ 133:
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -391,9 +202,9 @@ Object.defineProperty(exports, "__esModule", {
 
 var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
 
-__webpack_require__(150);
+__webpack_require__(240);
 
-var _listStyles = __webpack_require__(18);
+var _listStyles = __webpack_require__(62);
 
 var _listStyles2 = _interopRequireDefault(_listStyles);
 
@@ -601,6 +412,195 @@ exports.default = List;
 function __guard__(value, transform) {
 	return typeof value !== 'undefined' && value !== null ? transform(value) : undefined;
 }
+
+/***/ }),
+
+/***/ 240:
+/***/ (function(module, exports) {
+
+// removed by extract-text-webpack-plugin
+
+/***/ }),
+
+/***/ 264:
+/***/ (function(module, exports, __webpack_require__) {
+
+module.exports = __webpack_require__(103);
+
+
+/***/ }),
+
+/***/ 62:
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+Object.defineProperty(exports, "__esModule", {
+	value: true
+});
+
+var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+var getDefaultBulletStyle = function getDefaultBulletStyle(indent, type) {
+	var defaults = type === 'ordered' ? orderedDefaultBulletStyles : unorderedDefaultBulletStyles;
+	return defaults[indent % defaults.length];
+};
+
+var getStyleWithDefaults = function getStyleWithDefaults(indent, defaultType, style) {
+	if (style == null) {
+		style = null;
+	}
+	var styleWithDefaults = new ListStyle();
+
+	styleWithDefaults.type = (style != null ? style.type : undefined) ? style.type : defaultType;
+	styleWithDefaults.start = (style != null ? style.start : undefined) ? style.start : 1;
+	styleWithDefaults.bulletStyle = (style != null ? style.bulletStyle : undefined) ? style.bulletStyle : getDefaultBulletStyle(indent, styleWithDefaults.type);
+
+	return styleWithDefaults;
+};
+
+var ListStyle = function () {
+	function ListStyle(opts) {
+		_classCallCheck(this, ListStyle);
+
+		if (opts == null) {
+			opts = {};
+		}
+		this.type = opts.type || null;
+		this.start = opts.start || null;
+		this.bulletStyle = opts.bulletStyle || null;
+	}
+
+	_createClass(ListStyle, [{
+		key: 'toDescriptor',
+		value: function toDescriptor() {
+			return {
+				type: this.type || null,
+				start: this.start || null,
+				bulletStyle: this.bulletStyle || null
+			};
+		}
+	}, {
+		key: 'clone',
+		value: function clone() {
+			return new ListStyle(this);
+		}
+	}]);
+
+	return ListStyle;
+}();
+
+var ListStyles = function () {
+	function ListStyles(type) {
+		_classCallCheck(this, ListStyles);
+
+		this.type = type;
+		this.styles = {};
+	}
+
+	_createClass(ListStyles, [{
+		key: 'init',
+		value: function init() {
+			this.type = ListStyles.TYPE_UNORDERED;
+			return this.styles = {};
+		}
+	}, {
+		key: 'set',
+		value: function set(indent, opts) {
+			return this.styles[indent] = new ListStyle(opts);
+		}
+	}, {
+		key: 'get',
+		value: function get(indent) {
+			return getStyleWithDefaults(indent, this.type, this.styles[indent]);
+		}
+	}, {
+		key: 'getSetStyles',
+		value: function getSetStyles(indent) {
+			var style = this.styles[indent];
+			if (!style) {
+				return new ListStyle();
+			}
+
+			return style;
+		}
+	}, {
+		key: 'toDescriptor',
+		value: function toDescriptor() {
+			var desc = {
+				type: this.type,
+				indents: {}
+			};
+
+			for (var indent in this.styles) {
+				var style = this.styles[indent];
+				desc.indents[indent] = style.toDescriptor();
+			}
+
+			return desc;
+		}
+	}, {
+		key: 'clone',
+		value: function clone() {
+			var clone = new ListStyles(this.type);
+
+			for (var indent in this.styles) {
+				var style = this.styles[indent];
+				clone.styles[indent] = style.clone();
+			}
+
+			return clone;
+		}
+	}, {
+		key: 'map',
+		value: function map(fn) {
+			var result = [];
+
+			for (var indent in this.styles) {
+				var style = this.styles[indent];
+				result.push(fn(style, indent));
+			}
+
+			return result;
+		}
+	}]);
+
+	return ListStyles;
+}();
+
+ListStyles.fromDescriptor = function (descriptor) {
+	var styles = new ListStyles(descriptor.type);
+
+	for (var indent in descriptor.indents) {
+		var style = descriptor.indents[indent];
+		styles.set(indent, style);
+	}
+
+	return styles;
+};
+
+ListStyles.TYPE_ORDERED = 'ordered';
+ListStyles.TYPE_UNORDERED = 'unordered';
+
+ListStyles.STYLE_FILLED_CIRCLE = 'disc';
+ListStyles.STYLE_HOLLOW_CIRCLE = 'circle';
+ListStyles.STYLE_SQUARE = 'square';
+
+ListStyles.STYLE_NUMERIC = 'decimal';
+ListStyles.STYLE_LEAD_ZERO_NUMERIC = 'decimal-leading-zero';
+ListStyles.STYLE_LOWERCASE_LETTER = 'lower-alpha';
+ListStyles.STYLE_UPPERCASE_LETTER = 'upper-alpha';
+ListStyles.STYLE_LOWERCASE_ROMAN = 'lower-roman';
+ListStyles.STYLE_UPPERCASE_ROMAN = 'upper-roman';
+
+var unorderedDefaultBulletStyles = [ListStyles.STYLE_FILLED_CIRCLE, ListStyles.STYLE_HOLLOW_CIRCLE, ListStyles.STYLE_SQUARE];
+
+var orderedDefaultBulletStyles = [ListStyles.STYLE_NUMERIC, ListStyles.STYLE_UPPERCASE_LETTER, ListStyles.STYLE_UPPERCASE_ROMAN, ListStyles.STYLE_LOWERCASE_LETTER, ListStyles.STYLE_LOWERCASE_ROMAN];
+
+exports.default = ListStyles;
 
 /***/ })
 

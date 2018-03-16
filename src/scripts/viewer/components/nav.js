@@ -50,11 +50,7 @@ export default class Nav extends React.Component {
 		if (label instanceof StyleableText) {
 			return <StyleableTextComponent text={label} />
 		} else {
-			return (
-				<a>
-					{label}
-				</a>
-			)
+			return <a>{label}</a>
 		}
 	}
 
@@ -80,12 +76,11 @@ export default class Nav extends React.Component {
 
 		return (
 			<div
-				className={`viewer--components--nav${this.props.navState.locked
-					? ' is-locked'
-					: ' is-unlocked'}${this.props.navState.open ? ' is-open' : ' is-closed'}${this.props
-					.navState.disabled
-					? ' is-disabled'
-					: ' is-enabled'}`}
+				className={`viewer--components--nav${
+					this.props.navState.locked ? ' is-locked' : ' is-unlocked'
+				}${this.props.navState.open ? ' is-open' : ' is-closed'}${
+					this.props.navState.disabled ? ' is-disabled' : ' is-enabled'
+				}`}
 			>
 				<button
 					className="toggle-button"
@@ -122,14 +117,11 @@ export default class Nav extends React.Component {
 									<li
 										key={index}
 										onClick={this.onClick.bind(this, item)}
-										className={`link${isSelected ? ' is-selected' : ' is-not-select'}${item.flags
-											.visited
-											? ' is-visited'
-											: ' is-not-visited'}${item.flags.complete
-											? ' is-complete'
-											: ' is-not-complete'}${item.flags.correct
-											? ' is-correct'
-											: ' is-not-correct'}`}
+										className={`link${isSelected ? ' is-selected' : ' is-not-select'}${
+											item.flags.visited ? ' is-visited' : ' is-not-visited'
+										}${item.flags.complete ? ' is-complete' : ' is-not-complete'}${
+											item.flags.correct ? ' is-correct' : ' is-not-correct'
+										}`}
 									>
 										{this.renderLabel(item.label)}
 										{lockEl}
@@ -144,10 +136,9 @@ export default class Nav extends React.Component {
 									<li
 										key={index}
 										onClick={this.onClick.bind(this, item)}
-										className={`sub-link${isSelected ? ' is-selected' : ' is-not-select'}${item
-											.flags.correct
-											? ' is-correct'
-											: ' is-not-correct'}`}
+										className={`sub-link${isSelected ? ' is-selected' : ' is-not-select'}${
+											item.flags.correct ? ' is-correct' : ' is-not-correct'
+										}`}
 									>
 										{this.renderLabel(item.label)}
 										{lockEl}

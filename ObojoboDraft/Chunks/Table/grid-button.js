@@ -90,9 +90,7 @@ export default class GridButton extends React.Component {
 					onMouseOut={this.onMouseOut.bind(this)}
 					key="table"
 				>
-					<tbody>
-						{rows}
-					</tbody>
+					<tbody>{rows}</tbody>
 				</table>
 			)
 
