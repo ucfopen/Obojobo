@@ -20,15 +20,15 @@ export default class Figure extends React.Component {
 					<div className="container">
 						<figure unselectable="on">
 							<Image chunk={this.props.model} />
-							{data.textGroup.first.text.length > 0
-								? <figcaption ref="caption">
-										<TextGroupEl
-											parentModel={this.props.model}
-											textItem={data.textGroup.first}
-											groupIndex="0"
-										/>
-									</figcaption>
-								: null}
+							{data.textGroup.first.text.length > 0 ? (
+								<figcaption ref="caption">
+									<TextGroupEl
+										parentModel={this.props.model}
+										textItem={data.textGroup.first}
+										groupIndex="0"
+									/>
+								</figcaption>
+							) : null}
 						</figure>
 					</div>
 				</NonEditableChunk>

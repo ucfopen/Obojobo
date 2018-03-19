@@ -7,25 +7,27 @@ import AssessmentUtil from './util/assessment-util'
 import NavUtil from './util/nav-util'
 import APIUtil from './util/api-util'
 import QuestionUtil from './util/question-util'
+import getLTIOutcomeServiceHostname from './util/get-lti-outcome-service-hostname'
 
 export default {
 	components: {
-		ViewerApp: ViewerApp
+		ViewerApp
 	},
 
 	stores: {
-		AssessmentStore: AssessmentStore,
+		AssessmentStore,
 		assessmentStore: {
 			LTINetworkStates
 		},
-		NavStore: NavStore,
-		QuestionStore: QuestionStore
+		NavStore,
+		QuestionStore
 	},
 
 	util: {
-		AssessmentUtil: AssessmentUtil,
-		NavUtil: NavUtil,
-		APIUtil: APIUtil,
-		QuestionUtil: QuestionUtil
+		AssessmentUtil,
+		NavUtil,
+		APIUtil,
+		QuestionUtil,
+		getLTIOutcomeServiceHostname
 	}
 }

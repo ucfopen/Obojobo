@@ -11,7 +11,7 @@
 .obojobo-draft--sections--assessment > .score > .results-bar {
   font-family: "Libre Franklin", Arial, sans-serif;
   text-align: center;
-  background-color: #F4F4F4;
+  background-color: #f4f4f4;
   border-radius: 0.25em; }
   .obojobo-draft--sections--assessment > .score > .results-bar > h1 {
     width: 100%;
@@ -43,7 +43,7 @@
   padding: 3em;
   margin-top: 3em;
   background: #fdfdfd;
-  border-radius: .2em; }
+  border-radius: 0.2em; }
   .obojobo-draft--sections--assessment .review .number-correct {
     font-family: "Libre Franklin", Arial, sans-serif;
     margin-top: 0;
@@ -76,27 +76,19 @@
   width: 44em; }
   .obojobo-draft--sections--assessment .submit-button button {
     min-width: 9em; }
-.obojobo-draft--sections--assessment--lti-status.is-synced {
-  font-size: 0.7em;
-  padding-bottom: 1em;
-  color: #999999; }
-
-.obojobo-draft--sections--assessment--lti-status.is-error {
+.obojobo-draft--sections--assessment--lti-status {
   width: 100%;
   border-radius: 0.25em;
-  border-top-left-radius: 0;
-  border-top-right-radius: 0;
   font-family: "Libre Franklin", Arial, sans-serif;
   margin-bottom: 3em;
   padding: 1.5em 3em;
   box-sizing: border-box;
   background-color: #ffe9c3; }
-  .obojobo-draft--sections--assessment--lti-status.is-error > h2 {
-    color: #D40000;
+  .obojobo-draft--sections--assessment--lti-status > h2 {
+    color: #000000;
     font-size: 1em;
     font-weight: bold; }
-  .obojobo-draft--sections--assessment--lti-status.is-error > p,
-  .obojobo-draft--sections--assessment--lti-status.is-error > div > p {
+  .obojobo-draft--sections--assessment--lti-status > p,
+  .obojobo-draft--sections--assessment--lti-status > div > p {
     font-size: 0.9em;
-    line-height: 1.4em;
-    text-align: justify; }
+    line-height: 1.4em; }

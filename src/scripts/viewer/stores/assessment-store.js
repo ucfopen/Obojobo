@@ -52,6 +52,12 @@ class AssessmentStore extends Store {
 			// the UI to update accordingly (assessment review). We'll need to fetch the appropriate
 			// review data from our attempt end endpoint.
 		})
+
+		Dispatcher.on('viewer:closeAttempted', shouldPrompt => {
+			if (AssessmentUtil.isInAssessment(this.state)) {
+				shouldPrompt()
+			}
+		})
 	}
 
 	init(attemptsByAssessment) {

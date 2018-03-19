@@ -8,7 +8,6 @@ let { OboModel } = Common.models
 let { Button } = Common.components
 let { Dispatcher } = Common.flux
 let { ModalUtil } = Common.util
-let Launch = Common.Launch
 
 let { AssessmentUtil } = Viewer.util
 let { NavUtil } = Viewer.util
@@ -147,8 +146,6 @@ export default class Assessment extends React.Component {
 			this.props.moduleData.assessmentState,
 			this.props.model
 		)
-
-		let externalSystemLabel = Launch.getOutcomeServiceHostname()
 
 		const childEl = (() => {
 			switch (this.getCurrentStep()) {

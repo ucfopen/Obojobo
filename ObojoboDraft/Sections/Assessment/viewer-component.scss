@@ -1,39 +1,30 @@
 @import '~styles/includes';
 
-.obojobo-draft--sections--assessment
-{
-	.untested
-	{
+.obojobo-draft--sections--assessment {
+	.untested {
 		// text-align: center;
 		padding-top: 1em;
 
-		> h1
-		{
+		> h1 {
 			margin-bottom: 0.2em;
 			text-align: center;
 		}
 
-		> h2
-		{
+		> h2 {
 			margin-bottom: 0;
 			text-align: center;
 			font-size: 1em;
-
-
 		}
 	}
 
-	> .score
-	{
-		> .results-bar
-		{
+	> .score {
+		> .results-bar {
 			font-family: $font-default;
 			text-align: center;
 			background-color: $color-bg2;
 			border-radius: $dimension-rounded-radius;
 
-			> h1
-			{
+			> h1 {
 				width: 100%;
 				max-width: ($dimension-column-width / 1.35) - $dimension-padding - $dimension-padding;
 				display: inline-block;
@@ -45,8 +36,7 @@
 				box-sizing: border-box;
 			}
 
-			table
-			{
+			table {
 				width: 100%;
 				// margin: 0 auto;
 				max-width: $dimension-column-width - $dimension-padding - $dimension-padding;
@@ -54,22 +44,19 @@
 				margin: 0 $dimension-padding;
 				box-sizing: border-box;
 
-				th
-				{
+				th {
 					font-size: 0.9em;
 					padding-bottom: 0.5em;
 				}
 
-				td
-				{
+				td {
 					font-size: 2em;
 				}
 			}
 		}
 	}
 
-	.review
-	{
+	.review {
 		text-align: left;
 		width: 70%;
 		margin: 0 auto;
@@ -77,56 +64,48 @@
 		padding: 3em;
 		margin-top: 3em;
 		background: #fdfdfd;
-		border-radius: .2em;
+		border-radius: 0.2em;
 
-		.number-correct
-		{
+		.number-correct {
 			font-family: $font-default;
 			margin-top: 0;
 			margin-bottom: 2em;
 		}
 
 		.is-correct > p,
-		.is-not-correct > p
-		{
+		.is-not-correct > p {
 			margin-top: 0;
 			margin-bottom: 0;
 			font-family: $font-default;
 			font-weight: bold;
 		}
 
-		.obojobo-draft--chunks--question
-		{
+		.obojobo-draft--chunks--question {
 			font-size: 0.8em;
 		}
 
-		.is-not-correct .obojobo-draft--chunks--question .flipper
-		{
+		.is-not-correct .obojobo-draft--chunks--question .flipper {
 			position: relative;
 			border: 1px solid $color-incorrect;
 			background: transparentize($color-incorrect, 0.9);
 
-			.responses-hidden
-			{
+			.responses-hidden {
 				color: $color-incorrect;
 			}
 		}
 
-		.is-correct .obojobo-draft--chunks--question .flipper
-		{
+		.is-correct .obojobo-draft--chunks--question .flipper {
 			position: relative;
 			border: 1px solid $color-correct;
 			background: transparentize($color-correct, 0.9);
 
-			.responses-hidden
-			{
+			.responses-hidden {
 				color: $color-correct;
 			}
 		}
 	}
 
-	.submit-button
-	{
+	.submit-button {
 		display: block;
 		margin: 0 auto;
 		// transform: scale(1.25, 1.25);

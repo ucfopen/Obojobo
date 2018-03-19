@@ -1,8 +1,6 @@
-import ObjectAssign from 'object-assign'
-
 export default {
 	createData(data, template) {
-		let clone = ObjectAssign({}, data)
+		let clone = Object.assign({}, data)
 
 		for (var key in clone) {
 			if (template[key] == null) {
@@ -13,7 +11,7 @@ export default {
 		for (key in template) {
 			if (clone[key] == null) {
 				if (typeof template[key] === 'object') {
-					clone[key] = ObjectAssign({}, template[key])
+					clone[key] = Object.assign({}, template[key])
 				} else {
 					clone[key] = template[key]
 				}
@@ -24,7 +22,7 @@ export default {
 	},
 
 	defaultCloneFn(data) {
-		return ObjectAssign({}, data)
+		return Object.assign({}, data)
 	},
 
 	defaultMergeFn(consumer, digested) {

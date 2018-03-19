@@ -115,11 +115,11 @@ let QuestionUtil = {
 
 	getScoreForModel(state, model, context) {
 		let scoreItem
-		if (state.scores[context] != null) scoreItem = state.scores[context][model.get('id')]
-		if (scoreItem == null) {
-			return null
+		if (state.scores[context] != null) {
+			scoreItem = state.scores[context][model.get('id')]
 		}
-		return scoreItem.score
+
+		return scoreItem == null || scoreItem.score == null ? null : scoreItem.score
 	},
 
 	setScore(itemId, score, context) {

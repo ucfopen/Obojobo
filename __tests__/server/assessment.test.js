@@ -76,7 +76,7 @@ describe('Assessment', () => {
 
 		expect(assessment.registerEvents).toHaveBeenCalledWith({
 			'internal:sendToClient': assessment.onSendToClient,
-			'internal:renderViewer': assessment.onRenderViewer
+			'internal:startVisit': assessment.onStartVisit
 		})
 	})
 
@@ -138,11 +138,12 @@ describe('Assessment', () => {
 				}
 			)
 			.then(() => {
-				expect(
-					oboGlobalsMockSetFn
-				).toHaveBeenCalledWith('ObojoboDraft.Sections.Assessment:attempts', {
-					history: 'test123'
-				})
+				expect(oboGlobalsMockSetFn).toHaveBeenCalledWith(
+					'ObojoboDraft.Sections.Assessment:attempts',
+					{
+						history: 'test123'
+					}
+				)
 
 				done()
 			})

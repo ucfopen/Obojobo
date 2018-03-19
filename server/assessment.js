@@ -29,7 +29,7 @@ class Assessment extends DraftNode {
 					AND assessment_id = $[assessmentId]
 					AND completed_at IS NOT NULL
 					${previewSql}
-				ORDER BY completed_at DESC`,
+				ORDER BY completed_at`,
 			{ userId: userId, draftId: draftId, assessmentId: assessmentId }
 		)
 	}
@@ -102,9 +102,7 @@ class Assessment extends DraftNode {
 				WHERE
 					ATT.user_id = $[userId]
 					AND ATT.draft_id = $[draftId]
-					${optionalAssessmentId !== null
-						? "AND ATT.assessment_id = '" + optionalAssessmentId + "'"
-						: ''}
+					${optionalAssessmentId !== null ? "AND ATT.assessment_id = '" + optionalAssessmentId + "'" : ''}
 				ORDER BY ATT.completed_at`,
 				{
 					userId,
@@ -380,7 +378,7 @@ class Assessment extends DraftNode {
 		super(draftTree, node, initFn)
 		this.registerEvents({
 			'internal:sendToClient': this.onSendToClient,
-			'internal:renderViewer': this.onRenderViewer
+			'internal:startVisit': this.onStartVisit
 		})
 	}
 
@@ -388,23 +386,12 @@ class Assessment extends DraftNode {
 		return this.yell('ObojoboDraft.Sections.Assessment:sendToClient', req, res)
 	}
 
-	onRenderViewer(req, res, oboGlobals) {
-		let attempts
-		let userId
-
+	onStartVisit(req, res, draftId, visitId, extensionsProps) {
 		return req
 			.requireCurrentUser()
-			.then(currentUser => {
-				userId = currentUser.id
-
-				return this.constructor.getAttempts(userId, req.params.draftId)
-			})
+			.then(currentUser => this.constructor.getAttempts(currentUser.id, draftId))
 			.then(attempts => {
-				oboGlobals.set('ObojoboDraft.Sections.Assessment:attempts', attempts)
-				return Promise.resolve()
-			})
-			.catch(err => {
-				return Promise.reject(err)
+				extensionsProps[':ObojoboDraft.Sections.Assessment:attemptHistory'] = attempts
 			})
 	}
 }

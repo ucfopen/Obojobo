@@ -1,31 +1,29 @@
 @import '../../../scss/includes';
 
-.viewer--viewer-app
-{
+.viewer--viewer-app {
 	$header-padding: 1rem;
 
 	height: 100%;
-	transition: padding-left $duration-animation-default $duration-animation-default, padding-top $duration-animation-default;
+	transition: padding-left $duration-animation-default $duration-animation-default,
+		padding-top $duration-animation-default;
 	overflow: auto;
 	padding-top: 2.5rem;
 	box-sizing: border-box;
 
-	&.is-open-nav.is-enabled-nav
-	{
+	&.is-open-nav.is-enabled-nav {
 		padding-left: $dimension-nav-menu;
 		padding-top: 0;
 		// transition: padding-left $duration-animation-default , padding-top $duration-animation-default $duration-animation-default;
 
-		> header
-		{
+		> header {
 			top: -2.5rem;
 			// width: $dimension-nav-menu;
 			// border-right: 1px solid transparentize($color-shadow, 0.2);
 			// background: transparent;
 			border-bottom: 1px solid $color-transparent;
 
-			.viewer--components--logo, .location
-			{
+			.viewer--components--logo,
+			.location {
 				opacity: 0;
 				transition-delay: 0s;
 				transition: $duration-animation-default/2 opacity;
@@ -33,8 +31,7 @@
 		}
 	}
 
-	> header
-	{
+	> header {
 		background: $color-bg;
 		position: absolute;
 		left: 0;
@@ -43,7 +40,7 @@
 		height: 2.5rem;
 		z-index: $z-index-above-content;
 		border-bottom: 1px solid transparentize($color-shadow, 0.2);
-		font-size: .7rem;
+		font-size: 0.7rem;
 		font-family: Libre Franklin;
 		color: $color-text;
 		padding: 0.8rem $header-padding;
@@ -52,20 +49,17 @@
 		transition: top $duration-animation-default;
 		opacity: 0.95;
 
-		> div
-		{
+		> div {
 			position: relative;
 		}
 
-		.module-title
-		{
+		.module-title {
 			text-transform: uppercase;
 			display: inline-block;
 			cursor: default;
 		}
 
-		.location
-		{
+		.location {
 			margin-left: 1rem;
 			font-weight: bold;
 			transition: opacity $duration-animation-default;
@@ -73,8 +67,7 @@
 			cursor: default;
 		}
 
-		.viewer--components--logo
-		{
+		.viewer--components--logo {
 			color: $color-text-minor;
 			position: fixed;
 			right: $header-padding;
@@ -86,35 +79,32 @@
 		}
 	}
 
-	> .preview-banner
-	{
+	> .preview-banner {
 		$preview-color: #555a69;
 
 		font-family: $font-default;
 		background: $preview-color;
 		box-sizing: border-box;
 		color: white;
-		font-size: .7em;
+		font-size: 0.7em;
 		font-weight: bold;
 		line-height: 0;
 		height: 3rem;
 		left: 0;
-		padding: .5em 1em;
+		padding: 0.5em 1em;
 		padding-top: 1.5rem;
 		position: fixed;
 		right: 0;
 		bottom: 0;
 		z-index: $z-index-above-all;
 
-		.controls
-		{
+		.controls {
 			position: absolute;
 			right: 1em;
 			top: 50%;
 			transform: translate(0, -50%) translate(0, 0.5px);
 
-			button
-			{
+			button {
 				@include appearance(none);
 				@include user-select(none);
 
@@ -131,7 +121,7 @@
 				min-width: 3.25em;
 				// margin-bottom: 1em;
 				// margin-top: 1em;
-				border-radius: .2em;
+				border-radius: 0.2em;
 				padding: 0.4em;
 				background-color: white;
 				color: $preview-color;
@@ -142,19 +132,16 @@
 				background-color: $color-bg;
 				color: $preview-color;
 
-				&:hover
-				{
+				&:hover {
 					background-color: $preview-color;
 					color: white;
 				}
 
-				&:disabled
-				{
+				&:disabled {
 					opacity: 0.5;
 					cursor: default;
 
-					&:hover
-					{
+					&:hover {
 						background-color: $color-bg;
 						color: $preview-color;
 					}
@@ -163,8 +150,7 @@
 		}
 	}
 
-	&.is-previewing
-	{
+	&.is-previewing {
 		// margin-top: 2rem;
 
 		// > header
@@ -185,8 +171,7 @@
 	}
 }
 
-.debug-edit-json
-{
+.debug-edit-json {
 	// position: fixed;
 	// left: 330px;
 	// top: 0;

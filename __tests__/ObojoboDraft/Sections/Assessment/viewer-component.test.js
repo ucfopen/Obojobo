@@ -8,7 +8,6 @@ import {
 	AssessmentStore,
 	NavStore,
 	QuestionStore,
-	ScoreStore,
 	ModalStore,
 	FocusStore
 } from '../../../../__mocks__/viewer-state.mock'

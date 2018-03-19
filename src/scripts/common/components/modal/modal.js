@@ -44,12 +44,10 @@ export default class Modal extends React.Component {
 					type="text"
 					onFocus={this.onTabTrapFocus.bind(this)}
 				/>
-				{this.props.onClose
-					? <DeleteButton ref="closeButton" onClick={this.props.onClose} />
-					: null}
-				<div className="content">
-					{this.props.children}
-				</div>
+				{this.props.onClose ? (
+					<DeleteButton ref="closeButton" onClick={this.props.onClose} />
+				) : null}
+				<div className="content">{this.props.children}</div>
 				<input
 					className="last-tab"
 					ref="lastTab"
