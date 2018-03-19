@@ -81,7 +81,7 @@ describe('start attempt route', () => {
     expect(assessmentChildrenMap).toMatchSnapshot()
   })
 
-  it('can choose to display questions sequentially', () => {
+  it('can choose to display question banks and questions sequentially', () => {
     const mockDraft = new Draft(testJson)
     const mockUsedQuestionMap = new Map()
     const mockAssessmentProperties = {
@@ -89,20 +89,25 @@ describe('start attempt route', () => {
       childrenMap: mockUsedQuestionMap
     }
 
-    mockUsedQuestionMap.set('qb1', 1)
+    mockUsedQuestionMap.set('qb1', 0)
     mockUsedQuestionMap.set('qb1.q1', 0)
     mockUsedQuestionMap.set('qb1.q2', 0)
     mockUsedQuestionMap.set('qb2', 1)
     mockUsedQuestionMap.set('qb2.q1', 1)
     mockUsedQuestionMap.set('qb2.q2', 1)
 
-    // TODO: Choose questions sequentially chooses the question banks to show
-    // sequentially AS WELL as the questions within those question banks. So
-    // create some probable scenarios for varying uses of each to fully test
-    // functionality.
+    // Case to test sorting of question banks (qb1 should come first).
+    expect(chooseQuestionsSequentially(mockAssessmentProperties, 'qb', 2)).toMatchSnapshot()
 
     // Choosing questions where numQuestionsPerAttempt = 1.
     expect(chooseQuestionsSequentially(mockAssessmentProperties, 'qb1', 1)).toMatchSnapshot()
+
+    // Choosing questions where numQuestionsPerAttempt = 2.
+    expect(chooseQuestionsSequentially(mockAssessmentProperties, 'qb1', 2)).toMatchSnapshot()
+
+    // Case where questions need to be reorded (q2 should now come first).
+    mockUsedQuestionMap.set('qb1.q1', 1)
+    expect(chooseQuestionsSequentially(mockAssessmentProperties, 'qb1', 2)).toMatchSnapshot()
 
   })
 })
