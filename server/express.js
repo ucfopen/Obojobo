@@ -196,7 +196,7 @@ app.post('/api/assessments/clear-preview-scores', (req, res, next) => {
 		})
 
 		.catch(error => {
-			logAndRespondToUnexpected(res, error, new Error('Unexpected error completing your attempt'))
+			logAndRespondToUnexpected('Unexpected error clearing preview scores', res, req, error)
 		})
 })
 

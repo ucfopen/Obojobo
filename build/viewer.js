@@ -6498,6 +6498,14 @@ var ViewerApp = function (_React$Component) {
 		key: 'clearPreviewScores',
 		value: function clearPreviewScores() {
 			_apiUtil2.default.clearPreviewScores(this.state.model).then(function (res) {
+				if (res.status === 'error') {
+					return ModalUtil.show(_react2.default.createElement(
+						SimpleDialog,
+						{ ok: true, width: '15em' },
+						'There was an error resetting assessments and questions: ' + res.value.message + '.'
+					));
+				}
+
 				_assessmentStore2.default.init();
 				_questionStore2.default.init();
 				_scoreStore2.default.init();
