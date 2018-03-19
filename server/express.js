@@ -83,6 +83,9 @@ app.post('/api/assessments/attempt/:attemptId/end', (req, res, next) => {
 })
 
 app.post('/api/assessments/clear-preview-scores', (req, res, next) => {
+	let assessmentScoreIds
+	let attemptIds
+
 	req
 		.requireCurrentUser()
 		.then(currentUser => {
@@ -92,97 +95,104 @@ app.post('/api/assessments/clear-preview-scores', (req, res, next) => {
 				return res.notAuthorized('Not in preview mode')
 			}
 
-			// delete from assessment_scores where user_id, draft_id, preview
-			//	join lti_assessment_scores
-			// delete from attempts where user_id, draft_id, preview,
-			//	join attempts_question_responses
-			//
-
 			return db
 				.manyOrNone(
 					`
-				SELECT id
-				FROM assessment_scores
-				WHERE user_id = $[userId]
-				AND draft_id = $[draftId]
-				AND preview = true
-			`,
+						SELECT id
+						FROM assessment_scores
+						WHERE user_id = $[userId]
+						AND draft_id = $[draftId]
+						AND preview = true
+					`,
 					{
 						userId: currentUser.id,
 						draftId: req.body.draftId
 					}
 				)
-				.then(assessmentScoreIds => {
-					if (assessmentScoreIds.length === 0) return
+				.then(assessmentScoreIdsResult => {
+					assessmentScoreIds = assessmentScoreIdsResult
 
-					return db.none(
-						`
-					DELETE FROM lti_assessment_scores
-					WHERE assessment_score_id IN ($1:csv)
-				`,
-						assessmentScoreIds.map(i => i.id)
-					)
-				})
-				.then(() => {
 					return db.manyOrNone(
 						`
-					SELECT id
-					FROM attempts
-					WHERE user_id = $[userId]
-					AND draft_id = $[draftId]
-					AND preview = true
-				`,
+							SELECT id
+							FROM attempts
+							WHERE user_id = $[userId]
+							AND draft_id = $[draftId]
+							AND preview = true
+						`,
 						{
 							userId: currentUser.id,
 							draftId: req.body.draftId
 						}
 					)
 				})
-				.then(attemptIds => {
-					if (attemptIds.length === 0) return
+				.then(attemptIdsResult => {
+					attemptIds = attemptIdsResult
 
-					return db.none(
-						`
-					DELETE FROM attempts_question_responses
-					WHERE attempt_id IN ($1:csv)
-				`,
-						attemptIds.map(i => i.id)
-					)
-				})
-				.then(() => {
-					return db.none(
-						`
-					DELETE FROM assessment_scores
-					WHERE user_id = $[userId]
-					AND draft_id = $[draftId]
-					AND preview = true
-				`,
-						{
-							userId: currentUser.id,
-							draftId: req.body.draftId
+					return db.tx(t => {
+						let queries = []
+
+						if (assessmentScoreIds.length > 0) {
+							queries.push(
+								t.none(
+									`
+									DELETE FROM lti_assessment_scores
+									WHERE assessment_score_id IN ($1:csv)
+								`,
+									assessmentScoreIds.map(i => i.id)
+								)
+							)
 						}
-					)
-				})
-				.then(() => {
-					return db.none(
-						`
-					DELETE FROM attempts
-					WHERE user_id = $[userId]
-					AND draft_id = $[draftId]
-					AND preview = true
-				`,
-						{
-							userId: currentUser.id,
-							draftId: req.body.draftId
+
+						if (attemptIds.length > 0) {
+							queries.push(
+								t.none(
+									`
+									DELETE FROM attempts_question_responses
+									WHERE attempt_id IN ($1:csv)
+								`,
+									attemptIds.map(i => i.id)
+								)
+							)
 						}
-					)
+
+						queries.push(
+							t.none(
+								`
+									DELETE FROM assessment_scores
+									WHERE user_id = $[userId]
+									AND draft_id = $[draftId]
+									AND preview = true
+								`,
+								{
+									userId: currentUser.id,
+									draftId: req.body.draftId
+								}
+							)
+						)
+
+						queries.push(
+							t.none(
+								`
+									DELETE FROM attempts
+									WHERE user_id = $[userId]
+									AND draft_id = $[draftId]
+									AND preview = true
+								`,
+								{
+									userId: currentUser.id,
+									draftId: req.body.draftId
+								}
+							)
+						)
+
+						return t.batch(queries)
+					})
 				})
+
 				.then(() => {
 					return res.success()
 				})
-
-			// return endAttempt(req, res, currentUser, req.params.attemptId, isPreviewing)
-			// return Assessment.getAttempts(currentUser.id, req.body.draftId)
 		})
 
 		.catch(error => {
