@@ -14,8 +14,6 @@ class ScoreActions {
 		this.actions = (actions == null ? [] : actions).map(action => {
 			let forAttr = action.for
 
-			// console.log('parse action', action)
-
 			// Transform legacy to/from to newer "for"
 			if (
 				typeof action.from !== 'undefined' &&

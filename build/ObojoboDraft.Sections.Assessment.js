@@ -478,8 +478,6 @@ var ScoreActions = function () {
 		this.actions = (actions == null ? [] : actions).map(function (action) {
 			var forAttr = action.for;
 
-			// console.log('parse action', action)
-
 			// Transform legacy to/from to newer "for"
 			if (typeof action.from !== 'undefined' && typeof action.to !== 'undefined' && typeof action.for === 'undefined') {
 				forAttr = '[' + action.from + ',' + action.to + ']';
