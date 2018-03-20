@@ -1,0 +1,57 @@
+.score-report {
+	li {
+		padding: 5px 5px;
+
+		&:last-child {
+			border-top: 1px solid LightGray;
+		}
+	}
+
+	ul {
+		padding: 0;
+		list-style-type: none;
+		border-top: 1px solid LightGray;
+		width: 85%;
+	}
+
+	.score-report-text {
+		display: inline-block;
+		width: 80%;
+		text-align: left;
+
+		.is-type-score-report-penalty {
+			color: red
+		}
+
+		.is-type-score-report-extra-credit {
+			color: green
+		}
+
+		.score-report-text-total {
+			font-weight: bold;
+		}
+	}
+	
+	.score-report-score {
+		display: inline-block;
+		width: 20%;
+		white-space: nowrap;
+		text-align: right;
+	}
+	
+	.retained-score {
+		background-color: white;
+		flex: 2;
+		border-radius: 5%;
+		margin: 0 1em;
+	}
+	
+	.mod-breakdown {
+		display: flex;
+		justify-content: center;
+		padding: 0 20px;
+		font-size: .7em;
+		line-height: 1.5em;
+	}
+}
+

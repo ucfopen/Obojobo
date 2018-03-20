@@ -8,87 +8,6 @@
     text-align: center;
     font-size: 1em; }
 
-.obojobo-draft--sections--assessment > .score > .results-bar {
-  font-family: "Libre Franklin", Arial, sans-serif;
-  text-align: center;
-  background-color: #F4F4F4;
-  border-radius: 0.25em;
-  padding: 3em; }
-  .obojobo-draft--sections--assessment > .score > .results-bar > h1 {
-    width: 100%;
-    display: inline-block;
-    font-weight: normal;
-    font-size: 1.35em;
-    border-bottom: 1px solid rgba(0, 0, 0, 0.3);
-    padding: 1em 0;
-    box-sizing: border-box; }
-
-.obojobo-draft--sections--assessment .attempt-info-content {
-  display: flex;
-  list-style-type: none; }
-  .obojobo-draft--sections--assessment .attempt-info-content > ul {
-    list-style-type: none;
-    padding: 0;
-    margin: 0; }
-
-.obojobo-draft--sections--assessment .attempt-header {
-  display: flex;
-  justify-content: space-around; }
-  .obojobo-draft--sections--assessment .attempt-header > .attempt-info-container {
-    display: flex;
-    align-items: center;
-    justify-content: center; }
-    .obojobo-draft--sections--assessment .attempt-header > .attempt-info-container > ul {
-      margin: 0;
-      list-style-type: none;
-      font-size: .8em; }
-  .obojobo-draft--sections--assessment .attempt-header > .score-section {
-    display: flex;
-    align-items: center;
-    flex-direction: row;
-    justify-content: space-between; }
-    .obojobo-draft--sections--assessment .attempt-header > .score-section > ul {
-      margin: 0;
-      margin-right: 2em;
-      padding: 0;
-      list-style-type: none;
-      font-size: .7em;
-      color: gray; }
-    .obojobo-draft--sections--assessment .attempt-header > .score-section > .credit-breakdown {
-      flex-direction: column; }
-
-.obojobo-draft--sections--assessment #attempt-percent {
-  display: inline-block;
-  font-size: .6em;
-  transform: translateY(-35%); }
-
-.obojobo-draft--sections--assessment .attempt-review-container {
-  position: relative; }
-
-.obojobo-draft--sections--assessment .attempt-button-container {
-  position: absolute;
-  top: 0;
-  left: 50%;
-  transform: translate(-50%, -50%); }
-  .obojobo-draft--sections--assessment .attempt-button-container button {
-    margin: 2px; }
-
-.obojobo-draft--sections--assessment .retained-score {
-  background-color: white;
-  flex: 2;
-  border-radius: 5%;
-  margin: 0 1em; }
-
-.obojobo-draft--sections--assessment .mod-breakdown {
-  display: flex;
-  justify-content: center;
-  font-size: .7em; }
-
-.obojobo-draft--sections--assessment .assessment-flex-container {
-  display: flex;
-  justify-content: space-around;
-  margin-top: 1em; }
-
 .obojobo-draft--sections--assessment .review {
   text-align: left;
   width: 70%;
@@ -123,6 +42,137 @@
     background: rgba(56, 174, 36, 0.1); }
     .obojobo-draft--sections--assessment .review .is-correct .obojobo-draft--chunks--question .flipper .responses-hidden {
       color: #38ae24; }
+
+.obojobo-draft--sections--assessment .review {
+  text-align: left;
+  width: 70%;
+  margin: 0 auto;
+  border: 1px solid rgba(0, 0, 0, 0.3);
+  padding: 3em;
+  margin-top: 3em;
+  background: #fdfdfd;
+  border-radius: .2em;
+  font-size: .8em; }
+  .obojobo-draft--sections--assessment .review .attempt-header {
+    display: flex;
+    justify-content: space-around; }
+    .obojobo-draft--sections--assessment .review .attempt-header > .attempt-info-container {
+      display: flex;
+      align-items: center;
+      justify-content: center; }
+      .obojobo-draft--sections--assessment .review .attempt-header > .attempt-info-container > ul {
+        margin: 0;
+        list-style-type: none;
+        font-size: .8em; }
+    .obojobo-draft--sections--assessment .review .attempt-header > .score-section {
+      display: flex;
+      align-items: center;
+      flex-direction: row;
+      justify-content: space-between; }
+      .obojobo-draft--sections--assessment .review .attempt-header > .score-section > ul {
+        margin: 0;
+        margin-right: 2em;
+        padding: 0;
+        list-style-type: none;
+        font-size: .7em;
+        color: gray; }
+      .obojobo-draft--sections--assessment .review .attempt-header > .score-section > .credit-breakdown {
+        flex-direction: column; }
+  .obojobo-draft--sections--assessment .review .attempt-review-container {
+    position: relative; }
+  .obojobo-draft--sections--assessment .review .attempt-button-container {
+    position: absolute;
+    top: 0;
+    left: 50%;
+    transform: translate(-50%, -50%); }
+    .obojobo-draft--sections--assessment .review .attempt-button-container button {
+      margin: 2px; }
+  .obojobo-draft--sections--assessment .review .number-correct {
+    font-family: "Libre Franklin", Arial, sans-serif;
+    margin-top: 0;
+    margin-bottom: 2em; }
+  .obojobo-draft--sections--assessment .review .is-correct > p,
+  .obojobo-draft--sections--assessment .review .is-not-correct > p {
+    margin-top: 0;
+    margin-bottom: 0;
+    font-family: "Libre Franklin", Arial, sans-serif;
+    font-weight: bold; }
+  .obojobo-draft--sections--assessment .review .obojobo-draft--chunks--question {
+    font-size: 0.8em; }
+  .obojobo-draft--sections--assessment .review .is-not-correct .obojobo-draft--chunks--question .flipper {
+    position: relative;
+    border: 1px solid #c21f00;
+    background: rgba(194, 31, 0, 0.1); }
+    .obojobo-draft--sections--assessment .review .is-not-correct .obojobo-draft--chunks--question .flipper .responses-hidden {
+      color: #c21f00; }
+  .obojobo-draft--sections--assessment .review .is-correct .obojobo-draft--chunks--question .flipper {
+    position: relative;
+    border: 1px solid #38ae24;
+    background: rgba(56, 174, 36, 0.1); }
+    .obojobo-draft--sections--assessment .review .is-correct .obojobo-draft--chunks--question .flipper .responses-hidden {
+      color: #38ae24; }
+
+.obojobo-draft--sections--assessment .score-report li {
+  padding: 5px 5px; }
+  .obojobo-draft--sections--assessment .score-report li:last-child {
+    border-top: 1px solid LightGray; }
+
+.obojobo-draft--sections--assessment .score-report ul {
+  padding: 0;
+  list-style-type: none;
+  border-top: 1px solid LightGray;
+  width: 85%; }
+
+.obojobo-draft--sections--assessment .score-report .score-report-text {
+  display: inline-block;
+  width: 80%;
+  text-align: left; }
+  .obojobo-draft--sections--assessment .score-report .score-report-text .is-type-score-report-penalty {
+    color: red; }
+  .obojobo-draft--sections--assessment .score-report .score-report-text .is-type-score-report-extra-credit {
+    color: green; }
+  .obojobo-draft--sections--assessment .score-report .score-report-text .score-report-text-total {
+    font-weight: bold; }
+
+.obojobo-draft--sections--assessment .score-report .score-report-score {
+  display: inline-block;
+  width: 20%;
+  white-space: nowrap;
+  text-align: right; }
+
+.obojobo-draft--sections--assessment .score-report .retained-score {
+  background-color: white;
+  flex: 2;
+  border-radius: 5%;
+  margin: 0 1em; }
+
+.obojobo-draft--sections--assessment .score-report .mod-breakdown {
+  display: flex;
+  justify-content: center;
+  padding: 0 20px;
+  font-size: .7em;
+  line-height: 1.5em; }
+
+.obojobo-draft--sections--assessment .score > .results-bar {
+  font-family: "Libre Franklin", Arial, sans-serif;
+  text-align: center;
+  background-color: #F4F4F4;
+  border-radius: 0.25em;
+  padding: 3em; }
+  .obojobo-draft--sections--assessment .score > .results-bar > h1 {
+    width: 100%;
+    display: inline-block;
+    font-weight: normal;
+    font-size: 1.35em;
+    border-bottom: 1px solid rgba(0, 0, 0, 0.3);
+    padding: 1em 0;
+    box-sizing: border-box; }
+
+.obojobo-draft--sections--assessment .score .assessment-flex-container {
+  display: flex;
+  justify-content: space-around;
+  margin-top: 1em;
+  margin-bottom: .5em; }
 
 .obojobo-draft--sections--assessment .submit-button {
   display: block;

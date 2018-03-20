@@ -2,7 +2,8 @@ import Viewer from 'Viewer'
 import Common from 'Common'
 
 import ReviewIcon from './review-icon.js'
-import ScoreOverview from './viewer-component-score-overview'
+import ScoreReportView from './viewer-component-score-report'
+import ScoreReport from './assessment-score-report'
 
 import formatDate from 'date-fns/format'
 
@@ -11,13 +12,15 @@ const { NavUtil } = Viewer.util
 const { OboModel } = Common.models
 const { Button } = Common.components
 
-const assessmentReviewView = assessment => {
+const assessmentReviewView = ({ assessment }) => {
 	let attemptReviewComponents = {}
 
 	let attempts = AssessmentUtil.getAllAttempts(
 		assessment.props.moduleData.assessmentState,
 		assessment.props.model
 	)
+
+	const report = new ScoreReport(assessment.props.model.modelState.rubric.toObject())
 
 	let attemptReviewComponent = (attempt, assessment) => {
 		let dateString = formatDate(new Date(attempt.finishTime), 'M/D/YY [at] h:ma')
@@ -51,7 +54,15 @@ const assessmentReviewView = assessment => {
 						</div>
 					</div>
 					<div className="score-section">
-						<ScoreOverview />
+						<ScoreReportView
+							items={report.getTextItems(
+								attempt.assessmentScoreDetails,
+								AssessmentUtil.getAttemptsRemaining(
+									assessment.props.moduleData.assessmentState,
+									assessment.props.model
+								)
+							)}
+						/>
 					</div>
 				</div>
 				{attempt.questionScores.map(scoreObj => {

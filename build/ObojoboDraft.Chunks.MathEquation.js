@@ -72,7 +72,7 @@
 	/******/
 	/******/ /******/ __webpack_require__.p = 'build/' // Load entry module and return exports
 	/******/
-	/******/ /******/ return __webpack_require__((__webpack_require__.s = 193))
+	/******/ /******/ return __webpack_require__((__webpack_require__.s = 195))
 	/******/
 })(
 	/************************************************************************/
@@ -83,7 +83,7 @@
 			/***/
 		},
 
-		/***/ /***/ 170: function(module, exports) {
+		/***/ /***/ 172: function(module, exports) {
 			// removed by extract-text-webpack-plugin
 			/***/
 		},
@@ -94,24 +94,24 @@
 			/***/
 		},
 
-		/***/ /***/ 193: function(module, exports, __webpack_require__) {
-			module.exports = __webpack_require__(40)
+		/***/ /***/ 195: function(module, exports, __webpack_require__) {
+			module.exports = __webpack_require__(41)
 
 			/***/
 		},
 
-		/***/ /***/ 40: function(module, exports, __webpack_require__) {
+		/***/ /***/ 41: function(module, exports, __webpack_require__) {
 			'use strict'
 
 			var _Common = __webpack_require__(0)
 
 			var _Common2 = _interopRequireDefault(_Common)
 
-			var _adapter = __webpack_require__(75)
+			var _adapter = __webpack_require__(76)
 
 			var _adapter2 = _interopRequireDefault(_adapter)
 
-			var _viewerComponent = __webpack_require__(76)
+			var _viewerComponent = __webpack_require__(77)
 
 			var _viewerComponent2 = _interopRequireDefault(_viewerComponent)
 
@@ -132,7 +132,7 @@
 			/***/
 		},
 
-		/***/ /***/ 75: function(module, exports, __webpack_require__) {
+		/***/ /***/ 76: function(module, exports, __webpack_require__) {
 			'use strict'
 
 			Object.defineProperty(exports, '__esModule', {
@@ -194,7 +194,7 @@
 			/***/
 		},
 
-		/***/ /***/ 76: function(module, exports, __webpack_require__) {
+		/***/ /***/ 77: function(module, exports, __webpack_require__) {
 			'use strict'
 
 			Object.defineProperty(exports, '__esModule', {
@@ -218,7 +218,7 @@
 				}
 			})()
 
-			__webpack_require__(170)
+			__webpack_require__(172)
 
 			var _katex = __webpack_require__(18)
 

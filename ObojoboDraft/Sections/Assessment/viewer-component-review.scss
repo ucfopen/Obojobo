@@ -1,27 +1,4 @@
-@import '~styles/includes';
-
-.obojobo-draft--sections--assessment
-{
-	.untested
-	{
-		// text-align: center;
-		padding-top: 1em;
-
-		> h1
-		{
-			margin-bottom: 0.2em;
-			text-align: center;
-		}
-
-		> h2
-		{
-			margin-bottom: 0;
-			text-align: center;
-			font-size: 1em;
-		}
-	}
-
-	.review
+.review
 	{
 		text-align: left;
 		width: 70%;
@@ -32,6 +9,56 @@
 		background: #fdfdfd;
 		border-radius: .2em;
 		font-size: .8em;
+
+		.attempt-header {
+			display: flex;
+			justify-content: space-around;
+	
+			> .attempt-info-container {
+				display: flex;
+				align-items: center;
+				justify-content: center;
+				> ul {
+					margin: 0;
+					list-style-type: none;
+					font-size: .8em;
+				}
+	
+			}
+	
+			> .score-section {
+				> ul {
+					margin: 0;
+					margin-right: 2em;
+					padding: 0;
+					list-style-type: none;
+					font-size: .7em;
+					color: gray;
+				}
+	
+				display: flex;
+				align-items: center;
+				flex-direction: row;
+				justify-content: space-between;
+				> .credit-breakdown {
+					flex-direction: column;
+				}
+			}
+		}
+
+		.attempt-review-container {
+			position: relative;
+		}
+	
+		.attempt-button-container {
+			position: absolute;
+			top:0;
+			left:50%;
+			transform: translate(-50%, -50%);
+			button {
+				margin: 2px;
+			}
+		}
 
 		.number-correct
 		{
@@ -78,9 +105,3 @@
 			}
 		}
 	}
-
-	@import 'viewer-component-review';
-	@import 'viewer-component-score-report';
-	@import 'viewer-component-score-submitted';
-	@import 'viewer-component-taking-test';
-}

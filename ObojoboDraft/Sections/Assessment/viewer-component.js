@@ -161,9 +161,6 @@ export default class Assessment extends React.Component {
 				case 'scoreSubmitted':
 					return scoreSubmittedView(this)
 
-				case 'review':
-					return assessmentReviewView(this)
-
 				default:
 					return null
 			}

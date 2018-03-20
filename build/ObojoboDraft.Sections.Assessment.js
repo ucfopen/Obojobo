@@ -72,7 +72,7 @@
 	/******/
 	/******/ /******/ __webpack_require__.p = 'build/' // Load entry module and return exports
 	/******/
-	/******/ /******/ return __webpack_require__((__webpack_require__.s = 201))
+	/******/ /******/ return __webpack_require__((__webpack_require__.s = 203))
 	/******/
 })(
 	/************************************************************************/
@@ -89,10 +89,318 @@
 			/***/
 		},
 
-		/***/ /***/ 103: function(module, exports, __webpack_require__) {
+		/***/ /***/ 100: function(module, exports, __webpack_require__) {
 			'use strict'
 
-			var startOfDay = __webpack_require__(112)
+			Object.defineProperty(exports, '__esModule', {
+				value: true
+			})
+
+			var _createClass = (function() {
+				function defineProperties(target, props) {
+					for (var i = 0; i < props.length; i++) {
+						var descriptor = props[i]
+						descriptor.enumerable = descriptor.enumerable || false
+						descriptor.configurable = true
+						if ('value' in descriptor) descriptor.writable = true
+						Object.defineProperty(target, descriptor.key, descriptor)
+					}
+				}
+				return function(Constructor, protoProps, staticProps) {
+					if (protoProps) defineProperties(Constructor.prototype, protoProps)
+					if (staticProps) defineProperties(Constructor, staticProps)
+					return Constructor
+				}
+			})()
+
+			__webpack_require__(182)
+
+			var _Common = __webpack_require__(0)
+
+			var _Common2 = _interopRequireDefault(_Common)
+
+			var _Viewer = __webpack_require__(1)
+
+			var _Viewer2 = _interopRequireDefault(_Viewer)
+
+			var _attemptIncompleteDialog = __webpack_require__(92)
+
+			var _attemptIncompleteDialog2 = _interopRequireDefault(_attemptIncompleteDialog)
+
+			var _viewerComponentUntested = __webpack_require__(99)
+
+			var _viewerComponentUntested2 = _interopRequireDefault(_viewerComponentUntested)
+
+			var _viewerComponentReview = __webpack_require__(23)
+
+			var _viewerComponentReview2 = _interopRequireDefault(_viewerComponentReview)
+
+			var _viewerComponentScoreSubmitted = __webpack_require__(97)
+
+			var _viewerComponentScoreSubmitted2 = _interopRequireDefault(_viewerComponentScoreSubmitted)
+
+			var _viewerComponentTakingTest = __webpack_require__(98)
+
+			var _viewerComponentTakingTest2 = _interopRequireDefault(_viewerComponentTakingTest)
+
+			function _interopRequireDefault(obj) {
+				return obj && obj.__esModule ? obj : { default: obj }
+			}
+
+			function _classCallCheck(instance, Constructor) {
+				if (!(instance instanceof Constructor)) {
+					throw new TypeError('Cannot call a class as a function')
+				}
+			}
+
+			function _possibleConstructorReturn(self, call) {
+				if (!self) {
+					throw new ReferenceError("this hasn't been initialised - super() hasn't been called")
+				}
+				return call && (typeof call === 'object' || typeof call === 'function') ? call : self
+			}
+
+			function _inherits(subClass, superClass) {
+				if (typeof superClass !== 'function' && superClass !== null) {
+					throw new TypeError(
+						'Super expression must either be null or a function, not ' + typeof superClass
+					)
+				}
+				subClass.prototype = Object.create(superClass && superClass.prototype, {
+					constructor: { value: subClass, enumerable: false, writable: true, configurable: true }
+				})
+				if (superClass)
+					Object.setPrototypeOf
+						? Object.setPrototypeOf(subClass, superClass)
+						: (subClass.__proto__ = superClass)
+			}
+
+			var OboComponent = _Common2.default.components.OboComponent
+			var OboModel = _Common2.default.models.OboModel
+			var Button = _Common2.default.components.Button
+			var Dispatcher = _Common2.default.flux.Dispatcher
+			var ModalUtil = _Common2.default.util.ModalUtil
+
+			var Launch = _Common2.default.Launch
+
+			var AssessmentUtil = _Viewer2.default.util.AssessmentUtil
+			var NavUtil = _Viewer2.default.util.NavUtil
+
+			var Assessment = (function(_React$Component) {
+				_inherits(Assessment, _React$Component)
+
+				function Assessment() {
+					_classCallCheck(this, Assessment)
+
+					var _this = _possibleConstructorReturn(
+						this,
+						(Assessment.__proto__ || Object.getPrototypeOf(Assessment)).call(this)
+					)
+
+					_this.state = { step: null }
+					return _this
+				}
+
+				_createClass(Assessment, [
+					{
+						key: 'componentWillUnmount',
+						value: function componentWillUnmount() {
+							NavUtil.setContext('practice')
+						}
+					},
+					{
+						key: 'getCurrentStep',
+						value: function getCurrentStep() {
+							var assessment = AssessmentUtil.getAssessmentForModel(
+								this.props.moduleData.assessmentState,
+								this.props.model
+							)
+
+							if (assessment === null) {
+								return 'untested'
+							}
+							if (assessment.current !== null) {
+								return 'takingTest'
+							}
+
+							if (assessment.attempts.length > 0) {
+								return 'scoreSubmitted'
+							}
+							return 'untested'
+						}
+					},
+					{
+						key: 'componentWillReceiveProps',
+						value: function componentWillReceiveProps(nextProps) {
+							var curStep = this.getCurrentStep()
+							if (curStep !== this.state.step) {
+								this.needsScroll = true
+							}
+
+							return this.setState({ step: curStep })
+						}
+					},
+					{
+						key: 'componentDidUpdate',
+						value: function componentDidUpdate() {
+							if (this.needsScroll) {
+								delete this.needsScroll
+								return Dispatcher.trigger('viewer:scrollToTop')
+							}
+						}
+					},
+					{
+						key: 'isAttemptComplete',
+						value: function isAttemptComplete() {
+							return AssessmentUtil.isCurrentAttemptComplete(
+								this.props.moduleData.assessmentState,
+								this.props.moduleData.questionState,
+								this.props.model,
+								this.props.moduleData.navState.context
+							)
+						}
+					},
+					{
+						key: 'isAssessmentComplete',
+						value: function isAssessmentComplete() {
+							return !AssessmentUtil.hasAttemptsRemaining(
+								this.props.moduleData.assessmentState,
+								this.props.model
+							)
+						}
+					},
+					{
+						key: 'onClickSubmit',
+						value: function onClickSubmit() {
+							if (!this.isAttemptComplete()) {
+								ModalUtil.show(
+									React.createElement(_attemptIncompleteDialog2.default, {
+										onSubmit: this.endAttempt.bind(this)
+									})
+								)
+								return
+							}
+							return this.endAttempt()
+						}
+					},
+					{
+						key: 'onClickResendScore',
+						value: function onClickResendScore() {
+							AssessmentUtil.resendLTIScore(this.props.model)
+						}
+					},
+					{
+						key: 'endAttempt',
+						value: function endAttempt() {
+							return AssessmentUtil.endAttempt(
+								this.props.model,
+								this.props.moduleData.navState.context
+							)
+						}
+					},
+					{
+						key: 'exitAssessment',
+						value: function exitAssessment() {
+							var scoreAction = this.getScoreAction()
+
+							switch (scoreAction.action.value) {
+								case '_next':
+									return NavUtil.goNext()
+
+								case '_prev':
+									return NavUtil.goPrev()
+
+								default:
+									return NavUtil.goto(scoreAction.action.value)
+							}
+						}
+					},
+					{
+						key: 'getScoreAction',
+						value: function getScoreAction() {
+							var assessmentScore = AssessmentUtil.getAssessmentScoreForModel(
+								this.props.moduleData.assessmentState,
+								this.props.model
+							)
+							var scoreAction = this.props.model.modelState.scoreActions.getActionForScore(
+								assessmentScore
+							)
+							if (scoreAction) {
+								return scoreAction
+							}
+
+							return {
+								from: 0,
+								to: 100,
+								message: '',
+								action: {
+									type: 'unlock',
+									value: '_next'
+								}
+							}
+						}
+					},
+					{
+						key: 'render',
+						value: function render() {
+							var _this2 = this
+
+							var recentScore = AssessmentUtil.getLastAttemptScoreForModel(
+								this.props.moduleData.assessmentState,
+								this.props.model
+							)
+							var assessmentScore = AssessmentUtil.getAssessmentScoreForModel(
+								this.props.moduleData.assessmentState,
+								this.props.model
+							)
+							var ltiState = AssessmentUtil.getLTIStateForModel(
+								this.props.moduleData.assessmentState,
+								this.props.model
+							)
+
+							var externalSystemLabel = Launch.getOutcomeServiceHostname()
+
+							var childEl = (function() {
+								switch (_this2.getCurrentStep()) {
+									case 'untested':
+										return (0, _viewerComponentUntested2.default)(_this2)
+
+									case 'takingTest':
+										return (0, _viewerComponentTakingTest2.default)(_this2)
+
+									case 'scoreSubmitted':
+										return (0, _viewerComponentScoreSubmitted2.default)(_this2)
+
+									default:
+										return null
+								}
+							})()
+
+							return React.createElement(
+								OboComponent,
+								{
+									model: this.props.model,
+									moduleData: this.props.moduleData,
+									className: 'obojobo-draft--sections--assessment'
+								},
+								childEl
+							)
+						}
+					}
+				])
+
+				return Assessment
+			})(React.Component)
+
+			exports.default = Assessment
+
+			/***/
+		},
+
+		/***/ /***/ 105: function(module, exports, __webpack_require__) {
+			'use strict'
+
+			var startOfDay = __webpack_require__(114)
 
 			var MILLISECONDS_IN_MINUTE = 60000
 			var MILLISECONDS_IN_DAY = 86400000
@@ -137,15 +445,15 @@
 			/***/
 		},
 
-		/***/ /***/ 104: function(module, exports, __webpack_require__) {
+		/***/ /***/ 106: function(module, exports, __webpack_require__) {
 			'use strict'
 
-			var getDayOfYear = __webpack_require__(105)
-			var getISOWeek = __webpack_require__(106)
-			var getISOYear = __webpack_require__(24)
+			var getDayOfYear = __webpack_require__(107)
+			var getISOWeek = __webpack_require__(108)
+			var getISOYear = __webpack_require__(25)
 			var parse = __webpack_require__(5)
-			var isValid = __webpack_require__(107)
-			var enLocale = __webpack_require__(111)
+			var isValid = __webpack_require__(109)
+			var enLocale = __webpack_require__(113)
 
 			/**
  * @category Common Helpers
@@ -472,12 +780,12 @@
 			/***/
 		},
 
-		/***/ /***/ 105: function(module, exports, __webpack_require__) {
+		/***/ /***/ 107: function(module, exports, __webpack_require__) {
 			'use strict'
 
 			var parse = __webpack_require__(5)
-			var startOfYear = __webpack_require__(115)
-			var differenceInCalendarDays = __webpack_require__(103)
+			var startOfYear = __webpack_require__(117)
+			var differenceInCalendarDays = __webpack_require__(105)
 
 			/**
  * @category Day Helpers
@@ -506,12 +814,12 @@
 			/***/
 		},
 
-		/***/ /***/ 106: function(module, exports, __webpack_require__) {
+		/***/ /***/ 108: function(module, exports, __webpack_require__) {
 			'use strict'
 
 			var parse = __webpack_require__(5)
 			var startOfISOWeek = __webpack_require__(11)
-			var startOfISOYear = __webpack_require__(113)
+			var startOfISOYear = __webpack_require__(115)
 
 			var MILLISECONDS_IN_WEEK = 604800000
 
@@ -547,10 +855,10 @@
 			/***/
 		},
 
-		/***/ /***/ 107: function(module, exports, __webpack_require__) {
+		/***/ /***/ 109: function(module, exports, __webpack_require__) {
 			'use strict'
 
-			var isDate = __webpack_require__(25)
+			var isDate = __webpack_require__(26)
 
 			/**
  * @category Common Helpers
@@ -589,7 +897,39 @@
 			/***/
 		},
 
-		/***/ /***/ 108: function(module, exports, __webpack_require__) {
+		/***/ /***/ 11: function(module, exports, __webpack_require__) {
+			'use strict'
+
+			var startOfWeek = __webpack_require__(116)
+
+			/**
+ * @category ISO Week Helpers
+ * @summary Return the start of an ISO week for the given date.
+ *
+ * @description
+ * Return the start of an ISO week for the given date.
+ * The result will be in the local timezone.
+ *
+ * ISO week-numbering year: http://en.wikipedia.org/wiki/ISO_week_date
+ *
+ * @param {Date|String|Number} date - the original date
+ * @returns {Date} the start of an ISO week
+ *
+ * @example
+ * // The start of an ISO week for 2 September 2014 11:55:00:
+ * var result = startOfISOWeek(new Date(2014, 8, 2, 11, 55, 0))
+ * //=> Mon Sep 01 2014 00:00:00
+ */
+			function startOfISOWeek(dirtyDate) {
+				return startOfWeek(dirtyDate, { weekStartsOn: 1 })
+			}
+
+			module.exports = startOfISOWeek
+
+			/***/
+		},
+
+		/***/ /***/ 110: function(module, exports, __webpack_require__) {
 			'use strict'
 
 			var commonFormatterKeys = [
@@ -647,7 +987,7 @@
 			/***/
 		},
 
-		/***/ /***/ 109: function(module, exports, __webpack_require__) {
+		/***/ /***/ 111: function(module, exports, __webpack_require__) {
 			'use strict'
 
 			function buildDistanceInWordsLocale() {
@@ -753,42 +1093,10 @@
 			/***/
 		},
 
-		/***/ /***/ 11: function(module, exports, __webpack_require__) {
+		/***/ /***/ 112: function(module, exports, __webpack_require__) {
 			'use strict'
 
-			var startOfWeek = __webpack_require__(114)
-
-			/**
- * @category ISO Week Helpers
- * @summary Return the start of an ISO week for the given date.
- *
- * @description
- * Return the start of an ISO week for the given date.
- * The result will be in the local timezone.
- *
- * ISO week-numbering year: http://en.wikipedia.org/wiki/ISO_week_date
- *
- * @param {Date|String|Number} date - the original date
- * @returns {Date} the start of an ISO week
- *
- * @example
- * // The start of an ISO week for 2 September 2014 11:55:00:
- * var result = startOfISOWeek(new Date(2014, 8, 2, 11, 55, 0))
- * //=> Mon Sep 01 2014 00:00:00
- */
-			function startOfISOWeek(dirtyDate) {
-				return startOfWeek(dirtyDate, { weekStartsOn: 1 })
-			}
-
-			module.exports = startOfISOWeek
-
-			/***/
-		},
-
-		/***/ /***/ 110: function(module, exports, __webpack_require__) {
-			'use strict'
-
-			var buildFormattingTokensRegExp = __webpack_require__(108)
+			var buildFormattingTokensRegExp = __webpack_require__(110)
 
 			function buildFormatLocale() {
 				// Note: in English, the names of days of the week and months are capitalized.
@@ -914,11 +1222,11 @@
 			/***/
 		},
 
-		/***/ /***/ 111: function(module, exports, __webpack_require__) {
+		/***/ /***/ 113: function(module, exports, __webpack_require__) {
 			'use strict'
 
-			var buildDistanceInWordsLocale = __webpack_require__(109)
-			var buildFormatLocale = __webpack_require__(110)
+			var buildDistanceInWordsLocale = __webpack_require__(111)
+			var buildFormatLocale = __webpack_require__(112)
 
 			/**
  * @category Locales
@@ -932,7 +1240,7 @@
 			/***/
 		},
 
-		/***/ /***/ 112: function(module, exports, __webpack_require__) {
+		/***/ /***/ 114: function(module, exports, __webpack_require__) {
 			'use strict'
 
 			var parse = __webpack_require__(5)
@@ -964,10 +1272,10 @@
 			/***/
 		},
 
-		/***/ /***/ 113: function(module, exports, __webpack_require__) {
+		/***/ /***/ 115: function(module, exports, __webpack_require__) {
 			'use strict'
 
-			var getISOYear = __webpack_require__(24)
+			var getISOYear = __webpack_require__(25)
 			var startOfISOWeek = __webpack_require__(11)
 
 			/**
@@ -1003,7 +1311,7 @@
 			/***/
 		},
 
-		/***/ /***/ 114: function(module, exports, __webpack_require__) {
+		/***/ /***/ 116: function(module, exports, __webpack_require__) {
 			'use strict'
 
 			var parse = __webpack_require__(5)
@@ -1048,7 +1356,7 @@
 			/***/
 		},
 
-		/***/ /***/ 115: function(module, exports, __webpack_require__) {
+		/***/ /***/ 117: function(module, exports, __webpack_require__) {
 			'use strict'
 
 			var parse = __webpack_require__(5)
@@ -1082,7 +1390,7 @@
 			/***/
 		},
 
-		/***/ /***/ 157: function(module, exports, __webpack_require__) {
+		/***/ /***/ 159: function(module, exports, __webpack_require__) {
 			'use strict'
 
 			var _createClass = (function() {
@@ -1470,23 +1778,296 @@ AttemptRange:
 			/***/
 		},
 
-		/***/ /***/ 179: function(module, exports) {
+		/***/ /***/ 181: function(module, exports) {
 			// removed by extract-text-webpack-plugin
 			/***/
 		},
 
-		/***/ /***/ 180: function(module, exports) {
+		/***/ /***/ 182: function(module, exports) {
 			// removed by extract-text-webpack-plugin
 			/***/
 		},
 
-		/***/ /***/ 201: function(module, exports, __webpack_require__) {
-			module.exports = __webpack_require__(48)
+		/***/ /***/ 203: function(module, exports, __webpack_require__) {
+			module.exports = __webpack_require__(49)
 
 			/***/
 		},
 
 		/***/ /***/ 22: function(module, exports, __webpack_require__) {
+			'use strict'
+
+			Object.defineProperty(exports, '__esModule', {
+				value: true
+			})
+
+			var _createClass = (function() {
+				function defineProperties(target, props) {
+					for (var i = 0; i < props.length; i++) {
+						var descriptor = props[i]
+						descriptor.enumerable = descriptor.enumerable || false
+						descriptor.configurable = true
+						if ('value' in descriptor) descriptor.writable = true
+						Object.defineProperty(target, descriptor.key, descriptor)
+					}
+				}
+				return function(Constructor, protoProps, staticProps) {
+					if (protoProps) defineProperties(Constructor.prototype, protoProps)
+					if (staticProps) defineProperties(Constructor, staticProps)
+					return Constructor
+				}
+			})()
+
+			function _classCallCheck(instance, Constructor) {
+				if (!(instance instanceof Constructor)) {
+					throw new TypeError('Cannot call a class as a function')
+				}
+			}
+
+			var getDisplayFriendlyScore = function getDisplayFriendlyScore(n) {
+				if (n === null) return '--'
+				return n.toFixed(2).replace('.00', '')
+			}
+
+			var getPassingRange = function getPassingRange(passingNumber) {
+				if (passingNumber === 100) return '100%'
+				return getDisplayFriendlyScore(passingNumber) + '-100%'
+			}
+
+			var getModText = function getModText(attemptCondition, numOfAttemptsAvailable) {
+				attemptCondition = ('' + attemptCondition).replace(
+					'$last_attempt',
+					'' + numOfAttemptsAvailable
+				)
+
+				var range = []
+				if (attemptCondition.indexOf(',') === -1) {
+					range.push(parseInt(attemptCondition, 10))
+				} else {
+					var tokens = attemptCondition.split(',')
+					range.push(parseInt(tokens[0].substr(1), 10))
+					range.push(parseInt(tokens[1].substr(0, tokens[1].length - 1), 10))
+
+					if (tokens[0].charAt(0) === '(') range[0]++
+					if (tokens[1].charAt(tokens[1].length - 1) === ')') range[1]--
+
+					if (range[0] === range[1]) range.splice(1, 1)
+				}
+
+				if (range.length === 1) {
+					if (range[0] === 1) return 'Passed on first attempt'
+					if (range[0] === numOfAttemptsAvailable) return 'Passed on last attempt'
+					return 'Passed on attempt ' + range[0]
+				}
+
+				return 'Passed on attempts ' + range[0] + ' to ' + range[1]
+			}
+
+			var AssessmentScoreReport = (function() {
+				function AssessmentScoreReport(assessmentRubric) {
+					_classCallCheck(this, AssessmentScoreReport)
+
+					this.assessmentRubric = assessmentRubric
+				}
+
+				_createClass(AssessmentScoreReport, [
+					{
+						key: 'getTextItems',
+						value: function getTextItems(assessmentScoreInfo, numOfAttemptsAvailable) {
+							var rubric = this.assessmentRubric
+
+							var passingAttemptScore =
+								typeof rubric.passingAttemptScore !== 'undefined' ? rubric.passingAttemptScore : 100
+							var passedResult =
+								typeof rubric.passedResult !== 'undefined' ? rubric.passedResult : 100
+							var failedResult =
+								typeof rubric.failedResult !== 'undefined' ? rubric.failedResult : 0
+							var unableToPassResult =
+								typeof rubric.unableToPassResult !== 'undefined' ? rubric.unableToPassResult : 0
+							var isRewardedMods = assessmentScoreInfo.rewardedMods.length > 0
+							var status = assessmentScoreInfo.status
+							var attemptNum = assessmentScoreInfo.attemptNumber
+
+							var items = []
+							var attemptScore = getDisplayFriendlyScore(assessmentScoreInfo.attemptScore)
+							var assessScore = getDisplayFriendlyScore(assessmentScoreInfo.assessmentModdedScore)
+
+							if (rubric.type === 'attempt' && isRewardedMods) {
+								items.push({
+									type: 'value',
+									text: 'Attempt ' + attemptNum + ' score',
+									value: attemptScore
+								})
+							} else if (rubric.type === 'attempt' && !isRewardedMods) {
+								items.push({
+									type: 'line',
+									text: 'This is your highest attempt score (Attempt ' + attemptNum + ')'
+								})
+								//
+							} else if (
+								rubric.type === 'pass-fail' &&
+								status === 'passed' &&
+								passedResult === '$attempt_score' &&
+								isRewardedMods
+							) {
+								items.push({
+									type: 'value',
+									text:
+										'Passing (' +
+										getPassingRange(passingAttemptScore) +
+										') attempt ' +
+										attemptNum +
+										' score',
+									value: attemptScore
+								})
+							} else if (
+								rubric.type === 'pass-fail' &&
+								status === 'passed' &&
+								passedResult === '$attempt_score' &&
+								!isRewardedMods
+							) {
+								items.push({
+									type: 'line',
+									text:
+										'This is your highest passing (' +
+										getPassingRange(passingAttemptScore) +
+										') attempt ' +
+										attemptNum +
+										' score'
+								})
+							} else if (
+								rubric.type === 'pass-fail' &&
+								status === 'passed' &&
+								Number.isFinite(parseFloat(passedResult)) &&
+								isRewardedMods
+							) {
+								items.push({
+									type: 'value',
+									text:
+										'Reward for your passing (' +
+										getPassingRange(passingAttemptScore) +
+										') attempt ' +
+										attemptNum +
+										' score',
+									value: getDisplayFriendlyScore(passedResult)
+								})
+							} else if (
+								rubric.type === 'pass-fail' &&
+								status === 'passed' &&
+								Number.isFinite(parseFloat(passedResult)) &&
+								!isRewardedMods
+							) {
+								items.push({
+									type: 'line',
+									text:
+										'This is your rewarded score for your passing (' +
+										getPassingRange(passingAttemptScore) +
+										') attempt ' +
+										attemptNum +
+										' score'
+								})
+							} else if (
+								rubric.type === 'pass-fail' &&
+								status === 'failed' &&
+								failedResult === 'no-score'
+							) {
+								items.push({
+									type: 'line',
+									text:
+										'You need an attempt score of ' +
+										getPassingRange(passingAttemptScore) +
+										' to pass'
+								})
+							} else if (
+								rubric.type === 'pass-fail' &&
+								status === 'failed' &&
+								Number.isFinite(parseFloat(failedResult))
+							) {
+								items.push({
+									type: 'value',
+									text:
+										'Given score for a non-passing (less than ' +
+										getDisplayFriendlyScore(passingAttemptScore) +
+										'%) attempt',
+									value: getDisplayFriendlyScore(failedResult)
+								})
+							} else if (
+								rubric.type === 'pass-fail' &&
+								status === 'unableToPass' &&
+								unableToPassResult === 'no-score'
+							) {
+								items.push({
+									type: 'line',
+									text:
+										'You needed an attempt score of ' +
+										getPassingRange(passingAttemptScore) +
+										' to pass'
+								})
+							} else if (
+								rubric.type === 'pass-fail' &&
+								status === 'unableToPass' &&
+								unableToPassResult === '$highest_attempt_score'
+							) {
+								items.push({
+									type: 'line',
+									text: 'This is your highest attempt score (Attempt ' + attemptNum + ')'
+								})
+							} else if (
+								rubric.type === 'pass-fail' &&
+								status === 'unableToPass' &&
+								Number.isFinite(parseFloat(unableToPassResult))
+							) {
+								items.push({
+									type: 'value',
+									text:
+										'Given score for not achieving a passing (' +
+										getPassingRange(passingAttemptScore) +
+										') attempt',
+									value: getDisplayFriendlyScore(unableToPassResult)
+								})
+							} else {
+								throw new Error('Unknown assessment rubric and score state')
+							}
+
+							if (assessmentScoreInfo.rewardedMods.length > 0) {
+								items = items.concat(
+									assessmentScoreInfo.rewardedMods.map(function(modIndex) {
+										var mod = rubric.mods[modIndex]
+
+										//@TODO - for now assumes attemptCondition - will change to type
+
+										return {
+											type: parseInt(mod.reward) >= 0 ? 'extra-credit' : 'penalty',
+											text: getModText(mod.attemptCondition, numOfAttemptsAvailable),
+											value: getDisplayFriendlyScore(Math.abs(mod.reward))
+										}
+									})
+								)
+
+								var isScoreOver100 =
+									assessmentScoreInfo.attemptScore + assessmentScoreInfo.rewardTotal > 100
+
+								items.push({
+									type: 'total',
+									text: 'Total' + (isScoreOver100 ? ' (Max 100%)' : ''),
+									value: assessScore
+								})
+							}
+
+							return items
+						}
+					}
+				])
+
+				return AssessmentScoreReport
+			})()
+
+			exports.default = AssessmentScoreReport
+
+			/***/
+		},
+
+		/***/ /***/ 23: function(module, exports, __webpack_require__) {
 			'use strict'
 
 			Object.defineProperty(exports, '__esModule', {
@@ -1501,15 +2082,19 @@ AttemptRange:
 
 			var _Common2 = _interopRequireDefault(_Common)
 
-			var _reviewIcon = __webpack_require__(93)
+			var _reviewIcon = __webpack_require__(94)
 
 			var _reviewIcon2 = _interopRequireDefault(_reviewIcon)
 
-			var _viewerComponentScoreOverview = __webpack_require__(23)
+			var _viewerComponentScoreReport = __webpack_require__(24)
 
-			var _viewerComponentScoreOverview2 = _interopRequireDefault(_viewerComponentScoreOverview)
+			var _viewerComponentScoreReport2 = _interopRequireDefault(_viewerComponentScoreReport)
 
-			var _format = __webpack_require__(104)
+			var _assessmentScoreReport = __webpack_require__(22)
+
+			var _assessmentScoreReport2 = _interopRequireDefault(_assessmentScoreReport)
+
+			var _format = __webpack_require__(106)
 
 			var _format2 = _interopRequireDefault(_format)
 
@@ -1522,12 +2107,18 @@ AttemptRange:
 			var OboModel = _Common2.default.models.OboModel
 			var Button = _Common2.default.components.Button
 
-			var assessmentReviewView = function assessmentReviewView(assessment) {
+			var assessmentReviewView = function assessmentReviewView(_ref) {
+				var assessment = _ref.assessment
+
 				var attemptReviewComponents = {}
 
 				var attempts = AssessmentUtil.getAllAttempts(
 					assessment.props.moduleData.assessmentState,
 					assessment.props.model
+				)
+
+				var report = new _assessmentScoreReport2.default(
+					assessment.props.model.modelState.rubric.toObject()
 				)
 
 				var attemptReviewComponent = function attemptReviewComponent(attempt, assessment) {
@@ -1580,7 +2171,15 @@ AttemptRange:
 							React.createElement(
 								'div',
 								{ className: 'score-section' },
-								React.createElement(_viewerComponentScoreOverview2.default, null)
+								React.createElement(_viewerComponentScoreReport2.default, {
+									items: report.getTextItems(
+										attempt.assessmentScoreDetails,
+										AssessmentUtil.getAttemptsRemaining(
+											assessment.props.moduleData.assessmentState,
+											assessment.props.model
+										)
+									)
+								})
 							)
 						),
 						attempt.questionScores.map(function(scoreObj) {
@@ -1632,125 +2231,109 @@ AttemptRange:
 			/***/
 		},
 
-		/***/ /***/ 23: function(module, exports, __webpack_require__) {
+		/***/ /***/ 24: function(module, exports, __webpack_require__) {
 			'use strict'
 
 			Object.defineProperty(exports, '__esModule', {
 				value: true
 			})
-			var testThing = [
-				{
-					type: 'value',
-					text: 'Attempt 2 score',
-					value: '50'
-				},
-				{
-					type: 'penalty',
-					text: 'Passed on attempt 2',
-					value: '1'
-				},
-				{
-					type: 'penalty',
-					text: 'Passed on attempts 1 to 2',
-					value: '3'
-				},
-				{
-					type: 'total',
-					text: 'Total',
-					value: '34'
-				}
-			]
-
-			var getLIStyle = function getLIStyle(type) {
-				switch (type) {
-					case 'penalty':
-						return { color: 'red', display: 'inline-block' }
-					case 'extra-credit':
-						return { color: 'green', display: 'inline-block' }
-					default:
-						return { display: 'inline-block' }
-				}
-			}
-
-			var ulStyle = {
-				padding: 0,
-				listStyleType: 'none',
-				borderTop: '1px solid LightGray'
-			}
-
-			var getModsTextList = function getModsTextList(givenObj) {
-				var modsList = givenObj.map(function(obj, index) {
+			var getModsList = function getModsList(textItemsArray) {
+				var modsList = textItemsArray.map(function(obj, index) {
 					var type = obj.type
 
-					var style = getLIStyle(type)
+					var getSpecialChar = function getSpecialChar(type) {
+						switch (type) {
+							case 'extra-credit':
+								return '+'
+							case 'penalty':
+								return '-'
+							case 'value':
+								return ''
+							case 'total':
+								return '='
+						}
+					}
 
-					if (index === 0) {
+					var getSpanTextClass = function getSpanTextClass(type) {
+						switch (type) {
+							case 'penalty':
+								return 'is-type-score-report-penalty'
+							case 'extra-credit':
+								return 'is-type-score-report-extra-credit'
+							default:
+								return ''
+						}
+					}
+
+					var getTextDiv = function getTextDiv() {
+						if (type === 'value')
+							return React.createElement(
+								'div',
+								{ className: 'score-report-text score-report-text-value' },
+								'Passing Reward'
+							)
+
+						if (type === 'total')
+							return React.createElement(
+								'div',
+								{ className: 'score-report-text score-report-text-total' },
+								obj.text
+							)
+
 						return React.createElement(
-							'li',
-							null,
-							React.createElement('div', { style: style }, obj.text)
+							'div',
+							{ className: 'score-report-text' },
+							React.createElement(
+								'span',
+								{ className: getSpanTextClass(type) },
+								type.charAt(0).toUpperCase() + type.substr(1)
+							),
+							' - ' + obj.text + ':'
 						)
 					}
 
-					return React.createElement(
-						'li',
-						null,
-						React.createElement(
+					var getScoreDiv = function getScoreDiv() {
+						return React.createElement(
 							'div',
-							{ style: style },
-							type.charAt(0).toUpperCase() + type.substr(1)
-						),
-						' - ',
-						obj.text,
-						':'
-					)
-				})
-
-				return React.createElement('ul', { style: ulStyle }, modsList)
-			}
-
-			var getModsScoreList = function getModsScoreList(givenObj) {
-				var getSpecialChar = function getSpecialChar(type) {
-					switch (type) {
-						case 'extra-credit':
-							return '+'
-						case 'penalty':
-							return '-'
-						case 'value':
-							return ''
-						case 'total':
-							return '='
+							{ className: 'score-report-score' },
+							React.createElement(
+								'strong',
+								null,
+								getSpecialChar(obj.type),
+								obj.value ? ' ' + obj.value + ' %' : null
+							)
+						)
 					}
-				}
 
-				var modsList = givenObj.map(function(obj) {
-					return React.createElement(
-						'li',
-						null,
-						React.createElement('strong', null, getSpecialChar(obj.type), obj.value, '%')
-					)
+					return React.createElement('li', null, getTextDiv(), getScoreDiv())
 				})
 
-				return React.createElement('ul', { style: ulStyle }, modsList)
+				return React.createElement('ul', null, modsList)
 			}
 
-			var scoreOverview = function scoreOverview(props) {
+			var scoreOverview = function scoreOverview(_ref) {
+				var items = _ref.items,
+					retainedScore = _ref.retainedScore
+
 				var modBreakDown = React.createElement(
 					'div',
 					{ className: 'mod-breakdown' },
-					getModsTextList(testThing),
-					getModsScoreList(testThing)
+					getModsList(items)
 				)
 
-				return props.showRetainedScore
+				return retainedScore
 					? React.createElement(
 							'div',
-							{ className: 'retained-score' },
-							React.createElement('div', { style: { paddingTop: '10px' } }, 'Retained Score'),
-							React.createElement('h1', null, '100%'),
-							modBreakDown
+							{ className: 'score-report' },
+							React.createElement(
+								'div',
+								{ className: 'retained-score' },
+								React.createElement('div', null, 'Retained Score'),
+								React.createElement('h1', null, '100%'),
+								modBreakDown
+							)
 						)
-					: modBreakDown
+					: React.createElement('div', { className: 'score-report' }, modBreakDown)
 			}
 
 			exports.default = scoreOverview
@@ -1758,7 +2341,7 @@ AttemptRange:
 			/***/
 		},
 
-		/***/ /***/ 24: function(module, exports, __webpack_require__) {
+		/***/ /***/ 25: function(module, exports, __webpack_require__) {
 			'use strict'
 
 			var parse = __webpack_require__(5)
@@ -1810,7 +2393,7 @@ AttemptRange:
 			/***/
 		},
 
-		/***/ /***/ 25: function(module, exports, __webpack_require__) {
+		/***/ /***/ 26: function(module, exports, __webpack_require__) {
 			'use strict'
 
 			/**
@@ -1837,7 +2420,7 @@ AttemptRange:
 			/***/
 		},
 
-		/***/ /***/ 48: function(module, exports, __webpack_require__) {
+		/***/ /***/ 49: function(module, exports, __webpack_require__) {
 			'use strict'
 
 			var _Common = __webpack_require__(0)
@@ -1848,11 +2431,11 @@ AttemptRange:
 
 			var _Viewer2 = _interopRequireDefault(_Viewer)
 
-			var _adapter = __webpack_require__(90)
+			var _adapter = __webpack_require__(91)
 
 			var _adapter2 = _interopRequireDefault(_adapter)
 
-			var _viewerComponent = __webpack_require__(98)
+			var _viewerComponent = __webpack_require__(100)
 
 			var _viewerComponent2 = _interopRequireDefault(_viewerComponent)
 
@@ -1920,7 +2503,7 @@ AttemptRange:
 		/***/ /***/ 5: function(module, exports, __webpack_require__) {
 			'use strict'
 
-			var isDate = __webpack_require__(25)
+			var isDate = __webpack_require__(26)
 
 			var MILLISECONDS_IN_HOUR = 3600000
 			var MILLISECONDS_IN_MINUTE = 60000
@@ -2245,18 +2828,18 @@ AttemptRange:
 			/***/
 		},
 
-		/***/ /***/ 90: function(module, exports, __webpack_require__) {
+		/***/ /***/ 91: function(module, exports, __webpack_require__) {
 			'use strict'
 
 			Object.defineProperty(exports, '__esModule', {
 				value: true
 			})
 
-			var _scoreActions = __webpack_require__(94)
+			var _scoreActions = __webpack_require__(95)
 
 			var _scoreActions2 = _interopRequireDefault(_scoreActions)
 
-			var _assessmentRubric = __webpack_require__(157)
+			var _assessmentRubric = __webpack_require__(159)
 
 			var _assessmentRubric2 = _interopRequireDefault(_assessmentRubric)
 
@@ -2316,7 +2899,7 @@ AttemptRange:
 			/***/
 		},
 
-		/***/ /***/ 91: function(module, exports, __webpack_require__) {
+		/***/ /***/ 92: function(module, exports, __webpack_require__) {
 			'use strict'
 
 			Object.defineProperty(exports, '__esModule', {
@@ -2443,7 +3026,7 @@ AttemptRange:
 			/***/
 		},
 
-		/***/ /***/ 92: function(module, exports, __webpack_require__) {
+		/***/ /***/ 93: function(module, exports, __webpack_require__) {
 			'use strict'
 
 			Object.defineProperty(exports, '__esModule', {
@@ -2467,7 +3050,7 @@ AttemptRange:
 				}
 			})()
 
-			__webpack_require__(179)
+			__webpack_require__(181)
 
 			var _Common = __webpack_require__(0)
 
@@ -2632,7 +3215,7 @@ AttemptRange:
 			/***/
 		},
 
-		/***/ /***/ 93: function(module, exports, __webpack_require__) {
+		/***/ /***/ 94: function(module, exports, __webpack_require__) {
 			'use strict'
 
 			Object.defineProperty(exports, '__esModule', {
@@ -2737,7 +3320,7 @@ AttemptRange:
 			/***/
 		},
 
-		/***/ /***/ 94: function(module, exports, __webpack_require__) {
+		/***/ /***/ 95: function(module, exports, __webpack_require__) {
 			'use strict'
 
 			Object.defineProperty(exports, '__esModule', {
@@ -2837,7 +3420,7 @@ AttemptRange:
 			/***/
 		},
 
-		/***/ /***/ 95: function(module, exports, __webpack_require__) {
+		/***/ /***/ 96: function(module, exports, __webpack_require__) {
 			'use strict'
 
 			Object.defineProperty(exports, '__esModule', {
@@ -2852,17 +3435,76 @@ AttemptRange:
 
 			var _Viewer2 = _interopRequireDefault(_Viewer)
 
-			var _ltiStatus = __webpack_require__(92)
+			function _interopRequireDefault(obj) {
+				return obj && obj.__esModule ? obj : { default: obj }
+			}
+
+			var OboModel = _Common2.default.models.OboModel
+
+			var questionResultView = function questionResultView(moduleData, questionScore, index) {
+				var questionModel = OboModel.models[questionScore.id]
+				var QuestionComponent = questionModel.getComponentClass()
+
+				return React.createElement(
+					'div',
+					{ key: index, className: questionScore.score === 100 ? 'is-correct' : 'is-not-correct' },
+					React.createElement(
+						'p',
+						null,
+						'Question ' +
+							(index + 1) +
+							' - ' +
+							(questionScore.score === 100 ? 'Correct:' : 'Incorrect:')
+					),
+					React.createElement(QuestionComponent, {
+						model: questionModel,
+						moduleData: moduleData,
+						showContentOnly: true
+					})
+				)
+			}
+
+			exports.default = questionResultView
+
+			/***/
+		},
+
+		/***/ /***/ 97: function(module, exports, __webpack_require__) {
+			'use strict'
+
+			Object.defineProperty(exports, '__esModule', {
+				value: true
+			})
+
+			var _Common = __webpack_require__(0)
+
+			var _Common2 = _interopRequireDefault(_Common)
+
+			var _Viewer = __webpack_require__(1)
+
+			var _Viewer2 = _interopRequireDefault(_Viewer)
+
+			var _ltiStatus = __webpack_require__(93)
 
 			var _ltiStatus2 = _interopRequireDefault(_ltiStatus)
 
-			var _viewerComponentReview = __webpack_require__(22)
+			var _viewerComponentReview = __webpack_require__(23)
 
 			var _viewerComponentReview2 = _interopRequireDefault(_viewerComponentReview)
 
-			var _viewerComponentScoreOverview = __webpack_require__(23)
+			var _viewerComponentScoreReport = __webpack_require__(24)
 
-			var _viewerComponentScoreOverview2 = _interopRequireDefault(_viewerComponentScoreOverview)
+			var _viewerComponentScoreReport2 = _interopRequireDefault(_viewerComponentScoreReport)
+
+			var _assessmentScoreReport = __webpack_require__(22)
+
+			var _assessmentScoreReport2 = _interopRequireDefault(_assessmentScoreReport)
+
+			var _viewerComponentQuestionResultView = __webpack_require__(96)
+
+			var _viewerComponentQuestionResultView2 = _interopRequireDefault(
+				_viewerComponentQuestionResultView
+			)
 
 			function _interopRequireDefault(obj) {
 				return obj && obj.__esModule ? obj : { default: obj }
@@ -2875,6 +3517,15 @@ AttemptRange:
 			var NavUtil = _Viewer2.default.util.NavUtil
 
 			var scoreSubmittedView = function scoreSubmittedView(assessment) {
+				var report = new _assessmentScoreReport2.default(
+					assessment.props.model.modelState.rubric.toObject()
+				)
+
+				var latestHighestAttemptScoreDetails = AssessmentUtil.getLatestHighestAttemptScoreState(
+					assessment.props.moduleData.assessmentState,
+					assessment.props.model
+				)
+
 				var questionScores = AssessmentUtil.getLastAttemptScoresForModel(
 					assessment.props.moduleData.assessmentState,
 					assessment.props.model
@@ -2943,12 +3594,6 @@ AttemptRange:
 					}
 				})(assessment.props.model.modelState.review)
 
-				var scoreOverviewProps = {
-					assessmentLabel: assessmentLabel,
-					recentScore: recentScore,
-					attemptsRemaining: attemptsRemaining
-				}
-
 				return React.createElement(
 					'div',
 					{ className: 'score unlock' },
@@ -2961,16 +3606,23 @@ AttemptRange:
 							{ className: 'assessment-flex-container' },
 							React.createElement(
 								'div',
-								{ className: 'last-attempt' },
+								null,
 								React.createElement('div', null, 'Last Attempt Score'),
 								React.createElement('div', null, Math.round(recentScore), '%')
 							),
-							React.createElement(_viewerComponentScoreOverview2.default, {
-								showRetainedScore: true
+							React.createElement(_viewerComponentScoreReport2.default, {
+								retainedScore: latestHighestAttemptScoreDetails.attemptScore,
+								items: report.getTextItems(
+									latestHighestAttemptScoreDetails,
+									AssessmentUtil.getAttemptsRemaining(
+										assessment.props.moduleData.assessmentState,
+										assessment.props.model
+									)
+								)
 							}),
 							React.createElement(
 								'div',
-								{ className: 'attempts-remaining' },
+								null,
 								React.createElement('div', null, 'Attempts Remaining'),
 								React.createElement('div', null, attemptsRemaining)
 							)
@@ -2984,10 +3636,10 @@ AttemptRange:
 					),
 					childEl,
 					showFullReview
-						? (0, _viewerComponentReview2.default)(assessment)
+						? React.createElement(_viewerComponentReview2.default, { assessment: assessment })
 						: React.createElement(
 								'div',
-								{ className: 'review' },
+								null,
 								React.createElement(
 									'p',
 									{ className: 'number-correct' },
@@ -2998,32 +3650,12 @@ AttemptRange:
 										' questions correct:'
 								),
 								questionScores.map(function(questionScore, index) {
-									return questionResultView(assessment.props, questionScore, index)
+									return (
+										0,
+										_viewerComponentQuestionResultView2.default
+									)(assessment.props.moduleData, questionScore, index)
 								})
 							)
-				)
-			}
-
-			var questionResultView = function questionResultView(props, questionScore, index) {
-				var questionModel = OboModel.models[questionScore.id]
-				var QuestionComponent = questionModel.getComponentClass()
-
-				return React.createElement(
-					'div',
-					{ key: index, className: questionScore.score === 100 ? 'is-correct' : 'is-not-correct' },
-					React.createElement(
-						'p',
-						null,
-						'Question ' +
-							(index + 1) +
-							' - ' +
-							(questionScore.score === 100 ? 'Correct:' : 'Incorrect:')
-					),
-					React.createElement(QuestionComponent, {
-						model: questionModel,
-						moduleData: props.moduleData,
-						showContentOnly: true
-					})
 				)
 			}
 
@@ -3032,7 +3664,7 @@ AttemptRange:
 			/***/
 		},
 
-		/***/ /***/ 96: function(module, exports, __webpack_require__) {
+		/***/ /***/ 98: function(module, exports, __webpack_require__) {
 			'use strict'
 
 			Object.defineProperty(exports, '__esModule', {
@@ -3089,7 +3721,7 @@ AttemptRange:
 			/***/
 		},
 
-		/***/ /***/ 97: function(module, exports, __webpack_require__) {
+		/***/ /***/ 99: function(module, exports, __webpack_require__) {
 			'use strict'
 
 			Object.defineProperty(exports, '__esModule', {
@@ -3107,317 +3739,6 @@ AttemptRange:
 			}
 
 			exports.default = untestedView
-
-			/***/
-		},
-
-		/***/ /***/ 98: function(module, exports, __webpack_require__) {
-			'use strict'
-
-			Object.defineProperty(exports, '__esModule', {
-				value: true
-			})
-
-			var _createClass = (function() {
-				function defineProperties(target, props) {
-					for (var i = 0; i < props.length; i++) {
-						var descriptor = props[i]
-						descriptor.enumerable = descriptor.enumerable || false
-						descriptor.configurable = true
-						if ('value' in descriptor) descriptor.writable = true
-						Object.defineProperty(target, descriptor.key, descriptor)
-					}
-				}
-				return function(Constructor, protoProps, staticProps) {
-					if (protoProps) defineProperties(Constructor.prototype, protoProps)
-					if (staticProps) defineProperties(Constructor, staticProps)
-					return Constructor
-				}
-			})()
-
-			__webpack_require__(180)
-
-			var _Common = __webpack_require__(0)
-
-			var _Common2 = _interopRequireDefault(_Common)
-
-			var _Viewer = __webpack_require__(1)
-
-			var _Viewer2 = _interopRequireDefault(_Viewer)
-
-			var _attemptIncompleteDialog = __webpack_require__(91)
-
-			var _attemptIncompleteDialog2 = _interopRequireDefault(_attemptIncompleteDialog)
-
-			var _viewerComponentUntested = __webpack_require__(97)
-
-			var _viewerComponentUntested2 = _interopRequireDefault(_viewerComponentUntested)
-
-			var _viewerComponentReview = __webpack_require__(22)
-
-			var _viewerComponentReview2 = _interopRequireDefault(_viewerComponentReview)
-
-			var _viewerComponentScoreSubmitted = __webpack_require__(95)
-
-			var _viewerComponentScoreSubmitted2 = _interopRequireDefault(_viewerComponentScoreSubmitted)
-
-			var _viewerComponentTakingTest = __webpack_require__(96)
-
-			var _viewerComponentTakingTest2 = _interopRequireDefault(_viewerComponentTakingTest)
-
-			function _interopRequireDefault(obj) {
-				return obj && obj.__esModule ? obj : { default: obj }
-			}
-
-			function _classCallCheck(instance, Constructor) {
-				if (!(instance instanceof Constructor)) {
-					throw new TypeError('Cannot call a class as a function')
-				}
-			}
-
-			function _possibleConstructorReturn(self, call) {
-				if (!self) {
-					throw new ReferenceError("this hasn't been initialised - super() hasn't been called")
-				}
-				return call && (typeof call === 'object' || typeof call === 'function') ? call : self
-			}
-
-			function _inherits(subClass, superClass) {
-				if (typeof superClass !== 'function' && superClass !== null) {
-					throw new TypeError(
-						'Super expression must either be null or a function, not ' + typeof superClass
-					)
-				}
-				subClass.prototype = Object.create(superClass && superClass.prototype, {
-					constructor: { value: subClass, enumerable: false, writable: true, configurable: true }
-				})
-				if (superClass)
-					Object.setPrototypeOf
-						? Object.setPrototypeOf(subClass, superClass)
-						: (subClass.__proto__ = superClass)
-			}
-
-			var OboComponent = _Common2.default.components.OboComponent
-			var OboModel = _Common2.default.models.OboModel
-			var Button = _Common2.default.components.Button
-			var Dispatcher = _Common2.default.flux.Dispatcher
-			var ModalUtil = _Common2.default.util.ModalUtil
-
-			var Launch = _Common2.default.Launch
-
-			var AssessmentUtil = _Viewer2.default.util.AssessmentUtil
-			var NavUtil = _Viewer2.default.util.NavUtil
-
-			var Assessment = (function(_React$Component) {
-				_inherits(Assessment, _React$Component)
-
-				function Assessment() {
-					_classCallCheck(this, Assessment)
-
-					var _this = _possibleConstructorReturn(
-						this,
-						(Assessment.__proto__ || Object.getPrototypeOf(Assessment)).call(this)
-					)
-
-					_this.state = { step: null }
-					return _this
-				}
-
-				_createClass(Assessment, [
-					{
-						key: 'componentWillUnmount',
-						value: function componentWillUnmount() {
-							NavUtil.setContext('practice')
-						}
-					},
-					{
-						key: 'getCurrentStep',
-						value: function getCurrentStep() {
-							var assessment = AssessmentUtil.getAssessmentForModel(
-								this.props.moduleData.assessmentState,
-								this.props.model
-							)
-
-							if (assessment === null) {
-								return 'untested'
-							}
-							if (assessment.current !== null) {
-								return 'takingTest'
-							}
-
-							if (assessment.attempts.length > 0) {
-								return 'scoreSubmitted'
-							}
-							return 'untested'
-						}
-					},
-					{
-						key: 'componentWillReceiveProps',
-						value: function componentWillReceiveProps(nextProps) {
-							var curStep = this.getCurrentStep()
-							if (curStep !== this.state.step) {
-								this.needsScroll = true
-							}
-
-							return this.setState({ step: curStep })
-						}
-					},
-					{
-						key: 'componentDidUpdate',
-						value: function componentDidUpdate() {
-							if (this.needsScroll) {
-								delete this.needsScroll
-								return Dispatcher.trigger('viewer:scrollToTop')
-							}
-						}
-					},
-					{
-						key: 'isAttemptComplete',
-						value: function isAttemptComplete() {
-							return AssessmentUtil.isCurrentAttemptComplete(
-								this.props.moduleData.assessmentState,
-								this.props.moduleData.questionState,
-								this.props.model,
-								this.props.moduleData.navState.context
-							)
-						}
-					},
-					{
-						key: 'isAssessmentComplete',
-						value: function isAssessmentComplete() {
-							return !AssessmentUtil.hasAttemptsRemaining(
-								this.props.moduleData.assessmentState,
-								this.props.model
-							)
-						}
-					},
-					{
-						key: 'onClickSubmit',
-						value: function onClickSubmit() {
-							if (!this.isAttemptComplete()) {
-								ModalUtil.show(
-									React.createElement(_attemptIncompleteDialog2.default, {
-										onSubmit: this.endAttempt.bind(this)
-									})
-								)
-								return
-							}
-							return this.endAttempt()
-						}
-					},
-					{
-						key: 'onClickResendScore',
-						value: function onClickResendScore() {
-							AssessmentUtil.resendLTIScore(this.props.model)
-						}
-					},
-					{
-						key: 'endAttempt',
-						value: function endAttempt() {
-							return AssessmentUtil.endAttempt(
-								this.props.model,
-								this.props.moduleData.navState.context
-							)
-						}
-					},
-					{
-						key: 'exitAssessment',
-						value: function exitAssessment() {
-							var scoreAction = this.getScoreAction()
-
-							switch (scoreAction.action.value) {
-								case '_next':
-									return NavUtil.goNext()
-
-								case '_prev':
-									return NavUtil.goPrev()
-
-								default:
-									return NavUtil.goto(scoreAction.action.value)
-							}
-						}
-					},
-					{
-						key: 'getScoreAction',
-						value: function getScoreAction() {
-							var assessmentScore = AssessmentUtil.getAssessmentScoreForModel(
-								this.props.moduleData.assessmentState,
-								this.props.model
-							)
-							var scoreAction = this.props.model.modelState.scoreActions.getActionForScore(
-								assessmentScore
-							)
-							if (scoreAction) {
-								return scoreAction
-							}
-
-							return {
-								from: 0,
-								to: 100,
-								message: '',
-								action: {
-									type: 'unlock',
-									value: '_next'
-								}
-							}
-						}
-					},
-					{
-						key: 'render',
-						value: function render() {
-							var _this2 = this
-
-							var recentScore = AssessmentUtil.getLastAttemptScoreForModel(
-								this.props.moduleData.assessmentState,
-								this.props.model
-							)
-							var assessmentScore = AssessmentUtil.getAssessmentScoreForModel(
-								this.props.moduleData.assessmentState,
-								this.props.model
-							)
-							var ltiState = AssessmentUtil.getLTIStateForModel(
-								this.props.moduleData.assessmentState,
-								this.props.model
-							)
-
-							var externalSystemLabel = Launch.getOutcomeServiceHostname()
-
-							var childEl = (function() {
-								switch (_this2.getCurrentStep()) {
-									case 'untested':
-										return (0, _viewerComponentUntested2.default)(_this2)
-
-									case 'takingTest':
-										return (0, _viewerComponentTakingTest2.default)(_this2)
-
-									case 'scoreSubmitted':
-										return (0, _viewerComponentScoreSubmitted2.default)(_this2)
-
-									case 'review':
-										return (0, _viewerComponentReview2.default)(_this2)
-
-									default:
-										return null
-								}
-							})()
-
-							return React.createElement(
-								OboComponent,
-								{
-									model: this.props.model,
-									moduleData: this.props.moduleData,
-									className: 'obojobo-draft--sections--assessment'
-								},
-								childEl
-							)
-						}
-					}
-				])
-
-				return Assessment
-			})(React.Component)
-
-			exports.default = Assessment
 
 			/***/
 		}

@@ -1,0 +1,29 @@
+.score
+	{
+		> .results-bar
+		{
+			font-family: $font-default;
+			text-align: center;
+			background-color: $color-bg2;
+			border-radius: $dimension-rounded-radius;
+			padding: 3em;
+
+			> h1
+			{
+				width:100%;
+				display: inline-block;
+				font-weight: normal;
+				font-size: 1.35em;
+				border-bottom: 1px solid $color-shadow;
+				padding: 1em 0;
+				box-sizing: border-box;
+			}
+		}
+
+		.assessment-flex-container {
+			display: flex;
+			justify-content: space-around;
+			margin-top: 1em;
+			margin-bottom: .5em;
+		}
+	}

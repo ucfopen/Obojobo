@@ -2796,6 +2796,19 @@
 
 					return assessment.score
 				},
+				getLatestHighestAttemptScoreState: function getLatestHighestAttemptScoreState(
+					state,
+					model
+				) {
+					var assessment = AssessmentUtil.getAssessmentForModel(state, model)
+					return assessment.attempts
+						.map(function(attempt) {
+							return attempt.assessmentScoreDetails
+						})
+						.reduce(function(stored, current) {
+							return current.attemptScore >= stored.attemptScore ? current : stored
+						})
+				},
 				getLastAttemptScoresForModel: function getLastAttemptScoresForModel(state, model) {
 					var assessment = AssessmentUtil.getAssessmentForModel(state, model)
 					if (!assessment) {

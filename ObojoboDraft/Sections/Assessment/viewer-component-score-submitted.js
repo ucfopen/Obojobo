@@ -7,10 +7,19 @@ const Launch = Common.Launch
 const NavUtil = Viewer.util.NavUtil
 
 import LTIStatus from './lti-status'
-import fullReview from './viewer-component-review'
-import ScoreOverview from './viewer-component-score-overview'
+import FullReview from './viewer-component-review'
+import ScoreReportView from './viewer-component-score-report'
+import ScoreReport from './assessment-score-report'
+import questionResultView from './viewer-component-question-result-view'
 
 const scoreSubmittedView = assessment => {
+	const report = new ScoreReport(assessment.props.model.modelState.rubric.toObject())
+
+	let latestHighestAttemptScoreDetails = AssessmentUtil.getLatestHighestAttemptScoreState(
+		assessment.props.moduleData.assessmentState,
+		assessment.props.model
+	)
+
 	const questionScores = AssessmentUtil.getLastAttemptScoresForModel(
 		assessment.props.moduleData.assessmentState,
 		assessment.props.model
@@ -80,12 +89,6 @@ const scoreSubmittedView = assessment => {
 		}
 	})(assessment.props.model.modelState.review)
 
-	let scoreOverviewProps = {
-		assessmentLabel,
-		recentScore,
-		attemptsRemaining
-	}
-
 	return (
 		<div className="score unlock">
 			<div className="results-bar">
@@ -94,14 +97,23 @@ const scoreSubmittedView = assessment => {
 				</h1>
 
 				<div className="assessment-flex-container">
-					<div className="last-attempt">
+					<div>
 						<div>Last Attempt Score</div>
 						<div>
 							{Math.round(recentScore)}%
 						</div>
 					</div>
-					<ScoreOverview showRetainedScore />
-					<div className="attempts-remaining">
+					<ScoreReportView
+						retainedScore={latestHighestAttemptScoreDetails.attemptScore}
+						items={report.getTextItems(
+							latestHighestAttemptScoreDetails,
+							AssessmentUtil.getAttemptsRemaining(
+								assessment.props.moduleData.assessmentState,
+								assessment.props.model
+							)
+						)}
+					/>
+					<div>
 						<div>Attempts Remaining</div>
 						<div>
 							{attemptsRemaining}
@@ -117,25 +129,13 @@ const scoreSubmittedView = assessment => {
 			</div>
 			{childEl}
 			{showFullReview
-				? fullReview(assessment)
-				: <div className="review">
+				? <FullReview assessment={assessment} />
+				: <div>
 						<p className="number-correct">{`You got ${numCorrect} out of ${questionScores.length} questions correct:`}</p>
 						{questionScores.map((questionScore, index) =>
-							questionResultView(assessment.props, questionScore, index)
+							questionResultView(assessment.props.moduleData, questionScore, index)
 						)}
 					</div>}
-		</div>
-	)
-}
-
-const questionResultView = (props, questionScore, index) => {
-	const questionModel = OboModel.models[questionScore.id]
-	const QuestionComponent = questionModel.getComponentClass()
-
-	return (
-		<div key={index} className={questionScore.score === 100 ? 'is-correct' : 'is-not-correct'}>
-			<p>{`Question ${index + 1} - ${questionScore.score === 100 ? 'Correct:' : 'Incorrect:'}`}</p>
-			<QuestionComponent model={questionModel} moduleData={props.moduleData} showContentOnly />
 		</div>
 	)
 }

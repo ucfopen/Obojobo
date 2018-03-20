@@ -159,10 +159,10 @@ exports[`ViewerApp ViewerApp 1`] = `
   <div
     className="component obojobo-draft--modules--module"
     data-focussed={false}
-    data-id="df9d08bb-6f91-4034-84e1-24fcc6072e47"
+    data-id="f20307b6-7217-49bd-b6bb-aae98911e68f"
     data-obo-component={true}
     data-type="ObojoboDraft.Modules.Module"
-    id="obo-df9d08bb-6f91-4034-84e1-24fcc6072e47"
+    id="obo-f20307b6-7217-49bd-b6bb-aae98911e68f"
   >
     <div>
       <div
@@ -176,10 +176,10 @@ exports[`ViewerApp ViewerApp 1`] = `
         <div
           className="component"
           data-focussed={false}
-          data-id="9022b75d-9b43-42aa-aba6-64321d6894f6"
+          data-id="fb441d16-f545-43e2-bf24-bed875ba62c5"
           data-obo-component={true}
           data-type="ObojoboDraft.Chunks.Heading"
-          id="obo-9022b75d-9b43-42aa-aba6-64321d6894f6"
+          id="obo-fb441d16-f545-43e2-bf24-bed875ba62c5"
         >
           <div
             className="text-chunk obojobo-draft--chunks--heading pad"
@@ -204,10 +204,10 @@ exports[`ViewerApp ViewerApp 1`] = `
         <div
           className="component"
           data-focussed={false}
-          data-id="60dbff03-323c-4598-8f76-e204d036bc22"
+          data-id="d59e17fc-a052-431f-b6b7-9bc7f3d9557f"
           data-obo-component={true}
           data-type="ObojoboDraft.Chunks.Heading"
-          id="obo-60dbff03-323c-4598-8f76-e204d036bc22"
+          id="obo-d59e17fc-a052-431f-b6b7-9bc7f3d9557f"
         >
           <div
             className="text-chunk obojobo-draft--chunks--heading pad"
@@ -232,10 +232,10 @@ exports[`ViewerApp ViewerApp 1`] = `
         <div
           className="component"
           data-focussed={false}
-          data-id="a981c5a9-fe7a-4143-9e44-8da8936648e3"
+          data-id="e047c530-725c-4749-bd22-21d047b8a7c3"
           data-obo-component={true}
           data-type="ObojoboDraft.Chunks.Text"
-          id="obo-a981c5a9-fe7a-4143-9e44-8da8936648e3"
+          id="obo-e047c530-725c-4749-bd22-21d047b8a7c3"
         >
           <div
             className="text-chunk obojobo-draft--chunks--single-text pad"
@@ -272,10 +272,10 @@ exports[`ViewerApp ViewerApp 1`] = `
         <div
           className="component obojobo-draft--chunks--math-equation pad align-center"
           data-focussed={false}
-          data-id="9f015bee-0455-4369-bb06-e8ab63941e70"
+          data-id="4497d699-4ccd-408f-803c-fe200ebbf513"
           data-obo-component={true}
           data-type="ObojoboDraft.Chunks.MathEquation"
-          id="obo-9f015bee-0455-4369-bb06-e8ab63941e70"
+          id="obo-4497d699-4ccd-408f-803c-fe200ebbf513"
         >
           <div
             className="non-editable-chunk"
@@ -295,10 +295,10 @@ exports[`ViewerApp ViewerApp 1`] = `
         <div
           className="component"
           data-focussed={false}
-          data-id="243a4713-2668-4e25-8483-21588c4b2706"
+          data-id="7e13fe5b-ab14-4e2c-9505-4a9bffc13a84"
           data-obo-component={true}
           data-type="ObojoboDraft.Chunks.Text"
-          id="obo-243a4713-2668-4e25-8483-21588c4b2706"
+          id="obo-7e13fe5b-ab14-4e2c-9505-4a9bffc13a84"
         >
           <div
             className="text-chunk obojobo-draft--chunks--single-text pad"
@@ -363,10 +363,10 @@ exports[`ViewerApp ViewerApp 1`] = `
         <div
           className="component"
           data-focussed={false}
-          data-id="caf0052d-9dd8-47c4-b42a-ce43c46ecb1c"
+          data-id="02ebf5aa-9c1a-4a01-8963-3d3d1562d7e8"
           data-obo-component={true}
           data-type="ObojoboDraft.Chunks.List"
-          id="obo-caf0052d-9dd8-47c4-b42a-ce43c46ecb1c"
+          id="obo-02ebf5aa-9c1a-4a01-8963-3d3d1562d7e8"
         >
           <div
             className="text-chunk obojobo-draft--chunks--list pad"
@@ -449,10 +449,10 @@ exports[`ViewerApp ViewerApp 1`] = `
         <div
           className="component"
           data-focussed={false}
-          data-id="f58c38c8-2de4-4a63-8633-32dbf9d61397"
+          data-id="db48f2c5-51e7-49e6-8864-2bcd29659f9f"
           data-obo-component={true}
           data-type="ObojoboDraft.Chunks.Text"
-          id="obo-f58c38c8-2de4-4a63-8633-32dbf9d61397"
+          id="obo-db48f2c5-51e7-49e6-8864-2bcd29659f9f"
         >
           <div
             className="text-chunk obojobo-draft--chunks--single-text pad"
@@ -475,10 +475,10 @@ exports[`ViewerApp ViewerApp 1`] = `
         <div
           className="component"
           data-focussed={false}
-          data-id="f530a522-ddfb-40fb-9736-dbd9870d4989"
+          data-id="251f610b-671a-4c42-bcee-efb47bf2eb98"
           data-obo-component={true}
           data-type="ObojoboDraft.Chunks.Heading"
-          id="obo-f530a522-ddfb-40fb-9736-dbd9870d4989"
+          id="obo-251f610b-671a-4c42-bcee-efb47bf2eb98"
         >
           <div
             className="text-chunk obojobo-draft--chunks--heading pad"
@@ -503,10 +503,10 @@ exports[`ViewerApp ViewerApp 1`] = `
         <div
           className="component"
           data-focussed={false}
-          data-id="bf4fd224-de8e-4991-bc3f-1f4bdf979879"
+          data-id="344c1075-8835-4ea2-934c-e1a955dbdebb"
           data-obo-component={true}
           data-type="ObojoboDraft.Chunks.Text"
-          id="obo-bf4fd224-de8e-4991-bc3f-1f4bdf979879"
+          id="obo-344c1075-8835-4ea2-934c-e1a955dbdebb"
         >
           <div
             className="text-chunk obojobo-draft--chunks--single-text pad"

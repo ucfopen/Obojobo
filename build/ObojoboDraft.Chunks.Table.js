@@ -72,7 +72,7 @@
 	/******/
 	/******/ /******/ __webpack_require__.p = 'build/' // Load entry module and return exports
 	/******/
-	/******/ /******/ return __webpack_require__((__webpack_require__.s = 196))
+	/******/ /******/ return __webpack_require__((__webpack_require__.s = 198))
 	/******/
 })(
 	/************************************************************************/
@@ -83,13 +83,13 @@
 			/***/
 		},
 
-		/***/ /***/ 174: function(module, exports) {
+		/***/ /***/ 176: function(module, exports) {
 			// removed by extract-text-webpack-plugin
 			/***/
 		},
 
-		/***/ /***/ 196: function(module, exports, __webpack_require__) {
-			module.exports = __webpack_require__(43)
+		/***/ /***/ 198: function(module, exports, __webpack_require__) {
+			module.exports = __webpack_require__(44)
 
 			/***/
 		},
@@ -584,7 +584,7 @@
 			/***/
 		},
 
-		/***/ /***/ 43: function(module, exports, __webpack_require__) {
+		/***/ /***/ 44: function(module, exports, __webpack_require__) {
 			'use strict'
 
 			var _Common = __webpack_require__(0)
@@ -595,11 +595,11 @@
 
 			var _selectionHandler2 = _interopRequireDefault(_selectionHandler)
 
-			var _adapter = __webpack_require__(82)
+			var _adapter = __webpack_require__(83)
 
 			var _adapter2 = _interopRequireDefault(_adapter)
 
-			var _viewerComponent = __webpack_require__(83)
+			var _viewerComponent = __webpack_require__(84)
 
 			var _viewerComponent2 = _interopRequireDefault(_viewerComponent)
 
@@ -617,7 +617,7 @@
 			/***/
 		},
 
-		/***/ /***/ 82: function(module, exports, __webpack_require__) {
+		/***/ /***/ 83: function(module, exports, __webpack_require__) {
 			'use strict'
 
 			Object.defineProperty(exports, '__esModule', {
@@ -741,7 +741,7 @@
 			/***/
 		},
 
-		/***/ /***/ 83: function(module, exports, __webpack_require__) {
+		/***/ /***/ 84: function(module, exports, __webpack_require__) {
 			'use strict'
 
 			Object.defineProperty(exports, '__esModule', {
@@ -765,7 +765,7 @@
 				}
 			})()
 
-			__webpack_require__(174)
+			__webpack_require__(176)
 
 			var _gridTextGroup = __webpack_require__(20)
 
