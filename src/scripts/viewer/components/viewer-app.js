@@ -327,6 +327,14 @@ export default class ViewerApp extends React.Component {
 
 	clearPreviewScores() {
 		APIUtil.clearPreviewScores(this.state.model).then(res => {
+			if (res.status === 'error') {
+				return ModalUtil.show(
+					<SimpleDialog ok width="15em">
+						{`There was an error resetting assessments and questions: ${res.value.message}.`}
+					</SimpleDialog>
+				)
+			}
+
 			AssessmentStore.init()
 			QuestionStore.init()
 			ScoreStore.init()
