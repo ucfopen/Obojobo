@@ -136,12 +136,17 @@ class Assessment extends DraftNode {
 			.then(ltiStates => {
 				assessmentsArr.forEach(assessmentItem => {
 					let ltiState = ltiStates[assessmentItem.assessmentId]
-					assessmentItem.ltiState = {
-						scoreSent: ltiState.scoreSent,
-						sentDate: ltiState.sentDate,
-						status: ltiState.status,
-						gradebookStatus: ltiState.gradebookStatus,
-						statusDetails: ltiState.statusDetails
+
+					if (!ltiState) {
+						assessmentItem.ltiState = null
+					} else {
+						assessmentItem.ltiState = {
+							scoreSent: ltiState.scoreSent,
+							sentDate: ltiState.sentDate,
+							status: ltiState.status,
+							gradebookStatus: ltiState.gradebookStatus,
+							statusDetails: ltiState.statusDetails
+						}
 					}
 				})
 
