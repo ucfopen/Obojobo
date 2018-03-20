@@ -8,6 +8,8 @@
 	position: relative;
 	box-shadow: 0 1px 1px $color-shadow;
 	border-radius: 2px;
+	max-height: 70vh;
+	overflow: scroll;
 
 	.obojobo-draft--components--delete-button {
 		top: 0.5em;
