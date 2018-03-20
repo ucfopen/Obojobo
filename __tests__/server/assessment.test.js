@@ -18,7 +18,7 @@ describe('Assessment', () => {
 	})
 
 	test('getCompletedAssessmentAttemptHistory calls db', () => {
-		Assessment.getCompletedAssessmentAttemptHistory(0, 1, 2, false)
+		Assessment.getCompletedAssessmentAttemptHistory(0, 1, 2)
 
 		expect(db.manyOrNone).toHaveBeenCalled()
 		expect(db.manyOrNone.mock.calls[0][1]).toEqual({

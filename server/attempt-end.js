@@ -142,7 +142,7 @@ let getAttempt = attemptId => {
 }
 
 let getAttemptHistory = (userId, draftId, assessmentId) => {
-	return Assessment.getCompletedAssessmentAttemptHistory(userId, draftId, assessmentId, false)
+	return Assessment.getCompletedAssessmentAttemptHistory(userId, draftId, assessmentId)
 }
 
 let getResponsesForAttempt = (userId, draftId) => {
@@ -247,7 +247,7 @@ let insertAttemptEndEvents = (
 		actorTime: new Date().toISOString(),
 		payload: {
 			attemptId: attemptId,
-			attemptCount: isPreviewing ? -1 : attemptNumber
+			attemptCount: attemptNumber
 		},
 		userId: user.id,
 		ip: remoteAddress,
@@ -292,9 +292,9 @@ let insertAttemptScoredEvents = (
 		actorTime: new Date().toISOString(),
 		payload: {
 			attemptId,
-			attemptCount: isPreviewing ? -1 : attemptNumber,
+			attemptCount: attemptNumber,
 			attemptScore,
-			assessmentScore: isPreviewing ? -1 : assessmentScore,
+			assessmentScore,
 			ltiScoreSent,
 			ltiScoreStatus,
 			ltiScoreError,
@@ -315,10 +315,10 @@ let insertAttemptScoredEvents = (
 			attemptScore,
 			isPreviewMode: isPreviewing,
 			extensions: {
-				attemptCount: isPreviewing ? -1 : attemptNumber,
-				attemptScore: attemptScore,
-				assessmentScore: isPreviewing ? -1 : assessmentScore,
-				ltiScoreSent: ltiScoreSent
+				attemptCount: attemptNumber,
+				attemptScore,
+				assessmentScore,
+				ltiScoreSent
 			}
 		})
 	})

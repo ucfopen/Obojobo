@@ -198,7 +198,7 @@ body {
       cursor: default; }
   .viewer--viewer-app > .preview-banner {
     font-family: "Libre Franklin", Arial, sans-serif;
-    background: #555a69;
+    background: #00b3b3;
     box-sizing: border-box;
     color: white;
     font-size: 0.7em;
@@ -211,13 +211,13 @@ body {
     position: fixed;
     right: 0;
     bottom: 0;
-    z-index: 99999; }
-    .viewer--viewer-app > .preview-banner .controls {
+    z-index: 999999; }
+    .viewer--viewer-app > .preview-banner > .controls {
       position: absolute;
       right: 1em;
       top: 50%;
       transform: translate(0, -50%) translate(0, 0.5px); }
-      .viewer--viewer-app > .preview-banner .controls button {
+      .viewer--viewer-app > .preview-banner > .controls button {
         -webkit-appearance: none;
         -moz-appearance: none;
         -ms-appearance: none;
@@ -240,22 +240,15 @@ body {
         border-radius: 0.2em;
         padding: 0.4em;
         background-color: white;
-        color: #555a69;
-        border: 1px solid transparent;
-        border-bottom: 1px solid #cccccc;
-        border: 1px solid white;
-        border-bottom: 1px solid white;
-        background-color: #ffffff;
-        color: #555a69; }
-        .viewer--viewer-app > .preview-banner .controls button:hover {
-          background-color: #555a69;
-          color: white; }
-        .viewer--viewer-app > .preview-banner .controls button:disabled {
-          opacity: 0.5;
-          cursor: default; }
-          .viewer--viewer-app > .preview-banner .controls button:disabled:hover {
-            background-color: #ffffff;
-            color: #555a69; }
+        color: #00b3b3; }
+    .viewer--viewer-app > .preview-banner > .border {
+      position: fixed;
+      left: 0;
+      top: 0;
+      right: 0;
+      bottom: 0;
+      border: 3px solid #00b3b3;
+      pointer-events: none; }
   .viewer--viewer-app.is-previewing {
     height: calc(100% - 3rem); }
 @charset "UTF-8";

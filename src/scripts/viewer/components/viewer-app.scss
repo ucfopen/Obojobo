@@ -80,10 +80,8 @@
 	}
 
 	> .preview-banner {
-		$preview-color: #555a69;
-
 		font-family: $font-default;
-		background: $preview-color;
+		background: $color-preview;
 		box-sizing: border-box;
 		color: white;
 		font-size: 0.7em;
@@ -96,9 +94,9 @@
 		position: fixed;
 		right: 0;
 		bottom: 0;
-		z-index: $z-index-above-all;
+		z-index: $z-index-preview;
 
-		.controls {
+		> .controls {
 			position: absolute;
 			right: 1em;
 			top: 50%;
@@ -124,29 +122,18 @@
 				border-radius: 0.2em;
 				padding: 0.4em;
 				background-color: white;
-				color: $preview-color;
-				border: 1px solid $color-transparent;
-				border-bottom: 1px solid darken(white, 20%);
-				border: 1px solid white;
-				border-bottom: 1px solid white;
-				background-color: $color-bg;
-				color: $preview-color;
-
-				&:hover {
-					background-color: $preview-color;
-					color: white;
-				}
-
-				&:disabled {
-					opacity: 0.5;
-					cursor: default;
-
-					&:hover {
-						background-color: $color-bg;
-						color: $preview-color;
-					}
-				}
+				color: $color-preview;
 			}
+		}
+
+		> .border {
+			position: fixed;
+			left: 0;
+			top: 0;
+			right: 0;
+			bottom: 0;
+			border: 3px solid $color-preview;
+			pointer-events: none;
 		}
 	}
 

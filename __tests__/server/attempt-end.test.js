@@ -93,8 +93,7 @@ describe('Attempt End', () => {
 		expect(Assessment.getCompletedAssessmentAttemptHistory).toHaveBeenLastCalledWith(
 			'userId',
 			'draftId',
-			'assessmentId',
-			false
+			'assessmentId'
 		)
 	})
 

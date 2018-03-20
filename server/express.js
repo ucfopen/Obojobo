@@ -82,6 +82,124 @@ app.post('/api/assessments/attempt/:attemptId/end', (req, res, next) => {
 		})
 })
 
+app.post('/api/assessments/clear-preview-scores', (req, res, next) => {
+	let assessmentScoreIds
+	let attemptIds
+
+	req
+		.requireCurrentUser()
+		.then(currentUser => {
+			let isPreviewing = currentUser.canViewEditor
+
+			if (!isPreviewing) {
+				return res.notAuthorized('Not in preview mode')
+			}
+
+			return db
+				.manyOrNone(
+					`
+						SELECT id
+						FROM assessment_scores
+						WHERE user_id = $[userId]
+						AND draft_id = $[draftId]
+						AND preview = true
+					`,
+					{
+						userId: currentUser.id,
+						draftId: req.body.draftId
+					}
+				)
+				.then(assessmentScoreIdsResult => {
+					assessmentScoreIds = assessmentScoreIdsResult
+
+					return db.manyOrNone(
+						`
+							SELECT id
+							FROM attempts
+							WHERE user_id = $[userId]
+							AND draft_id = $[draftId]
+							AND preview = true
+						`,
+						{
+							userId: currentUser.id,
+							draftId: req.body.draftId
+						}
+					)
+				})
+				.then(attemptIdsResult => {
+					attemptIds = attemptIdsResult
+
+					return db.tx(t => {
+						let queries = []
+
+						if (assessmentScoreIds.length > 0) {
+							queries.push(
+								t.none(
+									`
+									DELETE FROM lti_assessment_scores
+									WHERE assessment_score_id IN ($1:csv)
+								`,
+									assessmentScoreIds.map(i => i.id)
+								)
+							)
+						}
+
+						if (attemptIds.length > 0) {
+							queries.push(
+								t.none(
+									`
+									DELETE FROM attempts_question_responses
+									WHERE attempt_id IN ($1:csv)
+								`,
+									attemptIds.map(i => i.id)
+								)
+							)
+						}
+
+						queries.push(
+							t.none(
+								`
+									DELETE FROM assessment_scores
+									WHERE user_id = $[userId]
+									AND draft_id = $[draftId]
+									AND preview = true
+								`,
+								{
+									userId: currentUser.id,
+									draftId: req.body.draftId
+								}
+							)
+						)
+
+						queries.push(
+							t.none(
+								`
+									DELETE FROM attempts
+									WHERE user_id = $[userId]
+									AND draft_id = $[draftId]
+									AND preview = true
+								`,
+								{
+									userId: currentUser.id,
+									draftId: req.body.draftId
+								}
+							)
+						)
+
+						return t.batch(queries)
+					})
+				})
+
+				.then(() => {
+					return res.success()
+				})
+		})
+
+		.catch(error => {
+			logAndRespondToUnexpected('Unexpected error clearing preview scores', res, req, error)
+		})
+})
+
 app.get('/api/assessments/:draftId/:assessmentId/attempt/:attemptId', (req, res, next) => {
 	// check perms
 	req
