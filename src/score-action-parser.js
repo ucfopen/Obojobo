@@ -5,9 +5,22 @@ let parseScoreActions = (el) => {
 }
 
 let parseScoreAction = (el) => {
+	let attrs = el.attributes
+
+	// Transform legacy "from" and "to" properties to new "for" property:
+	if(
+		typeof attrs.from !== 'undefined'
+		&& typeof attrs.to !== 'undefined'
+		&& typeof attrs.for === 'undefined'
+	) {
+		attrs.for = "[" + attrs.from + "," + attrs.to + "]"
+	}
+
+	delete attrs.from
+	delete attrs.to
+
 	return {
-		from: el.attributes.from,
-		to: el.attributes.to,
+		for: el.attributes.for,
 		page: el.elements[0]
 	}
 }

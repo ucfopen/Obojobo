@@ -6,7 +6,23 @@
         <QuestionBank>
         </QuestionBank>
         <scoreActions>
-            <scoreAction from="0" to="99">
+            <scoreAction for="no-score">
+                <Page>
+                </Page>
+            </scoreAction>
+            <scoreAction for="[0,50)">
+                <Page>
+                </Page>
+            </scoreAction>
+            <scoreAction from="50" to="90"> <!-- Legacy from/to attributes -->
+                <Page>
+                </Page>
+            </scoreAction>
+            <scoreAction for="(90,100)">
+                <Page>
+                </Page>
+            </scoreAction>
+            <scoreAction for="100">
                 <Page>
                 </Page>
             </scoreAction>

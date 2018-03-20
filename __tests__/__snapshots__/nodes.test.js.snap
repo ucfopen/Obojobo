@@ -61,14 +61,49 @@ Object {
     },
     "scoreActions": Array [
       Object {
-        "from": "0",
+        "for": "no-score",
         "page": Object {
           "children": Array [],
           "content": Object {},
           "id": null,
           "type": "ObojoboDraft.Pages.Page",
         },
-        "to": "99",
+      },
+      Object {
+        "for": "[0,50)",
+        "page": Object {
+          "children": Array [],
+          "content": Object {},
+          "id": null,
+          "type": "ObojoboDraft.Pages.Page",
+        },
+      },
+      Object {
+        "for": "[50,90]",
+        "page": Object {
+          "children": Array [],
+          "content": Object {},
+          "id": null,
+          "type": "ObojoboDraft.Pages.Page",
+        },
+      },
+      Object {
+        "for": "(90,100)",
+        "page": Object {
+          "children": Array [],
+          "content": Object {},
+          "id": null,
+          "type": "ObojoboDraft.Pages.Page",
+        },
+      },
+      Object {
+        "for": "100",
+        "page": Object {
+          "children": Array [],
+          "content": Object {},
+          "id": null,
+          "type": "ObojoboDraft.Pages.Page",
+        },
       },
     ],
   },
@@ -830,14 +865,13 @@ Object {
           "content": Object {
             "scoreActions": Array [
               Object {
-                "from": "0",
+                "for": "[0,99]",
                 "page": Object {
                   "children": Array [],
                   "content": Object {},
                   "id": null,
                   "type": "ObojoboDraft.Pages.Page",
                 },
-                "to": "99",
               },
             ],
           },
