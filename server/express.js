@@ -61,7 +61,7 @@ app.post('/api/lti/sendAssessmentScore', (req, res, next) => {
 			})
 		})
 		.catch(e => {
-			logAndRespondToUnexpected(res, e, new Error('Unexpected error starting a new attempt'))
+			logAndRespondToUnexpected('Unexpected error starting a new attempt', res, req, e)
 		})
 })
 
@@ -78,7 +78,7 @@ app.post('/api/assessments/attempt/:attemptId/end', (req, res, next) => {
 			res.success(resp)
 		})
 		.catch(error => {
-			logAndRespondToUnexpected(res, error, new Error('Unexpected error completing your attempt'))
+			logAndRespondToUnexpected('Unexpected error completing your attempt', res, req, e)
 		})
 })
 
@@ -218,12 +218,7 @@ app.get('/api/assessments/:draftId/:assessmentId/attempt/:attemptId', (req, res,
 			res.success(result)
 		})
 		.catch(error => {
-			console.log('error', error, error.toString())
-			logAndRespondToUnexpected(
-				res,
-				error,
-				new Error('Unexpected Error Loading attempt "${:attemptId}"')
-			)
+			logAndRespondToUnexpected('Unexpected Error Loading attempt "${:attemptId}"', res, req, error)
 		})
 })
 
@@ -246,7 +241,7 @@ app.get('/api/assessments/:draftId/attempts', (req, res, next) => {
 					return next()
 
 				default:
-					logAndRespondToUnexpected(res, error, Error('Unexpected error loading attempts'))
+					logAndRespondToUnexpected('Unexpected error loading attempts', res, req, error)
 			}
 		})
 })
@@ -270,7 +265,7 @@ app.get('/api/assessment/:draftId/:assessmentId/attempts', (req, res, next) => {
 					return next()
 
 				default:
-					logAndRespondToUnexpected(res, error, Error('Unexpected error loading attempts'))
+					logAndRespondToUnexpected('Unexpected error loading attempts', res, req, error)
 			}
 		})
 })
