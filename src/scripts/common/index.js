@@ -68,6 +68,7 @@ import ModalUtil from './util/modal-util'
 import FocusUtil from './util/focus-util'
 import ErrorUtil from './util/error-util'
 import UUID from './util/uuid'
+import RangeParsing from './util/range-parsing'
 
 export default {
 	Store,
@@ -184,6 +185,7 @@ export default {
 		ModalUtil,
 		FocusUtil,
 		ErrorUtil,
-		UUID
+		UUID,
+		RangeParsing
 	}
 }
