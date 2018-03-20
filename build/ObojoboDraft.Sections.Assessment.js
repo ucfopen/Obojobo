@@ -454,32 +454,54 @@ Object.defineProperty(exports, "__esModule", {
 
 var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
 
+var _Common = __webpack_require__(0);
+
+var _Common2 = _interopRequireDefault(_Common);
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
+var getParsedRange = _Common2.default.util.RangeParsing.getParsedRange;
+var isValueInRange = _Common2.default.util.RangeParsing.isValueInRange;
+
+var replaceDict = {
+	'no-score': null
+};
+
 var ScoreActions = function () {
-	function ScoreActions(_actions) {
+	function ScoreActions(actions) {
 		_classCallCheck(this, ScoreActions);
 
-		if (_actions == null) {
-			_actions = [];
-		}
-		this._actions = _actions;
+		this.originalActions = actions;
+
+		this.actions = (actions == null ? [] : actions).map(function (action) {
+			var forAttr = action.for;
+
+			// Transform legacy to/from to newer "for"
+			if (typeof action.from !== 'undefined' && typeof action.to !== 'undefined' && typeof action.for === 'undefined') {
+				forAttr = '[' + action.from + ',' + action.to + ']';
+			}
+
+			return {
+				page: action.page,
+				range: getParsedRange(forAttr)
+			};
+		});
 	}
 
 	_createClass(ScoreActions, [{
-		key: "getActionForScore",
+		key: 'getActionForScore',
 		value: function getActionForScore(score) {
 			var _iteratorNormalCompletion = true;
 			var _didIteratorError = false;
 			var _iteratorError = undefined;
 
 			try {
-				for (var _iterator = Array.from(this._actions)[Symbol.iterator](), _step; !(_iteratorNormalCompletion = (_step = _iterator.next()).done); _iteratorNormalCompletion = true) {
+				for (var _iterator = this.actions[Symbol.iterator](), _step; !(_iteratorNormalCompletion = (_step = _iterator.next()).done); _iteratorNormalCompletion = true) {
 					var action = _step.value;
 
-					if (score >= action.from && score <= action.to) {
-						return action;
-					}
+					if (isValueInRange(score, action.range, replaceDict, true)) return action;
 				}
 			} catch (err) {
 				_didIteratorError = true;
@@ -499,12 +521,12 @@ var ScoreActions = function () {
 			return null;
 		}
 	}, {
-		key: "toObject",
+		key: 'toObject',
 		value: function toObject() {
-			return Object.assign([], this._actions);
+			return Object.assign([], this.originalActions);
 		}
 	}, {
-		key: "clone",
+		key: 'clone',
 		value: function clone() {
 			return new ScoreActions(this.toObject());
 		}
