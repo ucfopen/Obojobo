@@ -4,7 +4,6 @@ import Viewer from 'Viewer'
 import './polyfills'
 
 let { APIUtil } = Viewer.util
-let { OboGlobals } = Common.util
 
 var debounce = function(ms, cb) {
 	clearTimeout(debounce.id)
@@ -52,9 +51,3 @@ window.__oboViewerRender = () => {
 		document.getElementById('viewer-app')
 	)
 }
-
-history.replaceState(
-	'',
-	document.title,
-	`/view/${OboGlobals.get('draftId')}${window.location.search}`
-)

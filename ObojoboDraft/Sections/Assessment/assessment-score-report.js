@@ -76,8 +76,7 @@ export default class AssessmentScoreReport {
 		) {
 			items.push({
 				type: 'value',
-				text:
-					'Passing (' + getPassingRange(passingAttemptScore) + ') attempt ' + attemptNum + ' score',
+				text: 'Passing attempt ' + attemptNum + ' score',
 				value: attemptScore
 			})
 		} else if (
@@ -88,12 +87,7 @@ export default class AssessmentScoreReport {
 		) {
 			items.push({
 				type: 'line',
-				text:
-					'This is your highest passing (' +
-					getPassingRange(passingAttemptScore) +
-					') attempt ' +
-					attemptNum +
-					' score'
+				text: 'This is your highest passing attempt ' + attemptNum + ' score'
 			})
 		} else if (
 			rubric.type === 'pass-fail' &&
@@ -103,12 +97,7 @@ export default class AssessmentScoreReport {
 		) {
 			items.push({
 				type: 'value',
-				text:
-					'Reward for your passing (' +
-					getPassingRange(passingAttemptScore) +
-					') attempt ' +
-					attemptNum +
-					' score',
+				text: 'Reward for your passing attempt ' + attemptNum + ' score',
 				value: getDisplayFriendlyScore(passedResult)
 			})
 		} else if (
@@ -119,12 +108,7 @@ export default class AssessmentScoreReport {
 		) {
 			items.push({
 				type: 'line',
-				text:
-					'This is your rewarded score for your passing (' +
-					getPassingRange(passingAttemptScore) +
-					') attempt ' +
-					attemptNum +
-					' score'
+				text: 'This is your rewarded score for your passing attempt ' + attemptNum + ' score'
 			})
 		} else if (rubric.type === 'pass-fail' && status === 'failed' && failedResult === 'no-score') {
 			items.push({

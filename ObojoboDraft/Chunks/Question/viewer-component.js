@@ -38,15 +38,21 @@ export default class Question extends React.Component {
 		let assessment = this.props.model.children.models[this.props.model.children.models.length - 1]
 		let AssessmentComponent = assessment.getComponentClass()
 
+		let mode = this.props.mode ? this.props.mode : this.props.model.modelState.mode
+
+		let classNames = [
+			'flip-container',
+			'obojobo-draft--chunks--question',
+			score === null ? '' : score === 100 ? 'is-correct' : 'is-incorrect',
+			this.props.mode === 'review' ? 'is-active' : `is-${viewState}`,
+			`is-mode-${mode}`
+		].join(' ')
+
 		return (
 			<OboComponent
 				model={this.props.model}
 				moduleData={this.props.moduleData}
-				className={`flip-container obojobo-draft--chunks--question${score === null
-					? ''
-					: score === 100 ? ' is-correct' : ' is-incorrect'} ${this.props.mode === 'review'
-					? 'is-active'
-					: `is-${viewState}`}`}
+				className={classNames}
 			>
 				<div className="flipper">
 					<div className="content back">
@@ -55,7 +61,7 @@ export default class Question extends React.Component {
 							key={assessment.get('id')}
 							model={assessment}
 							moduleData={this.props.moduleData}
-							mode={this.props.mode ? this.props.mode : this.props.model.modelState.mode}
+							mode={mode}
 						/>
 					</div>
 					<div className="blocker front" key="blocker" onClick={this.onClickBlocker.bind(this)}>
@@ -76,15 +82,24 @@ export default class Question extends React.Component {
 			this.props.model,
 			this.props.moduleData.navState.context
 		)
-		let viewState = QuestionUtil.getViewState(this.props.moduleData.questionState, this.props.model)
+
+		let mode = this.props.mode ? this.props.mode : this.props.model.modelState.mode
+
+		// let viewState = QuestionUtil.getViewState(this.props.moduleData.questionState, this.props.model)
+
+		let classNames = [
+			'flip-container',
+			'obojobo-draft--chunks--question',
+			score === null ? '' : score === 100 ? 'is-correct' : 'is-incorrect',
+			'is-active',
+			`is-mode-${mode}`
+		].join(' ')
+
 		return (
 			<OboComponent
 				model={this.props.model}
 				moduleData={this.props.moduleData}
-				className={`flip-container obojobo-draft--chunks--question${score === null
-					? ''
-					: score === 100 ? ' is-correct' : ' is-incorrect'} is-active is-mode${this.props.model
-					.modelState.mode}`}
+				className={classNames}
 			>
 				<div className="flipper">
 					<div className="content back">

@@ -34,7 +34,7 @@ const assessmentReviewView = ({ assessment }) => {
 							height="50px"
 							width="50px"
 							css={{
-								transform: 'translate(-10px,-10px)'
+								transform: 'translateX(-10px)'
 							}}
 						/>
 						<div className="attempt-info-content-container">

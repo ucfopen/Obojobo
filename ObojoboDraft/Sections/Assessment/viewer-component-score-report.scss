@@ -1,17 +1,45 @@
 .score-report {
-	li {
-		padding: 5px 5px;
 
-		&:last-child {
+	&.is-showing-retained-score {
+		ul {
 			border-top: 1px solid LightGray;
+
+			li {
+				&:first-child {
+					margin-top: 5px
+				}
+
+				&:last-child {
+					margin-top: 5px;
+					padding-top: 4px;
+					border-top: 1px solid LightGray;
+				}
+			}
+		}
+		
+	}
+
+	&:not(.is-showing-retained-score) {
+		.mod-breakdown {
+			border: 1px solid LightGray;
+			background: #fff;
+		}
+	}
+
+	.mod-breakdown {
+		display: flex;
+		justify-content: center;
+		font-size: .7em;
+		line-height: 1.5em;
+
+		ul {
+			width: 80%
 		}
 	}
 
 	ul {
 		padding: 0;
 		list-style-type: none;
-		border-top: 1px solid LightGray;
-		width: 85%;
 	}
 
 	.score-report-text {
@@ -20,11 +48,11 @@
 		text-align: left;
 
 		.is-type-score-report-penalty {
-			color: red
+			color: red;
 		}
 
 		.is-type-score-report-extra-credit {
-			color: green
+			color: green;
 		}
 
 		.score-report-text-total {
@@ -44,14 +72,7 @@
 		flex: 2;
 		border-radius: 5%;
 		margin: 0 1em;
-	}
-	
-	.mod-breakdown {
-		display: flex;
-		justify-content: center;
-		padding: 0 20px;
-		font-size: .7em;
-		line-height: 1.5em;
+		padding-top: 0.8em;
 	}
 }
 

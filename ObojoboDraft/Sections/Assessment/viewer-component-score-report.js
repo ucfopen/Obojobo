@@ -30,7 +30,7 @@ const getModsList = textItemsArray => {
 			if (type === 'value')
 				return (
 					<div className="score-report-text score-report-text-value">
-						{'Passing Reward'}
+						{'Passing Reward:'}
 					</div>
 				)
 
@@ -74,7 +74,7 @@ const getModsList = textItemsArray => {
 	)
 }
 
-const scoreOverview = ({ items, retainedScore }) => {
+const scoreReportView = ({ items, retainedScore }) => {
 	let modBreakDown = (
 		<div className="mod-breakdown">
 			{getModsList(items)}
@@ -82,10 +82,12 @@ const scoreOverview = ({ items, retainedScore }) => {
 	)
 
 	return retainedScore
-		? <div className="score-report">
+		? <div className="score-report is-showing-retained-score">
 				<div className="retained-score">
 					<div>Retained Score</div>
-					<h1>100%</h1>
+					<h1>
+						{retainedScore}%
+					</h1>
 					{modBreakDown}
 				</div>
 			</div>
@@ -94,4 +96,4 @@ const scoreOverview = ({ items, retainedScore }) => {
 			</div>
 }
 
-export default scoreOverview
+export default scoreReportView

@@ -1,7 +1,6 @@
 @import '../../../scss/includes';
 
-.editor--components--text-menu
-{
+.editor--components--text-menu {
 	$bg: rgba(0, 0, 0, 0.9);
 	$size: 1.75em;
 	$ptr-size: 0.8em;
@@ -15,8 +14,7 @@
 	transform: translate(-50%, -$size - 1.2em);
 	z-index: 9999;
 
-	&::after
-	{
+	&::after {
 		border: $ptr-size solid transparent;
 		border-top: $ptr-size solid $bg;
 		content: ' ';
@@ -29,8 +27,7 @@
 		width: 0;
 	}
 
-	a
-	{
+	a {
 		background: none;
 		border: none;
 		border-right: 1px solid transparentize($color-bg, 0.7);
@@ -50,30 +47,25 @@
 		transform: translate(0, -50%);
 		vertical-align: middle;
 
-		&:hover
-		{
+		&:hover {
 			opacity: 1;
 		}
 
-		&:first-child
-		{
+		&:first-child {
 			padding-left: 0.6em;
 		}
 
-		&:last-child
-		{
+		&:last-child {
 			border-right: none;
 			padding-right: 0.6em;
 		}
 
-		img
-		{
+		img {
 			height: $size * 0.7;
 			width: $size * 0.7;
 		}
 
-		span
-		{
+		span {
 			display: block;
 			height: $size * 0.7;
 			line-height: $size * 0.7;
@@ -81,8 +73,7 @@
 		}
 	}
 
-	.click-blocker
-	{
+	.click-blocker {
 		background: $color-bg;
 		display: block;
 		height: 100%;

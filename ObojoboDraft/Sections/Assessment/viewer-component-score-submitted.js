@@ -61,8 +61,6 @@ const scoreSubmittedView = assessment => {
 		assessment.props.model
 	)
 
-	let externalSystemLabel = Launch.getOutcomeServiceHostname()
-
 	let childEl
 
 	if (scoreAction.page != null) {
@@ -77,6 +75,8 @@ const scoreSubmittedView = assessment => {
 			</p>
 		)
 	}
+
+	let externalSystemLabel = assessment.props.moduleData.lti.outcomeServiceHostname
 
 	let showFullReview = (reviewType => {
 		switch (reviewType) {
@@ -120,17 +120,40 @@ const scoreSubmittedView = assessment => {
 						</div>
 					</div>
 				</div>
+
 				<LTIStatus
 					ltiState={ltiState}
-					launch={Launch}
+					externalSystemLabel={externalSystemLabel}
 					onClickResendScore={onClickResendScore}
-					assessmentScore={assessmentScore}
 				/>
+				{() => {
+					switch (ltiState.state.gradebookStatus) {
+						case 'ok_no_outcome_service':
+						case 'ok_null_score_not_sent':
+							return null
+
+						case 'ok_gradebook_matches_assessment_score':
+							return (
+								<span className="lti-sync-message is-synced">
+									({`sent to ${externalSystemLabel} `}
+									<span>✔</span>)
+								</span>
+							)
+
+						default:
+							return (
+								<span className="lti-sync-message is-not-synced">
+									({`not sent to ${externalSystemLabel} `}
+									<span>✖</span>)
+								</span>
+							)
+					}
+				}}
 			</div>
 			{childEl}
 			{showFullReview
 				? <FullReview assessment={assessment} />
-				: <div>
+				: <div className="review">
 						<p className="number-correct">{`You got ${numCorrect} out of ${questionScores.length} questions correct:`}</p>
 						{questionScores.map((questionScore, index) =>
 							questionResultView(assessment.props.moduleData, questionScore, index)

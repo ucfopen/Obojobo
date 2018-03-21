@@ -1,9 +1,7 @@
 @import '../../../scss/includes';
 
-.obojobo-draft--components--button
-{
-	@mixin disabled()
-	{
+.obojobo-draft--components--button {
+	@mixin disabled() {
 		background-color: $color-bg2;
 		cursor: default;
 		color: $color-text-minor;
@@ -14,8 +12,7 @@
 
 	display: inline-block;
 
-	button
-	{
+	button {
 		@include user-select(none);
 
 		cursor: pointer;
@@ -24,8 +21,8 @@
 		// opacity: 0.8;
 		position: relative;
 		min-width: 3.25em;
-		border-radius: .2em;
-		padding: .6rem 1em;
+		border-radius: 0.2em;
+		padding: 0.6rem 1em;
 		background-color: lighten($color-action, 20% );
 		// background-color: $color-action;
 		color: $color-bg;
@@ -38,77 +35,63 @@
 			// opacity: 1;
 		}
 
-		&:disabled
-		{
+		&:disabled {
 			@include disabled();
 		}
 	}
 
-	&.dangerous
-	{
-		button
-		{
+	&.dangerous {
+		button {
 			background-color: $color-dangerous;
 			border-bottom: 1px solid darken($color-action, 20%);
 		}
 	}
 
-	&.alt-action
-	{
-		button
-		{
+	&.alt-action {
+		button {
 			border: 1px solid $color-action;
 			border-bottom: 1px solid $color-action;
 			background-color: $color-bg;
 			color: $color-action;
 
-			&:hover
-			{
+			&:hover {
 				background-color: $color-action;
 				color: $color-bg;
 			}
 
-			&:disabled
-			{
+			&:disabled {
 				@include disabled();
 			}
 		}
 	}
 
-	&.alt-action.dangerous
-	{
-		button
-		{
+	&.alt-action.dangerous {
+		button {
 			border: 1px solid $color-dangerous;
 			border-bottom: 1px solid $color-dangerous;
 			background-color: $color-bg;
 			color: $color-dangerous;
 
-			&:hover
-			{
+			&:hover {
 				background-color: $color-dangerous;
 				color: $color-bg;
 			}
 
-			&:disabled
-			{
+			&:disabled {
 				@include disabled();
 			}
 		}
 	}
 
-	&.align-left
-	{
+	&.align-left {
 		text-align: left;
 	}
 
-	&.align-right
-	{
+	&.align-right {
 		text-align: right;
 	}
 
-	&.align-center
-	{
+	&.align-center {
 		text-align: center;
 	}
 }

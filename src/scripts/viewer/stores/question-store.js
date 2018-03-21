@@ -36,7 +36,6 @@ class QuestionStore extends Store {
 			},
 
 			'question:clearResponse': payload => {
-				console.log('CR', payload)
 				delete this.state.responses[payload.value.context][payload.value.id]
 				return this.triggerChange()
 			},

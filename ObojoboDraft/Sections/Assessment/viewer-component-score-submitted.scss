@@ -7,6 +7,7 @@
 			background-color: $color-bg2;
 			border-radius: $dimension-rounded-radius;
 			padding: 3em;
+			padding-bottom: 2em;
 
 			> h1
 			{
@@ -24,6 +25,16 @@
 			display: flex;
 			justify-content: space-around;
 			margin-top: 1em;
-			margin-bottom: .5em;
+			margin-bottom: 1em;
+
+			.score-report {
+				width: 70%
+			}
+		}
+
+		.number-correct {
+			font-family: $font-default;
+			margin-top: 0;
+			margin-bottom: 1.5em;
 		}
 	}

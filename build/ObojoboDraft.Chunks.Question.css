@@ -4,7 +4,8 @@
   margin: 0 auto; }
 
 /* flip the pane when hovered */
-.front, .back {
+.front,
+.back {
   width: 100%; }
 
 /* flip speed goes here */
@@ -15,7 +16,8 @@
   position: relative; }
 
 /* hide back of pane during swap */
-.front, .back {
+.front,
+.back {
   -webkit-backface-visibility: hidden;
   backface-visibility: hidden;
   -ms-backface-visibility: visible; }
@@ -34,7 +36,6 @@
   transform: rotateY(180deg); }
 
 .obojobo-draft--chunks--question .flipper {
-  background: #FFFFFF;
   border-radius: 0.25em;
   padding: 0;
   position: relative;
@@ -44,7 +45,7 @@
   max-width: 44em; }
 
 .obojobo-draft--chunks--question.is-hidden .flipper {
-  border: 1px solid #6714BD; }
+  border: 1px solid #6714bd; }
 
 .obojobo-draft--chunks--question.is-mode-practice .back::before {
   color: #999999;
@@ -70,15 +71,17 @@
   right: 0;
   bottom: 0;
   opacity: 1;
-  background: #FFFFFF;
+  background: #ffffff;
   cursor: pointer;
   border-radius: 0.25em; }
   .obojobo-draft--chunks--question .blocker:hover .obojobo-draft--components--button {
     transform: translate(-50%, -50%) scale(1.1, 1.1); }
+  .obojobo-draft--chunks--question .blocker.is-not-practice .submit {
+    display: none; }
   .obojobo-draft--chunks--question .blocker .obojobo-draft--components--button {
     transition: transform 0.2s;
     font-family: "Libre Franklin", Arial, sans-serif;
-    color: #6714BD;
+    color: #6714bd;
     position: absolute;
     left: 50%;
     top: 50%;

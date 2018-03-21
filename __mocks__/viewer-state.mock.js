@@ -23,7 +23,11 @@ let initModuleData = () => {
 	moduleData.focusState = FocusStore.getState()
 }
 
-let moduleData = {}
+let moduleData = {
+	lti: {
+		outcomeServiceHostname: 'http://outcome-service-hostname/test.php'
+	}
+}
 
 NavStore.onChange(() => {
 	moduleData.navState = NavStore.getState()

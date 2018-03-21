@@ -34,11 +34,7 @@ export default class StyleableTextComponent extends React.Component {
 							// console.log('yes', child.html)
 							return <span key={key.counter++} dangerouslySetInnerHTML={{ __html: child.html }} />
 						} else if (child.text.length === 0) {
-							return (
-								<span key={key.counter++}>
-									{emptyChar}
-								</span>
-							)
+							return <span key={key.counter++}>{emptyChar}</span>
 						} else if (child.text.charAt(child.text.length - 1) === '\n') {
 							// Hack to force the display of a blank line that has no content
 							return (
@@ -48,11 +44,7 @@ export default class StyleableTextComponent extends React.Component {
 								</span>
 							)
 						} else {
-							return (
-								<span key={key.counter++}>
-									{child.text}
-								</span>
-							)
+							return <span key={key.counter++}>{child.text}</span>
 						}
 					// child.text || emptyChar
 					default:
@@ -66,10 +58,6 @@ export default class StyleableTextComponent extends React.Component {
 		let key = { counter: 0 }
 		let mockElement = StyleableTextRenderer(this.props.text)
 
-		return (
-			<span>
-				{this.createChild(mockElement, key)}
-			</span>
-		)
+		return <span>{this.createChild(mockElement, key)}</span>
 	}
 }

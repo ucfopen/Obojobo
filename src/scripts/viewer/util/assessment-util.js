@@ -138,6 +138,16 @@ var AssessmentUtil = {
 		)
 	},
 
+	isInAssessment(state) {
+		for (let assessmentName in state.assessments) {
+			if (state.assessments[assessmentName].current !== null) {
+				return true
+			}
+		}
+
+		return false
+	},
+
 	getNumberOfAttemptsCompletedForModel(state, model) {
 		let assessment = AssessmentUtil.getAssessmentForModel(state, model)
 		if (!assessment || assessment.attempts.length === 0) {
