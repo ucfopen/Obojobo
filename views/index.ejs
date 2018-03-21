@@ -1,14 +1,16 @@
 <!DOCTYPE html>
 <html lang="en">
-	<head>
-		<%- include ./partials/head %>
-	</head>
-	<body>
-		<div id="container"></div>
-	</body>
 
-	<script>
-		var elm = React.createElement('h1', {}, 'Welcome to <%= title %>');
-		ReactDOM.render(elm, document.getElementById('container'));
-	</script>
+<head>
+	<%- include ./partials/head %>
+</head>
+
+<body>
+	<div id="container">
+		<h1>Welcome to
+			<%= title %>
+		</h1>
+	</div>
+</body>
+
 </html>

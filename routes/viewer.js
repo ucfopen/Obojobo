@@ -67,7 +67,16 @@ router.get('/:draftId/visit/:visitId*', (req, res, next) => {
 			return draft.yell('internal:sendToClient', req, res)
 		})
 		.then(draft => {
-			res.render('viewer')
+			res.render('viewer', {
+				draftTitle:
+					draft &&
+					draft.root &&
+					draft.root.node &&
+					draft.root.node.content &&
+					draft.root.node.content.title
+						? draft.root.node.content.title
+						: ''
+			})
 			let { createViewerSessionLoggedInEvent } = createCaliperEvent(null, req.hostname)
 
 			insertEvent({

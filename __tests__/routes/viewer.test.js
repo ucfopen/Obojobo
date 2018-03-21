@@ -140,7 +140,7 @@ describe('lti route', () => {
 					expect.any(Object)
 				)
 
-				expect(mockRes.render).toBeCalledWith('viewer')
+				expect(mockRes.render).toBeCalledWith('viewer', { draftTitle: '' })
 			})
 			.catch(err => {
 				expect(err).toBe('never called')
