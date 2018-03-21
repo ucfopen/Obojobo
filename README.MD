@@ -40,13 +40,12 @@ To create, edit and delete objects:
 
 1. run `yarn devDocEngine:setup` to install a dev copy of doc engine
 2. run `yarn devDocEngine:link` to replace the node_modules version with your development Doc Engine located in /devsrc/
-3. run `yarn devDocEngine:start` to initialize webpack within doc engine
+3. run `yarn dev:docEngine` 
 
 ## Developing Obojobo XML Parser
 
 1. run `yarn devXmlParser:setup` to install a dev copy of the parser
 2. run `yarn devXmlParser:link` to replace the node_modules version with your development parser located in /devsrc/
-3. run `yarn devXmlParser:start` to initialize webpack within xml parser
 
 ## Testing
 
