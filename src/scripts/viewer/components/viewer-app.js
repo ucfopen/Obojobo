@@ -143,9 +143,15 @@ export default class ViewerApp extends React.Component {
 				this.state.lti.outcomeServiceHostname = getLTIOutcomeServiceHostname(outcomeServiceURL)
 
 				window.onbeforeunload = this.onWindowClose
+
 				this.setState({ loading: false, requestStatus: 'ok', isPreviewing }, () => {
 					Dispatcher.trigger('viewer:loaded', true)
 				})
+
+				let loadingEl = document.getElementById('viewer-app-loading')
+				if (loadingEl && loadingEl.parentElement) {
+					loadingEl.parentElement.removeChild(loadingEl)
+				}
 			})
 			.catch(err => {
 				console.log(err)
@@ -356,10 +362,7 @@ export default class ViewerApp extends React.Component {
 	}
 
 	render() {
-		// @TODO loading component
-		if (this.state.loading == true) {
-			return <div className="is-loading">...Loading</div>
-		}
+		if (this.state.loading == true) return null
 
 		if (this.state.requestStatus === 'invalid') return <div>Invalid</div>
 
@@ -417,6 +420,16 @@ export default class ViewerApp extends React.Component {
 		let modalItem = ModalUtil.getCurrentModal(this.state.modalState)
 		let hideViewer = modalItem && modalItem.hideViewer
 
+		let classNames = [
+			'viewer--viewer-app',
+			'is-loaded',
+			this.state.isPreviewing ? 'is-previewing' : 'is-not-previewing',
+			this.state.navState.locked ? 'is-locked-nav' : 'is-unlocked-nav',
+			this.state.navState.open ? 'is-open-nav' : 'is-closed-nav',
+			this.state.navState.disabled ? 'is-disabled-nav' : 'is-enabled-nav',
+			`is-focus-state-${this.state.focusState.viewState}`
+		].join(' ')
+
 		return (
 			<IdleTimer
 				ref="idleTimer"
@@ -429,13 +442,7 @@ export default class ViewerApp extends React.Component {
 					ref="container"
 					onMouseDown={this.onMouseDown.bind(this)}
 					onScroll={this.onScroll.bind(this)}
-					className={`viewer--viewer-app${
-						this.state.isPreviewing ? ' is-previewing' : ' is-not-previewing'
-					}${this.state.navState.locked ? ' is-locked-nav' : ' is-unlocked-nav'}${
-						this.state.navState.open ? ' is-open-nav' : ' is-closed-nav'
-					}${
-						this.state.navState.disabled ? ' is-disabled-nav' : ' is-enabled-nav'
-					} is-focus-state-${this.state.focusState.viewState}`}
+					className={classNames}
 				>
 					{hideViewer ? null : (
 						<header>

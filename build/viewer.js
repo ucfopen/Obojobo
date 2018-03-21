@@ -6290,9 +6290,15 @@ var ViewerApp = function (_React$Component) {
 				_this2.state.lti.outcomeServiceHostname = (0, _getLtiOutcomeServiceHostname2.default)(outcomeServiceURL);
 
 				window.onbeforeunload = _this2.onWindowClose;
+
 				_this2.setState({ loading: false, requestStatus: 'ok', isPreviewing: isPreviewing }, function () {
 					Dispatcher.trigger('viewer:loaded', true);
 				});
+
+				var loadingEl = document.getElementById('viewer-app-loading');
+				if (loadingEl && loadingEl.parentElement) {
+					loadingEl.parentElement.removeChild(loadingEl);
+				}
 			}).catch(function (err) {
 				console.log(err);
 				_this2.setState({ loading: false, requestStatus: 'invalid' }, function () {
@@ -6529,14 +6535,7 @@ var ViewerApp = function (_React$Component) {
 	}, {
 		key: 'render',
 		value: function render() {
-			// @TODO loading component
-			if (this.state.loading == true) {
-				return _react2.default.createElement(
-					'div',
-					{ className: 'is-loading' },
-					'...Loading'
-				);
-			}
+			if (this.state.loading == true) return null;
 
 			if (this.state.requestStatus === 'invalid') return _react2.default.createElement(
 				'div',
@@ -6590,6 +6589,8 @@ var ViewerApp = function (_React$Component) {
 			var modalItem = ModalUtil.getCurrentModal(this.state.modalState);
 			var hideViewer = modalItem && modalItem.hideViewer;
 
+			var classNames = ['viewer--viewer-app', 'is-loaded', this.state.isPreviewing ? 'is-previewing' : 'is-not-previewing', this.state.navState.locked ? 'is-locked-nav' : 'is-unlocked-nav', this.state.navState.open ? 'is-open-nav' : 'is-closed-nav', this.state.navState.disabled ? 'is-disabled-nav' : 'is-enabled-nav', 'is-focus-state-' + this.state.focusState.viewState].join(' ');
+
 			return _react2.default.createElement(
 				_reactIdleTimer2.default,
 				{
@@ -6605,7 +6606,7 @@ var ViewerApp = function (_React$Component) {
 						ref: 'container',
 						onMouseDown: this.onMouseDown.bind(this),
 						onScroll: this.onScroll.bind(this),
-						className: 'viewer--viewer-app' + (this.state.isPreviewing ? ' is-previewing' : ' is-not-previewing') + (this.state.navState.locked ? ' is-locked-nav' : ' is-unlocked-nav') + (this.state.navState.open ? ' is-open-nav' : ' is-closed-nav') + (this.state.navState.disabled ? ' is-disabled-nav' : ' is-enabled-nav') + ' is-focus-state-' + this.state.focusState.viewState
+						className: classNames
 					},
 					hideViewer ? null : _react2.default.createElement(
 						'header',
