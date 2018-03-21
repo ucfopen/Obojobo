@@ -3,7 +3,6 @@
 exports[`Question adapter can be constructed WITH attributes 1`] = `
 Object {
   "modelState": Object {
-    "limit": 2,
     "practice": false,
     "solution": Object {
       "children": Array [
@@ -80,7 +79,6 @@ Object {
 exports[`Question adapter can be created WITHOUT attributes 1`] = `
 Object {
   "modelState": Object {
-    "limit": 0,
     "practice": true,
     "solution": null,
   },

@@ -68,123 +68,124 @@ import ModalUtil from './util/modal-util'
 import FocusUtil from './util/focus-util'
 import ErrorUtil from './util/error-util'
 import UUID from './util/uuid'
-import OboGlobals from './util/obo-globals'
+import RangeParsing from './util/range-parsing'
 
 export default {
-	Store: Store,
+	Store,
+
 	chunk: {
-		BaseSelectionHandler: BaseSelectionHandler,
-		FocusableChunk: FocusableChunk,
+		BaseSelectionHandler,
+		FocusableChunk,
 		focusableChunk: {
-			FocusableSelectionHandler: FocusableSelectionHandler,
-			ToggleSelectionHandler: ToggleSelectionHandler
+			FocusableSelectionHandler,
+			ToggleSelectionHandler
 		},
-		NonEditableChunk: NonEditableChunk,
-		TextChunk: TextChunk,
+		NonEditableChunk,
+		TextChunk,
 		textChunk: {
-			TextGroupSelectionHandler: TextGroupSelectionHandler,
-			TextGroupEl: TextGroupEl,
-			Linkify: Linkify,
-			TextGroupAdapter: TextGroupAdapter
+			TextGroupSelectionHandler,
+			TextGroupEl,
+			Linkify,
+			TextGroupAdapter
 		},
 		util: {
-			ChunkUtil: ChunkUtil,
-			Insert: Insert,
-			InsertWithText: InsertWithText
+			ChunkUtil,
+			Insert,
+			InsertWithText
 		}
 	},
 
 	components: {
-		OboComponent: OboComponent,
-		Anchor: Anchor,
-		DeleteButton: DeleteButton,
-		EditButton: EditButton,
-		Button: Button,
+		OboComponent,
+		Anchor,
+		DeleteButton,
+		EditButton,
+		Button,
 		modal: {
 			bubble: {
-				Bubble: Bubble,
-				SingleInputBubble: SingleInputBubble
+				Bubble,
+				SingleInputBubble
 			},
-			Question: Question,
-			SimpleMessage: SimpleMessage,
-			Modal: Modal,
-			Dialog: Dialog,
-			SimpleDialog: SimpleDialog,
-			ErrorDialog: ErrorDialog
+			Question,
+			SimpleMessage,
+			Modal,
+			Dialog,
+			SimpleDialog,
+			ErrorDialog
 		},
-		TextMenu: TextMenu,
-		ModalContainer: ModalContainer,
-		FocusBlocker: FocusBlocker
+		TextMenu,
+		ModalContainer,
+		FocusBlocker
 	},
 
 	flux: {
 		Store: FluxStore,
-		Dispatcher: Dispatcher
+		Dispatcher
 	},
 
 	mockDOM: {
-		MockElement: MockElement,
-		MockTextNode: MockTextNode
+		MockElement,
+		MockTextNode
 	},
 
 	models: {
-		OboModel: OboModel,
-		Legacy: Legacy
+		OboModel,
+		Legacy
 	},
 
 	net: {
-		API: API
+		API
 	},
 
 	selection: {
-		ChunkSelection: ChunkSelection,
-		Cursor: Cursor,
-		DOMSelection: DOMSelection,
-		OboSelectionRect: OboSelectionRect,
-		Selection: Selection,
-		VirtualCursor: VirtualCursor,
-		VirtualCursorData: VirtualCursorData,
-		VirtualSelection: VirtualSelection
+		ChunkSelection,
+		Cursor,
+		DOMSelection,
+		OboSelectionRect,
+		Selection,
+		VirtualCursor,
+		VirtualCursorData,
+		VirtualSelection
 	},
 
 	stores: {
-		ModalStore: ModalStore,
-		FocusStore: FocusStore
+		ModalStore,
+		FocusStore
 	},
 
 	page: {
-		DOMUtil: DOMUtil,
-		Head: Head,
-		Keyboard: Keyboard,
-		Screen: Screen
+		DOMUtil,
+		Head,
+		Keyboard,
+		Screen
 	},
 
 	text: {
-		ChunkStyleList: ChunkStyleList,
-		StyleableText: StyleableText,
-		StyleableTextComponent: StyleableTextComponent,
-		StyleableTextRenderer: StyleableTextRenderer,
-		StyleRange: StyleRange,
-		StyleType: StyleType,
-		TextConstants: TextConstants
+		ChunkStyleList,
+		StyleableText,
+		StyleableTextComponent,
+		StyleableTextRenderer,
+		StyleRange,
+		StyleType,
+		TextConstants
 	},
 
 	textGroup: {
-		TextGroup: TextGroup,
-		TextGroupCursor: TextGroupCursor,
-		TextGroupItem: TextGroupItem,
-		TextGroupSelection: TextGroupSelection,
-		TextGroupUtil: TextGroupUtil
+		TextGroup,
+		TextGroupCursor,
+		TextGroupItem,
+		TextGroupSelection,
+		TextGroupUtil
 	},
 
 	util: {
-		Console: Console,
-		getBackgroundImage: getBackgroundImage,
-		HtmlUtil: HtmlUtil,
-		ModalUtil: ModalUtil,
-		FocusUtil: FocusUtil,
-		ErrorUtil: ErrorUtil,
-		UUID: UUID,
-		OboGlobals: OboGlobals
+		Console,
+		getBackgroundImage,
+		HtmlUtil,
+		ModalUtil,
+		FocusUtil,
+		ErrorUtil,
+		UUID,
+		RangeParsing
 	}
 }

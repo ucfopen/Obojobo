@@ -62,11 +62,27 @@ class NavStore extends Store {
 						})
 					}
 				},
-				'nav:lock': payload => this.setAndTrigger({ locked: true }),
-				'nav:unlock': payload => this.setAndTrigger({ locked: false }),
-				'nav:close': payload => this.setAndTrigger({ open: false }),
-				'nav:open': payload => this.setAndTrigger({ open: true }),
-				'nav:toggle': payload => this.setAndTrigger({ open: !this.state.open }),
+				'nav:lock': payload => {
+					APIUtil.postEvent(OboModel.getRoot(), 'nav:lock', '1.0.0')
+					return this.setAndTrigger({ locked: true })
+				},
+				'nav:unlock': payload => {
+					APIUtil.postEvent(OboModel.getRoot(), 'nav:unlock', '1.0.0')
+					return this.setAndTrigger({ locked: false })
+				},
+				'nav:close': payload => {
+					APIUtil.postEvent(OboModel.getRoot(), 'nav:close', '1.0.0')
+					return this.setAndTrigger({ open: false })
+				},
+				'nav:open': payload => {
+					APIUtil.postEvent(OboModel.getRoot(), 'nav:open', '1.0.0')
+					return this.setAndTrigger({ open: true })
+				},
+				'nav:toggle': payload => {
+					let updatedState = { open: !this.state.open }
+					APIUtil.postEvent(OboModel.getRoot(), 'nav:toggle', '1.0.0', updatedState)
+					return this.setAndTrigger(updatedState)
+				},
 				'nav:openExternalLink': payload => {
 					window.open(payload.value.url)
 					return this.triggerChange()
@@ -94,7 +110,7 @@ class NavStore extends Store {
 		)
 	}
 
-	init(model, startingId, startingPath) {
+	init(model, startingId, startingPath, visitId, viewState = {}) {
 		this.state = {
 			items: {},
 			itemsById: {},
@@ -102,8 +118,9 @@ class NavStore extends Store {
 			itemsByFullPath: {},
 			navTargetHistory: [],
 			navTargetId: null,
-			locked: false,
-			open: true
+			locked: viewState['nav:isLocked'] != null ? viewState['nav:isLocked'].value : false,
+			open: viewState['nav:isOpen'] != null ? viewState['nav:isOpen'].value : true,
+			visitId
 		}
 
 		this.buildMenu(model)
@@ -203,7 +220,13 @@ class NavStore extends Store {
 			// flatPath = ['view', model.getRoot().get('_id'), childNavItem.fullPath.join('/')].join('/')
 			let flatPath = childNavItem.fullPath.join('/')
 			childNavItem.flatPath = flatPath
-			childNavItem.fullFlatPath = ['/view', model.getRoot().get('_id'), flatPath].join('/')
+			childNavItem.fullFlatPath = [
+				'/view',
+				model.getRoot().get('draftId'),
+				'visit',
+				this.state.visitId,
+				flatPath
+			].join('/')
 			this.state.itemsByPath[flatPath] = childNavItem
 			this.state.itemsByFullPath[childNavItem.fullFlatPath] = childNavItem
 		}

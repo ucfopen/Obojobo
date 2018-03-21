@@ -12,9 +12,9 @@ export default class Logo extends React.Component {
 
 		return (
 			<div
-				className={`viewer--components--logo${this.props.inverted
-					? ' is-inverted'
-					: ' is-not-inverted'}`}
+				className={`viewer--components--logo${
+					this.props.inverted ? ' is-inverted' : ' is-not-inverted'
+				}`}
 				style={{
 					backgroundImage: bg
 				}}

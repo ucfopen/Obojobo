@@ -5,11 +5,7 @@ var ErrorUtil = {
 	show(title, errorMessage) {
 		return Dispatcher.trigger('modal:show', {
 			value: {
-				component: (
-					<ErrorDialog title={title}>
-						{errorMessage}
-					</ErrorDialog>
-				)
+				component: <ErrorDialog title={title}>{errorMessage}</ErrorDialog>
 			}
 		})
 	},
