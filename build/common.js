@@ -2052,6 +2052,9 @@ var Store = function () {
 		value: function setState(newState) {
 			return this.state = Object.assign({}, newState);
 		}
+
+		//@TODO: Remove?
+
 	}, {
 		key: 'updateStateByContext',
 		value: function updateStateByContext(obj, context) {

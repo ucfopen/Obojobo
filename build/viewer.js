@@ -662,6 +662,9 @@ var NavUtil = {
 				context: context
 			}
 		});
+	},
+	getContext: function getContext(state) {
+		return state.context;
 	}
 };
 
@@ -871,6 +874,7 @@ Object.defineProperty(exports, "__esModule", {
 	value: true
 });
 var createParsedJsonPromise = function createParsedJsonPromise(promise) {
+	console.log('cpjp');
 	return new Promise(function (resolve, reject) {
 		return promise.then(function (res) {
 			return res.json();
@@ -897,6 +901,7 @@ var APIUtil = {
 		if (body == null) {
 			body = {};
 		}
+		console.log('post', endpoint, body);
 		return fetch(endpoint, {
 			method: 'POST',
 			credentials: 'include',
@@ -950,6 +955,10 @@ var APIUtil = {
 	endAttempt: function endAttempt(attempt) {
 		return createParsedJsonPromise(APIUtil.post('/api/assessments/attempt/' + attempt.attemptId + '/end'));
 	},
+	resumeAttempt: function resumeAttempt(attempt) {
+		console.log('resume api', attempt.attemptId);
+		return createParsedJsonPromise(APIUtil.post('/api/assessments/attempt/' + attempt.attemptId + '/resume'));
+	},
 	resendLTIAssessmentScore: function resendLTIAssessmentScore(lo, assessment) {
 		return createParsedJsonPromise(APIUtil.post('/api/lti/sendAssessmentScore', {
 			draftId: lo.get('_id'),
@@ -962,305 +971,6 @@ exports.default = APIUtil;
 
 /***/ }),
 /* 5 */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-
-
-Object.defineProperty(exports, "__esModule", {
-	value: true
-});
-
-var _Common = __webpack_require__(0);
-
-var _Common2 = _interopRequireDefault(_Common);
-
-function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
-
-var Dispatcher = _Common2.default.flux.Dispatcher;
-var OboModel = _Common2.default.models.OboModel;
-
-
-var QuestionUtil = {
-	setResponse: function setResponse(id, response, targetId, context, assessmentId, attemptId) {
-		return Dispatcher.trigger('question:setResponse', {
-			value: {
-				id: id,
-				response: response,
-				targetId: targetId,
-				context: context,
-				assessmentId: assessmentId,
-				attemptId: attemptId
-			}
-		});
-	},
-	clearResponse: function clearResponse(id, context) {
-		return Dispatcher.trigger('question:clearResponse', {
-			value: {
-				id: id,
-				context: context
-			}
-		});
-	},
-	setData: function setData(id, key, value) {
-		return Dispatcher.trigger('question:setData', {
-			value: {
-				key: id + ':' + key,
-				value: value
-			}
-		});
-	},
-	clearData: function clearData(id, key) {
-		return Dispatcher.trigger('question:clearData', {
-			value: {
-				key: id + ':' + key
-			}
-		});
-	},
-	showExplanation: function showExplanation(id) {
-		return Dispatcher.trigger('question:showExplanation', {
-			value: { id: id }
-		});
-	},
-	hideExplanation: function hideExplanation(id, actor) {
-		return Dispatcher.trigger('question:hideExplanation', {
-			value: { id: id, actor: actor }
-		});
-	},
-	viewQuestion: function viewQuestion(id) {
-		return Dispatcher.trigger('question:view', {
-			value: {
-				id: id
-			}
-		});
-	},
-	hideQuestion: function hideQuestion(id) {
-		return Dispatcher.trigger('question:hide', {
-			value: {
-				id: id
-			}
-		});
-	},
-	checkAnswer: function checkAnswer(id) {
-		return Dispatcher.trigger('question:checkAnswer', {
-			value: {
-				id: id
-			}
-		});
-	},
-	retryQuestion: function retryQuestion(id, context) {
-		return Dispatcher.trigger('question:retry', {
-			value: {
-				id: id,
-				context: context
-			}
-		});
-	},
-	getViewState: function getViewState(state, model) {
-		var modelId = model.get('id');
-
-		if (state.viewing === modelId) {
-			return 'active';
-		}
-		if (state.viewedQuestions[modelId]) {
-			return 'viewed';
-		}
-		return 'hidden';
-	},
-	getResponse: function getResponse(state, model, context) {
-		if (!state.responses[context]) return null;
-		return state.responses[context][model.get('id')] || null;
-	},
-	getData: function getData(state, model, key) {
-		return state.data[model.get('id') + ':' + key] || false;
-	},
-	isShowingExplanation: function isShowingExplanation(state, model) {
-		return state.data[model.get('id') + ':showingExplanation'] || false;
-	},
-	getScoreForModel: function getScoreForModel(state, model, context) {
-		var scoreItem = void 0;
-		if (state.scores[context] != null) {
-			scoreItem = state.scores[context][model.get('id')];
-		}
-
-		return scoreItem == null || scoreItem.score == null ? null : scoreItem.score;
-	},
-	setScore: function setScore(itemId, score, context) {
-		return Dispatcher.trigger('question:scoreSet', {
-			value: {
-				itemId: itemId,
-				score: score,
-				context: context
-			}
-		});
-	},
-	clearScore: function clearScore(itemId, context) {
-		return Dispatcher.trigger('question:scoreClear', {
-			value: {
-				itemId: itemId,
-				context: context
-			}
-		});
-	}
-};
-
-exports.default = QuestionUtil;
-
-/***/ }),
-/* 6 */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-
-
-var startOfWeek = __webpack_require__(34);
-
-/**
- * @category ISO Week Helpers
- * @summary Return the start of an ISO week for the given date.
- *
- * @description
- * Return the start of an ISO week for the given date.
- * The result will be in the local timezone.
- *
- * ISO week-numbering year: http://en.wikipedia.org/wiki/ISO_week_date
- *
- * @param {Date|String|Number} date - the original date
- * @returns {Date} the start of an ISO week
- *
- * @example
- * // The start of an ISO week for 2 September 2014 11:55:00:
- * var result = startOfISOWeek(new Date(2014, 8, 2, 11, 55, 0))
- * //=> Mon Sep 01 2014 00:00:00
- */
-function startOfISOWeek(dirtyDate) {
-  return startOfWeek(dirtyDate, { weekStartsOn: 1 });
-}
-
-module.exports = startOfISOWeek;
-
-/***/ }),
-/* 7 */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-/**
- * Copyright (c) 2013-present, Facebook, Inc.
- *
- * This source code is licensed under the MIT license found in the
- * LICENSE file in the root directory of this source tree.
- */
-
-
-
-var ReactPropTypesSecret = 'SECRET_DO_NOT_PASS_THIS_OR_YOU_WILL_BE_FIRED';
-
-module.exports = ReactPropTypesSecret;
-
-/***/ }),
-/* 8 */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-
-
-/**
- * Copyright (c) 2013-present, Facebook, Inc.
- *
- * This source code is licensed under the MIT license found in the
- * LICENSE file in the root directory of this source tree.
- *
- * 
- */
-
-function makeEmptyFunction(arg) {
-  return function () {
-    return arg;
-  };
-}
-
-/**
- * This function accepts and discards inputs; it has no side effects. This is
- * primarily useful idiomatically for overridable function endpoints which
- * always need to be callable, since JS lacks a null-call idiom ala Cocoa.
- */
-var emptyFunction = function emptyFunction() {};
-
-emptyFunction.thatReturns = makeEmptyFunction;
-emptyFunction.thatReturnsFalse = makeEmptyFunction(false);
-emptyFunction.thatReturnsTrue = makeEmptyFunction(true);
-emptyFunction.thatReturnsNull = makeEmptyFunction(null);
-emptyFunction.thatReturnsThis = function () {
-  return this;
-};
-emptyFunction.thatReturnsArgument = function (arg) {
-  return arg;
-};
-
-module.exports = emptyFunction;
-
-/***/ }),
-/* 9 */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-/* WEBPACK VAR INJECTION */(function(process) {/**
- * Copyright (c) 2013-present, Facebook, Inc.
- *
- * This source code is licensed under the MIT license found in the
- * LICENSE file in the root directory of this source tree.
- *
- */
-
-
-
-/**
- * Use invariant() to assert state which your program assumes to be true.
- *
- * Provide sprintf-style format (only %s is supported) and arguments
- * to provide information about what broke and what you were
- * expecting.
- *
- * The invariant message will be stripped in production, but the invariant
- * will remain to ensure logic does not differ in production.
- */
-
-var validateFormat = function validateFormat(format) {};
-
-if (process.env.NODE_ENV !== 'production') {
-  validateFormat = function validateFormat(format) {
-    if (format === undefined) {
-      throw new Error('invariant requires an error message argument');
-    }
-  };
-}
-
-function invariant(condition, format, a, b, c, d, e, f) {
-  validateFormat(format);
-
-  if (!condition) {
-    var error;
-    if (format === undefined) {
-      error = new Error('Minified exception occurred; use the non-minified dev environment ' + 'for the full error message and additional helpful warnings.');
-    } else {
-      var args = [a, b, c, d, e, f];
-      var argIndex = 0;
-      error = new Error(format.replace(/%s/g, function () {
-        return args[argIndex++];
-      }));
-      error.name = 'Invariant Violation';
-    }
-
-    error.framesToPop = 1; // we don't care about invariant's own frame
-    throw error;
-  }
-}
-
-module.exports = invariant;
-/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(3)))
-
-/***/ }),
-/* 10 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -1577,6 +1287,305 @@ function __guard__(value, transform) {
 }
 
 /***/ }),
+/* 6 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+Object.defineProperty(exports, "__esModule", {
+	value: true
+});
+
+var _Common = __webpack_require__(0);
+
+var _Common2 = _interopRequireDefault(_Common);
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+var Dispatcher = _Common2.default.flux.Dispatcher;
+var OboModel = _Common2.default.models.OboModel;
+
+
+var QuestionUtil = {
+	setResponse: function setResponse(id, response, targetId, context, assessmentId, attemptId) {
+		return Dispatcher.trigger('question:setResponse', {
+			value: {
+				id: id,
+				response: response,
+				targetId: targetId,
+				context: context,
+				assessmentId: assessmentId,
+				attemptId: attemptId
+			}
+		});
+	},
+	clearResponse: function clearResponse(id, context) {
+		return Dispatcher.trigger('question:clearResponse', {
+			value: {
+				id: id,
+				context: context
+			}
+		});
+	},
+	setData: function setData(id, key, value) {
+		return Dispatcher.trigger('question:setData', {
+			value: {
+				key: id + ':' + key,
+				value: value
+			}
+		});
+	},
+	clearData: function clearData(id, key) {
+		return Dispatcher.trigger('question:clearData', {
+			value: {
+				key: id + ':' + key
+			}
+		});
+	},
+	showExplanation: function showExplanation(id) {
+		return Dispatcher.trigger('question:showExplanation', {
+			value: { id: id }
+		});
+	},
+	hideExplanation: function hideExplanation(id, actor) {
+		return Dispatcher.trigger('question:hideExplanation', {
+			value: { id: id, actor: actor }
+		});
+	},
+	viewQuestion: function viewQuestion(id) {
+		return Dispatcher.trigger('question:view', {
+			value: {
+				id: id
+			}
+		});
+	},
+	hideQuestion: function hideQuestion(id) {
+		return Dispatcher.trigger('question:hide', {
+			value: {
+				id: id
+			}
+		});
+	},
+	checkAnswer: function checkAnswer(id) {
+		return Dispatcher.trigger('question:checkAnswer', {
+			value: {
+				id: id
+			}
+		});
+	},
+	retryQuestion: function retryQuestion(id, context) {
+		return Dispatcher.trigger('question:retry', {
+			value: {
+				id: id,
+				context: context
+			}
+		});
+	},
+	getViewState: function getViewState(state, model) {
+		var modelId = model.get('id');
+
+		if (state.viewing === modelId) {
+			return 'active';
+		}
+		if (state.viewedQuestions[modelId]) {
+			return 'viewed';
+		}
+		return 'hidden';
+	},
+	getResponse: function getResponse(state, model, context) {
+		if (!state.responses[context]) return null;
+		return state.responses[context][model.get('id')] || null;
+	},
+	getData: function getData(state, model, key) {
+		return state.data[model.get('id') + ':' + key] || false;
+	},
+	isShowingExplanation: function isShowingExplanation(state, model) {
+		return state.data[model.get('id') + ':showingExplanation'] || false;
+	},
+	getScoreForModel: function getScoreForModel(state, model, context) {
+		var scoreItem = void 0;
+		if (state.scores[context] != null) {
+			scoreItem = state.scores[context][model.get('id')];
+		}
+
+		return scoreItem == null || scoreItem.score == null ? null : scoreItem.score;
+	},
+	setScore: function setScore(itemId, score, context) {
+		return Dispatcher.trigger('question:scoreSet', {
+			value: {
+				itemId: itemId,
+				score: score,
+				context: context
+			}
+		});
+	},
+	clearScore: function clearScore(itemId, context) {
+		return Dispatcher.trigger('question:scoreClear', {
+			value: {
+				itemId: itemId,
+				context: context
+			}
+		});
+	}
+};
+
+exports.default = QuestionUtil;
+
+/***/ }),
+/* 7 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+var startOfWeek = __webpack_require__(34);
+
+/**
+ * @category ISO Week Helpers
+ * @summary Return the start of an ISO week for the given date.
+ *
+ * @description
+ * Return the start of an ISO week for the given date.
+ * The result will be in the local timezone.
+ *
+ * ISO week-numbering year: http://en.wikipedia.org/wiki/ISO_week_date
+ *
+ * @param {Date|String|Number} date - the original date
+ * @returns {Date} the start of an ISO week
+ *
+ * @example
+ * // The start of an ISO week for 2 September 2014 11:55:00:
+ * var result = startOfISOWeek(new Date(2014, 8, 2, 11, 55, 0))
+ * //=> Mon Sep 01 2014 00:00:00
+ */
+function startOfISOWeek(dirtyDate) {
+  return startOfWeek(dirtyDate, { weekStartsOn: 1 });
+}
+
+module.exports = startOfISOWeek;
+
+/***/ }),
+/* 8 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+/**
+ * Copyright (c) 2013-present, Facebook, Inc.
+ *
+ * This source code is licensed under the MIT license found in the
+ * LICENSE file in the root directory of this source tree.
+ */
+
+
+
+var ReactPropTypesSecret = 'SECRET_DO_NOT_PASS_THIS_OR_YOU_WILL_BE_FIRED';
+
+module.exports = ReactPropTypesSecret;
+
+/***/ }),
+/* 9 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+/**
+ * Copyright (c) 2013-present, Facebook, Inc.
+ *
+ * This source code is licensed under the MIT license found in the
+ * LICENSE file in the root directory of this source tree.
+ *
+ * 
+ */
+
+function makeEmptyFunction(arg) {
+  return function () {
+    return arg;
+  };
+}
+
+/**
+ * This function accepts and discards inputs; it has no side effects. This is
+ * primarily useful idiomatically for overridable function endpoints which
+ * always need to be callable, since JS lacks a null-call idiom ala Cocoa.
+ */
+var emptyFunction = function emptyFunction() {};
+
+emptyFunction.thatReturns = makeEmptyFunction;
+emptyFunction.thatReturnsFalse = makeEmptyFunction(false);
+emptyFunction.thatReturnsTrue = makeEmptyFunction(true);
+emptyFunction.thatReturnsNull = makeEmptyFunction(null);
+emptyFunction.thatReturnsThis = function () {
+  return this;
+};
+emptyFunction.thatReturnsArgument = function (arg) {
+  return arg;
+};
+
+module.exports = emptyFunction;
+
+/***/ }),
+/* 10 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+/* WEBPACK VAR INJECTION */(function(process) {/**
+ * Copyright (c) 2013-present, Facebook, Inc.
+ *
+ * This source code is licensed under the MIT license found in the
+ * LICENSE file in the root directory of this source tree.
+ *
+ */
+
+
+
+/**
+ * Use invariant() to assert state which your program assumes to be true.
+ *
+ * Provide sprintf-style format (only %s is supported) and arguments
+ * to provide information about what broke and what you were
+ * expecting.
+ *
+ * The invariant message will be stripped in production, but the invariant
+ * will remain to ensure logic does not differ in production.
+ */
+
+var validateFormat = function validateFormat(format) {};
+
+if (process.env.NODE_ENV !== 'production') {
+  validateFormat = function validateFormat(format) {
+    if (format === undefined) {
+      throw new Error('invariant requires an error message argument');
+    }
+  };
+}
+
+function invariant(condition, format, a, b, c, d, e, f) {
+  validateFormat(format);
+
+  if (!condition) {
+    var error;
+    if (format === undefined) {
+      error = new Error('Minified exception occurred; use the non-minified dev environment ' + 'for the full error message and additional helpful warnings.');
+    } else {
+      var args = [a, b, c, d, e, f];
+      var argIndex = 0;
+      error = new Error(format.replace(/%s/g, function () {
+        return args[argIndex++];
+      }));
+      error.name = 'Invariant Violation';
+    }
+
+    error.framesToPop = 1; // we don't care about invariant's own frame
+    throw error;
+  }
+}
+
+module.exports = invariant;
+/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(3)))
+
+/***/ }),
 /* 11 */
 /***/ (function(module, exports, __webpack_require__) {
 
@@ -1597,7 +1606,7 @@ var _apiUtil = __webpack_require__(4);
 
 var _apiUtil2 = _interopRequireDefault(_apiUtil);
 
-var _questionUtil = __webpack_require__(5);
+var _questionUtil = __webpack_require__(6);
 
 var _questionUtil2 = _interopRequireDefault(_questionUtil);
 
@@ -1828,7 +1837,7 @@ exports.default = questionStore;
 
 
 var parse = __webpack_require__(1);
-var startOfISOWeek = __webpack_require__(6);
+var startOfISOWeek = __webpack_require__(7);
 
 /**
  * @category ISO Week-Numbering Year Helpers
@@ -1916,7 +1925,7 @@ module.exports = isDate;
 
 
 
-var emptyFunction = __webpack_require__(8);
+var emptyFunction = __webpack_require__(9);
 
 /**
  * Similar to invariant but only logs a warning if the condition is not met.
@@ -2060,7 +2069,7 @@ var _assessmentUtil = __webpack_require__(18);
 
 var _assessmentUtil2 = _interopRequireDefault(_assessmentUtil);
 
-var _questionUtil = __webpack_require__(5);
+var _questionUtil = __webpack_require__(6);
 
 var _questionUtil2 = _interopRequireDefault(_questionUtil);
 
@@ -2079,6 +2088,10 @@ var _ltiNetworkStates2 = _interopRequireDefault(_ltiNetworkStates);
 var _questionStore = __webpack_require__(11);
 
 var _questionStore2 = _interopRequireDefault(_questionStore);
+
+var _navStore = __webpack_require__(5);
+
+var _navStore2 = _interopRequireDefault(_navStore);
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
@@ -2217,6 +2230,9 @@ var AssessmentStore = function (_Store) {
 			}
 
 			if (unfinishedAttempt) {
+				// this.startAttempt(unfinishedAttempt)
+				// this.triggerChange()
+
 				return ModalUtil.show(React.createElement(
 					SimpleDialog,
 					{
@@ -2235,15 +2251,54 @@ var AssessmentStore = function (_Store) {
 	}, {
 		key: 'onResumeAttemptConfirm',
 		value: function onResumeAttemptConfirm(unfinishedAttempt) {
-			ModalUtil.hide();
+			var _this2 = this;
 
-			this.startAttempt(unfinishedAttempt);
-			this.triggerChange();
+			return _apiUtil2.default.resumeAttempt(unfinishedAttempt).then(function (res) {
+				_this2.startAttempt(unfinishedAttempt);
+
+				_questionStore2.default.updateStateByContext({ responses: res.value.responses }, _this2.createAttemptContext(unfinishedAttempt.assessmentId, unfinishedAttempt.attemptId));
+
+				var assessmentState = _this2.state.assessments[unfinishedAttempt.assessmentId];
+				var questionState = _questionStore2.default.getState();
+
+				assessmentState.currentResponses = Object.keys(res.value.responses);
+				var _iteratorNormalCompletion = true;
+				var _didIteratorError = false;
+				var _iteratorError = undefined;
+
+				try {
+					for (var _iterator = Object.keys(res.value.responses)[Symbol.iterator](), _step; !(_iteratorNormalCompletion = (_step = _iterator.next()).done); _iteratorNormalCompletion = true) {
+						var id = _step.value;
+
+						assessmentState.currentResponses.push(id);
+						_questionUtil2.default.setQuestionAsViewed(questionState, id);
+					}
+				} catch (err) {
+					_didIteratorError = true;
+					_iteratorError = err;
+				} finally {
+					try {
+						if (!_iteratorNormalCompletion && _iterator.return) {
+							_iterator.return();
+						}
+					} finally {
+						if (_didIteratorError) {
+							throw _iteratorError;
+						}
+					}
+				}
+
+				ModalUtil.hide();
+				_questionStore2.default.triggerChange();
+				_this2.triggerChange();
+
+				Dispatcher.trigger('assessment:attemptResumed', unfinishedAttempt.attemptId);
+			});
 		}
 	}, {
 		key: 'tryStartAttempt',
 		value: function tryStartAttempt(id) {
-			var _this2 = this;
+			var _this3 = this;
 
 			var model = OboModel.models[id];
 
@@ -2258,13 +2313,18 @@ var AssessmentStore = function (_Store) {
 							ErrorUtil.errorResponse(res);
 					}
 				} else {
-					_this2.startAttempt(res.value);
+					_this3.startAttempt(res.value);
 				}
 
-				_this2.triggerChange();
+				_this3.triggerChange();
 			}).catch(function (e) {
 				console.error(e);
 			});
+		}
+	}, {
+		key: 'createAttemptContext',
+		value: function createAttemptContext(assessmentId, attemptId) {
+			return 'assessment:' + assessmentId + ':' + attemptId;
 		}
 	}, {
 		key: 'startAttempt',
@@ -2273,28 +2333,28 @@ var AssessmentStore = function (_Store) {
 			var model = OboModel.models[id];
 
 			model.children.at(1).children.reset();
-			var _iteratorNormalCompletion = true;
-			var _didIteratorError = false;
-			var _iteratorError = undefined;
+			var _iteratorNormalCompletion2 = true;
+			var _didIteratorError2 = false;
+			var _iteratorError2 = undefined;
 
 			try {
-				for (var _iterator = Array.from(startAttemptResp.state.questions)[Symbol.iterator](), _step; !(_iteratorNormalCompletion = (_step = _iterator.next()).done); _iteratorNormalCompletion = true) {
-					var child = _step.value;
+				for (var _iterator2 = Array.from(startAttemptResp.state.questions)[Symbol.iterator](), _step2; !(_iteratorNormalCompletion2 = (_step2 = _iterator2.next()).done); _iteratorNormalCompletion2 = true) {
+					var child = _step2.value;
 
 					var c = OboModel.create(child);
 					model.children.at(1).children.add(c);
 				}
 			} catch (err) {
-				_didIteratorError = true;
-				_iteratorError = err;
+				_didIteratorError2 = true;
+				_iteratorError2 = err;
 			} finally {
 				try {
-					if (!_iteratorNormalCompletion && _iterator.return) {
-						_iterator.return();
+					if (!_iteratorNormalCompletion2 && _iterator2.return) {
+						_iterator2.return();
 					}
 				} finally {
-					if (_didIteratorError) {
-						throw _iteratorError;
+					if (_didIteratorError2) {
+						throw _iteratorError2;
 					}
 				}
 			}
@@ -2305,17 +2365,17 @@ var AssessmentStore = function (_Store) {
 
 			this.state.assessments[id].current = startAttemptResp;
 
-			_navUtil2.default.setContext('assessment:' + startAttemptResp.assessmentId + ':' + startAttemptResp.attemptId);
+			_navUtil2.default.setContext(this.createAttemptContext(startAttemptResp.assessmentId, startAttemptResp.attemptId));
 			_navUtil2.default.rebuildMenu(model.getRoot());
 			_navUtil2.default.goto(id);
 
 			model.processTrigger('onStartAttempt');
-			Dispatcher.trigger('assessment:attemptStarted', id);
+			Dispatcher.trigger('assessment:attemptStarted', startAttemptResp.attemptId);
 		}
 	}, {
 		key: 'tryEndAttempt',
 		value: function tryEndAttempt(id, context) {
-			var _this3 = this;
+			var _this4 = this;
 
 			var model = OboModel.models[id];
 			var assessment = this.state.assessments[id];
@@ -2325,8 +2385,8 @@ var AssessmentStore = function (_Store) {
 					return ErrorUtil.errorResponse(res);
 				}
 
-				_this3.endAttempt(res.value, context);
-				return _this3.triggerChange();
+				_this4.endAttempt(res.value, context);
+				return _this4.triggerChange();
 			}).catch(function (e) {
 				console.error(e);
 			});
@@ -2350,12 +2410,12 @@ var AssessmentStore = function (_Store) {
 
 			model.processTrigger('onEndAttempt');
 
-			Dispatcher.trigger('assessment:attemptEnded', assessId);
+			Dispatcher.trigger('assessment:attemptEnded', endAttemptResp.attemptId);
 		}
 	}, {
 		key: 'tryResendLTIScore',
 		value: function tryResendLTIScore(assessmentId) {
-			var _this4 = this;
+			var _this5 = this;
 
 			var assessmentModel = OboModel.models[assessmentId];
 			var assessment = _assessmentUtil2.default.getAssessmentForModel(this.state, assessmentModel);
@@ -2370,8 +2430,8 @@ var AssessmentStore = function (_Store) {
 					return ErrorUtil.errorResponse(res);
 				}
 
-				_this4.updateLTIScore(_assessmentUtil2.default.getAssessmentForModel(_this4.state, assessmentModel), res.value);
-				return _this4.triggerChange();
+				_this5.updateLTIScore(_assessmentUtil2.default.getAssessmentForModel(_this5.state, assessmentModel), res.value);
+				return _this5.triggerChange();
 			}).catch(function (e) {
 				console.error(e);
 			});
@@ -2452,7 +2512,7 @@ var _Common = __webpack_require__(0);
 
 var _Common2 = _interopRequireDefault(_Common);
 
-var _questionUtil = __webpack_require__(5);
+var _questionUtil = __webpack_require__(6);
 
 var _questionUtil2 = _interopRequireDefault(_questionUtil);
 
@@ -3558,7 +3618,7 @@ module.exports = getDayOfYear;
 
 
 var parse = __webpack_require__(1);
-var startOfISOWeek = __webpack_require__(6);
+var startOfISOWeek = __webpack_require__(7);
 var startOfISOYear = __webpack_require__(33);
 
 var MILLISECONDS_IN_WEEK = 604800000;
@@ -3922,7 +3982,7 @@ module.exports = startOfDay;
 
 
 var getISOYear = __webpack_require__(12);
-var startOfISOWeek = __webpack_require__(6);
+var startOfISOWeek = __webpack_require__(7);
 
 /**
  * @category ISO Week-Numbering Year Helpers
@@ -4148,9 +4208,9 @@ module.exports = shouldUseNative() ? Object.assign : function (target, source) {
 var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol" ? function (obj) { return typeof obj; } : function (obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; };
 
 if (process.env.NODE_ENV !== 'production') {
-  var invariant = __webpack_require__(9);
+  var invariant = __webpack_require__(10);
   var warning = __webpack_require__(14);
-  var ReactPropTypesSecret = __webpack_require__(7);
+  var ReactPropTypesSecret = __webpack_require__(8);
   var loggedTypeFailures = {};
 }
 
@@ -4213,9 +4273,9 @@ module.exports = checkPropTypes;
 
 
 
-var emptyFunction = __webpack_require__(8);
-var invariant = __webpack_require__(9);
-var ReactPropTypesSecret = __webpack_require__(7);
+var emptyFunction = __webpack_require__(9);
+var invariant = __webpack_require__(10);
+var ReactPropTypesSecret = __webpack_require__(8);
 
 module.exports = function () {
   function shim(props, propName, componentName, location, propFullName, secret) {
@@ -4274,12 +4334,12 @@ module.exports = function () {
 
 var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol" ? function (obj) { return typeof obj; } : function (obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; };
 
-var emptyFunction = __webpack_require__(8);
-var invariant = __webpack_require__(9);
+var emptyFunction = __webpack_require__(9);
+var invariant = __webpack_require__(10);
 var warning = __webpack_require__(14);
 var assign = __webpack_require__(36);
 
-var ReactPropTypesSecret = __webpack_require__(7);
+var ReactPropTypesSecret = __webpack_require__(8);
 var checkPropTypes = __webpack_require__(37);
 
 module.exports = function (isValidElement, throwOnDirectAccess) {
@@ -5859,7 +5919,7 @@ var _createClass = function () { function defineProperties(target, props) { for 
 
 __webpack_require__(53);
 
-var _navStore = __webpack_require__(10);
+var _navStore = __webpack_require__(5);
 
 var _navStore2 = _interopRequireDefault(_navStore);
 
@@ -6118,7 +6178,7 @@ var _assessmentStore = __webpack_require__(16);
 
 var _assessmentStore2 = _interopRequireDefault(_assessmentStore);
 
-var _navStore = __webpack_require__(10);
+var _navStore = __webpack_require__(5);
 
 var _navStore2 = _interopRequireDefault(_navStore);
 
@@ -6664,7 +6724,7 @@ var _ltiNetworkStates = __webpack_require__(17);
 
 var _ltiNetworkStates2 = _interopRequireDefault(_ltiNetworkStates);
 
-var _navStore = __webpack_require__(10);
+var _navStore = __webpack_require__(5);
 
 var _navStore2 = _interopRequireDefault(_navStore);
 
@@ -6684,7 +6744,7 @@ var _apiUtil = __webpack_require__(4);
 
 var _apiUtil2 = _interopRequireDefault(_apiUtil);
 
-var _questionUtil = __webpack_require__(5);
+var _questionUtil = __webpack_require__(6);
 
 var _questionUtil2 = _interopRequireDefault(_questionUtil);
 

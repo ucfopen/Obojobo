@@ -2,7 +2,7 @@
 
 exports[`MCAssessment Question component 1`] = `
 <div
-  className="component flip-container obojobo-draft--chunks--question  is-hidden is-mode-practice"
+  className="component flip-container obojobo-draft--chunks--question  is-hidden is-not-shown-via-click is-mode-practice"
   data-focussed={false}
   data-id="id"
   data-obo-component={true}
@@ -256,7 +256,7 @@ exports[`MCAssessment Question component 1`] = `
 
 exports[`MCAssessment Question view & focus question 1`] = `
 <div
-  className="component flip-container obojobo-draft--chunks--question  is-hidden is-mode-practice"
+  className="component flip-container obojobo-draft--chunks--question  is-hidden is-not-shown-via-click is-mode-practice"
   data-focussed={false}
   data-id="id"
   data-obo-component={true}
@@ -510,7 +510,7 @@ exports[`MCAssessment Question view & focus question 1`] = `
 
 exports[`MCAssessment Question view & focus question 2`] = `
 <div
-  className="component flip-container obojobo-draft--chunks--question  is-active is-mode-practice"
+  className="component flip-container obojobo-draft--chunks--question  is-active is-not-shown-via-click is-mode-practice"
   data-focussed={true}
   data-id="id"
   data-obo-component={true}
@@ -764,7 +764,7 @@ exports[`MCAssessment Question view & focus question 2`] = `
 
 exports[`MCAssessment Question view question 1`] = `
 <div
-  className="component flip-container obojobo-draft--chunks--question  is-hidden is-mode-practice"
+  className="component flip-container obojobo-draft--chunks--question  is-hidden is-not-shown-via-click is-mode-practice"
   data-focussed={false}
   data-id="id"
   data-obo-component={true}
@@ -1018,7 +1018,7 @@ exports[`MCAssessment Question view question 1`] = `
 
 exports[`MCAssessment Question view question 2`] = `
 <div
-  className="component flip-container obojobo-draft--chunks--question  is-active is-mode-practice"
+  className="component flip-container obojobo-draft--chunks--question  is-active is-not-shown-via-click is-mode-practice"
   data-focussed={false}
   data-id="id"
   data-obo-component={true}
@@ -1272,7 +1272,7 @@ exports[`MCAssessment Question view question 2`] = `
 
 exports[`MCAssessment Question with a set score 1`] = `
 <div
-  className="component flip-container obojobo-draft--chunks--question  is-hidden is-mode-practice"
+  className="component flip-container obojobo-draft--chunks--question  is-hidden is-not-shown-via-click is-mode-practice"
   data-focussed={false}
   data-id="id"
   data-obo-component={true}
@@ -1526,7 +1526,7 @@ exports[`MCAssessment Question with a set score 1`] = `
 
 exports[`MCAssessment Question with a set score 2`] = `
 <div
-  className="component flip-container obojobo-draft--chunks--question is-correct is-hidden is-mode-practice"
+  className="component flip-container obojobo-draft--chunks--question is-correct is-hidden is-not-shown-via-click is-mode-practice"
   data-focussed={false}
   data-id="id"
   data-obo-component={true}
@@ -1809,7 +1809,7 @@ exports[`MCAssessment Question with a set score 2`] = `
 
 exports[`MCAssessment Question with response 1`] = `
 <div
-  className="component flip-container obojobo-draft--chunks--question  is-hidden is-mode-practice"
+  className="component flip-container obojobo-draft--chunks--question  is-hidden is-not-shown-via-click is-mode-practice"
   data-focussed={false}
   data-id="id"
   data-obo-component={true}
@@ -2063,7 +2063,7 @@ exports[`MCAssessment Question with response 1`] = `
 
 exports[`MCAssessment Question with response 2`] = `
 <div
-  className="component flip-container obojobo-draft--chunks--question  is-hidden is-mode-practice"
+  className="component flip-container obojobo-draft--chunks--question  is-hidden is-not-shown-via-click is-mode-practice"
   data-focussed={false}
   data-id="id"
   data-obo-component={true}
@@ -2317,7 +2317,7 @@ exports[`MCAssessment Question with response 2`] = `
 
 exports[`MCAssessment Question with revealAll 1`] = `
 <div
-  className="component flip-container obojobo-draft--chunks--question  is-hidden is-mode-practice"
+  className="component flip-container obojobo-draft--chunks--question  is-hidden is-not-shown-via-click is-mode-practice"
   data-focussed={false}
   data-id="id"
   data-obo-component={true}
@@ -2571,7 +2571,7 @@ exports[`MCAssessment Question with revealAll 1`] = `
 
 exports[`MCAssessment Question with revealAll 2`] = `
 <div
-  className="component flip-container obojobo-draft--chunks--question  is-hidden is-mode-practice"
+  className="component flip-container obojobo-draft--chunks--question  is-hidden is-not-shown-via-click is-mode-practice"
   data-focussed={false}
   data-id="id"
   data-obo-component={true}

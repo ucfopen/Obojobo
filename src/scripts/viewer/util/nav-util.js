@@ -229,6 +229,10 @@ var NavUtil = {
 				context
 			}
 		})
+	},
+
+	getContext(state) {
+		return state.context
 	}
 }
 

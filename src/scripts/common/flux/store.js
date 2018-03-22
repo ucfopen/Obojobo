@@ -34,6 +34,7 @@ class Store {
 		return (this.state = Object.assign({}, newState))
 	}
 
+	//@TODO: Remove?
 	updateStateByContext(obj, context) {
 		for (let key in obj) {
 			if (!this.state[key]) this.state[key] = {}

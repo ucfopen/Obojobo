@@ -25,7 +25,7 @@
 
 /* flip speed goes here */
 .flipper {
-	transition: 0.4s;
+	// transition: 0.4s;
 	-ms-transition: none;
 	transform-style: preserve-3d;
 
@@ -77,6 +77,10 @@
 .obojobo-draft--chunks--question {
 	&.is-hidden .flipper {
 		border: 1px solid $color-action;
+	}
+
+	&.is-shown-via-click .flipper {
+		transition: 0.4s;
 	}
 
 	&.is-mode-practice {

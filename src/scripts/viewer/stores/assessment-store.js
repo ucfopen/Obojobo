@@ -7,6 +7,7 @@ import NavUtil from '../../viewer/util/nav-util'
 import LTINetworkStates from './assessment-store/lti-network-states'
 
 import QuestionStore from './question-store'
+import NavStore from './nav-store'
 
 let { Store } = Common.flux
 let { Dispatcher } = Common.flux
@@ -124,6 +125,9 @@ class AssessmentStore extends Store {
 		}
 
 		if (unfinishedAttempt) {
+			// this.startAttempt(unfinishedAttempt)
+			// this.triggerChange()
+
 			return ModalUtil.show(
 				<SimpleDialog
 					ok
@@ -140,10 +144,29 @@ class AssessmentStore extends Store {
 	}
 
 	onResumeAttemptConfirm(unfinishedAttempt) {
-		ModalUtil.hide()
+		return APIUtil.resumeAttempt(unfinishedAttempt).then(res => {
+			this.startAttempt(unfinishedAttempt)
 
-		this.startAttempt(unfinishedAttempt)
-		this.triggerChange()
+			QuestionStore.updateStateByContext(
+				{ responses: res.value.responses },
+				this.createAttemptContext(unfinishedAttempt.assessmentId, unfinishedAttempt.attemptId)
+			)
+
+			let assessmentState = this.state.assessments[unfinishedAttempt.assessmentId]
+			let questionState = QuestionStore.getState()
+
+			assessmentState.currentResponses = Object.keys(res.value.responses)
+			for (let id of Object.keys(res.value.responses)) {
+				assessmentState.currentResponses.push(id)
+				QuestionUtil.setQuestionAsViewed(questionState, id)
+			}
+
+			ModalUtil.hide()
+			QuestionStore.triggerChange()
+			this.triggerChange()
+
+			Dispatcher.trigger('assessment:attemptResumed', unfinishedAttempt.attemptId)
+		})
 	}
 
 	tryStartAttempt(id) {
@@ -174,6 +197,10 @@ class AssessmentStore extends Store {
 			})
 	}
 
+	createAttemptContext(assessmentId, attemptId) {
+		return `assessment:${assessmentId}:${attemptId}`
+	}
+
 	startAttempt(startAttemptResp) {
 		let id = startAttemptResp.assessmentId
 		let model = OboModel.models[id]
@@ -190,12 +217,14 @@ class AssessmentStore extends Store {
 
 		this.state.assessments[id].current = startAttemptResp
 
-		NavUtil.setContext(`assessment:${startAttemptResp.assessmentId}:${startAttemptResp.attemptId}`)
+		NavUtil.setContext(
+			this.createAttemptContext(startAttemptResp.assessmentId, startAttemptResp.attemptId)
+		)
 		NavUtil.rebuildMenu(model.getRoot())
 		NavUtil.goto(id)
 
 		model.processTrigger('onStartAttempt')
-		Dispatcher.trigger('assessment:attemptStarted', id)
+		Dispatcher.trigger('assessment:attemptStarted', startAttemptResp.attemptId)
 	}
 
 	tryEndAttempt(id, context) {
@@ -231,7 +260,7 @@ class AssessmentStore extends Store {
 
 		model.processTrigger('onEndAttempt')
 
-		Dispatcher.trigger('assessment:attemptEnded', assessId)
+		Dispatcher.trigger('assessment:attemptEnded', endAttemptResp.attemptId)
 	}
 
 	tryResendLTIScore(assessmentId) {

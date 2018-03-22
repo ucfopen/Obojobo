@@ -10,7 +10,6 @@
 
 /* flip speed goes here */
 .flipper {
-  transition: 0.4s;
   -ms-transition: none;
   transform-style: preserve-3d;
   position: relative; }
@@ -46,6 +45,9 @@
 
 .obojobo-draft--chunks--question.is-hidden .flipper {
   border: 1px solid #6714bd; }
+
+.obojobo-draft--chunks--question.is-shown-via-click .flipper {
+  transition: 0.4s; }
 
 .obojobo-draft--chunks--question.is-mode-practice .back::before {
   color: #999999;

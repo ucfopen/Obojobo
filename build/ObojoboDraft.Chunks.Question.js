@@ -299,17 +299,28 @@ var Question = function (_React$Component) {
 	function Question() {
 		_classCallCheck(this, Question);
 
-		return _possibleConstructorReturn(this, (Question.__proto__ || Object.getPrototypeOf(Question)).apply(this, arguments));
+		var _this = _possibleConstructorReturn(this, (Question.__proto__ || Object.getPrototypeOf(Question)).call(this));
+
+		_this.state = {
+			clickedToShow: false
+		};
+		return _this;
 	}
 
 	_createClass(Question, [{
 		key: 'onClickBlocker',
 		value: function onClickBlocker() {
-			QuestionUtil.viewQuestion(this.props.model.get('id'));
+			var _this2 = this;
 
-			if (this.props.model.modelState.mode === 'practice') {
-				return FocusUtil.focusComponent(this.props.model.get('id'));
-			}
+			this.setState({
+				clickedToShow: true
+			}, function () {
+				QuestionUtil.viewQuestion(_this2.props.model.get('id'));
+
+				if (_this2.props.model.modelState.mode === 'practice') {
+					return FocusUtil.focusComponent(_this2.props.model.get('id'));
+				}
+			});
 		}
 	}, {
 		key: 'render',
@@ -326,7 +337,7 @@ var Question = function (_React$Component) {
 
 			var mode = this.props.mode ? this.props.mode : this.props.model.modelState.mode;
 
-			var classNames = ['flip-container', 'obojobo-draft--chunks--question', score === null ? '' : score === 100 ? 'is-correct' : 'is-incorrect', this.props.mode === 'review' ? 'is-active' : 'is-' + viewState, 'is-mode-' + mode].join(' ');
+			var classNames = ['flip-container', 'obojobo-draft--chunks--question', score === null ? '' : score === 100 ? 'is-correct' : 'is-incorrect', this.props.mode === 'review' ? 'is-active' : 'is-' + viewState, this.state.clickedToShow ? 'is-shown-via-click' : 'is-not-shown-via-click', 'is-mode-' + mode].join(' ');
 
 			return React.createElement(
 				OboComponent,

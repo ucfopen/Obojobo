@@ -15,12 +15,27 @@ let { QuestionUtil } = Viewer.util
 import QuestionContent from './Content/viewer-component'
 
 export default class Question extends React.Component {
-	onClickBlocker() {
-		QuestionUtil.viewQuestion(this.props.model.get('id'))
+	constructor() {
+		super()
 
-		if (this.props.model.modelState.mode === 'practice') {
-			return FocusUtil.focusComponent(this.props.model.get('id'))
+		this.state = {
+			clickedToShow: false
 		}
+	}
+
+	onClickBlocker() {
+		this.setState(
+			{
+				clickedToShow: true
+			},
+			() => {
+				QuestionUtil.viewQuestion(this.props.model.get('id'))
+
+				if (this.props.model.modelState.mode === 'practice') {
+					return FocusUtil.focusComponent(this.props.model.get('id'))
+				}
+			}
+		)
 	}
 
 	render() {
@@ -45,6 +60,7 @@ export default class Question extends React.Component {
 			'obojobo-draft--chunks--question',
 			score === null ? '' : score === 100 ? 'is-correct' : 'is-incorrect',
 			this.props.mode === 'review' ? 'is-active' : `is-${viewState}`,
+			this.state.clickedToShow ? 'is-shown-via-click' : 'is-not-shown-via-click',
 			`is-mode-${mode}`
 		].join(' ')
 

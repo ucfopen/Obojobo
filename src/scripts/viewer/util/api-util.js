@@ -1,4 +1,5 @@
 const createParsedJsonPromise = promise => {
+	console.log('cpjp')
 	return new Promise((resolve, reject) => {
 		return promise
 			.then(res => {
@@ -28,6 +29,7 @@ var APIUtil = {
 		if (body == null) {
 			body = {}
 		}
+		console.log('post', endpoint, body)
 		return fetch(endpoint, {
 			method: 'POST',
 			credentials: 'include',
@@ -93,6 +95,13 @@ var APIUtil = {
 	endAttempt(attempt) {
 		return createParsedJsonPromise(
 			APIUtil.post(`/api/assessments/attempt/${attempt.attemptId}/end`)
+		)
+	},
+
+	resumeAttempt(attempt) {
+		console.log('resume api', attempt.attemptId)
+		return createParsedJsonPromise(
+			APIUtil.post(`/api/assessments/attempt/${attempt.attemptId}/resume`)
 		)
 	},
 
