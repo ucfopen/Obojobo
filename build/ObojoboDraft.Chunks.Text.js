@@ -75,7 +75,7 @@ module.exports = Common;
 
 /***/ }),
 
-/***/ 116:
+/***/ 115:
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -85,7 +85,7 @@ var _Common = __webpack_require__(0);
 
 var _Common2 = _interopRequireDefault(_Common);
 
-var _viewerComponent = __webpack_require__(156);
+var _viewerComponent = __webpack_require__(155);
 
 var _viewerComponent2 = _interopRequireDefault(_viewerComponent);
 
@@ -104,7 +104,7 @@ _Common2.default.Store.registerModel('ObojoboDraft.Chunks.Text', {
 
 /***/ }),
 
-/***/ 156:
+/***/ 155:
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -187,7 +187,7 @@ exports.default = Text;
 /***/ 297:
 /***/ (function(module, exports, __webpack_require__) {
 
-module.exports = __webpack_require__(116);
+module.exports = __webpack_require__(115);
 
 
 /***/ })

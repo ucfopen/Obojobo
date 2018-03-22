@@ -17,9 +17,9 @@
 		}
 	}
 
-	@import 'viewer-component-review';
-	@import 'viewer-component-score-report';
-	@import 'viewer-component-score-submitted';
-	@import 'viewer-component-taking-test';
+	@import 'components/full-review/index';
+	@import 'components/score-report/index';
+	@import 'components/score-submitted/index';
+	@import 'components/taking-test/index';
 }
 

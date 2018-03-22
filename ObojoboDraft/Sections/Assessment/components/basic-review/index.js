@@ -3,7 +3,7 @@ import Viewer from 'Viewer'
 
 const { OboModel } = Common.models
 
-const questionResultView = (moduleData, questionScore, index) => {
+const basicReview = (moduleData, questionScore, index) => {
 	const questionModel = OboModel.models[questionScore.id]
 	const QuestionComponent = questionModel.getComponentClass()
 
@@ -15,4 +15,4 @@ const questionResultView = (moduleData, questionScore, index) => {
 	)
 }
 
-export default questionResultView
+export default basicReview

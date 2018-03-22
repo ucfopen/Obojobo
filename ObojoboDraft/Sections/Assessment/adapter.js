@@ -1,4 +1,4 @@
-import ScoreActions from './score-actions'
+import ScoreActions from './post-assessment/score-actions'
 // @TODO: Importing from the server code, we shouldn't do this:
 import AssessmentRubric from '../../../server/assessment-rubric'
 

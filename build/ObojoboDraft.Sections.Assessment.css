@@ -33,14 +33,14 @@
         font-size: .8em;
         line-height: 1.5em; }
   .obojobo-draft--sections--assessment .review .score-section {
-    width: 30%; }
-  .obojobo-draft--sections--assessment .review .flipper {
-    background: #fff;
-    margin-left: 3.5%; }
+    width: 38%; }
   .obojobo-draft--sections--assessment .review .result-container {
     margin-left: 3em;
     margin-top: 1em;
     margin-bottom: 0.4em; }
+  .obojobo-draft--sections--assessment .review .flipper {
+    background: #fff;
+    margin-left: 3.5%; }
   .obojobo-draft--sections--assessment .review .is-correct > p,
   .obojobo-draft--sections--assessment .review .is-not-correct > p {
     margin-top: 0;
@@ -75,12 +75,6 @@
 
 .obojobo-draft--sections--assessment .score-report.is-showing-retained-score ul {
   border-top: 1px solid LightGray; }
-  .obojobo-draft--sections--assessment .score-report.is-showing-retained-score ul li:first-child {
-    margin-top: 5px; }
-  .obojobo-draft--sections--assessment .score-report.is-showing-retained-score ul li:last-child {
-    margin-top: 5px;
-    padding-top: 4px;
-    border-top: 1px solid LightGray; }
 
 .obojobo-draft--sections--assessment .score-report:not(.is-showing-retained-score) .mod-breakdown {
   border: 1px solid LightGray;
@@ -97,6 +91,14 @@
 .obojobo-draft--sections--assessment .score-report ul {
   padding: 0;
   list-style-type: none; }
+
+.obojobo-draft--sections--assessment .score-report li:first-child:not(:only-child) {
+  margin-top: 5px; }
+
+.obojobo-draft--sections--assessment .score-report li:last-child:not(:only-child) {
+  margin-top: 5px;
+  padding-top: 4px;
+  border-top: 1px solid LightGray; }
 
 .obojobo-draft--sections--assessment .score-report .score-report-text {
   display: inline-block;

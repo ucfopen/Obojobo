@@ -75,7 +75,7 @@ module.exports = Common;
 
 /***/ }),
 
-/***/ 117:
+/***/ 116:
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -85,11 +85,11 @@ var _Common = __webpack_require__(0);
 
 var _Common2 = _interopRequireDefault(_Common);
 
-var _adapter = __webpack_require__(157);
+var _adapter = __webpack_require__(156);
 
 var _adapter2 = _interopRequireDefault(_adapter);
 
-var _viewerComponent = __webpack_require__(158);
+var _viewerComponent = __webpack_require__(157);
 
 var _viewerComponent2 = _interopRequireDefault(_viewerComponent);
 
@@ -106,7 +106,7 @@ _Common2.default.Store.registerModel('ObojoboDraft.Chunks.YouTube', {
 
 /***/ }),
 
-/***/ 157:
+/***/ 156:
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -144,7 +144,7 @@ function __guard__(value, transform) {
 
 /***/ }),
 
-/***/ 158:
+/***/ 157:
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -219,7 +219,7 @@ exports.default = YouTube;
 /***/ 298:
 /***/ (function(module, exports, __webpack_require__) {
 
-module.exports = __webpack_require__(117);
+module.exports = __webpack_require__(116);
 
 
 /***/ })

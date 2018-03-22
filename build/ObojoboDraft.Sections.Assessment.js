@@ -82,7 +82,7 @@ module.exports = Viewer;
 
 /***/ }),
 
-/***/ 101:
+/***/ 100:
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -136,7 +136,7 @@ module.exports = getISOYear;
 
 /***/ }),
 
-/***/ 102:
+/***/ 101:
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -165,7 +165,7 @@ module.exports = isDate;
 
 /***/ }),
 
-/***/ 120:
+/***/ 119:
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -179,7 +179,7 @@ var _Viewer = __webpack_require__(1);
 
 var _Viewer2 = _interopRequireDefault(_Viewer);
 
-var _adapter = __webpack_require__(162);
+var _adapter = __webpack_require__(161);
 
 var _adapter2 = _interopRequireDefault(_adapter);
 
@@ -243,7 +243,7 @@ _Common2.default.Store.registerModel('ObojoboDraft.Sections.Assessment', {
 
 /***/ }),
 
-/***/ 162:
+/***/ 161:
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -253,7 +253,7 @@ Object.defineProperty(exports, "__esModule", {
 	value: true
 });
 
-var _scoreActions = __webpack_require__(166);
+var _scoreActions = __webpack_require__(170);
 
 var _scoreActions2 = _interopRequireDefault(_scoreActions);
 
@@ -311,7 +311,7 @@ exports.default = Adapter;
 
 /***/ }),
 
-/***/ 163:
+/***/ 162:
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -393,7 +393,490 @@ exports.default = AttemptIncompleteDialog;
 
 /***/ }),
 
+/***/ 163:
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+Object.defineProperty(exports, "__esModule", {
+	value: true
+});
+
+var _Common = __webpack_require__(0);
+
+var _Common2 = _interopRequireDefault(_Common);
+
+var _Viewer = __webpack_require__(1);
+
+var _Viewer2 = _interopRequireDefault(_Viewer);
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+var OboModel = _Common2.default.models.OboModel;
+
+
+var basicReview = function basicReview(moduleData, questionScore, index) {
+	var questionModel = OboModel.models[questionScore.id];
+	var QuestionComponent = questionModel.getComponentClass();
+
+	return React.createElement(
+		'div',
+		{ key: index, className: questionScore.score === 100 ? 'is-correct' : 'is-not-correct' },
+		React.createElement(
+			'p',
+			null,
+			'Question ' + (index + 1) + ' - ' + (questionScore.score === 100 ? 'Correct:' : 'Incorrect:')
+		),
+		React.createElement(QuestionComponent, { model: questionModel, moduleData: moduleData, showContentOnly: true })
+	);
+};
+
+exports.default = basicReview;
+
+/***/ }),
+
 /***/ 164:
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+Object.defineProperty(exports, "__esModule", {
+	value: true
+});
+
+var _Viewer = __webpack_require__(1);
+
+var _Viewer2 = _interopRequireDefault(_Viewer);
+
+var _Common = __webpack_require__(0);
+
+var _Common2 = _interopRequireDefault(_Common);
+
+var _reviewIcon = __webpack_require__(165);
+
+var _reviewIcon2 = _interopRequireDefault(_reviewIcon);
+
+var _scoreReport = __webpack_require__(67);
+
+var _scoreReport2 = _interopRequireDefault(_scoreReport);
+
+var _assessmentScoreReport = __webpack_require__(68);
+
+var _assessmentScoreReport2 = _interopRequireDefault(_assessmentScoreReport);
+
+var _format = __webpack_require__(244);
+
+var _format2 = _interopRequireDefault(_format);
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+var AssessmentUtil = _Viewer2.default.util.AssessmentUtil;
+var NavUtil = _Viewer2.default.util.NavUtil;
+var OboModel = _Common2.default.models.OboModel;
+var Button = _Common2.default.components.Button;
+
+
+var assessmentReviewView = function assessmentReviewView(_ref) {
+	var assessment = _ref.assessment;
+
+	var attemptReviewComponents = {};
+
+	var attempts = AssessmentUtil.getAllAttempts(assessment.props.moduleData.assessmentState, assessment.props.model);
+
+	var report = new _assessmentScoreReport2.default(assessment.props.model.modelState.rubric.toObject());
+
+	var attemptReviewComponent = function attemptReviewComponent(attempt, assessment) {
+		var dateString = (0, _format2.default)(new Date(attempt.finishTime), 'M/D/YY [at] h:mma');
+		var numCorrect = AssessmentUtil.getNumCorrect(attempt.questionScores);
+
+		return React.createElement(
+			'div',
+			{ className: 'review' },
+			React.createElement(
+				'div',
+				{ className: 'attempt-header' },
+				React.createElement(
+					'div',
+					{ className: 'attempt-info-container' },
+					React.createElement(_reviewIcon2.default, {
+						height: '50px',
+						width: '50px',
+						css: {
+							transform: 'translateX(-10px)'
+						}
+					}),
+					React.createElement(
+						'div',
+						{ className: 'attempt-info-content-container' },
+						React.createElement(
+							'h4',
+							null,
+							React.createElement(
+								'strong',
+								null,
+								'Attempt ' + attempt.attemptNumber
+							)
+						),
+						React.createElement(
+							'div',
+							{ className: 'attempt-info-content' },
+							React.createElement(
+								'ul',
+								null,
+								React.createElement(
+									'li',
+									null,
+									dateString
+								),
+								React.createElement(
+									'li',
+									null,
+									numCorrect,
+									' out of ',
+									attempt.questionScores.length,
+									' questions correct'
+								)
+							)
+						)
+					)
+				),
+				React.createElement(
+					'div',
+					{ className: 'score-section' },
+					React.createElement(_scoreReport2.default, {
+						items: report.getTextItems(attempt.assessmentScoreDetails, AssessmentUtil.getAttemptsRemaining(assessment.props.moduleData.assessmentState, assessment.props.model))
+					})
+				)
+			),
+			attempt.questionScores.map(function (scoreObj) {
+				var questionModel = OboModel.models[scoreObj.id];
+				var QuestionComponent = questionModel.getComponentClass();
+				return React.createElement(QuestionComponent, {
+					model: questionModel,
+					moduleData: assessment.props.moduleData,
+					mode: 'review'
+				});
+			})
+		);
+	};
+
+	var attemptButtons = attempts.map(function (attempt, index) {
+		return React.createElement(
+			Button,
+			{ onClick: function onClick() {
+					return NavUtil.setContext('assessmentReview:' + attempt.attemptId);
+				} },
+			attempt.attemptNumber
+		);
+	});
+
+	attempts.forEach(function (attempt) {
+		attemptReviewComponents['assessmentReview:' + attempt.attemptId] = attemptReviewComponent(attempt, assessment);
+	});
+
+	var context = assessment.props.moduleData.navState.context;
+	if (context.split(':')[0] !== 'assessmentReview')
+		// show most recent attempt
+		NavUtil.setContext('assessmentReview:' + attempts[attempts.length - 1].attemptId);
+
+	return React.createElement(
+		'div',
+		{ className: 'attempt-review-container' },
+		React.createElement(
+			'div',
+			{ className: 'attempt-button-container' },
+			attemptButtons
+		),
+		attemptReviewComponents[context]
+	);
+};
+
+exports.default = assessmentReviewView;
+
+/***/ }),
+
+/***/ 165:
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+Object.defineProperty(exports, "__esModule", {
+	value: true
+});
+
+exports.default = function (props) {
+	return React.createElement(
+		"svg",
+		{
+			xmlns: "http://www.w3.org/2000/svg",
+			viewBox: "0 0 114.33 114.33",
+			height: props.height,
+			width: props.width,
+			style: props.css
+		},
+		React.createElement(
+			"defs",
+			null,
+			React.createElement(
+				"style",
+				null,
+				".cls-1{fill:#eadff6;}.cls-2{fill:#fff;}.cls-3{fill:#d7c6ed;}.cls-4{fill:#8fb9eb;}.cls-5{fill:#e8f3e2;}.cls-6{fill:#77b851;}"
+			)
+		),
+		React.createElement(
+			"title",
+			null,
+			"obo-assessment-review-icon"
+		),
+		React.createElement("circle", { className: "cls-1", cx: "57.17", cy: "57.17", r: "57.17" }),
+		React.createElement("rect", { className: "cls-2", x: "32.5", y: "28.87", width: "49.33", height: "56.6", rx: "3.72", ry: "3.72" }),
+		React.createElement("path", {
+			className: "cls-3",
+			d: "M43.15,39.35a4.06,4.06,0,1,0,4.06,4.06A4.06,4.06,0,0,0,43.15,39.35Zm0,6.31a2.25,2.25,0,1,1,2.25-2.25A2.25,2.25,0,0,1,43.15,45.67Z"
+		}),
+		React.createElement("rect", { className: "cls-3", x: "51.5", y: "41.29", width: "23.75", height: "4.25", rx: "2.12", ry: "2.12" }),
+		React.createElement("path", {
+			className: "cls-3",
+			d: "M43.15,53.1a4.06,4.06,0,1,0,4.06,4.06A4.06,4.06,0,0,0,43.15,53.1Zm0,6.31a2.25,2.25,0,1,1,2.25-2.25A2.25,2.25,0,0,1,43.15,59.42Z"
+		}),
+		React.createElement("rect", { className: "cls-3", x: "51.5", y: "55.04", width: "23.75", height: "4.25", rx: "2.12", ry: "2.12" }),
+		React.createElement("path", {
+			className: "cls-3",
+			d: "M43.15,66.85a4.06,4.06,0,1,0,4.06,4.06A4.06,4.06,0,0,0,43.15,66.85Z"
+		}),
+		React.createElement("rect", { className: "cls-3", x: "51.5", y: "68.79", width: "23.75", height: "4.25", rx: "2.12", ry: "2.12" }),
+		React.createElement("path", {
+			className: "cls-2",
+			d: "M91.27,81.5l-5.39-5.39a15.3,15.3,0,1,0-7.65,7.74l5.35,5.35a3.53,3.53,0,0,0,5,0l2.72-2.72A3.53,3.53,0,0,0,91.27,81.5Z"
+		}),
+		React.createElement("path", {
+			className: "cls-4",
+			d: "M88.24,83.1,82,76.86A11.87,11.87,0,1,0,78.82,80l6.24,6.24a1.25,1.25,0,0,0,1.76,0l1.42-1.42A1.25,1.25,0,0,0,88.24,83.1Z"
+		}),
+		React.createElement("circle", { className: "cls-5", cx: "72.16", cy: "70.2", r: "8.79" }),
+		React.createElement("path", {
+			className: "cls-6",
+			d: "M78.18,67.41l-1.75-1.75a.67.67,0,0,0-.94,0l-4.17,4.17L69.46,68a.67.67,0,0,0-.94,0l-1.75,1.75a.67.67,0,0,0,0,.94l2.72,2.72h0l1.35,1.35a.67.67,0,0,0,.94,0l6.39-6.39A.67.67,0,0,0,78.18,67.41Z"
+		})
+	);
+};
+
+/***/ }),
+
+/***/ 166:
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+Object.defineProperty(exports, "__esModule", {
+	value: true
+});
+
+var _Common = __webpack_require__(0);
+
+var _Common2 = _interopRequireDefault(_Common);
+
+var _Viewer = __webpack_require__(1);
+
+var _Viewer2 = _interopRequireDefault(_Viewer);
+
+var _ltiStatus = __webpack_require__(167);
+
+var _ltiStatus2 = _interopRequireDefault(_ltiStatus);
+
+var _fullReview = __webpack_require__(164);
+
+var _fullReview2 = _interopRequireDefault(_fullReview);
+
+var _scoreReport = __webpack_require__(67);
+
+var _scoreReport2 = _interopRequireDefault(_scoreReport);
+
+var _assessmentScoreReport = __webpack_require__(68);
+
+var _assessmentScoreReport2 = _interopRequireDefault(_assessmentScoreReport);
+
+var _basicReview = __webpack_require__(163);
+
+var _basicReview2 = _interopRequireDefault(_basicReview);
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+var OboModel = _Common2.default.models.OboModel;
+var AssessmentUtil = _Viewer2.default.util.AssessmentUtil;
+
+var Launch = _Common2.default.Launch;
+var NavUtil = _Viewer2.default.util.NavUtil;
+
+var scoreSubmittedView = function scoreSubmittedView(assessment) {
+	var report = new _assessmentScoreReport2.default(assessment.props.model.modelState.rubric.toObject());
+
+	var latestHighestAttemptScoreDetails = AssessmentUtil.getLatestHighestAttemptScoreState(assessment.props.moduleData.assessmentState, assessment.props.model);
+
+	var questionScores = AssessmentUtil.getLastAttemptScoresForModel(assessment.props.moduleData.assessmentState, assessment.props.model);
+	var recentScore = AssessmentUtil.getLastAttemptScoreForModel(assessment.props.moduleData.assessmentState, assessment.props.model);
+	var isAssessmentComplete = function isAssessmentComplete() {
+		return !AssessmentUtil.hasAttemptsRemaining(assessment.props.moduleData.assessmentState, assessment.props.model);
+	};
+	var attemptsRemaining = AssessmentUtil.getAttemptsRemaining(assessment.props.moduleData.assessmentState, assessment.props.model);
+
+	var scoreAction = assessment.getScoreAction();
+	var numCorrect = AssessmentUtil.getNumCorrect(questionScores);
+
+	var assessmentScore = AssessmentUtil.getAssessmentScoreForModel(assessment.props.moduleData.assessmentState, assessment.props.model);
+
+	var onClickResendScore = function onClickResendScore() {
+		AssessmentUtil.resendLTIScore(assessment.props.model);
+	};
+
+	var ltiState = AssessmentUtil.getLTIStateForModel(assessment.props.moduleData.assessmentState, assessment.props.model);
+
+	var assessmentLabel = NavUtil.getNavLabelForModel(assessment.props.moduleData.navState, assessment.props.model);
+
+	var childEl = void 0;
+
+	if (scoreAction.page != null) {
+		var pageModel = OboModel.create(scoreAction.page);
+		pageModel.parent = assessment.props.model; //'@TODO - FIGURE OUT A BETTER WAY TO DO THIS - THIS IS NEEDED TO GET {{VARIABLES}} WORKING')
+		var PageComponent = pageModel.getComponentClass();
+		childEl = React.createElement(PageComponent, { model: pageModel, moduleData: assessment.props.moduleData });
+	} else {
+		childEl = React.createElement(
+			'p',
+			null,
+			scoreAction.message
+		);
+	}
+
+	var externalSystemLabel = assessment.props.moduleData.lti.outcomeServiceHostname;
+
+	var showFullReview = function (reviewType) {
+		switch (reviewType) {
+			case 'always':
+				return true;
+			case 'never':
+				return false;
+			case 'afterAttempts':
+				return isAssessmentComplete();
+		}
+	}(assessment.props.model.modelState.review);
+
+	return React.createElement(
+		'div',
+		{ className: 'score unlock' },
+		React.createElement(
+			'div',
+			{ className: 'results-bar' },
+			React.createElement(
+				'h1',
+				null,
+				assessmentLabel,
+				' - How You Did'
+			),
+			React.createElement(
+				'div',
+				{ className: 'assessment-flex-container' },
+				React.createElement(
+					'div',
+					null,
+					React.createElement(
+						'div',
+						null,
+						'Last Attempt Score'
+					),
+					React.createElement(
+						'div',
+						null,
+						Math.round(recentScore),
+						'%'
+					)
+				),
+				React.createElement(_scoreReport2.default, {
+					retainedScore: latestHighestAttemptScoreDetails.attemptScore,
+					items: report.getTextItems(latestHighestAttemptScoreDetails, AssessmentUtil.getAttemptsRemaining(assessment.props.moduleData.assessmentState, assessment.props.model))
+				}),
+				React.createElement(
+					'div',
+					null,
+					React.createElement(
+						'div',
+						null,
+						'Attempts Remaining'
+					),
+					React.createElement(
+						'div',
+						null,
+						attemptsRemaining
+					)
+				)
+			),
+			React.createElement(_ltiStatus2.default, {
+				ltiState: ltiState,
+				externalSystemLabel: externalSystemLabel,
+				onClickResendScore: onClickResendScore,
+				assessmentScore: latestHighestAttemptScoreDetails.attemptScore
+			}),
+			function () {
+				switch (ltiState.state.gradebookStatus) {
+					case 'ok_no_outcome_service':
+					case 'ok_null_score_not_sent':
+						return null;
+
+					case 'ok_gradebook_matches_assessment_score':
+						return React.createElement(
+							'span',
+							{ className: 'lti-sync-message is-synced' },
+							'(',
+							'sent to ' + externalSystemLabel + ' ',
+							React.createElement(
+								'span',
+								null,
+								'\u2714'
+							),
+							')'
+						);
+
+					default:
+						return React.createElement(
+							'span',
+							{ className: 'lti-sync-message is-not-synced' },
+							'(',
+							'not sent to ' + externalSystemLabel + ' ',
+							React.createElement(
+								'span',
+								null,
+								'\u2716'
+							),
+							')'
+						);
+				}
+			}
+		),
+		childEl,
+		showFullReview ? React.createElement(_fullReview2.default, { assessment: assessment }) : React.createElement(
+			'div',
+			{ className: 'review' },
+			React.createElement(
+				'p',
+				{ className: 'number-correct' },
+				'You got ' + numCorrect + ' out of ' + questionScores.length + ' questions correct:'
+			),
+			questionScores.map(function (questionScore, index) {
+				return (0, _basicReview2.default)(assessment.props.moduleData, questionScore, index);
+			})
+		)
+	);
+};
+
+exports.default = scoreSubmittedView;
+
+/***/ }),
+
+/***/ 167:
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -533,403 +1016,7 @@ exports.default = LTIStatus;
 
 /***/ }),
 
-/***/ 165:
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-
-
-Object.defineProperty(exports, "__esModule", {
-	value: true
-});
-
-exports.default = function (props) {
-	return React.createElement(
-		"svg",
-		{
-			xmlns: "http://www.w3.org/2000/svg",
-			viewBox: "0 0 114.33 114.33",
-			height: props.height,
-			width: props.width,
-			style: props.css
-		},
-		React.createElement(
-			"defs",
-			null,
-			React.createElement(
-				"style",
-				null,
-				".cls-1{fill:#eadff6;}.cls-2{fill:#fff;}.cls-3{fill:#d7c6ed;}.cls-4{fill:#8fb9eb;}.cls-5{fill:#e8f3e2;}.cls-6{fill:#77b851;}"
-			)
-		),
-		React.createElement(
-			"title",
-			null,
-			"obo-assessment-review-icon"
-		),
-		React.createElement("circle", { className: "cls-1", cx: "57.17", cy: "57.17", r: "57.17" }),
-		React.createElement("rect", { className: "cls-2", x: "32.5", y: "28.87", width: "49.33", height: "56.6", rx: "3.72", ry: "3.72" }),
-		React.createElement("path", {
-			className: "cls-3",
-			d: "M43.15,39.35a4.06,4.06,0,1,0,4.06,4.06A4.06,4.06,0,0,0,43.15,39.35Zm0,6.31a2.25,2.25,0,1,1,2.25-2.25A2.25,2.25,0,0,1,43.15,45.67Z"
-		}),
-		React.createElement("rect", { className: "cls-3", x: "51.5", y: "41.29", width: "23.75", height: "4.25", rx: "2.12", ry: "2.12" }),
-		React.createElement("path", {
-			className: "cls-3",
-			d: "M43.15,53.1a4.06,4.06,0,1,0,4.06,4.06A4.06,4.06,0,0,0,43.15,53.1Zm0,6.31a2.25,2.25,0,1,1,2.25-2.25A2.25,2.25,0,0,1,43.15,59.42Z"
-		}),
-		React.createElement("rect", { className: "cls-3", x: "51.5", y: "55.04", width: "23.75", height: "4.25", rx: "2.12", ry: "2.12" }),
-		React.createElement("path", {
-			className: "cls-3",
-			d: "M43.15,66.85a4.06,4.06,0,1,0,4.06,4.06A4.06,4.06,0,0,0,43.15,66.85Z"
-		}),
-		React.createElement("rect", { className: "cls-3", x: "51.5", y: "68.79", width: "23.75", height: "4.25", rx: "2.12", ry: "2.12" }),
-		React.createElement("path", {
-			className: "cls-2",
-			d: "M91.27,81.5l-5.39-5.39a15.3,15.3,0,1,0-7.65,7.74l5.35,5.35a3.53,3.53,0,0,0,5,0l2.72-2.72A3.53,3.53,0,0,0,91.27,81.5Z"
-		}),
-		React.createElement("path", {
-			className: "cls-4",
-			d: "M88.24,83.1,82,76.86A11.87,11.87,0,1,0,78.82,80l6.24,6.24a1.25,1.25,0,0,0,1.76,0l1.42-1.42A1.25,1.25,0,0,0,88.24,83.1Z"
-		}),
-		React.createElement("circle", { className: "cls-5", cx: "72.16", cy: "70.2", r: "8.79" }),
-		React.createElement("path", {
-			className: "cls-6",
-			d: "M78.18,67.41l-1.75-1.75a.67.67,0,0,0-.94,0l-4.17,4.17L69.46,68a.67.67,0,0,0-.94,0l-1.75,1.75a.67.67,0,0,0,0,.94l2.72,2.72h0l1.35,1.35a.67.67,0,0,0,.94,0l6.39-6.39A.67.67,0,0,0,78.18,67.41Z"
-		})
-	);
-};
-
-/***/ }),
-
-/***/ 166:
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-
-
-Object.defineProperty(exports, "__esModule", {
-	value: true
-});
-
-var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
-
-function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
-
-var ScoreActions = function () {
-	function ScoreActions(_actions) {
-		_classCallCheck(this, ScoreActions);
-
-		if (_actions == null) {
-			_actions = [];
-		}
-		this._actions = _actions;
-	}
-
-	_createClass(ScoreActions, [{
-		key: "getActionForScore",
-		value: function getActionForScore(score) {
-			var _iteratorNormalCompletion = true;
-			var _didIteratorError = false;
-			var _iteratorError = undefined;
-
-			try {
-				for (var _iterator = Array.from(this._actions)[Symbol.iterator](), _step; !(_iteratorNormalCompletion = (_step = _iterator.next()).done); _iteratorNormalCompletion = true) {
-					var action = _step.value;
-
-					if (score >= action.from && score <= action.to) {
-						return action;
-					}
-				}
-			} catch (err) {
-				_didIteratorError = true;
-				_iteratorError = err;
-			} finally {
-				try {
-					if (!_iteratorNormalCompletion && _iterator.return) {
-						_iterator.return();
-					}
-				} finally {
-					if (_didIteratorError) {
-						throw _iteratorError;
-					}
-				}
-			}
-
-			return null;
-		}
-	}, {
-		key: "toObject",
-		value: function toObject() {
-			return Object.assign([], this._actions);
-		}
-	}, {
-		key: "clone",
-		value: function clone() {
-			return new ScoreActions(this.toObject());
-		}
-	}]);
-
-	return ScoreActions;
-}();
-
-exports.default = ScoreActions;
-
-/***/ }),
-
-/***/ 167:
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-
-
-Object.defineProperty(exports, "__esModule", {
-	value: true
-});
-
-var _Common = __webpack_require__(0);
-
-var _Common2 = _interopRequireDefault(_Common);
-
-var _Viewer = __webpack_require__(1);
-
-var _Viewer2 = _interopRequireDefault(_Viewer);
-
-function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
-
-var OboModel = _Common2.default.models.OboModel;
-
-
-var questionResultView = function questionResultView(moduleData, questionScore, index) {
-	var questionModel = OboModel.models[questionScore.id];
-	var QuestionComponent = questionModel.getComponentClass();
-
-	return React.createElement(
-		'div',
-		{ key: index, className: questionScore.score === 100 ? 'is-correct' : 'is-not-correct' },
-		React.createElement(
-			'p',
-			null,
-			'Question ' + (index + 1) + ' - ' + (questionScore.score === 100 ? 'Correct:' : 'Incorrect:')
-		),
-		React.createElement(QuestionComponent, { model: questionModel, moduleData: moduleData, showContentOnly: true })
-	);
-};
-
-exports.default = questionResultView;
-
-/***/ }),
-
 /***/ 168:
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-
-
-Object.defineProperty(exports, "__esModule", {
-	value: true
-});
-
-var _Common = __webpack_require__(0);
-
-var _Common2 = _interopRequireDefault(_Common);
-
-var _Viewer = __webpack_require__(1);
-
-var _Viewer2 = _interopRequireDefault(_Viewer);
-
-var _ltiStatus = __webpack_require__(164);
-
-var _ltiStatus2 = _interopRequireDefault(_ltiStatus);
-
-var _viewerComponentReview = __webpack_require__(68);
-
-var _viewerComponentReview2 = _interopRequireDefault(_viewerComponentReview);
-
-var _viewerComponentScoreReport = __webpack_require__(69);
-
-var _viewerComponentScoreReport2 = _interopRequireDefault(_viewerComponentScoreReport);
-
-var _assessmentScoreReport = __webpack_require__(67);
-
-var _assessmentScoreReport2 = _interopRequireDefault(_assessmentScoreReport);
-
-var _viewerComponentQuestionResultView = __webpack_require__(167);
-
-var _viewerComponentQuestionResultView2 = _interopRequireDefault(_viewerComponentQuestionResultView);
-
-function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
-
-var OboModel = _Common2.default.models.OboModel;
-var AssessmentUtil = _Viewer2.default.util.AssessmentUtil;
-
-var Launch = _Common2.default.Launch;
-var NavUtil = _Viewer2.default.util.NavUtil;
-
-var scoreSubmittedView = function scoreSubmittedView(assessment) {
-	var report = new _assessmentScoreReport2.default(assessment.props.model.modelState.rubric.toObject());
-
-	var latestHighestAttemptScoreDetails = AssessmentUtil.getLatestHighestAttemptScoreState(assessment.props.moduleData.assessmentState, assessment.props.model);
-
-	var questionScores = AssessmentUtil.getLastAttemptScoresForModel(assessment.props.moduleData.assessmentState, assessment.props.model);
-	var recentScore = AssessmentUtil.getLastAttemptScoreForModel(assessment.props.moduleData.assessmentState, assessment.props.model);
-	var isAssessmentComplete = function isAssessmentComplete() {
-		return !AssessmentUtil.hasAttemptsRemaining(assessment.props.moduleData.assessmentState, assessment.props.model);
-	};
-	var attemptsRemaining = AssessmentUtil.getAttemptsRemaining(assessment.props.moduleData.assessmentState, assessment.props.model);
-
-	var scoreAction = assessment.getScoreAction();
-	var numCorrect = AssessmentUtil.getNumCorrect(questionScores);
-
-	var assessmentScore = AssessmentUtil.getAssessmentScoreForModel(assessment.props.moduleData.assessmentState, assessment.props.model);
-
-	var onClickResendScore = function onClickResendScore() {
-		AssessmentUtil.resendLTIScore(assessment.props.model);
-	};
-
-	var ltiState = AssessmentUtil.getLTIStateForModel(assessment.props.moduleData.assessmentState, assessment.props.model);
-
-	var assessmentLabel = NavUtil.getNavLabelForModel(assessment.props.moduleData.navState, assessment.props.model);
-
-	var childEl = void 0;
-
-	if (scoreAction.page != null) {
-		var pageModel = OboModel.create(scoreAction.page);
-		pageModel.parent = assessment.props.model; //'@TODO - FIGURE OUT A BETTER WAY TO DO THIS - THIS IS NEEDED TO GET {{VARIABLES}} WORKING')
-		var PageComponent = pageModel.getComponentClass();
-		childEl = React.createElement(PageComponent, { model: pageModel, moduleData: assessment.props.moduleData });
-	} else {
-		childEl = React.createElement(
-			'p',
-			null,
-			scoreAction.message
-		);
-	}
-
-	var externalSystemLabel = assessment.props.moduleData.lti.outcomeServiceHostname;
-
-	var showFullReview = function (reviewType) {
-		switch (reviewType) {
-			case 'always':
-				return true;
-			case 'never':
-				return false;
-			case 'afterAttempts':
-				return isAssessmentComplete();
-		}
-	}(assessment.props.model.modelState.review);
-
-	return React.createElement(
-		'div',
-		{ className: 'score unlock' },
-		React.createElement(
-			'div',
-			{ className: 'results-bar' },
-			React.createElement(
-				'h1',
-				null,
-				assessmentLabel,
-				' - How You Did'
-			),
-			React.createElement(
-				'div',
-				{ className: 'assessment-flex-container' },
-				React.createElement(
-					'div',
-					null,
-					React.createElement(
-						'div',
-						null,
-						'Last Attempt Score'
-					),
-					React.createElement(
-						'div',
-						null,
-						Math.round(recentScore),
-						'%'
-					)
-				),
-				React.createElement(_viewerComponentScoreReport2.default, {
-					retainedScore: latestHighestAttemptScoreDetails.attemptScore,
-					items: report.getTextItems(latestHighestAttemptScoreDetails, AssessmentUtil.getAttemptsRemaining(assessment.props.moduleData.assessmentState, assessment.props.model))
-				}),
-				React.createElement(
-					'div',
-					null,
-					React.createElement(
-						'div',
-						null,
-						'Attempts Remaining'
-					),
-					React.createElement(
-						'div',
-						null,
-						attemptsRemaining
-					)
-				)
-			),
-			React.createElement(_ltiStatus2.default, {
-				ltiState: ltiState,
-				externalSystemLabel: externalSystemLabel,
-				onClickResendScore: onClickResendScore
-			}),
-			function () {
-				switch (ltiState.state.gradebookStatus) {
-					case 'ok_no_outcome_service':
-					case 'ok_null_score_not_sent':
-						return null;
-
-					case 'ok_gradebook_matches_assessment_score':
-						return React.createElement(
-							'span',
-							{ className: 'lti-sync-message is-synced' },
-							'(',
-							'sent to ' + externalSystemLabel + ' ',
-							React.createElement(
-								'span',
-								null,
-								'\u2714'
-							),
-							')'
-						);
-
-					default:
-						return React.createElement(
-							'span',
-							{ className: 'lti-sync-message is-not-synced' },
-							'(',
-							'not sent to ' + externalSystemLabel + ' ',
-							React.createElement(
-								'span',
-								null,
-								'\u2716'
-							),
-							')'
-						);
-				}
-			}
-		),
-		childEl,
-		showFullReview ? React.createElement(_viewerComponentReview2.default, { assessment: assessment }) : React.createElement(
-			'div',
-			{ className: 'review' },
-			React.createElement(
-				'p',
-				{ className: 'number-correct' },
-				'You got ' + numCorrect + ' out of ' + questionScores.length + ' questions correct:'
-			),
-			questionScores.map(function (questionScore, index) {
-				return (0, _viewerComponentQuestionResultView2.default)(assessment.props.moduleData, questionScore, index);
-			})
-		)
-	);
-};
-
-exports.default = scoreSubmittedView;
-
-/***/ }),
-
-/***/ 169:
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -982,13 +1069,37 @@ exports.default = takingTestView;
 
 /***/ }),
 
+/***/ 169:
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+Object.defineProperty(exports, "__esModule", {
+	value: true
+});
+var untestedView = function untestedView(assessment) {
+	var child = assessment.props.model.children.at(0);
+	var Component = child.getComponentClass();
+
+	return React.createElement(
+		"div",
+		{ className: "untested" },
+		React.createElement(Component, { model: child, moduleData: assessment.props.moduleData })
+	);
+};
+
+exports.default = untestedView;
+
+/***/ }),
+
 /***/ 17:
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
 
 
-var isDate = __webpack_require__(102);
+var isDate = __webpack_require__(101);
 
 var MILLISECONDS_IN_HOUR = 3600000;
 var MILLISECONDS_IN_MINUTE = 60000;
@@ -1315,18 +1426,69 @@ module.exports = parse;
 Object.defineProperty(exports, "__esModule", {
 	value: true
 });
-var untestedView = function untestedView(assessment) {
-	var child = assessment.props.model.children.at(0);
-	var Component = child.getComponentClass();
 
-	return React.createElement(
-		"div",
-		{ className: "untested" },
-		React.createElement(Component, { model: child, moduleData: assessment.props.moduleData })
-	);
-};
+var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
 
-exports.default = untestedView;
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+var ScoreActions = function () {
+	function ScoreActions(_actions) {
+		_classCallCheck(this, ScoreActions);
+
+		if (_actions == null) {
+			_actions = [];
+		}
+		this._actions = _actions;
+	}
+
+	_createClass(ScoreActions, [{
+		key: "getActionForScore",
+		value: function getActionForScore(score) {
+			var _iteratorNormalCompletion = true;
+			var _didIteratorError = false;
+			var _iteratorError = undefined;
+
+			try {
+				for (var _iterator = Array.from(this._actions)[Symbol.iterator](), _step; !(_iteratorNormalCompletion = (_step = _iterator.next()).done); _iteratorNormalCompletion = true) {
+					var action = _step.value;
+
+					if (score >= action.from && score <= action.to) {
+						return action;
+					}
+				}
+			} catch (err) {
+				_didIteratorError = true;
+				_iteratorError = err;
+			} finally {
+				try {
+					if (!_iteratorNormalCompletion && _iterator.return) {
+						_iterator.return();
+					}
+				} finally {
+					if (_didIteratorError) {
+						throw _iteratorError;
+					}
+				}
+			}
+
+			return null;
+		}
+	}, {
+		key: "toObject",
+		value: function toObject() {
+			return Object.assign([], this._actions);
+		}
+	}, {
+		key: "clone",
+		value: function clone() {
+			return new ScoreActions(this.toObject());
+		}
+	}]);
+
+	return ScoreActions;
+}();
+
+exports.default = ScoreActions;
 
 /***/ }),
 
@@ -1352,25 +1514,21 @@ var _Viewer = __webpack_require__(1);
 
 var _Viewer2 = _interopRequireDefault(_Viewer);
 
-var _attemptIncompleteDialog = __webpack_require__(163);
+var _attemptIncompleteDialog = __webpack_require__(162);
 
 var _attemptIncompleteDialog2 = _interopRequireDefault(_attemptIncompleteDialog);
 
-var _viewerComponentUntested = __webpack_require__(170);
+var _untested = __webpack_require__(169);
 
-var _viewerComponentUntested2 = _interopRequireDefault(_viewerComponentUntested);
+var _untested2 = _interopRequireDefault(_untested);
 
-var _viewerComponentReview = __webpack_require__(68);
+var _scoreSubmitted = __webpack_require__(166);
 
-var _viewerComponentReview2 = _interopRequireDefault(_viewerComponentReview);
+var _scoreSubmitted2 = _interopRequireDefault(_scoreSubmitted);
 
-var _viewerComponentScoreSubmitted = __webpack_require__(168);
+var _takingTest = __webpack_require__(168);
 
-var _viewerComponentScoreSubmitted2 = _interopRequireDefault(_viewerComponentScoreSubmitted);
-
-var _viewerComponentTakingTest = __webpack_require__(169);
-
-var _viewerComponentTakingTest2 = _interopRequireDefault(_viewerComponentTakingTest);
+var _takingTest2 = _interopRequireDefault(_takingTest);
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
@@ -1516,13 +1674,13 @@ var Assessment = function (_React$Component) {
 			var childEl = function () {
 				switch (_this2.getCurrentStep()) {
 					case 'untested':
-						return (0, _viewerComponentUntested2.default)(_this2);
+						return (0, _untested2.default)(_this2);
 
 					case 'takingTest':
-						return (0, _viewerComponentTakingTest2.default)(_this2);
+						return (0, _takingTest2.default)(_this2);
 
 					case 'scoreSubmitted':
-						return (0, _viewerComponentScoreSubmitted2.default)(_this2);
+						return (0, _scoreSubmitted2.default)(_this2);
 
 					default:
 						return null;
@@ -1604,7 +1762,7 @@ module.exports = differenceInCalendarDays;
 
 var getDayOfYear = __webpack_require__(245);
 var getISOWeek = __webpack_require__(246);
-var getISOYear = __webpack_require__(101);
+var getISOYear = __webpack_require__(100);
 var parse = __webpack_require__(17);
 var isValid = __webpack_require__(247);
 var enLocale = __webpack_require__(251);
@@ -2018,7 +2176,7 @@ module.exports = getISOWeek;
 "use strict";
 
 
-var isDate = __webpack_require__(102);
+var isDate = __webpack_require__(101);
 
 /**
  * @category Common Helpers
@@ -2346,7 +2504,7 @@ module.exports = startOfDay;
 "use strict";
 
 
-var getISOYear = __webpack_require__(101);
+var getISOYear = __webpack_require__(100);
 var startOfISOWeek = __webpack_require__(61);
 
 /**
@@ -2814,7 +2972,7 @@ module.exports = AssessmentRubric;
 /***/ 301:
 /***/ (function(module, exports, __webpack_require__) {
 
-module.exports = __webpack_require__(120);
+module.exports = __webpack_require__(119);
 
 
 /***/ }),
@@ -2854,6 +3012,140 @@ module.exports = startOfISOWeek;
 /***/ }),
 
 /***/ 67:
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+Object.defineProperty(exports, "__esModule", {
+	value: true
+});
+var getModsList = function getModsList(textItemsArray) {
+	var modsList = textItemsArray.map(function (obj, index) {
+		var type = obj.type;
+
+
+		var getSpecialChar = function getSpecialChar(type) {
+			switch (type) {
+				case 'extra-credit':
+					return '+';
+				case 'penalty':
+					return '-';
+				case 'value':
+					return '';
+				case 'total':
+					return '=';
+			}
+		};
+
+		var getSpanTextClass = function getSpanTextClass(type) {
+			switch (type) {
+				case 'penalty':
+					return 'is-type-score-report-penalty';
+				case 'extra-credit':
+					return 'is-type-score-report-extra-credit';
+				default:
+					return '';
+			}
+		};
+
+		var getTextDiv = function getTextDiv() {
+			if (type === 'value') return React.createElement(
+				'div',
+				{ className: 'score-report-text score-report-text-value' },
+				'Passing Reward:'
+			);
+
+			if (type === 'total') return React.createElement(
+				'div',
+				{ className: 'score-report-text score-report-text-total' },
+				obj.text
+			);
+
+			return React.createElement(
+				'div',
+				{ className: 'score-report-text' },
+				React.createElement(
+					'span',
+					{ className: getSpanTextClass(type) },
+					type.charAt(0).toUpperCase() + type.substr(1)
+				),
+				' - ' + obj.text + ':'
+			);
+		};
+
+		var getScoreDiv = function getScoreDiv() {
+			return React.createElement(
+				'div',
+				{ className: 'score-report-score' },
+				React.createElement(
+					'strong',
+					null,
+					getSpecialChar(obj.type),
+					obj.value ? ' ' + obj.value + ' %' : null
+				)
+			);
+		};
+
+		return React.createElement(
+			'li',
+			null,
+			getTextDiv(),
+			getScoreDiv()
+		);
+	});
+
+	return React.createElement(
+		'ul',
+		null,
+		modsList
+	);
+};
+
+var scoreReportView = function scoreReportView(_ref) {
+	var items = _ref.items,
+	    retainedScore = _ref.retainedScore;
+
+	if (typeof retainedScore === 'number') {
+		if (retainedScore === 0) retainedScore = '--';else retainedScore = retainedScore + ' %';
+	}
+
+	var modBreakDown = React.createElement(
+		'div',
+		{ className: 'mod-breakdown' },
+		getModsList(items)
+	);
+
+	return retainedScore ? React.createElement(
+		'div',
+		{ className: 'score-report is-showing-retained-score' },
+		React.createElement(
+			'div',
+			{ className: 'retained-score' },
+			React.createElement(
+				'div',
+				null,
+				'Retained Score'
+			),
+			React.createElement(
+				'h1',
+				null,
+				retainedScore
+			),
+			modBreakDown
+		)
+	) : React.createElement(
+		'div',
+		{ className: 'score-report' },
+		modBreakDown
+	);
+};
+
+exports.default = scoreReportView;
+
+/***/ }),
+
+/***/ 68:
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -3022,298 +3314,6 @@ var AssessmentScoreReport = function () {
 }();
 
 exports.default = AssessmentScoreReport;
-
-/***/ }),
-
-/***/ 68:
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-
-
-Object.defineProperty(exports, "__esModule", {
-	value: true
-});
-
-var _Viewer = __webpack_require__(1);
-
-var _Viewer2 = _interopRequireDefault(_Viewer);
-
-var _Common = __webpack_require__(0);
-
-var _Common2 = _interopRequireDefault(_Common);
-
-var _reviewIcon = __webpack_require__(165);
-
-var _reviewIcon2 = _interopRequireDefault(_reviewIcon);
-
-var _viewerComponentScoreReport = __webpack_require__(69);
-
-var _viewerComponentScoreReport2 = _interopRequireDefault(_viewerComponentScoreReport);
-
-var _assessmentScoreReport = __webpack_require__(67);
-
-var _assessmentScoreReport2 = _interopRequireDefault(_assessmentScoreReport);
-
-var _format = __webpack_require__(244);
-
-var _format2 = _interopRequireDefault(_format);
-
-function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
-
-var AssessmentUtil = _Viewer2.default.util.AssessmentUtil;
-var NavUtil = _Viewer2.default.util.NavUtil;
-var OboModel = _Common2.default.models.OboModel;
-var Button = _Common2.default.components.Button;
-
-
-var assessmentReviewView = function assessmentReviewView(_ref) {
-	var assessment = _ref.assessment;
-
-	var attemptReviewComponents = {};
-
-	var attempts = AssessmentUtil.getAllAttempts(assessment.props.moduleData.assessmentState, assessment.props.model);
-
-	var report = new _assessmentScoreReport2.default(assessment.props.model.modelState.rubric.toObject());
-
-	var attemptReviewComponent = function attemptReviewComponent(attempt, assessment) {
-		var dateString = (0, _format2.default)(new Date(attempt.finishTime), 'M/D/YY [at] h:ma');
-		var numCorrect = AssessmentUtil.getNumCorrect(attempt.questionScores);
-
-		return React.createElement(
-			'div',
-			{ className: 'review' },
-			React.createElement(
-				'div',
-				{ className: 'attempt-header' },
-				React.createElement(
-					'div',
-					{ className: 'attempt-info-container' },
-					React.createElement(_reviewIcon2.default, {
-						height: '50px',
-						width: '50px',
-						css: {
-							transform: 'translateX(-10px)'
-						}
-					}),
-					React.createElement(
-						'div',
-						{ className: 'attempt-info-content-container' },
-						React.createElement(
-							'h4',
-							null,
-							React.createElement(
-								'strong',
-								null,
-								'Attempt ' + attempt.attemptNumber
-							)
-						),
-						React.createElement(
-							'div',
-							{ className: 'attempt-info-content' },
-							React.createElement(
-								'ul',
-								null,
-								React.createElement(
-									'li',
-									null,
-									dateString
-								),
-								React.createElement(
-									'li',
-									null,
-									numCorrect,
-									' out of ',
-									attempt.questionScores.length,
-									' questions correct'
-								)
-							)
-						)
-					)
-				),
-				React.createElement(
-					'div',
-					{ className: 'score-section' },
-					React.createElement(_viewerComponentScoreReport2.default, {
-						items: report.getTextItems(attempt.assessmentScoreDetails, AssessmentUtil.getAttemptsRemaining(assessment.props.moduleData.assessmentState, assessment.props.model))
-					})
-				)
-			),
-			attempt.questionScores.map(function (scoreObj) {
-				var questionModel = OboModel.models[scoreObj.id];
-				var QuestionComponent = questionModel.getComponentClass();
-				return React.createElement(QuestionComponent, {
-					model: questionModel,
-					moduleData: assessment.props.moduleData,
-					mode: 'review'
-				});
-			})
-		);
-	};
-
-	var attemptButtons = attempts.map(function (attempt, index) {
-		return React.createElement(
-			Button,
-			{ onClick: function onClick() {
-					return NavUtil.setContext('assessmentReview:' + attempt.attemptId);
-				} },
-			attempt.attemptNumber
-		);
-	});
-
-	attempts.forEach(function (attempt) {
-		attemptReviewComponents['assessmentReview:' + attempt.attemptId] = attemptReviewComponent(attempt, assessment);
-	});
-
-	var context = assessment.props.moduleData.navState.context;
-	if (context.split(':')[0] !== 'assessmentReview')
-		// show most recent attempt
-		NavUtil.setContext('assessmentReview:' + attempts[attempts.length - 1].attemptId);
-
-	return React.createElement(
-		'div',
-		{ className: 'attempt-review-container' },
-		React.createElement(
-			'div',
-			{ className: 'attempt-button-container' },
-			attemptButtons
-		),
-		attemptReviewComponents[context]
-	);
-};
-
-exports.default = assessmentReviewView;
-
-/***/ }),
-
-/***/ 69:
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-
-
-Object.defineProperty(exports, "__esModule", {
-	value: true
-});
-var getModsList = function getModsList(textItemsArray) {
-	var modsList = textItemsArray.map(function (obj, index) {
-		var type = obj.type;
-
-
-		var getSpecialChar = function getSpecialChar(type) {
-			switch (type) {
-				case 'extra-credit':
-					return '+';
-				case 'penalty':
-					return '-';
-				case 'value':
-					return '';
-				case 'total':
-					return '=';
-			}
-		};
-
-		var getSpanTextClass = function getSpanTextClass(type) {
-			switch (type) {
-				case 'penalty':
-					return 'is-type-score-report-penalty';
-				case 'extra-credit':
-					return 'is-type-score-report-extra-credit';
-				default:
-					return '';
-			}
-		};
-
-		var getTextDiv = function getTextDiv() {
-			if (type === 'value') return React.createElement(
-				'div',
-				{ className: 'score-report-text score-report-text-value' },
-				'Passing Reward:'
-			);
-
-			if (type === 'total') return React.createElement(
-				'div',
-				{ className: 'score-report-text score-report-text-total' },
-				obj.text
-			);
-
-			return React.createElement(
-				'div',
-				{ className: 'score-report-text' },
-				React.createElement(
-					'span',
-					{ className: getSpanTextClass(type) },
-					type.charAt(0).toUpperCase() + type.substr(1)
-				),
-				' - ' + obj.text + ':'
-			);
-		};
-
-		var getScoreDiv = function getScoreDiv() {
-			return React.createElement(
-				'div',
-				{ className: 'score-report-score' },
-				React.createElement(
-					'strong',
-					null,
-					getSpecialChar(obj.type),
-					obj.value ? ' ' + obj.value + ' %' : null
-				)
-			);
-		};
-
-		return React.createElement(
-			'li',
-			null,
-			getTextDiv(),
-			getScoreDiv()
-		);
-	});
-
-	return React.createElement(
-		'ul',
-		null,
-		modsList
-	);
-};
-
-var scoreReportView = function scoreReportView(_ref) {
-	var items = _ref.items,
-	    retainedScore = _ref.retainedScore;
-
-	var modBreakDown = React.createElement(
-		'div',
-		{ className: 'mod-breakdown' },
-		getModsList(items)
-	);
-
-	return retainedScore ? React.createElement(
-		'div',
-		{ className: 'score-report is-showing-retained-score' },
-		React.createElement(
-			'div',
-			{ className: 'retained-score' },
-			React.createElement(
-				'div',
-				null,
-				'Retained Score'
-			),
-			React.createElement(
-				'h1',
-				null,
-				retainedScore,
-				'%'
-			),
-			modBreakDown
-		)
-	) : React.createElement(
-		'div',
-		{ className: 'score-report' },
-		modBreakDown
-	);
-};
-
-exports.default = scoreReportView;
 
 /***/ })
 

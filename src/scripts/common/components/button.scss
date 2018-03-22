@@ -23,7 +23,8 @@
 		min-width: 3.25em;
 		border-radius: 0.2em;
 		padding: 0.6rem 1em;
-		background-color: lighten($color-action, 20% );
+		// button lightened to be close to $color-action with opacity 0.8
+		background-color: lighten($color-action, 9% );
 		// background-color: $color-action;
 		color: $color-bg;
 		border: 1px solid $color-transparent;

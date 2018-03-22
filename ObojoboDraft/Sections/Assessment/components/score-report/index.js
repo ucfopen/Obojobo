@@ -75,6 +75,11 @@ const getModsList = textItemsArray => {
 }
 
 const scoreReportView = ({ items, retainedScore }) => {
+	if (typeof retainedScore === 'number') {
+		if (retainedScore === 0) retainedScore = '--'
+		else retainedScore = retainedScore + ' %'
+	}
+
 	let modBreakDown = (
 		<div className="mod-breakdown">
 			{getModsList(items)}
@@ -86,7 +91,7 @@ const scoreReportView = ({ items, retainedScore }) => {
 				<div className="retained-score">
 					<div>Retained Score</div>
 					<h1>
-						{retainedScore}%
+						{retainedScore}
 					</h1>
 					{modBreakDown}
 				</div>

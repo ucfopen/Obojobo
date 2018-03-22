@@ -1,9 +1,9 @@
 import Viewer from 'Viewer'
 import Common from 'Common'
 
-import ReviewIcon from './review-icon.js'
-import ScoreReportView from './viewer-component-score-report'
-import ScoreReport from './assessment-score-report'
+import ReviewIcon from '../review-icon'
+import ScoreReportView from '../score-report'
+import ScoreReport from '../../post-assessment/assessment-score-report'
 
 import formatDate from 'date-fns/format'
 
@@ -23,7 +23,7 @@ const assessmentReviewView = ({ assessment }) => {
 	const report = new ScoreReport(assessment.props.model.modelState.rubric.toObject())
 
 	let attemptReviewComponent = (attempt, assessment) => {
-		let dateString = formatDate(new Date(attempt.finishTime), 'M/D/YY [at] h:ma')
+		let dateString = formatDate(new Date(attempt.finishTime), 'M/D/YY [at] h:mma')
 		let numCorrect = AssessmentUtil.getNumCorrect(attempt.questionScores)
 
 		return (

@@ -75,7 +75,7 @@ module.exports = Common;
 
 /***/ }),
 
-/***/ 115:
+/***/ 114:
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -89,11 +89,11 @@ var _selectionHandler = __webpack_require__(66);
 
 var _selectionHandler2 = _interopRequireDefault(_selectionHandler);
 
-var _adapter = __webpack_require__(154);
+var _adapter = __webpack_require__(153);
 
 var _adapter2 = _interopRequireDefault(_adapter);
 
-var _viewerComponent = __webpack_require__(155);
+var _viewerComponent = __webpack_require__(154);
 
 var _viewerComponent2 = _interopRequireDefault(_viewerComponent);
 
@@ -108,7 +108,7 @@ _Common2.default.Store.registerModel('ObojoboDraft.Chunks.Table', {
 
 /***/ }),
 
-/***/ 154:
+/***/ 153:
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -211,7 +211,7 @@ function __guard__(value, transform) {
 
 /***/ }),
 
-/***/ 155:
+/***/ 154:
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -378,7 +378,7 @@ function __range__(left, right, inclusive) {
 /***/ 296:
 /***/ (function(module, exports, __webpack_require__) {
 
-module.exports = __webpack_require__(115);
+module.exports = __webpack_require__(114);
 
 
 /***/ }),

@@ -75,7 +75,7 @@ module.exports = Common;
 
 /***/ }),
 
-/***/ 106:
+/***/ 105:
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -85,15 +85,15 @@ var _Common = __webpack_require__(0);
 
 var _Common2 = _interopRequireDefault(_Common);
 
-var _selectionHandler = __webpack_require__(131);
+var _selectionHandler = __webpack_require__(130);
 
 var _selectionHandler2 = _interopRequireDefault(_selectionHandler);
 
-var _adapter = __webpack_require__(129);
+var _adapter = __webpack_require__(128);
 
 var _adapter2 = _interopRequireDefault(_adapter);
 
-var _viewerComponent = __webpack_require__(132);
+var _viewerComponent = __webpack_require__(131);
 
 var _viewerComponent2 = _interopRequireDefault(_viewerComponent);
 
@@ -108,7 +108,7 @@ _Common2.default.Store.registerModel('ObojoboDraft.Chunks.Figure', {
 
 /***/ }),
 
-/***/ 129:
+/***/ 128:
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -201,7 +201,7 @@ function __guard__(value, transform) {
 
 /***/ }),
 
-/***/ 130:
+/***/ 129:
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -278,7 +278,7 @@ exports.default = Image;
 
 /***/ }),
 
-/***/ 131:
+/***/ 130:
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -328,7 +328,7 @@ exports.default = SelectionHandler = function (_TextGroupSelectionHa) {
 
 /***/ }),
 
-/***/ 132:
+/***/ 131:
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -342,7 +342,7 @@ var _createClass = function () { function defineProperties(target, props) { for 
 
 __webpack_require__(262);
 
-var _image = __webpack_require__(130);
+var _image = __webpack_require__(129);
 
 var _image2 = _interopRequireDefault(_image);
 
@@ -432,7 +432,7 @@ module.exports = "data:image/svg+xml,%3Csvg id='Layer_1' data-name='Layer 1' xml
 /***/ 286:
 /***/ (function(module, exports, __webpack_require__) {
 
-module.exports = __webpack_require__(106);
+module.exports = __webpack_require__(105);
 
 
 /***/ })

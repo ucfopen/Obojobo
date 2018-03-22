@@ -3,20 +3,7 @@
 	&.is-showing-retained-score {
 		ul {
 			border-top: 1px solid LightGray;
-
-			li {
-				&:first-child {
-					margin-top: 5px
-				}
-
-				&:last-child {
-					margin-top: 5px;
-					padding-top: 4px;
-					border-top: 1px solid LightGray;
-				}
-			}
 		}
-		
 	}
 
 	&:not(.is-showing-retained-score) {
@@ -40,6 +27,18 @@
 	ul {
 		padding: 0;
 		list-style-type: none;
+	}
+
+	li {
+		&:first-child:not(:only-child) {
+			margin-top: 5px
+		}
+
+		&:last-child:not(:only-child) {
+			margin-top: 5px;
+			padding-top: 4px;
+			border-top: 1px solid LightGray;
+		}
 	}
 
 	.score-report-text {

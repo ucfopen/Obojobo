@@ -75,7 +75,7 @@ module.exports = Common;
 
 /***/ }),
 
-/***/ 114:
+/***/ 113:
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -85,11 +85,11 @@ var _Common = __webpack_require__(0);
 
 var _Common2 = _interopRequireDefault(_Common);
 
-var _adapter = __webpack_require__(152);
+var _adapter = __webpack_require__(151);
 
 var _adapter2 = _interopRequireDefault(_adapter);
 
-var _viewerComponent = __webpack_require__(153);
+var _viewerComponent = __webpack_require__(152);
 
 var _viewerComponent2 = _interopRequireDefault(_viewerComponent);
 
@@ -106,7 +106,7 @@ _Common2.default.Store.registerModel('ObojoboDraft.Chunks.QuestionBank', {
 
 /***/ }),
 
-/***/ 152:
+/***/ 151:
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -187,7 +187,7 @@ function __guard__(value, transform) {
 
 /***/ }),
 
-/***/ 153:
+/***/ 152:
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -262,7 +262,7 @@ exports.default = QuestionBank;
 /***/ 295:
 /***/ (function(module, exports, __webpack_require__) {
 
-module.exports = __webpack_require__(114);
+module.exports = __webpack_require__(113);
 
 
 /***/ })

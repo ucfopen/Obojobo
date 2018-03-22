@@ -7,10 +7,10 @@ const Launch = Common.Launch
 const NavUtil = Viewer.util.NavUtil
 
 import LTIStatus from './lti-status'
-import FullReview from './viewer-component-review'
-import ScoreReportView from './viewer-component-score-report'
-import ScoreReport from './assessment-score-report'
-import questionResultView from './viewer-component-question-result-view'
+import FullReview from '../full-review'
+import ScoreReportView from '../score-report'
+import ScoreReport from '../../post-assessment/assessment-score-report'
+import basicReview from '../basic-review'
 
 const scoreSubmittedView = assessment => {
 	const report = new ScoreReport(assessment.props.model.modelState.rubric.toObject())
@@ -125,6 +125,7 @@ const scoreSubmittedView = assessment => {
 					ltiState={ltiState}
 					externalSystemLabel={externalSystemLabel}
 					onClickResendScore={onClickResendScore}
+					assessmentScore={latestHighestAttemptScoreDetails.attemptScore}
 				/>
 				{() => {
 					switch (ltiState.state.gradebookStatus) {
@@ -156,7 +157,7 @@ const scoreSubmittedView = assessment => {
 				: <div className="review">
 						<p className="number-correct">{`You got ${numCorrect} out of ${questionScores.length} questions correct:`}</p>
 						{questionScores.map((questionScore, index) =>
-							questionResultView(assessment.props.moduleData, questionScore, index)
+							basicReview(assessment.props.moduleData, questionScore, index)
 						)}
 					</div>}
 		</div>

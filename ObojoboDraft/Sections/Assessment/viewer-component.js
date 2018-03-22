@@ -12,12 +12,11 @@ let { ModalUtil } = Common.util
 let { AssessmentUtil } = Viewer.util
 let { NavUtil } = Viewer.util
 
-import AttemptIncompleteDialog from './attempt-incomplete-dialog'
+import AttemptIncompleteDialog from './components/attempt-incomplete-dialog'
 
-import untestedView from './viewer-component-untested'
-import assessmentReviewView from './viewer-component-review'
-import scoreSubmittedView from './viewer-component-score-submitted'
-import takingTestView from './viewer-component-taking-test'
+import untestedView from './components/untested'
+import scoreSubmittedView from './components/score-submitted'
+import takingTestView from './components/taking-test'
 
 export default class Assessment extends React.Component {
 	constructor() {

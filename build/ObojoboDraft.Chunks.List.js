@@ -75,7 +75,7 @@ module.exports = Common;
 
 /***/ }),
 
-/***/ 110:
+/***/ 109:
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -85,11 +85,11 @@ var _Common = __webpack_require__(0);
 
 var _Common2 = _interopRequireDefault(_Common);
 
-var _adapter = __webpack_require__(139);
+var _adapter = __webpack_require__(138);
 
 var _adapter2 = _interopRequireDefault(_adapter);
 
-var _viewerComponent = __webpack_require__(140);
+var _viewerComponent = __webpack_require__(139);
 
 var _viewerComponent2 = _interopRequireDefault(_viewerComponent);
 
@@ -106,7 +106,7 @@ _Common2.default.Store.registerModel('ObojoboDraft.Chunks.List', {
 
 /***/ }),
 
-/***/ 139:
+/***/ 138:
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -190,7 +190,7 @@ function __guard__(value, transform) {
 
 /***/ }),
 
-/***/ 140:
+/***/ 139:
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -425,7 +425,7 @@ function __guard__(value, transform) {
 /***/ 290:
 /***/ (function(module, exports, __webpack_require__) {
 
-module.exports = __webpack_require__(110);
+module.exports = __webpack_require__(109);
 
 
 /***/ }),

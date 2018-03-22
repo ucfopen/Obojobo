@@ -1,4 +1,4 @@
-import AssessmentScoreReport from '../../../../ObojoboDraft/Sections/Assessment/assessment-score-report'
+import AssessmentScoreReport from '../../../../ObojoboDraft/Sections/Assessment/post-assessment/assessment-score-report'
 
 describe('AssessmentScoreReport', () => {
 	// beforeEach(() => {

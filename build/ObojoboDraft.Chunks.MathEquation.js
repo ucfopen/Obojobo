@@ -75,7 +75,7 @@ module.exports = Common;
 
 /***/ }),
 
-/***/ 112:
+/***/ 111:
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -85,11 +85,11 @@ var _Common = __webpack_require__(0);
 
 var _Common2 = _interopRequireDefault(_Common);
 
-var _adapter = __webpack_require__(147);
+var _adapter = __webpack_require__(146);
 
 var _adapter2 = _interopRequireDefault(_adapter);
 
-var _viewerComponent = __webpack_require__(148);
+var _viewerComponent = __webpack_require__(147);
 
 var _viewerComponent2 = _interopRequireDefault(_viewerComponent);
 
@@ -107,7 +107,7 @@ _Common2.default.Store.registerModel('ObojoboDraft.Chunks.MathEquation', {
 
 /***/ }),
 
-/***/ 147:
+/***/ 146:
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -165,7 +165,7 @@ function __guard__(value, transform) {
 
 /***/ }),
 
-/***/ 148:
+/***/ 147:
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -278,7 +278,7 @@ exports.default = MathEquation;
 /***/ 293:
 /***/ (function(module, exports, __webpack_require__) {
 
-module.exports = __webpack_require__(112);
+module.exports = __webpack_require__(111);
 
 
 /***/ }),

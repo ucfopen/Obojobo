@@ -1,4 +1,4 @@
-import './lti-status.scss'
+import './index.scss'
 
 import Common from 'Common'
 import Viewer from 'Viewer'
@@ -51,13 +51,12 @@ export default class LTIStatus extends React.Component {
 				<p>
 					{`Don’t worry - your score is safely recorded here. We just weren’t able to send it to ${systemLabel}. Click the button below to resend your score:`}
 				</p>
-				{this.props.ltiState.errorCount === 0 ||
-				ltiState.networkState !== LTINetworkStates.IDLE ? null : (
-					<p>
-						<strong>Sorry - That didn't work.</strong>
-						{` Most likely the connection to ${systemLabel} has expired and just needs to be refreshed. Please close this tab or window, reopen this module from ${systemLabel}, return to this page and then resend your score.`}
-					</p>
-				)}
+				{this.props.ltiState.errorCount === 0 || ltiState.networkState !== LTINetworkStates.IDLE
+					? null
+					: <p>
+							<strong>Sorry - That didn't work.</strong>
+							{` Most likely the connection to ${systemLabel} has expired and just needs to be refreshed. Please close this tab or window, reopen this module from ${systemLabel}, return to this page and then resend your score.`}
+						</p>}
 				{(() => {
 					switch (ltiState.networkState) {
 						case LTINetworkStates.AWAITING_SEND_ASSESSMENT_SCORE_RESPONSE:
