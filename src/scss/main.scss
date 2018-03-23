@@ -5,6 +5,7 @@ html {
 	height: 100%;
 	width: 100%;
 	overflow: hidden;
+	background: $color-bg2;
 	// -webkit-overflow-scrolling: touch;
 }
 
@@ -40,6 +41,81 @@ body {
 
 	.root {
 		height: 100%;
+	}
+}
+
+#viewer-app-loading {
+	background: $color-bg;
+	box-sizing: border-box;
+	width: 14em;
+	min-height: 7em;
+	position: fixed;
+	left: 50%;
+	top: 30%;
+	text-align: center;
+	transform: translate(-50%,-50%);
+	font-family: $font-default;
+	border-radius: 0.25em;
+	border-bottom: 1px solid $color-shadow;
+	padding-top: 3em;
+	padding-bottom: 2em;
+	padding-left: 1em;
+	padding-right: 1em;
+
+	> svg
+	{
+		width: 100%;
+		height: 0.7em;
+		opacity: 0.5;
+		position: absolute;
+		bottom: 0.5em;
+		left: 50%;
+		transform: translate(-50%);
+		opacity: 0.2;
+	}
+
+	> span
+	{
+		color: $color-text-minor;
+		font-size: 0.7em;
+	}
+
+	> .loading-label
+	{
+		display: block;
+	}
+
+	> .draft-title
+	{
+		display: block;
+		font-weight: bold;
+	}
+
+	> .throbber
+	{
+		@keyframes rotating {
+			from {
+				transform: translate(-50%, 0) rotate(0deg);
+			}
+			to {
+				transform: translate(-50%, 0) rotate(360deg);
+			}
+		}
+
+		width: 1em;
+		height: 1em;
+		display: inline-block;
+		position: absolute;
+		left: 50%;
+		top: 1.25em;
+		opacity: 0.3;
+		animation: rotating 1.5s linear infinite;
+
+		> svg
+		{
+			width: 1em;
+			height: 1em;
+		}
 	}
 }
 

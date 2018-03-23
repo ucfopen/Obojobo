@@ -83,10 +83,8 @@ describe('ViewerApp', () => {
 		Dispatcher.off('viewer:loaded')
 	})
 
-	test('ViewerApp renders correctly before and after fetching draft', () => {
-		expect(viewerEl.find('.is-loading').length).toBe(1)
-		viewerEl.update()
-		expect(viewerEl.find('.is-loading').length).toBe(0)
+	test.only('ViewerApp clears loading element', () => {
+		expect(window.document.getElementById('viewer-app-loading')).toBe(null)
 	})
 
 	test("Navigation doesn't change when navigation is locked but does when unlocked", () => {
