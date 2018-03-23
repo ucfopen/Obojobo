@@ -6,8 +6,7 @@ import {
   chooseQuestionsSequentially,
   createChosenQuestionTree,
   getNodeQuestions,
-  getSendToClientPromises,
-  updateAssessmentProperties
+  getSendToClientPromises
 } from '../../server/attempt-start.js';
 import testJson from '../../test-object.json'
 
@@ -17,6 +16,15 @@ const QUESTION_BANK_NODE_TYPE = 'ObojoboDraft.Chunks.QuestionBank'
 const QUESTION_NODE_TYPE = 'ObojoboDraft.Chunks.Question'
 
 jest.mock('../../../../db')
+jest.mock('../../../../config', () => {
+  return {
+    lti: {
+      keys: {
+        testkey: 'testsecret'
+      }
+    }
+  }
+})
 
 describe('start attempt route', () => {
   const initMockUsedQuestionMap = map => {
@@ -89,7 +97,7 @@ describe('start attempt route', () => {
     const mockUsedQuestionMap = new Map()
     initMockUsedQuestionMap(mockUsedQuestionMap)
     const mockAssessmentProperties = {
-      node: { draftTree: mockDraft },
+      oboNode: { draftTree: mockDraft },
       childrenMap: mockUsedQuestionMap
     }
 
@@ -128,7 +136,7 @@ describe('start attempt route', () => {
     mockUsedQuestionMap.set('qb2.q2', 1)
 
     const mockAssessmentProperties = {
-      node: assessmentNode,
+      oboNode: assessmentNode,
       childrenMap: mockUsedQuestionMap
     }
 
@@ -161,5 +169,18 @@ describe('start attempt route', () => {
       expect(q.node.type).toBe(QUESTION_NODE_TYPE)
       expect(expectedQuestionIds.includes(q.node.id)).toBeTruthy()
     }
+  })
+
+  it('can get promises that could be the result of yelling an assessment:sendToAssessment event', () => {
+    const mockDraft = new Draft(testJson)
+    const assessmentNode = mockDraft.getChildNodeById('assessment')
+    const assessmentQbTree = assessmentNode.children[1].toObject()
+    const mockAttemptState = {
+      questions: getNodeQuestions(assessmentQbTree, assessmentNode, [])
+    }
+
+    // TODO: No promises should be returned in this case, however there may be instances
+    // where there are.
+    expect(getSendToClientPromises(mockAttemptState, {}, {})).toEqual([])
   })
 })
