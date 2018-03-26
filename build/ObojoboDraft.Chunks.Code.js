@@ -63,7 +63,7 @@
 /******/ 	__webpack_require__.p = "build/";
 /******/
 /******/ 	// Load entry module and return exports
-/******/ 	return __webpack_require__(__webpack_require__.s = 285);
+/******/ 	return __webpack_require__(__webpack_require__.s = 287);
 /******/ })
 /************************************************************************/
 /******/ ({
@@ -75,7 +75,7 @@ module.exports = Common;
 
 /***/ }),
 
-/***/ 104:
+/***/ 106:
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -85,7 +85,7 @@ var _Common = __webpack_require__(0);
 
 var _Common2 = _interopRequireDefault(_Common);
 
-var _viewerComponent = __webpack_require__(127);
+var _viewerComponent = __webpack_require__(129);
 
 var _viewerComponent2 = _interopRequireDefault(_viewerComponent);
 
@@ -104,7 +104,7 @@ _Common2.default.Store.registerModel('ObojoboDraft.Chunks.Code', {
 
 /***/ }),
 
-/***/ 127:
+/***/ 129:
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -116,7 +116,7 @@ Object.defineProperty(exports, "__esModule", {
 
 var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
 
-__webpack_require__(261);
+__webpack_require__(263);
 
 var _Common = __webpack_require__(0);
 
@@ -184,17 +184,17 @@ exports.default = Code;
 
 /***/ }),
 
-/***/ 261:
+/***/ 263:
 /***/ (function(module, exports) {
 
 // removed by extract-text-webpack-plugin
 
 /***/ }),
 
-/***/ 285:
+/***/ 287:
 /***/ (function(module, exports, __webpack_require__) {
 
-module.exports = __webpack_require__(104);
+module.exports = __webpack_require__(106);
 
 
 /***/ })

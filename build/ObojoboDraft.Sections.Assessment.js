@@ -63,7 +63,7 @@
 /******/ 	__webpack_require__.p = "build/";
 /******/
 /******/ 	// Load entry module and return exports
-/******/ 	return __webpack_require__(__webpack_require__.s = 301);
+/******/ 	return __webpack_require__(__webpack_require__.s = 303);
 /******/ })
 /************************************************************************/
 /******/ ({
@@ -82,7 +82,7 @@ module.exports = Viewer;
 
 /***/ }),
 
-/***/ 100:
+/***/ 102:
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -136,7 +136,7 @@ module.exports = getISOYear;
 
 /***/ }),
 
-/***/ 101:
+/***/ 103:
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -165,7 +165,7 @@ module.exports = isDate;
 
 /***/ }),
 
-/***/ 119:
+/***/ 121:
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -179,11 +179,11 @@ var _Viewer = __webpack_require__(1);
 
 var _Viewer2 = _interopRequireDefault(_Viewer);
 
-var _adapter = __webpack_require__(161);
+var _adapter = __webpack_require__(163);
 
 var _adapter2 = _interopRequireDefault(_adapter);
 
-var _viewerComponent = __webpack_require__(171);
+var _viewerComponent = __webpack_require__(173);
 
 var _viewerComponent2 = _interopRequireDefault(_viewerComponent);
 
@@ -243,7 +243,7 @@ _Common2.default.Store.registerModel('ObojoboDraft.Sections.Assessment', {
 
 /***/ }),
 
-/***/ 161:
+/***/ 163:
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -253,11 +253,11 @@ Object.defineProperty(exports, "__esModule", {
 	value: true
 });
 
-var _scoreActions = __webpack_require__(170);
+var _scoreActions = __webpack_require__(172);
 
 var _scoreActions2 = _interopRequireDefault(_scoreActions);
 
-var _assessmentRubric = __webpack_require__(257);
+var _assessmentRubric = __webpack_require__(259);
 
 var _assessmentRubric2 = _interopRequireDefault(_assessmentRubric);
 
@@ -311,7 +311,7 @@ exports.default = Adapter;
 
 /***/ }),
 
-/***/ 162:
+/***/ 164:
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -393,7 +393,7 @@ exports.default = AttemptIncompleteDialog;
 
 /***/ }),
 
-/***/ 163:
+/***/ 165:
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -436,7 +436,7 @@ exports.default = basicReview;
 
 /***/ }),
 
-/***/ 164:
+/***/ 166:
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -454,7 +454,7 @@ var _Common = __webpack_require__(0);
 
 var _Common2 = _interopRequireDefault(_Common);
 
-var _reviewIcon = __webpack_require__(165);
+var _reviewIcon = __webpack_require__(167);
 
 var _reviewIcon2 = _interopRequireDefault(_reviewIcon);
 
@@ -466,7 +466,7 @@ var _assessmentScoreReport = __webpack_require__(68);
 
 var _assessmentScoreReport2 = _interopRequireDefault(_assessmentScoreReport);
 
-var _format = __webpack_require__(244);
+var _format = __webpack_require__(246);
 
 var _format2 = _interopRequireDefault(_format);
 
@@ -597,7 +597,7 @@ exports.default = assessmentReviewView;
 
 /***/ }),
 
-/***/ 165:
+/***/ 167:
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -666,7 +666,7 @@ exports.default = function (props) {
 
 /***/ }),
 
-/***/ 166:
+/***/ 168:
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -684,11 +684,11 @@ var _Viewer = __webpack_require__(1);
 
 var _Viewer2 = _interopRequireDefault(_Viewer);
 
-var _ltiStatus = __webpack_require__(167);
+var _ltiStatus = __webpack_require__(169);
 
 var _ltiStatus2 = _interopRequireDefault(_ltiStatus);
 
-var _fullReview = __webpack_require__(164);
+var _fullReview = __webpack_require__(166);
 
 var _fullReview2 = _interopRequireDefault(_fullReview);
 
@@ -700,7 +700,7 @@ var _assessmentScoreReport = __webpack_require__(68);
 
 var _assessmentScoreReport2 = _interopRequireDefault(_assessmentScoreReport);
 
-var _basicReview = __webpack_require__(163);
+var _basicReview = __webpack_require__(165);
 
 var _basicReview2 = _interopRequireDefault(_basicReview);
 
@@ -876,7 +876,7 @@ exports.default = scoreSubmittedView;
 
 /***/ }),
 
-/***/ 167:
+/***/ 169:
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -888,7 +888,7 @@ Object.defineProperty(exports, "__esModule", {
 
 var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
 
-__webpack_require__(279);
+__webpack_require__(281);
 
 var _Common = __webpack_require__(0);
 
@@ -1016,90 +1016,13 @@ exports.default = LTIStatus;
 
 /***/ }),
 
-/***/ 168:
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-
-
-Object.defineProperty(exports, "__esModule", {
-	value: true
-});
-
-var _Common = __webpack_require__(0);
-
-var _Common2 = _interopRequireDefault(_Common);
-
-var _Viewer = __webpack_require__(1);
-
-var _Viewer2 = _interopRequireDefault(_Viewer);
-
-function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
-
-var Button = _Common2.default.components.Button;
-var AssessmentUtil = _Viewer2.default.util.AssessmentUtil;
-
-
-var takingTestView = function takingTestView(assessment) {
-	var moduleData = assessment.props.moduleData;
-	var recentScore = AssessmentUtil.getLastAttemptScoreForModel(assessment.props.moduleData.assessmentState, assessment.props.model);
-	var child = assessment.props.model.children.at(1);
-	var Component = child.getComponentClass();
-	return React.createElement(
-		'div',
-		{ className: 'test' },
-		React.createElement(Component, {
-			className: 'untested',
-			model: child,
-			moduleData: moduleData,
-			showScore: recentScore !== null
-		}),
-		React.createElement(
-			'div',
-			{ className: 'submit-button' },
-			React.createElement(Button, {
-				onClick: assessment.onClickSubmit.bind(assessment),
-				value: assessment.isAttemptComplete() ? 'Submit' : 'Submit (Not all questions have been answered)'
-			})
-		)
-	);
-};
-
-exports.default = takingTestView;
-
-/***/ }),
-
-/***/ 169:
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-
-
-Object.defineProperty(exports, "__esModule", {
-	value: true
-});
-var untestedView = function untestedView(assessment) {
-	var child = assessment.props.model.children.at(0);
-	var Component = child.getComponentClass();
-
-	return React.createElement(
-		"div",
-		{ className: "untested" },
-		React.createElement(Component, { model: child, moduleData: assessment.props.moduleData })
-	);
-};
-
-exports.default = untestedView;
-
-/***/ }),
-
 /***/ 17:
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
 
 
-var isDate = __webpack_require__(101);
+var isDate = __webpack_require__(103);
 
 var MILLISECONDS_IN_HOUR = 3600000;
 var MILLISECONDS_IN_MINUTE = 60000;
@@ -1427,6 +1350,83 @@ Object.defineProperty(exports, "__esModule", {
 	value: true
 });
 
+var _Common = __webpack_require__(0);
+
+var _Common2 = _interopRequireDefault(_Common);
+
+var _Viewer = __webpack_require__(1);
+
+var _Viewer2 = _interopRequireDefault(_Viewer);
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+var Button = _Common2.default.components.Button;
+var AssessmentUtil = _Viewer2.default.util.AssessmentUtil;
+
+
+var takingTestView = function takingTestView(assessment) {
+	var moduleData = assessment.props.moduleData;
+	var recentScore = AssessmentUtil.getLastAttemptScoreForModel(assessment.props.moduleData.assessmentState, assessment.props.model);
+	var child = assessment.props.model.children.at(1);
+	var Component = child.getComponentClass();
+	return React.createElement(
+		'div',
+		{ className: 'test' },
+		React.createElement(Component, {
+			className: 'untested',
+			model: child,
+			moduleData: moduleData,
+			showScore: recentScore !== null
+		}),
+		React.createElement(
+			'div',
+			{ className: 'submit-button' },
+			React.createElement(Button, {
+				onClick: assessment.onClickSubmit.bind(assessment),
+				value: assessment.isAttemptComplete() ? 'Submit' : 'Submit (Not all questions have been answered)'
+			})
+		)
+	);
+};
+
+exports.default = takingTestView;
+
+/***/ }),
+
+/***/ 171:
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+Object.defineProperty(exports, "__esModule", {
+	value: true
+});
+var untestedView = function untestedView(assessment) {
+	var child = assessment.props.model.children.at(0);
+	var Component = child.getComponentClass();
+
+	return React.createElement(
+		"div",
+		{ className: "untested" },
+		React.createElement(Component, { model: child, moduleData: assessment.props.moduleData })
+	);
+};
+
+exports.default = untestedView;
+
+/***/ }),
+
+/***/ 172:
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+Object.defineProperty(exports, "__esModule", {
+	value: true
+});
+
 var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
 
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
@@ -1492,7 +1492,7 @@ exports.default = ScoreActions;
 
 /***/ }),
 
-/***/ 171:
+/***/ 173:
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -1504,7 +1504,7 @@ Object.defineProperty(exports, "__esModule", {
 
 var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
 
-__webpack_require__(280);
+__webpack_require__(282);
 
 var _Common = __webpack_require__(0);
 
@@ -1514,19 +1514,19 @@ var _Viewer = __webpack_require__(1);
 
 var _Viewer2 = _interopRequireDefault(_Viewer);
 
-var _attemptIncompleteDialog = __webpack_require__(162);
+var _attemptIncompleteDialog = __webpack_require__(164);
 
 var _attemptIncompleteDialog2 = _interopRequireDefault(_attemptIncompleteDialog);
 
-var _untested = __webpack_require__(169);
+var _untested = __webpack_require__(171);
 
 var _untested2 = _interopRequireDefault(_untested);
 
-var _scoreSubmitted = __webpack_require__(166);
+var _scoreSubmitted = __webpack_require__(168);
 
 var _scoreSubmitted2 = _interopRequireDefault(_scoreSubmitted);
 
-var _takingTest = __webpack_require__(168);
+var _takingTest = __webpack_require__(170);
 
 var _takingTest2 = _interopRequireDefault(_takingTest);
 
@@ -1706,13 +1706,13 @@ exports.default = Assessment;
 
 /***/ }),
 
-/***/ 243:
+/***/ 245:
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
 
 
-var startOfDay = __webpack_require__(252);
+var startOfDay = __webpack_require__(254);
 
 var MILLISECONDS_IN_MINUTE = 60000;
 var MILLISECONDS_IN_DAY = 86400000;
@@ -1754,18 +1754,18 @@ module.exports = differenceInCalendarDays;
 
 /***/ }),
 
-/***/ 244:
+/***/ 246:
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
 
 
-var getDayOfYear = __webpack_require__(245);
-var getISOWeek = __webpack_require__(246);
-var getISOYear = __webpack_require__(100);
+var getDayOfYear = __webpack_require__(247);
+var getISOWeek = __webpack_require__(248);
+var getISOYear = __webpack_require__(102);
 var parse = __webpack_require__(17);
-var isValid = __webpack_require__(247);
-var enLocale = __webpack_require__(251);
+var isValid = __webpack_require__(249);
+var enLocale = __webpack_require__(253);
 
 /**
  * @category Common Helpers
@@ -2091,15 +2091,15 @@ module.exports = format;
 
 /***/ }),
 
-/***/ 245:
+/***/ 247:
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
 
 
 var parse = __webpack_require__(17);
-var startOfYear = __webpack_require__(255);
-var differenceInCalendarDays = __webpack_require__(243);
+var startOfYear = __webpack_require__(257);
+var differenceInCalendarDays = __webpack_require__(245);
 
 /**
  * @category Day Helpers
@@ -2127,7 +2127,7 @@ module.exports = getDayOfYear;
 
 /***/ }),
 
-/***/ 246:
+/***/ 248:
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -2135,7 +2135,7 @@ module.exports = getDayOfYear;
 
 var parse = __webpack_require__(17);
 var startOfISOWeek = __webpack_require__(61);
-var startOfISOYear = __webpack_require__(253);
+var startOfISOYear = __webpack_require__(255);
 
 var MILLISECONDS_IN_WEEK = 604800000;
 
@@ -2170,13 +2170,13 @@ module.exports = getISOWeek;
 
 /***/ }),
 
-/***/ 247:
+/***/ 249:
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
 
 
-var isDate = __webpack_require__(101);
+var isDate = __webpack_require__(103);
 
 /**
  * @category Common Helpers
@@ -2214,7 +2214,7 @@ module.exports = isValid;
 
 /***/ }),
 
-/***/ 248:
+/***/ 250:
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -2240,7 +2240,7 @@ module.exports = buildFormattingTokensRegExp;
 
 /***/ }),
 
-/***/ 249:
+/***/ 251:
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -2348,13 +2348,13 @@ module.exports = buildDistanceInWordsLocale;
 
 /***/ }),
 
-/***/ 250:
+/***/ 252:
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
 
 
-var buildFormattingTokensRegExp = __webpack_require__(248);
+var buildFormattingTokensRegExp = __webpack_require__(250);
 
 function buildFormatLocale() {
   // Note: in English, the names of days of the week and months are capitalized.
@@ -2444,14 +2444,14 @@ module.exports = buildFormatLocale;
 
 /***/ }),
 
-/***/ 251:
+/***/ 253:
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
 
 
-var buildDistanceInWordsLocale = __webpack_require__(249);
-var buildFormatLocale = __webpack_require__(250);
+var buildDistanceInWordsLocale = __webpack_require__(251);
+var buildFormatLocale = __webpack_require__(252);
 
 /**
  * @category Locales
@@ -2464,7 +2464,7 @@ module.exports = {
 
 /***/ }),
 
-/***/ 252:
+/***/ 254:
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -2498,13 +2498,13 @@ module.exports = startOfDay;
 
 /***/ }),
 
-/***/ 253:
+/***/ 255:
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
 
 
-var getISOYear = __webpack_require__(100);
+var getISOYear = __webpack_require__(102);
 var startOfISOWeek = __webpack_require__(61);
 
 /**
@@ -2539,7 +2539,7 @@ module.exports = startOfISOYear;
 
 /***/ }),
 
-/***/ 254:
+/***/ 256:
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -2586,7 +2586,7 @@ module.exports = startOfWeek;
 
 /***/ }),
 
-/***/ 255:
+/***/ 257:
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -2622,7 +2622,7 @@ module.exports = startOfYear;
 
 /***/ }),
 
-/***/ 257:
+/***/ 259:
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -2955,24 +2955,24 @@ module.exports = AssessmentRubric;
 
 /***/ }),
 
-/***/ 279:
+/***/ 281:
 /***/ (function(module, exports) {
 
 // removed by extract-text-webpack-plugin
 
 /***/ }),
 
-/***/ 280:
+/***/ 282:
 /***/ (function(module, exports) {
 
 // removed by extract-text-webpack-plugin
 
 /***/ }),
 
-/***/ 301:
+/***/ 303:
 /***/ (function(module, exports, __webpack_require__) {
 
-module.exports = __webpack_require__(119);
+module.exports = __webpack_require__(121);
 
 
 /***/ }),
@@ -2983,7 +2983,7 @@ module.exports = __webpack_require__(119);
 "use strict";
 
 
-var startOfWeek = __webpack_require__(254);
+var startOfWeek = __webpack_require__(256);
 
 /**
  * @category ISO Week Helpers
@@ -3020,102 +3020,110 @@ module.exports = startOfISOWeek;
 Object.defineProperty(exports, "__esModule", {
 	value: true
 });
-var getModsList = function getModsList(textItemsArray) {
-	var modsList = textItemsArray.map(function (obj, index) {
-		var type = obj.type;
+var getSpecialChar = function getSpecialChar(type) {
+	switch (type) {
+		case 'extra-credit':
+			return '+';
+		case 'penalty':
+			return '-';
+		case 'value':
+			return '';
+		case 'total':
+			return '=';
+	}
+	return '';
+};
 
+var getSpanTextClass = function getSpanTextClass(type) {
+	switch (type) {
+		case 'penalty':
+			return 'is-type-score-report-penalty';
+		case 'extra-credit':
+			return 'is-type-score-report-extra-credit';
+	}
+	return '';
+};
 
-		var getSpecialChar = function getSpecialChar(type) {
-			switch (type) {
-				case 'extra-credit':
-					return '+';
-				case 'penalty':
-					return '-';
-				case 'value':
-					return '';
-				case 'total':
-					return '=';
-			}
-		};
-
-		var getSpanTextClass = function getSpanTextClass(type) {
-			switch (type) {
-				case 'penalty':
-					return 'is-type-score-report-penalty';
-				case 'extra-credit':
-					return 'is-type-score-report-extra-credit';
-				default:
-					return '';
-			}
-		};
-
-		var getTextDiv = function getTextDiv() {
-			if (type === 'value') return React.createElement(
-				'div',
-				{ className: 'score-report-text score-report-text-value' },
-				'Passing Reward:'
-			);
-
-			if (type === 'total') return React.createElement(
-				'div',
-				{ className: 'score-report-text score-report-text-total' },
-				obj.text
-			);
-
+var getTextDiv = function getTextDiv(type, text) {
+	switch (type) {
+		case 'value':
+		case 'line':
+		case 'total':
 			return React.createElement(
 				'div',
-				{ className: 'score-report-text' },
+				{ className: 'score-report-text score-report-text-' + type },
 				React.createElement(
-					'span',
-					{ className: getSpanTextClass(type) },
-					type.charAt(0).toUpperCase() + type.substr(1)
-				),
-				' - ' + obj.text + ':'
-			);
-		};
-
-		var getScoreDiv = function getScoreDiv() {
-			return React.createElement(
-				'div',
-				{ className: 'score-report-score' },
-				React.createElement(
-					'strong',
-					null,
-					getSpecialChar(obj.type),
-					obj.value ? ' ' + obj.value + ' %' : null
+					'div',
+					{ className: 'score-report-text-content' },
+					type === 'line' ? text : text + ':'
 				)
 			);
-		};
-
-		return React.createElement(
-			'li',
-			null,
-			getTextDiv(),
-			getScoreDiv()
-		);
-	});
-
+	}
 	return React.createElement(
-		'ul',
-		null,
-		modsList
+		'div',
+		{ className: 'score-report-text' },
+		React.createElement(
+			'div',
+			{ className: 'score-report-text-content' },
+			React.createElement(
+				'span',
+				{ className: getSpanTextClass(type) },
+				type.charAt(0).toUpperCase() + type.substr(1)
+			),
+			' - ' + text + ':'
+		)
 	);
 };
 
-var scoreReportView = function scoreReportView(_ref) {
-	var items = _ref.items,
-	    retainedScore = _ref.retainedScore;
+var getScoreDiv = function getScoreDiv(type, value) {
+	return React.createElement(
+		'div',
+		{ className: 'score-report-score' },
+		React.createElement(
+			'div',
+			{ className: 'score-report-score-content' },
+			React.createElement(
+				'strong',
+				null,
+				getSpecialChar(type),
+				value ? ' ' + value + ' %' : null
+			)
+		)
+	);
+};
 
-	if (typeof retainedScore === 'number') {
-		if (retainedScore === 0) retainedScore = '--';else retainedScore = retainedScore + ' %';
-	}
+var getModsBreakdownItem = function getModsBreakdownItem(_ref) {
+	var type = _ref.type,
+	    text = _ref.text,
+	    value = _ref.value;
+	return React.createElement(
+		'div',
+		{ className: 'mod-breakdown-item' },
+		getTextDiv(type, text),
+		type === 'line' ? null : getScoreDiv(type, value)
+	);
+};
 
-	var modBreakDown = React.createElement(
+var getModsBreakdown = function getModsBreakdown(items) {
+	return React.createElement(
 		'div',
 		{ className: 'mod-breakdown' },
-		getModsList(items)
+		React.createElement(
+			'div',
+			{ className: 'mod-breakdown-items' },
+			items.map(function (item, index) {
+				return getModsBreakdownItem(item);
+			})
+		)
 	);
+};
 
+var scoreReportView = function scoreReportView(_ref2) {
+	var items = _ref2.items,
+	    _ref2$retainedScore = _ref2.retainedScore,
+	    retainedScore = _ref2$retainedScore === undefined ? null : _ref2$retainedScore;
+
+	if (retainedScore) retainedScore = retainedScore + '%';
 	return retainedScore ? React.createElement(
 		'div',
 		{ className: 'score-report is-showing-retained-score' },
@@ -3132,12 +3140,12 @@ var scoreReportView = function scoreReportView(_ref) {
 				null,
 				retainedScore
 			),
-			modBreakDown
+			getModsBreakdown(items)
 		)
 	) : React.createElement(
 		'div',
 		{ className: 'score-report' },
-		modBreakDown
+		getModsBreakdown(items)
 	);
 };
 
@@ -3228,7 +3236,7 @@ var AssessmentScoreReport = function () {
 			} else if (rubric.type === 'attempt' && !isRewardedMods) {
 				items.push({
 					type: 'line',
-					text: 'This is your highest attempt score (Attempt ' + attemptNum + ')'
+					text: 'This is your highest attempt score (Attempt\xA0' + attemptNum + ')'
 				});
 				//
 			} else if (rubric.type === 'pass-fail' && status === 'passed' && passedResult === '$attempt_score' && isRewardedMods) {
@@ -3240,7 +3248,7 @@ var AssessmentScoreReport = function () {
 			} else if (rubric.type === 'pass-fail' && status === 'passed' && passedResult === '$attempt_score' && !isRewardedMods) {
 				items.push({
 					type: 'line',
-					text: 'This is your highest passing attempt ' + attemptNum + ' score'
+					text: 'This is your highest passing attempt\xA0' + attemptNum + ' score'
 				});
 			} else if (rubric.type === 'pass-fail' && status === 'passed' && Number.isFinite(parseFloat(passedResult)) && isRewardedMods) {
 				items.push({
@@ -3272,7 +3280,7 @@ var AssessmentScoreReport = function () {
 			} else if (rubric.type === 'pass-fail' && status === 'unableToPass' && unableToPassResult === '$highest_attempt_score') {
 				items.push({
 					type: 'line',
-					text: 'This is your highest attempt score (Attempt ' + attemptNum + ')'
+					text: 'This is your highest attempt score (Attempt\xA0' + attemptNum + ')'
 				});
 			} else if (rubric.type === 'pass-fail' && status === 'unableToPass' && Number.isFinite(parseFloat(unableToPassResult))) {
 				items.push({

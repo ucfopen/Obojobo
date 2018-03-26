@@ -26,7 +26,7 @@ describe('AssessmentScoreReport', () => {
 		).toEqual([
 			{
 				type: 'line',
-				text: 'This is your highest attempt score (Attempt 2)'
+				text: 'This is your highest attempt score (Attempt\u00a02)'
 			}
 		])
 	})
@@ -97,7 +97,7 @@ describe('AssessmentScoreReport', () => {
 		).toEqual([
 			{
 				type: 'line',
-				text: 'This is your highest passing attempt 2 score'
+				text: 'This is your highest passing attempt\u00a02 score'
 			}
 		])
 	})
@@ -170,7 +170,7 @@ describe('AssessmentScoreReport', () => {
 		).toEqual([
 			{
 				type: 'line',
-				text: 'This is your highest passing attempt 2 score'
+				text: 'This is your highest passing attempt\u00a02 score'
 			}
 		])
 	})
@@ -569,7 +569,7 @@ describe('AssessmentScoreReport', () => {
 		).toEqual([
 			{
 				type: 'line',
-				text: 'This is your highest attempt score (Attempt 1)'
+				text: 'This is your highest attempt score (Attempt\u00a01)'
 			}
 		])
 	})
@@ -597,7 +597,7 @@ describe('AssessmentScoreReport', () => {
 		).toEqual([
 			{
 				type: 'line',
-				text: 'This is your highest attempt score (Attempt 1)'
+				text: 'This is your highest attempt score (Attempt\u00a01)'
 			}
 		])
 	})

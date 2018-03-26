@@ -65,7 +65,7 @@ export default class AssessmentScoreReport {
 		} else if (rubric.type === 'attempt' && !isRewardedMods) {
 			items.push({
 				type: 'line',
-				text: 'This is your highest attempt score (Attempt ' + attemptNum + ')'
+				text: 'This is your highest attempt score (Attempt\u00a0' + attemptNum + ')'
 			})
 			//
 		} else if (
@@ -87,7 +87,7 @@ export default class AssessmentScoreReport {
 		) {
 			items.push({
 				type: 'line',
-				text: 'This is your highest passing attempt ' + attemptNum + ' score'
+				text: 'This is your highest passing attempt\u00a0' + attemptNum + ' score'
 			})
 		} else if (
 			rubric.type === 'pass-fail' &&
@@ -144,7 +144,7 @@ export default class AssessmentScoreReport {
 		) {
 			items.push({
 				type: 'line',
-				text: 'This is your highest attempt score (Attempt ' + attemptNum + ')'
+				text: 'This is your highest attempt score (Attempt\u00a0' + attemptNum + ')'
 			})
 		} else if (
 			rubric.type === 'pass-fail' &&

@@ -73,8 +73,10 @@
   .obojobo-draft--sections--assessment .attempt-button-container button {
     margin: 2px; }
 
-.obojobo-draft--sections--assessment .score-report.is-showing-retained-score ul {
+.obojobo-draft--sections--assessment .score-report.is-showing-retained-score .mod-breakdown-items {
   border-top: 1px solid LightGray; }
+  .obojobo-draft--sections--assessment .score-report.is-showing-retained-score .mod-breakdown-items .mod-breakdown-item:last-child {
+    padding-bottom: 0.8em; }
 
 .obojobo-draft--sections--assessment .score-report:not(.is-showing-retained-score) .mod-breakdown {
   border: 1px solid LightGray;
@@ -85,37 +87,43 @@
   justify-content: center;
   font-size: .7em;
   line-height: 1.5em; }
-  .obojobo-draft--sections--assessment .score-report .mod-breakdown ul {
+  .obojobo-draft--sections--assessment .score-report .mod-breakdown .mod-breakdown-items {
     width: 80%; }
 
-.obojobo-draft--sections--assessment .score-report ul {
-  padding: 0;
-  list-style-type: none; }
-
-.obojobo-draft--sections--assessment .score-report li:first-child:not(:only-child) {
-  margin-top: 5px; }
-
-.obojobo-draft--sections--assessment .score-report li:last-child:not(:only-child) {
-  margin-top: 5px;
-  padding-top: 4px;
-  border-top: 1px solid LightGray; }
-
-.obojobo-draft--sections--assessment .score-report .score-report-text {
-  display: inline-block;
-  width: 80%;
-  text-align: left; }
-  .obojobo-draft--sections--assessment .score-report .score-report-text .is-type-score-report-penalty {
-    color: red; }
-  .obojobo-draft--sections--assessment .score-report .score-report-text .is-type-score-report-extra-credit {
-    color: green; }
-  .obojobo-draft--sections--assessment .score-report .score-report-text .score-report-text-total {
-    font-weight: bold; }
+.obojobo-draft--sections--assessment .score-report .mod-breakdown-item {
+  display: flex;
+  align-items: baseline; }
+  .obojobo-draft--sections--assessment .score-report .mod-breakdown-item:first-child:not(:only-child) {
+    margin-top: 5px; }
+  .obojobo-draft--sections--assessment .score-report .mod-breakdown-item:last-child:not(:only-child) {
+    padding-top: 0.5em;
+    border-top: 1px solid LightGray; }
+  .obojobo-draft--sections--assessment .score-report .mod-breakdown-item .score-report-text {
+    display: inline-block;
+    width: 80%;
+    text-align: left;
+    margin-bottom: 0.5em; }
+    .obojobo-draft--sections--assessment .score-report .mod-breakdown-item .score-report-text .score-report-text-content {
+      display: inline-block; }
+    .obojobo-draft--sections--assessment .score-report .mod-breakdown-item .score-report-text .is-type-score-report-penalty {
+      color: red; }
+    .obojobo-draft--sections--assessment .score-report .mod-breakdown-item .score-report-text .is-type-score-report-extra-credit {
+      color: green; }
+    .obojobo-draft--sections--assessment .score-report .mod-breakdown-item .score-report-text.score-report-text-line, .obojobo-draft--sections--assessment .score-report .mod-breakdown-item .score-report-text.score-report-text-value {
+      margin-top: 0.5em; }
+    .obojobo-draft--sections--assessment .score-report .mod-breakdown-item .score-report-text.score-report-text-line {
+      width: 100%;
+      text-align: center; }
+    .obojobo-draft--sections--assessment .score-report .mod-breakdown-item .score-report-text .score-report-text-total {
+      font-weight: bold; }
 
 .obojobo-draft--sections--assessment .score-report .score-report-score {
   display: inline-block;
   width: 20%;
   white-space: nowrap;
   text-align: right; }
+  .obojobo-draft--sections--assessment .score-report .score-report-score .score-report-score-content {
+    display: inline-block; }
 
 .obojobo-draft--sections--assessment .score-report .retained-score {
   background-color: white;
@@ -123,6 +131,8 @@
   border-radius: 5%;
   margin: 0 1em;
   padding-top: 0.8em; }
+  .obojobo-draft--sections--assessment .score-report .retained-score h1 {
+    padding-bottom: 10px; }
 
 .obojobo-draft--sections--assessment .score > .results-bar {
   font-family: "Libre Franklin", Arial, sans-serif;
@@ -164,7 +174,7 @@
   width: 100%;
   border-radius: 0.25em;
   font-family: "Libre Franklin", Arial, sans-serif;
-  padding: 0.75em 3em;
+  padding: 0.5em 3em;
   box-sizing: border-box;
   background-color: #ffe9c3; }
   .obojobo-draft--sections--assessment--lti-status > h2 {
