@@ -171,8 +171,8 @@ const initAssessmentUsedQuestions = (node, usedQuestionMap) => {
 	for (let child of node.children) initAssessmentUsedQuestions(child, usedQuestionMap)
 }
 
-// Sort the questions sequentially, get their nodes from the tree via id, and only return up to
-// the desired amount of questions per attempt (choose property).
+// Sort the question banks and questions sequentially, get their nodes from the tree via id, 
+// and only return up to the desired amount of questions per attempt (choose property).
 const chooseQuestionsSequentially = (assessmentProperties, rootId, numQuestionsPerAttempt) => {
 	const { oboNode, childrenMap } = assessmentProperties
 	return [...oboNode.draftTree.getChildNodeById(rootId).immediateChildrenSet]
