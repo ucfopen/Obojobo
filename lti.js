@@ -5,6 +5,7 @@ let moment = require('moment')
 let insertEvent = oboRequire('insert_event')
 let logger = oboRequire('logger')
 let uuid = require('uuid').v4
+let createCaliperEvent = oboRequire('routes/api/events/create_caliper_event')
 
 const MINUTES_EXPIRED_LAUNCH = 300
 
@@ -473,6 +474,23 @@ let insertReplaceResultEvent = (
 	outcomeData,
 	ltiResult
 ) => {
+	let { createPostedEvent } = createCaliperEvent(null, config.general.hostname)
+	let caliperPayload = undefined
+	if (assessmentScoreData.scoreDetails != null) {
+		caliperPayload = createPostedEvent({
+			actor: { type: 'serverApp' },
+			draftId: draftId,
+			assessmentId: assessmentScoreData.id,
+			attemptId: assessmentScoreData.attemptId,
+			attemptScore: assessmentScoreData.score,
+			extensions: {
+				attemptCount: assessmentScoreData.scoreDetails.attemptNumber,
+				attemptScore: assessmentScoreData.score,
+				assessmentScore: assessmentScoreData.scoreDetails.assessmentScore
+			}
+		})
+	}
+
 	insertEvent({
 		action: 'lti:replaceResult',
 		actorTime: new Date().toISOString(),
@@ -490,7 +508,8 @@ let insertReplaceResultEvent = (
 		ip: '',
 		eventVersion: '2.0.0',
 		metadata: {},
-		draftId: draftId
+		draftId: draftId,
+		caliperPayload: caliperPayload
 	}).catch(err => {
 		logger.error('There was an error inserting the lti event')
 	})

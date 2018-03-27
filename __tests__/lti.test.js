@@ -21,6 +21,9 @@ jest.mock('../config', () => {
 			keys: {
 				testkey: 'testsecret'
 			}
+		},
+		general: {
+			hostname: '127.0.0.1:8080'
 		}
 	}
 })
@@ -330,11 +333,9 @@ describe('lti', () => {
 
 	test('getLatestHighestAssessmentScoreRecord returns error if nothing returned', done => {
 		let getLatestHighestAssessmentScoreRecord = lti.getLatestHighestAssessmentScoreRecord
-
 		db.oneOrNone.mockImplementationOnce((query, vars) => {
 			return Promise.resolve(null)
 		})
-
 		getLatestHighestAssessmentScoreRecord(123)
 			.then(result => {
 				expect(result.error.message).toBe('No assessment score found')
@@ -365,7 +366,6 @@ describe('lti', () => {
 	test('send same assessment score results in "success" and "ok_gradebook_matches_assessment"', done => {
 		mockSendAssessScoreDBCalls(100, 1, moment().toISOString(), true, true)
 		mockDate()
-
 		lti.sendHighestAssessmentScore('user-id', 'draft-id', 'assessment-id').then(result => {
 			expect(logger.info.mock.calls[0]).toEqual([
 				'LTI begin sendHighestAssessmentScore for userId:"user-id", draftId:"draft-id", assessmentId:"assessment-id"',
@@ -441,7 +441,24 @@ describe('lti', () => {
 				ip: '',
 				eventVersion: '2.0.0',
 				metadata: {},
-				draftId: 'draft-id'
+				draftId: 'draft-id',
+				caliperPayload: {
+					'@context': 'http://purl.imsglobal.org/ctx/caliper/v1p1',
+					actor: 'https://127.0.0.1:8080/api/server',
+					action: 'Posted',
+					object: 'https://127.0.0.1:8080/api/attempt/attempt-id',
+					target: 'https://127.0.0.1:8080/api/assessment/assessment-score-id/undefined',
+					eventTime: 'MOCKED-ISO-DATE-STRING',
+					edApp: 'https://127.0.0.1:8080/api/system',
+					id: 'urn:uuid:DEADBEEF-0000-DEAD-BEEF-1234DEADBEEF',
+					extensions: {
+						previewMode: false,
+						attemptCount: 1,
+						attemptScore: 100,
+						assessmentScore: 100
+					},
+					type: 'Event'
+				}
 			})
 
 			expect(result).toEqual({
@@ -538,7 +555,24 @@ describe('lti', () => {
 				ip: '',
 				eventVersion: '2.0.0',
 				metadata: {},
-				draftId: 'draft-id'
+				draftId: 'draft-id',
+				caliperPayload: {
+					'@context': 'http://purl.imsglobal.org/ctx/caliper/v1p1',
+					actor: 'https://127.0.0.1:8080/api/server',
+					action: 'Posted',
+					object: 'https://127.0.0.1:8080/api/attempt/attempt-id',
+					target: 'https://127.0.0.1:8080/api/assessment/assessment-score-id/undefined',
+					eventTime: 'MOCKED-ISO-DATE-STRING',
+					edApp: 'https://127.0.0.1:8080/api/system',
+					id: 'urn:uuid:DEADBEEF-0000-DEAD-BEEF-1234DEADBEEF',
+					extensions: {
+						previewMode: false,
+						attemptCount: 1,
+						attemptScore: 100,
+						assessmentScore: 100
+					},
+					type: 'Event'
+				}
 			})
 
 			expect(result).toEqual({
@@ -635,7 +669,24 @@ describe('lti', () => {
 				ip: '',
 				eventVersion: '2.0.0',
 				metadata: {},
-				draftId: 'draft-id'
+				draftId: 'draft-id',
+				caliperPayload: {
+					'@context': 'http://purl.imsglobal.org/ctx/caliper/v1p1',
+					actor: 'https://127.0.0.1:8080/api/server',
+					action: 'Posted',
+					object: 'https://127.0.0.1:8080/api/attempt/attempt-id',
+					target: 'https://127.0.0.1:8080/api/assessment/assessment-score-id/undefined',
+					eventTime: 'MOCKED-ISO-DATE-STRING',
+					edApp: 'https://127.0.0.1:8080/api/system',
+					id: 'urn:uuid:DEADBEEF-0000-DEAD-BEEF-1234DEADBEEF',
+					extensions: {
+						previewMode: false,
+						attemptCount: 1,
+						attemptScore: 100,
+						assessmentScore: 100
+					},
+					type: 'Event'
+				}
 			})
 
 			expect(result).toEqual({
@@ -728,7 +779,24 @@ describe('lti', () => {
 				ip: '',
 				eventVersion: '2.0.0',
 				metadata: {},
-				draftId: 'draft-id'
+				draftId: 'draft-id',
+				caliperPayload: {
+					'@context': 'http://purl.imsglobal.org/ctx/caliper/v1p1',
+					actor: 'https://127.0.0.1:8080/api/server',
+					action: 'Posted',
+					object: 'https://127.0.0.1:8080/api/attempt/attempt-id',
+					target: 'https://127.0.0.1:8080/api/assessment/assessment-score-id/undefined',
+					eventTime: 'MOCKED-ISO-DATE-STRING',
+					edApp: 'https://127.0.0.1:8080/api/system',
+					id: 'urn:uuid:DEADBEEF-0000-DEAD-BEEF-1234DEADBEEF',
+					extensions: {
+						previewMode: false,
+						attemptCount: 1,
+						attemptScore: null,
+						assessmentScore: null
+					},
+					type: 'Event'
+				}
 			})
 
 			expect(result).toEqual({
@@ -821,7 +889,24 @@ describe('lti', () => {
 				ip: '',
 				eventVersion: '2.0.0',
 				metadata: {},
-				draftId: 'draft-id'
+				draftId: 'draft-id',
+				caliperPayload: {
+					'@context': 'http://purl.imsglobal.org/ctx/caliper/v1p1',
+					actor: 'https://127.0.0.1:8080/api/server',
+					action: 'Posted',
+					object: 'https://127.0.0.1:8080/api/attempt/attempt-id',
+					target: 'https://127.0.0.1:8080/api/assessment/assessment-score-id/undefined',
+					eventTime: 'MOCKED-ISO-DATE-STRING',
+					edApp: 'https://127.0.0.1:8080/api/system',
+					id: 'urn:uuid:DEADBEEF-0000-DEAD-BEEF-1234DEADBEEF',
+					extensions: {
+						previewMode: false,
+						attemptCount: 1,
+						attemptScore: null,
+						assessmentScore: null
+					},
+					type: 'Event'
+				}
 			})
 
 			expect(result).toEqual({
@@ -922,7 +1007,24 @@ describe('lti', () => {
 				ip: '',
 				eventVersion: '2.0.0',
 				metadata: {},
-				draftId: 'draft-id'
+				draftId: 'draft-id',
+				caliperPayload: {
+					'@context': 'http://purl.imsglobal.org/ctx/caliper/v1p1',
+					actor: 'https://127.0.0.1:8080/api/server',
+					action: 'Posted',
+					object: 'https://127.0.0.1:8080/api/attempt/attempt-id',
+					target: 'https://127.0.0.1:8080/api/assessment/assessment-score-id/undefined',
+					eventTime: 'MOCKED-ISO-DATE-STRING',
+					edApp: 'https://127.0.0.1:8080/api/system',
+					id: 'urn:uuid:DEADBEEF-0000-DEAD-BEEF-1234DEADBEEF',
+					extensions: {
+						previewMode: false,
+						attemptCount: 1,
+						attemptScore: 100,
+						assessmentScore: 100
+					},
+					type: 'Event'
+				}
 			})
 
 			expect(result).toEqual({
@@ -1023,7 +1125,24 @@ describe('lti', () => {
 				ip: '',
 				eventVersion: '2.0.0',
 				metadata: {},
-				draftId: 'draft-id'
+				draftId: 'draft-id',
+				caliperPayload: {
+					'@context': 'http://purl.imsglobal.org/ctx/caliper/v1p1',
+					actor: 'https://127.0.0.1:8080/api/server',
+					action: 'Posted',
+					object: 'https://127.0.0.1:8080/api/attempt/attempt-id',
+					target: 'https://127.0.0.1:8080/api/assessment/assessment-score-id/undefined',
+					eventTime: 'MOCKED-ISO-DATE-STRING',
+					edApp: 'https://127.0.0.1:8080/api/system',
+					id: 'urn:uuid:DEADBEEF-0000-DEAD-BEEF-1234DEADBEEF',
+					extensions: {
+						previewMode: false,
+						attemptCount: 1,
+						attemptScore: 100,
+						assessmentScore: 100
+					},
+					type: 'Event'
+				}
 			})
 
 			expect(result).toEqual({
@@ -1114,7 +1233,24 @@ describe('lti', () => {
 				ip: '',
 				eventVersion: '2.0.0',
 				metadata: {},
-				draftId: 'draft-id'
+				draftId: 'draft-id',
+				caliperPayload: {
+					'@context': 'http://purl.imsglobal.org/ctx/caliper/v1p1',
+					actor: 'https://127.0.0.1:8080/api/server',
+					action: 'Posted',
+					object: 'https://127.0.0.1:8080/api/attempt/attempt-id',
+					target: 'https://127.0.0.1:8080/api/assessment/assessment-score-id/undefined',
+					eventTime: 'MOCKED-ISO-DATE-STRING',
+					edApp: 'https://127.0.0.1:8080/api/system',
+					id: 'urn:uuid:DEADBEEF-0000-DEAD-BEEF-1234DEADBEEF',
+					extensions: {
+						previewMode: false,
+						attemptCount: 1,
+						attemptScore: 100,
+						assessmentScore: 100
+					},
+					type: 'Event'
+				}
 			})
 
 			expect(result).toEqual({
@@ -1207,7 +1343,24 @@ describe('lti', () => {
 				ip: '',
 				eventVersion: '2.0.0',
 				metadata: {},
-				draftId: 'draft-id'
+				draftId: 'draft-id',
+				caliperPayload: {
+					'@context': 'http://purl.imsglobal.org/ctx/caliper/v1p1',
+					actor: 'https://127.0.0.1:8080/api/server',
+					action: 'Posted',
+					object: 'https://127.0.0.1:8080/api/attempt/attempt-id',
+					target: 'https://127.0.0.1:8080/api/assessment/assessment-score-id/undefined',
+					eventTime: 'MOCKED-ISO-DATE-STRING',
+					edApp: 'https://127.0.0.1:8080/api/system',
+					id: 'urn:uuid:DEADBEEF-0000-DEAD-BEEF-1234DEADBEEF',
+					extensions: {
+						previewMode: false,
+						attemptCount: 1,
+						attemptScore: 100,
+						assessmentScore: 100
+					},
+					type: 'Event'
+				}
 			})
 
 			expect(result).toEqual({
@@ -1229,7 +1382,6 @@ describe('lti', () => {
 	test('no assessment score results in "error_no_assessment_score_found" and "error_state_unknown"', done => {
 		mockSendAssessScoreDBCalls('missing', 1, moment().toISOString(), true, true)
 		mockDate()
-
 		lti.sendHighestAssessmentScore('user-id', 'draft-id', 'assessment-id').then(result => {
 			// expect(logger.error.mock.calls).toBe(1)
 			expect(logger.info.mock.calls[0]).toEqual([
@@ -1373,7 +1525,24 @@ describe('lti', () => {
 				ip: '',
 				eventVersion: '2.0.0',
 				metadata: {},
-				draftId: 'draft-id'
+				draftId: 'draft-id',
+				caliperPayload: {
+					'@context': 'http://purl.imsglobal.org/ctx/caliper/v1p1',
+					actor: 'https://127.0.0.1:8080/api/server',
+					action: 'Posted',
+					object: 'https://127.0.0.1:8080/api/attempt/attempt-id',
+					target: 'https://127.0.0.1:8080/api/assessment/assessment-score-id/undefined',
+					eventTime: 'MOCKED-ISO-DATE-STRING',
+					edApp: 'https://127.0.0.1:8080/api/system',
+					id: 'urn:uuid:DEADBEEF-0000-DEAD-BEEF-1234DEADBEEF',
+					extensions: {
+						previewMode: false,
+						attemptCount: 1,
+						attemptScore: 100,
+						assessmentScore: 100
+					},
+					type: 'Event'
+				}
 			})
 
 			expect(result).toEqual({
@@ -1460,7 +1629,24 @@ describe('lti', () => {
 				ip: '',
 				eventVersion: '2.0.0',
 				metadata: {},
-				draftId: 'draft-id'
+				draftId: 'draft-id',
+				caliperPayload: {
+					'@context': 'http://purl.imsglobal.org/ctx/caliper/v1p1',
+					actor: 'https://127.0.0.1:8080/api/server',
+					action: 'Posted',
+					object: 'https://127.0.0.1:8080/api/attempt/attempt-id',
+					target: 'https://127.0.0.1:8080/api/assessment/assessment-score-id/undefined',
+					eventTime: 'MOCKED-ISO-DATE-STRING',
+					edApp: 'https://127.0.0.1:8080/api/system',
+					id: 'urn:uuid:DEADBEEF-0000-DEAD-BEEF-1234DEADBEEF',
+					extensions: {
+						previewMode: false,
+						attemptCount: 1,
+						attemptScore: 100,
+						assessmentScore: 100
+					},
+					type: 'Event'
+				}
 			})
 
 			expect(result).toEqual({
@@ -1551,7 +1737,24 @@ describe('lti', () => {
 				ip: '',
 				eventVersion: '2.0.0',
 				metadata: {},
-				draftId: 'draft-id'
+				draftId: 'draft-id',
+				caliperPayload: {
+					'@context': 'http://purl.imsglobal.org/ctx/caliper/v1p1',
+					actor: 'https://127.0.0.1:8080/api/server',
+					action: 'Posted',
+					object: 'https://127.0.0.1:8080/api/attempt/attempt-id',
+					target: 'https://127.0.0.1:8080/api/assessment/assessment-score-id/undefined',
+					eventTime: 'MOCKED-ISO-DATE-STRING',
+					edApp: 'https://127.0.0.1:8080/api/system',
+					id: 'urn:uuid:DEADBEEF-0000-DEAD-BEEF-1234DEADBEEF',
+					extensions: {
+						previewMode: false,
+						attemptCount: 1,
+						attemptScore: null,
+						assessmentScore: null
+					},
+					type: 'Event'
+				}
 			})
 
 			expect(result).toEqual({
@@ -1649,7 +1852,24 @@ describe('lti', () => {
 				ip: '',
 				eventVersion: '2.0.0',
 				metadata: {},
-				draftId: 'draft-id'
+				draftId: 'draft-id',
+				caliperPayload: {
+					'@context': 'http://purl.imsglobal.org/ctx/caliper/v1p1',
+					actor: 'https://127.0.0.1:8080/api/server',
+					action: 'Posted',
+					object: 'https://127.0.0.1:8080/api/attempt/attempt-id',
+					target: 'https://127.0.0.1:8080/api/assessment/assessment-score-id/undefined',
+					eventTime: 'MOCKED-ISO-DATE-STRING',
+					edApp: 'https://127.0.0.1:8080/api/system',
+					id: 'urn:uuid:DEADBEEF-0000-DEAD-BEEF-1234DEADBEEF',
+					extensions: {
+						previewMode: false,
+						attemptCount: 1,
+						attemptScore: 100,
+						assessmentScore: 100
+					},
+					type: 'Event'
+				}
 			})
 
 			expect(result).toEqual({
@@ -1747,7 +1967,24 @@ describe('lti', () => {
 				ip: '',
 				eventVersion: '2.0.0',
 				metadata: {},
-				draftId: 'draft-id'
+				draftId: 'draft-id',
+				caliperPayload: {
+					'@context': 'http://purl.imsglobal.org/ctx/caliper/v1p1',
+					actor: 'https://127.0.0.1:8080/api/server',
+					action: 'Posted',
+					object: 'https://127.0.0.1:8080/api/attempt/attempt-id',
+					target: 'https://127.0.0.1:8080/api/assessment/assessment-score-id/undefined',
+					eventTime: 'MOCKED-ISO-DATE-STRING',
+					edApp: 'https://127.0.0.1:8080/api/system',
+					id: 'urn:uuid:DEADBEEF-0000-DEAD-BEEF-1234DEADBEEF',
+					extensions: {
+						previewMode: false,
+						attemptCount: 1,
+						attemptScore: 100,
+						assessmentScore: 100
+					},
+					type: 'Event'
+				}
 			})
 
 			expect(result).toEqual({
@@ -1849,7 +2086,24 @@ describe('lti', () => {
 				ip: '',
 				eventVersion: '2.0.0',
 				metadata: {},
-				draftId: 'draft-id'
+				draftId: 'draft-id',
+				caliperPayload: {
+					'@context': 'http://purl.imsglobal.org/ctx/caliper/v1p1',
+					actor: 'https://127.0.0.1:8080/api/server',
+					action: 'Posted',
+					object: 'https://127.0.0.1:8080/api/attempt/attempt-id',
+					target: 'https://127.0.0.1:8080/api/assessment/assessment-score-id/undefined',
+					eventTime: 'MOCKED-ISO-DATE-STRING',
+					edApp: 'https://127.0.0.1:8080/api/system',
+					id: 'urn:uuid:DEADBEEF-0000-DEAD-BEEF-1234DEADBEEF',
+					extensions: {
+						previewMode: false,
+						attemptCount: 1,
+						attemptScore: null,
+						assessmentScore: null
+					},
+					type: 'Event'
+				}
 			})
 
 			expect(result).toEqual({
@@ -1962,7 +2216,24 @@ describe('lti', () => {
 				ip: '',
 				eventVersion: '2.0.0',
 				metadata: {},
-				draftId: 'draft-id'
+				draftId: 'draft-id',
+				caliperPayload: {
+					'@context': 'http://purl.imsglobal.org/ctx/caliper/v1p1',
+					actor: 'https://127.0.0.1:8080/api/server',
+					action: 'Posted',
+					object: 'https://127.0.0.1:8080/api/attempt/attempt-id',
+					target: 'https://127.0.0.1:8080/api/assessment/assessment-score-id/undefined',
+					eventTime: 'MOCKED-ISO-DATE-STRING',
+					edApp: 'https://127.0.0.1:8080/api/system',
+					id: 'urn:uuid:DEADBEEF-0000-DEAD-BEEF-1234DEADBEEF',
+					extensions: {
+						previewMode: false,
+						attemptCount: 1,
+						attemptScore: null,
+						assessmentScore: null
+					},
+					type: 'Event'
+				}
 			})
 
 			done()
@@ -2053,7 +2324,24 @@ describe('lti', () => {
 				ip: '',
 				eventVersion: '2.0.0',
 				metadata: {},
-				draftId: 'draft-id'
+				draftId: 'draft-id',
+				caliperPayload: {
+					'@context': 'http://purl.imsglobal.org/ctx/caliper/v1p1',
+					actor: 'https://127.0.0.1:8080/api/server',
+					action: 'Posted',
+					object: 'https://127.0.0.1:8080/api/attempt/attempt-id',
+					target: 'https://127.0.0.1:8080/api/assessment/assessment-score-id/undefined',
+					eventTime: 'MOCKED-ISO-DATE-STRING',
+					edApp: 'https://127.0.0.1:8080/api/system',
+					id: 'urn:uuid:DEADBEEF-0000-DEAD-BEEF-1234DEADBEEF',
+					extensions: {
+						previewMode: false,
+						attemptCount: 1,
+						attemptScore: 100,
+						assessmentScore: 100
+					},
+					type: 'Event'
+				}
 			})
 
 			expect(result).toEqual({
@@ -2147,7 +2435,24 @@ describe('lti', () => {
 				ip: '',
 				eventVersion: '2.0.0',
 				metadata: {},
-				draftId: 'draft-id'
+				draftId: 'draft-id',
+				caliperPayload: {
+					'@context': 'http://purl.imsglobal.org/ctx/caliper/v1p1',
+					actor: 'https://127.0.0.1:8080/api/server',
+					action: 'Posted',
+					object: 'https://127.0.0.1:8080/api/attempt/attempt-id',
+					target: 'https://127.0.0.1:8080/api/assessment/assessment-score-id/undefined',
+					eventTime: 'MOCKED-ISO-DATE-STRING',
+					edApp: 'https://127.0.0.1:8080/api/system',
+					id: 'urn:uuid:DEADBEEF-0000-DEAD-BEEF-1234DEADBEEF',
+					extensions: {
+						previewMode: false,
+						attemptCount: 1,
+						attemptScore: 'doggo',
+						assessmentScore: 'doggo'
+					},
+					type: 'Event'
+				}
 			})
 
 			expect(result).toEqual({
@@ -2242,7 +2547,24 @@ describe('lti', () => {
 				ip: '',
 				eventVersion: '2.0.0',
 				metadata: {},
-				draftId: 'draft-id'
+				draftId: 'draft-id',
+				caliperPayload: {
+					'@context': 'http://purl.imsglobal.org/ctx/caliper/v1p1',
+					actor: 'https://127.0.0.1:8080/api/server',
+					action: 'Posted',
+					object: 'https://127.0.0.1:8080/api/attempt/attempt-id',
+					target: 'https://127.0.0.1:8080/api/assessment/assessment-score-id/undefined',
+					eventTime: 'MOCKED-ISO-DATE-STRING',
+					edApp: 'https://127.0.0.1:8080/api/system',
+					id: 'urn:uuid:DEADBEEF-0000-DEAD-BEEF-1234DEADBEEF',
+					extensions: {
+						previewMode: false,
+						attemptCount: 1,
+						attemptScore: 'doggo',
+						assessmentScore: 'doggo'
+					},
+					type: 'Event'
+				}
 			})
 
 			expect(result).toEqual({
@@ -2411,7 +2733,24 @@ describe('lti', () => {
 				ip: '',
 				eventVersion: '2.0.0',
 				metadata: {},
-				draftId: 'draft-id'
+				draftId: 'draft-id',
+				caliperPayload: {
+					'@context': 'http://purl.imsglobal.org/ctx/caliper/v1p1',
+					actor: 'https://127.0.0.1:8080/api/server',
+					action: 'Posted',
+					object: 'https://127.0.0.1:8080/api/attempt/attempt-id',
+					target: 'https://127.0.0.1:8080/api/assessment/assessment-score-id/undefined',
+					eventTime: 'MOCKED-ISO-DATE-STRING',
+					edApp: 'https://127.0.0.1:8080/api/system',
+					id: 'urn:uuid:DEADBEEF-0000-DEAD-BEEF-1234DEADBEEF',
+					extensions: {
+						previewMode: false,
+						attemptCount: 1,
+						attemptScore: 100,
+						assessmentScore: 100
+					},
+					type: 'Event'
+				}
 			})
 
 			expect(result).toEqual({
@@ -2503,7 +2842,24 @@ describe('lti', () => {
 				ip: '',
 				eventVersion: '2.0.0',
 				metadata: {},
-				draftId: 'draft-id'
+				draftId: 'draft-id',
+				caliperPayload: {
+					'@context': 'http://purl.imsglobal.org/ctx/caliper/v1p1',
+					actor: 'https://127.0.0.1:8080/api/server',
+					action: 'Posted',
+					object: 'https://127.0.0.1:8080/api/attempt/attempt-id',
+					target: 'https://127.0.0.1:8080/api/assessment/assessment-score-id/undefined',
+					eventTime: 'MOCKED-ISO-DATE-STRING',
+					edApp: 'https://127.0.0.1:8080/api/system',
+					id: 'urn:uuid:DEADBEEF-0000-DEAD-BEEF-1234DEADBEEF',
+					extensions: {
+						previewMode: false,
+						attemptCount: 1,
+						attemptScore: 100,
+						assessmentScore: 100
+					},
+					type: 'Event'
+				}
 			})
 
 			expect(result).toEqual({

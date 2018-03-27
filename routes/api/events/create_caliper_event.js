@@ -15,8 +15,9 @@ let NavigationEvent = require('caliper-js-public/src/events/navigationEvent')
 let SessionEvent = require('caliper-js-public/src/events/sessionEvent')
 let ViewEvent = require('caliper-js-public/src/events/viewEvent')
 
-// This version doesn't have grade event:
+// This version doesn't have grade or toolUse event:
 // let GradeEvent = require('caliper-js-public/src/events/gradeEvent')
+// let ToolUseEvent = require('caliper-js-public/src/events/toolUseEvent')
 
 // @TODO: Remove this when we migrate to using the 1.1 Caliper library
 // (Will potentially want to retain the code that strips out null values)
@@ -182,6 +183,23 @@ const caliperEventFactory = (req, host = null, isFromReq = false) => {
 			return updateEventToVersion1_1(caliperEvent)
 		},
 
+		createPostedEvent: obj => {
+			let required = ['assessmentId', 'attemptId', 'attemptScore', 'draftId']
+			validateCaliperEvent({ required }, obj, ACTOR_SERVER_APP)
+
+			let options = assignCaliperOptions(obj)
+			let { actor, assessmentId, attemptId, attemptScore, draftId, extensions } = obj
+			let caliperEvent = createEvent(Event, actor, IRI, options)
+
+			caliperEvent.setType('Event')
+			caliperEvent.setAction('Posted')
+			caliperEvent.setTarget(IRI.getAssessmentIRI(assessmentId))
+			caliperEvent.setObject(IRI.getAssessmentAttemptIRI(attemptId))
+			Object.assign(caliperEvent.extensions, extensions)
+
+			return updateEventToVersion1_1(caliperEvent)
+		},
+
 		createAssessmentAttemptStartedEvent: obj => {
 			obj.action = 'Started'
 			return createAssessmentEvent(obj, IRI)
@@ -240,7 +258,6 @@ const caliperEventFactory = (req, host = null, isFromReq = false) => {
 			caliperEvent.setGenerated(
 				createScore(IRI.getAssessmentAttemptIRI(attemptId), IRI.getAppServerIRI(), attemptScore)
 			)
-
 			Object.assign(caliperEvent.extensions, extensions)
 
 			return updateEventToVersion1_1(caliperEvent)
@@ -480,6 +497,24 @@ const caliperEventFactory = (req, host = null, isFromReq = false) => {
 
 			Object.assign(caliperEvent.extensions, extensions)
 
+			return updateEventToVersion1_1(caliperEvent)
+		},
+
+		createToolUseEvent: obj => {
+			let required = ['draftId']
+			validateCaliperEvent({ required }, obj, ACTOR_SERVER_APP)
+
+			let options = assignCaliperOptions(obj)
+
+			let { actor, draftId, extensions } = obj
+			let caliperEvent = createEvent(Event, actor, IRI, options)
+
+			caliperEvent.setType('ToolUseEvent')
+			caliperEvent.setAction('Used')
+			caliperEvent.setObject(IRI.getEdAppIRI())
+			if (draftId != null) caliperEvent.setTarget(IRI.getDraftIRI(draftId))
+
+			Object.assign(caliperEvent.extensions, extensions)
 			return updateEventToVersion1_1(caliperEvent)
 		}
 	}

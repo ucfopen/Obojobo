@@ -2,6 +2,8 @@ let db = oboRequire('db')
 let insertEvent = oboRequire('insert_event')
 let User = oboRequire('models/user')
 let logger = oboRequire('logger')
+let config = oboRequire('config')
+let createCaliperEvent = oboRequire('routes/api/events/create_caliper_event')
 
 let storeLtiLaunch = (draftId, user, ip, ltiBody, ltiConsumerKey) => {
 	let insertLaunchResult = null
@@ -22,7 +24,7 @@ let storeLtiLaunch = (draftId, user, ip, ltiBody, ltiConsumerKey) => {
 		)
 		.then(result => {
 			insertLaunchResult = result
-
+			let { createToolUseEvent } = createCaliperEvent(null, config.general.hostname)
 			// Insert Event
 			return insertEvent({
 				action: 'lti:launch',
@@ -32,7 +34,11 @@ let storeLtiLaunch = (draftId, user, ip, ltiBody, ltiConsumerKey) => {
 				ip: ip,
 				metadata: {},
 				eventVersion: '1.0.0',
-				draftId: draftId
+				draftId: draftId,
+				caliperPayload: createToolUseEvent({
+					draftId: draftId,
+					actor: { type: 'serverApp' }
+				})
 			})
 		})
 		.then(() => {
@@ -41,6 +47,7 @@ let storeLtiLaunch = (draftId, user, ip, ltiBody, ltiConsumerKey) => {
 }
 
 let storeLtiPickerLaunch = (user, ip, ltiBody, ltiConsumerKey) => {
+	let { createToolUseEvent } = createCaliperEvent(null, config.general.hostname)
 	return insertEvent({
 		action: 'lti:pickerLaunch',
 		actorTime: new Date().toISOString(),
@@ -49,7 +56,11 @@ let storeLtiPickerLaunch = (user, ip, ltiBody, ltiConsumerKey) => {
 		ip: ip,
 		metadata: {},
 		eventVersion: '1.0.0',
-		draftId: null
+		draftId: null,
+		caliperPayload: createToolUseEvent({
+			draftId: draftId,
+			actor: { type: 'serverApp' }
+		})
 	})
 }
 
