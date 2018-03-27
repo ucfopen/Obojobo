@@ -99,4 +99,12 @@ describe('lti route', () => {
 		routeFunction(mockReq, mockRes, mockNext)
 		expect(mockRes.type).toBeCalledWith('xml')
 	})
+
+	test.skip('course_navigation calls redirect for users with access', () => {
+		//
+	})
+
+	test.skip('course_navigation returns a 403 if user does not have access', () => {
+		//
+	})
 })

@@ -83,4 +83,12 @@ describe('Caliper event from req', () => {
 			expect(caliperEvent(reqObjects[reqObjectKey])).toMatchSnapshot()
 		})
 	})
+
+	test.skip('actorFromType returns an object with the actor type and the current users id if given ACTOR_USER', () => {
+		//@TODO
+	})
+
+	test.skip('actorFromType returns an object with only the given type if the type is not ACTOR_USER', () => {
+		//@TODO
+	})
 })

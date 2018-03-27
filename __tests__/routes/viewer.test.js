@@ -146,4 +146,8 @@ describe('lti route', () => {
 				expect(err).toBe('never called')
 			})
 	})
+
+	test.skip('view/draft/visit calls render with the draft title', () => {
+		//@TODO
+	})
 })

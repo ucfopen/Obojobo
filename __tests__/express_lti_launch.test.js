@@ -174,4 +174,28 @@ describe('lti launch middleware', () => {
 				)
 			})
 	})
+
+	test.skip('courseNavlaunch simply calls next if not a LTI request', () => {
+		//@TODO
+	})
+
+	test.skip('courseNavlaunch creates a new user', () => {
+		//@TODO
+	})
+
+	test.skip('courseNavlaunch logs an error if no LTI body and calls next with an error', () => {
+		//@TODO
+	})
+
+	test.skip('assignmentSelection simply calls next if not a LTI request', () => {
+		//@TODO
+	})
+
+	test.skip('assignmentSelection creates a new user and inserts an event', () => {
+		//@TODO
+	})
+
+	test.skip('assignmentSelection logs an error if no LTI body and calls next with an error', () => {
+		//@TODO
+	})
 })
