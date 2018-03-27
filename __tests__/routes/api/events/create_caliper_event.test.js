@@ -640,4 +640,23 @@ describe('Caliper event creator', () => {
 			})
 		}).toThrow(`Invalid actor type. Must provide actor of type serverApp`)
 	})
+
+	///////////////////////////////////////////////////////////////////////////////////////////////////
+
+	it('createToolUseEvent', () => {
+		const createPostedEvent = caliperEvents.createToolUseEvent({
+			draftId,
+			actor: { type: 'serverApp' }
+		})
+		expect(createPostedEvent).toMatchSnapshot()
+	})
+
+	it('createToolUseEvent - throws error given a bad actor', () => {
+		expect(() => {
+			caliperEvents.createToolUseEvent({
+				draftId,
+				actor: { type: 'bad' }
+			})
+		}).toThrow(`Invalid actor type. Must provide actor of type serverApp`)
+	})
 })

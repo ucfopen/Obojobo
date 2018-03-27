@@ -478,6 +478,23 @@ Event {
 }
 `;
 
+exports[`Caliper event creator createToolUseEvent 1`] = `
+Event {
+  "@context": "http://purl.imsglobal.org/ctx/caliper/v1p1",
+  "action": "Used",
+  "actor": "https://testHost/api/server",
+  "edApp": "https://testHost/api/system",
+  "eventTime": "2017-08-29T16:57:14.500Z",
+  "extensions": Object {
+    "previewMode": false,
+  },
+  "id": "urn:uuid:DEADBEEF-0000-DEAD-BEEF-1234DEADBEEF",
+  "object": "https://testHost/api/system",
+  "target": "https:///api/draft/testDraftId",
+  "type": "ToolUseEvent",
+}
+`;
+
 exports[`Caliper event creator createViewEvent - sets target of view event when given framename arg 1`] = `
 Event {
   "@context": "http://purl.imsglobal.org/ctx/caliper/v1p1",
