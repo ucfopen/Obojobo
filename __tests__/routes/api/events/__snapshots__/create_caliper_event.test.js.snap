@@ -374,6 +374,24 @@ Event {
 }
 `;
 
+exports[`Caliper event creator createPostedEvent 1`] = `
+Event {
+  "@context": "http://purl.imsglobal.org/ctx/caliper/v1p1",
+  "action": "Posted",
+  "actor": "https://testHost/api/server",
+  "edApp": "https://testHost/api/system",
+  "eventTime": "2017-08-29T16:57:14.500Z",
+  "extensions": Object {
+    "foo": "bar",
+    "previewMode": false,
+  },
+  "id": "urn:uuid:DEADBEEF-0000-DEAD-BEEF-1234DEADBEEF",
+  "object": "https://testHost/api/attempt/testAttemptId",
+  "target": "https://testHost/api/assessment/testAssessment/undefined",
+  "type": "Event",
+}
+`;
+
 exports[`Caliper event creator createPracticeGradeEvent 1`] = `
 Event {
   "@context": "http://purl.imsglobal.org/ctx/caliper/v1p1",

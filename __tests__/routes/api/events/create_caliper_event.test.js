@@ -613,4 +613,31 @@ describe('Caliper event creator', () => {
 			`createEvent actor must be one of "user", "viewerClient" or "serverApp". Instead was given "bad".`
 		)
 	})
+
+	///////////////////////////////////////////////////////////////////////////////////////////////////
+
+	it('createPostedEvent', () => {
+		const createPostedEvent = caliperEvents.createPostedEvent({
+			actor: { type: 'serverApp' },
+			draftId,
+			assessmentId,
+			attemptId,
+			extensions,
+			attemptScore: score
+		})
+		expect(createPostedEvent).toMatchSnapshot()
+	})
+
+	it('createPostedEvent - throws error given a bad actor', () => {
+		expect(() => {
+			caliperEvents.createPostedEvent({
+				actor: { type: 'bad' },
+				draftId,
+				assessmentId,
+				attemptId,
+				sessionIds,
+				attemptScore: score
+			})
+		}).toThrow(`Invalid actor type. Must provide actor of type serverApp`)
+	})
 })
