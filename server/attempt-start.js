@@ -4,6 +4,7 @@ const createCaliperEvent = oboRequire('routes/api/events/create_caliper_event')
 const insertEvent = oboRequire('insert_event')
 const logger = oboRequire('logger')
 const logAndRespondToUnexpected = require('./util').logAndRespondToUnexpected
+const _ = require('underscore')
 
 const QUESTION_BANK_NODE_TYPE = 'ObojoboDraft.Chunks.QuestionBank'
 const QUESTION_NODE_TYPE = 'ObojoboDraft.Chunks.Question'
@@ -171,12 +172,36 @@ const initAssessmentUsedQuestions = (node, usedQuestionMap) => {
 	for (let child of node.children) initAssessmentUsedQuestions(child, usedQuestionMap)
 }
 
+// TODO: These 3 question choosing functions can probably be merged into one function. (also need tests)
 // Sort the question banks and questions sequentially, get their nodes from the tree via id, 
 // and only return up to the desired amount of questions per attempt (choose property).
-const chooseQuestionsSequentially = (assessmentProperties, rootId, numQuestionsPerAttempt) => {
+const chooseUnseenQuestionsSequentially = (assessmentProperties, rootId, numQuestionsPerAttempt) => {
 	const { oboNode, childrenMap } = assessmentProperties
 	return [...oboNode.draftTree.getChildNodeById(rootId).immediateChildrenSet]
 		.sort((a, b) => childrenMap.get(a) - childrenMap.get(b))
+		.map(id => oboNode.draftTree.getChildNodeById(id).toObject())
+		.slice(0, numQuestionsPerAttempt)
+}
+
+// Randomly chooses all questions to display irregardless if they have been seen or not.
+const chooseAllQuestionsRandomly = (assessmentProperties, rootId, numQuestionsPerAttempt) => {
+	const { oboNode } = assessmentProperties
+	const oboNodeQuestionArray = [...oboNode.draftTree.getChildNodeById(rootId).immediateChildrenSet]
+	return _.shuffle(oboNodeQuestionArray)
+		.map(id => oboNode.draftTree.getChildNodeById(id).toObject())
+		.slice(0, numQuestionsPerAttempt)
+}
+
+// Randomly chooses unseen questions to display.
+const chooseUnseenQuestionsRandomly = (assessmentProperties, rootId, numQuestionsPerAttempt) => {
+	const { oboNode, childrenMap } = assessmentProperties
+	const oboNodeQuestionArray = [...oboNode.draftTree.getChildNodeById(rootId).immediateChildrenSet]
+	return oboNodeQuestionArray
+		.sort((a, b) => {
+			if (childrenMap.get(a) === childrenMap.get(b))
+				return Math.random() < 0.5 ? -1 : 1
+			return childrenMap.get(a) - childrenMap.get(b)
+		})
 		.map(id => oboNode.draftTree.getChildNodeById(id).toObject())
 		.slice(0, numQuestionsPerAttempt)
 }
@@ -188,8 +213,15 @@ const createChosenQuestionTree = (node, assessmentProperties) => {
 		logger.log('TEST', node.id, node.content, node.content.choose)
 		const qbProperties = getQuestionBankProperties(node)
 
-		// TODO: 'random-all' and 'random-unseen' selects need to be taken care of as well.
-		node.children = chooseQuestionsSequentially(assessmentProperties, node.id, qbProperties.choose)
+		switch (qbProperties.choose) {
+			case 'random-unseen':
+				node.children = chooseUnseenQuestionsRandomly(assessmentProperties, node.id, qbProperties.choose)
+			case 'random-all':
+				node.children = chooseAllQuestionsRandomly(assessmentProperties, node.id, qbProperties.choose)
+			// 'sequential' by default
+			default:
+				node.children = chooseUnseenQuestionsSequentially(assessmentProperties, node.id, qbProperties.choose)
+		}
 	}
 
 	for (let child of node.children) createChosenQuestionTree(child, assessmentProperties)
@@ -224,7 +256,9 @@ module.exports = {
 	getQuestionBankProperties,
 	createAssessmentUsedQuestionMap,
 	initAssessmentUsedQuestions,
-	chooseQuestionsSequentially,
+	chooseUnseenQuestionsSequentially,
+	chooseAllQuestionsRandomly,
+	chooseUnseenQuestionsRandomly,
 	createChosenQuestionTree,
 	getNodeQuestions,
 	getSendToClientPromises
