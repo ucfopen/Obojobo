@@ -162,4 +162,24 @@ describe('Assessment', () => {
 			done()
 		})
 	})
+
+	test.skip('createAttemptResponse returns attempt object', () => {
+		//@TODO
+	})
+
+	test.skip('getAttempts returns attempts object', () => {
+		//@TODO
+	})
+
+	test.skip('getAttemptNumber returns the attempt_number property', () => {
+		//@TODO
+	})
+
+	test.skip('completeAttempt calls UPDATE/INSERT queries with expected values and returns data object', () => {
+		//@TODO
+	})
+
+	test.skip('onStartVisit inserts value into extensionsProps', () => {
+		//@TODO
+	})
 })

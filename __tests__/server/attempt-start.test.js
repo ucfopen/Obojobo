@@ -213,4 +213,16 @@ describe('start attempt route', () => {
     // where there are.
     expect(getSendToClientPromises(mockAttemptState, {}, {})).toEqual([])
   })
+
+  test.skip('startAttempt inserts a new attempt, creates events and replies with an expected object', () => {
+    //@TODO
+  })
+
+  test.skip('calling startAttempt when no attempts remain rejects with an expected error', () => {
+    //@TODO
+  })
+
+  test.skip('an unexpected error in startAttempt calls logAndRespondToUnexpected with expected values', () => {
+    //@TODO
+  })
 })

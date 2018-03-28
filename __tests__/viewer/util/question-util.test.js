@@ -219,4 +219,8 @@ describe('QuestionUtil', () => {
 			)
 		).toBe(true)
 	})
+
+	test.skip('checkAnswer', () => {
+		//@TODO
+	})
 })

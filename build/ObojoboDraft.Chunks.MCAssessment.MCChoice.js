@@ -206,18 +206,6 @@ var MCChoice = function (_React$Component) {
 			return this.props.model.getParentOfType('ObojoboDraft.Chunks.Question');
 		}
 	}, {
-		key: 'createFeedbackItem',
-		value: function createFeedbackItem(message) {
-			var feedback = OboModel.create('ObojoboDraft.Chunks.MCAssessment.MCFeedback');
-			var text = OboModel.create('ObojoboDraft.Chunks.Text');
-			// console.log('text', text)
-			text.modelState.textGroup.first.text.insertText(0, message);
-			// console.log('feedback', feedback)
-			feedback.children.add(text);
-
-			return feedback;
-		}
-	}, {
 		key: 'getInputType',
 		value: function getInputType() {
 			switch (this.props.responseType) {
