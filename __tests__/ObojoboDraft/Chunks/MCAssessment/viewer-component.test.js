@@ -243,4 +243,12 @@ describe('MCAssessment', () => {
 		const component = renderer.create(<MCAssessment model={model} moduleData={moduleData} />)
 		expect(_.shuffle).not.toBeCalled()
 	})
+
+	test.skip('Clicking Check Answer on an incorrect answer shows you that you got the answer wrong', () => {
+		//@TODO
+	})
+
+	test.skip('Clicking Check Answer on a correct answer shows you that you got the answer correct', () => {
+		//@TODO
+	})
 })

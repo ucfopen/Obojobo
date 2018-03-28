@@ -194,4 +194,16 @@ describe('Assessment', () => {
 		expect(el5.textContent.indexOf(' 100%')).not.toBe(-1)
 		expect(el5.textContent.indexOf('This is your highest score')).toBe(-1)
 	})
+
+	test.skip('takingTest case renders correct', () => {
+		//@TODO
+	})
+
+	test.skip('scoreSubmitted page renders the matching score action page', () => {
+		//@TODO
+	})
+
+	test.skip('clicking on the resend score button calls AssessmentUtil.resendLTIScore', () => {
+		//@TODO
+	})
 })
