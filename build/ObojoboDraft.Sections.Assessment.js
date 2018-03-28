@@ -796,7 +796,7 @@ var scoreSubmittedView = function scoreSubmittedView(assessment) {
 					)
 				),
 				React.createElement(_scoreReport2.default, {
-					retainedScore: latestHighestAttemptScoreDetails.attemptScore,
+					highestScore: latestHighestAttemptScoreDetails.assessmentScore,
 					items: report.getTextItems(true, latestHighestAttemptScoreDetails, AssessmentUtil.getAttemptsRemaining(assessment.props.moduleData.assessmentState, assessment.props.model))
 				}),
 				React.createElement(
@@ -818,7 +818,7 @@ var scoreSubmittedView = function scoreSubmittedView(assessment) {
 				ltiState: ltiState,
 				externalSystemLabel: externalSystemLabel,
 				onClickResendScore: onClickResendScore,
-				assessmentScore: latestHighestAttemptScoreDetails.attemptScore
+				assessmentScore: latestHighestAttemptScoreDetails.assessmentScore
 			}),
 			function () {
 				switch (ltiState.state.gradebookStatus) {
@@ -951,7 +951,7 @@ var LTIStatus = function (_React$Component) {
 			return React.createElement(
 				'div',
 				{ className: 'obojobo-draft--sections--assessment--lti-status is-synced' },
-				'\u2714 Your retained score of ' + Math.round(this.props.assessmentScore) + '% was sent to ' + systemLabel
+				'\u2714 Your highest score of ' + Math.round(this.props.assessmentScore) + '% was sent to ' + systemLabel
 			);
 		}
 	}, {
@@ -3120,25 +3120,25 @@ var getModsBreakdown = function getModsBreakdown(items) {
 
 var scoreReportView = function scoreReportView(_ref2) {
 	var items = _ref2.items,
-	    _ref2$retainedScore = _ref2.retainedScore,
-	    retainedScore = _ref2$retainedScore === undefined ? null : _ref2$retainedScore;
+	    _ref2$highestScore = _ref2.highestScore,
+	    highestScore = _ref2$highestScore === undefined ? null : _ref2$highestScore;
 
-	if (retainedScore) retainedScore = retainedScore + '%';
-	return retainedScore ? React.createElement(
+	if (highestScore) highestScore = highestScore + '%';
+	return highestScore ? React.createElement(
 		'div',
-		{ className: 'score-report is-showing-retained-score' },
+		{ className: 'score-report is-showing-highest-score' },
 		React.createElement(
 			'div',
-			{ className: 'retained-score' },
+			{ className: 'highest-score' },
 			React.createElement(
 				'div',
 				null,
-				'Retained Score'
+				'Highest Score'
 			),
 			React.createElement(
 				'h1',
 				null,
-				retainedScore
+				highestScore
 			),
 			getModsBreakdown(items)
 		)

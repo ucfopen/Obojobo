@@ -96,7 +96,7 @@ const scoreSubmittedView = assessment => {
 						<div>{Math.round(recentScore)}%</div>
 					</div>
 					<ScoreReportView
-						retainedScore={latestHighestAttemptScoreDetails.attemptScore}
+						highestScore={latestHighestAttemptScoreDetails.assessmentScore}
 						items={report.getTextItems(
 							true,
 							latestHighestAttemptScoreDetails,
@@ -116,7 +116,7 @@ const scoreSubmittedView = assessment => {
 					ltiState={ltiState}
 					externalSystemLabel={externalSystemLabel}
 					onClickResendScore={onClickResendScore}
-					assessmentScore={latestHighestAttemptScoreDetails.attemptScore}
+					assessmentScore={latestHighestAttemptScoreDetails.assessmentScore}
 				/>
 				{() => {
 					switch (ltiState.state.gradebookStatus) {

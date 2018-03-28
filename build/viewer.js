@@ -2506,7 +2506,7 @@ var AssessmentUtil = {
 		return assessment.attempts.map(function (attempt) {
 			return attempt.assessmentScoreDetails;
 		}).reduce(function (stored, current) {
-			return current.attemptScore >= stored.attemptScore ? current : stored;
+			return current.assessmentScore >= stored.assessmentScore ? current : stored;
 		});
 	},
 	getLastAttemptScoresForModel: function getLastAttemptScoresForModel(state, model) {

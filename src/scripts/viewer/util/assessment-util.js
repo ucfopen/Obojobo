@@ -52,7 +52,7 @@ var AssessmentUtil = {
 		return assessment.attempts
 			.map(attempt => attempt.assessmentScoreDetails)
 			.reduce((stored, current) => {
-				return current.attemptScore >= stored.attemptScore ? current : stored
+				return current.assessmentScore >= stored.assessmentScore ? current : stored
 			})
 	},
 

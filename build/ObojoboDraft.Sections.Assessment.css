@@ -73,19 +73,19 @@
   .obojobo-draft--sections--assessment .attempt-button-container button {
     margin: 2px; }
 
-.obojobo-draft--sections--assessment .score-report.is-showing-retained-score .mod-breakdown-items {
+.obojobo-draft--sections--assessment .score-report.is-showing-highest-score .mod-breakdown-items {
   border-top: 1px solid LightGray; }
-  .obojobo-draft--sections--assessment .score-report.is-showing-retained-score .mod-breakdown-items .mod-breakdown-item:last-child {
+  .obojobo-draft--sections--assessment .score-report.is-showing-highest-score .mod-breakdown-items .mod-breakdown-item:last-child {
     padding-bottom: 0.8em; }
 
-.obojobo-draft--sections--assessment .score-report:not(.is-showing-retained-score) .mod-breakdown {
+.obojobo-draft--sections--assessment .score-report:not(.is-showing-highest-score) .mod-breakdown {
   border: 1px solid LightGray;
   background: #fff; }
 
 .obojobo-draft--sections--assessment .score-report .mod-breakdown {
   display: flex;
   justify-content: center;
-  font-size: .7em;
+  font-size: 0.7em;
   line-height: 1.5em; }
   .obojobo-draft--sections--assessment .score-report .mod-breakdown .mod-breakdown-items {
     width: 80%; }
@@ -125,13 +125,13 @@
   .obojobo-draft--sections--assessment .score-report .score-report-score .score-report-score-content {
     display: inline-block; }
 
-.obojobo-draft--sections--assessment .score-report .retained-score {
+.obojobo-draft--sections--assessment .score-report .highest-score {
   background-color: white;
   flex: 2;
-  border-radius: 5%;
+  border-radius: 0.25em;
   margin: 0 1em;
   padding-top: 0.8em; }
-  .obojobo-draft--sections--assessment .score-report .retained-score h1 {
+  .obojobo-draft--sections--assessment .score-report .highest-score h1 {
     padding-bottom: 10px; }
 
 .obojobo-draft--sections--assessment .score > .results-bar {
@@ -139,8 +139,8 @@
   text-align: center;
   background-color: #f4f4f4;
   border-radius: 0.25em;
-  padding: 3em;
-  padding-bottom: 2em; }
+  padding: 2em 3em;
+  padding-bottom: 1em; }
   .obojobo-draft--sections--assessment .score > .results-bar > h1 {
     width: 100%;
     display: inline-block;
@@ -148,6 +148,7 @@
     font-size: 1.35em;
     border-bottom: 1px solid rgba(0, 0, 0, 0.3);
     padding: 1em 0;
+    padding-top: 0;
     box-sizing: border-box; }
 
 .obojobo-draft--sections--assessment .score .assessment-flex-container {
@@ -175,13 +176,17 @@
   border-radius: 0.25em;
   font-family: "Libre Franklin", Arial, sans-serif;
   padding: 0.5em 3em;
-  box-sizing: border-box;
-  background-color: #ffe9c3; }
-  .obojobo-draft--sections--assessment--lti-status > h2 {
-    color: #000000;
-    font-size: 1em;
-    font-weight: bold; }
-  .obojobo-draft--sections--assessment--lti-status > p,
-  .obojobo-draft--sections--assessment--lti-status > div > p {
-    font-size: 0.9em;
-    line-height: 1.4em; }
+  box-sizing: border-box; }
+  .obojobo-draft--sections--assessment--lti-status.is-synced {
+    font-size: 0.7em;
+    color: #999999; }
+  .obojobo-draft--sections--assessment--lti-status.is-not-synced {
+    background-color: #ffe9c3; }
+    .obojobo-draft--sections--assessment--lti-status.is-not-synced > h2 {
+      color: #000000;
+      font-size: 1em;
+      font-weight: bold; }
+    .obojobo-draft--sections--assessment--lti-status.is-not-synced > p,
+    .obojobo-draft--sections--assessment--lti-status.is-not-synced > div > p {
+      font-size: 0.9em;
+      line-height: 1.4em; }

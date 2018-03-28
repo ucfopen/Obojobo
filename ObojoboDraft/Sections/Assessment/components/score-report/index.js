@@ -29,9 +29,7 @@ const getTextDiv = (type, text) => {
 		case 'total':
 			return (
 				<div className={`score-report-text score-report-text-${type}`}>
-					<div className="score-report-text-content">
-						{type === 'line' ? text : text + ':'}
-					</div>
+					<div className="score-report-text-content">{type === 'line' ? text : text + ':'}</div>
 				</div>
 			)
 	}
@@ -47,7 +45,7 @@ const getTextDiv = (type, text) => {
 	)
 }
 
-const getScoreDiv = (type, value) =>
+const getScoreDiv = (type, value) => (
 	<div className="score-report-score">
 		<div className="score-report-score-content">
 			<strong>
@@ -56,35 +54,36 @@ const getScoreDiv = (type, value) =>
 			</strong>
 		</div>
 	</div>
+)
 
-const getModsBreakdownItem = ({ type, text, value }) =>
+const getModsBreakdownItem = ({ type, text, value }) => (
 	<div className="mod-breakdown-item">
 		{getTextDiv(type, text)}
 		{type === 'line' ? null : getScoreDiv(type, value)}
 	</div>
+)
 
-const getModsBreakdown = items =>
+const getModsBreakdown = items => (
 	<div className="mod-breakdown">
 		<div className="mod-breakdown-items">
 			{items.map((item, index) => getModsBreakdownItem(item))}
 		</div>
 	</div>
+)
 
-const scoreReportView = ({ items, retainedScore = null }) => {
-	if (retainedScore) retainedScore = retainedScore + '%'
-	return retainedScore
-		? <div className="score-report is-showing-retained-score">
-				<div className="retained-score">
-					<div>Retained Score</div>
-					<h1>
-						{retainedScore}
-					</h1>
-					{getModsBreakdown(items)}
-				</div>
-			</div>
-		: <div className="score-report">
+const scoreReportView = ({ items, highestScore = null }) => {
+	if (highestScore) highestScore = highestScore + '%'
+	return highestScore ? (
+		<div className="score-report is-showing-highest-score">
+			<div className="highest-score">
+				<div>Highest Score</div>
+				<h1>{highestScore}</h1>
 				{getModsBreakdown(items)}
 			</div>
+		</div>
+	) : (
+		<div className="score-report">{getModsBreakdown(items)}</div>
+	)
 }
 
 export default scoreReportView

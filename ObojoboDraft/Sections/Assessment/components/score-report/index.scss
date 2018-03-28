@@ -1,6 +1,5 @@
 .score-report {
-
-	&.is-showing-retained-score {
+	&.is-showing-highest-score {
 		.mod-breakdown-items {
 			border-top: 1px solid LightGray;
 
@@ -12,7 +11,7 @@
 		}
 	}
 
-	&:not(.is-showing-retained-score) {
+	&:not(.is-showing-highest-score) {
 		.mod-breakdown {
 			border: 1px solid LightGray;
 			background: #fff;
@@ -22,11 +21,11 @@
 	.mod-breakdown {
 		display: flex;
 		justify-content: center;
-		font-size: .7em;
+		font-size: 0.7em;
 		line-height: 1.5em;
 
 		.mod-breakdown-items {
-			width: 80%
+			width: 80%;
 		}
 	}
 
@@ -35,7 +34,7 @@
 		align-items: baseline;
 
 		&:first-child:not(:only-child) {
-			margin-top: 5px
+			margin-top: 5px;
 		}
 
 		&:last-child:not(:only-child) {
@@ -49,7 +48,7 @@
 			text-align: left;
 			margin-bottom: 0.5em;
 
-			.score-report-text-content { 
+			.score-report-text-content {
 				display: inline-block;
 			}
 
@@ -61,13 +60,14 @@
 				color: green;
 			}
 
-			&.score-report-text-line, &.score-report-text-value{
+			&.score-report-text-line,
+			&.score-report-text-value {
 				margin-top: 0.5em;
 			}
 
 			&.score-report-text-line {
 				width: 100%;
-				text-align: center
+				text-align: center;
 			}
 
 			.score-report-text-total {
@@ -82,15 +82,15 @@
 		white-space: nowrap;
 		text-align: right;
 
-		.score-report-score-content { 
+		.score-report-score-content {
 			display: inline-block;
 		}
 	}
 
-	.retained-score {
+	.highest-score {
 		background-color: white;
 		flex: 2;
-		border-radius: 5%;
+		border-radius: $dimension-rounded-radius;
 		margin: 0 1em;
 		padding-top: 0.8em;
 
@@ -99,4 +99,3 @@
 		}
 	}
 }
-
