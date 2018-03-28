@@ -547,12 +547,7 @@ var assessmentReviewView = function assessmentReviewView(_ref) {
 					{ className: 'score-section' },
 					React.createElement(_scoreReport2.default, {
 						items: report.getTextItems(false, attempt.assessmentScoreDetails, AssessmentUtil.getAttemptsRemaining(assessment.props.moduleData.assessmentState, assessment.props.model))
-					}),
-					React.createElement(
-						'pre',
-						null,
-						JSON.stringify(attempt.assessmentScoreDetails, null, 2)
-					)
+					})
 				)
 			),
 			attempt.questionScores.map(function (scoreObj) {

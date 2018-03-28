@@ -62,7 +62,6 @@ const assessmentReviewView = ({ assessment }) => {
 								)
 							)}
 						/>
-						<pre>{JSON.stringify(attempt.assessmentScoreDetails, null, 2)}</pre>
 					</div>
 				</div>
 				{attempt.questionScores.map(scoreObj => {
