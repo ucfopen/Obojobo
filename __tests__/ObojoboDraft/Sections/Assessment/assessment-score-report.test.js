@@ -7,11 +7,12 @@ describe('AssessmentScoreReport', () => {
 
 	// type=attempt:
 
-	test('type=attempt, no mods rewarded', () => {
+	test('type=attempt, no mods rewarded, highest=true', () => {
 		expect(
 			new AssessmentScoreReport({
 				type: 'attempt'
 			}).getTextItems(
+				true,
 				{
 					attemptNumber: 2,
 					attemptScore: 90,
@@ -31,29 +32,33 @@ describe('AssessmentScoreReport', () => {
 		])
 	})
 
-	test('type=attempt, mods rewarded', () => {
+	test('type=attempt, no mods rewarded, highest=false', () => {
 		expect(
 			new AssessmentScoreReport({
-				type: 'attempt',
-				mods: [
-					{
-						attemptCondition: 1,
-						reward: 5
-					}
-				]
+				type: 'attempt'
 			}).getTextItems(
+				false,
 				{
-					attemptNumber: 1,
+					attemptNumber: 2,
 					attemptScore: 90,
 					assessmentScore: 90,
-					rewardedMods: [0],
-					rewardTotal: 5,
-					assessmentModdedScore: 95,
+					rewardedMods: [],
+					rewardTotal: 0,
+					assessmentModdedScore: 90,
 					status: 'passed'
 				},
 				10
 			)
 		).toEqual([
+			{
+				type: 'line',
+				text: 'This is your attempt 2 score'
+			}
+		])
+	})
+
+	test('type=attempt, mods rewarded, highest=true and false', () => {
+		let expected = [
 			{
 				type: 'value',
 				text: 'Attempt 1 score',
@@ -69,12 +74,60 @@ describe('AssessmentScoreReport', () => {
 				text: 'Total',
 				value: '95'
 			}
-		])
+		]
+
+		expect(
+			new AssessmentScoreReport({
+				type: 'attempt',
+				mods: [
+					{
+						attemptCondition: 1,
+						reward: 5
+					}
+				]
+			}).getTextItems(
+				true,
+				{
+					attemptNumber: 1,
+					attemptScore: 90,
+					assessmentScore: 90,
+					rewardedMods: [0],
+					rewardTotal: 5,
+					assessmentModdedScore: 95,
+					status: 'passed'
+				},
+				10
+			)
+		).toEqual(expected)
+
+		expect(
+			new AssessmentScoreReport({
+				type: 'attempt',
+				mods: [
+					{
+						attemptCondition: 1,
+						reward: 5
+					}
+				]
+			}).getTextItems(
+				false,
+				{
+					attemptNumber: 1,
+					attemptScore: 90,
+					assessmentScore: 90,
+					rewardedMods: [0],
+					rewardTotal: 5,
+					assessmentModdedScore: 95,
+					status: 'passed'
+				},
+				10
+			)
+		).toEqual(expected)
 	})
 
 	// type=pass-fail, status=passed, passedResult=$attempt_score:
 
-	test('type=pass-fail, status=passed, passedResult=$attempt_score, passing=80-100%, no mods rewarded', () => {
+	test('type=pass-fail, status=passed, passedResult=$attempt_score, passing=80-100%, no mods rewarded, highest=true', () => {
 		expect(
 			new AssessmentScoreReport({
 				type: 'pass-fail',
@@ -83,6 +136,7 @@ describe('AssessmentScoreReport', () => {
 				failedResult: 0,
 				unableToPassResult: 50
 			}).getTextItems(
+				true,
 				{
 					attemptNumber: 2,
 					attemptScore: 90,
@@ -102,33 +156,37 @@ describe('AssessmentScoreReport', () => {
 		])
 	})
 
-	test('type=pass-fail, status=passed, passedResult=$attempt_score, passing=80-100%, mods rewarded', () => {
+	test('type=pass-fail, status=passed, passedResult=$attempt_score, passing=80-100%, no mods rewarded, highest=false', () => {
 		expect(
 			new AssessmentScoreReport({
 				type: 'pass-fail',
 				passingAttemptScore: 80,
 				passedResult: '$attempt_score',
 				failedResult: 0,
-				unableToPassResult: 50,
-				mods: [
-					{
-						attemptCondition: '[1,2]',
-						reward: 5
-					}
-				]
+				unableToPassResult: 50
 			}).getTextItems(
+				false,
 				{
 					attemptNumber: 2,
 					attemptScore: 90,
 					assessmentScore: 90,
-					rewardedMods: [0],
-					rewardTotal: 5,
-					assessmentModdedScore: 95,
+					rewardedMods: [],
+					rewardTotal: 0,
+					assessmentModdedScore: 90,
 					status: 'passed'
 				},
 				10
 			)
 		).toEqual([
+			{
+				type: 'line',
+				text: 'This is your passing attempt 2 score'
+			}
+		])
+	})
+
+	test('type=pass-fail, status=passed, passedResult=$attempt_score, passing=80-100%, mods rewarded, highest=true and false', () => {
+		let expected = [
 			{
 				type: 'value',
 				text: 'Passing attempt 2 score',
@@ -144,10 +202,66 @@ describe('AssessmentScoreReport', () => {
 				text: 'Total',
 				value: '95'
 			}
-		])
+		]
+
+		expect(
+			new AssessmentScoreReport({
+				type: 'pass-fail',
+				passingAttemptScore: 80,
+				passedResult: '$attempt_score',
+				failedResult: 0,
+				unableToPassResult: 50,
+				mods: [
+					{
+						attemptCondition: '[1,2]',
+						reward: 5
+					}
+				]
+			}).getTextItems(
+				true,
+				{
+					attemptNumber: 2,
+					attemptScore: 90,
+					assessmentScore: 90,
+					rewardedMods: [0],
+					rewardTotal: 5,
+					assessmentModdedScore: 95,
+					status: 'passed'
+				},
+				10
+			)
+		).toEqual(expected)
+
+		expect(
+			new AssessmentScoreReport({
+				type: 'pass-fail',
+				passingAttemptScore: 80,
+				passedResult: '$attempt_score',
+				failedResult: 0,
+				unableToPassResult: 50,
+				mods: [
+					{
+						attemptCondition: '[1,2]',
+						reward: 5
+					}
+				]
+			}).getTextItems(
+				false,
+				{
+					attemptNumber: 2,
+					attemptScore: 90,
+					assessmentScore: 90,
+					rewardedMods: [0],
+					rewardTotal: 5,
+					assessmentModdedScore: 95,
+					status: 'passed'
+				},
+				10
+			)
+		).toEqual(expected)
 	})
 
-	test('type=pass-fail, status=passed, passedResult=$attempt_score, passing=100%, no mods rewarded', () => {
+	test('type=pass-fail, status=passed, passedResult=$attempt_score, passing=100%, no mods rewarded, highest=true', () => {
 		expect(
 			new AssessmentScoreReport({
 				type: 'pass-fail',
@@ -156,6 +270,7 @@ describe('AssessmentScoreReport', () => {
 				failedResult: 0,
 				unableToPassResult: 50
 			}).getTextItems(
+				true,
 				{
 					attemptNumber: 2,
 					attemptScore: 100,
@@ -175,33 +290,37 @@ describe('AssessmentScoreReport', () => {
 		])
 	})
 
-	test('type=pass-fail, status=passed, passedResult=$attempt_score, passing=100%, mods rewarded', () => {
+	test('type=pass-fail, status=passed, passedResult=$attempt_score, passing=100%, no mods rewarded, highest=false', () => {
 		expect(
 			new AssessmentScoreReport({
 				type: 'pass-fail',
 				passingAttemptScore: 100,
 				passedResult: '$attempt_score',
 				failedResult: 0,
-				unableToPassResult: 50,
-				mods: [
-					{
-						attemptCondition: '[1,2]',
-						reward: 5
-					}
-				]
+				unableToPassResult: 50
 			}).getTextItems(
+				false,
 				{
 					attemptNumber: 2,
 					attemptScore: 100,
 					assessmentScore: 100,
-					rewardedMods: [0],
-					rewardTotal: 5,
+					rewardedMods: [],
+					rewardTotal: 0,
 					assessmentModdedScore: 100,
 					status: 'passed'
 				},
 				10
 			)
 		).toEqual([
+			{
+				type: 'line',
+				text: 'This is your passing attempt 2 score'
+			}
+		])
+	})
+
+	test('type=pass-fail, status=passed, passedResult=$attempt_score, passing=100%, mods rewarded, highest=true and false', () => {
+		let expected = [
 			{
 				type: 'value',
 				text: 'Passing attempt 2 score',
@@ -217,12 +336,75 @@ describe('AssessmentScoreReport', () => {
 				text: 'Total (Max 100%)',
 				value: '100'
 			}
-		])
+		]
+
+		expect(
+			new AssessmentScoreReport({
+				type: 'pass-fail',
+				passingAttemptScore: 100,
+				passedResult: '$attempt_score',
+				failedResult: 0,
+				unableToPassResult: 50,
+				mods: [
+					{
+						attemptCondition: '[1,2]',
+						reward: 5
+					}
+				]
+			}).getTextItems(
+				true,
+				{
+					attemptNumber: 2,
+					attemptScore: 100,
+					assessmentScore: 100,
+					rewardedMods: [0],
+					rewardTotal: 5,
+					assessmentModdedScore: 100,
+					status: 'passed'
+				},
+				10
+			)
+		).toEqual(expected)
+
+		expect(
+			new AssessmentScoreReport({
+				type: 'pass-fail',
+				passingAttemptScore: 100,
+				passedResult: '$attempt_score',
+				failedResult: 0,
+				unableToPassResult: 50,
+				mods: [
+					{
+						attemptCondition: '[1,2]',
+						reward: 5
+					}
+				]
+			}).getTextItems(
+				false,
+				{
+					attemptNumber: 2,
+					attemptScore: 100,
+					assessmentScore: 100,
+					rewardedMods: [0],
+					rewardTotal: 5,
+					assessmentModdedScore: 100,
+					status: 'passed'
+				},
+				10
+			)
+		).toEqual(expected)
 	})
 
 	// type=pass-fail, status=passed, passedResult=100:
 
-	test('type=pass-fail, status=passed, passedResult=100, passing=80-100%, no mods rewarded', () => {
+	test('type=pass-fail, status=passed, passedResult=100, passing=80-100%, no mods rewarded, highest=true and false', () => {
+		let expected = [
+			{
+				type: 'line',
+				text: 'This is your rewarded score for your passing attempt 2 score'
+			}
+		]
+
 		expect(
 			new AssessmentScoreReport({
 				type: 'pass-fail',
@@ -231,6 +413,7 @@ describe('AssessmentScoreReport', () => {
 				failedResult: 0,
 				unableToPassResult: 50
 			}).getTextItems(
+				true,
 				{
 					attemptNumber: 2,
 					attemptScore: 90,
@@ -242,41 +425,33 @@ describe('AssessmentScoreReport', () => {
 				},
 				10
 			)
-		).toEqual([
-			{
-				type: 'line',
-				text: 'This is your rewarded score for your passing attempt 2 score'
-			}
-		])
-	})
+		).toEqual(expected)
 
-	test('type=pass-fail, status=passed, passedResult=100, passing=80-100%, mods rewarded', () => {
 		expect(
 			new AssessmentScoreReport({
 				type: 'pass-fail',
 				passingAttemptScore: 80,
 				passedResult: 100,
 				failedResult: 0,
-				unableToPassResult: 50,
-				mods: [
-					{
-						attemptCondition: '[1,2]',
-						reward: 5
-					}
-				]
+				unableToPassResult: 50
 			}).getTextItems(
+				false,
 				{
 					attemptNumber: 2,
 					attemptScore: 90,
 					assessmentScore: 100,
-					rewardedMods: [0],
-					rewardTotal: 5,
+					rewardedMods: [],
+					rewardTotal: 0,
 					assessmentModdedScore: 100,
 					status: 'passed'
 				},
 				10
 			)
-		).toEqual([
+		).toEqual(expected)
+	})
+
+	test('type=pass-fail, status=passed, passedResult=100, passing=80-100%, mods rewarded, highest=true and false', () => {
+		let expected = [
 			{
 				type: 'value',
 				text: 'Reward for your passing attempt 2 score',
@@ -292,10 +467,73 @@ describe('AssessmentScoreReport', () => {
 				text: 'Total',
 				value: '100'
 			}
-		])
+		]
+
+		expect(
+			new AssessmentScoreReport({
+				type: 'pass-fail',
+				passingAttemptScore: 80,
+				passedResult: 100,
+				failedResult: 0,
+				unableToPassResult: 50,
+				mods: [
+					{
+						attemptCondition: '[1,2]',
+						reward: 5
+					}
+				]
+			}).getTextItems(
+				true,
+				{
+					attemptNumber: 2,
+					attemptScore: 90,
+					assessmentScore: 100,
+					rewardedMods: [0],
+					rewardTotal: 5,
+					assessmentModdedScore: 100,
+					status: 'passed'
+				},
+				10
+			)
+		).toEqual(expected)
+
+		expect(
+			new AssessmentScoreReport({
+				type: 'pass-fail',
+				passingAttemptScore: 80,
+				passedResult: 100,
+				failedResult: 0,
+				unableToPassResult: 50,
+				mods: [
+					{
+						attemptCondition: '[1,2]',
+						reward: 5
+					}
+				]
+			}).getTextItems(
+				false,
+				{
+					attemptNumber: 2,
+					attemptScore: 90,
+					assessmentScore: 100,
+					rewardedMods: [0],
+					rewardTotal: 5,
+					assessmentModdedScore: 100,
+					status: 'passed'
+				},
+				10
+			)
+		).toEqual(expected)
 	})
 
-	test('type=pass-fail, status=passed, passedResult=100, passing=100%, no mods rewarded', () => {
+	test('type=pass-fail, status=passed, passedResult=100, passing=100%, no mods rewarded, highest=true and false', () => {
+		let expected = [
+			{
+				type: 'line',
+				text: 'This is your rewarded score for your passing attempt 2 score'
+			}
+		]
+
 		expect(
 			new AssessmentScoreReport({
 				type: 'pass-fail',
@@ -304,6 +542,7 @@ describe('AssessmentScoreReport', () => {
 				failedResult: 0,
 				unableToPassResult: 50
 			}).getTextItems(
+				true,
 				{
 					attemptNumber: 2,
 					attemptScore: 100,
@@ -315,41 +554,33 @@ describe('AssessmentScoreReport', () => {
 				},
 				10
 			)
-		).toEqual([
-			{
-				type: 'line',
-				text: 'This is your rewarded score for your passing attempt 2 score'
-			}
-		])
-	})
+		).toEqual(expected)
 
-	test('type=pass-fail, status=passed, passedResult=100, passing=100%, mods rewarded', () => {
 		expect(
 			new AssessmentScoreReport({
 				type: 'pass-fail',
 				passingAttemptScore: 100,
 				passedResult: 100,
 				failedResult: 0,
-				unableToPassResult: 50,
-				mods: [
-					{
-						attemptCondition: '[1,2]',
-						reward: 5
-					}
-				]
+				unableToPassResult: 50
 			}).getTextItems(
+				false,
 				{
 					attemptNumber: 2,
 					attemptScore: 100,
 					assessmentScore: 100,
-					rewardedMods: [0],
-					rewardTotal: 5,
+					rewardedMods: [],
+					rewardTotal: 0,
 					assessmentModdedScore: 100,
 					status: 'passed'
 				},
 				10
 			)
-		).toEqual([
+		).toEqual(expected)
+	})
+
+	test('type=pass-fail, status=passed, passedResult=100, passing=100%, mods rewarded', () => {
+		let expected = [
 			{
 				type: 'value',
 				text: 'Reward for your passing attempt 2 score',
@@ -365,12 +596,75 @@ describe('AssessmentScoreReport', () => {
 				text: 'Total (Max 100%)',
 				value: '100'
 			}
-		])
+		]
+
+		expect(
+			new AssessmentScoreReport({
+				type: 'pass-fail',
+				passingAttemptScore: 100,
+				passedResult: 100,
+				failedResult: 0,
+				unableToPassResult: 50,
+				mods: [
+					{
+						attemptCondition: '[1,2]',
+						reward: 5
+					}
+				]
+			}).getTextItems(
+				true,
+				{
+					attemptNumber: 2,
+					attemptScore: 100,
+					assessmentScore: 100,
+					rewardedMods: [0],
+					rewardTotal: 5,
+					assessmentModdedScore: 100,
+					status: 'passed'
+				},
+				10
+			)
+		).toEqual(expected)
+
+		expect(
+			new AssessmentScoreReport({
+				type: 'pass-fail',
+				passingAttemptScore: 100,
+				passedResult: 100,
+				failedResult: 0,
+				unableToPassResult: 50,
+				mods: [
+					{
+						attemptCondition: '[1,2]',
+						reward: 5
+					}
+				]
+			}).getTextItems(
+				false,
+				{
+					attemptNumber: 2,
+					attemptScore: 100,
+					assessmentScore: 100,
+					rewardedMods: [0],
+					rewardTotal: 5,
+					assessmentModdedScore: 100,
+					status: 'passed'
+				},
+				10
+			)
+		).toEqual(expected)
 	})
 
 	// type=pass-fail, status=failed, failedResult=no-score:
 
-	test('type=pass-fail, status=failed, failedResult=no-score, passing=80-100%', () => {
+	test('type=pass-fail, status=failed, failedResult=no-score, passing=80-100%, highest=true and false', () => {
+		let expected = [
+			{
+				type: 'line',
+				text: 'You need an attempt score of 80-100% to pass'
+			}
+		]
+
 		expect(
 			new AssessmentScoreReport({
 				type: 'pass-fail',
@@ -379,6 +673,7 @@ describe('AssessmentScoreReport', () => {
 				failedResult: 'no-score',
 				unableToPassResult: 50
 			}).getTextItems(
+				true,
 				{
 					attemptNumber: 2,
 					attemptScore: 50,
@@ -390,82 +685,49 @@ describe('AssessmentScoreReport', () => {
 				},
 				10
 			)
-		).toEqual([
-			{
-				type: 'line',
-				text: 'You need an attempt score of 80-100% to pass'
-			}
-		])
-	})
+		).toEqual(expected)
 
-	test('type=pass-fail, status=failed, failedResult=0, passing=80-100%', () => {
 		expect(
 			new AssessmentScoreReport({
 				type: 'pass-fail',
 				passingAttemptScore: 80,
 				passedResult: 100,
-				failedResult: 0,
+				failedResult: 'no-score',
 				unableToPassResult: 50
 			}).getTextItems(
+				false,
 				{
 					attemptNumber: 2,
 					attemptScore: 50,
-					assessmentScore: 0,
+					assessmentScore: null,
 					rewardedMods: [],
 					rewardTotal: 0,
-					assessmentModdedScore: 0,
+					assessmentModdedScore: null,
 					status: 'failed'
 				},
 				10
 			)
-		).toEqual([
+		).toEqual(expected)
+	})
+
+	test('type=pass-fail, status=failed, failedResult=0, passing=80-100%, highest=true or false', () => {
+		let expected = [
 			{
 				type: 'value',
 				text: 'Given score for a non-passing (less than 80%) attempt',
 				value: '0'
 			}
-		])
-	})
+		]
 
-	// type=pass-fail, status=failed, failedResult=0:
-
-	test('type=pass-fail, status=failed, failedResult=no-score, passing=100%', () => {
 		expect(
 			new AssessmentScoreReport({
 				type: 'pass-fail',
-				passingAttemptScore: 100,
-				passedResult: 100,
-				failedResult: 'no-score',
-				unableToPassResult: 50
-			}).getTextItems(
-				{
-					attemptNumber: 2,
-					attemptScore: 50,
-					assessmentScore: null,
-					rewardedMods: [],
-					rewardTotal: 0,
-					assessmentModdedScore: null,
-					status: 'failed'
-				},
-				10
-			)
-		).toEqual([
-			{
-				type: 'line',
-				text: 'You need an attempt score of 100% to pass'
-			}
-		])
-	})
-
-	test('type=pass-fail, status=failed, failedResult=0, passing=100%', () => {
-		expect(
-			new AssessmentScoreReport({
-				type: 'pass-fail',
-				passingAttemptScore: 100,
+				passingAttemptScore: 80,
 				passedResult: 100,
 				failedResult: 0,
 				unableToPassResult: 50
 			}).getTextItems(
+				true,
 				{
 					attemptNumber: 2,
 					attemptScore: 50,
@@ -477,54 +739,159 @@ describe('AssessmentScoreReport', () => {
 				},
 				10
 			)
-		).toEqual([
+		).toEqual(expected)
+
+		expect(
+			new AssessmentScoreReport({
+				type: 'pass-fail',
+				passingAttemptScore: 80,
+				passedResult: 100,
+				failedResult: 0,
+				unableToPassResult: 50
+			}).getTextItems(
+				false,
+				{
+					attemptNumber: 2,
+					attemptScore: 50,
+					assessmentScore: 0,
+					rewardedMods: [],
+					rewardTotal: 0,
+					assessmentModdedScore: 0,
+					status: 'failed'
+				},
+				10
+			)
+		).toEqual(expected)
+	})
+
+	// type=pass-fail, status=failed, failedResult=0:
+
+	test('type=pass-fail, status=failed, failedResult=no-score, passing=100%, highest=true and false', () => {
+		let expected = [
+			{
+				type: 'line',
+				text: 'You need an attempt score of 100% to pass'
+			}
+		]
+
+		expect(
+			new AssessmentScoreReport({
+				type: 'pass-fail',
+				passingAttemptScore: 100,
+				passedResult: 100,
+				failedResult: 'no-score',
+				unableToPassResult: 50
+			}).getTextItems(
+				true,
+				{
+					attemptNumber: 2,
+					attemptScore: 50,
+					assessmentScore: null,
+					rewardedMods: [],
+					rewardTotal: 0,
+					assessmentModdedScore: null,
+					status: 'failed'
+				},
+				10
+			)
+		).toEqual(expected)
+
+		expect(
+			new AssessmentScoreReport({
+				type: 'pass-fail',
+				passingAttemptScore: 100,
+				passedResult: 100,
+				failedResult: 'no-score',
+				unableToPassResult: 50
+			}).getTextItems(
+				false,
+				{
+					attemptNumber: 2,
+					attemptScore: 50,
+					assessmentScore: null,
+					rewardedMods: [],
+					rewardTotal: 0,
+					assessmentModdedScore: null,
+					status: 'failed'
+				},
+				10
+			)
+		).toEqual(expected)
+	})
+
+	test('type=pass-fail, status=failed, failedResult=0, passing=100%, highest=true and false', () => {
+		let expected = [
 			{
 				type: 'value',
 				text: 'Given score for a non-passing (less than 100%) attempt',
 				value: '0'
 			}
-		])
+		]
+
+		expect(
+			new AssessmentScoreReport({
+				type: 'pass-fail',
+				passingAttemptScore: 100,
+				passedResult: 100,
+				failedResult: 0,
+				unableToPassResult: 50
+			}).getTextItems(
+				true,
+				{
+					attemptNumber: 2,
+					attemptScore: 50,
+					assessmentScore: 0,
+					rewardedMods: [],
+					rewardTotal: 0,
+					assessmentModdedScore: 0,
+					status: 'failed'
+				},
+				10
+			)
+		).toEqual(expected)
+
+		expect(
+			new AssessmentScoreReport({
+				type: 'pass-fail',
+				passingAttemptScore: 100,
+				passedResult: 100,
+				failedResult: 0,
+				unableToPassResult: 50
+			}).getTextItems(
+				false,
+				{
+					attemptNumber: 2,
+					attemptScore: 50,
+					assessmentScore: 0,
+					rewardedMods: [],
+					rewardTotal: 0,
+					assessmentModdedScore: 0,
+					status: 'failed'
+				},
+				10
+			)
+		).toEqual(expected)
 	})
 
 	// type=pass-fail, status=unableToPass, unableToPassResult=no-score:
 
-	test('type=pass-fail, status=unableToPass, unableToPassResult=no-score, passing=80-100%', () => {
-		expect(
-			new AssessmentScoreReport({
-				type: 'pass-fail',
-				passingAttemptScore: 80,
-				passedResult: 100,
-				failedResult: 0,
-				unableToPassResult: 'no-score'
-			}).getTextItems(
-				{
-					attemptNumber: 2,
-					attemptScore: 50,
-					assessmentScore: null,
-					rewardedMods: [],
-					rewardTotal: 0,
-					assessmentModdedScore: null,
-					status: 'unableToPass'
-				},
-				2
-			)
-		).toEqual([
+	test('type=pass-fail, status=unableToPass, unableToPassResult=no-score, passing=80-100%, highest=true and false', () => {
+		let expected = [
 			{
 				type: 'line',
 				text: 'You needed an attempt score of 80-100% to pass'
 			}
-		])
-	})
+		]
 
-	test('type=pass-fail, status=unableToPass, unableToPassResult=no-score, passing=100%', () => {
 		expect(
 			new AssessmentScoreReport({
 				type: 'pass-fail',
-				passingAttemptScore: 100,
+				passingAttemptScore: 80,
 				passedResult: 100,
 				failedResult: 0,
 				unableToPassResult: 'no-score'
 			}).getTextItems(
+				true,
 				{
 					attemptNumber: 2,
 					attemptScore: 50,
@@ -536,17 +903,94 @@ describe('AssessmentScoreReport', () => {
 				},
 				2
 			)
-		).toEqual([
+		).toEqual(expected)
+
+		expect(
+			new AssessmentScoreReport({
+				type: 'pass-fail',
+				passingAttemptScore: 80,
+				passedResult: 100,
+				failedResult: 0,
+				unableToPassResult: 'no-score'
+			}).getTextItems(
+				false,
+				{
+					attemptNumber: 2,
+					attemptScore: 50,
+					assessmentScore: null,
+					rewardedMods: [],
+					rewardTotal: 0,
+					assessmentModdedScore: null,
+					status: 'unableToPass'
+				},
+				2
+			)
+		).toEqual(expected)
+	})
+
+	test('type=pass-fail, status=unableToPass, unableToPassResult=no-score, passing=100%, highest=true and false', () => {
+		let expected = [
 			{
 				type: 'line',
 				text: 'You needed an attempt score of 100% to pass'
 			}
-		])
+		]
+
+		expect(
+			new AssessmentScoreReport({
+				type: 'pass-fail',
+				passingAttemptScore: 100,
+				passedResult: 100,
+				failedResult: 0,
+				unableToPassResult: 'no-score'
+			}).getTextItems(
+				true,
+				{
+					attemptNumber: 2,
+					attemptScore: 50,
+					assessmentScore: null,
+					rewardedMods: [],
+					rewardTotal: 0,
+					assessmentModdedScore: null,
+					status: 'unableToPass'
+				},
+				2
+			)
+		).toEqual(expected)
+
+		expect(
+			new AssessmentScoreReport({
+				type: 'pass-fail',
+				passingAttemptScore: 100,
+				passedResult: 100,
+				failedResult: 0,
+				unableToPassResult: 'no-score'
+			}).getTextItems(
+				false,
+				{
+					attemptNumber: 2,
+					attemptScore: 50,
+					assessmentScore: null,
+					rewardedMods: [],
+					rewardTotal: 0,
+					assessmentModdedScore: null,
+					status: 'unableToPass'
+				},
+				2
+			)
+		).toEqual(expected)
 	})
 
 	// type=pass-fail, status=unableToPass, unableToPassResult=$highest_attempt_score:
 
-	test('type=pass-fail, status=unableToPass, unableToPassResult=$highest_attempt_score, passing=80-100%', () => {
+	test('type=pass-fail, status=unableToPass, unableToPassResult=$highest_attempt_score, passing=80-100%, highest=true and false', () => {
+		let expected = [
+			{
+				type: 'line',
+				text: 'This is your highest attempt score (Attempt 1)'
+			}
+		]
+
 		expect(
 			new AssessmentScoreReport({
 				type: 'pass-fail',
@@ -555,6 +999,7 @@ describe('AssessmentScoreReport', () => {
 				failedResult: 0,
 				unableToPassResult: '$highest_attempt_score'
 			}).getTextItems(
+				true,
 				{
 					attemptNumber: 1,
 					attemptScore: 50,
@@ -566,15 +1011,39 @@ describe('AssessmentScoreReport', () => {
 				},
 				2
 			)
-		).toEqual([
+		).toEqual(expected)
+
+		expect(
+			new AssessmentScoreReport({
+				type: 'pass-fail',
+				passingAttemptScore: 80,
+				passedResult: 100,
+				failedResult: 0,
+				unableToPassResult: '$highest_attempt_score'
+			}).getTextItems(
+				false,
+				{
+					attemptNumber: 1,
+					attemptScore: 50,
+					assessmentScore: 75,
+					rewardedMods: [],
+					rewardTotal: 0,
+					assessmentModdedScore: 75,
+					status: 'unableToPass'
+				},
+				2
+			)
+		).toEqual(expected)
+	})
+
+	test('type=pass-fail, status=unableToPass, unableToPassResult=$highest_attempt_score, passing=100%, highest=true and false', () => {
+		let expected = [
 			{
 				type: 'line',
 				text: 'This is your highest attempt score (Attempt 1)'
 			}
-		])
-	})
+		]
 
-	test('type=pass-fail, status=unableToPass, unableToPassResult=$highest_attempt_score, passing=100%', () => {
 		expect(
 			new AssessmentScoreReport({
 				type: 'pass-fail',
@@ -583,6 +1052,7 @@ describe('AssessmentScoreReport', () => {
 				failedResult: 0,
 				unableToPassResult: '$highest_attempt_score'
 			}).getTextItems(
+				true,
 				{
 					attemptNumber: 1,
 					attemptScore: 50,
@@ -594,54 +1064,51 @@ describe('AssessmentScoreReport', () => {
 				},
 				2
 			)
-		).toEqual([
-			{
-				type: 'line',
-				text: 'This is your highest attempt score (Attempt 1)'
-			}
-		])
+		).toEqual(expected)
+
+		expect(
+			new AssessmentScoreReport({
+				type: 'pass-fail',
+				passingAttemptScore: 100,
+				passedResult: 100,
+				failedResult: 0,
+				unableToPassResult: '$highest_attempt_score'
+			}).getTextItems(
+				false,
+				{
+					attemptNumber: 1,
+					attemptScore: 50,
+					assessmentScore: 75,
+					rewardedMods: [],
+					rewardTotal: 0,
+					assessmentModdedScore: 75,
+					status: 'unableToPass'
+				},
+				2
+			)
+		).toEqual(expected)
 	})
 
 	// type=pass-fail, status=unableToPass, unableToPassResult=0
 
-	test('type=pass-fail, status=unableToPass, unableToPassResult=0, passing=80-100%', () => {
-		expect(
-			new AssessmentScoreReport({
-				type: 'pass-fail',
-				passingAttemptScore: 80,
-				passedResult: 100,
-				failedResult: 0,
-				unableToPassResult: 0
-			}).getTextItems(
-				{
-					attemptNumber: 1,
-					attemptScore: 50,
-					assessmentScore: 75,
-					rewardedMods: [],
-					rewardTotal: 0,
-					assessmentModdedScore: 75,
-					status: 'unableToPass'
-				},
-				2
-			)
-		).toEqual([
+	test('type=pass-fail, status=unableToPass, unableToPassResult=0, passing=80-100%, highest=true and false', () => {
+		let expected = [
 			{
 				type: 'value',
 				text: 'Given score for not achieving a passing (80-100%) attempt',
 				value: '0'
 			}
-		])
-	})
+		]
 
-	test('type=pass-fail, status=unableToPass, unableToPassResult=0, passing=100%', () => {
 		expect(
 			new AssessmentScoreReport({
 				type: 'pass-fail',
-				passingAttemptScore: 100,
+				passingAttemptScore: 80,
 				passedResult: 100,
 				failedResult: 0,
 				unableToPassResult: 0
 			}).getTextItems(
+				true,
 				{
 					attemptNumber: 1,
 					attemptScore: 50,
@@ -653,13 +1120,83 @@ describe('AssessmentScoreReport', () => {
 				},
 				2
 			)
-		).toEqual([
+		).toEqual(expected)
+
+		expect(
+			new AssessmentScoreReport({
+				type: 'pass-fail',
+				passingAttemptScore: 80,
+				passedResult: 100,
+				failedResult: 0,
+				unableToPassResult: 0
+			}).getTextItems(
+				false,
+				{
+					attemptNumber: 1,
+					attemptScore: 50,
+					assessmentScore: 75,
+					rewardedMods: [],
+					rewardTotal: 0,
+					assessmentModdedScore: 75,
+					status: 'unableToPass'
+				},
+				2
+			)
+		).toEqual(expected)
+	})
+
+	test('type=pass-fail, status=unableToPass, unableToPassResult=0, passing=100%, highest=true and false', () => {
+		let expected = [
 			{
 				type: 'value',
 				text: 'Given score for not achieving a passing (100%) attempt',
 				value: '0'
 			}
-		])
+		]
+
+		expect(
+			new AssessmentScoreReport({
+				type: 'pass-fail',
+				passingAttemptScore: 100,
+				passedResult: 100,
+				failedResult: 0,
+				unableToPassResult: 0
+			}).getTextItems(
+				true,
+				{
+					attemptNumber: 1,
+					attemptScore: 50,
+					assessmentScore: 75,
+					rewardedMods: [],
+					rewardTotal: 0,
+					assessmentModdedScore: 75,
+					status: 'unableToPass'
+				},
+				2
+			)
+		).toEqual(expected)
+
+		expect(
+			new AssessmentScoreReport({
+				type: 'pass-fail',
+				passingAttemptScore: 100,
+				passedResult: 100,
+				failedResult: 0,
+				unableToPassResult: 0
+			}).getTextItems(
+				false,
+				{
+					attemptNumber: 1,
+					attemptScore: 50,
+					assessmentScore: 75,
+					rewardedMods: [],
+					rewardTotal: 0,
+					assessmentModdedScore: 75,
+					status: 'unableToPass'
+				},
+				2
+			)
+		).toEqual(expected)
 	})
 
 	// mods:
@@ -688,6 +1225,7 @@ describe('AssessmentScoreReport', () => {
 
 		expect(
 			asr.getTextItems(
+				true,
 				{
 					attemptNumber: 1,
 					attemptScore: 50,
@@ -729,6 +1267,7 @@ describe('AssessmentScoreReport', () => {
 
 		expect(
 			asr.getTextItems(
+				true,
 				{
 					attemptNumber: 2,
 					attemptScore: 50,
@@ -781,6 +1320,7 @@ describe('AssessmentScoreReport', () => {
 
 		expect(
 			asr.getTextItems(
+				true,
 				{
 					attemptNumber: 3,
 					attemptScore: 50,
@@ -827,6 +1367,7 @@ describe('AssessmentScoreReport', () => {
 
 		expect(
 			asr.getTextItems(
+				true,
 				{
 					attemptNumber: 4,
 					attemptScore: 50,
@@ -863,6 +1404,7 @@ describe('AssessmentScoreReport', () => {
 
 		expect(
 			asr.getTextItems(
+				true,
 				{
 					attemptNumber: 5,
 					attemptScore: 50,
@@ -904,6 +1446,7 @@ describe('AssessmentScoreReport', () => {
 				type: 'pass-fail',
 				passedResult: 'invalid-value'
 			}).getTextItems(
+				true,
 				{
 					attemptNumber: 1,
 					attemptScore: 100,

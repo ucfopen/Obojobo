@@ -3204,7 +3204,7 @@ var AssessmentScoreReport = function () {
 
 	_createClass(AssessmentScoreReport, [{
 		key: 'getTextItems',
-		value: function getTextItems(assessmentScoreInfo, numOfAttemptsAvailable) {
+		value: function getTextItems(isHighest, assessmentScoreInfo, numOfAttemptsAvailable) {
 			var rubric = this.assessmentRubric;
 
 			var passingAttemptScore = typeof rubric.passingAttemptScore !== 'undefined' ? rubric.passingAttemptScore : 100;
@@ -3212,69 +3212,83 @@ var AssessmentScoreReport = function () {
 			var failedResult = typeof rubric.failedResult !== 'undefined' ? rubric.failedResult : 0;
 			var unableToPassResult = typeof rubric.unableToPassResult !== 'undefined' ? rubric.unableToPassResult : 0;
 			var isRewardedMods = assessmentScoreInfo.rewardedMods.length > 0;
+			var isTypeAttempt = rubric.type === 'attempt';
+			var isTypePassFail = rubric.type === 'pass-fail';
 			var status = assessmentScoreInfo.status;
+			var passed = status === 'passed';
+			var failed = status === 'failed';
+			var unableToPass = status === 'unableToPass';
 			var attemptNum = assessmentScoreInfo.attemptNumber;
 
 			var items = [];
 			var attemptScore = getDisplayFriendlyScore(assessmentScoreInfo.attemptScore);
 			var assessScore = getDisplayFriendlyScore(assessmentScoreInfo.assessmentModdedScore);
 
-			if (rubric.type === 'attempt' && isRewardedMods) {
+			if (isTypeAttempt && isRewardedMods) {
 				items.push({
 					type: 'value',
 					text: 'Attempt ' + attemptNum + ' score',
 					value: attemptScore
 				});
-			} else if (rubric.type === 'attempt' && !isRewardedMods) {
+			} else if (isTypeAttempt && !isRewardedMods && isHighest) {
 				items.push({
 					type: 'line',
 					text: 'This is your highest attempt score (Attempt ' + attemptNum + ')'
 				});
-				//
-			} else if (rubric.type === 'pass-fail' && status === 'passed' && passedResult === '$attempt_score' && isRewardedMods) {
+			} else if (isTypeAttempt && !isRewardedMods && !isHighest) {
+				items.push({
+					type: 'line',
+					text: 'This is your attempt ' + attemptNum + ' score'
+				});
+			} else if (isTypePassFail && passed && passedResult === '$attempt_score' && isRewardedMods) {
 				items.push({
 					type: 'value',
 					text: 'Passing attempt ' + attemptNum + ' score',
 					value: attemptScore
 				});
-			} else if (rubric.type === 'pass-fail' && status === 'passed' && passedResult === '$attempt_score' && !isRewardedMods) {
+			} else if (isTypePassFail && passed && passedResult === '$attempt_score' && !isRewardedMods && isHighest) {
 				items.push({
 					type: 'line',
 					text: 'This is your highest passing attempt ' + attemptNum + ' score'
 				});
-			} else if (rubric.type === 'pass-fail' && status === 'passed' && Number.isFinite(parseFloat(passedResult)) && isRewardedMods) {
+			} else if (isTypePassFail && passed && passedResult === '$attempt_score' && !isRewardedMods && !isHighest) {
+				items.push({
+					type: 'line',
+					text: 'This is your passing attempt ' + attemptNum + ' score'
+				});
+			} else if (isTypePassFail && passed && Number.isFinite(parseFloat(passedResult)) && isRewardedMods) {
 				items.push({
 					type: 'value',
 					text: 'Reward for your passing attempt ' + attemptNum + ' score',
 					value: getDisplayFriendlyScore(passedResult)
 				});
-			} else if (rubric.type === 'pass-fail' && status === 'passed' && Number.isFinite(parseFloat(passedResult)) && !isRewardedMods) {
+			} else if (isTypePassFail && passed && Number.isFinite(parseFloat(passedResult)) && !isRewardedMods) {
 				items.push({
 					type: 'line',
 					text: 'This is your rewarded score for your passing attempt ' + attemptNum + ' score'
 				});
-			} else if (rubric.type === 'pass-fail' && status === 'failed' && failedResult === 'no-score') {
+			} else if (isTypePassFail && failed && failedResult === 'no-score') {
 				items.push({
 					type: 'line',
 					text: 'You need an attempt score of ' + getPassingRange(passingAttemptScore) + ' to pass'
 				});
-			} else if (rubric.type === 'pass-fail' && status === 'failed' && Number.isFinite(parseFloat(failedResult))) {
+			} else if (isTypePassFail && failed && Number.isFinite(parseFloat(failedResult))) {
 				items.push({
 					type: 'value',
 					text: 'Given score for a non-passing (less than ' + getDisplayFriendlyScore(passingAttemptScore) + '%) attempt',
 					value: getDisplayFriendlyScore(failedResult)
 				});
-			} else if (rubric.type === 'pass-fail' && status === 'unableToPass' && unableToPassResult === 'no-score') {
+			} else if (isTypePassFail && unableToPass && unableToPassResult === 'no-score') {
 				items.push({
 					type: 'line',
 					text: 'You needed an attempt score of ' + getPassingRange(passingAttemptScore) + ' to pass'
 				});
-			} else if (rubric.type === 'pass-fail' && status === 'unableToPass' && unableToPassResult === '$highest_attempt_score') {
+			} else if (isTypePassFail && unableToPass && unableToPassResult === '$highest_attempt_score') {
 				items.push({
 					type: 'line',
 					text: 'This is your highest attempt score (Attempt ' + attemptNum + ')'
 				});
-			} else if (rubric.type === 'pass-fail' && status === 'unableToPass' && Number.isFinite(parseFloat(unableToPassResult))) {
+			} else if (isTypePassFail && unableToPass && Number.isFinite(parseFloat(unableToPassResult))) {
 				items.push({
 					type: 'value',
 					text: 'Given score for not achieving a passing (' + getPassingRange(passingAttemptScore) + ') attempt',
