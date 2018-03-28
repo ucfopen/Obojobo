@@ -3020,102 +3020,110 @@ module.exports = startOfISOWeek;
 Object.defineProperty(exports, "__esModule", {
 	value: true
 });
-var getModsList = function getModsList(textItemsArray) {
-	var modsList = textItemsArray.map(function (obj, index) {
-		var type = obj.type;
+var getSpecialChar = function getSpecialChar(type) {
+	switch (type) {
+		case 'extra-credit':
+			return '+';
+		case 'penalty':
+			return '-';
+		case 'value':
+			return '';
+		case 'total':
+			return '=';
+	}
+	return '';
+};
 
+var getSpanTextClass = function getSpanTextClass(type) {
+	switch (type) {
+		case 'penalty':
+			return 'is-type-score-report-penalty';
+		case 'extra-credit':
+			return 'is-type-score-report-extra-credit';
+	}
+	return '';
+};
 
-		var getSpecialChar = function getSpecialChar(type) {
-			switch (type) {
-				case 'extra-credit':
-					return '+';
-				case 'penalty':
-					return '-';
-				case 'value':
-					return '';
-				case 'total':
-					return '=';
-			}
-		};
-
-		var getSpanTextClass = function getSpanTextClass(type) {
-			switch (type) {
-				case 'penalty':
-					return 'is-type-score-report-penalty';
-				case 'extra-credit':
-					return 'is-type-score-report-extra-credit';
-				default:
-					return '';
-			}
-		};
-
-		var getTextDiv = function getTextDiv() {
-			if (type === 'value') return React.createElement(
-				'div',
-				{ className: 'score-report-text score-report-text-value' },
-				'Passing Reward:'
-			);
-
-			if (type === 'total') return React.createElement(
-				'div',
-				{ className: 'score-report-text score-report-text-total' },
-				obj.text
-			);
-
+var getTextDiv = function getTextDiv(type, text) {
+	switch (type) {
+		case 'value':
+		case 'line':
+		case 'total':
 			return React.createElement(
 				'div',
-				{ className: 'score-report-text' },
+				{ className: 'score-report-text score-report-text-' + type },
 				React.createElement(
-					'span',
-					{ className: getSpanTextClass(type) },
-					type.charAt(0).toUpperCase() + type.substr(1)
-				),
-				' - ' + obj.text + ':'
-			);
-		};
-
-		var getScoreDiv = function getScoreDiv() {
-			return React.createElement(
-				'div',
-				{ className: 'score-report-score' },
-				React.createElement(
-					'strong',
-					null,
-					getSpecialChar(obj.type),
-					obj.value ? ' ' + obj.value + ' %' : null
+					'div',
+					{ className: 'score-report-text-content' },
+					type === 'line' ? text : text + ':'
 				)
 			);
-		};
-
-		return React.createElement(
-			'li',
-			null,
-			getTextDiv(),
-			getScoreDiv()
-		);
-	});
-
+	}
 	return React.createElement(
-		'ul',
-		null,
-		modsList
+		'div',
+		{ className: 'score-report-text' },
+		React.createElement(
+			'div',
+			{ className: 'score-report-text-content' },
+			React.createElement(
+				'span',
+				{ className: getSpanTextClass(type) },
+				type.charAt(0).toUpperCase() + type.substr(1)
+			),
+			' - ' + text + ':'
+		)
 	);
 };
 
-var scoreReportView = function scoreReportView(_ref) {
-	var items = _ref.items,
-	    retainedScore = _ref.retainedScore;
+var getScoreDiv = function getScoreDiv(type, value) {
+	return React.createElement(
+		'div',
+		{ className: 'score-report-score' },
+		React.createElement(
+			'div',
+			{ className: 'score-report-score-content' },
+			React.createElement(
+				'strong',
+				null,
+				getSpecialChar(type),
+				value ? ' ' + value + ' %' : null
+			)
+		)
+	);
+};
 
-	if (typeof retainedScore === 'number') {
-		if (retainedScore === 0) retainedScore = '--';else retainedScore = retainedScore + ' %';
-	}
+var getModsBreakdownItem = function getModsBreakdownItem(_ref) {
+	var type = _ref.type,
+	    text = _ref.text,
+	    value = _ref.value;
+	return React.createElement(
+		'div',
+		{ className: 'mod-breakdown-item' },
+		getTextDiv(type, text),
+		type === 'line' ? null : getScoreDiv(type, value)
+	);
+};
 
-	var modBreakDown = React.createElement(
+var getModsBreakdown = function getModsBreakdown(items) {
+	return React.createElement(
 		'div',
 		{ className: 'mod-breakdown' },
-		getModsList(items)
+		React.createElement(
+			'div',
+			{ className: 'mod-breakdown-items' },
+			items.map(function (item, index) {
+				return getModsBreakdownItem(item);
+			})
+		)
 	);
+};
 
+var scoreReportView = function scoreReportView(_ref2) {
+	var items = _ref2.items,
+	    _ref2$retainedScore = _ref2.retainedScore,
+	    retainedScore = _ref2$retainedScore === undefined ? null : _ref2$retainedScore;
+
+	if (retainedScore) retainedScore = retainedScore + '%';
 	return retainedScore ? React.createElement(
 		'div',
 		{ className: 'score-report is-showing-retained-score' },
@@ -3132,12 +3140,12 @@ var scoreReportView = function scoreReportView(_ref) {
 				null,
 				retainedScore
 			),
-			modBreakDown
+			getModsBreakdown(items)
 		)
 	) : React.createElement(
 		'div',
 		{ className: 'score-report' },
-		modBreakDown
+		getModsBreakdown(items)
 	);
 };
 
@@ -3189,7 +3197,7 @@ var getModText = function getModText(attemptCondition, numOfAttemptsAvailable) {
 	if (range.length === 1) {
 		if (range[0] === 1) return 'Passed on first attempt';
 		if (range[0] === numOfAttemptsAvailable) return 'Passed on last attempt';
-		return 'Passed on attempt ' + range[0];
+		return 'Passed on attempt\xA0' + range[0];
 	}
 
 	return 'Passed on attempts ' + range[0] + ' to ' + range[1];
@@ -3227,45 +3235,45 @@ var AssessmentScoreReport = function () {
 			if (isTypeAttempt && isRewardedMods) {
 				items.push({
 					type: 'value',
-					text: 'Attempt ' + attemptNum + ' score',
+					text: 'Attempt\xA0' + attemptNum + ' score',
 					value: attemptScore
 				});
 			} else if (isTypeAttempt && !isRewardedMods && isHighest) {
 				items.push({
 					type: 'line',
-					text: 'This is your highest attempt score (Attempt ' + attemptNum + ')'
+					text: 'This is your highest attempt score (Attempt\xA0' + attemptNum + ')'
 				});
 			} else if (isTypeAttempt && !isRewardedMods && !isHighest) {
 				items.push({
 					type: 'line',
-					text: 'This is your attempt ' + attemptNum + ' score'
+					text: 'This is your attempt\xA0' + attemptNum + ' score'
 				});
 			} else if (isTypePassFail && passed && passedResult === '$attempt_score' && isRewardedMods) {
 				items.push({
 					type: 'value',
-					text: 'Passing attempt ' + attemptNum + ' score',
+					text: 'Passing attempt\xA0' + attemptNum + ' score',
 					value: attemptScore
 				});
 			} else if (isTypePassFail && passed && passedResult === '$attempt_score' && !isRewardedMods && isHighest) {
 				items.push({
 					type: 'line',
-					text: 'This is your highest passing attempt ' + attemptNum + ' score'
+					text: 'This is your highest passing attempt\xA0' + attemptNum + ' score'
 				});
 			} else if (isTypePassFail && passed && passedResult === '$attempt_score' && !isRewardedMods && !isHighest) {
 				items.push({
 					type: 'line',
-					text: 'This is your passing attempt ' + attemptNum + ' score'
+					text: 'This is your passing attempt\xA0' + attemptNum + ' score'
 				});
 			} else if (isTypePassFail && passed && Number.isFinite(parseFloat(passedResult)) && isRewardedMods) {
 				items.push({
 					type: 'value',
-					text: 'Reward for your passing attempt ' + attemptNum + ' score',
+					text: 'Reward for your passing attempt\xA0' + attemptNum + ' score',
 					value: getDisplayFriendlyScore(passedResult)
 				});
 			} else if (isTypePassFail && passed && Number.isFinite(parseFloat(passedResult)) && !isRewardedMods) {
 				items.push({
 					type: 'line',
-					text: 'This is your rewarded score for your passing attempt ' + attemptNum + ' score'
+					text: 'This is your rewarded score for your passing attempt\xA0' + attemptNum + ' score'
 				});
 			} else if (isTypePassFail && failed && failedResult === 'no-score') {
 				items.push({
@@ -3286,7 +3294,7 @@ var AssessmentScoreReport = function () {
 			} else if (isTypePassFail && unableToPass && unableToPassResult === '$highest_attempt_score') {
 				items.push({
 					type: 'line',
-					text: 'This is your highest attempt score (Attempt ' + attemptNum + ')'
+					text: 'This is your highest attempt score (Attempt\xA0' + attemptNum + ')'
 				});
 			} else if (isTypePassFail && unableToPass && Number.isFinite(parseFloat(unableToPassResult))) {
 				items.push({

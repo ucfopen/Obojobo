@@ -28,7 +28,7 @@ let getModText = (attemptCondition, numOfAttemptsAvailable) => {
 	if (range.length === 1) {
 		if (range[0] === 1) return 'Passed on first attempt'
 		if (range[0] === numOfAttemptsAvailable) return 'Passed on last attempt'
-		return 'Passed on attempt ' + range[0]
+		return 'Passed on attempt\u00a0' + range[0]
 	}
 
 	return 'Passed on attempts ' + range[0] + ' to ' + range[1]
@@ -64,23 +64,23 @@ export default class AssessmentScoreReport {
 		if (isTypeAttempt && isRewardedMods) {
 			items.push({
 				type: 'value',
-				text: 'Attempt ' + attemptNum + ' score',
+				text: 'Attempt\u00a0' + attemptNum + ' score',
 				value: attemptScore
 			})
 		} else if (isTypeAttempt && !isRewardedMods && isHighest) {
 			items.push({
 				type: 'line',
-				text: 'This is your highest attempt score (Attempt ' + attemptNum + ')'
+				text: 'This is your highest attempt score (Attempt\u00a0' + attemptNum + ')'
 			})
 		} else if (isTypeAttempt && !isRewardedMods && !isHighest) {
 			items.push({
 				type: 'line',
-				text: 'This is your attempt ' + attemptNum + ' score'
+				text: 'This is your attempt\u00a0' + attemptNum + ' score'
 			})
 		} else if (isTypePassFail && passed && passedResult === '$attempt_score' && isRewardedMods) {
 			items.push({
 				type: 'value',
-				text: 'Passing attempt ' + attemptNum + ' score',
+				text: 'Passing attempt\u00a0' + attemptNum + ' score',
 				value: attemptScore
 			})
 		} else if (
@@ -92,7 +92,7 @@ export default class AssessmentScoreReport {
 		) {
 			items.push({
 				type: 'line',
-				text: 'This is your highest passing attempt ' + attemptNum + ' score'
+				text: 'This is your highest passing attempt\u00a0' + attemptNum + ' score'
 			})
 		} else if (
 			isTypePassFail &&
@@ -103,7 +103,7 @@ export default class AssessmentScoreReport {
 		) {
 			items.push({
 				type: 'line',
-				text: 'This is your passing attempt ' + attemptNum + ' score'
+				text: 'This is your passing attempt\u00a0' + attemptNum + ' score'
 			})
 		} else if (
 			isTypePassFail &&
@@ -113,7 +113,7 @@ export default class AssessmentScoreReport {
 		) {
 			items.push({
 				type: 'value',
-				text: 'Reward for your passing attempt ' + attemptNum + ' score',
+				text: 'Reward for your passing attempt\u00a0' + attemptNum + ' score',
 				value: getDisplayFriendlyScore(passedResult)
 			})
 		} else if (
@@ -124,7 +124,7 @@ export default class AssessmentScoreReport {
 		) {
 			items.push({
 				type: 'line',
-				text: 'This is your rewarded score for your passing attempt ' + attemptNum + ' score'
+				text: 'This is your rewarded score for your passing attempt\u00a0' + attemptNum + ' score'
 			})
 		} else if (isTypePassFail && failed && failedResult === 'no-score') {
 			items.push({
@@ -148,7 +148,7 @@ export default class AssessmentScoreReport {
 		} else if (isTypePassFail && unableToPass && unableToPassResult === '$highest_attempt_score') {
 			items.push({
 				type: 'line',
-				text: 'This is your highest attempt score (Attempt ' + attemptNum + ')'
+				text: 'This is your highest attempt score (Attempt\u00a0' + attemptNum + ')'
 			})
 		} else if (isTypePassFail && unableToPass && Number.isFinite(parseFloat(unableToPassResult))) {
 			items.push({

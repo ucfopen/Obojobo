@@ -1,8 +1,14 @@
 .score-report {
 
 	&.is-showing-retained-score {
-		ul {
+		.mod-breakdown-items {
 			border-top: 1px solid LightGray;
+
+			.mod-breakdown-item {
+				&:last-child {
+					padding-bottom: 0.8em;
+				}
+			}
 		}
 	}
 
@@ -19,59 +25,78 @@
 		font-size: .7em;
 		line-height: 1.5em;
 
-		ul {
+		.mod-breakdown-items {
 			width: 80%
 		}
 	}
 
-	ul {
-		padding: 0;
-		list-style-type: none;
-	}
+	.mod-breakdown-item {
+		display: flex;
+		align-items: baseline;
 
-	li {
 		&:first-child:not(:only-child) {
 			margin-top: 5px
 		}
 
 		&:last-child:not(:only-child) {
-			margin-top: 5px;
-			padding-top: 4px;
+			padding-top: 0.5em;
 			border-top: 1px solid LightGray;
 		}
+
+		.score-report-text {
+			display: inline-block;
+			width: 80%;
+			text-align: left;
+			margin-bottom: 0.5em;
+
+			.score-report-text-content { 
+				display: inline-block;
+			}
+
+			.is-type-score-report-penalty {
+				color: red;
+			}
+
+			.is-type-score-report-extra-credit {
+				color: green;
+			}
+
+			&.score-report-text-line, &.score-report-text-value{
+				margin-top: 0.5em;
+			}
+
+			&.score-report-text-line {
+				width: 100%;
+				text-align: center
+			}
+
+			.score-report-text-total {
+				font-weight: bold;
+			}
+		}
 	}
 
-	.score-report-text {
-		display: inline-block;
-		width: 80%;
-		text-align: left;
-
-		.is-type-score-report-penalty {
-			color: red;
-		}
-
-		.is-type-score-report-extra-credit {
-			color: green;
-		}
-
-		.score-report-text-total {
-			font-weight: bold;
-		}
-	}
-	
 	.score-report-score {
 		display: inline-block;
 		width: 20%;
 		white-space: nowrap;
 		text-align: right;
+
+		.score-report-score-content { 
+			display: inline-block;
+		}
 	}
-	
+
 	.retained-score {
 		background-color: white;
 		flex: 2;
 		border-radius: 5%;
 		margin: 0 1em;
 		padding-top: 0.8em;
+
+		h1 {
+			padding-bottom: 10px;
+		}
 	}
 }
 

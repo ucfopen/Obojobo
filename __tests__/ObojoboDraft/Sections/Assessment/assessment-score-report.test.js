@@ -27,7 +27,7 @@ describe('AssessmentScoreReport', () => {
 		).toEqual([
 			{
 				type: 'line',
-				text: 'This is your highest attempt score (Attempt 2)'
+				text: 'This is your highest attempt score (Attempt\u00a02)'
 			}
 		])
 	})
@@ -52,7 +52,7 @@ describe('AssessmentScoreReport', () => {
 		).toEqual([
 			{
 				type: 'line',
-				text: 'This is your attempt 2 score'
+				text: 'This is your attempt\u00a02 score'
 			}
 		])
 	})
@@ -61,7 +61,7 @@ describe('AssessmentScoreReport', () => {
 		let expected = [
 			{
 				type: 'value',
-				text: 'Attempt 1 score',
+				text: 'Attempt\u00a01 score',
 				value: '90'
 			},
 			{
@@ -151,7 +151,7 @@ describe('AssessmentScoreReport', () => {
 		).toEqual([
 			{
 				type: 'line',
-				text: 'This is your highest passing attempt 2 score'
+				text: 'This is your highest passing attempt\u00a02 score'
 			}
 		])
 	})
@@ -180,7 +180,7 @@ describe('AssessmentScoreReport', () => {
 		).toEqual([
 			{
 				type: 'line',
-				text: 'This is your passing attempt 2 score'
+				text: 'This is your passing attempt\u00a02 score'
 			}
 		])
 	})
@@ -189,7 +189,7 @@ describe('AssessmentScoreReport', () => {
 		let expected = [
 			{
 				type: 'value',
-				text: 'Passing attempt 2 score',
+				text: 'Passing attempt\u00a02 score',
 				value: '90'
 			},
 			{
@@ -285,7 +285,7 @@ describe('AssessmentScoreReport', () => {
 		).toEqual([
 			{
 				type: 'line',
-				text: 'This is your highest passing attempt 2 score'
+				text: 'This is your highest passing attempt\u00a02 score'
 			}
 		])
 	})
@@ -314,7 +314,7 @@ describe('AssessmentScoreReport', () => {
 		).toEqual([
 			{
 				type: 'line',
-				text: 'This is your passing attempt 2 score'
+				text: 'This is your passing attempt\u00a02 score'
 			}
 		])
 	})
@@ -323,7 +323,7 @@ describe('AssessmentScoreReport', () => {
 		let expected = [
 			{
 				type: 'value',
-				text: 'Passing attempt 2 score',
+				text: 'Passing attempt\u00a02 score',
 				value: '100'
 			},
 			{
@@ -401,7 +401,7 @@ describe('AssessmentScoreReport', () => {
 		let expected = [
 			{
 				type: 'line',
-				text: 'This is your rewarded score for your passing attempt 2 score'
+				text: 'This is your rewarded score for your passing attempt\u00a02 score'
 			}
 		]
 
@@ -454,7 +454,7 @@ describe('AssessmentScoreReport', () => {
 		let expected = [
 			{
 				type: 'value',
-				text: 'Reward for your passing attempt 2 score',
+				text: 'Reward for your passing attempt\u00a02 score',
 				value: '100'
 			},
 			{
@@ -530,7 +530,7 @@ describe('AssessmentScoreReport', () => {
 		let expected = [
 			{
 				type: 'line',
-				text: 'This is your rewarded score for your passing attempt 2 score'
+				text: 'This is your rewarded score for your passing attempt\u00a02 score'
 			}
 		]
 
@@ -583,7 +583,7 @@ describe('AssessmentScoreReport', () => {
 		let expected = [
 			{
 				type: 'value',
-				text: 'Reward for your passing attempt 2 score',
+				text: 'Reward for your passing attempt\u00a02 score',
 				value: '100'
 			},
 			{
@@ -987,7 +987,7 @@ describe('AssessmentScoreReport', () => {
 		let expected = [
 			{
 				type: 'line',
-				text: 'This is your highest attempt score (Attempt 1)'
+				text: 'This is your highest attempt score (Attempt\u00a01)'
 			}
 		]
 
@@ -1040,7 +1040,7 @@ describe('AssessmentScoreReport', () => {
 		let expected = [
 			{
 				type: 'line',
-				text: 'This is your highest attempt score (Attempt 1)'
+				text: 'This is your highest attempt score (Attempt\u00a01)'
 			}
 		]
 
@@ -1240,7 +1240,7 @@ describe('AssessmentScoreReport', () => {
 		).toEqual([
 			{
 				type: 'value',
-				text: 'Attempt 1 score',
+				text: 'Attempt\u00a01 score',
 				value: '50'
 			},
 			{
@@ -1282,12 +1282,12 @@ describe('AssessmentScoreReport', () => {
 		).toEqual([
 			{
 				type: 'value',
-				text: 'Attempt 2 score',
+				text: 'Attempt\u00a02 score',
 				value: '50'
 			},
 			{
 				type: 'penalty',
-				text: 'Passed on attempt 2',
+				text: 'Passed on attempt\u00a02',
 				value: '1'
 			},
 			{
@@ -1297,7 +1297,7 @@ describe('AssessmentScoreReport', () => {
 			},
 			{
 				type: 'extra-credit',
-				text: 'Passed on attempt 2',
+				text: 'Passed on attempt\u00a02',
 				value: '4'
 			},
 			{
@@ -1307,7 +1307,7 @@ describe('AssessmentScoreReport', () => {
 			},
 			{
 				type: 'penalty',
-				text: 'Passed on attempt 2',
+				text: 'Passed on attempt\u00a02',
 				value: '9'
 			},
 
@@ -1335,7 +1335,7 @@ describe('AssessmentScoreReport', () => {
 		).toEqual([
 			{
 				type: 'value',
-				text: 'Attempt 3 score',
+				text: 'Attempt\u00a03 score',
 				value: '50'
 			},
 			{
@@ -1345,7 +1345,7 @@ describe('AssessmentScoreReport', () => {
 			},
 			{
 				type: 'extra-credit',
-				text: 'Passed on attempt 3',
+				text: 'Passed on attempt\u00a03',
 				value: '8'
 			},
 			{
@@ -1382,7 +1382,7 @@ describe('AssessmentScoreReport', () => {
 		).toEqual([
 			{
 				type: 'value',
-				text: 'Attempt 4 score',
+				text: 'Attempt\u00a04 score',
 				value: '50'
 			},
 			{
@@ -1419,7 +1419,7 @@ describe('AssessmentScoreReport', () => {
 		).toEqual([
 			{
 				type: 'value',
-				text: 'Attempt 5 score',
+				text: 'Attempt\u00a05 score',
 				value: '50'
 			},
 			{
