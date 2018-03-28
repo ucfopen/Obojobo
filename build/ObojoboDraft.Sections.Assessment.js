@@ -546,8 +546,13 @@ var assessmentReviewView = function assessmentReviewView(_ref) {
 					'div',
 					{ className: 'score-section' },
 					React.createElement(_scoreReport2.default, {
-						items: report.getTextItems(attempt.assessmentScoreDetails, AssessmentUtil.getAttemptsRemaining(assessment.props.moduleData.assessmentState, assessment.props.model))
-					})
+						items: report.getTextItems(false, attempt.assessmentScoreDetails, AssessmentUtil.getAttemptsRemaining(assessment.props.moduleData.assessmentState, assessment.props.model))
+					}),
+					React.createElement(
+						'pre',
+						null,
+						JSON.stringify(attempt.assessmentScoreDetails, null, 2)
+					)
 				)
 			),
 			attempt.questionScores.map(function (scoreObj) {
@@ -797,7 +802,7 @@ var scoreSubmittedView = function scoreSubmittedView(assessment) {
 				),
 				React.createElement(_scoreReport2.default, {
 					retainedScore: latestHighestAttemptScoreDetails.attemptScore,
-					items: report.getTextItems(latestHighestAttemptScoreDetails, AssessmentUtil.getAttemptsRemaining(assessment.props.moduleData.assessmentState, assessment.props.model))
+					items: report.getTextItems(true, latestHighestAttemptScoreDetails, AssessmentUtil.getAttemptsRemaining(assessment.props.moduleData.assessmentState, assessment.props.model))
 				}),
 				React.createElement(
 					'div',

@@ -43,9 +43,7 @@ const assessmentReviewView = ({ assessment }) => {
 							</h4>
 							<div className="attempt-info-content">
 								<ul>
-									<li>
-										{dateString}
-									</li>
+									<li>{dateString}</li>
 									<li>
 										{numCorrect} out of {attempt.questionScores.length} questions correct
 									</li>
@@ -56,6 +54,7 @@ const assessmentReviewView = ({ assessment }) => {
 					<div className="score-section">
 						<ScoreReportView
 							items={report.getTextItems(
+								false,
 								attempt.assessmentScoreDetails,
 								AssessmentUtil.getAttemptsRemaining(
 									assessment.props.moduleData.assessmentState,
@@ -63,6 +62,7 @@ const assessmentReviewView = ({ assessment }) => {
 								)
 							)}
 						/>
+						<pre>{JSON.stringify(attempt.assessmentScoreDetails, null, 2)}</pre>
 					</div>
 				</div>
 				{attempt.questionScores.map(scoreObj => {
@@ -102,9 +102,7 @@ const assessmentReviewView = ({ assessment }) => {
 
 	return (
 		<div className="attempt-review-container">
-			<div className="attempt-button-container">
-				{attemptButtons}
-			</div>
+			<div className="attempt-button-container">{attemptButtons}</div>
 			{attemptReviewComponents[context]}
 		</div>
 	)

@@ -69,11 +69,7 @@ const scoreSubmittedView = assessment => {
 		let PageComponent = pageModel.getComponentClass()
 		childEl = <PageComponent model={pageModel} moduleData={assessment.props.moduleData} />
 	} else {
-		childEl = (
-			<p>
-				{scoreAction.message}
-			</p>
-		)
+		childEl = <p>{scoreAction.message}</p>
 	}
 
 	let externalSystemLabel = assessment.props.moduleData.lti.outcomeServiceHostname
@@ -92,20 +88,17 @@ const scoreSubmittedView = assessment => {
 	return (
 		<div className="score unlock">
 			<div className="results-bar">
-				<h1>
-					{assessmentLabel} - How You Did
-				</h1>
+				<h1>{assessmentLabel} - How You Did</h1>
 
 				<div className="assessment-flex-container">
 					<div>
 						<div>Last Attempt Score</div>
-						<div>
-							{Math.round(recentScore)}%
-						</div>
+						<div>{Math.round(recentScore)}%</div>
 					</div>
 					<ScoreReportView
 						retainedScore={latestHighestAttemptScoreDetails.attemptScore}
 						items={report.getTextItems(
+							true,
 							latestHighestAttemptScoreDetails,
 							AssessmentUtil.getAttemptsRemaining(
 								assessment.props.moduleData.assessmentState,
@@ -115,9 +108,7 @@ const scoreSubmittedView = assessment => {
 					/>
 					<div>
 						<div>Attempts Remaining</div>
-						<div>
-							{attemptsRemaining}
-						</div>
+						<div>{attemptsRemaining}</div>
 					</div>
 				</div>
 
@@ -152,14 +143,18 @@ const scoreSubmittedView = assessment => {
 				}}
 			</div>
 			{childEl}
-			{showFullReview
-				? <FullReview assessment={assessment} />
-				: <div className="review">
-						<p className="number-correct">{`You got ${numCorrect} out of ${questionScores.length} questions correct:`}</p>
-						{questionScores.map((questionScore, index) =>
-							basicReview(assessment.props.moduleData, questionScore, index)
-						)}
-					</div>}
+			{showFullReview ? (
+				<FullReview assessment={assessment} />
+			) : (
+				<div className="review">
+					<p className="number-correct">{`You got ${numCorrect} out of ${
+						questionScores.length
+					} questions correct:`}</p>
+					{questionScores.map((questionScore, index) =>
+						basicReview(assessment.props.moduleData, questionScore, index)
+					)}
+				</div>
+			)}
 		</div>
 	)
 }
