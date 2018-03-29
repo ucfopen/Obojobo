@@ -13,7 +13,7 @@ describe('lti route', () => {
 		oboRequire('routes/viewer')
 		expect(mockRouterMethods.get).toHaveBeenCalledTimes(1)
 		expect(mockRouterMethods.post).toHaveBeenCalledTimes(1)
-		expect(mockRouterMethods.post).toBeCalledWith('/:draftId', expect.any(Function))
+		expect(mockRouterMethods.post).toBeCalledWith('/:draftId/:page?', expect.any(Function))
 		expect(mockRouterMethods.get).toBeCalledWith('/:draftId/visit/:visitId*', expect.any(Function))
 	})
 
