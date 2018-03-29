@@ -52,10 +52,15 @@ describe('lti launch middleware', () => {
 	})
 	afterEach(() => {})
 
-	it('assignment calls next with no lti data and returns a proimse', () => {
+	it('assignment returns a promise and short circuits to next if not a LTI request, skipping launch logic', () => {
+		expect.assertions(2)
 		let [req, res, mockNext] = mockExpressArgs(false)
 		return ltiLaunch.assignment(req, res, mockNext).then(() => {
 			expect(mockNext).toBeCalledWith()
+			// next can be called in several places
+			// make sure we're not getting into the logic
+			// that creates users
+			expect(User.saveOrCreateCallback).not.toHaveBeenCalled()
 		})
 	})
 
@@ -64,6 +69,9 @@ describe('lti launch middleware', () => {
 
 		let [req, res, mockNext] = mockExpressArgs(true)
 		return ltiLaunch.assignment(req, res, mockNext).then(() => {
+			// tests to see if the launch is being stored
+			// there's no external handles to the method
+			// so we're watching db.one to see if it was inserted
 			expect(db.one).toBeCalledWith(
 				expect.stringContaining('INSERT INTO launches'),
 				expect.objectContaining({
@@ -79,6 +87,8 @@ describe('lti launch middleware', () => {
 				})
 			)
 
+			// lets also make sure insert event is geting called
+			// with the data we expec
 			expect(insertEvent).toBeCalledWith(
 				expect.objectContaining({
 					action: 'lti:launch',
@@ -95,12 +105,16 @@ describe('lti launch middleware', () => {
 		})
 	})
 
-	it('assignment calls next with lti data', () => {
-		expect.assertions(1)
+	it('assignment returns a promise and short circuits to next if not a LTI request, skipping launch logic', () => {
+		expect.assertions(2)
 
 		let [req, res, mockNext] = mockExpressArgs(true)
 		return ltiLaunch.assignment(req, res, mockNext).then(() => {
 			expect(mockNext).toBeCalledWith()
+			// next can be called in several places
+			// make sure we're not getting caught by the logic
+			// that bypasses everything
+			expect(User.saveOrCreateCallback).toHaveBeenCalled()
 		})
 	})
 
@@ -146,12 +160,15 @@ describe('lti launch middleware', () => {
 		})
 	})
 
-	test('courseNavlaunch simply calls next if not a LTI request', () => {
+	test('courseNavlaunch returns a promise and short circuits to next if not a LTI request, skipping launch logic', () => {
 		expect.assertions(2)
 
 		let [req, res, mockNext] = mockExpressArgs(false)
 		return ltiLaunch.courseNavlaunch(req, res, mockNext).then(() => {
 			expect(mockNext).toBeCalledWith()
+			// next can be called in several places
+			// make sure we're not getting into the logic
+			// that creates users
 			expect(User.saveOrCreateCallback).not.toHaveBeenCalled()
 		})
 	})
@@ -196,13 +213,16 @@ describe('lti launch middleware', () => {
 		})
 	})
 
-	test('assignmentSelection simply calls next if not a LTI request', () => {
+	test('assignmentSelection returns a promise and short circuits to next if not a LTI request, skipping launch logic', () => {
 		expect.assertions(2)
 
 		let [req, res, mockNext] = mockExpressArgs(false)
 
 		return ltiLaunch.assignmentSelection(req, res, mockNext).then(() => {
 			expect(mockNext).toBeCalledWith()
+			// next can be called in several places
+			// make sure we're not getting into the logic
+			// that creates users
 			expect(User.saveOrCreateCallback).not.toHaveBeenCalled()
 		})
 	})
