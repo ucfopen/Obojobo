@@ -15,7 +15,7 @@ import basicReview from '../basic-review'
 const scoreSubmittedView = assessment => {
 	const report = new ScoreReport(assessment.props.model.modelState.rubric.toObject())
 
-	let latestHighestAttemptScoreDetails = AssessmentUtil.getLatestHighestAttemptScoreState(
+	let latestHighestAttempt = AssessmentUtil.getLatestHighestAttemptForModel(
 		assessment.props.moduleData.assessmentState,
 		assessment.props.model
 	)
@@ -91,22 +91,25 @@ const scoreSubmittedView = assessment => {
 				<h1>{assessmentLabel} - How You Did</h1>
 
 				<div className="assessment-flex-container">
-					<div>
+					<div className="last-attempt">
 						<h2>Last Attempt Score</h2>
-						<div className="value">{Math.round(recentScore)}%</div>
+						<div className="value">{Math.round(recentScore)}</div>
 					</div>
-					<ScoreReportView
-						highestScore={latestHighestAttemptScoreDetails.assessmentScore}
-						items={report.getTextItems(
-							true,
-							latestHighestAttemptScoreDetails,
-							AssessmentUtil.getAttemptsRemaining(
-								assessment.props.moduleData.assessmentState,
-								assessment.props.model
-							)
-						)}
-					/>
-					<div>
+					<div className="highest-score">
+						<h2>Highest Score</h2>
+						<ScoreReportView
+							score={latestHighestAttempt.assessmentScore}
+							items={report.getTextItems(
+								true,
+								latestHighestAttempt.assessmentScoreDetails,
+								AssessmentUtil.getAttemptsRemaining(
+									assessment.props.moduleData.assessmentState,
+									assessment.props.model
+								)
+							)}
+						/>
+					</div>
+					<div className="attempts-remaining">
 						<h2>Attempts Remaining</h2>
 						<div className="value">{attemptsRemaining}</div>
 					</div>
@@ -116,7 +119,7 @@ const scoreSubmittedView = assessment => {
 					ltiState={ltiState}
 					externalSystemLabel={externalSystemLabel}
 					onClickResendScore={onClickResendScore}
-					assessmentScore={latestHighestAttemptScoreDetails.assessmentScore}
+					assessmentScore={latestHighestAttempt.assessmentScore}
 				/>
 				{() => {
 					switch (ltiState.state.gradebookStatus) {

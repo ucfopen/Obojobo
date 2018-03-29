@@ -542,6 +542,7 @@ var assessmentReviewView = function assessmentReviewView(_ref) {
 					'div',
 					{ className: 'score-section' },
 					React.createElement(_scoreReport2.default, {
+						score: attempt.assessmentScore,
 						items: report.getTextItems(false, attempt.assessmentScoreDetails, AssessmentUtil.getAttemptsRemaining(assessment.props.moduleData.assessmentState, assessment.props.model))
 					})
 				)
@@ -723,7 +724,7 @@ var NavUtil = _Viewer2.default.util.NavUtil;
 var scoreSubmittedView = function scoreSubmittedView(assessment) {
 	var report = new _assessmentScoreReport2.default(assessment.props.model.modelState.rubric.toObject());
 
-	var latestHighestAttemptScoreDetails = AssessmentUtil.getLatestHighestAttemptScoreState(assessment.props.moduleData.assessmentState, assessment.props.model);
+	var latestHighestAttempt = AssessmentUtil.getLatestHighestAttemptForModel(assessment.props.moduleData.assessmentState, assessment.props.model);
 
 	var questionScores = AssessmentUtil.getLastAttemptScoresForModel(assessment.props.moduleData.assessmentState, assessment.props.model);
 	var recentScore = AssessmentUtil.getLastAttemptScoreForModel(assessment.props.moduleData.assessmentState, assessment.props.model);
@@ -790,7 +791,7 @@ var scoreSubmittedView = function scoreSubmittedView(assessment) {
 				{ className: 'assessment-flex-container' },
 				React.createElement(
 					'div',
-					null,
+					{ className: 'last-attempt' },
 					React.createElement(
 						'h2',
 						null,
@@ -799,17 +800,25 @@ var scoreSubmittedView = function scoreSubmittedView(assessment) {
 					React.createElement(
 						'div',
 						{ className: 'value' },
-						Math.round(recentScore),
-						'%'
+						Math.round(recentScore)
 					)
 				),
-				React.createElement(_scoreReport2.default, {
-					highestScore: latestHighestAttemptScoreDetails.assessmentScore,
-					items: report.getTextItems(true, latestHighestAttemptScoreDetails, AssessmentUtil.getAttemptsRemaining(assessment.props.moduleData.assessmentState, assessment.props.model))
-				}),
 				React.createElement(
 					'div',
-					null,
+					{ className: 'highest-score' },
+					React.createElement(
+						'h2',
+						null,
+						'Highest Score'
+					),
+					React.createElement(_scoreReport2.default, {
+						score: latestHighestAttempt.assessmentScore,
+						items: report.getTextItems(true, latestHighestAttempt.assessmentScoreDetails, AssessmentUtil.getAttemptsRemaining(assessment.props.moduleData.assessmentState, assessment.props.model))
+					})
+				),
+				React.createElement(
+					'div',
+					{ className: 'attempts-remaining' },
 					React.createElement(
 						'h2',
 						null,
@@ -826,7 +835,7 @@ var scoreSubmittedView = function scoreSubmittedView(assessment) {
 				ltiState: ltiState,
 				externalSystemLabel: externalSystemLabel,
 				onClickResendScore: onClickResendScore,
-				assessmentScore: latestHighestAttemptScoreDetails.assessmentScore
+				assessmentScore: latestHighestAttempt.assessmentScore
 			}),
 			function () {
 				switch (ltiState.state.gradebookStatus) {
@@ -3128,33 +3137,26 @@ var getModsBreakdown = function getModsBreakdown(items) {
 
 var scoreReportView = function scoreReportView(_ref2) {
 	var items = _ref2.items,
-	    _ref2$highestScore = _ref2.highestScore,
-	    highestScore = _ref2$highestScore === undefined ? null : _ref2$highestScore;
+	    _ref2$score = _ref2.score,
+	    score = _ref2$score === undefined ? null : _ref2$score;
 
-	if (highestScore) highestScore = highestScore + '%';
-	return highestScore ? React.createElement(
-		'div',
-		{ className: 'score-report is-showing-highest-score' },
-		React.createElement(
-			'div',
-			{ className: 'highest-score' },
-			React.createElement(
-				'h2',
-				null,
-				'Highest Score'
-			),
-			React.createElement(
-				'span',
-				{ className: 'value' },
-				highestScore
-			),
-			getModsBreakdown(items)
-		)
-	) : React.createElement(
+	return React.createElement(
 		'div',
 		{ className: 'score-report' },
+		score === null ? React.createElement(
+			'span',
+			{ className: 'value is-null' },
+			'--'
+		) : React.createElement(
+			'span',
+			{ className: 'value is-not-null' },
+			score
+		),
 		getModsBreakdown(items)
 	);
+	//) : (
+	//<div className="score-report">{getModsBreakdown(items)}</div>
+	//)
 };
 
 exports.default = scoreReportView;

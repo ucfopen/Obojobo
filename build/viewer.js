@@ -2102,7 +2102,7 @@ var getNewAssessmentObject = function getNewAssessmentObject(assessmentId) {
 		current: null,
 		currentResponses: [],
 		attempts: [],
-		score: null,
+		latestHighestAttempt: null,
 		lti: null,
 		ltiNetworkState: _ltiNetworkStates2.default.IDLE,
 		ltiErrorCount: 0
@@ -2180,18 +2180,25 @@ var AssessmentStore = function (_Store) {
 				}
 
 				assessments[assessId].lti = assessmentItem.ltiState;
+				assessments[assessId].latestHighestAttempt = null;
 
 				attempts.forEach(function (attempt) {
 					assessment = assessments[attempt.assessmentId];
 
-					if (attempt.assessmentScore !== null) {
-						assessment.score = Math.max(attempt.assessmentScore, assessment.score);
+					if (assessment.latestHighestAttempt === null) {
+						assessment.latestHighestAttempt = attempt;
 					}
 
 					if (!attempt.isFinished) {
 						unfinishedAttempt = attempt;
 					} else {
 						assessment.attempts.push(attempt);
+
+						var thisAssessScore = attempt.assessmentScore === null ? -1 : attempt.assessmentScore;
+						var currentHighestAssessScore = assessment.latestHighestAttempt.assessmentScore === null ? -1 : assessment.latestHighestAttempt.assessmentScore;
+						if (thisAssessScore >= currentHighestAssessScore) {
+							assessment.latestHighestAttempt = attempt;
+						}
 					}
 
 					attempt.state.questions.forEach(function (question) {
@@ -2493,21 +2500,21 @@ var AssessmentUtil = {
 
 		return assessment.attempts[assessment.attempts.length - 1].attemptScore;
 	},
-	getAssessmentScoreForModel: function getAssessmentScoreForModel(state, model) {
+	getLatestHighestAttemptForModel: function getLatestHighestAttemptForModel(state, model) {
 		var assessment = AssessmentUtil.getAssessmentForModel(state, model);
 		if (!assessment) {
 			return null;
 		}
 
-		return assessment.score;
+		return assessment.latestHighestAttempt;
 	},
-	getLatestHighestAttemptScoreState: function getLatestHighestAttemptScoreState(state, model) {
-		var assessment = AssessmentUtil.getAssessmentForModel(state, model);
-		return assessment.attempts.map(function (attempt) {
-			return attempt.assessmentScoreDetails;
-		}).reduce(function (stored, current) {
-			return current.assessmentScore >= stored.assessmentScore ? current : stored;
-		});
+	getAssessmentScoreForModel: function getAssessmentScoreForModel(state, model) {
+		var attempt = AssessmentUtil.getLatestHighestAttemptForModel(state, model);
+		if (!attempt) {
+			return null;
+		}
+
+		return attempt.assessmentScore;
 	},
 	getLastAttemptScoresForModel: function getLastAttemptScoresForModel(state, model) {
 		var assessment = AssessmentUtil.getAssessmentForModel(state, model);

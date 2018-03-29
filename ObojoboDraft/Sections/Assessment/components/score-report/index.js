@@ -71,19 +71,21 @@ const getModsBreakdown = items => (
 	</div>
 )
 
-const scoreReportView = ({ items, highestScore = null }) => {
-	if (highestScore) highestScore = highestScore + '%'
-	return highestScore ? (
-		<div className="score-report is-showing-highest-score">
-			<div className="highest-score">
-				<h2>Highest Score</h2>
-				<span className="value">{highestScore}</span>
-				{getModsBreakdown(items)}
-			</div>
+const scoreReportView = ({ items, score = null }) => {
+	return (
+		<div className="score-report">
+			{score === null ? (
+				<span className="value is-null">--</span>
+			) : (
+				<span className="value is-not-null">{score}</span>
+			)}
+
+			{getModsBreakdown(items)}
 		</div>
-	) : (
-		<div className="score-report">{getModsBreakdown(items)}</div>
 	)
+	//) : (
+	//<div className="score-report">{getModsBreakdown(items)}</div>
+	//)
 }
 
 export default scoreReportView

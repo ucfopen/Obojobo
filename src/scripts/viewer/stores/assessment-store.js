@@ -20,7 +20,7 @@ let getNewAssessmentObject = assessmentId => ({
 	current: null,
 	currentResponses: [],
 	attempts: [],
-	score: null,
+	latestHighestAttempt: null,
 	lti: null,
 	ltiNetworkState: LTINetworkStates.IDLE,
 	ltiErrorCount: 0
@@ -87,18 +87,28 @@ class AssessmentStore extends Store {
 			}
 
 			assessments[assessId].lti = assessmentItem.ltiState
+			assessments[assessId].latestHighestAttempt = null
 
 			attempts.forEach(attempt => {
 				assessment = assessments[attempt.assessmentId]
 
-				if (attempt.assessmentScore !== null) {
-					assessment.score = Math.max(attempt.assessmentScore, assessment.score)
+				if (assessment.latestHighestAttempt === null) {
+					assessment.latestHighestAttempt = attempt
 				}
 
 				if (!attempt.isFinished) {
 					unfinishedAttempt = attempt
 				} else {
 					assessment.attempts.push(attempt)
+
+					let thisAssessScore = attempt.assessmentScore === null ? -1 : attempt.assessmentScore
+					let currentHighestAssessScore =
+						assessment.latestHighestAttempt.assessmentScore === null
+							? -1
+							: assessment.latestHighestAttempt.assessmentScore
+					if (thisAssessScore >= currentHighestAssessScore) {
+						assessment.latestHighestAttempt = attempt
+					}
 				}
 
 				attempt.state.questions.forEach(question => {

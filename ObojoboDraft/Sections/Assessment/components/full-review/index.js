@@ -47,6 +47,7 @@ const assessmentReviewView = ({ assessment }) => {
 					</div>
 					<div className="score-section">
 						<ScoreReportView
+							score={attempt.assessmentScore}
 							items={report.getTextItems(
 								false,
 								attempt.assessmentScoreDetails,

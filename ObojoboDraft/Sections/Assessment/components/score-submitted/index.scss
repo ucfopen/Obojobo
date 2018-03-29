@@ -29,11 +29,6 @@
 			margin-top: 0.8em;
 		}
 
-		.score-report {
-			width: 55%;
-			margin-top: 0;
-		}
-
 		h2 {
 			color: $color-text-minor;
 			font-weight: bold;
@@ -43,9 +38,36 @@
 
 		.value {
 			font-size: 1.5em;
+			display: inline-block;
+		}
+
+		.last-attempt .value {
+			position: relative;
+
+			&:after {
+				position: absolute;
+				right: 0;
+				top: 50%;
+				content: '%';
+				display: block;
+				transform: translate(1em, -50%);
+				font-size: 0.6em;
+			}
 		}
 
 		.highest-score {
+			width: 55%;
+			margin-top: 0;
+			background-color: white;
+			flex: 2;
+			border-radius: $dimension-rounded-radius;
+			margin: 0 1em;
+			padding-top: 0.8em;
+
+			h1 {
+				padding-bottom: 10px;
+			}
+
 			h2 {
 				color: $color-text;
 				font-size: 1em;
@@ -54,7 +76,6 @@
 
 			.value {
 				font-size: 1.75em;
-				display: block;
 				margin-bottom: 0.4em;
 			}
 		}

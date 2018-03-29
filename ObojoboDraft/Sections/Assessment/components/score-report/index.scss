@@ -2,25 +2,21 @@
 	$color-hr: transparentize($color-shadow, 0.2);
 
 	font-family: $font-default;
+	text-align: center;
 
-	&.is-showing-highest-score {
-		.mod-breakdown-items {
-			border-top: 1px solid $color-hr;
+	.value.is-not-null {
+		position: relative;
 
-			.mod-breakdown-item {
-				&:last-child {
-					padding-bottom: 0.8em;
-				}
-			}
+		&:after {
+			position: absolute;
+			right: 0;
+			top: 50%;
+			content: '%';
+			display: block;
+			transform: translate(1em, -50%);
+			font-size: 0.6em;
 		}
 	}
-
-	// &:not(.is-showing-highest-score) {
-	// 	.mod-breakdown {
-	// 		border: 1px solid $color-hr;
-	// 		background: #fff;
-	// 	}
-	// }
 
 	.mod-breakdown {
 		display: flex;
@@ -31,6 +27,11 @@
 		.mod-breakdown-items {
 			width: 80%;
 			padding-top: 0.5em;
+			border-top: 1px solid $color-hr;
+
+			&:last-child {
+				padding-bottom: 0.8em;
+			}
 		}
 	}
 
@@ -89,18 +90,6 @@
 
 		.score-report-score-content {
 			display: inline-block;
-		}
-	}
-
-	.highest-score {
-		background-color: white;
-		flex: 2;
-		border-radius: $dimension-rounded-radius;
-		margin: 0 1em;
-		padding-top: 0.8em;
-
-		h1 {
-			padding-bottom: 10px;
 		}
 	}
 }
