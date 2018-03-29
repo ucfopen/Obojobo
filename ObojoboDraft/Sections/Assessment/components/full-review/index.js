@@ -30,13 +30,7 @@ const assessmentReviewView = ({ assessment }) => {
 			<div className="review">
 				<div className="attempt-header">
 					<div className="attempt-info-container">
-						<ReviewIcon
-							height="50px"
-							width="50px"
-							css={{
-								transform: 'translateX(-10px)'
-							}}
-						/>
+						<ReviewIcon />
 						<div className="attempt-info-content-container">
 							<h4>
 								<strong>{`Attempt ${attempt.attemptNumber}`}</strong>

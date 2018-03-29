@@ -92,8 +92,8 @@ const scoreSubmittedView = assessment => {
 
 				<div className="assessment-flex-container">
 					<div>
-						<div>Last Attempt Score</div>
-						<div>{Math.round(recentScore)}%</div>
+						<h2>Last Attempt Score</h2>
+						<div className="value">{Math.round(recentScore)}%</div>
 					</div>
 					<ScoreReportView
 						highestScore={latestHighestAttemptScoreDetails.assessmentScore}
@@ -107,8 +107,8 @@ const scoreSubmittedView = assessment => {
 						)}
 					/>
 					<div>
-						<div>Attempts Remaining</div>
-						<div>{attemptsRemaining}</div>
+						<h2>Attempts Remaining</h2>
+						<div className="value">{attemptsRemaining}</div>
 					</div>
 				</div>
 

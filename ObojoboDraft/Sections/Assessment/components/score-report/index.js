@@ -76,8 +76,8 @@ const scoreReportView = ({ items, highestScore = null }) => {
 	return highestScore ? (
 		<div className="score-report is-showing-highest-score">
 			<div className="highest-score">
-				<div>Highest Score</div>
-				<h1>{highestScore}</h1>
+				<h2>Highest Score</h2>
+				<span className="value">{highestScore}</span>
 				{getModsBreakdown(items)}
 			</div>
 		</div>

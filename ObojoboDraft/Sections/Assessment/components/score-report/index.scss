@@ -1,7 +1,11 @@
 .score-report {
+	$color-hr: transparentize($color-shadow, 0.2);
+
+	font-family: $font-default;
+
 	&.is-showing-highest-score {
 		.mod-breakdown-items {
-			border-top: 1px solid LightGray;
+			border-top: 1px solid $color-hr;
 
 			.mod-breakdown-item {
 				&:last-child {
@@ -13,7 +17,7 @@
 
 	&:not(.is-showing-highest-score) {
 		.mod-breakdown {
-			border: 1px solid LightGray;
+			border: 1px solid $color-hr;
 			background: #fff;
 		}
 	}
@@ -26,6 +30,7 @@
 
 		.mod-breakdown-items {
 			width: 80%;
+			padding-top: 0.5em;
 		}
 	}
 
@@ -39,7 +44,7 @@
 
 		&:last-child:not(:only-child) {
 			padding-top: 0.5em;
-			border-top: 1px solid LightGray;
+			border-top: 1px solid $color-hr;
 		}
 
 		.score-report-text {

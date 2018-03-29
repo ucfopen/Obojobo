@@ -500,13 +500,7 @@ var assessmentReviewView = function assessmentReviewView(_ref) {
 				React.createElement(
 					'div',
 					{ className: 'attempt-info-container' },
-					React.createElement(_reviewIcon2.default, {
-						height: '50px',
-						width: '50px',
-						css: {
-							transform: 'translateX(-10px)'
-						}
-					}),
+					React.createElement(_reviewIcon2.default, null),
 					React.createElement(
 						'div',
 						{ className: 'attempt-info-content-container' },
@@ -610,13 +604,7 @@ Object.defineProperty(exports, "__esModule", {
 exports.default = function (props) {
 	return React.createElement(
 		"svg",
-		{
-			xmlns: "http://www.w3.org/2000/svg",
-			viewBox: "0 0 114.33 114.33",
-			height: props.height,
-			width: props.width,
-			style: props.css
-		},
+		{ xmlns: "http://www.w3.org/2000/svg", viewBox: "0 0 114.33 114.33" },
 		React.createElement(
 			"defs",
 			null,
@@ -784,13 +772,13 @@ var scoreSubmittedView = function scoreSubmittedView(assessment) {
 					'div',
 					null,
 					React.createElement(
-						'div',
+						'h2',
 						null,
 						'Last Attempt Score'
 					),
 					React.createElement(
 						'div',
-						null,
+						{ className: 'value' },
 						Math.round(recentScore),
 						'%'
 					)
@@ -803,13 +791,13 @@ var scoreSubmittedView = function scoreSubmittedView(assessment) {
 					'div',
 					null,
 					React.createElement(
-						'div',
+						'h2',
 						null,
 						'Attempts Remaining'
 					),
 					React.createElement(
 						'div',
-						null,
+						{ className: 'value' },
 						attemptsRemaining
 					)
 				)
@@ -3131,13 +3119,13 @@ var scoreReportView = function scoreReportView(_ref2) {
 			'div',
 			{ className: 'highest-score' },
 			React.createElement(
-				'div',
+				'h2',
 				null,
 				'Highest Score'
 			),
 			React.createElement(
-				'h1',
-				null,
+				'span',
+				{ className: 'value' },
 				highestScore
 			),
 			getModsBreakdown(items)

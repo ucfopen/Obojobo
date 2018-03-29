@@ -12,7 +12,7 @@
 			display: inline-block;
 			font-weight: normal;
 			font-size: 1.35em;
-			border-bottom: 1px solid $color-shadow;
+			border-bottom: 1px solid transparentize($color-shadow, 0.2);
 			padding: 1em 0;
 			padding-top: 0;
 			box-sizing: border-box;
@@ -25,8 +25,38 @@
 		margin-top: 1em;
 		margin-bottom: 1em;
 
+		> div {
+			margin-top: 0.8em;
+		}
+
 		.score-report {
-			width: 70%;
+			width: 55%;
+			margin-top: 0;
+		}
+
+		h2 {
+			color: $color-text-minor;
+			font-weight: bold;
+			font-size: 0.8em;
+			margin-bottom: 1em;
+		}
+
+		.value {
+			font-size: 1.5em;
+		}
+
+		.highest-score {
+			h2 {
+				color: $color-text;
+				font-size: 1em;
+				margin-bottom: 0.8em;
+			}
+
+			.value {
+				font-size: 1.75em;
+				display: block;
+				margin-bottom: 0.4em;
+			}
 		}
 	}
 
