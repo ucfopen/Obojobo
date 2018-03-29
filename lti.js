@@ -10,6 +10,7 @@ const MINUTES_EXPIRED_LAUNCH = 300
 
 const ERROR_NO_OUTCOME_SERVICE_FOR_LAUNCH /*  */ = new Error('No outcome service found for launch')
 const ERROR_SCORE_IS_NULL /*                  */ = new Error('LTI score is null')
+const ERROR_PREVIEW_MODE /*					  */ = new Error('Preview mode is on')
 const ERROR_FATAL_REPLACE_RESULT_FAILED /*    */ = new Error('Replace result failed')
 const ERROR_FATAL_NO_ASSESSMENT_SCORE_FOUND /**/ = new Error('No assessment score found')
 const ERROR_FATAL_NO_SECRET_FOR_KEY /*        */ = new Error('No LTI secret found for key')
@@ -21,6 +22,7 @@ const STATUS_SUCCESS /*                             */ = 'success'
 const STATUS_NOT_ATTEMPTED_NO_OUTCOME_FOR_LAUNCH /* */ =
 	'not_attempted_no_outcome_service_for_launch'
 const STATUS_NOT_ATTEMPTED_SCORE_IS_NULL /*         */ = 'not_attempted_score_is_null'
+const STATUS_NOT_ATTEMPTED_PREVIEW_MODE /*			*/ = 'not_attempted_preview_mode'
 const STATUS_ERROR_LAUNCH_EXPIRED /*                */ = 'error_launch_expired'
 const STATUS_ERROR_REPLACE_RESULT_FAILED /*         */ = 'error_replace_result_failed'
 const STATUS_ERROR_NO_ASSESSMENT_SCORE_FOUND /*     */ = 'error_no_assessment_score_found'
@@ -38,6 +40,7 @@ const GRADEBOOK_STATUS_ERROR_INVALID /*             */ = 'error_invalid'
 const GRADEBOOK_STATUS_OK_NULL_SCORE_NOT_SENT /*    */ = 'ok_null_score_not_sent'
 const GRADEBOOK_STATUS_OK_GRADEBOOK_MATCHES_SCORE /**/ = 'ok_gradebook_matches_assessment_score'
 const GRADEBOOK_STATUS_OK_NO_OUTCOME_SERVICE /*     */ = 'ok_no_outcome_service'
+const GRADEBOOK_STATUS_OK_PREVIEW_MODE /*			*/ = 'ok_preview_mode'
 
 const OUTCOME_TYPE_UNKNOWN = 'unknownOutcome'
 const OUTCOME_TYPE_NO_OUTCOME = 'noOutcome'
@@ -60,10 +63,19 @@ let isLaunchExpired = launchDate => {
 	return minsSinceLaunch > MINUTES_EXPIRED_LAUNCH
 }
 
-let getGradebookStatus = function(outcomeType, scoreType, replaceResultWasSentSuccessfully) {
+let getGradebookStatus = function(
+	outcomeType,
+	scoreType,
+	replaceResultWasSentSuccessfully,
+	isPreview
+) {
 	// Check to make sure this function wasn't called with weird and invalid inputs.
 	// In other words, replaceResultWasSentSuccessfully can only be true under some conditions.
 	// If these conditions are not met then we have invalid inputs and don't want to allow this.
+	if (isPreview) {
+		return GRADEBOOK_STATUS_OK_PREVIEW_MODE
+	}
+
 	if (
 		replaceResultWasSentSuccessfully &&
 		(outcomeType !== OUTCOME_TYPE_HAS_OUTCOME ||
@@ -549,6 +561,11 @@ let logAndGetStatusForError = function(error, requiredData, logId) {
 		//
 		// Expected possible errors:
 		//
+		case ERROR_PREVIEW_MODE:
+			result.status = STATUS_NOT_ATTEMPTED_PREVIEW_MODE
+			logger.info(`LTI not sending preview score for user:"${userId}" on draft:"${draftId}"`, logId)
+			break
+
 		case ERROR_NO_OUTCOME_SERVICE_FOR_LAUNCH:
 			result.status = STATUS_NOT_ATTEMPTED_NO_OUTCOME_FOR_LAUNCH
 			logger.info(`LTI No outcome service for user:"${userId}" on draft:"${draftId}"`, logId)
@@ -641,7 +658,9 @@ let sendHighestAssessmentScore = function(userId, draftId, assessmentId) {
 
 			result.outcomeServiceURL = outcomeData.serviceURL
 
-			if (requiredData.ltiScoreToSend === null) {
+			if (requiredData.assessmentScoreRecord.preview) {
+				throw ERROR_PREVIEW_MODE
+			} else if (requiredData.ltiScoreToSend === null) {
 				throw ERROR_SCORE_IS_NULL
 			} else if (outcomeData.type === OUTCOME_TYPE_NO_OUTCOME) {
 				throw ERROR_NO_OUTCOME_SERVICE_FOR_LAUNCH
@@ -685,7 +704,8 @@ let sendHighestAssessmentScore = function(userId, draftId, assessmentId) {
 			result.gradebookStatus = getGradebookStatus(
 				outcomeData.type,
 				requiredData.scoreType,
-				result.status === STATUS_SUCCESS
+				result.status === STATUS_SUCCESS,
+				requiredData.assessmentScoreRecord.preview
 			)
 
 			logger.info(`LTI gradebook status is "${result.gradebookStatus}"`, logId)
