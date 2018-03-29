@@ -207,7 +207,6 @@ var Adapter = {
 
 	clone: function clone(model, _clone) {
 		_clone.modelState.attempts = model.modelState.attempts;
-		_clone.modelState.hideNav = model.modelState.hideNav;
 		return _clone.modelState.scoreActions = model.modelState.scoreActions.clone();
 	},
 
@@ -220,7 +219,6 @@ var Adapter = {
 
 	toJSON: function toJSON(model, json) {
 		json.content.attempts = model.modelState.attempts;
-		json.content.hideNav = model.modelState.hideNav;
 		return json.content.scoreActions = model.modelState.scoreActions.toObject();
 	}
 };
