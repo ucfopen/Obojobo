@@ -8,7 +8,7 @@ let { ACTOR_USER } = require('./api/events/caliper_constants')
 let { getSessionIds } = require('./api/events/caliper_utils')
 let db = oboRequire('db')
 
-router.post('/:draftId', (req, res, next) => {
+router.post('/:draftId/:page?', (req, res, next) => {
 	let user = null
 	let draft = null
 	let visitId = null
