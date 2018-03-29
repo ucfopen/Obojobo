@@ -475,7 +475,9 @@ function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { de
 var AssessmentUtil = _Viewer2.default.util.AssessmentUtil;
 var NavUtil = _Viewer2.default.util.NavUtil;
 var OboModel = _Common2.default.models.OboModel;
-var Button = _Common2.default.components.Button;
+var _Common$components = _Common2.default.components,
+    Button = _Common$components.Button,
+    ButtonBar = _Common$components.ButtonBar;
 
 
 var assessmentReviewView = function assessmentReviewView(_ref) {
@@ -556,6 +558,20 @@ var assessmentReviewView = function assessmentReviewView(_ref) {
 		);
 	};
 
+	var getSelectedIndex = function getSelectedIndex() {
+		var context = assessment.props.moduleData.navState.context;
+
+		for (var i in attempts) {
+			var attempt = attempts[i];
+
+			if (context === 'assessmentReview:' + attempt.attemptId) {
+				return parseInt(i, 10);
+			}
+		}
+
+		return attempts.length - 1;
+	};
+
 	var attemptButtons = attempts.map(function (attempt, index) {
 		return React.createElement(
 			Button,
@@ -581,7 +597,11 @@ var assessmentReviewView = function assessmentReviewView(_ref) {
 		React.createElement(
 			'div',
 			{ className: 'attempt-button-container' },
-			attemptButtons
+			React.createElement(
+				ButtonBar,
+				{ altAction: true, selectedIndex: getSelectedIndex() },
+				attemptButtons
+			)
 		),
 		attemptReviewComponents[context]
 	);

@@ -120,6 +120,24 @@
     text-align: right; }
   .obojobo-draft--components--button.align-center {
     text-align: center; }
+.obojobo-draft--components--button-bar > div {
+  display: inline-block; }
+  .obojobo-draft--components--button-bar > div:first-child > .obojobo-draft--components--button > button {
+    border-top-left-radius: 0.25em;
+    border-bottom-left-radius: 0.25em; }
+  .obojobo-draft--components--button-bar > div:last-child > .obojobo-draft--components--button > button {
+    border-top-right-radius: 0.25em;
+    border-bottom-right-radius: 0.25em; }
+  .obojobo-draft--components--button-bar > div:not(:last-child) > .obojobo-draft--components--button > button {
+    border-right: none; }
+  .obojobo-draft--components--button-bar > div > .obojobo-draft--components--button > button {
+    border-radius: 0; }
+    .obojobo-draft--components--button-bar > div > .obojobo-draft--components--button > button:focus {
+      z-index: 2; }
+  .obojobo-draft--components--button-bar > div.is-selected > .obojobo-draft--components--button > button {
+    background-color: #93c6ff;
+    color: #ffffff;
+    z-index: 1; }
 .obojobo-draft--components--modal--bubble {
   background: #ffffff;
   border: 1px solid rgba(0, 0, 0, 0.3);

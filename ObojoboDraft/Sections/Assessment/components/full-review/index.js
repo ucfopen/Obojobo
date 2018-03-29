@@ -10,7 +10,7 @@ import formatDate from 'date-fns/format'
 const { AssessmentUtil } = Viewer.util
 const { NavUtil } = Viewer.util
 const { OboModel } = Common.models
-const { Button } = Common.components
+const { Button, ButtonBar } = Common.components
 
 const assessmentReviewView = ({ assessment }) => {
 	let attemptReviewComponents = {}
@@ -73,6 +73,20 @@ const assessmentReviewView = ({ assessment }) => {
 		)
 	}
 
+	let getSelectedIndex = () => {
+		let context = assessment.props.moduleData.navState.context
+
+		for (let i in attempts) {
+			let attempt = attempts[i]
+
+			if (context === `assessmentReview:${attempt.attemptId}`) {
+				return parseInt(i, 10)
+			}
+		}
+
+		return attempts.length - 1
+	}
+
 	let attemptButtons = attempts.map((attempt, index) => {
 		return (
 			<Button onClick={() => NavUtil.setContext(`assessmentReview:${attempt.attemptId}`)}>
@@ -95,7 +109,11 @@ const assessmentReviewView = ({ assessment }) => {
 
 	return (
 		<div className="attempt-review-container">
-			<div className="attempt-button-container">{attemptButtons}</div>
+			<div className="attempt-button-container">
+				<ButtonBar altAction selectedIndex={getSelectedIndex()}>
+					{attemptButtons}
+				</ButtonBar>
+			</div>
 			{attemptReviewComponents[context]}
 		</div>
 	)
