@@ -43,10 +43,11 @@ export default class MCChoice extends React.Component {
 	}
 
 	render() {
-		let questionId = this.getQuestionModel().id
+		let questionModel = this.getQuestionModel()
+		let questionId = questionModel.id
 		let response = QuestionUtil.getResponse(
 			this.props.moduleData.questionState,
-			this.getQuestionModel(),
+			questionModel,
 			this.props.moduleData.navState.context
 		) || { ids: [] }
 

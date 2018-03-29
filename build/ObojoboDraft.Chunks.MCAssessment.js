@@ -1027,8 +1027,9 @@ var MCChoice = function (_React$Component) {
 		value: function render() {
 			var _this2 = this;
 
-			var questionId = this.getQuestionModel().id;
-			var response = QuestionUtil.getResponse(this.props.moduleData.questionState, this.getQuestionModel(), this.props.moduleData.navState.context) || { ids: [] };
+			var questionModel = this.getQuestionModel();
+			var questionId = questionModel.id;
+			var response = QuestionUtil.getResponse(this.props.moduleData.questionState, questionModel, this.props.moduleData.navState.context) || { ids: [] };
 
 			var isSelected = response.ids.indexOf(this.props.model.get('id')) !== -1;
 
