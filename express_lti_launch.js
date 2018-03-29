@@ -40,11 +40,14 @@ let storeLtiLaunch = (draftId, user, ip, ltiBody, ltiConsumerKey) => {
 		})
 }
 
-let storeLtiPickerLaunch = (user, ip, ltiBody, ltiConsumerKey) => {
+let storeLtiPickerLaunchEvent = (user, ip, ltiBody, ltiConsumerKey) => {
 	return insertEvent({
 		action: 'lti:pickerLaunch',
 		actorTime: new Date().toISOString(),
-		payload: {},
+		payload: {
+			ltiBody,
+			ltiConsumerKey
+		},
 		userId: user.id,
 		ip: ip,
 		metadata: {},
@@ -74,7 +77,10 @@ let userFromLaunch = (req, ltiBody) => {
 // This will also try to register the launch information if there is any
 // If a launch is happening, this will overwrite the current user
 exports.assignment = (req, res, next) => {
-	if (!req.lti) return next() // bypass, no lti launch data
+	if (!req.lti) {
+		next()
+		return Promise.resolve()
+	}
 
 	// allows launches to redirect /view/example to /view/00000000-0000-0000-0000-000000000000
 	// the actual redirect happens in the route, this just handles the lti launch
@@ -109,7 +115,11 @@ exports.assignment = (req, res, next) => {
 }
 
 exports.courseNavlaunch = (req, res, next) => {
-	if (!req.lti) return next()
+	if (!req.lti) {
+		next()
+		return Promise.resolve()
+	}
+
 	return Promise.resolve(req.lti)
 		.then(lti => userFromLaunch(req, lti.body))
 		.then(user => next())
@@ -124,12 +134,15 @@ exports.courseNavlaunch = (req, res, next) => {
 // This middleware will create and register a user if there is one
 // If a launch is happening, this will overwrite the current user
 exports.assignmentSelection = (req, res, next) => {
-	if (!req.lti) return next() // bypass, no lti launch data
+	if (!req.lti) {
+		next()
+		return Promise.resolve()
+	}
 
 	return Promise.resolve(req.lti)
 		.then(lti => userFromLaunch(req, lti.body))
 		.then(user => {
-			return storeLtiPickerLaunch(
+			return storeLtiPickerLaunchEvent(
 				user,
 				req.connection.remoteAddress,
 				req.lti.body,
