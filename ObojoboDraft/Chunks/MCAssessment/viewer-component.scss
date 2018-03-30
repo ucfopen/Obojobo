@@ -110,22 +110,11 @@
 		}
 	}
 
-	// &.is-mode-review {
-	// 	.submit {
-	// 		visibility: hidden;
-	// 	}
-	// 	.result-container {
-	// 		position: absolute;
-	// 		left: 0;
-	// 		top: 50%;
-	// 		transform: translate(0, -50%);
-
-	// 		.result {
-	// 			margin: 0;
-	// 			animation: none;
-	// 		}
-	// 	}
-	// }
+	&.is-mode-review {
+		.result-container .result {
+			animation: none;
+		}
+	}
 
 	$border: 1px solid transparentize($color-shadow, 0.25);
 

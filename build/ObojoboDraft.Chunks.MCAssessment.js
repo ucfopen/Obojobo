@@ -694,7 +694,7 @@ var MCAssessment = function (_React$Component) {
 					moduleData: this.props.moduleData,
 					onClick: this.props.mode !== 'review' ? this.onClick : null,
 					tag: 'form',
-					className: 'obojobo-draft--chunks--mc-assessment' + (' is-response-type-' + this.props.model.modelState.responseType) + (isShowingExplanation ? ' is-showing-explanation' : ' is-not-showing-explantion') + (score === null ? ' is-unscored' : ' is-scored')
+					className: 'obojobo-draft--chunks--mc-assessment' + (' is-response-type-' + this.props.model.modelState.responseType) + (' is-mode-' + this.props.mode) + (isShowingExplanation ? ' is-showing-explanation' : ' is-not-showing-explantion') + (score === null ? ' is-unscored' : ' is-scored')
 				},
 				React.createElement(
 					'span',

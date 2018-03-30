@@ -146,6 +146,8 @@
     top: 1.5em;
     letter-spacing: 0.2em;
     content: "\2716" attr(data-choice-label); }
+  .obojobo-draft--chunks--mc-assessment.is-mode-review .result-container .result {
+    animation: none; }
   .obojobo-draft--chunks--mc-assessment .instructions {
     padding-left: 3em;
     padding-right: 3em;
