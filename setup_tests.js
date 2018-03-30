@@ -45,3 +45,15 @@ global.mockVirtual = mock => {
 	)
 	return mockFunction
 }
+
+// make sure all Date objects use a static date
+global.mockStaticDate = () => {
+	const testDate = new Date('2016-09-22T16:57:14.500Z')
+	Date = class extends Date {
+		constructor() {
+			super()
+			return testDate
+		}
+	}
+	return testDate
+}
