@@ -19,6 +19,7 @@ describe('viewer events', () => {
 		expect(oboEvents.on).toBeCalledWith('client:nav:open', expect.any(Function))
 		expect(oboEvents.on).toBeCalledWith('client:nav:close', expect.any(Function))
 		expect(oboEvents.on).toBeCalledWith('client:nav:toggle', expect.any(Function))
+		expect(oboEvents.on).toHaveBeenCalledTimes(3)
 	})
 
 	test('executes next when included to support express middleware', () => {
