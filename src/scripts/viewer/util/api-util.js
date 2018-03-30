@@ -103,6 +103,14 @@ var APIUtil = {
 				assessmentId: assessment.get('id')
 			})
 		)
+	},
+
+	clearPreviewScores(lo) {
+		return createParsedJsonPromise(
+			APIUtil.post('/api/assessments/clear-preview-scores', {
+				draftId: lo.get('draftId')
+			})
+		)
 	}
 }
 

@@ -63,7 +63,7 @@
 /******/ 	__webpack_require__.p = "build/";
 /******/
 /******/ 	// Load entry module and return exports
-/******/ 	return __webpack_require__(__webpack_require__.s = 303);
+/******/ 	return __webpack_require__(__webpack_require__.s = 304);
 /******/ })
 /************************************************************************/
 /******/ ([
@@ -2397,7 +2397,7 @@ var _Viewer = __webpack_require__(1);
 
 var _Viewer2 = _interopRequireDefault(_Viewer);
 
-__webpack_require__(258);
+__webpack_require__(259);
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
@@ -5022,7 +5022,8 @@ var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol
 
 /***/ }),
 /* 257 */,
-/* 258 */
+/* 258 */,
+/* 259 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -5109,7 +5110,6 @@ Number.isFinite = Number.isFinite || function (n) {
 };
 
 /***/ }),
-/* 259 */,
 /* 260 */,
 /* 261 */,
 /* 262 */,
@@ -5153,7 +5153,8 @@ Number.isFinite = Number.isFinite || function (n) {
 /* 300 */,
 /* 301 */,
 /* 302 */,
-/* 303 */
+/* 303 */,
+/* 304 */
 /***/ (function(module, exports, __webpack_require__) {
 
 __webpack_require__(121);

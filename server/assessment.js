@@ -3,16 +3,10 @@ let db = oboRequire('db')
 let lti = oboRequire('lti')
 let express = require('express')
 let app = express()
+let logger = oboRequire('logger')
 
 class Assessment extends DraftNode {
-	static getCompletedAssessmentAttemptHistory(
-		userId,
-		draftId,
-		assessmentId,
-		includePreviewAttempts
-	) {
-		let previewSql = includePreviewAttempts ? '' : 'AND preview = FALSE'
-
+	static getCompletedAssessmentAttemptHistory(userId, draftId, assessmentId) {
 		return db.manyOrNone(
 			`
 				SELECT
@@ -28,7 +22,6 @@ class Assessment extends DraftNode {
 					AND draft_id = $[draftId]
 					AND assessment_id = $[assessmentId]
 					AND completed_at IS NOT NULL
-					${previewSql}
 				ORDER BY completed_at`,
 			{ userId: userId, draftId: draftId, assessmentId: assessmentId }
 		)
@@ -46,7 +39,6 @@ class Assessment extends DraftNode {
 					AND draft_id = $[draftId]
 					AND assessment_id = $[assessmentId]
 					AND completed_at IS NOT NULL
-					AND preview = false
 			`,
 				{ userId: userId, draftId: draftId, assessmentId: assessmentId }
 			)
@@ -135,6 +127,17 @@ class Assessment extends DraftNode {
 						let attemptForResponseIndex = assessments[response.assessment_id].attempts.findIndex(
 							x => x.attemptId === response.attempt_id
 						)
+
+						if (attemptForResponseIndex === -1) {
+							logger.warn(
+								`Couldn't find an attempt I was looking for ('${userId}', '${draftId}', '${attemptId}', '${
+									response.id
+								}') - Shouldn't get here!`
+							)
+
+							return
+						}
+
 						assessments[response.assessment_id].attempts[attemptForResponseIndex].responses[
 							response.question_id
 						] =
@@ -154,12 +157,17 @@ class Assessment extends DraftNode {
 			.then(ltiStates => {
 				assessmentsArr.forEach(assessmentItem => {
 					let ltiState = ltiStates[assessmentItem.assessmentId]
-					assessmentItem.ltiState = {
-						scoreSent: ltiState.scoreSent,
-						sentDate: ltiState.sentDate,
-						status: ltiState.status,
-						gradebookStatus: ltiState.gradebookStatus,
-						statusDetails: ltiState.statusDetails
+
+					if (!ltiState) {
+						assessmentItem.ltiState = null
+					} else {
+						assessmentItem.ltiState = {
+							scoreSent: ltiState.scoreSent,
+							sentDate: ltiState.sentDate,
+							status: ltiState.status,
+							gradebookStatus: ltiState.gradebookStatus,
+							statusDetails: ltiState.statusDetails
+						}
 					}
 				})
 
@@ -188,8 +196,7 @@ class Assessment extends DraftNode {
 			id
 			FROM attempts
 			WHERE
-				preview = FALSE
-				AND user_id = $[userId]
+				user_id = $[userId]
 			AND draft_id = $[draftId]
 			ORDER BY completed_at
 			`,

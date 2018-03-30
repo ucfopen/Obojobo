@@ -63,7 +63,7 @@
 /******/ 	__webpack_require__.p = "build/";
 /******/
 /******/ 	// Load entry module and return exports
-/******/ 	return __webpack_require__(__webpack_require__.s = 301);
+/******/ 	return __webpack_require__(__webpack_require__.s = 302);
 /******/ })
 /************************************************************************/
 /******/ ({
@@ -287,7 +287,6 @@ var Adapter = {
 
 	clone: function clone(model, _clone) {
 		_clone.modelState.attempts = model.modelState.attempts;
-		_clone.modelState.hideNav = model.modelState.hideNav;
 		_clone.modelState.scoreActions = model.modelState.scoreActions.clone();
 		_clone.modelState.rubric = model.modelState.rubric.clone();
 	},
@@ -301,7 +300,6 @@ var Adapter = {
 
 	toJSON: function toJSON(model, json) {
 		json.content.attempts = model.modelState.attempts;
-		json.content.hideNav = model.modelState.hideNav;
 		json.content.scoreActions = model.modelState.scoreActions.toObject();
 		json.content.rubric = model.modelState.rubric.toObject();
 	}
@@ -905,7 +903,7 @@ Object.defineProperty(exports, "__esModule", {
 
 var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
 
-__webpack_require__(279);
+__webpack_require__(280);
 
 var _Common = __webpack_require__(0);
 
@@ -1446,32 +1444,54 @@ Object.defineProperty(exports, "__esModule", {
 
 var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
 
+var _Common = __webpack_require__(0);
+
+var _Common2 = _interopRequireDefault(_Common);
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
+var getParsedRange = _Common2.default.util.RangeParsing.getParsedRange;
+var isValueInRange = _Common2.default.util.RangeParsing.isValueInRange;
+
+var replaceDict = {
+	'no-score': null
+};
+
 var ScoreActions = function () {
-	function ScoreActions(_actions) {
+	function ScoreActions(actions) {
 		_classCallCheck(this, ScoreActions);
 
-		if (_actions == null) {
-			_actions = [];
-		}
-		this._actions = _actions;
+		this.originalActions = actions;
+
+		this.actions = (actions == null ? [] : actions).map(function (action) {
+			var forAttr = action.for;
+
+			// Transform legacy to/from to newer "for"
+			if (typeof action.from !== 'undefined' && typeof action.to !== 'undefined' && typeof action.for === 'undefined') {
+				forAttr = '[' + action.from + ',' + action.to + ']';
+			}
+
+			return {
+				page: action.page,
+				range: getParsedRange(forAttr)
+			};
+		});
 	}
 
 	_createClass(ScoreActions, [{
-		key: "getActionForScore",
+		key: 'getActionForScore',
 		value: function getActionForScore(score) {
 			var _iteratorNormalCompletion = true;
 			var _didIteratorError = false;
 			var _iteratorError = undefined;
 
 			try {
-				for (var _iterator = Array.from(this._actions)[Symbol.iterator](), _step; !(_iteratorNormalCompletion = (_step = _iterator.next()).done); _iteratorNormalCompletion = true) {
+				for (var _iterator = this.actions[Symbol.iterator](), _step; !(_iteratorNormalCompletion = (_step = _iterator.next()).done); _iteratorNormalCompletion = true) {
 					var action = _step.value;
 
-					if (score >= action.from && score <= action.to) {
-						return action;
-					}
+					if (isValueInRange(score, action.range, replaceDict, true)) return action;
 				}
 			} catch (err) {
 				_didIteratorError = true;
@@ -1491,12 +1511,12 @@ var ScoreActions = function () {
 			return null;
 		}
 	}, {
-		key: "toObject",
+		key: 'toObject',
 		value: function toObject() {
-			return Object.assign([], this._actions);
+			return Object.assign([], this.originalActions);
 		}
 	}, {
-		key: "clone",
+		key: 'clone',
 		value: function clone() {
 			return new ScoreActions(this.toObject());
 		}
@@ -1521,7 +1541,7 @@ Object.defineProperty(exports, "__esModule", {
 
 var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
 
-__webpack_require__(280);
+__webpack_require__(281);
 
 var _Common = __webpack_require__(0);
 
@@ -2683,95 +2703,13 @@ AttemptRange:
 
 */
 
+//@TODO: Maybe shouldn't be importing this here since this file will someday be on the server
+var _require = __webpack_require__(258),
+    getParsedRange = _require.getParsedRange,
+    tryGetParsedFloat = _require.tryGetParsedFloat,
+    isValueInRange = _require.isValueInRange;
+
 var MOD_AMOUNT_LIMIT = 20;
-
-var getParsedRange = function getParsedRange(range) {
-	if (typeof range === 'undefined' || range === null) return null;
-
-	if (range.indexOf(',') === -1) return getParsedRangeFromSingleValue(range);
-
-	var ints = range.replace(/[\(\[\)\] ]+/g, '');
-	var rangeValues = ints.split(',');
-
-	return {
-		min: rangeValues[0],
-		isMinInclusive: range.charAt(0) === '[',
-		max: rangeValues[1],
-		isMaxInclusive: range.charAt(range.length - 1) === ']'
-	};
-};
-
-var getParsedRangeFromSingleValue = function getParsedRangeFromSingleValue(value) {
-	if (typeof value === 'undefined' || value === null) return null;
-
-	return {
-		min: value,
-		isMinInclusive: true,
-		max: value,
-		isMaxInclusive: true
-	};
-};
-
-var getRangeString = function getRangeString(range) {
-	if (range.min === range.max && range.isMinInclusive && range.isMaxInclusive) {
-		return '' + range.min;
-	}
-
-	var lhs = range.isMinInclusive ? '[' : '(';
-	var rhs = range.isMaxInclusive ? ']' : ')';
-
-	return lhs + range.min + ',' + range.max + rhs;
-};
-
-var tryGetParsedFloat = function tryGetParsedFloat(value) {
-	var replaceDict = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : {};
-	var allowNull = arguments.length > 2 && arguments[2] !== undefined ? arguments[2] : false;
-
-	var replaceDictValue = void 0;
-
-	for (var placeholder in replaceDict) {
-		if (value === placeholder) {
-			replaceDictValue = replaceDict[placeholder];
-			value = replaceDictValue === null ? null : parseFloat(replaceDictValue);
-			break;
-		}
-	}
-
-	if (allowNull && value === null) {
-		return null;
-	}
-
-	var parsedValue = parseFloat(value);
-
-	if (!Number.isFinite(parsedValue)) throw new Error('Unable to parse "' + value + '": Got "' + parsedValue + '" - Unsure how to proceed');
-
-	return parsedValue;
-};
-
-var isValueInRange = function isValueInRange(value, range, replaceDict) {
-	// By default a null range is defined to be all-inclusive
-	if (range === null) return true;
-
-	var isMinRequirementMet = void 0,
-	    isMaxRequirementMet = void 0;
-
-	var min = tryGetParsedFloat(range.min, replaceDict);
-	var max = tryGetParsedFloat(range.max, replaceDict);
-
-	if (range.isMinInclusive) {
-		isMinRequirementMet = value >= min;
-	} else {
-		isMinRequirementMet = value > min;
-	}
-
-	if (range.isMaxInclusive) {
-		isMaxRequirementMet = value <= max;
-	} else {
-		isMaxRequirementMet = value < max;
-	}
-
-	return isMinRequirementMet && isMaxRequirementMet;
-};
 
 var getRubricType = function getRubricType(rubric) {
 	return !rubric || !rubric.type ? AssessmentRubric.TYPE_ATTEMPT : rubric.type;
@@ -2830,6 +2768,17 @@ var modToObject = function modToObject(whitelistedMod) {
 		attemptCondition: getRangeString(whitelistedMod.attemptCondition),
 		reward: whitelistedMod.reward
 	};
+};
+
+var getRangeString = function getRangeString(range) {
+	if (range.min === range.max && range.isMinInclusive && range.isMaxInclusive) {
+		return '' + range.min;
+	}
+
+	var lhs = range.isMinInclusive ? '[' : '(';
+	var rhs = range.isMaxInclusive ? ']' : ')';
+
+	return lhs + range.min + ',' + range.max + rhs;
 };
 
 var AssessmentRubric = function () {
@@ -2972,10 +2921,97 @@ module.exports = AssessmentRubric;
 
 /***/ }),
 
-/***/ 279:
-/***/ (function(module, exports) {
+/***/ 258:
+/***/ (function(module, exports, __webpack_require__) {
 
-// removed by extract-text-webpack-plugin
+"use strict";
+
+
+var getParsedRange = function getParsedRange(range) {
+	if (typeof range === 'undefined' || range === null) return null;
+
+	if (range.indexOf(',') === -1) return getParsedRangeFromSingleValue(range);
+
+	var ints = range.replace(/[\(\[\)\] ]+/g, '');
+	var rangeValues = ints.split(',');
+
+	return {
+		min: rangeValues[0],
+		isMinInclusive: range.charAt(0) === '[',
+		max: rangeValues[1],
+		isMaxInclusive: range.charAt(range.length - 1) === ']'
+	};
+};
+
+var getParsedRangeFromSingleValue = function getParsedRangeFromSingleValue(value) {
+	if (typeof value === 'undefined' || value === null) return null;
+
+	return {
+		min: value,
+		isMinInclusive: true,
+		max: value,
+		isMaxInclusive: true
+	};
+};
+
+var tryGetParsedFloat = function tryGetParsedFloat(value) {
+	var replaceDict = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : {};
+	var allowNull = arguments.length > 2 && arguments[2] !== undefined ? arguments[2] : false;
+
+	var replaceDictValue = void 0;
+
+	for (var placeholder in replaceDict) {
+		if (value === placeholder) {
+			replaceDictValue = replaceDict[placeholder];
+			value = replaceDictValue === null ? null : parseFloat(replaceDictValue);
+			break;
+		}
+	}
+
+	if (allowNull && value === null) {
+		return null;
+	}
+
+	var parsedValue = parseFloat(value);
+
+	if (!Number.isFinite(parsedValue)) throw new Error('Unable to parse "' + value + '": Got "' + parsedValue + '" - Unsure how to proceed');
+
+	return parsedValue;
+};
+
+var isValueInRange = function isValueInRange(value, range, replaceDict) {
+	var allowNull = arguments.length > 3 && arguments[3] !== undefined ? arguments[3] : false;
+
+	// By default a null range is defined to be all-inclusive
+	if (range === null) return true;
+
+	var isMinRequirementMet = void 0,
+	    isMaxRequirementMet = void 0;
+
+	var min = tryGetParsedFloat(range.min, replaceDict, allowNull);
+	var max = tryGetParsedFloat(range.max, replaceDict, allowNull);
+
+	if (range.isMinInclusive) {
+		isMinRequirementMet = value >= min;
+	} else {
+		isMinRequirementMet = value > min;
+	}
+
+	if (range.isMaxInclusive) {
+		isMaxRequirementMet = value <= max;
+	} else {
+		isMaxRequirementMet = value < max;
+	}
+
+	return isMinRequirementMet && isMaxRequirementMet;
+};
+
+module.exports = {
+	getParsedRange: getParsedRange,
+	getParsedRangeFromSingleValue: getParsedRangeFromSingleValue,
+	tryGetParsedFloat: tryGetParsedFloat,
+	isValueInRange: isValueInRange
+};
 
 /***/ }),
 
@@ -2986,7 +3022,14 @@ module.exports = AssessmentRubric;
 
 /***/ }),
 
-/***/ 301:
+/***/ 281:
+/***/ (function(module, exports) {
+
+// removed by extract-text-webpack-plugin
+
+/***/ }),
+
+/***/ 302:
 /***/ (function(module, exports, __webpack_require__) {
 
 module.exports = __webpack_require__(119);

@@ -63,7 +63,7 @@
 /******/ 	__webpack_require__.p = "build/";
 /******/
 /******/ 	// Load entry module and return exports
-/******/ 	return __webpack_require__(__webpack_require__.s = 89);
+/******/ 	return __webpack_require__(__webpack_require__.s = 90);
 /******/ })
 /************************************************************************/
 /******/ ([
@@ -1936,7 +1936,7 @@ Object.defineProperty(exports, "__esModule", {
 
 var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
 
-__webpack_require__(75);
+__webpack_require__(76);
 
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
@@ -2015,7 +2015,7 @@ Object.defineProperty(exports, "__esModule", {
 
 var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
 
-__webpack_require__(76);
+__webpack_require__(77);
 
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
@@ -2584,7 +2584,7 @@ Object.defineProperty(exports, "__esModule", {
 
 var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
 
-__webpack_require__(80);
+__webpack_require__(81);
 
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
@@ -2636,7 +2636,7 @@ var _extends = Object.assign || function (target) { for (var i = 1; i < argument
 
 var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
 
-__webpack_require__(82);
+__webpack_require__(83);
 
 var _button = __webpack_require__(9);
 
@@ -2763,7 +2763,7 @@ Object.defineProperty(exports, "__esModule", {
 
 var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
 
-__webpack_require__(83);
+__webpack_require__(84);
 
 var _simpleDialog = __webpack_require__(22);
 
@@ -2819,7 +2819,7 @@ Object.defineProperty(exports, "__esModule", {
 
 var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
 
-__webpack_require__(84);
+__webpack_require__(85);
 
 var _deleteButton = __webpack_require__(10);
 
@@ -2922,7 +2922,7 @@ Object.defineProperty(exports, "__esModule", {
 
 var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
 
-__webpack_require__(85);
+__webpack_require__(86);
 
 var _modalUtil = __webpack_require__(37);
 
@@ -5675,7 +5675,7 @@ Object.defineProperty(exports, "__esModule", {
 	value: true
 });
 
-var _katex = __webpack_require__(88);
+var _katex = __webpack_require__(89);
 
 var _katex2 = _interopRequireDefault(_katex);
 
@@ -7304,7 +7304,7 @@ Object.defineProperty(exports, "__esModule", {
 
 var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
 
-__webpack_require__(74);
+__webpack_require__(75);
 
 var _button = __webpack_require__(9);
 
@@ -7402,13 +7402,13 @@ Object.defineProperty(exports, "__esModule", {
 
 var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
 
-__webpack_require__(77);
+__webpack_require__(78);
 
 var _getBackgroundImage = __webpack_require__(35);
 
 var _getBackgroundImage2 = _interopRequireDefault(_getBackgroundImage);
 
-var _edit = __webpack_require__(87);
+var _edit = __webpack_require__(88);
 
 var _edit2 = _interopRequireDefault(_edit);
 
@@ -7474,7 +7474,7 @@ Object.defineProperty(exports, "__esModule", {
 
 var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
 
-__webpack_require__(78);
+__webpack_require__(79);
 
 var _focusUtil = __webpack_require__(15);
 
@@ -7522,7 +7522,7 @@ Object.defineProperty(exports, "__esModule", {
 
 var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
 
-__webpack_require__(79);
+__webpack_require__(80);
 
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
@@ -7572,7 +7572,7 @@ Object.defineProperty(exports, "__esModule", {
 
 var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
 
-__webpack_require__(81);
+__webpack_require__(82);
 
 var _bubble = __webpack_require__(18);
 
@@ -7892,7 +7892,7 @@ Object.defineProperty(exports, "__esModule", {
 
 var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
 
-__webpack_require__(86);
+__webpack_require__(87);
 
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
@@ -8276,9 +8276,12 @@ var _uuid = __webpack_require__(38);
 
 var _uuid2 = _interopRequireDefault(_uuid);
 
+var _rangeParsing = __webpack_require__(74);
+
+var _rangeParsing2 = _interopRequireDefault(_rangeParsing);
+
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
-// @TODO
 exports.default = {
 	Store: _store.Store,
 
@@ -8395,9 +8398,10 @@ exports.default = {
 		ModalUtil: _modalUtil2.default,
 		FocusUtil: _focusUtil2.default,
 		ErrorUtil: _errorUtil2.default,
-		UUID: _uuid2.default
+		UUID: _uuid2.default,
+		RangeParsing: _rangeParsing2.default
 	}
-};
+}; // @TODO
 
 /***/ }),
 /* 62 */
@@ -9690,9 +9694,96 @@ exports.default = ErrorUtil;
 
 /***/ }),
 /* 74 */
-/***/ (function(module, exports) {
+/***/ (function(module, exports, __webpack_require__) {
 
-// removed by extract-text-webpack-plugin
+"use strict";
+
+
+var getParsedRange = function getParsedRange(range) {
+	if (typeof range === 'undefined' || range === null) return null;
+
+	if (range.indexOf(',') === -1) return getParsedRangeFromSingleValue(range);
+
+	var ints = range.replace(/[\(\[\)\] ]+/g, '');
+	var rangeValues = ints.split(',');
+
+	return {
+		min: rangeValues[0],
+		isMinInclusive: range.charAt(0) === '[',
+		max: rangeValues[1],
+		isMaxInclusive: range.charAt(range.length - 1) === ']'
+	};
+};
+
+var getParsedRangeFromSingleValue = function getParsedRangeFromSingleValue(value) {
+	if (typeof value === 'undefined' || value === null) return null;
+
+	return {
+		min: value,
+		isMinInclusive: true,
+		max: value,
+		isMaxInclusive: true
+	};
+};
+
+var tryGetParsedFloat = function tryGetParsedFloat(value) {
+	var replaceDict = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : {};
+	var allowNull = arguments.length > 2 && arguments[2] !== undefined ? arguments[2] : false;
+
+	var replaceDictValue = void 0;
+
+	for (var placeholder in replaceDict) {
+		if (value === placeholder) {
+			replaceDictValue = replaceDict[placeholder];
+			value = replaceDictValue === null ? null : parseFloat(replaceDictValue);
+			break;
+		}
+	}
+
+	if (allowNull && value === null) {
+		return null;
+	}
+
+	var parsedValue = parseFloat(value);
+
+	if (!Number.isFinite(parsedValue)) throw new Error('Unable to parse "' + value + '": Got "' + parsedValue + '" - Unsure how to proceed');
+
+	return parsedValue;
+};
+
+var isValueInRange = function isValueInRange(value, range, replaceDict) {
+	var allowNull = arguments.length > 3 && arguments[3] !== undefined ? arguments[3] : false;
+
+	// By default a null range is defined to be all-inclusive
+	if (range === null) return true;
+
+	var isMinRequirementMet = void 0,
+	    isMaxRequirementMet = void 0;
+
+	var min = tryGetParsedFloat(range.min, replaceDict, allowNull);
+	var max = tryGetParsedFloat(range.max, replaceDict, allowNull);
+
+	if (range.isMinInclusive) {
+		isMinRequirementMet = value >= min;
+	} else {
+		isMinRequirementMet = value > min;
+	}
+
+	if (range.isMaxInclusive) {
+		isMaxRequirementMet = value <= max;
+	} else {
+		isMaxRequirementMet = value < max;
+	}
+
+	return isMinRequirementMet && isMaxRequirementMet;
+};
+
+module.exports = {
+	getParsedRange: getParsedRange,
+	getParsedRangeFromSingleValue: getParsedRangeFromSingleValue,
+	tryGetParsedFloat: tryGetParsedFloat,
+	isValueInRange: isValueInRange
+};
 
 /***/ }),
 /* 75 */
@@ -9770,16 +9861,22 @@ exports.default = ErrorUtil;
 /* 87 */
 /***/ (function(module, exports) {
 
-module.exports = "data:image/svg+xml,%3Csvg id='Layer_10' data-name='Layer 10' xmlns='http://www.w3.org/2000/svg' viewBox='0 0 20.48 20.48'%3E %3Cdefs%3E %3Cstyle%3E .cls-1 %7B fill: %236714bd; %7D %3C/style%3E %3C/defs%3E %3Ctitle%3Etoolbar-icons%3C/title%3E %3Cg%3E %3Crect class='cls-1' x='15.15' y='4.57' width='5.75' height='18.82' rx='1.13' ry='1.13' transform='translate(9.4 -14.41) rotate(45)'/%3E %3Cpath class='cls-1' d='M11.06,25l-5.3,1.23L7,20.94a1.12,1.12,0,0,1,1.59,0l2.47,2.47A1.13,1.13,0,0,1,11.06,25Z' transform='translate(-5.76 -5.76)'/%3E %3C/g%3E %3C/svg%3E"
+// removed by extract-text-webpack-plugin
 
 /***/ }),
 /* 88 */
 /***/ (function(module, exports) {
 
-module.exports = katex;
+module.exports = "data:image/svg+xml,%3Csvg id='Layer_10' data-name='Layer 10' xmlns='http://www.w3.org/2000/svg' viewBox='0 0 20.48 20.48'%3E %3Cdefs%3E %3Cstyle%3E .cls-1 %7B fill: %236714bd; %7D %3C/style%3E %3C/defs%3E %3Ctitle%3Etoolbar-icons%3C/title%3E %3Cg%3E %3Crect class='cls-1' x='15.15' y='4.57' width='5.75' height='18.82' rx='1.13' ry='1.13' transform='translate(9.4 -14.41) rotate(45)'/%3E %3Cpath class='cls-1' d='M11.06,25l-5.3,1.23L7,20.94a1.12,1.12,0,0,1,1.59,0l2.47,2.47A1.13,1.13,0,0,1,11.06,25Z' transform='translate(-5.76 -5.76)'/%3E %3C/g%3E %3C/svg%3E"
 
 /***/ }),
 /* 89 */
+/***/ (function(module, exports) {
+
+module.exports = katex;
+
+/***/ }),
+/* 90 */
 /***/ (function(module, exports, __webpack_require__) {
 
 module.exports = __webpack_require__(39);

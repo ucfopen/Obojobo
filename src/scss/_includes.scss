@@ -16,6 +16,7 @@ $color-incorrect: #c21f00;
 $color-transparent: rgba(0, 0, 0, 0);
 $color-browser-focus: #5991ca;
 $color-comment: #ffd400;
+$color-preview: #00b3b3;
 
 $box-shadow-focus: 0 0 3px 3px $color-browser-focus;
 $box-shadow-overlay: 0 2px 2px $color-shadow;
@@ -39,6 +40,7 @@ $dimension-rounded-radius: 0.25em;
 $z-index-above-content: 999;
 $z-index-above-most: 9999;
 $z-index-above-all: 99999;
+$z-index-preview: 999999;
 
 @mixin pad() {
 	padding-left: $dimension-padding;

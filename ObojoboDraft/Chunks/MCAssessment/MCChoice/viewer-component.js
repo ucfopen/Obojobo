@@ -21,17 +21,6 @@ export default class MCChoice extends React.Component {
 		return this.props.model.getParentOfType('ObojoboDraft.Chunks.Question')
 	}
 
-	createFeedbackItem(message) {
-		let feedback = OboModel.create('ObojoboDraft.Chunks.MCAssessment.MCFeedback')
-		let text = OboModel.create('ObojoboDraft.Chunks.Text')
-		// console.log('text', text)
-		text.modelState.textGroup.first.text.insertText(0, message)
-		// console.log('feedback', feedback)
-		feedback.children.add(text)
-
-		return feedback
-	}
-
 	getInputType() {
 		switch (this.props.responseType) {
 			case 'pick-all':

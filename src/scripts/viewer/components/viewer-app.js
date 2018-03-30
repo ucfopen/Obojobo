@@ -138,9 +138,15 @@ export default class ViewerApp extends React.Component {
 				this.state.lti.outcomeServiceHostname = getLTIOutcomeServiceHostname(outcomeServiceURL)
 
 				window.onbeforeunload = this.onWindowClose
+
 				this.setState({ loading: false, requestStatus: 'ok', isPreviewing }, () => {
 					Dispatcher.trigger('viewer:loaded', true)
 				})
+
+				let loadingEl = document.getElementById('viewer-app-loading')
+				if (loadingEl && loadingEl.parentElement) {
+					loadingEl.parentElement.removeChild(loadingEl)
+				}
 			})
 			.catch(err => {
 				console.log(err)
@@ -318,18 +324,30 @@ export default class ViewerApp extends React.Component {
 		APIUtil.postEvent(this.state.model, 'viewer:close', '1.0.0', {})
 	}
 
-	resetAssessments() {
-		AssessmentStore.init()
-		QuestionStore.init()
+	clearPreviewScores() {
+		APIUtil.clearPreviewScores(this.state.model).then(res => {
+			if (res.status === 'error' || res.error) {
+				return ModalUtil.show(
+					<SimpleDialog ok width="15em">
+						{res.value && res.value.message
+							? `There was an error resetting assessments and questions: ${res.value.message}.`
+							: 'There was an error resetting assessments and questions'}
+					</SimpleDialog>
+				)
+			}
 
-		AssessmentStore.triggerChange()
-		QuestionStore.triggerChange()
+			AssessmentStore.init()
+			QuestionStore.init()
 
-		return ModalUtil.show(
-			<SimpleDialog ok width="15em">
-				Assessment attempts and all question responses have been reset.
-			</SimpleDialog>
-		)
+			AssessmentStore.triggerChange()
+			QuestionStore.triggerChange()
+
+			return ModalUtil.show(
+				<SimpleDialog ok width="15em">
+					Assessment attempts and all question responses have been reset.
+				</SimpleDialog>
+			)
+		})
 	}
 
 	unlockNavigation() {
@@ -337,10 +355,7 @@ export default class ViewerApp extends React.Component {
 	}
 
 	render() {
-		// @TODO loading component
-		if (this.state.loading == true) {
-			return <div className="is-loading">...Loading</div>
-		}
+		if (this.state.loading == true) return null
 
 		if (this.state.requestStatus === 'invalid') return <div>Invalid</div>
 
@@ -398,6 +413,16 @@ export default class ViewerApp extends React.Component {
 		let modalItem = ModalUtil.getCurrentModal(this.state.modalState)
 		let hideViewer = modalItem && modalItem.hideViewer
 
+		let classNames = [
+			'viewer--viewer-app',
+			'is-loaded',
+			this.state.isPreviewing ? 'is-previewing' : 'is-not-previewing',
+			this.state.navState.locked ? 'is-locked-nav' : 'is-unlocked-nav',
+			this.state.navState.open ? 'is-open-nav' : 'is-closed-nav',
+			this.state.navState.disabled ? 'is-disabled-nav' : 'is-enabled-nav',
+			`is-focus-state-${this.state.focusState.viewState}`
+		].join(' ')
+
 		return (
 			<IdleTimer
 				ref="idleTimer"
@@ -410,13 +435,7 @@ export default class ViewerApp extends React.Component {
 					ref="container"
 					onMouseDown={this.onMouseDown.bind(this)}
 					onScroll={this.onScroll.bind(this)}
-					className={`viewer--viewer-app${
-						this.state.isPreviewing ? ' is-previewing' : ' is-not-previewing'
-					}${this.state.navState.locked ? ' is-locked-nav' : ' is-unlocked-nav'}${
-						this.state.navState.open ? ' is-open-nav' : ' is-closed-nav'
-					}${
-						this.state.navState.disabled ? ' is-disabled-nav' : ' is-enabled-nav'
-					} is-focus-state-${this.state.focusState.viewState}`}
+					className={classNames}
 				>
 					{hideViewer ? null : (
 						<header>
@@ -433,18 +452,20 @@ export default class ViewerApp extends React.Component {
 					{hideViewer ? null : nextEl}
 					{this.state.isPreviewing ? (
 						<div className="preview-banner">
-							<span>You are previewing this object - Assessments will not be counted</span>
+							<span>You are previewing this module</span>
 							<div className="controls">
+								<span>Preview options:</span>
 								<button
 									onClick={this.unlockNavigation.bind(this)}
 									disabled={!this.state.navState.locked}
 								>
 									Unlock navigation
 								</button>
-								<button onClick={this.resetAssessments.bind(this)}>
+								<button onClick={this.clearPreviewScores.bind(this)}>
 									Reset assessments &amp; questions
 								</button>
 							</div>
+							<div className="border" />
 						</div>
 					) : null}
 					<FocusBlocker moduleData={this.state} />

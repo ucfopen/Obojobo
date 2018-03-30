@@ -63,7 +63,7 @@
 /******/ 	__webpack_require__.p = "build/";
 /******/
 /******/ 	// Load entry module and return exports
-/******/ 	return __webpack_require__(__webpack_require__.s = 291);
+/******/ 	return __webpack_require__(__webpack_require__.s = 292);
 /******/ })
 /************************************************************************/
 /******/ ({
@@ -82,7 +82,7 @@ module.exports = Viewer;
 
 /***/ }),
 
-/***/ 291:
+/***/ 292:
 /***/ (function(module, exports, __webpack_require__) {
 
 module.exports = __webpack_require__(39);
@@ -204,18 +204,6 @@ var MCChoice = function (_React$Component) {
 		key: 'getQuestionModel',
 		value: function getQuestionModel() {
 			return this.props.model.getParentOfType('ObojoboDraft.Chunks.Question');
-		}
-	}, {
-		key: 'createFeedbackItem',
-		value: function createFeedbackItem(message) {
-			var feedback = OboModel.create('ObojoboDraft.Chunks.MCAssessment.MCFeedback');
-			var text = OboModel.create('ObojoboDraft.Chunks.Text');
-			// console.log('text', text)
-			text.modelState.textGroup.first.text.insertText(0, message);
-			// console.log('feedback', feedback)
-			feedback.children.add(text);
-
-			return feedback;
 		}
 	}, {
 		key: 'getInputType',

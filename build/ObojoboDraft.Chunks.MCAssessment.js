@@ -63,7 +63,7 @@
 /******/ 	__webpack_require__.p = "build/";
 /******/
 /******/ 	// Load entry module and return exports
-/******/ 	return __webpack_require__(__webpack_require__.s = 292);
+/******/ 	return __webpack_require__(__webpack_require__.s = 293);
 /******/ })
 /************************************************************************/
 /******/ ({
@@ -131,7 +131,7 @@ Object.defineProperty(exports, "__esModule", {
 
 var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
 
-__webpack_require__(267);
+__webpack_require__(268);
 
 var _Common = __webpack_require__(0);
 
@@ -222,7 +222,7 @@ Object.defineProperty(exports, "__esModule", {
 
 var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
 
-__webpack_require__(268);
+__webpack_require__(269);
 
 var _Common = __webpack_require__(0);
 
@@ -350,7 +350,7 @@ Object.defineProperty(exports, "__esModule", {
 
 var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
 
-__webpack_require__(269);
+__webpack_require__(270);
 
 var _Common = __webpack_require__(0);
 
@@ -380,6 +380,11 @@ var DOMUtil = _Common2.default.page.DOMUtil;
 var QuestionUtil = _Viewer2.default.util.QuestionUtil;
 var NavUtil = _Viewer2.default.util.NavUtil;
 
+
+var DEFAULT_CORRECT_PRACTICE_LABELS = ['Correct!', 'You got it!', 'Great job!', "That's right!"];
+var DEFAULT_CORRECT_REVIEW_LABELS = ['Correct'];
+var DEFAULT_INCORRECT_LABELS = ['Incorrect'];
+
 // @TODO - This wont update if new children are passed in via props
 
 var MCAssessment = function (_React$Component) {
@@ -402,8 +407,8 @@ var MCAssessment = function (_React$Component) {
 		_this.onClick = _this.onClick.bind(_this);
 		_this.onCheckAnswer = _this.onCheckAnswer.bind(_this);
 		_this.isShowingExplanation = _this.isShowingExplanation.bind(_this);
-		_this.correctLabels = correctLabels ? correctLabels : ['Correct!', 'You got it!', 'Great job!', "That's right!"];
-		_this.incorrectLabels = incorrectLabels ? incorrectLabels : ['Incorrect'];
+		_this.correctLabels = correctLabels ? correctLabels : _this.props.mode === 'review' ? DEFAULT_CORRECT_REVIEW_LABELS : DEFAULT_CORRECT_PRACTICE_LABELS;
+		_this.incorrectLabels = incorrectLabels ? incorrectLabels : DEFAULT_INCORRECT_LABELS;
 		_this.updateFeedbackLabels();
 		return _this;
 	}
@@ -855,13 +860,6 @@ function __guard__(value, transform) {
 
 /***/ }),
 
-/***/ 267:
-/***/ (function(module, exports) {
-
-// removed by extract-text-webpack-plugin
-
-/***/ }),
-
 /***/ 268:
 /***/ (function(module, exports) {
 
@@ -876,7 +874,14 @@ function __guard__(value, transform) {
 
 /***/ }),
 
-/***/ 292:
+/***/ 270:
+/***/ (function(module, exports) {
+
+// removed by extract-text-webpack-plugin
+
+/***/ }),
+
+/***/ 293:
 /***/ (function(module, exports, __webpack_require__) {
 
 module.exports = __webpack_require__(110);
@@ -998,18 +1003,6 @@ var MCChoice = function (_React$Component) {
 		key: 'getQuestionModel',
 		value: function getQuestionModel() {
 			return this.props.model.getParentOfType('ObojoboDraft.Chunks.Question');
-		}
-	}, {
-		key: 'createFeedbackItem',
-		value: function createFeedbackItem(message) {
-			var feedback = OboModel.create('ObojoboDraft.Chunks.MCAssessment.MCFeedback');
-			var text = OboModel.create('ObojoboDraft.Chunks.Text');
-			// console.log('text', text)
-			text.modelState.textGroup.first.text.insertText(0, message);
-			// console.log('feedback', feedback)
-			feedback.children.add(text);
-
-			return feedback;
 		}
 	}, {
 		key: 'getInputType',

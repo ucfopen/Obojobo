@@ -314,4 +314,20 @@ describe.skip('QuestionUtil', () => {
 			}
 		})
 	})
+
+	test.skip('getLTIStateForModel returns the lti state', () => {
+		//@TODO
+	})
+
+	test.skip('isLTIScoreNeedingToBeResynced returns ... well... it returns if the lti score needs to be resynced, obviously', () => {
+		//@TODO
+	})
+
+	test.skip('isInAssessment returns if the user is in an assessment', () => {
+		//@TODO
+	})
+
+	test.skip('resendLTIScore sends the expected event with expected arguments', () => {
+		//@TODO
+	})
 })

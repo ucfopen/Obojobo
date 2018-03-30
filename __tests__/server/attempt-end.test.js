@@ -93,8 +93,7 @@ describe('Attempt End', () => {
 		expect(Assessment.getCompletedAssessmentAttemptHistory).toHaveBeenLastCalledWith(
 			'userId',
 			'draftId',
-			'assessmentId',
-			false
+			'assessmentId'
 		)
 	})
 
@@ -562,5 +561,38 @@ describe('Attempt End', () => {
 
 	it.skip('calculateScores keeps all scores in order', () => {
 		// this needs to make sure sends allScores into getAssessmentScoreInfoForAttempt IN ORDER (oldest to newest)
+	})
+
+	test.skip('@TODO - Need to make sure that these tests log correct', () => {
+		//Don't actually write this test - this is just a reminder
+		//that we need to add log mocks to the other tests in this file
+	})
+
+	test.skip('getAttempt returns an expected object', () => {
+		//@TODO
+	})
+
+	test.skip('getCalculatedScores calls calculateScores with expected values', () => {
+		//@TODO
+	})
+
+	test.skip('calculateScores calls rubric.getAssessmentScoreInfoForAttempt with expected values', () => {
+		//@TODO
+	})
+
+	test.skip('calculateScores returns expected object', () => {
+		//@TODO
+	})
+
+	test.skip('completeAttempt calls Assessment.completeAttempt with expected values', () => {
+		//@TODO
+	})
+
+	test.skip('insertAttemptEndEvents creates a correct caliper event and internal event', () => {
+		//@TODO
+	})
+
+	test.skip('insertAttemptScoredEvents creates a correct caliper event and internal event', () => {
+		//@TODO
 	})
 })

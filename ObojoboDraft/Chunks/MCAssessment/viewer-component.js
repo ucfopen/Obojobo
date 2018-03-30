@@ -15,6 +15,10 @@ let { DOMUtil } = Common.page
 let { QuestionUtil } = Viewer.util
 let { NavUtil } = Viewer.util
 
+const DEFAULT_CORRECT_PRACTICE_LABELS = ['Correct!', 'You got it!', 'Great job!', "That's right!"]
+const DEFAULT_CORRECT_REVIEW_LABELS = ['Correct']
+const DEFAULT_INCORRECT_LABELS = ['Incorrect']
+
 // @TODO - This wont update if new children are passed in via props
 
 export default class MCAssessment extends React.Component {
@@ -32,8 +36,10 @@ export default class MCAssessment extends React.Component {
 		this.isShowingExplanation = this.isShowingExplanation.bind(this)
 		this.correctLabels = correctLabels
 			? correctLabels
-			: ['Correct!', 'You got it!', 'Great job!', "That's right!"]
-		this.incorrectLabels = incorrectLabels ? incorrectLabels : ['Incorrect']
+			: this.props.mode === 'review'
+				? DEFAULT_CORRECT_REVIEW_LABELS
+				: DEFAULT_CORRECT_PRACTICE_LABELS
+		this.incorrectLabels = incorrectLabels ? incorrectLabels : DEFAULT_INCORRECT_LABELS
 		this.updateFeedbackLabels()
 	}
 

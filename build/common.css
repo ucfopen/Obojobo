@@ -206,7 +206,9 @@
   min-width: 15em;
   position: relative;
   box-shadow: 0 1px 1px rgba(0, 0, 0, 0.3);
-  border-radius: 2px; }
+  border-radius: 2px;
+  max-height: 70vh;
+  overflow: auto; }
   .obojobo-draft--components--modal--modal .obojobo-draft--components--delete-button {
     top: 0.5em;
     right: 0.5em;

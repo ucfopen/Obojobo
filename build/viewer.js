@@ -955,6 +955,11 @@ var APIUtil = {
 			draftId: lo.get('_id'),
 			assessmentId: assessment.get('id')
 		}));
+	},
+	clearPreviewScores: function clearPreviewScores(lo) {
+		return createParsedJsonPromise(APIUtil.post('/api/assessments/clear-preview-scores', {
+			draftId: lo.get('draftId')
+		}));
 	}
 };
 
@@ -6288,9 +6293,15 @@ var ViewerApp = function (_React$Component) {
 				_this2.state.lti.outcomeServiceHostname = (0, _getLtiOutcomeServiceHostname2.default)(outcomeServiceURL);
 
 				window.onbeforeunload = _this2.onWindowClose;
+
 				_this2.setState({ loading: false, requestStatus: 'ok', isPreviewing: isPreviewing }, function () {
 					Dispatcher.trigger('viewer:loaded', true);
 				});
+
+				var loadingEl = document.getElementById('viewer-app-loading');
+				if (loadingEl && loadingEl.parentElement) {
+					loadingEl.parentElement.removeChild(loadingEl);
+				}
 			}).catch(function (err) {
 				console.log(err);
 				_this2.setState({ loading: false, requestStatus: 'invalid' }, function () {
@@ -6491,19 +6502,29 @@ var ViewerApp = function (_React$Component) {
 			_apiUtil2.default.postEvent(this.state.model, 'viewer:close', '1.0.0', {});
 		}
 	}, {
-		key: 'resetAssessments',
-		value: function resetAssessments() {
-			_assessmentStore2.default.init();
-			_questionStore2.default.init();
+		key: 'clearPreviewScores',
+		value: function clearPreviewScores() {
+			_apiUtil2.default.clearPreviewScores(this.state.model).then(function (res) {
+				if (res.status === 'error' || res.error) {
+					return ModalUtil.show(_react2.default.createElement(
+						SimpleDialog,
+						{ ok: true, width: '15em' },
+						res.value && res.value.message ? 'There was an error resetting assessments and questions: ' + res.value.message + '.' : 'There was an error resetting assessments and questions'
+					));
+				}
 
-			_assessmentStore2.default.triggerChange();
-			_questionStore2.default.triggerChange();
+				_assessmentStore2.default.init();
+				_questionStore2.default.init();
 
-			return ModalUtil.show(_react2.default.createElement(
-				SimpleDialog,
-				{ ok: true, width: '15em' },
-				'Assessment attempts and all question responses have been reset.'
-			));
+				_assessmentStore2.default.triggerChange();
+				_questionStore2.default.triggerChange();
+
+				return ModalUtil.show(_react2.default.createElement(
+					SimpleDialog,
+					{ ok: true, width: '15em' },
+					'Assessment attempts and all question responses have been reset.'
+				));
+			});
 		}
 	}, {
 		key: 'unlockNavigation',
@@ -6513,14 +6534,7 @@ var ViewerApp = function (_React$Component) {
 	}, {
 		key: 'render',
 		value: function render() {
-			// @TODO loading component
-			if (this.state.loading == true) {
-				return _react2.default.createElement(
-					'div',
-					{ className: 'is-loading' },
-					'...Loading'
-				);
-			}
+			if (this.state.loading == true) return null;
 
 			if (this.state.requestStatus === 'invalid') return _react2.default.createElement(
 				'div',
@@ -6574,6 +6588,8 @@ var ViewerApp = function (_React$Component) {
 			var modalItem = ModalUtil.getCurrentModal(this.state.modalState);
 			var hideViewer = modalItem && modalItem.hideViewer;
 
+			var classNames = ['viewer--viewer-app', 'is-loaded', this.state.isPreviewing ? 'is-previewing' : 'is-not-previewing', this.state.navState.locked ? 'is-locked-nav' : 'is-unlocked-nav', this.state.navState.open ? 'is-open-nav' : 'is-closed-nav', this.state.navState.disabled ? 'is-disabled-nav' : 'is-enabled-nav', 'is-focus-state-' + this.state.focusState.viewState].join(' ');
+
 			return _react2.default.createElement(
 				_reactIdleTimer2.default,
 				{
@@ -6589,7 +6605,7 @@ var ViewerApp = function (_React$Component) {
 						ref: 'container',
 						onMouseDown: this.onMouseDown.bind(this),
 						onScroll: this.onScroll.bind(this),
-						className: 'viewer--viewer-app' + (this.state.isPreviewing ? ' is-previewing' : ' is-not-previewing') + (this.state.navState.locked ? ' is-locked-nav' : ' is-unlocked-nav') + (this.state.navState.open ? ' is-open-nav' : ' is-closed-nav') + (this.state.navState.disabled ? ' is-disabled-nav' : ' is-enabled-nav') + ' is-focus-state-' + this.state.focusState.viewState
+						className: classNames
 					},
 					hideViewer ? null : _react2.default.createElement(
 						'header',
@@ -6620,11 +6636,16 @@ var ViewerApp = function (_React$Component) {
 						_react2.default.createElement(
 							'span',
 							null,
-							'You are previewing this object - Assessments will not be counted'
+							'You are previewing this module'
 						),
 						_react2.default.createElement(
 							'div',
 							{ className: 'controls' },
+							_react2.default.createElement(
+								'span',
+								null,
+								'Preview options:'
+							),
 							_react2.default.createElement(
 								'button',
 								{
@@ -6635,10 +6656,11 @@ var ViewerApp = function (_React$Component) {
 							),
 							_react2.default.createElement(
 								'button',
-								{ onClick: this.resetAssessments.bind(this) },
+								{ onClick: this.clearPreviewScores.bind(this) },
 								'Reset assessments & questions'
 							)
-						)
+						),
+						_react2.default.createElement('div', { className: 'border' })
 					) : null,
 					_react2.default.createElement(FocusBlocker, { moduleData: this.state }),
 					modalItem && modalItem.component ? _react2.default.createElement(

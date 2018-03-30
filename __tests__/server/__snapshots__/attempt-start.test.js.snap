@@ -1,0 +1,902 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`start attempt route can choose to display question banks and questions sequentially 1`] = `
+Array [
+  Object {
+    "children": Array [
+      Object {
+        "children": Array [
+          Object {
+            "children": Array [],
+            "content": Object {
+              "textGroup": Array [
+                Object {
+                  "data": null,
+                  "text": Object {
+                    "styleList": Array [],
+                    "value": "Question Bank 1 Question 1 - This is the first question you'll see",
+                  },
+                },
+              ],
+            },
+            "id": "e3d455d5-80dd-4df8-87cf-594218016f44",
+            "type": "ObojoboDraft.Chunks.Text",
+          },
+          Object {
+            "children": Array [
+              Object {
+                "children": Array [
+                  Object {
+                    "children": Array [
+                      Object {
+                        "children": Array [],
+                        "content": Object {
+                          "textGroup": Array [
+                            Object {
+                              "data": null,
+                              "text": Object {
+                                "styleList": Array [],
+                                "value": "Correct",
+                              },
+                            },
+                          ],
+                        },
+                        "id": "eb1df6ac-27e5-4b0c-865e-fea3ef790623",
+                        "type": "ObojoboDraft.Chunks.Text",
+                      },
+                    ],
+                    "content": Object {},
+                    "id": "qb1-q1-mca-mc1-ans",
+                    "type": "ObojoboDraft.Chunks.MCAssessment.MCAnswer",
+                  },
+                ],
+                "content": Object {
+                  "score": 100,
+                },
+                "id": "qb1-q1-mca-mc1",
+                "type": "ObojoboDraft.Chunks.MCAssessment.MCChoice",
+              },
+              Object {
+                "children": Array [
+                  Object {
+                    "children": Array [
+                      Object {
+                        "children": Array [],
+                        "content": Object {
+                          "textGroup": Array [
+                            Object {
+                              "data": null,
+                              "text": Object {
+                                "styleList": Array [],
+                                "value": "Incorrect",
+                              },
+                            },
+                          ],
+                        },
+                        "id": "2e332c06-58d1-42f9-a8b5-64fc0b1825fc",
+                        "type": "ObojoboDraft.Chunks.Text",
+                      },
+                    ],
+                    "content": Object {},
+                    "id": "qb1-q1-mca-mc2-ans",
+                    "type": "ObojoboDraft.Chunks.MCAssessment.MCAnswer",
+                  },
+                ],
+                "content": Object {
+                  "score": 0,
+                },
+                "id": "qb1-q1-mca-mc2",
+                "type": "ObojoboDraft.Chunks.MCAssessment.MCChoice",
+              },
+            ],
+            "content": Object {
+              "responseType": "pick-one",
+            },
+            "id": "qb1-q1-mca",
+            "type": "ObojoboDraft.Chunks.MCAssessment",
+          },
+        ],
+        "content": Object {},
+        "id": "qb1.q1",
+        "type": "ObojoboDraft.Chunks.Question",
+      },
+      Object {
+        "children": Array [
+          Object {
+            "children": Array [],
+            "content": Object {
+              "textGroup": Array [
+                Object {
+                  "data": null,
+                  "text": Object {
+                    "styleList": Array [],
+                    "value": "Question Bank 1 Question 2 - This is the fourth question you'll see",
+                  },
+                },
+              ],
+            },
+            "id": "26ca5752-dff9-43d0-9486-259184707166",
+            "type": "ObojoboDraft.Chunks.Text",
+          },
+          Object {
+            "children": Array [
+              Object {
+                "children": Array [
+                  Object {
+                    "children": Array [
+                      Object {
+                        "children": Array [],
+                        "content": Object {
+                          "textGroup": Array [
+                            Object {
+                              "data": null,
+                              "text": Object {
+                                "styleList": Array [],
+                                "value": "Correct",
+                              },
+                            },
+                          ],
+                        },
+                        "id": "268b6e2a-6a25-48a9-8101-65ad3ef0d3a7",
+                        "type": "ObojoboDraft.Chunks.Text",
+                      },
+                    ],
+                    "content": Object {},
+                    "id": "qb1.q2-mca-mc1-ans",
+                    "type": "ObojoboDraft.Chunks.MCAssessment.MCAnswer",
+                  },
+                ],
+                "content": Object {
+                  "score": 100,
+                },
+                "id": "qb1.q2-mca-mc1",
+                "type": "ObojoboDraft.Chunks.MCAssessment.MCChoice",
+              },
+              Object {
+                "children": Array [
+                  Object {
+                    "children": Array [
+                      Object {
+                        "children": Array [],
+                        "content": Object {
+                          "textGroup": Array [
+                            Object {
+                              "data": null,
+                              "text": Object {
+                                "styleList": Array [],
+                                "value": "Incorrect",
+                              },
+                            },
+                          ],
+                        },
+                        "id": "1a474950-0bfb-4d22-acbd-f099f3b6d4ac",
+                        "type": "ObojoboDraft.Chunks.Text",
+                      },
+                    ],
+                    "content": Object {},
+                    "id": "qb1.q2-mca-mc2-ans",
+                    "type": "ObojoboDraft.Chunks.MCAssessment.MCAnswer",
+                  },
+                ],
+                "content": Object {
+                  "score": 0,
+                },
+                "id": "qb1.q2-mca-mc2",
+                "type": "ObojoboDraft.Chunks.MCAssessment.MCChoice",
+              },
+            ],
+            "content": Object {
+              "responseType": "pick-one",
+            },
+            "id": "qb1.q2.mca",
+            "type": "ObojoboDraft.Chunks.MCAssessment",
+          },
+        ],
+        "content": Object {},
+        "id": "qb1.q2",
+        "type": "ObojoboDraft.Chunks.Question",
+      },
+    ],
+    "content": Object {
+      "choose": 1,
+      "select": "sequential",
+    },
+    "id": "qb1",
+    "type": "ObojoboDraft.Chunks.QuestionBank",
+  },
+  Object {
+    "children": Array [
+      Object {
+        "children": Array [
+          Object {
+            "children": Array [],
+            "content": Object {
+              "textGroup": Array [
+                Object {
+                  "data": null,
+                  "text": Object {
+                    "styleList": Array [],
+                    "value": "Question Bank 2 Question 1 - This is the second question you'll see",
+                  },
+                },
+              ],
+            },
+            "id": "dbb88a94-9218-4d49-882b-36a7cfc4d02a",
+            "type": "ObojoboDraft.Chunks.Text",
+          },
+          Object {
+            "children": Array [
+              Object {
+                "children": Array [
+                  Object {
+                    "children": Array [
+                      Object {
+                        "children": Array [],
+                        "content": Object {
+                          "textGroup": Array [
+                            Object {
+                              "data": null,
+                              "text": Object {
+                                "styleList": Array [],
+                                "value": "Correct",
+                              },
+                            },
+                          ],
+                        },
+                        "id": "d4ab1542-b78c-47d3-8036-e9ec76428c31",
+                        "type": "ObojoboDraft.Chunks.Text",
+                      },
+                    ],
+                    "content": Object {},
+                    "id": "qb2-q1-mca-mc1-ans",
+                    "type": "ObojoboDraft.Chunks.MCAssessment.MCAnswer",
+                  },
+                ],
+                "content": Object {
+                  "score": 100,
+                },
+                "id": "qb2-q1-mca-mc1",
+                "type": "ObojoboDraft.Chunks.MCAssessment.MCChoice",
+              },
+              Object {
+                "children": Array [
+                  Object {
+                    "children": Array [
+                      Object {
+                        "children": Array [],
+                        "content": Object {
+                          "textGroup": Array [
+                            Object {
+                              "data": null,
+                              "text": Object {
+                                "styleList": Array [],
+                                "value": "Incorrect",
+                              },
+                            },
+                          ],
+                        },
+                        "id": "3bcc0175-411f-4ce5-9006-bac9982950d7",
+                        "type": "ObojoboDraft.Chunks.Text",
+                      },
+                    ],
+                    "content": Object {},
+                    "id": "qb2-q1-mca-mc2-ans",
+                    "type": "ObojoboDraft.Chunks.MCAssessment.MCAnswer",
+                  },
+                ],
+                "content": Object {
+                  "score": 0,
+                },
+                "id": "qb2-q1-mca-mc2",
+                "type": "ObojoboDraft.Chunks.MCAssessment.MCChoice",
+              },
+            ],
+            "content": Object {
+              "responseType": "pick-one",
+            },
+            "id": "qb2-q1-mca",
+            "type": "ObojoboDraft.Chunks.MCAssessment",
+          },
+        ],
+        "content": Object {},
+        "id": "qb2.q1",
+        "type": "ObojoboDraft.Chunks.Question",
+      },
+      Object {
+        "children": Array [
+          Object {
+            "children": Array [],
+            "content": Object {
+              "textGroup": Array [
+                Object {
+                  "data": null,
+                  "text": Object {
+                    "styleList": Array [],
+                    "value": "Question Bank 2 Question 2 - This is the third question you'll see",
+                  },
+                },
+              ],
+            },
+            "id": "70244544-e587-432c-bd70-0b084b2d858e",
+            "type": "ObojoboDraft.Chunks.Text",
+          },
+          Object {
+            "children": Array [
+              Object {
+                "children": Array [
+                  Object {
+                    "children": Array [
+                      Object {
+                        "children": Array [],
+                        "content": Object {
+                          "textGroup": Array [
+                            Object {
+                              "data": null,
+                              "text": Object {
+                                "styleList": Array [],
+                                "value": "Correct",
+                              },
+                            },
+                          ],
+                        },
+                        "id": "657cd9da-ad77-4d82-8bff-7781022083fb",
+                        "type": "ObojoboDraft.Chunks.Text",
+                      },
+                    ],
+                    "content": Object {},
+                    "id": "qb2.q2-mca-mc1-ans",
+                    "type": "ObojoboDraft.Chunks.MCAssessment.MCAnswer",
+                  },
+                ],
+                "content": Object {
+                  "score": 100,
+                },
+                "id": "qb2.q2-mca-mc1",
+                "type": "ObojoboDraft.Chunks.MCAssessment.MCChoice",
+              },
+              Object {
+                "children": Array [
+                  Object {
+                    "children": Array [
+                      Object {
+                        "children": Array [],
+                        "content": Object {
+                          "textGroup": Array [
+                            Object {
+                              "data": null,
+                              "text": Object {
+                                "styleList": Array [],
+                                "value": "Incorrect",
+                              },
+                            },
+                          ],
+                        },
+                        "id": "b6a88fad-5d1c-42a6-9114-f617ee8bf6ac",
+                        "type": "ObojoboDraft.Chunks.Text",
+                      },
+                    ],
+                    "content": Object {},
+                    "id": "qb2.q2-mca-mc2-ans",
+                    "type": "ObojoboDraft.Chunks.MCAssessment.MCAnswer",
+                  },
+                ],
+                "content": Object {
+                  "score": 0,
+                },
+                "id": "qb2.q2-mca-mc2",
+                "type": "ObojoboDraft.Chunks.MCAssessment.MCChoice",
+              },
+            ],
+            "content": Object {
+              "responseType": "pick-one",
+            },
+            "id": "qb2.q2.mca",
+            "type": "ObojoboDraft.Chunks.MCAssessment",
+          },
+        ],
+        "content": Object {},
+        "id": "qb2.q2",
+        "type": "ObojoboDraft.Chunks.Question",
+      },
+    ],
+    "content": Object {},
+    "id": "qb2",
+    "type": "ObojoboDraft.Chunks.QuestionBank",
+  },
+]
+`;
+
+exports[`start attempt route can choose to display question banks and questions sequentially 2`] = `
+Array [
+  Object {
+    "children": Array [
+      Object {
+        "children": Array [],
+        "content": Object {
+          "textGroup": Array [
+            Object {
+              "data": null,
+              "text": Object {
+                "styleList": Array [],
+                "value": "Question Bank 1 Question 1 - This is the first question you'll see",
+              },
+            },
+          ],
+        },
+        "id": "e3d455d5-80dd-4df8-87cf-594218016f44",
+        "type": "ObojoboDraft.Chunks.Text",
+      },
+      Object {
+        "children": Array [
+          Object {
+            "children": Array [
+              Object {
+                "children": Array [
+                  Object {
+                    "children": Array [],
+                    "content": Object {
+                      "textGroup": Array [
+                        Object {
+                          "data": null,
+                          "text": Object {
+                            "styleList": Array [],
+                            "value": "Correct",
+                          },
+                        },
+                      ],
+                    },
+                    "id": "eb1df6ac-27e5-4b0c-865e-fea3ef790623",
+                    "type": "ObojoboDraft.Chunks.Text",
+                  },
+                ],
+                "content": Object {},
+                "id": "qb1-q1-mca-mc1-ans",
+                "type": "ObojoboDraft.Chunks.MCAssessment.MCAnswer",
+              },
+            ],
+            "content": Object {
+              "score": 100,
+            },
+            "id": "qb1-q1-mca-mc1",
+            "type": "ObojoboDraft.Chunks.MCAssessment.MCChoice",
+          },
+          Object {
+            "children": Array [
+              Object {
+                "children": Array [
+                  Object {
+                    "children": Array [],
+                    "content": Object {
+                      "textGroup": Array [
+                        Object {
+                          "data": null,
+                          "text": Object {
+                            "styleList": Array [],
+                            "value": "Incorrect",
+                          },
+                        },
+                      ],
+                    },
+                    "id": "2e332c06-58d1-42f9-a8b5-64fc0b1825fc",
+                    "type": "ObojoboDraft.Chunks.Text",
+                  },
+                ],
+                "content": Object {},
+                "id": "qb1-q1-mca-mc2-ans",
+                "type": "ObojoboDraft.Chunks.MCAssessment.MCAnswer",
+              },
+            ],
+            "content": Object {
+              "score": 0,
+            },
+            "id": "qb1-q1-mca-mc2",
+            "type": "ObojoboDraft.Chunks.MCAssessment.MCChoice",
+          },
+        ],
+        "content": Object {
+          "responseType": "pick-one",
+        },
+        "id": "qb1-q1-mca",
+        "type": "ObojoboDraft.Chunks.MCAssessment",
+      },
+    ],
+    "content": Object {},
+    "id": "qb1.q1",
+    "type": "ObojoboDraft.Chunks.Question",
+  },
+]
+`;
+
+exports[`start attempt route can choose to display question banks and questions sequentially 3`] = `
+Array [
+  Object {
+    "children": Array [
+      Object {
+        "children": Array [],
+        "content": Object {
+          "textGroup": Array [
+            Object {
+              "data": null,
+              "text": Object {
+                "styleList": Array [],
+                "value": "Question Bank 1 Question 1 - This is the first question you'll see",
+              },
+            },
+          ],
+        },
+        "id": "e3d455d5-80dd-4df8-87cf-594218016f44",
+        "type": "ObojoboDraft.Chunks.Text",
+      },
+      Object {
+        "children": Array [
+          Object {
+            "children": Array [
+              Object {
+                "children": Array [
+                  Object {
+                    "children": Array [],
+                    "content": Object {
+                      "textGroup": Array [
+                        Object {
+                          "data": null,
+                          "text": Object {
+                            "styleList": Array [],
+                            "value": "Correct",
+                          },
+                        },
+                      ],
+                    },
+                    "id": "eb1df6ac-27e5-4b0c-865e-fea3ef790623",
+                    "type": "ObojoboDraft.Chunks.Text",
+                  },
+                ],
+                "content": Object {},
+                "id": "qb1-q1-mca-mc1-ans",
+                "type": "ObojoboDraft.Chunks.MCAssessment.MCAnswer",
+              },
+            ],
+            "content": Object {
+              "score": 100,
+            },
+            "id": "qb1-q1-mca-mc1",
+            "type": "ObojoboDraft.Chunks.MCAssessment.MCChoice",
+          },
+          Object {
+            "children": Array [
+              Object {
+                "children": Array [
+                  Object {
+                    "children": Array [],
+                    "content": Object {
+                      "textGroup": Array [
+                        Object {
+                          "data": null,
+                          "text": Object {
+                            "styleList": Array [],
+                            "value": "Incorrect",
+                          },
+                        },
+                      ],
+                    },
+                    "id": "2e332c06-58d1-42f9-a8b5-64fc0b1825fc",
+                    "type": "ObojoboDraft.Chunks.Text",
+                  },
+                ],
+                "content": Object {},
+                "id": "qb1-q1-mca-mc2-ans",
+                "type": "ObojoboDraft.Chunks.MCAssessment.MCAnswer",
+              },
+            ],
+            "content": Object {
+              "score": 0,
+            },
+            "id": "qb1-q1-mca-mc2",
+            "type": "ObojoboDraft.Chunks.MCAssessment.MCChoice",
+          },
+        ],
+        "content": Object {
+          "responseType": "pick-one",
+        },
+        "id": "qb1-q1-mca",
+        "type": "ObojoboDraft.Chunks.MCAssessment",
+      },
+    ],
+    "content": Object {},
+    "id": "qb1.q1",
+    "type": "ObojoboDraft.Chunks.Question",
+  },
+  Object {
+    "children": Array [
+      Object {
+        "children": Array [],
+        "content": Object {
+          "textGroup": Array [
+            Object {
+              "data": null,
+              "text": Object {
+                "styleList": Array [],
+                "value": "Question Bank 1 Question 2 - This is the fourth question you'll see",
+              },
+            },
+          ],
+        },
+        "id": "26ca5752-dff9-43d0-9486-259184707166",
+        "type": "ObojoboDraft.Chunks.Text",
+      },
+      Object {
+        "children": Array [
+          Object {
+            "children": Array [
+              Object {
+                "children": Array [
+                  Object {
+                    "children": Array [],
+                    "content": Object {
+                      "textGroup": Array [
+                        Object {
+                          "data": null,
+                          "text": Object {
+                            "styleList": Array [],
+                            "value": "Correct",
+                          },
+                        },
+                      ],
+                    },
+                    "id": "268b6e2a-6a25-48a9-8101-65ad3ef0d3a7",
+                    "type": "ObojoboDraft.Chunks.Text",
+                  },
+                ],
+                "content": Object {},
+                "id": "qb1.q2-mca-mc1-ans",
+                "type": "ObojoboDraft.Chunks.MCAssessment.MCAnswer",
+              },
+            ],
+            "content": Object {
+              "score": 100,
+            },
+            "id": "qb1.q2-mca-mc1",
+            "type": "ObojoboDraft.Chunks.MCAssessment.MCChoice",
+          },
+          Object {
+            "children": Array [
+              Object {
+                "children": Array [
+                  Object {
+                    "children": Array [],
+                    "content": Object {
+                      "textGroup": Array [
+                        Object {
+                          "data": null,
+                          "text": Object {
+                            "styleList": Array [],
+                            "value": "Incorrect",
+                          },
+                        },
+                      ],
+                    },
+                    "id": "1a474950-0bfb-4d22-acbd-f099f3b6d4ac",
+                    "type": "ObojoboDraft.Chunks.Text",
+                  },
+                ],
+                "content": Object {},
+                "id": "qb1.q2-mca-mc2-ans",
+                "type": "ObojoboDraft.Chunks.MCAssessment.MCAnswer",
+              },
+            ],
+            "content": Object {
+              "score": 0,
+            },
+            "id": "qb1.q2-mca-mc2",
+            "type": "ObojoboDraft.Chunks.MCAssessment.MCChoice",
+          },
+        ],
+        "content": Object {
+          "responseType": "pick-one",
+        },
+        "id": "qb1.q2.mca",
+        "type": "ObojoboDraft.Chunks.MCAssessment",
+      },
+    ],
+    "content": Object {},
+    "id": "qb1.q2",
+    "type": "ObojoboDraft.Chunks.Question",
+  },
+]
+`;
+
+exports[`start attempt route can choose to display question banks and questions sequentially 4`] = `
+Array [
+  Object {
+    "children": Array [
+      Object {
+        "children": Array [],
+        "content": Object {
+          "textGroup": Array [
+            Object {
+              "data": null,
+              "text": Object {
+                "styleList": Array [],
+                "value": "Question Bank 1 Question 2 - This is the fourth question you'll see",
+              },
+            },
+          ],
+        },
+        "id": "26ca5752-dff9-43d0-9486-259184707166",
+        "type": "ObojoboDraft.Chunks.Text",
+      },
+      Object {
+        "children": Array [
+          Object {
+            "children": Array [
+              Object {
+                "children": Array [
+                  Object {
+                    "children": Array [],
+                    "content": Object {
+                      "textGroup": Array [
+                        Object {
+                          "data": null,
+                          "text": Object {
+                            "styleList": Array [],
+                            "value": "Correct",
+                          },
+                        },
+                      ],
+                    },
+                    "id": "268b6e2a-6a25-48a9-8101-65ad3ef0d3a7",
+                    "type": "ObojoboDraft.Chunks.Text",
+                  },
+                ],
+                "content": Object {},
+                "id": "qb1.q2-mca-mc1-ans",
+                "type": "ObojoboDraft.Chunks.MCAssessment.MCAnswer",
+              },
+            ],
+            "content": Object {
+              "score": 100,
+            },
+            "id": "qb1.q2-mca-mc1",
+            "type": "ObojoboDraft.Chunks.MCAssessment.MCChoice",
+          },
+          Object {
+            "children": Array [
+              Object {
+                "children": Array [
+                  Object {
+                    "children": Array [],
+                    "content": Object {
+                      "textGroup": Array [
+                        Object {
+                          "data": null,
+                          "text": Object {
+                            "styleList": Array [],
+                            "value": "Incorrect",
+                          },
+                        },
+                      ],
+                    },
+                    "id": "1a474950-0bfb-4d22-acbd-f099f3b6d4ac",
+                    "type": "ObojoboDraft.Chunks.Text",
+                  },
+                ],
+                "content": Object {},
+                "id": "qb1.q2-mca-mc2-ans",
+                "type": "ObojoboDraft.Chunks.MCAssessment.MCAnswer",
+              },
+            ],
+            "content": Object {
+              "score": 0,
+            },
+            "id": "qb1.q2-mca-mc2",
+            "type": "ObojoboDraft.Chunks.MCAssessment.MCChoice",
+          },
+        ],
+        "content": Object {
+          "responseType": "pick-one",
+        },
+        "id": "qb1.q2.mca",
+        "type": "ObojoboDraft.Chunks.MCAssessment",
+      },
+    ],
+    "content": Object {},
+    "id": "qb1.q2",
+    "type": "ObojoboDraft.Chunks.Question",
+  },
+  Object {
+    "children": Array [
+      Object {
+        "children": Array [],
+        "content": Object {
+          "textGroup": Array [
+            Object {
+              "data": null,
+              "text": Object {
+                "styleList": Array [],
+                "value": "Question Bank 1 Question 1 - This is the first question you'll see",
+              },
+            },
+          ],
+        },
+        "id": "e3d455d5-80dd-4df8-87cf-594218016f44",
+        "type": "ObojoboDraft.Chunks.Text",
+      },
+      Object {
+        "children": Array [
+          Object {
+            "children": Array [
+              Object {
+                "children": Array [
+                  Object {
+                    "children": Array [],
+                    "content": Object {
+                      "textGroup": Array [
+                        Object {
+                          "data": null,
+                          "text": Object {
+                            "styleList": Array [],
+                            "value": "Correct",
+                          },
+                        },
+                      ],
+                    },
+                    "id": "eb1df6ac-27e5-4b0c-865e-fea3ef790623",
+                    "type": "ObojoboDraft.Chunks.Text",
+                  },
+                ],
+                "content": Object {},
+                "id": "qb1-q1-mca-mc1-ans",
+                "type": "ObojoboDraft.Chunks.MCAssessment.MCAnswer",
+              },
+            ],
+            "content": Object {
+              "score": 100,
+            },
+            "id": "qb1-q1-mca-mc1",
+            "type": "ObojoboDraft.Chunks.MCAssessment.MCChoice",
+          },
+          Object {
+            "children": Array [
+              Object {
+                "children": Array [
+                  Object {
+                    "children": Array [],
+                    "content": Object {
+                      "textGroup": Array [
+                        Object {
+                          "data": null,
+                          "text": Object {
+                            "styleList": Array [],
+                            "value": "Incorrect",
+                          },
+                        },
+                      ],
+                    },
+                    "id": "2e332c06-58d1-42f9-a8b5-64fc0b1825fc",
+                    "type": "ObojoboDraft.Chunks.Text",
+                  },
+                ],
+                "content": Object {},
+                "id": "qb1-q1-mca-mc2-ans",
+                "type": "ObojoboDraft.Chunks.MCAssessment.MCAnswer",
+              },
+            ],
+            "content": Object {
+              "score": 0,
+            },
+            "id": "qb1-q1-mca-mc2",
+            "type": "ObojoboDraft.Chunks.MCAssessment.MCChoice",
+          },
+        ],
+        "content": Object {
+          "responseType": "pick-one",
+        },
+        "id": "qb1-q1-mca",
+        "type": "ObojoboDraft.Chunks.MCAssessment",
+      },
+    ],
+    "content": Object {},
+    "id": "qb1.q1",
+    "type": "ObojoboDraft.Chunks.Question",
+  },
+]
+`;

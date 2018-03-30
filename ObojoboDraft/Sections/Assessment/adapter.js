@@ -26,7 +26,6 @@ let Adapter = {
 
 	clone(model, clone) {
 		clone.modelState.attempts = model.modelState.attempts
-		clone.modelState.hideNav = model.modelState.hideNav
 		clone.modelState.scoreActions = model.modelState.scoreActions.clone()
 		clone.modelState.rubric = model.modelState.rubric.clone()
 	},
@@ -39,7 +38,6 @@ let Adapter = {
 
 	toJSON(model, json) {
 		json.content.attempts = model.modelState.attempts
-		json.content.hideNav = model.modelState.hideNav
 		json.content.scoreActions = model.modelState.scoreActions.toObject()
 		json.content.rubric = model.modelState.rubric.toObject()
 	}
