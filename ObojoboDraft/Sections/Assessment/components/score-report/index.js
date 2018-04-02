@@ -71,15 +71,23 @@ const getModsBreakdown = items => (
 	</div>
 )
 
-const scoreReportView = ({ items, score = null }) => {
-	return (
-		<div className="score-report">
-			{score === null ? (
+const scoreReportView = ({ items, score }) => {
+	let scoreEl = null
+	if (typeof score !== 'undefined') {
+		scoreEl =
+			score === null ? (
 				<span className="value is-null">--</span>
 			) : (
 				<span className="value is-not-null">{score}</span>
-			)}
-
+			)
+	}
+	return (
+		<div
+			className={`score-report ${
+				typeof score === 'undefined' ? 'is-not-showing-score' : 'is-showing-score'
+			}`}
+		>
+			{scoreEl}
 			{getModsBreakdown(items)}
 		</div>
 	)

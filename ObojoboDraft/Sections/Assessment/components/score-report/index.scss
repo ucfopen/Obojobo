@@ -4,6 +4,12 @@
 	font-family: $font-default;
 	text-align: center;
 
+	&.is-showing-score {
+		.mod-breakdown .mod-breakdown-items {
+			border-top: 1px solid $color-hr;
+		}
+	}
+
 	.value.is-not-null {
 		position: relative;
 
@@ -27,11 +33,6 @@
 		.mod-breakdown-items {
 			width: 100%;
 			padding-top: 0;
-			border-top: 1px solid $color-hr;
-
-			&:last-child {
-				padding-bottom: 0.8em;
-			}
 		}
 	}
 

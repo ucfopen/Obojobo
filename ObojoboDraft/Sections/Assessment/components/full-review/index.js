@@ -10,7 +10,7 @@ import formatDate from 'date-fns/format'
 const { AssessmentUtil } = Viewer.util
 const { NavUtil } = Viewer.util
 const { OboModel } = Common.models
-const { Button, ButtonBar } = Common.components
+const { Button, ButtonBar, MoreInfoButton } = Common.components
 
 const assessmentReviewView = ({ assessment }) => {
 	let attemptReviewComponents = {}
@@ -41,22 +41,27 @@ const assessmentReviewView = ({ assessment }) => {
 									<li>
 										{numCorrect} out of {attempt.questionScores.length} questions correct
 									</li>
+									<li>
+										Score:{' '}
+										<strong>
+											{attempt.assessmentScore === null ? '--' : attempt.assessmentScore + '%'}
+										</strong>
+										<MoreInfoButton>
+											<ScoreReportView
+												items={report.getTextItems(
+													false,
+													attempt.assessmentScoreDetails,
+													AssessmentUtil.getAttemptsRemaining(
+														assessment.props.moduleData.assessmentState,
+														assessment.props.model
+													)
+												)}
+											/>
+										</MoreInfoButton>
+									</li>
 								</ul>
 							</div>
 						</div>
-					</div>
-					<div className="score-section">
-						<ScoreReportView
-							score={attempt.assessmentScore}
-							items={report.getTextItems(
-								false,
-								attempt.assessmentScoreDetails,
-								AssessmentUtil.getAttemptsRemaining(
-									assessment.props.moduleData.assessmentState,
-									assessment.props.model
-								)
-							)}
-						/>
 					</div>
 				</div>
 				{attempt.questionScores.map(scoreObj => {

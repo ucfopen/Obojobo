@@ -34,8 +34,8 @@
 				justify-content: center;
 
 				svg {
-					width: 3.5em;
-					height: 3.5em;
+					width: 5em;
+					height: 5em;
 					margin-right: 1em;
 				}
 
@@ -46,17 +46,33 @@
 					font-size: 0.8em;
 					line-height: 1.5em;
 				}
-			}
 
-			> .score-section {
-				width: 50%;
+				li {
+					position: relative;
+					line-height: 1.5em;
+				}
 
-				.value {
-					font-size: 1.5em;
-					margin-bottom: 0.3em;
-					display: inline-block;
+				.obojobo-draft--components--more-info-button {
+					margin-left: 0.5em;
+
+					.score-report {
+						font-size: 1.25em;
+						width: 20em;
+						padding: 0.5em 1em;
+						box-sizing: border-box;
+					}
 				}
 			}
+
+			// > .score-section {
+			// 	width: 50%;
+
+			// 	.value {
+			// 		font-size: 1.5em;
+			// 		margin-bottom: 0.3em;
+			// 		display: inline-block;
+			// 	}
+			// }
 		}
 
 		// mcassessment component

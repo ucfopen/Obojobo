@@ -475,7 +475,8 @@ var NavUtil = _Viewer2.default.util.NavUtil;
 var OboModel = _Common2.default.models.OboModel;
 var _Common$components = _Common2.default.components,
     Button = _Common$components.Button,
-    ButtonBar = _Common$components.ButtonBar;
+    ButtonBar = _Common$components.ButtonBar,
+    MoreInfoButton = _Common$components.MoreInfoButton;
 
 
 var assessmentReviewView = function assessmentReviewView(_ref) {
@@ -531,18 +532,28 @@ var assessmentReviewView = function assessmentReviewView(_ref) {
 									' out of ',
 									attempt.questionScores.length,
 									' questions correct'
+								),
+								React.createElement(
+									'li',
+									null,
+									'Score:',
+									' ',
+									React.createElement(
+										'strong',
+										null,
+										attempt.assessmentScore === null ? '--' : attempt.assessmentScore + '%'
+									),
+									React.createElement(
+										MoreInfoButton,
+										null,
+										React.createElement(_scoreReport2.default, {
+											items: report.getTextItems(false, attempt.assessmentScoreDetails, AssessmentUtil.getAttemptsRemaining(assessment.props.moduleData.assessmentState, assessment.props.model))
+										})
+									)
 								)
 							)
 						)
 					)
-				),
-				React.createElement(
-					'div',
-					{ className: 'score-section' },
-					React.createElement(_scoreReport2.default, {
-						score: attempt.assessmentScore,
-						items: report.getTextItems(false, attempt.assessmentScoreDetails, AssessmentUtil.getAttemptsRemaining(assessment.props.moduleData.assessmentState, assessment.props.model))
-					})
 				)
 			),
 			attempt.questionScores.map(function (scoreObj) {
@@ -3186,13 +3197,11 @@ var getModsBreakdown = function getModsBreakdown(items) {
 
 var scoreReportView = function scoreReportView(_ref2) {
 	var items = _ref2.items,
-	    _ref2$score = _ref2.score,
-	    score = _ref2$score === undefined ? null : _ref2$score;
+	    score = _ref2.score;
 
-	return React.createElement(
-		'div',
-		{ className: 'score-report' },
-		score === null ? React.createElement(
+	var scoreEl = null;
+	if (typeof score !== 'undefined') {
+		scoreEl = score === null ? React.createElement(
 			'span',
 			{ className: 'value is-null' },
 			'--'
@@ -3200,7 +3209,14 @@ var scoreReportView = function scoreReportView(_ref2) {
 			'span',
 			{ className: 'value is-not-null' },
 			score
-		),
+		);
+	}
+	return React.createElement(
+		'div',
+		{
+			className: 'score-report ' + (typeof score === 'undefined' ? 'is-not-showing-score' : 'is-showing-score')
+		},
+		scoreEl,
 		getModsBreakdown(items)
 	);
 	//) : (
