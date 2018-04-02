@@ -213,7 +213,7 @@ const createChosenQuestionTree = (node, assessmentProperties) => {
 		logger.log('TEST', node.id, node.content, node.content.choose)
 		const qbProperties = getQuestionBankProperties(node)
 
-		switch (qbProperties.choose) {
+		switch (qbProperties.select) {
 			case 'random-unseen':
 				node.children = chooseUnseenQuestionsRandomly(assessmentProperties, node.id, qbProperties.choose)
 			case 'random-all':

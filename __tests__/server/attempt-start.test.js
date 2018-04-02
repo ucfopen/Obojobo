@@ -10,7 +10,7 @@ import {
   createChosenQuestionTree,
   getNodeQuestions,
   getSendToClientPromises
-} from '../../server/attempt-start.js';
+} from '../../server/attempt-start.js'
 import testJson from '../../test-object.json'
 
 const Draft = oboRequire('models/draft')
@@ -159,9 +159,8 @@ describe('start attempt route', () => {
 
   // select options are added to attempt-start.
   it('can create a tree of chosen question banks/questions appropriate to a specified choose property', () => {
-    // TODO: Mock each of the question choosing methods and expect them to have been called.
     const assessmentNode = mockDraft.getChildNodeById('assessment')
-    const assessmentQbTree = assessmentNode.children[1].toObject()
+    let assessmentQbTree = assessmentNode.children[1].toObject()
 
     mockUsedQuestionMap.set('qb2', 1)
     mockUsedQuestionMap.set('qb2.q1', 1)
@@ -184,6 +183,27 @@ describe('start attempt route', () => {
     expect(assessmentQbTree.id).toBe('qb')
     expect(assessmentQbTree.children.length).toBe(1)
     expect(assessmentQbTree.children[0].id).toBe('qb1')
+
+    // Reset qb tree and check if random-all works appropriately when called
+    // through createChosenQuestionTree.
+    assessmentQbTree = assessmentNode.children[1].toObject()
+    assessmentQbTree.content.select = 'random-all'
+    _.shuffle = jest.fn(() => (['qb2', 'qb1']))
+    createChosenQuestionTree(assessmentQbTree, mockAssessmentProperties)
+    expect(_.shuffle).toHaveBeenCalled()
+
+    // Reset qb tree and check if random-unseen works appropriately when called
+    // through createChosenQuestionTree
+    assessmentQbTree = assessmentNode.children[1].toObject()
+    assessmentQbTree.content.select = 'random-unseen'
+
+    mockUsedQuestionMap.set('qb1', 2)
+    mockUsedQuestionMap.set('qb1.q1', 2)
+    mockUsedQuestionMap.set('qb1.q2', 2)
+
+    // qb2 should come first here (it is next up in unseen priority)
+    createChosenQuestionTree(assessmentQbTree, mockAssessmentProperties)
+    expect(assessmentQbTree.children.map(node => node.id)).toEqual(['qb2'])
   })
 
   it('can retrieve an array of question type nodes from a node tree', () => {
