@@ -125,9 +125,6 @@ exports[`MCAssessment MCAssessment component 1`] = `
       </div>
     </div>
   </div>
-  <div
-    className="submit-and-result-container"
-  />
   <div />
 </form>
 `;
@@ -257,9 +254,6 @@ exports[`MCAssessment MCAssessment with a set score 1`] = `
       </div>
     </div>
   </div>
-  <div
-    className="submit-and-result-container"
-  />
   <div />
 </form>
 `;
@@ -389,9 +383,6 @@ exports[`MCAssessment MCAssessment with a set score 2`] = `
       </div>
     </div>
   </div>
-  <div
-    className="submit-and-result-container"
-  />
   <div />
 </form>
 `;
@@ -521,9 +512,6 @@ exports[`MCAssessment MCAssessment with response 1`] = `
       </div>
     </div>
   </div>
-  <div
-    className="submit-and-result-container"
-  />
   <div />
 </form>
 `;
@@ -653,9 +641,6 @@ exports[`MCAssessment MCAssessment with response 2`] = `
       </div>
     </div>
   </div>
-  <div
-    className="submit-and-result-container"
-  />
   <div />
 </form>
 `;
@@ -785,9 +770,6 @@ exports[`MCAssessment MCAssessment with revealAll 1`] = `
       </div>
     </div>
   </div>
-  <div
-    className="submit-and-result-container"
-  />
   <div />
 </form>
 `;
@@ -917,9 +899,6 @@ exports[`MCAssessment MCAssessment with revealAll 2`] = `
       </div>
     </div>
   </div>
-  <div
-    className="submit-and-result-container"
-  />
   <div />
 </form>
 `;

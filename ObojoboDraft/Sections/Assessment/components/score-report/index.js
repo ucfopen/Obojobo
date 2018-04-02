@@ -37,7 +37,7 @@ const getTextDiv = (type, text) => {
 		<div className="score-report-text">
 			<div className="score-report-text-content">
 				<span className={getSpanTextClass(type)}>
-					{type.charAt(0).toUpperCase() + type.substr(1)}
+					{type === 'extra-credit' ? 'Extra Credit' : 'Penalty'}
 				</span>
 				{' - ' + text + ':'}
 			</div>

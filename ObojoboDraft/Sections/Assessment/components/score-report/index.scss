@@ -25,8 +25,8 @@
 		line-height: 1.5em;
 
 		.mod-breakdown-items {
-			width: 80%;
-			padding-top: 0.5em;
+			width: 100%;
+			padding-top: 0;
 			border-top: 1px solid $color-hr;
 
 			&:last-child {
@@ -59,11 +59,13 @@
 			}
 
 			.is-type-score-report-penalty {
-				color: red;
+				color: $color-incorrect;
+				font-weight: bold;
 			}
 
 			.is-type-score-report-extra-credit {
-				color: green;
+				color: $color-correct;
+				font-weight: bold;
 			}
 
 			&.score-report-text-line,

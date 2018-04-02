@@ -1,6 +1,8 @@
 let getDisplayFriendlyScore = n => {
 	if (n === null) return '--'
-	return n.toFixed(2).replace('.00', '')
+	return parseFloat(n)
+		.toFixed(2)
+		.replace('.00', '')
 }
 
 let getPassingRange = passingNumber => {

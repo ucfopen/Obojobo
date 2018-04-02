@@ -751,7 +751,7 @@ var MCAssessment = function (_React$Component) {
 						label: String.fromCharCode(index + 65)
 					});
 				}),
-				React.createElement(
+				this.props.mode === 'assessment' ? null : React.createElement(
 					'div',
 					{ className: 'submit-and-result-container' },
 					this.props.mode === 'practice' ? questionSubmitted ? React.createElement(

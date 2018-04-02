@@ -13,6 +13,8 @@
   .obojobo-draft--sections--assessment .attempt-review-container > .attempt-button-container {
     width: 100%;
     text-align: center; }
+    .obojobo-draft--sections--assessment .attempt-review-container > .attempt-button-container.is-showing-one-item {
+      visibility: hidden; }
   .obojobo-draft--sections--assessment .attempt-review-container > .review {
     text-align: left;
     margin: 0 auto;
@@ -27,7 +29,7 @@
     .obojobo-draft--sections--assessment .attempt-review-container > .review > .attempt-header {
       display: flex;
       justify-content: space-between;
-      align-items: center;
+      align-items: start;
       font-family: "Libre Franklin", Arial, sans-serif; }
       .obojobo-draft--sections--assessment .attempt-review-container > .review > .attempt-header > .attempt-info-container {
         display: flex;
@@ -35,6 +37,7 @@
         justify-content: center; }
         .obojobo-draft--sections--assessment .attempt-review-container > .review > .attempt-header > .attempt-info-container svg {
           width: 3.5em;
+          height: 3.5em;
           margin-right: 1em; }
         .obojobo-draft--sections--assessment .attempt-review-container > .review > .attempt-header > .attempt-info-container ul {
           margin: 0;
@@ -43,7 +46,11 @@
           font-size: 0.8em;
           line-height: 1.5em; }
       .obojobo-draft--sections--assessment .attempt-review-container > .review > .attempt-header > .score-section {
-        width: 38%; }
+        width: 50%; }
+        .obojobo-draft--sections--assessment .attempt-review-container > .review > .attempt-header > .score-section .value {
+          font-size: 1.5em;
+          margin-bottom: 0.3em;
+          display: inline-block; }
 
 .obojobo-draft--sections--assessment .score-report {
   font-family: "Libre Franklin", Arial, sans-serif;
@@ -64,8 +71,8 @@
     font-size: 0.7em;
     line-height: 1.5em; }
     .obojobo-draft--sections--assessment .score-report .mod-breakdown .mod-breakdown-items {
-      width: 80%;
-      padding-top: 0.5em;
+      width: 100%;
+      padding-top: 0;
       border-top: 1px solid rgba(0, 0, 0, 0.1); }
       .obojobo-draft--sections--assessment .score-report .mod-breakdown .mod-breakdown-items:last-child {
         padding-bottom: 0.8em; }
@@ -85,9 +92,11 @@
       .obojobo-draft--sections--assessment .score-report .mod-breakdown-item .score-report-text .score-report-text-content {
         display: inline-block; }
       .obojobo-draft--sections--assessment .score-report .mod-breakdown-item .score-report-text .is-type-score-report-penalty {
-        color: red; }
+        color: #c21f00;
+        font-weight: bold; }
       .obojobo-draft--sections--assessment .score-report .mod-breakdown-item .score-report-text .is-type-score-report-extra-credit {
-        color: green; }
+        color: #38ae24;
+        font-weight: bold; }
       .obojobo-draft--sections--assessment .score-report .mod-breakdown-item .score-report-text.score-report-text-line, .obojobo-draft--sections--assessment .score-report .mod-breakdown-item .score-report-text.score-report-text-value {
         margin-top: 0.5em; }
       .obojobo-draft--sections--assessment .score-report .mod-breakdown-item .score-report-text.score-report-text-line {
@@ -153,6 +162,8 @@
     flex: 2;
     border-radius: 0.25em;
     margin: 0 1em;
+    padding-left: 2em;
+    padding-right: 2em;
     padding-top: 0.8em; }
     .obojobo-draft--sections--assessment .score .assessment-flex-container .highest-score h1 {
       padding-bottom: 10px; }

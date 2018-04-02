@@ -345,7 +345,7 @@ export default class MCAssessment extends React.Component {
 						/>
 					)
 				})}
-				{
+				{this.props.mode === 'assessment' ? null : (
 					<div className="submit-and-result-container">
 						{this.props.mode === 'practice' ? (
 							questionSubmitted ? (
@@ -380,7 +380,7 @@ export default class MCAssessment extends React.Component {
 							)
 						) : null}
 					</div>
-				}
+				)}
 				<ReactCSSTransitionGroup
 					component="div"
 					transitionName="submit"

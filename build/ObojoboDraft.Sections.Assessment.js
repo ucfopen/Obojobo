@@ -595,7 +595,9 @@ var assessmentReviewView = function assessmentReviewView(_ref) {
 		{ className: 'attempt-review-container' },
 		React.createElement(
 			'div',
-			{ className: 'attempt-button-container' },
+			{
+				className: 'attempt-button-container ' + (attemptButtons.length <= 1 ? 'is-showing-one-item' : null)
+			},
 			React.createElement(
 				ButtonBar,
 				{ altAction: true, selectedIndex: getSelectedIndex() },
@@ -3132,7 +3134,7 @@ var getTextDiv = function getTextDiv(type, text) {
 			React.createElement(
 				'span',
 				{ className: getSpanTextClass(type) },
-				type.charAt(0).toUpperCase() + type.substr(1)
+				type === 'extra-credit' ? 'Extra Credit' : 'Penalty'
 			),
 			' - ' + text + ':'
 		)
@@ -3226,7 +3228,7 @@ function _classCallCheck(instance, Constructor) { if (!(instance instanceof Cons
 
 var getDisplayFriendlyScore = function getDisplayFriendlyScore(n) {
 	if (n === null) return '--';
-	return n.toFixed(2).replace('.00', '');
+	return parseFloat(n).toFixed(2).replace('.00', '');
 };
 
 var getPassingRange = function getPassingRange(passingNumber) {

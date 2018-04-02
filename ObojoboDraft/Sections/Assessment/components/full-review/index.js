@@ -110,7 +110,11 @@ const assessmentReviewView = ({ assessment }) => {
 
 	return (
 		<div className="attempt-review-container">
-			<div className="attempt-button-container">
+			<div
+				className={`attempt-button-container ${
+					attemptButtons.length <= 1 ? 'is-showing-one-item' : null
+				}`}
+			>
 				<ButtonBar altAction selectedIndex={getSelectedIndex()}>
 					{attemptButtons}
 				</ButtonBar>
