@@ -4,18 +4,21 @@
 		text-align: center;
 		background-color: $color-bg2;
 		border-radius: $dimension-rounded-radius;
-		padding: 2em 3em;
-		padding-bottom: 1em;
 
-		> h1 {
-			width: 100%;
-			display: inline-block;
-			font-weight: normal;
-			font-size: 1.35em;
-			border-bottom: 1px solid transparentize($color-shadow, 0.2);
-			padding: 1em 0;
-			padding-top: 0;
-			box-sizing: border-box;
+		> .top {
+			padding: 2em 3em;
+			padding-bottom: 0.5em;
+
+			> h1 {
+				width: 100%;
+				display: inline-block;
+				font-weight: normal;
+				font-size: 1.35em;
+				border-bottom: 1px solid transparentize($color-shadow, 0.2);
+				padding: 1em 0;
+				padding-top: 0;
+				box-sizing: border-box;
+			}
 		}
 	}
 

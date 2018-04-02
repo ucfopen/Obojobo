@@ -46,7 +46,7 @@ export default class LTIStatus extends React.Component {
 		let systemLabel = this.props.externalSystemLabel
 
 		return (
-			<div className="obojobo-draft--sections--assessment--lti-status">
+			<div className="obojobo-draft--sections--assessment--lti-status is-not-synced">
 				<h2>{`There was a problem sending your score to ${systemLabel}.`}</h2>
 				<p>
 					{`Don’t worry - your score is safely recorded here. We just weren’t able to send it to ${systemLabel}. Click the button below to resend your score:`}

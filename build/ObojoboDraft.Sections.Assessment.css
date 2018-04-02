@@ -107,18 +107,19 @@
   font-family: "Libre Franklin", Arial, sans-serif;
   text-align: center;
   background-color: #f4f4f4;
-  border-radius: 0.25em;
-  padding: 2em 3em;
-  padding-bottom: 1em; }
-  .obojobo-draft--sections--assessment .score > .results-bar > h1 {
-    width: 100%;
-    display: inline-block;
-    font-weight: normal;
-    font-size: 1.35em;
-    border-bottom: 1px solid rgba(0, 0, 0, 0.1);
-    padding: 1em 0;
-    padding-top: 0;
-    box-sizing: border-box; }
+  border-radius: 0.25em; }
+  .obojobo-draft--sections--assessment .score > .results-bar > .top {
+    padding: 2em 3em;
+    padding-bottom: 0.5em; }
+    .obojobo-draft--sections--assessment .score > .results-bar > .top > h1 {
+      width: 100%;
+      display: inline-block;
+      font-weight: normal;
+      font-size: 1.35em;
+      border-bottom: 1px solid rgba(0, 0, 0, 0.1);
+      padding: 1em 0;
+      padding-top: 0;
+      box-sizing: border-box; }
 
 .obojobo-draft--sections--assessment .score .assessment-flex-container {
   display: flex;
@@ -182,9 +183,12 @@
   box-sizing: border-box; }
   .obojobo-draft--sections--assessment--lti-status.is-synced {
     font-size: 0.7em;
-    color: #999999; }
+    color: #999999;
+    padding-bottom: 2em; }
   .obojobo-draft--sections--assessment--lti-status.is-not-synced {
-    background-color: #ffe9c3; }
+    background-color: #ffe9c3;
+    padding: 2em;
+    margin-top: 0.5em; }
     .obojobo-draft--sections--assessment--lti-status.is-not-synced > h2 {
       color: #000000;
       font-size: 1em;

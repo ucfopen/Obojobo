@@ -9,10 +9,13 @@
 	&.is-synced {
 		font-size: 0.7em;
 		color: $color-text-minor;
+		padding-bottom: 2em;
 	}
 
 	&.is-not-synced {
 		background-color: #ffe9c3;
+		padding: 2em;
+		margin-top: 0.5em;
 
 		> h2 {
 			color: $color-text;

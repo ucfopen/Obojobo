@@ -99,7 +99,7 @@ var APIUtil = {
 	resendLTIAssessmentScore(lo, assessment) {
 		return createParsedJsonPromise(
 			APIUtil.post('/api/lti/sendAssessmentScore', {
-				draftId: lo.get('_id'),
+				draftId: lo.get('draftId'),
 				assessmentId: assessment.get('id')
 			})
 		)

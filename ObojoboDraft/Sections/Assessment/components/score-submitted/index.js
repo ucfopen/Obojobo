@@ -88,30 +88,32 @@ const scoreSubmittedView = assessment => {
 	return (
 		<div className="score unlock">
 			<div className="results-bar">
-				<h1>{assessmentLabel} - How You Did</h1>
+				<div className="top">
+					<h1>{assessmentLabel} - How You Did</h1>
 
-				<div className="assessment-flex-container">
-					<div className="last-attempt">
-						<h2>Last Attempt Score</h2>
-						<div className="value">{Math.round(recentScore)}</div>
-					</div>
-					<div className="highest-score">
-						<h2>Highest Score</h2>
-						<ScoreReportView
-							score={latestHighestAttempt.assessmentScore}
-							items={report.getTextItems(
-								true,
-								latestHighestAttempt.assessmentScoreDetails,
-								AssessmentUtil.getAttemptsRemaining(
-									assessment.props.moduleData.assessmentState,
-									assessment.props.model
-								)
-							)}
-						/>
-					</div>
-					<div className="attempts-remaining">
-						<h2>Attempts Remaining</h2>
-						<div className="value">{attemptsRemaining}</div>
+					<div className="assessment-flex-container">
+						<div className="last-attempt">
+							<h2>Last Attempt Score</h2>
+							<div className="value">{Math.round(recentScore)}</div>
+						</div>
+						<div className="highest-score">
+							<h2>Highest Score</h2>
+							<ScoreReportView
+								score={latestHighestAttempt.assessmentScore}
+								items={report.getTextItems(
+									true,
+									latestHighestAttempt.assessmentScoreDetails,
+									AssessmentUtil.getAttemptsRemaining(
+										assessment.props.moduleData.assessmentState,
+										assessment.props.model
+									)
+								)}
+							/>
+						</div>
+						<div className="attempts-remaining">
+							<h2>Attempts Remaining</h2>
+							<div className="value">{attemptsRemaining}</div>
+						</div>
 					</div>
 				</div>
 

@@ -779,53 +779,57 @@ var scoreSubmittedView = function scoreSubmittedView(assessment) {
 			'div',
 			{ className: 'results-bar' },
 			React.createElement(
-				'h1',
-				null,
-				assessmentLabel,
-				' - How You Did'
-			),
-			React.createElement(
 				'div',
-				{ className: 'assessment-flex-container' },
+				{ className: 'top' },
 				React.createElement(
-					'div',
-					{ className: 'last-attempt' },
-					React.createElement(
-						'h2',
-						null,
-						'Last Attempt Score'
-					),
-					React.createElement(
-						'div',
-						{ className: 'value' },
-						Math.round(recentScore)
-					)
+					'h1',
+					null,
+					assessmentLabel,
+					' - How You Did'
 				),
 				React.createElement(
 					'div',
-					{ className: 'highest-score' },
+					{ className: 'assessment-flex-container' },
 					React.createElement(
-						'h2',
-						null,
-						'Highest Score'
-					),
-					React.createElement(_scoreReport2.default, {
-						score: latestHighestAttempt.assessmentScore,
-						items: report.getTextItems(true, latestHighestAttempt.assessmentScoreDetails, AssessmentUtil.getAttemptsRemaining(assessment.props.moduleData.assessmentState, assessment.props.model))
-					})
-				),
-				React.createElement(
-					'div',
-					{ className: 'attempts-remaining' },
-					React.createElement(
-						'h2',
-						null,
-						'Attempts Remaining'
+						'div',
+						{ className: 'last-attempt' },
+						React.createElement(
+							'h2',
+							null,
+							'Last Attempt Score'
+						),
+						React.createElement(
+							'div',
+							{ className: 'value' },
+							Math.round(recentScore)
+						)
 					),
 					React.createElement(
 						'div',
-						{ className: 'value' },
-						attemptsRemaining
+						{ className: 'highest-score' },
+						React.createElement(
+							'h2',
+							null,
+							'Highest Score'
+						),
+						React.createElement(_scoreReport2.default, {
+							score: latestHighestAttempt.assessmentScore,
+							items: report.getTextItems(true, latestHighestAttempt.assessmentScoreDetails, AssessmentUtil.getAttemptsRemaining(assessment.props.moduleData.assessmentState, assessment.props.model))
+						})
+					),
+					React.createElement(
+						'div',
+						{ className: 'attempts-remaining' },
+						React.createElement(
+							'h2',
+							null,
+							'Attempts Remaining'
+						),
+						React.createElement(
+							'div',
+							{ className: 'value' },
+							attemptsRemaining
+						)
 					)
 				)
 			),
@@ -979,7 +983,7 @@ var LTIStatus = function (_React$Component) {
 
 			return React.createElement(
 				'div',
-				{ className: 'obojobo-draft--sections--assessment--lti-status' },
+				{ className: 'obojobo-draft--sections--assessment--lti-status is-not-synced' },
 				React.createElement(
 					'h2',
 					null,
