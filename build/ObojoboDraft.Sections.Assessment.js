@@ -386,6 +386,8 @@ var LTIStatus = function (_React$Component) {
 			var ltiState = this.props.ltiState;
 			var systemLabel = this.props.externalSystemLabel;
 
+			console.log(JSON.stringify(ltiState));
+
 			return React.createElement(
 				'div',
 				{ className: 'obojobo-draft--sections--assessment--lti-status' },

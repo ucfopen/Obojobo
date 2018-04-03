@@ -49,9 +49,9 @@ describe('lti-status', () => {
 		// Expect no error message box
 		expect(el.textContent.indexOf('There was a problem')).toBe(-1)
 
-		// Expect no sync error notification
+		// Expect no sync notification
 		// Note - Only works once issue 135 is synced to dev
-		// expect(el.textContent.indexOf('not sent to')).toBe(-1)
+		// expect(el.textContent.indexOf('sent to')).toBe(-1)
 
 		ltiState = {
 			state: {
@@ -71,16 +71,16 @@ describe('lti-status', () => {
 		// Expect no error message box
 		expect(el.textContent.indexOf('There was a problem')).toBe(-1)
 
-		// Expect no sync error notification
+		// Expect no sync notification
 		// Note - Only works once issue 135 is synced to dev
-		// expect(el.textContent.indexOf('not sent to')).toBe(-1)
+		// expect(el.textContent.indexOf('sent to')).toBe(-1)
 	})
 
-	test.skip('renders a synced message for ok_gradebook_matches_assessment_score', () => {
+	test('renders no error message for ok_gradebook_matches_assessment_score', () => {
 		let resendScore = jest.fn()
 		let ltiState = {
 			state: {
-				gradebookStatus: "ok_no_outcome_service"
+				gradebookStatus: "ok_gradebook_matches_assessment_score"
 			},
 			networkState: "idle",
 			errorCount: 0
@@ -95,6 +95,21 @@ describe('lti-status', () => {
 		let tree = component.toJSON()
 
 		expect(tree).toMatchSnapshot()
+
+		let el = document.createElement('div')
+		el.innerHTML = shallow(<LTIStatus
+			ltiState={ltiState}
+			externalSystemLabel={'mocklti'}
+			onClickResendScore={resendScore}
+		/>).html()
+
+		// Expect no error message box
+		expect(el.textContent.indexOf('There was a problem')).toBe(-1)
+
+		// Expect positive sync notification
+		// Note - Only works once issue 135 is synced to dev
+		// expect(el.textContent.indexOf('sent to')).not.toBe(-1)
+		// expect(el.textContent.indexOf('not sent to')).toBe(-1)
 	})
 
 	test('renders error for error gradebook statuses', () => {
@@ -132,31 +147,71 @@ describe('lti-status', () => {
 		// expect(el.textContent).toBe('not sent to')
 	})
 
-	test.skip('error shows additional information if error count is above 0', () => {
+	test('error shows additional information if error count is above 0', () => {
+		let resendScore = jest.fn()
+		let ltiState = {
+			state: {
+				gradebookStatus: "error_state_unknown"
+			},
+			networkState: "idle",
+			errorCount: 1
+		}
 		const component = renderer.create(
 			<LTIStatus
 				ltiState={ltiState}
-				externalSystemLabel={externalSystemLabel}
-				onClickResendScore={this.onClickResendScore.bind(this)}
+				externalSystemLabel={'mocklti'}
+				onClickResendScore={resendScore}
 			/>
 		)
 		let tree = component.toJSON()
 
 		expect(tree).toMatchSnapshot()
 
+		let el = document.createElement('div')
+		el.innerHTML = shallow(<LTIStatus
+			ltiState={ltiState}
+			externalSystemLabel={'mocklti'}
+			onClickResendScore={resendScore}
+		/>).html()
+
+		// Expect extended sync error box
+		expect(el.textContent.indexOf('There was a problem')).not.toBe(-1)
+		expect(el.textContent.indexOf('Try again anyway')).not.toBe(-1)
+
+		// Expect sync error notification
+		// Note - Only works once issue 135 is synced to dev
+		// expect(el.textContent).toBe('not sent to')
 	})
 
-	test.skip('error shows a loading state when loading', () => {
+	test('error shows a loading state when loading', () => {
+		let resendScore = jest.fn()
+		let ltiState = {
+			state: {
+				gradebookStatus: "error_state_unknown"
+			},
+			networkState: "awaitingSendAssessmentScoreResponse",
+			errorCount: 0
+		}
 		const component = renderer.create(
 			<LTIStatus
 				ltiState={ltiState}
-				externalSystemLabel={externalSystemLabel}
-				onClickResendScore={this.onClickResendScore.bind(this)}
+				externalSystemLabel={'mocklti'}
+				onClickResendScore={resendScore}
 			/>
 		)
 		let tree = component.toJSON()
 
 		expect(tree).toMatchSnapshot()
 
+		let el = document.createElement('div')
+		el.innerHTML = shallow(<LTIStatus
+			ltiState={ltiState}
+			externalSystemLabel={'mocklti'}
+			onClickResendScore={resendScore}
+		/>).html()
+
+		// Expect extended sync error box with diabled button
+		expect(el.textContent.indexOf('There was a problem')).not.toBe(-1)
+		expect(el.textContent.indexOf('Resending Score...')).not.toBe(-1)
 	})
 })
