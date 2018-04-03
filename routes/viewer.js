@@ -43,7 +43,9 @@ router.post('/:draftId/:page?', (req, res, next) => {
 			)
 		})
 		.then(visit => {
-			res.redirect(`/view/${req.params.draftId}/visit/${visit.id}`)
+			req.session.save(function(err) {
+				res.redirect(`/view/${req.params.draftId}/visit/${visit.id}`)
+			})
 		})
 		.catch(error => {
 			logger.error(error)
@@ -54,7 +56,6 @@ router.post('/:draftId/:page?', (req, res, next) => {
 router.get('/:draftId/visit/:visitId*', (req, res, next) => {
 	let user = null
 	let draft = null
-
 	return req
 		.requireCurrentUser()
 		.then(currentUser => {
