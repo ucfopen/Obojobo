@@ -52,6 +52,28 @@ describe('lti-status', () => {
 		// Expect no sync error notification
 		// Note - Only works once issue 135 is synced to dev
 		// expect(el.textContent.indexOf('not sent to')).toBe(-1)
+
+		ltiState = {
+			state: {
+				gradebookStatus: "ok_null_score_not_sent"
+			},
+			networkState: "idle",
+			errorCount: 0
+		}
+
+		el = document.createElement('div')
+		el.innerHTML = shallow(<LTIStatus
+			ltiState={ltiState}
+			externalSystemLabel={'mocklti'}
+			onClickResendScore={resendScore}
+		/>).html()
+
+		// Expect no error message box
+		expect(el.textContent.indexOf('There was a problem')).toBe(-1)
+
+		// Expect no sync error notification
+		// Note - Only works once issue 135 is synced to dev
+		// expect(el.textContent.indexOf('not sent to')).toBe(-1)
 	})
 
 	test.skip('renders a synced message for ok_gradebook_matches_assessment_score', () => {
