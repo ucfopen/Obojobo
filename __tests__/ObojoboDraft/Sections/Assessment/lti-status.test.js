@@ -39,26 +39,29 @@ describe('lti-status', () => {
 			<LTIStatus
 				ltiState={ltiState}
 				externalSystemLabel={'mocklti'}
-				onClickResendScore={resendScore}
-			/>
+				onClickResendScore={resendScore}>
+				<h1 className='lti-score'> Dummy Score </h1>
+			</LTIStatus>
 		)
 		let tree = component.toJSON()
 
 		expect(tree).toMatchSnapshot()
 
 		let el = document.createElement('div')
-		el.innerHTML = shallow(<LTIStatus
-			ltiState={ltiState}
-			externalSystemLabel={'mocklti'}
-			onClickResendScore={resendScore}
-		/>).html()
+		el.innerHTML = shallow(
+			<LTIStatus
+				ltiState={ltiState}
+				externalSystemLabel={'mocklti'}
+				onClickResendScore={resendScore}>
+				<h1 className='lti-score'> Dummy Score </h1>
+			</LTIStatus>
+		).html()
 
 		// Expect no error message box
 		expect(el.textContent.indexOf('There was a problem')).toBe(-1)
 
 		// Expect no sync notification
-		// Note - Only works once issue 135 is synced to dev
-		// expect(el.textContent.indexOf('sent to')).toBe(-1)
+		expect(el.textContent.indexOf('sent to')).toBe(-1)
 
 		ltiState = {
 			state: {
@@ -69,18 +72,20 @@ describe('lti-status', () => {
 		}
 
 		el = document.createElement('div')
-		el.innerHTML = shallow(<LTIStatus
-			ltiState={ltiState}
-			externalSystemLabel={'mocklti'}
-			onClickResendScore={resendScore}
-		/>).html()
+		el.innerHTML = shallow(
+			<LTIStatus
+				ltiState={ltiState}
+				externalSystemLabel={'mocklti'}
+				onClickResendScore={resendScore}>
+				<h1 className='lti-score'> Dummy Score </h1>
+			</LTIStatus>
+		).html()
 
 		// Expect no error message box
 		expect(el.textContent.indexOf('There was a problem')).toBe(-1)
 
 		// Expect no sync notification
-		// Note - Only works once issue 135 is synced to dev
-		// expect(el.textContent.indexOf('sent to')).toBe(-1)
+		expect(el.textContent.indexOf('sent to')).toBe(-1)
 	})
 
 	test('renders no error message for ok_gradebook_matches_assessment_score', () => {
@@ -96,27 +101,29 @@ describe('lti-status', () => {
 			<LTIStatus
 				ltiState={ltiState}
 				externalSystemLabel={'mocklti'}
-				onClickResendScore={resendScore}
-			/>
+				onClickResendScore={resendScore}>
+				<h1 className='lti-score'> Dummy Score </h1>
+			</LTIStatus>
 		)
 		let tree = component.toJSON()
 
 		expect(tree).toMatchSnapshot()
 
 		let el = document.createElement('div')
-		el.innerHTML = shallow(<LTIStatus
-			ltiState={ltiState}
-			externalSystemLabel={'mocklti'}
-			onClickResendScore={resendScore}
-		/>).html()
+		el.innerHTML = shallow(
+			<LTIStatus
+				ltiState={ltiState}
+				externalSystemLabel={'mocklti'}
+				onClickResendScore={resendScore}>
+				<h1 className='lti-score'> Dummy Score </h1>
+			</LTIStatus>
+		).html()
 
 		// Expect no error message box
 		expect(el.textContent.indexOf('There was a problem')).toBe(-1)
 
 		// Expect positive sync notification
-		// Note - Only works once issue 135 is synced to dev
-		// expect(el.textContent.indexOf('sent to')).not.toBe(-1)
-		// expect(el.textContent.indexOf('not sent to')).toBe(-1)
+		expect(el.textContent.indexOf('not sent to')).toBe(-1)
 	})
 
 	test('renders error for error gradebook statuses', () => {
@@ -132,33 +139,37 @@ describe('lti-status', () => {
 			<LTIStatus
 				ltiState={ltiState}
 				externalSystemLabel={'mocklti'}
-				onClickResendScore={resendScore}
-			/>
+				onClickResendScore={resendScore}>
+				<h1 className='lti-score'> Dummy Score </h1>
+			</LTIStatus>
 		)
 		let tree = component.toJSON()
 
 		expect(tree).toMatchSnapshot()
 
 		let el = document.createElement('div')
-		el.innerHTML = shallow(<LTIStatus
-			ltiState={ltiState}
-			externalSystemLabel={'mocklti'}
-			onClickResendScore={resendScore}
-		/>).html()
+		el.innerHTML = shallow(
+			<LTIStatus
+				ltiState={ltiState}
+				externalSystemLabel={'mocklti'}
+				onClickResendScore={resendScore}>
+				<h1 className='lti-score'> Dummy Score </h1>
+			</LTIStatus>
+		).html()
 
 		// Expect sync error box
 		expect(el.textContent.indexOf('There was a problem')).not.toBe(-1)
 
 		// Expect sync error notification
 		// Note - Only works once issue 135 is synced to dev
-		// expect(el.textContent).toBe('not sent to')
+		// expect(el.textContent.indexOf('not sent to')).not.toBe(-1)
 	})
 
 	test('error shows additional information if error count is above 0', () => {
 		let resendScore = jest.fn()
 		let ltiState = {
 			state: {
-				gradebookStatus: "error_state_unknown"
+				gradebookStatus: "error"
 			},
 			networkState: "idle",
 			errorCount: 1
@@ -167,19 +178,23 @@ describe('lti-status', () => {
 			<LTIStatus
 				ltiState={ltiState}
 				externalSystemLabel={'mocklti'}
-				onClickResendScore={resendScore}
-			/>
+				onClickResendScore={resendScore}>
+				<h1 className='lti-score'> Dummy Score </h1>
+			</LTIStatus>
 		)
 		let tree = component.toJSON()
 
 		expect(tree).toMatchSnapshot()
 
 		let el = document.createElement('div')
-		el.innerHTML = shallow(<LTIStatus
-			ltiState={ltiState}
-			externalSystemLabel={'mocklti'}
-			onClickResendScore={resendScore}
-		/>).html()
+		el.innerHTML = shallow(
+			<LTIStatus
+				ltiState={ltiState}
+				externalSystemLabel={'mocklti'}
+				onClickResendScore={resendScore}>
+				<h1 className='lti-score'> Dummy Score </h1>
+			</LTIStatus>
+		).html()
 
 		// Expect extended sync error box
 		expect(el.textContent.indexOf('There was a problem')).not.toBe(-1)
@@ -187,7 +202,7 @@ describe('lti-status', () => {
 
 		// Expect sync error notification
 		// Note - Only works once issue 135 is synced to dev
-		// expect(el.textContent).toBe('not sent to')
+		// expect(el.textContent.indexOf('not sent to')).not.toBe(-1)
 	})
 
 	test('error shows a loading state when loading', () => {
@@ -203,19 +218,23 @@ describe('lti-status', () => {
 			<LTIStatus
 				ltiState={ltiState}
 				externalSystemLabel={'mocklti'}
-				onClickResendScore={resendScore}
-			/>
+				onClickResendScore={resendScore}>
+				<h1 className='lti-score'> Dummy Score </h1>
+			</LTIStatus>
 		)
 		let tree = component.toJSON()
 
 		expect(tree).toMatchSnapshot()
 
 		let el = document.createElement('div')
-		el.innerHTML = shallow(<LTIStatus
-			ltiState={ltiState}
-			externalSystemLabel={'mocklti'}
-			onClickResendScore={resendScore}
-		/>).html()
+		el.innerHTML = shallow(
+			<LTIStatus
+				ltiState={ltiState}
+				externalSystemLabel={'mocklti'}
+				onClickResendScore={resendScore}>
+				<h1 className='lti-score'> Dummy Score </h1>
+			</LTIStatus>
+		).html()
 
 		// Expect extended sync error box with diabled button
 		expect(el.textContent.indexOf('There was a problem')).not.toBe(-1)
@@ -235,8 +254,9 @@ describe('lti-status', () => {
 			<LTIStatus
 				ltiState={ltiState}
 				externalSystemLabel={'mocklti'}
-				onClickResendScore={resendScore}
-			/>
+				onClickResendScore={resendScore}>
+				<h1 className='lti-score'> Dummy Score </h1>
+			</LTIStatus>
 		)
 
 		component
