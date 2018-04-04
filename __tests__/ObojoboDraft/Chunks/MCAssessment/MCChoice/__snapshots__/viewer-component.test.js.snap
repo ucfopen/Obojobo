@@ -1,0 +1,178 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`MCChoice viewer-component pick-all questions render as expected 1`] = `
+<div
+  className="component obojobo-draft--chunks--mc-assessment--mc-choice is-not-selected is-correct"
+  data-choice-label={undefined}
+  data-focussed={false}
+  data-id="pq1-mca-mc1"
+  data-obo-component={true}
+  data-type="ObojoboDraft.Chunks.MCAssessment.MCChoice"
+  id="obo-pq1-mca-mc1"
+>
+  <input
+    checked={false}
+    name="pq1.mca"
+    onChange={[Function]}
+    type="checkbox"
+    value="pq1-mca-mc1"
+  />
+  <div
+    className="children"
+  >
+    <div
+      className="component obojobo-draft--chunks--mc-assessment--mc-answer"
+      data-focussed={false}
+      data-id="pq1-mca-mc1-ans"
+      data-obo-component={true}
+      data-type="ObojoboDraft.Chunks.MCAssessment.MCAnswer"
+      id="obo-pq1-mca-mc1-ans"
+    >
+      <div
+        className="component"
+        data-focussed={false}
+        data-id="21853c91-3d1a-4b36-acee-75fb764b743"
+        data-obo-component={true}
+        data-type="ObojoboDraft.Chunks.Text"
+        id="obo-21853c91-3d1a-4b36-acee-75fb764b743"
+      >
+        <div
+          className="text-chunk obojobo-draft--chunks--single-text pad"
+        >
+          <span
+            className="text align-left"
+            data-group-index={0}
+            data-indent={0}
+          >
+            <span>
+              <span>
+                <span>
+                  yes
+                </span>
+              </span>
+            </span>
+          </span>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+`;
+
+exports[`MCChoice viewer-component pick-one questions render as expected 1`] = `
+<div
+  className="component obojobo-draft--chunks--mc-assessment--mc-choice is-not-selected is-correct"
+  data-choice-label={undefined}
+  data-focussed={false}
+  data-id="pq1-mca-mc1"
+  data-obo-component={true}
+  data-type="ObojoboDraft.Chunks.MCAssessment.MCChoice"
+  id="obo-pq1-mca-mc1"
+>
+  <input
+    checked={false}
+    name="pq1.mca"
+    onChange={[Function]}
+    type="radio"
+    value="pq1-mca-mc1"
+  />
+  <div
+    className="children"
+  >
+    <div
+      className="component obojobo-draft--chunks--mc-assessment--mc-answer"
+      data-focussed={false}
+      data-id="pq1-mca-mc1-ans"
+      data-obo-component={true}
+      data-type="ObojoboDraft.Chunks.MCAssessment.MCAnswer"
+      id="obo-pq1-mca-mc1-ans"
+    >
+      <div
+        className="component"
+        data-focussed={false}
+        data-id="21853c91-3d1a-4b36-acee-75fb764b743"
+        data-obo-component={true}
+        data-type="ObojoboDraft.Chunks.Text"
+        id="obo-21853c91-3d1a-4b36-acee-75fb764b743"
+      >
+        <div
+          className="text-chunk obojobo-draft--chunks--single-text pad"
+        >
+          <span
+            className="text align-left"
+            data-group-index={0}
+            data-indent={0}
+          >
+            <span>
+              <span>
+                <span>
+                  yes
+                </span>
+              </span>
+            </span>
+          </span>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+`;
+
+exports[`MCChoice viewer-component pick-one-multiple-correct questions render as expected 1`] = `
+<div
+  className="component obojobo-draft--chunks--mc-assessment--mc-choice is-not-selected is-correct"
+  data-choice-label={undefined}
+  data-focussed={false}
+  data-id="pq1-mca-mc1"
+  data-obo-component={true}
+  data-type="ObojoboDraft.Chunks.MCAssessment.MCChoice"
+  id="obo-pq1-mca-mc1"
+>
+  <input
+    checked={false}
+    name="pq1.mca"
+    onChange={[Function]}
+    type="radio"
+    value="pq1-mca-mc1"
+  />
+  <div
+    className="children"
+  >
+    <div
+      className="component obojobo-draft--chunks--mc-assessment--mc-answer"
+      data-focussed={false}
+      data-id="pq1-mca-mc1-ans"
+      data-obo-component={true}
+      data-type="ObojoboDraft.Chunks.MCAssessment.MCAnswer"
+      id="obo-pq1-mca-mc1-ans"
+    >
+      <div
+        className="component"
+        data-focussed={false}
+        data-id="21853c91-3d1a-4b36-acee-75fb764b743"
+        data-obo-component={true}
+        data-type="ObojoboDraft.Chunks.Text"
+        id="obo-21853c91-3d1a-4b36-acee-75fb764b743"
+      >
+        <div
+          className="text-chunk obojobo-draft--chunks--single-text pad"
+        >
+          <span
+            className="text align-left"
+            data-group-index={0}
+            data-indent={0}
+          >
+            <span>
+              <span>
+                <span>
+                  yes
+                </span>
+              </span>
+            </span>
+          </span>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+`;

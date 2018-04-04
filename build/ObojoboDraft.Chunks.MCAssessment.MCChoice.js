@@ -211,8 +211,9 @@ var MCChoice = function (_React$Component) {
 			switch (this.props.responseType) {
 				case 'pick-all':
 					return 'checkbox';
+				case 'pick-one':
+				case 'pick-one-multiple-correct':
 				default:
-					//'pick-one', 'pick-one-multiple-correct'
 					return 'radio';
 			}
 		}
