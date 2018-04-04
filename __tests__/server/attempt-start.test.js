@@ -9,7 +9,8 @@ import {
   chooseUnseenQuestionsRandomly,
   createChosenQuestionTree,
   getNodeQuestions,
-  getSendToClientPromises
+  getSendToClientPromises,
+  insertAttemptStartEvent
 } from '../../server/attempt-start.js'
 import testJson from '../../test-object.json'
 
@@ -18,7 +19,16 @@ const DraftNode = oboRequire('models/draft_node')
 const QUESTION_BANK_NODE_TYPE = 'ObojoboDraft.Chunks.QuestionBank'
 const QUESTION_NODE_TYPE = 'ObojoboDraft.Chunks.Question'
 
-jest.mock('../../../../db')
+jest.mock('../../../../insert_event.js')
+jest.mock('../../../../logger.js')
+jest.mock('../../../../db', () => {
+  return {
+    one: jest.fn(),
+    manyOrNone: jest.fn(),
+    any: jest.fn(),
+    none: jest.fn()
+  }
+})
 jest.mock('../../../../config', () => {
   return {
     lti: {
@@ -235,14 +245,15 @@ describe('start attempt route', () => {
   })
 
   test.skip('startAttempt inserts a new attempt, creates events and replies with an expected object', () => {
-    //@TODO
+    // TODO: Test the new insertStartAttemptEvent function from attempt-start (call
+    // it and expect insertEvent to have been called with some object)
   })
 
   test.skip('calling startAttempt when no attempts remain rejects with an expected error', () => {
-    //@TODO
+
   })
 
   test.skip('an unexpected error in startAttempt calls logAndRespondToUnexpected with expected values', () => {
-    //@TODO
+
   })
 })

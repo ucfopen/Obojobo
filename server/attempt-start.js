@@ -110,30 +110,17 @@ const startAttempt = (req, res) => {
 		})
 		.then(result => {
 			res.success(result)
-			const { createAssessmentAttemptStartedEvent } = createCaliperEvent(null, req.hostname)
-			insertEvent({
-				action: ACTION_ASSESSMENT_ATTEMPT_START,
-				actorTime: new Date().toISOString(),
-				payload: {
-					attemptId: result.attemptId,
-					attemptCount: assessmentProperties.numAttemptsTaken
-				},
-				userId: assessmentProperties.user.id,
-				ip: req.connection.remoteAddress,
-				metadata: {},
-				draftId: req.body.draftId,
-				eventVersion: '1.1.0',
-				caliperPayload: createAssessmentAttemptStartedEvent({
-					actor: { type: 'user', id: assessmentProperties.user.id },
-					draftId: req.body.draftId,
-					assessmentId: req.body.assessmentId,
-					attemptId: result.attemptId,
-					isPreviewMode: assessmentProperties.isPreviewing,
-					extensions: {
-						count: assessmentProperties.numAttemptsaken
-					}
-				})
-			})
+
+			return insertAttemptStartEvent(
+				result.attemptId,
+				assessmentProperties.numAttemptsaken,
+				assessmentProperties.user.id,
+				req.body.draftId,
+				req.body.assessmentId,
+				assessmentProperties.isPreviewing,
+				req.hostname,
+				req.connection.remoteAddress
+			)
 		})
 		.catch(error => {
 			switch (error.message) {
@@ -251,6 +238,42 @@ const getSendToClientPromises = (attemptState, req, res) => {
 	return promises
 }
 
+const insertAttemptStartEvent = (
+	attemptId,
+	numAttemptsTaken,
+	userId,
+	draftId,
+	assessmentId,
+	isPreviewing,
+	hostname,
+	remoteAddress
+) => {
+	const { createAssessmentAttemptStartedEvent } = createCaliperEvent(null, hostname)
+	return insertEvent({
+		action: ACTION_ASSESSMENT_ATTEMPT_START,
+		actorTime: new Date().toISOString(),
+		payload: {
+			attemptId: attemptId,
+			attemptCount: numAttemptsTaken
+		},
+		userId: userId,
+		ip: remoteAddress,
+		metadata: {},
+		draftId: draftId,
+		eventVersion: '1.1.0',
+		caliperPayload: createAssessmentAttemptStartedEvent({
+			actor: { type: 'user', id: userId },
+			draftId: draftId,
+			assessmentId: assessmentId,
+			attemptId: attemptId,
+			isPreviewMode: isPreviewing,
+			extensions: {
+				count: numAttemptsTaken
+			}
+		})
+	})
+}
+
 module.exports = {
 	startAttempt,
 	getQuestionBankProperties,
@@ -261,5 +284,6 @@ module.exports = {
 	chooseUnseenQuestionsRandomly,
 	createChosenQuestionTree,
 	getNodeQuestions,
-	getSendToClientPromises
+	getSendToClientPromises,
+	insertAttemptStartEvent
 }
