@@ -222,14 +222,14 @@ describe('lti-status', () => {
 		expect(el.textContent.indexOf('Resending Score...')).not.toBe(-1)
 	})
 
-	test.skip('clicking on the resend score button calls AssessmentUtil.resendLTIScore', () => {
-		let resendScore = jest.fn()
+	test('clicking on the resend score button calls AssessmentUtil.resendLTIScore', () => {
+		let resendScore = AssessmentUtil.resendLTIScore
 		let ltiState = {
 			state: {
 				gradebookStatus: "error_state_unknown"
 			},
-			networkState: "awaitingSendAssessmentScoreResponse",
-			errorCount: 0
+			networkState: "idle",
+			errorCount: 1
 		}
 		const component = mount(
 			<LTIStatus
@@ -244,7 +244,7 @@ describe('lti-status', () => {
 			.at(0)
 			.simulate('click')
 
-		expect(AssessmentUtil.resendLTIScore).not.toHaveBeenCalled()
+		expect(AssessmentUtil.resendLTIScore).toHaveBeenCalled()
 		expect(resendScore).toHaveBeenCalled()
 	})
 })
