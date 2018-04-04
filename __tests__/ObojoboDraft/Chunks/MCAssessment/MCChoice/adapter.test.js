@@ -21,6 +21,7 @@ describe('MCChoice adapter', () => {
 		MCChoiceAdapter.clone(a, b)
 
 		expect(a).not.toBe(b)
+		expect(a.modelState).not.toBe(b.modelState)
 		expect(a.modelState).toMatchObject(b.modelState)
 	})
 
