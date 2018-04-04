@@ -136,24 +136,24 @@ var Adapter = {
 			return x.score;
 		}) != null) {
 			model.modelState.score = attrs.content.score;
-			return model.modelState._score = attrs.content.score;
+			model.modelState._score = attrs.content.score;
 		} else {
-			return model.modelState.score = '';
+			model.modelState.score = '';
 		}
 	},
 	clone: function clone(model, _clone) {
-		return _clone.modelState.score = model.modelState.score;
+		_clone.modelState.score = model.modelState.score;
 	},
 	toJSON: function toJSON(model, json) {
-		return json.content.score = model.modelState.score;
+		json.content.score = model.modelState.score;
 	}
 };
 
 exports.default = Adapter;
 
-function __guard__(value, transform) {
+var __guard__ = function __guard__(value, transform) {
 	return typeof value !== 'undefined' && value !== null ? transform(value) : undefined;
-}
+};
 
 /***/ }),
 
