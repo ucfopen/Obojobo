@@ -63,7 +63,7 @@
 /******/ 	__webpack_require__.p = "build/";
 /******/
 /******/ 	// Load entry module and return exports
-/******/ 	return __webpack_require__(__webpack_require__.s = 60);
+/******/ 	return __webpack_require__(__webpack_require__.s = 64);
 /******/ })
 /************************************************************************/
 /******/ ([
@@ -1118,7 +1118,7 @@ exports.default = QuestionUtil;
 "use strict";
 
 
-var startOfWeek = __webpack_require__(34);
+var startOfWeek = __webpack_require__(37);
 
 /**
  * @category ISO Week Helpers
@@ -1606,7 +1606,7 @@ var _questionUtil = __webpack_require__(5);
 
 var _questionUtil2 = _interopRequireDefault(_questionUtil);
 
-var _uuid = __webpack_require__(46);
+var _uuid = __webpack_require__(49);
 
 var _uuid2 = _interopRequireDefault(_uuid);
 
@@ -1988,13 +1988,13 @@ Object.defineProperty(exports, "__esModule", {
 
 var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
 
-__webpack_require__(52);
+__webpack_require__(56);
 
 var _navUtil = __webpack_require__(2);
 
 var _navUtil2 = _interopRequireDefault(_navUtil);
 
-var _obojoboLogo = __webpack_require__(59);
+var _obojoboLogo = __webpack_require__(63);
 
 var _obojoboLogo2 = _interopRequireDefault(_obojoboLogo);
 
@@ -2085,6 +2085,16 @@ var _questionStore = __webpack_require__(11);
 
 var _questionStore2 = _interopRequireDefault(_questionStore);
 
+var _assessmentScoreReport = __webpack_require__(24);
+
+var _assessmentScoreReport2 = _interopRequireDefault(_assessmentScoreReport);
+
+var _getScoreChangeDescription = __webpack_require__(25);
+
+var _scoreReport = __webpack_require__(23);
+
+var _scoreReport2 = _interopRequireDefault(_scoreReport);
+
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
@@ -2097,7 +2107,9 @@ var Store = _Common2.default.flux.Store;
 var Dispatcher = _Common2.default.flux.Dispatcher;
 var OboModel = _Common2.default.models.OboModel;
 var ErrorUtil = _Common2.default.util.ErrorUtil;
-var SimpleDialog = _Common2.default.components.modal.SimpleDialog;
+var _Common$components$mo = _Common2.default.components.modal,
+    SimpleDialog = _Common$components$mo.SimpleDialog,
+    Dialog = _Common$components$mo.Dialog;
 var ModalUtil = _Common2.default.util.ModalUtil;
 
 
@@ -2107,7 +2119,7 @@ var getNewAssessmentObject = function getNewAssessmentObject(assessmentId) {
 		current: null,
 		currentResponses: [],
 		attempts: [],
-		latestHighestAttempt: null,
+		highestAttempt: null,
 		lti: null,
 		ltiNetworkState: _ltiNetworkStates2.default.IDLE,
 		ltiErrorCount: 0
@@ -2185,13 +2197,13 @@ var AssessmentStore = function (_Store) {
 				}
 
 				assessments[assessId].lti = assessmentItem.ltiState;
-				assessments[assessId].latestHighestAttempt = null;
+				assessments[assessId].highestAttempt = null;
 
 				attempts.forEach(function (attempt) {
 					assessment = assessments[attempt.assessmentId];
 
-					if (assessment.latestHighestAttempt === null) {
-						assessment.latestHighestAttempt = attempt;
+					if (assessment.highestAttempt === null) {
+						assessment.highestAttempt = attempt;
 					}
 
 					if (!attempt.isFinished) {
@@ -2200,9 +2212,9 @@ var AssessmentStore = function (_Store) {
 						assessment.attempts.push(attempt);
 
 						var thisAssessScore = attempt.assessmentScore === null ? -1 : attempt.assessmentScore;
-						var currentHighestAssessScore = assessment.latestHighestAttempt.assessmentScore === null ? -1 : assessment.latestHighestAttempt.assessmentScore;
-						if (thisAssessScore >= currentHighestAssessScore) {
-							assessment.latestHighestAttempt = attempt;
+						var currentHighestAssessScore = assessment.highestAttempt.assessmentScore === null ? -1 : assessment.highestAttempt.assessmentScore;
+						if (thisAssessScore > currentHighestAssessScore) {
+							assessment.highestAttempt = attempt;
 						}
 					}
 
@@ -2349,6 +2361,7 @@ var AssessmentStore = function (_Store) {
 			var assessId = endAttemptResp.assessmentId;
 			var assessment = this.state.assessments[assessId];
 			var model = OboModel.models[assessId];
+			var oldHighestScore = _assessmentUtil2.default.getHighestAttemptForModel(this.state, model);
 
 			assessment.current.state.questions.forEach(function (question) {
 				return _questionUtil2.default.hideQuestion(question.id);
@@ -2363,6 +2376,45 @@ var AssessmentStore = function (_Store) {
 			model.processTrigger('onEndAttempt');
 
 			Dispatcher.trigger('assessment:attemptEnded', assessId);
+
+			//TEMP
+
+			var attempt = _assessmentUtil2.default.getLastAttemptForModel(this.state, model);
+			var isNotPassingAttempt = attempt.assessmentScoreDetails.status === 'failed' || attempt.assessmentScoreDetails.status === 'unableToPass';
+			var newHighestScore = _assessmentUtil2.default.getHighestAttemptForModel(this.state, model);
+			var changeEl = void 0;
+
+			if (oldHighestScore === null) {
+				changeEl = null;
+			} else {
+				changeEl = React.createElement(
+					'span',
+					{ className: 'change-notice' },
+					(0, _getScoreChangeDescription.getScoreChangeDescription)(oldHighestScore.assessmentScore, newHighestScore.assessmentScore)
+				);
+			}
+
+			var items = new _assessmentScoreReport2.default(model.modelState.rubric.toObject()).getTextItems(attempt.assessmentScoreDetails, _assessmentUtil2.default.getAttemptsRemaining(this.state, model));
+			ModalUtil.show(React.createElement(
+				Dialog,
+				{
+					modalClassName: 'obojobo-draft--sections--assessment--results-modal',
+					centered: true,
+					buttons: [{
+						value: 'Show Assessment Overview',
+						onClick: ModalUtil.hide,
+						default: true
+					}],
+					title: 'Attempt ' + attempt.attemptNumber + ' Results',
+					width: '35rem'
+				},
+				React.createElement(
+					'div',
+					{ className: 'score-report-box' },
+					React.createElement(_scoreReport2.default, { items: items })
+				),
+				changeEl
+			));
 		}
 	}, {
 		key: 'tryResendLTIScore',
@@ -2493,7 +2545,7 @@ var AssessmentUtil = {
 
 		return assessment;
 	},
-	getLastAttemptScoreForModel: function getLastAttemptScoreForModel(state, model) {
+	getLastAttemptForModel: function getLastAttemptForModel(state, model) {
 		var assessment = AssessmentUtil.getAssessmentForModel(state, model);
 		if (!assessment) {
 			return null;
@@ -2503,18 +2555,26 @@ var AssessmentUtil = {
 			return 0;
 		}
 
-		return assessment.attempts[assessment.attempts.length - 1].attemptScore;
+		return assessment.attempts[assessment.attempts.length - 1];
 	},
-	getLatestHighestAttemptForModel: function getLatestHighestAttemptForModel(state, model) {
+	getLastAttemptScoreForModel: function getLastAttemptScoreForModel(state, model) {
+		var attempt = this.getLastAttemptForModel(state, model);
+		if (!attempt) {
+			return null;
+		}
+
+		return attempt.attemptScore;
+	},
+	getHighestAttemptForModel: function getHighestAttemptForModel(state, model) {
 		var assessment = AssessmentUtil.getAssessmentForModel(state, model);
 		if (!assessment) {
 			return null;
 		}
 
-		return assessment.latestHighestAttempt;
+		return assessment.highestAttempt;
 	},
 	getAssessmentScoreForModel: function getAssessmentScoreForModel(state, model) {
-		var attempt = AssessmentUtil.getLatestHighestAttemptForModel(state, model);
+		var attempt = AssessmentUtil.getHighestAttemptForModel(state, model);
 		if (!attempt) {
 			return null;
 		}
@@ -2660,7 +2720,7 @@ exports.default = function (url) {
 	return hostname;
 };
 
-var _urlParse = __webpack_require__(44);
+var _urlParse = __webpack_require__(47);
 
 var _urlParse2 = _interopRequireDefault(_urlParse);
 
@@ -3144,7 +3204,7 @@ module.exports = React;
 "use strict";
 
 
-var _index = __webpack_require__(50);
+var _index = __webpack_require__(53);
 
 var _index2 = _interopRequireDefault(_index);
 
@@ -3159,7 +3219,359 @@ window.Viewer = _index2.default;
 "use strict";
 
 
-var startOfDay = __webpack_require__(32);
+Object.defineProperty(exports, "__esModule", {
+	value: true
+});
+__webpack_require__(54);
+
+var scoreReportView = function scoreReportView(props) {
+	return React.createElement(
+		'div',
+		{ className: 'obojobo-draft--sections--assessment--components--score-report' },
+		props.items.map(getItemEl)
+	);
+};
+
+var getAmountEl = function getAmountEl(value) {
+	if (value === 'No Score Recorded') {
+		return React.createElement(
+			'span',
+			{ className: 'amount is-null' },
+			'No Score Recorded'
+		);
+	}
+
+	return React.createElement(
+		'span',
+		{ className: 'amount is-number' },
+		value,
+		'%'
+	);
+};
+
+var getItemEl = function getItemEl(item) {
+	switch (item.type) {
+		case 'text':
+			return React.createElement(
+				'div',
+				{ className: 'text' },
+				item.text
+			);
+
+		case 'divider':
+			return React.createElement('hr', { className: 'divider' });
+
+		case 'extra-credit':
+			return React.createElement(
+				'div',
+				{ className: 'extra-credit' },
+				React.createElement(
+					'span',
+					{ className: 'label' },
+					React.createElement(
+						'span',
+						null,
+						'Extra-credit'
+					),
+					' - ',
+					item.text
+				),
+				getAmountEl('+' + item.value)
+			);
+
+		case 'penalty':
+			return React.createElement(
+				'div',
+				{ className: 'penalty' },
+				React.createElement(
+					'span',
+					{ className: 'label' },
+					React.createElement(
+						'span',
+						null,
+						'Penalty'
+					),
+					' - ',
+					item.text
+				),
+				getAmountEl('-' + item.value)
+			);
+
+		case 'value':
+		case 'total':
+			return React.createElement(
+				'div',
+				{ className: item.type },
+				React.createElement(
+					'span',
+					{ className: 'label' },
+					item.text
+				),
+				getAmountEl(item.value)
+			);
+	}
+};
+
+exports.default = scoreReportView;
+
+/***/ }),
+/* 24 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+Object.defineProperty(exports, "__esModule", {
+	value: true
+});
+
+var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+var getDisplayFriendlyScore = function getDisplayFriendlyScore(n) {
+	if (n === null) return '--';
+	return parseFloat(n).toFixed(2).replace('.00', '');
+};
+
+var getPassingRange = function getPassingRange(passingNumber) {
+	if (passingNumber === 100 || passingNumber === '100') return '100%';
+	return getDisplayFriendlyScore(passingNumber) + '-100%';
+};
+
+var getModText = function getModText(attemptCondition, numOfAttemptsAvailable) {
+	attemptCondition = ('' + attemptCondition).replace('$last_attempt', '' + numOfAttemptsAvailable);
+
+	var range = [];
+	if (attemptCondition.indexOf(',') === -1) {
+		range.push(parseInt(attemptCondition, 10));
+	} else {
+		var tokens = attemptCondition.split(',');
+		range.push(parseInt(tokens[0].substr(1), 10));
+		range.push(parseInt(tokens[1].substr(0, tokens[1].length - 1), 10));
+
+		if (tokens[0].charAt(0) === '(') range[0]++;
+		if (tokens[1].charAt(tokens[1].length - 1) === ')') range[1]--;
+
+		if (range[0] === range[1]) range.splice(1, 1);
+	}
+
+	if (range.length === 1) {
+		if (range[0] === 1) return 'Passed on first attempt';
+		if (range[0] === numOfAttemptsAvailable) return 'Passed on last attempt';
+		return 'Passed on attempt\xA0' + range[0];
+	}
+
+	return 'Passed on attempts ' + range[0] + ' to ' + range[1];
+};
+
+var AssessmentScoreReport = function () {
+	function AssessmentScoreReport(assessmentRubric) {
+		_classCallCheck(this, AssessmentScoreReport);
+
+		this.assessmentRubric = assessmentRubric;
+	}
+
+	_createClass(AssessmentScoreReport, [{
+		key: 'getTextItems',
+		value: function getTextItems(assessmentScoreInfo, numOfAttemptsAvailable) {
+			var rubric = this.assessmentRubric;
+
+			var passingAttemptScore = typeof rubric.passingAttemptScore !== 'undefined' ? rubric.passingAttemptScore : 100;
+			var passedResult = typeof rubric.passedResult !== 'undefined' ? rubric.passedResult : 100;
+			var failedResult = typeof rubric.failedResult !== 'undefined' ? rubric.failedResult : 0;
+			var unableToPassResult = typeof rubric.unableToPassResult !== 'undefined' ? rubric.unableToPassResult : 0;
+			var isRewardedMods = assessmentScoreInfo.rewardedMods.length > 0;
+			var isAttemptRubric = rubric.type === 'attempt';
+			var isPassFailRubric = rubric.type === 'pass-fail';
+			var status = assessmentScoreInfo.status;
+			var passed = status === 'passed';
+			var failed = status === 'failed';
+			var unableToPass = status === 'unableToPass';
+			// let isLTIAndScoreWasUnsent = (failed || unableToPass) && isLti
+			var attemptNum = assessmentScoreInfo.attemptNumber;
+
+			var items = [];
+			var attemptScore = getDisplayFriendlyScore(assessmentScoreInfo.attemptScore);
+			var assessScore = getDisplayFriendlyScore(assessmentScoreInfo.assessmentModdedScore);
+
+			if (isAttemptRubric && !isRewardedMods) {
+				items.push({
+					type: 'value',
+					text: 'Score',
+					value: attemptScore
+				});
+			} else if (isAttemptRubric && isRewardedMods) {
+				items.push({
+					type: 'value',
+					text: 'Base Score',
+					value: attemptScore
+				});
+			} else if (isPassFailRubric && passed && passedResult === '$attempt_score' && !isRewardedMods) {
+				items.push({
+					type: 'value',
+					text: 'Score',
+					value: attemptScore
+				});
+			} else if (isPassFailRubric && passed && passedResult === '$attempt_score' && isRewardedMods) {
+				items.push({
+					type: 'value',
+					text: 'Base Score',
+					value: attemptScore
+				});
+			} else if (isPassFailRubric && passed && Number.isFinite(parseFloat(passedResult))) {
+				items.push({
+					type: 'value',
+					text: 'Base Score',
+					value: attemptScore
+				}, {
+					type: 'divider'
+				}, {
+					type: 'value',
+					text: 'Rewarded score for a passing attempt',
+					value: getDisplayFriendlyScore(passedResult)
+				});
+			} else if (isPassFailRubric && failed && failedResult === 'no-score') {
+				items.push({
+					type: 'value',
+					text: 'Base Score',
+					value: attemptScore
+				}, {
+					type: 'divider'
+				}, {
+					type: 'text',
+					text: 'You need ' + getPassingRange(passingAttemptScore) + ' to pass'
+				});
+			} else if (isPassFailRubric && failed && Number.isFinite(parseFloat(failedResult))) {
+				items.push({
+					type: 'value',
+					text: 'Base Score',
+					value: attemptScore
+				}, {
+					type: 'divider'
+				}, {
+					type: 'value',
+					text: 'Given score for a non-passing (less than ' + getDisplayFriendlyScore(passingAttemptScore) + '%) attempt',
+					value: getDisplayFriendlyScore(failedResult)
+				});
+			} else if (isPassFailRubric && unableToPass && unableToPassResult === 'no-score') {
+				items.push({
+					type: 'value',
+					text: 'Base Score',
+					value: attemptScore
+				}, {
+					type: 'divider'
+				}, {
+					type: 'text',
+					text: 'You needed ' + getPassingRange(passingAttemptScore) + ' to pass'
+				});
+			} else if (isPassFailRubric && unableToPass && unableToPassResult === '$highest_attempt_score') {
+				items.push({
+					type: 'value',
+					text: 'Base Score',
+					value: attemptScore
+				}, {
+					type: 'divider'
+				}, {
+					type: 'text',
+					text: 'You did not achieve a passing ' + getPassingRange(passingAttemptScore) + ' score within the number of attempts available. Your highest attempt score will be used instead.'
+				}, {
+					type: 'divider'
+				}, {
+					type: 'value',
+					text: 'Highest attempt score (Attempt\xA0' + attemptNum + ')',
+					value: assessScore
+				});
+			} else if (isPassFailRubric && unableToPass && Number.isFinite(parseFloat(unableToPassResult))) {
+				items.push({
+					type: 'value',
+					text: 'Base Score',
+					value: attemptScore
+				}, {
+					type: 'divider'
+				}, {
+					type: 'text',
+					text: 'You did not achieve a passing ' + getPassingRange(passingAttemptScore) + ' score within the number of attempts available.'
+				}, {
+					type: 'value',
+					text: 'Given score for not achieving a passing attempt',
+					value: getDisplayFriendlyScore(unableToPassResult)
+				});
+			} else {
+				throw new Error('Unknown assessment rubric and score state');
+			}
+
+			if (assessmentScoreInfo.rewardedMods.length > 0) {
+				items = items.concat(assessmentScoreInfo.rewardedMods.map(function (modIndex) {
+					var mod = rubric.mods[modIndex];
+
+					//@TODO - for now assumes attemptCondition - will change to type
+
+					return {
+						type: parseInt(mod.reward) >= 0 ? 'extra-credit' : 'penalty',
+						text: getModText(mod.attemptCondition, numOfAttemptsAvailable),
+						value: getDisplayFriendlyScore(Math.abs(mod.reward))
+					};
+				}));
+			}
+
+			if (items.length > 1) {
+				var isScoreOver100 = assessmentScoreInfo.assessmentScore !== null && assessmentScoreInfo.assessmentScore + assessmentScoreInfo.rewardTotal > 100;
+
+				items.push({
+					type: 'divider'
+				}, {
+					type: 'total',
+					text: 'Total Score' + (isScoreOver100 ? ' (Max 100%)' : ''),
+					value: assessmentScoreInfo.assessmentModdedScore === null ? 'No Score Recorded' : assessScore
+				});
+			}
+
+			return items;
+		}
+	}]);
+
+	return AssessmentScoreReport;
+}();
+
+exports.default = AssessmentScoreReport;
+
+/***/ }),
+/* 25 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+Object.defineProperty(exports, "__esModule", {
+	value: true
+});
+exports.getScoreChangeDescription = getScoreChangeDescription;
+function getScoreChangeDescription(oldHighestScore, newHighestScore) {
+	if (newHighestScore === null && oldHighestScore === null) {
+		return 'This did not change your recorded score';
+	}
+
+	if (oldHighestScore === null) {
+		return '\u2714 Your recorded score was updated to ' + newHighestScore + '%';
+	}
+
+	if (newHighestScore > oldHighestScore) {
+		return '\u2714 Your recorded score was updated from ' + oldHighestScore + '% to ' + newHighestScore + '%';
+	}
+
+	// Else newHighestScore === null || newHighestScore <= oldHighestScore
+	return 'This did not change your recorded score of ' + oldHighestScore + '%';
+}
+
+/***/ }),
+/* 26 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+var startOfDay = __webpack_require__(35);
 
 var MILLISECONDS_IN_MINUTE = 60000;
 var MILLISECONDS_IN_DAY = 86400000;
@@ -3200,18 +3612,18 @@ function differenceInCalendarDays(dirtyDateLeft, dirtyDateRight) {
 module.exports = differenceInCalendarDays;
 
 /***/ }),
-/* 24 */
+/* 27 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
 
 
-var getDayOfYear = __webpack_require__(25);
-var getISOWeek = __webpack_require__(26);
+var getDayOfYear = __webpack_require__(28);
+var getISOWeek = __webpack_require__(29);
 var getISOYear = __webpack_require__(12);
 var parse = __webpack_require__(1);
-var isValid = __webpack_require__(27);
-var enLocale = __webpack_require__(31);
+var isValid = __webpack_require__(30);
+var enLocale = __webpack_require__(34);
 
 /**
  * @category Common Helpers
@@ -3536,15 +3948,15 @@ function addLeadingZeros(number, targetLength) {
 module.exports = format;
 
 /***/ }),
-/* 25 */
+/* 28 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
 
 
 var parse = __webpack_require__(1);
-var startOfYear = __webpack_require__(35);
-var differenceInCalendarDays = __webpack_require__(23);
+var startOfYear = __webpack_require__(38);
+var differenceInCalendarDays = __webpack_require__(26);
 
 /**
  * @category Day Helpers
@@ -3571,7 +3983,7 @@ function getDayOfYear(dirtyDate) {
 module.exports = getDayOfYear;
 
 /***/ }),
-/* 26 */
+/* 29 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -3579,7 +3991,7 @@ module.exports = getDayOfYear;
 
 var parse = __webpack_require__(1);
 var startOfISOWeek = __webpack_require__(6);
-var startOfISOYear = __webpack_require__(33);
+var startOfISOYear = __webpack_require__(36);
 
 var MILLISECONDS_IN_WEEK = 604800000;
 
@@ -3613,7 +4025,7 @@ function getISOWeek(dirtyDate) {
 module.exports = getISOWeek;
 
 /***/ }),
-/* 27 */
+/* 30 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -3656,7 +4068,7 @@ function isValid(dirtyDate) {
 module.exports = isValid;
 
 /***/ }),
-/* 28 */
+/* 31 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -3681,7 +4093,7 @@ function buildFormattingTokensRegExp(formatters) {
 module.exports = buildFormattingTokensRegExp;
 
 /***/ }),
-/* 29 */
+/* 32 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -3788,13 +4200,13 @@ function buildDistanceInWordsLocale() {
 module.exports = buildDistanceInWordsLocale;
 
 /***/ }),
-/* 30 */
+/* 33 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
 
 
-var buildFormattingTokensRegExp = __webpack_require__(28);
+var buildFormattingTokensRegExp = __webpack_require__(31);
 
 function buildFormatLocale() {
   // Note: in English, the names of days of the week and months are capitalized.
@@ -3883,14 +4295,14 @@ function ordinal(number) {
 module.exports = buildFormatLocale;
 
 /***/ }),
-/* 31 */
+/* 34 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
 
 
-var buildDistanceInWordsLocale = __webpack_require__(29);
-var buildFormatLocale = __webpack_require__(30);
+var buildDistanceInWordsLocale = __webpack_require__(32);
+var buildFormatLocale = __webpack_require__(33);
 
 /**
  * @category Locales
@@ -3902,7 +4314,7 @@ module.exports = {
 };
 
 /***/ }),
-/* 32 */
+/* 35 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -3935,7 +4347,7 @@ function startOfDay(dirtyDate) {
 module.exports = startOfDay;
 
 /***/ }),
-/* 33 */
+/* 36 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -3975,7 +4387,7 @@ function startOfISOYear(dirtyDate) {
 module.exports = startOfISOYear;
 
 /***/ }),
-/* 34 */
+/* 37 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -4021,7 +4433,7 @@ function startOfWeek(dirtyDate, dirtyOptions) {
 module.exports = startOfWeek;
 
 /***/ }),
-/* 35 */
+/* 38 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -4056,7 +4468,7 @@ function startOfYear(dirtyDate) {
 module.exports = startOfYear;
 
 /***/ }),
-/* 36 */
+/* 39 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -4152,7 +4564,7 @@ module.exports = shouldUseNative() ? Object.assign : function (target, source) {
 };
 
 /***/ }),
-/* 37 */
+/* 40 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -4220,7 +4632,7 @@ module.exports = checkPropTypes;
 /* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(3)))
 
 /***/ }),
-/* 38 */
+/* 41 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -4279,7 +4691,7 @@ module.exports = function () {
 };
 
 /***/ }),
-/* 39 */
+/* 42 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -4297,10 +4709,10 @@ var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol
 var emptyFunction = __webpack_require__(8);
 var invariant = __webpack_require__(9);
 var warning = __webpack_require__(14);
-var assign = __webpack_require__(36);
+var assign = __webpack_require__(39);
 
 var ReactPropTypesSecret = __webpack_require__(7);
-var checkPropTypes = __webpack_require__(37);
+var checkPropTypes = __webpack_require__(40);
 
 module.exports = function (isValidElement, throwOnDirectAccess) {
   /* global Symbol */
@@ -4804,7 +5216,7 @@ module.exports = function (isValidElement, throwOnDirectAccess) {
 /* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(3)))
 
 /***/ }),
-/* 40 */
+/* 43 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -4829,16 +5241,16 @@ if (process.env.NODE_ENV !== 'production') {
   // By explicitly using `prop-types` you are opting into new development behavior.
   // http://fb.me/prop-types-in-prod
   var throwOnDirectAccess = true;
-  module.exports = __webpack_require__(39)(isValidElement, throwOnDirectAccess);
+  module.exports = __webpack_require__(42)(isValidElement, throwOnDirectAccess);
 } else {
   // By explicitly using `prop-types` you are opting into new production behavior.
   // http://fb.me/prop-types-in-prod
-  module.exports = __webpack_require__(38)();
+  module.exports = __webpack_require__(41)();
 }
 /* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(3)))
 
 /***/ }),
-/* 41 */
+/* 44 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -4913,7 +5325,7 @@ exports.stringify = querystringify;
 exports.parse = querystring;
 
 /***/ }),
-/* 42 */
+/* 45 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -4945,11 +5357,11 @@ var _react = __webpack_require__(20);
 
 var _react2 = _interopRequireDefault(_react);
 
-var _propTypes = __webpack_require__(40);
+var _propTypes = __webpack_require__(43);
 
 var _propTypes2 = _interopRequireDefault(_propTypes);
 
-var _format = __webpack_require__(24);
+var _format = __webpack_require__(27);
 
 var _format2 = _interopRequireDefault(_format);
 
@@ -5281,7 +5693,7 @@ IdleTimer.defaultProps = {
 exports.default = IdleTimer;
 
 /***/ }),
-/* 43 */
+/* 46 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -5326,7 +5738,7 @@ module.exports = function required(port, protocol) {
 };
 
 /***/ }),
-/* 44 */
+/* 47 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -5334,8 +5746,8 @@ module.exports = function required(port, protocol) {
 
 var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol" ? function (obj) { return typeof obj; } : function (obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; };
 
-var required = __webpack_require__(43),
-    qs = __webpack_require__(41),
+var required = __webpack_require__(46),
+    qs = __webpack_require__(44),
     protocolre = /^([a-z][a-z0-9.+-]*:)?(\/\/)?([\S\s]*)/i,
     slashes = /^[A-Za-z][A-Za-z0-9+-.]*:\/\//;
 
@@ -5739,10 +6151,10 @@ URL.location = lolcation;
 URL.qs = qs;
 
 module.exports = URL;
-/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(45)))
+/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(48)))
 
 /***/ }),
-/* 45 */
+/* 48 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -5772,7 +6184,7 @@ try {
 module.exports = g;
 
 /***/ }),
-/* 46 */
+/* 49 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -5795,7 +6207,7 @@ exports.default = function () {
 };
 
 /***/ }),
-/* 47 */
+/* 50 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -5807,7 +6219,7 @@ Object.defineProperty(exports, "__esModule", {
 
 var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
 
-__webpack_require__(51);
+__webpack_require__(55);
 
 var _navUtil = __webpack_require__(2);
 
@@ -5865,7 +6277,7 @@ var InlineNavButton = function (_React$Component) {
 exports.default = InlineNavButton;
 
 /***/ }),
-/* 48 */
+/* 51 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -5877,7 +6289,7 @@ Object.defineProperty(exports, "__esModule", {
 
 var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
 
-__webpack_require__(53);
+__webpack_require__(57);
 
 var _navStore = __webpack_require__(10);
 
@@ -5891,15 +6303,15 @@ var _logo = __webpack_require__(15);
 
 var _logo2 = _interopRequireDefault(_logo);
 
-var _hamburger = __webpack_require__(57);
+var _hamburger = __webpack_require__(61);
 
 var _hamburger2 = _interopRequireDefault(_hamburger);
 
-var _arrow = __webpack_require__(56);
+var _arrow = __webpack_require__(60);
 
 var _arrow2 = _interopRequireDefault(_arrow);
 
-var _lockIcon = __webpack_require__(58);
+var _lockIcon = __webpack_require__(62);
 
 var _lockIcon2 = _interopRequireDefault(_lockIcon);
 
@@ -6086,7 +6498,7 @@ var Nav = function (_React$Component) {
 exports.default = Nav;
 
 /***/ }),
-/* 49 */
+/* 52 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -6098,9 +6510,9 @@ Object.defineProperty(exports, "__esModule", {
 
 var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
 
-__webpack_require__(55);
+__webpack_require__(59);
 
-__webpack_require__(54);
+__webpack_require__(58);
 
 var _Common = __webpack_require__(0);
 
@@ -6110,11 +6522,11 @@ var _react = __webpack_require__(20);
 
 var _react2 = _interopRequireDefault(_react);
 
-var _reactIdleTimer = __webpack_require__(42);
+var _reactIdleTimer = __webpack_require__(45);
 
 var _reactIdleTimer2 = _interopRequireDefault(_reactIdleTimer);
 
-var _inlineNavButton = __webpack_require__(47);
+var _inlineNavButton = __webpack_require__(50);
 
 var _inlineNavButton2 = _interopRequireDefault(_inlineNavButton);
 
@@ -6142,7 +6554,7 @@ var _navStore = __webpack_require__(10);
 
 var _navStore2 = _interopRequireDefault(_navStore);
 
-var _nav = __webpack_require__(48);
+var _nav = __webpack_require__(51);
 
 var _nav2 = _interopRequireDefault(_nav);
 
@@ -6679,7 +7091,7 @@ var ViewerApp = function (_React$Component) {
 exports.default = ViewerApp;
 
 /***/ }),
-/* 50 */
+/* 53 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -6689,7 +7101,7 @@ Object.defineProperty(exports, "__esModule", {
 	value: true
 });
 
-var _viewerApp = __webpack_require__(49);
+var _viewerApp = __webpack_require__(52);
 
 var _viewerApp2 = _interopRequireDefault(_viewerApp);
 
@@ -6755,24 +7167,6 @@ exports.default = {
 };
 
 /***/ }),
-/* 51 */
-/***/ (function(module, exports) {
-
-// removed by extract-text-webpack-plugin
-
-/***/ }),
-/* 52 */
-/***/ (function(module, exports) {
-
-// removed by extract-text-webpack-plugin
-
-/***/ }),
-/* 53 */
-/***/ (function(module, exports) {
-
-// removed by extract-text-webpack-plugin
-
-/***/ }),
 /* 54 */
 /***/ (function(module, exports) {
 
@@ -6788,28 +7182,52 @@ exports.default = {
 /* 56 */
 /***/ (function(module, exports) {
 
-module.exports = "data:image/svg+xml,%3C?xml version='1.0' encoding='utf-8'?%3E %3C!-- Generator: Adobe Illustrator 19.0.0, SVG Export Plug-In . SVG Version: 6.00 Build 0) --%3E %3Csvg version='1.1' id='Layer_1' xmlns='http://www.w3.org/2000/svg' xmlns:xlink='http://www.w3.org/1999/xlink' x='0px' y='0px' viewBox='-290 387 30 20' style='enable-background:new -290 387 30 20;' xml:space='preserve'%3E %3Cpath d='M-272.5,405.4l-12.1-7.4c-0.6-0.4-0.6-1.7,0-2.1l12.1-7.4c0.5-0.3,1,0.3,1,1.1v14.7C-271.4,405.2-272,405.7-272.5,405.4z' fill='rgba(0, 0, 0, .2)' transform='translate(2, 0)'/%3E %3C/svg%3E"
+// removed by extract-text-webpack-plugin
 
 /***/ }),
 /* 57 */
 /***/ (function(module, exports) {
 
-module.exports = "data:image/svg+xml,%3Csvg width='20' height='10' viewBox='0 0 100 100' xmlns='http://www.w3.org/2000/svg' version='1.1'%3E %3Cline x1='0' y1='10' x2='100' y2='10' stroke='rgba(0, 0, 0, .2)' stroke-width='20' stroke-linecap='round' /%3E %3Cline x1='0' y1='50' x2='100' y2='50' stroke='rgba(0, 0, 0, .2)' stroke-width='20' stroke-linecap='round' /%3E %3Cline x1='0' y1='90' x2='100' y2='90' stroke='rgba(0, 0, 0, .2)' stroke-width='20' stroke-linecap='round' /%3E %3C/svg%3E"
+// removed by extract-text-webpack-plugin
 
 /***/ }),
 /* 58 */
 /***/ (function(module, exports) {
 
-module.exports = "data:image/svg+xml,%3C?xml version='1.0' encoding='utf-8'?%3E %3Csvg version='1.1' xmlns='http://www.w3.org/2000/svg' xmlns:xlink='http://www.w3.org/1999/xlink' viewBox='0 0 10 16' style='enable-background:new 0 0 10 16;' xml:space='preserve'%3E %3Cpath fill='white' id='XMLID_6_' d='M9.1,6H8.5V3.5C8.5,1.5,6.9,0,5,0C3.1,0,1.6,1.5,1.6,3.5l0,2.5H0.9C0.4,6,0,6.4,0,6.9v8.2 C0,15.6,0.4,16,0.9,16h8.2c0.5,0,0.9-0.4,0.9-0.9V6.9C10,6.4,9.6,6,9.1,6z M3.3,3.4c0-0.9,0.8-1.6,1.7-1.6c0.9,0,1.7,0.8,1.7,1.7V6 H3.3V3.4z'/%3E %3C/svg%3E"
+// removed by extract-text-webpack-plugin
 
 /***/ }),
 /* 59 */
 /***/ (function(module, exports) {
 
-module.exports = "data:image/svg+xml,%3C?xml version='1.0' encoding='utf-8'?%3E %3C!-- Generator: Adobe Illustrator 15.0.2, SVG Export Plug-In . SVG Version: 6.00 Build 0) --%3E %3C!DOCTYPE svg PUBLIC '-//W3C//DTD SVG 1.1//EN' 'http://www.w3.org/Graphics/SVG/1.1/DTD/svg11.dtd'%3E %3Csvg version='1.1' id='Layer_1' xmlns='http://www.w3.org/2000/svg' xmlns:xlink='http://www.w3.org/1999/xlink' x='0px' y='0px' width='253px' height='64.577px' viewBox='0 0 253 64.577' enable-background='new 0 0 253 64.577' xml:space='preserve' fill='black'%3E %3Cpath d='M18.399,53.629c-0.01,0-0.021,0-0.031,0C7.023,53.396,0,43.151,0,33.793c0-10.79,8.426-19.905,18.399-19.905 c11.006,0,18.399,10.292,18.399,19.905c0,10.719-8.239,19.617-18.367,19.835C18.421,53.629,18.41,53.629,18.399,53.629z M18.399,18.257c-8.393,0-14.031,8.033-14.031,15.536c0.295,7.574,5.625,15.468,14.031,15.468c8.393,0,14.031-7.998,14.031-15.468 C32.43,25.372,26.005,18.257,18.399,18.257z'/%3E %3Cpath d='M58.15,53.629c-6.02,0-13.502-3.57-16.154-10.394c-0.287-0.733-0.603-1.542-0.603-3.281l0-38.454 c0-0.398,0.158-0.779,0.439-1.061S42.495,0,42.893,0h1.369c0.829,0,1.5,0.671,1.5,1.5v18.495c3.827-4.056,8.188-6.106,13.004-6.106 c11.111,0,17.989,10.332,17.989,19.905C76.444,44.75,68.099,53.629,58.15,53.629z M45.761,27.446v12.437 c0,4.652,7.208,9.378,12.389,9.378c8.516,0,14.236-7.998,14.236-15.468c0-7.472-5.208-15.536-13.621-15.536 C51.235,18.257,47.065,24.927,45.761,27.446z'/%3E %3Cpath d='M99.064,53.629c-0.01,0-0.021,0-0.031,0c-11.346-0.233-18.369-10.478-18.369-19.835 c0-10.79,8.426-19.905,18.399-19.905c11.005,0,18.398,10.292,18.398,19.905c0,10.719-8.239,19.617-18.366,19.835 C99.086,53.629,99.075,53.629,99.064,53.629z M99.064,18.257c-8.393,0-14.031,8.033-14.031,15.536 c0.294,7.574,5.624,15.468,14.031,15.468c8.393,0,14.031-7.998,14.031-15.468C113.096,25.372,106.67,18.257,99.064,18.257z'/%3E %3Cpath d='M153.252,53.629c-0.01,0-0.021,0-0.031,0c-11.346-0.233-18.369-10.478-18.369-19.835 c0-10.79,8.426-19.905,18.399-19.905c11.006,0,18.399,10.292,18.399,19.905c0,10.719-8.239,19.617-18.367,19.835 C153.273,53.629,153.263,53.629,153.252,53.629z M153.252,18.257c-8.393,0-14.031,8.033-14.031,15.536 c0.294,7.574,5.624,15.468,14.031,15.468c8.393,0,14.031-7.998,14.031-15.468C167.283,25.372,160.858,18.257,153.252,18.257z'/%3E %3Cpath d='M234.601,53.629c-0.01,0-0.021,0-0.031,0c-11.345-0.233-18.367-10.478-18.367-19.835 c0-10.79,8.426-19.905,18.398-19.905c11.006,0,18.399,10.292,18.399,19.905c0,10.719-8.239,19.617-18.367,19.835 C234.622,53.629,234.611,53.629,234.601,53.629z M234.601,18.257c-8.393,0-14.03,8.033-14.03,15.536 c0.294,7.574,5.624,15.468,14.03,15.468c8.394,0,14.031-7.998,14.031-15.468C248.632,25.372,242.206,18.257,234.601,18.257z'/%3E %3Cpath d='M193.62,53.629c-6.021,0-13.503-3.57-16.155-10.394l-0.098-0.239c-0.254-0.607-0.603-1.438-0.603-3.042 c0.002-15.911,0.098-38.237,0.099-38.461c0.003-0.826,0.674-1.494,1.5-1.494h1.368c0.829,0,1.5,0.671,1.5,1.5v18.495 c3.827-4.055,8.188-6.106,13.005-6.106c11.111,0,17.988,10.332,17.988,19.904C211.915,44.75,203.569,53.629,193.62,53.629z M181.231,27.446v12.437c0,4.652,7.208,9.378,12.389,9.378c8.515,0,14.235-7.998,14.235-15.468c0-7.472-5.207-15.536-13.619-15.536 C186.705,18.257,182.535,24.927,181.231,27.446z'/%3E %3Cpath d='M118.017,64.577c-0.013,0-0.026,0-0.039,0c-2.437-0.063-5.533-0.434-7.865-2.765 c-0.308-0.308-0.467-0.734-0.436-1.167c0.031-0.434,0.249-0.833,0.597-1.094l1.096-0.821c0.566-0.425,1.353-0.396,1.887,0.072 c1.083,0.947,2.617,1.408,4.691,1.408c2.913,0,6.3-2.752,6.3-6.3V16.073c0-0.829,0.671-1.5,1.5-1.5h1.368c0.829,0,1.5,0.671,1.5,1.5 v37.835C128.616,60.195,123.03,64.577,118.017,64.577z M127.116,8.268h-1.368c-0.829,0-1.5-0.671-1.5-1.5V2.389 c0-0.829,0.671-1.5,1.5-1.5h1.368c0.829,0,1.5,0.671,1.5,1.5v4.379C128.616,7.597,127.945,8.268,127.116,8.268z'/%3E %3C/svg%3E"
+// removed by extract-text-webpack-plugin
 
 /***/ }),
 /* 60 */
+/***/ (function(module, exports) {
+
+module.exports = "data:image/svg+xml,%3C?xml version='1.0' encoding='utf-8'?%3E %3C!-- Generator: Adobe Illustrator 19.0.0, SVG Export Plug-In . SVG Version: 6.00 Build 0) --%3E %3Csvg version='1.1' id='Layer_1' xmlns='http://www.w3.org/2000/svg' xmlns:xlink='http://www.w3.org/1999/xlink' x='0px' y='0px' viewBox='-290 387 30 20' style='enable-background:new -290 387 30 20;' xml:space='preserve'%3E %3Cpath d='M-272.5,405.4l-12.1-7.4c-0.6-0.4-0.6-1.7,0-2.1l12.1-7.4c0.5-0.3,1,0.3,1,1.1v14.7C-271.4,405.2-272,405.7-272.5,405.4z' fill='rgba(0, 0, 0, .2)' transform='translate(2, 0)'/%3E %3C/svg%3E"
+
+/***/ }),
+/* 61 */
+/***/ (function(module, exports) {
+
+module.exports = "data:image/svg+xml,%3Csvg width='20' height='10' viewBox='0 0 100 100' xmlns='http://www.w3.org/2000/svg' version='1.1'%3E %3Cline x1='0' y1='10' x2='100' y2='10' stroke='rgba(0, 0, 0, .2)' stroke-width='20' stroke-linecap='round' /%3E %3Cline x1='0' y1='50' x2='100' y2='50' stroke='rgba(0, 0, 0, .2)' stroke-width='20' stroke-linecap='round' /%3E %3Cline x1='0' y1='90' x2='100' y2='90' stroke='rgba(0, 0, 0, .2)' stroke-width='20' stroke-linecap='round' /%3E %3C/svg%3E"
+
+/***/ }),
+/* 62 */
+/***/ (function(module, exports) {
+
+module.exports = "data:image/svg+xml,%3C?xml version='1.0' encoding='utf-8'?%3E %3Csvg version='1.1' xmlns='http://www.w3.org/2000/svg' xmlns:xlink='http://www.w3.org/1999/xlink' viewBox='0 0 10 16' style='enable-background:new 0 0 10 16;' xml:space='preserve'%3E %3Cpath fill='white' id='XMLID_6_' d='M9.1,6H8.5V3.5C8.5,1.5,6.9,0,5,0C3.1,0,1.6,1.5,1.6,3.5l0,2.5H0.9C0.4,6,0,6.4,0,6.9v8.2 C0,15.6,0.4,16,0.9,16h8.2c0.5,0,0.9-0.4,0.9-0.9V6.9C10,6.4,9.6,6,9.1,6z M3.3,3.4c0-0.9,0.8-1.6,1.7-1.6c0.9,0,1.7,0.8,1.7,1.7V6 H3.3V3.4z'/%3E %3C/svg%3E"
+
+/***/ }),
+/* 63 */
+/***/ (function(module, exports) {
+
+module.exports = "data:image/svg+xml,%3C?xml version='1.0' encoding='utf-8'?%3E %3C!-- Generator: Adobe Illustrator 15.0.2, SVG Export Plug-In . SVG Version: 6.00 Build 0) --%3E %3C!DOCTYPE svg PUBLIC '-//W3C//DTD SVG 1.1//EN' 'http://www.w3.org/Graphics/SVG/1.1/DTD/svg11.dtd'%3E %3Csvg version='1.1' id='Layer_1' xmlns='http://www.w3.org/2000/svg' xmlns:xlink='http://www.w3.org/1999/xlink' x='0px' y='0px' width='253px' height='64.577px' viewBox='0 0 253 64.577' enable-background='new 0 0 253 64.577' xml:space='preserve' fill='black'%3E %3Cpath d='M18.399,53.629c-0.01,0-0.021,0-0.031,0C7.023,53.396,0,43.151,0,33.793c0-10.79,8.426-19.905,18.399-19.905 c11.006,0,18.399,10.292,18.399,19.905c0,10.719-8.239,19.617-18.367,19.835C18.421,53.629,18.41,53.629,18.399,53.629z M18.399,18.257c-8.393,0-14.031,8.033-14.031,15.536c0.295,7.574,5.625,15.468,14.031,15.468c8.393,0,14.031-7.998,14.031-15.468 C32.43,25.372,26.005,18.257,18.399,18.257z'/%3E %3Cpath d='M58.15,53.629c-6.02,0-13.502-3.57-16.154-10.394c-0.287-0.733-0.603-1.542-0.603-3.281l0-38.454 c0-0.398,0.158-0.779,0.439-1.061S42.495,0,42.893,0h1.369c0.829,0,1.5,0.671,1.5,1.5v18.495c3.827-4.056,8.188-6.106,13.004-6.106 c11.111,0,17.989,10.332,17.989,19.905C76.444,44.75,68.099,53.629,58.15,53.629z M45.761,27.446v12.437 c0,4.652,7.208,9.378,12.389,9.378c8.516,0,14.236-7.998,14.236-15.468c0-7.472-5.208-15.536-13.621-15.536 C51.235,18.257,47.065,24.927,45.761,27.446z'/%3E %3Cpath d='M99.064,53.629c-0.01,0-0.021,0-0.031,0c-11.346-0.233-18.369-10.478-18.369-19.835 c0-10.79,8.426-19.905,18.399-19.905c11.005,0,18.398,10.292,18.398,19.905c0,10.719-8.239,19.617-18.366,19.835 C99.086,53.629,99.075,53.629,99.064,53.629z M99.064,18.257c-8.393,0-14.031,8.033-14.031,15.536 c0.294,7.574,5.624,15.468,14.031,15.468c8.393,0,14.031-7.998,14.031-15.468C113.096,25.372,106.67,18.257,99.064,18.257z'/%3E %3Cpath d='M153.252,53.629c-0.01,0-0.021,0-0.031,0c-11.346-0.233-18.369-10.478-18.369-19.835 c0-10.79,8.426-19.905,18.399-19.905c11.006,0,18.399,10.292,18.399,19.905c0,10.719-8.239,19.617-18.367,19.835 C153.273,53.629,153.263,53.629,153.252,53.629z M153.252,18.257c-8.393,0-14.031,8.033-14.031,15.536 c0.294,7.574,5.624,15.468,14.031,15.468c8.393,0,14.031-7.998,14.031-15.468C167.283,25.372,160.858,18.257,153.252,18.257z'/%3E %3Cpath d='M234.601,53.629c-0.01,0-0.021,0-0.031,0c-11.345-0.233-18.367-10.478-18.367-19.835 c0-10.79,8.426-19.905,18.398-19.905c11.006,0,18.399,10.292,18.399,19.905c0,10.719-8.239,19.617-18.367,19.835 C234.622,53.629,234.611,53.629,234.601,53.629z M234.601,18.257c-8.393,0-14.03,8.033-14.03,15.536 c0.294,7.574,5.624,15.468,14.03,15.468c8.394,0,14.031-7.998,14.031-15.468C248.632,25.372,242.206,18.257,234.601,18.257z'/%3E %3Cpath d='M193.62,53.629c-6.021,0-13.503-3.57-16.155-10.394l-0.098-0.239c-0.254-0.607-0.603-1.438-0.603-3.042 c0.002-15.911,0.098-38.237,0.099-38.461c0.003-0.826,0.674-1.494,1.5-1.494h1.368c0.829,0,1.5,0.671,1.5,1.5v18.495 c3.827-4.055,8.188-6.106,13.005-6.106c11.111,0,17.988,10.332,17.988,19.904C211.915,44.75,203.569,53.629,193.62,53.629z M181.231,27.446v12.437c0,4.652,7.208,9.378,12.389,9.378c8.515,0,14.235-7.998,14.235-15.468c0-7.472-5.207-15.536-13.619-15.536 C186.705,18.257,182.535,24.927,181.231,27.446z'/%3E %3Cpath d='M118.017,64.577c-0.013,0-0.026,0-0.039,0c-2.437-0.063-5.533-0.434-7.865-2.765 c-0.308-0.308-0.467-0.734-0.436-1.167c0.031-0.434,0.249-0.833,0.597-1.094l1.096-0.821c0.566-0.425,1.353-0.396,1.887,0.072 c1.083,0.947,2.617,1.408,4.691,1.408c2.913,0,6.3-2.752,6.3-6.3V16.073c0-0.829,0.671-1.5,1.5-1.5h1.368c0.829,0,1.5,0.671,1.5,1.5 v37.835C128.616,60.195,123.03,64.577,118.017,64.577z M127.116,8.268h-1.368c-0.829,0-1.5-0.671-1.5-1.5V2.389 c0-0.829,0.671-1.5,1.5-1.5h1.368c0.829,0,1.5,0.671,1.5,1.5v4.379C128.616,7.597,127.945,8.268,127.116,8.268z'/%3E %3C/svg%3E"
+
+/***/ }),
+/* 64 */
 /***/ (function(module, exports, __webpack_require__) {
 
 __webpack_require__(21);

@@ -52,10 +52,31 @@
 					line-height: 1.5em;
 				}
 
+				h4 {
+					vertical-align: middle;
+
+					> strong {
+						vertical-align: middle;
+					}
+				}
+
+				.highest-attempt {
+					background: $color-reward;
+					display: inline-block;
+					margin-left: 1em;
+					font-size: 0.7em;
+					border-radius: 2em;
+					line-height: 2em;
+					color: $color-reward-text;
+					font-weight: bold;
+					padding: 0 1em;
+					vertical-align: middle;
+				}
+
 				.obojobo-draft--components--more-info-button {
 					margin-left: 0.5em;
 
-					.score-report {
+					.obojobo-draft--sections--assessment--components--score-report {
 						font-size: 1.25em;
 						width: 20em;
 						padding: 0.5em 1em;

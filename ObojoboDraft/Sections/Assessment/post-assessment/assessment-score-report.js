@@ -6,7 +6,7 @@ let getDisplayFriendlyScore = n => {
 }
 
 let getPassingRange = passingNumber => {
-	if (passingNumber === 100) return '100%'
+	if (passingNumber === 100 || passingNumber === '100') return '100%'
 	return getDisplayFriendlyScore(passingNumber) + '-100%'
 }
 
@@ -36,12 +36,12 @@ let getModText = (attemptCondition, numOfAttemptsAvailable) => {
 	return 'Passed on attempts ' + range[0] + ' to ' + range[1]
 }
 
-export default class AssessmentScoreReport {
+class AssessmentScoreReport {
 	constructor(assessmentRubric) {
 		this.assessmentRubric = assessmentRubric
 	}
 
-	getTextItems(isHighest, assessmentScoreInfo, numOfAttemptsAvailable) {
+	getTextItems(assessmentScoreInfo, numOfAttemptsAvailable) {
 		let rubric = this.assessmentRubric
 
 		let passingAttemptScore =
@@ -51,116 +51,165 @@ export default class AssessmentScoreReport {
 		let unableToPassResult =
 			typeof rubric.unableToPassResult !== 'undefined' ? rubric.unableToPassResult : 0
 		let isRewardedMods = assessmentScoreInfo.rewardedMods.length > 0
-		let isTypeAttempt = rubric.type === 'attempt'
-		let isTypePassFail = rubric.type === 'pass-fail'
+		let isAttemptRubric = rubric.type === 'attempt'
+		let isPassFailRubric = rubric.type === 'pass-fail'
 		let status = assessmentScoreInfo.status
 		let passed = status === 'passed'
 		let failed = status === 'failed'
 		let unableToPass = status === 'unableToPass'
+		// let isLTIAndScoreWasUnsent = (failed || unableToPass) && isLti
 		let attemptNum = assessmentScoreInfo.attemptNumber
 
 		let items = []
 		let attemptScore = getDisplayFriendlyScore(assessmentScoreInfo.attemptScore)
 		let assessScore = getDisplayFriendlyScore(assessmentScoreInfo.assessmentModdedScore)
 
-		if (isTypeAttempt && isRewardedMods) {
+		if (isAttemptRubric && !isRewardedMods) {
 			items.push({
 				type: 'value',
-				text: 'Attempt\u00a0' + attemptNum + ' score',
+				text: 'Score',
 				value: attemptScore
 			})
-		} else if (isTypeAttempt && !isRewardedMods && isHighest) {
-			items.push({
-				type: 'line',
-				text: 'This is your highest attempt score (Attempt\u00a0' + attemptNum + ')'
-			})
-		} else if (isTypeAttempt && !isRewardedMods && !isHighest) {
-			items.push({
-				type: 'line',
-				text: 'This is your attempt\u00a0' + attemptNum + ' score'
-			})
-		} else if (isTypePassFail && passed && passedResult === '$attempt_score' && isRewardedMods) {
+		} else if (isAttemptRubric && isRewardedMods) {
 			items.push({
 				type: 'value',
-				text: 'Passing attempt\u00a0' + attemptNum + ' score',
+				text: 'Base Score',
 				value: attemptScore
 			})
-		} else if (
-			isTypePassFail &&
-			passed &&
-			passedResult === '$attempt_score' &&
-			!isRewardedMods &&
-			isHighest
-		) {
-			items.push({
-				type: 'line',
-				text: 'This is your highest passing attempt\u00a0' + attemptNum + ' score'
-			})
-		} else if (
-			isTypePassFail &&
-			passed &&
-			passedResult === '$attempt_score' &&
-			!isRewardedMods &&
-			!isHighest
-		) {
-			items.push({
-				type: 'line',
-				text: 'This is your passing attempt\u00a0' + attemptNum + ' score'
-			})
-		} else if (
-			isTypePassFail &&
-			passed &&
-			Number.isFinite(parseFloat(passedResult)) &&
-			isRewardedMods
-		) {
+		} else if (isPassFailRubric && passed && passedResult === '$attempt_score' && !isRewardedMods) {
 			items.push({
 				type: 'value',
-				text: 'Reward for your passing attempt\u00a0' + attemptNum + ' score',
-				value: getDisplayFriendlyScore(passedResult)
+				text: 'Score',
+				value: attemptScore
 			})
+		} else if (isPassFailRubric && passed && passedResult === '$attempt_score' && isRewardedMods) {
+			items.push({
+				type: 'value',
+				text: 'Base Score',
+				value: attemptScore
+			})
+		} else if (isPassFailRubric && passed && Number.isFinite(parseFloat(passedResult))) {
+			items.push(
+				{
+					type: 'value',
+					text: 'Base Score',
+					value: attemptScore
+				},
+				{
+					type: 'divider'
+				},
+				{
+					type: 'value',
+					text: 'Rewarded score for a passing attempt',
+					value: getDisplayFriendlyScore(passedResult)
+				}
+			)
+		} else if (isPassFailRubric && failed && failedResult === 'no-score') {
+			items.push(
+				{
+					type: 'value',
+					text: 'Base Score',
+					value: attemptScore
+				},
+				{
+					type: 'divider'
+				},
+				{
+					type: 'text',
+					text: 'You need ' + getPassingRange(passingAttemptScore) + ' to pass'
+				}
+			)
+		} else if (isPassFailRubric && failed && Number.isFinite(parseFloat(failedResult))) {
+			items.push(
+				{
+					type: 'value',
+					text: 'Base Score',
+					value: attemptScore
+				},
+				{
+					type: 'divider'
+				},
+				{
+					type: 'value',
+					text:
+						'Given score for a non-passing (less than ' +
+						getDisplayFriendlyScore(passingAttemptScore) +
+						'%) attempt',
+					value: getDisplayFriendlyScore(failedResult)
+				}
+			)
+		} else if (isPassFailRubric && unableToPass && unableToPassResult === 'no-score') {
+			items.push(
+				{
+					type: 'value',
+					text: 'Base Score',
+					value: attemptScore
+				},
+				{
+					type: 'divider'
+				},
+				{
+					type: 'text',
+					text: 'You needed ' + getPassingRange(passingAttemptScore) + ' to pass'
+				}
+			)
 		} else if (
-			isTypePassFail &&
-			passed &&
-			Number.isFinite(parseFloat(passedResult)) &&
-			!isRewardedMods
+			isPassFailRubric &&
+			unableToPass &&
+			unableToPassResult === '$highest_attempt_score'
 		) {
-			items.push({
-				type: 'line',
-				text: 'This is your rewarded score for your passing attempt\u00a0' + attemptNum + ' score'
-			})
-		} else if (isTypePassFail && failed && failedResult === 'no-score') {
-			items.push({
-				type: 'line',
-				text: 'You need an attempt score of ' + getPassingRange(passingAttemptScore) + ' to pass'
-			})
-		} else if (isTypePassFail && failed && Number.isFinite(parseFloat(failedResult))) {
-			items.push({
-				type: 'value',
-				text:
-					'Given score for a non-passing (less than ' +
-					getDisplayFriendlyScore(passingAttemptScore) +
-					'%) attempt',
-				value: getDisplayFriendlyScore(failedResult)
-			})
-		} else if (isTypePassFail && unableToPass && unableToPassResult === 'no-score') {
-			items.push({
-				type: 'line',
-				text: 'You needed an attempt score of ' + getPassingRange(passingAttemptScore) + ' to pass'
-			})
-		} else if (isTypePassFail && unableToPass && unableToPassResult === '$highest_attempt_score') {
-			items.push({
-				type: 'line',
-				text: 'This is your highest attempt score (Attempt\u00a0' + attemptNum + ')'
-			})
-		} else if (isTypePassFail && unableToPass && Number.isFinite(parseFloat(unableToPassResult))) {
-			items.push({
-				type: 'value',
-				text:
-					'Given score for not achieving a passing (' +
-					getPassingRange(passingAttemptScore) +
-					') attempt',
-				value: getDisplayFriendlyScore(unableToPassResult)
-			})
+			items.push(
+				{
+					type: 'value',
+					text: 'Base Score',
+					value: attemptScore
+				},
+				{
+					type: 'divider'
+				},
+				{
+					type: 'text',
+					text:
+						'You did not achieve a passing ' +
+						getPassingRange(passingAttemptScore) +
+						' score within the number of attempts available. Your highest attempt score will be used instead.'
+				},
+				{
+					type: 'divider'
+				},
+				{
+					type: 'value',
+					text: 'Highest attempt score (Attempt\u00a0' + attemptNum + ')',
+					value: assessScore
+				}
+			)
+		} else if (
+			isPassFailRubric &&
+			unableToPass &&
+			Number.isFinite(parseFloat(unableToPassResult))
+		) {
+			items.push(
+				{
+					type: 'value',
+					text: 'Base Score',
+					value: attemptScore
+				},
+				{
+					type: 'divider'
+				},
+				{
+					type: 'text',
+					text:
+						'You did not achieve a passing ' +
+						getPassingRange(passingAttemptScore) +
+						' score within the number of attempts available.'
+				},
+				{
+					type: 'value',
+					text: 'Given score for not achieving a passing attempt',
+					value: getDisplayFriendlyScore(unableToPassResult)
+				}
+			)
 		} else {
 			throw new Error('Unknown assessment rubric and score state')
 		}
@@ -179,16 +228,28 @@ export default class AssessmentScoreReport {
 					}
 				})
 			)
+		}
 
-			let isScoreOver100 = assessmentScoreInfo.attemptScore + assessmentScoreInfo.rewardTotal > 100
+		if (items.length > 1) {
+			let isScoreOver100 =
+				assessmentScoreInfo.assessmentScore !== null &&
+				assessmentScoreInfo.assessmentScore + assessmentScoreInfo.rewardTotal > 100
 
-			items.push({
-				type: 'total',
-				text: 'Total' + (isScoreOver100 ? ' (Max 100%)' : ''),
-				value: assessScore
-			})
+			items.push(
+				{
+					type: 'divider'
+				},
+				{
+					type: 'total',
+					text: 'Total Score' + (isScoreOver100 ? ' (Max 100%)' : ''),
+					value:
+						assessmentScoreInfo.assessmentModdedScore === null ? 'No Score Recorded' : assessScore
+				}
+			)
 		}
 
 		return items
 	}
 }
+
+export default AssessmentScoreReport

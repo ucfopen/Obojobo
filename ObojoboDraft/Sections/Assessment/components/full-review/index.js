@@ -3,9 +3,10 @@ import Common from 'Common'
 
 import ReviewIcon from '../review-icon'
 import ScoreReportView from '../score-report'
-import ScoreReport from '../../post-assessment/assessment-score-report'
+// import ScoreReport from '../../post-assessment/assessment-score-report'
 
 import formatDate from 'date-fns/format'
+import ScoreReport from '../../post-assessment/assessment-score-report'
 
 const { AssessmentUtil } = Viewer.util
 const { NavUtil } = Viewer.util
@@ -19,12 +20,23 @@ const assessmentReviewView = ({ assessment }) => {
 		assessment.props.moduleData.assessmentState,
 		assessment.props.model
 	)
-
+	let highestAttempt = AssessmentUtil.getHighestAttemptForModel(
+		assessment.props.moduleData.assessmentState,
+		assessment.props.model
+	)
 	const report = new ScoreReport(assessment.props.model.modelState.rubric.toObject())
 
-	let attemptReviewComponent = (attempt, assessment) => {
+	let attemptReviewComponent = (attempt, assessment, isHighestNonNullAttempt) => {
 		let dateString = formatDate(new Date(attempt.finishTime), 'M/D/YY [at] h:mma')
 		let numCorrect = AssessmentUtil.getNumCorrect(attempt.questionScores)
+
+		let scoreReportTextItems = report.getTextItems(
+			attempt.assessmentScoreDetails,
+			AssessmentUtil.getAttemptsRemaining(
+				assessment.props.moduleData.assessmentState,
+				assessment.props.model
+			)
+		)
 
 		return (
 			<div className="review">
@@ -34,6 +46,9 @@ const assessmentReviewView = ({ assessment }) => {
 						<div className="attempt-info-content-container">
 							<h4>
 								<strong>{`Attempt ${attempt.attemptNumber}`}</strong>
+								{isHighestNonNullAttempt ? (
+									<span className="highest-attempt">★ Highest Attempt</span>
+								) : null}
 							</h4>
 							<div className="attempt-info-content">
 								<ul>
@@ -42,22 +57,17 @@ const assessmentReviewView = ({ assessment }) => {
 										{numCorrect} out of {attempt.questionScores.length} questions correct
 									</li>
 									<li>
-										Score:{' '}
+										Total Score:{' '}
 										<strong>
-											{attempt.assessmentScore === null ? '--' : attempt.assessmentScore + '%'}
+											{attempt.assessmentScore === null
+												? 'No Score Recorded'
+												: attempt.assessmentScore + '%'}
 										</strong>
-										<MoreInfoButton>
-											<ScoreReportView
-												items={report.getTextItems(
-													false,
-													attempt.assessmentScoreDetails,
-													AssessmentUtil.getAttemptsRemaining(
-														assessment.props.moduleData.assessmentState,
-														assessment.props.model
-													)
-												)}
-											/>
-										</MoreInfoButton>
+										{scoreReportTextItems.length === 1 ? null : (
+											<MoreInfoButton>
+												<ScoreReportView items={scoreReportTextItems} />
+											</MoreInfoButton>
+										)}
 									</li>
 								</ul>
 							</div>
@@ -104,7 +114,8 @@ const assessmentReviewView = ({ assessment }) => {
 	attempts.forEach(attempt => {
 		attemptReviewComponents[`assessmentReview:${attempt.attemptId}`] = attemptReviewComponent(
 			attempt,
-			assessment
+			assessment,
+			attempt === highestAttempt && attempt.assessmentScore !== null
 		)
 	})
 

@@ -15,7 +15,7 @@ import basicReview from '../basic-review'
 const scoreSubmittedView = assessment => {
 	const report = new ScoreReport(assessment.props.model.modelState.rubric.toObject())
 
-	let latestHighestAttempt = AssessmentUtil.getLatestHighestAttemptForModel(
+	let highestAttempt = AssessmentUtil.getHighestAttemptForModel(
 		assessment.props.moduleData.assessmentState,
 		assessment.props.model
 	)
@@ -24,20 +24,13 @@ const scoreSubmittedView = assessment => {
 		assessment.props.moduleData.assessmentState,
 		assessment.props.model
 	)
-	const recentScore = AssessmentUtil.getLastAttemptScoreForModel(
-		assessment.props.moduleData.assessmentState,
-		assessment.props.model
-	)
+
 	const isAssessmentComplete = () => {
 		return !AssessmentUtil.hasAttemptsRemaining(
 			assessment.props.moduleData.assessmentState,
 			assessment.props.model
 		)
 	}
-	const attemptsRemaining = AssessmentUtil.getAttemptsRemaining(
-		assessment.props.moduleData.assessmentState,
-		assessment.props.model
-	)
 
 	const scoreAction = assessment.getScoreAction()
 	const numCorrect = AssessmentUtil.getNumCorrect(questionScores)
@@ -61,15 +54,15 @@ const scoreSubmittedView = assessment => {
 		assessment.props.model
 	)
 
-	let childEl
+	let scoreActionsPage
 
 	if (scoreAction.page != null) {
 		let pageModel = OboModel.create(scoreAction.page)
 		pageModel.parent = assessment.props.model //'@TODO - FIGURE OUT A BETTER WAY TO DO THIS - THIS IS NEEDED TO GET {{VARIABLES}} WORKING')
 		let PageComponent = pageModel.getComponentClass()
-		childEl = <PageComponent model={pageModel} moduleData={assessment.props.moduleData} />
+		scoreActionsPage = <PageComponent model={pageModel} moduleData={assessment.props.moduleData} />
 	} else {
-		childEl = <p>{scoreAction.message}</p>
+		scoreActionsPage = <p>{scoreAction.message}</p>
 	}
 
 	let externalSystemLabel = assessment.props.moduleData.lti.outcomeServiceHostname
@@ -87,41 +80,28 @@ const scoreSubmittedView = assessment => {
 
 	return (
 		<div className="score unlock">
-			<div className="results-bar">
-				<div className="top">
-					<h1>{assessmentLabel} - How You Did</h1>
-
-					<div className="assessment-flex-container">
-						<div className="last-attempt">
-							<h2>Last Attempt Score</h2>
-							<div className="value">{Math.round(recentScore)}</div>
-						</div>
-						<div className="highest-score">
-							<h2>Highest Score</h2>
-							<ScoreReportView
-								score={latestHighestAttempt.assessmentScore}
-								items={report.getTextItems(
-									true,
-									latestHighestAttempt.assessmentScoreDetails,
-									AssessmentUtil.getAttemptsRemaining(
-										assessment.props.moduleData.assessmentState,
-										assessment.props.model
-									)
-								)}
-							/>
-						</div>
-						<div className="attempts-remaining">
-							<h2>Attempts Remaining</h2>
-							<div className="value">{attemptsRemaining}</div>
-						</div>
+			<div className="overview">
+				<h1>{assessmentLabel} Overview</h1>
+				{highestAttempt.assessmentScore === null ? (
+					<div className="recorded-score is-null">
+						<h2>Recorded Score:</h2>
+						<span className="value">No Score Recorded</span>
 					</div>
-				</div>
+				) : (
+					<div className="recorded-score is-not-null">
+						<h2>Recorded Score:</h2>
+						<span className="value">{highestAttempt.assessmentScore}</span>
+						<span className="from-attempt">{`From attempt ${
+							highestAttempt.assessmentScoreDetails.attemptNumber
+						}`}</span>
+					</div>
+				)}
 
 				<LTIStatus
 					ltiState={ltiState}
 					externalSystemLabel={externalSystemLabel}
 					onClickResendScore={onClickResendScore}
-					assessmentScore={latestHighestAttempt.assessmentScore}
+					assessmentScore={highestAttempt.assessmentScore}
 				/>
 				{() => {
 					switch (ltiState.state.gradebookStatus) {
@@ -146,20 +126,23 @@ const scoreSubmittedView = assessment => {
 							)
 					}
 				}}
+				<div className="score-actions-page">{scoreActionsPage}</div>
 			</div>
-			{childEl}
-			{showFullReview ? (
-				<FullReview assessment={assessment} />
-			) : (
-				<div className="review">
-					<p className="number-correct">{`You got ${numCorrect} out of ${
-						questionScores.length
-					} questions correct:`}</p>
-					{questionScores.map((questionScore, index) =>
-						basicReview(assessment.props.moduleData, questionScore, index)
-					)}
-				</div>
-			)}
+			<div className="attempt-history">
+				<h1>Attempt History:</h1>
+				{showFullReview ? (
+					<FullReview assessment={assessment} />
+				) : (
+					<div className="review">
+						<p className="number-correct">{`You got ${numCorrect} out of ${
+							questionScores.length
+						} questions correct:`}</p>
+						{questionScores.map((questionScore, index) =>
+							basicReview(assessment.props.moduleData, questionScore, index)
+						)}
+					</div>
+				)}
+			</div>
 		</div>
 	)
 }

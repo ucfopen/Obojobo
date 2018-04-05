@@ -1,98 +1,58 @@
-.score-report {
-	$color-hr: transparentize($color-shadow, 0.2);
+// @import '~styles/includes'; //@TODO - This is not importing
 
-	font-family: $font-default;
-	text-align: center;
+.obojobo-draft--sections--assessment--components--score-report {
+	$color-hr: transparentize(rgba(0, 0, 0, 0.3), 0.2);
+	$color-correct: #38ae24;
+	$color-incorrect: #c21f00;
 
-	&.is-showing-score {
-		.mod-breakdown .mod-breakdown-items {
-			border-top: 1px solid $color-hr;
-		}
-	}
+	text-align: left;
 
-	.value.is-not-null {
-		position: relative;
-
-		&:after {
-			position: absolute;
-			right: 0;
-			top: 50%;
-			content: '%';
-			display: block;
-			transform: translate(1em, -50%);
-			font-size: 0.6em;
-		}
-	}
-
-	.mod-breakdown {
-		display: flex;
-		justify-content: center;
+	> * {
 		font-size: 0.7em;
 		line-height: 1.5em;
+		margin-top: 0.5em;
+		position: relative;
 
-		.mod-breakdown-items {
-			width: 100%;
-			padding-top: 0;
-		}
-	}
-
-	.mod-breakdown-item {
-		display: flex;
-		align-items: baseline;
-
-		&:first-child:not(:only-child) {
-			margin-top: 5px;
+		&:only-child {
+			margin-top: 0;
+			font-size: 1em;
 		}
 
-		&:last-child:not(:only-child) {
-			padding-top: 0.5em;
-			border-top: 1px solid $color-hr;
+		&.divider {
+			height: 1px;
+			border: none;
+			background: $color-hr;
 		}
 
-		.score-report-text {
-			display: inline-block;
-			width: 80%;
-			text-align: left;
-			margin-bottom: 0.5em;
-
-			.score-report-text-content {
-				display: inline-block;
-			}
-
-			.is-type-score-report-penalty {
-				color: $color-incorrect;
-				font-weight: bold;
-			}
-
-			.is-type-score-report-extra-credit {
+		&.extra-credit {
+			> .label > span {
 				color: $color-correct;
 				font-weight: bold;
 			}
+		}
 
-			&.score-report-text-line,
-			&.score-report-text-value {
-				margin-top: 0.5em;
-			}
-
-			&.score-report-text-line {
-				width: 100%;
-				text-align: center;
-			}
-
-			.score-report-text-total {
+		&.penalty {
+			> .label > span {
+				color: $color-incorrect;
 				font-weight: bold;
 			}
 		}
-	}
 
-	.score-report-score {
-		display: inline-block;
-		width: 20%;
-		white-space: nowrap;
-		text-align: right;
+		&.value {
+			padding-right: 4em;
+		}
 
-		.score-report-score-content {
-			display: inline-block;
+		&.total {
+			font-size: 1em;
+		}
+
+		> .amount {
+			white-space: nowrap;
+			text-align: right;
+			position: absolute;
+			bottom: 0;
+			right: 0;
+			font-weight: bold;
 		}
 	}
 }

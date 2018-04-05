@@ -63,7 +63,7 @@
 /******/ 	__webpack_require__.p = "build/";
 /******/
 /******/ 	// Load entry module and return exports
-/******/ 	return __webpack_require__(__webpack_require__.s = 302);
+/******/ 	return __webpack_require__(__webpack_require__.s = 303);
 /******/ })
 /************************************************************************/
 /******/ ({
@@ -460,15 +460,17 @@ var _scoreReport = __webpack_require__(67);
 
 var _scoreReport2 = _interopRequireDefault(_scoreReport);
 
-var _assessmentScoreReport = __webpack_require__(68);
-
-var _assessmentScoreReport2 = _interopRequireDefault(_assessmentScoreReport);
-
 var _format = __webpack_require__(244);
 
 var _format2 = _interopRequireDefault(_format);
 
+var _assessmentScoreReport = __webpack_require__(68);
+
+var _assessmentScoreReport2 = _interopRequireDefault(_assessmentScoreReport);
+
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+// import ScoreReport from '../../post-assessment/assessment-score-report'
 
 var AssessmentUtil = _Viewer2.default.util.AssessmentUtil;
 var NavUtil = _Viewer2.default.util.NavUtil;
@@ -485,12 +487,14 @@ var assessmentReviewView = function assessmentReviewView(_ref) {
 	var attemptReviewComponents = {};
 
 	var attempts = AssessmentUtil.getAllAttempts(assessment.props.moduleData.assessmentState, assessment.props.model);
-
+	var highestAttempt = AssessmentUtil.getHighestAttemptForModel(assessment.props.moduleData.assessmentState, assessment.props.model);
 	var report = new _assessmentScoreReport2.default(assessment.props.model.modelState.rubric.toObject());
 
-	var attemptReviewComponent = function attemptReviewComponent(attempt, assessment) {
+	var attemptReviewComponent = function attemptReviewComponent(attempt, assessment, isHighestNonNullAttempt) {
 		var dateString = (0, _format2.default)(new Date(attempt.finishTime), 'M/D/YY [at] h:mma');
 		var numCorrect = AssessmentUtil.getNumCorrect(attempt.questionScores);
+
+		var scoreReportTextItems = report.getTextItems(attempt.assessmentScoreDetails, AssessmentUtil.getAttemptsRemaining(assessment.props.moduleData.assessmentState, assessment.props.model));
 
 		return React.createElement(
 			'div',
@@ -512,7 +516,12 @@ var assessmentReviewView = function assessmentReviewView(_ref) {
 								'strong',
 								null,
 								'Attempt ' + attempt.attemptNumber
-							)
+							),
+							isHighestNonNullAttempt ? React.createElement(
+								'span',
+								{ className: 'highest-attempt' },
+								'\u2605 Highest Attempt'
+							) : null
 						),
 						React.createElement(
 							'div',
@@ -536,19 +545,17 @@ var assessmentReviewView = function assessmentReviewView(_ref) {
 								React.createElement(
 									'li',
 									null,
-									'Score:',
+									'Total Score:',
 									' ',
 									React.createElement(
 										'strong',
 										null,
-										attempt.assessmentScore === null ? '--' : attempt.assessmentScore + '%'
+										attempt.assessmentScore === null ? 'No Score Recorded' : attempt.assessmentScore + '%'
 									),
-									React.createElement(
+									scoreReportTextItems.length === 1 ? null : React.createElement(
 										MoreInfoButton,
 										null,
-										React.createElement(_scoreReport2.default, {
-											items: report.getTextItems(false, attempt.assessmentScoreDetails, AssessmentUtil.getAttemptsRemaining(assessment.props.moduleData.assessmentState, assessment.props.model))
-										})
+										React.createElement(_scoreReport2.default, { items: scoreReportTextItems })
 									)
 								)
 							)
@@ -593,7 +600,7 @@ var assessmentReviewView = function assessmentReviewView(_ref) {
 	});
 
 	attempts.forEach(function (attempt) {
-		attemptReviewComponents['assessmentReview:' + attempt.attemptId] = attemptReviewComponent(attempt, assessment);
+		attemptReviewComponents['assessmentReview:' + attempt.attemptId] = attemptReviewComponent(attempt, assessment, attempt === highestAttempt && attempt.assessmentScore !== null);
 	});
 
 	var context = assessment.props.moduleData.navState.context;
@@ -735,14 +742,13 @@ var NavUtil = _Viewer2.default.util.NavUtil;
 var scoreSubmittedView = function scoreSubmittedView(assessment) {
 	var report = new _assessmentScoreReport2.default(assessment.props.model.modelState.rubric.toObject());
 
-	var latestHighestAttempt = AssessmentUtil.getLatestHighestAttemptForModel(assessment.props.moduleData.assessmentState, assessment.props.model);
+	var highestAttempt = AssessmentUtil.getHighestAttemptForModel(assessment.props.moduleData.assessmentState, assessment.props.model);
 
 	var questionScores = AssessmentUtil.getLastAttemptScoresForModel(assessment.props.moduleData.assessmentState, assessment.props.model);
-	var recentScore = AssessmentUtil.getLastAttemptScoreForModel(assessment.props.moduleData.assessmentState, assessment.props.model);
+
 	var isAssessmentComplete = function isAssessmentComplete() {
 		return !AssessmentUtil.hasAttemptsRemaining(assessment.props.moduleData.assessmentState, assessment.props.model);
 	};
-	var attemptsRemaining = AssessmentUtil.getAttemptsRemaining(assessment.props.moduleData.assessmentState, assessment.props.model);
 
 	var scoreAction = assessment.getScoreAction();
 	var numCorrect = AssessmentUtil.getNumCorrect(questionScores);
@@ -757,15 +763,15 @@ var scoreSubmittedView = function scoreSubmittedView(assessment) {
 
 	var assessmentLabel = NavUtil.getNavLabelForModel(assessment.props.moduleData.navState, assessment.props.model);
 
-	var childEl = void 0;
+	var scoreActionsPage = void 0;
 
 	if (scoreAction.page != null) {
 		var pageModel = OboModel.create(scoreAction.page);
 		pageModel.parent = assessment.props.model; //'@TODO - FIGURE OUT A BETTER WAY TO DO THIS - THIS IS NEEDED TO GET {{VARIABLES}} WORKING')
 		var PageComponent = pageModel.getComponentClass();
-		childEl = React.createElement(PageComponent, { model: pageModel, moduleData: assessment.props.moduleData });
+		scoreActionsPage = React.createElement(PageComponent, { model: pageModel, moduleData: assessment.props.moduleData });
 	} else {
-		childEl = React.createElement(
+		scoreActionsPage = React.createElement(
 			'p',
 			null,
 			scoreAction.message
@@ -790,67 +796,50 @@ var scoreSubmittedView = function scoreSubmittedView(assessment) {
 		{ className: 'score unlock' },
 		React.createElement(
 			'div',
-			{ className: 'results-bar' },
+			{ className: 'overview' },
 			React.createElement(
+				'h1',
+				null,
+				assessmentLabel,
+				' Overview'
+			),
+			highestAttempt.assessmentScore === null ? React.createElement(
 				'div',
-				{ className: 'top' },
+				{ className: 'recorded-score is-null' },
 				React.createElement(
-					'h1',
+					'h2',
 					null,
-					assessmentLabel,
-					' - How You Did'
+					'Recorded Score:'
 				),
 				React.createElement(
-					'div',
-					{ className: 'assessment-flex-container' },
-					React.createElement(
-						'div',
-						{ className: 'last-attempt' },
-						React.createElement(
-							'h2',
-							null,
-							'Last Attempt Score'
-						),
-						React.createElement(
-							'div',
-							{ className: 'value' },
-							Math.round(recentScore)
-						)
-					),
-					React.createElement(
-						'div',
-						{ className: 'highest-score' },
-						React.createElement(
-							'h2',
-							null,
-							'Highest Score'
-						),
-						React.createElement(_scoreReport2.default, {
-							score: latestHighestAttempt.assessmentScore,
-							items: report.getTextItems(true, latestHighestAttempt.assessmentScoreDetails, AssessmentUtil.getAttemptsRemaining(assessment.props.moduleData.assessmentState, assessment.props.model))
-						})
-					),
-					React.createElement(
-						'div',
-						{ className: 'attempts-remaining' },
-						React.createElement(
-							'h2',
-							null,
-							'Attempts Remaining'
-						),
-						React.createElement(
-							'div',
-							{ className: 'value' },
-							attemptsRemaining
-						)
-					)
+					'span',
+					{ className: 'value' },
+					'No Score Recorded'
+				)
+			) : React.createElement(
+				'div',
+				{ className: 'recorded-score is-not-null' },
+				React.createElement(
+					'h2',
+					null,
+					'Recorded Score:'
+				),
+				React.createElement(
+					'span',
+					{ className: 'value' },
+					highestAttempt.assessmentScore
+				),
+				React.createElement(
+					'span',
+					{ className: 'from-attempt' },
+					'From attempt ' + highestAttempt.assessmentScoreDetails.attemptNumber
 				)
 			),
 			React.createElement(_ltiStatus2.default, {
 				ltiState: ltiState,
 				externalSystemLabel: externalSystemLabel,
 				onClickResendScore: onClickResendScore,
-				assessmentScore: latestHighestAttempt.assessmentScore
+				assessmentScore: highestAttempt.assessmentScore
 			}),
 			function () {
 				switch (ltiState.state.gradebookStatus) {
@@ -886,20 +875,33 @@ var scoreSubmittedView = function scoreSubmittedView(assessment) {
 							')'
 						);
 				}
-			}
-		),
-		childEl,
-		showFullReview ? React.createElement(_fullReview2.default, { assessment: assessment }) : React.createElement(
-			'div',
-			{ className: 'review' },
+			},
 			React.createElement(
-				'p',
-				{ className: 'number-correct' },
-				'You got ' + numCorrect + ' out of ' + questionScores.length + ' questions correct:'
+				'div',
+				{ className: 'score-actions-page' },
+				scoreActionsPage
+			)
+		),
+		React.createElement(
+			'div',
+			{ className: 'attempt-history' },
+			React.createElement(
+				'h1',
+				null,
+				'Attempt History:'
 			),
-			questionScores.map(function (questionScore, index) {
-				return (0, _basicReview2.default)(assessment.props.moduleData, questionScore, index);
-			})
+			showFullReview ? React.createElement(_fullReview2.default, { assessment: assessment }) : React.createElement(
+				'div',
+				{ className: 'review' },
+				React.createElement(
+					'p',
+					{ className: 'number-correct' },
+					'You got ' + numCorrect + ' out of ' + questionScores.length + ' questions correct:'
+				),
+				questionScores.map(function (questionScore, index) {
+					return (0, _basicReview2.default)(assessment.props.moduleData, questionScore, index);
+				})
+			)
 		)
 	);
 };
@@ -920,7 +922,7 @@ Object.defineProperty(exports, "__esModule", {
 
 var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
 
-__webpack_require__(280);
+__webpack_require__(281);
 
 var _Common = __webpack_require__(0);
 
@@ -965,8 +967,10 @@ var LTIStatus = function (_React$Component) {
 
 			switch (ltiState.state.gradebookStatus) {
 				case 'ok_no_outcome_service':
+					return this.renderNotLTI();
+
 				case 'ok_null_score_not_sent':
-					return null;
+					return this.renderNoScoreSent();
 
 				case 'ok_gradebook_matches_assessment_score':
 					return this.renderSynced();
@@ -976,6 +980,26 @@ var LTIStatus = function (_React$Component) {
 			}
 		}
 	}, {
+		key: 'renderNotLTI',
+		value: function renderNotLTI() {
+			return React.createElement(
+				'div',
+				{ className: 'obojobo-draft--sections--assessment--lti-status is-not-lti' },
+				'\xA0'
+			);
+		}
+	}, {
+		key: 'renderNoScoreSent',
+		value: function renderNoScoreSent() {
+			var systemLabel = this.props.externalSystemLabel;
+
+			return React.createElement(
+				'div',
+				{ className: 'obojobo-draft--sections--assessment--lti-status is-synced' },
+				'No score has been sent to ' + systemLabel + ' (Only recorded scores are sent)'
+			);
+		}
+	}, {
 		key: 'renderSynced',
 		value: function renderSynced() {
 			var systemLabel = this.props.externalSystemLabel;
@@ -983,7 +1007,7 @@ var LTIStatus = function (_React$Component) {
 			return React.createElement(
 				'div',
 				{ className: 'obojobo-draft--sections--assessment--lti-status is-synced' },
-				'\u2714 Your highest score of ' + Math.round(this.props.assessmentScore) + '% was sent to ' + systemLabel
+				'\u2714 Your recorded score of ' + Math.round(this.props.assessmentScore) + '% was sent to ' + systemLabel
 			);
 		}
 	}, {
@@ -1558,7 +1582,7 @@ Object.defineProperty(exports, "__esModule", {
 
 var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
 
-__webpack_require__(281);
+__webpack_require__(282);
 
 var _Common = __webpack_require__(0);
 
@@ -3046,7 +3070,14 @@ module.exports = {
 
 /***/ }),
 
-/***/ 302:
+/***/ 282:
+/***/ (function(module, exports) {
+
+// removed by extract-text-webpack-plugin
+
+/***/ }),
+
+/***/ 303:
 /***/ (function(module, exports, __webpack_require__) {
 
 module.exports = __webpack_require__(119);
@@ -3097,131 +3128,94 @@ module.exports = startOfISOWeek;
 Object.defineProperty(exports, "__esModule", {
 	value: true
 });
-var getSpecialChar = function getSpecialChar(type) {
-	switch (type) {
-		case 'extra-credit':
-			return '+';
-		case 'penalty':
-			return '-';
-		case 'value':
-			return '';
-		case 'total':
-			return '=';
-	}
-	return '';
+__webpack_require__(280);
+
+var scoreReportView = function scoreReportView(props) {
+	return React.createElement(
+		'div',
+		{ className: 'obojobo-draft--sections--assessment--components--score-report' },
+		props.items.map(getItemEl)
+	);
 };
 
-var getSpanTextClass = function getSpanTextClass(type) {
-	switch (type) {
-		case 'penalty':
-			return 'is-type-score-report-penalty';
-		case 'extra-credit':
-			return 'is-type-score-report-extra-credit';
+var getAmountEl = function getAmountEl(value) {
+	if (value === 'No Score Recorded') {
+		return React.createElement(
+			'span',
+			{ className: 'amount is-null' },
+			'No Score Recorded'
+		);
 	}
-	return '';
+
+	return React.createElement(
+		'span',
+		{ className: 'amount is-number' },
+		value,
+		'%'
+	);
 };
 
-var getTextDiv = function getTextDiv(type, text) {
-	switch (type) {
+var getItemEl = function getItemEl(item) {
+	switch (item.type) {
+		case 'text':
+			return React.createElement(
+				'div',
+				{ className: 'text' },
+				item.text
+			);
+
+		case 'divider':
+			return React.createElement('hr', { className: 'divider' });
+
+		case 'extra-credit':
+			return React.createElement(
+				'div',
+				{ className: 'extra-credit' },
+				React.createElement(
+					'span',
+					{ className: 'label' },
+					React.createElement(
+						'span',
+						null,
+						'Extra-credit'
+					),
+					' - ',
+					item.text
+				),
+				getAmountEl('+' + item.value)
+			);
+
+		case 'penalty':
+			return React.createElement(
+				'div',
+				{ className: 'penalty' },
+				React.createElement(
+					'span',
+					{ className: 'label' },
+					React.createElement(
+						'span',
+						null,
+						'Penalty'
+					),
+					' - ',
+					item.text
+				),
+				getAmountEl('-' + item.value)
+			);
+
 		case 'value':
-		case 'line':
 		case 'total':
 			return React.createElement(
 				'div',
-				{ className: 'score-report-text score-report-text-' + type },
+				{ className: item.type },
 				React.createElement(
-					'div',
-					{ className: 'score-report-text-content' },
-					type === 'line' ? text : text + ':'
-				)
+					'span',
+					{ className: 'label' },
+					item.text
+				),
+				getAmountEl(item.value)
 			);
 	}
-	return React.createElement(
-		'div',
-		{ className: 'score-report-text' },
-		React.createElement(
-			'div',
-			{ className: 'score-report-text-content' },
-			React.createElement(
-				'span',
-				{ className: getSpanTextClass(type) },
-				type === 'extra-credit' ? 'Extra Credit' : 'Penalty'
-			),
-			' - ' + text + ':'
-		)
-	);
-};
-
-var getScoreDiv = function getScoreDiv(type, value) {
-	return React.createElement(
-		'div',
-		{ className: 'score-report-score' },
-		React.createElement(
-			'div',
-			{ className: 'score-report-score-content' },
-			React.createElement(
-				'strong',
-				null,
-				getSpecialChar(type),
-				value ? ' ' + value + ' %' : null
-			)
-		)
-	);
-};
-
-var getModsBreakdownItem = function getModsBreakdownItem(_ref) {
-	var type = _ref.type,
-	    text = _ref.text,
-	    value = _ref.value;
-	return React.createElement(
-		'div',
-		{ className: 'mod-breakdown-item' },
-		getTextDiv(type, text),
-		type === 'line' ? null : getScoreDiv(type, value)
-	);
-};
-
-var getModsBreakdown = function getModsBreakdown(items) {
-	return React.createElement(
-		'div',
-		{ className: 'mod-breakdown' },
-		React.createElement(
-			'div',
-			{ className: 'mod-breakdown-items' },
-			items.map(function (item, index) {
-				return getModsBreakdownItem(item);
-			})
-		)
-	);
-};
-
-var scoreReportView = function scoreReportView(_ref2) {
-	var items = _ref2.items,
-	    score = _ref2.score;
-
-	var scoreEl = null;
-	if (typeof score !== 'undefined') {
-		scoreEl = score === null ? React.createElement(
-			'span',
-			{ className: 'value is-null' },
-			'--'
-		) : React.createElement(
-			'span',
-			{ className: 'value is-not-null' },
-			score
-		);
-	}
-	return React.createElement(
-		'div',
-		{
-			className: 'score-report ' + (typeof score === 'undefined' ? 'is-not-showing-score' : 'is-showing-score')
-		},
-		scoreEl,
-		getModsBreakdown(items)
-	);
-	//) : (
-	//<div className="score-report">{getModsBreakdown(items)}</div>
-	//)
 };
 
 exports.default = scoreReportView;
@@ -3248,7 +3242,7 @@ var getDisplayFriendlyScore = function getDisplayFriendlyScore(n) {
 };
 
 var getPassingRange = function getPassingRange(passingNumber) {
-	if (passingNumber === 100) return '100%';
+	if (passingNumber === 100 || passingNumber === '100') return '100%';
 	return getDisplayFriendlyScore(passingNumber) + '-100%';
 };
 
@@ -3287,7 +3281,7 @@ var AssessmentScoreReport = function () {
 
 	_createClass(AssessmentScoreReport, [{
 		key: 'getTextItems',
-		value: function getTextItems(isHighest, assessmentScoreInfo, numOfAttemptsAvailable) {
+		value: function getTextItems(assessmentScoreInfo, numOfAttemptsAvailable) {
 			var rubric = this.assessmentRubric;
 
 			var passingAttemptScore = typeof rubric.passingAttemptScore !== 'undefined' ? rubric.passingAttemptScore : 100;
@@ -3295,86 +3289,119 @@ var AssessmentScoreReport = function () {
 			var failedResult = typeof rubric.failedResult !== 'undefined' ? rubric.failedResult : 0;
 			var unableToPassResult = typeof rubric.unableToPassResult !== 'undefined' ? rubric.unableToPassResult : 0;
 			var isRewardedMods = assessmentScoreInfo.rewardedMods.length > 0;
-			var isTypeAttempt = rubric.type === 'attempt';
-			var isTypePassFail = rubric.type === 'pass-fail';
+			var isAttemptRubric = rubric.type === 'attempt';
+			var isPassFailRubric = rubric.type === 'pass-fail';
 			var status = assessmentScoreInfo.status;
 			var passed = status === 'passed';
 			var failed = status === 'failed';
 			var unableToPass = status === 'unableToPass';
+			// let isLTIAndScoreWasUnsent = (failed || unableToPass) && isLti
 			var attemptNum = assessmentScoreInfo.attemptNumber;
 
 			var items = [];
 			var attemptScore = getDisplayFriendlyScore(assessmentScoreInfo.attemptScore);
 			var assessScore = getDisplayFriendlyScore(assessmentScoreInfo.assessmentModdedScore);
 
-			if (isTypeAttempt && isRewardedMods) {
+			if (isAttemptRubric && !isRewardedMods) {
 				items.push({
 					type: 'value',
-					text: 'Attempt\xA0' + attemptNum + ' score',
+					text: 'Score',
 					value: attemptScore
 				});
-			} else if (isTypeAttempt && !isRewardedMods && isHighest) {
-				items.push({
-					type: 'line',
-					text: 'This is your highest attempt score (Attempt\xA0' + attemptNum + ')'
-				});
-			} else if (isTypeAttempt && !isRewardedMods && !isHighest) {
-				items.push({
-					type: 'line',
-					text: 'This is your attempt\xA0' + attemptNum + ' score'
-				});
-			} else if (isTypePassFail && passed && passedResult === '$attempt_score' && isRewardedMods) {
+			} else if (isAttemptRubric && isRewardedMods) {
 				items.push({
 					type: 'value',
-					text: 'Passing attempt\xA0' + attemptNum + ' score',
+					text: 'Base Score',
 					value: attemptScore
 				});
-			} else if (isTypePassFail && passed && passedResult === '$attempt_score' && !isRewardedMods && isHighest) {
-				items.push({
-					type: 'line',
-					text: 'This is your highest passing attempt\xA0' + attemptNum + ' score'
-				});
-			} else if (isTypePassFail && passed && passedResult === '$attempt_score' && !isRewardedMods && !isHighest) {
-				items.push({
-					type: 'line',
-					text: 'This is your passing attempt\xA0' + attemptNum + ' score'
-				});
-			} else if (isTypePassFail && passed && Number.isFinite(parseFloat(passedResult)) && isRewardedMods) {
+			} else if (isPassFailRubric && passed && passedResult === '$attempt_score' && !isRewardedMods) {
 				items.push({
 					type: 'value',
-					text: 'Reward for your passing attempt\xA0' + attemptNum + ' score',
+					text: 'Score',
+					value: attemptScore
+				});
+			} else if (isPassFailRubric && passed && passedResult === '$attempt_score' && isRewardedMods) {
+				items.push({
+					type: 'value',
+					text: 'Base Score',
+					value: attemptScore
+				});
+			} else if (isPassFailRubric && passed && Number.isFinite(parseFloat(passedResult))) {
+				items.push({
+					type: 'value',
+					text: 'Base Score',
+					value: attemptScore
+				}, {
+					type: 'divider'
+				}, {
+					type: 'value',
+					text: 'Rewarded score for a passing attempt',
 					value: getDisplayFriendlyScore(passedResult)
 				});
-			} else if (isTypePassFail && passed && Number.isFinite(parseFloat(passedResult)) && !isRewardedMods) {
+			} else if (isPassFailRubric && failed && failedResult === 'no-score') {
 				items.push({
-					type: 'line',
-					text: 'This is your rewarded score for your passing attempt\xA0' + attemptNum + ' score'
+					type: 'value',
+					text: 'Base Score',
+					value: attemptScore
+				}, {
+					type: 'divider'
+				}, {
+					type: 'text',
+					text: 'You need ' + getPassingRange(passingAttemptScore) + ' to pass'
 				});
-			} else if (isTypePassFail && failed && failedResult === 'no-score') {
+			} else if (isPassFailRubric && failed && Number.isFinite(parseFloat(failedResult))) {
 				items.push({
-					type: 'line',
-					text: 'You need an attempt score of ' + getPassingRange(passingAttemptScore) + ' to pass'
-				});
-			} else if (isTypePassFail && failed && Number.isFinite(parseFloat(failedResult))) {
-				items.push({
+					type: 'value',
+					text: 'Base Score',
+					value: attemptScore
+				}, {
+					type: 'divider'
+				}, {
 					type: 'value',
 					text: 'Given score for a non-passing (less than ' + getDisplayFriendlyScore(passingAttemptScore) + '%) attempt',
 					value: getDisplayFriendlyScore(failedResult)
 				});
-			} else if (isTypePassFail && unableToPass && unableToPassResult === 'no-score') {
-				items.push({
-					type: 'line',
-					text: 'You needed an attempt score of ' + getPassingRange(passingAttemptScore) + ' to pass'
-				});
-			} else if (isTypePassFail && unableToPass && unableToPassResult === '$highest_attempt_score') {
-				items.push({
-					type: 'line',
-					text: 'This is your highest attempt score (Attempt\xA0' + attemptNum + ')'
-				});
-			} else if (isTypePassFail && unableToPass && Number.isFinite(parseFloat(unableToPassResult))) {
+			} else if (isPassFailRubric && unableToPass && unableToPassResult === 'no-score') {
 				items.push({
 					type: 'value',
-					text: 'Given score for not achieving a passing (' + getPassingRange(passingAttemptScore) + ') attempt',
+					text: 'Base Score',
+					value: attemptScore
+				}, {
+					type: 'divider'
+				}, {
+					type: 'text',
+					text: 'You needed ' + getPassingRange(passingAttemptScore) + ' to pass'
+				});
+			} else if (isPassFailRubric && unableToPass && unableToPassResult === '$highest_attempt_score') {
+				items.push({
+					type: 'value',
+					text: 'Base Score',
+					value: attemptScore
+				}, {
+					type: 'divider'
+				}, {
+					type: 'text',
+					text: 'You did not achieve a passing ' + getPassingRange(passingAttemptScore) + ' score within the number of attempts available. Your highest attempt score will be used instead.'
+				}, {
+					type: 'divider'
+				}, {
+					type: 'value',
+					text: 'Highest attempt score (Attempt\xA0' + attemptNum + ')',
+					value: assessScore
+				});
+			} else if (isPassFailRubric && unableToPass && Number.isFinite(parseFloat(unableToPassResult))) {
+				items.push({
+					type: 'value',
+					text: 'Base Score',
+					value: attemptScore
+				}, {
+					type: 'divider'
+				}, {
+					type: 'text',
+					text: 'You did not achieve a passing ' + getPassingRange(passingAttemptScore) + ' score within the number of attempts available.'
+				}, {
+					type: 'value',
+					text: 'Given score for not achieving a passing attempt',
 					value: getDisplayFriendlyScore(unableToPassResult)
 				});
 			} else {
@@ -3393,13 +3420,17 @@ var AssessmentScoreReport = function () {
 						value: getDisplayFriendlyScore(Math.abs(mod.reward))
 					};
 				}));
+			}
 
-				var isScoreOver100 = assessmentScoreInfo.attemptScore + assessmentScoreInfo.rewardTotal > 100;
+			if (items.length > 1) {
+				var isScoreOver100 = assessmentScoreInfo.assessmentScore !== null && assessmentScoreInfo.assessmentScore + assessmentScoreInfo.rewardTotal > 100;
 
 				items.push({
+					type: 'divider'
+				}, {
 					type: 'total',
-					text: 'Total' + (isScoreOver100 ? ' (Max 100%)' : ''),
-					value: assessScore
+					text: 'Total Score' + (isScoreOver100 ? ' (Max 100%)' : ''),
+					value: assessmentScoreInfo.assessmentModdedScore === null ? 'No Score Recorded' : assessScore
 				});
 			}
 

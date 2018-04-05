@@ -8,11 +8,15 @@ import LTINetworkStates from './assessment-store/lti-network-states'
 
 import QuestionStore from './question-store'
 
+import ScoreReport from '../../../../ObojoboDraft/Sections/Assessment/post-assessment/assessment-score-report'
+import { getScoreChangeDescription } from '../../../../ObojoboDraft/Sections/Assessment/post-assessment/get-score-change-description'
+import ScoreReportView from '../../../../ObojoboDraft/Sections/Assessment/components/score-report'
+
 let { Store } = Common.flux
 let { Dispatcher } = Common.flux
 let { OboModel } = Common.models
 let { ErrorUtil } = Common.util
-let { SimpleDialog } = Common.components.modal
+let { SimpleDialog, Dialog } = Common.components.modal
 let { ModalUtil } = Common.util
 
 let getNewAssessmentObject = assessmentId => ({
@@ -20,7 +24,7 @@ let getNewAssessmentObject = assessmentId => ({
 	current: null,
 	currentResponses: [],
 	attempts: [],
-	latestHighestAttempt: null,
+	highestAttempt: null,
 	lti: null,
 	ltiNetworkState: LTINetworkStates.IDLE,
 	ltiErrorCount: 0
@@ -87,13 +91,13 @@ class AssessmentStore extends Store {
 			}
 
 			assessments[assessId].lti = assessmentItem.ltiState
-			assessments[assessId].latestHighestAttempt = null
+			assessments[assessId].highestAttempt = null
 
 			attempts.forEach(attempt => {
 				assessment = assessments[attempt.assessmentId]
 
-				if (assessment.latestHighestAttempt === null) {
-					assessment.latestHighestAttempt = attempt
+				if (assessment.highestAttempt === null) {
+					assessment.highestAttempt = attempt
 				}
 
 				if (!attempt.isFinished) {
@@ -103,11 +107,11 @@ class AssessmentStore extends Store {
 
 					let thisAssessScore = attempt.assessmentScore === null ? -1 : attempt.assessmentScore
 					let currentHighestAssessScore =
-						assessment.latestHighestAttempt.assessmentScore === null
+						assessment.highestAttempt.assessmentScore === null
 							? -1
-							: assessment.latestHighestAttempt.assessmentScore
-					if (thisAssessScore >= currentHighestAssessScore) {
-						assessment.latestHighestAttempt = attempt
+							: assessment.highestAttempt.assessmentScore
+					if (thisAssessScore > currentHighestAssessScore) {
+						assessment.highestAttempt = attempt
 					}
 				}
 
@@ -230,6 +234,7 @@ class AssessmentStore extends Store {
 		let assessId = endAttemptResp.assessmentId
 		let assessment = this.state.assessments[assessId]
 		let model = OboModel.models[assessId]
+		let oldHighestScore = AssessmentUtil.getHighestAttemptForModel(this.state, model)
 
 		assessment.current.state.questions.forEach(question => QuestionUtil.hideQuestion(question.id))
 		assessment.currentResponses.forEach(questionId =>
@@ -242,6 +247,53 @@ class AssessmentStore extends Store {
 		model.processTrigger('onEndAttempt')
 
 		Dispatcher.trigger('assessment:attemptEnded', assessId)
+
+		//TEMP
+
+		let attempt = AssessmentUtil.getLastAttemptForModel(this.state, model)
+		let isNotPassingAttempt =
+			attempt.assessmentScoreDetails.status === 'failed' ||
+			attempt.assessmentScoreDetails.status === 'unableToPass'
+		let newHighestScore = AssessmentUtil.getHighestAttemptForModel(this.state, model)
+		let changeEl
+
+		if (oldHighestScore === null) {
+			changeEl = null
+		} else {
+			changeEl = (
+				<span className="change-notice">
+					{getScoreChangeDescription(
+						oldHighestScore.assessmentScore,
+						newHighestScore.assessmentScore
+					)}
+				</span>
+			)
+		}
+
+		let items = new ScoreReport(model.modelState.rubric.toObject()).getTextItems(
+			attempt.assessmentScoreDetails,
+			AssessmentUtil.getAttemptsRemaining(this.state, model)
+		)
+		ModalUtil.show(
+			<Dialog
+				modalClassName="obojobo-draft--sections--assessment--results-modal"
+				centered
+				buttons={[
+					{
+						value: 'Show Assessment Overview',
+						onClick: ModalUtil.hide,
+						default: true
+					}
+				]}
+				title={`Attempt ${attempt.attemptNumber} Results`}
+				width="35rem"
+			>
+				<div className="score-report-box">
+					<ScoreReportView items={items} />
+				</div>
+				{changeEl}
+			</Dialog>
+		)
 	}
 
 	tryResendLTIScore(assessmentId) {

@@ -360,6 +360,37 @@ body {
   overflow: hidden; }
   .viewer--components--logo.is-inverted {
     filter: invert(100%); }
+.obojobo-draft--sections--assessment--components--score-report {
+  text-align: left; }
+  .obojobo-draft--sections--assessment--components--score-report > * {
+    font-size: 0.7em;
+    line-height: 1.5em;
+    margin-top: 0.5em;
+    position: relative; }
+    .obojobo-draft--sections--assessment--components--score-report > *:only-child {
+      margin-top: 0;
+      font-size: 1em; }
+    .obojobo-draft--sections--assessment--components--score-report > *.divider {
+      height: 1px;
+      border: none;
+      background: rgba(0, 0, 0, 0.1); }
+    .obojobo-draft--sections--assessment--components--score-report > *.extra-credit > .label > span {
+      color: #38ae24;
+      font-weight: bold; }
+    .obojobo-draft--sections--assessment--components--score-report > *.penalty > .label > span {
+      color: #c21f00;
+      font-weight: bold; }
+    .obojobo-draft--sections--assessment--components--score-report > *.value {
+      padding-right: 4em; }
+    .obojobo-draft--sections--assessment--components--score-report > *.total {
+      font-size: 1em; }
+    .obojobo-draft--sections--assessment--components--score-report > * > .amount {
+      white-space: nowrap;
+      text-align: right;
+      position: absolute;
+      bottom: 0;
+      right: 0;
+      font-weight: bold; }
 @charset "UTF-8";
 .viewer--components--nav {
   overflow: auto;

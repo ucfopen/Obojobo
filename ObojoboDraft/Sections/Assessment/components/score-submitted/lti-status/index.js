@@ -18,8 +18,10 @@ export default class LTIStatus extends React.Component {
 
 		switch (ltiState.state.gradebookStatus) {
 			case 'ok_no_outcome_service':
+				return this.renderNotLTI()
+
 			case 'ok_null_score_not_sent':
-				return null
+				return this.renderNoScoreSent()
 
 			case 'ok_gradebook_matches_assessment_score':
 				return this.renderSynced()
@@ -29,12 +31,26 @@ export default class LTIStatus extends React.Component {
 		}
 	}
 
+	renderNotLTI() {
+		return <div className="obojobo-draft--sections--assessment--lti-status is-not-lti">&nbsp;</div>
+	}
+
+	renderNoScoreSent() {
+		let systemLabel = this.props.externalSystemLabel
+
+		return (
+			<div className="obojobo-draft--sections--assessment--lti-status is-synced">
+				{`No score has been sent to ${systemLabel} (Only recorded scores are sent)`}
+			</div>
+		)
+	}
+
 	renderSynced() {
 		let systemLabel = this.props.externalSystemLabel
 
 		return (
 			<div className="obojobo-draft--sections--assessment--lti-status is-synced">
-				{`✔ Your highest score of ${Math.round(
+				{`✔ Your recorded score of ${Math.round(
 					this.props.assessmentScore
 				)}% was sent to ${systemLabel}`}
 			</div>
