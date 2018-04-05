@@ -78,7 +78,7 @@ app.post('/api/assessments/attempt/:attemptId/end', (req, res, next) => {
 			res.success(resp)
 		})
 		.catch(error => {
-			logAndRespondToUnexpected('Unexpected error completing your attempt', res, req, e)
+			logAndRespondToUnexpected('Unexpected error completing your attempt', res, req, error)
 		})
 })
 
