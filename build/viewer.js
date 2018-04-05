@@ -461,6 +461,7 @@ var NavUtil = {
 		});
 	},
 	gotoPath: function gotoPath(path) {
+		console.log(path);
 		return Dispatcher.trigger('nav:gotoPath', {
 			value: {
 				path: path

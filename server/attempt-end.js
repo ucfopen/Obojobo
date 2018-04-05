@@ -52,6 +52,7 @@ let endAttempt = (req, res, user, attemptId, isPreviewing) => {
 				logger.info(`End attempt "${attemptId}" - getCalculatedScores success`)
 
 				calculatedScores = calculatedScoresResult
+				logger.info(`Elli Log3 "${attempt.number}"`)
 
 				return completeAttempt(
 					attempt.assessmentId,
@@ -319,6 +320,59 @@ let insertAttemptScoredEvents = (
 			}
 		})
 	})
+}
+
+let reloadState = (attemptId, attempt) => {
+	let assesmentNode = attempt.assessmentModel.node
+
+	// Do not reload the state if reviews are never allowed
+	if(assessmentNode.content.review == 'never'){
+		return null
+	}
+
+	let isLastAttempt = attempt.number === assessmentNode.content.attempts
+
+	// Do not reload the state if reviews are only allowed after the last
+	// attempt and this is not the last attempt
+	if(assessmentNode.content.review == 'lastAttempt' && !isLastAttempt){
+		return null
+	}
+
+	let assessmentProperties = {
+		draftTree: null,
+		id: attemptId,
+		oboNode: attempt.assessmentModel.node,
+		nodeChildrenIds: attempt.assessmentModel.node.children[1].childrenSet,
+		assessmentQBTree: attempt.assessmentModel.node.children[1].toObject()
+	}
+
+	// Elli: import from attempt-start
+	createChosenQuestionTree(assessmentProperties.assessmentQBTree, assessmentProperties)
+
+	attemptState = {
+		qb: assessmentProperties.assessmentQBTree,
+		questions: getNodeQuestions(
+			assessmentProperties.assessmentQBTree,
+			assessmentProperties.oboNode,
+			[]
+		),
+		data: {}
+	}
+
+	// If reviews are always allowed, reload the state for this attempt
+	// Each attempt's state will be reloaded as it finishes
+	if(assessmentNode.content.review == 'always'){
+		return null
+	}
+
+	// If reviews are allowed after last attempt and this is the last attempt,
+	// reload the states for all attempts
+	if(assessmentNode.content.review == 'lastAttempt' && !isLastAttempt){
+		return null
+	}
+
+	// Elli: This should never be reached
+	return null
 }
 
 module.exports = {
