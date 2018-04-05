@@ -66,11 +66,10 @@ module.exports = (xml, generateIds = false) => {
 	let root = convert.xml2js(xml, {
 		compact: false,
 		trim: false,
-		nativeType: true,
+		nativeType: false,
 		ignoreComment: true,
 		ignoreDeclaration: true
 	});
-
 	nameTransform(root)
 	extensionTransform(root)
 	htmlTransform(root)
