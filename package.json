@@ -2,6 +2,9 @@
 	"name": "obojobo-draft-document-engine",
 	"version": "0.2.1",
 	"description": "",
+	"engines":{
+		"yarn": "^1.0"
+	},
 	"main": "index.js",
 	"scripts": {
 		"test": "jest --verbose",
@@ -28,7 +31,7 @@
 	},
 	"lint-staged": {
 		"{src,server,__{tests,mocks}__,ObojoboDraft}/**/*.{js,scss}": [
-			"yarn prettier --write --",
+			"yarn prettier --write",
 			"git add"
 		]
 	},
@@ -84,6 +87,7 @@
 			"\\.scss$": "<rootDir>/__mocks__/ignore-file-stub.js",
 			"\\.svg$": "<rootDir>/__mocks__/ignore-file-stub.js"
 		},
+		"moduleDirectories": ["<rootDir>", "node_modules"],
 		"collectCoverageFrom": ["src/scripts/**", "ObojoboDraft/**", "server/**"],
 		"coveragePathIgnorePatterns": [
 			"command-handler.js",

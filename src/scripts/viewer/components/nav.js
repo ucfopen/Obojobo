@@ -30,7 +30,7 @@ export default class Nav extends React.Component {
 			return NavUtil.gotoPath(item.fullPath)
 		} else if (item.type === 'sub-link') {
 			let el = OboModel.models[item.id].getDomEl()
-			return el.scrollIntoView({ behavior: 'smooth' })
+			return el.scrollIntoView({ behavior: 'smooth', block: 'start' })
 		}
 	}
 

@@ -6354,7 +6354,7 @@ var Nav = function (_React$Component) {
 				return _navUtil2.default.gotoPath(item.fullPath);
 			} else if (item.type === 'sub-link') {
 				var el = OboModel.models[item.id].getDomEl();
-				return el.scrollIntoView({ behavior: 'smooth' });
+				return el.scrollIntoView({ behavior: 'smooth', block: 'start' });
 			}
 		}
 	}, {
