@@ -13,6 +13,8 @@ import {
 	getAttemptEndServerResponse
 } from '../../../../__mocks__/assessment-server.mock'
 import LTIStatus from '../../../../ObojoboDraft/Sections/Assessment/lti-status'
+// Issue/107 refactor
+// import LTIStatus from '../../../../ObojoboDraft/Sections/Assessment/components/score-submitted/lti-status'
 import AssessmentUtil from '../../../../src/scripts/viewer/util/assessment-util'
 
 jest.mock('../../../../src/scripts/viewer/util/assessment-util', () => {
