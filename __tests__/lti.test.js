@@ -77,80 +77,72 @@ let mockSendAssessScoreDBCalls = (
 ) => {
 	// mock get assessment_score
 	if (assessmentScore === 'missing') {
-		db.oneOrNone.mockReturnValueOnce(Promise.resolve(null))
+		db.oneOrNone.mockResolvedValueOnce(null)
 	} else {
-		db.oneOrNone.mockReturnValueOnce(
-			Promise.resolve({
-				id: 'assessment-score-id',
-				user_id: 'user-id',
-				draft_id: 'draft-id',
-				assessment_id: 'assessment-id',
-				attempt_id: 'attempt-id',
-				score: assessmentScore,
-				score_details: {
-					status: 'passed',
-					rewardTotal: 0,
-					attemptScore: assessmentScore,
-					rewardedMods: [],
-					attemptNumber: 1,
-					assessmentScore: assessmentScore,
-					assessmentModdedScore: assessmentScore
-				},
-				preview: false
-			})
-		)
+		db.oneOrNone.mockResolvedValueOnce({
+			id: 'assessment-score-id',
+			user_id: 'user-id',
+			draft_id: 'draft-id',
+			assessment_id: 'assessment-id',
+			attempt_id: 'attempt-id',
+			score: assessmentScore,
+			score_details: {
+				status: 'passed',
+				rewardTotal: 0,
+				attemptScore: assessmentScore,
+				rewardedMods: [],
+				attemptNumber: 1,
+				assessmentScore: assessmentScore,
+				assessmentModdedScore: assessmentScore
+			},
+			preview: false
+		})
 	}
 
 	if (assessmentScore !== 'missing') {
 		// mock getLatestSuccessfulLTIAssessmentScoreRecord
 		if (ltiPrevRecordScoreSent === null) {
-			db.oneOrNone.mockReturnValueOnce(Promise.resolve(null))
+			db.oneOrNone.mockResolvedValueOnce(null)
 		} else {
-			db.oneOrNone.mockReturnValueOnce(
-				Promise.resolve({
-					id: 'lti-assessment-score-id',
-					created_at: creationDate,
-					assessment_score_id: 'assessment-score-id',
-					launch_id: 'launch-id',
-					score_sent: ltiPrevRecordScoreSent,
-					status_details: null,
-					log_id: logId,
-					status: 'success',
-					gradebook_status: 'ok_gradebook_matches_assessment_score'
-				})
-			)
+			db.oneOrNone.mockResolvedValueOnce({
+				id: 'lti-assessment-score-id',
+				created_at: creationDate,
+				assessment_score_id: 'assessment-score-id',
+				launch_id: 'launch-id',
+				score_sent: ltiPrevRecordScoreSent,
+				status_details: null,
+				log_id: logId,
+				status: 'success',
+				gradebook_status: 'ok_gradebook_matches_assessment_score'
+			})
 		}
 
 		// mock tryRetrieveLtiLaunch:
 		if (ltiHasOutcome === 'missing') {
-			db.oneOrNone.mockReturnValueOnce(Promise.resolve(false))
+			db.oneOrNone.mockResolvedValueOnce(false)
 		} else if (ltiHasOutcome === 'error') {
-			db.oneOrNone.mockReturnValueOnce(
-				Promise.resolve({
-					id: 'launch-id',
-					data: new MockedBadReqVars(),
-					lti_key: ltiKey,
-					created_at: creationDate
-				})
-			)
+			db.oneOrNone.mockResolvedValueOnce({
+				id: 'launch-id',
+				data: new MockedBadReqVars(),
+				lti_key: ltiKey,
+				created_at: creationDate
+			})
 		} else {
-			db.oneOrNone.mockReturnValueOnce(
-				Promise.resolve({
-					id: 'launch-id',
-					data: {
-						lis_outcome_service_url: ltiHasOutcome ? 'lis_outcome_service_url' : null,
-						lis_result_sourcedid: 'lis_result_sourcedid'
-					},
-					lti_key: ltiKey,
-					created_at: creationDate
-				})
-			)
+			db.oneOrNone.mockResolvedValueOnce({
+				id: 'launch-id',
+				data: {
+					lis_outcome_service_url: ltiHasOutcome ? 'lis_outcome_service_url' : null,
+					lis_result_sourcedid: 'lis_result_sourcedid'
+				},
+				lti_key: ltiKey,
+				created_at: creationDate
+			})
 		}
 	}
 
 	// mock insertLTIAssessmentScore:
 	if (insertLTIAssessmentScoreSucceeds) {
-		db.one.mockReturnValueOnce(Promise.resolve({ id: 'new-lti-assessment-score-id' }))
+		db.one.mockResolvedValueOnce({ id: 'new-lti-assessment-score-id' })
 	} else {
 		db.one.mockReturnValueOnce(
 			new Promise(() => {
@@ -160,7 +152,7 @@ let mockSendAssessScoreDBCalls = (
 	}
 
 	// mock insertEvent
-	db.one.mockReturnValueOnce(Promise.resolve(true))
+	db.one.mockResolvedValueOnce(true)
 
 	OutcomeService.__setNextSendReplaceResultReturn(sendReplaceResultSuccessful)
 }
@@ -300,16 +292,14 @@ describe('lti', () => {
 	test('getLatestHighestAssessmentScoreRecord returns an object with expected properties', done => {
 		let getLatestHighestAssessmentScoreRecord = lti.getLatestHighestAssessmentScoreRecord
 
-		db.oneOrNone.mockImplementationOnce((query, vars) => {
-			return Promise.resolve({
-				id: 'id',
-				user_id: 'user_id',
-				draft_id: 'draft_id',
-				assessment_id: 'assessment_id',
-				attempt_id: 'attempt_id',
-				score: 'score',
-				preview: 'preview'
-			})
+		db.oneOrNone.mockResolvedValueOnce({
+			id: 'id',
+			user_id: 'user_id',
+			draft_id: 'draft_id',
+			assessment_id: 'assessment_id',
+			attempt_id: 'attempt_id',
+			score: 'score',
+			preview: 'preview'
 		})
 
 		getLatestHighestAssessmentScoreRecord(123).then(result => {
@@ -331,10 +321,7 @@ describe('lti', () => {
 	test('getLatestHighestAssessmentScoreRecord returns error if nothing returned', done => {
 		let getLatestHighestAssessmentScoreRecord = lti.getLatestHighestAssessmentScoreRecord
 
-		db.oneOrNone.mockImplementationOnce((query, vars) => {
-			return Promise.resolve(null)
-		})
-
+		db.oneOrNone.mockResolvedValueOnce(null)
 		getLatestHighestAssessmentScoreRecord(123)
 			.then(result => {
 				expect(result.error.message).toBe('No assessment score found')
@@ -347,11 +334,7 @@ describe('lti', () => {
 	})
 
 	test('getLatestSuccessfulLTIAssessmentScoreRecord returns a record with expected values', done => {
-		db.oneOrNone.mockImplementationOnce((query, vars) => {
-			return Promise.resolve({
-				properties: 'properties'
-			})
-		})
+		db.oneOrNone.mockResolvedValueOnce({ properties: 'properties' })
 
 		lti.getLatestSuccessfulLTIAssessmentScoreRecord(123).then(result => {
 			expect(result).toEqual({
@@ -2261,19 +2244,17 @@ describe('lti', () => {
 	})
 
 	test('getLTIStatesByAssessmentIdForUserAndDraft returns expected values', done => {
-		db.manyOrNone.mockImplementationOnce((query, vars) => {
-			return Promise.resolve([
-				{
-					assessment_id: 'assessmentid',
-					assessment_score_id: 'assessment-score-id',
-					score_sent: 'score-sent',
-					lti_sent_date: 'lti-sent-date',
-					status: 'status',
-					gradebook_status: 'gradebook-status',
-					status_details: 'status-details'
-				}
-			])
-		})
+		db.manyOrNone.mockResolvedValueOnce([
+			{
+				assessment_id: 'assessmentid',
+				assessment_score_id: 'assessment-score-id',
+				score_sent: 'score-sent',
+				lti_sent_date: 'lti-sent-date',
+				status: 'status',
+				gradebook_status: 'gradebook-status',
+				status_details: 'status-details'
+			}
+		])
 
 		lti.getLTIStatesByAssessmentIdForUserAndDraft('user-id', 'draft-id').then(result => {
 			expect(result).toEqual({
@@ -2293,9 +2274,7 @@ describe('lti', () => {
 	})
 
 	test('getLTIStatesByAssessmentIdForUserAndDraft returns empty object when nothing returned from database', done => {
-		db.manyOrNone.mockImplementationOnce((query, vars) => {
-			return Promise.resolve(null)
-		})
+		db.manyOrNone.mockResolvedValueOnce(null)
 
 		lti.getLTIStatesByAssessmentIdForUserAndDraft('user-id', 'draft-id').then(result => {
 			expect(result).toEqual({})

@@ -44,9 +44,9 @@ describe('lti launch middleware', () => {
 	afterAll(() => {})
 	beforeEach(() => {
 		insertEvent.mockReset()
-		insertEvent.mockReturnValue(Promise.resolve())
+		insertEvent.mockResolvedValue()
 		db.one.mockReset()
-		db.one.mockReturnValue(Promise.resolve({ id: 88 }))
+		db.one.mockResolvedValue({ id: 88 })
 		User.saveOrCreateCallback.mockReset()
 		logger.error.mockReset()
 	})

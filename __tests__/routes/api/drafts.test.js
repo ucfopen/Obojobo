@@ -312,18 +312,14 @@ describe('api draft route', () => {
 		expect.assertions(1)
 
 		let db = oboRequire('db')
-		db.none.mockImplementationOnce(() => {
-			return Promise.resolve(5)
-		})
+		db.none.mockResolvedValueOnce(5)
 
 		oboRequire('routes/api/drafts')
 		let routeFunction = mockRouterMethods.delete.mock.calls[0][1]
 
 		let mockReq = {
 			params: { draftId: 555 },
-			requireCurrentUser: () => {
-				return Promise.resolve({ canDeleteDrafts: true })
-			}
+			requireCurrentUser: () => Promise.resolve({ canDeleteDrafts: true })
 		}
 
 		let mockRes = {
@@ -348,9 +344,7 @@ describe('api draft route', () => {
 		let routeFunction = mockRouterMethods.get.mock.calls[1][1]
 
 		let mockReq = {
-			requireCurrentUser: () => {
-				return Promise.reject('error1')
-			}
+			requireCurrentUser: () => Promise.reject('error1')
 		}
 
 		let mockRes = {
@@ -375,9 +369,7 @@ describe('api draft route', () => {
 		let routeFunction = mockRouterMethods.get.mock.calls[1][1]
 
 		let mockReq = {
-			requireCurrentUser: () => {
-				return Promise.resolve({ canViewDrafts: false })
-			}
+			requireCurrentUser: () => Promise.resolve({ canViewDrafts: false })
 		}
 
 		let mockRes = {
@@ -399,18 +391,14 @@ describe('api draft route', () => {
 		expect.assertions(1)
 
 		let db = oboRequire('db')
-		db.any.mockImplementationOnce(() => {
-			return Promise.resolve(5)
-		})
+		db.any.mockResolvedValueOnce(5)
 
 		oboRequire('routes/api/drafts')
 		let routeFunction = mockRouterMethods.get.mock.calls[1][1]
 
 		let mockReq = {
 			params: { draftId: 555 },
-			requireCurrentUser: () => {
-				return Promise.resolve({ id: 5, canViewDrafts: true })
-			}
+			requireCurrentUser: () => Promise.resolve({ id: 5, canViewDrafts: true })
 		}
 
 		let mockRes = {
