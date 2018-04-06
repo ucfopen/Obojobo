@@ -1077,7 +1077,6 @@ var takingTestView = function takingTestView(assessment) {
 	var recentScore = AssessmentUtil.getLastAttemptScoreForModel(assessment.props.moduleData.assessmentState, assessment.props.model);
 	var child = assessment.props.model.children.at(1);
 	var Component = child.getComponentClass();
-
 	return React.createElement(
 		'div',
 		{ className: 'test' },

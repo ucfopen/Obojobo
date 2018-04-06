@@ -362,6 +362,18 @@ class Assessment extends DraftNode {
 			})
 	}
 
+	// Update the state for an attempt
+	static updateAttemptState(attemptId, state) {
+		return db.none(
+			`
+			UPDATE attempts
+			SET state = $[state]
+			WHERE id = $[attemptId]
+			`,
+			{ result: attemptScoreResult, attemptId: attemptId }
+		)
+	}
+
 	static insertNewAssessmentScore(userId, draftId, assessmentId, score, preview) {
 		return db
 			.one(

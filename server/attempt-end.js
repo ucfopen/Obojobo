@@ -14,6 +14,18 @@ let endAttempt = (req, res, user, attemptId, isPreviewing) => {
 	let calculatedScores
 	let updateAttemptData
 	let assessmentScoreId
+	let assessmentProperties = {
+		user: null,
+		isPreviewing: null,
+		draftTree: null,
+		id: null,
+		node: null,
+		nodeChildrenIds: null,
+		assessmentQBTree: null,
+		attemptHistory: null,
+		numAttemptsaken: null,
+		childrenMap: null
+	}
 
 	logger.info(`End attempt "${attemptId}" begin for user "${user.id}" (Preview="${isPreviewing}")`)
 
@@ -26,12 +38,26 @@ let endAttempt = (req, res, user, attemptId, isPreviewing) => {
 			.then(attemptResult => {
 				logger.info(`End attempt "${attemptId}" - getAttempt success`)
 				attempt = attemptResult
+				return DraftModel.fetchById(attempt.draftId)
+			})
+			.then(draftTree => {
+				const assessmentNode = draftTree.getChildNodeById(assessmentId)
+
+				assessmentProperties.user = user
+				assessmentProperties.isPreviewing = isPreviewing
+				assessmentProperties.draftTree = draftTree
+				assessmentProperties.id = assessmentId
+				assessmentProperties.oboNode = assessmentNode
+				assessmentProperties.nodeChildrenIds = assessmentNode.children[1].childrenSet
+				assessmentProperties.assessmentQBTree = assessmentNode.children[1].toObject()
+
 				return getAttemptHistory(user.id, attempt.draftId, attempt.assessmentId)
 			})
 			.then(attemptHistoryResult => {
 				logger.info(`End attempt "${attemptId}" - getAttemptHistory success`)
 
 				attemptHistory = attemptHistoryResult
+				assessmentProperties.attemptHistory = attemptHistoryResult
 				return getResponsesForAttempt(attemptId)
 			})
 			.then(responsesForAttemptResult => {
@@ -52,7 +78,10 @@ let endAttempt = (req, res, user, attemptId, isPreviewing) => {
 				logger.info(`End attempt "${attemptId}" - getCalculatedScores success`)
 
 				calculatedScores = calculatedScoresResult
-				logger.info(`Elli Log3 "${attempt.number}"`)
+				logger.info(`Elli Log8 "${attempt.assessmentModel.node.content}"`)
+
+				// Elli: do db update here
+				reloadState(attemptId, assessmentProperties, attempt)
 
 				return completeAttempt(
 					attempt.assessmentId,
@@ -322,57 +351,141 @@ let insertAttemptScoredEvents = (
 	})
 }
 
-let reloadState = (attemptId, attempt) => {
-	let assesmentNode = attempt.assessmentModel.node
+let reloadState = (attemptId, assessmentProperties, attempt) => {
+	let assessmentNode = attempt.assessmentModel
+
+	logger.info(`Elli Log8 ${assessmentNode.node.content}`)
 
 	// Do not reload the state if reviews are never allowed
-	if(assessmentNode.content.review == 'never'){
+	if(assessmentNode.node.content.review == 'never'){
+		logger.info(`Elli Log8 reviews not allowed`)
 		return null
 	}
 
-	let isLastAttempt = attempt.number === assessmentNode.content.attempts
+	logger.info(`Elli Log8 reviews allowed`)
+
+	let isLastAttempt = attempt.number === assessmentNode.node.content.attempts
+
+	logger.info(`Elli Log8 an attempt`)
 
 	// Do not reload the state if reviews are only allowed after the last
 	// attempt and this is not the last attempt
-	if(assessmentNode.content.review == 'lastAttempt' && !isLastAttempt){
+	if(assessmentNode.node.content.review == 'lastAttempt' && !isLastAttempt){
+		logger.info(`Elli Log8 review not allowed`)
 		return null
 	}
 
-	let assessmentProperties = {
-		draftTree: null,
-		id: attemptId,
-		oboNode: attempt.assessmentModel.node,
-		nodeChildrenIds: attempt.assessmentModel.node.children[1].childrenSet,
-		assessmentQBTree: attempt.assessmentModel.node.children[1].toObject()
+	// Set up assessment properties
+	assessmentProperties.numAttemptsTaken = attempt.number
+	assessmentProperties.childrenMap = createAssessmentUsedQuestionMap(assessmentProperties)
+
+	for (let attempt of assessmentProperties.attemptHistory) {
+		if (attempt.state.qb) {
+			initAssessmentUsedQuestions(attempt.state.qb, assessmentProperties.childrenMap)
+		}
 	}
+
+	logger.info(`Elli Log8 properties`)
 
 	// Elli: import from attempt-start
 	createChosenQuestionTree(assessmentProperties.assessmentQBTree, assessmentProperties)
 
-	attemptState = {
-		qb: assessmentProperties.assessmentQBTree,
-		questions: getNodeQuestions(
-			assessmentProperties.assessmentQBTree,
-			assessmentProperties.oboNode,
-			[]
-		),
-		data: {}
+	logger.info(`Elli Log8 tree`)
+	let questionObjects = getNodeQuestions(
+		assessmentProperties.assessmentQBTree,
+		assessmentProperties.oboNode,
+		[]
+	).map(q => q.toObject())
+
+	logger.info(`Elli Log8 crashy methods`)
+
+	let state = {
+		questions: questionObjects,
+		data: {},
+		qb: assessmentProperties.assessmentQBTree
 	}
+
+	logger.info(`Elli Log8 state done`)
 
 	// If reviews are always allowed, reload the state for this attempt
 	// Each attempt's state will be reloaded as it finishes
 	if(assessmentNode.content.review == 'always'){
-		return null
+		logger.info(`Elli Log8 up up and away`)
+		return Assessment.updateAttemptState(attemptId, state)
 	}
 
 	// If reviews are allowed after last attempt and this is the last attempt,
 	// reload the states for all attempts
 	if(assessmentNode.content.review == 'lastAttempt' && !isLastAttempt){
-		return null
+		let attempts = AssessmentUtil.getAllAttempts(
+			assessment.props.moduleData.assessmentState,
+			assessment.props.model
+		)
 	}
 
 	// Elli: This should never be reached
+	logger.info(`Error: Reached exceptional state while reloading state for ${attemptId}`)
 	return null
+}
+
+
+// Elli: copied from attempt start, see if there is a better way to do this
+const QUESTION_BANK_NODE_TYPE = 'ObojoboDraft.Chunks.QuestionBank'
+const QUESTION_NODE_TYPE = 'ObojoboDraft.Chunks.Question'
+
+// When a question has been used, we will increment the value
+// pointed to by the node's id in our usedMap.
+const initAssessmentUsedQuestions = (node, usedQuestionMap) => {
+	if (usedQuestionMap.has(node.id)) usedQuestionMap.set(node.id, usedQuestionMap.get(node.id) + 1)
+
+	for (let child of node.children) initAssessmentUsedQuestions(child, usedQuestionMap)
+}
+
+// This will narrow down the assessment tree to question banks
+// with their respectively selected questions.
+const createChosenQuestionTree = (node, assessmentProperties) => {
+
+	logger.info(`Elli Log8 in tree`)
+	logger.info(`Elli Log8 in ${node.type}`)
+	if (node.type === QUESTION_BANK_NODE_TYPE) {
+		logger.log('TEST', node.id, node.content, node.content.choose)
+
+
+		logger.info(`Elli Log8 do bank`)
+		const qbProperties = getQuestionBankProperties(node)
+		logger.info(`Elli Log8 done bank`)
+
+		// TODO: 'random-all' and 'random-unseen' selects need to be taken care of as well.
+		node.children = chooseQuestionsSequentially(assessmentProperties, node.id, qbProperties.choose)
+	}
+
+	for (let child of node.children) createChosenQuestionTree(child, assessmentProperties)
+}
+// Choose is the number of questions to show per attempt, select indicates how to display them.
+const getQuestionBankProperties = questionBankNode => ({
+	choose: questionBankNode.content.choose || Infinity,
+	select: questionBankNode.content.select || 'sequential'
+})
+// Sort the question banks and questions sequentially, get their nodes from the tree via id,
+// and only return up to the desired amount of questions per attempt (choose property).
+const chooseQuestionsSequentially = (assessmentProperties, rootId, numQuestionsPerAttempt) => {
+
+	logger.info(`Elli Log8 in seq`)
+	const { oboNode, childrenMap } = assessmentProperties
+	logger.info(`Elli Log8 in seq`)
+	return [...oboNode.draftTree.getChildNodeById(rootId).immediateChildrenSet]
+		.sort((a, b) => childrenMap.get(a) - childrenMap.get(b))
+		.map(id => oboNode.draftTree.getChildNodeById(id).toObject())
+		.slice(0, numQuestionsPerAttempt)
+}
+const createAssessmentUsedQuestionMap = assessmentProperties => {
+	const assessmentChildrenMap = new Map()
+	assessmentProperties.nodeChildrenIds.forEach(id => {
+		const type = assessmentProperties.draftTree.getChildNodeById(id).node.type
+		if (type === QUESTION_BANK_NODE_TYPE || type === QUESTION_NODE_TYPE)
+			assessmentChildrenMap.set(id, 0)
+	})
+	return assessmentChildrenMap
 }
 
 module.exports = {
