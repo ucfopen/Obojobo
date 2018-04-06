@@ -97,7 +97,8 @@ describe('OboModel', () => {
 		expect(o.toText()).toEqual('toTextTestResult')
 	})
 
-	test('should retrieve the root model', done => {
+	test('should retrieve the root model', () => {
+		expect.assertions(2)
 		Store.getItems(items => {
 			let o = OboModel.create({
 				id: 'root',
@@ -112,8 +113,6 @@ describe('OboModel', () => {
 
 			expect(OboModel.models.root.getRoot()).toBe(o)
 			expect(OboModel.models.child.getRoot()).toBe(o)
-
-			done()
 		})
 	})
 
@@ -184,7 +183,8 @@ describe('OboModel', () => {
 	})
 
 	//@TODO: Test fails, flags on modelState are broken, skip for now
-	test.skip('marking models as dirty sets flags dirty and needsUpdate but does not modify children', done => {
+	test.skip('marking models as dirty sets flags dirty and needsUpdate but does not modify children', () => {
+		expect.assertions(55)
 		Store.getItems(items => {
 			let o = OboModel.create({
 				id: 'ObojoboDraft.Modules.Module',
@@ -208,12 +208,11 @@ describe('OboModel', () => {
 			expect(OboModel.models.root.modelState.needsUpdate).toBe(true)
 			expect(OboModel.models.child.modelState.dirty).toBe(false)
 			expect(OboModel.models.child.modelState.needsUpdate).toBe(false)
-
-			done()
 		})
 	})
 
-	test('removing children sets their parent to null, marks them dirty and removes them from the model db', done => {
+	test('removing children sets their parent to null, marks them dirty and removes them from the model db', () => {
+		expect.assertions(4)
 		Store.getItems(items => {
 			let o = OboModel.create({
 				id: 'root',
@@ -236,8 +235,6 @@ describe('OboModel', () => {
 			expect(child.modelState.dirty).toBe(true)
 
 			expect(OboModel.models.child).toBeUndefined()
-
-			done()
 		})
 	})
 
@@ -468,7 +465,8 @@ describe('OboModel', () => {
 		expect(false).toBe(true)
 	})
 
-	test('getComponentClass returns the component class of a model', done => {
+	test('getComponentClass returns the component class of a model', () => {
+		expect.assertions(1)
 		Store.getItems(items => {
 			OboModel.create({
 				id: 'rootId',
@@ -479,8 +477,6 @@ describe('OboModel', () => {
 			let Text = items.get('ObojoboDraft.Chunks.Text')
 
 			expect(root.getComponentClass()).toBe(Text.componentClass)
-
-			done()
 		})
 	})
 

@@ -104,9 +104,7 @@ describe('Assessment', () => {
 
 	//@TODO: SKIP
 	test.skip('onRenderView sets global attemptHistory', done => {
-		Assessment.getAttemptHistory = () => {
-			return Promise.resolve({ history: 'test123' })
-		}
+		Assessment.getAttemptHistory = () => Promise.resolve({ history: 'test123' })
 
 		let assessment = new Assessment(
 			{
@@ -118,9 +116,7 @@ describe('Assessment', () => {
 			jest.fn()
 		)
 
-		let requireCurrentUser = () => {
-			return Promise.resolve({ id: 1 })
-		}
+		let requireCurrentUser = () => Promise.resolve({ id: 1 })
 
 		let oboGlobalsMockSetFn = jest.fn()
 
@@ -152,14 +148,12 @@ describe('Assessment', () => {
 			})
 	})
 
-	test('getNumberAttemptsTaken calls db', done => {
-		db.one.mockImplementationOnce(() => {
-			return Promise.resolve({ count: 123 })
-		})
+	test('getNumberAttemptsTaken calls db', () => {
+		expect.assertions(1)
+		db.one.mockResolvedValueOnce({ count: 123 })
 
-		Assessment.getNumberAttemptsTaken(0, 1, 2).then(n => {
+		return Assessment.getNumberAttemptsTaken(0, 1, 2).then(n => {
 			expect(n).toBe(123)
-			done()
 		})
 	})
 

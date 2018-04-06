@@ -19,8 +19,6 @@ React.addons = {
 	CSSTransitionGroup: require('react-transition-group/CSSTransitionGroup')
 }
 
-
-
 jest.mock('fs')
 let fs = require('fs')
 let dbJson = {

@@ -187,7 +187,6 @@ app.post('/api/assessments/clear-preview-scores', (req, res, next) => {
 		})
 		.then(() => res.success())
 		.catch(error => {
-			console.log('error', error)
 			if (error === 'Not in preview mode') {
 				return res.notAuthorized(error)
 			}

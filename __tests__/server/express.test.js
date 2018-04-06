@@ -218,7 +218,7 @@ describe('server/express', () => {
 		expect(clearPreviewScoresRoute[0]).toBe('/api/assessments/clear-preview-scores')
 
 		// user that can't preview
-		req.requireCurrentUser.mockReturnValueOnce(Promise.resolve({ id: 1, canViewEditor: false }))
+		req.requireCurrentUser.mockResolvedValue({ id: 1, canViewEditor: false })
 
 		// execute
 		return clearPreviewScoresRoute[1](req, res, {}).then(() => {
