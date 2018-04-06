@@ -24,9 +24,7 @@ describe('api draft events route', () => {
 		let routeFunction = mockRouterMethods.post.mock.calls[0][1]
 
 		let mockReq = {
-			requireCurrentUser: () => {
-				return Promise.reject('no current user')
-			}
+			requireCurrentUser: () => Promise.reject('no current user')
 		}
 
 		let mockRes = {
@@ -86,9 +84,7 @@ describe('api draft events route', () => {
 		expect.assertions(1)
 
 		let db = oboRequire('db')
-		db.one.mockImplementationOnce(() => {
-			return Promise.reject('db fail')
-		})
+		db.one.mockRejectedValueOnce('db fail')
 
 		oboRequire('routes/api/events')
 		let routeFunction = mockRouterMethods.post.mock.calls[0][1]

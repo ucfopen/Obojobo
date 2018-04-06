@@ -64,9 +64,7 @@ describe('models draft', () => {
 		let Draft = oboRequire('models/draft')
 		let DraftNode = oboRequire('models/draft_node')
 		let db = oboRequire('db')
-		db.one.mockImplementationOnce((query, vars) => {
-			return Promise.reject(new Error('not found in db'))
-		})
+		db.one.mockRejectedValueOnce(new Error('not found in db'))
 
 		return Draft.fetchById('whatever')
 			.then(model => {

@@ -29,9 +29,7 @@ describe('api draft route', () => {
 		expect.assertions(1)
 
 		let DraftModel = oboRequire('models/draft')
-		DraftModel.fetchById.mockImplementationOnce(() => {
-			return Promise.reject('some error')
-		})
+		DraftModel.fetchById.mockRejectedValueOnce('some error')
 
 		oboRequire('routes/api/drafts')
 		let routeFunction = mockRouterMethods.get.mock.calls[0][1]
@@ -231,9 +229,7 @@ describe('api draft route', () => {
 		let routeFunction = mockRouterMethods.post.mock.calls[1][1]
 
 		let mockReq = {
-			requireCurrentUser: () => {
-				return Promise.reject('error1')
-			}
+			requireCurrentUser: () => Promise.reject('error1')
 		}
 
 		let mockRes = {
@@ -259,9 +255,7 @@ describe('api draft route', () => {
 		let routeFunction = mockRouterMethods.delete.mock.calls[0][1]
 
 		let mockReq = {
-			requireCurrentUser: () => {
-				return Promise.reject('error1')
-			}
+			requireCurrentUser: () => Promise.reject('error1')
 		}
 
 		let mockRes = {

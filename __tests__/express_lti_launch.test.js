@@ -122,7 +122,7 @@ describe('lti launch middleware', () => {
 		expect.assertions(1)
 
 		// mock insert launch fail
-		db.one.mockReturnValueOnce(Promise.reject('launch insert error'))
+		db.one.mockRejectedValueOnce('launch insert error')
 
 		let [req, res, mockNext] = mockExpressArgs(true)
 		return ltiLaunch.assignment(req, res, mockNext).then(() => {
@@ -134,7 +134,7 @@ describe('lti launch middleware', () => {
 		expect.assertions(1)
 
 		// mock insert event failure
-		insertEvent.mockReturnValueOnce(Promise.reject('launch insert error'))
+		insertEvent.mockRejectedValueOnce('launch insert error')
 
 		let [req, res, mockNext] = mockExpressArgs(true)
 		return ltiLaunch.assignment(req, res, mockNext).then(() => {
@@ -268,7 +268,7 @@ describe('lti launch middleware', () => {
 	test('assignmentSelection logs an error if event insert fails and calls next with an error', () => {
 		expect.assertions(5)
 
-		insertEvent.mockReturnValueOnce(Promise.reject('event insert error'))
+		insertEvent.mockRejectedValueOnce('event insert error')
 		let [req, res, mockNext] = mockExpressArgs(true)
 
 		return ltiLaunch.assignmentSelection(req, res, mockNext).then(() => {
