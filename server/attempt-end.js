@@ -33,14 +33,13 @@ let endAttempt = (req, res, user, attemptId, isPreviewing) => {
 		.then(responsesForAttemptResult => {
 			logger.info(`End attempt "${attemptId}" - getResponsesForAttempt success`)
 
-			responsesForAttempt = responsesForAttemptResult
 			return getCalculatedScores(
 				req,
 				res,
 				attempt.assessmentModel,
 				attempt.attemptState,
 				attemptHistory,
-				responsesForAttempt
+				responsesForAttemptResult
 			)
 		})
 		.then(calculatedScoresResult => {

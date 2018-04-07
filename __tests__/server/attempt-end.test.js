@@ -1,6 +1,7 @@
 jest.mock('../../../../insert_event')
 jest.mock('../../../../models/draft')
 jest.mock('../../../../routes/api/events/create_caliper_event')
+jest.mock('../../../../logger')
 jest.mock('../../../../config', () => ({
 	db: {
 		host: 'host',
@@ -18,17 +19,19 @@ jest.mock('../../../../lti', () => ({
 jest.mock('../../server/assessment-rubric')
 jest.mock('../../server/assessment', () => ({
 	getAttempt: jest.fn().mockResolvedValue({
-		assessment_id: 10,
-		attemptNumber: 12,
+		assessment_id: 'mockAssessmentId',
+		attemptNumber: 'mockAttemptNumber',
 		state: 'mockState',
-		draft_id: 13
+		draft_id: 'mockDraftId'
 	}),
 	getAttempts: jest.fn().mockResolvedValue('attempts'),
 	getAttemptNumber: jest.fn().mockResolvedValue(6),
+	getResponsesForAttempt: jest.fn().mockResolvedValue('mockResponsesForAttempt'),
 	getCompletedAssessmentAttemptHistory: jest.fn().mockReturnValue('super bat dad'),
 	completeAttempt: jest.fn().mockReturnValue('mockCompleteAttemptResult')
 }))
 
+const logger = oboRequire('logger')
 const config = oboRequire('config')
 const db = oboRequire('db')
 const DraftModel = oboRequire('models/draft')
@@ -64,16 +67,118 @@ describe('Attempt End', () => {
 		insertEvent.mockReset()
 		AssessmentRubric.mockGetAssessmentScoreInfoForAttempt.mockReset()
 		AssessmentRubric.mockGetAssessmentScoreInfoForAttempt.mockReturnValue('mockScoreForAttempt')
+		lti.sendHighestAssessmentScore.mockReset()
 	})
 
-	test('endAttempt returns an object of attempt info', () => {
+	test('endAttempt returns Assessment.getAttempts, sends lti highest score, and inserts 2 events', () => {
+		// provide a draft model mock
+		let draft = new DraftModel({ content: { rubric: 1 } })
+		draft.yell.mockImplementationOnce(
+			(eventType, req, res, assessmentModel, responseHistory, event) => {
+				event.addScore('q1', 0)
+				event.addScore('q2', 100)
+				return [Promise.resolve()]
+			}
+		)
+		draft.getChildNodeById.mockReturnValueOnce(draft)
+		DraftModel.fetchById.mockResolvedValueOnce(draft)
+
+		// Mock out assessment methods internally to build score data
+		Assessment.getCompletedAssessmentAttemptHistory.mockResolvedValueOnce([])
+		Assessment.getAttempt.mockResolvedValueOnce({
+			assessment_id: 'mockAssessmentId',
+			state: { questions: [] },
+			draft_id: 'mockDraftId'
+		})
+
+		// mock the caliperEvent methods
+		let createAssessmentAttemptSubmittedEvent = jest.fn().mockReturnValue('mockCaliperPayload')
+		let createAssessmentAttemptScoredEvent = jest.fn().mockReturnValue('mockCaliperPayload')
+		insertEvent.mockReturnValueOnce('mockInsertResult')
+		createCaliperEvent
+			.mockReturnValueOnce({ createAssessmentAttemptSubmittedEvent })
+			.mockReturnValueOnce({ createAssessmentAttemptScoredEvent })
+
+		// mock lti send score
+		lti.sendHighestAssessmentScore.mockReturnValueOnce({
+			scoreSent: 'mockScoreSent',
+			error: 'mockScoreError',
+			errorDetails: 'mockErrorDetails',
+			ltiAssessmentScoreId: 'mockLitScoreId',
+			status: 'mockStatus'
+		})
+
+		let req = { connection: { remoteAddress: 'mockRemoteAddress' } }
+		let user = { id: 'mockUserId' }
+		expect(insertEvent).toHaveBeenCalledTimes(0)
+
+		return endAttempt(req, {}, user, 'mockAttemptId', true).then(results => {
+			expect(logger.info).toHaveBeenCalledTimes(8)
+			expect(logger.info).toHaveBeenCalledWith(expect.stringContaining('getAttempt success'))
+			expect(logger.info).toHaveBeenCalledWith(expect.stringContaining('getAttemptHistory success'))
+			expect(logger.info).toHaveBeenCalledWith(
+				expect.stringContaining('getCalculatedScores success')
+			)
+			expect(logger.info).toHaveBeenCalledWith(expect.stringContaining('completeAttempt success'))
+			expect(logger.info).toHaveBeenCalledWith(
+				expect.stringContaining('insertAttemptEndEvent success')
+			)
+			expect(logger.info).toHaveBeenCalledWith(expect.stringContaining('sendLTIScore was executed'))
+
+			expect(results).toBe('attempts')
+			expect(lti.sendHighestAssessmentScore).toHaveBeenLastCalledWith(
+				'mockUserId',
+				'mockDraftId',
+				'mockAssessmentId'
+			)
+			expect(insertEvent).toHaveBeenCalledTimes(2)
+			expect(insertEvent).toHaveBeenCalledWith({
+				action: 'assessment:attemptScored',
+				actorTime: 'mockDate',
+				caliperPayload: 'mockCaliperPayload',
+				draftId: 'mockDraftId',
+				eventVersion: '2.0.0',
+				ip: 'mockRemoteAddress',
+				metadata: {},
+				payload: {
+					assessmentScore: undefined,
+					assessmentScoreId: undefined,
+					attemptCount: 6,
+					attemptId: 'mockAttemptId',
+					attemptScore: undefined,
+					ltiAssessmentScoreId: 'mockLitScoreId',
+					ltiScoreError: 'mockScoreError',
+					ltiScoreErrorDetails: 'mockErrorDetails',
+					ltiScoreSent: 'mockScoreSent',
+					ltiScoreStatus: 'mockStatus'
+				},
+				userId: 'mockUserId'
+			})
+			expect(insertEvent).toHaveBeenCalledWith({
+				action: 'assessment:attemptEnd',
+				actorTime: 'mockDate',
+				caliperPayload: 'mockCaliperPayload',
+				draftId: 'mockDraftId',
+				eventVersion: '1.1.0',
+				ip: 'mockRemoteAddress',
+				metadata: {},
+				payload: {
+					attemptCount: 6,
+					attemptId: 'mockAttemptId'
+				},
+				userId: 'mockUserId'
+			})
+		})
+	})
+
+	test('getAttempt returns an object of attempt info', () => {
 		expect.assertions(6)
 
 		return getAttempt(1).then(attempt => {
-			expect(attempt).toHaveProperty('assessmentId', 10)
+			expect(attempt).toHaveProperty('assessmentId', 'mockAssessmentId')
 			expect(attempt).toHaveProperty('number', 6)
 			expect(attempt).toHaveProperty('attemptState', 'mockState')
-			expect(attempt).toHaveProperty('draftId', 13)
+			expect(attempt).toHaveProperty('draftId', 'mockDraftId')
 			expect(attempt).toHaveProperty('model', expect.any(DraftModel))
 			expect(attempt).toHaveProperty('assessmentModel', 'mockChild')
 		})
@@ -90,6 +195,7 @@ describe('Attempt End', () => {
 	})
 
 	test('getCalculatedScores', () => {
+		expect.assertions(4)
 		// Setup: Assessment with two questions (q1 and q2)
 		// First attempt: q1 = 60%, q2 = 100%, attempt = 80%
 		// This attempt: q1 = 0%, q2 = 100%, attempt should be 50%
@@ -100,15 +206,18 @@ describe('Attempt End', () => {
 		let res = jest.fn()
 		let assessmentModel = {
 			yell: (eventType, req, res, assessmentModel, responseHistory, event) => {
-				event.addScore('q1', 0)
-				event.addScore('q2', 100)
-				return []
+				expect(event).toHaveProperty('getQuestions', expect.any(Function))
+				expect(event).toHaveProperty('addScore', expect.any(Function))
+				expect(event.getQuestions()).toBe(attemptState.questions)
+
+				// add scores into the method's scoreInfo object for calculating later
+				// this is usually done by yell after getting the questions
+				event.addScore('q1', 66.6666666667)
+				event.addScore('q2', 12.9999999999)
+
+				return [] // return empty array of promises, no need for more
 			},
-			node: {
-				content: {
-					attempts: 10
-				}
-			}
+			node: { content: {} }
 		}
 		let attemptState = {
 			questions: [
@@ -120,24 +229,7 @@ describe('Attempt End', () => {
 				}
 			]
 		}
-		let attemptHistory = [
-			{
-				result: {
-					scores: [
-						{
-							id: 'q1',
-							score: 60
-						},
-						{
-							id: 'q2',
-							score: 100
-						}
-					],
-					attemptScore: 80,
-					assessmentScore: 0
-				}
-			}
-		]
+		let attemptHistory = []
 		let responseHistory = jest.fn()
 
 		return getCalculatedScores(
@@ -151,15 +243,15 @@ describe('Attempt End', () => {
 			expect(result).toEqual({
 				assessmentScoreDetails: 'mockScoreForAttempt',
 				attempt: {
-					attemptScore: 50,
+					attemptScore: 39.8333333333,
 					questionScores: [
 						{
 							id: 'q1',
-							score: 0
+							score: 66.6666666667
 						},
 						{
 							id: 'q2',
-							score: 100
+							score: 12.9999999999
 						}
 					]
 				}
