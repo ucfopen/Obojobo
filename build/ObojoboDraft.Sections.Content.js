@@ -110,6 +110,7 @@ _Common2.default.Store.registerModel('ObojoboDraft.Sections.Content', {
 			showChildren: true
 		};
 	},
+
 	generateNav: function generateNav(model) {
 		var nav = [];
 
