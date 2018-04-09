@@ -6,7 +6,6 @@ jest.mock('../../../src/scripts/common/flux/dispatcher', () => ({
 
 const QuestionUtil = require('../../../src/scripts/viewer/util/question-util').default
 const Dispatcher = require('../../../src/scripts/common/flux/dispatcher')
-const QuestionStore = require('../../../src/scripts/viewer/stores/question-store').default
 
 const testModel = {
 	get: () => 'testId'
@@ -15,7 +14,6 @@ const testModel = {
 describe('QuestionUtil', () => {
 	beforeEach(() => {
 		jest.resetAllMocks()
-		QuestionStore.init()
 	})
 
 	it('should trigger question:setResponse', () => {
