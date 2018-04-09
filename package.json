@@ -77,6 +77,7 @@
 	},
 	"jest": {
 		"testURL": "http://localhost:3000/view/00000000-0000-0000-0000-000000000000/visit/1",
+		"testMatch": [ "**/__tests__/**/*.js?(x)" ],
 		"setupTestFrameworkScriptFile": "./setupTests.js",
 		"verbose": true,
 		"moduleNameMapper": {
@@ -105,7 +106,9 @@
 			"<rootDir>/src/scripts/common/text-group/text-group-cursor.js",
 			"<rootDir>/src/scripts/common/text-group/text-group-selection.js",
 			"<rootDir>/src/scripts/common/util/console.js",
-			"<rootDir>/src/scripts/viewer",
+			"<rootDir>/src/scripts/viewer/app.js",
+			"<rootDir>/src/scripts/viewer/dist.js",
+			"<rootDir>/src/scripts/viewer/polyfills.js",
 			"<rootDir>/src/scripts/common/net",
 			"<rootDir>/server/questionbank.js",
 			"<rootDir>/server/questionselector.js",
