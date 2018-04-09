@@ -1,30 +1,24 @@
-import ScoreStore from '../../../src/scripts/viewer/stores/score-store'
-import ScoreUtil from '../../../src/scripts/viewer/util/score-util'
-import OboModel from '../../../src/scripts/common/models/obo-model'
-import Dispatcher from '../../../src/scripts/common/flux/dispatcher'
+const ScoreStore = require('../../../src/scripts/viewer/stores/score-store').default
+const ScoreUtil = require('../../../src/scripts/viewer/util/score-util').default
+const OboModel = require('../../../src/scripts/common/models/obo-model').default
+const Dispatcher = require('../../../src/scripts/common/flux/dispatcher')
 
-jest.mock('../../../src/scripts/viewer/util/api-util', () => {
-	return {
-		postEvent: jest.fn()
-	}
-})
+jest.mock('../../../src/scripts/viewer/util/api-util', () => ({
+	postEvent: jest.fn()
+}))
 
-jest.mock('../../../src/scripts/common/models/obo-model', () => {
-	return {
-		models: {
-			test: {
-				getRoot: jest.fn()
-			}
+jest.mock('../../../src/scripts/common/models/obo-model', () => ({
+	models: {
+		test: {
+			getRoot: jest.fn()
 		}
 	}
-})
+}))
 
-jest.mock('../../../src/scripts/common/flux/dispatcher', () => {
-	return {
-		trigger: jest.fn(),
-		on: jest.fn()
-	}
-})
+jest.mock('../../../src/scripts/common/flux/dispatcher', () => ({
+	trigger: jest.fn(),
+	on: jest.fn()
+}))
 
 describe('ScoreUtil', () => {
 	beforeEach(() => {

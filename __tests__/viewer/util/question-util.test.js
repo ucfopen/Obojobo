@@ -1,10 +1,8 @@
-jest.mock('../../../src/scripts/common/flux/dispatcher', () => {
-	return {
-		trigger: jest.fn(),
-		on: jest.fn(),
-		off: jest.fn()
-	}
-})
+jest.mock('../../../src/scripts/common/flux/dispatcher', () => ({
+	trigger: jest.fn(),
+	on: jest.fn(),
+	off: jest.fn()
+}))
 
 const QuestionUtil = require('../../../src/scripts/viewer/util/question-util').default
 const Dispatcher = require('../../../src/scripts/common/flux/dispatcher')
