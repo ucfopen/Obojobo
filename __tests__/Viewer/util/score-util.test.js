@@ -1,46 +1,37 @@
-const ScoreStore = require('../../../src/scripts/viewer/stores/score-store').default
-const ScoreUtil = require('../../../src/scripts/viewer/util/score-util').default
-const OboModel = require('../../../src/scripts/common/models/obo-model').default
-const Dispatcher = require('../../../src/scripts/common/flux/dispatcher')
-
-jest.mock('../../../src/scripts/viewer/util/api-util', () => ({
-	postEvent: jest.fn()
-}))
-
-jest.mock('../../../src/scripts/common/models/obo-model', () => ({
-	models: {
-		test: {
-			getRoot: jest.fn()
-		}
-	}
-}))
-
+// Dispatcher
 jest.mock('../../../src/scripts/common/flux/dispatcher', () => ({
 	trigger: jest.fn(),
 	on: jest.fn()
 }))
 
+const Dispatcher = require('../../../src/scripts/common/flux/dispatcher')
+const ScoreUtil = require('../../../src/scripts/viewer/util/score-util').default
+
 describe('ScoreUtil', () => {
 	beforeEach(() => {
-		ScoreStore.init()
+		jest.resetAllMocks()
 	})
 
-	it("should return a null score for a model that doesn't have a score associated with it", () => {
+	test("should return a null score for a model that doesn't have a score associated with it", () => {
 		let fakeModel = {
 			get: () => 'test'
 		}
 
-		let score = ScoreUtil.getScoreForModel(ScoreStore.getState(), fakeModel)
+		let scoreState = {
+			scores: {}
+		}
 
+		let score = ScoreUtil.getScoreForModel(scoreState, fakeModel)
 		expect(score).toBe(null)
+		expect(Dispatcher.trigger).not.toHaveBeenCalled()
 	})
 
-	it('should return a score for a model that has a score associated with it', () => {
+	test('should return a score for a model that has a score associated with it', () => {
 		let fakeModel = {
 			get: () => 'test'
 		}
 
-		ScoreStore.setState({
+		let state = {
 			scores: {
 				test: {
 					id: 'uuid',
@@ -48,31 +39,33 @@ describe('ScoreUtil', () => {
 					score: 50
 				}
 			}
-		})
+		}
 
-		let score = ScoreUtil.getScoreForModel(ScoreStore.getState(), fakeModel)
-
+		let score = ScoreUtil.getScoreForModel(state, fakeModel)
 		expect(score).toBe(50)
+		expect(Dispatcher.trigger).not.toHaveBeenCalled()
 	})
 
-	it('should set scores', () => {
+	test('setScore should dispatch expected event', () => {
 		ScoreUtil.setScore('test', 50)
 
-		expect(Dispatcher.trigger).toHaveBeenCalledWith(
-			'score:set',
-			expect.objectContaining({
-				value: {
-					itemId: 'test',
-					score: 50
-				}
-			})
-		)
+		expect(Dispatcher.trigger).toHaveBeenCalledTimes(1)
+		expect(Dispatcher.trigger).toHaveBeenCalledWith('score:set', {
+			value: {
+				itemId: 'test',
+				score: 50
+			}
+		})
 	})
 
-	it('should clear scores', () => {
-		ScoreUtil.setScore('test', 50)
-		ScoreUtil.clearScore('test')
+	test('clearScore should dispatch expected event', () => {
+		ScoreUtil.clearScore(50)
 
-		expect(ScoreStore.getState()).toEqual({ scores: {} })
+		expect(Dispatcher.trigger).toHaveBeenCalledTimes(1)
+		expect(Dispatcher.trigger).toHaveBeenCalledWith('score:clear', {
+			value: {
+				itemId: 50
+			}
+		})
 	})
 })
