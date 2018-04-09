@@ -370,7 +370,7 @@ class Assessment extends DraftNode {
 			SET state = $[state]
 			WHERE id = $[attemptId]
 			`,
-			{ result: attemptScoreResult, attemptId: attemptId }
+			{ state: state, attemptId: attemptId }
 		)
 	}
 

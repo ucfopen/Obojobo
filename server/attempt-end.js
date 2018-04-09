@@ -41,12 +41,13 @@ let endAttempt = (req, res, user, attemptId, isPreviewing) => {
 				return DraftModel.fetchById(attempt.draftId)
 			})
 			.then(draftTree => {
-				const assessmentNode = draftTree.getChildNodeById(assessmentId)
+				const assessmentNode = draftTree.getChildNodeById(attempt.assessmentId)
 
 				assessmentProperties.user = user
 				assessmentProperties.isPreviewing = isPreviewing
+
 				assessmentProperties.draftTree = draftTree
-				assessmentProperties.id = assessmentId
+				assessmentProperties.id = attempt.assessmentId
 				assessmentProperties.oboNode = assessmentNode
 				assessmentProperties.nodeChildrenIds = assessmentNode.children[1].childrenSet
 				assessmentProperties.assessmentQBTree = assessmentNode.children[1].toObject()
@@ -81,6 +82,12 @@ let endAttempt = (req, res, user, attemptId, isPreviewing) => {
 				logger.info(`Elli Log8 "${attempt.assessmentModel.node.content}"`)
 
 				// Elli: do db update here
+				assessmentProperties.childrenMap = createAssessmentUsedQuestionMap(assessmentProperties)
+				for (let attempt of assessmentProperties.attemptHistory) {
+					if (attempt.state.qb) {
+						initAssessmentUsedQuestions(attempt.state.qb, assessmentProperties.childrenMap)
+					}
+				}
 				reloadState(attemptId, assessmentProperties, attempt)
 
 				return completeAttempt(
@@ -354,24 +361,16 @@ let insertAttemptScoredEvents = (
 let reloadState = (attemptId, assessmentProperties, attempt) => {
 	let assessmentNode = attempt.assessmentModel
 
-	logger.info(`Elli Log8 ${assessmentNode.node.content}`)
-
 	// Do not reload the state if reviews are never allowed
 	if(assessmentNode.node.content.review == 'never'){
-		logger.info(`Elli Log8 reviews not allowed`)
 		return null
 	}
 
-	logger.info(`Elli Log8 reviews allowed`)
-
 	let isLastAttempt = attempt.number === assessmentNode.node.content.attempts
-
-	logger.info(`Elli Log8 an attempt`)
 
 	// Do not reload the state if reviews are only allowed after the last
 	// attempt and this is not the last attempt
 	if(assessmentNode.node.content.review == 'lastAttempt' && !isLastAttempt){
-		logger.info(`Elli Log8 review not allowed`)
 		return null
 	}
 
@@ -385,19 +384,14 @@ let reloadState = (attemptId, assessmentProperties, attempt) => {
 		}
 	}
 
-	logger.info(`Elli Log8 properties`)
-
 	// Elli: import from attempt-start
 	createChosenQuestionTree(assessmentProperties.assessmentQBTree, assessmentProperties)
 
-	logger.info(`Elli Log8 tree`)
 	let questionObjects = getNodeQuestions(
 		assessmentProperties.assessmentQBTree,
 		assessmentProperties.oboNode,
 		[]
 	).map(q => q.toObject())
-
-	logger.info(`Elli Log8 crashy methods`)
 
 	let state = {
 		questions: questionObjects,
@@ -405,18 +399,15 @@ let reloadState = (attemptId, assessmentProperties, attempt) => {
 		qb: assessmentProperties.assessmentQBTree
 	}
 
-	logger.info(`Elli Log8 state done`)
-
 	// If reviews are always allowed, reload the state for this attempt
 	// Each attempt's state will be reloaded as it finishes
-	if(assessmentNode.content.review == 'always'){
-		logger.info(`Elli Log8 up up and away`)
+	if(assessmentNode.node.content.review == 'always'){
 		return Assessment.updateAttemptState(attemptId, state)
 	}
 
 	// If reviews are allowed after last attempt and this is the last attempt,
 	// reload the states for all attempts
-	if(assessmentNode.content.review == 'lastAttempt' && !isLastAttempt){
+	if(assessmentNode.node.content.review == 'lastAttempt' && !isLastAttempt){
 		let attempts = AssessmentUtil.getAllAttempts(
 			assessment.props.moduleData.assessmentState,
 			assessment.props.model
@@ -444,16 +435,10 @@ const initAssessmentUsedQuestions = (node, usedQuestionMap) => {
 // This will narrow down the assessment tree to question banks
 // with their respectively selected questions.
 const createChosenQuestionTree = (node, assessmentProperties) => {
-
-	logger.info(`Elli Log8 in tree`)
-	logger.info(`Elli Log8 in ${node.type}`)
 	if (node.type === QUESTION_BANK_NODE_TYPE) {
 		logger.log('TEST', node.id, node.content, node.content.choose)
 
-
-		logger.info(`Elli Log8 do bank`)
 		const qbProperties = getQuestionBankProperties(node)
-		logger.info(`Elli Log8 done bank`)
 
 		// TODO: 'random-all' and 'random-unseen' selects need to be taken care of as well.
 		node.children = chooseQuestionsSequentially(assessmentProperties, node.id, qbProperties.choose)
@@ -469,10 +454,7 @@ const getQuestionBankProperties = questionBankNode => ({
 // Sort the question banks and questions sequentially, get their nodes from the tree via id,
 // and only return up to the desired amount of questions per attempt (choose property).
 const chooseQuestionsSequentially = (assessmentProperties, rootId, numQuestionsPerAttempt) => {
-
-	logger.info(`Elli Log8 in seq`)
 	const { oboNode, childrenMap } = assessmentProperties
-	logger.info(`Elli Log8 in seq`)
 	return [...oboNode.draftTree.getChildNodeById(rootId).immediateChildrenSet]
 		.sort((a, b) => childrenMap.get(a) - childrenMap.get(b))
 		.map(id => oboNode.draftTree.getChildNodeById(id).toObject())
@@ -486,6 +468,18 @@ const createAssessmentUsedQuestionMap = assessmentProperties => {
 			assessmentChildrenMap.set(id, 0)
 	})
 	return assessmentChildrenMap
+}
+// Return an array of question type nodes from a node tree.
+const getNodeQuestions = (node, assessmentNode, questions) => {
+	if (node.type === QUESTION_NODE_TYPE) {
+		questions.push(assessmentNode.draftTree.getChildNodeById(node.id))
+	}
+
+	for (let child of node.children) {
+		questions.concat(getNodeQuestions(child, assessmentNode, questions))
+	}
+
+	return questions
 }
 
 module.exports = {
