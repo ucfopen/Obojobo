@@ -203,11 +203,52 @@ describe('Nav', () => {
 				navTargetId: 5 // select this item
 			}
 		}
+
 		const el = shallow(<Nav {...props} />)
 
-		NavUtil.canNavigate.mockReturnValueOnce(false)
-		expect(NavUtil.canNavigate).not.toHaveBeenCalled()
 		el.find('li').simulate('click')
 		expect(mockScrollIntoView).toHaveBeenCalledWith({ behavior: 'smooth', block: 'start' })
+	})
+
+	test('mouseOver button applies expected styles when not open', () => {
+		NavUtil.getOrderedList.mockReturnValue([])
+		let props = {
+			navState: {
+				open: false,
+				locked: true
+			}
+		}
+
+		const el = shallow(<Nav {...props} />)
+		expect(el.state()).toHaveProperty('hover', false)
+
+		const button = el.find('.toggle-button')
+		button.simulate('mouseover')
+
+		expect(el.state()).toHaveProperty('hover', true)
+		expect(button.prop('style')).toHaveProperty('transform', '')
+		// expect(mockScrollIntoView).toHaveBeenCalledWith({ behavior: 'smooth', block: 'start' })
+	})
+
+	test('mouseOver button applies expected styles when not open', () => {
+		NavUtil.getOrderedList.mockReturnValue([])
+		let props = {
+			navState: {
+				open: false,
+				locked: true
+			}
+		}
+
+		const el = shallow(<Nav {...props} />)
+		expect(el.state()).toHaveProperty('hover', false)
+
+		let button = el.find('.toggle-button')
+		button.simulate('mouseover')
+
+		// get the updated button
+		button = el.find('.toggle-button')
+
+		expect(el.state()).toHaveProperty('hover', true)
+		expect(button.prop('style')).toHaveProperty('transform', 'rotate(180deg)')
 	})
 })
