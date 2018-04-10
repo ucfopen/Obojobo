@@ -106,6 +106,7 @@
 			"<rootDir>/src/scripts/common/text-group/text-group-cursor.js",
 			"<rootDir>/src/scripts/common/text-group/text-group-selection.js",
 			"<rootDir>/src/scripts/common/util/console.js",
+			"<rootDir>/src/scripts/viewer/index.js",
 			"<rootDir>/src/scripts/viewer/app.js",
 			"<rootDir>/src/scripts/viewer/dist.js",
 			"<rootDir>/src/scripts/viewer/polyfills.js",
