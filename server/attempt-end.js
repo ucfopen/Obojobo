@@ -8,6 +8,8 @@ let lti = oboRequire('lti')
 let logger = oboRequire('logger')
 let attemptStart = require('./attempt-start')
 
+const QUESTION_NODE_TYPE = 'ObojoboDraft.Chunks.Question'
+
 let endAttempt = (req, res, user, attemptId, isPreviewing) => {
 	let attempt
 	let attemptHistory
@@ -404,14 +406,22 @@ let reloadState = (attemptId, draftId, assessmentProperties, attempt) => {
 		return Assessment.getAttempts(assessmentProperties.user.id, draftId, assessmentProperties.id)
 		.then(result => {
 			result.attempts.map(attempt => {
+				logger.info(`Elli Log 91`)
 				attempt.state.qb = recreateChosenQuestionTree(attempt.state.qb, assessmentProperties.draftTree)
 
+				logger.info(`Elli Log 92`)
 				let newQuestions = []
+
+				logger.info(`Elli Log 93`)
 				attempt.state.questions.map(question => {
 					newQuestions.push(getNodeQuestion(question.id, assessmentProperties.draftTree))
 				})
+
+				logger.info(`Elli Log 94`)
 				attempt.state.questions = newQuestions;
 
+
+				logger.info(`Elli Log 95`)
 				Assessment.updateAttemptState(attempt.attemptId, attempt.state);
 			})
 		})
@@ -422,7 +432,6 @@ let reloadState = (attemptId, draftId, assessmentProperties, attempt) => {
 }
 
 const recreateChosenQuestionTree = (node, assessmentNode) => {
-	logger.info(`Treeing down ${node.id}`)
 	if (node.type === QUESTION_NODE_TYPE) {
 		return getNodeQuestion(node.id,assessmentNode)
 	}
@@ -430,6 +439,7 @@ const recreateChosenQuestionTree = (node, assessmentNode) => {
 	let newChildren = [];
 
 	for (let child of node.children) {
+		logger.info(JSON.stringify(child))
 		newChildren.push(recreateChosenQuestionTree(child, assessmentNode))
 	}
 
