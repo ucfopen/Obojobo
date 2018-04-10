@@ -1,5 +1,7 @@
 import { EMPTY_CHAR } from '../../common/text/text-constants'
 
+// @TODO: check to see if this needs a ref
+// if not - convert to a stateless functional component
 export default class Anchor extends React.Component {
 	render() {
 		return (

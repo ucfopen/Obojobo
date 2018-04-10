@@ -8,6 +8,7 @@ let { OboModel } = Common.models
 
 let { QuestionUtil } = Viewer.util
 
+// @TODO: see if we need ref="input", if not convert to stateless component
 export default class MCChoice extends React.Component {
 	static get defaultProps() {
 		return {

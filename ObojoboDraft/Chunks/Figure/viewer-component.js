@@ -7,6 +7,9 @@ let { OboComponent } = Common.components
 let { TextGroupEl } = Common.chunk.textChunk
 let { NonEditableChunk } = Common.chunk
 
+// @TODO: ask @zach if ref="component" is used here
+// it's the  only thing preventing converting this to a
+// functional component
 export default class Figure extends React.Component {
 	render() {
 		let data = this.props.model.modelState

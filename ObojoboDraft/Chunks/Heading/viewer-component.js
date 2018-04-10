@@ -5,20 +5,21 @@ let { OboComponent } = Common.components
 let { TextGroupEl } = Common.chunk.textChunk
 let { TextChunk } = Common.chunk
 
-export default class Heading extends React.Component {
-	render() {
-		let data = this.props.model.modelState
+export default props => {
+	// creates an h1, h2, h3, etc to use in jsx below
+	let HTag = `h${props.model.modelState.headingLevel}`
 
-		let inner = React.createElement(
-			`h${data.headingLevel}`,
-			null,
-			<TextGroupEl parentModel={this.props.model} textItem={data.textGroup.first} groupIndex="0" />
-		)
-
-		return (
-			<OboComponent model={this.props.model} moduleData={this.props.moduleData}>
-				<TextChunk className="obojobo-draft--chunks--heading pad">{inner}</TextChunk>
-			</OboComponent>
-		)
-	}
+	return (
+		<OboComponent model={props.model} moduleData={props.moduleData}>
+			<TextChunk className="obojobo-draft--chunks--heading pad">
+				<HTag>
+					<TextGroupEl
+						parentModel={props.model}
+						textItem={props.model.modelState.textGroup.first}
+						groupIndex="0"
+					/>
+				</HTag>
+			</TextChunk>
+		</OboComponent>
+	)
 }

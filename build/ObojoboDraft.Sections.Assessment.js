@@ -241,75 +241,49 @@ Object.defineProperty(exports, "__esModule", {
 	value: true
 });
 
-var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
-
 var _Common = __webpack_require__(0);
 
 var _Common2 = _interopRequireDefault(_Common);
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
-function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
-
-function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
-
-function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
-
 var Dialog = _Common2.default.components.modal.Dialog;
 var ModalUtil = _Common2.default.util.ModalUtil;
 
-var AttemptIncompleteDialog = function (_React$Component) {
-	_inherits(AttemptIncompleteDialog, _React$Component);
 
-	function AttemptIncompleteDialog() {
-		_classCallCheck(this, AttemptIncompleteDialog);
+var onCancel = function onCancel() {
+	ModalUtil.hide();
+};
 
-		return _possibleConstructorReturn(this, (AttemptIncompleteDialog.__proto__ || Object.getPrototypeOf(AttemptIncompleteDialog)).apply(this, arguments));
-	}
+var onSubmit = function onSubmit(submitProp) {
+	ModalUtil.hide();
+	submitProp();
+};
 
-	_createClass(AttemptIncompleteDialog, [{
-		key: 'onCancel',
-		value: function onCancel() {
-			return ModalUtil.hide();
-		}
-	}, {
-		key: 'onSubmit',
-		value: function onSubmit() {
-			ModalUtil.hide();
-			return this.props.onSubmit();
-		}
-	}, {
-		key: 'render',
-		value: function render() {
-			return React.createElement(
-				Dialog,
-				{
-					buttons: [{
-						value: 'Submit as incomplete',
-						altAction: true,
-						dangerous: true,
-						onClick: this.onSubmit.bind(this)
-					}, 'or', {
-						value: 'Resume assessment',
-						onClick: this.onCancel.bind(this),
-						default: true
-					}]
-				},
-				React.createElement(
-					'b',
-					null,
-					'Wait! You left some questions blank.'
-				),
-				React.createElement('br', null),
-				'Finish answering all questions and submit again.'
-			);
-		}
-	}]);
-
-	return AttemptIncompleteDialog;
-}(React.Component);
-
-exports.default = AttemptIncompleteDialog;
+exports.default = function (props) {
+	return React.createElement(
+		Dialog,
+		{
+			buttons: [{
+				value: 'Submit as incomplete',
+				altAction: true,
+				dangerous: true,
+				onClick: onSubmit.bind(null, props.onSubmit)
+			}, 'or', {
+				value: 'Resume assessment',
+				onClick: onCancel,
+				default: true
+			}]
+		},
+		React.createElement(
+			'b',
+			null,
+			'Wait! You left some questions blank.'
+		),
+		React.createElement('br', null),
+		'Finish answering all questions and submit again.'
+	);
+};
 
 /***/ }),
 
@@ -323,8 +297,6 @@ Object.defineProperty(exports, "__esModule", {
 	value: true
 });
 
-var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
-
 __webpack_require__(253);
 
 var _Common = __webpack_require__(0);
@@ -337,106 +309,66 @@ var _Viewer2 = _interopRequireDefault(_Viewer);
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
-function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
-
-function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
-
-function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
-
 var Button = _Common2.default.components.Button;
 
 var LTINetworkStates = _Viewer2.default.stores.assessmentStore.LTINetworkStates;
 
-var LTIStatus = function (_React$Component) {
-	_inherits(LTIStatus, _React$Component);
+exports.default = function (props) {
+	if (!props.ltiState.state) return null;
 
-	function LTIStatus() {
-		_classCallCheck(this, LTIStatus);
-
-		return _possibleConstructorReturn(this, (LTIStatus.__proto__ || Object.getPrototypeOf(LTIStatus)).apply(this, arguments));
+	switch (props.ltiState.state.gradebookStatus) {
+		case 'ok_no_outcome_service':
+		case 'ok_gradebook_matches_assessment_score':
+		case 'ok_null_score_not_sent':
+			return null;
 	}
 
-	_createClass(LTIStatus, [{
-		key: 'onClickResendScore',
-		value: function onClickResendScore() {
-			AssessmentUtil.resendLTIScore(this.props.model);
-		}
-	}, {
-		key: 'render',
-		value: function render() {
-			var ltiState = this.props.ltiState;
+	var systemLabel = props.externalSystemLabel;
+	return React.createElement(
+		'div',
+		{ className: 'obojobo-draft--sections--assessment--lti-status' },
+		React.createElement(
+			'h2',
+			null,
+			'There was a problem sending your score to ' + systemLabel + '.'
+		),
+		React.createElement(
+			'p',
+			null,
+			'Don\u2019t worry - your score is safely recorded here. We just weren\u2019t able to send it to ' + systemLabel + '. Click the button below to resend your score:'
+		),
+		props.ltiState.errorCount === 0 || props.ltiState.networkState !== LTINetworkStates.IDLE ? null : React.createElement(
+			'p',
+			null,
+			React.createElement(
+				'strong',
+				null,
+				'Sorry - That didn\'t work.'
+			),
+			' Most likely the connection to ' + systemLabel + ' has expired and just needs to be refreshed. Please close this tab or window, reopen this module from ' + systemLabel + ', return to this page and then resend your score.'
+		),
+		function () {
+			switch (props.ltiState.networkState) {
+				case LTINetworkStates.AWAITING_SEND_ASSESSMENT_SCORE_RESPONSE:
+					return React.createElement(
+						Button,
+						{ disabled: true },
+						'Resending Score...'
+					);
+					break;
 
-			if (!ltiState.state) return null;
-
-			switch (ltiState.state.gradebookStatus) {
-				case 'ok_no_outcome_service':
-				case 'ok_gradebook_matches_assessment_score':
-				case 'ok_null_score_not_sent':
-					return null;
-
+				case LTINetworkStates.IDLE:
 				default:
-					return this.renderError();
+					return React.createElement(
+						Button,
+						{ dangerous: true, onClick: AssessmentUtil.resendLTIScore.bind(null, props.model) },
+						props.ltiState.errorCount === 0 ? 'Resend score' : 'Try again anyway'
+					);
+					break;
 			}
-		}
-	}, {
-		key: 'renderError',
-		value: function renderError() {
-			var _this2 = this;
-
-			var ltiState = this.props.ltiState;
-			var systemLabel = this.props.externalSystemLabel;
-
-			return React.createElement(
-				'div',
-				{ className: 'obojobo-draft--sections--assessment--lti-status' },
-				React.createElement(
-					'h2',
-					null,
-					'There was a problem sending your score to ' + systemLabel + '.'
-				),
-				React.createElement(
-					'p',
-					null,
-					'Don\u2019t worry - your score is safely recorded here. We just weren\u2019t able to send it to ' + systemLabel + '. Click the button below to resend your score:'
-				),
-				this.props.ltiState.errorCount === 0 || ltiState.networkState !== LTINetworkStates.IDLE ? null : React.createElement(
-					'p',
-					null,
-					React.createElement(
-						'strong',
-						null,
-						'Sorry - That didn\'t work.'
-					),
-					' Most likely the connection to ' + systemLabel + ' has expired and just needs to be refreshed. Please close this tab or window, reopen this module from ' + systemLabel + ', return to this page and then resend your score.'
-				),
-				function () {
-					switch (ltiState.networkState) {
-						case LTINetworkStates.AWAITING_SEND_ASSESSMENT_SCORE_RESPONSE:
-							return React.createElement(
-								Button,
-								{ disabled: true },
-								'Resending Score...'
-							);
-							break;
-
-						case LTINetworkStates.IDLE:
-						default:
-							return React.createElement(
-								Button,
-								{ dangerous: true, onClick: _this2.props.onClickResendScore },
-								_this2.props.ltiState.errorCount === 0 ? 'Resend score' : 'Try again anyway'
-							);
-							break;
-					}
-				}()
-			);
-		}
-	}]);
-
-	return LTIStatus;
-}(React.Component);
-
-exports.default = LTIStatus;
+		}()
+	);
+};
 
 /***/ }),
 

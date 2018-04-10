@@ -191,6 +191,8 @@ var OboComponent = _Common2.default.components.OboComponent;
 var OboModel = _Common2.default.models.OboModel;
 var QuestionUtil = _Viewer2.default.util.QuestionUtil;
 
+// @TODO: see if we need ref="input", if not convert to stateless component
+
 var MCChoice = function (_React$Component) {
 	_inherits(MCChoice, _React$Component);
 

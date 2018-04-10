@@ -200,8 +200,6 @@ Object.defineProperty(exports, "__esModule", {
 	value: true
 });
 
-var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
-
 __webpack_require__(240);
 
 var _listStyles = __webpack_require__(62);
@@ -214,13 +212,8 @@ var _Common2 = _interopRequireDefault(_Common);
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
-function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+var TextGroup = _Common2.default.textGroup.TextGroup; //@TODO - HAS TO REBUILD MOCKELEMENT STRUCTURE EVERYTIME, WOULD LIKE TO NOT HAVE TO DO THAT!
 
-function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
-
-function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; } //@TODO - HAS TO REBUILD MOCKELEMENT STRUCTURE EVERYTIME, WOULD LIKE TO NOT HAVE TO DO THAT!
-
-var TextGroup = _Common2.default.textGroup.TextGroup;
 var TextGroupEl = _Common2.default.chunk.textChunk.TextGroupEl;
 var Chunk = _Common2.default.models.Chunk;
 var MockElement = _Common2.default.mockDOM.MockElement;
@@ -233,185 +226,161 @@ var OboComponent = _Common2.default.components.OboComponent;
 
 var selectionHandler = new SelectionHandler();
 
-var List = function (_React$Component) {
-	_inherits(List, _React$Component);
+var createMockListElement = function createMockListElement(data, indentLevel) {
+	var style = data.listStyles.get(indentLevel);
 
-	function List() {
-		_classCallCheck(this, List);
+	var tag = style.type === 'unordered' ? 'ul' : 'ol';
+	var el = new MockElement(tag);
+	el.start = style.start;
+	el._listStyleType = style.bulletStyle;
 
-		return _possibleConstructorReturn(this, (List.__proto__ || Object.getPrototypeOf(List)).apply(this, arguments));
+	return el;
+};
+
+var addItemToList = function addItemToList(ul, li, lis) {
+	ul.addChild(li);
+	li.listStyleType = ul._listStyleType;
+	return lis.push(li);
+};
+
+var renderEl = function renderEl(props, node, index, indent) {
+	var key = props.model.cid + '-' + indent + '-' + index;
+
+	switch (node.nodeType) {
+		case 'text':
+			return React.createElement(TextGroupEl, {
+				parentModel: props.model,
+				textItem: { text: node.text, data: {} },
+				key: key,
+				groupIndex: node.index
+			});
+		case 'element':
+			var ElType = node.type;
+			return React.createElement(
+				ElType,
+				{ key: key, start: node.start, style: { listStyleType: node.listStyleType } },
+				renderChildren(props, node.children, indent + 1)
+			);
+	}
+};
+
+var renderChildren = function renderChildren(props, children, indent) {
+	var els = [];
+	for (var index = 0; index < children.length; index++) {
+		var child = children[index];
+		els.push(renderEl(props, child, index, indent));
 	}
 
-	_createClass(List, [{
-		key: 'createMockListElement',
-		value: function createMockListElement(data, indentLevel) {
-			var style = data.listStyles.get(indentLevel);
+	return els;
+};
 
-			var tag = style.type === 'unordered' ? 'ul' : 'ol';
-			var el = new MockElement(tag);
-			el.start = style.start;
-			el._listStyleType = style.bulletStyle;
-
-			return el;
-		}
-	}, {
-		key: 'addItemToList',
-		value: function addItemToList(ul, li, lis) {
-			ul.addChild(li);
-			li.listStyleType = ul._listStyleType;
-			return lis.push(li);
-		}
-	}, {
-		key: 'render',
-		value: function render() {
-			var curUl = void 0;
-			window.yeOldListHandler = List.commandHandler;
-			window.yeOldListChunk = this.props.model;
-
-			var data = this.props.model.modelState;
-
-			var texts = data.textGroup;
-
-			var curIndentLevel = 0;
-			var curIndex = 0;
-			var rootUl = curUl = this.createMockListElement(data, curIndentLevel);
-			var lis = [];
-
-			var li = new MockElement('li');
-			this.addItemToList(curUl, li, lis);
-
-			for (var itemIndex = 0; itemIndex < texts.items.length; itemIndex++) {
-				// if this item is lower than the current indent level...
-				var item = texts.items[itemIndex];
-				if (item.data.indent < curIndentLevel) {
-					// traverse up the tree looking for our curUl:
-					while (curIndentLevel > item.data.indent) {
-						curUl = curUl.parent.parent;
-						curIndentLevel--;
-					}
-
-					// else, if this item is higher than the current indent level...
-				} else if (item.data.indent > curIndentLevel) {
-					// traverse down the tree...
-					while (curIndentLevel < item.data.indent) {
-						curIndentLevel++;
-
-						// if the last LI's last child isn't a UL, create it
-						if ((curUl.lastChild.lastChild != null ? curUl.lastChild.lastChild.type : undefined) !== 'ul' && (curUl.lastChild.lastChild != null ? curUl.lastChild.lastChild.type : undefined) !== 'ol') {
-							var newUl = this.createMockListElement(data, curIndentLevel);
-							var newLi = new MockElement('li');
-							this.addItemToList(newUl, newLi, lis);
-							curUl.lastChild.addChild(newUl);
-							curUl = newUl;
-						} else {
-							curUl = curUl.lastChild.lastChild;
-						}
-					}
-				}
-
-				// if the lastChild is not an LI or it is an LI that already has text inside
-				if (!((curUl.lastChild != null ? curUl.lastChild.type : undefined) === 'li') || (curUl.lastChild != null ? curUl.lastChild.lastChild : undefined) != null) {
-					li = new MockElement('li');
-					this.addItemToList(curUl, li, lis);
-				}
-
-				var text = new MockTextNode(item.text);
-				text.index = curIndex;
-				curIndex++;
-
-				curUl.lastChild.addChild(text);
-			}
-
-			// console.log 'TREE'
-			// console.log '==========================================='
-			// @printTree '', rootUl, curUl
-
-			// Remove bullets from nested LIs
-			var _iteratorNormalCompletion = true;
-			var _didIteratorError = false;
-			var _iteratorError = undefined;
-
-			try {
-				for (var _iterator = Array.from(lis)[Symbol.iterator](), _step; !(_iteratorNormalCompletion = (_step = _iterator.next()).done); _iteratorNormalCompletion = true) {
-					li = _step.value;
-
-					if (__guard__(li.children != null ? li.children[0] : undefined, function (x) {
-						return x.nodeType;
-					}) !== 'text') {
-						li.listStyleType = 'none';
-					}
-				}
-
-				// React.createElement 'div', { style: { marginLeft: (data.indent * 20) + 'px' } }, @renderEl(rootUl, 0, 0)
-			} catch (err) {
-				_didIteratorError = true;
-				_iteratorError = err;
-			} finally {
-				try {
-					if (!_iteratorNormalCompletion && _iterator.return) {
-						_iterator.return();
-					}
-				} finally {
-					if (_didIteratorError) {
-						throw _iteratorError;
-					}
-				}
-			}
-
-			return React.createElement(
-				OboComponent,
-				{ model: this.props.model, moduleData: this.props.moduleData },
-				React.createElement(
-					TextChunk,
-					{ className: 'obojobo-draft--chunks--list pad' },
-					React.createElement(
-						'div',
-						{ 'data-indent': data.indent },
-						this.renderEl(rootUl, 0, 0)
-					)
-				)
-			);
-		}
-	}, {
-		key: 'renderEl',
-		value: function renderEl(node, index, indent) {
-			var key = this.props.model.cid + '-' + indent + '-' + index;
-
-			switch (node.nodeType) {
-				case 'text':
-					return React.createElement(TextGroupEl, {
-						parentModel: this.props.model,
-						textItem: { text: node.text, data: {} },
-						key: key,
-						groupIndex: node.index
-					});
-				case 'element':
-					return React.createElement(node.type, { key: key, start: node.start, style: { listStyleType: node.listStyleType } }, this.renderChildren(node.children, indent + 1));
-			}
-		}
-	}, {
-		key: 'renderChildren',
-		value: function renderChildren(children, indent) {
-			// console.log 'renderChildren', children
-			var els = [];
-			for (var index = 0; index < children.length; index++) {
-				var child = children[index];
-				els.push(this.renderEl(child, index, indent));
-			}
-
-			return els;
-		}
-	}]);
-
-	return List;
-}(React.Component);
-
-exports.default = List;
-
-
-function __guard__(value, transform) {
+var __guard__ = function __guard__(value, transform) {
 	return typeof value !== 'undefined' && value !== null ? transform(value) : undefined;
-}
+};
+
+exports.default = function (props) {
+	var curUl = void 0;
+	// window.yeOldListHandler = List.commandHandler
+	window.yeOldListChunk = props.model;
+
+	var data = props.model.modelState;
+
+	var texts = data.textGroup;
+
+	var curIndentLevel = 0;
+	var curIndex = 0;
+	var rootUl = curUl = createMockListElement(data, curIndentLevel);
+	var lis = [];
+
+	var li = new MockElement('li');
+	addItemToList(curUl, li, lis);
+
+	for (var itemIndex = 0; itemIndex < texts.items.length; itemIndex++) {
+		// if this item is lower than the current indent level...
+		var item = texts.items[itemIndex];
+		if (item.data.indent < curIndentLevel) {
+			// traverse up the tree looking for our curUl:
+			while (curIndentLevel > item.data.indent) {
+				curUl = curUl.parent.parent;
+				curIndentLevel--;
+			}
+
+			// else, if this item is higher than the current indent level...
+		} else if (item.data.indent > curIndentLevel) {
+			// traverse down the tree...
+			while (curIndentLevel < item.data.indent) {
+				curIndentLevel++;
+
+				// if the last LI's last child isn't a UL, create it
+				if ((curUl.lastChild.lastChild != null ? curUl.lastChild.lastChild.type : undefined) !== 'ul' && (curUl.lastChild.lastChild != null ? curUl.lastChild.lastChild.type : undefined) !== 'ol') {
+					var newUl = createMockListElement(data, curIndentLevel);
+					var newLi = new MockElement('li');
+					addItemToList(newUl, newLi, lis);
+					curUl.lastChild.addChild(newUl);
+					curUl = newUl;
+				} else {
+					curUl = curUl.lastChild.lastChild;
+				}
+			}
+		}
+
+		// if the lastChild is not an LI or it is an LI that already has text inside
+		if (!((curUl.lastChild != null ? curUl.lastChild.type : undefined) === 'li') || (curUl.lastChild != null ? curUl.lastChild.lastChild : undefined) != null) {
+			li = new MockElement('li');
+			addItemToList(curUl, li, lis);
+		}
+
+		var text = new MockTextNode(item.text);
+		text.index = curIndex;
+		curIndex++;
+
+		curUl.lastChild.addChild(text);
+	}
+
+	// Remove bullets from nested LIs
+	var _iteratorNormalCompletion = true;
+	var _didIteratorError = false;
+	var _iteratorError = undefined;
+
+	try {
+		for (var _iterator = Array.from(lis)[Symbol.iterator](), _step; !(_iteratorNormalCompletion = (_step = _iterator.next()).done); _iteratorNormalCompletion = true) {
+			li = _step.value;
+
+			if (__guard__(li.children != null ? li.children[0] : undefined, function (x) {
+				return x.nodeType;
+			}) !== 'text') {
+				li.listStyleType = 'none';
+			}
+		}
+	} catch (err) {
+		_didIteratorError = true;
+		_iteratorError = err;
+	} finally {
+		try {
+			if (!_iteratorNormalCompletion && _iterator.return) {
+				_iterator.return();
+			}
+		} finally {
+			if (_didIteratorError) {
+				throw _iteratorError;
+			}
+		}
+	}
+
+	return React.createElement(
+		OboComponent,
+		{ model: props.model, moduleData: props.moduleData },
+		React.createElement(
+			TextChunk,
+			{ className: 'obojobo-draft--chunks--list pad' },
+			React.createElement(
+				'div',
+				{ 'data-indent': data.indent },
+				renderEl(props, rootUl, 0, 0)
+			)
+		)
+	);
+};
 
 /***/ }),
 
