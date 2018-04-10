@@ -31,6 +31,27 @@ export default class MCChoice extends React.Component {
 		}
 	}
 
+	getAnsType(isCorrect, isSelected, isRight){
+		let text
+		if(isSelected){
+			text = <p>Your Answer</p>
+		}else if(isCorrect){
+			if(isRight){
+				text = <p>Another Correct Answer</p>
+			}else{
+				text = <p>Correct Answer</p>
+			}
+		}
+
+		return (<div className={
+					'answer-flag' +
+					(isSelected ? ' is-selected' : ' is-not-selected') +
+					(isCorrect ? ' is-correct' : ' is-incorrect') +
+					(isRight ? ' is-right' : ' is-not-right')}>
+					{text}
+				</div>)
+	}
+
 	render() {
 		let questionModel = this.getQuestionModel()
 		let questionId = questionModel.id
@@ -39,15 +60,23 @@ export default class MCChoice extends React.Component {
 			questionModel,
 			this.props.moduleData.navState.context
 		) || { ids: [] }
+		let score = QuestionUtil.getScoreForModel(
+			this.props.moduleData.questionState,
+			questionModel,
+			this.props.moduleData.navState.context
+		)
+		let isRight = score == 100
 
 		let isSelected = response.ids.indexOf(this.props.model.get('id')) !== -1
 
 		let isCorrect
+		let flag
 		if (this.props.mode === 'review') {
 			if (!this.props.moduleData.questionState.scores[this.props.moduleData.navState.context])
 				return <div />
 			isCorrect =
 				this.props.model.get('content').score === 100
+			flag = this.getAnsType(isCorrect,isSelected,isRight)
 		} else isCorrect = this.props.model.modelState.score === 100
 
 		return (
@@ -58,6 +87,7 @@ export default class MCChoice extends React.Component {
 					'obojobo-draft--chunks--mc-assessment--mc-choice' +
 					(isSelected ? ' is-selected' : ' is-not-selected') +
 					(isCorrect ? ' is-correct' : ' is-incorrect') +
+					(isRight ? ' is-right' : ' is-not-right') +
 					' is-mode-' +
 					this.props.mode
 				}
@@ -79,8 +109,10 @@ export default class MCChoice extends React.Component {
 
 						if (isAnswerItem) {
 							let Component = child.getComponentClass()
-							return (
+							return (<div>
+								{flag}
 								<Component key={child.get('id')} model={child} moduleData={this.props.moduleData} />
+								</div>
 							)
 						}
 					})}

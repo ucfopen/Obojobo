@@ -1,4 +1,5 @@
 @import '~styles/includes';
+$border: 1px solid transparentize($color-shadow, 0.25);
 
 .obojobo-draft--chunks--mc-assessment {
 	@keyframes fadein {
@@ -37,6 +38,18 @@
 		animation: fadein $duration-animation-default * 2;
 	}
 
+	@mixin altcorrect() {
+		content: '✔';
+		position: absolute;
+		top: 0.65em;
+		display: block;
+		color: $color-altcorrect;
+		font-size: 2.5em;
+		transform: translate(-50%, -50%);
+		left: 0.6em;
+		animation: fadein $duration-animation-default * 2;
+	}
+
 	@mixin incorrect() {
 		content: '✖';
 		position: absolute;
@@ -62,77 +75,27 @@
 		// These two rules, one for pick-all and one for the others, could be combined but
 		// don't - IE11 has a bug that applies multiple sizes in pseudo elements :(
 		&.is-response-type-pick-one .obojobo-draft--chunks--mc-assessment--mc-choice,
+		&.is-response-type-pick-all .obojobo-draft--chunks--mc-assessment--mc-choice,
 		&.is-response-type-pick-one-multiple-correct .obojobo-draft--chunks--mc-assessment--mc-choice {
 			&.is-correct {
-				&:before {
-					@include correct();
+				&.is-right{
+					background: transparentize($color-altcorrect, 0.9);
 				}
-
-				background: transparentize($color-correct, 0.9);
+				&.is-not-right{
+					background: transparentize($color-wrong, 0.9);
+				}
 			}
 			&.is-selected {
-
+				&.is-correct {
+					background: transparentize($color-correct, 0.9);
+				}
 				&.is-incorrect {
-					&:before {
-						@include incorrect();
-					}
-
 					background: transparentize($color-incorrect, 0.9);
 				}
 			}
 		}
 
-		&.is-response-type-pick-all .obojobo-draft--chunks--mc-assessment--mc-choice {
-			&.is-selected {
-				@mixin smaller() {
-					font-size: 1.25em;
-					left: 1.25em;
-					top: 1.5em;
-					letter-spacing: 0.2em;
-				}
 
-				&.is-correct {
-					&:before {
-						@include correct();
-						@include smaller();
-						content: '✔' attr(data-choice-label);
-					}
-				}
-
-				&.is-incorrect {
-					&:before {
-						@include incorrect();
-						@include smaller();
-						content: '✖' attr(data-choice-label);
-					}
-				}
-			}
-
-			&.is-not-selected {
-				@mixin smaller() {
-					font-size: 1.25em;
-					left: 1.25em;
-					top: 1.5em;
-					letter-spacing: 0.2em;
-				}
-
-				&.is-correct {
-					&:before {
-						@include correct();
-						@include smaller();
-						content: '✔' attr(data-choice-label);
-					}
-				}
-
-				&.is-incorrect {
-					&:before {
-						@include incorrect();
-						@include smaller();
-						content: '✖' attr(data-choice-label);
-					}
-				}
-			}
-		}
 	}
 
 	&.is-mode-review {
@@ -141,7 +104,7 @@
 		}
 	}
 
-	$border: 1px solid transparentize($color-shadow, 0.25);
+
 
 	.instructions {
 		$font-size: 1em;
@@ -404,5 +367,33 @@
 	.obojobo-draft--chunks--mc-assessment--mc-answer {
 		padding-top: 0;
 		padding-bottom: 0;
+	}
+}
+
+.answer-flag{
+	margin-left: -140px;
+	position: absolute;
+	color: $color-bg;
+	width: 180px;
+	text-align: center;
+	border-radius: 20px;
+	font-size: .75em;
+	&.is-not-selected{
+		&.is-correct{
+			&.is-right{
+				background-color: $color-altcorrect;
+			}
+			&.is-not-right{
+				background-color: $color-wrong;
+			}
+		}
+	}
+	&.is-selected{
+		&.is-correct{
+			background-color: $color-correct
+		}
+		&.is-incorrect{
+			background-color: $color-incorrect
+		}
 	}
 }

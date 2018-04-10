@@ -88,94 +88,22 @@
     transform: scale(0.9); }
   100% {
     transform: scale(1); } }
-  .obojobo-draft--chunks--mc-assessment.is-scored.is-response-type-pick-one .obojobo-draft--chunks--mc-assessment--mc-choice.is-correct,
-  .obojobo-draft--chunks--mc-assessment.is-scored.is-response-type-pick-one-multiple-correct .obojobo-draft--chunks--mc-assessment--mc-choice.is-correct {
+  .obojobo-draft--chunks--mc-assessment.is-scored.is-response-type-pick-one .obojobo-draft--chunks--mc-assessment--mc-choice.is-correct.is-right,
+  .obojobo-draft--chunks--mc-assessment.is-scored.is-response-type-pick-all .obojobo-draft--chunks--mc-assessment--mc-choice.is-correct.is-right,
+  .obojobo-draft--chunks--mc-assessment.is-scored.is-response-type-pick-one-multiple-correct .obojobo-draft--chunks--mc-assessment--mc-choice.is-correct.is-right {
+    background: rgba(196, 154, 3, 0.1); }
+  .obojobo-draft--chunks--mc-assessment.is-scored.is-response-type-pick-one .obojobo-draft--chunks--mc-assessment--mc-choice.is-correct.is-not-right,
+  .obojobo-draft--chunks--mc-assessment.is-scored.is-response-type-pick-all .obojobo-draft--chunks--mc-assessment--mc-choice.is-correct.is-not-right,
+  .obojobo-draft--chunks--mc-assessment.is-scored.is-response-type-pick-one-multiple-correct .obojobo-draft--chunks--mc-assessment--mc-choice.is-correct.is-not-right {
+    background: rgba(85, 85, 85, 0.1); }
+  .obojobo-draft--chunks--mc-assessment.is-scored.is-response-type-pick-one .obojobo-draft--chunks--mc-assessment--mc-choice.is-selected.is-correct,
+  .obojobo-draft--chunks--mc-assessment.is-scored.is-response-type-pick-all .obojobo-draft--chunks--mc-assessment--mc-choice.is-selected.is-correct,
+  .obojobo-draft--chunks--mc-assessment.is-scored.is-response-type-pick-one-multiple-correct .obojobo-draft--chunks--mc-assessment--mc-choice.is-selected.is-correct {
     background: rgba(56, 174, 36, 0.1); }
-    .obojobo-draft--chunks--mc-assessment.is-scored.is-response-type-pick-one .obojobo-draft--chunks--mc-assessment--mc-choice.is-correct:before,
-    .obojobo-draft--chunks--mc-assessment.is-scored.is-response-type-pick-one-multiple-correct .obojobo-draft--chunks--mc-assessment--mc-choice.is-correct:before {
-      content: '\2714';
-      position: absolute;
-      top: 0.65em;
-      display: block;
-      color: #38ae24;
-      font-size: 2.5em;
-      transform: translate(-50%, -50%);
-      left: 0.6em;
-      animation: fadein 0.4s; }
   .obojobo-draft--chunks--mc-assessment.is-scored.is-response-type-pick-one .obojobo-draft--chunks--mc-assessment--mc-choice.is-selected.is-incorrect,
+  .obojobo-draft--chunks--mc-assessment.is-scored.is-response-type-pick-all .obojobo-draft--chunks--mc-assessment--mc-choice.is-selected.is-incorrect,
   .obojobo-draft--chunks--mc-assessment.is-scored.is-response-type-pick-one-multiple-correct .obojobo-draft--chunks--mc-assessment--mc-choice.is-selected.is-incorrect {
     background: rgba(194, 31, 0, 0.1); }
-    .obojobo-draft--chunks--mc-assessment.is-scored.is-response-type-pick-one .obojobo-draft--chunks--mc-assessment--mc-choice.is-selected.is-incorrect:before,
-    .obojobo-draft--chunks--mc-assessment.is-scored.is-response-type-pick-one-multiple-correct .obojobo-draft--chunks--mc-assessment--mc-choice.is-selected.is-incorrect:before {
-      content: '\2716';
-      position: absolute;
-      top: 0.65em;
-      display: block;
-      color: #c21f00;
-      font-size: 2.5em;
-      transform: translate(-50%, -50%);
-      left: 0.6em;
-      animation: fadein 0.4s; }
-  .obojobo-draft--chunks--mc-assessment.is-scored.is-response-type-pick-all .obojobo-draft--chunks--mc-assessment--mc-choice.is-selected.is-correct:before {
-    content: '\2714';
-    position: absolute;
-    top: 0.65em;
-    display: block;
-    color: #38ae24;
-    font-size: 2.5em;
-    transform: translate(-50%, -50%);
-    left: 0.6em;
-    animation: fadein 0.4s;
-    font-size: 1.25em;
-    left: 1.25em;
-    top: 1.5em;
-    letter-spacing: 0.2em;
-    content: "\2714" attr(data-choice-label); }
-  .obojobo-draft--chunks--mc-assessment.is-scored.is-response-type-pick-all .obojobo-draft--chunks--mc-assessment--mc-choice.is-selected.is-incorrect:before {
-    content: '\2716';
-    position: absolute;
-    top: 0.65em;
-    display: block;
-    color: #c21f00;
-    font-size: 2.5em;
-    transform: translate(-50%, -50%);
-    left: 0.6em;
-    animation: fadein 0.4s;
-    font-size: 1.25em;
-    left: 1.25em;
-    top: 1.5em;
-    letter-spacing: 0.2em;
-    content: "\2716" attr(data-choice-label); }
-  .obojobo-draft--chunks--mc-assessment.is-scored.is-response-type-pick-all .obojobo-draft--chunks--mc-assessment--mc-choice.is-not-selected.is-correct:before {
-    content: '\2714';
-    position: absolute;
-    top: 0.65em;
-    display: block;
-    color: #38ae24;
-    font-size: 2.5em;
-    transform: translate(-50%, -50%);
-    left: 0.6em;
-    animation: fadein 0.4s;
-    font-size: 1.25em;
-    left: 1.25em;
-    top: 1.5em;
-    letter-spacing: 0.2em;
-    content: "\2714" attr(data-choice-label); }
-  .obojobo-draft--chunks--mc-assessment.is-scored.is-response-type-pick-all .obojobo-draft--chunks--mc-assessment--mc-choice.is-not-selected.is-incorrect:before {
-    content: '\2716';
-    position: absolute;
-    top: 0.65em;
-    display: block;
-    color: #c21f00;
-    font-size: 2.5em;
-    transform: translate(-50%, -50%);
-    left: 0.6em;
-    animation: fadein 0.4s;
-    font-size: 1.25em;
-    left: 1.25em;
-    top: 1.5em;
-    letter-spacing: 0.2em;
-    content: "\2716" attr(data-choice-label); }
   .obojobo-draft--chunks--mc-assessment.is-mode-review .result-container .result {
     animation: none; }
   .obojobo-draft--chunks--mc-assessment .instructions {
@@ -357,3 +285,20 @@
   .obojobo-draft--chunks--mc-assessment .obojobo-draft--chunks--mc-assessment--mc-answer {
     padding-top: 0;
     padding-bottom: 0; }
+
+.answer-flag {
+  margin-left: -140px;
+  position: absolute;
+  color: #ffffff;
+  width: 180px;
+  text-align: center;
+  border-radius: 20px;
+  font-size: .75em; }
+  .answer-flag.is-not-selected.is-correct.is-right {
+    background-color: #c49a03; }
+  .answer-flag.is-not-selected.is-correct.is-not-right {
+    background-color: #555555; }
+  .answer-flag.is-selected.is-correct {
+    background-color: #38ae24; }
+  .answer-flag.is-selected.is-incorrect {
+    background-color: #c21f00; }
