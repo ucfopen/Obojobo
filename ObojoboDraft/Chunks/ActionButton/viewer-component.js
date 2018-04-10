@@ -15,7 +15,7 @@ export default props => {
 		<OboComponent model={model} moduleData={props.moduleData}>
 			<TextChunk className="obojobo-draft--chunks--action-button pad">
 				<Button
-					onClick={model.processTrigger.bind(null, 'onClick')}
+					onClick={model.processTrigger.bind(model, 'onClick')}
 					value={model.modelState.label}
 					align={model.modelState.align}
 				>
