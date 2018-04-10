@@ -87,8 +87,9 @@ let endAttempt = (req, res, user, attemptId, isPreviewing) => {
 						attemptStart.initAssessmentUsedQuestions(attempt.state.qb, assessmentProperties.childrenMap)
 					}
 				}
-				reloadState(attemptId, attempt.draftId, assessmentProperties, attempt)
-
+				return reloadState(attemptId, attempt.draftId, assessmentProperties, attempt)
+			})
+			.then(() => {
 				return completeAttempt(
 					attempt.assessmentId,
 					attemptId,
@@ -400,7 +401,7 @@ let reloadState = (attemptId, draftId, assessmentProperties, attempt) => {
 		Assessment.updateAttemptState(attemptId, state);
 
 		// Reload state for all previous attempts
-		Assessment.getAttempts(assessmentProperties.user.id, draftId, assessmentProperties.id)
+		return Assessment.getAttempts(assessmentProperties.user.id, draftId, assessmentProperties.id)
 		.then(result => {
 			result.attempts.map(attempt => {
 				attempt.state.qb = recreateChosenQuestionTree(attempt.state.qb, assessmentProperties.draftTree)
@@ -414,8 +415,6 @@ let reloadState = (attemptId, draftId, assessmentProperties, attempt) => {
 				Assessment.updateAttemptState(attempt.attemptId, attempt.state);
 			})
 		})
-
-		return null
 	}
 
 	logger.info(`Error: Reached exceptional state while reloading state for ${attemptId}`)

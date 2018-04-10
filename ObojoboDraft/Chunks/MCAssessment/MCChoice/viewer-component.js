@@ -47,9 +47,7 @@ export default class MCChoice extends React.Component {
 			if (!this.props.moduleData.questionState.scores[this.props.moduleData.navState.context])
 				return <div />
 			isCorrect =
-				this.props.moduleData.questionState.scores[this.props.moduleData.navState.context][
-					questionId
-				].score === 100
+				this.props.model.get('content').score === 100
 		} else isCorrect = this.props.model.modelState.score === 100
 
 		return (

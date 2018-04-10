@@ -63,14 +63,14 @@
 		// don't - IE11 has a bug that applies multiple sizes in pseudo elements :(
 		&.is-response-type-pick-one .obojobo-draft--chunks--mc-assessment--mc-choice,
 		&.is-response-type-pick-one-multiple-correct .obojobo-draft--chunks--mc-assessment--mc-choice {
-			&.is-selected {
-				&.is-correct {
-					&:before {
-						@include correct();
-					}
-
-					background: transparentize($color-correct, 0.9);
+			&.is-correct {
+				&:before {
+					@include correct();
 				}
+
+				background: transparentize($color-correct, 0.9);
+			}
+			&.is-selected {
 
 				&.is-incorrect {
 					&:before {
@@ -84,6 +84,31 @@
 
 		&.is-response-type-pick-all .obojobo-draft--chunks--mc-assessment--mc-choice {
 			&.is-selected {
+				@mixin smaller() {
+					font-size: 1.25em;
+					left: 1.25em;
+					top: 1.5em;
+					letter-spacing: 0.2em;
+				}
+
+				&.is-correct {
+					&:before {
+						@include correct();
+						@include smaller();
+						content: '✔' attr(data-choice-label);
+					}
+				}
+
+				&.is-incorrect {
+					&:before {
+						@include incorrect();
+						@include smaller();
+						content: '✖' attr(data-choice-label);
+					}
+				}
+			}
+
+			&.is-not-selected {
 				@mixin smaller() {
 					font-size: 1.25em;
 					left: 1.25em;

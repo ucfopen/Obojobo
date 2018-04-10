@@ -230,7 +230,7 @@ var MCChoice = function (_React$Component) {
 			var isCorrect = void 0;
 			if (this.props.mode === 'review') {
 				if (!this.props.moduleData.questionState.scores[this.props.moduleData.navState.context]) return React.createElement('div', null);
-				isCorrect = this.props.moduleData.questionState.scores[this.props.moduleData.navState.context][questionId].score === 100;
+				isCorrect = this.props.model.get('content').score === 100;
 			} else isCorrect = this.props.model.modelState.score === 100;
 
 			return React.createElement(

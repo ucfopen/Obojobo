@@ -112,9 +112,7 @@ class AssessmentStore extends Store {
 				}
 
 				attempt.state.questions.forEach(question => {
-					if (!OboModel.models[question.id]) {
-						OboModel.create(question)
-					}
+					OboModel.create(question)
 				})
 			})
 		})

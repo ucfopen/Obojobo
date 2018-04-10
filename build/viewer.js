@@ -2207,9 +2207,7 @@ var AssessmentStore = function (_Store) {
 					}
 
 					attempt.state.questions.forEach(function (question) {
-						if (!OboModel.models[question.id]) {
-							OboModel.create(question);
-						}
+						OboModel.create(question);
 					});
 				});
 			});
