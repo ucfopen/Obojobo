@@ -82,7 +82,7 @@ $border: 1px solid transparentize($color-shadow, 0.25);
 					background: transparentize($color-altcorrect, 0.9);
 				}
 				&.is-not-right{
-					background: transparentize($color-wrong, 0.9);
+					background: transparentize($color-unchosencorrect, 0.9);
 				}
 			}
 			&.is-selected {
@@ -371,29 +371,56 @@ $border: 1px solid transparentize($color-shadow, 0.25);
 }
 
 .answer-flag{
-	margin-left: -140px;
+	&:after {
+		position: absolute;
+		left: 0;
+		top: 50%;
+		transform: translate(179px, -50%) rotate(45deg);
+		content: ' ';
+		width: 1.4em;
+		height: 1.4em;
+	}
+
+	margin-left: -160px;
 	position: absolute;
 	color: $color-bg;
-	width: 180px;
+	width: 190px;
 	text-align: center;
-	border-radius: 20px;
+	border-radius: $dimension-rounded-radius;
 	font-size: .75em;
+	top: 50%;
+	transform: translate(0, -50%);
+	 >p{
+	 	margin: 0;
+	 }
 	&.is-not-selected{
 		&.is-correct{
 			&.is-right{
 				background-color: $color-altcorrect;
+				&:after {
+					background-color: $color-altcorrect;
+				}
 			}
 			&.is-not-right{
-				background-color: $color-wrong;
+				background-color: $color-unchosencorrect;
+				&:after {
+					background-color: $color-unchosencorrect;
+				}
 			}
 		}
 	}
 	&.is-selected{
 		&.is-correct{
-			background-color: $color-correct
+			background-color: $color-correct;
+			&:after {
+				background-color: $color-correct;
+			}
 		}
 		&.is-incorrect{
-			background-color: $color-incorrect
+			background-color: $color-incorrect;
+			&:after {
+				background-color: $color-incorrect;
+			}
 		}
 	}
 }

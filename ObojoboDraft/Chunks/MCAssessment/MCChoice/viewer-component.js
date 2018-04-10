@@ -34,7 +34,11 @@ export default class MCChoice extends React.Component {
 	getAnsType(isCorrect, isSelected, isRight){
 		let text
 		if(isSelected){
-			text = <p>Your Answer</p>
+			if(isCorrect){
+				text = <p>Your Answer (Correct)</p>
+			}else{
+				text = <p>Your Answer (Incorrect)</p>
+			}
 		}else if(isCorrect){
 			if(isRight){
 				text = <p>Another Correct Answer</p>
@@ -60,11 +64,13 @@ export default class MCChoice extends React.Component {
 			questionModel,
 			this.props.moduleData.navState.context
 		) || { ids: [] }
+
 		let score = QuestionUtil.getScoreForModel(
 			this.props.moduleData.questionState,
 			questionModel,
 			this.props.moduleData.navState.context
 		)
+
 		let isRight = score == 100
 
 		let isSelected = response.ids.indexOf(this.props.model.get('id')) !== -1

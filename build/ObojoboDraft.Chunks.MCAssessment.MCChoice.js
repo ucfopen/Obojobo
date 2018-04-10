@@ -221,11 +221,19 @@ var MCChoice = function (_React$Component) {
 		value: function getAnsType(isCorrect, isSelected, isRight) {
 			var text = void 0;
 			if (isSelected) {
-				text = React.createElement(
-					'p',
-					null,
-					'Your Answer'
-				);
+				if (isCorrect) {
+					text = React.createElement(
+						'p',
+						null,
+						'Your Answer (Correct)'
+					);
+				} else {
+					text = React.createElement(
+						'p',
+						null,
+						'Your Answer (Incorrect)'
+					);
+				}
 			} else if (isCorrect) {
 				if (isRight) {
 					text = React.createElement(
@@ -256,7 +264,9 @@ var MCChoice = function (_React$Component) {
 			var questionModel = this.getQuestionModel();
 			var questionId = questionModel.id;
 			var response = QuestionUtil.getResponse(this.props.moduleData.questionState, questionModel, this.props.moduleData.navState.context) || { ids: [] };
+
 			var score = QuestionUtil.getScoreForModel(this.props.moduleData.questionState, questionModel, this.props.moduleData.navState.context);
+
 			var isRight = score == 100;
 
 			var isSelected = response.ids.indexOf(this.props.model.get('id')) !== -1;

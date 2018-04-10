@@ -287,18 +287,38 @@
     padding-bottom: 0; }
 
 .answer-flag {
-  margin-left: -140px;
+  margin-left: -160px;
   position: absolute;
   color: #ffffff;
-  width: 180px;
+  width: 190px;
   text-align: center;
-  border-radius: 20px;
-  font-size: .75em; }
+  border-radius: 0.25em;
+  font-size: .75em;
+  top: 50%;
+  transform: translate(0, -50%); }
+  .answer-flag:after {
+    position: absolute;
+    left: 0;
+    top: 50%;
+    transform: translate(179px, -50%) rotate(45deg);
+    content: ' ';
+    width: 1.4em;
+    height: 1.4em; }
+  .answer-flag > p {
+    margin: 0; }
   .answer-flag.is-not-selected.is-correct.is-right {
     background-color: #c49a03; }
+    .answer-flag.is-not-selected.is-correct.is-right:after {
+      background-color: #c49a03; }
   .answer-flag.is-not-selected.is-correct.is-not-right {
     background-color: #555555; }
+    .answer-flag.is-not-selected.is-correct.is-not-right:after {
+      background-color: #555555; }
   .answer-flag.is-selected.is-correct {
     background-color: #38ae24; }
+    .answer-flag.is-selected.is-correct:after {
+      background-color: #38ae24; }
   .answer-flag.is-selected.is-incorrect {
     background-color: #c21f00; }
+    .answer-flag.is-selected.is-incorrect:after {
+      background-color: #c21f00; }
