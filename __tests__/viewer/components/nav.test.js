@@ -1,13 +1,20 @@
+import { shallow } from 'enzyme'
 import React from 'react'
 import renderer from 'react-test-renderer'
 
 const mockStylableText = props => <div {...props} className={'mockStylableText'} />
-
+const mockScrollIntoView = jest.fn()
 // Common
 jest.mock('../../../src/scripts/common/index', () => ({
 	models: {
 		OboModel: {
-			models: {}
+			models: {
+				5: {
+					getDomEl: jest.fn(() => ({
+						scrollIntoView: mockScrollIntoView
+					}))
+				}
+			}
 		}
 	},
 	util: {
@@ -139,5 +146,68 @@ describe('Nav', () => {
 		const component = renderer.create(<Nav {...props} />)
 		let tree = component.toJSON()
 		expect(tree).toMatchSnapshot()
+	})
+
+	test('onClick link checks NavUtil.canNavigate and changes the page', () => {
+		NavUtil.getOrderedList.mockReturnValueOnce([
+			{
+				id: 5,
+				type: 'link',
+				label: 'label',
+				fullPath: 'mockFullPath',
+				flags: {
+					visited: false,
+					complete: false,
+					correct: false
+				}
+			}
+		])
+		let props = {
+			navState: {
+				open: false,
+				locked: true,
+				navTargetId: 5 // select this item
+			}
+		}
+		const el = shallow(<Nav {...props} />)
+
+		NavUtil.canNavigate.mockReturnValueOnce(false)
+		expect(NavUtil.canNavigate).not.toHaveBeenCalled()
+		el.find('li').simulate('click')
+		expect(NavUtil.canNavigate).toHaveBeenCalledWith(props.navState)
+		expect(NavUtil.gotoPath).not.toHaveBeenCalled()
+
+		NavUtil.canNavigate.mockReset()
+		expect(NavUtil.canNavigate).not.toHaveBeenCalled()
+		NavUtil.canNavigate.mockReturnValueOnce(true)
+		el.find('li').simulate('click')
+		expect(NavUtil.canNavigate).toHaveBeenCalledWith(props.navState)
+		expect(NavUtil.gotoPath).toHaveBeenCalledWith('mockFullPath')
+	})
+
+	test('onClick sub-link scrolls to the chunk', () => {
+		NavUtil.getOrderedList.mockReturnValueOnce([
+			{
+				id: 5,
+				type: 'sub-link',
+				label: 'label',
+				flags: {
+					correct: false
+				}
+			}
+		])
+		let props = {
+			navState: {
+				open: false,
+				locked: true,
+				navTargetId: 5 // select this item
+			}
+		}
+		const el = shallow(<Nav {...props} />)
+
+		NavUtil.canNavigate.mockReturnValueOnce(false)
+		expect(NavUtil.canNavigate).not.toHaveBeenCalled()
+		el.find('li').simulate('click')
+		expect(mockScrollIntoView).toHaveBeenCalledWith({ behavior: 'smooth', block: 'start' })
 	})
 })
