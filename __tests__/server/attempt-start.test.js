@@ -1,26 +1,9 @@
-import _ from 'underscore'
-import {
-  startAttempt,
-  getQuestionBankProperties,
-  createAssessmentUsedQuestionMap,
-  initAssessmentUsedQuestions,
-  chooseUnseenQuestionsSequentially,
-  chooseAllQuestionsRandomly,
-  chooseUnseenQuestionsRandomly,
-  createChosenQuestionTree,
-  getNodeQuestions,
-  getSendToClientPromises,
-  insertAttemptStartEvent
-} from '../../server/attempt-start.js'
-import testJson from '../../test-object.json'
+import { start } from 'pm2';
 
-const Draft = oboRequire('models/draft')
-const DraftNode = oboRequire('models/draft_node')
-const QUESTION_BANK_NODE_TYPE = 'ObojoboDraft.Chunks.QuestionBank'
-const QUESTION_NODE_TYPE = 'ObojoboDraft.Chunks.Question'
-
-jest.mock('../../../../insert_event.js')
+jest.mock('../../../../insert_event')
 jest.mock('../../../../logger.js')
+jest.mock('../../server/assessment')
+jest.mock('../../../../routes/api/events/create_caliper_event')
 jest.mock('../../../../db', () => {
   return {
     one: jest.fn(),
@@ -38,6 +21,33 @@ jest.mock('../../../../config', () => {
     }
   }
 })
+
+const _ = require('underscore')
+const {
+  startAttempt,
+  getQuestionBankProperties,
+  createAssessmentUsedQuestionMap,
+  initAssessmentUsedQuestions,
+  chooseUnseenQuestionsSequentially,
+  chooseAllQuestionsRandomly,
+  chooseUnseenQuestionsRandomly,
+  createChosenQuestionTree,
+  getNodeQuestions,
+  getSendToClientPromises,
+  insertAttemptStartCaliperEvent
+} = require('../../server/attempt-start.js')
+const testJson = require('../../test-object.json')
+const Assessment = require('../../server/assessment')
+const insertEvent = require('../../../../insert_event')
+const db = require('../../../../db')
+const Draft = oboRequire('models/draft')
+const DraftNode = oboRequire('models/draft_node')
+const createCaliperEvent = oboRequire('routes/api/events/create_caliper_event')
+const logAndRespondToUnexpected = require('../../server/util').logAndRespondToUnexpected
+const QUESTION_BANK_NODE_TYPE = 'ObojoboDraft.Chunks.QuestionBank'
+const QUESTION_NODE_TYPE = 'ObojoboDraft.Chunks.Question'
+const ERROR_ATTEMPT_LIMIT_REACHED = 'Attempt limit reached'
+const ERROR_UNEXPECTED_DB_ERROR = 'Unexpected DB error'
 
 describe('start attempt route', () => {
   let mockDraft
@@ -244,16 +254,112 @@ describe('start attempt route', () => {
     expect(getSendToClientPromises(mockAttemptState, {}, {})).toEqual([])
   })
 
-  test.skip('startAttempt inserts a new attempt, creates events and replies with an expected object', () => {
-    // TODO: Test the new insertStartAttemptEvent function from attempt-start (call
-    // it and expect insertEvent to have been called with some object)
+  test('startAttempt inserts a new attempt, creates events and replies with an expected object', () => {
+    const createAssessmentAttemptStartedEvent = jest.fn().mockReturnValue('mockCaliperPayload')
+    insertEvent.mockReturnValueOnce('mockInsertResult')
+    createCaliperEvent.mockReturnValueOnce({
+      createAssessmentAttemptStartedEvent
+    })
+    Date.prototype.toISOString = () => 'date'
+
+    const r = insertAttemptStartCaliperEvent(
+      'mockAttemptId',
+      1,
+      'mockUserId',
+      'mockDraftId',
+      'mockAssessmentId',
+      true,
+      'mockHostname',
+      'mockRemoteAddress'
+    )
+
+    // Make sure we get the result of insertEvent back
+    expect(r).toBe('mockInsertResult')
+
+    // Make sure insertEvent was called
+    expect(insertEvent).toHaveBeenCalledTimes(1)
+
+    expect(createAssessmentAttemptStartedEvent).toHaveBeenCalledWith({
+      "actor": {
+        "id": "mockUserId",
+        "type": "user"
+      },
+      "assessmentId": "mockAssessmentId",
+      "attemptId": "mockAttemptId",
+      "draftId": "mockDraftId",
+      "extensions": {
+        "count": 1
+      },
+      "isPreviewMode": true
+    })
+
+    expect(insertEvent).toHaveBeenCalledWith({
+      "action": "assessment:attemptStart",
+      "actorTime": "date",
+      "caliperPayload": "mockCaliperPayload",
+      "draftId": "mockDraftId",
+      "eventVersion": "1.1.0",
+      "ip": "mockRemoteAddress",
+      "metadata": {},
+      "payload": {
+        "attemptCount": 1,
+        "attemptId":
+          "mockAttemptId"
+      },
+      "userId": "mockUserId"
+    })
   })
 
-  test.skip('calling startAttempt when no attempts remain rejects with an expected error', () => {
+  test('calling startAttempt when no attempts remain rejects with an expected error', () => {
+    const mockReq = {
+      requireCurrentUser: jest.fn(() => Promise.resolve({
+        user: {
+          canViewEditor: true
+        }
+      })),
+      body: {
+        draftId: 'mockDraftId',
+        assessmentId: 'mockAssessmentId'
+      }
+    }
 
+    const mockRes = { reject: jest.fn() }
+
+    const mockAssessmentNode = {
+      getChildNodeById: jest.fn(() => ({
+        node: {
+          content: {
+            // Number of attempts the user is allowed (what we're testing here).
+            attempts: 1
+          }
+        },
+        children: [
+          {},
+          {
+            childrenSet: ['test', 'test1'],
+            toObject: jest.fn()
+          }
+        ]
+      }))
+    }
+
+    Draft.fetchById = jest.fn(() => Promise.resolve(mockAssessmentNode))
+    Assessment.getNumberAttemptsTaken = jest.fn(() => 1)
+
+    startAttempt(mockReq, mockRes).then(() => {
+      expect(mockRes.reject).toHaveBeenCalledWith(ERROR_ATTEMPT_LIMIT_REACHED)
+    })
   })
 
   test.skip('an unexpected error in startAttempt calls logAndRespondToUnexpected with expected values', () => {
+    const mockReq = {
+      requireCurrentUser: jest.fn(() => {
+        throw new Error(ERROR_UNEXPECTED_DB_ERROR)
+      })
+    }
 
+    startAttempt(mockReq, {}).catch(error => {
+      console.log(error)
+    })
   })
 })

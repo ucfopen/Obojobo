@@ -28,7 +28,7 @@ const startAttempt = (req, res) => {
 	}
 	let attemptState
 
-	req
+	return req
 		.requireCurrentUser()
 		.then(user => {
 			assessmentProperties.user = user
@@ -111,7 +111,7 @@ const startAttempt = (req, res) => {
 		.then(result => {
 			res.success(result)
 
-			return insertAttemptStartEvent(
+			return insertAttemptStartCaliperEvent(
 				result.attemptId,
 				assessmentProperties.numAttemptsaken,
 				assessmentProperties.user.id,
@@ -238,7 +238,7 @@ const getSendToClientPromises = (attemptState, req, res) => {
 	return promises
 }
 
-const insertAttemptStartEvent = (
+const insertAttemptStartCaliperEvent = (
 	attemptId,
 	numAttemptsTaken,
 	userId,
@@ -285,5 +285,5 @@ module.exports = {
 	createChosenQuestionTree,
 	getNodeQuestions,
 	getSendToClientPromises,
-	insertAttemptStartEvent
+	insertAttemptStartCaliperEvent
 }
