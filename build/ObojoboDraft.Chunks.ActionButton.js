@@ -174,7 +174,7 @@ exports.default = function (props) {
 			React.createElement(
 				Button,
 				{
-					onClick: model.processTrigger.bind(null, 'onClick'),
+					onClick: model.processTrigger.bind(model, 'onClick'),
 					value: model.modelState.label,
 					align: model.modelState.align
 				},

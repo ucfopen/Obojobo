@@ -223,20 +223,10 @@ var OboModel = function (_Backbone$Model) {
 
 			return null;
 		}
-
-		// getDraftId() {
-		// 	let root = this.getRoot();
-		// 	if ((root == null)) { return null; }
-
-		// 	return root.get('_id');
-		// }
-
 	}, {
 		key: 'processTrigger',
 		value: function processTrigger(type) {
 			var _this2 = this;
-
-			// console.log 'PROCESS TRIGGER', type, @triggers
 
 			var index = void 0;
 			var triggersToDelete = [];

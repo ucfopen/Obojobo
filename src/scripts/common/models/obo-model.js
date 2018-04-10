@@ -82,16 +82,7 @@ class OboModel extends Backbone.Model {
 		return null
 	}
 
-	// getDraftId() {
-	// 	let root = this.getRoot();
-	// 	if ((root == null)) { return null; }
-
-	// 	return root.get('_id');
-	// }
-
 	processTrigger(type) {
-		// console.log 'PROCESS TRIGGER', type, @triggers
-
 		let index
 		let triggersToDelete = []
 

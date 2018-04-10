@@ -126,11 +126,10 @@ class AssessmentStore extends Store {
 
 	tryStartAttempt(id) {
 		let model = OboModel.models[id]
+
 		return APIUtil.startAttempt(model.getRoot(), model, {})
 			.then(res => {
-				console.log(1)
 				if (res.status === 'error') {
-					console.log(2)
 					switch (res.value.message.toLowerCase()) {
 						case 'attempt limit reached':
 							ErrorUtil.show(
@@ -143,10 +142,9 @@ class AssessmentStore extends Store {
 							ErrorUtil.errorResponse(res)
 					}
 				} else {
-					console.log(3, res.value)
 					this.startAttempt(res.value)
 				}
-				console.log(4)
+
 				this.triggerChange()
 			})
 			.catch(e => {
@@ -155,25 +153,24 @@ class AssessmentStore extends Store {
 	}
 
 	startAttempt(startAttemptResp) {
-
 		let id = startAttemptResp.assessmentId
 		let model = OboModel.models[id]
-		console.log(5, model.children)
+
 		model.children.at(1).children.reset()
 		for (let child of Array.from(startAttemptResp.state.questions)) {
 			let c = OboModel.create(child)
 			model.children.at(1).children.add(c)
 		}
-		console.log(7)
+
 		if (!this.state.assessments[id]) {
 			this.state.assessments[id] = getNewAssessmentObject(id)
 		}
 
 		this.state.assessments[id].current = startAttemptResp
-console.log(8)
+
 		NavUtil.rebuildMenu(model.getRoot())
 		NavUtil.goto(id)
-console.log(9)
+
 		model.processTrigger('onStartAttempt')
 		Dispatcher.trigger('assessment:attemptStarted', id)
 	}
