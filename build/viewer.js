@@ -79,7 +79,7 @@ module.exports = Common;
 "use strict";
 
 
-var isDate = __webpack_require__(13);
+var isDate = __webpack_require__(12);
 
 var MILLISECONDS_IN_HOUR = 3600000;
 var MILLISECONDS_IN_MINUTE = 60000;
@@ -1226,318 +1226,6 @@ Object.defineProperty(exports, "__esModule", {
 	value: true
 });
 
-var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
-
-var _Common = __webpack_require__(0);
-
-var _Common2 = _interopRequireDefault(_Common);
-
-var _navUtil = __webpack_require__(2);
-
-var _navUtil2 = _interopRequireDefault(_navUtil);
-
-var _apiUtil = __webpack_require__(3);
-
-var _apiUtil2 = _interopRequireDefault(_apiUtil);
-
-function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
-
-function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
-
-function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
-
-function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
-
-var Store = _Common2.default.flux.Store;
-var Dispatcher = _Common2.default.flux.Dispatcher;
-var OboModel = _Common2.default.models.OboModel;
-
-var NavStore = function (_Store) {
-	_inherits(NavStore, _Store);
-
-	function NavStore() {
-		_classCallCheck(this, NavStore);
-
-		var item = void 0,
-		    oldNavTargetId = void 0;
-
-		var _this = _possibleConstructorReturn(this, (NavStore.__proto__ || Object.getPrototypeOf(NavStore)).call(this, 'navstore'));
-
-		Dispatcher.on({
-			'nav:rebuildMenu': function navRebuildMenu(payload) {
-				_this.buildMenu(payload.value.model);
-				return _this.triggerChange();
-			},
-			'nav:gotoPath': function navGotoPath(payload) {
-				oldNavTargetId = _this.state.navTargetId;
-				if (_this.gotoItem(_this.state.itemsByPath[payload.value.path])) {
-					return _apiUtil2.default.postEvent(OboModel.getRoot(), 'nav:gotoPath', '1.0.0', {
-						from: oldNavTargetId,
-						to: _this.state.itemsByPath[payload.value.path].id
-					});
-				}
-			},
-			'nav:setFlag': function navSetFlag(payload) {
-				var navItem = this.state.itemsById[payload.value.id];
-				navItem.flags[payload.value.flagName] = payload.value.flagValue;
-
-				return this.triggerChange();
-			},
-
-			'nav:prev': function navPrev(payload) {
-				oldNavTargetId = _this.state.navTargetId;
-				var prev = _navUtil2.default.getPrev(_this.state);
-				if (_this.gotoItem(prev)) {
-					return _apiUtil2.default.postEvent(OboModel.getRoot(), 'nav:prev', '1.0.0', {
-						from: oldNavTargetId,
-						to: prev.id
-					});
-				}
-			},
-			'nav:next': function navNext(payload) {
-				oldNavTargetId = _this.state.navTargetId;
-				var next = _navUtil2.default.getNext(_this.state);
-				if (_this.gotoItem(next)) {
-					return _apiUtil2.default.postEvent(OboModel.getRoot(), 'nav:next', '1.0.0', {
-						from: oldNavTargetId,
-						to: next.id
-					});
-				}
-			},
-			'nav:goto': function navGoto(payload) {
-				oldNavTargetId = _this.state.navTargetId;
-				if (_this.gotoItem(_this.state.itemsById[payload.value.id])) {
-					return _apiUtil2.default.postEvent(OboModel.getRoot(), 'nav:goto', '1.0.0', {
-						from: oldNavTargetId,
-						to: _this.state.itemsById[payload.value.id].id
-					});
-				}
-			},
-			'nav:lock': function navLock(payload) {
-				_apiUtil2.default.postEvent(OboModel.getRoot(), 'nav:lock', '1.0.0');
-				return _this.setAndTrigger({ locked: true });
-			},
-			'nav:unlock': function navUnlock(payload) {
-				_apiUtil2.default.postEvent(OboModel.getRoot(), 'nav:unlock', '1.0.0');
-				return _this.setAndTrigger({ locked: false });
-			},
-			'nav:close': function navClose(payload) {
-				_apiUtil2.default.postEvent(OboModel.getRoot(), 'nav:close', '1.0.0');
-				return _this.setAndTrigger({ open: false });
-			},
-			'nav:open': function navOpen(payload) {
-				_apiUtil2.default.postEvent(OboModel.getRoot(), 'nav:open', '1.0.0');
-				return _this.setAndTrigger({ open: true });
-			},
-			'nav:toggle': function navToggle(payload) {
-				var updatedState = { open: !_this.state.open };
-				_apiUtil2.default.postEvent(OboModel.getRoot(), 'nav:toggle', '1.0.0', updatedState);
-				return _this.setAndTrigger(updatedState);
-			},
-			'nav:openExternalLink': function navOpenExternalLink(payload) {
-				window.open(payload.value.url);
-				return _this.triggerChange();
-			},
-			'nav:showChildren': function navShowChildren(payload) {
-				item = _this.state.itemsById[payload.value.id];
-				item.showChildren = true;
-				return _this.triggerChange();
-			},
-			'nav:hideChildren': function navHideChildren(payload) {
-				item = _this.state.itemsById[payload.value.id];
-				item.showChildren = false;
-				return _this.triggerChange();
-			},
-			'score:set': function scoreSet(payload) {
-				var navItem = _this.state.itemsById[payload.value.id];
-				if (!navItem) {
-					return;
-				}
-
-				return _navUtil2.default.setFlag(payload.value.id, 'correct', payload.value.score === 100);
-			}
-		}, _this);
-		return _this;
-	}
-
-	_createClass(NavStore, [{
-		key: 'init',
-		value: function init(model, startingId, startingPath, visitId) {
-			var viewState = arguments.length > 4 && arguments[4] !== undefined ? arguments[4] : {};
-
-			this.state = {
-				items: {},
-				itemsById: {},
-				itemsByPath: {},
-				itemsByFullPath: {},
-				navTargetHistory: [],
-				navTargetId: null,
-				locked: viewState['nav:isLocked'] != null ? viewState['nav:isLocked'].value : false,
-				open: viewState['nav:isOpen'] != null ? viewState['nav:isOpen'].value : true,
-				visitId: visitId
-			};
-
-			this.buildMenu(model);
-			// console.clear()
-			// console.log @state.items
-			// debugger
-			_navUtil2.default.gotoPath(startingPath);
-
-			if (startingId != null) {
-				return _navUtil2.default.goto(startingId);
-			} else {
-				var first = _navUtil2.default.getFirst(this.state);
-
-				if (first && first.id) _navUtil2.default.goto(first.id);
-			}
-		}
-	}, {
-		key: 'buildMenu',
-		value: function buildMenu(model) {
-			this.state.itemsById = {};
-			this.state.itemsByPath = {};
-			this.state.itemsByFullPath = {};
-			this.state.items = this.generateNav(model);
-		}
-	}, {
-		key: 'gotoItem',
-		value: function gotoItem(navItem) {
-			if (!navItem) {
-				return false;
-			}
-
-			if (this.state.navTargetId != null) {
-				if (this.state.navTargetId === navItem.id) {
-					return;
-				}
-
-				var navTargetModel = __guard__(_navUtil2.default.getNavTargetModel(this.state), function (x) {
-					return x.processTrigger('onNavExit');
-				});
-				this.state.navTargetHistory.push(this.state.navTargetId);
-				this.state.itemsById[this.state.navTargetId].showChildren = false;
-			}
-
-			if (navItem.showChildrenOnNavigation) {
-				navItem.showChildren = true;
-			}
-			window.history.pushState({}, document.title, navItem.fullFlatPath);
-			this.state.navTargetId = navItem.id;
-			_navUtil2.default.getNavTargetModel(this.state).processTrigger('onNavEnter');
-			this.triggerChange();
-			return true;
-		}
-	}, {
-		key: 'generateNav',
-		value: function generateNav(model, indent) {
-			if (!model) return {};
-
-			if (indent == null) {
-				indent = '';
-			}
-			var item = _Common2.default.Store.getItemForType(model.get('type'));
-
-			var navItem = null;
-			if (item.getNavItem != null) {
-				navItem = item.getNavItem(model);
-			}
-
-			if (navItem == null) {
-				navItem = {};
-			}
-
-			navItem = Object.assign({
-				type: 'hidden',
-				label: '',
-				path: '',
-				showChildren: true,
-				showChildrenOnNavigation: true
-			}, navItem);
-
-			navItem.flags = [];
-			navItem.children = [];
-			navItem.id = model.get('id');
-			navItem.fullPath = [].concat(navItem.path).filter(function (item) {
-				return item !== '';
-			});
-			navItem.flags = {
-				visited: false,
-				complete: false,
-				correct: false
-			};
-
-			var _iteratorNormalCompletion = true;
-			var _didIteratorError = false;
-			var _iteratorError = undefined;
-
-			try {
-				for (var _iterator = Array.from(model.children.models)[Symbol.iterator](), _step; !(_iteratorNormalCompletion = (_step = _iterator.next()).done); _iteratorNormalCompletion = true) {
-					var child = _step.value;
-
-					var childNavItem = this.generateNav(child, indent + '_');
-					navItem.children.push(childNavItem);
-					childNavItem.fullPath = navItem.fullPath.concat(childNavItem.fullPath).filter(function (item) {
-						return item !== '';
-					});
-
-					// flatPath = ['view', model.getRoot().get('_id'), childNavItem.fullPath.join('/')].join('/')
-					var flatPath = childNavItem.fullPath.join('/');
-					childNavItem.flatPath = flatPath;
-					childNavItem.fullFlatPath = ['/view', model.getRoot().get('draftId'), 'visit', this.state.visitId, flatPath].join('/');
-					this.state.itemsByPath[flatPath] = childNavItem;
-					this.state.itemsByFullPath[childNavItem.fullFlatPath] = childNavItem;
-				}
-			} catch (err) {
-				_didIteratorError = true;
-				_iteratorError = err;
-			} finally {
-				try {
-					if (!_iteratorNormalCompletion && _iterator.return) {
-						_iterator.return();
-					}
-				} finally {
-					if (_didIteratorError) {
-						throw _iteratorError;
-					}
-				}
-			}
-
-			this.state.itemsById[model.get('id')] = navItem;
-
-			return navItem;
-		}
-	}, {
-		key: '_clearFlags',
-		value: function _clearFlags() {
-			return Array.from(this.state.items).map(function (item) {
-				return item.flags.complete = false;
-			});
-		}
-	}]);
-
-	return NavStore;
-}(Store);
-
-var navStore = new NavStore();
-window.__ns = navStore;
-exports.default = navStore;
-
-
-function __guard__(value, transform) {
-	return typeof value !== 'undefined' && value !== null ? transform(value) : undefined;
-}
-
-/***/ }),
-/* 11 */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-
-
-Object.defineProperty(exports, "__esModule", {
-	value: true
-});
-
 var _Common = __webpack_require__(0);
 
 var _Common2 = _interopRequireDefault(_Common);
@@ -1576,7 +1264,7 @@ var ScoreUtil = {
 exports.default = ScoreUtil;
 
 /***/ }),
-/* 12 */
+/* 11 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -1629,7 +1317,7 @@ function getISOYear(dirtyDate) {
 module.exports = getISOYear;
 
 /***/ }),
-/* 13 */
+/* 12 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -1657,7 +1345,7 @@ function isDate(argument) {
 module.exports = isDate;
 
 /***/ }),
-/* 14 */
+/* 13 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -1726,7 +1414,7 @@ module.exports = warning;
 /* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(4)))
 
 /***/ }),
-/* 15 */
+/* 14 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -1795,7 +1483,7 @@ var Logo = function (_React$Component) {
 exports.default = Logo;
 
 /***/ }),
-/* 16 */
+/* 15 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -1815,7 +1503,7 @@ var _assessmentUtil = __webpack_require__(20);
 
 var _assessmentUtil2 = _interopRequireDefault(_assessmentUtil);
 
-var _scoreUtil = __webpack_require__(11);
+var _scoreUtil = __webpack_require__(10);
 
 var _scoreUtil2 = _interopRequireDefault(_scoreUtil);
 
@@ -1831,7 +1519,7 @@ var _navUtil = __webpack_require__(2);
 
 var _navUtil2 = _interopRequireDefault(_navUtil);
 
-var _ltiNetworkStates = __webpack_require__(17);
+var _ltiNetworkStates = __webpack_require__(16);
 
 var _ltiNetworkStates2 = _interopRequireDefault(_ltiNetworkStates);
 
@@ -2169,7 +1857,7 @@ var assessmentStore = new AssessmentStore();
 exports.default = assessmentStore;
 
 /***/ }),
-/* 17 */
+/* 16 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -2183,6 +1871,318 @@ exports.default = {
 	AWAITING_SEND_ASSESSMENT_SCORE_RESPONSE: 'awaitingSendAssessmentScoreResponse'
 	//AWAITING_READ_RESULT_RESPONSE: 'awaitingReadResultResponse'
 };
+
+/***/ }),
+/* 17 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+Object.defineProperty(exports, "__esModule", {
+	value: true
+});
+
+var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+
+var _Common = __webpack_require__(0);
+
+var _Common2 = _interopRequireDefault(_Common);
+
+var _navUtil = __webpack_require__(2);
+
+var _navUtil2 = _interopRequireDefault(_navUtil);
+
+var _apiUtil = __webpack_require__(3);
+
+var _apiUtil2 = _interopRequireDefault(_apiUtil);
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
+
+function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
+
+var Store = _Common2.default.flux.Store;
+var Dispatcher = _Common2.default.flux.Dispatcher;
+var OboModel = _Common2.default.models.OboModel;
+
+var NavStore = function (_Store) {
+	_inherits(NavStore, _Store);
+
+	function NavStore() {
+		_classCallCheck(this, NavStore);
+
+		var item = void 0,
+		    oldNavTargetId = void 0;
+
+		var _this = _possibleConstructorReturn(this, (NavStore.__proto__ || Object.getPrototypeOf(NavStore)).call(this, 'navstore'));
+
+		Dispatcher.on({
+			'nav:rebuildMenu': function navRebuildMenu(payload) {
+				_this.buildMenu(payload.value.model);
+				return _this.triggerChange();
+			},
+			'nav:gotoPath': function navGotoPath(payload) {
+				oldNavTargetId = _this.state.navTargetId;
+				if (_this.gotoItem(_this.state.itemsByPath[payload.value.path])) {
+					return _apiUtil2.default.postEvent(OboModel.getRoot(), 'nav:gotoPath', '1.0.0', {
+						from: oldNavTargetId,
+						to: _this.state.itemsByPath[payload.value.path].id
+					});
+				}
+			},
+			'nav:setFlag': function navSetFlag(payload) {
+				var navItem = this.state.itemsById[payload.value.id];
+				navItem.flags[payload.value.flagName] = payload.value.flagValue;
+
+				return this.triggerChange();
+			},
+
+			'nav:prev': function navPrev(payload) {
+				oldNavTargetId = _this.state.navTargetId;
+				var prev = _navUtil2.default.getPrev(_this.state);
+				if (_this.gotoItem(prev)) {
+					return _apiUtil2.default.postEvent(OboModel.getRoot(), 'nav:prev', '1.0.0', {
+						from: oldNavTargetId,
+						to: prev.id
+					});
+				}
+			},
+			'nav:next': function navNext(payload) {
+				oldNavTargetId = _this.state.navTargetId;
+				var next = _navUtil2.default.getNext(_this.state);
+				if (_this.gotoItem(next)) {
+					return _apiUtil2.default.postEvent(OboModel.getRoot(), 'nav:next', '1.0.0', {
+						from: oldNavTargetId,
+						to: next.id
+					});
+				}
+			},
+			'nav:goto': function navGoto(payload) {
+				oldNavTargetId = _this.state.navTargetId;
+				if (_this.gotoItem(_this.state.itemsById[payload.value.id])) {
+					return _apiUtil2.default.postEvent(OboModel.getRoot(), 'nav:goto', '1.0.0', {
+						from: oldNavTargetId,
+						to: _this.state.itemsById[payload.value.id].id
+					});
+				}
+			},
+			'nav:lock': function navLock(payload) {
+				_apiUtil2.default.postEvent(OboModel.getRoot(), 'nav:lock', '1.0.0');
+				return _this.setAndTrigger({ locked: true });
+			},
+			'nav:unlock': function navUnlock(payload) {
+				_apiUtil2.default.postEvent(OboModel.getRoot(), 'nav:unlock', '1.0.0');
+				return _this.setAndTrigger({ locked: false });
+			},
+			'nav:close': function navClose(payload) {
+				_apiUtil2.default.postEvent(OboModel.getRoot(), 'nav:close', '1.0.0');
+				return _this.setAndTrigger({ open: false });
+			},
+			'nav:open': function navOpen(payload) {
+				_apiUtil2.default.postEvent(OboModel.getRoot(), 'nav:open', '1.0.0');
+				return _this.setAndTrigger({ open: true });
+			},
+			'nav:toggle': function navToggle(payload) {
+				var updatedState = { open: !_this.state.open };
+				_apiUtil2.default.postEvent(OboModel.getRoot(), 'nav:toggle', '1.0.0', updatedState);
+				return _this.setAndTrigger(updatedState);
+			},
+			'nav:openExternalLink': function navOpenExternalLink(payload) {
+				window.open(payload.value.url);
+				return _this.triggerChange();
+			},
+			'nav:showChildren': function navShowChildren(payload) {
+				item = _this.state.itemsById[payload.value.id];
+				item.showChildren = true;
+				return _this.triggerChange();
+			},
+			'nav:hideChildren': function navHideChildren(payload) {
+				item = _this.state.itemsById[payload.value.id];
+				item.showChildren = false;
+				return _this.triggerChange();
+			},
+			'score:set': function scoreSet(payload) {
+				var navItem = _this.state.itemsById[payload.value.id];
+				if (!navItem) {
+					return;
+				}
+
+				return _navUtil2.default.setFlag(payload.value.id, 'correct', payload.value.score === 100);
+			}
+		}, _this);
+		return _this;
+	}
+
+	_createClass(NavStore, [{
+		key: 'init',
+		value: function init(model, startingId, startingPath, visitId) {
+			var viewState = arguments.length > 4 && arguments[4] !== undefined ? arguments[4] : {};
+
+			this.state = {
+				items: {},
+				itemsById: {},
+				itemsByPath: {},
+				itemsByFullPath: {},
+				navTargetHistory: [],
+				navTargetId: null,
+				locked: viewState['nav:isLocked'] != null ? viewState['nav:isLocked'].value : false,
+				open: viewState['nav:isOpen'] != null ? viewState['nav:isOpen'].value : true,
+				visitId: visitId
+			};
+
+			this.buildMenu(model);
+			// console.clear()
+			// console.log @state.items
+			// debugger
+			_navUtil2.default.gotoPath(startingPath);
+
+			if (startingId != null) {
+				return _navUtil2.default.goto(startingId);
+			} else {
+				var first = _navUtil2.default.getFirst(this.state);
+
+				if (first && first.id) _navUtil2.default.goto(first.id);
+			}
+		}
+	}, {
+		key: 'buildMenu',
+		value: function buildMenu(model) {
+			this.state.itemsById = {};
+			this.state.itemsByPath = {};
+			this.state.itemsByFullPath = {};
+			this.state.items = this.generateNav(model);
+		}
+	}, {
+		key: 'gotoItem',
+		value: function gotoItem(navItem) {
+			if (!navItem) {
+				return false;
+			}
+
+			if (this.state.navTargetId != null) {
+				if (this.state.navTargetId === navItem.id) {
+					return;
+				}
+
+				var navTargetModel = __guard__(_navUtil2.default.getNavTargetModel(this.state), function (x) {
+					return x.processTrigger('onNavExit');
+				});
+				this.state.navTargetHistory.push(this.state.navTargetId);
+				this.state.itemsById[this.state.navTargetId].showChildren = false;
+			}
+
+			if (navItem.showChildrenOnNavigation) {
+				navItem.showChildren = true;
+			}
+			window.history.pushState({}, document.title, navItem.fullFlatPath);
+			this.state.navTargetId = navItem.id;
+			_navUtil2.default.getNavTargetModel(this.state).processTrigger('onNavEnter');
+			this.triggerChange();
+			return true;
+		}
+	}, {
+		key: 'generateNav',
+		value: function generateNav(model, indent) {
+			if (!model) return {};
+
+			if (indent == null) {
+				indent = '';
+			}
+			var item = _Common2.default.Store.getItemForType(model.get('type'));
+
+			var navItem = null;
+			if (item.getNavItem != null) {
+				navItem = item.getNavItem(model);
+			}
+
+			if (navItem == null) {
+				navItem = {};
+			}
+
+			navItem = Object.assign({
+				type: 'hidden',
+				label: '',
+				path: '',
+				showChildren: true,
+				showChildrenOnNavigation: true
+			}, navItem);
+
+			navItem.flags = [];
+			navItem.children = [];
+			navItem.id = model.get('id');
+			navItem.fullPath = [].concat(navItem.path).filter(function (item) {
+				return item !== '';
+			});
+			navItem.flags = {
+				visited: false,
+				complete: false,
+				correct: false
+			};
+
+			var _iteratorNormalCompletion = true;
+			var _didIteratorError = false;
+			var _iteratorError = undefined;
+
+			try {
+				for (var _iterator = Array.from(model.children.models)[Symbol.iterator](), _step; !(_iteratorNormalCompletion = (_step = _iterator.next()).done); _iteratorNormalCompletion = true) {
+					var child = _step.value;
+
+					var childNavItem = this.generateNav(child, indent + '_');
+					navItem.children.push(childNavItem);
+					childNavItem.fullPath = navItem.fullPath.concat(childNavItem.fullPath).filter(function (item) {
+						return item !== '';
+					});
+
+					// flatPath = ['view', model.getRoot().get('_id'), childNavItem.fullPath.join('/')].join('/')
+					var flatPath = childNavItem.fullPath.join('/');
+					childNavItem.flatPath = flatPath;
+					childNavItem.fullFlatPath = ['/view', model.getRoot().get('draftId'), 'visit', this.state.visitId, flatPath].join('/');
+					this.state.itemsByPath[flatPath] = childNavItem;
+					this.state.itemsByFullPath[childNavItem.fullFlatPath] = childNavItem;
+				}
+			} catch (err) {
+				_didIteratorError = true;
+				_iteratorError = err;
+			} finally {
+				try {
+					if (!_iteratorNormalCompletion && _iterator.return) {
+						_iterator.return();
+					}
+				} finally {
+					if (_didIteratorError) {
+						throw _iteratorError;
+					}
+				}
+			}
+
+			this.state.itemsById[model.get('id')] = navItem;
+
+			return navItem;
+		}
+	}, {
+		key: '_clearFlags',
+		value: function _clearFlags() {
+			return Array.from(this.state.items).map(function (item) {
+				return item.flags.complete = false;
+			});
+		}
+	}]);
+
+	return NavStore;
+}(Store);
+
+var navStore = new NavStore();
+window.__ns = navStore;
+exports.default = navStore;
+
+
+function __guard__(value, transform) {
+	return typeof value !== 'undefined' && value !== null ? transform(value) : undefined;
+}
 
 /***/ }),
 /* 18 */
@@ -2209,7 +2209,7 @@ var _questionUtil = __webpack_require__(5);
 
 var _questionUtil2 = _interopRequireDefault(_questionUtil);
 
-var _scoreUtil = __webpack_require__(11);
+var _scoreUtil = __webpack_require__(10);
 
 var _scoreUtil2 = _interopRequireDefault(_scoreUtil);
 
@@ -3218,7 +3218,7 @@ module.exports = differenceInCalendarDays;
 
 var getDayOfYear = __webpack_require__(27);
 var getISOWeek = __webpack_require__(28);
-var getISOYear = __webpack_require__(12);
+var getISOYear = __webpack_require__(11);
 var parse = __webpack_require__(1);
 var isValid = __webpack_require__(29);
 var enLocale = __webpack_require__(33);
@@ -3629,7 +3629,7 @@ module.exports = getISOWeek;
 "use strict";
 
 
-var isDate = __webpack_require__(13);
+var isDate = __webpack_require__(12);
 
 /**
  * @category Common Helpers
@@ -3951,7 +3951,7 @@ module.exports = startOfDay;
 "use strict";
 
 
-var getISOYear = __webpack_require__(12);
+var getISOYear = __webpack_require__(11);
 var startOfISOWeek = __webpack_require__(6);
 
 /**
@@ -4179,7 +4179,7 @@ var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol
 
 if (process.env.NODE_ENV !== 'production') {
   var invariant = __webpack_require__(9);
-  var warning = __webpack_require__(14);
+  var warning = __webpack_require__(13);
   var ReactPropTypesSecret = __webpack_require__(7);
   var loggedTypeFailures = {};
 }
@@ -4306,7 +4306,7 @@ var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol
 
 var emptyFunction = __webpack_require__(8);
 var invariant = __webpack_require__(9);
-var warning = __webpack_require__(14);
+var warning = __webpack_require__(13);
 var assign = __webpack_require__(38);
 
 var ReactPropTypesSecret = __webpack_require__(7);
@@ -5866,15 +5866,11 @@ var _createClass = function () { function defineProperties(target, props) { for 
 
 __webpack_require__(54);
 
-var _navStore = __webpack_require__(10);
-
-var _navStore2 = _interopRequireDefault(_navStore);
-
 var _navUtil = __webpack_require__(2);
 
 var _navUtil2 = _interopRequireDefault(_navUtil);
 
-var _logo = __webpack_require__(15);
+var _logo = __webpack_require__(14);
 
 var _logo2 = _interopRequireDefault(_logo);
 
@@ -5902,6 +5898,9 @@ function _possibleConstructorReturn(self, call) { if (!self) { throw new Referen
 
 function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
 
+// import navStore from '../../viewer/stores/nav-store'
+
+
 var getBackgroundImage = _Common2.default.util.getBackgroundImage;
 var OboModel = _Common2.default.models.OboModel;
 var StyleableText = _Common2.default.text.StyleableText;
@@ -5924,84 +5923,126 @@ var Nav = function (_React$Component) {
 	_createClass(Nav, [{
 		key: 'onClick',
 		value: function onClick(item) {
-			if (item.type === 'link') {
-				if (!_navUtil2.default.canNavigate(this.props.navState)) return;
-				return _navUtil2.default.gotoPath(item.fullPath);
-			} else if (item.type === 'sub-link') {
-				var el = OboModel.models[item.id].getDomEl();
-				return el.scrollIntoView({ behavior: 'smooth', block: 'start' });
+			switch (item.type) {
+				case 'link':
+					if (!_navUtil2.default.canNavigate(this.props.navState)) return;
+					_navUtil2.default.gotoPath(item.fullPath);
+					break;
+
+				case 'sub-link':
+					var el = OboModel.models[item.id].getDomEl();
+					el.scrollIntoView({ behavior: 'smooth', block: 'start' });
+					break;
 			}
 		}
 	}, {
-		key: 'toggleNav',
-		value: function toggleNav() {
-			return _navUtil2.default.toggle();
-		}
-	}, {
-		key: 'onMouseOver',
-		value: function onMouseOver() {
-			return this.setState({ hover: true });
-		}
-	}, {
-		key: 'onMouseOut',
-		value: function onMouseOut() {
-			return this.setState({ hover: false });
+		key: 'setHoverState',
+		value: function setHoverState(hover) {
+			this.setState({ hover: hover });
 		}
 	}, {
 		key: 'renderLabel',
 		value: function renderLabel(label) {
 			if (label instanceof StyleableText) {
 				return React.createElement(StyleableTextComponent, { text: label });
-			} else {
-				return React.createElement(
-					'a',
-					null,
-					label
-				);
 			}
+
+			return React.createElement(
+				'a',
+				null,
+				label
+			);
+		}
+	}, {
+		key: 'renderLink',
+		value: function renderLink(index, isSelected, item, lockEl) {
+			var className = 'link';
+			className += isSelected ? ' is-selected' : ' is-not-select';
+			className += item.flags.visited ? ' is-visited' : ' is-not-visited';
+			className += item.flags.complete ? ' is-complete' : ' is-not-complete';
+			className += item.flags.correct ? ' is-correct' : ' is-not-correct';
+
+			return React.createElement(
+				'li',
+				{ key: index, onClick: this.onClick.bind(this, item), className: className },
+				this.renderLabel(item.label),
+				lockEl
+			);
+		}
+	}, {
+		key: 'renderSubLink',
+		value: function renderSubLink(index, isSelected, item, lockEl) {
+			var className = 'sub-link';
+			className += isSelected ? ' is-selected' : ' is-not-select';
+			className += item.flags.correct ? ' is-correct' : ' is-not-correct';
+
+			return React.createElement(
+				'li',
+				{ key: index, onClick: this.onClick.bind(this, item), className: className },
+				this.renderLabel(item.label),
+				lockEl
+			);
+		}
+	}, {
+		key: 'renderHeading',
+		value: function renderHeading(index, item) {
+			return React.createElement(
+				'li',
+				{ key: index, className: 'heading is-not-select' },
+				this.renderLabel(item.label)
+			);
+		}
+	}, {
+		key: 'renderSep',
+		value: function renderSep(index) {
+			return React.createElement(
+				'li',
+				{ key: index, className: 'seperator' },
+				React.createElement('hr', null)
+			);
 		}
 	}, {
 		key: 'render',
 		value: function render() {
 			var _this2 = this;
 
-			var bg = void 0,
-			    lockEl = void 0;
-			if (this.props.navState.open || this.state.hover) {
-				bg = getBackgroundImage(_arrow2.default);
-			} else {
-				bg = getBackgroundImage(_hamburger2.default);
-			}
+			var navState = this.props.navState;
+			var lockEl = void 0;
+			var isOpenOrHovered = navState.open || this.state.hover;
+			var bg = getBackgroundImage(isOpenOrHovered ? _arrow2.default : _hamburger2.default);
 
-			if (this.props.navState.locked) {
+			if (navState.locked) {
 				lockEl = React.createElement(
 					'div',
 					{ className: 'lock-icon' },
 					React.createElement('img', { src: _lockIcon2.default })
 				);
-			} else {
-				lockEl = null;
 			}
 
-			var list = _navUtil2.default.getOrderedList(this.props.navState);
+			var list = _navUtil2.default.getOrderedList(navState);
+
+			var className = 'viewer--components--nav';
+			className += navState.locked ? ' is-locked' : ' is-unlocked';
+			className += navState.open ? ' is-open' : ' is-closed';
+			className += navState.disabled ? ' is-disabled' : ' is-enabled';
+
+			var style = {
+				backgroundImage: bg,
+				transform: !navState.open && this.state.hover ? 'rotate(180deg)' : '',
+				filter: navState.open ? 'invert(100%)' : 'invert(0%)'
+			};
 
 			return React.createElement(
 				'div',
-				{
-					className: 'viewer--components--nav' + (this.props.navState.locked ? ' is-locked' : ' is-unlocked') + (this.props.navState.open ? ' is-open' : ' is-closed') + (this.props.navState.disabled ? ' is-disabled' : ' is-enabled')
-				},
+				{ className: className },
 				React.createElement(
 					'button',
 					{
 						className: 'toggle-button',
-						onClick: this.toggleNav.bind(this),
-						onMouseOver: this.onMouseOver.bind(this),
-						onMouseOut: this.onMouseOut.bind(this),
-						style: {
-							backgroundImage: bg,
-							transform: !this.props.navState.open && this.state.hover ? 'rotate(180deg)' : '',
-							filter: this.props.navState.open ? 'invert(100%)' : 'invert(0%)'
-						}
+						style: style,
+						onClick: _navUtil2.default.toggle,
+						onMouseOver: this.setHoverState.bind(this, true),
+						onMouseOut: this.setHoverState.bind(this, false)
 					},
 					'Toggle Navigation Menu'
 				),
@@ -6011,54 +6052,16 @@ var Nav = function (_React$Component) {
 					list.map(function (item, index) {
 						switch (item.type) {
 							case 'heading':
-								var isSelected = false;
-								return React.createElement(
-									'li',
-									{
-										key: index,
-										className: 'heading' + (isSelected ? ' is-selected' : ' is-not-select')
-									},
-									_this2.renderLabel(item.label)
-								);
-								break;
+								return _this2.renderHeading(index, item);
 
 							case 'link':
-								var isSelected = _this2.props.navState.navTargetId === item.id;
-								//var isPrevVisited = this.props.navState.navTargetHistory.indexOf(item.id) > -1
-								return React.createElement(
-									'li',
-									{
-										key: index,
-										onClick: _this2.onClick.bind(_this2, item),
-										className: 'link' + (isSelected ? ' is-selected' : ' is-not-select') + (item.flags.visited ? ' is-visited' : ' is-not-visited') + (item.flags.complete ? ' is-complete' : ' is-not-complete') + (item.flags.correct ? ' is-correct' : ' is-not-correct')
-									},
-									_this2.renderLabel(item.label),
-									lockEl
-								);
-								break;
+								return _this2.renderLink(index, navState.navTargetId === item.id, item, lockEl);
 
 							case 'sub-link':
-								var isSelected = _this2.props.navState.navTargetIndex === index;
-
-								return React.createElement(
-									'li',
-									{
-										key: index,
-										onClick: _this2.onClick.bind(_this2, item),
-										className: 'sub-link' + (isSelected ? ' is-selected' : ' is-not-select') + (item.flags.correct ? ' is-correct' : ' is-not-correct')
-									},
-									_this2.renderLabel(item.label),
-									lockEl
-								);
-								break;
+								return _this2.renderSubLink(index, navState.navTargetIndex === index, item, lockEl);
 
 							case 'seperator':
-								return React.createElement(
-									'li',
-									{ key: index, className: 'seperator' },
-									React.createElement('hr', null)
-								);
-								break;
+								return _this2.renderSep(index);
 						}
 					})
 				),
@@ -6113,7 +6116,7 @@ var _apiUtil = __webpack_require__(3);
 
 var _apiUtil2 = _interopRequireDefault(_apiUtil);
 
-var _logo = __webpack_require__(15);
+var _logo = __webpack_require__(14);
 
 var _logo2 = _interopRequireDefault(_logo);
 
@@ -6125,11 +6128,11 @@ var _questionStore = __webpack_require__(18);
 
 var _questionStore2 = _interopRequireDefault(_questionStore);
 
-var _assessmentStore = __webpack_require__(16);
+var _assessmentStore = __webpack_require__(15);
 
 var _assessmentStore2 = _interopRequireDefault(_assessmentStore);
 
-var _navStore = __webpack_require__(10);
+var _navStore = __webpack_require__(17);
 
 var _navStore2 = _interopRequireDefault(_navStore);
 
@@ -6698,15 +6701,15 @@ var _scoreStore = __webpack_require__(19);
 
 var _scoreStore2 = _interopRequireDefault(_scoreStore);
 
-var _assessmentStore = __webpack_require__(16);
+var _assessmentStore = __webpack_require__(15);
 
 var _assessmentStore2 = _interopRequireDefault(_assessmentStore);
 
-var _ltiNetworkStates = __webpack_require__(17);
+var _ltiNetworkStates = __webpack_require__(16);
 
 var _ltiNetworkStates2 = _interopRequireDefault(_ltiNetworkStates);
 
-var _navStore = __webpack_require__(10);
+var _navStore = __webpack_require__(17);
 
 var _navStore2 = _interopRequireDefault(_navStore);
 
@@ -6722,7 +6725,7 @@ var _navUtil = __webpack_require__(2);
 
 var _navUtil2 = _interopRequireDefault(_navUtil);
 
-var _scoreUtil = __webpack_require__(11);
+var _scoreUtil = __webpack_require__(10);
 
 var _scoreUtil2 = _interopRequireDefault(_scoreUtil);
 
