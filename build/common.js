@@ -8313,18 +8313,13 @@ var _createClass = function () { function defineProperties(target, props) { for 
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
 var makeRequest = function makeRequest(method, url, data, callback) {
-	if (data == null) {
-		data = null;
-	}
 	if (callback == null) {
 		callback = function callback() {};
 	}
-	var request = new XMLHttpRequest();
 
-	request.addEventListener('load', callback); //(event) ->
-	// callback Module.createFromDescriptor({ id:moduleId, chunks:JSON.parse(request.responseText) })
-
-	request.open(method, url, true);
+	if (data == null) {
+		data = null;
+	}
 
 	if (data != null) {
 		var a = [];
@@ -8333,11 +8328,12 @@ var makeRequest = function makeRequest(method, url, data, callback) {
 			a.push(k + '=' + v);
 		}
 		data = a.join('&');
-
-		return request.send(data);
-	} else {
-		return request.send();
 	}
+
+	var request = new XMLHttpRequest();
+	request.addEventListener('load', callback);
+	request.open(method, url, true);
+	return request.send(data);
 };
 
 var APIModule = function () {
@@ -8365,7 +8361,6 @@ var APIChunk = function () {
 	_createClass(APIChunk, [{
 		key: 'move',
 		value: function move(chunkMoved, chunkBefore, callback) {
-			console.log(arguments);
 			var beforeId = chunkBefore != null ? chunkBefore.get('id') : null;
 			return makeRequest('POST', '/api/chunk/' + chunkMoved.get('id') + '/move_before', { before_chunk_id: beforeId }, callback);
 		}
