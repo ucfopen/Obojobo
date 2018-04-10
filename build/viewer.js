@@ -659,16 +659,10 @@ exports.default = NavUtil;
 Object.defineProperty(exports, "__esModule", {
 	value: true
 });
-var createParsedJsonPromise = function createParsedJsonPromise(promise) {
-	return new Promise(function (resolve, reject) {
-		return promise.then(function (res) {
-			return res.json();
-		}).then(function (json) {
-			if (json.status === 'error') console.log(json.value);
-			return resolve(json);
-		}).catch(function (error) {
-			return reject(error);
-		});
+var processJsonResults = function processJsonResults(res) {
+	return Promise.resolve(res.json()).then(function (json) {
+		if (json.status === 'error') console.log(json.value);
+		return json;
 	});
 };
 
@@ -697,7 +691,7 @@ var APIUtil = {
 		});
 	},
 	postEvent: function postEvent(lo, action, eventVersion, payload) {
-		return createParsedJsonPromise(APIUtil.post('/api/events', {
+		return APIUtil.post('/api/events', {
 			event: {
 				action: action,
 				draft_id: lo.get('draftId'),
@@ -705,9 +699,9 @@ var APIUtil = {
 				event_version: eventVersion,
 				payload: payload
 			}
-		})
+		}).then(processJsonResults)
 		// TODO: Send Caliper event to client host.
-		).then(function (res) {
+		.then(function (res) {
 			if (res && res.status === 'ok' && res.value) {
 				parent.postMessage(res.value, '*');
 			}
@@ -719,36 +713,36 @@ var APIUtil = {
 		return APIUtil.postEvent(lo, 'saveState', state);
 	},
 	getDraft: function getDraft(id) {
-		return createParsedJsonPromise(fetch('/api/drafts/' + id));
+		return fetch('/api/drafts/' + id).then(processJsonResults);
 	},
 	getAttempts: function getAttempts(lo) {
-		return createParsedJsonPromise(APIUtil.get('/api/drafts/' + lo.get('draftId') + '/attempts'));
+		return APIUtil.get('/api/drafts/' + lo.get('draftId') + '/attempts').then(processJsonResults);
 	},
 	requestStart: function requestStart(visitId, draftId) {
-		return createParsedJsonPromise(APIUtil.post('/api/visits/start', {
+		return APIUtil.post('/api/visits/start', {
 			visitId: visitId,
 			draftId: draftId
-		}));
+		}).then(processJsonResults);
 	},
-	startAttempt: function startAttempt(lo, assessment, questions) {
-		return createParsedJsonPromise(APIUtil.post('/api/assessments/attempt/start', {
+	startAttempt: function startAttempt(lo, assessment) {
+		return APIUtil.post('/api/assessments/attempt/start', {
 			draftId: lo.get('draftId'),
 			assessmentId: assessment.get('id')
-		}));
+		}).then(processJsonResults);
 	},
 	endAttempt: function endAttempt(attempt) {
-		return createParsedJsonPromise(APIUtil.post('/api/assessments/attempt/' + attempt.attemptId + '/end'));
+		return APIUtil.post('/api/assessments/attempt/' + attempt.attemptId + '/end').then(processJsonResults);
 	},
 	resendLTIAssessmentScore: function resendLTIAssessmentScore(lo, assessment) {
-		return createParsedJsonPromise(APIUtil.post('/api/lti/sendAssessmentScore', {
+		return APIUtil.post('/api/lti/sendAssessmentScore', {
 			draftId: lo.get('_id'),
 			assessmentId: assessment.get('id')
-		}));
+		}).then(processJsonResults);
 	},
 	clearPreviewScores: function clearPreviewScores(lo) {
-		return createParsedJsonPromise(APIUtil.post('/api/assessments/clear-preview-scores', {
+		return APIUtil.post('/api/assessments/clear-preview-scores', {
 			draftId: lo.get('draftId')
-		}));
+		}).then(processJsonResults);
 	}
 };
 
