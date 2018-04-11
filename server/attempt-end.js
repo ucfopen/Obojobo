@@ -406,22 +406,15 @@ let reloadState = (attemptId, draftId, assessmentProperties, attempt) => {
 		return Assessment.getAttempts(assessmentProperties.user.id, draftId, assessmentProperties.id)
 		.then(result => {
 			result.attempts.map(attempt => {
-				logger.info(`Elli Log 91`)
 				attempt.state.qb = recreateChosenQuestionTree(attempt.state.qb, assessmentProperties.draftTree)
-
-				logger.info(`Elli Log 92`)
 				let newQuestions = []
 
-				logger.info(`Elli Log 93`)
 				attempt.state.questions.map(question => {
 					newQuestions.push(getNodeQuestion(question.id, assessmentProperties.draftTree))
 				})
 
-				logger.info(`Elli Log 94`)
 				attempt.state.questions = newQuestions;
 
-
-				logger.info(`Elli Log 95`)
 				Assessment.updateAttemptState(attempt.attemptId, attempt.state);
 			})
 		})
@@ -431,7 +424,7 @@ let reloadState = (attemptId, draftId, assessmentProperties, attempt) => {
 	return null
 }
 
-const recreateChosenQuestionTree = (node, assessmentNode) => {
+let recreateChosenQuestionTree = (node, assessmentNode) => {
 	if (node.type === QUESTION_NODE_TYPE) {
 		return getNodeQuestion(node.id,assessmentNode)
 	}
@@ -447,7 +440,7 @@ const recreateChosenQuestionTree = (node, assessmentNode) => {
 	return node;
 }
 // Pulls down a single question from the draft
-const getNodeQuestion = (nodeId, assessmentNode) => {
+let getNodeQuestion = (nodeId, assessmentNode) => {
 	return assessmentNode.getChildNodeById(nodeId).toObject()
 }
 
@@ -461,5 +454,8 @@ module.exports = {
 	completeAttempt,
 	insertAttemptEndEvents,
 	sendLTIHighestAssessmentScore,
-	insertAttemptScoredEvents
+	insertAttemptScoredEvents,
+	reloadState,
+	recreateChosenQuestionTree,
+	getNodeQuestion
 }

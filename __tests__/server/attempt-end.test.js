@@ -8,8 +8,12 @@ import {
 	updateAttempt,
 	insertAttemptEndEvents,
 	sendLTIScore,
-	insertAttemptScoredEvents
-} from '../../server/attempt-end'
+	insertAttemptScoredEvents,
+	getNodeQuestion,
+	recreateChosenQuestionTree,
+	reloadState
+} from '../../server/attempt-end.js'
+
 import config from '../../../../config'
 import db from '../../../../db'
 import DraftModel from '../../../../models/draft'
@@ -17,7 +21,13 @@ import Assessment from '../../server/assessment'
 import insertEvent from '../../../../insert_event'
 import lti from '../../../../lti'
 
+import testJson from '../../test-object.json'
+
+const Draft = oboRequire('models/draft')
+const DraftNode = oboRequire('models/draft_node')
+
 jest.mock('uuid')
+
 
 jest.mock('../../../../config', () => {
 	return {
@@ -48,16 +58,25 @@ jest.mock('../../../../db', () => {
 
 jest.mock('../../../../insert_event')
 
-jest.mock('../../../../models/draft')
-
 jest.mock('../../server/assessment', () => {
 	return {
 		getCompletedAssessmentAttemptHistory: jest.fn(),
-		updateAttempt: jest.fn()
+		updateAttempt: jest.fn(),
+		updateAttemptState: jest.fn(),
+		getAttempts: jest.fn()
 	}
 })
 
 describe('Attempt End', () => {
+	const initMockUsedQuestionMap = map => {
+		map.set('qb1', 0)
+		map.set('qb1.q1', 0)
+		map.set('qb1.q2', 0)
+		map.set('qb2', 0)
+		map.set('qb2.q1', 0)
+		map.set('qb2.q2', 0)
+	}
+
 	beforeEach(() => {
 		jest.resetAllMocks()
 	})
@@ -594,5 +613,232 @@ describe('Attempt End', () => {
 
 	test.skip('insertAttemptScoredEvents creates a correct caliper event and internal event', () => {
 		//@TODO
+	})
+
+	test('getNodeQuestion reloads score', () => {
+		const mockDraft = new Draft(testJson)
+		const mockQuestion = {
+			"id": "qb1.q1",
+			"type": "ObojoboDraft.Chunks.Question",
+			"children": [{
+				"id": "e3d455d5-80dd-4df8-87cf-594218016f44",
+				"type": "ObojoboDraft.Chunks.Text",
+				"content": {},
+				"children": []
+				},{
+				"id": "qb1-q1-mca",
+				"type": "ObojoboDraft.Chunks.MCAssessment",
+				"content": {},
+				"children": [{
+					"id": "qb1-q1-mca-mc1",
+					"type": "ObojoboDraft.Chunks.MCAssessment.MCChoice",
+					"content": {"score": 0}
+				}]
+			}]
+		}
+
+		expect(mockQuestion.id).toBe("qb1.q1")
+		expect(mockQuestion.children[1].children[0].content.score).toBe(0)
+
+		let reloadedQuestion = getNodeQuestion(mockQuestion.id, mockDraft)
+
+		expect(reloadedQuestion.id).toBe(mockQuestion.id)
+		expect(reloadedQuestion.children[1].children[0].content.score).toBe(100)
+	})
+
+	test('recreateChosenQuestionTree parses down a one-level question bank', () => {
+		const mockDraft = new Draft(testJson)
+		const mockQB = {
+			"id":"qb.lv1",
+			"type":"ObojoboDraft.Chunks.QuestionBank",
+			"children":[
+				{"id": "qb1.q1",
+				"type": "ObojoboDraft.Chunks.Question",
+				"children":[]
+				}
+			]
+		}
+
+		expect(mockQB.children.length).toBe(1)
+		expect(mockQB.children[0].children.length).toBe(0)
+
+		let traversedQB = recreateChosenQuestionTree(mockQB, mockDraft)
+
+		expect(mockQB.children.length).toBe(1)
+		expect(mockQB.children[0].children.length).not.toBe(0)
+	})
+
+	test('recreateChosenQuestionTree parses down a multi-level question bank', () => {
+		const mockDraft = new Draft(testJson)
+		const mockQB = {
+			"id":"qb.lv1",
+			"type":"ObojoboDraft.Chunks.QuestionBank",
+			"children":[
+				{"id":"qb.lv2",
+				"type":"ObojoboDraft.Chunks.QuestionBank",
+				"children":[
+					{"id":"qb.lv3",
+					"type":"ObojoboDraft.Chunks.QuestionBank",
+					"children":[
+						{"id": "qb1.q1",
+						"type": "ObojoboDraft.Chunks.Question",
+						"children":[]}
+					]}
+				]}
+			]
+		}
+
+		expect(mockQB.children.length).toBe(1)
+		expect(mockQB.children[0].children.length).toBe(1)
+		expect(mockQB.children[0].children[0].children.length).toBe(1)
+		expect(mockQB.children[0].children[0].children[0].children.length).toBe(0)
+
+		let traversedQB = recreateChosenQuestionTree(mockQB, mockDraft)
+
+		expect(mockQB.children.length).toBe(1)
+		expect(mockQB.children[0].children.length).toBe(1)
+		expect(mockQB.children[0].children[0].children.length).toBe(1)
+		expect(mockQB.children[0].children[0].children[0].children.length).not.toBe(0)
+	})
+
+	test('reloadState does not reload when reviews are not allowed', () => {
+		const mockProperties = {}
+		const mockAttempt = {
+			"assessmentModel":{
+				"node":{
+					"content":{
+						"review":"never"
+					}
+				}
+			}
+		}
+
+		let response = reloadState(0, 0, mockProperties, mockAttempt)
+
+		expect(response).toBe(null)
+	})
+
+	test('reloadState does not reload when reviews are allowed after attempts, but it is not the last attempt', () => {
+		const mockProperties = {}
+		const mockAttempt = {
+			"number":1,
+			"assessmentModel":{
+				"node":{
+					"content":{
+						"review":"afterAttempts",
+						"attempts":3
+					}
+				}
+			}
+		}
+
+		let response = reloadState(0, 0, mockProperties, mockAttempt)
+
+		expect(response).toBe(null)
+	})
+
+	test('reloadState reloads only one when reviews are always allowed', () => {
+		const mockDraft = new Draft(testJson)
+		const assessmentNode = mockDraft.getChildNodeById('assessment')
+		const assessmentQbTree = assessmentNode.children[1].toObject()
+		const mockUsedQuestionMap = new Map()
+		initMockUsedQuestionMap(mockUsedQuestionMap)
+
+		mockUsedQuestionMap.set('qb2', 1)
+		mockUsedQuestionMap.set('qb2.q1', 1)
+		mockUsedQuestionMap.set('qb2.q2', 1)
+
+		const mockProperties = {
+			draftTree: mockDraft,
+			id: null,
+			oboNode: assessmentNode,
+			nodeChildrenIds: null,
+			assessmentQBTree: assessmentQbTree,
+			attemptHistory: null,
+			numAttemptsTaken: null,
+			childrenMap: mockUsedQuestionMap
+		}
+		const mockAttempt = {
+			"number":1,
+			"assessmentModel":{
+				"node":{
+					"content":{
+						"review":"always",
+						"attempts":3
+					}
+				}
+			}
+		}
+
+		let response = reloadState(0, 0, mockProperties, mockAttempt)
+
+		expect(Assessment.updateAttemptState).toHaveBeenCalled()
+	})
+
+	test('reloadState reloads all when reviews are allowed after last', () => {
+		const mockDraft = new Draft(testJson)
+		const assessmentNode = mockDraft.getChildNodeById('assessment')
+		const assessmentQbTree = assessmentNode.children[1].toObject()
+		const mockUsedQuestionMap = new Map()
+		initMockUsedQuestionMap(mockUsedQuestionMap)
+
+		mockUsedQuestionMap.set('qb2', 1)
+		mockUsedQuestionMap.set('qb2.q1', 1)
+		mockUsedQuestionMap.set('qb2.q2', 1)
+
+		const mockProperties = {
+			user: {"id":0},
+			draftTree: mockDraft,
+			id: 0,
+			oboNode: assessmentNode,
+			nodeChildrenIds: null,
+			assessmentQBTree: assessmentQbTree,
+			attemptHistory: null,
+			numAttemptsTaken: null,
+			childrenMap: mockUsedQuestionMap
+		}
+		const mockAttempt = {
+			"number":3,
+			"assessmentModel":{
+				"node":{
+					"content":{
+						"review":"afterAttempts",
+						"attempts":3
+					}
+				}
+			}
+		}
+
+		Assessment.getAttempts.mockImplementationOnce(() => Promise.resolve({
+			"attempts":[
+				{"state":
+					{"qb": {
+						"id":"qb.lv1",
+						"type":"ObojoboDraft.Chunks.QuestionBank",
+						"children":[
+							{"id":"qb.lv2",
+							"type":"ObojoboDraft.Chunks.QuestionBank",
+							"children":[
+								{"id":"qb.lv3",
+								"type":"ObojoboDraft.Chunks.QuestionBank",
+								"children":[
+									{"id": "qb1.q1",
+									"type": "ObojoboDraft.Chunks.Question",
+									"children":[]}
+								]}
+							]}
+						]
+					},
+					"questions": [
+						{"id": "qb1.q1"}
+					]
+				}
+			}]
+		}))
+
+		let response = reloadState(0, 0, mockProperties, mockAttempt)
+
+		expect(Assessment.updateAttemptState).toHaveBeenCalled()
+		expect(Assessment.getAttempts).toHaveBeenCalled()
 	})
 })
