@@ -126,7 +126,7 @@ describe('start attempt route', () => {
   it('can choose to display unseen question banks and questions sequentially', () => {
     const mockAssessmentProperties = {
       oboNode: { draftTree: mockDraft },
-      childrenMap: mockUsedQuestionMap
+      questionUsesMap: mockUsedQuestionMap
     }
 
     mockUsedQuestionMap.set('qb2', 1)
@@ -159,7 +159,7 @@ describe('start attempt route', () => {
 
     const mockAssessmentProperties = {
       oboNode: { draftTree: mockDraft },
-      childrenMap: {}
+      questionUsesMap: {}
     }
 
     expect(chooseAllQuestionsRandomly(mockAssessmentProperties, 'qb', 2).map(node => node.id)).toEqual(['qb2', 'qb1'])
@@ -175,7 +175,7 @@ describe('start attempt route', () => {
 
     const mockAssessmentProperties = {
       oboNode: { draftTree: mockDraft },
-      childrenMap: mockUsedQuestionMap
+      questionUsesMap: mockUsedQuestionMap
     }
 
     expect(chooseUnseenQuestionsRandomly(mockAssessmentProperties, 'qb', 2).map(node => node.id)).toEqual(['qb2', 'qb1'])
@@ -193,7 +193,7 @@ describe('start attempt route', () => {
 
     const mockAssessmentProperties = {
       oboNode: assessmentNode,
-      childrenMap: mockUsedQuestionMap
+      questionUsesMap: mockUsedQuestionMap
     }
 
     // Question bank should start with both children (qb1 and 1b2)
