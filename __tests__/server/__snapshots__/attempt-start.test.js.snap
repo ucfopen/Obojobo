@@ -1,6 +1,6 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
-exports[`start attempt route can choose to display question banks and questions sequentially 1`] = `
+exports[`start attempt route can choose to display unseen question banks and questions sequentially 1`] = `
 Array [
   Object {
     "children": Array [
@@ -406,7 +406,7 @@ Array [
 ]
 `;
 
-exports[`start attempt route can choose to display question banks and questions sequentially 2`] = `
+exports[`start attempt route can choose to display unseen question banks and questions sequentially 2`] = `
 Array [
   Object {
     "children": Array [
@@ -507,7 +507,7 @@ Array [
 ]
 `;
 
-exports[`start attempt route can choose to display question banks and questions sequentially 3`] = `
+exports[`start attempt route can choose to display unseen question banks and questions sequentially 3`] = `
 Array [
   Object {
     "children": Array [
@@ -704,7 +704,7 @@ Array [
 ]
 `;
 
-exports[`start attempt route can choose to display question banks and questions sequentially 4`] = `
+exports[`start attempt route can choose to display unseen question banks and questions sequentially 4`] = `
 Array [
   Object {
     "children": Array [
