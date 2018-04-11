@@ -52,6 +52,8 @@ const ERROR_UNEXPECTED_DB_ERROR = 'Unexpected DB error'
 describe('start attempt route', () => {
   let mockDraft
   let mockUsedQuestionMap
+  let mockReq
+  let mockRes
 
   beforeEach(() => {
     mockDraft = new Draft(testJson)
@@ -63,6 +65,9 @@ describe('start attempt route', () => {
     mockUsedQuestionMap.set('qb2', 0)
     mockUsedQuestionMap.set('qb2.q1', 0)
     mockUsedQuestionMap.set('qb2.q2', 0)
+
+    mockReq = {}
+    mockRes = {}
   })
 
   it('can retrieve question bank properties with attributes set', () => {
@@ -310,8 +315,8 @@ describe('start attempt route', () => {
     })
   })
 
-  test('calling startAttempt when no attempts remain rejects with an expected error', () => {
-    const mockReq = {
+  test('calling startAttempt when no attempts remain rejects with an expected error', done => {
+    mockReq = {
       requireCurrentUser: jest.fn(() => Promise.resolve({
         user: {
           canViewEditor: true
@@ -323,7 +328,7 @@ describe('start attempt route', () => {
       }
     }
 
-    const mockRes = { reject: jest.fn() }
+    mockRes = { reject: jest.fn() }
 
     const mockAssessmentNode = {
       getChildNodeById: jest.fn(() => ({
@@ -348,18 +353,28 @@ describe('start attempt route', () => {
 
     startAttempt(mockReq, mockRes).then(() => {
       expect(mockRes.reject).toHaveBeenCalledWith(ERROR_ATTEMPT_LIMIT_REACHED)
+      done()
     })
   })
 
-  test.skip('an unexpected error in startAttempt calls logAndRespondToUnexpected with expected values', () => {
-    const mockReq = {
-      requireCurrentUser: jest.fn(() => {
-        throw new Error(ERROR_UNEXPECTED_DB_ERROR)
-      })
+  test('an unexpected error in startAttempt calls logAndRespondToUnexpected with expected values', done => {
+    mockReq = {
+      requireCurrentUser: jest.fn(() => Promise.resolve({
+        user: {
+          canViewEditor: true
+        }
+      }))
     }
 
-    startAttempt(mockReq, {}).catch(error => {
-      console.log(error)
+    mockRes = { unexpected: jest.fn() }
+
+    Draft.fetchById = jest.fn(() => {
+      throw new Error(ERROR_UNEXPECTED_DB_ERROR)
+    })
+
+    startAttempt(mockReq, mockRes).then(() => {
+      expect(mockRes.unexpected).toHaveBeenCalledWith(ERROR_UNEXPECTED_DB_ERROR)
+      done()
     })
   })
 })
