@@ -133,10 +133,6 @@ export default class Assessment extends React.Component {
 	}
 
 	render() {
-		let recentScore = AssessmentUtil.getLastAttemptScoreForModel(
-			this.props.moduleData.assessmentState,
-			this.props.model
-		)
 		let assessmentScore = AssessmentUtil.getAssessmentScoreForModel(
 			this.props.moduleData.assessmentState,
 			this.props.model

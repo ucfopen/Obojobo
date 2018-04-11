@@ -24,23 +24,4 @@
 
 .obojobo-draft--sections--assessment--results-modal {
 	background: $color-bg2;
-
-	.dialog-content > .score-report-box {
-		border-radius: $dimension-rounded-radius;
-		background: $color-bg;
-		padding: 1em 2em;
-		margin-bottom: 1em;
-
-		h2 {
-			margin-top: 0;
-			margin-bottom: 0.25em;
-			font-weight: normal;
-			font-size: 1em;
-		}
-	}
-
-	.change-notice {
-		font-size: 0.75em;
-		font-weight: bold;
-	}
 }

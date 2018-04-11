@@ -238,7 +238,7 @@ describe('AssessmentRubric', () => {
 		})
 		expect(ar.getAssessmentScoreInfoForAttempt(3, [70, 60, 50])).toEqual({
 			attemptNumber: 1,
-			attemptScore: 70,
+			attemptScore: 50,
 			status: 'unableToPass',
 			assessmentScore: 70,
 			rewardTotal: 0,

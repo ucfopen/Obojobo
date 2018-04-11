@@ -63,7 +63,7 @@
 /******/ 	__webpack_require__.p = "build/";
 /******/
 /******/ 	// Load entry module and return exports
-/******/ 	return __webpack_require__(__webpack_require__.s = 64);
+/******/ 	return __webpack_require__(__webpack_require__.s = 73);
 /******/ })
 /************************************************************************/
 /******/ ([
@@ -79,7 +79,7 @@ module.exports = Common;
 "use strict";
 
 
-var isDate = __webpack_require__(13);
+var isDate = __webpack_require__(15);
 
 var MILLISECONDS_IN_HOUR = 3600000;
 var MILLISECONDS_IN_MINUTE = 60000;
@@ -975,297 +975,15 @@ exports.default = APIUtil;
 Object.defineProperty(exports, "__esModule", {
 	value: true
 });
-
-var _Common = __webpack_require__(0);
-
-var _Common2 = _interopRequireDefault(_Common);
-
-function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
-
-var Dispatcher = _Common2.default.flux.Dispatcher;
-var OboModel = _Common2.default.models.OboModel;
-
-
-var QuestionUtil = {
-	setResponse: function setResponse(id, response, targetId, context, assessmentId, attemptId) {
-		return Dispatcher.trigger('question:setResponse', {
-			value: {
-				id: id,
-				response: response,
-				targetId: targetId,
-				context: context,
-				assessmentId: assessmentId,
-				attemptId: attemptId
-			}
-		});
-	},
-	clearResponse: function clearResponse(id, context) {
-		return Dispatcher.trigger('question:clearResponse', {
-			value: {
-				id: id,
-				context: context
-			}
-		});
-	},
-	setData: function setData(id, key, value) {
-		return Dispatcher.trigger('question:setData', {
-			value: {
-				key: id + ':' + key,
-				value: value
-			}
-		});
-	},
-	clearData: function clearData(id, key) {
-		return Dispatcher.trigger('question:clearData', {
-			value: {
-				key: id + ':' + key
-			}
-		});
-	},
-	showExplanation: function showExplanation(id) {
-		return Dispatcher.trigger('question:showExplanation', {
-			value: { id: id }
-		});
-	},
-	hideExplanation: function hideExplanation(id, actor) {
-		return Dispatcher.trigger('question:hideExplanation', {
-			value: { id: id, actor: actor }
-		});
-	},
-	viewQuestion: function viewQuestion(id) {
-		return Dispatcher.trigger('question:view', {
-			value: {
-				id: id
-			}
-		});
-	},
-	hideQuestion: function hideQuestion(id) {
-		return Dispatcher.trigger('question:hide', {
-			value: {
-				id: id
-			}
-		});
-	},
-	checkAnswer: function checkAnswer(id) {
-		return Dispatcher.trigger('question:checkAnswer', {
-			value: {
-				id: id
-			}
-		});
-	},
-	retryQuestion: function retryQuestion(id, context) {
-		return Dispatcher.trigger('question:retry', {
-			value: {
-				id: id,
-				context: context
-			}
-		});
-	},
-	getViewState: function getViewState(state, model) {
-		var modelId = model.get('id');
-
-		if (state.viewing === modelId) {
-			return 'active';
-		}
-		if (state.viewedQuestions[modelId]) {
-			return 'viewed';
-		}
-		return 'hidden';
-	},
-	getResponse: function getResponse(state, model, context) {
-		if (!state.responses[context]) return null;
-		return state.responses[context][model.get('id')] || null;
-	},
-	getData: function getData(state, model, key) {
-		return state.data[model.get('id') + ':' + key] || false;
-	},
-	isShowingExplanation: function isShowingExplanation(state, model) {
-		return state.data[model.get('id') + ':showingExplanation'] || false;
-	},
-	getScoreForModel: function getScoreForModel(state, model, context) {
-		var scoreItem = void 0;
-		if (state.scores[context] != null) {
-			scoreItem = state.scores[context][model.get('id')];
-		}
-
-		return scoreItem == null || scoreItem.score == null ? null : scoreItem.score;
-	},
-	setScore: function setScore(itemId, score, context) {
-		return Dispatcher.trigger('question:scoreSet', {
-			value: {
-				itemId: itemId,
-				score: score,
-				context: context
-			}
-		});
-	},
-	clearScore: function clearScore(itemId, context) {
-		return Dispatcher.trigger('question:scoreClear', {
-			value: {
-				itemId: itemId,
-				context: context
-			}
-		});
-	}
+var getDisplayFriendlyScore = function getDisplayFriendlyScore(n) {
+	if (n === null) return '--';
+	return Math.round(n).toString();
 };
 
-exports.default = QuestionUtil;
+exports.default = getDisplayFriendlyScore;
 
 /***/ }),
 /* 6 */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-
-
-var startOfWeek = __webpack_require__(37);
-
-/**
- * @category ISO Week Helpers
- * @summary Return the start of an ISO week for the given date.
- *
- * @description
- * Return the start of an ISO week for the given date.
- * The result will be in the local timezone.
- *
- * ISO week-numbering year: http://en.wikipedia.org/wiki/ISO_week_date
- *
- * @param {Date|String|Number} date - the original date
- * @returns {Date} the start of an ISO week
- *
- * @example
- * // The start of an ISO week for 2 September 2014 11:55:00:
- * var result = startOfISOWeek(new Date(2014, 8, 2, 11, 55, 0))
- * //=> Mon Sep 01 2014 00:00:00
- */
-function startOfISOWeek(dirtyDate) {
-  return startOfWeek(dirtyDate, { weekStartsOn: 1 });
-}
-
-module.exports = startOfISOWeek;
-
-/***/ }),
-/* 7 */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-/**
- * Copyright (c) 2013-present, Facebook, Inc.
- *
- * This source code is licensed under the MIT license found in the
- * LICENSE file in the root directory of this source tree.
- */
-
-
-
-var ReactPropTypesSecret = 'SECRET_DO_NOT_PASS_THIS_OR_YOU_WILL_BE_FIRED';
-
-module.exports = ReactPropTypesSecret;
-
-/***/ }),
-/* 8 */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-
-
-/**
- * Copyright (c) 2013-present, Facebook, Inc.
- *
- * This source code is licensed under the MIT license found in the
- * LICENSE file in the root directory of this source tree.
- *
- * 
- */
-
-function makeEmptyFunction(arg) {
-  return function () {
-    return arg;
-  };
-}
-
-/**
- * This function accepts and discards inputs; it has no side effects. This is
- * primarily useful idiomatically for overridable function endpoints which
- * always need to be callable, since JS lacks a null-call idiom ala Cocoa.
- */
-var emptyFunction = function emptyFunction() {};
-
-emptyFunction.thatReturns = makeEmptyFunction;
-emptyFunction.thatReturnsFalse = makeEmptyFunction(false);
-emptyFunction.thatReturnsTrue = makeEmptyFunction(true);
-emptyFunction.thatReturnsNull = makeEmptyFunction(null);
-emptyFunction.thatReturnsThis = function () {
-  return this;
-};
-emptyFunction.thatReturnsArgument = function (arg) {
-  return arg;
-};
-
-module.exports = emptyFunction;
-
-/***/ }),
-/* 9 */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-/* WEBPACK VAR INJECTION */(function(process) {/**
- * Copyright (c) 2013-present, Facebook, Inc.
- *
- * This source code is licensed under the MIT license found in the
- * LICENSE file in the root directory of this source tree.
- *
- */
-
-
-
-/**
- * Use invariant() to assert state which your program assumes to be true.
- *
- * Provide sprintf-style format (only %s is supported) and arguments
- * to provide information about what broke and what you were
- * expecting.
- *
- * The invariant message will be stripped in production, but the invariant
- * will remain to ensure logic does not differ in production.
- */
-
-var validateFormat = function validateFormat(format) {};
-
-if (process.env.NODE_ENV !== 'production') {
-  validateFormat = function validateFormat(format) {
-    if (format === undefined) {
-      throw new Error('invariant requires an error message argument');
-    }
-  };
-}
-
-function invariant(condition, format, a, b, c, d, e, f) {
-  validateFormat(format);
-
-  if (!condition) {
-    var error;
-    if (format === undefined) {
-      error = new Error('Minified exception occurred; use the non-minified dev environment ' + 'for the full error message and additional helpful warnings.');
-    } else {
-      var args = [a, b, c, d, e, f];
-      var argIndex = 0;
-      error = new Error(format.replace(/%s/g, function () {
-        return args[argIndex++];
-      }));
-      error.name = 'Invariant Violation';
-    }
-
-    error.framesToPop = 1; // we don't care about invariant's own frame
-    throw error;
-  }
-}
-
-module.exports = invariant;
-/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(3)))
-
-/***/ }),
-/* 10 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -1582,7 +1300,529 @@ function __guard__(value, transform) {
 }
 
 /***/ }),
+/* 7 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+Object.defineProperty(exports, "__esModule", {
+	value: true
+});
+
+var _Common = __webpack_require__(0);
+
+var _Common2 = _interopRequireDefault(_Common);
+
+var _questionUtil = __webpack_require__(8);
+
+var _questionUtil2 = _interopRequireDefault(_questionUtil);
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+var Dispatcher = _Common2.default.flux.Dispatcher;
+
+
+var AssessmentUtil = {
+	getAssessmentForModel: function getAssessmentForModel(state, model) {
+		var assessmentModel = void 0;
+		if (model.get('type') === 'ObojoboDraft.Sections.Assessment') {
+			assessmentModel = model;
+		} else {
+			assessmentModel = model.getParentOfType('ObojoboDraft.Sections.Assessment');
+		}
+
+		if (!assessmentModel) {
+			return null;
+		}
+
+		var assessment = state.assessments[assessmentModel.get('id')];
+		if (!assessment) {
+			return null;
+		}
+
+		return assessment;
+	},
+	getLastAttemptForModel: function getLastAttemptForModel(state, model) {
+		var assessment = AssessmentUtil.getAssessmentForModel(state, model);
+		if (!assessment) {
+			return null;
+		}
+
+		if (assessment.attempts.length === 0) {
+			return 0;
+		}
+
+		return assessment.attempts[assessment.attempts.length - 1];
+	},
+	getHighestAttemptsForModelByAssessmentScore: function getHighestAttemptsForModelByAssessmentScore(state, model) {
+		var assessment = AssessmentUtil.getAssessmentForModel(state, model);
+		if (!assessment) {
+			return [];
+		}
+
+		return assessment.highestAssessmentScoreAttempts;
+	},
+	getHighestAttemptsForModelByAttemptScore: function getHighestAttemptsForModelByAttemptScore(state, model) {
+		var assessment = AssessmentUtil.getAssessmentForModel(state, model);
+		if (!assessment) {
+			return [];
+		}
+
+		return assessment.highestAttemptScoreAttempts;
+	},
+	getAssessmentScoreForModel: function getAssessmentScoreForModel(state, model) {
+		var attempts = AssessmentUtil.getHighestAttemptsForModelByAssessmentScore(state, model);
+		if (attempts.length === 0) {
+			return null;
+		}
+
+		return attempts[0].assessmentScore;
+	},
+	getLastAttemptScoresForModel: function getLastAttemptScoresForModel(state, model) {
+		var assessment = AssessmentUtil.getAssessmentForModel(state, model);
+		if (!assessment) {
+			return null;
+		}
+
+		if (assessment.attempts.length === 0) {
+			return [];
+		}
+
+		return assessment.attempts[assessment.attempts.length - 1].questionScores;
+	},
+	getCurrentAttemptForModel: function getCurrentAttemptForModel(state, model) {
+		var assessment = AssessmentUtil.getAssessmentForModel(state, model);
+		if (!assessment) {
+			return null;
+		}
+
+		return assessment.current;
+	},
+	getAllAttempts: function getAllAttempts(state, model) {
+		return this.getAssessmentForModel(state, model).attempts;
+	},
+	getAttemptsRemaining: function getAttemptsRemaining(state, model) {
+		return Math.max(model.modelState.attempts - this.getNumberOfAttemptsCompletedForModel(state, model), 0);
+	},
+	hasAttemptsRemaining: function hasAttemptsRemaining(state, model) {
+		return model.modelState.attempts - this.getNumberOfAttemptsCompletedForModel(state, model) > 0;
+	},
+	getLTIStateForModel: function getLTIStateForModel(state, model) {
+		var assessment = AssessmentUtil.getAssessmentForModel(state, model);
+		if (!assessment) {
+			return null;
+		}
+
+		return {
+			state: assessment.lti,
+			networkState: assessment.ltiNetworkState,
+			errorCount: assessment.ltiErrorCount
+		};
+	},
+	isLTIScoreNeedingToBeResynced: function isLTIScoreNeedingToBeResynced(state, model) {
+		var assessment = AssessmentUtil.getAssessmentForModel(state, model);
+
+		if (!assessment || !assessment.lti || !assessment.lti.gradebookStatus) {
+			return false;
+		}
+
+		switch (assessment.lti.gradebookStatus) {
+			case 'ok_no_outcome_service':
+			case 'ok_gradebook_matches_assessment_score':
+			case 'ok_null_score_not_sent':
+				return false;
+
+			default:
+				return true;
+		}
+	},
+	isCurrentAttemptComplete: function isCurrentAttemptComplete(assessmentState, questionState, model, context) {
+		var current = AssessmentUtil.getCurrentAttemptForModel(assessmentState, model);
+		if (!current) {
+			return null;
+		}
+		var models = model.children.at(1).children.models;
+		return models.filter(function (questionModel) {
+			var resp = _questionUtil2.default.getResponse(questionState, questionModel, context);
+			return resp;
+		}).length === models.length;
+	},
+	isInAssessment: function isInAssessment(state) {
+		for (var assessmentName in state.assessments) {
+			if (state.assessments[assessmentName].current !== null) {
+				return true;
+			}
+		}
+
+		return false;
+	},
+	getNumberOfAttemptsCompletedForModel: function getNumberOfAttemptsCompletedForModel(state, model) {
+		var assessment = AssessmentUtil.getAssessmentForModel(state, model);
+		if (!assessment || assessment.attempts.length === 0) {
+			return 0;
+		}
+
+		return assessment.attempts.length;
+	},
+	getNumCorrect: function getNumCorrect(questionScores) {
+		return questionScores.reduce(function (acc, questionScore) {
+			var n = 0;
+			if (parseInt(questionScore.score, 10) === 100) {
+				n = 1;
+			}
+			return parseInt(acc, 10) + n;
+		}, [0]);
+	},
+	findHighestAttempts: function findHighestAttempts(attempts, scoreProperty) {
+		if (attempts.length === 0) return [];
+
+		var attemptsByScore = {};
+		var highestScore = -1;
+
+		attempts.forEach(function (attempt) {
+			var score = attempt[scoreProperty] === null ? -1 : attempt[scoreProperty];
+
+			if (score > highestScore) {
+				highestScore = score;
+			}
+
+			if (!attemptsByScore[score]) {
+				attemptsByScore[score] = [];
+			}
+
+			attemptsByScore[score].push(attempt);
+		});
+
+		return attemptsByScore[highestScore];
+	},
+	startAttempt: function startAttempt(model) {
+		return Dispatcher.trigger('assessment:startAttempt', {
+			value: {
+				id: model.get('id')
+			}
+		});
+	},
+	endAttempt: function endAttempt(model, context) {
+		return Dispatcher.trigger('assessment:endAttempt', {
+			value: {
+				id: model.get('id'),
+				context: context
+			}
+		});
+	},
+	resendLTIScore: function resendLTIScore(model) {
+		return Dispatcher.trigger('assessment:resendLTIScore', {
+			value: {
+				id: model.get('id')
+			}
+		});
+	}
+};
+
+exports.default = AssessmentUtil;
+
+/***/ }),
+/* 8 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+Object.defineProperty(exports, "__esModule", {
+	value: true
+});
+
+var _Common = __webpack_require__(0);
+
+var _Common2 = _interopRequireDefault(_Common);
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+var Dispatcher = _Common2.default.flux.Dispatcher;
+var OboModel = _Common2.default.models.OboModel;
+
+
+var QuestionUtil = {
+	setResponse: function setResponse(id, response, targetId, context, assessmentId, attemptId) {
+		return Dispatcher.trigger('question:setResponse', {
+			value: {
+				id: id,
+				response: response,
+				targetId: targetId,
+				context: context,
+				assessmentId: assessmentId,
+				attemptId: attemptId
+			}
+		});
+	},
+	clearResponse: function clearResponse(id, context) {
+		return Dispatcher.trigger('question:clearResponse', {
+			value: {
+				id: id,
+				context: context
+			}
+		});
+	},
+	setData: function setData(id, key, value) {
+		return Dispatcher.trigger('question:setData', {
+			value: {
+				key: id + ':' + key,
+				value: value
+			}
+		});
+	},
+	clearData: function clearData(id, key) {
+		return Dispatcher.trigger('question:clearData', {
+			value: {
+				key: id + ':' + key
+			}
+		});
+	},
+	showExplanation: function showExplanation(id) {
+		return Dispatcher.trigger('question:showExplanation', {
+			value: { id: id }
+		});
+	},
+	hideExplanation: function hideExplanation(id, actor) {
+		return Dispatcher.trigger('question:hideExplanation', {
+			value: { id: id, actor: actor }
+		});
+	},
+	viewQuestion: function viewQuestion(id) {
+		return Dispatcher.trigger('question:view', {
+			value: {
+				id: id
+			}
+		});
+	},
+	hideQuestion: function hideQuestion(id) {
+		return Dispatcher.trigger('question:hide', {
+			value: {
+				id: id
+			}
+		});
+	},
+	checkAnswer: function checkAnswer(id) {
+		return Dispatcher.trigger('question:checkAnswer', {
+			value: {
+				id: id
+			}
+		});
+	},
+	retryQuestion: function retryQuestion(id, context) {
+		return Dispatcher.trigger('question:retry', {
+			value: {
+				id: id,
+				context: context
+			}
+		});
+	},
+	getViewState: function getViewState(state, model) {
+		var modelId = model.get('id');
+
+		if (state.viewing === modelId) {
+			return 'active';
+		}
+		if (state.viewedQuestions[modelId]) {
+			return 'viewed';
+		}
+		return 'hidden';
+	},
+	getResponse: function getResponse(state, model, context) {
+		if (!state.responses[context]) return null;
+		return state.responses[context][model.get('id')] || null;
+	},
+	getData: function getData(state, model, key) {
+		return state.data[model.get('id') + ':' + key] || false;
+	},
+	isShowingExplanation: function isShowingExplanation(state, model) {
+		return state.data[model.get('id') + ':showingExplanation'] || false;
+	},
+	getScoreForModel: function getScoreForModel(state, model, context) {
+		var scoreItem = void 0;
+		if (state.scores[context] != null) {
+			scoreItem = state.scores[context][model.get('id')];
+		}
+
+		return scoreItem == null || scoreItem.score == null ? null : scoreItem.score;
+	},
+	setScore: function setScore(itemId, score, context) {
+		return Dispatcher.trigger('question:scoreSet', {
+			value: {
+				itemId: itemId,
+				score: score,
+				context: context
+			}
+		});
+	},
+	clearScore: function clearScore(itemId, context) {
+		return Dispatcher.trigger('question:scoreClear', {
+			value: {
+				itemId: itemId,
+				context: context
+			}
+		});
+	}
+};
+
+exports.default = QuestionUtil;
+
+/***/ }),
+/* 9 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+var startOfWeek = __webpack_require__(38);
+
+/**
+ * @category ISO Week Helpers
+ * @summary Return the start of an ISO week for the given date.
+ *
+ * @description
+ * Return the start of an ISO week for the given date.
+ * The result will be in the local timezone.
+ *
+ * ISO week-numbering year: http://en.wikipedia.org/wiki/ISO_week_date
+ *
+ * @param {Date|String|Number} date - the original date
+ * @returns {Date} the start of an ISO week
+ *
+ * @example
+ * // The start of an ISO week for 2 September 2014 11:55:00:
+ * var result = startOfISOWeek(new Date(2014, 8, 2, 11, 55, 0))
+ * //=> Mon Sep 01 2014 00:00:00
+ */
+function startOfISOWeek(dirtyDate) {
+  return startOfWeek(dirtyDate, { weekStartsOn: 1 });
+}
+
+module.exports = startOfISOWeek;
+
+/***/ }),
+/* 10 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+/**
+ * Copyright (c) 2013-present, Facebook, Inc.
+ *
+ * This source code is licensed under the MIT license found in the
+ * LICENSE file in the root directory of this source tree.
+ */
+
+
+
+var ReactPropTypesSecret = 'SECRET_DO_NOT_PASS_THIS_OR_YOU_WILL_BE_FIRED';
+
+module.exports = ReactPropTypesSecret;
+
+/***/ }),
 /* 11 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+/**
+ * Copyright (c) 2013-present, Facebook, Inc.
+ *
+ * This source code is licensed under the MIT license found in the
+ * LICENSE file in the root directory of this source tree.
+ *
+ * 
+ */
+
+function makeEmptyFunction(arg) {
+  return function () {
+    return arg;
+  };
+}
+
+/**
+ * This function accepts and discards inputs; it has no side effects. This is
+ * primarily useful idiomatically for overridable function endpoints which
+ * always need to be callable, since JS lacks a null-call idiom ala Cocoa.
+ */
+var emptyFunction = function emptyFunction() {};
+
+emptyFunction.thatReturns = makeEmptyFunction;
+emptyFunction.thatReturnsFalse = makeEmptyFunction(false);
+emptyFunction.thatReturnsTrue = makeEmptyFunction(true);
+emptyFunction.thatReturnsNull = makeEmptyFunction(null);
+emptyFunction.thatReturnsThis = function () {
+  return this;
+};
+emptyFunction.thatReturnsArgument = function (arg) {
+  return arg;
+};
+
+module.exports = emptyFunction;
+
+/***/ }),
+/* 12 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+/* WEBPACK VAR INJECTION */(function(process) {/**
+ * Copyright (c) 2013-present, Facebook, Inc.
+ *
+ * This source code is licensed under the MIT license found in the
+ * LICENSE file in the root directory of this source tree.
+ *
+ */
+
+
+
+/**
+ * Use invariant() to assert state which your program assumes to be true.
+ *
+ * Provide sprintf-style format (only %s is supported) and arguments
+ * to provide information about what broke and what you were
+ * expecting.
+ *
+ * The invariant message will be stripped in production, but the invariant
+ * will remain to ensure logic does not differ in production.
+ */
+
+var validateFormat = function validateFormat(format) {};
+
+if (process.env.NODE_ENV !== 'production') {
+  validateFormat = function validateFormat(format) {
+    if (format === undefined) {
+      throw new Error('invariant requires an error message argument');
+    }
+  };
+}
+
+function invariant(condition, format, a, b, c, d, e, f) {
+  validateFormat(format);
+
+  if (!condition) {
+    var error;
+    if (format === undefined) {
+      error = new Error('Minified exception occurred; use the non-minified dev environment ' + 'for the full error message and additional helpful warnings.');
+    } else {
+      var args = [a, b, c, d, e, f];
+      var argIndex = 0;
+      error = new Error(format.replace(/%s/g, function () {
+        return args[argIndex++];
+      }));
+      error.name = 'Invariant Violation';
+    }
+
+    error.framesToPop = 1; // we don't care about invariant's own frame
+    throw error;
+  }
+}
+
+module.exports = invariant;
+/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(3)))
+
+/***/ }),
+/* 13 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -1602,11 +1842,11 @@ var _apiUtil = __webpack_require__(4);
 
 var _apiUtil2 = _interopRequireDefault(_apiUtil);
 
-var _questionUtil = __webpack_require__(5);
+var _questionUtil = __webpack_require__(8);
 
 var _questionUtil2 = _interopRequireDefault(_questionUtil);
 
-var _uuid = __webpack_require__(49);
+var _uuid = __webpack_require__(50);
 
 var _uuid2 = _interopRequireDefault(_uuid);
 
@@ -1826,14 +2066,14 @@ var questionStore = new QuestionStore();
 exports.default = questionStore;
 
 /***/ }),
-/* 12 */
+/* 14 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
 
 
 var parse = __webpack_require__(1);
-var startOfISOWeek = __webpack_require__(6);
+var startOfISOWeek = __webpack_require__(9);
 
 /**
  * @category ISO Week-Numbering Year Helpers
@@ -1879,7 +2119,7 @@ function getISOYear(dirtyDate) {
 module.exports = getISOYear;
 
 /***/ }),
-/* 13 */
+/* 15 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -1907,7 +2147,7 @@ function isDate(argument) {
 module.exports = isDate;
 
 /***/ }),
-/* 14 */
+/* 16 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -1921,7 +2161,7 @@ module.exports = isDate;
 
 
 
-var emptyFunction = __webpack_require__(8);
+var emptyFunction = __webpack_require__(11);
 
 /**
  * Similar to invariant but only logs a warning if the condition is not met.
@@ -1976,7 +2216,136 @@ module.exports = warning;
 /* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(3)))
 
 /***/ }),
-/* 15 */
+/* 17 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+Object.defineProperty(exports, "__esModule", {
+	value: true
+});
+__webpack_require__(63);
+
+var GREAT_JOB_YOU_ROCK_EMOJI = '😎';
+
+var scoreReportView = function scoreReportView(props) {
+	return React.createElement(
+		'div',
+		{ className: 'obojobo-draft--sections--assessment--components--score-report' },
+		React.createElement(
+			'div',
+			{ className: 'text-items' },
+			props.report.textItems.map(getItemEl)
+		),
+		props.report.scoreChangeDescription === null ? null : React.createElement(
+			'span',
+			{ className: 'score-change-description' },
+			props.report.scoreChangeDescription
+		)
+	);
+};
+
+var getAmountEl = function getAmountEl(value) {
+	var isTotalOf100 = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : false;
+
+	if (value === 'Did Not Pass') {
+		return React.createElement(
+			'span',
+			{ className: 'amount is-null' },
+			'Did Not Pass'
+		);
+	}
+
+	if (isTotalOf100) {
+		return React.createElement(
+			'div',
+			{ className: 'amount is-number' },
+			value,
+			'%',
+			React.createElement(
+				'span',
+				{ className: 'great-job-you-rock' },
+				GREAT_JOB_YOU_ROCK_EMOJI
+			)
+		);
+	}
+
+	return React.createElement(
+		'span',
+		{ className: 'amount is-number' },
+		value,
+		'%'
+	);
+};
+
+var getItemEl = function getItemEl(item) {
+	switch (item.type) {
+		case 'text':
+			return React.createElement(
+				'div',
+				{ className: 'text' },
+				item.text
+			);
+
+		case 'divider':
+			return React.createElement('hr', { className: 'divider' });
+
+		case 'extra-credit':
+			return React.createElement(
+				'div',
+				{ className: 'extra-credit' },
+				React.createElement(
+					'span',
+					{ className: 'label' },
+					React.createElement(
+						'span',
+						null,
+						'Extra-credit'
+					),
+					' - ',
+					item.text
+				),
+				getAmountEl('+' + item.value)
+			);
+
+		case 'penalty':
+			return React.createElement(
+				'div',
+				{ className: 'penalty' },
+				React.createElement(
+					'span',
+					{ className: 'label' },
+					React.createElement(
+						'span',
+						null,
+						'Penalty'
+					),
+					' - ',
+					item.text
+				),
+				getAmountEl('-' + item.value)
+			);
+
+		case 'value':
+		case 'total':
+			return React.createElement(
+				'div',
+				{ className: item.type },
+				React.createElement(
+					'div',
+					{ className: 'label' },
+					item.text
+				),
+				getAmountEl(item.value, item.type === 'total' && item.value === '100')
+			);
+	}
+};
+
+exports.default = scoreReportView;
+
+/***/ }),
+/* 18 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -1988,13 +2357,126 @@ Object.defineProperty(exports, "__esModule", {
 
 var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
 
-__webpack_require__(56);
+var _assessmentUtil = __webpack_require__(7);
+
+var _assessmentUtil2 = _interopRequireDefault(_assessmentUtil);
+
+var _getScoreComparisionData = __webpack_require__(55);
+
+var _getScoreComparisionData2 = _interopRequireDefault(_getScoreComparisionData);
+
+var _getReportDetailsForAttempt = __webpack_require__(52);
+
+var _getReportDetailsForAttempt2 = _interopRequireDefault(_getReportDetailsForAttempt);
+
+var _getReportDisplayValuesForAttempt = __webpack_require__(53);
+
+var _getReportDisplayValuesForAttempt2 = _interopRequireDefault(_getReportDisplayValuesForAttempt);
+
+var _getScoreChangeDescription = __webpack_require__(54);
+
+var _getScoreChangeDescription2 = _interopRequireDefault(_getScoreChangeDescription);
+
+var _getTextItems = __webpack_require__(58);
+
+var _getTextItems2 = _interopRequireDefault(_getTextItems);
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+var AssessmentScoreReporter = function () {
+	function AssessmentScoreReporter(_ref) {
+		var assessmentRubric = _ref.assessmentRubric,
+		    allAttempts = _ref.allAttempts,
+		    totalNumberOfAttemptsAllowed = _ref.totalNumberOfAttemptsAllowed;
+
+		_classCallCheck(this, AssessmentScoreReporter);
+
+		this.assessmentRubric = assessmentRubric;
+		this.totalNumberOfAttemptsAllowed = totalNumberOfAttemptsAllowed;
+		this.allAttempts = allAttempts;
+	}
+
+	_createClass(AssessmentScoreReporter, [{
+		key: 'getReportFor',
+		value: function getReportFor(attemptNumberToGenerateReportFor) {
+			if (attemptNumberToGenerateReportFor === 0) {
+				throw new Error('attemptNumberToGenerateReportFor parameter is not zero-indexed - Use "1" for first attempt');
+			}
+
+			var assessScoreInfoToReport = this.allAttempts[attemptNumberToGenerateReportFor - 1].assessmentScoreDetails;
+
+			return {
+				textItems: (0, _getTextItems2.default)((0, _getReportDetailsForAttempt2.default)(this.assessmentRubric, assessScoreInfoToReport), (0, _getReportDisplayValuesForAttempt2.default)(assessScoreInfoToReport, this.totalNumberOfAttemptsAllowed)),
+				scoreChangeDescription: (0, _getScoreChangeDescription2.default)((0, _getScoreComparisionData2.default)(this.allAttempts, attemptNumberToGenerateReportFor))
+			};
+		}
+	}]);
+
+	return AssessmentScoreReporter;
+}();
+
+exports.default = AssessmentScoreReporter;
+
+/***/ }),
+/* 19 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+Object.defineProperty(exports, "__esModule", {
+	value: true
+});
+var TYPE_ATTEMPT_WITHOUT_MODS_REWARDED = 0;
+var TYPE_ATTEMPT_WITH_MODS_REWARDED = 1;
+var TYPE_PASSFAIL_PASSED_GIVEN_ATTEMPT_SCORE_WITHOUT_MODS_REWARDED = 2;
+var TYPE_PASSFAIL_PASSED_GIVEN_ATTEMPT_SCORE_WITH_MODS_REWARDED = 3;
+var TYPE_PASSFAIL_PASSED_GIVEN_SCORE_AND_ATTEMPT_SCORE_LESS_THAN_100 = 4;
+var TYPE_PASSFAIL_PASSED_GIVEN_SCORE_AND_ATTEMPT_SCORE_IS_100_AND_NO_MODS_REWARDED = 5;
+var TYPE_PASSFAIL_PASSED_GIVEN_SCORE_AND_ATTEMPT_SCORE_IS_100_AND_MODS_REWARDED = 6;
+var TYPE_PASSFAIL_FAILED_GIVEN_NO_SCORE = 7;
+var TYPE_PASSFAIL_FAILED_GIVEN_SCORE = 8;
+var TYPE_PASSFAIL_UNABLE_TO_PASS_GIVEN_NO_SCORE = 9;
+var TYPE_PASSFAIL_UNABLE_TO_PASS_GIVEN_HIGHEST_ATTEMPT_SCORE = 10;
+var TYPE_PASSFAIL_UNABLE_TO_PASS_GIVEN_SCORE = 11;
+var ERROR_UNKNOWN_DISPLAY_TYPE = -1;
+
+exports.TYPE_ATTEMPT_WITHOUT_MODS_REWARDED = TYPE_ATTEMPT_WITHOUT_MODS_REWARDED;
+exports.TYPE_ATTEMPT_WITH_MODS_REWARDED = TYPE_ATTEMPT_WITH_MODS_REWARDED;
+exports.TYPE_PASSFAIL_PASSED_GIVEN_ATTEMPT_SCORE_WITHOUT_MODS_REWARDED = TYPE_PASSFAIL_PASSED_GIVEN_ATTEMPT_SCORE_WITHOUT_MODS_REWARDED;
+exports.TYPE_PASSFAIL_PASSED_GIVEN_ATTEMPT_SCORE_WITH_MODS_REWARDED = TYPE_PASSFAIL_PASSED_GIVEN_ATTEMPT_SCORE_WITH_MODS_REWARDED;
+exports.TYPE_PASSFAIL_PASSED_GIVEN_SCORE_AND_ATTEMPT_SCORE_LESS_THAN_100 = TYPE_PASSFAIL_PASSED_GIVEN_SCORE_AND_ATTEMPT_SCORE_LESS_THAN_100;
+exports.TYPE_PASSFAIL_PASSED_GIVEN_SCORE_AND_ATTEMPT_SCORE_IS_100_AND_NO_MODS_REWARDED = TYPE_PASSFAIL_PASSED_GIVEN_SCORE_AND_ATTEMPT_SCORE_IS_100_AND_NO_MODS_REWARDED;
+exports.TYPE_PASSFAIL_PASSED_GIVEN_SCORE_AND_ATTEMPT_SCORE_IS_100_AND_MODS_REWARDED = TYPE_PASSFAIL_PASSED_GIVEN_SCORE_AND_ATTEMPT_SCORE_IS_100_AND_MODS_REWARDED;
+exports.TYPE_PASSFAIL_FAILED_GIVEN_NO_SCORE = TYPE_PASSFAIL_FAILED_GIVEN_NO_SCORE;
+exports.TYPE_PASSFAIL_FAILED_GIVEN_SCORE = TYPE_PASSFAIL_FAILED_GIVEN_SCORE;
+exports.TYPE_PASSFAIL_UNABLE_TO_PASS_GIVEN_NO_SCORE = TYPE_PASSFAIL_UNABLE_TO_PASS_GIVEN_NO_SCORE;
+exports.TYPE_PASSFAIL_UNABLE_TO_PASS_GIVEN_HIGHEST_ATTEMPT_SCORE = TYPE_PASSFAIL_UNABLE_TO_PASS_GIVEN_HIGHEST_ATTEMPT_SCORE;
+exports.TYPE_PASSFAIL_UNABLE_TO_PASS_GIVEN_SCORE = TYPE_PASSFAIL_UNABLE_TO_PASS_GIVEN_SCORE;
+exports.ERROR_UNKNOWN_DISPLAY_TYPE = ERROR_UNKNOWN_DISPLAY_TYPE;
+
+/***/ }),
+/* 20 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+Object.defineProperty(exports, "__esModule", {
+	value: true
+});
+
+var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+
+__webpack_require__(65);
 
 var _navUtil = __webpack_require__(2);
 
 var _navUtil2 = _interopRequireDefault(_navUtil);
 
-var _obojoboLogo = __webpack_require__(63);
+var _obojoboLogo = __webpack_require__(72);
 
 var _obojoboLogo2 = _interopRequireDefault(_obojoboLogo);
 
@@ -2045,7 +2527,7 @@ var Logo = function (_React$Component) {
 exports.default = Logo;
 
 /***/ }),
-/* 16 */
+/* 21 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -2061,11 +2543,11 @@ var _Common = __webpack_require__(0);
 
 var _Common2 = _interopRequireDefault(_Common);
 
-var _assessmentUtil = __webpack_require__(18);
+var _assessmentUtil = __webpack_require__(7);
 
 var _assessmentUtil2 = _interopRequireDefault(_assessmentUtil);
 
-var _questionUtil = __webpack_require__(5);
+var _questionUtil = __webpack_require__(8);
 
 var _questionUtil2 = _interopRequireDefault(_questionUtil);
 
@@ -2077,23 +2559,25 @@ var _navUtil = __webpack_require__(2);
 
 var _navUtil2 = _interopRequireDefault(_navUtil);
 
-var _ltiNetworkStates = __webpack_require__(17);
+var _navStore = __webpack_require__(6);
+
+var _navStore2 = _interopRequireDefault(_navStore);
+
+var _ltiNetworkStates = __webpack_require__(22);
 
 var _ltiNetworkStates2 = _interopRequireDefault(_ltiNetworkStates);
 
-var _questionStore = __webpack_require__(11);
+var _questionStore = __webpack_require__(13);
 
 var _questionStore2 = _interopRequireDefault(_questionStore);
 
-var _assessmentScoreReport = __webpack_require__(24);
+var _assessmentScoreReporter = __webpack_require__(18);
 
-var _assessmentScoreReport2 = _interopRequireDefault(_assessmentScoreReport);
+var _assessmentScoreReporter2 = _interopRequireDefault(_assessmentScoreReporter);
 
-var _getScoreChangeDescription = __webpack_require__(25);
+var _assessmentScoreReportView = __webpack_require__(17);
 
-var _scoreReport = __webpack_require__(23);
-
-var _scoreReport2 = _interopRequireDefault(_scoreReport);
+var _assessmentScoreReportView2 = _interopRequireDefault(_assessmentScoreReportView);
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
@@ -2119,7 +2603,8 @@ var getNewAssessmentObject = function getNewAssessmentObject(assessmentId) {
 		current: null,
 		currentResponses: [],
 		attempts: [],
-		highestAttempt: null,
+		highestAssessmentScoreAttempts: [],
+		highestAttemptScoreAttempts: [],
 		lti: null,
 		ltiNetworkState: _ltiNetworkStates2.default.IDLE,
 		ltiErrorCount: 0
@@ -2197,25 +2682,16 @@ var AssessmentStore = function (_Store) {
 				}
 
 				assessments[assessId].lti = assessmentItem.ltiState;
-				assessments[assessId].highestAttempt = null;
+				assessments[assessId].highestAttemptScoreAttempts = _assessmentUtil2.default.findHighestAttempts(attempts, 'assessmentScore');
+				assessments[assessId].highestAssessmentScoreAttempts = _assessmentUtil2.default.findHighestAttempts(attempts, 'attemptScore');
 
 				attempts.forEach(function (attempt) {
 					assessment = assessments[attempt.assessmentId];
-
-					if (assessment.highestAttempt === null) {
-						assessment.highestAttempt = attempt;
-					}
 
 					if (!attempt.isFinished) {
 						unfinishedAttempt = attempt;
 					} else {
 						assessment.attempts.push(attempt);
-
-						var thisAssessScore = attempt.assessmentScore === null ? -1 : attempt.assessmentScore;
-						var currentHighestAssessScore = assessment.highestAttempt.assessmentScore === null ? -1 : assessment.highestAttempt.assessmentScore;
-						if (thisAssessScore > currentHighestAssessScore) {
-							assessment.highestAttempt = attempt;
-						}
 					}
 
 					attempt.state.questions.forEach(function (question) {
@@ -2361,7 +2837,6 @@ var AssessmentStore = function (_Store) {
 			var assessId = endAttemptResp.assessmentId;
 			var assessment = this.state.assessments[assessId];
 			var model = OboModel.models[assessId];
-			var oldHighestScore = _assessmentUtil2.default.getHighestAttemptForModel(this.state, model);
 
 			assessment.current.state.questions.forEach(function (question) {
 				return _questionUtil2.default.hideQuestion(question.id);
@@ -2377,43 +2852,28 @@ var AssessmentStore = function (_Store) {
 
 			Dispatcher.trigger('assessment:attemptEnded', assessId);
 
-			//TEMP
-
 			var attempt = _assessmentUtil2.default.getLastAttemptForModel(this.state, model);
-			var isNotPassingAttempt = attempt.assessmentScoreDetails.status === 'failed' || attempt.assessmentScoreDetails.status === 'unableToPass';
-			var newHighestScore = _assessmentUtil2.default.getHighestAttemptForModel(this.state, model);
-			var changeEl = void 0;
+			var reporter = new _assessmentScoreReporter2.default({
+				assessmentRubric: model.modelState.rubric.toObject(),
+				totalNumberOfAttemptsAllowed: model.modelState.attempts,
+				allAttempts: assessment.attempts
+			});
 
-			if (oldHighestScore === null) {
-				changeEl = null;
-			} else {
-				changeEl = React.createElement(
-					'span',
-					{ className: 'change-notice' },
-					(0, _getScoreChangeDescription.getScoreChangeDescription)(oldHighestScore.assessmentScore, newHighestScore.assessmentScore)
-				);
-			}
-
-			var items = new _assessmentScoreReport2.default(model.modelState.rubric.toObject()).getTextItems(attempt.assessmentScoreDetails, _assessmentUtil2.default.getAttemptsRemaining(this.state, model));
+			var assessmentLabel = _navUtil2.default.getNavLabelForModel(_navStore2.default.getState(), model);
 			ModalUtil.show(React.createElement(
 				Dialog,
 				{
 					modalClassName: 'obojobo-draft--sections--assessment--results-modal',
 					centered: true,
 					buttons: [{
-						value: 'Show Assessment Overview',
+						value: 'Show ' + assessmentLabel + ' Overview',
 						onClick: ModalUtil.hide,
 						default: true
 					}],
 					title: 'Attempt ' + attempt.attemptNumber + ' Results',
 					width: '35rem'
 				},
-				React.createElement(
-					'div',
-					{ className: 'score-report-box' },
-					React.createElement(_scoreReport2.default, { items: items })
-				),
-				changeEl
+				React.createElement(_assessmentScoreReportView2.default, { report: reporter.getReportFor(attempt.attemptNumber) })
 			));
 		}
 	}, {
@@ -2486,7 +2946,7 @@ var assessmentStore = new AssessmentStore();
 exports.default = assessmentStore;
 
 /***/ }),
-/* 17 */
+/* 22 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -2502,208 +2962,7 @@ exports.default = {
 };
 
 /***/ }),
-/* 18 */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-
-
-Object.defineProperty(exports, "__esModule", {
-	value: true
-});
-
-var _Common = __webpack_require__(0);
-
-var _Common2 = _interopRequireDefault(_Common);
-
-var _questionUtil = __webpack_require__(5);
-
-var _questionUtil2 = _interopRequireDefault(_questionUtil);
-
-function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
-
-var Dispatcher = _Common2.default.flux.Dispatcher;
-
-
-var AssessmentUtil = {
-	getAssessmentForModel: function getAssessmentForModel(state, model) {
-		var assessmentModel = void 0;
-		if (model.get('type') === 'ObojoboDraft.Sections.Assessment') {
-			assessmentModel = model;
-		} else {
-			assessmentModel = model.getParentOfType('ObojoboDraft.Sections.Assessment');
-		}
-
-		if (!assessmentModel) {
-			return null;
-		}
-
-		var assessment = state.assessments[assessmentModel.get('id')];
-		if (!assessment) {
-			return null;
-		}
-
-		return assessment;
-	},
-	getLastAttemptForModel: function getLastAttemptForModel(state, model) {
-		var assessment = AssessmentUtil.getAssessmentForModel(state, model);
-		if (!assessment) {
-			return null;
-		}
-
-		if (assessment.attempts.length === 0) {
-			return 0;
-		}
-
-		return assessment.attempts[assessment.attempts.length - 1];
-	},
-	getLastAttemptScoreForModel: function getLastAttemptScoreForModel(state, model) {
-		var attempt = this.getLastAttemptForModel(state, model);
-		if (!attempt) {
-			return null;
-		}
-
-		return attempt.attemptScore;
-	},
-	getHighestAttemptForModel: function getHighestAttemptForModel(state, model) {
-		var assessment = AssessmentUtil.getAssessmentForModel(state, model);
-		if (!assessment) {
-			return null;
-		}
-
-		return assessment.highestAttempt;
-	},
-	getAssessmentScoreForModel: function getAssessmentScoreForModel(state, model) {
-		var attempt = AssessmentUtil.getHighestAttemptForModel(state, model);
-		if (!attempt) {
-			return null;
-		}
-
-		return attempt.assessmentScore;
-	},
-	getLastAttemptScoresForModel: function getLastAttemptScoresForModel(state, model) {
-		var assessment = AssessmentUtil.getAssessmentForModel(state, model);
-		if (!assessment) {
-			return null;
-		}
-
-		if (assessment.attempts.length === 0) {
-			return [];
-		}
-
-		return assessment.attempts[assessment.attempts.length - 1].questionScores;
-	},
-	getCurrentAttemptForModel: function getCurrentAttemptForModel(state, model) {
-		var assessment = AssessmentUtil.getAssessmentForModel(state, model);
-		if (!assessment) {
-			return null;
-		}
-
-		return assessment.current;
-	},
-	getAllAttempts: function getAllAttempts(state, model) {
-		return this.getAssessmentForModel(state, model).attempts;
-	},
-	getAttemptsRemaining: function getAttemptsRemaining(state, model) {
-		return Math.max(model.modelState.attempts - this.getNumberOfAttemptsCompletedForModel(state, model), 0);
-	},
-	hasAttemptsRemaining: function hasAttemptsRemaining(state, model) {
-		return model.modelState.attempts - this.getNumberOfAttemptsCompletedForModel(state, model) > 0;
-	},
-	getLTIStateForModel: function getLTIStateForModel(state, model) {
-		var assessment = AssessmentUtil.getAssessmentForModel(state, model);
-		if (!assessment) {
-			return null;
-		}
-
-		return {
-			state: assessment.lti,
-			networkState: assessment.ltiNetworkState,
-			errorCount: assessment.ltiErrorCount
-		};
-	},
-	isLTIScoreNeedingToBeResynced: function isLTIScoreNeedingToBeResynced(state, model) {
-		var assessment = AssessmentUtil.getAssessmentForModel(state, model);
-
-		if (!assessment || !assessment.lti || !assessment.lti.gradebookStatus) {
-			return false;
-		}
-
-		switch (assessment.lti.gradebookStatus) {
-			case 'ok_no_outcome_service':
-			case 'ok_gradebook_matches_assessment_score':
-			case 'ok_null_score_not_sent':
-				return false;
-
-			default:
-				return true;
-		}
-	},
-	isCurrentAttemptComplete: function isCurrentAttemptComplete(assessmentState, questionState, model, context) {
-		var current = AssessmentUtil.getCurrentAttemptForModel(assessmentState, model);
-		if (!current) {
-			return null;
-		}
-		var models = model.children.at(1).children.models;
-		return models.filter(function (questionModel) {
-			var resp = _questionUtil2.default.getResponse(questionState, questionModel, context);
-			return resp;
-		}).length === models.length;
-	},
-	isInAssessment: function isInAssessment(state) {
-		for (var assessmentName in state.assessments) {
-			if (state.assessments[assessmentName].current !== null) {
-				return true;
-			}
-		}
-
-		return false;
-	},
-	getNumberOfAttemptsCompletedForModel: function getNumberOfAttemptsCompletedForModel(state, model) {
-		var assessment = AssessmentUtil.getAssessmentForModel(state, model);
-		if (!assessment || assessment.attempts.length === 0) {
-			return 0;
-		}
-
-		return assessment.attempts.length;
-	},
-	getNumCorrect: function getNumCorrect(questionScores) {
-		return questionScores.reduce(function (acc, questionScore) {
-			var n = 0;
-			if (parseInt(questionScore.score, 10) === 100) {
-				n = 1;
-			}
-			return parseInt(acc, 10) + n;
-		}, [0]);
-	},
-	startAttempt: function startAttempt(model) {
-		return Dispatcher.trigger('assessment:startAttempt', {
-			value: {
-				id: model.get('id')
-			}
-		});
-	},
-	endAttempt: function endAttempt(model, context) {
-		return Dispatcher.trigger('assessment:endAttempt', {
-			value: {
-				id: model.get('id'),
-				context: context
-			}
-		});
-	},
-	resendLTIScore: function resendLTIScore(model) {
-		return Dispatcher.trigger('assessment:resendLTIScore', {
-			value: {
-				id: model.get('id')
-			}
-		});
-	}
-};
-
-exports.default = AssessmentUtil;
-
-/***/ }),
-/* 19 */
+/* 23 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -2720,20 +2979,20 @@ exports.default = function (url) {
 	return hostname;
 };
 
-var _urlParse = __webpack_require__(47);
+var _urlParse = __webpack_require__(48);
 
 var _urlParse2 = _interopRequireDefault(_urlParse);
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 /***/ }),
-/* 20 */
+/* 24 */
 /***/ (function(module, exports) {
 
 module.exports = React;
 
 /***/ }),
-/* 21 */
+/* 25 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -3198,13 +3457,13 @@ module.exports = React;
 })(typeof self !== 'undefined' ? self : undefined);
 
 /***/ }),
-/* 22 */
+/* 26 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
 
 
-var _index = __webpack_require__(53);
+var _index = __webpack_require__(62);
 
 var _index2 = _interopRequireDefault(_index);
 
@@ -3213,365 +3472,13 @@ function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { de
 window.Viewer = _index2.default;
 
 /***/ }),
-/* 23 */
+/* 27 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
 
 
-Object.defineProperty(exports, "__esModule", {
-	value: true
-});
-__webpack_require__(54);
-
-var scoreReportView = function scoreReportView(props) {
-	return React.createElement(
-		'div',
-		{ className: 'obojobo-draft--sections--assessment--components--score-report' },
-		props.items.map(getItemEl)
-	);
-};
-
-var getAmountEl = function getAmountEl(value) {
-	if (value === 'No Score Recorded') {
-		return React.createElement(
-			'span',
-			{ className: 'amount is-null' },
-			'No Score Recorded'
-		);
-	}
-
-	return React.createElement(
-		'span',
-		{ className: 'amount is-number' },
-		value,
-		'%'
-	);
-};
-
-var getItemEl = function getItemEl(item) {
-	switch (item.type) {
-		case 'text':
-			return React.createElement(
-				'div',
-				{ className: 'text' },
-				item.text
-			);
-
-		case 'divider':
-			return React.createElement('hr', { className: 'divider' });
-
-		case 'extra-credit':
-			return React.createElement(
-				'div',
-				{ className: 'extra-credit' },
-				React.createElement(
-					'span',
-					{ className: 'label' },
-					React.createElement(
-						'span',
-						null,
-						'Extra-credit'
-					),
-					' - ',
-					item.text
-				),
-				getAmountEl('+' + item.value)
-			);
-
-		case 'penalty':
-			return React.createElement(
-				'div',
-				{ className: 'penalty' },
-				React.createElement(
-					'span',
-					{ className: 'label' },
-					React.createElement(
-						'span',
-						null,
-						'Penalty'
-					),
-					' - ',
-					item.text
-				),
-				getAmountEl('-' + item.value)
-			);
-
-		case 'value':
-		case 'total':
-			return React.createElement(
-				'div',
-				{ className: item.type },
-				React.createElement(
-					'span',
-					{ className: 'label' },
-					item.text
-				),
-				getAmountEl(item.value)
-			);
-	}
-};
-
-exports.default = scoreReportView;
-
-/***/ }),
-/* 24 */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-
-
-Object.defineProperty(exports, "__esModule", {
-	value: true
-});
-
-var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
-
-function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
-
-var getDisplayFriendlyScore = function getDisplayFriendlyScore(n) {
-	if (n === null) return '--';
-	return parseFloat(n).toFixed(2).replace('.00', '');
-};
-
-var getPassingRange = function getPassingRange(passingNumber) {
-	if (passingNumber === 100 || passingNumber === '100') return '100%';
-	return getDisplayFriendlyScore(passingNumber) + '-100%';
-};
-
-var getModText = function getModText(attemptCondition, numOfAttemptsAvailable) {
-	attemptCondition = ('' + attemptCondition).replace('$last_attempt', '' + numOfAttemptsAvailable);
-
-	var range = [];
-	if (attemptCondition.indexOf(',') === -1) {
-		range.push(parseInt(attemptCondition, 10));
-	} else {
-		var tokens = attemptCondition.split(',');
-		range.push(parseInt(tokens[0].substr(1), 10));
-		range.push(parseInt(tokens[1].substr(0, tokens[1].length - 1), 10));
-
-		if (tokens[0].charAt(0) === '(') range[0]++;
-		if (tokens[1].charAt(tokens[1].length - 1) === ')') range[1]--;
-
-		if (range[0] === range[1]) range.splice(1, 1);
-	}
-
-	if (range.length === 1) {
-		if (range[0] === 1) return 'Passed on first attempt';
-		if (range[0] === numOfAttemptsAvailable) return 'Passed on last attempt';
-		return 'Passed on attempt\xA0' + range[0];
-	}
-
-	return 'Passed on attempts ' + range[0] + ' to ' + range[1];
-};
-
-var AssessmentScoreReport = function () {
-	function AssessmentScoreReport(assessmentRubric) {
-		_classCallCheck(this, AssessmentScoreReport);
-
-		this.assessmentRubric = assessmentRubric;
-	}
-
-	_createClass(AssessmentScoreReport, [{
-		key: 'getTextItems',
-		value: function getTextItems(assessmentScoreInfo, numOfAttemptsAvailable) {
-			var rubric = this.assessmentRubric;
-
-			var passingAttemptScore = typeof rubric.passingAttemptScore !== 'undefined' ? rubric.passingAttemptScore : 100;
-			var passedResult = typeof rubric.passedResult !== 'undefined' ? rubric.passedResult : 100;
-			var failedResult = typeof rubric.failedResult !== 'undefined' ? rubric.failedResult : 0;
-			var unableToPassResult = typeof rubric.unableToPassResult !== 'undefined' ? rubric.unableToPassResult : 0;
-			var isRewardedMods = assessmentScoreInfo.rewardedMods.length > 0;
-			var isAttemptRubric = rubric.type === 'attempt';
-			var isPassFailRubric = rubric.type === 'pass-fail';
-			var status = assessmentScoreInfo.status;
-			var passed = status === 'passed';
-			var failed = status === 'failed';
-			var unableToPass = status === 'unableToPass';
-			// let isLTIAndScoreWasUnsent = (failed || unableToPass) && isLti
-			var attemptNum = assessmentScoreInfo.attemptNumber;
-
-			var items = [];
-			var attemptScore = getDisplayFriendlyScore(assessmentScoreInfo.attemptScore);
-			var assessScore = getDisplayFriendlyScore(assessmentScoreInfo.assessmentModdedScore);
-
-			if (isAttemptRubric && !isRewardedMods) {
-				items.push({
-					type: 'value',
-					text: 'Score',
-					value: attemptScore
-				});
-			} else if (isAttemptRubric && isRewardedMods) {
-				items.push({
-					type: 'value',
-					text: 'Base Score',
-					value: attemptScore
-				});
-			} else if (isPassFailRubric && passed && passedResult === '$attempt_score' && !isRewardedMods) {
-				items.push({
-					type: 'value',
-					text: 'Score',
-					value: attemptScore
-				});
-			} else if (isPassFailRubric && passed && passedResult === '$attempt_score' && isRewardedMods) {
-				items.push({
-					type: 'value',
-					text: 'Base Score',
-					value: attemptScore
-				});
-			} else if (isPassFailRubric && passed && Number.isFinite(parseFloat(passedResult))) {
-				items.push({
-					type: 'value',
-					text: 'Base Score',
-					value: attemptScore
-				}, {
-					type: 'divider'
-				}, {
-					type: 'value',
-					text: 'Rewarded score for a passing attempt',
-					value: getDisplayFriendlyScore(passedResult)
-				});
-			} else if (isPassFailRubric && failed && failedResult === 'no-score') {
-				items.push({
-					type: 'value',
-					text: 'Base Score',
-					value: attemptScore
-				}, {
-					type: 'divider'
-				}, {
-					type: 'text',
-					text: 'You need ' + getPassingRange(passingAttemptScore) + ' to pass'
-				});
-			} else if (isPassFailRubric && failed && Number.isFinite(parseFloat(failedResult))) {
-				items.push({
-					type: 'value',
-					text: 'Base Score',
-					value: attemptScore
-				}, {
-					type: 'divider'
-				}, {
-					type: 'value',
-					text: 'Given score for a non-passing (less than ' + getDisplayFriendlyScore(passingAttemptScore) + '%) attempt',
-					value: getDisplayFriendlyScore(failedResult)
-				});
-			} else if (isPassFailRubric && unableToPass && unableToPassResult === 'no-score') {
-				items.push({
-					type: 'value',
-					text: 'Base Score',
-					value: attemptScore
-				}, {
-					type: 'divider'
-				}, {
-					type: 'text',
-					text: 'You needed ' + getPassingRange(passingAttemptScore) + ' to pass'
-				});
-			} else if (isPassFailRubric && unableToPass && unableToPassResult === '$highest_attempt_score') {
-				items.push({
-					type: 'value',
-					text: 'Base Score',
-					value: attemptScore
-				}, {
-					type: 'divider'
-				}, {
-					type: 'text',
-					text: 'You did not achieve a passing ' + getPassingRange(passingAttemptScore) + ' score within the number of attempts available. Your highest attempt score will be used instead.'
-				}, {
-					type: 'divider'
-				}, {
-					type: 'value',
-					text: 'Highest attempt score (Attempt\xA0' + attemptNum + ')',
-					value: assessScore
-				});
-			} else if (isPassFailRubric && unableToPass && Number.isFinite(parseFloat(unableToPassResult))) {
-				items.push({
-					type: 'value',
-					text: 'Base Score',
-					value: attemptScore
-				}, {
-					type: 'divider'
-				}, {
-					type: 'text',
-					text: 'You did not achieve a passing ' + getPassingRange(passingAttemptScore) + ' score within the number of attempts available.'
-				}, {
-					type: 'value',
-					text: 'Given score for not achieving a passing attempt',
-					value: getDisplayFriendlyScore(unableToPassResult)
-				});
-			} else {
-				throw new Error('Unknown assessment rubric and score state');
-			}
-
-			if (assessmentScoreInfo.rewardedMods.length > 0) {
-				items = items.concat(assessmentScoreInfo.rewardedMods.map(function (modIndex) {
-					var mod = rubric.mods[modIndex];
-
-					//@TODO - for now assumes attemptCondition - will change to type
-
-					return {
-						type: parseInt(mod.reward) >= 0 ? 'extra-credit' : 'penalty',
-						text: getModText(mod.attemptCondition, numOfAttemptsAvailable),
-						value: getDisplayFriendlyScore(Math.abs(mod.reward))
-					};
-				}));
-			}
-
-			if (items.length > 1) {
-				var isScoreOver100 = assessmentScoreInfo.assessmentScore !== null && assessmentScoreInfo.assessmentScore + assessmentScoreInfo.rewardTotal > 100;
-
-				items.push({
-					type: 'divider'
-				}, {
-					type: 'total',
-					text: 'Total Score' + (isScoreOver100 ? ' (Max 100%)' : ''),
-					value: assessmentScoreInfo.assessmentModdedScore === null ? 'No Score Recorded' : assessScore
-				});
-			}
-
-			return items;
-		}
-	}]);
-
-	return AssessmentScoreReport;
-}();
-
-exports.default = AssessmentScoreReport;
-
-/***/ }),
-/* 25 */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-
-
-Object.defineProperty(exports, "__esModule", {
-	value: true
-});
-exports.getScoreChangeDescription = getScoreChangeDescription;
-function getScoreChangeDescription(oldHighestScore, newHighestScore) {
-	if (newHighestScore === null && oldHighestScore === null) {
-		return 'This did not change your recorded score';
-	}
-
-	if (oldHighestScore === null) {
-		return '\u2714 Your recorded score was updated to ' + newHighestScore + '%';
-	}
-
-	if (newHighestScore > oldHighestScore) {
-		return '\u2714 Your recorded score was updated from ' + oldHighestScore + '% to ' + newHighestScore + '%';
-	}
-
-	// Else newHighestScore === null || newHighestScore <= oldHighestScore
-	return 'This did not change your recorded score of ' + oldHighestScore + '%';
-}
-
-/***/ }),
-/* 26 */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-
-
-var startOfDay = __webpack_require__(35);
+var startOfDay = __webpack_require__(36);
 
 var MILLISECONDS_IN_MINUTE = 60000;
 var MILLISECONDS_IN_DAY = 86400000;
@@ -3612,18 +3519,18 @@ function differenceInCalendarDays(dirtyDateLeft, dirtyDateRight) {
 module.exports = differenceInCalendarDays;
 
 /***/ }),
-/* 27 */
+/* 28 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
 
 
-var getDayOfYear = __webpack_require__(28);
-var getISOWeek = __webpack_require__(29);
-var getISOYear = __webpack_require__(12);
+var getDayOfYear = __webpack_require__(29);
+var getISOWeek = __webpack_require__(30);
+var getISOYear = __webpack_require__(14);
 var parse = __webpack_require__(1);
-var isValid = __webpack_require__(30);
-var enLocale = __webpack_require__(34);
+var isValid = __webpack_require__(31);
+var enLocale = __webpack_require__(35);
 
 /**
  * @category Common Helpers
@@ -3948,15 +3855,15 @@ function addLeadingZeros(number, targetLength) {
 module.exports = format;
 
 /***/ }),
-/* 28 */
+/* 29 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
 
 
 var parse = __webpack_require__(1);
-var startOfYear = __webpack_require__(38);
-var differenceInCalendarDays = __webpack_require__(26);
+var startOfYear = __webpack_require__(39);
+var differenceInCalendarDays = __webpack_require__(27);
 
 /**
  * @category Day Helpers
@@ -3983,15 +3890,15 @@ function getDayOfYear(dirtyDate) {
 module.exports = getDayOfYear;
 
 /***/ }),
-/* 29 */
+/* 30 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
 
 
 var parse = __webpack_require__(1);
-var startOfISOWeek = __webpack_require__(6);
-var startOfISOYear = __webpack_require__(36);
+var startOfISOWeek = __webpack_require__(9);
+var startOfISOYear = __webpack_require__(37);
 
 var MILLISECONDS_IN_WEEK = 604800000;
 
@@ -4025,13 +3932,13 @@ function getISOWeek(dirtyDate) {
 module.exports = getISOWeek;
 
 /***/ }),
-/* 30 */
+/* 31 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
 
 
-var isDate = __webpack_require__(13);
+var isDate = __webpack_require__(15);
 
 /**
  * @category Common Helpers
@@ -4068,7 +3975,7 @@ function isValid(dirtyDate) {
 module.exports = isValid;
 
 /***/ }),
-/* 31 */
+/* 32 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -4093,7 +4000,7 @@ function buildFormattingTokensRegExp(formatters) {
 module.exports = buildFormattingTokensRegExp;
 
 /***/ }),
-/* 32 */
+/* 33 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -4200,13 +4107,13 @@ function buildDistanceInWordsLocale() {
 module.exports = buildDistanceInWordsLocale;
 
 /***/ }),
-/* 33 */
+/* 34 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
 
 
-var buildFormattingTokensRegExp = __webpack_require__(31);
+var buildFormattingTokensRegExp = __webpack_require__(32);
 
 function buildFormatLocale() {
   // Note: in English, the names of days of the week and months are capitalized.
@@ -4295,14 +4202,14 @@ function ordinal(number) {
 module.exports = buildFormatLocale;
 
 /***/ }),
-/* 34 */
+/* 35 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
 
 
-var buildDistanceInWordsLocale = __webpack_require__(32);
-var buildFormatLocale = __webpack_require__(33);
+var buildDistanceInWordsLocale = __webpack_require__(33);
+var buildFormatLocale = __webpack_require__(34);
 
 /**
  * @category Locales
@@ -4314,7 +4221,7 @@ module.exports = {
 };
 
 /***/ }),
-/* 35 */
+/* 36 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -4347,14 +4254,14 @@ function startOfDay(dirtyDate) {
 module.exports = startOfDay;
 
 /***/ }),
-/* 36 */
+/* 37 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
 
 
-var getISOYear = __webpack_require__(12);
-var startOfISOWeek = __webpack_require__(6);
+var getISOYear = __webpack_require__(14);
+var startOfISOWeek = __webpack_require__(9);
 
 /**
  * @category ISO Week-Numbering Year Helpers
@@ -4387,7 +4294,7 @@ function startOfISOYear(dirtyDate) {
 module.exports = startOfISOYear;
 
 /***/ }),
-/* 37 */
+/* 38 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -4433,7 +4340,7 @@ function startOfWeek(dirtyDate, dirtyOptions) {
 module.exports = startOfWeek;
 
 /***/ }),
-/* 38 */
+/* 39 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -4468,7 +4375,7 @@ function startOfYear(dirtyDate) {
 module.exports = startOfYear;
 
 /***/ }),
-/* 39 */
+/* 40 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -4564,7 +4471,7 @@ module.exports = shouldUseNative() ? Object.assign : function (target, source) {
 };
 
 /***/ }),
-/* 40 */
+/* 41 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -4580,9 +4487,9 @@ module.exports = shouldUseNative() ? Object.assign : function (target, source) {
 var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol" ? function (obj) { return typeof obj; } : function (obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; };
 
 if (process.env.NODE_ENV !== 'production') {
-  var invariant = __webpack_require__(9);
-  var warning = __webpack_require__(14);
-  var ReactPropTypesSecret = __webpack_require__(7);
+  var invariant = __webpack_require__(12);
+  var warning = __webpack_require__(16);
+  var ReactPropTypesSecret = __webpack_require__(10);
   var loggedTypeFailures = {};
 }
 
@@ -4632,7 +4539,7 @@ module.exports = checkPropTypes;
 /* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(3)))
 
 /***/ }),
-/* 41 */
+/* 42 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -4645,9 +4552,9 @@ module.exports = checkPropTypes;
 
 
 
-var emptyFunction = __webpack_require__(8);
-var invariant = __webpack_require__(9);
-var ReactPropTypesSecret = __webpack_require__(7);
+var emptyFunction = __webpack_require__(11);
+var invariant = __webpack_require__(12);
+var ReactPropTypesSecret = __webpack_require__(10);
 
 module.exports = function () {
   function shim(props, propName, componentName, location, propFullName, secret) {
@@ -4691,7 +4598,7 @@ module.exports = function () {
 };
 
 /***/ }),
-/* 42 */
+/* 43 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -4706,13 +4613,13 @@ module.exports = function () {
 
 var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol" ? function (obj) { return typeof obj; } : function (obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; };
 
-var emptyFunction = __webpack_require__(8);
-var invariant = __webpack_require__(9);
-var warning = __webpack_require__(14);
-var assign = __webpack_require__(39);
+var emptyFunction = __webpack_require__(11);
+var invariant = __webpack_require__(12);
+var warning = __webpack_require__(16);
+var assign = __webpack_require__(40);
 
-var ReactPropTypesSecret = __webpack_require__(7);
-var checkPropTypes = __webpack_require__(40);
+var ReactPropTypesSecret = __webpack_require__(10);
+var checkPropTypes = __webpack_require__(41);
 
 module.exports = function (isValidElement, throwOnDirectAccess) {
   /* global Symbol */
@@ -5216,7 +5123,7 @@ module.exports = function (isValidElement, throwOnDirectAccess) {
 /* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(3)))
 
 /***/ }),
-/* 43 */
+/* 44 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -5241,16 +5148,16 @@ if (process.env.NODE_ENV !== 'production') {
   // By explicitly using `prop-types` you are opting into new development behavior.
   // http://fb.me/prop-types-in-prod
   var throwOnDirectAccess = true;
-  module.exports = __webpack_require__(42)(isValidElement, throwOnDirectAccess);
+  module.exports = __webpack_require__(43)(isValidElement, throwOnDirectAccess);
 } else {
   // By explicitly using `prop-types` you are opting into new production behavior.
   // http://fb.me/prop-types-in-prod
-  module.exports = __webpack_require__(41)();
+  module.exports = __webpack_require__(42)();
 }
 /* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(3)))
 
 /***/ }),
-/* 44 */
+/* 45 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -5325,7 +5232,7 @@ exports.stringify = querystringify;
 exports.parse = querystring;
 
 /***/ }),
-/* 45 */
+/* 46 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -5353,15 +5260,15 @@ Object.defineProperty(exports, "__esModule", {
   value: true
 });
 
-var _react = __webpack_require__(20);
+var _react = __webpack_require__(24);
 
 var _react2 = _interopRequireDefault(_react);
 
-var _propTypes = __webpack_require__(43);
+var _propTypes = __webpack_require__(44);
 
 var _propTypes2 = _interopRequireDefault(_propTypes);
 
-var _format = __webpack_require__(27);
+var _format = __webpack_require__(28);
 
 var _format2 = _interopRequireDefault(_format);
 
@@ -5693,7 +5600,7 @@ IdleTimer.defaultProps = {
 exports.default = IdleTimer;
 
 /***/ }),
-/* 46 */
+/* 47 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -5738,7 +5645,7 @@ module.exports = function required(port, protocol) {
 };
 
 /***/ }),
-/* 47 */
+/* 48 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -5746,8 +5653,8 @@ module.exports = function required(port, protocol) {
 
 var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol" ? function (obj) { return typeof obj; } : function (obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; };
 
-var required = __webpack_require__(46),
-    qs = __webpack_require__(44),
+var required = __webpack_require__(47),
+    qs = __webpack_require__(45),
     protocolre = /^([a-z][a-z0-9.+-]*:)?(\/\/)?([\S\s]*)/i,
     slashes = /^[A-Za-z][A-Za-z0-9+-.]*:\/\//;
 
@@ -6151,10 +6058,10 @@ URL.location = lolcation;
 URL.qs = qs;
 
 module.exports = URL;
-/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(48)))
+/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(49)))
 
 /***/ }),
-/* 48 */
+/* 49 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -6184,7 +6091,7 @@ try {
 module.exports = g;
 
 /***/ }),
-/* 49 */
+/* 50 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -6207,7 +6114,529 @@ exports.default = function () {
 };
 
 /***/ }),
-/* 50 */
+/* 51 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+Object.defineProperty(exports, "__esModule", {
+	value: true
+});
+
+var _displayTypes = __webpack_require__(19);
+
+var getDisplayType = function getDisplayType(_ref) {
+	var rubricType = _ref.rubricType,
+	    mods = _ref.mods,
+	    status = _ref.status,
+	    statusResult = _ref.statusResult,
+	    isAttemptScore100 = _ref.isAttemptScore100;
+
+	var passed = status === 'passed';
+	var failed = status === 'failed';
+	var unableToPass = status === 'unableToPass';
+	var isAttemptRubric = rubricType === 'attempt';
+	var isPassFailRubric = rubricType === 'pass-fail';
+	var isRewardedMods = mods.length > 0;
+	var isResultNumeric = Number.isFinite(parseFloat(statusResult));
+	var isResultNoScore = statusResult === 'no-score';
+	var isResultAttemptScore = statusResult === '$attempt_score';
+	var isResultHighestAttemptScore = statusResult === '$highest_attempt_score';
+
+	var items = [];
+
+	if (isAttemptRubric && passed && isResultAttemptScore && !isRewardedMods) {
+		return _displayTypes.TYPE_ATTEMPT_WITHOUT_MODS_REWARDED;
+	}
+	if (isAttemptRubric && passed && isResultAttemptScore && isRewardedMods) {
+		return _displayTypes.TYPE_ATTEMPT_WITH_MODS_REWARDED;
+	}
+	if (isPassFailRubric && passed && isResultAttemptScore && !isRewardedMods) {
+		return _displayTypes.TYPE_PASSFAIL_PASSED_GIVEN_ATTEMPT_SCORE_WITHOUT_MODS_REWARDED;
+	}
+	if (isPassFailRubric && passed && isResultAttemptScore && isRewardedMods) {
+		return _displayTypes.TYPE_PASSFAIL_PASSED_GIVEN_ATTEMPT_SCORE_WITH_MODS_REWARDED;
+	}
+	if (isPassFailRubric && passed && isResultNumeric && !isAttemptScore100) {
+		return _displayTypes.TYPE_PASSFAIL_PASSED_GIVEN_SCORE_AND_ATTEMPT_SCORE_LESS_THAN_100;
+	}
+	if (isPassFailRubric && passed && isResultNumeric && isAttemptScore100 && !isRewardedMods) {
+		return _displayTypes.TYPE_PASSFAIL_PASSED_GIVEN_SCORE_AND_ATTEMPT_SCORE_IS_100_AND_NO_MODS_REWARDED;
+	}
+	if (isPassFailRubric && passed && isResultNumeric && isAttemptScore100 && isRewardedMods) {
+		return _displayTypes.TYPE_PASSFAIL_PASSED_GIVEN_SCORE_AND_ATTEMPT_SCORE_IS_100_AND_MODS_REWARDED;
+	}
+	if (isPassFailRubric && failed && isResultNoScore && !isRewardedMods) {
+		return _displayTypes.TYPE_PASSFAIL_FAILED_GIVEN_NO_SCORE;
+	}
+	if (isPassFailRubric && failed && isResultNumeric && !isRewardedMods) {
+		return _displayTypes.TYPE_PASSFAIL_FAILED_GIVEN_SCORE;
+	}
+	if (isPassFailRubric && unableToPass && isResultNoScore && !isRewardedMods) {
+		return _displayTypes.TYPE_PASSFAIL_UNABLE_TO_PASS_GIVEN_NO_SCORE;
+	}
+	if (isPassFailRubric && unableToPass && isResultHighestAttemptScore && !isRewardedMods) {
+		return _displayTypes.TYPE_PASSFAIL_UNABLE_TO_PASS_GIVEN_HIGHEST_ATTEMPT_SCORE;
+	}
+	if (isPassFailRubric && unableToPass && isResultNumeric && !isRewardedMods) {
+		return _displayTypes.TYPE_PASSFAIL_UNABLE_TO_PASS_GIVEN_SCORE;
+	}
+
+	return _displayTypes.ERROR_UNKNOWN_DISPLAY_TYPE;
+};
+
+exports.default = getDisplayType;
+
+/***/ }),
+/* 52 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+Object.defineProperty(exports, "__esModule", {
+	value: true
+});
+
+var _getDisplayFriendlyScore = __webpack_require__(5);
+
+var _getDisplayFriendlyScore2 = _interopRequireDefault(_getDisplayFriendlyScore);
+
+var _getStatusResult = __webpack_require__(56);
+
+var _getStatusResult2 = _interopRequireDefault(_getStatusResult);
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+var getReportDetailsForAttempt = function getReportDetailsForAttempt(assessmentRubric, scoreInfo) {
+	var statusResult = (0, _getStatusResult2.default)(assessmentRubric, scoreInfo.status);
+
+	return {
+		rubricType: assessmentRubric.type,
+		mods: scoreInfo.rewardedMods.map(function (modIndex) {
+			return assessmentRubric.mods[modIndex];
+		}),
+		status: scoreInfo.status,
+		statusResult: statusResult,
+		passingAttemptScore: typeof assessmentRubric.passingAttemptScore !== 'undefined' ? assessmentRubric.passingAttemptScore : 100,
+		isAttemptScore100: scoreInfo.attemptScore === 100,
+		isAssessScoreOver100: scoreInfo.status === 'passed' && scoreInfo.assessmentScore !== null && scoreInfo.assessmentScore + scoreInfo.rewardTotal > 100
+	};
+};
+
+exports.default = getReportDetailsForAttempt;
+
+/***/ }),
+/* 53 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+Object.defineProperty(exports, "__esModule", {
+	value: true
+});
+
+var _getDisplayFriendlyScore = __webpack_require__(5);
+
+var _getDisplayFriendlyScore2 = _interopRequireDefault(_getDisplayFriendlyScore);
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+var getReportDetailsForAttempt = function getReportDetailsForAttempt(scoreInfo, totalNumberOfAttemptsAllowed) {
+	return {
+		attemptNum: '' + scoreInfo.attemptNumber,
+		attemptScore: (0, _getDisplayFriendlyScore2.default)(scoreInfo.attemptScore),
+		assessScore: scoreInfo.assessmentModdedScore === null ? 'Did Not Pass' : (0, _getDisplayFriendlyScore2.default)(scoreInfo.assessmentModdedScore),
+		totalNumberOfAttemptsAllowed: '' + totalNumberOfAttemptsAllowed
+	};
+};
+
+exports.default = getReportDetailsForAttempt;
+
+/***/ }),
+/* 54 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+Object.defineProperty(exports, "__esModule", {
+	value: true
+});
+var getScoreChangeDescription = function getScoreChangeDescription(_ref) {
+	var prevHighestInfo = _ref.prevHighestInfo,
+	    newInfo = _ref.newInfo;
+
+	if (prevHighestInfo === null || newInfo === null) return null;
+
+	var prevHighestScore = prevHighestInfo.assessmentModdedScore;
+	var newScore = newInfo.assessmentModdedScore;
+
+	if (newScore === null && prevHighestScore === null) {
+		return 'This did not change your recorded score';
+	}
+
+	if (prevHighestScore === null) {
+		return '\u2714 Your recorded score was updated to ' + Math.round(newScore) + '%';
+	}
+
+	if (newScore > prevHighestScore) {
+		return '\u2714 Your recorded score was updated from ' + Math.round(prevHighestScore) + '% to ' + Math.round(newScore) + '%';
+	}
+
+	if (newScore === prevHighestScore) {
+		return 'This maintains your recorded score of ' + Math.round(prevHighestScore) + '%';
+	}
+
+	// Else newScore === null && prevHighestScore !== null
+	return 'This did not change your recorded score of ' + Math.round(prevHighestScore) + '%';
+};
+
+exports.default = getScoreChangeDescription;
+
+/***/ }),
+/* 55 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+Object.defineProperty(exports, "__esModule", {
+	value: true
+});
+
+var _assessmentUtil = __webpack_require__(7);
+
+var _assessmentUtil2 = _interopRequireDefault(_assessmentUtil);
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+var getScoreComparisionData = function getScoreComparisionData(allAttempts, attemptNumberToGenerateReportFor) {
+	if (allAttempts.length === 0) {
+		return {
+			prevHighestInfo: null,
+			newInfo: null
+		};
+	}
+
+	var prevAttempts = allAttempts.slice(0, attemptNumberToGenerateReportFor - 1);
+	var highestAttempts = _assessmentUtil2.default.findHighestAttempts(prevAttempts, 'assessmentScore');
+	var prevHighestAttempt = highestAttempts.length === 0 ? null : highestAttempts[0];
+
+	return {
+		prevHighestInfo: prevHighestAttempt ? prevHighestAttempt.assessmentScoreDetails : null,
+		newInfo: allAttempts[attemptNumberToGenerateReportFor - 1].assessmentScoreDetails
+	};
+};
+
+exports.default = getScoreComparisionData;
+
+/***/ }),
+/* 56 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+Object.defineProperty(exports, "__esModule", {
+	value: true
+});
+var getStatusResult = function getStatusResult(rubric, status) {
+	switch (status) {
+		case 'passed':
+			return typeof rubric.passedResult !== 'undefined' ? rubric.passedResult : 100;
+		case 'failed':
+			return typeof rubric.failedResult !== 'undefined' ? rubric.failedResult : 0;
+		case 'unableToPass':
+			return typeof rubric.unableToPassResult !== 'undefined' ? rubric.unableToPassResult : 0;
+	}
+
+	throw new Error('Unknown status: ' + status);
+};
+
+exports.default = getStatusResult;
+
+/***/ }),
+/* 57 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+Object.defineProperty(exports, "__esModule", {
+	value: true
+});
+
+var _getDisplayFriendlyScore = __webpack_require__(5);
+
+var _getDisplayFriendlyScore2 = _interopRequireDefault(_getDisplayFriendlyScore);
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+var whitespaceRegex = /\s/g;
+
+var getModText = function getModText(attemptCondition, totalNumberOfAttemptsAllowed) {
+	attemptCondition = ('' + attemptCondition).replace(whitespaceRegex, '').replace('$last_attempt', '' + totalNumberOfAttemptsAllowed);
+
+	var range = [];
+	if (attemptCondition.indexOf(',') === -1) {
+		range.push(parseInt(attemptCondition, 10));
+	} else {
+		var tokens = attemptCondition.split(',');
+		range.push(parseInt(tokens[0].substr(1), 10));
+		range.push(parseInt(tokens[1].substr(0, tokens[1].length - 1), 10));
+
+		if (tokens[0].charAt(0) === '(') range[0]++;
+		if (tokens[1].charAt(tokens[1].length - 1) === ')') range[1]--;
+
+		if (range[0] === range[1]) range.splice(1, 1);
+	}
+
+	if (range.length === 1) {
+		if (range[0] === 1) return 'Passed on first attempt';
+		if (range[0] === totalNumberOfAttemptsAllowed) return 'Passed on last attempt';
+		return 'Passed on attempt\xA0' + range[0];
+	}
+
+	return 'Passed on attempts ' + range[0] + ' to ' + range[1];
+};
+
+var getTextItemsForMods = function getTextItemsForMods(mods, totalNumberOfAttemptsAllowed) {
+	return mods.map(function (mod) {
+		return {
+			type: parseInt(mod.reward) >= 0 ? 'extra-credit' : 'penalty',
+			text: getModText(mod.attemptCondition, totalNumberOfAttemptsAllowed),
+			value: (0, _getDisplayFriendlyScore2.default)(Math.abs(mod.reward))
+		};
+	});
+};
+
+exports.default = getTextItemsForMods;
+
+/***/ }),
+/* 58 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+Object.defineProperty(exports, "__esModule", {
+	value: true
+});
+
+var _getDisplayFriendlyScore = __webpack_require__(5);
+
+var _getDisplayFriendlyScore2 = _interopRequireDefault(_getDisplayFriendlyScore);
+
+var _getTextItemsForMods = __webpack_require__(57);
+
+var _getTextItemsForMods2 = _interopRequireDefault(_getTextItemsForMods);
+
+var _getDisplayType = __webpack_require__(51);
+
+var _getDisplayType2 = _interopRequireDefault(_getDisplayType);
+
+var _displayTypes = __webpack_require__(19);
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+var getPassingRange = function getPassingRange(passingNumber) {
+	if (passingNumber === '100') return '100%';
+	return (0, _getDisplayFriendlyScore2.default)(passingNumber) + '-100%';
+};
+
+var getTextItems = function getTextItems(_ref, _ref2) {
+	var rubricType = _ref.rubricType,
+	    mods = _ref.mods,
+	    status = _ref.status,
+	    statusResult = _ref.statusResult,
+	    passingAttemptScore = _ref.passingAttemptScore,
+	    isAttemptScore100 = _ref.isAttemptScore100,
+	    isAssessScoreOver100 = _ref.isAssessScoreOver100;
+	var attemptNum = _ref2.attemptNum,
+	    attemptScore = _ref2.attemptScore,
+	    assessScore = _ref2.assessScore,
+	    totalNumberOfAttemptsAllowed = _ref2.totalNumberOfAttemptsAllowed;
+
+	var items = [];
+
+	switch ((0, _getDisplayType2.default)({
+		rubricType: rubricType,
+		mods: mods,
+		status: status,
+		statusResult: statusResult,
+		isAttemptScore100: isAttemptScore100
+	})) {
+		case _displayTypes.TYPE_ATTEMPT_WITHOUT_MODS_REWARDED:
+			items.push({
+				type: 'total',
+				text: 'Score',
+				value: assessScore
+			});
+			break;
+
+		case _displayTypes.TYPE_ATTEMPT_WITH_MODS_REWARDED:
+			items.push({
+				type: 'value',
+				text: 'Attempt Score',
+				value: attemptScore
+			});
+			break;
+
+		case _displayTypes.TYPE_PASSFAIL_PASSED_GIVEN_ATTEMPT_SCORE_WITHOUT_MODS_REWARDED:
+			items.push({
+				type: 'total',
+				text: 'Score',
+				value: assessScore
+			});
+			break;
+
+		case _displayTypes.TYPE_PASSFAIL_PASSED_GIVEN_ATTEMPT_SCORE_WITH_MODS_REWARDED:
+			items.push({
+				type: 'value',
+				text: 'Attempt Score',
+				value: attemptScore
+			});
+			break;
+
+		case _displayTypes.TYPE_PASSFAIL_PASSED_GIVEN_SCORE_AND_ATTEMPT_SCORE_LESS_THAN_100:
+			items.push({
+				type: 'value',
+				text: 'Attempt Score (Passed)',
+				value: attemptScore
+			}, {
+				type: 'divider'
+			}, {
+				type: 'value',
+				text: 'Score adjusted for passing',
+				value: (0, _getDisplayFriendlyScore2.default)(statusResult)
+			});
+			break;
+
+		case _displayTypes.TYPE_PASSFAIL_PASSED_GIVEN_SCORE_AND_ATTEMPT_SCORE_IS_100_AND_NO_MODS_REWARDED:
+			items.push({
+				type: 'total',
+				text: 'Score',
+				value: assessScore
+			});
+			break;
+
+		case _displayTypes.TYPE_PASSFAIL_PASSED_GIVEN_SCORE_AND_ATTEMPT_SCORE_IS_100_AND_MODS_REWARDED:
+			items.push({
+				type: 'value',
+				text: 'Attempt Score (Passed)',
+				value: attemptScore
+			});
+			break;
+
+		case _displayTypes.TYPE_PASSFAIL_FAILED_GIVEN_NO_SCORE:
+			items.push({
+				type: 'value',
+				text: 'Attempt Score',
+				value: attemptScore
+			}, {
+				type: 'divider'
+			}, {
+				type: 'text',
+				text: 'You need ' + getPassingRange(passingAttemptScore) + ' to pass'
+			});
+			break;
+
+		case _displayTypes.TYPE_PASSFAIL_FAILED_GIVEN_SCORE:
+			items.push({
+				type: 'value',
+				text: 'Attempt Score',
+				value: attemptScore
+			}, {
+				type: 'divider'
+			}, {
+				type: 'value',
+				text: 'Score adjusted for not passing (less than ' + (0, _getDisplayFriendlyScore2.default)(passingAttemptScore) + '%)',
+				value: (0, _getDisplayFriendlyScore2.default)(statusResult)
+			});
+			break;
+
+		case _displayTypes.TYPE_PASSFAIL_UNABLE_TO_PASS_GIVEN_NO_SCORE:
+			items.push({
+				type: 'value',
+				text: 'Attempt Score',
+				value: attemptScore
+			}, {
+				type: 'divider'
+			}, {
+				type: 'text',
+				text: 'You needed ' + getPassingRange(passingAttemptScore) + ' to pass'
+			});
+			break;
+
+		case _displayTypes.TYPE_PASSFAIL_UNABLE_TO_PASS_GIVEN_HIGHEST_ATTEMPT_SCORE:
+			items.push({
+				type: 'value',
+				text: 'Attempt Score',
+				value: attemptScore
+			}, {
+				type: 'divider'
+			}, {
+				type: 'text',
+				text: 'You did not achieve a passing ' + getPassingRange(passingAttemptScore) + ' score within the number of attempts available. Your highest attempt score will be used instead.'
+			}, {
+				type: 'divider'
+			}, {
+				type: 'value',
+				text: 'Highest attempt score (Attempt\xA0' + attemptNum + ')',
+				value: assessScore
+			});
+			break;
+
+		case _displayTypes.TYPE_PASSFAIL_UNABLE_TO_PASS_GIVEN_SCORE:
+			items.push({
+				type: 'value',
+				text: 'Attempt Score',
+				value: attemptScore
+			}, {
+				type: 'divider'
+			}, {
+				type: 'text',
+				text: 'You did not achieve a passing ' + getPassingRange(passingAttemptScore) + ' score within the number of attempts available.'
+			}, {
+				type: 'value',
+				text: 'Score for not achieving a passing attempt',
+				value: (0, _getDisplayFriendlyScore2.default)(statusResult)
+			});
+			break;
+
+		case _displayTypes.ERROR_UNKNOWN_DISPLAY_TYPE:
+			// Shouldn't get here but we still want to show their score
+			items.push({
+				type: 'value',
+				text: 'Score',
+				value: assessScore
+			});
+			break;
+	}
+
+	items = items.concat((0, _getTextItemsForMods2.default)(mods, totalNumberOfAttemptsAllowed));
+
+	if (items.length > 1) {
+		items.push({
+			type: 'divider'
+		}, {
+			type: 'total',
+			text: 'Total Score' + (isAssessScoreOver100 ? ' (Max 100%)' : ''),
+			// value: assessScore === null ? 'Did Not Pass' : assessScore
+			value: assessScore
+		});
+	}
+
+	return items;
+};
+
+exports.default = getTextItems;
+
+/***/ }),
+/* 59 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -6219,7 +6648,7 @@ Object.defineProperty(exports, "__esModule", {
 
 var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
 
-__webpack_require__(55);
+__webpack_require__(64);
 
 var _navUtil = __webpack_require__(2);
 
@@ -6277,7 +6706,7 @@ var InlineNavButton = function (_React$Component) {
 exports.default = InlineNavButton;
 
 /***/ }),
-/* 51 */
+/* 60 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -6289,9 +6718,9 @@ Object.defineProperty(exports, "__esModule", {
 
 var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
 
-__webpack_require__(57);
+__webpack_require__(66);
 
-var _navStore = __webpack_require__(10);
+var _navStore = __webpack_require__(6);
 
 var _navStore2 = _interopRequireDefault(_navStore);
 
@@ -6299,19 +6728,19 @@ var _navUtil = __webpack_require__(2);
 
 var _navUtil2 = _interopRequireDefault(_navUtil);
 
-var _logo = __webpack_require__(15);
+var _logo = __webpack_require__(20);
 
 var _logo2 = _interopRequireDefault(_logo);
 
-var _hamburger = __webpack_require__(61);
+var _hamburger = __webpack_require__(70);
 
 var _hamburger2 = _interopRequireDefault(_hamburger);
 
-var _arrow = __webpack_require__(60);
+var _arrow = __webpack_require__(69);
 
 var _arrow2 = _interopRequireDefault(_arrow);
 
-var _lockIcon = __webpack_require__(62);
+var _lockIcon = __webpack_require__(71);
 
 var _lockIcon2 = _interopRequireDefault(_lockIcon);
 
@@ -6498,7 +6927,7 @@ var Nav = function (_React$Component) {
 exports.default = Nav;
 
 /***/ }),
-/* 52 */
+/* 61 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -6510,23 +6939,23 @@ Object.defineProperty(exports, "__esModule", {
 
 var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
 
-__webpack_require__(59);
+__webpack_require__(68);
 
-__webpack_require__(58);
+__webpack_require__(67);
 
 var _Common = __webpack_require__(0);
 
 var _Common2 = _interopRequireDefault(_Common);
 
-var _react = __webpack_require__(20);
+var _react = __webpack_require__(24);
 
 var _react2 = _interopRequireDefault(_react);
 
-var _reactIdleTimer = __webpack_require__(45);
+var _reactIdleTimer = __webpack_require__(46);
 
 var _reactIdleTimer2 = _interopRequireDefault(_reactIdleTimer);
 
-var _inlineNavButton = __webpack_require__(50);
+var _inlineNavButton = __webpack_require__(59);
 
 var _inlineNavButton2 = _interopRequireDefault(_inlineNavButton);
 
@@ -6538,27 +6967,27 @@ var _apiUtil = __webpack_require__(4);
 
 var _apiUtil2 = _interopRequireDefault(_apiUtil);
 
-var _logo = __webpack_require__(15);
+var _logo = __webpack_require__(20);
 
 var _logo2 = _interopRequireDefault(_logo);
 
-var _questionStore = __webpack_require__(11);
+var _questionStore = __webpack_require__(13);
 
 var _questionStore2 = _interopRequireDefault(_questionStore);
 
-var _assessmentStore = __webpack_require__(16);
+var _assessmentStore = __webpack_require__(21);
 
 var _assessmentStore2 = _interopRequireDefault(_assessmentStore);
 
-var _navStore = __webpack_require__(10);
+var _navStore = __webpack_require__(6);
 
 var _navStore2 = _interopRequireDefault(_navStore);
 
-var _nav = __webpack_require__(51);
+var _nav = __webpack_require__(60);
 
 var _nav2 = _interopRequireDefault(_nav);
 
-var _getLtiOutcomeServiceHostname = __webpack_require__(19);
+var _getLtiOutcomeServiceHostname = __webpack_require__(23);
 
 var _getLtiOutcomeServiceHostname2 = _interopRequireDefault(_getLtiOutcomeServiceHostname);
 
@@ -7091,7 +7520,7 @@ var ViewerApp = function (_React$Component) {
 exports.default = ViewerApp;
 
 /***/ }),
-/* 53 */
+/* 62 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -7101,27 +7530,27 @@ Object.defineProperty(exports, "__esModule", {
 	value: true
 });
 
-var _viewerApp = __webpack_require__(52);
+var _viewerApp = __webpack_require__(61);
 
 var _viewerApp2 = _interopRequireDefault(_viewerApp);
 
-var _assessmentStore = __webpack_require__(16);
+var _assessmentStore = __webpack_require__(21);
 
 var _assessmentStore2 = _interopRequireDefault(_assessmentStore);
 
-var _ltiNetworkStates = __webpack_require__(17);
+var _ltiNetworkStates = __webpack_require__(22);
 
 var _ltiNetworkStates2 = _interopRequireDefault(_ltiNetworkStates);
 
-var _navStore = __webpack_require__(10);
+var _navStore = __webpack_require__(6);
 
 var _navStore2 = _interopRequireDefault(_navStore);
 
-var _questionStore = __webpack_require__(11);
+var _questionStore = __webpack_require__(13);
 
 var _questionStore2 = _interopRequireDefault(_questionStore);
 
-var _assessmentUtil = __webpack_require__(18);
+var _assessmentUtil = __webpack_require__(7);
 
 var _assessmentUtil2 = _interopRequireDefault(_assessmentUtil);
 
@@ -7133,13 +7562,21 @@ var _apiUtil = __webpack_require__(4);
 
 var _apiUtil2 = _interopRequireDefault(_apiUtil);
 
-var _questionUtil = __webpack_require__(5);
+var _questionUtil = __webpack_require__(8);
 
 var _questionUtil2 = _interopRequireDefault(_questionUtil);
 
-var _getLtiOutcomeServiceHostname = __webpack_require__(19);
+var _getLtiOutcomeServiceHostname = __webpack_require__(23);
 
 var _getLtiOutcomeServiceHostname2 = _interopRequireDefault(_getLtiOutcomeServiceHostname);
+
+var _assessmentScoreReporter = __webpack_require__(18);
+
+var _assessmentScoreReporter2 = _interopRequireDefault(_assessmentScoreReporter);
+
+var _assessmentScoreReportView = __webpack_require__(17);
+
+var _assessmentScoreReportView2 = _interopRequireDefault(_assessmentScoreReportView);
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
@@ -7163,75 +7600,80 @@ exports.default = {
 		APIUtil: _apiUtil2.default,
 		QuestionUtil: _questionUtil2.default,
 		getLTIOutcomeServiceHostname: _getLtiOutcomeServiceHostname2.default
+	},
+
+	assessment: {
+		AssessmentScoreReporter: _assessmentScoreReporter2.default,
+		AssessmentScoreReportView: _assessmentScoreReportView2.default
 	}
 };
-
-/***/ }),
-/* 54 */
-/***/ (function(module, exports) {
-
-// removed by extract-text-webpack-plugin
-
-/***/ }),
-/* 55 */
-/***/ (function(module, exports) {
-
-// removed by extract-text-webpack-plugin
-
-/***/ }),
-/* 56 */
-/***/ (function(module, exports) {
-
-// removed by extract-text-webpack-plugin
-
-/***/ }),
-/* 57 */
-/***/ (function(module, exports) {
-
-// removed by extract-text-webpack-plugin
-
-/***/ }),
-/* 58 */
-/***/ (function(module, exports) {
-
-// removed by extract-text-webpack-plugin
-
-/***/ }),
-/* 59 */
-/***/ (function(module, exports) {
-
-// removed by extract-text-webpack-plugin
-
-/***/ }),
-/* 60 */
-/***/ (function(module, exports) {
-
-module.exports = "data:image/svg+xml,%3C?xml version='1.0' encoding='utf-8'?%3E %3C!-- Generator: Adobe Illustrator 19.0.0, SVG Export Plug-In . SVG Version: 6.00 Build 0) --%3E %3Csvg version='1.1' id='Layer_1' xmlns='http://www.w3.org/2000/svg' xmlns:xlink='http://www.w3.org/1999/xlink' x='0px' y='0px' viewBox='-290 387 30 20' style='enable-background:new -290 387 30 20;' xml:space='preserve'%3E %3Cpath d='M-272.5,405.4l-12.1-7.4c-0.6-0.4-0.6-1.7,0-2.1l12.1-7.4c0.5-0.3,1,0.3,1,1.1v14.7C-271.4,405.2-272,405.7-272.5,405.4z' fill='rgba(0, 0, 0, .2)' transform='translate(2, 0)'/%3E %3C/svg%3E"
-
-/***/ }),
-/* 61 */
-/***/ (function(module, exports) {
-
-module.exports = "data:image/svg+xml,%3Csvg width='20' height='10' viewBox='0 0 100 100' xmlns='http://www.w3.org/2000/svg' version='1.1'%3E %3Cline x1='0' y1='10' x2='100' y2='10' stroke='rgba(0, 0, 0, .2)' stroke-width='20' stroke-linecap='round' /%3E %3Cline x1='0' y1='50' x2='100' y2='50' stroke='rgba(0, 0, 0, .2)' stroke-width='20' stroke-linecap='round' /%3E %3Cline x1='0' y1='90' x2='100' y2='90' stroke='rgba(0, 0, 0, .2)' stroke-width='20' stroke-linecap='round' /%3E %3C/svg%3E"
-
-/***/ }),
-/* 62 */
-/***/ (function(module, exports) {
-
-module.exports = "data:image/svg+xml,%3C?xml version='1.0' encoding='utf-8'?%3E %3Csvg version='1.1' xmlns='http://www.w3.org/2000/svg' xmlns:xlink='http://www.w3.org/1999/xlink' viewBox='0 0 10 16' style='enable-background:new 0 0 10 16;' xml:space='preserve'%3E %3Cpath fill='white' id='XMLID_6_' d='M9.1,6H8.5V3.5C8.5,1.5,6.9,0,5,0C3.1,0,1.6,1.5,1.6,3.5l0,2.5H0.9C0.4,6,0,6.4,0,6.9v8.2 C0,15.6,0.4,16,0.9,16h8.2c0.5,0,0.9-0.4,0.9-0.9V6.9C10,6.4,9.6,6,9.1,6z M3.3,3.4c0-0.9,0.8-1.6,1.7-1.6c0.9,0,1.7,0.8,1.7,1.7V6 H3.3V3.4z'/%3E %3C/svg%3E"
 
 /***/ }),
 /* 63 */
 /***/ (function(module, exports) {
 
-module.exports = "data:image/svg+xml,%3C?xml version='1.0' encoding='utf-8'?%3E %3C!-- Generator: Adobe Illustrator 15.0.2, SVG Export Plug-In . SVG Version: 6.00 Build 0) --%3E %3C!DOCTYPE svg PUBLIC '-//W3C//DTD SVG 1.1//EN' 'http://www.w3.org/Graphics/SVG/1.1/DTD/svg11.dtd'%3E %3Csvg version='1.1' id='Layer_1' xmlns='http://www.w3.org/2000/svg' xmlns:xlink='http://www.w3.org/1999/xlink' x='0px' y='0px' width='253px' height='64.577px' viewBox='0 0 253 64.577' enable-background='new 0 0 253 64.577' xml:space='preserve' fill='black'%3E %3Cpath d='M18.399,53.629c-0.01,0-0.021,0-0.031,0C7.023,53.396,0,43.151,0,33.793c0-10.79,8.426-19.905,18.399-19.905 c11.006,0,18.399,10.292,18.399,19.905c0,10.719-8.239,19.617-18.367,19.835C18.421,53.629,18.41,53.629,18.399,53.629z M18.399,18.257c-8.393,0-14.031,8.033-14.031,15.536c0.295,7.574,5.625,15.468,14.031,15.468c8.393,0,14.031-7.998,14.031-15.468 C32.43,25.372,26.005,18.257,18.399,18.257z'/%3E %3Cpath d='M58.15,53.629c-6.02,0-13.502-3.57-16.154-10.394c-0.287-0.733-0.603-1.542-0.603-3.281l0-38.454 c0-0.398,0.158-0.779,0.439-1.061S42.495,0,42.893,0h1.369c0.829,0,1.5,0.671,1.5,1.5v18.495c3.827-4.056,8.188-6.106,13.004-6.106 c11.111,0,17.989,10.332,17.989,19.905C76.444,44.75,68.099,53.629,58.15,53.629z M45.761,27.446v12.437 c0,4.652,7.208,9.378,12.389,9.378c8.516,0,14.236-7.998,14.236-15.468c0-7.472-5.208-15.536-13.621-15.536 C51.235,18.257,47.065,24.927,45.761,27.446z'/%3E %3Cpath d='M99.064,53.629c-0.01,0-0.021,0-0.031,0c-11.346-0.233-18.369-10.478-18.369-19.835 c0-10.79,8.426-19.905,18.399-19.905c11.005,0,18.398,10.292,18.398,19.905c0,10.719-8.239,19.617-18.366,19.835 C99.086,53.629,99.075,53.629,99.064,53.629z M99.064,18.257c-8.393,0-14.031,8.033-14.031,15.536 c0.294,7.574,5.624,15.468,14.031,15.468c8.393,0,14.031-7.998,14.031-15.468C113.096,25.372,106.67,18.257,99.064,18.257z'/%3E %3Cpath d='M153.252,53.629c-0.01,0-0.021,0-0.031,0c-11.346-0.233-18.369-10.478-18.369-19.835 c0-10.79,8.426-19.905,18.399-19.905c11.006,0,18.399,10.292,18.399,19.905c0,10.719-8.239,19.617-18.367,19.835 C153.273,53.629,153.263,53.629,153.252,53.629z M153.252,18.257c-8.393,0-14.031,8.033-14.031,15.536 c0.294,7.574,5.624,15.468,14.031,15.468c8.393,0,14.031-7.998,14.031-15.468C167.283,25.372,160.858,18.257,153.252,18.257z'/%3E %3Cpath d='M234.601,53.629c-0.01,0-0.021,0-0.031,0c-11.345-0.233-18.367-10.478-18.367-19.835 c0-10.79,8.426-19.905,18.398-19.905c11.006,0,18.399,10.292,18.399,19.905c0,10.719-8.239,19.617-18.367,19.835 C234.622,53.629,234.611,53.629,234.601,53.629z M234.601,18.257c-8.393,0-14.03,8.033-14.03,15.536 c0.294,7.574,5.624,15.468,14.03,15.468c8.394,0,14.031-7.998,14.031-15.468C248.632,25.372,242.206,18.257,234.601,18.257z'/%3E %3Cpath d='M193.62,53.629c-6.021,0-13.503-3.57-16.155-10.394l-0.098-0.239c-0.254-0.607-0.603-1.438-0.603-3.042 c0.002-15.911,0.098-38.237,0.099-38.461c0.003-0.826,0.674-1.494,1.5-1.494h1.368c0.829,0,1.5,0.671,1.5,1.5v18.495 c3.827-4.055,8.188-6.106,13.005-6.106c11.111,0,17.988,10.332,17.988,19.904C211.915,44.75,203.569,53.629,193.62,53.629z M181.231,27.446v12.437c0,4.652,7.208,9.378,12.389,9.378c8.515,0,14.235-7.998,14.235-15.468c0-7.472-5.207-15.536-13.619-15.536 C186.705,18.257,182.535,24.927,181.231,27.446z'/%3E %3Cpath d='M118.017,64.577c-0.013,0-0.026,0-0.039,0c-2.437-0.063-5.533-0.434-7.865-2.765 c-0.308-0.308-0.467-0.734-0.436-1.167c0.031-0.434,0.249-0.833,0.597-1.094l1.096-0.821c0.566-0.425,1.353-0.396,1.887,0.072 c1.083,0.947,2.617,1.408,4.691,1.408c2.913,0,6.3-2.752,6.3-6.3V16.073c0-0.829,0.671-1.5,1.5-1.5h1.368c0.829,0,1.5,0.671,1.5,1.5 v37.835C128.616,60.195,123.03,64.577,118.017,64.577z M127.116,8.268h-1.368c-0.829,0-1.5-0.671-1.5-1.5V2.389 c0-0.829,0.671-1.5,1.5-1.5h1.368c0.829,0,1.5,0.671,1.5,1.5v4.379C128.616,7.597,127.945,8.268,127.116,8.268z'/%3E %3C/svg%3E"
+// removed by extract-text-webpack-plugin
 
 /***/ }),
 /* 64 */
+/***/ (function(module, exports) {
+
+// removed by extract-text-webpack-plugin
+
+/***/ }),
+/* 65 */
+/***/ (function(module, exports) {
+
+// removed by extract-text-webpack-plugin
+
+/***/ }),
+/* 66 */
+/***/ (function(module, exports) {
+
+// removed by extract-text-webpack-plugin
+
+/***/ }),
+/* 67 */
+/***/ (function(module, exports) {
+
+// removed by extract-text-webpack-plugin
+
+/***/ }),
+/* 68 */
+/***/ (function(module, exports) {
+
+// removed by extract-text-webpack-plugin
+
+/***/ }),
+/* 69 */
+/***/ (function(module, exports) {
+
+module.exports = "data:image/svg+xml,%3C?xml version='1.0' encoding='utf-8'?%3E %3C!-- Generator: Adobe Illustrator 19.0.0, SVG Export Plug-In . SVG Version: 6.00 Build 0) --%3E %3Csvg version='1.1' id='Layer_1' xmlns='http://www.w3.org/2000/svg' xmlns:xlink='http://www.w3.org/1999/xlink' x='0px' y='0px' viewBox='-290 387 30 20' style='enable-background:new -290 387 30 20;' xml:space='preserve'%3E %3Cpath d='M-272.5,405.4l-12.1-7.4c-0.6-0.4-0.6-1.7,0-2.1l12.1-7.4c0.5-0.3,1,0.3,1,1.1v14.7C-271.4,405.2-272,405.7-272.5,405.4z' fill='rgba(0, 0, 0, .2)' transform='translate(2, 0)'/%3E %3C/svg%3E"
+
+/***/ }),
+/* 70 */
+/***/ (function(module, exports) {
+
+module.exports = "data:image/svg+xml,%3Csvg width='20' height='10' viewBox='0 0 100 100' xmlns='http://www.w3.org/2000/svg' version='1.1'%3E %3Cline x1='0' y1='10' x2='100' y2='10' stroke='rgba(0, 0, 0, .2)' stroke-width='20' stroke-linecap='round' /%3E %3Cline x1='0' y1='50' x2='100' y2='50' stroke='rgba(0, 0, 0, .2)' stroke-width='20' stroke-linecap='round' /%3E %3Cline x1='0' y1='90' x2='100' y2='90' stroke='rgba(0, 0, 0, .2)' stroke-width='20' stroke-linecap='round' /%3E %3C/svg%3E"
+
+/***/ }),
+/* 71 */
+/***/ (function(module, exports) {
+
+module.exports = "data:image/svg+xml,%3C?xml version='1.0' encoding='utf-8'?%3E %3Csvg version='1.1' xmlns='http://www.w3.org/2000/svg' xmlns:xlink='http://www.w3.org/1999/xlink' viewBox='0 0 10 16' style='enable-background:new 0 0 10 16;' xml:space='preserve'%3E %3Cpath fill='white' id='XMLID_6_' d='M9.1,6H8.5V3.5C8.5,1.5,6.9,0,5,0C3.1,0,1.6,1.5,1.6,3.5l0,2.5H0.9C0.4,6,0,6.4,0,6.9v8.2 C0,15.6,0.4,16,0.9,16h8.2c0.5,0,0.9-0.4,0.9-0.9V6.9C10,6.4,9.6,6,9.1,6z M3.3,3.4c0-0.9,0.8-1.6,1.7-1.6c0.9,0,1.7,0.8,1.7,1.7V6 H3.3V3.4z'/%3E %3C/svg%3E"
+
+/***/ }),
+/* 72 */
+/***/ (function(module, exports) {
+
+module.exports = "data:image/svg+xml,%3C?xml version='1.0' encoding='utf-8'?%3E %3C!-- Generator: Adobe Illustrator 15.0.2, SVG Export Plug-In . SVG Version: 6.00 Build 0) --%3E %3C!DOCTYPE svg PUBLIC '-//W3C//DTD SVG 1.1//EN' 'http://www.w3.org/Graphics/SVG/1.1/DTD/svg11.dtd'%3E %3Csvg version='1.1' id='Layer_1' xmlns='http://www.w3.org/2000/svg' xmlns:xlink='http://www.w3.org/1999/xlink' x='0px' y='0px' width='253px' height='64.577px' viewBox='0 0 253 64.577' enable-background='new 0 0 253 64.577' xml:space='preserve' fill='black'%3E %3Cpath d='M18.399,53.629c-0.01,0-0.021,0-0.031,0C7.023,53.396,0,43.151,0,33.793c0-10.79,8.426-19.905,18.399-19.905 c11.006,0,18.399,10.292,18.399,19.905c0,10.719-8.239,19.617-18.367,19.835C18.421,53.629,18.41,53.629,18.399,53.629z M18.399,18.257c-8.393,0-14.031,8.033-14.031,15.536c0.295,7.574,5.625,15.468,14.031,15.468c8.393,0,14.031-7.998,14.031-15.468 C32.43,25.372,26.005,18.257,18.399,18.257z'/%3E %3Cpath d='M58.15,53.629c-6.02,0-13.502-3.57-16.154-10.394c-0.287-0.733-0.603-1.542-0.603-3.281l0-38.454 c0-0.398,0.158-0.779,0.439-1.061S42.495,0,42.893,0h1.369c0.829,0,1.5,0.671,1.5,1.5v18.495c3.827-4.056,8.188-6.106,13.004-6.106 c11.111,0,17.989,10.332,17.989,19.905C76.444,44.75,68.099,53.629,58.15,53.629z M45.761,27.446v12.437 c0,4.652,7.208,9.378,12.389,9.378c8.516,0,14.236-7.998,14.236-15.468c0-7.472-5.208-15.536-13.621-15.536 C51.235,18.257,47.065,24.927,45.761,27.446z'/%3E %3Cpath d='M99.064,53.629c-0.01,0-0.021,0-0.031,0c-11.346-0.233-18.369-10.478-18.369-19.835 c0-10.79,8.426-19.905,18.399-19.905c11.005,0,18.398,10.292,18.398,19.905c0,10.719-8.239,19.617-18.366,19.835 C99.086,53.629,99.075,53.629,99.064,53.629z M99.064,18.257c-8.393,0-14.031,8.033-14.031,15.536 c0.294,7.574,5.624,15.468,14.031,15.468c8.393,0,14.031-7.998,14.031-15.468C113.096,25.372,106.67,18.257,99.064,18.257z'/%3E %3Cpath d='M153.252,53.629c-0.01,0-0.021,0-0.031,0c-11.346-0.233-18.369-10.478-18.369-19.835 c0-10.79,8.426-19.905,18.399-19.905c11.006,0,18.399,10.292,18.399,19.905c0,10.719-8.239,19.617-18.367,19.835 C153.273,53.629,153.263,53.629,153.252,53.629z M153.252,18.257c-8.393,0-14.031,8.033-14.031,15.536 c0.294,7.574,5.624,15.468,14.031,15.468c8.393,0,14.031-7.998,14.031-15.468C167.283,25.372,160.858,18.257,153.252,18.257z'/%3E %3Cpath d='M234.601,53.629c-0.01,0-0.021,0-0.031,0c-11.345-0.233-18.367-10.478-18.367-19.835 c0-10.79,8.426-19.905,18.398-19.905c11.006,0,18.399,10.292,18.399,19.905c0,10.719-8.239,19.617-18.367,19.835 C234.622,53.629,234.611,53.629,234.601,53.629z M234.601,18.257c-8.393,0-14.03,8.033-14.03,15.536 c0.294,7.574,5.624,15.468,14.03,15.468c8.394,0,14.031-7.998,14.031-15.468C248.632,25.372,242.206,18.257,234.601,18.257z'/%3E %3Cpath d='M193.62,53.629c-6.021,0-13.503-3.57-16.155-10.394l-0.098-0.239c-0.254-0.607-0.603-1.438-0.603-3.042 c0.002-15.911,0.098-38.237,0.099-38.461c0.003-0.826,0.674-1.494,1.5-1.494h1.368c0.829,0,1.5,0.671,1.5,1.5v18.495 c3.827-4.055,8.188-6.106,13.005-6.106c11.111,0,17.988,10.332,17.988,19.904C211.915,44.75,203.569,53.629,193.62,53.629z M181.231,27.446v12.437c0,4.652,7.208,9.378,12.389,9.378c8.515,0,14.235-7.998,14.235-15.468c0-7.472-5.207-15.536-13.619-15.536 C186.705,18.257,182.535,24.927,181.231,27.446z'/%3E %3Cpath d='M118.017,64.577c-0.013,0-0.026,0-0.039,0c-2.437-0.063-5.533-0.434-7.865-2.765 c-0.308-0.308-0.467-0.734-0.436-1.167c0.031-0.434,0.249-0.833,0.597-1.094l1.096-0.821c0.566-0.425,1.353-0.396,1.887,0.072 c1.083,0.947,2.617,1.408,4.691,1.408c2.913,0,6.3-2.752,6.3-6.3V16.073c0-0.829,0.671-1.5,1.5-1.5h1.368c0.829,0,1.5,0.671,1.5,1.5 v37.835C128.616,60.195,123.03,64.577,118.017,64.577z M127.116,8.268h-1.368c-0.829,0-1.5-0.671-1.5-1.5V2.389 c0-0.829,0.671-1.5,1.5-1.5h1.368c0.829,0,1.5,0.671,1.5,1.5v4.379C128.616,7.597,127.945,8.268,127.116,8.268z'/%3E %3C/svg%3E"
+
+/***/ }),
+/* 73 */
 /***/ (function(module, exports, __webpack_require__) {
 
-__webpack_require__(21);
-module.exports = __webpack_require__(22);
+__webpack_require__(25);
+module.exports = __webpack_require__(26);
 
 
 /***/ })

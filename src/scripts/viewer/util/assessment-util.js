@@ -38,31 +38,31 @@ var AssessmentUtil = {
 		return assessment.attempts[assessment.attempts.length - 1]
 	},
 
-	getLastAttemptScoreForModel(state, model) {
-		let attempt = this.getLastAttemptForModel(state, model)
-		if (!attempt) {
-			return null
-		}
-
-		return attempt.attemptScore
-	},
-
-	getHighestAttemptForModel(state, model) {
+	getHighestAttemptsForModelByAssessmentScore(state, model) {
 		let assessment = AssessmentUtil.getAssessmentForModel(state, model)
 		if (!assessment) {
-			return null
+			return []
 		}
 
-		return assessment.highestAttempt
+		return assessment.highestAssessmentScoreAttempts
+	},
+
+	getHighestAttemptsForModelByAttemptScore(state, model) {
+		let assessment = AssessmentUtil.getAssessmentForModel(state, model)
+		if (!assessment) {
+			return []
+		}
+
+		return assessment.highestAttemptScoreAttempts
 	},
 
 	getAssessmentScoreForModel(state, model) {
-		let attempt = AssessmentUtil.getHighestAttemptForModel(state, model)
-		if (!attempt) {
+		let attempts = AssessmentUtil.getHighestAttemptsForModelByAssessmentScore(state, model)
+		if (attempts.length === 0) {
 			return null
 		}
 
-		return attempt.assessmentScore
+		return attempts[0].assessmentScore
 	},
 
 	getLastAttemptScoresForModel(state, model) {
@@ -177,6 +177,29 @@ var AssessmentUtil = {
 			},
 			[0]
 		)
+	},
+
+	findHighestAttempts(attempts, scoreProperty) {
+		if (attempts.length === 0) return []
+
+		let attemptsByScore = {}
+		let highestScore = -1
+
+		attempts.forEach(attempt => {
+			let score = attempt[scoreProperty] === null ? -1 : attempt[scoreProperty]
+
+			if (score > highestScore) {
+				highestScore = score
+			}
+
+			if (!attemptsByScore[score]) {
+				attemptsByScore[score] = []
+			}
+
+			attemptsByScore[score].push(attempt)
+		})
+
+		return attemptsByScore[highestScore]
 	},
 
 	startAttempt(model) {

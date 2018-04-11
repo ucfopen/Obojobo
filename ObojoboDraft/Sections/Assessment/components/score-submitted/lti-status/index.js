@@ -40,7 +40,7 @@ export default class LTIStatus extends React.Component {
 
 		return (
 			<div className="obojobo-draft--sections--assessment--lti-status is-synced">
-				{`No score has been sent to ${systemLabel} (Only recorded scores are sent)`}
+				{`No score has been sent to ${systemLabel} (Only passing scores are sent)`}
 			</div>
 		)
 	}

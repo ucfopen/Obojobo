@@ -2,51 +2,57 @@ import Viewer from 'Viewer'
 import Common from 'Common'
 
 import ReviewIcon from '../review-icon'
-import ScoreReportView from '../score-report'
-// import ScoreReport from '../../post-assessment/assessment-score-report'
-
 import formatDate from 'date-fns/format'
-import ScoreReport from '../../post-assessment/assessment-score-report'
 
+import basicReview from './basic-review'
+
+const { AssessmentScoreReporter, AssessmentScoreReportView } = Viewer.assessment
 const { AssessmentUtil } = Viewer.util
 const { NavUtil } = Viewer.util
 const { OboModel } = Common.models
 const { Button, ButtonBar, MoreInfoButton } = Common.components
 
-const assessmentReviewView = ({ assessment }) => {
+const assessmentReviewView = ({ assessment, showFullReview }) => {
 	let attemptReviewComponents = {}
 
 	let attempts = AssessmentUtil.getAllAttempts(
 		assessment.props.moduleData.assessmentState,
 		assessment.props.model
 	)
-	let highestAttempt = AssessmentUtil.getHighestAttemptForModel(
+	let highestAttempts = AssessmentUtil.getHighestAttemptsForModelByAttemptScore(
 		assessment.props.moduleData.assessmentState,
 		assessment.props.model
 	)
-	const report = new ScoreReport(assessment.props.model.modelState.rubric.toObject())
+	const scoreReporter = new AssessmentScoreReporter({
+		assessmentRubric: assessment.props.model.modelState.rubric.toObject(),
+		totalNumberOfAttemptsAllowed: assessment.props.model.modelState.attempts,
+		allAttempts: attempts
+	})
 
-	let attemptReviewComponent = (attempt, assessment, isHighestNonNullAttempt) => {
+	let attemptReviewComponent = (attempt, assessment, isAHighestScoringNonNullAttempt) => {
 		let dateString = formatDate(new Date(attempt.finishTime), 'M/D/YY [at] h:mma')
 		let numCorrect = AssessmentUtil.getNumCorrect(attempt.questionScores)
 
-		let scoreReportTextItems = report.getTextItems(
-			attempt.assessmentScoreDetails,
-			AssessmentUtil.getAttemptsRemaining(
-				assessment.props.moduleData.assessmentState,
-				assessment.props.model
-			)
-		)
+		let report = scoreReporter.getReportFor(attempt.attemptNumber)
+
+		let attemptScoreSummary = Math.round(attempt.attemptScore) + '%'
+		if (attempt.attemptScore !== attempt.assessmentScore) {
+			attemptScoreSummary +=
+				' → ' +
+				(attempt.assessmentScore === null
+					? 'Did Not Pass'
+					: Math.round(attempt.assessmentScore) + '%')
+		}
 
 		return (
-			<div className="review">
+			<div className="attempt-results">
 				<div className="attempt-header">
 					<div className="attempt-info-container">
 						<ReviewIcon />
 						<div className="attempt-info-content-container">
 							<h4>
 								<strong>{`Attempt ${attempt.attemptNumber}`}</strong>
-								{isHighestNonNullAttempt ? (
+								{isAHighestScoringNonNullAttempt ? (
 									<span className="highest-attempt">★ Highest Attempt</span>
 								) : null}
 							</h4>
@@ -57,34 +63,32 @@ const assessmentReviewView = ({ assessment }) => {
 										{numCorrect} out of {attempt.questionScores.length} questions correct
 									</li>
 									<li>
-										Total Score:{' '}
-										<strong>
-											{attempt.assessmentScore === null
-												? 'No Score Recorded'
-												: attempt.assessmentScore + '%'}
-										</strong>
-										{scoreReportTextItems.length === 1 ? null : (
-											<MoreInfoButton>
-												<ScoreReportView items={scoreReportTextItems} />
-											</MoreInfoButton>
-										)}
+										Attempt Score: <strong>{attemptScoreSummary}</strong>
+										<MoreInfoButton>
+											<AssessmentScoreReportView report={report} />
+										</MoreInfoButton>
 									</li>
 								</ul>
 							</div>
 						</div>
 					</div>
 				</div>
-				{attempt.questionScores.map(scoreObj => {
-					const questionModel = OboModel.models[scoreObj.id]
-					const QuestionComponent = questionModel.getComponentClass()
-					return (
-						<QuestionComponent
-							model={questionModel}
-							moduleData={assessment.props.moduleData}
-							mode={'review'}
-						/>
-					)
-				})}
+				<div className={`review ${showFullReview ? 'is-full-review' : 'is-basic-review'}`}>
+					{attempt.questionScores.map((scoreObj, index) => {
+						const questionModel = OboModel.models[scoreObj.id]
+						const QuestionComponent = questionModel.getComponentClass()
+
+						return showFullReview ? (
+							<QuestionComponent
+								model={questionModel}
+								moduleData={assessment.props.moduleData}
+								mode={'review'}
+							/>
+						) : (
+							basicReview(assessment.props.moduleData, scoreObj, index)
+						)
+					})}
+				</div>
 			</div>
 		)
 	}
@@ -115,7 +119,7 @@ const assessmentReviewView = ({ assessment }) => {
 		attemptReviewComponents[`assessmentReview:${attempt.attemptId}`] = attemptReviewComponent(
 			attempt,
 			assessment,
-			attempt === highestAttempt && attempt.assessmentScore !== null
+			highestAttempts.indexOf(attempt) > -1 && attempt.assessmentScore !== null
 		)
 	})
 

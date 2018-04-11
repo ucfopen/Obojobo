@@ -9,7 +9,7 @@ const basicReview = (moduleData, questionScore, index) => {
 
 	return (
 		<div key={index} className={questionScore.score === 100 ? 'is-correct' : 'is-not-correct'}>
-			<p>{`Question ${index + 1} - ${questionScore.score === 100 ? 'Correct:' : 'Incorrect:'}`}</p>
+			<p>{`Question ${index + 1}: ${questionScore.score === 100 ? 'Correct' : 'Incorrect'}`}</p>
 			<QuestionComponent model={questionModel} moduleData={moduleData} showContentOnly />
 		</div>
 	)

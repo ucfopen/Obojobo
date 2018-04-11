@@ -361,36 +361,56 @@ body {
   .viewer--components--logo.is-inverted {
     filter: invert(100%); }
 .obojobo-draft--sections--assessment--components--score-report {
-  text-align: left; }
-  .obojobo-draft--sections--assessment--components--score-report > * {
-    font-size: 0.7em;
-    line-height: 1.5em;
-    margin-top: 0.5em;
-    position: relative; }
-    .obojobo-draft--sections--assessment--components--score-report > *:only-child {
-      margin-top: 0;
-      font-size: 1em; }
-    .obojobo-draft--sections--assessment--components--score-report > *.divider {
-      height: 1px;
-      border: none;
-      background: rgba(0, 0, 0, 0.1); }
-    .obojobo-draft--sections--assessment--components--score-report > *.extra-credit > .label > span {
-      color: #38ae24;
-      font-weight: bold; }
-    .obojobo-draft--sections--assessment--components--score-report > *.penalty > .label > span {
-      color: #c21f00;
-      font-weight: bold; }
-    .obojobo-draft--sections--assessment--components--score-report > *.value {
-      padding-right: 4em; }
-    .obojobo-draft--sections--assessment--components--score-report > *.total {
-      font-size: 1em; }
-    .obojobo-draft--sections--assessment--components--score-report > * > .amount {
-      white-space: nowrap;
-      text-align: right;
-      position: absolute;
-      bottom: 0;
-      right: 0;
-      font-weight: bold; }
+  background: #f4f4f4;
+  min-width: 23em; }
+  .obojobo-draft--sections--assessment--components--score-report > .text-items {
+    text-align: left;
+    border-radius: 0.25em;
+    background: white;
+    padding: 1em 2em; }
+    .obojobo-draft--sections--assessment--components--score-report > .text-items > * {
+      font-size: 0.7em;
+      line-height: 1.5em;
+      margin-top: 0.5em;
+      position: relative; }
+      .obojobo-draft--sections--assessment--components--score-report > .text-items > *:only-child {
+        margin-top: 0; }
+      .obojobo-draft--sections--assessment--components--score-report > .text-items > *.divider {
+        height: 1px;
+        border: none;
+        background: rgba(0, 0, 0, 0.1); }
+      .obojobo-draft--sections--assessment--components--score-report > .text-items > *.extra-credit > .label > span {
+        color: #38ae24;
+        font-weight: bold; }
+      .obojobo-draft--sections--assessment--components--score-report > .text-items > *.penalty > .label > span {
+        color: #c21f00;
+        font-weight: bold; }
+      .obojobo-draft--sections--assessment--components--score-report > .text-items > *.value {
+        padding-right: 4em; }
+      .obojobo-draft--sections--assessment--components--score-report > .text-items > *.total {
+        font-size: 1em; }
+      .obojobo-draft--sections--assessment--components--score-report > .text-items > * > .amount {
+        white-space: nowrap;
+        text-align: right;
+        position: absolute;
+        bottom: 0;
+        right: 0;
+        font-weight: bold; }
+        .obojobo-draft--sections--assessment--components--score-report > .text-items > * > .amount > .great-job-you-rock {
+          position: absolute;
+          top: 50%;
+          right: -0.5rem;
+          transform: translate(100%, -50%);
+          display: block;
+          line-height: 1em;
+          font-size: 1em; }
+  .obojobo-draft--sections--assessment--components--score-report > .score-change-description {
+    font-size: 0.75em;
+    font-weight: bold;
+    text-align: center;
+    display: block;
+    width: 100%;
+    margin-top: 1.5em; }
 @charset "UTF-8";
 .viewer--components--nav {
   overflow: auto;

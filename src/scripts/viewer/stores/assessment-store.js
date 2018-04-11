@@ -4,13 +4,11 @@ import AssessmentUtil from '../../viewer/util/assessment-util'
 import QuestionUtil from '../../viewer/util/question-util'
 import APIUtil from '../../viewer/util/api-util'
 import NavUtil from '../../viewer/util/nav-util'
+import NavStore from '../../viewer/stores/nav-store'
 import LTINetworkStates from './assessment-store/lti-network-states'
-
 import QuestionStore from './question-store'
-
-import ScoreReport from '../../../../ObojoboDraft/Sections/Assessment/post-assessment/assessment-score-report'
-import { getScoreChangeDescription } from '../../../../ObojoboDraft/Sections/Assessment/post-assessment/get-score-change-description'
-import ScoreReportView from '../../../../ObojoboDraft/Sections/Assessment/components/score-report'
+import AssessmentScoreReporter from '../../viewer/assessment/assessment-score-reporter'
+import AssessmentScoreReportView from '../../viewer/assessment/assessment-score-report-view'
 
 let { Store } = Common.flux
 let { Dispatcher } = Common.flux
@@ -24,7 +22,8 @@ let getNewAssessmentObject = assessmentId => ({
 	current: null,
 	currentResponses: [],
 	attempts: [],
-	highestAttempt: null,
+	highestAssessmentScoreAttempts: [],
+	highestAttemptScoreAttempts: [],
 	lti: null,
 	ltiNetworkState: LTINetworkStates.IDLE,
 	ltiErrorCount: 0
@@ -91,28 +90,22 @@ class AssessmentStore extends Store {
 			}
 
 			assessments[assessId].lti = assessmentItem.ltiState
-			assessments[assessId].highestAttempt = null
+			assessments[assessId].highestAttemptScoreAttempts = AssessmentUtil.findHighestAttempts(
+				attempts,
+				'assessmentScore'
+			)
+			assessments[assessId].highestAssessmentScoreAttempts = AssessmentUtil.findHighestAttempts(
+				attempts,
+				'attemptScore'
+			)
 
 			attempts.forEach(attempt => {
 				assessment = assessments[attempt.assessmentId]
-
-				if (assessment.highestAttempt === null) {
-					assessment.highestAttempt = attempt
-				}
 
 				if (!attempt.isFinished) {
 					unfinishedAttempt = attempt
 				} else {
 					assessment.attempts.push(attempt)
-
-					let thisAssessScore = attempt.assessmentScore === null ? -1 : attempt.assessmentScore
-					let currentHighestAssessScore =
-						assessment.highestAttempt.assessmentScore === null
-							? -1
-							: assessment.highestAttempt.assessmentScore
-					if (thisAssessScore > currentHighestAssessScore) {
-						assessment.highestAttempt = attempt
-					}
 				}
 
 				attempt.state.questions.forEach(question => {
@@ -234,7 +227,6 @@ class AssessmentStore extends Store {
 		let assessId = endAttemptResp.assessmentId
 		let assessment = this.state.assessments[assessId]
 		let model = OboModel.models[assessId]
-		let oldHighestScore = AssessmentUtil.getHighestAttemptForModel(this.state, model)
 
 		assessment.current.state.questions.forEach(question => QuestionUtil.hideQuestion(question.id))
 		assessment.currentResponses.forEach(questionId =>
@@ -248,39 +240,21 @@ class AssessmentStore extends Store {
 
 		Dispatcher.trigger('assessment:attemptEnded', assessId)
 
-		//TEMP
-
 		let attempt = AssessmentUtil.getLastAttemptForModel(this.state, model)
-		let isNotPassingAttempt =
-			attempt.assessmentScoreDetails.status === 'failed' ||
-			attempt.assessmentScoreDetails.status === 'unableToPass'
-		let newHighestScore = AssessmentUtil.getHighestAttemptForModel(this.state, model)
-		let changeEl
+		let reporter = new AssessmentScoreReporter({
+			assessmentRubric: model.modelState.rubric.toObject(),
+			totalNumberOfAttemptsAllowed: model.modelState.attempts,
+			allAttempts: assessment.attempts
+		})
 
-		if (oldHighestScore === null) {
-			changeEl = null
-		} else {
-			changeEl = (
-				<span className="change-notice">
-					{getScoreChangeDescription(
-						oldHighestScore.assessmentScore,
-						newHighestScore.assessmentScore
-					)}
-				</span>
-			)
-		}
-
-		let items = new ScoreReport(model.modelState.rubric.toObject()).getTextItems(
-			attempt.assessmentScoreDetails,
-			AssessmentUtil.getAttemptsRemaining(this.state, model)
-		)
+		let assessmentLabel = NavUtil.getNavLabelForModel(NavStore.getState(), model)
 		ModalUtil.show(
 			<Dialog
 				modalClassName="obojobo-draft--sections--assessment--results-modal"
 				centered
 				buttons={[
 					{
-						value: 'Show Assessment Overview',
+						value: `Show ${assessmentLabel} Overview`,
 						onClick: ModalUtil.hide,
 						default: true
 					}
@@ -288,10 +262,7 @@ class AssessmentStore extends Store {
 				title={`Attempt ${attempt.attemptNumber} Results`}
 				width="35rem"
 			>
-				<div className="score-report-box">
-					<ScoreReportView items={items} />
-				</div>
-				{changeEl}
+				<AssessmentScoreReportView report={reporter.getReportFor(attempt.attemptNumber)} />
 			</Dialog>
 		)
 	}

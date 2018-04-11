@@ -157,7 +157,6 @@ class AssessmentRubric {
 		let rewardTotal = 0
 		let assessmentScore
 		let status
-		let attemptScore
 
 		let attemptReplaceDict = {}
 		attemptReplaceDict[AssessmentRubric.VAR_LAST_ATTEMPT] = totalNumberOfAttemptsAvailable
@@ -183,9 +182,6 @@ class AssessmentRubric {
 
 				if (this.rubric.unableToPassResult === AssessmentRubric.VAR_HIGHEST_ATTEMPT_SCORE) {
 					attemptNumber = highestAttemptNumber
-					attemptScore = highestAttemptScore
-				} else {
-					attemptScore = latestAttemptScore
 				}
 				assessmentScore = tryGetParsedFloat(this.rubric.unableToPassResult, scoreReplaceDict, true)
 
@@ -194,14 +190,12 @@ class AssessmentRubric {
 			case AssessmentRubric.STATUS_FAILED:
 				scoreReplaceDict[AssessmentRubric.NO_SCORE] = null
 
-				attemptScore = latestAttemptScore
 				assessmentScore = tryGetParsedFloat(this.rubric.failedResult, scoreReplaceDict, true)
 				break
 
 			case AssessmentRubric.STATUS_PASSED:
 				scoreReplaceDict[AssessmentRubric.VAR_ATTEMPT_SCORE] = latestAttemptScore
 
-				attemptScore = latestAttemptScore
 				assessmentScore = tryGetParsedFloat(this.rubric.passedResult, scoreReplaceDict, true)
 
 				// find matching mods and apply them
@@ -218,7 +212,7 @@ class AssessmentRubric {
 
 		return {
 			attemptNumber,
-			attemptScore,
+			attemptScore: latestAttemptScore,
 			assessmentScore,
 			rewardedMods: rewardedModsIndicies,
 			rewardTotal,
