@@ -24,7 +24,7 @@ const startAttempt = (req, res) => {
 		assessmentQBTree: null,
 		attemptHistory: null,
 		numAttemptsaken: null,
-		childrenMap: null
+		questionUsesMap: null
 	}
 	let attemptState
 
@@ -71,11 +71,11 @@ const startAttempt = (req, res) => {
 			)
 				throw new Error(ERROR_ATTEMPT_LIMIT_REACHED)
 
-			assessmentProperties.childrenMap = createAssessmentUsedQuestionMap(assessmentProperties)
+			assessmentProperties.questionUsesMap = createAssessmentUsedQuestionMap(assessmentProperties)
 
 			for (let attempt of assessmentProperties.attemptHistory) {
 				if (attempt.state.qb) {
-					initAssessmentUsedQuestions(attempt.state.qb, assessmentProperties.childrenMap)
+					initAssessmentUsedQuestions(attempt.state.qb, assessmentProperties.questionUsesMap)
 				}
 			}
 
@@ -141,14 +141,14 @@ const getQuestionBankProperties = questionBankNode => ({
 // Maps an assessment's questions id's to the amount of times
 // the questions have been used (0 until initAssessmentUsedQuestions is called).
 const createAssessmentUsedQuestionMap = assessmentProperties => {
-	const assessmentChildrenMap = new Map()
+	const assessmentquestionUsesMap = new Map()
 	assessmentProperties.nodeChildrenIds.forEach(id => {
 		const type = assessmentProperties.draftTree.getChildNodeById(id).node.type
 		if (type === QUESTION_BANK_NODE_TYPE || type === QUESTION_NODE_TYPE)
-			assessmentChildrenMap.set(id, 0)
+			assessmentquestionUsesMap.set(id, 0)
 	})
 
-	return assessmentChildrenMap
+	return assessmentquestionUsesMap
 }
 
 // When a question has been used, we will increment the value
@@ -159,13 +159,12 @@ const initAssessmentUsedQuestions = (node, usedQuestionMap) => {
 	for (let child of node.children) initAssessmentUsedQuestions(child, usedQuestionMap)
 }
 
-// TODO: These 3 question choosing functions can probably be merged into one function. (also need tests)
 // Sort the question banks and questions sequentially, get their nodes from the tree via id, 
 // and only return up to the desired amount of questions per attempt (choose property).
 const chooseUnseenQuestionsSequentially = (assessmentProperties, rootId, numQuestionsPerAttempt) => {
-	const { oboNode, childrenMap } = assessmentProperties
+	const { oboNode, questionUsesMap } = assessmentProperties
 	return [...oboNode.draftTree.getChildNodeById(rootId).immediateChildrenSet]
-		.sort((a, b) => childrenMap.get(a) - childrenMap.get(b))
+		.sort((a, b) => questionUsesMap.get(a) - questionUsesMap.get(b))
 		.map(id => oboNode.draftTree.getChildNodeById(id).toObject())
 		.slice(0, numQuestionsPerAttempt)
 }
@@ -181,13 +180,15 @@ const chooseAllQuestionsRandomly = (assessmentProperties, rootId, numQuestionsPe
 
 // Randomly chooses unseen questions to display.
 const chooseUnseenQuestionsRandomly = (assessmentProperties, rootId, numQuestionsPerAttempt) => {
-	const { oboNode, childrenMap } = assessmentProperties
+	const { oboNode, questionUsesMap } = assessmentProperties
 	const oboNodeQuestionArray = [...oboNode.draftTree.getChildNodeById(rootId).immediateChildrenSet]
 	return oboNodeQuestionArray
 		.sort((a, b) => {
-			if (childrenMap.get(a) === childrenMap.get(b))
-				return Math.random() < 0.5 ? -1 : 1
-			return childrenMap.get(a) - childrenMap.get(b)
+			if (questionUsesMap.get(a) === questionUsesMap.get(b)) {
+				return Math.random() - 0.5
+			}
+
+			return questionUsesMap.get(a) - questionUsesMap.get(b)
 		})
 		.map(id => oboNode.draftTree.getChildNodeById(id).toObject())
 		.slice(0, numQuestionsPerAttempt)
@@ -203,8 +204,10 @@ const createChosenQuestionTree = (node, assessmentProperties) => {
 		switch (qbProperties.select) {
 			case 'random-unseen':
 				node.children = chooseUnseenQuestionsRandomly(assessmentProperties, node.id, qbProperties.choose)
+				break
 			case 'random-all':
 				node.children = chooseAllQuestionsRandomly(assessmentProperties, node.id, qbProperties.choose)
+				break
 			// 'sequential' by default
 			default:
 				node.children = chooseUnseenQuestionsSequentially(assessmentProperties, node.id, qbProperties.choose)
