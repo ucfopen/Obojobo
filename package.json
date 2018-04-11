@@ -37,6 +37,8 @@
 		"devXmlParser:nodemodules": "cd ./devsrc/obojobo-draft-xml-parser && yarn",
 		"devXmlParser:link":
 			"cd ./devsrc/obojobo-draft-xml-parser && yarn link && cd ../.. && yarn link obojobo-draft-xml-parser",
+		"dev:dataDashboard": "concurrently \"yarn express:dev\" \"yarn devDataDashboard:start\"",
+		"devDataDashboard:start": "cd ./devsrc/Obojobo-Data-Dashboard && yarn start",
 		"test": "jest --watch",
 		"test:ci": "CI=true jest --coverage",
 		"precommit": "yarn test:ci && lint-staged",

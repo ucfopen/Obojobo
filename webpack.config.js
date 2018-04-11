@@ -13,6 +13,9 @@ let docEngineBasePath = path.join(
 	'obojobo-draft-document-engine',
 	'build'
 )
+
+let dataDashboardBasePath = path.join(__dirname, 'devsrc', 'Obojobo-Data-Dashboard', 'build')
+
 console.log(`Building assets for ${optimize ? 'production' : 'development'}`)
 
 module.exports = {
@@ -37,7 +40,8 @@ module.exports = {
 			`${docEngineBasePath}/viewer.js`,
 			`${docEngineBasePath}/viewer.css`,
 			`${docEngineBasePath}/viewer-app.js`
-		].concat(getInstalledModules(optimize ? 'production' : 'development').assets)
+		].concat(getInstalledModules(optimize ? 'production' : 'development').assets),
+		dashboard: [`${dataDashboardBasePath}/index.js`, `${dataDashboardBasePath}/dashboard.css`]
 	},
 	module: {
 		rules: [
