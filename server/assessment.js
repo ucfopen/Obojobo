@@ -1,8 +1,6 @@
 let DraftNode = oboRequire('models/draft_node')
 let db = oboRequire('db')
 let lti = oboRequire('lti')
-let express = require('express')
-let app = express()
 
 class Assessment extends DraftNode {
 	static getCompletedAssessmentAttemptHistory(userId, draftId, assessmentId) {
@@ -99,10 +97,9 @@ class Assessment extends DraftNode {
 					draftId
 				}
 			)
-			.then(result => {
+			.then(attempts => {
 				let assessments = {}
-
-				result.forEach(attempt => {
+				attempts.forEach(attempt => {
 					attempt = Assessment.createAttemptResponse(userId, draftId, attempt)
 
 					if (!assessments[attempt.assessmentId]) {
@@ -287,8 +284,8 @@ class Assessment extends DraftNode {
 		preview
 	) {
 		return db
-			.tx(t => {
-				const q1 = db.one(
+			.tx(dbTransaction => {
+				const q1 = dbTransaction.one(
 					`
 					UPDATE attempts
 					SET
@@ -306,7 +303,7 @@ class Assessment extends DraftNode {
 					{ result: attemptScoreResult, attemptId: attemptId }
 				)
 
-				const q2 = db.one(
+				const q2 = dbTransaction.one(
 					`
 					INSERT INTO assessment_scores (user_id, draft_id, assessment_id, attempt_id, score, score_details, preview)
 					VALUES($[userId], $[draftId], $[assessmentId], $[attemptId], $[score], $[scoreDetails], $[preview])
@@ -323,7 +320,7 @@ class Assessment extends DraftNode {
 					}
 				)
 
-				return t.batch([q1, q2])
+				return dbTransaction.batch([q1, q2])
 			})
 			.then(result => {
 				return {
@@ -331,25 +328,6 @@ class Assessment extends DraftNode {
 					assessmentScoreId: result[1].id
 				}
 			})
-	}
-
-	static insertNewAssessmentScore(userId, draftId, assessmentId, score, preview) {
-		return db
-			.one(
-				`
-				INSERT INTO assessment_scores (user_id, draft_id, assessment_id, score, preview)
-				VALUES($[userId], $[draftId], $[assessmentId], $[score], $[preview])
-				RETURNING id
-			`,
-				{
-					userId,
-					draftId,
-					assessmentId,
-					score,
-					preview
-				}
-			)
-			.then(result => result.id)
 	}
 
 	constructor(draftTree, node, initFn) {
