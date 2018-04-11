@@ -120,6 +120,7 @@ class OboModel extends Backbone.Model {
 		return delete OboModel.models[model.get('id')]
 	}
 
+	// @TODO Should this dirty model or parent?
 	onChildAdd(model, collection, options) {
 		model.parent = this
 		return model.markDirty()
@@ -185,13 +186,9 @@ class OboModel extends Backbone.Model {
 	}
 
 	revert() {
-		// Does this work? - NO, needs fixing
-		let newModel = new this.constructor({})
-
 		let index = this.get('index')
 		let id = this.get('id')
-
-		this.clear()
+		let newModel = new this.constructor({})
 
 		for (let attrName in newModel.attributes) {
 			let attr = newModel.attributes[attrName]
@@ -200,8 +197,8 @@ class OboModel extends Backbone.Model {
 
 		this.set('index', index)
 		this.set('id', id)
-
 		this.modelState = newModel.modelState
+		this.children.forEach(child => child.remove())
 
 		return this
 	}

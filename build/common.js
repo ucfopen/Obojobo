@@ -287,6 +287,9 @@ var OboModel = function (_Backbone$Model) {
 
 			return delete OboModel.models[model.get('id')];
 		}
+
+		// @TODO Should this dirty model or parent?
+
 	}, {
 		key: 'onChildAdd',
 		value: function onChildAdd(model, collection, options) {
@@ -428,13 +431,9 @@ var OboModel = function (_Backbone$Model) {
 	}, {
 		key: 'revert',
 		value: function revert() {
-			// Does this work? - NO, needs fixing
-			var newModel = new this.constructor({});
-
 			var index = this.get('index');
 			var id = this.get('id');
-
-			this.clear();
+			var newModel = new this.constructor({});
 
 			for (var attrName in newModel.attributes) {
 				var attr = newModel.attributes[attrName];
@@ -443,8 +442,10 @@ var OboModel = function (_Backbone$Model) {
 
 			this.set('index', index);
 			this.set('id', id);
-
 			this.modelState = newModel.modelState;
+			this.children.forEach(function (child) {
+				return child.remove();
+			});
 
 			return this;
 		}

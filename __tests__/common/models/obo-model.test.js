@@ -99,21 +99,18 @@ describe('OboModel', () => {
 
 	test('should retrieve the root model', () => {
 		expect.assertions(2)
-		Store.getItems(items => {
-			let o = OboModel.create({
-				id: 'root',
-				type: 'ObojoboDraft.Modules.Module',
-				children: [
-					{
-						id: 'child',
-						type: 'ObojoboDraft.Sections.Content'
-					}
-				]
-			})
-
-			expect(OboModel.models.root.getRoot()).toBe(o)
-			expect(OboModel.models.child.getRoot()).toBe(o)
+		let o = OboModel.create({
+			id: 'root',
+			type: 'ObojoboDraft.Modules.Module',
+			children: [
+				{
+					id: 'child',
+					type: 'ObojoboDraft.Sections.Content'
+				}
+			]
 		})
+		expect(OboModel.models.root.getRoot()).toBe(o)
+		expect(OboModel.models.child.getRoot()).toBe(o)
 	})
 
 	test('should process a trigger', () => {
@@ -183,6 +180,8 @@ describe('OboModel', () => {
 	})
 
 	//@TODO: Test fails, flags on modelState are broken, skip for now
+	// Should onChildAdd/onChildRemove dirty the parent?
+	// As test is editor specific and until desired behavior of model methods clear- saving until later
 	test.skip('marking models as dirty sets flags dirty and needsUpdate but does not modify children', () => {
 		expect.assertions(55)
 		Store.getItems(items => {
@@ -373,31 +372,57 @@ describe('OboModel', () => {
 		expect(root.toJSON().toJSONWasCalled).toBe(true)
 	})
 
-	test.skip('toText will output the model into a text format', () => {
-		expect(true).toBe(false)
+	test('toText will output the model into a text format', () => {
+		let parent = new OboModel(
+			{
+				id: 'parentId',
+				type: 'parentType'
+			},
+			{
+				toText(model) {
+					return 'parent text'
+				}
+			}
+		)
+
+		let child = new OboModel(
+			{
+				id: 'childId',
+				type: 'childType'
+			},
+			{
+				toText(model) {
+					return 'child text'
+				}
+			}
+		)
+
+		parent.children.add(child)
+
+		expect(OboModel.models['parentId'].toText()).toBe('parent text\nchild text')
 	})
 
-	test.skip('revert will clear the model but keep the index and id', () => {
+	test('revert will clear the model but keep the index and id', () => {
 		let root = new OboModel({
 			type: 'someType',
-			content: { a: 1 }
+			content: { a: 1 },
+			index: 555
 		})
 		let child = new OboModel({})
 
 		root.children.add(child)
 
 		let oldId = root.id
-		let oldIndex = root.index
-		let oldRoot = root
+		let oldIndex = root.attributes.index
 
 		root.revert()
 
-		expect(root).toBe(oldRoot)
 		expect(root.toJSON()).toEqual({
 			id: oldId,
 			type: '',
 			children: null,
 			index: oldIndex,
+			content: {},
 			metadata: {}
 		})
 	})
@@ -461,8 +486,23 @@ describe('OboModel', () => {
 		expect(child.modelState.needsUpdate).toBe(false)
 	})
 
-	test.skip('getDomEl', () => {
-		expect(false).toBe(true)
+	test('getDomEl', () => {
+		const shallow = require('enzyme').shallow
+		const Heading = require('ObojoboDraft/Chunks/Heading/viewer-component').default
+		const moduleData = require('__mocks__/viewer-state.mock').moduleData
+		const initModuleData = require('__mocks__/viewer-state.mock').initModuleData
+
+		const model = OboModel.create({
+			id: 'testId',
+			type: 'ObojoboDraft.Chunks.Heading'
+		})
+		initModuleData()
+		const component = shallow(<Heading model={model} moduleData={moduleData} />)
+		const domHTML = component.html()
+		document.body.innerHTML = domHTML
+		const domEl = model.getDomEl()
+		expect(domEl.attributes[1].value).toBe('obo-testId')
+		expect(domEl.attributes[4].value).toBe('ObojoboDraft.Chunks.Heading')
 	})
 
 	test('getComponentClass returns the component class of a model', () => {
