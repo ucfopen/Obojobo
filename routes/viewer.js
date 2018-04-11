@@ -43,9 +43,16 @@ router.post('/:draftId/:page?', (req, res, next) => {
 			)
 		})
 		.then(visit => {
-			req.session.save(function(err) {
-				res.redirect(`/view/${req.params.draftId}/visit/${visit.id}`)
+			return new Promise((resolve, reject) => {
+				req.session.save(function(err) {
+					if (err) return reject(err)
+
+					resolve(visit)
+				})
 			})
+		})
+		.then(visit => {
+			res.redirect(`/view/${req.params.draftId}/visit/${visit.id}`)
 		})
 		.catch(error => {
 			logger.error(error)
