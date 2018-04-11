@@ -4,6 +4,7 @@ const createCaliperEvent = oboRequire('routes/api/events/create_caliper_event')
 const insertEvent = oboRequire('insert_event')
 const logger = oboRequire('logger')
 const logAndRespondToUnexpected = require('./util').logAndRespondToUnexpected
+const _ = require('underscore')
 
 const QUESTION_BANK_NODE_TYPE = 'ObojoboDraft.Chunks.QuestionBank'
 const QUESTION_NODE_TYPE = 'ObojoboDraft.Chunks.Question'
@@ -23,11 +24,11 @@ const startAttempt = (req, res) => {
 		assessmentQBTree: null,
 		attemptHistory: null,
 		numAttemptsaken: null,
-		childrenMap: null
+		questionUsesMap: null
 	}
 	let attemptState
 
-	req
+	return req
 		.requireCurrentUser()
 		.then(user => {
 			assessmentProperties.user = user
@@ -70,11 +71,11 @@ const startAttempt = (req, res) => {
 			)
 				throw new Error(ERROR_ATTEMPT_LIMIT_REACHED)
 
-			assessmentProperties.childrenMap = createAssessmentUsedQuestionMap(assessmentProperties)
+			assessmentProperties.questionUsesMap = createAssessmentUsedQuestionMap(assessmentProperties)
 
 			for (let attempt of assessmentProperties.attemptHistory) {
 				if (attempt.state.qb) {
-					initAssessmentUsedQuestions(attempt.state.qb, assessmentProperties.childrenMap)
+					initAssessmentUsedQuestions(attempt.state.qb, assessmentProperties.questionUsesMap)
 				}
 			}
 
@@ -109,30 +110,17 @@ const startAttempt = (req, res) => {
 		})
 		.then(result => {
 			res.success(result)
-			const { createAssessmentAttemptStartedEvent } = createCaliperEvent(null, req.hostname)
-			insertEvent({
-				action: ACTION_ASSESSMENT_ATTEMPT_START,
-				actorTime: new Date().toISOString(),
-				payload: {
-					attemptId: result.attemptId,
-					attemptCount: assessmentProperties.numAttemptsTaken
-				},
-				userId: assessmentProperties.user.id,
-				ip: req.connection.remoteAddress,
-				metadata: {},
-				draftId: req.body.draftId,
-				eventVersion: '1.1.0',
-				caliperPayload: createAssessmentAttemptStartedEvent({
-					actor: { type: 'user', id: assessmentProperties.user.id },
-					draftId: req.body.draftId,
-					assessmentId: req.body.assessmentId,
-					attemptId: result.attemptId,
-					isPreviewMode: assessmentProperties.isPreviewing,
-					extensions: {
-						count: assessmentProperties.numAttemptsaken
-					}
-				})
-			})
+
+			return insertAttemptStartCaliperEvent(
+				result.attemptId,
+				assessmentProperties.numAttemptsaken,
+				assessmentProperties.user.id,
+				req.body.draftId,
+				req.body.assessmentId,
+				assessmentProperties.isPreviewing,
+				req.hostname,
+				req.connection.remoteAddress
+			)
 		})
 		.catch(error => {
 			switch (error.message) {
@@ -153,14 +141,14 @@ const getQuestionBankProperties = questionBankNode => ({
 // Maps an assessment's questions id's to the amount of times
 // the questions have been used (0 until initAssessmentUsedQuestions is called).
 const createAssessmentUsedQuestionMap = assessmentProperties => {
-	const assessmentChildrenMap = new Map()
+	const assessmentquestionUsesMap = new Map()
 	assessmentProperties.nodeChildrenIds.forEach(id => {
 		const type = assessmentProperties.draftTree.getChildNodeById(id).node.type
 		if (type === QUESTION_BANK_NODE_TYPE || type === QUESTION_NODE_TYPE)
-			assessmentChildrenMap.set(id, 0)
+			assessmentquestionUsesMap.set(id, 0)
 	})
 
-	return assessmentChildrenMap
+	return assessmentquestionUsesMap
 }
 
 // When a question has been used, we will increment the value
@@ -173,10 +161,35 @@ const initAssessmentUsedQuestions = (node, usedQuestionMap) => {
 
 // Sort the question banks and questions sequentially, get their nodes from the tree via id,
 // and only return up to the desired amount of questions per attempt (choose property).
-const chooseQuestionsSequentially = (assessmentProperties, rootId, numQuestionsPerAttempt) => {
-	const { oboNode, childrenMap } = assessmentProperties
+const chooseUnseenQuestionsSequentially = (assessmentProperties, rootId, numQuestionsPerAttempt) => {
+	const { oboNode, questionUsesMap } = assessmentProperties
 	return [...oboNode.draftTree.getChildNodeById(rootId).immediateChildrenSet]
-		.sort((a, b) => childrenMap.get(a) - childrenMap.get(b))
+		.sort((a, b) => questionUsesMap.get(a) - questionUsesMap.get(b))
+		.map(id => oboNode.draftTree.getChildNodeById(id).toObject())
+		.slice(0, numQuestionsPerAttempt)
+}
+
+// Randomly chooses all questions to display irregardless if they have been seen or not.
+const chooseAllQuestionsRandomly = (assessmentProperties, rootId, numQuestionsPerAttempt) => {
+	const { oboNode } = assessmentProperties
+	const oboNodeQuestionArray = [...oboNode.draftTree.getChildNodeById(rootId).immediateChildrenSet]
+	return _.shuffle(oboNodeQuestionArray)
+		.map(id => oboNode.draftTree.getChildNodeById(id).toObject())
+		.slice(0, numQuestionsPerAttempt)
+}
+
+// Randomly chooses unseen questions to display.
+const chooseUnseenQuestionsRandomly = (assessmentProperties, rootId, numQuestionsPerAttempt) => {
+	const { oboNode, questionUsesMap } = assessmentProperties
+	const oboNodeQuestionArray = [...oboNode.draftTree.getChildNodeById(rootId).immediateChildrenSet]
+	return oboNodeQuestionArray
+		.sort((a, b) => {
+			if (questionUsesMap.get(a) === questionUsesMap.get(b)) {
+				return Math.random() - 0.5
+			}
+
+			return questionUsesMap.get(a) - questionUsesMap.get(b)
+		})
 		.map(id => oboNode.draftTree.getChildNodeById(id).toObject())
 		.slice(0, numQuestionsPerAttempt)
 }
@@ -188,8 +201,17 @@ const createChosenQuestionTree = (node, assessmentProperties) => {
 		logger.log('TEST', node.id, node.content, node.content.choose)
 		const qbProperties = getQuestionBankProperties(node)
 
-		// TODO: 'random-all' and 'random-unseen' selects need to be taken care of as well.
-		node.children = chooseQuestionsSequentially(assessmentProperties, node.id, qbProperties.choose)
+		switch (qbProperties.select) {
+			case 'random-unseen':
+				node.children = chooseUnseenQuestionsRandomly(assessmentProperties, node.id, qbProperties.choose)
+				break
+			case 'random-all':
+				node.children = chooseAllQuestionsRandomly(assessmentProperties, node.id, qbProperties.choose)
+				break
+			// 'sequential' by default
+			default:
+				node.children = chooseUnseenQuestionsSequentially(assessmentProperties, node.id, qbProperties.choose)
+		}
 	}
 
 	for (let child of node.children) createChosenQuestionTree(child, assessmentProperties)
@@ -219,13 +241,52 @@ const getSendToClientPromises = (attemptState, req, res) => {
 	return promises
 }
 
+const insertAttemptStartCaliperEvent = (
+	attemptId,
+	numAttemptsTaken,
+	userId,
+	draftId,
+	assessmentId,
+	isPreviewing,
+	hostname,
+	remoteAddress
+) => {
+	const { createAssessmentAttemptStartedEvent } = createCaliperEvent(null, hostname)
+	return insertEvent({
+		action: ACTION_ASSESSMENT_ATTEMPT_START,
+		actorTime: new Date().toISOString(),
+		payload: {
+			attemptId: attemptId,
+			attemptCount: numAttemptsTaken
+		},
+		userId: userId,
+		ip: remoteAddress,
+		metadata: {},
+		draftId: draftId,
+		eventVersion: '1.1.0',
+		caliperPayload: createAssessmentAttemptStartedEvent({
+			actor: { type: 'user', id: userId },
+			draftId: draftId,
+			assessmentId: assessmentId,
+			attemptId: attemptId,
+			isPreviewMode: isPreviewing,
+			extensions: {
+				count: numAttemptsTaken
+			}
+		})
+	})
+}
+
 module.exports = {
 	startAttempt,
 	getQuestionBankProperties,
 	createAssessmentUsedQuestionMap,
 	initAssessmentUsedQuestions,
-	chooseQuestionsSequentially,
+	chooseUnseenQuestionsSequentially,
+	chooseAllQuestionsRandomly,
+	chooseUnseenQuestionsRandomly,
 	createChosenQuestionTree,
 	getNodeQuestions,
-	getSendToClientPromises
+	getSendToClientPromises,
+	insertAttemptStartCaliperEvent
 }
