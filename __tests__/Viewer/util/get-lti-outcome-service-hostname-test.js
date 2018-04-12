@@ -9,6 +9,7 @@ describe('get-lti-outcome-service-hostname', () => {
 	test('returns "the external system" if unable to find a hostname', () => {
 		expect(Util('')).toBe('the external system')
 		expect(Util()).toBe('the external system')
+		expect(Util(null)).toBe('the external system')
 		expect(Util(undefined)).toBe('the external system')
 		expect(Util({})).toBe('the external system')
 	})

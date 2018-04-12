@@ -71,7 +71,7 @@ describe('Assessment', () => {
 			}
 		}
 
-		// cause getCurentStap to be 'untested'
+		// cause getCurrentStep to be 'untested'
 		AssessmentUtil.getAssessmentForModel.mockReturnValue(null)
 		const component = renderer.create(
 			<Assessment model={assessmentModel} moduleData={moduleData} />

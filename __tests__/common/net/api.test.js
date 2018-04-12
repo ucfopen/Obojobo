@@ -25,13 +25,7 @@ describe('Net API', () => {
 	test('has expected properties', () => {
 		expect(API).toHaveProperty('module', {})
 		expect(API).toHaveProperty('chunk', {})
-	})
-
-	test('APIModule has expected properties', () => {
 		expect(API.module).toHaveProperty('get', expect.any(Function))
-	})
-
-	test('APIChunk has expected properties', () => {
 		expect(API.chunk).toHaveProperty('move', expect.any(Function))
 	})
 

@@ -25,7 +25,7 @@ describe('ObojoboDraft.Sections.Content registration', () => {
 		expect(register[1]).toHaveProperty('generateNav')
 	})
 
-	test('getNavItem return sexpected object', () => {
+	test('getNavItem returns expected object', () => {
 		let register = Common.Store.registerModel.mock.calls[0]
 		let model = {
 			children: {

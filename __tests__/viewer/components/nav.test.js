@@ -227,7 +227,6 @@ describe('Nav', () => {
 
 		expect(el.state()).toHaveProperty('hover', true)
 		expect(button.prop('style')).toHaveProperty('transform', '')
-		// expect(mockScrollIntoView).toHaveBeenCalledWith({ behavior: 'smooth', block: 'start' })
 	})
 
 	test('mouseOver button applies expected styles when not open', () => {

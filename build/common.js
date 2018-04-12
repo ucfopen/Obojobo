@@ -2435,49 +2435,21 @@ Object.defineProperty(exports, "__esModule", {
 
 var _extends = Object.assign || function (target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i]; for (var key in source) { if (Object.prototype.hasOwnProperty.call(source, key)) { target[key] = source[key]; } } } return target; };
 
-var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
-
 var _textConstants = __webpack_require__(6);
 
-function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
-
-function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
-
-function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
-
-// @TODO: check to see if this needs a ref
-// if not - convert to a stateless functional component
-var Anchor = function (_React$Component) {
-	_inherits(Anchor, _React$Component);
-
-	function Anchor() {
-		_classCallCheck(this, Anchor);
-
-		return _possibleConstructorReturn(this, (Anchor.__proto__ || Object.getPrototypeOf(Anchor)).apply(this, arguments));
-	}
-
-	_createClass(Anchor, [{
-		key: "render",
-		value: function render() {
-			return React.createElement(
-				"span",
-				_extends({}, this.props, {
-					className: "anchor",
-					ref: "anchorElement",
-					contentEditable: true,
-					tabIndex: this.props.shouldPreventTab ? '-1' : '',
-					suppressContentEditableWarning: true,
-					"data-group-index": "anchor:" + this.props.name
-				}),
-				_textConstants.EMPTY_CHAR
-			);
-		}
-	}]);
-
-	return Anchor;
-}(React.Component);
-
-exports.default = Anchor;
+exports.default = function (props) {
+	return React.createElement(
+		'span',
+		_extends({}, props, {
+			className: 'anchor',
+			contentEditable: true,
+			tabIndex: props.shouldPreventTab ? '-1' : '',
+			suppressContentEditableWarning: true,
+			'data-group-index': 'anchor:' + props.name
+		}),
+		_textConstants.EMPTY_CHAR
+	);
+};
 
 /***/ }),
 /* 17 */
