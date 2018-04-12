@@ -280,8 +280,6 @@ var __guard__ = function __guard__(value, transform) {
 
 exports.default = function (props) {
 	var curUl = void 0;
-	// window.yeOldListHandler = List.commandHandler
-	window.yeOldListChunk = props.model;
 
 	var data = props.model.modelState;
 

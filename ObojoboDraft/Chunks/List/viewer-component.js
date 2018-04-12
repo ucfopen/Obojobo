@@ -73,8 +73,6 @@ const __guard__ = (value, transform) => {
 
 export default props => {
 	let curUl
-	// window.yeOldListHandler = List.commandHandler
-	window.yeOldListChunk = props.model
 
 	let data = props.model.modelState
 
