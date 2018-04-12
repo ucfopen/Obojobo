@@ -15,7 +15,7 @@ describe('viewer events', () => {
 	})
 	afterEach(() => {})
 
-	test('registeres expected events', () => {
+	test('registers expected events', () => {
 		expect(oboEvents.on).toBeCalledWith('client:nav:open', expect.any(Function))
 		expect(oboEvents.on).toBeCalledWith('client:nav:close', expect.any(Function))
 		expect(oboEvents.on).toBeCalledWith('client:nav:toggle', expect.any(Function))
