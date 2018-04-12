@@ -7,7 +7,7 @@ describe('insert_event', () => {
 	afterEach(() => {})
 
 	it('inserts the expected values', () => {
-		expect.assertions(3)
+		expect.assertions(4)
 
 		let db = oboRequire('db')
 		let insertEvent = oboRequire('insert_event')
@@ -22,19 +22,20 @@ describe('insert_event', () => {
 			draftId: '999999'
 		}
 		// mock insert
-		db.one.mockImplementationOnce((query, vars) => {
-			expect(vars).toMatchObject(insertObject)
-			return Promise.resolve({ created_at: expectedCreatedAt })
-		})
+		db.one.mockResolvedValueOnce({ created_at: expectedCreatedAt })
 
 		return insertEvent(insertObject)
 			.then(result => {
 				expect(result).toHaveProperty('created_at')
 				expect(result.created_at).toBe(expectedCreatedAt)
+				expect(db.one).toHaveBeenCalledTimes(1)
+				expect(db.one).toHaveBeenCalledWith(
+					expect.stringContaining('INSERT INTO events'),
+					insertObject
+				)
 			})
 			.catch(err => {
-				expect(true).toBe(false)
-				expect(err).toBeNull()
+				throw err
 			})
 	})
 
