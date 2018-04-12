@@ -6,6 +6,7 @@ import { moduleData, initModuleData } from '../../../../../__mocks__/viewer-stat
 
 describe('MCChoice viewer-component', () => {
 	// TMCChoice looks at it's parent question model - so we need to build the whole question
+
 	let questionModel = OboModel.create({
 		id: 'pq1',
 		type: 'ObojoboDraft.Chunks.Question',
@@ -96,8 +97,18 @@ describe('MCChoice viewer-component', () => {
 	initModuleData()
 
 	test('pick-one questions render as expected', () => {
+		let props = {
+			model,
+			moduleData,
+			key: 'mockKey',
+			responseType: 'pick-one',
+			isShowingExplanation: false,
+			questionSubmitted: false,
+			label: 'mocklabel'
+		}
+
 		const component = renderer.create(
-			<MCChoice model={model} moduleData={moduleData} responseType={'pick-one'} />
+			<MCChoice {...props} />
 		)
 
 		expect(component).toMatchSnapshot()
@@ -105,16 +116,38 @@ describe('MCChoice viewer-component', () => {
 
 	test('pick-one-multiple-correct questions render as expected', () => {
 		initModuleData()
+
+		let props = {
+			model,
+			moduleData,
+			key: 'mockKey',
+			responseType: 'pick-one-multiple-correct',
+			isShowingExplanation: false,
+			questionSubmitted: false,
+			label: 'mocklabel'
+		}
+
 		const component = renderer.create(
-			<MCChoice model={model} moduleData={moduleData} responseType={'pick-one-multiple-correct'} />
+			<MCChoice {...props} />
 		)
 
 		expect(component).toMatchSnapshot()
 	})
 
 	test('pick-all questions render as expected', () => {
+
+		let props = {
+			model,
+			moduleData,
+			key: 'mockKey',
+			responseType: 'pick-all',
+			isShowingExplanation: false,
+			questionSubmitted: false,
+			label: 'mocklabel'
+		}
+
 		const component = renderer.create(
-			<MCChoice model={model} moduleData={moduleData} responseType={'pick-all'} />
+			<MCChoice {...props} />
 		)
 
 		expect(component).toMatchSnapshot()

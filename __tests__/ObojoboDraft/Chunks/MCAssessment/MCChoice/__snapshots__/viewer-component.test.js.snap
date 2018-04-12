@@ -3,7 +3,7 @@
 exports[`MCChoice viewer-component pick-all questions render as expected 1`] = `
 <div
   className="component obojobo-draft--chunks--mc-assessment--mc-choice is-not-selected is-correct"
-  data-choice-label={undefined}
+  data-choice-label="mocklabel"
   data-focussed={false}
   data-id="pq1-mca-mc1"
   data-obo-component={true}
@@ -62,7 +62,7 @@ exports[`MCChoice viewer-component pick-all questions render as expected 1`] = `
 exports[`MCChoice viewer-component pick-one questions render as expected 1`] = `
 <div
   className="component obojobo-draft--chunks--mc-assessment--mc-choice is-not-selected is-correct"
-  data-choice-label={undefined}
+  data-choice-label="mocklabel"
   data-focussed={false}
   data-id="pq1-mca-mc1"
   data-obo-component={true}
@@ -121,7 +121,7 @@ exports[`MCChoice viewer-component pick-one questions render as expected 1`] = `
 exports[`MCChoice viewer-component pick-one-multiple-correct questions render as expected 1`] = `
 <div
   className="component obojobo-draft--chunks--mc-assessment--mc-choice is-not-selected is-correct"
-  data-choice-label={undefined}
+  data-choice-label="mocklabel"
   data-focussed={false}
   data-id="pq1-mca-mc1"
   data-obo-component={true}
