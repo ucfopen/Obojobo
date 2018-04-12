@@ -49,8 +49,10 @@ describe('ObojoboDraft.Sections.Assessment adapter', () => {
 		})
 	})
 
-	test('constructs with score actions', () => {
+	test('constructs with legacy score actions', () => {
 		let model = { modelState: {} }
+
+		// use the legacy action syntax
 		let action = {
 			from: 2,
 			to: 4,
@@ -76,11 +78,36 @@ describe('ObojoboDraft.Sections.Assessment adapter', () => {
 		})
 	})
 
+	test('constructs with score actions', () => {
+		let model = { modelState: {} }
+		let action = {
+			for: "[2,4]",
+			page: 5
+		}
+		AssessmentAdapter.construct(model, { content: { scoreActions: [action] } })
+		expect(model.modelState).toMatchObject({
+			attempts: Infinity,
+			scoreActions: {
+				actions: [
+					{
+						page: 5,
+						range: {
+							isMaxInclusive: true,
+							isMinInclusive: true,
+							max: '4',
+							min: '2'
+						}
+					}
+				],
+				originalActions: [action]
+			}
+		})
+	})
+
 	test('exports to json', () => {
 		let model = { modelState: {} }
 		let action = {
-			from: 2,
-			to: 4,
+			for: "[2,4]",
 			page: 5
 		}
 		AssessmentAdapter.construct(model, { content: { scoreActions: [action] } })
@@ -110,8 +137,7 @@ describe('ObojoboDraft.Sections.Assessment adapter', () => {
 				attempts: Infinity,
 				scoreActions: [
 					{
-						from: 2,
-						to: 4,
+						for: "[2,4]",
 						page: 5
 					}
 				]
@@ -123,8 +149,7 @@ describe('ObojoboDraft.Sections.Assessment adapter', () => {
 		let model = { modelState: {} }
 		let model2 = { modelState: {} }
 		let action = {
-			from: 2,
-			to: 4,
+			for: "[2,4]",
 			page: 5
 		}
 		AssessmentAdapter.construct(model, { content: { scoreActions: [action] } })
