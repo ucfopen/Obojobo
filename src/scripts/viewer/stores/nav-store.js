@@ -3,13 +3,14 @@ import Common from 'Common'
 import NavUtil from '../../viewer/util/nav-util'
 import APIUtil from '../../viewer/util/api-util'
 
-let { Store } = Common.flux
-let { Dispatcher } = Common.flux
-let { OboModel } = Common.models
+const { Store } = Common.flux
+const { Dispatcher } = Common.flux
+const { OboModel } = Common.models
 
 class NavStore extends Store {
 	constructor() {
-		let item, oldNavTargetId
+		let item
+		let oldNavTargetId
 		super('navstore')
 
 		Dispatcher.on(
@@ -124,9 +125,6 @@ class NavStore extends Store {
 		}
 
 		this.buildMenu(model)
-		// console.clear()
-		// console.log @state.items
-		// debugger
 		NavUtil.gotoPath(startingPath)
 
 		if (startingId != null) {

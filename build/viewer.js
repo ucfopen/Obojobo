@@ -1909,8 +1909,8 @@ var NavStore = function (_Store) {
 	function NavStore() {
 		_classCallCheck(this, NavStore);
 
-		var item = void 0,
-		    oldNavTargetId = void 0;
+		var item = void 0;
+		var oldNavTargetId = void 0;
 
 		var _this = _possibleConstructorReturn(this, (NavStore.__proto__ || Object.getPrototypeOf(NavStore)).call(this, 'navstore'));
 
@@ -2029,9 +2029,6 @@ var NavStore = function (_Store) {
 			};
 
 			this.buildMenu(model);
-			// console.clear()
-			// console.log @state.items
-			// debugger
 			_navUtil2.default.gotoPath(startingPath);
 
 			if (startingId != null) {

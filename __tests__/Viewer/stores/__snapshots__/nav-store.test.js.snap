@@ -1,0 +1,222 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`NavStore buildMenu should reset menu items 1`] = `
+Object {
+  "items": "mockModel",
+  "itemsByFullPath": Object {},
+  "itemsById": Object {},
+  "itemsByPath": Object {},
+  "locked": false,
+  "navTargetHistory": Array [],
+  "navTargetId": null,
+  "open": true,
+  "visitId": 11,
+}
+`;
+
+exports[`NavStore generateNav builds a navItem 1`] = `
+Object {
+  "children": Array [
+    Object {
+      "children": Array [],
+      "flags": Object {
+        "complete": false,
+        "correct": false,
+        "visited": false,
+      },
+      "flatPath": "whatever/whatever2",
+      "fullFlatPath": "/view/66/visit/visitId/whatever/whatever2",
+      "fullPath": Array [
+        "whatever",
+        "whatever2",
+      ],
+      "id": 9,
+      "label": "",
+      "path": "whatever2",
+      "showChildren": true,
+      "showChildrenOnNavigation": true,
+      "type": "hidden",
+    },
+  ],
+  "flags": Object {
+    "complete": false,
+    "correct": false,
+    "visited": false,
+  },
+  "fullPath": Array [
+    "whatever",
+  ],
+  "id": 11,
+  "label": "",
+  "path": "whatever",
+  "showChildren": true,
+  "showChildrenOnNavigation": true,
+  "type": "hidden",
+}
+`;
+
+exports[`NavStore generateNav builds a navItem 2`] = `
+Object {
+  "itemsByFullPath": Object {
+    "/view/66/visit/visitId/whatever/whatever2": Object {
+      "children": Array [],
+      "flags": Object {
+        "complete": false,
+        "correct": false,
+        "visited": false,
+      },
+      "flatPath": "whatever/whatever2",
+      "fullFlatPath": "/view/66/visit/visitId/whatever/whatever2",
+      "fullPath": Array [
+        "whatever",
+        "whatever2",
+      ],
+      "id": 9,
+      "label": "",
+      "path": "whatever2",
+      "showChildren": true,
+      "showChildrenOnNavigation": true,
+      "type": "hidden",
+    },
+  },
+  "itemsById": Object {
+    "11": Object {
+      "children": Array [
+        Object {
+          "children": Array [],
+          "flags": Object {
+            "complete": false,
+            "correct": false,
+            "visited": false,
+          },
+          "flatPath": "whatever/whatever2",
+          "fullFlatPath": "/view/66/visit/visitId/whatever/whatever2",
+          "fullPath": Array [
+            "whatever",
+            "whatever2",
+          ],
+          "id": 9,
+          "label": "",
+          "path": "whatever2",
+          "showChildren": true,
+          "showChildrenOnNavigation": true,
+          "type": "hidden",
+        },
+      ],
+      "flags": Object {
+        "complete": false,
+        "correct": false,
+        "visited": false,
+      },
+      "fullPath": Array [
+        "whatever",
+      ],
+      "id": 11,
+      "label": "",
+      "path": "whatever",
+      "showChildren": true,
+      "showChildrenOnNavigation": true,
+      "type": "hidden",
+    },
+    "9": Object {
+      "children": Array [],
+      "flags": Object {
+        "complete": false,
+        "correct": false,
+        "visited": false,
+      },
+      "flatPath": "whatever/whatever2",
+      "fullFlatPath": "/view/66/visit/visitId/whatever/whatever2",
+      "fullPath": Array [
+        "whatever",
+        "whatever2",
+      ],
+      "id": 9,
+      "label": "",
+      "path": "whatever2",
+      "showChildren": true,
+      "showChildrenOnNavigation": true,
+      "type": "hidden",
+    },
+  },
+  "itemsByPath": Object {
+    "whatever/whatever2": Object {
+      "children": Array [],
+      "flags": Object {
+        "complete": false,
+        "correct": false,
+        "visited": false,
+      },
+      "flatPath": "whatever/whatever2",
+      "fullFlatPath": "/view/66/visit/visitId/whatever/whatever2",
+      "fullPath": Array [
+        "whatever",
+        "whatever2",
+      ],
+      "id": 9,
+      "label": "",
+      "path": "whatever2",
+      "showChildren": true,
+      "showChildrenOnNavigation": true,
+      "type": "hidden",
+    },
+  },
+  "visitId": "visitId",
+}
+`;
+
+exports[`NavStore gotoItem sends triggers events and updates history 1`] = `
+Object {
+  "itemsById": Object {
+    "mockId": Object {
+      "showChildren": false,
+    },
+  },
+  "navTargetHistory": Array [
+    "mockId",
+  ],
+  "navTargetId": "newItem",
+}
+`;
+
+exports[`NavStore should init state locked state 1`] = `
+Object {
+  "items": Object {},
+  "itemsByFullPath": Object {},
+  "itemsById": Object {},
+  "itemsByPath": Object {},
+  "locked": true,
+  "navTargetHistory": Array [],
+  "navTargetId": null,
+  "open": true,
+  "visitId": 11,
+}
+`;
+
+exports[`NavStore should init state open state 1`] = `
+Object {
+  "items": Object {},
+  "itemsByFullPath": Object {},
+  "itemsById": Object {},
+  "itemsByPath": Object {},
+  "locked": false,
+  "navTargetHistory": Array [],
+  "navTargetId": null,
+  "open": true,
+  "visitId": 11,
+}
+`;
+
+exports[`NavStore should init state with basic options 1`] = `
+Object {
+  "items": Object {},
+  "itemsByFullPath": Object {},
+  "itemsById": Object {},
+  "itemsByPath": Object {},
+  "locked": false,
+  "navTargetHistory": Array [],
+  "navTargetId": null,
+  "open": true,
+  "visitId": 11,
+}
+`;
