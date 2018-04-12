@@ -2029,7 +2029,7 @@ var NavStore = function (_Store) {
 			_navUtil2.default.gotoPath(startingPath);
 
 			if (startingId != null) {
-				return _navUtil2.default.goto(startingId);
+				_navUtil2.default.goto(startingId);
 			} else {
 				var first = _navUtil2.default.getFirst(this.state);
 
@@ -2056,9 +2056,10 @@ var NavStore = function (_Store) {
 					return;
 				}
 
-				var navTargetModel = __guard__(_navUtil2.default.getNavTargetModel(this.state), function (x) {
-					return x.processTrigger('onNavExit');
-				});
+				var navTargetModel = _navUtil2.default.getNavTargetModel(this.state);
+				if (navTargetModel && navTargetModel.processTrigger) {
+					navTargetModel.processTrigger('onNavExit');
+				}
 				this.state.navTargetHistory.push(this.state.navTargetId);
 				this.state.itemsById[this.state.navTargetId].showChildren = false;
 			}
@@ -2159,11 +2160,6 @@ var NavStore = function (_Store) {
 var navStore = new NavStore();
 window.__ns = navStore;
 exports.default = navStore;
-
-
-function __guard__(value, transform) {
-	return typeof value !== 'undefined' && value !== null ? transform(value) : undefined;
-}
 
 /***/ }),
 /* 18 */

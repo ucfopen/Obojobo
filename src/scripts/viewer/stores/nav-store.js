@@ -126,7 +126,7 @@ class NavStore extends Store {
 		NavUtil.gotoPath(startingPath)
 
 		if (startingId != null) {
-			return NavUtil.goto(startingId)
+			NavUtil.goto(startingId)
 		} else {
 			let first = NavUtil.getFirst(this.state)
 
@@ -151,9 +151,10 @@ class NavStore extends Store {
 				return
 			}
 
-			let navTargetModel = __guard__(NavUtil.getNavTargetModel(this.state), x =>
-				x.processTrigger('onNavExit')
-			)
+			let navTargetModel = NavUtil.getNavTargetModel(this.state)
+			if (navTargetModel && navTargetModel.processTrigger) {
+				navTargetModel.processTrigger('onNavExit')
+			}
 			this.state.navTargetHistory.push(this.state.navTargetId)
 			this.state.itemsById[this.state.navTargetId].showChildren = false
 		}
@@ -236,7 +237,3 @@ class NavStore extends Store {
 let navStore = new NavStore()
 window.__ns = navStore
 export default navStore
-
-function __guard__(value, transform) {
-	return typeof value !== 'undefined' && value !== null ? transform(value) : undefined
-}
