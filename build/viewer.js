@@ -1917,95 +1917,92 @@ var NavStore = function (_Store) {
 		Dispatcher.on({
 			'nav:rebuildMenu': function navRebuildMenu(payload) {
 				_this.buildMenu(payload.value.model);
-				return _this.triggerChange();
+				_this.triggerChange();
 			},
 			'nav:gotoPath': function navGotoPath(payload) {
 				oldNavTargetId = _this.state.navTargetId;
 				if (_this.gotoItem(_this.state.itemsByPath[payload.value.path])) {
-					return _apiUtil2.default.postEvent(OboModel.getRoot(), 'nav:gotoPath', '1.0.0', {
+					_apiUtil2.default.postEvent(OboModel.getRoot(), 'nav:gotoPath', '1.0.0', {
 						from: oldNavTargetId,
 						to: _this.state.itemsByPath[payload.value.path].id
 					});
 				}
 			},
 			'nav:setFlag': function navSetFlag(payload) {
-				var navItem = this.state.itemsById[payload.value.id];
+				var navItem = _this.state.itemsById[payload.value.id];
 				navItem.flags[payload.value.flagName] = payload.value.flagValue;
-
-				return this.triggerChange();
+				_this.triggerChange();
 			},
-
-			'nav:prev': function navPrev(payload) {
+			'nav:prev': function navPrev() {
 				oldNavTargetId = _this.state.navTargetId;
 				var prev = _navUtil2.default.getPrev(_this.state);
 				if (_this.gotoItem(prev)) {
-					return _apiUtil2.default.postEvent(OboModel.getRoot(), 'nav:prev', '1.0.0', {
+					_apiUtil2.default.postEvent(OboModel.getRoot(), 'nav:prev', '1.0.0', {
 						from: oldNavTargetId,
 						to: prev.id
 					});
 				}
 			},
-			'nav:next': function navNext(payload) {
+			'nav:next': function navNext() {
 				oldNavTargetId = _this.state.navTargetId;
 				var next = _navUtil2.default.getNext(_this.state);
 				if (_this.gotoItem(next)) {
-					return _apiUtil2.default.postEvent(OboModel.getRoot(), 'nav:next', '1.0.0', {
+					_apiUtil2.default.postEvent(OboModel.getRoot(), 'nav:next', '1.0.0', {
 						from: oldNavTargetId,
 						to: next.id
 					});
 				}
 			},
 			'nav:goto': function navGoto(payload) {
+				console.log(_this.state, payload.value.id);
 				oldNavTargetId = _this.state.navTargetId;
 				if (_this.gotoItem(_this.state.itemsById[payload.value.id])) {
-					return _apiUtil2.default.postEvent(OboModel.getRoot(), 'nav:goto', '1.0.0', {
+					_apiUtil2.default.postEvent(OboModel.getRoot(), 'nav:goto', '1.0.0', {
 						from: oldNavTargetId,
 						to: _this.state.itemsById[payload.value.id].id
 					});
 				}
 			},
-			'nav:lock': function navLock(payload) {
+			'nav:lock': function navLock() {
 				_apiUtil2.default.postEvent(OboModel.getRoot(), 'nav:lock', '1.0.0');
-				return _this.setAndTrigger({ locked: true });
+				_this.setAndTrigger({ locked: true });
 			},
-			'nav:unlock': function navUnlock(payload) {
+			'nav:unlock': function navUnlock() {
 				_apiUtil2.default.postEvent(OboModel.getRoot(), 'nav:unlock', '1.0.0');
-				return _this.setAndTrigger({ locked: false });
+				_this.setAndTrigger({ locked: false });
 			},
-			'nav:close': function navClose(payload) {
+			'nav:close': function navClose() {
 				_apiUtil2.default.postEvent(OboModel.getRoot(), 'nav:close', '1.0.0');
-				return _this.setAndTrigger({ open: false });
+				_this.setAndTrigger({ open: false });
 			},
-			'nav:open': function navOpen(payload) {
+			'nav:open': function navOpen() {
 				_apiUtil2.default.postEvent(OboModel.getRoot(), 'nav:open', '1.0.0');
-				return _this.setAndTrigger({ open: true });
+				_this.setAndTrigger({ open: true });
 			},
-			'nav:toggle': function navToggle(payload) {
+			'nav:toggle': function navToggle() {
 				var updatedState = { open: !_this.state.open };
 				_apiUtil2.default.postEvent(OboModel.getRoot(), 'nav:toggle', '1.0.0', updatedState);
-				return _this.setAndTrigger(updatedState);
+				_this.setAndTrigger(updatedState);
 			},
 			'nav:openExternalLink': function navOpenExternalLink(payload) {
 				window.open(payload.value.url);
-				return _this.triggerChange();
+				_this.triggerChange();
 			},
 			'nav:showChildren': function navShowChildren(payload) {
 				item = _this.state.itemsById[payload.value.id];
 				item.showChildren = true;
-				return _this.triggerChange();
+				_this.triggerChange();
 			},
 			'nav:hideChildren': function navHideChildren(payload) {
 				item = _this.state.itemsById[payload.value.id];
 				item.showChildren = false;
-				return _this.triggerChange();
+				_this.triggerChange();
 			},
 			'score:set': function scoreSet(payload) {
 				var navItem = _this.state.itemsById[payload.value.id];
-				if (!navItem) {
-					return;
+				if (navItem) {
+					_navUtil2.default.setFlag(payload.value.id, 'correct', payload.value.score === 100);
 				}
-
-				return _navUtil2.default.setFlag(payload.value.id, 'correct', payload.value.score === 100);
 			}
 		}, _this);
 		return _this;

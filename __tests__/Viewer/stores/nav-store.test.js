@@ -19,13 +19,298 @@ jest.mock('../../../src/scripts/viewer/util/nav-util', () => ({
 const Common = require('../../../src/scripts/common/index').default
 const NavUtil = require('../../../src/scripts/viewer/util/nav-util')
 const APIUtil = require('../../../src/scripts/viewer/util/api-util')
+
+// gotta spy on dispatcher before loading navstore
 jest.spyOn(Common.flux.Dispatcher, 'on')
+jest.spyOn(Common.flux.Dispatcher, 'trigger')
 const NavStore = require('../../../src/scripts/viewer/stores/nav-store').default
+// gotta hold on to this because beforeEach will clear it before the tests
+const eventCallbacks = Common.flux.Dispatcher.on.mock.calls[0][0]
 
 describe('NavStore', () => {
 	beforeAll(() => {})
 	beforeEach(() => {
 		jest.clearAllMocks()
+		NavStore.setState({})
+	})
+
+	it('Regisers events w/ dispatcher', () => {
+		expect(eventCallbacks).toMatchSnapshot()
+	})
+
+	it('nav:rebuildMenu event rebuilds the menu', () => {
+		jest.spyOn(NavStore, 'buildMenu')
+		NavStore.buildMenu.mockReturnValueOnce('')
+		jest.spyOn(NavStore, 'triggerChange')
+		NavStore.triggerChange.mockReturnValueOnce('fakeRes')
+		eventCallbacks['nav:rebuildMenu']({ value: { model: 'fake' } })
+
+		expect(NavStore.buildMenu).toHaveBeenCalledWith('fake')
+		expect(NavStore.triggerChange).toHaveBeenCalledWith()
+	})
+
+	it('nav:gotoPath event calls gotoItem and postEvent', () => {
+		NavStore.setState({
+			navTargetId: 7,
+			itemsByPath: {
+				fake: { id: 'mock' }
+			}
+		})
+		jest.spyOn(Common.models.OboModel, 'getRoot')
+		Common.models.OboModel.getRoot.mockReturnValueOnce('root')
+		jest.spyOn(NavStore, 'gotoItem')
+		NavStore.gotoItem.mockReturnValueOnce(true)
+		eventCallbacks['nav:gotoPath']({ value: { path: 'fake' } })
+
+		expect(NavStore.gotoItem).toHaveBeenCalledWith({ id: 'mock' })
+		expect(APIUtil.postEvent).toHaveBeenCalledTimes(1)
+		expect(APIUtil.postEvent.mock.calls[0]).toMatchSnapshot()
+	})
+
+	it('nav:setFlag event updates state and calls trigger', () => {
+		NavStore.setState({
+			navTargetId: 7,
+			itemsById: {
+				fake: { id: 'mock', flags: {} }
+			}
+		})
+
+		jest.spyOn(NavStore, 'triggerChange')
+		eventCallbacks['nav:setFlag']({ value: { id: 'fake', flagName: 'spoof' } })
+
+		expect(NavStore.triggerChange).toHaveBeenCalledWith()
+		expect(NavStore.getState()).toMatchSnapshot()
+	})
+
+	it('nav:prev changes page and posts event', () => {
+		NavStore.setState({
+			navTargetId: 7
+		})
+
+		// simulate a valid gotoItem Call
+		jest.spyOn(NavStore, 'gotoItem')
+		NavStore.gotoItem.mockReturnValueOnce(true)
+
+		// mock getRoot
+		jest.spyOn(Common.models.OboModel, 'getRoot')
+		Common.models.OboModel.getRoot.mockReturnValueOnce('root')
+
+		// simulate nextItem lookup
+		NavUtil.getPrev.mockReturnValueOnce({ id: 'mockPrev' })
+
+		// go
+		eventCallbacks['nav:prev']()
+		expect(APIUtil.postEvent).toHaveBeenCalledTimes(1)
+		expect(APIUtil.postEvent.mock.calls[0]).toMatchSnapshot()
+	})
+
+	it('nav:next changes page and posts event', () => {
+		NavStore.setState({
+			navTargetId: 7
+		})
+
+		// simulate a valid gotoItem Call
+		jest.spyOn(NavStore, 'gotoItem')
+		NavStore.gotoItem.mockReturnValueOnce(true)
+
+		// mock getRoot
+		jest.spyOn(Common.models.OboModel, 'getRoot')
+		Common.models.OboModel.getRoot.mockReturnValueOnce('root')
+
+		// simulate nextItem lookup
+		NavUtil.getNext.mockReturnValueOnce({ id: 'mockNext' })
+
+		// go
+		eventCallbacks['nav:next']()
+		expect(APIUtil.postEvent).toHaveBeenCalledTimes(1)
+		expect(APIUtil.postEvent.mock.calls[0]).toMatchSnapshot()
+	})
+
+	it('nav:goto changes page and posts event', () => {
+		NavStore.setState({
+			navTargetId: 7,
+			itemsById: {
+				mock: { id: 'mock', flags: {} }
+			}
+		})
+
+		// simulate a valid gotoItem Call
+		jest.spyOn(NavStore, 'gotoItem')
+		NavStore.gotoItem.mockReturnValueOnce(true)
+
+		// mock getRoot
+		jest.spyOn(Common.models.OboModel, 'getRoot')
+		Common.models.OboModel.getRoot.mockReturnValueOnce('root')
+
+		// go
+		eventCallbacks['nav:goto']({ value: { id: 'mock' } })
+		expect(APIUtil.postEvent).toHaveBeenCalledTimes(1)
+		expect(APIUtil.postEvent.mock.calls[0]).toMatchSnapshot()
+	})
+
+	it('nav:lock event fires and updates state', () => {
+		NavStore.setState({ locked: 'unchanged', open: 'unchanged' })
+
+		// simulate a valid setAndTrigger Call
+		jest.spyOn(NavStore, 'setAndTrigger')
+		NavStore.setAndTrigger.mockReturnValueOnce()
+
+		// mock getRoot
+		jest.spyOn(Common.models.OboModel, 'getRoot')
+		Common.models.OboModel.getRoot.mockReturnValueOnce('root')
+
+		// go
+		eventCallbacks['nav:lock']()
+		expect(NavStore.setAndTrigger).toHaveBeenCalledTimes(1)
+		expect(NavStore.setAndTrigger.mock.calls[0]).toMatchSnapshot()
+		expect(APIUtil.postEvent).toHaveBeenCalledTimes(1)
+		expect(APIUtil.postEvent.mock.calls[0]).toMatchSnapshot()
+		expect(NavStore.getState()).toMatchSnapshot()
+	})
+
+	it('nav:unlock event fires and updates state', () => {
+		NavStore.setState({ locked: 'unchanged', open: 'unchanged' })
+		// simulate a valid triggerChange Call
+		Common.flux.Dispatcher.trigger.mockReturnValueOnce()
+
+		// mock getRoot
+		jest.spyOn(Common.models.OboModel, 'getRoot')
+		Common.models.OboModel.getRoot.mockReturnValueOnce('root')
+
+		// go
+		eventCallbacks['nav:unlock']()
+		expect(Common.flux.Dispatcher.trigger).toHaveBeenCalledTimes(1)
+		expect(Common.flux.Dispatcher.trigger.mock.calls[0]).toMatchSnapshot()
+		expect(APIUtil.postEvent).toHaveBeenCalledTimes(1)
+		expect(APIUtil.postEvent.mock.calls[0]).toMatchSnapshot()
+		expect(NavStore.getState()).toMatchSnapshot()
+	})
+
+	it('nav:close event fires and updates state', () => {
+		NavStore.setState({ locked: 'unchanged', open: 'unchanged' })
+		// simulate a valid triggerChange Call
+		Common.flux.Dispatcher.trigger.mockReturnValueOnce()
+
+		// mock getRoot
+		jest.spyOn(Common.models.OboModel, 'getRoot')
+		Common.models.OboModel.getRoot.mockReturnValueOnce('root')
+
+		// go
+		eventCallbacks['nav:close']()
+		expect(Common.flux.Dispatcher.trigger).toHaveBeenCalledTimes(1)
+		expect(Common.flux.Dispatcher.trigger.mock.calls[0]).toMatchSnapshot()
+		expect(APIUtil.postEvent).toHaveBeenCalledTimes(1)
+		expect(APIUtil.postEvent.mock.calls[0]).toMatchSnapshot()
+		expect(NavStore.getState()).toMatchSnapshot()
+	})
+
+	it('nav:open event fires and updates state', () => {
+		NavStore.setState({ locked: 'unchanged', open: 'unchanged' })
+		// simulate a valid triggerChange Call
+		Common.flux.Dispatcher.trigger.mockReturnValueOnce()
+
+		// mock getRoot
+		jest.spyOn(Common.models.OboModel, 'getRoot')
+		Common.models.OboModel.getRoot.mockReturnValueOnce('root')
+
+		// go
+		eventCallbacks['nav:open']()
+		expect(Common.flux.Dispatcher.trigger).toHaveBeenCalledTimes(1)
+		expect(Common.flux.Dispatcher.trigger.mock.calls[0]).toMatchSnapshot()
+		expect(APIUtil.postEvent).toHaveBeenCalledTimes(1)
+		expect(APIUtil.postEvent.mock.calls[0]).toMatchSnapshot()
+		expect(NavStore.getState()).toMatchSnapshot()
+	})
+
+	it('nav:close event fires and updates state', () => {
+		NavStore.setState({ locked: 'unchanged', open: 'unchanged' })
+		// simulate a valid triggerChange Call
+		Common.flux.Dispatcher.trigger.mockReturnValueOnce()
+
+		// mock getRoot
+		jest.spyOn(Common.models.OboModel, 'getRoot')
+		Common.models.OboModel.getRoot.mockReturnValueOnce('root')
+
+		// go
+		eventCallbacks['nav:close']()
+		expect(Common.flux.Dispatcher.trigger).toHaveBeenCalledTimes(1)
+		expect(Common.flux.Dispatcher.trigger.mock.calls[0]).toMatchSnapshot()
+		expect(APIUtil.postEvent).toHaveBeenCalledTimes(1)
+		expect(APIUtil.postEvent.mock.calls[0]).toMatchSnapshot()
+		expect(NavStore.getState()).toMatchSnapshot()
+	})
+
+	it('nav:toggle event fires and updates state', () => {
+		NavStore.setState({ locked: 'unchanged', open: false })
+		// simulate a valid triggerChange Call
+		Common.flux.Dispatcher.trigger.mockReturnValueOnce()
+
+		// mock getRoot
+		jest.spyOn(Common.models.OboModel, 'getRoot')
+		Common.models.OboModel.getRoot.mockReturnValueOnce('root')
+
+		// go
+		eventCallbacks['nav:toggle']()
+		expect(Common.flux.Dispatcher.trigger).toHaveBeenCalledTimes(1)
+		expect(Common.flux.Dispatcher.trigger.mock.calls[0]).toMatchSnapshot()
+		expect(APIUtil.postEvent).toHaveBeenCalledTimes(1)
+		expect(APIUtil.postEvent.mock.calls[0]).toMatchSnapshot()
+		expect(NavStore.getState()).toMatchSnapshot()
+	})
+
+	it('nav:openExternalLink fires event and opens a window', () => {
+		// simulate a valid triggerChange Call
+		Common.flux.Dispatcher.trigger.mockReturnValueOnce()
+		window.open = jest.fn()
+
+		// go
+		eventCallbacks['nav:openExternalLink']({ value: { url: 'mockUrl' } })
+		expect(window.open).toHaveBeenCalledTimes(1)
+		expect(window.open).toHaveBeenCalledWith('mockUrl')
+		expect(Common.flux.Dispatcher.trigger).toHaveBeenCalledTimes(1)
+		expect(Common.flux.Dispatcher.trigger.mock.calls[0]).toMatchSnapshot()
+	})
+
+	it('nav:showChildren event fires and updates state', () => {
+		NavStore.setState({ itemsById: { mockID: { showChildren: 'unchanged' } } })
+		// simulate a valid triggerChange Call
+		Common.flux.Dispatcher.trigger.mockReturnValueOnce()
+
+		// go
+		eventCallbacks['nav:showChildren']({ value: { id: 'mockID' } })
+		expect(Common.flux.Dispatcher.trigger).toHaveBeenCalledTimes(1)
+		expect(Common.flux.Dispatcher.trigger.mock.calls[0]).toMatchSnapshot()
+		expect(NavStore.getState()).toMatchSnapshot()
+	})
+
+	it('nav:hideChildren event fires and updates state', () => {
+		NavStore.setState({ itemsById: { mockID: { showChildren: 'unchanged' } } })
+		// simulate a valid triggerChange Call
+		Common.flux.Dispatcher.trigger.mockReturnValueOnce()
+
+		// go
+		eventCallbacks['nav:hideChildren']({ value: { id: 'mockID' } })
+		expect(Common.flux.Dispatcher.trigger).toHaveBeenCalledTimes(1)
+		expect(Common.flux.Dispatcher.trigger.mock.calls[0]).toMatchSnapshot()
+		expect(NavStore.getState()).toMatchSnapshot()
+	})
+
+	it('score:set sets a correct flag on the item with a score of 100', () => {
+		NavStore.setState({ itemsById: { mockID: { showChildren: 'unchanged' } } })
+		// go
+		eventCallbacks['score:set']({ value: { id: 'mockID', score: 100 } })
+
+		expect(NavUtil.setFlag).toHaveBeenCalledTimes(1)
+		expect(NavUtil.setFlag.mock.calls[0]).toMatchSnapshot()
+	})
+
+	it('score:set sets a correct flag on the item with a score of 23', () => {
+		NavStore.setState({ itemsById: { mockID: { showChildren: 'unchanged' } } })
+		// go
+		eventCallbacks['score:set']({ value: { id: 'mockID', score: 23 } })
+
+		expect(NavUtil.setFlag).toHaveBeenCalledTimes(1)
+		expect(NavUtil.setFlag.mock.calls[0]).toMatchSnapshot()
 	})
 
 	it('should init state with basic options', () => {
