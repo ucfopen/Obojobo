@@ -6,7 +6,7 @@ const QuestionContent = require('../../../../../ObojoboDraft/Chunks/Question/Con
 const mockComponent = props => <div {...props} />
 
 describe('QuestionContent', () => {
-	test.skip('renders with no children', () => {
+	test('renders with no children', () => {
 		let props = {
 			model: {
 				children: {
