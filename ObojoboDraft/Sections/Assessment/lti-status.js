@@ -39,7 +39,7 @@ export default props => {
 					case LTINetworkStates.IDLE:
 					default:
 						return (
-							<Button dangerous onClick={AssessmentUtil.resendLTIScore.bind(null, props.model)}>
+							<Button dangerous onClick={props.onClickResendScore}>
 								{props.ltiState.errorCount === 0 ? 'Resend score' : 'Try again anyway'}
 							</Button>
 						)
