@@ -8,7 +8,8 @@ jest.mock('../../../../config', () => {
 jest.mock('../../../../db', () => {
 	return {
 		one: jest.fn(),
-		manyOrNone: jest.fn()
+		manyOrNone: jest.fn(),
+		none: jest.fn()
 	}
 })
 
@@ -181,5 +182,15 @@ describe('Assessment', () => {
 
 	test.skip('onStartVisit inserts value into extensionsProps', () => {
 		//@TODO
+	})
+
+	test('updateAttemptState calls db', () => {
+		Assessment.updateAttemptState(0, {})
+
+		expect(db.none).toHaveBeenCalled()
+		expect(db.none.mock.calls[0][1]).toEqual({
+			state: {},
+			attemptId: 0
+		})
 	})
 })
