@@ -2151,13 +2151,6 @@ var NavStore = function (_Store) {
 
 			return navItem;
 		}
-	}, {
-		key: '_clearFlags',
-		value: function _clearFlags() {
-			return Array.from(this.state.items).map(function (item) {
-				return item.flags.complete = false;
-			});
-		}
 	}]);
 
 	return NavStore;

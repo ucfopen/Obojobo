@@ -231,10 +231,6 @@ class NavStore extends Store {
 
 		return navItem
 	}
-
-	_clearFlags() {
-		return Array.from(this.state.items).map(item => (item.flags.complete = false))
-	}
 }
 
 let navStore = new NavStore()
