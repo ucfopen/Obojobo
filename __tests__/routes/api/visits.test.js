@@ -110,7 +110,7 @@ describe('api visits route', () => {
 		})
 	})
 
-	test('start fails when theres outcome service url', () => {
+	test('start fails when theres no outcome service url', () => {
 		expect.assertions(3)
 		let startVisitRoute = mockRouterMethods.post.mock.calls[0][1]
 		mockReq.requireCurrentUser.mockReturnValueOnce(Promise.resolve(new User()))
