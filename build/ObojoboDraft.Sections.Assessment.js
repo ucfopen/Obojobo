@@ -361,7 +361,7 @@ exports.default = function (props) {
 				default:
 					return React.createElement(
 						Button,
-						{ dangerous: true, onClick: AssessmentUtil.resendLTIScore.bind(null, props.model) },
+						{ dangerous: true, onClick: props.onClickResendScore },
 						props.ltiState.errorCount === 0 ? 'Resend score' : 'Try again anyway'
 					);
 					break;
