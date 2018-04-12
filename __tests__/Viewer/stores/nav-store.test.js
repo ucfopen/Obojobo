@@ -41,12 +41,12 @@ describe('NavStore', () => {
 	it('nav:rebuildMenu event rebuilds the menu', () => {
 		jest.spyOn(NavStore, 'buildMenu')
 		NavStore.buildMenu.mockReturnValueOnce('')
-		jest.spyOn(NavStore, 'triggerChange')
-		NavStore.triggerChange.mockReturnValueOnce('fakeRes')
+		// simulate trigger
+		Common.flux.Dispatcher.trigger.mockReturnValueOnce()
 		eventCallbacks['nav:rebuildMenu']({ value: { model: 'fake' } })
 
 		expect(NavStore.buildMenu).toHaveBeenCalledWith('fake')
-		expect(NavStore.triggerChange).toHaveBeenCalledWith()
+		expect(Common.flux.Dispatcher.trigger).toHaveBeenCalledWith('navstore:change')
 	})
 
 	it('nav:gotoPath event calls gotoItem and postEvent', () => {
@@ -75,10 +75,12 @@ describe('NavStore', () => {
 			}
 		})
 
-		jest.spyOn(NavStore, 'triggerChange')
+		// simulate trigger
+		Common.flux.Dispatcher.trigger.mockReturnValueOnce()
+
 		eventCallbacks['nav:setFlag']({ value: { id: 'fake', flagName: 'spoof' } })
 
-		expect(NavStore.triggerChange).toHaveBeenCalledWith()
+		expect(Common.flux.Dispatcher.trigger).toHaveBeenCalledWith('navstore:change')
 		expect(NavStore.getState()).toMatchSnapshot()
 	})
 
@@ -151,9 +153,8 @@ describe('NavStore', () => {
 	it('nav:lock event fires and updates state', () => {
 		NavStore.setState({ locked: 'unchanged', open: 'unchanged' })
 
-		// simulate a valid setAndTrigger Call
-		jest.spyOn(NavStore, 'setAndTrigger')
-		NavStore.setAndTrigger.mockReturnValueOnce()
+		// simulate trigger
+		Common.flux.Dispatcher.trigger.mockReturnValueOnce()
 
 		// mock getRoot
 		jest.spyOn(Common.models.OboModel, 'getRoot')
@@ -161,8 +162,8 @@ describe('NavStore', () => {
 
 		// go
 		eventCallbacks['nav:lock']()
-		expect(NavStore.setAndTrigger).toHaveBeenCalledTimes(1)
-		expect(NavStore.setAndTrigger.mock.calls[0]).toMatchSnapshot()
+		expect(Common.flux.Dispatcher.trigger).toHaveBeenCalledTimes(1)
+		expect(Common.flux.Dispatcher.trigger).toHaveBeenCalledWith('navstore:change')
 		expect(APIUtil.postEvent).toHaveBeenCalledTimes(1)
 		expect(APIUtil.postEvent.mock.calls[0]).toMatchSnapshot()
 		expect(NavStore.getState()).toMatchSnapshot()
@@ -170,7 +171,7 @@ describe('NavStore', () => {
 
 	it('nav:unlock event fires and updates state', () => {
 		NavStore.setState({ locked: 'unchanged', open: 'unchanged' })
-		// simulate a valid triggerChange Call
+		// simulate trigger
 		Common.flux.Dispatcher.trigger.mockReturnValueOnce()
 
 		// mock getRoot
@@ -188,7 +189,7 @@ describe('NavStore', () => {
 
 	it('nav:close event fires and updates state', () => {
 		NavStore.setState({ locked: 'unchanged', open: 'unchanged' })
-		// simulate a valid triggerChange Call
+		// simulate trigger
 		Common.flux.Dispatcher.trigger.mockReturnValueOnce()
 
 		// mock getRoot
@@ -206,7 +207,7 @@ describe('NavStore', () => {
 
 	it('nav:open event fires and updates state', () => {
 		NavStore.setState({ locked: 'unchanged', open: 'unchanged' })
-		// simulate a valid triggerChange Call
+		// simulate trigger
 		Common.flux.Dispatcher.trigger.mockReturnValueOnce()
 
 		// mock getRoot
@@ -224,7 +225,7 @@ describe('NavStore', () => {
 
 	it('nav:close event fires and updates state', () => {
 		NavStore.setState({ locked: 'unchanged', open: 'unchanged' })
-		// simulate a valid triggerChange Call
+		// simulate trigger
 		Common.flux.Dispatcher.trigger.mockReturnValueOnce()
 
 		// mock getRoot
@@ -242,7 +243,7 @@ describe('NavStore', () => {
 
 	it('nav:toggle event fires and updates state', () => {
 		NavStore.setState({ locked: 'unchanged', open: false })
-		// simulate a valid triggerChange Call
+		// simulate trigger
 		Common.flux.Dispatcher.trigger.mockReturnValueOnce()
 
 		// mock getRoot
@@ -259,7 +260,7 @@ describe('NavStore', () => {
 	})
 
 	it('nav:openExternalLink fires event and opens a window', () => {
-		// simulate a valid triggerChange Call
+		// simulate trigger
 		Common.flux.Dispatcher.trigger.mockReturnValueOnce()
 		window.open = jest.fn()
 
@@ -273,7 +274,7 @@ describe('NavStore', () => {
 
 	it('nav:showChildren event fires and updates state', () => {
 		NavStore.setState({ itemsById: { mockID: { showChildren: 'unchanged' } } })
-		// simulate a valid triggerChange Call
+		// simulate trigger
 		Common.flux.Dispatcher.trigger.mockReturnValueOnce()
 
 		// go
@@ -285,7 +286,7 @@ describe('NavStore', () => {
 
 	it('nav:hideChildren event fires and updates state', () => {
 		NavStore.setState({ itemsById: { mockID: { showChildren: 'unchanged' } } })
-		// simulate a valid triggerChange Call
+		// simulate trigger
 		Common.flux.Dispatcher.trigger.mockReturnValueOnce()
 
 		// go
@@ -372,7 +373,9 @@ describe('NavStore', () => {
 	})
 
 	it('gotoItem sends triggers events and updates history', () => {
-		jest.spyOn(NavStore, 'triggerChange')
+		// simulate trigger
+		Common.flux.Dispatcher.trigger.mockReturnValueOnce()
+
 		NavStore.setState({
 			navTargetId: 'mockId',
 			navTargetHistory: [],
@@ -396,7 +399,8 @@ describe('NavStore', () => {
 		expect(after).toMatchSnapshot()
 		expect(oldNavItem.processTrigger).toHaveBeenCalledWith('onNavExit')
 		expect(newNavItem.processTrigger).toHaveBeenCalledWith('onNavEnter')
-		expect(NavStore.triggerChange).toHaveBeenCalledTimes(1)
+		expect(Common.flux.Dispatcher.trigger).toHaveBeenCalledTimes(1)
+		expect(Common.flux.Dispatcher.trigger).toHaveBeenCalledWith('navstore:change')
 	})
 
 	it('generateNav with no model returns empty objec ', () => {

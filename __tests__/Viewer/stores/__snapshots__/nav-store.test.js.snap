@@ -278,23 +278,15 @@ Object {
 
 exports[`NavStore nav:lock event fires and updates state 1`] = `
 Array [
-  Object {
-    "locked": true,
-  },
-]
-`;
-
-exports[`NavStore nav:lock event fires and updates state 2`] = `
-Array [
   "root",
   "nav:lock",
   "1.0.0",
 ]
 `;
 
-exports[`NavStore nav:lock event fires and updates state 3`] = `
+exports[`NavStore nav:lock event fires and updates state 2`] = `
 Object {
-  "locked": "unchanged",
+  "locked": true,
   "open": "unchanged",
 }
 `;
