@@ -45,6 +45,7 @@ app.on('mount', app => {
 	app.use('/api/events', oboRequire('routes/api/events'))
 	app.use('/api/states', oboRequire('routes/api/states'))
 	app.use('/api/visits', oboRequire('routes/api/visits'))
+	app.use('/api/data', oboRequire('routes/api/data'))
 	app.use('/profile', oboRequire('routes/profile'))
 	app.use('/dashboard', oboRequire('routes/dashboard'))
 })
