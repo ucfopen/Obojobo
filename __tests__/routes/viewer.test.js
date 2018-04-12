@@ -41,7 +41,7 @@ describe('lti route', () => {
 	test('view/draft/visit rejects guest', () => {
 		expect.assertions(1)
 		let routeFunction = mockRouterMethods.get.mock.calls[0][1]
-		mockReq.requireCurrentUser.mockReturnValueOnce(Promise.resolve(new GuestUser()))
+		mockReq.requireCurrentUser.mockResolvedValueOnce(new GuestUser())
 
 		return routeFunction(mockReq, mockRes, mockNext).then(result => {
 			expect(mockNext).toBeCalledWith(Error('Login Required'))
@@ -51,7 +51,7 @@ describe('lti route', () => {
 	test('view/draft/visit rejects non-logged in users', () => {
 		expect.assertions(1)
 		let routeFunction = mockRouterMethods.get.mock.calls[0][1]
-		mockReq.requireCurrentUser.mockReturnValueOnce(Promise.reject('not logged in'))
+		mockReq.requireCurrentUser.mockRejectedValueOnce('not logged in')
 
 		return routeFunction(mockReq, mockRes, mockNext).then(result => {
 			expect(mockNext).toBeCalledWith('not logged in')
@@ -61,7 +61,7 @@ describe('lti route', () => {
 	test('view/draft/visit rejects non-logged in users', () => {
 		expect.assertions(2)
 		let routeFunction = mockRouterMethods.get.mock.calls[0][1]
-		mockReq.requireCurrentUser.mockReturnValueOnce(Promise.reject('not logged in'))
+		mockReq.requireCurrentUser.mockRejectedValueOnce('not logged in')
 
 		return routeFunction(mockReq, mockRes, mockNext).then(result => {
 			expect(mockRes.render).not.toBeCalled()
@@ -72,10 +72,10 @@ describe('lti route', () => {
 	test('view/draft/visit calls render', () => {
 		expect.assertions(2)
 		let routeFunction = mockRouterMethods.get.mock.calls[0][1]
-		mockReq.requireCurrentUser.mockReturnValueOnce(Promise.resolve(new User()))
+		mockReq.requireCurrentUser.mockResolvedValueOnce(new User())
 		let mockDoc = {} // no contents
 		let mockYell = jest.fn().mockReturnValueOnce(mockDoc)
-		Draft.fetchById.mockReturnValueOnce(Promise.resolve({ yell: mockYell }))
+		Draft.fetchById.mockResolvedValueOnce({ yell: mockYell })
 
 		return routeFunction(mockReq, mockRes, mockNext).then(result => {
 			expect(mockYell).toBeCalledWith('internal:sendToClient', mockReq, mockRes)
@@ -87,7 +87,7 @@ describe('lti route', () => {
 	test('view/draft/visit calls render with the draft title', () => {
 		expect.assertions(1)
 		let routeFunction = mockRouterMethods.get.mock.calls[0][1]
-		mockReq.requireCurrentUser.mockReturnValueOnce(Promise.resolve(new User()))
+		mockReq.requireCurrentUser.mockResolvedValueOnce(new User())
 		let mockDoc = {
 			root: {
 				node: {
@@ -99,7 +99,7 @@ describe('lti route', () => {
 		}
 
 		let mockYell = jest.fn().mockReturnValueOnce(mockDoc)
-		Draft.fetchById.mockReturnValueOnce(Promise.resolve({ yell: mockYell }))
+		Draft.fetchById.mockResolvedValueOnce({ yell: mockYell })
 
 		return routeFunction(mockReq, mockRes, mockNext).then(result => {
 			expect(mockRes.render).toBeCalledWith('viewer', { draftTitle: 'my expected title' })

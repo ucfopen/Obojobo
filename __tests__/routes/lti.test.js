@@ -101,7 +101,7 @@ describe('lti route', () => {
 	test('course_navigation silently calls next on an error', () => {
 		expect.assertions(5)
 		let courseNavigationRoute = mockRouterMethods.post.mock.calls[0][1]
-		mockReq.getCurrentUser.mockImplementationOnce(() => Promise.reject('whoopths'))
+		mockReq.getCurrentUser.mockRejectedValueOnce('whoopths')
 		return courseNavigationRoute(mockReq, mockRes, mockNext).then(() => {
 			expect(mockRes.redirect).not.toBeCalled()
 			expect(mockRes.status).not.toBeCalled()
@@ -114,7 +114,7 @@ describe('lti route', () => {
 	test('canvas resource_selection requires a user', () => {
 		expect.assertions(5)
 		let resourceSelectionRoute = mockRouterMethods.post.mock.calls[1][1]
-		mockReq.getCurrentUser.mockImplementationOnce(() => Promise.reject('whoopths'))
+		mockReq.getCurrentUser.mockRejectedValueOnce('whoopths')
 		return resourceSelectionRoute(mockReq, mockRes, mockNext).then(() => {
 			expect(mockRes.redirect).not.toBeCalled()
 			expect(mockRes.status).not.toBeCalled()

@@ -47,9 +47,7 @@ describe('models draft', () => {
 		let Draft = oboRequire('models/draft')
 		let DraftNode = oboRequire('models/draft_node')
 		let db = oboRequire('db')
-		db.one.mockImplementationOnce((query, vars) => {
-			return Promise.resolve(mockRawDraft)
-		})
+		db.one.mockResolvedValueOnce(mockRawDraft)
 
 		return Draft.fetchById('whatever').then(model => {
 			expect(model).toBeInstanceOf(Draft)
@@ -66,9 +64,7 @@ describe('models draft', () => {
 		let Draft = oboRequire('models/draft')
 		let DraftNode = oboRequire('models/draft_node')
 		let db = oboRequire('db')
-		db.one.mockImplementationOnce((query, vars) => {
-			return Promise.reject(new Error('not found in db'))
-		})
+		db.one.mockRejectedValueOnce(new Error('not found in db'))
 
 		return Draft.fetchById('whatever')
 			.then(model => {
@@ -86,10 +82,7 @@ describe('models draft', () => {
 		let Draft = oboRequire('models/draft')
 		let DraftNode = oboRequire('models/draft_node')
 		let db = oboRequire('db')
-		db.one.mockImplementationOnce((query, vars) => {
-			return Promise.resolve(mockRawDraft)
-		})
-
+		db.one.mockResolvedValueOnce(mockRawDraft)
 		return Draft.fetchById('whatever').then(model => {
 			expect(model.document).toEqual(
 				expect.objectContaining({
@@ -108,9 +101,7 @@ describe('models draft', () => {
 		let Draft = oboRequire('models/draft')
 		let DraftNode = oboRequire('models/draft_node')
 		let db = oboRequire('db')
-		db.one.mockImplementationOnce((query, vars) => {
-			return Promise.resolve(mockRawDraft)
-		})
+		db.one.mockResolvedValueOnce(mockRawDraft)
 
 		return Draft.fetchById('whatever').then(model => {
 			expect(model.getChildNodeById(666)).toBeInstanceOf(DraftNode)
@@ -126,9 +117,7 @@ describe('models draft', () => {
 		let Draft = oboRequire('models/draft')
 		let DraftNode = oboRequire('models/draft_node')
 		let db = oboRequire('db')
-		db.one.mockImplementationOnce((query, vars) => {
-			return Promise.resolve(mockRawDraft)
-		})
+		db.one.mockResolvedValueOnce(mockRawDraft)
 
 		return Draft.fetchById('whatever').then(model => {
 			expect(model.getChildNodesByType('DraftNode')).toBeInstanceOf(Array)
@@ -150,9 +139,7 @@ describe('models draft', () => {
 		let DraftNode = oboRequire('models/draft_node')
 		let db = oboRequire('db')
 		let childNode
-		db.one.mockImplementationOnce((query, vars) => {
-			return Promise.resolve(mockRawDraft)
-		})
+		db.one.mockResolvedValueOnce(mockRawDraft)
 
 		return Draft.fetchById('whatever')
 			.then(model => {

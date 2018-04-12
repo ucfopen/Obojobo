@@ -3,19 +3,21 @@ let permissions = oboRequire('config').permissions
 let mockYell = jest.fn()
 
 class MockDraft {
-	constructor(rawDraft){
+	constructor(rawDraft) {
 		this.yell = mockYell
 		this.root = this
 		this.document = `{"json":"value"}`
+		this.getChildNodeById = jest.fn().mockReturnValue('mockChild')
+		this.node = rawDraft
 	}
 }
 
-MockDraft.fetchById = jest.fn().mockImplementation((id) => {
+MockDraft.fetchById = jest.fn().mockImplementation(id => {
 	return Promise.resolve(new MockDraft())
 })
 
-MockDraft.__setMockYell = (newMock) => {
+MockDraft.__setMockYell = newMock => {
 	mockYell = newMock
 }
 
-module.exports = MockDraft;
+module.exports = MockDraft
