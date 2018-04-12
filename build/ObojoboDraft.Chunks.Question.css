@@ -59,10 +59,10 @@
   transform-origin: top left; }
 
 .obojobo-draft--chunks--question.is-practice.is-correct .flipper {
-  border: 1px solid #38ae24; }
+  border: 1.25px solid #38ae24; }
 
 .obojobo-draft--chunks--question.is-practice.is-incorrect .flipper {
-  border: 1px solid #c21f00; }
+  border: 1.25px solid #c21f00; }
 
 .obojobo-draft--chunks--question.is-not-practice .submit {
   display: none; }
