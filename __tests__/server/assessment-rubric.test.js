@@ -541,25 +541,23 @@ describe('AssessmentRubric', () => {
 		})
 	})
 
-	test('unableToPassResult can reward a specified value', () => {
-		test('pass-fail rewards different failing result for final attempt with unableToPassResult', () => {
-			let ar = new AssessmentRubric({
-				type: 'pass-fail',
-				passingAttemptScore: 80,
-				passedResult: '$attempt_score',
-				failedResult: 'no-score',
-				unableToPassResult: 55
-			})
+	test('pass-fail rewards different failing result for final attempt with unableToPassResult', () => {
+		let ar = new AssessmentRubric({
+			type: 'pass-fail',
+			passingAttemptScore: 80,
+			passedResult: '$attempt_score',
+			failedResult: 'no-score',
+			unableToPassResult: 55
+		})
 
-			expect(ar.getAssessmentScoreInfoForAttempt(3, [79, 78, 77])).toEqual({
-				attemptNumber: 3,
-				attemptScore: 77,
-				status: 'unableToPass',
-				assessmentScore: 55,
-				rewardTotal: 0,
-				assessmentModdedScore: 55,
-				rewardedMods: []
-			})
+		expect(ar.getAssessmentScoreInfoForAttempt(3, [79, 78, 77])).toEqual({
+			attemptNumber: 3,
+			attemptScore: 77,
+			status: 'unableToPass',
+			assessmentScore: 55,
+			rewardTotal: 0,
+			assessmentModdedScore: 55,
+			rewardedMods: []
 		})
 	})
 })
