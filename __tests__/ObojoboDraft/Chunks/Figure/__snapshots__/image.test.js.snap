@@ -6,16 +6,16 @@ ShallowWrapper {
   Symbol(enzyme.__root__): [Circular],
   Symbol(enzyme.__unrendered__): <Image
     chunk={
-        Object {
-            "modelState": Object {
-              "height": 100,
-              "size": "custom",
-              "url": "url",
-              "width": 100,
-            },
-          }
+      Object {
+        "modelState": Object {
+          "height": 100,
+          "size": "custom",
+          "url": "url",
+          "width": 100,
+        },
+      }
     }
-/>,
+  />,
   Symbol(enzyme.__renderer__): Object {
     "batchedUpdates": [Function],
     "getNode": [Function],
@@ -75,15 +75,15 @@ ShallowWrapper {
   Symbol(enzyme.__root__): [Circular],
   Symbol(enzyme.__unrendered__): <Image
     chunk={
-        Object {
-            "modelState": Object {
-              "alt": "alt text",
-              "size": "small",
-              "url": "url",
-            },
-          }
+      Object {
+        "modelState": Object {
+          "alt": "alt text",
+          "size": "small",
+          "url": "url",
+        },
+      }
     }
-/>,
+  />,
   Symbol(enzyme.__renderer__): Object {
     "batchedUpdates": [Function],
     "getNode": [Function],
@@ -135,14 +135,14 @@ ShallowWrapper {
   Symbol(enzyme.__root__): [Circular],
   Symbol(enzyme.__unrendered__): <Image
     chunk={
-        Object {
-            "modelState": Object {
-              "alt": "alt text",
-              "size": "small",
-            },
-          }
+      Object {
+        "modelState": Object {
+          "alt": "alt text",
+          "size": "small",
+        },
+      }
     }
-/>,
+  />,
   Symbol(enzyme.__renderer__): Object {
     "batchedUpdates": [Function],
     "getNode": [Function],

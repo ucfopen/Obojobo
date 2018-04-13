@@ -25,7 +25,7 @@ var AssessmentUtil = {
 		return assessment
 	},
 
-	getLastAttemptScoreForModel(state, model) {
+	getLastAttemptForModel(state, model) {
 		let assessment = AssessmentUtil.getAssessmentForModel(state, model)
 		if (!assessment) {
 			return null
@@ -35,25 +35,34 @@ var AssessmentUtil = {
 			return 0
 		}
 
-		return assessment.attempts[assessment.attempts.length - 1].attemptScore
+		return assessment.attempts[assessment.attempts.length - 1]
 	},
 
-	getLatestHighestAttemptForModel(state, model) {
+	getHighestAttemptsForModelByAssessmentScore(state, model) {
 		let assessment = AssessmentUtil.getAssessmentForModel(state, model)
 		if (!assessment) {
-			return null
+			return []
 		}
 
-		return assessment.latestHighestAttempt
+		return assessment.highestAssessmentScoreAttempts
+	},
+
+	getHighestAttemptsForModelByAttemptScore(state, model) {
+		let assessment = AssessmentUtil.getAssessmentForModel(state, model)
+		if (!assessment) {
+			return []
+		}
+
+		return assessment.highestAttemptScoreAttempts
 	},
 
 	getAssessmentScoreForModel(state, model) {
-		let attempt = AssessmentUtil.getLatestHighestAttemptForModel(state, model)
-		if (!attempt) {
+		let attempts = AssessmentUtil.getHighestAttemptsForModelByAssessmentScore(state, model)
+		if (attempts.length === 0) {
 			return null
 		}
 
-		return attempt.assessmentScore
+		return attempts[0].assessmentScore
 	},
 
 	getLastAttemptScoresForModel(state, model) {
@@ -168,6 +177,29 @@ var AssessmentUtil = {
 			},
 			[0]
 		)
+	},
+
+	findHighestAttempts(attempts, scoreProperty) {
+		if (attempts.length === 0) return []
+
+		let attemptsByScore = {}
+		let highestScore = -1
+
+		attempts.forEach(attempt => {
+			let score = attempt[scoreProperty] === null ? -1 : attempt[scoreProperty]
+
+			if (score > highestScore) {
+				highestScore = score
+			}
+
+			if (!attemptsByScore[score]) {
+				attemptsByScore[score] = []
+			}
+
+			attemptsByScore[score].push(attempt)
+		})
+
+		return attemptsByScore[highestScore]
 	},
 
 	startAttempt(model) {

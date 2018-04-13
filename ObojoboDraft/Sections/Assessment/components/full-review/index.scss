@@ -10,7 +10,7 @@
 		}
 	}
 
-	> .review {
+	> .attempt-results {
 		text-align: left;
 		margin: 0 auto;
 		border: 1px solid $color-action;
@@ -52,13 +52,34 @@
 					line-height: 1.5em;
 				}
 
+				h4 {
+					vertical-align: middle;
+
+					> strong {
+						vertical-align: middle;
+					}
+				}
+
+				.highest-attempt {
+					background: $color-reward;
+					display: inline-block;
+					margin-left: 1em;
+					font-size: 0.7em;
+					border-radius: 2em;
+					line-height: 2em;
+					color: $color-reward-text;
+					font-weight: bold;
+					padding: 0 1em;
+					vertical-align: middle;
+				}
+
 				.obojobo-draft--components--more-info-button {
 					margin-left: 0.5em;
 
-					.score-report {
+					.obojobo-draft--sections--assessment--components--score-report {
 						font-size: 1.25em;
-						width: 20em;
-						padding: 0.5em 1em;
+						margin: 0 auto;
+						padding: 1em;
 						box-sizing: border-box;
 					}
 				}
@@ -75,49 +96,58 @@
 			// }
 		}
 
-		// mcassessment component
-		// .result-container {
-		// 	margin-left: 3em;
-		// 	margin-top: 1em;
-		// 	margin-bottom: 0.4em;
-		// }
+		.review.is-basic-review {
+			margin-top: 2em;
 
-		// question component
-		// .flipper {
-		// 	background: #fff;
-		// 	margin: 0 auto;
-		// }
+			/*
+			@TODO: These classes should not be here - they assume that we have MCAssessment type children!
+			BEGIN shame:
+			*/
+			.result-container {
+				margin-left: 3em;
+				margin-top: 1em;
+				margin-bottom: 0.4em;
+			}
 
-		// .is-correct > p,
-		// .is-not-correct > p {
-		// 	margin-top: 0;
-		// 	margin-bottom: 0;
-		// 	font-family: $font-default;
-		// 	font-weight: bold;
-		// }
+			.flipper {
+				//background: #fff;
+				margin: 0 auto;
+			}
 
-		// .obojobo-draft--chunks--question {
-		// 	font-size: 0.875em;
-		// }
+			.is-correct > p,
+			.is-not-correct > p {
+				margin-top: 0;
+				margin-bottom: 0;
+				font-family: $font-default;
+				font-weight: bold;
+			}
 
-		// .is-not-correct .obojobo-draft--chunks--question .flipper {
-		// 	position: relative;
-		// 	border: 1px solid $color-incorrect;
-		// 	background: transparentize($color-incorrect, 0.9);
+			.obojobo-draft--chunks--question {
+				font-size: 0.875em;
+			}
 
-		// 	.responses-hidden {
-		// 		color: $color-incorrect;
-		// 	}
-		// }
+			.is-not-correct .obojobo-draft--chunks--question .flipper {
+				position: relative;
+				border: 1px solid $color-incorrect;
+				background: transparentize($color-incorrect, 0.9);
 
-		// .is-correct .obojobo-draft--chunks--question .flipper {
-		// 	position: relative;
-		// 	border: 1px solid $color-correct;
-		// 	background: transparentize($color-correct, 0.9);
+				.responses-hidden {
+					color: $color-incorrect;
+				}
+			}
 
-		// 	.responses-hidden {
-		// 		color: $color-correct;
-		// 	}
-		// }
+			.is-correct .obojobo-draft--chunks--question .flipper {
+				position: relative;
+				border: 1px solid $color-correct;
+				background: transparentize($color-correct, 0.9);
+
+				.responses-hidden {
+					color: $color-correct;
+				}
+			}
+			/*
+			END shame
+			*/
+		}
 	}
 }

@@ -4,15 +4,17 @@ import AssessmentUtil from '../../viewer/util/assessment-util'
 import QuestionUtil from '../../viewer/util/question-util'
 import APIUtil from '../../viewer/util/api-util'
 import NavUtil from '../../viewer/util/nav-util'
+import NavStore from '../../viewer/stores/nav-store'
 import LTINetworkStates from './assessment-store/lti-network-states'
-
 import QuestionStore from './question-store'
+import AssessmentScoreReporter from '../../viewer/assessment/assessment-score-reporter'
+import AssessmentScoreReportView from '../../viewer/assessment/assessment-score-report-view'
 
 let { Store } = Common.flux
 let { Dispatcher } = Common.flux
 let { OboModel } = Common.models
 let { ErrorUtil } = Common.util
-let { SimpleDialog } = Common.components.modal
+let { SimpleDialog, Dialog } = Common.components.modal
 let { ModalUtil } = Common.util
 
 let getNewAssessmentObject = assessmentId => ({
@@ -20,10 +22,12 @@ let getNewAssessmentObject = assessmentId => ({
 	current: null,
 	currentResponses: [],
 	attempts: [],
-	latestHighestAttempt: null,
+	highestAssessmentScoreAttempts: [],
+	highestAttemptScoreAttempts: [],
 	lti: null,
 	ltiNetworkState: LTINetworkStates.IDLE,
-	ltiErrorCount: 0
+	ltiErrorCount: 0,
+	isShowingAttemptHistory: false
 })
 
 class AssessmentStore extends Store {
@@ -45,12 +49,6 @@ class AssessmentStore extends Store {
 
 		Dispatcher.on('question:setResponse', payload => {
 			this.trySetResponse(payload.value.id, payload.value.response, payload.value.targetId)
-		})
-
-		Dispatcher.on('assessment:review', payload => {
-			// TODO: Handle the case where the client is out of attempts. Consider how to allow
-			// the UI to update accordingly (assessment review). We'll need to fetch the appropriate
-			// review data from our attempt end endpoint.
 		})
 
 		Dispatcher.on('viewer:closeAttempted', shouldPrompt => {
@@ -87,28 +85,22 @@ class AssessmentStore extends Store {
 			}
 
 			assessments[assessId].lti = assessmentItem.ltiState
-			assessments[assessId].latestHighestAttempt = null
+			assessments[assessId].highestAttemptScoreAttempts = AssessmentUtil.findHighestAttempts(
+				attempts,
+				'assessmentScore'
+			)
+			assessments[assessId].highestAssessmentScoreAttempts = AssessmentUtil.findHighestAttempts(
+				attempts,
+				'attemptScore'
+			)
 
 			attempts.forEach(attempt => {
 				assessment = assessments[attempt.assessmentId]
-
-				if (assessment.latestHighestAttempt === null) {
-					assessment.latestHighestAttempt = attempt
-				}
 
 				if (!attempt.isFinished) {
 					unfinishedAttempt = attempt
 				} else {
 					assessment.attempts.push(attempt)
-
-					let thisAssessScore = attempt.assessmentScore === null ? -1 : attempt.assessmentScore
-					let currentHighestAssessScore =
-						assessment.latestHighestAttempt.assessmentScore === null
-							? -1
-							: assessment.latestHighestAttempt.assessmentScore
-					if (thisAssessScore >= currentHighestAssessScore) {
-						assessment.latestHighestAttempt = attempt
-					}
 				}
 
 				attempt.state.questions.forEach(question => {
@@ -240,6 +232,32 @@ class AssessmentStore extends Store {
 		model.processTrigger('onEndAttempt')
 
 		Dispatcher.trigger('assessment:attemptEnded', assessId)
+
+		let attempt = AssessmentUtil.getLastAttemptForModel(this.state, model)
+		let reporter = new AssessmentScoreReporter({
+			assessmentRubric: model.modelState.rubric.toObject(),
+			totalNumberOfAttemptsAllowed: model.modelState.attempts,
+			allAttempts: assessment.attempts
+		})
+
+		let assessmentLabel = NavUtil.getNavLabelForModel(NavStore.getState(), model)
+		ModalUtil.show(
+			<Dialog
+				modalClassName="obojobo-draft--sections--assessment--results-modal"
+				centered
+				buttons={[
+					{
+						value: `Show ${assessmentLabel} Overview`,
+						onClick: ModalUtil.hide,
+						default: true
+					}
+				]}
+				title={`Attempt ${attempt.attemptNumber} Results`}
+				width="35rem"
+			>
+				<AssessmentScoreReportView report={reporter.getReportFor(attempt.attemptNumber)} />
+			</Dialog>
+		)
 	}
 
 	tryResendLTIScore(assessmentId) {

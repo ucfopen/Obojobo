@@ -6,7 +6,8 @@
 	font-family: $font-default;
 	box-sizing: border-box;
 
-	&.is-synced {
+	&.is-synced,
+	&.is-not-lti {
 		font-size: 0.7em;
 		color: $color-text-minor;
 		padding-bottom: 2em;
@@ -16,6 +17,7 @@
 		background-color: #ffe9c3;
 		padding: 2em;
 		margin-top: 0.5em;
+		margin-bottom: 0.5em;
 
 		> h2 {
 			color: $color-text;

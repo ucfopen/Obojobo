@@ -18,8 +18,10 @@
 	}
 
 	@import 'components/full-review/index';
-	@import 'components/score-report/index';
 	@import 'components/score-submitted/index';
 	@import 'components/taking-test/index';
 }
 
+.obojobo-draft--sections--assessment--results-modal {
+	background: $color-bg2;
+}

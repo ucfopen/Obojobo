@@ -37,7 +37,12 @@ export default class Modal extends React.Component {
 
 	render() {
 		return (
-			<div className="obojobo-draft--components--modal--modal">
+			<div
+				className={
+					'obojobo-draft--components--modal--modal' +
+					(this.props.className ? ' ' + this.props.className : '')
+				}
+			>
 				<input
 					className="first-tab"
 					ref="firstTab"

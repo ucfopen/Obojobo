@@ -7,37 +7,31 @@ const Launch = Common.Launch
 const NavUtil = Viewer.util.NavUtil
 
 import LTIStatus from './lti-status'
-import FullReview from '../full-review'
-import ScoreReportView from '../score-report'
-import ScoreReport from '../../post-assessment/assessment-score-report'
-import basicReview from '../basic-review'
+import FullReview from '../full-review' //@TODO - Rename to simply "Review"
 
 const scoreSubmittedView = assessment => {
-	const report = new ScoreReport(assessment.props.model.modelState.rubric.toObject())
-
-	let latestHighestAttempt = AssessmentUtil.getLatestHighestAttemptForModel(
-		assessment.props.moduleData.assessmentState,
-		assessment.props.model
-	)
-
 	const questionScores = AssessmentUtil.getLastAttemptScoresForModel(
 		assessment.props.moduleData.assessmentState,
 		assessment.props.model
 	)
-	const recentScore = AssessmentUtil.getLastAttemptScoreForModel(
-		assessment.props.moduleData.assessmentState,
-		assessment.props.model
-	)
+
+	const isFullReviewAvailable = reviewType => {
+		switch (reviewType) {
+			case 'always':
+				return true
+			case 'never':
+				return false
+			case 'no-attempts-remaining':
+				return isAssessmentComplete()
+		}
+	}
+
 	const isAssessmentComplete = () => {
 		return !AssessmentUtil.hasAttemptsRemaining(
 			assessment.props.moduleData.assessmentState,
 			assessment.props.model
 		)
 	}
-	const attemptsRemaining = AssessmentUtil.getAttemptsRemaining(
-		assessment.props.moduleData.assessmentState,
-		assessment.props.model
-	)
 
 	const scoreAction = assessment.getScoreAction()
 	const numCorrect = AssessmentUtil.getNumCorrect(questionScores)
@@ -46,6 +40,16 @@ const scoreSubmittedView = assessment => {
 		assessment.props.moduleData.assessmentState,
 		assessment.props.model
 	)
+
+	let firstHighestAttempt = null
+	if (assessmentScore !== null) {
+		let highestAttempts = AssessmentUtil.getHighestAttemptsForModelByAssessmentScore(
+			assessment.props.moduleData.assessmentState,
+			assessment.props.model
+		)
+
+		firstHighestAttempt = highestAttempts.length === 0 ? null : highestAttempts[0]
+	}
 
 	let onClickResendScore = () => {
 		AssessmentUtil.resendLTIScore(assessment.props.model)
@@ -61,67 +65,45 @@ const scoreSubmittedView = assessment => {
 		assessment.props.model
 	)
 
-	let childEl
+	let scoreActionsPage
 
 	if (scoreAction.page != null) {
 		let pageModel = OboModel.create(scoreAction.page)
 		pageModel.parent = assessment.props.model //'@TODO - FIGURE OUT A BETTER WAY TO DO THIS - THIS IS NEEDED TO GET {{VARIABLES}} WORKING')
 		let PageComponent = pageModel.getComponentClass()
-		childEl = <PageComponent model={pageModel} moduleData={assessment.props.moduleData} />
+		scoreActionsPage = <PageComponent model={pageModel} moduleData={assessment.props.moduleData} />
 	} else {
-		childEl = <p>{scoreAction.message}</p>
+		scoreActionsPage = <p>{scoreAction.message}</p>
 	}
 
 	let externalSystemLabel = assessment.props.moduleData.lti.outcomeServiceHostname
 
-	let showFullReview = (reviewType => {
-		switch (reviewType) {
-			case 'always':
-				return true
-			case 'never':
-				return false
-			case 'afterAttempts':
-				return isAssessmentComplete()
-		}
-	})(assessment.props.model.modelState.review)
+	let showFullReview = isFullReviewAvailable(assessment.props.model.modelState.review)
 
 	return (
 		<div className="score unlock">
-			<div className="results-bar">
-				<div className="top">
-					<h1>{assessmentLabel} - How You Did</h1>
-
-					<div className="assessment-flex-container">
-						<div className="last-attempt">
-							<h2>Last Attempt Score</h2>
-							<div className="value">{Math.round(recentScore)}</div>
-						</div>
-						<div className="highest-score">
-							<h2>Highest Score</h2>
-							<ScoreReportView
-								score={latestHighestAttempt.assessmentScore}
-								items={report.getTextItems(
-									true,
-									latestHighestAttempt.assessmentScoreDetails,
-									AssessmentUtil.getAttemptsRemaining(
-										assessment.props.moduleData.assessmentState,
-										assessment.props.model
-									)
-								)}
-							/>
-						</div>
-						<div className="attempts-remaining">
-							<h2>Attempts Remaining</h2>
-							<div className="value">{attemptsRemaining}</div>
-						</div>
+			<div className="overview">
+				<h1>{assessmentLabel} Overview</h1>
+				{assessmentScore === null ? (
+					<div className="recorded-score is-null">
+						<h2>Recorded Score:</h2>
+						<span className="value">Did Not Pass</span>
 					</div>
-				</div>
+				) : (
+					<div className="recorded-score is-not-null">
+						<h2>Recorded Score:</h2>
+						<span className="value">{Math.round(assessmentScore)}</span>
+						<span className="from-attempt">{`From attempt ${
+							firstHighestAttempt.assessmentScoreDetails.attemptNumber
+						}`}</span>
+					</div>
+				)}
 
 				<LTIStatus
 					ltiState={ltiState}
 					externalSystemLabel={externalSystemLabel}
 					onClickResendScore={onClickResendScore}
-					assessmentScore={latestHighestAttempt.assessmentScore}
+					assessmentScore={assessmentScore}
 				/>
 				{() => {
 					switch (ltiState.state.gradebookStatus) {
@@ -146,20 +128,12 @@ const scoreSubmittedView = assessment => {
 							)
 					}
 				}}
+				<div className="score-actions-page">{scoreActionsPage}</div>
 			</div>
-			{childEl}
-			{showFullReview ? (
-				<FullReview assessment={assessment} />
-			) : (
-				<div className="review">
-					<p className="number-correct">{`You got ${numCorrect} out of ${
-						questionScores.length
-					} questions correct:`}</p>
-					{questionScores.map((questionScore, index) =>
-						basicReview(assessment.props.moduleData, questionScore, index)
-					)}
-				</div>
-			)}
+			<div className="attempt-history">
+				<h1>Attempt History:</h1>
+				<FullReview assessment={assessment} showFullReview={showFullReview} />
+			</div>
 		</div>
 	)
 }

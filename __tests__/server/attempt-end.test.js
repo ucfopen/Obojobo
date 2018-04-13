@@ -28,7 +28,6 @@ const DraftNode = oboRequire('models/draft_node')
 
 jest.mock('uuid')
 
-
 jest.mock('../../../../config', () => {
 	return {
 		db: {
@@ -618,26 +617,31 @@ describe('Attempt End', () => {
 	test('getNodeQuestion reloads score', () => {
 		const mockDraft = new Draft(testJson)
 		const mockQuestion = {
-			"id": "qb1.q1",
-			"type": "ObojoboDraft.Chunks.Question",
-			"children": [{
-				"id": "e3d455d5-80dd-4df8-87cf-594218016f44",
-				"type": "ObojoboDraft.Chunks.Text",
-				"content": {},
-				"children": []
-				},{
-				"id": "qb1-q1-mca",
-				"type": "ObojoboDraft.Chunks.MCAssessment",
-				"content": {},
-				"children": [{
-					"id": "qb1-q1-mca-mc1",
-					"type": "ObojoboDraft.Chunks.MCAssessment.MCChoice",
-					"content": {"score": 0}
-				}]
-			}]
+			id: 'qb1.q1',
+			type: 'ObojoboDraft.Chunks.Question',
+			children: [
+				{
+					id: 'e3d455d5-80dd-4df8-87cf-594218016f44',
+					type: 'ObojoboDraft.Chunks.Text',
+					content: {},
+					children: []
+				},
+				{
+					id: 'qb1-q1-mca',
+					type: 'ObojoboDraft.Chunks.MCAssessment',
+					content: {},
+					children: [
+						{
+							id: 'qb1-q1-mca-mc1',
+							type: 'ObojoboDraft.Chunks.MCAssessment.MCChoice',
+							content: { score: 0 }
+						}
+					]
+				}
+			]
 		}
 
-		expect(mockQuestion.id).toBe("qb1.q1")
+		expect(mockQuestion.id).toBe('qb1.q1')
 		expect(mockQuestion.children[1].children[0].content.score).toBe(0)
 
 		let reloadedQuestion = getNodeQuestion(mockQuestion.id, mockDraft)
@@ -649,12 +653,13 @@ describe('Attempt End', () => {
 	test('recreateChosenQuestionTree parses down a one-level question bank', () => {
 		const mockDraft = new Draft(testJson)
 		const mockQB = {
-			"id":"qb.lv1",
-			"type":"ObojoboDraft.Chunks.QuestionBank",
-			"children":[
-				{"id": "qb1.q1",
-				"type": "ObojoboDraft.Chunks.Question",
-				"children":[]
+			id: 'qb.lv1',
+			type: 'ObojoboDraft.Chunks.QuestionBank',
+			children: [
+				{
+					id: 'qb1.q1',
+					type: 'ObojoboDraft.Chunks.Question',
+					children: []
 				}
 			]
 		}
@@ -671,20 +676,26 @@ describe('Attempt End', () => {
 	test('recreateChosenQuestionTree parses down a multi-level question bank', () => {
 		const mockDraft = new Draft(testJson)
 		const mockQB = {
-			"id":"qb.lv1",
-			"type":"ObojoboDraft.Chunks.QuestionBank",
-			"children":[
-				{"id":"qb.lv2",
-				"type":"ObojoboDraft.Chunks.QuestionBank",
-				"children":[
-					{"id":"qb.lv3",
-					"type":"ObojoboDraft.Chunks.QuestionBank",
-					"children":[
-						{"id": "qb1.q1",
-						"type": "ObojoboDraft.Chunks.Question",
-						"children":[]}
-					]}
-				]}
+			id: 'qb.lv1',
+			type: 'ObojoboDraft.Chunks.QuestionBank',
+			children: [
+				{
+					id: 'qb.lv2',
+					type: 'ObojoboDraft.Chunks.QuestionBank',
+					children: [
+						{
+							id: 'qb.lv3',
+							type: 'ObojoboDraft.Chunks.QuestionBank',
+							children: [
+								{
+									id: 'qb1.q1',
+									type: 'ObojoboDraft.Chunks.Question',
+									children: []
+								}
+							]
+						}
+					]
+				}
 			]
 		}
 
@@ -704,10 +715,10 @@ describe('Attempt End', () => {
 	test('reloadAttemptStateIfReviewing does not reload when reviews are not allowed', () => {
 		const mockProperties = {}
 		const mockAttempt = {
-			"assessmentModel":{
-				"node":{
-					"content":{
-						"review":"never"
+			assessmentModel: {
+				node: {
+					content: {
+						review: 'never'
 					}
 				}
 			}
@@ -721,12 +732,12 @@ describe('Attempt End', () => {
 	test('reloadAttemptStateIfReviewing does not reload when reviews are allowed after attempts, but it is not the last attempt', () => {
 		const mockProperties = {}
 		const mockAttempt = {
-			"number":1,
-			"assessmentModel":{
-				"node":{
-					"content":{
-						"review":"afterAttempts",
-						"attempts":3
+			number: 1,
+			assessmentModel: {
+				node: {
+					content: {
+						review: 'afterAttempts',
+						attempts: 3
 					}
 				}
 			}
@@ -748,21 +759,23 @@ describe('Attempt End', () => {
 			draftTree: mockDraft,
 			id: null,
 			oboNode: assessmentNode,
-			nodeChildrenIds: ['qb2','qb2.q1','qb2.q2'],
+			nodeChildrenIds: ['qb2', 'qb2.q1', 'qb2.q2'],
 			assessmentQBTree: assessmentQbTree,
-			attemptHistory: [{
-				'state':mockQbTree
-			}],
+			attemptHistory: [
+				{
+					state: mockQbTree
+				}
+			],
 			numAttemptsTaken: null,
-			childrenMap: null
+			questionUsesMap: null
 		}
 		const mockAttempt = {
-			"number":1,
-			"assessmentModel":{
-				"node":{
-					"content":{
-						"review":"always",
-						"attempts":3
+			number: 1,
+			assessmentModel: {
+				node: {
+					content: {
+						review: 'always',
+						attempts: 3
 					}
 				}
 			}
@@ -781,56 +794,66 @@ describe('Attempt End', () => {
 		const mockQbTree = { id: 'qb1', children: fakeChildNodes }
 
 		const mockProperties = {
-			user: {"id":0},
+			user: { id: 0 },
 			draftTree: mockDraft,
 			id: 0,
 			oboNode: assessmentNode,
-			nodeChildrenIds: ['qb2','qb2.q1','qb2.q2'],
+			nodeChildrenIds: ['qb2', 'qb2.q1', 'qb2.q2'],
 			assessmentQBTree: assessmentQbTree,
-			attemptHistory: [{
-				'state':mockQbTree
-			}],
+			attemptHistory: [
+				{
+					state: mockQbTree
+				}
+			],
 			numAttemptsTaken: null,
-			childrenMap: null
+			questionUsesMap: null
 		}
 		const mockAttempt = {
-			"number":3,
-			"assessmentModel":{
-				"node":{
-					"content":{
-						"review":"afterAttempts",
-						"attempts":3
+			number: 3,
+			assessmentModel: {
+				node: {
+					content: {
+						review: 'afterAttempts',
+						attempts: 3
 					}
 				}
 			}
 		}
 
-		Assessment.getAttempts.mockImplementationOnce(() => Promise.resolve({
-			"attempts":[
-				{"state":
-					{"qb": {
-						"id":"qb.lv1",
-						"type":"ObojoboDraft.Chunks.QuestionBank",
-						"children":[
-							{"id":"qb.lv2",
-							"type":"ObojoboDraft.Chunks.QuestionBank",
-							"children":[
-								{"id":"qb.lv3",
-								"type":"ObojoboDraft.Chunks.QuestionBank",
-								"children":[
-									{"id": "qb1.q1",
-									"type": "ObojoboDraft.Chunks.Question",
-									"children":[]}
-								]}
-							]}
-						]
-					},
-					"questions": [
-						{"id": "qb1.q1"}
-					]
-				}
-			}]
-		}))
+		Assessment.getAttempts.mockImplementationOnce(() =>
+			Promise.resolve({
+				attempts: [
+					{
+						state: {
+							qb: {
+								id: 'qb.lv1',
+								type: 'ObojoboDraft.Chunks.QuestionBank',
+								children: [
+									{
+										id: 'qb.lv2',
+										type: 'ObojoboDraft.Chunks.QuestionBank',
+										children: [
+											{
+												id: 'qb.lv3',
+												type: 'ObojoboDraft.Chunks.QuestionBank',
+												children: [
+													{
+														id: 'qb1.q1',
+														type: 'ObojoboDraft.Chunks.Question',
+														children: []
+													}
+												]
+											}
+										]
+									}
+								]
+							},
+							questions: [{ id: 'qb1.q1' }]
+						}
+					}
+				]
+			})
+		)
 
 		let response = reloadAttemptStateIfReviewing(0, 0, mockProperties, mockAttempt)
 

@@ -62,7 +62,7 @@ class Assessment extends DraftNode {
 			questionScores: attempt.result ? attempt.result.questionScores : [],
 			responses: {},
 			attemptScore: attempt.result ? attempt.result.attemptScore : null,
-			assessmentScore: parseInt(attempt.assessment_score, 10),
+			assessmentScore: parseFloat(attempt.assessment_score),
 			assessmentScoreDetails: attempt.score_details
 		}
 	}

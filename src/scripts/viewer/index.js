@@ -8,6 +8,8 @@ import NavUtil from './util/nav-util'
 import APIUtil from './util/api-util'
 import QuestionUtil from './util/question-util'
 import getLTIOutcomeServiceHostname from './util/get-lti-outcome-service-hostname'
+import AssessmentScoreReporter from './assessment/assessment-score-reporter'
+import AssessmentScoreReportView from './assessment/assessment-score-report-view'
 
 export default {
 	components: {
@@ -29,5 +31,10 @@ export default {
 		APIUtil,
 		QuestionUtil,
 		getLTIOutcomeServiceHostname
+	},
+
+	assessment: {
+		AssessmentScoreReporter,
+		AssessmentScoreReportView
 	}
 }

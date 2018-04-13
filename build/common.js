@@ -2705,7 +2705,8 @@ var Dialog = function (_React$Component) {
 					_modal2.default,
 					{
 						onClose: this.props.onClose,
-						focusOnFirstElement: this.focusOnFirstElement.bind(this)
+						focusOnFirstElement: this.focusOnFirstElement.bind(this),
+						className: this.props.modalClassName
 					},
 					this.props.title ? React.createElement(
 						'h1',
@@ -2881,7 +2882,9 @@ var Modal = function (_React$Component) {
 		value: function render() {
 			return React.createElement(
 				'div',
-				{ className: 'obojobo-draft--components--modal--modal' },
+				{
+					className: 'obojobo-draft--components--modal--modal' + (this.props.className ? ' ' + this.props.className : '')
+				},
 				React.createElement('input', {
 					className: 'first-tab',
 					ref: 'firstTab',

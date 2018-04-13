@@ -6,20 +6,11 @@ const { AssessmentUtil } = Viewer.util
 
 const takingTestView = assessment => {
 	const moduleData = assessment.props.moduleData
-	const recentScore = AssessmentUtil.getLastAttemptScoreForModel(
-		assessment.props.moduleData.assessmentState,
-		assessment.props.model
-	)
 	const child = assessment.props.model.children.at(1)
 	const Component = child.getComponentClass()
 	return (
 		<div className="test">
-			<Component
-				className="untested"
-				model={child}
-				moduleData={moduleData}
-				showScore={recentScore !== null}
-			/>
+			<Component className="untested" model={child} moduleData={moduleData} />
 			<div className="submit-button">
 				<Button
 					onClick={assessment.onClickSubmit.bind(assessment)}
