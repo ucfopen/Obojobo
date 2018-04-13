@@ -129,8 +129,6 @@ Object.defineProperty(exports, "__esModule", {
 	value: true
 });
 
-var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
-
 __webpack_require__(241);
 
 var _Common = __webpack_require__(0);
@@ -139,47 +137,22 @@ var _Common2 = _interopRequireDefault(_Common);
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
-function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
-
-function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
-
-function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
-
 var OboComponent = _Common2.default.components.OboComponent;
 
-var MCAnswer = function (_React$Component) {
-	_inherits(MCAnswer, _React$Component);
-
-	function MCAnswer() {
-		_classCallCheck(this, MCAnswer);
-
-		return _possibleConstructorReturn(this, (MCAnswer.__proto__ || Object.getPrototypeOf(MCAnswer)).apply(this, arguments));
-	}
-
-	_createClass(MCAnswer, [{
-		key: 'render',
-		value: function render() {
-			var _this2 = this;
-
-			return React.createElement(
-				OboComponent,
-				{
-					model: this.props.model,
-					moduleData: this.props.moduleData,
-					className: 'obojobo-draft--chunks--mc-assessment--mc-answer'
-				},
-				this.props.model.children.models.map(function (child, index) {
-					var Component = child.getComponentClass();
-					return React.createElement(Component, { key: child.get('id'), model: child, moduleData: _this2.props.moduleData });
-				})
-			);
-		}
-	}]);
-
-	return MCAnswer;
-}(React.Component);
-
-exports.default = MCAnswer;
+exports.default = function (props) {
+	return React.createElement(
+		OboComponent,
+		{
+			model: props.model,
+			moduleData: props.moduleData,
+			className: 'obojobo-draft--chunks--mc-assessment--mc-answer'
+		},
+		props.model.children.models.map(function (child, index) {
+			var Component = child.getComponentClass();
+			return React.createElement(Component, { key: child.get('id'), model: child, moduleData: props.moduleData });
+		})
+	);
+};
 
 /***/ }),
 
@@ -220,8 +193,6 @@ Object.defineProperty(exports, "__esModule", {
 	value: true
 });
 
-var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
-
 __webpack_require__(242);
 
 var _Common = __webpack_require__(0);
@@ -230,48 +201,23 @@ var _Common2 = _interopRequireDefault(_Common);
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
-function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
-
-function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
-
-function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
-
 var OboComponent = _Common2.default.components.OboComponent;
 
-var MCFeedback = function (_React$Component) {
-	_inherits(MCFeedback, _React$Component);
-
-	function MCFeedback() {
-		_classCallCheck(this, MCFeedback);
-
-		return _possibleConstructorReturn(this, (MCFeedback.__proto__ || Object.getPrototypeOf(MCFeedback)).apply(this, arguments));
-	}
-
-	_createClass(MCFeedback, [{
-		key: 'render',
-		value: function render() {
-			var _this2 = this;
-
-			return React.createElement(
-				OboComponent,
-				{
-					model: this.props.model,
-					moduleData: this.props.moduleData,
-					className: 'obojobo-draft--chunks--mc-assessment--mc-feedback' + (this.props.model.parent.modelState.score === 100 ? ' is-correct-feedback' : ' is-incorrect-feedback'),
-					'data-choice-label': this.props.label
-				},
-				this.props.model.children.models.map(function (child, index) {
-					var Component = child.getComponentClass();
-					return React.createElement(Component, { key: child.get('id'), model: child, moduleData: _this2.props.moduleData });
-				})
-			);
-		}
-	}]);
-
-	return MCFeedback;
-}(React.Component);
-
-exports.default = MCFeedback;
+exports.default = function (props) {
+	return React.createElement(
+		OboComponent,
+		{
+			model: props.model,
+			moduleData: props.moduleData,
+			className: 'obojobo-draft--chunks--mc-assessment--mc-feedback' + (props.model.parent.modelState.score === 100 ? ' is-correct-feedback' : ' is-incorrect-feedback'),
+			'data-choice-label': props.label
+		},
+		props.model.children.models.map(function (child, index) {
+			var Component = child.getComponentClass();
+			return React.createElement(Component, { key: child.get('id'), model: child, moduleData: props.moduleData });
+		})
+	);
+};
 
 /***/ }),
 
@@ -919,24 +865,24 @@ var Adapter = {
 			return x.score;
 		}) != null) {
 			model.modelState.score = attrs.content.score;
-			return model.modelState._score = attrs.content.score;
+			model.modelState._score = attrs.content.score;
 		} else {
-			return model.modelState.score = '';
+			model.modelState.score = '';
 		}
 	},
 	clone: function clone(model, _clone) {
-		return _clone.modelState.score = model.modelState.score;
+		_clone.modelState.score = model.modelState.score;
 	},
 	toJSON: function toJSON(model, json) {
-		return json.content.score = model.modelState.score;
+		json.content.score = model.modelState.score;
 	}
 };
 
 exports.default = Adapter;
 
-function __guard__(value, transform) {
+var __guard__ = function __guard__(value, transform) {
 	return typeof value !== 'undefined' && value !== null ? transform(value) : undefined;
-}
+};
 
 /***/ }),
 
@@ -950,8 +896,6 @@ Object.defineProperty(exports, "__esModule", {
 	value: true
 });
 
-var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
-
 __webpack_require__(60);
 
 var _Common = __webpack_require__(0);
@@ -964,101 +908,70 @@ var _Viewer2 = _interopRequireDefault(_Viewer);
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
-function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
-
-function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
-
-function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
-
 var OboComponent = _Common2.default.components.OboComponent;
 var OboModel = _Common2.default.models.OboModel;
 var QuestionUtil = _Viewer2.default.util.QuestionUtil;
 
-var MCChoice = function (_React$Component) {
-	_inherits(MCChoice, _React$Component);
 
-	function MCChoice() {
-		_classCallCheck(this, MCChoice);
-
-		return _possibleConstructorReturn(this, (MCChoice.__proto__ || Object.getPrototypeOf(MCChoice)).apply(this, arguments));
+var getInputType = function getInputType(responseType) {
+	switch (responseType) {
+		case 'pick-all':
+			return 'checkbox';
+		case 'pick-one':
+		case 'pick-one-multiple-correct':
+		default:
+			return 'radio';
 	}
+};
 
-	_createClass(MCChoice, [{
-		key: 'getQuestionModel',
-		value: function getQuestionModel() {
-			return this.props.model.getParentOfType('ObojoboDraft.Chunks.Question');
-		}
-	}, {
-		key: 'getInputType',
-		value: function getInputType() {
-			switch (this.props.responseType) {
-				case 'pick-all':
-					return 'checkbox';
-				default:
-					//'pick-one', 'pick-one-multiple-correct'
-					return 'radio';
-			}
-		}
-	}, {
-		key: 'render',
-		value: function render() {
-			var _this2 = this;
+var questionIsSelected = function questionIsSelected(questionState, model) {
+	var response = QuestionUtil.getResponse(questionState, model.getParentOfType('ObojoboDraft.Chunks.Question')) || { ids: [] };
 
-			var response = QuestionUtil.getResponse(this.props.moduleData.questionState, this.getQuestionModel()) || { ids: [] };
-			var isSelected = response.ids.indexOf(this.props.model.get('id')) !== -1;
+	return response.ids.indexOf(model.get('id')) !== -1;
+};
 
-			return React.createElement(
-				OboComponent,
-				{
-					model: this.props.model,
-					moduleData: this.props.moduleData,
-					className: 'obojobo-draft--chunks--mc-assessment--mc-choice' + (isSelected ? ' is-selected' : ' is-not-selected') + (this.props.model.modelState.score === 100 ? ' is-correct' : ' is-incorrect'),
-					'data-choice-label': this.props.label
-				},
-				React.createElement('input', {
-					ref: 'input',
-					type: this.getInputType(),
-					value: this.props.model.get('id'),
-					checked: isSelected,
-					onChange: function onChange() {},
-					name: this.props.model.parent.get('id')
-				}),
-				React.createElement(
-					'div',
-					{ className: 'children' },
-					this.props.model.children.map(function (child, index) {
-						var type = child.get('type');
-						var isAnswerItem = type === 'ObojoboDraft.Chunks.MCAssessment.MCAnswer';
-						var isFeedbackItem = type === 'ObojoboDraft.Chunks.MCAssessment.MCFeedback';
+var MCChoice = function MCChoice(props) {
+	var isSelected = questionIsSelected(props.moduleData.questionState, props.model);
 
-						if (isAnswerItem) {
-							var Component = child.getComponentClass();
-							return React.createElement(Component, { key: child.get('id'), model: child, moduleData: _this2.props.moduleData });
-						}
-					})
-				)
-			);
-		}
-	}], [{
-		key: 'defaultProps',
-		get: function get() {
-			return {
-				responseType: null,
-				revealAll: false,
-				questionSubmitted: false
-			};
-		}
-	}]);
+	return React.createElement(
+		OboComponent,
+		{
+			model: props.model,
+			moduleData: props.moduleData,
+			className: 'obojobo-draft--chunks--mc-assessment--mc-choice' + (isSelected ? ' is-selected' : ' is-not-selected') + (props.model.modelState.score === 100 ? ' is-correct' : ' is-incorrect'),
+			'data-choice-label': props.label
+		},
+		React.createElement('input', {
+			type: getInputType(props.responseType),
+			value: props.model.get('id'),
+			checked: isSelected,
+			onChange: function onChange() {},
+			name: props.model.parent.get('id')
+		}),
+		React.createElement(
+			'div',
+			{ className: 'children' },
+			props.model.children.map(function (child, index) {
+				var type = child.get('type');
+				var isAnswerItem = type === 'ObojoboDraft.Chunks.MCAssessment.MCAnswer';
+				var isFeedbackItem = type === 'ObojoboDraft.Chunks.MCAssessment.MCFeedback';
 
-	return MCChoice;
-}(React.Component);
+				if (isAnswerItem) {
+					var Component = child.getComponentClass();
+					return React.createElement(Component, { key: child.get('id'), model: child, moduleData: props.moduleData });
+				}
+			})
+		)
+	);
+};
+
+MCChoice.defaultProps = {
+	responseType: null,
+	revealAll: false,
+	questionSubmitted: false
+};
 
 exports.default = MCChoice;
-
-
-function __guard__(value, transform) {
-	return typeof value !== 'undefined' && value !== null ? transform(value) : undefined;
-}
 
 /***/ }),
 

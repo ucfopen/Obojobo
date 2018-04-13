@@ -3,51 +3,51 @@ import Common from 'Common'
 import NavUtil from '../../viewer/util/nav-util'
 import APIUtil from '../../viewer/util/api-util'
 
-let { Store } = Common.flux
-let { Dispatcher } = Common.flux
-let { OboModel } = Common.models
+const { Store } = Common.flux
+const { Dispatcher } = Common.flux
+const { OboModel } = Common.models
 
 class NavStore extends Store {
 	constructor() {
-		let item, oldNavTargetId
+		let item
+		let oldNavTargetId
 		super('navstore')
 
 		Dispatcher.on(
 			{
 				'nav:rebuildMenu': payload => {
 					this.buildMenu(payload.value.model)
-					return this.triggerChange()
+					this.triggerChange()
 				},
 				'nav:gotoPath': payload => {
 					oldNavTargetId = this.state.navTargetId
 					if (this.gotoItem(this.state.itemsByPath[payload.value.path])) {
-						return APIUtil.postEvent(OboModel.getRoot(), 'nav:gotoPath', '1.0.0', {
+						APIUtil.postEvent(OboModel.getRoot(), 'nav:gotoPath', '1.0.0', {
 							from: oldNavTargetId,
 							to: this.state.itemsByPath[payload.value.path].id
 						})
 					}
 				},
-				'nav:setFlag'(payload) {
+				'nav:setFlag': payload => {
 					let navItem = this.state.itemsById[payload.value.id]
 					navItem.flags[payload.value.flagName] = payload.value.flagValue
-
-					return this.triggerChange()
+					this.triggerChange()
 				},
-				'nav:prev': payload => {
+				'nav:prev': () => {
 					oldNavTargetId = this.state.navTargetId
 					let prev = NavUtil.getPrev(this.state)
 					if (this.gotoItem(prev)) {
-						return APIUtil.postEvent(OboModel.getRoot(), 'nav:prev', '1.0.0', {
+						APIUtil.postEvent(OboModel.getRoot(), 'nav:prev', '1.0.0', {
 							from: oldNavTargetId,
 							to: prev.id
 						})
 					}
 				},
-				'nav:next': payload => {
+				'nav:next': () => {
 					oldNavTargetId = this.state.navTargetId
 					let next = NavUtil.getNext(this.state)
 					if (this.gotoItem(next)) {
-						return APIUtil.postEvent(OboModel.getRoot(), 'nav:next', '1.0.0', {
+						APIUtil.postEvent(OboModel.getRoot(), 'nav:next', '1.0.0', {
 							from: oldNavTargetId,
 							to: next.id
 						})
@@ -56,54 +56,52 @@ class NavStore extends Store {
 				'nav:goto': payload => {
 					oldNavTargetId = this.state.navTargetId
 					if (this.gotoItem(this.state.itemsById[payload.value.id])) {
-						return APIUtil.postEvent(OboModel.getRoot(), 'nav:goto', '1.0.0', {
+						APIUtil.postEvent(OboModel.getRoot(), 'nav:goto', '1.0.0', {
 							from: oldNavTargetId,
 							to: this.state.itemsById[payload.value.id].id
 						})
 					}
 				},
-				'nav:lock': payload => {
+				'nav:lock': () => {
 					APIUtil.postEvent(OboModel.getRoot(), 'nav:lock', '1.0.0')
-					return this.setAndTrigger({ locked: true })
+					this.setAndTrigger({ locked: true })
 				},
-				'nav:unlock': payload => {
+				'nav:unlock': () => {
 					APIUtil.postEvent(OboModel.getRoot(), 'nav:unlock', '1.0.0')
-					return this.setAndTrigger({ locked: false })
+					this.setAndTrigger({ locked: false })
 				},
-				'nav:close': payload => {
+				'nav:close': () => {
 					APIUtil.postEvent(OboModel.getRoot(), 'nav:close', '1.0.0')
-					return this.setAndTrigger({ open: false })
+					this.setAndTrigger({ open: false })
 				},
-				'nav:open': payload => {
+				'nav:open': () => {
 					APIUtil.postEvent(OboModel.getRoot(), 'nav:open', '1.0.0')
-					return this.setAndTrigger({ open: true })
+					this.setAndTrigger({ open: true })
 				},
-				'nav:toggle': payload => {
+				'nav:toggle': () => {
 					let updatedState = { open: !this.state.open }
 					APIUtil.postEvent(OboModel.getRoot(), 'nav:toggle', '1.0.0', updatedState)
-					return this.setAndTrigger(updatedState)
+					this.setAndTrigger(updatedState)
 				},
 				'nav:openExternalLink': payload => {
 					window.open(payload.value.url)
-					return this.triggerChange()
+					this.triggerChange()
 				},
 				'nav:showChildren': payload => {
 					item = this.state.itemsById[payload.value.id]
 					item.showChildren = true
-					return this.triggerChange()
+					this.triggerChange()
 				},
 				'nav:hideChildren': payload => {
 					item = this.state.itemsById[payload.value.id]
 					item.showChildren = false
-					return this.triggerChange()
+					this.triggerChange()
 				},
 				'score:set': payload => {
 					let navItem = this.state.itemsById[payload.value.id]
-					if (!navItem) {
-						return
+					if (navItem) {
+						NavUtil.setFlag(payload.value.id, 'correct', payload.value.score === 100)
 					}
-
-					return NavUtil.setFlag(payload.value.id, 'correct', payload.value.score === 100)
 				}
 			},
 			this
@@ -124,13 +122,10 @@ class NavStore extends Store {
 		}
 
 		this.buildMenu(model)
-		// console.clear()
-		// console.log @state.items
-		// debugger
 		NavUtil.gotoPath(startingPath)
 
 		if (startingId != null) {
-			return NavUtil.goto(startingId)
+			NavUtil.goto(startingId)
 		} else {
 			let first = NavUtil.getFirst(this.state)
 
@@ -155,9 +150,10 @@ class NavStore extends Store {
 				return
 			}
 
-			let navTargetModel = __guard__(NavUtil.getNavTargetModel(this.state), x =>
-				x.processTrigger('onNavExit')
-			)
+			let navTargetModel = NavUtil.getNavTargetModel(this.state)
+			if (navTargetModel && navTargetModel.processTrigger) {
+				navTargetModel.processTrigger('onNavExit')
+			}
 			this.state.navTargetHistory.push(this.state.navTargetId)
 			this.state.itemsById[this.state.navTargetId].showChildren = false
 		}
@@ -235,16 +231,8 @@ class NavStore extends Store {
 
 		return navItem
 	}
-
-	_clearFlags() {
-		return Array.from(this.state.items).map(item => (item.flags.complete = false))
-	}
 }
 
 let navStore = new NavStore()
 window.__ns = navStore
 export default navStore
-
-function __guard__(value, transform) {
-	return typeof value !== 'undefined' && value !== null ? transform(value) : undefined
-}
