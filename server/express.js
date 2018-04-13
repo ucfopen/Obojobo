@@ -137,9 +137,9 @@ app.post('/api/assessments/clear-preview-scores', (req, res, next) => {
 								t.none(
 									`
 									DELETE FROM lti_assessment_scores
-									WHERE assessment_score_id IN ($1:csv)
+									WHERE assessment_score_id IN ($[ids:csv])
 								`,
-									assessmentScoreIds.map(i => i.id)
+									{ ids: assessmentScoreIds.map(i => i.id) }
 								)
 							)
 						}
@@ -149,9 +149,9 @@ app.post('/api/assessments/clear-preview-scores', (req, res, next) => {
 								t.none(
 									`
 									DELETE FROM attempts_question_responses
-									WHERE attempt_id IN ($1:csv)
+									WHERE attempt_id IN ($[ids:csv])
 								`,
-									attemptIds.map(i => i.id)
+									{ ids: attemptIds.map(i => i.id) }
 								)
 							)
 						}
