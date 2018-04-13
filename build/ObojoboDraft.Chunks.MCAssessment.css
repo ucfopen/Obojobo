@@ -287,12 +287,14 @@
     padding-bottom: 0; }
 
 .answer-flag {
-  margin-left: -160px;
+  margin-left: -11em;
   position: absolute;
   color: #ffffff;
-  width: 190px;
+  width: 13em;
   text-align: center;
   border-radius: 0.25em;
+  border-top-right-radius: 0;
+  border-bottom-right-radius: 0;
   font-size: .75em;
   top: 50%;
   transform: translate(0, -50%); }
@@ -300,7 +302,7 @@
     position: absolute;
     left: 0;
     top: 50%;
-    transform: translate(12.5em, -50%) rotate(45deg);
+    transform: translate(12.3em, -50%) rotate(45deg);
     content: ' ';
     width: 1.4em;
     height: 1.4em; }
