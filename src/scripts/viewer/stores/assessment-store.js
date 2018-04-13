@@ -26,7 +26,8 @@ let getNewAssessmentObject = assessmentId => ({
 	highestAttemptScoreAttempts: [],
 	lti: null,
 	ltiNetworkState: LTINetworkStates.IDLE,
-	ltiErrorCount: 0
+	ltiErrorCount: 0,
+	isShowingAttemptHistory: false
 })
 
 class AssessmentStore extends Store {
@@ -48,12 +49,6 @@ class AssessmentStore extends Store {
 
 		Dispatcher.on('question:setResponse', payload => {
 			this.trySetResponse(payload.value.id, payload.value.response, payload.value.targetId)
-		})
-
-		Dispatcher.on('assessment:review', payload => {
-			// TODO: Handle the case where the client is out of attempts. Consider how to allow
-			// the UI to update accordingly (assessment review). We'll need to fetch the appropriate
-			// review data from our attempt end endpoint.
 		})
 
 		Dispatcher.on('viewer:closeAttempted', shouldPrompt => {

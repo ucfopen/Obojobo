@@ -45,7 +45,7 @@ exports[`lti-status error shows additional information if error count is above 0
   >
     <button
       disabled={undefined}
-      onClick={[Function]}
+      onClick={[MockFunction]}
       tabIndex={undefined}
     >
       Try again anyway
@@ -69,7 +69,7 @@ exports[`lti-status renders error for error gradebook statuses 1`] = `
   >
     <button
       disabled={undefined}
-      onClick={[Function]}
+      onClick={[MockFunction]}
       tabIndex={undefined}
     >
       Resend score

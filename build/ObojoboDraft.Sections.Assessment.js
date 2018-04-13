@@ -361,6 +361,8 @@ Object.defineProperty(exports, "__esModule", {
 	value: true
 });
 
+var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+
 var _Viewer = __webpack_require__(1);
 
 var _Viewer2 = _interopRequireDefault(_Viewer);
@@ -383,6 +385,12 @@ var _basicReview2 = _interopRequireDefault(_basicReview);
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
+
+function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
+
 var _Viewer$assessment = _Viewer2.default.assessment,
     AssessmentScoreReporter = _Viewer$assessment.AssessmentScoreReporter,
     AssessmentScoreReportView = _Viewer$assessment.AssessmentScoreReportView;
@@ -394,167 +402,188 @@ var _Common$components = _Common2.default.components,
     ButtonBar = _Common$components.ButtonBar,
     MoreInfoButton = _Common$components.MoreInfoButton;
 
+var AssessmentReviewView = function (_React$Component) {
+	_inherits(AssessmentReviewView, _React$Component);
 
-var assessmentReviewView = function assessmentReviewView(_ref) {
-	var assessment = _ref.assessment,
-	    showFullReview = _ref.showFullReview;
+	function AssessmentReviewView() {
+		_classCallCheck(this, AssessmentReviewView);
 
-	var attemptReviewComponents = {};
+		return _possibleConstructorReturn(this, (AssessmentReviewView.__proto__ || Object.getPrototypeOf(AssessmentReviewView)).apply(this, arguments));
+	}
 
-	var attempts = AssessmentUtil.getAllAttempts(assessment.props.moduleData.assessmentState, assessment.props.model);
-	var highestAttempts = AssessmentUtil.getHighestAttemptsForModelByAttemptScore(assessment.props.moduleData.assessmentState, assessment.props.model);
-	var scoreReporter = new AssessmentScoreReporter({
-		assessmentRubric: assessment.props.model.modelState.rubric.toObject(),
-		totalNumberOfAttemptsAllowed: assessment.props.model.modelState.attempts,
-		allAttempts: attempts
-	});
+	_createClass(AssessmentReviewView, [{
+		key: 'componentDidMount',
+		value: function componentDidMount() {
+			var lastAttempt = AssessmentUtil.getLastAttemptForModel(this.props.assessment.props.moduleData.assessmentState, this.props.assessment.props.model);
 
-	var attemptReviewComponent = function attemptReviewComponent(attempt, assessment, isAHighestScoringNonNullAttempt) {
-		var dateString = (0, _format2.default)(new Date(attempt.finishTime), 'M/D/YY [at] h:mma');
-		var numCorrect = AssessmentUtil.getNumCorrect(attempt.questionScores);
-
-		var report = scoreReporter.getReportFor(attempt.attemptNumber);
-
-		var attemptScoreSummary = Math.round(attempt.attemptScore) + '%';
-		if (attempt.attemptScore !== attempt.assessmentScore) {
-			attemptScoreSummary += ' → ' + (attempt.assessmentScore === null ? 'Did Not Pass' : Math.round(attempt.assessmentScore) + '%');
+			NavUtil.setContext('assessmentReview:' + lastAttempt.attemptId);
 		}
+	}, {
+		key: 'render',
+		value: function render() {
+			var _this2 = this;
 
-		return React.createElement(
-			'div',
-			{ className: 'attempt-results' },
-			React.createElement(
-				'div',
-				{ className: 'attempt-header' },
-				React.createElement(
+			var attemptReviewComponents = {};
+
+			var attempts = AssessmentUtil.getAllAttempts(this.props.assessment.props.moduleData.assessmentState, this.props.assessment.props.model);
+			var highestAttempts = AssessmentUtil.getHighestAttemptsForModelByAttemptScore(this.props.assessment.props.moduleData.assessmentState, this.props.assessment.props.model);
+			var scoreReporter = new AssessmentScoreReporter({
+				assessmentRubric: this.props.assessment.props.model.modelState.rubric.toObject(),
+				totalNumberOfAttemptsAllowed: this.props.assessment.props.model.modelState.attempts,
+				allAttempts: attempts
+			});
+
+			var attemptReviewComponent = function attemptReviewComponent(attempt, assessment, isAHighestScoringNonNullAttempt) {
+				var dateString = (0, _format2.default)(new Date(attempt.finishTime), 'M/D/YY [at] h:mma');
+				var numCorrect = AssessmentUtil.getNumCorrect(attempt.questionScores);
+
+				var report = scoreReporter.getReportFor(attempt.attemptNumber);
+
+				var attemptScoreSummary = Math.round(attempt.attemptScore) + '%';
+				if (attempt.attemptScore !== attempt.assessmentScore) {
+					attemptScoreSummary += ' → ' + (attempt.assessmentScore === null ? 'Did Not Pass' : Math.round(attempt.assessmentScore) + '%');
+				}
+
+				return React.createElement(
 					'div',
-					{ className: 'attempt-info-container' },
-					React.createElement(_reviewIcon2.default, null),
+					{ className: 'attempt-results' },
 					React.createElement(
 						'div',
-						{ className: 'attempt-info-content-container' },
-						React.createElement(
-							'h4',
-							null,
-							React.createElement(
-								'strong',
-								null,
-								'Attempt ' + attempt.attemptNumber
-							),
-							isAHighestScoringNonNullAttempt ? React.createElement(
-								'span',
-								{ className: 'highest-attempt' },
-								'\u2605 Highest Attempt'
-							) : null
-						),
+						{ className: 'attempt-header' },
 						React.createElement(
 							'div',
-							{ className: 'attempt-info-content' },
+							{ className: 'attempt-info-container' },
+							React.createElement(_reviewIcon2.default, null),
 							React.createElement(
-								'ul',
-								null,
+								'div',
+								{ className: 'attempt-info-content-container' },
 								React.createElement(
-									'li',
+									'h4',
 									null,
-									dateString
-								),
-								React.createElement(
-									'li',
-									null,
-									numCorrect,
-									' out of ',
-									attempt.questionScores.length,
-									' questions correct'
-								),
-								React.createElement(
-									'li',
-									null,
-									'Attempt Score: ',
 									React.createElement(
 										'strong',
 										null,
-										attemptScoreSummary
+										'Attempt ' + attempt.attemptNumber
 									),
+									isAHighestScoringNonNullAttempt ? React.createElement(
+										'span',
+										{ className: 'highest-attempt' },
+										'\u2605 Highest Attempt'
+									) : null
+								),
+								React.createElement(
+									'div',
+									{ className: 'attempt-info-content' },
 									React.createElement(
-										MoreInfoButton,
+										'ul',
 										null,
-										React.createElement(AssessmentScoreReportView, { report: report })
+										React.createElement(
+											'li',
+											null,
+											dateString
+										),
+										React.createElement(
+											'li',
+											null,
+											numCorrect,
+											' out of ',
+											attempt.questionScores.length,
+											' questions correct'
+										),
+										React.createElement(
+											'li',
+											null,
+											'Attempt Score: ',
+											React.createElement(
+												'strong',
+												null,
+												attemptScoreSummary
+											),
+											React.createElement(
+												MoreInfoButton,
+												null,
+												React.createElement(AssessmentScoreReportView, { report: report })
+											)
+										)
 									)
 								)
 							)
 						)
+					),
+					React.createElement(
+						'div',
+						{
+							className: 'review ' + (_this2.props.showFullReview ? 'is-full-review' : 'is-basic-review')
+						},
+						attempt.questionScores.map(function (scoreObj, index) {
+							var questionModel = OboModel.models[scoreObj.id];
+							var QuestionComponent = questionModel.getComponentClass();
+
+							return _this2.props.showFullReview ? React.createElement(QuestionComponent, {
+								model: questionModel,
+								moduleData: assessment.props.moduleData,
+								mode: 'review',
+								key: scoreObj.id
+							}) : (0, _basicReview2.default)(assessment.props.moduleData, scoreObj, index);
+						})
 					)
-				)
-			),
-			React.createElement(
+				);
+			};
+
+			var getSelectedIndex = function getSelectedIndex() {
+				var context = _this2.props.assessment.props.moduleData.navState.context;
+
+				for (var i in attempts) {
+					var attempt = attempts[i];
+
+					if (context === 'assessmentReview:' + attempt.attemptId) {
+						return parseInt(i, 10);
+					}
+				}
+
+				return attempts.length - 1;
+			};
+
+			var attemptButtons = attempts.map(function (attempt, index) {
+				return React.createElement(
+					Button,
+					{
+						onClick: function onClick() {
+							return NavUtil.setContext('assessmentReview:' + attempt.attemptId);
+						},
+						key: index
+					},
+					attempt.attemptNumber
+				);
+			});
+
+			attempts.forEach(function (attempt) {
+				attemptReviewComponents['assessmentReview:' + attempt.attemptId] = attemptReviewComponent(attempt, _this2.props.assessment, highestAttempts.indexOf(attempt) > -1 && attempt.assessmentScore !== null);
+			});
+
+			return React.createElement(
 				'div',
-				{ className: 'review ' + (showFullReview ? 'is-full-review' : 'is-basic-review') },
-				attempt.questionScores.map(function (scoreObj, index) {
-					var questionModel = OboModel.models[scoreObj.id];
-					var QuestionComponent = questionModel.getComponentClass();
-
-					return showFullReview ? React.createElement(QuestionComponent, {
-						model: questionModel,
-						moduleData: assessment.props.moduleData,
-						mode: 'review'
-					}) : (0, _basicReview2.default)(assessment.props.moduleData, scoreObj, index);
-				})
-			)
-		);
-	};
-
-	var getSelectedIndex = function getSelectedIndex() {
-		var context = assessment.props.moduleData.navState.context;
-
-		for (var i in attempts) {
-			var attempt = attempts[i];
-
-			if (context === 'assessmentReview:' + attempt.attemptId) {
-				return parseInt(i, 10);
-			}
+				{ className: 'attempt-review-container' },
+				React.createElement(
+					'div',
+					{
+						className: 'attempt-button-container ' + (attemptButtons.length <= 1 ? 'is-showing-one-item' : null)
+					},
+					React.createElement(
+						ButtonBar,
+						{ altAction: true, selectedIndex: getSelectedIndex() },
+						attemptButtons
+					)
+				),
+				attemptReviewComponents[this.props.assessment.props.moduleData.navState.context]
+			);
 		}
+	}]);
 
-		return attempts.length - 1;
-	};
+	return AssessmentReviewView;
+}(React.Component);
 
-	var attemptButtons = attempts.map(function (attempt, index) {
-		return React.createElement(
-			Button,
-			{ onClick: function onClick() {
-					return NavUtil.setContext('assessmentReview:' + attempt.attemptId);
-				} },
-			attempt.attemptNumber
-		);
-	});
-
-	attempts.forEach(function (attempt) {
-		attemptReviewComponents['assessmentReview:' + attempt.attemptId] = attemptReviewComponent(attempt, assessment, highestAttempts.indexOf(attempt) > -1 && attempt.assessmentScore !== null);
-	});
-
-	var context = assessment.props.moduleData.navState.context;
-	if (context.split(':')[0] !== 'assessmentReview')
-		// show most recent attempt
-		NavUtil.setContext('assessmentReview:' + attempts[attempts.length - 1].attemptId);
-
-	return React.createElement(
-		'div',
-		{ className: 'attempt-review-container' },
-		React.createElement(
-			'div',
-			{
-				className: 'attempt-button-container ' + (attemptButtons.length <= 1 ? 'is-showing-one-item' : null)
-			},
-			React.createElement(
-				ButtonBar,
-				{ altAction: true, selectedIndex: getSelectedIndex() },
-				attemptButtons
-			)
-		),
-		attemptReviewComponents[context]
-	);
-};
-
-exports.default = assessmentReviewView;
+exports.default = AssessmentReviewView;
 
 /***/ }),
 
@@ -660,6 +689,17 @@ var NavUtil = _Viewer2.default.util.NavUtil;
 var scoreSubmittedView = function scoreSubmittedView(assessment) {
 	var questionScores = AssessmentUtil.getLastAttemptScoresForModel(assessment.props.moduleData.assessmentState, assessment.props.model);
 
+	var isFullReviewAvailable = function isFullReviewAvailable(reviewType) {
+		switch (reviewType) {
+			case 'always':
+				return true;
+			case 'never':
+				return false;
+			case 'no-attempts-remaining':
+				return isAssessmentComplete();
+		}
+	};
+
 	var isAssessmentComplete = function isAssessmentComplete() {
 		return !AssessmentUtil.hasAttemptsRemaining(assessment.props.moduleData.assessmentState, assessment.props.model);
 	};
@@ -701,16 +741,7 @@ var scoreSubmittedView = function scoreSubmittedView(assessment) {
 
 	var externalSystemLabel = assessment.props.moduleData.lti.outcomeServiceHostname;
 
-	var showFullReview = function (reviewType) {
-		switch (reviewType) {
-			case 'always':
-				return true;
-			case 'never':
-				return false;
-			case 'no-attempts-remaining':
-				return isAssessmentComplete();
-		}
-	}(assessment.props.model.modelState.review);
+	var showFullReview = isFullReviewAvailable(assessment.props.model.modelState.review);
 
 	return React.createElement(
 		'div',

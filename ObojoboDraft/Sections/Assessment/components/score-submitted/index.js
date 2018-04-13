@@ -15,6 +15,17 @@ const scoreSubmittedView = assessment => {
 		assessment.props.model
 	)
 
+	const isFullReviewAvailable = reviewType => {
+		switch (reviewType) {
+			case 'always':
+				return true
+			case 'never':
+				return false
+			case 'no-attempts-remaining':
+				return isAssessmentComplete()
+		}
+	}
+
 	const isAssessmentComplete = () => {
 		return !AssessmentUtil.hasAttemptsRemaining(
 			assessment.props.moduleData.assessmentState,
@@ -67,16 +78,7 @@ const scoreSubmittedView = assessment => {
 
 	let externalSystemLabel = assessment.props.moduleData.lti.outcomeServiceHostname
 
-	let showFullReview = (reviewType => {
-		switch (reviewType) {
-			case 'always':
-				return true
-			case 'never':
-				return false
-			case 'no-attempts-remaining':
-				return isAssessmentComplete()
-		}
-	})(assessment.props.model.modelState.review)
+	let showFullReview = isFullReviewAvailable(assessment.props.model.modelState.review)
 
 	return (
 		<div className="score unlock">

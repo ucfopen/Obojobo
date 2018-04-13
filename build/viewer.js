@@ -2279,22 +2279,22 @@ var getAmountEl = function getAmountEl(value) {
 	);
 };
 
-var getItemEl = function getItemEl(item) {
+var getItemEl = function getItemEl(item, index) {
 	switch (item.type) {
 		case 'text':
 			return React.createElement(
 				'div',
-				{ className: 'text' },
+				{ key: index, className: 'text' },
 				item.text
 			);
 
 		case 'divider':
-			return React.createElement('hr', { className: 'divider' });
+			return React.createElement('hr', { key: index, className: 'divider' });
 
 		case 'extra-credit':
 			return React.createElement(
 				'div',
-				{ className: 'extra-credit' },
+				{ key: index, className: 'extra-credit' },
 				React.createElement(
 					'span',
 					{ className: 'label' },
@@ -2312,7 +2312,7 @@ var getItemEl = function getItemEl(item) {
 		case 'penalty':
 			return React.createElement(
 				'div',
-				{ className: 'penalty' },
+				{ key: index, className: 'penalty' },
 				React.createElement(
 					'span',
 					{ className: 'label' },
@@ -2331,7 +2331,7 @@ var getItemEl = function getItemEl(item) {
 		case 'total':
 			return React.createElement(
 				'div',
-				{ className: item.type },
+				{ key: index, className: item.type },
 				React.createElement(
 					'div',
 					{ className: 'label' },
@@ -2607,7 +2607,8 @@ var getNewAssessmentObject = function getNewAssessmentObject(assessmentId) {
 		highestAttemptScoreAttempts: [],
 		lti: null,
 		ltiNetworkState: _ltiNetworkStates2.default.IDLE,
-		ltiErrorCount: 0
+		ltiErrorCount: 0,
+		isShowingAttemptHistory: false
 	};
 };
 
@@ -2637,12 +2638,6 @@ var AssessmentStore = function (_Store) {
 
 		Dispatcher.on('question:setResponse', function (payload) {
 			_this.trySetResponse(payload.value.id, payload.value.response, payload.value.targetId);
-		});
-
-		Dispatcher.on('assessment:review', function (payload) {
-			// TODO: Handle the case where the client is out of attempts. Consider how to allow
-			// the UI to update accordingly (assessment review). We'll need to fetch the appropriate
-			// review data from our attempt end endpoint.
 		});
 
 		Dispatcher.on('viewer:closeAttempted', function (shouldPrompt) {
