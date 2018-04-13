@@ -186,6 +186,13 @@ describe('MCChoice viewer-component', () => {
 		// Set up this answer to exist
 		moduleData.questionState.scores[moduleData.navState.context] = 1
 
+		// Set up this answer to be unselected
+		QuestionUtil.getResponse.mockReturnValueOnce({
+			'ids':[]})
+
+		// set answer to incorrect
+		model.get('content').score = 0
+
 		const component = renderer.create(
 			<MCChoice model={model} moduleData={moduleData} mode="test" />
 		)

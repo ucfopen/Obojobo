@@ -1,7 +1,7 @@
 @import '~styles/includes';
-$border: 1px solid transparentize($color-shadow, 0.25);
 
 .obojobo-draft--chunks--mc-assessment {
+	$border: 1px solid transparentize($color-shadow, 0.25);
 	@keyframes fadein {
 		0% {
 			opacity: 0;
@@ -77,21 +77,17 @@ $border: 1px solid transparentize($color-shadow, 0.25);
 		&.is-response-type-pick-one .obojobo-draft--chunks--mc-assessment--mc-choice,
 		&.is-response-type-pick-all .obojobo-draft--chunks--mc-assessment--mc-choice,
 		&.is-response-type-pick-one-multiple-correct .obojobo-draft--chunks--mc-assessment--mc-choice {
-			&.is-correct {
-				&.is-right{
-					background: transparentize($color-altcorrect, 0.9);
-				}
-				&.is-not-right{
-					background: transparentize($color-unchosencorrect, 0.9);
-				}
+			&.chosen-correctly{
+				background: transparentize($color-correct, 0.9);
 			}
-			&.is-selected {
-				&.is-correct {
-					background: transparentize($color-correct, 0.9);
-				}
-				&.is-incorrect {
-					background: transparentize($color-incorrect, 0.9);
-				}
+			&.should-not-have-chosen{
+				background: transparentize($color-incorrect, 0.9);
+			}
+			&.could-have-chosen{
+				background: transparentize($color-altcorrect, 0.9);
+			}
+			&.should-have-chosen{
+				background: transparentize($color-unchosencorrect, 0.9);
 			}
 		}
 
@@ -390,37 +386,32 @@ $border: 1px solid transparentize($color-shadow, 0.25);
 	font-size: .75em;
 	top: 50%;
 	transform: translate(0, -50%);
-	 >p{
-	 	margin: 0;
-	 }
-	&.is-not-selected{
-		&.is-correct{
-			&.is-right{
-				background-color: $color-altcorrect;
-				&:after {
-					background-color: $color-altcorrect;
-				}
-			}
-			&.is-not-right{
-				background-color: $color-unchosencorrect;
-				&:after {
-					background-color: $color-unchosencorrect;
-				}
-			}
+	>p{
+		margin: 0;
+	}
+
+	&.chosen-correctly{
+		background-color: $color-correct;
+		&:after {
+			background-color: $color-correct;
 		}
 	}
-	&.is-selected{
-		&.is-correct{
-			background-color: $color-correct;
-			&:after {
-				background-color: $color-correct;
-			}
-		}
-		&.is-incorrect{
+	&.should-not-have-chosen{
+		background-color: $color-incorrect;
+		&:after {
 			background-color: $color-incorrect;
-			&:after {
-				background-color: $color-incorrect;
-			}
+		}
+	}
+	&.should-have-chosen{
+		background-color: $color-unchosencorrect;
+		&:after {
+			background-color: $color-unchosencorrect;
+		}
+	}
+	&.could-have-chosen{
+		background-color: $color-altcorrect;
+		&:after {
+			background-color: $color-altcorrect;
 		}
 	}
 }

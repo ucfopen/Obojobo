@@ -88,22 +88,22 @@
     transform: scale(0.9); }
   100% {
     transform: scale(1); } }
-  .obojobo-draft--chunks--mc-assessment.is-scored.is-response-type-pick-one .obojobo-draft--chunks--mc-assessment--mc-choice.is-correct.is-right,
-  .obojobo-draft--chunks--mc-assessment.is-scored.is-response-type-pick-all .obojobo-draft--chunks--mc-assessment--mc-choice.is-correct.is-right,
-  .obojobo-draft--chunks--mc-assessment.is-scored.is-response-type-pick-one-multiple-correct .obojobo-draft--chunks--mc-assessment--mc-choice.is-correct.is-right {
-    background: rgba(196, 154, 3, 0.1); }
-  .obojobo-draft--chunks--mc-assessment.is-scored.is-response-type-pick-one .obojobo-draft--chunks--mc-assessment--mc-choice.is-correct.is-not-right,
-  .obojobo-draft--chunks--mc-assessment.is-scored.is-response-type-pick-all .obojobo-draft--chunks--mc-assessment--mc-choice.is-correct.is-not-right,
-  .obojobo-draft--chunks--mc-assessment.is-scored.is-response-type-pick-one-multiple-correct .obojobo-draft--chunks--mc-assessment--mc-choice.is-correct.is-not-right {
-    background: rgba(85, 85, 85, 0.1); }
-  .obojobo-draft--chunks--mc-assessment.is-scored.is-response-type-pick-one .obojobo-draft--chunks--mc-assessment--mc-choice.is-selected.is-correct,
-  .obojobo-draft--chunks--mc-assessment.is-scored.is-response-type-pick-all .obojobo-draft--chunks--mc-assessment--mc-choice.is-selected.is-correct,
-  .obojobo-draft--chunks--mc-assessment.is-scored.is-response-type-pick-one-multiple-correct .obojobo-draft--chunks--mc-assessment--mc-choice.is-selected.is-correct {
+  .obojobo-draft--chunks--mc-assessment.is-scored.is-response-type-pick-one .obojobo-draft--chunks--mc-assessment--mc-choice.chosen-correctly,
+  .obojobo-draft--chunks--mc-assessment.is-scored.is-response-type-pick-all .obojobo-draft--chunks--mc-assessment--mc-choice.chosen-correctly,
+  .obojobo-draft--chunks--mc-assessment.is-scored.is-response-type-pick-one-multiple-correct .obojobo-draft--chunks--mc-assessment--mc-choice.chosen-correctly {
     background: rgba(56, 174, 36, 0.1); }
-  .obojobo-draft--chunks--mc-assessment.is-scored.is-response-type-pick-one .obojobo-draft--chunks--mc-assessment--mc-choice.is-selected.is-incorrect,
-  .obojobo-draft--chunks--mc-assessment.is-scored.is-response-type-pick-all .obojobo-draft--chunks--mc-assessment--mc-choice.is-selected.is-incorrect,
-  .obojobo-draft--chunks--mc-assessment.is-scored.is-response-type-pick-one-multiple-correct .obojobo-draft--chunks--mc-assessment--mc-choice.is-selected.is-incorrect {
+  .obojobo-draft--chunks--mc-assessment.is-scored.is-response-type-pick-one .obojobo-draft--chunks--mc-assessment--mc-choice.should-not-have-chosen,
+  .obojobo-draft--chunks--mc-assessment.is-scored.is-response-type-pick-all .obojobo-draft--chunks--mc-assessment--mc-choice.should-not-have-chosen,
+  .obojobo-draft--chunks--mc-assessment.is-scored.is-response-type-pick-one-multiple-correct .obojobo-draft--chunks--mc-assessment--mc-choice.should-not-have-chosen {
     background: rgba(194, 31, 0, 0.1); }
+  .obojobo-draft--chunks--mc-assessment.is-scored.is-response-type-pick-one .obojobo-draft--chunks--mc-assessment--mc-choice.could-have-chosen,
+  .obojobo-draft--chunks--mc-assessment.is-scored.is-response-type-pick-all .obojobo-draft--chunks--mc-assessment--mc-choice.could-have-chosen,
+  .obojobo-draft--chunks--mc-assessment.is-scored.is-response-type-pick-one-multiple-correct .obojobo-draft--chunks--mc-assessment--mc-choice.could-have-chosen {
+    background: rgba(196, 154, 3, 0.1); }
+  .obojobo-draft--chunks--mc-assessment.is-scored.is-response-type-pick-one .obojobo-draft--chunks--mc-assessment--mc-choice.should-have-chosen,
+  .obojobo-draft--chunks--mc-assessment.is-scored.is-response-type-pick-all .obojobo-draft--chunks--mc-assessment--mc-choice.should-have-chosen,
+  .obojobo-draft--chunks--mc-assessment.is-scored.is-response-type-pick-one-multiple-correct .obojobo-draft--chunks--mc-assessment--mc-choice.should-have-chosen {
+    background: rgba(85, 85, 85, 0.1); }
   .obojobo-draft--chunks--mc-assessment.is-mode-review .result-container .result {
     animation: none; }
   .obojobo-draft--chunks--mc-assessment .instructions {
@@ -306,19 +306,19 @@
     height: 1.4em; }
   .answer-flag > p {
     margin: 0; }
-  .answer-flag.is-not-selected.is-correct.is-right {
-    background-color: #c49a03; }
-    .answer-flag.is-not-selected.is-correct.is-right:after {
-      background-color: #c49a03; }
-  .answer-flag.is-not-selected.is-correct.is-not-right {
-    background-color: #555555; }
-    .answer-flag.is-not-selected.is-correct.is-not-right:after {
-      background-color: #555555; }
-  .answer-flag.is-selected.is-correct {
+  .answer-flag.chosen-correctly {
     background-color: #38ae24; }
-    .answer-flag.is-selected.is-correct:after {
+    .answer-flag.chosen-correctly:after {
       background-color: #38ae24; }
-  .answer-flag.is-selected.is-incorrect {
+  .answer-flag.should-not-have-chosen {
     background-color: #c21f00; }
-    .answer-flag.is-selected.is-incorrect:after {
+    .answer-flag.should-not-have-chosen:after {
       background-color: #c21f00; }
+  .answer-flag.should-have-chosen {
+    background-color: #555555; }
+    .answer-flag.should-have-chosen:after {
+      background-color: #555555; }
+  .answer-flag.could-have-chosen {
+    background-color: #c49a03; }
+    .answer-flag.could-have-chosen:after {
+      background-color: #c49a03; }

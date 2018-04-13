@@ -191,6 +191,13 @@ var OboComponent = _Common2.default.components.OboComponent;
 var OboModel = _Common2.default.models.OboModel;
 var QuestionUtil = _Viewer2.default.util.QuestionUtil;
 
+
+var CHOSEN_CORRECTLY = ' chosen-correctly';
+var SHOULD_NOT_HAVE_CHOSEN = ' should-not-have-chosen';
+var COULD_HAVE_CHOSEN = ' could-have-chosen';
+var SHOULD_HAVE_CHOSEN = ' should-have-chosen';
+var UNCHOSEN_CORRECTLY = ' unchosen-correctly';
+
 var MCChoice = function (_React$Component) {
 	_inherits(MCChoice, _React$Component);
 
@@ -218,42 +225,75 @@ var MCChoice = function (_React$Component) {
 		}
 	}, {
 		key: 'getAnsType',
-		value: function getAnsType(isCorrect, isSelected, isRight) {
-			var text = void 0;
-			if (isSelected) {
-				if (isCorrect) {
-					text = React.createElement(
+		value: function getAnsType(response, score) {
+			// The question is a correct choice
+			var isACorrectChoice = this.props.model.get('content').score === 100;
+
+			// The user selected a correct answer (not necessarily this one)
+			// On multi-select questions, this is only true if a user selected all and only correct answers
+			var userIsCorrect = score == 100;
+
+			// The user selected this answer
+			var isUserSelected = response.ids.indexOf(this.props.model.get('id')) !== -1;
+
+			if (isUserSelected) {
+				if (isACorrectChoice) {
+					return CHOSEN_CORRECTLY;
+				} else {
+					return SHOULD_NOT_HAVE_CHOSEN;
+				}
+			} else if (isACorrectChoice) {
+				if (userIsCorrect) {
+					return COULD_HAVE_CHOSEN;
+				} else {
+					return SHOULD_HAVE_CHOSEN;
+				}
+			} else {
+				return UNCHOSEN_CORRECTLY;
+			}
+		}
+	}, {
+		key: 'renderAnsFlag',
+		value: function renderAnsFlag(type) {
+			var flagEl = void 0;
+
+			switch (type) {
+				case UNCHOSEN_CORRECTLY:
+					return React.createElement('div', null);
+				case CHOSEN_CORRECTLY:
+					flagEl = React.createElement(
 						'p',
 						null,
 						'Your Answer (Correct)'
 					);
-				} else {
-					text = React.createElement(
+					break;
+				case SHOULD_NOT_HAVE_CHOSEN:
+					flagEl = React.createElement(
 						'p',
 						null,
 						'Your Answer (Incorrect)'
 					);
-				}
-			} else if (isCorrect) {
-				if (isRight) {
-					text = React.createElement(
+					break;
+				case COULD_HAVE_CHOSEN:
+					flagEl = React.createElement(
 						'p',
 						null,
 						'Another Correct Answer'
 					);
-				} else {
-					text = React.createElement(
+					break;
+				case SHOULD_HAVE_CHOSEN:
+					flagEl = React.createElement(
 						'p',
 						null,
 						'Correct Answer'
 					);
-				}
+					break;
 			}
 
 			return React.createElement(
 				'div',
-				{ className: 'answer-flag' + (isSelected ? ' is-selected' : ' is-not-selected') + (isCorrect ? ' is-correct' : ' is-incorrect') + (isRight ? ' is-right' : ' is-not-right') },
-				text
+				{ className: 'answer-flag' + type },
+				flagEl
 			);
 		}
 	}, {
@@ -268,6 +308,7 @@ var MCChoice = function (_React$Component) {
 			var score = QuestionUtil.getScoreForModel(this.props.moduleData.questionState, questionModel, this.props.moduleData.navState.context);
 
 			var isRight = score == 100;
+			var ansType = this.getAnsType(response, score);
 
 			var isSelected = response.ids.indexOf(this.props.model.get('id')) !== -1;
 
@@ -276,7 +317,6 @@ var MCChoice = function (_React$Component) {
 			if (this.props.mode === 'review') {
 				if (!this.props.moduleData.questionState.scores[this.props.moduleData.navState.context]) return React.createElement('div', null);
 				isCorrect = this.props.model.get('content').score === 100;
-				flag = this.getAnsType(isCorrect, isSelected, isRight);
 			} else isCorrect = this.props.model.modelState.score === 100;
 
 			return React.createElement(
@@ -284,7 +324,7 @@ var MCChoice = function (_React$Component) {
 				{
 					model: this.props.model,
 					moduleData: this.props.moduleData,
-					className: 'obojobo-draft--chunks--mc-assessment--mc-choice' + (isSelected ? ' is-selected' : ' is-not-selected') + (isCorrect ? ' is-correct' : ' is-incorrect') + (isRight ? ' is-right' : ' is-not-right') + ' is-mode-' + this.props.mode,
+					className: 'obojobo-draft--chunks--mc-assessment--mc-choice' + ansType + ' is-mode-' + this.props.mode,
 					'data-choice-label': this.props.label
 				},
 				React.createElement('input', {
@@ -308,7 +348,7 @@ var MCChoice = function (_React$Component) {
 							return React.createElement(
 								'div',
 								null,
-								flag,
+								_this2.renderAnsFlag(ansType),
 								React.createElement(Component, { key: child.get('id'), model: child, moduleData: _this2.props.moduleData })
 							);
 						}

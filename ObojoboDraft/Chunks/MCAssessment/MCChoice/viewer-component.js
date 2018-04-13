@@ -8,6 +8,12 @@ let { OboModel } = Common.models
 
 let { QuestionUtil } = Viewer.util
 
+const CHOSEN_CORRECTLY = ' chosen-correctly'
+const SHOULD_NOT_HAVE_CHOSEN = ' should-not-have-chosen'
+const COULD_HAVE_CHOSEN = ' could-have-chosen'
+const SHOULD_HAVE_CHOSEN = ' should-have-chosen'
+const UNCHOSEN_CORRECTLY = ' unchosen-correctly'
+
 export default class MCChoice extends React.Component {
 	static get defaultProps() {
 		return {
@@ -31,28 +37,58 @@ export default class MCChoice extends React.Component {
 		}
 	}
 
-	getAnsType(isCorrect, isSelected, isRight){
-		let text
-		if(isSelected){
-			if(isCorrect){
-				text = <p>Your Answer (Correct)</p>
+	getAnsType(response, score){
+		// The question is a correct choice
+		let isACorrectChoice = this.props.model.get('content').score === 100
+
+		// The user selected a correct answer (not necessarily this one)
+		// On multi-select questions, this is only true if a user selected all and only correct answers
+		let userIsCorrect = score == 100
+
+		// The user selected this answer
+		let isUserSelected = response.ids.indexOf(this.props.model.get('id')) !== -1
+
+
+		if(isUserSelected){
+			if(isACorrectChoice){
+				return CHOSEN_CORRECTLY
 			}else{
-				text = <p>Your Answer (Incorrect)</p>
+				return SHOULD_NOT_HAVE_CHOSEN
 			}
-		}else if(isCorrect){
-			if(isRight){
-				text = <p>Another Correct Answer</p>
+		}else if(isACorrectChoice){
+			if(userIsCorrect){
+				return COULD_HAVE_CHOSEN
 			}else{
-				text = <p>Correct Answer</p>
+				return SHOULD_HAVE_CHOSEN
 			}
+		}else{
+			return UNCHOSEN_CORRECTLY
+		}
+	}
+
+	renderAnsFlag(type){
+		let flagEl
+
+		switch(type){
+			case UNCHOSEN_CORRECTLY:
+				return <div/>
+			case CHOSEN_CORRECTLY:
+				flagEl = <p>Your Answer (Correct)</p>
+				break
+			case SHOULD_NOT_HAVE_CHOSEN:
+				flagEl = <p>Your Answer (Incorrect)</p>
+				break
+			case COULD_HAVE_CHOSEN:
+				flagEl = <p>Another Correct Answer</p>
+				break
+			case SHOULD_HAVE_CHOSEN:
+				flagEl = <p>Correct Answer</p>
+				break
 		}
 
 		return (<div className={
-					'answer-flag' +
-					(isSelected ? ' is-selected' : ' is-not-selected') +
-					(isCorrect ? ' is-correct' : ' is-incorrect') +
-					(isRight ? ' is-right' : ' is-not-right')}>
-					{text}
+					'answer-flag' + type}>
+					{flagEl}
 				</div>)
 	}
 
@@ -72,6 +108,7 @@ export default class MCChoice extends React.Component {
 		)
 
 		let isRight = score == 100
+		let ansType = this.getAnsType(response, score)
 
 		let isSelected = response.ids.indexOf(this.props.model.get('id')) !== -1
 
@@ -82,7 +119,6 @@ export default class MCChoice extends React.Component {
 				return <div />
 			isCorrect =
 				this.props.model.get('content').score === 100
-			flag = this.getAnsType(isCorrect,isSelected,isRight)
 		} else isCorrect = this.props.model.modelState.score === 100
 
 		return (
@@ -91,9 +127,7 @@ export default class MCChoice extends React.Component {
 				moduleData={this.props.moduleData}
 				className={
 					'obojobo-draft--chunks--mc-assessment--mc-choice' +
-					(isSelected ? ' is-selected' : ' is-not-selected') +
-					(isCorrect ? ' is-correct' : ' is-incorrect') +
-					(isRight ? ' is-right' : ' is-not-right') +
+					ansType +
 					' is-mode-' +
 					this.props.mode
 				}
@@ -116,7 +150,7 @@ export default class MCChoice extends React.Component {
 						if (isAnswerItem) {
 							let Component = child.getComponentClass()
 							return (<div>
-								{flag}
+								{this.renderAnsFlag(ansType)}
 								<Component key={child.get('id')} model={child} moduleData={this.props.moduleData} />
 								</div>
 							)
