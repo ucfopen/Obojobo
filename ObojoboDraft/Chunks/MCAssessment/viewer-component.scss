@@ -49,10 +49,10 @@
 				background: transparentize($color-incorrect, 0.9);
 			}
 			&.could-have-chosen{
-				background: transparentize($color-altcorrect, 0.9);
+				background: transparentize($color-alt-correct, 0.9);
 			}
 			&.should-have-chosen{
-				background: transparentize($color-unchosencorrect, 0.9);
+				background: transparentize($color-unchosen-correct, 0.9);
 			}
 		}
 
@@ -368,15 +368,15 @@
 		}
 	}
 	&.should-have-chosen{
-		background-color: $color-unchosencorrect;
+		background-color: $color-unchosen-correct;
 		&:after {
-			background-color: $color-unchosencorrect;
+			background-color: $color-unchosen-correct;
 		}
 	}
 	&.could-have-chosen{
-		background-color: $color-altcorrect;
+		background-color: $color-alt-correct;
 		&:after {
-			background-color: $color-altcorrect;
+			background-color: $color-alt-correct;
 		}
 	}
 }
