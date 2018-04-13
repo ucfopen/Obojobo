@@ -1,108 +1,201 @@
+jest.mock('../../../../insert_event')
+jest.mock('../../../../models/draft')
+jest.mock('../../../../routes/api/events/create_caliper_event')
+jest.mock('../../../../logger')
+jest.mock('../../../../config', () => ({
+	db: {
+		host: 'host',
+		port: 'port',
+		database: 'database',
+		user: 'user',
+		password: 'password'
+	}
+}))
+
+jest.mock('../../../../lti', () => ({
+	replaceResult: jest.fn(),
+	sendHighestAssessmentScore: jest.fn()
+}))
+jest.mock('../../server/assessment-rubric')
+jest.mock('../../server/assessment', () => ({
+	getAttempt: jest.fn().mockResolvedValue({
+		assessment_id: 'mockAssessmentId',
+		attemptNumber: 'mockAttemptNumber',
+		state: 'mockState',
+		draft_id: 'mockDraftId'
+	}),
+	getAttempts: jest.fn().mockResolvedValue('attempts'),
+	getAttemptNumber: jest.fn().mockResolvedValue(6),
+	getResponsesForAttempt: jest.fn().mockResolvedValue('mockResponsesForAttempt'),
+	getCompletedAssessmentAttemptHistory: jest.fn().mockReturnValue('super bat dad'),
+	completeAttempt: jest.fn().mockReturnValue('mockCompleteAttemptResult')
+}))
+
+const logger = oboRequire('logger')
+const config = oboRequire('config')
+const db = oboRequire('db')
+const DraftModel = oboRequire('models/draft')
+const lti = oboRequire('lti')
+const insertEvent = oboRequire('insert_event')
+const createCaliperEvent = oboRequire('routes/api/events/create_caliper_event') //@TODO
+const originalToISOString = Date.prototype.toISOString
+const AssessmentRubric = require('../../server/assessment-rubric')
+import Assessment from '../../server/assessment'
+
 import {
 	endAttempt,
-	getAttemptInfo,
+	getAttempt,
 	getAttemptHistory,
-	getResponseHistory,
+	getResponsesForAttempt,
 	getCalculatedScores,
 	calculateScores,
-	updateAttempt,
+	completeAttempt,
 	insertAttemptEndEvents,
-	sendLTIScore,
+	sendLTIHighestAssessmentScore,
 	insertAttemptScoredEvents
 } from '../../server/attempt-end'
-import config from '../../../../config'
-import db from '../../../../db'
-import DraftModel from '../../../../models/draft'
-import Assessment from '../../server/assessment'
-import insertEvent from '../../../../insert_event'
-import lti from '../../../../lti'
-
-jest.mock('uuid')
-
-jest.mock('../../../../config', () => {
-	return {
-		db: {
-			host: 'host',
-			port: 'port',
-			database: 'database',
-			user: 'user',
-			password: 'password'
-		}
-	}
-})
-
-jest.mock('../../../../lti', () => {
-	return {
-		replaceResult: jest.fn()
-	}
-})
-
-jest.mock('../../../../db', () => {
-	return {
-		one: jest.fn(),
-		manyOrNone: jest.fn(),
-		any: jest.fn(),
-		none: jest.fn()
-	}
-})
-
-jest.mock('../../../../insert_event')
-
-jest.mock('../../../../models/draft')
-
-jest.mock('../../server/assessment', () => {
-	return {
-		getCompletedAssessmentAttemptHistory: jest.fn(),
-		updateAttempt: jest.fn()
-	}
-})
 
 describe('Attempt End', () => {
+	beforeAll(() => {
+		Date.prototype.toISOString = () => 'mockDate'
+	})
+	afterAll(() => {
+		Date.prototype.toISOString = originalToISOString
+	})
 	beforeEach(() => {
-		jest.resetAllMocks()
+		jest.restoreAllMocks()
+		insertEvent.mockReset()
+		AssessmentRubric.mockGetAssessmentScoreInfoForAttempt.mockReset()
+		AssessmentRubric.mockGetAssessmentScoreInfoForAttempt.mockReturnValue('mockScoreForAttempt')
+		lti.sendHighestAssessmentScore.mockReset()
 	})
 
-	test.skip('getAttemptInfo returns an object of attempt info', done => {
-		db.one.mockImplementationOnce(() => {
-			return Promise.resolve({
-				draft_id: 'test_draft_id',
-				assessment_id: 'test_assessment_id',
-				attempt_state: {
-					testAttemptState: 'testStateValue'
-				}
-			})
+	test('endAttempt returns Assessment.getAttempts, sends lti highest score, and inserts 2 events', () => {
+		// provide a draft model mock
+		let draft = new DraftModel({ content: { rubric: 1 } })
+		draft.yell.mockImplementationOnce(
+			(eventType, req, res, assessmentModel, responseHistory, event) => {
+				event.addScore('q1', 0)
+				event.addScore('q2', 100)
+				return [Promise.resolve()]
+			}
+		)
+		draft.getChildNodeById.mockReturnValueOnce(draft)
+		DraftModel.fetchById.mockResolvedValueOnce(draft)
+
+		// Mock out assessment methods internally to build score data
+		Assessment.getCompletedAssessmentAttemptHistory.mockResolvedValueOnce([])
+		Assessment.getAttempt.mockResolvedValueOnce({
+			assessment_id: 'mockAssessmentId',
+			state: { questions: [] },
+			draft_id: 'mockDraftId'
 		})
 
-		getAttemptInfo(1)
-			.then(info => {
-				expect(info).toEqual({
-					assessmentId: 'test_assessment_id',
-					attemptState: { testAttemptState: 'testStateValue' },
-					draftId: 'test_draft_id',
-					model: new DraftModel(),
-					assessmentModel: { mockChild: 'test_assessment_id' }
-				})
+		// mock the caliperEvent methods
+		let createAssessmentAttemptSubmittedEvent = jest.fn().mockReturnValue('mockCaliperPayload')
+		let createAssessmentAttemptScoredEvent = jest.fn().mockReturnValue('mockCaliperPayload')
+		insertEvent.mockReturnValueOnce('mockInsertResult')
+		createCaliperEvent
+			.mockReturnValueOnce({ createAssessmentAttemptSubmittedEvent })
+			.mockReturnValueOnce({ createAssessmentAttemptScoredEvent })
 
-				done()
+		// mock lti send score
+		lti.sendHighestAssessmentScore.mockReturnValueOnce({
+			scoreSent: 'mockScoreSent',
+			error: 'mockScoreError',
+			errorDetails: 'mockErrorDetails',
+			ltiAssessmentScoreId: 'mockLitScoreId',
+			status: 'mockStatus'
+		})
+
+		let req = { connection: { remoteAddress: 'mockRemoteAddress' } }
+		let user = { id: 'mockUserId' }
+		expect(insertEvent).toHaveBeenCalledTimes(0)
+
+		return endAttempt(req, {}, user, 'mockAttemptId', true).then(results => {
+			expect(logger.info).toHaveBeenCalledTimes(8)
+			expect(logger.info).toHaveBeenCalledWith(expect.stringContaining('getAttempt success'))
+			expect(logger.info).toHaveBeenCalledWith(expect.stringContaining('getAttemptHistory success'))
+			expect(logger.info).toHaveBeenCalledWith(
+				expect.stringContaining('getCalculatedScores success')
+			)
+			expect(logger.info).toHaveBeenCalledWith(expect.stringContaining('completeAttempt success'))
+			expect(logger.info).toHaveBeenCalledWith(
+				expect.stringContaining('insertAttemptEndEvent success')
+			)
+			expect(logger.info).toHaveBeenCalledWith(expect.stringContaining('sendLTIScore was executed'))
+
+			expect(results).toBe('attempts')
+			expect(lti.sendHighestAssessmentScore).toHaveBeenLastCalledWith(
+				'mockUserId',
+				'mockDraftId',
+				'mockAssessmentId'
+			)
+			expect(insertEvent).toHaveBeenCalledTimes(2)
+			expect(insertEvent).toHaveBeenCalledWith({
+				action: 'assessment:attemptScored',
+				actorTime: 'mockDate',
+				caliperPayload: 'mockCaliperPayload',
+				draftId: 'mockDraftId',
+				eventVersion: '2.0.0',
+				ip: 'mockRemoteAddress',
+				metadata: {},
+				payload: {
+					assessmentScore: undefined,
+					assessmentScoreId: undefined,
+					attemptCount: 6,
+					attemptId: 'mockAttemptId',
+					attemptScore: undefined,
+					ltiAssessmentScoreId: 'mockLitScoreId',
+					ltiScoreError: 'mockScoreError',
+					ltiScoreErrorDetails: 'mockErrorDetails',
+					ltiScoreSent: 'mockScoreSent',
+					ltiScoreStatus: 'mockStatus'
+				},
+				userId: 'mockUserId'
 			})
-			.catch(e => console.error(e))
+			expect(insertEvent).toHaveBeenCalledWith({
+				action: 'assessment:attemptEnd',
+				actorTime: 'mockDate',
+				caliperPayload: 'mockCaliperPayload',
+				draftId: 'mockDraftId',
+				eventVersion: '1.1.0',
+				ip: 'mockRemoteAddress',
+				metadata: {},
+				payload: {
+					attemptCount: 6,
+					attemptId: 'mockAttemptId'
+				},
+				userId: 'mockUserId'
+			})
+		})
 	})
 
-	test.skip('getAttemptHistory calls Assessment method', () => {
-		getAttemptHistory('userId', 'draftId', 'assessmentId')
+	test('getAttempt returns an object of attempt info', () => {
+		expect.assertions(6)
+
+		return getAttempt(1).then(attempt => {
+			expect(attempt).toHaveProperty('assessmentId', 'mockAssessmentId')
+			expect(attempt).toHaveProperty('number', 6)
+			expect(attempt).toHaveProperty('attemptState', 'mockState')
+			expect(attempt).toHaveProperty('draftId', 'mockDraftId')
+			expect(attempt).toHaveProperty('model', expect.any(DraftModel))
+			expect(attempt).toHaveProperty('assessmentModel', 'mockChild')
+		})
+	})
+
+	test('getAttemptHistory calls Assessment method', () => {
+		let result = getAttemptHistory('userId', 'draftId', 'assessmentId')
 		expect(Assessment.getCompletedAssessmentAttemptHistory).toHaveBeenLastCalledWith(
 			'userId',
 			'draftId',
 			'assessmentId'
 		)
+		expect(result).toBe('super bat dad')
 	})
 
-	test.skip('getResponseHistory', () => {
-		getResponseHistory('attemptId')
-		expect(db.any.mock.calls[0][1][0]).toEqual('attemptId')
-	})
-
-	test.skip('getCalculatedScores', done => {
+	test('getCalculatedScores', () => {
+		expect.assertions(4)
 		// Setup: Assessment with two questions (q1 and q2)
 		// First attempt: q1 = 60%, q2 = 100%, attempt = 80%
 		// This attempt: q1 = 0%, q2 = 100%, attempt should be 50%
@@ -113,15 +206,18 @@ describe('Attempt End', () => {
 		let res = jest.fn()
 		let assessmentModel = {
 			yell: (eventType, req, res, assessmentModel, responseHistory, event) => {
-				event.addScore('q1', 0)
-				event.addScore('q2', 100)
-				return []
+				expect(event).toHaveProperty('getQuestions', expect.any(Function))
+				expect(event).toHaveProperty('addScore', expect.any(Function))
+				expect(event.getQuestions()).toBe(attemptState.questions)
+
+				// add scores into the method's scoreInfo object for calculating later
+				// this is usually done by yell after getting the questions
+				event.addScore('q1', 66.6666666667)
+				event.addScore('q2', 12.9999999999)
+
+				return [] // return empty array of promises, no need for more
 			},
-			node: {
-				content: {
-					attempts: 10
-				}
-			}
+			node: { content: {} }
 		}
 		let attemptState = {
 			questions: [
@@ -133,434 +229,240 @@ describe('Attempt End', () => {
 				}
 			]
 		}
-		let attemptHistory = [
-			{
-				result: {
-					scores: [
-						{
-							id: 'q1',
-							score: 60
-						},
-						{
-							id: 'q2',
-							score: 100
-						}
-					],
-					attemptScore: 80,
-					assessmentScore: 0
-				}
-			}
-		]
+		let attemptHistory = []
 		let responseHistory = jest.fn()
 
-		getCalculatedScores(req, res, assessmentModel, attemptState, attemptHistory, responseHistory)
-			.then(result => {
-				expect(result).toEqual({
-					attemptScore: 50,
-					assessmentScore: 80,
-					ltiScore: 0.8,
+		return getCalculatedScores(
+			req,
+			res,
+			assessmentModel,
+			attemptState,
+			attemptHistory,
+			responseHistory
+		).then(result => {
+			expect(result).toEqual({
+				assessmentScoreDetails: 'mockScoreForAttempt',
+				attempt: {
+					attemptScore: 39.8333333333,
 					questionScores: [
 						{
 							id: 'q1',
-							score: 0
+							score: 66.6666666667
 						},
 						{
 							id: 'q2',
-							score: 100
+							score: 12.9999999999
 						}
 					]
-				})
-
-				done()
+				}
 			})
-			.catch(e => console.error(e))
+		})
 	})
 
-	test.skip('updateAttempt calls Assessment model method', () => {
-		updateAttempt('attemptId', 'attemptResult')
-		expect(Assessment.updateAttempt).toHaveBeenLastCalledWith('attemptResult', 'attemptId')
-	})
+	test('insertAttemptEndEvents calls insertEvent with expected params (preview mode = true)', () => {
+		// mock the caliperEvent method
+		let createAssessmentAttemptSubmittedEvent = jest.fn().mockReturnValue('mockCaliperPayload')
+		insertEvent.mockReturnValueOnce('mockInsertResult')
+		createCaliperEvent.mockReturnValueOnce({
+			createAssessmentAttemptSubmittedEvent
+		})
 
-	test.skip('insertAttemptEndEvents calls insertEvent with expected params (preview mode = true)', done => {
-		let toISOString = Date.prototype.toISOString
-
-		Date.prototype.toISOString = () => 'date'
-
-		insertAttemptEndEvents(
-			{ id: 'userId' },
-			'draftId',
-			'assessmentId',
-			'attemptId',
-			'attemptNumber',
-			true,
-			'hostname',
-			'remoteAddress'
+		let r = insertAttemptEndEvents(
+			{ id: 'mockUserId' },
+			'mockDraftId',
+			'mockAssessmentId',
+			'mockAttemptId',
+			'mockAttemptNumber',
+			'mockIsPreviewing',
+			'mockHostname',
+			'mockRemoteAddress'
 		)
 
-		Date.prototype.toISOString = toISOString
+		// make sure we get the result of insertEvent back
+		expect(r).toBe('mockInsertResult')
 
-		expect(insertEvent).toHaveBeenLastCalledWith({
+		// make sure insert event is called
+		expect(insertEvent).toHaveBeenCalledTimes(1)
+
+		// make sure insert event is called with the arguments we expect
+		expect(insertEvent).toHaveBeenCalledWith({
 			action: 'assessment:attemptEnd',
-			actorTime: 'date',
+			actorTime: 'mockDate',
 			payload: {
-				attemptId: 'attemptId',
-				attemptCount: -1
+				attemptId: 'mockAttemptId',
+				attemptCount: 'mockAttemptNumber'
 			},
-			userId: 'userId',
-			ip: 'remoteAddress',
+			userId: 'mockUserId',
+			ip: 'mockRemoteAddress',
 			metadata: {},
-			draftId: 'draftId',
+			draftId: 'mockDraftId',
 			eventVersion: '1.1.0',
-			caliperPayload: {
-				'@context': 'http://purl.imsglobal.org/ctx/caliper/v1p1',
-				actor: 'https://hostname/api/user/userId',
-				action: 'Submitted',
-				object: 'https://hostname/api/assessment/draftId/assessmentId',
-				generated: 'https://hostname/api/attempt/attemptId',
-				eventTime: 'date',
-				edApp: 'https://hostname/api/system',
-				id: 'test-uuid',
-				extensions: { previewMode: true },
-				type: 'AssessmentEvent'
-			}
+			caliperPayload: 'mockCaliperPayload'
 		})
 
-		done()
+		// make sure the caliper payload gets the expected inputs
+		expect(createAssessmentAttemptSubmittedEvent).toHaveBeenCalledWith({
+			actor: {
+				id: 'mockUserId',
+				type: 'user'
+			},
+			assessmentId: 'mockAssessmentId',
+			attemptId: 'mockAttemptId',
+			draftId: 'mockDraftId',
+			isPreviewMode: 'mockIsPreviewing'
+		})
 	})
 
-	test.skip('insertAttemptEndEvents calls insertEvent with expected params (preview mode = false)', done => {
-		let toISOString = Date.prototype.toISOString
-
-		Date.prototype.toISOString = () => 'date'
-
-		insertAttemptEndEvents(
-			{ id: 'userId' },
-			'draftId',
-			'assessmentId',
-			'attemptId',
-			'attemptNumber',
-			false,
-			'hostname',
-			'remoteAddress'
-		)
-
-		Date.prototype.toISOString = toISOString
-
-		expect(insertEvent).toHaveBeenLastCalledWith({
-			action: 'assessment:attemptEnd',
-			actorTime: 'date',
-			payload: {
-				attemptId: 'attemptId',
-				attemptCount: 'attemptNumber'
-			},
-			userId: 'userId',
-			ip: 'remoteAddress',
-			metadata: {},
-			draftId: 'draftId',
-			eventVersion: '1.1.0',
-			caliperPayload: {
-				'@context': 'http://purl.imsglobal.org/ctx/caliper/v1p1',
-				actor: 'https://hostname/api/user/userId',
-				action: 'Submitted',
-				object: 'https://hostname/api/assessment/draftId/assessmentId',
-				generated: 'https://hostname/api/attempt/attemptId',
-				eventTime: 'date',
-				edApp: 'https://hostname/api/system',
-				id: 'test-uuid',
-				extensions: { previewMode: false },
-				type: 'AssessmentEvent'
-			}
+	test('insertAttemptScoredEvents calls insertEvent with expected params (preview mode = false, isScoreSent = false)', () => {
+		// mock the caliperEvent method
+		let createAssessmentAttemptScoredEvent = jest.fn().mockReturnValue('mockCaliperPayload')
+		insertEvent.mockReturnValueOnce('mockInsertResult')
+		createCaliperEvent.mockReturnValueOnce({
+			createAssessmentAttemptScoredEvent
 		})
 
-		done()
-	})
-
-	test.skip('insertAttemptScoredEvents calls insertEvent with expected params (preview mode = true, isScoreSent = false)', done => {
-		let toISOString = Date.prototype.toISOString
-
-		Date.prototype.toISOString = () => 'date'
-
-		insertAttemptScoredEvents(
+		let r = insertAttemptScoredEvents(
 			{ id: 'userId' },
-			'draftId',
-			'assessmentId',
-			'attemptId',
-			'attemptNumber',
-			55,
-			65,
-			true,
-			false,
-			'hostname',
-			'remoteAddress'
+			'mockDraftId',
+			'mockAssessmentId',
+			'mockAssessmentScoreId',
+			'mockAttemptId',
+			'mockAttemptNumber',
+			'mockAttemptScore',
+			'mockAssessmentScore',
+			'mockIsPreviewing',
+			'mockLtiScoreSent',
+			'mockLtiScoreStatus',
+			'mockLtiScoreError',
+			'mockLtiScoreErrorDetails',
+			'mockLtiAssessmentScoreId',
+			'mockHostname',
+			'mockRemoteAddress'
 		)
 
-		Date.prototype.toISOString = toISOString
+		// make sure we get the result of insertEvent back
+		expect(r).toBe('mockInsertResult')
 
-		expect(insertEvent).toHaveBeenLastCalledWith({
+		// make sure insert event is called
+		expect(insertEvent).toHaveBeenCalledTimes(1)
+
+		// make sure insert event is called with the arguments we expect
+		expect(insertEvent).toHaveBeenCalledWith({
 			action: 'assessment:attemptScored',
-			actorTime: 'date',
-			payload: {
-				attemptId: 'attemptId',
-				attemptCount: -1,
-				attemptScore: 55,
-				assessmentScore: -1,
-				didSendLtiOutcome: false
-			},
-			userId: 'userId',
-			ip: 'remoteAddress',
+			actorTime: 'mockDate',
+			caliperPayload: 'mockCaliperPayload',
+			draftId: 'mockDraftId',
+			eventVersion: '2.0.0',
+			ip: 'mockRemoteAddress',
 			metadata: {},
-			draftId: 'draftId',
-			eventVersion: '1.1.0',
-			caliperPayload: {
-				'@context': 'http://purl.imsglobal.org/ctx/caliper/v1p1',
-				actor: 'https://hostname/api/server',
-				action: 'Graded',
-				object: 'https://hostname/api/attempt/attemptId',
-				generated: {
-					'@context': 'http://purl.imsglobal.org/ctx/caliper/v1p1',
-					attempt: 'https://hostname/api/attempt/attemptId',
-					dateCreated: 'date',
-					id: 'test-uuid',
-					maxScore: 100,
-					scoreGiven: 55,
-					scoredBy: 'https://hostname/api/server',
-					type: 'Score'
-				},
-				eventTime: 'date',
-				edApp: 'https://hostname/api/system',
-				id: 'test-uuid',
-				extensions: {
-					previewMode: true,
-					attemptCount: -1,
-					attemptScore: 55,
-					assessmentScore: -1,
-					didSendLtiOutcome: false
-				},
-				type: 'GradeEvent'
-			}
+			payload: {
+				assessmentScore: 'mockAssessmentScore',
+				assessmentScoreId: 'mockAssessmentScoreId',
+				attemptCount: 'mockAttemptNumber',
+				attemptId: 'mockAttemptId',
+				attemptScore: 'mockAttemptScore',
+				ltiAssessmentScoreId: 'mockLtiAssessmentScoreId',
+				ltiScoreError: 'mockLtiScoreError',
+				ltiScoreErrorDetails: 'mockLtiScoreErrorDetails',
+				ltiScoreSent: 'mockLtiScoreSent',
+				ltiScoreStatus: 'mockLtiScoreStatus'
+			},
+			userId: 'userId'
 		})
 
-		done()
+		// make sure the caliper payload gets the expected inputs
+		expect(createAssessmentAttemptScoredEvent).toHaveBeenCalledWith({
+			actor: {
+				type: 'serverApp'
+			},
+			assessmentId: 'mockAssessmentId',
+			attemptId: 'mockAttemptId',
+			attemptScore: 'mockAttemptScore',
+			draftId: 'mockDraftId',
+			extensions: {
+				assessmentScore: 'mockAssessmentScore',
+				attemptCount: 'mockAttemptNumber',
+				attemptScore: 'mockAttemptScore',
+				ltiScoreSent: 'mockLtiScoreSent'
+			},
+			isPreviewMode: 'mockIsPreviewing'
+		})
 	})
 
-	test.skip('insertAttemptScoredEvents calls insertEvent with expected params (preview mode = true, isScoreSent = true)', done => {
-		let toISOString = Date.prototype.toISOString
+	test('sendLTIHighestAssessmentScore calls lti.sendLTIHighestAssessmentScore', () => {
+		expect(lti.sendHighestAssessmentScore).toHaveBeenCalledTimes(0)
+		sendLTIHighestAssessmentScore()
+		expect(lti.sendHighestAssessmentScore).toHaveBeenCalledTimes(1)
+	})
 
-		Date.prototype.toISOString = () => 'date'
+	test('calculateScores keeps all scores in order', () => {
+		let assessmentModel = { node: { content: {} } }
 
-		insertAttemptScoredEvents(
-			{ id: 'userId' },
-			'draftId',
-			'assessmentId',
-			'attemptId',
-			'attemptNumber',
-			55,
-			65,
-			true,
-			true,
-			'hostname',
-			'remoteAddress'
+		let attemptHistory = [
+			{
+				result: {
+					attemptScore: 25
+				}
+			}
+		]
+
+		let scoreInfo = {
+			questions: [{ id: 4 }, { id: 5 }, { id: 6 }],
+			scoresByQuestionId: { 4: 50, 5: 75, 6: 27 },
+			scores: [50, 75, 27]
+		}
+
+		let result = calculateScores(assessmentModel, attemptHistory, scoreInfo)
+
+		// make sure the questionScores are in the same order
+		expect(result.attempt.questionScores).toEqual([
+			{ id: 4, score: 50 },
+			{ id: 5, score: 75 },
+			{ id: 6, score: 27 }
+		])
+	})
+
+	test('calculateScores calculates expected attemptScore', () => {
+		let assessmentModel = { node: { content: {} } }
+
+		let attemptHistory = [
+			{
+				result: {
+					attemptScore: 25
+				}
+			}
+		]
+
+		let scoreInfo = {
+			questions: [{ id: 4 }, { id: 5 }, { id: 6 }],
+			scoresByQuestionId: { 4: 50, 5: 75, 6: 27 },
+			scores: [50, 75, 27]
+		}
+
+		let result = calculateScores(assessmentModel, attemptHistory, scoreInfo)
+		expect(result.attempt.attemptScore).toBe(50.666666666666664)
+	})
+
+	test('calculateScores calls AssessmentRubric.getAssessmentScoreInfoForAttempt with expected values', () => {
+		expect(AssessmentRubric.mockGetAssessmentScoreInfoForAttempt).toHaveBeenCalledTimes(0)
+		let assessmentModel = { node: { content: { attempts: 'mockContentAttempts' } } }
+
+		let attemptHistory = [{ result: { attemptScore: 25 } }]
+
+		let scoreInfo = {
+			questions: [{ id: 4 }, { id: 5 }],
+			scoresByQuestionId: { 4: 50, 5: 75 },
+			scores: [50, 75]
+		}
+
+		let result = calculateScores(assessmentModel, attemptHistory, scoreInfo)
+
+		expect(result).toHaveProperty('assessmentScoreDetails', 'mockScoreForAttempt')
+		expect(AssessmentRubric.mockGetAssessmentScoreInfoForAttempt).toHaveBeenCalledTimes(1)
+		expect(AssessmentRubric.mockGetAssessmentScoreInfoForAttempt).toHaveBeenCalledWith(
+			'mockContentAttempts',
+			[25, 62.5]
 		)
-
-		Date.prototype.toISOString = toISOString
-
-		expect(insertEvent).toHaveBeenLastCalledWith({
-			action: 'assessment:attemptScored',
-			actorTime: 'date',
-			payload: {
-				attemptId: 'attemptId',
-				attemptCount: -1,
-				attemptScore: 55,
-				assessmentScore: -1,
-				didSendLtiOutcome: true
-			},
-			userId: 'userId',
-			ip: 'remoteAddress',
-			metadata: {},
-			draftId: 'draftId',
-			eventVersion: '1.1.0',
-			caliperPayload: {
-				'@context': 'http://purl.imsglobal.org/ctx/caliper/v1p1',
-				actor: 'https://hostname/api/server',
-				action: 'Graded',
-				object: 'https://hostname/api/attempt/attemptId',
-				generated: {
-					'@context': 'http://purl.imsglobal.org/ctx/caliper/v1p1',
-					attempt: 'https://hostname/api/attempt/attemptId',
-					dateCreated: 'date',
-					id: 'test-uuid',
-					maxScore: 100,
-					scoreGiven: 55,
-					scoredBy: 'https://hostname/api/server',
-					type: 'Score'
-				},
-				eventTime: 'date',
-				edApp: 'https://hostname/api/system',
-				id: 'test-uuid',
-				extensions: {
-					previewMode: true,
-					attemptCount: -1,
-					attemptScore: 55,
-					assessmentScore: -1,
-					didSendLtiOutcome: true
-				},
-				type: 'GradeEvent'
-			}
-		})
-
-		done()
-	})
-
-	test.skip('insertAttemptScoredEvents calls insertEvent with expected params (preview mode = false, isScoreSent = false)', done => {
-		let toISOString = Date.prototype.toISOString
-
-		Date.prototype.toISOString = () => 'date'
-
-		insertAttemptScoredEvents(
-			{ id: 'userId' },
-			'draftId',
-			'assessmentId',
-			'attemptId',
-			'attemptNumber',
-			55,
-			65,
-			false,
-			false,
-			'hostname',
-			'remoteAddress'
-		)
-
-		Date.prototype.toISOString = toISOString
-
-		expect(insertEvent).toHaveBeenLastCalledWith({
-			action: 'assessment:attemptScored',
-			actorTime: 'date',
-			payload: {
-				attemptId: 'attemptId',
-				attemptCount: 'attemptNumber',
-				attemptScore: 55,
-				assessmentScore: 65,
-				didSendLtiOutcome: false
-			},
-			userId: 'userId',
-			ip: 'remoteAddress',
-			metadata: {},
-			draftId: 'draftId',
-			eventVersion: '1.1.0',
-			caliperPayload: {
-				'@context': 'http://purl.imsglobal.org/ctx/caliper/v1p1',
-				actor: 'https://hostname/api/server',
-				action: 'Graded',
-				object: 'https://hostname/api/attempt/attemptId',
-				generated: {
-					'@context': 'http://purl.imsglobal.org/ctx/caliper/v1p1',
-					attempt: 'https://hostname/api/attempt/attemptId',
-					dateCreated: 'date',
-					id: 'test-uuid',
-					maxScore: 100,
-					scoreGiven: 55,
-					scoredBy: 'https://hostname/api/server',
-					type: 'Score'
-				},
-				eventTime: 'date',
-				edApp: 'https://hostname/api/system',
-				id: 'test-uuid',
-				extensions: {
-					previewMode: false,
-					attemptCount: 'attemptNumber',
-					attemptScore: 55,
-					assessmentScore: 65,
-					didSendLtiOutcome: false
-				},
-				type: 'GradeEvent'
-			}
-		})
-
-		done()
-	})
-
-	test.skip('insertAttemptScoredEvents calls insertEvent with expected params (preview mode = false, isScoreSent = true)', done => {
-		let toISOString = Date.prototype.toISOString
-
-		Date.prototype.toISOString = () => 'date'
-
-		insertAttemptScoredEvents(
-			{ id: 'userId' },
-			'draftId',
-			'assessmentId',
-			'attemptId',
-			'attemptNumber',
-			55,
-			65,
-			false,
-			true,
-			'hostname',
-			'remoteAddress'
-		)
-
-		Date.prototype.toISOString = toISOString
-
-		expect(insertEvent).toHaveBeenLastCalledWith({
-			action: 'assessment:attemptScored',
-			actorTime: 'date',
-			payload: {
-				attemptId: 'attemptId',
-				attemptCount: 'attemptNumber',
-				attemptScore: 55,
-				assessmentScore: 65,
-				didSendLtiOutcome: true
-			},
-			userId: 'userId',
-			ip: 'remoteAddress',
-			metadata: {},
-			draftId: 'draftId',
-			eventVersion: '1.1.0',
-			caliperPayload: {
-				'@context': 'http://purl.imsglobal.org/ctx/caliper/v1p1',
-				actor: 'https://hostname/api/server',
-				action: 'Graded',
-				object: 'https://hostname/api/attempt/attemptId',
-				generated: {
-					'@context': 'http://purl.imsglobal.org/ctx/caliper/v1p1',
-					attempt: 'https://hostname/api/attempt/attemptId',
-					dateCreated: 'date',
-					id: 'test-uuid',
-					maxScore: 100,
-					scoreGiven: 55,
-					scoredBy: 'https://hostname/api/server',
-					type: 'Score'
-				},
-				eventTime: 'date',
-				edApp: 'https://hostname/api/system',
-				id: 'test-uuid',
-				extensions: {
-					previewMode: false,
-					attemptCount: 'attemptNumber',
-					attemptScore: 55,
-					assessmentScore: 65,
-					didSendLtiOutcome: true
-				},
-				type: 'GradeEvent'
-			}
-		})
-
-		done()
-	})
-
-	test.skip('sendLTIScore resolves as false if no score given', done => {
-		sendLTIScore({ id: 'userId' }, 'draftId', null).then(result => {
-			expect(result).toBe(false)
-			done()
-		})
-	})
-
-	test.skip('sendLTIScore calls lti.replaceResult if given a score', () => {
-		sendLTIScore({ id: 'userId' }, 'draftId', 78)
-		expect(lti.replaceResult).toHaveBeenLastCalledWith('userId', 'draftId', 78)
-	})
-
-	it.skip('calculateScores keeps all scores in order', () => {
-		// this needs to make sure sends allScores into getAssessmentScoreInfoForAttempt IN ORDER (oldest to newest)
 	})
 
 	test.skip('@TODO - Need to make sure that these tests log correct', () => {
@@ -568,31 +470,119 @@ describe('Attempt End', () => {
 		//that we need to add log mocks to the other tests in this file
 	})
 
-	test.skip('getAttempt returns an expected object', () => {
-		//@TODO
+	test('getCalculatedScores calls calculateScores with expected values', () => {
+		let attemptHistory = [
+			{
+				result: {
+					attemptScore: 25
+				}
+			}
+		]
+
+		let attemptState = {
+			questions: [{ id: 4 }, { id: 5 }, { id: 6 }]
+		}
+
+		let x = new DraftModel({ content: { rubric: 1 } })
+
+		// now we have to mock yell so that we can call addScore()
+		x.yell.mockImplementationOnce((event, req, res, model, history, funcs) => {
+			funcs.addScore(4, 10)
+			funcs.addScore(5, 66)
+			funcs.addScore(6, 77)
+			return [Promise.resolve()]
+		})
+
+		return getCalculatedScores({}, {}, x, attemptState, attemptHistory, 'rh').then(result => {
+			expect(result).toEqual({
+				assessmentScoreDetails: 'mockScoreForAttempt',
+				attempt: {
+					attemptScore: 51,
+					questionScores: [
+						{
+							id: 4,
+							score: 10
+						},
+						{
+							id: 5,
+							score: 66
+						},
+						{
+							id: 6,
+							score: 77
+						}
+					]
+				}
+			})
+
+			expect()
+		})
 	})
 
-	test.skip('getCalculatedScores calls calculateScores with expected values', () => {
-		//@TODO
+	test('completeAttempt calls Assessment.completeAttempt with expected values', () => {
+		let r = completeAttempt(
+			'mockAssessmentId',
+			'mockAttemptId',
+			'mockUserId',
+			'mockDraftId',
+			{ attempt: 'mockCalculatedScores', assessmentScoreDetails: 'mockScoreDeets' },
+			'mockPreview'
+		)
+
+		// make sure we get the result of insertEvent back
+		expect(r).toBe('mockCompleteAttemptResult')
+
+		// make sure Assessment.completeAttempt is called
+		expect(Assessment.completeAttempt).toHaveBeenLastCalledWith(
+			'mockAssessmentId',
+			'mockAttemptId',
+			'mockUserId',
+			'mockDraftId',
+			'mockCalculatedScores',
+			'mockScoreDeets',
+			'mockPreview'
+		)
 	})
 
-	test.skip('calculateScores calls rubric.getAssessmentScoreInfoForAttempt with expected values', () => {
-		//@TODO
-	})
+	test('insertAttemptEndEvents creates a correct caliper event and internal event', () => {
+		// mock the caliperEvent method
+		let createAssessmentAttemptSubmittedEvent = jest.fn().mockReturnValue('mockCaliperPayload')
+		insertEvent.mockReturnValueOnce('mockInsertResult')
+		createCaliperEvent.mockReturnValueOnce({
+			createAssessmentAttemptSubmittedEvent
+		})
 
-	test.skip('calculateScores returns expected object', () => {
-		//@TODO
-	})
+		let r = insertAttemptEndEvents(
+			{ id: 1 },
+			'mockDraftId',
+			'mockAssessmentId',
+			'mockAttemptId',
+			'mockAttemptNumber',
+			'mockIsPreviewing',
+			'mockHostname',
+			'mockRemoteAddress'
+		)
 
-	test.skip('completeAttempt calls Assessment.completeAttempt with expected values', () => {
-		//@TODO
-	})
+		// make sure we get the result of insertEvent back
+		expect(r).toBe('mockInsertResult')
 
-	test.skip('insertAttemptEndEvents creates a correct caliper event and internal event', () => {
-		//@TODO
-	})
+		// make sure insert event is called
+		expect(insertEvent).toHaveBeenCalledTimes(1)
 
-	test.skip('insertAttemptScoredEvents creates a correct caliper event and internal event', () => {
-		//@TODO
+		// make sure insert event is called with the arguments we expect
+		expect(insertEvent).toHaveBeenCalledWith({
+			action: 'assessment:attemptEnd',
+			actorTime: 'mockDate',
+			caliperPayload: 'mockCaliperPayload',
+			draftId: 'mockDraftId',
+			eventVersion: '1.1.0',
+			ip: 'mockRemoteAddress',
+			metadata: {},
+			payload: {
+				attemptCount: 'mockAttemptNumber',
+				attemptId: 'mockAttemptId'
+			},
+			userId: 1
+		})
 	})
 })

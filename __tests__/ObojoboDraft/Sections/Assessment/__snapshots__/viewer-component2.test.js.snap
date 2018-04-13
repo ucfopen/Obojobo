@@ -1,0 +1,48 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`Assessment untested state renders as expected 1`] = `
+<div
+  className="obojobo-draft--sections--assessment"
+  model={
+    Object {
+      "children": Object {
+        "at": [MockFunction] {
+          "calls": Array [
+            Array [
+              0,
+            ],
+          ],
+        },
+      },
+      "id": "rootId",
+      "type": "ObojoboDraft.Modules.Module",
+    }
+  }
+  moduleData={
+    Object {
+      "lti": Object {
+        "outcomeServiceHostname": "mockHostName",
+      },
+    }
+  }
+>
+  <div
+    className="untested"
+  >
+    <div
+      model={
+        Object {
+          "getComponentClass": [Function],
+        }
+      }
+      moduleData={
+        Object {
+          "lti": Object {
+            "outcomeServiceHostname": "mockHostName",
+          },
+        }
+      }
+    />
+  </div>
+</div>
+`;

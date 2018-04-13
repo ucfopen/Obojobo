@@ -19,7 +19,6 @@ import LTIStatus from './lti-status'
 export default class Assessment extends React.Component {
 	constructor() {
 		super()
-
 		this.state = { step: null }
 	}
 
