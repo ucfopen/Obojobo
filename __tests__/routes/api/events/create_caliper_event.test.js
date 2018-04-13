@@ -18,17 +18,17 @@ const selectedTargets = { ids: [targetId] }
 const score = '50'
 const scoreId = '123'
 const sessionIds = { sessionId: 'testSessionId', launchId: 'testOboLaunchId' }
-const testDate = new Date('2017-08-29T16:57:14.500Z')
 const to = 'navigation is going here'
-
-Date = class extends Date {
-	constructor() {
-		super()
-		return testDate
-	}
-}
+let originaltoISOString
 
 describe('Caliper event creator', () => {
+	beforeAll(() => {
+		originaltoISOString = Date.prototype.toISOString
+		Date.prototype.toISOString = () => 'mockDate'
+	})
+	afterAll(() => {
+		Date.prototype.toISOString = originaltoISOString
+	})
 	it('createNavigationEvent', () => {
 		const navEvent = caliperEvents.createNavigationEvent({
 			actor,

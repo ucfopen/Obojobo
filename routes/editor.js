@@ -3,8 +3,6 @@ var router = express.Router()
 var db = require('../db')
 
 let displayEditor = (req, res, next) => {
-	// let oboGlobals = new OboGlobals();
-
 	return req
 		.getCurrentUser(true)
 		.then(user => {

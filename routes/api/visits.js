@@ -18,6 +18,7 @@ router.post('/start', (req, res, next) => {
 		.then(userFromReq => {
 			user = userFromReq
 			visitId = req.body.visitId
+			// get visit
 			return db.one(
 				`
 				SELECT id, is_active
@@ -60,7 +61,7 @@ router.post('/start', (req, res, next) => {
 		.then(() => {
 			res.success({
 				visitId,
-				isPreviewing: user.canViewEditor,
+				isPreviewing: user.canViewEditor ? user.canViewEditor : false,
 				lti: {
 					lis_outcome_service_url: ltiOutcomeServiceUrl
 				},
@@ -70,6 +71,9 @@ router.post('/start', (req, res, next) => {
 		})
 		.catch(err => {
 			logger.error(err)
+			if (err instanceof Error) {
+				err = err.message
+			}
 			res.reject(err)
 		})
 })
