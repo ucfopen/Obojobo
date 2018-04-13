@@ -129,12 +129,12 @@ app.post('/api/assessments/clear-preview-scores', (req, res, next) => {
 				.then(attemptIdsResult => {
 					attemptIds = attemptIdsResult
 
-					return db.tx(t => {
+					return db.tx(transaction => {
 						let queries = []
 
 						if (assessmentScoreIds.length > 0) {
 							queries.push(
-								t.none(
+								transaction.none(
 									`
 									DELETE FROM lti_assessment_scores
 									WHERE assessment_score_id IN ($[ids:csv])
@@ -146,7 +146,7 @@ app.post('/api/assessments/clear-preview-scores', (req, res, next) => {
 
 						if (attemptIds.length > 0) {
 							queries.push(
-								t.none(
+								transaction.none(
 									`
 									DELETE FROM attempts_question_responses
 									WHERE attempt_id IN ($[ids:csv])
@@ -157,7 +157,7 @@ app.post('/api/assessments/clear-preview-scores', (req, res, next) => {
 						}
 
 						queries.push(
-							t.none(
+							transaction.none(
 								`
 									DELETE FROM assessment_scores
 									WHERE user_id = $[userId]
@@ -172,7 +172,7 @@ app.post('/api/assessments/clear-preview-scores', (req, res, next) => {
 						)
 
 						queries.push(
-							t.none(
+							transaction.none(
 								`
 									DELETE FROM attempts
 									WHERE user_id = $[userId]
@@ -186,7 +186,7 @@ app.post('/api/assessments/clear-preview-scores', (req, res, next) => {
 							)
 						)
 
-						return t.batch(queries)
+						return transaction.batch(queries)
 					})
 				})
 
