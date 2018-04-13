@@ -70,19 +70,7 @@ const startAttempt = (req, res) => {
 			)
 				throw new Error(ERROR_ATTEMPT_LIMIT_REACHED)
 
-			assessmentProperties.childrenMap = loadChildren(assessmentProperties)
-
-			createChosenQuestionTree(assessmentProperties.assessmentQBTree, assessmentProperties)
-
-			attemptState = {
-				qb: assessmentProperties.assessmentQBTree,
-				questions: getNodeQuestions(
-					assessmentProperties.assessmentQBTree,
-					assessmentProperties.oboNode,
-					[]
-				),
-				data: {}
-			}
+			attemptState = getState(assessmentProperties)
 
 			return Promise.all(getSendToClientPromises(attemptState, req, res))
 		})
@@ -138,6 +126,23 @@ const startAttempt = (req, res) => {
 		})
 }
 
+const getState = assessmentProperties => {
+	assessmentProperties.childrenMap = loadChildren(assessmentProperties)
+
+	createChosenQuestionTree(assessmentProperties.assessmentQBTree, assessmentProperties)
+
+	return {
+		qb: assessmentProperties.assessmentQBTree,
+		questions: getNodeQuestions(
+			assessmentProperties.assessmentQBTree,
+			assessmentProperties.oboNode,
+			[]
+		),
+		data: {}
+	}
+}
+
+// Load the children into the children map
 const loadChildren = assessmentProperties => {
 	const childrenMap = createAssessmentUsedQuestionMap(assessmentProperties)
 
@@ -233,5 +238,6 @@ module.exports = {
 	createChosenQuestionTree,
 	getNodeQuestions,
 	getSendToClientPromises,
-	loadChildren
+	loadChildren,
+	getState
 }

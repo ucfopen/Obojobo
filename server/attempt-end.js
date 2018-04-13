@@ -370,21 +370,7 @@ let reloadAttemptStateIfReviewing = (attemptId, draftId, assessmentProperties, a
 		return null
 	}
 
-	assessmentProperties.childrenMap = attemptStart.loadChildren(assessmentProperties)
-
-	attemptStart.createChosenQuestionTree(assessmentProperties.assessmentQBTree, assessmentProperties)
-
-	let questionObjects = attemptStart.getNodeQuestions(
-		assessmentProperties.assessmentQBTree,
-		assessmentProperties.oboNode,
-		[]
-	).map(q => q.toObject())
-
-	let state = {
-		questions: questionObjects,
-		data: {},
-		qb: assessmentProperties.assessmentQBTree
-	}
+	let state = attemptStart.getState(assessmentProperties)
 
 	// If reviews are always allowed, reload the state for this attempt
 	// Each attempt's state will be reloaded as it finishes
