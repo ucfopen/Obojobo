@@ -560,4 +560,86 @@ describe('AssessmentRubric', () => {
 			rewardedMods: []
 		})
 	})
+
+	test('handles $last_attempt when there is no last attempt (unlimited attempts)', () => {
+		let ar = new AssessmentRubric({
+			type: 'attempt',
+			mods: [
+				{
+					attemptCondition: '$last_attempt', // should never apply
+					reward: 10
+				},
+				{
+					attemptCondition: '[1,$last_attempt]', // should always apply
+					reward: 1
+				}
+			]
+		})
+
+		expect(ar.getAssessmentScoreInfoForAttempt(Infinity, [80])).toEqual({
+			attemptNumber: 1,
+			attemptScore: 80,
+			status: 'passed',
+			assessmentScore: 80,
+			rewardTotal: 1,
+			assessmentModdedScore: 81,
+			rewardedMods: [1]
+		})
+
+		expect(ar.getAssessmentScoreInfoForAttempt(Infinity, [80, 80])).toEqual({
+			attemptNumber: 2,
+			attemptScore: 80,
+			status: 'passed',
+			assessmentScore: 80,
+			rewardTotal: 1,
+			assessmentModdedScore: 81,
+			rewardedMods: [1]
+		})
+	})
+
+	test('getAssessmentScoreInfoForAttempt throws error for invalid numbers of attempts', () => {
+		let ar = new AssessmentRubric()
+
+		try {
+			ar.getAssessmentScoreInfoForAttempt('unlimited', [100])
+			expect('this').toBe('not called')
+		} catch (e) {
+			expect(e.message).toBe('totalNumberOfAttemptsAvailable must be 1 to Infinity!')
+		}
+
+		try {
+			ar.getAssessmentScoreInfoForAttempt('', [100])
+			expect('this').toBe('not called')
+		} catch (e) {
+			expect(e.message).toBe('totalNumberOfAttemptsAvailable must be 1 to Infinity!')
+		}
+
+		try {
+			ar.getAssessmentScoreInfoForAttempt('2', [100])
+			expect('this').toBe('not called')
+		} catch (e) {
+			expect(e.message).toBe('totalNumberOfAttemptsAvailable must be 1 to Infinity!')
+		}
+
+		try {
+			ar.getAssessmentScoreInfoForAttempt(0, [100])
+			expect('this').toBe('not called')
+		} catch (e) {
+			expect(e.message).toBe('totalNumberOfAttemptsAvailable must be 1 to Infinity!')
+		}
+
+		try {
+			ar.getAssessmentScoreInfoForAttempt(-2, [100])
+			expect('this').toBe('not called')
+		} catch (e) {
+			expect(e.message).toBe('totalNumberOfAttemptsAvailable must be 1 to Infinity!')
+		}
+
+		try {
+			ar.getAssessmentScoreInfoForAttempt(null, [100])
+			expect('this').toBe('not called')
+		} catch (e) {
+			expect(e.message).toBe('totalNumberOfAttemptsAvailable must be 1 to Infinity!')
+		}
+	})
 })

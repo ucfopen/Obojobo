@@ -9375,21 +9375,20 @@ var getParsedRangeFromSingleValue = function getParsedRangeFromSingleValue(value
 
 var tryGetParsedFloat = function tryGetParsedFloat(value) {
 	var replaceDict = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : {};
-	var allowNull = arguments.length > 2 && arguments[2] !== undefined ? arguments[2] : false;
+	var nonNumericAllowedValues = arguments.length > 2 && arguments[2] !== undefined ? arguments[2] : [];
 
 	var replaceDictValue = void 0;
 
 	for (var placeholder in replaceDict) {
 		if (value === placeholder) {
-			replaceDictValue = replaceDict[placeholder];
-			value = replaceDictValue === null ? null : parseFloat(replaceDictValue);
+			value = replaceDict[placeholder];
 			break;
 		}
 	}
 
-	if (allowNull && value === null) {
-		return null;
-	}
+	// If the value is an allowed non-numeric value then we don't parse it
+	// and simply return it as is
+	if (nonNumericAllowedValues.indexOf(value) > -1) return value;
 
 	var parsedValue = parseFloat(value);
 
@@ -9398,17 +9397,15 @@ var tryGetParsedFloat = function tryGetParsedFloat(value) {
 	return parsedValue;
 };
 
-var isValueInRange = function isValueInRange(value, range, replaceDict) {
-	var allowNull = arguments.length > 3 && arguments[3] !== undefined ? arguments[3] : false;
-
+var isValueInRange = function isValueInRange(value, range, replaceDict, nonNumericAllowedValues) {
 	// By default a null range is defined to be all-inclusive
 	if (range === null) return true;
 
 	var isMinRequirementMet = void 0,
 	    isMaxRequirementMet = void 0;
 
-	var min = tryGetParsedFloat(range.min, replaceDict, allowNull);
-	var max = tryGetParsedFloat(range.max, replaceDict, allowNull);
+	var min = tryGetParsedFloat(range.min, replaceDict, nonNumericAllowedValues);
+	var max = tryGetParsedFloat(range.max, replaceDict, nonNumericAllowedValues);
 
 	if (range.isMinInclusive) {
 		isMinRequirementMet = value >= min;

@@ -25,20 +25,19 @@ let getParsedRangeFromSingleValue = value => {
 	}
 }
 
-let tryGetParsedFloat = (value, replaceDict = {}, allowNull = false) => {
+let tryGetParsedFloat = (value, replaceDict = {}, nonNumericAllowedValues = []) => {
 	let replaceDictValue
 
 	for (let placeholder in replaceDict) {
 		if (value === placeholder) {
-			replaceDictValue = replaceDict[placeholder]
-			value = replaceDictValue === null ? null : parseFloat(replaceDictValue)
+			value = replaceDict[placeholder]
 			break
 		}
 	}
 
-	if (allowNull && value === null) {
-		return null
-	}
+	// If the value is an allowed non-numeric value then we don't parse it
+	// and simply return it as is
+	if (nonNumericAllowedValues.indexOf(value) > -1) return value
 
 	let parsedValue = parseFloat(value)
 
@@ -48,14 +47,14 @@ let tryGetParsedFloat = (value, replaceDict = {}, allowNull = false) => {
 	return parsedValue
 }
 
-let isValueInRange = (value, range, replaceDict, allowNull = false) => {
+let isValueInRange = (value, range, replaceDict, nonNumericAllowedValues) => {
 	// By default a null range is defined to be all-inclusive
 	if (range === null) return true
 
 	let isMinRequirementMet, isMaxRequirementMet
 
-	let min = tryGetParsedFloat(range.min, replaceDict, allowNull)
-	let max = tryGetParsedFloat(range.max, replaceDict, allowNull)
+	let min = tryGetParsedFloat(range.min, replaceDict, nonNumericAllowedValues)
+	let max = tryGetParsedFloat(range.max, replaceDict, nonNumericAllowedValues)
 
 	if (range.isMinInclusive) {
 		isMinRequirementMet = value >= min

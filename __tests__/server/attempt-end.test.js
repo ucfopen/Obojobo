@@ -445,7 +445,7 @@ describe('Attempt End', () => {
 
 	test('calculateScores calls AssessmentRubric.getAssessmentScoreInfoForAttempt with expected values', () => {
 		expect(AssessmentRubric.mockGetAssessmentScoreInfoForAttempt).toHaveBeenCalledTimes(0)
-		let assessmentModel = { node: { content: { attempts: 'mockContentAttempts' } } }
+		let assessmentModel = { node: { content: { attempts: '2' } } }
 
 		let attemptHistory = [{ result: { attemptScore: 25 } }]
 
@@ -459,10 +459,10 @@ describe('Attempt End', () => {
 
 		expect(result).toHaveProperty('assessmentScoreDetails', 'mockScoreForAttempt')
 		expect(AssessmentRubric.mockGetAssessmentScoreInfoForAttempt).toHaveBeenCalledTimes(1)
-		expect(AssessmentRubric.mockGetAssessmentScoreInfoForAttempt).toHaveBeenCalledWith(
-			'mockContentAttempts',
-			[25, 62.5]
-		)
+		expect(AssessmentRubric.mockGetAssessmentScoreInfoForAttempt).toHaveBeenCalledWith(2, [
+			25,
+			62.5
+		])
 	})
 
 	test.skip('@TODO - Need to make sure that these tests log correct', () => {
