@@ -11,7 +11,7 @@ import {
 	insertAttemptScoredEvents,
 	getNodeQuestion,
 	recreateChosenQuestionTree,
-	reloadState
+	reloadAttemptStateIfReviewing
 } from '../../server/attempt-end.js'
 
 import config from '../../../../config'
@@ -701,7 +701,7 @@ describe('Attempt End', () => {
 		expect(mockQB.children[0].children[0].children[0].children.length).not.toBe(0)
 	})
 
-	test('reloadState does not reload when reviews are not allowed', () => {
+	test('reloadAttemptStateIfReviewing does not reload when reviews are not allowed', () => {
 		const mockProperties = {}
 		const mockAttempt = {
 			"assessmentModel":{
@@ -713,12 +713,12 @@ describe('Attempt End', () => {
 			}
 		}
 
-		let response = reloadState(0, 0, mockProperties, mockAttempt)
+		let response = reloadAttemptStateIfReviewing(0, 0, mockProperties, mockAttempt)
 
 		expect(response).toBe(null)
 	})
 
-	test('reloadState does not reload when reviews are allowed after attempts, but it is not the last attempt', () => {
+	test('reloadAttemptStateIfReviewing does not reload when reviews are allowed after attempts, but it is not the last attempt', () => {
 		const mockProperties = {}
 		const mockAttempt = {
 			"number":1,
@@ -732,31 +732,29 @@ describe('Attempt End', () => {
 			}
 		}
 
-		let response = reloadState(0, 0, mockProperties, mockAttempt)
+		let response = reloadAttemptStateIfReviewing(0, 0, mockProperties, mockAttempt)
 
 		expect(response).toBe(null)
 	})
 
-	test('reloadState reloads only one when reviews are always allowed', () => {
+	test('reloadAttemptStateIfReviewing reloads only one when reviews are always allowed', () => {
 		const mockDraft = new Draft(testJson)
 		const assessmentNode = mockDraft.getChildNodeById('assessment')
 		const assessmentQbTree = assessmentNode.children[1].toObject()
-		const mockUsedQuestionMap = new Map()
-		initMockUsedQuestionMap(mockUsedQuestionMap)
-
-		mockUsedQuestionMap.set('qb2', 1)
-		mockUsedQuestionMap.set('qb2.q1', 1)
-		mockUsedQuestionMap.set('qb2.q2', 1)
+		const fakeChildNodes = [{ id: 'qb1.q1', children: [] }, { id: 'qb1.q2', children: [] }]
+		const mockQbTree = { id: 'qb1', children: fakeChildNodes }
 
 		const mockProperties = {
 			draftTree: mockDraft,
 			id: null,
 			oboNode: assessmentNode,
-			nodeChildrenIds: null,
+			nodeChildrenIds: ['qb2','qb2.q1','qb2.q2'],
 			assessmentQBTree: assessmentQbTree,
-			attemptHistory: null,
+			attemptHistory: [{
+				'state':mockQbTree
+			}],
 			numAttemptsTaken: null,
-			childrenMap: mockUsedQuestionMap
+			childrenMap: null
 		}
 		const mockAttempt = {
 			"number":1,
@@ -770,32 +768,30 @@ describe('Attempt End', () => {
 			}
 		}
 
-		let response = reloadState(0, 0, mockProperties, mockAttempt)
+		let response = reloadAttemptStateIfReviewing(0, 0, mockProperties, mockAttempt)
 
 		expect(Assessment.updateAttemptState).toHaveBeenCalled()
 	})
 
-	test('reloadState reloads all when reviews are allowed after last', () => {
+	test('reloadAttemptStateIfReviewing reloads all when reviews are allowed after last', () => {
 		const mockDraft = new Draft(testJson)
 		const assessmentNode = mockDraft.getChildNodeById('assessment')
 		const assessmentQbTree = assessmentNode.children[1].toObject()
-		const mockUsedQuestionMap = new Map()
-		initMockUsedQuestionMap(mockUsedQuestionMap)
-
-		mockUsedQuestionMap.set('qb2', 1)
-		mockUsedQuestionMap.set('qb2.q1', 1)
-		mockUsedQuestionMap.set('qb2.q2', 1)
+		const fakeChildNodes = [{ id: 'qb1.q1', children: [] }, { id: 'qb1.q2', children: [] }]
+		const mockQbTree = { id: 'qb1', children: fakeChildNodes }
 
 		const mockProperties = {
 			user: {"id":0},
 			draftTree: mockDraft,
 			id: 0,
 			oboNode: assessmentNode,
-			nodeChildrenIds: null,
+			nodeChildrenIds: ['qb2','qb2.q1','qb2.q2'],
 			assessmentQBTree: assessmentQbTree,
-			attemptHistory: null,
+			attemptHistory: [{
+				'state':mockQbTree
+			}],
 			numAttemptsTaken: null,
-			childrenMap: mockUsedQuestionMap
+			childrenMap: null
 		}
 		const mockAttempt = {
 			"number":3,
@@ -836,7 +832,7 @@ describe('Attempt End', () => {
 			}]
 		}))
 
-		let response = reloadState(0, 0, mockProperties, mockAttempt)
+		let response = reloadAttemptStateIfReviewing(0, 0, mockProperties, mockAttempt)
 
 		expect(Assessment.updateAttemptState).toHaveBeenCalled()
 		expect(Assessment.getAttempts).toHaveBeenCalled()

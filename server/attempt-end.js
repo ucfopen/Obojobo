@@ -83,10 +83,6 @@ let endAttempt = (req, res, user, attemptId, isPreviewing) => {
 
 				calculatedScores = calculatedScoresResult
 
-
-				return reloadState(attemptId, attempt.draftId, assessmentProperties, attempt)
-			})
-			.then(() => {
 				return completeAttempt(
 					attempt.assessmentId,
 					attemptId,
@@ -96,10 +92,13 @@ let endAttempt = (req, res, user, attemptId, isPreviewing) => {
 					isPreviewing
 				)
 			})
-			.then(completeAttemptResult => {
+			.then((completeAttemptResult) => {
 				logger.info(`End attempt "${attemptId}" - completeAttempt success`)
-
 				assessmentScoreId = completeAttemptResult.assessmentScoreId
+
+				return reloadAttemptStateIfReviewing(attemptId, attempt.draftId, assessmentProperties, attempt)
+			})
+			.then(() => {
 
 				return insertAttemptEndEvents(
 					user,
@@ -355,7 +354,7 @@ let insertAttemptScoredEvents = (
 	})
 }
 
-let reloadState = (attemptId, draftId, assessmentProperties, attempt) => {
+let reloadAttemptStateIfReviewing = (attemptId, draftId, assessmentProperties, attempt) => {
 	let assessmentNode = attempt.assessmentModel
 
 	// Do not reload the state if reviews are never allowed
@@ -370,6 +369,7 @@ let reloadState = (attemptId, draftId, assessmentProperties, attempt) => {
 	if(assessmentNode.node.content.review == 'afterAttempts' && !isLastAttempt){
 		return null
 	}
+
 	assessmentProperties.childrenMap = attemptStart.loadChildren(assessmentProperties)
 
 	attemptStart.createChosenQuestionTree(assessmentProperties.assessmentQBTree, assessmentProperties)
@@ -395,6 +395,7 @@ let reloadState = (attemptId, draftId, assessmentProperties, attempt) => {
 	// If reviews are allowed after last attempt and this is the last attempt,
 	// reload the states for all attempts
 	if(assessmentNode.node.content.review == 'afterAttempts' && isLastAttempt){
+
 		// Reload state for this attempt
 		Assessment.updateAttemptState(attemptId, state);
 
@@ -450,7 +451,7 @@ module.exports = {
 	insertAttemptEndEvents,
 	sendLTIHighestAssessmentScore,
 	insertAttemptScoredEvents,
-	reloadState,
+	reloadAttemptStateIfReviewing,
 	recreateChosenQuestionTree,
 	getNodeQuestion
 }
