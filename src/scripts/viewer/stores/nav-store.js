@@ -54,7 +54,6 @@ class NavStore extends Store {
 					}
 				},
 				'nav:goto': payload => {
-					console.log(this.state, payload.value.id)
 					oldNavTargetId = this.state.navTargetId
 					if (this.gotoItem(this.state.itemsById[payload.value.id])) {
 						APIUtil.postEvent(OboModel.getRoot(), 'nav:goto', '1.0.0', {
