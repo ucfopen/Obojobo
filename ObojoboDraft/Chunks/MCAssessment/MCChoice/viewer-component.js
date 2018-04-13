@@ -112,14 +112,12 @@ export default class MCChoice extends React.Component {
 
 		let isSelected = response.ids.indexOf(this.props.model.get('id')) !== -1
 
-		let isCorrect
 		let flag
 		if (this.props.mode === 'review') {
 			if (!this.props.moduleData.questionState.scores[this.props.moduleData.navState.context])
 				return <div />
-			isCorrect =
-				this.props.model.get('content').score === 100
-		} else isCorrect = this.props.model.modelState.score === 100
+			flag = this.renderAnsFlag(ansType)
+		}
 
 		return (
 			<OboComponent
@@ -150,7 +148,7 @@ export default class MCChoice extends React.Component {
 						if (isAnswerItem) {
 							let Component = child.getComponentClass()
 							return (<div>
-								{this.renderAnsFlag(ansType)}
+								{flag}
 								<Component key={child.get('id')} model={child} moduleData={this.props.moduleData} />
 								</div>
 							)

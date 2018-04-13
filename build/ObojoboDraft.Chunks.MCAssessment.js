@@ -1111,12 +1111,11 @@ var MCChoice = function (_React$Component) {
 
 			var isSelected = response.ids.indexOf(this.props.model.get('id')) !== -1;
 
-			var isCorrect = void 0;
 			var flag = void 0;
 			if (this.props.mode === 'review') {
 				if (!this.props.moduleData.questionState.scores[this.props.moduleData.navState.context]) return React.createElement('div', null);
-				isCorrect = this.props.model.get('content').score === 100;
-			} else isCorrect = this.props.model.modelState.score === 100;
+				flag = this.renderAnsFlag(ansType);
+			}
 
 			return React.createElement(
 				OboComponent,
@@ -1147,7 +1146,7 @@ var MCChoice = function (_React$Component) {
 							return React.createElement(
 								'div',
 								null,
-								_this2.renderAnsFlag(ansType),
+								flag,
 								React.createElement(Component, { key: child.get('id'), model: child, moduleData: _this2.props.moduleData })
 							);
 						}

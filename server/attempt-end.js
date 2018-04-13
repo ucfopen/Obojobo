@@ -83,12 +83,7 @@ let endAttempt = (req, res, user, attemptId, isPreviewing) => {
 
 				calculatedScores = calculatedScoresResult
 
-				assessmentProperties.childrenMap = attemptStart.createAssessmentUsedQuestionMap(assessmentProperties)
-				for (let attempt of assessmentProperties.attemptHistory) {
-					if (attempt.state.qb) {
-						attemptStart.initAssessmentUsedQuestions(attempt.state.qb, assessmentProperties.childrenMap)
-					}
-				}
+
 				return reloadState(attemptId, attempt.draftId, assessmentProperties, attempt)
 			})
 			.then(() => {
@@ -375,6 +370,7 @@ let reloadState = (attemptId, draftId, assessmentProperties, attempt) => {
 	if(assessmentNode.node.content.review == 'afterAttempts' && !isLastAttempt){
 		return null
 	}
+	assessmentProperties.childrenMap = attemptStart.loadChildren(assessmentProperties)
 
 	attemptStart.createChosenQuestionTree(assessmentProperties.assessmentQBTree, assessmentProperties)
 

@@ -179,7 +179,6 @@ describe('MCChoice viewer-component', () => {
 	})
 
 	// Review Tests
-	// Elli Not done
 	test('getAnsType renders nothing when not reviewing', () => {
 		let moduleData = getModuleData()
 

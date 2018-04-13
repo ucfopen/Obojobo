@@ -70,13 +70,7 @@ const startAttempt = (req, res) => {
 			)
 				throw new Error(ERROR_ATTEMPT_LIMIT_REACHED)
 
-			assessmentProperties.childrenMap = createAssessmentUsedQuestionMap(assessmentProperties)
-
-			for (let attempt of assessmentProperties.attemptHistory) {
-				if (attempt.state.qb) {
-					initAssessmentUsedQuestions(attempt.state.qb, assessmentProperties.childrenMap)
-				}
-			}
+			assessmentProperties.childrenMap = loadChildren(assessmentProperties)
 
 			createChosenQuestionTree(assessmentProperties.assessmentQBTree, assessmentProperties)
 
@@ -144,6 +138,17 @@ const startAttempt = (req, res) => {
 		})
 }
 
+const loadChildren = assessmentProperties => {
+	const childrenMap = createAssessmentUsedQuestionMap(assessmentProperties)
+
+	for (let attempt of assessmentProperties.attemptHistory) {
+		if (attempt.state.qb) {
+			initAssessmentUsedQuestions(attempt.state.qb, childrenMap)
+		}
+	}
+	return childrenMap
+}
+
 // Choose is the number of questions to show per attempt, select indicates how to display them.
 const getQuestionBankProperties = questionBankNode => ({
 	choose: questionBankNode.content.choose || Infinity,
@@ -171,7 +176,7 @@ const initAssessmentUsedQuestions = (node, usedQuestionMap) => {
 	for (let child of node.children) initAssessmentUsedQuestions(child, usedQuestionMap)
 }
 
-// Sort the question banks and questions sequentially, get their nodes from the tree via id, 
+// Sort the question banks and questions sequentially, get their nodes from the tree via id,
 // and only return up to the desired amount of questions per attempt (choose property).
 const chooseQuestionsSequentially = (assessmentProperties, rootId, numQuestionsPerAttempt) => {
 	const { oboNode, childrenMap } = assessmentProperties
@@ -227,5 +232,6 @@ module.exports = {
 	chooseQuestionsSequentially,
 	createChosenQuestionTree,
 	getNodeQuestions,
-	getSendToClientPromises
+	getSendToClientPromises,
+	loadChildren
 }
