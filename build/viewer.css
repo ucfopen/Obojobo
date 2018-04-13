@@ -76,8 +76,12 @@ body {
   font-size: 14pt; }
 
 #viewer-app {
+  opacity: 0;
+  transition: opacity 0.4s;
   height: 100%;
   overflow: auto; }
+  #viewer-app.is-loaded {
+    opacity: 1; }
   #viewer-app .root {
     height: 100%; }
 

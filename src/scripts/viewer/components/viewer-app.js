@@ -47,6 +47,14 @@ export default class ViewerApp extends React.Component {
 	constructor(props) {
 		super(props)
 
+		window.__load = () => {
+			this.setState({ loading: true })
+		}
+
+		window.__loaded = () => {
+			this.setState({ loading: false })
+		}
+
 		Common.Store.loadDependency('https://cdnjs.cloudflare.com/ajax/libs/KaTeX/0.5.1/katex.min.css')
 
 		Dispatcher.on('viewer:scrollTo', payload => {
@@ -150,6 +158,7 @@ export default class ViewerApp extends React.Component {
 
 				let loadingEl = document.getElementById('viewer-app-loading')
 				if (loadingEl && loadingEl.parentElement) {
+					document.getElementById('viewer-app').classList.add('is-loaded')
 					loadingEl.parentElement.removeChild(loadingEl)
 				}
 			})
