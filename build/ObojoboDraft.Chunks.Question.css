@@ -45,7 +45,8 @@
   max-width: 44em; }
 
 .obojobo-draft--chunks--question.is-hidden .flipper {
-  border: 1px solid #6714bd; }
+  border: 1px solid #6714bd;
+  max-height: 15em; }
 
 .obojobo-draft--chunks--question.is-practice .back::before {
   color: #999999;
@@ -77,8 +78,10 @@
   background: #ffffff;
   cursor: pointer;
   border-radius: 0.25em; }
-  .obojobo-draft--chunks--question .blocker:hover .obojobo-draft--components--button {
-    transform: translate(-50%, -50%) scale(1.1, 1.1); }
+  .obojobo-draft--chunks--question .blocker:hover {
+    background: #f9f4ff; }
+    .obojobo-draft--chunks--question .blocker:hover .obojobo-draft--components--button {
+      transform: translate(-50%, -50%) scale(1.1, 1.1); }
   .obojobo-draft--chunks--question .blocker .obojobo-draft--components--button {
     transition: transform 0.2s;
     font-family: "Libre Franklin", Arial, sans-serif;
