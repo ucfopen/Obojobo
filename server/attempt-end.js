@@ -432,7 +432,6 @@ let recreateChosenQuestionTree = (node, assessmentNode) => {
 	let newChildren = [];
 
 	for (let child of node.children) {
-		logger.info(JSON.stringify(child))
 		newChildren.push(recreateChosenQuestionTree(child, assessmentNode))
 	}
 
