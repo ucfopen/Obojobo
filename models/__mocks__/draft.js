@@ -12,9 +12,7 @@ class MockDraft {
 	}
 }
 
-MockDraft.fetchById = jest.fn().mockImplementation(id => {
-	return Promise.resolve(new MockDraft())
-})
+MockDraft.fetchById = jest.fn().mockResolvedValue(new MockDraft())
 
 MockDraft.__setMockYell = newMock => {
 	mockYell = newMock
