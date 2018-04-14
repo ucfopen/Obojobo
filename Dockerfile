@@ -4,6 +4,12 @@ RUN apk add --no-cache \
 	git \
 	python
 
+ADD bin/clone_and_test.sh /bin/docker_clone_and_test.sh
 
-# docker build -t docengine:3.3.0
-# docker run -i -w /docengine -v $(pwd):/docengine/ docengine:3.3.0 yarn test --coverage
+CMD mkdir /project
+
+ENV GIT_BRANCH=master
+ENV GIT_REPO=https://github.com/ucfcdl/Obojobo-Document-Engine.git
+
+# docker build -t docengine:latest .
+# docker run -i -e GIT_USER -e GIT_PASSWORD -e GIT_BRANCH docengine:latest /bin/docker_clone_and_test.sh
