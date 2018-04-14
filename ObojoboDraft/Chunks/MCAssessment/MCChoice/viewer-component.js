@@ -20,7 +20,8 @@ const getInputType = responseType => {
 }
 
 const questionIsSelected = (questionState, model) => {
-	let response = QuestionUtil.getResponse(questionState,
+	let response = QuestionUtil.getResponse(
+		questionState,
 		model.getParentOfType('ObojoboDraft.Chunks.Question')
 	) || { ids: [] }
 
@@ -56,9 +57,7 @@ const MCChoice = props => {
 
 					if (isAnswerItem) {
 						let Component = child.getComponentClass()
-						return (
-							<Component key={child.get('id')} model={child} moduleData={props.moduleData} />
-						)
+						return <Component key={child.get('id')} model={child} moduleData={props.moduleData} />
 					}
 				})}
 			</div>

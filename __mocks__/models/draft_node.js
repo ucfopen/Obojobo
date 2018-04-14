@@ -15,7 +15,6 @@ class DraftNode {
 		this.yell = mockYell
 		this.toObject = jest.fn()
 	}
-
 }
 
 DraftNode.__setMockYell = newMock => {

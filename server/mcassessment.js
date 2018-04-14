@@ -18,7 +18,6 @@ class MCAssessment extends DraftNode {
 				break
 
 			case 'pick-all':
-
 				let correctIds = new Set(
 					[...this.immediateChildrenSet].filter(id => {
 						return this.draftTree.getChildNodeById(id).node.content.score === 100

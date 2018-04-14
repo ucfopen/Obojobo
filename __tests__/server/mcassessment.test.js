@@ -33,14 +33,14 @@ describe('MCAssessment', () => {
 	})
 
 	it("returns if question doesn't contain 'this' node on calulate score", () => {
-		let question = {contains: () => false}
+		let question = { contains: () => false }
 		let res = mcAssessment.onCalculateScore({}, question, {}, setScore)
 		expect(res).toBe(undefined)
 		expect(setScore).not.toHaveBeenCalled()
 	})
 
 	it('sets score to 100 on correct answer chosen (pick-one)', () => {
-		let question = {contains: () => true}
+		let question = { contains: () => true }
 		const responseRecord = { response: { ids: ['test'] } }
 		mcAssessment.node.content = { responseType: 'pick-one' }
 		expect(setScore).not.toHaveBeenCalled()
@@ -49,7 +49,7 @@ describe('MCAssessment', () => {
 	})
 
 	it('sets score to 0 on wrong answer chosen (pick-one)', () => {
-		let question = {contains: () => true}
+		let question = { contains: () => true }
 		const responseRecord = { response: { ids: ['test3'] } }
 		mcAssessment.node.content = { responseType: 'pick-one' }
 		expect(setScore).not.toHaveBeenCalled()
@@ -58,7 +58,7 @@ describe('MCAssessment', () => {
 	})
 
 	it('sets score to 0 if number of chosen !== number of correct answers (pick-all)', () => {
-		let question = {contains: () => true}
+		let question = { contains: () => true }
 		const responseRecord = { response: { ids: ['test'] } }
 		mcAssessment.node.content = { responseType: 'pick-all' }
 
@@ -68,7 +68,7 @@ describe('MCAssessment', () => {
 	})
 
 	it('sets score to 0 if any chosen answers are not the correct answer (pick-all)', () => {
-		let question = {contains: () => true}
+		let question = { contains: () => true }
 		const responseRecord = { response: { ids: ['test', 'test1', 'test2'] } }
 		mcAssessment.node.content = { responseType: 'pick-all' }
 
@@ -78,7 +78,7 @@ describe('MCAssessment', () => {
 	})
 
 	it('sets score to 100 on correct answers chosen (pick-all)', () => {
-		let question = {contains: () => true}
+		let question = { contains: () => true }
 		const responseRecord = { response: { ids: ['test', 'test1'] } }
 		mcAssessment.node.content = { responseType: 'pick-all' }
 

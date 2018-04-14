@@ -1954,7 +1954,6 @@ var NavStore = function (_Store) {
 				}
 			},
 			'nav:goto': function navGoto(payload) {
-				console.log(_this.state, payload.value.id);
 				oldNavTargetId = _this.state.navTargetId;
 				if (_this.gotoItem(_this.state.itemsById[payload.value.id])) {
 					_apiUtil2.default.postEvent(OboModel.getRoot(), 'nav:goto', '1.0.0', {

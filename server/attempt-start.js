@@ -161,7 +161,11 @@ const initAssessmentUsedQuestions = (node, usedQuestionMap) => {
 
 // Sort the question banks and questions sequentially, get their nodes from the tree via id,
 // and only return up to the desired amount of questions per attempt (choose property).
-const chooseUnseenQuestionsSequentially = (assessmentProperties, rootId, numQuestionsPerAttempt) => {
+const chooseUnseenQuestionsSequentially = (
+	assessmentProperties,
+	rootId,
+	numQuestionsPerAttempt
+) => {
 	const { oboNode, questionUsesMap } = assessmentProperties
 	return [...oboNode.draftTree.getChildNodeById(rootId).immediateChildrenSet]
 		.sort((a, b) => questionUsesMap.get(a) - questionUsesMap.get(b))
@@ -198,19 +202,31 @@ const chooseUnseenQuestionsRandomly = (assessmentProperties, rootId, numQuestion
 // with their respectively selected questions.
 const createChosenQuestionTree = (node, assessmentProperties) => {
 	if (node.type === QUESTION_BANK_NODE_TYPE) {
-		logger.log('TEST', node.id, node.content, node.content.choose)
 		const qbProperties = getQuestionBankProperties(node)
 
 		switch (qbProperties.select) {
 			case 'random-unseen':
-				node.children = chooseUnseenQuestionsRandomly(assessmentProperties, node.id, qbProperties.choose)
+				node.children = chooseUnseenQuestionsRandomly(
+					assessmentProperties,
+					node.id,
+					qbProperties.choose
+				)
 				break
 			case 'random-all':
-				node.children = chooseAllQuestionsRandomly(assessmentProperties, node.id, qbProperties.choose)
+				node.children = chooseAllQuestionsRandomly(
+					assessmentProperties,
+					node.id,
+					qbProperties.choose
+				)
 				break
-			// 'sequential' by default
+			case 'sequential':
 			default:
-				node.children = chooseUnseenQuestionsSequentially(assessmentProperties, node.id, qbProperties.choose)
+				node.children = chooseUnseenQuestionsSequentially(
+					assessmentProperties,
+					node.id,
+					qbProperties.choose
+				)
+				break
 		}
 	}
 
@@ -219,10 +235,12 @@ const createChosenQuestionTree = (node, assessmentProperties) => {
 
 // Return an array of question type nodes from a node tree.
 const getNodeQuestions = (node, assessmentNode, questions) => {
+	// add this item to the questions array
 	if (node.type === QUESTION_NODE_TYPE) {
 		questions.push(assessmentNode.draftTree.getChildNodeById(node.id))
 	}
 
+	// recurse through this node's children
 	for (let child of node.children) {
 		questions.concat(getNodeQuestions(child, assessmentNode, questions))
 	}

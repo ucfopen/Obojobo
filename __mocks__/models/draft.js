@@ -7,6 +7,7 @@ class MockDraft {
 		this.document = `{"json":"value"}`
 		this.getChildNodeById = jest.fn().mockReturnValue('mockChild')
 		this.node = rawDraft
+		this.childrent = []
 	}
 }
 

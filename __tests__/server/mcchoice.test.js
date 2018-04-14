@@ -7,7 +7,9 @@ describe('MCChoice', () => {
 		expect(mcChoice.registerEvents).toHaveBeenCalledTimes(1)
 		let register = mcChoice.registerEvents.mock.calls[0]
 		expect(register).toMatchSnapshot()
-		expect(register[0]['ObojoboDraft.Sections.Assessment:sendToAssessment']).toBe(mcChoice.onSendToAssessment)
+		expect(register[0]['ObojoboDraft.Sections.Assessment:sendToAssessment']).toBe(
+			mcChoice.onSendToAssessment
+		)
 	})
 
 	it('onSendToAssessment sets score to 0', () => {

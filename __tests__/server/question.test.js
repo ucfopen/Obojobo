@@ -18,10 +18,11 @@ describe('Question', () => {
 		expect(question.registerEvents).toHaveBeenCalledTimes(1)
 		let events = question.registerEvents.mock.calls[0][0]
 		expect(question.registerEvents.mock.calls[0]).toMatchSnapshot()
-		expect(events['ObojoboDraft.Sections.Assessment:sendToAssessment']).toBe(question.onSendToAssessment)
+		expect(events['ObojoboDraft.Sections.Assessment:sendToAssessment']).toBe(
+			question.onSendToAssessment
+		)
 		expect(events['ObojoboDraft.Sections.Assessment:attemptEnd']).toBe(question.onAttemptEnd)
 	})
-
 
 	it('disables practice on send to assessment', () => {
 		let responseHistory = []
@@ -31,14 +32,14 @@ describe('Question', () => {
 	})
 
 	it("returns if assessment doesn't contain 'this' node on attempt end", () => {
-		let mockAssessment = {contains: () => false}
+		let mockAssessment = { contains: () => false }
 		let res = question.onAttemptEnd({}, {}, mockAssessment, {}, currentAttempt)
 		expect(res).toBe(undefined)
 		expect(question.yell).not.toHaveBeenCalled()
 	})
 
 	it('returns if there are no question responses', () => {
-		let mockAssessment = {contains: () => true}
+		let mockAssessment = { contains: () => true }
 
 		let res = question.onAttemptEnd({}, {}, mockAssessment, [], currentAttempt)
 		expect(res).toEqual(undefined)
@@ -46,7 +47,7 @@ describe('Question', () => {
 	})
 
 	it('emits calculate score event when necessary', () => {
-		let mockAssessment = {contains: () => true}
+		let mockAssessment = { contains: () => true }
 		let responseHistory = [{ question_id: question.node.id }]
 
 		let res = {
@@ -66,7 +67,7 @@ describe('Question', () => {
 	})
 
 	it('throws error if given non-unique question response rows', () => {
-		let mockAssessment = {contains: () => true}
+		let mockAssessment = { contains: () => true }
 
 		let responseRecord = { question_id: question.node.id }
 		let responseRecord2 = { question_id: question.node.id }
