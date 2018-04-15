@@ -8,16 +8,11 @@
 	"main": "index.js",
 	"scripts": {
 		"test": "jest --verbose",
-		"test:watch": "jest --verbose --watch",
-		"test:noCache": "jest --verbose --no-cache",
-		"test:watchNoCache": "jest --verbose --watch --no-cache",
-		"test:coverage": "jest --verbose --coverage",
+		"test:ci": "CI=true jest --coverage --coverageReporters text cobertura",
 		"start": "webpack --watch",
-		"dev": "webpack-dev-server  --colors --port 8090 --host 0.0.0.0",
+		"dev": "webpack-dev-server --colors --port 8090 --host 0.0.0.0",
 		"build": "webpack",
 		"build:gitadd": "git add ./build",
-		"karma": "./node_modules/karma/bin/karma start ./karma.conf.js",
-		"karma-coverage": "./node_modules/karma/bin/karma start ./karma-coverage.conf.js",
 		"generateModuleManifest": "node ./bin/generate_module_manifest.js",
 		"prettier:run": "prettier --write '{src,server,__{tests,mocks}__,ObojoboDraft}/**/*.{js,scss}'",
 		"prettier:debug": "prettier -l '{src,server,__{tests,mocks}__,ObojoboDraft}/**/*.{js,scss}'",
@@ -100,6 +95,10 @@
 			"src/scripts/**",
 			"ObojoboDraft/**",
 			"server/**"
+		],
+		"coverageReporters": [
+			"text",
+			"lcov"
 		],
 		"coveragePathIgnorePatterns": [
 			"====THESE DONT NEED TESTS====",
