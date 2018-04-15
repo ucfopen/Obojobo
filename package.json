@@ -21,7 +21,12 @@
 		"generateModuleManifest": "node ./bin/generate_module_manifest.js",
 		"prettier:run": "prettier --write '{src,server,__{tests,mocks}__,ObojoboDraft}/**/*.{js,scss}'",
 		"prettier:debug": "prettier -l '{src,server,__{tests,mocks}__,ObojoboDraft}/**/*.{js,scss}'",
-		"precommit": "yarn test && lint-staged && yarn build && yarn build:gitadd"
+		"precommit": "yarn test && lint-staged && yarn build && yarn build:gitadd",
+		"ci:prepare": "docker build -t docengine:latest .",
+		"ci:mounted:install": "docker run -i -v $(pwd):/project/ -w /project docengine:latest yarn install --force",
+		"ci:mounted:test": "docker run -i -v $(pwd):/project/ -w /project docengine:latest yarn test --coverage",
+		"ci:mounted:build": "docker run -i -w -v $(pwd):/project/ -w /project docengine:latest yarn build",
+		"ci:isolated:test": "docker run -i -e GIT_USER -e GIT_PASSWORD -e GIT_BRANCH docengine:latest /bin/docker_clone_and_test.sh"
 	},
 	"prettier": {
 		"printWidth": 100,

@@ -8,13 +8,7 @@ git clone -b $GIT_BRANCH $GIT_REPO --depth 1 /project
 
 cd /project
 
-# make sure we clean cache before starting
-yarn cache clean
-
 # install deps
-yarn install --force --ignore-scripts
-
-# clean up after
-yarn cache clean
+yarn install --force
 
 yarn test --coverage
