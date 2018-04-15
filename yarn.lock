@@ -1275,9 +1275,9 @@ cache-base@^1.0.1:
     union-value "^1.0.0"
     unset-value "^1.0.0"
 
-"caliper-js-public@git+ssh://git@github.com/IMSGlobal/caliper-js-public.git#v1.0.0":
+"caliper-js-public@https://github.com/IMSGlobal/caliper-js-public.git#v1.0.0":
   version "1.0.0"
-  resolved "git+ssh://git@github.com/IMSGlobal/caliper-js-public.git#9654f151deb29b1003e1473d058db67ea5dfef85"
+  resolved "https://github.com/IMSGlobal/caliper-js-public.git#9654f151deb29b1003e1473d058db67ea5dfef85"
   dependencies:
     caterpillar "^2.0.7"
     caterpillar-browser "^2.0.1"
@@ -2728,9 +2728,9 @@ expect@^22.4.3:
     jest-message-util "^22.4.3"
     jest-regex-util "^22.4.3"
 
-"express-ims-lti@git+ssh://git@github.com/ucfcdl/express-ims-lti.git#20e4f025cf498b31bd21a981fe1af0707d2028b5":
+"express-ims-lti@https://github.com/ucfcdl/express-ims-lti.git#20e4f025cf498b31bd21a981fe1af0707d2028b5":
   version "0.2.4"
-  resolved "git+ssh://git@github.com/ucfcdl/express-ims-lti.git#20e4f025cf498b31bd21a981fe1af0707d2028b5"
+  resolved "https://github.com/ucfcdl/express-ims-lti.git#20e4f025cf498b31bd21a981fe1af0707d2028b5"
   dependencies:
     ims-lti "https://github.com/ChristianMurphy/ims-lti.git#d535b4c4aff8a43775d3d9c1f2069f0593b7779f"
 
@@ -5484,9 +5484,9 @@ object.values@^1.0.4:
     function-bind "^1.1.0"
     has "^1.0.1"
 
-"obojobo-draft-document-engine@git+ssh://git@github.com/ucfcdl/Obojobo-Document-Engine.git#v0.2.1":
+"obojobo-draft-document-engine@https://github.com/ucfcdl/Obojobo-Document-Engine.git#v0.2.1":
   version "0.2.1"
-  resolved "git+ssh://git@github.com/ucfcdl/Obojobo-Document-Engine.git#6aaf9a266573bb30d7602937a12c4fa663fcce5f"
+  resolved "https://github.com/ucfcdl/Obojobo-Document-Engine.git#6aaf9a266573bb30d7602937a12c4fa663fcce5f"
   dependencies:
     array-from "^2.1.1"
     babel-preset-env "^1.5.1"
@@ -5503,9 +5503,9 @@ object.values@^1.0.4:
     underscore "1.5.1"
     whatwg-fetch "^2.0.3"
 
-"obojobo-draft-xml-parser@git+ssh://git@github.com/ucfcdl/Obojobo-Docment-XML-Parser.git#v0.1.1":
+"obojobo-draft-xml-parser@https://github.com/ucfcdl/Obojobo-Docment-XML-Parser.git#v0.1.1":
   version "0.1.1"
-  resolved "git+ssh://git@github.com/ucfcdl/Obojobo-Docment-XML-Parser.git#3eab758987ea27aaae98a5030fc5665a7b9c7b92"
+  resolved "https://github.com/ucfcdl/Obojobo-Docment-XML-Parser.git#3eab758987ea27aaae98a5030fc5665a7b9c7b92"
   dependencies:
     minimist "^1.2.0"
     xml-js "^1.0.2"

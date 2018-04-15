@@ -26,7 +26,7 @@
 		"devDocEngine:start": "cd ./node_modules/obojobo-draft-document-engine && yarn start",
 		"devDocEngine:setup": "yarn devDocEngine:clone && yarn devDocEngine:nodemodules",
 		"devDocEngine:clone":
-			"git clone git@github.com:ucfcdl/Obojobo-Document-Engine.git devsrc/obojobo-draft-document-engine || echo 'already cloned'",
+			"git clone https://github.com/ucfcdl/Obojobo-Document-Engine.git devsrc/obojobo-draft-document-engine || echo 'already cloned'",
 		"devDocEngine:nodemodules": "cd ./devsrc/obojobo-draft-document-engine && yarn",
 		"devDocEngine:link":
 			"cd ./devsrc/obojobo-draft-document-engine && yarn link && cd ../.. && yarn link obojobo-draft-document-engine",
@@ -53,7 +53,7 @@
 	},
 	"dependencies": {
 		"body-parser": "^1.17.1",
-		"caliper-js-public": "git+ssh://git@github.com/IMSGlobal/caliper-js-public.git#v1.0.0",
+		"caliper-js-public": "https://github.com/IMSGlobal/caliper-js-public.git#v1.0.0",
 		"compression": "^1.6.2",
 		"concat-files": "^0.1.1",
 		"connect-pg-simple": "^3.1.2",
@@ -67,7 +67,7 @@
 		"eventemitter": "^0.3.3",
 		"express": "~4.14.0",
 		"express-ims-lti":
-			"git+ssh://git@github.com/ucfcdl/express-ims-lti.git#20e4f025cf498b31bd21a981fe1af0707d2028b5",
+			"https://github.com/ucfcdl/express-ims-lti.git#20e4f025cf498b31bd21a981fe1af0707d2028b5",
 		"express-session": "^1.15.1",
 		"extract-text-webpack-plugin": "^2.1.0",
 		"glob": "^7.1.1",
@@ -77,9 +77,9 @@
 		"newrelic": "^1.38.2",
 		"node-sass-middleware": "0.9.8",
 		"obojobo-draft-document-engine":
-			"git+ssh://git@github.com/ucfcdl/Obojobo-Document-Engine.git#v0.2.1",
+			"https://github.com/ucfcdl/Obojobo-Document-Engine.git#v0.2.1",
 		"obojobo-draft-xml-parser":
-			"git+ssh://git@github.com/ucfcdl/Obojobo-Docment-XML-Parser.git#v0.1.1",
+			"https://github.com/ucfcdl/Obojobo-Docment-XML-Parser.git#v0.1.1",
 		"on-build-webpack": "^0.1.0",
 		"pg-promise": "^5.5.0",
 		"pm2": "^2.4.2",
