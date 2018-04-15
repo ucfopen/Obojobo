@@ -4,10 +4,11 @@ RUN apk add --no-cache \
 	git \
 	python
 
-ADD bin/docker_clone_and_test.sh /bin/docker_clone_and_test.sh
-
 CMD mkdir /project
 
+ADD bin/docker_clone_and_test.sh /bin/docker_clone_and_test.sh
+
+# set some default env vars
 ENV GIT_BRANCH=master
 ENV GIT_REPO=https://github.com/ucfcdl/Obojobo-Document-Engine.git
 
