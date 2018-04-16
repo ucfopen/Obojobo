@@ -71,25 +71,7 @@ const startAttempt = (req, res) => {
 			)
 				throw new Error(ERROR_ATTEMPT_LIMIT_REACHED)
 
-			assessmentProperties.questionUsesMap = createAssessmentUsedQuestionMap(assessmentProperties)
-
-			for (let attempt of assessmentProperties.attemptHistory) {
-				if (attempt.state.qb) {
-					initAssessmentUsedQuestions(attempt.state.qb, assessmentProperties.questionUsesMap)
-				}
-			}
-
-			createChosenQuestionTree(assessmentProperties.assessmentQBTree, assessmentProperties)
-
-			attemptState = {
-				qb: assessmentProperties.assessmentQBTree,
-				questions: getNodeQuestions(
-					assessmentProperties.assessmentQBTree,
-					assessmentProperties.oboNode,
-					[]
-				),
-				data: {}
-			}
+			attemptState = getState(assessmentProperties)
 
 			return Promise.all(getSendToClientPromises(attemptState, req, res))
 		})
@@ -134,6 +116,12 @@ const startAttempt = (req, res) => {
 
 const getState = assessmentProperties => {
 	assessmentProperties.questionUsesMap = loadChildren(assessmentProperties)
+
+	for (let attempt of assessmentProperties.attemptHistory) {
+		if (attempt.state.qb) {
+			initAssessmentUsedQuestions(attempt.state.qb, assessmentProperties.questionUsesMap)
+		}
+	}
 
 	createChosenQuestionTree(assessmentProperties.assessmentQBTree, assessmentProperties)
 

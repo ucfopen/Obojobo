@@ -92,14 +92,20 @@ let endAttempt = (req, res, user, attemptId, isPreviewing) => {
 					isPreviewing
 				)
 			})
-			.then((completeAttemptResult) => {
+			.then(completeAttemptResult => {
 				logger.info(`End attempt "${attemptId}" - completeAttempt success`)
 				assessmentScoreId = completeAttemptResult.assessmentScoreId
 
-				return reloadAttemptStateIfReviewing(attemptId, attempt.draftId, assessmentProperties, attempt)
+				logger.info('Starting to reload')
+				return reloadAttemptStateIfReviewing(
+					attemptId,
+					attempt.draftId,
+					assessmentProperties,
+					attempt
+				)
 			})
 			.then(() => {
-
+				logger.info('finish reload')
 				return insertAttemptEndEvents(
 					user,
 					attempt.draftId,
@@ -358,47 +364,56 @@ let reloadAttemptStateIfReviewing = (attemptId, draftId, assessmentProperties, a
 	let assessmentNode = attempt.assessmentModel
 
 	// Do not reload the state if reviews are never allowed
-	if(assessmentNode.node.content.review == 'never'){
+	if (assessmentNode.node.content.review == 'never') {
 		return null
 	}
 
-	let isLastAttempt = (attempt.number == assessmentNode.node.content.attempts)
+	let isLastAttempt = attempt.number == assessmentNode.node.content.attempts
 
 	// Do not reload the state if reviews are only allowed after the last
 	// attempt and this is not the last attempt
-	if(assessmentNode.node.content.review == 'afterAttempts' && !isLastAttempt){
+	if (assessmentNode.node.content.review == 'afterAttempts' && !isLastAttempt) {
 		return null
 	}
 
 	let state = attemptStart.getState(assessmentProperties)
+	// Not ideal, but attempt-start needs this as a recursive structure to send
+	// client promises
+	state.questions = state.questions.map(q => q.toObject())
 
 	// If reviews are always allowed, reload the state for this attempt
 	// Each attempt's state will be reloaded as it finishes
-	if(assessmentNode.node.content.review == 'always'){
+	if (assessmentNode.node.content.review == 'always') {
+		logger.info(`Elli why ${JSON.stringify(state.questions)}`)
 		return Assessment.updateAttemptState(attemptId, state)
 	}
 
 	// If reviews are allowed after last attempt and this is the last attempt,
 	// reload the states for all attempts
-	if(assessmentNode.node.content.review == 'afterAttempts' && isLastAttempt){
-
+	if (assessmentNode.node.content.review == 'afterAttempts' && isLastAttempt) {
 		// Reload state for this attempt
-		Assessment.updateAttemptState(attemptId, state);
+		Assessment.updateAttemptState(attemptId, state)
 
 		// Reload state for all previous attempts
-		return Assessment.getAttempts(assessmentProperties.user.id, draftId, assessmentProperties.id)
-		.then(result => {
+		return Assessment.getAttempts(
+			assessmentProperties.user.id,
+			draftId,
+			assessmentProperties.id
+		).then(result => {
 			result.attempts.map(attempt => {
-				attempt.state.qb = recreateChosenQuestionTree(attempt.state.qb, assessmentProperties.draftTree)
+				attempt.state.qb = recreateChosenQuestionTree(
+					attempt.state.qb,
+					assessmentProperties.draftTree
+				)
 				let newQuestions = []
 
 				attempt.state.questions.map(question => {
 					newQuestions.push(getNodeQuestion(question.id, assessmentProperties.draftTree))
 				})
 
-				attempt.state.questions = newQuestions;
+				attempt.state.questions = newQuestions
 
-				Assessment.updateAttemptState(attempt.attemptId, attempt.state);
+				Assessment.updateAttemptState(attempt.attemptId, attempt.state)
 			})
 		})
 	}
@@ -409,17 +424,17 @@ let reloadAttemptStateIfReviewing = (attemptId, draftId, assessmentProperties, a
 
 let recreateChosenQuestionTree = (node, assessmentNode) => {
 	if (node.type === QUESTION_NODE_TYPE) {
-		return getNodeQuestion(node.id,assessmentNode)
+		return getNodeQuestion(node.id, assessmentNode)
 	}
 
-	let newChildren = [];
+	let newChildren = []
 
 	for (let child of node.children) {
 		newChildren.push(recreateChosenQuestionTree(child, assessmentNode))
 	}
 
-	node.children = newChildren;
-	return node;
+	node.children = newChildren
+	return node
 }
 // Pulls down a single question from the draft
 let getNodeQuestion = (nodeId, assessmentNode) => {
