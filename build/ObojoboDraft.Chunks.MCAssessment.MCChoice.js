@@ -254,7 +254,7 @@ var MCChoice = function (_React$Component) {
 		}
 	}, {
 		key: 'renderAnsFlag',
-		value: function renderAnsFlag(type, key) {
+		value: function renderAnsFlag(type) {
 			var flagEl = void 0;
 
 			switch (type) {
@@ -292,7 +292,7 @@ var MCChoice = function (_React$Component) {
 
 			return React.createElement(
 				'div',
-				{ key: key + '-flag', className: 'answer-flag' + type },
+				{ className: 'answer-flag' + type },
 				flagEl
 			);
 		}
@@ -315,6 +315,7 @@ var MCChoice = function (_React$Component) {
 			var flag = void 0;
 			if (this.props.mode === 'review') {
 				if (!this.props.moduleData.questionState.scores[this.props.moduleData.navState.context]) return React.createElement('div', null);
+				flag = this.renderAnsFlag(ansType);
 			}
 
 			return React.createElement(
@@ -347,7 +348,7 @@ var MCChoice = function (_React$Component) {
 							return React.createElement(
 								'div',
 								{ key: id },
-								_this2.renderAnsFlag(ansType, id),
+								flag,
 								React.createElement(Component, { key: id, model: child, moduleData: _this2.props.moduleData })
 							);
 						}

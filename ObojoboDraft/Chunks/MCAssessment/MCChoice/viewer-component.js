@@ -65,7 +65,7 @@ export default class MCChoice extends React.Component {
 		}
 	}
 
-	renderAnsFlag(type, key) {
+	renderAnsFlag(type) {
 		let flagEl
 
 		switch (type) {
@@ -85,11 +85,7 @@ export default class MCChoice extends React.Component {
 				break
 		}
 
-		return (
-			<div key={key + '-flag'} className={'answer-flag' + type}>
-				{flagEl}
-			</div>
-		)
+		return <div className={'answer-flag' + type}>{flagEl}</div>
 	}
 
 	render() {
@@ -116,6 +112,7 @@ export default class MCChoice extends React.Component {
 		if (this.props.mode === 'review') {
 			if (!this.props.moduleData.questionState.scores[this.props.moduleData.navState.context])
 				return <div />
+			flag = this.renderAnsFlag(ansType)
 		}
 
 		return (
@@ -149,7 +146,7 @@ export default class MCChoice extends React.Component {
 							let Component = child.getComponentClass()
 							return (
 								<div key={id}>
-									{this.renderAnsFlag(ansType, id)}
+									{flag}
 									<Component key={id} model={child} moduleData={this.props.moduleData} />
 								</div>
 							)
