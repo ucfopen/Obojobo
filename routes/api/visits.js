@@ -8,7 +8,8 @@ const viewerState = oboRequire('viewer/viewer_state')
 
 router.post('/start', (req, res, next) => {
 	let user
-	let visitId
+	let visit
+	let isPreviewVisit
 	let viewerStateData = null
 	let ltiOutcomeServiceUrl = null
 	let visitStartReturnExtensionsProps = {}
@@ -16,12 +17,14 @@ router.post('/start', (req, res, next) => {
 	return req
 		.requireCurrentUser()
 		.then(userFromReq => {
+			let visitId = req.body.visitId
+
 			user = userFromReq
-			visitId = req.body.visitId
+
 			// get visit
 			return db.one(
 				`
-				SELECT id, is_active
+				SELECT is_active, preview, draft_content_id
 				FROM visits
 				WHERE id = $[visitId]
 				AND user_id = $[userId]
@@ -35,11 +38,18 @@ router.post('/start', (req, res, next) => {
 				}
 			)
 		})
-		.then(() => {
-			return ltiUtil.retrieveLtiLaunch(user.id, req.body.draftId, 'START_VISIT_API')
+		.then(visitResult => {
+			visit = visitResult
+			isPreviewVisit = visit.preview === true
+
+			if (!isPreviewVisit) {
+				return ltiUtil.retrieveLtiLaunch(user.id, req.body.draftId, 'START_VISIT_API')
+			}
 		})
 		.then(launch => {
-			ltiOutcomeServiceUrl = launch.reqVars.lis_outcome_service_url
+			if (!isPreviewVisit) {
+				ltiOutcomeServiceUrl = launch.reqVars.lis_outcome_service_url
+			}
 
 			return viewerState.get(user.id, req.body.draftId)
 		})
@@ -49,6 +59,10 @@ router.post('/start', (req, res, next) => {
 			return DraftModel.fetchById(req.body.draftId)
 		})
 		.then(draft => {
+			if (visit.draft_content_id !== draft.root.node._rev) {
+				throw new Error('Visit for older draft version!')
+			}
+
 			return draft.yell(
 				'internal:startVisit',
 				req,
@@ -60,7 +74,7 @@ router.post('/start', (req, res, next) => {
 		})
 		.then(() => {
 			res.success({
-				visitId,
+				visitId: req.body.visitId,
 				isPreviewing: user.canViewEditor ? user.canViewEditor : false,
 				lti: {
 					lis_outcome_service_url: ltiOutcomeServiceUrl

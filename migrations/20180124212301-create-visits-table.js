@@ -23,16 +23,17 @@ exports.up = function(db) {
 				notNull: true,
 				defaultValue: new String('now()')
 			},
-			user_id: { type: 'bigserial', notNull: true },
-			draft_content_id: { type: 'bigserial' },
+			user_id: { type: 'bigint', notNull: true },
+			draft_content_id: { type: 'bigint', notNull: true },
 			draft_id: { type: 'UUID', notNull: true },
-			launch_id: { type: 'bigserial', notNull: true },
-			resource_link_id: { type: 'varchar', notNull: true },
+			launch_id: { type: 'bigint' },
+			resource_link_id: { type: 'varchar' },
 			is_active: {
 				type: 'boolean',
 				notNull: true,
 				defaultValue: false
-			}
+			},
+			preview: { type: 'boolean', notNull: true }
 		})
 		.then(result => {
 			return db.addIndex('visits', 'visits_unique_visit', ['user_id', 'draft_id', 'is_active'])

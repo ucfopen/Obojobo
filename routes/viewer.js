@@ -6,40 +6,18 @@ let insertEvent = oboRequire('insert_event')
 let createCaliperEvent = oboRequire('routes/api/events/create_caliper_event')
 let { ACTOR_USER } = require('./api/events/caliper_constants')
 let { getSessionIds } = require('./api/events/caliper_utils')
+let { createVisit } = require('./create-visit')
 let db = oboRequire('db')
 
 router.post('/:draftId/:page?', (req, res, next) => {
-	let user = null
-	let draft = null
-	let visitId = null
-
 	return req
 		.requireCurrentUser()
 		.then(currentUser => {
-			user = currentUser
-			return db.none(
-				`UPDATE visits
-				SET is_active = false
-				WHERE user_id = $[userId]
-				AND draft_id = $[draftId]`,
-				{
-					draftId: req.params.draftId,
-					userId: user.id
-				}
-			)
-		})
-		.then(() => {
-			return db.one(
-				`INSERT INTO visits
-					(draft_id, user_id, launch_id, resource_link_id, is_active)
-					VALUES ($[draftId], $[userId], $[launchId], $[resourceLinkId], true)
-					RETURNING id`,
-				{
-					draftId: req.params.draftId,
-					userId: user.id,
-					resourceLinkId: req.lti.body.resource_link_id,
-					launchId: req.oboLti.launchId
-				}
+			return createVisit(
+				currentUser.id,
+				req.params.draftId,
+				req.lti.body.resource_link_id,
+				req.oboLti.launchId
 			)
 		})
 		.then(visit => {
