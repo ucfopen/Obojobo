@@ -42,21 +42,19 @@
 		&.is-response-type-pick-one .obojobo-draft--chunks--mc-assessment--mc-choice,
 		&.is-response-type-pick-all .obojobo-draft--chunks--mc-assessment--mc-choice,
 		&.is-response-type-pick-one-multiple-correct .obojobo-draft--chunks--mc-assessment--mc-choice {
-			&.chosen-correctly{
+			&.chosen-correctly {
 				background: transparentize($color-correct, 0.9);
 			}
-			&.should-not-have-chosen{
+			&.should-not-have-chosen {
 				background: transparentize($color-incorrect, 0.9);
 			}
-			&.could-have-chosen{
+			&.could-have-chosen {
 				background: transparentize($color-alt-correct, 0.9);
 			}
-			&.should-have-chosen{
+			&.should-have-chosen {
 				background: transparentize($color-unchosen-correct, 0.9);
 			}
 		}
-
-
 	}
 
 	&.is-mode-review {
@@ -64,8 +62,6 @@
 			animation: none;
 		}
 	}
-
-
 
 	.instructions {
 		$font-size: 1em;
@@ -331,51 +327,55 @@
 	}
 }
 
-.answer-flag{
+.answer-flag {
 	&:after {
 		position: absolute;
+		z-index: -1;
 		left: 0;
 		top: 50%;
-		transform: translate(12.3em, -50%) rotate(45deg);
+		transform: translate(6.9em, -50%) rotate(45deg);
 		content: ' ';
-		width: 1.4em;
-		height: 1.4em;
+		width: 1.75em;
+		height: 1.75em;
 	}
 
-	margin-left: -11em;
+	margin-left: -4.6em;
 	position: absolute;
 	color: $color-bg;
-	width: 13em;
+	width: 7.75em;
 	text-align: center;
 	border-radius: $dimension-rounded-radius;
 	border-top-right-radius: 0;
 	border-bottom-right-radius: 0;
-	font-size: .75em;
+	font-size: 0.65em;
 	top: 50%;
 	transform: translate(0, -50%);
-	>p{
-		margin: 0;
+	> p {
+		margin: 0.25em;
+		margin-left: 0em;
+		line-height: 1em;
+		top: 50%;
 	}
 
-	&.chosen-correctly{
+	&.chosen-correctly {
 		background-color: $color-correct;
 		&:after {
 			background-color: $color-correct;
 		}
 	}
-	&.should-not-have-chosen{
+	&.should-not-have-chosen {
 		background-color: $color-incorrect;
 		&:after {
 			background-color: $color-incorrect;
 		}
 	}
-	&.should-have-chosen{
+	&.should-have-chosen {
 		background-color: $color-unchosen-correct;
 		&:after {
 			background-color: $color-unchosen-correct;
 		}
 	}
-	&.could-have-chosen{
+	&.could-have-chosen {
 		background-color: $color-alt-correct;
 		&:after {
 			background-color: $color-alt-correct;

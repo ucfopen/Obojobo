@@ -1084,7 +1084,7 @@ var MCChoice = function (_React$Component) {
 					flagEl = React.createElement(
 						'p',
 						null,
-						'Correct Answer'
+						' Correct Answer '
 					);
 					break;
 			}
@@ -1147,7 +1147,11 @@ var MCChoice = function (_React$Component) {
 								'div',
 								null,
 								flag,
-								React.createElement(Component, { key: child.get('id'), model: child, moduleData: _this2.props.moduleData })
+								React.createElement(Component, {
+									key: child.get('id'),
+									model: child,
+									moduleData: _this2.props.moduleData
+								})
 							);
 						}
 					})

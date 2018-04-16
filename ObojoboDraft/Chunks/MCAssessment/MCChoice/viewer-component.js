@@ -37,7 +37,7 @@ export default class MCChoice extends React.Component {
 		}
 	}
 
-	getAnsType(response, score){
+	getAnsType(response, score) {
 		// The question is a correct choice
 		let isACorrectChoice = this.props.model.get('content').score === 100
 
@@ -48,30 +48,29 @@ export default class MCChoice extends React.Component {
 		// The user selected this answer
 		let isUserSelected = response.ids.indexOf(this.props.model.get('id')) !== -1
 
-
-		if(isUserSelected){
-			if(isACorrectChoice){
+		if (isUserSelected) {
+			if (isACorrectChoice) {
 				return CHOSEN_CORRECTLY
-			}else{
+			} else {
 				return SHOULD_NOT_HAVE_CHOSEN
 			}
-		}else if(isACorrectChoice){
-			if(userIsCorrect){
+		} else if (isACorrectChoice) {
+			if (userIsCorrect) {
 				return COULD_HAVE_CHOSEN
-			}else{
+			} else {
 				return SHOULD_HAVE_CHOSEN
 			}
-		}else{
+		} else {
 			return UNCHOSEN_CORRECTLY
 		}
 	}
 
-	renderAnsFlag(type){
+	renderAnsFlag(type) {
 		let flagEl
 
-		switch(type){
+		switch (type) {
 			case UNCHOSEN_CORRECTLY:
-				return <div/>
+				return <div />
 			case CHOSEN_CORRECTLY:
 				flagEl = <p>Your Answer (Correct)</p>
 				break
@@ -82,14 +81,11 @@ export default class MCChoice extends React.Component {
 				flagEl = <p>Another Correct Answer</p>
 				break
 			case SHOULD_HAVE_CHOSEN:
-				flagEl = <p>Correct Answer</p>
+				flagEl = <p> Correct Answer </p>
 				break
 		}
 
-		return (<div className={
-					'answer-flag' + type}>
-					{flagEl}
-				</div>)
+		return <div className={'answer-flag' + type}>{flagEl}</div>
 	}
 
 	render() {
@@ -147,9 +143,14 @@ export default class MCChoice extends React.Component {
 
 						if (isAnswerItem) {
 							let Component = child.getComponentClass()
-							return (<div>
-								{flag}
-								<Component key={child.get('id')} model={child} moduleData={this.props.moduleData} />
+							return (
+								<div>
+									{flag}
+									<Component
+										key={child.get('id')}
+										model={child}
+										moduleData={this.props.moduleData}
+									/>
 								</div>
 							)
 						}
