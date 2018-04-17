@@ -45,11 +45,14 @@ describe('preview route', () => {
 		expect(mockRouterMethods.get).toBeCalledWith('/:draftId', expect.any(Function))
 	})
 
-	test('GET preview/:draftId redirects to a visit', () => {
+	test('GET preview/:draftId redirects to a visit (if user can view the editor)', () => {
 		expect.assertions(2)
 
 		let routeFunction = mockRouterMethods.get.mock.calls[0][1]
-		mockReq.requireCurrentUser.mockResolvedValueOnce(new User())
+		let user = new User()
+		user.canViewEditor = () => true
+
+		mockReq.requireCurrentUser.mockResolvedValueOnce(user)
 
 		return routeFunction(mockReq, mockRes, mockNext).then(result => {
 			expect(createPreviewVisit).toBeCalledWith(0, 'mocked-draft-id')
@@ -57,7 +60,22 @@ describe('preview route', () => {
 		})
 	})
 
-	test('GET preview/:draftId onlogs error and calls next if error', () => {
+	test('GET preview/:draftId fails if user cannot view the editor', () => {
+		expect.assertions(2)
+
+		let routeFunction = mockRouterMethods.get.mock.calls[0][1]
+		let user = new User()
+		let error = new Error('Not authorized to preview')
+
+		mockReq.requireCurrentUser.mockResolvedValueOnce(user)
+
+		return routeFunction(mockReq, mockRes, mockNext).then(result => {
+			expect(logger.error).toBeCalledWith(error)
+			expect(mockNext).toBeCalledWith(error)
+		})
+	})
+
+	test('GET preview/:draftId logs error and calls next if error thrown', () => {
 		expect.assertions(2)
 
 		let routeFunction = mockRouterMethods.get.mock.calls[0][1]

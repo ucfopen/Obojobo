@@ -8,6 +8,8 @@ router.get('/:draftId', (req, res, next) => {
 	return req
 		.requireCurrentUser()
 		.then(currentUser => {
+			if (!currentUser.canViewEditor) throw new Error('Not authorized to preview')
+
 			return createPreviewVisit(currentUser.id, req.params.draftId)
 		})
 		.then(visit => {
