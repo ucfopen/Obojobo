@@ -13,9 +13,13 @@ class DraftNode {
 		this.registerEvents = jest.fn()
 		this.contains = jest.fn().mockReturnValue(true)
 		this.yell = mockYell
-		this.toObject = jest.fn()
+	}
+
+	toObject(){
+		return {mockDraftId: this.id}
 	}
 }
+
 
 DraftNode.__setMockYell = newMock => {
 	mockYell = newMock

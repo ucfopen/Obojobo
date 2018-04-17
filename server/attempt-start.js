@@ -159,18 +159,24 @@ const initAssessmentUsedQuestions = (node, usedQuestionMap) => {
 	for (let child of node.children) initAssessmentUsedQuestions(child, usedQuestionMap)
 }
 
-// Sort the question banks and questions sequentially, get their nodes from the tree via id,
-// and only return up to the desired amount of questions per attempt (choose property).
+// Sort the question banks and questions sequentially
+// get their nodes from the tree via id,
+// only return up to the desired amount of questions per attempt (choose property).
 const chooseUnseenQuestionsSequentially = (
 	assessmentProperties,
-	rootId,
+	rootId, // the root id of the question bank
 	numQuestionsPerAttempt
 ) => {
 	const { oboNode, questionUsesMap } = assessmentProperties
+
+	// convert the questionBank's set of direct children ids to an array
 	return [...oboNode.draftTree.getChildNodeById(rootId).immediateChildrenSet]
+		// sort those ids based on the number of time's the've been used
 		.sort((a, b) => questionUsesMap.get(a) - questionUsesMap.get(b))
-		.map(id => oboNode.draftTree.getChildNodeById(id).toObject())
+		// reduce the array to the number of questions per attempt
 		.slice(0, numQuestionsPerAttempt)
+		// return the node objects using DraftNode.toObject
+		.map(id => oboNode.draftTree.getChildNodeById(id).toObject())
 }
 
 // Randomly chooses all questions to display irregardless if they have been seen or not.
@@ -178,8 +184,8 @@ const chooseAllQuestionsRandomly = (assessmentProperties, rootId, numQuestionsPe
 	const { oboNode } = assessmentProperties
 	const oboNodeQuestionArray = [...oboNode.draftTree.getChildNodeById(rootId).immediateChildrenSet]
 	return _.shuffle(oboNodeQuestionArray)
-		.map(id => oboNode.draftTree.getChildNodeById(id).toObject())
 		.slice(0, numQuestionsPerAttempt)
+		.map(id => oboNode.draftTree.getChildNodeById(id).toObject())
 }
 
 // Randomly chooses unseen questions to display.
@@ -194,12 +200,14 @@ const chooseUnseenQuestionsRandomly = (assessmentProperties, rootId, numQuestion
 
 			return questionUsesMap.get(a) - questionUsesMap.get(b)
 		})
-		.map(id => oboNode.draftTree.getChildNodeById(id).toObject())
 		.slice(0, numQuestionsPerAttempt)
+		.map(id => oboNode.draftTree.getChildNodeById(id).toObject())
 }
 
 // This will narrow down the assessment tree to question banks
 // with their respectively selected questions.
+// node = initially a QuestionBank Node, recurses through children
+// to find nested questionBanks
 const createChosenQuestionTree = (node, assessmentProperties) => {
 	if (node.type === QUESTION_BANK_NODE_TYPE) {
 		const qbProperties = getQuestionBankProperties(node)

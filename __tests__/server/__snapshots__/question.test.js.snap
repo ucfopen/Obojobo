@@ -27,7 +27,6 @@ Array [
         ],
       ],
     },
-    "toObject": [MockFunction],
     "yell": [MockFunction] {
       "calls": Array [
         [Circular],
