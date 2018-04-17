@@ -27,6 +27,30 @@
 		}
 	}
 
+	@mixin correct() {
+		content: '✔';
+		position: absolute;
+		top: 0.65em;
+		display: block;
+		color: $color-correct;
+		font-size: 2.5em;
+		transform: translate(-50%, -50%);
+		left: 0.6em;
+		animation: fadein $duration-animation-default * 2;
+	}
+
+	@mixin incorrect() {
+		content: '✖';
+		position: absolute;
+		top: 0.65em;
+		display: block;
+		color: $color-incorrect;
+		font-size: 2.5em;
+		transform: translate(-50%, -50%);
+		left: 0.6em;
+		animation: fadein $duration-animation-default * 2;
+	}
+
 	padding-bottom: 0;
 	// .obojobo-draft--chunks--mc-assessment--mc-choice
 	// {
@@ -37,22 +61,70 @@
 	// }
 
 	&.is-scored {
-		.obojobo-draft--chunks--mc-assessment--mc-choice {
-			&.is-type-chosen-correctly {
-				background: transparentize($color-correct, 0.9);
-			}
-			&.is-type-should-not-have-chosen {
-				background: transparentize($color-incorrect, 0.9);
-			}
-
+		// These two rules, one for pick-all and one for the others, could be combined but
+		// don't - IE11 has a bug that applies multiple sizes in pseudo elements :(
+		&.is-response-type-pick-one .obojobo-draft--chunks--mc-assessment--mc-choice,
+		&.is-response-type-pick-one-multiple-correct .obojobo-draft--chunks--mc-assessment--mc-choice {
 			// Only show unchosen correct answers in review
 			&.is-mode-review {
+				&:before {
+					content: none;
+				}
 				&.is-type-could-have-chosen {
 					background: transparentize($color-alt-correct, 0.9);
 				}
 				&.is-type-should-have-chosen {
 					background: transparentize($color-unchosen-correct, 0.9);
 				}
+			}
+
+			&.is-type-chosen-correctly {
+				// Do not include the checkmark on review
+				&:not(.is-mode-review) {
+					&:before {
+						@include correct();
+					}
+				}
+
+				background: transparentize($color-correct, 0.9);
+			}
+
+			&.is-type-should-not-have-chosen {
+				// Do not include the x on review
+				&:not(.is-mode-review) {
+					&:before {
+						@include incorrect();
+					}
+				}
+
+				background: transparentize($color-incorrect, 0.9);
+			}
+		}
+
+		&.is-response-type-pick-all .obojobo-draft--chunks--mc-assessment--mc-choice {
+			@mixin smaller() {
+				font-size: 1.25em;
+				left: 1.25em;
+				top: 1.5em;
+				letter-spacing: 0.2em;
+			}
+
+			&.is-type-chosen-correctly {
+				&:before {
+					@include correct();
+					@include smaller();
+					content: '✔' attr(data-choice-label);
+				}
+				background: transparentize($color-correct, 0.9);
+			}
+
+			&.is-type-should-not-have-chosen {
+				&:before {
+					@include incorrect();
+					@include smaller();
+					content: '✖' attr(data-choice-label);
+				}
+				background: transparentize($color-incorrect, 0.9);
 			}
 		}
 	}

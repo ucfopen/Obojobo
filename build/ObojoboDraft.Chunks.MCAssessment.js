@@ -1112,17 +1112,19 @@ var MCChoice = function (_React$Component) {
 			var isSelected = response.ids.indexOf(this.props.model.get('id')) !== -1;
 
 			var flag = void 0;
+			var isCorrect = void 0;
 			if (this.props.mode === 'review') {
 				if (!this.props.moduleData.questionState.scores[this.props.moduleData.navState.context]) return React.createElement('div', null);
 				flag = this.renderAnsFlag(ansType);
-			}
+				isCorrect = this.props.model.get('content').score === 100;
+			} else isCorrect = this.props.model.modelState.score === 100;
 
 			return React.createElement(
 				OboComponent,
 				{
 					model: this.props.model,
 					moduleData: this.props.moduleData,
-					className: 'obojobo-draft--chunks--mc-assessment--mc-choice' + ' is-type-' + ansType + ' is-mode-' + this.props.mode,
+					className: 'obojobo-draft--chunks--mc-assessment--mc-choice' + (isSelected ? ' is-selected' : ' is-not-selected') + (isCorrect ? ' is-correct' : ' is-incorrect') + ' is-type-' + ansType + ' is-mode-' + this.props.mode,
 					'data-choice-label': this.props.label
 				},
 				React.createElement('input', {
