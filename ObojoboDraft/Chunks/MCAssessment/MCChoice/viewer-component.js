@@ -8,11 +8,11 @@ let { OboModel } = Common.models
 
 let { QuestionUtil } = Viewer.util
 
-const CHOSEN_CORRECTLY = ' chosen-correctly'
-const SHOULD_NOT_HAVE_CHOSEN = ' should-not-have-chosen'
-const COULD_HAVE_CHOSEN = ' could-have-chosen'
-const SHOULD_HAVE_CHOSEN = ' should-have-chosen'
-const UNCHOSEN_CORRECTLY = ' unchosen-correctly'
+const CHOSEN_CORRECTLY = 'chosen-correctly'
+const SHOULD_NOT_HAVE_CHOSEN = 'should-not-have-chosen'
+const COULD_HAVE_CHOSEN = 'could-have-chosen'
+const SHOULD_HAVE_CHOSEN = 'should-have-chosen'
+const UNCHOSEN_CORRECTLY = 'unchosen-correctly'
 
 export default class MCChoice extends React.Component {
 	static get defaultProps() {
@@ -85,7 +85,7 @@ export default class MCChoice extends React.Component {
 				break
 		}
 
-		return <div className={'answer-flag' + type}>{flagEl}</div>
+		return <div className={'answer-flag' + ' is-type-' + type}>{flagEl}</div>
 	}
 
 	render() {
@@ -121,6 +121,7 @@ export default class MCChoice extends React.Component {
 				moduleData={this.props.moduleData}
 				className={
 					'obojobo-draft--chunks--mc-assessment--mc-choice' +
+					' is-type-' +
 					ansType +
 					' is-mode-' +
 					this.props.mode

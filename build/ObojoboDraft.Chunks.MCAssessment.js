@@ -991,11 +991,11 @@ var OboModel = _Common2.default.models.OboModel;
 var QuestionUtil = _Viewer2.default.util.QuestionUtil;
 
 
-var CHOSEN_CORRECTLY = ' chosen-correctly';
-var SHOULD_NOT_HAVE_CHOSEN = ' should-not-have-chosen';
-var COULD_HAVE_CHOSEN = ' could-have-chosen';
-var SHOULD_HAVE_CHOSEN = ' should-have-chosen';
-var UNCHOSEN_CORRECTLY = ' unchosen-correctly';
+var CHOSEN_CORRECTLY = 'chosen-correctly';
+var SHOULD_NOT_HAVE_CHOSEN = 'should-not-have-chosen';
+var COULD_HAVE_CHOSEN = 'could-have-chosen';
+var SHOULD_HAVE_CHOSEN = 'should-have-chosen';
+var UNCHOSEN_CORRECTLY = 'unchosen-correctly';
 
 var MCChoice = function (_React$Component) {
 	_inherits(MCChoice, _React$Component);
@@ -1091,7 +1091,7 @@ var MCChoice = function (_React$Component) {
 
 			return React.createElement(
 				'div',
-				{ className: 'answer-flag' + type },
+				{ className: 'answer-flag' + ' is-type-' + type },
 				flagEl
 			);
 		}
@@ -1122,7 +1122,7 @@ var MCChoice = function (_React$Component) {
 				{
 					model: this.props.model,
 					moduleData: this.props.moduleData,
-					className: 'obojobo-draft--chunks--mc-assessment--mc-choice' + ansType + ' is-mode-' + this.props.mode,
+					className: 'obojobo-draft--chunks--mc-assessment--mc-choice' + ' is-type-' + ansType + ' is-mode-' + this.props.mode,
 					'data-choice-label': this.props.label
 				},
 				React.createElement('input', {
