@@ -47,7 +47,7 @@ describe('start attempt route', () => {
 	let buildTreeForTest = () => {
 		let n = 0
 		let draftTree = {
-			getChildNodeById: jest.fn(id => nodes.find(c => c.id ==id))
+			getChildNodeById: jest.fn(id => nodes.find(c => c.id == id))
 		}
 		let nodes = []
 		let nodeMap = new Map()
@@ -87,8 +87,6 @@ describe('start attempt route', () => {
 		}
 	}
 
-
-
 	beforeAll(() => {
 		originalRandom = Math.random
 		Math.random = jest.fn(() => 1)
@@ -103,7 +101,7 @@ describe('start attempt route', () => {
 
 		// mock _.shuffle by allways returning the same array
 		// just check to make sure shuffle.toHaveBeenCalled
-		_.shuffle.mockImplementation((arr) => arr)
+		_.shuffle.mockImplementation(arr => arr)
 		mockDraft = new Draft(testJson)
 		mockUsedQuestionMap = new Map()
 
@@ -265,18 +263,15 @@ describe('start attempt route', () => {
 	})
 
 	it('createChosenQuestionTree creates a sequential group with no limit', () => {
-
-		let {qb, assessmentProperties} = buildTreeForTest()
+		let { qb, assessmentProperties } = buildTreeForTest()
 		qb.content.select = 'sequential'
 		qb.content.choose = Infinity
 		createChosenQuestionTree(qb, assessmentProperties)
 		expect(qb.children).toMatchSnapshot()
-
 	})
 
 	it('createChosenQuestionTree creates a sequential group with a limit', () => {
-
-		let {qb, assessmentProperties} = buildTreeForTest()
+		let { qb, assessmentProperties } = buildTreeForTest()
 		qb.content.select = 'sequential'
 		qb.content.choose = 2
 		createChosenQuestionTree(qb, assessmentProperties)
@@ -284,7 +279,7 @@ describe('start attempt route', () => {
 	})
 
 	it('createChosenQuestionTree creates a random-all group with no limit', () => {
-		let {qb, assessmentProperties} = buildTreeForTest()
+		let { qb, assessmentProperties } = buildTreeForTest()
 		qb.content.select = 'random-all'
 		qb.content.choose = Infinity
 		expect(_.shuffle).not.toHaveBeenCalled()
@@ -294,7 +289,7 @@ describe('start attempt route', () => {
 	})
 
 	it('createChosenQuestionTree creates a random-all group with a limit', () => {
-		let {qb, assessmentProperties} = buildTreeForTest()
+		let { qb, assessmentProperties } = buildTreeForTest()
 		qb.content.select = 'random-all'
 		qb.content.choose = 2
 		expect(_.shuffle).not.toHaveBeenCalled()
@@ -304,28 +299,26 @@ describe('start attempt route', () => {
 	})
 
 	it('createChosenQuestionTree creates a random-unseen group with no limit', () => {
-		let {qb, assessmentProperties} = buildTreeForTest()
+		let { qb, assessmentProperties } = buildTreeForTest()
 		qb.content.select = 'random-unseen'
 		qb.content.choose = Infinity
-		expect(Math.random ).not.toHaveBeenCalled()
+		expect(Math.random).not.toHaveBeenCalled()
 		createChosenQuestionTree(qb, assessmentProperties)
 		expect(Math.random).toHaveBeenCalled()
 		expect(qb.children).toMatchSnapshot()
 	})
 
 	it('createChosenQuestionTree creates a random-unseen group with a limit', () => {
-		let {qb, assessmentProperties} = buildTreeForTest()
+		let { qb, assessmentProperties } = buildTreeForTest()
 		qb.content.select = 'random-unseen'
 		qb.content.choose = 2
-		expect(Math.random ).not.toHaveBeenCalled()
+		expect(Math.random).not.toHaveBeenCalled()
 		createChosenQuestionTree(qb, assessmentProperties)
 		expect(Math.random).toHaveBeenCalled()
 		expect(qb.children).toMatchSnapshot()
 	})
 
-	it.skip('createChosenQuestionTree creates children when tree has nested question banks', () => {
-	})
-
+	it.skip('createChosenQuestionTree handles nested question banks with limits', () => {})
 
 	it('can retrieve an array of question type nodes from a node tree', () => {
 		let n = 0

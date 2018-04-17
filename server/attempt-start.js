@@ -159,9 +159,10 @@ const initAssessmentUsedQuestions = (node, usedQuestionMap) => {
 	for (let child of node.children) initAssessmentUsedQuestions(child, usedQuestionMap)
 }
 
-// Sort the question banks and questions sequentially
-// get their nodes from the tree via id,
-// only return up to the desired amount of questions per attempt (choose property).
+// Choose questions in order, Prioritizing less used questions first
+// questions are first grouped by number of uses
+// but within those groups, questions are kept in order
+// only return up to the desired amount of questions per attempt.
 const chooseUnseenQuestionsSequentially = (
 	assessmentProperties,
 	rootId, // the root id of the question bank
@@ -169,45 +170,65 @@ const chooseUnseenQuestionsSequentially = (
 ) => {
 	const { oboNode, questionUsesMap } = assessmentProperties
 
-	// convert the questionBank's set of direct children ids to an array
-	return [...oboNode.draftTree.getChildNodeById(rootId).immediateChildrenSet]
-		// sort those ids based on the number of time's the've been used
-		.sort((a, b) => questionUsesMap.get(a) - questionUsesMap.get(b))
-		// reduce the array to the number of questions per attempt
-		.slice(0, numQuestionsPerAttempt)
-		// return the node objects using DraftNode.toObject
-		.map(id => oboNode.draftTree.getChildNodeById(id).toObject())
+	// convert this questionBank's (via rootId) set of direct children *IDs* to an array
+	return (
+		[...oboNode.draftTree.getChildNodeById(rootId).immediateChildrenSet]
+			// sort those ids based on the number of time's the've been used
+			.sort((id1, id2) => questionUsesMap.get(id1) - questionUsesMap.get(id2))
+			// reduce the array to the number of questions in attempt
+			.slice(0, numQuestionsPerAttempt)
+			// return plain objects using DraftNode.toObject
+			.map(id => oboNode.draftTree.getChildNodeById(id).toObject())
+	)
 }
 
-// Randomly chooses all questions to display irregardless if they have been seen or not.
+// Randomly choose from all questions
+// Ignores the number of times a question is used
+// only return up to the desired amount of questions per attempt.
 const chooseAllQuestionsRandomly = (assessmentProperties, rootId, numQuestionsPerAttempt) => {
 	const { oboNode } = assessmentProperties
-	const oboNodeQuestionArray = [...oboNode.draftTree.getChildNodeById(rootId).immediateChildrenSet]
-	return _.shuffle(oboNodeQuestionArray)
-		.slice(0, numQuestionsPerAttempt)
-		.map(id => oboNode.draftTree.getChildNodeById(id).toObject())
+	// convert this questionBank's (via rootId) set of direct children *IDs* to an array
+	const oboNodeQuestionIds = [...oboNode.draftTree.getChildNodeById(rootId).immediateChildrenSet]
+	// shuffle the array
+	return (
+		_.shuffle(oboNodeQuestionIds)
+			// reduce the array to the number of questions in attempt
+			.slice(0, numQuestionsPerAttempt)
+			// return the node objects using DraftNode.toObject
+			.map(id => oboNode.draftTree.getChildNodeById(id).toObject())
+	)
 }
 
 // Randomly chooses unseen questions to display.
+// prioritizes questions that have been seen less
+// will still return questions that have been seen
 const chooseUnseenQuestionsRandomly = (assessmentProperties, rootId, numQuestionsPerAttempt) => {
 	const { oboNode, questionUsesMap } = assessmentProperties
-	const oboNodeQuestionArray = [...oboNode.draftTree.getChildNodeById(rootId).immediateChildrenSet]
-	return oboNodeQuestionArray
-		.sort((a, b) => {
-			if (questionUsesMap.get(a) === questionUsesMap.get(b)) {
-				return Math.random() - 0.5
-			}
-
-			return questionUsesMap.get(a) - questionUsesMap.get(b)
-		})
-		.slice(0, numQuestionsPerAttempt)
-		.map(id => oboNode.draftTree.getChildNodeById(id).toObject())
+	// convert this questionBank's (via rootId) set of direct children *IDs* to an array
+	return (
+		[...oboNode.draftTree.getChildNodeById(rootId).immediateChildrenSet]
+			// sort, prioritizing unseen questions
+			.sort((id1, id2) => {
+				// these questsions have been seen the same number of times
+				// randomize their order reletive to each other [a, b] or [b, a]
+				if (questionUsesMap.get(id1) === questionUsesMap.get(id2)) {
+					return Math.random() - 0.5
+				}
+				// these questions have not been seen the same number of times
+				// place the lesser seen one first
+				return questionUsesMap.get(id1) - questionUsesMap.get(id2)
+			})
+			// reduce the array to the number of questions in attempt
+			.slice(0, numQuestionsPerAttempt)
+			// return plain objects using DraftNode.toObject
+			.map(id => oboNode.draftTree.getChildNodeById(id).toObject())
+	)
 }
 
-// This will narrow down the assessment tree to question banks
-// with their respectively selected questions.
-// node = initially a QuestionBank Node, recurses through children
-// to find nested questionBanks
+// This reduce a tree's children to those nodes selected for an attempt
+// node is probably initially a QuestionBank Node (or higher up tree)
+// expects all children[] of question banks to be questions or question banks
+// alters the children[] of questionbank nodes
 const createChosenQuestionTree = (node, assessmentProperties) => {
 	if (node.type === QUESTION_BANK_NODE_TYPE) {
 		const qbProperties = getQuestionBankProperties(node)
@@ -238,6 +259,7 @@ const createChosenQuestionTree = (node, assessmentProperties) => {
 		}
 	}
 
+	// Continue recursively through children
 	for (let child of node.children) createChosenQuestionTree(child, assessmentProperties)
 }
 

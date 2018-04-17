@@ -15,11 +15,14 @@ class DraftNode {
 		this.yell = mockYell
 	}
 
-	toObject(){
-		return {mockDraftId: this.id}
+	toObject() {
+		return {
+			__toObject: true,
+			id: this.id,
+			children: this.children.map(c => c.toObject())
+		}
 	}
 }
-
 
 DraftNode.__setMockYell = newMock => {
 	mockYell = newMock

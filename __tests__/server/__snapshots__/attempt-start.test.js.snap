@@ -3,10 +3,14 @@
 exports[`start attempt route createChosenQuestionTree creates a random-all group with a limit 1`] = `
 Array [
   Object {
-    "mockDraftId": "q-0",
+    "__toObject": true,
+    "children": Array [],
+    "id": "q-0",
   },
   Object {
-    "mockDraftId": "q-1",
+    "__toObject": true,
+    "children": Array [],
+    "id": "q-1",
   },
 ]
 `;
@@ -14,13 +18,19 @@ Array [
 exports[`start attempt route createChosenQuestionTree creates a random-all group with no limit 1`] = `
 Array [
   Object {
-    "mockDraftId": "q-0",
+    "__toObject": true,
+    "children": Array [],
+    "id": "q-0",
   },
   Object {
-    "mockDraftId": "q-1",
+    "__toObject": true,
+    "children": Array [],
+    "id": "q-1",
   },
   Object {
-    "mockDraftId": "q-2",
+    "__toObject": true,
+    "children": Array [],
+    "id": "q-2",
   },
 ]
 `;
@@ -28,10 +38,14 @@ Array [
 exports[`start attempt route createChosenQuestionTree creates a random-unseen group with a limit 1`] = `
 Array [
   Object {
-    "mockDraftId": "q-0",
+    "__toObject": true,
+    "children": Array [],
+    "id": "q-0",
   },
   Object {
-    "mockDraftId": "q-1",
+    "__toObject": true,
+    "children": Array [],
+    "id": "q-1",
   },
 ]
 `;
@@ -39,13 +53,19 @@ Array [
 exports[`start attempt route createChosenQuestionTree creates a random-unseen group with no limit 1`] = `
 Array [
   Object {
-    "mockDraftId": "q-0",
+    "__toObject": true,
+    "children": Array [],
+    "id": "q-0",
   },
   Object {
-    "mockDraftId": "q-1",
+    "__toObject": true,
+    "children": Array [],
+    "id": "q-1",
   },
   Object {
-    "mockDraftId": "q-2",
+    "__toObject": true,
+    "children": Array [],
+    "id": "q-2",
   },
 ]
 `;
@@ -53,10 +73,14 @@ Array [
 exports[`start attempt route createChosenQuestionTree creates a sequential group with a limit 1`] = `
 Array [
   Object {
-    "mockDraftId": "q-0",
+    "__toObject": true,
+    "children": Array [],
+    "id": "q-0",
   },
   Object {
-    "mockDraftId": "q-1",
+    "__toObject": true,
+    "children": Array [],
+    "id": "q-1",
   },
 ]
 `;
@@ -64,13 +88,19 @@ Array [
 exports[`start attempt route createChosenQuestionTree creates a sequential group with no limit 1`] = `
 Array [
   Object {
-    "mockDraftId": "q-0",
+    "__toObject": true,
+    "children": Array [],
+    "id": "q-0",
   },
   Object {
-    "mockDraftId": "q-1",
+    "__toObject": true,
+    "children": Array [],
+    "id": "q-1",
   },
   Object {
-    "mockDraftId": "q-2",
+    "__toObject": true,
+    "children": Array [],
+    "id": "q-2",
   },
 ]
 `;
