@@ -6163,6 +6163,14 @@ var ViewerApp = function (_React$Component) {
 
 		var _this = _possibleConstructorReturn(this, (ViewerApp.__proto__ || Object.getPrototypeOf(ViewerApp)).call(this, props));
 
+		window.__load = function () {
+			_this.setState({ loading: true });
+		};
+
+		window.__loaded = function () {
+			_this.setState({ loading: false });
+		};
+
 		_Common2.default.Store.loadDependency('https://cdnjs.cloudflare.com/ajax/libs/KaTeX/0.5.1/katex.min.css');
 
 		Dispatcher.on('viewer:scrollTo', function (payload) {
@@ -6276,6 +6284,7 @@ var ViewerApp = function (_React$Component) {
 
 				var loadingEl = document.getElementById('viewer-app-loading');
 				if (loadingEl && loadingEl.parentElement) {
+					document.getElementById('viewer-app').classList.add('is-loaded');
 					loadingEl.parentElement.removeChild(loadingEl);
 				}
 			}).catch(function (err) {
