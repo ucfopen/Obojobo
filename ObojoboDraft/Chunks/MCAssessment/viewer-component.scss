@@ -110,21 +110,32 @@
 			}
 
 			&.is-type-chosen-correctly {
-				&:before {
-					@include correct();
-					@include smaller();
-					content: '✔' attr(data-choice-label);
+				&:not(.is-mode-review) {
+					&:before {
+						@include correct();
+						@include smaller();
+						content: '✔' attr(data-choice-label);
+					}
 				}
 				background: transparentize($color-correct, 0.9);
 			}
 
 			&.is-type-should-not-have-chosen {
-				&:before {
-					@include incorrect();
-					@include smaller();
-					content: '✖' attr(data-choice-label);
+				&:not(.is-mode-review) {
+					&:before {
+						@include incorrect();
+						@include smaller();
+						content: '✖' attr(data-choice-label);
+					}
 				}
 				background: transparentize($color-incorrect, 0.9);
+			}
+
+			// Only show unchosen correct answers in review
+			&.is-mode-review {
+				&.is-type-should-have-chosen {
+					background: transparentize($color-unchosen-correct, 0.9);
+				}
 			}
 		}
 	}
