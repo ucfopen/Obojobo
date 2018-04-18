@@ -159,9 +159,13 @@ const initAssessmentUsedQuestions = (node, usedQuestionMap) => {
 	for (let child of node.children) initAssessmentUsedQuestions(child, usedQuestionMap)
 }
 
-// Sort the question banks and questions sequentially, get their nodes from the tree via id, 
+// Sort the question banks and questions sequentially, get their nodes from the tree via id,
 // and only return up to the desired amount of questions per attempt (choose property).
-const chooseUnseenQuestionsSequentially = (assessmentProperties, rootId, numQuestionsPerAttempt) => {
+const chooseUnseenQuestionsSequentially = (
+	assessmentProperties,
+	rootId,
+	numQuestionsPerAttempt
+) => {
 	const { oboNode, questionUsesMap } = assessmentProperties
 	return [...oboNode.draftTree.getChildNodeById(rootId).immediateChildrenSet]
 		.sort((a, b) => questionUsesMap.get(a) - questionUsesMap.get(b))
@@ -203,14 +207,26 @@ const createChosenQuestionTree = (node, assessmentProperties) => {
 
 		switch (qbProperties.select) {
 			case 'random-unseen':
-				node.children = chooseUnseenQuestionsRandomly(assessmentProperties, node.id, qbProperties.choose)
+				node.children = chooseUnseenQuestionsRandomly(
+					assessmentProperties,
+					node.id,
+					qbProperties.choose
+				)
 				break
 			case 'random-all':
-				node.children = chooseAllQuestionsRandomly(assessmentProperties, node.id, qbProperties.choose)
+				node.children = chooseAllQuestionsRandomly(
+					assessmentProperties,
+					node.id,
+					qbProperties.choose
+				)
 				break
 			// 'sequential' by default
 			default:
-				node.children = chooseUnseenQuestionsSequentially(assessmentProperties, node.id, qbProperties.choose)
+				node.children = chooseUnseenQuestionsSequentially(
+					assessmentProperties,
+					node.id,
+					qbProperties.choose
+				)
 		}
 	}
 

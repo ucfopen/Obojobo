@@ -14,29 +14,28 @@ describe('Store', () => {
 		Store.init()
 	})
 
-	test('registers a model', done => {
+	test('registers a model', () => {
+		expect.assertions(2)
 		Store.registerModel('type')
 
 		Store.getItems(items => {
 			expect(items.size).toBe(1)
 			expect(items.get('type')).toEqual({})
-
-			done()
 		})
 	})
 
-	test('registers calls init', done => {
+	test('registers calls init', () => {
+		expect.assertions(1)
 		let init = jest.fn()
 		Store.registerModel('type', { init: init })
 
 		Store.getItems(items => {
 			expect(init).toHaveBeenCalled()
-
-			done()
 		})
 	})
 
-	test('registers default', done => {
+	test('registers default', () => {
+		expect.assertions(2)
 		let init = jest.fn()
 		Store.registerModel('chunk', { type: 'chunk', default: false, __testValue: 1 })
 		Store.registerModel('chunk-default', { type: 'chunk', default: true, __testValue: 2 })
@@ -46,12 +45,11 @@ describe('Store', () => {
 		Store.getItems(items => {
 			expect(Store.getDefaultItemForModelType('chunk').__testValue).toBe(2)
 			expect(Store.getDefaultItemForModelType('page').__testValue).toBe(4)
-
-			done()
 		})
 	})
 
-	test('gets item by type', done => {
+	test('gets item by type', () => {
+		expect.assertions(4)
 		let init = jest.fn()
 		Store.registerModel('chunk', { type: 'chunk', default: false, __testValue: 1 })
 		Store.registerModel('chunk-default', { type: 'chunk', default: true, __testValue: 2 })
@@ -63,12 +61,11 @@ describe('Store', () => {
 			expect(Store.getItemForType('chunk-default').__testValue).toBe(2)
 			expect(Store.getItemForType('page').__testValue).toBe(3)
 			expect(Store.getItemForType('page-default').__testValue).toBe(4)
-
-			done()
 		})
 	})
 
-	test('sets variables and calls variable callback', done => {
+	test('sets variables and calls variable callback', () => {
+		expect.assertions(3)
 		let var1cb = jest.fn()
 		let var2cb = jest.fn()
 
@@ -88,19 +85,16 @@ describe('Store', () => {
 			expect(var1cb).toHaveBeenCalledTimes(0)
 			expect(var2cb).toHaveBeenCalledTimes(1)
 			expect(result).toBe('__model__viewerState')
-
-			done()
 		})
 	})
 
-	test('returns null for variable replacement for an unrecognized variable', done => {
+	test('returns null for variable replacement for an unrecognized variable', () => {
+		expect.assertions(1)
 		Store.registerModel('type')
 
 		Store.getItems(items => {
 			let result = Store.getTextForVariable('someVar', '__model', '__viewerState')
 			expect(result).toBe(null)
-
-			done()
 		})
 	})
 
@@ -153,15 +147,37 @@ describe('Store', () => {
 		])
 	})
 
-	test('loads dependencies', done => {
+	test('loads dependencies registered onload callback for javascript', () => {
+		expect.assertions(2)
+		document.head.appendChild = jest.fn()
+		let callback = {}
+
+		Store.loadDependency('example.js', callback)
+		expect(document.head.appendChild).toHaveBeenCalledTimes(1)
+		expect(document.head.appendChild).toHaveBeenCalledWith(
+			expect.objectContaining({
+				onload: callback
+			})
+		)
+	})
+
+	test('loads dependencies executes callback after appendchild for css', () => {
+		expect.assertions(1)
+		document.head.appendChild = jest.fn()
+
+		Store.loadDependency('example.css', () => {
+			// make sure appendChild was already called
+			expect(document.head.appendChild).toHaveBeenCalledTimes(1)
+		})
+	})
+
+	test('loads dependencies', () => {
+		expect.assertions(1)
 		document.head.appendChild = jest.fn()
 
 		Store.loadDependency('example.js')
-		expect(document.head.appendChild).toHaveBeenCalledTimes(1)
-
 		Store.loadDependency('example.css')
-		expect(document.head.appendChild).toHaveBeenCalledTimes(2)
 
-		done()
+		expect(document.head.appendChild).toHaveBeenCalledTimes(2)
 	})
 })

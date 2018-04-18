@@ -6,91 +6,61 @@ import Viewer from 'Viewer'
 let { Button } = Common.components
 let LTINetworkStates = Viewer.stores.assessmentStore.LTINetworkStates
 
-export default class LTIStatus extends React.Component {
-	onClickResendScore() {
-		AssessmentUtil.resendLTIScore(this.props.model)
-	}
+const notLTI = () =>
+	<div className="obojobo-draft--sections--assessment--lti-status is-not-lti">&nbsp;</div>
 
-	render() {
-		let ltiState = this.props.ltiState
+const noScoreSent = (externalSystemLabel) =>
+	<div className="obojobo-draft--sections--assessment--lti-status is-synced">
+		{`No score has been sent to ${externalSystemLabel} (Only passing scores are sent)`}
+	</div>
 
-		if (!ltiState.state) return null
+const synced = (assessmentScore, externalSystemLabel) =>
+	<div className="obojobo-draft--sections--assessment--lti-status is-synced">
+		{`✔ Your recorded score of ${assessmentScore}% was sent to ${externalSystemLabel}`}
+	</div>
 
-		switch (ltiState.state.gradebookStatus) {
-			case 'ok_no_outcome_service':
-				return this.renderNotLTI()
+const renderError = (ltiState, systemLabel, onClickResendScore) =>
+	<div className="obojobo-draft--sections--assessment--lti-status is-not-synced">
+		<h2>{`There was a problem sending your score to ${systemLabel}.`}</h2>
+		<p>
+			{`Don’t worry - your score is safely recorded here. We just weren’t able to send it to ${systemLabel}. Click the button below to resend your score:`}
+		</p>
+		{ltiState.errorCount === 0 || ltiState.networkState !== LTINetworkStates.IDLE ? null : (
+			<p>
+				<strong>Sorry - That didn't work.</strong>
+				{` Most likely the connection to ${systemLabel} has expired and just needs to be refreshed. Please close this tab or window, reopen this module from ${systemLabel}, return to this page and then resend your score.`}
+			</p>
+		)}
+		{(() => {
+			switch (ltiState.networkState) {
+				case LTINetworkStates.AWAITING_SEND_ASSESSMENT_SCORE_RESPONSE:
+					return <Button disabled>Resending Score...</Button>
 
-			case 'ok_null_score_not_sent':
-				return this.renderNoScoreSent()
+				case LTINetworkStates.IDLE:
+				default:
+					return (
+						<Button dangerous onClick={onClickResendScore}>
+							{ltiState.errorCount === 0 ? 'Resend score' : 'Try again anyway'}
+						</Button>
+					)
+			}
+		})()}
+	</div>
 
-			case 'ok_gradebook_matches_assessment_score':
-				return this.renderSynced()
+export default props => {
+	if (!props.ltiState.state) return null
 
-			default:
-				return this.renderError()
-		}
-	}
+	switch (props.ltiState.state.gradebookStatus) {
+		case 'ok_no_outcome_service':
+			return notLTI()
 
-	renderNotLTI() {
-		return <div className="obojobo-draft--sections--assessment--lti-status is-not-lti">&nbsp;</div>
-	}
+		case 'ok_null_score_not_sent':
+			return noScoreSent(props.externalSystemLabel)
 
-	renderNoScoreSent() {
-		let systemLabel = this.props.externalSystemLabel
+		case 'ok_gradebook_matches_assessment_score':
+			return synced(Math.round(props.assessmentScore), props.externalSystemLabel)
 
-		return (
-			<div className="obojobo-draft--sections--assessment--lti-status is-synced">
-				{`No score has been sent to ${systemLabel} (Only passing scores are sent)`}
-			</div>
-		)
-	}
-
-	renderSynced() {
-		let systemLabel = this.props.externalSystemLabel
-
-		return (
-			<div className="obojobo-draft--sections--assessment--lti-status is-synced">
-				{`✔ Your recorded score of ${Math.round(
-					this.props.assessmentScore
-				)}% was sent to ${systemLabel}`}
-			</div>
-		)
-	}
-
-	renderError() {
-		let ltiState = this.props.ltiState
-		let systemLabel = this.props.externalSystemLabel
-
-		return (
-			<div className="obojobo-draft--sections--assessment--lti-status is-not-synced">
-				<h2>{`There was a problem sending your score to ${systemLabel}.`}</h2>
-				<p>
-					{`Don’t worry - your score is safely recorded here. We just weren’t able to send it to ${systemLabel}. Click the button below to resend your score:`}
-				</p>
-				{this.props.ltiState.errorCount === 0 ||
-				ltiState.networkState !== LTINetworkStates.IDLE ? null : (
-					<p>
-						<strong>Sorry - That didn't work.</strong>
-						{` Most likely the connection to ${systemLabel} has expired and just needs to be refreshed. Please close this tab or window, reopen this module from ${systemLabel}, return to this page and then resend your score.`}
-					</p>
-				)}
-				{(() => {
-					switch (ltiState.networkState) {
-						case LTINetworkStates.AWAITING_SEND_ASSESSMENT_SCORE_RESPONSE:
-							return <Button disabled>Resending Score...</Button>
-							break
-
-						case LTINetworkStates.IDLE:
-						default:
-							return (
-								<Button dangerous onClick={this.props.onClickResendScore}>
-									{this.props.ltiState.errorCount === 0 ? 'Resend score' : 'Try again anyway'}
-								</Button>
-							)
-							break
-					}
-				})()}
-			</div>
-		)
+		default:
+			return renderError(props.ltiState, props.externalSystemLabel, props.onClickResendScore)
 	}
 }

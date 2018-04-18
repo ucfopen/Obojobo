@@ -41,7 +41,7 @@
 		}
 	}
 
-	&.is-closed {
+	&.is-not-open {
 		left: -$dimension-nav-menu;
 	}
 
@@ -56,7 +56,7 @@
 		}
 	}
 
-	&.is-disabled {
+	&.is-not-enabled {
 		display: none;
 	}
 

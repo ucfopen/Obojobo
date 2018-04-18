@@ -2,7 +2,7 @@
 	"name": "obojobo-draft-document-engine",
 	"version": "0.2.1",
 	"description": "",
-	"engines":{
+	"engines": {
 		"yarn": "^1.0"
 	},
 	"main": "index.js",
@@ -38,7 +38,6 @@
 	"author": "",
 	"devDependencies": {
 		"babel-core": "^6.6.4",
-		"babel-jest": "^20.0.1",
 		"babel-loader": "^7.0.0",
 		"babel-preset-env": "^1.5.1",
 		"babel-preset-react": "^6.5.0",
@@ -48,7 +47,7 @@
 		"enzyme-adapter-react-15": "^1.0.5",
 		"extract-text-webpack-plugin": "^2.1.0",
 		"husky": "^0.14.3",
-		"jest": "^19.0.2",
+		"jest": "^22.4.3",
 		"json-loader": "^0.5.4",
 		"lint-staged": "^6.1.1",
 		"node-bourbon": "^4.2.8",
@@ -79,7 +78,10 @@
 	},
 	"jest": {
 		"testURL": "http://localhost:3000/view/00000000-0000-0000-0000-000000000000/visit/1",
-		"setupFiles": ["./setupTests.js"],
+		"testMatch": [
+			"**/__tests__/**/*.js?(x)"
+		],
+		"setupTestFrameworkScriptFile": "./setupTests.js",
 		"verbose": true,
 		"moduleNameMapper": {
 			"^Common(.*)$": "<rootDir>/src/scripts/common$1",
@@ -87,11 +89,26 @@
 			"\\.scss$": "<rootDir>/__mocks__/ignore-file-stub.js",
 			"\\.svg$": "<rootDir>/__mocks__/ignore-file-stub.js"
 		},
-		"moduleDirectories": ["<rootDir>", "node_modules"],
-		"collectCoverageFrom": ["src/scripts/**", "ObojoboDraft/**", "server/**"],
+		"moduleDirectories": [
+			"<rootDir>",
+			"node_modules"
+		],
+		"collectCoverageFrom": [
+			"src/scripts/**",
+			"ObojoboDraft/**",
+			"server/**"
+		],
 		"coveragePathIgnorePatterns": [
-			"command-handler.js",
+			"====THESE DONT NEED TESTS====",
+			"<rootDir>/src/scripts/viewer/index.js",
+			"<rootDir>/src/scripts/viewer/app.js",
+			"<rootDir>/src/scripts/viewer/dist.js",
+			"<rootDir>/src/scripts/viewer/polyfills.js",
+			"====THESE ARE NOT USED RIGHT NOW====",
 			"selection-handler.js",
+			"<rootDir>/src/scripts/common/util/console.js",
+			"====THESE ARE FOR THE EDITOR====",
+			"command-handler.js",
 			"<rootDir>/ObojoboDraft/Chunks/Table/create-form.js",
 			"<rootDir>/ObojoboDraft/Chunks/Table/grid-button.js",
 			"<rootDir>/ObojoboDraft/Chunks/Table/table-controls.js",
@@ -106,12 +123,6 @@
 			"<rootDir>/src/scripts/common/chunk/text-chunk/text-group-el-util.js",
 			"<rootDir>/src/scripts/common/text-group/text-group-cursor.js",
 			"<rootDir>/src/scripts/common/text-group/text-group-selection.js",
-			"<rootDir>/src/scripts/common/util/console.js",
-			"<rootDir>/src/scripts/viewer",
-			"<rootDir>/src/scripts/common/net",
-			"<rootDir>/server/questionbank.js",
-			"<rootDir>/server/questionselector.js",
-			"<rootDir>/server/util.js",
 			"<rootDir>/src/scripts/common/page/screen.js",
 			"<rootDir>/src/scripts/common/page/head.js"
 		]

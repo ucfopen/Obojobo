@@ -1,24 +1,19 @@
-import QuestionUtil from '../../../src/scripts/viewer/util/question-util'
-import Dispatcher from '../../../src/scripts/common/flux/dispatcher'
-import QuestionStore from '../../../src/scripts/viewer/stores/question-store'
+jest.mock('../../../src/scripts/common/flux/dispatcher', () => ({
+	trigger: jest.fn(),
+	on: jest.fn(),
+	off: jest.fn()
+}))
 
-jest.mock('../../../src/scripts/common/flux/dispatcher', () => {
-	return {
-		trigger: jest.fn(),
-		on: jest.fn(),
-		off: jest.fn()
-	}
-})
+const QuestionUtil = require('../../../src/scripts/viewer/util/question-util').default
+const Dispatcher = require('../../../src/scripts/common/flux/dispatcher')
 
-describe.skip('QuestionUtil', () => {
-	let testModel = {
-		get: () => 'testId'
-	}
+const testModel = {
+	get: () => 'testId'
+}
 
+describe('QuestionUtil', () => {
 	beforeEach(() => {
 		jest.resetAllMocks()
-
-		QuestionStore.init()
 	})
 
 	it('should trigger question:setResponse', () => {
@@ -220,7 +215,14 @@ describe.skip('QuestionUtil', () => {
 		).toBe(true)
 	})
 
-	test.skip('checkAnswer', () => {
-		//@TODO
+	test('checkAnswer', () => {
+		QuestionUtil.checkAnswer('testId')
+
+		expect(Dispatcher.trigger).toHaveBeenCalledTimes(1)
+		expect(Dispatcher.trigger).toHaveBeenCalledWith('question:checkAnswer', {
+			value: {
+				id: 'testId'
+			}
+		})
 	})
 })

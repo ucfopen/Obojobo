@@ -21,7 +21,6 @@ import takingTestView from './components/taking-test'
 export default class Assessment extends React.Component {
 	constructor() {
 		super()
-
 		this.state = { step: null }
 	}
 

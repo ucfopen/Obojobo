@@ -1,9 +1,9 @@
 import Common from 'Common'
 
-let { Dispatcher } = Common.flux
-let { OboModel } = Common.models
+const { Dispatcher } = Common.flux
+const { OboModel } = Common.models
 
-var getFlatList = function(item) {
+const getFlatList = function(item) {
 	let list = []
 	if (item.type !== 'hidden') {
 		list.push(item)
@@ -18,7 +18,7 @@ var getFlatList = function(item) {
 	return list
 }
 
-var NavUtil = {
+const NavUtil = {
 	rebuildMenu(model) {
 		return Dispatcher.trigger('nav:rebuildMenu', {
 			value: {
