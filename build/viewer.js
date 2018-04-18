@@ -6163,14 +6163,6 @@ var ViewerApp = function (_React$Component) {
 
 		var _this = _possibleConstructorReturn(this, (ViewerApp.__proto__ || Object.getPrototypeOf(ViewerApp)).call(this, props));
 
-		window.__load = function () {
-			_this.setState({ loading: true });
-		};
-
-		window.__loaded = function () {
-			_this.setState({ loading: false });
-		};
-
 		_Common2.default.Store.loadDependency('https://cdnjs.cloudflare.com/ajax/libs/KaTeX/0.5.1/katex.min.css');
 
 		Dispatcher.on('viewer:scrollTo', function (payload) {
@@ -6239,7 +6231,7 @@ var ViewerApp = function (_React$Component) {
 			var attemptHistory = void 0;
 			var viewState = void 0;
 			var isPreviewing = void 0;
-			var outcomeServiceURL = void 0;
+			var outcomeServiceURL = 'the external system';
 
 			var urlTokens = document.location.pathname.split('/');
 			var visitIdFromUrl = urlTokens[4] ? urlTokens[4] : null;
@@ -6248,7 +6240,13 @@ var ViewerApp = function (_React$Component) {
 			Dispatcher.trigger('viewer:loading');
 
 			_apiUtil2.default.requestStart(visitIdFromUrl, draftIdFromUrl).then(function (visit) {
+				_scoreStore2.default.init();
+				_questionStore2.default.init();
+				ModalStore.init();
+				FocusStore.init();
+
 				if (visit.status !== 'ok') throw 'Invalid Visit Id';
+
 				visitIdFromApi = visit.value.visitId;
 				viewState = visit.value.viewState;
 				attemptHistory = visit.value.extensions[':ObojoboDraft.Sections.Assessment:attemptHistory'];
@@ -6261,10 +6259,6 @@ var ViewerApp = function (_React$Component) {
 
 				_this2.state.model = OboModel.create(draftModel);
 
-				_scoreStore2.default.init();
-				_questionStore2.default.init();
-				ModalStore.init();
-				FocusStore.init();
 				_navStore2.default.init(_this2.state.model, _this2.state.model.modelState.start, window.location.pathname, visitIdFromApi, viewState);
 				_assessmentStore2.default.init(attemptHistory);
 
@@ -6281,14 +6275,7 @@ var ViewerApp = function (_React$Component) {
 				_this2.setState({ loading: false, requestStatus: 'ok', isPreviewing: isPreviewing }, function () {
 					Dispatcher.trigger('viewer:loaded', true);
 				});
-
-				var loadingEl = document.getElementById('viewer-app-loading');
-				if (loadingEl && loadingEl.parentElement) {
-					document.getElementById('viewer-app').classList.add('is-loaded');
-					loadingEl.parentElement.removeChild(loadingEl);
-				}
 			}).catch(function (err) {
-				console.log(err);
 				_this2.setState({ loading: false, requestStatus: 'invalid' }, function () {
 					return Dispatcher.trigger('viewer:loaded', false);
 				});
@@ -6334,6 +6321,10 @@ var ViewerApp = function (_React$Component) {
 					return this.setState({ navTargetId: nextNavTargetId });
 				}
 			}
+
+			if (this.state.loading === true && nextState.loading === false) {
+				this.needsRemoveLoadingElement = true;
+			}
 		}
 	}, {
 		key: 'componentDidUpdate',
@@ -6346,7 +6337,17 @@ var ViewerApp = function (_React$Component) {
 				if (this.needsScroll != null) {
 					this.scrollToTop();
 
-					return delete this.needsScroll;
+					delete this.needsScroll;
+				}
+			}
+
+			if (this.needsRemoveLoadingElement === true) {
+				var loadingEl = document.getElementById('viewer-app-loading');
+				if (loadingEl && loadingEl.parentElement) {
+					document.getElementById('viewer-app').classList.add('is-loaded');
+					loadingEl.parentElement.removeChild(loadingEl);
+
+					delete this.needsRemoveLoadingElement;
 				}
 			}
 		}
@@ -6525,11 +6526,13 @@ var ViewerApp = function (_React$Component) {
 		value: function render() {
 			if (this.state.loading == true) return null;
 
-			if (this.state.requestStatus === 'invalid') return _react2.default.createElement(
-				'div',
-				null,
-				'Invalid'
-			);
+			if (this.state.requestStatus === 'invalid') {
+				return _react2.default.createElement(
+					'div',
+					{ className: 'viewer--viewer-app--visit-error' },
+					'There was a problem starting your visit. Please return to ' + (this.state.lti.outcomeServiceHostname ? this.state.lti.outcomeServiceHostname : 'the external system') + ' and relaunch this module.'
+				); //`There was a problem starting your visit. Please return to ${outcomeServiceURL} and relaunch this module.`
+			}
 
 			var nextEl = void 0,
 			    nextModel = void 0,
