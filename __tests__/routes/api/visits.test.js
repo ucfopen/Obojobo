@@ -35,7 +35,7 @@ describe('api visits route', () => {
 	beforeEach(() => {
 		oboRequire('routes/api/visits')
 		mockReq.requireCurrentUser.mockReset()
-		delete mockReq.body
+		mockReq.body = {}
 		mockRes.render.mockReset()
 		mockRes.reject.mockReset()
 		mockRes.success.mockReset()
@@ -71,7 +71,7 @@ describe('api visits route', () => {
 		mockReq.requireCurrentUser.mockReturnValueOnce(Promise.resolve(new User()))
 		return startVisitRoute(mockReq, mockRes, mockNext).then(result => {
 			expect(logger.error).toBeCalledWith(expect.any(Error))
-			expect(mockRes.reject).toBeCalledWith("Cannot read property 'visitId' of undefined")
+			expect(mockRes.reject).toBeCalledWith('Missing visit and/or draft id!')
 			expect(mockNext).not.toBeCalled()
 		})
 	})
@@ -80,7 +80,7 @@ describe('api visits route', () => {
 		expect.assertions(3)
 		let startVisitRoute = mockRouterMethods.post.mock.calls[0][1]
 		mockReq.requireCurrentUser.mockReturnValueOnce(Promise.resolve(new User()))
-		mockReq.body = { visitId: 9 }
+		mockReq.body = { draftId: 1, visitId: 9 }
 
 		// reject db.one lookup of visit
 		db.one.mockReturnValueOnce(Promise.reject('no record found'))
@@ -95,12 +95,22 @@ describe('api visits route', () => {
 		expect.assertions(3)
 		let startVisitRoute = mockRouterMethods.post.mock.calls[0][1]
 		mockReq.requireCurrentUser.mockReturnValueOnce(Promise.resolve(new User()))
-		mockReq.body = { visitId: 9 }
+		mockReq.body = { draftId: 1, visitId: 9 }
 
 		// resolve db.one lookup of visit
 		db.one.mockResolvedValueOnce({
 			preview: false,
 			draft_content_id: 'mocked-draft-content-id'
+		})
+
+		// mock the draft
+		Draft.fetchById.mockResolvedValueOnce({
+			yell: jest.fn(),
+			root: {
+				node: {
+					_rev: 'mocked-draft-content-id'
+				}
+			}
 		})
 
 		// reject launch lookup
@@ -117,9 +127,10 @@ describe('api visits route', () => {
 		expect.assertions(3)
 		let startVisitRoute = mockRouterMethods.post.mock.calls[0][1]
 		mockReq.requireCurrentUser.mockReturnValueOnce(Promise.resolve(new User()))
-		mockReq.body = { visitId: 9 }
+		mockReq.body = { visitId: 9, draftId: 1 }
 
 		Draft.fetchById.mockResolvedValueOnce({
+			yell: jest.fn(),
 			root: {
 				node: {
 					_rev: 'mocked-new-draft-content-id'
@@ -155,13 +166,22 @@ describe('api visits route', () => {
 		expect.assertions(3)
 		let startVisitRoute = mockRouterMethods.post.mock.calls[0][1]
 		mockReq.requireCurrentUser.mockReturnValueOnce(Promise.resolve(new User()))
-		mockReq.body = { visitId: 9 }
+		mockReq.body = { visitId: 9, draftId: 1 }
 
 		// resolve db.one lookup of visit
 		db.one.mockResolvedValueOnce({
 			is_active: true,
 			preview: false,
-			draft_content_id: 'draft-content-id'
+			draft_content_id: 'mocked-draft-content-id'
+		})
+
+		Draft.fetchById.mockResolvedValueOnce({
+			yell: jest.fn(),
+			root: {
+				node: {
+					_rev: 'mocked-draft-content-id'
+				}
+			}
 		})
 
 		// resolve ltiLaunch lookup
@@ -180,7 +200,7 @@ describe('api visits route', () => {
 		expect.assertions(3)
 		let startVisitRoute = mockRouterMethods.post.mock.calls[0][1]
 		mockReq.requireCurrentUser.mockReturnValueOnce(Promise.resolve(new User()))
-		mockReq.body = { visitId: 9 }
+		mockReq.body = { visitId: 9, draftId: 1 }
 
 		// resolve db.one lookup of visit
 		db.one.mockResolvedValueOnce({
