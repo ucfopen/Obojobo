@@ -186,7 +186,7 @@ class AssessmentRubric {
 
 				// find matching mods and apply them
 				this.mods.forEach((mod, i) => {
-					if (isValueInRange(attemptNumber, mod.attemptCondition, attemptReplaceDict, [Infinity])) {
+					if (isValueInRange(attemptNumber, mod.attemptCondition, attemptReplaceDict)) {
 						rewardedMods.push(mod)
 						rewardedModsIndicies.push(i)
 					}

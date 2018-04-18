@@ -431,7 +431,7 @@ var ScoreActions = function () {
 				for (var _iterator = this.actions[Symbol.iterator](), _step; !(_iteratorNormalCompletion = (_step = _iterator.next()).done); _iteratorNormalCompletion = true) {
 					var action = _step.value;
 
-					if (isValueInRange(score, action.range, replaceDict, [null])) return action;
+					if (isValueInRange(score, action.range, replaceDict)) return action;
 				}
 			} catch (err) {
 				_didIteratorError = true;

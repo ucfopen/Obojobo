@@ -25,8 +25,22 @@ let getParsedRangeFromSingleValue = value => {
 	}
 }
 
-let tryGetParsedFloat = (value, replaceDict = {}, nonNumericAllowedValues = []) => {
+// replaceDict is an object of possibile replacements for `value`.
+// For example, if replaceDict = { '$highest_score':100 } and `value` is '$highest_score' then
+// `value` will be replaced with 100.
+// nonParsedValueOrValues is a value or an array of values that won't be parsed by parseFloat.
+// If `value` is one of these values then `value` is not parsed and simply returned.
+// For example, if nonParsedValueOrValues is `[null, undefined]` and `value` is null
+// then null is returned.
+let tryGetParsedFloat = (value, replaceDict = {}, nonParsedValueOrValues = []) => {
 	let replaceDictValue
+	let nonParsedValues
+
+	if (!(nonParsedValueOrValues instanceof Array)) {
+		nonParsedValues = [nonParsedValueOrValues]
+	} else {
+		nonParsedValues = nonParsedValueOrValues
+	}
 
 	for (let placeholder in replaceDict) {
 		if (value === placeholder) {
@@ -37,24 +51,25 @@ let tryGetParsedFloat = (value, replaceDict = {}, nonNumericAllowedValues = []) 
 
 	// If the value is an allowed non-numeric value then we don't parse it
 	// and simply return it as is
-	if (nonNumericAllowedValues.indexOf(value) > -1) return value
+	if (nonParsedValues.indexOf(value) > -1) return value
 
 	let parsedValue = parseFloat(value)
 
-	if (!Number.isFinite(parsedValue))
+	if (!Number.isFinite(parsedValue) && parsedValue !== Infinity && parsedValue !== -Infinity) {
 		throw new Error(`Unable to parse "${value}": Got "${parsedValue}" - Unsure how to proceed`)
+	}
 
 	return parsedValue
 }
 
-let isValueInRange = (value, range, replaceDict, nonNumericAllowedValues) => {
-	// By default a null range is defined to be all-inclusive
-	if (range === null) return true
+let isValueInRange = (value, range, replaceDict) => {
+	// By definition a value is not inside a null range
+	if (range === null) return false
 
 	let isMinRequirementMet, isMaxRequirementMet
 
-	let min = tryGetParsedFloat(range.min, replaceDict, nonNumericAllowedValues)
-	let max = tryGetParsedFloat(range.max, replaceDict, nonNumericAllowedValues)
+	let min = tryGetParsedFloat(range.min, replaceDict)
+	let max = tryGetParsedFloat(range.max, replaceDict)
 
 	if (range.isMinInclusive) {
 		isMinRequirementMet = value >= min

@@ -600,46 +600,13 @@ describe('AssessmentRubric', () => {
 	test('getAssessmentScoreInfoForAttempt throws error for invalid numbers of attempts', () => {
 		let ar = new AssessmentRubric()
 
-		try {
-			ar.getAssessmentScoreInfoForAttempt('unlimited', [100])
-			expect('this').toBe('not called')
-		} catch (e) {
-			expect(e.message).toBe('totalNumberOfAttemptsAvailable must be 1 to Infinity!')
-		}
+		let e = 'totalNumberOfAttemptsAvailable must be 1 to Infinity!'
 
-		try {
-			ar.getAssessmentScoreInfoForAttempt('', [100])
-			expect('this').toBe('not called')
-		} catch (e) {
-			expect(e.message).toBe('totalNumberOfAttemptsAvailable must be 1 to Infinity!')
-		}
-
-		try {
-			ar.getAssessmentScoreInfoForAttempt('2', [100])
-			expect('this').toBe('not called')
-		} catch (e) {
-			expect(e.message).toBe('totalNumberOfAttemptsAvailable must be 1 to Infinity!')
-		}
-
-		try {
-			ar.getAssessmentScoreInfoForAttempt(0, [100])
-			expect('this').toBe('not called')
-		} catch (e) {
-			expect(e.message).toBe('totalNumberOfAttemptsAvailable must be 1 to Infinity!')
-		}
-
-		try {
-			ar.getAssessmentScoreInfoForAttempt(-2, [100])
-			expect('this').toBe('not called')
-		} catch (e) {
-			expect(e.message).toBe('totalNumberOfAttemptsAvailable must be 1 to Infinity!')
-		}
-
-		try {
-			ar.getAssessmentScoreInfoForAttempt(null, [100])
-			expect('this').toBe('not called')
-		} catch (e) {
-			expect(e.message).toBe('totalNumberOfAttemptsAvailable must be 1 to Infinity!')
-		}
+		expect(ar.getAssessmentScoreInfoForAttempt.bind(ar, 'unlimited', [100])).toThrow(e)
+		expect(ar.getAssessmentScoreInfoForAttempt.bind(ar, '', [100])).toThrow(e)
+		expect(ar.getAssessmentScoreInfoForAttempt.bind(ar, '2', [100])).toThrow(e)
+		expect(ar.getAssessmentScoreInfoForAttempt.bind(ar, 0, [100])).toThrow(e)
+		expect(ar.getAssessmentScoreInfoForAttempt.bind(ar, -2, [100])).toThrow(e)
+		expect(ar.getAssessmentScoreInfoForAttempt.bind(ar, null, [100])).toThrow(e)
 	})
 })
