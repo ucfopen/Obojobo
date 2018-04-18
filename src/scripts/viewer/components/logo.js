@@ -1,8 +1,5 @@
 import './logo.scss'
-
-import NavUtil from '../../viewer/util/nav-util'
 import logo from 'svg-url-loader?noquotes!./obojobo-logo.svg'
-
 import Common from 'Common'
 let { getBackgroundImage } = Common.util
 

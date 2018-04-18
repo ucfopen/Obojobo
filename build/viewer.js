@@ -405,6 +405,105 @@ module.exports = parse;
 Object.defineProperty(exports, "__esModule", {
 	value: true
 });
+var processJsonResults = function processJsonResults(res) {
+	return Promise.resolve(res.json()).then(function (json) {
+		if (json.status === 'error') console.log(json.value);
+		return json;
+	});
+};
+
+var APIUtil = {
+	get: function get(endpoint) {
+		return fetch(endpoint, {
+			method: 'GET',
+			credentials: 'include',
+			headers: {
+				Accept: 'application/json',
+				'Content-Type': 'application/json' //@TODO - Do I need this?
+			} });
+	},
+	post: function post(endpoint, body) {
+		if (body == null) {
+			body = {};
+		}
+		return fetch(endpoint, {
+			method: 'POST',
+			credentials: 'include',
+			body: JSON.stringify(body),
+			headers: {
+				Accept: 'application/json',
+				'Content-Type': 'application/json'
+			}
+		});
+	},
+	postEvent: function postEvent(lo, action, eventVersion, payload) {
+		return APIUtil.post('/api/events', {
+			event: {
+				action: action,
+				draft_id: lo.get('draftId'),
+				actor_time: new Date().toISOString(),
+				event_version: eventVersion,
+				payload: payload
+			}
+		}).then(processJsonResults)
+		// TODO: Send Caliper event to client host.
+		.then(function (res) {
+			if (res && res.status === 'ok' && res.value) {
+				parent.postMessage(res.value, '*');
+			}
+
+			return res;
+		});
+	},
+	saveState: function saveState(lo, state) {
+		return APIUtil.postEvent(lo, 'saveState', state);
+	},
+	getDraft: function getDraft(id) {
+		return fetch('/api/drafts/' + id).then(processJsonResults);
+	},
+	getAttempts: function getAttempts(lo) {
+		return APIUtil.get('/api/drafts/' + lo.get('draftId') + '/attempts').then(processJsonResults);
+	},
+	requestStart: function requestStart(visitId, draftId) {
+		return APIUtil.post('/api/visits/start', {
+			visitId: visitId,
+			draftId: draftId
+		}).then(processJsonResults);
+	},
+	startAttempt: function startAttempt(lo, assessment) {
+		return APIUtil.post('/api/assessments/attempt/start', {
+			draftId: lo.get('draftId'),
+			assessmentId: assessment.get('id')
+		}).then(processJsonResults);
+	},
+	endAttempt: function endAttempt(attempt) {
+		return APIUtil.post('/api/assessments/attempt/' + attempt.attemptId + '/end').then(processJsonResults);
+	},
+	resendLTIAssessmentScore: function resendLTIAssessmentScore(lo, assessment) {
+		return APIUtil.post('/api/lti/sendAssessmentScore', {
+			draftId: lo.get('_id'),
+			assessmentId: assessment.get('id')
+		}).then(processJsonResults);
+	},
+	clearPreviewScores: function clearPreviewScores(lo) {
+		return APIUtil.post('/api/assessments/clear-preview-scores', {
+			draftId: lo.get('draftId')
+		}).then(processJsonResults);
+	}
+};
+
+exports.default = APIUtil;
+
+/***/ }),
+/* 3 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+Object.defineProperty(exports, "__esModule", {
+	value: true
+});
 
 var _Common = __webpack_require__(0);
 
@@ -648,105 +747,6 @@ var NavUtil = {
 };
 
 exports.default = NavUtil;
-
-/***/ }),
-/* 3 */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-
-
-Object.defineProperty(exports, "__esModule", {
-	value: true
-});
-var processJsonResults = function processJsonResults(res) {
-	return Promise.resolve(res.json()).then(function (json) {
-		if (json.status === 'error') console.log(json.value);
-		return json;
-	});
-};
-
-var APIUtil = {
-	get: function get(endpoint) {
-		return fetch(endpoint, {
-			method: 'GET',
-			credentials: 'include',
-			headers: {
-				Accept: 'application/json',
-				'Content-Type': 'application/json' //@TODO - Do I need this?
-			} });
-	},
-	post: function post(endpoint, body) {
-		if (body == null) {
-			body = {};
-		}
-		return fetch(endpoint, {
-			method: 'POST',
-			credentials: 'include',
-			body: JSON.stringify(body),
-			headers: {
-				Accept: 'application/json',
-				'Content-Type': 'application/json'
-			}
-		});
-	},
-	postEvent: function postEvent(lo, action, eventVersion, payload) {
-		return APIUtil.post('/api/events', {
-			event: {
-				action: action,
-				draft_id: lo.get('draftId'),
-				actor_time: new Date().toISOString(),
-				event_version: eventVersion,
-				payload: payload
-			}
-		}).then(processJsonResults)
-		// TODO: Send Caliper event to client host.
-		.then(function (res) {
-			if (res && res.status === 'ok' && res.value) {
-				parent.postMessage(res.value, '*');
-			}
-
-			return res;
-		});
-	},
-	saveState: function saveState(lo, state) {
-		return APIUtil.postEvent(lo, 'saveState', state);
-	},
-	getDraft: function getDraft(id) {
-		return fetch('/api/drafts/' + id).then(processJsonResults);
-	},
-	getAttempts: function getAttempts(lo) {
-		return APIUtil.get('/api/drafts/' + lo.get('draftId') + '/attempts').then(processJsonResults);
-	},
-	requestStart: function requestStart(visitId, draftId) {
-		return APIUtil.post('/api/visits/start', {
-			visitId: visitId,
-			draftId: draftId
-		}).then(processJsonResults);
-	},
-	startAttempt: function startAttempt(lo, assessment) {
-		return APIUtil.post('/api/assessments/attempt/start', {
-			draftId: lo.get('draftId'),
-			assessmentId: assessment.get('id')
-		}).then(processJsonResults);
-	},
-	endAttempt: function endAttempt(attempt) {
-		return APIUtil.post('/api/assessments/attempt/' + attempt.attemptId + '/end').then(processJsonResults);
-	},
-	resendLTIAssessmentScore: function resendLTIAssessmentScore(lo, assessment) {
-		return APIUtil.post('/api/lti/sendAssessmentScore', {
-			draftId: lo.get('_id'),
-			assessmentId: assessment.get('id')
-		}).then(processJsonResults);
-	},
-	clearPreviewScores: function clearPreviewScores(lo) {
-		return APIUtil.post('/api/assessments/clear-preview-scores', {
-			draftId: lo.get('draftId')
-		}).then(processJsonResults);
-	}
-};
-
-exports.default = APIUtil;
 
 /***/ }),
 /* 4 */
@@ -1422,10 +1422,6 @@ var _createClass = function () { function defineProperties(target, props) { for 
 
 __webpack_require__(53);
 
-var _navUtil = __webpack_require__(2);
-
-var _navUtil2 = _interopRequireDefault(_navUtil);
-
 var _obojoboLogo = __webpack_require__(60);
 
 var _obojoboLogo2 = _interopRequireDefault(_obojoboLogo);
@@ -1505,11 +1501,11 @@ var _questionUtil = __webpack_require__(5);
 
 var _questionUtil2 = _interopRequireDefault(_questionUtil);
 
-var _apiUtil = __webpack_require__(3);
+var _apiUtil = __webpack_require__(2);
 
 var _apiUtil2 = _interopRequireDefault(_apiUtil);
 
-var _navUtil = __webpack_require__(2);
+var _navUtil = __webpack_require__(3);
 
 var _navUtil2 = _interopRequireDefault(_navUtil);
 
@@ -1883,11 +1879,11 @@ var _Common = __webpack_require__(0);
 
 var _Common2 = _interopRequireDefault(_Common);
 
-var _navUtil = __webpack_require__(2);
+var _navUtil = __webpack_require__(3);
 
 var _navUtil2 = _interopRequireDefault(_navUtil);
 
-var _apiUtil = __webpack_require__(3);
+var _apiUtil = __webpack_require__(2);
 
 var _apiUtil2 = _interopRequireDefault(_apiUtil);
 
@@ -2177,7 +2173,7 @@ var _Common = __webpack_require__(0);
 
 var _Common2 = _interopRequireDefault(_Common);
 
-var _apiUtil = __webpack_require__(3);
+var _apiUtil = __webpack_require__(2);
 
 var _apiUtil2 = _interopRequireDefault(_apiUtil);
 
@@ -2370,7 +2366,7 @@ var _Common = __webpack_require__(0);
 
 var _Common2 = _interopRequireDefault(_Common);
 
-var _apiUtil = __webpack_require__(3);
+var _apiUtil = __webpack_require__(2);
 
 var _apiUtil2 = _interopRequireDefault(_apiUtil);
 
@@ -5772,7 +5768,7 @@ var _createClass = function () { function defineProperties(target, props) { for 
 
 __webpack_require__(52);
 
-var _navUtil = __webpack_require__(2);
+var _navUtil = __webpack_require__(3);
 
 var _navUtil2 = _interopRequireDefault(_navUtil);
 
@@ -5842,7 +5838,7 @@ var _createClass = function () { function defineProperties(target, props) { for 
 
 __webpack_require__(54);
 
-var _navUtil = __webpack_require__(2);
+var _navUtil = __webpack_require__(3);
 
 var _navUtil2 = _interopRequireDefault(_navUtil);
 
@@ -6084,11 +6080,11 @@ var _inlineNavButton = __webpack_require__(48);
 
 var _inlineNavButton2 = _interopRequireDefault(_inlineNavButton);
 
-var _navUtil = __webpack_require__(2);
+var _navUtil = __webpack_require__(3);
 
 var _navUtil2 = _interopRequireDefault(_navUtil);
 
-var _apiUtil = __webpack_require__(3);
+var _apiUtil = __webpack_require__(2);
 
 var _apiUtil2 = _interopRequireDefault(_apiUtil);
 
@@ -6706,7 +6702,7 @@ var _assessmentUtil = __webpack_require__(20);
 
 var _assessmentUtil2 = _interopRequireDefault(_assessmentUtil);
 
-var _navUtil = __webpack_require__(2);
+var _navUtil = __webpack_require__(3);
 
 var _navUtil2 = _interopRequireDefault(_navUtil);
 
@@ -6714,7 +6710,7 @@ var _scoreUtil = __webpack_require__(10);
 
 var _scoreUtil2 = _interopRequireDefault(_scoreUtil);
 
-var _apiUtil = __webpack_require__(3);
+var _apiUtil = __webpack_require__(2);
 
 var _apiUtil2 = _interopRequireDefault(_apiUtil);
 
