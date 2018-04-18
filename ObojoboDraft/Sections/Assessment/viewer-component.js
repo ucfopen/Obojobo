@@ -19,7 +19,10 @@ import LTIStatus from './lti-status'
 export default class Assessment extends React.Component {
 	constructor() {
 		super()
-		this.state = { step: null }
+		this.state = {
+			fetching: false,
+			step: null
+		}
 	}
 
 	getCurrentStep() {
@@ -46,7 +49,10 @@ export default class Assessment extends React.Component {
 			this.needsScroll = true
 		}
 
-		return this.setState({ step: curStep })
+		this.setState({
+			step: curStep,
+			fetching: false
+		})
 	}
 
 	componentDidUpdate() {
@@ -78,6 +84,7 @@ export default class Assessment extends React.Component {
 	}
 
 	endAttempt() {
+		this.setState({ fetching: true })
 		return AssessmentUtil.endAttempt(this.props.model)
 	}
 
@@ -148,6 +155,15 @@ export default class Assessment extends React.Component {
 				case 'takingTest':
 					child = this.props.model.children.at(1)
 					Component = child.getComponentClass()
+					let submitButtonText
+
+					if (!this.isAttemptComplete())
+						submitButtonText = 'Submit (Not all questions have been answered)'
+					else if (!this.state.fetching)
+						submitButtonText = 'Submit'
+					else
+						submitButtonText = 'Loading ...'
+
 
 					return (
 						<div className="test">
@@ -160,11 +176,7 @@ export default class Assessment extends React.Component {
 							<div className="submit-button">
 								<Button
 									onClick={this.onClickSubmit.bind(this)}
-									value={
-										this.isAttemptComplete()
-											? 'Submit'
-											: 'Submit (Not all questions have been answered)'
-									}
+									value={submitButtonText}
 								/>
 							</div>
 						</div>
@@ -179,7 +191,7 @@ export default class Assessment extends React.Component {
 					)
 
 					let numCorrect = questionScores.reduce(
-						function(acc, questionScore) {
+						function (acc, questionScore) {
 							let n = 0
 							if (parseInt(questionScore.score, 10) === 100) {
 								n = 1
@@ -238,7 +250,7 @@ export default class Assessment extends React.Component {
 							<div className="review">
 								<p className="number-correct">{`You got ${numCorrect} out of ${
 									questionScores.length
-								} questions correct:`}</p>
+									} questions correct:`}</p>
 								{questionScores.map((questionScore, index) => {
 									let questionModel = OboModel.models[questionScore.id]
 									let QuestionComponent = questionModel.getComponentClass()
@@ -250,7 +262,7 @@ export default class Assessment extends React.Component {
 										>
 											<p>{`Question ${index + 1} - ${
 												questionScore.score === 100 ? 'Correct:' : 'Incorrect:'
-											}`}</p>
+												}`}</p>
 											<QuestionComponent
 												model={questionModel}
 												moduleData={this.props.moduleData}
