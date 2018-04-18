@@ -1,7 +1,7 @@
 var express = require('express')
 var router = express.Router()
 let logger = oboRequire('logger')
-let { createPreviewVisit } = require('./create-visit')
+let { createPreviewVisit } = require('../create-visit')
 let db = oboRequire('db')
 
 router.get('/:draftId', (req, res, next) => {
@@ -13,6 +13,7 @@ router.get('/:draftId', (req, res, next) => {
 			return createPreviewVisit(currentUser.id, req.params.draftId)
 		})
 		.then(visit => {
+			// Saving session here solves #128
 			return new Promise((resolve, reject) => {
 				req.session.save(function(err) {
 					if (err) return reject(err)

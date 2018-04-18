@@ -1,5 +1,5 @@
 jest.mock('../../logger')
-jest.mock('../../routes/create-visit', () => ({
+jest.mock('../../create-visit', () => ({
 	createPreviewVisit: jest.fn()
 }))
 
@@ -25,7 +25,7 @@ describe('preview route', () => {
 		redirect: jest.fn()
 	}
 	const mockNext = jest.fn()
-	const { createPreviewVisit } = require('../../routes/create-visit')
+	const { createPreviewVisit } = require('../../create-visit')
 
 	beforeAll(() => {})
 	afterAll(() => {})

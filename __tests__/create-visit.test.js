@@ -1,9 +1,8 @@
-// jest.mock('../../routes/create-visit')
-jest.mock('../../db')
+jest.mock('../db')
 
 describe('create-visit', () => {
 	const db = oboRequire('db')
-	const { createVisit, createPreviewVisit } = require('../../routes/create-visit')
+	const { createVisit, createPreviewVisit } = require('../create-visit')
 
 	beforeEach(() => {
 		jest.resetAllMocks()

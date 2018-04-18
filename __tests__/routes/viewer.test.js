@@ -1,7 +1,7 @@
 jest.mock('../../models/draft')
 jest.mock('../../viewer/viewer_state')
 jest.mock('../../logger')
-jest.mock('../../routes/create-visit', () => ({
+jest.mock('../../create-visit', () => ({
 	createVisit: jest.fn()
 }))
 
@@ -11,7 +11,7 @@ describe('viewer route', () => {
 	const User = oboRequire('models/user')
 	const GuestUser = oboRequire('models/guest_user')
 	const { mockExpressMethods, mockRouterMethods } = require('../../__mocks__/__mock_express')
-	const { createVisit } = require('../../routes/create-visit')
+	const { createVisit } = require('../../create-visit')
 	const mockReq = {
 		requireCurrentUser: jest.fn(),
 		params: { draftId: 555 },

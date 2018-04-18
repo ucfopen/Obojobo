@@ -6,7 +6,7 @@ let insertEvent = oboRequire('insert_event')
 let createCaliperEvent = oboRequire('routes/api/events/create_caliper_event')
 let { ACTOR_USER } = require('./api/events/caliper_constants')
 let { getSessionIds } = require('./api/events/caliper_utils')
-let { createVisit } = require('./create-visit')
+let { createVisit } = require('../create-visit')
 let db = oboRequire('db')
 
 router.post('/:draftId/:page?', (req, res, next) => {

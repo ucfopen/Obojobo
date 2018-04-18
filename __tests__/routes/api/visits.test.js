@@ -56,7 +56,7 @@ describe('api visits route', () => {
 	test('start fails without current user', () => {
 		expect.assertions(3)
 		let startVisitRoute = mockRouterMethods.post.mock.calls[0][1]
-		mockReq.requireCurrentUser.mockReturnValueOnce(Promise.reject('not logged in'))
+		mockReq.requireCurrentUser.mockRejectedValueOnce('not logged in')
 
 		return startVisitRoute(mockReq, mockRes, mockNext).then(result => {
 			expect(logger.error).toBeCalledWith('not logged in')
@@ -68,7 +68,7 @@ describe('api visits route', () => {
 	test('start fails when theres no visit id in the request', () => {
 		expect.assertions(3)
 		let startVisitRoute = mockRouterMethods.post.mock.calls[0][1]
-		mockReq.requireCurrentUser.mockReturnValueOnce(Promise.resolve(new User()))
+		mockReq.requireCurrentUser.mockResolvedValueOnce(new User())
 		return startVisitRoute(mockReq, mockRes, mockNext).then(result => {
 			expect(logger.error).toBeCalledWith(expect.any(Error))
 			expect(mockRes.reject).toBeCalledWith('Missing visit and/or draft id!')
@@ -79,7 +79,7 @@ describe('api visits route', () => {
 	test('start fails when theres no matching visit', () => {
 		expect.assertions(3)
 		let startVisitRoute = mockRouterMethods.post.mock.calls[0][1]
-		mockReq.requireCurrentUser.mockReturnValueOnce(Promise.resolve(new User()))
+		mockReq.requireCurrentUser.mockResolvedValueOnce(new User())
 		mockReq.body = { draftId: 1, visitId: 9 }
 
 		// reject db.one lookup of visit
@@ -94,7 +94,7 @@ describe('api visits route', () => {
 	test('start fails when theres no linked lti launch (when not in preview mode)', () => {
 		expect.assertions(3)
 		let startVisitRoute = mockRouterMethods.post.mock.calls[0][1]
-		mockReq.requireCurrentUser.mockReturnValueOnce(Promise.resolve(new User()))
+		mockReq.requireCurrentUser.mockResolvedValueOnce(new User())
 		mockReq.body = { draftId: 1, visitId: 9 }
 
 		// resolve db.one lookup of visit
@@ -114,7 +114,7 @@ describe('api visits route', () => {
 		})
 
 		// reject launch lookup
-		ltiUtil.retrieveLtiLaunch.mockReturnValueOnce(Promise.reject('no launch found'))
+		ltiUtil.retrieveLtiLaunch.mockRejectedValueOnce('no launch found')
 
 		return startVisitRoute(mockReq, mockRes, mockNext).then(result => {
 			expect(logger.error).toBeCalledWith('no launch found')
@@ -126,7 +126,7 @@ describe('api visits route', () => {
 	test('start fails when draft_content_ids do not match', () => {
 		expect.assertions(3)
 		let startVisitRoute = mockRouterMethods.post.mock.calls[0][1]
-		mockReq.requireCurrentUser.mockReturnValueOnce(Promise.resolve(new User()))
+		mockReq.requireCurrentUser.mockResolvedValueOnce(new User())
 		mockReq.body = { visitId: 9, draftId: 1 }
 
 		Draft.fetchById.mockResolvedValueOnce({
@@ -144,7 +144,7 @@ describe('api visits route', () => {
 				lis_outcome_service_url: 'howtune.com'
 			}
 		}
-		ltiUtil.retrieveLtiLaunch.mockReturnValueOnce(Promise.resolve(launch))
+		ltiUtil.retrieveLtiLaunch.mockResolvedValueOnce(launch)
 
 		// resolve db.one lookup of visit
 		db.one.mockResolvedValueOnce({
@@ -153,7 +153,7 @@ describe('api visits route', () => {
 		})
 
 		// reject launch lookup
-		ltiUtil.retrieveLtiLaunch.mockReturnValueOnce(Promise.reject('no launch found'))
+		ltiUtil.retrieveLtiLaunch.mockRejectedValueOnce('no launch found')
 
 		return startVisitRoute(mockReq, mockRes, mockNext).then(result => {
 			expect(logger.error).toBeCalledWith(new Error('Visit for older draft version!'))
@@ -165,7 +165,7 @@ describe('api visits route', () => {
 	test('start fails when theres no outcome service url', () => {
 		expect.assertions(3)
 		let startVisitRoute = mockRouterMethods.post.mock.calls[0][1]
-		mockReq.requireCurrentUser.mockReturnValueOnce(Promise.resolve(new User()))
+		mockReq.requireCurrentUser.mockResolvedValueOnce(new User())
 		mockReq.body = { visitId: 9, draftId: 1 }
 
 		// resolve db.one lookup of visit
@@ -199,7 +199,7 @@ describe('api visits route', () => {
 	test('start fails when theres no draft', () => {
 		expect.assertions(3)
 		let startVisitRoute = mockRouterMethods.post.mock.calls[0][1]
-		mockReq.requireCurrentUser.mockReturnValueOnce(Promise.resolve(new User()))
+		mockReq.requireCurrentUser.mockResolvedValueOnce(new User())
 		mockReq.body = { visitId: 9, draftId: 1 }
 
 		// resolve db.one lookup of visit
@@ -215,7 +215,7 @@ describe('api visits route', () => {
 				lis_outcome_service_url: 'howtune.com'
 			}
 		}
-		ltiUtil.retrieveLtiLaunch.mockReturnValueOnce(Promise.resolve(launch))
+		ltiUtil.retrieveLtiLaunch.mockResolvedValueOnce(launch)
 
 		// resolve viewerState.get
 		viewerState.get.mockReturnValueOnce(Promise.resolve())
@@ -232,7 +232,7 @@ describe('api visits route', () => {
 	test('start yells internal:startVisit and respond with success', () => {
 		expect.assertions(5)
 		let startVisitRoute = mockRouterMethods.post.mock.calls[0][1]
-		mockReq.requireCurrentUser.mockReturnValueOnce(Promise.resolve(new User()))
+		mockReq.requireCurrentUser.mockResolvedValueOnce(new User())
 		mockReq.body = { draftId: 8, visitId: 9 }
 
 		// resolve db.one lookup of visit
@@ -248,7 +248,7 @@ describe('api visits route', () => {
 				lis_outcome_service_url: 'howtune.com'
 			}
 		}
-		ltiUtil.retrieveLtiLaunch.mockReturnValueOnce(Promise.resolve(launch))
+		ltiUtil.retrieveLtiLaunch.mockResolvedValueOnce(launch)
 
 		// resolve viewerState.get
 		viewerState.get.mockReturnValueOnce(Promise.resolve('view state'))
@@ -288,7 +288,7 @@ describe('api visits route', () => {
 	test('start is also successful for a preview visit', () => {
 		expect.assertions(5)
 		let startVisitRoute = mockRouterMethods.post.mock.calls[0][1]
-		mockReq.requireCurrentUser.mockReturnValueOnce(Promise.resolve(new User()))
+		mockReq.requireCurrentUser.mockResolvedValueOnce(new User())
 		mockReq.body = { draftId: 8, visitId: 9 }
 
 		// resolve db.one lookup of visit
