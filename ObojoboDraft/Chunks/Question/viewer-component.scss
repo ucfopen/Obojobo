@@ -99,7 +99,7 @@
 			border: 1px solid $color-correct;
 		}
 
-		&.is-incorrect .flipper {
+		&.is-not-correct .flipper {
 			border: 1px solid $color-incorrect;
 		}
 	}

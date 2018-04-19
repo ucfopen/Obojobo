@@ -45,7 +45,8 @@
   max-width: 44em; }
 
 .obojobo-draft--chunks--question.is-hidden .flipper {
-  border: 1px solid #6714bd; }
+  border: 1px solid #6714bd;
+  max-height: 15em; }
 
 .obojobo-draft--chunks--question.is-mode-practice .back::before {
   color: #999999;
@@ -61,7 +62,7 @@
 .obojobo-draft--chunks--question.is-mode-practice.is-correct .flipper {
   border: 1px solid #38ae24; }
 
-.obojobo-draft--chunks--question.is-mode-practice.is-incorrect .flipper {
+.obojobo-draft--chunks--question.is-mode-practice.is-not-correct .flipper {
   border: 1px solid #c21f00; }
 
 .obojobo-draft--chunks--question .blocker {
@@ -74,8 +75,10 @@
   background: #ffffff;
   cursor: pointer;
   border-radius: 0.25em; }
-  .obojobo-draft--chunks--question .blocker:hover .obojobo-draft--components--button {
-    transform: translate(-50%, -50%) scale(1.1, 1.1); }
+  .obojobo-draft--chunks--question .blocker:hover {
+    background: #f9f4ff; }
+    .obojobo-draft--chunks--question .blocker:hover .obojobo-draft--components--button {
+      transform: translate(-50%, -50%) scale(1.1, 1.1); }
   .obojobo-draft--chunks--question .blocker.is-not-practice .submit {
     display: none; }
   .obojobo-draft--chunks--question .blocker .obojobo-draft--components--button {

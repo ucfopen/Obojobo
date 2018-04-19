@@ -2,6 +2,7 @@ import './viewer-component.scss'
 
 import Common from 'Common'
 import Viewer from 'Viewer'
+import isOrNot from '../../../../src/scripts/common/isornot'
 
 let { OboComponent } = Common.components
 let { OboModel } = Common.models
@@ -30,13 +31,12 @@ const questionIsSelected = (questionState, model) => {
 
 const answerIsCorrect = (model, mode, questionState, navStateContext) => {
 	let score
-	if (mode === 'review'){
+	if (mode === 'review') {
 		// no score data for this context? no idea what to do, throw an error
 		if (!questionState.scores[navStateContext]) throw 'Unkown Question State'
 
 		score = QuestionUtil.getScoreForModel(questionState, model, navStateContext)
-	}
-	else {
+	} else {
 		score = model.modelState.score
 	}
 
@@ -46,21 +46,28 @@ const answerIsCorrect = (model, mode, questionState, navStateContext) => {
 const MCChoice = props => {
 	let isCorrect
 
-	try{
-		isCorrect = answerIsCorrect(props.model, props.mode, props.moduleData.questionState, props.moduleData.navState.context)
+	try {
+		isCorrect = answerIsCorrect(
+			props.model,
+			props.mode,
+			props.moduleData.questionState,
+			props.moduleData.navState.context
+		)
 	} catch (error) {
 		// if there's no questionState data for this
 		// or getting the score throws an error
 		// just display a div
-		return <div/>
+		return <div />
 	}
 
 	let isSelected = questionIsSelected(props.moduleData.questionState, props.model)
 
-	let className = 'obojobo-draft--chunks--mc-assessment--mc-choice' +
-		' is-' + (isSelected ? '' : 'not-') + 'selected' +
-		' is-' + (isCorrect ? '' : 'in') + 'correct' +
-		' is-mode-' + props.mode
+	let className =
+		'obojobo-draft--chunks--mc-assessment--mc-choice' +
+		isOrNot(isSelected, 'selected') +
+		isOrNot(isCorrect, 'correct') +
+		' is-mode-' +
+		props.mode
 
 	return (
 		<OboComponent

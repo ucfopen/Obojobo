@@ -48,34 +48,29 @@ export default class Nav extends React.Component {
 	}
 
 	renderLink(index, isSelected, item, lockEl) {
-		let className = 'link' +
+		let className =
+			'link' +
 			isOrNot(isSelected, 'selected') +
 			isOrNot(item.flags.visited, 'visited') +
 			isOrNot(item.flags.complete, 'complete') +
 			isOrNot(item.flags.correct, 'correct')
 
 		return (
-			<li
-				key={index}
-				onClick={this.onClick.bind(this, item)}
-				className={className}>
-					{this.renderLabel(item.label)}
-					{lockEl}
+			<li key={index} onClick={this.onClick.bind(this, item)} className={className}>
+				{this.renderLabel(item.label)}
+				{lockEl}
 			</li>
 		)
 	}
 
 	renderSubLink(index, isSelected, item, lockEl) {
-		let className = 'sub-link' +
-			isOrNot(isSelected, 'selected') +
-			isOrNot(item.flags.correct, 'correct')
+		let className =
+			'sub-link' + isOrNot(isSelected, 'selected') + isOrNot(item.flags.correct, 'correct')
 
 		return (
-			<li key={index}
-				onClick={this.onClick.bind(this, item)}
-				className={className}>
-					{this.renderLabel(item.label)}
-					{lockEl}
+			<li key={index} onClick={this.onClick.bind(this, item)} className={className}>
+				{this.renderLabel(item.label)}
+				{lockEl}
 			</li>
 		)
 	}
@@ -97,7 +92,7 @@ export default class Nav extends React.Component {
 	}
 
 	getLockEl(isLocked) {
-		if(isLocked){
+		if (isLocked) {
 			return (
 				<div className="lock-icon">
 					<img src={lockImg} />
@@ -114,10 +109,11 @@ export default class Nav extends React.Component {
 
 		let list = NavUtil.getOrderedList(navState)
 
-		let className = 'viewer--components--nav'
+		let className =
+			'viewer--components--nav' +
 			isOrNot(navState.locked, 'locked') +
 			isOrNot(navState.open, 'open') +
-			isOrNot(navState.disabled, 'enabled')
+			isOrNot(!navState.disabled, 'enabled')
 
 		let style = {
 			backgroundImage: bg,

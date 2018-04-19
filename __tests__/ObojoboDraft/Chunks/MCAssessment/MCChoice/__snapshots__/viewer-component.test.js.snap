@@ -2,7 +2,7 @@
 
 exports[`MCChoice viewer-component pick-all questions render as expected 1`] = `
 <div
-  className="component obojobo-draft--chunks--mc-assessment--mc-choice is-not-selected is-correct"
+  className="component obojobo-draft--chunks--mc-assessment--mc-choice is-not-selected is-correct is-mode-undefined"
   data-choice-label="mocklabel"
   data-focussed={false}
   data-id="pq1-mca-mc1"
@@ -13,7 +13,6 @@ exports[`MCChoice viewer-component pick-all questions render as expected 1`] = `
   <input
     checked={false}
     name="pq1.mca"
-    onChange={[Function]}
     type="checkbox"
     value="pq1-mca-mc1"
   />
@@ -61,7 +60,7 @@ exports[`MCChoice viewer-component pick-all questions render as expected 1`] = `
 
 exports[`MCChoice viewer-component pick-one questions render as expected 1`] = `
 <div
-  className="component obojobo-draft--chunks--mc-assessment--mc-choice is-not-selected is-correct"
+  className="component obojobo-draft--chunks--mc-assessment--mc-choice is-not-selected is-correct is-mode-mockMode"
   data-choice-label="mocklabel"
   data-focussed={false}
   data-id="pq1-mca-mc1"
@@ -72,7 +71,6 @@ exports[`MCChoice viewer-component pick-one questions render as expected 1`] = `
   <input
     checked={false}
     name="pq1.mca"
-    onChange={[Function]}
     type="radio"
     value="pq1-mca-mc1"
   />
@@ -120,7 +118,7 @@ exports[`MCChoice viewer-component pick-one questions render as expected 1`] = `
 
 exports[`MCChoice viewer-component pick-one-multiple-correct questions render as expected 1`] = `
 <div
-  className="component obojobo-draft--chunks--mc-assessment--mc-choice is-not-selected is-correct"
+  className="component obojobo-draft--chunks--mc-assessment--mc-choice is-not-selected is-correct is-mode-undefined"
   data-choice-label="mocklabel"
   data-focussed={false}
   data-id="pq1-mca-mc1"
@@ -131,7 +129,6 @@ exports[`MCChoice viewer-component pick-one-multiple-correct questions render as
   <input
     checked={false}
     name="pq1.mca"
-    onChange={[Function]}
     type="radio"
     value="pq1-mca-mc1"
   />

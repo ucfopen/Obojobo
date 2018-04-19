@@ -2,7 +2,7 @@
 
 exports[`Nav renders all list item types 1`] = `
 <div
-  className="viewer--components--nav is-locked is-closed is-enabled"
+  className="viewer--components--nav is-locked is-not-open is-enabled"
 >
   <button
     className="toggle-button"
@@ -28,7 +28,7 @@ exports[`Nav renders all list item types 1`] = `
       </a>
     </li>
     <li
-      className="link is-not-select is-not-visited is-not-complete is-not-correct"
+      className="link is-not-selected is-not-visited is-not-complete is-not-correct"
       onClick={[Function]}
     >
       <a>
@@ -43,7 +43,7 @@ exports[`Nav renders all list item types 1`] = `
       </div>
     </li>
     <li
-      className="link is-not-select is-not-visited is-not-complete is-not-correct"
+      className="link is-not-selected is-not-visited is-not-complete is-not-correct"
       onClick={[Function]}
     >
       <a>
@@ -76,7 +76,7 @@ exports[`Nav renders all list item types 1`] = `
       </div>
     </li>
     <li
-      className="sub-link is-not-select is-not-correct"
+      className="sub-link is-not-selected is-not-correct"
       onClick={[Function]}
     >
       <a>
@@ -144,7 +144,7 @@ exports[`Nav renders closed 1`] = `
 
 exports[`Nav renders opened 1`] = `
 <div
-  className="viewer--components--nav is-locked is-closed is-enabled"
+  className="viewer--components--nav is-locked is-not-open is-enabled"
 >
   <button
     className="toggle-button"
@@ -177,7 +177,7 @@ exports[`Nav renders opened 1`] = `
 
 exports[`Nav renders unlocked 1`] = `
 <div
-  className="viewer--components--nav is-unlocked is-closed is-enabled"
+  className="viewer--components--nav is-not-locked is-not-open is-enabled"
 >
   <button
     className="toggle-button"

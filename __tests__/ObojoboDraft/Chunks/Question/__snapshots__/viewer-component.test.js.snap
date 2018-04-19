@@ -42,7 +42,6 @@ exports[`MCAssessment Question component 1`] = `
           <input
             checked={false}
             name="mc-assessment-id"
-            onChange={[Function]}
             type="radio"
             value="choice1"
           />
@@ -122,7 +121,7 @@ exports[`MCAssessment Question component 1`] = `
           </div>
         </div>
         <div
-          className="component obojobo-draft--chunks--mc-assessment--mc-choice is-not-selected is-incorrect is-mode-practice"
+          className="component obojobo-draft--chunks--mc-assessment--mc-choice is-not-selected is-not-correct is-mode-practice"
           data-choice-label="B"
           data-focussed={false}
           data-id="choice2"
@@ -133,7 +132,6 @@ exports[`MCAssessment Question component 1`] = `
           <input
             checked={false}
             name="mc-assessment-id"
-            onChange={[Function]}
             type="radio"
             value="choice2"
           />
@@ -296,7 +294,6 @@ exports[`MCAssessment Question view & focus question 1`] = `
           <input
             checked={false}
             name="mc-assessment-id"
-            onChange={[Function]}
             type="radio"
             value="choice1"
           />
@@ -376,7 +373,7 @@ exports[`MCAssessment Question view & focus question 1`] = `
           </div>
         </div>
         <div
-          className="component obojobo-draft--chunks--mc-assessment--mc-choice is-not-selected is-incorrect is-mode-practice"
+          className="component obojobo-draft--chunks--mc-assessment--mc-choice is-not-selected is-not-correct is-mode-practice"
           data-choice-label="B"
           data-focussed={false}
           data-id="choice2"
@@ -387,7 +384,6 @@ exports[`MCAssessment Question view & focus question 1`] = `
           <input
             checked={false}
             name="mc-assessment-id"
-            onChange={[Function]}
             type="radio"
             value="choice2"
           />
@@ -550,7 +546,6 @@ exports[`MCAssessment Question view & focus question 2`] = `
           <input
             checked={false}
             name="mc-assessment-id"
-            onChange={[Function]}
             type="radio"
             value="choice1"
           />
@@ -630,7 +625,7 @@ exports[`MCAssessment Question view & focus question 2`] = `
           </div>
         </div>
         <div
-          className="component obojobo-draft--chunks--mc-assessment--mc-choice is-not-selected is-incorrect is-mode-practice"
+          className="component obojobo-draft--chunks--mc-assessment--mc-choice is-not-selected is-not-correct is-mode-practice"
           data-choice-label="B"
           data-focussed={false}
           data-id="choice2"
@@ -641,7 +636,6 @@ exports[`MCAssessment Question view & focus question 2`] = `
           <input
             checked={false}
             name="mc-assessment-id"
-            onChange={[Function]}
             type="radio"
             value="choice2"
           />
@@ -804,7 +798,6 @@ exports[`MCAssessment Question view question 1`] = `
           <input
             checked={false}
             name="mc-assessment-id"
-            onChange={[Function]}
             type="radio"
             value="choice1"
           />
@@ -884,7 +877,7 @@ exports[`MCAssessment Question view question 1`] = `
           </div>
         </div>
         <div
-          className="component obojobo-draft--chunks--mc-assessment--mc-choice is-not-selected is-incorrect is-mode-practice"
+          className="component obojobo-draft--chunks--mc-assessment--mc-choice is-not-selected is-not-correct is-mode-practice"
           data-choice-label="B"
           data-focussed={false}
           data-id="choice2"
@@ -895,7 +888,6 @@ exports[`MCAssessment Question view question 1`] = `
           <input
             checked={false}
             name="mc-assessment-id"
-            onChange={[Function]}
             type="radio"
             value="choice2"
           />
@@ -1058,7 +1050,6 @@ exports[`MCAssessment Question view question 2`] = `
           <input
             checked={false}
             name="mc-assessment-id"
-            onChange={[Function]}
             type="radio"
             value="choice1"
           />
@@ -1138,7 +1129,7 @@ exports[`MCAssessment Question view question 2`] = `
           </div>
         </div>
         <div
-          className="component obojobo-draft--chunks--mc-assessment--mc-choice is-not-selected is-incorrect is-mode-practice"
+          className="component obojobo-draft--chunks--mc-assessment--mc-choice is-not-selected is-not-correct is-mode-practice"
           data-choice-label="B"
           data-focussed={false}
           data-id="choice2"
@@ -1149,7 +1140,6 @@ exports[`MCAssessment Question view question 2`] = `
           <input
             checked={false}
             name="mc-assessment-id"
-            onChange={[Function]}
             type="radio"
             value="choice2"
           />
@@ -1312,7 +1302,6 @@ exports[`MCAssessment Question with a set score 1`] = `
           <input
             checked={false}
             name="mc-assessment-id"
-            onChange={[Function]}
             type="radio"
             value="choice1"
           />
@@ -1392,7 +1381,7 @@ exports[`MCAssessment Question with a set score 1`] = `
           </div>
         </div>
         <div
-          className="component obojobo-draft--chunks--mc-assessment--mc-choice is-not-selected is-incorrect is-mode-practice"
+          className="component obojobo-draft--chunks--mc-assessment--mc-choice is-not-selected is-not-correct is-mode-practice"
           data-choice-label="B"
           data-focussed={false}
           data-id="choice2"
@@ -1403,7 +1392,6 @@ exports[`MCAssessment Question with a set score 1`] = `
           <input
             checked={false}
             name="mc-assessment-id"
-            onChange={[Function]}
             type="radio"
             value="choice2"
           />
@@ -1566,7 +1554,6 @@ exports[`MCAssessment Question with a set score 2`] = `
           <input
             checked={false}
             name="mc-assessment-id"
-            onChange={[Function]}
             type="radio"
             value="choice1"
           />
@@ -1646,7 +1633,7 @@ exports[`MCAssessment Question with a set score 2`] = `
           </div>
         </div>
         <div
-          className="component obojobo-draft--chunks--mc-assessment--mc-choice is-not-selected is-incorrect is-mode-practice"
+          className="component obojobo-draft--chunks--mc-assessment--mc-choice is-not-selected is-not-correct is-mode-practice"
           data-choice-label="B"
           data-focussed={false}
           data-id="choice2"
@@ -1657,7 +1644,6 @@ exports[`MCAssessment Question with a set score 2`] = `
           <input
             checked={false}
             name="mc-assessment-id"
-            onChange={[Function]}
             type="radio"
             value="choice2"
           />
@@ -1849,7 +1835,6 @@ exports[`MCAssessment Question with response 1`] = `
           <input
             checked={false}
             name="mc-assessment-id"
-            onChange={[Function]}
             type="radio"
             value="choice1"
           />
@@ -1929,7 +1914,7 @@ exports[`MCAssessment Question with response 1`] = `
           </div>
         </div>
         <div
-          className="component obojobo-draft--chunks--mc-assessment--mc-choice is-not-selected is-incorrect is-mode-practice"
+          className="component obojobo-draft--chunks--mc-assessment--mc-choice is-not-selected is-not-correct is-mode-practice"
           data-choice-label="B"
           data-focussed={false}
           data-id="choice2"
@@ -1940,7 +1925,6 @@ exports[`MCAssessment Question with response 1`] = `
           <input
             checked={false}
             name="mc-assessment-id"
-            onChange={[Function]}
             type="radio"
             value="choice2"
           />
@@ -2103,7 +2087,6 @@ exports[`MCAssessment Question with response 2`] = `
           <input
             checked={true}
             name="mc-assessment-id"
-            onChange={[Function]}
             type="radio"
             value="choice1"
           />
@@ -2183,7 +2166,7 @@ exports[`MCAssessment Question with response 2`] = `
           </div>
         </div>
         <div
-          className="component obojobo-draft--chunks--mc-assessment--mc-choice is-not-selected is-incorrect is-mode-practice"
+          className="component obojobo-draft--chunks--mc-assessment--mc-choice is-not-selected is-not-correct is-mode-practice"
           data-choice-label="B"
           data-focussed={false}
           data-id="choice2"
@@ -2194,7 +2177,6 @@ exports[`MCAssessment Question with response 2`] = `
           <input
             checked={false}
             name="mc-assessment-id"
-            onChange={[Function]}
             type="radio"
             value="choice2"
           />
@@ -2357,7 +2339,6 @@ exports[`MCAssessment Question with revealAll 1`] = `
           <input
             checked={false}
             name="mc-assessment-id"
-            onChange={[Function]}
             type="radio"
             value="choice1"
           />
@@ -2437,7 +2418,7 @@ exports[`MCAssessment Question with revealAll 1`] = `
           </div>
         </div>
         <div
-          className="component obojobo-draft--chunks--mc-assessment--mc-choice is-not-selected is-incorrect is-mode-practice"
+          className="component obojobo-draft--chunks--mc-assessment--mc-choice is-not-selected is-not-correct is-mode-practice"
           data-choice-label="B"
           data-focussed={false}
           data-id="choice2"
@@ -2448,7 +2429,6 @@ exports[`MCAssessment Question with revealAll 1`] = `
           <input
             checked={false}
             name="mc-assessment-id"
-            onChange={[Function]}
             type="radio"
             value="choice2"
           />
@@ -2611,7 +2591,6 @@ exports[`MCAssessment Question with revealAll 2`] = `
           <input
             checked={false}
             name="mc-assessment-id"
-            onChange={[Function]}
             type="radio"
             value="choice1"
           />
@@ -2691,7 +2670,7 @@ exports[`MCAssessment Question with revealAll 2`] = `
           </div>
         </div>
         <div
-          className="component obojobo-draft--chunks--mc-assessment--mc-choice is-not-selected is-incorrect is-mode-practice"
+          className="component obojobo-draft--chunks--mc-assessment--mc-choice is-not-selected is-not-correct is-mode-practice"
           data-choice-label="B"
           data-focussed={false}
           data-id="choice2"
@@ -2702,7 +2681,6 @@ exports[`MCAssessment Question with revealAll 2`] = `
           <input
             checked={false}
             name="mc-assessment-id"
-            onChange={[Function]}
             type="radio"
             value="choice2"
           />

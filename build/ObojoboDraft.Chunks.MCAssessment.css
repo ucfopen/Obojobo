@@ -102,11 +102,11 @@
       transform: translate(-50%, -50%);
       left: 0.6em;
       animation: fadein 0.4s; }
-  .obojobo-draft--chunks--mc-assessment.is-scored.is-response-type-pick-one .obojobo-draft--chunks--mc-assessment--mc-choice.is-selected.is-incorrect,
-  .obojobo-draft--chunks--mc-assessment.is-scored.is-response-type-pick-one-multiple-correct .obojobo-draft--chunks--mc-assessment--mc-choice.is-selected.is-incorrect {
+  .obojobo-draft--chunks--mc-assessment.is-scored.is-response-type-pick-one .obojobo-draft--chunks--mc-assessment--mc-choice.is-selected.is-not-correct,
+  .obojobo-draft--chunks--mc-assessment.is-scored.is-response-type-pick-one-multiple-correct .obojobo-draft--chunks--mc-assessment--mc-choice.is-selected.is-not-correct {
     background: rgba(194, 31, 0, 0.1); }
-    .obojobo-draft--chunks--mc-assessment.is-scored.is-response-type-pick-one .obojobo-draft--chunks--mc-assessment--mc-choice.is-selected.is-incorrect:before,
-    .obojobo-draft--chunks--mc-assessment.is-scored.is-response-type-pick-one-multiple-correct .obojobo-draft--chunks--mc-assessment--mc-choice.is-selected.is-incorrect:before {
+    .obojobo-draft--chunks--mc-assessment.is-scored.is-response-type-pick-one .obojobo-draft--chunks--mc-assessment--mc-choice.is-selected.is-not-correct:before,
+    .obojobo-draft--chunks--mc-assessment.is-scored.is-response-type-pick-one-multiple-correct .obojobo-draft--chunks--mc-assessment--mc-choice.is-selected.is-not-correct:before {
       content: '\2716';
       position: absolute;
       top: 0.65em;
@@ -265,7 +265,7 @@
           .obojobo-draft--chunks--mc-assessment .solution > .score .feedback.is-pick-all-feedback > .obojobo-draft--chunks--mc-assessment--mc-feedback.is-correct-feedback:before {
             content: "\2714" attr(data-choice-label);
             color: #38ae24; }
-          .obojobo-draft--chunks--mc-assessment .solution > .score .feedback.is-pick-all-feedback > .obojobo-draft--chunks--mc-assessment--mc-feedback.is-incorrect-feedback:before {
+          .obojobo-draft--chunks--mc-assessment .solution > .score .feedback.is-pick-all-feedback > .obojobo-draft--chunks--mc-assessment--mc-feedback.is-not-correct-feedback:before {
             content: "\2716" attr(data-choice-label);
             color: #c21f00; }
     .obojobo-draft--chunks--mc-assessment .solution > .obojobo-draft--components--button {

@@ -63,7 +63,7 @@
 /******/ 	__webpack_require__.p = "build/";
 /******/
 /******/ 	// Load entry module and return exports
-/******/ 	return __webpack_require__(__webpack_require__.s = 293);
+/******/ 	return __webpack_require__(__webpack_require__.s = 294);
 /******/ })
 /************************************************************************/
 /******/ ({
@@ -82,7 +82,7 @@ module.exports = Viewer;
 
 /***/ }),
 
-/***/ 110:
+/***/ 111:
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -92,11 +92,11 @@ var _Common = __webpack_require__(0);
 
 var _Common2 = _interopRequireDefault(_Common);
 
-var _adapter = __webpack_require__(147);
+var _adapter = __webpack_require__(148);
 
 var _adapter2 = _interopRequireDefault(_adapter);
 
-var _viewerComponent = __webpack_require__(148);
+var _viewerComponent = __webpack_require__(149);
 
 var _viewerComponent2 = _interopRequireDefault(_viewerComponent);
 
@@ -133,7 +133,7 @@ _Common2.default.Store.registerModel('ObojoboDraft.Chunks.Question', {
 
 /***/ }),
 
-/***/ 146:
+/***/ 147:
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -143,49 +143,22 @@ Object.defineProperty(exports, "__esModule", {
 	value: true
 });
 
-var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+__webpack_require__(271);
 
-__webpack_require__(270);
-
-function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
-
-function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
-
-function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
-
-var QuestionContent = function (_React$Component) {
-	_inherits(QuestionContent, _React$Component);
-
-	function QuestionContent() {
-		_classCallCheck(this, QuestionContent);
-
-		return _possibleConstructorReturn(this, (QuestionContent.__proto__ || Object.getPrototypeOf(QuestionContent)).apply(this, arguments));
-	}
-
-	_createClass(QuestionContent, [{
-		key: 'render',
-		value: function render() {
-			var _this2 = this;
-
-			return React.createElement(
-				'div',
-				{ className: 'obojobo-draft--chunks--mc-question--content' },
-				this.props.model.children.models.slice(0, this.props.model.children.models.length - 1).map(function (child, index) {
-					var Component = child.getComponentClass();
-					return React.createElement(Component, { key: child.get('id'), model: child, moduleData: _this2.props.moduleData });
-				})
-			);
-		}
-	}]);
-
-	return QuestionContent;
-}(React.Component);
-
-exports.default = QuestionContent;
+exports.default = function (props) {
+	return React.createElement(
+		'div',
+		{ className: 'obojobo-draft--chunks--mc-question--content' },
+		props.model.children.models.slice(0, -1).map(function (child, index) {
+			var Component = child.getComponentClass();
+			return React.createElement(Component, { key: child.get('id'), model: child, moduleData: props.moduleData });
+		})
+	);
+};
 
 /***/ }),
 
-/***/ 147:
+/***/ 148:
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -251,7 +224,7 @@ function __guard__(value, transform) {
 
 /***/ }),
 
-/***/ 148:
+/***/ 149:
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -263,7 +236,7 @@ Object.defineProperty(exports, "__esModule", {
 
 var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
 
-__webpack_require__(271);
+__webpack_require__(272);
 
 var _Common = __webpack_require__(0);
 
@@ -273,7 +246,7 @@ var _Viewer = __webpack_require__(1);
 
 var _Viewer2 = _interopRequireDefault(_Viewer);
 
-var _viewerComponent = __webpack_require__(146);
+var _viewerComponent = __webpack_require__(147);
 
 var _viewerComponent2 = _interopRequireDefault(_viewerComponent);
 
@@ -326,7 +299,7 @@ var Question = function (_React$Component) {
 
 			var mode = this.props.mode ? this.props.mode : this.props.model.modelState.mode;
 
-			var classNames = ['flip-container', 'obojobo-draft--chunks--question', score === null ? '' : score === 100 ? 'is-correct' : 'is-incorrect', this.props.mode === 'review' ? 'is-active' : 'is-' + viewState, 'is-mode-' + mode].join(' ');
+			var classNames = ['flip-container', 'obojobo-draft--chunks--question', score === null ? '' : score === 100 ? 'is-correct' : 'is-not-correct', this.props.mode === 'review' ? 'is-active' : 'is-' + viewState, 'is-mode-' + mode].join(' ');
 
 			return React.createElement(
 				OboComponent,
@@ -368,7 +341,7 @@ var Question = function (_React$Component) {
 
 			// let viewState = QuestionUtil.getViewState(this.props.moduleData.questionState, this.props.model)
 
-			var classNames = ['flip-container', 'obojobo-draft--chunks--question', score === null ? '' : score === 100 ? 'is-correct' : 'is-incorrect', 'is-active', 'is-mode-' + mode].join(' ');
+			var classNames = ['flip-container', 'obojobo-draft--chunks--question', score === null ? '' : score === 100 ? 'is-correct' : 'is-not-correct', 'is-active', 'is-mode-' + mode].join(' ');
 
 			return React.createElement(
 				OboComponent,
@@ -402,13 +375,6 @@ exports.default = Question;
 
 /***/ }),
 
-/***/ 270:
-/***/ (function(module, exports) {
-
-// removed by extract-text-webpack-plugin
-
-/***/ }),
-
 /***/ 271:
 /***/ (function(module, exports) {
 
@@ -416,10 +382,17 @@ exports.default = Question;
 
 /***/ }),
 
-/***/ 293:
+/***/ 272:
+/***/ (function(module, exports) {
+
+// removed by extract-text-webpack-plugin
+
+/***/ }),
+
+/***/ 294:
 /***/ (function(module, exports, __webpack_require__) {
 
-module.exports = __webpack_require__(110);
+module.exports = __webpack_require__(111);
 
 
 /***/ })

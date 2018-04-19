@@ -63,7 +63,7 @@
 /******/ 	__webpack_require__.p = "build/";
 /******/
 /******/ 	// Load entry module and return exports
-/******/ 	return __webpack_require__(__webpack_require__.s = 283);
+/******/ 	return __webpack_require__(__webpack_require__.s = 284);
 /******/ })
 /************************************************************************/
 /******/ ({
@@ -75,7 +75,7 @@ module.exports = Common;
 
 /***/ }),
 
-/***/ 101:
+/***/ 102:
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -85,11 +85,11 @@ var _Common = __webpack_require__(0);
 
 var _Common2 = _interopRequireDefault(_Common);
 
-var _adapter = __webpack_require__(123);
+var _adapter = __webpack_require__(124);
 
 var _adapter2 = _interopRequireDefault(_adapter);
 
-var _viewerComponent = __webpack_require__(124);
+var _viewerComponent = __webpack_require__(125);
 
 var _viewerComponent2 = _interopRequireDefault(_viewerComponent);
 
@@ -106,7 +106,7 @@ _Common2.default.Store.registerModel('ObojoboDraft.Chunks.Break', {
 
 /***/ }),
 
-/***/ 123:
+/***/ 124:
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -148,7 +148,7 @@ function __guard__(value, transform) {
 
 /***/ }),
 
-/***/ 124:
+/***/ 125:
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -158,9 +158,7 @@ Object.defineProperty(exports, "__esModule", {
 	value: true
 });
 
-var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
-
-__webpack_require__(259);
+__webpack_require__(260);
 
 var _Common = __webpack_require__(0);
 
@@ -168,59 +166,36 @@ var _Common2 = _interopRequireDefault(_Common);
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
-function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
-
-function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
-
-function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
-
 var OboComponent = _Common2.default.components.OboComponent;
 var NonEditableChunk = _Common2.default.chunk.NonEditableChunk;
 
-var Break = function (_React$Component) {
-	_inherits(Break, _React$Component);
-
-	function Break() {
-		_classCallCheck(this, Break);
-
-		return _possibleConstructorReturn(this, (Break.__proto__ || Object.getPrototypeOf(Break)).apply(this, arguments));
-	}
-
-	_createClass(Break, [{
-		key: 'render',
-		value: function render() {
-			return React.createElement(
-				OboComponent,
-				{ model: this.props.model, moduleData: this.props.moduleData },
-				React.createElement(
-					NonEditableChunk,
-					{
-						className: 'obojobo-draft--chunks--break viewer width-' + this.props.model.modelState.width
-					},
-					React.createElement('hr', null)
-				)
-			);
-		}
-	}]);
-
-	return Break;
-}(React.Component);
-
-exports.default = Break;
+exports.default = function (props) {
+	return React.createElement(
+		OboComponent,
+		{ model: props.model, moduleData: props.moduleData },
+		React.createElement(
+			NonEditableChunk,
+			{
+				className: 'obojobo-draft--chunks--break viewer width-' + props.model.modelState.width
+			},
+			React.createElement('hr', null)
+		)
+	);
+};
 
 /***/ }),
 
-/***/ 259:
+/***/ 260:
 /***/ (function(module, exports) {
 
 // removed by extract-text-webpack-plugin
 
 /***/ }),
 
-/***/ 283:
+/***/ 284:
 /***/ (function(module, exports, __webpack_require__) {
 
-module.exports = __webpack_require__(101);
+module.exports = __webpack_require__(102);
 
 
 /***/ })

@@ -45,7 +45,7 @@ class Assessment extends DraftNode {
 			})
 	}
 
-	static createAttemptResponse(userId, draftId, attempt) {
+	static createUserAttempt(userId, draftId, attempt) {
 		return {
 			userId: userId,
 			draftId: draftId,
@@ -66,8 +66,7 @@ class Assessment extends DraftNode {
 	}
 
 	static getAttempts(userId, draftId, optionalAssessmentId = null) {
-		let assessments
-		let assessmentsArr = []
+		let assessments = {}
 		return db
 			.manyOrNone(
 				`
@@ -100,32 +99,41 @@ class Assessment extends DraftNode {
 				}
 			)
 			.then(attempts => {
-				let assessments = {}
+				// turn array of results from into a nested object
+				// { assessment1: { id: 1, attempts: [{} , {}] } }
 				attempts.forEach(attempt => {
-					attempt = Assessment.createAttemptResponse(userId, draftId, attempt)
+					let userAttempt = Assessment.createUserAttempt(userId, draftId, attempt)
 
-					if (!assessments[attempt.assessmentId]) {
-						assessments[attempt.assessmentId] = {
-							assessmentId: attempt.assessmentId,
+					// initialize in assessments array if missing
+					if (!assessments[userAttempt.assessmentId]) {
+						assessments[userAttempt.assessmentId] = {
+							assessmentId: userAttempt.assessmentId,
 							attempts: []
 						}
 					}
 
-					assessments[attempt.assessmentId].attempts.push(attempt)
+					// append response
+					assessments[userAttempt.assessmentId].attempts.push(userAttempt)
 				})
 
+				// now, get the response history for this user & draft
 				return Assessment.getResponseHistory(userId, draftId)
 			})
 			.then(responseHistory => {
+				// Goal: place the responses from history into the attempts created above
+				// history is keyed by attemptId
+				// find the matching attemptID in assessments.<id>.attempts[ {attemptId:<attemptId>}, ...]
+				// and place our responses into the userAttempt objects in assessments
 				for (let attemptId in responseHistory) {
 					let responsesForAttempt = responseHistory[attemptId]
 
+					// loop through responses in this attempt
 					responsesForAttempt.forEach(response => {
-						let attemptForResponseIndex = assessments[response.assessment_id].attempts.findIndex(
+						let attemptForResponse = assessments[response.assessment_id].attempts.find(
 							x => x.attemptId === response.attempt_id
 						)
 
-						if (attemptForResponseIndex === -1) {
+						if (!attemptForResponse) {
 							logger.warn(
 								`Couldn't find an attempt I was looking for ('${userId}', '${draftId}', '${attemptId}', '${
 									response.id
@@ -135,23 +143,16 @@ class Assessment extends DraftNode {
 							return
 						}
 
-						assessments[response.assessment_id].attempts[attemptForResponseIndex].responses[
-							response.question_id
-						] =
-							response.response
+						// asessments.<assessmentId>.attempts
+						attemptForResponse.responses[response.question_id] = response.response
 					})
 				}
-
-				for (let assessmentId in assessments) {
-					assessmentsArr.push(assessments[assessmentId])
-				}
-
-				return assessmentsArr
 			})
-			.then(assessmentsArr => {
-				return lti.getLTIStatesByAssessmentIdForUserAndDraft(userId, draftId, optionalAssessmentId)
-			})
+			.then(() =>
+				lti.getLTIStatesByAssessmentIdForUserAndDraft(userId, draftId, optionalAssessmentId)
+			)
 			.then(ltiStates => {
+				let assessmentsArr = Object.values(assessments)
 				assessmentsArr.forEach(assessmentItem => {
 					let ltiState = ltiStates[assessmentItem.assessmentId]
 
@@ -168,16 +169,21 @@ class Assessment extends DraftNode {
 					}
 				})
 
+				// didn't ask for a specific assessment, return everything
 				if (optionalAssessmentId === null) {
 					return assessmentsArr
-				} else if (optionalAssessmentId !== null && assessmentsArr.length > 0) {
+				}
+
+				// asked for a specific assessment return it
+				if (assessmentsArr.length > 0) {
 					return assessmentsArr[0]
-				} else {
-					return {
-						assessmentId: optionalAssessmentId,
-						attempts: [],
-						ltiState: null
-					}
+				}
+
+				// asked for a specific assessment but none found
+				return {
+					assessmentId: optionalAssessmentId,
+					attempts: [],
+					ltiState: null
 				}
 			})
 	}
@@ -222,6 +228,8 @@ class Assessment extends DraftNode {
 		)
 	}
 
+	// get all attempts containing an array of responses
+	// { <attemptId>: [ {...question response...} ] }
 	static getResponseHistory(userId, draftId) {
 		return db
 			.manyOrNone(

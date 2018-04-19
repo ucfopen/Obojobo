@@ -1,0 +1,63 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`Assessment getAttempts returns attempts object with response history 1`] = `
+Object {
+  "assessmentId": "mockAssessmentId",
+  "attempts": Array [
+    Object {
+      "assessmentId": "mockAssessmentId",
+      "assessmentScore": 15,
+      "assessmentScoreDetails": "mockScoreDeails",
+      "assessmentScoreId": "scoreId",
+      "attemptId": "mockAttemptId",
+      "attemptNumber": 12,
+      "attemptScore": "mockResult",
+      "draftId": "mockDraftId",
+      "finishTime": "mockCompletedAt",
+      "isFinished": true,
+      "questionScores": Array [
+        "mockScore",
+      ],
+      "responses": Object {},
+      "startTime": "mockCreatedAt",
+      "state": "mockState",
+      "userId": "mockUserId",
+    },
+  ],
+  "ltiState": Object {
+    "gradebookStatus": "mockGradeBookSatus",
+    "scoreSent": 0,
+    "sentDate": "mockSentDate",
+    "status": "mockStatus",
+    "statusDetails": "mockStatusDtails",
+  },
+}
+`;
+
+exports[`Assessment getAttempts returns attempts object without response history 1`] = `
+Object {
+  "assessmentId": "mockAssessmentId",
+  "attempts": Array [
+    Object {
+      "assessmentId": "mockAssessmentId",
+      "assessmentScore": 15,
+      "assessmentScoreDetails": "mockScoreDeails",
+      "assessmentScoreId": "scoreId",
+      "attemptId": "mockAttemptId",
+      "attemptNumber": 12,
+      "attemptScore": "mockResult",
+      "draftId": "mockDraftId",
+      "finishTime": "mockCompletedAt",
+      "isFinished": true,
+      "questionScores": Array [
+        "mockScore",
+      ],
+      "responses": Object {},
+      "startTime": "mockCreatedAt",
+      "state": "mockState",
+      "userId": "mockUserId",
+    },
+  ],
+  "ltiState": null,
+}
+`;

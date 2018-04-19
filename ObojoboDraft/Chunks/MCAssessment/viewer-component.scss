@@ -72,7 +72,7 @@
 					background: transparentize($color-correct, 0.9);
 				}
 
-				&.is-incorrect {
+				&.is-not-correct {
 					&:before {
 						@include incorrect();
 					}
@@ -284,7 +284,7 @@
 							color: $color-correct;
 						}
 
-						&.is-incorrect-feedback:before {
+						&.is-not-correct-feedback:before {
 							content: '✖' attr(data-choice-label);
 							color: $color-incorrect;
 						}

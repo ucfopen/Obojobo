@@ -43,7 +43,7 @@ export default class Question extends React.Component {
 		let classNames = [
 			'flip-container',
 			'obojobo-draft--chunks--question',
-			score === null ? '' : score === 100 ? 'is-correct' : 'is-incorrect',
+			score === null ? '' : score === 100 ? 'is-correct' : 'is-not-correct',
 			this.props.mode === 'review' ? 'is-active' : `is-${viewState}`,
 			`is-mode-${mode}`
 		].join(' ')
@@ -90,7 +90,7 @@ export default class Question extends React.Component {
 		let classNames = [
 			'flip-container',
 			'obojobo-draft--chunks--question',
-			score === null ? '' : score === 100 ? 'is-correct' : 'is-incorrect',
+			score === null ? '' : score === 100 ? 'is-correct' : 'is-not-correct',
 			'is-active',
 			`is-mode-${mode}`
 		].join(' ')
