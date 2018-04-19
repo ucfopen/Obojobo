@@ -3,8 +3,12 @@ import Common from 'Common'
 const { Dispatcher } = Common.flux
 const { OboModel } = Common.models
 
-const getFlatList = function(item) {
+const getFlatList = function (item) {
 	let list = []
+	let model = OboModel.models[item.id]
+	if (model && model.get('type') === 'ObojoboDraft.Sections.Assessment') {
+		item.flags.assessment = true
+	}
 	if (item.type !== 'hidden') {
 		list.push(item)
 	}

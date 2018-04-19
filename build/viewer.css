@@ -375,7 +375,6 @@ body {
   overflow: hidden; }
   .viewer--components--logo.is-inverted {
     filter: invert(100%); }
-@charset "UTF-8";
 .viewer--components--nav {
   overflow: auto;
   position: fixed;
@@ -384,14 +383,15 @@ body {
   bottom: 0;
   z-index: 999;
   font-family: "Libre Franklin", Arial, sans-serif;
-  color: #ffffff;
-  background: #131313;
+  color: #000000;
+  background: #ffffff;
   font-size: 1rem;
   width: 16rem;
   padding: 2rem;
   padding-top: 1rem;
   box-sizing: border-box;
-  transition: left 0.2s 0.2s; }
+  transition: left 0.2s 0.2s;
+  border-right: 1px solid rgba(0, 0, 0, 0.2); }
   .viewer--components--nav.is-locked li.link,
   .viewer--components--nav.is-locked li.seperator {
     opacity: 0.25;
@@ -413,37 +413,37 @@ body {
     display: none; }
   .viewer--components--nav .is-correct {
     color: #b4d4af; }
-  .viewer--components--nav .is-selected {
-    font-weight: bold;
-    color: #93c6ff; }
-    .viewer--components--nav .is-selected:after {
-      content: '\2022';
-      position: absolute;
-      right: -1rem;
-      top: 50%;
-      transform: translate(0, -50%); }
-    .viewer--components--nav .is-selected .lock-icon {
-      display: none; }
   .viewer--components--nav .lock-icon {
     position: absolute;
     right: -1.2rem;
     top: 0.2rem;
     width: 0.7rem;
     opacity: 0.3; }
-  .viewer--components--nav ul {
-    padding: 0;
-    margin: 0;
-    text-align: right; }
-  .viewer--components--nav li {
-    position: relative;
-    list-style-type: none;
-    padding: 0.25rem 0; }
   .viewer--components--nav hr {
     border: none;
     border-bottom: 1px solid #ffffff;
     opacity: 0.2; }
+  .viewer--components--nav ul {
+    padding: 0;
+    margin: 0; }
+  .viewer--components--nav li {
+    position: relative;
+    list-style-type: none;
+    padding: 0 0 1rem 0;
+    border-left: solid 2px #999999; }
+  .viewer--components--nav .heading {
+    position: relative;
+    top: 1px;
+    font-size: 1.1rem;
+    font-weight: bold;
+    opacity: 0.7;
+    color: #000000;
+    cursor: default;
+    border-left: solid 1px #ffffff; }
   .viewer--components--nav .link,
   .viewer--components--nav .sub-link {
+    padding-left: 1rem;
+    color: #999999;
     cursor: pointer; }
     .viewer--components--nav .link:hover,
     .viewer--components--nav .sub-link:hover {
@@ -452,27 +452,95 @@ body {
     .viewer--components--nav .sub-link.is-selected:hover {
       color: #93c6ff;
       cursor: default; }
-  .viewer--components--nav .link {
-    margin-top: 1rem; }
-  .viewer--components--nav .sub-link {
-    font-size: 0.7rem;
-    opacity: 0.6;
-    margin-left: 1rem;
-    position: relative; }
+    .viewer--components--nav .link:after,
     .viewer--components--nav .sub-link:after {
-      content: '\2022';
+      content: '';
       position: absolute;
-      right: -1.3em;
-      top: 1em;
-      transform: translate(0, -50%); }
+      display: inline-block;
+      left: -0.6em;
+      top: 29%;
+      transform: translate(0, -50%);
+      width: 0.8em;
+      height: 0.8em;
+      border: solid 2px #999999;
+      border-radius: 0.8em;
+      background: #ffffff; }
+    .viewer--components--nav .link.last-in-list:before,
+    .viewer--components--nav .sub-link.last-in-list:before {
+      content: '';
+      position: absolute;
+      bottom: 0px;
+      left: -2px;
+      width: 1.2em;
+      height: 1.2em;
+      background: #ffffff; }
+  .viewer--components--nav .link:after {
+    left: -10px;
+    color: #ffffff; }
+  .viewer--components--nav .link.is-selected {
+    color: #93c6ff;
+    border-left-color: #93c6ff; }
+    .viewer--components--nav .link.is-selected:after {
+      left: -10px;
+      top: 29%;
+      background: #c6e1ff;
+      border: solid 3px #93c6ff; }
+    .viewer--components--nav .link.is-selected .lock-icon {
+      display: none; }
+  .viewer--components--nav .link.first-in-list:before {
+    content: '';
+    position: absolute;
+    top: 0px;
+    left: -2px;
+    width: 1.2em;
+    height: 1.2em;
+    background: #ffffff; }
+  .viewer--components--nav .sub-link {
+    position: relative;
+    font-size: 0.7rem;
+    border-left-color: #93c6ff; }
+    .viewer--components--nav .sub-link.last-in-list:before {
+      content: '';
+      position: absolute;
+      bottom: 0px;
+      left: -2px;
+      width: 1.2em;
+      height: 1.5em;
+      background: #ffffff; }
+    .viewer--components--nav .sub-link:after {
+      left: -5px;
+      background: #93c6ff;
+      border: none; }
+  .viewer--components--nav .is-assessment {
+    position: relative;
+    margin-bottom: 0.75em;
+    padding: 0.75em 0.75em 0.75em 1em;
+    border-top: solid 1px #cccccc;
+    border-left: solid 2px #ffffff;
+    border-bottom: solid 1px #cccccc; }
+    .viewer--components--nav .is-assessment:before {
+      display: none; }
+    .viewer--components--nav .is-assessment:after {
+      top: 50%;
+      width: 1.2em;
+      height: 1.2em;
+      content: 'Q';
+      padding: 0.2em;
+      color: #999999;
+      border: solid 1px #999999;
+      border-radius: 4px;
+      font-size: 0.6em;
+      font-weight: bold;
+      text-align: center; }
+    .viewer--components--nav .is-assessment.is-selected {
+      color: #93c6ff;
+      border-left: none; }
+      .viewer--components--nav .is-assessment.is-selected:after {
+        top: 50%;
+        border: solid 1px #999999;
+        background: #ffffff; }
   .viewer--components--nav .seperator {
     cursor: default; }
-  .viewer--components--nav .heading {
-    font-size: 0.7rem;
-    opacity: 0.5;
-    text-transform: uppercase;
-    cursor: default;
-    margin-bottom: 1rem; }
   .viewer--components--nav .toggle-button {
     background-color: transparent;
     background-position: center center;

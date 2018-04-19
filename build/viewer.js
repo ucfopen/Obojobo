@@ -517,6 +517,10 @@ var OboModel = _Common2.default.models.OboModel;
 
 var getFlatList = function getFlatList(item) {
 	var list = [];
+	var model = OboModel.models[item.id];
+	if (model && model.get('type') === 'ObojoboDraft.Sections.Assessment') {
+		item.flags.assessment = true;
+	}
 	if (item.type !== 'hidden') {
 		list.push(item);
 	}
@@ -5927,12 +5931,18 @@ var Nav = function (_React$Component) {
 		}
 	}, {
 		key: 'renderLink',
-		value: function renderLink(index, isSelected, item, lockEl) {
+		value: function renderLink(index, isSelected, list, lockEl) {
+
+			var item = list[index];
+			var isFirstInList = list[index - 1] && (list[index - 1].type != 'link' || list[index - 1].flags.assessment) && list[index - 1].type != 'sub-link' && !item.flags.assessment;
+			var isLastInList = !list[index + 1] || list[index + 1].type != 'link' && list[index + 1].type != 'sub-link' || list[index + 1].flags.assessment;
+
 			var className = 'link';
 			className += isSelected ? ' is-selected' : ' is-not-select';
 			className += item.flags.visited ? ' is-visited' : ' is-not-visited';
 			className += item.flags.complete ? ' is-complete' : ' is-not-complete';
 			className += item.flags.correct ? ' is-correct' : ' is-not-correct';
+			if (isFirstInList) className += ' first-in-list';else if (isLastInList) className += ' last-in-list';
 
 			return React.createElement(
 				'li',
@@ -5943,10 +5953,15 @@ var Nav = function (_React$Component) {
 		}
 	}, {
 		key: 'renderSubLink',
-		value: function renderSubLink(index, isSelected, item, lockEl) {
+		value: function renderSubLink(index, isSelected, list, lockEl) {
+
+			var item = list[index];
+			var isLastInList = !list[index + 1] || list[index + 1].type != 'link' && list[index + 1].type != 'sub-link' || list[index + 1].flags.assessment;
+
 			var className = 'sub-link';
 			className += isSelected ? ' is-selected' : ' is-not-select';
 			className += item.flags.correct ? ' is-correct' : ' is-not-correct';
+			if (isLastInList) className += ' last-in-list';
 
 			return React.createElement(
 				'li',
@@ -6027,10 +6042,10 @@ var Nav = function (_React$Component) {
 								return _this2.renderHeading(index, item);
 
 							case 'link':
-								return _this2.renderLink(index, navState.navTargetId === item.id, item, lockEl);
+								return _this2.renderLink(index, navState.navTargetId === item.id, list, lockEl);
 
 							case 'sub-link':
-								return _this2.renderSubLink(index, navState.navTargetIndex === index, item, lockEl);
+								return _this2.renderSubLink(index, navState.navTargetIndex === index, list, lockEl);
 
 							case 'seperator':
 								return _this2.renderSep(index);

@@ -50,12 +50,24 @@ export default class Nav extends React.Component {
 		return <a>{label}</a>
 	}
 
-	renderLink(index, isSelected, item, lockEl) {
+	renderLink(index, isSelected, list, lockEl) {
+
+		let item = list[index]
+		let isFirstInList = list[index - 1]
+			&& (list[index - 1].type != 'link' || list[index - 1].flags.assessment)
+			&& list[index - 1].type != 'sub-link'
+			&& !item.flags.assessment
+		let isLastInList = !list[index + 1]
+			|| (list[index + 1].type != 'link' && list[index + 1].type != 'sub-link')
+			|| list[index + 1].flags.assessment
+
 		let className = 'link'
 		className += isSelected ? ' is-selected' : ' is-not-select'
 		className += item.flags.visited ? ' is-visited' : ' is-not-visited'
 		className += item.flags.complete ? ' is-complete' : ' is-not-complete'
 		className += item.flags.correct ? ' is-correct' : ' is-not-correct'
+		if (isFirstInList) className += ' first-in-list'
+		else if (isLastInList) className += ' last-in-list'
 
 		return (
 			<li key={index} onClick={this.onClick.bind(this, item)} className={className}>
@@ -65,10 +77,17 @@ export default class Nav extends React.Component {
 		)
 	}
 
-	renderSubLink(index, isSelected, item, lockEl) {
+	renderSubLink(index, isSelected, list, lockEl) {
+
+		let item = list[index]
+		var isLastInList = !list[index + 1]
+			|| (list[index + 1].type != 'link' && list[index + 1].type != 'sub-link')
+			|| list[index + 1].flags.assessment
+
 		let className = 'sub-link'
 		className += isSelected ? ' is-selected' : ' is-not-select'
 		className += item.flags.correct ? ' is-correct' : ' is-not-correct'
+		if (isLastInList) className += ' last-in-list'
 
 		return (
 			<li key={index} onClick={this.onClick.bind(this, item)} className={className}>
@@ -139,10 +158,10 @@ export default class Nav extends React.Component {
 								return this.renderHeading(index, item)
 
 							case 'link':
-								return this.renderLink(index, navState.navTargetId === item.id, item, lockEl)
+								return this.renderLink(index, navState.navTargetId === item.id, list, lockEl)
 
 							case 'sub-link':
-								return this.renderSubLink(index, navState.navTargetIndex === index, item, lockEl)
+								return this.renderSubLink(index, navState.navTargetIndex === index, list, lockEl)
 
 							case 'seperator':
 								return this.renderSep(index)

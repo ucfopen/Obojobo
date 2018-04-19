@@ -2,7 +2,6 @@
 
 .viewer--components--nav {
 	$padding: 2rem;
-
 	overflow: auto;
 	position: fixed;
 	top: 0;
@@ -10,8 +9,8 @@
 	bottom: 0;
 	z-index: $z-index-above-content;
 	font-family: $font-default;
-	color: $color-bg;
-	background: $color-bg3;
+	color: $color-text;
+	background: $color-bg;
 	font-size: 1rem;
 	width: $dimension-nav-menu;
 	padding: $padding;
@@ -20,8 +19,7 @@
 	// text-align: right;
 	transition: left $duration-animation-default $duration-animation-default;
 	// transform: translate(0, -1px);
-	// border-right: 1px solid transparentize($color-shadow, 0.2);
-
+	border-right: 1px solid transparentize($color-shadow, 0.1);
 	//@TODO - Temporary
 	// text-align: left;
 
@@ -58,7 +56,7 @@
 
 	&.is-disabled {
 		display: none;
-	}
+	} 
 
 	// .is-visited
 	// {
@@ -74,23 +72,6 @@
 	// 	color: #ec7b7b;
 	// }
 
-	.is-selected {
-		font-weight: bold;
-		color: $color-highlight;
-
-		&:after {
-			content: '•';
-			position: absolute;
-			right: -$padding / 2;
-			top: 50%;
-			transform: translate(0, -50%);
-		}
-
-		.lock-icon {
-			display: none;
-		}
-	}
-
 	.lock-icon {
 		position: absolute;
 		right: -1.2rem;
@@ -99,26 +80,40 @@
 		opacity: 0.3;
 	}
 
-	ul {
-		padding: 0;
-		margin: 0;
-		text-align: right;
-	}
-
-	li {
-		position: relative;
-		list-style-type: none;
-		padding: 0.25rem 0;
-	}
-
 	hr {
 		border: none;
 		border-bottom: 1px solid $color-bg;
 		opacity: 0.2;
 	}
 
+	ul {
+		padding: 0;
+		margin: 0;
+	}
+
+	li {
+		position: relative;
+		list-style-type: none;
+		padding: 0 0 1rem 0;
+
+		border-left: solid 2px $color-text-minor;
+	}
+
+	.heading {
+		position: relative;
+		top: 1px;
+		font-size: 1.1rem;
+		font-weight: bold;
+		opacity: 0.7;
+		color: $color-text;
+		cursor: default;
+		border-left: solid 1px $color-bg;
+	}
+
 	.link,
 	.sub-link {
+		padding-left: 1rem;
+		color: $color-text-minor;
 		cursor: pointer;
 
 		&:hover {
@@ -129,38 +124,133 @@
 			color: $color-highlight;
 			cursor: default;
 		}
-	}
+		&:after {
+			content: '';
+			position: absolute;
+			display: inline-block;
+			left: -0.6em;
+			top: 29%;
+			transform: translate(0, -50%);			
+			width: 0.8em;
+			height: 0.8em;
+			border: solid 2px $color-text-minor;
+			border-radius: 0.8em;
+			background: $color-bg;		
+		}
 
+		&.last-in-list {
+			&:before {
+				content:'';
+				position: absolute;
+				bottom: 0px;
+				left: -2px;				
+				width: 1.2em;
+				height: 1.2em;
+				background: $color-bg;
+			}
+		}
+	}
 	.link {
-		margin-top: 1rem;
+
+		&:after {
+			left: -10px;
+			color: $color-bg;
+		}
+
+		&.is-selected {
+			color: $color-highlight;
+			border-left-color: $color-highlight;
+
+			&:after {
+				left: -10px;
+				top: 29%;
+				background: lighten($color-highlight, 10%);
+				border: solid 3px $color-highlight;
+			}
+	
+			.lock-icon {
+				display: none;
+			}
+		}
+
+		&.first-in-list {
+			&:before {
+				content:'';
+				position: absolute;
+				top: 0px;
+				left: -2px;				
+				width: 1.2em;
+				height: 1.2em;
+				background: $color-bg;
+			}
+		}
 	}
 
 	.sub-link {
-		font-size: 0.7rem;
-		opacity: 0.6;
-		// list-style-type: inherit;
-		margin-left: 1rem;
 		position: relative;
+		font-size: 0.7rem;
+		border-left-color: $color-highlight;
+
+		&.last-in-list {
+			&:before {
+				content:'';
+				position: absolute;
+				bottom: 0px;
+				left: -2px;				
+				width: 1.2em;
+				height: 1.5em;
+				background: $color-bg;
+			}
+		}
+		
+		&:after {
+			left: -5px;
+			background: $color-highlight;
+			border: none;
+		}
+	}
+
+	.is-assessment {
+		position: relative;
+		margin-bottom: 0.75em;
+		padding: 0.75em 0.75em 0.75em 1em;
+		border-top: solid 1px lighten($color-text, 80%);
+		border-left: solid 2px $color-bg;
+		border-bottom: solid 1px lighten($color-text, 80%);
+
+		&:before {
+			display: none;
+		}
 
 		&:after {
-			content: '•';
-			position: absolute;
-			right: -1.3em;
-			top: 1em;
-			transform: translate(0, -50%);
+			top: 50%;
+			width: 1.2em;
+			height: 1.2em;
+			content: 'Q';
+			padding: 0.2em;
+			color: lighten($color-text, 60%);
+			
+			border: solid 1px lighten($color-text, 60%);
+			border-radius: 4px;
+			font-size: 0.6em;
+			font-weight: bold;
+			text-align: center;
+		}
+
+		&.is-selected {
+			color: $color-highlight;
+			border-left: none;
+
+			&:after {
+				top: 50%;
+				border: solid 1px lighten($color-text, 60%);
+				background: $color-bg;
+			}
 		}
 	}
 
 	.seperator {
 		cursor: default;
-	}
-
-	.heading {
-		font-size: 0.7rem;
-		opacity: 0.5;
-		text-transform: uppercase;
-		cursor: default;
-		margin-bottom: 1rem;
 	}
 
 	.toggle-button {
