@@ -50,9 +50,18 @@ export default class Assessment extends React.Component {
 		}
 
 		this.setState({
-			step: curStep,
-			fetching: false
+			step: curStep
 		})
+	}
+
+	componentWillMount() {
+		Dispatcher.on('assessment:endAttempt', () => this.setState({ fetching: true }))
+		Dispatcher.on('assessment:attemptEnded', () => this.setState({ fetching: false }))
+	}
+
+	componentWillUnmount() {
+		Dispatcher.off('assessment:endAttempt')
+		Dispatcher.off('assessment:attemptEnded')
 	}
 
 	componentDidUpdate() {
@@ -84,7 +93,6 @@ export default class Assessment extends React.Component {
 	}
 
 	endAttempt() {
-		this.setState({ fetching: true })
 		return AssessmentUtil.endAttempt(this.props.model)
 	}
 
