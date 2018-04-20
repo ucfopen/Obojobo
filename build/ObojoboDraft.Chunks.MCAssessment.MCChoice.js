@@ -216,8 +216,8 @@ var getInputType = function getInputType(responseType) {
 	}
 };
 
-var questionIsSelected = function questionIsSelected(questionState, model) {
-	var response = QuestionUtil.getResponse(questionState, model.getParentOfType('ObojoboDraft.Chunks.Question')) || { ids: [] };
+var questionIsSelected = function questionIsSelected(questionState, model, navStateContext) {
+	var response = QuestionUtil.getResponse(questionState, model.getParentOfType('ObojoboDraft.Chunks.Question'), navStateContext) || { ids: [] };
 
 	return response.ids.indexOf(model.get('id')) !== -1;
 };
@@ -248,7 +248,7 @@ var MCChoice = function MCChoice(props) {
 		return React.createElement('div', null);
 	}
 
-	var isSelected = questionIsSelected(props.moduleData.questionState, props.model);
+	var isSelected = questionIsSelected(props.moduleData.questionState, props.model, props.moduleData.navState.context);
 
 	var className = 'obojobo-draft--chunks--mc-assessment--mc-choice' + (0, _isornot2.default)(isSelected, 'selected') + (0, _isornot2.default)(isCorrect, 'correct') + ' is-mode-' + props.mode;
 

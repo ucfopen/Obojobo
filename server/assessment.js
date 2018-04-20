@@ -99,12 +99,12 @@ class Assessment extends DraftNode {
 				}
 			)
 			.then(attempts => {
-				// turn array of results from into a nested object
-				// { assessment1: { id: 1, attempts: [{} , {}] } }
+				// turn array of results from the query into a nested object
+				// { assessment1: { id: 'assessment1', attempts: [{} , {}] }, ... }
 				attempts.forEach(attempt => {
 					let userAttempt = Assessment.createUserAttempt(userId, draftId, attempt)
 
-					// initialize in assessments array if missing
+					// create new assessment object if we don't have one yet
 					if (!assessments[userAttempt.assessmentId]) {
 						assessments[userAttempt.assessmentId] = {
 							assessmentId: userAttempt.assessmentId,
@@ -112,7 +112,7 @@ class Assessment extends DraftNode {
 						}
 					}
 
-					// append response
+					// add attempt into our assessments object
 					assessments[userAttempt.assessmentId].attempts.push(userAttempt)
 				})
 
@@ -152,7 +152,7 @@ class Assessment extends DraftNode {
 				lti.getLTIStatesByAssessmentIdForUserAndDraft(userId, draftId, optionalAssessmentId)
 			)
 			.then(ltiStates => {
-				let assessmentsArr = Object.values(assessments)
+				let assessmentsArr = Object.keys(assessments).map(k => assessments[k]) //@TODO: Use Object.values if node >= 7
 				assessmentsArr.forEach(assessmentItem => {
 					let ltiState = ltiStates[assessmentItem.assessmentId]
 

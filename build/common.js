@@ -2089,28 +2089,28 @@ var Store = function () {
 	_createClass(Store, [{
 		key: 'init',
 		value: function init() {
-			return this.state = {};
+			this.state = {};
 		}
 	}, {
 		key: 'triggerChange',
 		value: function triggerChange() {
-			return _dispatcher2.default.trigger(this.name + ':change');
+			_dispatcher2.default.trigger(this.name + ':change');
 		}
 	}, {
 		key: 'onChange',
 		value: function onChange(callback) {
-			return _dispatcher2.default.on(this.name + ':change', callback);
+			_dispatcher2.default.on(this.name + ':change', callback);
 		}
 	}, {
 		key: 'offChange',
 		value: function offChange(callback) {
-			return _dispatcher2.default.off(this.name + ':change', callback);
+			_dispatcher2.default.off(this.name + ':change', callback);
 		}
 	}, {
 		key: 'setAndTrigger',
 		value: function setAndTrigger(keyValues) {
 			Object.assign(this.state, keyValues); // merge args onto defaults
-			return this.triggerChange();
+			this.triggerChange();
 		}
 	}, {
 		key: 'getState',
@@ -2120,7 +2120,7 @@ var Store = function () {
 	}, {
 		key: 'setState',
 		value: function setState(newState) {
-			return this.state = Object.assign({}, newState);
+			this.state = Object.assign({}, newState);
 		}
 	}, {
 		key: 'updateStateByContext',
@@ -7194,8 +7194,6 @@ Object.defineProperty(exports, "__esModule", {
 	value: true
 });
 
-var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
-
 __webpack_require__(76);
 
 var _button = __webpack_require__(9);
@@ -7204,82 +7202,50 @@ var _button2 = _interopRequireDefault(_button);
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
-function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+var onClickButton = function onClickButton(index, isSelected, originalOnClick) {
+	var buttonBarOnClick = arguments.length > 3 && arguments[3] !== undefined ? arguments[3] : function () {};
 
-function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
-
-function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
-
-var ButtonBar = function (_React$Component) {
-	_inherits(ButtonBar, _React$Component);
-
-	function ButtonBar() {
-		_classCallCheck(this, ButtonBar);
-
-		return _possibleConstructorReturn(this, (ButtonBar.__proto__ || Object.getPrototypeOf(ButtonBar)).apply(this, arguments));
+	if (typeof originalOnClick === 'function') {
+		originalOnClick();
 	}
 
-	_createClass(ButtonBar, [{
-		key: 'onClickButton',
-		value: function onClickButton(index, isSelected, originalOnClick) {
-			if (typeof originalOnClick === 'function') {
-				originalOnClick();
+	buttonBarOnClick(index, isSelected);
+};
+
+exports.default = function (props) {
+	return React.createElement(
+		'div',
+		{ className: 'obojobo-draft--components--button-bar' },
+		props.children.map(function (child, i) {
+			var isSelected = i === props.selectedIndex;
+			var childProps = Object.assign({}, child.props);
+
+			if (props.altAction) {
+				childProps.altAction = props.altAction;
 			}
 
-			this.props.onClick(index, isSelected);
-		}
-	}, {
-		key: 'render',
-		value: function render() {
-			var _this2 = this;
+			if (props.dangerous) {
+				childProps.dangerous = props.dangerous;
+			}
+
+			if (props.disabled) {
+				childProps.disabled = props.disabled;
+			}
+
+			childProps.onClick = onClickButton.bind(null, i, isSelected, childProps.onClick || function () {}, props.onClick);
 
 			return React.createElement(
 				'div',
-				{ className: 'obojobo-draft--components--button-bar' },
-				this.props.children.map(function (child, i) {
-					var isSelected = i === _this2.props.selectedIndex;
-					var childProps = Object.assign({}, child.props);
-
-					if (_this2.props.altAction) {
-						childProps.altAction = _this2.props.altAction;
-					}
-
-					if (_this2.props.dangerous) {
-						childProps.dangerous = _this2.props.dangerous;
-					}
-
-					if (_this2.props.disabled) {
-						childProps.disabled = _this2.props.disabled;
-					}
-
-					childProps.onClick = _this2.onClickButton.bind(_this2, i, isSelected, childProps.onClick);
-
-					return React.createElement(
-						'div',
-						{ key: i, className: isSelected ? 'is-selected' : '' },
-						React.createElement(
-							_button2.default,
-							childProps,
-							child.props.children
-						)
-					);
-				})
+				{ key: i, className: isSelected ? 'is-selected' : '' },
+				React.createElement(
+					_button2.default,
+					childProps,
+					child.props.children
+				)
 			);
-		}
-	}], [{
-		key: 'defaultProps',
-		get: function get() {
-			return {
-				selectedIndex: -1,
-				onClick: function onClick() {}
-			};
-		}
-	}]);
-
-	return ButtonBar;
-}(React.Component);
-
-exports.default = ButtonBar;
+		})
+	);
+};
 
 /***/ }),
 /* 53 */

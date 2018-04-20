@@ -106,7 +106,6 @@ export default class ViewerApp extends React.Component {
 
 		APIUtil.requestStart(visitIdFromUrl, draftIdFromUrl)
 			.then(visit => {
-				ScoreStore.init()
 				QuestionStore.init()
 				ModalStore.init()
 				FocusStore.init()
@@ -147,6 +146,7 @@ export default class ViewerApp extends React.Component {
 				})
 			})
 			.catch(err => {
+				console.log(err)
 				this.setState({ loading: false, requestStatus: 'invalid' }, () =>
 					Dispatcher.trigger('viewer:loaded', false)
 				)

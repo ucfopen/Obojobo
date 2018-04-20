@@ -376,7 +376,7 @@ var _Common = __webpack_require__(0);
 
 var _Common2 = _interopRequireDefault(_Common);
 
-var _reviewIcon = __webpack_require__(164);
+var _reviewIcon = __webpack_require__(167);
 
 var _reviewIcon2 = _interopRequireDefault(_reviewIcon);
 
@@ -419,7 +419,7 @@ var AssessmentReviewView = function (_React$Component) {
 	_createClass(AssessmentReviewView, [{
 		key: 'componentDidMount',
 		value: function componentDidMount() {
-			var lastAttempt = AssessmentUtil.getLastAttemptForModel(this.props.assessment.props.moduleData.assessmentState, this.props.assessment.props.model);
+			var lastAttempt = AssessmentUtil.getLastAttemptForModel(this.props.moduleData.assessmentState, this.props.model);
 
 			NavUtil.setContext('assessmentReview:' + lastAttempt.attemptId);
 		}
@@ -430,11 +430,11 @@ var AssessmentReviewView = function (_React$Component) {
 
 			var attemptReviewComponents = {};
 
-			var attempts = AssessmentUtil.getAllAttempts(this.props.assessment.props.moduleData.assessmentState, this.props.assessment.props.model);
-			var highestAttempts = AssessmentUtil.getHighestAttemptsForModelByAttemptScore(this.props.assessment.props.moduleData.assessmentState, this.props.assessment.props.model);
+			var attempts = AssessmentUtil.getAllAttempts(this.props.moduleData.assessmentState, this.props.model);
+			var highestAttempts = AssessmentUtil.getHighestAttemptsForModelByAttemptScore(this.props.moduleData.assessmentState, this.props.model);
 			var scoreReporter = new AssessmentScoreReporter({
-				assessmentRubric: this.props.assessment.props.model.modelState.rubric.toObject(),
-				totalNumberOfAttemptsAllowed: this.props.assessment.props.model.modelState.attempts,
+				assessmentRubric: this.props.model.modelState.rubric.toObject(),
+				totalNumberOfAttemptsAllowed: this.props.model.modelState.attempts,
 				allAttempts: attempts
 			});
 
@@ -526,17 +526,17 @@ var AssessmentReviewView = function (_React$Component) {
 
 							return _this2.props.showFullReview ? React.createElement(QuestionComponent, {
 								model: questionModel,
-								moduleData: assessment.props.moduleData,
+								moduleData: _this2.props.moduleData,
 								mode: 'review',
 								key: scoreObj.id
-							}) : (0, _basicReview2.default)(assessment.props.moduleData, scoreObj, index);
+							}) : (0, _basicReview2.default)(_this2.props.moduleData, scoreObj, index);
 						})
 					)
 				);
 			};
 
 			var getSelectedIndex = function getSelectedIndex() {
-				var context = _this2.props.assessment.props.moduleData.navState.context;
+				var context = _this2.props.moduleData.navState.context;
 
 				for (var i in attempts) {
 					var attempt = attempts[i];
@@ -580,7 +580,7 @@ var AssessmentReviewView = function (_React$Component) {
 						attemptButtons
 					)
 				),
-				attemptReviewComponents[this.props.assessment.props.moduleData.navState.context]
+				attemptReviewComponents[this.props.moduleData.navState.context]
 			);
 		}
 	}]);
@@ -602,68 +602,7 @@ Object.defineProperty(exports, "__esModule", {
 	value: true
 });
 
-exports.default = function (props) {
-	return React.createElement(
-		"svg",
-		{ xmlns: "http://www.w3.org/2000/svg", viewBox: "0 0 114.33 114.33" },
-		React.createElement(
-			"defs",
-			null,
-			React.createElement(
-				"style",
-				null,
-				".cls-1{fill:#eadff6;}.cls-2{fill:#fff;}.cls-3{fill:#d7c6ed;}.cls-4{fill:#8fb9eb;}.cls-5{fill:#e8f3e2;}.cls-6{fill:#77b851;}"
-			)
-		),
-		React.createElement(
-			"title",
-			null,
-			"obo-assessment-review-icon"
-		),
-		React.createElement("circle", { className: "cls-1", cx: "57.17", cy: "57.17", r: "57.17" }),
-		React.createElement("rect", { className: "cls-2", x: "32.5", y: "28.87", width: "49.33", height: "56.6", rx: "3.72", ry: "3.72" }),
-		React.createElement("path", {
-			className: "cls-3",
-			d: "M43.15,39.35a4.06,4.06,0,1,0,4.06,4.06A4.06,4.06,0,0,0,43.15,39.35Zm0,6.31a2.25,2.25,0,1,1,2.25-2.25A2.25,2.25,0,0,1,43.15,45.67Z"
-		}),
-		React.createElement("rect", { className: "cls-3", x: "51.5", y: "41.29", width: "23.75", height: "4.25", rx: "2.12", ry: "2.12" }),
-		React.createElement("path", {
-			className: "cls-3",
-			d: "M43.15,53.1a4.06,4.06,0,1,0,4.06,4.06A4.06,4.06,0,0,0,43.15,53.1Zm0,6.31a2.25,2.25,0,1,1,2.25-2.25A2.25,2.25,0,0,1,43.15,59.42Z"
-		}),
-		React.createElement("rect", { className: "cls-3", x: "51.5", y: "55.04", width: "23.75", height: "4.25", rx: "2.12", ry: "2.12" }),
-		React.createElement("path", {
-			className: "cls-3",
-			d: "M43.15,66.85a4.06,4.06,0,1,0,4.06,4.06A4.06,4.06,0,0,0,43.15,66.85Z"
-		}),
-		React.createElement("rect", { className: "cls-3", x: "51.5", y: "68.79", width: "23.75", height: "4.25", rx: "2.12", ry: "2.12" }),
-		React.createElement("path", {
-			className: "cls-2",
-			d: "M91.27,81.5l-5.39-5.39a15.3,15.3,0,1,0-7.65,7.74l5.35,5.35a3.53,3.53,0,0,0,5,0l2.72-2.72A3.53,3.53,0,0,0,91.27,81.5Z"
-		}),
-		React.createElement("path", {
-			className: "cls-4",
-			d: "M88.24,83.1,82,76.86A11.87,11.87,0,1,0,78.82,80l6.24,6.24a1.25,1.25,0,0,0,1.76,0l1.42-1.42A1.25,1.25,0,0,0,88.24,83.1Z"
-		}),
-		React.createElement("circle", { className: "cls-5", cx: "72.16", cy: "70.2", r: "8.79" }),
-		React.createElement("path", {
-			className: "cls-6",
-			d: "M78.18,67.41l-1.75-1.75a.67.67,0,0,0-.94,0l-4.17,4.17L69.46,68a.67.67,0,0,0-.94,0l-1.75,1.75a.67.67,0,0,0,0,.94l2.72,2.72h0l1.35,1.35a.67.67,0,0,0,.94,0l6.39-6.39A.67.67,0,0,0,78.18,67.41Z"
-		})
-	);
-};
-
-/***/ }),
-
-/***/ 165:
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-
-
-Object.defineProperty(exports, "__esModule", {
-	value: true
-});
+var _extends = Object.assign || function (target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i]; for (var key in source) { if (Object.prototype.hasOwnProperty.call(source, key)) { target[key] = source[key]; } } } return target; };
 
 var _Common = __webpack_require__(0);
 
@@ -673,7 +612,7 @@ var _Viewer = __webpack_require__(1);
 
 var _Viewer2 = _interopRequireDefault(_Viewer);
 
-var _ltiStatus = __webpack_require__(166);
+var _ltiStatus = __webpack_require__(165);
 
 var _ltiStatus2 = _interopRequireDefault(_ltiStatus);
 
@@ -691,8 +630,8 @@ var NavUtil = _Viewer2.default.util.NavUtil;
 
 //@TODO - Rename to simply "Review"
 
-var scoreSubmittedView = function scoreSubmittedView(assessment) {
-	var questionScores = AssessmentUtil.getLastAttemptScoresForModel(assessment.props.moduleData.assessmentState, assessment.props.model);
+var AssessmentPostTest = function AssessmentPostTest(props) {
+	var questionScores = AssessmentUtil.getLastAttemptScoresForModel(props.moduleData.assessmentState, props.model);
 
 	var isFullReviewAvailable = function isFullReviewAvailable(reviewType) {
 		switch (reviewType) {
@@ -706,36 +645,36 @@ var scoreSubmittedView = function scoreSubmittedView(assessment) {
 	};
 
 	var isAssessmentComplete = function isAssessmentComplete() {
-		return !AssessmentUtil.hasAttemptsRemaining(assessment.props.moduleData.assessmentState, assessment.props.model);
+		return !AssessmentUtil.hasAttemptsRemaining(props.moduleData.assessmentState, props.model);
 	};
 
-	var scoreAction = assessment.getScoreAction();
+	// const scoreAction = assessment.getScoreAction()
 	var numCorrect = AssessmentUtil.getNumCorrect(questionScores);
 
-	var assessmentScore = AssessmentUtil.getAssessmentScoreForModel(assessment.props.moduleData.assessmentState, assessment.props.model);
+	var assessmentScore = AssessmentUtil.getAssessmentScoreForModel(props.moduleData.assessmentState, props.model);
 
 	var firstHighestAttempt = null;
 	if (assessmentScore !== null) {
-		var highestAttempts = AssessmentUtil.getHighestAttemptsForModelByAssessmentScore(assessment.props.moduleData.assessmentState, assessment.props.model);
+		var highestAttempts = AssessmentUtil.getHighestAttemptsForModelByAssessmentScore(props.moduleData.assessmentState, props.model);
 
 		firstHighestAttempt = highestAttempts.length === 0 ? null : highestAttempts[0];
 	}
 
 	var onClickResendScore = function onClickResendScore() {
-		AssessmentUtil.resendLTIScore(assessment.props.model);
+		AssessmentUtil.resendLTIScore(props.model);
 	};
 
-	var ltiState = AssessmentUtil.getLTIStateForModel(assessment.props.moduleData.assessmentState, assessment.props.model);
+	var ltiState = AssessmentUtil.getLTIStateForModel(props.moduleData.assessmentState, props.model);
 
-	var assessmentLabel = NavUtil.getNavLabelForModel(assessment.props.moduleData.navState, assessment.props.model);
+	var assessmentLabel = NavUtil.getNavLabelForModel(props.moduleData.navState, props.model);
 
 	var scoreActionsPage = void 0;
 
-	if (scoreAction.page != null) {
-		var pageModel = OboModel.create(scoreAction.page);
-		pageModel.parent = assessment.props.model; //'@TODO - FIGURE OUT A BETTER WAY TO DO THIS - THIS IS NEEDED TO GET {{VARIABLES}} WORKING')
+	if (props.scoreAction.page != null) {
+		var pageModel = OboModel.create(props.scoreAction.page);
+		pageModel.parent = props.model; //'@TODO - FIGURE OUT A BETTER WAY TO DO THIS - THIS IS NEEDED TO GET {{VARIABLES}} WORKING')
 		var PageComponent = pageModel.getComponentClass();
-		scoreActionsPage = React.createElement(PageComponent, { model: pageModel, moduleData: assessment.props.moduleData });
+		scoreActionsPage = React.createElement(PageComponent, { model: pageModel, moduleData: props.moduleData });
 	} else {
 		scoreActionsPage = React.createElement(
 			'p',
@@ -744,9 +683,9 @@ var scoreSubmittedView = function scoreSubmittedView(assessment) {
 		);
 	}
 
-	var externalSystemLabel = assessment.props.moduleData.lti.outcomeServiceHostname;
+	var externalSystemLabel = props.moduleData.lti.outcomeServiceHostname;
 
-	var showFullReview = isFullReviewAvailable(assessment.props.model.modelState.review);
+	var showFullReview = isFullReviewAvailable(props.model.modelState.review);
 
 	return React.createElement(
 		'div',
@@ -847,16 +786,16 @@ var scoreSubmittedView = function scoreSubmittedView(assessment) {
 				null,
 				'Attempt History:'
 			),
-			React.createElement(_fullReview2.default, { assessment: assessment, showFullReview: showFullReview })
+			React.createElement(_fullReview2.default, _extends({}, props, { showFullReview: showFullReview }))
 		)
 	);
 };
 
-exports.default = scoreSubmittedView;
+exports.default = AssessmentPostTest;
 
 /***/ }),
 
-/***/ 166:
+/***/ 165:
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -971,7 +910,93 @@ exports.default = function (props) {
 
 /***/ }),
 
+/***/ 166:
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+Object.defineProperty(exports, "__esModule", {
+	value: true
+});
+var AssessmentPreTest = function AssessmentPreTest(props) {
+	var Component = props.model.getComponentClass();
+
+	return React.createElement(
+		"div",
+		{ className: "pre-test" },
+		React.createElement(Component, { model: props.model, moduleData: props.moduleData })
+	);
+};
+
+exports.default = AssessmentPreTest;
+
+/***/ }),
+
 /***/ 167:
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+Object.defineProperty(exports, "__esModule", {
+	value: true
+});
+
+exports.default = function (props) {
+	return React.createElement(
+		"svg",
+		{ xmlns: "http://www.w3.org/2000/svg", viewBox: "0 0 114.33 114.33" },
+		React.createElement(
+			"defs",
+			null,
+			React.createElement(
+				"style",
+				null,
+				".cls-1{fill:#eadff6;}.cls-2{fill:#fff;}.cls-3{fill:#d7c6ed;}.cls-4{fill:#8fb9eb;}.cls-5{fill:#e8f3e2;}.cls-6{fill:#77b851;}"
+			)
+		),
+		React.createElement(
+			"title",
+			null,
+			"obo-assessment-review-icon"
+		),
+		React.createElement("circle", { className: "cls-1", cx: "57.17", cy: "57.17", r: "57.17" }),
+		React.createElement("rect", { className: "cls-2", x: "32.5", y: "28.87", width: "49.33", height: "56.6", rx: "3.72", ry: "3.72" }),
+		React.createElement("path", {
+			className: "cls-3",
+			d: "M43.15,39.35a4.06,4.06,0,1,0,4.06,4.06A4.06,4.06,0,0,0,43.15,39.35Zm0,6.31a2.25,2.25,0,1,1,2.25-2.25A2.25,2.25,0,0,1,43.15,45.67Z"
+		}),
+		React.createElement("rect", { className: "cls-3", x: "51.5", y: "41.29", width: "23.75", height: "4.25", rx: "2.12", ry: "2.12" }),
+		React.createElement("path", {
+			className: "cls-3",
+			d: "M43.15,53.1a4.06,4.06,0,1,0,4.06,4.06A4.06,4.06,0,0,0,43.15,53.1Zm0,6.31a2.25,2.25,0,1,1,2.25-2.25A2.25,2.25,0,0,1,43.15,59.42Z"
+		}),
+		React.createElement("rect", { className: "cls-3", x: "51.5", y: "55.04", width: "23.75", height: "4.25", rx: "2.12", ry: "2.12" }),
+		React.createElement("path", {
+			className: "cls-3",
+			d: "M43.15,66.85a4.06,4.06,0,1,0,4.06,4.06A4.06,4.06,0,0,0,43.15,66.85Z"
+		}),
+		React.createElement("rect", { className: "cls-3", x: "51.5", y: "68.79", width: "23.75", height: "4.25", rx: "2.12", ry: "2.12" }),
+		React.createElement("path", {
+			className: "cls-2",
+			d: "M91.27,81.5l-5.39-5.39a15.3,15.3,0,1,0-7.65,7.74l5.35,5.35a3.53,3.53,0,0,0,5,0l2.72-2.72A3.53,3.53,0,0,0,91.27,81.5Z"
+		}),
+		React.createElement("path", {
+			className: "cls-4",
+			d: "M88.24,83.1,82,76.86A11.87,11.87,0,1,0,78.82,80l6.24,6.24a1.25,1.25,0,0,0,1.76,0l1.42-1.42A1.25,1.25,0,0,0,88.24,83.1Z"
+		}),
+		React.createElement("circle", { className: "cls-5", cx: "72.16", cy: "70.2", r: "8.79" }),
+		React.createElement("path", {
+			className: "cls-6",
+			d: "M78.18,67.41l-1.75-1.75a.67.67,0,0,0-.94,0l-4.17,4.17L69.46,68a.67.67,0,0,0-.94,0l-1.75,1.75a.67.67,0,0,0,0,.94l2.72,2.72h0l1.35,1.35a.67.67,0,0,0,.94,0l6.39-6.39A.67.67,0,0,0,78.18,67.41Z"
+		})
+	);
+};
+
+/***/ }),
+
+/***/ 168:
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -985,60 +1010,30 @@ var _Common = __webpack_require__(0);
 
 var _Common2 = _interopRequireDefault(_Common);
 
-var _Viewer = __webpack_require__(1);
-
-var _Viewer2 = _interopRequireDefault(_Viewer);
-
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 var Button = _Common2.default.components.Button;
-var AssessmentUtil = _Viewer2.default.util.AssessmentUtil;
 
 
-var takingTestView = function takingTestView(assessment) {
-	var moduleData = assessment.props.moduleData;
-	var child = assessment.props.model.children.at(1);
-	var Component = child.getComponentClass();
+var AssessmentTest = function AssessmentTest(props) {
+	var Component = props.model.getComponentClass();
+
 	return React.createElement(
-		'div',
-		{ className: 'test' },
-		React.createElement(Component, { className: 'untested', model: child, moduleData: moduleData }),
+		"div",
+		{ className: "test" },
+		React.createElement(Component, { model: props.model, moduleData: props.moduleData }),
 		React.createElement(
-			'div',
-			{ className: 'submit-button' },
+			"div",
+			{ className: "submit-button" },
 			React.createElement(Button, {
-				onClick: assessment.onClickSubmit.bind(assessment),
-				value: assessment.isAttemptComplete() ? 'Submit' : 'Submit (Not all questions have been answered)'
+				onClick: props.onClickSubmit,
+				value: props.isAttemptComplete ? 'Submit' : 'Submit (Not all questions have been answered)'
 			})
 		)
 	);
 };
 
-exports.default = takingTestView;
-
-/***/ }),
-
-/***/ 168:
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-
-
-Object.defineProperty(exports, "__esModule", {
-	value: true
-});
-var untestedView = function untestedView(assessment) {
-	var child = assessment.props.model.children.at(0);
-	var Component = child.getComponentClass();
-
-	return React.createElement(
-		"div",
-		{ className: "untested" },
-		React.createElement(Component, { model: child, moduleData: assessment.props.moduleData })
-	);
-};
-
-exports.default = untestedView;
+exports.default = AssessmentTest;
 
 /***/ }),
 
@@ -1489,17 +1484,17 @@ var _attemptIncompleteDialog = __webpack_require__(161);
 
 var _attemptIncompleteDialog2 = _interopRequireDefault(_attemptIncompleteDialog);
 
-var _untested = __webpack_require__(168);
+var _preTest = __webpack_require__(166);
 
-var _untested2 = _interopRequireDefault(_untested);
+var _preTest2 = _interopRequireDefault(_preTest);
 
-var _scoreSubmitted = __webpack_require__(165);
+var _test = __webpack_require__(168);
 
-var _scoreSubmitted2 = _interopRequireDefault(_scoreSubmitted);
+var _test2 = _interopRequireDefault(_test);
 
-var _takingTest = __webpack_require__(167);
+var _postTest = __webpack_require__(164);
 
-var _takingTest2 = _interopRequireDefault(_takingTest);
+var _postTest2 = _interopRequireDefault(_postTest);
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
@@ -1540,16 +1535,16 @@ var Assessment = function (_React$Component) {
 			var assessment = AssessmentUtil.getAssessmentForModel(this.props.moduleData.assessmentState, this.props.model);
 
 			if (assessment === null) {
-				return 'untested';
+				return 'pre-test';
 			}
 			if (assessment.current !== null) {
-				return 'takingTest';
+				return 'test';
 			}
 
 			if (assessment.attempts.length > 0) {
-				return 'scoreSubmitted';
+				return 'post-test';
 			}
-			return 'untested';
+			return 'pre-test';
 		}
 	}, {
 		key: 'componentWillReceiveProps',
@@ -1619,6 +1614,7 @@ var Assessment = function (_React$Component) {
 		value: function getScoreAction() {
 			var assessmentScore = AssessmentUtil.getAssessmentScoreForModel(this.props.moduleData.assessmentState, this.props.model);
 			var scoreAction = this.props.model.modelState.scoreActions.getActionForScore(assessmentScore);
+
 			if (scoreAction) {
 				return scoreAction;
 			}
@@ -1643,14 +1639,26 @@ var Assessment = function (_React$Component) {
 
 			var childEl = function () {
 				switch (_this2.getCurrentStep()) {
-					case 'untested':
-						return (0, _untested2.default)(_this2);
+					case 'pre-test':
+						return (0, _preTest2.default)({
+							model: _this2.props.model.children.at(0),
+							moduleData: _this2.props.moduleData
+						});
 
-					case 'takingTest':
-						return (0, _takingTest2.default)(_this2);
+					case 'test':
+						return (0, _test2.default)({
+							model: _this2.props.model.children.at(1),
+							moduleData: _this2.props.moduleData,
+							onClickSubmit: _this2.onClickSubmit.bind(_this2),
+							isAttemptComplete: _this2.isAttemptComplete()
+						});
 
-					case 'scoreSubmitted':
-						return (0, _scoreSubmitted2.default)(_this2);
+					case 'post-test':
+						return (0, _postTest2.default)({
+							model: _this2.props.model,
+							moduleData: _this2.props.moduleData,
+							scoreAction: _this2.getScoreAction()
+						});
 
 					default:
 						return null;

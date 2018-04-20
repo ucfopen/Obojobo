@@ -1,8 +1,11 @@
 @import '~styles/includes';
 
 .obojobo-draft--sections--assessment {
-	.untested {
-		// text-align: center;
+	@import './components/test/index';
+	@import './components/post-test/index';
+	@import './components/full-review/index';
+
+	.pre-test {
 		padding-top: 1em;
 
 		> h1 {
@@ -16,10 +19,6 @@
 			font-size: 1em;
 		}
 	}
-
-	@import 'components/full-review/index';
-	@import 'components/score-submitted/index';
-	@import 'components/taking-test/index';
 }
 
 .obojobo-draft--sections--assessment--results-modal {

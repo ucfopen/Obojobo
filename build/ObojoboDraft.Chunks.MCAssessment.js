@@ -643,6 +643,49 @@ var MCAssessment = function (_React$Component) {
 			}
 		}
 	}, {
+		key: 'renderSubmitFooter',
+		value: function renderSubmitFooter(isAnswerSelected, isAnswerScored) {
+			return React.createElement(
+				'div',
+				{ className: 'submit' },
+				isAnswerScored ? React.createElement(Button, { altAction: true, onClick: this.onClickReset, value: 'Try Again' }) : React.createElement(Button, {
+					onClick: this.onClickSubmit,
+					value: 'Check Your Answer',
+					disabled: !isAnswerSelected
+				})
+			);
+		}
+	}, {
+		key: 'renderSubmittedResultsFooter',
+		value: function renderSubmittedResultsFooter(isCorrect, isPickAll) {
+			if (isCorrect) {
+				return React.createElement(
+					'div',
+					{ className: 'result-container' },
+					React.createElement(
+						'p',
+						{ className: 'result correct' },
+						this.correctLabelToShow
+					)
+				);
+			}
+
+			return React.createElement(
+				'div',
+				{ className: 'result-container' },
+				React.createElement(
+					'p',
+					{ className: 'result incorrect' },
+					this.incorrectLabelToShow
+				),
+				isPickAll ? React.createElement(
+					'span',
+					{ className: 'pick-all-instructions' },
+					'You have either missed some correct answers or selected some incorrect answers'
+				) : null
+			);
+		}
+	}, {
 		key: 'render',
 		value: function render() {
 			var _this2 = this;
@@ -653,8 +696,8 @@ var MCAssessment = function (_React$Component) {
 			var responseType = this.props.model.modelState.responseType;
 			var isShowingExplanation = this.isShowingExplanation();
 			var score = this.getScore();
-			var questionSubmitted = score !== null;
-			var questionAnswered = this.getResponseData().responses.size >= 1;
+			var isAnswerScored = score !== null; // Question has been submitted in practice or scored by server in assessment
+			var isAnswerSelected = this.getResponseData().responses.size >= 1; // An answer choice was selected
 
 			var feedbacks = Array.from(this.getResponseData().responses).filter(function (mcChoiceId) {
 				return OboModel.models[mcChoiceId].children.length > 1;
@@ -668,6 +711,62 @@ var MCAssessment = function (_React$Component) {
 
 			if (solution != null) {
 				var SolutionComponent = solution.getComponentClass();
+			}
+
+			var explanationFooter = null;
+			if (isShowingExplanation) {
+				explanationFooter = React.createElement(Button, { altAction: true, onClick: this.onClickHideExplanation, value: 'Hide Explanation' });
+			} else if (solution) {
+				explanationFooter = React.createElement(Button, {
+					altAction: true,
+					onClick: this.onClickShowExplanation,
+					value: 'Read an explanation of the answer'
+				});
+			}
+
+			var feedbackAndSolution = null;
+			if (isAnswerScored && (feedbacks.length > 0 || solution)) {
+				feedbackAndSolution = React.createElement(
+					'div',
+					{ className: 'solution', key: 'solution' },
+					React.createElement(
+						'div',
+						{ className: 'score' },
+						feedbacks.length === 0 ? null : React.createElement(
+							'div',
+							{
+								className: 'feedback' + (0, _isornot2.default)(responseType === 'pick-all', 'pick-all-feedback')
+							},
+							feedbacks.map(function (model) {
+								var Component = model.getComponentClass();
+								return React.createElement(Component, {
+									key: model.get('id'),
+									model: model,
+									moduleData: _this2.props.moduleData,
+									responseType: responseType,
+									isShowingExplanation: true,
+									questionSubmitted: true,
+									label: String.fromCharCode(sortedIds.indexOf(model.parent.get('id')) + 65)
+								});
+							})
+						)
+					),
+					explanationFooter,
+					React.createElement(
+						ReactCSSTransitionGroup,
+						{
+							component: 'div',
+							transitionName: 'solution',
+							transitionEnterTimeout: 800,
+							transitionLeaveTimeout: 800
+						},
+						isShowingExplanation ? React.createElement(
+							'div',
+							{ className: 'solution-container', key: 'solution-component' },
+							React.createElement(SolutionComponent, { model: solution, moduleData: this.props.moduleData })
+						) : null
+					)
+				);
 			}
 
 			var className = 'obojobo-draft--chunks--mc-assessment' + (' is-response-type-' + this.props.model.modelState.responseType) + (' is-mode-' + this.props.mode) + (0, _isornot2.default)(isShowingExplanation, 'showing-explanation') + (0, _isornot2.default)(score !== null, 'scored');
@@ -700,49 +799,16 @@ var MCAssessment = function (_React$Component) {
 						responseType: responseType,
 						isShowingExplanation: true,
 						mode: _this2.props.mode,
-						questionSubmitted: questionSubmitted,
+						questionSubmitted: isAnswerScored,
 						label: String.fromCharCode(index + 65)
 					});
 				}),
-				this.props.mode === 'assessment' ? null : React.createElement(
+				this.props.mode === 'practice' || this.props.mode === 'review' ? React.createElement(
 					'div',
 					{ className: 'submit-and-result-container' },
-					this.props.mode === 'practice' ? questionSubmitted ? React.createElement(
-						'div',
-						{ className: 'submit' },
-						React.createElement(Button, { altAction: true, onClick: this.onClickReset, value: 'Try Again' })
-					) : React.createElement(
-						'div',
-						{ className: 'submit' },
-						React.createElement(Button, {
-							onClick: this.onClickSubmit,
-							value: 'Check Your Answer',
-							disabled: !questionAnswered
-						})
-					) : null,
-					questionSubmitted ? score === 100 ? React.createElement(
-						'div',
-						{ className: 'result-container' },
-						React.createElement(
-							'p',
-							{ className: 'result correct' },
-							this.correctLabelToShow
-						)
-					) : React.createElement(
-						'div',
-						{ className: 'result-container' },
-						React.createElement(
-							'p',
-							{ className: 'result incorrect' },
-							this.incorrectLabelToShow
-						),
-						responseType === 'pick-all' ? React.createElement(
-							'span',
-							{ className: 'pick-all-instructions' },
-							'You have either missed some correct answers or selected some incorrect answers'
-						) : null
-					) : null
-				),
+					this.props.mode === 'practice' ? this.renderSubmitFooter(isAnswerSelected, isAnswerScored) : null,
+					isAnswerScored ? this.renderSubmittedResultsFooter(score === 100, responseType === 'pick-all') : null
+				) : null,
 				React.createElement(
 					ReactCSSTransitionGroup,
 					{
@@ -751,51 +817,7 @@ var MCAssessment = function (_React$Component) {
 						transitionEnterTimeout: 800,
 						transitionLeaveTimeout: 800
 					},
-					questionSubmitted && (feedbacks.length > 0 || solution) ? React.createElement(
-						'div',
-						{ className: 'solution', key: 'solution' },
-						React.createElement(
-							'div',
-							{ className: 'score' },
-							feedbacks.length === 0 ? null : React.createElement(
-								'div',
-								{
-									className: 'feedback' + (0, _isornot2.default)(responseType === 'pick-all', 'pick-all-feedback')
-								},
-								feedbacks.map(function (model) {
-									var Component = model.getComponentClass();
-									return React.createElement(Component, {
-										key: model.get('id'),
-										model: model,
-										moduleData: _this2.props.moduleData,
-										responseType: responseType,
-										isShowingExplanation: true,
-										questionSubmitted: true,
-										label: String.fromCharCode(sortedIds.indexOf(model.parent.get('id')) + 65)
-									});
-								})
-							)
-						),
-						isShowingExplanation ? React.createElement(Button, { altAction: true, onClick: this.onClickHideExplanation, value: 'Hide Explanation' }) : solution ? React.createElement(Button, {
-							altAction: true,
-							onClick: this.onClickShowExplanation,
-							value: 'Read an explanation of the answer'
-						}) : null,
-						React.createElement(
-							ReactCSSTransitionGroup,
-							{
-								component: 'div',
-								transitionName: 'solution',
-								transitionEnterTimeout: 800,
-								transitionLeaveTimeout: 800
-							},
-							isShowingExplanation ? React.createElement(
-								'div',
-								{ className: 'solution-container', key: 'solution-component' },
-								React.createElement(SolutionComponent, { model: solution, moduleData: this.props.moduleData })
-							) : null
-						)
-					) : null
+					feedbackAndSolution
 				)
 			);
 		}
@@ -968,8 +990,8 @@ var getInputType = function getInputType(responseType) {
 	}
 };
 
-var questionIsSelected = function questionIsSelected(questionState, model) {
-	var response = QuestionUtil.getResponse(questionState, model.getParentOfType('ObojoboDraft.Chunks.Question')) || { ids: [] };
+var questionIsSelected = function questionIsSelected(questionState, model, navStateContext) {
+	var response = QuestionUtil.getResponse(questionState, model.getParentOfType('ObojoboDraft.Chunks.Question'), navStateContext) || { ids: [] };
 
 	return response.ids.indexOf(model.get('id')) !== -1;
 };
@@ -1000,7 +1022,7 @@ var MCChoice = function MCChoice(props) {
 		return React.createElement('div', null);
 	}
 
-	var isSelected = questionIsSelected(props.moduleData.questionState, props.model);
+	var isSelected = questionIsSelected(props.moduleData.questionState, props.model, props.moduleData.navState.context);
 
 	var className = 'obojobo-draft--chunks--mc-assessment--mc-choice' + (0, _isornot2.default)(isSelected, 'selected') + (0, _isornot2.default)(isCorrect, 'correct') + ' is-mode-' + props.mode;
 

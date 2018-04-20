@@ -343,7 +343,7 @@ var Question = function (_React$Component) {
 
 			var mode = this.props.mode ? this.props.mode : this.props.model.modelState.mode;
 
-			var className = 'flip-container' + 'obojobo-draft--chunks--question' + (0, _isornot2.default)(score === 100, 'corect') + 'is-active' + ('is-mode-' + mode);
+			var className = 'flip-container' + ' obojobo-draft--chunks--question' + (0, _isornot2.default)(score === 100, 'correct') + ' is-active' + (' is-mode-' + mode);
 
 			return React.createElement(
 				OboComponent,

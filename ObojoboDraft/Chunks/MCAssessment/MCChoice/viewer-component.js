@@ -20,10 +20,11 @@ const getInputType = responseType => {
 	}
 }
 
-const questionIsSelected = (questionState, model) => {
+const questionIsSelected = (questionState, model, navStateContext) => {
 	let response = QuestionUtil.getResponse(
 		questionState,
-		model.getParentOfType('ObojoboDraft.Chunks.Question')
+		model.getParentOfType('ObojoboDraft.Chunks.Question'),
+		navStateContext
 	) || { ids: [] }
 
 	return response.ids.indexOf(model.get('id')) !== -1
@@ -60,7 +61,11 @@ const MCChoice = props => {
 		return <div />
 	}
 
-	let isSelected = questionIsSelected(props.moduleData.questionState, props.model)
+	let isSelected = questionIsSelected(
+		props.moduleData.questionState,
+		props.model,
+		props.moduleData.navState.context
+	)
 
 	let className =
 		'obojobo-draft--chunks--mc-assessment--mc-choice' +

@@ -1126,6 +1126,8 @@ var AssessmentUtil = {
 		}).length === models.length;
 	},
 	isInAssessment: function isInAssessment(state) {
+		if (!state) return false;
+
 		for (var assessmentName in state.assessments) {
 			if (state.assessments[assessmentName].current !== null) {
 				return true;
@@ -1870,8 +1872,10 @@ var QuestionStore = function (_Store) {
 			},
 
 			'question:clearResponse': function questionClearResponse(payload) {
-				delete _this.state.responses[payload.value.context][payload.value.id];
-				return _this.triggerChange();
+				if (_this.state.responses[payload.value.context]) {
+					delete _this.state.responses[payload.value.context][payload.value.id];
+					return _this.triggerChange();
+				}
 			},
 
 			'assessment:endAttempt': function assessmentEndAttempt(payload) {
@@ -6679,7 +6683,7 @@ var InlineNavButton = function (_React$Component) {
 			return React.createElement(
 				'div',
 				{
-					className: 'viewer--components--inline-nav-button is-' + this.props.type + (this.props.disabled ? ' is-disabled' : ' is-enabled'),
+					className: 'viewer--components--inline-nav-button is-' + this.props.type + (this.props.disabled ? ' is-not-enabled' : ' is-enabled'),
 					onClick: this.onClick.bind(this)
 				},
 				this.props.title
@@ -7092,7 +7096,6 @@ var ViewerApp = function (_React$Component) {
 			Dispatcher.trigger('viewer:loading');
 
 			_apiUtil2.default.requestStart(visitIdFromUrl, draftIdFromUrl).then(function (visit) {
-				ScoreStore.init();
 				_questionStore2.default.init();
 				ModalStore.init();
 				FocusStore.init();
@@ -7127,6 +7130,7 @@ var ViewerApp = function (_React$Component) {
 					Dispatcher.trigger('viewer:loaded', true);
 				});
 			}).catch(function (err) {
+				console.log(err);
 				_this2.setState({ loading: false, requestStatus: 'invalid' }, function () {
 					return Dispatcher.trigger('viewer:loaded', false);
 				});

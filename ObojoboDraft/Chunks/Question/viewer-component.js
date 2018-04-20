@@ -88,10 +88,10 @@ export default class Question extends React.Component {
 
 		let className =
 			'flip-container' +
-			'obojobo-draft--chunks--question' +
-			isOrNot(score === 100, 'corect') +
-			'is-active' +
-			`is-mode-${mode}`
+			' obojobo-draft--chunks--question' +
+			isOrNot(score === 100, 'correct') +
+			' is-active' +
+			` is-mode-${mode}`
 
 		return (
 			<OboComponent
