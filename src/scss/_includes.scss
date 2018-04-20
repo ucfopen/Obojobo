@@ -18,6 +18,8 @@ $color-transparent: rgba(0, 0, 0, 0);
 $color-browser-focus: #5991ca;
 $color-comment: #ffd400;
 $color-preview: #00b3b3;
+$color-reward: #ffe65d;
+$color-reward-text: #947d00;
 
 $box-shadow-focus: 0 0 3px 3px $color-browser-focus;
 $box-shadow-overlay: 0 2px 2px $color-shadow;
@@ -36,6 +38,7 @@ $dimension-padding: 3em;
 $dimension-editor: $dimension-column-width + 3em + 3em;
 $dimension-toolbar-height: 2.7em;
 $dimension-nav-menu: 16rem;
+$dimension-rounded-radius: 0.25em;
 
 $z-index-above-content: 999;
 $z-index-above-most: 9999;

@@ -17,6 +17,8 @@ import Anchor from './components/anchor'
 import DeleteButton from './components/delete-button'
 import EditButton from './components/edit-button'
 import Button from './components/button'
+import ButtonBar from './components/button-bar'
+import MoreInfoButton from './components/more-info-button'
 import Bubble from './components/modal/bubble/bubble'
 import SingleInputBubble from './components/modal/bubble/single-input-bubble'
 import Question from './components/modal/question'
@@ -101,6 +103,8 @@ export default {
 		DeleteButton,
 		EditButton,
 		Button,
+		ButtonBar,
+		MoreInfoButton,
 		modal: {
 			bubble: {
 				Bubble,

@@ -48,7 +48,7 @@
   border: 1px solid #6714bd;
   max-height: 15em; }
 
-.obojobo-draft--chunks--question.is-practice .back::before {
+.obojobo-draft--chunks--question.is-mode-practice .back::before {
   color: #999999;
   content: 'Practice';
   display: block;
@@ -59,14 +59,11 @@
   transform: scale(0.7);
   transform-origin: top left; }
 
-.obojobo-draft--chunks--question.is-practice.is-correct .flipper {
+.obojobo-draft--chunks--question.is-mode-practice.is-correct .flipper {
   border: 1px solid #38ae24; }
 
-.obojobo-draft--chunks--question.is-practice.is-incorrect .flipper {
+.obojobo-draft--chunks--question.is-mode-practice.is-not-correct .flipper {
   border: 1px solid #c21f00; }
-
-.obojobo-draft--chunks--question.is-not-practice .submit {
-  display: none; }
 
 .obojobo-draft--chunks--question .blocker {
   position: absolute;
@@ -82,6 +79,8 @@
     background: #f9f4ff; }
     .obojobo-draft--chunks--question .blocker:hover .obojobo-draft--components--button {
       transform: translate(-50%, -50%) scale(1.1, 1.1); }
+  .obojobo-draft--chunks--question .blocker.is-not-practice .submit {
+    display: none; }
   .obojobo-draft--chunks--question .blocker .obojobo-draft--components--button {
     transition: transform 0.2s;
     font-family: "Libre Franklin", Arial, sans-serif;

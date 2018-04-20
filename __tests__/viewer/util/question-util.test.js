@@ -153,14 +153,33 @@ describe('QuestionUtil', () => {
 		expect(hidden).toEqual('hidden')
 	})
 
+	it('should get a response from state with no matching context', () => {
+		let res = QuestionUtil.getResponse(
+			{
+				responses: {
+					mockContext: {
+						testId: 'A Response'
+					}
+				}
+			},
+			testModel,
+			'missingContext'
+		)
+
+		expect(res).toEqual(null)
+	})
+
 	it('should get a response from state', () => {
 		let res = QuestionUtil.getResponse(
 			{
 				responses: {
-					testId: 'A Response'
+					mockContext: {
+						testId: 'A Response'
+					}
 				}
 			},
-			testModel
+			testModel,
+			'mockContext'
 		)
 
 		expect(res).toEqual('A Response')

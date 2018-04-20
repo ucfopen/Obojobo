@@ -82,14 +82,13 @@ var APIUtil = {
 	},
 
 	endAttempt(attempt) {
-		return APIUtil.post(`/api/assessments/attempt/${attempt.attemptId}/end`).then(
-			processJsonResults
-		)
+		return APIUtil.post(`/api/assessments/attempt/${attempt.attemptId}/end`)
+		.then(processJsonResults)
 	},
 
 	resendLTIAssessmentScore(lo, assessment) {
 		return APIUtil.post('/api/lti/sendAssessmentScore', {
-			draftId: lo.get('_id'),
+			draftId: lo.get('draftId'),
 			assessmentId: assessment.get('id')
 		}).then(processJsonResults)
 	},
