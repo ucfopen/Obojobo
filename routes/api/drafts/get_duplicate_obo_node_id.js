@@ -1,6 +1,6 @@
 // Saves ids into a idSet and returns the first duplicate
-module.exports = (jsonTree, idSet) => {
-	let duplicateId
+module.exports = (jsonTree, idSet = {}) => {
+	let duplicateId = null
 
 	if (!jsonTree.id) {
 		return duplicateId
