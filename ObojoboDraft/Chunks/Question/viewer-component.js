@@ -41,13 +41,12 @@ export default class Question extends React.Component {
 
 		let mode = this.props.mode ? this.props.mode : this.props.model.modelState.mode
 
-		let classNames = [
-			'flip-container',
-			'obojobo-draft--chunks--question',
-			score === null ? '' : score === 100 ? 'is-correct' : 'is-not-correct',
-			this.props.mode === 'review' ? 'is-active' : `is-${viewState}`,
-			`is-mode-${mode}`
-		].join(' ')
+		let classNames =
+			'flip-container' +
+			' obojobo-draft--chunks--question' +
+			(score === null ? ' ' : score === 100 ? ' is-correct' : ' is-not-correct') +
+			(this.props.mode === 'review' ? ' is-active' : ` is-${viewState}`) +
+			` is-mode-${mode}`
 
 		return (
 			<OboComponent

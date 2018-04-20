@@ -99,7 +99,7 @@
 					}
 				}
 
-				&.is-incorrect {
+				&.is-not-correct {
 					&:before {
 						@include incorrect();
 						@include smaller();

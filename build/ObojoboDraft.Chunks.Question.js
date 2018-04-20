@@ -303,7 +303,7 @@ var Question = function (_React$Component) {
 
 			var mode = this.props.mode ? this.props.mode : this.props.model.modelState.mode;
 
-			var classNames = ['flip-container', 'obojobo-draft--chunks--question', score === null ? '' : score === 100 ? 'is-correct' : 'is-not-correct', this.props.mode === 'review' ? 'is-active' : 'is-' + viewState, 'is-mode-' + mode].join(' ');
+			var classNames = 'flip-container' + ' obojobo-draft--chunks--question' + (score === null ? ' ' : score === 100 ? ' is-correct' : ' is-not-correct') + (this.props.mode === 'review' ? ' is-active' : ' is-' + viewState) + (' is-mode-' + mode);
 
 			return React.createElement(
 				OboComponent,

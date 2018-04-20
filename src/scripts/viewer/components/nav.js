@@ -77,7 +77,7 @@ export default class Nav extends React.Component {
 
 	renderHeading(index, item) {
 		return (
-			<li key={index} className={'heading is-not-select'}>
+			<li key={index} className={'heading is-not-selected'}>
 				{this.renderLabel(item.label)}
 			</li>
 		)

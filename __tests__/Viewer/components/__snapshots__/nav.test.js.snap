@@ -21,7 +21,7 @@ exports[`Nav renders all list item types 1`] = `
   </button>
   <ul>
     <li
-      className="heading is-not-select"
+      className="heading is-not-selected"
     >
       <a>
         label4

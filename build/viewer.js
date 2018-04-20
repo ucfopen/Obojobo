@@ -6828,7 +6828,7 @@ var Nav = function (_React$Component) {
 		value: function renderHeading(index, item) {
 			return React.createElement(
 				'li',
-				{ key: index, className: 'heading is-not-select' },
+				{ key: index, className: 'heading is-not-selected' },
 				this.renderLabel(item.label)
 			);
 		}

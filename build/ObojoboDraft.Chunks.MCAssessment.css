@@ -131,7 +131,7 @@
     top: 1.5em;
     letter-spacing: 0.2em;
     content: "\2714" attr(data-choice-label); }
-  .obojobo-draft--chunks--mc-assessment.is-scored.is-response-type-pick-all .obojobo-draft--chunks--mc-assessment--mc-choice.is-selected.is-incorrect:before {
+  .obojobo-draft--chunks--mc-assessment.is-scored.is-response-type-pick-all .obojobo-draft--chunks--mc-assessment--mc-choice.is-selected.is-not-correct:before {
     content: '\2716';
     position: absolute;
     top: 0.65em;

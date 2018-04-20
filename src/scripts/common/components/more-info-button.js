@@ -1,8 +1,5 @@
 import './more-info-button.scss'
 
-// import ModalUtil from '../util/modal-util'
-// import Modal from './modal/bubble/bubble'
-
 const DEFAULT_LABEL = '?'
 
 export default class MoreInfoButton extends React.Component {
