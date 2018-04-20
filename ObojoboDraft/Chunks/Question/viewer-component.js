@@ -4,6 +4,7 @@ let ReactCSSTransitionGroup = React.addons.CSSTransitionGroup
 
 import Common from 'Common'
 import Viewer from 'Viewer'
+import isOrNot from '../../../src/scripts/common/isornot'
 
 let { OboComponent } = Common.components
 let { Dispatcher } = Common.flux
@@ -85,21 +86,18 @@ export default class Question extends React.Component {
 
 		let mode = this.props.mode ? this.props.mode : this.props.model.modelState.mode
 
-		// let viewState = QuestionUtil.getViewState(this.props.moduleData.questionState, this.props.model)
-
-		let classNames = [
-			'flip-container',
-			'obojobo-draft--chunks--question',
-			score === null ? '' : score === 100 ? 'is-correct' : 'is-not-correct',
-			'is-active',
+		let className =
+			'flip-container' +
+			'obojobo-draft--chunks--question' +
+			isOrNot(score === 100, 'corect') +
+			'is-active' +
 			`is-mode-${mode}`
-		].join(' ')
 
 		return (
 			<OboComponent
 				model={this.props.model}
 				moduleData={this.props.moduleData}
-				className={classNames}
+				className={className}
 			>
 				<div className="flipper">
 					<div className="content back">

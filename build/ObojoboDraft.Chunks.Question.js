@@ -246,6 +246,10 @@ var _Viewer = __webpack_require__(1);
 
 var _Viewer2 = _interopRequireDefault(_Viewer);
 
+var _isornot = __webpack_require__(20);
+
+var _isornot2 = _interopRequireDefault(_isornot);
+
 var _viewerComponent = __webpack_require__(147);
 
 var _viewerComponent2 = _interopRequireDefault(_viewerComponent);
@@ -339,16 +343,14 @@ var Question = function (_React$Component) {
 
 			var mode = this.props.mode ? this.props.mode : this.props.model.modelState.mode;
 
-			// let viewState = QuestionUtil.getViewState(this.props.moduleData.questionState, this.props.model)
-
-			var classNames = ['flip-container', 'obojobo-draft--chunks--question', score === null ? '' : score === 100 ? 'is-correct' : 'is-not-correct', 'is-active', 'is-mode-' + mode].join(' ');
+			var className = 'flip-container' + 'obojobo-draft--chunks--question' + (0, _isornot2.default)(score === 100, 'corect') + 'is-active' + ('is-mode-' + mode);
 
 			return React.createElement(
 				OboComponent,
 				{
 					model: this.props.model,
 					moduleData: this.props.moduleData,
-					className: classNames
+					className: className
 				},
 				React.createElement(
 					'div',
@@ -372,6 +374,23 @@ var Question = function (_React$Component) {
 }(React.Component);
 
 exports.default = Question;
+
+/***/ }),
+
+/***/ 20:
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+// used to apply ' is-label' or ' is-not-label' styles
+var isOrNot = function isOrNot(flag, label) {
+  return ' is-' + (flag ? '' : 'not-') + label;
+};
+exports.default = isOrNot;
 
 /***/ }),
 

@@ -92,7 +92,7 @@ var _Common = __webpack_require__(0);
 
 var _Common2 = _interopRequireDefault(_Common);
 
-__webpack_require__(39);
+__webpack_require__(40);
 
 __webpack_require__(140);
 
@@ -305,6 +305,10 @@ var _Common2 = _interopRequireDefault(_Common);
 var _Viewer = __webpack_require__(1);
 
 var _Viewer2 = _interopRequireDefault(_Viewer);
+
+var _isornot = __webpack_require__(20);
+
+var _isornot2 = _interopRequireDefault(_isornot);
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
@@ -609,20 +613,48 @@ var MCAssessment = function (_React$Component) {
 			return arrayOfOptions[Math.floor(Math.random() * arrayOfOptions.length)];
 		}
 	}, {
+		key: 'createInstructions',
+		value: function createInstructions(responseType) {
+			switch (responseType) {
+				case 'pick-one':
+					return React.createElement(
+						'span',
+						null,
+						'Pick the correct answer'
+					);
+				case 'pick-one-multiple-correct':
+					return React.createElement(
+						'span',
+						null,
+						'Pick one of the correct answers'
+					);
+				case 'pick-all':
+					return React.createElement(
+						'span',
+						null,
+						'Pick ',
+						React.createElement(
+							'b',
+							null,
+							'all'
+						),
+						' of the correct answers'
+					);
+			}
+		}
+	}, {
 		key: 'render',
 		value: function render() {
 			var _this2 = this;
 
-			var responseType = this.props.model.modelState.responseType;
+			var sortedIds = QuestionUtil.getData(this.props.moduleData.questionState, this.props.model, 'sortedIds');
+			if (!sortedIds) return null;
 
+			var responseType = this.props.model.modelState.responseType;
 			var isShowingExplanation = this.isShowingExplanation();
 			var score = this.getScore();
 			var questionSubmitted = score !== null;
 			var questionAnswered = this.getResponseData().responses.size >= 1;
-			var sortedIds = QuestionUtil.getData(this.props.moduleData.questionState, this.props.model, 'sortedIds');
-			// sortedIds = _.shuffle(@props.model.children.models).map (model) -> model.get('id')
-
-			if (!sortedIds) return false;
 
 			var feedbacks = Array.from(this.getResponseData().responses).filter(function (mcChoiceId) {
 				return OboModel.models[mcChoiceId].children.length > 1;
@@ -638,6 +670,8 @@ var MCAssessment = function (_React$Component) {
 				var SolutionComponent = solution.getComponentClass();
 			}
 
+			var className = 'obojobo-draft--chunks--mc-assessment' + (' is-response-type-' + this.props.model.modelState.responseType) + (' is-mode-' + this.props.mode) + (0, _isornot2.default)(isShowingExplanation, 'showing-explanation') + (0, _isornot2.default)(score !== null, 'scored');
+
 			return React.createElement(
 				OboComponent,
 				{
@@ -645,39 +679,12 @@ var MCAssessment = function (_React$Component) {
 					moduleData: this.props.moduleData,
 					onClick: this.props.mode !== 'review' ? this.onClick : null,
 					tag: 'form',
-					className: 'obojobo-draft--chunks--mc-assessment' + (' is-response-type-' + this.props.model.modelState.responseType) + (' is-mode-' + this.props.mode) + (isShowingExplanation ? ' is-showing-explanation' : ' is-not-showing-explantion') + (score === null ? ' is-unscored' : ' is-scored')
+					className: className
 				},
 				React.createElement(
 					'span',
 					{ className: 'instructions' },
-					function () {
-						switch (responseType) {
-							case 'pick-one':
-								return React.createElement(
-									'span',
-									null,
-									'Pick the correct answer'
-								);
-							case 'pick-one-multiple-correct':
-								return React.createElement(
-									'span',
-									null,
-									'Pick one of the correct answers'
-								);
-							case 'pick-all':
-								return React.createElement(
-									'span',
-									null,
-									'Pick ',
-									React.createElement(
-										'b',
-										null,
-										'all'
-									),
-									' of the correct answers'
-								);
-						}
-					}()
+					this.createInstructions(responseType)
 				),
 				sortedIds.map(function (id, index) {
 					var child = OboModel.models[id];
@@ -753,7 +760,7 @@ var MCAssessment = function (_React$Component) {
 							feedbacks.length === 0 ? null : React.createElement(
 								'div',
 								{
-									className: 'feedback' + (responseType === 'pick-all' ? ' is-pick-all-feedback' : ' is-not-pick-all-feedback')
+									className: 'feedback' + (0, _isornot2.default)(responseType === 'pick-all', 'pick-all-feedback')
 								},
 								feedbacks.map(function (model) {
 									var Component = model.getComponentClass();
@@ -806,6 +813,23 @@ function __guard__(value, transform) {
 
 /***/ }),
 
+/***/ 20:
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+// used to apply ' is-label' or ' is-not-label' styles
+var isOrNot = function isOrNot(flag, label) {
+  return ' is-' + (flag ? '' : 'not-') + label;
+};
+exports.default = isOrNot;
+
+/***/ }),
+
 /***/ 267:
 /***/ (function(module, exports) {
 
@@ -835,7 +859,7 @@ module.exports = __webpack_require__(109);
 
 /***/ }),
 
-/***/ 39:
+/***/ 40:
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -845,11 +869,11 @@ var _Common = __webpack_require__(0);
 
 var _Common2 = _interopRequireDefault(_Common);
 
-var _adapter = __webpack_require__(40);
+var _adapter = __webpack_require__(41);
 
 var _adapter2 = _interopRequireDefault(_adapter);
 
-var _viewerComponent = __webpack_require__(41);
+var _viewerComponent = __webpack_require__(42);
 
 var _viewerComponent2 = _interopRequireDefault(_viewerComponent);
 
@@ -866,7 +890,7 @@ _Common2.default.Store.registerModel('ObojoboDraft.Chunks.MCAssessment.MCChoice'
 
 /***/ }),
 
-/***/ 40:
+/***/ 41:
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -902,7 +926,7 @@ var __guard__ = function __guard__(value, transform) {
 
 /***/ }),
 
-/***/ 41:
+/***/ 42:
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -922,7 +946,7 @@ var _Viewer = __webpack_require__(1);
 
 var _Viewer2 = _interopRequireDefault(_Viewer);
 
-var _isornot = __webpack_require__(62);
+var _isornot = __webpack_require__(20);
 
 var _isornot2 = _interopRequireDefault(_isornot);
 
@@ -1017,23 +1041,6 @@ MCChoice.defaultProps = {
 };
 
 exports.default = MCChoice;
-
-/***/ }),
-
-/***/ 62:
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-
-
-Object.defineProperty(exports, "__esModule", {
-  value: true
-});
-// used to apply ' is-label' or ' is-not-label' styles
-var isOrNot = function isOrNot(flag, label) {
-  return ' is-' + (flag ? '' : 'not-') + label;
-};
-exports.default = isOrNot;
 
 /***/ }),
 

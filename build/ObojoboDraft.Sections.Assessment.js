@@ -2104,7 +2104,7 @@ module.exports = getDayOfYear;
 
 
 var parse = __webpack_require__(17);
-var startOfISOWeek = __webpack_require__(61);
+var startOfISOWeek = __webpack_require__(62);
 var startOfISOYear = __webpack_require__(252);
 
 var MILLISECONDS_IN_WEEK = 604800000;
@@ -2475,7 +2475,7 @@ module.exports = startOfDay;
 
 
 var getISOYear = __webpack_require__(99);
-var startOfISOWeek = __webpack_require__(61);
+var startOfISOWeek = __webpack_require__(62);
 
 /**
  * @category ISO Week-Numbering Year Helpers
@@ -2964,7 +2964,7 @@ module.exports = __webpack_require__(118);
 
 /***/ }),
 
-/***/ 61:
+/***/ 62:
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -3005,7 +3005,7 @@ module.exports = startOfISOWeek;
 
 
 var parse = __webpack_require__(17);
-var startOfISOWeek = __webpack_require__(61);
+var startOfISOWeek = __webpack_require__(62);
 
 /**
  * @category ISO Week-Numbering Year Helpers

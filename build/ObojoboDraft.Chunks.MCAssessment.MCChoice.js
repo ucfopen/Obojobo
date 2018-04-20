@@ -82,15 +82,32 @@ module.exports = Viewer;
 
 /***/ }),
 
+/***/ 20:
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+// used to apply ' is-label' or ' is-not-label' styles
+var isOrNot = function isOrNot(flag, label) {
+  return ' is-' + (flag ? '' : 'not-') + label;
+};
+exports.default = isOrNot;
+
+/***/ }),
+
 /***/ 291:
 /***/ (function(module, exports, __webpack_require__) {
 
-module.exports = __webpack_require__(39);
+module.exports = __webpack_require__(40);
 
 
 /***/ }),
 
-/***/ 39:
+/***/ 40:
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -100,11 +117,11 @@ var _Common = __webpack_require__(0);
 
 var _Common2 = _interopRequireDefault(_Common);
 
-var _adapter = __webpack_require__(40);
+var _adapter = __webpack_require__(41);
 
 var _adapter2 = _interopRequireDefault(_adapter);
 
-var _viewerComponent = __webpack_require__(41);
+var _viewerComponent = __webpack_require__(42);
 
 var _viewerComponent2 = _interopRequireDefault(_viewerComponent);
 
@@ -121,7 +138,7 @@ _Common2.default.Store.registerModel('ObojoboDraft.Chunks.MCAssessment.MCChoice'
 
 /***/ }),
 
-/***/ 40:
+/***/ 41:
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -157,7 +174,7 @@ var __guard__ = function __guard__(value, transform) {
 
 /***/ }),
 
-/***/ 41:
+/***/ 42:
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -177,7 +194,7 @@ var _Viewer = __webpack_require__(1);
 
 var _Viewer2 = _interopRequireDefault(_Viewer);
 
-var _isornot = __webpack_require__(62);
+var _isornot = __webpack_require__(20);
 
 var _isornot2 = _interopRequireDefault(_isornot);
 
@@ -272,23 +289,6 @@ MCChoice.defaultProps = {
 };
 
 exports.default = MCChoice;
-
-/***/ }),
-
-/***/ 62:
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-
-
-Object.defineProperty(exports, "__esModule", {
-  value: true
-});
-// used to apply ' is-label' or ' is-not-label' styles
-var isOrNot = function isOrNot(flag, label) {
-  return ' is-' + (flag ? '' : 'not-') + label;
-};
-exports.default = isOrNot;
 
 /***/ }),
 

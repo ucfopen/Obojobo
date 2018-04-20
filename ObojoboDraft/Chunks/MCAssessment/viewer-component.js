@@ -4,6 +4,7 @@ let ReactCSSTransitionGroup = React.addons.CSSTransitionGroup
 
 import Common from 'Common'
 import Viewer from 'Viewer'
+import isOrNot from '../../../src/scripts/common/isornot'
 
 let { OboComponent } = Common.components
 let { Button } = Common.components
@@ -264,36 +265,51 @@ export default class MCAssessment extends React.Component {
 		return arrayOfOptions[Math.floor(Math.random() * arrayOfOptions.length)]
 	}
 
+	createInstructions(responseType) {
+		switch (responseType) {
+			case 'pick-one':
+				return <span>Pick the correct answer</span>
+			case 'pick-one-multiple-correct':
+				return <span>Pick one of the correct answers</span>
+			case 'pick-all':
+				return (
+					<span>
+						Pick <b>all</b> of the correct answers
+					</span>
+				)
+		}
+	}
+
 	render() {
-		let { responseType } = this.props.model.modelState
-		let isShowingExplanation = this.isShowingExplanation()
-		let score = this.getScore()
-		let questionSubmitted = score !== null
-		let questionAnswered = this.getResponseData().responses.size >= 1
 		let sortedIds = QuestionUtil.getData(
 			this.props.moduleData.questionState,
 			this.props.model,
 			'sortedIds'
 		)
-		// sortedIds = _.shuffle(@props.model.children.models).map (model) -> model.get('id')
+		if (!sortedIds) return null
 
-		if (!sortedIds) return false
+		let responseType = this.props.model.modelState.responseType
+		let isShowingExplanation = this.isShowingExplanation()
+		let score = this.getScore()
+		let questionSubmitted = score !== null
+		let questionAnswered = this.getResponseData().responses.size >= 1
 
 		let feedbacks = Array.from(this.getResponseData().responses)
-			.filter(mcChoiceId => {
-				return OboModel.models[mcChoiceId].children.length > 1
-			})
-			.sort((id1, id2) => {
-				return sortedIds.indexOf(id1) - sortedIds.indexOf(id2)
-			})
-			.map(mcChoiceId => {
-				return OboModel.models[mcChoiceId].children.at(1)
-			})
+			.filter(mcChoiceId => OboModel.models[mcChoiceId].children.length > 1)
+			.sort((id1, id2) => sortedIds.indexOf(id1) - sortedIds.indexOf(id2))
+			.map(mcChoiceId => OboModel.models[mcChoiceId].children.at(1))
 
 		let { solution } = this.props.model.parent.modelState
 		if (solution != null) {
 			var SolutionComponent = solution.getComponentClass()
 		}
+
+		let className =
+			'obojobo-draft--chunks--mc-assessment' +
+			` is-response-type-${this.props.model.modelState.responseType}` +
+			` is-mode-${this.props.mode}` +
+			isOrNot(isShowingExplanation, 'showing-explanation') +
+			isOrNot(score !== null, 'scored')
 
 		return (
 			<OboComponent
@@ -301,30 +317,9 @@ export default class MCAssessment extends React.Component {
 				moduleData={this.props.moduleData}
 				onClick={this.props.mode !== 'review' ? this.onClick : null}
 				tag="form"
-				className={
-					'obojobo-draft--chunks--mc-assessment' +
-					` is-response-type-${this.props.model.modelState.responseType}` +
-					` is-mode-${this.props.mode}` +
-					(isShowingExplanation ? ' is-showing-explanation' : ' is-not-showing-explantion') +
-					(score === null ? ' is-unscored' : ' is-scored')
-				}
+				className={className}
 			>
-				<span className="instructions">
-					{(function() {
-						switch (responseType) {
-							case 'pick-one':
-								return <span>Pick the correct answer</span>
-							case 'pick-one-multiple-correct':
-								return <span>Pick one of the correct answers</span>
-							case 'pick-all':
-								return (
-									<span>
-										Pick <b>all</b> of the correct answers
-									</span>
-								)
-						}
-					})()}
-				</span>
+				<span className="instructions">{this.createInstructions(responseType)}</span>
 				{sortedIds.map((id, index) => {
 					let child = OboModel.models[id]
 					if (child.get('type') !== 'ObojoboDraft.Chunks.MCAssessment.MCChoice') {
@@ -392,11 +387,10 @@ export default class MCAssessment extends React.Component {
 							<div className="score">
 								{feedbacks.length === 0 ? null : (
 									<div
-										className={`feedback${
-											responseType === 'pick-all'
-												? ' is-pick-all-feedback'
-												: ' is-not-pick-all-feedback'
-										}`}
+										className={`feedback${isOrNot(
+											responseType === 'pick-all',
+											'pick-all-feedback'
+										)}`}
 									>
 										{feedbacks.map(model => {
 											let Component = model.getComponentClass()
