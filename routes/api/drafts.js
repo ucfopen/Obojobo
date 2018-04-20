@@ -8,6 +8,7 @@ const xmlToDraftObject = require('obojobo-draft-xml-parser/xml-to-draft-object')
 
 const insertNewDraft = require('./drafts/insert_new_draft')
 const updateDraft = require('./drafts/update_draft')
+const getDuplicateId = require('./drafts/get_duplicate_obo_node_id')
 
 const draftTemplateXML = fs
 	.readFileSync('./node_modules/obojobo-draft-document-engine/documents/empty.xml')
@@ -89,6 +90,14 @@ router.post(/(\w{8}-\w{4}-\w{4}-\w{4}-\w{12})/, (req, res, next) => {
 				default:
 					logger.error('Posting draft failed - format unexpected:', req.body)
 					res.badInput('Posting draft failed - format unexpected')
+			}
+
+			// Scan through json for identical ids
+			let duplicateId = getDuplicateId(reqInput)
+			if (duplicateId) {
+				logger.error('Posting draft failed - duplicate id "' + duplicateId + '"')
+				res.badInput('Posting draft failed - duplicate id "' + duplicateId + '"')
+				return
 			}
 
 			return updateDraft(req.params[0], reqInput, xml || null).then(id => {
