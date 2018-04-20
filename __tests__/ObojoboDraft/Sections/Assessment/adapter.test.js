@@ -81,7 +81,7 @@ describe('ObojoboDraft.Sections.Assessment adapter', () => {
 	test('constructs with score actions', () => {
 		let model = { modelState: {} }
 		let action = {
-			for: "[2,4]",
+			for: '[2,4]',
 			page: 5
 		}
 		AssessmentAdapter.construct(model, { content: { scoreActions: [action] } })
@@ -107,7 +107,7 @@ describe('ObojoboDraft.Sections.Assessment adapter', () => {
 	test('exports to json', () => {
 		let model = { modelState: {} }
 		let action = {
-			for: "[2,4]",
+			for: '[2,4]',
 			page: 5
 		}
 		AssessmentAdapter.construct(model, { content: { scoreActions: [action] } })
@@ -137,7 +137,7 @@ describe('ObojoboDraft.Sections.Assessment adapter', () => {
 				attempts: Infinity,
 				scoreActions: [
 					{
-						for: "[2,4]",
+						for: '[2,4]',
 						page: 5
 					}
 				]
@@ -149,7 +149,7 @@ describe('ObojoboDraft.Sections.Assessment adapter', () => {
 		let model = { modelState: {} }
 		let model2 = { modelState: {} }
 		let action = {
-			for: "[2,4]",
+			for: '[2,4]',
 			page: 5
 		}
 		AssessmentAdapter.construct(model, { content: { scoreActions: [action] } })

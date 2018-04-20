@@ -107,9 +107,7 @@ describe('MCChoice viewer-component', () => {
 			label: 'mocklabel'
 		}
 
-		const component = renderer.create(
-			<MCChoice {...props} />
-		)
+		const component = renderer.create(<MCChoice {...props} />)
 
 		expect(component).toMatchSnapshot()
 	})
@@ -127,15 +125,12 @@ describe('MCChoice viewer-component', () => {
 			label: 'mocklabel'
 		}
 
-		const component = renderer.create(
-			<MCChoice {...props} />
-		)
+		const component = renderer.create(<MCChoice {...props} />)
 
 		expect(component).toMatchSnapshot()
 	})
 
 	test('pick-all questions render as expected', () => {
-
 		let props = {
 			model,
 			moduleData,
@@ -146,9 +141,7 @@ describe('MCChoice viewer-component', () => {
 			label: 'mocklabel'
 		}
 
-		const component = renderer.create(
-			<MCChoice {...props} />
-		)
+		const component = renderer.create(<MCChoice {...props} />)
 
 		expect(component).toMatchSnapshot()
 	})

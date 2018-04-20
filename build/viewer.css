@@ -76,8 +76,12 @@ body {
   font-size: 14pt; }
 
 #viewer-app {
+  opacity: 0;
+  transition: opacity 0.4s;
   height: 100%;
   overflow: auto; }
+  #viewer-app.is-loaded {
+    opacity: 1; }
   #viewer-app .root {
     height: 100%; }
 
@@ -195,6 +199,17 @@ body {
     text-align: right; }
   .component .text.align-center {
     text-align: center; }
+.viewer--viewer-app--visit-error {
+  width: 100%;
+  max-width: 36rem;
+  text-align: center;
+  position: absolute;
+  left: 50%;
+  top: 20%;
+  transform: translate(-50%, -50%);
+  color: #000000;
+  font-family: "Libre Franklin", Arial, sans-serif; }
+
 .viewer--viewer-app {
   height: 100%;
   transition: padding-left 0.2s 0.2s, padding-top 0.2s;

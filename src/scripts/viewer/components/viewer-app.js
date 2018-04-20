@@ -99,7 +99,7 @@ export default class ViewerApp extends React.Component {
 		let attemptHistory
 		let viewState
 		let isPreviewing
-		let outcomeServiceURL
+		let outcomeServiceURL = 'the external system'
 
 		let urlTokens = document.location.pathname.split('/')
 		let visitIdFromUrl = urlTokens[4] ? urlTokens[4] : null
@@ -109,7 +109,13 @@ export default class ViewerApp extends React.Component {
 
 		APIUtil.requestStart(visitIdFromUrl, draftIdFromUrl)
 			.then(visit => {
+				ScoreStore.init()
+				QuestionStore.init()
+				ModalStore.init()
+				FocusStore.init()
+
 				if (visit.status !== 'ok') throw 'Invalid Visit Id'
+
 				visitIdFromApi = visit.value.visitId
 				viewState = visit.value.viewState
 				attemptHistory = visit.value.extensions[':ObojoboDraft.Sections.Assessment:attemptHistory']
@@ -121,10 +127,6 @@ export default class ViewerApp extends React.Component {
 			.then(({ value: draftModel }) => {
 				this.state.model = OboModel.create(draftModel)
 
-				ScoreStore.init()
-				QuestionStore.init()
-				ModalStore.init()
-				FocusStore.init()
 				NavStore.init(
 					this.state.model,
 					this.state.model.modelState.start,
@@ -147,14 +149,8 @@ export default class ViewerApp extends React.Component {
 				this.setState({ loading: false, requestStatus: 'ok', isPreviewing }, () => {
 					Dispatcher.trigger('viewer:loaded', true)
 				})
-
-				let loadingEl = document.getElementById('viewer-app-loading')
-				if (loadingEl && loadingEl.parentElement) {
-					loadingEl.parentElement.removeChild(loadingEl)
-				}
 			})
 			.catch(err => {
-				console.log(err)
 				this.setState({ loading: false, requestStatus: 'invalid' }, () =>
 					Dispatcher.trigger('viewer:loaded', false)
 				)
@@ -196,6 +192,10 @@ export default class ViewerApp extends React.Component {
 				return this.setState({ navTargetId: nextNavTargetId })
 			}
 		}
+
+		if (this.state.loading === true && nextState.loading === false) {
+			this.needsRemoveLoadingElement = true
+		}
 	}
 
 	componentDidUpdate() {
@@ -207,7 +207,17 @@ export default class ViewerApp extends React.Component {
 			if (this.needsScroll != null) {
 				this.scrollToTop()
 
-				return delete this.needsScroll
+				delete this.needsScroll
+			}
+		}
+
+		if (this.needsRemoveLoadingElement === true) {
+			let loadingEl = document.getElementById('viewer-app-loading')
+			if (loadingEl && loadingEl.parentElement) {
+				document.getElementById('viewer-app').classList.add('is-loaded')
+				loadingEl.parentElement.removeChild(loadingEl)
+
+				delete this.needsRemoveLoadingElement
 			}
 		}
 	}
@@ -364,7 +374,17 @@ export default class ViewerApp extends React.Component {
 	render() {
 		if (this.state.loading == true) return null
 
-		if (this.state.requestStatus === 'invalid') return <div>Invalid</div>
+		if (this.state.requestStatus === 'invalid') {
+			return (
+				<div className="viewer--viewer-app--visit-error">
+					{`There was a problem starting your visit. Please return to ${
+						this.state.lti.outcomeServiceHostname
+							? this.state.lti.outcomeServiceHostname
+							: 'the external system'
+					} and relaunch this module.`}
+				</div>
+			) //`There was a problem starting your visit. Please return to ${outcomeServiceURL} and relaunch this module.`
+		}
 
 		let nextEl, nextModel, prevEl
 		window.__lo = this.state.model

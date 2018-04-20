@@ -36,8 +36,14 @@ body {
 // }
 
 #viewer-app {
+	opacity: 0;
+	transition: opacity $duration-animation-default * 2;
 	height: 100%;
 	overflow: auto;
+
+	&.is-loaded {
+		opacity: 1;
+	}
 
 	.root {
 		height: 100%;
