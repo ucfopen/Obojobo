@@ -51,15 +51,16 @@ export default class Nav extends React.Component {
 	}
 
 	renderLink(index, isSelected, list, lockEl) {
-
 		let item = list[index]
-		let isFirstInList = list[index - 1]
-			&& (list[index - 1].type != 'link' || list[index - 1].flags.assessment)
-			&& list[index - 1].type != 'sub-link'
-			&& !item.flags.assessment
-		let isLastInList = !list[index + 1]
-			|| (list[index + 1].type != 'link' && list[index + 1].type != 'sub-link')
-			|| list[index + 1].flags.assessment
+		let isFirstInList =
+			list[index - 1] &&
+			(list[index - 1].type != 'link' || list[index - 1].flags.assessment) &&
+			list[index - 1].type != 'sub-link' &&
+			!item.flags.assessment
+		let isLastInList =
+			!list[index + 1] ||
+			(list[index + 1].type != 'link' && list[index + 1].type != 'sub-link') ||
+			list[index + 1].flags.assessment
 
 		let className = 'link'
 		className += isSelected ? ' is-selected' : ' is-not-select'
@@ -68,6 +69,7 @@ export default class Nav extends React.Component {
 		className += item.flags.correct ? ' is-correct' : ' is-not-correct'
 		if (isFirstInList) className += ' first-in-list'
 		else if (isLastInList) className += ' last-in-list'
+		if (item.flags.assessment) className += ' is-assessment'
 
 		return (
 			<li key={index} onClick={this.onClick.bind(this, item)} className={className}>
@@ -78,11 +80,11 @@ export default class Nav extends React.Component {
 	}
 
 	renderSubLink(index, isSelected, list, lockEl) {
-
 		let item = list[index]
-		var isLastInList = !list[index + 1]
-			|| (list[index + 1].type != 'link' && list[index + 1].type != 'sub-link')
-			|| list[index + 1].flags.assessment
+		var isLastInList =
+			!list[index + 1] ||
+			(list[index + 1].type != 'link' && list[index + 1].type != 'sub-link') ||
+			list[index + 1].flags.assessment
 
 		let className = 'sub-link'
 		className += isSelected ? ' is-selected' : ' is-not-select'

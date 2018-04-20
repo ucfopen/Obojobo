@@ -56,7 +56,7 @@
 
 	&.is-disabled {
 		display: none;
-	} 
+	}
 
 	// .is-visited
 	// {
@@ -108,6 +108,7 @@
 		color: $color-text;
 		cursor: default;
 		border-left: solid 1px $color-bg;
+		border-bottom: solid 1px lighten($color-text, 80%);
 	}
 
 	.link,
@@ -129,21 +130,21 @@
 			position: absolute;
 			display: inline-block;
 			left: -0.6em;
-			top: 29%;
-			transform: translate(0, -50%);			
+			top: 0.55em;
+			transform: translate(0, -50%);
 			width: 0.8em;
 			height: 0.8em;
 			border: solid 2px $color-text-minor;
 			border-radius: 0.8em;
-			background: $color-bg;		
+			background: $color-bg;
 		}
 
 		&.last-in-list {
 			&:before {
-				content:'';
+				content: '';
 				position: absolute;
 				bottom: 0px;
-				left: -2px;				
+				left: -2px;
 				width: 1.2em;
 				height: 1.2em;
 				background: $color-bg;
@@ -151,7 +152,6 @@
 		}
 	}
 	.link {
-
 		&:after {
 			left: -10px;
 			color: $color-bg;
@@ -167,18 +167,20 @@
 				background: lighten($color-highlight, 10%);
 				border: solid 3px $color-highlight;
 			}
-	
+
 			.lock-icon {
 				display: none;
 			}
 		}
 
 		&.first-in-list {
+			margin-top: 0.75em;
+
 			&:before {
-				content:'';
+				content: '';
 				position: absolute;
 				top: 0px;
-				left: -2px;				
+				left: -2px;
 				width: 1.2em;
 				height: 1.2em;
 				background: $color-bg;
@@ -193,16 +195,16 @@
 
 		&.last-in-list {
 			&:before {
-				content:'';
+				content: '';
 				position: absolute;
 				bottom: 0px;
-				left: -2px;				
+				left: -2px;
 				width: 1.2em;
-				height: 1.5em;
+				height: 1.75em;
 				background: $color-bg;
 			}
 		}
-		
+
 		&:after {
 			left: -5px;
 			background: $color-highlight;
@@ -229,7 +231,7 @@
 			content: 'Q';
 			padding: 0.2em;
 			color: lighten($color-text, 60%);
-			
+
 			border: solid 1px lighten($color-text, 60%);
 			border-radius: 4px;
 			font-size: 0.6em;

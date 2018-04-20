@@ -28,7 +28,7 @@ exports[`Nav renders all list item types 1`] = `
       </a>
     </li>
     <li
-      className="link is-not-select is-not-visited is-not-complete is-not-correct"
+      className="link is-not-select is-not-visited is-not-complete is-not-correct first-in-list"
       onClick={[Function]}
     >
       <a>
@@ -76,7 +76,7 @@ exports[`Nav renders all list item types 1`] = `
       </div>
     </li>
     <li
-      className="sub-link is-not-select is-not-correct"
+      className="sub-link is-not-select is-not-correct last-in-list"
       onClick={[Function]}
     >
       <a>

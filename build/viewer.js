@@ -5932,7 +5932,6 @@ var Nav = function (_React$Component) {
 	}, {
 		key: 'renderLink',
 		value: function renderLink(index, isSelected, list, lockEl) {
-
 			var item = list[index];
 			var isFirstInList = list[index - 1] && (list[index - 1].type != 'link' || list[index - 1].flags.assessment) && list[index - 1].type != 'sub-link' && !item.flags.assessment;
 			var isLastInList = !list[index + 1] || list[index + 1].type != 'link' && list[index + 1].type != 'sub-link' || list[index + 1].flags.assessment;
@@ -5943,6 +5942,7 @@ var Nav = function (_React$Component) {
 			className += item.flags.complete ? ' is-complete' : ' is-not-complete';
 			className += item.flags.correct ? ' is-correct' : ' is-not-correct';
 			if (isFirstInList) className += ' first-in-list';else if (isLastInList) className += ' last-in-list';
+			if (item.flags.assessment) className += ' is-assessment';
 
 			return React.createElement(
 				'li',
@@ -5954,7 +5954,6 @@ var Nav = function (_React$Component) {
 	}, {
 		key: 'renderSubLink',
 		value: function renderSubLink(index, isSelected, list, lockEl) {
-
 			var item = list[index];
 			var isLastInList = !list[index + 1] || list[index + 1].type != 'link' && list[index + 1].type != 'sub-link' || list[index + 1].flags.assessment;
 
