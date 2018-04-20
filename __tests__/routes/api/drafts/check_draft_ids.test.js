@@ -1,4 +1,4 @@
-const checkIds = oboRequire('routes/api/drafts/check_draft_ids')
+const checkIds = oboRequire('routes/api/drafts/get_duplicate_obo_node_id')
 
 describe('draft id checker', () => {
 	beforeAll(() => {})
@@ -15,7 +15,7 @@ describe('draft id checker', () => {
 
 		let duplicate = checkIds(testTree, ids)
 
-		expect(duplicate).toBe(undefined)
+		expect(duplicate).toBe(null)
 	})
 
 	test('parses a multi level draft with no duplications', () => {
@@ -41,7 +41,7 @@ describe('draft id checker', () => {
 
 		let duplicate = checkIds(testTree, ids)
 
-		expect(duplicate).toBe(undefined)
+		expect(duplicate).toBe(null)
 	})
 
 	test('parses a multi level draft with duplication', () => {
