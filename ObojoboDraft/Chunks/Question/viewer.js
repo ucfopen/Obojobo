@@ -17,7 +17,7 @@ Common.Store.registerModel('ObojoboDraft.Chunks.Question', {
 
 		if (model.title) {
 			label = model.title
-		} else if (model.modelState.practice) {
+		} else if (model.modelState.mode === 'practice') {
 			label = `Practice Question ${questions.indexOf(model) + 1}`
 		} else {
 			label = `Question ${questions.indexOf(model) + 1}`

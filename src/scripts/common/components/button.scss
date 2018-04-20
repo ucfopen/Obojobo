@@ -18,20 +18,18 @@
 		cursor: pointer;
 		font-family: $font-default;
 		font-size: 0.85em;
-		opacity: 0.8;
 		position: relative;
 		min-width: 3.25em;
-		// margin-bottom: 1em;
-		// margin-top: 1em;
 		border-radius: 0.2em;
 		padding: 0.6rem 1em;
-		background-color: $color-action;
+		// button lightened to be close to $color-action with opacity 0.8
+		background-color: lighten($color-action, 9%);
 		color: $color-bg;
 		border: 1px solid $color-transparent;
 		border-bottom: 1px solid darken($color-action, 20%);
 
 		&:hover {
-			opacity: 1;
+			background-color: $color-action;
 		}
 
 		&:disabled {

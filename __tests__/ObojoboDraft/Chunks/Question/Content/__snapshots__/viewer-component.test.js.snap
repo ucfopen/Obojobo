@@ -1,0 +1,32 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`QuestionContent renders all child except the last one 1`] = `
+<div
+  className="obojobo-draft--chunks--mc-question--content"
+>
+  <div
+    model={
+      Object {
+        "get": [Function],
+        "getComponentClass": [Function],
+      }
+    }
+    moduleData="mockModuleData"
+  />
+  <div
+    model={
+      Object {
+        "get": [Function],
+        "getComponentClass": [Function],
+      }
+    }
+    moduleData="mockModuleData"
+  />
+</div>
+`;
+
+exports[`QuestionContent renders with no children 1`] = `
+<div
+  className="obojobo-draft--chunks--mc-question--content"
+/>
+`;

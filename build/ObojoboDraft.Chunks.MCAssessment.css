@@ -6,8 +6,6 @@
   font-family: "Libre Franklin", Arial, sans-serif;
   padding-bottom: 1em;
   cursor: pointer; }
-  .obojobo-draft--chunks--mc-assessment--mc-choice:hover {
-    background: rgba(147, 198, 255, 0.15); }
   .obojobo-draft--chunks--mc-assessment--mc-choice input {
     font-size: inherit;
     position: absolute;
@@ -56,6 +54,17 @@
       left: 0.5em; }
   .obojobo-draft--chunks--mc-assessment--mc-choice.is-selected {
     background: rgba(147, 198, 255, 0.25); }
+  .obojobo-draft--chunks--mc-assessment--mc-choice.is-mode-review {
+    cursor: default; }
+    .obojobo-draft--chunks--mc-assessment--mc-choice.is-mode-review input {
+      display: none; }
+    .obojobo-draft--chunks--mc-assessment--mc-choice.is-mode-review .children {
+      margin-left: 0; }
+    .obojobo-draft--chunks--mc-assessment--mc-choice.is-mode-review:hover {
+      cursor: default;
+      background: inherit; }
+  .obojobo-draft--chunks--mc-assessment--mc-choice:hover {
+    background: rgba(147, 198, 255, 0.15); }
 .obojobo-draft--chunks--mc-assessment--mc-feedback {
   font-size: 0.8em;
   padding-left: 0.7em;
@@ -93,11 +102,11 @@
       transform: translate(-50%, -50%);
       left: 0.6em;
       animation: fadein 0.4s; }
-  .obojobo-draft--chunks--mc-assessment.is-scored.is-response-type-pick-one .obojobo-draft--chunks--mc-assessment--mc-choice.is-selected.is-incorrect,
-  .obojobo-draft--chunks--mc-assessment.is-scored.is-response-type-pick-one-multiple-correct .obojobo-draft--chunks--mc-assessment--mc-choice.is-selected.is-incorrect {
+  .obojobo-draft--chunks--mc-assessment.is-scored.is-response-type-pick-one .obojobo-draft--chunks--mc-assessment--mc-choice.is-selected.is-not-correct,
+  .obojobo-draft--chunks--mc-assessment.is-scored.is-response-type-pick-one-multiple-correct .obojobo-draft--chunks--mc-assessment--mc-choice.is-selected.is-not-correct {
     background: rgba(194, 31, 0, 0.1); }
-    .obojobo-draft--chunks--mc-assessment.is-scored.is-response-type-pick-one .obojobo-draft--chunks--mc-assessment--mc-choice.is-selected.is-incorrect:before,
-    .obojobo-draft--chunks--mc-assessment.is-scored.is-response-type-pick-one-multiple-correct .obojobo-draft--chunks--mc-assessment--mc-choice.is-selected.is-incorrect:before {
+    .obojobo-draft--chunks--mc-assessment.is-scored.is-response-type-pick-one .obojobo-draft--chunks--mc-assessment--mc-choice.is-selected.is-not-correct:before,
+    .obojobo-draft--chunks--mc-assessment.is-scored.is-response-type-pick-one-multiple-correct .obojobo-draft--chunks--mc-assessment--mc-choice.is-selected.is-not-correct:before {
       content: '\2716';
       position: absolute;
       top: 0.65em;
@@ -122,7 +131,7 @@
     top: 1.5em;
     letter-spacing: 0.2em;
     content: "\2714" attr(data-choice-label); }
-  .obojobo-draft--chunks--mc-assessment.is-scored.is-response-type-pick-all .obojobo-draft--chunks--mc-assessment--mc-choice.is-selected.is-incorrect:before {
+  .obojobo-draft--chunks--mc-assessment.is-scored.is-response-type-pick-all .obojobo-draft--chunks--mc-assessment--mc-choice.is-selected.is-not-correct:before {
     content: '\2716';
     position: absolute;
     top: 0.65em;
@@ -137,6 +146,8 @@
     top: 1.5em;
     letter-spacing: 0.2em;
     content: "\2716" attr(data-choice-label); }
+  .obojobo-draft--chunks--mc-assessment.is-mode-review .result-container .result {
+    animation: none; }
   .obojobo-draft--chunks--mc-assessment .instructions {
     padding-left: 3em;
     padding-right: 3em;
@@ -147,10 +158,15 @@
     font-size: 1em;
     font-weight: normal;
     border-bottom: 1px solid rgba(0, 0, 0, 0.05); }
-  .obojobo-draft--chunks--mc-assessment .submit {
+  .obojobo-draft--chunks--mc-assessment .submit-and-result-container {
     margin-left: 3em;
-    margin-right: 3em;
-    position: relative; }
+    min-height: 4em;
+    display: table; }
+  .obojobo-draft--chunks--mc-assessment .submit {
+    margin-left: 0;
+    margin-right: 0;
+    position: relative;
+    display: inline-block; }
     .obojobo-draft--chunks--mc-assessment .submit button {
       cursor: pointer;
       font-size: 0.85em;
@@ -164,25 +180,11 @@
       transform: scale(2, 0.9); }
     .obojobo-draft--chunks--mc-assessment .submit .obojobo-draft--components--button:first-child {
       margin-right: 1em; }
-    .obojobo-draft--chunks--mc-assessment .submit .result-container {
-      display: inline-block; }
-    .obojobo-draft--chunks--mc-assessment .submit .result {
-      font-family: "Libre Franklin", Arial, sans-serif;
-      color: white;
-      font-weight: bold;
-      box-sizing: border-box;
-      margin: 0;
-      display: inline-block;
-      border-radius: 9999px;
-      padding: 0 1.5em;
-      font-size: 0.8em;
-      margin-bottom: 1em;
-      animation: bounce 0.4s; }
-      .obojobo-draft--chunks--mc-assessment .submit .result.correct {
-        background-color: #38ae24; }
-      .obojobo-draft--chunks--mc-assessment .submit .result.incorrect {
-        background-color: #c21f00; }
-    .obojobo-draft--chunks--mc-assessment .submit .pick-all-instructions {
+  .obojobo-draft--chunks--mc-assessment .result-container {
+    display: table-cell;
+    position: relative;
+    vertical-align: middle; }
+    .obojobo-draft--chunks--mc-assessment .result-container .pick-all-instructions {
       font-family: "Libre Franklin", Arial, sans-serif;
       font-size: 0.8em;
       font-weight: bold;
@@ -192,6 +194,21 @@
       line-height: 1.5em;
       vertical-align: middle;
       margin-left: 1.25em; }
+    .obojobo-draft--chunks--mc-assessment .result-container .result {
+      font-family: "Libre Franklin", Arial, sans-serif;
+      color: white;
+      font-weight: bold;
+      box-sizing: border-box;
+      margin: 0;
+      display: inline-block;
+      border-radius: 9999px;
+      padding: 0 1.5em;
+      font-size: 0.8em;
+      animation: bounce 0.4s; }
+      .obojobo-draft--chunks--mc-assessment .result-container .result.correct {
+        background-color: #38ae24; }
+      .obojobo-draft--chunks--mc-assessment .result-container .result.incorrect {
+        background-color: #c21f00; }
   .obojobo-draft--chunks--mc-assessment .solution {
     background: #f4f4f4;
     border-top: 1px solid rgba(0, 0, 0, 0.3);
@@ -248,7 +265,7 @@
           .obojobo-draft--chunks--mc-assessment .solution > .score .feedback.is-pick-all-feedback > .obojobo-draft--chunks--mc-assessment--mc-feedback.is-correct-feedback:before {
             content: "\2714" attr(data-choice-label);
             color: #38ae24; }
-          .obojobo-draft--chunks--mc-assessment .solution > .score .feedback.is-pick-all-feedback > .obojobo-draft--chunks--mc-assessment--mc-feedback.is-incorrect-feedback:before {
+          .obojobo-draft--chunks--mc-assessment .solution > .score .feedback.is-pick-all-feedback > .obojobo-draft--chunks--mc-assessment--mc-feedback.is-not-correct-feedback:before {
             content: "\2716" attr(data-choice-label);
             color: #c21f00; }
     .obojobo-draft--chunks--mc-assessment .solution > .obojobo-draft--components--button {

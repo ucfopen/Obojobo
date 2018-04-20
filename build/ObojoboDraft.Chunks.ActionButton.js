@@ -63,7 +63,7 @@
 /******/ 	__webpack_require__.p = "build/";
 /******/
 /******/ 	// Load entry module and return exports
-/******/ 	return __webpack_require__(__webpack_require__.s = 257);
+/******/ 	return __webpack_require__(__webpack_require__.s = 283);
 /******/ })
 /************************************************************************/
 /******/ ({
@@ -75,7 +75,38 @@ module.exports = Common;
 
 /***/ }),
 
-/***/ 117:
+/***/ 101:
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+var _adapter = __webpack_require__(122);
+
+var _adapter2 = _interopRequireDefault(_adapter);
+
+var _viewerComponent = __webpack_require__(123);
+
+var _viewerComponent2 = _interopRequireDefault(_viewerComponent);
+
+var _Common = __webpack_require__(0);
+
+var _Common2 = _interopRequireDefault(_Common);
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+var SelectionHandler = _Common2.default.chunk.textChunk.TextGroupSelectionHandler;
+
+_Common2.default.Store.registerModel('ObojoboDraft.Chunks.ActionButton', {
+	type: 'chunk',
+	adapter: _adapter2.default,
+	componentClass: _viewerComponent2.default,
+	selectionHandler: new SelectionHandler() //@TODO
+});
+
+/***/ }),
+
+/***/ 122:
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -138,7 +169,7 @@ function __guard__(value, transform) {
 
 /***/ }),
 
-/***/ 118:
+/***/ 123:
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -148,115 +179,56 @@ Object.defineProperty(exports, "__esModule", {
 	value: true
 });
 
-var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
-
-__webpack_require__(233);
+__webpack_require__(259);
 
 var _Common = __webpack_require__(0);
 
 var _Common2 = _interopRequireDefault(_Common);
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
-
-function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
-
-function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
-
-function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
 
 var OboComponent = _Common2.default.components.OboComponent;
 var Button = _Common2.default.components.Button;
 var TextGroupEl = _Common2.default.chunk.textChunk.TextGroupEl;
 var TextChunk = _Common2.default.chunk.TextChunk;
 
-var ActionButton = function (_React$Component) {
-	_inherits(ActionButton, _React$Component);
+exports.default = function (props) {
+	var model = props.model;
+	var textItem = model.modelState.textGroup ? model.modelState.textGroup.first : '';
 
-	function ActionButton() {
-		_classCallCheck(this, ActionButton);
-
-		return _possibleConstructorReturn(this, (ActionButton.__proto__ || Object.getPrototypeOf(ActionButton)).apply(this, arguments));
-	}
-
-	_createClass(ActionButton, [{
-		key: 'onClick',
-		value: function onClick() {
-			return this.props.model.processTrigger('onClick');
-		}
-	}, {
-		key: 'render',
-		value: function render() {
-			var textItem = this.props.model.modelState.textGroup ? this.props.model.modelState.textGroup.first : '';
-			return React.createElement(
-				OboComponent,
-				{ model: this.props.model, moduleData: this.props.moduleData },
-				React.createElement(
-					TextChunk,
-					{ className: 'obojobo-draft--chunks--action-button pad' },
-					React.createElement(
-						Button,
-						{
-							onClick: this.onClick.bind(this),
-							value: this.props.model.modelState.label,
-							align: this.props.model.modelState.align
-						},
-						React.createElement(TextGroupEl, { textItem: textItem, groupIndex: '0', parentModel: this.props.model })
-					)
-				)
-			);
-		}
-	}]);
-
-	return ActionButton;
-}(React.Component);
-
-exports.default = ActionButton;
+	return React.createElement(
+		OboComponent,
+		{ model: model, moduleData: props.moduleData },
+		React.createElement(
+			TextChunk,
+			{ className: 'obojobo-draft--chunks--action-button pad' },
+			React.createElement(
+				Button,
+				{
+					onClick: model.processTrigger.bind(model, 'onClick'),
+					value: model.modelState.label,
+					align: model.modelState.align
+				},
+				React.createElement(TextGroupEl, { textItem: textItem, groupIndex: '0', parentModel: model })
+			)
+		)
+	);
+};
 
 /***/ }),
 
-/***/ 233:
+/***/ 259:
 /***/ (function(module, exports) {
 
 // removed by extract-text-webpack-plugin
 
 /***/ }),
 
-/***/ 257:
+/***/ 283:
 /***/ (function(module, exports, __webpack_require__) {
 
-module.exports = __webpack_require__(96);
+module.exports = __webpack_require__(101);
 
-
-/***/ }),
-
-/***/ 96:
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-
-
-var _adapter = __webpack_require__(117);
-
-var _adapter2 = _interopRequireDefault(_adapter);
-
-var _viewerComponent = __webpack_require__(118);
-
-var _viewerComponent2 = _interopRequireDefault(_viewerComponent);
-
-var _Common = __webpack_require__(0);
-
-var _Common2 = _interopRequireDefault(_Common);
-
-function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
-
-var SelectionHandler = _Common2.default.chunk.textChunk.TextGroupSelectionHandler;
-
-_Common2.default.Store.registerModel('ObojoboDraft.Chunks.ActionButton', {
-	type: 'chunk',
-	adapter: _adapter2.default,
-	componentClass: _viewerComponent2.default,
-	selectionHandler: new SelectionHandler() //@TODO
-});
 
 /***/ })
 

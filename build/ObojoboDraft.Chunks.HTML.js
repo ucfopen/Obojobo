@@ -63,7 +63,7 @@
 /******/ 	__webpack_require__.p = "build/";
 /******/
 /******/ 	// Load entry module and return exports
-/******/ 	return __webpack_require__(__webpack_require__.s = 261);
+/******/ 	return __webpack_require__(__webpack_require__.s = 287);
 /******/ })
 /************************************************************************/
 /******/ ({
@@ -75,7 +75,7 @@ module.exports = Common;
 
 /***/ }),
 
-/***/ 100:
+/***/ 105:
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -85,11 +85,11 @@ var _Common = __webpack_require__(0);
 
 var _Common2 = _interopRequireDefault(_Common);
 
-var _adapter = __webpack_require__(126);
+var _adapter = __webpack_require__(131);
 
 var _adapter2 = _interopRequireDefault(_adapter);
 
-var _viewerComponent = __webpack_require__(127);
+var _viewerComponent = __webpack_require__(132);
 
 var _viewerComponent2 = _interopRequireDefault(_viewerComponent);
 
@@ -106,7 +106,7 @@ _Common2.default.Store.registerModel('ObojoboDraft.Chunks.HTML', {
 
 /***/ }),
 
-/***/ 126:
+/***/ 131:
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -157,7 +157,7 @@ function __guard__(value, transform) {
 
 /***/ }),
 
-/***/ 127:
+/***/ 132:
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -167,11 +167,9 @@ Object.defineProperty(exports, "__esModule", {
 	value: true
 });
 
-var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+__webpack_require__(263);
 
-__webpack_require__(237);
-
-var _katex = __webpack_require__(61);
+var _katex = __webpack_require__(64);
 
 var _katex2 = _interopRequireDefault(_katex);
 
@@ -181,97 +179,72 @@ var _Common2 = _interopRequireDefault(_Common);
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
-function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
-
-function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
-
-function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
-
 var OboComponent = _Common2.default.components.OboComponent;
 
-var HTML = function (_React$Component) {
-	_inherits(HTML, _React$Component);
 
-	function HTML() {
-		_classCallCheck(this, HTML);
+var createMarkup = function createMarkup(html) {
+	var div = document.createElement('div');
+	div.innerHTML = html;
 
-		return _possibleConstructorReturn(this, (HTML.__proto__ || Object.getPrototypeOf(HTML)).apply(this, arguments));
+	var latexes = div.querySelectorAll('.latex');
+
+	var _iteratorNormalCompletion = true;
+	var _didIteratorError = false;
+	var _iteratorError = undefined;
+
+	try {
+		for (var _iterator = Array.from(latexes)[Symbol.iterator](), _step; !(_iteratorNormalCompletion = (_step = _iterator.next()).done); _iteratorNormalCompletion = true) {
+			var el = _step.value;
+
+			el.innerHTML = _katex2.default.renderToString(el.innerHTML);
+		}
+	} catch (err) {
+		_didIteratorError = true;
+		_iteratorError = err;
+	} finally {
+		try {
+			if (!_iteratorNormalCompletion && _iterator.return) {
+				_iterator.return();
+			}
+		} finally {
+			if (_didIteratorError) {
+				throw _iteratorError;
+			}
+		}
 	}
 
-	_createClass(HTML, [{
-		key: 'createMarkup',
-		value: function createMarkup() {
-			var div = document.createElement('div');
-			div.innerHTML = this.props.model.modelState.html;
+	return { __html: div.innerHTML };
+};
 
-			var latexes = div.querySelectorAll('.latex');
-
-			var _iteratorNormalCompletion = true;
-			var _didIteratorError = false;
-			var _iteratorError = undefined;
-
-			try {
-				for (var _iterator = Array.from(latexes)[Symbol.iterator](), _step; !(_iteratorNormalCompletion = (_step = _iterator.next()).done); _iteratorNormalCompletion = true) {
-					var el = _step.value;
-
-					el.innerHTML = _katex2.default.renderToString(el.innerHTML);
-				}
-			} catch (err) {
-				_didIteratorError = true;
-				_iteratorError = err;
-			} finally {
-				try {
-					if (!_iteratorNormalCompletion && _iterator.return) {
-						_iterator.return();
-					}
-				} finally {
-					if (_didIteratorError) {
-						throw _iteratorError;
-					}
-				}
-			}
-
-			return { __html: div.innerHTML };
-		}
-	}, {
-		key: 'render',
-		value: function render() {
-			var data = this.props.model.modelState;
-
-			return React.createElement(
-				OboComponent,
-				{ model: this.props.model, moduleData: this.props.moduleData },
-				React.createElement('div', {
-					className: 'obojobo-draft--chunks--html viewer pad align-' + data.align,
-					dangerouslySetInnerHTML: this.createMarkup()
-				})
-			);
-		}
-	}]);
-
-	return HTML;
-}(React.Component);
-
-exports.default = HTML;
+exports.default = function (props) {
+	return React.createElement(
+		OboComponent,
+		{ model: props.model, moduleData: props.moduleData },
+		React.createElement('div', {
+			className: 'obojobo-draft--chunks--html viewer pad align-' + props.model.modelState.align,
+			dangerouslySetInnerHTML: createMarkup(props.model.modelState.html)
+		})
+	);
+};
 
 /***/ }),
 
-/***/ 237:
+/***/ 263:
 /***/ (function(module, exports) {
 
 // removed by extract-text-webpack-plugin
 
 /***/ }),
 
-/***/ 261:
+/***/ 287:
 /***/ (function(module, exports, __webpack_require__) {
 
-module.exports = __webpack_require__(100);
+module.exports = __webpack_require__(105);
 
 
 /***/ }),
 
-/***/ 61:
+/***/ 64:
 /***/ (function(module, exports) {
 
 module.exports = katex;
