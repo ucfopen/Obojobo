@@ -666,5 +666,4 @@ describe('AssessmentRubric', () => {
 
 		expect(ar.clone()).toEqual(ar)
 	})
-
 })

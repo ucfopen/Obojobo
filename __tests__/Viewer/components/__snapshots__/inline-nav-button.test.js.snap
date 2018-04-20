@@ -2,7 +2,7 @@
 
 exports[`Inline Nav Button correctly renders when disabled prop is true 1`] = `
 <div
-  className="viewer--components--inline-nav-button is-goNext is-disabled"
+  className="viewer--components--inline-nav-button is-goNext is-not-enabled"
   onClick={[Function]}
 >
   testTitle

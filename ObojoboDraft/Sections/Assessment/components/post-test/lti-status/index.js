@@ -6,20 +6,23 @@ import Viewer from 'Viewer'
 let { Button } = Common.components
 let LTINetworkStates = Viewer.stores.assessmentStore.LTINetworkStates
 
-const notLTI = () =>
+const notLTI = () => (
 	<div className="obojobo-draft--sections--assessment--lti-status is-not-lti">&nbsp;</div>
+)
 
-const noScoreSent = (externalSystemLabel) =>
+const noScoreSent = externalSystemLabel => (
 	<div className="obojobo-draft--sections--assessment--lti-status is-synced">
 		{`No score has been sent to ${externalSystemLabel} (Only passing scores are sent)`}
 	</div>
+)
 
-const synced = (assessmentScore, externalSystemLabel) =>
+const synced = (assessmentScore, externalSystemLabel) => (
 	<div className="obojobo-draft--sections--assessment--lti-status is-synced">
 		{`✔ Your recorded score of ${assessmentScore}% was sent to ${externalSystemLabel}`}
 	</div>
+)
 
-const renderError = (ltiState, systemLabel, onClickResendScore) =>
+const renderError = (ltiState, systemLabel, onClickResendScore) => (
 	<div className="obojobo-draft--sections--assessment--lti-status is-not-synced">
 		<h2>{`There was a problem sending your score to ${systemLabel}.`}</h2>
 		<p>
@@ -46,6 +49,7 @@ const renderError = (ltiState, systemLabel, onClickResendScore) =>
 			}
 		})()}
 	</div>
+)
 
 export default props => {
 	if (!props.ltiState.state) return null

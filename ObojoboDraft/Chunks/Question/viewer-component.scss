@@ -96,11 +96,11 @@
 		}
 
 		&.is-correct .flipper {
-			border: 1px solid $color-correct;
+			border: 1.25px solid $color-correct;
 		}
 
 		&.is-not-correct .flipper {
-			border: 1px solid $color-incorrect;
+			border: 1.25px solid $color-incorrect;
 		}
 	}
 

@@ -31,7 +31,10 @@ describe('AttemptIncompleteDialog', () => {
 		expect(ModalUtil.hide).not.toHaveBeenCalled()
 		expect(onSubmit).not.toHaveBeenCalled()
 
-		component.find('button').at(1).simulate('click')
+		component
+			.find('button')
+			.at(1)
+			.simulate('click')
 
 		expect(ModalUtil.hide).toHaveBeenCalled()
 		expect(onSubmit).not.toHaveBeenCalled()
@@ -44,7 +47,10 @@ describe('AttemptIncompleteDialog', () => {
 		expect(ModalUtil.hide).not.toHaveBeenCalled()
 		expect(onSubmit).not.toHaveBeenCalled()
 
-		component.find('button').at(0).simulate('click')
+		component
+			.find('button')
+			.at(0)
+			.simulate('click')
 
 		expect(ModalUtil.hide).toHaveBeenCalled()
 		expect(onSubmit).toHaveBeenCalled()
