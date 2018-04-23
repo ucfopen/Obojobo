@@ -58,8 +58,8 @@
 .obojobo-draft--chunks--question .flipper {
 	$color-sep: rgba(0, 0, 0, 0.1);
 
+	border-radius: $dimension-rounded-radius;
 	//background: $color-bg; //@FIX: #92
-	border-radius: 0.25em;
 
 	padding: 0;
 	// padding-top: 2em;
@@ -77,9 +77,10 @@
 .obojobo-draft--chunks--question {
 	&.is-hidden .flipper {
 		border: 1px solid $color-action;
+		max-height: 15em;
 	}
 
-	&.is-practice {
+	&.is-mode-practice {
 		.back::before {
 			color: $color-text-minor;
 			content: 'Practice';
@@ -95,17 +96,11 @@
 		}
 
 		&.is-correct .flipper {
-			border: 1px solid $color-correct;
+			border: 1.25px solid $color-correct;
 		}
 
-		&.is-incorrect .flipper {
-			border: 1px solid $color-incorrect;
-		}
-	}
-
-	&.is-not-practice {
-		.submit {
-			display: none;
+		&.is-not-correct .flipper {
+			border: 1.25px solid $color-incorrect;
 		}
 	}
 
@@ -119,11 +114,19 @@
 		background: $color-bg;
 		cursor: pointer;
 		// transition: opacity $duration-animation-default;
-		border-radius: 0.25em;
+		border-radius: $dimension-rounded-radius;
 
 		&:hover {
+			background: $color-action-bg;
+
 			.obojobo-draft--components--button {
 				transform: translate(-50%, -50%) scale(1.1, 1.1);
+			}
+		}
+
+		&.is-not-practice {
+			.submit {
+				display: none;
 			}
 		}
 

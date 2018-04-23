@@ -4,6 +4,7 @@ const createCaliperEvent = oboRequire('routes/api/events/create_caliper_event')
 const insertEvent = oboRequire('insert_event')
 const logger = oboRequire('logger')
 const logAndRespondToUnexpected = require('./util').logAndRespondToUnexpected
+const _ = require('underscore')
 
 const QUESTION_BANK_NODE_TYPE = 'ObojoboDraft.Chunks.QuestionBank'
 const QUESTION_NODE_TYPE = 'ObojoboDraft.Chunks.Question'
@@ -23,11 +24,11 @@ const startAttempt = (req, res) => {
 		assessmentQBTree: null,
 		attemptHistory: null,
 		numAttemptsaken: null,
-		childrenMap: null
+		questionUsesMap: null
 	}
 	let attemptState
 
-	req
+	return req
 		.requireCurrentUser()
 		.then(user => {
 			assessmentProperties.user = user
@@ -70,11 +71,11 @@ const startAttempt = (req, res) => {
 			)
 				throw new Error(ERROR_ATTEMPT_LIMIT_REACHED)
 
-			assessmentProperties.childrenMap = createAssessmentUsedQuestionMap(assessmentProperties)
+			assessmentProperties.questionUsesMap = createAssessmentUsedQuestionMap(assessmentProperties)
 
 			for (let attempt of assessmentProperties.attemptHistory) {
 				if (attempt.state.qb) {
-					initAssessmentUsedQuestions(attempt.state.qb, assessmentProperties.childrenMap)
+					initAssessmentUsedQuestions(attempt.state.qb, assessmentProperties.questionUsesMap)
 				}
 			}
 
@@ -84,8 +85,7 @@ const startAttempt = (req, res) => {
 				qb: assessmentProperties.assessmentQBTree,
 				questions: getNodeQuestions(
 					assessmentProperties.assessmentQBTree,
-					assessmentProperties.oboNode,
-					[]
+					assessmentProperties.oboNode
 				),
 				data: {}
 			}
@@ -109,30 +109,17 @@ const startAttempt = (req, res) => {
 		})
 		.then(result => {
 			res.success(result)
-			const { createAssessmentAttemptStartedEvent } = createCaliperEvent(null, req.hostname)
-			insertEvent({
-				action: ACTION_ASSESSMENT_ATTEMPT_START,
-				actorTime: new Date().toISOString(),
-				payload: {
-					attemptId: result.attemptId,
-					attemptCount: assessmentProperties.numAttemptsTaken
-				},
-				userId: assessmentProperties.user.id,
-				ip: req.connection.remoteAddress,
-				metadata: {},
-				draftId: req.body.draftId,
-				eventVersion: '1.1.0',
-				caliperPayload: createAssessmentAttemptStartedEvent({
-					actor: { type: 'user', id: assessmentProperties.user.id },
-					draftId: req.body.draftId,
-					assessmentId: req.body.assessmentId,
-					attemptId: result.attemptId,
-					isPreviewMode: assessmentProperties.isPreviewing,
-					extensions: {
-						count: assessmentProperties.numAttemptsaken
-					}
-				})
-			})
+
+			return insertAttemptStartCaliperEvent(
+				result.attemptId,
+				assessmentProperties.numAttemptsaken,
+				assessmentProperties.user.id,
+				req.body.draftId,
+				req.body.assessmentId,
+				assessmentProperties.isPreviewing,
+				req.hostname,
+				req.connection.remoteAddress
+			)
 		})
 		.catch(error => {
 			switch (error.message) {
@@ -153,14 +140,14 @@ const getQuestionBankProperties = questionBankNode => ({
 // Maps an assessment's questions id's to the amount of times
 // the questions have been used (0 until initAssessmentUsedQuestions is called).
 const createAssessmentUsedQuestionMap = assessmentProperties => {
-	const assessmentChildrenMap = new Map()
+	const assessmentquestionUsesMap = new Map()
 	assessmentProperties.nodeChildrenIds.forEach(id => {
 		const type = assessmentProperties.draftTree.getChildNodeById(id).node.type
 		if (type === QUESTION_BANK_NODE_TYPE || type === QUESTION_NODE_TYPE)
-			assessmentChildrenMap.set(id, 0)
+			assessmentquestionUsesMap.set(id, 0)
 	})
 
-	return assessmentChildrenMap
+	return assessmentquestionUsesMap
 }
 
 // When a question has been used, we will increment the value
@@ -171,36 +158,123 @@ const initAssessmentUsedQuestions = (node, usedQuestionMap) => {
 	for (let child of node.children) initAssessmentUsedQuestions(child, usedQuestionMap)
 }
 
-// Sort the question banks and questions sequentially, get their nodes from the tree via id, 
-// and only return up to the desired amount of questions per attempt (choose property).
-const chooseQuestionsSequentially = (assessmentProperties, rootId, numQuestionsPerAttempt) => {
-	const { oboNode, childrenMap } = assessmentProperties
-	return [...oboNode.draftTree.getChildNodeById(rootId).immediateChildrenSet]
-		.sort((a, b) => childrenMap.get(a) - childrenMap.get(b))
-		.map(id => oboNode.draftTree.getChildNodeById(id).toObject())
-		.slice(0, numQuestionsPerAttempt)
+// Choose questions in order, Prioritizing less used questions first
+// questions are first grouped by number of uses
+// but within those groups, questions are kept in order
+// only return up to the desired amount of questions per attempt.
+const chooseUnseenQuestionsSequentially = (
+	assessmentProperties,
+	rootId, // the root id of the question bank
+	numQuestionsPerAttempt
+) => {
+	const { oboNode, questionUsesMap } = assessmentProperties
+
+	// convert this questionBank's (via rootId) set of direct children *IDs* to an array
+	return (
+		[...oboNode.draftTree.getChildNodeById(rootId).immediateChildrenSet]
+			// sort those ids based on the number of time's the've been used
+			.sort((id1, id2) => questionUsesMap.get(id1) - questionUsesMap.get(id2))
+			// reduce the array to the number of questions in attempt
+			.slice(0, numQuestionsPerAttempt)
+			// return plain objects using DraftNode.toObject
+			.map(id => oboNode.draftTree.getChildNodeById(id).toObject())
+	)
 }
 
-// This will narrow down the assessment tree to question banks
-// with their respectively selected questions.
+// Randomly choose from all questions
+// Ignores the number of times a question is used
+// only return up to the desired amount of questions per attempt.
+const chooseAllQuestionsRandomly = (assessmentProperties, rootId, numQuestionsPerAttempt) => {
+	const { oboNode } = assessmentProperties
+	// convert this questionBank's (via rootId) set of direct children *IDs* to an array
+	const oboNodeQuestionIds = [...oboNode.draftTree.getChildNodeById(rootId).immediateChildrenSet]
+	// shuffle the array
+	return (
+		_.shuffle(oboNodeQuestionIds)
+			// reduce the array to the number of questions in attempt
+			.slice(0, numQuestionsPerAttempt)
+			// return the node objects using DraftNode.toObject
+			.map(id => oboNode.draftTree.getChildNodeById(id).toObject())
+	)
+}
+
+// Randomly chooses unseen questions to display.
+// prioritizes questions that have been seen less
+// will still return questions that have been seen
+const chooseUnseenQuestionsRandomly = (assessmentProperties, rootId, numQuestionsPerAttempt) => {
+	const { oboNode, questionUsesMap } = assessmentProperties
+	// convert this questionBank's (via rootId) set of direct children *IDs* to an array
+	return (
+		[...oboNode.draftTree.getChildNodeById(rootId).immediateChildrenSet]
+			// sort, prioritizing unseen questions
+			.sort((id1, id2) => {
+				// these questsions have been seen the same number of times
+				// randomize their order reletive to each other [a, b] or [b, a]
+				if (questionUsesMap.get(id1) === questionUsesMap.get(id2)) {
+					return Math.random() - 0.5
+				}
+				// these questions have not been seen the same number of times
+				// place the lesser seen one first
+				return questionUsesMap.get(id1) - questionUsesMap.get(id2)
+			})
+			// reduce the array to the number of questions in attempt
+			.slice(0, numQuestionsPerAttempt)
+			// return plain objects using DraftNode.toObject
+			.map(id => oboNode.draftTree.getChildNodeById(id).toObject())
+	)
+}
+
+/*
+This reduce a tree of nodes to those nodes selected for an attempt
+node is probably initially a QuestionBank Node (or higher up tree)
+expects all `.children` of question banks to be questions or question banks
+alters `.children` of questionbank nodes
+
+SEE the `createChosenQuestionTree` tests in attempt-start.test.js for
+details on exactly what to expect from this
+*/
 const createChosenQuestionTree = (node, assessmentProperties) => {
 	if (node.type === QUESTION_BANK_NODE_TYPE) {
-		logger.log('TEST', node.id, node.content, node.content.choose)
 		const qbProperties = getQuestionBankProperties(node)
 
-		// TODO: 'random-all' and 'random-unseen' selects need to be taken care of as well.
-		node.children = chooseQuestionsSequentially(assessmentProperties, node.id, qbProperties.choose)
+		switch (qbProperties.select) {
+			case 'random-unseen':
+				node.children = chooseUnseenQuestionsRandomly(
+					assessmentProperties,
+					node.id,
+					qbProperties.choose
+				)
+				break
+			case 'random-all':
+				node.children = chooseAllQuestionsRandomly(
+					assessmentProperties,
+					node.id,
+					qbProperties.choose
+				)
+				break
+			case 'sequential':
+			default:
+				node.children = chooseUnseenQuestionsSequentially(
+					assessmentProperties,
+					node.id,
+					qbProperties.choose
+				)
+				break
+		}
 	}
 
+	// Continue recursively through children
 	for (let child of node.children) createChosenQuestionTree(child, assessmentProperties)
 }
 
 // Return an array of question type nodes from a node tree.
-const getNodeQuestions = (node, assessmentNode, questions) => {
+const getNodeQuestions = (node, assessmentNode, questions = []) => {
+	// add this item to the questions array
 	if (node.type === QUESTION_NODE_TYPE) {
 		questions.push(assessmentNode.draftTree.getChildNodeById(node.id))
 	}
 
+	// recurse through this node's children
 	for (let child of node.children) {
 		questions.concat(getNodeQuestions(child, assessmentNode, questions))
 	}
@@ -219,13 +293,52 @@ const getSendToClientPromises = (attemptState, req, res) => {
 	return promises
 }
 
+const insertAttemptStartCaliperEvent = (
+	attemptId,
+	numAttemptsTaken,
+	userId,
+	draftId,
+	assessmentId,
+	isPreviewing,
+	hostname,
+	remoteAddress
+) => {
+	const { createAssessmentAttemptStartedEvent } = createCaliperEvent(null, hostname)
+	return insertEvent({
+		action: ACTION_ASSESSMENT_ATTEMPT_START,
+		actorTime: new Date().toISOString(),
+		payload: {
+			attemptId: attemptId,
+			attemptCount: numAttemptsTaken
+		},
+		userId: userId,
+		ip: remoteAddress,
+		metadata: {},
+		draftId: draftId,
+		eventVersion: '1.1.0',
+		caliperPayload: createAssessmentAttemptStartedEvent({
+			actor: { type: 'user', id: userId },
+			draftId: draftId,
+			assessmentId: assessmentId,
+			attemptId: attemptId,
+			isPreviewMode: isPreviewing,
+			extensions: {
+				count: numAttemptsTaken
+			}
+		})
+	})
+}
+
 module.exports = {
 	startAttempt,
 	getQuestionBankProperties,
 	createAssessmentUsedQuestionMap,
 	initAssessmentUsedQuestions,
-	chooseQuestionsSequentially,
+	chooseUnseenQuestionsSequentially,
+	chooseAllQuestionsRandomly,
+	chooseUnseenQuestionsRandomly,
 	createChosenQuestionTree,
 	getNodeQuestions,
-	getSendToClientPromises
+	getSendToClientPromises,
+	insertAttemptStartCaliperEvent
 }

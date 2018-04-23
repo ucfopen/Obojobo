@@ -63,7 +63,7 @@
 /******/ 	__webpack_require__.p = "build/";
 /******/
 /******/ 	// Load entry module and return exports
-/******/ 	return __webpack_require__(__webpack_require__.s = 266);
+/******/ 	return __webpack_require__(__webpack_require__.s = 292);
 /******/ })
 /************************************************************************/
 /******/ ({
@@ -82,7 +82,7 @@ module.exports = Viewer;
 
 /***/ }),
 
-/***/ 104:
+/***/ 109:
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -92,17 +92,17 @@ var _Common = __webpack_require__(0);
 
 var _Common2 = _interopRequireDefault(_Common);
 
-__webpack_require__(38);
+__webpack_require__(40);
 
-__webpack_require__(135);
+__webpack_require__(140);
 
-__webpack_require__(137);
+__webpack_require__(142);
 
-var _adapter = __webpack_require__(138);
+var _adapter = __webpack_require__(143);
 
 var _adapter2 = _interopRequireDefault(_adapter);
 
-var _viewerComponent = __webpack_require__(139);
+var _viewerComponent = __webpack_require__(144);
 
 var _viewerComponent2 = _interopRequireDefault(_viewerComponent);
 
@@ -119,7 +119,7 @@ _Common2.default.Store.registerModel('ObojoboDraft.Chunks.MCAssessment', {
 
 /***/ }),
 
-/***/ 134:
+/***/ 139:
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -129,9 +129,7 @@ Object.defineProperty(exports, "__esModule", {
 	value: true
 });
 
-var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
-
-__webpack_require__(241);
+__webpack_require__(267);
 
 var _Common = __webpack_require__(0);
 
@@ -139,51 +137,26 @@ var _Common2 = _interopRequireDefault(_Common);
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
-function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
-
-function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
-
-function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
-
 var OboComponent = _Common2.default.components.OboComponent;
 
-var MCAnswer = function (_React$Component) {
-	_inherits(MCAnswer, _React$Component);
-
-	function MCAnswer() {
-		_classCallCheck(this, MCAnswer);
-
-		return _possibleConstructorReturn(this, (MCAnswer.__proto__ || Object.getPrototypeOf(MCAnswer)).apply(this, arguments));
-	}
-
-	_createClass(MCAnswer, [{
-		key: 'render',
-		value: function render() {
-			var _this2 = this;
-
-			return React.createElement(
-				OboComponent,
-				{
-					model: this.props.model,
-					moduleData: this.props.moduleData,
-					className: 'obojobo-draft--chunks--mc-assessment--mc-answer'
-				},
-				this.props.model.children.models.map(function (child, index) {
-					var Component = child.getComponentClass();
-					return React.createElement(Component, { key: child.get('id'), model: child, moduleData: _this2.props.moduleData });
-				})
-			);
-		}
-	}]);
-
-	return MCAnswer;
-}(React.Component);
-
-exports.default = MCAnswer;
+exports.default = function (props) {
+	return React.createElement(
+		OboComponent,
+		{
+			model: props.model,
+			moduleData: props.moduleData,
+			className: 'obojobo-draft--chunks--mc-assessment--mc-answer'
+		},
+		props.model.children.models.map(function (child, index) {
+			var Component = child.getComponentClass();
+			return React.createElement(Component, { key: child.get('id'), model: child, moduleData: props.moduleData });
+		})
+	);
+};
 
 /***/ }),
 
-/***/ 135:
+/***/ 140:
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -193,7 +166,7 @@ var _Common = __webpack_require__(0);
 
 var _Common2 = _interopRequireDefault(_Common);
 
-var _viewerComponent = __webpack_require__(134);
+var _viewerComponent = __webpack_require__(139);
 
 var _viewerComponent2 = _interopRequireDefault(_viewerComponent);
 
@@ -210,7 +183,7 @@ _Common2.default.Store.registerModel('ObojoboDraft.Chunks.MCAssessment.MCAnswer'
 
 /***/ }),
 
-/***/ 136:
+/***/ 141:
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -220,9 +193,7 @@ Object.defineProperty(exports, "__esModule", {
 	value: true
 });
 
-var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
-
-__webpack_require__(242);
+__webpack_require__(268);
 
 var _Common = __webpack_require__(0);
 
@@ -230,52 +201,27 @@ var _Common2 = _interopRequireDefault(_Common);
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
-function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
-
-function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
-
-function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
-
 var OboComponent = _Common2.default.components.OboComponent;
 
-var MCFeedback = function (_React$Component) {
-	_inherits(MCFeedback, _React$Component);
-
-	function MCFeedback() {
-		_classCallCheck(this, MCFeedback);
-
-		return _possibleConstructorReturn(this, (MCFeedback.__proto__ || Object.getPrototypeOf(MCFeedback)).apply(this, arguments));
-	}
-
-	_createClass(MCFeedback, [{
-		key: 'render',
-		value: function render() {
-			var _this2 = this;
-
-			return React.createElement(
-				OboComponent,
-				{
-					model: this.props.model,
-					moduleData: this.props.moduleData,
-					className: 'obojobo-draft--chunks--mc-assessment--mc-feedback' + (this.props.model.parent.modelState.score === 100 ? ' is-correct-feedback' : ' is-incorrect-feedback'),
-					'data-choice-label': this.props.label
-				},
-				this.props.model.children.models.map(function (child, index) {
-					var Component = child.getComponentClass();
-					return React.createElement(Component, { key: child.get('id'), model: child, moduleData: _this2.props.moduleData });
-				})
-			);
-		}
-	}]);
-
-	return MCFeedback;
-}(React.Component);
-
-exports.default = MCFeedback;
+exports.default = function (props) {
+	return React.createElement(
+		OboComponent,
+		{
+			model: props.model,
+			moduleData: props.moduleData,
+			className: 'obojobo-draft--chunks--mc-assessment--mc-feedback' + (props.model.parent.modelState.score === 100 ? ' is-correct-feedback' : ' is-not-correct-feedback'),
+			'data-choice-label': props.label
+		},
+		props.model.children.models.map(function (child, index) {
+			var Component = child.getComponentClass();
+			return React.createElement(Component, { key: child.get('id'), model: child, moduleData: props.moduleData });
+		})
+	);
+};
 
 /***/ }),
 
-/***/ 137:
+/***/ 142:
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -285,7 +231,7 @@ var _Common = __webpack_require__(0);
 
 var _Common2 = _interopRequireDefault(_Common);
 
-var _viewerComponent = __webpack_require__(136);
+var _viewerComponent = __webpack_require__(141);
 
 var _viewerComponent2 = _interopRequireDefault(_viewerComponent);
 
@@ -302,7 +248,7 @@ _Common2.default.Store.registerModel('ObojoboDraft.Chunks.MCAssessment.MCFeedbac
 
 /***/ }),
 
-/***/ 138:
+/***/ 143:
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -338,7 +284,7 @@ exports.default = Adapter;
 
 /***/ }),
 
-/***/ 139:
+/***/ 144:
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -350,7 +296,7 @@ Object.defineProperty(exports, "__esModule", {
 
 var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
 
-__webpack_require__(243);
+__webpack_require__(269);
 
 var _Common = __webpack_require__(0);
 
@@ -359,6 +305,10 @@ var _Common2 = _interopRequireDefault(_Common);
 var _Viewer = __webpack_require__(1);
 
 var _Viewer2 = _interopRequireDefault(_Viewer);
+
+var _isornot = __webpack_require__(20);
+
+var _isornot2 = _interopRequireDefault(_isornot);
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
@@ -378,7 +328,12 @@ var DOMUtil = _Common2.default.page.DOMUtil;
 // FocusUtil = Common.util.FocusUtil
 
 var QuestionUtil = _Viewer2.default.util.QuestionUtil;
-var ScoreUtil = _Viewer2.default.util.ScoreUtil;
+var NavUtil = _Viewer2.default.util.NavUtil;
+
+
+var DEFAULT_CORRECT_PRACTICE_LABELS = ['Correct!', 'You got it!', 'Great job!', "That's right!"];
+var DEFAULT_CORRECT_REVIEW_LABELS = ['Correct'];
+var DEFAULT_INCORRECT_LABELS = ['Incorrect'];
 
 // @TODO - This wont update if new children are passed in via props
 
@@ -402,8 +357,8 @@ var MCAssessment = function (_React$Component) {
 		_this.onClick = _this.onClick.bind(_this);
 		_this.onCheckAnswer = _this.onCheckAnswer.bind(_this);
 		_this.isShowingExplanation = _this.isShowingExplanation.bind(_this);
-		_this.correctLabels = correctLabels ? correctLabels : ['Correct!', 'You got it!', 'Great job!', "That's right!"];
-		_this.incorrectLabels = incorrectLabels ? incorrectLabels : ['Incorrect'];
+		_this.correctLabels = correctLabels ? correctLabels : _this.props.mode === 'review' ? DEFAULT_CORRECT_REVIEW_LABELS : DEFAULT_CORRECT_PRACTICE_LABELS;
+		_this.incorrectLabels = incorrectLabels ? incorrectLabels : DEFAULT_INCORRECT_LABELS;
 		_this.updateFeedbackLabels();
 		return _this;
 	}
@@ -416,7 +371,8 @@ var MCAssessment = function (_React$Component) {
 	}, {
 		key: 'getResponseData',
 		value: function getResponseData() {
-			var questionResponse = QuestionUtil.getResponse(this.props.moduleData.questionState, this.getQuestionModel()) || { ids: [] };
+			var questionResponse = QuestionUtil.getResponse(this.props.moduleData.questionState, this.getQuestionModel(), this.props.moduleData.navState.context) || { ids: [] };
+
 			var correct = new Set();
 			var responses = new Set();
 			var childId = void 0;
@@ -520,7 +476,7 @@ var MCAssessment = function (_React$Component) {
 	}, {
 		key: 'retry',
 		value: function retry() {
-			QuestionUtil.retryQuestion(this.getQuestionModel().get('id'));
+			QuestionUtil.retryQuestion(this.getQuestionModel().get('id'), this.props.moduleData.navState.context);
 		}
 	}, {
 		key: 'hideExplanation',
@@ -539,6 +495,7 @@ var MCAssessment = function (_React$Component) {
 		value: function onClickSubmit(event) {
 			event.preventDefault();
 
+			QuestionUtil.setScore(this.getQuestionModel().get('id'), this.calculateScore(), this.props.moduleData.navState.context);
 			// ScoreUtil.setScore(this.getQuestionModel().get('id'), this.calculateScore())
 			this.updateFeedbackLabels();
 			QuestionUtil.checkAnswer(this.getQuestionModel().get('id'));
@@ -578,7 +535,7 @@ var MCAssessment = function (_React$Component) {
 
 			switch (this.props.model.modelState.responseType) {
 				case 'pick-all':
-					response = QuestionUtil.getResponse(this.props.moduleData.questionState, questionModel) || {
+					response = QuestionUtil.getResponse(this.props.moduleData.questionState, questionModel, this.props.moduleData.navState.context) || {
 						ids: []
 					};
 					var responseIndex = response.ids.indexOf(mcChoiceId);
@@ -597,12 +554,12 @@ var MCAssessment = function (_React$Component) {
 					break;
 			}
 
-			QuestionUtil.setResponse(questionModel.get('id'), response, mcChoiceId);
+			QuestionUtil.setResponse(questionModel.get('id'), response, mcChoiceId, this.props.moduleData.navState.context, this.props.moduleData.navState.context.split(':')[1], this.props.moduleData.navState.context.split(':')[2]);
 		}
 	}, {
 		key: 'getScore',
 		value: function getScore() {
-			return ScoreUtil.getScoreForModel(this.props.moduleData.scoreState, this.getQuestionModel());
+			return QuestionUtil.getScoreForModel(this.props.moduleData.questionState, this.getQuestionModel(), this.props.moduleData.navState.context);
 		}
 	}, {
 		key: 'componentWillReceiveProps',
@@ -625,7 +582,7 @@ var MCAssessment = function (_React$Component) {
 			var questionId = this.getQuestionModel().get('id');
 
 			if (payload.value.id === questionId) {
-				ScoreUtil.setScore(questionId, this.calculateScore());
+				QuestionUtil.setScore(questionId, this.calculateScore(), this.props.moduleData.navState.context);
 			}
 		}
 	}, {
@@ -656,20 +613,91 @@ var MCAssessment = function (_React$Component) {
 			return arrayOfOptions[Math.floor(Math.random() * arrayOfOptions.length)];
 		}
 	}, {
+		key: 'createInstructions',
+		value: function createInstructions(responseType) {
+			switch (responseType) {
+				case 'pick-one':
+					return React.createElement(
+						'span',
+						null,
+						'Pick the correct answer'
+					);
+				case 'pick-one-multiple-correct':
+					return React.createElement(
+						'span',
+						null,
+						'Pick one of the correct answers'
+					);
+				case 'pick-all':
+					return React.createElement(
+						'span',
+						null,
+						'Pick ',
+						React.createElement(
+							'b',
+							null,
+							'all'
+						),
+						' of the correct answers'
+					);
+			}
+		}
+	}, {
+		key: 'renderSubmitFooter',
+		value: function renderSubmitFooter(isAnswerSelected, isAnswerScored) {
+			return React.createElement(
+				'div',
+				{ className: 'submit' },
+				isAnswerScored ? React.createElement(Button, { altAction: true, onClick: this.onClickReset, value: 'Try Again' }) : React.createElement(Button, {
+					onClick: this.onClickSubmit,
+					value: 'Check Your Answer',
+					disabled: !isAnswerSelected
+				})
+			);
+		}
+	}, {
+		key: 'renderSubmittedResultsFooter',
+		value: function renderSubmittedResultsFooter(isCorrect, isPickAll) {
+			if (isCorrect) {
+				return React.createElement(
+					'div',
+					{ className: 'result-container' },
+					React.createElement(
+						'p',
+						{ className: 'result correct' },
+						this.correctLabelToShow
+					)
+				);
+			}
+
+			return React.createElement(
+				'div',
+				{ className: 'result-container' },
+				React.createElement(
+					'p',
+					{ className: 'result incorrect' },
+					this.incorrectLabelToShow
+				),
+				isPickAll ? React.createElement(
+					'span',
+					{ className: 'pick-all-instructions' },
+					'You have either missed some correct answers or selected some incorrect answers'
+				) : null
+			);
+		}
+	}, {
 		key: 'render',
 		value: function render() {
 			var _this2 = this;
 
-			var responseType = this.props.model.modelState.responseType;
+			var sortedIds = QuestionUtil.getData(this.props.moduleData.questionState, this.props.model, 'sortedIds');
+			if (!sortedIds) return null;
 
+			var responseType = this.props.model.modelState.responseType;
 			var isShowingExplanation = this.isShowingExplanation();
 			var score = this.getScore();
-			var questionSubmitted = score !== null;
-			var questionAnswered = this.getResponseData().responses.size >= 1;
-			var sortedIds = QuestionUtil.getData(this.props.moduleData.questionState, this.props.model, 'sortedIds');
-			// sortedIds = _.shuffle(@props.model.children.models).map (model) -> model.get('id')
-
-			if (!sortedIds) return false;
+			var isAnswerScored = score !== null; // Question has been submitted in practice or scored by server in assessment
+			var isAnswerSelected = this.getResponseData().responses.size >= 1; // An answer choice was selected
 
 			var feedbacks = Array.from(this.getResponseData().responses).filter(function (mcChoiceId) {
 				return OboModel.models[mcChoiceId].children.length > 1;
@@ -685,46 +713,77 @@ var MCAssessment = function (_React$Component) {
 				var SolutionComponent = solution.getComponentClass();
 			}
 
+			var explanationFooter = null;
+			if (isShowingExplanation) {
+				explanationFooter = React.createElement(Button, { altAction: true, onClick: this.onClickHideExplanation, value: 'Hide Explanation' });
+			} else if (solution) {
+				explanationFooter = React.createElement(Button, {
+					altAction: true,
+					onClick: this.onClickShowExplanation,
+					value: 'Read an explanation of the answer'
+				});
+			}
+
+			var feedbackAndSolution = null;
+			if (isAnswerScored && (feedbacks.length > 0 || solution)) {
+				feedbackAndSolution = React.createElement(
+					'div',
+					{ className: 'solution', key: 'solution' },
+					React.createElement(
+						'div',
+						{ className: 'score' },
+						feedbacks.length === 0 ? null : React.createElement(
+							'div',
+							{
+								className: 'feedback' + (0, _isornot2.default)(responseType === 'pick-all', 'pick-all-feedback')
+							},
+							feedbacks.map(function (model) {
+								var Component = model.getComponentClass();
+								return React.createElement(Component, {
+									key: model.get('id'),
+									model: model,
+									moduleData: _this2.props.moduleData,
+									responseType: responseType,
+									isShowingExplanation: true,
+									questionSubmitted: true,
+									label: String.fromCharCode(sortedIds.indexOf(model.parent.get('id')) + 65)
+								});
+							})
+						)
+					),
+					explanationFooter,
+					React.createElement(
+						ReactCSSTransitionGroup,
+						{
+							component: 'div',
+							transitionName: 'solution',
+							transitionEnterTimeout: 800,
+							transitionLeaveTimeout: 800
+						},
+						isShowingExplanation ? React.createElement(
+							'div',
+							{ className: 'solution-container', key: 'solution-component' },
+							React.createElement(SolutionComponent, { model: solution, moduleData: this.props.moduleData })
+						) : null
+					)
+				);
+			}
+
+			var className = 'obojobo-draft--chunks--mc-assessment' + (' is-response-type-' + this.props.model.modelState.responseType) + (' is-mode-' + this.props.mode) + (0, _isornot2.default)(isShowingExplanation, 'showing-explanation') + (0, _isornot2.default)(score !== null, 'scored');
+
 			return React.createElement(
 				OboComponent,
 				{
 					model: this.props.model,
 					moduleData: this.props.moduleData,
-					onClick: this.onClick,
+					onClick: this.props.mode !== 'review' ? this.onClick : null,
 					tag: 'form',
-					className: 'obojobo-draft--chunks--mc-assessment' + (' is-response-type-' + this.props.model.modelState.responseType) + (isShowingExplanation ? ' is-showing-explanation' : ' is-not-showing-explantion') + (score === null ? ' is-unscored' : ' is-scored')
+					className: className
 				},
 				React.createElement(
 					'span',
 					{ className: 'instructions' },
-					function () {
-						switch (responseType) {
-							case 'pick-one':
-								return React.createElement(
-									'span',
-									null,
-									'Pick the correct answer'
-								);
-							case 'pick-one-multiple-correct':
-								return React.createElement(
-									'span',
-									null,
-									'Pick one of the correct answers'
-								);
-							case 'pick-all':
-								return React.createElement(
-									'span',
-									null,
-									'Pick ',
-									React.createElement(
-										'b',
-										null,
-										'all'
-									),
-									' of the correct answers'
-								);
-						}
-					}()
+					this.createInstructions(responseType)
 				),
 				sortedIds.map(function (id, index) {
 					var child = OboModel.models[id];
@@ -739,41 +798,17 @@ var MCAssessment = function (_React$Component) {
 						moduleData: _this2.props.moduleData,
 						responseType: responseType,
 						isShowingExplanation: true,
-						questionSubmitted: questionSubmitted,
+						mode: _this2.props.mode,
+						questionSubmitted: isAnswerScored,
 						label: String.fromCharCode(index + 65)
 					});
 				}),
-				React.createElement(
+				this.props.mode === 'practice' || this.props.mode === 'review' ? React.createElement(
 					'div',
-					{ className: 'submit' },
-					questionSubmitted ? React.createElement(Button, { altAction: true, onClick: this.onClickReset, value: 'Try Again' }) : React.createElement(Button, {
-						onClick: this.onClickSubmit,
-						value: 'Check Your Answer',
-						disabled: !questionAnswered
-					}),
-					questionSubmitted ? score === 100 ? React.createElement(
-						'div',
-						{ className: 'result-container' },
-						React.createElement(
-							'p',
-							{ className: 'result correct' },
-							this.correctLabelToShow
-						)
-					) : React.createElement(
-						'div',
-						{ className: 'result-container' },
-						React.createElement(
-							'p',
-							{ className: 'result incorrect' },
-							this.incorrectLabelToShow
-						),
-						responseType === 'pick-all' ? React.createElement(
-							'span',
-							{ className: 'pick-all-instructions' },
-							'You have either missed some correct answers or selected some incorrect answers'
-						) : null
-					) : null
-				),
+					{ className: 'submit-and-result-container' },
+					this.props.mode === 'practice' ? this.renderSubmitFooter(isAnswerSelected, isAnswerScored) : null,
+					isAnswerScored ? this.renderSubmittedResultsFooter(score === 100, responseType === 'pick-all') : null
+				) : null,
 				React.createElement(
 					ReactCSSTransitionGroup,
 					{
@@ -782,51 +817,7 @@ var MCAssessment = function (_React$Component) {
 						transitionEnterTimeout: 800,
 						transitionLeaveTimeout: 800
 					},
-					questionSubmitted && (feedbacks.length > 0 || solution) ? React.createElement(
-						'div',
-						{ className: 'solution', key: 'solution' },
-						React.createElement(
-							'div',
-							{ className: 'score' },
-							feedbacks.length === 0 ? null : React.createElement(
-								'div',
-								{
-									className: 'feedback' + (responseType === 'pick-all' ? ' is-pick-all-feedback' : ' is-not-pick-all-feedback')
-								},
-								feedbacks.map(function (model) {
-									var Component = model.getComponentClass();
-									return React.createElement(Component, {
-										key: model.get('id'),
-										model: model,
-										moduleData: _this2.props.moduleData,
-										responseType: responseType,
-										isShowingExplanation: true,
-										questionSubmitted: true,
-										label: String.fromCharCode(sortedIds.indexOf(model.parent.get('id')) + 65)
-									});
-								})
-							)
-						),
-						isShowingExplanation ? React.createElement(Button, { altAction: true, onClick: this.onClickHideExplanation, value: 'Hide Explanation' }) : solution ? React.createElement(Button, {
-							altAction: true,
-							onClick: this.onClickShowExplanation,
-							value: 'Read an explanation of the answer'
-						}) : null,
-						React.createElement(
-							ReactCSSTransitionGroup,
-							{
-								component: 'div',
-								transitionName: 'solution',
-								transitionEnterTimeout: 800,
-								transitionLeaveTimeout: 800
-							},
-							isShowingExplanation ? React.createElement(
-								'div',
-								{ className: 'solution-container', key: 'solution-component' },
-								React.createElement(SolutionComponent, { model: solution, moduleData: this.props.moduleData })
-							) : null
-						)
-					) : null
+					feedbackAndSolution
 				)
 			);
 		}
@@ -844,36 +835,53 @@ function __guard__(value, transform) {
 
 /***/ }),
 
-/***/ 241:
-/***/ (function(module, exports) {
-
-// removed by extract-text-webpack-plugin
-
-/***/ }),
-
-/***/ 242:
-/***/ (function(module, exports) {
-
-// removed by extract-text-webpack-plugin
-
-/***/ }),
-
-/***/ 243:
-/***/ (function(module, exports) {
-
-// removed by extract-text-webpack-plugin
-
-/***/ }),
-
-/***/ 266:
+/***/ 20:
 /***/ (function(module, exports, __webpack_require__) {
 
-module.exports = __webpack_require__(104);
+"use strict";
+
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+// used to apply ' is-label' or ' is-not-label' styles
+var isOrNot = function isOrNot(flag, label) {
+  return ' is-' + (flag ? '' : 'not-') + label;
+};
+exports.default = isOrNot;
+
+/***/ }),
+
+/***/ 267:
+/***/ (function(module, exports) {
+
+// removed by extract-text-webpack-plugin
+
+/***/ }),
+
+/***/ 268:
+/***/ (function(module, exports) {
+
+// removed by extract-text-webpack-plugin
+
+/***/ }),
+
+/***/ 269:
+/***/ (function(module, exports) {
+
+// removed by extract-text-webpack-plugin
+
+/***/ }),
+
+/***/ 292:
+/***/ (function(module, exports, __webpack_require__) {
+
+module.exports = __webpack_require__(109);
 
 
 /***/ }),
 
-/***/ 38:
+/***/ 40:
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -883,11 +891,11 @@ var _Common = __webpack_require__(0);
 
 var _Common2 = _interopRequireDefault(_Common);
 
-var _adapter = __webpack_require__(39);
+var _adapter = __webpack_require__(41);
 
 var _adapter2 = _interopRequireDefault(_adapter);
 
-var _viewerComponent = __webpack_require__(40);
+var _viewerComponent = __webpack_require__(42);
 
 var _viewerComponent2 = _interopRequireDefault(_viewerComponent);
 
@@ -904,7 +912,7 @@ _Common2.default.Store.registerModel('ObojoboDraft.Chunks.MCAssessment.MCChoice'
 
 /***/ }),
 
-/***/ 39:
+/***/ 41:
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -919,28 +927,28 @@ var Adapter = {
 			return x.score;
 		}) != null) {
 			model.modelState.score = attrs.content.score;
-			return model.modelState._score = attrs.content.score;
+			model.modelState._score = attrs.content.score;
 		} else {
-			return model.modelState.score = '';
+			model.modelState.score = '';
 		}
 	},
 	clone: function clone(model, _clone) {
-		return _clone.modelState.score = model.modelState.score;
+		_clone.modelState.score = model.modelState.score;
 	},
 	toJSON: function toJSON(model, json) {
-		return json.content.score = model.modelState.score;
+		json.content.score = model.modelState.score;
 	}
 };
 
 exports.default = Adapter;
 
-function __guard__(value, transform) {
+var __guard__ = function __guard__(value, transform) {
 	return typeof value !== 'undefined' && value !== null ? transform(value) : undefined;
-}
+};
 
 /***/ }),
 
-/***/ 40:
+/***/ 42:
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -950,9 +958,7 @@ Object.defineProperty(exports, "__esModule", {
 	value: true
 });
 
-var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
-
-__webpack_require__(60);
+__webpack_require__(63);
 
 var _Common = __webpack_require__(0);
 
@@ -962,107 +968,105 @@ var _Viewer = __webpack_require__(1);
 
 var _Viewer2 = _interopRequireDefault(_Viewer);
 
+var _isornot = __webpack_require__(20);
+
+var _isornot2 = _interopRequireDefault(_isornot);
+
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
-
-function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
-
-function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
-
-function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
 
 var OboComponent = _Common2.default.components.OboComponent;
 var OboModel = _Common2.default.models.OboModel;
 var QuestionUtil = _Viewer2.default.util.QuestionUtil;
 
-var MCChoice = function (_React$Component) {
-	_inherits(MCChoice, _React$Component);
 
-	function MCChoice() {
-		_classCallCheck(this, MCChoice);
+var getInputType = function getInputType(responseType) {
+	switch (responseType) {
+		case 'pick-all':
+			return 'checkbox';
+		case 'pick-one':
+		case 'pick-one-multiple-correct':
+		default:
+			return 'radio';
+	}
+};
 
-		return _possibleConstructorReturn(this, (MCChoice.__proto__ || Object.getPrototypeOf(MCChoice)).apply(this, arguments));
+var questionIsSelected = function questionIsSelected(questionState, model, navStateContext) {
+	var response = QuestionUtil.getResponse(questionState, model.getParentOfType('ObojoboDraft.Chunks.Question'), navStateContext) || { ids: [] };
+
+	return response.ids.indexOf(model.get('id')) !== -1;
+};
+
+var answerIsCorrect = function answerIsCorrect(model, mode, questionState, navStateContext) {
+	var score = void 0;
+	if (mode === 'review') {
+		// no score data for this context? no idea what to do, throw an error
+		if (!questionState.scores[navStateContext]) throw 'Unkown Question State';
+
+		score = QuestionUtil.getScoreForModel(questionState, model, navStateContext);
+	} else {
+		score = model.modelState.score;
 	}
 
-	_createClass(MCChoice, [{
-		key: 'getQuestionModel',
-		value: function getQuestionModel() {
-			return this.props.model.getParentOfType('ObojoboDraft.Chunks.Question');
-		}
-	}, {
-		key: 'getInputType',
-		value: function getInputType() {
-			switch (this.props.responseType) {
-				case 'pick-all':
-					return 'checkbox';
-				default:
-					//'pick-one', 'pick-one-multiple-correct'
-					return 'radio';
-			}
-		}
-	}, {
-		key: 'render',
-		value: function render() {
-			var _this2 = this;
+	return score === 100;
+};
 
-			var response = QuestionUtil.getResponse(this.props.moduleData.questionState, this.getQuestionModel()) || { ids: [] };
-			var isSelected = response.ids.indexOf(this.props.model.get('id')) !== -1;
+var MCChoice = function MCChoice(props) {
+	var isCorrect = void 0;
 
-			return React.createElement(
-				OboComponent,
-				{
-					model: this.props.model,
-					moduleData: this.props.moduleData,
-					className: 'obojobo-draft--chunks--mc-assessment--mc-choice' + (isSelected ? ' is-selected' : ' is-not-selected') + (this.props.model.modelState.score === 100 ? ' is-correct' : ' is-incorrect'),
-					'data-choice-label': this.props.label
-				},
-				React.createElement('input', {
-					ref: 'input',
-					type: this.getInputType(),
-					value: this.props.model.get('id'),
-					checked: isSelected,
-					onChange: function onChange() {},
-					name: this.props.model.parent.get('id')
-				}),
-				React.createElement(
-					'div',
-					{ className: 'children' },
-					this.props.model.children.map(function (child, index) {
-						var type = child.get('type');
-						var isAnswerItem = type === 'ObojoboDraft.Chunks.MCAssessment.MCAnswer';
-						var isFeedbackItem = type === 'ObojoboDraft.Chunks.MCAssessment.MCFeedback';
+	try {
+		isCorrect = answerIsCorrect(props.model, props.mode, props.moduleData.questionState, props.moduleData.navState.context);
+	} catch (error) {
+		// if there's no questionState data for this
+		// or getting the score throws an error
+		// just display a div
+		return React.createElement('div', null);
+	}
 
-						if (isAnswerItem) {
-							var Component = child.getComponentClass();
-							return React.createElement(Component, { key: child.get('id'), model: child, moduleData: _this2.props.moduleData });
-						}
-					})
-				)
-			);
-		}
-	}], [{
-		key: 'defaultProps',
-		get: function get() {
-			return {
-				responseType: null,
-				revealAll: false,
-				questionSubmitted: false
-			};
-		}
-	}]);
+	var isSelected = questionIsSelected(props.moduleData.questionState, props.model, props.moduleData.navState.context);
 
-	return MCChoice;
-}(React.Component);
+	var className = 'obojobo-draft--chunks--mc-assessment--mc-choice' + (0, _isornot2.default)(isSelected, 'selected') + (0, _isornot2.default)(isCorrect, 'correct') + ' is-mode-' + props.mode;
+
+	return React.createElement(
+		OboComponent,
+		{
+			model: props.model,
+			moduleData: props.moduleData,
+			className: className,
+			'data-choice-label': props.label
+		},
+		React.createElement('input', {
+			type: getInputType(props.responseType),
+			value: props.model.get('id'),
+			checked: isSelected,
+			name: props.model.parent.get('id')
+		}),
+		React.createElement(
+			'div',
+			{ className: 'children' },
+			props.model.children.map(function (child, index) {
+				var type = child.get('type');
+				var isAnswerItem = type === 'ObojoboDraft.Chunks.MCAssessment.MCAnswer';
+				var isFeedbackItem = type === 'ObojoboDraft.Chunks.MCAssessment.MCFeedback';
+				if (isAnswerItem) {
+					var Component = child.getComponentClass();
+					return React.createElement(Component, { key: child.get('id'), model: child, moduleData: props.moduleData });
+				}
+			})
+		)
+	);
+};
+
+MCChoice.defaultProps = {
+	responseType: null,
+	revealAll: false,
+	questionSubmitted: false
+};
 
 exports.default = MCChoice;
 
-
-function __guard__(value, transform) {
-	return typeof value !== 'undefined' && value !== null ? transform(value) : undefined;
-}
-
 /***/ }),
 
-/***/ 60:
+/***/ 63:
 /***/ (function(module, exports) {
 
 // removed by extract-text-webpack-plugin

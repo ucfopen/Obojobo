@@ -15,11 +15,10 @@ const logAndRespondToUnexpected = require('./util').logAndRespondToUnexpected
 app.get('/api/lti/state/draft/:draftId', (req, res, next) => {
 	let currentUser
 
-	req
+	return req
 		.requireCurrentUser()
 		.then(user => {
 			currentUser = user
-
 			return lti.getLTIStatesByAssessmentIdForUserAndDraft(currentUser.id, req.params.draftId)
 		})
 		.then(result => {
@@ -36,7 +35,7 @@ app.post('/api/lti/sendAssessmentScore', (req, res, next) => {
 	let draftId = req.body.draftId
 	let assessmentId = req.body.assessmentId
 
-	req
+	return req
 		.requireCurrentUser()
 		.then(user => {
 			currentUser = user
@@ -68,7 +67,7 @@ app.post('/api/lti/sendAssessmentScore', (req, res, next) => {
 app.post('/api/assessments/attempt/start', (req, res) => startAttempt(req, res))
 
 app.post('/api/assessments/attempt/:attemptId/end', (req, res, next) => {
-	req
+	return req
 		.requireCurrentUser()
 		.then(currentUser => {
 			let isPreviewing = currentUser.canViewEditor
@@ -78,44 +77,100 @@ app.post('/api/assessments/attempt/:attemptId/end', (req, res, next) => {
 			res.success(resp)
 		})
 		.catch(error => {
-			logAndRespondToUnexpected('Unexpected error completing your attempt', res, req, e)
+			logAndRespondToUnexpected('Unexpected error completing your attempt', res, req, error)
 		})
 })
 
 app.post('/api/assessments/clear-preview-scores', (req, res, next) => {
 	let assessmentScoreIds
 	let attemptIds
+	let currentUser
 
-	req
+	return req
 		.requireCurrentUser()
-		.then(currentUser => {
+		.then(user => {
+			currentUser = user
 			let isPreviewing = currentUser.canViewEditor
 
-			if (!isPreviewing) {
-				return res.notAuthorized('Not in preview mode')
-			}
+			if (!isPreviewing) throw 'Not in preview mode'
 
-			return db
-				.manyOrNone(
-					`
+			return db.manyOrNone(
+				`
 						SELECT id
 						FROM assessment_scores
 						WHERE user_id = $[userId]
 						AND draft_id = $[draftId]
 						AND preview = true
 					`,
-					{
-						userId: currentUser.id,
-						draftId: req.body.draftId
-					}
-				)
-				.then(assessmentScoreIdsResult => {
-					assessmentScoreIds = assessmentScoreIdsResult
+				{
+					userId: currentUser.id,
+					draftId: req.body.draftId
+				}
+			)
+		})
+		.then(assessmentScoreIdsResult => {
+			assessmentScoreIds = assessmentScoreIdsResult
 
-					return db.manyOrNone(
+			return db.manyOrNone(
+				`
+					SELECT id
+					FROM attempts
+					WHERE user_id = $[userId]
+					AND draft_id = $[draftId]
+					AND preview = true
+				`,
+				{
+					userId: currentUser.id,
+					draftId: req.body.draftId
+				}
+			)
+		})
+		.then(attemptIdsResult => {
+			attemptIds = attemptIdsResult
+
+			return db.tx(transaction => {
+				let queries = []
+
+				if (assessmentScoreIds.length > 0) {
+					queries.push(
+						transaction.none(
+							`
+							DELETE FROM lti_assessment_scores
+							WHERE assessment_score_id IN ($[ids:csv])
+						`,
+							{ ids: assessmentScoreIds.map(i => i.id) }
+						)
+					)
+				}
+
+				if (attemptIds.length > 0) {
+					queries.push(
+						transaction.none(
+							`
+							DELETE FROM attempts_question_responses
+							WHERE attempt_id IN ($[ids:csv])
+						`,
+							{ ids: attemptIds.map(i => i.id) }
+						)
+					)
+				}
+
+				queries.push(
+					transaction.none(
 						`
-							SELECT id
-							FROM attempts
+							DELETE FROM assessment_scores
+							WHERE user_id = $[userId]
+							AND draft_id = $[draftId]
+							AND preview = true
+						`,
+						{
+							userId: currentUser.id,
+							draftId: req.body.draftId
+						}
+					),
+					transaction.none(
+						`
+							DELETE FROM attempts
 							WHERE user_id = $[userId]
 							AND draft_id = $[draftId]
 							AND preview = true
@@ -125,88 +180,27 @@ app.post('/api/assessments/clear-preview-scores', (req, res, next) => {
 							draftId: req.body.draftId
 						}
 					)
-				})
-				.then(attemptIdsResult => {
-					attemptIds = attemptIdsResult
+				)
 
-					return db.tx(t => {
-						let queries = []
-
-						if (assessmentScoreIds.length > 0) {
-							queries.push(
-								t.none(
-									`
-									DELETE FROM lti_assessment_scores
-									WHERE assessment_score_id IN ($1:csv)
-								`,
-									assessmentScoreIds.map(i => i.id)
-								)
-							)
-						}
-
-						if (attemptIds.length > 0) {
-							queries.push(
-								t.none(
-									`
-									DELETE FROM attempts_question_responses
-									WHERE attempt_id IN ($1:csv)
-								`,
-									attemptIds.map(i => i.id)
-								)
-							)
-						}
-
-						queries.push(
-							t.none(
-								`
-									DELETE FROM assessment_scores
-									WHERE user_id = $[userId]
-									AND draft_id = $[draftId]
-									AND preview = true
-								`,
-								{
-									userId: currentUser.id,
-									draftId: req.body.draftId
-								}
-							)
-						)
-
-						queries.push(
-							t.none(
-								`
-									DELETE FROM attempts
-									WHERE user_id = $[userId]
-									AND draft_id = $[draftId]
-									AND preview = true
-								`,
-								{
-									userId: currentUser.id,
-									draftId: req.body.draftId
-								}
-							)
-						)
-
-						return t.batch(queries)
-					})
-				})
-
-				.then(() => {
-					return res.success()
-				})
+				return transaction.batch(queries)
+			})
 		})
-
+		.then(() => res.success())
 		.catch(error => {
+			if (error === 'Not in preview mode') {
+				return res.notAuthorized(error)
+			}
+
 			logAndRespondToUnexpected('Unexpected error clearing preview scores', res, req, error)
 		})
 })
 
 app.get('/api/assessments/:draftId/:assessmentId/attempt/:attemptId', (req, res, next) => {
-	// check perms
-	req
+	// @TODO:
+	// check input
+	return req
 		.requireCurrentUser()
 		.then(currentUser => {
-			// check input
-			// select
 			return Assessment.getAttempt(
 				currentUser.id,
 				req.params.draftId,
@@ -214,77 +208,63 @@ app.get('/api/assessments/:draftId/:assessmentId/attempt/:attemptId', (req, res,
 				req.params.attemptId
 			)
 		})
-		.then(result => {
-			res.success(result)
-		})
+		.then(result => res.success(result))
 		.catch(error => {
 			logAndRespondToUnexpected('Unexpected Error Loading attempt "${:attemptId}"', res, req, error)
 		})
 })
 
 app.get('/api/assessments/:draftId/attempts', (req, res, next) => {
-	// check perms
-	req
+	// @TODO:
+	// check input
+	return req
 		.requireCurrentUser()
 		.then(currentUser => {
-			// check input
-			// select
 			return Assessment.getAttempts(currentUser.id, req.params.draftId)
 		})
 		.then(result => {
 			res.success(result)
 		})
 		.catch(error => {
-			switch (error.message) {
-				case 'Login Required':
-					res.notAuthorized(error.message)
-					return next()
-
-				default:
-					logAndRespondToUnexpected('Unexpected error loading attempts', res, req, error)
+			if (error.message == 'Login Required') {
+				return res.notAuthorized(error.message)
 			}
+
+			logAndRespondToUnexpected('Unexpected error loading attempts', res, req, error)
 		})
 })
 
 app.get('/api/assessment/:draftId/:assessmentId/attempts', (req, res, next) => {
-	// check perms
-	req
+	// @TODO:
+	// check input
+	return req
 		.requireCurrentUser()
 		.then(currentUser => {
-			// check input
-			// select
 			return Assessment.getAttempts(currentUser.id, req.params.draftId, req.params.assessmentId)
 		})
-		.then(result => {
-			res.success(result)
-		})
+		.then(result => res.success(result))
 		.catch(error => {
-			switch (error.message) {
-				case 'Login Required':
-					res.notAuthorized(error.message)
-					return next()
-
-				default:
-					logAndRespondToUnexpected('Unexpected error loading attempts', res, req, error)
+			if (error.message == 'Login Required') {
+				return res.notAuthorized(error.message)
 			}
+
+			logAndRespondToUnexpected('Unexpected error loading attempts', res, req, error)
 		})
 })
 
-oboEvents.on('client:assessment:setResponse', (event, req) => {
-	let eventRecordResponse = 'client:assessment:setResponse'
+oboEvents.on('client:question:setResponse', (event, req) => {
+	const eventRecordResponse = 'client:question:setResponse'
+	// @TODO: check perms
+	// @TODO: better input sanitizing
 
-	// check perms
-	// check input
-	if (!event.payload.attemptId)
-		return logger.error(eventRecordResponse, 'Missing Attempt ID', req, event)
-	if (!event.payload.questionId)
-		return logger.error(eventRecordResponse, 'Missing Question ID', req, event)
-	if (!event.payload.response)
-		return logger.error(eventRecordResponse, 'Missing Response', req, event)
+	return Promise.resolve()
+		.then(() => {
+			if (!event.payload.attemptId) throw 'Missing Attempt ID'
+			if (!event.payload.questionId) throw 'Missing Question ID'
+			if (!event.payload.response) throw 'Missing Response'
 
-	return db
-		.none(
-			`
+			return db.none(
+				`
 			INSERT INTO attempts_question_responses
 			(attempt_id, question_id, response, assessment_id)
 			VALUES($[attemptId], $[questionId], $[response], $[assessmentId])
@@ -295,15 +275,16 @@ oboEvents.on('client:assessment:setResponse', (event, req) => {
 					updated_at = now()
 				WHERE attempts_question_responses.attempt_id = $[attemptId]
 					AND attempts_question_responses.question_id = $[questionId]`,
-			{
-				assessmentId: event.payload.assessmentId,
-				attemptId: event.payload.attemptId,
-				questionId: event.payload.questionId,
-				response: event.payload.response
-			}
-		)
+				{
+					assessmentId: event.payload.assessmentId,
+					attemptId: event.payload.attemptId,
+					questionId: event.payload.questionId,
+					response: event.payload.response
+				}
+			)
+		})
 		.catch(error => {
-			logger.error(eventRecordResponse, 'DB UNEXPECTED', req, error, error.toString())
+			logger.error(eventRecordResponse, req, event, error, error.toString())
 		})
 })
 

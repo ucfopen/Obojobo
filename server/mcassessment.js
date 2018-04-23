@@ -32,7 +32,8 @@ class MCAssessment extends DraftNode {
 				correctIds.forEach(id => {
 					if (!responseIds.has(id)) score = 0
 				})
-				return setScore(score)
+				setScore(score)
+				break
 		}
 	}
 }

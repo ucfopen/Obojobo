@@ -14,7 +14,7 @@ exports[`Modal Modal 1`] = `
   >
     <button
       disabled={undefined}
-      onClick={[Function]}
+      onClick={[MockFunction]}
       tabIndex={undefined}
     >
       Delete

@@ -1,14 +1,7 @@
-const createParsedJsonPromise = promise => {
-	return new Promise((resolve, reject) => {
-		return promise
-			.then(res => {
-				return res.json()
-			})
-			.then(json => {
-				if (json.status === 'error') console.log(json.value)
-				return resolve(json)
-			})
-			.catch(error => reject(error))
+const processJsonResults = res => {
+	return Promise.resolve(res.json()).then(json => {
+		if (json.status === 'error') console.log(json.value)
+		return json
 	})
 }
 
@@ -40,7 +33,7 @@ var APIUtil = {
 	},
 
 	postEvent(lo, action, eventVersion, payload) {
-		return createParsedJsonPromise(
+		return (
 			APIUtil.post('/api/events', {
 				event: {
 					action,
@@ -50,14 +43,16 @@ var APIUtil = {
 					payload
 				}
 			})
-			// TODO: Send Caliper event to client host.
-		).then(res => {
-			if (res && res.status === 'ok' && res.value) {
-				parent.postMessage(res.value, '*')
-			}
+				.then(processJsonResults)
+				// TODO: Send Caliper event to client host.
+				.then(res => {
+					if (res && res.status === 'ok' && res.value) {
+						parent.postMessage(res.value, '*')
+					}
 
-			return res
-		})
+					return res
+				})
+		)
 	},
 
 	saveState(lo, state) {
@@ -65,52 +60,44 @@ var APIUtil = {
 	},
 
 	getDraft(id) {
-		return createParsedJsonPromise(fetch(`/api/drafts/${id}`))
+		return fetch(`/api/drafts/${id}`).then(processJsonResults)
 	},
 
 	getAttempts(lo) {
-		return createParsedJsonPromise(APIUtil.get(`/api/drafts/${lo.get('draftId')}/attempts`))
+		return APIUtil.get(`/api/drafts/${lo.get('draftId')}/attempts`).then(processJsonResults)
 	},
 
 	requestStart(visitId, draftId) {
-		return createParsedJsonPromise(
-			APIUtil.post('/api/visits/start', {
-				visitId,
-				draftId
-			})
-		)
+		return APIUtil.post('/api/visits/start', {
+			visitId,
+			draftId
+		}).then(processJsonResults)
 	},
 
-	startAttempt(lo, assessment, questions) {
-		return createParsedJsonPromise(
-			APIUtil.post('/api/assessments/attempt/start', {
-				draftId: lo.get('draftId'),
-				assessmentId: assessment.get('id')
-			})
-		)
+	startAttempt(lo, assessment) {
+		return APIUtil.post('/api/assessments/attempt/start', {
+			draftId: lo.get('draftId'),
+			assessmentId: assessment.get('id')
+		}).then(processJsonResults)
 	},
 
 	endAttempt(attempt) {
-		return createParsedJsonPromise(
-			APIUtil.post(`/api/assessments/attempt/${attempt.attemptId}/end`)
+		return APIUtil.post(`/api/assessments/attempt/${attempt.attemptId}/end`).then(
+			processJsonResults
 		)
 	},
 
 	resendLTIAssessmentScore(lo, assessment) {
-		return createParsedJsonPromise(
-			APIUtil.post('/api/lti/sendAssessmentScore', {
-				draftId: lo.get('_id'),
-				assessmentId: assessment.get('id')
-			})
-		)
+		return APIUtil.post('/api/lti/sendAssessmentScore', {
+			draftId: lo.get('draftId'),
+			assessmentId: assessment.get('id')
+		}).then(processJsonResults)
 	},
 
 	clearPreviewScores(lo) {
-		return createParsedJsonPromise(
-			APIUtil.post('/api/assessments/clear-preview-scores', {
-				draftId: lo.get('draftId')
-			})
-		)
+		return APIUtil.post('/api/assessments/clear-preview-scores', {
+			draftId: lo.get('draftId')
+		}).then(processJsonResults)
 	}
 }
 

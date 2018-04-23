@@ -63,7 +63,7 @@
 /******/ 	__webpack_require__.p = "build/";
 /******/
 /******/ 	// Load entry module and return exports
-/******/ 	return __webpack_require__(__webpack_require__.s = 61);
+/******/ 	return __webpack_require__(__webpack_require__.s = 74);
 /******/ })
 /************************************************************************/
 /******/ ([
@@ -79,7 +79,7 @@ module.exports = Common;
 "use strict";
 
 
-var isDate = __webpack_require__(13);
+var isDate = __webpack_require__(15);
 
 var MILLISECONDS_IN_HOUR = 3600000;
 var MILLISECONDS_IN_MINUTE = 60000;
@@ -530,11 +530,6 @@ var NavUtil = {
 			}
 		});
 	},
-
-
-	// getNavItemForModel: (state, model) ->
-	// 	state.itemsById[model.get('id')]
-
 	getNavTarget: function getNavTarget(state) {
 		return state.itemsById[state.navTargetId];
 	},
@@ -639,11 +634,34 @@ var NavUtil = {
 
 		return OboModel.models[nextItem.id];
 	},
+	getNavItemForModel: function getNavItemForModel(state, model) {
+		var item = state.itemsById[model.get('id')];
+		if (!item) {
+			return null;
+		}
+
+		return item;
+	},
+	getNavLabelForModel: function getNavLabelForModel(state, model) {
+		var item = NavUtil.getNavItemForModel(state, model);
+		if (!item) {
+			return null;
+		}
+
+		return item.label;
+	},
 	canNavigate: function canNavigate(state) {
 		return !state.locked;
 	},
 	getOrderedList: function getOrderedList(state) {
 		return getFlatList(state.items);
+	},
+	setContext: function setContext(context) {
+		return Dispatcher.trigger('nav:setContext', {
+			value: {
+				context: context
+			}
+		});
 	}
 };
 
@@ -651,111 +669,6 @@ exports.default = NavUtil;
 
 /***/ }),
 /* 3 */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-
-
-Object.defineProperty(exports, "__esModule", {
-	value: true
-});
-var createParsedJsonPromise = function createParsedJsonPromise(promise) {
-	return new Promise(function (resolve, reject) {
-		return promise.then(function (res) {
-			return res.json();
-		}).then(function (json) {
-			if (json.status === 'error') console.log(json.value);
-			return resolve(json);
-		}).catch(function (error) {
-			return reject(error);
-		});
-	});
-};
-
-var APIUtil = {
-	get: function get(endpoint) {
-		return fetch(endpoint, {
-			method: 'GET',
-			credentials: 'include',
-			headers: {
-				Accept: 'application/json',
-				'Content-Type': 'application/json' //@TODO - Do I need this?
-			} });
-	},
-	post: function post(endpoint, body) {
-		if (body == null) {
-			body = {};
-		}
-		return fetch(endpoint, {
-			method: 'POST',
-			credentials: 'include',
-			body: JSON.stringify(body),
-			headers: {
-				Accept: 'application/json',
-				'Content-Type': 'application/json'
-			}
-		});
-	},
-	postEvent: function postEvent(lo, action, eventVersion, payload) {
-		return createParsedJsonPromise(APIUtil.post('/api/events', {
-			event: {
-				action: action,
-				draft_id: lo.get('draftId'),
-				actor_time: new Date().toISOString(),
-				event_version: eventVersion,
-				payload: payload
-			}
-		})
-		// TODO: Send Caliper event to client host.
-		).then(function (res) {
-			if (res && res.status === 'ok' && res.value) {
-				parent.postMessage(res.value, '*');
-			}
-
-			return res;
-		});
-	},
-	saveState: function saveState(lo, state) {
-		return APIUtil.postEvent(lo, 'saveState', state);
-	},
-	getDraft: function getDraft(id) {
-		return createParsedJsonPromise(fetch('/api/drafts/' + id));
-	},
-	getAttempts: function getAttempts(lo) {
-		return createParsedJsonPromise(APIUtil.get('/api/drafts/' + lo.get('draftId') + '/attempts'));
-	},
-	requestStart: function requestStart(visitId, draftId) {
-		return createParsedJsonPromise(APIUtil.post('/api/visits/start', {
-			visitId: visitId,
-			draftId: draftId
-		}));
-	},
-	startAttempt: function startAttempt(lo, assessment, questions) {
-		return createParsedJsonPromise(APIUtil.post('/api/assessments/attempt/start', {
-			draftId: lo.get('draftId'),
-			assessmentId: assessment.get('id')
-		}));
-	},
-	endAttempt: function endAttempt(attempt) {
-		return createParsedJsonPromise(APIUtil.post('/api/assessments/attempt/' + attempt.attemptId + '/end'));
-	},
-	resendLTIAssessmentScore: function resendLTIAssessmentScore(lo, assessment) {
-		return createParsedJsonPromise(APIUtil.post('/api/lti/sendAssessmentScore', {
-			draftId: lo.get('_id'),
-			assessmentId: assessment.get('id')
-		}));
-	},
-	clearPreviewScores: function clearPreviewScores(lo) {
-		return createParsedJsonPromise(APIUtil.post('/api/assessments/clear-preview-scores', {
-			draftId: lo.get('draftId')
-		}));
-	}
-};
-
-exports.default = APIUtil;
-
-/***/ }),
-/* 4 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -948,7 +861,348 @@ process.umask = function () {
 };
 
 /***/ }),
+/* 4 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+Object.defineProperty(exports, "__esModule", {
+	value: true
+});
+var processJsonResults = function processJsonResults(res) {
+	return Promise.resolve(res.json()).then(function (json) {
+		if (json.status === 'error') console.log(json.value);
+		return json;
+	});
+};
+
+var APIUtil = {
+	get: function get(endpoint) {
+		return fetch(endpoint, {
+			method: 'GET',
+			credentials: 'include',
+			headers: {
+				Accept: 'application/json',
+				'Content-Type': 'application/json' //@TODO - Do I need this?
+			} });
+	},
+	post: function post(endpoint, body) {
+		if (body == null) {
+			body = {};
+		}
+		return fetch(endpoint, {
+			method: 'POST',
+			credentials: 'include',
+			body: JSON.stringify(body),
+			headers: {
+				Accept: 'application/json',
+				'Content-Type': 'application/json'
+			}
+		});
+	},
+	postEvent: function postEvent(lo, action, eventVersion, payload) {
+		return APIUtil.post('/api/events', {
+			event: {
+				action: action,
+				draft_id: lo.get('draftId'),
+				actor_time: new Date().toISOString(),
+				event_version: eventVersion,
+				payload: payload
+			}
+		}).then(processJsonResults)
+		// TODO: Send Caliper event to client host.
+		.then(function (res) {
+			if (res && res.status === 'ok' && res.value) {
+				parent.postMessage(res.value, '*');
+			}
+
+			return res;
+		});
+	},
+	saveState: function saveState(lo, state) {
+		return APIUtil.postEvent(lo, 'saveState', state);
+	},
+	getDraft: function getDraft(id) {
+		return fetch('/api/drafts/' + id).then(processJsonResults);
+	},
+	getAttempts: function getAttempts(lo) {
+		return APIUtil.get('/api/drafts/' + lo.get('draftId') + '/attempts').then(processJsonResults);
+	},
+	requestStart: function requestStart(visitId, draftId) {
+		return APIUtil.post('/api/visits/start', {
+			visitId: visitId,
+			draftId: draftId
+		}).then(processJsonResults);
+	},
+	startAttempt: function startAttempt(lo, assessment) {
+		return APIUtil.post('/api/assessments/attempt/start', {
+			draftId: lo.get('draftId'),
+			assessmentId: assessment.get('id')
+		}).then(processJsonResults);
+	},
+	endAttempt: function endAttempt(attempt) {
+		return APIUtil.post('/api/assessments/attempt/' + attempt.attemptId + '/end').then(processJsonResults);
+	},
+	resendLTIAssessmentScore: function resendLTIAssessmentScore(lo, assessment) {
+		return APIUtil.post('/api/lti/sendAssessmentScore', {
+			draftId: lo.get('draftId'),
+			assessmentId: assessment.get('id')
+		}).then(processJsonResults);
+	},
+	clearPreviewScores: function clearPreviewScores(lo) {
+		return APIUtil.post('/api/assessments/clear-preview-scores', {
+			draftId: lo.get('draftId')
+		}).then(processJsonResults);
+	}
+};
+
+exports.default = APIUtil;
+
+/***/ }),
 /* 5 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+Object.defineProperty(exports, "__esModule", {
+	value: true
+});
+var getDisplayFriendlyScore = function getDisplayFriendlyScore(n) {
+	if (n === null) return '--';
+	return Math.round(n).toString();
+};
+
+exports.default = getDisplayFriendlyScore;
+
+/***/ }),
+/* 6 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+Object.defineProperty(exports, "__esModule", {
+	value: true
+});
+
+var _Common = __webpack_require__(0);
+
+var _Common2 = _interopRequireDefault(_Common);
+
+var _questionUtil = __webpack_require__(7);
+
+var _questionUtil2 = _interopRequireDefault(_questionUtil);
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+var Dispatcher = _Common2.default.flux.Dispatcher;
+
+
+var AssessmentUtil = {
+	getAssessmentForModel: function getAssessmentForModel(state, model) {
+		var assessmentModel = void 0;
+		if (model.get('type') === 'ObojoboDraft.Sections.Assessment') {
+			assessmentModel = model;
+		} else {
+			assessmentModel = model.getParentOfType('ObojoboDraft.Sections.Assessment');
+		}
+
+		if (!assessmentModel) {
+			return null;
+		}
+
+		var assessment = state.assessments[assessmentModel.get('id')];
+		if (!assessment) {
+			return null;
+		}
+
+		return assessment;
+	},
+	getLastAttemptForModel: function getLastAttemptForModel(state, model) {
+		var assessment = AssessmentUtil.getAssessmentForModel(state, model);
+		if (!assessment) {
+			return null;
+		}
+
+		if (assessment.attempts.length === 0) {
+			return 0;
+		}
+
+		return assessment.attempts[assessment.attempts.length - 1];
+	},
+	getHighestAttemptsForModelByAssessmentScore: function getHighestAttemptsForModelByAssessmentScore(state, model) {
+		var assessment = AssessmentUtil.getAssessmentForModel(state, model);
+		if (!assessment) {
+			return [];
+		}
+
+		return assessment.highestAssessmentScoreAttempts;
+	},
+	getHighestAttemptsForModelByAttemptScore: function getHighestAttemptsForModelByAttemptScore(state, model) {
+		var assessment = AssessmentUtil.getAssessmentForModel(state, model);
+		if (!assessment) {
+			return [];
+		}
+
+		return assessment.highestAttemptScoreAttempts;
+	},
+	getAssessmentScoreForModel: function getAssessmentScoreForModel(state, model) {
+		var attempts = AssessmentUtil.getHighestAttemptsForModelByAssessmentScore(state, model);
+		if (attempts.length === 0) {
+			return null;
+		}
+
+		return attempts[0].assessmentScore;
+	},
+	getLastAttemptScoresForModel: function getLastAttemptScoresForModel(state, model) {
+		var assessment = AssessmentUtil.getAssessmentForModel(state, model);
+		if (!assessment) {
+			return null;
+		}
+
+		if (assessment.attempts.length === 0) {
+			return [];
+		}
+
+		return assessment.attempts[assessment.attempts.length - 1].questionScores;
+	},
+	getCurrentAttemptForModel: function getCurrentAttemptForModel(state, model) {
+		var assessment = AssessmentUtil.getAssessmentForModel(state, model);
+		if (!assessment) {
+			return null;
+		}
+
+		return assessment.current;
+	},
+	getAllAttempts: function getAllAttempts(state, model) {
+		return this.getAssessmentForModel(state, model).attempts;
+	},
+	getAttemptsRemaining: function getAttemptsRemaining(state, model) {
+		return Math.max(model.modelState.attempts - this.getNumberOfAttemptsCompletedForModel(state, model), 0);
+	},
+	hasAttemptsRemaining: function hasAttemptsRemaining(state, model) {
+		return model.modelState.attempts - this.getNumberOfAttemptsCompletedForModel(state, model) > 0;
+	},
+	getLTIStateForModel: function getLTIStateForModel(state, model) {
+		var assessment = AssessmentUtil.getAssessmentForModel(state, model);
+		if (!assessment) {
+			return null;
+		}
+
+		return {
+			state: assessment.lti,
+			networkState: assessment.ltiNetworkState,
+			errorCount: assessment.ltiErrorCount
+		};
+	},
+	isLTIScoreNeedingToBeResynced: function isLTIScoreNeedingToBeResynced(state, model) {
+		var assessment = AssessmentUtil.getAssessmentForModel(state, model);
+
+		if (!assessment || !assessment.lti || !assessment.lti.gradebookStatus) {
+			return false;
+		}
+
+		switch (assessment.lti.gradebookStatus) {
+			case 'ok_no_outcome_service':
+			case 'ok_gradebook_matches_assessment_score':
+			case 'ok_null_score_not_sent':
+				return false;
+
+			default:
+				return true;
+		}
+	},
+	isCurrentAttemptComplete: function isCurrentAttemptComplete(assessmentState, questionState, model, context) {
+		var current = AssessmentUtil.getCurrentAttemptForModel(assessmentState, model);
+		if (!current) {
+			return null;
+		}
+		var models = model.children.at(1).children.models;
+		return models.filter(function (questionModel) {
+			var resp = _questionUtil2.default.getResponse(questionState, questionModel, context);
+			return resp;
+		}).length === models.length;
+	},
+	isInAssessment: function isInAssessment(state) {
+		if (!state) return false;
+
+		for (var assessmentName in state.assessments) {
+			if (state.assessments[assessmentName].current !== null) {
+				return true;
+			}
+		}
+
+		return false;
+	},
+	getNumberOfAttemptsCompletedForModel: function getNumberOfAttemptsCompletedForModel(state, model) {
+		var assessment = AssessmentUtil.getAssessmentForModel(state, model);
+		if (!assessment || assessment.attempts.length === 0) {
+			return 0;
+		}
+
+		return assessment.attempts.length;
+	},
+	getNumCorrect: function getNumCorrect(questionScores) {
+		return questionScores.reduce(function (acc, questionScore) {
+			var n = 0;
+			if (parseInt(questionScore.score, 10) === 100) {
+				n = 1;
+			}
+			return parseInt(acc, 10) + n;
+		}, [0]);
+	},
+	findHighestAttempts: function findHighestAttempts(attempts, scoreProperty) {
+		if (attempts.length === 0) return [];
+
+		var attemptsByScore = {};
+		var highestScore = -1;
+
+		attempts.forEach(function (attempt) {
+			var score = attempt[scoreProperty] === null ? -1 : attempt[scoreProperty];
+
+			if (score > highestScore) {
+				highestScore = score;
+			}
+
+			if (!attemptsByScore[score]) {
+				attemptsByScore[score] = [];
+			}
+
+			attemptsByScore[score].push(attempt);
+		});
+
+		return attemptsByScore[highestScore];
+	},
+	startAttempt: function startAttempt(model) {
+		return Dispatcher.trigger('assessment:startAttempt', {
+			value: {
+				id: model.get('id')
+			}
+		});
+	},
+	endAttempt: function endAttempt(model, context) {
+		return Dispatcher.trigger('assessment:endAttempt', {
+			value: {
+				id: model.get('id'),
+				context: context
+			}
+		});
+	},
+	resendLTIScore: function resendLTIScore(model) {
+		return Dispatcher.trigger('assessment:resendLTIScore', {
+			value: {
+				id: model.get('id')
+			}
+		});
+	}
+};
+
+exports.default = AssessmentUtil;
+
+/***/ }),
+/* 7 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -969,19 +1223,23 @@ var OboModel = _Common2.default.models.OboModel;
 
 
 var QuestionUtil = {
-	setResponse: function setResponse(id, response, targetId) {
+	setResponse: function setResponse(id, response, targetId, context, assessmentId, attemptId) {
 		return Dispatcher.trigger('question:setResponse', {
 			value: {
 				id: id,
 				response: response,
-				targetId: targetId
+				targetId: targetId,
+				context: context,
+				assessmentId: assessmentId,
+				attemptId: attemptId
 			}
 		});
 	},
-	clearResponse: function clearResponse(id) {
+	clearResponse: function clearResponse(id, context) {
 		return Dispatcher.trigger('question:clearResponse', {
 			value: {
-				id: id
+				id: id,
+				context: context
 			}
 		});
 	},
@@ -1031,10 +1289,11 @@ var QuestionUtil = {
 			}
 		});
 	},
-	retryQuestion: function retryQuestion(id) {
+	retryQuestion: function retryQuestion(id, context) {
 		return Dispatcher.trigger('question:retry', {
 			value: {
-				id: id
+				id: id,
+				context: context
 			}
 		});
 	},
@@ -1049,27 +1308,53 @@ var QuestionUtil = {
 		}
 		return 'hidden';
 	},
-	getResponse: function getResponse(state, model) {
-		return state.responses[model.get('id')] || null;
+	getResponse: function getResponse(state, model, context) {
+		if (!state.responses[context]) return null;
+		return state.responses[context][model.get('id')] || null;
 	},
 	getData: function getData(state, model, key) {
 		return state.data[model.get('id') + ':' + key] || false;
 	},
 	isShowingExplanation: function isShowingExplanation(state, model) {
 		return state.data[model.get('id') + ':showingExplanation'] || false;
+	},
+	getScoreForModel: function getScoreForModel(state, model, context) {
+		var scoreItem = void 0;
+		if (state.scores[context] != null) {
+			scoreItem = state.scores[context][model.get('id')];
+		}
+
+		return scoreItem == null || scoreItem.score == null ? null : scoreItem.score;
+	},
+	setScore: function setScore(itemId, score, context) {
+		return Dispatcher.trigger('question:scoreSet', {
+			value: {
+				itemId: itemId,
+				score: score,
+				context: context
+			}
+		});
+	},
+	clearScore: function clearScore(itemId, context) {
+		return Dispatcher.trigger('question:scoreClear', {
+			value: {
+				itemId: itemId,
+				context: context
+			}
+		});
 	}
 };
 
 exports.default = QuestionUtil;
 
 /***/ }),
-/* 6 */
+/* 8 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
 
 
-var startOfWeek = __webpack_require__(36);
+var startOfWeek = __webpack_require__(38);
 
 /**
  * @category ISO Week Helpers
@@ -1096,7 +1381,7 @@ function startOfISOWeek(dirtyDate) {
 module.exports = startOfISOWeek;
 
 /***/ }),
-/* 7 */
+/* 9 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -1114,7 +1399,7 @@ var ReactPropTypesSecret = 'SECRET_DO_NOT_PASS_THIS_OR_YOU_WILL_BE_FIRED';
 module.exports = ReactPropTypesSecret;
 
 /***/ }),
-/* 8 */
+/* 10 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -1156,7 +1441,7 @@ emptyFunction.thatReturnsArgument = function (arg) {
 module.exports = emptyFunction;
 
 /***/ }),
-/* 9 */
+/* 11 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -1213,10 +1498,10 @@ function invariant(condition, format, a, b, c, d, e, f) {
 }
 
 module.exports = invariant;
-/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(4)))
+/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(3)))
 
 /***/ }),
-/* 10 */
+/* 12 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -1236,7 +1521,7 @@ var _navUtil = __webpack_require__(2);
 
 var _navUtil2 = _interopRequireDefault(_navUtil);
 
-var _apiUtil = __webpack_require__(3);
+var _apiUtil = __webpack_require__(4);
 
 var _apiUtil2 = _interopRequireDefault(_apiUtil);
 
@@ -1258,47 +1543,49 @@ var NavStore = function (_Store) {
 	function NavStore() {
 		_classCallCheck(this, NavStore);
 
-		var item = void 0,
-		    oldNavTargetId = void 0;
+		var item = void 0;
+		var oldNavTargetId = void 0;
 
 		var _this = _possibleConstructorReturn(this, (NavStore.__proto__ || Object.getPrototypeOf(NavStore)).call(this, 'navstore'));
 
 		Dispatcher.on({
+			'nav:setContext': function navSetContext(payload) {
+				_this.state.context = payload.value.context;
+				return _this.triggerChange();
+			},
 			'nav:rebuildMenu': function navRebuildMenu(payload) {
 				_this.buildMenu(payload.value.model);
-				return _this.triggerChange();
+				_this.triggerChange();
 			},
 			'nav:gotoPath': function navGotoPath(payload) {
 				oldNavTargetId = _this.state.navTargetId;
 				if (_this.gotoItem(_this.state.itemsByPath[payload.value.path])) {
-					return _apiUtil2.default.postEvent(OboModel.getRoot(), 'nav:gotoPath', '1.0.0', {
+					_apiUtil2.default.postEvent(OboModel.getRoot(), 'nav:gotoPath', '1.0.0', {
 						from: oldNavTargetId,
 						to: _this.state.itemsByPath[payload.value.path].id
 					});
 				}
 			},
 			'nav:setFlag': function navSetFlag(payload) {
-				var navItem = this.state.itemsById[payload.value.id];
+				var navItem = _this.state.itemsById[payload.value.id];
 				navItem.flags[payload.value.flagName] = payload.value.flagValue;
-
-				return this.triggerChange();
+				_this.triggerChange();
 			},
-
-			'nav:prev': function navPrev(payload) {
+			'nav:prev': function navPrev() {
 				oldNavTargetId = _this.state.navTargetId;
 				var prev = _navUtil2.default.getPrev(_this.state);
 				if (_this.gotoItem(prev)) {
-					return _apiUtil2.default.postEvent(OboModel.getRoot(), 'nav:prev', '1.0.0', {
+					_apiUtil2.default.postEvent(OboModel.getRoot(), 'nav:prev', '1.0.0', {
 						from: oldNavTargetId,
 						to: prev.id
 					});
 				}
 			},
-			'nav:next': function navNext(payload) {
+			'nav:next': function navNext() {
 				oldNavTargetId = _this.state.navTargetId;
 				var next = _navUtil2.default.getNext(_this.state);
 				if (_this.gotoItem(next)) {
-					return _apiUtil2.default.postEvent(OboModel.getRoot(), 'nav:next', '1.0.0', {
+					_apiUtil2.default.postEvent(OboModel.getRoot(), 'nav:next', '1.0.0', {
 						from: oldNavTargetId,
 						to: next.id
 					});
@@ -1307,54 +1594,52 @@ var NavStore = function (_Store) {
 			'nav:goto': function navGoto(payload) {
 				oldNavTargetId = _this.state.navTargetId;
 				if (_this.gotoItem(_this.state.itemsById[payload.value.id])) {
-					return _apiUtil2.default.postEvent(OboModel.getRoot(), 'nav:goto', '1.0.0', {
+					_apiUtil2.default.postEvent(OboModel.getRoot(), 'nav:goto', '1.0.0', {
 						from: oldNavTargetId,
 						to: _this.state.itemsById[payload.value.id].id
 					});
 				}
 			},
-			'nav:lock': function navLock(payload) {
+			'nav:lock': function navLock() {
 				_apiUtil2.default.postEvent(OboModel.getRoot(), 'nav:lock', '1.0.0');
-				return _this.setAndTrigger({ locked: true });
+				_this.setAndTrigger({ locked: true });
 			},
-			'nav:unlock': function navUnlock(payload) {
+			'nav:unlock': function navUnlock() {
 				_apiUtil2.default.postEvent(OboModel.getRoot(), 'nav:unlock', '1.0.0');
-				return _this.setAndTrigger({ locked: false });
+				_this.setAndTrigger({ locked: false });
 			},
-			'nav:close': function navClose(payload) {
+			'nav:close': function navClose() {
 				_apiUtil2.default.postEvent(OboModel.getRoot(), 'nav:close', '1.0.0');
-				return _this.setAndTrigger({ open: false });
+				_this.setAndTrigger({ open: false });
 			},
-			'nav:open': function navOpen(payload) {
+			'nav:open': function navOpen() {
 				_apiUtil2.default.postEvent(OboModel.getRoot(), 'nav:open', '1.0.0');
-				return _this.setAndTrigger({ open: true });
+				_this.setAndTrigger({ open: true });
 			},
-			'nav:toggle': function navToggle(payload) {
+			'nav:toggle': function navToggle() {
 				var updatedState = { open: !_this.state.open };
 				_apiUtil2.default.postEvent(OboModel.getRoot(), 'nav:toggle', '1.0.0', updatedState);
-				return _this.setAndTrigger(updatedState);
+				_this.setAndTrigger(updatedState);
 			},
 			'nav:openExternalLink': function navOpenExternalLink(payload) {
 				window.open(payload.value.url);
-				return _this.triggerChange();
+				_this.triggerChange();
 			},
 			'nav:showChildren': function navShowChildren(payload) {
 				item = _this.state.itemsById[payload.value.id];
 				item.showChildren = true;
-				return _this.triggerChange();
+				_this.triggerChange();
 			},
 			'nav:hideChildren': function navHideChildren(payload) {
 				item = _this.state.itemsById[payload.value.id];
 				item.showChildren = false;
-				return _this.triggerChange();
+				_this.triggerChange();
 			},
-			'score:set': function scoreSet(payload) {
+			'question:scoreSet': function questionScoreSet(payload) {
 				var navItem = _this.state.itemsById[payload.value.id];
-				if (!navItem) {
-					return;
+				if (navItem) {
+					_navUtil2.default.setFlag(payload.value.id, 'correct', payload.value.score === 100);
 				}
-
-				return _navUtil2.default.setFlag(payload.value.id, 'correct', payload.value.score === 100);
 			}
 		}, _this);
 		return _this;
@@ -1374,17 +1659,15 @@ var NavStore = function (_Store) {
 				navTargetId: null,
 				locked: viewState['nav:isLocked'] != null ? viewState['nav:isLocked'].value : false,
 				open: viewState['nav:isOpen'] != null ? viewState['nav:isOpen'].value : true,
+				context: 'practice',
 				visitId: visitId
 			};
 
 			this.buildMenu(model);
-			// console.clear()
-			// console.log @state.items
-			// debugger
 			_navUtil2.default.gotoPath(startingPath);
 
 			if (startingId != null) {
-				return _navUtil2.default.goto(startingId);
+				_navUtil2.default.goto(startingId);
 			} else {
 				var first = _navUtil2.default.getFirst(this.state);
 
@@ -1411,9 +1694,10 @@ var NavStore = function (_Store) {
 					return;
 				}
 
-				var navTargetModel = __guard__(_navUtil2.default.getNavTargetModel(this.state), function (x) {
-					return x.processTrigger('onNavExit');
-				});
+				var navTargetModel = _navUtil2.default.getNavTargetModel(this.state);
+				if (navTargetModel && navTargetModel.processTrigger) {
+					navTargetModel.processTrigger('onNavExit');
+				}
 				this.state.navTargetHistory.push(this.state.navTargetId);
 				this.state.itemsById[this.state.navTargetId].showChildren = false;
 			}
@@ -1506,13 +1790,6 @@ var NavStore = function (_Store) {
 
 			return navItem;
 		}
-	}, {
-		key: '_clearFlags',
-		value: function _clearFlags() {
-			return Array.from(this.state.items).map(function (item) {
-				return item.flags.complete = false;
-			});
-		}
 	}]);
 
 	return NavStore;
@@ -1522,13 +1799,8 @@ var navStore = new NavStore();
 window.__ns = navStore;
 exports.default = navStore;
 
-
-function __guard__(value, transform) {
-	return typeof value !== 'undefined' && value !== null ? transform(value) : undefined;
-}
-
 /***/ }),
-/* 11 */
+/* 13 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -1538,52 +1810,250 @@ Object.defineProperty(exports, "__esModule", {
 	value: true
 });
 
+var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+
 var _Common = __webpack_require__(0);
 
 var _Common2 = _interopRequireDefault(_Common);
 
+var _apiUtil = __webpack_require__(4);
+
+var _apiUtil2 = _interopRequireDefault(_apiUtil);
+
+var _questionUtil = __webpack_require__(7);
+
+var _questionUtil2 = _interopRequireDefault(_questionUtil);
+
+var _uuid = __webpack_require__(51);
+
+var _uuid2 = _interopRequireDefault(_uuid);
+
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
+
+function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
+
+var Store = _Common2.default.flux.Store;
 var Dispatcher = _Common2.default.flux.Dispatcher;
+var OboModel = _Common2.default.models.OboModel;
+var FocusUtil = _Common2.default.util.FocusUtil;
 
+var QuestionStore = function (_Store) {
+	_inherits(QuestionStore, _Store);
 
-var ScoreUtil = {
-	getScoreForModel: function getScoreForModel(state, model) {
-		var scoreItem = state.scores[model.get('id')];
-		if (typeof scoreItem === 'undefined' || scoreItem === null) {
-			return null;
-		}
+	function QuestionStore() {
+		_classCallCheck(this, QuestionStore);
 
-		return scoreItem.score;
-	},
-	setScore: function setScore(itemId, score) {
-		return Dispatcher.trigger('score:set', {
-			value: {
-				itemId: itemId,
-				score: score
+		var id = void 0;
+		var model = void 0;
+
+		var _this = _possibleConstructorReturn(this, (QuestionStore.__proto__ || Object.getPrototypeOf(QuestionStore)).call(this, 'questionStore'));
+
+		Dispatcher.on({
+			'question:setResponse': function questionSetResponse(payload) {
+				var id = payload.value.id;
+				var context = payload.value.context;
+				var model = OboModel.models[id];
+				if (!_this.state.responses[context]) _this.state.responses[context] = {};
+				_this.state.responses[context][id] = payload.value.response;
+				_this.triggerChange();
+
+				_apiUtil2.default.postEvent(model.getRoot(), 'question:setResponse', '2.0.0', {
+					questionId: id,
+					response: payload.value.response,
+					targetId: payload.value.targetId,
+					context: context,
+					assessmentId: payload.value.assessmentId,
+					attemptId: payload.value.attemptId
+				});
+			},
+
+			'question:clearResponse': function questionClearResponse(payload) {
+				if (_this.state.responses[payload.value.context]) {
+					delete _this.state.responses[payload.value.context][payload.value.id];
+					return _this.triggerChange();
+				}
+			},
+
+			'assessment:endAttempt': function assessmentEndAttempt(payload) {
+				if (_this.state.responses[payload.value.context]) {
+					delete _this.state.responses[payload.value.context][payload.value.id];
+					return _this.triggerChange();
+				}
+			},
+
+			'question:setData': function questionSetData(payload) {
+				_this.state.data[payload.value.key] = payload.value.value;
+				return _this.triggerChange();
+			},
+
+			'question:showExplanation': function questionShowExplanation(payload) {
+				var root = OboModel.models[payload.value.id].getRoot();
+
+				_apiUtil2.default.postEvent(root, 'question:showExplanation', '1.0.0', {
+					questionId: payload.value.id
+				});
+
+				_questionUtil2.default.setData(payload.value.id, 'showingExplanation', true);
+			},
+
+			'question:hideExplanation': function questionHideExplanation(payload) {
+				var root = OboModel.models[payload.value.id].getRoot();
+
+				_apiUtil2.default.postEvent(root, 'question:hideExplanation', '1.1.0', {
+					questionId: payload.value.id,
+					actor: payload.value.actor
+				});
+
+				_questionUtil2.default.clearData(payload.value.id, 'showingExplanation');
+			},
+
+			'question:clearData': function questionClearData(payload) {
+				delete _this.state.data[payload.value.key];
+				return _this.triggerChange();
+			},
+
+			'question:hide': function questionHide(payload) {
+				_apiUtil2.default.postEvent(OboModel.models[payload.value.id].getRoot(), 'question:hide', '1.0.0', {
+					questionId: payload.value.id
+				});
+
+				delete _this.state.viewedQuestions[payload.value.id];
+
+				if (_this.state.viewing === payload.value.id) {
+					_this.state.viewing = null;
+				}
+
+				return _this.triggerChange();
+			},
+
+			'question:view': function questionView(payload) {
+				var root = OboModel.models[payload.value.id].getRoot();
+
+				_apiUtil2.default.postEvent(root, 'question:view', '1.0.0', {
+					questionId: payload.value.id
+				});
+
+				_this.state.viewedQuestions[payload.value.id] = true;
+				_this.state.viewing = payload.value.id;
+
+				return _this.triggerChange();
+			},
+
+			'question:checkAnswer': function questionCheckAnswer(payload) {
+				var questionId = payload.value.id;
+				var questionModel = OboModel.models[questionId];
+				var root = questionModel.getRoot();
+
+				_apiUtil2.default.postEvent(root, 'question:checkAnswer', '1.0.0', {
+					questionId: payload.value.id
+				});
+			},
+
+			'question:retry': function questionRetry(payload) {
+				var questionId = payload.value.id;
+				var questionModel = OboModel.models[questionId];
+				var root = questionModel.getRoot();
+
+				_this.clearResponses(questionId, payload.value.context);
+
+				_apiUtil2.default.postEvent(root, 'question:retry', '1.0.0', {
+					questionId: payload.value.id
+				});
+
+				if (_questionUtil2.default.isShowingExplanation(_this.state, questionModel)) {
+					_questionUtil2.default.hideExplanation(questionId, 'viewerClient');
+				}
+
+				_questionUtil2.default.clearScore(questionId, payload.value.context);
+			},
+
+			'question:scoreSet': function questionScoreSet(payload) {
+				var scoreId = (0, _uuid2.default)();
+
+				if (!payload.value[payload.value.context]) _this.state.scores[payload.value.context] = {};
+
+				_this.state.scores[payload.value.context][payload.value.itemId] = {
+					id: scoreId,
+					score: payload.value.score,
+					itemId: payload.value.itemId
+				};
+
+				if (payload.value.score === 100) {
+					FocusUtil.unfocus();
+				}
+
+				_this.triggerChange();
+
+				model = OboModel.models[payload.value.itemId];
+				return _apiUtil2.default.postEvent(model.getRoot(), 'score:set', '2.0.0', {
+					id: scoreId,
+					itemId: payload.value.itemId,
+					score: payload.value.score,
+					context: payload.value.context
+				});
+			},
+
+			'question:scoreClear': function questionScoreClear(payload) {
+				var scoreItem = _this.state.scores[payload.value.context][payload.value.itemId];
+
+				model = OboModel.models[scoreItem.itemId];
+
+				delete _this.state.scores[payload.value.context][payload.value.itemId];
+				_this.triggerChange();
+
+				return _apiUtil2.default.postEvent(model.getRoot(), 'score:clear', '2.0.0', scoreItem);
 			}
 		});
-	},
-	clearScore: function clearScore(itemId) {
-		return Dispatcher.trigger('score:clear', {
-			value: {
-				itemId: itemId
-			}
-		});
+		return _this;
 	}
-};
 
-exports.default = ScoreUtil;
+	_createClass(QuestionStore, [{
+		key: 'clearResponses',
+		value: function clearResponses(questionId, context) {
+			delete this.state.responses[context][questionId];
+		}
+	}, {
+		key: 'init',
+		value: function init() {
+			return this.state = {
+				viewing: null,
+				viewedQuestions: {},
+				scores: {},
+				responses: {},
+				data: {}
+			};
+		}
+	}, {
+		key: 'getState',
+		value: function getState() {
+			return this.state;
+		}
+	}, {
+		key: 'setState',
+		value: function setState(newState) {
+			this.state = newState;
+		}
+	}]);
+
+	return QuestionStore;
+}(Store);
+
+var questionStore = new QuestionStore();
+exports.default = questionStore;
 
 /***/ }),
-/* 12 */
+/* 14 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
 
 
 var parse = __webpack_require__(1);
-var startOfISOWeek = __webpack_require__(6);
+var startOfISOWeek = __webpack_require__(8);
 
 /**
  * @category ISO Week-Numbering Year Helpers
@@ -1629,7 +2099,7 @@ function getISOYear(dirtyDate) {
 module.exports = getISOYear;
 
 /***/ }),
-/* 13 */
+/* 15 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -1657,7 +2127,7 @@ function isDate(argument) {
 module.exports = isDate;
 
 /***/ }),
-/* 14 */
+/* 16 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -1671,7 +2141,7 @@ module.exports = isDate;
 
 
 
-var emptyFunction = __webpack_require__(8);
+var emptyFunction = __webpack_require__(10);
 
 /**
  * Similar to invariant but only logs a warning if the condition is not met.
@@ -1723,10 +2193,139 @@ if (process.env.NODE_ENV !== 'production') {
 }
 
 module.exports = warning;
-/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(4)))
+/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(3)))
 
 /***/ }),
-/* 15 */
+/* 17 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+Object.defineProperty(exports, "__esModule", {
+	value: true
+});
+__webpack_require__(64);
+
+var GREAT_JOB_YOU_ROCK_EMOJI = '😎';
+
+var scoreReportView = function scoreReportView(props) {
+	return React.createElement(
+		'div',
+		{ className: 'obojobo-draft--sections--assessment--components--score-report' },
+		React.createElement(
+			'div',
+			{ className: 'text-items' },
+			props.report.textItems.map(getItemEl)
+		),
+		props.report.scoreChangeDescription === null ? null : React.createElement(
+			'span',
+			{ className: 'score-change-description' },
+			props.report.scoreChangeDescription
+		)
+	);
+};
+
+var getAmountEl = function getAmountEl(value) {
+	var isTotalOf100 = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : false;
+
+	if (value === 'Did Not Pass') {
+		return React.createElement(
+			'span',
+			{ className: 'amount is-null' },
+			'Did Not Pass'
+		);
+	}
+
+	if (isTotalOf100) {
+		return React.createElement(
+			'div',
+			{ className: 'amount is-number' },
+			value,
+			'%',
+			React.createElement(
+				'span',
+				{ className: 'great-job-you-rock' },
+				GREAT_JOB_YOU_ROCK_EMOJI
+			)
+		);
+	}
+
+	return React.createElement(
+		'span',
+		{ className: 'amount is-number' },
+		value,
+		'%'
+	);
+};
+
+var getItemEl = function getItemEl(item, index) {
+	switch (item.type) {
+		case 'text':
+			return React.createElement(
+				'div',
+				{ key: index, className: 'text' },
+				item.text
+			);
+
+		case 'divider':
+			return React.createElement('hr', { key: index, className: 'divider' });
+
+		case 'extra-credit':
+			return React.createElement(
+				'div',
+				{ key: index, className: 'extra-credit' },
+				React.createElement(
+					'span',
+					{ className: 'label' },
+					React.createElement(
+						'span',
+						null,
+						'Extra-credit'
+					),
+					' - ',
+					item.text
+				),
+				getAmountEl('+' + item.value)
+			);
+
+		case 'penalty':
+			return React.createElement(
+				'div',
+				{ key: index, className: 'penalty' },
+				React.createElement(
+					'span',
+					{ className: 'label' },
+					React.createElement(
+						'span',
+						null,
+						'Penalty'
+					),
+					' - ',
+					item.text
+				),
+				getAmountEl('-' + item.value)
+			);
+
+		case 'value':
+		case 'total':
+			return React.createElement(
+				'div',
+				{ key: index, className: item.type },
+				React.createElement(
+					'div',
+					{ className: 'label' },
+					item.text
+				),
+				getAmountEl(item.value, item.type === 'total' && item.value === '100')
+			);
+	}
+};
+
+exports.default = scoreReportView;
+
+/***/ }),
+/* 18 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -1738,13 +2337,122 @@ Object.defineProperty(exports, "__esModule", {
 
 var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
 
-__webpack_require__(53);
+var _assessmentUtil = __webpack_require__(6);
 
-var _navUtil = __webpack_require__(2);
+var _assessmentUtil2 = _interopRequireDefault(_assessmentUtil);
 
-var _navUtil2 = _interopRequireDefault(_navUtil);
+var _getScoreComparisionData = __webpack_require__(56);
 
-var _obojoboLogo = __webpack_require__(60);
+var _getScoreComparisionData2 = _interopRequireDefault(_getScoreComparisionData);
+
+var _getReportDetailsForAttempt = __webpack_require__(53);
+
+var _getReportDetailsForAttempt2 = _interopRequireDefault(_getReportDetailsForAttempt);
+
+var _getReportDisplayValuesForAttempt = __webpack_require__(54);
+
+var _getReportDisplayValuesForAttempt2 = _interopRequireDefault(_getReportDisplayValuesForAttempt);
+
+var _getScoreChangeDescription = __webpack_require__(55);
+
+var _getScoreChangeDescription2 = _interopRequireDefault(_getScoreChangeDescription);
+
+var _getTextItems = __webpack_require__(59);
+
+var _getTextItems2 = _interopRequireDefault(_getTextItems);
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+var AssessmentScoreReporter = function () {
+	function AssessmentScoreReporter(_ref) {
+		var assessmentRubric = _ref.assessmentRubric,
+		    allAttempts = _ref.allAttempts,
+		    totalNumberOfAttemptsAllowed = _ref.totalNumberOfAttemptsAllowed;
+
+		_classCallCheck(this, AssessmentScoreReporter);
+
+		this.assessmentRubric = assessmentRubric;
+		this.totalNumberOfAttemptsAllowed = totalNumberOfAttemptsAllowed;
+		this.allAttempts = allAttempts;
+	}
+
+	_createClass(AssessmentScoreReporter, [{
+		key: 'getReportFor',
+		value: function getReportFor(attemptNumberToGenerateReportFor) {
+			if (attemptNumberToGenerateReportFor === 0) {
+				throw new Error('attemptNumberToGenerateReportFor parameter is not zero-indexed - Use "1" for first attempt');
+			}
+
+			var assessScoreInfoToReport = this.allAttempts[attemptNumberToGenerateReportFor - 1].assessmentScoreDetails;
+
+			return {
+				textItems: (0, _getTextItems2.default)((0, _getReportDetailsForAttempt2.default)(this.assessmentRubric, assessScoreInfoToReport), (0, _getReportDisplayValuesForAttempt2.default)(assessScoreInfoToReport, this.totalNumberOfAttemptsAllowed)),
+				scoreChangeDescription: (0, _getScoreChangeDescription2.default)((0, _getScoreComparisionData2.default)(this.allAttempts, attemptNumberToGenerateReportFor))
+			};
+		}
+	}]);
+
+	return AssessmentScoreReporter;
+}();
+
+exports.default = AssessmentScoreReporter;
+
+/***/ }),
+/* 19 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+Object.defineProperty(exports, "__esModule", {
+	value: true
+});
+var TYPE_ATTEMPT_WITHOUT_MODS_REWARDED = 0;
+var TYPE_ATTEMPT_WITH_MODS_REWARDED = 1;
+var TYPE_PASSFAIL_PASSED_GIVEN_ATTEMPT_SCORE_WITHOUT_MODS_REWARDED = 2;
+var TYPE_PASSFAIL_PASSED_GIVEN_ATTEMPT_SCORE_WITH_MODS_REWARDED = 3;
+var TYPE_PASSFAIL_PASSED_GIVEN_SCORE_AND_ATTEMPT_SCORE_LESS_THAN_100 = 4;
+var TYPE_PASSFAIL_PASSED_GIVEN_SCORE_AND_ATTEMPT_SCORE_IS_100_AND_NO_MODS_REWARDED = 5;
+var TYPE_PASSFAIL_PASSED_GIVEN_SCORE_AND_ATTEMPT_SCORE_IS_100_AND_MODS_REWARDED = 6;
+var TYPE_PASSFAIL_FAILED_GIVEN_NO_SCORE = 7;
+var TYPE_PASSFAIL_FAILED_GIVEN_SCORE = 8;
+var TYPE_PASSFAIL_UNABLE_TO_PASS_GIVEN_NO_SCORE = 9;
+var TYPE_PASSFAIL_UNABLE_TO_PASS_GIVEN_HIGHEST_ATTEMPT_SCORE = 10;
+var TYPE_PASSFAIL_UNABLE_TO_PASS_GIVEN_SCORE = 11;
+var ERROR_UNKNOWN_DISPLAY_TYPE = -1;
+
+exports.TYPE_ATTEMPT_WITHOUT_MODS_REWARDED = TYPE_ATTEMPT_WITHOUT_MODS_REWARDED;
+exports.TYPE_ATTEMPT_WITH_MODS_REWARDED = TYPE_ATTEMPT_WITH_MODS_REWARDED;
+exports.TYPE_PASSFAIL_PASSED_GIVEN_ATTEMPT_SCORE_WITHOUT_MODS_REWARDED = TYPE_PASSFAIL_PASSED_GIVEN_ATTEMPT_SCORE_WITHOUT_MODS_REWARDED;
+exports.TYPE_PASSFAIL_PASSED_GIVEN_ATTEMPT_SCORE_WITH_MODS_REWARDED = TYPE_PASSFAIL_PASSED_GIVEN_ATTEMPT_SCORE_WITH_MODS_REWARDED;
+exports.TYPE_PASSFAIL_PASSED_GIVEN_SCORE_AND_ATTEMPT_SCORE_LESS_THAN_100 = TYPE_PASSFAIL_PASSED_GIVEN_SCORE_AND_ATTEMPT_SCORE_LESS_THAN_100;
+exports.TYPE_PASSFAIL_PASSED_GIVEN_SCORE_AND_ATTEMPT_SCORE_IS_100_AND_NO_MODS_REWARDED = TYPE_PASSFAIL_PASSED_GIVEN_SCORE_AND_ATTEMPT_SCORE_IS_100_AND_NO_MODS_REWARDED;
+exports.TYPE_PASSFAIL_PASSED_GIVEN_SCORE_AND_ATTEMPT_SCORE_IS_100_AND_MODS_REWARDED = TYPE_PASSFAIL_PASSED_GIVEN_SCORE_AND_ATTEMPT_SCORE_IS_100_AND_MODS_REWARDED;
+exports.TYPE_PASSFAIL_FAILED_GIVEN_NO_SCORE = TYPE_PASSFAIL_FAILED_GIVEN_NO_SCORE;
+exports.TYPE_PASSFAIL_FAILED_GIVEN_SCORE = TYPE_PASSFAIL_FAILED_GIVEN_SCORE;
+exports.TYPE_PASSFAIL_UNABLE_TO_PASS_GIVEN_NO_SCORE = TYPE_PASSFAIL_UNABLE_TO_PASS_GIVEN_NO_SCORE;
+exports.TYPE_PASSFAIL_UNABLE_TO_PASS_GIVEN_HIGHEST_ATTEMPT_SCORE = TYPE_PASSFAIL_UNABLE_TO_PASS_GIVEN_HIGHEST_ATTEMPT_SCORE;
+exports.TYPE_PASSFAIL_UNABLE_TO_PASS_GIVEN_SCORE = TYPE_PASSFAIL_UNABLE_TO_PASS_GIVEN_SCORE;
+exports.ERROR_UNKNOWN_DISPLAY_TYPE = ERROR_UNKNOWN_DISPLAY_TYPE;
+
+/***/ }),
+/* 20 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+Object.defineProperty(exports, "__esModule", {
+	value: true
+});
+
+var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+
+__webpack_require__(66);
+
+var _obojoboLogo = __webpack_require__(73);
 
 var _obojoboLogo2 = _interopRequireDefault(_obojoboLogo);
 
@@ -1795,7 +2503,7 @@ var Logo = function (_React$Component) {
 exports.default = Logo;
 
 /***/ }),
-/* 16 */
+/* 21 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -1811,19 +2519,15 @@ var _Common = __webpack_require__(0);
 
 var _Common2 = _interopRequireDefault(_Common);
 
-var _assessmentUtil = __webpack_require__(20);
+var _assessmentUtil = __webpack_require__(6);
 
 var _assessmentUtil2 = _interopRequireDefault(_assessmentUtil);
 
-var _scoreUtil = __webpack_require__(11);
-
-var _scoreUtil2 = _interopRequireDefault(_scoreUtil);
-
-var _questionUtil = __webpack_require__(5);
+var _questionUtil = __webpack_require__(7);
 
 var _questionUtil2 = _interopRequireDefault(_questionUtil);
 
-var _apiUtil = __webpack_require__(3);
+var _apiUtil = __webpack_require__(4);
 
 var _apiUtil2 = _interopRequireDefault(_apiUtil);
 
@@ -1831,9 +2535,25 @@ var _navUtil = __webpack_require__(2);
 
 var _navUtil2 = _interopRequireDefault(_navUtil);
 
-var _ltiNetworkStates = __webpack_require__(17);
+var _navStore = __webpack_require__(12);
+
+var _navStore2 = _interopRequireDefault(_navStore);
+
+var _ltiNetworkStates = __webpack_require__(22);
 
 var _ltiNetworkStates2 = _interopRequireDefault(_ltiNetworkStates);
+
+var _questionStore = __webpack_require__(13);
+
+var _questionStore2 = _interopRequireDefault(_questionStore);
+
+var _assessmentScoreReporter = __webpack_require__(18);
+
+var _assessmentScoreReporter2 = _interopRequireDefault(_assessmentScoreReporter);
+
+var _assessmentScoreReportView = __webpack_require__(17);
+
+var _assessmentScoreReportView2 = _interopRequireDefault(_assessmentScoreReportView);
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
@@ -1847,7 +2567,9 @@ var Store = _Common2.default.flux.Store;
 var Dispatcher = _Common2.default.flux.Dispatcher;
 var OboModel = _Common2.default.models.OboModel;
 var ErrorUtil = _Common2.default.util.ErrorUtil;
-var SimpleDialog = _Common2.default.components.modal.SimpleDialog;
+var _Common$components$mo = _Common2.default.components.modal,
+    SimpleDialog = _Common$components$mo.SimpleDialog,
+    Dialog = _Common$components$mo.Dialog;
 var ModalUtil = _Common2.default.util.ModalUtil;
 
 
@@ -1857,10 +2579,12 @@ var getNewAssessmentObject = function getNewAssessmentObject(assessmentId) {
 		current: null,
 		currentResponses: [],
 		attempts: [],
-		score: null,
+		highestAssessmentScoreAttempts: [],
+		highestAttemptScoreAttempts: [],
 		lti: null,
 		ltiNetworkState: _ltiNetworkStates2.default.IDLE,
-		ltiErrorCount: 0
+		ltiErrorCount: 0,
+		isShowingAttemptHistory: false
 	};
 };
 
@@ -1881,7 +2605,7 @@ var AssessmentStore = function (_Store) {
 		});
 
 		Dispatcher.on('assessment:endAttempt', function (payload) {
-			_this.tryEndAttempt(payload.value.id);
+			_this.tryEndAttempt(payload.value.id, payload.value.context);
 		});
 
 		Dispatcher.on('assessment:resendLTIScore', function (payload) {
@@ -1905,9 +2629,9 @@ var AssessmentStore = function (_Store) {
 		value: function init(attemptsByAssessment) {
 			this.state = {
 				assessments: {}
-			};
 
-			if (!attemptsByAssessment) return;
+				// necessary?
+			};if (!attemptsByAssessment) return;
 			this.updateAttempts(attemptsByAssessment);
 		}
 	}, {
@@ -1929,13 +2653,11 @@ var AssessmentStore = function (_Store) {
 				}
 
 				assessments[assessId].lti = assessmentItem.ltiState;
+				assessments[assessId].highestAttemptScoreAttempts = _assessmentUtil2.default.findHighestAttempts(attempts, 'assessmentScore');
+				assessments[assessId].highestAssessmentScoreAttempts = _assessmentUtil2.default.findHighestAttempts(attempts, 'attemptScore');
 
 				attempts.forEach(function (attempt) {
 					assessment = assessments[attempt.assessmentId];
-
-					if (attempt.assessmentScore !== null) {
-						assessment.score = Math.max(attempt.assessmentScore, assessment.score);
-					}
 
 					if (!attempt.isFinished) {
 						unfinishedAttempt = attempt;
@@ -1950,6 +2672,20 @@ var AssessmentStore = function (_Store) {
 					});
 				});
 			});
+
+			for (var _assessment in assessments) {
+				assessments[_assessment].attempts.forEach(function (attempt) {
+					var scoreObject = {};
+					attempt.questionScores.forEach(function (score) {
+						scoreObject[score.id] = score;
+					});
+					var stateToUpdate = {
+						scores: scoreObject,
+						responses: attempt.responses
+					};
+					_questionStore2.default.updateStateByContext(stateToUpdate, 'assessmentReview:' + attempt.attemptId);
+				});
+			}
 
 			if (unfinishedAttempt) {
 				return ModalUtil.show(React.createElement(
@@ -2040,6 +2776,7 @@ var AssessmentStore = function (_Store) {
 
 			this.state.assessments[id].current = startAttemptResp;
 
+			_navUtil2.default.setContext('assessment:' + startAttemptResp.assessmentId + ':' + startAttemptResp.attemptId);
 			_navUtil2.default.rebuildMenu(model.getRoot());
 			_navUtil2.default.goto(id);
 
@@ -2048,7 +2785,7 @@ var AssessmentStore = function (_Store) {
 		}
 	}, {
 		key: 'tryEndAttempt',
-		value: function tryEndAttempt(id) {
+		value: function tryEndAttempt(id, context) {
 			var _this3 = this;
 
 			var model = OboModel.models[id];
@@ -2059,7 +2796,7 @@ var AssessmentStore = function (_Store) {
 					return ErrorUtil.errorResponse(res);
 				}
 
-				_this3.endAttempt(res.value);
+				_this3.endAttempt(res.value, context);
 				return _this3.triggerChange();
 			}).catch(function (e) {
 				console.error(e);
@@ -2067,7 +2804,7 @@ var AssessmentStore = function (_Store) {
 		}
 	}, {
 		key: 'endAttempt',
-		value: function endAttempt(endAttemptResp) {
+		value: function endAttempt(endAttemptResp, context) {
 			var assessId = endAttemptResp.assessmentId;
 			var assessment = this.state.assessments[assessId];
 			var model = OboModel.models[assessId];
@@ -2076,14 +2813,39 @@ var AssessmentStore = function (_Store) {
 				return _questionUtil2.default.hideQuestion(question.id);
 			});
 			assessment.currentResponses.forEach(function (questionId) {
-				return _questionUtil2.default.clearResponse(questionId);
+				return _questionUtil2.default.clearResponse(questionId, context);
 			});
 			assessment.current = null;
 
 			this.updateAttempts([endAttemptResp]);
 
 			model.processTrigger('onEndAttempt');
+
 			Dispatcher.trigger('assessment:attemptEnded', assessId);
+
+			var attempt = _assessmentUtil2.default.getLastAttemptForModel(this.state, model);
+			var reporter = new _assessmentScoreReporter2.default({
+				assessmentRubric: model.modelState.rubric.toObject(),
+				totalNumberOfAttemptsAllowed: model.modelState.attempts,
+				allAttempts: assessment.attempts
+			});
+
+			var assessmentLabel = _navUtil2.default.getNavLabelForModel(_navStore2.default.getState(), model);
+			ModalUtil.show(React.createElement(
+				Dialog,
+				{
+					modalClassName: 'obojobo-draft--sections--assessment--results-modal',
+					centered: true,
+					buttons: [{
+						value: 'Show ' + assessmentLabel + ' Overview',
+						onClick: ModalUtil.hide,
+						default: true
+					}],
+					title: 'Attempt ' + attempt.attemptNumber + ' Results',
+					width: '35rem'
+				},
+				React.createElement(_assessmentScoreReportView2.default, { report: reporter.getReportFor(attempt.attemptNumber) })
+			));
 		}
 	}, {
 		key: 'tryResendLTIScore',
@@ -2125,8 +2887,6 @@ var AssessmentStore = function (_Store) {
 	}, {
 		key: 'trySetResponse',
 		value: function trySetResponse(questionId, response, targetId) {
-			var _this5 = this;
-
 			var model = OboModel.models[questionId];
 			var assessment = _assessmentUtil2.default.getAssessmentForModel(this.state, model);
 
@@ -2136,19 +2896,7 @@ var AssessmentStore = function (_Store) {
 			}
 
 			assessment.currentResponses.push(questionId);
-
-			return _apiUtil2.default.postEvent(model.getRoot(), 'assessment:setResponse', '2.0.0', {
-				assessmentId: assessment.id,
-				attemptId: assessment.current.attemptId,
-				questionId: questionId,
-				response: response,
-				targetId: targetId
-			}).then(function (res) {
-				if (res.status === 'error') {
-					return ErrorUtil.errorResponse(res);
-				}
-				_this5.triggerChange();
-			});
+			this.triggerChange();
 		}
 	}, {
 		key: 'getState',
@@ -2169,7 +2917,7 @@ var assessmentStore = new AssessmentStore();
 exports.default = assessmentStore;
 
 /***/ }),
-/* 17 */
+/* 22 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -2185,475 +2933,7 @@ exports.default = {
 };
 
 /***/ }),
-/* 18 */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-
-
-Object.defineProperty(exports, "__esModule", {
-	value: true
-});
-
-var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
-
-var _Common = __webpack_require__(0);
-
-var _Common2 = _interopRequireDefault(_Common);
-
-var _apiUtil = __webpack_require__(3);
-
-var _apiUtil2 = _interopRequireDefault(_apiUtil);
-
-var _questionUtil = __webpack_require__(5);
-
-var _questionUtil2 = _interopRequireDefault(_questionUtil);
-
-var _scoreUtil = __webpack_require__(11);
-
-var _scoreUtil2 = _interopRequireDefault(_scoreUtil);
-
-function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
-
-function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
-
-function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
-
-function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
-
-var Store = _Common2.default.flux.Store;
-var Dispatcher = _Common2.default.flux.Dispatcher;
-var OboModel = _Common2.default.models.OboModel;
-
-var QuestionStore = function (_Store) {
-	_inherits(QuestionStore, _Store);
-
-	function QuestionStore() {
-		_classCallCheck(this, QuestionStore);
-
-		var id = void 0;
-
-		var _this = _possibleConstructorReturn(this, (QuestionStore.__proto__ || Object.getPrototypeOf(QuestionStore)).call(this, 'questionStore'));
-
-		Dispatcher.on({
-			'question:setResponse': function questionSetResponse(payload) {
-				var id = payload.value.id;
-				var model = OboModel.models[id];
-
-				_this.state.responses[id] = payload.value.response;
-				_this.triggerChange();
-
-				_apiUtil2.default.postEvent(model.getRoot(), 'question:setResponse', '2.0.0', {
-					questionId: id,
-					response: payload.value.response,
-					targetId: payload.value.targetId
-				});
-			},
-
-			'question:clearResponse': function questionClearResponse(payload) {
-				delete _this.state.responses[payload.value.id];
-				return _this.triggerChange();
-			},
-
-			'question:setData': function questionSetData(payload) {
-				_this.state.data[payload.value.key] = payload.value.value;
-				return _this.triggerChange();
-			},
-
-			'question:showExplanation': function questionShowExplanation(payload) {
-				var root = OboModel.models[payload.value.id].getRoot();
-
-				_apiUtil2.default.postEvent(root, 'question:showExplanation', '1.0.0', {
-					questionId: payload.value.id
-				});
-
-				_questionUtil2.default.setData(payload.value.id, 'showingExplanation', true);
-			},
-
-			'question:hideExplanation': function questionHideExplanation(payload) {
-				var root = OboModel.models[payload.value.id].getRoot();
-
-				_apiUtil2.default.postEvent(root, 'question:hideExplanation', '1.1.0', {
-					questionId: payload.value.id,
-					actor: payload.value.actor
-				});
-
-				_questionUtil2.default.clearData(payload.value.id, 'showingExplanation');
-			},
-
-			'question:clearData': function questionClearData(payload) {
-				delete _this.state.data[payload.value.key];
-				return _this.triggerChange();
-			},
-
-			'question:hide': function questionHide(payload) {
-				_apiUtil2.default.postEvent(OboModel.models[payload.value.id].getRoot(), 'question:hide', '1.0.0', {
-					questionId: payload.value.id
-				});
-
-				delete _this.state.viewedQuestions[payload.value.id];
-
-				if (_this.state.viewing === payload.value.id) {
-					_this.state.viewing = null;
-				}
-
-				return _this.triggerChange();
-			},
-
-			'question:view': function questionView(payload) {
-				var root = OboModel.models[payload.value.id].getRoot();
-
-				_apiUtil2.default.postEvent(root, 'question:view', '1.0.0', {
-					questionId: payload.value.id
-				});
-
-				_this.state.viewedQuestions[payload.value.id] = true;
-				_this.state.viewing = payload.value.id;
-
-				return _this.triggerChange();
-			},
-
-			'question:checkAnswer': function questionCheckAnswer(payload) {
-				var questionId = payload.value.id;
-				var questionModel = OboModel.models[questionId];
-				var root = questionModel.getRoot();
-
-				_apiUtil2.default.postEvent(root, 'question:checkAnswer', '1.0.0', {
-					questionId: payload.value.id
-				});
-			},
-
-			'question:retry': function questionRetry(payload) {
-				var questionId = payload.value.id;
-				var questionModel = OboModel.models[questionId];
-				var root = questionModel.getRoot();
-
-				_this.clearResponses(questionId);
-
-				_apiUtil2.default.postEvent(root, 'question:retry', '1.0.0', {
-					questionId: payload.value.id
-				});
-
-				if (_questionUtil2.default.isShowingExplanation(_this.state, questionModel)) {
-					_questionUtil2.default.hideExplanation(questionId, 'viewerClient');
-				}
-
-				_scoreUtil2.default.clearScore(questionId); // should trigger change
-			}
-		});
-		return _this;
-	}
-
-	_createClass(QuestionStore, [{
-		key: 'clearResponses',
-		value: function clearResponses(questionId) {
-			delete this.state.responses[questionId];
-		}
-	}, {
-		key: 'init',
-		value: function init() {
-			return this.state = {
-				viewing: null,
-				viewedQuestions: {},
-				responses: {},
-				data: {}
-			};
-		}
-	}, {
-		key: 'getState',
-		value: function getState() {
-			return this.state;
-		}
-	}, {
-		key: 'setState',
-		value: function setState(newState) {
-			return this.state = newState;
-		}
-	}]);
-
-	return QuestionStore;
-}(Store);
-
-var questionStore = new QuestionStore();
-exports.default = questionStore;
-
-/***/ }),
-/* 19 */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-
-
-Object.defineProperty(exports, "__esModule", {
-	value: true
-});
-
-var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
-
-var _Common = __webpack_require__(0);
-
-var _Common2 = _interopRequireDefault(_Common);
-
-var _apiUtil = __webpack_require__(3);
-
-var _apiUtil2 = _interopRequireDefault(_apiUtil);
-
-function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
-
-function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
-
-function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
-
-function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
-
-var Store = _Common2.default.flux.Store;
-var Dispatcher = _Common2.default.flux.Dispatcher;
-var _Common$util = _Common2.default.util,
-    UUID = _Common$util.UUID,
-    FocusUtil = _Common$util.FocusUtil;
-var OboModel = _Common2.default.models.OboModel;
-
-var ScoreStore = function (_Store) {
-	_inherits(ScoreStore, _Store);
-
-	function ScoreStore() {
-		_classCallCheck(this, ScoreStore);
-
-		var model = void 0;
-
-		var _this = _possibleConstructorReturn(this, (ScoreStore.__proto__ || Object.getPrototypeOf(ScoreStore)).call(this, 'scoreStore'));
-
-		Dispatcher.on({
-			'score:set': function scoreSet(payload) {
-				var scoreId = UUID();
-
-				_this.state.scores[payload.value.itemId] = {
-					id: scoreId,
-					score: payload.value.score,
-					itemId: payload.value.itemId
-				};
-
-				if (payload.value.score === 100) {
-					FocusUtil.unfocus();
-				}
-
-				_this.triggerChange();
-
-				model = OboModel.models[payload.value.itemId];
-				return _apiUtil2.default.postEvent(model.getRoot(), 'score:set', '2.0.0', {
-					id: scoreId,
-					itemId: payload.value.itemId,
-					score: payload.value.score
-				});
-			},
-
-			'score:clear': function scoreClear(payload) {
-				var scoreItem = _this.state.scores[payload.value.itemId];
-
-				model = OboModel.models[scoreItem.itemId];
-
-				delete _this.state.scores[payload.value.itemId];
-				_this.triggerChange();
-
-				return _apiUtil2.default.postEvent(model.getRoot(), 'score:clear', '2.0.0', scoreItem);
-			}
-		});
-		return _this;
-	}
-
-	_createClass(ScoreStore, [{
-		key: 'init',
-		value: function init() {
-			return this.state = {
-				scores: {}
-			};
-		}
-	}, {
-		key: 'getState',
-		value: function getState() {
-			return this.state;
-		}
-	}, {
-		key: 'setState',
-		value: function setState(newState) {
-			return this.state = newState;
-		}
-	}]);
-
-	return ScoreStore;
-}(Store);
-
-var scoreStore = new ScoreStore();
-exports.default = scoreStore;
-
-/***/ }),
-/* 20 */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-
-
-Object.defineProperty(exports, "__esModule", {
-	value: true
-});
-
-var _Common = __webpack_require__(0);
-
-var _Common2 = _interopRequireDefault(_Common);
-
-var _questionUtil = __webpack_require__(5);
-
-var _questionUtil2 = _interopRequireDefault(_questionUtil);
-
-function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
-
-var Dispatcher = _Common2.default.flux.Dispatcher;
-
-
-var AssessmentUtil = {
-	getAssessmentForModel: function getAssessmentForModel(state, model) {
-		var assessmentModel = void 0;
-		if (model.get('type') === 'ObojoboDraft.Sections.Assessment') {
-			assessmentModel = model;
-		} else {
-			assessmentModel = model.getParentOfType('ObojoboDraft.Sections.Assessment');
-		}
-
-		if (!assessmentModel) {
-			return null;
-		}
-
-		var assessment = state.assessments[assessmentModel.get('id')];
-		if (!assessment) {
-			return null;
-		}
-
-		return assessment;
-	},
-	getLastAttemptScoreForModel: function getLastAttemptScoreForModel(state, model) {
-		var assessment = AssessmentUtil.getAssessmentForModel(state, model);
-		if (!assessment) {
-			return null;
-		}
-
-		if (assessment.attempts.length === 0) {
-			return 0;
-		}
-
-		return assessment.attempts[assessment.attempts.length - 1].attemptScore;
-	},
-	getAssessmentScoreForModel: function getAssessmentScoreForModel(state, model) {
-		var assessment = AssessmentUtil.getAssessmentForModel(state, model);
-		if (!assessment) {
-			return null;
-		}
-
-		return assessment.score;
-	},
-	getLastAttemptScoresForModel: function getLastAttemptScoresForModel(state, model) {
-		var assessment = AssessmentUtil.getAssessmentForModel(state, model);
-		if (!assessment) {
-			return null;
-		}
-
-		if (assessment.attempts.length === 0) {
-			return [];
-		}
-
-		return assessment.attempts[assessment.attempts.length - 1].questionScores;
-	},
-	getCurrentAttemptForModel: function getCurrentAttemptForModel(state, model) {
-		var assessment = AssessmentUtil.getAssessmentForModel(state, model);
-		if (!assessment) {
-			return null;
-		}
-
-		return assessment.current;
-	},
-	getLTIStateForModel: function getLTIStateForModel(state, model) {
-		var assessment = AssessmentUtil.getAssessmentForModel(state, model);
-		if (!assessment) {
-			return null;
-		}
-
-		return {
-			state: assessment.lti,
-			networkState: assessment.ltiNetworkState,
-			errorCount: assessment.ltiErrorCount
-		};
-	},
-	isLTIScoreNeedingToBeResynced: function isLTIScoreNeedingToBeResynced(state, model) {
-		var assessment = AssessmentUtil.getAssessmentForModel(state, model);
-
-		if (!assessment || !assessment.lti || !assessment.lti.gradebookStatus) {
-			return false;
-		}
-
-		switch (assessment.lti.gradebookStatus) {
-			case 'ok_no_outcome_service':
-			case 'ok_gradebook_matches_assessment_score':
-			case 'ok_null_score_not_sent':
-				return false;
-
-			default:
-				return true;
-		}
-	},
-	isCurrentAttemptComplete: function isCurrentAttemptComplete(assessmentState, questionState, model) {
-		var current = AssessmentUtil.getCurrentAttemptForModel(assessmentState, model);
-		if (!current) {
-			return null;
-		}
-		var models = model.children.at(1).children.models;
-		return models.filter(function (questionModel) {
-			var resp = _questionUtil2.default.getResponse(questionState, questionModel);
-			return resp;
-		}).length === models.length;
-	},
-	isInAssessment: function isInAssessment(state) {
-		for (var assessmentName in state.assessments) {
-			if (state.assessments[assessmentName].current !== null) {
-				return true;
-			}
-		}
-
-		return false;
-	},
-	getNumberOfAttemptsCompletedForModel: function getNumberOfAttemptsCompletedForModel(state, model) {
-		var assessment = AssessmentUtil.getAssessmentForModel(state, model);
-		if (!assessment || assessment.attempts.length === 0) {
-			return 0;
-		}
-
-		return assessment.attempts.length;
-	},
-	startAttempt: function startAttempt(model) {
-		return Dispatcher.trigger('assessment:startAttempt', {
-			value: {
-				id: model.get('id')
-			}
-		});
-	},
-	endAttempt: function endAttempt(model) {
-		return Dispatcher.trigger('assessment:endAttempt', {
-			value: {
-				id: model.get('id')
-			}
-		});
-	},
-	resendLTIScore: function resendLTIScore(model) {
-		return Dispatcher.trigger('assessment:resendLTIScore', {
-			value: {
-				id: model.get('id')
-			}
-		});
-	}
-};
-
-exports.default = AssessmentUtil;
-
-/***/ }),
-/* 21 */
+/* 23 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -2670,20 +2950,20 @@ exports.default = function (url) {
 	return hostname;
 };
 
-var _urlParse = __webpack_require__(46);
+var _urlParse = __webpack_require__(48);
 
 var _urlParse2 = _interopRequireDefault(_urlParse);
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 /***/ }),
-/* 22 */
+/* 24 */
 /***/ (function(module, exports) {
 
 module.exports = React;
 
 /***/ }),
-/* 23 */
+/* 25 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -3148,13 +3428,13 @@ module.exports = React;
 })(typeof self !== 'undefined' ? self : undefined);
 
 /***/ }),
-/* 24 */
+/* 26 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
 
 
-var _index = __webpack_require__(51);
+var _index = __webpack_require__(63);
 
 var _index2 = _interopRequireDefault(_index);
 
@@ -3163,13 +3443,13 @@ function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { de
 window.Viewer = _index2.default;
 
 /***/ }),
-/* 25 */
+/* 27 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
 
 
-var startOfDay = __webpack_require__(34);
+var startOfDay = __webpack_require__(36);
 
 var MILLISECONDS_IN_MINUTE = 60000;
 var MILLISECONDS_IN_DAY = 86400000;
@@ -3210,18 +3490,18 @@ function differenceInCalendarDays(dirtyDateLeft, dirtyDateRight) {
 module.exports = differenceInCalendarDays;
 
 /***/ }),
-/* 26 */
+/* 28 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
 
 
-var getDayOfYear = __webpack_require__(27);
-var getISOWeek = __webpack_require__(28);
-var getISOYear = __webpack_require__(12);
+var getDayOfYear = __webpack_require__(29);
+var getISOWeek = __webpack_require__(30);
+var getISOYear = __webpack_require__(14);
 var parse = __webpack_require__(1);
-var isValid = __webpack_require__(29);
-var enLocale = __webpack_require__(33);
+var isValid = __webpack_require__(31);
+var enLocale = __webpack_require__(35);
 
 /**
  * @category Common Helpers
@@ -3546,15 +3826,15 @@ function addLeadingZeros(number, targetLength) {
 module.exports = format;
 
 /***/ }),
-/* 27 */
+/* 29 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
 
 
 var parse = __webpack_require__(1);
-var startOfYear = __webpack_require__(37);
-var differenceInCalendarDays = __webpack_require__(25);
+var startOfYear = __webpack_require__(39);
+var differenceInCalendarDays = __webpack_require__(27);
 
 /**
  * @category Day Helpers
@@ -3581,15 +3861,15 @@ function getDayOfYear(dirtyDate) {
 module.exports = getDayOfYear;
 
 /***/ }),
-/* 28 */
+/* 30 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
 
 
 var parse = __webpack_require__(1);
-var startOfISOWeek = __webpack_require__(6);
-var startOfISOYear = __webpack_require__(35);
+var startOfISOWeek = __webpack_require__(8);
+var startOfISOYear = __webpack_require__(37);
 
 var MILLISECONDS_IN_WEEK = 604800000;
 
@@ -3623,13 +3903,13 @@ function getISOWeek(dirtyDate) {
 module.exports = getISOWeek;
 
 /***/ }),
-/* 29 */
+/* 31 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
 
 
-var isDate = __webpack_require__(13);
+var isDate = __webpack_require__(15);
 
 /**
  * @category Common Helpers
@@ -3666,7 +3946,7 @@ function isValid(dirtyDate) {
 module.exports = isValid;
 
 /***/ }),
-/* 30 */
+/* 32 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -3691,7 +3971,7 @@ function buildFormattingTokensRegExp(formatters) {
 module.exports = buildFormattingTokensRegExp;
 
 /***/ }),
-/* 31 */
+/* 33 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -3798,13 +4078,13 @@ function buildDistanceInWordsLocale() {
 module.exports = buildDistanceInWordsLocale;
 
 /***/ }),
-/* 32 */
+/* 34 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
 
 
-var buildFormattingTokensRegExp = __webpack_require__(30);
+var buildFormattingTokensRegExp = __webpack_require__(32);
 
 function buildFormatLocale() {
   // Note: in English, the names of days of the week and months are capitalized.
@@ -3893,14 +4173,14 @@ function ordinal(number) {
 module.exports = buildFormatLocale;
 
 /***/ }),
-/* 33 */
+/* 35 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
 
 
-var buildDistanceInWordsLocale = __webpack_require__(31);
-var buildFormatLocale = __webpack_require__(32);
+var buildDistanceInWordsLocale = __webpack_require__(33);
+var buildFormatLocale = __webpack_require__(34);
 
 /**
  * @category Locales
@@ -3912,7 +4192,7 @@ module.exports = {
 };
 
 /***/ }),
-/* 34 */
+/* 36 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -3945,14 +4225,14 @@ function startOfDay(dirtyDate) {
 module.exports = startOfDay;
 
 /***/ }),
-/* 35 */
+/* 37 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
 
 
-var getISOYear = __webpack_require__(12);
-var startOfISOWeek = __webpack_require__(6);
+var getISOYear = __webpack_require__(14);
+var startOfISOWeek = __webpack_require__(8);
 
 /**
  * @category ISO Week-Numbering Year Helpers
@@ -3985,7 +4265,7 @@ function startOfISOYear(dirtyDate) {
 module.exports = startOfISOYear;
 
 /***/ }),
-/* 36 */
+/* 38 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -4031,7 +4311,7 @@ function startOfWeek(dirtyDate, dirtyOptions) {
 module.exports = startOfWeek;
 
 /***/ }),
-/* 37 */
+/* 39 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -4066,7 +4346,7 @@ function startOfYear(dirtyDate) {
 module.exports = startOfYear;
 
 /***/ }),
-/* 38 */
+/* 40 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -4162,7 +4442,7 @@ module.exports = shouldUseNative() ? Object.assign : function (target, source) {
 };
 
 /***/ }),
-/* 39 */
+/* 41 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -4178,9 +4458,9 @@ module.exports = shouldUseNative() ? Object.assign : function (target, source) {
 var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol" ? function (obj) { return typeof obj; } : function (obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; };
 
 if (process.env.NODE_ENV !== 'production') {
-  var invariant = __webpack_require__(9);
-  var warning = __webpack_require__(14);
-  var ReactPropTypesSecret = __webpack_require__(7);
+  var invariant = __webpack_require__(11);
+  var warning = __webpack_require__(16);
+  var ReactPropTypesSecret = __webpack_require__(9);
   var loggedTypeFailures = {};
 }
 
@@ -4227,10 +4507,10 @@ function checkPropTypes(typeSpecs, values, location, componentName, getStack) {
 }
 
 module.exports = checkPropTypes;
-/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(4)))
+/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(3)))
 
 /***/ }),
-/* 40 */
+/* 42 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -4243,9 +4523,9 @@ module.exports = checkPropTypes;
 
 
 
-var emptyFunction = __webpack_require__(8);
-var invariant = __webpack_require__(9);
-var ReactPropTypesSecret = __webpack_require__(7);
+var emptyFunction = __webpack_require__(10);
+var invariant = __webpack_require__(11);
+var ReactPropTypesSecret = __webpack_require__(9);
 
 module.exports = function () {
   function shim(props, propName, componentName, location, propFullName, secret) {
@@ -4289,7 +4569,7 @@ module.exports = function () {
 };
 
 /***/ }),
-/* 41 */
+/* 43 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -4304,13 +4584,13 @@ module.exports = function () {
 
 var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol" ? function (obj) { return typeof obj; } : function (obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; };
 
-var emptyFunction = __webpack_require__(8);
-var invariant = __webpack_require__(9);
-var warning = __webpack_require__(14);
-var assign = __webpack_require__(38);
+var emptyFunction = __webpack_require__(10);
+var invariant = __webpack_require__(11);
+var warning = __webpack_require__(16);
+var assign = __webpack_require__(40);
 
-var ReactPropTypesSecret = __webpack_require__(7);
-var checkPropTypes = __webpack_require__(39);
+var ReactPropTypesSecret = __webpack_require__(9);
+var checkPropTypes = __webpack_require__(41);
 
 module.exports = function (isValidElement, throwOnDirectAccess) {
   /* global Symbol */
@@ -4811,10 +5091,10 @@ module.exports = function (isValidElement, throwOnDirectAccess) {
 
   return ReactPropTypes;
 };
-/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(4)))
+/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(3)))
 
 /***/ }),
-/* 42 */
+/* 44 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -4839,16 +5119,16 @@ if (process.env.NODE_ENV !== 'production') {
   // By explicitly using `prop-types` you are opting into new development behavior.
   // http://fb.me/prop-types-in-prod
   var throwOnDirectAccess = true;
-  module.exports = __webpack_require__(41)(isValidElement, throwOnDirectAccess);
+  module.exports = __webpack_require__(43)(isValidElement, throwOnDirectAccess);
 } else {
   // By explicitly using `prop-types` you are opting into new production behavior.
   // http://fb.me/prop-types-in-prod
-  module.exports = __webpack_require__(40)();
+  module.exports = __webpack_require__(42)();
 }
-/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(4)))
+/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(3)))
 
 /***/ }),
-/* 43 */
+/* 45 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -4923,7 +5203,7 @@ exports.stringify = querystringify;
 exports.parse = querystring;
 
 /***/ }),
-/* 44 */
+/* 46 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -4951,15 +5231,15 @@ Object.defineProperty(exports, "__esModule", {
   value: true
 });
 
-var _react = __webpack_require__(22);
+var _react = __webpack_require__(24);
 
 var _react2 = _interopRequireDefault(_react);
 
-var _propTypes = __webpack_require__(42);
+var _propTypes = __webpack_require__(44);
 
 var _propTypes2 = _interopRequireDefault(_propTypes);
 
-var _format = __webpack_require__(26);
+var _format = __webpack_require__(28);
 
 var _format2 = _interopRequireDefault(_format);
 
@@ -5291,7 +5571,7 @@ IdleTimer.defaultProps = {
 exports.default = IdleTimer;
 
 /***/ }),
-/* 45 */
+/* 47 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -5336,7 +5616,7 @@ module.exports = function required(port, protocol) {
 };
 
 /***/ }),
-/* 46 */
+/* 48 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -5344,8 +5624,8 @@ module.exports = function required(port, protocol) {
 
 var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol" ? function (obj) { return typeof obj; } : function (obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; };
 
-var required = __webpack_require__(45),
-    qs = __webpack_require__(43),
+var required = __webpack_require__(47),
+    qs = __webpack_require__(45),
     protocolre = /^([a-z][a-z0-9.+-]*:)?(\/\/)?([\S\s]*)/i,
     slashes = /^[A-Za-z][A-Za-z0-9+-.]*:\/\//;
 
@@ -5749,10 +6029,10 @@ URL.location = lolcation;
 URL.qs = qs;
 
 module.exports = URL;
-/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(47)))
+/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(49)))
 
 /***/ }),
-/* 47 */
+/* 49 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -5782,7 +6062,568 @@ try {
 module.exports = g;
 
 /***/ }),
-/* 48 */
+/* 50 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+// used to apply ' is-label' or ' is-not-label' styles
+var isOrNot = function isOrNot(flag, label) {
+  return ' is-' + (flag ? '' : 'not-') + label;
+};
+exports.default = isOrNot;
+
+/***/ }),
+/* 51 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+Object.defineProperty(exports, "__esModule", {
+	value: true
+});
+
+exports.default = function () {
+	//https://gist.github.com/jed/982883
+	var getId = function getId(a) {
+		if (a) {
+			return (a ^ Math.random() * 16 >> a / 4).toString(16);
+		} else {
+			return ([1e7] + -1e3 + -4e3 + -8e3 + -1e11).replace(/[018]/g, getId);
+		}
+	};
+	return getId();
+};
+
+/***/ }),
+/* 52 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+Object.defineProperty(exports, "__esModule", {
+	value: true
+});
+
+var _displayTypes = __webpack_require__(19);
+
+var getDisplayType = function getDisplayType(_ref) {
+	var rubricType = _ref.rubricType,
+	    mods = _ref.mods,
+	    status = _ref.status,
+	    statusResult = _ref.statusResult,
+	    isAttemptScore100 = _ref.isAttemptScore100;
+
+	var passed = status === 'passed';
+	var failed = status === 'failed';
+	var unableToPass = status === 'unableToPass';
+	var isAttemptRubric = rubricType === 'attempt';
+	var isPassFailRubric = rubricType === 'pass-fail';
+	var isRewardedMods = mods.length > 0;
+	var isResultNumeric = Number.isFinite(parseFloat(statusResult));
+	var isResultNoScore = statusResult === 'no-score';
+	var isResultAttemptScore = statusResult === '$attempt_score';
+	var isResultHighestAttemptScore = statusResult === '$highest_attempt_score';
+
+	var items = [];
+
+	if (isAttemptRubric && passed && isResultAttemptScore && !isRewardedMods) {
+		return _displayTypes.TYPE_ATTEMPT_WITHOUT_MODS_REWARDED;
+	}
+	if (isAttemptRubric && passed && isResultAttemptScore && isRewardedMods) {
+		return _displayTypes.TYPE_ATTEMPT_WITH_MODS_REWARDED;
+	}
+	if (isPassFailRubric && passed && isResultAttemptScore && !isRewardedMods) {
+		return _displayTypes.TYPE_PASSFAIL_PASSED_GIVEN_ATTEMPT_SCORE_WITHOUT_MODS_REWARDED;
+	}
+	if (isPassFailRubric && passed && isResultAttemptScore && isRewardedMods) {
+		return _displayTypes.TYPE_PASSFAIL_PASSED_GIVEN_ATTEMPT_SCORE_WITH_MODS_REWARDED;
+	}
+	if (isPassFailRubric && passed && isResultNumeric && !isAttemptScore100) {
+		return _displayTypes.TYPE_PASSFAIL_PASSED_GIVEN_SCORE_AND_ATTEMPT_SCORE_LESS_THAN_100;
+	}
+	if (isPassFailRubric && passed && isResultNumeric && isAttemptScore100 && !isRewardedMods) {
+		return _displayTypes.TYPE_PASSFAIL_PASSED_GIVEN_SCORE_AND_ATTEMPT_SCORE_IS_100_AND_NO_MODS_REWARDED;
+	}
+	if (isPassFailRubric && passed && isResultNumeric && isAttemptScore100 && isRewardedMods) {
+		return _displayTypes.TYPE_PASSFAIL_PASSED_GIVEN_SCORE_AND_ATTEMPT_SCORE_IS_100_AND_MODS_REWARDED;
+	}
+	if (isPassFailRubric && failed && isResultNoScore && !isRewardedMods) {
+		return _displayTypes.TYPE_PASSFAIL_FAILED_GIVEN_NO_SCORE;
+	}
+	if (isPassFailRubric && failed && isResultNumeric && !isRewardedMods) {
+		return _displayTypes.TYPE_PASSFAIL_FAILED_GIVEN_SCORE;
+	}
+	if (isPassFailRubric && unableToPass && isResultNoScore && !isRewardedMods) {
+		return _displayTypes.TYPE_PASSFAIL_UNABLE_TO_PASS_GIVEN_NO_SCORE;
+	}
+	if (isPassFailRubric && unableToPass && isResultHighestAttemptScore && !isRewardedMods) {
+		return _displayTypes.TYPE_PASSFAIL_UNABLE_TO_PASS_GIVEN_HIGHEST_ATTEMPT_SCORE;
+	}
+	if (isPassFailRubric && unableToPass && isResultNumeric && !isRewardedMods) {
+		return _displayTypes.TYPE_PASSFAIL_UNABLE_TO_PASS_GIVEN_SCORE;
+	}
+
+	return _displayTypes.ERROR_UNKNOWN_DISPLAY_TYPE;
+};
+
+exports.default = getDisplayType;
+
+/***/ }),
+/* 53 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+Object.defineProperty(exports, "__esModule", {
+	value: true
+});
+
+var _getDisplayFriendlyScore = __webpack_require__(5);
+
+var _getDisplayFriendlyScore2 = _interopRequireDefault(_getDisplayFriendlyScore);
+
+var _getStatusResult = __webpack_require__(57);
+
+var _getStatusResult2 = _interopRequireDefault(_getStatusResult);
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+var getReportDetailsForAttempt = function getReportDetailsForAttempt(assessmentRubric, scoreInfo) {
+	var statusResult = (0, _getStatusResult2.default)(assessmentRubric, scoreInfo.status);
+
+	return {
+		rubricType: assessmentRubric.type,
+		mods: scoreInfo.rewardedMods.map(function (modIndex) {
+			return assessmentRubric.mods[modIndex];
+		}),
+		status: scoreInfo.status,
+		statusResult: statusResult,
+		passingAttemptScore: typeof assessmentRubric.passingAttemptScore !== 'undefined' ? assessmentRubric.passingAttemptScore : 100,
+		isAttemptScore100: scoreInfo.attemptScore === 100,
+		isAssessScoreOver100: scoreInfo.status === 'passed' && scoreInfo.assessmentScore !== null && scoreInfo.assessmentScore + scoreInfo.rewardTotal > 100
+	};
+};
+
+exports.default = getReportDetailsForAttempt;
+
+/***/ }),
+/* 54 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+Object.defineProperty(exports, "__esModule", {
+	value: true
+});
+
+var _getDisplayFriendlyScore = __webpack_require__(5);
+
+var _getDisplayFriendlyScore2 = _interopRequireDefault(_getDisplayFriendlyScore);
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+var getReportDetailsForAttempt = function getReportDetailsForAttempt(scoreInfo, totalNumberOfAttemptsAllowed) {
+	return {
+		attemptNum: '' + scoreInfo.attemptNumber,
+		attemptScore: (0, _getDisplayFriendlyScore2.default)(scoreInfo.attemptScore),
+		assessScore: scoreInfo.assessmentModdedScore === null ? 'Did Not Pass' : (0, _getDisplayFriendlyScore2.default)(scoreInfo.assessmentModdedScore),
+		totalNumberOfAttemptsAllowed: '' + totalNumberOfAttemptsAllowed
+	};
+};
+
+exports.default = getReportDetailsForAttempt;
+
+/***/ }),
+/* 55 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+Object.defineProperty(exports, "__esModule", {
+	value: true
+});
+var getScoreChangeDescription = function getScoreChangeDescription(_ref) {
+	var prevHighestInfo = _ref.prevHighestInfo,
+	    newInfo = _ref.newInfo;
+
+	if (prevHighestInfo === null || newInfo === null) return null;
+
+	var prevHighestScore = prevHighestInfo.assessmentModdedScore;
+	var newScore = newInfo.assessmentModdedScore;
+
+	if (newScore === null && prevHighestScore === null) {
+		return 'This did not change your recorded score';
+	}
+
+	if (prevHighestScore === null) {
+		return '\u2714 Your recorded score was updated to ' + Math.round(newScore) + '%';
+	}
+
+	if (newScore > prevHighestScore) {
+		return '\u2714 Your recorded score was updated from ' + Math.round(prevHighestScore) + '% to ' + Math.round(newScore) + '%';
+	}
+
+	if (newScore === prevHighestScore) {
+		return 'This maintains your recorded score of ' + Math.round(prevHighestScore) + '%';
+	}
+
+	// Else newScore === null && prevHighestScore !== null
+	return 'This did not change your recorded score of ' + Math.round(prevHighestScore) + '%';
+};
+
+exports.default = getScoreChangeDescription;
+
+/***/ }),
+/* 56 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+Object.defineProperty(exports, "__esModule", {
+	value: true
+});
+
+var _assessmentUtil = __webpack_require__(6);
+
+var _assessmentUtil2 = _interopRequireDefault(_assessmentUtil);
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+var getScoreComparisionData = function getScoreComparisionData(allAttempts, attemptNumberToGenerateReportFor) {
+	if (allAttempts.length === 0) {
+		return {
+			prevHighestInfo: null,
+			newInfo: null
+		};
+	}
+
+	var prevAttempts = allAttempts.slice(0, attemptNumberToGenerateReportFor - 1);
+	var highestAttempts = _assessmentUtil2.default.findHighestAttempts(prevAttempts, 'assessmentScore');
+	var prevHighestAttempt = highestAttempts.length === 0 ? null : highestAttempts[0];
+
+	return {
+		prevHighestInfo: prevHighestAttempt ? prevHighestAttempt.assessmentScoreDetails : null,
+		newInfo: allAttempts[attemptNumberToGenerateReportFor - 1].assessmentScoreDetails
+	};
+};
+
+exports.default = getScoreComparisionData;
+
+/***/ }),
+/* 57 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+Object.defineProperty(exports, "__esModule", {
+	value: true
+});
+var getStatusResult = function getStatusResult(rubric, status) {
+	switch (status) {
+		case 'passed':
+			return typeof rubric.passedResult !== 'undefined' ? rubric.passedResult : 100;
+		case 'failed':
+			return typeof rubric.failedResult !== 'undefined' ? rubric.failedResult : 0;
+		case 'unableToPass':
+			return typeof rubric.unableToPassResult !== 'undefined' ? rubric.unableToPassResult : 0;
+	}
+
+	throw new Error('Unknown status: ' + status);
+};
+
+exports.default = getStatusResult;
+
+/***/ }),
+/* 58 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+Object.defineProperty(exports, "__esModule", {
+	value: true
+});
+
+var _getDisplayFriendlyScore = __webpack_require__(5);
+
+var _getDisplayFriendlyScore2 = _interopRequireDefault(_getDisplayFriendlyScore);
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+var whitespaceRegex = /\s/g;
+
+var getModText = function getModText(attemptCondition, totalNumberOfAttemptsAllowed) {
+	attemptCondition = ('' + attemptCondition).replace(whitespaceRegex, '').replace('$last_attempt', '' + totalNumberOfAttemptsAllowed);
+
+	var range = [];
+	if (attemptCondition.indexOf(',') === -1) {
+		range.push(parseInt(attemptCondition, 10));
+	} else {
+		var tokens = attemptCondition.split(',');
+		range.push(parseInt(tokens[0].substr(1), 10));
+		range.push(parseInt(tokens[1].substr(0, tokens[1].length - 1), 10));
+
+		if (tokens[0].charAt(0) === '(') range[0]++;
+		if (tokens[1].charAt(tokens[1].length - 1) === ')') range[1]--;
+
+		if (range[0] === range[1]) range.splice(1, 1);
+	}
+
+	if (range.length === 1) {
+		if (range[0] === 1) return 'Passed on first attempt';
+		if (range[0] === totalNumberOfAttemptsAllowed) return 'Passed on last attempt';
+		return 'Passed on attempt\xA0' + range[0];
+	}
+
+	return 'Passed on attempts ' + range[0] + ' to ' + range[1];
+};
+
+var getTextItemsForMods = function getTextItemsForMods(mods, totalNumberOfAttemptsAllowed) {
+	return mods.map(function (mod) {
+		return {
+			type: parseInt(mod.reward) >= 0 ? 'extra-credit' : 'penalty',
+			text: getModText(mod.attemptCondition, totalNumberOfAttemptsAllowed),
+			value: (0, _getDisplayFriendlyScore2.default)(Math.abs(mod.reward))
+		};
+	});
+};
+
+exports.default = getTextItemsForMods;
+
+/***/ }),
+/* 59 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+Object.defineProperty(exports, "__esModule", {
+	value: true
+});
+
+var _getDisplayFriendlyScore = __webpack_require__(5);
+
+var _getDisplayFriendlyScore2 = _interopRequireDefault(_getDisplayFriendlyScore);
+
+var _getTextItemsForMods = __webpack_require__(58);
+
+var _getTextItemsForMods2 = _interopRequireDefault(_getTextItemsForMods);
+
+var _getDisplayType = __webpack_require__(52);
+
+var _getDisplayType2 = _interopRequireDefault(_getDisplayType);
+
+var _displayTypes = __webpack_require__(19);
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+var getPassingRange = function getPassingRange(passingNumber) {
+	if (passingNumber === '100') return '100%';
+	return (0, _getDisplayFriendlyScore2.default)(passingNumber) + '-100%';
+};
+
+var getTextItems = function getTextItems(_ref, _ref2) {
+	var rubricType = _ref.rubricType,
+	    mods = _ref.mods,
+	    status = _ref.status,
+	    statusResult = _ref.statusResult,
+	    passingAttemptScore = _ref.passingAttemptScore,
+	    isAttemptScore100 = _ref.isAttemptScore100,
+	    isAssessScoreOver100 = _ref.isAssessScoreOver100;
+	var attemptNum = _ref2.attemptNum,
+	    attemptScore = _ref2.attemptScore,
+	    assessScore = _ref2.assessScore,
+	    totalNumberOfAttemptsAllowed = _ref2.totalNumberOfAttemptsAllowed;
+
+	var items = [];
+
+	switch ((0, _getDisplayType2.default)({
+		rubricType: rubricType,
+		mods: mods,
+		status: status,
+		statusResult: statusResult,
+		isAttemptScore100: isAttemptScore100
+	})) {
+		case _displayTypes.TYPE_ATTEMPT_WITHOUT_MODS_REWARDED:
+			items.push({
+				type: 'total',
+				text: 'Score',
+				value: assessScore
+			});
+			break;
+
+		case _displayTypes.TYPE_ATTEMPT_WITH_MODS_REWARDED:
+			items.push({
+				type: 'value',
+				text: 'Attempt Score',
+				value: attemptScore
+			});
+			break;
+
+		case _displayTypes.TYPE_PASSFAIL_PASSED_GIVEN_ATTEMPT_SCORE_WITHOUT_MODS_REWARDED:
+			items.push({
+				type: 'total',
+				text: 'Score',
+				value: assessScore
+			});
+			break;
+
+		case _displayTypes.TYPE_PASSFAIL_PASSED_GIVEN_ATTEMPT_SCORE_WITH_MODS_REWARDED:
+			items.push({
+				type: 'value',
+				text: 'Attempt Score',
+				value: attemptScore
+			});
+			break;
+
+		case _displayTypes.TYPE_PASSFAIL_PASSED_GIVEN_SCORE_AND_ATTEMPT_SCORE_LESS_THAN_100:
+			items.push({
+				type: 'value',
+				text: 'Attempt Score (Passed)',
+				value: attemptScore
+			}, {
+				type: 'divider'
+			}, {
+				type: 'value',
+				text: 'Score adjusted for passing',
+				value: (0, _getDisplayFriendlyScore2.default)(statusResult)
+			});
+			break;
+
+		case _displayTypes.TYPE_PASSFAIL_PASSED_GIVEN_SCORE_AND_ATTEMPT_SCORE_IS_100_AND_NO_MODS_REWARDED:
+			items.push({
+				type: 'total',
+				text: 'Score',
+				value: assessScore
+			});
+			break;
+
+		case _displayTypes.TYPE_PASSFAIL_PASSED_GIVEN_SCORE_AND_ATTEMPT_SCORE_IS_100_AND_MODS_REWARDED:
+			items.push({
+				type: 'value',
+				text: 'Attempt Score (Passed)',
+				value: attemptScore
+			});
+			break;
+
+		case _displayTypes.TYPE_PASSFAIL_FAILED_GIVEN_NO_SCORE:
+			items.push({
+				type: 'value',
+				text: 'Attempt Score',
+				value: attemptScore
+			}, {
+				type: 'divider'
+			}, {
+				type: 'text',
+				text: 'You need ' + getPassingRange(passingAttemptScore) + ' to pass'
+			});
+			break;
+
+		case _displayTypes.TYPE_PASSFAIL_FAILED_GIVEN_SCORE:
+			items.push({
+				type: 'value',
+				text: 'Attempt Score',
+				value: attemptScore
+			}, {
+				type: 'divider'
+			}, {
+				type: 'value',
+				text: 'Score adjusted for not passing (less than ' + (0, _getDisplayFriendlyScore2.default)(passingAttemptScore) + '%)',
+				value: (0, _getDisplayFriendlyScore2.default)(statusResult)
+			});
+			break;
+
+		case _displayTypes.TYPE_PASSFAIL_UNABLE_TO_PASS_GIVEN_NO_SCORE:
+			items.push({
+				type: 'value',
+				text: 'Attempt Score',
+				value: attemptScore
+			}, {
+				type: 'divider'
+			}, {
+				type: 'text',
+				text: 'You needed ' + getPassingRange(passingAttemptScore) + ' to pass'
+			});
+			break;
+
+		case _displayTypes.TYPE_PASSFAIL_UNABLE_TO_PASS_GIVEN_HIGHEST_ATTEMPT_SCORE:
+			items.push({
+				type: 'value',
+				text: 'Attempt Score',
+				value: attemptScore
+			}, {
+				type: 'divider'
+			}, {
+				type: 'text',
+				text: 'You did not achieve a passing ' + getPassingRange(passingAttemptScore) + ' score within the number of attempts available. Your highest attempt score will be used instead.'
+			}, {
+				type: 'divider'
+			}, {
+				type: 'value',
+				text: 'Highest attempt score (Attempt\xA0' + attemptNum + ')',
+				value: assessScore
+			});
+			break;
+
+		case _displayTypes.TYPE_PASSFAIL_UNABLE_TO_PASS_GIVEN_SCORE:
+			items.push({
+				type: 'value',
+				text: 'Attempt Score',
+				value: attemptScore
+			}, {
+				type: 'divider'
+			}, {
+				type: 'text',
+				text: 'You did not achieve a passing ' + getPassingRange(passingAttemptScore) + ' score within the number of attempts available.'
+			}, {
+				type: 'value',
+				text: 'Score for not achieving a passing attempt',
+				value: (0, _getDisplayFriendlyScore2.default)(statusResult)
+			});
+			break;
+
+		case _displayTypes.ERROR_UNKNOWN_DISPLAY_TYPE:
+			// Shouldn't get here but we still want to show their score
+			items.push({
+				type: 'value',
+				text: 'Score',
+				value: assessScore
+			});
+			break;
+	}
+
+	items = items.concat((0, _getTextItemsForMods2.default)(mods, totalNumberOfAttemptsAllowed));
+
+	if (items.length > 1) {
+		items.push({
+			type: 'divider'
+		}, {
+			type: 'total',
+			text: 'Total Score' + (isAssessScoreOver100 ? ' (Max 100%)' : ''),
+			// value: assessScore === null ? 'Did Not Pass' : assessScore
+			value: assessScore
+		});
+	}
+
+	return items;
+};
+
+exports.default = getTextItems;
+
+/***/ }),
+/* 60 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -5794,7 +6635,7 @@ Object.defineProperty(exports, "__esModule", {
 
 var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
 
-__webpack_require__(52);
+__webpack_require__(65);
 
 var _navUtil = __webpack_require__(2);
 
@@ -5838,7 +6679,7 @@ var InlineNavButton = function (_React$Component) {
 			return React.createElement(
 				'div',
 				{
-					className: 'viewer--components--inline-nav-button is-' + this.props.type + (this.props.disabled ? ' is-disabled' : ' is-enabled'),
+					className: 'viewer--components--inline-nav-button is-' + this.props.type + (this.props.disabled ? ' is-not-enabled' : ' is-enabled'),
 					onClick: this.onClick.bind(this)
 				},
 				this.props.title
@@ -5852,7 +6693,7 @@ var InlineNavButton = function (_React$Component) {
 exports.default = InlineNavButton;
 
 /***/ }),
-/* 49 */
+/* 61 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -5864,31 +6705,31 @@ Object.defineProperty(exports, "__esModule", {
 
 var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
 
-__webpack_require__(54);
-
-var _navStore = __webpack_require__(10);
-
-var _navStore2 = _interopRequireDefault(_navStore);
+__webpack_require__(67);
 
 var _navUtil = __webpack_require__(2);
 
 var _navUtil2 = _interopRequireDefault(_navUtil);
 
-var _logo = __webpack_require__(15);
+var _logo = __webpack_require__(20);
 
 var _logo2 = _interopRequireDefault(_logo);
 
-var _hamburger = __webpack_require__(58);
+var _hamburger = __webpack_require__(71);
 
 var _hamburger2 = _interopRequireDefault(_hamburger);
 
-var _arrow = __webpack_require__(57);
+var _arrow = __webpack_require__(70);
 
 var _arrow2 = _interopRequireDefault(_arrow);
 
-var _lockIcon = __webpack_require__(59);
+var _lockIcon = __webpack_require__(72);
 
 var _lockIcon2 = _interopRequireDefault(_lockIcon);
+
+var _isornot = __webpack_require__(50);
+
+var _isornot2 = _interopRequireDefault(_isornot);
 
 var _Common = __webpack_require__(0);
 
@@ -5924,39 +6765,86 @@ var Nav = function (_React$Component) {
 	_createClass(Nav, [{
 		key: 'onClick',
 		value: function onClick(item) {
-			if (item.type === 'link') {
-				if (!_navUtil2.default.canNavigate(this.props.navState)) return;
-				return _navUtil2.default.gotoPath(item.fullPath);
-			} else if (item.type === 'sub-link') {
-				var el = OboModel.models[item.id].getDomEl();
-				return el.scrollIntoView({ behavior: 'smooth' });
+			switch (item.type) {
+				case 'link':
+					if (!_navUtil2.default.canNavigate(this.props.navState)) return;
+					_navUtil2.default.gotoPath(item.fullPath);
+					break;
+
+				case 'sub-link':
+					var el = OboModel.models[item.id].getDomEl();
+					el.scrollIntoView({ behavior: 'smooth', block: 'start' });
+					break;
 			}
 		}
 	}, {
-		key: 'toggleNav',
-		value: function toggleNav() {
-			return _navUtil2.default.toggle();
-		}
-	}, {
-		key: 'onMouseOver',
-		value: function onMouseOver() {
-			return this.setState({ hover: true });
-		}
-	}, {
-		key: 'onMouseOut',
-		value: function onMouseOut() {
-			return this.setState({ hover: false });
+		key: 'setHoverState',
+		value: function setHoverState(hover) {
+			this.setState({ hover: hover });
 		}
 	}, {
 		key: 'renderLabel',
 		value: function renderLabel(label) {
 			if (label instanceof StyleableText) {
 				return React.createElement(StyleableTextComponent, { text: label });
-			} else {
+			}
+
+			return React.createElement(
+				'a',
+				null,
+				label
+			);
+		}
+	}, {
+		key: 'renderLink',
+		value: function renderLink(index, isSelected, item, lockEl) {
+			var className = 'link' + (0, _isornot2.default)(isSelected, 'selected') + (0, _isornot2.default)(item.flags.visited, 'visited') + (0, _isornot2.default)(item.flags.complete, 'complete') + (0, _isornot2.default)(item.flags.correct, 'correct');
+
+			return React.createElement(
+				'li',
+				{ key: index, onClick: this.onClick.bind(this, item), className: className },
+				this.renderLabel(item.label),
+				lockEl
+			);
+		}
+	}, {
+		key: 'renderSubLink',
+		value: function renderSubLink(index, isSelected, item, lockEl) {
+			var className = 'sub-link' + (0, _isornot2.default)(isSelected, 'selected') + (0, _isornot2.default)(item.flags.correct, 'correct');
+
+			return React.createElement(
+				'li',
+				{ key: index, onClick: this.onClick.bind(this, item), className: className },
+				this.renderLabel(item.label),
+				lockEl
+			);
+		}
+	}, {
+		key: 'renderHeading',
+		value: function renderHeading(index, item) {
+			return React.createElement(
+				'li',
+				{ key: index, className: 'heading is-not-selected' },
+				this.renderLabel(item.label)
+			);
+		}
+	}, {
+		key: 'renderSep',
+		value: function renderSep(index) {
+			return React.createElement(
+				'li',
+				{ key: index, className: 'seperator' },
+				React.createElement('hr', null)
+			);
+		}
+	}, {
+		key: 'getLockEl',
+		value: function getLockEl(isLocked) {
+			if (isLocked) {
 				return React.createElement(
-					'a',
-					null,
-					label
+					'div',
+					{ className: 'lock-icon' },
+					React.createElement('img', { src: _lockIcon2.default })
 				);
 			}
 		}
@@ -5965,43 +6853,32 @@ var Nav = function (_React$Component) {
 		value: function render() {
 			var _this2 = this;
 
-			var bg = void 0,
-			    lockEl = void 0;
-			if (this.props.navState.open || this.state.hover) {
-				bg = getBackgroundImage(_arrow2.default);
-			} else {
-				bg = getBackgroundImage(_hamburger2.default);
-			}
+			var navState = this.props.navState;
+			var lockEl = this.getLockEl(navState.locked);
+			var isOpenOrHovered = navState.open || this.state.hover;
+			var bg = getBackgroundImage(isOpenOrHovered ? _arrow2.default : _hamburger2.default);
 
-			if (this.props.navState.locked) {
-				lockEl = React.createElement(
-					'div',
-					{ className: 'lock-icon' },
-					React.createElement('img', { src: _lockIcon2.default })
-				);
-			} else {
-				lockEl = null;
-			}
+			var list = _navUtil2.default.getOrderedList(navState);
 
-			var list = _navUtil2.default.getOrderedList(this.props.navState);
+			var className = 'viewer--components--nav' + (0, _isornot2.default)(navState.locked, 'locked') + (0, _isornot2.default)(navState.open, 'open') + (0, _isornot2.default)(!navState.disabled, 'enabled');
+
+			var style = {
+				backgroundImage: bg,
+				transform: !navState.open && this.state.hover ? 'rotate(180deg)' : '',
+				filter: navState.open ? 'invert(100%)' : 'invert(0%)'
+			};
 
 			return React.createElement(
 				'div',
-				{
-					className: 'viewer--components--nav' + (this.props.navState.locked ? ' is-locked' : ' is-unlocked') + (this.props.navState.open ? ' is-open' : ' is-closed') + (this.props.navState.disabled ? ' is-disabled' : ' is-enabled')
-				},
+				{ className: className },
 				React.createElement(
 					'button',
 					{
 						className: 'toggle-button',
-						onClick: this.toggleNav.bind(this),
-						onMouseOver: this.onMouseOver.bind(this),
-						onMouseOut: this.onMouseOut.bind(this),
-						style: {
-							backgroundImage: bg,
-							transform: !this.props.navState.open && this.state.hover ? 'rotate(180deg)' : '',
-							filter: this.props.navState.open ? 'invert(100%)' : 'invert(0%)'
-						}
+						style: style,
+						onClick: _navUtil2.default.toggle,
+						onMouseOver: this.setHoverState.bind(this, true),
+						onMouseOut: this.setHoverState.bind(this, false)
 					},
 					'Toggle Navigation Menu'
 				),
@@ -6011,54 +6888,16 @@ var Nav = function (_React$Component) {
 					list.map(function (item, index) {
 						switch (item.type) {
 							case 'heading':
-								var isSelected = false;
-								return React.createElement(
-									'li',
-									{
-										key: index,
-										className: 'heading' + (isSelected ? ' is-selected' : ' is-not-select')
-									},
-									_this2.renderLabel(item.label)
-								);
-								break;
+								return _this2.renderHeading(index, item);
 
 							case 'link':
-								var isSelected = _this2.props.navState.navTargetId === item.id;
-								//var isPrevVisited = this.props.navState.navTargetHistory.indexOf(item.id) > -1
-								return React.createElement(
-									'li',
-									{
-										key: index,
-										onClick: _this2.onClick.bind(_this2, item),
-										className: 'link' + (isSelected ? ' is-selected' : ' is-not-select') + (item.flags.visited ? ' is-visited' : ' is-not-visited') + (item.flags.complete ? ' is-complete' : ' is-not-complete') + (item.flags.correct ? ' is-correct' : ' is-not-correct')
-									},
-									_this2.renderLabel(item.label),
-									lockEl
-								);
-								break;
+								return _this2.renderLink(index, navState.navTargetId === item.id, item, lockEl);
 
 							case 'sub-link':
-								var isSelected = _this2.props.navState.navTargetIndex === index;
-
-								return React.createElement(
-									'li',
-									{
-										key: index,
-										onClick: _this2.onClick.bind(_this2, item),
-										className: 'sub-link' + (isSelected ? ' is-selected' : ' is-not-select') + (item.flags.correct ? ' is-correct' : ' is-not-correct')
-									},
-									_this2.renderLabel(item.label),
-									lockEl
-								);
-								break;
+								return _this2.renderSubLink(index, navState.navTargetIndex === index, item, lockEl);
 
 							case 'seperator':
-								return React.createElement(
-									'li',
-									{ key: index, className: 'seperator' },
-									React.createElement('hr', null)
-								);
-								break;
+								return _this2.renderSep(index);
 						}
 					})
 				),
@@ -6073,7 +6912,7 @@ var Nav = function (_React$Component) {
 exports.default = Nav;
 
 /***/ }),
-/* 50 */
+/* 62 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -6085,23 +6924,23 @@ Object.defineProperty(exports, "__esModule", {
 
 var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
 
-__webpack_require__(56);
+__webpack_require__(69);
 
-__webpack_require__(55);
+__webpack_require__(68);
 
 var _Common = __webpack_require__(0);
 
 var _Common2 = _interopRequireDefault(_Common);
 
-var _react = __webpack_require__(22);
+var _react = __webpack_require__(24);
 
 var _react2 = _interopRequireDefault(_react);
 
-var _reactIdleTimer = __webpack_require__(44);
+var _reactIdleTimer = __webpack_require__(46);
 
 var _reactIdleTimer2 = _interopRequireDefault(_reactIdleTimer);
 
-var _inlineNavButton = __webpack_require__(48);
+var _inlineNavButton = __webpack_require__(60);
 
 var _inlineNavButton2 = _interopRequireDefault(_inlineNavButton);
 
@@ -6109,35 +6948,31 @@ var _navUtil = __webpack_require__(2);
 
 var _navUtil2 = _interopRequireDefault(_navUtil);
 
-var _apiUtil = __webpack_require__(3);
+var _apiUtil = __webpack_require__(4);
 
 var _apiUtil2 = _interopRequireDefault(_apiUtil);
 
-var _logo = __webpack_require__(15);
+var _logo = __webpack_require__(20);
 
 var _logo2 = _interopRequireDefault(_logo);
 
-var _scoreStore = __webpack_require__(19);
-
-var _scoreStore2 = _interopRequireDefault(_scoreStore);
-
-var _questionStore = __webpack_require__(18);
+var _questionStore = __webpack_require__(13);
 
 var _questionStore2 = _interopRequireDefault(_questionStore);
 
-var _assessmentStore = __webpack_require__(16);
+var _assessmentStore = __webpack_require__(21);
 
 var _assessmentStore2 = _interopRequireDefault(_assessmentStore);
 
-var _navStore = __webpack_require__(10);
+var _navStore = __webpack_require__(12);
 
 var _navStore2 = _interopRequireDefault(_navStore);
 
-var _nav = __webpack_require__(49);
+var _nav = __webpack_require__(61);
 
 var _nav2 = _interopRequireDefault(_nav);
 
-var _getLtiOutcomeServiceHostname = __webpack_require__(21);
+var _getLtiOutcomeServiceHostname = __webpack_require__(23);
 
 var _getLtiOutcomeServiceHostname2 = _interopRequireDefault(_getLtiOutcomeServiceHostname);
 
@@ -6196,7 +7031,6 @@ var ViewerApp = function (_React$Component) {
 		var state = {
 			model: null,
 			navState: null,
-			scoreState: null,
 			questionState: null,
 			assessmentState: null,
 			modalState: null,
@@ -6211,9 +7045,6 @@ var ViewerApp = function (_React$Component) {
 		};
 		_this.onNavStoreChange = function () {
 			return _this.setState({ navState: _navStore2.default.getState() });
-		};
-		_this.onScoreStoreChange = function () {
-			return _this.setState({ scoreState: _scoreStore2.default.getState() });
 		};
 		_this.onQuestionStoreChange = function () {
 			return _this.setState({ questionState: _questionStore2.default.getState() });
@@ -6252,7 +7083,7 @@ var ViewerApp = function (_React$Component) {
 			var attemptHistory = void 0;
 			var viewState = void 0;
 			var isPreviewing = void 0;
-			var outcomeServiceURL = void 0;
+			var outcomeServiceURL = 'the external system';
 
 			var urlTokens = document.location.pathname.split('/');
 			var visitIdFromUrl = urlTokens[4] ? urlTokens[4] : null;
@@ -6261,7 +7092,12 @@ var ViewerApp = function (_React$Component) {
 			Dispatcher.trigger('viewer:loading');
 
 			_apiUtil2.default.requestStart(visitIdFromUrl, draftIdFromUrl).then(function (visit) {
+				_questionStore2.default.init();
+				ModalStore.init();
+				FocusStore.init();
+
 				if (visit.status !== 'ok') throw 'Invalid Visit Id';
+
 				visitIdFromApi = visit.value.visitId;
 				viewState = visit.value.viewState;
 				attemptHistory = visit.value.extensions[':ObojoboDraft.Sections.Assessment:attemptHistory'];
@@ -6274,15 +7110,10 @@ var ViewerApp = function (_React$Component) {
 
 				_this2.state.model = OboModel.create(draftModel);
 
-				_scoreStore2.default.init();
-				_questionStore2.default.init();
-				ModalStore.init();
-				FocusStore.init();
 				_navStore2.default.init(_this2.state.model, _this2.state.model.modelState.start, window.location.pathname, visitIdFromApi, viewState);
 				_assessmentStore2.default.init(attemptHistory);
 
 				_this2.state.navState = _navStore2.default.getState();
-				_this2.state.scoreState = _scoreStore2.default.getState();
 				_this2.state.questionState = _questionStore2.default.getState();
 				_this2.state.assessmentState = _assessmentStore2.default.getState();
 				_this2.state.modalState = ModalStore.getState();
@@ -6294,11 +7125,6 @@ var ViewerApp = function (_React$Component) {
 				_this2.setState({ loading: false, requestStatus: 'ok', isPreviewing: isPreviewing }, function () {
 					Dispatcher.trigger('viewer:loaded', true);
 				});
-
-				var loadingEl = document.getElementById('viewer-app-loading');
-				if (loadingEl && loadingEl.parentElement) {
-					loadingEl.parentElement.removeChild(loadingEl);
-				}
 			}).catch(function (err) {
 				console.log(err);
 				_this2.setState({ loading: false, requestStatus: 'invalid' }, function () {
@@ -6311,7 +7137,6 @@ var ViewerApp = function (_React$Component) {
 		value: function componentWillMount() {
 			// === SET UP DATA STORES ===
 			_navStore2.default.onChange(this.onNavStoreChange);
-			_scoreStore2.default.onChange(this.onScoreStoreChange);
 			_questionStore2.default.onChange(this.onQuestionStoreChange);
 			_assessmentStore2.default.onChange(this.onAssessmentStoreChange);
 			ModalStore.onChange(this.onModalStoreChange);
@@ -6321,7 +7146,6 @@ var ViewerApp = function (_React$Component) {
 		key: 'componentWillUnmount',
 		value: function componentWillUnmount() {
 			_navStore2.default.offChange(this.onNavStoreChange);
-			_scoreStore2.default.offChange(this.onScoreStoreChange);
 			_questionStore2.default.offChange(this.onQuestionStoreChange);
 			_assessmentStore2.default.offChange(this.onAssessmentStoreChange);
 			ModalStore.offChange(this.onModalStoreChange);
@@ -6346,6 +7170,10 @@ var ViewerApp = function (_React$Component) {
 					return this.setState({ navTargetId: nextNavTargetId });
 				}
 			}
+
+			if (this.state.loading === true && nextState.loading === false) {
+				this.needsRemoveLoadingElement = true;
+			}
 		}
 	}, {
 		key: 'componentDidUpdate',
@@ -6358,7 +7186,17 @@ var ViewerApp = function (_React$Component) {
 				if (this.needsScroll != null) {
 					this.scrollToTop();
 
-					return delete this.needsScroll;
+					delete this.needsScroll;
+				}
+			}
+
+			if (this.needsRemoveLoadingElement === true) {
+				var loadingEl = document.getElementById('viewer-app-loading');
+				if (loadingEl && loadingEl.parentElement) {
+					document.getElementById('viewer-app').classList.add('is-loaded');
+					loadingEl.parentElement.removeChild(loadingEl);
+
+					delete this.needsRemoveLoadingElement;
 				}
 			}
 		}
@@ -6504,21 +7342,19 @@ var ViewerApp = function (_React$Component) {
 		key: 'clearPreviewScores',
 		value: function clearPreviewScores() {
 			_apiUtil2.default.clearPreviewScores(this.state.model).then(function (res) {
-				if (res.status === 'error') {
+				if (res.status === 'error' || res.error) {
 					return ModalUtil.show(_react2.default.createElement(
 						SimpleDialog,
 						{ ok: true, width: '15em' },
-						'There was an error resetting assessments and questions: ' + res.value.message + '.'
+						res.value && res.value.message ? 'There was an error resetting assessments and questions: ' + res.value.message + '.' : 'There was an error resetting assessments and questions'
 					));
 				}
 
 				_assessmentStore2.default.init();
 				_questionStore2.default.init();
-				_scoreStore2.default.init();
 
 				_assessmentStore2.default.triggerChange();
 				_questionStore2.default.triggerChange();
-				_scoreStore2.default.triggerChange();
 
 				return ModalUtil.show(_react2.default.createElement(
 					SimpleDialog,
@@ -6537,11 +7373,13 @@ var ViewerApp = function (_React$Component) {
 		value: function render() {
 			if (this.state.loading == true) return null;
 
-			if (this.state.requestStatus === 'invalid') return _react2.default.createElement(
-				'div',
-				null,
-				'Invalid'
-			);
+			if (this.state.requestStatus === 'invalid') {
+				return _react2.default.createElement(
+					'div',
+					{ className: 'viewer--viewer-app--visit-error' },
+					'There was a problem starting your visit. Please return to ' + (this.state.lti.outcomeServiceHostname ? this.state.lti.outcomeServiceHostname : 'the external system') + ' and relaunch this module.'
+				); //`There was a problem starting your visit. Please return to ${outcomeServiceURL} and relaunch this module.`
+			}
 
 			var nextEl = void 0,
 			    nextModel = void 0,
@@ -6680,7 +7518,7 @@ var ViewerApp = function (_React$Component) {
 exports.default = ViewerApp;
 
 /***/ }),
-/* 51 */
+/* 63 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -6690,31 +7528,27 @@ Object.defineProperty(exports, "__esModule", {
 	value: true
 });
 
-var _viewerApp = __webpack_require__(50);
+var _viewerApp = __webpack_require__(62);
 
 var _viewerApp2 = _interopRequireDefault(_viewerApp);
 
-var _scoreStore = __webpack_require__(19);
-
-var _scoreStore2 = _interopRequireDefault(_scoreStore);
-
-var _assessmentStore = __webpack_require__(16);
+var _assessmentStore = __webpack_require__(21);
 
 var _assessmentStore2 = _interopRequireDefault(_assessmentStore);
 
-var _ltiNetworkStates = __webpack_require__(17);
+var _ltiNetworkStates = __webpack_require__(22);
 
 var _ltiNetworkStates2 = _interopRequireDefault(_ltiNetworkStates);
 
-var _navStore = __webpack_require__(10);
+var _navStore = __webpack_require__(12);
 
 var _navStore2 = _interopRequireDefault(_navStore);
 
-var _questionStore = __webpack_require__(18);
+var _questionStore = __webpack_require__(13);
 
 var _questionStore2 = _interopRequireDefault(_questionStore);
 
-var _assessmentUtil = __webpack_require__(20);
+var _assessmentUtil = __webpack_require__(6);
 
 var _assessmentUtil2 = _interopRequireDefault(_assessmentUtil);
 
@@ -6722,21 +7556,25 @@ var _navUtil = __webpack_require__(2);
 
 var _navUtil2 = _interopRequireDefault(_navUtil);
 
-var _scoreUtil = __webpack_require__(11);
-
-var _scoreUtil2 = _interopRequireDefault(_scoreUtil);
-
-var _apiUtil = __webpack_require__(3);
+var _apiUtil = __webpack_require__(4);
 
 var _apiUtil2 = _interopRequireDefault(_apiUtil);
 
-var _questionUtil = __webpack_require__(5);
+var _questionUtil = __webpack_require__(7);
 
 var _questionUtil2 = _interopRequireDefault(_questionUtil);
 
-var _getLtiOutcomeServiceHostname = __webpack_require__(21);
+var _getLtiOutcomeServiceHostname = __webpack_require__(23);
 
 var _getLtiOutcomeServiceHostname2 = _interopRequireDefault(_getLtiOutcomeServiceHostname);
+
+var _assessmentScoreReporter = __webpack_require__(18);
+
+var _assessmentScoreReporter2 = _interopRequireDefault(_assessmentScoreReporter);
+
+var _assessmentScoreReportView = __webpack_require__(17);
+
+var _assessmentScoreReportView2 = _interopRequireDefault(_assessmentScoreReportView);
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
@@ -6746,7 +7584,6 @@ exports.default = {
 	},
 
 	stores: {
-		ScoreStore: _scoreStore2.default,
 		AssessmentStore: _assessmentStore2.default,
 		assessmentStore: {
 			LTINetworkStates: _ltiNetworkStates2.default
@@ -6758,73 +7595,83 @@ exports.default = {
 	util: {
 		AssessmentUtil: _assessmentUtil2.default,
 		NavUtil: _navUtil2.default,
-		ScoreUtil: _scoreUtil2.default,
 		APIUtil: _apiUtil2.default,
 		QuestionUtil: _questionUtil2.default,
 		getLTIOutcomeServiceHostname: _getLtiOutcomeServiceHostname2.default
+	},
+
+	assessment: {
+		AssessmentScoreReporter: _assessmentScoreReporter2.default,
+		AssessmentScoreReportView: _assessmentScoreReportView2.default
 	}
 };
 
 /***/ }),
-/* 52 */
+/* 64 */
 /***/ (function(module, exports) {
 
 // removed by extract-text-webpack-plugin
 
 /***/ }),
-/* 53 */
+/* 65 */
 /***/ (function(module, exports) {
 
 // removed by extract-text-webpack-plugin
 
 /***/ }),
-/* 54 */
+/* 66 */
 /***/ (function(module, exports) {
 
 // removed by extract-text-webpack-plugin
 
 /***/ }),
-/* 55 */
+/* 67 */
 /***/ (function(module, exports) {
 
 // removed by extract-text-webpack-plugin
 
 /***/ }),
-/* 56 */
+/* 68 */
 /***/ (function(module, exports) {
 
 // removed by extract-text-webpack-plugin
 
 /***/ }),
-/* 57 */
+/* 69 */
+/***/ (function(module, exports) {
+
+// removed by extract-text-webpack-plugin
+
+/***/ }),
+/* 70 */
 /***/ (function(module, exports) {
 
 module.exports = "data:image/svg+xml,%3C?xml version='1.0' encoding='utf-8'?%3E %3C!-- Generator: Adobe Illustrator 19.0.0, SVG Export Plug-In . SVG Version: 6.00 Build 0) --%3E %3Csvg version='1.1' id='Layer_1' xmlns='http://www.w3.org/2000/svg' xmlns:xlink='http://www.w3.org/1999/xlink' x='0px' y='0px' viewBox='-290 387 30 20' style='enable-background:new -290 387 30 20;' xml:space='preserve'%3E %3Cpath d='M-272.5,405.4l-12.1-7.4c-0.6-0.4-0.6-1.7,0-2.1l12.1-7.4c0.5-0.3,1,0.3,1,1.1v14.7C-271.4,405.2-272,405.7-272.5,405.4z' fill='rgba(0, 0, 0, .2)' transform='translate(2, 0)'/%3E %3C/svg%3E"
 
 /***/ }),
-/* 58 */
+/* 71 */
 /***/ (function(module, exports) {
 
 module.exports = "data:image/svg+xml,%3Csvg width='20' height='10' viewBox='0 0 100 100' xmlns='http://www.w3.org/2000/svg' version='1.1'%3E %3Cline x1='0' y1='10' x2='100' y2='10' stroke='rgba(0, 0, 0, .2)' stroke-width='20' stroke-linecap='round' /%3E %3Cline x1='0' y1='50' x2='100' y2='50' stroke='rgba(0, 0, 0, .2)' stroke-width='20' stroke-linecap='round' /%3E %3Cline x1='0' y1='90' x2='100' y2='90' stroke='rgba(0, 0, 0, .2)' stroke-width='20' stroke-linecap='round' /%3E %3C/svg%3E"
 
 /***/ }),
-/* 59 */
+/* 72 */
 /***/ (function(module, exports) {
 
 module.exports = "data:image/svg+xml,%3C?xml version='1.0' encoding='utf-8'?%3E %3Csvg version='1.1' xmlns='http://www.w3.org/2000/svg' xmlns:xlink='http://www.w3.org/1999/xlink' viewBox='0 0 10 16' style='enable-background:new 0 0 10 16;' xml:space='preserve'%3E %3Cpath fill='white' id='XMLID_6_' d='M9.1,6H8.5V3.5C8.5,1.5,6.9,0,5,0C3.1,0,1.6,1.5,1.6,3.5l0,2.5H0.9C0.4,6,0,6.4,0,6.9v8.2 C0,15.6,0.4,16,0.9,16h8.2c0.5,0,0.9-0.4,0.9-0.9V6.9C10,6.4,9.6,6,9.1,6z M3.3,3.4c0-0.9,0.8-1.6,1.7-1.6c0.9,0,1.7,0.8,1.7,1.7V6 H3.3V3.4z'/%3E %3C/svg%3E"
 
 /***/ }),
-/* 60 */
+/* 73 */
 /***/ (function(module, exports) {
 
 module.exports = "data:image/svg+xml,%3C?xml version='1.0' encoding='utf-8'?%3E %3C!-- Generator: Adobe Illustrator 15.0.2, SVG Export Plug-In . SVG Version: 6.00 Build 0) --%3E %3C!DOCTYPE svg PUBLIC '-//W3C//DTD SVG 1.1//EN' 'http://www.w3.org/Graphics/SVG/1.1/DTD/svg11.dtd'%3E %3Csvg version='1.1' id='Layer_1' xmlns='http://www.w3.org/2000/svg' xmlns:xlink='http://www.w3.org/1999/xlink' x='0px' y='0px' width='253px' height='64.577px' viewBox='0 0 253 64.577' enable-background='new 0 0 253 64.577' xml:space='preserve' fill='black'%3E %3Cpath d='M18.399,53.629c-0.01,0-0.021,0-0.031,0C7.023,53.396,0,43.151,0,33.793c0-10.79,8.426-19.905,18.399-19.905 c11.006,0,18.399,10.292,18.399,19.905c0,10.719-8.239,19.617-18.367,19.835C18.421,53.629,18.41,53.629,18.399,53.629z M18.399,18.257c-8.393,0-14.031,8.033-14.031,15.536c0.295,7.574,5.625,15.468,14.031,15.468c8.393,0,14.031-7.998,14.031-15.468 C32.43,25.372,26.005,18.257,18.399,18.257z'/%3E %3Cpath d='M58.15,53.629c-6.02,0-13.502-3.57-16.154-10.394c-0.287-0.733-0.603-1.542-0.603-3.281l0-38.454 c0-0.398,0.158-0.779,0.439-1.061S42.495,0,42.893,0h1.369c0.829,0,1.5,0.671,1.5,1.5v18.495c3.827-4.056,8.188-6.106,13.004-6.106 c11.111,0,17.989,10.332,17.989,19.905C76.444,44.75,68.099,53.629,58.15,53.629z M45.761,27.446v12.437 c0,4.652,7.208,9.378,12.389,9.378c8.516,0,14.236-7.998,14.236-15.468c0-7.472-5.208-15.536-13.621-15.536 C51.235,18.257,47.065,24.927,45.761,27.446z'/%3E %3Cpath d='M99.064,53.629c-0.01,0-0.021,0-0.031,0c-11.346-0.233-18.369-10.478-18.369-19.835 c0-10.79,8.426-19.905,18.399-19.905c11.005,0,18.398,10.292,18.398,19.905c0,10.719-8.239,19.617-18.366,19.835 C99.086,53.629,99.075,53.629,99.064,53.629z M99.064,18.257c-8.393,0-14.031,8.033-14.031,15.536 c0.294,7.574,5.624,15.468,14.031,15.468c8.393,0,14.031-7.998,14.031-15.468C113.096,25.372,106.67,18.257,99.064,18.257z'/%3E %3Cpath d='M153.252,53.629c-0.01,0-0.021,0-0.031,0c-11.346-0.233-18.369-10.478-18.369-19.835 c0-10.79,8.426-19.905,18.399-19.905c11.006,0,18.399,10.292,18.399,19.905c0,10.719-8.239,19.617-18.367,19.835 C153.273,53.629,153.263,53.629,153.252,53.629z M153.252,18.257c-8.393,0-14.031,8.033-14.031,15.536 c0.294,7.574,5.624,15.468,14.031,15.468c8.393,0,14.031-7.998,14.031-15.468C167.283,25.372,160.858,18.257,153.252,18.257z'/%3E %3Cpath d='M234.601,53.629c-0.01,0-0.021,0-0.031,0c-11.345-0.233-18.367-10.478-18.367-19.835 c0-10.79,8.426-19.905,18.398-19.905c11.006,0,18.399,10.292,18.399,19.905c0,10.719-8.239,19.617-18.367,19.835 C234.622,53.629,234.611,53.629,234.601,53.629z M234.601,18.257c-8.393,0-14.03,8.033-14.03,15.536 c0.294,7.574,5.624,15.468,14.03,15.468c8.394,0,14.031-7.998,14.031-15.468C248.632,25.372,242.206,18.257,234.601,18.257z'/%3E %3Cpath d='M193.62,53.629c-6.021,0-13.503-3.57-16.155-10.394l-0.098-0.239c-0.254-0.607-0.603-1.438-0.603-3.042 c0.002-15.911,0.098-38.237,0.099-38.461c0.003-0.826,0.674-1.494,1.5-1.494h1.368c0.829,0,1.5,0.671,1.5,1.5v18.495 c3.827-4.055,8.188-6.106,13.005-6.106c11.111,0,17.988,10.332,17.988,19.904C211.915,44.75,203.569,53.629,193.62,53.629z M181.231,27.446v12.437c0,4.652,7.208,9.378,12.389,9.378c8.515,0,14.235-7.998,14.235-15.468c0-7.472-5.207-15.536-13.619-15.536 C186.705,18.257,182.535,24.927,181.231,27.446z'/%3E %3Cpath d='M118.017,64.577c-0.013,0-0.026,0-0.039,0c-2.437-0.063-5.533-0.434-7.865-2.765 c-0.308-0.308-0.467-0.734-0.436-1.167c0.031-0.434,0.249-0.833,0.597-1.094l1.096-0.821c0.566-0.425,1.353-0.396,1.887,0.072 c1.083,0.947,2.617,1.408,4.691,1.408c2.913,0,6.3-2.752,6.3-6.3V16.073c0-0.829,0.671-1.5,1.5-1.5h1.368c0.829,0,1.5,0.671,1.5,1.5 v37.835C128.616,60.195,123.03,64.577,118.017,64.577z M127.116,8.268h-1.368c-0.829,0-1.5-0.671-1.5-1.5V2.389 c0-0.829,0.671-1.5,1.5-1.5h1.368c0.829,0,1.5,0.671,1.5,1.5v4.379C128.616,7.597,127.945,8.268,127.116,8.268z'/%3E %3C/svg%3E"
 
 /***/ }),
-/* 61 */
+/* 74 */
 /***/ (function(module, exports, __webpack_require__) {
 
-__webpack_require__(23);
-module.exports = __webpack_require__(24);
+__webpack_require__(25);
+module.exports = __webpack_require__(26);
 
 
 /***/ })

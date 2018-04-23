@@ -63,7 +63,7 @@
 /******/ 	__webpack_require__.p = "build/";
 /******/
 /******/ 	// Load entry module and return exports
-/******/ 	return __webpack_require__(__webpack_require__.s = 259);
+/******/ 	return __webpack_require__(__webpack_require__.s = 285);
 /******/ })
 /************************************************************************/
 /******/ ({
@@ -75,102 +75,7 @@ module.exports = Common;
 
 /***/ }),
 
-/***/ 121:
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-
-
-Object.defineProperty(exports, "__esModule", {
-	value: true
-});
-
-var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
-
-__webpack_require__(235);
-
-var _Common = __webpack_require__(0);
-
-var _Common2 = _interopRequireDefault(_Common);
-
-function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
-
-function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
-
-function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
-
-function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
-
-var OboComponent = _Common2.default.components.OboComponent;
-var TextGroupEl = _Common2.default.chunk.textChunk.TextGroupEl;
-var TextChunk = _Common2.default.chunk.TextChunk;
-
-var Code = function (_React$Component) {
-	_inherits(Code, _React$Component);
-
-	function Code() {
-		_classCallCheck(this, Code);
-
-		return _possibleConstructorReturn(this, (Code.__proto__ || Object.getPrototypeOf(Code)).apply(this, arguments));
-	}
-
-	_createClass(Code, [{
-		key: 'render',
-		value: function render() {
-			var _this2 = this;
-
-			var texts = this.props.model.modelState.textGroup.items.map(function (textItem, index) {
-				return React.createElement(TextGroupEl, {
-					parentModel: _this2.props.model,
-					textItem: textItem,
-					groupIndex: index,
-					key: index
-				});
-			});
-
-			return React.createElement(
-				OboComponent,
-				{ model: this.props.model, moduleData: this.props.moduleData },
-				React.createElement(
-					TextChunk,
-					{ className: 'obojobo-draft--chunks--single-text pad' },
-					React.createElement(
-						'pre',
-						null,
-						React.createElement(
-							'code',
-							null,
-							texts
-						)
-					)
-				)
-			);
-		}
-	}]);
-
-	return Code;
-}(React.Component);
-
-exports.default = Code;
-
-/***/ }),
-
-/***/ 235:
-/***/ (function(module, exports) {
-
-// removed by extract-text-webpack-plugin
-
-/***/ }),
-
-/***/ 259:
-/***/ (function(module, exports, __webpack_require__) {
-
-module.exports = __webpack_require__(98);
-
-
-/***/ }),
-
-/***/ 98:
+/***/ 103:
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -180,7 +85,7 @@ var _Common = __webpack_require__(0);
 
 var _Common2 = _interopRequireDefault(_Common);
 
-var _viewerComponent = __webpack_require__(121);
+var _viewerComponent = __webpack_require__(126);
 
 var _viewerComponent2 = _interopRequireDefault(_viewerComponent);
 
@@ -196,6 +101,72 @@ _Common2.default.Store.registerModel('ObojoboDraft.Chunks.Code', {
 	componentClass: _viewerComponent2.default,
 	selectionHandler: new SelectionHandler()
 });
+
+/***/ }),
+
+/***/ 126:
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+Object.defineProperty(exports, "__esModule", {
+	value: true
+});
+
+__webpack_require__(261);
+
+var _Common = __webpack_require__(0);
+
+var _Common2 = _interopRequireDefault(_Common);
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+var OboComponent = _Common2.default.components.OboComponent;
+var TextGroupEl = _Common2.default.chunk.textChunk.TextGroupEl;
+var TextChunk = _Common2.default.chunk.TextChunk;
+
+exports.default = function (props) {
+	return React.createElement(
+		OboComponent,
+		{ model: props.model, moduleData: props.moduleData },
+		React.createElement(
+			TextChunk,
+			{ className: 'obojobo-draft--chunks--single-text pad' },
+			React.createElement(
+				'pre',
+				null,
+				React.createElement(
+					'code',
+					null,
+					props.model.modelState.textGroup.items.map(function (textItem, index) {
+						return React.createElement(TextGroupEl, {
+							parentModel: props.model,
+							textItem: textItem,
+							groupIndex: index,
+							key: index
+						});
+					})
+				)
+			)
+		)
+	);
+};
+
+/***/ }),
+
+/***/ 261:
+/***/ (function(module, exports) {
+
+// removed by extract-text-webpack-plugin
+
+/***/ }),
+
+/***/ 285:
+/***/ (function(module, exports, __webpack_require__) {
+
+module.exports = __webpack_require__(103);
+
 
 /***/ })
 
