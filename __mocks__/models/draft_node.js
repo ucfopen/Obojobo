@@ -19,6 +19,8 @@ class DraftNode {
 		return {
 			__toObject: true,
 			id: this.id,
+			type: this.type,
+			content: this.content,
 			children: this.children.map(c => c.toObject())
 		}
 	}

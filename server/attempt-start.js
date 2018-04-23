@@ -85,8 +85,7 @@ const startAttempt = (req, res) => {
 				qb: assessmentProperties.assessmentQBTree,
 				questions: getNodeQuestions(
 					assessmentProperties.assessmentQBTree,
-					assessmentProperties.oboNode,
-					[]
+					assessmentProperties.oboNode
 				),
 				data: {}
 			}
@@ -225,10 +224,15 @@ const chooseUnseenQuestionsRandomly = (assessmentProperties, rootId, numQuestion
 	)
 }
 
-// This reduce a tree's children to those nodes selected for an attempt
-// node is probably initially a QuestionBank Node (or higher up tree)
-// expects all children[] of question banks to be questions or question banks
-// alters the children[] of questionbank nodes
+/*
+This reduce a tree of nodes to those nodes selected for an attempt
+node is probably initially a QuestionBank Node (or higher up tree)
+expects all `.children` of question banks to be questions or question banks
+alters `.children` of questionbank nodes
+
+SEE the `createChosenQuestionTree` tests in attempt-start.test.js for
+details on exactly what to expect from this
+*/
 const createChosenQuestionTree = (node, assessmentProperties) => {
 	if (node.type === QUESTION_BANK_NODE_TYPE) {
 		const qbProperties = getQuestionBankProperties(node)
@@ -264,7 +268,7 @@ const createChosenQuestionTree = (node, assessmentProperties) => {
 }
 
 // Return an array of question type nodes from a node tree.
-const getNodeQuestions = (node, assessmentNode, questions) => {
+const getNodeQuestions = (node, assessmentNode, questions = []) => {
 	// add this item to the questions array
 	if (node.type === QUESTION_NODE_TYPE) {
 		questions.push(assessmentNode.draftTree.getChildNodeById(node.id))

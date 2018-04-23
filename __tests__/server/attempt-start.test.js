@@ -44,44 +44,87 @@ describe('start attempt route', () => {
 		})
 	}
 
+	let convertChosenTreeToIdArray = (tree, assessmentNode) => {
+		// pluck out questions into an array
+		let chosenQuestions = getNodeQuestions(tree, assessmentNode)
+
+		// convert to array of ids for simplicity
+		return chosenQuestions.map(q => q.id)
+	}
+
+	let runAttemptThroughCreateChosenQuestionTree = useageMap => {
+		// mock the structure
+		let { QB, assessmentProperties } = buildTreeForTest()
+
+		// override the usage map
+		assessmentProperties.questionUsesMap = useageMap
+
+		// select/filter nodes
+		createChosenQuestionTree(QB, assessmentProperties)
+
+		return convertChosenTreeToIdArray(QB, assessmentProperties.oboNode)
+	}
+
+	/*
+	|QB (choose=Infinity)
+	|-QB1 (choose=1)
+	|  |-qA
+	|  |-qB
+	|
+	|-QB2 (choose=2)
+	|  |-qC
+	|  |-qD
+	|  |-QB3 (choose=1)
+	|    |-qE
+	|    |-qF
+	|
+	|-qG
+	|-qH
+   */
 	let buildTreeForTest = () => {
-		let n = 0
 		let draftTree = {
 			getChildNodeById: jest.fn(id => nodes.find(c => c.id == id))
 		}
 		let nodes = []
-		let nodeMap = new Map()
 		let usesMap = new Map()
-		const newQ = () => {
+		const newQ = id => {
 			let q = new DraftNode(draftTree)
-			q.id = `q-${n++}`
+			q.id = id
 			q.type = 'ObojoboDraft.Chunks.Question'
-			nodes.push(q)
-			nodeMap.set(q.id, q)
 			usesMap.set(q.id, 0)
+			nodes.push(q)
 			return q
 		}
-		const newQb = (children = []) => {
+		const newQb = (id, choose, children = []) => {
 			let qb = new DraftNode(draftTree)
-			qb.id = `qb-${n++}`
+			qb.id = id
 			qb.type = 'ObojoboDraft.Chunks.QuestionBank'
 			qb.children = children
-			qb.content = {}
+			qb.content = { choose: choose }
 			children.forEach(c => qb.immediateChildrenSet.add(c.id))
+			usesMap.set(qb.id, 0)
 			nodes.push(qb)
-			nodeMap.set(qb.id, qb)
 			return qb
 		}
 
-		const q1 = newQ()
-		const q2 = newQ()
-		const q3 = newQ()
-		const qb = newQb([q1, q2, q3])
+		const qA = newQ('qA')
+		const qB = newQ('qB')
+		const qC = newQ('qC')
+		const qD = newQ('qD')
+		const qE = newQ('qE')
+		const qF = newQ('qF')
+		const qG = newQ('qG')
+		const qH = newQ('qH')
+		const QB1 = newQb('QB1', 1, [qA, qB])
+		const QB3 = newQb('QB3', 1, [qE, qF])
+		const QB2 = newQb('QB2', 2, [qC, qD, QB3])
+		const QB = newQb('QB', Infinity, [QB1, QB2, qG, qH])
 
 		return {
-			qb,
+			QB,
+			usesMap,
 			assessmentProperties: {
-				oboNode: qb,
+				oboNode: QB,
 				questionUsesMap: usesMap
 			}
 		}
@@ -262,63 +305,242 @@ describe('start attempt route', () => {
 		expect(Math.random).toHaveBeenCalled()
 	})
 
-	it('createChosenQuestionTree creates a sequential group with no limit', () => {
-		let { qb, assessmentProperties } = buildTreeForTest()
-		qb.content.select = 'sequential'
-		qb.content.choose = Infinity
-		createChosenQuestionTree(qb, assessmentProperties)
-		expect(qb.children).toMatchSnapshot()
+	it('createChosenQuestionTree picks expected questions in order for FIRST attempt in sequential mode', () => {
+		// uses | Tree
+		//      |QB (choose=Infinity)
+		//    0 |-QB1 (choose=1)
+		//    0 |  |-qA <------------- EXPECT CHOSEN
+		//    0 |  |-qB
+		//      |
+		//    0 |-QB2 (choose=2)
+		//    0 |  |-qC <------------- EXPECT CHOSEN
+		//    0 |  |-qD <------------- EXPECT CHOSEN
+		//    0 |  |-QB3 (choose=1)
+		//    0 |    |-qE
+		//    0 |    |-qF
+		//      |
+		//    0 |-qG <--------------- EXPECT CHOSEN
+		//    0 |-qH <--------------- EXPECT CHOSEN
+
+		// preserve indentation structure
+		// prettier-ignore
+		let usageMap = new Map()
+			.set('QB1',         0)
+				.set('qA',      0)
+				.set('qB',      0)
+			.set('QB2',         0)
+				.set('qC',      0)
+				.set('qD',      0)
+				.set('QB3',     0)
+					.set('qE',  0)
+					.set('qF',  0)
+			.set('qG',          0)
+			.set('qH',          0)
+
+		let ids = runAttemptThroughCreateChosenQuestionTree(usageMap)
+
+		// test the ids and order of the results
+		expect(ids).toEqual(['qA', 'qC', 'qD', 'qG', 'qH'])
 	})
 
-	it('createChosenQuestionTree creates a sequential group with a limit', () => {
-		let { qb, assessmentProperties } = buildTreeForTest()
-		qb.content.select = 'sequential'
-		qb.content.choose = 2
-		createChosenQuestionTree(qb, assessmentProperties)
-		expect(qb.children).toMatchSnapshot()
+	it('createChosenQuestionTree picks expected questions in order for SECOND attempt in sequential mode', () => {
+		// uses | Tree
+		//      |QB (choose=Infinity)
+		//    1 |-QB1 (choose=1)
+		//    1 |  |-qA
+		//    0 |  |-qB <------------- EXPECT CHOSEN
+		//      |
+		//    1 |-QB2 (choose=2)
+		//    1 |  |-qC <------------- EXPECT CHOSEN
+		//    1 |  |-qD
+		//    0 |  |-QB3 (choose=1)
+		//    0 |    |-qE <----------- EXPECT CHOSEN
+		//    0 |    |-qF
+		//      |
+		//    1 |-qG <--------------- EXPECT CHOSEN
+		//    1 |-qH <--------------- EXPECT CHOSEN
+
+		// preserve indentation structure
+		// prettier-ignore
+		let usageMap = new Map()
+			.set('QB1',         1)
+				.set('qA',      1)
+				.set('qB',      0)
+			.set('QB2',         1)
+				.set('qC',      1)
+				.set('qD',      1)
+				.set('QB3',     0)
+					.set('qE',  0)
+					.set('qF',  0)
+			.set('qG',          1)
+			.set('qH',          1)
+
+		let ids = runAttemptThroughCreateChosenQuestionTree(usageMap)
+
+		expect(ids).toEqual(['qB', 'qE', 'qC', 'qG', 'qH'])
+	})
+
+	it('createChosenQuestionTree picks expected questions in order for THIRD attempt in sequential mode', () => {
+		// uses | Tree
+		//      |QB (choose=Infinity)
+		//    2 |-QB1 (choose=1)
+		//    1 |  |-qA <------------ EXPECT CHOSEN
+		//    1 |  |-qB
+		//      |
+		//    2 |-QB2 (choose=2)
+		//    2 |  |-qC
+		//    1 |  |-qD <------------ EXPECT CHOSEN
+		//    1 |  |-QB3 (choose=1)
+		//    1 |    |-qE
+		//    0 |    |-qF <---------- EXPECT CHOSEN
+		//      |
+		//    2 |-qG <--------------- EXPECT CHOSEN
+		//    2 |-qH <--------------- EXPECT CHOSEN
+
+		// preserve indentation structure
+		// prettier-ignore
+		let usageMap = new Map()
+			.set('QB1',         2)
+				.set('qA',      1)
+				.set('qB',      1)
+			.set('QB2',         2)
+				.set('qC',      2)
+				.set('qD',      1)
+				.set('QB3',     1)
+					.set('qE',  1)
+					.set('qF',  0)
+			.set('qG',          2)
+			.set('qH',          2)
+
+		let ids = runAttemptThroughCreateChosenQuestionTree(usageMap)
+
+		// test the ids and order of the results
+		expect(ids).toEqual(['qA', 'qD', 'qF', 'qG', 'qH'])
+	})
+
+	it('createChosenQuestionTree picks expected questions in order for FOURTH attempt in sequential mode', () => {
+		// uses | Tree
+		//      |QB (choose=Infinity)
+		//    3 |-QB1 (choose=1)
+		//    2 |  |-qA
+		//    1 |  |-qB <------------ EXPECT CHOSEN
+		//      |
+		//    3 |-QB2 (choose=2)
+		//    2 |  |-qC <------------ EXPECT CHOSEN
+		//    2 |  |-qD <------------ EXPECT CHOSEN
+		//    2 |  |-QB3 (choose=1)
+		//    1 |    |-qE
+		//    1 |    |-qF
+		//      |
+		//    3 |-qG <--------------- EXPECT CHOSEN
+		//    3 |-qH <--------------- EXPECT CHOSEN
+
+		// preserve indentation structure
+		// prettier-ignore
+		let usageMap = new Map()
+			.set('QB1',         3)
+				.set('qA',      2)
+				.set('qB',      1)
+			.set('QB2',         3)
+				.set('qC',      2)
+				.set('qD',      2)
+				.set('QB3',     2)
+					.set('qE',  1)
+					.set('qF',  1)
+			.set('qG',          3)
+			.set('qH',          3)
+
+		let ids = runAttemptThroughCreateChosenQuestionTree(usageMap)
+
+		// test the ids and order of the results
+		expect(ids).toEqual(['qB', 'qC', 'qD', 'qG', 'qH'])
+	})
+
+	it('createChosenQuestionTree creates a sequential group with no limit', () => {
+		let { QB, assessmentProperties } = buildTreeForTest()
+		QB.content.select = 'sequential'
+		QB.content.choose = Infinity
+		createChosenQuestionTree(QB, assessmentProperties)
+		let ids = convertChosenTreeToIdArray(QB, assessmentProperties.oboNode)
+
+		expect(ids).toEqual(['qA', 'qC', 'qD', 'qG', 'qH'])
 	})
 
 	it('createChosenQuestionTree creates a random-all group with no limit', () => {
-		let { qb, assessmentProperties } = buildTreeForTest()
-		qb.content.select = 'random-all'
-		qb.content.choose = Infinity
+		let { QB, assessmentProperties } = buildTreeForTest()
+		QB.content.select = 'random-all'
+		QB.content.choose = Infinity
 		expect(_.shuffle).not.toHaveBeenCalled()
-		createChosenQuestionTree(qb, assessmentProperties)
-		expect(_.shuffle).toHaveBeenCalled()
-		expect(qb.children).toMatchSnapshot()
+		createChosenQuestionTree(QB, assessmentProperties)
+
+		// make sure shuffle's called on the top level children
+		expect(_.shuffle).toHaveBeenCalledTimes(1)
+		expect(_.shuffle).toHaveBeenCalledWith(['QB1', 'QB2', 'qG', 'qH'])
+		let ids = convertChosenTreeToIdArray(QB, assessmentProperties.oboNode)
+
+		// mock _.shuffle doesn't alter the order, expect the same as sequential
+		expect(ids).toEqual(['qA', 'qC', 'qD', 'qG', 'qH'])
+	})
+
+	it('createChosenQuestionTree creates a sequential group with a limit', () => {
+		//|QB (choose=2)
+		//|-QB1 (choose=1)
+		//|  |-qA <------------ EXPECT CHOSEN
+		//|  |-qB
+		//|
+		//|-QB2 (choose=2)
+		//|  |-qC <------------ EXPECT CHOSEN
+		//|  |-qD <------------ EXPECT CHOSEN
+		//|  |-QB3 (choose=1)
+		//|    |-qE
+		//|    |-qF
+		//|
+		//|-qG
+		//|-qH
+		let { QB, assessmentProperties } = buildTreeForTest()
+		QB.content.select = 'sequential'
+		QB.content.choose = 2
+		createChosenQuestionTree(QB, assessmentProperties)
+		let ids = convertChosenTreeToIdArray(QB, assessmentProperties.oboNode)
+
+		expect(ids).toEqual(['qA', 'qC', 'qD'])
 	})
 
 	it('createChosenQuestionTree creates a random-all group with a limit', () => {
-		let { qb, assessmentProperties } = buildTreeForTest()
-		qb.content.select = 'random-all'
-		qb.content.choose = 2
+		let { QB, assessmentProperties } = buildTreeForTest()
+		QB.content.select = 'random-all'
+		QB.content.choose = 2
 		expect(_.shuffle).not.toHaveBeenCalled()
-		createChosenQuestionTree(qb, assessmentProperties)
+		createChosenQuestionTree(QB, assessmentProperties)
 		expect(_.shuffle).toHaveBeenCalled()
-		expect(qb.children).toMatchSnapshot()
+		let ids = convertChosenTreeToIdArray(QB, assessmentProperties.oboNode)
+
+		expect(ids).toEqual(['qA', 'qC', 'qD'])
 	})
 
 	it('createChosenQuestionTree creates a random-unseen group with no limit', () => {
-		let { qb, assessmentProperties } = buildTreeForTest()
-		qb.content.select = 'random-unseen'
-		qb.content.choose = Infinity
+		let { QB, assessmentProperties } = buildTreeForTest()
+		QB.content.select = 'random-unseen'
+		QB.content.choose = Infinity
 		expect(Math.random).not.toHaveBeenCalled()
-		createChosenQuestionTree(qb, assessmentProperties)
+		createChosenQuestionTree(QB, assessmentProperties)
 		expect(Math.random).toHaveBeenCalled()
-		expect(qb.children).toMatchSnapshot()
+		let ids = convertChosenTreeToIdArray(QB, assessmentProperties.oboNode)
+
+		expect(ids).toEqual(['qA', 'qC', 'qD', 'qG', 'qH'])
 	})
 
 	it('createChosenQuestionTree creates a random-unseen group with a limit', () => {
-		let { qb, assessmentProperties } = buildTreeForTest()
-		qb.content.select = 'random-unseen'
-		qb.content.choose = 2
+		let { QB, assessmentProperties } = buildTreeForTest()
+		QB.content.select = 'random-unseen'
+		QB.content.choose = 2
 		expect(Math.random).not.toHaveBeenCalled()
-		createChosenQuestionTree(qb, assessmentProperties)
+		createChosenQuestionTree(QB, assessmentProperties)
 		expect(Math.random).toHaveBeenCalled()
-		expect(qb.children).toMatchSnapshot()
-	})
+		let ids = convertChosenTreeToIdArray(QB, assessmentProperties.oboNode)
 
-	it.skip('createChosenQuestionTree handles nested question banks with limits', () => {})
+		expect(ids).toEqual(['qA', 'qC', 'qD'])
+	})
 
 	it('can retrieve an array of question type nodes from a node tree', () => {
 		let n = 0
