@@ -12,11 +12,12 @@ Object {
   "nav:openExternalLink": [Function],
   "nav:prev": [Function],
   "nav:rebuildMenu": [Function],
+  "nav:setContext": [Function],
   "nav:setFlag": [Function],
   "nav:showChildren": [Function],
   "nav:toggle": [Function],
   "nav:unlock": [Function],
-  "score:set": [Function],
+  "question:scoreSet": [Function],
 }
 `;
 
@@ -435,6 +436,7 @@ Array [
 
 exports[`NavStore should init state locked state 1`] = `
 Object {
+  "context": "practice",
   "items": Object {},
   "itemsByFullPath": Object {},
   "itemsById": Object {},
@@ -449,6 +451,7 @@ Object {
 
 exports[`NavStore should init state open state 1`] = `
 Object {
+  "context": "practice",
   "items": Object {},
   "itemsByFullPath": Object {},
   "itemsById": Object {},
@@ -463,6 +466,7 @@ Object {
 
 exports[`NavStore should init state with basic options 1`] = `
 Object {
+  "context": "practice",
   "items": Object {},
   "itemsByFullPath": Object {},
   "itemsById": Object {},

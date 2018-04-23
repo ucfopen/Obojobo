@@ -2,7 +2,7 @@ import React from 'react'
 import renderer from 'react-test-renderer'
 import { mount } from 'enzyme'
 
-import AttemptIncompleteDialog from '../../../../ObojoboDraft/Sections/Assessment/attempt-incomplete-dialog'
+import AttemptIncompleteDialog from '../../../../ObojoboDraft/Sections/Assessment/components/attempt-incomplete-dialog'
 import ModalUtil from '../../../../src/scripts/common/util/modal-util'
 
 jest.mock('../../../../src/scripts/common/util/modal-util', () => {

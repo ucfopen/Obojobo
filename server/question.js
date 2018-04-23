@@ -11,7 +11,7 @@ class Question extends DraftNode {
 	}
 
 	onSendToAssessment(req, res) {
-		this.node.content.practice = false
+		this.node.content.mode = 'assessment'
 	}
 
 	onAttemptEnd(req, res, assessment, responseHistory, currentAttempt) {

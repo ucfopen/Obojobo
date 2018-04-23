@@ -13,7 +13,7 @@ Array [
     "init": Object {},
     "node": Object {
       "content": Object {
-        "practice": false,
+        "mode": "assessment",
       },
       "id": "mockQuestion",
     },

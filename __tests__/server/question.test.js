@@ -26,9 +26,9 @@ describe('Question', () => {
 
 	it('disables practice on send to assessment', () => {
 		let responseHistory = []
-		question.node.content = { practice: true }
+		question.node.content = { mode: 'practice' }
 		question.onSendToAssessment()
-		expect(question.node.content.practice).toBe(false)
+		expect(question.node.content.mode).toBe('assessment')
 	})
 
 	it("returns if assessment doesn't contain 'this' node on attempt end", () => {

@@ -324,7 +324,7 @@ describe('apiutil', () => {
 			})
 			expect(JSON.parse(calledOptions.body)).toEqual({
 				assessmentId: 'id',
-				draftId: '_id'
+				draftId: 'draftId'
 			})
 		})
 	})

@@ -77,7 +77,7 @@ describe('server/express', () => {
 			'/api/assessment/:draftId/:assessmentId/attempts',
 			expect.anything()
 		)
-		expect(oboEvents.on).toBeCalledWith('client:assessment:setResponse', expect.anything())
+		expect(oboEvents.on).toBeCalledWith('client:question:setResponse', expect.anything())
 	})
 
 	test('/api/lti/state/draft/:draftId calls getLTIStatesByAssessmentIdForUserAndDraft', () => {
@@ -274,11 +274,11 @@ describe('server/express', () => {
 		})
 	})
 
-	test('client:assessment:setResponse expects attemptId', () => {
+	test('client:question:setResponse expects attemptId', () => {
 		expect.assertions(3)
 
 		let setResponseCallBack = oboEvents.on.mock.calls[0]
-		expect(setResponseCallBack[0]).toBe('client:assessment:setResponse')
+		expect(setResponseCallBack[0]).toBe('client:question:setResponse')
 		let event = {
 			payload: {
 				questionId: 3,
@@ -292,11 +292,11 @@ describe('server/express', () => {
 		})
 	})
 
-	test('client:assessment:setResponse expects questionId', () => {
+	test('client:question:setResponse expects questionId', () => {
 		expect.assertions(3)
 
 		let setResponseCallBack = oboEvents.on.mock.calls[0]
-		expect(setResponseCallBack[0]).toBe('client:assessment:setResponse')
+		expect(setResponseCallBack[0]).toBe('client:question:setResponse')
 		let event = {
 			payload: {
 				attemptId: 4,
@@ -310,11 +310,11 @@ describe('server/express', () => {
 		})
 	})
 
-	test('client:assessment:setResponse expects response', () => {
+	test('client:question:setResponse expects response', () => {
 		expect.assertions(3)
 
 		let setResponseCallBack = oboEvents.on.mock.calls[0]
-		expect(setResponseCallBack[0]).toBe('client:assessment:setResponse')
+		expect(setResponseCallBack[0]).toBe('client:question:setResponse')
 		let event = {
 			payload: {
 				attemptId: 4,
@@ -328,11 +328,11 @@ describe('server/express', () => {
 		})
 	})
 
-	test('client:assessment:setResponse inserts into attempts_question_responses', () => {
+	test('client:question:setResponse inserts into attempts_question_responses', () => {
 		expect.assertions(2)
 
 		let setResponseCallBack = oboEvents.on.mock.calls[0]
-		expect(setResponseCallBack[0]).toBe('client:assessment:setResponse')
+		expect(setResponseCallBack[0]).toBe('client:question:setResponse')
 		let event = {
 			payload: {
 				attemptId: 4,

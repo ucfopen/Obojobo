@@ -8,7 +8,6 @@ import {
 	AssessmentStore,
 	NavStore,
 	QuestionStore,
-	ScoreStore,
 	ModalStore,
 	FocusStore
 } from '../../../../__mocks__/viewer-state.mock'
@@ -200,10 +199,6 @@ describe('Assessment', () => {
 	})
 
 	test.skip('scoreSubmitted page renders the matching score action page', () => {
-		//@TODO
-	})
-
-	test.skip('clicking on the resend score button calls AssessmentUtil.resendLTIScore', () => {
 		//@TODO
 	})
 })

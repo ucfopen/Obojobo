@@ -11,7 +11,7 @@ export default props => (
 		className={`obojobo-draft--chunks--mc-assessment--mc-feedback${
 			props.model.parent.modelState.score === 100
 				? ' is-correct-feedback'
-				: ' is-incorrect-feedback'
+				: ' is-not-correct-feedback'
 		}`}
 		data-choice-label={props.label}
 	>

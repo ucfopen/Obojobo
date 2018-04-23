@@ -8,6 +8,22 @@ describe('Assessment', () => {
 		db.one.mockReset()
 	})
 
+	let makeMockAttempt = () => ({
+		attempt_id: 'mockAttemptId',
+		assessment_id: 'mockAssessmentId',
+		created_at: 'mockCreatedAt',
+		completed_at: 'mockCompletedAt',
+		state: 'mockState',
+		result: {
+			attemptScore: 'mockResult',
+			questionScores: ['mockScore']
+		},
+		assessment_score: '15',
+		score_details: 'mockScoreDeails',
+		assessment_score_id: 'scoreId',
+		attempt_number: '12'
+	})
+
 	test('getCompletedAssessmentAttemptHistory calls db', () => {
 		Assessment.getCompletedAssessmentAttemptHistory(0, 1, 2)
 
@@ -147,29 +163,16 @@ describe('Assessment', () => {
 		})
 	})
 
-	test('createAttemptResponse returns attempt object', () => {
-		let mockAttempt = {
-			attempt_id: 'mockAttemptId',
-			assessment_id: 'mockAssessmentId',
-			created_at: 'mockCreatedAt',
-			completed_at: 'mockCompletedAt',
-			state: 'mockState',
-			result: {
-				attemptScore: 'mockResult',
-				questionScores: ['mockScore']
-			},
-			assessment_score: '15',
-			score_details: 'mockScoreDeails',
-			assessment_score_id: 'scoreId',
-			attempt_number: '12'
-		}
-		let res = Assessment.createAttemptResponse('mockUserId', 'mockDraftId', mockAttempt)
+	test('createUserAttempt returns attempt object', () => {
+		let mockAttempt = makeMockAttempt()
+		let res = Assessment.createUserAttempt('mockUserId', 'mockDraftId', mockAttempt)
 		expect(res).toEqual({
 			assessmentId: 'mockAssessmentId',
 			assessmentScore: 15,
 			assessmentScoreDetails: 'mockScoreDeails',
 			assessmentScoreId: 'scoreId',
 			attemptId: 'mockAttemptId',
+			responses: {},
 			attemptNumber: 12,
 			attemptScore: 'mockResult',
 			draftId: 'mockDraftId',
@@ -182,44 +185,40 @@ describe('Assessment', () => {
 		})
 	})
 
-	test('getAttempts returns attempts object', () => {
-		db.manyOrNone.mockResolvedValueOnce([
-			{
-				assessmentId: 3
-			}
-		])
+	test('getAttempts returns attempts object without response history', () => {
+		db.manyOrNone.mockResolvedValueOnce([makeMockAttempt()])
 
-		lti.getLTIStatesByAssessmentIdForUserAndDraft.mockResolvedValueOnce({
-			3: {
-				scoreSent: 3,
-				sentDate: 3,
-				status: 3,
-				gradebookStatus: 3,
-				statusDetails: 'f'
-			}
-		})
+		// there's no response history
+		jest.spyOn(Assessment, 'getResponseHistory')
+		Assessment.getResponseHistory.mockResolvedValueOnce({})
 
-		jest.spyOn(Assessment, 'createAttemptResponse')
-		Assessment.createAttemptResponse.mockReturnValue('mockAttemptResponse')
+		// there's no lti state
+		lti.getLTIStatesByAssessmentIdForUserAndDraft.mockResolvedValueOnce({})
 
 		return Assessment.getAttempts('mockUserId', 'mockDraftId', 'assessmentId').then(result => {
-			expect(result).toEqual({
-				assessmentId: undefined,
-				attempts: ['mockAttemptResponse'],
-				ltiState: null
-			})
+			expect(result).toMatchSnapshot()
 		})
 	})
 
-	test('getAttempts returns attempts object', () => {
-		db.manyOrNone.mockResolvedValueOnce([
-			{
-				// assessmentId: 3
-			}
-		])
+	test('getAttempts returns attempts object with response history', () => {
+		// mock the results of the query to just return an object in an array
+		db.manyOrNone.mockResolvedValueOnce([makeMockAttempt()])
+
+		// create a mock history
+		jest.spyOn(Assessment, 'getResponseHistory')
+		let mockHistory = {
+			mockAttemptId: [
+				{
+					id: 'mockResponseId',
+					assessment_id: 'mockAssessmentId',
+					repsonse: 'mockResponse'
+				}
+			]
+		}
+		Assessment.getResponseHistory.mockResolvedValueOnce(mockHistory)
 
 		lti.getLTIStatesByAssessmentIdForUserAndDraft.mockResolvedValueOnce({
-			3: {
+			mockAssessmentId: {
 				scoreSent: 0,
 				sentDate: 'mockSentDate',
 				status: 'mockStatus',
@@ -228,29 +227,8 @@ describe('Assessment', () => {
 			}
 		})
 
-		jest.spyOn(Assessment, 'createAttemptResponse')
-		Assessment.createAttemptResponse.mockReturnValue({
-			mock: 'mockCreateAttemptResponse',
-			assessmentId: 3
-		})
-
-		return Assessment.getAttempts('mockUserId', 'mockDraftId', 'assessmentId').then(result => {
-			expect(result).toEqual({
-				assessmentId: 3,
-				attempts: [
-					{
-						mock: 'mockCreateAttemptResponse',
-						assessmentId: 3
-					}
-				],
-				ltiState: {
-					gradebookStatus: 'mockGradeBookSatus',
-					scoreSent: 0,
-					sentDate: 'mockSentDate',
-					status: 'mockStatus',
-					statusDetails: 'mockStatusDtails'
-				}
-			})
+		return Assessment.getAttempts('mockUserId', 'mockDraftId', 'mockAssessmentId').then(result => {
+			expect(result).toMatchSnapshot()
 		})
 	})
 
