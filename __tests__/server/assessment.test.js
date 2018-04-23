@@ -1,11 +1,6 @@
-jest.mock('../../../../lti', () => ({
-	getLTIStatesByAssessmentIdForUserAndDraft: jest.fn()
-}))
-
-jest.mock('../../../../db')
-const Assessment = require('../../server/assessment')
 const db = oboRequire('db')
 const lti = oboRequire('lti')
+const Assessment = require('../../server/assessment')
 
 describe('Assessment', () => {
 	beforeEach(() => {
