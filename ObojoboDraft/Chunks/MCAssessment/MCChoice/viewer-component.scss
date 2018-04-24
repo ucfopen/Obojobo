@@ -5,8 +5,7 @@
 
 // }
 
-.obojobo-draft--chunks--mc-assessment--mc-choice
-{
+.obojobo-draft--chunks--mc-assessment--mc-choice {
 	list-style-type: none;
 	min-height: 3.5em;
 	position: relative;
@@ -15,14 +14,7 @@
 	padding-bottom: 1em;
 	cursor: pointer;
 
-
-	&:hover
-	{
-		background: transparentize($color-highlight, 0.85);
-	}
-
-	input
-	{
+	input {
 		font-size: inherit;
 		position: absolute;
 		top: 1.7em;
@@ -31,8 +23,7 @@
 		margin: 0;
 	}
 
-	.children
-	{
+	.children {
 		margin-left: 2em;
 		margin-right: 0;
 		// border: 1px solid red;
@@ -61,20 +52,15 @@
 		// 	}
 		// }
 
-		.feedback-icon
-		{
+		.feedback-icon {
 			position: absolute;
 			opacity: 0.4;
 			width: 1em;
 			right: 0.5em;
 			top: 50%;
-			transform: translate(0,-50%);
+			transform: translate(0, -50%);
 		}
 	}
-
-
-
-
 
 	// &.blank:hover
 	// {
@@ -82,8 +68,7 @@
 	// }
 
 	label,
-	.label
-	{
+	.label {
 		cursor: pointer;
 		display: table;
 		min-height: 2em;
@@ -105,27 +90,23 @@
 	// 	width: 2em;
 	// }
 
-	.input
-	{
+	.input {
 		display: table-cell;
 		padding-left: 2em;
 		vertical-align: middle;
 		width: 100%;
 
-		&:focus
-		{
+		&:focus {
 			box-shadow: none;
 			outline: none;
 
-			.text
-			{
+			.text {
 				box-shadow: $box-shadow-focus;
 			}
 		}
 	}
 
-	.feedback
-	{
+	.feedback {
 		box-sizing: border-box;
 		color: transparentize($color-text, 0.3);
 		font-size: 0.7em;
@@ -134,14 +115,30 @@
 		padding-bottom: 0.5em;
 		position: relative;
 
-		.placeholder
-		{
+		.placeholder {
 			left: 0.5em;
 		}
 	}
 
-	&.is-selected
-	{
+	&.is-selected {
 		background: transparentize($color-highlight, 0.75);
+	}
+
+	&.is-mode-review {
+		input {
+			display: none;
+		}
+		.children {
+			margin-left: 0;
+		}
+		&:hover {
+			cursor: default;
+			background: inherit;
+		}
+		cursor: default;
+	}
+
+	&:hover {
+		background: transparentize($color-highlight, 0.85);
 	}
 }

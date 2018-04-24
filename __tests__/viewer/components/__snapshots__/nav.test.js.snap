@@ -1,0 +1,209 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`Nav renders all list item types 1`] = `
+<div
+  className="viewer--components--nav is-locked is-not-open is-enabled"
+>
+  <button
+    className="toggle-button"
+    onClick={[MockFunction]}
+    onMouseOut={[Function]}
+    onMouseOver={[Function]}
+    style={
+      Object {
+        "backgroundImage": undefined,
+        "filter": "invert(0%)",
+        "transform": "",
+      }
+    }
+  >
+    Toggle Navigation Menu
+  </button>
+  <ul>
+    <li
+      className="heading is-not-selected"
+    >
+      <a>
+        label4
+      </a>
+    </li>
+    <li
+      className="link is-not-selected is-not-visited is-not-complete is-not-correct"
+      onClick={[Function]}
+    >
+      <a>
+        label5
+      </a>
+      <div
+        className="lock-icon"
+      >
+        <img
+          src={Object {}}
+        />
+      </div>
+    </li>
+    <li
+      className="link is-not-selected is-not-visited is-not-complete is-not-correct"
+      onClick={[Function]}
+    >
+      <a>
+        <div
+          className="mockStylableText"
+          text="mockMe"
+        />
+      </a>
+      <div
+        className="lock-icon"
+      >
+        <img
+          src={Object {}}
+        />
+      </div>
+    </li>
+    <li
+      className="link is-selected is-visited is-complete is-correct"
+      onClick={[Function]}
+    >
+      <a>
+        label56
+      </a>
+      <div
+        className="lock-icon"
+      >
+        <img
+          src={Object {}}
+        />
+      </div>
+    </li>
+    <li
+      className="sub-link is-not-selected is-not-correct"
+      onClick={[Function]}
+    >
+      <a>
+        label6
+      </a>
+      <div
+        className="lock-icon"
+      >
+        <img
+          src={Object {}}
+        />
+      </div>
+    </li>
+    <li
+      className="seperator"
+    >
+      <hr />
+    </li>
+  </ul>
+  <div
+    className="viewer--components--logo is-inverted"
+    style={
+      Object {
+        "backgroundImage": undefined,
+      }
+    }
+  >
+    Obojobo
+  </div>
+</div>
+`;
+
+exports[`Nav renders closed 1`] = `
+<div
+  className="viewer--components--nav is-locked is-open is-enabled"
+>
+  <button
+    className="toggle-button"
+    onClick={[MockFunction]}
+    onMouseOut={[Function]}
+    onMouseOver={[Function]}
+    style={
+      Object {
+        "backgroundImage": undefined,
+        "filter": "invert(100%)",
+        "transform": "",
+      }
+    }
+  >
+    Toggle Navigation Menu
+  </button>
+  <ul />
+  <div
+    className="viewer--components--logo is-inverted"
+    style={
+      Object {
+        "backgroundImage": undefined,
+      }
+    }
+  >
+    Obojobo
+  </div>
+</div>
+`;
+
+exports[`Nav renders opened 1`] = `
+<div
+  className="viewer--components--nav is-locked is-not-open is-enabled"
+>
+  <button
+    className="toggle-button"
+    onClick={[MockFunction]}
+    onMouseOut={[Function]}
+    onMouseOver={[Function]}
+    style={
+      Object {
+        "backgroundImage": undefined,
+        "filter": "invert(0%)",
+        "transform": "",
+      }
+    }
+  >
+    Toggle Navigation Menu
+  </button>
+  <ul />
+  <div
+    className="viewer--components--logo is-inverted"
+    style={
+      Object {
+        "backgroundImage": undefined,
+      }
+    }
+  >
+    Obojobo
+  </div>
+</div>
+`;
+
+exports[`Nav renders unlocked 1`] = `
+<div
+  className="viewer--components--nav is-not-locked is-not-open is-enabled"
+>
+  <button
+    className="toggle-button"
+    onClick={[MockFunction]}
+    onMouseOut={[Function]}
+    onMouseOver={[Function]}
+    style={
+      Object {
+        "backgroundImage": undefined,
+        "filter": "invert(0%)",
+        "transform": "",
+      }
+    }
+  >
+    Toggle Navigation Menu
+  </button>
+  <ul />
+  <div
+    className="viewer--components--logo is-inverted"
+    style={
+      Object {
+        "backgroundImage": undefined,
+      }
+    }
+  >
+    Obojobo
+  </div>
+</div>
+`;

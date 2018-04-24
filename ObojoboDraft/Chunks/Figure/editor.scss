@@ -1,30 +1,23 @@
 @import '../../../../../../../scss/includes';
 
-.component[data-component-type="ObojoboDraft.Chunks.Figure"]
-{
+.component[data-component-type='ObojoboDraft.Chunks.Figure'] {
 	&.selection-contains,
 	&.selection-inside,
 	&.selection-start,
-	&.selection-end
-	{
-		.obojobo-draft--components--delete-button
-		{
+	&.selection-end {
+		.obojobo-draft--components--delete-button {
 			display: block;
 		}
 	}
 }
 
-.obojobo-draft--chunks--figure
-{
-	.anchor
-	{
+.obojobo-draft--chunks--figure {
+	.anchor {
 		z-index: 1;
 	}
 
-	figure
-	{
-		&::after
-		{
+	figure {
+		&::after {
 			bottom: 0;
 			color: $color-text-minor;
 			content: 'Click here to specify a caption';
@@ -38,41 +31,33 @@
 			width: 100%;
 		}
 
-		&.empty-caption::after
-		{
+		&.empty-caption::after {
 			display: block;
 		}
 
-		&.focus-anchor
-		{
+		&.focus-anchor {
 			.size-controls,
-			.img-controls
-			{
+			.img-controls {
 				display: block;
 			}
 		}
 	}
 
-	figcaption
-	{
+	figcaption {
 		position: relative;
 		z-index: 2;
 
-		&:focus
-		{
+		&:focus {
 			outline: none;
 		}
 	}
 
-	.container
-	{
-		&.outline-on-selection
-		{
+	.container {
+		&.outline-on-selection {
 			background: transparentize($color-action, 0.7);
 		}
 
-		.size-controls
-		{
+		.size-controls {
 			display: none;
 			left: 50%;
 			position: absolute;
@@ -81,8 +66,7 @@
 			z-index: 3;
 		}
 
-		.img-controls
-		{
+		.img-controls {
 			bottom: 20%;
 			display: none;
 			left: 50%;
@@ -92,8 +76,7 @@
 		}
 	}
 
-	.obojobo-draft--components--delete-button
-	{
+	.obojobo-draft--components--delete-button {
 		display: none;
 		position: absolute;
 		right: 0;

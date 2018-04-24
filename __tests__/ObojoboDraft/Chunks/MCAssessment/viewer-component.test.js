@@ -5,10 +5,8 @@ import MCAssessment from '../../../../ObojoboDraft/Chunks/MCAssessment/viewer-co
 import FocusStore from '../../../../src/scripts/common/stores/focus-store'
 import QuestionStore from '../../../../src/scripts/viewer/stores/question-store'
 import NavStore from '../../../../src/scripts/viewer/stores/nav-store'
-import ScoreStore from '../../../../src/scripts/viewer/stores/score-store'
 import AssessmentStore from '../../../../src/scripts/viewer/stores/assessment-store'
 import QuestionUtil from '../../../../src/scripts/viewer/util/question-util'
-import ScoreUtil from '../../../../src/scripts/viewer/util/score-util'
 import OboModel from '../../../../__mocks__/_obo-model-with-chunks'
 import APIUtil from '../../../../src/scripts/viewer/util/api-util'
 
@@ -148,7 +146,6 @@ describe('MCAssessment', () => {
 
 	let getModuleData = () => {
 		QuestionStore.init()
-		ScoreStore.init()
 		AssessmentStore.init()
 		FocusStore.init()
 		NavStore.setState({
@@ -158,7 +155,6 @@ describe('MCAssessment', () => {
 		return {
 			focusState: FocusStore.getState(),
 			questionState: QuestionStore.getState(),
-			scoreState: ScoreStore.getState(),
 			assessmentState: AssessmentStore.getState(),
 			navState: NavStore.getState()
 		}
@@ -166,7 +162,9 @@ describe('MCAssessment', () => {
 
 	test('MCAssessment component', () => {
 		let moduleData = getModuleData()
-		const component = renderer.create(<MCAssessment model={model} moduleData={moduleData} />)
+		const component = renderer.create(
+			<MCAssessment model={model} moduleData={moduleData} mode="assessment" />
+		)
 		let tree = component.toJSON()
 
 		expect(tree).toMatchSnapshot()
@@ -174,14 +172,18 @@ describe('MCAssessment', () => {
 
 	test('MCAssessment with response', () => {
 		let moduleData = getModuleData()
-		const component = renderer.create(<MCAssessment model={model} moduleData={moduleData} />)
+		const component = renderer.create(
+			<MCAssessment model={model} moduleData={moduleData} mode="assessment" />
+		)
 		let tree = component.toJSON()
 
 		expect(tree).toMatchSnapshot()
 
 		APIUtil.postEvent = jest.fn()
 		QuestionUtil.setResponse('parent', { ids: ['choice1'] })
-		const component2 = renderer.create(<MCAssessment model={model} moduleData={moduleData} />)
+		const component2 = renderer.create(
+			<MCAssessment model={model} moduleData={moduleData} mode="assessment" />
+		)
 		let tree2 = component2.toJSON()
 
 		expect(tree2).toMatchSnapshot()
@@ -191,13 +193,17 @@ describe('MCAssessment', () => {
 
 	test('MCAssessment with revealAll', () => {
 		let moduleData = getModuleData()
-		const component = renderer.create(<MCAssessment model={model} moduleData={moduleData} />)
+		const component = renderer.create(
+			<MCAssessment model={model} moduleData={moduleData} mode="assessment" />
+		)
 		let tree = component.toJSON()
 
 		expect(tree).toMatchSnapshot()
 
 		QuestionUtil.setData('id', 'revealAll', true)
-		const component2 = renderer.create(<MCAssessment model={model} moduleData={moduleData} />)
+		const component2 = renderer.create(
+			<MCAssessment model={model} moduleData={moduleData} mode="assessment" />
+		)
 		let tree2 = component2.toJSON()
 
 		expect(tree2).toMatchSnapshot()
@@ -207,17 +213,52 @@ describe('MCAssessment', () => {
 
 	test('MCAssessment with a set score', () => {
 		let moduleData = getModuleData()
-		const component = renderer.create(<MCAssessment model={model} moduleData={moduleData} />)
+		const component = renderer.create(
+			<MCAssessment model={model} moduleData={moduleData} mode="assessment" />
+		)
 		let tree = component.toJSON()
 
 		expect(tree).toMatchSnapshot()
 
-		ScoreUtil.setScore('id', 100)
-		const component2 = renderer.create(<MCAssessment model={model} moduleData={moduleData} />)
+		QuestionUtil.setScore('id', 100)
+		const component2 = renderer.create(
+			<MCAssessment model={model} moduleData={moduleData} mode="assessment" />
+		)
 		let tree2 = component2.toJSON()
 
 		expect(tree2).toMatchSnapshot()
 
 		expect(tree).not.toEqual(tree2)
+	})
+
+	test('MCAssessment with shuffle not set', () => {
+		_.shuffle = jest.fn()
+		let moduleData = getModuleData()
+		const component = renderer.create(<MCAssessment model={model} moduleData={moduleData} />)
+		expect(_.shuffle).toBeCalled()
+	})
+
+	test('MCAssessment with shuffle set to true', () => {
+		_.shuffle = jest.fn()
+		let moduleData = getModuleData()
+		model.modelState.shuffle = true
+		const component = renderer.create(<MCAssessment model={model} moduleData={moduleData} />)
+		expect(_.shuffle).toBeCalled()
+	})
+
+	test('MCAssessment with shuffle set to false', () => {
+		_.shuffle = jest.fn()
+		let moduleData = getModuleData()
+		model.modelState.shuffle = false
+		const component = renderer.create(<MCAssessment model={model} moduleData={moduleData} />)
+		expect(_.shuffle).not.toBeCalled()
+	})
+
+	test.skip('Clicking Check Answer on an incorrect answer shows you that you got the answer wrong', () => {
+		//@TODO
+	})
+
+	test.skip('Clicking Check Answer on a correct answer shows you that you got the answer correct', () => {
+		//@TODO
 	})
 })

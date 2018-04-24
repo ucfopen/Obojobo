@@ -1,6 +1,6 @@
 import TableAdapter from '../../../../ObojoboDraft/Chunks/Table/adapter'
 import GridTextGroup from '../../../../ObojoboDraft/Chunks/Table/grid-text-group'
-import StylableText from '../../../../../obojobo-draft-document-engine/src/scripts/common/text/styleable-text'
+import StylableText from '../../../../src/scripts/common/text/styleable-text'
 
 describe('Table adapter', () => {
 	it('can be constructed WITHOUT attributes', () => {

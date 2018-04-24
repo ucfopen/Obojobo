@@ -10,7 +10,7 @@ exports[`Assessment Assessment component 1`] = `
   id="obo-assessment"
 >
   <div
-    className="untested"
+    className="pre-test"
   >
     <div
       className="component obojobo-draft--pages--page"
@@ -362,12 +362,26 @@ exports[`Assessment Assessment page changes when attempt started and submitted 3
   <div
     className="score unlock"
   >
+    <p>
+      i put this in here
+    </p>
     <h1>
-      Your score is 0%
+      Your attempt score is 0%
     </h1>
     <h2>
-      This is your highest score
+      This is your recorded score
     </h2>
+    <div
+      className="obojobo-draft--components--button align-center"
+    >
+      <button
+        disabled={undefined}
+        onClick={[Function]}
+        tabIndex={undefined}
+      >
+        Resend Score
+      </button>
+    </div>
     <p>
       
     </p>
@@ -455,12 +469,26 @@ exports[`Assessment Assessment page changes when attempt started and submitted 4
   <div
     className="score unlock"
   >
+    <p>
+      i put this in here
+    </p>
     <h1>
-      Your score is 100%
+      Your attempt score is 100%
     </h1>
     <h2>
-      This is your highest score
+      This is your recorded score
     </h2>
+    <div
+      className="obojobo-draft--components--button align-center"
+    >
+      <button
+        disabled={undefined}
+        onClick={[Function]}
+        tabIndex={undefined}
+      >
+        Resend Score
+      </button>
+    </div>
     <p>
       
     </p>
@@ -548,12 +576,26 @@ exports[`Assessment Assessment page changes when attempt started and submitted 5
   <div
     className="score unlock"
   >
+    <p>
+      i put this in here
+    </p>
     <h1>
-      Your score is 0%
+      Your attempt score is 0%
     </h1>
     <h2>
-      Your highest score was 100%
+      Your recorded score is 100%
     </h2>
+    <div
+      className="obojobo-draft--components--button align-center"
+    >
+      <button
+        disabled={undefined}
+        onClick={[Function]}
+        tabIndex={undefined}
+      >
+        Resend Score
+      </button>
+    </div>
     <p>
       
     </p>
@@ -639,7 +681,7 @@ exports[`Assessment Assessment variable replacement 1`] = `
   id="obo-assessment"
 >
   <div
-    className="untested"
+    className="pre-test"
   >
     <div
       className="component obojobo-draft--pages--page"
@@ -690,7 +732,7 @@ exports[`Assessment Assessment variable replacement 2`] = `
   id="obo-assessment"
 >
   <div
-    className="untested"
+    className="pre-test"
   >
     <div
       className="component obojobo-draft--pages--page"
@@ -741,7 +783,7 @@ exports[`Assessment Assessment variable replacement 3`] = `
   id="obo-assessment"
 >
   <div
-    className="untested"
+    className="pre-test"
   >
     <div
       className="component obojobo-draft--pages--page"

@@ -1,0 +1,27 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`Logo renders correctly when inverted prop is true 1`] = `
+<div
+  className="viewer--components--logo is-inverted"
+  style={
+    Object {
+      "backgroundImage": undefined,
+    }
+  }
+>
+  Obojobo
+</div>
+`;
+
+exports[`Logo renders correctly when not inverted prop is false 1`] = `
+<div
+  className="viewer--components--logo is-not-inverted"
+  style={
+    Object {
+      "backgroundImage": undefined,
+    }
+  }
+>
+  Obojobo
+</div>
+`;

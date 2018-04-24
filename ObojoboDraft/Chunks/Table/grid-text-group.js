@@ -166,22 +166,20 @@ class GridTextGroup extends TextGroup {
 		let i, item
 		console.log('========================')
 		return __range__(0, this.numRows, false).map(
-			row =>
+			row => (
 				// console.log 'row', row
-				(
-					(s = []),
-					__range__(0, this.numCols, false).map(
-						col =>
-							// console.log '  col', col
-							(
-								(i = row * this.numCols + col),
-								// console.log '    i', i
-								(item = this.items[i]),
-								s.push((item.text.value + '          ').substr(0, 10))
-							)
-					),
-					console.log(s)
-				)
+				(s = []),
+				__range__(0, this.numCols, false).map(
+					col => (
+						// console.log '  col', col
+						(i = row * this.numCols + col),
+						// console.log '    i', i
+						(item = this.items[i]),
+						s.push((item.text.value + '          ').substr(0, 10))
+					)
+				),
+				console.log(s)
+			)
 		)
 	}
 }

@@ -6,7 +6,7 @@ class ModalStore extends Store {
 		super('modalstore')
 
 		Dispatcher.on('modal:show', payload => {
-			this._show(payload.value.component)
+			this._show(payload.value)
 		})
 
 		Dispatcher.on('modal:hide', this._hide.bind(this))
@@ -18,8 +18,8 @@ class ModalStore extends Store {
 		})
 	}
 
-	_show(component) {
-		this.state.modals.push(component)
+	_show(modalItem) {
+		this.state.modals.push(modalItem)
 		this.triggerChange()
 	}
 

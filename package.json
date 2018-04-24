@@ -2,58 +2,58 @@
 	"name": "obojobo-draft-document-engine",
 	"version": "0.2.1",
 	"description": "",
+	"engines": {
+		"yarn": "^1.0"
+	},
 	"main": "index.js",
 	"scripts": {
 		"test": "jest --verbose",
-		"test:watch": "jest --verbose --watch",
-		"test:noCache": "jest --verbose --no-cache",
-		"test:watchNoCache": "jest --verbose --watch --no-cache",
-		"test:coverage": "jest --verbose --coverage",
+		"test:ci": "CI=true jest --coverage --coverageReporters text cobertura",
 		"start": "webpack --watch",
-		"dev": "webpack-dev-server  --colors --port 8090 --host 0.0.0.0",
+		"dev": "webpack-dev-server --colors --port 8090 --host 0.0.0.0",
 		"build": "webpack",
 		"build:gitadd": "git add ./build",
-		"karma": "./node_modules/karma/bin/karma start ./karma.conf.js",
-		"karma-coverage": "./node_modules/karma/bin/karma start ./karma-coverage.conf.js",
 		"generateModuleManifest": "node ./bin/generate_module_manifest.js",
-		"prettier": "prettier --single-quote --use-tabs --no-semi --print-width='100' --write '{src,server,__{tests,mocks}__,ObojoboDraft}/**/*.js'",
-		"prettier:debug": "prettier --single-quote --use-tabs --no-semi --print-width='100' --debug-check '{src,server,__{tests,mocks}__,ObojoboDraft}/**/*.js'",
-		"precommit": "yarn test && yarn build && yarn build:gitadd && lint-staged"
+		"prettier:run": "prettier --write '{src,server,__{tests,mocks}__,ObojoboDraft}/**/*.{js,scss}'",
+		"prettier:debug": "prettier -l '{src,server,__{tests,mocks}__,ObojoboDraft}/**/*.{js,scss}'",
+		"precommit": "yarn test && lint-staged && yarn build && yarn build:gitadd",
+		"ci:prepare": "docker build -t docengine:latest .",
+		"ci:mounted:install": "docker run -i -v $(pwd):/project/ -w /project docengine:latest yarn install --force",
+		"ci:mounted:test": "docker run -i -v $(pwd):/project/ -w /project docengine:latest yarn test --coverage",
+		"ci:mounted:build": "docker run -i -w -v $(pwd):/project/ -w /project docengine:latest yarn build",
+		"ci:isolated:test": "docker run -i -e GIT_USER -e GIT_PASSWORD -e GIT_BRANCH docengine:latest /bin/docker_clone_and_test.sh"
+	},
+	"prettier": {
+		"printWidth": 100,
+		"semi": false,
+		"useTabs": true,
+		"singleQuote": true
 	},
 	"lint-staged": {
-		"*.js": ["yarn prettier", "git add"]
+		"{src,server,__{tests,mocks}__,ObojoboDraft}/**/*.{js,scss}": [
+			"yarn prettier --write",
+			"git add"
+		]
 	},
 	"author": "",
 	"devDependencies": {
 		"babel-core": "^6.6.4",
-		"babel-jest": "^20.0.1",
 		"babel-loader": "^7.0.0",
-		"babel-preset-es2015": "^6.24.1",
+		"babel-preset-env": "^1.5.1",
 		"babel-preset-react": "^6.5.0",
-		"backbone": "^1.3.3",
-		"backbone.nativeajax": "^0.4.3",
 		"bourbon": "^4.2.7",
-		"coffee-loader": "^0.7.2",
-		"coffee-script": "^1.10.0",
 		"css-loader": "^0.28.1",
-		"dragula": "^3.7.1",
+		"enzyme": "^3.3.0",
+		"enzyme-adapter-react-15": "^1.0.5",
 		"extract-text-webpack-plugin": "^2.1.0",
-		"http-server": "^0.9.0",
 		"husky": "^0.14.3",
-		"jasmine-core": "^2.5.0",
-		"jasmine-node": "^1.14.5",
-		"jest": "^19.0.2",
+		"jest": "^22.4.3",
 		"json-loader": "^0.5.4",
-		"karma": "^1.2.0",
-		"karma-chrome-launcher": "^2.0.0",
-		"karma-coverage": "^1.1.1",
-		"karma-jasmine": "^0.1.6",
-		"katex": "^0.5.1",
-		"lint-staged": "^4.0.2",
+		"lint-staged": "^6.1.1",
 		"node-bourbon": "^4.2.8",
 		"node-sass": "^3.4.2",
-		"object-assign": "^4.1.0",
-		"prettier": "^1.5.2",
+		"prettier": "1.11.1",
+		"react-test-renderer": "^15.5.4",
 		"sass-loader": "^6.0.5",
 		"style-loader": "^0.17.0",
 		"svg-url-loader": "^2.0.2",
@@ -61,24 +61,27 @@
 		"webpack-dev-server": "^2.4.5"
 	},
 	"dependencies": {
-		"array-from": "^2.1.1",
 		"babel-preset-env": "^1.5.1",
-		"babel-preset-react-es2015": "^1.2.0",
-		"enzyme": "^2.8.2",
-		"es6-set": "^0.1.5",
-		"promise-polyfill": "^6.0.2",
+		"date-fns": "^1.29.0",
+		"babel-polyfill": "^6.26.0",
+		"backbone": "^1.3.3",
+		"dragula": "^3.7.1",
+		"katex": "^0.9.0",
 		"react": "^15.5.4",
 		"react-dom": "^15.5.4",
 		"react-idle-timer": "^1.5.0",
-		"react-test-renderer": "^15.5.4",
 		"react-transition-group": "^1.1.3",
 		"smoothscroll-polyfill": "^0.3.4",
 		"underscore": "1.5.1",
+		"url-parse": "^1.2.0",
 		"whatwg-fetch": "^2.0.3"
 	},
 	"jest": {
-		"testURL": "http://localhost:3000/view/00000000-0000-0000-0000-000000000000",
-		"setupFiles": ["./setupTests.js"],
+		"testURL": "http://localhost:3000/view/00000000-0000-0000-0000-000000000000/visit/1",
+		"testMatch": [
+			"**/__tests__/**/*.js?(x)"
+		],
+		"setupTestFrameworkScriptFile": "./setupTests.js",
 		"verbose": true,
 		"moduleNameMapper": {
 			"^Common(.*)$": "<rootDir>/src/scripts/common$1",
@@ -86,10 +89,30 @@
 			"\\.scss$": "<rootDir>/__mocks__/ignore-file-stub.js",
 			"\\.svg$": "<rootDir>/__mocks__/ignore-file-stub.js"
 		},
-		"collectCoverageFrom": ["src/scripts/**", "ObojoboDraft/**", "server/**"],
+		"moduleDirectories": [
+			"<rootDir>",
+			"node_modules"
+		],
+		"collectCoverageFrom": [
+			"src/scripts/**",
+			"ObojoboDraft/**",
+			"server/**"
+		],
+		"coverageReporters": [
+			"text",
+			"lcov"
+		],
 		"coveragePathIgnorePatterns": [
-			"command-handler.js",
+			"====THESE DONT NEED TESTS====",
+			"<rootDir>/src/scripts/viewer/index.js",
+			"<rootDir>/src/scripts/viewer/app.js",
+			"<rootDir>/src/scripts/viewer/dist.js",
+			"<rootDir>/src/scripts/viewer/polyfills.js",
+			"====THESE ARE NOT USED RIGHT NOW====",
 			"selection-handler.js",
+			"<rootDir>/src/scripts/common/util/console.js",
+			"====THESE ARE FOR THE EDITOR====",
+			"command-handler.js",
 			"<rootDir>/ObojoboDraft/Chunks/Table/create-form.js",
 			"<rootDir>/ObojoboDraft/Chunks/Table/grid-button.js",
 			"<rootDir>/ObojoboDraft/Chunks/Table/table-controls.js",
@@ -104,13 +127,6 @@
 			"<rootDir>/src/scripts/common/chunk/text-chunk/text-group-el-util.js",
 			"<rootDir>/src/scripts/common/text-group/text-group-cursor.js",
 			"<rootDir>/src/scripts/common/text-group/text-group-selection.js",
-			"<rootDir>/src/scripts/common/util/console.js",
-			"<rootDir>/src/scripts/viewer",
-			"<rootDir>/src/scripts/common/net",
-			"<rootDir>/server/questionbank.js",
-			"<rootDir>/server/questionselector.js",
-			"<rootDir>/server/util.js",
-			"<rootDir>/server/express.js",
 			"<rootDir>/src/scripts/common/page/screen.js",
 			"<rootDir>/src/scripts/common/page/head.js"
 		]

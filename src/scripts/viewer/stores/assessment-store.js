@@ -1,23 +1,33 @@
 import Common from 'Common'
 
 import AssessmentUtil from '../../viewer/util/assessment-util'
-import ScoreUtil from '../../viewer/util/score-util'
 import QuestionUtil from '../../viewer/util/question-util'
 import APIUtil from '../../viewer/util/api-util'
 import NavUtil from '../../viewer/util/nav-util'
+import NavStore from '../../viewer/stores/nav-store'
+import LTINetworkStates from './assessment-store/lti-network-states'
+import QuestionStore from './question-store'
+import AssessmentScoreReporter from '../../viewer/assessment/assessment-score-reporter'
+import AssessmentScoreReportView from '../../viewer/assessment/assessment-score-report-view'
 
 let { Store } = Common.flux
 let { Dispatcher } = Common.flux
 let { OboModel } = Common.models
 let { ErrorUtil } = Common.util
-let { SimpleDialog } = Common.components.modal
+let { SimpleDialog, Dialog } = Common.components.modal
 let { ModalUtil } = Common.util
 
 let getNewAssessmentObject = assessmentId => ({
 	id: assessmentId,
 	current: null,
 	currentResponses: [],
-	attempts: []
+	attempts: [],
+	highestAssessmentScoreAttempts: [],
+	highestAttemptScoreAttempts: [],
+	lti: null,
+	ltiNetworkState: LTINetworkStates.IDLE,
+	ltiErrorCount: 0,
+	isShowingAttemptHistory: false
 })
 
 class AssessmentStore extends Store {
@@ -30,49 +40,89 @@ class AssessmentStore extends Store {
 		})
 
 		Dispatcher.on('assessment:endAttempt', payload => {
-			this.tryEndAttempt(payload.value.id)
+			this.tryEndAttempt(payload.value.id, payload.value.context)
+		})
+
+		Dispatcher.on('assessment:resendLTIScore', payload => {
+			this.tryResendLTIScore(payload.value.id)
 		})
 
 		Dispatcher.on('question:setResponse', payload => {
 			this.trySetResponse(payload.value.id, payload.value.response, payload.value.targetId)
 		})
+
+		Dispatcher.on('viewer:closeAttempted', shouldPrompt => {
+			if (AssessmentUtil.isInAssessment(this.state)) {
+				shouldPrompt()
+			}
+		})
 	}
 
-	init(history) {
-		let question
-		if (history == null) {
-			history = []
-		}
+	init(attemptsByAssessment) {
 		this.state = {
 			assessments: {}
 		}
 
-		history.sort((a, b) => new Date(a.startTime).getTime() > new Date(b.startTime).getTime())
+		// necessary?
+		if (!attemptsByAssessment) return
+		this.updateAttempts(attemptsByAssessment)
+	}
 
+	updateAttempts(attemptsByAssessment) {
 		let unfinishedAttempt = null
 		let nonExistantQuestions = []
+		let assessments = this.state.assessments
+		let assessment
 
-		for (let attempt of Array.from(history)) {
-			if (!this.state.assessments[attempt.assessmentId]) {
-				this.state.assessments[attempt.assessmentId] = getNewAssessmentObject(attempt.assessmentId)
-			}
+		attemptsByAssessment.forEach(assessmentItem => {
+			let assessId = assessmentItem.assessmentId
+			let attempts = assessmentItem.attempts
 
-			if (!attempt.endTime) {
-				// @state.assessments[attempt.assessmentId].current = attempt
-				unfinishedAttempt = attempt
+			if (!assessments[assessId]) {
+				assessments[assessId] = getNewAssessmentObject(assessId)
 			} else {
-				this.state.assessments[attempt.assessmentId].attempts.push(attempt)
+				assessments[assessId].attempts = []
 			}
 
-			for (question of Array.from(attempt.state.questions)) {
-				if (!OboModel.models[question.id]) {
-					nonExistantQuestions.push(question)
+			assessments[assessId].lti = assessmentItem.ltiState
+			assessments[assessId].highestAttemptScoreAttempts = AssessmentUtil.findHighestAttempts(
+				attempts,
+				'assessmentScore'
+			)
+			assessments[assessId].highestAssessmentScoreAttempts = AssessmentUtil.findHighestAttempts(
+				attempts,
+				'attemptScore'
+			)
+
+			attempts.forEach(attempt => {
+				assessment = assessments[attempt.assessmentId]
+
+				if (!attempt.isFinished) {
+					unfinishedAttempt = attempt
+				} else {
+					assessment.attempts.push(attempt)
 				}
-			}
-		}
 
-		for (question of Array.from(nonExistantQuestions)) {
-			OboModel.create(question)
+				attempt.state.questions.forEach(question => {
+					if (!OboModel.models[question.id]) {
+						OboModel.create(question)
+					}
+				})
+			})
+		})
+
+		for (let assessment in assessments) {
+			assessments[assessment].attempts.forEach(attempt => {
+				let scoreObject = {}
+				attempt.questionScores.forEach(score => {
+					scoreObject[score.id] = score
+				})
+				let stateToUpdate = {
+					scores: scoreObject,
+					responses: attempt.responses
+				}
+				QuestionStore.updateStateByContext(stateToUpdate, `assessmentReview:${attempt.attemptId}`)
+			})
 		}
 
 		if (unfinishedAttempt) {
@@ -85,7 +135,8 @@ class AssessmentStore extends Store {
 					<p>
 						It looks like you were in the middle of an attempt. We'll resume you where you left off.
 					</p>
-				</SimpleDialog>
+				</SimpleDialog>,
+				true
 			)
 		}
 	}
@@ -141,6 +192,7 @@ class AssessmentStore extends Store {
 
 		this.state.assessments[id].current = startAttemptResp
 
+		NavUtil.setContext(`assessment:${startAttemptResp.assessmentId}:${startAttemptResp.attemptId}`)
 		NavUtil.rebuildMenu(model.getRoot())
 		NavUtil.goto(id)
 
@@ -148,7 +200,7 @@ class AssessmentStore extends Store {
 		Dispatcher.trigger('assessment:attemptStarted', id)
 	}
 
-	tryEndAttempt(id) {
+	tryEndAttempt(id, context) {
 		let model = OboModel.models[id]
 		let assessment = this.state.assessments[id]
 
@@ -158,7 +210,7 @@ class AssessmentStore extends Store {
 					return ErrorUtil.errorResponse(res)
 				}
 
-				this.endAttempt(res.value)
+				this.endAttempt(res.value, context)
 				return this.triggerChange()
 			})
 			.catch(e => {
@@ -166,18 +218,86 @@ class AssessmentStore extends Store {
 			})
 	}
 
-	endAttempt(endAttemptResp) {
-		let id = endAttemptResp.assessmentId
-		let assessment = this.state.assessments[id]
-		let model = OboModel.models[id]
+	endAttempt(endAttemptResp, context) {
+		let assessId = endAttemptResp.assessmentId
+		let assessment = this.state.assessments[assessId]
+		let model = OboModel.models[assessId]
 
 		assessment.current.state.questions.forEach(question => QuestionUtil.hideQuestion(question.id))
-		assessment.currentResponses.forEach(questionId => QuestionUtil.clearResponse(questionId))
-		assessment.attempts.push(endAttemptResp)
+		assessment.currentResponses.forEach(questionId =>
+			QuestionUtil.clearResponse(questionId, context)
+		)
 		assessment.current = null
 
+		this.updateAttempts([endAttemptResp])
+
 		model.processTrigger('onEndAttempt')
-		Dispatcher.trigger('assessment:attemptEnded', id)
+
+		Dispatcher.trigger('assessment:attemptEnded', assessId)
+
+		let attempt = AssessmentUtil.getLastAttemptForModel(this.state, model)
+		let reporter = new AssessmentScoreReporter({
+			assessmentRubric: model.modelState.rubric.toObject(),
+			totalNumberOfAttemptsAllowed: model.modelState.attempts,
+			allAttempts: assessment.attempts
+		})
+
+		let assessmentLabel = NavUtil.getNavLabelForModel(NavStore.getState(), model)
+		ModalUtil.show(
+			<Dialog
+				modalClassName="obojobo-draft--sections--assessment--results-modal"
+				centered
+				buttons={[
+					{
+						value: `Show ${assessmentLabel} Overview`,
+						onClick: ModalUtil.hide,
+						default: true
+					}
+				]}
+				title={`Attempt ${attempt.attemptNumber} Results`}
+				width="35rem"
+			>
+				<AssessmentScoreReportView report={reporter.getReportFor(attempt.attemptNumber)} />
+			</Dialog>
+		)
+	}
+
+	tryResendLTIScore(assessmentId) {
+		let assessmentModel = OboModel.models[assessmentId]
+		let assessment = AssessmentUtil.getAssessmentForModel(this.state, assessmentModel)
+
+		assessment.ltiNetworkState = LTINetworkStates.AWAITING_SEND_ASSESSMENT_SCORE_RESPONSE
+		this.triggerChange()
+
+		return APIUtil.resendLTIAssessmentScore(assessmentModel.getRoot(), assessmentModel)
+			.then(res => {
+				assessment.ltiNetworkState = LTINetworkStates.IDLE
+
+				if (res.status === 'error') {
+					return ErrorUtil.errorResponse(res)
+				}
+
+				this.updateLTIScore(
+					AssessmentUtil.getAssessmentForModel(this.state, assessmentModel),
+					res.value
+				)
+				return this.triggerChange()
+			})
+			.catch(e => {
+				console.error(e)
+			})
+	}
+
+	updateLTIScore(assessment, updateLTIScoreResp) {
+		assessment.lti = updateLTIScoreResp
+
+		let assessmentModel = OboModel.models[assessment.id]
+		if (AssessmentUtil.isLTIScoreNeedingToBeResynced(this.state, assessmentModel)) {
+			assessment.ltiErrorCount++
+		} else {
+			assessment.ltiErrorCount = 0
+		}
+		// Dispatcher.trigger('assessment:ltiScore')
 	}
 
 	trySetResponse(questionId, response, targetId) {
@@ -190,19 +310,7 @@ class AssessmentStore extends Store {
 		}
 
 		assessment.currentResponses.push(questionId)
-
-		return APIUtil.postEvent(model.getRoot(), 'assessment:setResponse', '2.0.0', {
-			assessmentId: assessment.id,
-			attemptId: assessment.current.attemptId,
-			questionId,
-			response,
-			targetId
-		}).then(res => {
-			if (res.status === 'error') {
-				return ErrorUtil.errorResponse(res)
-			}
-			this.triggerChange()
-		})
+		this.triggerChange()
 	}
 
 	getState() {

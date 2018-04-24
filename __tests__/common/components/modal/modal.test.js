@@ -32,7 +32,10 @@ describe('Modal', () => {
 
 		expect(onClose).toHaveBeenCalledTimes(0)
 
-		component.find('DeleteButton').find('button').simulate('click')
+		component
+			.find('DeleteButton')
+			.find('button')
+			.simulate('click')
 
 		expect(onClose).toHaveBeenCalledTimes(1)
 	})
@@ -60,7 +63,11 @@ describe('Modal', () => {
 
 		expect(focusOnFirstElement).toHaveBeenCalledTimes(0)
 
-		component.find('div').at(0).find('.first-tab').simulate('focus')
+		component
+			.find('div')
+			.at(0)
+			.find('.first-tab')
+			.simulate('focus')
 
 		expect(focusOnFirstElement).toHaveBeenCalledTimes(1)
 	})
@@ -74,7 +81,11 @@ describe('Modal', () => {
 
 		expect(focusOnFirstElement).toHaveBeenCalledTimes(0)
 
-		component.find('div').at(0).find('.first-tab').simulate('focus')
+		component
+			.find('div')
+			.at(0)
+			.find('.first-tab')
+			.simulate('focus')
 
 		expect(focusOnFirstElement).toHaveBeenCalledTimes(0)
 		expect(document.activeElement.parentElement.className).toBe(

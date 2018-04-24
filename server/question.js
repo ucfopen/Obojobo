@@ -11,7 +11,7 @@ class Question extends DraftNode {
 	}
 
 	onSendToAssessment(req, res) {
-		this.node.content.practice = false
+		this.node.content.mode = 'assessment'
 	}
 
 	onAttemptEnd(req, res, assessment, responseHistory, currentAttempt) {
@@ -30,9 +30,9 @@ class Question extends DraftNode {
 			req.app,
 			this,
 			questionResponses[0],
-			function(score) {
+			score => {
 				currentAttempt.addScore(this.node.id, score)
-			}.bind(this)
+			}
 		)
 	}
 }

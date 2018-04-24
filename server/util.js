@@ -1,3 +1,5 @@
+const logger = oboRequire('logger')
+
 let findOboNode = (oboNode, targetId) => {
 	;((oboNode, id) => {
 		if (findOboNode.oboNode) return
@@ -61,9 +63,15 @@ let zeroOutScores = oboNode => {
 	}
 }
 
+const logAndRespondToUnexpected = (errorMessage, res, req, jsError) => {
+	logger.error('logAndRespondToUnexpected', errorMessage, jsError)
+	res.unexpected(errorMessage)
+}
+
 module.exports = {
 	filterOutAssessment: filterOutAssessment,
 	buildAttempt: buildAttempt,
 	findOboNode: findOboNode,
-	zeroOutScores: zeroOutScores
+	zeroOutScores: zeroOutScores,
+	logAndRespondToUnexpected
 }
