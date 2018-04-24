@@ -29,7 +29,8 @@ let endAttempt = (req, res, user, attemptId, isPreviewing) => {
 		.then(draftTree => {
 			tree = draftTree
 			return getAttemptHistory(user.id, attempt.draftId, attempt.assessmentId)
-		}).then(attemptHistoryResult => {
+		})
+		.then(attemptHistoryResult => {
 			logger.info(`End attempt "${attemptId}" - getAttemptHistory success`)
 
 			attemptHistory = attemptHistoryResult
@@ -69,13 +70,14 @@ let endAttempt = (req, res, user, attemptId, isPreviewing) => {
 
 			assessmentScoreId = completeAttemptResult.assessmentScoreId
 
-			let assessmentProperties = loadAssessmentProperties(tree, attempt, user, isPreviewing, attemptHistory)
-
 			return reloadAttemptStateIfReviewing(
 				attemptId,
 				attempt.draftId,
-				assessmentProperties,
-				attempt
+				attempt,
+				tree,
+				user,
+				isPreviewing,
+				attemptHistory
 			)
 		})
 		.then(() => {
@@ -311,7 +313,15 @@ let insertAttemptScoredEvents = (
 	})
 }
 
-let reloadAttemptStateIfReviewing = (attemptId, draftId, assessmentProperties, attempt) => {
+let reloadAttemptStateIfReviewing = (
+	attemptId,
+	draftId,
+	attempt,
+	tree,
+	user,
+	isPreviewing,
+	attemptHistory
+) => {
 	let assessmentNode = attempt.assessmentModel
 
 	// Do not reload the state if reviews are never allowed
@@ -326,6 +336,14 @@ let reloadAttemptStateIfReviewing = (attemptId, draftId, assessmentProperties, a
 	if (assessmentNode.node.content.review == 'afterAttempts' && !isLastAttempt) {
 		return null
 	}
+
+	let assessmentProperties = loadAssessmentProperties(
+		tree,
+		attempt,
+		user,
+		isPreviewing,
+		attemptHistory
+	)
 
 	let state = attemptStart.getState(assessmentProperties)
 	// Not ideal, but attempt-start needs this as a recursive structure to send
@@ -422,5 +440,6 @@ module.exports = {
 	insertAttemptScoredEvents,
 	reloadAttemptStateIfReviewing,
 	recreateChosenQuestionTree,
-	getNodeQuestion
+	getNodeQuestion,
+	loadAssessmentProperties
 }
