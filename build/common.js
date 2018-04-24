@@ -6203,76 +6203,28 @@ Object.defineProperty(exports, "__esModule", {
 
 var _extends = Object.assign || function (target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i]; for (var key in source) { if (Object.prototype.hasOwnProperty.call(source, key)) { target[key] = source[key]; } } } return target; };
 
-var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
-
 var _anchor = __webpack_require__(17);
 
 var _anchor2 = _interopRequireDefault(_anchor);
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
-function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+var FocusableChunk = function FocusableChunk(props) {
+	return React.createElement(
+		'div',
+		{
+			className: 'focusable-chunk anchor-container' + (props.className ? ' ' + props.className : ''),
+			contentEditable: false
+		},
+		React.createElement(_anchor2.default, _extends({}, props, { name: 'main' })),
+		props.children
+	);
+};
 
-function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
-
-function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
-
-var FocusableChunk = function (_React$Component) {
-	_inherits(FocusableChunk, _React$Component);
-
-	function FocusableChunk() {
-		_classCallCheck(this, FocusableChunk);
-
-		return _possibleConstructorReturn(this, (FocusableChunk.__proto__ || Object.getPrototypeOf(FocusableChunk)).apply(this, arguments));
-	}
-
-	_createClass(FocusableChunk, [{
-		key: 'render',
-
-
-		// getAnchorNode() {
-		// 	if (
-		// 		__guard__(
-		// 			__guard__(this.refs != null ? this.refs.anchor : undefined, x1 => x1.refs),
-		// 			x => x.anchorElement
-		// 		) == null
-		// 	) {
-		// 		return null
-		// 	}
-		// 	return this.refs.anchor.refs.anchorElement
-		// }
-
-		value: function render() {
-			var className = this.props.className;
-
-
-			return React.createElement(
-				'div',
-				{
-					className: 'focusable-chunk anchor-container' + (className ? ' ' + className : ''),
-					contentEditable: false
-				},
-				React.createElement(_anchor2.default, _extends({}, this.props, { name: 'main', ref: 'anchor' })),
-				this.props.children
-			);
-		}
-	}], [{
-		key: 'defaultProps',
-		get: function get() {
-			return {
-				indent: 0,
-				spellcheck: true
-			};
-		}
-	}]);
-
-	return FocusableChunk;
-}(React.Component);
-
-// function __guard__(value, transform) {
-// 	return typeof value !== 'undefined' && value !== null ? transform(value) : undefined
-// }
-
+FocusableChunk.defaultProps = {
+	indent: 0,
+	spellcheck: true
+};
 
 exports.default = FocusableChunk;
 

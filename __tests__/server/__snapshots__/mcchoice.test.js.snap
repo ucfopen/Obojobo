@@ -1,0 +1,9 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`MCChoice registers expected events 1`] = `
+Array [
+  Object {
+    "ObojoboDraft.Sections.Assessment:sendToAssessment": [Function],
+  },
+]
+`;

@@ -1,21 +1,3 @@
-jest.mock('../../../../insert_event')
-jest.mock('../../../../models/draft')
-jest.mock('../../../../routes/api/events/create_caliper_event')
-jest.mock('../../../../logger')
-jest.mock('../../../../config', () => ({
-	db: {
-		host: 'host',
-		port: 'port',
-		database: 'database',
-		user: 'user',
-		password: 'password'
-	}
-}))
-
-jest.mock('../../../../lti', () => ({
-	replaceResult: jest.fn(),
-	sendHighestAssessmentScore: jest.fn()
-}))
 jest.mock('../../server/assessment-rubric')
 jest.mock('../../server/assessment', () => ({
 	getAttempt: jest.fn().mockResolvedValue({
@@ -45,7 +27,6 @@ jest.mock('../../../../db', () => {
 })
 
 const logger = oboRequire('logger')
-const config = oboRequire('config')
 const db = oboRequire('db')
 const DraftModel = oboRequire('models/draft')
 const Draft = oboRequire('models/draft')

@@ -1,10 +1,3 @@
-jest.mock('../../../../db')
-jest.mock('../../../../logger')
-jest.mock('../../../../lti', () => ({
-	getLTIStatesByAssessmentIdForUserAndDraft: jest.fn(),
-	sendHighestAssessmentScore: jest.fn()
-}))
-jest.mock('../../../../obo_events', () => ({ on: jest.fn() }))
 jest.mock('../../server/attempt-start', () => ({ startAttempt: jest.fn() }))
 jest.mock('../../server/attempt-end', () => ({
 	endAttempt: jest.fn().mockReturnValue(Promise.resolve('endAttemptResult'))

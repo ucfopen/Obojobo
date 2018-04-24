@@ -30,9 +30,9 @@ class Question extends DraftNode {
 			req.app,
 			this,
 			questionResponses[0],
-			function(score) {
+			score => {
 				currentAttempt.addScore(this.node.id, score)
-			}.bind(this)
+			}
 		)
 	}
 }
