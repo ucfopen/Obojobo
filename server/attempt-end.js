@@ -8,8 +8,6 @@ let lti = oboRequire('lti')
 let logger = oboRequire('logger')
 let attemptStart = require('./attempt-start')
 
-const QUESTION_NODE_TYPE = 'ObojoboDraft.Chunks.Question'
-
 let endAttempt = (req, res, user, attemptId, isPreviewing) => {
 	let attempt
 	let attemptHistory
@@ -17,50 +15,29 @@ let endAttempt = (req, res, user, attemptId, isPreviewing) => {
 	let calculatedScores
 	let updateAttemptData
 	let assessmentScoreId
-	let assessmentProperties = {
-		user: null,
-		isPreviewing: null,
-		draftTree: null,
-		id: null,
-		node: null,
-		nodeChildrenIds: null,
-		assessmentQBTree: null,
-		attemptHistory: null,
-		numAttemptsTaken: null,
-		childrenMap: null
-	}
+	let tree
 
 	logger.info(`End attempt "${attemptId}" begin for user "${user.id}" (Preview="${isPreviewing}")`)
 
 	return getAttempt(attemptId)
 		.then(attemptResult => {
 			logger.info(`End attempt "${attemptId}" - getAttempt success`)
+
 			attempt = attemptResult
 			return DraftModel.fetchById(attempt.draftId)
 		})
 		.then(draftTree => {
-			const assessmentNode = draftTree.getChildNodeById(attempt.assessmentId)
-
-			assessmentProperties.user = user
-			assessmentProperties.isPreviewing = isPreviewing
-
-			assessmentProperties.draftTree = draftTree
-			assessmentProperties.id = attempt.assessmentId
-			assessmentProperties.oboNode = assessmentNode
-			assessmentProperties.nodeChildrenIds = assessmentNode.children[1].childrenSet
-			assessmentProperties.assessmentQBTree = assessmentNode.children[1].toObject()
-
+			tree = draftTree
 			return getAttemptHistory(user.id, attempt.draftId, attempt.assessmentId)
-		})
-		.then(attemptHistoryResult => {
+		}).then(attemptHistoryResult => {
 			logger.info(`End attempt "${attemptId}" - getAttemptHistory success`)
 
 			attemptHistory = attemptHistoryResult
-			assessmentProperties.attemptHistory = attemptHistoryResult
 			return getResponsesForAttempt(attemptId)
 		})
 		.then(responsesForAttemptResult => {
 			logger.info(`End attempt "${attemptId}" - getResponsesForAttempt success`)
+
 			return getCalculatedScores(
 				req,
 				res,
@@ -89,7 +66,10 @@ let endAttempt = (req, res, user, attemptId, isPreviewing) => {
 		})
 		.then(completeAttemptResult => {
 			logger.info(`End attempt "${attemptId}" - completeAttempt success`)
+
 			assessmentScoreId = completeAttemptResult.assessmentScoreId
+
+			let assessmentProperties = loadAssessmentProperties(tree, attempt, user, isPreviewing, attemptHistory)
 
 			return reloadAttemptStateIfReviewing(
 				attemptId,
@@ -355,7 +335,6 @@ let reloadAttemptStateIfReviewing = (attemptId, draftId, assessmentProperties, a
 	// If reviews are always allowed, reload the state for this attempt
 	// Each attempt's state will be reloaded as it finishes
 	if (assessmentNode.node.content.review == 'always') {
-		logger.info(`Elli why ${JSON.stringify(state.questions)}`)
 		return Assessment.updateAttemptState(attemptId, state)
 	}
 
@@ -412,6 +391,24 @@ let getNodeQuestion = (nodeId, assessmentNode) => {
 	return assessmentNode.getChildNodeById(nodeId).toObject()
 }
 
+// Pulls assessment properties out of the promise flow
+let loadAssessmentProperties = (draftTree, attempt, user, isPreviewing, attemptHistory) => {
+	const assessmentNode = draftTree.getChildNodeById(attempt.assessmentId)
+
+	return {
+		user: user,
+		isPreviewing: isPreviewing,
+		draftTree: draftTree,
+		id: attempt.assessmentId,
+		oboNode: assessmentNode,
+		nodeChildrenIds: assessmentNode.children[1].childrenSet,
+		assessmentQBTree: assessmentNode.children[1].toObject(),
+		attemptHistory: attemptHistory,
+		numAttemptsTaken: null,
+		childrenMap: null
+	}
+}
+
 module.exports = {
 	endAttempt,
 	getAttempt,
@@ -422,7 +419,6 @@ module.exports = {
 	completeAttempt,
 	insertAttemptEndEvents,
 	sendLTIHighestAssessmentScore: lti.sendHighestAssessmentScore,
-	insertAttemptScoredEvents,
 	insertAttemptScoredEvents,
 	reloadAttemptStateIfReviewing,
 	recreateChosenQuestionTree,

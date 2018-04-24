@@ -115,21 +115,16 @@ const startAttempt = (req, res) => {
 }
 
 const getState = assessmentProperties => {
-	assessmentProperties.questionUsesMap = createAssessmentUsedQuestionMap(assessmentProperties)
-
-	for (let attempt of assessmentProperties.attemptHistory) {
-		if (attempt.state.qb) {
-			initAssessmentUsedQuestions(attempt.state.qb, assessmentProperties.questionUsesMap)
-		}
-	}
+	assessmentProperties.questionUsesMap = loadChildren(assessmentProperties)
 
 	createChosenQuestionTree(assessmentProperties.assessmentQBTree, assessmentProperties)
 
-	attemptState = {
+	return {
 		qb: assessmentProperties.assessmentQBTree,
 		questions: getNodeQuestions(
 			assessmentProperties.assessmentQBTree,
-			assessmentProperties.oboNode
+			assessmentProperties.oboNode,
+			[]
 		),
 		data: {}
 	}
