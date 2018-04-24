@@ -10,12 +10,6 @@
 .obojobo-draft--chunks--math-equation.align-center .katex-display {
   text-align: center; }
 
-.obojobo-draft--chunks--math-equation.size-small {
-  font-size: 0.7em; }
-
-.obojobo-draft--chunks--math-equation.size-large {
-  font-size: 1.5em; }
-
 .obojobo-draft--chunks--math-equation .equation-label {
   position: absolute;
   top: 50%;
