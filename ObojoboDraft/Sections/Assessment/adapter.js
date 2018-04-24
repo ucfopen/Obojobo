@@ -4,18 +4,19 @@ import AssessmentRubric from '../../../server/assessment-rubric'
 
 let Adapter = {
 	construct(model, attrs) {
-		// Default state.
-		model.modelState.attempts = Infinity
-		model.modelState.review = 'never'
-		model.modelState.scoreActions = new ScoreActions()
-		model.modelState.rubric = new AssessmentRubric(attrs.content.rubric)
-
 		// Set state if XML has the attributes.
 		if (attrs && attrs.content) {
-			model.modelState.attempts =
-				attrs.content.attempts === 'unlimited' ? Infinity : parseInt(attrs.content.attempts, 10)
+			let attempts = attrs.content.attempts || 'unlimited'
+			model.modelState.attempts = attempts === 'unlimited' ? Infinity : parseInt(attempts, 10)
 			model.modelState.review = attrs.content.review || 'never'
 			model.modelState.scoreActions = new ScoreActions(attrs.content.scoreActions || null)
+			model.modelState.rubric = new AssessmentRubric(attrs.content.rubric || null)
+		} else {
+			// Default state.
+			model.modelState.attempts = Infinity
+			model.modelState.review = 'never'
+			model.modelState.scoreActions = new ScoreActions()
+			model.modelState.rubric = new AssessmentRubric()
 		}
 	},
 

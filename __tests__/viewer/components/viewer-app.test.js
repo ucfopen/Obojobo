@@ -20,19 +20,15 @@ import {
 import Dispatcher from '../../../src/scripts/common/flux/dispatcher'
 import ViewerApp from '../../../src/scripts/viewer/components/viewer-app'
 import '../../../__mocks__/_load-all-chunks'
-
 import APIUtil from '../../../src/scripts/viewer/util/api-util'
 import testObject from '../../../test-object.json'
 
-APIUtil.startAttempt = () => {
-	return Promise.resolve(getAttemptStartServerResponse())
-}
-APIUtil.endAttempt = () => {
-	return Promise.resolve(getAttemptEndServerResponse(100, 100))
-}
-
-APIUtil.requestStart = () => {
-	return Promise.resolve({
+APIUtil.startAttempt = () => Promise.resolve(getAttemptStartServerResponse())
+APIUtil.endAttempt = () => Promise.resolve(getAttemptEndServerResponse(100, 100))
+APIUtil.postEvent = () => Promise.resolve({ status: 'ok' })
+APIUtil.getDraft = () => Promise.resolve({ value: testObject })
+APIUtil.requestStart = () =>
+	Promise.resolve({
 		status: 'ok',
 		value: {
 			visitId: 123,
@@ -45,15 +41,6 @@ APIUtil.requestStart = () => {
 			}
 		}
 	})
-}
-
-APIUtil.postEvent = () => {
-	return Promise.resolve({ status: 'ok' })
-}
-
-APIUtil.getDraft = () => {
-	return Promise.resolve({ value: testObject })
-}
 
 let viewerEl
 let viewerLoaded = false

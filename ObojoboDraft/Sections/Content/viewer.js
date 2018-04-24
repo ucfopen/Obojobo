@@ -8,14 +8,12 @@ Common.Store.registerModel('ObojoboDraft.Sections.Content', {
 	adapter: null,
 	componentClass: ViewerComponent,
 	selectionHandler: null,
-	getNavItem(model) {
-		return {
-			type: 'hidden',
-			showChildren: true
-		}
-	},
+	getNavItem: model => ({
+		type: 'hidden',
+		showChildren: true
+	}),
 
-	generateNav(model) {
+	generateNav: model => {
 		let nav = []
 
 		for (let index = 0; index < model.children.models.length; index++) {

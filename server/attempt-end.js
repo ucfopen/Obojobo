@@ -32,125 +32,115 @@ let endAttempt = (req, res, user, attemptId, isPreviewing) => {
 
 	logger.info(`End attempt "${attemptId}" begin for user "${user.id}" (Preview="${isPreviewing}")`)
 
-	return (
-		//
-		// Collect info
-		//
+	return getAttempt(attemptId)
+		.then(attemptResult => {
+			logger.info(`End attempt "${attemptId}" - getAttempt success`)
+			attempt = attemptResult
+			return DraftModel.fetchById(attempt.draftId)
+		})
+		.then(draftTree => {
+			const assessmentNode = draftTree.getChildNodeById(attempt.assessmentId)
 
-		getAttempt(attemptId)
-			.then(attemptResult => {
-				logger.info(`End attempt "${attemptId}" - getAttempt success`)
-				attempt = attemptResult
-				return DraftModel.fetchById(attempt.draftId)
-			})
-			.then(draftTree => {
-				const assessmentNode = draftTree.getChildNodeById(attempt.assessmentId)
+			assessmentProperties.user = user
+			assessmentProperties.isPreviewing = isPreviewing
 
-				assessmentProperties.user = user
-				assessmentProperties.isPreviewing = isPreviewing
+			assessmentProperties.draftTree = draftTree
+			assessmentProperties.id = attempt.assessmentId
+			assessmentProperties.oboNode = assessmentNode
+			assessmentProperties.nodeChildrenIds = assessmentNode.children[1].childrenSet
+			assessmentProperties.assessmentQBTree = assessmentNode.children[1].toObject()
 
-				assessmentProperties.draftTree = draftTree
-				assessmentProperties.id = attempt.assessmentId
-				assessmentProperties.oboNode = assessmentNode
-				assessmentProperties.nodeChildrenIds = assessmentNode.children[1].childrenSet
-				assessmentProperties.assessmentQBTree = assessmentNode.children[1].toObject()
+			return getAttemptHistory(user.id, attempt.draftId, attempt.assessmentId)
+		})
+		.then(attemptHistoryResult => {
+			logger.info(`End attempt "${attemptId}" - getAttemptHistory success`)
 
-				return getAttemptHistory(user.id, attempt.draftId, attempt.assessmentId)
-			})
-			.then(attemptHistoryResult => {
-				logger.info(`End attempt "${attemptId}" - getAttemptHistory success`)
-
-				attemptHistory = attemptHistoryResult
-				assessmentProperties.attemptHistory = attemptHistoryResult
-				return getResponsesForAttempt(attemptId)
-			})
-			.then(responsesForAttemptResult => {
-				logger.info(`End attempt "${attemptId}" - getResponsesForAttempt success`)
-				return getCalculatedScores(
-					req,
-					res,
-					attempt.assessmentModel,
-					attempt.attemptState,
-					attemptHistory,
-					responsesForAttemptResult
-				)
-			})
+			attemptHistory = attemptHistoryResult
+			assessmentProperties.attemptHistory = attemptHistoryResult
+			return getResponsesForAttempt(attemptId)
+		})
+		.then(responsesForAttemptResult => {
+			logger.info(`End attempt "${attemptId}" - getResponsesForAttempt success`)
+			return getCalculatedScores(
+				req,
+				res,
+				attempt.assessmentModel,
+				attempt.attemptState,
+				attemptHistory,
+				responsesForAttemptResult
+			)
+		})
+		.then(calculatedScoresResult => {
 			//
 			// Update attempt and send event
 			//
-			.then(calculatedScoresResult => {
-				logger.info(`End attempt "${attemptId}" - getCalculatedScores success`)
+			logger.info(`End attempt "${attemptId}" - getCalculatedScores success`)
 
-				calculatedScores = calculatedScoresResult
+			calculatedScores = calculatedScoresResult
 
-				return completeAttempt(
-					attempt.assessmentId,
-					attemptId,
-					user.id,
-					attempt.draftId,
-					calculatedScores,
-					isPreviewing
-				)
-			})
-			.then(completeAttemptResult => {
-				logger.info(`End attempt "${attemptId}" - completeAttempt success`)
-				assessmentScoreId = completeAttemptResult.assessmentScoreId
+			return completeAttempt(
+				attempt.assessmentId,
+				attemptId,
+				user.id,
+				attempt.draftId,
+				calculatedScores,
+				isPreviewing
+			)
+		})
+		.then(completeAttemptResult => {
+			logger.info(`End attempt "${attemptId}" - completeAttempt success`)
+			assessmentScoreId = completeAttemptResult.assessmentScoreId
 
-				logger.info('Starting to reload')
-				return reloadAttemptStateIfReviewing(
-					attemptId,
-					attempt.draftId,
-					assessmentProperties,
-					attempt
-				)
-			})
-			.then(() => {
-				logger.info('finish reload')
-				return insertAttemptEndEvents(
-					user,
-					attempt.draftId,
-					attempt.assessmentId,
-					attemptId,
-					attempt.number,
-					isPreviewing,
-					req.hostname,
-					req.connection.remoteAddress
-				)
-			})
+			return reloadAttemptStateIfReviewing(
+				attemptId,
+				attempt.draftId,
+				assessmentProperties,
+				attempt
+			)
+		})
+		.then(() => {
+			return insertAttemptEndEvents(
+				user,
+				attempt.draftId,
+				attempt.assessmentId,
+				attemptId,
+				attempt.number,
+				isPreviewing,
+				req.hostname,
+				req.connection.remoteAddress
+			)
+		})
+		.then(() => {
 			//
 			// Send LTI score and send event
 			//
-			.then(() => {
-				logger.info(`End attempt "${attemptId}" - insertAttemptEndEvent success`)
+			logger.info(`End attempt "${attemptId}" - insertAttemptEndEvent success`)
 
-				return sendLTIHighestAssessmentScore(user.id, attempt.draftId, attempt.assessmentId)
-			})
-			.then(ltiRequestResult => {
-				logger.info(`End attempt "${attemptId}" - sendLTIScore was executed`)
+			return lti.sendHighestAssessmentScore(user.id, attempt.draftId, attempt.assessmentId)
+		})
+		.then(ltiRequestResult => {
+			logger.info(`End attempt "${attemptId}" - sendLTIScore was executed`)
 
-				insertAttemptScoredEvents(
-					user,
-					attempt.draftId,
-					attempt.assessmentId,
-					assessmentScoreId,
-					attemptId,
-					attempt.number,
-					calculatedScores.attemptScore,
-					calculatedScores.assessmentScore,
-					isPreviewing,
-					ltiRequestResult.scoreSent,
-					ltiRequestResult.status,
-					ltiRequestResult.error,
-					ltiRequestResult.errorDetails,
-					ltiRequestResult.ltiAssessmentScoreId,
-					req.hostname,
-					req.connection.remoteAddress
-				)
-			})
-			.then(() => {
-				return Assessment.getAttempts(user.id, attempt.draftId, attempt.assessmentId)
-			})
-	)
+			insertAttemptScoredEvents(
+				user,
+				attempt.draftId,
+				attempt.assessmentId,
+				assessmentScoreId,
+				attemptId,
+				attempt.number,
+				calculatedScores.attemptScore,
+				calculatedScores.assessmentScore,
+				isPreviewing,
+				ltiRequestResult.scoreSent,
+				ltiRequestResult.status,
+				ltiRequestResult.error,
+				ltiRequestResult.errorDetails,
+				ltiRequestResult.ltiAssessmentScoreId,
+				req.hostname,
+				req.connection.remoteAddress
+			)
+		})
+		.then(() => Assessment.getAttempts(user.id, attempt.draftId, attempt.assessmentId))
 }
 
 let getAttempt = attemptId => {
@@ -165,25 +155,20 @@ let getAttempt = attemptId => {
 			result.attemptNumber = attemptNumber
 			return DraftModel.fetchById(result.draft_id)
 		})
-		.then(draftModel => {
-			return {
-				assessmentId: result.assessment_id,
-				number: result.attemptNumber,
-				attemptState: result.state,
-				draftId: result.draft_id,
-				model: draftModel,
-				assessmentModel: draftModel.getChildNodeById(result.assessment_id)
-			}
-		})
+		.then(draftModel => ({
+			assessmentId: result.assessment_id,
+			number: result.attemptNumber,
+			attemptState: result.state,
+			draftId: result.draft_id,
+			model: draftModel,
+			assessmentModel: draftModel.getChildNodeById(result.assessment_id)
+		}))
 }
 
-let getAttemptHistory = (userId, draftId, assessmentId) => {
-	return Assessment.getCompletedAssessmentAttemptHistory(userId, draftId, assessmentId)
-}
+let getAttemptHistory = (userId, draftId, assessmentId) =>
+	Assessment.getCompletedAssessmentAttemptHistory(userId, draftId, assessmentId)
 
-let getResponsesForAttempt = (userId, draftId) => {
-	return Assessment.getResponsesForAttempt(userId, draftId)
-}
+let getResponsesForAttempt = (userId, draftId) => Assessment.getResponsesForAttempt(userId, draftId)
 
 let getCalculatedScores = (
 	req,
@@ -206,9 +191,7 @@ let getCalculatedScores = (
 		assessmentModel,
 		responseHistory,
 		{
-			getQuestions: () => {
-				return scoreInfo.questions
-			},
+			getQuestions: () => scoreInfo.questions,
 			addScore: (questionId, score) => {
 				scoreInfo.scores.push(score)
 				scoreInfo.scoresByQuestionId[questionId] = score
@@ -216,28 +199,21 @@ let getCalculatedScores = (
 		}
 	)
 
-	return Promise.all(promises).then(() => {
-		return calculateScores(assessmentModel, attemptHistory, scoreInfo)
-	})
+	return Promise.all(promises).then(() =>
+		calculateScores(assessmentModel, attemptHistory, scoreInfo)
+	)
 }
 
 let calculateScores = (assessmentModel, attemptHistory, scoreInfo) => {
-	let questionScores = scoreInfo.questions.map(question => {
-		return {
-			id: question.id,
-			score: scoreInfo.scoresByQuestionId[question.id] || 0
-		}
-	})
+	let questionScores = scoreInfo.questions.map(question => ({
+		id: question.id,
+		score: scoreInfo.scoresByQuestionId[question.id] || 0
+	}))
 
-	let attemptScore =
-		scoreInfo.scores.reduce((a, b) => {
-			return a + b
-		}) / scoreInfo.questions.length
+	let attemptScore = scoreInfo.scores.reduce((a, b) => a + b) / scoreInfo.questions.length
 
 	let allScores = attemptHistory
-		.map(attempt => {
-			return parseFloat(attempt.result.attemptScore)
-		})
+		.map(attempt => parseFloat(attempt.result.attemptScore))
 		.concat(attemptScore)
 
 	let rubric = new AssessmentRubric(assessmentModel.node.content.rubric)
@@ -255,8 +231,8 @@ let calculateScores = (assessmentModel, attemptHistory, scoreInfo) => {
 	}
 }
 
-let completeAttempt = (assessmentId, attemptId, userId, draftId, calculatedScores, preview) => {
-	return Assessment.completeAttempt(
+let completeAttempt = (assessmentId, attemptId, userId, draftId, calculatedScores, preview) =>
+	Assessment.completeAttempt(
 		assessmentId,
 		attemptId,
 		userId,
@@ -265,7 +241,6 @@ let completeAttempt = (assessmentId, attemptId, userId, draftId, calculatedScore
 		calculatedScores.assessmentScoreDetails,
 		preview
 	)
-}
 
 let insertAttemptEndEvents = (
 	user,
@@ -298,10 +273,6 @@ let insertAttemptEndEvents = (
 			isPreviewMode: isPreviewing
 		})
 	})
-}
-
-let sendLTIHighestAssessmentScore = (userId, draftId, assessmentId) => {
-	return lti.sendHighestAssessmentScore(userId, draftId, assessmentId)
 }
 
 let insertAttemptScoredEvents = (
@@ -450,7 +421,8 @@ module.exports = {
 	calculateScores,
 	completeAttempt,
 	insertAttemptEndEvents,
-	sendLTIHighestAssessmentScore,
+	sendLTIHighestAssessmentScore: lti.sendHighestAssessmentScore,
+	insertAttemptScoredEvents,
 	insertAttemptScoredEvents,
 	reloadAttemptStateIfReviewing,
 	recreateChosenQuestionTree,

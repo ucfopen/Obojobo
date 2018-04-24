@@ -77,6 +77,7 @@
 .obojobo-draft--chunks--question {
 	&.is-hidden .flipper {
 		border: 1px solid $color-action;
+		max-height: 15em;
 	}
 
 	&.is-mode-practice {
@@ -95,11 +96,11 @@
 		}
 
 		&.is-correct .flipper {
-			border: 1px solid $color-correct;
+			border: 1.25px solid $color-correct;
 		}
 
-		&.is-incorrect .flipper {
-			border: 1px solid $color-incorrect;
+		&.is-not-correct .flipper {
+			border: 1.25px solid $color-incorrect;
 		}
 	}
 
@@ -116,6 +117,8 @@
 		border-radius: $dimension-rounded-radius;
 
 		&:hover {
+			background: $color-action-bg;
+
 			.obojobo-draft--components--button {
 				transform: translate(-50%, -50%) scale(1.1, 1.1);
 			}

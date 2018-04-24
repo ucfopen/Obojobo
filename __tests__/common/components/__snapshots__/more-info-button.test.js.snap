@@ -1,6 +1,6 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
-exports[`ModalContainer Defaults 1`] = `
+exports[`MoreInfoButton Renders default props 1`] = `
 <div
   className="obojobo-draft--components--more-info-button is-default-label is-mode-hidden"
 >
@@ -14,7 +14,7 @@ exports[`ModalContainer Defaults 1`] = `
 </div>
 `;
 
-exports[`ModalContainer Label 1`] = `
+exports[`MoreInfoButton Renders label 1`] = `
 <div
   className="obojobo-draft--components--more-info-button is-not-default-label is-mode-hidden"
 >

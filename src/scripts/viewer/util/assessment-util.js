@@ -148,6 +148,8 @@ var AssessmentUtil = {
 	},
 
 	isInAssessment(state) {
+		if (!state) return false
+
 		for (let assessmentName in state.assessments) {
 			if (state.assessments[assessmentName].current !== null) {
 				return true

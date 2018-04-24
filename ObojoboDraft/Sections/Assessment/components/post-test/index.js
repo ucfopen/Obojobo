@@ -9,10 +9,10 @@ const NavUtil = Viewer.util.NavUtil
 import LTIStatus from './lti-status'
 import FullReview from '../full-review' //@TODO - Rename to simply "Review"
 
-const scoreSubmittedView = assessment => {
+const AssessmentPostTest = props => {
 	const questionScores = AssessmentUtil.getLastAttemptScoresForModel(
-		assessment.props.moduleData.assessmentState,
-		assessment.props.model
+		props.moduleData.assessmentState,
+		props.model
 	)
 
 	const isFullReviewAvailable = reviewType => {
@@ -27,58 +27,49 @@ const scoreSubmittedView = assessment => {
 	}
 
 	const isAssessmentComplete = () => {
-		return !AssessmentUtil.hasAttemptsRemaining(
-			assessment.props.moduleData.assessmentState,
-			assessment.props.model
-		)
+		return !AssessmentUtil.hasAttemptsRemaining(props.moduleData.assessmentState, props.model)
 	}
 
-	const scoreAction = assessment.getScoreAction()
+	// const scoreAction = assessment.getScoreAction()
 	const numCorrect = AssessmentUtil.getNumCorrect(questionScores)
 
 	let assessmentScore = AssessmentUtil.getAssessmentScoreForModel(
-		assessment.props.moduleData.assessmentState,
-		assessment.props.model
+		props.moduleData.assessmentState,
+		props.model
 	)
 
 	let firstHighestAttempt = null
 	if (assessmentScore !== null) {
 		let highestAttempts = AssessmentUtil.getHighestAttemptsForModelByAssessmentScore(
-			assessment.props.moduleData.assessmentState,
-			assessment.props.model
+			props.moduleData.assessmentState,
+			props.model
 		)
 
 		firstHighestAttempt = highestAttempts.length === 0 ? null : highestAttempts[0]
 	}
 
 	let onClickResendScore = () => {
-		AssessmentUtil.resendLTIScore(assessment.props.model)
+		AssessmentUtil.resendLTIScore(props.model)
 	}
 
-	let ltiState = AssessmentUtil.getLTIStateForModel(
-		assessment.props.moduleData.assessmentState,
-		assessment.props.model
-	)
+	let ltiState = AssessmentUtil.getLTIStateForModel(props.moduleData.assessmentState, props.model)
 
-	let assessmentLabel = NavUtil.getNavLabelForModel(
-		assessment.props.moduleData.navState,
-		assessment.props.model
-	)
+	let assessmentLabel = NavUtil.getNavLabelForModel(props.moduleData.navState, props.model)
 
 	let scoreActionsPage
 
-	if (scoreAction.page != null) {
-		let pageModel = OboModel.create(scoreAction.page)
-		pageModel.parent = assessment.props.model //'@TODO - FIGURE OUT A BETTER WAY TO DO THIS - THIS IS NEEDED TO GET {{VARIABLES}} WORKING')
+	if (props.scoreAction.page != null) {
+		let pageModel = OboModel.create(props.scoreAction.page)
+		pageModel.parent = props.model //'@TODO - FIGURE OUT A BETTER WAY TO DO THIS - THIS IS NEEDED TO GET {{VARIABLES}} WORKING')
 		let PageComponent = pageModel.getComponentClass()
-		scoreActionsPage = <PageComponent model={pageModel} moduleData={assessment.props.moduleData} />
+		scoreActionsPage = <PageComponent model={pageModel} moduleData={props.moduleData} />
 	} else {
 		scoreActionsPage = <p>{scoreAction.message}</p>
 	}
 
-	let externalSystemLabel = assessment.props.moduleData.lti.outcomeServiceHostname
+	let externalSystemLabel = props.moduleData.lti.outcomeServiceHostname
 
-	let showFullReview = isFullReviewAvailable(assessment.props.model.modelState.review)
+	let showFullReview = isFullReviewAvailable(props.model.modelState.review)
 
 	return (
 		<div className="score unlock">
@@ -132,10 +123,10 @@ const scoreSubmittedView = assessment => {
 			</div>
 			<div className="attempt-history">
 				<h1>Attempt History:</h1>
-				<FullReview assessment={assessment} showFullReview={showFullReview} />
+				<FullReview {...props} showFullReview={showFullReview} />
 			</div>
 		</div>
 	)
 }
 
-export default scoreSubmittedView
+export default AssessmentPostTest

@@ -2,16 +2,14 @@ require('./assessment-score-report-view.scss')
 
 const GREAT_JOB_YOU_ROCK_EMOJI = '😎'
 
-const scoreReportView = props => {
-	return (
-		<div className="obojobo-draft--sections--assessment--components--score-report">
-			<div className="text-items">{props.report.textItems.map(getItemEl)}</div>
-			{props.report.scoreChangeDescription === null ? null : (
-				<span className="score-change-description">{props.report.scoreChangeDescription}</span>
-			)}
-		</div>
-	)
-}
+const scoreReportView = props => (
+	<div className="obojobo-draft--sections--assessment--components--score-report">
+		<div className="text-items">{props.report.textItems.map(getItemEl)}</div>
+		{props.report.scoreChangeDescription === null ? null : (
+			<span className="score-change-description">{props.report.scoreChangeDescription}</span>
+		)}
+	</div>
+)
 
 const getAmountEl = (value, isTotalOf100 = false) => {
 	if (value === 'Did Not Pass') {

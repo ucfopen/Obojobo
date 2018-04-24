@@ -15,8 +15,8 @@ const { Button, ButtonBar, MoreInfoButton } = Common.components
 class AssessmentReviewView extends React.Component {
 	componentDidMount() {
 		let lastAttempt = AssessmentUtil.getLastAttemptForModel(
-			this.props.assessment.props.moduleData.assessmentState,
-			this.props.assessment.props.model
+			this.props.moduleData.assessmentState,
+			this.props.model
 		)
 
 		NavUtil.setContext(`assessmentReview:${lastAttempt.attemptId}`)
@@ -26,16 +26,16 @@ class AssessmentReviewView extends React.Component {
 		let attemptReviewComponents = {}
 
 		let attempts = AssessmentUtil.getAllAttempts(
-			this.props.assessment.props.moduleData.assessmentState,
-			this.props.assessment.props.model
+			this.props.moduleData.assessmentState,
+			this.props.model
 		)
 		let highestAttempts = AssessmentUtil.getHighestAttemptsForModelByAttemptScore(
-			this.props.assessment.props.moduleData.assessmentState,
-			this.props.assessment.props.model
+			this.props.moduleData.assessmentState,
+			this.props.model
 		)
 		const scoreReporter = new AssessmentScoreReporter({
-			assessmentRubric: this.props.assessment.props.model.modelState.rubric.toObject(),
-			totalNumberOfAttemptsAllowed: this.props.assessment.props.model.modelState.attempts,
+			assessmentRubric: this.props.model.modelState.rubric.toObject(),
+			totalNumberOfAttemptsAllowed: this.props.model.modelState.attempts,
 			allAttempts: attempts
 		})
 
@@ -93,12 +93,12 @@ class AssessmentReviewView extends React.Component {
 							return this.props.showFullReview ? (
 								<QuestionComponent
 									model={questionModel}
-									moduleData={assessment.props.moduleData}
+									moduleData={this.props.moduleData}
 									mode={'review'}
 									key={scoreObj.id}
 								/>
 							) : (
-								basicReview(assessment.props.moduleData, scoreObj, index)
+								basicReview(this.props.moduleData, scoreObj, index)
 							)
 						})}
 					</div>
@@ -107,7 +107,7 @@ class AssessmentReviewView extends React.Component {
 		}
 
 		let getSelectedIndex = () => {
-			let context = this.props.assessment.props.moduleData.navState.context
+			let context = this.props.moduleData.navState.context
 
 			for (let i in attempts) {
 				let attempt = attempts[i]
@@ -150,7 +150,7 @@ class AssessmentReviewView extends React.Component {
 						{attemptButtons}
 					</ButtonBar>
 				</div>
-				{attemptReviewComponents[this.props.assessment.props.moduleData.navState.context]}
+				{attemptReviewComponents[this.props.moduleData.navState.context]}
 			</div>
 		)
 	}

@@ -2,50 +2,45 @@ import './button-bar.scss'
 
 import Button from './button'
 
-export default class ButtonBar extends React.Component {
-	static get defaultProps() {
-		return {
-			selectedIndex: -1,
-			onClick: function() {}
-		}
+const onClickButton = (index, isSelected, originalOnClick, buttonBarOnClick = () => {}) => {
+	if (typeof originalOnClick === 'function') {
+		originalOnClick()
 	}
 
-	onClickButton(index, isSelected, originalOnClick) {
-		if (typeof originalOnClick === 'function') {
-			originalOnClick()
-		}
-
-		this.props.onClick(index, isSelected)
-	}
-
-	render() {
-		return (
-			<div className={`obojobo-draft--components--button-bar`}>
-				{this.props.children.map((child, i) => {
-					let isSelected = i === this.props.selectedIndex
-					let childProps = Object.assign({}, child.props)
-
-					if (this.props.altAction) {
-						childProps.altAction = this.props.altAction
-					}
-
-					if (this.props.dangerous) {
-						childProps.dangerous = this.props.dangerous
-					}
-
-					if (this.props.disabled) {
-						childProps.disabled = this.props.disabled
-					}
-
-					childProps.onClick = this.onClickButton.bind(this, i, isSelected, childProps.onClick)
-
-					return (
-						<div key={i} className={isSelected ? 'is-selected' : ''}>
-							<Button {...childProps}>{child.props.children}</Button>
-						</div>
-					)
-				})}
-			</div>
-		)
-	}
+	buttonBarOnClick(index, isSelected)
 }
+
+export default props => (
+	<div className={`obojobo-draft--components--button-bar`}>
+		{props.children.map((child, i) => {
+			let isSelected = i === props.selectedIndex
+			let childProps = Object.assign({}, child.props)
+
+			if (props.altAction) {
+				childProps.altAction = props.altAction
+			}
+
+			if (props.dangerous) {
+				childProps.dangerous = props.dangerous
+			}
+
+			if (props.disabled) {
+				childProps.disabled = props.disabled
+			}
+
+			childProps.onClick = onClickButton.bind(
+				null,
+				i,
+				isSelected,
+				childProps.onClick || (() => {}),
+				props.onClick
+			)
+
+			return (
+				<div key={i} className={isSelected ? 'is-selected' : ''}>
+					<Button {...childProps}>{child.props.children}</Button>
+				</div>
+			)
+		})}
+	</div>
+)

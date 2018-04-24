@@ -312,7 +312,7 @@
 							color: $color-correct;
 						}
 
-						&.is-incorrect-feedback:before {
+						&.is-not-correct-feedback:before {
 							content: '✖' attr(data-choice-label);
 							color: $color-incorrect;
 						}

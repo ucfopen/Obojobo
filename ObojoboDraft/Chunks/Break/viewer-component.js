@@ -5,18 +5,12 @@ import Common from 'Common'
 let { OboComponent } = Common.components
 let { NonEditableChunk } = Common.chunk
 
-export default class Break extends React.Component {
-	render() {
-		return (
-			<OboComponent model={this.props.model} moduleData={this.props.moduleData}>
-				<NonEditableChunk
-					className={`obojobo-draft--chunks--break viewer width-${
-						this.props.model.modelState.width
-					}`}
-				>
-					<hr />
-				</NonEditableChunk>
-			</OboComponent>
-		)
-	}
-}
+export default props => (
+	<OboComponent model={props.model} moduleData={props.moduleData}>
+		<NonEditableChunk
+			className={`obojobo-draft--chunks--break viewer width-${props.model.modelState.width}`}
+		>
+			<hr />
+		</NonEditableChunk>
+	</OboComponent>
+)

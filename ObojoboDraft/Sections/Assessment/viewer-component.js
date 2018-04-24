@@ -14,14 +14,13 @@ let { NavUtil } = Viewer.util
 
 import AttemptIncompleteDialog from './components/attempt-incomplete-dialog'
 
-import untestedView from './components/untested'
-import scoreSubmittedView from './components/score-submitted'
-import takingTestView from './components/taking-test'
+import PreTest from './components/pre-test'
+import Test from './components/test'
+import PostTest from './components/post-test'
 
 export default class Assessment extends React.Component {
 	constructor() {
 		super()
-
 		this.state = { step: null }
 	}
 
@@ -36,16 +35,16 @@ export default class Assessment extends React.Component {
 		)
 
 		if (assessment === null) {
-			return 'untested'
+			return 'pre-test'
 		}
 		if (assessment.current !== null) {
-			return 'takingTest'
+			return 'test'
 		}
 
 		if (assessment.attempts.length > 0) {
-			return 'scoreSubmitted'
+			return 'post-test'
 		}
-		return 'untested'
+		return 'pre-test'
 	}
 
 	componentWillReceiveProps(nextProps) {
@@ -117,6 +116,7 @@ export default class Assessment extends React.Component {
 			this.props.model
 		)
 		let scoreAction = this.props.model.modelState.scoreActions.getActionForScore(assessmentScore)
+
 		if (scoreAction) {
 			return scoreAction
 		}
@@ -144,14 +144,26 @@ export default class Assessment extends React.Component {
 
 		const childEl = (() => {
 			switch (this.getCurrentStep()) {
-				case 'untested':
-					return untestedView(this)
+				case 'pre-test':
+					return PreTest({
+						model: this.props.model.children.at(0),
+						moduleData: this.props.moduleData
+					})
 
-				case 'takingTest':
-					return takingTestView(this)
+				case 'test':
+					return Test({
+						model: this.props.model.children.at(1),
+						moduleData: this.props.moduleData,
+						onClickSubmit: this.onClickSubmit.bind(this),
+						isAttemptComplete: this.isAttemptComplete()
+					})
 
-				case 'scoreSubmitted':
-					return scoreSubmittedView(this)
+				case 'post-test':
+					return PostTest({
+						model: this.props.model,
+						moduleData: this.props.moduleData,
+						scoreAction: this.getScoreAction()
+					})
 
 				default:
 					return null
