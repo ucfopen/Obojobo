@@ -13,7 +13,7 @@ Expected input for type 'pass-fail':
 	type: 'pass-file',
 	*passingAttemptScore: 0-100 [Default = 100],
 	*passedResult: (0-100 | '$attempt_score') [Default = 100],
-	*failedResult: (0-100 | 'no-score' | '$attempt_score' | '$highest_attempt_score' ) [Default = 0],
+	*failedResult: (0-100 | 'no-score' | '$highest_attempt_score' ) [Default = 0],
 	*unableToPassResult: (0-100 | 'no-score' | '$attempt_score' | '$highest_attempt_score' | null) [Default = null],
 	*mods: Array<Mod> (Default = [])
 }
@@ -28,9 +28,6 @@ Mod:
 AttemptRange:
 	("[" | "(") + (>=1 | '$last_attempt') + "," + (>=1 | '$last_attempt') + ("]" | ")")
 
-ScoreRange:
-	("[" | "(") + (0-100) + "," + (0-100) + ("]" | ")")
-
 (Mods are only applied if PASSING. Mods must contain at least one condition)
 
 */
@@ -44,17 +41,17 @@ let {
 
 let MOD_AMOUNT_LIMIT = 20
 
-let createRubric = rubric => {
-	let rubricType
-	if (!rubric || !rubric.type) {
-		rubricType = AssessmentRubric.TYPE_ATTEMPT
-	} else {
-		rubricType = rubric.type
-	}
+let getRubricType = rubric =>
+	!rubric || !rubric.type ? AssessmentRubric.TYPE_ATTEMPT : rubric.type
+
+let createWhitelistedRubric = rubric => {
+	let rubricType = getRubricType(rubric)
+
+	let whitelistedRubric
 
 	switch (rubricType) {
 		case AssessmentRubric.TYPE_PASS_FAIL:
-			rubric = Object.assign(
+			whitelistedRubric = Object.assign(
 				{
 					passingAttemptScore: 100,
 					passedResult: 100,
@@ -67,7 +64,7 @@ let createRubric = rubric => {
 
 		case AssessmentRubric.TYPE_ATTEMPT:
 		default:
-			rubric = {
+			whitelistedRubric = {
 				passingAttemptScore: 0,
 				passedResult: AssessmentRubric.VAR_ATTEMPT_SCORE,
 				failedResult: 0,
@@ -76,42 +73,73 @@ let createRubric = rubric => {
 			break
 	}
 
-	return rubric
+	return whitelistedRubric
+}
+
+let createWhitelistedMod = mod => {
+	let parsedReward
+
+	// Ensure at least one condition exists:
+	if (!mod.attemptCondition) {
+		return null
+	}
+
+	mod = Object.assign(
+		{
+			attemptCondition: '[0,$last_attempt]'
+			// dateCondition: null,
+		},
+		mod
+	)
+
+	return {
+		attemptCondition: getParsedRange(mod.attemptCondition.toString()),
+		reward: mod.reward
+	}
+}
+
+let modToObject = whitelistedMod => {
+	return {
+		attemptCondition: getRangeString(whitelistedMod.attemptCondition),
+		reward: whitelistedMod.reward
+	}
+}
+
+let getRangeString = range => {
+	if (range.min === range.max && range.isMinInclusive && range.isMaxInclusive) {
+		return '' + range.min
+	}
+
+	let lhs = range.isMinInclusive ? '[' : '('
+	let rhs = range.isMaxInclusive ? ']' : ')'
+
+	return lhs + range.min + ',' + range.max + rhs
 }
 
 class AssessmentRubric {
 	constructor(rubric) {
+		this.originalRubric = Object.assign(rubric || {})
+
 		let mods = rubric && rubric.mods ? rubric.mods.slice(0, MOD_AMOUNT_LIMIT) : []
 
-		this.rubric = createRubric(rubric)
+		this.rubric = createWhitelistedRubric(rubric)
+		this.type = getRubricType(rubric)
+		this.mods = mods.map(createWhitelistedMod).filter(mod => mod !== null)
+	}
 
-		let parsedScoreRange, parsedAttemptRange
+	toObject() {
+		return {
+			type: this.type,
+			passingAttemptScore: this.rubric.passingAttemptScore,
+			passedResult: this.rubric.passedResult,
+			failedResult: this.rubric.failedResult,
+			unableToPassResult: this.rubric.unableToPassResult,
+			mods: this.mods.map(modToObject)
+		}
+	}
 
-		this.mods = []
-		mods.forEach(mod => {
-			let parsedReward
-
-			// Ensure at least one condition exists:
-			if (!mod.attemptCondition) {
-				return
-			}
-
-			mod = Object.assign(
-				{
-					attemptCondition: '[0,$last_attempt]'
-					// dateCondition: null,
-					// passCondition: false
-				},
-				mod
-			)
-
-			mod = {
-				attemptCondition: getParsedRange(mod.attemptCondition.toString()),
-				reward: mod.reward
-			}
-
-			this.mods.push(mod)
-		})
+	clone() {
+		return new AssessmentRubric(this.originalRubric)
 	}
 
 	getAssessmentScoreInfoForAttempt(totalNumberOfAttemptsAvailable, attemptScores) {
@@ -135,7 +163,6 @@ class AssessmentRubric {
 		let rewardTotal = 0
 		let assessmentScore
 		let status
-		let attemptScore
 
 		let attemptReplaceDict = {}
 		attemptReplaceDict[AssessmentRubric.VAR_LAST_ATTEMPT] = totalNumberOfAttemptsAvailable
@@ -161,9 +188,6 @@ class AssessmentRubric {
 
 				if (this.rubric.unableToPassResult === AssessmentRubric.VAR_HIGHEST_ATTEMPT_SCORE) {
 					attemptNumber = highestAttemptNumber
-					attemptScore = highestAttemptScore
-				} else {
-					attemptScore = latestAttemptScore
 				}
 				assessmentScore = tryGetParsedFloat(this.rubric.unableToPassResult, scoreReplaceDict, [
 					null
@@ -173,15 +197,11 @@ class AssessmentRubric {
 
 			case AssessmentRubric.STATUS_FAILED:
 				scoreReplaceDict[AssessmentRubric.NO_SCORE] = null
-
-				attemptScore = latestAttemptScore
 				assessmentScore = tryGetParsedFloat(this.rubric.failedResult, scoreReplaceDict, [null])
 				break
 
 			case AssessmentRubric.STATUS_PASSED:
 				scoreReplaceDict[AssessmentRubric.VAR_ATTEMPT_SCORE] = latestAttemptScore
-
-				attemptScore = latestAttemptScore
 				assessmentScore = tryGetParsedFloat(this.rubric.passedResult, scoreReplaceDict, [null])
 
 				// find matching mods and apply them
@@ -198,7 +218,7 @@ class AssessmentRubric {
 
 		return {
 			attemptNumber,
-			attemptScore,
+			attemptScore: latestAttemptScore,
 			assessmentScore,
 			rewardedMods: rewardedModsIndicies,
 			rewardTotal,

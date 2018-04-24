@@ -15,6 +15,10 @@ class NavStore extends Store {
 
 		Dispatcher.on(
 			{
+				'nav:setContext': payload => {
+					this.state.context = payload.value.context
+					return this.triggerChange()
+				},
 				'nav:rebuildMenu': payload => {
 					this.buildMenu(payload.value.model)
 					this.triggerChange()
@@ -97,7 +101,7 @@ class NavStore extends Store {
 					item.showChildren = false
 					this.triggerChange()
 				},
-				'score:set': payload => {
+				'question:scoreSet': payload => {
 					let navItem = this.state.itemsById[payload.value.id]
 					if (navItem) {
 						NavUtil.setFlag(payload.value.id, 'correct', payload.value.score === 100)
@@ -118,6 +122,7 @@ class NavStore extends Store {
 			navTargetId: null,
 			locked: viewState['nav:isLocked'] != null ? viewState['nav:isLocked'].value : false,
 			open: viewState['nav:isOpen'] != null ? viewState['nav:isOpen'].value : true,
+			context: 'practice',
 			visitId
 		}
 

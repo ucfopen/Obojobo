@@ -7,7 +7,7 @@ let { OboComponent } = Common.components
 let { TextGroupEl } = Common.chunk.textChunk
 let { NonEditableChunk } = Common.chunk
 
-export default props =>
+export default props => (
 	<OboComponent model={props.model} moduleData={props.moduleData}>
 		<NonEditableChunk
 			className={`obojobo-draft--chunks--figure viewer ${props.model.modelState.size}`}
@@ -28,3 +28,4 @@ export default props =>
 			</div>
 		</NonEditableChunk>
 	</OboComponent>
+)

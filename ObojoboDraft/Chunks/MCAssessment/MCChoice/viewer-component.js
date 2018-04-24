@@ -2,6 +2,7 @@ import './viewer-component.scss'
 
 import Common from 'Common'
 import Viewer from 'Viewer'
+import isOrNot from '../../../../src/scripts/common/isornot'
 
 let { OboComponent } = Common.components
 let { OboModel } = Common.models
@@ -19,33 +20,71 @@ const getInputType = responseType => {
 	}
 }
 
-const questionIsSelected = (questionState, model) => {
-	let response = QuestionUtil.getResponse(questionState,
-		model.getParentOfType('ObojoboDraft.Chunks.Question')
+const questionIsSelected = (questionState, model, navStateContext) => {
+	let response = QuestionUtil.getResponse(
+		questionState,
+		model.getParentOfType('ObojoboDraft.Chunks.Question'),
+		navStateContext
 	) || { ids: [] }
 
 	return response.ids.indexOf(model.get('id')) !== -1
 }
 
+const answerIsCorrect = (model, mode, questionState, navStateContext) => {
+	let score
+	if (mode === 'review') {
+		// no score data for this context? no idea what to do, throw an error
+		if (!questionState.scores[navStateContext]) throw 'Unkown Question State'
+
+		score = QuestionUtil.getScoreForModel(questionState, model, navStateContext)
+	} else {
+		score = model.modelState.score
+	}
+
+	return score === 100
+}
+
 const MCChoice = props => {
-	let isSelected = questionIsSelected(props.moduleData.questionState, props.model)
+	let isCorrect
+
+	try {
+		isCorrect = answerIsCorrect(
+			props.model,
+			props.mode,
+			props.moduleData.questionState,
+			props.moduleData.navState.context
+		)
+	} catch (error) {
+		// if there's no questionState data for this
+		// or getting the score throws an error
+		// just display a div
+		return <div />
+	}
+
+	let isSelected = questionIsSelected(
+		props.moduleData.questionState,
+		props.model,
+		props.moduleData.navState.context
+	)
+
+	let className =
+		'obojobo-draft--chunks--mc-assessment--mc-choice' +
+		isOrNot(isSelected, 'selected') +
+		isOrNot(isCorrect, 'correct') +
+		' is-mode-' +
+		props.mode
 
 	return (
 		<OboComponent
 			model={props.model}
 			moduleData={props.moduleData}
-			className={
-				'obojobo-draft--chunks--mc-assessment--mc-choice' +
-				(isSelected ? ' is-selected' : ' is-not-selected') +
-				(props.model.modelState.score === 100 ? ' is-correct' : ' is-incorrect')
-			}
+			className={className}
 			data-choice-label={props.label}
 		>
 			<input
 				type={getInputType(props.responseType)}
 				value={props.model.get('id')}
 				checked={isSelected}
-				onChange={function() {}}
 				name={props.model.parent.get('id')}
 			/>
 			<div className="children">
@@ -53,12 +92,9 @@ const MCChoice = props => {
 					let type = child.get('type')
 					let isAnswerItem = type === 'ObojoboDraft.Chunks.MCAssessment.MCAnswer'
 					let isFeedbackItem = type === 'ObojoboDraft.Chunks.MCAssessment.MCFeedback'
-
 					if (isAnswerItem) {
 						let Component = child.getComponentClass()
-						return (
-							<Component key={child.get('id')} model={child} moduleData={props.moduleData} />
-						)
+						return <Component key={child.get('id')} model={child} moduleData={props.moduleData} />
 					}
 				})}
 			</div>

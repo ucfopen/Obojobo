@@ -100,6 +100,7 @@ describe('MCChoice viewer-component', () => {
 		let props = {
 			model,
 			moduleData,
+			mode: 'mockMode',
 			key: 'mockKey',
 			responseType: 'pick-one',
 			isShowingExplanation: false,
@@ -107,12 +108,14 @@ describe('MCChoice viewer-component', () => {
 			label: 'mocklabel'
 		}
 
-		const component = renderer.create(
-			<MCChoice {...props} />
-		)
+		const component = renderer.create(<MCChoice {...props} />)
 
 		expect(component).toMatchSnapshot()
 	})
+
+	test.skip('question classNames update when selected', () => {})
+
+	test.skip('question classNames update when correct', () => {})
 
 	test('pick-one-multiple-correct questions render as expected', () => {
 		initModuleData()
@@ -127,15 +130,12 @@ describe('MCChoice viewer-component', () => {
 			label: 'mocklabel'
 		}
 
-		const component = renderer.create(
-			<MCChoice {...props} />
-		)
+		const component = renderer.create(<MCChoice {...props} />)
 
 		expect(component).toMatchSnapshot()
 	})
 
 	test('pick-all questions render as expected', () => {
-
 		let props = {
 			model,
 			moduleData,
@@ -146,9 +146,7 @@ describe('MCChoice viewer-component', () => {
 			label: 'mocklabel'
 		}
 
-		const component = renderer.create(
-			<MCChoice {...props} />
-		)
+		const component = renderer.create(<MCChoice {...props} />)
 
 		expect(component).toMatchSnapshot()
 	})

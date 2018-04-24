@@ -63,7 +63,7 @@
 /******/ 	__webpack_require__.p = "build/";
 /******/
 /******/ 	// Load entry module and return exports
-/******/ 	return __webpack_require__(__webpack_require__.s = 265);
+/******/ 	return __webpack_require__(__webpack_require__.s = 291);
 /******/ })
 /************************************************************************/
 /******/ ({
@@ -82,15 +82,32 @@ module.exports = Viewer;
 
 /***/ }),
 
-/***/ 265:
+/***/ 20:
 /***/ (function(module, exports, __webpack_require__) {
 
-module.exports = __webpack_require__(38);
+"use strict";
+
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+// used to apply ' is-label' or ' is-not-label' styles
+var isOrNot = function isOrNot(flag, label) {
+  return ' is-' + (flag ? '' : 'not-') + label;
+};
+exports.default = isOrNot;
+
+/***/ }),
+
+/***/ 291:
+/***/ (function(module, exports, __webpack_require__) {
+
+module.exports = __webpack_require__(40);
 
 
 /***/ }),
 
-/***/ 38:
+/***/ 40:
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -100,11 +117,11 @@ var _Common = __webpack_require__(0);
 
 var _Common2 = _interopRequireDefault(_Common);
 
-var _adapter = __webpack_require__(39);
+var _adapter = __webpack_require__(41);
 
 var _adapter2 = _interopRequireDefault(_adapter);
 
-var _viewerComponent = __webpack_require__(40);
+var _viewerComponent = __webpack_require__(42);
 
 var _viewerComponent2 = _interopRequireDefault(_viewerComponent);
 
@@ -121,7 +138,7 @@ _Common2.default.Store.registerModel('ObojoboDraft.Chunks.MCAssessment.MCChoice'
 
 /***/ }),
 
-/***/ 39:
+/***/ 41:
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -157,7 +174,7 @@ var __guard__ = function __guard__(value, transform) {
 
 /***/ }),
 
-/***/ 40:
+/***/ 42:
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -167,7 +184,7 @@ Object.defineProperty(exports, "__esModule", {
 	value: true
 });
 
-__webpack_require__(60);
+__webpack_require__(63);
 
 var _Common = __webpack_require__(0);
 
@@ -176,6 +193,10 @@ var _Common2 = _interopRequireDefault(_Common);
 var _Viewer = __webpack_require__(1);
 
 var _Viewer2 = _interopRequireDefault(_Viewer);
+
+var _isornot = __webpack_require__(20);
+
+var _isornot2 = _interopRequireDefault(_isornot);
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
@@ -195,28 +216,54 @@ var getInputType = function getInputType(responseType) {
 	}
 };
 
-var questionIsSelected = function questionIsSelected(questionState, model) {
-	var response = QuestionUtil.getResponse(questionState, model.getParentOfType('ObojoboDraft.Chunks.Question')) || { ids: [] };
+var questionIsSelected = function questionIsSelected(questionState, model, navStateContext) {
+	var response = QuestionUtil.getResponse(questionState, model.getParentOfType('ObojoboDraft.Chunks.Question'), navStateContext) || { ids: [] };
 
 	return response.ids.indexOf(model.get('id')) !== -1;
 };
 
+var answerIsCorrect = function answerIsCorrect(model, mode, questionState, navStateContext) {
+	var score = void 0;
+	if (mode === 'review') {
+		// no score data for this context? no idea what to do, throw an error
+		if (!questionState.scores[navStateContext]) throw 'Unkown Question State';
+
+		score = QuestionUtil.getScoreForModel(questionState, model, navStateContext);
+	} else {
+		score = model.modelState.score;
+	}
+
+	return score === 100;
+};
+
 var MCChoice = function MCChoice(props) {
-	var isSelected = questionIsSelected(props.moduleData.questionState, props.model);
+	var isCorrect = void 0;
+
+	try {
+		isCorrect = answerIsCorrect(props.model, props.mode, props.moduleData.questionState, props.moduleData.navState.context);
+	} catch (error) {
+		// if there's no questionState data for this
+		// or getting the score throws an error
+		// just display a div
+		return React.createElement('div', null);
+	}
+
+	var isSelected = questionIsSelected(props.moduleData.questionState, props.model, props.moduleData.navState.context);
+
+	var className = 'obojobo-draft--chunks--mc-assessment--mc-choice' + (0, _isornot2.default)(isSelected, 'selected') + (0, _isornot2.default)(isCorrect, 'correct') + ' is-mode-' + props.mode;
 
 	return React.createElement(
 		OboComponent,
 		{
 			model: props.model,
 			moduleData: props.moduleData,
-			className: 'obojobo-draft--chunks--mc-assessment--mc-choice' + (isSelected ? ' is-selected' : ' is-not-selected') + (props.model.modelState.score === 100 ? ' is-correct' : ' is-incorrect'),
+			className: className,
 			'data-choice-label': props.label
 		},
 		React.createElement('input', {
 			type: getInputType(props.responseType),
 			value: props.model.get('id'),
 			checked: isSelected,
-			onChange: function onChange() {},
 			name: props.model.parent.get('id')
 		}),
 		React.createElement(
@@ -226,7 +273,6 @@ var MCChoice = function MCChoice(props) {
 				var type = child.get('type');
 				var isAnswerItem = type === 'ObojoboDraft.Chunks.MCAssessment.MCAnswer';
 				var isFeedbackItem = type === 'ObojoboDraft.Chunks.MCAssessment.MCFeedback';
-
 				if (isAnswerItem) {
 					var Component = child.getComponentClass();
 					return React.createElement(Component, { key: child.get('id'), model: child, moduleData: props.moduleData });
@@ -246,7 +292,7 @@ exports.default = MCChoice;
 
 /***/ }),
 
-/***/ 60:
+/***/ 63:
 /***/ (function(module, exports) {
 
 // removed by extract-text-webpack-plugin

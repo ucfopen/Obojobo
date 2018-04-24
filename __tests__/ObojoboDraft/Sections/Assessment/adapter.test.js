@@ -4,49 +4,28 @@ describe('ObojoboDraft.Sections.Assessment adapter', () => {
 	test('constructs with default values', () => {
 		let model = { modelState: {} }
 		AssessmentAdapter.construct(model)
-		expect(model.modelState).toMatchObject({
-			attempts: Infinity,
-			scoreActions: {
-				actions: [],
-				originalActions: undefined
-			}
-		})
+		expect(model.modelState).toMatchSnapshot()
 	})
 
-	test('constructs with attempts', () => {
+	test('constructs with N attempts', () => {
 		let model = { modelState: {} }
 		AssessmentAdapter.construct(model, { content: { attempts: 6 } })
-		expect(model.modelState).toMatchObject({
-			attempts: 6,
-			scoreActions: {
-				actions: [],
-				originalActions: undefined
-			}
-		})
+		expect(model.modelState).toMatchSnapshot()
+		expect(model.modelState.attempts).toBe(6)
 	})
 
 	test('constructs with unlimited attempts', () => {
 		let model = { modelState: {} }
 		AssessmentAdapter.construct(model, { content: { attempts: 'unlimited' } })
-		expect(model.modelState).toMatchObject({
-			attempts: Infinity,
-			scoreActions: {
-				actions: [],
-				originalActions: undefined
-			}
-		})
+		expect(model.modelState).toMatchSnapshot()
+		expect(model.modelState.attempts).toBe(Infinity)
 	})
 
 	test('constructor floors decimal attempt integers', () => {
 		let model = { modelState: {} }
 		AssessmentAdapter.construct(model, { content: { attempts: 6.9 } })
-		expect(model.modelState).toMatchObject({
-			attempts: 6,
-			scoreActions: {
-				actions: [],
-				originalActions: undefined
-			}
-		})
+		expect(model.modelState).toMatchSnapshot()
+		expect(model.modelState.attempts).toBe(6)
 	})
 
 	test('constructs with legacy score actions', () => {
@@ -81,7 +60,7 @@ describe('ObojoboDraft.Sections.Assessment adapter', () => {
 	test('constructs with score actions', () => {
 		let model = { modelState: {} }
 		let action = {
-			for: "[2,4]",
+			for: '[2,4]',
 			page: 5
 		}
 		AssessmentAdapter.construct(model, { content: { scoreActions: [action] } })
@@ -107,7 +86,7 @@ describe('ObojoboDraft.Sections.Assessment adapter', () => {
 	test('exports to json', () => {
 		let model = { modelState: {} }
 		let action = {
-			for: "[2,4]",
+			for: '[2,4]',
 			page: 5
 		}
 		AssessmentAdapter.construct(model, { content: { scoreActions: [action] } })
@@ -137,7 +116,7 @@ describe('ObojoboDraft.Sections.Assessment adapter', () => {
 				attempts: Infinity,
 				scoreActions: [
 					{
-						for: "[2,4]",
+						for: '[2,4]',
 						page: 5
 					}
 				]
@@ -149,7 +128,7 @@ describe('ObojoboDraft.Sections.Assessment adapter', () => {
 		let model = { modelState: {} }
 		let model2 = { modelState: {} }
 		let action = {
-			for: "[2,4]",
+			for: '[2,4]',
 			page: 5
 		}
 		AssessmentAdapter.construct(model, { content: { scoreActions: [action] } })
