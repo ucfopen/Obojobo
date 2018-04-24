@@ -7,6 +7,7 @@ let insertEvent = oboRequire('insert_event')
 let lti = oboRequire('lti')
 let logger = oboRequire('logger')
 let attemptStart = require('./attempt-start')
+const QUESTION_NODE_TYPE = 'ObojoboDraft.Chunks.Question'
 
 let endAttempt = (req, res, user, attemptId, isPreviewing) => {
 	let attempt
@@ -333,7 +334,7 @@ let reloadAttemptStateIfReviewing = (
 
 	// Do not reload the state if reviews are only allowed after the last
 	// attempt and this is not the last attempt
-	if (assessmentNode.node.content.review == 'afterAttempts' && !isLastAttempt) {
+	if (assessmentNode.node.content.review == 'no-attempts-remaining' && !isLastAttempt) {
 		return null
 	}
 
@@ -358,10 +359,7 @@ let reloadAttemptStateIfReviewing = (
 
 	// If reviews are allowed after last attempt and this is the last attempt,
 	// reload the states for all attempts
-	if (assessmentNode.node.content.review == 'afterAttempts' && isLastAttempt) {
-		// Reload state for this attempt
-		Assessment.updateAttemptState(attemptId, state)
-
+	if (assessmentNode.node.content.review == 'no-attempts-remaining' && isLastAttempt) {
 		// Reload state for all previous attempts
 		return Assessment.getAttempts(
 			assessmentProperties.user.id,
@@ -373,7 +371,9 @@ let reloadAttemptStateIfReviewing = (
 					attempt.state.qb,
 					assessmentProperties.draftTree
 				)
+
 				let newQuestions = []
+				logger.info('inside')
 
 				attempt.state.questions.map(question => {
 					newQuestions.push(getNodeQuestion(question.id, assessmentProperties.draftTree))
