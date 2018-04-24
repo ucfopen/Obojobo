@@ -1,12 +1,70 @@
-.obojobo-draft--sections--assessment .untested {
-  padding-top: 1em; }
-  .obojobo-draft--sections--assessment .untested > h1 {
-    margin-bottom: 0.2em;
-    text-align: center; }
-  .obojobo-draft--sections--assessment .untested > h2 {
-    margin-bottom: 0;
-    text-align: center;
-    font-size: 1em; }
+.obojobo-draft--sections--assessment .submit-button {
+  display: block;
+  margin: 0 auto;
+  text-align: center;
+  width: 44em; }
+  .obojobo-draft--sections--assessment .submit-button button {
+    min-width: 9em; }
+
+.obojobo-draft--sections--assessment .score > .overview {
+  font-family: "Libre Franklin", Arial, sans-serif;
+  text-align: center;
+  background-color: #f4f4f4;
+  border-radius: 0.25em;
+  padding: 2em 3em;
+  margin-bottom: 3em; }
+  .obojobo-draft--sections--assessment .score > .overview > h1 {
+    width: 100%;
+    display: inline-block;
+    font-size: 1.35em;
+    padding: 1em 0;
+    padding-top: 0;
+    box-sizing: border-box; }
+  .obojobo-draft--sections--assessment .score > .overview > .recorded-score {
+    width: 48%;
+    margin: 0 auto;
+    margin-bottom: 0.5em;
+    background-color: #ffffff;
+    border-radius: 0.25em;
+    padding: 0.8em 2em;
+    padding-bottom: 0.5em; }
+    .obojobo-draft--sections--assessment .score > .overview > .recorded-score.is-null .value {
+      font-size: 1.5em; }
+    .obojobo-draft--sections--assessment .score > .overview > .recorded-score.is-not-null .value {
+      font-size: 2em; }
+      .obojobo-draft--sections--assessment .score > .overview > .recorded-score.is-not-null .value:after {
+        position: absolute;
+        right: 0;
+        top: 50%;
+        content: '%';
+        display: block;
+        transform: translate(1em, -50%);
+        font-size: 0.6em; }
+    .obojobo-draft--sections--assessment .score > .overview > .recorded-score h2 {
+      font-size: 1em;
+      margin-bottom: 1em; }
+    .obojobo-draft--sections--assessment .score > .overview > .recorded-score .value {
+      display: inline-block;
+      position: relative;
+      margin-bottom: 0.5em; }
+    .obojobo-draft--sections--assessment .score > .overview > .recorded-score .from-attempt {
+      border-top: 1px solid rgba(0, 0, 0, 0.1);
+      display: block;
+      font-size: 0.7em;
+      padding-top: 0.5em; }
+  .obojobo-draft--sections--assessment .score > .overview > .score-actions-page {
+    background: #ffffff;
+    border-radius: 0.25em; }
+    .obojobo-draft--sections--assessment .score > .overview > .score-actions-page h1 {
+      font-weight: normal;
+      font-size: 1.5em; }
+
+.obojobo-draft--sections--assessment .score > .attempt-history > h1 {
+  border-bottom: 1px solid rgba(0, 0, 0, 0.3);
+  text-align: center;
+  margin-bottom: 1em;
+  padding-bottom: 0.5em;
+  font-size: 1.5em; }
 
 .obojobo-draft--sections--assessment .attempt-review-container {
   position: relative; }
@@ -106,73 +164,15 @@
         .obojobo-draft--sections--assessment .attempt-review-container > .attempt-results .review.is-basic-review .is-correct .obojobo-draft--chunks--question .flipper .responses-hidden {
           color: #38ae24; }
 
-.obojobo-draft--sections--assessment .score > .overview {
-  font-family: "Libre Franklin", Arial, sans-serif;
-  text-align: center;
-  background-color: #f4f4f4;
-  border-radius: 0.25em;
-  padding: 2em 3em;
-  margin-bottom: 3em; }
-  .obojobo-draft--sections--assessment .score > .overview > h1 {
-    width: 100%;
-    display: inline-block;
-    font-size: 1.35em;
-    padding: 1em 0;
-    padding-top: 0;
-    box-sizing: border-box; }
-  .obojobo-draft--sections--assessment .score > .overview > .recorded-score {
-    width: 48%;
-    margin: 0 auto;
-    margin-bottom: 0.5em;
-    background-color: #ffffff;
-    border-radius: 0.25em;
-    padding: 0.8em 2em;
-    padding-bottom: 0.5em; }
-    .obojobo-draft--sections--assessment .score > .overview > .recorded-score.is-null .value {
-      font-size: 1.5em; }
-    .obojobo-draft--sections--assessment .score > .overview > .recorded-score.is-not-null .value {
-      font-size: 2em; }
-      .obojobo-draft--sections--assessment .score > .overview > .recorded-score.is-not-null .value:after {
-        position: absolute;
-        right: 0;
-        top: 50%;
-        content: '%';
-        display: block;
-        transform: translate(1em, -50%);
-        font-size: 0.6em; }
-    .obojobo-draft--sections--assessment .score > .overview > .recorded-score h2 {
-      font-size: 1em;
-      margin-bottom: 1em; }
-    .obojobo-draft--sections--assessment .score > .overview > .recorded-score .value {
-      display: inline-block;
-      position: relative;
-      margin-bottom: 0.5em; }
-    .obojobo-draft--sections--assessment .score > .overview > .recorded-score .from-attempt {
-      border-top: 1px solid rgba(0, 0, 0, 0.1);
-      display: block;
-      font-size: 0.7em;
-      padding-top: 0.5em; }
-  .obojobo-draft--sections--assessment .score > .overview > .score-actions-page {
-    background: #ffffff;
-    border-radius: 0.25em; }
-    .obojobo-draft--sections--assessment .score > .overview > .score-actions-page h1 {
-      font-weight: normal;
-      font-size: 1.5em; }
-
-.obojobo-draft--sections--assessment .score > .attempt-history > h1 {
-  border-bottom: 1px solid rgba(0, 0, 0, 0.3);
-  text-align: center;
-  margin-bottom: 1em;
-  padding-bottom: 0.5em;
-  font-size: 1.5em; }
-
-.obojobo-draft--sections--assessment .submit-button {
-  display: block;
-  margin: 0 auto;
-  text-align: center;
-  width: 44em; }
-  .obojobo-draft--sections--assessment .submit-button button {
-    min-width: 9em; }
+.obojobo-draft--sections--assessment .pre-test {
+  padding-top: 1em; }
+  .obojobo-draft--sections--assessment .pre-test > h1 {
+    margin-bottom: 0.2em;
+    text-align: center; }
+  .obojobo-draft--sections--assessment .pre-test > h2 {
+    margin-bottom: 0;
+    text-align: center;
+    font-size: 1em; }
 
 .obojobo-draft--sections--assessment--results-modal {
   background: #f4f4f4; }

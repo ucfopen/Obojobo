@@ -63,7 +63,7 @@
 /******/ 	__webpack_require__.p = "build/";
 /******/
 /******/ 	// Load entry module and return exports
-/******/ 	return __webpack_require__(__webpack_require__.s = 292);
+/******/ 	return __webpack_require__(__webpack_require__.s = 293);
 /******/ })
 /************************************************************************/
 /******/ ({
@@ -75,7 +75,7 @@ module.exports = Common;
 
 /***/ }),
 
-/***/ 109:
+/***/ 110:
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -85,11 +85,11 @@ var _Common = __webpack_require__(0);
 
 var _Common2 = _interopRequireDefault(_Common);
 
-var _adapter = __webpack_require__(144);
+var _adapter = __webpack_require__(145);
 
 var _adapter2 = _interopRequireDefault(_adapter);
 
-var _viewerComponent = __webpack_require__(145);
+var _viewerComponent = __webpack_require__(146);
 
 var _viewerComponent2 = _interopRequireDefault(_viewerComponent);
 
@@ -107,7 +107,7 @@ _Common2.default.Store.registerModel('ObojoboDraft.Chunks.MathEquation', {
 
 /***/ }),
 
-/***/ 144:
+/***/ 145:
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -165,7 +165,7 @@ function __guard__(value, transform) {
 
 /***/ }),
 
-/***/ 145:
+/***/ 146:
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -175,11 +175,9 @@ Object.defineProperty(exports, "__esModule", {
 	value: true
 });
 
-var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+__webpack_require__(270);
 
-__webpack_require__(269);
-
-var _katex = __webpack_require__(63);
+var _katex = __webpack_require__(64);
 
 var _katex2 = _interopRequireDefault(_katex);
 
@@ -189,15 +187,7 @@ var _Common2 = _interopRequireDefault(_Common);
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
-function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
-
-function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
-
-function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
-
 // katex = null #dynamically load
-
-
 var OboComponent = _Common2.default.components.OboComponent;
 var NonEditableChunk = _Common2.default.chunk.NonEditableChunk;
 
@@ -211,79 +201,56 @@ var getLatexHtml = function getLatexHtml(latex) {
 	}
 };
 
-var MathEquation = function (_React$Component) {
-	_inherits(MathEquation, _React$Component);
-
-	function MathEquation(props) {
-		_classCallCheck(this, MathEquation);
-
-		var _this = _possibleConstructorReturn(this, (MathEquation.__proto__ || Object.getPrototypeOf(MathEquation)).call(this, props));
-
-		var katexHtml = getLatexHtml(_this.props.model.modelState.latex);
-		if (katexHtml.error != null) {
-			katexHtml = '';
-		} else {
-			katexHtml = katexHtml.html;
-		}
-
-		_this.state = { katexHtml: katexHtml };
-		return _this;
+exports.default = function (props) {
+	var katexHtml = getLatexHtml(props.model.modelState.latex);
+	if (katexHtml.error != null) {
+		katexHtml = '';
+	} else {
+		katexHtml = katexHtml.html;
 	}
 
-	_createClass(MathEquation, [{
-		key: 'render',
-		value: function render() {
-			if (this.state.katexHtml.length === 0) {
-				return null;
-			}
+	if (katexHtml.length === 0) {
+		return null;
+	}
 
-			return React.createElement(
-				OboComponent,
-				{
-					model: this.props.model,
-					moduleData: this.props.moduleData,
-					className: 'obojobo-draft--chunks--math-equation pad align-' + this.props.model.modelState.align
-				},
-				React.createElement(
-					NonEditableChunk,
-					null,
-					React.createElement('div', {
-						className: 'katex-container',
-						dangerouslySetInnerHTML: { __html: this.state.katexHtml }
-					}),
-					this.props.model.modelState.label === '' ? null : React.createElement(
-						'div',
-						{ className: 'equation-label' },
-						this.props.model.modelState.label
-					)
-				)
-			);
-		}
-	}]);
-
-	return MathEquation;
-}(React.Component);
-
-exports.default = MathEquation;
+	return React.createElement(
+		OboComponent,
+		{
+			model: props.model,
+			moduleData: props.moduleData,
+			className: 'obojobo-draft--chunks--math-equation pad align-' + props.model.modelState.align
+		},
+		React.createElement(
+			NonEditableChunk,
+			null,
+			React.createElement('div', { className: 'katex-container', dangerouslySetInnerHTML: { __html: katexHtml } }),
+			props.model.modelState.label === '' ? null : React.createElement(
+				'div',
+				{ className: 'equation-label' },
+				props.model.modelState.label
+			)
+		)
+	);
+};
 
 /***/ }),
 
-/***/ 269:
+/***/ 270:
 /***/ (function(module, exports) {
 
 // removed by extract-text-webpack-plugin
 
 /***/ }),
 
-/***/ 292:
+/***/ 293:
 /***/ (function(module, exports, __webpack_require__) {
 
-module.exports = __webpack_require__(109);
+module.exports = __webpack_require__(110);
 
 
 /***/ }),
 
-/***/ 63:
+/***/ 64:
 /***/ (function(module, exports) {
 
 module.exports = katex;

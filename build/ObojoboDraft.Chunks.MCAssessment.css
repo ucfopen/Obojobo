@@ -280,7 +280,7 @@
           .obojobo-draft--chunks--mc-assessment .solution > .score .feedback.is-pick-all-feedback > .obojobo-draft--chunks--mc-assessment--mc-feedback.is-correct-feedback:before {
             content: "\2714" attr(data-choice-label);
             color: #38ae24; }
-          .obojobo-draft--chunks--mc-assessment .solution > .score .feedback.is-pick-all-feedback > .obojobo-draft--chunks--mc-assessment--mc-feedback.is-incorrect-feedback:before {
+          .obojobo-draft--chunks--mc-assessment .solution > .score .feedback.is-pick-all-feedback > .obojobo-draft--chunks--mc-assessment--mc-feedback.is-not-correct-feedback:before {
             content: "\2716" attr(data-choice-label);
             color: #c21f00; }
     .obojobo-draft--chunks--mc-assessment .solution > .obojobo-draft--components--button {

@@ -63,7 +63,7 @@
 /******/ 	__webpack_require__.p = "build/";
 /******/
 /******/ 	// Load entry module and return exports
-/******/ 	return __webpack_require__(__webpack_require__.s = 300);
+/******/ 	return __webpack_require__(__webpack_require__.s = 301);
 /******/ })
 /************************************************************************/
 /******/ ({
@@ -82,7 +82,36 @@ module.exports = Viewer;
 
 /***/ }),
 
-/***/ 117:
+/***/ 100:
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+/**
+ * @category Common Helpers
+ * @summary Is the given argument an instance of Date?
+ *
+ * @description
+ * Is the given argument an instance of Date?
+ *
+ * @param {*} argument - the argument to check
+ * @returns {Boolean} the given argument is an instance of Date
+ *
+ * @example
+ * // Is 'mayonnaise' a Date?
+ * var result = isDate('mayonnaise')
+ * //=> false
+ */
+function isDate(argument) {
+  return argument instanceof Date;
+}
+
+module.exports = isDate;
+
+/***/ }),
+
+/***/ 118:
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -96,11 +125,11 @@ var _Viewer = __webpack_require__(1);
 
 var _Viewer2 = _interopRequireDefault(_Viewer);
 
-var _adapter = __webpack_require__(159);
+var _adapter = __webpack_require__(160);
 
 var _adapter2 = _interopRequireDefault(_adapter);
 
-var _viewerComponent = __webpack_require__(169);
+var _viewerComponent = __webpack_require__(170);
 
 var _viewerComponent2 = _interopRequireDefault(_viewerComponent);
 
@@ -160,7 +189,7 @@ _Common2.default.Store.registerModel('ObojoboDraft.Sections.Assessment', {
 
 /***/ }),
 
-/***/ 159:
+/***/ 160:
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -170,11 +199,11 @@ Object.defineProperty(exports, "__esModule", {
 	value: true
 });
 
-var _scoreActions = __webpack_require__(168);
+var _scoreActions = __webpack_require__(169);
 
 var _scoreActions2 = _interopRequireDefault(_scoreActions);
 
-var _assessmentRubric = __webpack_require__(255);
+var _assessmentRubric = __webpack_require__(256);
 
 var _assessmentRubric2 = _interopRequireDefault(_assessmentRubric);
 
@@ -182,17 +211,19 @@ function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { de
 
 var Adapter = {
 	construct: function construct(model, attrs) {
-		// Default state.
-		model.modelState.attempts = Infinity;
-		model.modelState.review = 'never';
-		model.modelState.scoreActions = new _scoreActions2.default();
-		model.modelState.rubric = new _assessmentRubric2.default(attrs.content.rubric);
-
 		// Set state if XML has the attributes.
 		if (attrs && attrs.content) {
-			model.modelState.attempts = attrs.content.attempts === 'unlimited' ? Infinity : parseInt(attrs.content.attempts, 10);
+			var attempts = attrs.content.attempts || 'unlimited';
+			model.modelState.attempts = attempts === 'unlimited' ? Infinity : parseInt(attempts, 10);
 			model.modelState.review = attrs.content.review || 'never';
 			model.modelState.scoreActions = new _scoreActions2.default(attrs.content.scoreActions || null);
+			model.modelState.rubric = new _assessmentRubric2.default(attrs.content.rubric || null);
+		} else {
+			// Default state.
+			model.modelState.attempts = Infinity;
+			model.modelState.review = 'never';
+			model.modelState.scoreActions = new _scoreActions2.default();
+			model.modelState.rubric = new _assessmentRubric2.default();
 		}
 	},
 
@@ -226,7 +257,7 @@ exports.default = Adapter;
 
 /***/ }),
 
-/***/ 160:
+/***/ 161:
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -236,79 +267,53 @@ Object.defineProperty(exports, "__esModule", {
 	value: true
 });
 
-var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
-
 var _Common = __webpack_require__(0);
 
 var _Common2 = _interopRequireDefault(_Common);
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
-function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
-
-function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
-
-function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
-
 var Dialog = _Common2.default.components.modal.Dialog;
 var ModalUtil = _Common2.default.util.ModalUtil;
 
-var AttemptIncompleteDialog = function (_React$Component) {
-	_inherits(AttemptIncompleteDialog, _React$Component);
 
-	function AttemptIncompleteDialog() {
-		_classCallCheck(this, AttemptIncompleteDialog);
+var onCancel = function onCancel() {
+	ModalUtil.hide();
+};
 
-		return _possibleConstructorReturn(this, (AttemptIncompleteDialog.__proto__ || Object.getPrototypeOf(AttemptIncompleteDialog)).apply(this, arguments));
-	}
+var onSubmit = function onSubmit(submitProp) {
+	ModalUtil.hide();
+	submitProp();
+};
 
-	_createClass(AttemptIncompleteDialog, [{
-		key: 'onCancel',
-		value: function onCancel() {
-			return ModalUtil.hide();
-		}
-	}, {
-		key: 'onSubmit',
-		value: function onSubmit() {
-			ModalUtil.hide();
-			return this.props.onSubmit();
-		}
-	}, {
-		key: 'render',
-		value: function render() {
-			return React.createElement(
-				Dialog,
-				{
-					buttons: [{
-						value: 'Submit as incomplete',
-						altAction: true,
-						dangerous: true,
-						onClick: this.onSubmit.bind(this)
-					}, 'or', {
-						value: 'Resume assessment',
-						onClick: this.onCancel.bind(this),
-						default: true
-					}]
-				},
-				React.createElement(
-					'b',
-					null,
-					'Wait! You left some questions blank.'
-				),
-				React.createElement('br', null),
-				'Finish answering all questions and submit again.'
-			);
-		}
-	}]);
-
-	return AttemptIncompleteDialog;
-}(React.Component);
-
-exports.default = AttemptIncompleteDialog;
+exports.default = function (props) {
+	return React.createElement(
+		Dialog,
+		{
+			buttons: [{
+				value: 'Submit as incomplete',
+				altAction: true,
+				dangerous: true,
+				onClick: onSubmit.bind(null, props.onSubmit)
+			}, 'or', {
+				value: 'Resume assessment',
+				onClick: onCancel,
+				default: true
+			}]
+		},
+		React.createElement(
+			'b',
+			null,
+			'Wait! You left some questions blank.'
+		),
+		React.createElement('br', null),
+		'Finish answering all questions and submit again.'
+	);
+};
 
 /***/ }),
 
-/***/ 161:
+/***/ 162:
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -351,7 +356,7 @@ exports.default = basicReview;
 
 /***/ }),
 
-/***/ 162:
+/***/ 163:
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -371,15 +376,15 @@ var _Common = __webpack_require__(0);
 
 var _Common2 = _interopRequireDefault(_Common);
 
-var _reviewIcon = __webpack_require__(163);
+var _reviewIcon = __webpack_require__(167);
 
 var _reviewIcon2 = _interopRequireDefault(_reviewIcon);
 
-var _format = __webpack_require__(242);
+var _format = __webpack_require__(243);
 
 var _format2 = _interopRequireDefault(_format);
 
-var _basicReview = __webpack_require__(161);
+var _basicReview = __webpack_require__(162);
 
 var _basicReview2 = _interopRequireDefault(_basicReview);
 
@@ -414,7 +419,7 @@ var AssessmentReviewView = function (_React$Component) {
 	_createClass(AssessmentReviewView, [{
 		key: 'componentDidMount',
 		value: function componentDidMount() {
-			var lastAttempt = AssessmentUtil.getLastAttemptForModel(this.props.assessment.props.moduleData.assessmentState, this.props.assessment.props.model);
+			var lastAttempt = AssessmentUtil.getLastAttemptForModel(this.props.moduleData.assessmentState, this.props.model);
 
 			NavUtil.setContext('assessmentReview:' + lastAttempt.attemptId);
 		}
@@ -425,11 +430,11 @@ var AssessmentReviewView = function (_React$Component) {
 
 			var attemptReviewComponents = {};
 
-			var attempts = AssessmentUtil.getAllAttempts(this.props.assessment.props.moduleData.assessmentState, this.props.assessment.props.model);
-			var highestAttempts = AssessmentUtil.getHighestAttemptsForModelByAttemptScore(this.props.assessment.props.moduleData.assessmentState, this.props.assessment.props.model);
+			var attempts = AssessmentUtil.getAllAttempts(this.props.moduleData.assessmentState, this.props.model);
+			var highestAttempts = AssessmentUtil.getHighestAttemptsForModelByAttemptScore(this.props.moduleData.assessmentState, this.props.model);
 			var scoreReporter = new AssessmentScoreReporter({
-				assessmentRubric: this.props.assessment.props.model.modelState.rubric.toObject(),
-				totalNumberOfAttemptsAllowed: this.props.assessment.props.model.modelState.attempts,
+				assessmentRubric: this.props.model.modelState.rubric.toObject(),
+				totalNumberOfAttemptsAllowed: this.props.model.modelState.attempts,
 				allAttempts: attempts
 			});
 
@@ -521,17 +526,17 @@ var AssessmentReviewView = function (_React$Component) {
 
 							return _this2.props.showFullReview ? React.createElement(QuestionComponent, {
 								model: questionModel,
-								moduleData: assessment.props.moduleData,
+								moduleData: _this2.props.moduleData,
 								mode: 'review',
 								key: scoreObj.id
-							}) : (0, _basicReview2.default)(assessment.props.moduleData, scoreObj, index);
+							}) : (0, _basicReview2.default)(_this2.props.moduleData, scoreObj, index);
 						})
 					)
 				);
 			};
 
 			var getSelectedIndex = function getSelectedIndex() {
-				var context = _this2.props.assessment.props.moduleData.navState.context;
+				var context = _this2.props.moduleData.navState.context;
 
 				for (var i in attempts) {
 					var attempt = attempts[i];
@@ -575,7 +580,7 @@ var AssessmentReviewView = function (_React$Component) {
 						attemptButtons
 					)
 				),
-				attemptReviewComponents[this.props.assessment.props.moduleData.navState.context]
+				attemptReviewComponents[this.props.moduleData.navState.context]
 			);
 		}
 	}]);
@@ -584,69 +589,6 @@ var AssessmentReviewView = function (_React$Component) {
 }(React.Component);
 
 exports.default = AssessmentReviewView;
-
-/***/ }),
-
-/***/ 163:
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-
-
-Object.defineProperty(exports, "__esModule", {
-	value: true
-});
-
-exports.default = function (props) {
-	return React.createElement(
-		"svg",
-		{ xmlns: "http://www.w3.org/2000/svg", viewBox: "0 0 114.33 114.33" },
-		React.createElement(
-			"defs",
-			null,
-			React.createElement(
-				"style",
-				null,
-				".cls-1{fill:#eadff6;}.cls-2{fill:#fff;}.cls-3{fill:#d7c6ed;}.cls-4{fill:#8fb9eb;}.cls-5{fill:#e8f3e2;}.cls-6{fill:#77b851;}"
-			)
-		),
-		React.createElement(
-			"title",
-			null,
-			"obo-assessment-review-icon"
-		),
-		React.createElement("circle", { className: "cls-1", cx: "57.17", cy: "57.17", r: "57.17" }),
-		React.createElement("rect", { className: "cls-2", x: "32.5", y: "28.87", width: "49.33", height: "56.6", rx: "3.72", ry: "3.72" }),
-		React.createElement("path", {
-			className: "cls-3",
-			d: "M43.15,39.35a4.06,4.06,0,1,0,4.06,4.06A4.06,4.06,0,0,0,43.15,39.35Zm0,6.31a2.25,2.25,0,1,1,2.25-2.25A2.25,2.25,0,0,1,43.15,45.67Z"
-		}),
-		React.createElement("rect", { className: "cls-3", x: "51.5", y: "41.29", width: "23.75", height: "4.25", rx: "2.12", ry: "2.12" }),
-		React.createElement("path", {
-			className: "cls-3",
-			d: "M43.15,53.1a4.06,4.06,0,1,0,4.06,4.06A4.06,4.06,0,0,0,43.15,53.1Zm0,6.31a2.25,2.25,0,1,1,2.25-2.25A2.25,2.25,0,0,1,43.15,59.42Z"
-		}),
-		React.createElement("rect", { className: "cls-3", x: "51.5", y: "55.04", width: "23.75", height: "4.25", rx: "2.12", ry: "2.12" }),
-		React.createElement("path", {
-			className: "cls-3",
-			d: "M43.15,66.85a4.06,4.06,0,1,0,4.06,4.06A4.06,4.06,0,0,0,43.15,66.85Z"
-		}),
-		React.createElement("rect", { className: "cls-3", x: "51.5", y: "68.79", width: "23.75", height: "4.25", rx: "2.12", ry: "2.12" }),
-		React.createElement("path", {
-			className: "cls-2",
-			d: "M91.27,81.5l-5.39-5.39a15.3,15.3,0,1,0-7.65,7.74l5.35,5.35a3.53,3.53,0,0,0,5,0l2.72-2.72A3.53,3.53,0,0,0,91.27,81.5Z"
-		}),
-		React.createElement("path", {
-			className: "cls-4",
-			d: "M88.24,83.1,82,76.86A11.87,11.87,0,1,0,78.82,80l6.24,6.24a1.25,1.25,0,0,0,1.76,0l1.42-1.42A1.25,1.25,0,0,0,88.24,83.1Z"
-		}),
-		React.createElement("circle", { className: "cls-5", cx: "72.16", cy: "70.2", r: "8.79" }),
-		React.createElement("path", {
-			className: "cls-6",
-			d: "M78.18,67.41l-1.75-1.75a.67.67,0,0,0-.94,0l-4.17,4.17L69.46,68a.67.67,0,0,0-.94,0l-1.75,1.75a.67.67,0,0,0,0,.94l2.72,2.72h0l1.35,1.35a.67.67,0,0,0,.94,0l6.39-6.39A.67.67,0,0,0,78.18,67.41Z"
-		})
-	);
-};
 
 /***/ }),
 
@@ -660,6 +602,8 @@ Object.defineProperty(exports, "__esModule", {
 	value: true
 });
 
+var _extends = Object.assign || function (target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i]; for (var key in source) { if (Object.prototype.hasOwnProperty.call(source, key)) { target[key] = source[key]; } } } return target; };
+
 var _Common = __webpack_require__(0);
 
 var _Common2 = _interopRequireDefault(_Common);
@@ -672,7 +616,7 @@ var _ltiStatus = __webpack_require__(165);
 
 var _ltiStatus2 = _interopRequireDefault(_ltiStatus);
 
-var _fullReview = __webpack_require__(162);
+var _fullReview = __webpack_require__(163);
 
 var _fullReview2 = _interopRequireDefault(_fullReview);
 
@@ -686,8 +630,8 @@ var NavUtil = _Viewer2.default.util.NavUtil;
 
 //@TODO - Rename to simply "Review"
 
-var scoreSubmittedView = function scoreSubmittedView(assessment) {
-	var questionScores = AssessmentUtil.getLastAttemptScoresForModel(assessment.props.moduleData.assessmentState, assessment.props.model);
+var AssessmentPostTest = function AssessmentPostTest(props) {
+	var questionScores = AssessmentUtil.getLastAttemptScoresForModel(props.moduleData.assessmentState, props.model);
 
 	var isFullReviewAvailable = function isFullReviewAvailable(reviewType) {
 		switch (reviewType) {
@@ -701,36 +645,36 @@ var scoreSubmittedView = function scoreSubmittedView(assessment) {
 	};
 
 	var isAssessmentComplete = function isAssessmentComplete() {
-		return !AssessmentUtil.hasAttemptsRemaining(assessment.props.moduleData.assessmentState, assessment.props.model);
+		return !AssessmentUtil.hasAttemptsRemaining(props.moduleData.assessmentState, props.model);
 	};
 
-	var scoreAction = assessment.getScoreAction();
+	// const scoreAction = assessment.getScoreAction()
 	var numCorrect = AssessmentUtil.getNumCorrect(questionScores);
 
-	var assessmentScore = AssessmentUtil.getAssessmentScoreForModel(assessment.props.moduleData.assessmentState, assessment.props.model);
+	var assessmentScore = AssessmentUtil.getAssessmentScoreForModel(props.moduleData.assessmentState, props.model);
 
 	var firstHighestAttempt = null;
 	if (assessmentScore !== null) {
-		var highestAttempts = AssessmentUtil.getHighestAttemptsForModelByAssessmentScore(assessment.props.moduleData.assessmentState, assessment.props.model);
+		var highestAttempts = AssessmentUtil.getHighestAttemptsForModelByAssessmentScore(props.moduleData.assessmentState, props.model);
 
 		firstHighestAttempt = highestAttempts.length === 0 ? null : highestAttempts[0];
 	}
 
 	var onClickResendScore = function onClickResendScore() {
-		AssessmentUtil.resendLTIScore(assessment.props.model);
+		AssessmentUtil.resendLTIScore(props.model);
 	};
 
-	var ltiState = AssessmentUtil.getLTIStateForModel(assessment.props.moduleData.assessmentState, assessment.props.model);
+	var ltiState = AssessmentUtil.getLTIStateForModel(props.moduleData.assessmentState, props.model);
 
-	var assessmentLabel = NavUtil.getNavLabelForModel(assessment.props.moduleData.navState, assessment.props.model);
+	var assessmentLabel = NavUtil.getNavLabelForModel(props.moduleData.navState, props.model);
 
 	var scoreActionsPage = void 0;
 
-	if (scoreAction.page != null) {
-		var pageModel = OboModel.create(scoreAction.page);
-		pageModel.parent = assessment.props.model; //'@TODO - FIGURE OUT A BETTER WAY TO DO THIS - THIS IS NEEDED TO GET {{VARIABLES}} WORKING')
+	if (props.scoreAction.page != null) {
+		var pageModel = OboModel.create(props.scoreAction.page);
+		pageModel.parent = props.model; //'@TODO - FIGURE OUT A BETTER WAY TO DO THIS - THIS IS NEEDED TO GET {{VARIABLES}} WORKING')
 		var PageComponent = pageModel.getComponentClass();
-		scoreActionsPage = React.createElement(PageComponent, { model: pageModel, moduleData: assessment.props.moduleData });
+		scoreActionsPage = React.createElement(PageComponent, { model: pageModel, moduleData: props.moduleData });
 	} else {
 		scoreActionsPage = React.createElement(
 			'p',
@@ -739,9 +683,9 @@ var scoreSubmittedView = function scoreSubmittedView(assessment) {
 		);
 	}
 
-	var externalSystemLabel = assessment.props.moduleData.lti.outcomeServiceHostname;
+	var externalSystemLabel = props.moduleData.lti.outcomeServiceHostname;
 
-	var showFullReview = isFullReviewAvailable(assessment.props.model.modelState.review);
+	var showFullReview = isFullReviewAvailable(props.model.modelState.review);
 
 	return React.createElement(
 		'div',
@@ -842,12 +786,12 @@ var scoreSubmittedView = function scoreSubmittedView(assessment) {
 				null,
 				'Attempt History:'
 			),
-			React.createElement(_fullReview2.default, { assessment: assessment, showFullReview: showFullReview })
+			React.createElement(_fullReview2.default, _extends({}, props, { showFullReview: showFullReview }))
 		)
 	);
 };
 
-exports.default = scoreSubmittedView;
+exports.default = AssessmentPostTest;
 
 /***/ }),
 
@@ -861,9 +805,7 @@ Object.defineProperty(exports, "__esModule", {
 	value: true
 });
 
-var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
-
-__webpack_require__(278);
+__webpack_require__(279);
 
 var _Common = __webpack_require__(0);
 
@@ -875,141 +817,96 @@ var _Viewer2 = _interopRequireDefault(_Viewer);
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
-function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
-
-function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
-
-function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
-
 var Button = _Common2.default.components.Button;
 
 var LTINetworkStates = _Viewer2.default.stores.assessmentStore.LTINetworkStates;
 
-var LTIStatus = function (_React$Component) {
-	_inherits(LTIStatus, _React$Component);
+var notLTI = function notLTI() {
+	return React.createElement(
+		'div',
+		{ className: 'obojobo-draft--sections--assessment--lti-status is-not-lti' },
+		'\xA0'
+	);
+};
 
-	function LTIStatus() {
-		_classCallCheck(this, LTIStatus);
+var noScoreSent = function noScoreSent(externalSystemLabel) {
+	return React.createElement(
+		'div',
+		{ className: 'obojobo-draft--sections--assessment--lti-status is-synced' },
+		'No score has been sent to ' + externalSystemLabel + ' (Only passing scores are sent)'
+	);
+};
 
-		return _possibleConstructorReturn(this, (LTIStatus.__proto__ || Object.getPrototypeOf(LTIStatus)).apply(this, arguments));
-	}
+var synced = function synced(assessmentScore, externalSystemLabel) {
+	return React.createElement(
+		'div',
+		{ className: 'obojobo-draft--sections--assessment--lti-status is-synced' },
+		'\u2714 Your recorded score of ' + assessmentScore + '% was sent to ' + externalSystemLabel
+	);
+};
 
-	_createClass(LTIStatus, [{
-		key: 'onClickResendScore',
-		value: function onClickResendScore() {
-			AssessmentUtil.resendLTIScore(this.props.model);
-		}
-	}, {
-		key: 'render',
-		value: function render() {
-			var ltiState = this.props.ltiState;
+var renderError = function renderError(ltiState, systemLabel, onClickResendScore) {
+	return React.createElement(
+		'div',
+		{ className: 'obojobo-draft--sections--assessment--lti-status is-not-synced' },
+		React.createElement(
+			'h2',
+			null,
+			'There was a problem sending your score to ' + systemLabel + '.'
+		),
+		React.createElement(
+			'p',
+			null,
+			'Don\u2019t worry - your score is safely recorded here. We just weren\u2019t able to send it to ' + systemLabel + '. Click the button below to resend your score:'
+		),
+		ltiState.errorCount === 0 || ltiState.networkState !== LTINetworkStates.IDLE ? null : React.createElement(
+			'p',
+			null,
+			React.createElement(
+				'strong',
+				null,
+				'Sorry - That didn\'t work.'
+			),
+			' Most likely the connection to ' + systemLabel + ' has expired and just needs to be refreshed. Please close this tab or window, reopen this module from ' + systemLabel + ', return to this page and then resend your score.'
+		),
+		function () {
+			switch (ltiState.networkState) {
+				case LTINetworkStates.AWAITING_SEND_ASSESSMENT_SCORE_RESPONSE:
+					return React.createElement(
+						Button,
+						{ disabled: true },
+						'Resending Score...'
+					);
 
-			if (!ltiState.state) return null;
-
-			switch (ltiState.state.gradebookStatus) {
-				case 'ok_no_outcome_service':
-					return this.renderNotLTI();
-
-				case 'ok_null_score_not_sent':
-					return this.renderNoScoreSent();
-
-				case 'ok_gradebook_matches_assessment_score':
-					return this.renderSynced();
-
+				case LTINetworkStates.IDLE:
 				default:
-					return this.renderError();
+					return React.createElement(
+						Button,
+						{ dangerous: true, onClick: onClickResendScore },
+						ltiState.errorCount === 0 ? 'Resend score' : 'Try again anyway'
+					);
 			}
-		}
-	}, {
-		key: 'renderNotLTI',
-		value: function renderNotLTI() {
-			return React.createElement(
-				'div',
-				{ className: 'obojobo-draft--sections--assessment--lti-status is-not-lti' },
-				'\xA0'
-			);
-		}
-	}, {
-		key: 'renderNoScoreSent',
-		value: function renderNoScoreSent() {
-			var systemLabel = this.props.externalSystemLabel;
+		}()
+	);
+};
 
-			return React.createElement(
-				'div',
-				{ className: 'obojobo-draft--sections--assessment--lti-status is-synced' },
-				'No score has been sent to ' + systemLabel + ' (Only passing scores are sent)'
-			);
-		}
-	}, {
-		key: 'renderSynced',
-		value: function renderSynced() {
-			var systemLabel = this.props.externalSystemLabel;
+exports.default = function (props) {
+	if (!props.ltiState.state) return null;
 
-			return React.createElement(
-				'div',
-				{ className: 'obojobo-draft--sections--assessment--lti-status is-synced' },
-				'\u2714 Your recorded score of ' + Math.round(this.props.assessmentScore) + '% was sent to ' + systemLabel
-			);
-		}
-	}, {
-		key: 'renderError',
-		value: function renderError() {
-			var _this2 = this;
+	switch (props.ltiState.state.gradebookStatus) {
+		case 'ok_no_outcome_service':
+			return notLTI();
 
-			var ltiState = this.props.ltiState;
-			var systemLabel = this.props.externalSystemLabel;
+		case 'ok_null_score_not_sent':
+			return noScoreSent(props.externalSystemLabel);
 
-			return React.createElement(
-				'div',
-				{ className: 'obojobo-draft--sections--assessment--lti-status is-not-synced' },
-				React.createElement(
-					'h2',
-					null,
-					'There was a problem sending your score to ' + systemLabel + '.'
-				),
-				React.createElement(
-					'p',
-					null,
-					'Don\u2019t worry - your score is safely recorded here. We just weren\u2019t able to send it to ' + systemLabel + '. Click the button below to resend your score:'
-				),
-				this.props.ltiState.errorCount === 0 || ltiState.networkState !== LTINetworkStates.IDLE ? null : React.createElement(
-					'p',
-					null,
-					React.createElement(
-						'strong',
-						null,
-						'Sorry - That didn\'t work.'
-					),
-					' Most likely the connection to ' + systemLabel + ' has expired and just needs to be refreshed. Please close this tab or window, reopen this module from ' + systemLabel + ', return to this page and then resend your score.'
-				),
-				function () {
-					switch (ltiState.networkState) {
-						case LTINetworkStates.AWAITING_SEND_ASSESSMENT_SCORE_RESPONSE:
-							return React.createElement(
-								Button,
-								{ disabled: true },
-								'Resending Score...'
-							);
-							break;
+		case 'ok_gradebook_matches_assessment_score':
+			return synced(Math.round(props.assessmentScore), props.externalSystemLabel);
 
-						case LTINetworkStates.IDLE:
-						default:
-							return React.createElement(
-								Button,
-								{ dangerous: true, onClick: _this2.props.onClickResendScore },
-								_this2.props.ltiState.errorCount === 0 ? 'Resend score' : 'Try again anyway'
-							);
-							break;
-					}
-				}()
-			);
-		}
-	}]);
-
-	return LTIStatus;
-}(React.Component);
-
-exports.default = LTIStatus;
+		default:
+			return renderError(props.ltiState, props.externalSystemLabel, props.onClickResendScore);
+	}
+};
 
 /***/ }),
 
@@ -1022,41 +919,17 @@ exports.default = LTIStatus;
 Object.defineProperty(exports, "__esModule", {
 	value: true
 });
+var AssessmentPreTest = function AssessmentPreTest(props) {
+	var Component = props.model.getComponentClass();
 
-var _Common = __webpack_require__(0);
-
-var _Common2 = _interopRequireDefault(_Common);
-
-var _Viewer = __webpack_require__(1);
-
-var _Viewer2 = _interopRequireDefault(_Viewer);
-
-function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
-
-var Button = _Common2.default.components.Button;
-var AssessmentUtil = _Viewer2.default.util.AssessmentUtil;
-
-
-var takingTestView = function takingTestView(assessment) {
-	var moduleData = assessment.props.moduleData;
-	var child = assessment.props.model.children.at(1);
-	var Component = child.getComponentClass();
 	return React.createElement(
-		'div',
-		{ className: 'test' },
-		React.createElement(Component, { className: 'untested', model: child, moduleData: moduleData }),
-		React.createElement(
-			'div',
-			{ className: 'submit-button' },
-			React.createElement(Button, {
-				onClick: assessment.onClickSubmit.bind(assessment),
-				value: assessment.isAttemptComplete() ? 'Submit' : 'Submit (Not all questions have been answered)'
-			})
-		)
+		"div",
+		{ className: "pre-test" },
+		React.createElement(Component, { model: props.model, moduleData: props.moduleData })
 	);
 };
 
-exports.default = takingTestView;
+exports.default = AssessmentPreTest;
 
 /***/ }),
 
@@ -1069,22 +942,102 @@ exports.default = takingTestView;
 Object.defineProperty(exports, "__esModule", {
 	value: true
 });
-var untestedView = function untestedView(assessment) {
-	var child = assessment.props.model.children.at(0);
-	var Component = child.getComponentClass();
 
+exports.default = function (props) {
 	return React.createElement(
-		"div",
-		{ className: "untested" },
-		React.createElement(Component, { model: child, moduleData: assessment.props.moduleData })
+		"svg",
+		{ xmlns: "http://www.w3.org/2000/svg", viewBox: "0 0 114.33 114.33" },
+		React.createElement(
+			"defs",
+			null,
+			React.createElement(
+				"style",
+				null,
+				".cls-1{fill:#eadff6;}.cls-2{fill:#fff;}.cls-3{fill:#d7c6ed;}.cls-4{fill:#8fb9eb;}.cls-5{fill:#e8f3e2;}.cls-6{fill:#77b851;}"
+			)
+		),
+		React.createElement(
+			"title",
+			null,
+			"obo-assessment-review-icon"
+		),
+		React.createElement("circle", { className: "cls-1", cx: "57.17", cy: "57.17", r: "57.17" }),
+		React.createElement("rect", { className: "cls-2", x: "32.5", y: "28.87", width: "49.33", height: "56.6", rx: "3.72", ry: "3.72" }),
+		React.createElement("path", {
+			className: "cls-3",
+			d: "M43.15,39.35a4.06,4.06,0,1,0,4.06,4.06A4.06,4.06,0,0,0,43.15,39.35Zm0,6.31a2.25,2.25,0,1,1,2.25-2.25A2.25,2.25,0,0,1,43.15,45.67Z"
+		}),
+		React.createElement("rect", { className: "cls-3", x: "51.5", y: "41.29", width: "23.75", height: "4.25", rx: "2.12", ry: "2.12" }),
+		React.createElement("path", {
+			className: "cls-3",
+			d: "M43.15,53.1a4.06,4.06,0,1,0,4.06,4.06A4.06,4.06,0,0,0,43.15,53.1Zm0,6.31a2.25,2.25,0,1,1,2.25-2.25A2.25,2.25,0,0,1,43.15,59.42Z"
+		}),
+		React.createElement("rect", { className: "cls-3", x: "51.5", y: "55.04", width: "23.75", height: "4.25", rx: "2.12", ry: "2.12" }),
+		React.createElement("path", {
+			className: "cls-3",
+			d: "M43.15,66.85a4.06,4.06,0,1,0,4.06,4.06A4.06,4.06,0,0,0,43.15,66.85Z"
+		}),
+		React.createElement("rect", { className: "cls-3", x: "51.5", y: "68.79", width: "23.75", height: "4.25", rx: "2.12", ry: "2.12" }),
+		React.createElement("path", {
+			className: "cls-2",
+			d: "M91.27,81.5l-5.39-5.39a15.3,15.3,0,1,0-7.65,7.74l5.35,5.35a3.53,3.53,0,0,0,5,0l2.72-2.72A3.53,3.53,0,0,0,91.27,81.5Z"
+		}),
+		React.createElement("path", {
+			className: "cls-4",
+			d: "M88.24,83.1,82,76.86A11.87,11.87,0,1,0,78.82,80l6.24,6.24a1.25,1.25,0,0,0,1.76,0l1.42-1.42A1.25,1.25,0,0,0,88.24,83.1Z"
+		}),
+		React.createElement("circle", { className: "cls-5", cx: "72.16", cy: "70.2", r: "8.79" }),
+		React.createElement("path", {
+			className: "cls-6",
+			d: "M78.18,67.41l-1.75-1.75a.67.67,0,0,0-.94,0l-4.17,4.17L69.46,68a.67.67,0,0,0-.94,0l-1.75,1.75a.67.67,0,0,0,0,.94l2.72,2.72h0l1.35,1.35a.67.67,0,0,0,.94,0l6.39-6.39A.67.67,0,0,0,78.18,67.41Z"
+		})
 	);
 };
-
-exports.default = untestedView;
 
 /***/ }),
 
 /***/ 168:
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+Object.defineProperty(exports, "__esModule", {
+	value: true
+});
+
+var _Common = __webpack_require__(0);
+
+var _Common2 = _interopRequireDefault(_Common);
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+var Button = _Common2.default.components.Button;
+
+
+var AssessmentTest = function AssessmentTest(props) {
+	var Component = props.model.getComponentClass();
+
+	return React.createElement(
+		"div",
+		{ className: "test" },
+		React.createElement(Component, { model: props.model, moduleData: props.moduleData }),
+		React.createElement(
+			"div",
+			{ className: "submit-button" },
+			React.createElement(Button, {
+				onClick: props.onClickSubmit,
+				value: props.isAttemptComplete ? 'Submit' : 'Submit (Not all questions have been answered)'
+			})
+		)
+	);
+};
+
+exports.default = AssessmentTest;
+
+/***/ }),
+
+/***/ 169:
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -1181,226 +1134,13 @@ exports.default = ScoreActions;
 
 /***/ }),
 
-/***/ 169:
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-
-
-Object.defineProperty(exports, "__esModule", {
-	value: true
-});
-
-var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
-
-__webpack_require__(279);
-
-var _Common = __webpack_require__(0);
-
-var _Common2 = _interopRequireDefault(_Common);
-
-var _Viewer = __webpack_require__(1);
-
-var _Viewer2 = _interopRequireDefault(_Viewer);
-
-var _attemptIncompleteDialog = __webpack_require__(160);
-
-var _attemptIncompleteDialog2 = _interopRequireDefault(_attemptIncompleteDialog);
-
-var _untested = __webpack_require__(167);
-
-var _untested2 = _interopRequireDefault(_untested);
-
-var _scoreSubmitted = __webpack_require__(164);
-
-var _scoreSubmitted2 = _interopRequireDefault(_scoreSubmitted);
-
-var _takingTest = __webpack_require__(166);
-
-var _takingTest2 = _interopRequireDefault(_takingTest);
-
-function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
-
-function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
-
-function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
-
-function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
-
-var OboComponent = _Common2.default.components.OboComponent;
-var OboModel = _Common2.default.models.OboModel;
-var Button = _Common2.default.components.Button;
-var Dispatcher = _Common2.default.flux.Dispatcher;
-var ModalUtil = _Common2.default.util.ModalUtil;
-var AssessmentUtil = _Viewer2.default.util.AssessmentUtil;
-var NavUtil = _Viewer2.default.util.NavUtil;
-
-var Assessment = function (_React$Component) {
-	_inherits(Assessment, _React$Component);
-
-	function Assessment() {
-		_classCallCheck(this, Assessment);
-
-		var _this = _possibleConstructorReturn(this, (Assessment.__proto__ || Object.getPrototypeOf(Assessment)).call(this));
-
-		_this.state = { step: null };
-		return _this;
-	}
-
-	_createClass(Assessment, [{
-		key: 'componentWillUnmount',
-		value: function componentWillUnmount() {
-			NavUtil.setContext('practice');
-		}
-	}, {
-		key: 'getCurrentStep',
-		value: function getCurrentStep() {
-			var assessment = AssessmentUtil.getAssessmentForModel(this.props.moduleData.assessmentState, this.props.model);
-
-			if (assessment === null) {
-				return 'untested';
-			}
-			if (assessment.current !== null) {
-				return 'takingTest';
-			}
-
-			if (assessment.attempts.length > 0) {
-				return 'scoreSubmitted';
-			}
-			return 'untested';
-		}
-	}, {
-		key: 'componentWillReceiveProps',
-		value: function componentWillReceiveProps(nextProps) {
-			var curStep = this.getCurrentStep();
-			if (curStep !== this.state.step) {
-				this.needsScroll = true;
-			}
-
-			return this.setState({ step: curStep });
-		}
-	}, {
-		key: 'componentDidUpdate',
-		value: function componentDidUpdate() {
-			if (this.needsScroll) {
-				delete this.needsScroll;
-				return Dispatcher.trigger('viewer:scrollToTop');
-			}
-		}
-	}, {
-		key: 'isAttemptComplete',
-		value: function isAttemptComplete() {
-			return AssessmentUtil.isCurrentAttemptComplete(this.props.moduleData.assessmentState, this.props.moduleData.questionState, this.props.model, this.props.moduleData.navState.context);
-		}
-	}, {
-		key: 'isAssessmentComplete',
-		value: function isAssessmentComplete() {
-			return !AssessmentUtil.hasAttemptsRemaining(this.props.moduleData.assessmentState, this.props.model);
-		}
-	}, {
-		key: 'onClickSubmit',
-		value: function onClickSubmit() {
-			if (!this.isAttemptComplete()) {
-				ModalUtil.show(React.createElement(_attemptIncompleteDialog2.default, { onSubmit: this.endAttempt.bind(this) }));
-				return;
-			}
-			return this.endAttempt();
-		}
-	}, {
-		key: 'onClickResendScore',
-		value: function onClickResendScore() {
-			AssessmentUtil.resendLTIScore(this.props.model);
-		}
-	}, {
-		key: 'endAttempt',
-		value: function endAttempt() {
-			return AssessmentUtil.endAttempt(this.props.model, this.props.moduleData.navState.context);
-		}
-	}, {
-		key: 'exitAssessment',
-		value: function exitAssessment() {
-			var scoreAction = this.getScoreAction();
-
-			switch (scoreAction.action.value) {
-				case '_next':
-					return NavUtil.goNext();
-
-				case '_prev':
-					return NavUtil.goPrev();
-
-				default:
-					return NavUtil.goto(scoreAction.action.value);
-			}
-		}
-	}, {
-		key: 'getScoreAction',
-		value: function getScoreAction() {
-			var assessmentScore = AssessmentUtil.getAssessmentScoreForModel(this.props.moduleData.assessmentState, this.props.model);
-			var scoreAction = this.props.model.modelState.scoreActions.getActionForScore(assessmentScore);
-			if (scoreAction) {
-				return scoreAction;
-			}
-
-			return {
-				from: 0,
-				to: 100,
-				message: '',
-				action: {
-					type: 'unlock',
-					value: '_next'
-				}
-			};
-		}
-	}, {
-		key: 'render',
-		value: function render() {
-			var _this2 = this;
-
-			var assessmentScore = AssessmentUtil.getAssessmentScoreForModel(this.props.moduleData.assessmentState, this.props.model);
-			var ltiState = AssessmentUtil.getLTIStateForModel(this.props.moduleData.assessmentState, this.props.model);
-
-			var childEl = function () {
-				switch (_this2.getCurrentStep()) {
-					case 'untested':
-						return (0, _untested2.default)(_this2);
-
-					case 'takingTest':
-						return (0, _takingTest2.default)(_this2);
-
-					case 'scoreSubmitted':
-						return (0, _scoreSubmitted2.default)(_this2);
-
-					default:
-						return null;
-				}
-			}();
-
-			return React.createElement(
-				OboComponent,
-				{
-					model: this.props.model,
-					moduleData: this.props.moduleData,
-					className: 'obojobo-draft--sections--assessment'
-				},
-				childEl
-			);
-		}
-	}]);
-
-	return Assessment;
-}(React.Component);
-
-exports.default = Assessment;
-
-/***/ }),
-
 /***/ 17:
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
 
 
-var isDate = __webpack_require__(99);
+var isDate = __webpack_require__(100);
 
 var MILLISECONDS_IN_HOUR = 3600000;
 var MILLISECONDS_IN_MINUTE = 60000;
@@ -1718,13 +1458,239 @@ module.exports = parse;
 
 /***/ }),
 
-/***/ 241:
+/***/ 170:
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
 
 
-var startOfDay = __webpack_require__(250);
+Object.defineProperty(exports, "__esModule", {
+	value: true
+});
+
+var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+
+__webpack_require__(280);
+
+var _Common = __webpack_require__(0);
+
+var _Common2 = _interopRequireDefault(_Common);
+
+var _Viewer = __webpack_require__(1);
+
+var _Viewer2 = _interopRequireDefault(_Viewer);
+
+var _attemptIncompleteDialog = __webpack_require__(161);
+
+var _attemptIncompleteDialog2 = _interopRequireDefault(_attemptIncompleteDialog);
+
+var _preTest = __webpack_require__(166);
+
+var _preTest2 = _interopRequireDefault(_preTest);
+
+var _test = __webpack_require__(168);
+
+var _test2 = _interopRequireDefault(_test);
+
+var _postTest = __webpack_require__(164);
+
+var _postTest2 = _interopRequireDefault(_postTest);
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
+
+function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
+
+var OboComponent = _Common2.default.components.OboComponent;
+var OboModel = _Common2.default.models.OboModel;
+var Button = _Common2.default.components.Button;
+var Dispatcher = _Common2.default.flux.Dispatcher;
+var ModalUtil = _Common2.default.util.ModalUtil;
+var AssessmentUtil = _Viewer2.default.util.AssessmentUtil;
+var NavUtil = _Viewer2.default.util.NavUtil;
+
+var Assessment = function (_React$Component) {
+	_inherits(Assessment, _React$Component);
+
+	function Assessment() {
+		_classCallCheck(this, Assessment);
+
+		var _this = _possibleConstructorReturn(this, (Assessment.__proto__ || Object.getPrototypeOf(Assessment)).call(this));
+
+		_this.state = { step: null };
+		return _this;
+	}
+
+	_createClass(Assessment, [{
+		key: 'componentWillUnmount',
+		value: function componentWillUnmount() {
+			NavUtil.setContext('practice');
+		}
+	}, {
+		key: 'getCurrentStep',
+		value: function getCurrentStep() {
+			var assessment = AssessmentUtil.getAssessmentForModel(this.props.moduleData.assessmentState, this.props.model);
+
+			if (assessment === null) {
+				return 'pre-test';
+			}
+			if (assessment.current !== null) {
+				return 'test';
+			}
+
+			if (assessment.attempts.length > 0) {
+				return 'post-test';
+			}
+			return 'pre-test';
+		}
+	}, {
+		key: 'componentWillReceiveProps',
+		value: function componentWillReceiveProps(nextProps) {
+			var curStep = this.getCurrentStep();
+			if (curStep !== this.state.step) {
+				this.needsScroll = true;
+			}
+
+			return this.setState({ step: curStep });
+		}
+	}, {
+		key: 'componentDidUpdate',
+		value: function componentDidUpdate() {
+			if (this.needsScroll) {
+				delete this.needsScroll;
+				return Dispatcher.trigger('viewer:scrollToTop');
+			}
+		}
+	}, {
+		key: 'isAttemptComplete',
+		value: function isAttemptComplete() {
+			return AssessmentUtil.isCurrentAttemptComplete(this.props.moduleData.assessmentState, this.props.moduleData.questionState, this.props.model, this.props.moduleData.navState.context);
+		}
+	}, {
+		key: 'isAssessmentComplete',
+		value: function isAssessmentComplete() {
+			return !AssessmentUtil.hasAttemptsRemaining(this.props.moduleData.assessmentState, this.props.model);
+		}
+	}, {
+		key: 'onClickSubmit',
+		value: function onClickSubmit() {
+			if (!this.isAttemptComplete()) {
+				ModalUtil.show(React.createElement(_attemptIncompleteDialog2.default, { onSubmit: this.endAttempt.bind(this) }));
+				return;
+			}
+			return this.endAttempt();
+		}
+	}, {
+		key: 'onClickResendScore',
+		value: function onClickResendScore() {
+			AssessmentUtil.resendLTIScore(this.props.model);
+		}
+	}, {
+		key: 'endAttempt',
+		value: function endAttempt() {
+			return AssessmentUtil.endAttempt(this.props.model, this.props.moduleData.navState.context);
+		}
+	}, {
+		key: 'exitAssessment',
+		value: function exitAssessment() {
+			var scoreAction = this.getScoreAction();
+
+			switch (scoreAction.action.value) {
+				case '_next':
+					return NavUtil.goNext();
+
+				case '_prev':
+					return NavUtil.goPrev();
+
+				default:
+					return NavUtil.goto(scoreAction.action.value);
+			}
+		}
+	}, {
+		key: 'getScoreAction',
+		value: function getScoreAction() {
+			var assessmentScore = AssessmentUtil.getAssessmentScoreForModel(this.props.moduleData.assessmentState, this.props.model);
+			var scoreAction = this.props.model.modelState.scoreActions.getActionForScore(assessmentScore);
+
+			if (scoreAction) {
+				return scoreAction;
+			}
+
+			return {
+				from: 0,
+				to: 100,
+				message: '',
+				action: {
+					type: 'unlock',
+					value: '_next'
+				}
+			};
+		}
+	}, {
+		key: 'render',
+		value: function render() {
+			var _this2 = this;
+
+			var assessmentScore = AssessmentUtil.getAssessmentScoreForModel(this.props.moduleData.assessmentState, this.props.model);
+			var ltiState = AssessmentUtil.getLTIStateForModel(this.props.moduleData.assessmentState, this.props.model);
+
+			var childEl = function () {
+				switch (_this2.getCurrentStep()) {
+					case 'pre-test':
+						return (0, _preTest2.default)({
+							model: _this2.props.model.children.at(0),
+							moduleData: _this2.props.moduleData
+						});
+
+					case 'test':
+						return (0, _test2.default)({
+							model: _this2.props.model.children.at(1),
+							moduleData: _this2.props.moduleData,
+							onClickSubmit: _this2.onClickSubmit.bind(_this2),
+							isAttemptComplete: _this2.isAttemptComplete()
+						});
+
+					case 'post-test':
+						return (0, _postTest2.default)({
+							model: _this2.props.model,
+							moduleData: _this2.props.moduleData,
+							scoreAction: _this2.getScoreAction()
+						});
+
+					default:
+						return null;
+				}
+			}();
+
+			return React.createElement(
+				OboComponent,
+				{
+					model: this.props.model,
+					moduleData: this.props.moduleData,
+					className: 'obojobo-draft--sections--assessment'
+				},
+				childEl
+			);
+		}
+	}]);
+
+	return Assessment;
+}(React.Component);
+
+exports.default = Assessment;
+
+/***/ }),
+
+/***/ 242:
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+var startOfDay = __webpack_require__(251);
 
 var MILLISECONDS_IN_MINUTE = 60000;
 var MILLISECONDS_IN_DAY = 86400000;
@@ -1766,18 +1732,18 @@ module.exports = differenceInCalendarDays;
 
 /***/ }),
 
-/***/ 242:
+/***/ 243:
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
 
 
-var getDayOfYear = __webpack_require__(243);
-var getISOWeek = __webpack_require__(244);
-var getISOYear = __webpack_require__(98);
+var getDayOfYear = __webpack_require__(244);
+var getISOWeek = __webpack_require__(245);
+var getISOYear = __webpack_require__(99);
 var parse = __webpack_require__(17);
-var isValid = __webpack_require__(245);
-var enLocale = __webpack_require__(249);
+var isValid = __webpack_require__(246);
+var enLocale = __webpack_require__(250);
 
 /**
  * @category Common Helpers
@@ -2103,15 +2069,15 @@ module.exports = format;
 
 /***/ }),
 
-/***/ 243:
+/***/ 244:
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
 
 
 var parse = __webpack_require__(17);
-var startOfYear = __webpack_require__(253);
-var differenceInCalendarDays = __webpack_require__(241);
+var startOfYear = __webpack_require__(254);
+var differenceInCalendarDays = __webpack_require__(242);
 
 /**
  * @category Day Helpers
@@ -2139,15 +2105,15 @@ module.exports = getDayOfYear;
 
 /***/ }),
 
-/***/ 244:
+/***/ 245:
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
 
 
 var parse = __webpack_require__(17);
-var startOfISOWeek = __webpack_require__(61);
-var startOfISOYear = __webpack_require__(251);
+var startOfISOWeek = __webpack_require__(62);
+var startOfISOYear = __webpack_require__(252);
 
 var MILLISECONDS_IN_WEEK = 604800000;
 
@@ -2182,13 +2148,13 @@ module.exports = getISOWeek;
 
 /***/ }),
 
-/***/ 245:
+/***/ 246:
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
 
 
-var isDate = __webpack_require__(99);
+var isDate = __webpack_require__(100);
 
 /**
  * @category Common Helpers
@@ -2226,7 +2192,7 @@ module.exports = isValid;
 
 /***/ }),
 
-/***/ 246:
+/***/ 247:
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -2252,7 +2218,7 @@ module.exports = buildFormattingTokensRegExp;
 
 /***/ }),
 
-/***/ 247:
+/***/ 248:
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -2360,13 +2326,13 @@ module.exports = buildDistanceInWordsLocale;
 
 /***/ }),
 
-/***/ 248:
+/***/ 249:
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
 
 
-var buildFormattingTokensRegExp = __webpack_require__(246);
+var buildFormattingTokensRegExp = __webpack_require__(247);
 
 function buildFormatLocale() {
   // Note: in English, the names of days of the week and months are capitalized.
@@ -2456,14 +2422,14 @@ module.exports = buildFormatLocale;
 
 /***/ }),
 
-/***/ 249:
+/***/ 250:
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
 
 
-var buildDistanceInWordsLocale = __webpack_require__(247);
-var buildFormatLocale = __webpack_require__(248);
+var buildDistanceInWordsLocale = __webpack_require__(248);
+var buildFormatLocale = __webpack_require__(249);
 
 /**
  * @category Locales
@@ -2476,7 +2442,7 @@ module.exports = {
 
 /***/ }),
 
-/***/ 250:
+/***/ 251:
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -2510,14 +2476,14 @@ module.exports = startOfDay;
 
 /***/ }),
 
-/***/ 251:
+/***/ 252:
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
 
 
-var getISOYear = __webpack_require__(98);
-var startOfISOWeek = __webpack_require__(61);
+var getISOYear = __webpack_require__(99);
+var startOfISOWeek = __webpack_require__(62);
 
 /**
  * @category ISO Week-Numbering Year Helpers
@@ -2551,7 +2517,7 @@ module.exports = startOfISOYear;
 
 /***/ }),
 
-/***/ 252:
+/***/ 253:
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -2598,7 +2564,7 @@ module.exports = startOfWeek;
 
 /***/ }),
 
-/***/ 253:
+/***/ 254:
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -2634,7 +2600,7 @@ module.exports = startOfYear;
 
 /***/ }),
 
-/***/ 255:
+/***/ 256:
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -2679,7 +2645,7 @@ AttemptRange:
 */
 
 //@TODO: Maybe shouldn't be importing this here since this file will someday be on the server
-var _require = __webpack_require__(256),
+var _require = __webpack_require__(257),
     getParsedRange = _require.getParsedRange,
     tryGetParsedFloat = _require.tryGetParsedFloat,
     isValueInRange = _require.isValueInRange;
@@ -2890,7 +2856,7 @@ module.exports = AssessmentRubric;
 
 /***/ }),
 
-/***/ 256:
+/***/ 257:
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -2984,13 +2950,6 @@ module.exports = {
 
 /***/ }),
 
-/***/ 278:
-/***/ (function(module, exports) {
-
-// removed by extract-text-webpack-plugin
-
-/***/ }),
-
 /***/ 279:
 /***/ (function(module, exports) {
 
@@ -2998,21 +2957,28 @@ module.exports = {
 
 /***/ }),
 
-/***/ 300:
+/***/ 280:
+/***/ (function(module, exports) {
+
+// removed by extract-text-webpack-plugin
+
+/***/ }),
+
+/***/ 301:
 /***/ (function(module, exports, __webpack_require__) {
 
-module.exports = __webpack_require__(117);
+module.exports = __webpack_require__(118);
 
 
 /***/ }),
 
-/***/ 61:
+/***/ 62:
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
 
 
-var startOfWeek = __webpack_require__(252);
+var startOfWeek = __webpack_require__(253);
 
 /**
  * @category ISO Week Helpers
@@ -3040,14 +3006,14 @@ module.exports = startOfISOWeek;
 
 /***/ }),
 
-/***/ 98:
+/***/ 99:
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
 
 
 var parse = __webpack_require__(17);
-var startOfISOWeek = __webpack_require__(61);
+var startOfISOWeek = __webpack_require__(62);
 
 /**
  * @category ISO Week-Numbering Year Helpers
@@ -3091,35 +3057,6 @@ function getISOYear(dirtyDate) {
 }
 
 module.exports = getISOYear;
-
-/***/ }),
-
-/***/ 99:
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-
-
-/**
- * @category Common Helpers
- * @summary Is the given argument an instance of Date?
- *
- * @description
- * Is the given argument an instance of Date?
- *
- * @param {*} argument - the argument to check
- * @returns {Boolean} the given argument is an instance of Date
- *
- * @example
- * // Is 'mayonnaise' a Date?
- * var result = isDate('mayonnaise')
- * //=> false
- */
-function isDate(argument) {
-  return argument instanceof Date;
-}
-
-module.exports = isDate;
 
 /***/ })
 
