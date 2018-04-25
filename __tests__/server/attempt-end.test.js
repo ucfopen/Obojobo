@@ -836,6 +836,38 @@ describe('Attempt End', () => {
 			questions: [],
 			data: {}
 		})
+		Assessment.getAttempts.mockResolvedValueOnce({
+			attempts: [
+				{
+					state: {
+						qb: {
+							id: 'qb.lv1',
+							type: 'ObojoboDraft.Chunks.QuestionBank',
+							children: [
+								{
+									id: 'qb.lv2',
+									type: 'ObojoboDraft.Chunks.QuestionBank',
+									children: [
+										{
+											id: 'qb.lv3',
+											type: 'ObojoboDraft.Chunks.QuestionBank',
+											children: [
+												{
+													id: 'qb1.q1',
+													type: 'ObojoboDraft.Chunks.Question',
+													children: []
+												}
+											]
+										}
+									]
+								}
+							]
+						},
+						questions: [{ id: 'qb1.q1' }]
+					}
+				}
+			]
+		})
 		Assessment.updateAttemptState = jest.fn()
 
 		let response = reloadAttemptStateIfReviewing(
