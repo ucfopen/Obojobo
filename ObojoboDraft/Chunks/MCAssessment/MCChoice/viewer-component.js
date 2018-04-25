@@ -6,9 +6,9 @@ import isOrNot from '../../../../src/scripts/common/isornot'
 
 let { OboComponent } = Common.components
 let { OboModel } = Common.models
-
 let { QuestionUtil } = Viewer.util
 
+const QUESTION_TYPE = 'ObojoboDraft.Chunks.Question'
 const CHOSEN_CORRECTLY = 'chosen-correctly'
 const SHOULD_NOT_HAVE_CHOSEN = 'should-not-have-chosen'
 const COULD_HAVE_CHOSEN = 'could-have-chosen'
@@ -29,16 +29,14 @@ const getInputType = responseType => {
 const questionIsSelected = (questionState, model, navStateContext) => {
 	let response = QuestionUtil.getResponse(
 		questionState,
-		model.getParentOfType('ObojoboDraft.Chunks.Question'),
+		model.getParentOfType(QUESTION_TYPE),
 		navStateContext
 	) || { ids: [] }
 
 	return response.ids.indexOf(model.get('id')) !== -1
 }
 
-const getQuestionModel = (model) =>{
-	return model.getParentOfType('ObojoboDraft.Chunks.Question')
-}
+const getQuestionModel = model => model.getParentOfType(QUESTION_TYPE)
 
 const answerIsCorrect = (model, mode, questionState, navStateContext) => {
 	let score
@@ -53,7 +51,7 @@ const answerIsCorrect = (model, mode, questionState, navStateContext) => {
 	return score === 100
 }
 
-const renderAnsFlag = (type) => {
+const renderAnsFlag = type => {
 	let flagEl
 
 	switch (type) {
@@ -73,7 +71,7 @@ const renderAnsFlag = (type) => {
 			break
 	}
 
-	return <div className={'answer-flag' + ' is-type-' + type}>{flagEl}</div>
+	return <div className={`answer-flag is-type-${type}`}>{flagEl}</div>
 }
 
 const getAnsType = (model, isCorrect, isSelected) => {
@@ -85,20 +83,14 @@ const getAnsType = (model, isCorrect, isSelected) => {
 	let isACorrectChoice = model.get('content').score === 100
 
 	if (isSelected) {
-		if (isACorrectChoice) {
-			return CHOSEN_CORRECTLY
-		} else {
-			return SHOULD_NOT_HAVE_CHOSEN
-		}
-	} else if (isACorrectChoice) {
-		if (userIsCorrect) {
-			return COULD_HAVE_CHOSEN
-		} else {
-			return SHOULD_HAVE_CHOSEN
-		}
-	} else {
-		return UNCHOSEN_CORRECTLY
+		return isACorrectChoice ? CHOSEN_CORRECTLY : SHOULD_NOT_HAVE_CHOSEN
 	}
+
+	if (isACorrectChoice) {
+		return userIsCorrect ? COULD_HAVE_CHOSEN : SHOULD_HAVE_CHOSEN
+	}
+
+	return UNCHOSEN_CORRECTLY
 }
 
 const MCChoice = props => {
@@ -124,13 +116,10 @@ const MCChoice = props => {
 		props.moduleData.navState.context
 	)
 
-	let ansType = getAnsType(
-		props.model,
-		isCorrect,
-		isSelected)
+	let ansType = getAnsType(props.model, isCorrect, isSelected)
 
 	let flag
-	if(props.mode === 'review'){
+	if (props.mode === 'review') {
 		flag = renderAnsFlag(ansType)
 	}
 
@@ -138,8 +127,8 @@ const MCChoice = props => {
 		'obojobo-draft--chunks--mc-assessment--mc-choice' +
 		isOrNot(isSelected, 'selected') +
 		isOrNot(isCorrect, 'correct') +
-		' is-type-' + ansType +
-		' is-mode-' + props.mode
+		` is-type-${ansType}` +
+		` is-mode-${props.mode}`
 
 	return (
 		<OboComponent
