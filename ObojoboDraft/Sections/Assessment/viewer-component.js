@@ -20,9 +20,16 @@ export default class Assessment extends React.Component {
 	constructor() {
 		super()
 		this.state = {
-			fetching: false,
+			isFetching: false,
 			step: null
 		}
+
+		// pre-bind scopes to this object once
+		this.onEndAttempt = this.onEndAttempt.bind(this)
+		this.onAttemptEnded = this.onAttemptEnded.bind(this)
+		this.endAttempt = this.endAttempt.bind(this)
+		this.onClickSubmit = this.onClickSubmit.bind(this)
+		this.onClickResendScore = this.onClickResendScore.bind(this)
 	}
 
 	getCurrentStep() {
@@ -53,15 +60,14 @@ export default class Assessment extends React.Component {
 			step: curStep
 		})
 	}
-
 	componentWillMount() {
-		Dispatcher.on('assessment:endAttempt', () => this.setState({ fetching: true }))
-		Dispatcher.on('assessment:attemptEnded', () => this.setState({ fetching: false }))
+		Dispatcher.on('assessment:endAttempt', this.onEndAttempt)
+		Dispatcher.on('assessment:attemptEnded', this.onAttemptEnded)
 	}
 
 	componentWillUnmount() {
-		Dispatcher.off('assessment:endAttempt')
-		Dispatcher.off('assessment:attemptEnded')
+		Dispatcher.off('assessment:endAttempt', this.onEndAttempt)
+		Dispatcher.off('assessment:attemptEnded', this.onAttemptEnded)
 	}
 
 	componentDidUpdate() {
@@ -69,6 +75,14 @@ export default class Assessment extends React.Component {
 			delete this.needsScroll
 			return Dispatcher.trigger('viewer:scrollToTop')
 		}
+	}
+
+	onEndAttempt() {
+		this.setState({ isFetching: true })
+	}
+
+	onAttemptEnded() {
+		this.setState({ isFetching: false })
 	}
 
 	isAttemptComplete() {
@@ -80,8 +94,11 @@ export default class Assessment extends React.Component {
 	}
 
 	onClickSubmit() {
+		// disable multiple clicks
+		if (this.state.isFetching) return
+
 		if (!this.isAttemptComplete()) {
-			ModalUtil.show(<AttemptIncompleteDialog onSubmit={this.endAttempt.bind(this)} />)
+			ModalUtil.show(<AttemptIncompleteDialog onSubmit={this.endAttempt} />)
 			return
 		}
 
@@ -165,13 +182,13 @@ export default class Assessment extends React.Component {
 					Component = child.getComponentClass()
 					let submitButtonText
 
-					if (!this.isAttemptComplete())
+					if (!this.isAttemptComplete()) {
 						submitButtonText = 'Submit (Not all questions have been answered)'
-					else if (!this.state.fetching)
+					} else if (!this.state.isFetching) {
 						submitButtonText = 'Submit'
-					else
+					} else {
 						submitButtonText = 'Loading ...'
-
+					}
 
 					return (
 						<div className="test">
@@ -183,8 +200,9 @@ export default class Assessment extends React.Component {
 							/>
 							<div className="submit-button">
 								<Button
-									onClick={this.onClickSubmit.bind(this)}
+									onClick={this.onClickSubmit}
 									value={submitButtonText}
+									disabled={this.state.isFetching}
 								/>
 							</div>
 						</div>
@@ -198,16 +216,8 @@ export default class Assessment extends React.Component {
 						this.props.model
 					)
 
-					let numCorrect = questionScores.reduce(
-						function (acc, questionScore) {
-							let n = 0
-							if (parseInt(questionScore.score, 10) === 100) {
-								n = 1
-							}
-							return parseInt(acc, 10) + n
-						},
-						[0]
-					)
+					const count100s = (acc, qs) => acc + (parseInt(qs.score, 10) === 100 ? 1 : 0)
+					let numCorrect = questionScores.reduce(count100s, 0)
 
 					if (scoreAction.page != null) {
 						let pageModel = OboModel.create(scoreAction.page)
@@ -223,7 +233,7 @@ export default class Assessment extends React.Component {
 							<LTIStatus
 								ltiState={ltiState}
 								externalSystemLabel={externalSystemLabel}
-								onClickResendScore={this.onClickResendScore.bind(this)}
+								onClickResendScore={this.onClickResendScore}
 							/>
 							<h1>{`Your attempt score is ${Math.round(recentScore)}%`}</h1>
 							<h2>
@@ -258,7 +268,7 @@ export default class Assessment extends React.Component {
 							<div className="review">
 								<p className="number-correct">{`You got ${numCorrect} out of ${
 									questionScores.length
-									} questions correct:`}</p>
+								} questions correct:`}</p>
 								{questionScores.map((questionScore, index) => {
 									let questionModel = OboModel.models[questionScore.id]
 									let QuestionComponent = questionModel.getComponentClass()
@@ -270,7 +280,7 @@ export default class Assessment extends React.Component {
 										>
 											<p>{`Question ${index + 1} - ${
 												questionScore.score === 100 ? 'Correct:' : 'Incorrect:'
-												}`}</p>
+											}`}</p>
 											<QuestionComponent
 												model={questionModel}
 												moduleData={this.props.moduleData}

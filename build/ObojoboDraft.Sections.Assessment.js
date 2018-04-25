@@ -524,7 +524,16 @@ var Assessment = function (_React$Component) {
 
 		var _this = _possibleConstructorReturn(this, (Assessment.__proto__ || Object.getPrototypeOf(Assessment)).call(this));
 
-		_this.state = { step: null };
+		_this.state = {
+			isFetching: false,
+			step: null
+
+			// pre-bind scopes to this object once
+		};_this.onEndAttempt = _this.onEndAttempt.bind(_this);
+		_this.onAttemptEnded = _this.onAttemptEnded.bind(_this);
+		_this.endAttempt = _this.endAttempt.bind(_this);
+		_this.onClickSubmit = _this.onClickSubmit.bind(_this);
+		_this.onClickResendScore = _this.onClickResendScore.bind(_this);
 		return _this;
 	}
 
@@ -552,7 +561,21 @@ var Assessment = function (_React$Component) {
 				this.needsScroll = true;
 			}
 
-			return this.setState({ step: curStep });
+			this.setState({
+				step: curStep
+			});
+		}
+	}, {
+		key: 'componentWillMount',
+		value: function componentWillMount() {
+			Dispatcher.on('assessment:endAttempt', this.onEndAttempt);
+			Dispatcher.on('assessment:attemptEnded', this.onAttemptEnded);
+		}
+	}, {
+		key: 'componentWillUnmount',
+		value: function componentWillUnmount() {
+			Dispatcher.off('assessment:endAttempt', this.onEndAttempt);
+			Dispatcher.off('assessment:attemptEnded', this.onAttemptEnded);
 		}
 	}, {
 		key: 'componentDidUpdate',
@@ -563,6 +586,16 @@ var Assessment = function (_React$Component) {
 			}
 		}
 	}, {
+		key: 'onEndAttempt',
+		value: function onEndAttempt() {
+			this.setState({ isFetching: true });
+		}
+	}, {
+		key: 'onAttemptEnded',
+		value: function onAttemptEnded() {
+			this.setState({ isFetching: false });
+		}
+	}, {
 		key: 'isAttemptComplete',
 		value: function isAttemptComplete() {
 			return AssessmentUtil.isCurrentAttemptComplete(this.props.moduleData.assessmentState, this.props.moduleData.questionState, this.props.model);
@@ -570,8 +603,11 @@ var Assessment = function (_React$Component) {
 	}, {
 		key: 'onClickSubmit',
 		value: function onClickSubmit() {
+			// disable multiple clicks
+			if (this.state.isFetching) return;
+
 			if (!this.isAttemptComplete()) {
-				ModalUtil.show(React.createElement(_attemptIncompleteDialog2.default, { onSubmit: this.endAttempt.bind(this) }));
+				ModalUtil.show(React.createElement(_attemptIncompleteDialog2.default, { onSubmit: this.endAttempt }));
 				return;
 			}
 
@@ -648,6 +684,9 @@ var Assessment = function (_React$Component) {
 					case 'takingTest':
 						child = _this2.props.model.children.at(1);
 						Component = child.getComponentClass();
+						var submitButtonText = void 0;
+
+						if (!_this2.isAttemptComplete()) submitButtonText = 'Submit (Not all questions have been answered)';else if (!_this2.state.isFetching) submitButtonText = 'Submit';else submitButtonText = 'Loading ...';
 
 						return React.createElement(
 							'div',
@@ -662,8 +701,9 @@ var Assessment = function (_React$Component) {
 								'div',
 								{ className: 'submit-button' },
 								React.createElement(Button, {
-									onClick: _this2.onClickSubmit.bind(_this2),
-									value: _this2.isAttemptComplete() ? 'Submit' : 'Submit (Not all questions have been answered)'
+									onClick: _this2.onClickSubmit,
+									value: submitButtonText,
+									disabled: _this2.state.isFetching
 								})
 							)
 						);
@@ -700,7 +740,7 @@ var Assessment = function (_React$Component) {
 							React.createElement(_ltiStatus2.default, {
 								ltiState: ltiState,
 								externalSystemLabel: externalSystemLabel,
-								onClickResendScore: _this2.onClickResendScore.bind(_this2)
+								onClickResendScore: _this2.onClickResendScore
 							}),
 							React.createElement(
 								'h1',
