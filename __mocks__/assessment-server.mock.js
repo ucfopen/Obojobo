@@ -595,7 +595,7 @@ let getAttemptStartServerResponse = () => {
 	}
 }
 
-let getAttemptEndServerResponse = questionScore => {
+let getAttemptEndServerResponse = (questionScore, assessmentScore) => {
 	let startResp = getAttemptStartServerResponse()
 
 	return {
@@ -609,8 +609,9 @@ let getAttemptEndServerResponse = questionScore => {
 				sent: false
 			},
 			result: {
+				assessmentScore: assessmentScore,
 				attemptScore: questionScore,
-				scores: [{ id: 'qb1-q1', score: questionScore }]
+				questionScores: [{ id: 'qb1-q1', score: questionScore }]
 			},
 			state: startResp.state
 		}

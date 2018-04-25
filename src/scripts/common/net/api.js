@@ -1,16 +1,11 @@
-let makeRequest = function(method, url, data, callback) {
+let makeRequest = (method, url, data, callback) => {
+	if (callback == null) {
+		callback = () => {}
+	}
+
 	if (data == null) {
 		data = null
 	}
-	if (callback == null) {
-		callback = function() {}
-	}
-	let request = new XMLHttpRequest()
-
-	request.addEventListener('load', callback) //(event) ->
-	// callback Module.createFromDescriptor({ id:moduleId, chunks:JSON.parse(request.responseText) })
-
-	request.open(method, url, true)
 
 	if (data != null) {
 		let a = []
@@ -19,11 +14,12 @@ let makeRequest = function(method, url, data, callback) {
 			a.push(`${k}=${v}`)
 		}
 		data = a.join('&')
-
-		return request.send(data)
-	} else {
-		return request.send()
 	}
+
+	let request = new XMLHttpRequest()
+	request.addEventListener('load', callback)
+	request.open(method, url, true)
+	return request.send(data)
 }
 
 class APIModule {
@@ -40,7 +36,6 @@ class APIChunk {
 	constructor() {}
 
 	move(chunkMoved, chunkBefore, callback) {
-		console.log(arguments)
 		let beforeId = chunkBefore != null ? chunkBefore.get('id') : null
 		return makeRequest(
 			'POST',

@@ -14,7 +14,7 @@ exports[`MCFeedback MCFeedback for a correct item 1`] = `
 
 exports[`MCFeedback MCFeedback for an incorrect item 1`] = `
 <div
-  className="component obojobo-draft--chunks--mc-assessment--mc-feedback is-incorrect-feedback"
+  className="component obojobo-draft--chunks--mc-assessment--mc-feedback is-not-correct-feedback"
   data-choice-label={undefined}
   data-focussed={false}
   data-id="self"

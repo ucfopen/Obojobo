@@ -1,7 +1,6 @@
 @import '~styles/includes';
 
-.obojobo-draft--chunks--table--table-controls
-{
+.obojobo-draft--chunks--table--table-controls {
 	position: absolute;
 	left: -1.3em;
 	top: -1.3em;
@@ -11,8 +10,7 @@
 	border: 1px solid #b3b3b3;
 	outline: 2px solid $color-action;
 
-	button
-	{
+	button {
 		position: absolute;
 
 		width: 17px;
@@ -29,25 +27,21 @@
 		background-position: center;
 		cursor: pointer;
 
-		&.add-col
-		{
+		&.add-col {
 			right: -3em;
 			top: 50%;
 			transform: rotate(-90deg);
 
-			&:hover
-			{
+			&:hover {
 				transform: rotate(-90deg) scale(1.5);
 			}
 		}
 
-		&.add-row
-		{
+		&.add-row {
 			left: 50%;
 			bottom: -4em;
 
-			&:hover
-			{
+			&:hover {
 				transform: scale(1.5);
 			}
 		}

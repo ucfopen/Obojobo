@@ -1,7 +1,9 @@
-import es6set from 'es6-set'
-import arrayFrom from 'array-from'
-import promise from 'promise-polyfill'
 import smoothScroll from 'smoothscroll-polyfill'
+
+import arrayFrom from 'core-js/fn/array/from'
+import es6set from 'core-js/library/fn/set'
+import es6Symbol from 'core-js/es6/symbol'
+import promise from 'core-js/es6/promise'
 
 // Object.assign (IE)
 if (typeof Object.assign != 'function') {
@@ -47,5 +49,13 @@ if (!window.Promise) {
 	window.Promise = promise
 }
 
+// Symbol (IE)
+if (!window.Symbol) {
+	window.Symbol = es6Symbol
+}
+
 // Smooth scrollTo (non-FF)
 smoothScroll.polyfill()
+
+// Number.isFinite (IE)
+Number.isFinite = Number.isFinite || (n => typeof n === 'number' && isFinite(n))

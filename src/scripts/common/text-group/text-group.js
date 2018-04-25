@@ -3,8 +3,6 @@ import StyleableText from '../../common/text/styleable-text'
 import Util from './text-group-util'
 import TextGroupItem from './text-group-item'
 
-import ObjectAssign from 'object-assign'
-
 let getItemsArray = function(itemOrItems) {
 	if (itemOrItems instanceof TextGroupItem) {
 		return [itemOrItems]
@@ -22,7 +20,10 @@ let addChildToGroup = function(itemOrItems, group, atIndex) {
 	if (atIndex === null) {
 		group.items = group.items.concat(items)
 	} else {
-		group.items = group.items.slice(0, atIndex).concat(items).concat(group.items.slice(atIndex))
+		group.items = group.items
+			.slice(0, atIndex)
+			.concat(items)
+			.concat(group.items.slice(atIndex))
 	}
 
 	return Array.from(items).map(item => (item.parent = group))
@@ -73,7 +74,7 @@ class TextGroup {
 			initialItems = []
 		}
 		this.items = []
-		this.dataTemplate = Object.freeze(ObjectAssign({}, dataTemplate))
+		this.dataTemplate = Object.freeze(Object.assign({}, dataTemplate))
 
 		for (let item of Array.from(initialItems)) {
 			this.add(item.text, item.data)
