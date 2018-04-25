@@ -979,6 +979,7 @@ var OboModel = _Common2.default.models.OboModel;
 var QuestionUtil = _Viewer2.default.util.QuestionUtil;
 
 
+var QUESTION_TYPE = 'ObojoboDraft.Chunks.Question';
 var CHOSEN_CORRECTLY = 'chosen-correctly';
 var SHOULD_NOT_HAVE_CHOSEN = 'should-not-have-chosen';
 var COULD_HAVE_CHOSEN = 'could-have-chosen';
@@ -997,13 +998,13 @@ var getInputType = function getInputType(responseType) {
 };
 
 var questionIsSelected = function questionIsSelected(questionState, model, navStateContext) {
-	var response = QuestionUtil.getResponse(questionState, model.getParentOfType('ObojoboDraft.Chunks.Question'), navStateContext) || { ids: [] };
+	var response = QuestionUtil.getResponse(questionState, model.getParentOfType(QUESTION_TYPE), navStateContext) || { ids: [] };
 
 	return response.ids.indexOf(model.get('id')) !== -1;
 };
 
 var getQuestionModel = function getQuestionModel(model) {
-	return model.getParentOfType('ObojoboDraft.Chunks.Question');
+	return model.getParentOfType(QUESTION_TYPE);
 };
 
 var answerIsCorrect = function answerIsCorrect(model, mode, questionState, navStateContext) {
@@ -1057,7 +1058,7 @@ var renderAnsFlag = function renderAnsFlag(type) {
 
 	return React.createElement(
 		'div',
-		{ className: 'answer-flag' + ' is-type-' + type },
+		{ className: 'answer-flag is-type-' + type },
 		flagEl
 	);
 };
@@ -1071,20 +1072,14 @@ var getAnsType = function getAnsType(model, isCorrect, isSelected) {
 	var isACorrectChoice = model.get('content').score === 100;
 
 	if (isSelected) {
-		if (isACorrectChoice) {
-			return CHOSEN_CORRECTLY;
-		} else {
-			return SHOULD_NOT_HAVE_CHOSEN;
-		}
-	} else if (isACorrectChoice) {
-		if (userIsCorrect) {
-			return COULD_HAVE_CHOSEN;
-		} else {
-			return SHOULD_HAVE_CHOSEN;
-		}
-	} else {
-		return UNCHOSEN_CORRECTLY;
+		return isACorrectChoice ? CHOSEN_CORRECTLY : SHOULD_NOT_HAVE_CHOSEN;
 	}
+
+	if (isACorrectChoice) {
+		return userIsCorrect ? COULD_HAVE_CHOSEN : SHOULD_HAVE_CHOSEN;
+	}
+
+	return UNCHOSEN_CORRECTLY;
 };
 
 var MCChoice = function MCChoice(props) {
@@ -1108,7 +1103,7 @@ var MCChoice = function MCChoice(props) {
 		flag = renderAnsFlag(ansType);
 	}
 
-	var className = 'obojobo-draft--chunks--mc-assessment--mc-choice' + (0, _isornot2.default)(isSelected, 'selected') + (0, _isornot2.default)(isCorrect, 'correct') + ' is-type-' + ansType + ' is-mode-' + props.mode;
+	var className = 'obojobo-draft--chunks--mc-assessment--mc-choice' + (0, _isornot2.default)(isSelected, 'selected') + (0, _isornot2.default)(isCorrect, 'correct') + (' is-type-' + ansType) + (' is-mode-' + props.mode);
 
 	return React.createElement(
 		OboComponent,
