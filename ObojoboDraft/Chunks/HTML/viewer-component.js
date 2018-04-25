@@ -5,30 +5,24 @@ import katex from 'katex'
 import Common from 'Common'
 let { OboComponent } = Common.components
 
-export default class HTML extends React.Component {
-	createMarkup() {
-		let div = document.createElement('div')
-		div.innerHTML = this.props.model.modelState.html
+const createMarkup = html => {
+	let div = document.createElement('div')
+	div.innerHTML = html
 
-		let latexes = div.querySelectorAll('.latex')
+	let latexes = div.querySelectorAll('.latex')
 
-		for (let el of Array.from(latexes)) {
-			el.innerHTML = katex.renderToString(el.innerHTML)
-		}
-
-		return { __html: div.innerHTML }
+	for (let el of Array.from(latexes)) {
+		el.innerHTML = katex.renderToString(el.innerHTML)
 	}
 
-	render() {
-		let data = this.props.model.modelState
-
-		return (
-			<OboComponent model={this.props.model} moduleData={this.props.moduleData}>
-				<div
-					className={`obojobo-draft--chunks--html viewer pad align-${data.align}`}
-					dangerouslySetInnerHTML={this.createMarkup()}
-				/>
-			</OboComponent>
-		)
-	}
+	return { __html: div.innerHTML }
 }
+
+export default props => (
+	<OboComponent model={props.model} moduleData={props.moduleData}>
+		<div
+			className={`obojobo-draft--chunks--html viewer pad align-${props.model.modelState.align}`}
+			dangerouslySetInnerHTML={createMarkup(props.model.modelState.html)}
+		/>
+	</OboComponent>
+)

@@ -39,12 +39,13 @@ export default class Dialog extends React.Component {
 				<Modal
 					onClose={this.props.onClose}
 					focusOnFirstElement={this.focusOnFirstElement.bind(this)}
+					className={this.props.modalClassName}
 				>
-					{this.props.title
-						? <h1 className="heading" style={{ textAlign: this.props.centered ? 'center' : null }}>
-								{this.props.title}
-							</h1>
-						: null}
+					{this.props.title ? (
+						<h1 className="heading" style={{ textAlign: this.props.centered ? 'center' : null }}>
+							{this.props.title}
+						</h1>
+					) : null}
 					<div
 						className="dialog-content"
 						style={{ textAlign: this.props.centered ? 'center' : null }}

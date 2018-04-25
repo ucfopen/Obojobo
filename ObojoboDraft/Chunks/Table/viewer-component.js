@@ -32,11 +32,7 @@ export default class Table extends React.Component {
 				)
 			})
 
-			header = (
-				<tr key="header">
-					{row}
-				</tr>
-			)
+			header = <tr key="header">{row}</tr>
 		} else {
 			header = null
 		}
@@ -61,11 +57,7 @@ export default class Table extends React.Component {
 					)
 				})
 
-			return (
-				<tr key={rowNum}>
-					{row}
-				</tr>
-			)
+			return <tr key={rowNum}>{row}</tr>
 		})
 
 		return (
@@ -73,12 +65,8 @@ export default class Table extends React.Component {
 				<div className="obojobo-draft--chunks--table viewer pad">
 					<div className="container">
 						<table className="view" ref="table" key="table">
-							<thead key="thead">
-								{header}
-							</thead>
-							<tbody key="tbody">
-								{rows}
-							</tbody>
+							<thead key="thead">{header}</thead>
+							<tbody key="tbody">{rows}</tbody>
 						</table>
 					</div>
 				</div>

@@ -1,0 +1,89 @@
+// @import '~styles/includes'; //@TODO - This is not importing
+
+.obojobo-draft--sections--assessment--components--score-report {
+	$color-hr: transparentize(rgba(0, 0, 0, 0.3), 0.2);
+	$color-correct: #38ae24;
+	$color-incorrect: #c21f00;
+	$color-bg: white;
+	$color-bg2: #f4f4f4;
+	$dimension-rounded-radius: 0.25em;
+
+	background: $color-bg2;
+	min-width: 23em;
+
+	> .text-items {
+		text-align: left;
+		border-radius: $dimension-rounded-radius;
+		background: $color-bg;
+		padding: 1em 2em;
+		// margin-bottom: 1em;
+
+		> * {
+			font-size: 0.7em;
+			line-height: 1.5em;
+			margin-top: 0.5em;
+			position: relative;
+
+			&:only-child {
+				margin-top: 0;
+				// font-size: 1em;
+			}
+
+			&.divider {
+				height: 1px;
+				border: none;
+				background: $color-hr;
+			}
+
+			&.extra-credit {
+				> .label > span {
+					color: $color-correct;
+					font-weight: bold;
+				}
+			}
+
+			&.penalty {
+				> .label > span {
+					color: $color-incorrect;
+					font-weight: bold;
+				}
+			}
+
+			&.value {
+				padding-right: 4em;
+			}
+
+			&.total {
+				font-size: 1em;
+			}
+
+			> .amount {
+				white-space: nowrap;
+				text-align: right;
+				position: absolute;
+				bottom: 0;
+				right: 0;
+				font-weight: bold;
+
+				> .great-job-you-rock {
+					position: absolute;
+					top: 50%;
+					right: -0.5rem;
+					transform: translate(100%, -50%);
+					display: block;
+					line-height: 1em;
+					font-size: 1em;
+				}
+			}
+		}
+	}
+
+	> .score-change-description {
+		font-size: 0.75em;
+		font-weight: bold;
+		text-align: center;
+		display: block;
+		width: 100%;
+		margin-top: 1.5em;
+	}
+}

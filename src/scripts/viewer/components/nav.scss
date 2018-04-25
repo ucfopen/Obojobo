@@ -1,7 +1,6 @@
 @import '../../../scss/includes';
 
-.viewer--components--nav
-{
+.viewer--components--nav {
 	$padding: 2rem;
 
 	overflow: auto;
@@ -26,48 +25,38 @@
 	//@TODO - Temporary
 	// text-align: left;
 
-	&.is-locked
-	{
+	&.is-locked {
 		li.link,
-		li.seperator
-		{
+		li.seperator {
 			opacity: 0.25;
 			pointer-events: none;
 
-			&.is-selected
-			{
-
+			&.is-selected {
 				opacity: 1;
 
-				a
-				{
+				a {
 					text-decoration: none;
 				}
 			}
 		}
 	}
 
-	&.is-closed
-	{
+	&.is-not-open {
 		left: -$dimension-nav-menu;
 	}
 
-	&.is-open
-	{
-		.toggle-button
-		{
+	&.is-open {
+		.toggle-button {
 			background-color: transparent;
 			border: 2px solid $color-transparent;
 
-			&:hover
-			{
+			&:hover {
 				background-color: transparent;
 			}
 		}
 	}
 
-	&.is-disabled
-	{
+	&.is-not-enabled {
 		display: none;
 	}
 
@@ -76,8 +65,7 @@
 	// 	color: #b4d4af;
 	// }
 
-	.is-correct
-	{
+	.is-correct {
 		color: #b4d4af;
 	}
 
@@ -86,89 +74,76 @@
 	// 	color: #ec7b7b;
 	// }
 
-	.is-selected
-	{
+	.is-selected {
 		font-weight: bold;
 		color: $color-highlight;
 
-		&:after
-		{
-			content: "•";
+		&:after {
+			content: '•';
 			position: absolute;
 			right: -$padding / 2;
 			top: 50%;
 			transform: translate(0, -50%);
 		}
 
-		.lock-icon
-		{
+		.lock-icon {
 			display: none;
 		}
 	}
 
-	.lock-icon
-	{
+	.lock-icon {
 		position: absolute;
 		right: -1.2rem;
 		top: 0.2rem;
 		width: 0.7rem;
-		opacity: .3;
+		opacity: 0.3;
 	}
 
-	ul
-	{
+	ul {
 		padding: 0;
 		margin: 0;
 		text-align: right;
 	}
 
-	li
-	{
+	li {
 		position: relative;
 		list-style-type: none;
 		padding: 0.25rem 0;
 	}
 
-	hr
-	{
+	hr {
 		border: none;
 		border-bottom: 1px solid $color-bg;
 		opacity: 0.2;
 	}
 
 	.link,
-	.sub-link
-	{
+	.sub-link {
 		cursor: pointer;
 
-		&:hover
-		{
+		&:hover {
 			color: $color-highlight;
 		}
 
-		&.is-selected:hover
-		{
+		&.is-selected:hover {
 			color: $color-highlight;
 			cursor: default;
 		}
 	}
 
-	.link
-	{
+	.link {
 		margin-top: 1rem;
 	}
 
-	.sub-link
-	{
-		font-size: .7rem;
-		opacity: .6;
+	.sub-link {
+		font-size: 0.7rem;
+		opacity: 0.6;
 		// list-style-type: inherit;
 		margin-left: 1rem;
 		position: relative;
 
-		&:after
-		{
-			content: "•";
+		&:after {
+			content: '•';
 			position: absolute;
 			right: -1.3em;
 			top: 1em;
@@ -176,23 +151,19 @@
 		}
 	}
 
-
-	.seperator
-	{
+	.seperator {
 		cursor: default;
 	}
 
-	.heading
-	{
+	.heading {
 		font-size: 0.7rem;
-		opacity: .5;
+		opacity: 0.5;
 		text-transform: uppercase;
 		cursor: default;
 		margin-bottom: 1rem;
 	}
 
-	.toggle-button
-	{
+	.toggle-button {
 		background-color: transparent;
 		background-position: center center;
 		background-repeat: no-repeat;
@@ -211,14 +182,12 @@
 		width: 1.5rem;
 		z-index: 2;
 
-		&:focus
-		{
+		&:focus {
 			outline: none;
 		}
 	}
 
-	.viewer--components--logo
-	{
+	.viewer--components--logo {
 		position: absolute;
 		right: $padding;
 		bottom: $padding;

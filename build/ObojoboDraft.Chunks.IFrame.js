@@ -63,7 +63,7 @@
 /******/ 	__webpack_require__.p = "build/";
 /******/
 /******/ 	// Load entry module and return exports
-/******/ 	return __webpack_require__(__webpack_require__.s = 163);
+/******/ 	return __webpack_require__(__webpack_require__.s = 289);
 /******/ })
 /************************************************************************/
 /******/ ({
@@ -75,22 +75,7 @@ module.exports = Common;
 
 /***/ }),
 
-/***/ 140:
-/***/ (function(module, exports) {
-
-// removed by extract-text-webpack-plugin
-
-/***/ }),
-
-/***/ 163:
-/***/ (function(module, exports, __webpack_require__) {
-
-module.exports = __webpack_require__(31);
-
-
-/***/ }),
-
-/***/ 31:
+/***/ 107:
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -100,11 +85,11 @@ var _Common = __webpack_require__(0);
 
 var _Common2 = _interopRequireDefault(_Common);
 
-var _adapter = __webpack_require__(59);
+var _adapter = __webpack_require__(135);
 
 var _adapter2 = _interopRequireDefault(_adapter);
 
-var _viewerComponent = __webpack_require__(60);
+var _viewerComponent = __webpack_require__(136);
 
 var _viewerComponent2 = _interopRequireDefault(_viewerComponent);
 
@@ -121,7 +106,7 @@ _Common2.default.Store.registerModel('ObojoboDraft.Chunks.IFrame', {
 
 /***/ }),
 
-/***/ 59:
+/***/ 135:
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -137,21 +122,29 @@ exports.default = {
 		} else {
 			model.modelState.src = null;
 		}
+
+		if (attrs && attrs.content && attrs.content.allow) {
+			model.modelState.allow = attrs.content.allow;
+		} else {
+			model.modelState.allow = null;
+		}
 	},
 	clone: function clone(model, _clone) {
 		_clone.modelState.src = model.modelState.src;
+		_clone.modelState.allow = model.modelState.allow;
 	},
 	toJSON: function toJSON(model, json) {
 		json.content.src = model.modelState.src;
+		json.content.allow = model.modelState.allow;
 	},
 	toText: function toText(model) {
-		return model.modelState.src;
+		return model.modelState.src + ' ' + model.modelState.allow;
 	}
 };
 
 /***/ }),
 
-/***/ 60:
+/***/ 136:
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -161,9 +154,7 @@ Object.defineProperty(exports, "__esModule", {
 	value: true
 });
 
-var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
-
-__webpack_require__(140);
+__webpack_require__(265);
 
 var _Common = __webpack_require__(0);
 
@@ -171,42 +162,40 @@ var _Common2 = _interopRequireDefault(_Common);
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
-function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
-
-function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
-
-function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
-
 var OboComponent = _Common2.default.components.OboComponent;
 
-var IFrame = function (_React$Component) {
-	_inherits(IFrame, _React$Component);
+exports.default = function (props) {
+	return React.createElement(
+		OboComponent,
+		{ model: props.model, moduleData: props.moduleData },
+		React.createElement(
+			'div',
+			{ className: 'obojobo-draft--chunks--iframe viewer' },
+			React.createElement('iframe', {
+				is: true,
+				src: props.model.modelState.src,
+				frameBorder: '0',
+				allowFullScreen: 'true',
+				allow: props.model.modelState.allow
+			})
+		)
+	);
+};
 
-	function IFrame() {
-		_classCallCheck(this, IFrame);
+/***/ }),
 
-		return _possibleConstructorReturn(this, (IFrame.__proto__ || Object.getPrototypeOf(IFrame)).apply(this, arguments));
-	}
+/***/ 265:
+/***/ (function(module, exports) {
 
-	_createClass(IFrame, [{
-		key: 'render',
-		value: function render() {
-			return React.createElement(
-				OboComponent,
-				{ model: this.props.model, moduleData: this.props.moduleData },
-				React.createElement(
-					'div',
-					{ className: 'obojobo-draft--chunks--iframe viewer' },
-					React.createElement('iframe', { src: this.props.model.modelState.src, frameBorder: '0', allowFullScreen: 'true' })
-				)
-			);
-		}
-	}]);
+// removed by extract-text-webpack-plugin
 
-	return IFrame;
-}(React.Component);
+/***/ }),
 
-exports.default = IFrame;
+/***/ 289:
+/***/ (function(module, exports, __webpack_require__) {
+
+module.exports = __webpack_require__(107);
+
 
 /***/ })
 

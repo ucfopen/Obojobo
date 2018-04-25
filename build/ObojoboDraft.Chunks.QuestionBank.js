@@ -63,7 +63,7 @@
 /******/ 	__webpack_require__.p = "build/";
 /******/
 /******/ 	// Load entry module and return exports
-/******/ 	return __webpack_require__(__webpack_require__.s = 169);
+/******/ 	return __webpack_require__(__webpack_require__.s = 295);
 /******/ })
 /************************************************************************/
 /******/ ({
@@ -75,22 +75,7 @@ module.exports = Common;
 
 /***/ }),
 
-/***/ 148:
-/***/ (function(module, exports) {
-
-// removed by extract-text-webpack-plugin
-
-/***/ }),
-
-/***/ 169:
-/***/ (function(module, exports, __webpack_require__) {
-
-module.exports = __webpack_require__(36);
-
-
-/***/ }),
-
-/***/ 36:
+/***/ 112:
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -100,11 +85,11 @@ var _Common = __webpack_require__(0);
 
 var _Common2 = _interopRequireDefault(_Common);
 
-var _adapter = __webpack_require__(74);
+var _adapter = __webpack_require__(150);
 
 var _adapter2 = _interopRequireDefault(_adapter);
 
-var _viewerComponent = __webpack_require__(75);
+var _viewerComponent = __webpack_require__(151);
 
 var _viewerComponent2 = _interopRequireDefault(_viewerComponent);
 
@@ -121,7 +106,7 @@ _Common2.default.Store.registerModel('ObojoboDraft.Chunks.QuestionBank', {
 
 /***/ }),
 
-/***/ 74:
+/***/ 150:
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -202,7 +187,7 @@ function __guard__(value, transform) {
 
 /***/ }),
 
-/***/ 75:
+/***/ 151:
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -212,9 +197,7 @@ Object.defineProperty(exports, "__esModule", {
 	value: true
 });
 
-var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
-
-__webpack_require__(148);
+__webpack_require__(273);
 
 var _Common = __webpack_require__(0);
 
@@ -222,48 +205,38 @@ var _Common2 = _interopRequireDefault(_Common);
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
-function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
-
-function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
-
-function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
-
 var OboComponent = _Common2.default.components.OboComponent;
 
-var QuestionBank = function (_React$Component) {
-	_inherits(QuestionBank, _React$Component);
+exports.default = function (props) {
+	return React.createElement(
+		OboComponent,
+		{
+			model: props.model,
+			moduleData: props.moduleData,
+			className: 'obojobo-draft--chunks--question-bank'
+		},
+		props.model.children.models.map(function (child, index) {
+			var Component = child.getComponentClass();
 
-	function QuestionBank() {
-		_classCallCheck(this, QuestionBank);
+			return React.createElement(Component, { key: index, model: child, moduleData: props.moduleData });
+		})
+	);
+};
 
-		return _possibleConstructorReturn(this, (QuestionBank.__proto__ || Object.getPrototypeOf(QuestionBank)).apply(this, arguments));
-	}
+/***/ }),
 
-	_createClass(QuestionBank, [{
-		key: 'render',
-		value: function render() {
-			var _this2 = this;
+/***/ 273:
+/***/ (function(module, exports) {
 
-			return React.createElement(
-				OboComponent,
-				{
-					model: this.props.model,
-					moduleData: this.props.moduleData,
-					className: 'obojobo-draft--chunks--question-bank'
-				},
-				this.props.model.children.models.map(function (child, index) {
-					var Component = child.getComponentClass();
+// removed by extract-text-webpack-plugin
 
-					return React.createElement(Component, { key: index, model: child, moduleData: _this2.props.moduleData });
-				})
-			);
-		}
-	}]);
+/***/ }),
 
-	return QuestionBank;
-}(React.Component);
+/***/ 295:
+/***/ (function(module, exports, __webpack_require__) {
 
-exports.default = QuestionBank;
+module.exports = __webpack_require__(112);
+
 
 /***/ })
 

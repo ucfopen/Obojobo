@@ -4,20 +4,24 @@ let { Dispatcher } = Common.flux
 let { OboModel } = Common.models
 
 let QuestionUtil = {
-	setResponse(id, response, targetId) {
+	setResponse(id, response, targetId, context, assessmentId, attemptId) {
 		return Dispatcher.trigger('question:setResponse', {
 			value: {
 				id,
 				response,
-				targetId
+				targetId,
+				context,
+				assessmentId,
+				attemptId
 			}
 		})
 	},
 
-	clearResponse(id) {
+	clearResponse(id, context) {
 		return Dispatcher.trigger('question:clearResponse', {
 			value: {
-				id
+				id,
+				context
 			}
 		})
 	},
@@ -45,9 +49,9 @@ let QuestionUtil = {
 		})
 	},
 
-	hideExplanation(id, asSystem) {
+	hideExplanation(id, actor) {
 		return Dispatcher.trigger('question:hideExplanation', {
-			value: { id }
+			value: { id, actor }
 		})
 	},
 
@@ -75,10 +79,11 @@ let QuestionUtil = {
 		})
 	},
 
-	retryQuestion(id) {
+	retryQuestion(id, context) {
 		return Dispatcher.trigger('question:retry', {
 			value: {
-				id
+				id,
+				context
 			}
 		})
 	},
@@ -95,8 +100,9 @@ let QuestionUtil = {
 		return 'hidden'
 	},
 
-	getResponse(state, model) {
-		return state.responses[model.get('id')] || null
+	getResponse(state, model, context) {
+		if (!state.responses[context]) return null
+		return state.responses[context][model.get('id')] || null
 	},
 
 	getData(state, model, key) {
@@ -105,6 +111,34 @@ let QuestionUtil = {
 
 	isShowingExplanation(state, model) {
 		return state.data[model.get('id') + ':showingExplanation'] || false
+	},
+
+	getScoreForModel(state, model, context) {
+		let scoreItem
+		if (state.scores[context] != null) {
+			scoreItem = state.scores[context][model.get('id')]
+		}
+
+		return scoreItem == null || scoreItem.score == null ? null : scoreItem.score
+	},
+
+	setScore(itemId, score, context) {
+		return Dispatcher.trigger('question:scoreSet', {
+			value: {
+				itemId,
+				score,
+				context
+			}
+		})
+	},
+
+	clearScore(itemId, context) {
+		return Dispatcher.trigger('question:scoreClear', {
+			value: {
+				itemId,
+				context
+			}
+		})
 	}
 }
 

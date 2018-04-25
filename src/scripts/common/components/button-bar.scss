@@ -1,0 +1,37 @@
+@import '../../../scss/includes';
+
+.obojobo-draft--components--button-bar {
+	> div {
+		display: inline-block;
+
+		&:first-child > .obojobo-draft--components--button > button {
+			border-top-left-radius: $dimension-rounded-radius;
+			border-bottom-left-radius: $dimension-rounded-radius;
+		}
+
+		&:last-child > .obojobo-draft--components--button > button {
+			border-top-right-radius: $dimension-rounded-radius;
+			border-bottom-right-radius: $dimension-rounded-radius;
+		}
+
+		&:not(:last-child) > .obojobo-draft--components--button > button {
+			border-right: none;
+		}
+
+		> .obojobo-draft--components--button > button {
+			border-radius: 0;
+
+			&:focus {
+				z-index: 2;
+			}
+		}
+
+		&.is-selected {
+			> .obojobo-draft--components--button > button {
+				background-color: $color-highlight;
+				color: $color-bg;
+				z-index: 1;
+			}
+		}
+	}
+}

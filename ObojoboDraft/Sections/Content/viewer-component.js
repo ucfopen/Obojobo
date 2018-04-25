@@ -7,26 +7,22 @@ let { OboComponent } = Common.components
 let { OboModel } = Common.models
 let { NavUtil } = Viewer.util
 
-export default class Content extends React.Component {
-	render() {
-		let childEl = null
-		let navTargetModel = NavUtil.getNavTargetModel(this.props.moduleData.navState)
+export default props => {
+	let childEl = null
+	let navTargetModel = NavUtil.getNavTargetModel(props.moduleData.navState)
 
-		if (navTargetModel) {
-			let ChildComponent = navTargetModel.getComponentClass()
-			childEl = <ChildComponent model={navTargetModel} moduleData={this.props.moduleData} />
-		}
-
-		return (
-			<OboComponent
-				model={this.props.model}
-				moduleData={this.props.moduleData}
-				className="obojobo-draft--sections--content"
-			>
-				<div>
-					{childEl}
-				</div>
-			</OboComponent>
-		)
+	if (navTargetModel) {
+		let ChildComponent = navTargetModel.getComponentClass()
+		childEl = <ChildComponent model={navTargetModel} moduleData={props.moduleData} />
 	}
+
+	return (
+		<OboComponent
+			model={props.model}
+			moduleData={props.moduleData}
+			className="obojobo-draft--sections--content"
+		>
+			<div>{childEl}</div>
+		</OboComponent>
+	)
 }

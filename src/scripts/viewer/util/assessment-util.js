@@ -25,7 +25,7 @@ var AssessmentUtil = {
 		return assessment
 	},
 
-	getLastAttemptScoreForModel(state, model) {
+	getLastAttemptForModel(state, model) {
 		let assessment = AssessmentUtil.getAssessmentForModel(state, model)
 		if (!assessment) {
 			return null
@@ -35,18 +35,34 @@ var AssessmentUtil = {
 			return 0
 		}
 
-		return assessment.attempts[assessment.attempts.length - 1].result.attemptScore
+		return assessment.attempts[assessment.attempts.length - 1]
 	},
 
-	getHighestAttemptScoreForModel(state, model) {
+	getHighestAttemptsForModelByAssessmentScore(state, model) {
 		let assessment = AssessmentUtil.getAssessmentForModel(state, model)
 		if (!assessment) {
+			return []
+		}
+
+		return assessment.highestAssessmentScoreAttempts
+	},
+
+	getHighestAttemptsForModelByAttemptScore(state, model) {
+		let assessment = AssessmentUtil.getAssessmentForModel(state, model)
+		if (!assessment) {
+			return []
+		}
+
+		return assessment.highestAttemptScoreAttempts
+	},
+
+	getAssessmentScoreForModel(state, model) {
+		let attempts = AssessmentUtil.getHighestAttemptsForModelByAssessmentScore(state, model)
+		if (attempts.length === 0) {
 			return null
 		}
 
-		return assessment.attempts
-			.map(attempt => attempt.result.attemptScore)
-			.reduce((a, b) => Math.max(a, b), 0)
+		return attempts[0].assessmentScore
 	},
 
 	getLastAttemptScoresForModel(state, model) {
@@ -59,7 +75,7 @@ var AssessmentUtil = {
 			return []
 		}
 
-		return assessment.attempts[assessment.attempts.length - 1].result.scores
+		return assessment.attempts[assessment.attempts.length - 1].questionScores
 	},
 
 	getCurrentAttemptForModel(state, model) {
@@ -71,31 +87,77 @@ var AssessmentUtil = {
 		return assessment.current
 	},
 
-	// getLastAttemptForModel(state, model) {
-	// 	let assessment = AssessmentUtil.getAssessmentForModel(state, model);
-	// 	if (!assessment || (assessment.attempts.length === 0)) { return null; }
+	getAllAttempts(state, model) {
+		return this.getAssessmentForModel(state, model).attempts
+	},
 
-	// 	return assessment.attempts[assessment.attempts.length - 1];
-	// },
+	getAttemptsRemaining(state, model) {
+		return Math.max(
+			model.modelState.attempts - this.getNumberOfAttemptsCompletedForModel(state, model),
+			0
+		)
+	},
 
-	// isCurrentAttemptComplete(assessmentState, questionState, model) {
-	// 	console.log(
-	// 		'@TODO: Function not working, responses stored by responseId, not by questionId. Do not use this method.'
-	// 	)
-	// 	let current = AssessmentUtil.getCurrentAttemptForModel(assessmentState, model)
-	// 	if (!current) {
-	// 		return null
-	// 	}
+	hasAttemptsRemaining(state, model) {
+		return model.modelState.attempts - this.getNumberOfAttemptsCompletedForModel(state, model) > 0
+	},
 
-	// 	let models = model.children.at(1).children.models
+	getLTIStateForModel(state, model) {
+		let assessment = AssessmentUtil.getAssessmentForModel(state, model)
+		if (!assessment) {
+			return null
+		}
 
-	// 	return (
-	// 		models.filter(function(questionModel) {
-	// 			let resp = QuestionUtil.getResponse(questionState, questionModel)
-	// 			return resp && resp.set === true
-	// 		}).length === models.length
-	// 	)
-	// },
+		return {
+			state: assessment.lti,
+			networkState: assessment.ltiNetworkState,
+			errorCount: assessment.ltiErrorCount
+		}
+	},
+
+	isLTIScoreNeedingToBeResynced(state, model) {
+		let assessment = AssessmentUtil.getAssessmentForModel(state, model)
+
+		if (!assessment || !assessment.lti || !assessment.lti.gradebookStatus) {
+			return false
+		}
+
+		switch (assessment.lti.gradebookStatus) {
+			case 'ok_no_outcome_service':
+			case 'ok_gradebook_matches_assessment_score':
+			case 'ok_null_score_not_sent':
+				return false
+
+			default:
+				return true
+		}
+	},
+
+	isCurrentAttemptComplete(assessmentState, questionState, model, context) {
+		let current = AssessmentUtil.getCurrentAttemptForModel(assessmentState, model)
+		if (!current) {
+			return null
+		}
+		let models = model.children.at(1).children.models
+		return (
+			models.filter(function(questionModel) {
+				let resp = QuestionUtil.getResponse(questionState, questionModel, context)
+				return resp
+			}).length === models.length
+		)
+	},
+
+	isInAssessment(state) {
+		if (!state) return false
+
+		for (let assessmentName in state.assessments) {
+			if (state.assessments[assessmentName].current !== null) {
+				return true
+			}
+		}
+
+		return false
+	},
 
 	getNumberOfAttemptsCompletedForModel(state, model) {
 		let assessment = AssessmentUtil.getAssessmentForModel(state, model)
@@ -106,6 +168,42 @@ var AssessmentUtil = {
 		return assessment.attempts.length
 	},
 
+	getNumCorrect(questionScores) {
+		return questionScores.reduce(
+			function(acc, questionScore) {
+				let n = 0
+				if (parseInt(questionScore.score, 10) === 100) {
+					n = 1
+				}
+				return parseInt(acc, 10) + n
+			},
+			[0]
+		)
+	},
+
+	findHighestAttempts(attempts, scoreProperty) {
+		if (attempts.length === 0) return []
+
+		let attemptsByScore = {}
+		let highestScore = -1
+
+		attempts.forEach(attempt => {
+			let score = attempt[scoreProperty] === null ? -1 : attempt[scoreProperty]
+
+			if (score > highestScore) {
+				highestScore = score
+			}
+
+			if (!attemptsByScore[score]) {
+				attemptsByScore[score] = []
+			}
+
+			attemptsByScore[score].push(attempt)
+		})
+
+		return attemptsByScore[highestScore]
+	},
+
 	startAttempt(model) {
 		return Dispatcher.trigger('assessment:startAttempt', {
 			value: {
@@ -114,8 +212,17 @@ var AssessmentUtil = {
 		})
 	},
 
-	endAttempt(model) {
+	endAttempt(model, context) {
 		return Dispatcher.trigger('assessment:endAttempt', {
+			value: {
+				id: model.get('id'),
+				context
+			}
+		})
+	},
+
+	resendLTIScore(model) {
+		return Dispatcher.trigger('assessment:resendLTIScore', {
 			value: {
 				id: model.get('id')
 			}

@@ -1,16 +1,12 @@
 @import '../../../../../../../scss/includes';
 
-.component[data-component-type="ObojoboDraft.Chunks.Code"]
-{
+.component[data-component-type='ObojoboDraft.Chunks.Code'] {
 	&.selection-contains,
 	&.selection-inside,
 	&.selection-start,
-	&.selection-end
-	{
-		pre
-		{
-			&::after
-			{
+	&.selection-end {
+		pre {
+			&::after {
 				border-top: 1px solid $color-text-minor;
 				bottom: -2em;
 				color: $color-text-minor;
@@ -24,10 +20,8 @@
 	}
 }
 
-.obojobo-draft--chunks--code
-{
-	pre
-	{
+.obojobo-draft--chunks--code {
+	pre {
 		position: relative;
 	}
 }

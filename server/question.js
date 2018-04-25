@@ -1,7 +1,7 @@
 let DraftNode = oboRequire('models/draft_node')
 // import DraftNode from '../../../models/draft_node'
 
-class MCChoice extends DraftNode {
+class Question extends DraftNode {
 	constructor(draftTree, node, initFn) {
 		super(draftTree, node, initFn)
 		this.registerEvents({
@@ -11,7 +11,7 @@ class MCChoice extends DraftNode {
 	}
 
 	onSendToAssessment(req, res) {
-		this.node.content.practice = false
+		this.node.content.mode = 'assessment'
 	}
 
 	onAttemptEnd(req, res, assessment, responseHistory, currentAttempt) {
@@ -30,11 +30,11 @@ class MCChoice extends DraftNode {
 			req.app,
 			this,
 			questionResponses[0],
-			function(score) {
+			score => {
 				currentAttempt.addScore(this.node.id, score)
-			}.bind(this)
+			}
 		)
 	}
 }
 
-module.exports = MCChoice
+module.exports = Question
