@@ -252,8 +252,8 @@ app.get('/api/assessment/:draftId/:assessmentId/attempts', (req, res, next) => {
 		})
 })
 
-oboEvents.on('client:assessment:setResponse', (event, req) => {
-	const eventRecordResponse = 'client:assessment:setResponse'
+oboEvents.on('client:question:setResponse', (event, req) => {
+	const eventRecordResponse = 'client:question:setResponse'
 	// @TODO: check perms
 	// @TODO: better input sanitizing
 

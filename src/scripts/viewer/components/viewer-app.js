@@ -9,7 +9,6 @@ import InlineNavButton from '../../viewer/components/inline-nav-button'
 import NavUtil from '../../viewer/util/nav-util'
 import APIUtil from '../../viewer/util/api-util'
 import Logo from '../../viewer/components/logo'
-import ScoreStore from '../../viewer/stores/score-store'
 import QuestionStore from '../../viewer/stores/question-store'
 import AssessmentStore from '../../viewer/stores/assessment-store'
 import NavStore from '../../viewer/stores/nav-store'
@@ -59,7 +58,6 @@ export default class ViewerApp extends React.Component {
 		let state = {
 			model: null,
 			navState: null,
-			scoreState: null,
 			questionState: null,
 			assessmentState: null,
 			modalState: null,
@@ -73,7 +71,6 @@ export default class ViewerApp extends React.Component {
 			}
 		}
 		this.onNavStoreChange = () => this.setState({ navState: NavStore.getState() })
-		this.onScoreStoreChange = () => this.setState({ scoreState: ScoreStore.getState() })
 		this.onQuestionStoreChange = () => this.setState({ questionState: QuestionStore.getState() })
 		this.onAssessmentStoreChange = () =>
 			this.setState({ assessmentState: AssessmentStore.getState() })
@@ -109,7 +106,6 @@ export default class ViewerApp extends React.Component {
 
 		APIUtil.requestStart(visitIdFromUrl, draftIdFromUrl)
 			.then(visit => {
-				ScoreStore.init()
 				QuestionStore.init()
 				ModalStore.init()
 				FocusStore.init()
@@ -137,7 +133,6 @@ export default class ViewerApp extends React.Component {
 				AssessmentStore.init(attemptHistory)
 
 				this.state.navState = NavStore.getState()
-				this.state.scoreState = ScoreStore.getState()
 				this.state.questionState = QuestionStore.getState()
 				this.state.assessmentState = AssessmentStore.getState()
 				this.state.modalState = ModalStore.getState()
@@ -151,6 +146,7 @@ export default class ViewerApp extends React.Component {
 				})
 			})
 			.catch(err => {
+				console.log(err)
 				this.setState({ loading: false, requestStatus: 'invalid' }, () =>
 					Dispatcher.trigger('viewer:loaded', false)
 				)
@@ -160,7 +156,6 @@ export default class ViewerApp extends React.Component {
 	componentWillMount() {
 		// === SET UP DATA STORES ===
 		NavStore.onChange(this.onNavStoreChange)
-		ScoreStore.onChange(this.onScoreStoreChange)
 		QuestionStore.onChange(this.onQuestionStoreChange)
 		AssessmentStore.onChange(this.onAssessmentStoreChange)
 		ModalStore.onChange(this.onModalStoreChange)
@@ -169,7 +164,6 @@ export default class ViewerApp extends React.Component {
 
 	componentWillUnmount() {
 		NavStore.offChange(this.onNavStoreChange)
-		ScoreStore.offChange(this.onScoreStoreChange)
 		QuestionStore.offChange(this.onQuestionStoreChange)
 		AssessmentStore.offChange(this.onAssessmentStoreChange)
 		ModalStore.offChange(this.onModalStoreChange)
@@ -343,21 +337,21 @@ export default class ViewerApp extends React.Component {
 
 	clearPreviewScores() {
 		APIUtil.clearPreviewScores(this.state.model).then(res => {
-			if (res.status === 'error') {
+			if (res.status === 'error' || res.error) {
 				return ModalUtil.show(
 					<SimpleDialog ok width="15em">
-						{`There was an error resetting assessments and questions: ${res.value.message}.`}
+						{res.value && res.value.message
+							? `There was an error resetting assessments and questions: ${res.value.message}.`
+							: 'There was an error resetting assessments and questions'}
 					</SimpleDialog>
 				)
 			}
 
 			AssessmentStore.init()
 			QuestionStore.init()
-			ScoreStore.init()
 
 			AssessmentStore.triggerChange()
 			QuestionStore.triggerChange()
-			ScoreStore.triggerChange()
 
 			return ModalUtil.show(
 				<SimpleDialog ok width="15em">

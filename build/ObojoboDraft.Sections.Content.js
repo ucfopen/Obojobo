@@ -63,7 +63,7 @@
 /******/ 	__webpack_require__.p = "build/";
 /******/
 /******/ 	// Load entry module and return exports
-/******/ 	return __webpack_require__(__webpack_require__.s = 276);
+/******/ 	return __webpack_require__(__webpack_require__.s = 302);
 /******/ })
 /************************************************************************/
 /******/ ({
@@ -82,7 +82,7 @@ module.exports = Viewer;
 
 /***/ }),
 
-/***/ 114:
+/***/ 119:
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -92,7 +92,7 @@ var _Common = __webpack_require__(0);
 
 var _Common2 = _interopRequireDefault(_Common);
 
-var _viewerComponent = __webpack_require__(160);
+var _viewerComponent = __webpack_require__(171);
 
 var _viewerComponent2 = _interopRequireDefault(_viewerComponent);
 
@@ -133,7 +133,7 @@ _Common2.default.Store.registerModel('ObojoboDraft.Sections.Content', {
 
 /***/ }),
 
-/***/ 160:
+/***/ 171:
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -143,7 +143,7 @@ Object.defineProperty(exports, "__esModule", {
 	value: true
 });
 
-__webpack_require__(255);
+__webpack_require__(281);
 
 var _Common = __webpack_require__(0);
 
@@ -185,17 +185,17 @@ exports.default = function (props) {
 
 /***/ }),
 
-/***/ 255:
+/***/ 281:
 /***/ (function(module, exports) {
 
 // removed by extract-text-webpack-plugin
 
 /***/ }),
 
-/***/ 276:
+/***/ 302:
 /***/ (function(module, exports, __webpack_require__) {
 
-module.exports = __webpack_require__(114);
+module.exports = __webpack_require__(119);
 
 
 /***/ })

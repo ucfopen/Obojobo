@@ -100,6 +100,7 @@ describe('MCChoice viewer-component', () => {
 		let props = {
 			model,
 			moduleData,
+			mode: 'mockMode',
 			key: 'mockKey',
 			responseType: 'pick-one',
 			isShowingExplanation: false,
@@ -111,6 +112,10 @@ describe('MCChoice viewer-component', () => {
 
 		expect(component).toMatchSnapshot()
 	})
+
+	test.skip('question classNames update when selected', () => {})
+
+	test.skip('question classNames update when correct', () => {})
 
 	test('pick-one-multiple-correct questions render as expected', () => {
 		initModuleData()

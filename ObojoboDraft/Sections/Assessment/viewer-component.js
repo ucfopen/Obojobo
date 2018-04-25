@@ -9,12 +9,14 @@ let { Button } = Common.components
 let { Dispatcher } = Common.flux
 let { ModalUtil } = Common.util
 
-let { ScoreStore } = Viewer.stores
 let { AssessmentUtil } = Viewer.util
 let { NavUtil } = Viewer.util
 
-import AttemptIncompleteDialog from './attempt-incomplete-dialog'
-import LTIStatus from './lti-status'
+import AttemptIncompleteDialog from './components/attempt-incomplete-dialog'
+
+import PreTest from './components/pre-test'
+import Test from './components/test'
+import PostTest from './components/post-test'
 
 export default class Assessment extends React.Component {
 	constructor() {
@@ -29,25 +31,29 @@ export default class Assessment extends React.Component {
 		this.onAttemptEnded = this.onAttemptEnded.bind(this)
 		this.endAttempt = this.endAttempt.bind(this)
 		this.onClickSubmit = this.onClickSubmit.bind(this)
-		this.onClickResendScore = this.onClickResendScore.bind(this)
+	}
+
+	componentWillUnmount() {
+		NavUtil.setContext('practice')
 	}
 
 	getCurrentStep() {
-		let assessment = AssessmentUtil.getAssessmentForModel(
+		const assessment = AssessmentUtil.getAssessmentForModel(
 			this.props.moduleData.assessmentState,
 			this.props.model
 		)
 
 		if (assessment === null) {
-			return 'untested'
+			return 'pre-test'
 		}
 		if (assessment.current !== null) {
-			return 'takingTest'
+			return 'test'
 		}
+
 		if (assessment.attempts.length > 0) {
-			return 'scoreSubmitted'
+			return 'post-test'
 		}
-		return 'untested'
+		return 'pre-test'
 	}
 
 	componentWillReceiveProps(nextProps) {
@@ -89,6 +95,14 @@ export default class Assessment extends React.Component {
 		return AssessmentUtil.isCurrentAttemptComplete(
 			this.props.moduleData.assessmentState,
 			this.props.moduleData.questionState,
+			this.props.model,
+			this.props.moduleData.navState.context
+		)
+	}
+
+	isAssessmentComplete() {
+		return !AssessmentUtil.hasAttemptsRemaining(
+			this.props.moduleData.assessmentState,
 			this.props.model
 		)
 	}
@@ -101,16 +115,11 @@ export default class Assessment extends React.Component {
 			ModalUtil.show(<AttemptIncompleteDialog onSubmit={this.endAttempt} />)
 			return
 		}
-
 		return this.endAttempt()
 	}
 
-	onClickResendScore() {
-		AssessmentUtil.resendLTIScore(this.props.model)
-	}
-
 	endAttempt() {
-		return AssessmentUtil.endAttempt(this.props.model)
+		return AssessmentUtil.endAttempt(this.props.model, this.props.moduleData.navState.context)
 	}
 
 	exitAssessment() {
@@ -134,6 +143,7 @@ export default class Assessment extends React.Component {
 			this.props.model
 		)
 		let scoreAction = this.props.model.modelState.scoreActions.getActionForScore(assessmentScore)
+
 		if (scoreAction) {
 			return scoreAction
 		}
@@ -150,10 +160,6 @@ export default class Assessment extends React.Component {
 	}
 
 	render() {
-		let recentScore = AssessmentUtil.getLastAttemptScoreForModel(
-			this.props.moduleData.assessmentState,
-			this.props.model
-		)
 		let assessmentScore = AssessmentUtil.getAssessmentScoreForModel(
 			this.props.moduleData.assessmentState,
 			this.props.model
@@ -163,133 +169,32 @@ export default class Assessment extends React.Component {
 			this.props.model
 		)
 
-		let externalSystemLabel = this.props.moduleData.lti.outcomeServiceHostname
-
-		var childEl = (() => {
+		const childEl = (() => {
 			switch (this.getCurrentStep()) {
-				case 'untested':
-					let child = this.props.model.children.at(0)
-					let Component = child.getComponentClass()
+				case 'pre-test':
+					return PreTest({
+						model: this.props.model.children.at(0),
+						moduleData: this.props.moduleData
+					})
 
-					return (
-						<div className="untested">
-							<Component model={child} moduleData={this.props.moduleData} />
-						</div>
-					)
+				case 'test':
+					return Test({
+						model: this.props.model.children.at(1),
+						moduleData: this.props.moduleData,
+						onClickSubmit: this.onClickSubmit,
+						isAttemptComplete: this.isAttemptComplete(),
+						isFetching: this.state.isFetching
+					})
 
-				case 'takingTest':
-					child = this.props.model.children.at(1)
-					Component = child.getComponentClass()
-					let submitButtonText = 'Loading ...'
+				case 'post-test':
+					return PostTest({
+						model: this.props.model,
+						moduleData: this.props.moduleData,
+						scoreAction: this.getScoreAction()
+					})
 
-					if (!this.isAttemptComplete()) {
-						submitButtonText = 'Submit (Not all questions have been answered)'
-					} else if (!this.state.isFetching) {
-						submitButtonText = 'Submit'
-					}
-
-					return (
-						<div className="test">
-							<Component
-								className="untested"
-								model={child}
-								moduleData={this.props.moduleData}
-								showScore={recentScore !== null}
-							/>
-							<div className="submit-button">
-								<Button
-									onClick={this.onClickSubmit}
-									value={submitButtonText}
-									disabled={this.state.isFetching}
-								/>
-							</div>
-						</div>
-					)
-
-				case 'scoreSubmitted':
-					let scoreAction = this.getScoreAction()
-
-					let questionScores = AssessmentUtil.getLastAttemptScoresForModel(
-						this.props.moduleData.assessmentState,
-						this.props.model
-					)
-
-					const count100s = (acc, qs) => acc + (parseInt(qs.score, 10) === 100 ? 1 : 0)
-					let numCorrect = questionScores.reduce(count100s, 0)
-
-					if (scoreAction.page != null) {
-						let pageModel = OboModel.create(scoreAction.page)
-						pageModel.parent = this.props.model //'@TODO - FIGURE OUT A BETTER WAY TO DO THIS - THIS IS NEEDED TO GET {{VARIABLES}} WORKING')
-						let PageComponent = pageModel.getComponentClass()
-						childEl = <PageComponent model={pageModel} moduleData={this.props.moduleData} />
-					} else {
-						childEl = <p>{scoreAction.message}</p>
-					}
-
-					return (
-						<div className="score unlock">
-							<LTIStatus
-								ltiState={ltiState}
-								externalSystemLabel={externalSystemLabel}
-								onClickResendScore={this.onClickResendScore}
-							/>
-							<h1>{`Your attempt score is ${Math.round(recentScore)}%`}</h1>
-							<h2>
-								Your overall score for this assessment is{' '}
-								<strong>{assessmentScore === null ? '--' : Math.round(assessmentScore)}% </strong>
-								{(() => {
-									switch (ltiState.state.gradebookStatus) {
-										case 'ok_no_outcome_service':
-										case 'ok_null_score_not_sent':
-											return null
-
-										case 'ok_gradebook_matches_assessment_score':
-											return (
-												<span className="lti-sync-message is-synced">
-													({`sent to ${externalSystemLabel} `}
-													<span>✔</span>)
-												</span>
-											)
-
-										default:
-											return (
-												<span className="lti-sync-message is-not-synced">
-													({`not sent to ${externalSystemLabel} `}
-													<span>✖</span>)
-												</span>
-											)
-									}
-								})()}
-							</h2>
-
-							{childEl}
-							<div className="review">
-								<p className="number-correct">{`You got ${numCorrect} out of ${
-									questionScores.length
-								} questions correct:`}</p>
-								{questionScores.map((questionScore, index) => {
-									let questionModel = OboModel.models[questionScore.id]
-									let QuestionComponent = questionModel.getComponentClass()
-
-									return (
-										<div
-											key={index}
-											className={questionScore.score === 100 ? 'is-correct' : 'is-not-correct'}
-										>
-											<p>{`Question ${index + 1} - ${
-												questionScore.score === 100 ? 'Correct:' : 'Incorrect:'
-											}`}</p>
-											<QuestionComponent
-												model={questionModel}
-												moduleData={this.props.moduleData}
-												showContentOnly
-											/>
-										</div>
-									)
-								})}
-							</div>
-						</div>
-					)
+				default:
+					return null
 			}
 		})()
 

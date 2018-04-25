@@ -1,0 +1,50 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`Question emits calculate score event when necessary 1`] = `
+Array [
+  "ObojoboDraft.Chunks.Question:calculateScore",
+  Object {},
+  Question {
+    "children": Array [],
+    "childrenSet": [MockFunction],
+    "contains": [MockFunction],
+    "draftTree": Object {},
+    "immediateChildrenSet": Set {},
+    "init": Object {},
+    "node": Object {
+      "content": Object {
+        "mode": "assessment",
+      },
+      "id": "mockQuestion",
+    },
+    "registerEvents": [MockFunction] {
+      "calls": Array [
+        Array [
+          Object {
+            "ObojoboDraft.Sections.Assessment:attemptEnd": [Function],
+            "ObojoboDraft.Sections.Assessment:sendToAssessment": [Function],
+          },
+        ],
+      ],
+    },
+    "yell": [MockFunction] {
+      "calls": Array [
+        [Circular],
+      ],
+    },
+  },
+  Object {
+    "question_id": "mockQuestion",
+  },
+  [Function],
+]
+`;
+
+exports[`Question registers expected events 1`] = `
+Array [
+  Object {
+    "ObojoboDraft.Sections.Assessment:attemptEnd": [Function],
+    "ObojoboDraft.Sections.Assessment:sendToAssessment": [Function],
+  },
+]
+`;

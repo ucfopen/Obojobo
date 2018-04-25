@@ -89,7 +89,7 @@ var APIUtil = {
 
 	resendLTIAssessmentScore(lo, assessment) {
 		return APIUtil.post('/api/lti/sendAssessmentScore', {
-			draftId: lo.get('_id'),
+			draftId: lo.get('draftId'),
 			assessmentId: assessment.get('id')
 		}).then(processJsonResults)
 	},
