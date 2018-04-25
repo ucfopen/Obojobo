@@ -6,6 +6,8 @@ let createCaliperEvent = oboRequire('routes/api/events/create_caliper_event') //
 let insertEvent = oboRequire('insert_event')
 let lti = oboRequire('lti')
 let logger = oboRequire('logger')
+let attemptStart = require('./attempt-start')
+const QUESTION_NODE_TYPE = 'ObojoboDraft.Chunks.Question'
 
 let endAttempt = (req, res, user, attemptId, isPreviewing) => {
 	let attempt
@@ -14,6 +16,7 @@ let endAttempt = (req, res, user, attemptId, isPreviewing) => {
 	let calculatedScores
 	let updateAttemptData
 	let assessmentScoreId
+	let tree
 
 	logger.info(`End attempt "${attemptId}" begin for user "${user.id}" (Preview="${isPreviewing}")`)
 
@@ -22,6 +25,10 @@ let endAttempt = (req, res, user, attemptId, isPreviewing) => {
 			logger.info(`End attempt "${attemptId}" - getAttempt success`)
 
 			attempt = attemptResult
+			return DraftModel.fetchById(attempt.draftId)
+		})
+		.then(draftTree => {
+			tree = draftTree
 			return getAttemptHistory(user.id, attempt.draftId, attempt.assessmentId)
 		})
 		.then(attemptHistoryResult => {
@@ -64,6 +71,17 @@ let endAttempt = (req, res, user, attemptId, isPreviewing) => {
 
 			assessmentScoreId = completeAttemptResult.assessmentScoreId
 
+			return reloadAttemptStateIfReviewing(
+				attemptId,
+				attempt.draftId,
+				attempt,
+				tree,
+				user,
+				isPreviewing,
+				attemptHistory
+			)
+		})
+		.then(() => {
 			return insertAttemptEndEvents(
 				user,
 				attempt.draftId,
@@ -296,6 +314,119 @@ let insertAttemptScoredEvents = (
 	})
 }
 
+let reloadAttemptStateIfReviewing = (
+	attemptId,
+	draftId,
+	attempt,
+	tree,
+	user,
+	isPreviewing,
+	attemptHistory
+) => {
+	let assessmentNode = attempt.assessmentModel
+
+	// Do not reload the state if reviews are never allowed
+	if (assessmentNode.node.content.review == 'never') {
+		return null
+	}
+
+	let isLastAttempt = attempt.number == assessmentNode.node.content.attempts
+
+	// Do not reload the state if reviews are only allowed after the last
+	// attempt and this is not the last attempt
+	if (assessmentNode.node.content.review == 'no-attempts-remaining' && !isLastAttempt) {
+		return null
+	}
+
+	let assessmentProperties = loadAssessmentProperties(
+		tree,
+		attempt,
+		user,
+		isPreviewing,
+		attemptHistory
+	)
+
+	let state = attemptStart.getState(assessmentProperties)
+	// Not ideal, but attempt-start needs this as a recursive structure to send
+	// client promises
+	state.questions = state.questions.map(q => q.toObject())
+
+	// If reviews are always allowed, reload the state for this attempt
+	// Each attempt's state will be reloaded as it finishes
+	if (assessmentNode.node.content.review == 'always') {
+		return Assessment.updateAttemptState(attemptId, state)
+	}
+
+	// If reviews are allowed after last attempt and this is the last attempt,
+	// reload the states for all attempts
+	if (assessmentNode.node.content.review == 'no-attempts-remaining' && isLastAttempt) {
+		// Reload state for all previous attempts
+		return Assessment.getAttempts(
+			assessmentProperties.user.id,
+			draftId,
+			assessmentProperties.id
+		).then(result => {
+			result.attempts.map(attempt => {
+				attempt.state.qb = recreateChosenQuestionTree(
+					attempt.state.qb,
+					assessmentProperties.draftTree
+				)
+
+				let newQuestions = []
+				logger.info('inside')
+
+				attempt.state.questions.map(question => {
+					newQuestions.push(getNodeQuestion(question.id, assessmentProperties.draftTree))
+				})
+
+				attempt.state.questions = newQuestions
+
+				Assessment.updateAttemptState(attempt.attemptId, attempt.state)
+			})
+		})
+	}
+
+	logger.info(`Error: Reached exceptional state while reloading state for ${attemptId}`)
+	return null
+}
+
+let recreateChosenQuestionTree = (node, assessmentNode) => {
+	if (node.type === QUESTION_NODE_TYPE) {
+		return getNodeQuestion(node.id, assessmentNode)
+	}
+
+	let newChildren = []
+
+	for (let child of node.children) {
+		newChildren.push(recreateChosenQuestionTree(child, assessmentNode))
+	}
+
+	node.children = newChildren
+	return node
+}
+// Pulls down a single question from the draft
+let getNodeQuestion = (nodeId, assessmentNode) => {
+	return assessmentNode.getChildNodeById(nodeId).toObject()
+}
+
+// Pulls assessment properties out of the promise flow
+let loadAssessmentProperties = (draftTree, attempt, user, isPreviewing, attemptHistory) => {
+	const assessmentNode = draftTree.getChildNodeById(attempt.assessmentId)
+
+	return {
+		user: user,
+		isPreviewing: isPreviewing,
+		draftTree: draftTree,
+		id: attempt.assessmentId,
+		oboNode: assessmentNode,
+		nodeChildrenIds: assessmentNode.children[1].childrenSet,
+		assessmentQBTree: assessmentNode.children[1].toObject(),
+		attemptHistory: attemptHistory,
+		numAttemptsTaken: null,
+		childrenMap: null
+	}
+}
+
 module.exports = {
 	endAttempt,
 	getAttempt,
@@ -306,5 +437,9 @@ module.exports = {
 	completeAttempt,
 	insertAttemptEndEvents,
 	sendLTIHighestAssessmentScore: lti.sendHighestAssessmentScore,
-	insertAttemptScoredEvents
+	insertAttemptScoredEvents,
+	reloadAttemptStateIfReviewing,
+	recreateChosenQuestionTree,
+	getNodeQuestion,
+	loadAssessmentProperties
 }

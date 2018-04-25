@@ -979,6 +979,12 @@ var OboModel = _Common2.default.models.OboModel;
 var QuestionUtil = _Viewer2.default.util.QuestionUtil;
 
 
+var CHOSEN_CORRECTLY = 'chosen-correctly';
+var SHOULD_NOT_HAVE_CHOSEN = 'should-not-have-chosen';
+var COULD_HAVE_CHOSEN = 'could-have-chosen';
+var SHOULD_HAVE_CHOSEN = 'should-have-chosen';
+var UNCHOSEN_CORRECTLY = 'unchosen-correctly';
+
 var getInputType = function getInputType(responseType) {
 	switch (responseType) {
 		case 'pick-all':
@@ -996,18 +1002,89 @@ var questionIsSelected = function questionIsSelected(questionState, model, navSt
 	return response.ids.indexOf(model.get('id')) !== -1;
 };
 
+var getQuestionModel = function getQuestionModel(model) {
+	return model.getParentOfType('ObojoboDraft.Chunks.Question');
+};
+
 var answerIsCorrect = function answerIsCorrect(model, mode, questionState, navStateContext) {
 	var score = void 0;
 	if (mode === 'review') {
 		// no score data for this context? no idea what to do, throw an error
 		if (!questionState.scores[navStateContext]) throw 'Unkown Question State';
 
-		score = QuestionUtil.getScoreForModel(questionState, model, navStateContext);
+		score = QuestionUtil.getScoreForModel(questionState, getQuestionModel(model), navStateContext);
 	} else {
 		score = model.modelState.score;
 	}
-
 	return score === 100;
+};
+
+var renderAnsFlag = function renderAnsFlag(type) {
+	var flagEl = void 0;
+
+	switch (type) {
+		case UNCHOSEN_CORRECTLY:
+			return React.createElement('div', null);
+		case CHOSEN_CORRECTLY:
+			flagEl = React.createElement(
+				'p',
+				null,
+				'Your Answer (Correct)'
+			);
+			break;
+		case SHOULD_NOT_HAVE_CHOSEN:
+			flagEl = React.createElement(
+				'p',
+				null,
+				'Your Answer (Incorrect)'
+			);
+			break;
+		case COULD_HAVE_CHOSEN:
+			flagEl = React.createElement(
+				'p',
+				null,
+				'Another Correct Answer'
+			);
+			break;
+		case SHOULD_HAVE_CHOSEN:
+			flagEl = React.createElement(
+				'p',
+				null,
+				' Correct Answer '
+			);
+			break;
+	}
+
+	return React.createElement(
+		'div',
+		{ className: 'answer-flag' + ' is-type-' + type },
+		flagEl
+	);
+};
+
+var getAnsType = function getAnsType(model, isCorrect, isSelected) {
+	// The user selected a correct answer (not necessarily this one)
+	// On multi-select questions, this is only true if a user selected all and only correct answers
+	// Renamed for clarity w/ isACorrectChoice
+	var userIsCorrect = isCorrect;
+
+	var isACorrectChoice = model.get('content').score === 100;
+
+	if (isSelected) {
+		if (isACorrectChoice) {
+			return CHOSEN_CORRECTLY;
+		} else {
+			return SHOULD_NOT_HAVE_CHOSEN;
+		}
+	} else if (isACorrectChoice) {
+		if (userIsCorrect) {
+			return COULD_HAVE_CHOSEN;
+		} else {
+			return SHOULD_HAVE_CHOSEN;
+		}
+	} else {
+		return UNCHOSEN_CORRECTLY;
+	}
 };
 
 var MCChoice = function MCChoice(props) {
@@ -1024,7 +1101,14 @@ var MCChoice = function MCChoice(props) {
 
 	var isSelected = questionIsSelected(props.moduleData.questionState, props.model, props.moduleData.navState.context);
 
-	var className = 'obojobo-draft--chunks--mc-assessment--mc-choice' + (0, _isornot2.default)(isSelected, 'selected') + (0, _isornot2.default)(isCorrect, 'correct') + ' is-mode-' + props.mode;
+	var ansType = getAnsType(props.model, isCorrect, isSelected);
+
+	var flag = void 0;
+	if (props.mode === 'review') {
+		flag = renderAnsFlag(ansType);
+	}
+
+	var className = 'obojobo-draft--chunks--mc-assessment--mc-choice' + (0, _isornot2.default)(isSelected, 'selected') + (0, _isornot2.default)(isCorrect, 'correct') + ' is-type-' + ansType + ' is-mode-' + props.mode;
 
 	return React.createElement(
 		OboComponent,
@@ -1047,9 +1131,16 @@ var MCChoice = function MCChoice(props) {
 				var type = child.get('type');
 				var isAnswerItem = type === 'ObojoboDraft.Chunks.MCAssessment.MCAnswer';
 				var isFeedbackItem = type === 'ObojoboDraft.Chunks.MCAssessment.MCFeedback';
+				var id = child.get('id');
+
 				if (isAnswerItem) {
 					var Component = child.getComponentClass();
-					return React.createElement(Component, { key: child.get('id'), model: child, moduleData: props.moduleData });
+					return React.createElement(
+						'div',
+						{ key: id },
+						flag,
+						React.createElement(Component, { key: id, model: child, moduleData: props.moduleData })
+					);
 				}
 			})
 		)

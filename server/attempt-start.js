@@ -71,24 +71,7 @@ const startAttempt = (req, res) => {
 			)
 				throw new Error(ERROR_ATTEMPT_LIMIT_REACHED)
 
-			assessmentProperties.questionUsesMap = createAssessmentUsedQuestionMap(assessmentProperties)
-
-			for (let attempt of assessmentProperties.attemptHistory) {
-				if (attempt.state.qb) {
-					initAssessmentUsedQuestions(attempt.state.qb, assessmentProperties.questionUsesMap)
-				}
-			}
-
-			createChosenQuestionTree(assessmentProperties.assessmentQBTree, assessmentProperties)
-
-			attemptState = {
-				qb: assessmentProperties.assessmentQBTree,
-				questions: getNodeQuestions(
-					assessmentProperties.assessmentQBTree,
-					assessmentProperties.oboNode
-				),
-				data: {}
-			}
+			attemptState = getState(assessmentProperties)
 
 			return Promise.all(getSendToClientPromises(attemptState, req, res))
 		})
@@ -129,6 +112,34 @@ const startAttempt = (req, res) => {
 					logAndRespondToUnexpected(ERROR_UNEXPECTED_DB_ERROR, res, req, error)
 			}
 		})
+}
+
+const getState = assessmentProperties => {
+	assessmentProperties.questionUsesMap = loadChildren(assessmentProperties)
+
+	createChosenQuestionTree(assessmentProperties.assessmentQBTree, assessmentProperties)
+
+	return {
+		qb: assessmentProperties.assessmentQBTree,
+		questions: getNodeQuestions(
+			assessmentProperties.assessmentQBTree,
+			assessmentProperties.oboNode,
+			[]
+		),
+		data: {}
+	}
+}
+
+// Load the children into the children map
+const loadChildren = assessmentProperties => {
+	const childrenMap = createAssessmentUsedQuestionMap(assessmentProperties)
+
+	for (let attempt of assessmentProperties.attemptHistory) {
+		if (attempt.state.qb) {
+			initAssessmentUsedQuestions(attempt.state.qb, childrenMap)
+		}
+	}
+	return childrenMap
 }
 
 // Choose is the number of questions to show per attempt, select indicates how to display them.
@@ -340,5 +351,7 @@ module.exports = {
 	createChosenQuestionTree,
 	getNodeQuestions,
 	getSendToClientPromises,
-	insertAttemptStartCaliperEvent
+	insertAttemptStartCaliperEvent,
+	loadChildren,
+	getState
 }

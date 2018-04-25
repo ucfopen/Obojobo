@@ -297,4 +297,14 @@ describe('Assessment', () => {
 			)
 		})
 	})
+
+	test('updateAttemptState calls db', () => {
+		Assessment.updateAttemptState(0, {})
+
+		expect(db.none).toHaveBeenCalled()
+		expect(db.none.mock.calls[0][1]).toEqual({
+			state: {},
+			attemptId: 0
+		})
+	})
 })

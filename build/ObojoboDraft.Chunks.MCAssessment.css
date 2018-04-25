@@ -88,11 +88,20 @@
     transform: scale(0.9); }
   100% {
     transform: scale(1); } }
-  .obojobo-draft--chunks--mc-assessment.is-scored.is-response-type-pick-one .obojobo-draft--chunks--mc-assessment--mc-choice.is-selected.is-correct,
-  .obojobo-draft--chunks--mc-assessment.is-scored.is-response-type-pick-one-multiple-correct .obojobo-draft--chunks--mc-assessment--mc-choice.is-selected.is-correct {
+  .obojobo-draft--chunks--mc-assessment.is-scored.is-response-type-pick-one .obojobo-draft--chunks--mc-assessment--mc-choice.is-mode-review:before,
+  .obojobo-draft--chunks--mc-assessment.is-scored.is-response-type-pick-one-multiple-correct .obojobo-draft--chunks--mc-assessment--mc-choice.is-mode-review:before {
+    content: none; }
+  .obojobo-draft--chunks--mc-assessment.is-scored.is-response-type-pick-one .obojobo-draft--chunks--mc-assessment--mc-choice.is-mode-review.is-type-could-have-chosen,
+  .obojobo-draft--chunks--mc-assessment.is-scored.is-response-type-pick-one-multiple-correct .obojobo-draft--chunks--mc-assessment--mc-choice.is-mode-review.is-type-could-have-chosen {
+    background: rgba(196, 154, 3, 0.1); }
+  .obojobo-draft--chunks--mc-assessment.is-scored.is-response-type-pick-one .obojobo-draft--chunks--mc-assessment--mc-choice.is-mode-review.is-type-should-have-chosen,
+  .obojobo-draft--chunks--mc-assessment.is-scored.is-response-type-pick-one-multiple-correct .obojobo-draft--chunks--mc-assessment--mc-choice.is-mode-review.is-type-should-have-chosen {
+    background: rgba(85, 85, 85, 0.1); }
+  .obojobo-draft--chunks--mc-assessment.is-scored.is-response-type-pick-one .obojobo-draft--chunks--mc-assessment--mc-choice.is-type-chosen-correctly,
+  .obojobo-draft--chunks--mc-assessment.is-scored.is-response-type-pick-one-multiple-correct .obojobo-draft--chunks--mc-assessment--mc-choice.is-type-chosen-correctly {
     background: rgba(56, 174, 36, 0.1); }
-    .obojobo-draft--chunks--mc-assessment.is-scored.is-response-type-pick-one .obojobo-draft--chunks--mc-assessment--mc-choice.is-selected.is-correct:before,
-    .obojobo-draft--chunks--mc-assessment.is-scored.is-response-type-pick-one-multiple-correct .obojobo-draft--chunks--mc-assessment--mc-choice.is-selected.is-correct:before {
+    .obojobo-draft--chunks--mc-assessment.is-scored.is-response-type-pick-one .obojobo-draft--chunks--mc-assessment--mc-choice.is-type-chosen-correctly:not(.is-mode-review):before,
+    .obojobo-draft--chunks--mc-assessment.is-scored.is-response-type-pick-one-multiple-correct .obojobo-draft--chunks--mc-assessment--mc-choice.is-type-chosen-correctly:not(.is-mode-review):before {
       content: '\2714';
       position: absolute;
       top: 0.65em;
@@ -102,11 +111,11 @@
       transform: translate(-50%, -50%);
       left: 0.6em;
       animation: fadein 0.4s; }
-  .obojobo-draft--chunks--mc-assessment.is-scored.is-response-type-pick-one .obojobo-draft--chunks--mc-assessment--mc-choice.is-selected.is-not-correct,
-  .obojobo-draft--chunks--mc-assessment.is-scored.is-response-type-pick-one-multiple-correct .obojobo-draft--chunks--mc-assessment--mc-choice.is-selected.is-not-correct {
+  .obojobo-draft--chunks--mc-assessment.is-scored.is-response-type-pick-one .obojobo-draft--chunks--mc-assessment--mc-choice.is-type-should-not-have-chosen,
+  .obojobo-draft--chunks--mc-assessment.is-scored.is-response-type-pick-one-multiple-correct .obojobo-draft--chunks--mc-assessment--mc-choice.is-type-should-not-have-chosen {
     background: rgba(194, 31, 0, 0.1); }
-    .obojobo-draft--chunks--mc-assessment.is-scored.is-response-type-pick-one .obojobo-draft--chunks--mc-assessment--mc-choice.is-selected.is-not-correct:before,
-    .obojobo-draft--chunks--mc-assessment.is-scored.is-response-type-pick-one-multiple-correct .obojobo-draft--chunks--mc-assessment--mc-choice.is-selected.is-not-correct:before {
+    .obojobo-draft--chunks--mc-assessment.is-scored.is-response-type-pick-one .obojobo-draft--chunks--mc-assessment--mc-choice.is-type-should-not-have-chosen:not(.is-mode-review):before,
+    .obojobo-draft--chunks--mc-assessment.is-scored.is-response-type-pick-one-multiple-correct .obojobo-draft--chunks--mc-assessment--mc-choice.is-type-should-not-have-chosen:not(.is-mode-review):before {
       content: '\2716';
       position: absolute;
       top: 0.65em;
@@ -116,36 +125,42 @@
       transform: translate(-50%, -50%);
       left: 0.6em;
       animation: fadein 0.4s; }
-  .obojobo-draft--chunks--mc-assessment.is-scored.is-response-type-pick-all .obojobo-draft--chunks--mc-assessment--mc-choice.is-selected.is-correct:before {
-    content: '\2714';
-    position: absolute;
-    top: 0.65em;
-    display: block;
-    color: #38ae24;
-    font-size: 2.5em;
-    transform: translate(-50%, -50%);
-    left: 0.6em;
-    animation: fadein 0.4s;
-    font-size: 1.25em;
-    left: 1.25em;
-    top: 1.5em;
-    letter-spacing: 0.2em;
-    content: "\2714" attr(data-choice-label); }
-  .obojobo-draft--chunks--mc-assessment.is-scored.is-response-type-pick-all .obojobo-draft--chunks--mc-assessment--mc-choice.is-selected.is-not-correct:before {
-    content: '\2716';
-    position: absolute;
-    top: 0.65em;
-    display: block;
-    color: #c21f00;
-    font-size: 2.5em;
-    transform: translate(-50%, -50%);
-    left: 0.6em;
-    animation: fadein 0.4s;
-    font-size: 1.25em;
-    left: 1.25em;
-    top: 1.5em;
-    letter-spacing: 0.2em;
-    content: "\2716" attr(data-choice-label); }
+  .obojobo-draft--chunks--mc-assessment.is-scored.is-response-type-pick-all .obojobo-draft--chunks--mc-assessment--mc-choice.is-type-chosen-correctly {
+    background: rgba(56, 174, 36, 0.1); }
+    .obojobo-draft--chunks--mc-assessment.is-scored.is-response-type-pick-all .obojobo-draft--chunks--mc-assessment--mc-choice.is-type-chosen-correctly:not(.is-mode-review):before {
+      content: '\2714';
+      position: absolute;
+      top: 0.65em;
+      display: block;
+      color: #38ae24;
+      font-size: 2.5em;
+      transform: translate(-50%, -50%);
+      left: 0.6em;
+      animation: fadein 0.4s;
+      font-size: 1.25em;
+      left: 1.25em;
+      top: 1.5em;
+      letter-spacing: 0.2em;
+      content: "\2714" attr(data-choice-label); }
+  .obojobo-draft--chunks--mc-assessment.is-scored.is-response-type-pick-all .obojobo-draft--chunks--mc-assessment--mc-choice.is-type-should-not-have-chosen {
+    background: rgba(194, 31, 0, 0.1); }
+    .obojobo-draft--chunks--mc-assessment.is-scored.is-response-type-pick-all .obojobo-draft--chunks--mc-assessment--mc-choice.is-type-should-not-have-chosen:not(.is-mode-review):before {
+      content: '\2716';
+      position: absolute;
+      top: 0.65em;
+      display: block;
+      color: #c21f00;
+      font-size: 2.5em;
+      transform: translate(-50%, -50%);
+      left: 0.6em;
+      animation: fadein 0.4s;
+      font-size: 1.25em;
+      left: 1.25em;
+      top: 1.5em;
+      letter-spacing: 0.2em;
+      content: "\2716" attr(data-choice-label); }
+  .obojobo-draft--chunks--mc-assessment.is-scored.is-response-type-pick-all .obojobo-draft--chunks--mc-assessment--mc-choice.is-mode-review.is-type-should-have-chosen {
+    background: rgba(85, 85, 85, 0.1); }
   .obojobo-draft--chunks--mc-assessment.is-mode-review .result-container .result {
     animation: none; }
   .obojobo-draft--chunks--mc-assessment .instructions {
@@ -327,3 +342,46 @@
   .obojobo-draft--chunks--mc-assessment .obojobo-draft--chunks--mc-assessment--mc-answer {
     padding-top: 0;
     padding-bottom: 0; }
+
+.answer-flag {
+  margin-left: -4.6em;
+  position: absolute;
+  color: #ffffff;
+  width: 7.75em;
+  text-align: center;
+  border-radius: 0.25em;
+  border-top-right-radius: 0;
+  border-bottom-right-radius: 0;
+  font-size: 0.65em;
+  top: 50%;
+  transform: translate(0, -50%); }
+  .answer-flag:after {
+    position: absolute;
+    z-index: -1;
+    left: 0;
+    top: 50%;
+    transform: translate(6.9em, -50%) rotate(45deg);
+    content: ' ';
+    width: 1.75em;
+    height: 1.75em; }
+  .answer-flag > p {
+    margin: 0.25em;
+    margin-left: 0em;
+    line-height: 1em;
+    top: 50%; }
+  .answer-flag.is-type-chosen-correctly {
+    background-color: #38ae24; }
+    .answer-flag.is-type-chosen-correctly:after {
+      background-color: #38ae24; }
+  .answer-flag.is-type-should-not-have-chosen {
+    background-color: #c21f00; }
+    .answer-flag.is-type-should-not-have-chosen:after {
+      background-color: #c21f00; }
+  .answer-flag.is-type-should-have-chosen {
+    background-color: #555555; }
+    .answer-flag.is-type-should-have-chosen:after {
+      background-color: #555555; }
+  .answer-flag.is-type-could-have-chosen {
+    background-color: #c49a03; }
+    .answer-flag.is-type-could-have-chosen:after {
+      background-color: #c49a03; }

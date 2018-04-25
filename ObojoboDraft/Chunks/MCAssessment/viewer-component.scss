@@ -1,6 +1,8 @@
 @import '~styles/includes';
 
 .obojobo-draft--chunks--mc-assessment {
+	$border: 1px solid transparentize($color-shadow, 0.25);
+
 	@keyframes fadein {
 		0% {
 			opacity: 0;
@@ -63,48 +65,76 @@
 		// don't - IE11 has a bug that applies multiple sizes in pseudo elements :(
 		&.is-response-type-pick-one .obojobo-draft--chunks--mc-assessment--mc-choice,
 		&.is-response-type-pick-one-multiple-correct .obojobo-draft--chunks--mc-assessment--mc-choice {
-			&.is-selected {
-				&.is-correct {
+			// Only show unchosen correct answers in review
+			&.is-mode-review {
+				&:before {
+					content: none;
+				}
+				&.is-type-could-have-chosen {
+					background: transparentize($color-alt-correct, 0.9);
+				}
+				&.is-type-should-have-chosen {
+					background: transparentize($color-unchosen-correct, 0.9);
+				}
+			}
+
+			&.is-type-chosen-correctly {
+				// Do not include the checkmark on review
+				&:not(.is-mode-review) {
 					&:before {
 						@include correct();
 					}
-
-					background: transparentize($color-correct, 0.9);
 				}
 
-				&.is-not-correct {
+				background: transparentize($color-correct, 0.9);
+			}
+
+			&.is-type-should-not-have-chosen {
+				// Do not include the x on review
+				&:not(.is-mode-review) {
 					&:before {
 						@include incorrect();
 					}
-
-					background: transparentize($color-incorrect, 0.9);
 				}
+
+				background: transparentize($color-incorrect, 0.9);
 			}
 		}
 
 		&.is-response-type-pick-all .obojobo-draft--chunks--mc-assessment--mc-choice {
-			&.is-selected {
-				@mixin smaller() {
-					font-size: 1.25em;
-					left: 1.25em;
-					top: 1.5em;
-					letter-spacing: 0.2em;
-				}
+			@mixin smaller() {
+				font-size: 1.25em;
+				left: 1.25em;
+				top: 1.5em;
+				letter-spacing: 0.2em;
+			}
 
-				&.is-correct {
+			&.is-type-chosen-correctly {
+				&:not(.is-mode-review) {
 					&:before {
 						@include correct();
 						@include smaller();
 						content: '✔' attr(data-choice-label);
 					}
 				}
+				background: transparentize($color-correct, 0.9);
+			}
 
-				&.is-not-correct {
+			&.is-type-should-not-have-chosen {
+				&:not(.is-mode-review) {
 					&:before {
 						@include incorrect();
 						@include smaller();
 						content: '✖' attr(data-choice-label);
 					}
+				}
+				background: transparentize($color-incorrect, 0.9);
+			}
+
+			// Only show unchosen correct answers in review
+			&.is-mode-review {
+				&.is-type-should-have-chosen {
+					background: transparentize($color-unchosen-correct, 0.9);
 				}
 			}
 		}
@@ -115,8 +145,6 @@
 			animation: none;
 		}
 	}
-
-	$border: 1px solid transparentize($color-shadow, 0.25);
 
 	.instructions {
 		$font-size: 1em;
@@ -379,5 +407,61 @@
 	.obojobo-draft--chunks--mc-assessment--mc-answer {
 		padding-top: 0;
 		padding-bottom: 0;
+	}
+}
+
+.answer-flag {
+	&:after {
+		position: absolute;
+		z-index: -1;
+		left: 0;
+		top: 50%;
+		transform: translate(6.9em, -50%) rotate(45deg);
+		content: ' ';
+		width: 1.75em;
+		height: 1.75em;
+	}
+
+	margin-left: -4.6em;
+	position: absolute;
+	color: $color-bg;
+	width: 7.75em;
+	text-align: center;
+	border-radius: $dimension-rounded-radius;
+	border-top-right-radius: 0;
+	border-bottom-right-radius: 0;
+	font-size: 0.65em;
+	top: 50%;
+	transform: translate(0, -50%);
+	> p {
+		margin: 0.25em;
+		margin-left: 0em;
+		line-height: 1em;
+		top: 50%;
+	}
+
+	&.is-type-chosen-correctly {
+		background-color: $color-correct;
+		&:after {
+			background-color: $color-correct;
+		}
+	}
+	&.is-type-should-not-have-chosen {
+		background-color: $color-incorrect;
+		&:after {
+			background-color: $color-incorrect;
+		}
+	}
+	&.is-type-should-have-chosen {
+		background-color: $color-unchosen-correct;
+		&:after {
+			background-color: $color-unchosen-correct;
+		}
+	}
+	&.is-type-could-have-chosen {
+		background-color: $color-alt-correct;
+		&:after {
+			background-color: $color-alt-correct;
+		}
 	}
 }

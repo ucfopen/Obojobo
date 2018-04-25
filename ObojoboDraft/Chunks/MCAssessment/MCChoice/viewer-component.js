@@ -6,8 +6,14 @@ import isOrNot from '../../../../src/scripts/common/isornot'
 
 let { OboComponent } = Common.components
 let { OboModel } = Common.models
-
 let { QuestionUtil } = Viewer.util
+
+const QUESTION_TYPE = 'ObojoboDraft.Chunks.Question'
+const CHOSEN_CORRECTLY = 'chosen-correctly'
+const SHOULD_NOT_HAVE_CHOSEN = 'should-not-have-chosen'
+const COULD_HAVE_CHOSEN = 'could-have-chosen'
+const SHOULD_HAVE_CHOSEN = 'should-have-chosen'
+const UNCHOSEN_CORRECTLY = 'unchosen-correctly'
 
 const getInputType = responseType => {
 	switch (responseType) {
@@ -23,12 +29,14 @@ const getInputType = responseType => {
 const questionIsSelected = (questionState, model, navStateContext) => {
 	let response = QuestionUtil.getResponse(
 		questionState,
-		model.getParentOfType('ObojoboDraft.Chunks.Question'),
+		model.getParentOfType(QUESTION_TYPE),
 		navStateContext
 	) || { ids: [] }
 
 	return response.ids.indexOf(model.get('id')) !== -1
 }
+
+const getQuestionModel = model => model.getParentOfType(QUESTION_TYPE)
 
 const answerIsCorrect = (model, mode, questionState, navStateContext) => {
 	let score
@@ -36,12 +44,53 @@ const answerIsCorrect = (model, mode, questionState, navStateContext) => {
 		// no score data for this context? no idea what to do, throw an error
 		if (!questionState.scores[navStateContext]) throw 'Unkown Question State'
 
-		score = QuestionUtil.getScoreForModel(questionState, model, navStateContext)
+		score = QuestionUtil.getScoreForModel(questionState, getQuestionModel(model), navStateContext)
 	} else {
 		score = model.modelState.score
 	}
-
 	return score === 100
+}
+
+const renderAnsFlag = type => {
+	let flagEl
+
+	switch (type) {
+		case UNCHOSEN_CORRECTLY:
+			return <div />
+		case CHOSEN_CORRECTLY:
+			flagEl = <p>Your Answer (Correct)</p>
+			break
+		case SHOULD_NOT_HAVE_CHOSEN:
+			flagEl = <p>Your Answer (Incorrect)</p>
+			break
+		case COULD_HAVE_CHOSEN:
+			flagEl = <p>Another Correct Answer</p>
+			break
+		case SHOULD_HAVE_CHOSEN:
+			flagEl = <p> Correct Answer </p>
+			break
+	}
+
+	return <div className={`answer-flag is-type-${type}`}>{flagEl}</div>
+}
+
+const getAnsType = (model, isCorrect, isSelected) => {
+	// The user selected a correct answer (not necessarily this one)
+	// On multi-select questions, this is only true if a user selected all and only correct answers
+	// Renamed for clarity w/ isACorrectChoice
+	let userIsCorrect = isCorrect
+
+	let isACorrectChoice = model.get('content').score === 100
+
+	if (isSelected) {
+		return isACorrectChoice ? CHOSEN_CORRECTLY : SHOULD_NOT_HAVE_CHOSEN
+	}
+
+	if (isACorrectChoice) {
+		return userIsCorrect ? COULD_HAVE_CHOSEN : SHOULD_HAVE_CHOSEN
+	}
+
+	return UNCHOSEN_CORRECTLY
 }
 
 const MCChoice = props => {
@@ -67,12 +116,19 @@ const MCChoice = props => {
 		props.moduleData.navState.context
 	)
 
+	let ansType = getAnsType(props.model, isCorrect, isSelected)
+
+	let flag
+	if (props.mode === 'review') {
+		flag = renderAnsFlag(ansType)
+	}
+
 	let className =
 		'obojobo-draft--chunks--mc-assessment--mc-choice' +
 		isOrNot(isSelected, 'selected') +
 		isOrNot(isCorrect, 'correct') +
-		' is-mode-' +
-		props.mode
+		` is-type-${ansType}` +
+		` is-mode-${props.mode}`
 
 	return (
 		<OboComponent
@@ -92,9 +148,16 @@ const MCChoice = props => {
 					let type = child.get('type')
 					let isAnswerItem = type === 'ObojoboDraft.Chunks.MCAssessment.MCAnswer'
 					let isFeedbackItem = type === 'ObojoboDraft.Chunks.MCAssessment.MCFeedback'
+					let id = child.get('id')
+
 					if (isAnswerItem) {
 						let Component = child.getComponentClass()
-						return <Component key={child.get('id')} model={child} moduleData={props.moduleData} />
+						return (
+							<div key={id}>
+								{flag}
+								<Component key={id} model={child} moduleData={props.moduleData} />
+							</div>
+						)
 					}
 				})}
 			</div>
