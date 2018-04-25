@@ -180,14 +180,12 @@ export default class Assessment extends React.Component {
 				case 'takingTest':
 					child = this.props.model.children.at(1)
 					Component = child.getComponentClass()
-					let submitButtonText
+					let submitButtonText = 'Loading ...'
 
 					if (!this.isAttemptComplete()) {
 						submitButtonText = 'Submit (Not all questions have been answered)'
 					} else if (!this.state.isFetching) {
 						submitButtonText = 'Submit'
-					} else {
-						submitButtonText = 'Loading ...'
 					}
 
 					return (

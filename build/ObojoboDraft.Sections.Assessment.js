@@ -684,9 +684,13 @@ var Assessment = function (_React$Component) {
 					case 'takingTest':
 						child = _this2.props.model.children.at(1);
 						Component = child.getComponentClass();
-						var submitButtonText = void 0;
+						var submitButtonText = 'Loading ...';
 
-						if (!_this2.isAttemptComplete()) submitButtonText = 'Submit (Not all questions have been answered)';else if (!_this2.state.isFetching) submitButtonText = 'Submit';else submitButtonText = 'Loading ...';
+						if (!_this2.isAttemptComplete()) {
+							submitButtonText = 'Submit (Not all questions have been answered)';
+						} else if (!_this2.state.isFetching) {
+							submitButtonText = 'Submit';
+						}
 
 						return React.createElement(
 							'div',
@@ -713,13 +717,10 @@ var Assessment = function (_React$Component) {
 
 						var questionScores = AssessmentUtil.getLastAttemptScoresForModel(_this2.props.moduleData.assessmentState, _this2.props.model);
 
-						var numCorrect = questionScores.reduce(function (acc, questionScore) {
-							var n = 0;
-							if (parseInt(questionScore.score, 10) === 100) {
-								n = 1;
-							}
-							return parseInt(acc, 10) + n;
-						}, [0]);
+						var count100s = function count100s(acc, qs) {
+							return acc + (parseInt(qs.score, 10) === 100 ? 1 : 0);
+						};
+						var numCorrect = questionScores.reduce(count100s, 0);
 
 						if (scoreAction.page != null) {
 							var pageModel = OboModel.create(scoreAction.page);
