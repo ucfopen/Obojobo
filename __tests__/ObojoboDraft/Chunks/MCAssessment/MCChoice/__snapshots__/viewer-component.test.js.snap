@@ -1,9 +1,9 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
-exports[`MCChoice viewer-component getAnsType renders nothing when not reviewing 1`] = `
+exports[`MCChoice viewer-component flag is not rendered when not reviewing 1`] = `
 <div
-  className="component obojobo-draft--chunks--mc-assessment--mc-choice is-not-selected is-correct is-type-unchosen-correctly is-mode-test"
-  data-choice-label={undefined}
+  className="component obojobo-draft--chunks--mc-assessment--mc-choice is-not-selected is-not-correct is-type-unchosen-correctly is-mode-review"
+  data-choice-label="mocklabel"
   data-focussed={false}
   data-id="pq1-mca-mc1"
   data-obo-component={true}
@@ -20,6 +20,7 @@ exports[`MCChoice viewer-component getAnsType renders nothing when not reviewing
     className="children"
   >
     <div>
+      <div />
       <div
         className="component obojobo-draft--chunks--mc-assessment--mc-answer"
         data-focussed={false}

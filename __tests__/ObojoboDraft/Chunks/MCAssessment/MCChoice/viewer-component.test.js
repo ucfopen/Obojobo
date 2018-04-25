@@ -7,7 +7,6 @@ import OboModel from '../../../../../__mocks__/_obo-model-with-chunks.js'
 import { moduleData, initModuleData } from '../../../../../__mocks__/viewer-state.mock'
 import QuestionUtil from '../../../../../src/scripts/viewer/util/question-util'
 
-
 jest.mock('../../../../../src/scripts/viewer/util/question-util', () => {
 	return {
 		getResponse: jest.fn(),
@@ -163,7 +162,7 @@ describe('MCChoice viewer-component', () => {
 	})
 
 	// Review Tests
-	test.skip('getAnsType renders nothing when not reviewing', () => {
+	test('flag is not rendered when not reviewing', () => {
 		initModuleData()
 
 		// Set up this answer to exist
@@ -171,91 +170,162 @@ describe('MCChoice viewer-component', () => {
 
 		// Set up this answer to be unselected
 		QuestionUtil.getResponse.mockReturnValueOnce({
-			'ids':[]})
+			ids: []
+		})
 
 		// set answer to incorrect
 		model.get('content').score = 0
 
-		const component = renderer.create(
-			<MCChoice model={model} moduleData={moduleData} mode="test" />
-		)
+		let props = {
+			model,
+			moduleData,
+			mode: 'review',
+			key: 'mockKey',
+			responseType: 'pick-one',
+			label: 'mocklabel'
+		}
+
+		const component = renderer.create(<MCChoice {...props} />)
 		let tree = component.toJSON()
 
 		expect(tree).toMatchSnapshot()
 		let el2 = document.createElement('div')
-		el2.innerHTML = shallow(<MCChoice model={model} moduleData={moduleData} mode="test" />).html()
+		el2.innerHTML = shallow(<MCChoice {...props} />).html()
 		expect(el2.textContent).toBe('yes')
 	})
 
-	test.skip('getAnsType renders correct flag when user picks correct answer', () => {
-		initModuleData()
-
+	test('renderAnsFlag renders correct flag when user picks correct answer', () => {
 		// Set up this answer to exist
 		moduleData.questionState.scores[moduleData.navState.context] = 1
 
 		// Set up this answer to be selected
 		QuestionUtil.getResponse.mockReturnValueOnce({
-			'ids':["testChoice1"]})
+			ids: ['pq1-mca-mc1']
+		})
 
 		// set answer to correct
 		model.get('content').score = 100
 
+		let props = {
+			model,
+			moduleData,
+			mode: 'review',
+			key: 'mockKey',
+			responseType: 'pick-one',
+			label: 'mocklabel'
+		}
+
 		let el2 = document.createElement('div')
-		el2.innerHTML = shallow(<MCChoice model={model} moduleData={moduleData} mode="review" />).html()
+		el2.innerHTML = shallow(<MCChoice {...props} />).html()
 		expect(el2.textContent).toContain('Your Answer (Correct)')
 	})
-	test.skip('getAnsType renders incorrect flag when user picks incorrect answer', () => {
-		initModuleData()
-
+	test('renderAnsFlag renders incorrect flag when user picks incorrect answer', () => {
 		// Set up this answer to exist
 		moduleData.questionState.scores[moduleData.navState.context] = 1
 
 		// Set up this answer to be selected
 		QuestionUtil.getResponse.mockReturnValueOnce({
-			'ids':["testChoice1"]})
+			ids: ['pq1-mca-mc1']
+		})
 
 		// set answer to incorrect
 		model.get('content').score = 0
 
+		let props = {
+			model,
+			moduleData,
+			mode: 'review',
+			key: 'mockKey',
+			responseType: 'pick-one',
+			label: 'mocklabel'
+		}
+
 		let el2 = document.createElement('div')
-		el2.innerHTML = shallow(<MCChoice model={model} moduleData={moduleData} mode="review" />).html()
+		el2.innerHTML = shallow(<MCChoice {...props} />).html()
 		expect(el2.textContent).toContain('Your Answer (Incorrect)')
 	})
-	test.skip('getAnsType renders alt flag when user picks other correct answer', () => {
-		initModuleData()
-
-		// Set up this answer to be unselected
-		QuestionUtil.getResponse.mockReturnValueOnce({
-			'ids':[]})
-
+	test('renderAnsFlag renders alt flag when user picks other correct answer', () => {
 		// Set up this answer to exist
 		moduleData.questionState.scores[moduleData.navState.context] = 1
 
-		// Set question to be correct
+		// Set up this answer to be unselected
+		QuestionUtil.getResponse.mockReturnValueOnce({
+			ids: []
+		})
+
+		// set answer to correct
 		model.get('content').score = 100
 
-		// Set up that user selected a different correct choice
-		QuestionUtil.getScoreForModel.mockReturnValueOnce(100)
+		// set user to be correct
+		QuestionUtil.getScoreForModel = jest.fn().mockReturnValueOnce(100)
+
+		let props = {
+			model,
+			moduleData,
+			mode: 'review',
+			key: 'mockKey',
+			responseType: 'pick-one',
+			label: 'mocklabel'
+		}
 
 		let el2 = document.createElement('div')
-		el2.innerHTML = shallow(<MCChoice model={model} moduleData={moduleData} mode="review" />).html()
+		el2.innerHTML = shallow(<MCChoice {...props} />).html()
 		expect(el2.textContent).toContain('Another Correct Answer')
 	})
-	test.skip('getAnsType renders correct flag when user picks other incorrect answer', () => {
-		initModuleData()
-
-		// Set up this answer to be unselected
-		QuestionUtil.getResponse.mockReturnValueOnce({
-			'ids':[]})
-
+	test('renderAnsFlag renders correct flag when user picks incorrect answer', () => {
 		// Set up this answer to exist
 		moduleData.questionState.scores[moduleData.navState.context] = 1
 
-		// Set question to be correct
+		// Set up this answer to be unselected
+		QuestionUtil.getResponse.mockReturnValueOnce({
+			ids: []
+		})
+
+		// set answer to correct
 		model.get('content').score = 100
 
+		// set user to be incorrect
+		QuestionUtil.getScoreForModel = jest.fn().mockReturnValueOnce(0)
+
+		let props = {
+			model,
+			moduleData,
+			mode: 'review',
+			key: 'mockKey',
+			responseType: 'pick-one',
+			label: 'mocklabel'
+		}
+
 		let el2 = document.createElement('div')
-		el2.innerHTML = shallow(<MCChoice model={model} moduleData={moduleData} mode="review" />).html()
+		el2.innerHTML = shallow(<MCChoice {...props} />).html()
 		expect(el2.textContent).toContain('Correct Answer')
+	})
+	test('renderAnsFlag renders no flag when answer is unpicked and incorrect', () => {
+		// Set up this answer to exist
+		moduleData.questionState.scores[moduleData.navState.context] = 1
+
+		// Set up this answer to be unselected
+		QuestionUtil.getResponse.mockReturnValueOnce({
+			ids: []
+		})
+
+		// set answer to incorrect
+		model.get('content').score = 0
+
+		// set user to be incorrect
+		QuestionUtil.getScoreForModel = jest.fn().mockReturnValueOnce(0)
+
+		let props = {
+			model,
+			moduleData,
+			mode: 'review',
+			key: 'mockKey',
+			responseType: 'pick-one',
+			label: 'mocklabel'
+		}
+
+		let el2 = document.createElement('div')
+		el2.innerHTML = shallow(<MCChoice {...props} />).html()
+		expect(el2.textContent).toBe('yes')
 	})
 })
