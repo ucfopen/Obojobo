@@ -32,7 +32,7 @@ class ScoreActions {
 
 	getActionForScore(score) {
 		for (let action of this.actions) {
-			if (isValueInRange(score, action.range, replaceDict, true)) return action
+			if (isValueInRange(score, action.range, replaceDict)) return action
 		}
 
 		return null

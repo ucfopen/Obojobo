@@ -1096,7 +1096,7 @@ var ScoreActions = function () {
 				for (var _iterator = this.actions[Symbol.iterator](), _step; !(_iteratorNormalCompletion = (_step = _iterator.next()).done); _iteratorNormalCompletion = true) {
 					var action = _step.value;
 
-					if (isValueInRange(score, action.range, replaceDict, true)) return action;
+					if (isValueInRange(score, action.range, replaceDict)) return action;
 				}
 			} catch (err) {
 				_didIteratorError = true;
@@ -2758,6 +2758,9 @@ var AssessmentRubric = function () {
 		key: 'getAssessmentScoreInfoForAttempt',
 		value: function getAssessmentScoreInfoForAttempt(totalNumberOfAttemptsAvailable, attemptScores) {
 			if (attemptScores.length === 0) return null;
+			if (totalNumberOfAttemptsAvailable !== Infinity && (!Number.isInteger(totalNumberOfAttemptsAvailable) || totalNumberOfAttemptsAvailable <= 0)) {
+				throw new Error('totalNumberOfAttemptsAvailable must be 1 to Infinity!');
+			}
 
 			var highestAttemptScore = Math.max.apply(null, attemptScores);
 			var highestAttemptNumber = attemptScores.reduce(function (iMax, x, i, arr) {
@@ -2794,20 +2797,18 @@ var AssessmentRubric = function () {
 					if (this.rubric.unableToPassResult === AssessmentRubric.VAR_HIGHEST_ATTEMPT_SCORE) {
 						attemptNumber = highestAttemptNumber;
 					}
-					assessmentScore = tryGetParsedFloat(this.rubric.unableToPassResult, scoreReplaceDict, true);
+					assessmentScore = tryGetParsedFloat(this.rubric.unableToPassResult, scoreReplaceDict, [null]);
 
 					break;
 
 				case AssessmentRubric.STATUS_FAILED:
 					scoreReplaceDict[AssessmentRubric.NO_SCORE] = null;
-
-					assessmentScore = tryGetParsedFloat(this.rubric.failedResult, scoreReplaceDict, true);
+					assessmentScore = tryGetParsedFloat(this.rubric.failedResult, scoreReplaceDict, [null]);
 					break;
 
 				case AssessmentRubric.STATUS_PASSED:
 					scoreReplaceDict[AssessmentRubric.VAR_ATTEMPT_SCORE] = latestAttemptScore;
-
-					assessmentScore = tryGetParsedFloat(this.rubric.passedResult, scoreReplaceDict, true);
+					assessmentScore = tryGetParsedFloat(this.rubric.passedResult, scoreReplaceDict, [null]);
 
 					// find matching mods and apply them
 					this.mods.forEach(function (mod, i) {
@@ -2889,42 +2890,55 @@ var getParsedRangeFromSingleValue = function getParsedRangeFromSingleValue(value
 	};
 };
 
+// replaceDict is an object of possibile replacements for `value`.
+// For example, if replaceDict = { '$highest_score':100 } and `value` is '$highest_score' then
+// `value` will be replaced with 100.
+// nonParsedValueOrValues is a value or an array of values that won't be parsed by parseFloat.
+// If `value` is one of these values then `value` is not parsed and simply returned.
+// For example, if nonParsedValueOrValues is `[null, undefined]` and `value` is null
+// then null is returned.
 var tryGetParsedFloat = function tryGetParsedFloat(value) {
 	var replaceDict = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : {};
-	var allowNull = arguments.length > 2 && arguments[2] !== undefined ? arguments[2] : false;
+	var nonParsedValueOrValues = arguments.length > 2 && arguments[2] !== undefined ? arguments[2] : [];
 
 	var replaceDictValue = void 0;
+	var nonParsedValues = void 0;
+
+	if (!(nonParsedValueOrValues instanceof Array)) {
+		nonParsedValues = [nonParsedValueOrValues];
+	} else {
+		nonParsedValues = nonParsedValueOrValues;
+	}
 
 	for (var placeholder in replaceDict) {
 		if (value === placeholder) {
-			replaceDictValue = replaceDict[placeholder];
-			value = replaceDictValue === null ? null : parseFloat(replaceDictValue);
+			value = replaceDict[placeholder];
 			break;
 		}
 	}
 
-	if (allowNull && value === null) {
-		return null;
-	}
+	// If the value is an allowed non-numeric value then we don't parse it
+	// and simply return it as is
+	if (nonParsedValues.indexOf(value) > -1) return value;
 
 	var parsedValue = parseFloat(value);
 
-	if (!Number.isFinite(parsedValue)) throw new Error('Unable to parse "' + value + '": Got "' + parsedValue + '" - Unsure how to proceed');
+	if (!Number.isFinite(parsedValue) && parsedValue !== Infinity && parsedValue !== -Infinity) {
+		throw new Error('Unable to parse "' + value + '": Got "' + parsedValue + '" - Unsure how to proceed');
+	}
 
 	return parsedValue;
 };
 
 var isValueInRange = function isValueInRange(value, range, replaceDict) {
-	var allowNull = arguments.length > 3 && arguments[3] !== undefined ? arguments[3] : false;
-
-	// By default a null range is defined to be all-inclusive
-	if (range === null) return true;
+	// By definition a value is not inside a null range
+	if (range === null) return false;
 
 	var isMinRequirementMet = void 0,
 	    isMaxRequirementMet = void 0;
 
-	var min = tryGetParsedFloat(range.min, replaceDict, allowNull);
-	var max = tryGetParsedFloat(range.max, replaceDict, allowNull);
+	var min = tryGetParsedFloat(range.min, replaceDict);
+	var max = tryGetParsedFloat(range.max, replaceDict);
 
 	if (range.isMinInclusive) {
 		isMinRequirementMet = value >= min;

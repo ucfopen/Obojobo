@@ -144,6 +144,12 @@ class AssessmentRubric {
 
 	getAssessmentScoreInfoForAttempt(totalNumberOfAttemptsAvailable, attemptScores) {
 		if (attemptScores.length === 0) return null
+		if (
+			totalNumberOfAttemptsAvailable !== Infinity &&
+			(!Number.isInteger(totalNumberOfAttemptsAvailable) || totalNumberOfAttemptsAvailable <= 0)
+		) {
+			throw new Error('totalNumberOfAttemptsAvailable must be 1 to Infinity!')
+		}
 
 		let highestAttemptScore = Math.max.apply(null, attemptScores)
 		let highestAttemptNumber =
@@ -183,20 +189,20 @@ class AssessmentRubric {
 				if (this.rubric.unableToPassResult === AssessmentRubric.VAR_HIGHEST_ATTEMPT_SCORE) {
 					attemptNumber = highestAttemptNumber
 				}
-				assessmentScore = tryGetParsedFloat(this.rubric.unableToPassResult, scoreReplaceDict, true)
+				assessmentScore = tryGetParsedFloat(this.rubric.unableToPassResult, scoreReplaceDict, [
+					null
+				])
 
 				break
 
 			case AssessmentRubric.STATUS_FAILED:
 				scoreReplaceDict[AssessmentRubric.NO_SCORE] = null
-
-				assessmentScore = tryGetParsedFloat(this.rubric.failedResult, scoreReplaceDict, true)
+				assessmentScore = tryGetParsedFloat(this.rubric.failedResult, scoreReplaceDict, [null])
 				break
 
 			case AssessmentRubric.STATUS_PASSED:
 				scoreReplaceDict[AssessmentRubric.VAR_ATTEMPT_SCORE] = latestAttemptScore
-
-				assessmentScore = tryGetParsedFloat(this.rubric.passedResult, scoreReplaceDict, true)
+				assessmentScore = tryGetParsedFloat(this.rubric.passedResult, scoreReplaceDict, [null])
 
 				// find matching mods and apply them
 				this.mods.forEach((mod, i) => {

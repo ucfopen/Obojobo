@@ -631,7 +631,63 @@ describe('AssessmentRubric', () => {
 		})
 	})
 
-	test('clone clones', () => {
+	test('pass-fail rewards different failing result for final attempt with unableToPassResult', () => {
+		let ar = new AssessmentRubric({
+			type: 'pass-fail',
+			passingAttemptScore: 80,
+			passedResult: '$attempt_score',
+			failedResult: 'no-score',
+			unableToPassResult: 55
+		})
+
+		expect(ar.getAssessmentScoreInfoForAttempt(3, [79, 78, 77])).toEqual({
+			attemptNumber: 3,
+			attemptScore: 77,
+			status: 'unableToPass',
+			assessmentScore: 55,
+			rewardTotal: 0,
+			assessmentModdedScore: 55,
+			rewardedMods: []
+		})
+	})
+
+	test('handles $last_attempt when there is no last attempt (unlimited attempts)', () => {
+		let ar = new AssessmentRubric({
+			type: 'attempt',
+			mods: [
+				{
+					attemptCondition: '$last_attempt', // should never apply
+					reward: 10
+				},
+				{
+					attemptCondition: '[1,$last_attempt]', // should always apply
+					reward: 1
+				}
+			]
+		})
+
+		expect(ar.getAssessmentScoreInfoForAttempt(Infinity, [80])).toEqual({
+			attemptNumber: 1,
+			attemptScore: 80,
+			status: 'passed',
+			assessmentScore: 80,
+			rewardTotal: 1,
+			assessmentModdedScore: 81,
+			rewardedMods: [1]
+		})
+
+		expect(ar.getAssessmentScoreInfoForAttempt(Infinity, [80, 80])).toEqual({
+			attemptNumber: 2,
+			attemptScore: 80,
+			status: 'passed',
+			assessmentScore: 80,
+			rewardTotal: 1,
+			assessmentModdedScore: 81,
+			rewardedMods: [1]
+		})
+	})
+
+	test('clone, well, clones', () => {
 		let ar = new AssessmentRubric()
 
 		expect(ar.clone()).toEqual(ar)
@@ -665,5 +721,18 @@ describe('AssessmentRubric', () => {
 		})
 
 		expect(ar.clone()).toEqual(ar)
+	})
+
+	test('getAssessmentScoreInfoForAttempt throws error for invalid numbers of attempts', () => {
+		let ar = new AssessmentRubric()
+
+		let e = 'totalNumberOfAttemptsAvailable must be 1 to Infinity!'
+
+		expect(ar.getAssessmentScoreInfoForAttempt.bind(ar, 'unlimited', [100])).toThrow(e)
+		expect(ar.getAssessmentScoreInfoForAttempt.bind(ar, '', [100])).toThrow(e)
+		expect(ar.getAssessmentScoreInfoForAttempt.bind(ar, '2', [100])).toThrow(e)
+		expect(ar.getAssessmentScoreInfoForAttempt.bind(ar, 0, [100])).toThrow(e)
+		expect(ar.getAssessmentScoreInfoForAttempt.bind(ar, -2, [100])).toThrow(e)
+		expect(ar.getAssessmentScoreInfoForAttempt.bind(ar, null, [100])).toThrow(e)
 	})
 })

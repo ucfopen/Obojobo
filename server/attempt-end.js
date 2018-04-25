@@ -199,11 +199,14 @@ let calculateScores = (assessmentModel, attemptHistory, scoreInfo) => {
 		.map(attempt => parseFloat(attempt.result.attemptScore))
 		.concat(attemptScore)
 
+	let numAttempts =
+		typeof assessmentModel.node.content.attempts === 'undefined' ||
+		assessmentModel.node.content.attempts === 'unlimited'
+			? Infinity
+			: parseInt(assessmentModel.node.content.attempts, 10)
+
 	let rubric = new AssessmentRubric(assessmentModel.node.content.rubric)
-	let assessmentScoreDetails = rubric.getAssessmentScoreInfoForAttempt(
-		assessmentModel.node.content.attempts,
-		allScores
-	)
+	let assessmentScoreDetails = rubric.getAssessmentScoreInfoForAttempt(numAttempts, allScores)
 
 	return {
 		attempt: {
