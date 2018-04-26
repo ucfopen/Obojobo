@@ -404,6 +404,45 @@ describe('ViewerApp', () => {
 		)
 	})
 
+	test('registers listener to onbeforeunload', () => {
+		let viewerReact = viewerEl.instance()
+		expect(window.onbeforeunload).toBe(viewerReact.onBeforeWindowClose)
+		expect(window.onunload).toBe(viewerReact.onWindowClose)
+	})
+
+	test('onWindowClose fires postEvent', () => {
+		APIUtil.postEvent.mockReset()
+		let viewerReact = viewerEl.instance()
+		viewerReact.onWindowClose()
+		expect(APIUtil.postEvent).toHaveBeenCalledTimes(1)
+		expect(APIUtil.postEvent).toHaveBeenCalledWith(
+			viewerEl.state('model'),
+			'viewer:close',
+			expect.any(String),
+			{}
+		)
+	})
+
+	test('onBeforeWindowClose triggers event and allows closing', () => {
+		let viewerReact = viewerEl.instance()
+		expect(viewerReact.onBeforeWindowClose()).toBe(undefined)
+		expect(Dispatcher.trigger).toHaveBeenLastCalledWith(
+			'viewer:closeAttempted',
+			expect.any(Function)
+		)
+	})
+
+	test('onBeforeWindowClose triggers event', () => {
+		// calling preventClose should change the return value to true
+		// which propmts the user before closing the window
+		Dispatcher.on('viewer:closeAttempted', preventClose => {
+			preventClose()
+		})
+
+		let viewerReact = viewerEl.instance()
+		expect(viewerReact.onBeforeWindowClose()).toBe(true)
+	})
+
 	test('clearPreviewScores makes call to clearPreviewScores api', () => {
 		APIUtil.clearPreviewScores = jest.fn().mockResolvedValue({ status: 'ok' })
 		// click clear scores button

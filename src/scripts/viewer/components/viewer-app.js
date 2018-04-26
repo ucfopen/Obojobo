@@ -83,9 +83,6 @@ export default class ViewerApp extends React.Component {
 		this.onWindowClose = this.onWindowClose.bind(this)
 		this.onVisibilityChange = this.onVisibilityChange.bind(this)
 
-		window.onbeforeunload = this.onBeforeWindowClose
-		window.onunload = this.onWindowClose
-
 		this.state = state
 	}
 
@@ -139,7 +136,8 @@ export default class ViewerApp extends React.Component {
 				this.state.focusState = FocusStore.getState()
 				this.state.lti.outcomeServiceHostname = getLTIOutcomeServiceHostname(outcomeServiceURL)
 
-				window.onbeforeunload = this.onWindowClose
+				window.onbeforeunload = this.onBeforeWindowClose
+				window.onunload = this.onWindowClose
 
 				this.setState({ loading: false, requestStatus: 'ok', isPreviewing }, () => {
 					Dispatcher.trigger('viewer:loaded', true)
@@ -318,9 +316,12 @@ export default class ViewerApp extends React.Component {
 		delete this.inactiveEvent
 	}
 
-	onBeforeWindowClose(e) {
+	onBeforeWindowClose() {
 		let closePrevented = false
-		let preventClose = () => (closePrevented = true)
+		// calling this function will prevent the window from closing
+		let preventClose = () => {
+			closePrevented = true
+		}
 
 		Dispatcher.trigger('viewer:closeAttempted', preventClose)
 
@@ -331,7 +332,7 @@ export default class ViewerApp extends React.Component {
 		return undefined // Returning undefined will allow browser to close normally
 	}
 
-	onWindowClose(e) {
+	onWindowClose() {
 		APIUtil.postEvent(this.state.model, 'viewer:close', '1.0.0', {})
 	}
 

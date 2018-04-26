@@ -7071,9 +7071,6 @@ var ViewerApp = function (_React$Component) {
 		_this.onWindowClose = _this.onWindowClose.bind(_this);
 		_this.onVisibilityChange = _this.onVisibilityChange.bind(_this);
 
-		window.onbeforeunload = _this.onBeforeWindowClose;
-		window.onunload = _this.onWindowClose;
-
 		_this.state = state;
 		return _this;
 	}
@@ -7126,7 +7123,8 @@ var ViewerApp = function (_React$Component) {
 				_this2.state.focusState = FocusStore.getState();
 				_this2.state.lti.outcomeServiceHostname = (0, _getLtiOutcomeServiceHostname2.default)(outcomeServiceURL);
 
-				window.onbeforeunload = _this2.onWindowClose;
+				window.onbeforeunload = _this2.onBeforeWindowClose;
+				window.onunload = _this2.onWindowClose;
 
 				_this2.setState({ loading: false, requestStatus: 'ok', isPreviewing: isPreviewing }, function () {
 					Dispatcher.trigger('viewer:loaded', true);
@@ -7325,10 +7323,11 @@ var ViewerApp = function (_React$Component) {
 		}
 	}, {
 		key: 'onBeforeWindowClose',
-		value: function onBeforeWindowClose(e) {
+		value: function onBeforeWindowClose() {
 			var closePrevented = false;
+			// calling this function will prevent the window from closing
 			var preventClose = function preventClose() {
-				return closePrevented = true;
+				closePrevented = true;
 			};
 
 			Dispatcher.trigger('viewer:closeAttempted', preventClose);
@@ -7341,7 +7340,7 @@ var ViewerApp = function (_React$Component) {
 		}
 	}, {
 		key: 'onWindowClose',
-		value: function onWindowClose(e) {
+		value: function onWindowClose() {
 			_apiUtil2.default.postEvent(this.state.model, 'viewer:close', '1.0.0', {});
 		}
 	}, {
