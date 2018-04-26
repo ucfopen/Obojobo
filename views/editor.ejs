@@ -3,12 +3,12 @@
 	<head>
 		<%
 			let title = 'Obojobo Editor'
-
+			let assetForEnv = oboRequire('asset_resolver').assetForEnv
 			let headerJs = [
-				"//unpkg.com/react@15.0.2/dist/react-with-addons$[.min].js",
-				"//unpkg.com/react-dom@15.0.2/dist/react-dom$[.min].js",
-				"//cdnjs.cloudflare.com/ajax/libs/underscore.js/1.5.1/underscore-min.js",
-				"//cdnjs.cloudflare.com/ajax/libs/backbone.js/1.3.3/backbone-min.js",
+				assetForEnv('//unpkg.com/react@15.0.2/dist/react-with-addons$[.min].js'),
+				assetForEnv('//unpkg.com/react-dom@15.0.2/dist/react-dom$[.min].js'),
+				assetForEnv('//cdnjs.cloudflare.com/ajax/libs/underscore.js/1.5.1/underscore$[-min].js'),
+				assetForEnv('//cdnjs.cloudflare.com/ajax/libs/backbone.js/1.3.3/backbone$[-min].js'),
 				"//cdnjs.cloudflare.com/ajax/libs/codemirror/5.30.0/codemirror.min.js",
 				"//cdnjs.cloudflare.com/ajax/libs/codemirror/5.30.0/mode/xml/xml.min.js",
 				"//cdnjs.cloudflare.com/ajax/libs/codemirror/5.30.0/addon/edit/matchtags.min.js",
@@ -176,32 +176,32 @@
 				let textBeforeCaret = line.substr(0, cursor.ch).replace(/\S/g, '')
 
 				let questionText = `<Question>
-${textBeforeCaret}	<h1>Your question here</h1>
-${textBeforeCaret}	<MCAssessment responseType="pick-one" shuffle="true">
-${textBeforeCaret}		<MCChoice score="100">
-${textBeforeCaret}			<MCAnswer>
-${textBeforeCaret}				<p>Answer 1 text</p>
-${textBeforeCaret}			</MCAnswer>
-${textBeforeCaret}			<MCFeedback>
-${textBeforeCaret}				<p>Optional answer 1 feedback</p>
-${textBeforeCaret}			</MCFeedback>
-${textBeforeCaret}		</MCChoice>
-${textBeforeCaret}		<MCChoice score="0">
-${textBeforeCaret}			<MCAnswer>
-${textBeforeCaret}				<p>Answer 2 text</p>
-${textBeforeCaret}			</MCAnswer>
-${textBeforeCaret}			<MCFeedback>
-${textBeforeCaret}				<p>Optional answer 2 feedback</p>
-${textBeforeCaret}			</MCFeedback>
-${textBeforeCaret}		</MCChoice>
-${textBeforeCaret}	</MCAssessment>
-${textBeforeCaret}	<!-- Optional solution: -->
-${textBeforeCaret}	<solution>
-${textBeforeCaret}		<Page>
-${textBeforeCaret}			<p>Add additional information here</p>
-${textBeforeCaret}		</Page>
-${textBeforeCaret}	</solution>
-${textBeforeCaret}</Question>`
+					<h1>Your question here</h1>
+					<MCAssessment responseType="pick-one" shuffle="true">
+						<MCChoice score="100">
+							<MCAnswer>
+								<p>Answer 1 text</p>
+							</MCAnswer>
+							<MCFeedback>
+								<p>Optional answer 1 feedback</p>
+							</MCFeedback>
+						</MCChoice>
+						<MCChoice score="0">
+							<MCAnswer>
+								<p>Answer 2 text</p>
+							</MCAnswer>
+							<MCFeedback>
+								<p>Optional answer 2 feedback</p>
+							</MCFeedback>
+						</MCChoice>
+					</MCAssessment>
+					<!-- Optional solution: -->
+					<solution>
+						<Page>
+							<p>Add additional information here</p>
+						</Page>
+					</solution>
+				</Question>`
 				editor.replaceSelection(questionText)
 
 				setTimeout(() => editor.focus(), 100)
