@@ -2,6 +2,8 @@ let db = oboRequire('db')
 let insertEvent = oboRequire('insert_event')
 let User = oboRequire('models/user')
 let logger = oboRequire('logger')
+let createCaliperEvent = oboRequire('routes/api/events/create_caliper_event')
+let { ACTOR_USER } = oboRequire('routes/api/events/caliper_constants')
 
 let storeLtiLaunch = (draftId, user, ip, ltiBody, ltiConsumerKey) => {
 	let insertLaunchResult = null
@@ -40,7 +42,14 @@ let storeLtiLaunch = (draftId, user, ip, ltiBody, ltiConsumerKey) => {
 		})
 }
 
-let storeLtiPickerLaunch = (user, ip, ltiBody, ltiConsumerKey) => {
+let storeLtiPickerLaunch = (user, ip, ltiBody, ltiConsumerKey, hostname) => {
+	console.log('Elli')
+	console.log(ltiBody)
+	console.log(user)
+	console.log(ltiConsumerKey)
+
+	let { createLTIPickerEvent } = createCaliperEvent(null, hostname)
+
 	return insertEvent({
 		action: 'lti:pickerLaunch',
 		actorTime: new Date().toISOString(),
@@ -49,7 +58,13 @@ let storeLtiPickerLaunch = (user, ip, ltiBody, ltiConsumerKey) => {
 		ip: ip,
 		metadata: {},
 		eventVersion: '1.0.0',
-		draftId: null
+		draftId: null,
+		caliperPayload: createLTIPickerEvent({
+			actor: {
+				type: ACTOR_USER,
+				id: user.id
+			}
+		})
 	})
 }
 
@@ -133,7 +148,8 @@ exports.assignmentSelection = (req, res, next) => {
 				user,
 				req.connection.remoteAddress,
 				req.lti.body,
-				req.lti.consumer_key
+				req.lti.consumer_key,
+				req.hostname
 			)
 		})
 		.then(launchResult => next())

@@ -14,6 +14,7 @@ let NavigationActions = require('caliper-js-public/src/actions/navigationActions
 let NavigationEvent = require('caliper-js-public/src/events/navigationEvent')
 let SessionEvent = require('caliper-js-public/src/events/sessionEvent')
 let ViewEvent = require('caliper-js-public/src/events/viewEvent')
+// let ToolUseEvent = require('caliper-js-public/src/events/toolUseEvent')
 
 // This version doesn't have grade event:
 // let GradeEvent = require('caliper-js-public/src/events/gradeEvent')
@@ -477,6 +478,29 @@ const caliperEventFactory = (req, host = null, isFromReq = false) => {
 			caliperEvent.setAction('Reset')
 			caliperEvent.setObject(IRI.getDraftIRI(draftId, questionId))
 			caliperEvent.setTarget(IRI.getPracticeQuestionAttemptIRI(draftId, questionId))
+
+			Object.assign(caliperEvent.extensions, extensions)
+
+			return updateEventToVersion1_1(caliperEvent)
+		},
+
+		// Caliper-Spec Properties
+		// type: (type: Term, REQUIRED) ToolUseEvent
+		// actor: (type: Person, REQUIRED) User
+		// action: (type: Term, REQUIRED) Used
+		// object: (type: SoftwareApplication, REQUIRED) Obo IRI
+		createLTIPickerEvent: obj => {
+			let required = []
+			validateCaliperEvent({ required }, obj, ACTOR_USER)
+
+			let options = assignCaliperOptions(obj)
+
+			let { actor, extensions } = obj
+			let caliperEvent = createEvent(Event, actor, IRI, options) // TODO should be ToolUse Event
+
+			caliperEvent.setType('ToolUseEvent')
+			caliperEvent.setAction('Used')
+			caliperEvent.setObject(IRI.getEdAppIRI())
 
 			Object.assign(caliperEvent.extensions, extensions)
 
