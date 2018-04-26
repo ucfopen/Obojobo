@@ -950,10 +950,8 @@ var APIUtil = {
 			assessmentId: assessment.get('id')
 		}).then(processJsonResults);
 	},
-	clearPreviewScores: function clearPreviewScores(lo) {
-		return APIUtil.post('/api/assessments/clear-preview-scores', {
-			draftId: lo.get('draftId')
-		}).then(processJsonResults);
+	clearPreviewScores: function clearPreviewScores(draftId) {
+		return APIUtil.post('/api/assessments/clear-preview-scores', { draftId: draftId }).then(processJsonResults);
 	}
 };
 
@@ -7349,7 +7347,7 @@ var ViewerApp = function (_React$Component) {
 	}, {
 		key: 'clearPreviewScores',
 		value: function clearPreviewScores() {
-			_apiUtil2.default.clearPreviewScores(this.state.model).then(function (res) {
+			_apiUtil2.default.clearPreviewScores(this.state.model.get('draftId')).then(function (res) {
 				if (res.status === 'error' || res.error) {
 					return ModalUtil.show(_react2.default.createElement(
 						SimpleDialog,
@@ -7503,7 +7501,10 @@ var ViewerApp = function (_React$Component) {
 							),
 							_react2.default.createElement(
 								'button',
-								{ onClick: this.clearPreviewScores.bind(this) },
+								{
+									className: 'button-clear-scores',
+									onClick: this.clearPreviewScores.bind(this)
+								},
 								'Reset assessments & questions'
 							)
 						),

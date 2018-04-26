@@ -336,7 +336,7 @@ export default class ViewerApp extends React.Component {
 	}
 
 	clearPreviewScores() {
-		APIUtil.clearPreviewScores(this.state.model).then(res => {
+		APIUtil.clearPreviewScores(this.state.model.get('draftId')).then(res => {
 			if (res.status === 'error' || res.error) {
 				return ModalUtil.show(
 					<SimpleDialog ok width="15em">
@@ -482,7 +482,10 @@ export default class ViewerApp extends React.Component {
 								>
 									Unlock navigation
 								</button>
-								<button onClick={this.clearPreviewScores.bind(this)}>
+								<button
+									className="button-clear-scores"
+									onClick={this.clearPreviewScores.bind(this)}
+								>
 									Reset assessments &amp; questions
 								</button>
 							</div>

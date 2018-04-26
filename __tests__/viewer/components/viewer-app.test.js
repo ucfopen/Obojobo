@@ -58,6 +58,8 @@ const _gotoAssessmentAndStartAttempt = () => {
 	viewerEl.find('#obo-start-assessment-button button').simulate('click')
 }
 
+const flushPromises = () => new Promise(resolve => setImmediate(resolve))
+
 describe('ViewerApp', () => {
 	beforeEach(done => {
 		jest.clearAllMocks()
@@ -70,11 +72,17 @@ describe('ViewerApp', () => {
 			APIUtil.requestStart.mockRestore()
 			APIUtil.startAttempt.mockRestore()
 			APIUtil.endAttempt.mockRestore()
+			jest.spyOn(AssessmentStore, 'init')
+			jest.spyOn(QuestionStore, 'init')
+			jest.spyOn(Dispatcher, 'trigger')
 			done()
 		})
 	})
 
 	afterEach(() => {
+		AssessmentStore.init.mockRestore()
+		QuestionStore.init.mockRestore()
+		Dispatcher.trigger.mockRestore()
 		viewerEl.unmount()
 	})
 
@@ -394,5 +402,38 @@ describe('ViewerApp', () => {
 				questionId: 'qb2.q2-mca-mc2'
 			}
 		)
+	})
+
+	test('clearPreviewScores makes call to clearPreviewScores api', () => {
+		APIUtil.clearPreviewScores = jest.fn().mockResolvedValue({ status: 'ok' })
+		// click clear scores button
+		viewerEl.find('.button-clear-scores').simulate('click')
+
+		expect(APIUtil.clearPreviewScores).toHaveBeenCalledTimes(1)
+	})
+
+	test('clearPreviewScores resets stores and triggers events', () => {
+		APIUtil.clearPreviewScores = jest.fn().mockResolvedValue({ status: 'ok' })
+		// click clear scores button
+		viewerEl.find('.button-clear-scores').simulate('click')
+
+		return flushPromises().then(() => {
+			expect(AssessmentStore.init).toHaveBeenCalledTimes(1)
+			expect(QuestionStore.init).toHaveBeenCalledTimes(1)
+			expect(Dispatcher.trigger).toHaveBeenCalledWith('modalstore:change')
+			expect(Dispatcher.trigger).toHaveBeenCalledWith('questionStore:change')
+		})
+	})
+
+	test('clearPreviewScores shows error dialog', () => {
+		APIUtil.clearPreviewScores = jest.fn().mockResolvedValue({ status: 'error', value: 'whoops' })
+		// click clear scores button
+		viewerEl.find('.button-clear-scores').simulate('click')
+
+		return flushPromises().then(() => {
+			expect(AssessmentStore.init).not.toHaveBeenCalled()
+			expect(QuestionStore.init).not.toHaveBeenCalled()
+			expect(Dispatcher.trigger.mock.calls[0]).toMatchSnapshot()
+		})
 	})
 })
