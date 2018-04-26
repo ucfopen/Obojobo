@@ -613,4 +613,21 @@ describe('Caliper event creator', () => {
 			`createEvent actor must be one of "user", "viewerClient" or "serverApp". Instead was given "bad".`
 		)
 	})
+
+	///////////////////////////////////////////////////////////////////////////////////////////////////
+
+	it('createLTIPickerEvent', () => {
+		const createLTIPickerEvent = caliperEvents.createLTIPickerEvent({
+			actor
+		})
+		expect(createLTIPickerEvent).toMatchSnapshot()
+	})
+
+	it('createLTIPickerEvent', () => {
+		expect(() =>
+			caliperEvents.createLTIPickerEvent({
+				actor: { type: 'bad' }
+			})
+		).toThrow(`Invalid actor type. Must provide actor of type user`)
+	})
 })

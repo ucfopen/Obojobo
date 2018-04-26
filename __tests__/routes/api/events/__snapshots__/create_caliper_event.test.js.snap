@@ -259,6 +259,22 @@ Event {
 }
 `;
 
+exports[`Caliper event creator createLTIPickerEvent 1`] = `
+Event {
+  "@context": "http://purl.imsglobal.org/ctx/caliper/v1p1",
+  "action": "Used",
+  "actor": "https://testHost/api/user/testUserId",
+  "edApp": "https://testHost/api/system",
+  "eventTime": "2017-08-29T16:57:14.500Z",
+  "extensions": Object {
+    "previewMode": false,
+  },
+  "id": "urn:uuid:DEADBEEF-0000-DEAD-BEEF-1234DEADBEEF",
+  "object": "https://testHost/api/system",
+  "type": "ToolUseEvent",
+}
+`;
+
 exports[`Caliper event creator createNavMenuActivatedEvent 1`] = `
 Event {
   "@context": "http://purl.imsglobal.org/ctx/caliper/v1p1",
