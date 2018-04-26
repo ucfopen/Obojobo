@@ -10,7 +10,7 @@ test('Button', () => {
 })
 
 test('Button dangerous', () => {
-	const component = renderer.create(<Button dangerous>Label</Button>)
+	const component = renderer.create(<Button isDangerous>Label</Button>)
 	let tree = component.toJSON()
 
 	expect(tree).toMatchSnapshot()

@@ -596,24 +596,47 @@ let getAttemptStartServerResponse = () => {
 }
 
 let getAttemptEndServerResponse = (questionScore, assessmentScore) => {
-	let startResp = getAttemptStartServerResponse()
-
+	// res.success always renders { status: ..., value: {} }
 	return {
 		status: 'ok',
 		value: {
 			assessmentId: 'assessment',
-			attemptId: '00000000-0000-0000-0000-000000000000',
-			startTime: '1970-01-01T00:00:00.000Z',
-			endTime: '1970-01-01T00:00:10.000Z',
-			ltiOutcomes: {
-				sent: false
-			},
-			result: {
-				assessmentScore: assessmentScore,
-				attemptScore: questionScore,
-				questionScores: [{ id: 'qb1-q1', score: questionScore }]
-			},
-			state: startResp.state
+			attempts: [
+				{
+					assessmentId: 'assessment',
+					assessmentScore: 100,
+					assessmentScoreDetails: {
+						status: 'passed',
+						rewardedMods: [],
+						attemptNumber: 1
+					},
+					assessmentScoreId: 'scoreId',
+					attemptId: 'mockAttemptId',
+					attemptNumber: 1,
+					attemptScore: 100,
+					draftId: 'mockDraftId',
+					finishTime: 'mockCompletedAt',
+					isFinished: true,
+					questionScores: [
+						{
+							id: 'qb1-q1',
+							score: 100
+						}
+					],
+					startTime: 'mockCreatedAt',
+					state: {
+						questions: [{ id: 'qb1-q1-mca-mc1', type: 'ObojoboDraft.Chunks.MCAssessment.MCChoice' }]
+					},
+					userId: 'mockUserId'
+				}
+			],
+			ltiState: {
+				gradebookStatus: 'mockGradeBookSatus',
+				scoreSent: 0,
+				sentDate: 'mockSentDate',
+				status: 'mockStatus',
+				statusDetails: 'mockStatusDtails'
+			}
 		}
 	}
 }

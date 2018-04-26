@@ -81,7 +81,7 @@
       border: 1px solid transparent;
       border-bottom: 1px solid transparent;
       opacity: 1; }
-  .obojobo-draft--components--button.dangerous button {
+  .obojobo-draft--components--button.is-dangerous button {
     background-color: #d40000;
     border-bottom: 1px solid #350a61; }
   .obojobo-draft--components--button.alt-action button {
@@ -99,15 +99,15 @@
       border: 1px solid transparent;
       border-bottom: 1px solid transparent;
       opacity: 1; }
-  .obojobo-draft--components--button.alt-action.dangerous button {
+  .obojobo-draft--components--button.alt-action.is-dangerous button {
     border: 1px solid #d40000;
     border-bottom: 1px solid #d40000;
     background-color: #ffffff;
     color: #d40000; }
-    .obojobo-draft--components--button.alt-action.dangerous button:hover {
+    .obojobo-draft--components--button.alt-action.is-dangerous button:hover {
       background-color: #d40000;
       color: #ffffff; }
-    .obojobo-draft--components--button.alt-action.dangerous button:disabled {
+    .obojobo-draft--components--button.alt-action.is-dangerous button:disabled {
       background-color: #f4f4f4;
       cursor: default;
       color: #999999;

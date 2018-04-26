@@ -1114,16 +1114,27 @@ var AssessmentUtil = {
 				return true;
 		}
 	},
+	getResponseCount: function getResponseCount(questionModels, questionState, context) {
+		var count = function count(acc, questionModel) {
+			if (_questionUtil2.default.getResponse(questionState, questionModel, context)) {
+				return acc + 1;
+			}
+		};
+
+		return questionModels.reduce(count, 0);
+	},
 	isCurrentAttemptComplete: function isCurrentAttemptComplete(assessmentState, questionState, model, context) {
-		var current = AssessmentUtil.getCurrentAttemptForModel(assessmentState, model);
-		if (!current) {
+		// exit if there is no current attempt
+		if (!AssessmentUtil.getCurrentAttemptForModel(assessmentState, model)) {
 			return null;
 		}
+
 		var models = model.children.at(1).children.models;
-		return models.filter(function (questionModel) {
-			var resp = _questionUtil2.default.getResponse(questionState, questionModel, context);
-			return resp;
-		}).length === models.length;
+		var responseCount = this.getResponseCount(models, questionState, context);
+
+		// is complete if the number of answered questions is
+		// equal to the total number of questions
+		return responseCount === models.length;
 	},
 	isInAssessment: function isInAssessment(state) {
 		if (!state) return false;
@@ -2788,12 +2799,10 @@ var AssessmentStore = function (_Store) {
 
 			var model = OboModel.models[id];
 			var assessment = this.state.assessments[id];
-
 			return _apiUtil2.default.endAttempt(assessment.current).then(function (res) {
 				if (res.status === 'error') {
 					return ErrorUtil.errorResponse(res);
 				}
-
 				_this3.endAttempt(res.value, context);
 				return _this3.triggerChange();
 			}).catch(function (e) {
@@ -2813,6 +2822,7 @@ var AssessmentStore = function (_Store) {
 			assessment.currentResponses.forEach(function (questionId) {
 				return _questionUtil2.default.clearResponse(questionId, context);
 			});
+
 			assessment.current = null;
 
 			this.updateAttempts([endAttemptResp]);

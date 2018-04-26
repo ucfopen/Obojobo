@@ -133,18 +133,28 @@ var AssessmentUtil = {
 		}
 	},
 
+	getResponseCount(questionModels, questionState, context) {
+		const count = (acc, questionModel) => {
+			if (QuestionUtil.getResponse(questionState, questionModel, context)) {
+				return acc + 1
+			}
+		}
+
+		return questionModels.reduce(count, 0)
+	},
+
 	isCurrentAttemptComplete(assessmentState, questionState, model, context) {
-		let current = AssessmentUtil.getCurrentAttemptForModel(assessmentState, model)
-		if (!current) {
+		// exit if there is no current attempt
+		if (!AssessmentUtil.getCurrentAttemptForModel(assessmentState, model)) {
 			return null
 		}
-		let models = model.children.at(1).children.models
-		return (
-			models.filter(function(questionModel) {
-				let resp = QuestionUtil.getResponse(questionState, questionModel, context)
-				return resp
-			}).length === models.length
-		)
+
+		const models = model.children.at(1).children.models
+		const responseCount = this.getResponseCount(models, questionState, context)
+
+		// is complete if the number of answered questions is
+		// equal to the total number of questions
+		return responseCount === models.length
 	},
 
 	isInAssessment(state) {

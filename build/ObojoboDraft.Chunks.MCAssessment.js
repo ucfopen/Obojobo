@@ -718,6 +718,7 @@ var MCAssessment = function (_React$Component) {
 				explanationFooter = React.createElement(Button, { altAction: true, onClick: this.onClickHideExplanation, value: 'Hide Explanation' });
 			} else if (solution) {
 				explanationFooter = React.createElement(Button, {
+					className: 'show-explanation-button',
 					altAction: true,
 					onClick: this.onClickShowExplanation,
 					value: 'Read an explanation of the answer'

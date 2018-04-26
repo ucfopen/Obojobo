@@ -201,13 +201,11 @@ class AssessmentStore extends Store {
 	tryEndAttempt(id, context) {
 		let model = OboModel.models[id]
 		let assessment = this.state.assessments[id]
-
 		return APIUtil.endAttempt(assessment.current)
 			.then(res => {
 				if (res.status === 'error') {
 					return ErrorUtil.errorResponse(res)
 				}
-
 				this.endAttempt(res.value, context)
 				return this.triggerChange()
 			})
@@ -225,6 +223,7 @@ class AssessmentStore extends Store {
 		assessment.currentResponses.forEach(questionId =>
 			QuestionUtil.clearResponse(questionId, context)
 		)
+
 		assessment.current = null
 
 		this.updateAttempts([endAttemptResp])

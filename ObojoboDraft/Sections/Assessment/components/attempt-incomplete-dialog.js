@@ -18,7 +18,7 @@ export default props => (
 			{
 				value: 'Submit as incomplete',
 				altAction: true,
-				dangerous: true,
+				isDangerous: true,
 				onClick: onSubmit.bind(null, props.onSubmit)
 			},
 			'or',

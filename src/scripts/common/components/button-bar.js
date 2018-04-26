@@ -20,8 +20,8 @@ export default props => (
 				childProps.altAction = props.altAction
 			}
 
-			if (props.dangerous) {
-				childProps.dangerous = props.dangerous
+			if (props.isDangerous) {
+				childProps.isDangerous = props.isDangerous
 			}
 
 			if (props.disabled) {

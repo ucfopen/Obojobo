@@ -46,7 +46,7 @@ exports[`ErrorDialog 1`] = `
             className="controls"
           >
             <div
-              className="obojobo-draft--components--button align-center"
+              className="obojobo-draft--components--button is-not-dangerous align-center"
             >
               <button
                 disabled={undefined}
