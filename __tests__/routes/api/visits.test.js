@@ -1,4 +1,5 @@
 jest.mock('../../../models/draft')
+jest.mock('../../../models/visit')
 jest.mock('../../../models/user')
 jest.mock('../../../db')
 jest.mock('../../../logger')
@@ -7,6 +8,7 @@ mockVirtual('../../../viewer/viewer_state')
 
 describe('api visits route', () => {
 	const Draft = oboRequire('models/draft')
+	const Visit = oboRequire('models/visit')
 	const viewerState = oboRequire('viewer/viewer_state')
 	const db = oboRequire('db')
 	const User = oboRequire('models/user')
@@ -83,7 +85,7 @@ describe('api visits route', () => {
 		mockReq.body = { draftId: 1, visitId: 9 }
 
 		// reject db.one lookup of visit
-		db.one.mockReturnValueOnce(Promise.reject('no record found'))
+		Visit.fetchById.mockRejectedValueOnce('no record found')
 		return startVisitRoute(mockReq, mockRes, mockNext).then(result => {
 			expect(logger.error).toBeCalledWith('no record found')
 			expect(mockRes.reject).toBeCalledWith('no record found')
@@ -97,11 +99,10 @@ describe('api visits route', () => {
 		mockReq.requireCurrentUser.mockResolvedValueOnce(new User())
 		mockReq.body = { draftId: 1, visitId: 9 }
 
-		// resolve db.one lookup of visit
-		db.one.mockResolvedValueOnce({
-			preview: false,
+		Visit.fetchById.mockResolvedValueOnce(new Visit({
+			is_preview: false,
 			draft_content_id: 'mocked-draft-content-id'
-		})
+		}))
 
 		// mock the draft
 		Draft.fetchById.mockResolvedValueOnce({
@@ -146,11 +147,10 @@ describe('api visits route', () => {
 		}
 		ltiUtil.retrieveLtiLaunch.mockResolvedValueOnce(launch)
 
-		// resolve db.one lookup of visit
-		db.one.mockResolvedValueOnce({
-			preview: false,
+		Visit.fetchById.mockResolvedValueOnce(new Visit({
+			is_preview: false,
 			draft_content_id: 'mocked-old-draft-content-id'
-		})
+		}))
 
 		// reject launch lookup
 		ltiUtil.retrieveLtiLaunch.mockRejectedValueOnce('no launch found')
@@ -169,11 +169,11 @@ describe('api visits route', () => {
 		mockReq.body = { visitId: 9, draftId: 1 }
 
 		// resolve db.one lookup of visit
-		db.one.mockResolvedValueOnce({
+		Visit.fetchById.mockResolvedValueOnce(new Visit({
 			is_active: true,
-			preview: false,
+			is_preview: false,
 			draft_content_id: 'mocked-draft-content-id'
-		})
+		}))
 
 		Draft.fetchById.mockResolvedValueOnce({
 			yell: jest.fn(),
@@ -203,11 +203,11 @@ describe('api visits route', () => {
 		mockReq.body = { visitId: 9, draftId: 1 }
 
 		// resolve db.one lookup of visit
-		db.one.mockResolvedValueOnce({
+		Visit.fetchById.mockResolvedValueOnce(new Visit({
 			is_active: true,
-			preview: false,
+			is_preview: false,
 			draft_content_id: 'draft-content-id'
-		})
+		}))
 
 		// resolve ltiLaunch lookup
 		let launch = {
@@ -236,11 +236,11 @@ describe('api visits route', () => {
 		mockReq.body = { draftId: 8, visitId: 9 }
 
 		// resolve db.one lookup of visit
-		db.one.mockResolvedValueOnce({
+		Visit.fetchById.mockResolvedValueOnce(new Visit({
 			is_active: true,
-			preview: false,
+			is_preview: false,
 			draft_content_id: 'draft-content-id'
-		})
+		}))
 
 		// resolve ltiLaunch lookup
 		let launch = {
@@ -292,11 +292,11 @@ describe('api visits route', () => {
 		mockReq.body = { draftId: 8, visitId: 9 }
 
 		// resolve db.one lookup of visit
-		db.one.mockResolvedValueOnce({
+		Visit.fetchById.mockResolvedValueOnce(new Visit({
 			is_active: true,
-			preview: true,
+			is_preview: true,
 			draft_content_id: 'draft-content-id'
-		})
+		}))
 
 		// resolve viewerState.get
 		viewerState.get.mockReturnValueOnce(Promise.resolve('view state'))

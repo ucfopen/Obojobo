@@ -29,7 +29,7 @@ describe('create-visit', () => {
 				userId: 'user-id',
 				resourceLinkId: 'resource-link-id',
 				launchId: 'launch-id',
-				preview: false
+				isPreview: false
 			})
 			expect(result).toEqual({ id: 'resulting-visit-id' })
 		})
@@ -56,7 +56,7 @@ describe('create-visit', () => {
 				userId: 'user-id',
 				resourceLinkId: null,
 				launchId: null,
-				preview: true
+				isPreview: true
 			})
 			expect(result).toEqual({ id: 'resulting-visit-id' })
 		})

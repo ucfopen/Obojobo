@@ -33,7 +33,7 @@ exports.up = function(db) {
 				notNull: true,
 				defaultValue: false
 			},
-			preview: { type: 'boolean', notNull: true }
+			is_preview: { type: 'boolean', notNull: true }
 		})
 		.then(result => {
 			return db.addIndex('visits', 'visits_unique_visit', ['user_id', 'draft_id', 'is_active'])

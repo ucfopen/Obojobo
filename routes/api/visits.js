@@ -3,26 +3,9 @@ const router = express.Router()
 const db = oboRequire('db')
 const logger = oboRequire('logger')
 const DraftModel = oboRequire('models/draft')
+const VisitModel = oboRequire('models/visit')
 const ltiUtil = oboRequire('lti')
 const viewerState = oboRequire('viewer/viewer_state')
-
-const getVisit = (visitId, userId) => {
-	return db.one(
-		`
-		SELECT is_active, preview, draft_content_id
-		FROM visits
-		WHERE id = $[visitId]
-		AND user_id = $[userId]
-		AND is_active = true
-		ORDER BY created_at DESC
-		LIMIT 1
-	`,
-		{
-			visitId,
-			userId
-		}
-	)
-}
 
 const getDraftAndStartVisitProps = (req, res) => {
 	let draft
@@ -41,17 +24,13 @@ const getDraftAndStartVisitProps = (req, res) => {
 				visitStartReturnExtensionsProps
 			)
 		})
-		.then(() => {
-			return {
-				draft,
-				visitStartReturnExtensionsProps
-			}
-		})
+		.then(() => ({
+			draft,
+			visitStartReturnExtensionsProps
+		}))
 }
 
-const getViewerState = (userId, draftId) => {
-	return viewerState.get(userId, draftId)
-}
+const getViewerState = (userId, draftId) => viewerState.get(userId, draftId)
 
 // Start a new visit
 // mounted as /api/visit/start
@@ -72,22 +51,25 @@ router.post('/start', (req, res, next) => {
 		.then(userFromReq => {
 			user = userFromReq
 
+			// validate input
 			if (visitId == null || draftId == null) throw new Error('Missing visit and/or draft id!')
 
 			return Promise.all([
-				getVisit(visitId, user.id),
+				VisitModel.fetchById(visitId),
 				getViewerState(user.id, draftId),
 				getDraftAndStartVisitProps(req, res)
 			])
 		})
 		.then(results => {
-			;[visit, viewState, { draft, visitStartReturnExtensionsProps }] = results
+			// expand results
+			[visit, viewState, { draft, visitStartReturnExtensionsProps }] = results
 
 			if (visit.draft_content_id !== draft.root.node._rev) {
 				throw new Error('Visit for older draft version!')
 			}
 
-			if (visit.preview !== true) {
+			// load lti launch data if not in preview mode
+			if (visit.is_preview !== true) {
 				return ltiUtil.retrieveLtiLaunch(user.id, draftId, 'START_VISIT_API')
 			}
 		})
@@ -96,12 +78,18 @@ router.post('/start', (req, res, next) => {
 				`VISIT: Start visit success for visitId="${visitId}", draftId="${draftId}", userId="${user.id}"`
 			)
 
+			// Build lti data for return
+			let lti = { lis_outcome_service_url: null }
+			if(visit.is_preview === false){
+				lti.lis_outcome_service_url = launch.reqVars.lis_outcome_service_url
+			}
+
 			res.success({
-				visitId: visitId,
-				isPreviewing: user.canViewEditor ? user.canViewEditor : false, //@TODO: This should be if visit.preview === true but we can't do that until the rest of the code uses visit.preview instead of user.canViewEditor
-				lti: {
-					lis_outcome_service_url: visit.preview ? null : launch.reqVars.lis_outcome_service_url
-				},
+				visitId,
+				//@TODO: This should be if visit.preview === true but we can't do that until the
+				// rest of the code uses visit.preview instead of user.canViewEditor
+				isPreviewing: user.canViewEditor ? user.canViewEditor : false,
+				lti,
 				viewState,
 				extensions: visitStartReturnExtensionsProps
 			})

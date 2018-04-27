@@ -32,7 +32,7 @@
 		"test": "jest --watch",
 		"test:ci": "CI=true jest --coverage --coverageReporters text cobertura",
 		"precommit": "yarn test:ci && lint-staged",
-		"prettier":"prettier --single-quote --use-tabs --no-semi --print-width='100' --write '{*.js, {__tests__, __mocks__, bin, config, migrations, models, public, routes, views}/**/*.js}'",
+		"prettier:run":"prettier --single-quote --use-tabs --no-semi --print-width='100' --write '{*.js, {__tests__, __mocks__, bin, config, migrations, models, public, routes, views}/**/*.js}'",
 		"prettier:debug":"prettier --single-quote --use-tabs --no-semi --print-width='100' --debug-check '{*.js, {__tests__, __mocks__, bin, config, migrations, models, public, routes, views}/**/*.js}'"
 	},
 	"engines": {
