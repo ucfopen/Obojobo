@@ -214,7 +214,7 @@ export default class ViewerApp extends React.Component {
 		}
 	}
 
-	onVisibilityChange(event) {
+	onVisibilityChange() {
 		if (document.hidden) {
 			APIUtil.postEvent(this.state.model, 'viewer:leave', '1.0.0', {}).then(res => {
 				this.leaveEvent = res.value
@@ -239,31 +239,12 @@ export default class ViewerApp extends React.Component {
 
 		if (el) {
 			return (container.scrollTop = ReactDOM.findDOMNode(el).getBoundingClientRect().height)
-		} else {
-			return (container.scrollTop = 0)
 		}
+
+		return (container.scrollTop = 0)
 	}
 
 	// === NON REACT LIFECYCLE METHODS ===
-
-	update(json) {
-		try {
-			let o
-			return (o = JSON.parse(json))
-		} catch (e) {
-			alert('Error parsing JSON')
-			this.setState({ model: this.state.model })
-			return
-		}
-	}
-
-	onBack() {
-		return NavUtil.goPrev()
-	}
-
-	onNext() {
-		return NavUtil.goNext()
-	}
 
 	onMouseDown(event) {
 		if (this.state.focusState.focussedId == null) {

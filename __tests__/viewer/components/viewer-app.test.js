@@ -23,30 +23,7 @@ import '../../../__mocks__/_load-all-chunks'
 import APIUtil from '../../../src/scripts/viewer/util/api-util'
 import testObject from '../../../test-object.json'
 
-APIUtil.startAttempt = jest.fn().mockResolvedValue(getAttemptStartServerResponse())
-APIUtil.endAttempt = jest.fn().mockResolvedValue(getAttemptEndServerResponse(100, 100))
-APIUtil.postEvent = jest.fn().mockResolvedValue({ status: 'ok' })
-APIUtil.getDraft = jest.fn().mockResolvedValue({ value: testObject })
-APIUtil.requestStart = jest.fn().mockResolvedValue({
-	status: 'ok',
-	value: {
-		visitId: 123,
-		lti: {
-			lisOutcomeServiceUrl: 'http://lis-outcome-service-url.test/example.php'
-		},
-		isPreviewing: true,
-		extensions: {
-			':ObojoboDraft.Sections.Assessment:attemptHistory': []
-		}
-	}
-})
-
 let viewerEl
-let viewerLoaded = false
-let viewerLoading = false
-
-Dispatcher.on('viewer:loading', () => (viewerLoading = true))
-Dispatcher.on('viewer:loaded', () => (viewerLoaded = true))
 
 const _gotoAssessmentAndStartAttempt = () => {
 	// navigate to assessment
@@ -63,18 +40,32 @@ const flushPromises = () => new Promise(resolve => setImmediate(resolve))
 describe('ViewerApp', () => {
 	beforeEach(done => {
 		jest.clearAllMocks()
+		APIUtil.postEvent = jest.fn().mockResolvedValue({ status: 'ok' })
+		APIUtil.startAttempt = jest.fn().mockResolvedValue(getAttemptStartServerResponse())
+		APIUtil.endAttempt = jest.fn().mockResolvedValue(getAttemptEndServerResponse(100, 100))
+		APIUtil.getDraft = jest.fn().mockResolvedValue({ value: testObject })
+		APIUtil.requestStart = jest.fn().mockResolvedValue({
+			status: 'ok',
+			value: {
+				visitId: 123,
+				lti: {
+					lisOutcomeServiceUrl: 'http://lis-outcome-service-url.test/example.php'
+				},
+				isPreviewing: true,
+				extensions: {
+					':ObojoboDraft.Sections.Assessment:attemptHistory': []
+				}
+			}
+		})
+		jest.spyOn(document, 'addEventListener')
+		jest.spyOn(document, 'removeEventListener')
+		jest.spyOn(Dispatcher, 'trigger')
 		viewerEl = mount(<ViewerApp />)
 		setTimeout(() => {
 			// sometimes the veiwer needs a moment
 			viewerEl.update()
-			APIUtil.postEvent.mockRestore()
-			APIUtil.getDraft.mockRestore()
-			APIUtil.requestStart.mockRestore()
-			APIUtil.startAttempt.mockRestore()
-			APIUtil.endAttempt.mockRestore()
 			jest.spyOn(AssessmentStore, 'init')
 			jest.spyOn(QuestionStore, 'init')
-			jest.spyOn(Dispatcher, 'trigger')
 			done()
 		})
 	})
@@ -83,14 +74,16 @@ describe('ViewerApp', () => {
 		AssessmentStore.init.mockRestore()
 		QuestionStore.init.mockRestore()
 		Dispatcher.trigger.mockRestore()
+		document.addEventListener.mockRestore()
+		document.removeEventListener.mockRestore()
 		viewerEl.unmount()
 	})
 
 	test('ViewerApp triggers viewer:loading & viewer:loaded events', () => {
-		expect(viewerLoading).toBe(true)
-		expect(viewerLoaded).toBe(true)
-		Dispatcher.off('viewer:loading')
-		Dispatcher.off('viewer:loaded')
+		return flushPromises().then(() => {
+			expect(Dispatcher.trigger).toHaveBeenCalledWith('viewer:loading')
+			expect(Dispatcher.trigger).toHaveBeenCalledWith('viewer:loaded', true)
+		})
 	})
 
 	test('ViewerApp clears loading element', () => {
@@ -405,15 +398,15 @@ describe('ViewerApp', () => {
 	})
 
 	test('registers listener to onbeforeunload', () => {
-		let viewerReact = viewerEl.instance()
-		expect(window.onbeforeunload).toBe(viewerReact.onBeforeWindowClose)
-		expect(window.onunload).toBe(viewerReact.onWindowClose)
+		let ViewerApp = viewerEl.instance()
+		expect(window.onbeforeunload).toBe(ViewerApp.onBeforeWindowClose)
+		expect(window.onunload).toBe(ViewerApp.onWindowClose)
 	})
 
 	test('onWindowClose fires postEvent', () => {
 		APIUtil.postEvent.mockReset()
-		let viewerReact = viewerEl.instance()
-		viewerReact.onWindowClose()
+		let ViewerApp = viewerEl.instance()
+		ViewerApp.onWindowClose()
 		expect(APIUtil.postEvent).toHaveBeenCalledTimes(1)
 		expect(APIUtil.postEvent).toHaveBeenCalledWith(
 			viewerEl.state('model'),
@@ -424,8 +417,8 @@ describe('ViewerApp', () => {
 	})
 
 	test('onBeforeWindowClose triggers event and allows closing', () => {
-		let viewerReact = viewerEl.instance()
-		expect(viewerReact.onBeforeWindowClose()).toBe(undefined)
+		let ViewerApp = viewerEl.instance()
+		expect(ViewerApp.onBeforeWindowClose()).toBe(undefined)
 		expect(Dispatcher.trigger).toHaveBeenLastCalledWith(
 			'viewer:closeAttempted',
 			expect.any(Function)
@@ -439,8 +432,8 @@ describe('ViewerApp', () => {
 			preventClose()
 		})
 
-		let viewerReact = viewerEl.instance()
-		expect(viewerReact.onBeforeWindowClose()).toBe(true)
+		let ViewerApp = viewerEl.instance()
+		expect(ViewerApp.onBeforeWindowClose()).toBe(true)
 	})
 
 	test('clearPreviewScores makes call to clearPreviewScores api', () => {
@@ -465,6 +458,7 @@ describe('ViewerApp', () => {
 	})
 
 	test('clearPreviewScores shows error dialog', () => {
+		Dispatcher.trigger.mockReset()
 		APIUtil.clearPreviewScores = jest.fn().mockResolvedValue({ status: 'error', value: 'whoops' })
 		// click clear scores button
 		viewerEl.find('.button-clear-scores').simulate('click')
@@ -473,6 +467,85 @@ describe('ViewerApp', () => {
 			expect(AssessmentStore.init).not.toHaveBeenCalled()
 			expect(QuestionStore.init).not.toHaveBeenCalled()
 			expect(Dispatcher.trigger.mock.calls[0]).toMatchSnapshot()
+		})
+	})
+
+	test('onVisibilityChange is registered to onVisibilityChange', () => {
+		let ViewerApp = viewerEl.instance()
+		expect(document.addEventListener).toHaveBeenCalledWith(
+			'visibilitychange',
+			ViewerApp.onVisibilityChange
+		)
+	})
+
+	test('onVisibilityChange is removed to onVisibilityChange when unmounted', () => {
+		let ViewerApp = viewerEl.instance()
+		viewerEl.unmount()
+		expect(document.addEventListener).toHaveBeenCalledWith(
+			'visibilitychange',
+			ViewerApp.onVisibilityChange
+		)
+	})
+
+	test('onVisibilityChange post event when hidden', () => {
+		document.hidden = true // indicates the browser tab is hidden
+		let ViewerApp = viewerEl.instance()
+		ViewerApp.onVisibilityChange()
+		expect(APIUtil.postEvent).toHaveBeenLastCalledWith(
+			viewerEl.state('model'),
+			'viewer:leave',
+			'1.0.0',
+			{}
+		)
+	})
+
+	test('onVisibilityChange post event when returning', () => {
+		document.hidden = false // indicates the browser tab is not hidden
+		let ViewerApp = viewerEl.instance()
+
+		// leaveEvent is temporarily stored on the component
+		ViewerApp.leaveEvent = { id: 'mockId' }
+
+		ViewerApp.onVisibilityChange()
+		expect(APIUtil.postEvent).toHaveBeenLastCalledWith(
+			viewerEl.state('model'),
+			'viewer:return',
+			'1.0.0',
+			{ relatedEventId: 'mockId' }
+		)
+	})
+
+	test('idle posts event', () => {
+		let ViewerApp = viewerEl.instance()
+		ViewerApp.onIdle()
+		expect(APIUtil.postEvent).toHaveBeenLastCalledWith(
+			viewerEl.state('model'),
+			'viewer:inactive',
+			'1.0.0',
+			expect.any(Object)
+		)
+	})
+
+	test('returnFromIdle fires event', () => {
+		let ViewerApp = viewerEl.instance()
+
+		// inactiveEvent is temporarily stored on the component
+		ViewerApp.inactiveEvent = { id: 'mockId' }
+
+		ViewerApp.onReturnFromIdle()
+		expect(APIUtil.postEvent).toHaveBeenLastCalledWith(
+			viewerEl.state('model'),
+			'viewer:returnFromInactive',
+			'1.0.0',
+			expect.any(Object)
+		)
+	})
+
+	test('handles requestStart in a failure state', () => {
+		APIUtil.requestStart.mockResolvedValueOnce({ status: 'error' })
+		viewerEl = mount(<ViewerApp />)
+		return flushPromises().then(() => {
+			expect(Dispatcher.trigger).toHaveBeenLastCalledWith('viewer:loaded', false)
 		})
 	})
 })

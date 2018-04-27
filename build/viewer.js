@@ -7206,7 +7206,7 @@ var ViewerApp = function (_React$Component) {
 		}
 	}, {
 		key: 'onVisibilityChange',
-		value: function onVisibilityChange(event) {
+		value: function onVisibilityChange() {
 			var _this3 = this;
 
 			if (document.hidden) {
@@ -7235,35 +7235,13 @@ var ViewerApp = function (_React$Component) {
 
 			if (el) {
 				return container.scrollTop = ReactDOM.findDOMNode(el).getBoundingClientRect().height;
-			} else {
-				return container.scrollTop = 0;
 			}
+
+			return container.scrollTop = 0;
 		}
 
 		// === NON REACT LIFECYCLE METHODS ===
 
-	}, {
-		key: 'update',
-		value: function update(json) {
-			try {
-				var o = void 0;
-				return o = JSON.parse(json);
-			} catch (e) {
-				alert('Error parsing JSON');
-				this.setState({ model: this.state.model });
-				return;
-			}
-		}
-	}, {
-		key: 'onBack',
-		value: function onBack() {
-			return _navUtil2.default.goPrev();
-		}
-	}, {
-		key: 'onNext',
-		value: function onNext() {
-			return _navUtil2.default.goNext();
-		}
 	}, {
 		key: 'onMouseDown',
 		value: function onMouseDown(event) {
