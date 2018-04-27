@@ -225,7 +225,7 @@ exports[`MCAssessment Question component 1`] = `
             className="submit"
           >
             <div
-              className="obojobo-draft--components--button align-center"
+              className="obojobo-draft--components--button is-not-dangerous align-center"
             >
               <button
                 disabled={true}
@@ -245,7 +245,7 @@ exports[`MCAssessment Question component 1`] = `
       onClick={[Function]}
     >
       <div
-        className="obojobo-draft--components--button align-center"
+        className="obojobo-draft--components--button is-not-dangerous align-center"
       >
         <button
           disabled={undefined}
@@ -485,7 +485,7 @@ exports[`MCAssessment Question view & focus question 1`] = `
             className="submit"
           >
             <div
-              className="obojobo-draft--components--button align-center"
+              className="obojobo-draft--components--button is-not-dangerous align-center"
             >
               <button
                 disabled={true}
@@ -505,7 +505,7 @@ exports[`MCAssessment Question view & focus question 1`] = `
       onClick={[Function]}
     >
       <div
-        className="obojobo-draft--components--button align-center"
+        className="obojobo-draft--components--button is-not-dangerous align-center"
       >
         <button
           disabled={undefined}
@@ -745,7 +745,7 @@ exports[`MCAssessment Question view & focus question 2`] = `
             className="submit"
           >
             <div
-              className="obojobo-draft--components--button align-center"
+              className="obojobo-draft--components--button is-not-dangerous align-center"
             >
               <button
                 disabled={true}
@@ -765,7 +765,7 @@ exports[`MCAssessment Question view & focus question 2`] = `
       onClick={[Function]}
     >
       <div
-        className="obojobo-draft--components--button align-center"
+        className="obojobo-draft--components--button is-not-dangerous align-center"
       >
         <button
           disabled={undefined}
@@ -1005,7 +1005,7 @@ exports[`MCAssessment Question view question 1`] = `
             className="submit"
           >
             <div
-              className="obojobo-draft--components--button align-center"
+              className="obojobo-draft--components--button is-not-dangerous align-center"
             >
               <button
                 disabled={true}
@@ -1025,7 +1025,7 @@ exports[`MCAssessment Question view question 1`] = `
       onClick={[Function]}
     >
       <div
-        className="obojobo-draft--components--button align-center"
+        className="obojobo-draft--components--button is-not-dangerous align-center"
       >
         <button
           disabled={undefined}
@@ -1265,7 +1265,7 @@ exports[`MCAssessment Question view question 2`] = `
             className="submit"
           >
             <div
-              className="obojobo-draft--components--button align-center"
+              className="obojobo-draft--components--button is-not-dangerous align-center"
             >
               <button
                 disabled={true}
@@ -1285,7 +1285,7 @@ exports[`MCAssessment Question view question 2`] = `
       onClick={[Function]}
     >
       <div
-        className="obojobo-draft--components--button align-center"
+        className="obojobo-draft--components--button is-not-dangerous align-center"
       >
         <button
           disabled={undefined}
@@ -1525,7 +1525,7 @@ exports[`MCAssessment Question with a set score 1`] = `
             className="submit"
           >
             <div
-              className="obojobo-draft--components--button align-center"
+              className="obojobo-draft--components--button is-not-dangerous align-center"
             >
               <button
                 disabled={true}
@@ -1545,7 +1545,7 @@ exports[`MCAssessment Question with a set score 1`] = `
       onClick={[Function]}
     >
       <div
-        className="obojobo-draft--components--button align-center"
+        className="obojobo-draft--components--button is-not-dangerous align-center"
       >
         <button
           disabled={undefined}
@@ -1785,7 +1785,7 @@ exports[`MCAssessment Question with a set score 2`] = `
             className="submit"
           >
             <div
-              className="obojobo-draft--components--button alt-action align-center"
+              className="obojobo-draft--components--button alt-action is-not-dangerous align-center"
             >
               <button
                 disabled={undefined}
@@ -1814,7 +1814,7 @@ exports[`MCAssessment Question with a set score 2`] = `
               className="score"
             />
             <div
-              className="obojobo-draft--components--button alt-action align-center"
+              className="obojobo-draft--components--button alt-action is-not-dangerous align-center show-explanation-button"
             >
               <button
                 disabled={undefined}
@@ -1834,7 +1834,7 @@ exports[`MCAssessment Question with a set score 2`] = `
       onClick={[Function]}
     >
       <div
-        className="obojobo-draft--components--button align-center"
+        className="obojobo-draft--components--button is-not-dangerous align-center"
       >
         <button
           disabled={undefined}
@@ -2074,7 +2074,7 @@ exports[`MCAssessment Question with response 1`] = `
             className="submit"
           >
             <div
-              className="obojobo-draft--components--button align-center"
+              className="obojobo-draft--components--button is-not-dangerous align-center"
             >
               <button
                 disabled={true}
@@ -2094,7 +2094,7 @@ exports[`MCAssessment Question with response 1`] = `
       onClick={[Function]}
     >
       <div
-        className="obojobo-draft--components--button align-center"
+        className="obojobo-draft--components--button is-not-dangerous align-center"
       >
         <button
           disabled={undefined}
@@ -2334,7 +2334,7 @@ exports[`MCAssessment Question with response 2`] = `
             className="submit"
           >
             <div
-              className="obojobo-draft--components--button align-center"
+              className="obojobo-draft--components--button is-not-dangerous align-center"
             >
               <button
                 disabled={undefined}
@@ -2354,7 +2354,7 @@ exports[`MCAssessment Question with response 2`] = `
       onClick={[Function]}
     >
       <div
-        className="obojobo-draft--components--button align-center"
+        className="obojobo-draft--components--button is-not-dangerous align-center"
       >
         <button
           disabled={undefined}
@@ -2594,7 +2594,7 @@ exports[`MCAssessment Question with revealAll 1`] = `
             className="submit"
           >
             <div
-              className="obojobo-draft--components--button align-center"
+              className="obojobo-draft--components--button is-not-dangerous align-center"
             >
               <button
                 disabled={true}
@@ -2614,7 +2614,7 @@ exports[`MCAssessment Question with revealAll 1`] = `
       onClick={[Function]}
     >
       <div
-        className="obojobo-draft--components--button align-center"
+        className="obojobo-draft--components--button is-not-dangerous align-center"
       >
         <button
           disabled={undefined}
@@ -2854,7 +2854,7 @@ exports[`MCAssessment Question with revealAll 2`] = `
             className="submit"
           >
             <div
-              className="obojobo-draft--components--button align-center"
+              className="obojobo-draft--components--button is-not-dangerous align-center"
             >
               <button
                 disabled={true}
@@ -2874,7 +2874,7 @@ exports[`MCAssessment Question with revealAll 2`] = `
       onClick={[Function]}
     >
       <div
-        className="obojobo-draft--components--button align-center"
+        className="obojobo-draft--components--button is-not-dangerous align-center"
       >
         <button
           disabled={undefined}

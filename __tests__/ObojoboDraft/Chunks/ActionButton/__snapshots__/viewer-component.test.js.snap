@@ -13,7 +13,7 @@ exports[`ActionButton ActionButton component with label 1`] = `
     className="text-chunk obojobo-draft--chunks--action-button pad"
   >
     <div
-      className="obojobo-draft--components--button align-center"
+      className="obojobo-draft--components--button is-not-dangerous align-center"
     >
       <button
         disabled={undefined}
@@ -40,7 +40,7 @@ exports[`ActionButton ActionButton component with textGroup 1`] = `
     className="text-chunk obojobo-draft--chunks--action-button pad"
   >
     <div
-      className="obojobo-draft--components--button align-center"
+      className="obojobo-draft--components--button is-not-dangerous align-center"
     >
       <button
         disabled={undefined}

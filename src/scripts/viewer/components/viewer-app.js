@@ -83,9 +83,6 @@ export default class ViewerApp extends React.Component {
 		this.onWindowClose = this.onWindowClose.bind(this)
 		this.onVisibilityChange = this.onVisibilityChange.bind(this)
 
-		window.onbeforeunload = this.onBeforeWindowClose
-		window.onunload = this.onWindowClose
-
 		this.state = state
 	}
 
@@ -139,7 +136,8 @@ export default class ViewerApp extends React.Component {
 				this.state.focusState = FocusStore.getState()
 				this.state.lti.outcomeServiceHostname = getLTIOutcomeServiceHostname(outcomeServiceURL)
 
-				window.onbeforeunload = this.onWindowClose
+				window.onbeforeunload = this.onBeforeWindowClose
+				window.onunload = this.onWindowClose
 
 				this.setState({ loading: false, requestStatus: 'ok', isPreviewing }, () => {
 					Dispatcher.trigger('viewer:loaded', true)
@@ -216,7 +214,7 @@ export default class ViewerApp extends React.Component {
 		}
 	}
 
-	onVisibilityChange(event) {
+	onVisibilityChange() {
 		if (document.hidden) {
 			APIUtil.postEvent(this.state.model, 'viewer:leave', '1.0.0', {}).then(res => {
 				this.leaveEvent = res.value
@@ -241,31 +239,12 @@ export default class ViewerApp extends React.Component {
 
 		if (el) {
 			return (container.scrollTop = ReactDOM.findDOMNode(el).getBoundingClientRect().height)
-		} else {
-			return (container.scrollTop = 0)
 		}
+
+		return (container.scrollTop = 0)
 	}
 
 	// === NON REACT LIFECYCLE METHODS ===
-
-	update(json) {
-		try {
-			let o
-			return (o = JSON.parse(json))
-		} catch (e) {
-			alert('Error parsing JSON')
-			this.setState({ model: this.state.model })
-			return
-		}
-	}
-
-	onBack() {
-		return NavUtil.goPrev()
-	}
-
-	onNext() {
-		return NavUtil.goNext()
-	}
 
 	onMouseDown(event) {
 		if (this.state.focusState.focussedId == null) {
@@ -318,9 +297,12 @@ export default class ViewerApp extends React.Component {
 		delete this.inactiveEvent
 	}
 
-	onBeforeWindowClose(e) {
+	onBeforeWindowClose() {
 		let closePrevented = false
-		let preventClose = () => (closePrevented = true)
+		// calling this function will prevent the window from closing
+		let preventClose = () => {
+			closePrevented = true
+		}
 
 		Dispatcher.trigger('viewer:closeAttempted', preventClose)
 
@@ -331,12 +313,12 @@ export default class ViewerApp extends React.Component {
 		return undefined // Returning undefined will allow browser to close normally
 	}
 
-	onWindowClose(e) {
+	onWindowClose() {
 		APIUtil.postEvent(this.state.model, 'viewer:close', '1.0.0', {})
 	}
 
 	clearPreviewScores() {
-		APIUtil.clearPreviewScores(this.state.model).then(res => {
+		APIUtil.clearPreviewScores(this.state.model.get('draftId')).then(res => {
 			if (res.status === 'error' || res.error) {
 				return ModalUtil.show(
 					<SimpleDialog ok width="15em">
@@ -482,7 +464,10 @@ export default class ViewerApp extends React.Component {
 								>
 									Unlock navigation
 								</button>
-								<button onClick={this.clearPreviewScores.bind(this)}>
+								<button
+									className="button-clear-scores"
+									onClick={this.clearPreviewScores.bind(this)}
+								>
 									Reset assessments &amp; questions
 								</button>
 							</div>

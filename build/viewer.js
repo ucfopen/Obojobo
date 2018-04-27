@@ -950,10 +950,8 @@ var APIUtil = {
 			assessmentId: assessment.get('id')
 		}).then(processJsonResults);
 	},
-	clearPreviewScores: function clearPreviewScores(lo) {
-		return APIUtil.post('/api/assessments/clear-preview-scores', {
-			draftId: lo.get('draftId')
-		}).then(processJsonResults);
+	clearPreviewScores: function clearPreviewScores(draftId) {
+		return APIUtil.post('/api/assessments/clear-preview-scores', { draftId: draftId }).then(processJsonResults);
 	}
 };
 
@@ -1114,16 +1112,27 @@ var AssessmentUtil = {
 				return true;
 		}
 	},
+	getResponseCount: function getResponseCount(questionModels, questionState, context) {
+		var count = function count(acc, questionModel) {
+			if (_questionUtil2.default.getResponse(questionState, questionModel, context)) {
+				return acc + 1;
+			}
+		};
+
+		return questionModels.reduce(count, 0);
+	},
 	isCurrentAttemptComplete: function isCurrentAttemptComplete(assessmentState, questionState, model, context) {
-		var current = AssessmentUtil.getCurrentAttemptForModel(assessmentState, model);
-		if (!current) {
+		// exit if there is no current attempt
+		if (!AssessmentUtil.getCurrentAttemptForModel(assessmentState, model)) {
 			return null;
 		}
+
 		var models = model.children.at(1).children.models;
-		return models.filter(function (questionModel) {
-			var resp = _questionUtil2.default.getResponse(questionState, questionModel, context);
-			return resp;
-		}).length === models.length;
+		var responseCount = this.getResponseCount(models, questionState, context);
+
+		// is complete if the number of answered questions is
+		// equal to the total number of questions
+		return responseCount === models.length;
 	},
 	isInAssessment: function isInAssessment(state) {
 		if (!state) return false;
@@ -2788,12 +2797,10 @@ var AssessmentStore = function (_Store) {
 
 			var model = OboModel.models[id];
 			var assessment = this.state.assessments[id];
-
 			return _apiUtil2.default.endAttempt(assessment.current).then(function (res) {
 				if (res.status === 'error') {
 					return ErrorUtil.errorResponse(res);
 				}
-
 				_this3.endAttempt(res.value, context);
 				return _this3.triggerChange();
 			}).catch(function (e) {
@@ -2813,6 +2820,7 @@ var AssessmentStore = function (_Store) {
 			assessment.currentResponses.forEach(function (questionId) {
 				return _questionUtil2.default.clearResponse(questionId, context);
 			});
+
 			assessment.current = null;
 
 			this.updateAttempts([endAttemptResp]);
@@ -7063,9 +7071,6 @@ var ViewerApp = function (_React$Component) {
 		_this.onWindowClose = _this.onWindowClose.bind(_this);
 		_this.onVisibilityChange = _this.onVisibilityChange.bind(_this);
 
-		window.onbeforeunload = _this.onBeforeWindowClose;
-		window.onunload = _this.onWindowClose;
-
 		_this.state = state;
 		return _this;
 	}
@@ -7118,7 +7123,8 @@ var ViewerApp = function (_React$Component) {
 				_this2.state.focusState = FocusStore.getState();
 				_this2.state.lti.outcomeServiceHostname = (0, _getLtiOutcomeServiceHostname2.default)(outcomeServiceURL);
 
-				window.onbeforeunload = _this2.onWindowClose;
+				window.onbeforeunload = _this2.onBeforeWindowClose;
+				window.onunload = _this2.onWindowClose;
 
 				_this2.setState({ loading: false, requestStatus: 'ok', isPreviewing: isPreviewing }, function () {
 					Dispatcher.trigger('viewer:loaded', true);
@@ -7200,7 +7206,7 @@ var ViewerApp = function (_React$Component) {
 		}
 	}, {
 		key: 'onVisibilityChange',
-		value: function onVisibilityChange(event) {
+		value: function onVisibilityChange() {
 			var _this3 = this;
 
 			if (document.hidden) {
@@ -7229,35 +7235,13 @@ var ViewerApp = function (_React$Component) {
 
 			if (el) {
 				return container.scrollTop = ReactDOM.findDOMNode(el).getBoundingClientRect().height;
-			} else {
-				return container.scrollTop = 0;
 			}
+
+			return container.scrollTop = 0;
 		}
 
 		// === NON REACT LIFECYCLE METHODS ===
 
-	}, {
-		key: 'update',
-		value: function update(json) {
-			try {
-				var o = void 0;
-				return o = JSON.parse(json);
-			} catch (e) {
-				alert('Error parsing JSON');
-				this.setState({ model: this.state.model });
-				return;
-			}
-		}
-	}, {
-		key: 'onBack',
-		value: function onBack() {
-			return _navUtil2.default.goPrev();
-		}
-	}, {
-		key: 'onNext',
-		value: function onNext() {
-			return _navUtil2.default.goNext();
-		}
 	}, {
 		key: 'onMouseDown',
 		value: function onMouseDown(event) {
@@ -7317,10 +7301,11 @@ var ViewerApp = function (_React$Component) {
 		}
 	}, {
 		key: 'onBeforeWindowClose',
-		value: function onBeforeWindowClose(e) {
+		value: function onBeforeWindowClose() {
 			var closePrevented = false;
+			// calling this function will prevent the window from closing
 			var preventClose = function preventClose() {
-				return closePrevented = true;
+				closePrevented = true;
 			};
 
 			Dispatcher.trigger('viewer:closeAttempted', preventClose);
@@ -7333,13 +7318,13 @@ var ViewerApp = function (_React$Component) {
 		}
 	}, {
 		key: 'onWindowClose',
-		value: function onWindowClose(e) {
+		value: function onWindowClose() {
 			_apiUtil2.default.postEvent(this.state.model, 'viewer:close', '1.0.0', {});
 		}
 	}, {
 		key: 'clearPreviewScores',
 		value: function clearPreviewScores() {
-			_apiUtil2.default.clearPreviewScores(this.state.model).then(function (res) {
+			_apiUtil2.default.clearPreviewScores(this.state.model.get('draftId')).then(function (res) {
 				if (res.status === 'error' || res.error) {
 					return ModalUtil.show(_react2.default.createElement(
 						SimpleDialog,
@@ -7493,7 +7478,10 @@ var ViewerApp = function (_React$Component) {
 							),
 							_react2.default.createElement(
 								'button',
-								{ onClick: this.clearPreviewScores.bind(this) },
+								{
+									className: 'button-clear-scores',
+									onClick: this.clearPreviewScores.bind(this)
+								},
 								'Reset assessments & questions'
 							)
 						),

@@ -331,9 +331,6 @@ describe('apiutil', () => {
 
 	test('clearPreviewScores calls fetch', () => {
 		expect.assertions(4)
-		let lo = {
-			get: requestedProp => requestedProp // this will just return the prop as the value
-		}
 		let assessment = {
 			get: prop => prop
 		}
@@ -344,7 +341,7 @@ describe('apiutil', () => {
 			})
 		})
 
-		return APIUtil.clearPreviewScores(lo).then(res => {
+		return APIUtil.clearPreviewScores('mockDraftId').then(res => {
 			expect(fetch).toHaveBeenCalled()
 			let calledEndpoint = fetch.mock.calls[0][0]
 			let calledOptions = fetch.mock.calls[0][1]
@@ -359,7 +356,7 @@ describe('apiutil', () => {
 				method: 'POST'
 			})
 			expect(JSON.parse(calledOptions.body)).toEqual({
-				draftId: 'draftId'
+				draftId: 'mockDraftId'
 			})
 		})
 	})

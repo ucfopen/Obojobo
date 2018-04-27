@@ -254,7 +254,7 @@
 							"content": {
 								"size": "small",
 								"alt": "A city",
-								"url": "http://lorempixel.com/640/480/city",
+								"url": "https://lorempixel.com/640/480/city",
 								"textGroup": [
 									{
 										"text": {
@@ -289,7 +289,7 @@
 							"content": {
 								"size": "medium",
 								"alt": "A city",
-								"url": "http://lorempixel.com/640/480/city"
+								"url": "https://lorempixel.com/640/480/city"
 							},
 							"children": []
 						},
@@ -315,7 +315,7 @@
 							"content": {
 								"size": "large",
 								"alt": "A city",
-								"url": "http://lorempixel.com/640/480/city"
+								"url": "https://lorempixel.com/640/480/city"
 							},
 							"children": []
 						},
@@ -342,7 +342,7 @@
 								"width": 200,
 								"alt": "A city",
 								"size": "custom",
-								"url": "http://lorempixel.com/640/480/city"
+								"url": "https://lorempixel.com/640/480/city"
 							},
 							"children": []
 						},
@@ -369,7 +369,7 @@
 								"height": 200,
 								"alt": "A city",
 								"size": "custom",
-								"url": "http://lorempixel.com/640/480/city"
+								"url": "https://lorempixel.com/640/480/city"
 							},
 							"children": []
 						},
@@ -397,7 +397,7 @@
 								"height": 100,
 								"alt": "A city",
 								"size": "custom",
-								"url": "http://lorempixel.com/640/480/city"
+								"url": "https://lorempixel.com/640/480/city"
 							},
 							"children": []
 						},
@@ -2443,7 +2443,7 @@
 			"type": "ObojoboDraft.Sections.Assessment",
 			"content": {
 				"attempts": 3,
-				"review": "afterAttempts",
+				"review": "always",
 				"triggers": [
 					{
 						"type": "onStartAttempt",

@@ -42,7 +42,7 @@ const renderError = (ltiState, systemLabel, onClickResendScore) => (
 				case LTINetworkStates.IDLE:
 				default:
 					return (
-						<Button dangerous onClick={onClickResendScore}>
+						<Button isDangerous onClick={onClickResendScore}>
 							{ltiState.errorCount === 0 ? 'Resend score' : 'Try again anyway'}
 						</Button>
 					)

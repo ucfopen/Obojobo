@@ -293,7 +293,7 @@ exports.default = function (props) {
 			buttons: [{
 				value: 'Submit as incomplete',
 				altAction: true,
-				dangerous: true,
+				isDangerous: true,
 				onClick: onSubmit.bind(null, props.onSubmit)
 			}, 'or', {
 				value: 'Resume assessment',
@@ -882,7 +882,7 @@ var renderError = function renderError(ltiState, systemLabel, onClickResendScore
 				default:
 					return React.createElement(
 						Button,
-						{ dangerous: true, onClick: onClickResendScore },
+						{ isDangerous: true, onClick: onClickResendScore },
 						ltiState.errorCount === 0 ? 'Resend score' : 'Try again anyway'
 					);
 			}

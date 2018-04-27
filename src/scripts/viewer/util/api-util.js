@@ -94,10 +94,10 @@ var APIUtil = {
 		}).then(processJsonResults)
 	},
 
-	clearPreviewScores(lo) {
-		return APIUtil.post('/api/assessments/clear-preview-scores', {
-			draftId: lo.get('draftId')
-		}).then(processJsonResults)
+	clearPreviewScores(draftId) {
+		return APIUtil.post('/api/assessments/clear-preview-scores', { draftId }).then(
+			processJsonResults
+		)
 	}
 }
 

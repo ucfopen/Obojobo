@@ -349,6 +349,7 @@ export default class MCAssessment extends React.Component {
 		} else if (solution) {
 			explanationFooter = (
 				<Button
+					className="show-explanation-button"
 					altAction
 					onClick={this.onClickShowExplanation}
 					value="Read an explanation of the answer"

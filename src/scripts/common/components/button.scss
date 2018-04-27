@@ -37,7 +37,7 @@
 		}
 	}
 
-	&.dangerous {
+	&.is-dangerous {
 		button {
 			background-color: $color-dangerous;
 			border-bottom: 1px solid darken($color-action, 20%);
@@ -62,7 +62,7 @@
 		}
 	}
 
-	&.alt-action.dangerous {
+	&.alt-action.is-dangerous {
 		button {
 			border: 1px solid $color-dangerous;
 			border-bottom: 1px solid $color-dangerous;
