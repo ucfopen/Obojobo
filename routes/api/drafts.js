@@ -15,6 +15,8 @@ const draftTemplateXML = fs
 	.toString()
 const draftTemplate = xmlToDraftObject(draftTemplateXML, true)
 
+// Get a Draft Document Tree
+// mounted as /api/drafts/:draftId
 router.get('/:draftId', (req, res, next) => {
 	let draftId = req.params.draftId
 
@@ -31,6 +33,8 @@ router.get('/:draftId', (req, res, next) => {
 })
 
 //@TODO - Transactionify this
+// Create a Draft
+// mounted as /api/drafts/new
 router.post('/new', (req, res, next) => {
 	let newDraft = null
 	let user = null
@@ -56,6 +60,8 @@ router.post('/new', (req, res, next) => {
 })
 
 //@TODO - Ensure that you can't post to a deleted draft, ensure you can only delete your own stuff
+// Update a Draft
+// mounted as /api/drafts/:draftid
 router.post(/(\w{8}-\w{4}-\w{4}-\w{4}-\w{12})/, (req, res, next) => {
 	return req
 		.requireCurrentUser()
@@ -111,6 +117,8 @@ router.post(/(\w{8}-\w{4}-\w{4}-\w{4}-\w{12})/, (req, res, next) => {
 		})
 })
 
+// Delete a Draft
+// mounted as /api/drafts/:draftId
 router.delete('/:draftId', (req, res, next) => {
 	return req
 		.requireCurrentUser()
@@ -139,7 +147,8 @@ router.delete('/:draftId', (req, res, next) => {
 		})
 })
 
-// list all my drafts
+// List drafts
+// mounted as /api/drafts
 router.get('/', (req, res, next) => {
 	return req
 		.requireCurrentUser()

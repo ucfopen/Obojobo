@@ -6,6 +6,8 @@ const DraftModel = oboRequire('models/draft')
 const ltiUtil = oboRequire('lti')
 const viewerState = oboRequire('viewer/viewer_state')
 
+// Start a new visit
+// mounted as /api/visit/start
 router.post('/start', (req, res, next) => {
 	let user
 	let visitId

@@ -8,6 +8,8 @@ let { ACTOR_USER } = require('./api/events/caliper_constants')
 let { getSessionIds } = require('./api/events/caliper_utils')
 let db = oboRequire('db')
 
+// USED FOR LTI LAUNCH - REDIRECTS TO VISIT
+// mounted as /visit/:draftId/:page
 router.post('/:draftId/:page?', (req, res, next) => {
 	let user = null
 	let draft = null
@@ -60,6 +62,8 @@ router.post('/:draftId/:page?', (req, res, next) => {
 		})
 })
 
+// MAIN VISIT ROUTE
+// mounted as /visit/:draftId/visit/:visitId
 router.get('/:draftId/visit/:visitId*', (req, res, next) => {
 	let user = null
 	let draft = null
