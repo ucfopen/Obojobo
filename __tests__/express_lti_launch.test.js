@@ -9,7 +9,8 @@ let mockArgs = (withLtiData = false) => {
 		connection: { remoteAddress: '1.1.1.1' },
 		params: {
 			draftId: '999'
-		}
+		},
+		hostname: 'dummyhost'
 	}
 	let mockJson = jest.fn().mockImplementation(obj => {
 		return true
@@ -66,7 +67,9 @@ let mockDBForLaunch = (resolveInsert = true, resolveEvent = true) => {
 describe('lti launch middleware', () => {
 	beforeAll(() => {})
 	afterAll(() => {})
-	beforeEach(() => {})
+	beforeEach(() => {
+		jest.resetAllMocks()
+	})
 	afterEach(() => {})
 
 	it('calls next with no lti data', () => {
@@ -94,7 +97,7 @@ describe('lti launch middleware', () => {
 							roles: ['saviour', 'explorer', 'doctor']
 						},
 						draftId: '999',
-						userId: 0
+						userId: 1
 					})
 				)
 				expect(db.one.mock.calls[1][1]).toEqual(
@@ -107,7 +110,7 @@ describe('lti launch middleware', () => {
 						payload: {
 							launchId: 88
 						},
-						userId: 0
+						userId: 1
 					})
 				)
 			})
@@ -187,15 +190,57 @@ describe('lti launch middleware', () => {
 		//@TODO
 	})
 
-	test.skip('assignmentSelection simply calls next if not a LTI request', () => {
-		//@TODO
+	test('assignmentSelection simply calls next if not a LTI request', () => {
+		let [res, req, mockJson, mockStatus, mockNext] = mockArgs()
+		oboRequire('express_lti_launch').assignmentSelection(req, res, mockNext)
+		expect(mockNext).toBeCalledWith()
 	})
 
-	test.skip('assignmentSelection creates a new user and inserts an event', () => {
-		//@TODO
+	test('assignmentSelection creates a new user and inserts an event', () => {
+		expect.assertions(3)
+
+		let db = mockDBForLaunch()
+
+		let User = oboRequire('models/user')
+
+		let [res, req, mockJson, mockStatus, mockNext] = mockArgs(true)
+		return oboRequire('express_lti_launch')
+			.assignmentSelection(req, res, mockNext)
+			.then(() => {
+				expect(req.setCurrentUser).toBeCalledWith(expect.any(User))
+				expect(req.setCurrentUser).toBeCalledWith(
+					expect.objectContaining({
+						username: '2020',
+						email: 'mann@internet.com',
+						firstName: 'Hugh',
+						lastName: 'Mann',
+						roles: expect.any(Array)
+					})
+				)
+				expect(db.one.mock.calls[0][1]).toEqual(
+					expect.objectContaining({
+						action: 'lti:pickerLaunch',
+						draftId: null,
+						eventVersion: '1.0.0',
+						ip: '1.1.1.1',
+						metadata: {},
+						payload: {},
+						userId: 1
+					})
+				)
+			})
 	})
 
-	test.skip('assignmentSelection logs an error if no LTI body and calls next with an error', () => {
-		//@TODO
+	test('assignmentSelection logs an error if no LTI body and calls next with an error', () => {
+		expect.assertions(1)
+
+		mockDBForLaunch(false, false)
+
+		let [res, req, mockJson, mockStatus, mockNext] = mockArgs(true)
+		return oboRequire('express_lti_launch')
+			.assignmentSelection(req, res, mockNext)
+			.then(() => {
+				expect(mockNext).toBeCalledWith(expect.any(Error))
+			})
 	})
 })

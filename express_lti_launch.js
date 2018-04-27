@@ -43,11 +43,6 @@ let storeLtiLaunch = (draftId, user, ip, ltiBody, ltiConsumerKey) => {
 }
 
 let storeLtiPickerLaunch = (user, ip, ltiBody, ltiConsumerKey, hostname) => {
-	console.log('Elli')
-	console.log(ltiBody)
-	console.log(user)
-	console.log(ltiConsumerKey)
-
 	let { createLTIPickerEvent } = createCaliperEvent(null, hostname)
 
 	return insertEvent({
