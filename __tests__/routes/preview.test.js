@@ -1,7 +1,5 @@
 jest.mock('../../logger')
-jest.mock('../../create-visit', () => ({
-	createPreviewVisit: jest.fn()
-}))
+jest.mock('../../models/visit')
 
 describe('preview route', () => {
 	const logger = oboRequire('logger')
@@ -25,7 +23,7 @@ describe('preview route', () => {
 		redirect: jest.fn()
 	}
 	const mockNext = jest.fn()
-	const { createPreviewVisit } = require('../../create-visit')
+	const Visit = oboRequire('models/visit')
 
 	beforeAll(() => {})
 	afterAll(() => {})
@@ -34,7 +32,7 @@ describe('preview route', () => {
 		mockReq.app.get.mockReset()
 		mockRes.redirect.mockReset()
 		mockNext.mockReset()
-		createPreviewVisit.mockReturnValueOnce({ id: 'mocked-visit-id' })
+		Visit.createPreviewVisit.mockReturnValueOnce({ id: 'mocked-visit-id' })
 		oboRequire('routes/preview')
 	})
 	afterEach(() => {})
@@ -55,7 +53,7 @@ describe('preview route', () => {
 		mockReq.requireCurrentUser.mockResolvedValueOnce(user)
 
 		return routeFunction(mockReq, mockRes, mockNext).then(result => {
-			expect(createPreviewVisit).toBeCalledWith(0, 'mocked-draft-id')
+			expect(Visit.createPreviewVisit).toBeCalledWith(0, 'mocked-draft-id')
 			expect(mockRes.redirect).toBeCalledWith('/view/mocked-draft-id/visit/mocked-visit-id')
 		})
 	})

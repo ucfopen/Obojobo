@@ -1,17 +1,15 @@
 jest.mock('../../models/draft')
+jest.mock('../../models/visit')
 jest.mock('../../viewer/viewer_state')
 jest.mock('../../logger')
-jest.mock('../../create-visit', () => ({
-	createVisit: jest.fn()
-}))
 
 describe('viewer route', () => {
 	const logger = oboRequire('logger')
 	const Draft = oboRequire('models/draft')
+	const Visit = oboRequire('models/visit')
 	const User = oboRequire('models/user')
 	const GuestUser = oboRequire('models/guest_user')
 	const { mockExpressMethods, mockRouterMethods } = require('../../__mocks__/__mock_express')
-	const { createVisit } = require('../../create-visit')
 	const mockReq = {
 		requireCurrentUser: jest.fn(),
 		params: { draftId: 555 },
@@ -47,7 +45,7 @@ describe('viewer route', () => {
 		mockReq.app.get.mockReset()
 		mockRes.render.mockReset()
 		mockNext.mockReset()
-		createVisit.mockReturnValueOnce({ id: 'mocked-visit-id' })
+		Visit.createVisit.mockReturnValueOnce({ id: 'mocked-visit-id' })
 		oboRequire('routes/viewer')
 	})
 	afterEach(() => {})
@@ -134,7 +132,7 @@ describe('viewer route', () => {
 		mockReq.requireCurrentUser.mockResolvedValueOnce(new User())
 
 		return routeFunction(mockReq, mockRes, mockNext).then(result => {
-			expect(createVisit).toBeCalledWith(0, 555, 'mocked-resource-link-id', 'mocked-launch-id')
+			expect(Visit.createVisit).toBeCalledWith(0, 555, 'mocked-resource-link-id', 'mocked-launch-id')
 			expect(mockRes.redirect).toBeCalledWith('/view/555/visit/mocked-visit-id')
 		})
 	})

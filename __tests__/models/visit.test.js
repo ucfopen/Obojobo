@@ -1,8 +1,8 @@
-jest.mock('../db')
+jest.mock('../../db')
 
-describe('create-visit', () => {
+describe('Visit Model', () => {
 	const db = oboRequire('db')
-	const { createVisit, createPreviewVisit } = require('../create-visit')
+	const Visit = oboRequire('models/visit')
 
 	beforeEach(() => {
 		jest.resetAllMocks()
@@ -15,7 +15,7 @@ describe('create-visit', () => {
 		db.one.mockResolvedValueOnce({ id: 'mocked-draft-content-id' })
 		db.one.mockResolvedValueOnce({ id: 'resulting-visit-id' })
 
-		return createVisit('user-id', 'draft-id', 'resource-link-id', 'launch-id').then(result => {
+		return Visit.createVisit('user-id', 'draft-id', 'resource-link-id', 'launch-id').then(result => {
 			expect(db.none.mock.calls[0][1]).toEqual({
 				draftId: 'draft-id',
 				userId: 'user-id'
@@ -42,7 +42,7 @@ describe('create-visit', () => {
 		db.one.mockResolvedValueOnce({ id: 'mocked-draft-content-id' })
 		db.one.mockResolvedValueOnce({ id: 'resulting-visit-id' })
 
-		return createPreviewVisit('user-id', 'draft-id').then(result => {
+		return Visit.createPreviewVisit('user-id', 'draft-id').then(result => {
 			expect(db.none.mock.calls[0][1]).toEqual({
 				draftId: 'draft-id',
 				userId: 'user-id'

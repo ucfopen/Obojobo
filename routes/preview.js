@@ -1,7 +1,7 @@
 var express = require('express')
 var router = express.Router()
 let logger = oboRequire('logger')
-let { createPreviewVisit } = require('../create-visit')
+const Visit = oboRequire('models/visit')
 
 // Start a preview - redirects to visit route
 // mounts at /preview/:draftId
@@ -11,7 +11,7 @@ router.get('/:draftId', (req, res, next) => {
 		.then(currentUser => {
 			if (!currentUser.canViewEditor) throw new Error('Not authorized to preview')
 
-			return createPreviewVisit(currentUser.id, req.params.draftId)
+			return Visit.createPreviewVisit(currentUser.id, req.params.draftId)
 		})
 		.then(visit => new Promise((resolve, reject) => {
 			// Saving session here solves #128

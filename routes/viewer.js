@@ -1,12 +1,12 @@
 var express = require('express')
 var router = express.Router()
 let DraftModel = oboRequire('models/draft')
+const Visit = oboRequire('models/visit')
 let logger = oboRequire('logger')
 let insertEvent = oboRequire('insert_event')
 let createCaliperEvent = oboRequire('routes/api/events/create_caliper_event')
 let { ACTOR_USER } = require('./api/events/caliper_constants')
 let { getSessionIds } = require('./api/events/caliper_utils')
-let { createVisit } = require('../create-visit')
 let db = oboRequire('db')
 
 // launch lti view of draft - redirects to visit route
@@ -15,7 +15,7 @@ router.post('/:draftId/:page?', (req, res, next) => {
 	return req
 		.requireCurrentUser()
 		.then(currentUser => {
-			return createVisit(
+			return Visit.createVisit(
 				currentUser.id,
 				req.params.draftId,
 				req.lti.body.resource_link_id,
