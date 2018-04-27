@@ -5,6 +5,8 @@ var insertEvent = oboRequire('insert_event')
 var createCaliperEvent = require('./events/create_caliper_event')
 let logger = oboRequire('logger')
 
+// Create A New Event
+// mounted as /api/events
 router.post('/', (req, res, next) => {
 	return req
 		.requireCurrentUser()

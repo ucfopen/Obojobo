@@ -53,6 +53,8 @@ const getViewerState = (userId, draftId) => {
 	return viewerState.get(userId, draftId)
 }
 
+// Start a new visit
+// mounted as /api/visit/start
 router.post('/start', (req, res, next) => {
 	let user
 	let visit
