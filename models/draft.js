@@ -61,7 +61,7 @@ class Draft {
 			)
 			.then(result => {
 				result.content.draftId = result.id
-				result.content._rev = result.revision
+				result.content._rev = result.version
 				return new Draft(result.content)
 			})
 			.catch(error => {
