@@ -1,7 +1,7 @@
 class MockVisit {
-	constructor(visitProps){
+	constructor(visitProps) {
 		// expand all the visitProps onto this object
-		for(let prop in visitProps){
+		for (let prop in visitProps) {
 			this[prop] = visitProps[prop]
 		}
 	}

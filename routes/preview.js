@@ -13,13 +13,16 @@ router.get('/:draftId', (req, res, next) => {
 
 			return Visit.createPreviewVisit(currentUser.id, req.params.draftId)
 		})
-		.then(visit => new Promise((resolve, reject) => {
-			// Saving session here solves #128
-			req.session.save(err => {
-				if (err) return reject(err)
-				resolve(visit)
-			})
-		}))
+		.then(
+			visit =>
+				new Promise((resolve, reject) => {
+					// Saving session here solves #128
+					req.session.save(err => {
+						if (err) return reject(err)
+						resolve(visit)
+					})
+				})
+		)
 		.then(visit => {
 			res.redirect(`/view/${req.params.draftId}/visit/${visit.id}`)
 		})

@@ -4,8 +4,15 @@ let logger = require('../logger.js')
 // use to initiate a new visit for a draft
 // this will deactivate old visits, preventing
 // them from being used again
-let deactivateOldVisitsAndCreateNewVisit = (userId, draftId, resourceLinkId, launchId, isPreview) => {
-	return db.none(
+let deactivateOldVisitsAndCreateNewVisit = (
+	userId,
+	draftId,
+	resourceLinkId,
+	launchId,
+	isPreview
+) => {
+	return db
+		.none(
 			// deactivate all my visits for this draft
 			`UPDATE visits
 			SET is_active = false
@@ -16,46 +23,50 @@ let deactivateOldVisitsAndCreateNewVisit = (userId, draftId, resourceLinkId, lau
 				userId
 			}
 		)
-		.then(() => db.one(
-			// get id of the newest version of the draft
-			`SELECT id
+		.then(() =>
+			db.one(
+				// get id of the newest version of the draft
+				`SELECT id
 			FROM drafts_content
 			WHERE draft_id = $[draftId]
 			ORDER BY created_at DESC
 			LIMIT 1`,
-			{
-				draftId
-			}
-		))
-		.then(draftsContent => db.one(
-			// Create a new visit
-			`INSERT INTO visits
+				{
+					draftId
+				}
+			)
+		)
+		.then(draftsContent =>
+			db.one(
+				// Create a new visit
+				`INSERT INTO visits
 			(draft_id, draft_content_id, user_id, launch_id, resource_link_id, is_active, is_preview)
 			VALUES ($[draftId], $[draftContentId], $[userId], $[launchId], $[resourceLinkId], true, $[isPreview])
 			RETURNING id`,
-			{
-				draftId,
-				draftContentId: draftsContent.id,
-				userId,
-				resourceLinkId,
-				launchId,
-				isPreview
-			}
-		))
+				{
+					draftId,
+					draftContentId: draftsContent.id,
+					userId,
+					resourceLinkId,
+					launchId,
+					isPreview
+				}
+			)
+		)
 }
 
-
 class Visit {
-	constructor(visitProps){
+	constructor(visitProps) {
 		// expand all the visitProps onto this object
-		for(let prop in visitProps){
+		for (let prop in visitProps) {
 			this[prop] = visitProps[prop]
 		}
 	}
 
 	static fetchById(visitId) {
-		return db.one(
-			`
+		return db
+			.one(
+				`
 			SELECT is_active, is_preview, draft_content_id
 			FROM visits
 			WHERE id = $[visitId]
@@ -63,23 +74,24 @@ class Visit {
 			ORDER BY created_at DESC
 			LIMIT 1
 		`,
-			{visitId}
-		).then(result => new Visit(result))
-		.catch(error => {
-			logger.error('Visit fetchById Error', error.message)
-			return Promise.reject(error)
-		})
+				{ visitId }
+			)
+			.then(result => new Visit(result))
+			.catch(error => {
+				logger.error('Visit fetchById Error', error.message)
+				return Promise.reject(error)
+			})
 	}
 
 	// create a student visit
 	// deactivates all previous visits
-	static createVisit(userId, draftId, resourceLinkId, launchId){
+	static createVisit(userId, draftId, resourceLinkId, launchId) {
 		return deactivateOldVisitsAndCreateNewVisit(userId, draftId, resourceLinkId, launchId, false)
 	}
 
 	// create a preview visit
 	// deactivates all previous visits
-	static createPreviewVisit(userId, draftId){
+	static createPreviewVisit(userId, draftId) {
 		return deactivateOldVisitsAndCreateNewVisit(userId, draftId, null, null, true)
 	}
 }

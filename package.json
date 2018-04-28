@@ -32,14 +32,14 @@
 		"test": "jest --watch",
 		"test:ci": "CI=true jest --coverage --coverageReporters text cobertura",
 		"precommit": "yarn test:ci && lint-staged",
-		"prettier:run":"prettier --write '{__{tests,mocks}__,bin,config,migrations,models,public,routes,views}/**/*.{js,scss}'",
-		"prettier:debug":"prettier -l '{__{tests,mocks}__,bin,config,migrations,models,public,routes,views}/**/*.{js,scss}'"
+		"prettier:run":"prettier --write '{__{tests,mocks}__,bin,config,migrations,models,routes,views}/**/*.{js,scss}'",
+		"prettier:debug":"prettier -l '{__{tests,mocks}__,bin,config,migrations,models,routes,views}/**/*.{js,scss}'"
 	},
 	"engines": {
 		"node": "^6.9.4"
 	},
 	"lint-staged": {
-		"{__{tests,mocks}__,bin,config,migrations,models,public,routes,views}/**/*.{js,scss}": [
+		"{__{tests,mocks}__,bin,config,migrations,models,routes,views}/**/*.{js,scss}": [
 			"yarn prettier:run",
 			"git add"
 		]

@@ -1,5 +1,5 @@
-'use strict';
+'use strict'
 
-const express = jest.genMockFromModule('express');
+const express = jest.genMockFromModule('express')
 
-module.exports = express;
+module.exports = express

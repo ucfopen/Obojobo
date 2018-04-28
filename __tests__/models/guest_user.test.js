@@ -1,12 +1,10 @@
 jest.mock('../../db')
 
-
 describe('guest user model', () => {
-
 	beforeAll(() => {})
 	afterAll(() => {})
-	beforeEach(() => {});
-	afterEach(() => {});
+	beforeEach(() => {})
+	afterEach(() => {})
 
 	it('extends user', () => {
 		let GuestUser = oboRequire('models/guest_user')
@@ -22,7 +20,7 @@ describe('guest user model', () => {
 		expect(g.isGuest()).toBe(true)
 	})
 
-	it('throws error using saveOrCreate', () =>{
+	it('throws error using saveOrCreate', () => {
 		let GuestUser = oboRequire('models/guest_user')
 		let g = new GuestUser()
 
@@ -31,12 +29,11 @@ describe('guest user model', () => {
 		}).toThrowError('Cannot save or create Guest User')
 	})
 
-	it('throws error using fetchById', () =>{
+	it('throws error using fetchById', () => {
 		let GuestUser = oboRequire('models/guest_user')
 
 		expect(() => {
 			GuestUser.fetchById(44)
 		}).toThrowError('Cannot fetch Guest User')
 	})
-
 })
