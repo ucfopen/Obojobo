@@ -64,12 +64,14 @@ router.post('/start', (req, res, next) => {
 			// expand results
 			[visit, viewState, { draft, visitStartReturnExtensionsProps }] = results
 
-			if (visit.draft_content_id !== draft.root.node._rev) {
-				throw new Error('Visit for older draft version!')
-			}
-
-			// load lti launch data if not in preview mode
-			if (visit.is_preview !== true) {
+			if (visit.is_preview === false) {
+				if (visit.draft_content_id !== draft.root.node._rev) {
+					// error so the student starts a new view w/ newer version
+					// this check doesn't happen in preview mode so authors
+					// can reload the page to see changes easier
+					throw new Error('Visit for older draft version!')
+				}
+				// load lti launch data
 				return ltiUtil.retrieveLtiLaunch(user.id, draftId, 'START_VISIT_API')
 			}
 		})
