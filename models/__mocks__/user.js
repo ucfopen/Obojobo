@@ -2,17 +2,15 @@ let permissions = oboRequire('config').permissions
 let saveOrCreateCallbackFn = jest.fn()
 
 class MockUser {
-	constructor(
-		{
-			id = 0,
-			firstName = 'Guest',
-			lastName = 'Guest',
-			email = 'guest@obojobo.ucf.edu',
-			username = 'guest',
-			createdAt = Date.now(),
-			roles = []
-		} = {}
-	) {
+	constructor({
+		id = 0,
+		firstName = 'Guest',
+		lastName = 'Guest',
+		email = 'guest@obojobo.ucf.edu',
+		username = 'guest',
+		createdAt = Date.now(),
+		roles = []
+	} = {}) {
 		this.id = id
 		this.firstName = firstName
 		this.lastName = lastName

@@ -97,10 +97,12 @@ describe('api visits route', () => {
 		mockReq.requireCurrentUser.mockResolvedValueOnce(new User())
 		mockReq.body = { draftId: 1, visitId: 9 }
 
-		Visit.fetchById.mockResolvedValueOnce(new Visit({
-			is_preview: false,
-			draft_content_id: 'mocked-draft-content-id'
-		}))
+		Visit.fetchById.mockResolvedValueOnce(
+			new Visit({
+				is_preview: false,
+				draft_content_id: 'mocked-draft-content-id'
+			})
+		)
 
 		// mock the draft
 		Draft.fetchById.mockResolvedValueOnce({
@@ -144,10 +146,12 @@ describe('api visits route', () => {
 		}
 		ltiUtil.retrieveLtiLaunch.mockResolvedValueOnce(launch)
 
-		Visit.fetchById.mockResolvedValueOnce(new Visit({
-			is_preview: false,
-			draft_content_id: 'mocked-old-draft-content-id'
-		}))
+		Visit.fetchById.mockResolvedValueOnce(
+			new Visit({
+				is_preview: false,
+				draft_content_id: 'mocked-old-draft-content-id'
+			})
+		)
 
 		return startVisitRoute(mockReq, mockRes, mockNext).then(result => {
 			expect(logger.error).toBeCalledWith(new Error('Visit for older draft version!'))
@@ -178,10 +182,12 @@ describe('api visits route', () => {
 		}
 		ltiUtil.retrieveLtiLaunch.mockResolvedValueOnce(launch)
 
-		Visit.fetchById.mockResolvedValueOnce(new Visit({
-			is_preview: true,
-			draft_content_id: 'mocked-old-draft-content-id'
-		}))
+		Visit.fetchById.mockResolvedValueOnce(
+			new Visit({
+				is_preview: true,
+				draft_content_id: 'mocked-old-draft-content-id'
+			})
+		)
 
 		return startVisitRoute(mockReq, mockRes, mockNext).then(result => {
 			expect(mockRes.success).toBeCalled()
@@ -197,11 +203,13 @@ describe('api visits route', () => {
 		mockReq.body = { visitId: 9, draftId: 1 }
 
 		// resolve db.one lookup of visit
-		Visit.fetchById.mockResolvedValueOnce(new Visit({
-			is_active: true,
-			is_preview: false,
-			draft_content_id: 'mocked-draft-content-id'
-		}))
+		Visit.fetchById.mockResolvedValueOnce(
+			new Visit({
+				is_active: true,
+				is_preview: false,
+				draft_content_id: 'mocked-draft-content-id'
+			})
+		)
 
 		Draft.fetchById.mockResolvedValueOnce({
 			yell: jest.fn(),
@@ -230,11 +238,13 @@ describe('api visits route', () => {
 		mockReq.body = { visitId: 9, draftId: 1 }
 
 		// resolve db.one lookup of visit
-		Visit.fetchById.mockResolvedValueOnce(new Visit({
-			is_active: true,
-			is_preview: false,
-			draft_content_id: 'draft-content-id'
-		}))
+		Visit.fetchById.mockResolvedValueOnce(
+			new Visit({
+				is_active: true,
+				is_preview: false,
+				draft_content_id: 'draft-content-id'
+			})
+		)
 
 		// resolve ltiLaunch lookup
 		let launch = {
@@ -262,11 +272,13 @@ describe('api visits route', () => {
 		mockReq.body = { draftId: 8, visitId: 9 }
 
 		// resolve db.one lookup of visit
-		Visit.fetchById.mockResolvedValueOnce(new Visit({
-			is_active: true,
-			is_preview: false,
-			draft_content_id: 'draft-content-id'
-		}))
+		Visit.fetchById.mockResolvedValueOnce(
+			new Visit({
+				is_active: true,
+				is_preview: false,
+				draft_content_id: 'draft-content-id'
+			})
+		)
 
 		// resolve ltiLaunch lookup
 		let launch = {
@@ -315,11 +327,13 @@ describe('api visits route', () => {
 		mockReq.body = { draftId: 8, visitId: 9 }
 
 		// resolve db.one lookup of visit
-		Visit.fetchById.mockResolvedValueOnce(new Visit({
-			is_active: true,
-			is_preview: true,
-			draft_content_id: 'draft-content-id'
-		}))
+		Visit.fetchById.mockResolvedValueOnce(
+			new Visit({
+				is_active: true,
+				is_preview: true,
+				draft_content_id: 'draft-content-id'
+			})
+		)
 
 		// resolve viewerState.get
 		viewerState.get.mockResolvedValueOnce('view state')

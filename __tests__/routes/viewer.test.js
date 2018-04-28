@@ -132,7 +132,12 @@ describe('viewer route', () => {
 		mockReq.requireCurrentUser.mockResolvedValueOnce(new User())
 
 		return routeFunction(mockReq, mockRes, mockNext).then(result => {
-			expect(Visit.createVisit).toBeCalledWith(0, 555, 'mocked-resource-link-id', 'mocked-launch-id')
+			expect(Visit.createVisit).toBeCalledWith(
+				0,
+				555,
+				'mocked-resource-link-id',
+				'mocked-launch-id'
+			)
 			expect(mockRes.redirect).toBeCalledWith('/view/555/visit/mocked-visit-id')
 		})
 	})

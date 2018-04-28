@@ -62,7 +62,7 @@ router.post('/start', (req, res, next) => {
 		})
 		.then(results => {
 			// expand results
-			[visit, viewState, { draft, visitStartReturnExtensionsProps }] = results
+			;[visit, viewState, { draft, visitStartReturnExtensionsProps }] = results
 
 			if (visit.is_preview === false) {
 				if (visit.draft_content_id !== draft.root.node._rev) {
@@ -77,12 +77,14 @@ router.post('/start', (req, res, next) => {
 		})
 		.then(launch => {
 			logger.log(
-				`VISIT: Start visit success for visitId="${visitId}", draftId="${draftId}", userId="${user.id}"`
+				`VISIT: Start visit success for visitId="${visitId}", draftId="${draftId}", userId="${
+					user.id
+				}"`
 			)
 
 			// Build lti data for return
 			let lti = { lis_outcome_service_url: null }
-			if(visit.is_preview === false){
+			if (visit.is_preview === false) {
 				lti.lis_outcome_service_url = launch.reqVars.lis_outcome_service_url
 			}
 
