@@ -38,6 +38,7 @@ app.on('mount', app => {
 	registerChunks(app)
 
 	// =========== ROUTING & CONTROLERS ===========
+	app.use('/preview', oboRequire('routes/preview'))
 	app.use('/view', oboRequire('routes/viewer'))
 	app.use('/editor', oboRequire('routes/editor'))
 	app.use('/lti', oboRequire('routes/lti'))
