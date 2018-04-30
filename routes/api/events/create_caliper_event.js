@@ -14,10 +14,10 @@ let NavigationActions = require('caliper-js-public/src/actions/navigationActions
 let NavigationEvent = require('caliper-js-public/src/events/navigationEvent')
 let SessionEvent = require('caliper-js-public/src/events/sessionEvent')
 let ViewEvent = require('caliper-js-public/src/events/viewEvent')
-// let ToolUseEvent = require('caliper-js-public/src/events/toolUseEvent')
 
-// This version doesn't have grade event:
+// This version doesn't have grade event or ToolUse event:
 // let GradeEvent = require('caliper-js-public/src/events/gradeEvent')
+// let ToolUseEvent = require('caliper-js-public/src/events/toolUseEvent')
 
 // @TODO: Remove this when we migrate to using the 1.1 Caliper library
 // (Will potentially want to retain the code that strips out null values)
@@ -496,7 +496,7 @@ const caliperEventFactory = (req, host = null, isFromReq = false) => {
 			let options = assignCaliperOptions(obj)
 
 			let { actor, extensions } = obj
-			let caliperEvent = createEvent(Event, actor, IRI, options) // TODO should be ToolUse Event
+			let caliperEvent = createEvent(Event, actor, IRI, options) //@TODO should be ToolUse Event
 
 			caliperEvent.setType('ToolUseEvent')
 			caliperEvent.setAction('Used')
