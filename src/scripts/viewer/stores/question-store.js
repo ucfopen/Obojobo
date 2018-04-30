@@ -138,7 +138,7 @@ class QuestionStore extends Store {
 			'question:scoreSet': payload => {
 				let scoreId = UUID()
 
-				if (!payload.value[payload.value.context]) this.state.scores[payload.value.context] = {}
+				if (!this.state.scores[payload.value.context]) this.state.scores[payload.value.context] = {}
 
 				this.state.scores[payload.value.context][payload.value.itemId] = {
 					id: scoreId,
