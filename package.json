@@ -30,7 +30,7 @@
 		"devXmlParser:nodemodules": "cd ./devsrc/obojobo-draft-xml-parser && yarn",
 		"devXmlParser:link":"cd ./devsrc/obojobo-draft-xml-parser && yarn link && cd ../.. && yarn link obojobo-draft-xml-parser",
 		"test": "jest --watch",
-		"test:ci": "CI=true jest --coverage --coverageReporters text cobertura",
+		"test:ci": "CI=true jest --ci --coverage --coverageReporters text-summary cobertura",
 		"precommit": "yarn test:ci && lint-staged",
 		"prettier:run":"prettier --write '{__{tests,mocks}__,bin,config,migrations,models,routes,views}/**/*.{js,scss}'",
 		"prettier:debug":"prettier -l '{__{tests,mocks}__,bin,config,migrations,models,routes,views}/**/*.{js,scss}'"
@@ -108,7 +108,6 @@
 		]
 	},
 	"jest": {
-		"verbose": true,
 		"setupTestFrameworkScriptFile": "./setup_tests.js",
 		"collectCoverageFrom": [
 			"*.js",
