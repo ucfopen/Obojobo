@@ -3,6 +3,7 @@ let router = express.Router()
 let config = oboRequire('config')
 
 // LTI Instructions
+// mounted as /lti/
 router.get('/', (req, res, next) => {
 	let hostname = config.general.hostname
 	res.render('lti_launch_static', {
@@ -16,6 +17,7 @@ router.get('/', (req, res, next) => {
 })
 
 // LTI Configuration
+// mounted as /lti/config.xml
 router.get('/config.xml', (req, res, next) => {
 	res.type('xml')
 
@@ -33,6 +35,8 @@ router.get('/config.xml', (req, res, next) => {
 	res.render('lti_config_xml', viewParams)
 })
 
+// Canvas LMS Course Navigation launch
+// mounted as /lti/canvas/course_navigation
 router.post('/canvas/course_navigation', (req, res, next) => {
 	return req
 		.getCurrentUser(true)

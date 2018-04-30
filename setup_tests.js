@@ -34,6 +34,11 @@ fs.__setMockFileContents(
 )
 fs.__setMockFileContents(emptyXmlPath, emptyXmlStream)
 
+// use this to wrap a class with a virtual mock
+// mockVirtual('./express_load_balancer_helper')
+// let elbh = require('./express_load_balancer_helper')
+// elbh.myFunc = jest.fn()
+// then when an include requires elbh, it'll get your mock
 global.mockVirtual = mock => {
 	let mockFunction = jest.fn()
 	jest.mock(
@@ -44,4 +49,16 @@ global.mockVirtual = mock => {
 		{ virtual: true }
 	)
 	return mockFunction
+}
+
+// make sure all Date objects use a static date
+global.mockStaticDate = () => {
+	const testDate = new Date('2016-09-22T16:57:14.500Z')
+	Date = class extends Date {
+		constructor() {
+			super()
+			return testDate
+		}
+	}
+	return testDate
 }

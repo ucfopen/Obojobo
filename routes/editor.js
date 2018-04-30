@@ -3,8 +3,6 @@ var router = express.Router()
 var db = require('../db')
 
 let displayEditor = (req, res, next) => {
-	// let oboGlobals = new OboGlobals();
-
 	return req
 		.getCurrentUser(true)
 		.then(user => {
@@ -44,6 +42,8 @@ let displayEditor = (req, res, next) => {
 		})
 }
 
+// Display the Document Editor
+// mounted as /editor
 router.post('/', displayEditor)
 router.get('/', displayEditor)
 

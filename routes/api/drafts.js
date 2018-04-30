@@ -8,12 +8,15 @@ const xmlToDraftObject = require('obojobo-draft-xml-parser/xml-to-draft-object')
 
 const insertNewDraft = require('./drafts/insert_new_draft')
 const updateDraft = require('./drafts/update_draft')
+const getDuplicateId = require('./drafts/get_duplicate_obo_node_id')
 
 const draftTemplateXML = fs
 	.readFileSync('./node_modules/obojobo-draft-document-engine/documents/empty.xml')
 	.toString()
 const draftTemplate = xmlToDraftObject(draftTemplateXML, true)
 
+// Get a Draft Document Tree
+// mounted as /api/drafts/:draftId
 router.get('/:draftId', (req, res, next) => {
 	let draftId = req.params.draftId
 
@@ -30,6 +33,8 @@ router.get('/:draftId', (req, res, next) => {
 })
 
 //@TODO - Transactionify this
+// Create a Draft
+// mounted as /api/drafts/new
 router.post('/new', (req, res, next) => {
 	let newDraft = null
 	let user = null
@@ -55,6 +60,8 @@ router.post('/new', (req, res, next) => {
 })
 
 //@TODO - Ensure that you can't post to a deleted draft, ensure you can only delete your own stuff
+// Update a Draft
+// mounted as /api/drafts/:draftid
 router.post(/(\w{8}-\w{4}-\w{4}-\w{4}-\w{12})/, (req, res, next) => {
 	return req
 		.requireCurrentUser()
@@ -91,6 +98,14 @@ router.post(/(\w{8}-\w{4}-\w{4}-\w{4}-\w{12})/, (req, res, next) => {
 					res.badInput('Posting draft failed - format unexpected')
 			}
 
+			// Scan through json for identical ids
+			let duplicateId = getDuplicateId(reqInput)
+			if (duplicateId) {
+				logger.error('Posting draft failed - duplicate id "' + duplicateId + '"')
+				res.badInput('Posting draft failed - duplicate id "' + duplicateId + '"')
+				return
+			}
+
 			return updateDraft(req.params[0], reqInput, xml || null).then(id => {
 				res.success({ id })
 			})
@@ -102,6 +117,8 @@ router.post(/(\w{8}-\w{4}-\w{4}-\w{4}-\w{12})/, (req, res, next) => {
 		})
 })
 
+// Delete a Draft
+// mounted as /api/drafts/:draftId
 router.delete('/:draftId', (req, res, next) => {
 	return req
 		.requireCurrentUser()
@@ -130,7 +147,8 @@ router.delete('/:draftId', (req, res, next) => {
 		})
 })
 
-// list all my drafts
+// List drafts
+// mounted as /api/drafts
 router.get('/', (req, res, next) => {
 	return req
 		.requireCurrentUser()

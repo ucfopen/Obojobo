@@ -5,9 +5,9 @@ var type
 var seed
 
 /**
-  * We receive the dbmigrate dependency from dbmigrate initially.
-  * This enables us to not have to rely on NODE_PATH.
-  */
+ * We receive the dbmigrate dependency from dbmigrate initially.
+ * This enables us to not have to rely on NODE_PATH.
+ */
 exports.setup = function(options, seedLink) {
 	dbm = options.dbmigrate
 	type = dbm.dataType
@@ -36,6 +36,7 @@ exports.up = function(db) {
         'success',
         'not_attempted_no_outcome_service_for_launch',
 				'not_attempted_score_is_null',
+				'not_attempted_preview_mode',
 				'error_replace_result_failed',
         'error_no_assessment_score_found',
         'error_no_secret_for_key',
@@ -60,7 +61,8 @@ exports.up = function(db) {
 				'error_invalid',
 				'ok_null_score_not_sent',
 				'ok_no_outcome_service',
-				'ok_gradebook_matches_assessment_score'
+				'ok_gradebook_matches_assessment_score',
+				'ok_preview_mode'
       );`)
 		})
 		.then(result => {
@@ -102,5 +104,5 @@ exports.down = function(db) {
 }
 
 exports._meta = {
-	version: 6
+	version: 7
 }

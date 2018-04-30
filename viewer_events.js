@@ -22,7 +22,7 @@ oboEvents.on('client:nav:toggle', (event, req) => {
 	setNavOpen(event.userId, event.draftId, event.payload.open)
 })
 
-function setNavOpen(userId, draftId, value) {
+const setNavOpen = (userId, draftId, value) => {
 	viewerState.set(userId, draftId, 'nav:isOpen', 1, value)
 }
 

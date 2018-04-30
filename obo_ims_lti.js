@@ -14,7 +14,7 @@ module.exports = ltiMiddleware({
 		let secret = ltiUtil.findSecretForKey(key)
 
 		if (!secret) {
-			logger.error('LTI unable to find secret for key', err)
+			logger.error('LTI unable to find secret for key')
 			return callback(new Error('Invalid LTI credentials'))
 		}
 

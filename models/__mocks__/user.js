@@ -1,17 +1,16 @@
 let permissions = oboRequire('config').permissions
+let saveOrCreateCallbackFn = jest.fn()
 
 class MockUser {
-	constructor(
-		{
-			id = 1,
-			firstName = 'Guest',
-			lastName = 'Guest',
-			email = 'guest@obojobo.ucf.edu',
-			username = 'guest',
-			createdAt = Date.now(),
-			roles = []
-		} = {}
-	) {
+	constructor({
+		id = 1,
+		firstName = 'Guest',
+		lastName = 'Guest',
+		email = 'guest@obojobo.ucf.edu',
+		username = 'guest',
+		createdAt = Date.now(),
+		roles = []
+	} = {}) {
 		this.id = id
 		this.firstName = firstName
 		this.lastName = lastName
@@ -34,7 +33,19 @@ class MockUser {
 	}
 
 	saveOrCreate() {
-		return Promise.resolve(this)
+		return Promise.resolve(this).then(user => {
+			// you can throw errors or just use this to get notified
+			saveOrCreateCallbackFn(user)
+			return user
+		})
+	}
+
+	static set saveOrCreateCallback(fn) {
+		saveOrCreateCallbackFn = fn
+	}
+
+	static get saveOrCreateCallback() {
+		return saveOrCreateCallbackFn
 	}
 }
 

@@ -1,8 +1,9 @@
 var db = require('../../../db')
 
 module.exports = (draftId, content, xml) => {
-	return (
-		db.one(`
+	return db
+		.one(
+			`
 			INSERT INTO drafts_content(
 				draft_id,
 				content,
@@ -14,13 +15,14 @@ module.exports = (draftId, content, xml) => {
 				$[xml]
 			)
 			RETURNING id
-		`, {
-			draftId: draftId,
-			content: content,
-			xml: xml
-		})
+		`,
+			{
+				draftId: draftId,
+				content: content,
+				xml: xml
+			}
+		)
 		.then(result => {
 			return result.id
 		})
-	)
 }
