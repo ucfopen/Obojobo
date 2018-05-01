@@ -46,6 +46,7 @@
 			#button-save-draft { position: absolute; left:50%; bottom: 5px; transform: translate(-50%);}
 			.draft-id { display: block; font-size: 8pt; opacity: 0.5; margin-bottom: 15px; pointer-events: none;  }
 			.link-preview { font-size: 9pt; }
+			.link-url { font-size: 9pt; text-decoration: underline;}
 			.link-delete, .link-delete:visited { color: gray; position: absolute; right: 0; top:10px; text-decoration:none; font-size: 11pt; }
 			.link-delete:hover { color:red; }
 			.add-question-btn { position: absolute; top: 5px; left: 341px; }
@@ -86,6 +87,7 @@
 									<span class="draft-id"><%= draft.draftId %></span>
 								<% } %>
 								<a target="_blank" class="link-preview" href="/preview/<%= draft.draftId %>">Preview</a>
+								<a data-id="<%= draft.draftId %>" class="link-url">Get URL</a>
 								<a class="link-delete" data-id="<%= draft.draftId %>">&times;</a>
 						</li>
 					<% }) %>
@@ -134,6 +136,15 @@
 			{
 				delLinks[i].addEventListener('click', function(event) {
 					del(event.target.getAttribute('data-id'))
+				})
+			}
+
+			// wire up get url buttons
+			var urlLinks = document.getElementsByClassName('link-url')
+			for(var i = 0; i < urlLinks.length; i++)
+			{
+				urlLinks[i].addEventListener('click', function(event) {
+					getURL(event.target.getAttribute('data-id'))
 				})
 			}
 
@@ -274,6 +285,30 @@
 					alert('Error: ' + error.toString())
 					console.error(error)
 				})
+			}
+
+			function getURL(draftId) {
+				let str = window.location.origin + '/view/' + draftId
+
+				// Loads the url into an invisible textarea
+				// to copy it to the clipboard
+				const el = document.createElement('textarea')
+				el.value = str
+				el.setAttribute('readonly', '')
+				el.style.position = 'absolute'
+				el.style.left = '-9999px'
+				document.body.appendChild(el)
+				const selected = document.getSelection().rangeCount > 0 ?
+					document.getSelection().getRangeAt(0) : false
+				el.select()
+				document.execCommand('copy')
+				document.body.removeChild(el)
+				if (selected) {
+					document.getSelection().removeAllRanges()
+					document.getSelection().addRange(selected)
+				}
+
+				let response = alert('Copied ' + str + ' to the clipboard')
 			}
 
 			function postCurrentlyEditingDraft(draftContent) {
