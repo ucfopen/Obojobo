@@ -179,16 +179,8 @@ var AssessmentUtil = {
 	},
 
 	getNumCorrect(questionScores) {
-		return questionScores.reduce(
-			function(acc, questionScore) {
-				let n = 0
-				if (parseInt(questionScore.score, 10) === 100) {
-					n = 1
-				}
-				return parseInt(acc, 10) + n
-			},
-			[0]
-		)
+		const count100s = (acc, qs) => acc + (parseInt(qs.score, 10) === 100 ? 1 : 0)
+		return questionScores.reduce(count100s, 0)
 	},
 
 	findHighestAttempts(attempts, scoreProperty) {

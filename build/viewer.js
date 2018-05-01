@@ -1154,13 +1154,10 @@ var AssessmentUtil = {
 		return assessment.attempts.length;
 	},
 	getNumCorrect: function getNumCorrect(questionScores) {
-		return questionScores.reduce(function (acc, questionScore) {
-			var n = 0;
-			if (parseInt(questionScore.score, 10) === 100) {
-				n = 1;
-			}
-			return parseInt(acc, 10) + n;
-		}, [0]);
+		var count100s = function count100s(acc, qs) {
+			return acc + (parseInt(qs.score, 10) === 100 ? 1 : 0);
+		};
+		return questionScores.reduce(count100s, 0);
 	},
 	findHighestAttempts: function findHighestAttempts(attempts, scoreProperty) {
 		if (attempts.length === 0) return [];
