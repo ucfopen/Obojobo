@@ -71,7 +71,7 @@ obo.lti = (function() {
 			return
 		}
 
-		var terms = searchTerms.split(' ')
+		var terms = searchTerms.toLowerCase().split(' ')
 		var numTerms = terms.length
 
 		var len = items.length
@@ -91,6 +91,7 @@ obo.lti = (function() {
 				).toLowerCase()
 			}
 			ss = searchStrings[key]
+			console.log(ss)
 
 			numMatches = 0
 			for (var j = 0; j < numTerms; j++) {
