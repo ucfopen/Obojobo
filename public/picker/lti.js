@@ -71,7 +71,7 @@ obo.lti = (function() {
 			return
 		}
 
-		var terms = searchTerms.split(' ')
+		var terms = searchTerms.toLowerCase().split(' ')
 		var numTerms = terms.length
 
 		var len = items.length
