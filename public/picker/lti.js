@@ -91,7 +91,6 @@ obo.lti = (function() {
 				).toLowerCase()
 			}
 			ss = searchStrings[key]
-			console.log(ss)
 
 			numMatches = 0
 			for (var j = 0; j < numTerms; j++) {
