@@ -489,6 +489,7 @@ const caliperEventFactory = (req, host = null, isFromReq = false) => {
 		// actor: (type: Person, REQUIRED) User
 		// action: (type: Term, REQUIRED) Used
 		// object: (type: SoftwareApplication, REQUIRED) Obo IRI
+		// target: (type: SoftwareApplication, Optional) Picker IRI
 		createLTIPickerEvent: obj => {
 			let required = []
 			validateCaliperEvent({ required }, obj, ACTOR_USER)
