@@ -49,14 +49,6 @@ exports.up = function(db) {
 		.then(result => {
 			return db.addIndex('attempts_question_responses', 'aqr_created_at_index', ['created_at'])
 		})
-		.then(result => {
-			return db.addIndex(
-				'attempts_question_responses',
-				'aqr_unique_responses',
-				['attempt_id', 'question_id', 'responder_id'],
-				true
-			)
-		})
 }
 
 exports.down = function(db) {
