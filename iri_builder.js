@@ -73,6 +73,10 @@ const iriFactory = (req, providedHost) => {
 
 		getAssessmentAttemptIRI: attemptId => {
 			return createIRI(host, `/api/attempt/${attemptId}`)
+		},
+
+		getPickerIRI: () => {
+			return createIRI(host, `/api/picker`)
 		}
 	}
 }

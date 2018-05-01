@@ -271,6 +271,7 @@ Event {
   },
   "id": "urn:uuid:DEADBEEF-0000-DEAD-BEEF-1234DEADBEEF",
   "object": "https://testHost/api/system",
+  "target": "https://testHost/api/picker",
   "type": "ToolUseEvent",
 }
 `;

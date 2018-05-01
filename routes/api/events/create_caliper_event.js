@@ -501,6 +501,7 @@ const caliperEventFactory = (req, host = null, isFromReq = false) => {
 			caliperEvent.setType('ToolUseEvent')
 			caliperEvent.setAction('Used')
 			caliperEvent.setObject(IRI.getEdAppIRI())
+			caliperEvent.setTarget(IRI.getPickerIRI())
 
 			Object.assign(caliperEvent.extensions, extensions)
 
