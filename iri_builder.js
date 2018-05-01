@@ -53,7 +53,7 @@ const iriFactory = (req, providedHost) => {
 			let iri
 
 			if (oboNodeId === null) {
-				iri = createIRI(`/api/draft/${draftId}`)
+				iri = createIRI(host, `/api/draft/${draftId}`)
 			} else if (contextName === null) {
 				iri = createIRI(host, `/api/draft/${draftId}`, `#${oboNodeId}`)
 			} else {
