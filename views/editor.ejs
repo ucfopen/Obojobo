@@ -171,37 +171,11 @@
 
 			function addQuestion() {
 
-				let cursor = editor.getCursor()
-				let line = editor.getLine(cursor.line)
-				let textBeforeCaret = line.substr(0, cursor.ch).replace(/\S/g, '')
+				var cursor = editor.getCursor()
+				var line = editor.getLine(cursor.line)
+				var textBeforeCaret = line.substr(0, cursor.ch).replace(/\S/g, '')
 
-				let questionText = `<Question>
-					<h1>Your question here</h1>
-					<MCAssessment responseType="pick-one" shuffle="true">
-						<MCChoice score="100">
-							<MCAnswer>
-								<p>Answer 1 text</p>
-							</MCAnswer>
-							<MCFeedback>
-								<p>Optional answer 1 feedback</p>
-							</MCFeedback>
-						</MCChoice>
-						<MCChoice score="0">
-							<MCAnswer>
-								<p>Answer 2 text</p>
-							</MCAnswer>
-							<MCFeedback>
-								<p>Optional answer 2 feedback</p>
-							</MCFeedback>
-						</MCChoice>
-					</MCAssessment>
-					<!-- Optional solution: -->
-					<solution>
-						<Page>
-							<p>Add additional information here</p>
-						</Page>
-					</solution>
-				</Question>`
+				var questionText = '<Question>\n					<h1>Your question here</h1>\n					<MCAssessment responseType="pick-one" shuffle="true">\n						<MCChoice score="100">\n							<MCAnswer>\n								<p>Answer 1 text</p>\n							</MCAnswer>\n							<MCFeedback>\n								<p>Optional answer 1 feedback</p>\n							</MCFeedback>\n						</MCChoice>\n						<MCChoice score="0">\n							<MCAnswer>\n								<p>Answer 2 text</p>\n							</MCAnswer>\n							<MCFeedback>\n								<p>Optional answer 2 feedback</p>\n							</MCFeedback>\n						</MCChoice>\n					</MCAssessment>\n					<!-- Optional solution: -->\n					<solution>\n						<Page>\n							<p>Add additional information here</p>\n						</Page>\n					</solution>\n				</Question>'
 				editor.replaceSelection(questionText)
 
 				setTimeout(() => editor.focus(), 100)
@@ -226,7 +200,7 @@
 				content = document.getElementById(draftId).getAttribute('data-content')
 
 				//- document.getElementById('edit').value = content;
-				let selected = document.getElementsByClassName('selected')
+				var selected = document.getElementsByClassName('selected')
 				if(selected[0]) selected[0].classList.remove('selected');
 				document.getElementById(draftId).classList.add('selected');
 				if(content.charAt(0) === '<')
@@ -244,7 +218,7 @@
 			}
 
 			function del(draftId) {
-				let response = confirm('Are you sure you want to delete ' + draftId + '?')
+				var response = confirm('Are you sure you want to delete ' + draftId + '?')
 
 				if(!response) return;
 
@@ -277,7 +251,7 @@
 			}
 
 			function postCurrentlyEditingDraft(draftContent) {
-				let mime
+				var mime
 
 				// try to parse JSON, if it works we assume we're sending JSON.
 				// otherwise send as plain text in the hopes that it's XML
