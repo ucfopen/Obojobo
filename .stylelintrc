@@ -1,0 +1,22 @@
+{
+	"extends": "stylelint-config-standard",
+	"plugins": ["stylelint-declaration-use-variable"],
+	"rules": {
+		"indentation": "tab",
+		"at-rule-no-unknown": [
+			true,
+			{
+				"ignoreAtRules": ["include"]
+			}
+		],
+		"unit-blacklist": [
+			"px",
+			{
+				"ignoreProperties": {
+					"px": ["/^border/", "/^transform/"]
+				}
+			}
+		],
+		"sh-waqar/declaration-use-variable": [["/color/", "/background/", "font-family"]]
+	}
+}
