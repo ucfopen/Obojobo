@@ -1,3 +1,6 @@
+.obojobo-draft--chunks--math-equation .katex {
+  white-space: pre-wrap; }
+
 .obojobo-draft--chunks--math-equation .katex-display {
   margin: 0; }
 
