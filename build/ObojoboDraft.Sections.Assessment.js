@@ -733,6 +733,7 @@ var AssessmentPostTest = function AssessmentPostTest(props) {
 			),
 			React.createElement(_ltiStatus2.default, {
 				ltiState: ltiState,
+				isPreviewing: props.moduleData.isPreviewing,
 				externalSystemLabel: externalSystemLabel,
 				onClickResendScore: onClickResendScore,
 				assessmentScore: assessmentScore
@@ -845,7 +846,10 @@ var synced = function synced(assessmentScore, externalSystemLabel) {
 	);
 };
 
-var renderError = function renderError(ltiState, systemLabel, onClickResendScore) {
+var renderError = function renderError() {
+	var ltiState = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : {};
+	var systemLabel = arguments[1];
+	var onClickResendScore = arguments[2];
 	return React.createElement(
 		'div',
 		{ className: 'obojobo-draft--sections--assessment--lti-status is-not-synced' },
@@ -891,7 +895,11 @@ var renderError = function renderError(ltiState, systemLabel, onClickResendScore
 };
 
 exports.default = function (props) {
-	if (!props.ltiState.state) return null;
+	if (props.isPreviewing || !props.externalSystemLabel) return notLTI();
+
+	if (props.externalSystemLabel && (!props.ltiState || !props.ltiState.state)) {
+		return renderError(props.ltiState, props.externalSystemLabel, props.onClickResendScore);
+	}
 
 	switch (props.ltiState.state.gradebookStatus) {
 		case 'ok_no_outcome_service':
