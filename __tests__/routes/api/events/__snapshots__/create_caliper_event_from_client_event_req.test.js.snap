@@ -219,7 +219,7 @@ Event {
   "id": "urn:uuid:DEADBEEF-0000-DEAD-BEEF-1234DEADBEEF",
   "object": "https://hostnameReq/api/draft/testDraftIdReq#testQuestionIdReq",
   "session": "https://hostnameReq/api/session/SessionIdReq",
-  "target": "https:///api/draft/testDraftIdReq",
+  "target": "https://hostnameReq/api/draft/testDraftIdReq",
   "type": "AssessmentItemEvent",
 }
 `;
@@ -322,7 +322,7 @@ Event {
   "id": "urn:uuid:DEADBEEF-0000-DEAD-BEEF-1234DEADBEEF",
   "object": "https://hostnameReq/api/system",
   "session": "https://hostnameReq/api/session/SessionIdReq",
-  "target": "https:///api/draft/testDraftIdReq",
+  "target": "https://hostnameReq/api/draft/testDraftIdReq",
   "type": "SessionEvent",
 }
 `;
@@ -342,7 +342,7 @@ Event {
   },
   "federatedSession": "https://hostnameReq/api/launch/OboLtiLaunchIdReq",
   "id": "urn:uuid:DEADBEEF-0000-DEAD-BEEF-1234DEADBEEF",
-  "object": "https:///api/draft/testDraftIdReq",
+  "object": "https://hostnameReq/api/draft/testDraftIdReq",
   "session": "https://hostnameReq/api/session/SessionIdReq",
   "type": "Event",
 }
@@ -361,7 +361,7 @@ Event {
   },
   "federatedSession": "https://hostnameReq/api/launch/OboLtiLaunchIdReq",
   "id": "urn:uuid:DEADBEEF-0000-DEAD-BEEF-1234DEADBEEF",
-  "object": "https:///api/draft/testDraftIdReq",
+  "object": "https://hostnameReq/api/draft/testDraftIdReq",
   "session": "https://hostnameReq/api/session/SessionIdReq",
   "type": "Event",
 }
@@ -381,7 +381,7 @@ Event {
   },
   "federatedSession": "https://hostnameReq/api/launch/OboLtiLaunchIdReq",
   "id": "urn:uuid:DEADBEEF-0000-DEAD-BEEF-1234DEADBEEF",
-  "object": "https:///api/draft/testDraftIdReq",
+  "object": "https://hostnameReq/api/draft/testDraftIdReq",
   "session": "https://hostnameReq/api/session/SessionIdReq",
   "type": "Event",
 }
@@ -403,7 +403,7 @@ Event {
   },
   "federatedSession": "https://hostnameReq/api/launch/OboLtiLaunchIdReq",
   "id": "urn:uuid:DEADBEEF-0000-DEAD-BEEF-1234DEADBEEF",
-  "object": "https:///api/draft/testDraftIdReq",
+  "object": "https://hostnameReq/api/draft/testDraftIdReq",
   "session": "https://hostnameReq/api/session/SessionIdReq",
   "type": "Event",
 }

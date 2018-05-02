@@ -259,6 +259,23 @@ Event {
 }
 `;
 
+exports[`Caliper event creator createLTIPickerEvent 1`] = `
+Event {
+  "@context": "http://purl.imsglobal.org/ctx/caliper/v1p1",
+  "action": "Used",
+  "actor": "https://testHost/api/user/testUserId",
+  "edApp": "https://testHost/api/system",
+  "eventTime": "mockDate",
+  "extensions": Object {
+    "previewMode": false,
+  },
+  "id": "urn:uuid:DEADBEEF-0000-DEAD-BEEF-1234DEADBEEF",
+  "object": "https://testHost/api/system",
+  "target": "https://testHost/api/picker",
+  "type": "ToolUseEvent",
+}
+`;
+
 exports[`Caliper event creator createNavMenuActivatedEvent 1`] = `
 Event {
   "@context": "http://purl.imsglobal.org/ctx/caliper/v1p1",
@@ -512,7 +529,7 @@ Event {
   },
   "federatedSession": "https://testHost/api/launch/testOboLaunchId",
   "id": "urn:uuid:DEADBEEF-0000-DEAD-BEEF-1234DEADBEEF",
-  "object": "https:///api/draft/testDraftId",
+  "object": "https://testHost/api/draft/testDraftId",
   "session": "https://testHost/api/session/testSessionId",
   "type": "Event",
 }
@@ -531,7 +548,7 @@ Event {
   },
   "federatedSession": "https://testHost/api/launch/testOboLaunchId",
   "id": "urn:uuid:DEADBEEF-0000-DEAD-BEEF-1234DEADBEEF",
-  "object": "https:///api/draft/testDraftId",
+  "object": "https://testHost/api/draft/testDraftId",
   "session": "https://testHost/api/session/testSessionId",
   "type": "Event",
 }
@@ -552,7 +569,7 @@ Event {
   "id": "urn:uuid:DEADBEEF-0000-DEAD-BEEF-1234DEADBEEF",
   "object": "https://testHost/api/system",
   "session": "https://testHost/api/session/testSessionId",
-  "target": "https:///api/draft/testDraftId",
+  "target": "https://testHost/api/draft/testDraftId",
   "type": "SessionEvent",
 }
 `;
@@ -572,7 +589,7 @@ Event {
   "id": "urn:uuid:DEADBEEF-0000-DEAD-BEEF-1234DEADBEEF",
   "object": "https://testHost/api/system",
   "session": "https://testHost/api/session/testSessionId",
-  "target": "https:///api/draft/testDraftId",
+  "target": "https://testHost/api/draft/testDraftId",
   "type": "SessionEvent",
 }
 `;

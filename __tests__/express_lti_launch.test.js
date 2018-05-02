@@ -19,6 +19,7 @@ let mockExpressArgs = withLtiData => {
 		params: {
 			draftId: '999'
 		},
+		hostname: 'dummyhost',
 		setCurrentUser: jest.fn()
 	}
 
@@ -83,7 +84,7 @@ describe('lti launch middleware', () => {
 						roles: ['saviour', 'explorer', 'doctor']
 					},
 					draftId: '999',
-					userId: 0
+					userId: 1
 				})
 			)
 
@@ -99,7 +100,7 @@ describe('lti launch middleware', () => {
 					payload: {
 						launchId: 88
 					},
-					userId: 0
+					userId: 1
 				})
 			)
 		})
@@ -226,7 +227,6 @@ describe('lti launch middleware', () => {
 			expect(User.saveOrCreateCallback).not.toHaveBeenCalled()
 		})
 	})
-
 	test('assignmentSelection creates a new user and inserts an event', () => {
 		expect.assertions(5)
 
