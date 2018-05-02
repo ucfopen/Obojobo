@@ -1154,13 +1154,10 @@ var AssessmentUtil = {
 		return assessment.attempts.length;
 	},
 	getNumCorrect: function getNumCorrect(questionScores) {
-		return questionScores.reduce(function (acc, questionScore) {
-			var n = 0;
-			if (parseInt(questionScore.score, 10) === 100) {
-				n = 1;
-			}
-			return parseInt(acc, 10) + n;
-		}, [0]);
+		var count100s = function count100s(acc, qs) {
+			return acc + (parseInt(qs.score, 10) === 100 ? 1 : 0);
+		};
+		return questionScores.reduce(count100s, 0);
 	},
 	findHighestAttempts: function findHighestAttempts(attempts, scoreProperty) {
 		if (attempts.length === 0) return [];
@@ -7024,8 +7021,6 @@ var ViewerApp = function (_React$Component) {
 		_classCallCheck(this, ViewerApp);
 
 		var _this = _possibleConstructorReturn(this, (ViewerApp.__proto__ || Object.getPrototypeOf(ViewerApp)).call(this, props));
-
-		_Common2.default.Store.loadDependency('https://cdnjs.cloudflare.com/ajax/libs/KaTeX/0.5.1/katex.min.css');
 
 		Dispatcher.on('viewer:scrollTo', function (payload) {
 			return ReactDOM.findDOMNode(_this.refs.container).scrollTop = payload.value;
