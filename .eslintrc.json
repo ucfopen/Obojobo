@@ -1,6 +1,9 @@
 {
 	"extends": ["eslint:recommended", "plugin:react/recommended"],
 	"parser": "babel-eslint",
+	"globals": {
+		"oboRequire": false
+	},
 	"env": {
 		"amd": true,
 		"node": true,
