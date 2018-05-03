@@ -5,7 +5,8 @@
 		"amd": true,
 		"node": true,
 		"browser": true,
-		"jest": true
+		"jest": true,
+		"es6": true
 	},
 	"rules": {
 		"no-var": "warn",
