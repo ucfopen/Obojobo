@@ -6,11 +6,15 @@ describe('get-lti-outcome-service-hostname', () => {
 		expect(Util('https://hunter.io#test')).toBe('hunter.io')
 	})
 
+	test('returns null if url passed in is falsy', () => {
+		expect(Util('')).toBe(null)
+		expect(Util()).toBe(null)
+		expect(Util(null)).toBe(null)
+		expect(Util(undefined)).toBe(null)
+	})
+
 	test('returns "the external system" if unable to find a hostname', () => {
-		expect(Util('')).toBe('the external system')
-		expect(Util()).toBe('the external system')
-		expect(Util(null)).toBe('the external system')
-		expect(Util(undefined)).toBe('the external system')
+		expect(Util('website')).toBe('the external system')
 		expect(Util({})).toBe('the external system')
 	})
 })
