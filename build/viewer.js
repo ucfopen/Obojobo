@@ -1980,7 +1980,7 @@ var QuestionStore = function (_Store) {
 			'question:scoreSet': function questionScoreSet(payload) {
 				var scoreId = (0, _uuid2.default)();
 
-				if (!payload.value[payload.value.context]) _this.state.scores[payload.value.context] = {};
+				if (!_this.state.scores[payload.value.context]) _this.state.scores[payload.value.context] = {};
 
 				_this.state.scores[payload.value.context][payload.value.itemId] = {
 					id: scoreId,
