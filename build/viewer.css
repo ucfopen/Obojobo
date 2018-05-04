@@ -356,12 +356,12 @@ body {
   .viewer--components--inline-nav-button.is-enabled:hover {
     color: #ffffff;
     background: #6714bd; }
-  .viewer--components--inline-nav-button.is-disabled {
+  .viewer--components--inline-nav-button.is-not-enabled {
     background: #f4f4f4;
     color: rgba(0, 0, 0, 0.3); }
-    .viewer--components--inline-nav-button.is-disabled.is-prev {
+    .viewer--components--inline-nav-button.is-not-enabled.is-prev {
       border-bottom: 1px solid rgba(0, 0, 0, 0.3); }
-    .viewer--components--inline-nav-button.is-disabled.is-next {
+    .viewer--components--inline-nav-button.is-not-enabled.is-next {
       border-top: 1px solid rgba(0, 0, 0, 0.3); }
 .viewer--components--logo {
   display: block;
@@ -375,6 +375,57 @@ body {
   overflow: hidden; }
   .viewer--components--logo.is-inverted {
     filter: invert(100%); }
+.obojobo-draft--sections--assessment--components--score-report {
+  background: #f4f4f4;
+  min-width: 23em; }
+  .obojobo-draft--sections--assessment--components--score-report > .text-items {
+    text-align: left;
+    border-radius: 0.25em;
+    background: white;
+    padding: 1em 2em; }
+    .obojobo-draft--sections--assessment--components--score-report > .text-items > * {
+      font-size: 0.7em;
+      line-height: 1.5em;
+      margin-top: 0.5em;
+      position: relative; }
+      .obojobo-draft--sections--assessment--components--score-report > .text-items > *:only-child {
+        margin-top: 0; }
+      .obojobo-draft--sections--assessment--components--score-report > .text-items > *.divider {
+        height: 1px;
+        border: none;
+        background: rgba(0, 0, 0, 0.1); }
+      .obojobo-draft--sections--assessment--components--score-report > .text-items > *.extra-credit > .label > span {
+        color: #38ae24;
+        font-weight: bold; }
+      .obojobo-draft--sections--assessment--components--score-report > .text-items > *.penalty > .label > span {
+        color: #c21f00;
+        font-weight: bold; }
+      .obojobo-draft--sections--assessment--components--score-report > .text-items > *.value {
+        padding-right: 4em; }
+      .obojobo-draft--sections--assessment--components--score-report > .text-items > *.total {
+        font-size: 1em; }
+      .obojobo-draft--sections--assessment--components--score-report > .text-items > * > .amount {
+        white-space: nowrap;
+        text-align: right;
+        position: absolute;
+        bottom: 0;
+        right: 0;
+        font-weight: bold; }
+        .obojobo-draft--sections--assessment--components--score-report > .text-items > * > .amount > .great-job-you-rock {
+          position: absolute;
+          top: 50%;
+          right: -0.5rem;
+          transform: translate(100%, -50%);
+          display: block;
+          line-height: 1em;
+          font-size: 1em; }
+  .obojobo-draft--sections--assessment--components--score-report > .score-change-description {
+    font-size: 0.75em;
+    font-weight: bold;
+    text-align: center;
+    display: block;
+    width: 100%;
+    margin-top: 1.5em; }
 .viewer--components--nav {
   overflow: auto;
   position: fixed;
@@ -402,14 +453,14 @@ body {
       .viewer--components--nav.is-locked li.link.is-selected a,
       .viewer--components--nav.is-locked li.seperator.is-selected a {
         text-decoration: none; }
-  .viewer--components--nav.is-closed {
+  .viewer--components--nav.is-not-open {
     left: -16rem; }
   .viewer--components--nav.is-open .toggle-button {
     background-color: transparent;
     border: 2px solid transparent; }
     .viewer--components--nav.is-open .toggle-button:hover {
       background-color: transparent; }
-  .viewer--components--nav.is-disabled {
+  .viewer--components--nav.is-not-enabled {
     display: none; }
   .viewer--components--nav .is-correct {
     color: #b4d4af; }
@@ -514,6 +565,8 @@ body {
       left: -5px;
       background: #93c6ff;
       border: none; }
+    .viewer--components--nav .sub-link .lock-icon {
+      display: none; }
   .viewer--components--nav .is-assessment {
     position: relative;
     margin-bottom: 0.75em;

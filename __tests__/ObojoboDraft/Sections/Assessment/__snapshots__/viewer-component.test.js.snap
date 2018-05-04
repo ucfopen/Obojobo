@@ -10,7 +10,7 @@ exports[`Assessment Assessment component 1`] = `
   id="obo-assessment"
 >
   <div
-    className="untested"
+    className="pre-test"
   >
     <div
       className="component obojobo-draft--pages--page"
@@ -681,7 +681,7 @@ exports[`Assessment Assessment variable replacement 1`] = `
   id="obo-assessment"
 >
   <div
-    className="untested"
+    className="pre-test"
   >
     <div
       className="component obojobo-draft--pages--page"
@@ -732,7 +732,7 @@ exports[`Assessment Assessment variable replacement 2`] = `
   id="obo-assessment"
 >
   <div
-    className="untested"
+    className="pre-test"
   >
     <div
       className="component obojobo-draft--pages--page"
@@ -783,7 +783,7 @@ exports[`Assessment Assessment variable replacement 3`] = `
   id="obo-assessment"
 >
   <div
-    className="untested"
+    className="pre-test"
   >
     <div
       className="component obojobo-draft--pages--page"

@@ -1,13 +1,10 @@
 import './nav.scss'
-
-// import navStore from '../../viewer/stores/nav-store'
 import NavUtil from '../../viewer/util/nav-util'
 import Logo from '../../viewer/components/logo'
-
 import hamburgerImg from 'svg-url-loader?noquotes!./hamburger.svg'
 import arrowImg from 'svg-url-loader?noquotes!./arrow.svg'
 import lockImg from 'svg-url-loader?noquotes!./lock-icon.svg'
-
+import isOrNot from '../../common/isornot'
 import Common from 'Common'
 
 let { getBackgroundImage } = Common.util
@@ -62,14 +59,16 @@ export default class Nav extends React.Component {
 			(list[index + 1].type != 'link' && list[index + 1].type != 'sub-link') ||
 			list[index + 1].flags.assessment
 
-		let className = 'link'
-		className += isSelected ? ' is-selected' : ' is-not-select'
-		className += item.flags.visited ? ' is-visited' : ' is-not-visited'
-		className += item.flags.complete ? ' is-complete' : ' is-not-complete'
-		className += item.flags.correct ? ' is-correct' : ' is-not-correct'
+		let className =
+			'link' +
+			isOrNot(isSelected, 'selected') +
+			isOrNot(item.flags.visited, 'visited') +
+			isOrNot(item.flags.complete, 'complete') +
+			isOrNot(item.flags.correct, 'correct') +
+			isOrNot(item.flags.assessment, 'assessment')
+
 		if (isFirstInList) className += ' first-in-list'
 		else if (isLastInList) className += ' last-in-list'
-		if (item.flags.assessment) className += ' is-assessment'
 
 		return (
 			<li key={index} onClick={this.onClick.bind(this, item)} className={className}>
@@ -86,9 +85,9 @@ export default class Nav extends React.Component {
 			(list[index + 1].type != 'link' && list[index + 1].type != 'sub-link') ||
 			list[index + 1].flags.assessment
 
-		let className = 'sub-link'
-		className += isSelected ? ' is-selected' : ' is-not-select'
-		className += item.flags.correct ? ' is-correct' : ' is-not-correct'
+		let className =
+			'sub-link' + isOrNot(isSelected, 'selected') + isOrNot(item.flags.correct, 'correct')
+
 		if (isLastInList) className += ' last-in-list'
 
 		return (
@@ -101,7 +100,7 @@ export default class Nav extends React.Component {
 
 	renderHeading(index, item) {
 		return (
-			<li key={index} className={'heading is-not-select'}>
+			<li key={index} className={'heading is-not-selected'}>
 				{this.renderLabel(item.label)}
 			</li>
 		)
@@ -115,26 +114,29 @@ export default class Nav extends React.Component {
 		)
 	}
 
-	render() {
-		let navState = this.props.navState
-		let lockEl
-		let isOpenOrHovered = navState.open || this.state.hover
-		let bg = getBackgroundImage(isOpenOrHovered ? arrowImg : hamburgerImg)
-
-		if (navState.locked) {
-			lockEl = (
+	getLockEl(isLocked) {
+		if (isLocked) {
+			return (
 				<div className="lock-icon">
 					<img src={lockImg} />
 				</div>
 			)
 		}
+	}
+
+	render() {
+		let navState = this.props.navState
+		let lockEl = this.getLockEl(navState.locked)
+		let isOpenOrHovered = navState.open || this.state.hover
+		let bg = getBackgroundImage(isOpenOrHovered ? arrowImg : hamburgerImg)
 
 		let list = NavUtil.getOrderedList(navState)
 
-		let className = 'viewer--components--nav'
-		className += navState.locked ? ' is-locked' : ' is-unlocked'
-		className += navState.open ? ' is-open' : ' is-closed'
-		className += navState.disabled ? ' is-disabled' : ' is-enabled'
+		let className =
+			'viewer--components--nav' +
+			isOrNot(navState.locked, 'locked') +
+			isOrNot(navState.open, 'open') +
+			isOrNot(!navState.disabled, 'enabled')
 
 		let style = {
 			backgroundImage: bg,

@@ -64,17 +64,16 @@
     cursor: pointer;
     font-family: "Libre Franklin", Arial, sans-serif;
     font-size: 0.85em;
-    opacity: 0.8;
     position: relative;
     min-width: 3.25em;
     border-radius: 0.2em;
     padding: 0.6rem 1em;
-    background-color: #6714bd;
+    background-color: #7e18e7;
     color: #ffffff;
     border: 1px solid transparent;
     border-bottom: 1px solid #350a61; }
     .obojobo-draft--components--button button:hover {
-      opacity: 1; }
+      background-color: #6714bd; }
     .obojobo-draft--components--button button:disabled {
       background-color: #f4f4f4;
       cursor: default;
@@ -82,7 +81,7 @@
       border: 1px solid transparent;
       border-bottom: 1px solid transparent;
       opacity: 1; }
-  .obojobo-draft--components--button.dangerous button {
+  .obojobo-draft--components--button.is-dangerous button {
     background-color: #d40000;
     border-bottom: 1px solid #350a61; }
   .obojobo-draft--components--button.alt-action button {
@@ -100,15 +99,15 @@
       border: 1px solid transparent;
       border-bottom: 1px solid transparent;
       opacity: 1; }
-  .obojobo-draft--components--button.alt-action.dangerous button {
+  .obojobo-draft--components--button.alt-action.is-dangerous button {
     border: 1px solid #d40000;
     border-bottom: 1px solid #d40000;
     background-color: #ffffff;
     color: #d40000; }
-    .obojobo-draft--components--button.alt-action.dangerous button:hover {
+    .obojobo-draft--components--button.alt-action.is-dangerous button:hover {
       background-color: #d40000;
       color: #ffffff; }
-    .obojobo-draft--components--button.alt-action.dangerous button:disabled {
+    .obojobo-draft--components--button.alt-action.is-dangerous button:disabled {
       background-color: #f4f4f4;
       cursor: default;
       color: #999999;
@@ -121,6 +120,78 @@
     text-align: right; }
   .obojobo-draft--components--button.align-center {
     text-align: center; }
+.obojobo-draft--components--button-bar > div {
+  display: inline-block; }
+  .obojobo-draft--components--button-bar > div:first-child > .obojobo-draft--components--button > button {
+    border-top-left-radius: 0.25em;
+    border-bottom-left-radius: 0.25em; }
+  .obojobo-draft--components--button-bar > div:last-child > .obojobo-draft--components--button > button {
+    border-top-right-radius: 0.25em;
+    border-bottom-right-radius: 0.25em; }
+  .obojobo-draft--components--button-bar > div:not(:last-child) > .obojobo-draft--components--button > button {
+    border-right: none; }
+  .obojobo-draft--components--button-bar > div > .obojobo-draft--components--button > button {
+    border-radius: 0; }
+    .obojobo-draft--components--button-bar > div > .obojobo-draft--components--button > button:focus {
+      z-index: 2; }
+  .obojobo-draft--components--button-bar > div.is-selected > .obojobo-draft--components--button > button {
+    background-color: #93c6ff;
+    color: #ffffff;
+    z-index: 1; }
+.obojobo-draft--components--more-info-button {
+  position: relative;
+  display: inline-block; }
+
+@keyframes obojobo-draft--components--more-info-button--slidein {
+  0% {
+    transform: translate(100%, -50%) translate(-1em, 0); }
+  100% {
+    transform: translate(100%, -50%); } }
+
+@keyframes obojobo-draft--components--more-info-button--fadein {
+  0% {
+    opacity: 0; }
+  100% {
+    opacity: 1; } }
+  .obojobo-draft--components--more-info-button.is-default-label > button {
+    width: 2em; }
+  .obojobo-draft--components--more-info-button.is-mode-hover > button {
+    background: rgba(103, 20, 189, 0.7);
+    color: #ffffff; }
+  .obojobo-draft--components--more-info-button.is-mode-clicked > button {
+    background: #6714bd;
+    color: #ffffff;
+    cursor: pointer; }
+  .obojobo-draft--components--more-info-button > button {
+    background: #f4f4f4;
+    height: 2em;
+    border-radius: 1.5em;
+    color: #6714bd;
+    border: none;
+    cursor: help; }
+  .obojobo-draft--components--more-info-button > .info {
+    pointer-events: none;
+    position: absolute;
+    right: -1em;
+    top: 50%;
+    transform: translate(100%, -50%);
+    background: #f4f4f4;
+    box-shadow: 0 2px 2px rgba(0, 0, 0, 0.3);
+    z-index: 999;
+    animation: obojobo-draft--components--more-info-button--fadein 0.2s, obojobo-draft--components--more-info-button--slidein 0.2s; }
+    .obojobo-draft--components--more-info-button > .info:before {
+      position: absolute;
+      left: 0;
+      top: 50%;
+      transform: translate(-50%, -50%) rotate(45deg);
+      content: ' ';
+      width: 1em;
+      height: 1em;
+      background: #f4f4f4;
+      box-shadow: 0 2px 2px rgba(0, 0, 0, 0.3); }
+    .obojobo-draft--components--more-info-button > .info > .container {
+      background: #f4f4f4;
+      position: relative; }
 .obojobo-draft--components--modal--bubble {
   background: #ffffff;
   border: 1px solid rgba(0, 0, 0, 0.3);

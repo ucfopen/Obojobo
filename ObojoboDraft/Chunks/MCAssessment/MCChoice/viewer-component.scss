@@ -14,10 +14,6 @@
 	padding-bottom: 1em;
 	cursor: pointer;
 
-	&:hover {
-		background: transparentize($color-highlight, 0.85);
-	}
-
 	input {
 		font-size: inherit;
 		position: absolute;
@@ -126,5 +122,23 @@
 
 	&.is-selected {
 		background: transparentize($color-highlight, 0.75);
+	}
+
+	&.is-mode-review {
+		input {
+			display: none;
+		}
+		.children {
+			margin-left: 0;
+		}
+		&:hover {
+			cursor: default;
+			background: inherit;
+		}
+		cursor: default;
+	}
+
+	&:hover {
+		background: transparentize($color-highlight, 0.85);
 	}
 }

@@ -1,21 +1,22 @@
-import ScoreActions from './score-actions'
+import ScoreActions from './post-assessment/score-actions'
+// @TODO: Importing from the server code, we shouldn't do this:
+import AssessmentRubric from '../../../server/assessment-rubric'
 
 let Adapter = {
 	construct(model, attrs) {
-		if (__guard__(attrs != null ? attrs.content : undefined, x => x.attempts) != null) {
-			if (attrs.content.attempts === 'unlimited') {
-				model.modelState.attempts = Infinity
-			} else {
-				model.modelState.attempts = parseInt(attrs.content.attempts, 10)
-			}
+		// Set state if XML has the attributes.
+		if (attrs && attrs.content) {
+			let attempts = attrs.content.attempts || 'unlimited'
+			model.modelState.attempts = attempts === 'unlimited' ? Infinity : parseInt(attempts, 10)
+			model.modelState.review = attrs.content.review || 'never'
+			model.modelState.scoreActions = new ScoreActions(attrs.content.scoreActions || null)
+			model.modelState.rubric = new AssessmentRubric(attrs.content.rubric || null)
 		} else {
+			// Default state.
 			model.modelState.attempts = Infinity
-		}
-
-		if (__guard__(attrs != null ? attrs.content : undefined, x1 => x1.scoreActions) != null) {
-			return (model.modelState.scoreActions = new ScoreActions(attrs.content.scoreActions))
-		} else {
-			return (model.modelState.scoreActions = new ScoreActions())
+			model.modelState.review = 'never'
+			model.modelState.scoreActions = new ScoreActions()
+			model.modelState.rubric = new AssessmentRubric()
 		}
 	},
 
@@ -26,7 +27,8 @@ let Adapter = {
 
 	clone(model, clone) {
 		clone.modelState.attempts = model.modelState.attempts
-		return (clone.modelState.scoreActions = model.modelState.scoreActions.clone())
+		clone.modelState.scoreActions = model.modelState.scoreActions.clone()
+		clone.modelState.rubric = model.modelState.rubric.clone()
 	},
 
 	//@TODO - necessary?
@@ -37,11 +39,9 @@ let Adapter = {
 
 	toJSON(model, json) {
 		json.content.attempts = model.modelState.attempts
-		return (json.content.scoreActions = model.modelState.scoreActions.toObject())
+		json.content.scoreActions = model.modelState.scoreActions.toObject()
+		json.content.rubric = model.modelState.rubric.toObject()
 	}
 }
 
 export default Adapter
-function __guard__(value, transform) {
-	return typeof value !== 'undefined' && value !== null ? transform(value) : undefined
-}

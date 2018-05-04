@@ -32,7 +32,7 @@
 	figcaption {
 		font-family: $font-default;
 		font-size: 0.8em;
-		color: $color-text-minor;
+		color: lighten($color-text, 40%);
 	}
 
 	&.custom {

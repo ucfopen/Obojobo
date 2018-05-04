@@ -39,7 +39,7 @@
 		}
 	}
 
-	&.is-closed {
+	&.is-not-open {
 		left: -$dimension-nav-menu;
 	}
 
@@ -54,7 +54,7 @@
 		}
 	}
 
-	&.is-disabled {
+	&.is-not-enabled {
 		display: none;
 	}
 
@@ -209,6 +209,9 @@
 			left: -5px;
 			background: $color-highlight;
 			border: none;
+		}
+		.lock-icon {
+			display: none;
 		}
 	}
 

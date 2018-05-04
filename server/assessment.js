@@ -1,6 +1,7 @@
 let DraftNode = oboRequire('models/draft_node')
 let db = oboRequire('db')
 let lti = oboRequire('lti')
+let logger = oboRequire('logger')
 
 class Assessment extends DraftNode {
 	static getCompletedAssessmentAttemptHistory(userId, draftId, assessmentId) {
@@ -44,7 +45,7 @@ class Assessment extends DraftNode {
 			})
 	}
 
-	static createAttemptResponse(userId, draftId, attempt) {
+	static createUserAttempt(userId, draftId, attempt) {
 		return {
 			userId: userId,
 			draftId: draftId,
@@ -57,15 +58,15 @@ class Assessment extends DraftNode {
 			isFinished: attempt.completed_at !== null,
 			state: attempt.state,
 			questionScores: attempt.result ? attempt.result.questionScores : [],
+			responses: {},
 			attemptScore: attempt.result ? attempt.result.attemptScore : null,
-			assessmentScore: parseInt(attempt.assessment_score, 10),
+			assessmentScore: parseFloat(attempt.assessment_score),
 			assessmentScoreDetails: attempt.score_details
 		}
 	}
 
 	static getAttempts(userId, draftId, optionalAssessmentId = null) {
-		let assessmentsArr = []
-
+		let assessments = {}
 		return db
 			.manyOrNone(
 				`
@@ -98,30 +99,60 @@ class Assessment extends DraftNode {
 				}
 			)
 			.then(attempts => {
-				let assessments = {}
+				// turn array of results from the query into a nested object
+				// { assessment1: { id: 'assessment1', attempts: [{} , {}] }, ... }
 				attempts.forEach(attempt => {
-					attempt = Assessment.createAttemptResponse(userId, draftId, attempt)
+					let userAttempt = Assessment.createUserAttempt(userId, draftId, attempt)
 
-					if (!assessments[attempt.assessmentId]) {
-						assessments[attempt.assessmentId] = {
-							assessmentId: attempt.assessmentId,
+					// create new assessment object if we don't have one yet
+					if (!assessments[userAttempt.assessmentId]) {
+						assessments[userAttempt.assessmentId] = {
+							assessmentId: userAttempt.assessmentId,
 							attempts: []
 						}
 					}
 
-					assessments[attempt.assessmentId].attempts.push(attempt)
+					// add attempt into our assessments object
+					assessments[userAttempt.assessmentId].attempts.push(userAttempt)
 				})
 
-				for (let assessmentId in assessments) {
-					assessmentsArr.push(assessments[assessmentId])
-				}
+				// now, get the response history for this user & draft
+				return Assessment.getResponseHistory(userId, draftId)
+			})
+			.then(responseHistory => {
+				// Goal: place the responses from history into the attempts created above
+				// history is keyed by attemptId
+				// find the matching attemptID in assessments.<id>.attempts[ {attemptId:<attemptId>}, ...]
+				// and place our responses into the userAttempt objects in assessments
+				for (let attemptId in responseHistory) {
+					let responsesForAttempt = responseHistory[attemptId]
 
-				return assessmentsArr
+					// loop through responses in this attempt
+					responsesForAttempt.forEach(response => {
+						let attemptForResponse = assessments[response.assessment_id].attempts.find(
+							x => x.attemptId === response.attempt_id
+						)
+
+						if (!attemptForResponse) {
+							logger.warn(
+								`Couldn't find an attempt I was looking for ('${userId}', '${draftId}', '${attemptId}', '${
+									response.id
+								}') - Shouldn't get here!`
+							)
+
+							return
+						}
+
+						// asessments.<assessmentId>.attempts
+						attemptForResponse.responses[response.question_id] = response.response
+					})
+				}
 			})
-			.then(assessmentsArr => {
-				return lti.getLTIStatesByAssessmentIdForUserAndDraft(userId, draftId, optionalAssessmentId)
-			})
+			.then(() =>
+				lti.getLTIStatesByAssessmentIdForUserAndDraft(userId, draftId, optionalAssessmentId)
+			)
 			.then(ltiStates => {
+				let assessmentsArr = Object.keys(assessments).map(k => assessments[k]) //@TODO: Use Object.values if node >= 7
 				assessmentsArr.forEach(assessmentItem => {
 					let ltiState = ltiStates[assessmentItem.assessmentId]
 
@@ -138,16 +169,21 @@ class Assessment extends DraftNode {
 					}
 				})
 
+				// didn't ask for a specific assessment, return everything
 				if (optionalAssessmentId === null) {
 					return assessmentsArr
-				} else if (optionalAssessmentId !== null && assessmentsArr.length > 0) {
+				}
+
+				// asked for a specific assessment return it
+				if (assessmentsArr.length > 0) {
 					return assessmentsArr[0]
-				} else {
-					return {
-						assessmentId: optionalAssessmentId,
-						attempts: [],
-						ltiState: null
-					}
+				}
+
+				// asked for a specific assessment but none found
+				return {
+					assessmentId: optionalAssessmentId,
+					attempts: [],
+					ltiState: null
 				}
 			})
 	}
@@ -192,8 +228,9 @@ class Assessment extends DraftNode {
 		)
 	}
 
-	//@TODO
-	static getResponseHistory__TODO__IS_THIS_USED(userId, draftId) {
+	// get all attempts containing an array of responses
+	// { <attemptId>: [ {...question response...} ] }
+	static getResponseHistory(userId, draftId) {
 		return db
 			.manyOrNone(
 				`
@@ -328,6 +365,37 @@ class Assessment extends DraftNode {
 					assessmentScoreId: result[1].id
 				}
 			})
+	}
+
+	// Update the state for an attempt
+	static updateAttemptState(attemptId, state) {
+		return db.none(
+			`
+			UPDATE attempts
+			SET state = $[state]
+			WHERE id = $[attemptId]
+			`,
+			{ state: state, attemptId: attemptId }
+		)
+	}
+
+	static insertNewAssessmentScore(userId, draftId, assessmentId, score, preview) {
+		return db
+			.one(
+				`
+				INSERT INTO assessment_scores (user_id, draft_id, assessment_id, score, preview)
+				VALUES($[userId], $[draftId], $[assessmentId], $[score], $[preview])
+				RETURNING id
+			`,
+				{
+					userId,
+					draftId,
+					assessmentId,
+					score,
+					preview
+				}
+			)
+			.then(result => result.id)
 	}
 
 	constructor(draftTree, node, initFn) {

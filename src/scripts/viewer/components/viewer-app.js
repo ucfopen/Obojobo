@@ -9,7 +9,6 @@ import InlineNavButton from '../../viewer/components/inline-nav-button'
 import NavUtil from '../../viewer/util/nav-util'
 import APIUtil from '../../viewer/util/api-util'
 import Logo from '../../viewer/components/logo'
-import ScoreStore from '../../viewer/stores/score-store'
 import QuestionStore from '../../viewer/stores/question-store'
 import AssessmentStore from '../../viewer/stores/assessment-store'
 import NavStore from '../../viewer/stores/nav-store'
@@ -47,8 +46,6 @@ export default class ViewerApp extends React.Component {
 	constructor(props) {
 		super(props)
 
-		Common.Store.loadDependency('https://cdnjs.cloudflare.com/ajax/libs/KaTeX/0.5.1/katex.min.css')
-
 		Dispatcher.on('viewer:scrollTo', payload => {
 			return (ReactDOM.findDOMNode(this.refs.container).scrollTop = payload.value)
 		})
@@ -59,7 +56,6 @@ export default class ViewerApp extends React.Component {
 		let state = {
 			model: null,
 			navState: null,
-			scoreState: null,
 			questionState: null,
 			assessmentState: null,
 			modalState: null,
@@ -73,7 +69,6 @@ export default class ViewerApp extends React.Component {
 			}
 		}
 		this.onNavStoreChange = () => this.setState({ navState: NavStore.getState() })
-		this.onScoreStoreChange = () => this.setState({ scoreState: ScoreStore.getState() })
 		this.onQuestionStoreChange = () => this.setState({ questionState: QuestionStore.getState() })
 		this.onAssessmentStoreChange = () =>
 			this.setState({ assessmentState: AssessmentStore.getState() })
@@ -85,9 +80,6 @@ export default class ViewerApp extends React.Component {
 		this.onBeforeWindowClose = this.onBeforeWindowClose.bind(this)
 		this.onWindowClose = this.onWindowClose.bind(this)
 		this.onVisibilityChange = this.onVisibilityChange.bind(this)
-
-		window.onbeforeunload = this.onBeforeWindowClose
-		window.onunload = this.onWindowClose
 
 		this.state = state
 	}
@@ -109,7 +101,6 @@ export default class ViewerApp extends React.Component {
 
 		APIUtil.requestStart(visitIdFromUrl, draftIdFromUrl)
 			.then(visit => {
-				ScoreStore.init()
 				QuestionStore.init()
 				ModalStore.init()
 				FocusStore.init()
@@ -137,20 +128,21 @@ export default class ViewerApp extends React.Component {
 				AssessmentStore.init(attemptHistory)
 
 				this.state.navState = NavStore.getState()
-				this.state.scoreState = ScoreStore.getState()
 				this.state.questionState = QuestionStore.getState()
 				this.state.assessmentState = AssessmentStore.getState()
 				this.state.modalState = ModalStore.getState()
 				this.state.focusState = FocusStore.getState()
 				this.state.lti.outcomeServiceHostname = getLTIOutcomeServiceHostname(outcomeServiceURL)
 
-				window.onbeforeunload = this.onWindowClose
+				window.onbeforeunload = this.onBeforeWindowClose
+				window.onunload = this.onWindowClose
 
 				this.setState({ loading: false, requestStatus: 'ok', isPreviewing }, () => {
 					Dispatcher.trigger('viewer:loaded', true)
 				})
 			})
 			.catch(err => {
+				console.log(err)
 				this.setState({ loading: false, requestStatus: 'invalid' }, () =>
 					Dispatcher.trigger('viewer:loaded', false)
 				)
@@ -160,7 +152,6 @@ export default class ViewerApp extends React.Component {
 	componentWillMount() {
 		// === SET UP DATA STORES ===
 		NavStore.onChange(this.onNavStoreChange)
-		ScoreStore.onChange(this.onScoreStoreChange)
 		QuestionStore.onChange(this.onQuestionStoreChange)
 		AssessmentStore.onChange(this.onAssessmentStoreChange)
 		ModalStore.onChange(this.onModalStoreChange)
@@ -169,7 +160,6 @@ export default class ViewerApp extends React.Component {
 
 	componentWillUnmount() {
 		NavStore.offChange(this.onNavStoreChange)
-		ScoreStore.offChange(this.onScoreStoreChange)
 		QuestionStore.offChange(this.onQuestionStoreChange)
 		AssessmentStore.offChange(this.onAssessmentStoreChange)
 		ModalStore.offChange(this.onModalStoreChange)
@@ -222,7 +212,7 @@ export default class ViewerApp extends React.Component {
 		}
 	}
 
-	onVisibilityChange(event) {
+	onVisibilityChange() {
 		if (document.hidden) {
 			APIUtil.postEvent(this.state.model, 'viewer:leave', '1.0.0', {}).then(res => {
 				this.leaveEvent = res.value
@@ -247,31 +237,12 @@ export default class ViewerApp extends React.Component {
 
 		if (el) {
 			return (container.scrollTop = ReactDOM.findDOMNode(el).getBoundingClientRect().height)
-		} else {
-			return (container.scrollTop = 0)
 		}
+
+		return (container.scrollTop = 0)
 	}
 
 	// === NON REACT LIFECYCLE METHODS ===
-
-	update(json) {
-		try {
-			let o
-			return (o = JSON.parse(json))
-		} catch (e) {
-			alert('Error parsing JSON')
-			this.setState({ model: this.state.model })
-			return
-		}
-	}
-
-	onBack() {
-		return NavUtil.goPrev()
-	}
-
-	onNext() {
-		return NavUtil.goNext()
-	}
 
 	onMouseDown(event) {
 		if (this.state.focusState.focussedId == null) {
@@ -324,9 +295,12 @@ export default class ViewerApp extends React.Component {
 		delete this.inactiveEvent
 	}
 
-	onBeforeWindowClose(e) {
+	onBeforeWindowClose() {
 		let closePrevented = false
-		let preventClose = () => (closePrevented = true)
+		// calling this function will prevent the window from closing
+		let preventClose = () => {
+			closePrevented = true
+		}
 
 		Dispatcher.trigger('viewer:closeAttempted', preventClose)
 
@@ -337,27 +311,27 @@ export default class ViewerApp extends React.Component {
 		return undefined // Returning undefined will allow browser to close normally
 	}
 
-	onWindowClose(e) {
+	onWindowClose() {
 		APIUtil.postEvent(this.state.model, 'viewer:close', '1.0.0', {})
 	}
 
 	clearPreviewScores() {
-		APIUtil.clearPreviewScores(this.state.model).then(res => {
-			if (res.status === 'error') {
+		APIUtil.clearPreviewScores(this.state.model.get('draftId')).then(res => {
+			if (res.status === 'error' || res.error) {
 				return ModalUtil.show(
 					<SimpleDialog ok width="15em">
-						{`There was an error resetting assessments and questions: ${res.value.message}.`}
+						{res.value && res.value.message
+							? `There was an error resetting assessments and questions: ${res.value.message}.`
+							: 'There was an error resetting assessments and questions'}
 					</SimpleDialog>
 				)
 			}
 
 			AssessmentStore.init()
 			QuestionStore.init()
-			ScoreStore.init()
 
 			AssessmentStore.triggerChange()
 			QuestionStore.triggerChange()
-			ScoreStore.triggerChange()
 
 			return ModalUtil.show(
 				<SimpleDialog ok width="15em">
@@ -488,7 +462,10 @@ export default class ViewerApp extends React.Component {
 								>
 									Unlock navigation
 								</button>
-								<button onClick={this.clearPreviewScores.bind(this)}>
+								<button
+									className="button-clear-scores"
+									onClick={this.clearPreviewScores.bind(this)}
+								>
 									Reset assessments &amp; questions
 								</button>
 							</div>
