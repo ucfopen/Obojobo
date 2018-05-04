@@ -145,7 +145,7 @@ var Adapter = {
 		if (__guard__(attrs != null ? attrs.content : undefined, function (x1) {
 			return x1.size;
 		}) != null) {
-			model.modelState.size = attrs.content.size + 'px';
+			model.modelState.size = attrs.content.size + 'em';
 		} else {
 			model.modelState.size = '1em';
 		}
@@ -228,15 +228,16 @@ exports.default = function (props) {
 		{
 			model: props.model,
 			moduleData: props.moduleData,
-			style: {
-				fontSize: props.model.modelState.size
-			},
 			className: 'obojobo-draft--chunks--math-equation pad align-' + props.model.modelState.align
 		},
 		React.createElement(
 			NonEditableChunk,
 			null,
-			React.createElement('div', { className: 'katex-container', dangerouslySetInnerHTML: { __html: katexHtml } }),
+			React.createElement('div', {
+				className: 'katex-container',
+				style: { fontSize: props.model.modelState.size },
+				dangerouslySetInnerHTML: { __html: katexHtml }
+			}),
 			props.model.modelState.label === '' ? null : React.createElement(
 				'div',
 				{ className: 'equation-label' },

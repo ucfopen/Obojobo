@@ -19,7 +19,7 @@ let Adapter = {
 		}
 
 		if (__guard__(attrs != null ? attrs.content : undefined, x1 => x1.size) != null) {
-			model.modelState.size = attrs.content.size + 'px'
+			model.modelState.size = attrs.content.size + 'em'
 		} else {
 			model.modelState.size = '1em'
 		}
