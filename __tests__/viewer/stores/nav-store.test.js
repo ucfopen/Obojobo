@@ -296,22 +296,24 @@ describe('NavStore', () => {
 		expect(NavStore.getState()).toMatchSnapshot()
 	})
 
-	// @TODO - these moved?
-	it.skip('score:set sets a correct flag on the item with a score of 100', () => {
+	it('question:scoreSet sets flag with a score of 100', () => {
 		NavStore.setState({ itemsById: { mockID: { showChildren: 'unchanged' } } })
-		// go
-		eventCallbacks['score:set']({ value: { id: 'mockID', score: 100 } })
+		// simulate trigger
+		Common.flux.Dispatcher.trigger.mockReturnValueOnce()
 
+		// go
+		eventCallbacks['question:scoreSet']({ value: { id: 'mockID', score: 0 } })
 		expect(NavUtil.setFlag).toHaveBeenCalledTimes(1)
 		expect(NavUtil.setFlag.mock.calls[0]).toMatchSnapshot()
 	})
 
-	// @TODO - these moved?
-	it.skip('score:set sets a correct flag on the item with a score of 23', () => {
+	it('question:scoreSet sets flag with a score of 100', () => {
 		NavStore.setState({ itemsById: { mockID: { showChildren: 'unchanged' } } })
-		// go
-		eventCallbacks['score:set']({ value: { id: 'mockID', score: 23 } })
+		// simulate trigger
+		Common.flux.Dispatcher.trigger.mockReturnValueOnce()
 
+		// go
+		eventCallbacks['question:scoreSet']({ value: { id: 'mockID', score: 100 } })
 		expect(NavUtil.setFlag).toHaveBeenCalledTimes(1)
 		expect(NavUtil.setFlag.mock.calls[0]).toMatchSnapshot()
 	})

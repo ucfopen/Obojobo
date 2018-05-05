@@ -116,8 +116,8 @@ let endAttempt = (req, res, user, attemptId, isPreviewing) => {
 				isPreviewing,
 				ltiRequestResult.scoreSent,
 				ltiRequestResult.status,
-				ltiRequestResult.error,
-				ltiRequestResult.errorDetails,
+				ltiRequestResult.statusDetails,
+				ltiRequestResult.gradebookStatus,
 				ltiRequestResult.ltiAssessmentScoreId,
 				req.hostname,
 				req.connection.remoteAddress
@@ -273,8 +273,8 @@ let insertAttemptScoredEvents = (
 	isPreviewing,
 	ltiScoreSent,
 	ltiScoreStatus,
-	ltiScoreError,
-	ltiScoreErrorDetails,
+	ltiStatusDetails,
+	ltiGradeBookStatus,
 	ltiAssessmentScoreId,
 	hostname,
 	remoteAddress
@@ -290,8 +290,8 @@ let insertAttemptScoredEvents = (
 			assessmentScore,
 			ltiScoreSent,
 			ltiScoreStatus,
-			ltiScoreError,
-			ltiScoreErrorDetails,
+			ltiStatusDetails,
+			ltiGradeBookStatus,
 			assessmentScoreId,
 			ltiAssessmentScoreId
 		},

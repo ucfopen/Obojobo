@@ -144,13 +144,14 @@ describe('Attempt End', () => {
 					attemptId: 'mockAttemptId',
 					attemptScore: undefined,
 					ltiAssessmentScoreId: 'mockLitScoreId',
-					ltiScoreError: 'mockScoreError',
-					ltiScoreErrorDetails: 'mockErrorDetails',
+					ltiGradeBookStatus: undefined,
+					ltiStatusDetails: undefined,
 					ltiScoreSent: 'mockScoreSent',
 					ltiScoreStatus: 'mockStatus'
 				},
 				userId: 'mockUserId'
 			})
+
 			expect(insertEvent).toHaveBeenCalledWith({
 				action: 'assessment:attemptEnd',
 				actorTime: 'mockDate',
@@ -359,8 +360,8 @@ describe('Attempt End', () => {
 				attemptId: 'mockAttemptId',
 				attemptScore: 'mockAttemptScore',
 				ltiAssessmentScoreId: 'mockLtiAssessmentScoreId',
-				ltiScoreError: 'mockLtiScoreError',
-				ltiScoreErrorDetails: 'mockLtiScoreErrorDetails',
+				ltiGradeBookStatus: 'mockLtiScoreErrorDetails',
+				ltiStatusDetails: 'mockLtiScoreError',
 				ltiScoreSent: 'mockLtiScoreSent',
 				ltiScoreStatus: 'mockLtiScoreStatus'
 			},
