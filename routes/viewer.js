@@ -12,12 +12,21 @@ let db = oboRequire('db')
 // launch lti view of draft - redirects to visit route
 // mounted as /visit/:draftId/:page
 router.post('/:draftId/:page?', (req, res, next) => {
+	let user = null
+	let draft = null
+
 	return req
 		.requireCurrentUser()
 		.then(currentUser => {
+			user = currentUser
+			return req.requireCurrentDraft()
+		})
+		.then(currentDraft => {
+			draft = currentDraft
+
 			return Visit.createVisit(
-				currentUser.id,
-				req.params.draftId,
+				user.id,
+				draft.draftId,
 				req.lti.body.resource_link_id,
 				req.oboLti.launchId
 			)
@@ -32,7 +41,7 @@ router.post('/:draftId/:page?', (req, res, next) => {
 			})
 		})
 		.then(visit => {
-			res.redirect(`/view/${req.params.draftId}/visit/${visit.id}`)
+			res.redirect(`/view/${draft.draftId}/visit/${visit.id}`)
 		})
 		.catch(error => {
 			logger.error(error)
@@ -50,7 +59,7 @@ router.get('/:draftId/visit/:visitId*', (req, res, next) => {
 		.then(currentUser => {
 			user = currentUser
 			if (user.isGuest()) throw new Error('Login Required')
-			return DraftModel.fetchById(req.params.draftId)
+			return req.requireCurrentDraft()
 		})
 		.then(draftModel => {
 			draft = draftModel
@@ -75,11 +84,11 @@ router.get('/:draftId/visit/:visitId*', (req, res, next) => {
 				userId: user.id,
 				ip: req.connection.remoteAddress,
 				metadata: {},
-				draftId: req.params.draftId,
+				draftId: draft.draftId,
 				payload: {},
 				eventVersion: '1.0.0',
 				caliperPayload: createViewerSessionLoggedInEvent({
-					draftId: req.params.draftId,
+					draftId: draft.draftId,
 					actor: { type: ACTOR_USER, id: user.id },
 					isPreviewMode: user.canViewEditor,
 					sessionIds: getSessionIds(req.session)

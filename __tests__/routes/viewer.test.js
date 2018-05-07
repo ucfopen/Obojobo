@@ -12,6 +12,7 @@ describe('viewer route', () => {
 	const { mockExpressMethods, mockRouterMethods } = require('../../__mocks__/__mock_express')
 	const mockReq = {
 		requireCurrentUser: jest.fn(),
+		requireCurrentDraft: jest.fn(),
 		params: { draftId: 555 },
 		app: {
 			locals: {
@@ -38,10 +39,18 @@ describe('viewer route', () => {
 	}
 	const mockNext = jest.fn()
 
+	const mockYell = jest.fn()
+
 	beforeAll(() => {})
 	afterAll(() => {})
 	beforeEach(() => {
 		mockReq.requireCurrentUser.mockReset()
+		mockReq.requireCurrentDraft.mockReset()
+		mockReq.requireCurrentDraft.mockReturnValue({
+			draftId: 555,
+			contentId: 12,
+			yell: mockYell
+		})
 		mockReq.app.get.mockReset()
 		mockRes.render.mockReset()
 		mockNext.mockReset()
@@ -93,8 +102,7 @@ describe('viewer route', () => {
 		let routeFunction = mockRouterMethods.get.mock.calls[0][1]
 		mockReq.requireCurrentUser.mockResolvedValueOnce(new User())
 		let mockDoc = {} // no contents
-		let mockYell = jest.fn().mockReturnValueOnce(mockDoc)
-		Draft.fetchById.mockResolvedValueOnce({ yell: mockYell })
+		mockYell.mockReturnValueOnce(mockDoc)
 
 		return routeFunction(mockReq, mockRes, mockNext).then(result => {
 			expect(mockYell).toBeCalledWith('internal:sendToClient', mockReq, mockRes)
@@ -117,8 +125,7 @@ describe('viewer route', () => {
 			}
 		}
 
-		let mockYell = jest.fn().mockReturnValueOnce(mockDoc)
-		Draft.fetchById.mockResolvedValueOnce({ yell: mockYell })
+		mockYell.mockReturnValueOnce(mockDoc)
 
 		return routeFunction(mockReq, mockRes, mockNext).then(result => {
 			expect(mockRes.render).toBeCalledWith('viewer', { draftTitle: 'my expected title' })
