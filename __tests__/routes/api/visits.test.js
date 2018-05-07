@@ -17,6 +17,7 @@ describe('api visits route', () => {
 	const { mockExpressMethods, mockRouterMethods } = require('../../../__mocks__/__mock_express')
 	const mockReq = {
 		requireCurrentUser: jest.fn(),
+		requireCurrentDraft: jest.fn(),
 		params: { draftId: 555 },
 		app: {
 			locals: {
@@ -31,6 +32,7 @@ describe('api visits route', () => {
 		success: jest.fn()
 	}
 	const mockNext = jest.fn()
+	const mockYell = jest.fn()
 	let startVisitRoute
 
 	beforeAll(() => {})
@@ -38,6 +40,16 @@ describe('api visits route', () => {
 	beforeEach(() => {
 		oboRequire('routes/api/visits')
 		mockReq.requireCurrentUser.mockReset()
+		mockReq.requireCurrentDraft.mockResolvedValue({
+			draftId: 555,
+			contentId: 12,
+			yell: mockYell,
+			root: {
+				node: {
+					_rev: 'draft-content-id'
+				}
+			}
+		})
 		mockReq.body = {}
 		mockRes.render.mockReset()
 		mockRes.reject.mockReset()
@@ -100,19 +112,9 @@ describe('api visits route', () => {
 		Visit.fetchById.mockResolvedValueOnce(
 			new Visit({
 				is_preview: false,
-				draft_content_id: 'mocked-draft-content-id'
+				draft_content_id: 'draft-content-id'
 			})
 		)
-
-		// mock the draft
-		Draft.fetchById.mockResolvedValueOnce({
-			yell: jest.fn(),
-			root: {
-				node: {
-					_rev: 'mocked-draft-content-id'
-				}
-			}
-		})
 
 		// reject launch lookup
 		ltiUtil.retrieveLtiLaunch.mockRejectedValueOnce('no launch found')
@@ -128,15 +130,6 @@ describe('api visits route', () => {
 		expect.assertions(3)
 		mockReq.requireCurrentUser.mockResolvedValueOnce(new User())
 		mockReq.body = { visitId: 9, draftId: 1 }
-
-		Draft.fetchById.mockResolvedValueOnce({
-			yell: jest.fn(),
-			root: {
-				node: {
-					_rev: 'mocked-new-draft-content-id'
-				}
-			}
-		})
 
 		// resolve ltiLaunch lookup
 		let launch = {
@@ -164,15 +157,6 @@ describe('api visits route', () => {
 		expect.assertions(4)
 		mockReq.requireCurrentUser.mockResolvedValueOnce(new User())
 		mockReq.body = { visitId: 9, draftId: 1 }
-
-		Draft.fetchById.mockResolvedValueOnce({
-			yell: jest.fn(),
-			root: {
-				node: {
-					_rev: 'mocked-new-draft-content-id'
-				}
-			}
-		})
 
 		// resolve ltiLaunch lookup
 		let launch = {
@@ -207,18 +191,9 @@ describe('api visits route', () => {
 			new Visit({
 				is_active: true,
 				is_preview: false,
-				draft_content_id: 'mocked-draft-content-id'
+				draft_content_id: 'draft-content-id'
 			})
 		)
-
-		Draft.fetchById.mockResolvedValueOnce({
-			yell: jest.fn(),
-			root: {
-				node: {
-					_rev: 'mocked-draft-content-id'
-				}
-			}
-		})
 
 		// resolve ltiLaunch lookup
 		ltiUtil.retrieveLtiLaunch.mockResolvedValueOnce({})
@@ -237,28 +212,8 @@ describe('api visits route', () => {
 		mockReq.requireCurrentUser.mockResolvedValueOnce(new User())
 		mockReq.body = { visitId: 9, draftId: 1 }
 
-		// resolve db.one lookup of visit
-		Visit.fetchById.mockResolvedValueOnce(
-			new Visit({
-				is_active: true,
-				is_preview: false,
-				draft_content_id: 'draft-content-id'
-			})
-		)
-
-		// resolve ltiLaunch lookup
-		let launch = {
-			reqVars: {
-				lis_outcome_service_url: 'howtune.com'
-			}
-		}
-		ltiUtil.retrieveLtiLaunch.mockResolvedValueOnce(launch)
-
-		// resolve viewerState.get
-		ltiUtil.retrieveLtiLaunch.mockResolvedValueOnce({})
-
 		// reject fetchById
-		Draft.fetchById.mockRejectedValueOnce('no draft')
+		mockReq.requireCurrentDraft.mockRejectedValueOnce('no draft')
 		return startVisitRoute(mockReq, mockRes, mockNext).then(result => {
 			expect(logger.error).toBeCalledWith('no draft')
 			expect(mockRes.reject).toBeCalledWith('no draft')
@@ -291,14 +246,8 @@ describe('api visits route', () => {
 		// resolve viewerState.get
 		viewerState.get.mockResolvedValueOnce('view state')
 
-		// resolve fetchById
-		let mockDraft = new Draft({
-			_rev: 'draft-content-id'
-		})
-		Draft.fetchById.mockResolvedValueOnce(mockDraft)
-
 		return startVisitRoute(mockReq, mockRes, mockNext).then(result => {
-			expect(mockDraft.yell).toBeCalledWith(
+			expect(mockYell).toBeCalledWith(
 				'internal:startVisit',
 				mockReq,
 				mockRes,
@@ -345,7 +294,7 @@ describe('api visits route', () => {
 		Draft.fetchById.mockResolvedValueOnce(mockDraft)
 
 		return startVisitRoute(mockReq, mockRes, mockNext).then(result => {
-			expect(mockDraft.yell).toBeCalledWith(
+			expect(mockYell).toBeCalledWith(
 				'internal:startVisit',
 				mockReq,
 				mockRes,

@@ -7,27 +7,18 @@ const VisitModel = oboRequire('models/visit')
 const ltiUtil = oboRequire('lti')
 const viewerState = oboRequire('viewer/viewer_state')
 
-const getDraftAndStartVisitProps = (req, res) => {
-	let draft
+const getDraftAndStartVisitProps = (req, res, draft) => {
 	let visitStartReturnExtensionsProps = {}
 
-	return DraftModel.fetchById(req.body.draftId)
-		.then(draftResult => {
-			draft = draftResult
-
-			return draft.yell(
-				'internal:startVisit',
-				req,
-				res,
-				req.body.draftId,
-				req.body.visitId,
-				visitStartReturnExtensionsProps
-			)
-		})
-		.then(() => ({
-			draft,
-			visitStartReturnExtensionsProps
-		}))
+	draft.yell(
+		'internal:startVisit',
+		req,
+		res,
+		req.body.draftId,
+		req.body.visitId,
+		visitStartReturnExtensionsProps
+	)
+	return visitStartReturnExtensionsProps
 }
 
 const getViewerState = (userId, draftId) => viewerState.get(userId, draftId)
@@ -54,15 +45,20 @@ router.post('/start', (req, res, next) => {
 			// validate input
 			if (visitId == null || draftId == null) throw new Error('Missing visit and/or draft id!')
 
+			return req.requireCurrentDraft()
+		})
+		.then(currentDraft => {
+			draft = currentDraft
+
 			return Promise.all([
 				VisitModel.fetchById(visitId),
 				getViewerState(user.id, draftId),
-				getDraftAndStartVisitProps(req, res)
+				getDraftAndStartVisitProps(req, res, draft)
 			])
 		})
 		.then(results => {
 			// expand results
-			;[visit, viewState, { draft, visitStartReturnExtensionsProps }] = results
+			;[visit, viewState, visitStartReturnExtensionsProps] = results
 
 			if (visit.is_preview === false) {
 				if (visit.draft_content_id !== draft.root.node._rev) {
