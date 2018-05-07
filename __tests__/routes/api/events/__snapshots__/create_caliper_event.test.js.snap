@@ -535,6 +535,23 @@ Event {
 }
 `;
 
+exports[`Caliper event creator createViewerOpenEvent 1`] = `
+Event {
+  "@context": "http://purl.imsglobal.org/ctx/caliper/v1p1",
+  "action": "Used",
+  "actor": "https://testHost/api/user/testUserId",
+  "edApp": "https://testHost/api/system",
+  "eventTime": "mockDate",
+  "extensions": Object {
+    "previewMode": false,
+  },
+  "generated": "https://testHost/api/visit/visitId",
+  "id": "urn:uuid:DEADBEEF-0000-DEAD-BEEF-1234DEADBEEF",
+  "object": "https://testHost/api/system",
+  "type": "ToolUseEvent",
+}
+`;
+
 exports[`Caliper event creator createViewerResumedEvent 1`] = `
 Event {
   "@context": "http://purl.imsglobal.org/ctx/caliper/v1p1",
@@ -591,5 +608,23 @@ Event {
   "session": "https://testHost/api/session/testSessionId",
   "target": "https://testHost/api/draft/testDraftId",
   "type": "SessionEvent",
+}
+`;
+
+exports[`Caliper event creator createVisitCreateEvent 1`] = `
+Event {
+  "@context": "http://purl.imsglobal.org/ctx/caliper/v1p1",
+  "action": "Created",
+  "actor": "https://testHost/api/user/testUserId",
+  "edApp": "https://testHost/api/system",
+  "eventTime": "mockDate",
+  "extensions": Object {
+    "deactivatedVisitId": "deactivatedVisitId",
+    "previewMode": false,
+  },
+  "generated": "https://testHost/api/visit/visitId",
+  "id": "urn:uuid:DEADBEEF-0000-DEAD-BEEF-1234DEADBEEF",
+  "object": "https://testHost/api/system",
+  "type": "VisitCreateEvent",
 }
 `;

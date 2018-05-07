@@ -2,8 +2,24 @@ jest.mock('../../models/draft')
 jest.mock('../../models/visit')
 jest.mock('../../viewer/viewer_state')
 jest.mock('../../logger')
+jest.mock('../../insert_event', () => jest.fn())
+
+const mockCreateViewerOpenEvent = jest.fn()
+const mockCreateViewerSessionLoggedInEvent = jest.fn()
+const mockCreateVisitCreateEvent = jest.fn()
+jest.mock('../../routes/api/events/create_caliper_event', () =>
+	jest.fn().mockReturnValue({
+		createViewerOpenEvent: mockCreateViewerOpenEvent,
+		createViewerSessionLoggedInEvent: mockCreateViewerSessionLoggedInEvent,
+		createVisitCreateEvent: mockCreateVisitCreateEvent
+	})
+)
+// make sure all Date objects use a static date
+mockStaticDate()
 
 describe('viewer route', () => {
+	const insertEvent = oboRequire('insert_event')
+	const caliperEvent = oboRequire('routes/api/events/create_caliper_event')
 	const logger = oboRequire('logger')
 	const Draft = oboRequire('models/draft')
 	const Visit = oboRequire('models/visit')
@@ -12,7 +28,10 @@ describe('viewer route', () => {
 	const { mockExpressMethods, mockRouterMethods } = require('../../__mocks__/__mock_express')
 	const mockReq = {
 		requireCurrentUser: jest.fn(),
-		params: { draftId: 555 },
+		params: {
+			draftId: 555,
+			visitId: 'mocked-visit-id'
+		},
 		app: {
 			locals: {
 				paths: 'paths',
@@ -30,6 +49,9 @@ describe('viewer route', () => {
 		},
 		oboLti: {
 			launchId: 'mocked-launch-id'
+		},
+		connection: {
+			remoteAddress: 'remoteAddress'
 		}
 	}
 	const mockRes = {
@@ -45,7 +67,10 @@ describe('viewer route', () => {
 		mockReq.app.get.mockReset()
 		mockRes.render.mockReset()
 		mockNext.mockReset()
-		Visit.createVisit.mockReturnValueOnce({ id: 'mocked-visit-id' })
+		Visit.createVisit.mockReturnValueOnce([
+			{ id: 'mocked-visit-id' },
+			{ id: 'mocked-deactivated-visit-id' }
+		])
 		oboRequire('routes/viewer')
 	})
 	afterEach(() => {})
@@ -85,6 +110,58 @@ describe('viewer route', () => {
 		return routeFunction(mockReq, mockRes, mockNext).then(result => {
 			expect(mockRes.render).not.toBeCalled()
 			expect(mockNext).toBeCalledWith('not logged in')
+		})
+	})
+
+	test('view/draft/visit inserts visit:start event and calls createViewerSessionLoggedInEvent', () => {
+		expect.assertions(2)
+		let routeFunction = mockRouterMethods.get.mock.calls[0][1]
+		mockReq.requireCurrentUser.mockResolvedValueOnce(new User())
+
+		return routeFunction(mockReq, mockRes, mockNext).then(result => {
+			expect(insertEvent).toBeCalledWith({
+				action: 'visit:start',
+				actorTime: '2016-09-22T16:57:14.500Z',
+				caliperPayload: undefined,
+				draftId: 555,
+				eventVersion: '1.0.0',
+				ip: 'remoteAddress',
+				metadata: {},
+				payload: { visitId: 'mocked-visit-id' },
+				userId: 0
+			})
+			expect(mockCreateViewerSessionLoggedInEvent).toBeCalledWith({
+				actor: { id: 0, type: 'user' },
+				draftId: 555,
+				isPreviewMode: undefined,
+				sessionIds: { launchId: undefined, sessionId: undefined }
+			})
+		})
+	})
+
+	test('view/draft/visit inserts viewer:open event and calls createViewerOpenEvent', () => {
+		expect.assertions(2)
+		let routeFunction = mockRouterMethods.get.mock.calls[0][1]
+		mockReq.requireCurrentUser.mockResolvedValueOnce(new User())
+
+		return routeFunction(mockReq, mockRes, mockNext).then(result => {
+			expect(insertEvent).toBeCalledWith({
+				action: 'viewer:open',
+				actorTime: '2016-09-22T16:57:14.500Z',
+				caliperPayload: undefined,
+				draftId: 555,
+				eventVersion: '1.1.0',
+				ip: 'remoteAddress',
+				metadata: {},
+				payload: { visitId: 'mocked-visit-id' },
+				userId: 0
+			})
+			expect(mockCreateViewerOpenEvent).toBeCalledWith({
+				actor: { id: 0, type: 'user' },
+				isPreviewMode: undefined,
+				sessionIds: { launchId: undefined, sessionId: undefined },
+				visitId: 'mocked-visit-id'
+			})
 		})
 	})
 
@@ -139,6 +216,33 @@ describe('viewer route', () => {
 				'mocked-launch-id'
 			)
 			expect(mockRes.redirect).toBeCalledWith('/view/555/visit/mocked-visit-id')
+		})
+	})
+
+	test('POST view/:draftId/:page? inserts visit:create event and calls createVisitCreateEvent', () => {
+		expect.assertions(2)
+		let routeFunction = mockRouterMethods.post.mock.calls[0][1]
+		mockReq.requireCurrentUser.mockResolvedValueOnce(new User())
+
+		return routeFunction(mockReq, mockRes, mockNext).then(result => {
+			expect(insertEvent).toBeCalledWith({
+				action: 'visit:create',
+				actorTime: '2016-09-22T16:57:14.500Z',
+				caliperPayload: undefined,
+				draftId: 555,
+				eventVersion: '1.0.0',
+				ip: 'remoteAddress',
+				metadata: {},
+				payload: { deactivatedVisit: 'mocked-deactivated-visit-id', visitId: 'mocked-visit-id' },
+				userId: 0
+			})
+			expect(mockCreateVisitCreateEvent).toBeCalledWith({
+				actor: { id: 0, type: 'user' },
+				isPreviewMode: undefined,
+				sessionIds: { launchId: undefined, sessionId: undefined },
+				visitId: 'mocked-visit-id',
+				extensions: { deactivatedVisitId: 'mocked-deactivated-visit-id' }
+			})
 		})
 	})
 

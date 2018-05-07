@@ -11,13 +11,14 @@ describe('Visit Model', () => {
 	test('createVisit updates and inserts visit with expected values', () => {
 		expect.assertions(4)
 
-		db.none.mockResolvedValueOnce({})
-		db.one.mockResolvedValueOnce({ id: 'mocked-draft-content-id' })
-		db.one.mockResolvedValueOnce({ id: 'resulting-visit-id' })
+		db.oneOrNone.mockResolvedValueOnce({ deactivatedVisit: { id: 'deactivated-visit-id' } })
+		db.one
+			.mockResolvedValueOnce({ id: 'mocked-draft-content-id' })
+			.mockResolvedValueOnce({ id: 'resulting-visit-id' })
 
 		return Visit.createVisit('user-id', 'draft-id', 'resource-link-id', 'launch-id').then(
 			result => {
-				expect(db.none.mock.calls[0][1]).toEqual({
+				expect(db.oneOrNone.mock.calls[0][1]).toEqual({
 					draftId: 'draft-id',
 					userId: 'user-id'
 				})
@@ -32,7 +33,12 @@ describe('Visit Model', () => {
 					launchId: 'launch-id',
 					isPreview: false
 				})
-				expect(result).toEqual({ id: 'resulting-visit-id' })
+				expect(result).toEqual([
+					{ id: 'resulting-visit-id' },
+					{
+						deactivatedVisit: { id: 'deactivated-visit-id' }
+					}
+				])
 			}
 		)
 	})
@@ -40,12 +46,13 @@ describe('Visit Model', () => {
 	test('createPreviewVisit updates and inserts with expected values', () => {
 		expect.assertions(4)
 
-		db.none.mockResolvedValueOnce({})
-		db.one.mockResolvedValueOnce({ id: 'mocked-draft-content-id' })
-		db.one.mockResolvedValueOnce({ id: 'resulting-visit-id' })
+		db.oneOrNone.mockResolvedValueOnce({ deactivatedVisit: { id: 'deactivated-visit-id' } })
+		db.one
+			.mockResolvedValueOnce({ id: 'mocked-draft-content-id' })
+			.mockResolvedValueOnce({ id: 'resulting-visit-id' })
 
 		return Visit.createPreviewVisit('user-id', 'draft-id').then(result => {
-			expect(db.none.mock.calls[0][1]).toEqual({
+			expect(db.oneOrNone.mock.calls[0][1]).toEqual({
 				draftId: 'draft-id',
 				userId: 'user-id'
 			})
@@ -60,7 +67,12 @@ describe('Visit Model', () => {
 				launchId: null,
 				isPreview: true
 			})
-			expect(result).toEqual({ id: 'resulting-visit-id' })
+			expect(result).toEqual([
+				{ id: 'resulting-visit-id' },
+				{
+					deactivatedVisit: { id: 'deactivated-visit-id' }
+				}
+			])
 		})
 	})
 })

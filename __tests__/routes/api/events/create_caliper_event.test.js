@@ -623,9 +623,46 @@ describe('Caliper event creator', () => {
 		expect(createLTIPickerEvent).toMatchSnapshot()
 	})
 
-	it('createLTIPickerEvent', () => {
+	it('createLTIPickerEvent - throws error given a bad actor', () => {
 		expect(() =>
 			caliperEvents.createLTIPickerEvent({
+				actor: { type: 'bad' }
+			})
+		).toThrow(`Invalid actor type. Must provide actor of type user`)
+	})
+
+	///////////////////////////////////////////////////////////////////////////////////////////////////
+
+	it('createViewerOpenEvent', () => {
+		const createViewerOpenEvent = caliperEvents.createViewerOpenEvent({
+			actor,
+			visitId: 'visitId'
+		})
+		expect(createViewerOpenEvent).toMatchSnapshot()
+	})
+
+	it('createViewerOpenEvent - throws error given a bad actor', () => {
+		expect(() =>
+			caliperEvents.createViewerOpenEvent({
+				actor: { type: 'bad' }
+			})
+		).toThrow(`Invalid actor type. Must provide actor of type user`)
+	})
+
+	///////////////////////////////////////////////////////////////////////////////////////////////////
+
+	it('createVisitCreateEvent', () => {
+		const createVisitCreateEvent = caliperEvents.createVisitCreateEvent({
+			actor,
+			visitId: 'visitId',
+			extensions: { deactivatedVisitId: 'deactivatedVisitId' }
+		})
+		expect(createVisitCreateEvent).toMatchSnapshot()
+	})
+
+	it('createVisitCreateEvent - throws error given a bad actor', () => {
+		expect(() =>
+			caliperEvents.createVisitCreateEvent({
 				actor: { type: 'bad' }
 			})
 		).toThrow(`Invalid actor type. Must provide actor of type user`)
