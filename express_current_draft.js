@@ -14,20 +14,31 @@ let resetCurrentDraft = req => {
 // returns a Promise!!!
 let getCurrentDraft = (req) => {
 	if (!req.currentDraft){
-		// If the draftId is not in params, we can't retrive the draft
-		if(!req.params || !req.params.draftId){
-			logger.warn(
-				'No Session or Current Draft?',
-				req.currentDraft
-			)
-			return Promise.reject(new Error('Draft Required'))
+		// Set and retrieve the draft from params
+		if(req.params && req.params.draftId){
+			return Draft.fetchById(req.params.draftId)
+			.then(draft => {
+				setCurrentDraft(req, draft)
+				return req.currentDraft
+			})
+
 		}
 
-		return Draft.fetchById(req.params.draftId)
-		.then(draft => {
-			setCurrentDraft(req, draft)
-			return req.currentDraft
-		})
+		// Set and retrive the draft from body
+		if(req.body && req.body.draftId){
+			return Draft.fetchById(req.body.draftId)
+			.then(draft => {
+				setCurrentDraft(req, draft)
+				return req.currentDraft
+			})
+
+		}
+
+		logger.warn(
+			'No Session or Current Draft?',
+			req.currentDraft
+		)
+		return Promise.reject(new Error('Draft Required'))
 	}
 
 	return Promise.resolve(req.currentDraft)
