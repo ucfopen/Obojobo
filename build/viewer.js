@@ -2944,7 +2944,9 @@ Object.defineProperty(exports, "__esModule", {
 });
 
 exports.default = function (url) {
-	var hostname = (0, _urlParse2.default)(url || '', {}).hostname;
+	if (!url) return null;
+
+	var hostname = (0, _urlParse2.default)(url, {}).hostname;
 
 	if (hostname === '' || !hostname) return 'the external system';
 	return hostname;
