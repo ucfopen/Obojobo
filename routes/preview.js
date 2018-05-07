@@ -6,12 +6,19 @@ const Visit = oboRequire('models/visit')
 // Start a preview - redirects to visit route
 // mounts at /preview/:draftId
 router.get('/:draftId', (req, res, next) => {
+	let user = null
+	let draft = null
 	return req
 		.requireCurrentUser()
 		.then(currentUser => {
-			if (!currentUser.canViewEditor) throw new Error('Not authorized to preview')
+			user = currentUser
+			return req.requireCurrentDraft()
+		})
+		.then(currentDraft => {
+			draft = currentDraft
+			if (!user.canViewEditor) throw new Error('Not authorized to preview')
 
-			return Visit.createPreviewVisit(currentUser.id, req.params.draftId)
+			return Visit.createPreviewVisit(user.id, draft.draftId)
 		})
 		.then(
 			visit =>
@@ -24,7 +31,7 @@ router.get('/:draftId', (req, res, next) => {
 				})
 		)
 		.then(visit => {
-			res.redirect(`/view/${req.params.draftId}/visit/${visit.id}`)
+			res.redirect(`/view/${draft.draftId}/visit/${visit.id}`)
 		})
 		.catch(error => {
 			logger.error(error)
