@@ -11,10 +11,12 @@ describe('server/express', () => {
 	const db = oboRequire('db')
 	const { mockExpressMethods, mockRouterMethods } = require('__mocks__/__mock_express')
 	const mockUser = { id: 1, canViewEditor: true }
+	const mockDraft = { draftId: 3, contentId: 12 }
 	const Assessment = require('../../server/assessment')
 	// build the req info
 	const req = {
 		requireCurrentUser: jest.fn().mockReturnValue(Promise.resolve(mockUser)),
+		requireCurrentDraft: jest.fn().mockReturnValue(Promise.resolve(mockDraft)),
 		params: {
 			draftId: 3,
 			attemptId: 5,

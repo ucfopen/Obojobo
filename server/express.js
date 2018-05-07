@@ -13,13 +13,16 @@ const endAttempt = require('./attempt-end').endAttempt
 const logAndRespondToUnexpected = require('./util').logAndRespondToUnexpected
 
 app.get('/api/lti/state/draft/:draftId', (req, res, next) => {
-	let currentUser
+	let currentUser = null
 
 	return req
 		.requireCurrentUser()
 		.then(user => {
 			currentUser = user
-			return lti.getLTIStatesByAssessmentIdForUserAndDraft(currentUser.id, req.params.draftId)
+			return req.requireCurrentDraft()
+		})
+		.then(draft => {
+			return lti.getLTIStatesByAssessmentIdForUserAndDraft(currentUser.id, draft.draftId)
 		})
 		.then(result => {
 			res.success(result)
@@ -29,7 +32,7 @@ app.get('/api/lti/state/draft/:draftId', (req, res, next) => {
 app.post('/api/lti/sendAssessmentScore', (req, res, next) => {
 	logger.info('API sendAssessmentScore', req.body)
 
-	let currentUser
+	let currentUser = null
 	let ltiScoreResult
 	let assessmentScoreId
 	let draftId = req.body.draftId
@@ -39,10 +42,12 @@ app.post('/api/lti/sendAssessmentScore', (req, res, next) => {
 		.requireCurrentUser()
 		.then(user => {
 			currentUser = user
-
+			return req.requireCurrentDraft()
+		})
+		.then(draft => {
 			logger.info(
 				`API sendAssessmentScore with userId="${
-					user.id
+					currentUser.id
 				}", draftId="${draftId}", assessmentId="${assessmentId}"`
 			)
 
@@ -67,9 +72,14 @@ app.post('/api/lti/sendAssessmentScore', (req, res, next) => {
 app.post('/api/assessments/attempt/start', (req, res) => startAttempt(req, res))
 
 app.post('/api/assessments/attempt/:attemptId/end', (req, res, next) => {
+	let currentUser = null
 	return req
 		.requireCurrentUser()
-		.then(currentUser => {
+		.then(user => {
+			currentUser = user
+			return req.requireCurrentDraft()
+		})
+		.then(draft => {
 			let isPreviewing = currentUser.canViewEditor
 			return endAttempt(req, res, currentUser, req.params.attemptId, isPreviewing)
 		})
@@ -84,12 +94,17 @@ app.post('/api/assessments/attempt/:attemptId/end', (req, res, next) => {
 app.post('/api/assessments/clear-preview-scores', (req, res, next) => {
 	let assessmentScoreIds
 	let attemptIds
-	let currentUser
+	let currentUser = null
+	let currentDraft = null
 
 	return req
 		.requireCurrentUser()
 		.then(user => {
 			currentUser = user
+			return req.requireCurrentDraft()
+		})
+		.then(draft => {
+			currentDraft = draft
 			let isPreviewing = currentUser.canViewEditor
 
 			if (!isPreviewing) throw 'Not in preview mode'
@@ -104,7 +119,7 @@ app.post('/api/assessments/clear-preview-scores', (req, res, next) => {
 					`,
 				{
 					userId: currentUser.id,
-					draftId: req.body.draftId
+					draftId: currentDraft.draftId
 				}
 			)
 		})
@@ -121,7 +136,7 @@ app.post('/api/assessments/clear-preview-scores', (req, res, next) => {
 				`,
 				{
 					userId: currentUser.id,
-					draftId: req.body.draftId
+					draftId: currentDraft.draftId
 				}
 			)
 		})
@@ -165,7 +180,7 @@ app.post('/api/assessments/clear-preview-scores', (req, res, next) => {
 						`,
 						{
 							userId: currentUser.id,
-							draftId: req.body.draftId
+							draftId: currentDraft.draftId
 						}
 					),
 					transaction.none(
@@ -177,7 +192,7 @@ app.post('/api/assessments/clear-preview-scores', (req, res, next) => {
 						`,
 						{
 							userId: currentUser.id,
-							draftId: req.body.draftId
+							draftId: currentDraft.draftId
 						}
 					)
 				)
@@ -196,14 +211,21 @@ app.post('/api/assessments/clear-preview-scores', (req, res, next) => {
 })
 
 app.get('/api/assessments/:draftId/:assessmentId/attempt/:attemptId', (req, res, next) => {
+	let currentUser = null
+	let currentDraft = null
 	// @TODO:
 	// check input
 	return req
 		.requireCurrentUser()
-		.then(currentUser => {
+		.then(user => {
+			currentUser = user
+			return req.requireCurrentDraft()
+		})
+		.then(draft => {
+			currentDraft = draft
 			return Assessment.getAttempt(
 				currentUser.id,
-				req.params.draftId,
+				currentDraft.draftId,
 				req.params.assessmentId,
 				req.params.attemptId
 			)
@@ -215,12 +237,19 @@ app.get('/api/assessments/:draftId/:assessmentId/attempt/:attemptId', (req, res,
 })
 
 app.get('/api/assessments/:draftId/attempts', (req, res, next) => {
+	let currentUser = null
+	let currentDraft = null
 	// @TODO:
 	// check input
 	return req
 		.requireCurrentUser()
-		.then(currentUser => {
-			return Assessment.getAttempts(currentUser.id, req.params.draftId)
+		.then(user => {
+			currentUser = user
+			return req.requireCurrentDraft()
+		})
+		.then(draft => {
+			currentDraft = draft
+			return Assessment.getAttempts(currentUser.id, currentDraft.draftId)
 		})
 		.then(result => {
 			res.success(result)
@@ -235,12 +264,19 @@ app.get('/api/assessments/:draftId/attempts', (req, res, next) => {
 })
 
 app.get('/api/assessment/:draftId/:assessmentId/attempts', (req, res, next) => {
+	let currentUser = null
+	let currentDraft = null
 	// @TODO:
 	// check input
 	return req
 		.requireCurrentUser()
-		.then(currentUser => {
-			return Assessment.getAttempts(currentUser.id, req.params.draftId, req.params.assessmentId)
+		.then(user => {
+			currentUser = user
+			return req.requireCurrentDraft()
+		})
+		.then(draft => {
+			currentDraft = draft
+			return Assessment.getAttempts(currentUser.id, currentDraft.draftId, req.params.assessmentId)
 		})
 		.then(result => res.success(result))
 		.catch(error => {
