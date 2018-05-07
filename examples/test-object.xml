@@ -377,7 +377,7 @@ int Fibonacci(int n)
 				</extension>
 			</Page>
 		</Content>
-		<Assessment id="assessment" attempts="3">
+		<Assessment id="assessment" attempts="3" review="always">
 			<Page>
 				<h1>Assessment</h1>
 				<p>This assessment contains two question banks. On each attempt only one question bank will be shown which will be the question bank not shown in the previous attempt. Scoring a 0-99% will take you to one page while scoring 100% will take you to another page. Navigation will be locked when starting and attempt and reopened when ending an attempt</p>
@@ -500,7 +500,13 @@ int Fibonacci(int n)
 					</Page>
 				</scoreAction>
 			</scoreActions>
-			<rubric type="pass-fail" passingAttemptScore="80" passingResult="100" failingResult="0" failingLastAttemptResult="$highest_attempt_score">
+			<rubric
+				type="pass-fail"
+				passingAttemptScore="80"
+				passingResult="100"
+				failingResult="0"
+				failingLastAttemptResult="$highest_attempt_score"
+				>
 				<mods>
 					<mod attemptCondition="1" passCondition="true" reward="5" />
 					<mod attemptCondition="2" passCondition="true" reward="2" />
