@@ -6,6 +6,8 @@ class Draft {
 	constructor(rawDraft) {
 		this.nodesById = new Map()
 		this.nodesByType = new Map()
+		this.draftId = rawDraft.draftId
+		this.contentId = rawDraft.contentId
 		this.root = this.processRawNode(rawDraft)
 	}
 
@@ -61,8 +63,12 @@ class Draft {
 			)
 			.then(result => {
 				result.content.draftId = result.id
+				result.content.contentId = result.version
 				result.content._rev = result.version
-				return new Draft(result.content)
+
+				let draftResult = new Draft(result.content)
+
+				return draftResult
 			})
 			.catch(error => {
 				logger.error('fetchById Error', error.message)
