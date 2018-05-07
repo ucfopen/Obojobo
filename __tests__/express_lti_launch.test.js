@@ -1,10 +1,12 @@
 jest.mock('../insert_event')
 jest.mock('../models/user')
+jest.mock('../models/draft')
 jest.mock('../db')
 jest.mock('../logger')
 
 const insertEvent = oboRequire('insert_event')
 const User = oboRequire('models/user')
+const Draft = oboRequire('models/draft')
 const logger = oboRequire('logger')
 const db = oboRequire('db')
 const ltiLaunch = oboRequire('express_lti_launch')
@@ -19,7 +21,8 @@ let mockExpressArgs = withLtiData => {
 		params: {
 			draftId: '999'
 		},
-		setCurrentUser: jest.fn()
+		setCurrentUser: jest.fn(),
+		setCurrentDraft: jest.fn()
 	}
 
 	let mockNext = jest.fn()
@@ -49,6 +52,12 @@ describe('lti launch middleware', () => {
 		db.one.mockResolvedValue({ id: 88 })
 		User.saveOrCreateCallback.mockReset()
 		logger.error.mockReset()
+		Draft.fetchById = jest.fn().mockResolvedValueOnce(
+			new Draft({
+				draftId: '999',
+				contentId: 12
+			})
+		)
 	})
 	afterEach(() => {})
 
@@ -68,6 +77,7 @@ describe('lti launch middleware', () => {
 		expect.assertions(2)
 
 		let [req, res, mockNext] = mockExpressArgs(true)
+
 		return ltiLaunch.assignment(req, res, mockNext).then(() => {
 			// tests to see if the launch is being stored
 			// there's no external handles to the method
@@ -156,6 +166,18 @@ describe('lti launch middleware', () => {
 					lastName: 'Mann',
 					roles: expect.any(Array)
 				})
+			)
+		})
+	})
+
+	test('assignment sets the current draft', () => {
+		expect.assertions(2)
+
+		let [req, res, mockNext] = mockExpressArgs(true)
+		return ltiLaunch.assignment(req, res, mockNext).then(() => {
+			expect(req.setCurrentDraft).toBeCalledWith(expect.any(Draft))
+			expect(req.setCurrentDraft).toBeCalledWith(
+				expect.objectContaining({ contentId: 12, draftId: '999' })
 			)
 		})
 	})

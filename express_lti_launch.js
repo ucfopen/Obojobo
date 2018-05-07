@@ -1,6 +1,7 @@
 let db = oboRequire('db')
 let insertEvent = oboRequire('insert_event')
 let User = oboRequire('models/user')
+let Draft = oboRequire('models/draft')
 let logger = oboRequire('logger')
 
 let storeLtiLaunch = (draftId, user, ip, ltiBody, ltiConsumerKey) => {
@@ -72,6 +73,13 @@ let userFromLaunch = (req, ltiBody) => {
 	})
 }
 
+let draftFromLaunch = (req, draftId) => {
+	return Draft.fetchById(draftId).then(draft => {
+		req.setCurrentDraft(draft)
+		return draft
+	})
+}
+
 // LTI launch detection (req.lti is created by express-ims-lti)
 // This middleware will create and register a user if there is one
 // This will also try to register the launch information if there is any
@@ -86,12 +94,17 @@ exports.assignment = (req, res, next) => {
 	// the actual redirect happens in the route, this just handles the lti launch
 	let draftId =
 		req.params.draftId === 'example' ? '00000000-0000-0000-0000-000000000000' : req.params.draftId
+	let user
 
 	return Promise.resolve(req.lti)
 		.then(lti => userFromLaunch(req, lti.body))
-		.then(user => {
+		.then(launchUser => {
+			user = launchUser
+			return draftFromLaunch(req, draftId)
+		})
+		.then(draft => {
 			return storeLtiLaunch(
-				draftId,
+				draft.draftId,
 				user,
 				req.connection.remoteAddress,
 				req.lti.body,
