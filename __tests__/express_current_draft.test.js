@@ -108,6 +108,21 @@ describe('current draft middleware', () => {
 		})
 	})
 
+	test('getCurrentDraft loads the draft when one is avalible', () => {
+		expect.assertions(2)
+
+		let [res, req, mockJson, mockStatus, mockNext] = mockArgs
+		let Draft = oboRequire('models/draft')
+		req.params = {
+			draftId: 1
+		}
+
+		return req.getCurrentDraft().then(draft => {
+			expect(draft.draftId).toBe(1)
+			expect(draft).toBeInstanceOf(Draft)
+		})
+	})
+
 	test('getCurrentDraft rejects when no Draft is set', () => {
 		expect.assertions(1)
 

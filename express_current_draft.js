@@ -3,6 +3,7 @@ let logger = oboRequire('logger')
 
 let setCurrentDraft = (req, draft) => {
 	if (!(draft instanceof Draft)) throw new Error('Invalid Draft for Current draft')
+	logger.info('setting current draft!')
 	req.currentDraft = draft
 }
 
@@ -13,11 +14,20 @@ let resetCurrentDraft = req => {
 // returns a Promise!!!
 let getCurrentDraft = (req) => {
 	if (!req.currentDraft){
-		logger.warn(
-			'No Session or Current Draft?',
-			req.currentDraft
-		)
-		return Promise.reject(new Error('Draft Required'))
+		// If the draftId is not in params, we can't retrive the draft
+		if(!req.params || !req.params.draftId){
+			logger.warn(
+				'No Session or Current Draft?',
+				req.currentDraft
+			)
+			return Promise.reject(new Error('Draft Required'))
+		}
+
+		return Draft.fetchById(req.params.draftId)
+		.then(draft => {
+			setCurrentDraft(req, draft)
+			return req.currentDraft
+		})
 	}
 
 	return Promise.resolve(req.currentDraft)
