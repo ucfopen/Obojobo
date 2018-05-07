@@ -77,9 +77,6 @@ app.post('/api/assessments/attempt/:attemptId/end', (req, res, next) => {
 		.requireCurrentUser()
 		.then(user => {
 			currentUser = user
-			return req.requireCurrentDraft()
-		})
-		.then(draft => {
 			let isPreviewing = currentUser.canViewEditor
 			return endAttempt(req, res, currentUser, req.params.attemptId, isPreviewing)
 		})

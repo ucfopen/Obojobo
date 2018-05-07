@@ -646,22 +646,6 @@ describe('start attempt route', () => {
 	})
 
 	test('calling startAttempt when no attempts remain rejects with an expected error', done => {
-		mockReq = {
-			requireCurrentUser: jest.fn(() =>
-				Promise.resolve({
-					user: {
-						canViewEditor: true
-					}
-				})
-			),
-			body: {
-				draftId: 'mockDraftId',
-				assessmentId: 'mockAssessmentId'
-			}
-		}
-
-		mockRes = { reject: jest.fn() }
-
 		const mockAssessmentNode = {
 			getChildNodeById: jest.fn(() => ({
 				node: {
@@ -680,7 +664,23 @@ describe('start attempt route', () => {
 			}))
 		}
 
-		Draft.fetchById = jest.fn(() => Promise.resolve(mockAssessmentNode))
+		mockReq = {
+			requireCurrentUser: jest.fn(() =>
+				Promise.resolve({
+					user: {
+						canViewEditor: true
+					}
+				})
+			),
+			requireCurrentDraft: jest.fn(() => Promise.resolve(mockAssessmentNode)),
+			body: {
+				draftId: 'mockDraftId',
+				assessmentId: 'mockAssessmentId'
+			}
+		}
+
+		mockRes = { reject: jest.fn() }
+
 		Assessment.getNumberAttemptsTaken = jest.fn(() => 1)
 
 		startAttempt(mockReq, mockRes).then(() => {
@@ -697,14 +697,13 @@ describe('start attempt route', () => {
 						canViewEditor: true
 					}
 				})
-			)
+			),
+			requireCurrentDraft: jest.fn(() => {
+				throw new Error(ERROR_UNEXPECTED_DB_ERROR)
+			})
 		}
 
 		mockRes = { unexpected: jest.fn() }
-
-		Draft.fetchById = jest.fn(() => {
-			throw new Error(ERROR_UNEXPECTED_DB_ERROR)
-		})
 
 		startAttempt(mockReq, mockRes).then(() => {
 			expect(mockRes.unexpected).toHaveBeenCalledWith(ERROR_UNEXPECTED_DB_ERROR)

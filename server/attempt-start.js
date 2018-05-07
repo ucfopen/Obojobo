@@ -34,7 +34,7 @@ const startAttempt = (req, res) => {
 			assessmentProperties.user = user
 			assessmentProperties.isPreviewing = user.canViewEditor
 
-			return DraftModel.fetchById(req.body.draftId)
+			return req.requireCurrentDraft()
 		})
 		.then(draftTree => {
 			const assessmentNode = draftTree.getChildNodeById(req.body.assessmentId)
