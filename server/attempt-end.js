@@ -120,7 +120,8 @@ let endAttempt = (req, res, user, attemptId, isPreviewing) => {
 				ltiRequestResult.gradebookStatus,
 				ltiRequestResult.ltiAssessmentScoreId,
 				req.hostname,
-				req.connection.remoteAddress
+				req.connection.remoteAddress,
+				calculatedScores.assessmentScoreDetails
 			)
 		})
 		.then(() => Assessment.getAttempts(user.id, attempt.draftId, attempt.assessmentId))
@@ -277,7 +278,8 @@ let insertAttemptScoredEvents = (
 	ltiGradeBookStatus,
 	ltiAssessmentScoreId,
 	hostname,
-	remoteAddress
+	remoteAddress,
+	scoreDetails
 ) => {
 	let { createAssessmentAttemptScoredEvent } = createCaliperEvent(null, hostname)
 	return insertEvent({
@@ -293,7 +295,8 @@ let insertAttemptScoredEvents = (
 			ltiStatusDetails,
 			ltiGradeBookStatus,
 			assessmentScoreId,
-			ltiAssessmentScoreId
+			ltiAssessmentScoreId,
+			scoreDetails
 		},
 		userId: user.id,
 		ip: remoteAddress,

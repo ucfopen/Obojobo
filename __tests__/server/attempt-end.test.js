@@ -147,7 +147,8 @@ describe('Attempt End', () => {
 					ltiGradeBookStatus: undefined,
 					ltiStatusDetails: undefined,
 					ltiScoreSent: 'mockScoreSent',
-					ltiScoreStatus: 'mockStatus'
+					ltiScoreStatus: 'mockStatus',
+					scoreDetails: 'mockScoreForAttempt'
 				},
 				userId: 'mockUserId'
 			})
