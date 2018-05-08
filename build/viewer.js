@@ -6927,7 +6927,7 @@ var Nav = function (_React$Component) {
 						}
 					})
 				),
-				React.createElement(_logo2.default, { inverted: true })
+				React.createElement(_logo2.default, null)
 			);
 		}
 	}]);

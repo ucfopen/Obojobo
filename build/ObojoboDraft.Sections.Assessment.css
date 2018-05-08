@@ -183,7 +183,7 @@
   box-sizing: border-box; }
   .obojobo-draft--sections--assessment--lti-status.is-synced, .obojobo-draft--sections--assessment--lti-status.is-not-lti {
     font-size: 0.7em;
-    color: #999999;
+    color: #666666;
     padding-bottom: 2em; }
   .obojobo-draft--sections--assessment--lti-status.is-not-synced {
     background-color: #ffe9c3;

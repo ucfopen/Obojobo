@@ -96,7 +96,7 @@ exports[`Nav renders all list item types 1`] = `
     </li>
   </ul>
   <div
-    className="viewer--components--logo is-inverted"
+    className="viewer--components--logo is-not-inverted"
     style={
       Object {
         "backgroundImage": undefined,
@@ -128,7 +128,7 @@ exports[`Nav renders closed 1`] = `
   </button>
   <ul />
   <div
-    className="viewer--components--logo is-inverted"
+    className="viewer--components--logo is-not-inverted"
     style={
       Object {
         "backgroundImage": undefined,
@@ -160,7 +160,7 @@ exports[`Nav renders opened 1`] = `
   </button>
   <ul />
   <div
-    className="viewer--components--logo is-inverted"
+    className="viewer--components--logo is-not-inverted"
     style={
       Object {
         "backgroundImage": undefined,
@@ -192,7 +192,7 @@ exports[`Nav renders unlocked 1`] = `
   </button>
   <ul />
   <div
-    className="viewer--components--logo is-inverted"
+    className="viewer--components--logo is-not-inverted"
     style={
       Object {
         "backgroundImage": undefined,

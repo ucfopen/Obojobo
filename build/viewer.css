@@ -112,7 +112,7 @@ body {
     transform: translate(-50%);
     opacity: 0.2; }
   #viewer-app-loading > span {
-    color: #999999;
+    color: #666666;
     font-size: 0.7em; }
   #viewer-app-loading > .loading-label {
     display: block; }
@@ -258,7 +258,7 @@ body {
       transition-delay: 0.4s;
       cursor: default; }
     .viewer--viewer-app > header .viewer--components--logo {
-      color: #999999;
+      color: #666666;
       position: fixed;
       right: 1rem;
       top: 0.8rem;
@@ -268,7 +268,7 @@ body {
       cursor: default; }
   .viewer--viewer-app > .preview-banner {
     font-family: "Libre Franklin", Arial, sans-serif;
-    background: #00b3b3;
+    background: #af1b5c;
     box-sizing: border-box;
     color: white;
     font-size: 0.7em;
@@ -281,7 +281,8 @@ body {
     position: fixed;
     right: 0;
     bottom: 0;
-    z-index: 999999; }
+    z-index: 999999;
+    border-top: 2px solid #ffffff; }
     .viewer--viewer-app > .preview-banner > .controls {
       position: absolute;
       right: 1em;
@@ -310,14 +311,14 @@ body {
         border-radius: 0.2em;
         padding: 0.4em;
         background-color: white;
-        color: #00b3b3; }
+        color: #af1b5c; }
     .viewer--viewer-app > .preview-banner > .border {
       position: fixed;
       left: 0;
       top: 0;
       right: 0;
       bottom: 0;
-      border: 3px solid #00b3b3;
+      border: 3px solid #af1b5c;
       pointer-events: none; }
   .viewer--viewer-app.is-previewing {
     height: calc(100% - 3rem); }
@@ -435,7 +436,7 @@ body {
   z-index: 999;
   font-family: "Libre Franklin", Arial, sans-serif;
   color: #000000;
-  background: #ffffff;
+  background: #fbfbfb;
   font-size: 1rem;
   width: 18rem;
   padding: 2rem;
@@ -483,7 +484,7 @@ body {
     position: relative;
     list-style-type: none;
     padding: 0 0 1rem 0;
-    border-left: solid 1px #999999; }
+    border-left: solid 1px #666666; }
   .viewer--components--nav .heading {
     position: relative;
     top: 1px;
@@ -492,7 +493,7 @@ body {
     opacity: 0.7;
     color: #000000;
     cursor: default;
-    border-left: solid 1px #ffffff; }
+    border-left: solid 1px #fbfbfb; }
     .viewer--components--nav .heading:after {
       content: '';
       position: relative;
@@ -505,14 +506,18 @@ body {
   .viewer--components--nav .sub-link {
     margin-left: 0.5rem;
     padding-left: 1rem;
-    color: #999999;
+    color: #666666;
     cursor: pointer; }
     .viewer--components--nav .link:hover,
     .viewer--components--nav .sub-link:hover {
-      color: #93c6ff; }
+      color: #1483ff; }
+      .viewer--components--nav .link:hover:after,
+      .viewer--components--nav .sub-link:hover:after {
+        border-color: #1483ff;
+        background: #93c6ff; }
     .viewer--components--nav .link.is-selected:hover,
     .viewer--components--nav .sub-link.is-selected:hover {
-      color: #93c6ff;
+      color: #0d4fa7;
       cursor: default; }
     .viewer--components--nav .link:after,
     .viewer--components--nav .sub-link:after {
@@ -524,7 +529,7 @@ body {
       transform: translate(0, -50%);
       width: 0.8em;
       height: 0.8em;
-      border: solid 2px #999999;
+      border: solid 2px #666666;
       border-radius: 0.8em;
       background: #ffffff; }
     .viewer--components--nav .link.is-last-in-list:before,
@@ -535,7 +540,7 @@ body {
       left: -1px;
       width: 1.2em;
       height: 1.2em;
-      background: #ffffff; }
+      background: #fbfbfb; }
     .viewer--components--nav .link.is-last-in-list.first-in-list:before,
     .viewer--components--nav .sub-link.is-last-in-list.first-in-list:before {
       content: '';
@@ -544,13 +549,14 @@ body {
       left: -1px;
       width: 0.5em;
       height: 100%;
-      background: #ffffff; }
+      background: #fbfbfb; }
   .viewer--components--nav .link.is-selected {
-    color: #93c6ff;
-    border-left-color: #93c6ff; }
+    color: #0d4fa7;
+    border-left-color: #0d4fa7;
+    font-weight: bold; }
     .viewer--components--nav .link.is-selected:after {
-      background: #c6e1ff;
-      border: solid 2px #93c6ff; }
+      background: #1165d6;
+      border: solid 2px #0d4fa7; }
     .viewer--components--nav .link.is-selected .lock-icon {
       display: none; }
   .viewer--components--nav .link.is-first-in-list {
@@ -562,11 +568,11 @@ body {
       left: -2px;
       width: 1.2em;
       height: 1em;
-      background: #ffffff; }
+      background: #fbfbfb; }
   .viewer--components--nav .sub-link {
     position: relative;
     font-size: 0.7rem;
-    border-left-color: #93c6ff; }
+    border-left-color: #0d4fa7; }
     .viewer--components--nav .sub-link.is-last-in-list:before {
       content: '';
       position: absolute;
@@ -579,7 +585,7 @@ body {
       left: -0.3em;
       width: 0.5em;
       height: 0.5em;
-      background: #93c6ff;
+      background: #0d4fa7;
       border: none; }
     .viewer--components--nav .sub-link .lock-icon {
       display: none; }
@@ -589,7 +595,7 @@ body {
     margin-bottom: 0.75em;
     padding: 0.75em 0.75em 0.75em 1.5em;
     border-top: solid 1px #cccccc;
-    border-left: solid 1px #ffffff;
+    border-left: solid 1px #fbfbfb;
     border-bottom: solid 1px #cccccc; }
     .viewer--components--nav .is-assessment:before {
       display: none; }
@@ -607,12 +613,14 @@ body {
       font-weight: bold;
       text-align: center; }
     .viewer--components--nav .is-assessment.is-selected {
-      color: #93c6ff;
+      color: #0d4fa7;
       border-left: solid 1px #ffffff; }
       .viewer--components--nav .is-assessment.is-selected:after {
         color: #ffffff;
-        background: #c6e1ff;
-        border: solid 1px #93c6ff; }
+        background: #1165d6;
+        border: solid 1px #0d4fa7; }
+    .viewer--components--nav .is-assessment:hover:after {
+      color: #ffffff; }
   .viewer--components--nav .seperator {
     cursor: default; }
   .viewer--components--nav .toggle-button {
@@ -634,7 +642,7 @@ body {
       outline: none; }
   .viewer--components--nav .viewer--components--logo {
     position: absolute;
-    right: 2rem;
+    left: 2rem;
     bottom: 2rem;
     font-size: 0.7rem;
-    opacity: 0.1; }
+    opacity: 0.5; }

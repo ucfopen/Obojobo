@@ -77,7 +77,7 @@
     .obojobo-draft--components--button button:disabled {
       background-color: #f4f4f4;
       cursor: default;
-      color: #999999;
+      color: #666666;
       border: 1px solid transparent;
       border-bottom: 1px solid transparent;
       opacity: 1; }
@@ -95,7 +95,7 @@
     .obojobo-draft--components--button.alt-action button:disabled {
       background-color: #f4f4f4;
       cursor: default;
-      color: #999999;
+      color: #666666;
       border: 1px solid transparent;
       border-bottom: 1px solid transparent;
       opacity: 1; }
@@ -110,7 +110,7 @@
     .obojobo-draft--components--button.alt-action.is-dangerous button:disabled {
       background-color: #f4f4f4;
       cursor: default;
-      color: #999999;
+      color: #666666;
       border: 1px solid transparent;
       border-bottom: 1px solid transparent;
       opacity: 1; }
@@ -248,7 +248,7 @@
   width: 25%; }
 
 .obojobo-draft--components--modal--bubble .single-input-bubble .label {
-  color: #999999;
+  color: #666666;
   display: block;
   font-family: "Libre Franklin", Arial, sans-serif;
   font-size: 0.7em;
@@ -298,7 +298,7 @@
     margin-left: 0.5em;
     margin-right: 0.5em; }
   .obojobo-draft--components--modal--dialog .obojobo-draft--components--modal--modal > .content > .controls .text {
-    color: #999999;
+    color: #666666;
     font-size: 0.9em; }
 .editor--components--text-menu {
   background: rgba(0, 0, 0, 0.9);

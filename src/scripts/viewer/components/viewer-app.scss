@@ -108,6 +108,7 @@
 		right: 0;
 		bottom: 0;
 		z-index: $z-index-preview;
+		border-top: 2px solid $color-bg;
 
 		> .controls {
 			position: absolute;

@@ -171,7 +171,7 @@ export default class Nav extends React.Component {
 						}
 					})}
 				</ul>
-				<Logo inverted />
+				<Logo />
 			</div>
 		)
 	}

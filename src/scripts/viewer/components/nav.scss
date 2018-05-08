@@ -1,6 +1,10 @@
 @import '../../../scss/includes';
 
 .viewer--components--nav {
+	$color-nav-bg: #fbfbfb;
+	$color-nav-highlight: $color-obojobo-blue;
+	$color-nav-hover: darken($color-highlight, 25%);
+
 	$padding: 2rem;
 	overflow: auto;
 	position: fixed;
@@ -10,7 +14,7 @@
 	z-index: $z-index-above-content;
 	font-family: $font-default;
 	color: $color-text;
-	background: $color-bg;
+	background: $color-nav-bg;
 	font-size: 1rem;
 	width: $dimension-nav-menu;
 	padding: $padding;
@@ -109,7 +113,7 @@
 		opacity: 0.7;
 		color: $color-text;
 		cursor: default;
-		border-left: solid 1px $color-bg;
+		border-left: solid 1px $color-nav-bg;
 
 		&:after {
 			content: '';
@@ -130,11 +134,16 @@
 		cursor: pointer;
 
 		&:hover {
-			color: $color-highlight;
+			color: $color-nav-hover;
+
+			&:after {
+				border-color: $color-nav-hover;
+				background: lighten($color-nav-hover, 25%);
+			}
 		}
 
 		&.is-selected:hover {
-			color: $color-highlight;
+			color: $color-nav-highlight;
 			cursor: default;
 		}
 		&:after {
@@ -159,7 +168,7 @@
 				left: -1px;
 				width: 1.2em;
 				height: 1.2em;
-				background: $color-bg;
+				background: $color-nav-bg;
 			}
 
 			&.first-in-list {
@@ -170,19 +179,21 @@
 					left: -1px;
 					width: 0.5em;
 					height: 100%;
-					background: $color-bg;
+					background: $color-nav-bg;
 				}
 			}
 		}
 	}
+
 	.link {
 		&.is-selected {
-			color: $color-highlight;
-			border-left-color: $color-highlight;
+			color: $color-nav-highlight;
+			border-left-color: $color-nav-highlight;
+			font-weight: bold;
 
 			&:after {
-				background: lighten($color-highlight, 10%);
-				border: solid 2px $color-highlight;
+				background: lighten($color-nav-highlight, 10%);
+				border: solid 2px $color-nav-highlight;
 			}
 
 			.lock-icon {
@@ -200,7 +211,7 @@
 				left: -2px;
 				width: 1.2em;
 				height: 1em;
-				background: $color-bg;
+				background: $color-nav-bg;
 			}
 		}
 	}
@@ -208,7 +219,7 @@
 	.sub-link {
 		position: relative;
 		font-size: 0.7rem;
-		border-left-color: $color-highlight;
+		border-left-color: $color-nav-highlight;
 
 		&.is-last-in-list {
 			&:before {
@@ -226,7 +237,7 @@
 			left: -0.3em;
 			width: 0.5em;
 			height: 0.5em;
-			background: $color-highlight;
+			background: $color-nav-highlight;
 			border: none;
 		}
 		.lock-icon {
@@ -240,7 +251,7 @@
 		margin-bottom: 0.75em;
 		padding: 0.75em 0.75em 0.75em 1.5em;
 		border-top: solid 1px lighten($color-text, 80%);
-		border-left: solid 1px $color-bg;
+		border-left: solid 1px $color-nav-bg;
 		border-bottom: solid 1px lighten($color-text, 80%);
 
 		&:before {
@@ -264,14 +275,18 @@
 		}
 
 		&.is-selected {
-			color: $color-highlight;
+			color: $color-nav-highlight;
 			border-left: solid 1px $color-bg;
 
 			&:after {
 				color: $color-bg;
-				background: lighten($color-highlight, 10%);
-				border: solid 1px $color-highlight;
+				background: lighten($color-nav-highlight, 10%);
+				border: solid 1px $color-nav-highlight;
 			}
+		}
+
+		&:hover:after {
+			color: $color-bg;
 		}
 	}
 
@@ -305,9 +320,9 @@
 
 	.viewer--components--logo {
 		position: absolute;
-		right: $padding;
+		left: $padding;
 		bottom: $padding;
 		font-size: 0.7rem;
-		opacity: 0.1;
+		opacity: 0.5;
 	}
 }
