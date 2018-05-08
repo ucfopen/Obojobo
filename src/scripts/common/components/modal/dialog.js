@@ -30,8 +30,11 @@ export default class Dialog extends React.Component {
 
 	render() {
 		let styles = null
-		if (this.props.width) {
-			styles = { width: this.props.width }
+		if (this.props.width || this.props.minWidth) {
+			styles = {
+				width: this.props.width,
+				minWidth: this.props.minWidth
+			}
 		}
 
 		return (

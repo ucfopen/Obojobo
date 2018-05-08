@@ -290,6 +290,7 @@ exports.default = function (props) {
 	return React.createElement(
 		Dialog,
 		{
+			minWidth: '30em',
 			buttons: [{
 				value: 'Submit as incomplete',
 				altAction: true,

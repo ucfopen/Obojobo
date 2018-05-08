@@ -14,6 +14,7 @@ const onSubmit = submitProp => {
 
 export default props => (
 	<Dialog
+		minWidth="30em"
 		buttons={[
 			{
 				value: 'Submit as incomplete',

@@ -2622,8 +2622,11 @@ var Dialog = function (_React$Component) {
 		key: 'render',
 		value: function render() {
 			var styles = null;
-			if (this.props.width) {
-				styles = { width: this.props.width };
+			if (this.props.width || this.props.minWidth) {
+				styles = {
+					width: this.props.width,
+					minWidth: this.props.minWidth
+				};
 			}
 
 			return React.createElement(
