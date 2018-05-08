@@ -3,7 +3,7 @@ import Common from 'Common'
 const { Dispatcher } = Common.flux
 const { OboModel } = Common.models
 
-const getFlatList = function (item) {
+const getFlatList = function(item) {
 	let list = []
 	let model = OboModel.models[item.id]
 	if (model && model.get('type') === 'ObojoboDraft.Sections.Assessment') {
@@ -111,9 +111,6 @@ const NavUtil = {
 		})
 	},
 
-	// getNavItemForModel: (state, model) ->
-	// 	state.itemsById[model.get('id')]
-
 	getNavTarget(state) {
 		return state.itemsById[state.navTargetId]
 	},
@@ -204,12 +201,38 @@ const NavUtil = {
 		return OboModel.models[nextItem.id]
 	},
 
+	getNavItemForModel(state, model) {
+		let item = state.itemsById[model.get('id')]
+		if (!item) {
+			return null
+		}
+
+		return item
+	},
+
+	getNavLabelForModel(state, model) {
+		let item = NavUtil.getNavItemForModel(state, model)
+		if (!item) {
+			return null
+		}
+
+		return item.label
+	},
+
 	canNavigate(state) {
 		return !state.locked
 	},
 
 	getOrderedList(state) {
 		return getFlatList(state.items)
+	},
+
+	setContext(context) {
+		return Dispatcher.trigger('nav:setContext', {
+			value: {
+				context
+			}
+		})
 	}
 }
 

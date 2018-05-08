@@ -63,7 +63,7 @@
 /******/ 	__webpack_require__.p = "build/";
 /******/
 /******/ 	// Load entry module and return exports
-/******/ 	return __webpack_require__(__webpack_require__.s = 258);
+/******/ 	return __webpack_require__(__webpack_require__.s = 285);
 /******/ })
 /************************************************************************/
 /******/ ({
@@ -75,7 +75,38 @@ module.exports = Common;
 
 /***/ }),
 
-/***/ 119:
+/***/ 103:
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+var _Common = __webpack_require__(0);
+
+var _Common2 = _interopRequireDefault(_Common);
+
+var _adapter = __webpack_require__(125);
+
+var _adapter2 = _interopRequireDefault(_adapter);
+
+var _viewerComponent = __webpack_require__(126);
+
+var _viewerComponent2 = _interopRequireDefault(_viewerComponent);
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+var SelectionHandler = _Common2.default.chunk.focusableChunk.FocusableSelectionHandler;
+
+_Common2.default.Store.registerModel('ObojoboDraft.Chunks.Break', {
+	type: 'chunk',
+	adapter: _adapter2.default,
+	componentClass: _viewerComponent2.default,
+	selectionHandler: new SelectionHandler()
+});
+
+/***/ }),
+
+/***/ 125:
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -117,7 +148,7 @@ function __guard__(value, transform) {
 
 /***/ }),
 
-/***/ 120:
+/***/ 126:
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -127,7 +158,7 @@ Object.defineProperty(exports, "__esModule", {
 	value: true
 });
 
-__webpack_require__(234);
+__webpack_require__(261);
 
 var _Common = __webpack_require__(0);
 
@@ -154,49 +185,18 @@ exports.default = function (props) {
 
 /***/ }),
 
-/***/ 234:
+/***/ 261:
 /***/ (function(module, exports) {
 
 // removed by extract-text-webpack-plugin
 
 /***/ }),
 
-/***/ 258:
+/***/ 285:
 /***/ (function(module, exports, __webpack_require__) {
 
-module.exports = __webpack_require__(97);
+module.exports = __webpack_require__(103);
 
-
-/***/ }),
-
-/***/ 97:
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-
-
-var _Common = __webpack_require__(0);
-
-var _Common2 = _interopRequireDefault(_Common);
-
-var _adapter = __webpack_require__(119);
-
-var _adapter2 = _interopRequireDefault(_adapter);
-
-var _viewerComponent = __webpack_require__(120);
-
-var _viewerComponent2 = _interopRequireDefault(_viewerComponent);
-
-function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
-
-var SelectionHandler = _Common2.default.chunk.focusableChunk.FocusableSelectionHandler;
-
-_Common2.default.Store.registerModel('ObojoboDraft.Chunks.Break', {
-	type: 'chunk',
-	adapter: _adapter2.default,
-	componentClass: _viewerComponent2.default,
-	selectionHandler: new SelectionHandler()
-});
 
 /***/ })
 

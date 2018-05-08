@@ -39,7 +39,7 @@
 		}
 	}
 
-	&.is-closed {
+	&.is-not-open {
 		left: -$dimension-nav-menu;
 	}
 
@@ -54,7 +54,7 @@
 		}
 	}
 
-	&.is-disabled {
+	&.is-not-enabled {
 		display: none;
 	}
 
@@ -139,7 +139,7 @@
 			background: $color-bg;
 		}
 
-		&.last-in-list {
+		&.is-last-in-list {
 			&:before {
 				content: '';
 				position: absolute;
@@ -173,7 +173,7 @@
 			}
 		}
 
-		&.first-in-list {
+		&.is-first-in-list {
 			margin-top: 0.75em;
 
 			&:before {
@@ -193,7 +193,7 @@
 		font-size: 0.7rem;
 		border-left-color: $color-highlight;
 
-		&.last-in-list {
+		&.is-last-in-list {
 			&:before {
 				content: '';
 				position: absolute;

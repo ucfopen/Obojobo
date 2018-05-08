@@ -1,4 +1,5 @@
 import './button.scss'
+import isOrNot from '../isornot'
 
 export default class Button extends React.Component {
 	static get defaultProps() {
@@ -22,15 +23,15 @@ export default class Button extends React.Component {
 			;({ children } = this.props)
 		}
 
+		let className =
+			'obojobo-draft--components--button' +
+			(this.props.altAction ? ' alt-action' : '') +
+			isOrNot(this.props.isDangerous, 'dangerous') +
+			` align-${this.props.align}` +
+			(this.props.className ? ` ${this.props.className}` : '')
+
 		return (
-			<div
-				className={
-					'obojobo-draft--components--button' +
-					(this.props.dangerous ? ' dangerous' : '') +
-					(this.props.altAction ? ' alt-action' : '') +
-					` align-${this.props.align}`
-				}
-			>
+			<div className={className}>
 				<button
 					ref="button"
 					onClick={this.props.onClick}

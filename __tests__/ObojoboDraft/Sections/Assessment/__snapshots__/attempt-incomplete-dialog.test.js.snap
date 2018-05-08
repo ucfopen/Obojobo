@@ -34,7 +34,7 @@ exports[`AttemptIncompleteDialog AttemptIncompleteDialog component 1`] = `
         className="controls"
       >
         <div
-          className="obojobo-draft--components--button dangerous alt-action align-center"
+          className="obojobo-draft--components--button alt-action is-dangerous align-center"
         >
           <button
             disabled={undefined}
@@ -50,7 +50,7 @@ exports[`AttemptIncompleteDialog AttemptIncompleteDialog component 1`] = `
           or
         </span>
         <div
-          className="obojobo-draft--components--button align-center"
+          className="obojobo-draft--components--button is-not-dangerous align-center"
         >
           <button
             disabled={undefined}

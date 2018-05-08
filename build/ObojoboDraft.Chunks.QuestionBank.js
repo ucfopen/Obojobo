@@ -63,7 +63,7 @@
 /******/ 	__webpack_require__.p = "build/";
 /******/
 /******/ 	// Load entry module and return exports
-/******/ 	return __webpack_require__(__webpack_require__.s = 269);
+/******/ 	return __webpack_require__(__webpack_require__.s = 296);
 /******/ })
 /************************************************************************/
 /******/ ({
@@ -75,7 +75,7 @@ module.exports = Common;
 
 /***/ }),
 
-/***/ 107:
+/***/ 113:
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -85,11 +85,11 @@ var _Common = __webpack_require__(0);
 
 var _Common2 = _interopRequireDefault(_Common);
 
-var _adapter = __webpack_require__(145);
+var _adapter = __webpack_require__(151);
 
 var _adapter2 = _interopRequireDefault(_adapter);
 
-var _viewerComponent = __webpack_require__(146);
+var _viewerComponent = __webpack_require__(152);
 
 var _viewerComponent2 = _interopRequireDefault(_viewerComponent);
 
@@ -106,7 +106,7 @@ _Common2.default.Store.registerModel('ObojoboDraft.Chunks.QuestionBank', {
 
 /***/ }),
 
-/***/ 145:
+/***/ 151:
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -187,7 +187,7 @@ function __guard__(value, transform) {
 
 /***/ }),
 
-/***/ 146:
+/***/ 152:
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -197,7 +197,7 @@ Object.defineProperty(exports, "__esModule", {
 	value: true
 });
 
-__webpack_require__(247);
+__webpack_require__(274);
 
 var _Common = __webpack_require__(0);
 
@@ -225,17 +225,17 @@ exports.default = function (props) {
 
 /***/ }),
 
-/***/ 247:
+/***/ 274:
 /***/ (function(module, exports) {
 
 // removed by extract-text-webpack-plugin
 
 /***/ }),
 
-/***/ 269:
+/***/ 296:
 /***/ (function(module, exports, __webpack_require__) {
 
-module.exports = __webpack_require__(107);
+module.exports = __webpack_require__(113);
 
 
 /***/ })

@@ -63,7 +63,7 @@
 /******/ 	__webpack_require__.p = "build/";
 /******/
 /******/ 	// Load entry module and return exports
-/******/ 	return __webpack_require__(__webpack_require__.s = 259);
+/******/ 	return __webpack_require__(__webpack_require__.s = 286);
 /******/ })
 /************************************************************************/
 /******/ ({
@@ -75,7 +75,36 @@ module.exports = Common;
 
 /***/ }),
 
-/***/ 121:
+/***/ 104:
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+var _Common = __webpack_require__(0);
+
+var _Common2 = _interopRequireDefault(_Common);
+
+var _viewerComponent = __webpack_require__(127);
+
+var _viewerComponent2 = _interopRequireDefault(_viewerComponent);
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+var SelectionHandler = _Common2.default.chunk.textChunk.TextGroupSelectionHandler;
+var adapter = _Common2.default.chunk.textChunk.TextGroupAdapter;
+
+_Common2.default.Store.registerModel('ObojoboDraft.Chunks.Code', {
+	type: 'chunk',
+	default: true,
+	adapter: adapter,
+	componentClass: _viewerComponent2.default,
+	selectionHandler: new SelectionHandler()
+});
+
+/***/ }),
+
+/***/ 127:
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -85,7 +114,7 @@ Object.defineProperty(exports, "__esModule", {
 	value: true
 });
 
-__webpack_require__(235);
+__webpack_require__(262);
 
 var _Common = __webpack_require__(0);
 
@@ -126,47 +155,18 @@ exports.default = function (props) {
 
 /***/ }),
 
-/***/ 235:
+/***/ 262:
 /***/ (function(module, exports) {
 
 // removed by extract-text-webpack-plugin
 
 /***/ }),
 
-/***/ 259:
+/***/ 286:
 /***/ (function(module, exports, __webpack_require__) {
 
-module.exports = __webpack_require__(98);
+module.exports = __webpack_require__(104);
 
-
-/***/ }),
-
-/***/ 98:
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-
-
-var _Common = __webpack_require__(0);
-
-var _Common2 = _interopRequireDefault(_Common);
-
-var _viewerComponent = __webpack_require__(121);
-
-var _viewerComponent2 = _interopRequireDefault(_viewerComponent);
-
-function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
-
-var SelectionHandler = _Common2.default.chunk.textChunk.TextGroupSelectionHandler;
-var adapter = _Common2.default.chunk.textChunk.TextGroupAdapter;
-
-_Common2.default.Store.registerModel('ObojoboDraft.Chunks.Code', {
-	type: 'chunk',
-	default: true,
-	adapter: adapter,
-	componentClass: _viewerComponent2.default,
-	selectionHandler: new SelectionHandler()
-});
 
 /***/ })
 

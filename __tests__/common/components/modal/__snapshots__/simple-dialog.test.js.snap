@@ -33,7 +33,7 @@ exports[`SimpleDialog cancelOk 1`] = `
           className="controls"
         >
           <div
-            className="obojobo-draft--components--button alt-action align-center"
+            className="obojobo-draft--components--button alt-action is-not-dangerous align-center"
           >
             <button
               disabled={undefined}
@@ -44,7 +44,7 @@ exports[`SimpleDialog cancelOk 1`] = `
             </button>
           </div>
           <div
-            className="obojobo-draft--components--button align-center"
+            className="obojobo-draft--components--button is-not-dangerous align-center"
           >
             <button
               disabled={undefined}
@@ -99,7 +99,7 @@ exports[`SimpleDialog noOrYes 1`] = `
           className="controls"
         >
           <div
-            className="obojobo-draft--components--button align-center"
+            className="obojobo-draft--components--button is-not-dangerous align-center"
           >
             <button
               disabled={undefined}
@@ -115,7 +115,7 @@ exports[`SimpleDialog noOrYes 1`] = `
             or
           </span>
           <div
-            className="obojobo-draft--components--button align-center"
+            className="obojobo-draft--components--button is-not-dangerous align-center"
           >
             <button
               disabled={undefined}
@@ -170,7 +170,7 @@ exports[`SimpleDialog ok 1`] = `
           className="controls"
         >
           <div
-            className="obojobo-draft--components--button align-center"
+            className="obojobo-draft--components--button is-not-dangerous align-center"
           >
             <button
               disabled={undefined}
@@ -225,7 +225,7 @@ exports[`SimpleDialog yesOrNo 1`] = `
           className="controls"
         >
           <div
-            className="obojobo-draft--components--button align-center"
+            className="obojobo-draft--components--button is-not-dangerous align-center"
           >
             <button
               disabled={undefined}
@@ -241,7 +241,7 @@ exports[`SimpleDialog yesOrNo 1`] = `
             or
           </span>
           <div
-            className="obojobo-draft--components--button align-center"
+            className="obojobo-draft--components--button is-not-dangerous align-center"
           >
             <button
               disabled={undefined}

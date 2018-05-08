@@ -63,7 +63,7 @@
 /******/ 	__webpack_require__.p = "build/";
 /******/
 /******/ 	// Load entry module and return exports
-/******/ 	return __webpack_require__(__webpack_require__.s = 261);
+/******/ 	return __webpack_require__(__webpack_require__.s = 288);
 /******/ })
 /************************************************************************/
 /******/ ({
@@ -75,7 +75,7 @@ module.exports = Common;
 
 /***/ }),
 
-/***/ 100:
+/***/ 106:
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -85,11 +85,11 @@ var _Common = __webpack_require__(0);
 
 var _Common2 = _interopRequireDefault(_Common);
 
-var _adapter = __webpack_require__(126);
+var _adapter = __webpack_require__(132);
 
 var _adapter2 = _interopRequireDefault(_adapter);
 
-var _viewerComponent = __webpack_require__(127);
+var _viewerComponent = __webpack_require__(133);
 
 var _viewerComponent2 = _interopRequireDefault(_viewerComponent);
 
@@ -106,7 +106,7 @@ _Common2.default.Store.registerModel('ObojoboDraft.Chunks.HTML', {
 
 /***/ }),
 
-/***/ 126:
+/***/ 132:
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -157,7 +157,7 @@ function __guard__(value, transform) {
 
 /***/ }),
 
-/***/ 127:
+/***/ 133:
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -167,9 +167,9 @@ Object.defineProperty(exports, "__esModule", {
 	value: true
 });
 
-__webpack_require__(237);
+__webpack_require__(264);
 
-var _katex = __webpack_require__(61);
+var _katex = __webpack_require__(64);
 
 var _katex2 = _interopRequireDefault(_katex);
 
@@ -229,22 +229,22 @@ exports.default = function (props) {
 
 /***/ }),
 
-/***/ 237:
+/***/ 264:
 /***/ (function(module, exports) {
 
 // removed by extract-text-webpack-plugin
 
 /***/ }),
 
-/***/ 261:
+/***/ 288:
 /***/ (function(module, exports, __webpack_require__) {
 
-module.exports = __webpack_require__(100);
+module.exports = __webpack_require__(106);
 
 
 /***/ }),
 
-/***/ 61:
+/***/ 64:
 /***/ (function(module, exports) {
 
 module.exports = katex;

@@ -63,7 +63,7 @@
 /******/ 	__webpack_require__.p = "build/";
 /******/
 /******/ 	// Load entry module and return exports
-/******/ 	return __webpack_require__(__webpack_require__.s = 267);
+/******/ 	return __webpack_require__(__webpack_require__.s = 294);
 /******/ })
 /************************************************************************/
 /******/ ({
@@ -75,7 +75,7 @@ module.exports = Common;
 
 /***/ }),
 
-/***/ 105:
+/***/ 111:
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -85,11 +85,11 @@ var _Common = __webpack_require__(0);
 
 var _Common2 = _interopRequireDefault(_Common);
 
-var _adapter = __webpack_require__(140);
+var _adapter = __webpack_require__(146);
 
 var _adapter2 = _interopRequireDefault(_adapter);
 
-var _viewerComponent = __webpack_require__(141);
+var _viewerComponent = __webpack_require__(147);
 
 var _viewerComponent2 = _interopRequireDefault(_viewerComponent);
 
@@ -107,7 +107,7 @@ _Common2.default.Store.registerModel('ObojoboDraft.Chunks.MathEquation', {
 
 /***/ }),
 
-/***/ 140:
+/***/ 146:
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -165,7 +165,7 @@ function __guard__(value, transform) {
 
 /***/ }),
 
-/***/ 141:
+/***/ 147:
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -175,9 +175,9 @@ Object.defineProperty(exports, "__esModule", {
 	value: true
 });
 
-__webpack_require__(244);
+__webpack_require__(271);
 
-var _katex = __webpack_require__(61);
+var _katex = __webpack_require__(64);
 
 var _katex2 = _interopRequireDefault(_katex);
 
@@ -235,22 +235,22 @@ exports.default = function (props) {
 
 /***/ }),
 
-/***/ 244:
+/***/ 271:
 /***/ (function(module, exports) {
 
 // removed by extract-text-webpack-plugin
 
 /***/ }),
 
-/***/ 267:
+/***/ 294:
 /***/ (function(module, exports, __webpack_require__) {
 
-module.exports = __webpack_require__(105);
+module.exports = __webpack_require__(111);
 
 
 /***/ }),
 
-/***/ 61:
+/***/ 64:
 /***/ (function(module, exports) {
 
 module.exports = katex;
