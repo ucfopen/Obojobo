@@ -6809,11 +6809,12 @@ var Nav = function (_React$Component) {
 		value: function renderLink(index, isSelected, list, lockEl) {
 			var item = list[index];
 			var isFirstInList = list[index - 1] && (list[index - 1].type != 'link' || list[index - 1].flags.assessment) && list[index - 1].type != 'sub-link' && !item.flags.assessment;
-			var isLastInList = !list[index + 1] || list[index + 1].type != 'link' && list[index + 1].type != 'sub-link' || list[index + 1].flags.assessment;
+			var isLastInList = !list[index + 1] || list[index + 1].type != 'link' && list[index + 1].type != 'sub-link' || list[index + 1].flags.assessment && !item.flags.assessment;
 
 			var className = 'link' + (0, _isornot2.default)(isSelected, 'selected') + (0, _isornot2.default)(item.flags.visited, 'visited') + (0, _isornot2.default)(item.flags.complete, 'complete') + (0, _isornot2.default)(item.flags.correct, 'correct') + (0, _isornot2.default)(item.flags.assessment, 'assessment');
 
-			if (isFirstInList) className += ' first-in-list';else if (isLastInList) className += ' last-in-list';
+			if (isFirstInList) className += ' first-in-list';
+			if (isLastInList) className += ' last-in-list';
 
 			return React.createElement(
 				'li',
@@ -6884,8 +6885,7 @@ var Nav = function (_React$Component) {
 
 			var style = {
 				backgroundImage: bg,
-				transform: !navState.open && this.state.hover ? 'rotate(180deg)' : '',
-				filter: navState.open ? 'invert(100%)' : 'invert(0%)'
+				transform: !navState.open && this.state.hover ? 'rotate(180deg)' : ''
 			};
 
 			return React.createElement(

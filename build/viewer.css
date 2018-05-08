@@ -218,7 +218,7 @@ body {
   box-sizing: border-box;
   background: #ffffff; }
   .viewer--viewer-app.is-open-nav.is-enabled-nav {
-    padding-left: 16rem;
+    padding-left: 18rem;
     padding-top: 0; }
     .viewer--viewer-app.is-open-nav.is-enabled-nav > header {
       top: -2.5rem;
@@ -437,7 +437,7 @@ body {
   color: #000000;
   background: #ffffff;
   font-size: 1rem;
-  width: 16rem;
+  width: 18rem;
   padding: 2rem;
   padding-top: 1rem;
   box-sizing: border-box;
@@ -454,7 +454,7 @@ body {
       .viewer--components--nav.is-locked li.seperator.is-selected a {
         text-decoration: none; }
   .viewer--components--nav.is-not-open {
-    left: -16rem; }
+    left: -18rem; }
   .viewer--components--nav.is-open .toggle-button {
     background-color: transparent;
     border: 2px solid transparent; }
@@ -475,13 +475,15 @@ body {
     border-bottom: 1px solid #ffffff;
     opacity: 0.2; }
   .viewer--components--nav ul {
+    position: relative;
+    top: 1em;
     padding: 0;
     margin: 0; }
   .viewer--components--nav li {
     position: relative;
     list-style-type: none;
     padding: 0 0 1rem 0;
-    border-left: solid 2px #999999; }
+    border-left: solid 1px #999999; }
   .viewer--components--nav .heading {
     position: relative;
     top: 1px;
@@ -490,10 +492,18 @@ body {
     opacity: 0.7;
     color: #000000;
     cursor: default;
-    border-left: solid 1px #ffffff;
-    border-bottom: solid 1px #cccccc; }
+    border-left: solid 1px #ffffff; }
+    .viewer--components--nav .heading:after {
+      content: '';
+      position: relative;
+      display: block;
+      top: 1rem;
+      width: 100%;
+      height: 1px;
+      background: #cccccc; }
   .viewer--components--nav .link,
   .viewer--components--nav .sub-link {
+    margin-left: 0.5rem;
     padding-left: 1rem;
     color: #999999;
     cursor: pointer; }
@@ -509,7 +519,7 @@ body {
       content: '';
       position: absolute;
       display: inline-block;
-      left: -0.6em;
+      left: -0.55em;
       top: 0.55em;
       transform: translate(0, -50%);
       width: 0.8em;
@@ -522,21 +532,25 @@ body {
       content: '';
       position: absolute;
       bottom: 0px;
-      left: -2px;
+      left: -1px;
       width: 1.2em;
       height: 1.2em;
       background: #ffffff; }
-  .viewer--components--nav .link:after {
-    left: -10px;
-    color: #ffffff; }
+    .viewer--components--nav .link.last-in-list.first-in-list:before,
+    .viewer--components--nav .sub-link.last-in-list.first-in-list:before {
+      content: '';
+      position: absolute;
+      bottom: 0px;
+      left: -1px;
+      width: 1.2em;
+      height: 100%;
+      background: #ffffff; }
   .viewer--components--nav .link.is-selected {
     color: #93c6ff;
     border-left-color: #93c6ff; }
     .viewer--components--nav .link.is-selected:after {
-      left: -10px;
-      top: 29%;
       background: #c6e1ff;
-      border: solid 3px #93c6ff; }
+      border: solid 2px #93c6ff; }
     .viewer--components--nav .link.is-selected .lock-icon {
       display: none; }
   .viewer--components--nav .link.first-in-list {
@@ -547,7 +561,7 @@ body {
       top: 0px;
       left: -2px;
       width: 1.2em;
-      height: 1.2em;
+      height: 1em;
       background: #ffffff; }
   .viewer--components--nav .sub-link {
     position: relative;
@@ -559,10 +573,12 @@ body {
       bottom: 0px;
       left: -2px;
       width: 1.2em;
-      height: 1.75em;
+      height: 1.85em;
       background: #ffffff; }
     .viewer--components--nav .sub-link:after {
-      left: -5px;
+      left: -0.3em;
+      width: 0.5em;
+      height: 0.5em;
       background: #93c6ff;
       border: none; }
     .viewer--components--nav .sub-link .lock-icon {
@@ -572,12 +588,13 @@ body {
     margin-bottom: 0.75em;
     padding: 0.75em 0.75em 0.75em 1em;
     border-top: solid 1px #cccccc;
-    border-left: solid 2px #ffffff;
+    border-left: solid 1px #ffffff;
     border-bottom: solid 1px #cccccc; }
     .viewer--components--nav .is-assessment:before {
       display: none; }
     .viewer--components--nav .is-assessment:after {
       top: 50%;
+      left: -0.8em;
       width: 1.2em;
       height: 1.2em;
       content: 'Q';
@@ -590,11 +607,11 @@ body {
       text-align: center; }
     .viewer--components--nav .is-assessment.is-selected {
       color: #93c6ff;
-      border-left: none; }
+      border-left: solid 1px #ffffff; }
       .viewer--components--nav .is-assessment.is-selected:after {
-        top: 50%;
-        border: solid 1px #999999;
-        background: #ffffff; }
+        color: #ffffff;
+        background: #c6e1ff;
+        border: solid 1px #93c6ff; }
   .viewer--components--nav .seperator {
     cursor: default; }
   .viewer--components--nav .toggle-button {
