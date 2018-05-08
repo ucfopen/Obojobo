@@ -111,16 +111,17 @@ let endAttempt = (req, res, user, attemptId, isPreviewing) => {
 				assessmentScoreId,
 				attemptId,
 				attempt.number,
-				calculatedScores.attemptScore,
-				calculatedScores.assessmentScore,
+				calculatedScores.attempt.attemptScore,
+				calculatedScores.assessmentScoreDetails.assessmentModdedScore,
 				isPreviewing,
 				ltiRequestResult.scoreSent,
 				ltiRequestResult.status,
-				ltiRequestResult.error,
-				ltiRequestResult.errorDetails,
+				ltiRequestResult.statusDetails,
+				ltiRequestResult.gradebookStatus,
 				ltiRequestResult.ltiAssessmentScoreId,
 				req.hostname,
-				req.connection.remoteAddress
+				req.connection.remoteAddress,
+				calculatedScores.assessmentScoreDetails
 			)
 		})
 		.then(() => Assessment.getAttempts(user.id, attempt.draftId, attempt.assessmentId))
@@ -273,11 +274,12 @@ let insertAttemptScoredEvents = (
 	isPreviewing,
 	ltiScoreSent,
 	ltiScoreStatus,
-	ltiScoreError,
-	ltiScoreErrorDetails,
+	ltiStatusDetails,
+	ltiGradeBookStatus,
 	ltiAssessmentScoreId,
 	hostname,
-	remoteAddress
+	remoteAddress,
+	scoreDetails
 ) => {
 	let { createAssessmentAttemptScoredEvent } = createCaliperEvent(null, hostname)
 	return insertEvent({
@@ -290,10 +292,11 @@ let insertAttemptScoredEvents = (
 			assessmentScore,
 			ltiScoreSent,
 			ltiScoreStatus,
-			ltiScoreError,
-			ltiScoreErrorDetails,
+			ltiStatusDetails,
+			ltiGradeBookStatus,
 			assessmentScoreId,
-			ltiAssessmentScoreId
+			ltiAssessmentScoreId,
+			scoreDetails
 		},
 		userId: user.id,
 		ip: remoteAddress,

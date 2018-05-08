@@ -368,7 +368,7 @@ describe('ViewerApp', () => {
 		expect(APIUtil.postEvent).toHaveBeenCalledWith(
 			OboModel.getRoot(),
 			'question:setResponse',
-			'2.0.0',
+			'2.1.0',
 			{
 				questionId: 'qb2.q2',
 				targetId: testId,
@@ -521,7 +521,7 @@ describe('ViewerApp', () => {
 		expect(APIUtil.postEvent).toHaveBeenLastCalledWith(
 			viewerEl.state('model'),
 			'viewer:inactive',
-			'1.0.0',
+			'2.0.0',
 			expect.any(Object)
 		)
 	})
@@ -536,7 +536,7 @@ describe('ViewerApp', () => {
 		expect(APIUtil.postEvent).toHaveBeenLastCalledWith(
 			viewerEl.state('model'),
 			'viewer:returnFromInactive',
-			'1.0.0',
+			'2.0.0',
 			expect.any(Object)
 		)
 	})
