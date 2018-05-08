@@ -236,8 +236,9 @@
 
 	.is-assessment {
 		position: relative;
+		margin-left: 0;
 		margin-bottom: 0.75em;
-		padding: 0.75em 0.75em 0.75em 1em;
+		padding: 0.75em 0.75em 0.75em 1.5em;
 		border-top: solid 1px lighten($color-text, 80%);
 		border-left: solid 1px $color-bg;
 		border-bottom: solid 1px lighten($color-text, 80%);
@@ -248,7 +249,7 @@
 
 		&:after {
 			top: 50%;
-			left: -0.8em;
+			left: 0;
 			width: 1.2em;
 			height: 1.2em;
 			content: 'Q';
