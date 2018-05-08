@@ -27,6 +27,7 @@ const startAttempt = (req, res) => {
 		questionUsesMap: null
 	}
 	let attemptState
+	let draftTree
 
 	return req
 		.requireCurrentUser()
@@ -36,7 +37,8 @@ const startAttempt = (req, res) => {
 
 			return req.requireCurrentDraft()
 		})
-		.then(draftTree => {
+		.then(draft => {
+			draftTree = draft
 			const assessmentNode = draftTree.getChildNodeById(req.body.assessmentId)
 
 			assessmentProperties.draftTree = draftTree
@@ -81,6 +83,7 @@ const startAttempt = (req, res) => {
 			return Assessment.insertNewAttempt(
 				assessmentProperties.user.id,
 				req.body.draftId,
+				draftTree.contentId,
 				req.body.assessmentId,
 				{
 					questions: questionObjects,

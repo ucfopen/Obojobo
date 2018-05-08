@@ -11,6 +11,7 @@ describe('Assessment', () => {
 	let makeMockAttempt = () => ({
 		attempt_id: 'mockAttemptId',
 		assessment_id: 'mockAssessmentId',
+		draft_content_id: 'mockContentId',
 		created_at: 'mockCreatedAt',
 		completed_at: 'mockCompletedAt',
 		state: 'mockState',
@@ -46,15 +47,16 @@ describe('Assessment', () => {
 	})
 
 	test('insertNewAttempt', () => {
-		Assessment.insertNewAttempt(0, 1, 2, 3, 4)
+		Assessment.insertNewAttempt(0, 1, 2, 3, 4, 5)
 
 		expect(db.one).toHaveBeenCalled()
 		expect(db.one.mock.calls[0][1]).toEqual({
 			userId: 0,
 			draftId: 1,
-			assessmentId: 2,
-			state: 3,
-			isPreview: 4
+			contentId: 2,
+			assessmentId: 3,
+			state: 4,
+			isPreview: 5
 		})
 	})
 
@@ -181,7 +183,8 @@ describe('Assessment', () => {
 			questionScores: ['mockScore'],
 			startTime: 'mockCreatedAt',
 			state: 'mockState',
-			userId: 'mockUserId'
+			userId: 'mockUserId',
+			contentId: 'mockContentId'
 		})
 	})
 

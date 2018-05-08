@@ -13,7 +13,8 @@ class Assessment extends DraftNode {
 					completed_at as "endTime",
 					assessment_id as "assessmentId",
 					state,
-					result
+					result,
+					draft_content_id as "contentId"
 				FROM attempts
 				WHERE
 					user_id = $[userId]
@@ -49,6 +50,7 @@ class Assessment extends DraftNode {
 		return {
 			userId: userId,
 			draftId: draftId,
+			contentId: attempt.draft_content_id,
 			attemptId: attempt.attempt_id,
 			assessmentScoreId: attempt.assessment_score_id,
 			attemptNumber: parseInt(attempt.attempt_number, 10),
@@ -82,6 +84,7 @@ class Assessment extends DraftNode {
 					ATT.completed_at,
 					ATT.state,
 					ATT.result,
+					ATT.draft_content_id,
 					SCO.id AS "assessment_score_id",
 					SCO.score AS "assessment_score",
 					SCO.score_details AS "score_details"
@@ -267,11 +270,11 @@ class Assessment extends DraftNode {
 		)
 	}
 
-	static insertNewAttempt(userId, draftId, assessmentId, state, isPreview) {
+	static insertNewAttempt(userId, draftId, contentId, assessmentId, state, isPreview) {
 		return db.one(
 			`
-				INSERT INTO attempts (user_id, draft_id, assessment_id, state, preview)
-				VALUES($[userId], $[draftId], $[assessmentId], $[state], $[isPreview])
+				INSERT INTO attempts (user_id, draft_id, draft_content_id, assessment_id, state, preview)
+				VALUES($[userId], $[draftId], $[contentId], $[assessmentId], $[state], $[isPreview])
 				RETURNING
 				id AS "attemptId",
 				created_at as "startTime",
@@ -283,6 +286,7 @@ class Assessment extends DraftNode {
 			{
 				userId: userId,
 				draftId: draftId,
+				contentId: contentId,
 				assessmentId: assessmentId,
 				state: state,
 				isPreview: isPreview
