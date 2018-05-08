@@ -9,14 +9,14 @@ let logger = oboRequire('logger')
 let attemptStart = require('./attempt-start')
 const QUESTION_NODE_TYPE = 'ObojoboDraft.Chunks.Question'
 
-let endAttempt = (req, res, user, attemptId, isPreviewing) => {
+let endAttempt = (req, res, user, draft, attemptId, isPreviewing) => {
 	let attempt
 	let attemptHistory
 	let responseHistory
 	let calculatedScores
 	let updateAttemptData
 	let assessmentScoreId
-	let tree
+	let tree = draft
 
 	logger.info(`End attempt "${attemptId}" begin for user "${user.id}" (Preview="${isPreviewing}")`)
 
@@ -25,10 +25,6 @@ let endAttempt = (req, res, user, attemptId, isPreviewing) => {
 			logger.info(`End attempt "${attemptId}" - getAttempt success`)
 
 			attempt = attemptResult
-			return DraftModel.fetchById(attempt.draftId)
-		})
-		.then(draftTree => {
-			tree = draftTree
 			return getAttemptHistory(user.id, attempt.draftId, attempt.assessmentId)
 		})
 		.then(attemptHistoryResult => {
@@ -62,6 +58,7 @@ let endAttempt = (req, res, user, attemptId, isPreviewing) => {
 				attemptId,
 				user.id,
 				attempt.draftId,
+				tree.contentId,
 				calculatedScores,
 				isPreviewing
 			)
@@ -217,12 +214,21 @@ let calculateScores = (assessmentModel, attemptHistory, scoreInfo) => {
 	}
 }
 
-let completeAttempt = (assessmentId, attemptId, userId, draftId, calculatedScores, preview) =>
+let completeAttempt = (
+	assessmentId,
+	attemptId,
+	userId,
+	draftId,
+	contentId,
+	calculatedScores,
+	preview
+) =>
 	Assessment.completeAttempt(
 		assessmentId,
 		attemptId,
 		userId,
 		draftId,
+		contentId,
 		calculatedScores.attempt,
 		calculatedScores.assessmentScoreDetails,
 		preview

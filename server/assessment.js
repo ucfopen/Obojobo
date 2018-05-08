@@ -290,16 +290,25 @@ class Assessment extends DraftNode {
 		)
 	}
 
-	static insertAssessmentScore(userId, draftId, assessmentId, launchId, score, isPreview) {
+	static insertAssessmentScore(
+		userId,
+		draftId,
+		contentId,
+		assessmentId,
+		launchId,
+		score,
+		isPreview
+	) {
 		return db.one(
 			`
-				INSERT INTO assessment_scores (user_id, draft_id, assessment_id, launch_id, score preview)
-				VALUES($[userId], $[draftId], $[assessmentId], $[launchId], $[score], $[isPreview])
+				INSERT INTO assessment_scores (user_id, draft_id, draft_content_id, assessment_id, launch_id, score preview)
+				VALUES($[userId], $[draftId], $[contentId], $[assessmentId], $[launchId], $[score], $[isPreview])
 				RETURNING id
 			`,
 			{
 				userId,
 				draftId,
+				contentId,
 				assessmentId,
 				launchId,
 				score,
@@ -316,6 +325,7 @@ class Assessment extends DraftNode {
 		attemptId,
 		userId,
 		draftId,
+		contentId,
 		attemptScoreResult,
 		assessmentScoreDetails,
 		preview
@@ -342,13 +352,14 @@ class Assessment extends DraftNode {
 
 				const q2 = dbTransaction.one(
 					`
-					INSERT INTO assessment_scores (user_id, draft_id, assessment_id, attempt_id, score, score_details, preview)
-					VALUES($[userId], $[draftId], $[assessmentId], $[attemptId], $[score], $[scoreDetails], $[preview])
+					INSERT INTO assessment_scores (user_id, draft_id, draft_content_id, assessment_id, attempt_id, score, score_details, preview)
+					VALUES($[userId], $[draftId], $[contentId], $[assessmentId], $[attemptId], $[score], $[scoreDetails], $[preview])
 					RETURNING id
 				`,
 					{
 						userId,
 						draftId,
+						contentId,
 						assessmentId,
 						attemptId,
 						score: assessmentScoreDetails.assessmentModdedScore,
@@ -379,17 +390,18 @@ class Assessment extends DraftNode {
 		)
 	}
 
-	static insertNewAssessmentScore(userId, draftId, assessmentId, score, preview) {
+	static insertNewAssessmentScore(userId, draftId, contentId, assessmentId, score, preview) {
 		return db
 			.one(
 				`
-				INSERT INTO assessment_scores (user_id, draft_id, assessment_id, score, preview)
-				VALUES($[userId], $[draftId], $[assessmentId], $[score], $[preview])
+				INSERT INTO assessment_scores (user_id, draft_id, draft_content_id, assessment_id, score, preview)
+				VALUES($[userId], $[draftId], $[contentId], $[assessmentId], $[score], $[preview])
 				RETURNING id
 			`,
 				{
 					userId,
 					draftId,
+					contentId,
 					assessmentId,
 					score,
 					preview

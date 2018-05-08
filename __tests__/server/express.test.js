@@ -160,7 +160,7 @@ describe('server/express', () => {
 		// execute
 		return endAttemptRoute[1](req, res, {}).then(() => {
 			expect(req.requireCurrentUser).toHaveBeenCalled()
-			expect(endAttempt).toHaveBeenCalledWith(req, res, mockUser, 5, true)
+			expect(endAttempt).toHaveBeenCalledWith(req, res, mockUser, mockDraft, 5, true)
 			expect(res.success).toHaveBeenCalledTimes(1)
 			expect(res.success).toHaveBeenCalledWith('endAttemptResult')
 		})
@@ -180,7 +180,7 @@ describe('server/express', () => {
 		// execute
 		return clearPreviewScoresRoute[1](req, res, {}).then(() => {
 			expect(req.requireCurrentUser).toHaveBeenCalled()
-			expect(endAttempt).toHaveBeenCalledWith(req, res, mockUser, 5, true)
+			expect(endAttempt).toHaveBeenCalledWith(req, res, mockUser, mockDraft, 5, true)
 			expect(res.success).toHaveBeenCalledTimes(1)
 			expect(res.success).toHaveBeenCalledWith()
 
@@ -218,7 +218,7 @@ describe('server/express', () => {
 		// execute
 		return clearPreviewScoresRoute[1](req, res, {}).then(() => {
 			expect(req.requireCurrentUser).toHaveBeenCalled()
-			expect(endAttempt).toHaveBeenCalledWith(req, res, mockUser, 5, true)
+			expect(endAttempt).toHaveBeenCalledWith(req, res, mockUser, mockDraft, 5, true)
 			expect(res.success).toHaveBeenCalledTimes(0)
 			expect(res.unexpected).toHaveBeenCalledTimes(0)
 			expect(db.manyOrNone).toHaveBeenCalledTimes(0)

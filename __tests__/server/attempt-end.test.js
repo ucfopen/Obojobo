@@ -64,7 +64,9 @@ describe('Attempt End', () => {
 			content: {
 				rubric: 1,
 				review: 'never'
-			}
+			},
+			draftId: 999,
+			contentId: 12
 		})
 		draft.yell.mockImplementationOnce(
 			(eventType, req, res, assessmentModel, responseHistory, event) => {
@@ -105,11 +107,13 @@ describe('Attempt End', () => {
 		let loadAssessmentProperties = jest.fn().mockReturnValueOnce('mockProperties')
 		let reloadAttemptStateIfReviewing = jest.fn().mockReturnValueOnce('mockReload')
 
-		let req = { connection: { remoteAddress: 'mockRemoteAddress' } }
+		let req = {
+			connection: { remoteAddress: 'mockRemoteAddress' }
+		}
 		let user = { id: 'mockUserId' }
 		expect(insertEvent).toHaveBeenCalledTimes(0)
 
-		return endAttempt(req, {}, user, 'mockAttemptId', true).then(results => {
+		return endAttempt(req, {}, user, draft, 'mockAttemptId', true).then(results => {
 			expect(logger.info).toHaveBeenCalledTimes(8)
 			expect(logger.info).toHaveBeenCalledWith(expect.stringContaining('getAttempt success'))
 			expect(logger.info).toHaveBeenCalledWith(expect.stringContaining('getAttemptHistory success'))
@@ -522,6 +526,7 @@ describe('Attempt End', () => {
 			'mockAttemptId',
 			'mockUserId',
 			'mockDraftId',
+			'mockContentId',
 			{ attempt: 'mockCalculatedScores', assessmentScoreDetails: 'mockScoreDeets' },
 			'mockPreview'
 		)
@@ -535,6 +540,7 @@ describe('Attempt End', () => {
 			'mockAttemptId',
 			'mockUserId',
 			'mockDraftId',
+			'mockContentId',
 			'mockCalculatedScores',
 			'mockScoreDeets',
 			'mockPreview'
