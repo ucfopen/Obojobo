@@ -87,6 +87,8 @@
 	}
 
 	ul {
+		position: relative;
+		top: 1em;
 		padding: 0;
 		margin: 0;
 	}
@@ -96,7 +98,7 @@
 		list-style-type: none;
 		padding: 0 0 1rem 0;
 
-		border-left: solid 2px $color-text-minor;
+		border-left: solid 1px $color-text-minor;
 	}
 
 	.heading {
@@ -108,11 +110,21 @@
 		color: $color-text;
 		cursor: default;
 		border-left: solid 1px $color-bg;
-		border-bottom: solid 1px lighten($color-text, 80%);
+
+		&:after {
+			content: '';
+			position: relative;
+			display: block;
+			top: 1rem;
+			width: 100%;
+			height: 1px;
+			background: lighten($color-text, 80%);
+		}
 	}
 
 	.link,
 	.sub-link {
+		margin-left: 0.5rem;
 		padding-left: 1rem;
 		color: $color-text-minor;
 		cursor: pointer;
@@ -129,7 +141,7 @@
 			content: '';
 			position: absolute;
 			display: inline-block;
-			left: -0.6em;
+			left: -0.55em;
 			top: 0.55em;
 			transform: translate(0, -50%);
 			width: 0.8em;
@@ -144,28 +156,33 @@
 				content: '';
 				position: absolute;
 				bottom: 0px;
-				left: -2px;
+				left: -1px;
 				width: 1.2em;
 				height: 1.2em;
 				background: $color-bg;
 			}
+
+			&.first-in-list {
+				&:before {
+					content: '';
+					position: absolute;
+					bottom: 0px;
+					left: -1px;
+					width: 0.5em;
+					height: 100%;
+					background: $color-bg;
+				}
+			}
 		}
 	}
 	.link {
-		&:after {
-			left: -10px;
-			color: $color-bg;
-		}
-
 		&.is-selected {
 			color: $color-highlight;
 			border-left-color: $color-highlight;
 
 			&:after {
-				left: -10px;
-				top: 29%;
 				background: lighten($color-highlight, 10%);
-				border: solid 3px $color-highlight;
+				border: solid 2px $color-highlight;
 			}
 
 			.lock-icon {
@@ -182,7 +199,7 @@
 				top: 0px;
 				left: -2px;
 				width: 1.2em;
-				height: 1.2em;
+				height: 1em;
 				background: $color-bg;
 			}
 		}
@@ -200,24 +217,30 @@
 				bottom: 0px;
 				left: -2px;
 				width: 1.2em;
-				height: 1.75em;
+				height: 1.85em;
 				background: $color-bg;
 			}
 		}
 
 		&:after {
-			left: -5px;
+			left: -0.3em;
+			width: 0.5em;
+			height: 0.5em;
 			background: $color-highlight;
 			border: none;
+		}
+		.lock-icon {
+			display: none;
 		}
 	}
 
 	.is-assessment {
 		position: relative;
+		margin-left: 0;
 		margin-bottom: 0.75em;
-		padding: 0.75em 0.75em 0.75em 1em;
+		padding: 0.75em 0.75em 0.75em 1.5em;
 		border-top: solid 1px lighten($color-text, 80%);
-		border-left: solid 2px $color-bg;
+		border-left: solid 1px $color-bg;
 		border-bottom: solid 1px lighten($color-text, 80%);
 
 		&:before {
@@ -226,6 +249,7 @@
 
 		&:after {
 			top: 50%;
+			left: 0;
 			width: 1.2em;
 			height: 1.2em;
 			content: 'Q';
@@ -241,12 +265,12 @@
 
 		&.is-selected {
 			color: $color-highlight;
-			border-left: none;
+			border-left: solid 1px $color-bg;
 
 			&:after {
-				top: 50%;
-				border: solid 1px lighten($color-text, 60%);
-				background: $color-bg;
+				color: $color-bg;
+				background: lighten($color-highlight, 10%);
+				border: solid 1px $color-highlight;
 			}
 		}
 	}

@@ -1984,7 +1984,7 @@ var QuestionStore = function (_Store) {
 			'question:scoreSet': function questionScoreSet(payload) {
 				var scoreId = (0, _uuid2.default)();
 
-				if (!payload.value[payload.value.context]) _this.state.scores[payload.value.context] = {};
+				if (!_this.state.scores[payload.value.context]) _this.state.scores[payload.value.context] = {};
 
 				_this.state.scores[payload.value.context][payload.value.itemId] = {
 					id: scoreId,
@@ -2951,7 +2951,9 @@ Object.defineProperty(exports, "__esModule", {
 });
 
 exports.default = function (url) {
-	var hostname = (0, _urlParse2.default)(url || '', {}).hostname;
+	if (!url) return null;
+
+	var hostname = (0, _urlParse2.default)(url, {}).hostname;
 
 	if (hostname === '' || !hostname) return 'the external system';
 	return hostname;
@@ -6818,7 +6820,7 @@ var Nav = function (_React$Component) {
 		value: function renderLink(index, isSelected, list, lockEl) {
 			var item = list[index];
 			var isFirstInList = list[index - 1] && (list[index - 1].type != 'link' || list[index - 1].flags.assessment) && list[index - 1].type != 'sub-link' && !item.flags.assessment;
-			var isLastInList = !list[index + 1] || list[index + 1].type != 'link' && list[index + 1].type != 'sub-link' || list[index + 1].flags.assessment;
+			var isLastInList = !list[index + 1] || list[index + 1].type != 'link' && list[index + 1].type != 'sub-link' || list[index + 1].flags.assessment && !item.flags.assessment;
 
 			var className = 'link' + (0, _isornot2.default)(isSelected, 'selected') + (0, _isornot2.default)(item.flags.visited, 'visited') + (0, _isornot2.default)(item.flags.complete, 'complete') + (0, _isornot2.default)(item.flags.correct, 'correct') + (0, _isornot2.default)(item.flags.assessment, 'assessment') + (0, _isornot2.default)(isFirstInList, 'first-in-list') + (0, _isornot2.default)(isLastInList, 'last-in-list');
 
@@ -6889,8 +6891,7 @@ var Nav = function (_React$Component) {
 
 			var style = {
 				backgroundImage: bg,
-				transform: !navState.open && this.state.hover ? 'rotate(180deg)' : '',
-				filter: navState.open ? 'invert(100%)' : 'invert(0%)'
+				transform: !navState.open && this.state.hover ? 'rotate(180deg)' : ''
 			};
 
 			return React.createElement(

@@ -57,7 +57,7 @@ export default class Nav extends React.Component {
 		let isLastInList =
 			!list[index + 1] ||
 			(list[index + 1].type != 'link' && list[index + 1].type != 'sub-link') ||
-			list[index + 1].flags.assessment
+			(list[index + 1].flags.assessment && !item.flags.assessment)
 
 		let className =
 			'link' +
@@ -140,8 +140,7 @@ export default class Nav extends React.Component {
 
 		let style = {
 			backgroundImage: bg,
-			transform: !navState.open && this.state.hover ? 'rotate(180deg)' : '',
-			filter: navState.open ? 'invert(100%)' : 'invert(0%)'
+			transform: !navState.open && this.state.hover ? 'rotate(180deg)' : ''
 		}
 
 		return (

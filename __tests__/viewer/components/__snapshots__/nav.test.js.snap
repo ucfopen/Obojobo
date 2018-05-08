@@ -12,7 +12,6 @@ exports[`Nav renders all list item types 1`] = `
     style={
       Object {
         "backgroundImage": undefined,
-        "filter": "invert(0%)",
         "transform": "",
       }
     }
@@ -121,7 +120,6 @@ exports[`Nav renders closed 1`] = `
     style={
       Object {
         "backgroundImage": undefined,
-        "filter": "invert(100%)",
         "transform": "",
       }
     }
@@ -154,7 +152,6 @@ exports[`Nav renders opened 1`] = `
     style={
       Object {
         "backgroundImage": undefined,
-        "filter": "invert(0%)",
         "transform": "",
       }
     }
@@ -187,7 +184,6 @@ exports[`Nav renders unlocked 1`] = `
     style={
       Object {
         "backgroundImage": undefined,
-        "filter": "invert(0%)",
         "transform": "",
       }
     }
