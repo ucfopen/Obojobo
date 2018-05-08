@@ -54,7 +54,9 @@ describe('Attempt End', () => {
 		jest.restoreAllMocks()
 		insertEvent.mockReset()
 		AssessmentRubric.mockGetAssessmentScoreInfoForAttempt.mockReset()
-		AssessmentRubric.mockGetAssessmentScoreInfoForAttempt.mockReturnValue('mockScoreForAttempt')
+		AssessmentRubric.mockGetAssessmentScoreInfoForAttempt.mockReturnValue({
+			assessmentScore: 'mockScoreForAttempt'
+		})
 		lti.sendHighestAssessmentScore.mockReset()
 	})
 
@@ -80,8 +82,11 @@ describe('Attempt End', () => {
 		Assessment.getCompletedAssessmentAttemptHistory.mockResolvedValueOnce([])
 		Assessment.getAttempt.mockResolvedValueOnce({
 			assessment_id: 'mockAssessmentId',
-			state: { questions: [] },
-			draft_id: 'mockDraftId'
+			state: { questions: [{}] },
+			draft_id: 'mockDraftId',
+			result: {
+				attemptScore: 50
+			}
 		})
 
 		// mock the caliperEvent methods
@@ -142,13 +147,13 @@ describe('Attempt End', () => {
 					assessmentScoreId: undefined,
 					attemptCount: 6,
 					attemptId: 'mockAttemptId',
-					attemptScore: undefined,
+					attemptScore: 100,
 					ltiAssessmentScoreId: 'mockLitScoreId',
 					ltiGradeBookStatus: undefined,
 					ltiStatusDetails: undefined,
 					ltiScoreSent: 'mockScoreSent',
 					ltiScoreStatus: 'mockStatus',
-					scoreDetails: 'mockScoreForAttempt'
+					scoreDetails: { assessmentScore: 'mockScoreForAttempt' }
 				},
 				userId: 'mockUserId'
 			})
@@ -240,7 +245,9 @@ describe('Attempt End', () => {
 			responseHistory
 		).then(result => {
 			expect(result).toEqual({
-				assessmentScoreDetails: 'mockScoreForAttempt',
+				assessmentScoreDetails: {
+					assessmentScore: 'mockScoreForAttempt'
+				},
 				attempt: {
 					attemptScore: 39.8333333333,
 					questionScores: [
@@ -456,7 +463,9 @@ describe('Attempt End', () => {
 
 		let result = calculateScores(assessmentModel, attemptHistory, scoreInfo)
 
-		expect(result).toHaveProperty('assessmentScoreDetails', 'mockScoreForAttempt')
+		expect(result).toHaveProperty('assessmentScoreDetails', {
+			assessmentScore: 'mockScoreForAttempt'
+		})
 		expect(AssessmentRubric.mockGetAssessmentScoreInfoForAttempt).toHaveBeenCalledTimes(1)
 		expect(AssessmentRubric.mockGetAssessmentScoreInfoForAttempt).toHaveBeenCalledWith(2, [
 			25,
@@ -494,7 +503,9 @@ describe('Attempt End', () => {
 
 		return getCalculatedScores({}, {}, x, attemptState, attemptHistory, 'rh').then(result => {
 			expect(result).toEqual({
-				assessmentScoreDetails: 'mockScoreForAttempt',
+				assessmentScoreDetails: {
+					assessmentScore: 'mockScoreForAttempt'
+				},
 				attempt: {
 					attemptScore: 51,
 					questionScores: [
