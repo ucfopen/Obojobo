@@ -355,17 +355,19 @@ describe('lti', () => {
 			id: 'id',
 			user_id: 'user_id',
 			draft_id: 'draft_id',
+			draft_content_id: 'content_id',
 			assessment_id: 'assessment_id',
 			attempt_id: 'attempt_id',
 			score: 'score',
 			preview: 'preview'
 		})
 
-		getLatestHighestAssessmentScoreRecord(123).then(result => {
+		getLatestHighestAssessmentScoreRecord('user_id', 'draft_id', 'assessment_id').then(result => {
 			expect(result).toEqual({
 				id: 'id',
 				userId: 'user_id',
 				draftId: 'draft_id',
+				contentId: 'content_id',
 				assessmentId: 'assessment_id',
 				attemptId: 'attempt_id',
 				score: 'score',
@@ -381,7 +383,7 @@ describe('lti', () => {
 		let getLatestHighestAssessmentScoreRecord = lti.getLatestHighestAssessmentScoreRecord
 
 		db.oneOrNone.mockResolvedValueOnce(null)
-		getLatestHighestAssessmentScoreRecord(123)
+		getLatestHighestAssessmentScoreRecord('user_id', 'draft_id', 'assessment_id')
 			.then(result => {
 				expect(result.error.message).toBe('No assessment score found')
 				done()
@@ -1306,6 +1308,7 @@ describe('lti', () => {
 						id: null,
 						userId: null,
 						draftId: null,
+						contentId: null,
 						assessmentId: null,
 						attemptId: null,
 						score: null,

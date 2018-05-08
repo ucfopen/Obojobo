@@ -3,7 +3,6 @@ let logger = oboRequire('logger')
 
 let setCurrentDraft = (req, draft) => {
 	if (!(draft instanceof Draft)) throw new Error('Invalid Draft for Current draft')
-	logger.info('setting current draft!')
 	req.currentDraft = draft
 }
 

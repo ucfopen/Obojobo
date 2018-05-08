@@ -120,6 +120,7 @@ let getLatestHighestAssessmentScoreRecord = (userId, draftId, assessmentId) => {
 		id: null,
 		userId: null,
 		draftId: null,
+		contentId: null,
 		assessmentId: null,
 		attemptId: null,
 		score: null,
@@ -136,6 +137,7 @@ let getLatestHighestAssessmentScoreRecord = (userId, draftId, assessmentId) => {
 					T1.created_at,
 					T1.user_id,
 					T1.draft_id,
+					T1.draft_content_id,
 					T1.assessment_id,
 					T1.attempt_id,
 					T1.score,
@@ -169,6 +171,7 @@ let getLatestHighestAssessmentScoreRecord = (userId, draftId, assessmentId) => {
 			result.id = dbResult.id
 			result.userId = dbResult.user_id
 			result.draftId = dbResult.draft_id
+			result.contentId = dbResult.draft_content_id
 			result.assessmentId = dbResult.assessment_id
 			result.attemptId = dbResult.attempt_id
 			result.score = dbResult.score
