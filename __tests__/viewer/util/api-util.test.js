@@ -269,6 +269,9 @@ describe('apiutil', () => {
 
 	test('endAttempt calls fetch', () => {
 		expect.assertions(3)
+		let lo = {
+			get: requestedProp => requestedProp // this will just return the prop as the value
+		}
 		fetch.mockResolvedValueOnce({
 			json: () => ({
 				status: 'ok',
@@ -276,13 +279,13 @@ describe('apiutil', () => {
 			})
 		})
 
-		return APIUtil.endAttempt({ attemptId: 999 }).then(res => {
+		return APIUtil.endAttempt(lo, { attemptId: 999 }).then(res => {
 			expect(fetch).toHaveBeenCalled()
 			let calledEndpoint = fetch.mock.calls[0][0]
 			let calledOptions = fetch.mock.calls[0][1]
 			expect(calledEndpoint).toBe('/api/assessments/attempt/999/end')
 			expect(calledOptions).toEqual({
-				body: '{}',
+				body: expect.anything(),
 				credentials: 'include',
 				headers: {
 					Accept: 'application/json',

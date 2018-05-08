@@ -941,8 +941,10 @@ var APIUtil = {
 			assessmentId: assessment.get('id')
 		}).then(processJsonResults);
 	},
-	endAttempt: function endAttempt(attempt) {
-		return APIUtil.post('/api/assessments/attempt/' + attempt.attemptId + '/end').then(processJsonResults);
+	endAttempt: function endAttempt(lo, attempt) {
+		return APIUtil.post('/api/assessments/attempt/' + attempt.attemptId + '/end', {
+			draftId: lo.get('draftId')
+		}).then(processJsonResults);
 	},
 	resendLTIAssessmentScore: function resendLTIAssessmentScore(lo, assessment) {
 		return APIUtil.post('/api/lti/sendAssessmentScore', {
@@ -2797,7 +2799,7 @@ var AssessmentStore = function (_Store) {
 
 			var model = OboModel.models[id];
 			var assessment = this.state.assessments[id];
-			return _apiUtil2.default.endAttempt(assessment.current).then(function (res) {
+			return _apiUtil2.default.endAttempt(model.getRoot(), assessment.current).then(function (res) {
 				if (res.status === 'error') {
 					return ErrorUtil.errorResponse(res);
 				}
