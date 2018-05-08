@@ -542,7 +542,7 @@ body {
       position: absolute;
       bottom: 0px;
       left: -1px;
-      width: 1.2em;
+      width: 0.5em;
       height: 100%;
       background: #ffffff; }
   .viewer--components--nav .link.is-selected {
