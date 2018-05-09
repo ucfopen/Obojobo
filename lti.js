@@ -399,13 +399,14 @@ let retrieveLtiLaunch = function(userId, draftId, logId) {
 		reqVars: null,
 		key: null,
 		createdAt: null,
+		contentId: null,
 		error: null
 	}
 
 	return db
 		.oneOrNone(
 			`
-		SELECT id, data, lti_key, created_at
+		SELECT id, data, lti_key, created_at, draft_content_id
 		FROM launches
 		WHERE user_id = $[userId]
 		AND draft_id = $[draftId]
@@ -427,6 +428,7 @@ let retrieveLtiLaunch = function(userId, draftId, logId) {
 				result.reqVars = dbResult.data
 				result.key = dbResult.lti_key
 				result.createdAt = dbResult.created_at
+				result.contentId = dbResult.draft_content_id
 			}
 
 			if (isLaunchExpired(result.createdAt)) {
