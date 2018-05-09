@@ -61,6 +61,7 @@ describe('Attempt End', () => {
 	})
 
 	test('endAttempt returns Assessment.getAttempts, sends lti highest score, and inserts 2 events', () => {
+		lti.getLatestHighestAssessmentScoreRecord.mockResolvedValueOnce({ score: 75 })
 		// provide a draft model mock
 		let draft = new DraftModel({
 			content: {
@@ -148,6 +149,7 @@ describe('Attempt End', () => {
 					attemptCount: 6,
 					attemptId: 'mockAttemptId',
 					attemptScore: 100,
+					highestAssessmentScore: 75,
 					ltiAssessmentScoreId: 'mockLitScoreId',
 					ltiGradeBookStatus: undefined,
 					ltiStatusDetails: undefined,
@@ -320,6 +322,9 @@ describe('Attempt End', () => {
 	})
 
 	test('insertAttemptScoredEvents calls insertEvent with expected params (preview mode = false, isScoreSent = false)', () => {
+		lti.getLatestHighestAssessmentScoreRecord.mockResolvedValue({
+			score: 'mockHighestAssessmentScore'
+		})
 		// mock the caliperEvent method
 		let createAssessmentAttemptScoredEvent = jest.fn().mockReturnValue('mockCaliperPayload')
 		insertEvent.mockReturnValueOnce('mockInsertResult')
@@ -327,7 +332,7 @@ describe('Attempt End', () => {
 			createAssessmentAttemptScoredEvent
 		})
 
-		let r = insertAttemptScoredEvents(
+		return insertAttemptScoredEvents(
 			{ id: 'userId' },
 			'mockDraftId',
 			'mockAssessmentId',
@@ -344,54 +349,56 @@ describe('Attempt End', () => {
 			'mockLtiAssessmentScoreId',
 			'mockHostname',
 			'mockRemoteAddress'
-		)
+		).then(r => {
+			// make sure we get the result of insertEvent back
+			expect(r).toBe('mockInsertResult')
 
-		// make sure we get the result of insertEvent back
-		expect(r).toBe('mockInsertResult')
+			// make sure insert event is called
+			expect(insertEvent).toHaveBeenCalledTimes(1)
 
-		// make sure insert event is called
-		expect(insertEvent).toHaveBeenCalledTimes(1)
+			// make sure insert event is called with the arguments we expect
+			expect(insertEvent).toHaveBeenCalledWith({
+				action: 'assessment:attemptScored',
+				actorTime: 'mockDate',
+				caliperPayload: 'mockCaliperPayload',
+				draftId: 'mockDraftId',
+				eventVersion: '2.0.0',
+				ip: 'mockRemoteAddress',
+				metadata: {},
+				payload: {
+					assessmentScore: 'mockAssessmentScore',
+					assessmentScoreId: 'mockAssessmentScoreId',
+					attemptCount: 'mockAttemptNumber',
+					attemptId: 'mockAttemptId',
+					attemptScore: 'mockAttemptScore',
+					highestAssessmentScore: 'mockHighestAssessmentScore',
+					ltiAssessmentScoreId: 'mockLtiAssessmentScoreId',
+					ltiGradeBookStatus: 'mockLtiScoreErrorDetails',
+					ltiStatusDetails: 'mockLtiScoreError',
+					ltiScoreSent: 'mockLtiScoreSent',
+					ltiScoreStatus: 'mockLtiScoreStatus'
+				},
+				userId: 'userId'
+			})
 
-		// make sure insert event is called with the arguments we expect
-		expect(insertEvent).toHaveBeenCalledWith({
-			action: 'assessment:attemptScored',
-			actorTime: 'mockDate',
-			caliperPayload: 'mockCaliperPayload',
-			draftId: 'mockDraftId',
-			eventVersion: '2.0.0',
-			ip: 'mockRemoteAddress',
-			metadata: {},
-			payload: {
-				assessmentScore: 'mockAssessmentScore',
-				assessmentScoreId: 'mockAssessmentScoreId',
-				attemptCount: 'mockAttemptNumber',
+			// make sure the caliper payload gets the expected inputs
+			expect(createAssessmentAttemptScoredEvent).toHaveBeenCalledWith({
+				actor: {
+					type: 'serverApp'
+				},
+				assessmentId: 'mockAssessmentId',
 				attemptId: 'mockAttemptId',
 				attemptScore: 'mockAttemptScore',
-				ltiAssessmentScoreId: 'mockLtiAssessmentScoreId',
-				ltiGradeBookStatus: 'mockLtiScoreErrorDetails',
-				ltiStatusDetails: 'mockLtiScoreError',
-				ltiScoreSent: 'mockLtiScoreSent',
-				ltiScoreStatus: 'mockLtiScoreStatus'
-			},
-			userId: 'userId'
-		})
-
-		// make sure the caliper payload gets the expected inputs
-		expect(createAssessmentAttemptScoredEvent).toHaveBeenCalledWith({
-			actor: {
-				type: 'serverApp'
-			},
-			assessmentId: 'mockAssessmentId',
-			attemptId: 'mockAttemptId',
-			attemptScore: 'mockAttemptScore',
-			draftId: 'mockDraftId',
-			extensions: {
-				assessmentScore: 'mockAssessmentScore',
-				attemptCount: 'mockAttemptNumber',
-				attemptScore: 'mockAttemptScore',
-				ltiScoreSent: 'mockLtiScoreSent'
-			},
-			isPreviewMode: 'mockIsPreviewing'
+				draftId: 'mockDraftId',
+				extensions: {
+					assessmentScore: 'mockAssessmentScore',
+					highestAssessmentScore: 'mockHighestAssessmentScore',
+					attemptCount: 'mockAttemptNumber',
+					attemptScore: 'mockAttemptScore',
+					ltiScoreSent: 'mockLtiScoreSent'
+				},
+				isPreviewMode: 'mockIsPreviewing'
+			})
 		})
 	})
 
