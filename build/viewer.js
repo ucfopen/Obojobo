@@ -63,7 +63,7 @@
 /******/ 	__webpack_require__.p = "build/";
 /******/
 /******/ 	// Load entry module and return exports
-/******/ 	return __webpack_require__(__webpack_require__.s = 70);
+/******/ 	return __webpack_require__(__webpack_require__.s = 69);
 /******/ })
 /************************************************************************/
 /******/ ([
@@ -1834,10 +1834,6 @@ var _questionUtil = __webpack_require__(7);
 
 var _questionUtil2 = _interopRequireDefault(_questionUtil);
 
-var _uuid = __webpack_require__(51);
-
-var _uuid2 = _interopRequireDefault(_uuid);
-
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
@@ -1850,6 +1846,7 @@ var Store = _Common2.default.flux.Store;
 var Dispatcher = _Common2.default.flux.Dispatcher;
 var OboModel = _Common2.default.models.OboModel;
 var FocusUtil = _Common2.default.util.FocusUtil;
+var UUID = _Common2.default.util.UUID;
 
 var QuestionStore = function (_Store) {
 	_inherits(QuestionStore, _Store);
@@ -1871,7 +1868,7 @@ var QuestionStore = function (_Store) {
 				_this.state.responses[context][id] = payload.value.response;
 				_this.triggerChange();
 
-				_apiUtil2.default.postEvent(model.getRoot(), 'question:setResponse', '2.0.0', {
+				_apiUtil2.default.postEvent(model.getRoot(), 'question:setResponse', '2.1.0', {
 					questionId: id,
 					response: payload.value.response,
 					targetId: payload.value.targetId,
@@ -1884,20 +1881,20 @@ var QuestionStore = function (_Store) {
 			'question:clearResponse': function questionClearResponse(payload) {
 				if (_this.state.responses[payload.value.context]) {
 					delete _this.state.responses[payload.value.context][payload.value.id];
-					return _this.triggerChange();
+					_this.triggerChange();
 				}
 			},
 
 			'assessment:endAttempt': function assessmentEndAttempt(payload) {
 				if (_this.state.responses[payload.value.context]) {
 					delete _this.state.responses[payload.value.context][payload.value.id];
-					return _this.triggerChange();
+					_this.triggerChange();
 				}
 			},
 
 			'question:setData': function questionSetData(payload) {
 				_this.state.data[payload.value.key] = payload.value.value;
-				return _this.triggerChange();
+				_this.triggerChange();
 			},
 
 			'question:showExplanation': function questionShowExplanation(payload) {
@@ -1923,7 +1920,7 @@ var QuestionStore = function (_Store) {
 
 			'question:clearData': function questionClearData(payload) {
 				delete _this.state.data[payload.value.key];
-				return _this.triggerChange();
+				_this.triggerChange();
 			},
 
 			'question:hide': function questionHide(payload) {
@@ -1937,7 +1934,7 @@ var QuestionStore = function (_Store) {
 					_this.state.viewing = null;
 				}
 
-				return _this.triggerChange();
+				_this.triggerChange();
 			},
 
 			'question:view': function questionView(payload) {
@@ -1950,7 +1947,7 @@ var QuestionStore = function (_Store) {
 				_this.state.viewedQuestions[payload.value.id] = true;
 				_this.state.viewing = payload.value.id;
 
-				return _this.triggerChange();
+				_this.triggerChange();
 			},
 
 			'question:checkAnswer': function questionCheckAnswer(payload) {
@@ -1971,7 +1968,7 @@ var QuestionStore = function (_Store) {
 				_this.clearResponses(questionId, payload.value.context);
 
 				_apiUtil2.default.postEvent(root, 'question:retry', '1.0.0', {
-					questionId: payload.value.id
+					questionId: questionId
 				});
 
 				if (_questionUtil2.default.isShowingExplanation(_this.state, questionModel)) {
@@ -1982,7 +1979,7 @@ var QuestionStore = function (_Store) {
 			},
 
 			'question:scoreSet': function questionScoreSet(payload) {
-				var scoreId = (0, _uuid2.default)();
+				var scoreId = UUID();
 
 				if (!_this.state.scores[payload.value.context]) _this.state.scores[payload.value.context] = {};
 
@@ -1999,7 +1996,7 @@ var QuestionStore = function (_Store) {
 				_this.triggerChange();
 
 				model = OboModel.models[payload.value.itemId];
-				return _apiUtil2.default.postEvent(model.getRoot(), 'score:set', '2.0.0', {
+				_apiUtil2.default.postEvent(model.getRoot(), 'question:scoreSet', '1.0.0', {
 					id: scoreId,
 					itemId: payload.value.itemId,
 					score: payload.value.score,
@@ -2015,7 +2012,7 @@ var QuestionStore = function (_Store) {
 				delete _this.state.scores[payload.value.context][payload.value.itemId];
 				_this.triggerChange();
 
-				return _apiUtil2.default.postEvent(model.getRoot(), 'score:clear', '2.0.0', scoreItem);
+				_apiUtil2.default.postEvent(model.getRoot(), 'question:scoreClear', '1.0.0', scoreItem);
 			}
 		});
 		return _this;
@@ -2029,7 +2026,7 @@ var QuestionStore = function (_Store) {
 	}, {
 		key: 'init',
 		value: function init() {
-			return this.state = {
+			this.state = {
 				viewing: null,
 				viewedQuestions: {},
 				scores: {},
@@ -2231,7 +2228,7 @@ exports.default = isOrNot;
 Object.defineProperty(exports, "__esModule", {
 	value: true
 });
-__webpack_require__(64);
+__webpack_require__(63);
 
 var GREAT_JOB_YOU_ROCK_EMOJI = '😎';
 
@@ -2367,23 +2364,23 @@ var _assessmentUtil = __webpack_require__(6);
 
 var _assessmentUtil2 = _interopRequireDefault(_assessmentUtil);
 
-var _getScoreComparisionData = __webpack_require__(56);
+var _getScoreComparisionData = __webpack_require__(55);
 
 var _getScoreComparisionData2 = _interopRequireDefault(_getScoreComparisionData);
 
-var _getReportDetailsForAttempt = __webpack_require__(53);
+var _getReportDetailsForAttempt = __webpack_require__(52);
 
 var _getReportDetailsForAttempt2 = _interopRequireDefault(_getReportDetailsForAttempt);
 
-var _getReportDisplayValuesForAttempt = __webpack_require__(54);
+var _getReportDisplayValuesForAttempt = __webpack_require__(53);
 
 var _getReportDisplayValuesForAttempt2 = _interopRequireDefault(_getReportDisplayValuesForAttempt);
 
-var _getScoreChangeDescription = __webpack_require__(55);
+var _getScoreChangeDescription = __webpack_require__(54);
 
 var _getScoreChangeDescription2 = _interopRequireDefault(_getScoreChangeDescription);
 
-var _getTextItems = __webpack_require__(59);
+var _getTextItems = __webpack_require__(58);
 
 var _getTextItems2 = _interopRequireDefault(_getTextItems);
 
@@ -2474,7 +2471,7 @@ Object.defineProperty(exports, "__esModule", {
 	value: true
 });
 
-__webpack_require__(66);
+__webpack_require__(65);
 
 var _isornot = __webpack_require__(17);
 
@@ -3423,7 +3420,7 @@ module.exports = React;
 "use strict";
 
 
-var _index = __webpack_require__(63);
+var _index = __webpack_require__(62);
 
 var _index2 = _interopRequireDefault(_index);
 
@@ -6061,29 +6058,6 @@ Object.defineProperty(exports, "__esModule", {
 	value: true
 });
 
-exports.default = function () {
-	//https://gist.github.com/jed/982883
-	var getId = function getId(a) {
-		if (a) {
-			return (a ^ Math.random() * 16 >> a / 4).toString(16);
-		} else {
-			return ([1e7] + -1e3 + -4e3 + -8e3 + -1e11).replace(/[018]/g, getId);
-		}
-	};
-	return getId();
-};
-
-/***/ }),
-/* 52 */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-
-
-Object.defineProperty(exports, "__esModule", {
-	value: true
-});
-
 var _displayTypes = __webpack_require__(20);
 
 var getDisplayType = function getDisplayType(_ref) {
@@ -6149,7 +6123,7 @@ var getDisplayType = function getDisplayType(_ref) {
 exports.default = getDisplayType;
 
 /***/ }),
-/* 53 */
+/* 52 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -6163,7 +6137,7 @@ var _getDisplayFriendlyScore = __webpack_require__(5);
 
 var _getDisplayFriendlyScore2 = _interopRequireDefault(_getDisplayFriendlyScore);
 
-var _getStatusResult = __webpack_require__(57);
+var _getStatusResult = __webpack_require__(56);
 
 var _getStatusResult2 = _interopRequireDefault(_getStatusResult);
 
@@ -6188,7 +6162,7 @@ var getReportDetailsForAttempt = function getReportDetailsForAttempt(assessmentR
 exports.default = getReportDetailsForAttempt;
 
 /***/ }),
-/* 54 */
+/* 53 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -6216,7 +6190,7 @@ var getReportDetailsForAttempt = function getReportDetailsForAttempt(scoreInfo, 
 exports.default = getReportDetailsForAttempt;
 
 /***/ }),
-/* 55 */
+/* 54 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -6257,7 +6231,7 @@ var getScoreChangeDescription = function getScoreChangeDescription(_ref) {
 exports.default = getScoreChangeDescription;
 
 /***/ }),
-/* 56 */
+/* 55 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -6294,7 +6268,7 @@ var getScoreComparisionData = function getScoreComparisionData(allAttempts, atte
 exports.default = getScoreComparisionData;
 
 /***/ }),
-/* 57 */
+/* 56 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -6319,7 +6293,7 @@ var getStatusResult = function getStatusResult(rubric, status) {
 exports.default = getStatusResult;
 
 /***/ }),
-/* 58 */
+/* 57 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -6376,7 +6350,7 @@ var getTextItemsForMods = function getTextItemsForMods(mods, totalNumberOfAttemp
 exports.default = getTextItemsForMods;
 
 /***/ }),
-/* 59 */
+/* 58 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -6390,11 +6364,11 @@ var _getDisplayFriendlyScore = __webpack_require__(5);
 
 var _getDisplayFriendlyScore2 = _interopRequireDefault(_getDisplayFriendlyScore);
 
-var _getTextItemsForMods = __webpack_require__(58);
+var _getTextItemsForMods = __webpack_require__(57);
 
 var _getTextItemsForMods2 = _interopRequireDefault(_getTextItemsForMods);
 
-var _getDisplayType = __webpack_require__(52);
+var _getDisplayType = __webpack_require__(51);
 
 var _getDisplayType2 = _interopRequireDefault(_getDisplayType);
 
@@ -6596,7 +6570,7 @@ var getTextItems = function getTextItems(_ref, _ref2) {
 exports.default = getTextItems;
 
 /***/ }),
-/* 60 */
+/* 59 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -6608,7 +6582,7 @@ Object.defineProperty(exports, "__esModule", {
 
 var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
 
-__webpack_require__(65);
+__webpack_require__(64);
 
 var _navUtil = __webpack_require__(2);
 
@@ -6666,7 +6640,7 @@ var InlineNavButton = function (_React$Component) {
 exports.default = InlineNavButton;
 
 /***/ }),
-/* 61 */
+/* 60 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -6678,7 +6652,7 @@ Object.defineProperty(exports, "__esModule", {
 
 var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
 
-__webpack_require__(67);
+__webpack_require__(66);
 
 var _navUtil = __webpack_require__(2);
 
@@ -6851,7 +6825,7 @@ var Nav = function (_React$Component) {
 exports.default = Nav;
 
 /***/ }),
-/* 62 */
+/* 61 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -6863,9 +6837,9 @@ Object.defineProperty(exports, "__esModule", {
 
 var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
 
-__webpack_require__(69);
-
 __webpack_require__(68);
+
+__webpack_require__(67);
 
 var _Common = __webpack_require__(0);
 
@@ -6879,7 +6853,7 @@ var _reactIdleTimer = __webpack_require__(47);
 
 var _reactIdleTimer2 = _interopRequireDefault(_reactIdleTimer);
 
-var _inlineNavButton = __webpack_require__(60);
+var _inlineNavButton = __webpack_require__(59);
 
 var _inlineNavButton2 = _interopRequireDefault(_inlineNavButton);
 
@@ -6907,7 +6881,7 @@ var _navStore = __webpack_require__(12);
 
 var _navStore2 = _interopRequireDefault(_navStore);
 
-var _nav = __webpack_require__(61);
+var _nav = __webpack_require__(60);
 
 var _nav2 = _interopRequireDefault(_nav);
 
@@ -7211,7 +7185,7 @@ var ViewerApp = function (_React$Component) {
 
 			this.lastActiveEpoch = new Date(this.refs.idleTimer.getLastActiveTime());
 
-			_apiUtil2.default.postEvent(this.state.model, 'viewer:inactive', '1.0.0', {
+			_apiUtil2.default.postEvent(this.state.model, 'viewer:inactive', '2.0.0', {
 				lastActiveTime: this.lastActiveEpoch,
 				inactiveDuration: IDLE_TIMEOUT_DURATION_MS
 			}).then(function (res) {
@@ -7221,7 +7195,7 @@ var ViewerApp = function (_React$Component) {
 	}, {
 		key: 'onReturnFromIdle',
 		value: function onReturnFromIdle() {
-			_apiUtil2.default.postEvent(this.state.model, 'viewer:returnFromInactive', '1.0.0', {
+			_apiUtil2.default.postEvent(this.state.model, 'viewer:returnFromInactive', '2.0.0', {
 				lastActiveTime: this.lastActiveEpoch,
 				inactiveDuration: Date.now() - this.lastActiveEpoch,
 				relatedEventId: this.inactiveEvent.id
@@ -7435,7 +7409,7 @@ var ViewerApp = function (_React$Component) {
 exports.default = ViewerApp;
 
 /***/ }),
-/* 63 */
+/* 62 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -7445,7 +7419,7 @@ Object.defineProperty(exports, "__esModule", {
 	value: true
 });
 
-var _viewerApp = __webpack_require__(62);
+var _viewerApp = __webpack_require__(61);
 
 var _viewerApp2 = _interopRequireDefault(_viewerApp);
 
@@ -7524,6 +7498,12 @@ exports.default = {
 };
 
 /***/ }),
+/* 63 */
+/***/ (function(module, exports) {
+
+// removed by extract-text-webpack-plugin
+
+/***/ }),
 /* 64 */
 /***/ (function(module, exports) {
 
@@ -7555,12 +7535,6 @@ exports.default = {
 
 /***/ }),
 /* 69 */
-/***/ (function(module, exports) {
-
-// removed by extract-text-webpack-plugin
-
-/***/ }),
-/* 70 */
 /***/ (function(module, exports, __webpack_require__) {
 
 __webpack_require__(26);

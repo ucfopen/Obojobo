@@ -111,16 +111,17 @@ let endAttempt = (req, res, user, attemptId, isPreviewing) => {
 				assessmentScoreId,
 				attemptId,
 				attempt.number,
-				calculatedScores.attemptScore,
-				calculatedScores.assessmentScore,
+				calculatedScores.attempt.attemptScore,
+				calculatedScores.assessmentScoreDetails.assessmentModdedScore,
 				isPreviewing,
 				ltiRequestResult.scoreSent,
 				ltiRequestResult.status,
-				ltiRequestResult.error,
-				ltiRequestResult.errorDetails,
+				ltiRequestResult.statusDetails,
+				ltiRequestResult.gradebookStatus,
 				ltiRequestResult.ltiAssessmentScoreId,
 				req.hostname,
-				req.connection.remoteAddress
+				req.connection.remoteAddress,
+				calculatedScores.assessmentScoreDetails
 			)
 		})
 		.then(() => Assessment.getAttempts(user.id, attempt.draftId, attempt.assessmentId))
@@ -273,48 +274,57 @@ let insertAttemptScoredEvents = (
 	isPreviewing,
 	ltiScoreSent,
 	ltiScoreStatus,
-	ltiScoreError,
-	ltiScoreErrorDetails,
+	ltiStatusDetails,
+	ltiGradeBookStatus,
 	ltiAssessmentScoreId,
 	hostname,
-	remoteAddress
+	remoteAddress,
+	scoreDetails
 ) => {
 	let { createAssessmentAttemptScoredEvent } = createCaliperEvent(null, hostname)
-	return insertEvent({
-		action: 'assessment:attemptScored',
-		actorTime: new Date().toISOString(),
-		payload: {
-			attemptId,
-			attemptCount: attemptNumber,
-			attemptScore,
-			assessmentScore,
-			ltiScoreSent,
-			ltiScoreStatus,
-			ltiScoreError,
-			ltiScoreErrorDetails,
-			assessmentScoreId,
-			ltiAssessmentScoreId
-		},
-		userId: user.id,
-		ip: remoteAddress,
-		metadata: {},
-		draftId: draftId,
-		eventVersion: '2.0.0',
-		caliperPayload: createAssessmentAttemptScoredEvent({
-			actor: { type: 'serverApp' },
-			draftId,
-			assessmentId,
-			attemptId: attemptId,
-			attemptScore,
-			isPreviewMode: isPreviewing,
-			extensions: {
-				attemptCount: attemptNumber,
-				attemptScore,
-				assessmentScore,
-				ltiScoreSent
-			}
+
+	return lti
+		.getLatestHighestAssessmentScoreRecord(user.id, draftId, assessmentId)
+		.then(highestAssessmentScoreRecord => {
+			return insertEvent({
+				action: 'assessment:attemptScored',
+				actorTime: new Date().toISOString(),
+				payload: {
+					attemptId,
+					attemptCount: attemptNumber,
+					attemptScore,
+					assessmentScore,
+					highestAssessmentScore: highestAssessmentScoreRecord.score,
+					ltiScoreSent,
+					ltiScoreStatus,
+					ltiStatusDetails,
+					ltiGradeBookStatus,
+					assessmentScoreId,
+					ltiAssessmentScoreId,
+					scoreDetails
+				},
+				userId: user.id,
+				ip: remoteAddress,
+				metadata: {},
+				draftId: draftId,
+				eventVersion: '2.0.0',
+				caliperPayload: createAssessmentAttemptScoredEvent({
+					actor: { type: 'serverApp' },
+					draftId,
+					assessmentId,
+					attemptId: attemptId,
+					attemptScore,
+					isPreviewMode: isPreviewing,
+					extensions: {
+						attemptCount: attemptNumber,
+						attemptScore,
+						assessmentScore,
+						highestAssessmentScore: highestAssessmentScoreRecord.score,
+						ltiScoreSent
+					}
+				})
+			})
 		})
-	})
 }
 
 let reloadAttemptStateIfReviewing = (

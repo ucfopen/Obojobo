@@ -20,12 +20,14 @@ const Common = require('../../../src/scripts/common/index').default
 const NavUtil = require('../../../src/scripts/viewer/util/nav-util')
 const APIUtil = require('../../../src/scripts/viewer/util/api-util')
 
-// gotta spy on dispatcher before loading navstore
-jest.spyOn(Common.flux.Dispatcher, 'on')
-jest.spyOn(Common.flux.Dispatcher, 'trigger')
+// spy on dispatcher before loading navstore
+const Dispatcher = Common.flux.Dispatcher
+jest.spyOn(Dispatcher, 'on')
+jest.spyOn(Dispatcher, 'trigger')
+
 const NavStore = require('../../../src/scripts/viewer/stores/nav-store').default
 // gotta hold on to this because beforeEach will clear it before the tests
-const eventCallbacks = Common.flux.Dispatcher.on.mock.calls[0][0]
+const eventCallbacks = Dispatcher.on.mock.calls[0][0]
 
 describe('NavStore', () => {
 	beforeAll(() => {})
@@ -42,11 +44,11 @@ describe('NavStore', () => {
 		jest.spyOn(NavStore, 'buildMenu')
 		NavStore.buildMenu.mockReturnValueOnce('')
 		// simulate trigger
-		Common.flux.Dispatcher.trigger.mockReturnValueOnce()
+		Dispatcher.trigger.mockReturnValueOnce()
 		eventCallbacks['nav:rebuildMenu']({ value: { model: 'fake' } })
 
 		expect(NavStore.buildMenu).toHaveBeenCalledWith('fake')
-		expect(Common.flux.Dispatcher.trigger).toHaveBeenCalledWith('navstore:change')
+		expect(Dispatcher.trigger).toHaveBeenCalledWith('navstore:change')
 	})
 
 	it('nav:gotoPath event calls gotoItem and postEvent', () => {
@@ -76,11 +78,11 @@ describe('NavStore', () => {
 		})
 
 		// simulate trigger
-		Common.flux.Dispatcher.trigger.mockReturnValueOnce()
+		Dispatcher.trigger.mockReturnValueOnce()
 
 		eventCallbacks['nav:setFlag']({ value: { id: 'fake', flagName: 'spoof' } })
 
-		expect(Common.flux.Dispatcher.trigger).toHaveBeenCalledWith('navstore:change')
+		expect(Dispatcher.trigger).toHaveBeenCalledWith('navstore:change')
 		expect(NavStore.getState()).toMatchSnapshot()
 	})
 
@@ -154,7 +156,7 @@ describe('NavStore', () => {
 		NavStore.setState({ locked: 'unchanged', open: 'unchanged' })
 
 		// simulate trigger
-		Common.flux.Dispatcher.trigger.mockReturnValueOnce()
+		Dispatcher.trigger.mockReturnValueOnce()
 
 		// mock getRoot
 		jest.spyOn(Common.models.OboModel, 'getRoot')
@@ -162,8 +164,8 @@ describe('NavStore', () => {
 
 		// go
 		eventCallbacks['nav:lock']()
-		expect(Common.flux.Dispatcher.trigger).toHaveBeenCalledTimes(1)
-		expect(Common.flux.Dispatcher.trigger).toHaveBeenCalledWith('navstore:change')
+		expect(Dispatcher.trigger).toHaveBeenCalledTimes(1)
+		expect(Dispatcher.trigger).toHaveBeenCalledWith('navstore:change')
 		expect(APIUtil.postEvent).toHaveBeenCalledTimes(1)
 		expect(APIUtil.postEvent.mock.calls[0]).toMatchSnapshot()
 		expect(NavStore.getState()).toMatchSnapshot()
@@ -172,7 +174,7 @@ describe('NavStore', () => {
 	it('nav:unlock event fires and updates state', () => {
 		NavStore.setState({ locked: 'unchanged', open: 'unchanged' })
 		// simulate trigger
-		Common.flux.Dispatcher.trigger.mockReturnValueOnce()
+		Dispatcher.trigger.mockReturnValueOnce()
 
 		// mock getRoot
 		jest.spyOn(Common.models.OboModel, 'getRoot')
@@ -180,8 +182,8 @@ describe('NavStore', () => {
 
 		// go
 		eventCallbacks['nav:unlock']()
-		expect(Common.flux.Dispatcher.trigger).toHaveBeenCalledTimes(1)
-		expect(Common.flux.Dispatcher.trigger.mock.calls[0]).toMatchSnapshot()
+		expect(Dispatcher.trigger).toHaveBeenCalledTimes(1)
+		expect(Dispatcher.trigger.mock.calls[0]).toMatchSnapshot()
 		expect(APIUtil.postEvent).toHaveBeenCalledTimes(1)
 		expect(APIUtil.postEvent.mock.calls[0]).toMatchSnapshot()
 		expect(NavStore.getState()).toMatchSnapshot()
@@ -190,7 +192,7 @@ describe('NavStore', () => {
 	it('nav:close event fires and updates state', () => {
 		NavStore.setState({ locked: 'unchanged', open: 'unchanged' })
 		// simulate trigger
-		Common.flux.Dispatcher.trigger.mockReturnValueOnce()
+		Dispatcher.trigger.mockReturnValueOnce()
 
 		// mock getRoot
 		jest.spyOn(Common.models.OboModel, 'getRoot')
@@ -198,8 +200,8 @@ describe('NavStore', () => {
 
 		// go
 		eventCallbacks['nav:close']()
-		expect(Common.flux.Dispatcher.trigger).toHaveBeenCalledTimes(1)
-		expect(Common.flux.Dispatcher.trigger.mock.calls[0]).toMatchSnapshot()
+		expect(Dispatcher.trigger).toHaveBeenCalledTimes(1)
+		expect(Dispatcher.trigger.mock.calls[0]).toMatchSnapshot()
 		expect(APIUtil.postEvent).toHaveBeenCalledTimes(1)
 		expect(APIUtil.postEvent.mock.calls[0]).toMatchSnapshot()
 		expect(NavStore.getState()).toMatchSnapshot()
@@ -208,7 +210,7 @@ describe('NavStore', () => {
 	it('nav:open event fires and updates state', () => {
 		NavStore.setState({ locked: 'unchanged', open: 'unchanged' })
 		// simulate trigger
-		Common.flux.Dispatcher.trigger.mockReturnValueOnce()
+		Dispatcher.trigger.mockReturnValueOnce()
 
 		// mock getRoot
 		jest.spyOn(Common.models.OboModel, 'getRoot')
@@ -216,8 +218,8 @@ describe('NavStore', () => {
 
 		// go
 		eventCallbacks['nav:open']()
-		expect(Common.flux.Dispatcher.trigger).toHaveBeenCalledTimes(1)
-		expect(Common.flux.Dispatcher.trigger.mock.calls[0]).toMatchSnapshot()
+		expect(Dispatcher.trigger).toHaveBeenCalledTimes(1)
+		expect(Dispatcher.trigger.mock.calls[0]).toMatchSnapshot()
 		expect(APIUtil.postEvent).toHaveBeenCalledTimes(1)
 		expect(APIUtil.postEvent.mock.calls[0]).toMatchSnapshot()
 		expect(NavStore.getState()).toMatchSnapshot()
@@ -226,7 +228,7 @@ describe('NavStore', () => {
 	it('nav:close event fires and updates state', () => {
 		NavStore.setState({ locked: 'unchanged', open: 'unchanged' })
 		// simulate trigger
-		Common.flux.Dispatcher.trigger.mockReturnValueOnce()
+		Dispatcher.trigger.mockReturnValueOnce()
 
 		// mock getRoot
 		jest.spyOn(Common.models.OboModel, 'getRoot')
@@ -234,8 +236,8 @@ describe('NavStore', () => {
 
 		// go
 		eventCallbacks['nav:close']()
-		expect(Common.flux.Dispatcher.trigger).toHaveBeenCalledTimes(1)
-		expect(Common.flux.Dispatcher.trigger.mock.calls[0]).toMatchSnapshot()
+		expect(Dispatcher.trigger).toHaveBeenCalledTimes(1)
+		expect(Dispatcher.trigger.mock.calls[0]).toMatchSnapshot()
 		expect(APIUtil.postEvent).toHaveBeenCalledTimes(1)
 		expect(APIUtil.postEvent.mock.calls[0]).toMatchSnapshot()
 		expect(NavStore.getState()).toMatchSnapshot()
@@ -244,7 +246,7 @@ describe('NavStore', () => {
 	it('nav:toggle event fires and updates state', () => {
 		NavStore.setState({ locked: 'unchanged', open: false })
 		// simulate trigger
-		Common.flux.Dispatcher.trigger.mockReturnValueOnce()
+		Dispatcher.trigger.mockReturnValueOnce()
 
 		// mock getRoot
 		jest.spyOn(Common.models.OboModel, 'getRoot')
@@ -252,8 +254,8 @@ describe('NavStore', () => {
 
 		// go
 		eventCallbacks['nav:toggle']()
-		expect(Common.flux.Dispatcher.trigger).toHaveBeenCalledTimes(1)
-		expect(Common.flux.Dispatcher.trigger.mock.calls[0]).toMatchSnapshot()
+		expect(Dispatcher.trigger).toHaveBeenCalledTimes(1)
+		expect(Dispatcher.trigger.mock.calls[0]).toMatchSnapshot()
 		expect(APIUtil.postEvent).toHaveBeenCalledTimes(1)
 		expect(APIUtil.postEvent.mock.calls[0]).toMatchSnapshot()
 		expect(NavStore.getState()).toMatchSnapshot()
@@ -261,57 +263,59 @@ describe('NavStore', () => {
 
 	it('nav:openExternalLink fires event and opens a window', () => {
 		// simulate trigger
-		Common.flux.Dispatcher.trigger.mockReturnValueOnce()
+		Dispatcher.trigger.mockReturnValueOnce()
 		window.open = jest.fn()
 
 		// go
 		eventCallbacks['nav:openExternalLink']({ value: { url: 'mockUrl' } })
 		expect(window.open).toHaveBeenCalledTimes(1)
 		expect(window.open).toHaveBeenCalledWith('mockUrl')
-		expect(Common.flux.Dispatcher.trigger).toHaveBeenCalledTimes(1)
-		expect(Common.flux.Dispatcher.trigger.mock.calls[0]).toMatchSnapshot()
+		expect(Dispatcher.trigger).toHaveBeenCalledTimes(1)
+		expect(Dispatcher.trigger.mock.calls[0]).toMatchSnapshot()
 	})
 
 	it('nav:showChildren event fires and updates state', () => {
 		NavStore.setState({ itemsById: { mockID: { showChildren: 'unchanged' } } })
 		// simulate trigger
-		Common.flux.Dispatcher.trigger.mockReturnValueOnce()
+		Dispatcher.trigger.mockReturnValueOnce()
 
 		// go
 		eventCallbacks['nav:showChildren']({ value: { id: 'mockID' } })
-		expect(Common.flux.Dispatcher.trigger).toHaveBeenCalledTimes(1)
-		expect(Common.flux.Dispatcher.trigger.mock.calls[0]).toMatchSnapshot()
+		expect(Dispatcher.trigger).toHaveBeenCalledTimes(1)
+		expect(Dispatcher.trigger.mock.calls[0]).toMatchSnapshot()
 		expect(NavStore.getState()).toMatchSnapshot()
 	})
 
 	it('nav:hideChildren event fires and updates state', () => {
 		NavStore.setState({ itemsById: { mockID: { showChildren: 'unchanged' } } })
 		// simulate trigger
-		Common.flux.Dispatcher.trigger.mockReturnValueOnce()
+		Dispatcher.trigger.mockReturnValueOnce()
 
 		// go
 		eventCallbacks['nav:hideChildren']({ value: { id: 'mockID' } })
-		expect(Common.flux.Dispatcher.trigger).toHaveBeenCalledTimes(1)
-		expect(Common.flux.Dispatcher.trigger.mock.calls[0]).toMatchSnapshot()
+		expect(Dispatcher.trigger).toHaveBeenCalledTimes(1)
+		expect(Dispatcher.trigger.mock.calls[0]).toMatchSnapshot()
 		expect(NavStore.getState()).toMatchSnapshot()
 	})
 
-	// @TODO - these moved?
-	it.skip('score:set sets a correct flag on the item with a score of 100', () => {
+	it('question:scoreSet sets flag with a score of 100', () => {
 		NavStore.setState({ itemsById: { mockID: { showChildren: 'unchanged' } } })
-		// go
-		eventCallbacks['score:set']({ value: { id: 'mockID', score: 100 } })
+		// simulate trigger
+		Dispatcher.trigger.mockReturnValueOnce()
 
+		// go
+		eventCallbacks['question:scoreSet']({ value: { id: 'mockID', score: 0 } })
 		expect(NavUtil.setFlag).toHaveBeenCalledTimes(1)
 		expect(NavUtil.setFlag.mock.calls[0]).toMatchSnapshot()
 	})
 
-	// @TODO - these moved?
-	it.skip('score:set sets a correct flag on the item with a score of 23', () => {
+	it('question:scoreSet sets flag with a score of 100', () => {
 		NavStore.setState({ itemsById: { mockID: { showChildren: 'unchanged' } } })
-		// go
-		eventCallbacks['score:set']({ value: { id: 'mockID', score: 23 } })
+		// simulate trigger
+		Dispatcher.trigger.mockReturnValueOnce()
 
+		// go
+		eventCallbacks['question:scoreSet']({ value: { id: 'mockID', score: 100 } })
 		expect(NavUtil.setFlag).toHaveBeenCalledTimes(1)
 		expect(NavUtil.setFlag.mock.calls[0]).toMatchSnapshot()
 	})
@@ -376,7 +380,7 @@ describe('NavStore', () => {
 
 	it('gotoItem sends triggers events and updates history', () => {
 		// simulate trigger
-		Common.flux.Dispatcher.trigger.mockReturnValueOnce()
+		Dispatcher.trigger.mockReturnValueOnce()
 
 		NavStore.setState({
 			navTargetId: 'mockId',
@@ -401,8 +405,8 @@ describe('NavStore', () => {
 		expect(after).toMatchSnapshot()
 		expect(oldNavItem.processTrigger).toHaveBeenCalledWith('onNavExit')
 		expect(newNavItem.processTrigger).toHaveBeenCalledWith('onNavEnter')
-		expect(Common.flux.Dispatcher.trigger).toHaveBeenCalledTimes(1)
-		expect(Common.flux.Dispatcher.trigger).toHaveBeenCalledWith('navstore:change')
+		expect(Dispatcher.trigger).toHaveBeenCalledTimes(1)
+		expect(Dispatcher.trigger).toHaveBeenCalledWith('navstore:change')
 	})
 
 	it('generateNav with no model returns empty objec ', () => {
