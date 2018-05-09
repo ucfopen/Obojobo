@@ -418,7 +418,7 @@ Object {
 }
 `;
 
-exports[`NavStore score:set sets a correct flag on the item with a score of 23 1`] = `
+exports[`NavStore question:scoreSet sets flag with a score of 100 1`] = `
 Array [
   "mockID",
   "correct",
@@ -426,7 +426,7 @@ Array [
 ]
 `;
 
-exports[`NavStore score:set sets a correct flag on the item with a score of 100 1`] = `
+exports[`NavStore question:scoreSet sets flag with a score of 100 2`] = `
 Array [
   "mockID",
   "correct",

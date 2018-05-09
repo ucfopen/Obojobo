@@ -276,7 +276,7 @@ export default class ViewerApp extends React.Component {
 	onIdle() {
 		this.lastActiveEpoch = new Date(this.refs.idleTimer.getLastActiveTime())
 
-		APIUtil.postEvent(this.state.model, 'viewer:inactive', '1.0.0', {
+		APIUtil.postEvent(this.state.model, 'viewer:inactive', '2.0.0', {
 			lastActiveTime: this.lastActiveEpoch,
 			inactiveDuration: IDLE_TIMEOUT_DURATION_MS
 		}).then(res => {
@@ -285,7 +285,7 @@ export default class ViewerApp extends React.Component {
 	}
 
 	onReturnFromIdle() {
-		APIUtil.postEvent(this.state.model, 'viewer:returnFromInactive', '1.0.0', {
+		APIUtil.postEvent(this.state.model, 'viewer:returnFromInactive', '2.0.0', {
 			lastActiveTime: this.lastActiveEpoch,
 			inactiveDuration: Date.now() - this.lastActiveEpoch,
 			relatedEventId: this.inactiveEvent.id

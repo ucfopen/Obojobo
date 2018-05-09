@@ -516,6 +516,8 @@ body {
       right: -1.3em;
       top: 1em;
       transform: translate(0, -50%); }
+    .viewer--components--nav .sub-link .lock-icon {
+      display: none; }
   .viewer--components--nav .seperator {
     cursor: default; }
   .viewer--components--nav .heading {

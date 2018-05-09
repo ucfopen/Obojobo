@@ -54,7 +54,9 @@ describe('Attempt End', () => {
 		jest.restoreAllMocks()
 		insertEvent.mockReset()
 		AssessmentRubric.mockGetAssessmentScoreInfoForAttempt.mockReset()
-		AssessmentRubric.mockGetAssessmentScoreInfoForAttempt.mockReturnValue('mockScoreForAttempt')
+		AssessmentRubric.mockGetAssessmentScoreInfoForAttempt.mockReturnValue({
+			assessmentScore: 'mockScoreForAttempt'
+		})
 		lti.sendHighestAssessmentScore.mockReset()
 	})
 
@@ -81,8 +83,11 @@ describe('Attempt End', () => {
 		Assessment.getCompletedAssessmentAttemptHistory.mockResolvedValueOnce([])
 		Assessment.getAttempt.mockResolvedValueOnce({
 			assessment_id: 'mockAssessmentId',
-			state: { questions: [] },
-			draft_id: 'mockDraftId'
+			state: { questions: [{}] },
+			draft_id: 'mockDraftId',
+			result: {
+				attemptScore: 50
+			}
 		})
 
 		// mock the caliperEvent methods
@@ -143,16 +148,18 @@ describe('Attempt End', () => {
 					assessmentScoreId: undefined,
 					attemptCount: 6,
 					attemptId: 'mockAttemptId',
-					attemptScore: undefined,
-					highestAttemptScore: 75,
+					attemptScore: 100,
+					highestAssessmentScore: 75,
 					ltiAssessmentScoreId: 'mockLitScoreId',
-					ltiScoreError: 'mockScoreError',
-					ltiScoreErrorDetails: 'mockErrorDetails',
+					ltiGradeBookStatus: undefined,
+					ltiStatusDetails: undefined,
 					ltiScoreSent: 'mockScoreSent',
-					ltiScoreStatus: 'mockStatus'
+					ltiScoreStatus: 'mockStatus',
+					scoreDetails: { assessmentScore: 'mockScoreForAttempt' }
 				},
 				userId: 'mockUserId'
 			})
+
 			expect(insertEvent).toHaveBeenCalledWith({
 				action: 'assessment:attemptEnd',
 				actorTime: 'mockDate',
@@ -240,7 +247,9 @@ describe('Attempt End', () => {
 			responseHistory
 		).then(result => {
 			expect(result).toEqual({
-				assessmentScoreDetails: 'mockScoreForAttempt',
+				assessmentScoreDetails: {
+					assessmentScore: 'mockScoreForAttempt'
+				},
 				attempt: {
 					attemptScore: 39.8333333333,
 					questionScores: [
@@ -314,7 +323,7 @@ describe('Attempt End', () => {
 
 	test('insertAttemptScoredEvents calls insertEvent with expected params (preview mode = false, isScoreSent = false)', () => {
 		lti.getLatestHighestAssessmentScoreRecord.mockResolvedValue({
-			score: 'mockHighestAttemptScore'
+			score: 'mockHighestAssessmentScore'
 		})
 		// mock the caliperEvent method
 		let createAssessmentAttemptScoredEvent = jest.fn().mockReturnValue('mockCaliperPayload')
@@ -362,33 +371,34 @@ describe('Attempt End', () => {
 					attemptCount: 'mockAttemptNumber',
 					attemptId: 'mockAttemptId',
 					attemptScore: 'mockAttemptScore',
-					highestAttemptScore: 'mockHighestAttemptScore',
+					highestAssessmentScore: 'mockHighestAssessmentScore',
 					ltiAssessmentScoreId: 'mockLtiAssessmentScoreId',
-					ltiScoreError: 'mockLtiScoreError',
-					ltiScoreErrorDetails: 'mockLtiScoreErrorDetails',
+					ltiGradeBookStatus: 'mockLtiScoreErrorDetails',
+					ltiStatusDetails: 'mockLtiScoreError',
 					ltiScoreSent: 'mockLtiScoreSent',
 					ltiScoreStatus: 'mockLtiScoreStatus'
 				},
 				userId: 'userId'
 			})
-		})
 
-		// make sure the caliper payload gets the expected inputs
-		expect(createAssessmentAttemptScoredEvent).toHaveBeenCalledWith({
-			actor: {
-				type: 'serverApp'
-			},
-			assessmentId: 'mockAssessmentId',
-			attemptId: 'mockAttemptId',
-			attemptScore: 'mockAttemptScore',
-			draftId: 'mockDraftId',
-			extensions: {
-				assessmentScore: 'mockAssessmentScore',
-				attemptCount: 'mockAttemptNumber',
+			// make sure the caliper payload gets the expected inputs
+			expect(createAssessmentAttemptScoredEvent).toHaveBeenCalledWith({
+				actor: {
+					type: 'serverApp'
+				},
+				assessmentId: 'mockAssessmentId',
+				attemptId: 'mockAttemptId',
 				attemptScore: 'mockAttemptScore',
-				ltiScoreSent: 'mockLtiScoreSent'
-			},
-			isPreviewMode: 'mockIsPreviewing'
+				draftId: 'mockDraftId',
+				extensions: {
+					assessmentScore: 'mockAssessmentScore',
+					highestAssessmentScore: 'mockHighestAssessmentScore',
+					attemptCount: 'mockAttemptNumber',
+					attemptScore: 'mockAttemptScore',
+					ltiScoreSent: 'mockLtiScoreSent'
+				},
+				isPreviewMode: 'mockIsPreviewing'
+			})
 		})
 	})
 
@@ -460,7 +470,9 @@ describe('Attempt End', () => {
 
 		let result = calculateScores(assessmentModel, attemptHistory, scoreInfo)
 
-		expect(result).toHaveProperty('assessmentScoreDetails', 'mockScoreForAttempt')
+		expect(result).toHaveProperty('assessmentScoreDetails', {
+			assessmentScore: 'mockScoreForAttempt'
+		})
 		expect(AssessmentRubric.mockGetAssessmentScoreInfoForAttempt).toHaveBeenCalledTimes(1)
 		expect(AssessmentRubric.mockGetAssessmentScoreInfoForAttempt).toHaveBeenCalledWith(2, [
 			25,
@@ -498,7 +510,9 @@ describe('Attempt End', () => {
 
 		return getCalculatedScores({}, {}, x, attemptState, attemptHistory, 'rh').then(result => {
 			expect(result).toEqual({
-				assessmentScoreDetails: 'mockScoreForAttempt',
+				assessmentScoreDetails: {
+					assessmentScore: 'mockScoreForAttempt'
+				},
 				attempt: {
 					attemptScore: 51,
 					questionScores: [
