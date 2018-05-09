@@ -4,8 +4,9 @@
 	$color-nav-bg: #fbfbfb;
 	$color-nav-highlight: $color-obojobo-blue;
 	$color-nav-hover: darken($color-highlight, 25%);
-
+	$break-small: 1000px;
 	$padding: 2rem;
+
 	overflow: auto;
 	position: fixed;
 	top: 0;
@@ -18,14 +19,18 @@
 	font-size: 1rem;
 	width: $dimension-nav-menu;
 	padding: $padding;
-	padding-top: $padding / 2;
+	padding-top: 0;
 	box-sizing: border-box;
-	// text-align: right;
 	transition: left $duration-animation-default $duration-animation-default;
-	// transform: translate(0, -1px);
 	border-right: 1px solid transparentize($color-shadow, 0.1);
-	//@TODO - Temporary
-	// text-align: left;
+
+	@media screen and (max-width: $break-small) {
+		width: 14rem;
+		padding: $padding * 0.4;
+		padding-bottom: $padding;
+		padding-top: 0;
+		font-size: 0.8rem;
+	}
 
 	&.is-locked {
 		li.link,
@@ -45,17 +50,6 @@
 
 	&.is-not-open {
 		left: -$dimension-nav-menu;
-	}
-
-	&.is-open {
-		.toggle-button {
-			background-color: transparent;
-			border: 2px solid $color-transparent;
-
-			&:hover {
-				background-color: transparent;
-			}
-		}
 	}
 
 	&.is-not-enabled {
@@ -91,10 +85,12 @@
 	}
 
 	ul {
+		background-color: $color-nav-bg;
 		position: relative;
-		top: 1em;
+		top: 0;
 		padding: 0;
 		margin: 0;
+		z-index: 5; // used to position between the footer logo and the toggle-button
 	}
 
 	li {
@@ -106,12 +102,15 @@
 	}
 
 	.heading {
-		position: relative;
-		top: 1px;
+		padding-top: 2em;
+		position: sticky;
+		z-index: 5;
+		background: $color-nav-bg;
+		top: 0;
 		font-size: 1.1rem;
 		font-weight: bold;
-		opacity: 0.7;
-		color: $color-text;
+		opacity: 0.9;
+		color: ligthen($color-text, 25%);
 		cursor: default;
 		border-left: solid 1px $color-nav-bg;
 
@@ -122,7 +121,7 @@
 			top: 1rem;
 			width: 100%;
 			height: 1px;
-			background: lighten($color-text, 80%);
+			background: lighten($color-text, 95%);
 		}
 	}
 
@@ -151,8 +150,6 @@
 			position: absolute;
 			display: inline-block;
 			left: -0.55em;
-			top: 0.55em;
-			transform: translate(0, -50%);
 			width: 0.8em;
 			height: 0.8em;
 			border: solid 2px $color-text-minor;
@@ -169,6 +166,11 @@
 				width: 1.2em;
 				height: 1.2em;
 				background: $color-nav-bg;
+
+				@media screen and (max-width: $break-small) {
+					width: 1em;
+					height: 2em;
+				}
 			}
 
 			&.first-in-list {
@@ -180,6 +182,11 @@
 					width: 0.5em;
 					height: 100%;
 					background: $color-nav-bg;
+
+					@media screen and (max-width: $break-small) {
+						width: 1em;
+						height: 1em;
+					}
 				}
 			}
 		}
@@ -228,8 +235,8 @@
 				bottom: 0px;
 				left: -2px;
 				width: 1.2em;
-				height: 1.85em;
-				background: $color-bg;
+				height: 2em;
+				background: $color-nav-bg;
 			}
 		}
 
@@ -237,6 +244,7 @@
 			left: -0.3em;
 			width: 0.5em;
 			height: 0.5em;
+			top: 0.5em;
 			background: $color-nav-highlight;
 			border: none;
 		}
@@ -259,7 +267,6 @@
 		}
 
 		&:after {
-			top: 50%;
 			left: 0;
 			width: 1.2em;
 			height: 1.2em;
@@ -298,31 +305,49 @@
 		background-color: transparent;
 		background-position: center center;
 		background-repeat: no-repeat;
-		// border-radius: 0.5rem;
 		border: none;
 		cursor: pointer;
 		height: 1.5rem;
-		// left: 1.25rem;
-		left: 1rem;
+		left: 0.5rem;
 		overflow: hidden;
 		position: fixed;
 		text-indent: -9999px;
-		// top: 1.35rem;
 		top: 0.5rem;
 		transition: background-color $duration-animation-default;
 		width: 1.5rem;
-		z-index: 2;
+		z-index: 6;
 
 		&:focus {
 			outline: none;
 		}
 	}
 
+	&.is-open .toggle-button {
+		background-color: transparent;
+
+		&:hover {
+			background-color: transparent;
+		}
+	}
+
 	.viewer--components--logo {
-		position: absolute;
+		position: fixed;
 		left: $padding;
-		bottom: $padding;
+		bottom: $padding * 0.4;
 		font-size: 0.7rem;
 		opacity: 0.5;
+		transition: opacity $duration-animation-default $duration-animation-default;
+
+		@media screen and (max-width: $break-small) {
+			left: $padding * 0.4;
+		}
 	}
+
+	&.is-not-open .viewer--components--logo {
+		opacity: 0;
+	}
+}
+
+.is-previewing .viewer--components--nav {
+	bottom: 3em;
 }

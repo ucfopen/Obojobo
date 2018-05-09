@@ -63,7 +63,7 @@
 /******/ 	__webpack_require__.p = "build/";
 /******/
 /******/ 	// Load entry module and return exports
-/******/ 	return __webpack_require__(__webpack_require__.s = 295);
+/******/ 	return __webpack_require__(__webpack_require__.s = 294);
 /******/ })
 /************************************************************************/
 /******/ ({
@@ -82,7 +82,7 @@ module.exports = Viewer;
 
 /***/ }),
 
-/***/ 112:
+/***/ 111:
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -92,11 +92,11 @@ var _Common = __webpack_require__(0);
 
 var _Common2 = _interopRequireDefault(_Common);
 
-var _adapter = __webpack_require__(149);
+var _adapter = __webpack_require__(148);
 
 var _adapter2 = _interopRequireDefault(_adapter);
 
-var _viewerComponent = __webpack_require__(150);
+var _viewerComponent = __webpack_require__(149);
 
 var _viewerComponent2 = _interopRequireDefault(_viewerComponent);
 
@@ -133,7 +133,7 @@ _Common2.default.Store.registerModel('ObojoboDraft.Chunks.Question', {
 
 /***/ }),
 
-/***/ 148:
+/***/ 147:
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -143,7 +143,7 @@ Object.defineProperty(exports, "__esModule", {
 	value: true
 });
 
-__webpack_require__(272);
+__webpack_require__(271);
 
 exports.default = function (props) {
 	return React.createElement(
@@ -158,7 +158,7 @@ exports.default = function (props) {
 
 /***/ }),
 
-/***/ 149:
+/***/ 148:
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -224,7 +224,7 @@ function __guard__(value, transform) {
 
 /***/ }),
 
-/***/ 150:
+/***/ 149:
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -236,7 +236,7 @@ Object.defineProperty(exports, "__esModule", {
 
 var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
 
-__webpack_require__(273);
+__webpack_require__(272);
 
 var _Common = __webpack_require__(0);
 
@@ -250,7 +250,7 @@ var _isornot = __webpack_require__(20);
 
 var _isornot2 = _interopRequireDefault(_isornot);
 
-var _viewerComponent = __webpack_require__(148);
+var _viewerComponent = __webpack_require__(147);
 
 var _viewerComponent2 = _interopRequireDefault(_viewerComponent);
 
@@ -394,6 +394,13 @@ exports.default = isOrNot;
 
 /***/ }),
 
+/***/ 271:
+/***/ (function(module, exports) {
+
+// removed by extract-text-webpack-plugin
+
+/***/ }),
+
 /***/ 272:
 /***/ (function(module, exports) {
 
@@ -401,17 +408,10 @@ exports.default = isOrNot;
 
 /***/ }),
 
-/***/ 273:
-/***/ (function(module, exports) {
-
-// removed by extract-text-webpack-plugin
-
-/***/ }),
-
-/***/ 295:
+/***/ 294:
 /***/ (function(module, exports, __webpack_require__) {
 
-module.exports = __webpack_require__(112);
+module.exports = __webpack_require__(111);
 
 
 /***/ })

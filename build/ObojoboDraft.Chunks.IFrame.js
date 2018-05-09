@@ -63,7 +63,7 @@
 /******/ 	__webpack_require__.p = "build/";
 /******/
 /******/ 	// Load entry module and return exports
-/******/ 	return __webpack_require__(__webpack_require__.s = 290);
+/******/ 	return __webpack_require__(__webpack_require__.s = 289);
 /******/ })
 /************************************************************************/
 /******/ ({
@@ -75,7 +75,7 @@ module.exports = Common;
 
 /***/ }),
 
-/***/ 108:
+/***/ 107:
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -85,11 +85,11 @@ var _Common = __webpack_require__(0);
 
 var _Common2 = _interopRequireDefault(_Common);
 
-var _adapter = __webpack_require__(136);
+var _adapter = __webpack_require__(135);
 
 var _adapter2 = _interopRequireDefault(_adapter);
 
-var _viewerComponent = __webpack_require__(137);
+var _viewerComponent = __webpack_require__(136);
 
 var _viewerComponent2 = _interopRequireDefault(_viewerComponent);
 
@@ -106,7 +106,7 @@ _Common2.default.Store.registerModel('ObojoboDraft.Chunks.IFrame', {
 
 /***/ }),
 
-/***/ 136:
+/***/ 135:
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -144,7 +144,7 @@ exports.default = {
 
 /***/ }),
 
-/***/ 137:
+/***/ 136:
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -154,7 +154,7 @@ Object.defineProperty(exports, "__esModule", {
 	value: true
 });
 
-__webpack_require__(266);
+__webpack_require__(265);
 
 var _Common = __webpack_require__(0);
 
@@ -184,17 +184,17 @@ exports.default = function (props) {
 
 /***/ }),
 
-/***/ 266:
+/***/ 265:
 /***/ (function(module, exports) {
 
 // removed by extract-text-webpack-plugin
 
 /***/ }),
 
-/***/ 290:
+/***/ 289:
 /***/ (function(module, exports, __webpack_require__) {
 
-module.exports = __webpack_require__(108);
+module.exports = __webpack_require__(107);
 
 
 /***/ })

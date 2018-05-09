@@ -63,7 +63,7 @@
 /******/ 	__webpack_require__.p = "build/";
 /******/
 /******/ 	// Load entry module and return exports
-/******/ 	return __webpack_require__(__webpack_require__.s = 299);
+/******/ 	return __webpack_require__(__webpack_require__.s = 298);
 /******/ })
 /************************************************************************/
 /******/ ({
@@ -75,7 +75,7 @@ module.exports = Common;
 
 /***/ }),
 
-/***/ 116:
+/***/ 115:
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -85,11 +85,11 @@ var _Common = __webpack_require__(0);
 
 var _Common2 = _interopRequireDefault(_Common);
 
-var _adapter = __webpack_require__(156);
+var _adapter = __webpack_require__(155);
 
 var _adapter2 = _interopRequireDefault(_adapter);
 
-var _viewerComponent = __webpack_require__(157);
+var _viewerComponent = __webpack_require__(156);
 
 var _viewerComponent2 = _interopRequireDefault(_viewerComponent);
 
@@ -106,7 +106,7 @@ _Common2.default.Store.registerModel('ObojoboDraft.Chunks.YouTube', {
 
 /***/ }),
 
-/***/ 156:
+/***/ 155:
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -144,7 +144,7 @@ function __guard__(value, transform) {
 
 /***/ }),
 
-/***/ 157:
+/***/ 156:
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -154,7 +154,7 @@ Object.defineProperty(exports, "__esModule", {
 	value: true
 });
 
-__webpack_require__(277);
+__webpack_require__(276);
 
 var _Common = __webpack_require__(0);
 
@@ -182,17 +182,17 @@ exports.default = function (props) {
 
 /***/ }),
 
-/***/ 277:
+/***/ 276:
 /***/ (function(module, exports) {
 
 // removed by extract-text-webpack-plugin
 
 /***/ }),
 
-/***/ 299:
+/***/ 298:
 /***/ (function(module, exports, __webpack_require__) {
 
-module.exports = __webpack_require__(116);
+module.exports = __webpack_require__(115);
 
 
 /***/ })
