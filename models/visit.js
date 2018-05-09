@@ -61,7 +61,7 @@ let deactivateOldVisitsAndCreateNewVisit = (
 				deactivatedVisit
 			])
 		)
-		.then(([visit, { deactivatedVisit }]) => {
+		.then(([visit, deactivatedVisit]) => {
 			let visitId = visit.id
 			let deactivatedVisitId = deactivatedVisit ? deactivatedVisit.id : null
 			return { visitId, deactivatedVisitId }

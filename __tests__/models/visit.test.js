@@ -11,7 +11,7 @@ describe('Visit Model', () => {
 	test('createVisit updates and inserts visit with expected values', () => {
 		expect.assertions(4)
 
-		db.oneOrNone.mockResolvedValueOnce({ deactivatedVisit: { id: 'deactivated-visit-id' } })
+		db.oneOrNone.mockResolvedValueOnce({ id: 'deactivated-visit-id' })
 		db.one
 			.mockResolvedValueOnce({ id: 'mocked-draft-content-id' })
 			.mockResolvedValueOnce({ id: 'resulting-visit-id' })
@@ -44,7 +44,7 @@ describe('Visit Model', () => {
 	test('createPreviewVisit updates and inserts with expected values', () => {
 		expect.assertions(4)
 
-		db.oneOrNone.mockResolvedValueOnce({ deactivatedVisit: { id: 'deactivated-visit-id' } })
+		db.oneOrNone.mockResolvedValueOnce({ id: 'deactivated-visit-id' })
 		db.one
 			.mockResolvedValueOnce({ id: 'mocked-draft-content-id' })
 			.mockResolvedValueOnce({ id: 'resulting-visit-id' })
