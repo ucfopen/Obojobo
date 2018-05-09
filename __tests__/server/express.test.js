@@ -122,7 +122,7 @@ describe('server/express', () => {
 		return sendAssessmentScoreRoute[1](req, res, {}).then(() => {
 			expect(req.requireCurrentUser).toHaveBeenCalled()
 			// make sure the lti method is called
-			expect(lti.sendHighestAssessmentScore).toHaveBeenCalledWith(1, 9, 777)
+			expect(lti.sendHighestAssessmentScore).toHaveBeenCalledWith(1, mockDraft, 777)
 			// make sure the results are passed to res.success
 			expect(res.success).toHaveBeenCalledTimes(1)
 			expect(res.success).toHaveBeenCalledWith({

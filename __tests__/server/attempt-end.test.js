@@ -65,8 +65,8 @@ describe('Attempt End', () => {
 				rubric: 1,
 				review: 'never'
 			},
-			draftId: 999,
-			contentId: 12
+			draftId: 'mockDraftId',
+			contentId: 'mockContentId'
 		})
 		draft.yell.mockImplementationOnce(
 			(eventType, req, res, assessmentModel, responseHistory, event) => {
@@ -129,7 +129,7 @@ describe('Attempt End', () => {
 			expect(results).toBe('attempts')
 			expect(lti.sendHighestAssessmentScore).toHaveBeenLastCalledWith(
 				'mockUserId',
-				'mockDraftId',
+				draft,
 				'mockAssessmentId'
 			)
 			expect(insertEvent).toHaveBeenCalledTimes(2)
@@ -138,6 +138,7 @@ describe('Attempt End', () => {
 				actorTime: 'mockDate',
 				caliperPayload: 'mockCaliperPayload',
 				draftId: 'mockDraftId',
+				contentId: 'mockContentId',
 				eventVersion: '2.0.0',
 				ip: 'mockRemoteAddress',
 				metadata: {},
@@ -160,6 +161,7 @@ describe('Attempt End', () => {
 				actorTime: 'mockDate',
 				caliperPayload: 'mockCaliperPayload',
 				draftId: 'mockDraftId',
+				contentId: 'mockContentId',
 				eventVersion: '1.1.0',
 				ip: 'mockRemoteAddress',
 				metadata: {},
@@ -268,9 +270,11 @@ describe('Attempt End', () => {
 			createAssessmentAttemptSubmittedEvent
 		})
 
+		let mockDraft = { draftId: 'mockDraftId', contentId: 'mockContentId' }
+
 		let r = insertAttemptEndEvents(
 			{ id: 'mockUserId' },
-			'mockDraftId',
+			mockDraft,
 			'mockAssessmentId',
 			'mockAttemptId',
 			'mockAttemptNumber',
@@ -297,6 +301,7 @@ describe('Attempt End', () => {
 			ip: 'mockRemoteAddress',
 			metadata: {},
 			draftId: 'mockDraftId',
+			contentId: 'mockContentId',
 			eventVersion: '1.1.0',
 			caliperPayload: 'mockCaliperPayload'
 		})
@@ -321,10 +326,11 @@ describe('Attempt End', () => {
 		createCaliperEvent.mockReturnValueOnce({
 			createAssessmentAttemptScoredEvent
 		})
+		let mockDraft = { draftId: 'mockDraftId', contentId: 'mockContentId' }
 
 		let r = insertAttemptScoredEvents(
 			{ id: 'userId' },
-			'mockDraftId',
+			mockDraft,
 			'mockAssessmentId',
 			'mockAssessmentScoreId',
 			'mockAttemptId',
@@ -353,6 +359,7 @@ describe('Attempt End', () => {
 			actorTime: 'mockDate',
 			caliperPayload: 'mockCaliperPayload',
 			draftId: 'mockDraftId',
+			contentId: 'mockContentId',
 			eventVersion: '2.0.0',
 			ip: 'mockRemoteAddress',
 			metadata: {},
@@ -555,9 +562,11 @@ describe('Attempt End', () => {
 			createAssessmentAttemptSubmittedEvent
 		})
 
+		let mockDraft = { draftId: 'mockDraftId', contentId: 'mockContentId' }
+
 		let r = insertAttemptEndEvents(
 			{ id: 1 },
-			'mockDraftId',
+			mockDraft,
 			'mockAssessmentId',
 			'mockAttemptId',
 			'mockAttemptNumber',
@@ -578,6 +587,7 @@ describe('Attempt End', () => {
 			actorTime: 'mockDate',
 			caliperPayload: 'mockCaliperPayload',
 			draftId: 'mockDraftId',
+			contentId: 'mockContentId',
 			eventVersion: '1.1.0',
 			ip: 'mockRemoteAddress',
 			metadata: {},

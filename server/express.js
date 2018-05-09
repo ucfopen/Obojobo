@@ -5,7 +5,6 @@ const DraftModel = oboRequire('models/draft')
 const db = oboRequire('db')
 const Assessment = require('./assessment')
 const lti = oboRequire('lti')
-const insertEvent = oboRequire('insert_event')
 const logger = oboRequire('logger')
 const createCaliperEvent = oboRequire('routes/api/events/create_caliper_event') //@TODO
 const startAttempt = require('./attempt-start').startAttempt
@@ -51,7 +50,7 @@ app.post('/api/lti/sendAssessmentScore', (req, res, next) => {
 				}", draftId="${draftId}", assessmentId="${assessmentId}"`
 			)
 
-			return lti.sendHighestAssessmentScore(currentUser.id, draftId, assessmentId)
+			return lti.sendHighestAssessmentScore(currentUser.id, draft, assessmentId)
 		})
 		.then(result => {
 			ltiScoreResult = result

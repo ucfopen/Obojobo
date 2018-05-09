@@ -81,7 +81,7 @@ let endAttempt = (req, res, user, draft, attemptId, isPreviewing) => {
 		.then(() => {
 			return insertAttemptEndEvents(
 				user,
-				attempt.draftId,
+				tree,
 				attempt.assessmentId,
 				attemptId,
 				attempt.number,
@@ -96,14 +96,14 @@ let endAttempt = (req, res, user, draft, attemptId, isPreviewing) => {
 			//
 			logger.info(`End attempt "${attemptId}" - insertAttemptEndEvent success`)
 
-			return lti.sendHighestAssessmentScore(user.id, attempt.draftId, attempt.assessmentId)
+			return lti.sendHighestAssessmentScore(user.id, tree, attempt.assessmentId)
 		})
 		.then(ltiRequestResult => {
 			logger.info(`End attempt "${attemptId}" - sendLTIScore was executed`)
 
 			insertAttemptScoredEvents(
 				user,
-				attempt.draftId,
+				tree,
 				attempt.assessmentId,
 				assessmentScoreId,
 				attemptId,
@@ -236,7 +236,7 @@ let completeAttempt = (
 
 let insertAttemptEndEvents = (
 	user,
-	draftId,
+	draft,
 	assessmentId,
 	attemptId,
 	attemptNumber,
@@ -255,11 +255,12 @@ let insertAttemptEndEvents = (
 		userId: user.id,
 		ip: remoteAddress,
 		metadata: {},
-		draftId: draftId,
+		draftId: draft.draftId,
+		contentId: draft.contentId,
 		eventVersion: '1.1.0',
 		caliperPayload: createAssessmentAttemptSubmittedEvent({
 			actor: { type: 'user', id: user.id },
-			draftId,
+			draftId: draft.draftId,
 			assessmentId,
 			attemptId: attemptId,
 			isPreviewMode: isPreviewing
@@ -269,7 +270,7 @@ let insertAttemptEndEvents = (
 
 let insertAttemptScoredEvents = (
 	user,
-	draftId,
+	draft,
 	assessmentId,
 	assessmentScoreId,
 	attemptId,
@@ -304,11 +305,12 @@ let insertAttemptScoredEvents = (
 		userId: user.id,
 		ip: remoteAddress,
 		metadata: {},
-		draftId: draftId,
+		draftId: draft.draftId,
+		contentId: draft.contentId,
 		eventVersion: '2.0.0',
 		caliperPayload: createAssessmentAttemptScoredEvent({
 			actor: { type: 'serverApp' },
-			draftId,
+			draftId: draft.draftId,
 			assessmentId,
 			attemptId: attemptId,
 			attemptScore,
@@ -369,6 +371,7 @@ let reloadAttemptStateIfReviewing = (
 	// If reviews are allowed after last attempt and this is the last attempt,
 	// reload the states for all attempts
 	if (assessmentNode.node.content.review == 'no-attempts-remaining' && isLastAttempt) {
+		console.log('now im here')
 		// Reload state for all previous attempts
 		return Assessment.getAttempts(
 			assessmentProperties.user.id,

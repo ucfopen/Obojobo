@@ -598,11 +598,16 @@ describe('start attempt route', () => {
 		})
 		Date.prototype.toISOString = () => 'date'
 
+		let mockDraft = {
+			draftId: 'mockDraftId',
+			contentId: 'mockContentId'
+		}
+
 		const r = insertAttemptStartCaliperEvent(
 			'mockAttemptId',
 			1,
 			'mockUserId',
-			'mockDraftId',
+			mockDraft,
 			'mockAssessmentId',
 			true,
 			'mockHostname',
@@ -634,6 +639,7 @@ describe('start attempt route', () => {
 			actorTime: 'date',
 			caliperPayload: 'mockCaliperPayload',
 			draftId: 'mockDraftId',
+			contentId: 'mockContentId',
 			eventVersion: '1.1.0',
 			ip: 'mockRemoteAddress',
 			metadata: {},

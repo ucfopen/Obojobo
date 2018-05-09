@@ -86,7 +86,8 @@ describe('apiutil', () => {
 					draft_id: 'draftId',
 					event_version: 'eventVersion',
 					payload: 'mockPayload'
-				}
+				},
+				draftId: 'draftId'
 			})
 		})
 	})

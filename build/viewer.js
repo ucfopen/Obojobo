@@ -909,7 +909,8 @@ var APIUtil = {
 				actor_time: new Date().toISOString(),
 				event_version: eventVersion,
 				payload: payload
-			}
+			},
+			draftId: lo.get('draftId')
 		}).then(processJsonResults)
 		// TODO: Send Caliper event to client host.
 		.then(function (res) {
