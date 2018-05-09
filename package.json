@@ -114,7 +114,8 @@
 			"models/*.js",
 			"routes/*.js",
 			"routes/**/*.js",
-			"controllers/**/*.js"
+			"controllers/**/*.js",
+			"viewer/*.js"
 		],
 		"coveragePathIgnorePatterns": ["/node_modules", "/app.js", "/dev_nonce_store.js"],
 		"coverageReporters": ["text", "lcov"],

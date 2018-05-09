@@ -1,21 +1,22 @@
 let db = oboRequire('db')
 let logger = oboRequire('logger')
 
-function set(userId, draftId, key, version, value) {
+function set(userId, draftId, contentId, key, version, value) {
 	return db
 		.none(
 			`
 				INSERT INTO view_state
-				(user_id, draft_id, payload)
-				VALUES($[user_id], $[draft_id], $[initialContents])
+				(user_id, draft_id, draft_content_id, payload)
+				VALUES($[userId], $[draftId], $[contentId], $[initialContents])
 				ON CONFLICT (user_id, draft_id) DO UPDATE
 				SET payload = jsonb_set(view_state.payload, $[key], $[contents], true)
 				WHERE view_state.user_id = $[user_id] AND
 				view_state.draft_id = $[draft_id]
 			`,
 			{
-				user_id: userId,
-				draft_id: draftId,
+				userId: userId,
+				draftId: draftId,
+				contentId: contentId,
 				contents: { value, version },
 				initialContents: { [key]: { value, version } },
 				key: `{${key}}`
@@ -26,23 +27,23 @@ function set(userId, draftId, key, version, value) {
 		})
 }
 
-function get(userId, draftId) {
+function get(userId, contentId) {
 	return db
 		.oneOrNone(
 			`
 				SELECT payload FROM view_state
-				WHERE view_state.user_id = $[user_id] AND
-				view_state.draft_id = $[draft_id]
+				WHERE view_state.user_id = $[userId] AND
+				view_state.draft_content_id = $[contentId]
 			`,
 			{
-				user_id: userId,
-				draft_id: draftId
-			},
-			result => {
-				// return payload or empty object if undefined from query
-				return result != null ? result.payload : {}
+				userId: userId,
+				contentId: contentId
 			}
 		)
+		.then(result => {
+			// return payload or empty object if undefined from query
+			return result != null ? result.payload : {}
+		})
 		.catch(error => {
 			logger.error('DB UNEXPECTED on viewer_state.get', error, error.toString())
 		})
