@@ -8,10 +8,17 @@ let logger = oboRequire('logger')
 // Create A New Event
 // mounted as /api/events
 router.post('/', (req, res, next) => {
+	let currentUser = null
+	let currentDraft = null
+
 	return req
 		.requireCurrentUser()
-		.then(currentUser => {
-			// check input
+		.then(user => {
+			currentUser = user
+			return req.requireCurrentDraft()
+		})
+		.then(draft => {
+			currentDraft = draft
 
 			// add data to the event
 			let event = req.body.event
@@ -26,7 +33,8 @@ router.post('/', (req, res, next) => {
 				ip: req.connection.remoteAddress,
 				metadata: {},
 				payload: event.payload,
-				draftId: event.draft_id,
+				draftId: draft.draftId,
+				contentId: draft.contentId,
 				caliperPayload: caliperEvent
 			}
 

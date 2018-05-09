@@ -4,7 +4,7 @@ let User = oboRequire('models/user')
 let Draft = oboRequire('models/draft')
 let logger = oboRequire('logger')
 
-let storeLtiLaunch = (draftId, user, ip, ltiBody, ltiConsumerKey) => {
+let storeLtiLaunch = (draft, user, ip, ltiBody, ltiConsumerKey) => {
 	let insertLaunchResult = null
 
 	return db
@@ -15,7 +15,7 @@ let storeLtiLaunch = (draftId, user, ip, ltiBody, ltiConsumerKey) => {
 		VALUES ($[draftId], $[userId], 'lti', $[lti_key], $[data])
 		RETURNING id`,
 			{
-				draftId: draftId,
+				draftId: draft.draftId,
 				userId: user.id,
 				lti_key: ltiConsumerKey,
 				data: ltiBody
@@ -33,7 +33,8 @@ let storeLtiLaunch = (draftId, user, ip, ltiBody, ltiConsumerKey) => {
 				ip: ip,
 				metadata: {},
 				eventVersion: '1.0.0',
-				draftId: draftId
+				draftId: draft.draftId,
+				contentId: draft.contentId
 			})
 		})
 		.then(() => {
@@ -53,7 +54,8 @@ let storeLtiPickerLaunchEvent = (user, ip, ltiBody, ltiConsumerKey) => {
 		ip: ip,
 		metadata: {},
 		eventVersion: '1.0.0',
-		draftId: null
+		draftId: null,
+		contentId: null
 	})
 }
 
@@ -104,7 +106,7 @@ exports.assignment = (req, res, next) => {
 		})
 		.then(draft => {
 			return storeLtiLaunch(
-				draft.draftId,
+				draft,
 				user,
 				req.connection.remoteAddress,
 				req.lti.body,

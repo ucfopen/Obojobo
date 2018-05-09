@@ -85,6 +85,7 @@ router.get('/:draftId/visit/:visitId*', (req, res, next) => {
 				ip: req.connection.remoteAddress,
 				metadata: {},
 				draftId: draft.draftId,
+				contentId: draft.contentId,
 				payload: {},
 				eventVersion: '1.0.0',
 				caliperPayload: createViewerSessionLoggedInEvent({
