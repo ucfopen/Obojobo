@@ -1,26 +1,14 @@
 import './nav.scss'
 import NavUtil from '../../viewer/util/nav-util'
 import Logo from '../../viewer/components/logo'
-import hamburgerImg from 'svg-url-loader?noquotes!./hamburger.svg'
-import arrowImg from 'svg-url-loader?noquotes!./arrow.svg'
-import lockImg from 'svg-url-loader?noquotes!./lock-icon.svg'
 import isOrNot from '../../common/isornot'
 import Common from 'Common'
 
-let { getBackgroundImage } = Common.util
 let { OboModel } = Common.models
 let { StyleableText } = Common.text
 let { StyleableTextComponent } = Common.text
 
 export default class Nav extends React.Component {
-	constructor(props) {
-		super(props)
-
-		this.state = {
-			hover: false
-		}
-	}
-
 	onClick(item) {
 		switch (item.type) {
 			case 'link':
@@ -33,10 +21,6 @@ export default class Nav extends React.Component {
 				el.scrollIntoView({ behavior: 'smooth', block: 'start' })
 				break
 		}
-	}
-
-	setHoverState(hover) {
-		this.setState({ hover })
 	}
 
 	renderLabel(label) {
@@ -116,19 +100,13 @@ export default class Nav extends React.Component {
 
 	getLockEl(isLocked) {
 		if (isLocked) {
-			return (
-				<div className="lock-icon">
-					<img src={lockImg} />
-				</div>
-			)
+			return <div className="lock-icon" />
 		}
 	}
 
 	render() {
 		let navState = this.props.navState
 		let lockEl = this.getLockEl(navState.locked)
-		let isOpenOrHovered = navState.open || this.state.hover
-		let bg = getBackgroundImage(isOpenOrHovered ? arrowImg : hamburgerImg)
 
 		let list = NavUtil.getOrderedList(navState)
 
@@ -138,20 +116,9 @@ export default class Nav extends React.Component {
 			isOrNot(navState.open, 'open') +
 			isOrNot(!navState.disabled, 'enabled')
 
-		let style = {
-			backgroundImage: bg,
-			transform: !navState.open && this.state.hover ? 'rotate(180deg)' : ''
-		}
-
 		return (
 			<div className={className}>
-				<button
-					className="toggle-button"
-					style={style}
-					onClick={NavUtil.toggle}
-					onMouseOver={this.setHoverState.bind(this, true)}
-					onMouseOut={this.setHoverState.bind(this, false)}
-				>
+				<button className="toggle-button" onClick={NavUtil.toggle}>
 					Toggle Navigation Menu
 				</button>
 				<ul>

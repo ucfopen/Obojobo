@@ -156,11 +156,6 @@ ShallowWrapper {
     "nodeType": "host",
     "props": Object {
       "className": "img-placeholder",
-      "style": Object {
-        "backgroundImage": "",
-        "backgroundSize": "16px",
-        "height": "300px",
-      },
     },
     "ref": null,
     "rendered": null,
@@ -173,11 +168,6 @@ ShallowWrapper {
       "nodeType": "host",
       "props": Object {
         "className": "img-placeholder",
-        "style": Object {
-          "backgroundImage": "",
-          "backgroundSize": "16px",
-          "height": "300px",
-        },
       },
       "ref": null,
       "rendered": null,

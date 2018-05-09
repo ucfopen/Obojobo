@@ -20,6 +20,11 @@
 		}
 	}
 
+	&.col,
+	&.row{
+		background-image: url('./table-menu-icon.svg');
+	}
+
 	&.col {
 		transform: translate(0, -1.2rem);
 

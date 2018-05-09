@@ -56,26 +56,31 @@
 		display: none;
 	}
 
-	// .is-visited
-	// {
-	// 	color: #b4d4af;
-	// }
-
 	.is-correct {
 		color: #b4d4af;
 	}
 
-	// .is-not-correct
-	// {
-	// 	color: #ec7b7b;
-	// }
-
 	.lock-icon {
 		position: absolute;
-		right: -1.2rem;
-		top: 0.2rem;
-		width: 0.7rem;
-		opacity: 0.3;
+		left: -1.4rem;
+		top: 0.1rem;
+		width: 1rem;
+		height: 0.8rem;
+		opacity: 0.5;
+		background-image: url('./lock-icon.svg');
+		background-color: transparent;
+		background-repeat: no-repeat;
+		background-size: contain;
+
+		@media screen and (max-width: $break-small) {
+			left: -1rem;
+			height: 0.65rem;
+		}
+	}
+
+	.is-assessment .lock-icon {
+		top: 0.8rem;
+		left: -0.9em;
 	}
 
 	hr {
@@ -241,9 +246,9 @@
 		}
 
 		&:after {
-			left: -0.3em;
-			width: 0.5em;
-			height: 0.5em;
+			left: -3px;
+			width: 5px;
+			height: 5px;
 			top: 0.5em;
 			background: $color-nav-highlight;
 			border: none;
@@ -302,6 +307,7 @@
 	}
 
 	.toggle-button {
+		background-image: url('./arrow.svg');
 		background-color: transparent;
 		background-position: center center;
 		background-repeat: no-repeat;
@@ -316,17 +322,18 @@
 		transition: background-color $duration-animation-default;
 		width: 1.5rem;
 		z-index: 6;
+		transform: none;
 
 		&:focus {
 			outline: none;
 		}
 	}
 
-	&.is-open .toggle-button {
-		background-color: transparent;
+	&.is-not-open .toggle-button {
+		transform: rotate(180deg);
 
-		&:hover {
-			background-color: transparent;
+		&:not(:hover) {
+			background-image: url('./hamburger.svg');
 		}
 	}
 

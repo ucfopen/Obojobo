@@ -17,6 +17,16 @@ var obojoboDraftConfig = {
 	module: {
 		loaders: [
 			{
+				test: /\.svg/,
+				use: {
+					loader: 'svg-url-loader',
+					options: {
+						stripdeclarations: true,
+						iesafe: true
+					}
+				}
+			},
+			{
 				test: /\.js?$/,
 				exclude: '/node_modules',
 				loaders: ['babel-loader?presets[]=react&presets[]=env']
@@ -51,6 +61,16 @@ var viewerConfig = {
 	},
 	module: {
 		loaders: [
+			{
+				test: /\.svg/,
+				use: {
+					loader: 'svg-url-loader',
+					options: {
+						stripdeclarations: true,
+						iesafe: true
+					}
+				}
+			},
 			{
 				test: /\.js?$/,
 				exclude: '/node_modules',
@@ -145,6 +165,16 @@ var mainConfig = {
 	},
 	module: {
 		loaders: [
+			{
+				test: /\.svg/,
+				use: {
+					loader: 'svg-url-loader',
+					options: {
+						stripdeclarations: true,
+						iesafe: true
+					}
+				}
+			},
 			{
 				test: /\.js?$/,
 				exclude: '/node_modules',
