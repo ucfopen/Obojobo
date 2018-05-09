@@ -26,7 +26,7 @@ router.post('/:draftId/:page?', (req, res, next) => {
 				req.oboLti.launchId
 			)
 		})
-		.then(([visit, deactivatedVisit]) => {
+		.then(({ visitId, deactivatedVisitId }) => {
 			let { createVisitCreateEvent } = createCaliperEvent(null, req.hostname)
 			insertEvent({
 				action: 'visit:create',
@@ -36,28 +36,28 @@ router.post('/:draftId/:page?', (req, res, next) => {
 				metadata: {},
 				draftId: req.params.draftId,
 				payload: {
-					visitId: visit.id,
-					deactivatedVisit: deactivatedVisit ? deactivatedVisit.id : null
+					visitId,
+					deactivatedVisitId
 				},
 				eventVersion: '1.0.0',
 				caliperPayload: createVisitCreateEvent({
 					actor: { type: ACTOR_USER, id: user.id },
 					isPreviewMode: user.canViewEditor,
 					sessionIds: getSessionIds(req.session),
-					visitId: visit.id,
-					extensions: { deactivatedVisitId: deactivatedVisit ? deactivatedVisit.id : null }
+					visitId,
+					extensions: { deactivatedVisitId }
 				})
 			})
 			// save session before redirect
 			return new Promise((resolve, reject) => {
 				req.session.save(err => {
 					if (err) return reject(err)
-					resolve(visit)
+					resolve(visitId)
 				})
 			})
 		})
-		.then(visit => {
-			res.redirect(`/view/${req.params.draftId}/visit/${visit.id}`)
+		.then(visitId => {
+			res.redirect(`/view/${req.params.draftId}/visit/${visitId}`)
 		})
 		.catch(error => {
 			logger.error(error)

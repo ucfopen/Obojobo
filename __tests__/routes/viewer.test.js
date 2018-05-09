@@ -67,10 +67,10 @@ describe('viewer route', () => {
 		mockReq.app.get.mockReset()
 		mockRes.render.mockReset()
 		mockNext.mockReset()
-		Visit.createVisit.mockReturnValueOnce([
-			{ id: 'mocked-visit-id' },
-			{ id: 'mocked-deactivated-visit-id' }
-		])
+		Visit.createVisit.mockReturnValueOnce({
+			visitId: 'mocked-visit-id',
+			deactivatedVisitId: 'mocked-deactivated-visit-id'
+		})
 		oboRequire('routes/viewer')
 	})
 	afterEach(() => {})
@@ -233,7 +233,7 @@ describe('viewer route', () => {
 				eventVersion: '1.0.0',
 				ip: 'remoteAddress',
 				metadata: {},
-				payload: { deactivatedVisit: 'mocked-deactivated-visit-id', visitId: 'mocked-visit-id' },
+				payload: { deactivatedVisitId: 'mocked-deactivated-visit-id', visitId: 'mocked-visit-id' },
 				userId: 0
 			})
 			expect(mockCreateVisitCreateEvent).toBeCalledWith({

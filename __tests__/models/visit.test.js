@@ -33,12 +33,10 @@ describe('Visit Model', () => {
 					launchId: 'launch-id',
 					isPreview: false
 				})
-				expect(result).toEqual([
-					{ id: 'resulting-visit-id' },
-					{
-						deactivatedVisit: { id: 'deactivated-visit-id' }
-					}
-				])
+				expect(result).toEqual({
+					visitId: 'resulting-visit-id',
+					deactivatedVisitId: 'deactivated-visit-id'
+				})
 			}
 		)
 	})
@@ -67,12 +65,10 @@ describe('Visit Model', () => {
 				launchId: null,
 				isPreview: true
 			})
-			expect(result).toEqual([
-				{ id: 'resulting-visit-id' },
-				{
-					deactivatedVisit: { id: 'deactivated-visit-id' }
-				}
-			])
+			expect(result).toEqual({
+				visitId: 'resulting-visit-id',
+				deactivatedVisitId: 'deactivated-visit-id'
+			})
 		})
 	})
 })

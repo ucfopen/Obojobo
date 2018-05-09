@@ -46,10 +46,10 @@ describe('preview route', () => {
 		mockReq.app.get.mockReset()
 		mockRes.redirect.mockReset()
 		mockNext.mockReset()
-		Visit.createPreviewVisit.mockReturnValueOnce([
-			{ id: 'mocked-visit-id' },
-			{ id: 'mocked-deactivated-visit-id' }
-		])
+		Visit.createPreviewVisit.mockReturnValueOnce({
+			visitId: 'mocked-visit-id',
+			deactivatedVisitId: 'mocked-deactivated-visit-id'
+		})
 		oboRequire('routes/preview')
 	})
 	afterEach(() => {})
@@ -120,7 +120,7 @@ describe('preview route', () => {
 				eventVersion: '1.0.0',
 				ip: 'remoteAddress',
 				metadata: {},
-				payload: { visitId: 'mocked-visit-id', deactivatedVisit: 'mocked-deactivated-visit-id' },
+				payload: { visitId: 'mocked-visit-id', deactivatedVisitId: 'mocked-deactivated-visit-id' },
 				userId: 0
 			})
 			expect(mockCreateVisitCreateEvent).toBeCalledWith({
