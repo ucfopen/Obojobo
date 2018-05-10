@@ -625,6 +625,6 @@ Event {
   "generated": "https://testHost/api/visit/visitId",
   "id": "urn:uuid:DEADBEEF-0000-DEAD-BEEF-1234DEADBEEF",
   "object": "https://testHost/api/system",
-  "type": "VisitCreateEvent",
+  "type": "Event",
 }
 `;

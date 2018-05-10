@@ -549,7 +549,7 @@ const caliperEventFactory = (req, host = null, isFromReq = false) => {
 			let { actor, extensions } = obj
 			let caliperEvent = createEvent(Event, actor, IRI, options)
 
-			caliperEvent.setType('VisitCreateEvent')
+			caliperEvent.setType('Event')
 			caliperEvent.setAction('Created')
 			caliperEvent.setObject(IRI.getEdAppIRI())
 			caliperEvent.setGenerated(IRI.getVisitIRI(obj.visitId))
