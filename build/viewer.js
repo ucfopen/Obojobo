@@ -1546,6 +1546,7 @@ function _inherits(subClass, superClass) { if (typeof superClass !== "function" 
 var Store = _Common2.default.flux.Store;
 var Dispatcher = _Common2.default.flux.Dispatcher;
 var OboModel = _Common2.default.models.OboModel;
+var FocusUtil = _Common2.default.util.FocusUtil;
 
 var NavStore = function (_Store) {
 	_inherits(NavStore, _Store);
@@ -1715,6 +1716,8 @@ var NavStore = function (_Store) {
 			if (navItem.showChildrenOnNavigation) {
 				navItem.showChildren = true;
 			}
+
+			FocusUtil.unfocus();
 			window.history.pushState({}, document.title, navItem.fullFlatPath);
 			this.state.navTargetId = navItem.id;
 			_navUtil2.default.getNavTargetModel(this.state).processTrigger('onNavEnter');

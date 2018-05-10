@@ -405,7 +405,8 @@ describe('NavStore', () => {
 		expect(after).toMatchSnapshot()
 		expect(oldNavItem.processTrigger).toHaveBeenCalledWith('onNavExit')
 		expect(newNavItem.processTrigger).toHaveBeenCalledWith('onNavEnter')
-		expect(Dispatcher.trigger).toHaveBeenCalledTimes(1)
+		expect(Dispatcher.trigger).toHaveBeenCalledTimes(2)
+		expect(Dispatcher.trigger).toHaveBeenCalledWith('focus:unfocus')
 		expect(Dispatcher.trigger).toHaveBeenCalledWith('navstore:change')
 	})
 
