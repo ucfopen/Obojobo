@@ -294,33 +294,6 @@ class Assessment extends DraftNode {
 		)
 	}
 
-	static insertAssessmentScore(
-		userId,
-		draftId,
-		contentId,
-		assessmentId,
-		launchId,
-		score,
-		isPreview
-	) {
-		return db.one(
-			`
-				INSERT INTO assessment_scores (user_id, draft_id, draft_content_id, assessment_id, launch_id, score preview)
-				VALUES($[userId], $[draftId], $[contentId], $[assessmentId], $[launchId], $[score], $[isPreview])
-				RETURNING id
-			`,
-			{
-				userId,
-				draftId,
-				contentId,
-				assessmentId,
-				launchId,
-				score,
-				isPreview
-			}
-		)
-	}
-
 	// @TODO: most things touching the db should end up in models. figure this out
 
 	// Finish an attempt and write a new assessment score record
@@ -392,26 +365,6 @@ class Assessment extends DraftNode {
 			`,
 			{ state: state, attemptId: attemptId }
 		)
-	}
-
-	static insertNewAssessmentScore(userId, draftId, contentId, assessmentId, score, preview) {
-		return db
-			.one(
-				`
-				INSERT INTO assessment_scores (user_id, draft_id, draft_content_id, assessment_id, score, preview)
-				VALUES($[userId], $[draftId], $[contentId], $[assessmentId], $[score], $[preview])
-				RETURNING id
-			`,
-				{
-					userId,
-					draftId,
-					contentId,
-					assessmentId,
-					score,
-					preview
-				}
-			)
-			.then(result => result.id)
 	}
 
 	constructor(draftTree, node, initFn) {

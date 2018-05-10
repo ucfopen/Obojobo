@@ -27,21 +27,23 @@ const startAttempt = (req, res) => {
 		questionUsesMap: null
 	}
 	let attemptState
-	let draftTree
+	let currentUser = null
+	let currentDocument = null
 
 	return req
 		.requireCurrentUser()
 		.then(user => {
+			currentUser = user
 			assessmentProperties.user = user
 			assessmentProperties.isPreviewing = user.canViewEditor
 
-			return req.requireCurrentDraft()
+			return req.requireCurrentDocument()
 		})
-		.then(draft => {
-			draftTree = draft
-			const assessmentNode = draftTree.getChildNodeById(req.body.assessmentId)
+		.then(draftDocument => {
+			currentDocument = draftDocument
+			const assessmentNode = currentDocument.getChildNodeById(req.body.assessmentId)
 
-			assessmentProperties.draftTree = draftTree
+			assessmentProperties.draftTree = currentDocument
 			assessmentProperties.id = req.body.assessmentId
 			assessmentProperties.oboNode = assessmentNode
 			assessmentProperties.nodeChildrenIds = assessmentNode.children[1].childrenSet
@@ -49,7 +51,7 @@ const startAttempt = (req, res) => {
 
 			return Assessment.getCompletedAssessmentAttemptHistory(
 				assessmentProperties.user.id,
-				req.body.draftId,
+				currentDocument.draftId,
 				req.body.assessmentId
 			)
 		})
@@ -58,7 +60,7 @@ const startAttempt = (req, res) => {
 
 			return Assessment.getNumberAttemptsTaken(
 				assessmentProperties.user.id,
-				req.body.draftId,
+				currentDocument.draftId,
 				req.body.assessmentId
 			)
 		})
@@ -82,8 +84,8 @@ const startAttempt = (req, res) => {
 
 			return Assessment.insertNewAttempt(
 				assessmentProperties.user.id,
-				req.body.draftId,
-				draftTree.contentId,
+				currentDocument.draftId,
+				currentDocument.contentId,
 				req.body.assessmentId,
 				{
 					questions: questionObjects,
@@ -100,7 +102,7 @@ const startAttempt = (req, res) => {
 				result.attemptId,
 				assessmentProperties.numAttemptsaken,
 				assessmentProperties.user.id,
-				draftTree,
+				currentDocument,
 				req.body.assessmentId,
 				assessmentProperties.isPreviewing,
 				req.hostname,

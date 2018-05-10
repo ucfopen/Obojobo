@@ -15,7 +15,7 @@ jest.mock('../../server/assessment', () => ({
 
 const logger = oboRequire('logger')
 const db = oboRequire('db')
-const DraftModel = oboRequire('models/draft')
+const DraftDocument = oboRequire('models/draft')
 const DraftNode = oboRequire('models/draft_node')
 const lti = oboRequire('lti')
 const insertEvent = oboRequire('insert_event')
@@ -60,7 +60,7 @@ describe('Attempt End', () => {
 
 	test('endAttempt returns Assessment.getAttempts, sends lti highest score, and inserts 2 events', () => {
 		// provide a draft model mock
-		let draft = new DraftModel({
+		let mockDraftDocument = new DraftDocument({
 			content: {
 				rubric: 1,
 				review: 'never'
@@ -68,15 +68,15 @@ describe('Attempt End', () => {
 			draftId: 'mockDraftId',
 			contentId: 'mockContentId'
 		})
-		draft.yell.mockImplementationOnce(
+		mockDraftDocument.yell.mockImplementationOnce(
 			(eventType, req, res, assessmentModel, responseHistory, event) => {
 				event.addScore('q1', 0)
 				event.addScore('q2', 100)
 				return [Promise.resolve()]
 			}
 		)
-		draft.getChildNodeById.mockReturnValueOnce(draft)
-		DraftModel.fetchById.mockResolvedValueOnce(draft)
+		mockDraftDocument.getChildNodeById.mockReturnValueOnce(mockDraftDocument)
+		DraftDocument.fetchById.mockResolvedValueOnce(mockDraftDocument)
 
 		// Mock out assessment methods internally to build score data
 		Assessment.getCompletedAssessmentAttemptHistory.mockResolvedValueOnce([])
@@ -113,7 +113,7 @@ describe('Attempt End', () => {
 		let user = { id: 'mockUserId' }
 		expect(insertEvent).toHaveBeenCalledTimes(0)
 
-		return endAttempt(req, {}, user, draft, 'mockAttemptId', true).then(results => {
+		return endAttempt(req, {}, user, mockDraftDocument, 'mockAttemptId', true).then(results => {
 			expect(logger.info).toHaveBeenCalledTimes(8)
 			expect(logger.info).toHaveBeenCalledWith(expect.stringContaining('getAttempt success'))
 			expect(logger.info).toHaveBeenCalledWith(expect.stringContaining('getAttemptHistory success'))
@@ -129,7 +129,7 @@ describe('Attempt End', () => {
 			expect(results).toBe('attempts')
 			expect(lti.sendHighestAssessmentScore).toHaveBeenLastCalledWith(
 				'mockUserId',
-				draft,
+				mockDraftDocument,
 				'mockAssessmentId'
 			)
 			expect(insertEvent).toHaveBeenCalledTimes(2)
@@ -182,7 +182,7 @@ describe('Attempt End', () => {
 			expect(attempt).toHaveProperty('number', 6)
 			expect(attempt).toHaveProperty('attemptState', 'mockState')
 			expect(attempt).toHaveProperty('draftId', 'mockDraftId')
-			expect(attempt).toHaveProperty('model', expect.any(DraftModel))
+			expect(attempt).toHaveProperty('model', expect.any(DraftDocument))
 			expect(attempt).toHaveProperty('assessmentModel', 'mockChild')
 		})
 	})
@@ -270,11 +270,14 @@ describe('Attempt End', () => {
 			createAssessmentAttemptSubmittedEvent
 		})
 
-		let mockDraft = { draftId: 'mockDraftId', contentId: 'mockContentId' }
+		let mockDraftDocument = {
+			draftId: 'mockDraftId',
+			contentId: 'mockContentId'
+		}
 
 		let r = insertAttemptEndEvents(
 			{ id: 'mockUserId' },
-			mockDraft,
+			mockDraftDocument,
 			'mockAssessmentId',
 			'mockAttemptId',
 			'mockAttemptNumber',
@@ -326,11 +329,14 @@ describe('Attempt End', () => {
 		createCaliperEvent.mockReturnValueOnce({
 			createAssessmentAttemptScoredEvent
 		})
-		let mockDraft = { draftId: 'mockDraftId', contentId: 'mockContentId' }
+		let mockDraftDocument = {
+			draftId: 'mockDraftId',
+			contentId: 'mockContentId'
+		}
 
 		let r = insertAttemptScoredEvents(
 			{ id: 'userId' },
-			mockDraft,
+			mockDraftDocument,
 			'mockAssessmentId',
 			'mockAssessmentScoreId',
 			'mockAttemptId',
@@ -491,7 +497,7 @@ describe('Attempt End', () => {
 			questions: [{ id: 4 }, { id: 5 }, { id: 6 }]
 		}
 
-		let x = new DraftModel({ content: { rubric: 1 } })
+		let x = new DraftDocument({ content: { rubric: 1 } })
 
 		// now we have to mock yell so that we can call addScore()
 		x.yell.mockImplementationOnce((event, req, res, model, history, funcs) => {
@@ -562,11 +568,14 @@ describe('Attempt End', () => {
 			createAssessmentAttemptSubmittedEvent
 		})
 
-		let mockDraft = { draftId: 'mockDraftId', contentId: 'mockContentId' }
+		let mockDraftDocument = {
+			draftId: 'mockDraftId',
+			contentId: 'mockContentId'
+		}
 
 		let r = insertAttemptEndEvents(
 			{ id: 1 },
-			mockDraft,
+			mockDraftDocument,
 			'mockAssessmentId',
 			'mockAttemptId',
 			'mockAttemptNumber',
@@ -599,9 +608,9 @@ describe('Attempt End', () => {
 		})
 	})
 	test('getNodeQuestion reloads score', () => {
-		const mockDraft = new DraftModel(testJson)
-		const assessmentNode = mockDraft.getChildNodeById('assessment')
-		mockDraft.getChildNodeById.mockReturnValueOnce({
+		const mockDraftDocument = new DraftDocument(testJson)
+		const assessmentNode = mockDraftDocument.getChildNodeById('assessment')
+		mockDraftDocument.getChildNodeById.mockReturnValueOnce({
 			toObject: () => {
 				return {
 					id: 'qb1.q1',
@@ -658,15 +667,15 @@ describe('Attempt End', () => {
 		expect(mockQuestion.id).toBe('qb1.q1')
 		expect(mockQuestion.children[1].children[0].content.score).toBe(0)
 
-		let reloadedQuestion = getNodeQuestion(mockQuestion.id, mockDraft)
+		let reloadedQuestion = getNodeQuestion(mockQuestion.id, mockDraftDocument)
 
 		expect(reloadedQuestion.id).toBe(mockQuestion.id)
 		expect(reloadedQuestion.children[1].children[0].content.score).toBe(100)
 	})
 
 	test('recreateChosenQuestionTree parses down a one-level question bank', () => {
-		const mockDraft = new DraftModel(testJson)
-		mockDraft.getChildNodeById.mockReturnValueOnce({
+		const mockDraftDocument = new DraftDocument(testJson)
+		mockDraftDocument.getChildNodeById.mockReturnValueOnce({
 			toObject: () => {
 				return {
 					id: 'qb1.q1',
@@ -690,15 +699,15 @@ describe('Attempt End', () => {
 		expect(mockQB.children.length).toBe(1)
 		expect(mockQB.children[0].children.length).toBe(0)
 
-		let traversedQB = recreateChosenQuestionTree(mockQB, mockDraft)
+		let traversedQB = recreateChosenQuestionTree(mockQB, mockDraftDocument)
 
 		expect(mockQB.children.length).toBe(1)
 		expect(mockQB.children[0].children.length).not.toBe(0)
 	})
 
 	test('recreateChosenQuestionTree parses down a multi-level question bank', () => {
-		const mockDraft = new DraftModel(testJson)
-		mockDraft.getChildNodeById.mockReturnValueOnce({
+		const mockDraftDocument = new DraftDocument(testJson)
+		mockDraftDocument.getChildNodeById.mockReturnValueOnce({
 			toObject: () => {
 				return {
 					id: 'qb1.q1',
@@ -736,7 +745,7 @@ describe('Attempt End', () => {
 		expect(mockQB.children[0].children[0].children.length).toBe(1)
 		expect(mockQB.children[0].children[0].children[0].children.length).toBe(0)
 
-		let traversedQB = recreateChosenQuestionTree(mockQB, mockDraft)
+		let traversedQB = recreateChosenQuestionTree(mockQB, mockDraftDocument)
 
 		expect(mockQB.children.length).toBe(1)
 		expect(mockQB.children[0].children.length).toBe(1)
@@ -779,8 +788,8 @@ describe('Attempt End', () => {
 	})
 
 	test('reloadAttemptStateIfReviewing reloads only one when reviews are always allowed', () => {
-		const mockDraft = new DraftModel(testJson)
-		mockDraft.getChildNodeById.mockReturnValueOnce({
+		const mockDraftDocument = new DraftDocument(testJson)
+		mockDraftDocument.getChildNodeById.mockReturnValueOnce({
 			children: [
 				{},
 				{
@@ -813,14 +822,22 @@ describe('Attempt End', () => {
 		})
 		Assessment.updateAttemptState = jest.fn()
 
-		let response = reloadAttemptStateIfReviewing(0, 0, mockAttempt, mockDraft, null, false, null)
+		let response = reloadAttemptStateIfReviewing(
+			0,
+			0,
+			mockAttempt,
+			mockDraftDocument,
+			null,
+			false,
+			null
+		)
 
 		expect(Assessment.updateAttemptState).toHaveBeenCalledTimes(1)
 	})
 
 	test.skip('reloadAttemptStateIfReviewing reloads all when reviews are allowed after last', () => {
-		const mockDraft = new DraftModel(testJson)
-		mockDraft.getChildNodeById.mockReturnValueOnce({
+		const mockDraftDocument = new DraftDocument(testJson)
+		mockDraftDocument.getChildNodeById.mockReturnValueOnce({
 			children: [
 				{},
 				{
@@ -890,7 +907,7 @@ describe('Attempt End', () => {
 			0,
 			0,
 			mockAttempt,
-			mockDraft,
+			mockDraftDocument,
 			{ id: 1 },
 			false,
 			null

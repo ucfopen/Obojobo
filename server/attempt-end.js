@@ -1,5 +1,5 @@
 let db = oboRequire('db')
-let DraftModel = oboRequire('models/draft')
+let DraftDocument = oboRequire('models/draft')
 let Assessment = require('./assessment')
 let AssessmentRubric = require('./assessment-rubric')
 let createCaliperEvent = oboRequire('routes/api/events/create_caliper_event') //@TODO
@@ -9,14 +9,13 @@ let logger = oboRequire('logger')
 let attemptStart = require('./attempt-start')
 const QUESTION_NODE_TYPE = 'ObojoboDraft.Chunks.Question'
 
-let endAttempt = (req, res, user, draft, attemptId, isPreviewing) => {
+let endAttempt = (req, res, user, draftDocument, attemptId, isPreviewing) => {
 	let attempt
 	let attemptHistory
 	let responseHistory
 	let calculatedScores
 	let updateAttemptData
 	let assessmentScoreId
-	let tree = draft
 
 	logger.info(`End attempt "${attemptId}" begin for user "${user.id}" (Preview="${isPreviewing}")`)
 
@@ -58,7 +57,7 @@ let endAttempt = (req, res, user, draft, attemptId, isPreviewing) => {
 				attemptId,
 				user.id,
 				attempt.draftId,
-				tree.contentId,
+				draftDocument.contentId,
 				calculatedScores,
 				isPreviewing
 			)
@@ -72,7 +71,7 @@ let endAttempt = (req, res, user, draft, attemptId, isPreviewing) => {
 				attemptId,
 				attempt.draftId,
 				attempt,
-				tree,
+				draftDocument,
 				user,
 				isPreviewing,
 				attemptHistory
@@ -81,7 +80,7 @@ let endAttempt = (req, res, user, draft, attemptId, isPreviewing) => {
 		.then(() => {
 			return insertAttemptEndEvents(
 				user,
-				tree,
+				draftDocument,
 				attempt.assessmentId,
 				attemptId,
 				attempt.number,
@@ -96,14 +95,14 @@ let endAttempt = (req, res, user, draft, attemptId, isPreviewing) => {
 			//
 			logger.info(`End attempt "${attemptId}" - insertAttemptEndEvent success`)
 
-			return lti.sendHighestAssessmentScore(user.id, tree, attempt.assessmentId)
+			return lti.sendHighestAssessmentScore(user.id, draftDocument, attempt.assessmentId)
 		})
 		.then(ltiRequestResult => {
 			logger.info(`End attempt "${attemptId}" - sendLTIScore was executed`)
 
 			insertAttemptScoredEvents(
 				user,
-				tree,
+				draftDocument,
 				attempt.assessmentId,
 				assessmentScoreId,
 				attemptId,
@@ -133,15 +132,15 @@ let getAttempt = attemptId => {
 		})
 		.then(attemptNumber => {
 			result.attemptNumber = attemptNumber
-			return DraftModel.fetchById(result.draft_id)
+			return DraftDocument.fetchById(result.draft_id)
 		})
-		.then(draftModel => ({
+		.then(draftDocument => ({
 			assessmentId: result.assessment_id,
 			number: result.attemptNumber,
 			attemptState: result.state,
 			draftId: result.draft_id,
-			model: draftModel,
-			assessmentModel: draftModel.getChildNodeById(result.assessment_id)
+			model: draftDocument,
+			assessmentModel: draftDocument.getChildNodeById(result.assessment_id)
 		}))
 }
 
@@ -236,7 +235,7 @@ let completeAttempt = (
 
 let insertAttemptEndEvents = (
 	user,
-	draft,
+	draftDocument,
 	assessmentId,
 	attemptId,
 	attemptNumber,
@@ -255,12 +254,12 @@ let insertAttemptEndEvents = (
 		userId: user.id,
 		ip: remoteAddress,
 		metadata: {},
-		draftId: draft.draftId,
-		contentId: draft.contentId,
+		draftId: draftDocument.draftId,
+		contentId: draftDocument.contentId,
 		eventVersion: '1.1.0',
 		caliperPayload: createAssessmentAttemptSubmittedEvent({
 			actor: { type: 'user', id: user.id },
-			draftId: draft.draftId,
+			draftId: draftDocument.draftId,
 			assessmentId,
 			attemptId: attemptId,
 			isPreviewMode: isPreviewing
@@ -270,7 +269,7 @@ let insertAttemptEndEvents = (
 
 let insertAttemptScoredEvents = (
 	user,
-	draft,
+	draftDocument,
 	assessmentId,
 	assessmentScoreId,
 	attemptId,
@@ -305,12 +304,12 @@ let insertAttemptScoredEvents = (
 		userId: user.id,
 		ip: remoteAddress,
 		metadata: {},
-		draftId: draft.draftId,
-		contentId: draft.contentId,
+		draftId: draftDocument.draftId,
+		contentId: draftDocument.contentId,
 		eventVersion: '2.0.0',
 		caliperPayload: createAssessmentAttemptScoredEvent({
 			actor: { type: 'serverApp' },
-			draftId: draft.draftId,
+			draftId: draftDocument.draftId,
 			assessmentId,
 			attemptId: attemptId,
 			attemptScore,
@@ -329,7 +328,7 @@ let reloadAttemptStateIfReviewing = (
 	attemptId,
 	draftId,
 	attempt,
-	tree,
+	draftDocument,
 	user,
 	isPreviewing,
 	attemptHistory
@@ -350,7 +349,7 @@ let reloadAttemptStateIfReviewing = (
 	}
 
 	let assessmentProperties = loadAssessmentProperties(
-		tree,
+		draftDocument,
 		attempt,
 		user,
 		isPreviewing,

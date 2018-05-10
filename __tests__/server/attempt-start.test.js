@@ -678,7 +678,7 @@ describe('start attempt route', () => {
 					}
 				})
 			),
-			requireCurrentDraft: jest.fn(() => Promise.resolve(mockAssessmentNode)),
+			requireCurrentDocument: jest.fn(() => Promise.resolve(mockAssessmentNode)),
 			body: {
 				draftId: 'mockDraftId',
 				assessmentId: 'mockAssessmentId'
@@ -704,7 +704,7 @@ describe('start attempt route', () => {
 					}
 				})
 			),
-			requireCurrentDraft: jest.fn(() => {
+			requireCurrentDocument: jest.fn(() => {
 				throw new Error(ERROR_UNEXPECTED_DB_ERROR)
 			})
 		}
