@@ -50,7 +50,7 @@ Object {
           "reward": "5",
         },
         Object {
-          "attemptCondition": "(80,100]",
+          "attemptCondition": "(1,$last_attempt]",
           "reward": "2",
         },
       ],
@@ -61,6 +61,7 @@ Object {
     },
     "scoreActions": Array [
       Object {
+        "for": undefined,
         "from": "0",
         "page": Object {
           "children": Array [],
@@ -69,6 +70,17 @@ Object {
           "type": "ObojoboDraft.Pages.Page",
         },
         "to": "99",
+      },
+      Object {
+        "for": "(99,100]",
+        "from": undefined,
+        "page": Object {
+          "children": Array [],
+          "content": Object {},
+          "id": null,
+          "type": "ObojoboDraft.Pages.Page",
+        },
+        "to": undefined,
       },
     ],
   },
@@ -830,6 +842,7 @@ Object {
           "content": Object {
             "scoreActions": Array [
               Object {
+                "for": undefined,
                 "from": "0",
                 "page": Object {
                   "children": Array [],
