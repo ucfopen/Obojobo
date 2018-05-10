@@ -24,12 +24,7 @@ exports.up = function(db) {
 			return db.removeIndex('view_state', 'user_draft_unique', ['user_id', 'draft_id'], true)
 		})
 		.then(result => {
-			return db.addIndex(
-				'view_state',
-				'user_draft_unique',
-				['user_id', 'draft_id', 'draft_content_id'],
-				true
-			)
+			return db.addIndex('view_state', 'user_draft_unique', ['user_id', 'draft_content_id'], true)
 		})
 }
 

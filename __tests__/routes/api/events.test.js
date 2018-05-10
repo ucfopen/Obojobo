@@ -2,10 +2,7 @@ jest.mock('../../../models/draft')
 jest.mock('../../../db')
 const { mockExpressMethods, mockRouterMethods } = require('../../../__mocks__/__mock_express')
 
-let mockInsertNewDraft = mockVirtual('./routes/api/drafts/insert_new_draft')
-let mockUpdateDraft = mockVirtual('./routes/api/drafts/update_draft')
-
-describe('api draft events route', () => {
+describe('api events route', () => {
 	beforeAll(() => {})
 	afterAll(() => {})
 	beforeEach(() => {})
@@ -64,7 +61,7 @@ describe('api draft events route', () => {
 				draftId: 88
 			},
 			requireCurrentUser: () => Promise.resolve({ id: 5 }),
-			requireCurrentDraft: () => Promise.resolve({ draftId: 88, contentId: 12 })
+			requireCurrentDocument: () => Promise.resolve({ draftId: 88, contentId: 12 })
 		}
 
 		let mockRes = {
@@ -103,7 +100,7 @@ describe('api draft events route', () => {
 				draftId: 88
 			},
 			requireCurrentUser: () => Promise.resolve({ id: 5 }),
-			requireCurrentDraft: () => Promise.resolve({ draftId: 88, contentId: 12 })
+			requireCurrentDocument: () => Promise.resolve({ draftId: 88, contentId: 12 })
 		}
 
 		let mockRes = {

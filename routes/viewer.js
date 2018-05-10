@@ -1,6 +1,6 @@
 var express = require('express')
 var router = express.Router()
-let DraftModel = oboRequire('models/draft')
+let DraftDocument = oboRequire('models/draft')
 const Visit = oboRequire('models/visit')
 let logger = oboRequire('logger')
 let insertEvent = oboRequire('insert_event')
@@ -12,21 +12,21 @@ let db = oboRequire('db')
 // launch lti view of draft - redirects to visit route
 // mounted as /visit/:draftId/:page
 router.post('/:draftId/:page?', (req, res, next) => {
-	let user = null
-	let draft = null
+	let currentUser = null
+	let currentDocument = null
 
 	return req
 		.requireCurrentUser()
-		.then(currentUser => {
-			user = currentUser
-			return req.requireCurrentDraft()
+		.then(user => {
+			currentUser = user
+			return req.requireCurrentDocument()
 		})
-		.then(currentDraft => {
-			draft = currentDraft
+		.then(draftDocument => {
+			currentDocument = draftDocument
 
 			return Visit.createVisit(
-				user.id,
-				draft.draftId,
+				currentUser.id,
+				currentDocument.draftId,
 				req.lti.body.resource_link_id,
 				req.oboLti.launchId
 			)
@@ -41,7 +41,7 @@ router.post('/:draftId/:page?', (req, res, next) => {
 			})
 		})
 		.then(visit => {
-			res.redirect(`/view/${draft.draftId}/visit/${visit.id}`)
+			res.redirect(`/view/${currentDocument.draftId}/visit/${visit.id}`)
 		})
 		.catch(error => {
 			logger.error(error)
@@ -52,28 +52,29 @@ router.post('/:draftId/:page?', (req, res, next) => {
 // MAIN VISIT ROUTE
 // mounted as /visit/:draftId/visit/:visitId
 router.get('/:draftId/visit/:visitId*', (req, res, next) => {
-	let user = null
-	let draft = null
+	let currentUser = null
+	let currentDocument = null
 	return req
 		.requireCurrentUser()
-		.then(currentUser => {
-			user = currentUser
-			if (user.isGuest()) throw new Error('Login Required')
-			return req.requireCurrentDraft()
+		.then(user => {
+			currentUser = user
+			if (currentUser.isGuest()) throw new Error('Login Required')
+			return req.requireCurrentDocument()
 		})
-		.then(draftModel => {
-			draft = draftModel
-			return draft.yell('internal:sendToClient', req, res)
+		.then(draftDocument => {
+			currentDocument = draftDocument
+			return currentDocument.yell('internal:sendToClient', req, res)
 		})
-		.then(draft => {
+		.then(draftDocument => {
+			currentDocument = draftDocument
 			res.render('viewer', {
 				draftTitle:
-					draft &&
-					draft.root &&
-					draft.root.node &&
-					draft.root.node.content &&
-					draft.root.node.content.title
-						? draft.root.node.content.title
+					currentDocument &&
+					currentDocument.root &&
+					currentDocument.root.node &&
+					currentDocument.root.node.content &&
+					currentDocument.root.node.content.title
+						? currentDocument.root.node.content.title
 						: ''
 			})
 			let { createViewerSessionLoggedInEvent } = createCaliperEvent(null, req.hostname)
@@ -81,17 +82,17 @@ router.get('/:draftId/visit/:visitId*', (req, res, next) => {
 			insertEvent({
 				action: 'viewer:open',
 				actorTime: new Date().toISOString(),
-				userId: user.id,
+				userId: currentUser.id,
 				ip: req.connection.remoteAddress,
 				metadata: {},
-				draftId: draft.draftId,
-				contentId: draft.contentId,
+				draftId: currentDocument.draftId,
+				contentId: currentDocument.contentId,
 				payload: {},
 				eventVersion: '1.0.0',
 				caliperPayload: createViewerSessionLoggedInEvent({
-					draftId: draft.draftId,
-					actor: { type: ACTOR_USER, id: user.id },
-					isPreviewMode: user.canViewEditor,
+					draftId: currentDocument.draftId,
+					actor: { type: ACTOR_USER, id: currentUser.id },
+					isPreviewMode: currentUser.canViewEditor,
 					sessionIds: getSessionIds(req.session)
 				})
 			})

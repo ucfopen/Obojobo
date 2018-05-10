@@ -17,7 +17,7 @@ describe('api visits route', () => {
 	const { mockExpressMethods, mockRouterMethods } = require('../../../__mocks__/__mock_express')
 	const mockReq = {
 		requireCurrentUser: jest.fn(),
-		requireCurrentDraft: jest.fn(),
+		requireCurrentDocument: jest.fn(),
 		params: { draftId: 555 },
 		app: {
 			locals: {
@@ -40,7 +40,7 @@ describe('api visits route', () => {
 	beforeEach(() => {
 		oboRequire('routes/api/visits')
 		mockReq.requireCurrentUser.mockReset()
-		mockReq.requireCurrentDraft.mockResolvedValue({
+		mockReq.requireCurrentDocument.mockResolvedValue({
 			draftId: 555,
 			contentId: 12,
 			yell: mockYell,
@@ -213,7 +213,7 @@ describe('api visits route', () => {
 		mockReq.body = { visitId: 9, draftId: 1 }
 
 		// reject fetchById
-		mockReq.requireCurrentDraft.mockRejectedValueOnce('no draft')
+		mockReq.requireCurrentDocument.mockRejectedValueOnce('no draft')
 		return startVisitRoute(mockReq, mockRes, mockNext).then(result => {
 			expect(logger.error).toBeCalledWith('no draft')
 			expect(mockRes.reject).toBeCalledWith('no draft')
@@ -224,7 +224,7 @@ describe('api visits route', () => {
 	test('start yells internal:startVisit and respond with success', () => {
 		expect.assertions(5)
 		mockReq.requireCurrentUser.mockResolvedValueOnce(new User())
-		mockReq.body = { draftId: 8, visitId: 9 }
+		mockReq.body = { draftId: 555, visitId: 9 }
 
 		// resolve db.one lookup of visit
 		Visit.fetchById.mockResolvedValueOnce(
@@ -251,7 +251,7 @@ describe('api visits route', () => {
 				'internal:startVisit',
 				mockReq,
 				mockRes,
-				8,
+				555,
 				9,
 				expect.any(Object)
 			)
@@ -273,7 +273,7 @@ describe('api visits route', () => {
 	test('start is also successful for a preview visit', () => {
 		expect.assertions(5)
 		mockReq.requireCurrentUser.mockResolvedValueOnce(new User())
-		mockReq.body = { draftId: 8, visitId: 9 }
+		mockReq.body = { draftId: 555, visitId: 9 }
 
 		// resolve db.one lookup of visit
 		Visit.fetchById.mockResolvedValueOnce(
@@ -298,7 +298,7 @@ describe('api visits route', () => {
 				'internal:startVisit',
 				mockReq,
 				mockRes,
-				8,
+				555,
 				9,
 				expect.any(Object)
 			)

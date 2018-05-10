@@ -6,7 +6,7 @@ jest.mock('../logger')
 
 const insertEvent = oboRequire('insert_event')
 const User = oboRequire('models/user')
-const Draft = oboRequire('models/draft')
+const DraftDocument = oboRequire('models/draft')
 const logger = oboRequire('logger')
 const db = oboRequire('db')
 const ltiLaunch = oboRequire('express_lti_launch')
@@ -22,7 +22,7 @@ let mockExpressArgs = withLtiData => {
 			draftId: '999'
 		},
 		setCurrentUser: jest.fn(),
-		setCurrentDraft: jest.fn()
+		setCurrentDocument: jest.fn()
 	}
 
 	let mockNext = jest.fn()
@@ -52,8 +52,8 @@ describe('lti launch middleware', () => {
 		db.one.mockResolvedValue({ id: 88 })
 		User.saveOrCreateCallback.mockReset()
 		logger.error.mockReset()
-		Draft.fetchById = jest.fn().mockResolvedValueOnce(
-			new Draft({
+		DraftDocument.fetchById = jest.fn().mockResolvedValueOnce(
+			new DraftDocument({
 				draftId: '999',
 				contentId: 12
 			})
@@ -175,8 +175,8 @@ describe('lti launch middleware', () => {
 
 		let [req, res, mockNext] = mockExpressArgs(true)
 		return ltiLaunch.assignment(req, res, mockNext).then(() => {
-			expect(req.setCurrentDraft).toBeCalledWith(expect.any(Draft))
-			expect(req.setCurrentDraft).toBeCalledWith(
+			expect(req.setCurrentDocument).toBeCalledWith(expect.any(DraftDocument))
+			expect(req.setCurrentDocument).toBeCalledWith(
 				expect.objectContaining({ contentId: 12, draftId: '999' })
 			)
 		})

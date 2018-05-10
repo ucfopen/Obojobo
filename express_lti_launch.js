@@ -1,10 +1,10 @@
 let db = oboRequire('db')
 let insertEvent = oboRequire('insert_event')
 let User = oboRequire('models/user')
-let Draft = oboRequire('models/draft')
+let DraftDocument = oboRequire('models/draft')
 let logger = oboRequire('logger')
 
-let storeLtiLaunch = (draft, user, ip, ltiBody, ltiConsumerKey) => {
+let storeLtiLaunch = (draftDocument, user, ip, ltiBody, ltiConsumerKey) => {
 	let insertLaunchResult = null
 
 	return db
@@ -15,8 +15,8 @@ let storeLtiLaunch = (draft, user, ip, ltiBody, ltiConsumerKey) => {
 		VALUES ($[draftId], $[contentId], $[userId], 'lti', $[lti_key], $[data])
 		RETURNING id`,
 			{
-				draftId: draft.draftId,
-				contentId: draft.contentId,
+				draftId: draftDocument.draftId,
+				contentId: draftDocument.contentId,
 				userId: user.id,
 				lti_key: ltiConsumerKey,
 				data: ltiBody
@@ -34,8 +34,8 @@ let storeLtiLaunch = (draft, user, ip, ltiBody, ltiConsumerKey) => {
 				ip: ip,
 				metadata: {},
 				eventVersion: '1.0.0',
-				draftId: draft.draftId,
-				contentId: draft.contentId
+				draftId: draftDocument.draftId,
+				contentId: draftDocument.contentId
 			})
 		})
 		.then(() => {
@@ -77,10 +77,11 @@ let userFromLaunch = (req, ltiBody) => {
 }
 
 let draftFromLaunch = (req, draftId) => {
-	return Draft.fetchById(draftId).then(draft => {
-		req.setCurrentDraft(draft)
-		return draft
-	})
+	return DraftDocument.fetchById(draftId)
+		.then(draftDocument => {
+			req.setCurrentDocument(draftDocument)
+			return draftDocument
+		})
 }
 
 // LTI launch detection (req.lti is created by express-ims-lti)
@@ -97,18 +98,20 @@ exports.assignment = (req, res, next) => {
 	// the actual redirect happens in the route, this just handles the lti launch
 	let draftId =
 		req.params.draftId === 'example' ? '00000000-0000-0000-0000-000000000000' : req.params.draftId
-	let user
+	let currentUser = null
+	let currentDocument = null
 
 	return Promise.resolve(req.lti)
 		.then(lti => userFromLaunch(req, lti.body))
 		.then(launchUser => {
-			user = launchUser
+			currentUser = launchUser
 			return draftFromLaunch(req, draftId)
 		})
-		.then(draft => {
+		.then(draftDocument => {
+			currentDocument = draftDocument
 			return storeLtiLaunch(
-				draft,
-				user,
+				currentDocument,
+				currentUser,
 				req.connection.remoteAddress,
 				req.lti.body,
 				req.lti.consumer_key

@@ -8,10 +8,10 @@ function set(userId, draftId, contentId, key, version, value) {
 				INSERT INTO view_state
 				(user_id, draft_id, draft_content_id, payload)
 				VALUES($[userId], $[draftId], $[contentId], $[initialContents])
-				ON CONFLICT (user_id, draft_id) DO UPDATE
+				ON CONFLICT (user_id, draft_content_id) DO UPDATE
 				SET payload = jsonb_set(view_state.payload, $[key], $[contents], true)
-				WHERE view_state.user_id = $[user_id] AND
-				view_state.draft_id = $[draft_id]
+				WHERE view_state.user_id = $[userId] AND
+				view_state.draft_content_id = $[contentId]
 			`,
 			{
 				userId: userId,

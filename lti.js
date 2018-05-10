@@ -482,7 +482,7 @@ let sendReplaceResultRequest = (outcomeService, score) => {
 
 let insertReplaceResultEvent = (
 	userId,
-	draft,
+	draftDocument,
 	launch,
 	assessmentScoreData,
 	outcomeData,
@@ -505,8 +505,8 @@ let insertReplaceResultEvent = (
 		ip: '',
 		eventVersion: '2.0.0',
 		metadata: {},
-		draftId: draft.draftId,
-		contentId: draft.contentId
+		draftId: draftDocument.draftId,
+		contentId: draftDocument.contentId
 	}).catch(err => {
 		logger.error('There was an error inserting the lti event')
 	})
@@ -631,7 +631,7 @@ let logAndGetStatusForError = function(error, requiredData, logId) {
 //
 // MAIN METHOD:
 //
-const sendHighestAssessmentScore = (userId, draft, assessmentId) => {
+const sendHighestAssessmentScore = (userId, draftDocument, assessmentId) => {
 	let logId = uuid()
 	let requiredData = null
 	let outcomeData = null
@@ -647,11 +647,11 @@ const sendHighestAssessmentScore = (userId, draft, assessmentId) => {
 	}
 
 	logger.info(
-		`LTI begin sendHighestAssessmentScore for userId:"${userId}", draftId:"${draft.draftId}", assessmentId:"${assessmentId}"`,
+		`LTI begin sendHighestAssessmentScore for userId:"${userId}", draftId:"${draftDocument.draftId}", assessmentId:"${assessmentId}"`,
 		logId
 	)
 
-	return getRequiredDataForReplaceResult(userId, draft.draftId, assessmentId, logId)
+	return getRequiredDataForReplaceResult(userId, draftDocument.draftId, assessmentId, logId)
 		.then(requiredDataResult => {
 			result.launchId = requiredDataResult.launch ? requiredDataResult.launch.id : null
 
@@ -734,7 +734,7 @@ const sendHighestAssessmentScore = (userId, draft, assessmentId) => {
 		.then(scoreId => {
 			insertReplaceResultEvent(
 				userId,
-				draft,
+				draftDocument,
 				requiredData.launch,
 				requiredData.assessmentScoreRecord,
 				outcomeData,

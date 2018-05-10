@@ -2,19 +2,18 @@ const express = require('express')
 const router = express.Router()
 const db = oboRequire('db')
 const logger = oboRequire('logger')
-const DraftModel = oboRequire('models/draft')
 const VisitModel = oboRequire('models/visit')
 const ltiUtil = oboRequire('lti')
 const viewerState = oboRequire('viewer/viewer_state')
 
-const getDraftAndStartVisitProps = (req, res, draft) => {
+const getDraftAndStartVisitProps = (req, res, draftDocument) => {
 	let visitStartReturnExtensionsProps = {}
 
-	draft.yell(
+	draftDocument.yell(
 		'internal:startVisit',
 		req,
 		res,
-		req.body.draftId,
+		draftDocument.draftId,
 		req.body.visitId,
 		visitStartReturnExtensionsProps
 	)
@@ -26,9 +25,9 @@ const getViewerState = (userId, contentId) => viewerState.get(userId, contentId)
 // Start a new visit
 // mounted as /api/visit/start
 router.post('/start', (req, res, next) => {
-	let user
+	let currentUser = null
+	let currentDocument = null
 	let visit
-	let draft
 	let viewState
 	let visitStartReturnExtensionsProps
 
@@ -39,21 +38,21 @@ router.post('/start', (req, res, next) => {
 
 	return req
 		.requireCurrentUser()
-		.then(userFromReq => {
-			user = userFromReq
+		.then(user => {
+			currentUser = user
 
 			// validate input
 			if (visitId == null || draftId == null) throw new Error('Missing visit and/or draft id!')
 
-			return req.requireCurrentDraft()
+			return req.requireCurrentDocument()
 		})
-		.then(currentDraft => {
-			draft = currentDraft
+		.then(draftDocument => {
+			currentDocument = draftDocument
 
 			return Promise.all([
 				VisitModel.fetchById(visitId),
-				getViewerState(user.id, draft.contentId),
-				getDraftAndStartVisitProps(req, res, draft)
+				getViewerState(currentUser.id, currentDocument.contentId),
+				getDraftAndStartVisitProps(req, res, currentDocument)
 			])
 		})
 		.then(results => {
@@ -61,20 +60,20 @@ router.post('/start', (req, res, next) => {
 			;[visit, viewState, visitStartReturnExtensionsProps] = results
 
 			if (visit.is_preview === false) {
-				if (visit.draft_content_id !== draft.root.node._rev) {
+				if (visit.draft_content_id !== currentDocument.root.node._rev) {
 					// error so the student starts a new view w/ newer version
 					// this check doesn't happen in preview mode so authors
 					// can reload the page to see changes easier
 					throw new Error('Visit for older draft version!')
 				}
 				// load lti launch data
-				return ltiUtil.retrieveLtiLaunch(user.id, draftId, 'START_VISIT_API')
+				return ltiUtil.retrieveLtiLaunch(currentUser.id, draftId, 'START_VISIT_API')
 			}
 		})
 		.then(launch => {
 			logger.log(
 				`VISIT: Start visit success for visitId="${visitId}", draftId="${draftId}", userId="${
-					user.id
+					currentUser.id
 				}"`
 			)
 
@@ -88,7 +87,7 @@ router.post('/start', (req, res, next) => {
 				visitId,
 				//@TODO: This should be if visit.preview === true but we can't do that until the
 				// rest of the code uses visit.preview instead of user.canViewEditor
-				isPreviewing: user.canViewEditor ? user.canViewEditor : false,
+				isPreviewing: currentUser.canViewEditor ? currentUser.canViewEditor : false,
 				lti,
 				viewState,
 				extensions: visitStartReturnExtensionsProps

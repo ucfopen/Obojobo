@@ -1,18 +1,16 @@
-jest.mock('../../models/draft')
 jest.mock('../../models/visit')
 jest.mock('../../viewer/viewer_state')
 jest.mock('../../logger')
 
 describe('viewer route', () => {
 	const logger = oboRequire('logger')
-	const Draft = oboRequire('models/draft')
 	const Visit = oboRequire('models/visit')
 	const User = oboRequire('models/user')
 	const GuestUser = oboRequire('models/guest_user')
 	const { mockExpressMethods, mockRouterMethods } = require('../../__mocks__/__mock_express')
 	const mockReq = {
 		requireCurrentUser: jest.fn(),
-		requireCurrentDraft: jest.fn(),
+		requireCurrentDocument: jest.fn(),
 		params: { draftId: 555 },
 		app: {
 			locals: {
@@ -45,8 +43,8 @@ describe('viewer route', () => {
 	afterAll(() => {})
 	beforeEach(() => {
 		mockReq.requireCurrentUser.mockReset()
-		mockReq.requireCurrentDraft.mockReset()
-		mockReq.requireCurrentDraft.mockReturnValue({
+		mockReq.requireCurrentDocument.mockReset()
+		mockReq.requireCurrentDocument.mockReturnValue({
 			draftId: 555,
 			contentId: 12,
 			yell: mockYell

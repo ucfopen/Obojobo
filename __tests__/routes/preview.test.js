@@ -7,7 +7,7 @@ describe('preview route', () => {
 	const { mockRouterMethods } = require('../../__mocks__/__mock_express')
 	const mockReq = {
 		requireCurrentUser: jest.fn(),
-		requireCurrentDraft: jest.fn(),
+		requireCurrentDocument: jest.fn(),
 		params: { draftId: 'mocked-draft-id' },
 		app: {
 			locals: {
@@ -30,7 +30,7 @@ describe('preview route', () => {
 	afterAll(() => {})
 	beforeEach(() => {
 		mockReq.requireCurrentUser.mockReset()
-		mockReq.requireCurrentDraft.mockReturnValue({
+		mockReq.requireCurrentDocument.mockReturnValue({
 			draftId: 'mocked-draft-id',
 			contentId: 12
 		})
