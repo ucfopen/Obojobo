@@ -2,18 +2,9 @@ jest.mock('../../models/draft')
 jest.mock('../../models/visit')
 jest.mock('../../viewer/viewer_state')
 jest.mock('../../logger')
-jest.mock('../../insert_event', () => jest.fn())
+jest.mock('../../insert_event')
+jest.mock('../../routes/api/events/create_caliper_event')
 
-const mockCreateViewerOpenEvent = jest.fn()
-const mockCreateViewerSessionLoggedInEvent = jest.fn()
-const mockCreateVisitCreateEvent = jest.fn()
-jest.mock('../../routes/api/events/create_caliper_event', () =>
-	jest.fn().mockReturnValue({
-		createViewerOpenEvent: mockCreateViewerOpenEvent,
-		createViewerSessionLoggedInEvent: mockCreateViewerSessionLoggedInEvent,
-		createVisitCreateEvent: mockCreateVisitCreateEvent
-	})
-)
 // make sure all Date objects use a static date
 mockStaticDate()
 
@@ -113,32 +104,6 @@ describe('viewer route', () => {
 		})
 	})
 
-	test('view/draft/visit inserts visit:start event and calls createViewerSessionLoggedInEvent', () => {
-		expect.assertions(2)
-		let routeFunction = mockRouterMethods.get.mock.calls[0][1]
-		mockReq.requireCurrentUser.mockResolvedValueOnce(new User())
-
-		return routeFunction(mockReq, mockRes, mockNext).then(result => {
-			expect(insertEvent).toBeCalledWith({
-				action: 'visit:start',
-				actorTime: '2016-09-22T16:57:14.500Z',
-				caliperPayload: undefined,
-				draftId: 555,
-				eventVersion: '1.0.0',
-				ip: 'remoteAddress',
-				metadata: {},
-				payload: { visitId: 'mocked-visit-id' },
-				userId: 0
-			})
-			expect(mockCreateViewerSessionLoggedInEvent).toBeCalledWith({
-				actor: { id: 0, type: 'user' },
-				draftId: 555,
-				isPreviewMode: undefined,
-				sessionIds: { launchId: undefined, sessionId: undefined }
-			})
-		})
-	})
-
 	test('view/draft/visit inserts viewer:open event and calls createViewerOpenEvent', () => {
 		expect.assertions(2)
 		let routeFunction = mockRouterMethods.get.mock.calls[0][1]
@@ -156,7 +121,7 @@ describe('viewer route', () => {
 				payload: { visitId: 'mocked-visit-id' },
 				userId: 0
 			})
-			expect(mockCreateViewerOpenEvent).toBeCalledWith({
+			expect(caliperEvent().createViewerOpenEvent).toBeCalledWith({
 				actor: { id: 0, type: 'user' },
 				isPreviewMode: undefined,
 				sessionIds: { launchId: undefined, sessionId: undefined },
@@ -236,7 +201,7 @@ describe('viewer route', () => {
 				payload: { deactivatedVisitId: 'mocked-deactivated-visit-id', visitId: 'mocked-visit-id' },
 				userId: 0
 			})
-			expect(mockCreateVisitCreateEvent).toBeCalledWith({
+			expect(caliperEvent().createVisitCreateEvent).toBeCalledWith({
 				actor: { id: 0, type: 'user' },
 				isPreviewMode: undefined,
 				sessionIds: { launchId: undefined, sessionId: undefined },
