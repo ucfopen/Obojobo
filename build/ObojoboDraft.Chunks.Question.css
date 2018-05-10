@@ -46,7 +46,8 @@
 
 .obojobo-draft--chunks--question.is-hidden .flipper {
   border: 1px solid #6714bd;
-  max-height: 15em; }
+  max-height: 15em;
+  overflow: hidden; }
 
 .obojobo-draft--chunks--question.is-mode-practice .back::before {
   color: #999999;
