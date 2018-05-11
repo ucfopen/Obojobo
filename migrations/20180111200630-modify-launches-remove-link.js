@@ -5,9 +5,9 @@ var type
 var seed
 
 /**
-  * We receive the dbmigrate dependency from dbmigrate initially.
-  * This enables us to not have to rely on NODE_PATH.
-  */
+ * We receive the dbmigrate dependency from dbmigrate initially.
+ * This enables us to not have to rely on NODE_PATH.
+ */
 exports.setup = function(options, seedLink) {
 	dbm = options.dbmigrate
 	type = dbm.dataType
@@ -19,7 +19,7 @@ exports.up = function(db) {
 }
 
 exports.down = function(db) {
-	return db.addColumn('launches', 'link', { type: 'varchar', length: 500, notNull: true })
+	return db.addColumn('launches', 'link', { type: 'varchar', length: 500, notNull: false })
 }
 
 exports._meta = {

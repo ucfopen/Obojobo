@@ -1,6 +1,6 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
-exports[`Caliper event from req nav_close 1`] = `
+exports[`Caliper event from req nav:close returns the expected snapshot 1`] = `
 Event {
   "@context": "http://purl.imsglobal.org/ctx/caliper/v1p1",
   "action": "Hid",
@@ -20,7 +20,7 @@ Event {
 }
 `;
 
-exports[`Caliper event from req nav_goto 1`] = `
+exports[`Caliper event from req nav:goto returns the expected snapshot 1`] = `
 Event {
   "@context": "http://purl.imsglobal.org/ctx/caliper/v1p1",
   "action": "NavigatedTo",
@@ -41,7 +41,7 @@ Event {
 }
 `;
 
-exports[`Caliper event from req nav_lock 1`] = `
+exports[`Caliper event from req nav:lock returns the expected snapshot 1`] = `
 Event {
   "@context": "http://purl.imsglobal.org/ctx/caliper/v1p1",
   "action": "Deactivated",
@@ -61,7 +61,7 @@ Event {
 }
 `;
 
-exports[`Caliper event from req nav_open 1`] = `
+exports[`Caliper event from req nav:open returns the expected snapshot 1`] = `
 Event {
   "@context": "http://purl.imsglobal.org/ctx/caliper/v1p1",
   "action": "Showed",
@@ -81,7 +81,7 @@ Event {
 }
 `;
 
-exports[`Caliper event from req nav_toggle 1`] = `
+exports[`Caliper event from req nav:toggle returns the expected snapshot 1`] = `
 Event {
   "@context": "http://purl.imsglobal.org/ctx/caliper/v1p1",
   "action": "Toggled",
@@ -102,7 +102,7 @@ Event {
 }
 `;
 
-exports[`Caliper event from req nav_unlock 1`] = `
+exports[`Caliper event from req nav:unlock returns the expected snapshot 1`] = `
 Event {
   "@context": "http://purl.imsglobal.org/ctx/caliper/v1p1",
   "action": "Activated",
@@ -122,7 +122,7 @@ Event {
 }
 `;
 
-exports[`Caliper event from req question_checkAnswer 1`] = `
+exports[`Caliper event from req question:checkAnswer returns the expected snapshot 1`] = `
 Event {
   "@context": "http://purl.imsglobal.org/ctx/caliper/v1p1",
   "action": "Submitted",
@@ -140,7 +140,7 @@ Event {
 }
 `;
 
-exports[`Caliper event from req question_hide 1`] = `
+exports[`Caliper event from req question:hide returns the expected snapshot 1`] = `
 Event {
   "@context": "http://purl.imsglobal.org/ctx/caliper/v1p1",
   "action": "Hid",
@@ -158,7 +158,7 @@ Event {
 }
 `;
 
-exports[`Caliper event from req question_hideExplanation 1`] = `
+exports[`Caliper event from req question:hideExplanation returns the expected snapshot 1`] = `
 Event {
   "@context": "http://purl.imsglobal.org/ctx/caliper/v1p1",
   "action": "Hid",
@@ -177,7 +177,7 @@ Event {
 }
 `;
 
-exports[`Caliper event from req question_retry 1`] = `
+exports[`Caliper event from req question:retry returns the expected snapshot 1`] = `
 Event {
   "@context": "http://purl.imsglobal.org/ctx/caliper/v1p1",
   "action": "Reset",
@@ -196,7 +196,7 @@ Event {
 }
 `;
 
-exports[`Caliper event from req question_setResponse 1`] = `
+exports[`Caliper event from req question:setResponse returns the expected snapshot 1`] = `
 Event {
   "@context": "http://purl.imsglobal.org/ctx/caliper/v1p1",
   "action": "Completed",
@@ -219,12 +219,12 @@ Event {
   "id": "urn:uuid:DEADBEEF-0000-DEAD-BEEF-1234DEADBEEF",
   "object": "https://hostnameReq/api/draft/testDraftIdReq#testQuestionIdReq",
   "session": "https://hostnameReq/api/session/SessionIdReq",
-  "target": "https:///api/draft/testDraftIdReq",
+  "target": "https://hostnameReq/api/draft/testDraftIdReq",
   "type": "AssessmentItemEvent",
 }
 `;
 
-exports[`Caliper event from req question_showExplanation 1`] = `
+exports[`Caliper event from req question:showExplanation returns the expected snapshot 1`] = `
 Event {
   "@context": "http://purl.imsglobal.org/ctx/caliper/v1p1",
   "action": "Viewed",
@@ -243,7 +243,7 @@ Event {
 }
 `;
 
-exports[`Caliper event from req question_view 1`] = `
+exports[`Caliper event from req question:view returns the expected snapshot 1`] = `
 Event {
   "@context": "http://purl.imsglobal.org/ctx/caliper/v1p1",
   "action": "Viewed",
@@ -261,7 +261,7 @@ Event {
 }
 `;
 
-exports[`Caliper event from req score_clear 1`] = `
+exports[`Caliper event from req score:clear returns the expected snapshot 1`] = `
 Event {
   "@context": "http://purl.imsglobal.org/ctx/caliper/v1p1",
   "action": "Reset",
@@ -280,7 +280,7 @@ Event {
 }
 `;
 
-exports[`Caliper event from req score_set 1`] = `
+exports[`Caliper event from req score:set returns the expected snapshot 1`] = `
 Event {
   "@context": "http://purl.imsglobal.org/ctx/caliper/v1p1",
   "action": "Graded",
@@ -308,7 +308,7 @@ Event {
 }
 `;
 
-exports[`Caliper event from req viewer_close 1`] = `
+exports[`Caliper event from req viewer:close returns the expected snapshot 1`] = `
 Event {
   "@context": "http://purl.imsglobal.org/ctx/caliper/v1p1",
   "action": "LoggedOut",
@@ -322,12 +322,12 @@ Event {
   "id": "urn:uuid:DEADBEEF-0000-DEAD-BEEF-1234DEADBEEF",
   "object": "https://hostnameReq/api/system",
   "session": "https://hostnameReq/api/session/SessionIdReq",
-  "target": "https:///api/draft/testDraftIdReq",
+  "target": "https://hostnameReq/api/draft/testDraftIdReq",
   "type": "SessionEvent",
 }
 `;
 
-exports[`Caliper event from req viewer_inactive 1`] = `
+exports[`Caliper event from req viewer:inactive returns the expected snapshot 1`] = `
 Event {
   "@context": "http://purl.imsglobal.org/ctx/caliper/v1p1",
   "action": "Abandoned",
@@ -342,13 +342,13 @@ Event {
   },
   "federatedSession": "https://hostnameReq/api/launch/OboLtiLaunchIdReq",
   "id": "urn:uuid:DEADBEEF-0000-DEAD-BEEF-1234DEADBEEF",
-  "object": "https:///api/draft/testDraftIdReq",
+  "object": "https://hostnameReq/api/draft/testDraftIdReq",
   "session": "https://hostnameReq/api/session/SessionIdReq",
   "type": "Event",
 }
 `;
 
-exports[`Caliper event from req viewer_leave 1`] = `
+exports[`Caliper event from req viewer:leave returns the expected snapshot 1`] = `
 Event {
   "@context": "http://purl.imsglobal.org/ctx/caliper/v1p1",
   "action": "Abandoned",
@@ -361,13 +361,13 @@ Event {
   },
   "federatedSession": "https://hostnameReq/api/launch/OboLtiLaunchIdReq",
   "id": "urn:uuid:DEADBEEF-0000-DEAD-BEEF-1234DEADBEEF",
-  "object": "https:///api/draft/testDraftIdReq",
+  "object": "https://hostnameReq/api/draft/testDraftIdReq",
   "session": "https://hostnameReq/api/session/SessionIdReq",
   "type": "Event",
 }
 `;
 
-exports[`Caliper event from req viewer_return 1`] = `
+exports[`Caliper event from req viewer:return returns the expected snapshot 1`] = `
 Event {
   "@context": "http://purl.imsglobal.org/ctx/caliper/v1p1",
   "action": "Resumed",
@@ -381,13 +381,13 @@ Event {
   },
   "federatedSession": "https://hostnameReq/api/launch/OboLtiLaunchIdReq",
   "id": "urn:uuid:DEADBEEF-0000-DEAD-BEEF-1234DEADBEEF",
-  "object": "https:///api/draft/testDraftIdReq",
+  "object": "https://hostnameReq/api/draft/testDraftIdReq",
   "session": "https://hostnameReq/api/session/SessionIdReq",
   "type": "Event",
 }
 `;
 
-exports[`Caliper event from req viewer_returnFromInactive 1`] = `
+exports[`Caliper event from req viewer:returnFromInactive returns the expected snapshot 1`] = `
 Event {
   "@context": "http://purl.imsglobal.org/ctx/caliper/v1p1",
   "action": "Resumed",
@@ -403,7 +403,7 @@ Event {
   },
   "federatedSession": "https://hostnameReq/api/launch/OboLtiLaunchIdReq",
   "id": "urn:uuid:DEADBEEF-0000-DEAD-BEEF-1234DEADBEEF",
-  "object": "https:///api/draft/testDraftIdReq",
+  "object": "https://hostnameReq/api/draft/testDraftIdReq",
   "session": "https://hostnameReq/api/session/SessionIdReq",
   "type": "Event",
 }

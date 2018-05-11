@@ -1,7 +1,7 @@
 jest.mock('../../db')
 
 let mockRawDraft = {
-	id:'whatever',
+	id: 'whatever',
 	version: 9,
 	draft_created_at: new Date().toISOString(),
 	content_created_at: new Date().toISOString(),
@@ -9,46 +9,47 @@ let mockRawDraft = {
 		id: 666,
 		stuff: true,
 		type: 'DraftNode',
-		content: {nothing:true},
+		content: { nothing: true },
 		children: [
 			{
 				id: 999,
 				type: 'DraftNode',
-				content: {otherStuff:true},
+				content: { otherStuff: true },
 				children: [
 					{
 						id: 777,
 						type: 'DraftNode',
-						content: {otherStuff:true},
-					},
+						content: { otherStuff: true }
+					}
 				]
 			},
 			{
 				id: 888,
 				type: 'DraftNode',
-				content: {otherStuff:false},
+				content: { otherStuff: false }
 			}
 		]
 	}
 }
 
 describe('models draft', () => {
-
 	beforeAll(() => {})
 	afterAll(() => {})
-	beforeEach(() => {});
-	afterEach(() => {});
+	beforeEach(() => {})
+	afterEach(() => {})
 
 	it('initializes expected properties', () => {
 		let DraftNode = oboRequire('models/draft_node')
 		const draftTree = {}
 		let initFn = jest.fn()
-		let d = new DraftNode(draftTree, mockRawDraft.content, initFn);
+		let d = new DraftNode(draftTree, mockRawDraft.content, initFn)
 		expect(d.draftTree).toBe(draftTree)
-		expect(d.node).toEqual(expect.objectContaining({
-			id: 666,
-			content: { nothing: true }
-		}))
+		expect(d.node).toEqual(
+			expect.objectContaining({
+				id: 666,
+				content: { nothing: true }
+			})
+		)
 		expect(d.node).not.toBe(mockRawDraft)
 		expect(d.node).not.toHaveProperty('children')
 		expect(d.init).toBe(initFn)
@@ -60,37 +61,36 @@ describe('models draft', () => {
 		let DraftNode = oboRequire('models/draft_node')
 		const draftTree = {}
 		let initFn = jest.fn()
-		let d = new DraftNode(draftTree, mockRawDraft.content, initFn);
+		let d = new DraftNode(draftTree, mockRawDraft.content, initFn)
 		expect(d.init).toBe(initFn)
 		d.init()
 		expect(initFn).toHaveBeenCalledTimes(1)
 	})
 
-
 	it('converts itself to an object', () => {
 		let DraftNode = oboRequire('models/draft_node')
 		const draftTree = {}
 		let initFn = jest.fn()
-		let d = new DraftNode(draftTree, mockRawDraft.content, initFn);
+		let d = new DraftNode(draftTree, mockRawDraft.content, initFn)
 		let obj = d.toObject()
-		expect(obj).toEqual(expect.objectContaining({
-			"content": {nothing: true},
-			"children": [], // note DraftNode wont have children when created directly
-			"id": 666,
-		}))
+		expect(obj).toEqual(
+			expect.objectContaining({
+				content: { nothing: true },
+				children: [], // note DraftNode wont have children when created directly
+				id: 666
+			})
+		)
 	})
-
 
 	it('yells returns an array of empty promises with no children', () => {
 		let DraftNode = oboRequire('models/draft_node')
 		const draftTree = {}
 		let initFn = jest.fn()
-		let d = new DraftNode(draftTree, mockRawDraft.content, initFn);
+		let d = new DraftNode(draftTree, mockRawDraft.content, initFn)
 		let promises = d.yell()
 		expect(promises).toBeInstanceOf(Array)
 		expect(promises).toHaveLength(0)
 	})
-
 
 	it('yells to children', () => {
 		expect.assertions(4)
@@ -119,9 +119,11 @@ describe('models draft', () => {
 	it('yell fires named event listeners', () => {
 		let DraftNode = oboRequire('models/draft_node')
 		const draftTree = {}
-		let eventFn = jest.fn().mockImplementation(() => {return 5})
-		let d = new DraftNode(draftTree, mockRawDraft.content);
-		d.registerEvents({ test: eventFn})
+		let eventFn = jest.fn().mockImplementation(() => {
+			return 5
+		})
+		let d = new DraftNode(draftTree, mockRawDraft.content)
+		d.registerEvents({ test: eventFn })
 		let promises = d.yell('test')
 		expect(eventFn).toHaveBeenCalled()
 	})
@@ -136,7 +138,6 @@ describe('models draft', () => {
 		expect(childrenSet.has(333)).toBe(false)
 	})
 
-
 	it('builds immediateChildrenSet as expected', () => {
 		let Draft = oboRequire('models/draft')
 		let d = new Draft(mockRawDraft.content)
@@ -150,9 +151,9 @@ describe('models draft', () => {
 	it('contains finds child nodes', () => {
 		let Draft = oboRequire('models/draft')
 		let d = new Draft(mockRawDraft.content)
-		expect(d.root.contains({id:999})).toBe(true)
-		expect(d.root.contains({id:888})).toBe(true)
-		expect(d.root.contains({id:777})).toBe(true)
-		expect(d.root.contains({id:333})).toBe(false)
+		expect(d.root.contains({ id: 999 })).toBe(true)
+		expect(d.root.contains({ id: 888 })).toBe(true)
+		expect(d.root.contains({ id: 777 })).toBe(true)
+		expect(d.root.contains({ id: 333 })).toBe(false)
 	})
 })

@@ -38,12 +38,12 @@ app.on('mount', app => {
 	registerChunks(app)
 
 	// =========== ROUTING & CONTROLERS ===========
+	app.use('/preview', oboRequire('routes/preview'))
 	app.use('/view', oboRequire('routes/viewer'))
 	app.use('/editor', oboRequire('routes/editor'))
 	app.use('/lti', oboRequire('routes/lti'))
 	app.use('/api/drafts', oboRequire('routes/api/drafts'))
 	app.use('/api/events', oboRequire('routes/api/events'))
-	app.use('/api/states', oboRequire('routes/api/states'))
 	app.use('/api/visits', oboRequire('routes/api/visits'))
 	app.use('/api/data', oboRequire('routes/api/data'))
 	app.use('/profile', oboRequire('routes/profile'))

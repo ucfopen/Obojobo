@@ -19,6 +19,7 @@ let mockExpressArgs = withLtiData => {
 		params: {
 			draftId: '999'
 		},
+		hostname: 'dummyhost',
 		setCurrentUser: jest.fn()
 	}
 
@@ -44,9 +45,9 @@ describe('lti launch middleware', () => {
 	afterAll(() => {})
 	beforeEach(() => {
 		insertEvent.mockReset()
-		insertEvent.mockReturnValue(Promise.resolve())
+		insertEvent.mockResolvedValue()
 		db.one.mockReset()
-		db.one.mockReturnValue(Promise.resolve({ id: 88 }))
+		db.one.mockResolvedValue({ id: 88 })
 		User.saveOrCreateCallback.mockReset()
 		logger.error.mockReset()
 	})
@@ -83,7 +84,7 @@ describe('lti launch middleware', () => {
 						roles: ['saviour', 'explorer', 'doctor']
 					},
 					draftId: '999',
-					userId: 0
+					userId: 1
 				})
 			)
 
@@ -99,7 +100,7 @@ describe('lti launch middleware', () => {
 					payload: {
 						launchId: 88
 					},
-					userId: 0
+					userId: 1
 				})
 			)
 		})
@@ -122,7 +123,7 @@ describe('lti launch middleware', () => {
 		expect.assertions(1)
 
 		// mock insert launch fail
-		db.one.mockReturnValueOnce(Promise.reject('launch insert error'))
+		db.one.mockRejectedValueOnce('launch insert error')
 
 		let [req, res, mockNext] = mockExpressArgs(true)
 		return ltiLaunch.assignment(req, res, mockNext).then(() => {
@@ -134,7 +135,7 @@ describe('lti launch middleware', () => {
 		expect.assertions(1)
 
 		// mock insert event failure
-		insertEvent.mockReturnValueOnce(Promise.reject('launch insert error'))
+		insertEvent.mockRejectedValueOnce('launch insert error')
 
 		let [req, res, mockNext] = mockExpressArgs(true)
 		return ltiLaunch.assignment(req, res, mockNext).then(() => {
@@ -226,7 +227,6 @@ describe('lti launch middleware', () => {
 			expect(User.saveOrCreateCallback).not.toHaveBeenCalled()
 		})
 	})
-
 	test('assignmentSelection creates a new user and inserts an event', () => {
 		expect.assertions(5)
 
@@ -268,7 +268,7 @@ describe('lti launch middleware', () => {
 	test('assignmentSelection logs an error if event insert fails and calls next with an error', () => {
 		expect.assertions(5)
 
-		insertEvent.mockReturnValueOnce(Promise.reject('event insert error'))
+		insertEvent.mockRejectedValueOnce('event insert error')
 		let [req, res, mockNext] = mockExpressArgs(true)
 
 		return ltiLaunch.assignmentSelection(req, res, mockNext).then(() => {

@@ -4,7 +4,7 @@ let saveOrCreateCallbackFn = jest.fn()
 class MockUser {
 	constructor(
 		{
-			id = 0,
+			id = 1,
 			firstName = 'Guest',
 			lastName = 'Guest',
 			email = 'guest@obojobo.ucf.edu',

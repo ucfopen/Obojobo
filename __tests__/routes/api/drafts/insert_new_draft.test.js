@@ -18,13 +18,9 @@ describe('api draft insert helper', () => {
 			return Promise.resolve()
 		})
 		// respond to insert draft
-		db.one.mockImplementationOnce(() => {
-			return Promise.resolve({ id: 'NEWID' })
-		})
+		db.one.mockResolvedValueOnce({ id: 'NEWID' })
 		// respond to insert content
-		db.one.mockImplementationOnce(() => {
-			return Promise.resolve('content')
-		})
+		db.one.mockResolvedValueOnce('content')
 
 		let updateDraft = oboRequire('routes/api/drafts/insert_new_draft')
 
@@ -63,10 +59,7 @@ describe('api draft insert helper', () => {
 		expect.assertions(1)
 		let db = oboRequire('db')
 		// respond to BEGIN & COMMIT
-		db.none.mockImplementation(() => {
-			return Promise.reject('error')
-		})
-
+		db.none.mockRejectedValueOnce('error')
 		let updateDraft = oboRequire('routes/api/drafts/insert_new_draft')
 
 		return updateDraft(555, { content: 'yes' })
@@ -82,14 +75,9 @@ describe('api draft insert helper', () => {
 		expect.assertions(1)
 		let db = oboRequire('db')
 		// respond to BEGIN & COMMIT
-		db.none.mockImplementation(() => {
-			return Promise.resolve()
-		})
+		db.none.mockResolvedValueOnce()
 		// respond to insert draft
-		db.one.mockImplementationOnce(() => {
-			return Promise.reject('an error')
-		})
-
+		db.one.mockRejectedValueOnce('an error')
 		let updateDraft = oboRequire('routes/api/drafts/insert_new_draft')
 
 		return updateDraft(555, { content: 'yes' })
@@ -105,17 +93,11 @@ describe('api draft insert helper', () => {
 		expect.assertions(1)
 		let db = oboRequire('db')
 		// respond to BEGIN & COMMIT
-		db.none.mockImplementation(() => {
-			return Promise.resolve()
-		})
+		db.none.mockResolvedValueOnce()
 		// respond to insert draft
-		db.one.mockImplementationOnce(() => {
-			return Promise.resolve({ id: 'NEWID' })
-		})
+		db.one.mockResolvedValueOnce({ id: 'NEWID' })
 		// respond to insert content
-		db.one.mockImplementationOnce(() => {
-			return Promise.reject('arrrg!')
-		})
+		db.one.mockRejectedValueOnce('arrrg!')
 
 		let updateDraft = oboRequire('routes/api/drafts/insert_new_draft')
 
