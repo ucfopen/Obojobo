@@ -12,7 +12,8 @@
   "scripts": {
     "test": "jest",
     "test:watch": "jest --watch",
-    "test:updateSnapshot": "jest --updateSnapshot"
+    "test:updateSnapshot": "jest --updateSnapshot",
+    "convertTestObjectToJson": "node ./bin/xml2draft.js examples/test-object.xml --spaces=4 --generate-ids > test-object.json"
   },
   "author": "",
   "description": ""
