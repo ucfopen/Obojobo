@@ -27,14 +27,15 @@ let viewerEl
 
 const _gotoAssessmentAndStartAttempt = () => {
 	// navigate to assessment
-	NavUtil.goto('assessment')
+	NavUtil.goto('my-assessment')
 
 	viewerEl.update() // render
 
 	// click start assessment
-	viewerEl.find('#obo-start-assessment-button button').simulate('click')
+	viewerEl.find('.obojobo-draft--components--button button').simulate('click')
 }
 
+// this util helps flush promises that are in limbo w/o having to use timers
 const flushPromises = () => new Promise(resolve => setImmediate(resolve))
 
 describe('ViewerApp', () => {
@@ -110,7 +111,7 @@ describe('ViewerApp', () => {
 		expect(viewerEl.html()).not.toEqual(initialHtml)
 
 		// goto assesment
-		NavUtil.goto('assessment')
+		NavUtil.goto('my-assessment')
 		viewerEl.update()
 		let assessmentHtml = viewerEl.html()
 
@@ -121,105 +122,125 @@ describe('ViewerApp', () => {
 	})
 
 	test('Prev/Next buttons go to prev/next page', () => {
-		let prevBtnEl = viewerEl.find('.viewer--components--inline-nav-button.is-prev')
-		let nextBtnEl = viewerEl.find('.viewer--components--inline-nav-button.is-next')
+		// grab a few page Ids from the test object
+		const pageIds = testObject.children[0].children.map(c => c.id)
+		const [page1, page2] = pageIds
 
-		expect(viewerEl.find('#obo-page-1').exists()).toBe(true) // click back, should do nothing
+		// grab the next and previous buttons
+		const prevBtnEl = viewerEl.find('.viewer--components--inline-nav-button.is-prev')
+		const nextBtnEl = viewerEl.find('.viewer--components--inline-nav-button.is-next')
 
+		// first page should be visible
+		expect(viewerEl.find('#obo-' + page1).exists()).toBe(true)
+
+		// click back, should do nothing because theres no where to go
 		prevBtnEl.simulate('click')
-		expect(viewerEl.find('#obo-page-1').exists()).toBe(true) // click forward, should move forward
+		expect(viewerEl.find('#obo-' + page1).exists()).toBe(true)
 
+		// click next, should go to page 2
 		nextBtnEl.simulate('click')
-		expect(viewerEl.find('#obo-page-2').exists()).toBe(true) // click back, should go back
+		expect(viewerEl.find('#obo-' + page2).exists()).toBe(true)
+
+		// no back should go to page 1
 		prevBtnEl.simulate('click')
-		expect(viewerEl.find('#obo-page-1').exists()).toBe(true) // go to the final page
+		expect(viewerEl.find('#obo-' + page1).exists()).toBe(true)
+
+		// click next once for each page to get the assessment
+		pageIds.forEach(() => {
+			nextBtnEl.simulate('click')
+		})
+		expect(viewerEl.find('#obo-my-assessment').exists()).toBe(true)
+
+		// click next, should do nothing becuase there's no next page
 		nextBtnEl.simulate('click')
-		nextBtnEl.simulate('click')
-		nextBtnEl.simulate('click')
-		nextBtnEl.simulate('click')
-		nextBtnEl.simulate('click')
-		nextBtnEl.simulate('click')
-		expect(viewerEl.find('#obo-assessment').exists()).toBe(true) // click next, should do nothing
-		nextBtnEl.simulate('click')
-		expect(viewerEl.find('#obo-assessment').exists()).toBe(true)
+		expect(viewerEl.find('#obo-my-assessment').exists()).toBe(true)
 	})
 
+	// TODO: move this to Question/viewer-component.test.js
 	test('Clicking on a question shows it', () => {
-		NavUtil.goto('page-3')
+		NavUtil.goto('questions-page')
 		viewerEl.update()
 
-		let questionEl = viewerEl.find('#obo-pq1')
+		let questionEl = viewerEl.find('#obo-practice-question-1')
 		expect(QuestionStore.getState().viewedQuestions).toEqual({})
 		expect(QuestionStore.getState().viewing).toBe(null)
 
 		questionEl.find('.blocker').simulate('click')
 
 		expect(QuestionStore.getState().viewedQuestions).toEqual({
-			pq1: true
+			'practice-question-1': true
 		})
-		expect(QuestionStore.getState().viewing).toBe('pq1')
+		expect(QuestionStore.getState().viewing).toBe('practice-question-1')
 	})
 
+	// TODO: move this to Question/viewer-component.test.js
 	test("Answering a question incorrectly displays 'Incorrect' and shows feedback", () => {
-		NavUtil.goto('page-3')
+		NavUtil.goto('questions-page')
 		viewerEl.update()
 
-		let questionEl = viewerEl.find('#obo-pq1')
+		let questionEl = viewerEl.find('#obo-practice-question-1')
 
 		// shows no correct label
 		expect(questionEl.find('.result.correct').exists()).toBe(false)
 		// shows no incorrect label
 		expect(questionEl.find('.result.incorrect').exists()).toBe(false)
 		// shows no feedback
-		expect(questionEl.find('#obo-pq1-mca-mc3-fb').exists()).toBe(false)
+		expect(questionEl.find('.obojobo-draft--chunks--mc-assessment--mc-feedback').exists()).toBe(
+			false
+		)
 		// shows no solution button
 		expect(questionEl.find('.show-explanation-button').exists()).toBe(false)
 
 		// click the question
 		questionEl.find('.flipper').simulate('click')
 		// click on the wrong answer
-		questionEl.find('#obo-pq1-mca-mc3').simulate('click')
+		questionEl.find('#obo-pq1-answer-3').simulate('click')
 		// submit the question
+
 		questionEl.find('.submit button').simulate('click') // Check your answer button
 
-		// check for the items
-		questionEl = viewerEl.find('#obo-pq1')
+		// Fetch the question again after updating
+		questionEl = viewerEl.find('#obo-practice-question-1')
 
 		// no correct flag to show, answer is wrong
 		expect(questionEl.find('.result.correct').exists()).toBe(false)
 		// shows incorrect
 		expect(questionEl.find('.result.incorrect').exists()).toBe(true)
 		// shows feedback
-		expect(questionEl.find('#obo-pq1-mca-mc3-fb').exists()).toBe(true)
+		expect(questionEl.find('.obojobo-draft--chunks--mc-assessment--mc-feedback').exists()).toBe(
+			true
+		)
 		// shows solution button
 		expect(questionEl.find('.show-explanation-button').exists()).toBe(true)
 	})
 
 	// @ADD BACK
 	test("Answering a question correctly displays 'Correct' and doesn't show feedback if none exists", () => {
-		NavUtil.goto('page-3')
+		NavUtil.goto('questions-page')
 		viewerEl.update()
 
-		let questionEl = viewerEl.find('#obo-pq1')
+		let questionEl = viewerEl.find('#obo-practice-question-1')
 
 		// shows no correct label
 		expect(questionEl.find('.result.correct').exists()).toBe(false)
 		// shows no incorrect label
 		expect(questionEl.find('.result.incorrect').exists()).toBe(false)
 		// shows no feedback
-		expect(questionEl.find('#obo-pq1-mca-mc3-fb').exists()).toBe(false)
+		expect(questionEl.find('.obojobo-draft--chunks--mc-assessment--mc-feedback').exists()).toBe(
+			false
+		)
 		// shows no solution button
 		expect(questionEl.find('.show-explanation-button').exists()).toBe(false)
 
 		// click the question
 		questionEl.find('.flipper').simulate('click')
 		// click on the correct answer
-		questionEl.find('#obo-pq1-mca-mc1').simulate('click')
+		questionEl.find('#obo-pq1-answer-1').simulate('click')
 		// submit the question
 		questionEl.find('.submit button').simulate('click') // Check your answer button
 
 		// check for the items
-		questionEl = viewerEl.find('#obo-pq1')
+		questionEl = viewerEl.find('#obo-practice-question-1')
 
 		// show correct
 		expect(questionEl.find('.result.correct').exists()).toBe(true)
@@ -232,25 +253,31 @@ describe('ViewerApp', () => {
 	})
 
 	test('Clicking the button to show the solution will show the solution', () => {
-		NavUtil.goto('page-3')
-		viewerEl.update()
-
 		let questionEl
-		questionEl = viewerEl.find('#obo-pq1')
+		NavUtil.goto('questions-page')
 
 		let updateQuestion = () => {
 			viewerEl.update()
-			questionEl = viewerEl.find('#obo-pq1')
+			questionEl = viewerEl.find('#obo-practice-question-1')
 		}
 
+		updateQuestion()
+
+		// make sure no solutions are shown
 		expect(questionEl.find('.solution-container').exists()).toBe(false)
 
+		// click the blocker/flipper
 		questionEl.find('.blocker').simulate('click')
 		updateQuestion()
-		questionEl.find('#obo-pq1-mca-mc3').simulate('click') // wrong answer choice
+
+		// wrong answer choice
+		questionEl.find('#obo-pq1-answer-3').simulate('click')
 		updateQuestion()
-		questionEl.find('.submit button').simulate('click') // Check your answer button
+
+		// Check your answer button
+		questionEl.find('.submit button').simulate('click')
 		updateQuestion()
+
 		questionEl
 			.find('button')
 			.at(1)
@@ -262,11 +289,10 @@ describe('ViewerApp', () => {
 
 	test('Clicking start assessment will lock out navigation and start the assessment', done => {
 		Dispatcher.once('assessment:attemptStarted', () => {
-			let navEl = viewerEl.find('.viewer--components--nav')
-			let firstPgLinkEl = navEl.find('a').at(1)
+			let firstPgLinkEl = viewerEl.find('.viewer--components--nav a').at(1)
 			firstPgLinkEl.simulate('click')
 
-			expect(viewerEl.find('#obo-assessment').exists()).toBe(true)
+			expect(viewerEl.find('#obo-my-assessment').exists()).toBe(true)
 			expect(viewerEl.find('#obo-page-1').exists()).toBe(false)
 
 			// preview mode allows us to unlock the navigation however
@@ -285,15 +311,33 @@ describe('ViewerApp', () => {
 	})
 
 	test('Finishing an assessment shows a score', done => {
+		const testObjectAssessment = testObject.children[1]
+		const questions = testObjectAssessment.children[1].children[0].children
+
 		// after assessment starts
 		Dispatcher.once('assessment:attemptStarted', () => {
 			viewerEl.update() // render
 
+			let id = questions[0].id
+			let answer = questions[0].children[1].children[0].children[0].id
 			// open a question
-			viewerEl.find('#obo-qb1-q1 .flipper').simulate('click')
-
+			viewerEl.find('#obo-' + id + ' .flipper').simulate('click')
 			// click an answer
-			viewerEl.find('#obo-qb1-q1-mca-mc1').simulate('click')
+			viewerEl.find('#obo-' + answer).simulate('click')
+
+			id = questions[1].id
+			answer = questions[1].children[1].children[0].children[0].id
+			// open a question
+			viewerEl.find('#obo-' + id + ' .flipper').simulate('click')
+			// click an answer
+			viewerEl.find('#obo-' + answer).simulate('click')
+
+			id = questions[2].id
+			answer = questions[2].children[1].children[0].children[0].id
+			// open a question
+			viewerEl.find('#obo-' + id + ' .flipper').simulate('click')
+			// click an answer
+			viewerEl.find('#obo-' + answer).simulate('click')
 
 			// click submit (not active unless an answer is chosen)
 			viewerEl.find('.submit-button button').simulate('click')
@@ -338,15 +382,19 @@ describe('ViewerApp', () => {
 	})
 
 	test('Emitting answering assessment question fires the expected postEvents in order', done => {
+		const testObjectAssessment = testObject.children[1]
+		const questions = testObjectAssessment.children[1].children[0].children
+
 		// executes after attempt starts
 		Dispatcher.once('assessment:attemptStarted', () => {
 			viewerEl.update() // render
 
+			let id = questions[0].id
+			let answer = questions[0].children[1].children[0].children[0].id
 			// open a question
-			viewerEl.find('#obo-qb1-q1 .flipper').simulate('click')
-
+			viewerEl.find('#obo-' + id + ' .flipper').simulate('click')
 			// click an answer
-			viewerEl.find('#obo-qb1-q1-mca-mc1').simulate('click')
+			viewerEl.find('#obo-' + answer).simulate('click')
 
 			// collect the event names
 			let orderedEvents = APIUtil.postEvent.mock.calls.map(c => c[1])
@@ -361,38 +409,42 @@ describe('ViewerApp', () => {
 	})
 
 	test('Emitting question events produces the appropriate event for APIUtil.postEvent', () => {
-		const testId = 'qb2.q2-mca-mc2'
+		const testObjectAssessment = testObject.children[1]
+		const questions = testObjectAssessment.children[1].children[0].children
+		const questionId = questions[0].id
+		const answerId = questions[0].children[1].children[0].children[0].id
+
 		APIUtil.postEvent = jest.fn()
 
-		QuestionUtil.setResponse('qb2.q2', { ids: [testId] }, testId)
+		QuestionUtil.setResponse(questionId, { ids: [answerId] }, answerId)
 		expect(APIUtil.postEvent).toHaveBeenCalledWith(
 			OboModel.getRoot(),
 			'question:setResponse',
 			'2.1.0',
 			{
-				questionId: 'qb2.q2',
-				targetId: testId,
-				response: { ids: [testId] }
+				questionId: questionId,
+				targetId: answerId,
+				response: { ids: [answerId] }
 			}
 		)
 
-		QuestionUtil.hideQuestion(testId)
+		QuestionUtil.hideQuestion(questionId)
 		expect(APIUtil.postEvent).toHaveBeenLastCalledWith(
 			OboModel.getRoot(),
 			'question:hide',
 			'1.0.0',
 			{
-				questionId: 'qb2.q2-mca-mc2'
+				questionId: questionId
 			}
 		)
 
-		QuestionUtil.viewQuestion(testId)
+		QuestionUtil.viewQuestion(questionId)
 		expect(APIUtil.postEvent).toHaveBeenLastCalledWith(
 			OboModel.getRoot(),
 			'question:view',
 			'1.0.0',
 			{
-				questionId: 'qb2.q2-mca-mc2'
+				questionId: questionId
 			}
 		)
 	})
