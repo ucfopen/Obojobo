@@ -15,14 +15,14 @@ Common.Store.registerModel('ObojoboDraft.Modules.Module', {
 			label: model.title,
 			showChildren: true
 		}
-	},
-
-	generateNav(model) {
-		return [
-			{
-				type: 'heading',
-				label: model.title
-			}
-		]
 	}
+
+	// generateNav(model) {
+	// 	return [
+	// 		{
+	// 			type: 'heading',
+	// 			label: model.title
+	// 		}
+	// 	]
+	// }
 })

@@ -131,9 +131,6 @@ describe('Nav', () => {
 				flags: {
 					correct: false
 				}
-			},
-			{
-				type: 'seperator'
 			}
 		])
 		let props = {

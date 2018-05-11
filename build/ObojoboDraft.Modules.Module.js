@@ -114,13 +114,17 @@ _Common2.default.Store.registerModel('ObojoboDraft.Modules.Module', {
 			label: model.title,
 			showChildren: true
 		};
-	},
-	generateNav: function generateNav(model) {
-		return [{
-			type: 'heading',
-			label: model.title
-		}];
 	}
+
+	// generateNav(model) {
+	// 	return [
+	// 		{
+	// 			type: 'heading',
+	// 			label: model.title
+	// 		}
+	// 	]
+	// }
+
 });
 
 /***/ }),

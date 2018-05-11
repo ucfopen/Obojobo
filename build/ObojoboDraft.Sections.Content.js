@@ -109,26 +109,21 @@ _Common2.default.Store.registerModel('ObojoboDraft.Sections.Content', {
 			type: 'hidden',
 			showChildren: true
 		};
-	},
-
-	generateNav: function generateNav(model) {
-		var nav = [];
-
-		for (var index = 0; index < model.children.models.length; index++) {
-			var child = model.children.models[index];
-			nav.push({
-				type: 'link',
-				label: child.title,
-				id: child.get('id')
-			});
-		}
-
-		nav.push({
-			type: 'seperator'
-		});
-
-		return nav;
 	}
+
+	// generateNav: model => {
+	// 	let nav = model.children.models.map(child => ({
+	// 		type: 'link',
+	// 		label: child.title,
+	// 		id: child.get('id')
+	// 	}))
+
+	// 	nav.push({
+	// 		type: 'seperator'
+	// 	})
+
+	// 	return nav
+	// }
 });
 
 /***/ }),

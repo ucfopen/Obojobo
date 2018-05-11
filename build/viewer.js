@@ -6726,8 +6726,8 @@ var Nav = function (_React$Component) {
 		key: 'renderLink',
 		value: function renderLink(index, isSelected, list, lockEl) {
 			var item = list[index];
-			var isFirstInList = list[index - 1] && (list[index - 1].type != 'link' || list[index - 1].flags.assessment) && list[index - 1].type != 'sub-link' && !item.flags.assessment;
-			var isLastInList = !list[index + 1] || list[index + 1].type != 'link' && list[index + 1].type != 'sub-link' || list[index + 1].flags.assessment && !item.flags.assessment;
+			var isFirstInList = !list[index - 1];
+			var isLastInList = !list[index + 1];
 
 			var className = 'link' + (0, _isornot2.default)(isSelected, 'selected') + (0, _isornot2.default)(item.flags.visited, 'visited') + (0, _isornot2.default)(item.flags.complete, 'complete') + (0, _isornot2.default)(item.flags.correct, 'correct') + (0, _isornot2.default)(item.flags.assessment, 'assessment') + (0, _isornot2.default)(isFirstInList, 'first-in-list') + (0, _isornot2.default)(isLastInList, 'last-in-list');
 
@@ -6742,7 +6742,7 @@ var Nav = function (_React$Component) {
 		key: 'renderSubLink',
 		value: function renderSubLink(index, isSelected, list, lockEl) {
 			var item = list[index];
-			var isLastInList = !list[index + 1] || list[index + 1].type != 'link' && list[index + 1].type != 'sub-link' || list[index + 1].flags.assessment;
+			var isLastInList = !list[index + 1];
 
 			var className = 'sub-link' + (0, _isornot2.default)(isSelected, 'selected') + (0, _isornot2.default)(item.flags.correct, 'correct') + (0, _isornot2.default)(isLastInList, 'last-in-list');
 
@@ -6762,15 +6762,15 @@ var Nav = function (_React$Component) {
 				this.renderLabel(item.label)
 			);
 		}
-	}, {
-		key: 'renderSep',
-		value: function renderSep(index) {
-			return React.createElement(
-				'li',
-				{ key: index, className: 'seperator' },
-				React.createElement('hr', null)
-			);
-		}
+
+		// renderSep(index) {
+		// 	return (
+		// 		<li key={index} className="seperator">
+		// 			<hr />
+		// 		</li>
+		// 	)
+		// }
+
 	}, {
 		key: 'getLockEl',
 		value: function getLockEl(isLocked) {
@@ -6812,8 +6812,8 @@ var Nav = function (_React$Component) {
 							case 'sub-link':
 								return _this2.renderSubLink(index, navState.navTargetIndex === index, list, lockEl);
 
-							case 'seperator':
-								return _this2.renderSep(index);
+							// case 'seperator':
+							// 	return this.renderSep(index)
 						}
 					})
 				),

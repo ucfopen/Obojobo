@@ -4,7 +4,6 @@
 	$color-nav-bg: #fbfbfb;
 	$color-nav-highlight: $color-obojobo-blue;
 	$color-nav-hover: darken($color-highlight, 25%);
-	$break-small: 1000px;
 	$padding: 2rem;
 
 	overflow: auto;
@@ -24,8 +23,8 @@
 	transition: left $duration-animation-default $duration-animation-default;
 	border-right: 1px solid transparentize($color-shadow, 0.1);
 
-	@media screen and (max-width: $break-small) {
-		width: 14rem;
+	@media screen and (max-width: $breakpoint-nav-small) {
+		width: $dimension-nav-menu-small;
 		padding: $padding * 0.4;
 		padding-bottom: $padding;
 		padding-top: 0;
@@ -33,8 +32,8 @@
 	}
 
 	&.is-locked {
-		li.link,
-		li.seperator {
+		// li.seperator ,
+		li.link {
 			opacity: 0.25;
 			pointer-events: none;
 
@@ -72,7 +71,7 @@
 		background-repeat: no-repeat;
 		background-size: contain;
 
-		@media screen and (max-width: $break-small) {
+		@media screen and (max-width: $breakpoint-nav-small) {
 			left: -1rem;
 			height: 0.65rem;
 		}
@@ -172,7 +171,7 @@
 				height: 1.2em;
 				background: $color-nav-bg;
 
-				@media screen and (max-width: $break-small) {
+				@media screen and (max-width: $breakpoint-nav-small) {
 					width: 1em;
 					height: 2em;
 				}
@@ -188,7 +187,7 @@
 					height: 100%;
 					background: $color-nav-bg;
 
-					@media screen and (max-width: $break-small) {
+					@media screen and (max-width: $breakpoint-nav-small) {
 						width: 1em;
 						height: 1em;
 					}
@@ -260,19 +259,17 @@
 
 	.is-assessment {
 		position: relative;
-		margin-left: 0;
-		margin-bottom: 0.75em;
-		padding: 0.75em 0.75em 0.75em 1.5em;
-		border-top: solid 1px lighten($color-text, 80%);
-		border-left: solid 1px $color-nav-bg;
-		border-bottom: solid 1px lighten($color-text, 80%);
+
+		&.is-last-in-list {
+			border-left: $dimension-nav-menu-small;
+		}
 
 		&:before {
 			display: none;
 		}
 
 		&:after {
-			left: 0;
+			left: -0.9em;
 			width: 1.2em;
 			height: 1.2em;
 			content: 'Q';
@@ -288,7 +285,6 @@
 
 		&.is-selected {
 			color: $color-nav-highlight;
-			border-left: solid 1px $color-bg;
 
 			&:after {
 				color: $color-bg;
@@ -302,9 +298,9 @@
 		}
 	}
 
-	.seperator {
-		cursor: default;
-	}
+	// .seperator {
+	// 	cursor: default;
+	// }
 
 	.toggle-button {
 		background-image: url('./arrow.svg');
@@ -345,7 +341,7 @@
 		opacity: 0.5;
 		transition: opacity $duration-animation-default $duration-animation-default;
 
-		@media screen and (max-width: $break-small) {
+		@media screen and (max-width: $breakpoint-nav-small) {
 			left: $padding * 0.4;
 		}
 	}

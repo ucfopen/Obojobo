@@ -11,24 +11,19 @@ Common.Store.registerModel('ObojoboDraft.Sections.Content', {
 	getNavItem: model => ({
 		type: 'hidden',
 		showChildren: true
-	}),
+	})
 
-	generateNav: model => {
-		let nav = []
+	// generateNav: model => {
+	// 	let nav = model.children.models.map(child => ({
+	// 		type: 'link',
+	// 		label: child.title,
+	// 		id: child.get('id')
+	// 	}))
 
-		for (let index = 0; index < model.children.models.length; index++) {
-			let child = model.children.models[index]
-			nav.push({
-				type: 'link',
-				label: child.title,
-				id: child.get('id')
-			})
-		}
+	// 	nav.push({
+	// 		type: 'seperator'
+	// 	})
 
-		nav.push({
-			type: 'seperator'
-		})
-
-		return nav
-	}
+	// 	return nav
+	// }
 })

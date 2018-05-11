@@ -19,7 +19,7 @@ exports[`Nav renders all list item types 1`] = `
       </a>
     </li>
     <li
-      className="link is-not-selected is-not-visited is-not-complete is-not-correct is-not-assessment is-first-in-list is-not-last-in-list"
+      className="link is-not-selected is-not-visited is-not-complete is-not-correct is-not-assessment is-not-first-in-list is-not-last-in-list"
       onClick={[Function]}
     >
       <a>
@@ -64,11 +64,6 @@ exports[`Nav renders all list item types 1`] = `
       <div
         className="lock-icon"
       />
-    </li>
-    <li
-      className="seperator"
-    >
-      <hr />
     </li>
   </ul>
   <div

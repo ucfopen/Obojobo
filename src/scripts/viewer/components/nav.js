@@ -33,15 +33,8 @@ export default class Nav extends React.Component {
 
 	renderLink(index, isSelected, list, lockEl) {
 		let item = list[index]
-		let isFirstInList =
-			list[index - 1] &&
-			(list[index - 1].type != 'link' || list[index - 1].flags.assessment) &&
-			list[index - 1].type != 'sub-link' &&
-			!item.flags.assessment
-		let isLastInList =
-			!list[index + 1] ||
-			(list[index + 1].type != 'link' && list[index + 1].type != 'sub-link') ||
-			(list[index + 1].flags.assessment && !item.flags.assessment)
+		let isFirstInList = !list[index - 1]
+		let isLastInList = !list[index + 1]
 
 		let className =
 			'link' +
@@ -63,10 +56,7 @@ export default class Nav extends React.Component {
 
 	renderSubLink(index, isSelected, list, lockEl) {
 		let item = list[index]
-		var isLastInList =
-			!list[index + 1] ||
-			(list[index + 1].type != 'link' && list[index + 1].type != 'sub-link') ||
-			list[index + 1].flags.assessment
+		let isLastInList = !list[index + 1]
 
 		let className =
 			'sub-link' +
@@ -90,13 +80,13 @@ export default class Nav extends React.Component {
 		)
 	}
 
-	renderSep(index) {
-		return (
-			<li key={index} className="seperator">
-				<hr />
-			</li>
-		)
-	}
+	// renderSep(index) {
+	// 	return (
+	// 		<li key={index} className="seperator">
+	// 			<hr />
+	// 		</li>
+	// 	)
+	// }
 
 	getLockEl(isLocked) {
 		if (isLocked) {
@@ -133,8 +123,8 @@ export default class Nav extends React.Component {
 							case 'sub-link':
 								return this.renderSubLink(index, navState.navTargetIndex === index, list, lockEl)
 
-							case 'seperator':
-								return this.renderSep(index)
+							// case 'seperator':
+							// 	return this.renderSep(index)
 						}
 					})}
 				</ul>
