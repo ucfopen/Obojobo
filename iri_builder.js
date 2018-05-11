@@ -77,6 +77,10 @@ const iriFactory = (req, providedHost) => {
 
 		getPickerIRI: () => {
 			return createIRI(host, `/api/picker`)
+		},
+
+		getVisitIRI: visitId => {
+			return createIRI(host, `/api/visit/${visitId}`)
 		}
 	}
 }

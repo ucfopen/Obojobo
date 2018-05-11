@@ -507,6 +507,56 @@ const caliperEventFactory = (req, host = null, isFromReq = false) => {
 			Object.assign(caliperEvent.extensions, extensions)
 
 			return updateEventToVersion1_1(caliperEvent)
+		},
+
+		// Caliper-Spec Properties
+		// type: (type: Term, REQUIRED) ToolUseEvent
+		// actor: (type: Person, REQUIRED) User
+		// action: (type: Term, REQUIRED) Used
+		// object: (type: SoftwareApplication, REQUIRED) Obo IRI
+		// generated: (type: Entity, Optional) Visit IRI
+		createViewerOpenEvent: obj => {
+			let required = ['visitId']
+			validateCaliperEvent({ required }, obj, ACTOR_USER)
+
+			let options = assignCaliperOptions(obj)
+
+			let { actor, extensions } = obj
+			let caliperEvent = createEvent(Event, actor, IRI, options) //@TODO should be ToolUse Event
+
+			caliperEvent.setType('ToolUseEvent')
+			caliperEvent.setAction('Used')
+			caliperEvent.setObject(IRI.getEdAppIRI())
+			caliperEvent.setGenerated(IRI.getVisitIRI(obj.visitId))
+
+			Object.assign(caliperEvent.extensions, extensions)
+
+			return updateEventToVersion1_1(caliperEvent)
+		},
+
+		// Caliper-Spec Properties
+		// type: (type: Term, REQUIRED) VisitCreateEvent
+		// actor: (type: Person, REQUIRED) User
+		// action: (type: Term, REQUIRED) Created
+		// object: (type: SoftwareApplication, REQUIRED) Obo IRI
+		// generated: (type: Entity, Optional) Visit IRI
+		createVisitCreateEvent: obj => {
+			let required = ['visitId']
+			validateCaliperEvent({ required }, obj, ACTOR_USER)
+
+			let options = assignCaliperOptions(obj)
+
+			let { actor, extensions } = obj
+			let caliperEvent = createEvent(Event, actor, IRI, options)
+
+			caliperEvent.setType('Event')
+			caliperEvent.setAction('Created')
+			caliperEvent.setObject(IRI.getEdAppIRI())
+			caliperEvent.setGenerated(IRI.getVisitIRI(obj.visitId))
+
+			Object.assign(caliperEvent.extensions, extensions)
+
+			return updateEventToVersion1_1(caliperEvent)
 		}
 	}
 }
