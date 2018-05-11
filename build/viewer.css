@@ -504,6 +504,7 @@ body {
     border-left: solid 1px #666666; }
   .viewer--components--nav .heading {
     padding-top: 2em;
+    margin-bottom: 1em;
     position: sticky;
     z-index: 5;
     background: #fbfbfb;

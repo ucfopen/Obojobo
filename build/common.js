@@ -5704,6 +5704,10 @@ var wrapElement = function wrapElement(styleRange, nodeToWrap, text) {
 			nodeToWrap.text = text;
 			return newChild;
 
+		case _styleType2.default.MONOSPACE:
+			styleRange.type = 'code';
+		// Intentional fallthrough
+
 		default:
 			newChild = new _mockElement2.default(styleRange.type, Object.assign({}, styleRange.data));
 			nodeToWrap.parent.replaceChild(nodeToWrap, newChild);
