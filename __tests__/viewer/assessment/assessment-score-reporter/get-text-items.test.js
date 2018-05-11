@@ -7,6 +7,7 @@ import {
 	TYPE_PASSFAIL_PASSED_GIVEN_SCORE_AND_ATTEMPT_SCORE_LESS_THAN_100,
 	TYPE_PASSFAIL_PASSED_GIVEN_SCORE_AND_ATTEMPT_SCORE_IS_100_AND_NO_MODS_REWARDED,
 	TYPE_PASSFAIL_PASSED_GIVEN_SCORE_AND_ATTEMPT_SCORE_IS_100_AND_MODS_REWARDED,
+	TYPE_PASSFAIL_FAILED_GIVEN_ATTEMPT_SCORE,
 	TYPE_PASSFAIL_FAILED_GIVEN_NO_SCORE,
 	TYPE_PASSFAIL_FAILED_GIVEN_SCORE,
 	TYPE_PASSFAIL_UNABLE_TO_PASS_GIVEN_NO_SCORE,
@@ -502,6 +503,40 @@ describe('getTextItems', () => {
 		])
 	})
 
+	test('TYPE_PASSFAIL_FAILED_GIVEN_ATTEMPT_SCORE', () => {
+		getDisplayType.mockReturnValueOnce(TYPE_PASSFAIL_FAILED_GIVEN_ATTEMPT_SCORE)
+		expect(
+			getTextItems(
+				{
+					passingAttemptScore: 50,
+					mods: []
+				},
+				displayValues
+			)
+		).toEqual([
+			{
+				type: 'value',
+				text: 'Attempt Score',
+				value: 'AttemptScore'
+			},
+			{
+				type: 'divider'
+			},
+			{
+				type: 'text',
+				text: 'You need 50% or higher to pass'
+			},
+			{
+				type: 'divider'
+			},
+			{
+				type: 'total',
+				text: 'Total Score',
+				value: 'AssessmentScore'
+			}
+		])
+	})
+
 	test('TYPE_PASSFAIL_FAILED_GIVEN_NO_SCORE', () => {
 		getDisplayType.mockReturnValueOnce(TYPE_PASSFAIL_FAILED_GIVEN_NO_SCORE)
 		expect(
@@ -523,7 +558,7 @@ describe('getTextItems', () => {
 			},
 			{
 				type: 'text',
-				text: 'You need 50-100% to pass'
+				text: 'You need 50% or higher to pass'
 			},
 			{
 				type: 'divider'
@@ -594,7 +629,7 @@ describe('getTextItems', () => {
 			},
 			{
 				type: 'text',
-				text: 'You needed 50-100% to pass'
+				text: 'You needed 50% or higher to pass'
 			},
 			{
 				type: 'divider'
@@ -630,7 +665,7 @@ describe('getTextItems', () => {
 			{
 				type: 'text',
 				text:
-					'You did not achieve a passing 50-100% score within the number of attempts available. Your highest attempt score will be used instead.'
+					'You did not achieve a passing 50% or higher score within the number of attempts available. Your highest attempt score will be used instead.'
 			},
 			{
 				type: 'divider'
@@ -673,7 +708,8 @@ describe('getTextItems', () => {
 			},
 			{
 				type: 'text',
-				text: 'You did not achieve a passing 50-100% score within the number of attempts available.'
+				text:
+					'You did not achieve a passing 50% or higher score within the number of attempts available.'
 			},
 			{
 				type: 'value',
@@ -702,7 +738,7 @@ describe('getTextItems', () => {
 			)
 		).toEqual([
 			{
-				type: 'value',
+				type: 'total',
 				text: 'Score',
 				value: 'AssessmentScore'
 			}
