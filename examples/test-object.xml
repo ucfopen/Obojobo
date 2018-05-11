@@ -52,18 +52,18 @@
 				<p>An image with no source:</p>
 				<img />
 			</Page>
-			<Page title="Practice Questions">
+			<Page id="questions-page" title="Practice Questions">
 				<h2>Practice question:</h2>
 				<p>This question is a <b>pick-one-multiple-correct</b> type question with feedback and an included <b>solution</b>:</p>
-				<Question title="A custom question title">
+				<Question id="practice-question-1" title="A custom question title">
 					<h1>Which equation describes horizontal displacement of projectile motion?</h1>
 					<MCAssessment responseType="pick-one-multiple-correct">
-						<MCChoice score="100">
+						<MCChoice id="pq1-answer-1" score="100">
 							<MCAnswer>
 								<MathEquation latex="x=v_xt" align="left" />
 							</MCAnswer>
 						</MCChoice>
-						<MCChoice score="100">
+						<MCChoice id="pq1-answer-2" score="100">
 							<MCAnswer>
 								<MathEquation latex="x=v_{ix}t + \frac{1}{2} a_x t^2" align="left" />
 							</MCAnswer>
@@ -72,7 +72,7 @@
 								<MathEquation latex="x=v_xt" align="left" />
 							</MCFeedback>
 						</MCChoice>
-						<MCChoice score="0">
+						<MCChoice id="pq1-answer-3" score="0">
 							<MCAnswer>
 								<MathEquation latex="x=\frac{1}{2} a_x t^2" align="left" />
 							</MCAnswer>
@@ -642,7 +642,6 @@ int Fibonacci(int n)
 				</QuestionBank>
 
 				<QuestionBank select="random">
-
 					<Question>
 						<h1>Apple is a type of</h1>
 						<MCAssessment responseType="pick-one" shuffle="true">
