@@ -18,7 +18,7 @@ module.exports = (userId, content = {}, xml = null) => {
 				.then(result => {
 					newDraft = result
 
-					return db.one(
+					return transactionDb.one(
 						`
 						INSERT INTO drafts_content
 							(draft_id, content, xml)
