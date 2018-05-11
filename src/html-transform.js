@@ -16,6 +16,8 @@ let applyAlign = (node) => {
 let htmlTransform = (node) => {
 	if(node.type === 'element')
 	{
+		if(!node.attributes) node.attributes = {}
+
 		switch(node.name)
 		{
 			case 'h1':
@@ -175,6 +177,8 @@ let htmlTransform = (node) => {
 				node.attributes = { numRows, numCols, header }
 				break;
 		}
+
+		if(Object.keys(node.attributes).length === 0) delete node.attributes
 	}
 
 	if(node.elements)
