@@ -5,6 +5,10 @@ import Viewer from 'Viewer'
 
 let { Button } = Common.components
 let LTINetworkStates = Viewer.stores.assessmentStore.LTINetworkStates
+// Number forces an error to show for testing purposes
+// let number = 0
+// Until I learn/figure out the proper way, this is keeping track of the error state.
+let tempErrorHappened = false
 
 const notLTI = () => (
 	<div className="obojobo-draft--sections--assessment--lti-status is-not-lti">&nbsp;</div>
@@ -16,9 +20,36 @@ const noScoreSent = externalSystemLabel => (
 	</div>
 )
 
-const synced = (assessmentScore, externalSystemLabel) => (
+// Added a switch statement to check if the error state is true.
+// onClickClose sets the error state to false, RemoveRecover forces an update of the component.
+// Ideally would like to combine their functionality.
+const synced = (assessmentScore, externalSystemLabel, onClickRemoveRecoverMessage) => (
 	<div className="obojobo-draft--sections--assessment--lti-status is-synced">
-		{`✔ Your recorded score of ${assessmentScore}% was sent to ${externalSystemLabel}`}
+		{(() => {
+			switch (tempErrorHappened) {
+				case true:
+					return (
+						<div className="recovery-message">
+							<h2>{`Success!`}</h2>
+							{`Your score was sucessfully sent to to ${externalSystemLabel}.`}
+							<Button
+								isDangerous
+								onClick={() => {
+									onClickClose()
+									onClickRemoveRecoverMessage()
+								}}
+							>
+								{`Close this message.`}
+							</Button>
+						</div>
+					)
+				default:
+					return (
+						<p
+						>{`✔ Your recorded score of ${assessmentScore}% was sent to ${externalSystemLabel}.`}</p>
+					)
+			}
+		})()}
 	</div>
 )
 
@@ -51,10 +82,49 @@ const renderError = (ltiState = {}, systemLabel, onClickResendScore) => (
 	</div>
 )
 
+// Need to combine with other button functionality.
+const onClickClose = () => {
+	//console.log("This is working?")
+	tempErrorHappened = false
+	//console.log("If so, this should be false: " + tempErrorHappened)
+}
+
 export default props => {
 	if (props.isPreviewing || !props.externalSystemLabel) return notLTI()
 
 	if (props.externalSystemLabel && (!props.ltiState || !props.ltiState.state)) {
+		tempErrorHappened = true
+		return renderError(props.ltiState, props.externalSystemLabel, props.onClickResendScore)
+	}
+
+	switch (props.ltiState.state.gradebookStatus) {
+		case 'ok_no_outcome_service':
+			return notLTI()
+
+		case 'ok_null_score_not_sent':
+			return noScoreSent(props.externalSystemLabel)
+
+		// Function now needs the onClickRemoveRecoverMessage from props.
+		case 'ok_gradebook_matches_assessment_score':
+			return synced(
+				Math.round(props.assessmentScore),
+				props.externalSystemLabel,
+				props.onClickRemoveRecoverMessage
+			)
+
+		default:
+			tempErrorHappened = true
+			return renderError(props.ltiState, props.externalSystemLabel, props.onClickResendScore)
+	}
+}
+
+// Test code, forced an error to show before the synced message could show. Also has some print statements.
+/*
+export default props => {
+	if (props.isPreviewing || !props.externalSystemLabel) return notLTI()
+
+	if (props.externalSystemLabel && (!props.ltiState || !props.ltiState.state)) {
+		tempErrorHappened = true
 		return renderError(props.ltiState, props.externalSystemLabel, props.onClickResendScore)
 	}
 
@@ -66,9 +136,28 @@ export default props => {
 			return noScoreSent(props.externalSystemLabel)
 
 		case 'ok_gradebook_matches_assessment_score':
-			return synced(Math.round(props.assessmentScore), props.externalSystemLabel)
+			return synced(Math.round(props.assessmentScore), props.externalSystemLabel, props.onClickRemoveRecoverMessage)
 
 		default:
-			return renderError(props.ltiState, props.externalSystemLabel, props.onClickResendScore)
+			if (number < 5) {
+				number++
+				console.log("Default!")
+				console.log("Number now is" + number)
+				console.log("Defualt stuff is " + JSON.stringify(props.ltiState))
+				console.log(props.ltiState.statusDetails)
+				props.ltiState.statusDetails = "Can I insert things here?"
+				console.log(props.ltiState.statusDetails)
+				tempErrorHappened = true
+				console.log("Case 1")
+				return renderError(props.ltiState, props.externalSystemLabel, props.onClickResendScore)
+			}
+			if (tempErrorHappened) {
+				console.log("Case 2")
+				return synced(Math.round(props.assessmentScore), props.externalSystemLabel, props.onClickRemoveRecoverMessage)
+			}
+			console.log("Case 3")
+			return synced(Math.round(props.assessmentScore), props.externalSystemLabel, props.onClickRemoveRecoverMessage)
 	}
 }
+
+*/

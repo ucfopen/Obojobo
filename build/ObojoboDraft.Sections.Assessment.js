@@ -664,6 +664,10 @@ var AssessmentPostTest = function AssessmentPostTest(props) {
 		AssessmentUtil.resendLTIScore(props.model);
 	};
 
+	var onClickRemoveRecoverMessage = function onClickRemoveRecoverMessage() {
+		AssessmentUtil.closeRecoveryMessage(props.model);
+	};
+
 	var ltiState = AssessmentUtil.getLTIStateForModel(props.moduleData.assessmentState, props.model);
 
 	var assessmentLabel = NavUtil.getNavLabelForModel(props.moduleData.navState, props.model);
@@ -736,7 +740,8 @@ var AssessmentPostTest = function AssessmentPostTest(props) {
 				isPreviewing: props.moduleData.isPreviewing,
 				externalSystemLabel: externalSystemLabel,
 				onClickResendScore: onClickResendScore,
-				assessmentScore: assessmentScore
+				assessmentScore: assessmentScore,
+				onClickRemoveRecoverMessage: onClickRemoveRecoverMessage
 			}),
 			function () {
 				switch (ltiState.state.gradebookStatus) {
@@ -821,6 +826,10 @@ function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { de
 var Button = _Common2.default.components.Button;
 
 var LTINetworkStates = _Viewer2.default.stores.assessmentStore.LTINetworkStates;
+// Number forces an error to show for testing purposes
+// let number = 0
+// Until I learn/figure out the proper way, this is keeping track of the error state.
+var tempErrorHappened = false;
 
 var notLTI = function notLTI() {
 	return React.createElement(
@@ -838,11 +847,45 @@ var noScoreSent = function noScoreSent(externalSystemLabel) {
 	);
 };
 
-var synced = function synced(assessmentScore, externalSystemLabel) {
+// Added a switch statement to check if the error state is true.
+// onClickClose sets the error state to false, RemoveRecover forces an update of the component.
+// Ideally would like to combine their functionality.
+var synced = function synced(assessmentScore, externalSystemLabel, onClickRemoveRecoverMessage) {
 	return React.createElement(
 		'div',
 		{ className: 'obojobo-draft--sections--assessment--lti-status is-synced' },
-		'\u2714 Your recorded score of ' + assessmentScore + '% was sent to ' + externalSystemLabel
+		function () {
+			switch (tempErrorHappened) {
+				case true:
+					return React.createElement(
+						'div',
+						{ className: 'recovery-message' },
+						React.createElement(
+							'h2',
+							null,
+							'Success!'
+						),
+						'Your score was sucessfully sent to to ' + externalSystemLabel + '.',
+						React.createElement(
+							Button,
+							{
+								isDangerous: true,
+								onClick: function onClick() {
+									onClickClose();
+									onClickRemoveRecoverMessage();
+								}
+							},
+							'Close this message.'
+						)
+					);
+				default:
+					return React.createElement(
+						'p',
+						null,
+						'\u2714 Your recorded score of ' + assessmentScore + '% was sent to ' + externalSystemLabel + '.'
+					);
+			}
+		}()
 	);
 };
 
@@ -894,10 +937,18 @@ var renderError = function renderError() {
 	);
 };
 
+// Need to combine with other button functionality.
+var onClickClose = function onClickClose() {
+	//console.log("This is working?")
+	tempErrorHappened = false;
+	//console.log("If so, this should be false: " + tempErrorHappened)
+};
+
 exports.default = function (props) {
 	if (props.isPreviewing || !props.externalSystemLabel) return notLTI();
 
 	if (props.externalSystemLabel && (!props.ltiState || !props.ltiState.state)) {
+		tempErrorHappened = true;
 		return renderError(props.ltiState, props.externalSystemLabel, props.onClickResendScore);
 	}
 
@@ -908,13 +959,59 @@ exports.default = function (props) {
 		case 'ok_null_score_not_sent':
 			return noScoreSent(props.externalSystemLabel);
 
+		// Function now needs the onClickRemoveRecoverMessage from props.
 		case 'ok_gradebook_matches_assessment_score':
-			return synced(Math.round(props.assessmentScore), props.externalSystemLabel);
+			return synced(Math.round(props.assessmentScore), props.externalSystemLabel, props.onClickRemoveRecoverMessage);
 
 		default:
+			tempErrorHappened = true;
 			return renderError(props.ltiState, props.externalSystemLabel, props.onClickResendScore);
 	}
 };
+
+// Test code, forced an error to show before the synced message could show. Also has some print statements.
+/*
+export default props => {
+	if (props.isPreviewing || !props.externalSystemLabel) return notLTI()
+
+	if (props.externalSystemLabel && (!props.ltiState || !props.ltiState.state)) {
+		tempErrorHappened = true
+		return renderError(props.ltiState, props.externalSystemLabel, props.onClickResendScore)
+	}
+
+	switch (props.ltiState.state.gradebookStatus) {
+		case 'ok_no_outcome_service':
+			return notLTI()
+
+		case 'ok_null_score_not_sent':
+			return noScoreSent(props.externalSystemLabel)
+
+		case 'ok_gradebook_matches_assessment_score':
+			return synced(Math.round(props.assessmentScore), props.externalSystemLabel, props.onClickRemoveRecoverMessage)
+
+		default:
+			if (number < 5) {
+				number++
+				console.log("Default!")
+				console.log("Number now is" + number)
+				console.log("Defualt stuff is " + JSON.stringify(props.ltiState))
+				console.log(props.ltiState.statusDetails)
+				props.ltiState.statusDetails = "Can I insert things here?"
+				console.log(props.ltiState.statusDetails)
+				tempErrorHappened = true
+				console.log("Case 1")
+				return renderError(props.ltiState, props.externalSystemLabel, props.onClickResendScore)
+			}
+			if (tempErrorHappened) {
+				console.log("Case 2")
+				return synced(Math.round(props.assessmentScore), props.externalSystemLabel, props.onClickRemoveRecoverMessage)
+			}
+			console.log("Case 3")
+			return synced(Math.round(props.assessmentScore), props.externalSystemLabel, props.onClickRemoveRecoverMessage)
+	}
+}
+
+*/
 
 /***/ }),
 

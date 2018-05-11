@@ -13,6 +13,27 @@
 		padding-bottom: 2em;
 	}
 
+	.recovery-message {
+		background-color: #87d37c;
+		padding: 2em;
+		margin-top: 0.5em;
+		margin-bottom: 0.5em;
+		border-radius: 0.25em;
+
+		> h2 {
+			color: $color-text;
+			font-size: 1em;
+			font-weight: bold;
+		}
+
+		> p,
+		> div > p {
+			font-size: 0.9em;
+			line-height: 1.4em;
+			color: $color-text;
+		}
+	}
+
 	&.is-not-synced {
 		background-color: #ffe9c3;
 		padding: 2em;

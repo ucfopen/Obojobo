@@ -138,7 +138,9 @@ exports[`lti-status rendering with lti state GRADEBOOK_STATUS_OK_GRADEBOOK_MATCH
 <div
   className="obojobo-draft--sections--assessment--lti-status is-synced"
 >
-  ✔ Your recorded score of 75% was sent to mocklti
+  <p>
+    ✔ Your recorded score of 75% was sent to mocklti.
+  </p>
 </div>
 `;
 

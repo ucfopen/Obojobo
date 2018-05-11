@@ -875,6 +875,7 @@ Object.defineProperty(exports, "__esModule", {
 	value: true
 });
 var processJsonResults = function processJsonResults(res) {
+	//console.log("THE JSON RESULTS ARE..." + JSON.stringify(res))
 	return Promise.resolve(res.json()).then(function (json) {
 		if (json.status === 'error') console.log(json.value);
 		return json;
@@ -949,6 +950,7 @@ var APIUtil = {
 		return APIUtil.post('/api/assessments/attempt/' + attempt.attemptId + '/end').then(processJsonResults);
 	},
 	resendLTIAssessmentScore: function resendLTIAssessmentScore(lo, assessment) {
+		//console.log("We're resending the assessment score!")
 		return APIUtil.post('/api/lti/sendAssessmentScore', {
 			draftId: lo.get('draftId'),
 			assessmentId: assessment.get('id')
@@ -1206,6 +1208,9 @@ var AssessmentUtil = {
 				id: model.get('id')
 			}
 		});
+	},
+	closeRecoveryMessage: function closeRecoveryMessage(model) {
+		return Dispatcher.trigger('assessment:closeRecoveryMessage', {});
 	}
 };
 
@@ -2600,6 +2605,11 @@ var AssessmentStore = function (_Store) {
 
 		Dispatcher.on('assessment:resendLTIScore', function (payload) {
 			_this.tryResendLTIScore(payload.value.id);
+		});
+
+		Dispatcher.on('assessment:closeRecoveryMessage', function (payload) {
+			//console.log("THE LTI FROM THE STORE IS " + JSON.stringify(this.lti))
+			_this.triggerChange();
 		});
 
 		Dispatcher.on('question:setResponse', function (payload) {

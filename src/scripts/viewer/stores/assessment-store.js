@@ -47,6 +47,11 @@ class AssessmentStore extends Store {
 			this.tryResendLTIScore(payload.value.id)
 		})
 
+		Dispatcher.on('assessment:closeRecoveryMessage', payload => {
+			//console.log("THE LTI FROM THE STORE IS " + JSON.stringify(this.lti))
+			this.triggerChange()
+		})
+
 		Dispatcher.on('question:setResponse', payload => {
 			this.trySetResponse(payload.value.id, payload.value.response, payload.value.targetId)
 		})
