@@ -11,6 +11,7 @@ let deactivateOldVisitsAndCreateNewVisit = (
 	launchId,
 	isPreview
 ) => {
+	let deactivatedVisitId
 	return db
 		.oneOrNone(
 			// deactivate all my visits for this draft
@@ -25,47 +26,38 @@ let deactivateOldVisitsAndCreateNewVisit = (
 				userId
 			}
 		)
-		.then(deactivatedVisit =>
-			Promise.all([
-				db.one(
-					// get id of the newest version of the draft
-					`SELECT id
+		.then(deactivatedVisit => {
+			deactivatedVisitId = deactivatedVisit ? deactivatedVisit.id : null
+			return db.one(
+				// get id of the newest version of the draft
+				`SELECT id
 						FROM drafts_content
 						WHERE draft_id = $[draftId]
 						ORDER BY created_at DESC
 						LIMIT 1`,
-					{
-						draftId
-					}
-				),
-				deactivatedVisit
-			])
-		)
-		.then(([draftsContent, deactivatedVisit]) =>
-			Promise.all([
-				db.one(
-					// Create a new visit
-					`INSERT INTO visits
+				{
+					draftId
+				}
+			)
+		})
+		.then(draftsContent =>
+			db.one(
+				// Create a new visit
+				`INSERT INTO visits
 					(draft_id, draft_content_id, user_id, launch_id, resource_link_id, is_active, is_preview)
 					VALUES ($[draftId], $[draftContentId], $[userId], $[launchId], $[resourceLinkId], true, $[isPreview])
 					RETURNING id`,
-					{
-						draftId,
-						draftContentId: draftsContent.id,
-						userId,
-						resourceLinkId,
-						launchId,
-						isPreview
-					}
-				),
-				deactivatedVisit
-			])
+				{
+					draftId,
+					draftContentId: draftsContent.id,
+					userId,
+					resourceLinkId,
+					launchId,
+					isPreview
+				}
+			)
 		)
-		.then(([visit, deactivatedVisit]) => {
-			let visitId = visit.id
-			let deactivatedVisitId = deactivatedVisit ? deactivatedVisit.id : null
-			return { visitId, deactivatedVisitId }
-		})
+		.then(visit => ({ visitId: visit.id, deactivatedVisitId }))
 }
 
 class Visit {
