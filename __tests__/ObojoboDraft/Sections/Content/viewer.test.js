@@ -22,7 +22,6 @@ describe('ObojoboDraft.Sections.Content registration', () => {
 		expect(register[1]).toHaveProperty('adapter', null)
 		expect(register[1]).toHaveProperty('componentClass', ViewerComponent)
 		expect(register[1]).toHaveProperty('selectionHandler', null)
-		// expect(register[1]).toHaveProperty('generateNav')
 	})
 
 	test('getNavItem returns expected object', () => {
@@ -38,30 +37,4 @@ describe('ObojoboDraft.Sections.Content registration', () => {
 			showChildren: true
 		})
 	})
-
-	// test('generateNav builds expected object without children', () => {
-	// 	let register = Common.Store.registerModel.mock.calls[0]
-	// 	let model = {
-	// 		children: {
-	// 			models: []
-	// 		}
-	// 	}
-	// 	let nav = register[1].generateNav(model)
-	// 	expect(nav).toEqual([{ type: 'seperator' }])
-	// })
-
-	// test('generateNav builds expected object with children', () => {
-	// 	let register = Common.Store.registerModel.mock.calls[0]
-	// 	let model = {
-	// 		children: {
-	// 			models: [{ title: 'one', get: () => 1 }, { title: 'two', get: () => 2 }]
-	// 		}
-	// 	}
-	// 	let nav = register[1].generateNav(model)
-	// 	expect(nav).toEqual([
-	// 		{ id: 1, label: 'one', type: 'link' },
-	// 		{ id: 2, label: 'two', type: 'link' },
-	// 		{ type: 'seperator' }
-	// 	])
-	// })
 })

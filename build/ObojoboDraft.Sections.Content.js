@@ -110,20 +110,6 @@ _Common2.default.Store.registerModel('ObojoboDraft.Sections.Content', {
 			showChildren: true
 		};
 	}
-
-	// generateNav: model => {
-	// 	let nav = model.children.models.map(child => ({
-	// 		type: 'link',
-	// 		label: child.title,
-	// 		id: child.get('id')
-	// 	}))
-
-	// 	nav.push({
-	// 		type: 'seperator'
-	// 	})
-
-	// 	return nav
-	// }
 });
 
 /***/ }),

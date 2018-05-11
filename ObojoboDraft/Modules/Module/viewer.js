@@ -16,13 +16,4 @@ Common.Store.registerModel('ObojoboDraft.Modules.Module', {
 			showChildren: true
 		}
 	}
-
-	// generateNav(model) {
-	// 	return [
-	// 		{
-	// 			type: 'heading',
-	// 			label: model.title
-	// 		}
-	// 	]
-	// }
 })
