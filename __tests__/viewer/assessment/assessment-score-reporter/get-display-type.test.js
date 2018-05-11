@@ -6,6 +6,7 @@ import {
 	TYPE_PASSFAIL_PASSED_GIVEN_SCORE_AND_ATTEMPT_SCORE_LESS_THAN_100,
 	TYPE_PASSFAIL_PASSED_GIVEN_SCORE_AND_ATTEMPT_SCORE_IS_100_AND_NO_MODS_REWARDED,
 	TYPE_PASSFAIL_PASSED_GIVEN_SCORE_AND_ATTEMPT_SCORE_IS_100_AND_MODS_REWARDED,
+	TYPE_PASSFAIL_FAILED_GIVEN_ATTEMPT_SCORE,
 	TYPE_PASSFAIL_FAILED_GIVEN_NO_SCORE,
 	TYPE_PASSFAIL_FAILED_GIVEN_SCORE,
 	TYPE_PASSFAIL_UNABLE_TO_PASS_GIVEN_NO_SCORE,
@@ -109,7 +110,7 @@ describe('getDisplayType', () => {
 		expect(tc('pass-fail', p, attScore, 0, 0)).toEqual(
 			TYPE_PASSFAIL_PASSED_GIVEN_ATTEMPT_SCORE_WITHOUT_MODS_REWARDED
 		)
-		expect(tc('pass-fail', f, attScore, 0, 0)).toEqual(ERROR_UNKNOWN_DISPLAY_TYPE)
+		expect(tc('pass-fail', f, attScore, 0, 0)).toEqual(TYPE_PASSFAIL_FAILED_GIVEN_ATTEMPT_SCORE)
 		expect(tc('pass-fail', u, attScore, 0, 0)).toEqual(ERROR_UNKNOWN_DISPLAY_TYPE)
 		expect(tc('pass-fail', p, highest, 0, 0)).toEqual(ERROR_UNKNOWN_DISPLAY_TYPE)
 		expect(tc('pass-fail', f, highest, 0, 0)).toEqual(ERROR_UNKNOWN_DISPLAY_TYPE)
@@ -133,7 +134,7 @@ describe('getDisplayType', () => {
 		expect(tc('pass-fail', p, attScore, 1, 0)).toEqual(
 			TYPE_PASSFAIL_PASSED_GIVEN_ATTEMPT_SCORE_WITHOUT_MODS_REWARDED
 		)
-		expect(tc('pass-fail', f, attScore, 1, 0)).toEqual(ERROR_UNKNOWN_DISPLAY_TYPE)
+		expect(tc('pass-fail', f, attScore, 1, 0)).toEqual(TYPE_PASSFAIL_FAILED_GIVEN_ATTEMPT_SCORE)
 		expect(tc('pass-fail', u, attScore, 1, 0)).toEqual(ERROR_UNKNOWN_DISPLAY_TYPE)
 		expect(tc('pass-fail', p, highest, 1, 0)).toEqual(ERROR_UNKNOWN_DISPLAY_TYPE)
 		expect(tc('pass-fail', f, highest, 1, 0)).toEqual(ERROR_UNKNOWN_DISPLAY_TYPE)
