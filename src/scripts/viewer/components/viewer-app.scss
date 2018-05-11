@@ -26,13 +26,13 @@
 	&.is-open-nav.is-enabled-nav {
 		padding-left: $dimension-nav-menu;
 		padding-top: 0;
-		// transition: padding-left $duration-animation-default , padding-top $duration-animation-default $duration-animation-default;
+
+		@media screen and (max-width: $breakpoint-nav-small) {
+			padding-left: $dimension-nav-menu-small;
+		}
 
 		> header {
 			top: -2.5rem;
-			// width: $dimension-nav-menu;
-			// border-right: 1px solid transparentize($color-shadow, 0.2);
-			// background: transparent;
 			border-bottom: 1px solid $color-transparent;
 
 			.viewer--components--logo,
@@ -108,6 +108,7 @@
 		right: 0;
 		bottom: 0;
 		z-index: $z-index-preview;
+		border-top: 2px solid $color-bg;
 
 		> .controls {
 			position: absolute;

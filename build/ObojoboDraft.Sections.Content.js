@@ -63,7 +63,7 @@
 /******/ 	__webpack_require__.p = "build/";
 /******/
 /******/ 	// Load entry module and return exports
-/******/ 	return __webpack_require__(__webpack_require__.s = 303);
+/******/ 	return __webpack_require__(__webpack_require__.s = 302);
 /******/ })
 /************************************************************************/
 /******/ ({
@@ -82,7 +82,7 @@ module.exports = Viewer;
 
 /***/ }),
 
-/***/ 120:
+/***/ 119:
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -92,7 +92,7 @@ var _Common = __webpack_require__(0);
 
 var _Common2 = _interopRequireDefault(_Common);
 
-var _viewerComponent = __webpack_require__(172);
+var _viewerComponent = __webpack_require__(171);
 
 var _viewerComponent2 = _interopRequireDefault(_viewerComponent);
 
@@ -109,31 +109,12 @@ _Common2.default.Store.registerModel('ObojoboDraft.Sections.Content', {
 			type: 'hidden',
 			showChildren: true
 		};
-	},
-
-	generateNav: function generateNav(model) {
-		var nav = [];
-
-		for (var index = 0; index < model.children.models.length; index++) {
-			var child = model.children.models[index];
-			nav.push({
-				type: 'link',
-				label: child.title,
-				id: child.get('id')
-			});
-		}
-
-		nav.push({
-			type: 'seperator'
-		});
-
-		return nav;
 	}
 });
 
 /***/ }),
 
-/***/ 172:
+/***/ 171:
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -192,10 +173,10 @@ exports.default = function (props) {
 
 /***/ }),
 
-/***/ 303:
+/***/ 302:
 /***/ (function(module, exports, __webpack_require__) {
 
-module.exports = __webpack_require__(120);
+module.exports = __webpack_require__(119);
 
 
 /***/ })

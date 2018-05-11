@@ -7,11 +7,6 @@ exports[`EditButton 1`] = `
   <button
     disabled={undefined}
     onClick={undefined}
-    style={
-      Object {
-        "backgroundImage": "",
-      }
-    }
     tabIndex={1}
   >
     Edit
@@ -26,11 +21,6 @@ exports[`EditButton onClick 1`] = `
   <button
     disabled={undefined}
     onClick={[Function]}
-    style={
-      Object {
-        "backgroundImage": "",
-      }
-    }
     tabIndex={1}
   >
     Edit
@@ -45,11 +35,6 @@ exports[`EditButton shouldPreventTab 1`] = `
   <button
     disabled={true}
     onClick={undefined}
-    style={
-      Object {
-        "backgroundImage": "",
-      }
-    }
     tabIndex="-1"
   >
     Edit

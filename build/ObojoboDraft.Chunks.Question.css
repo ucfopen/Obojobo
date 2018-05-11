@@ -50,7 +50,7 @@
   overflow: hidden; }
 
 .obojobo-draft--chunks--question.is-mode-practice .back::before {
-  color: #999999;
+  color: #666666;
   content: 'Practice';
   display: block;
   font-family: "Libre Franklin", Arial, sans-serif;

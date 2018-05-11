@@ -10,6 +10,7 @@
 	padding-top: 1rem;
 	box-sizing: border-box;
 	overflow: hidden;
+	background-image: url('./obojobo-logo.svg');
 
 	&.is-inverted {
 		filter: invert(100%);
