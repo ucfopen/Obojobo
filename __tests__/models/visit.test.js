@@ -11,14 +11,14 @@ describe('Visit Model', () => {
 	test('createVisit updates and inserts visit with expected values', () => {
 		expect.assertions(4)
 
-		db.oneOrNone.mockResolvedValueOnce({ id: 'deactivated-visit-id' })
+		db.manyOrNone.mockResolvedValueOnce([{ id: 'deactivated-visit-id' }])
 		db.one
 			.mockResolvedValueOnce({ id: 'mocked-draft-content-id' })
 			.mockResolvedValueOnce({ id: 'resulting-visit-id' })
 
 		return Visit.createVisit('user-id', 'draft-id', 'resource-link-id', 'launch-id').then(
 			result => {
-				expect(db.oneOrNone.mock.calls[0][1]).toEqual({
+				expect(db.manyOrNone.mock.calls[0][1]).toEqual({
 					draftId: 'draft-id',
 					userId: 'user-id'
 				})
@@ -35,7 +35,7 @@ describe('Visit Model', () => {
 				})
 				expect(result).toEqual({
 					visitId: 'resulting-visit-id',
-					deactivatedVisitId: 'deactivated-visit-id'
+					deactivatedVisitIds: ['deactivated-visit-id']
 				})
 			}
 		)
@@ -44,13 +44,16 @@ describe('Visit Model', () => {
 	test('createPreviewVisit updates and inserts with expected values', () => {
 		expect.assertions(4)
 
-		db.oneOrNone.mockResolvedValueOnce({ id: 'deactivated-visit-id' })
+		db.manyOrNone.mockResolvedValueOnce([
+			{ id: 'deactivated-visit-id' },
+			{ id: 'deactivated-visit-id2' }
+		])
 		db.one
 			.mockResolvedValueOnce({ id: 'mocked-draft-content-id' })
 			.mockResolvedValueOnce({ id: 'resulting-visit-id' })
 
 		return Visit.createPreviewVisit('user-id', 'draft-id').then(result => {
-			expect(db.oneOrNone.mock.calls[0][1]).toEqual({
+			expect(db.manyOrNone.mock.calls[0][1]).toEqual({
 				draftId: 'draft-id',
 				userId: 'user-id'
 			})
@@ -67,7 +70,7 @@ describe('Visit Model', () => {
 			})
 			expect(result).toEqual({
 				visitId: 'resulting-visit-id',
-				deactivatedVisitId: 'deactivated-visit-id'
+				deactivatedVisitIds: ['deactivated-visit-id', 'deactivated-visit-id2']
 			})
 		})
 	})

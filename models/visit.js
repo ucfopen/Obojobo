@@ -11,9 +11,9 @@ let deactivateOldVisitsAndCreateNewVisit = (
 	launchId,
 	isPreview
 ) => {
-	let deactivatedVisitId
+	let deactivatedVisitIds
 	return db
-		.oneOrNone(
+		.manyOrNone(
 			// deactivate all my visits for this draft
 			`UPDATE visits
 			SET is_active = false
@@ -26,8 +26,13 @@ let deactivateOldVisitsAndCreateNewVisit = (
 				userId
 			}
 		)
-		.then(deactivatedVisit => {
-			deactivatedVisitId = deactivatedVisit ? deactivatedVisit.id : null
+		.then(deactivatedVisits => {
+			// get the visits and squash them into an array of ids
+			deactivatedVisitIds = null
+			if (deactivatedVisits && deactivatedVisits.length) {
+				deactivatedVisitIds = deactivatedVisits.map(visit => visit.id)
+			}
+
 			return db.one(
 				// get id of the newest version of the draft
 				`SELECT id
@@ -57,7 +62,7 @@ let deactivateOldVisitsAndCreateNewVisit = (
 				}
 			)
 		)
-		.then(visit => ({ visitId: visit.id, deactivatedVisitId }))
+		.then(visit => ({ visitId: visit.id, deactivatedVisitIds }))
 }
 
 class Visit {
