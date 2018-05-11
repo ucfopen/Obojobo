@@ -11,5 +11,10 @@
                 <t>This is a test</t>
             </textGroup>
         </Heading>
+        <Heading headingLevel="2">
+            <textGroup>
+                <t align="center">This is a test</t>
+            </textGroup>
+        </Heading>
     </Module>
 </ObjoboDraftDoc>

@@ -250,6 +250,25 @@ Object {
       "id": null,
       "type": "ObojoboDraft.Chunks.Heading",
     },
+    Object {
+      "children": Array [],
+      "content": Object {
+        "headingLevel": 2,
+        "textGroup": Array [
+          Object {
+            "data": Object {
+              "align": "center",
+            },
+            "text": Object {
+              "styleList": Array [],
+              "value": "This is a test",
+            },
+          },
+        ],
+      },
+      "id": null,
+      "type": "ObojoboDraft.Chunks.Heading",
+    },
   ],
   "content": Object {},
   "id": null,
