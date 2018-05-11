@@ -3,14 +3,18 @@ let permissions = oboRequire('config').permissions
 
 class User {
 	constructor({
-		id = 0,
-		firstName = 'Guest',
-		lastName = 'Guest',
-		email = 'guest@obojobo.ucf.edu',
-		username = 'guest',
+		id = null,
+		firstName = null,
+		lastName = null,
+		email = null,
+		username = null,
 		createdAt = Date.now(),
 		roles = []
 	} = {}) {
+		if (firstName === null || lastName === null || email === null || username === null) {
+			throw new Error('Missing arguments for new user')
+		}
+
 		this.id = id
 		this.firstName = firstName
 		this.lastName = lastName
