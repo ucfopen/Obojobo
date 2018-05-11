@@ -841,6 +841,46 @@ Object {
 }
 `;
 
+exports[`XML to Draft Object Tranformation Converts native-type xml to native-type node 1`] = `
+Object {
+  "children": Array [],
+  "content": Object {
+    "textGroup": Array [
+      Object {
+        "data": null,
+        "text": Object {
+          "styleList": Array [],
+          "value": "33333333333333333333333333333333333333",
+        },
+      },
+      Object {
+        "data": null,
+        "text": Object {
+          "styleList": Array [],
+          "value": "True",
+        },
+      },
+      Object {
+        "data": null,
+        "text": Object {
+          "styleList": Array [],
+          "value": "0.33333333333333333333333",
+        },
+      },
+      Object {
+        "data": null,
+        "text": Object {
+          "styleList": Array [],
+          "value": "0.3",
+        },
+      },
+    ],
+  },
+  "id": null,
+  "type": "ObojoboDraft.Chunks.Text",
+}
+`;
+
 exports[`XML to Draft Object Tranformation Converts page xml to page node 1`] = `
 Object {
   "children": Array [

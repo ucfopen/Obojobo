@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ObojoboDraftDoc>
+	<!-- Need to make sure these values aren't converted to Numbers or Booleans -->
+    <Text>
+        <textGroup>
+            <t>33333333333333333333333333333333333333</t>
+			<t>True</t>
+			<t>0.33333333333333333333333</t>
+			<t>0.3</t>
+        </textGroup>
+    </Text>
+</ObojoboDraftDoc>
