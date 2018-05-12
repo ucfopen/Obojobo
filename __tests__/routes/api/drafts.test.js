@@ -138,7 +138,7 @@ describe('api draft route', () => {
 			})
 	})
 
-	test('save draft calls next', () => {
+	test('update draft calls next', () => {
 		expect.assertions(1)
 		mockUpdateDraft.mockImplementationOnce(() => {
 			return Promise.resolve(555)
