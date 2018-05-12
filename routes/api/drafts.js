@@ -5,11 +5,8 @@ const DraftModel = oboRequire('models/draft')
 const logger = oboRequire('logger')
 const db = oboRequire('db')
 const xmlToDraftObject = require('obojobo-draft-xml-parser/xml-to-draft-object')
-
-const insertNewDraft = require('./drafts/insert_new_draft')
 const updateDraft = require('./drafts/update_draft')
 const getDuplicateId = require('./drafts/get_duplicate_obo_node_id')
-
 const draftTemplateXML = fs
 	.readFileSync('./node_modules/obojobo-draft-document-engine/documents/empty.xml')
 	.toString()
@@ -44,11 +41,7 @@ router.post('/new', (req, res, next) => {
 		.then(currentUser => {
 			user = currentUser
 			if (!currentUser.canCreateDrafts) throw 'Insufficent permissions'
-
-			return db.none(`BEGIN`)
-		})
-		.then(() => {
-			return insertNewDraft(user.id, draftTemplate, draftTemplateXML)
+			return DraftModel.createWithContent(user.id, draftTemplate, draftTemplateXML)
 		})
 		.then(newDraft => {
 			res.success(newDraft)

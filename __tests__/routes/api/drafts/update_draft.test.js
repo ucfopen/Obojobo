@@ -1,4 +1,6 @@
 jest.mock('../../../../db')
+const db = oboRequire('db')
+const updateDraft = oboRequire('routes/api/drafts/update_draft')
 
 describe('api draft update helper', () => {
 	beforeAll(() => {})
@@ -8,10 +10,7 @@ describe('api draft update helper', () => {
 
 	test('calls db.one with expected args', () => {
 		expect.assertions(2)
-		let db = oboRequire('db')
 		db.one.mockResolvedValueOnce({ id: 555 })
-
-		let updateDraft = oboRequire('routes/api/drafts/update_draft')
 
 		return updateDraft(555, 'content')
 			.then(id => {
@@ -31,10 +30,7 @@ describe('api draft update helper', () => {
 
 	test('fails as expected', () => {
 		expect.assertions(1)
-		let db = oboRequire('db')
 		db.one.mockRejectedValueOnce('test error')
-
-		let updateDraft = oboRequire('routes/api/drafts/update_draft')
 
 		return updateDraft(555, 'content')
 			.then(id => {

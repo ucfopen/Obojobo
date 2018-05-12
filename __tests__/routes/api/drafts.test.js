@@ -2,10 +2,9 @@ jest.mock('../../../models/draft')
 jest.mock('../../../models/user')
 jest.mock('../../../db')
 jest.mock('../../../logger')
-const { mockExpressMethods, mockRouterMethods } = require('../../../__mocks__/__mock_express')
 
-let mockInsertNewDraft = mockVirtual('./routes/api/drafts/insert_new_draft')
-let mockUpdateDraft = mockVirtual('./routes/api/drafts/update_draft')
+const { mockExpressMethods, mockRouterMethods } = require('../../../__mocks__/__mock_express')
+const mockUpdateDraft = mockVirtual('./routes/api/drafts/update_draft')
 
 describe('api draft route', () => {
 	beforeAll(() => {})
@@ -22,7 +21,6 @@ describe('api draft route', () => {
 		expect(mockRouterMethods.get).toBeCalledWith('/:draftId', expect.any(Function))
 		expect(mockRouterMethods.post).toBeCalledWith('/new', expect.any(Function))
 		expect(mockRouterMethods.post).toBeCalledWith('/new', expect.any(Function))
-		// expect(mockRouterMethods.all).toBeCalledWith('/:draftId*', expect.any(Function))
 	})
 
 	test('get draft handles missing drafts', () => {
@@ -59,13 +57,10 @@ describe('api draft route', () => {
 
 		let User = oboRequire('models/user')
 		let DraftModel = oboRequire('models/draft')
-		let mockYell = jest.fn().mockImplementationOnce(() => {
-			return {
-				document: `{"json":"value"}`,
-				yell: jest.fn().mockImplementationOnce(() => {
-					return 'fake draft'
-				})
-			}
+
+		let mockYell = jest.fn().mockReturnValueOnce({
+			document: `{"json":"value"}`,
+			yell: jest.fn().mockReturnValueOnce('fake draft')
 		})
 
 		DraftModel.__setMockYell(mockYell)
@@ -89,9 +84,7 @@ describe('api draft route', () => {
 		}
 
 		let mockNext = jest.fn()
-		mockInsertNewDraft.mockImplementationOnce(() => {
-			return 'test_result'
-		})
+		DraftModel.createWithContent.mockReturnValueOnce('test_result')
 
 		return routeFunction(mockReq, mockRes, mockNext)
 			.then(() => {
@@ -105,6 +98,7 @@ describe('api draft route', () => {
 	test('creates draft requires user', () => {
 		expect.assertions(1)
 
+		const DraftModel = oboRequire('models/draft')
 		let User = oboRequire('models/user')
 		oboRequire('routes/api/drafts')
 		let routeFunction = mockRouterMethods.post.mock.calls[0][1]
@@ -125,9 +119,7 @@ describe('api draft route', () => {
 		}
 
 		let mockNext = jest.fn()
-		mockInsertNewDraft.mockImplementationOnce(() => {
-			return 'test_result'
-		})
+		DraftModel.createWithContent.mockReturnValueOnce('test_result')
 
 		return routeFunction(mockReq, mockRes, mockNext)
 			.then(() => {
@@ -140,19 +132,13 @@ describe('api draft route', () => {
 
 	test('save draft calls next', () => {
 		expect.assertions(1)
-		mockUpdateDraft.mockImplementationOnce(() => {
-			return Promise.resolve(555)
-		})
+		mockUpdateDraft.mockResolvedValueOnce(555)
 
 		let User = oboRequire('models/user')
 		let DraftModel = oboRequire('models/draft')
-		let mockYell = jest.fn().mockImplementationOnce(() => {
-			return {
-				document: `{"json":"value"}`,
-				yell: jest.fn().mockImplementationOnce(() => {
-					return 'fake draft'
-				})
-			}
+		let mockYell = jest.fn().mockReturnValueOnce({
+			document: `{"json":"value"}`,
+			yell: jest.fn().mockReturnValueOnce('fake draft')
 		})
 
 		DraftModel.__setMockYell(mockYell)
