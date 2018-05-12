@@ -10,7 +10,6 @@ let usageError = new Error(`Usage:
 
 let db = oboRequire('db')
 let insertNewDraft = oboRequire('routes/api/drafts/insert_new_draft')
-let updateDraft = oboRequire('routes/api/drafts/update_draft')
 
 let draftId
 let userId

@@ -13,6 +13,7 @@ class MockDraft {
 }
 
 MockDraft.fetchById = jest.fn().mockResolvedValue(new MockDraft())
+MockDraft.updateContent = jest.fn().mockResolvedValue('mockUpdatedContentId')
 
 MockDraft.__setMockYell = newMock => {
 	mockYell = newMock

@@ -7,7 +7,6 @@ const db = oboRequire('db')
 const xmlToDraftObject = require('obojobo-draft-xml-parser/xml-to-draft-object')
 
 const insertNewDraft = require('./drafts/insert_new_draft')
-const updateDraft = require('./drafts/update_draft')
 const getDuplicateId = require('./drafts/get_duplicate_obo_node_id')
 
 const draftTemplateXML = fs
@@ -106,7 +105,7 @@ router.post(/(\w{8}-\w{4}-\w{4}-\w{4}-\w{12})/, (req, res, next) => {
 				return
 			}
 
-			return updateDraft(req.params[0], reqInput, xml || null).then(id => {
+			return DraftModel.updateContent(req.params[0], reqInput, xml || null).then(id => {
 				res.success({ id })
 			})
 		})

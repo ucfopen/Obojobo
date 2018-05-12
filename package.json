@@ -111,8 +111,8 @@
 		"setupTestFrameworkScriptFile": "./setup_tests.js",
 		"collectCoverageFrom": [
 			"*.js",
-			"models/*.js",
-			"routes/*.js",
+			"models/**/*.js",
+			"routes/**/*.js",
 			"routes/**/*.js",
 			"controllers/**/*.js"
 		],

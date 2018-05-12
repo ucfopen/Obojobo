@@ -70,6 +70,31 @@ class Draft {
 			})
 	}
 
+	static updateContent(draftId, jsonContent, xmlContent) {
+		return db
+			.one(
+				`
+				INSERT INTO drafts_content(
+					draft_id,
+					content,
+					xml
+				)
+				VALUES(
+					$[draftId],
+					$[jsonContent],
+					$[xmlContent]
+				)
+				RETURNING id
+			`,
+				{
+					draftId,
+					jsonContent,
+					xmlContent
+				}
+			)
+			.then(result => result.id)
+	}
+
 	get document() {
 		return this.root.toObject()
 	}
