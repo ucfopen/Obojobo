@@ -43,12 +43,14 @@ describe('lti route', () => {
 		expect(mockRouterMethods.all).toHaveBeenCalledTimes(0)
 		expect(mockRouterMethods.get).toBeCalledWith('/', expect.any(Function))
 		expect(mockRouterMethods.get).toBeCalledWith('/config.xml', expect.any(Function))
-		expect(mockRouterMethods.post).toBeCalledWith('/canvas/course_navigation', expect.any(Function))
-		expect(mockRouterMethods.post).toBeCalledWith('/canvas/editor_button', expect.any(Function))
 		expect(mockRouterMethods.post).toBeCalledWith(
-			'/canvas/assignment_selection',
+			'/canvas/course_navigation',
+			expect.any(Array),
 			expect.any(Function)
 		)
+		expect(mockRouterMethods.post).toBeCalledWith('/canvas/editor_button', expect.any(Array))
+		expect(mockRouterMethods.post).toBeCalledWith('/canvas/assignment_selection', expect.any(Array))
+		expect(mockRouterMethods.post).toBeCalledWith('/canvas/resource_selection', expect.any(Array))
 	})
 
 	test('index calls render', () => {
@@ -71,7 +73,7 @@ describe('lti route', () => {
 
 	test('course_navigation calls redirect for users with access', () => {
 		expect.assertions(2)
-		let courseNavigationRoute = mockRouterMethods.post.mock.calls[0][1]
+		let courseNavigationRoute = mockRouterMethods.post.mock.calls[0][2]
 		let mockUser = { canViewEditor: true }
 		mockReq.getCurrentUser.mockReturnValueOnce(Promise.resolve(mockUser))
 
@@ -83,7 +85,7 @@ describe('lti route', () => {
 
 	test('course_navigation returns a 403 if user does not have access', () => {
 		expect.assertions(4)
-		let courseNavigationRoute = mockRouterMethods.post.mock.calls[0][1]
+		let courseNavigationRoute = mockRouterMethods.post.mock.calls[0][2]
 		let mockUser = { canViewEditor: false }
 		mockReq.getCurrentUser.mockReturnValueOnce(Promise.resolve(mockUser))
 
@@ -100,7 +102,7 @@ describe('lti route', () => {
 
 	test('course_navigation silently calls next on an error', () => {
 		expect.assertions(5)
-		let courseNavigationRoute = mockRouterMethods.post.mock.calls[0][1]
+		let courseNavigationRoute = mockRouterMethods.post.mock.calls[0][2]
 		mockReq.getCurrentUser.mockRejectedValueOnce('whoopths')
 		return courseNavigationRoute(mockReq, mockRes, mockNext).then(() => {
 			expect(mockRes.redirect).not.toBeCalled()
@@ -113,7 +115,7 @@ describe('lti route', () => {
 
 	test('canvas resource_selection requires a user', () => {
 		expect.assertions(5)
-		let resourceSelectionRoute = mockRouterMethods.post.mock.calls[1][1]
+		let resourceSelectionRoute = mockRouterMethods.post.mock.calls[1][1][1]
 		mockReq.getCurrentUser.mockRejectedValueOnce('whoopths')
 		return resourceSelectionRoute(mockReq, mockRes, mockNext).then(() => {
 			expect(mockRes.redirect).not.toBeCalled()
@@ -126,7 +128,7 @@ describe('lti route', () => {
 
 	test('canvas resource_selection requires a user with permissions', () => {
 		expect.assertions(5)
-		let resourceSelectionRoute = mockRouterMethods.post.mock.calls[1][1]
+		let resourceSelectionRoute = mockRouterMethods.post.mock.calls[1][1][1]
 		let mockUser = { canViewEditor: false }
 		mockReq.getCurrentUser.mockReturnValueOnce(Promise.resolve(mockUser))
 		// mock method chaining on res.satus
@@ -142,7 +144,7 @@ describe('lti route', () => {
 
 	test('canvas resource_selection errors with no returnUrl', () => {
 		expect.assertions(4)
-		let resourceSelectionRoute = mockRouterMethods.post.mock.calls[1][1]
+		let resourceSelectionRoute = mockRouterMethods.post.mock.calls[1][1][1]
 		let mockUser = { canViewEditor: true }
 		mockReq.getCurrentUser.mockReturnValueOnce(Promise.resolve(mockUser))
 		// mock method chaining on res.satus
@@ -157,7 +159,7 @@ describe('lti route', () => {
 
 	test('canvas resource_selection renders with return url and assignment', () => {
 		expect.assertions(4)
-		let resourceSelectionRoute = mockRouterMethods.post.mock.calls[1][1]
+		let resourceSelectionRoute = mockRouterMethods.post.mock.calls[1][1][1]
 		let mockUser = { canViewEditor: true }
 		mockReq.lti = {
 			body: {
@@ -181,7 +183,7 @@ describe('lti route', () => {
 
 	test('canvas resource_selection uses ext_content_return_url to override content_item_return_url', () => {
 		expect.assertions(4)
-		let resourceSelectionRoute = mockRouterMethods.post.mock.calls[1][1]
+		let resourceSelectionRoute = mockRouterMethods.post.mock.calls[1][1][1]
 		let mockUser = { canViewEditor: true }
 		mockReq.lti = {
 			body: {
@@ -206,7 +208,7 @@ describe('lti route', () => {
 
 	test('canvas resource_selection renders non assignments correctly', () => {
 		expect.assertions(4)
-		let resourceSelectionRoute = mockRouterMethods.post.mock.calls[1][1]
+		let resourceSelectionRoute = mockRouterMethods.post.mock.calls[1][1][1]
 		let mockUser = { canViewEditor: true }
 		mockReq.lti = {
 			body: {
@@ -229,9 +231,9 @@ describe('lti route', () => {
 
 	test('canvas editor_button, assingment_selection, and resource_selection share the same method', () => {
 		expect.assertions(2)
-		let resourceSelectionRoute = mockRouterMethods.post.mock.calls[1][1]
-		let editorButtonRoute = mockRouterMethods.post.mock.calls[2][1]
-		let assignmentSelectionRoute = mockRouterMethods.post.mock.calls[3][1]
+		let resourceSelectionRoute = mockRouterMethods.post.mock.calls[1][1][1]
+		let editorButtonRoute = mockRouterMethods.post.mock.calls[2][1][1]
+		let assignmentSelectionRoute = mockRouterMethods.post.mock.calls[3][1][1]
 
 		expect(resourceSelectionRoute).toBe(editorButtonRoute)
 		expect(resourceSelectionRoute).toBe(assignmentSelectionRoute)
