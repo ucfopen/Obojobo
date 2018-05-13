@@ -1,21 +1,12 @@
-var express = require('express')
-var router = express.Router()
-var db = require('../db')
+const express = require('express')
+const router = express.Router()
+const db = oboRequire('db')
+const { requireCanViewEditor } = oboRequire('express_validators')
 
 let displayEditor = (req, res, next) => {
-	return req
-		.getCurrentUser(true)
-		.then(user => {
-			if (user.isGuest()) {
-				return Promise.reject(new Error('Login Required'))
-			}
-			if (!user.canViewEditor) {
-				return next()
-			}
-
-			return db
-				.any(
-					`
+	return db
+		.any(
+			`
 			SELECT DISTINCT ON (draft_id)
 				draft_id AS "draftId",
 				id AS "latestVersion",
@@ -30,14 +21,13 @@ let displayEditor = (req, res, next) => {
 				AND user_id = $[userId]
 			)
 			ORDER BY draft_id, id desc
-		`,
-					{
-						userId: user.id
-					}
-				)
-				.then(drafts => {
-					res.render('editor', { drafts: drafts })
-				})
+			`,
+			{
+				userId: req.currentUser.id
+			}
+		)
+		.then(drafts => {
+			res.render('editor', { drafts: drafts })
 		})
 		.catch(error => {
 			next(error)
@@ -46,7 +36,10 @@ let displayEditor = (req, res, next) => {
 
 // Display the Document Editor
 // mounted as /editor
-router.post('/', displayEditor)
-router.get('/', displayEditor)
+router
+	.route('/')
+	.all(requireCanViewEditor)
+	.post(displayEditor)
+	.get(displayEditor)
 
 module.exports = router

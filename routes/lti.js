@@ -1,6 +1,7 @@
 let express = require('express')
 let router = express.Router()
 let config = oboRequire('config')
+const { requireCanViewEditor } = oboRequire('express_validators')
 
 // LTI Instructions
 // mounted as /lti/
@@ -37,31 +38,15 @@ router.get('/config.xml', (req, res, next) => {
 
 // Canvas LMS Course Navigation launch
 // mounted as /lti/canvas/course_navigation
-router.post('/canvas/course_navigation', (req, res, next) => {
-	return req
-		.getCurrentUser(true)
-		.then(user => {
-			if (!user.canViewEditor) {
-				res.status(403).send('Unauthorized') //@TODO
-				return
-			}
+router
+	.route('/canvas/course_navigation')
+	.post(requireCanViewEditor)
+	.post((req, res, next) => res.redirect('/editor'))
 
-			res.redirect('/editor')
-		})
-		.catch(error => {
-			next(error)
-		})
-})
-
-let showModuleSelector = (req, res, next) => {
-	return req
-		.getCurrentUser(true)
-		.then(user => {
-			if (!user.canViewEditor) {
-				res.status(403).send('Unauthorized') //@TODO
-				return
-			}
-
+let showModuleSelector = [
+	requireCanViewEditor,
+	(req, res, next) => {
+		try {
 			let returnUrl = null
 			let isAssignment = false
 			if (req.lti && req.lti.body) {
@@ -82,11 +67,11 @@ let showModuleSelector = (req, res, next) => {
 			}
 
 			res.render('lti_picker', { returnUrl, isAssignment })
-		})
-		.catch(error => {
+		} catch (error) {
 			next(error)
-		})
-}
+		}
+	}
+]
 
 router.post('/canvas/resource_selection', showModuleSelector)
 router.post('/canvas/editor_button', showModuleSelector)
