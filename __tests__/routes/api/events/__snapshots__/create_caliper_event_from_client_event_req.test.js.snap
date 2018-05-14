@@ -34,8 +34,8 @@ Event {
   },
   "federatedSession": "https://hostnameReq/api/launch/OboLtiLaunchIdReq",
   "id": "urn:uuid:DEADBEEF-0000-DEAD-BEEF-1234DEADBEEF",
-  "object": "https://hostnameReq/api/draft/testDraftIdReq#toReq",
-  "referrer": "https://hostnameReq/api/draft/testDraftIdReq#fromReq",
+  "object": "https://hostnameReq/api/draft/testDraftIdReq/draftcontent/testContentIdReq#toReq",
+  "referrer": "https://hostnameReq/api/draft/testDraftIdReq/draftcontent/testContentIdReq#fromReq",
   "session": "https://hostnameReq/api/session/SessionIdReq",
   "type": "NavigationEvent",
 }
@@ -152,7 +152,7 @@ Event {
   },
   "federatedSession": "https://hostnameReq/api/launch/OboLtiLaunchIdReq",
   "id": "urn:uuid:DEADBEEF-0000-DEAD-BEEF-1234DEADBEEF",
-  "object": "https://hostnameReq/api/draft/testDraftIdReq#testQuestionIdReq",
+  "object": "https://hostnameReq/api/draft/testDraftIdReq/draftcontent/testContentIdReq#testQuestionIdReq",
   "session": "https://hostnameReq/api/session/SessionIdReq",
   "type": "Event",
 }
@@ -170,9 +170,9 @@ Event {
   },
   "federatedSession": "https://hostnameReq/api/launch/OboLtiLaunchIdReq",
   "id": "urn:uuid:DEADBEEF-0000-DEAD-BEEF-1234DEADBEEF",
-  "object": "https://hostnameReq/api/draft/testDraftIdReq#testQuestionIdReq",
+  "object": "https://hostnameReq/api/draft/testDraftIdReq/draftcontent/testContentIdReq#testQuestionIdReq",
   "session": "https://hostnameReq/api/session/SessionIdReq",
-  "target": "https://hostnameReq/api/draft/testDraftIdReq?context=explanation#testQuestionIdReq",
+  "target": "https://hostnameReq/api/draft/testDraftIdReq/draftcontent/testContentIdReq?context=explanation#testQuestionIdReq",
   "type": "Event",
 }
 `;
@@ -189,7 +189,7 @@ Event {
   },
   "federatedSession": "https://hostnameReq/api/launch/OboLtiLaunchIdReq",
   "id": "urn:uuid:DEADBEEF-0000-DEAD-BEEF-1234DEADBEEF",
-  "object": "https://hostnameReq/api/draft/testDraftIdReq#testQuestionIdReq",
+  "object": "https://hostnameReq/api/draft/testDraftIdReq/draftcontent/testContentIdReq#testQuestionIdReq",
   "session": "https://hostnameReq/api/session/SessionIdReq",
   "target": "https://hostnameReq/api/practice/testDraftIdReq/testQuestionIdReq",
   "type": "Event",
@@ -217,9 +217,9 @@ Event {
     "type": "Response",
   },
   "id": "urn:uuid:DEADBEEF-0000-DEAD-BEEF-1234DEADBEEF",
-  "object": "https://hostnameReq/api/draft/testDraftIdReq#testQuestionIdReq",
+  "object": "https://hostnameReq/api/draft/testDraftIdReq/draftcontent/testContentIdReq#testQuestionIdReq",
   "session": "https://hostnameReq/api/session/SessionIdReq",
-  "target": "https:///api/draft/testDraftIdReq",
+  "target": "https:///api/draft/testDraftIdReq/draftcontent/testContentIdReq",
   "type": "AssessmentItemEvent",
 }
 `;
@@ -236,9 +236,9 @@ Event {
   },
   "federatedSession": "https://hostnameReq/api/launch/OboLtiLaunchIdReq",
   "id": "urn:uuid:DEADBEEF-0000-DEAD-BEEF-1234DEADBEEF",
-  "object": "https://hostnameReq/api/draft/testDraftIdReq#testQuestionIdReq",
+  "object": "https://hostnameReq/api/draft/testDraftIdReq/draftcontent/testContentIdReq#testQuestionIdReq",
   "session": "https://hostnameReq/api/session/SessionIdReq",
-  "target": "https://hostnameReq/api/draft/testDraftIdReq?context=explanation#testQuestionIdReq",
+  "target": "https://hostnameReq/api/draft/testDraftIdReq/draftcontent/testContentIdReq?context=explanation#testQuestionIdReq",
   "type": "ViewEvent",
 }
 `;
@@ -255,7 +255,7 @@ Event {
   },
   "federatedSession": "https://hostnameReq/api/launch/OboLtiLaunchIdReq",
   "id": "urn:uuid:DEADBEEF-0000-DEAD-BEEF-1234DEADBEEF",
-  "object": "https://hostnameReq/api/draft/testDraftIdReq#testQuestionIdReq",
+  "object": "https://hostnameReq/api/draft/testDraftIdReq/draftcontent/testContentIdReq#testQuestionIdReq",
   "session": "https://hostnameReq/api/session/SessionIdReq",
   "type": "ViewEvent",
 }
@@ -322,7 +322,7 @@ Event {
   "id": "urn:uuid:DEADBEEF-0000-DEAD-BEEF-1234DEADBEEF",
   "object": "https://hostnameReq/api/system",
   "session": "https://hostnameReq/api/session/SessionIdReq",
-  "target": "https:///api/draft/testDraftIdReq",
+  "target": "https:///api/draft/testDraftIdReq/draftcontent/testContentIdReq",
   "type": "SessionEvent",
 }
 `;
@@ -342,7 +342,7 @@ Event {
   },
   "federatedSession": "https://hostnameReq/api/launch/OboLtiLaunchIdReq",
   "id": "urn:uuid:DEADBEEF-0000-DEAD-BEEF-1234DEADBEEF",
-  "object": "https:///api/draft/testDraftIdReq",
+  "object": "https:///api/draft/testDraftIdReq/draftcontent/testContentIdReq",
   "session": "https://hostnameReq/api/session/SessionIdReq",
   "type": "Event",
 }
@@ -361,7 +361,7 @@ Event {
   },
   "federatedSession": "https://hostnameReq/api/launch/OboLtiLaunchIdReq",
   "id": "urn:uuid:DEADBEEF-0000-DEAD-BEEF-1234DEADBEEF",
-  "object": "https:///api/draft/testDraftIdReq",
+  "object": "https:///api/draft/testDraftIdReq/draftcontent/testContentIdReq",
   "session": "https://hostnameReq/api/session/SessionIdReq",
   "type": "Event",
 }
@@ -381,7 +381,7 @@ Event {
   },
   "federatedSession": "https://hostnameReq/api/launch/OboLtiLaunchIdReq",
   "id": "urn:uuid:DEADBEEF-0000-DEAD-BEEF-1234DEADBEEF",
-  "object": "https:///api/draft/testDraftIdReq",
+  "object": "https:///api/draft/testDraftIdReq/draftcontent/testContentIdReq",
   "session": "https://hostnameReq/api/session/SessionIdReq",
   "type": "Event",
 }
@@ -403,7 +403,7 @@ Event {
   },
   "federatedSession": "https://hostnameReq/api/launch/OboLtiLaunchIdReq",
   "id": "urn:uuid:DEADBEEF-0000-DEAD-BEEF-1234DEADBEEF",
-  "object": "https:///api/draft/testDraftIdReq",
+  "object": "https:///api/draft/testDraftIdReq/draftcontent/testContentIdReq",
   "session": "https://hostnameReq/api/session/SessionIdReq",
   "type": "Event",
 }

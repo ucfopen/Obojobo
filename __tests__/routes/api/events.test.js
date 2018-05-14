@@ -61,7 +61,8 @@ describe('api events route', () => {
 				draftId: 88
 			},
 			requireCurrentUser: () => Promise.resolve({ id: 5 }),
-			requireCurrentDocument: () => Promise.resolve({ draftId: 88, contentId: 12 })
+			requireCurrentDocument: () => Promise.resolve({ draftId: 88, contentId: 12 }),
+			currentDocument: { draftId: 88, contentId: 12 }
 		}
 
 		let mockRes = {

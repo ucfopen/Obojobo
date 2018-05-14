@@ -49,15 +49,15 @@ const iriFactory = (req, providedHost) => {
 			return createIRI(host, `/api/user/${userId}`)
 		},
 
-		getDraftIRI: (draftId, oboNodeId = null, contextName = null) => {
+		getDraftIRI: (draftId, contentId, oboNodeId = null, contextName = null) => {
 			let iri
 
 			if (oboNodeId === null) {
-				iri = createIRI(`/api/draft/${draftId}`)
+				iri = createIRI(`/api/draft/${draftId}/draftcontent/${contentId}`)
 			} else if (contextName === null) {
-				iri = createIRI(host, `/api/draft/${draftId}`, `#${oboNodeId}`)
+				iri = createIRI(host, `/api/draft/${draftId}/draftcontent/${contentId}`, `#${oboNodeId}`)
 			} else {
-				iri = createIRI(host, `/api/draft/${draftId}`, `#${oboNodeId}`, { context: contextName })
+				iri = createIRI(host, `/api/draft/${draftId}/draftcontent/${contentId}`, `#${oboNodeId}`, { context: contextName })
 			}
 
 			return iri

@@ -91,6 +91,7 @@ router.get('/:draftId/visit/:visitId*', (req, res, next) => {
 				eventVersion: '1.0.0',
 				caliperPayload: createViewerSessionLoggedInEvent({
 					draftId: currentDocument.draftId,
+					contentId: currentDocument.contentId,
 					actor: { type: ACTOR_USER, id: currentUser.id },
 					isPreviewMode: currentUser.canViewEditor,
 					sessionIds: getSessionIds(req.session)
