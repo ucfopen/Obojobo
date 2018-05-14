@@ -1,4 +1,4 @@
 node_modules/*
-devsrc
-public
-coverage
+devsrc/
+public/
+coverage/
