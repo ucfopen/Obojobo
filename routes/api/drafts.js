@@ -7,7 +7,6 @@ const db = oboRequire('db')
 const xmlToDraftObject = require('obojobo-draft-xml-parser/xml-to-draft-object')
 
 const insertNewDraft = require('./drafts/insert_new_draft')
-const getDuplicateId = require('./drafts/get_duplicate_obo_node_id')
 
 const draftTemplateXML = fs
 	.readFileSync('./node_modules/obojobo-draft-document-engine/documents/empty.xml')
@@ -98,8 +97,8 @@ router.post(/(\w{8}-\w{4}-\w{4}-\w{4}-\w{12})/, (req, res, next) => {
 			}
 
 			// Scan through json for identical ids
-			let duplicateId = getDuplicateId(reqInput)
-			if (duplicateId) {
+			let duplicateId = DraftModel.findDuplicateIds(reqInput)
+			if (duplicateId !== null) {
 				logger.error('Posting draft failed - duplicate id "' + duplicateId + '"')
 				res.badInput('Posting draft failed - duplicate id "' + duplicateId + '"')
 				return

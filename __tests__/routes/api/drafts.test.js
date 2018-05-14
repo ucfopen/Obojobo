@@ -137,7 +137,7 @@ describe('api draft route', () => {
 			})
 	})
 
-	test('save draft calls next', () => {
+	test('update draft calls next', () => {
 		expect.assertions(1)
 
 		let User = oboRequire('models/user')

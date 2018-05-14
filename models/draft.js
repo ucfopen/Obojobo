@@ -2,6 +2,35 @@ let db = require('../db')
 let draftNodeStore = oboRequire('draft_node_store')
 let logger = require('../logger.js')
 
+// Recurses through a draft tree
+// to find duplicate ids
+// ids are placed in the idSet
+const findDuplicateIdsRecursive = (jsonTreeNode, idSet = new Set()) => {
+	// no id to find on this leafNode? return
+	if (!jsonTreeNode.id) {
+		return null
+	}
+
+	// If the current id is already in the set, it has been duplicated
+	if (idSet.has(jsonTreeNode.id)) {
+		return jsonTreeNode.id
+	}
+
+	idSet.add(jsonTreeNode.id)
+
+	// Check all children nodes
+	let duplicateId = null
+	for (let child of jsonTreeNode.children) {
+		duplicateId = findDuplicateIdsRecursive(child, idSet)
+		if (duplicateId) {
+			// return as soon as a duplicate is found
+			return duplicateId
+		}
+	}
+
+	return duplicateId
+}
+
 class Draft {
 	constructor(rawDraft) {
 		this.nodesById = new Map()
@@ -93,6 +122,12 @@ class Draft {
 				}
 			)
 			.then(result => result.id)
+	}
+
+	// returns the first duplicate id found or
+	// null if no duplicates are found
+	static findDuplicateIds(jsonTree) {
+		return findDuplicateIdsRecursive(jsonTree)
 	}
 
 	get document() {
