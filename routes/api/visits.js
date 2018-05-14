@@ -5,6 +5,10 @@ const logger = oboRequire('logger')
 const VisitModel = oboRequire('models/visit')
 const ltiUtil = oboRequire('lti')
 const viewerState = oboRequire('viewer/viewer_state')
+const insertEvent = oboRequire('insert_event')
+const createCaliperEvent = oboRequire('routes/api/events/create_caliper_event')
+const { ACTOR_USER } = oboRequire('routes/api/events/caliper_constants')
+const { getSessionIds } = oboRequire('routes/api/events/caliper_utils')
 
 const getDraftAndStartVisitProps = (req, res, draftDocument) => {
 	let visitStartReturnExtensionsProps = {}
@@ -30,6 +34,7 @@ router.post('/start', (req, res, next) => {
 	let visit
 	let viewState
 	let visitStartReturnExtensionsProps
+	let launch
 
 	let visitId = req.body.visitId
 	let draftId = req.body.draftId
@@ -70,7 +75,30 @@ router.post('/start', (req, res, next) => {
 				return ltiUtil.retrieveLtiLaunch(currentUser.id, draftId, 'START_VISIT_API')
 			}
 		})
-		.then(launch => {
+		.then(launchResult => {
+			launch = launchResult
+			let { createViewerSessionLoggedInEvent } = createCaliperEvent(null, req.hostname)
+
+			return insertEvent({
+				action: 'visit:start',
+				actorTime: new Date().toISOString(),
+				userId: currentUser.id,
+				ip: req.connection.remoteAddress,
+				metadata: {},
+				draftId: currentDocument.draftId,
+				contentId: currentDocument.contentId,
+				payload: { visitId },
+				eventVersion: '1.0.0',
+				caliperPayload: createViewerSessionLoggedInEvent({
+					actor: { type: ACTOR_USER, id: currentUser.id },
+					draftId: currentDocument.draftId,
+					contentId: currentDocument.contentId,
+					isPreviewMode: currentUser.canViewEditor,
+					sessionIds: getSessionIds(req.session)
+				})
+			})
+		})
+		.then(() => {
 			logger.log(
 				`VISIT: Start visit success for visitId="${visitId}", draftId="${draftId}", userId="${
 					currentUser.id

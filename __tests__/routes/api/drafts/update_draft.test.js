@@ -1,4 +1,6 @@
 jest.mock('../../../../db')
+const db = oboRequire('db')
+const DraftModel = oboRequire('models/draft')
 
 describe('api draft update helper', () => {
 	beforeAll(() => {})
@@ -8,19 +10,20 @@ describe('api draft update helper', () => {
 
 	test('calls db.one with expected args', () => {
 		expect.assertions(2)
-		let db = oboRequire('db')
-		db.one.mockResolvedValueOnce({ id: 555 })
+		const id = 555
+		const jsonContent = 'mockJsonContent'
+		const xmlContent = 'mockXmlContent'
+		db.one.mockResolvedValueOnce({ id })
 
-		let updateDraft = oboRequire('routes/api/drafts/update_draft')
-
-		return updateDraft(555, 'content')
-			.then(id => {
-				expect(id).toBe(555)
+		return DraftModel.updateContent(id, jsonContent, xmlContent)
+			.then(resultId => {
+				expect(resultId).toBe(id)
 				expect(db.one).toBeCalledWith(
 					expect.any(String),
 					expect.objectContaining({
-						draftId: 555,
-						content: 'content'
+						draftId: id,
+						jsonContent: jsonContent,
+						xmlContent: xmlContent
 					})
 				)
 			})
@@ -31,12 +34,9 @@ describe('api draft update helper', () => {
 
 	test('fails as expected', () => {
 		expect.assertions(1)
-		let db = oboRequire('db')
 		db.one.mockRejectedValueOnce('test error')
 
-		let updateDraft = oboRequire('routes/api/drafts/update_draft')
-
-		return updateDraft(555, 'content')
+		return DraftModel.updateContent(555, 'content')
 			.then(id => {
 				expect(id).toBe('never called')
 			})

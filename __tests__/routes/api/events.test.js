@@ -2,7 +2,9 @@ jest.mock('../../../models/draft')
 jest.mock('../../../db')
 const { mockExpressMethods, mockRouterMethods } = require('../../../__mocks__/__mock_express')
 
-describe('api events route', () => {
+let mockInsertNewDraft = mockVirtual('./routes/api/drafts/insert_new_draft')
+
+describe('api draft events route', () => {
 	beforeAll(() => {})
 	afterAll(() => {})
 	beforeEach(() => {})

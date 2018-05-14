@@ -457,26 +457,6 @@ describe('lti', () => {
 						lis_outcome_service_url: 'lis_outcome_service_url',
 						lis_result_sourcedid: 'lis_result_sourcedid'
 					},
-					assessmentScore: {
-						id: 'assessment-score-id',
-						userId: 'user-id',
-						draftId: 'draft-id',
-						contentId: 'content-id',
-						assessmentId: 'assessment-id',
-						attemptId: 'attempt-id',
-						score: 100,
-						scoreDetails: {
-							status: 'passed',
-							rewardTotal: 0,
-							attemptScore: 100,
-							rewardedMods: [],
-							attemptNumber: 1,
-							assessmentScore: 100,
-							assessmentModdedScore: 100
-						},
-						preview: false,
-						error: null
-					},
 					result: {
 						launchId: 'launch-id',
 						scoreSent: 1,
@@ -559,26 +539,6 @@ describe('lti', () => {
 					body: {
 						lis_outcome_service_url: 'lis_outcome_service_url',
 						lis_result_sourcedid: 'lis_result_sourcedid'
-					},
-					assessmentScore: {
-						id: 'assessment-score-id',
-						userId: 'user-id',
-						draftId: 'draft-id',
-						contentId: 'content-id',
-						assessmentId: 'assessment-id',
-						attemptId: 'attempt-id',
-						score: 100,
-						scoreDetails: {
-							status: 'passed',
-							rewardTotal: 0,
-							attemptScore: 100,
-							rewardedMods: [],
-							attemptNumber: 1,
-							assessmentScore: 100,
-							assessmentModdedScore: 100
-						},
-						preview: false,
-						error: null
 					},
 					result: {
 						launchId: 'launch-id',
@@ -663,26 +623,6 @@ describe('lti', () => {
 						lis_outcome_service_url: 'lis_outcome_service_url',
 						lis_result_sourcedid: 'lis_result_sourcedid'
 					},
-					assessmentScore: {
-						id: 'assessment-score-id',
-						userId: 'user-id',
-						draftId: 'draft-id',
-						contentId: 'content-id',
-						assessmentId: 'assessment-id',
-						attemptId: 'attempt-id',
-						score: 100,
-						scoreDetails: {
-							status: 'passed',
-							rewardTotal: 0,
-							attemptScore: 100,
-							rewardedMods: [],
-							attemptNumber: 1,
-							assessmentScore: 100,
-							assessmentModdedScore: 100
-						},
-						preview: false,
-						error: null
-					},
 					result: {
 						launchId: 'launch-id',
 						scoreSent: 1,
@@ -762,26 +702,6 @@ describe('lti', () => {
 						lis_outcome_service_url: 'lis_outcome_service_url',
 						lis_result_sourcedid: 'lis_result_sourcedid'
 					},
-					assessmentScore: {
-						id: 'assessment-score-id',
-						userId: 'user-id',
-						draftId: 'draft-id',
-						contentId: 'content-id',
-						assessmentId: 'assessment-id',
-						attemptId: 'attempt-id',
-						score: null,
-						scoreDetails: {
-							status: 'passed',
-							rewardTotal: 0,
-							attemptScore: null,
-							rewardedMods: [],
-							attemptNumber: 1,
-							assessmentScore: null,
-							assessmentModdedScore: null
-						},
-						preview: false,
-						error: null
-					},
 					result: {
 						launchId: 'launch-id',
 						scoreSent: null,
@@ -860,26 +780,6 @@ describe('lti', () => {
 					body: {
 						lis_outcome_service_url: 'lis_outcome_service_url',
 						lis_result_sourcedid: 'lis_result_sourcedid'
-					},
-					assessmentScore: {
-						id: 'assessment-score-id',
-						userId: 'user-id',
-						draftId: 'draft-id',
-						contentId: 'content-id',
-						assessmentId: 'assessment-id',
-						attemptId: 'attempt-id',
-						score: null,
-						scoreDetails: {
-							status: 'passed',
-							rewardTotal: 0,
-							attemptScore: null,
-							rewardedMods: [],
-							attemptNumber: 1,
-							assessmentScore: null,
-							assessmentModdedScore: null
-						},
-						preview: false,
-						error: null
 					},
 					result: {
 						launchId: 'launch-id',
@@ -968,26 +868,6 @@ describe('lti', () => {
 						lis_outcome_service_url: 'lis_outcome_service_url',
 						lis_result_sourcedid: 'lis_result_sourcedid'
 					},
-					assessmentScore: {
-						id: 'assessment-score-id',
-						userId: 'user-id',
-						draftId: 'draft-id',
-						contentId: 'content-id',
-						assessmentId: 'assessment-id',
-						attemptId: 'attempt-id',
-						score: 100,
-						scoreDetails: {
-							status: 'passed',
-							rewardTotal: 0,
-							attemptScore: 100,
-							rewardedMods: [],
-							attemptNumber: 1,
-							assessmentScore: 100,
-							assessmentModdedScore: 100
-						},
-						preview: false,
-						error: null
-					},
 					result: {
 						launchId: 'launch-id',
 						scoreSent: 1,
@@ -1075,26 +955,6 @@ describe('lti', () => {
 						lis_outcome_service_url: 'lis_outcome_service_url',
 						lis_result_sourcedid: 'lis_result_sourcedid'
 					},
-					assessmentScore: {
-						id: 'assessment-score-id',
-						userId: 'user-id',
-						draftId: 'draft-id',
-						contentId: 'content-id',
-						assessmentId: 'assessment-id',
-						attemptId: 'attempt-id',
-						score: 100,
-						scoreDetails: {
-							status: 'passed',
-							rewardTotal: 0,
-							attemptScore: 100,
-							rewardedMods: [],
-							attemptNumber: 1,
-							assessmentScore: 100,
-							assessmentModdedScore: 100
-						},
-						preview: false,
-						error: null
-					},
 					result: {
 						launchId: 'launch-id',
 						scoreSent: 1,
@@ -1171,26 +1031,6 @@ describe('lti', () => {
 					body: {
 						lis_outcome_service_url: 'lis_outcome_service_url',
 						lis_result_sourcedid: 'lis_result_sourcedid'
-					},
-					assessmentScore: {
-						id: 'assessment-score-id',
-						userId: 'user-id',
-						draftId: 'draft-id',
-						contentId: 'content-id',
-						assessmentId: 'assessment-id',
-						attemptId: 'attempt-id',
-						score: 100,
-						scoreDetails: {
-							status: 'passed',
-							rewardTotal: 0,
-							attemptScore: 100,
-							rewardedMods: [],
-							attemptNumber: 1,
-							assessmentScore: 100,
-							assessmentModdedScore: 100
-						},
-						preview: false,
-						error: null
 					},
 					result: {
 						launchId: 'launch-id',
@@ -1271,26 +1111,6 @@ describe('lti', () => {
 						lis_outcome_service_url: 'lis_outcome_service_url',
 						lis_result_sourcedid: 'lis_result_sourcedid'
 					},
-					assessmentScore: {
-						id: 'assessment-score-id',
-						userId: 'user-id',
-						draftId: 'draft-id',
-						contentId: 'content-id',
-						assessmentId: 'assessment-id',
-						attemptId: 'attempt-id',
-						score: 100,
-						scoreDetails: {
-							status: 'passed',
-							rewardTotal: 0,
-							attemptScore: 100,
-							rewardedMods: [],
-							attemptNumber: 1,
-							assessmentScore: 100,
-							assessmentModdedScore: 100
-						},
-						preview: false,
-						error: null
-					},
 					result: {
 						launchId: 'launch-id',
 						scoreSent: null,
@@ -1363,18 +1183,6 @@ describe('lti', () => {
 					body: {
 						lis_outcome_service_url: null,
 						lis_result_sourcedid: null
-					},
-					assessmentScore: {
-						id: null,
-						userId: null,
-						draftId: null,
-						contentId: null,
-						assessmentId: null,
-						attemptId: null,
-						score: null,
-						scoreDetails: null,
-						preview: null,
-						error: new Error('No assessment score found')
 					},
 					result: {
 						launchId: null,
@@ -1449,26 +1257,6 @@ describe('lti', () => {
 						lis_outcome_service_url: null,
 						lis_result_sourcedid: null
 					},
-					assessmentScore: {
-						id: 'assessment-score-id',
-						userId: 'user-id',
-						draftId: 'draft-id',
-						contentId: 'content-id',
-						assessmentId: 'assessment-id',
-						attemptId: 'attempt-id',
-						score: 100,
-						scoreDetails: {
-							status: 'passed',
-							rewardTotal: 0,
-							attemptScore: 100,
-							rewardedMods: [],
-							attemptNumber: 1,
-							assessmentScore: 100,
-							assessmentModdedScore: 100
-						},
-						preview: false,
-						error: null
-					},
 					result: {
 						launchId: null,
 						scoreSent: null,
@@ -1541,26 +1329,6 @@ describe('lti', () => {
 					body: {
 						lis_outcome_service_url: null,
 						lis_result_sourcedid: null
-					},
-					assessmentScore: {
-						id: 'assessment-score-id',
-						userId: 'user-id',
-						draftId: 'draft-id',
-						contentId: 'content-id',
-						assessmentId: 'assessment-id',
-						attemptId: 'attempt-id',
-						score: 100,
-						scoreDetails: {
-							status: 'passed',
-							rewardTotal: 0,
-							attemptScore: 100,
-							rewardedMods: [],
-							attemptNumber: 1,
-							assessmentScore: 100,
-							assessmentModdedScore: 100
-						},
-						preview: false,
-						error: null
 					},
 					result: {
 						launchId: null,
@@ -1638,26 +1406,6 @@ describe('lti', () => {
 					body: {
 						lis_outcome_service_url: null,
 						lis_result_sourcedid: null
-					},
-					assessmentScore: {
-						id: 'assessment-score-id',
-						userId: 'user-id',
-						draftId: 'draft-id',
-						contentId: 'content-id',
-						assessmentId: 'assessment-id',
-						attemptId: 'attempt-id',
-						score: null,
-						scoreDetails: {
-							status: 'passed',
-							rewardTotal: 0,
-							attemptScore: null,
-							rewardedMods: [],
-							attemptNumber: 1,
-							assessmentScore: null,
-							assessmentModdedScore: null
-						},
-						preview: false,
-						error: null
 					},
 					result: {
 						launchId: null,
@@ -1743,26 +1491,6 @@ describe('lti', () => {
 						lis_outcome_service_url: 'lis_outcome_service_url',
 						lis_result_sourcedid: 'lis_result_sourcedid'
 					},
-					assessmentScore: {
-						id: 'assessment-score-id',
-						userId: 'user-id',
-						draftId: 'draft-id',
-						contentId: 'content-id',
-						assessmentId: 'assessment-id',
-						attemptId: 'attempt-id',
-						score: 100,
-						scoreDetails: {
-							status: 'passed',
-							rewardTotal: 0,
-							attemptScore: 100,
-							rewardedMods: [],
-							attemptNumber: 1,
-							assessmentScore: 100,
-							assessmentModdedScore: 100
-						},
-						preview: false,
-						error: null
-					},
 					result: {
 						launchId: 'launch-id',
 						scoreSent: null,
@@ -1846,26 +1574,6 @@ describe('lti', () => {
 					body: {
 						lis_outcome_service_url: 'lis_outcome_service_url',
 						lis_result_sourcedid: 'lis_result_sourcedid'
-					},
-					assessmentScore: {
-						id: 'assessment-score-id',
-						userId: 'user-id',
-						draftId: 'draft-id',
-						contentId: 'content-id',
-						assessmentId: 'assessment-id',
-						attemptId: 'attempt-id',
-						score: 100,
-						scoreDetails: {
-							status: 'passed',
-							rewardTotal: 0,
-							attemptScore: 100,
-							rewardedMods: [],
-							attemptNumber: 1,
-							assessmentScore: 100,
-							assessmentModdedScore: 100
-						},
-						preview: false,
-						error: null
 					},
 					result: {
 						launchId: 'launch-id',
@@ -1955,26 +1663,6 @@ describe('lti', () => {
 						lis_outcome_service_url: 'lis_outcome_service_url',
 						lis_result_sourcedid: 'lis_result_sourcedid'
 					},
-					assessmentScore: {
-						id: 'assessment-score-id',
-						userId: 'user-id',
-						draftId: 'draft-id',
-						contentId: 'content-id',
-						assessmentId: 'assessment-id',
-						attemptId: 'attempt-id',
-						score: null,
-						scoreDetails: {
-							status: 'passed',
-							rewardTotal: 0,
-							attemptScore: null,
-							rewardedMods: [],
-							attemptNumber: 1,
-							assessmentScore: null,
-							assessmentModdedScore: null
-						},
-						preview: false,
-						error: null
-					},
 					result: {
 						launchId: 'launch-id',
 						scoreSent: null,
@@ -2074,26 +1762,6 @@ describe('lti', () => {
 						lis_outcome_service_url: 'lis_outcome_service_url',
 						lis_result_sourcedid: 'lis_result_sourcedid'
 					},
-					assessmentScore: {
-						id: 'assessment-score-id',
-						userId: 'user-id',
-						draftId: 'draft-id',
-						contentId: 'content-id',
-						assessmentId: 'assessment-id',
-						attemptId: 'attempt-id',
-						score: null,
-						scoreDetails: {
-							status: 'passed',
-							rewardTotal: 0,
-							attemptScore: null,
-							rewardedMods: [],
-							attemptNumber: 1,
-							assessmentScore: null,
-							assessmentModdedScore: null
-						},
-						preview: false,
-						error: null
-					},
 					result: {
 						launchId: 'launch-id',
 						scoreSent: null,
@@ -2170,26 +1838,6 @@ describe('lti', () => {
 					body: {
 						lis_outcome_service_url: null,
 						lis_result_sourcedid: 'lis_result_sourcedid'
-					},
-					assessmentScore: {
-						id: 'assessment-score-id',
-						userId: 'user-id',
-						draftId: 'draft-id',
-						contentId: 'content-id',
-						assessmentId: 'assessment-id',
-						attemptId: 'attempt-id',
-						score: 100,
-						scoreDetails: {
-							status: 'passed',
-							rewardTotal: 0,
-							attemptScore: 100,
-							rewardedMods: [],
-							attemptNumber: 1,
-							assessmentScore: 100,
-							assessmentModdedScore: 100
-						},
-						preview: false,
-						error: null
 					},
 					result: {
 						launchId: 'launch-id',
@@ -2270,26 +1918,6 @@ describe('lti', () => {
 					body: {
 						lis_outcome_service_url: 'lis_outcome_service_url',
 						lis_result_sourcedid: 'lis_result_sourcedid'
-					},
-					assessmentScore: {
-						id: 'assessment-score-id',
-						userId: 'user-id',
-						draftId: 'draft-id',
-						contentId: 'content-id',
-						assessmentId: 'assessment-id',
-						attemptId: 'attempt-id',
-						score: 'doggo',
-						scoreDetails: {
-							status: 'passed',
-							rewardTotal: 0,
-							attemptScore: 'doggo',
-							rewardedMods: [],
-							attemptNumber: 1,
-							assessmentScore: 'doggo',
-							assessmentModdedScore: 'doggo'
-						},
-						preview: false,
-						error: null
 					},
 					result: {
 						launchId: 'launch-id',
@@ -2372,26 +2000,6 @@ describe('lti', () => {
 						lis_outcome_service_url: null,
 						lis_result_sourcedid: 'lis_result_sourcedid'
 					},
-					assessmentScore: {
-						id: 'assessment-score-id',
-						userId: 'user-id',
-						draftId: 'draft-id',
-						contentId: 'content-id',
-						assessmentId: 'assessment-id',
-						attemptId: 'attempt-id',
-						score: 'doggo',
-						scoreDetails: {
-							status: 'passed',
-							rewardTotal: 0,
-							attemptScore: 'doggo',
-							rewardedMods: [],
-							attemptNumber: 1,
-							assessmentScore: 'doggo',
-							assessmentModdedScore: 'doggo'
-						},
-						preview: false,
-						error: null
-					},
 					result: {
 						launchId: 'launch-id',
 						scoreSent: null,
@@ -2471,26 +2079,6 @@ describe('lti', () => {
 						lis_outcome_service_url: 'lis_outcome_service_url',
 						lis_result_sourcedid: 'lis_result_sourcedid'
 					},
-					assessmentScore: {
-						id: 'assessment-score-id',
-						userId: 'user-id',
-						draftId: 'draft-id',
-						contentId: 'content-id',
-						assessmentId: 'assessment-id',
-						attemptId: 'attempt-id',
-						score: 1,
-						scoreDetails: {
-							status: 'passed',
-							rewardTotal: 0,
-							attemptScore: 1,
-							rewardedMods: [],
-							attemptNumber: 1,
-							assessmentScore: 1,
-							assessmentModdedScore: 1
-						},
-						preview: true,
-						error: null
-					},
 					result: {
 						launchId: 'launch-id',
 						scoreSent: null,
@@ -2563,26 +2151,6 @@ describe('lti', () => {
 					body: {
 						lis_outcome_service_url: null,
 						lis_result_sourcedid: null
-					},
-					assessmentScore: {
-						id: 'assessment-score-id',
-						userId: 'user-id',
-						draftId: 'draft-id',
-						contentId: 'content-id',
-						assessmentId: 'assessment-id',
-						attemptId: 'attempt-id',
-						score: 1,
-						scoreDetails: {
-							status: 'passed',
-							rewardTotal: 0,
-							attemptScore: 1,
-							rewardedMods: [],
-							attemptNumber: 1,
-							assessmentScore: 1,
-							assessmentModdedScore: 1
-						},
-						preview: true,
-						error: null
 					},
 					result: {
 						launchId: null,
@@ -2660,26 +2228,6 @@ describe('lti', () => {
 						lis_outcome_service_url: 'lis_outcome_service_url',
 						lis_result_sourcedid: 'lis_result_sourcedid'
 					},
-					assessmentScore: {
-						id: 'assessment-score-id',
-						userId: 'user-id',
-						draftId: 'draft-id',
-						contentId: 'content-id',
-						assessmentId: 'assessment-id',
-						attemptId: 'attempt-id',
-						score: null,
-						scoreDetails: {
-							status: 'passed',
-							rewardTotal: 0,
-							attemptScore: null,
-							rewardedMods: [],
-							attemptNumber: 1,
-							assessmentScore: null,
-							assessmentModdedScore: null
-						},
-						preview: true,
-						error: null
-					},
 					result: {
 						launchId: 'launch-id',
 						scoreSent: null,
@@ -2755,26 +2303,6 @@ describe('lti', () => {
 					body: {
 						lis_outcome_service_url: 'lis_outcome_service_url',
 						lis_result_sourcedid: 'lis_result_sourcedid'
-					},
-					assessmentScore: {
-						id: 'assessment-score-id',
-						userId: 'user-id',
-						draftId: 'draft-id',
-						contentId: 'content-id',
-						assessmentId: 'assessment-id',
-						attemptId: 'attempt-id',
-						score: 'doggo',
-						scoreDetails: {
-							status: 'passed',
-							rewardTotal: 0,
-							attemptScore: 'doggo',
-							rewardedMods: [],
-							attemptNumber: 1,
-							assessmentScore: 'doggo',
-							assessmentModdedScore: 'doggo'
-						},
-						preview: true,
-						error: null
 					},
 					result: {
 						launchId: 'launch-id',
@@ -2853,26 +2381,6 @@ describe('lti', () => {
 					body: {
 						lis_outcome_service_url: 'lis_outcome_service_url',
 						lis_result_sourcedid: 'lis_result_sourcedid'
-					},
-					assessmentScore: {
-						id: 'assessment-score-id',
-						userId: 'user-id',
-						draftId: 'draft-id',
-						contentId: 'content-id',
-						assessmentId: 'assessment-id',
-						attemptId: 'attempt-id',
-						score: 1,
-						scoreDetails: {
-							status: 'passed',
-							rewardTotal: 0,
-							attemptScore: 1,
-							rewardedMods: [],
-							attemptNumber: 1,
-							assessmentScore: 1,
-							assessmentModdedScore: 1
-						},
-						preview: true,
-						error: null
 					},
 					result: {
 						launchId: 'launch-id',
@@ -3013,26 +2521,6 @@ describe('lti', () => {
 						lis_outcome_service_url: 'lis_outcome_service_url',
 						lis_result_sourcedid: 'lis_result_sourcedid'
 					},
-					assessmentScore: {
-						id: 'assessment-score-id',
-						userId: 'user-id',
-						draftId: 'draft-id',
-						contentId: 'content-id',
-						assessmentId: 'assessment-id',
-						attemptId: 'attempt-id',
-						score: 100,
-						scoreDetails: {
-							status: 'passed',
-							rewardTotal: 0,
-							attemptScore: 100,
-							rewardedMods: [],
-							attemptNumber: 1,
-							assessmentScore: 100,
-							assessmentModdedScore: 100
-						},
-						preview: false,
-						error: null
-					},
 					result: {
 						launchId: 'launch-id',
 						scoreSent: 1,
@@ -3110,26 +2598,6 @@ describe('lti', () => {
 					body: {
 						lis_outcome_service_url: null, // Shouldn't be null but is due to MockedBadReqVars
 						lis_result_sourcedid: 'lis_result_sourcedid'
-					},
-					assessmentScore: {
-						id: 'assessment-score-id',
-						userId: 'user-id',
-						draftId: 'draft-id',
-						contentId: 'content-id',
-						assessmentId: 'assessment-id',
-						attemptId: 'attempt-id',
-						score: 100,
-						scoreDetails: {
-							status: 'passed',
-							rewardTotal: 0,
-							attemptScore: 100,
-							rewardedMods: [],
-							attemptNumber: 1,
-							assessmentScore: 100,
-							assessmentModdedScore: 100
-						},
-						preview: false,
-						error: null
 					},
 					result: {
 						launchId: 'launch-id',

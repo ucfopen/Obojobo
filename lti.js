@@ -484,7 +484,6 @@ let insertReplaceResultEvent = (
 	userId,
 	draftDocument,
 	launch,
-	assessmentScoreData,
 	outcomeData,
 	ltiResult
 ) => {
@@ -498,7 +497,6 @@ let insertReplaceResultEvent = (
 				lis_outcome_service_url: outcomeData.serviceURL,
 				lis_result_sourcedid: outcomeData.resultSourcedId
 			},
-			assessmentScore: assessmentScoreData,
 			result: ltiResult
 		},
 		userId: userId,
@@ -635,7 +633,7 @@ const sendHighestAssessmentScore = (userId, draftDocument, assessmentId) => {
 	let logId = uuid()
 	let requiredData = null
 	let outcomeData = null
-	let result = {
+	let result = Object.seal({
 		launchId: null,
 		scoreSent: null,
 		status: null,
@@ -644,7 +642,8 @@ const sendHighestAssessmentScore = (userId, draftDocument, assessmentId) => {
 		dbStatus: null,
 		ltiAssessmentScoreId: null,
 		outcomeServiceURL: null
-	}
+	})
+
 
 	logger.info(
 		`LTI begin sendHighestAssessmentScore for userId:"${userId}", draftId:"${draftDocument.draftId}", assessmentId:"${assessmentId}"`,
@@ -736,7 +735,6 @@ const sendHighestAssessmentScore = (userId, draftDocument, assessmentId) => {
 				userId,
 				draftDocument,
 				requiredData.launch,
-				requiredData.assessmentScoreRecord,
 				outcomeData,
 				result
 			)

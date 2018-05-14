@@ -71,7 +71,7 @@ obo.lti = (function() {
 			return
 		}
 
-		var terms = searchTerms.split(' ')
+		var terms = searchTerms.toLowerCase().split(' ')
 		var numTerms = terms.length
 
 		var len = items.length
@@ -224,7 +224,7 @@ obo.lti = (function() {
 	}
 
 	function buildLaunchUrl(draftId) {
-		return window.location.protocol + '//' + window.location.host + '/view/' + draftId
+		return window.location.origin + '/view/' + draftId
 	}
 
 	// utility
@@ -239,7 +239,7 @@ obo.lti = (function() {
 		$clone.removeClass('template')
 		$clone.find('.title').html(lo.title ? lo.title : 'Untitled')
 		$clone.find('.draft-id').html('id: ' + lo.draftId)
-		$clone.find('.preview').attr('href', '/view/' + lo.draftId)
+		$clone.find('.preview').attr('href', '/preview/' + lo.draftId)
 		$clone.attr('data-lo-id', lo.draftId)
 
 		$clone.find('.button').click(onSelectClick)

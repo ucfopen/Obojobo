@@ -1,3 +1,5 @@
+jest.mock('../../models/user')
+
 const { mockExpressMethods, mockRouterMethods } = require('../../__mocks__/__mock_express')
 
 describe('lti route', () => {
