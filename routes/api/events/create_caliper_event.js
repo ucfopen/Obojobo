@@ -63,16 +63,16 @@ let createScore = (attemptIRI, scoredBy, score, scoreId = getNewGeneratedId()) =
 // generated: (type: Attempt, Recommended) IRI of the attempt of this assessment
 // actor: (type: Person, REQUIRED) Current user
 let createAssessmentEvent = (obj, IRI) => {
-	let required = ['action', 'assessmentId', 'attemptId', 'draftId']
+	let required = ['action', 'assessmentId', 'attemptId', 'draftId', 'contentId']
 	validateCaliperEvent({ required }, obj, ACTOR_USER)
 
 	let options = assignCaliperOptions(obj)
 
-	let { actor, assessmentId, draftId, action, attemptId, extensions } = obj
+	let { actor, assessmentId, draftId, contentId, action, attemptId, extensions } = obj
 	let caliperEvent = createEvent(AssessmentEvent, actor, IRI, options)
 
 	caliperEvent.setAction(action)
-	caliperEvent.setObject(IRI.getAssessmentIRI(draftId, assessmentId))
+	caliperEvent.setObject(IRI.getAssessmentIRI(draftId, contentId, assessmentId))
 	caliperEvent.setGenerated(IRI.getAssessmentAttemptIRI(attemptId))
 	Object.assign(caliperEvent.extensions, extensions)
 
@@ -85,16 +85,16 @@ let createAssessmentEvent = (obj, IRI) => {
 // object: (type: DigitalResource | SoftwareApplication, REQUIRED) Viewer IRI of the element
 // actor: (REQUIRED)
 let createNavMenuEvent = (obj, IRI) => {
-	let required = ['draftId', 'action']
+	let required = ['draftId', 'contentId', 'action']
 	validateCaliperEvent({ required }, obj)
 
 	let options = assignCaliperOptions(obj)
 
-	let { action, actor, draftId, extensions } = obj
+	let { action, actor, draftId, contentId, extensions } = obj
 	let caliperEvent = createEvent(Event, actor, IRI, options)
 
 	caliperEvent.setAction(action)
-	caliperEvent.setObject(IRI.getViewerClientIRI(draftId, 'nav'))
+	caliperEvent.setObject(IRI.getViewerClientIRI(draftId, contentId, 'nav'))
 	Object.assign(caliperEvent.extensions, extensions)
 
 	return updateEventToVersion1_1(caliperEvent)
@@ -224,18 +224,18 @@ const caliperEventFactory = (req, host = null, isFromReq = false) => {
 		// object: (type: Attempt, REQUIRED) Attempt IRI
 		// generated: (type: Score, Recommended) Score for the attempt
 		createAssessmentAttemptScoredEvent: obj => {
-			let required = ['assessmentId', 'attemptId', 'attemptScore', 'draftId']
+			let required = ['assessmentId', 'attemptId', 'attemptScore', 'draftId', 'contentId']
 			validateCaliperEvent({ required }, obj, ACTOR_SERVER_APP)
 
 			let options = assignCaliperOptions(obj)
 
-			let { actor, assessmentId, attemptId, attemptScore, draftId, extensions } = obj
+			let { actor, assessmentId, attemptId, attemptScore, draftId, contentId, extensions } = obj
 			let caliperEvent = createEvent(Event, actor, IRI, options) //@TODO: Should be GradeEvent
 
 			caliperEvent.setType('GradeEvent')
 			caliperEvent.setAction('Graded')
 			caliperEvent.setObject(IRI.getAssessmentAttemptIRI(attemptId))
-			caliperEvent.setTarget(IRI.getAssessmentIRI(draftId, assessmentId))
+			caliperEvent.setTarget(IRI.getAssessmentIRI(draftId, contentId, assessmentId))
 
 			//@TODO - Caliper spec will have a Score entity but our version doesn't have this yet
 			caliperEvent.setGenerated(
@@ -253,21 +253,21 @@ const caliperEventFactory = (req, host = null, isFromReq = false) => {
 		// object: (type: Attempt, REQUIRED) Question Attempt IRI
 		// generated: (type: Score, Recommended) Score for the attempt
 		createPracticeGradeEvent: obj => {
-			let required = ['draftId', 'questionId', 'scoreId', 'score']
+			let required = ['draftId', 'contentId', 'questionId', 'scoreId', 'score']
 			validateCaliperEvent({ required }, obj, ACTOR_VIEWER_CLIENT)
 
 			let options = assignCaliperOptions(obj)
 
-			let { actor, draftId, questionId, score, scoreId, extensions } = obj
+			let { actor, draftId, contentId, questionId, score, scoreId, extensions } = obj
 			let caliperEvent = createEvent(Event, actor, IRI, options) //@TODO: Should be GradeEvent
 
 			caliperEvent.setType('GradeEvent')
 			caliperEvent.setAction('Graded')
-			caliperEvent.setObject(IRI.getPracticeQuestionAttemptIRI(draftId, questionId))
+			caliperEvent.setObject(IRI.getPracticeQuestionAttemptIRI(draftId, contentId, questionId))
 			//@TODO - Caliper spec will have a Score entity but our version doesn't have this yet
 			caliperEvent.setGenerated(
 				createScore(
-					IRI.getPracticeQuestionAttemptIRI(draftId, questionId),
+					IRI.getPracticeQuestionAttemptIRI(draftId, contentId, questionId),
 					IRI.getViewerClientIRI(),
 					score,
 					getUrnFromUuid(scoreId)
@@ -305,7 +305,11 @@ const caliperEventFactory = (req, host = null, isFromReq = false) => {
 			const options = assignCaliperOptions(obj)
 			const caliperEvent = createEvent(AssessmentItemEvent, actor, IRI, options)
 			const questionIdIRI = IRI.getDraftIRI(draftId, contentId, questionId)
-			const practiceQuestionAttemptIRI = IRI.getPracticeQuestionAttemptIRI(draftId, questionId)
+			const practiceQuestionAttemptIRI = IRI.getPracticeQuestionAttemptIRI(
+				draftId,
+				contentId,
+				questionId
+			)
 
 			caliperEvent.setAction('Completed')
 			caliperEvent.setTarget(IRI.getDraftIRI(draftId, contentId, targetId))
@@ -343,7 +347,7 @@ const caliperEventFactory = (req, host = null, isFromReq = false) => {
 
 			caliperEvent.setAction('Submitted')
 			caliperEvent.setObject(IRI.getDraftIRI(draftId, contentId, questionId))
-			caliperEvent.setTarget(IRI.getPracticeQuestionAttemptIRI(draftId, questionId))
+			caliperEvent.setTarget(IRI.getPracticeQuestionAttemptIRI(draftId, contentId, questionId))
 
 			Object.assign(caliperEvent.extensions, extensions)
 
@@ -356,17 +360,17 @@ const caliperEventFactory = (req, host = null, isFromReq = false) => {
 		// object: (type: Entity, REQUIRED) Score URN
 		// target: (type: Entity, Optional) Practice question attempt IRI
 		createPracticeUngradeEvent: obj => {
-			let required = ['draftId', 'questionId', 'scoreId']
+			let required = ['draftId', 'contentId', 'questionId', 'scoreId']
 			validateCaliperEvent({ required }, obj, ACTOR_SERVER_APP)
 
 			let options = assignCaliperOptions(obj)
 
-			let { actor, draftId, questionId, scoreId, extensions } = obj
+			let { actor, draftId, contentId, questionId, scoreId, extensions } = obj
 			let caliperEvent = createEvent(Event, actor, IRI, options)
 
 			caliperEvent.setAction('Reset')
 			caliperEvent.setObject(getUrnFromUuid(scoreId))
-			caliperEvent.setTarget(IRI.getPracticeQuestionAttemptIRI(draftId, questionId))
+			caliperEvent.setTarget(IRI.getPracticeQuestionAttemptIRI(draftId, contentId, questionId))
 
 			Object.assign(caliperEvent.extensions, extensions)
 
@@ -479,7 +483,7 @@ const caliperEventFactory = (req, host = null, isFromReq = false) => {
 
 			caliperEvent.setAction('Reset')
 			caliperEvent.setObject(IRI.getDraftIRI(draftId, contentId, questionId))
-			caliperEvent.setTarget(IRI.getPracticeQuestionAttemptIRI(draftId, questionId))
+			caliperEvent.setTarget(IRI.getPracticeQuestionAttemptIRI(draftId, contentId, questionId))
 
 			Object.assign(caliperEvent.extensions, extensions)
 

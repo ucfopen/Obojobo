@@ -43,8 +43,10 @@ describe('IRI Builder', () => {
 	})
 
 	test('getViewerClientIRI returns with expected path when given draftId and client', () => {
-		let path = iri(null, 'testHost').getViewerClientIRI('testDraft', 'testClient')
-		expect(path).toBe('https://testHost/api/viewer/client/testClient%3FdraftId=testDraft')
+		let path = iri(null, 'testHost').getViewerClientIRI('testDraft', 'testContent', 'testClient')
+		expect(path).toBe(
+			'https://testHost/api/viewer/client/testClient%3FdraftId=testDraft&contentId=testContent'
+		)
 	})
 
 	test('getAppServerIRI returns with expected path', () => {
@@ -95,13 +97,21 @@ describe('IRI Builder', () => {
 	})
 
 	test('getPracticeQuestionAttemptIRI returns with expected path', () => {
-		let path = iri(null, 'testHost').getPracticeQuestionAttemptIRI('testDraft', 'testNode')
-		expect(path).toBe('https://testHost/api/practice/testDraft/testNode')
+		let path = iri(null, 'testHost').getPracticeQuestionAttemptIRI(
+			'testDraft',
+			'testContent',
+			'testNode'
+		)
+		expect(path).toBe(
+			'https://testHost/api/draft/testDraft/draftcontent/testContent/practice/testNode'
+		)
 	})
 
 	test('getAssessmentIRI returns with expected path', () => {
-		let path = iri(null, 'testHost').getAssessmentIRI('testDraft', 'testAssessment')
-		expect(path).toBe('https://testHost/api/assessment/testDraft/testAssessment')
+		let path = iri(null, 'testHost').getAssessmentIRI('testDraft', 'testContent', 'testAssessment')
+		expect(path).toBe(
+			'https://testHost/api/draft/testDraft/draftcontent/testContent/assessment/testAssessment'
+		)
 	})
 
 	test('getAssessmentAttemptIRI returns with expected path', () => {

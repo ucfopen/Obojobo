@@ -14,7 +14,7 @@ Event {
   },
   "federatedSession": "https://hostnameReq/api/launch/OboLtiLaunchIdReq",
   "id": "urn:uuid:DEADBEEF-0000-DEAD-BEEF-1234DEADBEEF",
-  "object": "https://hostnameReq/api/viewer/client/nav%3FdraftId=testDraftIdReq",
+  "object": "https://hostnameReq/api/viewer/client/nav%3FdraftId=testDraftIdReq&contentId=testContentIdReq",
   "session": "https://hostnameReq/api/session/SessionIdReq",
   "type": "Event",
 }
@@ -55,7 +55,7 @@ Event {
   },
   "federatedSession": "https://hostnameReq/api/launch/OboLtiLaunchIdReq",
   "id": "urn:uuid:DEADBEEF-0000-DEAD-BEEF-1234DEADBEEF",
-  "object": "https://hostnameReq/api/viewer/client/nav%3FdraftId=testDraftIdReq",
+  "object": "https://hostnameReq/api/viewer/client/nav%3FdraftId=testDraftIdReq&contentId=testContentIdReq",
   "session": "https://hostnameReq/api/session/SessionIdReq",
   "type": "Event",
 }
@@ -75,7 +75,7 @@ Event {
   },
   "federatedSession": "https://hostnameReq/api/launch/OboLtiLaunchIdReq",
   "id": "urn:uuid:DEADBEEF-0000-DEAD-BEEF-1234DEADBEEF",
-  "object": "https://hostnameReq/api/viewer/client/nav%3FdraftId=testDraftIdReq",
+  "object": "https://hostnameReq/api/viewer/client/nav%3FdraftId=testDraftIdReq&contentId=testContentIdReq",
   "session": "https://hostnameReq/api/session/SessionIdReq",
   "type": "Event",
 }
@@ -96,7 +96,7 @@ Event {
   },
   "federatedSession": "https://hostnameReq/api/launch/OboLtiLaunchIdReq",
   "id": "urn:uuid:DEADBEEF-0000-DEAD-BEEF-1234DEADBEEF",
-  "object": "https://hostnameReq/api/viewer/client/nav%3FdraftId=testDraftIdReq",
+  "object": "https://hostnameReq/api/viewer/client/nav%3FdraftId=testDraftIdReq&contentId=testContentIdReq",
   "session": "https://hostnameReq/api/session/SessionIdReq",
   "type": "Event",
 }
@@ -116,7 +116,7 @@ Event {
   },
   "federatedSession": "https://hostnameReq/api/launch/OboLtiLaunchIdReq",
   "id": "urn:uuid:DEADBEEF-0000-DEAD-BEEF-1234DEADBEEF",
-  "object": "https://hostnameReq/api/viewer/client/nav%3FdraftId=testDraftIdReq",
+  "object": "https://hostnameReq/api/viewer/client/nav%3FdraftId=testDraftIdReq&contentId=testContentIdReq",
   "session": "https://hostnameReq/api/session/SessionIdReq",
   "type": "Event",
 }
@@ -136,7 +136,7 @@ Event {
   "id": "urn:uuid:DEADBEEF-0000-DEAD-BEEF-1234DEADBEEF",
   "object": "https://hostnameReq/api/draft/testDraftIdReq/draftcontent/testContentIdReq#testQuestionIdReq",
   "session": "https://hostnameReq/api/session/SessionIdReq",
-  "target": "https://hostnameReq/api/practice/testDraftIdReq/testQuestionIdReq",
+  "target": "https://hostnameReq/api/draft/testDraftIdReq/draftcontent/testContentIdReq/practice/testQuestionIdReq",
   "type": "Event",
 }
 `;
@@ -192,7 +192,7 @@ Event {
   "id": "urn:uuid:DEADBEEF-0000-DEAD-BEEF-1234DEADBEEF",
   "object": "https://hostnameReq/api/draft/testDraftIdReq/draftcontent/testContentIdReq#testQuestionIdReq",
   "session": "https://hostnameReq/api/session/SessionIdReq",
-  "target": "https://hostnameReq/api/practice/testDraftIdReq/testQuestionIdReq",
+  "target": "https://hostnameReq/api/draft/testDraftIdReq/draftcontent/testContentIdReq/practice/testQuestionIdReq",
   "type": "Event",
 }
 `;
@@ -276,7 +276,7 @@ Event {
   "id": "urn:uuid:DEADBEEF-0000-DEAD-BEEF-1234DEADBEEF",
   "object": "urn:uuid:testIdReq",
   "session": "https://hostnameReq/api/session/SessionIdReq",
-  "target": "https://hostnameReq/api/practice/testDraftIdReq/testItemIdReq",
+  "target": "https://hostnameReq/api/draft/testDraftIdReq/draftcontent/testContentIdReq/practice/testItemIdReq",
   "type": "Event",
 }
 `;
@@ -294,7 +294,7 @@ Event {
   "federatedSession": "https://hostnameReq/api/launch/OboLtiLaunchIdReq",
   "generated": Object {
     "@context": "http://purl.imsglobal.org/ctx/caliper/v1p1",
-    "attempt": "https://hostnameReq/api/practice/testDraftIdReq/testItemIdReq",
+    "attempt": "https://hostnameReq/api/draft/testDraftIdReq/draftcontent/testContentIdReq/practice/testItemIdReq",
     "dateCreated": "2016-09-22T16:57:14.500Z",
     "id": "urn:uuid:testIdReq",
     "maxScore": 100,
@@ -303,7 +303,7 @@ Event {
     "type": "Score",
   },
   "id": "urn:uuid:DEADBEEF-0000-DEAD-BEEF-1234DEADBEEF",
-  "object": "https://hostnameReq/api/practice/testDraftIdReq/testItemIdReq",
+  "object": "https://hostnameReq/api/draft/testDraftIdReq/draftcontent/testContentIdReq/practice/testItemIdReq",
   "session": "https://hostnameReq/api/session/SessionIdReq",
   "type": "GradeEvent",
 }

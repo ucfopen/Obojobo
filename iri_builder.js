@@ -26,9 +26,10 @@ const iriFactory = (req, providedHost) => {
 			return createIRI(host, '/api/system')
 		},
 
-		getViewerClientIRI: (draftId, element) => {
-			if (element && draftId)
-				return createIRI(host, `/api/viewer/client/${element}?draftId=${draftId}`)
+		getViewerClientIRI: (draftId, contentId, element) => {
+			if (element && draftId && contentId)
+				return createIRI(host, `/api/viewer/client/${element}?draftId=${draftId}&contentId=${contentId}`)
+			if (draftId && contentId) return createIRI(host, `/api/viewer/client?draftId=${draftId}&contentId=${contentId}`)
 			if (draftId) return createIRI(host, `/api/viewer/client?draftId=${draftId}`)
 			else return createIRI(host, '/api/viewer/client')
 		},
@@ -63,12 +64,12 @@ const iriFactory = (req, providedHost) => {
 			return iri
 		},
 
-		getPracticeQuestionAttemptIRI: (draftId, oboNodeId) => {
-			return createIRI(host, `/api/practice/${draftId}/${oboNodeId}`)
+		getPracticeQuestionAttemptIRI: (draftId, contentId, oboNodeId) => {
+			return createIRI(host, `/api/draft/${draftId}/draftcontent/${contentId}/practice/${oboNodeId}`)
 		},
 
-		getAssessmentIRI: (draftId, assessmentId) => {
-			return createIRI(host, `/api/assessment/${draftId}/${assessmentId}`)
+		getAssessmentIRI: (draftId, contentId, assessmentId) => {
+			return createIRI(host, `/api/draft/${draftId}/draftcontent/${contentId}/assessment/${assessmentId}`)
 		},
 
 		getAssessmentAttemptIRI: attemptId => {

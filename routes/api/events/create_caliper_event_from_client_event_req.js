@@ -45,6 +45,7 @@ module.exports = req => {
 			return caliperEvents.createNavMenuShowedEvent({
 				actor: actorFromType(ACTOR_USER),
 				draftId: currentDocument.draftId,
+				contentId: currentDocument.contentId,
 				isPreviewMode,
 				sessionIds,
 				extensions: {
@@ -57,6 +58,7 @@ module.exports = req => {
 			return caliperEvents.createNavMenuHidEvent({
 				actor: actorFromType(ACTOR_USER),
 				draftId: currentDocument.draftId,
+				contentId: currentDocument.contentId,
 				isPreviewMode,
 				sessionIds,
 				extensions: {
@@ -69,6 +71,7 @@ module.exports = req => {
 			return caliperEvents.createNavMenuToggledEvent({
 				actor: actorFromType(ACTOR_USER),
 				draftId: currentDocument.draftId,
+				contentId: currentDocument.contentId,
 				isPreviewMode,
 				sessionIds,
 				extensions: {
@@ -82,6 +85,7 @@ module.exports = req => {
 			return caliperEvents.createNavMenuDeactivatedEvent({
 				actor: actorFromType(ACTOR_VIEWER_CLIENT),
 				draftId: currentDocument.draftId,
+				contentId: currentDocument.contentId,
 				isPreviewMode,
 				sessionIds,
 				extensions: {
@@ -94,6 +98,7 @@ module.exports = req => {
 			return caliperEvents.createNavMenuActivatedEvent({
 				actor: actorFromType(ACTOR_VIEWER_CLIENT),
 				draftId: currentDocument.draftId,
+				contentId: currentDocument.contentId,
 				isPreviewMode,
 				sessionIds,
 				extensions: {
@@ -174,6 +179,7 @@ module.exports = req => {
 			return caliperEvents.createPracticeGradeEvent({
 				actor: actorFromType(ACTOR_VIEWER_CLIENT),
 				draftId: currentDocument.draftId,
+				contentId: currentDocument.contentId,
 				questionId: clientEvent.payload.itemId,
 				scoreId: clientEvent.payload.id,
 				score: clientEvent.payload.score,
@@ -185,6 +191,7 @@ module.exports = req => {
 			return caliperEvents.createPracticeUngradeEvent({
 				actor: actorFromType(ACTOR_SERVER_APP),
 				draftId: currentDocument.draftId,
+				contentId: currentDocument.contentId,
 				questionId: clientEvent.payload.itemId,
 				scoreId: clientEvent.payload.id,
 				isPreviewMode,

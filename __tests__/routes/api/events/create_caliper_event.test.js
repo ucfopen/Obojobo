@@ -147,6 +147,7 @@ describe('Caliper event creator', () => {
 		const attemptStarted = caliperEvents.createAssessmentAttemptStartedEvent({
 			actor,
 			draftId,
+			contentId,
 			assessmentId,
 			attemptId,
 			sessionIds,
@@ -160,6 +161,7 @@ describe('Caliper event creator', () => {
 			caliperEvents.createAssessmentAttemptStartedEvent({
 				actor: { type: 'bad' },
 				draftId,
+				contentId,
 				assessmentId,
 				attemptId,
 				sessionIds,
@@ -174,6 +176,7 @@ describe('Caliper event creator', () => {
 		const attemptSubmitted = caliperEvents.createAssessmentAttemptSubmittedEvent({
 			actor,
 			draftId,
+			contentId,
 			assessmentId,
 			attemptId,
 			sessionIds,
@@ -201,6 +204,7 @@ describe('Caliper event creator', () => {
 		const attemptScored = caliperEvents.createAssessmentAttemptScoredEvent({
 			actor: { type: 'serverApp' },
 			draftId,
+			contentId,
 			assessmentId,
 			attemptId,
 			sessionIds,
@@ -228,6 +232,7 @@ describe('Caliper event creator', () => {
 		const practiceGrade = caliperEvents.createPracticeGradeEvent({
 			actor: { type: 'viewerClient' },
 			draftId,
+			contentId,
 			questionId,
 			scoreId,
 			score,
@@ -242,6 +247,7 @@ describe('Caliper event creator', () => {
 			caliperEvents.createPracticeGradeEvent({
 				actor: { type: 'bad' },
 				draftId,
+				contentId,
 				questionId,
 				scoreId,
 				score,
@@ -357,6 +363,7 @@ describe('Caliper event creator', () => {
 			caliperEvents.createPracticeQuestionSubmittedEvent({
 				actor: { type: 'bad' },
 				draftId,
+				contentId,
 				questionId,
 				sessionIds,
 				extensions
@@ -370,6 +377,7 @@ describe('Caliper event creator', () => {
 		const practiceUngrade = caliperEvents.createPracticeUngradeEvent({
 			actor: { type: 'serverApp' },
 			draftId,
+			contentId,
 			questionId,
 			scoreId,
 			extensions
@@ -382,6 +390,7 @@ describe('Caliper event creator', () => {
 			caliperEvents.createPracticeUngradeEvent({
 				actor: { type: 'bad' },
 				draftId,
+				contentId,
 				questionId,
 				scoreId,
 				extensions
@@ -521,6 +530,7 @@ describe('Caliper event creator', () => {
 		const createNavMenuHidEvent = caliperEvents.createNavMenuHidEvent({
 			actor,
 			draftId,
+			contentId,
 			sessionIds,
 			extensions
 		})
@@ -532,6 +542,7 @@ describe('Caliper event creator', () => {
 			caliperEvents.createNavMenuHidEvent({
 				actor: { type: 'bad' },
 				draftId,
+				contentId,
 				sessionIds,
 				extensions
 			})
@@ -546,6 +557,7 @@ describe('Caliper event creator', () => {
 		const createNavMenuShowedEvent = caliperEvents.createNavMenuShowedEvent({
 			actor,
 			draftId,
+			contentId,
 			sessionIds,
 			extensions
 		})
@@ -557,6 +569,7 @@ describe('Caliper event creator', () => {
 			caliperEvents.createNavMenuShowedEvent({
 				actor: { type: 'bad' },
 				draftId,
+				contentId,
 				sessionIds,
 				extensions
 			})
@@ -571,6 +584,7 @@ describe('Caliper event creator', () => {
 		const createNavMenuToggledEvent = caliperEvents.createNavMenuToggledEvent({
 			actor,
 			draftId,
+			contentId,
 			sessionIds,
 			extensions
 		})
@@ -582,6 +596,7 @@ describe('Caliper event creator', () => {
 			caliperEvents.createNavMenuToggledEvent({
 				actor: { type: 'bad' },
 				draftId,
+				contentId,
 				sessionIds,
 				extensions
 			})
@@ -596,6 +611,7 @@ describe('Caliper event creator', () => {
 		const createNavMenuActivatedEvent = caliperEvents.createNavMenuActivatedEvent({
 			actor,
 			draftId,
+			contentId,
 			sessionIds,
 			extensions
 		})
@@ -607,6 +623,7 @@ describe('Caliper event creator', () => {
 			caliperEvents.createNavMenuActivatedEvent({
 				actor: { type: 'bad' },
 				draftId,
+				contentId,
 				sessionIds,
 				extensions
 			})
@@ -621,6 +638,7 @@ describe('Caliper event creator', () => {
 		const createNavMenuDeactivatedEvent = caliperEvents.createNavMenuDeactivatedEvent({
 			actor,
 			draftId,
+			contentId,
 			sessionIds,
 			extensions
 		})
@@ -632,6 +650,7 @@ describe('Caliper event creator', () => {
 			caliperEvents.createNavMenuDeactivatedEvent({
 				actor: { type: 'bad' },
 				draftId,
+				contentId,
 				sessionIds,
 				extensions
 			})
