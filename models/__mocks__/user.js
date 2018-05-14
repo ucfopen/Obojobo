@@ -40,6 +40,10 @@ class MockUser {
 		})
 	}
 
+	isGuest() {
+		return false
+	}
+
 	static set saveOrCreateCallback(fn) {
 		saveOrCreateCallbackFn = fn
 	}

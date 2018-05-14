@@ -3,7 +3,6 @@ global.oboRequire = name => require(`${__dirname}/../${name}`)
 const fs = require('fs')
 const db = oboRequire('db')
 const DraftModel = oboRequire('models/draft')
-const updateDraft = oboRequire('routes/api/drafts/update_draft')
 const usageError = new Error(`Usage:
 	node write_json_draft_to_db.js insert file.json [user_id] [draft_id]
 	node write_json_draft_to_db.js update file.json draft_id`)
@@ -64,7 +63,7 @@ try {
 		case 'update':
 			draftId = process.argv[4] || 0
 
-			updateDraft(draftId, jsonContent)
+			Draft.updateContent(draftId, json)
 				.then(id => {
 					console.info('OK. id=' + id)
 					process.exit()

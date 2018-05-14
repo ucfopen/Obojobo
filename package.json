@@ -29,7 +29,7 @@
 		"devXmlParser:clone":"git clone git@github.com:ucfcdl/Obojobo-Docment-XML-Parser.git devsrc/obojobo-draft-xml-parser || echo 'already cloned'",
 		"devXmlParser:nodemodules": "cd ./devsrc/obojobo-draft-xml-parser && yarn",
 		"devXmlParser:link":"cd ./devsrc/obojobo-draft-xml-parser && yarn link && cd ../.. && yarn link obojobo-draft-xml-parser",
-		"test": "jest --watch",
+		"test": "jest",
 		"test:ci": "CI=true jest --ci --coverage --coverageReporters text-summary cobertura",
 		"precommit": "yarn test:ci && lint-staged",
 		"prettier:run":"prettier --write '{__{tests,mocks}__,bin,config,migrations,models,routes,views}/**/*.{js,scss}'",
@@ -111,13 +111,14 @@
 		"setupTestFrameworkScriptFile": "./setup_tests.js",
 		"collectCoverageFrom": [
 			"*.js",
-			"models/*.js",
-			"routes/*.js",
+			"models/**/*.js",
+			"routes/**/*.js",
 			"routes/**/*.js",
 			"controllers/**/*.js"
 		],
-		"coveragePathIgnorePatterns": ["/node_modules", "/app.js", "/dev_nonce_store.js"],
+		"coveragePathIgnorePatterns": ["<rootDir>/node_modules", "<rootDir>/app.js", "<rootDir>/dev_nonce_store.js", "<rootDir>/devsrc"],
 		"coverageReporters": ["text", "lcov"],
-		"testPathIgnorePatterns": ["devsrc"]
+		"testPathIgnorePatterns": ["<rootDir>/devsrc"],
+		"modulePathIgnorePatterns": ["<rootDir>/devsrc"]
 	}
 }

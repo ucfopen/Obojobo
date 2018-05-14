@@ -4,7 +4,6 @@ jest.mock('../../../db')
 jest.mock('../../../logger')
 
 const { mockExpressMethods, mockRouterMethods } = require('../../../__mocks__/__mock_express')
-const mockUpdateDraft = mockVirtual('./routes/api/drafts/update_draft')
 
 describe('api draft route', () => {
 	beforeAll(() => {})
@@ -130,9 +129,8 @@ describe('api draft route', () => {
 			})
 	})
 
-	test('save draft calls next', () => {
+	test('update draft calls next', () => {
 		expect.assertions(1)
-		mockUpdateDraft.mockResolvedValueOnce(555)
 
 		let User = oboRequire('models/user')
 		let DraftModel = oboRequire('models/draft')
@@ -167,7 +165,7 @@ describe('api draft route', () => {
 
 		return routeFunction(mockReq, mockRes, mockNext)
 			.then(() => {
-				expect(mockRes.success).toBeCalledWith({ id: 555 })
+				expect(mockRes.success).toBeCalledWith({ id: 'mockUpdatedContentId' })
 			})
 			.catch(err => {
 				expect(err).toBe('never called')

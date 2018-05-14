@@ -17,7 +17,7 @@ let success = (req, res, next, valueObject) => {
 // @TODO - in the controller - throw an error instead of calling this
 // let the main response handler catch it and respond with this
 let badInput = (req, res, next, message) => {
-	return res.status(400).json(
+	return res.status(422).json(
 		camelize({
 			status: 'error',
 			value: {

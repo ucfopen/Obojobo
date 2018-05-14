@@ -2,7 +2,7 @@
 
 exports[`user model fetches one from the database 1`] = `
 User {
-  "createdAt": "mockNowDate",
+  "createdAt": "mocked-date",
   "email": "guest@obojobo.ucf.edu",
   "firstName": "Guest",
   "id": 5,
@@ -38,12 +38,15 @@ Array [
 			",
   User {
     "createdAt": "mockNowDate",
-    "email": "guest@obojobo.ucf.edu",
-    "firstName": "Guest",
+    "email": "e@m.com",
+    "firstName": "Roger",
     "id": 3,
-    "lastName": "Guest",
-    "roles": Array [],
-    "username": "guest",
+    "lastName": "Wilco",
+    "roles": Array [
+      "roleName",
+      "otherRoleName",
+    ],
+    "username": "someusername",
   },
 ]
 `;

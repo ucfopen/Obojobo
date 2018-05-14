@@ -1,5 +1,6 @@
 jest.mock('../../logger')
 jest.mock('../../models/visit')
+jest.mock('../../models/user')
 jest.mock('../../insert_event', () => jest.fn())
 
 const mockCreateVisitCreateEvent = jest.fn()
@@ -70,7 +71,7 @@ describe('preview route', () => {
 		mockReq.requireCurrentUser.mockResolvedValueOnce(user)
 
 		return routeFunction(mockReq, mockRes, mockNext).then(result => {
-			expect(Visit.createPreviewVisit).toBeCalledWith(0, 'mocked-draft-id')
+			expect(Visit.createPreviewVisit).toBeCalledWith(1, 'mocked-draft-id')
 			expect(mockRes.redirect).toBeCalledWith('/view/mocked-draft-id/visit/mocked-visit-id')
 		})
 	})
@@ -121,10 +122,10 @@ describe('preview route', () => {
 				ip: 'remoteAddress',
 				metadata: {},
 				payload: { visitId: 'mocked-visit-id', deactivatedVisitId: 'mocked-deactivated-visit-id' },
-				userId: 0
+				userId: 1
 			})
 			expect(mockCreateVisitCreateEvent).toBeCalledWith({
-				actor: { id: 0, type: 'user' },
+				actor: { id: 1, type: 'user' },
 				isPreviewMode: true,
 				extensions: { deactivatedVisitId: 'mocked-deactivated-visit-id' },
 				visitId: 'mocked-visit-id',

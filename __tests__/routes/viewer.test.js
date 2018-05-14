@@ -1,5 +1,6 @@
 jest.mock('../../models/draft')
 jest.mock('../../models/visit')
+jest.mock('../../models/user')
 jest.mock('../../viewer/viewer_state')
 jest.mock('../../logger')
 jest.mock('../../insert_event')
@@ -119,10 +120,10 @@ describe('viewer route', () => {
 				ip: 'remoteAddress',
 				metadata: {},
 				payload: { visitId: 'mocked-visit-id' },
-				userId: 0
+				userId: 1
 			})
 			expect(caliperEvent().createViewerOpenEvent).toBeCalledWith({
-				actor: { id: 0, type: 'user' },
+				actor: { id: 1, type: 'user' },
 				isPreviewMode: undefined,
 				sessionIds: { launchId: undefined, sessionId: undefined },
 				visitId: 'mocked-visit-id'
@@ -175,7 +176,7 @@ describe('viewer route', () => {
 
 		return routeFunction(mockReq, mockRes, mockNext).then(result => {
 			expect(Visit.createVisit).toBeCalledWith(
-				0,
+				1,
 				555,
 				'mocked-resource-link-id',
 				'mocked-launch-id'
@@ -199,10 +200,10 @@ describe('viewer route', () => {
 				ip: 'remoteAddress',
 				metadata: {},
 				payload: { deactivatedVisitId: 'mocked-deactivated-visit-id', visitId: 'mocked-visit-id' },
-				userId: 0
+				userId: 1
 			})
 			expect(caliperEvent().createVisitCreateEvent).toBeCalledWith({
-				actor: { id: 0, type: 'user' },
+				actor: { id: 1, type: 'user' },
 				isPreviewMode: undefined,
 				sessionIds: { launchId: undefined, sessionId: undefined },
 				visitId: 'mocked-visit-id',
