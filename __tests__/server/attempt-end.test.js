@@ -329,6 +329,7 @@ describe('Attempt End', () => {
 			assessmentId: 'mockAssessmentId',
 			attemptId: 'mockAttemptId',
 			draftId: 'mockDraftId',
+			contentId: 'mockContentId',
 			isPreviewMode: 'mockIsPreviewing'
 		})
 	})

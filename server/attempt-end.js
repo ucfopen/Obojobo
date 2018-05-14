@@ -261,6 +261,7 @@ let insertAttemptEndEvents = (
 		caliperPayload: createAssessmentAttemptSubmittedEvent({
 			actor: { type: 'user', id: user.id },
 			draftId: draftDocument.draftId,
+			contentId: draftDocument.contentId,
 			assessmentId,
 			attemptId: attemptId,
 			isPreviewMode: isPreviewing

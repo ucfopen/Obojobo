@@ -603,7 +603,7 @@ describe('start attempt route', () => {
 			contentId: 'mockContentId'
 		}
 
-		const r = insertAttemptStartCaliperEvent(
+		let r = insertAttemptStartCaliperEvent(
 			'mockAttemptId',
 			1,
 			'mockUserId',
@@ -614,7 +614,6 @@ describe('start attempt route', () => {
 			'mockRemoteAddress'
 		)
 
-		// Make sure we get the result of insertEvent back
 		expect(r).toBe('mockInsertResult')
 
 		// Make sure insertEvent was called
@@ -628,6 +627,7 @@ describe('start attempt route', () => {
 			assessmentId: 'mockAssessmentId',
 			attemptId: 'mockAttemptId',
 			draftId: 'mockDraftId',
+			contentId: 'mockContentId',
 			extensions: {
 				count: 1
 			},
