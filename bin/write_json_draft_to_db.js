@@ -10,6 +10,7 @@ let usageError = new Error(`Usage:
 
 let db = oboRequire('db')
 let insertNewDraft = oboRequire('routes/api/drafts/insert_new_draft')
+let Draft = oboRequire('models/draft')
 
 let draftId
 let userId
@@ -68,7 +69,7 @@ try {
 		case 'update':
 			draftId = process.argv[4] || 0
 
-			updateDraft(draftId, json)
+			Draft.updateContent(draftId, json)
 				.then(id => {
 					console.info('OK. id=' + id)
 					process.exit()
