@@ -13,10 +13,11 @@
 			"px",
 			{
 				"ignoreProperties": {
-					"px": ["/^border/", "/^transform/"]
+					"px": ["/^border/", "/^transform/", "/box-shadow/"]
 				}
 			}
 		],
+		"color-hex-length": "long",
 		"sh-waqar/declaration-use-variable": [["/color/", "/background/", "font-family"]]
 	}
 }
