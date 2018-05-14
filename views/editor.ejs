@@ -207,12 +207,19 @@
 			function edit(draftId) {
 				if(!draftId) return
 
+				// if the selected draftId isn't loaded
+				// do nothing and reset the url
+				let el = document.getElementById(draftId)
+				if(!el){
+					location.hash = ''
+					return
+				}
+
+				content = el.getAttribute('data-content')
+
 				document.getElementById('editor').style.display = 'block';
 				editingDraftId = draftId
 
-				content = document.getElementById(draftId).getAttribute('data-content')
-
-				//- document.getElementById('edit').value = content;
 				var selected = document.getElementsByClassName('selected')
 				if(selected[0]) selected[0].classList.remove('selected');
 				document.getElementById(draftId).classList.add('selected');
