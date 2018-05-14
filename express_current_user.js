@@ -14,8 +14,12 @@ let resetCurrentUser = req => {
 
 // returns a Promise!!!
 let getCurrentUser = (req, isRequired = false) => {
+	// return early if already verified
 	if (req.currentUser) return Promise.resolve(req.currentUser)
 
+	// no session data
+	// if isRequired returns a promise rejection
+	// if not require, resovles with a GuestUser
 	if (!req.session || !req.session.currentUserId) {
 		if (isRequired) {
 			logger.warn(
@@ -28,6 +32,7 @@ let getCurrentUser = (req, isRequired = false) => {
 		return Promise.resolve(new GuestUser())
 	}
 
+	// fetch user from database using session data for the user id
 	return User.fetchById(req.session.currentUserId)
 		.then(user => {
 			req.currentUser = user
@@ -40,18 +45,8 @@ let getCurrentUser = (req, isRequired = false) => {
 		})
 }
 
-let requireCurrentUser = req => {
-	// returns a promise
-	return req
-		.getCurrentUser(true)
-		.then(user => {
-			return user
-		})
-		.catch(err => {
-			logger.warn('requireCurrentUser', err)
-			throw new Error('Login Required')
-		})
-}
+// sugar for getCurrentUser(true)
+let requireCurrentUser = req => req.getCurrentUser(true)
 
 module.exports = (req, res, next) => {
 	req.setCurrentUser = setCurrentUser.bind(this, req)
