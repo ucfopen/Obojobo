@@ -370,7 +370,6 @@ let reloadAttemptStateIfReviewing = (
 	// If reviews are allowed after last attempt and this is the last attempt,
 	// reload the states for all attempts
 	if (assessmentNode.node.content.review == 'no-attempts-remaining' && isLastAttempt) {
-		console.log('now im here')
 		// Reload state for all previous attempts
 		return Assessment.getAttempts(
 			assessmentProperties.user.id,
@@ -384,7 +383,6 @@ let reloadAttemptStateIfReviewing = (
 				)
 
 				let newQuestions = []
-				logger.info('inside')
 
 				attempt.state.questions.map(question => {
 					newQuestions.push(getNodeQuestion(question.id, assessmentProperties.draftTree))
