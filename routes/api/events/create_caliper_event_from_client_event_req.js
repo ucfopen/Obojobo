@@ -44,7 +44,7 @@ module.exports = req => {
 		case 'nav:open':
 			return caliperEvents.createNavMenuShowedEvent({
 				actor: actorFromType(ACTOR_USER),
-				draftId: clientEvent.draft_id,
+				draftId: currentDocument.draftId,
 				isPreviewMode,
 				sessionIds,
 				extensions: {
@@ -56,7 +56,7 @@ module.exports = req => {
 		case 'nav:close':
 			return caliperEvents.createNavMenuHidEvent({
 				actor: actorFromType(ACTOR_USER),
-				draftId: clientEvent.draft_id,
+				draftId: currentDocument.draftId,
 				isPreviewMode,
 				sessionIds,
 				extensions: {
@@ -68,7 +68,7 @@ module.exports = req => {
 		case 'nav:toggle':
 			return caliperEvents.createNavMenuToggledEvent({
 				actor: actorFromType(ACTOR_USER),
-				draftId: clientEvent.draft_id,
+				draftId: currentDocument.draftId,
 				isPreviewMode,
 				sessionIds,
 				extensions: {
@@ -81,7 +81,7 @@ module.exports = req => {
 		case 'nav:lock':
 			return caliperEvents.createNavMenuDeactivatedEvent({
 				actor: actorFromType(ACTOR_VIEWER_CLIENT),
-				draftId: clientEvent.draft_id,
+				draftId: currentDocument.draftId,
 				isPreviewMode,
 				sessionIds,
 				extensions: {
@@ -93,7 +93,7 @@ module.exports = req => {
 		case 'nav:unlock': {
 			return caliperEvents.createNavMenuActivatedEvent({
 				actor: actorFromType(ACTOR_VIEWER_CLIENT),
-				draftId: clientEvent.draft_id,
+				draftId: currentDocument.draftId,
 				isPreviewMode,
 				sessionIds,
 				extensions: {
@@ -126,7 +126,8 @@ module.exports = req => {
 		case 'question:checkAnswer':
 			return caliperEvents.createPracticeQuestionSubmittedEvent({
 				actor: actorFromType(ACTOR_USER),
-				draftId: clientEvent.draft_id,
+				draftId: currentDocument.draftId,
+				contentId: currentDocument.contentId,
 				questionId: clientEvent.payload.questionId,
 				isPreviewMode,
 				sessionIds
@@ -172,7 +173,7 @@ module.exports = req => {
 		case 'score:set':
 			return caliperEvents.createPracticeGradeEvent({
 				actor: actorFromType(ACTOR_VIEWER_CLIENT),
-				draftId: clientEvent.draft_id,
+				draftId: currentDocument.draftId,
 				questionId: clientEvent.payload.itemId,
 				scoreId: clientEvent.payload.id,
 				score: clientEvent.payload.score,
@@ -183,7 +184,7 @@ module.exports = req => {
 		case 'score:clear':
 			return caliperEvents.createPracticeUngradeEvent({
 				actor: actorFromType(ACTOR_SERVER_APP),
-				draftId: clientEvent.draft_id,
+				draftId: currentDocument.draftId,
 				questionId: clientEvent.payload.itemId,
 				scoreId: clientEvent.payload.id,
 				isPreviewMode,

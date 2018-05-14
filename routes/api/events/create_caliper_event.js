@@ -329,19 +329,20 @@ const caliperEventFactory = (req, host = null, isFromReq = false) => {
 		// Caliper-Spec Properties
 		// type: (type: Term, REQUIRED) Event
 		// action: (type: Term, REQUIRED) Reset
-		// object: (type: Entity, REQUIRED) Score URN
-		// target: (type: Entity, Optional) Practice question attempt IRI
+		// object: (type: Entity, REQUIRED) Draft IRI
+		// target: (type: Entity, Optional) Practice attempt IRI
 		createPracticeQuestionSubmittedEvent: obj => {
-			let required = ['draftId', 'questionId']
+			let required = ['draftId', 'contentId', 'questionId']
 			validateCaliperEvent({ required }, obj, ACTOR_USER)
 
 			let options = assignCaliperOptions(obj)
 
-			let { actor, draftId, questionId, extensions } = obj
+			let { actor, draftId, contentId, questionId, extensions } = obj
 			let caliperEvent = createEvent(Event, actor, IRI, options)
 
 			caliperEvent.setAction('Submitted')
-			caliperEvent.setObject(IRI.getPracticeQuestionAttemptIRI(draftId, questionId))
+			caliperEvent.setObject(IRI.getDraftIRI(draftId, contentId, questionId))
+			caliperEvent.setTarget(IRI.getPracticeQuestionAttemptIRI(draftId, questionId))
 
 			Object.assign(caliperEvent.extensions, extensions)
 

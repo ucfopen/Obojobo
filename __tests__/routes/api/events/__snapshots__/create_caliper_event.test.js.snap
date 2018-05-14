@@ -436,8 +436,9 @@ Event {
   },
   "federatedSession": "https://testHost/api/launch/testOboLaunchId",
   "id": "urn:uuid:DEADBEEF-0000-DEAD-BEEF-1234DEADBEEF",
-  "object": "https://testHost/api/practice/testDraftId/testQuestionId",
+  "object": "https://testHost/api/draft/testDraftId/draftcontent/test#testQuestionId",
   "session": "https://testHost/api/session/testSessionId",
+  "target": "https://testHost/api/practice/testDraftId/testQuestionId",
   "type": "Event",
 }
 `;

@@ -344,6 +344,7 @@ describe('Caliper event creator', () => {
 		const practiceQuestionSubmitted = caliperEvents.createPracticeQuestionSubmittedEvent({
 			actor,
 			draftId,
+			contentId,
 			questionId,
 			sessionIds,
 			extensions

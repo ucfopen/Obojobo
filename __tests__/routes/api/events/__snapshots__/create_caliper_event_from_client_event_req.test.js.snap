@@ -134,8 +134,9 @@ Event {
   },
   "federatedSession": "https://hostnameReq/api/launch/OboLtiLaunchIdReq",
   "id": "urn:uuid:DEADBEEF-0000-DEAD-BEEF-1234DEADBEEF",
-  "object": "https://hostnameReq/api/practice/testDraftIdReq/testQuestionIdReq",
+  "object": "https://hostnameReq/api/draft/testDraftIdReq/draftcontent/testContentIdReq#testQuestionIdReq",
   "session": "https://hostnameReq/api/session/SessionIdReq",
+  "target": "https://hostnameReq/api/practice/testDraftIdReq/testQuestionIdReq",
   "type": "Event",
 }
 `;
