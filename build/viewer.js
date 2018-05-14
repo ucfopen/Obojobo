@@ -79,7 +79,7 @@ module.exports = Common;
 "use strict";
 
 
-var isDate = __webpack_require__(16);
+var isDate = __webpack_require__(15);
 
 var MILLISECONDS_IN_HOUR = 3600000;
 var MILLISECONDS_IN_MINUTE = 60000;
@@ -2053,12 +2053,6 @@ exports.default = questionStore;
 
 /***/ }),
 /* 14 */
-/***/ (function(module, exports) {
-
-module.exports = React;
-
-/***/ }),
-/* 15 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -2111,7 +2105,7 @@ function getISOYear(dirtyDate) {
 module.exports = getISOYear;
 
 /***/ }),
-/* 16 */
+/* 15 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -2139,7 +2133,7 @@ function isDate(argument) {
 module.exports = isDate;
 
 /***/ }),
-/* 17 */
+/* 16 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -2208,7 +2202,7 @@ module.exports = warning;
 /* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(3)))
 
 /***/ }),
-/* 18 */
+/* 17 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -2337,7 +2331,7 @@ var getItemEl = function getItemEl(item, index) {
 exports.default = scoreReportView;
 
 /***/ }),
-/* 19 */
+/* 18 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -2412,7 +2406,7 @@ var AssessmentScoreReporter = function () {
 exports.default = AssessmentScoreReporter;
 
 /***/ }),
-/* 20 */
+/* 19 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -2450,7 +2444,7 @@ exports.TYPE_PASSFAIL_UNABLE_TO_PASS_GIVEN_SCORE = TYPE_PASSFAIL_UNABLE_TO_PASS_
 exports.ERROR_UNKNOWN_DISPLAY_TYPE = ERROR_UNKNOWN_DISPLAY_TYPE;
 
 /***/ }),
-/* 21 */
+/* 20 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -2515,7 +2509,7 @@ var Logo = function (_React$Component) {
 exports.default = Logo;
 
 /***/ }),
-/* 22 */
+/* 21 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -2551,7 +2545,7 @@ var _navStore = __webpack_require__(12);
 
 var _navStore2 = _interopRequireDefault(_navStore);
 
-var _ltiNetworkStates = __webpack_require__(23);
+var _ltiNetworkStates = __webpack_require__(22);
 
 var _ltiNetworkStates2 = _interopRequireDefault(_ltiNetworkStates);
 
@@ -2559,11 +2553,11 @@ var _questionStore = __webpack_require__(13);
 
 var _questionStore2 = _interopRequireDefault(_questionStore);
 
-var _assessmentScoreReporter = __webpack_require__(19);
+var _assessmentScoreReporter = __webpack_require__(18);
 
 var _assessmentScoreReporter2 = _interopRequireDefault(_assessmentScoreReporter);
 
-var _assessmentScoreReportView = __webpack_require__(18);
+var _assessmentScoreReportView = __webpack_require__(17);
 
 var _assessmentScoreReportView2 = _interopRequireDefault(_assessmentScoreReportView);
 
@@ -2926,7 +2920,7 @@ var assessmentStore = new AssessmentStore();
 exports.default = assessmentStore;
 
 /***/ }),
-/* 23 */
+/* 22 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -2942,7 +2936,7 @@ exports.default = {
 };
 
 /***/ }),
-/* 24 */
+/* 23 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -2964,6 +2958,12 @@ var _urlParse = __webpack_require__(48);
 var _urlParse2 = _interopRequireDefault(_urlParse);
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+/***/ }),
+/* 24 */
+/***/ (function(module, exports) {
+
+module.exports = React;
 
 /***/ }),
 /* 25 */
@@ -3501,7 +3501,7 @@ module.exports = differenceInCalendarDays;
 
 var getDayOfYear = __webpack_require__(29);
 var getISOWeek = __webpack_require__(30);
-var getISOYear = __webpack_require__(15);
+var getISOYear = __webpack_require__(14);
 var parse = __webpack_require__(1);
 var isValid = __webpack_require__(31);
 var enLocale = __webpack_require__(35);
@@ -3912,7 +3912,7 @@ module.exports = getISOWeek;
 "use strict";
 
 
-var isDate = __webpack_require__(16);
+var isDate = __webpack_require__(15);
 
 /**
  * @category Common Helpers
@@ -4234,7 +4234,7 @@ module.exports = startOfDay;
 "use strict";
 
 
-var getISOYear = __webpack_require__(15);
+var getISOYear = __webpack_require__(14);
 var startOfISOWeek = __webpack_require__(8);
 
 /**
@@ -4462,7 +4462,7 @@ var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol
 
 if (process.env.NODE_ENV !== 'production') {
   var invariant = __webpack_require__(11);
-  var warning = __webpack_require__(17);
+  var warning = __webpack_require__(16);
   var ReactPropTypesSecret = __webpack_require__(9);
   var loggedTypeFailures = {};
 }
@@ -4589,7 +4589,7 @@ var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol
 
 var emptyFunction = __webpack_require__(10);
 var invariant = __webpack_require__(11);
-var warning = __webpack_require__(17);
+var warning = __webpack_require__(16);
 var assign = __webpack_require__(40);
 
 var ReactPropTypesSecret = __webpack_require__(9);
@@ -5234,7 +5234,7 @@ Object.defineProperty(exports, "__esModule", {
   value: true
 });
 
-var _react = __webpack_require__(14);
+var _react = __webpack_require__(24);
 
 var _react2 = _interopRequireDefault(_react);
 
@@ -6114,7 +6114,7 @@ Object.defineProperty(exports, "__esModule", {
 	value: true
 });
 
-var _displayTypes = __webpack_require__(20);
+var _displayTypes = __webpack_require__(19);
 
 var getDisplayType = function getDisplayType(_ref) {
 	var rubricType = _ref.rubricType,
@@ -6428,7 +6428,7 @@ var _getDisplayType = __webpack_require__(52);
 
 var _getDisplayType2 = _interopRequireDefault(_getDisplayType);
 
-var _displayTypes = __webpack_require__(20);
+var _displayTypes = __webpack_require__(19);
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
@@ -6644,10 +6644,6 @@ var _navUtil = __webpack_require__(2);
 
 var _navUtil2 = _interopRequireDefault(_navUtil);
 
-var _react = __webpack_require__(14);
-
-var _react2 = _interopRequireDefault(_react);
-
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
@@ -6683,7 +6679,7 @@ var InlineNavButton = function (_React$Component) {
 	}, {
 		key: 'render',
 		value: function render() {
-			return _react2.default.createElement(
+			return React.createElement(
 				'div',
 				{
 					className: 'viewer--components--inline-nav-button is-' + this.props.type + (this.props.disabled ? ' is-not-enabled' : ' is-enabled'),
@@ -6695,7 +6691,7 @@ var InlineNavButton = function (_React$Component) {
 	}]);
 
 	return InlineNavButton;
-}(_react2.default.Component);
+}(React.Component);
 
 exports.default = InlineNavButton;
 
@@ -6718,7 +6714,7 @@ var _navUtil = __webpack_require__(2);
 
 var _navUtil2 = _interopRequireDefault(_navUtil);
 
-var _logo = __webpack_require__(21);
+var _logo = __webpack_require__(20);
 
 var _logo2 = _interopRequireDefault(_logo);
 
@@ -6939,7 +6935,7 @@ var _Common = __webpack_require__(0);
 
 var _Common2 = _interopRequireDefault(_Common);
 
-var _react = __webpack_require__(14);
+var _react = __webpack_require__(24);
 
 var _react2 = _interopRequireDefault(_react);
 
@@ -6959,7 +6955,7 @@ var _apiUtil = __webpack_require__(4);
 
 var _apiUtil2 = _interopRequireDefault(_apiUtil);
 
-var _logo = __webpack_require__(21);
+var _logo = __webpack_require__(20);
 
 var _logo2 = _interopRequireDefault(_logo);
 
@@ -6967,7 +6963,7 @@ var _questionStore = __webpack_require__(13);
 
 var _questionStore2 = _interopRequireDefault(_questionStore);
 
-var _assessmentStore = __webpack_require__(22);
+var _assessmentStore = __webpack_require__(21);
 
 var _assessmentStore2 = _interopRequireDefault(_assessmentStore);
 
@@ -6979,7 +6975,7 @@ var _nav = __webpack_require__(61);
 
 var _nav2 = _interopRequireDefault(_nav);
 
-var _getLtiOutcomeServiceHostname = __webpack_require__(24);
+var _getLtiOutcomeServiceHostname = __webpack_require__(23);
 
 var _getLtiOutcomeServiceHostname2 = _interopRequireDefault(_getLtiOutcomeServiceHostname);
 
@@ -7020,11 +7016,9 @@ var ViewerApp = function (_React$Component) {
 	_inherits(ViewerApp, _React$Component);
 
 	// === REACT LIFECYCLE METHODS ===
+
 	function ViewerApp(props) {
 		_classCallCheck(this, ViewerApp);
-
-		2;
-		4;
 
 		var _this = _possibleConstructorReturn(this, (ViewerApp.__proto__ || Object.getPrototypeOf(ViewerApp)).call(this, props));
 
@@ -7519,11 +7513,11 @@ var _viewerApp = __webpack_require__(62);
 
 var _viewerApp2 = _interopRequireDefault(_viewerApp);
 
-var _assessmentStore = __webpack_require__(22);
+var _assessmentStore = __webpack_require__(21);
 
 var _assessmentStore2 = _interopRequireDefault(_assessmentStore);
 
-var _ltiNetworkStates = __webpack_require__(23);
+var _ltiNetworkStates = __webpack_require__(22);
 
 var _ltiNetworkStates2 = _interopRequireDefault(_ltiNetworkStates);
 
@@ -7551,15 +7545,15 @@ var _questionUtil = __webpack_require__(7);
 
 var _questionUtil2 = _interopRequireDefault(_questionUtil);
 
-var _getLtiOutcomeServiceHostname = __webpack_require__(24);
+var _getLtiOutcomeServiceHostname = __webpack_require__(23);
 
 var _getLtiOutcomeServiceHostname2 = _interopRequireDefault(_getLtiOutcomeServiceHostname);
 
-var _assessmentScoreReporter = __webpack_require__(19);
+var _assessmentScoreReporter = __webpack_require__(18);
 
 var _assessmentScoreReporter2 = _interopRequireDefault(_assessmentScoreReporter);
 
-var _assessmentScoreReportView = __webpack_require__(18);
+var _assessmentScoreReportView = __webpack_require__(17);
 
 var _assessmentScoreReportView2 = _interopRequireDefault(_assessmentScoreReportView);
 
