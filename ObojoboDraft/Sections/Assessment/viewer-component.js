@@ -21,7 +21,16 @@ import PostTest from './components/post-test'
 export default class Assessment extends React.Component {
 	constructor() {
 		super()
-		this.state = { step: null }
+		this.state = {
+			isFetching: false,
+			step: null
+		}
+
+		// pre-bind scopes to this object once
+		this.onEndAttempt = this.onEndAttempt.bind(this)
+		this.onAttemptEnded = this.onAttemptEnded.bind(this)
+		this.endAttempt = this.endAttempt.bind(this)
+		this.onClickSubmit = this.onClickSubmit.bind(this)
 	}
 
 	componentWillUnmount() {
@@ -53,7 +62,18 @@ export default class Assessment extends React.Component {
 			this.needsScroll = true
 		}
 
-		return this.setState({ step: curStep })
+		this.setState({
+			step: curStep
+		})
+	}
+	componentWillMount() {
+		Dispatcher.on('assessment:endAttempt', this.onEndAttempt)
+		Dispatcher.on('assessment:attemptEnded', this.onAttemptEnded)
+	}
+
+	componentWillUnmount() {
+		Dispatcher.off('assessment:endAttempt', this.onEndAttempt)
+		Dispatcher.off('assessment:attemptEnded', this.onAttemptEnded)
 	}
 
 	componentDidUpdate() {
@@ -61,6 +81,14 @@ export default class Assessment extends React.Component {
 			delete this.needsScroll
 			return Dispatcher.trigger('viewer:scrollToTop')
 		}
+	}
+
+	onEndAttempt() {
+		this.setState({ isFetching: true })
+	}
+
+	onAttemptEnded() {
+		this.setState({ isFetching: false })
 	}
 
 	isAttemptComplete() {
@@ -80,15 +108,14 @@ export default class Assessment extends React.Component {
 	}
 
 	onClickSubmit() {
+		// disable multiple clicks
+		if (this.state.isFetching) return
+
 		if (!this.isAttemptComplete()) {
-			ModalUtil.show(<AttemptIncompleteDialog onSubmit={this.endAttempt.bind(this)} />)
+			ModalUtil.show(<AttemptIncompleteDialog onSubmit={this.endAttempt} />)
 			return
 		}
 		return this.endAttempt()
-	}
-
-	onClickResendScore() {
-		AssessmentUtil.resendLTIScore(this.props.model)
 	}
 
 	endAttempt() {
@@ -154,8 +181,9 @@ export default class Assessment extends React.Component {
 					return Test({
 						model: this.props.model.children.at(1),
 						moduleData: this.props.moduleData,
-						onClickSubmit: this.onClickSubmit.bind(this),
-						isAttemptComplete: this.isAttemptComplete()
+						onClickSubmit: this.onClickSubmit,
+						isAttemptComplete: this.isAttemptComplete(),
+						isFetching: this.state.isFetching
 					})
 
 				case 'post-test':

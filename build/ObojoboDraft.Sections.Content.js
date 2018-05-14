@@ -109,25 +109,6 @@ _Common2.default.Store.registerModel('ObojoboDraft.Sections.Content', {
 			type: 'hidden',
 			showChildren: true
 		};
-	},
-
-	generateNav: function generateNav(model) {
-		var nav = [];
-
-		for (var index = 0; index < model.children.models.length; index++) {
-			var child = model.children.models[index];
-			nav.push({
-				type: 'link',
-				label: child.title,
-				id: child.get('id')
-			});
-		}
-
-		nav.push({
-			type: 'seperator'
-		});
-
-		return nav;
 	}
 });
 
@@ -143,7 +124,7 @@ Object.defineProperty(exports, "__esModule", {
 	value: true
 });
 
-__webpack_require__(281);
+__webpack_require__(282);
 
 var _Common = __webpack_require__(0);
 
@@ -185,7 +166,7 @@ exports.default = function (props) {
 
 /***/ }),
 
-/***/ 281:
+/***/ 282:
 /***/ (function(module, exports) {
 
 // removed by extract-text-webpack-plugin

@@ -1,282 +1,152 @@
 import React from 'react'
 import renderer from 'react-test-renderer'
-import { shallow, mount } from 'enzyme'
+import { mount } from 'enzyme'
 
-import {
-	moduleData,
-	initModuleData,
-	AssessmentStore
-} from '../../../../__mocks__/viewer-state.mock'
-import OboModel from '../../../../__mocks__/_obo-model-with-chunks'
-import {
-	getAttemptStartServerResponse,
-	getAttemptEndServerResponse
-} from '../../../../__mocks__/assessment-server.mock'
-import LTIStatus from '../../../../ObojoboDraft/Sections/Assessment/components/post-test/lti-status'
-import AssessmentUtil from '../../../../src/scripts/viewer/util/assessment-util'
+import LTIStatus from 'ObojoboDraft/Sections/Assessment/components/post-test/lti-status'
 
-jest.mock('../../../../src/scripts/viewer/util/assessment-util', () => {
-	return {
-		resendLTIScore: jest.fn()
-	}
+const getLtiState = state => ({
+	state: {
+		gradebookStatus: state
+	},
+	networkState: 'idle',
+	errorCount: 0
 })
+
+const mockSymbol = 'mocklti'
+
+const GRADEBOOK_STATUS_ERROR_NEWER_SCORE_UNSENT /*  */ = 'error_newer_assessment_score_unsent'
+const GRADEBOOK_STATUS_ERROR_STATE_UNKNOWN /*       */ = 'error_state_unknown'
+const GRADEBOOK_STATUS_ERROR_INVALID /*             */ = 'error_invalid'
+const GRADEBOOK_STATUS_OK_NULL_SCORE_NOT_SENT /*    */ = 'ok_null_score_not_sent'
+const GRADEBOOK_STATUS_OK_GRADEBOOK_MATCHES_SCORE /**/ = 'ok_gradebook_matches_assessment_score'
+const GRADEBOOK_STATUS_OK_NO_OUTCOME_SERVICE /*     */ = 'ok_no_outcome_service'
+
+const AWAITING_SEND_ASSESSMENT_SCORE_RESPONSE = 'awaitingSendAssessmentScoreResponse'
 
 describe('lti-status', () => {
 	beforeEach(() => {
 		jest.resetAllMocks()
 	})
 
-	test.skip('renders nothing for ok_no_outcome_service or ok_null_score_not_sent gradebook statuses', () => {
-		let resendScore = jest.fn()
-		let ltiState = {
-			state: {
-				gradebookStatus: 'ok_no_outcome_service'
-			},
-			networkState: 'idle',
-			errorCount: 0
-		}
-		const component = renderer.create(
-			<LTIStatus
-				ltiState={ltiState}
-				externalSystemLabel={'mocklti'}
-				onClickResendScore={resendScore}
-			>
-				<h1 className="lti-score"> Dummy Score </h1>
-			</LTIStatus>
-		)
-		let tree = component.toJSON()
-
-		expect(tree).toMatchSnapshot()
-
-		let el = document.createElement('div')
-		el.innerHTML = shallow(
-			<LTIStatus
-				ltiState={ltiState}
-				externalSystemLabel={'mocklti'}
-				onClickResendScore={resendScore}
-			>
-				<h1 className="lti-score"> Dummy Score </h1>
-			</LTIStatus>
-		).html()
-
-		// Expect no error message box
-		expect(el.textContent.indexOf('There was a problem')).toBe(-1)
-
-		// Expect no sync notification
-		expect(el.textContent.indexOf('sent to')).toBe(-1)
-
-		ltiState = {
-			state: {
-				gradebookStatus: 'ok_null_score_not_sent'
-			},
-			networkState: 'idle',
-			errorCount: 0
-		}
-
-		el = document.createElement('div')
-		el.innerHTML = shallow(
-			<LTIStatus
-				ltiState={ltiState}
-				externalSystemLabel={'mocklti'}
-				onClickResendScore={resendScore}
-			>
-				<h1 className="lti-score"> Dummy Score </h1>
-			</LTIStatus>
-		).html()
-
-		// Expect no error message box
-		expect(el.textContent.indexOf('There was a problem')).toBe(-1)
-
-		// Expect no sync notification
-		expect(el.textContent.indexOf('sent to')).toBe(-1)
+	/////////////////////
+	// return notLTI
+	test('rendering with lti state GRADEBOOK_STATUS_OK_NO_OUTCOME_SERVICE returns notLTI', () => {
+		expect(
+			renderer.create(<LTIStatus ltiState={getLtiState(GRADEBOOK_STATUS_OK_NO_OUTCOME_SERVICE)} />)
+		).toMatchSnapshot()
 	})
 
-	test('renders no error message for ok_gradebook_matches_assessment_score', () => {
-		let resendScore = jest.fn()
-		let ltiState = {
-			state: {
-				gradebookStatus: 'ok_gradebook_matches_assessment_score'
-			},
-			networkState: 'idle',
-			errorCount: 0
-		}
-		const component = renderer.create(
-			<LTIStatus
-				ltiState={ltiState}
-				externalSystemLabel={'mocklti'}
-				onClickResendScore={resendScore}
-			>
-				<h1 className="lti-score"> Dummy Score </h1>
-			</LTIStatus>
-		)
-		let tree = component.toJSON()
-
-		expect(tree).toMatchSnapshot()
-
-		let el = document.createElement('div')
-		el.innerHTML = shallow(
-			<LTIStatus
-				ltiState={ltiState}
-				externalSystemLabel={'mocklti'}
-				onClickResendScore={resendScore}
-			>
-				<h1 className="lti-score"> Dummy Score </h1>
-			</LTIStatus>
-		).html()
-
-		// Expect no error message box
-		expect(el.textContent.indexOf('There was a problem')).toBe(-1)
-
-		// Expect positive sync notification
-		expect(el.textContent.indexOf('not sent to')).toBe(-1)
+	test('rendering with isPreviewing true returns notLTI', () => {
+		expect(renderer.create(<LTIStatus isPreviewing={true} />)).toMatchSnapshot()
 	})
 
-	test('renders error for error gradebook statuses', () => {
-		let resendScore = jest.fn()
-		let ltiState = {
-			state: {
-				gradebookStatus: 'error_newer_assessment_score_unsent'
-			},
-			networkState: 'idle',
-			errorCount: 0
-		}
-		const component = renderer.create(
-			<LTIStatus
-				ltiState={ltiState}
-				externalSystemLabel={'mocklti'}
-				onClickResendScore={resendScore}
-			>
-				<h1 className="lti-score"> Dummy Score </h1>
-			</LTIStatus>
-		)
-		let tree = component.toJSON()
+	test('rendering with no externalSystemLabel returns notLTI', () => {
+		expect(renderer.create(<LTIStatus />)).toMatchSnapshot()
+	})
+	/////////////////////
 
-		expect(tree).toMatchSnapshot()
+	/////////////////////
+	// return noScoreSent
+	test('rendering with lti state GRADEBOOK_STATUS_OK_NULL_SCORE_NOT_SENT returns noScoreSent', () => {
+		expect(
+			renderer.create(
+				<LTIStatus
+					ltiState={getLtiState(GRADEBOOK_STATUS_OK_NULL_SCORE_NOT_SENT)}
+					externalSystemLabel={mockSymbol}
+				/>
+			)
+		).toMatchSnapshot()
+	})
+	/////////////////////
 
-		let el = document.createElement('div')
-		el.innerHTML = shallow(
-			<LTIStatus
-				ltiState={ltiState}
-				externalSystemLabel={'mocklti'}
-				onClickResendScore={resendScore}
-			>
-				<h1 className="lti-score"> Dummy Score </h1>
-			</LTIStatus>
-		).html()
-
-		// Expect sync error box
-		expect(el.textContent.indexOf('There was a problem')).not.toBe(-1)
-
-		// Expect sync error notification
-		// Note - Only works once issue 135 is synced to dev
-		// expect(el.textContent.indexOf('not sent to')).not.toBe(-1)
+	/////////////////////
+	// return synced
+	test('rendering with lti state GRADEBOOK_STATUS_OK_GRADEBOOK_MATCHES_SCORE returns synced', () => {
+		expect(
+			renderer.create(
+				<LTIStatus
+					ltiState={getLtiState(GRADEBOOK_STATUS_OK_GRADEBOOK_MATCHES_SCORE)}
+					externalSystemLabel={mockSymbol}
+					assessmentScore={75}
+				/>
+			)
+		).toMatchSnapshot()
 	})
 
-	test('error shows additional information if error count is above 0', () => {
-		let resendScore = jest.fn()
-		let ltiState = {
+	/////////////////////
+	// return renderError
+	test('rendering with an externalSystemLabel and no lti state returns renderError', () => {
+		expect(renderer.create(<LTIStatus externalSystemLabel={mockSymbol} />)).toMatchSnapshot()
+	})
+
+	test('rendering with lti state GRADEBOOK_STATUS_ERROR_NEWER_SCORE_UNSENT returns renderError', () => {
+		expect(
+			renderer.create(
+				<LTIStatus
+					ltiState={getLtiState(GRADEBOOK_STATUS_ERROR_NEWER_SCORE_UNSENT)}
+					externalSystemLabel={mockSymbol}
+				/>
+			)
+		).toMatchSnapshot()
+	})
+
+	test('rendering with lti state GRADEBOOK_STATUS_ERROR_INVALID returns renderError', () => {
+		expect(
+			renderer.create(
+				<LTIStatus
+					ltiState={getLtiState(GRADEBOOK_STATUS_ERROR_INVALID)}
+					externalSystemLabel={mockSymbol}
+				/>
+			)
+		).toMatchSnapshot()
+	})
+
+	test('error shows additional information if errorCount is above 0', () => {
+		const ltiState = {
 			state: {
 				gradebookStatus: 'error'
 			},
 			networkState: 'idle',
 			errorCount: 1
 		}
-		const component = renderer.create(
-			<LTIStatus
-				ltiState={ltiState}
-				externalSystemLabel={'mocklti'}
-				onClickResendScore={resendScore}
-			>
-				<h1 className="lti-score"> Dummy Score </h1>
-			</LTIStatus>
-		)
-		let tree = component.toJSON()
-
-		expect(tree).toMatchSnapshot()
-
-		let el = document.createElement('div')
-		el.innerHTML = shallow(
-			<LTIStatus
-				ltiState={ltiState}
-				externalSystemLabel={'mocklti'}
-				onClickResendScore={resendScore}
-			>
-				<h1 className="lti-score"> Dummy Score </h1>
-			</LTIStatus>
-		).html()
-
-		// Expect extended sync error box
-		expect(el.textContent.indexOf('There was a problem')).not.toBe(-1)
-		expect(el.textContent.indexOf('Try again anyway')).not.toBe(-1)
-
-		// Expect sync error notification
-		// Note - Only works once issue 135 is synced to dev
-		// expect(el.textContent.indexOf('not sent to')).not.toBe(-1)
+		expect(
+			renderer.create(<LTIStatus ltiState={ltiState} externalSystemLabel={mockSymbol} />)
+		).toMatchSnapshot()
 	})
 
-	test('error shows a loading state when loading', () => {
-		let resendScore = jest.fn()
-		let ltiState = {
+	test('error shows a loading state', () => {
+		const ltiState = {
 			state: {
-				gradebookStatus: 'error_state_unknown'
+				gradebookStatus: 'error'
 			},
-			networkState: 'awaitingSendAssessmentScoreResponse',
+			networkState: AWAITING_SEND_ASSESSMENT_SCORE_RESPONSE,
 			errorCount: 0
 		}
-		const component = renderer.create(
-			<LTIStatus
-				ltiState={ltiState}
-				externalSystemLabel={'mocklti'}
-				onClickResendScore={resendScore}
-			>
-				<h1 className="lti-score"> Dummy Score </h1>
-			</LTIStatus>
-		)
-		let tree = component.toJSON()
-
-		expect(tree).toMatchSnapshot()
-
-		let el = document.createElement('div')
-		el.innerHTML = shallow(
-			<LTIStatus
-				ltiState={ltiState}
-				externalSystemLabel={'mocklti'}
-				onClickResendScore={resendScore}
-			>
-				<h1 className="lti-score"> Dummy Score </h1>
-			</LTIStatus>
-		).html()
-
-		// Expect extended sync error box with diabled button
-		expect(el.textContent.indexOf('There was a problem')).not.toBe(-1)
-		expect(el.textContent.indexOf('Resending Score...')).not.toBe(-1)
+		expect(
+			renderer.create(<LTIStatus ltiState={ltiState} externalSystemLabel={mockSymbol} />)
+		).toMatchSnapshot()
 	})
 
-	test('clicking on the resend score button calls AssessmentUtil.resendLTIScore', () => {
-		let resendScore = AssessmentUtil.resendLTIScore
-		let ltiState = {
+	test('onClickResendScore is called when error and button clicked', () => {
+		const onClickResendScore = jest.fn()
+		const ltiState = {
 			state: {
-				gradebookStatus: 'error_state_unknown'
+				gradebookStatus: 'error'
 			},
 			networkState: 'idle',
-			errorCount: 1
+			errorCount: 0
 		}
 		const component = mount(
 			<LTIStatus
 				ltiState={ltiState}
 				externalSystemLabel={'mocklti'}
-				onClickResendScore={resendScore}
-			>
-				<h1 className="lti-score"> Dummy Score </h1>
-			</LTIStatus>
+				onClickResendScore={onClickResendScore}
+			/>
 		)
-
 		component
 			.find('button')
 			.at(0)
 			.simulate('click')
-
-		expect(AssessmentUtil.resendLTIScore).toHaveBeenCalled()
-		expect(resendScore).toHaveBeenCalled()
+		expect(onClickResendScore).toHaveBeenCalled()
 	})
 })

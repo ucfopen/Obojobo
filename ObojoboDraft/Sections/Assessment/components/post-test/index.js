@@ -92,6 +92,7 @@ const AssessmentPostTest = props => {
 
 				<LTIStatus
 					ltiState={ltiState}
+					isPreviewing={props.moduleData.isPreviewing}
 					externalSystemLabel={externalSystemLabel}
 					onClickResendScore={onClickResendScore}
 					assessmentScore={assessmentScore}

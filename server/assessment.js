@@ -94,11 +94,12 @@ class Assessment extends DraftNode {
 				WHERE
 					ATT.user_id = $[userId]
 					AND ATT.draft_id = $[draftId]
-					${optionalAssessmentId !== null ? "AND ATT.assessment_id = '" + optionalAssessmentId + "'" : ''}
+					${optionalAssessmentId !== null ? 'AND ATT.assessment_id = $[optionalAssessmentId]' : ''}
 				ORDER BY ATT.completed_at`,
 				{
 					userId,
-					draftId
+					draftId,
+					optionalAssessmentId
 				}
 			)
 			.then(attempts => {
@@ -120,7 +121,7 @@ class Assessment extends DraftNode {
 				})
 
 				// now, get the response history for this user & draft
-				return Assessment.getResponseHistory(userId, draftId)
+				return Assessment.getResponseHistory(userId, draftId, optionalAssessmentId)
 			})
 			.then(responseHistory => {
 				// Goal: place the responses from history into the attempts created above
@@ -132,6 +133,8 @@ class Assessment extends DraftNode {
 
 					// loop through responses in this attempt
 					responsesForAttempt.forEach(response => {
+						if (!assessments[response.assessment_id]) return
+
 						let attemptForResponse = assessments[response.assessment_id].attempts.find(
 							x => x.attemptId === response.attempt_id
 						)
@@ -140,7 +143,7 @@ class Assessment extends DraftNode {
 							logger.warn(
 								`Couldn't find an attempt I was looking for ('${userId}', '${draftId}', '${attemptId}', '${
 									response.id
-								}') - Shouldn't get here!`
+								}', '${optionalAssessmentId}') - Shouldn't get here!`
 							)
 
 							return
@@ -233,19 +236,20 @@ class Assessment extends DraftNode {
 
 	// get all attempts containing an array of responses
 	// { <attemptId>: [ {...question response...} ] }
-	static getResponseHistory(userId, draftId) {
+	static getResponseHistory(userId, draftId, optionalAssessmentId = null) {
 		return db
 			.manyOrNone(
 				`
 				SELECT *
 				FROM attempts_question_responses
 				WHERE attempt_id IN (
-					SELECT attempt_id
+					SELECT id
 					FROM attempts
 					WHERE user_id = $[userId]
 					AND draft_id = $[draftId]
+					${optionalAssessmentId !== null ? "AND assessment_id = '" + optionalAssessmentId + "'" : ''}
 				) ORDER BY updated_at`,
-				{ userId: userId, draftId: draftId }
+				{ userId, draftId, optionalAssessmentId }
 			)
 			.then(result => {
 				let history = {}

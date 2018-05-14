@@ -198,7 +198,8 @@
   .obojobo-draft--chunks--mc-assessment .result-container {
     display: table-cell;
     position: relative;
-    vertical-align: middle; }
+    vertical-align: middle;
+    padding-right: 1em; }
     .obojobo-draft--chunks--mc-assessment .result-container .pick-all-instructions {
       font-family: "Libre Franklin", Arial, sans-serif;
       font-size: 0.8em;

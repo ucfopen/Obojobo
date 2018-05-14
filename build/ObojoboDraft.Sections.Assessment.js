@@ -733,6 +733,7 @@ var AssessmentPostTest = function AssessmentPostTest(props) {
 			),
 			React.createElement(_ltiStatus2.default, {
 				ltiState: ltiState,
+				isPreviewing: props.moduleData.isPreviewing,
 				externalSystemLabel: externalSystemLabel,
 				onClickResendScore: onClickResendScore,
 				assessmentScore: assessmentScore
@@ -805,7 +806,7 @@ Object.defineProperty(exports, "__esModule", {
 	value: true
 });
 
-__webpack_require__(279);
+__webpack_require__(280);
 
 var _Common = __webpack_require__(0);
 
@@ -845,7 +846,10 @@ var synced = function synced(assessmentScore, externalSystemLabel) {
 	);
 };
 
-var renderError = function renderError(ltiState, systemLabel, onClickResendScore) {
+var renderError = function renderError() {
+	var ltiState = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : {};
+	var systemLabel = arguments[1];
+	var onClickResendScore = arguments[2];
 	return React.createElement(
 		'div',
 		{ className: 'obojobo-draft--sections--assessment--lti-status is-not-synced' },
@@ -891,7 +895,11 @@ var renderError = function renderError(ltiState, systemLabel, onClickResendScore
 };
 
 exports.default = function (props) {
-	if (!props.ltiState.state) return null;
+	if (props.isPreviewing || !props.externalSystemLabel) return notLTI();
+
+	if (props.externalSystemLabel && (!props.ltiState || !props.ltiState.state)) {
+		return renderError(props.ltiState, props.externalSystemLabel, props.onClickResendScore);
+	}
 
 	switch (props.ltiState.state.gradebookStatus) {
 		case 'ok_no_outcome_service':
@@ -1018,16 +1026,24 @@ var Button = _Common2.default.components.Button;
 var AssessmentTest = function AssessmentTest(props) {
 	var Component = props.model.getComponentClass();
 
+	var submitButtonText = 'Loading ...';
+	if (!props.isAttemptComplete) {
+		submitButtonText = 'Submit (Not all questions have been answered)';
+	} else if (!props.isFetching) {
+		submitButtonText = 'Submit';
+	}
+
 	return React.createElement(
-		"div",
-		{ className: "test" },
+		'div',
+		{ className: 'test' },
 		React.createElement(Component, { model: props.model, moduleData: props.moduleData }),
 		React.createElement(
-			"div",
-			{ className: "submit-button" },
+			'div',
+			{ className: 'submit-button' },
 			React.createElement(Button, {
+				disabled: props.isFetching,
 				onClick: props.onClickSubmit,
-				value: props.isAttemptComplete ? 'Submit' : 'Submit (Not all questions have been answered)'
+				value: submitButtonText
 			})
 		)
 	);
@@ -1470,7 +1486,7 @@ Object.defineProperty(exports, "__esModule", {
 
 var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
 
-__webpack_require__(280);
+__webpack_require__(281);
 
 var _Common = __webpack_require__(0);
 
@@ -1520,7 +1536,15 @@ var Assessment = function (_React$Component) {
 
 		var _this = _possibleConstructorReturn(this, (Assessment.__proto__ || Object.getPrototypeOf(Assessment)).call(this));
 
-		_this.state = { step: null };
+		_this.state = {
+			isFetching: false,
+			step: null
+
+			// pre-bind scopes to this object once
+		};_this.onEndAttempt = _this.onEndAttempt.bind(_this);
+		_this.onAttemptEnded = _this.onAttemptEnded.bind(_this);
+		_this.endAttempt = _this.endAttempt.bind(_this);
+		_this.onClickSubmit = _this.onClickSubmit.bind(_this);
 		return _this;
 	}
 
@@ -1554,7 +1578,21 @@ var Assessment = function (_React$Component) {
 				this.needsScroll = true;
 			}
 
-			return this.setState({ step: curStep });
+			this.setState({
+				step: curStep
+			});
+		}
+	}, {
+		key: 'componentWillMount',
+		value: function componentWillMount() {
+			Dispatcher.on('assessment:endAttempt', this.onEndAttempt);
+			Dispatcher.on('assessment:attemptEnded', this.onAttemptEnded);
+		}
+	}, {
+		key: 'componentWillUnmount',
+		value: function componentWillUnmount() {
+			Dispatcher.off('assessment:endAttempt', this.onEndAttempt);
+			Dispatcher.off('assessment:attemptEnded', this.onAttemptEnded);
 		}
 	}, {
 		key: 'componentDidUpdate',
@@ -1563,6 +1601,16 @@ var Assessment = function (_React$Component) {
 				delete this.needsScroll;
 				return Dispatcher.trigger('viewer:scrollToTop');
 			}
+		}
+	}, {
+		key: 'onEndAttempt',
+		value: function onEndAttempt() {
+			this.setState({ isFetching: true });
+		}
+	}, {
+		key: 'onAttemptEnded',
+		value: function onAttemptEnded() {
+			this.setState({ isFetching: false });
 		}
 	}, {
 		key: 'isAttemptComplete',
@@ -1577,16 +1625,14 @@ var Assessment = function (_React$Component) {
 	}, {
 		key: 'onClickSubmit',
 		value: function onClickSubmit() {
+			// disable multiple clicks
+			if (this.state.isFetching) return;
+
 			if (!this.isAttemptComplete()) {
-				ModalUtil.show(React.createElement(_attemptIncompleteDialog2.default, { onSubmit: this.endAttempt.bind(this) }));
+				ModalUtil.show(React.createElement(_attemptIncompleteDialog2.default, { onSubmit: this.endAttempt }));
 				return;
 			}
 			return this.endAttempt();
-		}
-	}, {
-		key: 'onClickResendScore',
-		value: function onClickResendScore() {
-			AssessmentUtil.resendLTIScore(this.props.model);
 		}
 	}, {
 		key: 'endAttempt',
@@ -1649,8 +1695,9 @@ var Assessment = function (_React$Component) {
 						return (0, _test2.default)({
 							model: _this2.props.model.children.at(1),
 							moduleData: _this2.props.moduleData,
-							onClickSubmit: _this2.onClickSubmit.bind(_this2),
-							isAttemptComplete: _this2.isAttemptComplete()
+							onClickSubmit: _this2.onClickSubmit,
+							isAttemptComplete: _this2.isAttemptComplete(),
+							isFetching: _this2.state.isFetching
 						});
 
 					case 'post-test':
@@ -2802,6 +2849,7 @@ var AssessmentRubric = function () {
 					break;
 
 				case AssessmentRubric.STATUS_FAILED:
+					scoreReplaceDict[AssessmentRubric.VAR_ATTEMPT_SCORE] = latestAttemptScore;
 					scoreReplaceDict[AssessmentRubric.NO_SCORE] = null;
 					assessmentScore = tryGetParsedFloat(this.rubric.failedResult, scoreReplaceDict, [null]);
 					break;
@@ -2964,14 +3012,14 @@ module.exports = {
 
 /***/ }),
 
-/***/ 279:
+/***/ 280:
 /***/ (function(module, exports) {
 
 // removed by extract-text-webpack-plugin
 
 /***/ }),
 
-/***/ 280:
+/***/ 281:
 /***/ (function(module, exports) {
 
 // removed by extract-text-webpack-plugin

@@ -167,7 +167,7 @@ Object.defineProperty(exports, "__esModule", {
 	value: true
 });
 
-__webpack_require__(263);
+__webpack_require__(264);
 
 var _katex = __webpack_require__(64);
 
@@ -229,7 +229,7 @@ exports.default = function (props) {
 
 /***/ }),
 
-/***/ 263:
+/***/ 264:
 /***/ (function(module, exports) {
 
 // removed by extract-text-webpack-plugin

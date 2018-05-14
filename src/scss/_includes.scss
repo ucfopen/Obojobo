@@ -5,7 +5,7 @@ $color-action-minor: desaturate(lighten($color-action, 30%), 40%);
 $color-error: #990000;
 $color-dangerous: #d40000;
 $color-text: #000000;
-$color-text-minor: lighten($color-text, 60%);
+$color-text-minor: lighten($color-text, 40%);
 $color-bg: #ffffff;
 $color-shadow: rgba(0, 0, 0, 0.3);
 $color-highlight: #93c6ff;
@@ -19,15 +19,16 @@ $color-unchosen-correct: #555555;
 $color-transparent: rgba(0, 0, 0, 0);
 $color-browser-focus: #5991ca;
 $color-comment: #ffd400;
-$color-preview: #00b3b3;
+$color-preview: #0d4fa7;
 $color-reward: #ffe65d;
 $color-reward-text: #947d00;
+$color-obojobo-blue: #0d4fa7;
+$color-preview: #af1b5c;
 
 $box-shadow-focus: 0 0 3px 3px $color-browser-focus;
 $box-shadow-overlay: 0 2px 2px $color-shadow;
 
 $duration-animation-default: 0.2s;
-// $duration-animation-default: 1s;
 
 $font-default: 'Libre Franklin', Arial, sans-serif;
 $font-text: 'Noto Serif', serif;
@@ -39,8 +40,11 @@ $dimension-column-width: 44em;
 $dimension-padding: 3em;
 $dimension-editor: $dimension-column-width + 3em + 3em;
 $dimension-toolbar-height: 2.7em;
-$dimension-nav-menu: 16rem;
+$dimension-nav-menu: 18rem;
+$dimension-nav-menu-small: 14rem;
 $dimension-rounded-radius: 0.25em;
+
+$breakpoint-nav-small: 1000px;
 
 $z-index-above-content: 999;
 $z-index-above-most: 9999;
