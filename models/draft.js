@@ -99,6 +99,31 @@ class Draft {
 			})
 	}
 
+	static updateContent(draftId, jsonContent, xmlContent) {
+		return db
+			.one(
+				`
+				INSERT INTO drafts_content(
+					draft_id,
+					content,
+					xml
+				)
+				VALUES(
+					$[draftId],
+					$[jsonContent],
+					$[xmlContent]
+				)
+				RETURNING id
+			`,
+				{
+					draftId,
+					jsonContent,
+					xmlContent
+				}
+			)
+			.then(result => result.id)
+	}
+
 	// returns the first duplicate id found or
 	// null if no duplicates are found
 	static findDuplicateIds(jsonTree) {
