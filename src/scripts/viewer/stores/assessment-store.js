@@ -4,11 +4,12 @@ import AssessmentUtil from '../../viewer/util/assessment-util'
 import QuestionUtil from '../../viewer/util/question-util'
 import APIUtil from '../../viewer/util/api-util'
 import NavUtil from '../../viewer/util/nav-util'
-import NavStore from '../../viewer/stores/nav-store'
 import LTINetworkStates from './assessment-store/lti-network-states'
 import QuestionStore from './question-store'
 import AssessmentScoreReporter from '../../viewer/assessment/assessment-score-reporter'
 import AssessmentScoreReportView from '../../viewer/assessment/assessment-score-report-view'
+import ViewerStore from '../redux/viewer-store'
+import { rebuildMenu, goto, setContext } from '../redux/nav-actions'
 
 let { Store } = Common.flux
 let { Dispatcher } = Common.flux
@@ -190,9 +191,9 @@ class AssessmentStore extends Store {
 
 		this.state.assessments[id].current = startAttemptResp
 
-		NavUtil.setContext(`assessment:${startAttemptResp.assessmentId}:${startAttemptResp.attemptId}`)
-		NavUtil.rebuildMenu(model.getRoot())
-		NavUtil.goto(id)
+		ViewerStore.dispatch(setContext(`assessment:${startAttemptResp.assessmentId}:${startAttemptResp.attemptId}`))
+		ViewerStore.dispatch(rebuildMenu(model.getRoot()))
+		ViewerStore.dispatch(goto(id))
 
 		model.processTrigger('onStartAttempt')
 		Dispatcher.trigger('assessment:attemptStarted', id)
@@ -239,7 +240,7 @@ class AssessmentStore extends Store {
 			allAttempts: assessment.attempts
 		})
 
-		let assessmentLabel = NavUtil.getNavLabelForModel(NavStore.getState(), model)
+		let assessmentLabel = NavUtil.getNavLabelForModel(ViewerStore.getState().nav, model)
 		ModalUtil.show(
 			<Dialog
 				modalClassName="obojobo-draft--sections--assessment--results-modal"

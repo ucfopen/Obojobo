@@ -4,12 +4,12 @@ import Common from 'Common'
 import Viewer from 'Viewer'
 
 let { OboComponent } = Common.components
-let { NavUtil } = Viewer.util
 
-export default class Page extends React.Component {
+class PageRaw extends React.Component {
 	componentWillReceiveProps(nextProps) {
-		if (nextProps.moduleData.navState.navTargetId !== this.props.moduleData.navState.navTargetId) {
-			return NavUtil.setFlag(this.props.moduleData.navState.navTargetId, 'visited', true)
+		// @TODO: redux - move this to where the page is actually changed?
+		if(nextProps.navTargetId !== this.props.navTargetId){
+			this.props.markPageVisited(this.props.navTargetId)
 		}
 	}
 
@@ -29,3 +29,19 @@ export default class Page extends React.Component {
 		)
 	}
 }
+
+let { connect } = Viewer.redux
+let { setFlag } = Viewer.redux.NavActions
+
+// Connect to the redux store
+const mapStateToProps = (state, ownProps) => ({
+	navTargetId: state.nav.navTargetId
+})
+
+const mapDispatchToProps = (dispatch, ownProps) => ({
+	markPageVisited: (itemId) => { dispatch(setFlag(itemId, 'visited', true))}
+})
+
+const Page = connect(mapStateToProps, mapDispatchToProps)(PageRaw)
+
+export default Page

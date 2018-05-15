@@ -15,7 +15,7 @@ let { QuestionUtil } = Viewer.util
 
 import QuestionContent from './Content/viewer-component'
 
-export default class Question extends React.Component {
+class QuestionRaw extends React.Component {
 	onClickBlocker() {
 		QuestionUtil.viewQuestion(this.props.model.get('id'))
 
@@ -32,7 +32,7 @@ export default class Question extends React.Component {
 		let score = QuestionUtil.getScoreForModel(
 			this.props.moduleData.questionState,
 			this.props.model,
-			this.props.moduleData.navState.context
+			this.props.context
 		)
 		let viewState = QuestionUtil.getViewState(this.props.moduleData.questionState, this.props.model)
 
@@ -80,7 +80,7 @@ export default class Question extends React.Component {
 		let score = QuestionUtil.getScoreForModel(
 			this.props.moduleData.questionState,
 			this.props.model,
-			this.props.moduleData.navState.context
+			this.props.context
 		)
 
 		let mode = this.props.mode ? this.props.mode : this.props.model.modelState.mode
@@ -108,3 +108,15 @@ export default class Question extends React.Component {
 		)
 	}
 }
+
+
+import { connect } from 'react-redux'
+
+// Connect to the redux store
+const mapStateToProps = (state, ownProps) => ({
+	context: state.nav.context
+})
+
+const Question = connect(mapStateToProps)(QuestionRaw)
+
+export default Question

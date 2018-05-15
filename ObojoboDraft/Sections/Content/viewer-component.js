@@ -5,15 +5,13 @@ import Viewer from 'Viewer'
 
 let { OboComponent } = Common.components
 let { OboModel } = Common.models
-let { NavUtil } = Viewer.util
 
-export default props => {
+const ContentRaw = props => {
 	let childEl = null
-	let navTargetModel = NavUtil.getNavTargetModel(props.moduleData.navState)
 
-	if (navTargetModel) {
-		let ChildComponent = navTargetModel.getComponentClass()
-		childEl = <ChildComponent model={navTargetModel} moduleData={props.moduleData} />
+	if (props.navTargetModel) {
+		let ChildComponent = props.navTargetModel.getComponentClass()
+		childEl = <ChildComponent model={props.navTargetModel} moduleData={props.moduleData} />
 	}
 
 	return (
@@ -26,3 +24,15 @@ export default props => {
 		</OboComponent>
 	)
 }
+
+import { connect } from 'react-redux'
+let { NavUtil } = Viewer.util
+
+// Connect to the redux store
+const mapStateToProps = (state, ownProps) => ({
+	navTargetModel: NavUtil.getNavTargetModel(state.nav.context.itemsById, state.nav.context.navTargetId)
+})
+
+const Content = connect(mapStateToProps)(ContentRaw)
+
+export default Content

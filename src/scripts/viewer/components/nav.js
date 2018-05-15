@@ -8,12 +8,12 @@ let { OboModel } = Common.models
 let { StyleableText } = Common.text
 let { StyleableTextComponent } = Common.text
 
-export default class Nav extends React.Component {
+class NavRaw extends React.Component {
 	onClick(item) {
 		switch (item.type) {
 			case 'link':
-				if (!NavUtil.canNavigate(this.props.navState)) return
-				NavUtil.gotoPath(item.fullPath)
+				if (this.props.navState.locked) return
+				this.props.gotoPath(item.fullPath)
 				break
 
 			case 'sub-link':
@@ -98,7 +98,7 @@ export default class Nav extends React.Component {
 		let navState = this.props.navState
 		let lockEl = this.getLockEl(navState.locked)
 
-		let list = NavUtil.getOrderedList(navState)
+		let list = NavUtil.getOrderedList(navState.items)
 
 		let className =
 			'viewer--components--nav' +
@@ -108,7 +108,7 @@ export default class Nav extends React.Component {
 
 		return (
 			<div className={className}>
-				<button className="toggle-button" onClick={NavUtil.toggle}>
+				<button className="toggle-button" onClick={this.props.toggle}>
 					Toggle Navigation Menu
 				</button>
 				<ul>
@@ -133,3 +133,15 @@ export default class Nav extends React.Component {
 		)
 	}
 }
+
+import { connect } from 'react-redux'
+import { gotoPath, toggle } from '../redux/nav-actions'
+
+const mapDispatchToProps = (dispatch, ownProps) => ({
+	gotoPath: path => {dispatch(gotoPath(path))},
+	toggle: () => {dispatch(toggle())}
+})
+
+const Nav = connect(null, mapDispatchToProps)(NavRaw)
+
+export default Nav

@@ -23,100 +23,9 @@ const getFlatList = function(item) {
 }
 
 const NavUtil = {
-	rebuildMenu(model) {
-		return Dispatcher.trigger('nav:rebuildMenu', {
-			value: {
-				model
-			}
-		})
-	},
 
-	gotoPath(path) {
-		return Dispatcher.trigger('nav:gotoPath', {
-			value: {
-				path
-			}
-		})
-	},
-
-	// gotoCurrentPathname: () ->
-	// 	window.location.pathname
-
-	setFlag(id, flagName, flagValue) {
-		return Dispatcher.trigger('nav:setFlag', {
-			value: {
-				id,
-				flagName,
-				flagValue
-			}
-		})
-	},
-	goPrev() {
-		return Dispatcher.trigger('nav:prev')
-	},
-
-	goNext() {
-		return Dispatcher.trigger('nav:next')
-	},
-
-	goto(id) {
-		return Dispatcher.trigger('nav:goto', {
-			value: {
-				id
-			}
-		})
-	},
-
-	lock() {
-		return Dispatcher.trigger('nav:lock')
-	},
-
-	unlock() {
-		return Dispatcher.trigger('nav:unlock')
-	},
-
-	close() {
-		return Dispatcher.trigger('nav:close')
-	},
-
-	open() {
-		return Dispatcher.trigger('nav:open')
-	},
-
-	toggle() {
-		return Dispatcher.trigger('nav:toggle')
-	},
-
-	openExternalLink(url) {
-		return Dispatcher.trigger('nav:openExternalLink', {
-			value: {
-				url
-			}
-		})
-	},
-
-	showChildren(id) {
-		return Dispatcher.trigger('nav:showChildren', {
-			value: {
-				id
-			}
-		})
-	},
-
-	hideChildren(id) {
-		return Dispatcher.trigger('nav:hideChildren', {
-			value: {
-				id
-			}
-		})
-	},
-
-	getNavTarget(state) {
-		return state.itemsById[state.navTargetId]
-	},
-
-	getNavTargetModel(state) {
-		let navTarget = NavUtil.getNavTarget(state)
+	getNavTargetModel(itemsById, id) {
+		let navTarget = itemsById[id]
 		if (!navTarget) {
 			return null
 		}
@@ -124,8 +33,8 @@ const NavUtil = {
 		return OboModel.models[navTarget.id]
 	},
 
-	getFirst(state) {
-		let list = NavUtil.getOrderedList(state)
+	getFirst(items) {
+		let list = NavUtil.getOrderedList(items)
 
 		for (let item of Array.from(list)) {
 			if (item.type === 'link') {
@@ -136,11 +45,9 @@ const NavUtil = {
 		return null
 	},
 
-	getPrev(state) {
-		// state.items[NavUtil.getPrevIndex(state)]
-		let list = NavUtil.getOrderedList(state)
-		let navTarget = NavUtil.getNavTarget(state)
-		let index = list.indexOf(navTarget)
+	getPrev(items, currentItem) {
+		let list = NavUtil.getOrderedList(items)
+		let index = list.indexOf(currentItem)
 
 		if (index === -1) {
 			return null
@@ -159,11 +66,9 @@ const NavUtil = {
 		return null
 	},
 
-	getNext(state) {
-		// state.items[NavUtil.getPrevIndex(state)]
-		let list = NavUtil.getOrderedList(state)
-		let navTarget = NavUtil.getNavTarget(state)
-		let index = list.indexOf(navTarget)
+	getNext(items, currentItem) {
+		let list = NavUtil.getOrderedList(items)
+		let index = list.indexOf(currentItem)
 
 		if (index === -1) {
 			return null
@@ -183,8 +88,8 @@ const NavUtil = {
 		return null
 	},
 
-	getPrevModel(state) {
-		let prevItem = NavUtil.getPrev(state)
+	getPrevModel(items, currentItem) {
+		let prevItem = NavUtil.getPrev(items, currentItem)
 		if (!prevItem) {
 			return null
 		}
@@ -192,8 +97,8 @@ const NavUtil = {
 		return OboModel.models[prevItem.id]
 	},
 
-	getNextModel(state) {
-		let nextItem = NavUtil.getNext(state)
+	getNextModel(items, currentItem) {
+		let nextItem = NavUtil.getNext(items, currentItem)
 		if (!nextItem) {
 			return null
 		}
@@ -219,20 +124,8 @@ const NavUtil = {
 		return item.label
 	},
 
-	canNavigate(state) {
-		return !state.locked
-	},
-
-	getOrderedList(state) {
-		return getFlatList(state.items)
-	},
-
-	setContext(context) {
-		return Dispatcher.trigger('nav:setContext', {
-			value: {
-				context
-			}
-		})
+	getOrderedList(items) {
+		return getFlatList(items)
 	}
 }
 

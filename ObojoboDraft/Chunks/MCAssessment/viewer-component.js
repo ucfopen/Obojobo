@@ -22,7 +22,7 @@ const DEFAULT_INCORRECT_LABELS = ['Incorrect']
 
 // @TODO - This wont update if new children are passed in via props
 
-export default class MCAssessment extends React.Component {
+class MCAssessmentRaw extends React.Component {
 	constructor(props) {
 		super(props)
 
@@ -52,7 +52,7 @@ export default class MCAssessment extends React.Component {
 		let questionResponse = QuestionUtil.getResponse(
 			this.props.moduleData.questionState,
 			this.getQuestionModel(),
-			this.props.moduleData.navState.context
+			this.props.context
 		) || { ids: [] }
 
 		let correct = new Set()
@@ -117,7 +117,7 @@ export default class MCAssessment extends React.Component {
 	retry() {
 		QuestionUtil.retryQuestion(
 			this.getQuestionModel().get('id'),
-			this.props.moduleData.navState.context
+			this.props.context
 		)
 	}
 
@@ -133,11 +133,10 @@ export default class MCAssessment extends React.Component {
 
 	onClickSubmit(event) {
 		event.preventDefault()
-
 		QuestionUtil.setScore(
 			this.getQuestionModel().get('id'),
 			this.calculateScore(),
-			this.props.moduleData.navState.context
+			this.props.context
 		)
 		// ScoreUtil.setScore(this.getQuestionModel().get('id'), this.calculateScore())
 		this.updateFeedbackLabels()
@@ -182,7 +181,7 @@ export default class MCAssessment extends React.Component {
 				response = QuestionUtil.getResponse(
 					this.props.moduleData.questionState,
 					questionModel,
-					this.props.moduleData.navState.context
+					this.props.context
 				) || {
 					ids: []
 				}
@@ -206,9 +205,9 @@ export default class MCAssessment extends React.Component {
 			questionModel.get('id'),
 			response,
 			mcChoiceId,
-			this.props.moduleData.navState.context,
-			this.props.moduleData.navState.context.split(':')[1],
-			this.props.moduleData.navState.context.split(':')[2]
+			this.props.context,
+			this.props.context.split(':')[1],
+			this.props.context.split(':')[2]
 		)
 	}
 
@@ -216,7 +215,7 @@ export default class MCAssessment extends React.Component {
 		return QuestionUtil.getScoreForModel(
 			this.props.moduleData.questionState,
 			this.getQuestionModel(),
-			this.props.moduleData.navState.context
+			this.props.context
 		)
 	}
 
@@ -239,7 +238,7 @@ export default class MCAssessment extends React.Component {
 			QuestionUtil.setScore(
 				questionId,
 				this.calculateScore(),
-				this.props.moduleData.navState.context
+				this.props.context
 			)
 		}
 	}
@@ -462,3 +461,14 @@ export default class MCAssessment extends React.Component {
 function __guard__(value, transform) {
 	return typeof value !== 'undefined' && value !== null ? transform(value) : undefined
 }
+
+import { connect } from 'react-redux'
+
+// Connect to the redux store
+const mapStateToProps = state => ({
+	context: state.nav.context
+})
+
+const MCAssessment = connect(mapStateToProps)(MCAssessmentRaw)
+
+export default MCAssessment

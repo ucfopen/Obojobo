@@ -8,18 +8,17 @@ import basicReview from './basic-review'
 
 const { AssessmentScoreReporter, AssessmentScoreReportView } = Viewer.assessment
 const { AssessmentUtil } = Viewer.util
-const { NavUtil } = Viewer.util
 const { OboModel } = Common.models
 const { Button, ButtonBar, MoreInfoButton } = Common.components
 
-class AssessmentReviewView extends React.Component {
+class AssessmentReviewViewRaw extends React.Component {
 	componentDidMount() {
 		let lastAttempt = AssessmentUtil.getLastAttemptForModel(
 			this.props.moduleData.assessmentState,
 			this.props.model
 		)
 
-		NavUtil.setContext(`assessmentReview:${lastAttempt.attemptId}`)
+		this.props.setContext(`assessmentReview:${lastAttempt.attemptId}`)
 	}
 
 	render() {
@@ -107,12 +106,11 @@ class AssessmentReviewView extends React.Component {
 		}
 
 		let getSelectedIndex = () => {
-			let context = this.props.moduleData.navState.context
 
 			for (let i in attempts) {
 				let attempt = attempts[i]
 
-				if (context === `assessmentReview:${attempt.attemptId}`) {
+				if (this.props.context === `assessmentReview:${attempt.attemptId}`) {
 					return parseInt(i, 10)
 				}
 			}
@@ -123,7 +121,7 @@ class AssessmentReviewView extends React.Component {
 		let attemptButtons = attempts.map((attempt, index) => {
 			return (
 				<Button
-					onClick={() => NavUtil.setContext(`assessmentReview:${attempt.attemptId}`)}
+					onClick={() => this.props.setContext(`assessmentReview:${attempt.attemptId}`)}
 					key={index}
 				>
 					{attempt.attemptNumber}
@@ -150,10 +148,24 @@ class AssessmentReviewView extends React.Component {
 						{attemptButtons}
 					</ButtonBar>
 				</div>
-				{attemptReviewComponents[this.props.moduleData.navState.context]}
+				{attemptReviewComponents[this.props.context]}
 			</div>
 		)
 	}
 }
+
+let { connect } = Viewer.redux
+let { setContext } = Viewer.redux.NavActions
+
+// Connect to the redux store
+const mapStateToProps = (state, ownProps) => ({
+	context: state.nav.context
+})
+
+const mapDispatchToProps = (dispatch, ownProps) => ({
+	setContext: context => {dispatch(setContext(context))}
+})
+
+const AssessmentReviewView = connect(mapStateToProps, mapDispatchToProps)(AssessmentReviewViewRaw)
 
 export default AssessmentReviewView

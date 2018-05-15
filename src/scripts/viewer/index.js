@@ -1,7 +1,8 @@
 import ViewerApp from './components/viewer-app'
 import AssessmentStore from './stores/assessment-store'
+import ViewerStore from './redux/viewer-store'
+import * as NavActions from './redux/nav-actions'
 import LTINetworkStates from './stores/assessment-store/lti-network-states'
-import NavStore from './stores/nav-store'
 import QuestionStore from './stores/question-store'
 import AssessmentUtil from './util/assessment-util'
 import NavUtil from './util/nav-util'
@@ -10,6 +11,10 @@ import QuestionUtil from './util/question-util'
 import getLTIOutcomeServiceHostname from './util/get-lti-outcome-service-hostname'
 import AssessmentScoreReporter from './assessment/assessment-score-reporter'
 import AssessmentScoreReportView from './assessment/assessment-score-report-view'
+import { connect } from 'react-redux'
+
+// execute the redux dispatch listeners
+require('./redux/nav-dispatch-listener')
 
 export default {
 	components: {
@@ -21,8 +26,13 @@ export default {
 		assessmentStore: {
 			LTINetworkStates
 		},
-		NavStore,
-		QuestionStore
+		QuestionStore,
+		ViewerStore
+	},
+
+	redux: {
+		connect,
+		NavActions
 	},
 
 	util: {
@@ -30,7 +40,7 @@ export default {
 		NavUtil,
 		APIUtil,
 		QuestionUtil,
-		getLTIOutcomeServiceHostname
+		getLTIOutcomeServiceHostname,
 	},
 
 	assessment: {

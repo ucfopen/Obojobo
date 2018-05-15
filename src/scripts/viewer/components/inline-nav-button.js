@@ -1,8 +1,7 @@
 import './inline-nav-button.scss'
+import Common from 'Common'
 
-import NavUtil from '../../viewer/util/nav-util'
-
-export default class InlineNavButton extends React.Component {
+class InlineNavButtonRaw extends React.Component {
 	onClick() {
 		if (this.props.disabled) {
 			return
@@ -10,10 +9,10 @@ export default class InlineNavButton extends React.Component {
 
 		switch (this.props.type) {
 			case 'prev':
-				return NavUtil.goPrev()
+				return this.props.gotoPrev()
 
 			case 'next':
-				return NavUtil.goNext()
+				return this.props.gotoNext()
 		}
 	}
 
@@ -30,3 +29,18 @@ export default class InlineNavButton extends React.Component {
 		)
 	}
 }
+
+// REDUX STUFF
+import { connect } from 'react-redux'
+import { gotoPrev, gotoNext } from '../redux/nav-actions'
+
+// Connect to the redux store
+
+const mapDispatchToProps = (dispatch, ownProps) => ({
+	gotoPrev: () => {dispatch(gotoPrev())},
+	gotoNext: () => {dispatch(gotoNext())}
+})
+
+const InlineNavButton = connect(null, mapDispatchToProps)(InlineNavButtonRaw)
+
+export default InlineNavButton

@@ -191,5 +191,5 @@ export default {
 		ErrorUtil,
 		UUID,
 		RangeParsing
-	}
+	},
 }

@@ -6,12 +6,10 @@ import React from 'react'
 import IdleTimer from 'react-idle-timer'
 
 import InlineNavButton from '../../viewer/components/inline-nav-button'
-import NavUtil from '../../viewer/util/nav-util'
 import APIUtil from '../../viewer/util/api-util'
 import Logo from '../../viewer/components/logo'
 import QuestionStore from '../../viewer/stores/question-store'
 import AssessmentStore from '../../viewer/stores/assessment-store'
-import NavStore from '../../viewer/stores/nav-store'
 import Nav from './nav'
 import getLTIOutcomeServiceHostname from '../../viewer/util/get-lti-outcome-service-hostname'
 
@@ -40,7 +38,7 @@ Dispatcher.on('viewer:alert', payload =>
 	)
 )
 
-export default class ViewerApp extends React.Component {
+class ViewerAppRaw extends React.Component {
 	// === REACT LIFECYCLE METHODS ===
 
 	constructor(props) {
@@ -55,7 +53,6 @@ export default class ViewerApp extends React.Component {
 
 		let state = {
 			model: null,
-			navState: null,
 			questionState: null,
 			assessmentState: null,
 			modalState: null,
@@ -68,7 +65,7 @@ export default class ViewerApp extends React.Component {
 				outcomeServiceHostname: null
 			}
 		}
-		this.onNavStoreChange = () => this.setState({ navState: NavStore.getState() })
+		// this.onNavStoreChange = () => this.setState({ navState: props.nav })
 		this.onQuestionStoreChange = () => this.setState({ questionState: QuestionStore.getState() })
 		this.onAssessmentStoreChange = () =>
 			this.setState({ assessmentState: AssessmentStore.getState() })
@@ -101,6 +98,7 @@ export default class ViewerApp extends React.Component {
 
 		APIUtil.requestStart(visitIdFromUrl, draftIdFromUrl)
 			.then(visit => {
+
 				QuestionStore.init()
 				ModalStore.init()
 				FocusStore.init()
@@ -112,22 +110,19 @@ export default class ViewerApp extends React.Component {
 				attemptHistory = visit.value.extensions[':ObojoboDraft.Sections.Assessment:attemptHistory']
 				isPreviewing = visit.value.isPreviewing
 				outcomeServiceURL = visit.value.lti.lisOutcomeServiceUrl
-
 				return APIUtil.getDraft(draftIdFromUrl)
 			})
 			.then(({ value: draftModel }) => {
+
 				this.state.model = OboModel.create(draftModel)
 
-				NavStore.init(
+				this.props.navInitialize(
 					this.state.model,
 					this.state.model.modelState.start,
-					window.location.pathname,
 					visitIdFromApi,
 					viewState
 				)
 				AssessmentStore.init(attemptHistory)
-
-				this.state.navState = NavStore.getState()
 				this.state.questionState = QuestionStore.getState()
 				this.state.assessmentState = AssessmentStore.getState()
 				this.state.modalState = ModalStore.getState()
@@ -151,7 +146,6 @@ export default class ViewerApp extends React.Component {
 
 	componentWillMount() {
 		// === SET UP DATA STORES ===
-		NavStore.onChange(this.onNavStoreChange)
 		QuestionStore.onChange(this.onQuestionStoreChange)
 		AssessmentStore.onChange(this.onAssessmentStoreChange)
 		ModalStore.onChange(this.onModalStoreChange)
@@ -159,7 +153,6 @@ export default class ViewerApp extends React.Component {
 	}
 
 	componentWillUnmount() {
-		NavStore.offChange(this.onNavStoreChange)
 		QuestionStore.offChange(this.onQuestionStoreChange)
 		AssessmentStore.offChange(this.onAssessmentStoreChange)
 		ModalStore.offChange(this.onModalStoreChange)
@@ -175,7 +168,7 @@ export default class ViewerApp extends React.Component {
 	componentWillUpdate(nextProps, nextState) {
 		if (this.state.requestStatus === 'ok') {
 			let navTargetId = this.state.navTargetId
-			let nextNavTargetId = this.state.navState.navTargetId
+			let nextNavTargetId = this.props.nav.navTargetId
 
 			if (navTargetId !== nextNavTargetId) {
 				this.needsScroll = true
@@ -190,10 +183,10 @@ export default class ViewerApp extends React.Component {
 
 	componentDidUpdate() {
 		if (this.state.requestStatus === 'ok') {
-			if (this.lastCanNavigate !== NavUtil.canNavigate(this.state.navState)) {
+			if (this.lastCanNavigate !== !this.props.nav.locked) {
 				this.needsScroll = true
 			}
-			this.lastCanNavigate = NavUtil.canNavigate(this.state.navState)
+			this.lastCanNavigate = !this.props.nav.locked
 			if (this.needsScroll != null) {
 				this.scrollToTop()
 
@@ -342,7 +335,7 @@ export default class ViewerApp extends React.Component {
 	}
 
 	unlockNavigation() {
-		return NavUtil.unlock()
+		return this.props.unlock()
 	}
 
 	render() {
@@ -366,15 +359,14 @@ export default class ViewerApp extends React.Component {
 
 		let ModuleComponent = this.state.model.getComponentClass()
 
-		let navTargetModel = NavUtil.getNavTargetModel(this.state.navState)
 		let navTargetTitle = '?'
-		if (navTargetModel != null) {
-			navTargetTitle = navTargetModel.title
+		if (this.props.navTargetModel != null) {
+			navTargetTitle = this.props.navTargetModel.title
 		}
 
 		let prevModel = (nextModel = null)
-		if (NavUtil.canNavigate(this.state.navState)) {
-			prevModel = NavUtil.getPrevModel(this.state.navState)
+		if (!this.props.nav.locked) {
+			prevModel = this.props.getPrevModel()
 			if (prevModel) {
 				let navText =
 					typeof prevModel.title !== 'undefined' && prevModel.title !== null
@@ -392,7 +384,7 @@ export default class ViewerApp extends React.Component {
 				)
 			}
 
-			nextModel = NavUtil.getNextModel(this.state.navState)
+			nextModel = this.props.getNextModel()
 			if (nextModel) {
 				let navText =
 					typeof nextModel.title !== 'undefined' && nextModel.title !== null
@@ -418,9 +410,9 @@ export default class ViewerApp extends React.Component {
 			'viewer--viewer-app',
 			'is-loaded',
 			this.state.isPreviewing ? 'is-previewing' : 'is-not-previewing',
-			this.state.navState.locked ? 'is-locked-nav' : 'is-unlocked-nav',
-			this.state.navState.open ? 'is-open-nav' : 'is-closed-nav',
-			this.state.navState.disabled ? 'is-disabled-nav' : 'is-enabled-nav',
+			this.props.nav.locked ? 'is-locked-nav' : 'is-unlocked-nav',
+			this.props.nav.open ? 'is-open-nav' : 'is-closed-nav',
+			this.props.nav.disabled ? 'is-disabled-nav' : 'is-enabled-nav',
 			`is-focus-state-${this.state.focusState.viewState}`
 		].join(' ')
 
@@ -447,7 +439,7 @@ export default class ViewerApp extends React.Component {
 							</div>
 						</header>
 					)}
-					{hideViewer ? null : <Nav navState={this.state.navState} />}
+					{hideViewer ? null : <Nav navState={this.props.nav} />}
 					{hideViewer ? null : prevEl}
 					{hideViewer ? null : <ModuleComponent model={this.state.model} moduleData={this.state} />}
 					{hideViewer ? null : nextEl}
@@ -458,7 +450,7 @@ export default class ViewerApp extends React.Component {
 								<span>Preview options:</span>
 								<button
 									onClick={this.unlockNavigation.bind(this)}
-									disabled={!this.state.navState.locked}
+									disabled={!this.props.nav.locked}
 								>
 									Unlock navigation
 								</button>
@@ -481,3 +473,28 @@ export default class ViewerApp extends React.Component {
 		)
 	}
 }
+
+// REDUX STUFF
+
+import { connect } from 'react-redux'
+import { unlock, navInitialize } from '../redux/nav-actions'
+import NavUtil from '../util/nav-util'
+
+// Connect to the redux store
+const mapStateToProps = (state, ownProps) => ({
+	nav: state.nav,
+	navTargetModel: NavUtil.getNavTargetModel(state.nav.itemsById, state.nav.navTargetId),
+	getPrevModel: () => NavUtil.getPrevModel(state.nav.items, state.nav.itemsById[state.nav.navTargetId]),
+	getNextModel: () => NavUtil.getNextModel(state.nav.items, state.nav.itemsById[state.nav.navTargetId])
+})
+
+const mapDispatchToProps = (dispatch, ownProps) => ({
+	navInitialize: (model, itemId, path, visitId, viewState) => {
+		dispatch(navInitialize(model, itemId, path, visitId, viewState))
+	},
+	unlock: () => {dispatch(unlock())},
+})
+
+const ViewerApp = connect(mapStateToProps, mapDispatchToProps)(ViewerAppRaw)
+
+export default ViewerApp

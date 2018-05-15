@@ -10,15 +10,13 @@ let { Dispatcher } = Common.flux
 let { ModalUtil } = Common.util
 
 let { AssessmentUtil } = Viewer.util
-let { NavUtil } = Viewer.util
 
 import AttemptIncompleteDialog from './components/attempt-incomplete-dialog'
-
 import PreTest from './components/pre-test'
 import Test from './components/test'
 import PostTest from './components/post-test'
 
-export default class Assessment extends React.Component {
+class AssessmentRaw extends React.Component {
 	constructor() {
 		super()
 		this.state = {
@@ -34,7 +32,7 @@ export default class Assessment extends React.Component {
 	}
 
 	componentWillUnmount() {
-		NavUtil.setContext('practice')
+		this.props.setContextToPractice()
 	}
 
 	getCurrentStep() {
@@ -96,7 +94,7 @@ export default class Assessment extends React.Component {
 			this.props.moduleData.assessmentState,
 			this.props.moduleData.questionState,
 			this.props.model,
-			this.props.moduleData.navState.context
+			this.props.context
 		)
 	}
 
@@ -119,7 +117,7 @@ export default class Assessment extends React.Component {
 	}
 
 	endAttempt() {
-		return AssessmentUtil.endAttempt(this.props.model, this.props.moduleData.navState.context)
+		return AssessmentUtil.endAttempt(this.props.model, this.props.context)
 	}
 
 	exitAssessment() {
@@ -127,13 +125,13 @@ export default class Assessment extends React.Component {
 
 		switch (scoreAction.action.value) {
 			case '_next':
-				return NavUtil.goNext()
+				return this.props.gotoNext()
 
 			case '_prev':
-				return NavUtil.goPrev()
+				return this.props.gotoPrev()
 
 			default:
-				return NavUtil.goto(scoreAction.action.value)
+				return this.props.goto(scoreAction.action.value)
 		}
 	}
 
@@ -172,26 +170,26 @@ export default class Assessment extends React.Component {
 		const childEl = (() => {
 			switch (this.getCurrentStep()) {
 				case 'pre-test':
-					return PreTest({
-						model: this.props.model.children.at(0),
-						moduleData: this.props.moduleData
-					})
+					return <PreTest
+								model={this.props.model.children.at(0)}
+								moduleData={this.props.moduleData}
+							/>
 
 				case 'test':
-					return Test({
-						model: this.props.model.children.at(1),
-						moduleData: this.props.moduleData,
-						onClickSubmit: this.onClickSubmit,
-						isAttemptComplete: this.isAttemptComplete(),
-						isFetching: this.state.isFetching
-					})
+					return <Test
+								model={this.props.model.children.at(1)}
+								moduleData={this.props.moduleData}
+								onClickSubmit={this.onClickSubmit}
+								isAttemptComplete={this.isAttemptComplete()}
+								isFetching={this.state.isFetching}
+							/>
 
 				case 'post-test':
-					return PostTest({
-						model: this.props.model,
-						moduleData: this.props.moduleData,
-						scoreAction: this.getScoreAction()
-					})
+					return <PostTest
+								model={this.props.model}
+								moduleData={this.props.moduleData}
+								scoreAction={this.getScoreAction()}
+							/>
 
 				default:
 					return null
@@ -209,3 +207,23 @@ export default class Assessment extends React.Component {
 		)
 	}
 }
+
+let { connect } = Viewer.redux
+let { gotoPrev, gotoNext, goto, setContext } = Viewer.redux.NavActions
+
+// Connect to the redux store
+const mapStateToProps = (state, ownProps) => ({
+	context: state.nav.context
+})
+
+const mapDispatchToProps = (dispatch, ownProps) => ({
+	goto: target => {dispatch(goto(target))},
+	gotoPrev: () => {dispatch(gotoPrev())},
+	gotoNext: () => {dispatch(gotoNext())},
+	setContextToPractice: () => {dispatch(setContext('practice'))}
+})
+
+const Assessment = connect(mapStateToProps, mapDispatchToProps)(AssessmentRaw)
+
+
+export default Assessment

@@ -1,28 +1,26 @@
 import Common from 'Common'
-import Viewer from 'Viewer'
-
+import { Provider } from 'react-redux'
+let { ViewerStore } = Viewer.stores
+let { Dispatcher } = Common.flux
 import './polyfills'
 
 let { APIUtil } = Viewer.util
 
-var debounce = function(ms, cb) {
+var debounce = (ms, cb) => {
 	clearTimeout(debounce.id)
-	return (debounce.id = setTimeout(cb, ms))
+	debounce.id = setTimeout(cb, ms)
 }
 debounce.id = null
 
-// set up global event listeners
-let { Dispatcher } = Common.flux
-
 // Set up listeners for window for blur/focus
-let onFocus = function() {
+let onFocus = () => {
 	document.body.className = 'is-focused-window'
-	return Dispatcher.trigger('window:focus')
+	Dispatcher.trigger('window:focus')
 }
 
-let onBlur = function() {
+let onBlur = () => {
 	document.body.className = 'is-blured-window'
-	return Dispatcher.trigger('window:blur')
+	Dispatcher.trigger('window:blur')
 }
 
 let ie = false
@@ -35,19 +33,14 @@ if (ie) {
 	window.onblur = onBlur
 }
 
-let moduleData = {
-	model: null,
-	navState: null,
-	questionState: null,
-	assessmentState: null,
-	modalState: null
-}
-
 window.__oboViewerRender = () => {
 	return ReactDOM.render(
-		<div className="root">
-			<Viewer.components.ViewerApp />
-		</div>,
+		<Provider store={ViewerStore}>
+			<div className="root">
+				<Viewer.components.ViewerApp />
+			</div>
+		</Provider>,
 		document.getElementById('viewer-app')
 	)
 }
+

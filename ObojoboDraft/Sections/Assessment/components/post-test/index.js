@@ -4,12 +4,11 @@ import Viewer from 'Viewer'
 const { OboModel } = Common.models
 const { AssessmentUtil } = Viewer.util
 const Launch = Common.Launch
-const NavUtil = Viewer.util.NavUtil
 
 import LTIStatus from './lti-status'
 import FullReview from '../full-review' //@TODO - Rename to simply "Review"
 
-const AssessmentPostTest = props => {
+const AssessmentPostTestRaw = props => {
 	const questionScores = AssessmentUtil.getLastAttemptScoresForModel(
 		props.moduleData.assessmentState,
 		props.model
@@ -54,7 +53,6 @@ const AssessmentPostTest = props => {
 
 	let ltiState = AssessmentUtil.getLTIStateForModel(props.moduleData.assessmentState, props.model)
 
-	let assessmentLabel = NavUtil.getNavLabelForModel(props.moduleData.navState, props.model)
 
 	let scoreActionsPage
 
@@ -74,7 +72,7 @@ const AssessmentPostTest = props => {
 	return (
 		<div className="score unlock">
 			<div className="overview">
-				<h1>{assessmentLabel} Overview</h1>
+				<h1>{props.assessmentLabel} Overview</h1>
 				{assessmentScore === null ? (
 					<div className="recorded-score is-null">
 						<h2>Recorded Score:</h2>
@@ -129,5 +127,14 @@ const AssessmentPostTest = props => {
 		</div>
 	)
 }
+
+let { connect } = Viewer.redux
+
+// Connect to the redux store
+const mapStateToProps = (state, ownProps) => ({
+	assessmentLabel: Viewer.util.NavUtil.getNavLabelForModel(state.nav, ownProps.model)
+})
+
+const AssessmentPostTest = connect(mapStateToProps)(AssessmentPostTestRaw)
 
 export default AssessmentPostTest

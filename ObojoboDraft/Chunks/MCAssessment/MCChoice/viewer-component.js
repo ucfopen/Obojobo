@@ -93,7 +93,7 @@ const getAnsType = (model, isCorrect, isSelected) => {
 	return UNCHOSEN_CORRECTLY
 }
 
-const MCChoice = props => {
+const MCChoiceRaw = props => {
 	let isCorrect
 
 	try {
@@ -101,7 +101,7 @@ const MCChoice = props => {
 			props.model,
 			props.mode,
 			props.moduleData.questionState,
-			props.moduleData.navState.context
+			props.nav.context
 		)
 	} catch (error) {
 		// if there's no questionState data for this
@@ -113,7 +113,7 @@ const MCChoice = props => {
 	let isSelected = questionIsSelected(
 		props.moduleData.questionState,
 		props.model,
-		props.moduleData.navState.context
+		props.nav.context
 	)
 
 	let ansType = getAnsType(props.model, isCorrect, isSelected)
@@ -165,10 +165,20 @@ const MCChoice = props => {
 	)
 }
 
-MCChoice.defaultProps = {
+MCChoiceRaw.defaultProps = {
 	responseType: null,
 	revealAll: false,
 	questionSubmitted: false
 }
+
+import { connect } from 'react-redux'
+
+// Connect to the redux store
+const mapStateToProps = (state, ownProps) => ({
+	nav: state.nav
+})
+
+const MCChoice = connect(mapStateToProps)(MCChoiceRaw)
+
 
 export default MCChoice
