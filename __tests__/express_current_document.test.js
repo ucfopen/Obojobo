@@ -1,10 +1,5 @@
 let mockArgs // array of mocked express middleware request arguments
-const documentFunctions = [
-	'setCurrentDocument',
-	'getCurrentDocument',
-	'requireCurrentDocument',
-	'resetCurrentDocument'
-]
+const documentFunctions = ['setCurrentDocument', 'requireCurrentDocument', 'resetCurrentDocument']
 
 jest.mock('test_node')
 jest.mock('../models/draft')
@@ -93,7 +88,7 @@ describe('current document middleware', () => {
 		}).toThrow('Invalid DraftDocument for Current draftDocument')
 	})
 
-	test('getCurrentDocument gets the current draft document', done => {
+	test('requireCurrentDocument gets the current draft document', done => {
 		expect.assertions(2)
 
 		let [res, req, mockJson, mockStatus, mockNext] = mockArgs
@@ -103,14 +98,14 @@ describe('current document middleware', () => {
 		})
 		req.setCurrentDocument(mockDocument)
 
-		return req.getCurrentDocument().then(draftDocument => {
+		return req.requireCurrentDocument().then(draftDocument => {
 			expect(draftDocument.draftId).toBe(999)
 			expect(draftDocument).toBeInstanceOf(DraftDocument)
 			done()
 		})
 	})
 
-	test('getCurrentDocument loads the draft document from params when one is avalible', done => {
+	test('requireCurrentDocument loads the draft document from params when one is avalible', done => {
 		expect.assertions(2)
 
 		let [res, req, mockJson, mockStatus, mockNext] = mockArgs
@@ -118,14 +113,14 @@ describe('current document middleware', () => {
 			draftId: 1
 		}
 
-		return req.getCurrentDocument().then(draftDocument => {
+		return req.requireCurrentDocument().then(draftDocument => {
 			expect(draftDocument.draftId).toBe(1)
 			expect(draftDocument).toBeInstanceOf(DraftDocument)
 			done()
 		})
 	})
 
-	test('getCurrentDocument loads the draft document from body when one is avalible', done => {
+	test('requireCurrentDocument loads the draft document from body when one is avalible', done => {
 		expect.assertions(2)
 
 		let [res, req, mockJson, mockStatus, mockNext] = mockArgs
@@ -133,20 +128,20 @@ describe('current document middleware', () => {
 			draftId: 1
 		}
 
-		return req.getCurrentDocument().then(draftDocument => {
+		return req.requireCurrentDocument().then(draftDocument => {
 			expect(draftDocument.draftId).toBe(1)
 			expect(draftDocument).toBeInstanceOf(DraftDocument)
 			done()
 		})
 	})
 
-	test('getCurrentDocument rejects when no DraftDocument is set', done => {
+	test('requireCurrentDocument rejects when no DraftDocument is set', done => {
 		expect.assertions(1)
 
 		let [res, req, mockJson, mockStatus, mockNext] = mockArgs
 
 		return req
-			.getCurrentDocument()
+			.requireCurrentDocument()
 			.then(user => {
 				expect(false).toBe('never_called')
 				done()
@@ -154,43 +149,6 @@ describe('current document middleware', () => {
 			.catch(err => {
 				expect(err.message).toBe('DraftDocument Required')
 				done()
-			})
-	})
-
-	test('requireCurrentDocument sucessfully gets the draft document', done => {
-		expect.assertions(1)
-
-		let [res, req, mockJson, mockStatus, mockNext] = mockArgs
-		let mockDocument = new DraftDocument({
-			draftId: 999,
-			contentId: 12
-		})
-		req.setCurrentDocument(mockDocument)
-
-		return req
-			.requireCurrentDocument()
-			.then(draftDocument => {
-				expect(draftDocument).toBeInstanceOf(DraftDocument)
-				done()
-			})
-			.catch(err => {
-				expect(err.message).toBe('not_called')
-				done()
-			})
-	})
-
-	test('requireCurrentDocument rejects if no draft document is set', () => {
-		expect.assertions(1)
-
-		let [res, req, mockJson, mockStatus, mockNext] = mockArgs
-
-		return req
-			.requireCurrentDocument()
-			.then(draftDocument => {
-				expect(draftDocument).toBe('not_called')
-			})
-			.catch(err => {
-				expect(err.message).toBe('DraftDocument Required')
 			})
 	})
 })
