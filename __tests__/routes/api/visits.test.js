@@ -55,7 +55,7 @@ describe('api visits route', () => {
 		mockReq.requireCurrentUser.mockReset()
 		mockReq.requireCurrentDocument.mockResolvedValue({
 			draftId: 555,
-			contentId: 12,
+			contentId: 'draft-content-id',
 			yell: mockYell,
 			root: {
 				node: {
@@ -343,7 +343,7 @@ describe('api visits route', () => {
 				actorTime: '2016-09-22T16:57:14.500Z',
 				caliperPayload: undefined,
 				draftId: 555,
-				contentId: 12,
+				contentId: 'draft-content-id',
 				eventVersion: '1.0.0',
 				ip: 'remoteAddress',
 				metadata: {},
@@ -353,7 +353,7 @@ describe('api visits route', () => {
 			expect(caliperEvent().createViewerSessionLoggedInEvent).toBeCalledWith({
 				actor: { id: 2, type: 'user' },
 				draftId: 555,
-				contentId: 12,
+				contentId: 'draft-content-id',
 				isPreviewMode: undefined,
 				sessionIds: { launchId: undefined, sessionId: undefined }
 			})

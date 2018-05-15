@@ -65,7 +65,7 @@ router.post('/start', (req, res, next) => {
 			;[visit, viewState, visitStartReturnExtensionsProps] = results
 
 			if (visit.is_preview === false) {
-				if (visit.draft_content_id !== currentDocument.root.node._rev) {
+				if (visit.draft_content_id !== currentDocument.contentId) {
 					// error so the student starts a new view w/ newer version
 					// this check doesn't happen in preview mode so authors
 					// can reload the page to see changes easier
