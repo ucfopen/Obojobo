@@ -11,27 +11,19 @@ let resetCurrentDocument = req => {
 }
 
 let requireCurrentDocument = (req) => {
-	if (!req.currentDocument){
-		// Set and retrieve the draft document from params
-		if(req.params && req.params.draftId){
-			return DraftDocument.fetchById(req.params.draftId)
-			.then(draftDocument => {
-				setCurrentDocument(req, draftDocument)
-				return req.currentDocument
-			})
+	if(req.currentDocument){
+		return Promise.resolve(req.currentDocument)
+	}
 
-		}
+	// Figure out where the draftId is in this request
+	let draftId = null
+	if(req.params && req.params.draftId) {
+		draftId = req.params.draftId
+	} else if(req.body && req.body.draftId) {
+		draftId = req.body.draftId
+	}
 
-		// Set and retrive the draft document from body
-		if(req.body && req.body.draftId){
-			return DraftDocument.fetchById(req.body.draftId)
-			.then(draftDocument => {
-				setCurrentDocument(req, draftDocument)
-				return req.currentDocument
-			})
-
-		}
-
+	if(draftId === null) {
 		logger.warn(
 			'No Session or Current DraftDocument?',
 			req.currentDocument
@@ -39,7 +31,11 @@ let requireCurrentDocument = (req) => {
 		return Promise.reject(new Error('DraftDocument Required'))
 	}
 
-	return Promise.resolve(req.currentDocument)
+	return DraftDocument.fetchById(draftId)
+		.then(draftDocument => {
+			setCurrentDocument(req, draftDocument)
+			return req.currentDocument
+		})
 }
 
 module.exports = (req, res, next) => {

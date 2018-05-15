@@ -63,7 +63,7 @@ describe('current document middleware', () => {
 		expect(req.currentDocument).toBeInstanceOf(DraftDocument)
 	})
 
-	test('unsets the curent draft document', () => {
+	test('unsets the current draft document', () => {
 		expect.assertions(2)
 
 		let [res, req, mockJson, mockStatus, mockNext] = mockArgs
