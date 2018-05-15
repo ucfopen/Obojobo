@@ -86,14 +86,6 @@ let userFromLaunch = (req, ltiBody) => {
 	})
 }
 
-let draftFromLaunch = (req, draftId) => {
-	return DraftDocument.fetchById(draftId)
-		.then(draftDocument => {
-			req.setCurrentDocument(draftDocument)
-			return draftDocument
-		})
-}
-
 // LTI launch detection (req.lti is created by express-ims-lti)
 // This middleware will create and register a user if there is one
 // This will also try to register the launch information if there is any
@@ -115,7 +107,7 @@ exports.assignment = (req, res, next) => {
 		.then(lti => userFromLaunch(req, lti.body))
 		.then(launchUser => {
 			currentUser = launchUser
-			return draftFromLaunch(req, draftId)
+			return req.requireCurrentDocument()
 		})
 		.then(draftDocument => {
 			currentDocument = draftDocument
