@@ -95,9 +95,7 @@ class Draft {
 				result.content.contentId = result.version
 				result.content._rev = result.version
 
-				let draftResult = new Draft(result.content)
-
-				return draftResult
+				return new Draft(result.content)
 			})
 			.catch(error => {
 				logger.error('fetchById Error', error.message)
