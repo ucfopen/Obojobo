@@ -72,7 +72,7 @@ let createAssessmentEvent = (obj, IRI) => {
 	let caliperEvent = createEvent(AssessmentEvent, actor, IRI, options)
 
 	caliperEvent.setAction(action)
-	caliperEvent.setObject(IRI.getAssessmentIRI(draftId, contentId, assessmentId))
+	caliperEvent.setObject(IRI.getAssessmentIRI(contentId, assessmentId))
 	caliperEvent.setGenerated(IRI.getAssessmentAttemptIRI(attemptId))
 	Object.assign(caliperEvent.extensions, extensions)
 
@@ -124,9 +124,9 @@ const caliperEventFactory = (req, host = null, isFromReq = false) => {
 			let { actor, draftId, contentId, from, to, extensions } = obj
 			let caliperEvent = createEvent(NavigationEvent, actor, IRI, options)
 
-			caliperEvent.referrer = IRI.getDraftIRI(draftId, contentId, from)
+			caliperEvent.referrer = IRI.getDraftContentIRI(contentId, from)
 			caliperEvent.setAction(NavigationActions.NAVIGATED_TO)
-			caliperEvent.setObject(IRI.getDraftIRI(draftId, contentId, to))
+			caliperEvent.setObject(IRI.getDraftContentIRI(contentId, to))
 			Object.assign(caliperEvent.extensions, extensions)
 
 			return updateEventToVersion1_1(caliperEvent)
@@ -149,9 +149,9 @@ const caliperEventFactory = (req, host = null, isFromReq = false) => {
 			let caliperEvent = createEvent(ViewEvent, actor, IRI, options)
 
 			caliperEvent.setAction('Viewed')
-			caliperEvent.setObject(IRI.getDraftIRI(draftId, contentId, itemId))
+			caliperEvent.setObject(IRI.getDraftContentIRI(contentId, itemId))
 			if (frameName) {
-				caliperEvent.setTarget(IRI.getDraftIRI(draftId, contentId, itemId, frameName))
+				caliperEvent.setTarget(IRI.getDraftContentIRI(contentId, itemId, frameName))
 			}
 			Object.assign(caliperEvent.extensions, extensions)
 
@@ -174,9 +174,9 @@ const caliperEventFactory = (req, host = null, isFromReq = false) => {
 			let caliperEvent = createEvent(Event, actor, IRI, options)
 
 			caliperEvent.setAction('Hid')
-			caliperEvent.setObject(IRI.getDraftIRI(draftId, contentId, questionId))
+			caliperEvent.setObject(IRI.getDraftContentIRI(contentId, questionId))
 			if (frameName) {
-				caliperEvent.setTarget(IRI.getDraftIRI(draftId, contentId, questionId, frameName))
+				caliperEvent.setTarget(IRI.getDraftContentIRI(contentId, questionId, frameName))
 			}
 			Object.assign(caliperEvent.extensions, extensions)
 
@@ -235,7 +235,7 @@ const caliperEventFactory = (req, host = null, isFromReq = false) => {
 			caliperEvent.setType('GradeEvent')
 			caliperEvent.setAction('Graded')
 			caliperEvent.setObject(IRI.getAssessmentAttemptIRI(attemptId))
-			caliperEvent.setTarget(IRI.getAssessmentIRI(draftId, contentId, assessmentId))
+			caliperEvent.setTarget(IRI.getAssessmentIRI(contentId, assessmentId))
 
 			//@TODO - Caliper spec will have a Score entity but our version doesn't have this yet
 			caliperEvent.setGenerated(
@@ -263,11 +263,11 @@ const caliperEventFactory = (req, host = null, isFromReq = false) => {
 
 			caliperEvent.setType('GradeEvent')
 			caliperEvent.setAction('Graded')
-			caliperEvent.setObject(IRI.getPracticeQuestionAttemptIRI(draftId, contentId, questionId))
+			caliperEvent.setObject(IRI.getPracticeQuestionAttemptIRI(contentId, questionId))
 			//@TODO - Caliper spec will have a Score entity but our version doesn't have this yet
 			caliperEvent.setGenerated(
 				createScore(
-					IRI.getPracticeQuestionAttemptIRI(draftId, contentId, questionId),
+					IRI.getPracticeQuestionAttemptIRI(contentId, questionId),
 					IRI.getViewerClientIRI(),
 					score,
 					getUrnFromUuid(scoreId)
@@ -304,15 +304,11 @@ const caliperEventFactory = (req, host = null, isFromReq = false) => {
 			} = obj
 			const options = assignCaliperOptions(obj)
 			const caliperEvent = createEvent(AssessmentItemEvent, actor, IRI, options)
-			const questionIdIRI = IRI.getDraftIRI(draftId, contentId, questionId)
-			const practiceQuestionAttemptIRI = IRI.getPracticeQuestionAttemptIRI(
-				draftId,
-				contentId,
-				questionId
-			)
+			const questionIdIRI = IRI.getDraftContentIRI(contentId, questionId)
+			const practiceQuestionAttemptIRI = IRI.getPracticeQuestionAttemptIRI(contentId, questionId)
 
 			caliperEvent.setAction('Completed')
-			caliperEvent.setTarget(IRI.getDraftIRI(draftId, contentId, targetId))
+			caliperEvent.setTarget(IRI.getDraftContentIRI(contentId, targetId))
 			caliperEvent.setGenerated({
 				id: getNewGeneratedId(),
 				type: 'Response',
@@ -346,8 +342,8 @@ const caliperEventFactory = (req, host = null, isFromReq = false) => {
 			let caliperEvent = createEvent(Event, actor, IRI, options)
 
 			caliperEvent.setAction('Submitted')
-			caliperEvent.setObject(IRI.getDraftIRI(draftId, contentId, questionId))
-			caliperEvent.setTarget(IRI.getPracticeQuestionAttemptIRI(draftId, contentId, questionId))
+			caliperEvent.setObject(IRI.getDraftContentIRI(contentId, questionId))
+			caliperEvent.setTarget(IRI.getPracticeQuestionAttemptIRI(contentId, questionId))
 
 			Object.assign(caliperEvent.extensions, extensions)
 
@@ -370,7 +366,7 @@ const caliperEventFactory = (req, host = null, isFromReq = false) => {
 
 			caliperEvent.setAction('Reset')
 			caliperEvent.setObject(getUrnFromUuid(scoreId))
-			caliperEvent.setTarget(IRI.getPracticeQuestionAttemptIRI(draftId, contentId, questionId))
+			caliperEvent.setTarget(IRI.getPracticeQuestionAttemptIRI(contentId, questionId))
 
 			Object.assign(caliperEvent.extensions, extensions)
 
@@ -391,7 +387,7 @@ const caliperEventFactory = (req, host = null, isFromReq = false) => {
 			let caliperEvent = createEvent(Event, actor, IRI, options)
 
 			caliperEvent.setAction('Abandoned')
-			caliperEvent.setObject(IRI.getDraftIRI(draftId, contentId))
+			caliperEvent.setObject(IRI.getDraftContentIRI(contentId))
 
 			Object.assign(caliperEvent.extensions, extensions)
 
@@ -412,7 +408,7 @@ const caliperEventFactory = (req, host = null, isFromReq = false) => {
 			let caliperEvent = createEvent(Event, actor, IRI, options)
 
 			caliperEvent.setAction('Resumed')
-			caliperEvent.setObject(IRI.getDraftIRI(draftId, contentId))
+			caliperEvent.setObject(IRI.getDraftContentIRI(contentId))
 
 			Object.assign(caliperEvent.extensions, extensions)
 
@@ -436,7 +432,7 @@ const caliperEventFactory = (req, host = null, isFromReq = false) => {
 
 			caliperEvent.setAction('LoggedIn')
 			caliperEvent.setObject(IRI.getEdAppIRI())
-			caliperEvent.setTarget(IRI.getDraftIRI(draftId, contentId))
+			caliperEvent.setTarget(IRI.getDraftContentIRI(contentId))
 
 			Object.assign(caliperEvent.extensions, extensions)
 
@@ -460,7 +456,7 @@ const caliperEventFactory = (req, host = null, isFromReq = false) => {
 
 			caliperEvent.setAction('LoggedOut')
 			caliperEvent.setObject(IRI.getEdAppIRI())
-			caliperEvent.setTarget(IRI.getDraftIRI(draftId, contentId))
+			caliperEvent.setTarget(IRI.getDraftContentIRI(contentId))
 
 			Object.assign(caliperEvent.extensions, extensions)
 
@@ -482,8 +478,8 @@ const caliperEventFactory = (req, host = null, isFromReq = false) => {
 			let caliperEvent = createEvent(Event, actor, IRI, options)
 
 			caliperEvent.setAction('Reset')
-			caliperEvent.setObject(IRI.getDraftIRI(draftId, contentId, questionId))
-			caliperEvent.setTarget(IRI.getPracticeQuestionAttemptIRI(draftId, contentId, questionId))
+			caliperEvent.setObject(IRI.getDraftContentIRI(contentId, questionId))
+			caliperEvent.setTarget(IRI.getPracticeQuestionAttemptIRI(contentId, questionId))
 
 			Object.assign(caliperEvent.extensions, extensions)
 

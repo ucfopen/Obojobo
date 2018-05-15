@@ -75,43 +75,28 @@ describe('IRI Builder', () => {
 	})
 
 	test('getDraftIRI returns with expected path', () => {
-		let path = iri(null, 'testHost').getDraftIRI('testDraft', 'testContent')
-		expect(path).toBe('https://testHost/api/draft/testDraft/draftcontent/testContent')
+		let path = iri(null, 'testHost').getDraftContentIRI('testContent')
+		expect(path).toBe('https://testHost/api/draft-content/testContent')
 	})
 
 	test('getDraftIRI returns with expected path given OboNode', () => {
-		let path = iri(null, 'testHost').getDraftIRI('testDraft', 'testContent', 'testNode')
-		expect(path).toBe('https://testHost/api/draft/testDraft/draftcontent/testContent#testNode')
+		let path = iri(null, 'testHost').getDraftContentIRI('testContent', 'testNode')
+		expect(path).toBe('https://testHost/api/draft-content/testContent#testNode')
 	})
 
 	test('getDraftIRI returns with expected path given OboNode and context', () => {
-		let path = iri(null, 'testHost').getDraftIRI(
-			'testDraft',
-			'testContent',
-			'testNode',
-			'testContext'
-		)
-		expect(path).toBe(
-			'https://testHost/api/draft/testDraft/draftcontent/testContent?context=testContext#testNode'
-		)
+		let path = iri(null, 'testHost').getDraftContentIRI('testContent', 'testNode', 'testContext')
+		expect(path).toBe('https://testHost/api/draft-content/testContent?context=testContext#testNode')
 	})
 
 	test('getPracticeQuestionAttemptIRI returns with expected path', () => {
-		let path = iri(null, 'testHost').getPracticeQuestionAttemptIRI(
-			'testDraft',
-			'testContent',
-			'testNode'
-		)
-		expect(path).toBe(
-			'https://testHost/api/draft/testDraft/draftcontent/testContent/practice/testNode'
-		)
+		let path = iri(null, 'testHost').getPracticeQuestionAttemptIRI('testContent', 'testNode')
+		expect(path).toBe('https://testHost/api/draft-content/testContent/practice/testNode')
 	})
 
 	test('getAssessmentIRI returns with expected path', () => {
-		let path = iri(null, 'testHost').getAssessmentIRI('testDraft', 'testContent', 'testAssessment')
-		expect(path).toBe(
-			'https://testHost/api/draft/testDraft/draftcontent/testContent/assessment/testAssessment'
-		)
+		let path = iri(null, 'testHost').getAssessmentIRI('testContent', 'testAssessment')
+		expect(path).toBe('https://testHost/api/draft-content/testContent/assessment/testAssessment')
 	})
 
 	test('getAssessmentAttemptIRI returns with expected path', () => {

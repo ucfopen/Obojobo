@@ -50,26 +50,26 @@ const iriFactory = (req, providedHost) => {
 			return createIRI(host, `/api/user/${userId}`)
 		},
 
-		getDraftIRI: (draftId, contentId, oboNodeId = null, contextName = null) => {
+		getDraftContentIRI: (contentId, oboNodeId = null, contextName = null) => {
 			let iri
 
 			if (oboNodeId === null) {
-				iri = createIRI(host, `/api/draft/${draftId}/draftcontent/${contentId}`)
+				iri = createIRI(host, `/api/draft-content/${contentId}`)
 			} else if (contextName === null) {
-				iri = createIRI(host, `/api/draft/${draftId}/draftcontent/${contentId}`, `#${oboNodeId}`)
+				iri = createIRI(host, `/api/draft-content/${contentId}`, `#${oboNodeId}`)
 			} else {
-				iri = createIRI(host, `/api/draft/${draftId}/draftcontent/${contentId}`, `#${oboNodeId}`, { context: contextName })
+				iri = createIRI(host, `/api/draft-content/${contentId}`, `#${oboNodeId}`, { context: contextName })
 			}
 
 			return iri
 		},
 
-		getPracticeQuestionAttemptIRI: (draftId, contentId, oboNodeId) => {
-			return createIRI(host, `/api/draft/${draftId}/draftcontent/${contentId}/practice/${oboNodeId}`)
+		getPracticeQuestionAttemptIRI: (contentId, oboNodeId) => {
+			return createIRI(host, `/api/draft-content/${contentId}/practice/${oboNodeId}`)
 		},
 
-		getAssessmentIRI: (draftId, contentId, assessmentId) => {
-			return createIRI(host, `/api/draft/${draftId}/draftcontent/${contentId}/assessment/${assessmentId}`)
+		getAssessmentIRI: (contentId, assessmentId) => {
+			return createIRI(host, `/api/draft-content/${contentId}/assessment/${assessmentId}`)
 		},
 
 		getAssessmentAttemptIRI: attemptId => {
