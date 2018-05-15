@@ -12,7 +12,7 @@ router.get('/', (req, res, next) => {
 		xml_url: `https://${hostname}/lti/config.xml`,
 		launch_url: `https://${hostname}/lti`,
 		course_navigation_url: `https://${hostname}/lti/canvas/course_navigation`,
-		assignment_selection_url: `https://${hostname}/lti/canvas/assignment_selection`,
+		assignment_selection_url: `https://${hostname}/lti/canvas/resource_selection`,
 		keys: Object.keys(config.lti.keys)
 	})
 })
@@ -99,7 +99,5 @@ let showModuleSelector = [
 router.post('/canvas/resource_selection', showModuleSelector)
 // mounted as /lti/canvas/editor_button
 router.post('/canvas/editor_button', showModuleSelector)
-// mounted as /lti/canvas/assignment_selection
-router.post('/canvas/assignment_selection', showModuleSelector)
 
 module.exports = router

@@ -38,7 +38,7 @@ describe('lti route', () => {
 
 	test('registers the expected routes ', () => {
 		expect(mockRouterMethods.get).toHaveBeenCalledTimes(2)
-		expect(mockRouterMethods.post).toHaveBeenCalledTimes(4)
+		expect(mockRouterMethods.post).toHaveBeenCalledTimes(3)
 		expect(mockRouterMethods.delete).toHaveBeenCalledTimes(0)
 		expect(mockRouterMethods.all).toHaveBeenCalledTimes(0)
 		expect(mockRouterMethods.get).toBeCalledWith('/', expect.any(Function))
@@ -49,7 +49,6 @@ describe('lti route', () => {
 			expect.any(Function)
 		)
 		expect(mockRouterMethods.post).toBeCalledWith('/canvas/editor_button', expect.any(Array))
-		expect(mockRouterMethods.post).toBeCalledWith('/canvas/assignment_selection', expect.any(Array))
 		expect(mockRouterMethods.post).toBeCalledWith('/canvas/resource_selection', expect.any(Array))
 	})
 
@@ -229,13 +228,11 @@ describe('lti route', () => {
 		})
 	})
 
-	test('canvas editor_button, assingment_selection, and resource_selection share the same method', () => {
-		expect.assertions(2)
+	test('canvas editor_button and resource_selection share the same method', () => {
+		expect.assertions(1)
 		let resourceSelectionRoute = mockRouterMethods.post.mock.calls[1][1][1]
 		let editorButtonRoute = mockRouterMethods.post.mock.calls[2][1][1]
-		let assignmentSelectionRoute = mockRouterMethods.post.mock.calls[3][1][1]
 
 		expect(resourceSelectionRoute).toBe(editorButtonRoute)
-		expect(resourceSelectionRoute).toBe(assignmentSelectionRoute)
 	})
 })
