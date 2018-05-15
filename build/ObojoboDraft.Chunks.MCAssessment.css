@@ -312,7 +312,7 @@
       .obojobo-draft--chunks--mc-assessment .solution .solution-container.solution-enter {
         max-height: 0;
         overflow: hidden;
-        border: 0 solid transparent;
+        border: 0 solid rgba(0, 0, 0, 0);
         margin-bottom: 0;
         opacity: 0; }
       .obojobo-draft--chunks--mc-assessment .solution .solution-container.solution-enter.solution-enter-active {
@@ -330,7 +330,7 @@
       .obojobo-draft--chunks--mc-assessment .solution .solution-container.solution-leave.solution-leave-active {
         max-height: 0;
         margin-bottom: 0;
-        border: 0 solid transparent;
+        border: 0 solid rgba(0, 0, 0, 0);
         opacity: 0;
         transition: max-height 0.4s, margin-bottom 0.4s, border 0.4s, opacity 0.4s; }
       .obojobo-draft--chunks--mc-assessment .solution .solution-container > .component {
