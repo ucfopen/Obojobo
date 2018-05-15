@@ -415,8 +415,8 @@ let retrieveLtiLaunch = function(userId, draftId, logId) {
 		LIMIT 1
 	`,
 			{
-				userId: userId,
-				draftId: draftId
+				userId,
+				draftId
 			}
 		)
 		.then(dbResult => {
@@ -499,7 +499,7 @@ let insertReplaceResultEvent = (
 			},
 			result: ltiResult
 		},
-		userId: userId,
+		userId,
 		ip: '',
 		eventVersion: '2.0.0',
 		metadata: {},
@@ -661,13 +661,21 @@ const sendHighestAssessmentScore = (userId, draftDocument, assessmentId) => {
 
 			if (requiredData.assessmentScoreRecord.preview) {
 				throw ERROR_PREVIEW_MODE
-			} else if (requiredData.ltiScoreToSend === null) {
+			}
+
+			if (requiredData.ltiScoreToSend === null) {
 				throw ERROR_SCORE_IS_NULL
-			} else if (outcomeData.type === OUTCOME_TYPE_NO_OUTCOME) {
+			}
+
+			if (outcomeData.type === OUTCOME_TYPE_NO_OUTCOME) {
 				throw ERROR_NO_OUTCOME_SERVICE_FOR_LAUNCH
-			} else if (requiredData.error !== null) {
+			}
+
+			if (requiredData.error !== null) {
 				throw requiredData.error
-			} else if (outcomeData.error !== null) {
+			}
+
+			if (outcomeData.error !== null) {
 				throw outcomeData.error
 			}
 

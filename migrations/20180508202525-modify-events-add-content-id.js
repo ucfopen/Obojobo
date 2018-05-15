@@ -16,7 +16,7 @@ exports.setup = function(options, seedLink) {
 
 exports.up = function(db) {
 	return db.addColumn('events', 'draft_content_id', {
-		type: 'bigint'
+		type: 'UUID'
 	})
 }
 

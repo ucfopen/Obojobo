@@ -24,8 +24,6 @@ const getDraftAndStartVisitProps = (req, res, draftDocument) => {
 	return visitStartReturnExtensionsProps
 }
 
-const getViewerState = (userId, contentId) => viewerState.get(userId, contentId)
-
 // Start a new visit
 // mounted as /api/visit/start
 router.post('/start', (req, res, next) => {
@@ -56,7 +54,7 @@ router.post('/start', (req, res, next) => {
 
 			return Promise.all([
 				VisitModel.fetchById(visitId),
-				getViewerState(currentUser.id, currentDocument.contentId),
+				viewerState.get(currentUser.id, currentDocument.contentId),
 				getDraftAndStartVisitProps(req, res, currentDocument)
 			])
 		})

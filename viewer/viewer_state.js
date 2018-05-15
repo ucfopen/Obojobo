@@ -14,9 +14,9 @@ function set(userId, draftId, contentId, key, version, value) {
 				view_state.draft_content_id = $[contentId]
 			`,
 			{
-				userId: userId,
-				draftId: draftId,
-				contentId: contentId,
+				userId,
+				draftId,
+				contentId,
 				contents: { value, version },
 				initialContents: { [key]: { value, version } },
 				key: `{${key}}`
@@ -36,8 +36,8 @@ function get(userId, contentId) {
 				view_state.draft_content_id = $[contentId]
 			`,
 			{
-				userId: userId,
-				contentId: contentId
+				userId,
+				contentId
 			}
 		)
 		.then(result => {

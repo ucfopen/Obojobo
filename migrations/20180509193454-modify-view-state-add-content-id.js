@@ -17,7 +17,7 @@ exports.setup = function(options, seedLink) {
 exports.up = function(db) {
 	return db
 		.addColumn('view_state', 'draft_content_id', {
-			type: 'bigint',
+			type: 'UUID',
 			notNull: true
 		})
 		.then(result => {

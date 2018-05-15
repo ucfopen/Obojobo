@@ -33,7 +33,7 @@ let storeLtiLaunch = (draftDocument, user, ip, ltiBody, ltiConsumerKey) => {
 				actorTime: new Date().toISOString(),
 				payload: { launchId: insertLaunchResult.id },
 				userId: user.id,
-				ip: ip,
+				ip,
 				metadata: {},
 				eventVersion: '1.0.0',
 				draftId: draftDocument.draftId,
@@ -56,7 +56,7 @@ let storeLtiPickerLaunchEvent = (user, ip, ltiBody, ltiConsumerKey, hostname) =>
 			ltiConsumerKey
 		},
 		userId: user.id,
-		ip: ip,
+		ip,
 		metadata: {},
 		eventVersion: '1.0.0',
 		draftId: null,

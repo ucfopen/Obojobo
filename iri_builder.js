@@ -14,17 +14,12 @@ const iriFactory = (req, providedHost) => {
 	if (!req && !providedHost)
 		throw Error('Must provide a request object with hostname or provide a host')
 
-	let host
-	providedHost ? (host = providedHost) : (host = req.hostname)
+	let host = providedHost ? providedHost : req.hostname
 
 	return {
-		getIRI: path => {
-			return createIRI(host, `${path}`)
-		},
+		getIRI: path => createIRI(host, `${path}`),
 
-		getEdAppIRI: () => {
-			return createIRI(host, '/api/system')
-		},
+		getEdAppIRI: () => createIRI(host, '/api/system'),
 
 		getViewerClientIRI: (draftId, contentId, element) => {
 			if (element && draftId && contentId)
@@ -34,55 +29,33 @@ const iriFactory = (req, providedHost) => {
 			else return createIRI(host, '/api/viewer/client')
 		},
 
-		getAppServerIRI: () => {
-			return createIRI(host, '/api/server')
-		},
+		getAppServerIRI: () => createIRI(host, '/api/server'),
 
-		getSessionIRI: sessionId => {
-			return createIRI(host, `/api/session/${sessionId}`)
-		},
+		getSessionIRI: sessionId => createIRI(host, `/api/session/${sessionId}`),
 
-		getFederatedSessionIRI: launchId => {
-			return createIRI(host, `/api/launch/${launchId}`)
-		},
+		getFederatedSessionIRI: launchId => createIRI(host, `/api/launch/${launchId}`),
 
-		getUserIRI: userId => {
-			return createIRI(host, `/api/user/${userId}`)
-		},
+		getUserIRI: userId => createIRI(host, `/api/user/${userId}`),
 
 		getDraftContentIRI: (contentId, oboNodeId = null, contextName = null) => {
-			let iri
-
 			if (oboNodeId === null) {
-				iri = createIRI(host, `/api/draft-content/${contentId}`)
-			} else if (contextName === null) {
-				iri = createIRI(host, `/api/draft-content/${contentId}`, `#${oboNodeId}`)
-			} else {
-				iri = createIRI(host, `/api/draft-content/${contentId}`, `#${oboNodeId}`, { context: contextName })
+				return createIRI(host, `/api/draft-content/${contentId}`)
 			}
-
-			return iri
+			if (contextName === null) {
+				return createIRI(host, `/api/draft-content/${contentId}`, `#${oboNodeId}`)
+			}
+			return createIRI(host, `/api/draft-content/${contentId}`, `#${oboNodeId}`, { context: contextName })
 		},
 
-		getPracticeQuestionAttemptIRI: (contentId, oboNodeId) => {
-			return createIRI(host, `/api/draft-content/${contentId}/practice/${oboNodeId}`)
-		},
+		getPracticeQuestionAttemptIRI: (contentId, oboNodeId) => createIRI(host, `/api/draft-content/${contentId}/practice/${oboNodeId}`),
 
-		getAssessmentIRI: (contentId, assessmentId) => {
-			return createIRI(host, `/api/draft-content/${contentId}/assessment/${assessmentId}`)
-		},
+		getAssessmentIRI: (contentId, assessmentId) => createIRI(host, `/api/draft-content/${contentId}/assessment/${assessmentId}`),
 
-		getAssessmentAttemptIRI: attemptId => {
-			return createIRI(host, `/api/attempt/${attemptId}`)
-		},
+		getAssessmentAttemptIRI: attemptId => createIRI(host, `/api/attempt/${attemptId}`),
 
-		getPickerIRI: () => {
-			return createIRI(host, `/api/picker`)
-		},
+		getPickerIRI: () => createIRI(host, `/api/picker`),
 
-		getVisitIRI: visitId => {
-			return createIRI(host, `/api/visit/${visitId}`)
-		}
+		getVisitIRI: visitId => createIRI(host, `/api/visit/${visitId}`)
 	}
 }
 
