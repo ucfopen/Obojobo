@@ -24,13 +24,13 @@ exports.up = function(db) {
 			})
 			// Grab all the current records, which will not have draft_content_ids
 			.then(() => {
-				;`
-			SELECT
-				id,
-				draft_id,
-				created_at,
-			FROM view_state
-		`
+				return db.runSql(`
+					SELECT
+						id,
+						draft_id,
+						created_at,
+					FROM view_state
+				`)
 			})
 			// Find the correct UUID for each record - latest for ease, youngest-before for correctness
 			.then(result => {
@@ -42,25 +42,26 @@ exports.up = function(db) {
 
 					// youngest before
 					updates.push(`
-				UPDATE
-					view_state
-				SET
-					draft_content_id=draft_content.draft_content_id
-				FROM (
-					SELECT
-						draft_content_id
-					FROM
-						drafts_content
-					WHERE
-						draft_id=${draftId}
-						AND created_at<=${created}
-					ORDER BY
-						created_at DESC
-					LIMIT 1
-				) AS draft_content
-				WHERE
-					id=${rowId}
-			`)
+						UPDATE
+							view_state
+						SET
+							draft_content_id=content.id
+						FROM
+						(
+							SELECT
+								id
+							FROM
+								drafts_content
+							WHERE
+								draft_id='${draftId}'
+								AND created_at<='${created}'
+							ORDER BY
+								created_at DESC
+							LIMIT 1
+						) content
+						WHERE
+							view_state.id=${rowId}
+					`)
 
 					// latest
 					/*
@@ -86,7 +87,7 @@ exports.up = function(db) {
 			*/
 				})
 				updates = updates.join(';')
-				db.runSQL(updates)
+				return db.runSQL(updates)
 			})
 			// Require notNull after content has all been filled out
 			.then(result => {
