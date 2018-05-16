@@ -28,7 +28,7 @@ exports.up = function(db) {
 					SELECT
 						id,
 						draft_id,
-						created_at,
+						created_at
 					FROM view_state
 				`)
 			})
