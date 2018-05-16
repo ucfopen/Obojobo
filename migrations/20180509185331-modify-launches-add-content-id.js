@@ -39,7 +39,7 @@ exports.up = function(db) {
 					let created = row.created_at
 					let rowId = row.id
 
-					// youngest before
+					// latest
 					updates.push(`
 						UPDATE
 							launches
@@ -53,7 +53,6 @@ exports.up = function(db) {
 								drafts_content
 							WHERE
 								draft_id='${draftId}'
-								AND created_at<='${created}'
 							ORDER BY
 								created_at DESC
 							LIMIT 1

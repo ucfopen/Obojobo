@@ -39,7 +39,7 @@ exports.up = function(db) {
 					let created = row.created_at
 					let rowId = row.id
 
-					// youngest before
+					// latest
 					updates.push(`
 						UPDATE
 							attempts
@@ -58,7 +58,7 @@ exports.up = function(db) {
 							LIMIT 1
 						) content
 						WHERE
-							attempts.id=${rowId}
+							attempts.id='${rowId}'
 					`)
 				})
 				updates = updates.join(';')

@@ -39,7 +39,7 @@ exports.up = function(db) {
 					let created = row.created_at
 					let rowId = row.id
 
-					// youngest before
+					// latest
 					updates.push(`
 						UPDATE
 							assessment_scores
