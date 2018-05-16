@@ -1899,7 +1899,7 @@ data-urls@^1.0.0:
     whatwg-mimetype "^2.0.0"
     whatwg-url "^6.4.0"
 
-date-fns@^1.23.0, date-fns@^1.27.2, date-fns@^1.28.5, date-fns@^1.29.0:
+date-fns@^1.23.0, date-fns@^1.27.2, date-fns@^1.29.0:
   version "1.29.0"
   resolved "https://registry.yarnpkg.com/date-fns/-/date-fns-1.29.0.tgz#12e609cdcb935127311d04d33334e2960a2a54e6"
 
@@ -4531,6 +4531,19 @@ lodash._basecopy@^3.0.0:
   version "3.0.1"
   resolved "https://registry.yarnpkg.com/lodash._basecopy/-/lodash._basecopy-3.0.1.tgz#8da0e6a876cf344c0ad8a54882111dd3c5c7ca36"
 
+lodash._baseflatten@^3.0.0:
+  version "3.1.4"
+  resolved "https://registry.yarnpkg.com/lodash._baseflatten/-/lodash._baseflatten-3.1.4.tgz#0770ff80131af6e34f3b511796a7ba5214e65ff7"
+  dependencies:
+    lodash.isarguments "^3.0.0"
+    lodash.isarray "^3.0.0"
+
+lodash._basefunctions@^3.0.0:
+  version "3.0.0"
+  resolved "https://registry.yarnpkg.com/lodash._basefunctions/-/lodash._basefunctions-3.0.0.tgz#1bdffbadb4d2195c722968a02d56f4913413fcdb"
+  dependencies:
+    lodash.isfunction "^3.0.0"
+
 lodash._bindcallback@^3.0.0:
   version "3.0.1"
   resolved "https://registry.yarnpkg.com/lodash._bindcallback/-/lodash._bindcallback-3.0.1.tgz#e531c27644cf8b57a99e17ed95b35c748789392e"
@@ -4543,6 +4556,12 @@ lodash._createassigner@^3.0.0:
     lodash._isiterateecall "^3.0.0"
     lodash.restparam "^3.0.0"
 
+lodash._createwrapper@^3.0.0:
+  version "3.2.0"
+  resolved "https://registry.yarnpkg.com/lodash._createwrapper/-/lodash._createwrapper-3.2.0.tgz#df453e664163217b895a454065af1c47a0ea3c4d"
+  dependencies:
+    lodash._root "^3.0.0"
+
 lodash._getnative@^3.0.0:
   version "3.9.1"
   resolved "https://registry.yarnpkg.com/lodash._getnative/-/lodash._getnative-3.9.1.tgz#570bc7dede46d61cdcde687d65d3eecbaa3aaff5"
@@ -4550,6 +4569,10 @@ lodash._getnative@^3.0.0:
 lodash._isiterateecall@^3.0.0:
   version "3.0.9"
   resolved "https://registry.yarnpkg.com/lodash._isiterateecall/-/lodash._isiterateecall-3.0.9.tgz#5203ad7ba425fae842460e696db9cf3e6aac057c"
+
+lodash._root@^3.0.0:
+  version "3.0.1"
+  resolved "https://registry.yarnpkg.com/lodash._root/-/lodash._root-3.0.1.tgz#fba1c4524c19ee9a5f8136b4609f017cf4ded692"
 
 lodash.assign@^3.0.0:
   version "3.2.0"
@@ -4562,6 +4585,15 @@ lodash.assign@^3.0.0:
 lodash.assign@^4.2.0:
   version "4.2.0"
   resolved "https://registry.yarnpkg.com/lodash.assign/-/lodash.assign-4.2.0.tgz#0d99f3ccd7a6d261d19bdaeb9245005d285808e7"
+
+lodash.bindall@^3.1.0:
+  version "3.1.0"
+  resolved "https://registry.yarnpkg.com/lodash.bindall/-/lodash.bindall-3.1.0.tgz#72c7bd1aec8b56a9bc7d6b3484fdd4f2c7dc5469"
+  dependencies:
+    lodash._baseflatten "^3.0.0"
+    lodash._createwrapper "^3.0.0"
+    lodash.functions "^3.0.0"
+    lodash.restparam "^3.0.0"
 
 lodash.camelcase@^4.3.0:
   version "4.3.0"
@@ -4586,6 +4618,13 @@ lodash.findindex@^4.4.0:
   version "4.6.0"
   resolved "https://registry.yarnpkg.com/lodash.findindex/-/lodash.findindex-4.6.0.tgz#a3245dee61fb9b6e0624b535125624bb69c11106"
 
+lodash.functions@^3.0.0:
+  version "3.0.0"
+  resolved "https://registry.yarnpkg.com/lodash.functions/-/lodash.functions-3.0.0.tgz#4b037381a9f9276598869340086675d48cf3baf5"
+  dependencies:
+    lodash._basefunctions "^3.0.0"
+    lodash.keysin "^3.0.0"
+
 lodash.isarguments@^3.0.0:
   version "3.1.0"
   resolved "https://registry.yarnpkg.com/lodash.isarguments/-/lodash.isarguments-3.1.0.tgz#2f573d85c6a24289ff00663b491c1d338ff3458a"
@@ -4598,11 +4637,22 @@ lodash.isequal@^4.0.0:
   version "4.5.0"
   resolved "https://registry.yarnpkg.com/lodash.isequal/-/lodash.isequal-4.5.0.tgz#415c4478f2bcc30120c22ce10ed3226f7d3e18e0"
 
+lodash.isfunction@^3.0.0:
+  version "3.0.9"
+  resolved "https://registry.yarnpkg.com/lodash.isfunction/-/lodash.isfunction-3.0.9.tgz#06de25df4db327ac931981d1bdb067e5af68d051"
+
 lodash.keys@^3.0.0:
   version "3.1.2"
   resolved "https://registry.yarnpkg.com/lodash.keys/-/lodash.keys-3.1.2.tgz#4dbc0472b156be50a0b286855d1bd0b0c656098a"
   dependencies:
     lodash._getnative "^3.0.0"
+    lodash.isarguments "^3.0.0"
+    lodash.isarray "^3.0.0"
+
+lodash.keysin@^3.0.0:
+  version "3.0.8"
+  resolved "https://registry.yarnpkg.com/lodash.keysin/-/lodash.keysin-3.0.8.tgz#22c4493ebbedb1427962a54b445b2c8a767fb47f"
+  dependencies:
     lodash.isarguments "^3.0.0"
     lodash.isarray "^3.0.0"
 
@@ -4901,6 +4951,10 @@ moment-timezone@^0.5.x:
 "moment@>= 2.9.0", moment@^2.10.1, moment@^2.14.1, moment@^2.18, moment@^2.18.0:
   version "2.19.1"
   resolved "https://registry.yarnpkg.com/moment/-/moment-2.19.1.tgz#56da1a2d1cbf01d38b7e1afc31c10bcfa1929167"
+
+moment@^2.10.3:
+  version "2.22.1"
+  resolved "https://registry.yarnpkg.com/moment/-/moment-2.22.1.tgz#529a2e9bf973f259c9643d237fda84de3a26e8ad"
 
 "mongodb-uri@>= 0.9.7":
   version "0.9.7"
@@ -5275,9 +5329,9 @@ object.pick@^1.3.0:
   dependencies:
     isobject "^3.0.1"
 
-"obojobo-draft-document-engine@https://github.com/ucfcdl/Obojobo-Document-Engine.git#v1.0.0-alpha1":
-  version "1.0.0-alpha1"
-  resolved "https://github.com/ucfcdl/Obojobo-Document-Engine.git#d65793ae9360d98213120814840b44f09f4c887a"
+"obojobo-draft-document-engine@https://github.com/ucfcdl/Obojobo-Document-Engine.git#v1.0.0-alpha2":
+  version "1.0.0-alpha2"
+  resolved "https://github.com/ucfcdl/Obojobo-Document-Engine.git#2852f9580c933ce35fc4afd8fc5b2449e63173cc"
   dependencies:
     babel-polyfill "^6.26.0"
     babel-preset-env "^1.5.1"
@@ -5285,18 +5339,18 @@ object.pick@^1.3.0:
     date-fns "^1.29.0"
     dragula "^3.7.1"
     katex "^0.9.0"
-    react "^15.5.4"
-    react-dom "^15.5.4"
-    react-idle-timer "^1.5.0"
+    react "15.6.2"
+    react-dom "15.6.2"
+    react-idle-timer "1.3.3"
     react-transition-group "^1.1.3"
     smoothscroll-polyfill "^0.3.4"
     underscore "1.5.1"
     url-parse "^1.2.0"
-    whatwg-fetch "^2.0.3"
+    whatwg-fetch "^2.0.4"
 
-"obojobo-draft-xml-parser@https://github.com/ucfcdl/Obojobo-Docment-XML-Parser.git#v0.2.0":
-  version "0.2.0"
-  resolved "https://github.com/ucfcdl/Obojobo-Docment-XML-Parser.git#55d1b72825752ffda5d8e07b29b07afbe4af9d52"
+"obojobo-draft-xml-parser@https://github.com/ucfcdl/Obojobo-Docment-XML-Parser.git#v0.3.0-alpha1":
+  version "0.3.0-alpha1"
+  resolved "https://github.com/ucfcdl/Obojobo-Docment-XML-Parser.git#0e0804b12d6ee8d81a9ae2c484c241756e567bf1"
   dependencies:
     minimist "^1.2.0"
     xml-js "^1.0.2"
@@ -6083,7 +6137,7 @@ promptly@2.2.0:
   dependencies:
     read "^1.0.4"
 
-prop-types@^15.5.10, prop-types@^15.5.6, prop-types@^15.6.0:
+prop-types@^15.5.10, prop-types@^15.5.6:
   version "15.6.0"
   resolved "https://registry.yarnpkg.com/prop-types/-/prop-types-15.6.0.tgz#ceaf083022fc46b4a35f69e13ef75aed0d639856"
   dependencies:
@@ -6223,7 +6277,7 @@ rc@^1.0.1, rc@^1.1.6, rc@^1.1.7:
     minimist "^1.2.0"
     strip-json-comments "~2.0.1"
 
-react-dom@^15.5.4:
+react-dom@15.6.2:
   version "15.6.2"
   resolved "https://registry.yarnpkg.com/react-dom/-/react-dom-15.6.2.tgz#41cfadf693b757faf2708443a1d1fd5a02bef730"
   dependencies:
@@ -6232,23 +6286,13 @@ react-dom@^15.5.4:
     object-assign "^4.1.0"
     prop-types "^15.5.10"
 
-react-dom@^16.0.0:
-  version "16.2.0"
-  resolved "https://registry.yarnpkg.com/react-dom/-/react-dom-16.2.0.tgz#69003178601c0ca19b709b33a83369fe6124c044"
+react-idle-timer@1.3.3:
+  version "1.3.3"
+  resolved "https://registry.yarnpkg.com/react-idle-timer/-/react-idle-timer-1.3.3.tgz#51f7360533afd74e68e65369849f2cb042e9cb0e"
   dependencies:
-    fbjs "^0.8.16"
-    loose-envify "^1.1.0"
-    object-assign "^4.1.1"
-    prop-types "^15.6.0"
-
-react-idle-timer@^1.5.0:
-  version "1.6.0"
-  resolved "https://registry.yarnpkg.com/react-idle-timer/-/react-idle-timer-1.6.0.tgz#a7cb9a55c2276473fa49c832cc372f5384bbf5a3"
-  dependencies:
-    date-fns "^1.28.5"
-    prop-types "^15.5.10"
-    react "^16.0.0"
-    react-dom "^16.0.0"
+    in-publish "^2.0.0"
+    lodash.bindall "^3.1.0"
+    moment "^2.10.3"
 
 react-transition-group@^1.1.3:
   version "1.2.1"
@@ -6260,7 +6304,7 @@ react-transition-group@^1.1.3:
     prop-types "^15.5.6"
     warning "^3.0.0"
 
-react@^15.5.4:
+react@15.6.2:
   version "15.6.2"
   resolved "https://registry.yarnpkg.com/react/-/react-15.6.2.tgz#dba0434ab439cfe82f108f0f511663908179aa72"
   dependencies:
@@ -6269,15 +6313,6 @@ react@^15.5.4:
     loose-envify "^1.1.0"
     object-assign "^4.1.0"
     prop-types "^15.5.10"
-
-react@^16.0.0:
-  version "16.2.0"
-  resolved "https://registry.yarnpkg.com/react/-/react-16.2.0.tgz#a31bd2dab89bff65d42134fa187f24d054c273ba"
-  dependencies:
-    fbjs "^0.8.16"
-    loose-envify "^1.1.0"
-    object-assign "^4.1.1"
-    prop-types "^15.6.0"
 
 read-pkg-up@^1.0.1:
   version "1.0.1"
@@ -7893,9 +7928,13 @@ whatwg-encoding@^1.0.1, whatwg-encoding@^1.0.3:
   dependencies:
     iconv-lite "0.4.19"
 
-whatwg-fetch@>=0.10.0, whatwg-fetch@^2.0.3:
+whatwg-fetch@>=0.10.0:
   version "2.0.3"
   resolved "https://registry.yarnpkg.com/whatwg-fetch/-/whatwg-fetch-2.0.3.tgz#9c84ec2dcf68187ff00bc64e1274b442176e1c84"
+
+whatwg-fetch@^2.0.4:
+  version "2.0.4"
+  resolved "https://registry.yarnpkg.com/whatwg-fetch/-/whatwg-fetch-2.0.4.tgz#dde6a5df315f9d39991aa17621853d720b85566f"
 
 whatwg-mimetype@^2.0.0, whatwg-mimetype@^2.1.0:
   version "2.1.0"
