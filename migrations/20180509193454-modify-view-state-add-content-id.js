@@ -15,7 +15,6 @@ exports.setup = function(options, seedLink) {
 }
 
 exports.up = function(db) {
-	return db
 	// The UUID will temporarily allow null
 	return (
 		db
@@ -73,19 +72,11 @@ exports.up = function(db) {
 					notNull: true
 				})
 			})
-			.then(result => {
-				return db.removeIndex('view_state', 'user_draft_unique', ['user_id', 'draft_id'], true)
-			})
-			.then(result => {
-				return db.addIndex('view_state', 'user_draft_unique', ['user_id', 'draft_content_id'], true)
-			})
 	)
 }
 
 exports.down = function(db) {
-	return db.removeColumn('view_state', 'draft_content_id').then(result => {
-		return db.addIndex('view_state', 'user_draft_unique', ['user_id', 'draft_id'], true)
-	})
+	return db.removeColumn('view_state', 'draft_content_id')
 }
 
 exports._meta = {
