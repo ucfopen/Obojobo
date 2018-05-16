@@ -4,7 +4,7 @@
     "xml-js": "^1.0.2"
   },
   "name": "obojobo-draft-xml-parser",
-  "version": "0.2.0",
+  "version": "0.3.0-alpha1",
   "main": "xml2draft.js",
   "devDependencies": {
     "jest": "^20.0.4"
