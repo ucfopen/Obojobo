@@ -40,8 +40,7 @@ exports.up = function(db) {
 					let rowId = row.id
 
 					// youngest before
-					updates.push(
-						`
+					updates.push(`
 						UPDATE
 							attempts
 						SET
@@ -54,43 +53,16 @@ exports.up = function(db) {
 								drafts_content
 							WHERE
 								draft_id='${draftId}'
-								AND created_at<='${created}'
 							ORDER BY
 								created_at DESC
 							LIMIT 1
 						) content
 						WHERE
 							attempts.id=${rowId}
-					`
-					)
-
-					// latest
-					/*
-					updates.push(
-					`
-						UPDATE
-							attempts
-						SET
-							draft_content_id=draft_content.draft_content_id
-						FROM (
-							SELECT
-								draft_content_id
-							FROM
-								drafts_content
-							WHERE
-								draft_id=${draftId}
-							ORDER BY
-								created_at DESC
-							LIMIT 1
-						) AS draft_content
-						WHERE
-							id=${rowId}
-					`
-					)
-					*/
+					`)
 				})
 				updates = updates.join(';')
-				return db.runSQL(updates)
+				return db.runSql(updates)
 			})
 			// Require notNull after content has all been filled out
 			.then(result => {

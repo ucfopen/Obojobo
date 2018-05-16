@@ -18,7 +18,7 @@ exports.up = function(db) {
 	// The UUID will temporarily allow null
 	return (
 		db
-			.addColumn('launches', 'draft_content_id', {
+			.addColumn('view_state', 'draft_content_id', {
 				type: 'UUID'
 			})
 			// Grab all the current records, which will not have draft_content_ids
@@ -28,7 +28,7 @@ exports.up = function(db) {
 						id,
 						draft_id,
 						created_at
-					FROM launches
+					FROM view_state
 				`)
 			})
 			// Find the correct UUID for each record - latest for ease, youngest-before for correctness
@@ -42,7 +42,7 @@ exports.up = function(db) {
 					// youngest before
 					updates.push(`
 						UPDATE
-							launches
+							view_state
 						SET
 							draft_content_id=content.id
 						FROM
@@ -59,38 +59,15 @@ exports.up = function(db) {
 							LIMIT 1
 						) content
 						WHERE
-							launches.id=${rowId}
+							view_state.id=${rowId}
 					`)
-
-					// latest
-					/*
-			updates.push(`
-				UPDATE
-					launches
-				SET
-					draft_content_id=draft_content.draft_content_id
-				FROM (
-					SELECT
-						draft_content_id
-					FROM
-						drafts_content
-					WHERE
-						draft_id=${draftId}
-					ORDER BY
-						created_at DESC
-					LIMIT 1
-				) AS draft_content
-				WHERE
-					id=${rowId}
-			`)
-			*/
 				})
 				updates = updates.join(';')
-				return db.runSQL(updates)
+				return db.runSql(updates)
 			})
 			// Require notNull after content has all been filled out
 			.then(result => {
-				return db.changeColumn('launches', 'draft_content_id', {
+				return db.changeColumn('view_state', 'draft_content_id', {
 					type: 'UUID',
 					notNull: true
 				})
@@ -99,7 +76,7 @@ exports.up = function(db) {
 }
 
 exports.down = function(db) {
-	return db.removeColumn('launches', 'draft_content_id')
+	return db.removeColumn('view_state', 'draft_content_id')
 }
 
 exports._meta = {
