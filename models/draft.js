@@ -85,7 +85,7 @@ class Draft {
 				ON drafts.id = drafts_content.draft_id
 			WHERE drafts.id = $[id]
 				AND deleted = FALSE
-			ORDER BY version DESC
+			ORDER BY content_created_at DESC
 			LIMIT 1
 			`,
 				{ id: id }

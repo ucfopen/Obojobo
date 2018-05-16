@@ -15,10 +15,86 @@ exports.setup = function(options, seedLink) {
 }
 
 exports.up = function(db) {
-	return db.addColumn('launches', 'draft_content_id', {
-		type: 'UUID',
-		notNull: true
-	})
+	// The UUID will temporarily allow null
+	return (
+		db
+			.addColumn('launches', 'draft_content_id', {
+				type: 'UUID'
+			})
+			// Grab all the current records, which will not have draft_content_ids
+			.then(() => {
+				;`
+			SELECT
+				id,
+				draft_id,
+				created_at,
+			FROM launches
+		`
+			})
+			// Find the correct UUID for each record - latest for ease, youngest-before for correctness
+			.then(result => {
+				let updates = []
+				result.rows.forEach(row => {
+					let draftId = row.draft_id
+					let created = row.created_at
+					let rowId = row.id
+
+					// youngest before
+					updates.push(`
+				UPDATE
+					launches
+				SET
+					draft_content_id=draft_content.draft_content_id
+				FROM (
+					SELECT
+						draft_content_id
+					FROM
+						drafts_content
+					WHERE
+						draft_id=${draftId}
+						AND created_at<=${created}
+					ORDER BY
+						created_at DESC
+					LIMIT 1
+				) AS draft_content
+				WHERE
+					id=${rowId}
+			`)
+
+					// latest
+					/*
+			updates.push(`
+				UPDATE
+					launches
+				SET
+					draft_content_id=draft_content.draft_content_id
+				FROM (
+					SELECT
+						draft_content_id
+					FROM
+						drafts_content
+					WHERE
+						draft_id=${draftId}
+					ORDER BY
+						created_at DESC
+					LIMIT 1
+				) AS draft_content
+				WHERE
+					id=${rowId}
+			`)
+			*/
+				})
+				updates = updates.join(';')
+				db.runSQL(updates)
+			})
+			// Require notNull after content has all been filled out
+			.then(result => {
+				return db.changeColumn('launches', 'draft_content_id', {
+					type: 'UUID',
+					notNull: true
+				})
+			})
+	)
 }
 
 exports.down = function(db) {
