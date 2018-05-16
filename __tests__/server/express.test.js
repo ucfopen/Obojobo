@@ -274,7 +274,7 @@ describe('server/express', () => {
 		})
 	})
 
-	test('client:question:setResponse expects attemptId', () => {
+	test('client:question:setResponse halts execution if no attemptId', () => {
 		expect.assertions(3)
 
 		let setResponseCallBack = oboEvents.on.mock.calls[0]
@@ -288,7 +288,7 @@ describe('server/express', () => {
 
 		return setResponseCallBack[1](event, req).then(() => {
 			expect(db.none).not.toHaveBeenCalled()
-			expect(logger.error.mock.calls[0][4]).toBe('Missing Attempt ID')
+			expect(logger.error).not.toHaveBeenCalled()
 		})
 	})
 
