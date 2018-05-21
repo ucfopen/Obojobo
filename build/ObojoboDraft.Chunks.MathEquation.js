@@ -141,16 +141,26 @@ var Adapter = {
 		} else {
 			model.modelState.label = '';
 		}
+
+		if (__guard__(attrs != null ? attrs.content : undefined, function (x1) {
+			return x1.size;
+		}) != null) {
+			model.modelState.size = attrs.content.size + 'em';
+		} else {
+			model.modelState.size = '1em';
+		}
 	},
 	clone: function clone(model, _clone) {
 		_clone.modelState.latex = model.modelState.latex;
 		_clone.modelState.align = model.modelState.align;
 		_clone.modelState.label = model.modelState.label;
+		_clone.modelState.size = model.modelState.size;
 	},
 	toJSON: function toJSON(model, json) {
 		json.content.latex = model.modelState.latex;
 		json.content.align = model.modelState.align;
 		json.content.label = model.modelState.label;
+		json.content.size = model.modelState.size;
 	},
 	toText: function toText(model) {
 		return model.modelState.latex;
@@ -223,7 +233,11 @@ exports.default = function (props) {
 		React.createElement(
 			NonEditableChunk,
 			null,
-			React.createElement('div', { className: 'katex-container', dangerouslySetInnerHTML: { __html: katexHtml } }),
+			React.createElement('div', {
+				className: 'katex-container',
+				style: { fontSize: props.model.modelState.size },
+				dangerouslySetInnerHTML: { __html: katexHtml }
+			}),
 			props.model.modelState.label === '' ? null : React.createElement(
 				'div',
 				{ className: 'equation-label' },

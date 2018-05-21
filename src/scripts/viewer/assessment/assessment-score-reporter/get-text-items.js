@@ -10,6 +10,7 @@ import {
 	TYPE_PASSFAIL_PASSED_GIVEN_SCORE_AND_ATTEMPT_SCORE_LESS_THAN_100,
 	TYPE_PASSFAIL_PASSED_GIVEN_SCORE_AND_ATTEMPT_SCORE_IS_100_AND_NO_MODS_REWARDED,
 	TYPE_PASSFAIL_PASSED_GIVEN_SCORE_AND_ATTEMPT_SCORE_IS_100_AND_MODS_REWARDED,
+	TYPE_PASSFAIL_FAILED_GIVEN_ATTEMPT_SCORE,
 	TYPE_PASSFAIL_FAILED_GIVEN_NO_SCORE,
 	TYPE_PASSFAIL_FAILED_GIVEN_SCORE,
 	TYPE_PASSFAIL_UNABLE_TO_PASS_GIVEN_NO_SCORE,
@@ -20,7 +21,7 @@ import {
 
 let getPassingRange = passingNumber => {
 	if (passingNumber === '100') return '100%'
-	return getDisplayFriendlyScore(passingNumber) + '-100%'
+	return getDisplayFriendlyScore(passingNumber) + '% or higher'
 }
 
 let getTextItems = (
@@ -45,6 +46,9 @@ let getTextItems = (
 		isAttemptScore100
 	})) {
 		case TYPE_ATTEMPT_WITHOUT_MODS_REWARDED:
+		case TYPE_PASSFAIL_PASSED_GIVEN_ATTEMPT_SCORE_WITHOUT_MODS_REWARDED:
+		case TYPE_PASSFAIL_PASSED_GIVEN_SCORE_AND_ATTEMPT_SCORE_IS_100_AND_NO_MODS_REWARDED:
+		case ERROR_UNKNOWN_DISPLAY_TYPE: // Shouldn't get here but we still want to show their score
 			items.push({
 				type: 'total',
 				text: 'Score',
@@ -53,21 +57,6 @@ let getTextItems = (
 			break
 
 		case TYPE_ATTEMPT_WITH_MODS_REWARDED:
-			items.push({
-				type: 'value',
-				text: 'Attempt Score',
-				value: attemptScore
-			})
-			break
-
-		case TYPE_PASSFAIL_PASSED_GIVEN_ATTEMPT_SCORE_WITHOUT_MODS_REWARDED:
-			items.push({
-				type: 'total',
-				text: 'Score',
-				value: assessScore
-			})
-			break
-
 		case TYPE_PASSFAIL_PASSED_GIVEN_ATTEMPT_SCORE_WITH_MODS_REWARDED:
 			items.push({
 				type: 'value',
@@ -94,14 +83,6 @@ let getTextItems = (
 			)
 			break
 
-		case TYPE_PASSFAIL_PASSED_GIVEN_SCORE_AND_ATTEMPT_SCORE_IS_100_AND_NO_MODS_REWARDED:
-			items.push({
-				type: 'total',
-				text: 'Score',
-				value: assessScore
-			})
-			break
-
 		case TYPE_PASSFAIL_PASSED_GIVEN_SCORE_AND_ATTEMPT_SCORE_IS_100_AND_MODS_REWARDED:
 			items.push({
 				type: 'value',
@@ -110,6 +91,7 @@ let getTextItems = (
 			})
 			break
 
+		case TYPE_PASSFAIL_FAILED_GIVEN_ATTEMPT_SCORE:
 		case TYPE_PASSFAIL_FAILED_GIVEN_NO_SCORE:
 			items.push(
 				{
@@ -216,15 +198,6 @@ let getTextItems = (
 					value: getDisplayFriendlyScore(statusResult)
 				}
 			)
-			break
-
-		case ERROR_UNKNOWN_DISPLAY_TYPE:
-			// Shouldn't get here but we still want to show their score
-			items.push({
-				type: 'value',
-				text: 'Score',
-				value: assessScore
-			})
 			break
 	}
 

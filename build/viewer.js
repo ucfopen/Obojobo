@@ -2440,19 +2440,20 @@ exports.default = AssessmentScoreReporter;
 Object.defineProperty(exports, "__esModule", {
 	value: true
 });
-var TYPE_ATTEMPT_WITHOUT_MODS_REWARDED = 0;
-var TYPE_ATTEMPT_WITH_MODS_REWARDED = 1;
-var TYPE_PASSFAIL_PASSED_GIVEN_ATTEMPT_SCORE_WITHOUT_MODS_REWARDED = 2;
-var TYPE_PASSFAIL_PASSED_GIVEN_ATTEMPT_SCORE_WITH_MODS_REWARDED = 3;
-var TYPE_PASSFAIL_PASSED_GIVEN_SCORE_AND_ATTEMPT_SCORE_LESS_THAN_100 = 4;
-var TYPE_PASSFAIL_PASSED_GIVEN_SCORE_AND_ATTEMPT_SCORE_IS_100_AND_NO_MODS_REWARDED = 5;
-var TYPE_PASSFAIL_PASSED_GIVEN_SCORE_AND_ATTEMPT_SCORE_IS_100_AND_MODS_REWARDED = 6;
-var TYPE_PASSFAIL_FAILED_GIVEN_NO_SCORE = 7;
-var TYPE_PASSFAIL_FAILED_GIVEN_SCORE = 8;
-var TYPE_PASSFAIL_UNABLE_TO_PASS_GIVEN_NO_SCORE = 9;
-var TYPE_PASSFAIL_UNABLE_TO_PASS_GIVEN_HIGHEST_ATTEMPT_SCORE = 10;
-var TYPE_PASSFAIL_UNABLE_TO_PASS_GIVEN_SCORE = 11;
-var ERROR_UNKNOWN_DISPLAY_TYPE = -1;
+var TYPE_ATTEMPT_WITHOUT_MODS_REWARDED = 'attempt-without-mods-rewarded';
+var TYPE_ATTEMPT_WITH_MODS_REWARDED = 'attempt-with-mods-rewarded';
+var TYPE_PASSFAIL_PASSED_GIVEN_ATTEMPT_SCORE_WITHOUT_MODS_REWARDED = 'passfail-passed-given-attempt-score-without-mods-rewarded';
+var TYPE_PASSFAIL_PASSED_GIVEN_ATTEMPT_SCORE_WITH_MODS_REWARDED = 'passfail-passed-given-attempt-score-with-mods-rewarded';
+var TYPE_PASSFAIL_PASSED_GIVEN_SCORE_AND_ATTEMPT_SCORE_LESS_THAN_100 = 'passfail-passed-given-score-and-attempt-score-less-than-100';
+var TYPE_PASSFAIL_PASSED_GIVEN_SCORE_AND_ATTEMPT_SCORE_IS_100_AND_NO_MODS_REWARDED = 'passfail-passed-given-score-and-attempt-score-is-100-and-no-mods-rewarded';
+var TYPE_PASSFAIL_PASSED_GIVEN_SCORE_AND_ATTEMPT_SCORE_IS_100_AND_MODS_REWARDED = 'passfail-passed-given-score-and-attempt-score-is-100-and-mods-rewarded';
+var TYPE_PASSFAIL_FAILED_GIVEN_ATTEMPT_SCORE = 'passfail-failed-given-attempt-score';
+var TYPE_PASSFAIL_FAILED_GIVEN_NO_SCORE = 'passfail-failed-given-no-score';
+var TYPE_PASSFAIL_FAILED_GIVEN_SCORE = 'passfail-failed-given-score';
+var TYPE_PASSFAIL_UNABLE_TO_PASS_GIVEN_NO_SCORE = 'passfail-unable-to-pass-given-no-score';
+var TYPE_PASSFAIL_UNABLE_TO_PASS_GIVEN_HIGHEST_ATTEMPT_SCORE = 'passfail-unable-to-pass-given-highest-attempt-score';
+var TYPE_PASSFAIL_UNABLE_TO_PASS_GIVEN_SCORE = 'passfail-unable-to-pass-given-score';
+var ERROR_UNKNOWN_DISPLAY_TYPE = 'error-unknown-display-type';
 
 exports.TYPE_ATTEMPT_WITHOUT_MODS_REWARDED = TYPE_ATTEMPT_WITHOUT_MODS_REWARDED;
 exports.TYPE_ATTEMPT_WITH_MODS_REWARDED = TYPE_ATTEMPT_WITH_MODS_REWARDED;
@@ -2461,6 +2462,7 @@ exports.TYPE_PASSFAIL_PASSED_GIVEN_ATTEMPT_SCORE_WITH_MODS_REWARDED = TYPE_PASSF
 exports.TYPE_PASSFAIL_PASSED_GIVEN_SCORE_AND_ATTEMPT_SCORE_LESS_THAN_100 = TYPE_PASSFAIL_PASSED_GIVEN_SCORE_AND_ATTEMPT_SCORE_LESS_THAN_100;
 exports.TYPE_PASSFAIL_PASSED_GIVEN_SCORE_AND_ATTEMPT_SCORE_IS_100_AND_NO_MODS_REWARDED = TYPE_PASSFAIL_PASSED_GIVEN_SCORE_AND_ATTEMPT_SCORE_IS_100_AND_NO_MODS_REWARDED;
 exports.TYPE_PASSFAIL_PASSED_GIVEN_SCORE_AND_ATTEMPT_SCORE_IS_100_AND_MODS_REWARDED = TYPE_PASSFAIL_PASSED_GIVEN_SCORE_AND_ATTEMPT_SCORE_IS_100_AND_MODS_REWARDED;
+exports.TYPE_PASSFAIL_FAILED_GIVEN_ATTEMPT_SCORE = TYPE_PASSFAIL_FAILED_GIVEN_ATTEMPT_SCORE;
 exports.TYPE_PASSFAIL_FAILED_GIVEN_NO_SCORE = TYPE_PASSFAIL_FAILED_GIVEN_NO_SCORE;
 exports.TYPE_PASSFAIL_FAILED_GIVEN_SCORE = TYPE_PASSFAIL_FAILED_GIVEN_SCORE;
 exports.TYPE_PASSFAIL_UNABLE_TO_PASS_GIVEN_NO_SCORE = TYPE_PASSFAIL_UNABLE_TO_PASS_GIVEN_NO_SCORE;
@@ -6114,6 +6116,9 @@ var getDisplayType = function getDisplayType(_ref) {
 	if (isPassFailRubric && passed && isResultNumeric && isAttemptScore100 && isRewardedMods) {
 		return _displayTypes.TYPE_PASSFAIL_PASSED_GIVEN_SCORE_AND_ATTEMPT_SCORE_IS_100_AND_MODS_REWARDED;
 	}
+	if (isPassFailRubric && failed && isResultAttemptScore && !isRewardedMods) {
+		return _displayTypes.TYPE_PASSFAIL_FAILED_GIVEN_ATTEMPT_SCORE;
+	}
 	if (isPassFailRubric && failed && isResultNoScore && !isRewardedMods) {
 		return _displayTypes.TYPE_PASSFAIL_FAILED_GIVEN_NO_SCORE;
 	}
@@ -6391,7 +6396,7 @@ function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { de
 
 var getPassingRange = function getPassingRange(passingNumber) {
 	if (passingNumber === '100') return '100%';
-	return (0, _getDisplayFriendlyScore2.default)(passingNumber) + '-100%';
+	return (0, _getDisplayFriendlyScore2.default)(passingNumber) + '% or higher';
 };
 
 var getTextItems = function getTextItems(_ref, _ref2) {
@@ -6417,6 +6422,10 @@ var getTextItems = function getTextItems(_ref, _ref2) {
 		isAttemptScore100: isAttemptScore100
 	})) {
 		case _displayTypes.TYPE_ATTEMPT_WITHOUT_MODS_REWARDED:
+		case _displayTypes.TYPE_PASSFAIL_PASSED_GIVEN_ATTEMPT_SCORE_WITHOUT_MODS_REWARDED:
+		case _displayTypes.TYPE_PASSFAIL_PASSED_GIVEN_SCORE_AND_ATTEMPT_SCORE_IS_100_AND_NO_MODS_REWARDED:
+		case _displayTypes.ERROR_UNKNOWN_DISPLAY_TYPE:
+			// Shouldn't get here but we still want to show their score
 			items.push({
 				type: 'total',
 				text: 'Score',
@@ -6425,21 +6434,6 @@ var getTextItems = function getTextItems(_ref, _ref2) {
 			break;
 
 		case _displayTypes.TYPE_ATTEMPT_WITH_MODS_REWARDED:
-			items.push({
-				type: 'value',
-				text: 'Attempt Score',
-				value: attemptScore
-			});
-			break;
-
-		case _displayTypes.TYPE_PASSFAIL_PASSED_GIVEN_ATTEMPT_SCORE_WITHOUT_MODS_REWARDED:
-			items.push({
-				type: 'total',
-				text: 'Score',
-				value: assessScore
-			});
-			break;
-
 		case _displayTypes.TYPE_PASSFAIL_PASSED_GIVEN_ATTEMPT_SCORE_WITH_MODS_REWARDED:
 			items.push({
 				type: 'value',
@@ -6462,14 +6456,6 @@ var getTextItems = function getTextItems(_ref, _ref2) {
 			});
 			break;
 
-		case _displayTypes.TYPE_PASSFAIL_PASSED_GIVEN_SCORE_AND_ATTEMPT_SCORE_IS_100_AND_NO_MODS_REWARDED:
-			items.push({
-				type: 'total',
-				text: 'Score',
-				value: assessScore
-			});
-			break;
-
 		case _displayTypes.TYPE_PASSFAIL_PASSED_GIVEN_SCORE_AND_ATTEMPT_SCORE_IS_100_AND_MODS_REWARDED:
 			items.push({
 				type: 'value',
@@ -6478,6 +6464,7 @@ var getTextItems = function getTextItems(_ref, _ref2) {
 			});
 			break;
 
+		case _displayTypes.TYPE_PASSFAIL_FAILED_GIVEN_ATTEMPT_SCORE:
 		case _displayTypes.TYPE_PASSFAIL_FAILED_GIVEN_NO_SCORE:
 			items.push({
 				type: 'value',
@@ -6551,15 +6538,6 @@ var getTextItems = function getTextItems(_ref, _ref2) {
 				type: 'value',
 				text: 'Score for not achieving a passing attempt',
 				value: (0, _getDisplayFriendlyScore2.default)(statusResult)
-			});
-			break;
-
-		case _displayTypes.ERROR_UNKNOWN_DISPLAY_TYPE:
-			// Shouldn't get here but we still want to show their score
-			items.push({
-				type: 'value',
-				text: 'Score',
-				value: assessScore
 			});
 			break;
 	}

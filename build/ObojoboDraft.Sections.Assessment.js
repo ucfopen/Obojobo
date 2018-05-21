@@ -2946,6 +2946,7 @@ var AssessmentRubric = function () {
 					break;
 
 				case AssessmentRubric.STATUS_FAILED:
+					scoreReplaceDict[AssessmentRubric.VAR_ATTEMPT_SCORE] = latestAttemptScore;
 					scoreReplaceDict[AssessmentRubric.NO_SCORE] = null;
 					assessmentScore = tryGetParsedFloat(this.rubric.failedResult, scoreReplaceDict, [null]);
 					break;
