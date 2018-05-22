@@ -433,6 +433,7 @@ let loadAssessmentProperties = (draftTree, attempt, user, isPreviewing, attemptH
 		id: attempt.assessmentId,
 		oboNode: assessmentNode,
 		nodeChildrenIds: assessmentNode.children[1].childrenSet,
+		questionBank: assessmentNode.children[1],
 		assessmentQBTree: assessmentNode.children[1].toObject(),
 		attemptHistory: attemptHistory,
 		numAttemptsTaken: null,

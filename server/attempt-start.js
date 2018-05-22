@@ -21,7 +21,6 @@ const startAttempt = (req, res) => {
 		id: null,
 		node: null,
 		nodeChildrenIds: null,
-		assessmentQBTree: null,
 		attemptHistory: null,
 		numAttemptsaken: null,
 		questionUsesMap: null
@@ -43,7 +42,7 @@ const startAttempt = (req, res) => {
 			assessmentProperties.id = req.body.assessmentId
 			assessmentProperties.oboNode = assessmentNode
 			assessmentProperties.nodeChildrenIds = assessmentNode.children[1].childrenSet
-			assessmentProperties.assessmentQBTree = assessmentNode.children[1].toObject()
+			assessmentProperties.questionBank = assessmentNode.children[1]
 
 			return Assessment.getCompletedAssessmentAttemptHistory(
 				assessmentProperties.user.id,
@@ -85,7 +84,7 @@ const startAttempt = (req, res) => {
 				{
 					questions: questionObjects,
 					data: attemptState.data,
-					qb: assessmentProperties.assessmentQBTree
+					qb: attemptState.qb
 				},
 				assessmentProperties.isPreviewing
 			)
@@ -117,12 +116,12 @@ const startAttempt = (req, res) => {
 const getState = assessmentProperties => {
 	assessmentProperties.questionUsesMap = loadChildren(assessmentProperties)
 
-	createChosenQuestionTree(assessmentProperties.assessmentQBTree, assessmentProperties)
+	let tree = assessmentProperties.questionBank.buildAssessment(assessmentProperties.questionUsesMap)
 
 	return {
-		qb: assessmentProperties.assessmentQBTree,
+		qb: tree,
 		questions: getNodeQuestions(
-			assessmentProperties.assessmentQBTree,
+			tree,
 			assessmentProperties.oboNode,
 			[]
 		),
