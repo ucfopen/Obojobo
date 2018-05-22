@@ -31,7 +31,7 @@ exports.up = function(db) {
 					FROM events
 				`)
 			})
-			// Find the correct UUID for each record - latest for ease, youngest-before for correctness
+			// Find the correct UUID for each record
 			.then(result => {
 				let updates = []
 				result.rows.forEach(row => {
@@ -39,7 +39,6 @@ exports.up = function(db) {
 					let created = row.created_at
 					let rowId = row.id
 
-					// latest
 					updates.push(`
 						UPDATE
 							events
@@ -53,6 +52,7 @@ exports.up = function(db) {
 								drafts_content
 							WHERE
 								draft_id='${draftId}'
+								AND created_at<='${created.toISOString()}'
 							ORDER BY
 								created_at DESC
 							LIMIT 1
