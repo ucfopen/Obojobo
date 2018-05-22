@@ -10,6 +10,10 @@ class Question extends DraftNode {
 		})
 	}
 
+	buildAssessment(questionUsesMap) {
+		return this.toObject()
+	}
+
 	onSendToAssessment(req, res) {
 		this.node.content.mode = 'assessment'
 	}
