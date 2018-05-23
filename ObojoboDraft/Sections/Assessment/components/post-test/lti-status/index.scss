@@ -13,24 +13,16 @@
 		padding-bottom: 2em;
 	}
 
-	.recovery-message {
+	> .recovery-message {
 		background-color: #87d37c;
 		padding: 2em;
-		margin-top: 0.5em;
-		margin-bottom: 0.5em;
+		margin-top: 1em;
 		border-radius: 0.25em;
 
 		> h2 {
 			color: $color-text;
 			font-size: 1em;
 			font-weight: bold;
-		}
-
-		> p,
-		> div > p {
-			font-size: 0.9em;
-			line-height: 1.4em;
-			color: $color-text;
 		}
 	}
 

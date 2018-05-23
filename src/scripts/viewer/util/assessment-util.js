@@ -111,7 +111,7 @@ var AssessmentUtil = {
 		return {
 			state: assessment.lti,
 			networkState: assessment.ltiNetworkState,
-			errorCount: assessment.ltiErrorCount
+			ltiResyncStatus: assessment.ltiResyncStatus
 		}
 	},
 
