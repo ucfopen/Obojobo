@@ -229,10 +229,6 @@ var AssessmentUtil = {
 				id: model.get('id')
 			}
 		})
-	},
-
-	closeRecoveryMessage(model) {
-		return Dispatcher.trigger('assessment:closeRecoveryMessage', {})
 	}
 }
 

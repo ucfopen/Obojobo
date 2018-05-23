@@ -26,7 +26,7 @@ let getNewAssessmentObject = assessmentId => ({
 	highestAttemptScoreAttempts: [],
 	lti: null,
 	ltiNetworkState: LTINetworkStates.IDLE,
-	ltiErrorCount: 0,
+	ltiResyncStatus: 'noErrors',
 	isShowingAttemptHistory: false
 })
 
@@ -45,11 +45,6 @@ class AssessmentStore extends Store {
 
 		Dispatcher.on('assessment:resendLTIScore', payload => {
 			this.tryResendLTIScore(payload.value.id)
-		})
-
-		Dispatcher.on('assessment:closeRecoveryMessage', payload => {
-			//console.log("THE LTI FROM THE STORE IS " + JSON.stringify(this.lti))
-			this.triggerChange()
 		})
 
 		Dispatcher.on('question:setResponse', payload => {
@@ -295,9 +290,9 @@ class AssessmentStore extends Store {
 
 		let assessmentModel = OboModel.models[assessment.id]
 		if (AssessmentUtil.isLTIScoreNeedingToBeResynced(this.state, assessmentModel)) {
-			assessment.ltiErrorCount++
+			assessment.ltiResyncStatus = 'hasErrors'
 		} else {
-			assessment.ltiErrorCount = 0
+			assessment.ltiResyncStatus = 'hadErrors'
 		}
 		// Dispatcher.trigger('assessment:ltiScore')
 	}

@@ -9,7 +9,7 @@ const getLtiState = state => ({
 		gradebookStatus: state
 	},
 	networkState: 'idle',
-	errorCount: 0
+	ltiResyncStatus: 'noErrors'
 })
 
 const mockSymbol = 'mocklti'
@@ -101,13 +101,13 @@ describe('lti-status', () => {
 		).toMatchSnapshot()
 	})
 
-	test('error shows additional information if errorCount is above 0', () => {
+	test('error shows additional information if there was a problem resyncing', () => {
 		const ltiState = {
 			state: {
 				gradebookStatus: 'error'
 			},
 			networkState: 'idle',
-			errorCount: 1
+			ltiResyncStatus: 'hadErrors'
 		}
 		expect(
 			renderer.create(<LTIStatus ltiState={ltiState} externalSystemLabel={mockSymbol} />)
@@ -120,7 +120,7 @@ describe('lti-status', () => {
 				gradebookStatus: 'error'
 			},
 			networkState: AWAITING_SEND_ASSESSMENT_SCORE_RESPONSE,
-			errorCount: 0
+			ltiResyncStatus: 'noErrors'
 		}
 		expect(
 			renderer.create(<LTIStatus ltiState={ltiState} externalSystemLabel={mockSymbol} />)
@@ -134,7 +134,7 @@ describe('lti-status', () => {
 				gradebookStatus: 'error'
 			},
 			networkState: 'idle',
-			errorCount: 0
+			ltiResyncStatus: 'noErrors'
 		}
 		const component = mount(
 			<LTIStatus

@@ -213,3 +213,12 @@
     .obojobo-draft--sections--assessment--lti-status.is-not-synced > div > p {
       font-size: 0.9em;
       line-height: 1.4em; }
+    .obojobo-draft--sections--assessment--lti-status.is-not-synced .is-shown {
+      max-height: 400px;
+      transition: max-height 1s ease-out;
+      overflow: hidden;
+      margin-bottom: 1em; }
+    .obojobo-draft--sections--assessment--lti-status.is-not-synced .is-not-shown {
+      max-height: 0;
+      transition: max-height 1s ease-out;
+      overflow: hidden; }

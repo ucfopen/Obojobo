@@ -11,6 +11,14 @@ exports[`lti-status error shows a loading state 1`] = `
     Don’t worry - your score is safely recorded here. We just weren’t able to send it to mocklti. Click the button below to resend your score:
   </p>
   <div
+    className="is-not-shown"
+  >
+    <strong>
+      Sorry - That didn't work.
+    </strong>
+     Most likely the connection to mocklti has expired and just needs to be refreshed. Please close this tab or window, reopen this module from mocklti, return to this page and then resend your score.
+  </div>
+  <div
     className="obojobo-draft--components--button is-not-dangerous align-center"
   >
     <button
@@ -24,7 +32,7 @@ exports[`lti-status error shows a loading state 1`] = `
 </div>
 `;
 
-exports[`lti-status error shows additional information if errorCount is above 0 1`] = `
+exports[`lti-status error shows additional information if there was a problem resyncing 1`] = `
 <div
   className="obojobo-draft--sections--assessment--lti-status is-not-synced"
 >
@@ -34,12 +42,14 @@ exports[`lti-status error shows additional information if errorCount is above 0 
   <p>
     Don’t worry - your score is safely recorded here. We just weren’t able to send it to mocklti. Click the button below to resend your score:
   </p>
-  <p>
+  <div
+    className="is-shown"
+  >
     <strong>
       Sorry - That didn't work.
     </strong>
      Most likely the connection to mocklti has expired and just needs to be refreshed. Please close this tab or window, reopen this module from mocklti, return to this page and then resend your score.
-  </p>
+  </div>
   <div
     className="obojobo-draft--components--button is-dangerous align-center"
   >
@@ -65,6 +75,14 @@ exports[`lti-status rendering with an externalSystemLabel and no lti state retur
     Don’t worry - your score is safely recorded here. We just weren’t able to send it to mocklti. Click the button below to resend your score:
   </p>
   <div
+    className="is-not-shown"
+  >
+    <strong>
+      Sorry - That didn't work.
+    </strong>
+     Most likely the connection to mocklti has expired and just needs to be refreshed. Please close this tab or window, reopen this module from mocklti, return to this page and then resend your score.
+  </div>
+  <div
     className="obojobo-draft--components--button is-dangerous align-center"
   >
     <button
@@ -72,7 +90,7 @@ exports[`lti-status rendering with an externalSystemLabel and no lti state retur
       onClick={undefined}
       tabIndex={undefined}
     >
-      Try again anyway
+      Resend score
     </button>
   </div>
 </div>
@@ -97,6 +115,14 @@ exports[`lti-status rendering with lti state GRADEBOOK_STATUS_ERROR_INVALID retu
     Don’t worry - your score is safely recorded here. We just weren’t able to send it to mocklti. Click the button below to resend your score:
   </p>
   <div
+    className="is-not-shown"
+  >
+    <strong>
+      Sorry - That didn't work.
+    </strong>
+     Most likely the connection to mocklti has expired and just needs to be refreshed. Please close this tab or window, reopen this module from mocklti, return to this page and then resend your score.
+  </div>
+  <div
     className="obojobo-draft--components--button is-dangerous align-center"
   >
     <button
@@ -120,6 +146,14 @@ exports[`lti-status rendering with lti state GRADEBOOK_STATUS_ERROR_NEWER_SCORE_
   <p>
     Don’t worry - your score is safely recorded here. We just weren’t able to send it to mocklti. Click the button below to resend your score:
   </p>
+  <div
+    className="is-not-shown"
+  >
+    <strong>
+      Sorry - That didn't work.
+    </strong>
+     Most likely the connection to mocklti has expired and just needs to be refreshed. Please close this tab or window, reopen this module from mocklti, return to this page and then resend your score.
+  </div>
   <div
     className="obojobo-draft--components--button is-dangerous align-center"
   >

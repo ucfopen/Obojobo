@@ -1,5 +1,4 @@
 const processJsonResults = res => {
-	//console.log("THE JSON RESULTS ARE..." + JSON.stringify(res))
 	return Promise.resolve(res.json()).then(json => {
 		if (json.status === 'error') console.log(json.value)
 		return json
@@ -89,7 +88,6 @@ var APIUtil = {
 	},
 
 	resendLTIAssessmentScore(lo, assessment) {
-		//console.log("We're resending the assessment score!")
 		return APIUtil.post('/api/lti/sendAssessmentScore', {
 			draftId: lo.get('draftId'),
 			assessmentId: assessment.get('id')

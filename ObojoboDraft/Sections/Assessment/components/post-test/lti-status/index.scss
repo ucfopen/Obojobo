@@ -51,5 +51,18 @@
 			font-size: 0.9em;
 			line-height: 1.4em;
 		}
+
+		.is-shown {
+			max-height: 400px;
+			transition: max-height 1s ease-out;
+			overflow: hidden;
+			margin-bottom: 1em;
+		}
+
+		.is-not-shown {
+			max-height: 0;
+			transition: max-height 1s ease-out;
+			overflow: hidden;
+		}
 	}
 }

@@ -52,10 +52,6 @@ const AssessmentPostTest = props => {
 		AssessmentUtil.resendLTIScore(props.model)
 	}
 
-	let onClickRemoveRecoverMessage = () => {
-		AssessmentUtil.closeRecoveryMessage(props.model)
-	}
-
 	let ltiState = AssessmentUtil.getLTIStateForModel(props.moduleData.assessmentState, props.model)
 
 	let assessmentLabel = NavUtil.getNavLabelForModel(props.moduleData.navState, props.model)
@@ -100,7 +96,6 @@ const AssessmentPostTest = props => {
 					externalSystemLabel={externalSystemLabel}
 					onClickResendScore={onClickResendScore}
 					assessmentScore={assessmentScore}
-					onClickRemoveRecoverMessage={onClickRemoveRecoverMessage}
 				/>
 				{() => {
 					switch (ltiState.state.gradebookStatus) {
