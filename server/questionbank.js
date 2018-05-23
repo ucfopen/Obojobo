@@ -2,9 +2,11 @@ const DraftNode = oboRequire('models/draft_node')
 const _ = require('underscore')
 const logger = oboRequire('logger')
 
-const SELECT_SEQENTIAL = 'sequential'
-const SELECT_RANDOM_ALL = 'random_all'
+const SELECT_SEQUENTIAL = 'sequential'
+const SELECT_RANDOM = 'random_all'
 const SELECT_RANDOM_UNSEEN = 'random_unseen'
+
+const CHOOSE_ALL = 'all'
 
 class QuestionBank extends DraftNode {
 	constructor(draftTree, node, initFn) {
@@ -12,26 +14,17 @@ class QuestionBank extends DraftNode {
 	}
 
 	buildAssessment(questionUsesMap) {
-		let choose = this.node.content.choose
-		if(!choose || choose == 'all'){
-			choose = Infinity
-		}
-
-		let select = this.node.content.select
-		if(!select){
-			select = 'sequential'
-		}
-		console.log('QuestionBank - choose:' + choose + ' select:' + select)
+		let { choose, select } = this.getContentValues()
 
 		let chosenIds
 		switch(select){
-			case SELECT_SEQENTIAL:
+			case SELECT_SEQUENTIAL:
 				chosenIds = this.createChosenArraySequentially(questionUsesMap, choose)
 				break
-			case SELECT_RANDOM_UNSEEN:
+			case SELECT_RANDOM:
 				chosenIds = this.createChosenArrayRandomly(choose)
 				break
-			case SELECT_RANDOM_ALL:
+			case SELECT_RANDOM_UNSEEN:
 				chosenIds = this.createChosenArrayUnseenRandomly(questionUsesMap, choose)
 			default:
 				logger.error('Invalid Select Type for QuestionBank id='+this.id)
@@ -44,6 +37,20 @@ class QuestionBank extends DraftNode {
 		tree.children = chosenChildren
 
 		return tree
+	}
+
+	getContentValues(){
+		let choose = this.node.content.choose
+		if(!choose || choose == CHOOSE_ALL){
+			choose = Infinity
+		}
+
+		let select = this.node.content.select
+		if(!select){
+			select = 'sequential'
+		}
+
+		return { choose, select }
 	}
 
 	// sends buildAssessment call to chosen children, and gathers responses
