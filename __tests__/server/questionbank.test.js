@@ -26,7 +26,7 @@ describe('QuestionBank', () => {
 	|-qG
 	|-qH
    */
-	let buildQuestionBankForTest = (select) => {
+	let buildQuestionBankForTest = select => {
 		let draftTree = {
 			getChildNodeById: jest.fn(id => nodes.find(c => c.id == id))
 		}
@@ -35,8 +35,8 @@ describe('QuestionBank', () => {
 		const newQ = id => {
 			let q = {
 				id: id,
-				buildAssessment: () => 'mockBuiltQuestion-'+id,
-				toObject: () => 'mockObj-'+id
+				buildAssessment: () => 'mockBuiltQuestion-' + id,
+				toObject: () => 'mockObj-' + id
 			}
 			nodes.push(q)
 			return q
@@ -77,7 +77,7 @@ describe('QuestionBank', () => {
 
 	// Tree building tests - checks that child recursion works as expected
 	// SELECT_UNSEEN_RANDOM follows a similar selection pattern to SELECT_SEQUENTIAL
-	test.skip('buildAssessment picks expected questions in order for FIRST attempt in sequential mode', () => {
+	test('buildAssessment picks expected questions in order for FIRST attempt in sequential mode', () => {
 		// uses | Tree
 		//      |QB (choose=Infinity)
 		//    0 |-QB1 (choose=1)
@@ -113,26 +113,29 @@ describe('QuestionBank', () => {
 		let tree = mockQuestionBank.buildAssessment(usageMap)
 
 		// test the ids and order of the results
-		expect(tree).toEqual(expect.objectContaining({
-			"id": "QB",
-			"type": "ObojoboDraft.Chunks.QuestionBank",
-			"children": [
-				{
-					"id": "QB1",
-					"type": "ObojoboDraft.Chunks.QuestionBank",
-					"children": ["mockBuiltQuestion-qA"]
-				}, {
-					"id": "QB2",
-					"type": "ObojoboDraft.Chunks.QuestionBank",
-					"children": ["mockBuiltQuestion-qC", "mockBuiltQuestion-qD"]
-				},
-				"mockBuiltQuestion-qG",
-				"mockBuiltQuestion-qH"
-			]
-		}))
+		expect(tree).toEqual(
+			expect.objectContaining({
+				id: 'QB',
+				type: 'ObojoboDraft.Chunks.QuestionBank',
+				children: [
+					expect.objectContaining({
+						id: 'QB1',
+						type: 'ObojoboDraft.Chunks.QuestionBank',
+						children: ['mockBuiltQuestion-qA']
+					}),
+					expect.objectContaining({
+						id: 'QB2',
+						type: 'ObojoboDraft.Chunks.QuestionBank',
+						children: ['mockBuiltQuestion-qC', 'mockBuiltQuestion-qD']
+					}),
+					'mockBuiltQuestion-qG',
+					'mockBuiltQuestion-qH'
+				]
+			})
+		)
 	})
 
-	test.skip('createChosenQuestionTree picks expected questions in order for SECOND attempt in sequential mode', () => {
+	test('createChosenQuestionTree picks expected questions in order for SECOND attempt in sequential mode', () => {
 		// uses | Tree
 		//      |QB (choose=Infinity)
 		//    1 |-QB1 (choose=1)
@@ -167,10 +170,36 @@ describe('QuestionBank', () => {
 		let mockQuestionBank = buildQuestionBankForTest(SELECT_SEQUENTIAL)
 		let tree = mockQuestionBank.buildAssessment(usageMap)
 
-		expect(ids).toEqual(['qB', 'qE', 'qC', 'qG', 'qH'])
+		expect(tree).toEqual(
+			expect.objectContaining({
+				id: 'QB',
+				type: 'ObojoboDraft.Chunks.QuestionBank',
+				children: [
+					expect.objectContaining({
+						id: 'QB1',
+						type: 'ObojoboDraft.Chunks.QuestionBank',
+						children: ['mockBuiltQuestion-qB']
+					}),
+					expect.objectContaining({
+						id: 'QB2',
+						type: 'ObojoboDraft.Chunks.QuestionBank',
+						children: [
+							expect.objectContaining({
+								id: 'QB3',
+								type: 'ObojoboDraft.Chunks.QuestionBank',
+								children: ['mockBuiltQuestion-qE']
+							}),
+							'mockBuiltQuestion-qC'
+						]
+					}),
+					'mockBuiltQuestion-qG',
+					'mockBuiltQuestion-qH'
+				]
+			})
+		)
 	})
 
-	test.skip('createChosenQuestionTree picks expected questions in order for THIRD attempt in sequential mode', () => {
+	test('createChosenQuestionTree picks expected questions in order for THIRD attempt in sequential mode', () => {
 		// uses | Tree
 		//      |QB (choose=Infinity)
 		//    2 |-QB1 (choose=1)
@@ -206,10 +235,36 @@ describe('QuestionBank', () => {
 		let tree = mockQuestionBank.buildAssessment(usageMap)
 
 		// test the ids and order of the results
-		expect(ids).toEqual(['qA', 'qD', 'qF', 'qG', 'qH'])
+		expect(tree).toEqual(
+			expect.objectContaining({
+				id: 'QB',
+				type: 'ObojoboDraft.Chunks.QuestionBank',
+				children: [
+					expect.objectContaining({
+						id: 'QB1',
+						type: 'ObojoboDraft.Chunks.QuestionBank',
+						children: ['mockBuiltQuestion-qA']
+					}),
+					expect.objectContaining({
+						id: 'QB2',
+						type: 'ObojoboDraft.Chunks.QuestionBank',
+						children: [
+							'mockBuiltQuestion-qD',
+							expect.objectContaining({
+								id: 'QB3',
+								type: 'ObojoboDraft.Chunks.QuestionBank',
+								children: ['mockBuiltQuestion-qF']
+							})
+						]
+					}),
+					'mockBuiltQuestion-qG',
+					'mockBuiltQuestion-qH'
+				]
+			})
+		)
 	})
 
-	test.skip('createChosenQuestionTree picks expected questions in order for FOURTH attempt in sequential mode', () => {
+	test('createChosenQuestionTree picks expected questions in order for FOURTH attempt in sequential mode', () => {
 		// uses | Tree
 		//      |QB (choose=Infinity)
 		//    3 |-QB1 (choose=1)
@@ -245,111 +300,139 @@ describe('QuestionBank', () => {
 		let tree = mockQuestionBank.buildAssessment(usageMap)
 
 		// test the ids and order of the results
-		expect(ids).toEqual(['qB', 'qC', 'qD', 'qG', 'qH'])
+		expect(tree).toEqual(
+			expect.objectContaining({
+				id: 'QB',
+				type: 'ObojoboDraft.Chunks.QuestionBank',
+				children: [
+					expect.objectContaining({
+						id: 'QB1',
+						type: 'ObojoboDraft.Chunks.QuestionBank',
+						children: ['mockBuiltQuestion-qB']
+					}),
+					expect.objectContaining({
+						id: 'QB2',
+						type: 'ObojoboDraft.Chunks.QuestionBank',
+						children: ['mockBuiltQuestion-qC', 'mockBuiltQuestion-qD']
+					}),
+					'mockBuiltQuestion-qG',
+					'mockBuiltQuestion-qH'
+				]
+			})
+		)
 	})
 
-	test.skip('buildAssessment creates a random-all group', () => {
+	test('buildAssessment creates a random-all group', () => {
 		_.shuffle = jest.fn(array => array)
 
 		let usageMap = new Map()
 
-		let mockQBNode = buildQuestionBankForTest(SELECT_RANDOM_UNSEEN)
+		let mockQBNode = buildQuestionBankForTest(SELECT_RANDOM)
 		let tree = mockQBNode.buildAssessment(usageMap)
 
 		// test the ids and order of the results
-		expect(tree).toEqual(expect.objectContaining({
-			"id": "QB",
-			"type": "ObojoboDraft.Chunks.QuestionBank",
-			"children": [
-				{
-					"id": "QB1",
-					"type": "ObojoboDraft.Chunks.QuestionBank",
-					"children": ["mockBuiltQuestion-qA"]
-				}, {
-					"id": "QB2",
-					"type": "ObojoboDraft.Chunks.QuestionBank",
-					"children": ["mockBuiltQuestion-qC", "mockBuiltQuestion-qD"]
-				},
-				"mockBuiltQuestion-qG",
-				"mockBuiltQuestion-qH"
-			]
-		}))
+		expect(tree).toEqual(
+			expect.objectContaining({
+				id: 'QB',
+				type: 'ObojoboDraft.Chunks.QuestionBank',
+				children: [
+					expect.objectContaining({
+						id: 'QB1',
+						type: 'ObojoboDraft.Chunks.QuestionBank',
+						children: ['mockBuiltQuestion-qA']
+					}),
+					expect.objectContaining({
+						id: 'QB2',
+						type: 'ObojoboDraft.Chunks.QuestionBank',
+						children: ['mockBuiltQuestion-qC', 'mockBuiltQuestion-qD']
+					}),
+					'mockBuiltQuestion-qG',
+					'mockBuiltQuestion-qH'
+				]
+			})
+		)
 	})
 
-	test.skip('buildAssessment creates a random-unseen group', () => {
+	test('buildAssessment creates a random-unseen group', () => {
 		Math.random = jest.fn(() => 1)
 
 		let usageMap = new Map()
-			.set('QB1',         0)
-				.set('qA',      0)
-				.set('qB',      0)
-			.set('QB2',         0)
-				.set('qC',      0)
-				.set('qD',      0)
-				.set('QB3',     0)
-					.set('qE',  0)
-					.set('qF',  0)
-			.set('qG',          0)
-			.set('qH',          0)
+			.set('QB1', 0)
+			.set('qA', 0)
+			.set('qB', 0)
+			.set('QB2', 0)
+			.set('qC', 0)
+			.set('qD', 0)
+			.set('QB3', 0)
+			.set('qE', 0)
+			.set('qF', 0)
+			.set('qG', 0)
+			.set('qH', 0)
 
 		let mockQBNode = buildQuestionBankForTest(SELECT_RANDOM_UNSEEN)
 		let tree = mockQBNode.buildAssessment(usageMap)
 
 		// test the ids and order of the results
-		expect(tree).toEqual(expect.objectContaining({
-			"id": "QB",
-			"type": "ObojoboDraft.Chunks.QuestionBank",
-			"children": [
-				{
-					"id": "QB1",
-					"type": "ObojoboDraft.Chunks.QuestionBank",
-					"children": ["mockBuiltQuestion-qA"]
-				}, {
-					"id": "QB2",
-					"type": "ObojoboDraft.Chunks.QuestionBank",
-					"children": ["mockBuiltQuestion-qC", "mockBuiltQuestion-qD"]
-				},
-				"mockBuiltQuestion-qG",
-				"mockBuiltQuestion-qH"
-			]
-		}))
+		expect(tree).toEqual(
+			expect.objectContaining({
+				id: 'QB',
+				type: 'ObojoboDraft.Chunks.QuestionBank',
+				children: [
+					expect.objectContaining({
+						id: 'QB1',
+						type: 'ObojoboDraft.Chunks.QuestionBank',
+						children: ['mockBuiltQuestion-qA']
+					}),
+					expect.objectContaining({
+						id: 'QB2',
+						type: 'ObojoboDraft.Chunks.QuestionBank',
+						children: ['mockBuiltQuestion-qC', 'mockBuiltQuestion-qD']
+					}),
+					'mockBuiltQuestion-qG',
+					'mockBuiltQuestion-qH'
+				]
+			})
+		)
 	})
 
-	test.skip('buildAssessment creates a squential group and logs an error when select is unknown', () => {
+	test('buildAssessment creates a squential group and logs an error when select is unknown', () => {
 		let usageMap = new Map()
-			.set('QB1',         0)
-				.set('qA',      0)
-				.set('qB',      0)
-			.set('QB2',         0)
-				.set('qC',      0)
-				.set('qD',      0)
-				.set('QB3',     0)
-					.set('qE',  0)
-					.set('qF',  0)
-			.set('qG',          0)
-			.set('qH',          0)
+			.set('QB1', 0)
+			.set('qA', 0)
+			.set('qB', 0)
+			.set('QB2', 0)
+			.set('qC', 0)
+			.set('qD', 0)
+			.set('QB3', 0)
+			.set('qE', 0)
+			.set('qF', 0)
+			.set('qG', 0)
+			.set('qH', 0)
 
 		let mockQBNode = buildQuestionBankForTest('mock-invalid-selection')
 		let tree = mockQBNode.buildAssessment(usageMap)
 
 		// test the ids and order of the results
-		expect(tree).toEqual(expect.objectContaining({
-			"id": "QB",
-			"type": "ObojoboDraft.Chunks.QuestionBank",
-			"children": [
-				{
-					"id": "QB1",
-					"type": "ObojoboDraft.Chunks.QuestionBank",
-					"children": ["mockBuiltQuestion-qA"]
-				}, {
-					"id": "QB2",
-					"type": "ObojoboDraft.Chunks.QuestionBank",
-					"children": ["mockBuiltQuestion-qC", "mockBuiltQuestion-qD"]
-				},
-				"mockBuiltQuestion-qG",
-				"mockBuiltQuestion-qH"
-			]
-		}))
+		expect(tree).toEqual(
+			expect.objectContaining({
+				id: 'QB',
+				type: 'ObojoboDraft.Chunks.QuestionBank',
+				children: [
+					expect.objectContaining({
+						id: 'QB1',
+						type: 'ObojoboDraft.Chunks.QuestionBank',
+						children: ['mockBuiltQuestion-qA']
+					}),
+					expect.objectContaining({
+						id: 'QB2',
+						type: 'ObojoboDraft.Chunks.QuestionBank',
+						children: ['mockBuiltQuestion-qC', 'mockBuiltQuestion-qD']
+					}),
+					'mockBuiltQuestion-qG',
+					'mockBuiltQuestion-qH'
+				]
+			})
+		)
 	})
 
 	test('getContentValues returns values for choose and select', () => {
@@ -370,7 +453,7 @@ describe('QuestionBank', () => {
 
 	test('getContentValues returns default values when not provided', () => {
 		let mockNode = {
-			content: { }
+			content: {}
 		}
 		let mockQBNode = new QuestionBank({}, mockNode)
 		let content = mockQBNode.getContentValues()
@@ -398,12 +481,12 @@ describe('QuestionBank', () => {
 
 	test('buildFromArray calls the draft document to get nodes from ids', () => {
 		let mockDraftDocument = {
-			getChildNodeById: jest.fn(id => 'mockObject-'+id)
+			getChildNodeById: jest.fn(id => 'mockObject-' + id)
 		}
 
 		let mockQBNode = new QuestionBank(mockDraftDocument)
 
-		let mockchosen = [ 'qb1.q1', 'qb1.q2', 'qb1.q3' ]
+		let mockchosen = ['qb1.q1', 'qb1.q2', 'qb1.q3']
 
 		// Test for children without buildAssessment
 		let chosenChildren = mockQBNode.buildFromArray(mockchosen, {})
@@ -414,14 +497,11 @@ describe('QuestionBank', () => {
 		mockDraftDocument.getChildNodeById.mockImplementation(id => {
 			return {
 				id: id,
-				buildAssessment : mockBuildAssessment
+				buildAssessment: mockBuildAssessment
 			}
 		})
 		chosenChildren = mockQBNode.buildFromArray(mockchosen, {})
-		expect(chosenChildren).toEqual([
-			'mockBuiltObject',
-			'mockBuiltObject',
-			'mockBuiltObject' ])
+		expect(chosenChildren).toEqual(['mockBuiltObject', 'mockBuiltObject', 'mockBuiltObject'])
 		expect(mockBuildAssessment).toHaveBeenCalledTimes(3)
 	})
 
@@ -433,7 +513,7 @@ describe('QuestionBank', () => {
 		mockUsedQuestionMap.set('qb1.q2', 1)
 		mockUsedQuestionMap.set('qb1.q3', 1)
 
-		let mockChildrenIds = [ 'qb1.q1', 'qb1.q2', 'qb1.q3' ]
+		let mockChildrenIds = ['qb1.q1', 'qb1.q2', 'qb1.q3']
 		let mockQBNode = new QuestionBank()
 		mockQBNode.immediateChildrenSet = mockChildrenIds
 
@@ -443,26 +523,26 @@ describe('QuestionBank', () => {
 
 		// Choosing questions where numQuestionsPerAttempt = 1.
 		chosen = mockQBNode.createChosenArraySequentially(mockUsedQuestionMap, 1)
-		expect(chosen).toEqual([ 'qb1.q1' ])
+		expect(chosen).toEqual(['qb1.q1'])
 
 		// Choosing questions where numQuestionsPerAttempt is more than 1.
 		chosen = mockQBNode.createChosenArraySequentially(mockUsedQuestionMap, 2)
-		expect(chosen).toEqual([ 'qb1.q1', 'qb1.q2' ])
+		expect(chosen).toEqual(['qb1.q1', 'qb1.q2'])
 
 		// Case to test sorting of question banks.
 		chosen = mockQBNode.createChosenArraySequentially(mockUsedQuestionMap, Infinity)
-		expect(chosen).toEqual([ 'qb1.q1', 'qb1.q2', 'qb1.q3' ])
+		expect(chosen).toEqual(['qb1.q1', 'qb1.q2', 'qb1.q3'])
 
 		// Case where questions need to be reordered (q2 should now come first).
 		mockUsedQuestionMap.set('qb1.q1', 2)
 		chosen = mockQBNode.createChosenArraySequentially(mockUsedQuestionMap, 3)
-		expect(chosen).toEqual([ 'qb1.q2', 'qb1.q3', 'qb1.q1' ])
+		expect(chosen).toEqual(['qb1.q2', 'qb1.q3', 'qb1.q1'])
 	})
 
 	test('display all question banks and questions randomly', () => {
-		_.shuffle = jest.fn(() => [ 'qb1.q2', 'qb1.q1', 'qb1.q3' ])
+		_.shuffle = jest.fn(() => ['qb1.q2', 'qb1.q1', 'qb1.q3'])
 
-		let mockChildrenIds = [ 'qb1.q1', 'qb1.q2', 'qb1.q3' ]
+		let mockChildrenIds = ['qb1.q1', 'qb1.q2', 'qb1.q3']
 		let mockQBNode = new QuestionBank()
 		mockQBNode.immediateChildrenSet = mockChildrenIds
 
@@ -473,17 +553,17 @@ describe('QuestionBank', () => {
 
 		// Choosing questions where numQuestionsPerAttempt = 1.
 		chosen = mockQBNode.createChosenArrayRandomly(1)
-		expect(chosen).toEqual([ 'qb1.q2' ])
+		expect(chosen).toEqual(['qb1.q2'])
 		expect(_.shuffle).toHaveBeenCalled()
 
 		// Choosing questions where numQuestionsPerAttempt is more than 1.
 		chosen = mockQBNode.createChosenArrayRandomly(2)
-		expect(chosen).toEqual([ 'qb1.q2', 'qb1.q1' ])
+		expect(chosen).toEqual(['qb1.q2', 'qb1.q1'])
 		expect(_.shuffle).toHaveBeenCalled()
 
 		// Case to test sorting of question banks.
 		chosen = mockQBNode.createChosenArrayRandomly(Infinity)
-		expect(chosen).toEqual([ 'qb1.q2', 'qb1.q1', 'qb1.q3' ])
+		expect(chosen).toEqual(['qb1.q2', 'qb1.q1', 'qb1.q3'])
 		expect(_.shuffle).toHaveBeenCalled()
 	})
 
@@ -496,7 +576,7 @@ describe('QuestionBank', () => {
 		mockUsedQuestionMap.set('qb1.q2', 1)
 		mockUsedQuestionMap.set('qb1.q3', 1)
 
-		let mockChildrenIds = [ 'qb1.q1', 'qb1.q2', 'qb1.q3' ]
+		let mockChildrenIds = ['qb1.q1', 'qb1.q2', 'qb1.q3']
 		let mockQBNode = new QuestionBank()
 		mockQBNode.immediateChildrenSet = mockChildrenIds
 
@@ -507,48 +587,22 @@ describe('QuestionBank', () => {
 
 		// Choosing questions where numQuestionsPerAttempt = 1.
 		chosen = mockQBNode.createChosenArrayUnseenRandomly(mockUsedQuestionMap, 1)
-		expect(chosen).toEqual([ 'qb1.q3' ])
+		expect(chosen).toEqual(['qb1.q3'])
 		expect(Math.random).toHaveBeenCalled()
 
 		// Choosing questions where numQuestionsPerAttempt is more than 1.
 		chosen = mockQBNode.createChosenArrayUnseenRandomly(mockUsedQuestionMap, 2)
-		expect(chosen).toEqual([ 'qb1.q3', 'qb1.q2' ])
+		expect(chosen).toEqual(['qb1.q3', 'qb1.q2'])
 		expect(Math.random).toHaveBeenCalled()
 
 		// Case to test sorting of question banks.
 		chosen = mockQBNode.createChosenArrayUnseenRandomly(mockUsedQuestionMap, 3)
-		expect(chosen).toEqual([ 'qb1.q3', 'qb1.q2', 'qb1.q1' ])
+		expect(chosen).toEqual(['qb1.q3', 'qb1.q2', 'qb1.q1'])
 		expect(Math.random).toHaveBeenCalled()
 
 		// Case where questions need to be reordered (q2 should now come first).
 		mockUsedQuestionMap.set('qb1.q3', 2)
 		chosen = mockQBNode.createChosenArrayUnseenRandomly(mockUsedQuestionMap, 3)
-		expect(chosen).toEqual([ 'qb1.q2', 'qb1.q1', 'qb1.q3' ])
-	})
-
-	// buildAssesment tests
-	test.skip('QuestionBank with SELECT_SEQUENTIAL calls createChosenArraySequentially', () => {
-		// TODO
-	})
-	test.skip('QuestionBank with SELECT_RANDOM calls createChosenArrayRandomly', () => {
-		// TODO
-	})
-	test.skip('QuestionBank with SELECT_UNSEEN_RANDOM calls createChosenArrayUnseenRandomly', () => {
-		// TODO
-	})
-	test.skip('QuestionBank with no select calls createChosenArraySequentially', () => {
-		// TODO
-	})
-	test.skip('QuestionBank with choose 1 only chooses 1 immidiate child', () => {
-		// TODO
-	})
-	test.skip('QuestionBank with choose Infinity chooses all immidiate children', () => {
-		// TODO
-	})
-	test.skip('QuestionBank with choose all chooses all immidiate children', () => {
-		// TODO
-	})
-	test.skip('QuestionBank with no choose chooses all immidiate children', () => {
-		// TODO
+		expect(chosen).toEqual(['qb1.q2', 'qb1.q1', 'qb1.q3'])
 	})
 })
