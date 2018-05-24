@@ -3,7 +3,7 @@ const _ = require('underscore')
 const logger = oboRequire('logger')
 
 const SELECT_SEQUENTIAL = 'sequential'
-const SELECT_RANDOM = 'random_all'
+const SELECT_RANDOM = 'random'
 const SELECT_RANDOM_UNSEEN = 'random_unseen'
 
 const CHOOSE_ALL = 'all'
@@ -17,7 +17,7 @@ class QuestionBank extends DraftNode {
 		let { choose, select } = this.getContentValues()
 
 		let chosenIds
-		switch(select){
+		switch (select) {
 			case SELECT_SEQUENTIAL:
 				chosenIds = this.createChosenArraySequentially(questionUsesMap, choose)
 				break
@@ -27,7 +27,7 @@ class QuestionBank extends DraftNode {
 			case SELECT_RANDOM_UNSEEN:
 				chosenIds = this.createChosenArrayUnseenRandomly(questionUsesMap, choose)
 			default:
-				logger.error('Invalid Select Type for QuestionBank id='+this.id)
+				logger.error('Invalid Select Type for QuestionBank: ' + select)
 				chosenIds = this.createChosenArraySequentially(questionUsesMap, choose)
 		}
 
@@ -39,27 +39,27 @@ class QuestionBank extends DraftNode {
 		return tree
 	}
 
-	getContentValues(){
+	getContentValues() {
 		let choose = this.node.content.choose
-		if(!choose || choose == CHOOSE_ALL){
+		if (!choose || choose == CHOOSE_ALL) {
 			choose = Infinity
 		}
 
 		let select = this.node.content.select
-		if(!select){
-			select = 'sequential'
+		if (!select) {
+			select = SELECT_SEQUENTIAL
 		}
 
 		return { choose, select }
 	}
 
 	// sends buildAssessment call to chosen children, and gathers responses
-	buildFromArray(chosenIds, questionUsesMap){
+	buildFromArray(chosenIds, questionUsesMap) {
 		let chosenChildren = []
 
-		for(let id of chosenIds){
+		for (let id of chosenIds) {
 			let childNode = this.draftTree.getChildNodeById(id)
-			if(childNode.buildAssessment){
+			if (childNode.buildAssessment) {
 				chosenChildren.push(childNode.buildAssessment(questionUsesMap))
 			}
 		}
@@ -118,7 +118,6 @@ class QuestionBank extends DraftNode {
 				.slice(0, choose)
 		)
 	}
-
 }
 
 module.exports = QuestionBank

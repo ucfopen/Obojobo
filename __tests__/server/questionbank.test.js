@@ -1,12 +1,15 @@
 import QuestionBank from '../../server/questionbank'
 
+//jest.mock('../../logger')
+
 const testJson = require('../../test-object.json')
 const DraftDocument = oboRequire('models/draft')
 const OboNode = oboRequire('models/draft_node')
 const _ = require('underscore')
+const logger = oboRequire('logger')
 
 const SELECT_SEQUENTIAL = 'sequential'
-const SELECT_RANDOM = 'random_all'
+const SELECT_RANDOM = 'random'
 const SELECT_RANDOM_UNSEEN = 'random_unseen'
 
 describe('QuestionBank', () => {
@@ -433,6 +436,9 @@ describe('QuestionBank', () => {
 				]
 			})
 		)
+		expect(logger.error.mock.calls[0]).toEqual([
+			'Invalid Select Type for QuestionBank: mock-invalid-selection'
+		])
 	})
 
 	test('getContentValues returns values for choose and select', () => {
