@@ -2724,7 +2724,6 @@ var AssessmentStore = function (_Store) {
 
 				_this2.triggerChange();
 			}).catch(function (e) {
-				console.error("error starting assessment");
 				console.error(e);
 			});
 		}

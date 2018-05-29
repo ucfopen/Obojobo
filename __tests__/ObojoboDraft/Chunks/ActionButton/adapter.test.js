@@ -4,7 +4,7 @@ import Common from 'Common'
 const TextGroup = Common.textGroup.TextGroup
 
 describe('ActionButton adapter', () => {
-	it('can be constructed WITHOUT attributes', () => {
+	test('construct builds without attributes', () => {
 		let model = { modelState: {} }
 		let expected = { modelState: { align: 'center', label: '' } }
 		ActionButtonAdapter.construct(model)
@@ -12,7 +12,7 @@ describe('ActionButton adapter', () => {
 		expect(model).toEqual(expected)
 	})
 
-	it('can be constructed WITH attributes', () => {
+	test('construct builds with label attributes', () => {
 		let model = { modelState: {} }
 		let attrs = {
 			content: {
@@ -38,7 +38,67 @@ describe('ActionButton adapter', () => {
 		expect(model).toEqual(expected)
 	})
 
-	it('can be cloned', () => {
+	test('construct builds with textGroup attributes', () => {
+		let model = { modelState: {} }
+		let attrs = {
+			content: {
+				textGroup: 'mockText',
+				triggers: [
+					{
+						type: 'onClick',
+						actions: [
+							{
+								type: 'assessment:startAttempt',
+								value: {
+									id: 'assessment'
+								}
+							}
+						]
+					}
+				]
+			}
+		}
+		let expected = {
+			modelState: {
+				textGroup: 'mockTextGroup',
+				align: 'center'
+			}
+		}
+
+		TextGroup.fromDescriptor = jest.fn().mockReturnValueOnce('mockTextGroup')
+		ActionButtonAdapter.construct(model, attrs)
+
+		expect(model).toEqual(expected)
+	})
+
+	test('construct builds with align attributes', () => {
+		let model = { modelState: {} }
+		let attrs = {
+			content: {
+				label: 'Start Assessment',
+				align: 'right',
+				triggers: [
+					{
+						type: 'onClick',
+						actions: [
+							{
+								type: 'assessment:startAttempt',
+								value: {
+									id: 'assessment'
+								}
+							}
+						]
+					}
+				]
+			}
+		}
+		let expected = { modelState: { label: 'Start Assessment', align: 'right' } }
+		ActionButtonAdapter.construct(model, attrs)
+
+		expect(model).toEqual(expected)
+	})
+
+	test('clone produces an identical copy without a textGroup', () => {
 		let a = { modelState: {} }
 		let b = { modelState: {} }
 
@@ -49,7 +109,38 @@ describe('ActionButton adapter', () => {
 		expect(a.modelState).toEqual(b.modelState)
 	})
 
-	it('can be converted to JSON', () => {
+	test('clone produces an identical copy with a textGroup', () => {
+		let a = {
+			modelState: {
+				textGroup: {
+					clone: jest.fn().mockReturnValueOnce('mockClone')
+				}
+			}
+		}
+		let b = {
+			modelState: {
+				textGroup: {}
+			}
+		}
+
+		ActionButtonAdapter.construct(a)
+		ActionButtonAdapter.clone(a, b)
+
+		expect(a).not.toBe(b)
+		// Does not produce identical modelStates due to mocking of recursive clone()
+		// Would produce identical clone in code
+		expect(a.modelState).toEqual({
+			align: 'center',
+			label: '',
+			textGroup: { clone: expect.any(Function) }
+		})
+		expect(b.modelState).toEqual({
+			align: 'center',
+			textGroup: 'mockClone'
+		})
+	})
+
+	test('toJSON builds a JSON representation with a label', () => {
 		let model = { modelState: {} }
 		let attrs = {
 			content: {
@@ -93,5 +184,74 @@ describe('ActionButton adapter', () => {
 		ActionButtonAdapter.toJSON(model, attrs)
 
 		expect(attrs).toEqual(expected)
+	})
+
+	test('toJSON builds a JSON representation with a textGroup', () => {
+		let model = { modelState: {} }
+		let attrs = {
+			content: {
+				textGroup: 'mockText',
+				triggers: [
+					{
+						type: 'onClick',
+						actions: [
+							{
+								type: 'assessment:startAttempt',
+								value: {
+									id: 'assessment'
+								}
+							}
+						]
+					}
+				]
+			}
+		}
+
+		let expected = {
+			content: {
+				align: 'center',
+				textGroup: 'mockTextGroup',
+				triggers: [
+					{
+						actions: [
+							{
+								type: 'assessment:startAttempt',
+								value: {
+									id: 'assessment'
+								}
+							}
+						],
+						type: 'onClick'
+					}
+				]
+			}
+		}
+
+		TextGroup.fromDescriptor = jest.fn().mockReturnValueOnce({
+			toDescriptor: jest.fn().mockReturnValueOnce('mockTextGroup')
+		})
+
+		ActionButtonAdapter.construct(model, attrs)
+		ActionButtonAdapter.toJSON(model, attrs)
+
+		expect(attrs).toEqual(expected)
+	})
+
+	test('toText returns the expected value from a model', () => {
+		let a = {
+			modelState: {
+				textGroup: {
+					first: {
+						text: {
+							value: 'mockText'
+						}
+					}
+				}
+			}
+		}
+
+		let text = ActionButtonAdapter.toText(a)
+
+		expect(text).toEqual('mockText')
 	})
 })
