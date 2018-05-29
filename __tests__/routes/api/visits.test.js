@@ -368,7 +368,7 @@ describe('api visits route', () => {
 			)
 			expect(mockRes.success).toBeCalledWith({
 				visitId: 9,
-				isPreviewing: false,
+				isPreviewing: true,
 				lti: {
 					lis_outcome_service_url: null
 				},
@@ -401,7 +401,6 @@ describe('api visits route', () => {
 			expect(caliperEvent().createViewerSessionLoggedInEvent).toBeCalledWith({
 				actor: { id: 2, type: 'user' },
 				draftId: 99,
-				isPreviewMode: undefined,
 				sessionIds: { launchId: undefined, sessionId: undefined }
 			})
 		})

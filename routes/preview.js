@@ -14,7 +14,7 @@ router.get('/:draftId', (req, res, next) => {
 	return req
 		.requireCurrentUser()
 		.then(currentUser => {
-			if (!currentUser.canViewEditor) throw new Error('Not authorized to preview')
+			if (!currentUser.canPreview) throw new Error('Not authorized to preview')
 
 			user = currentUser
 			return Visit.createPreviewVisit(currentUser.id, req.params.draftId)
@@ -35,7 +35,6 @@ router.get('/:draftId', (req, res, next) => {
 				eventVersion: '1.0.0',
 				caliperPayload: createVisitCreateEvent({
 					actor: { type: ACTOR_USER, id: user.id },
-					isPreviewMode: user.canViewEditor,
 					sessionIds: getSessionIds(req.session),
 					visitId,
 					extensions: { deactivatedVisitId }

@@ -19,7 +19,7 @@ let getCurrentUser = (req, isRequired = false) => {
 
 	// no session data
 	// if isRequired returns a promise rejection
-	// if not require, resovles with a GuestUser
+	// if not require, resolves with a GuestUser
 	if (!req.session || !req.session.currentUserId) {
 		if (isRequired) {
 			logger.warn(

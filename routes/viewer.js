@@ -43,7 +43,6 @@ router.post('/:draftId/:page?', (req, res, next) => {
 				eventVersion: '1.0.0',
 				caliperPayload: createVisitCreateEvent({
 					actor: { type: ACTOR_USER, id: user.id },
-					isPreviewMode: user.canViewEditor,
 					sessionIds: getSessionIds(req.session),
 					visitId,
 					extensions: { deactivatedVisitId }
@@ -99,7 +98,6 @@ router.get('/:draftId/visit/:visitId*', (req, res, next) => {
 				eventVersion: '1.1.0',
 				caliperPayload: createViewerOpenEvent({
 					actor: { type: ACTOR_USER, id: user.id },
-					isPreviewMode: user.canViewEditor,
 					sessionIds: getSessionIds(req.session),
 					visitId: req.params.visitId
 				})

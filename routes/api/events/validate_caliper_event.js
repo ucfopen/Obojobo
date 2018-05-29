@@ -2,7 +2,7 @@ let { ACTOR_USER } = require('./caliper_constants')
 
 let caliperEventRequirements = {
 	required: ['actor'],
-	optional: ['isPreviewMode', 'extensions', 'sessionIds']
+	optional: ['extensions', 'sessionIds']
 }
 
 // @TODO decouple caliper specifics
@@ -50,17 +50,14 @@ let validateArguments = (
 }
 
 let assignOptions = obj => {
-	if (obj.isPreviewMode == null) obj.isPreviewMode = false
-	let options = { isPreviewMode: obj.isPreviewMode }
-
 	if (obj.sessionIds) {
 		let required = ['sessionId', 'launchId']
 		validateArguments({ required }, obj.sessionIds, null, null)
-		return Object.assign(options, {
+		return {
 			sessionId: obj.sessionIds.sessionId,
 			launchId: obj.sessionIds.launchId
-		})
-	} else return options
+		}
+	} else return {}
 }
 
 module.exports = { validateArguments, assignOptions }

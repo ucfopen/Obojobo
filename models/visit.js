@@ -27,11 +27,7 @@ let deactivateOldVisitsAndCreateNewVisit = (
 			}
 		)
 		.then(deactivatedVisits => {
-			// get the visits and squash them into an array of ids
-			deactivatedVisitIds = null
-			if (deactivatedVisits && deactivatedVisits.length) {
-				deactivatedVisitIds = deactivatedVisits.map(visit => visit.id)
-			}
+			deactivatedVisitIds = deactivatedVisits ? deactivatedVisits.map(visit => visit.id) : null
 
 			return db.one(
 				// get id of the newest version of the draft

@@ -124,7 +124,6 @@ describe('viewer route', () => {
 			})
 			expect(caliperEvent().createViewerOpenEvent).toBeCalledWith({
 				actor: { id: 1, type: 'user' },
-				isPreviewMode: undefined,
 				sessionIds: { launchId: undefined, sessionId: undefined },
 				visitId: 'mocked-visit-id'
 			})
@@ -204,7 +203,6 @@ describe('viewer route', () => {
 			})
 			expect(caliperEvent().createVisitCreateEvent).toBeCalledWith({
 				actor: { id: 1, type: 'user' },
-				isPreviewMode: undefined,
 				sessionIds: { launchId: undefined, sessionId: undefined },
 				visitId: 'mocked-visit-id',
 				extensions: { deactivatedVisitId: 'mocked-deactivated-visit-id' }

@@ -96,7 +96,6 @@ router.post('/start', (req, res, next) => {
 				caliperPayload: createViewerSessionLoggedInEvent({
 					actor: { type: ACTOR_USER, id: user.id },
 					draftId,
-					isPreviewMode: user.canViewEditor,
 					sessionIds: getSessionIds(req.session)
 				})
 			})
@@ -116,9 +115,7 @@ router.post('/start', (req, res, next) => {
 
 			res.success({
 				visitId,
-				//@TODO: This should be if visit.preview === true but we can't do that until the
-				// rest of the code uses visit.preview instead of user.canViewEditor
-				isPreviewing: user.canViewEditor ? user.canViewEditor : false,
+				isPreviewing: visit.is_preview,
 				lti,
 				viewState,
 				extensions: visitStartReturnExtensionsProps

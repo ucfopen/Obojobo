@@ -61,12 +61,12 @@ describe('preview route', () => {
 		expect(mockRouterMethods.get).toBeCalledWith('/:draftId', expect.any(Function))
 	})
 
-	test('GET preview/:draftId redirects to a visit (if user can view the editor)', () => {
+	test('GET preview/:draftId redirects to a visit (if user can view preview)', () => {
 		expect.assertions(2)
 
 		let routeFunction = mockRouterMethods.get.mock.calls[0][1]
 		let user = new User()
-		user.canViewEditor = () => true
+		user.canPreview = true
 
 		mockReq.requireCurrentUser.mockResolvedValueOnce(user)
 
@@ -76,7 +76,7 @@ describe('preview route', () => {
 		})
 	})
 
-	test('GET preview/:draftId fails if user cannot view the editor', () => {
+	test('GET preview/:draftId fails if user cannot view preview', () => {
 		expect.assertions(2)
 
 		let routeFunction = mockRouterMethods.get.mock.calls[0][1]
@@ -109,7 +109,7 @@ describe('preview route', () => {
 		expect.assertions(2)
 		let routeFunction = mockRouterMethods.get.mock.calls[0][1]
 		let user = new User()
-		user.canViewEditor = true
+		user.canPreview = true
 		mockReq.requireCurrentUser.mockResolvedValueOnce(user)
 
 		return routeFunction(mockReq, mockRes, mockNext).then(result => {
@@ -126,7 +126,6 @@ describe('preview route', () => {
 			})
 			expect(mockCreateVisitCreateEvent).toBeCalledWith({
 				actor: { id: 1, type: 'user' },
-				isPreviewMode: true,
 				extensions: { deactivatedVisitId: 'mocked-deactivated-visit-id' },
 				visitId: 'mocked-visit-id',
 				sessionIds: { launchId: undefined, sessionId: undefined }

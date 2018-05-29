@@ -11,7 +11,6 @@ module.exports = req => {
 	let caliperEvents = require('./create_caliper_event')(req, null, true)
 	let currentUser = req.currentUser || { id: null }
 	let clientEvent = req.body.event
-	let isPreviewMode = currentUser.canViewEditor
 	let sessionId, launchId
 	let sessionIds = getSessionIds(req.session)
 
@@ -31,7 +30,6 @@ module.exports = req => {
 				draftId: clientEvent.draft_id,
 				from: clientEvent.payload.from,
 				to: clientEvent.payload.to,
-				isPreviewMode,
 				sessionIds,
 				extensions: {
 					navType: clientEvent.action.split(':')[1],
@@ -43,7 +41,6 @@ module.exports = req => {
 			return caliperEvents.createNavMenuShowedEvent({
 				actor: actorFromType(ACTOR_USER),
 				draftId: clientEvent.draft_id,
-				isPreviewMode,
 				sessionIds,
 				extensions: {
 					navType: clientEvent.action.split(':')[1],
@@ -55,7 +52,6 @@ module.exports = req => {
 			return caliperEvents.createNavMenuHidEvent({
 				actor: actorFromType(ACTOR_USER),
 				draftId: clientEvent.draft_id,
-				isPreviewMode,
 				sessionIds,
 				extensions: {
 					navType: clientEvent.action.split(':')[1],
@@ -67,7 +63,6 @@ module.exports = req => {
 			return caliperEvents.createNavMenuToggledEvent({
 				actor: actorFromType(ACTOR_USER),
 				draftId: clientEvent.draft_id,
-				isPreviewMode,
 				sessionIds,
 				extensions: {
 					navType: clientEvent.action.split(':')[1],
@@ -80,7 +75,6 @@ module.exports = req => {
 			return caliperEvents.createNavMenuDeactivatedEvent({
 				actor: actorFromType(ACTOR_VIEWER_CLIENT),
 				draftId: clientEvent.draft_id,
-				isPreviewMode,
 				sessionIds,
 				extensions: {
 					navType: clientEvent.action.split(':')[1],
@@ -92,7 +86,6 @@ module.exports = req => {
 			return caliperEvents.createNavMenuActivatedEvent({
 				actor: actorFromType(ACTOR_VIEWER_CLIENT),
 				draftId: clientEvent.draft_id,
-				isPreviewMode,
 				sessionIds,
 				extensions: {
 					navType: clientEvent.action.split(':')[1],
@@ -106,7 +99,6 @@ module.exports = req => {
 				actor: actorFromType(ACTOR_USER),
 				draftId: clientEvent.draft_id,
 				itemId: clientEvent.payload.questionId,
-				isPreviewMode,
 				sessionIds
 			})
 
@@ -115,7 +107,6 @@ module.exports = req => {
 				actor: actorFromType(ACTOR_USER),
 				draftId: clientEvent.draft_id,
 				questionId: clientEvent.payload.questionId,
-				isPreviewMode,
 				sessionIds
 			})
 
@@ -124,7 +115,6 @@ module.exports = req => {
 				actor: actorFromType(ACTOR_USER),
 				draftId: clientEvent.draft_id,
 				questionId: clientEvent.payload.questionId,
-				isPreviewMode,
 				sessionIds
 			})
 
@@ -134,7 +124,6 @@ module.exports = req => {
 				draftId: clientEvent.draft_id,
 				itemId: clientEvent.payload.questionId,
 				frameName: 'explanation',
-				isPreviewMode,
 				sessionIds
 			})
 
@@ -144,7 +133,6 @@ module.exports = req => {
 				draftId: clientEvent.draft_id,
 				questionId: clientEvent.payload.questionId,
 				frameName: 'explanation',
-				isPreviewMode,
 				sessionIds
 			})
 
@@ -158,7 +146,6 @@ module.exports = req => {
 				attemptId: clientEvent.payload.attemptId,
 				selectedTargets: clientEvent.payload.response,
 				targetId: clientEvent.payload.targetId,
-				isPreviewMode,
 				sessionIds
 			})
 
@@ -169,7 +156,6 @@ module.exports = req => {
 				questionId: clientEvent.payload.itemId,
 				scoreId: clientEvent.payload.id,
 				score: clientEvent.payload.score,
-				isPreviewMode,
 				sessionIds
 			})
 
@@ -179,7 +165,6 @@ module.exports = req => {
 				draftId: clientEvent.draft_id,
 				questionId: clientEvent.payload.itemId,
 				scoreId: clientEvent.payload.id,
-				isPreviewMode,
 				sessionIds
 			})
 
@@ -188,7 +173,6 @@ module.exports = req => {
 				actor: actorFromType(ACTOR_USER),
 				draftId: clientEvent.draft_id,
 				questionId: clientEvent.payload.questionId,
-				isPreviewMode,
 				sessionIds
 			})
 
@@ -196,7 +180,6 @@ module.exports = req => {
 			return caliperEvents.createViewerAbandonedEvent({
 				actor: actorFromType(ACTOR_USER),
 				draftId: clientEvent.draft_id,
-				isPreviewMode,
 				sessionIds,
 				extensions: {
 					type: 'inactive',
@@ -209,7 +192,6 @@ module.exports = req => {
 			return caliperEvents.createViewerResumedEvent({
 				actor: actorFromType(ACTOR_USER),
 				draftId: clientEvent.draft_id,
-				isPreviewMode,
 				sessionIds,
 				extensions: {
 					type: 'returnFromInactive',
@@ -223,7 +205,6 @@ module.exports = req => {
 			return caliperEvents.createViewerSessionLoggedOutEvent({
 				actor: actorFromType(ACTOR_USER),
 				draftId: clientEvent.draft_id,
-				isPreviewMode,
 				sessionIds
 			})
 
@@ -231,7 +212,6 @@ module.exports = req => {
 			return caliperEvents.createViewerAbandonedEvent({
 				actor: actorFromType(ACTOR_USER),
 				draftId: clientEvent.draft_id,
-				isPreviewMode,
 				sessionIds,
 				extensions: {
 					type: 'leave'
@@ -242,7 +222,6 @@ module.exports = req => {
 			return caliperEvents.createViewerResumedEvent({
 				actor: actorFromType(ACTOR_USER),
 				draftId: clientEvent.draft_id,
-				isPreviewMode,
 				sessionIds,
 				extensions: {
 					type: 'return',
