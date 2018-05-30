@@ -1,11 +1,11 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
-exports[`Figure adapter can be constructed WITH attributes 1`] = `
+exports[`Figure adapter construct WITH attributes 1`] = `
 Object {
   "modelState": Object {
     "alt": "An image",
-    "height": null,
-    "size": "small",
+    "height": 100,
+    "size": "custom",
     "textGroup": TextGroup {
       "dataTemplate": Object {
         "align": "left",
@@ -29,12 +29,12 @@ Object {
       "maxItems": 1,
     },
     "url": "http://website.com/image.jpg",
-    "width": null,
+    "width": 100,
   },
 }
 `;
 
-exports[`Figure adapter can be constructed WITHOUT attributes 1`] = `
+exports[`Figure adapter construct WITHOUT attributes 1`] = `
 Object {
   "modelState": Object {
     "alt": null,

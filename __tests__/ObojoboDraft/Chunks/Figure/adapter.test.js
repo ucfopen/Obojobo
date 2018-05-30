@@ -6,18 +6,21 @@ import StylableText from '../../../../src/scripts/common/text/styleable-text'
 const { TextGroupAdapter } = Common.chunk.textChunk
 
 describe('Figure adapter', () => {
-	it('can be constructed WITHOUT attributes', () => {
+	test('construct WITHOUT attributes', () => {
 		let model = { modelState: {} }
 		FigureAdapter.construct(model)
 
 		expect(model).toMatchSnapshot()
 	})
 
-	it('can be constructed WITH attributes', () => {
+	test('construct WITH attributes', () => {
 		let model = { modelState: {} }
 		let attrs = {
 			content: {
 				url: 'http://website.com/image.jpg',
+				size: 'custom',
+				width: 100,
+				height: 100,
 				alt: 'An image'
 			}
 		}
@@ -26,7 +29,7 @@ describe('Figure adapter', () => {
 		expect(model).toMatchSnapshot()
 	})
 
-	it('can be cloned', () => {
+	test('clone creates a copy', () => {
 		let a = { modelState: {} }
 		let b = { modelState: {} }
 
@@ -37,7 +40,7 @@ describe('Figure adapter', () => {
 		expect(a.modelState).toEqual(b.modelState)
 	})
 
-	it('can be converted to JSON', () => {
+	test('toJSON creates a JSON representation', () => {
 		let model = { modelState: {} }
 		let attrs = {
 			content: {
@@ -73,7 +76,7 @@ describe('Figure adapter', () => {
 		expect(attrs).toEqual(expected)
 	})
 
-	it('can be converted to text', () => {
+	test('toText creates the expected text', () => {
 		let modelAlt = { modelState: {} }
 		let modelTextGroup = { modelState: {} }
 		let tg = TextGroup.create()
