@@ -151,7 +151,7 @@ var Adapter = {
 		return json.content.listStyles = model.modelState.listStyles.toDescriptor();
 	},
 	toText: function toText(model) {
-		console.log('@TODO - List toText method');
+		//@TODO - List toText method'
 		var text = '';
 		var _iteratorNormalCompletion = true;
 		var _didIteratorError = false;
@@ -296,9 +296,11 @@ exports.default = function (props) {
 	for (var itemIndex = 0; itemIndex < texts.items.length; itemIndex++) {
 		// if this item is lower than the current indent level...
 		var item = texts.items[itemIndex];
+		console.log(item.text.value);
 		if (item.data.indent < curIndentLevel) {
 			// traverse up the tree looking for our curUl:
 			while (curIndentLevel > item.data.indent) {
+				console.log('going up');
 				curUl = curUl.parent.parent;
 				curIndentLevel--;
 			}
@@ -307,7 +309,12 @@ exports.default = function (props) {
 		} else if (item.data.indent > curIndentLevel) {
 			// traverse down the tree...
 			while (curIndentLevel < item.data.indent) {
+				console.log('going down');
 				curIndentLevel++;
+
+				if (curUl.lastChild.lastChild != null) {
+					console.log(curUl.lastChild.lastChild);
+				}
 
 				// if the last LI's last child isn't a UL, create it
 				if ((curUl.lastChild.lastChild != null ? curUl.lastChild.lastChild.type : undefined) !== 'ul' && (curUl.lastChild.lastChild != null ? curUl.lastChild.lastChild.type : undefined) !== 'ol') {

@@ -89,9 +89,11 @@ export default props => {
 	for (let itemIndex = 0; itemIndex < texts.items.length; itemIndex++) {
 		// if this item is lower than the current indent level...
 		let item = texts.items[itemIndex]
+		console.log(item.text.value)
 		if (item.data.indent < curIndentLevel) {
 			// traverse up the tree looking for our curUl:
 			while (curIndentLevel > item.data.indent) {
+				console.log('going up')
 				curUl = curUl.parent.parent
 				curIndentLevel--
 			}
@@ -100,7 +102,12 @@ export default props => {
 		} else if (item.data.indent > curIndentLevel) {
 			// traverse down the tree...
 			while (curIndentLevel < item.data.indent) {
+				console.log('going down')
 				curIndentLevel++
+
+				if (curUl.lastChild.lastChild != null) {
+					console.log(curUl.lastChild.lastChild)
+				}
 
 				// if the last LI's last child isn't a UL, create it
 				if (
