@@ -1,6 +1,6 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
-exports[`Image creates an image with a custom url of a custom size 1`] = `
+exports[`Image Image component with a custom url of a custom size 1`] = `
 ShallowWrapper {
   "length": 1,
   Symbol(enzyme.__root__): [Circular],
@@ -69,7 +69,7 @@ ShallowWrapper {
 }
 `;
 
-exports[`Image creates an image with a custom url of a preset size 1`] = `
+exports[`Image Image component with a custom url of a preset size 1`] = `
 ShallowWrapper {
   "length": 1,
   Symbol(enzyme.__root__): [Circular],
@@ -129,7 +129,7 @@ ShallowWrapper {
 }
 `;
 
-exports[`Image creates an image with height only 1`] = `
+exports[`Image Image component with height only 1`] = `
 ShallowWrapper {
   "length": 1,
   Symbol(enzyme.__root__): [Circular],
@@ -195,7 +195,7 @@ ShallowWrapper {
 }
 `;
 
-exports[`Image creates an image with width only 1`] = `
+exports[`Image Image component with width only 1`] = `
 ShallowWrapper {
   "length": 1,
   Symbol(enzyme.__root__): [Circular],
@@ -261,7 +261,7 @@ ShallowWrapper {
 }
 `;
 
-exports[`Image renders without error 1`] = `
+exports[`Image Image component without error 1`] = `
 ShallowWrapper {
   "length": 1,
   Symbol(enzyme.__root__): [Circular],

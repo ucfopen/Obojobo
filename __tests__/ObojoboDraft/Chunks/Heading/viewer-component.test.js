@@ -25,9 +25,68 @@ describe('Heading', () => {
 	}
 
 	test('Heading component', () => {
-		const component = renderer.create(<Heading model={model} moduleData={moduleData} />)
-		let tree = component.toJSON()
+		let model = OboModel.create({
+			id: 'id',
+			type: 'ObojoboDraft.Chunks.Heading',
+			content: {
+				headingLevel: 1,
+				textGroup: [
+					{
+						text: {
+							value: 'Example Text'
+						}
+					}
+				]
+			}
+		})
 
+		const component = renderer.create(<Heading model={model} moduleData={moduleData} />)
+
+		let tree = component.toJSON()
+		expect(tree).toMatchSnapshot()
+	})
+
+	test('Heading component level 2', () => {
+		let model = OboModel.create({
+			id: 'id',
+			type: 'ObojoboDraft.Chunks.Heading',
+			content: {
+				headingLevel: 2,
+				textGroup: [
+					{
+						text: {
+							value: 'Example Text'
+						}
+					}
+				]
+			}
+		})
+
+		const component = renderer.create(<Heading model={model} moduleData={moduleData} />)
+
+		let tree = component.toJSON()
+		expect(tree).toMatchSnapshot()
+	})
+
+	test('Heading component level 3', () => {
+		let model = OboModel.create({
+			id: 'id',
+			type: 'ObojoboDraft.Chunks.Heading',
+			content: {
+				headingLevel: 3,
+				textGroup: [
+					{
+						text: {
+							value: 'Example Text'
+						}
+					}
+				]
+			}
+		})
+
+		const component = renderer.create(<Heading model={model} moduleData={moduleData} />)
+
+		let tree = component.toJSON()
 		expect(tree).toMatchSnapshot()
 	})
 })

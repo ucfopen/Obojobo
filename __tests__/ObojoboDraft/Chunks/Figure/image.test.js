@@ -46,20 +46,20 @@ describe('Image', () => {
 			/>
 		)
 	})
-	test('renders without error', () => {
+	test('Image component without error', () => {
 		expect(shallow(imageSm)).toMatchSnapshot()
 	})
-	test('creates an image with a custom url of a preset size', () => {
+	test('Image component with a custom url of a preset size', () => {
 		expect(shallow(imageSmUrl)).toMatchSnapshot()
 	})
 
-	test('creates an image with a custom url of a custom size', () => {
+	test('Image component with a custom url of a custom size', () => {
 		expect(shallow(imageCustom)).toMatchSnapshot()
 	})
-	test('creates an image with height only', () => {
+	test('Image component with height only', () => {
 		expect(shallow(imageHeightOnly)).toMatchSnapshot()
 	})
-	test('creates an image with width only', () => {
+	test('Image component with width only', () => {
 		expect(shallow(imageWidthOnly)).toMatchSnapshot()
 	})
 })

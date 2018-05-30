@@ -4,7 +4,7 @@ import Common from 'Common'
 const TextGroup = Common.textGroup.TextGroup
 
 describe('ActionButton adapter', () => {
-	test('construct without attributes', () => {
+	test('construct builds without attributes', () => {
 		let model = { modelState: {} }
 		let expected = { modelState: { width: 'normal' } }
 		BreakAdapter.construct(model)
@@ -12,7 +12,7 @@ describe('ActionButton adapter', () => {
 		expect(model).toEqual(expected)
 	})
 
-	test('construct with attributes', () => {
+	test('construct builds with attributes', () => {
 		let model = { modelState: {} }
 		let attrs = { content: { width: 'large' } }
 		let expected = { modelState: { width: 'large' } }
@@ -21,7 +21,7 @@ describe('ActionButton adapter', () => {
 		expect(model).toEqual(expected)
 	})
 
-	test('toText returns dashes', () => {
+	test('toText creates a text representation', () => {
 		let model = { modelState: { width: 'large' } }
 		let text = BreakAdapter.toText(model)
 

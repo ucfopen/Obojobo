@@ -6,14 +6,14 @@ import StylableText from '../../../../src/scripts/common/text/styleable-text'
 const { TextGroupAdapter } = Common.chunk.textChunk
 
 describe('Figure adapter', () => {
-	test('construct WITHOUT attributes', () => {
+	test('construct builds without attributes', () => {
 		let model = { modelState: {} }
 		FigureAdapter.construct(model)
 
 		expect(model).toMatchSnapshot()
 	})
 
-	test('construct WITH attributes', () => {
+	test('construct builds with attributes', () => {
 		let model = { modelState: {} }
 		let attrs = {
 			content: {
@@ -76,7 +76,7 @@ describe('Figure adapter', () => {
 		expect(attrs).toEqual(expected)
 	})
 
-	test('toText creates the expected text', () => {
+	test('toText creates a text representation', () => {
 		let modelAlt = { modelState: {} }
 		let modelTextGroup = { modelState: {} }
 		let tg = TextGroup.create()

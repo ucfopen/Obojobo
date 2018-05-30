@@ -98,7 +98,7 @@ describe('ActionButton adapter', () => {
 		expect(model).toEqual(expected)
 	})
 
-	test('clone produces an identical copy without a textGroup', () => {
+	test('clone creates a copy without a textGroup', () => {
 		let a = { modelState: {} }
 		let b = { modelState: {} }
 
@@ -109,7 +109,7 @@ describe('ActionButton adapter', () => {
 		expect(a.modelState).toEqual(b.modelState)
 	})
 
-	test('clone produces an identical copy with a textGroup', () => {
+	test('clone creates a copy with a textGroup', () => {
 		let a = {
 			modelState: {
 				textGroup: {
@@ -237,7 +237,7 @@ describe('ActionButton adapter', () => {
 		expect(attrs).toEqual(expected)
 	})
 
-	test('toText returns the expected value from a model', () => {
+	test('toText creates a text representation', () => {
 		let a = {
 			modelState: {
 				textGroup: {

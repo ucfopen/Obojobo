@@ -1,6 +1,6 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
-exports[`Figure adapter construct WITH attributes 1`] = `
+exports[`Figure adapter construct builds with attributes 1`] = `
 Object {
   "modelState": Object {
     "alt": "An image",
@@ -34,7 +34,7 @@ Object {
 }
 `;
 
-exports[`Figure adapter construct WITHOUT attributes 1`] = `
+exports[`Figure adapter construct builds without attributes 1`] = `
 Object {
   "modelState": Object {
     "alt": null,
