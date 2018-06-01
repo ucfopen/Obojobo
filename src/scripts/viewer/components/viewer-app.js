@@ -12,10 +12,12 @@ import Logo from '../../viewer/components/logo'
 import QuestionStore from '../../viewer/stores/question-store'
 import AssessmentStore from '../../viewer/stores/assessment-store'
 import NavStore from '../../viewer/stores/nav-store'
+import MediaStore from '../../viewer/stores/media-store'
 import Nav from './nav'
 import getLTIOutcomeServiceHostname from '../../viewer/util/get-lti-outcome-service-hostname'
 
 const IDLE_TIMEOUT_DURATION_MS = 600000 // 10 minutes
+const NAV_CLOSE_DURATION_MS = 400
 
 let { Legacy } = Common.models
 let { DOMUtil } = Common.page
@@ -49,13 +51,17 @@ export default class ViewerApp extends React.Component {
 		Dispatcher.on('viewer:scrollTo', payload => {
 			return (ReactDOM.findDOMNode(this.refs.container).scrollTop = payload.value)
 		})
-
 		Dispatcher.on('viewer:scrollToTop', this.scrollToTop.bind(this))
 		Dispatcher.on('getTextForVariable', this.getTextForVariable.bind(this))
+
+		Dispatcher.on('nav:open', this.onDelayResize.bind(this))
+		Dispatcher.on('nav:close', this.onDelayResize.bind(this))
+		Dispatcher.on('nav:toggle', this.onDelayResize.bind(this))
 
 		let state = {
 			model: null,
 			navState: null,
+			mediaState: null,
 			questionState: null,
 			assessmentState: null,
 			modalState: null,
@@ -74,6 +80,7 @@ export default class ViewerApp extends React.Component {
 			this.setState({ assessmentState: AssessmentStore.getState() })
 		this.onModalStoreChange = () => this.setState({ modalState: ModalStore.getState() })
 		this.onFocusStoreChange = () => this.setState({ focusState: FocusStore.getState() })
+		this.onMediaStoreChange = () => this.setState({ mediaState: MediaStore.getState() })
 
 		this.onIdle = this.onIdle.bind(this)
 		this.onReturnFromIdle = this.onReturnFromIdle.bind(this)
@@ -104,6 +111,7 @@ export default class ViewerApp extends React.Component {
 				QuestionStore.init()
 				ModalStore.init()
 				FocusStore.init()
+				MediaStore.init()
 
 				if (visit.status !== 'ok') throw 'Invalid Visit Id'
 
@@ -128,6 +136,7 @@ export default class ViewerApp extends React.Component {
 				AssessmentStore.init(attemptHistory)
 
 				this.state.navState = NavStore.getState()
+				this.state.mediaState = MediaStore.getState()
 				this.state.questionState = QuestionStore.getState()
 				this.state.assessmentState = AssessmentStore.getState()
 				this.state.modalState = ModalStore.getState()
@@ -136,6 +145,7 @@ export default class ViewerApp extends React.Component {
 
 				window.onbeforeunload = this.onBeforeWindowClose
 				window.onunload = this.onWindowClose
+				window.onresize = this.onResize.bind(this)
 
 				this.setState({ loading: false, requestStatus: 'ok', isPreviewing }, () => {
 					Dispatcher.trigger('viewer:loaded', true)
@@ -156,6 +166,7 @@ export default class ViewerApp extends React.Component {
 		AssessmentStore.onChange(this.onAssessmentStoreChange)
 		ModalStore.onChange(this.onModalStoreChange)
 		FocusStore.onChange(this.onFocusStoreChange)
+		MediaStore.onChange(this.onMediaStoreChange)
 	}
 
 	componentWillUnmount() {
@@ -164,6 +175,7 @@ export default class ViewerApp extends React.Component {
 		AssessmentStore.offChange(this.onAssessmentStoreChange)
 		ModalStore.offChange(this.onModalStoreChange)
 		FocusStore.offChange(this.onFocusStoreChange)
+		MediaStore.offChange(this.onMediaStoreChange)
 
 		document.removeEventListener('visibilitychange', this.onVisibilityChange)
 	}
@@ -271,6 +283,17 @@ export default class ViewerApp extends React.Component {
 		if (!Screen.isElementVisible(el)) {
 			return FocusUtil.unfocus()
 		}
+	}
+
+	onResize(event) {
+		Dispatcher.trigger(
+			'viewer:contentAreaResized',
+			ReactDOM.findDOMNode(this.refs.container).getBoundingClientRect().width
+		)
+	}
+
+	onDelayResize() {
+		window.setTimeout(this.onResize.bind(this), NAV_CLOSE_DURATION_MS)
 	}
 
 	onIdle() {

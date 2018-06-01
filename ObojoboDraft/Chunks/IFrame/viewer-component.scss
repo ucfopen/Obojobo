@@ -2,15 +2,299 @@
 
 .obojobo-draft--chunks--iframe {
 	display: block;
-	font-size: 0.8em;
+	font-size: 1em;
 	margin: 0 auto;
-	max-width: $dimension-editor;
-	text-align: left;
-	width: 100%;
+	text-align: center;
 
-	iframe {
-		height: 20em;
-		margin: 0 auto;
+//@TODO - temp stuf:
+	&.is-not-showing {
+		> .container {
+			// background-color: #fdfdfd !important;
+			border: 1px solid transparentize($color-action, 0.8);
+			max-height: 15em;
+
+		}
+	}
+
+	&.is-not-showing {
+		> .new-window-link {
+			visibility: hidden;
+		}
+	}
+
+	&.is-expandable {
+		margin-bottom: 1.5em;
+	}
+
+	&.is-expanded {
+		> .container {
+			position: fixed;
+			left: 0;
+			top: 2.5em;
+			right: 0;
+			bottom: 0;
+			z-index: $z-index-above-all;
+			// top: 50%;
+			// transform: translate(0, -50%);
+
+			top: 0;
+			// display: grid;
+			margin: auto;
+
+			> .iframe-container > iframe {
+				border-radius: $dimension-rounded-radius;
+				position: relative;
+				z-index: 2;
+				background: $color-bg;
+			}
+
+			> .obojobo-draft--components--delete-button {
+				z-index: 2;
+				position: absolute;
+				right: 0;
+				top: 0;
+				transform: translate(0, -120%);
+
+				> button {
+					background: rgba(0, 0, 0, 1);
+					opacity: 0.8;
+
+					&::after {
+						color: white;
+					}
+				}
+
+				&:hover > button {
+					opacity: 1;
+				}
+			}
+		}
+	}
+
+	&.is-bordered.is-showing.is-not-expanded {
+		> .container > .iframe-container {
+			// This gets an outline with rounded corners (border messes up our calculations)
+			$b: darken($color-bg2, 20%);
+			box-shadow: 0 1px 0 $b, 0 -1px 0 $b, 1px 0 0 $b, -1px 0 0 $b, 1px 1px 0 $b, -1px -1px 0 $b, -1px 1px $b, 1px -1px $b;
+		}
+	}
+
+	&.is-not-showing {
+		> .container {
+			border-radius: $dimension-rounded-radius;
+			background-color:  #fdfdfd; // $color-bg2;
+			overflow: hidden;
+			// transition: background-position $duration-animation-default;
+			cursor: pointer;
+
+			&::before {
+				content: " ";
+				display: block;
+				background-image: url('./bg.svg');
+				background-size: 38.16px 38.16px;
+				position: absolute;
+				left: 0;
+				top: 0;
+				right: 0;
+				bottom: 0;
+				transition: transform $duration-animation-default, opacity $duration-animation-default;
+			}
+
+			&:hover {
+				// background-color: lighten($color-action-minor, 20%);
+				background-color: #f9f4ff;
+				// background-position: 3px 0;
+
+				> .click-to-load {
+					transform: translate(-50%, -50%) scale(1.05);
+					transform-origin: center center;
+				}
+
+				&::before {
+					transform: scale(1.2);
+					opacity: 0.4;
+					// background-position: 3px 0;
+				}
+			}
+		}
+	}
+
+	// &.is-scaled-up {
+	// 	> .container > .iframe-container > iframe {
+	// 		transform-origin: top center;
+	// 	}
+	// }
+
+	> .expanded-background {
+		position: fixed;
+		left: 0;
+		top: 0;
+		right: 0;
+		bottom: 0;
+		background: rgba(0, 0, 0, 0.7);
+		z-index: $z-index-above-content;
+	}
+
+	> .container {
+		// @HACK: Enforce pixel perfect children.
+		// Used to make the "Click to load this content" element non-blurry in Chrome
+		transform-style: preserve-3d;
+	}
+
+	> .container,
+	> .container-placeholder {
 		width: 100%;
+		margin: 0 auto;
+		max-width: 100%;
+		position: relative;
+
+		.after {
+			display: block;
+		}
+
+		> .iframe-container {
+			position: absolute;
+			left: 0;
+			top: 0;
+			bottom: 0;
+			right: 0;
+			overflow: hidden;
+			border-radius: $dimension-rounded-radius;
+
+			> iframe {
+				background: $color-bg2;
+				
+			}
+
+			> iframe,
+			> .blocker {
+				width: 100%;
+				height: 100%;
+				transform-origin: top left;
+			}
+		}
+
+		> .click-to-load {
+			position: absolute;
+			left: 50%;
+			top: 50%;
+			transform: translate(-50%, -50%);
+			font-family: $font-default;
+			font-size: 0.8em;
+			line-height: 1.3em;
+			// padding: 1em 2em;
+			box-sizing: border-box;
+			// white-space: nowrap;
+			font-size: 1em;
+			border-radius: $dimension-rounded-radius;
+			// background: transparentize($color-bg, 0.2);
+			// border: 1px solid transparentize($color-action, 0.8);
+			color: $color-text;
+			font-weight: bold;
+			transition: transform 0.2s;
+			max-width: calc(100% - 3em);
+			// max-height: 100%;
+			overflow: hidden;
+
+
+
+
+
+			width: 100%;
+			// height: 100%;
+
+			> .title {
+				display: inline-block;
+				margin-bottom: 1em;
+				font-size: 0.8em;
+				opacity: 0.8;
+				width: 100%;
+				// padding: 0.4em 1.4em;
+				// background: $color-bg;
+				// border-radius: 10em;
+			}
+
+			> .obojobo-draft--components--button {
+				display: block;
+			}
+		}
+
+		> .expand {
+			position: relative;
+
+			> .expand-button {
+				@include user-select(none);
+
+				background-image: url('./expand-button.svg');
+				border: none;
+				width: 2em;
+				height: 2em;
+				overflow: hidden;
+				display: inline-block;
+				padding: 0;
+				border-radius: $dimension-rounded-radius;
+				color: $color-transparent;
+				background-color: $color-bg;
+				background-size: 75%;
+				background-position: center;
+				background-repeat: no-repeat;
+				cursor: pointer;
+				position: absolute;
+				right: 0;
+				top: 0.5em;
+				font-family: $font-default;
+				text-indent: -7em;
+				transition: color $duration-animation-default;
+				word-wrap: initial;
+
+				&:hover {
+					background-color: $color-action;
+					background-image: url('./expand-button-hover.svg');
+					overflow: visible;
+					color: $color-action;
+				}
+			}
+		}
+	}
+
+	> .new-window-link {
+		position: relative;
+		display: inline-block;
+		margin-top: 0.25em;
+		font-family: $font-default;
+		font-size: 0.7em;
+		opacity: 0.75;
+
+		> a {
+			display: inline-block;
+			color: $color-action;
+		}
+
+		> .tool-tip {
+			pointer-events: none;
+			position: absolute;
+			top: -3.5em;
+			left: 50%;
+			transform: translate(-50%);
+			display: none;
+			white-space: nowrap;
+			font-size: 0.8em;
+			color: $color-bg;
+			background: $color-action;
+			border-radius: 3em;
+			line-height: 1em;
+			padding: 0.75em 1.5em;
+			font-weight: bold;
+			font-size: 1em;
+			box-shadow: 0 2px 2px $color-shadow;
+		}
+
+		&:hover {
+			opacity: 1;
+
+			> .tool-tip {
+				display: block;
+			}
+		}
 	}
 }

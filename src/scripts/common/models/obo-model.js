@@ -17,6 +17,14 @@ let DefaultAdapter = {
 	}
 }
 
+let setModelStateProp = (model, attrs, propName, defaultValue, getPropValueFn = p => p) => {
+	if (attrs && attrs.content && typeof attrs.content[propName] !== 'undefined') {
+		model.modelState[propName] = getPropValueFn(attrs.content[propName])
+	} else {
+		model.modelState[propName] = defaultValue
+	}
+}
+
 class OboModel extends Backbone.Model {
 	defaults() {
 		return {
@@ -51,7 +59,7 @@ class OboModel extends Backbone.Model {
 		}
 
 		this.adapter = Object.assign(Object.assign({}, DefaultAdapter), adapter)
-		this.adapter.construct(this, attrs)
+		this.adapter.construct(this, attrs, setModelStateProp.bind(null, this, attrs))
 
 		if ((attrs.content != null ? attrs.content.triggers : undefined) != null) {
 			this.triggers = attrs.content.triggers
