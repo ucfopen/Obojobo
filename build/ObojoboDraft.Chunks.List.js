@@ -296,11 +296,9 @@ exports.default = function (props) {
 	for (var itemIndex = 0; itemIndex < texts.items.length; itemIndex++) {
 		// if this item is lower than the current indent level...
 		var item = texts.items[itemIndex];
-		console.log(item.text.value);
 		if (item.data.indent < curIndentLevel) {
 			// traverse up the tree looking for our curUl:
 			while (curIndentLevel > item.data.indent) {
-				console.log('going up');
 				curUl = curUl.parent.parent;
 				curIndentLevel--;
 			}
@@ -309,28 +307,20 @@ exports.default = function (props) {
 		} else if (item.data.indent > curIndentLevel) {
 			// traverse down the tree...
 			while (curIndentLevel < item.data.indent) {
-				console.log('going down');
 				curIndentLevel++;
 
-				if (curUl.lastChild.lastChild != null) {
-					console.log(curUl.lastChild.lastChild);
-				}
-
-				// if the last LI's last child isn't a UL, create it
-				if ((curUl.lastChild.lastChild != null ? curUl.lastChild.lastChild.type : undefined) !== 'ul' && (curUl.lastChild.lastChild != null ? curUl.lastChild.lastChild.type : undefined) !== 'ol') {
-					var newUl = createMockListElement(data, curIndentLevel);
-					var newLi = new MockElement('li');
-					addItemToList(newUl, newLi, lis);
-					curUl.lastChild.addChild(newUl);
-					curUl = newUl;
-				} else {
-					curUl = curUl.lastChild.lastChild;
-				}
+				// Create the list for this level
+				var newUl = createMockListElement(data, curIndentLevel);
+				var newLi = new MockElement('li');
+				addItemToList(newUl, newLi, lis);
+				curUl.lastChild.addChild(newUl);
+				curUl = newUl;
 			}
 		}
 
 		// if the lastChild is not an LI or it is an LI that already has text inside
-		if (!((curUl.lastChild != null ? curUl.lastChild.type : undefined) === 'li') || (curUl.lastChild != null ? curUl.lastChild.lastChild : undefined) != null) {
+		// lastChild is always defined because of the cals to addItemToList
+		if (!(curUl.lastChild.type === 'li') || curUl.lastChild.lastChild != null) {
 			li = new MockElement('li');
 			addItemToList(curUl, li, lis);
 		}
@@ -351,7 +341,8 @@ exports.default = function (props) {
 		for (var _iterator = Array.from(lis)[Symbol.iterator](), _step; !(_iteratorNormalCompletion = (_step = _iterator.next()).done); _iteratorNormalCompletion = true) {
 			li = _step.value;
 
-			if (__guard__(li.children != null ? li.children[0] : undefined, function (x) {
+			// li will always have .children because MockListElement creates it as an empty array
+			if (__guard__(li.children[0], function (x) {
 				return x.nodeType;
 			}) !== 'text') {
 				li.listStyleType = 'none';

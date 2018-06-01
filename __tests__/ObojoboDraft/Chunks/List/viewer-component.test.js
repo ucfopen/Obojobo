@@ -8,8 +8,36 @@ describe('List', () => {
 	let moduleData = {
 		focusState: {}
 	}
-
 	test('List component', () => {
+		let model = OboModel.create({
+			id: 'id',
+			type: 'ObojoboDraft.Chunks.List',
+			content: {
+				textGroup: [],
+				listStyles: {
+					type: 'ordered',
+					indents: {
+						'2': {
+							type: 'unordered',
+							bulletStyle: 'square'
+						},
+						'4': {
+							type: 'ordered',
+							start: '10',
+							bulletStyle: 'upper-alpha'
+						}
+					}
+				}
+			}
+		})
+
+		const component = renderer.create(<List model={model} moduleData={moduleData} />)
+		let tree = component.toJSON()
+
+		expect(tree).toMatchSnapshot()
+	})
+
+	test('List component with ascending indents', () => {
 		let model = OboModel.create({
 			id: 'id',
 			type: 'ObojoboDraft.Chunks.List',
@@ -93,6 +121,61 @@ describe('List', () => {
 		expect(tree).toMatchSnapshot()
 	})
 
+	test('List component with inverse indentation', () => {
+		let model = OboModel.create({
+			id: 'id',
+			type: 'ObojoboDraft.Chunks.List',
+			content: {
+				textGroup: [
+					{
+						text: {
+							value: 'One(indent=1)',
+							styleList: []
+						},
+						data: '3'
+					},
+					{
+						text: {
+							value: 'Two(indent=2)',
+							styleList: []
+						},
+						data: {
+							indent: '2'
+						}
+					},
+					{
+						text: {
+							value: 'Three(indent=6)',
+							styleList: []
+						},
+						data: {
+							indent: '1'
+						}
+					}
+				],
+				listStyles: {
+					type: 'ordered',
+					indents: {
+						'2': {
+							type: 'unordered',
+							bulletStyle: 'square'
+						},
+						'4': {
+							type: 'ordered',
+							start: '10',
+							bulletStyle: 'upper-alpha'
+						}
+					}
+				}
+			}
+		})
+
+		const component = renderer.create(<List model={model} moduleData={moduleData} />)
+		let tree = component.toJSON()
+
+		expect(tree).toMatchSnapshot()
+	})
+
 	test('List component with irregular indentation', () => {
 		let model = OboModel.create({
 			id: 'id',
@@ -149,15 +232,6 @@ describe('List', () => {
 						},
 						data: {
 							indent: '3'
-						}
-					},
-					{
-						text: {
-							value: 'Seven(indent=5)',
-							styleList: []
-						},
-						data: {
-							indent: '5'
 						}
 					}
 				],

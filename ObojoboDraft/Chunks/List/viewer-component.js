@@ -89,11 +89,9 @@ export default props => {
 	for (let itemIndex = 0; itemIndex < texts.items.length; itemIndex++) {
 		// if this item is lower than the current indent level...
 		let item = texts.items[itemIndex]
-		console.log(item.text.value)
 		if (item.data.indent < curIndentLevel) {
 			// traverse up the tree looking for our curUl:
 			while (curIndentLevel > item.data.indent) {
-				console.log('going up')
 				curUl = curUl.parent.parent
 				curIndentLevel--
 			}
@@ -102,35 +100,20 @@ export default props => {
 		} else if (item.data.indent > curIndentLevel) {
 			// traverse down the tree...
 			while (curIndentLevel < item.data.indent) {
-				console.log('going down')
 				curIndentLevel++
 
-				if (curUl.lastChild.lastChild != null) {
-					console.log(curUl.lastChild.lastChild)
-				}
-
-				// if the last LI's last child isn't a UL, create it
-				if (
-					(curUl.lastChild.lastChild != null ? curUl.lastChild.lastChild.type : undefined) !==
-						'ul' &&
-					(curUl.lastChild.lastChild != null ? curUl.lastChild.lastChild.type : undefined) !== 'ol'
-				) {
-					let newUl = createMockListElement(data, curIndentLevel)
-					let newLi = new MockElement('li')
-					addItemToList(newUl, newLi, lis)
-					curUl.lastChild.addChild(newUl)
-					curUl = newUl
-				} else {
-					curUl = curUl.lastChild.lastChild
-				}
+				// Create the list for this level
+				let newUl = createMockListElement(data, curIndentLevel)
+				let newLi = new MockElement('li')
+				addItemToList(newUl, newLi, lis)
+				curUl.lastChild.addChild(newUl)
+				curUl = newUl
 			}
 		}
 
 		// if the lastChild is not an LI or it is an LI that already has text inside
-		if (
-			!((curUl.lastChild != null ? curUl.lastChild.type : undefined) === 'li') ||
-			(curUl.lastChild != null ? curUl.lastChild.lastChild : undefined) != null
-		) {
+		// lastChild is always defined because of the cals to addItemToList
+		if (!(curUl.lastChild.type === 'li') || curUl.lastChild.lastChild != null) {
 			li = new MockElement('li')
 			addItemToList(curUl, li, lis)
 		}
@@ -144,7 +127,8 @@ export default props => {
 
 	// Remove bullets from nested LIs
 	for (li of Array.from(lis)) {
-		if (__guard__(li.children != null ? li.children[0] : undefined, x => x.nodeType) !== 'text') {
+		// li will always have .children because MockListElement creates it as an empty array
+		if (__guard__(li.children[0], x => x.nodeType) !== 'text') {
 			li.listStyleType = 'none'
 		}
 	}
