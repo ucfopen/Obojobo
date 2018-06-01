@@ -47,7 +47,7 @@ Object {
       "Great job!",
     ],
     "incorrectLabels": null,
-    "responseType": "",
+    "responseType": "pick-one",
     "shuffle": true,
   },
 }
@@ -61,7 +61,7 @@ Object {
       "Incorrect",
       "wrong",
     ],
-    "responseType": "",
+    "responseType": "pick-one",
     "shuffle": true,
   },
 }
@@ -83,7 +83,7 @@ Object {
   "modelState": Object {
     "correctLabels": null,
     "incorrectLabels": null,
-    "responseType": "",
+    "responseType": "pick-one",
     "shuffle": true,
   },
 }
@@ -94,7 +94,7 @@ Object {
   "modelState": Object {
     "correctLabels": null,
     "incorrectLabels": null,
-    "responseType": "",
+    "responseType": "pick-one",
     "shuffle": true,
   },
 }

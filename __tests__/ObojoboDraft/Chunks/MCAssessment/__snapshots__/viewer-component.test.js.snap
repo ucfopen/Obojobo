@@ -134,7 +134,7 @@ exports[`MCAssessment MCAssessment component with correct response in review mod
       <p
         className="result correct"
       >
-        m
+        mockCorrectLabels
       </p>
     </div>
   </div>
@@ -229,7 +229,7 @@ exports[`MCAssessment MCAssessment component with correct response in review mod
       <p
         className="result correct"
       >
-        m
+        mockCorrectLabels
       </p>
     </div>
   </div>
@@ -300,7 +300,7 @@ exports[`MCAssessment MCAssessment component with correct response in review mod
 
 exports[`MCAssessment MCAssessment component with feedback in sortedIds 1`] = `
 <form
-  className="component obojobo-draft--chunks--mc-assessment is-response-type- is-mode-assessment is-not-showing-explanation is-scored"
+  className="component obojobo-draft--chunks--mc-assessment is-response-type-pick-one is-mode-assessment is-not-showing-explanation is-scored"
   data-focussed={false}
   data-id="id"
   data-obo-component={true}
@@ -310,7 +310,11 @@ exports[`MCAssessment MCAssessment component with feedback in sortedIds 1`] = `
 >
   <span
     className="instructions"
-  />
+  >
+    <span>
+      Pick the correct answer
+    </span>
+  </span>
   <div
     className="component obojobo-draft--chunks--mc-assessment--mc-choice is-not-selected is-not-correct is-type-unchosen-correctly is-mode-assessment"
     data-choice-label="A"
@@ -490,7 +494,7 @@ exports[`MCAssessment MCAssessment component with incorrect response in practice
       <p
         className="result incorrect"
       >
-        m
+        mockIncorrectLabels
       </p>
     </div>
   </div>
@@ -589,7 +593,7 @@ exports[`MCAssessment MCAssessment component with incorrect response in review m
       <p
         className="result incorrect"
       >
-        m
+        mockIncorrectLabels
       </p>
       <span
         className="pick-all-instructions"
@@ -665,7 +669,7 @@ exports[`MCAssessment MCAssessment component with incorrect response in review m
 
 exports[`MCAssessment MCAssessment component with incorrect response in review mode 1`] = `
 <form
-  className="component obojobo-draft--chunks--mc-assessment is-response-type- is-mode-review is-not-showing-explanation is-scored"
+  className="component obojobo-draft--chunks--mc-assessment is-response-type-pick-one is-mode-review is-not-showing-explanation is-scored"
   data-focussed={false}
   data-id="id"
   data-obo-component={true}
@@ -675,7 +679,11 @@ exports[`MCAssessment MCAssessment component with incorrect response in review m
 >
   <span
     className="instructions"
-  />
+  >
+    <span>
+      Pick the correct answer
+    </span>
+  </span>
   <div
     className="submit-and-result-container"
   >
@@ -685,7 +693,7 @@ exports[`MCAssessment MCAssessment component with incorrect response in review m
       <p
         className="result incorrect"
       >
-        m
+        mockIncorrectLabels
       </p>
     </div>
   </div>
@@ -756,7 +764,7 @@ exports[`MCAssessment MCAssessment component with incorrect response in review m
 
 exports[`MCAssessment MCAssessment component with inverse sortedIds 1`] = `
 <form
-  className="component obojobo-draft--chunks--mc-assessment is-response-type- is-mode-assessment is-not-showing-explanation is-scored"
+  className="component obojobo-draft--chunks--mc-assessment is-response-type-pick-one is-mode-assessment is-not-showing-explanation is-scored"
   data-focussed={false}
   data-id="id"
   data-obo-component={true}
@@ -766,7 +774,11 @@ exports[`MCAssessment MCAssessment component with inverse sortedIds 1`] = `
 >
   <span
     className="instructions"
-  />
+  >
+    <span>
+      Pick the correct answer
+    </span>
+  </span>
   <div
     className="component obojobo-draft--chunks--mc-assessment--mc-choice is-not-selected is-not-correct is-type-unchosen-correctly is-mode-assessment"
     data-choice-label="A"
@@ -1027,7 +1039,7 @@ exports[`MCAssessment MCAssessment component with multiple responses 1`] = `
 
 exports[`MCAssessment MCAssessment component with one response 1`] = `
 <form
-  className="component obojobo-draft--chunks--mc-assessment is-response-type- is-mode-assessment is-not-showing-explanation is-scored"
+  className="component obojobo-draft--chunks--mc-assessment is-response-type-pick-one is-mode-assessment is-not-showing-explanation is-scored"
   data-focussed={false}
   data-id="id"
   data-obo-component={true}
@@ -1037,7 +1049,11 @@ exports[`MCAssessment MCAssessment component with one response 1`] = `
 >
   <span
     className="instructions"
-  />
+  >
+    <span>
+      Pick the correct answer
+    </span>
+  </span>
   <div>
     <div
       className="solution"
@@ -1145,7 +1161,7 @@ exports[`MCAssessment MCAssessment component with one response in practice mode 
 
 exports[`MCAssessment MCAssessment component with sortedIds 1`] = `
 <form
-  className="component obojobo-draft--chunks--mc-assessment is-response-type- is-mode-assessment is-not-showing-explanation is-scored"
+  className="component obojobo-draft--chunks--mc-assessment is-response-type-pick-one is-mode-assessment is-not-showing-explanation is-scored"
   data-focussed={false}
   data-id="id"
   data-obo-component={true}
@@ -1155,7 +1171,11 @@ exports[`MCAssessment MCAssessment component with sortedIds 1`] = `
 >
   <span
     className="instructions"
-  />
+  >
+    <span>
+      Pick the correct answer
+    </span>
+  </span>
   <div>
     <div
       className="solution"
@@ -1178,4 +1198,107 @@ exports[`MCAssessment MCAssessment component with sortedIds 1`] = `
     </div>
   </div>
 </form>
+`;
+
+exports[`MCAssessment createInstructions builds as expected for pick-all 1`] = `
+<span>
+  Pick 
+  <b>
+    all
+  </b>
+   of the correct answers
+</span>
+`;
+
+exports[`MCAssessment createInstructions builds as expected for pick-one 1`] = `
+<span>
+  Pick the correct answer
+</span>
+`;
+
+exports[`MCAssessment createInstructions builds as expected for pick-one-multiple-correct 1`] = `
+<span>
+  Pick one of the correct answers
+</span>
+`;
+
+exports[`MCAssessment renderSubmitFooter builds with retry button 1`] = `
+<div
+  className="submit"
+>
+  <Button
+    align="center"
+    altAction={true}
+    disabled={false}
+    onClick={[Function]}
+    value="Try Again"
+  />
+</div>
+`;
+
+exports[`MCAssessment renderSubmitFooter builds with submit button disabled 1`] = `
+<div
+  className="submit"
+>
+  <Button
+    align="center"
+    disabled={true}
+    onClick={[Function]}
+    value="Check Your Answer"
+  />
+</div>
+`;
+
+exports[`MCAssessment renderSubmitFooter builds with submit button ensabled 1`] = `
+<div
+  className="submit"
+>
+  <Button
+    align="center"
+    disabled={false}
+    onClick={[Function]}
+    value="Check Your Answer"
+  />
+</div>
+`;
+
+exports[`MCAssessment renderSubmittedResultsFooter displays correct 1`] = `
+<div
+  className="result-container"
+>
+  <p
+    className="result correct"
+  >
+    mockCorrectLabels
+  </p>
+</div>
+`;
+
+exports[`MCAssessment renderSubmittedResultsFooter displays incorrect 1`] = `
+<div
+  className="result-container"
+>
+  <p
+    className="result incorrect"
+  >
+    mockIncorrectLabels
+  </p>
+</div>
+`;
+
+exports[`MCAssessment renderSubmittedResultsFooter displays incorrect pick-all 1`] = `
+<div
+  className="result-container"
+>
+  <p
+    className="result incorrect"
+  >
+    mockIncorrectLabels
+  </p>
+  <span
+    className="pick-all-instructions"
+  >
+    You have either missed some correct answers or selected some incorrect answers
+  </span>
+</div>
 `;

@@ -261,7 +261,7 @@ var Adapter = {
 	construct: function construct(model, attrs) {
 		var content = attrs && attrs.content ? attrs.content : {};
 
-		model.modelState.responseType = content.responseType || '';
+		model.modelState.responseType = content.responseType || 'pick-one';
 		model.modelState.correctLabels = content.correctLabels ? content.correctLabels.split('|') : null;
 		model.modelState.incorrectLabels = content.incorrectLabels ? content.incorrectLabels.split('|') : null;
 		model.modelState.shuffle = content.shuffle !== false;
@@ -828,11 +828,6 @@ var MCAssessment = function (_React$Component) {
 }(React.Component);
 
 exports.default = MCAssessment;
-
-
-function __guard__(value, transform) {
-	return typeof value !== 'undefined' && value !== null ? transform(value) : undefined;
-}
 
 /***/ }),
 
