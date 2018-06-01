@@ -5,11 +5,10 @@ import HTML from '../../../../ObojoboDraft/Chunks/HTML/viewer-component'
 import OboModel from '../../../../__mocks__/_obo-model-with-chunks'
 
 describe('HTML', () => {
-	let moduleData = {
-		focusState: {}
-	}
-
 	test('HTML component', () => {
+		let moduleData = {
+			focusState: {}
+		}
 		let model = OboModel.create({
 			id: 'id',
 			type: 'ObojoboDraft.Chunks.HTML',
@@ -25,6 +24,9 @@ describe('HTML', () => {
 	})
 
 	test('HTML component with equation', () => {
+		let moduleData = {
+			focusState: {}
+		}
 		let model = OboModel.create({
 			id: 'id',
 			type: 'ObojoboDraft.Chunks.HTML',

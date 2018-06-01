@@ -10,19 +10,7 @@ jest.mock('../../../../src/scripts/common/page/dom-util')
 import QuestionUtil from '../../../../src/scripts/viewer/util/question-util'
 import Dispatcher from '../../../../src/scripts/common/flux/dispatcher'
 import DOMUtil from '../../../../src/scripts/common/page/dom-util'
-
-jest.mock('../../../../src/scripts/common/stores/focus-store', () => ({}))
-jest.mock('../../../../src/scripts/viewer/stores/question-store', () => ({}))
-jest.mock('../../../../src/scripts/viewer/stores/nav-store', () => ({}))
-jest.mock('../../../../src/scripts/viewer/stores/assessment-store', () => ({}))
-jest.mock('../../../../src/scripts/viewer/util/api-util', () => ({}))
-
-import FocusStore from '../../../../src/scripts/common/stores/focus-store'
-import QuestionStore from '../../../../src/scripts/viewer/stores/question-store'
-import NavStore from '../../../../src/scripts/viewer/stores/nav-store'
-import AssessmentStore from '../../../../src/scripts/viewer/stores/assessment-store'
 import OboModel from '../../../../__mocks__/_obo-model-with-chunks'
-import APIUtil from '../../../../src/scripts/viewer/util/api-util'
 
 const QUESTION_NODE_TYPE = 'ObojoboDraft.Chunks.Question'
 const MCCHOICE_NODE_TYPE = 'ObojoboDraft.Chunks.MCAssessment.MCChoice'

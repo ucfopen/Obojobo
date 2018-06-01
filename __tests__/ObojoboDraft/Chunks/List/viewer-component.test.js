@@ -5,10 +5,10 @@ import List from '../../../../ObojoboDraft/Chunks/List/viewer-component'
 import OboModel from '../../../../__mocks__/_obo-model-with-chunks'
 
 describe('List', () => {
-	let moduleData = {
-		focusState: {}
-	}
 	test('List component', () => {
+		let moduleData = {
+			focusState: {}
+		}
 		let model = OboModel.create({
 			id: 'id',
 			type: 'ObojoboDraft.Chunks.List',
@@ -38,6 +38,9 @@ describe('List', () => {
 	})
 
 	test('List component with ascending indents', () => {
+		let moduleData = {
+			focusState: {}
+		}
 		let model = OboModel.create({
 			id: 'id',
 			type: 'ObojoboDraft.Chunks.List',
@@ -122,6 +125,9 @@ describe('List', () => {
 	})
 
 	test('List component with inverse indentation', () => {
+		let moduleData = {
+			focusState: {}
+		}
 		let model = OboModel.create({
 			id: 'id',
 			type: 'ObojoboDraft.Chunks.List',
@@ -177,6 +183,9 @@ describe('List', () => {
 	})
 
 	test('List component with irregular indentation', () => {
+		let moduleData = {
+			focusState: {}
+		}
 		let model = OboModel.create({
 			id: 'id',
 			type: 'ObojoboDraft.Chunks.List',
