@@ -3,19 +3,18 @@ import QuestionAdapter from '../../../../ObojoboDraft/Chunks/Question/adapter'
 import OboModel from '../../../../__mocks__/_obo-model-with-chunks'
 
 describe('Question adapter', () => {
-	// @ADD BACK
-	it.skip('can be created WITHOUT attributes', () => {
+	test('construct builds without attributes', () => {
 		let model = { modelState: {} }
 		QuestionAdapter.construct(model)
 		expect(model).toMatchSnapshot()
 	})
 
-	// @ADD BACK
-	it.skip('can be constructed WITH attributes', () => {
+	test('construct builds with attributes', () => {
 		let model = { modelState: {} }
 		let attrs = {
 			content: {
 				limit: 2,
+				mode: 'review',
 				practice: false,
 				solution: {
 					id: '249138ca-be09-4ab5-b015-3a8107b4c79e',
@@ -47,7 +46,24 @@ describe('Question adapter', () => {
 		expect(model).toMatchSnapshot()
 	})
 
-	it('can be cloned', () => {
+	test('clone creates a copy', () => {
+		let a = { modelState: {} }
+		let b = { modelState: {} }
+		let attrs = {
+			content: {
+				limit: 2,
+				practice: false
+			}
+		}
+
+		QuestionAdapter.construct(a, attrs)
+		QuestionAdapter.clone(a, b)
+
+		expect(a).not.toBe(b)
+		expect(a).toEqual(b)
+	})
+
+	test('clone creates a copy with solution', () => {
 		let a = { modelState: {} }
 		let b = { modelState: {} }
 		let attrs = {
@@ -87,7 +103,22 @@ describe('Question adapter', () => {
 		expect(a).toEqual(b)
 	})
 
-	it('can be converted to JSON', () => {
+	test('toJSON builds a JSON representation', () => {
+		let model = { modelState: {} }
+		let json = { content: {} }
+		let attrs = {
+			content: {
+				limit: 2,
+				practice: false
+			}
+		}
+		QuestionAdapter.construct(model, attrs)
+		QuestionAdapter.toJSON(model, json)
+
+		expect(json).toMatchSnapshot()
+	})
+
+	test('toJSON builds a JSON representation with solution', () => {
 		let model = { modelState: {} }
 		let json = { content: {} }
 		let attrs = {

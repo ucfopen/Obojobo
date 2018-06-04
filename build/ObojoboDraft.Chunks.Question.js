@@ -283,8 +283,9 @@ var Question = function (_React$Component) {
 		key: 'onClickBlocker',
 		value: function onClickBlocker() {
 			QuestionUtil.viewQuestion(this.props.model.get('id'));
+			var mode = this.props.mode ? this.props.mode : this.props.model.modelState.mode;
 
-			if (this.props.model.modelState.mode === 'practice') {
+			if (mode === 'practice') {
 				return FocusUtil.focusComponent(this.props.model.get('id'));
 			}
 		}
@@ -303,7 +304,7 @@ var Question = function (_React$Component) {
 
 			var mode = this.props.mode ? this.props.mode : this.props.model.modelState.mode;
 
-			var classNames = 'flip-container' + ' obojobo-draft--chunks--question' + (score === null ? ' ' : score === 100 ? ' is-correct' : ' is-not-correct') + (this.props.mode === 'review' ? ' is-active' : ' is-' + viewState) + (' is-mode-' + mode);
+			var classNames = 'flip-container' + ' obojobo-draft--chunks--question' + (score === null ? ' ' : score === 100 ? ' is-correct' : ' is-not-correct') + (mode === 'review' ? ' is-active' : ' is-' + viewState) + (' is-mode-' + mode);
 
 			return React.createElement(
 				OboComponent,
@@ -329,9 +330,7 @@ var Question = function (_React$Component) {
 					React.createElement(
 						'div',
 						{ className: 'blocker front', key: 'blocker', onClick: this.onClickBlocker.bind(this) },
-						React.createElement(Button, {
-							value: this.props.model.modelState.mode === 'practice' ? 'Try Question' : 'View Question'
-						})
+						React.createElement(Button, { value: mode === 'practice' ? 'Try Question' : 'View Question' })
 					)
 				)
 			);
