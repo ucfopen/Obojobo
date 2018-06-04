@@ -185,10 +185,10 @@ var Adapter = {
 		var text = '';
 
 		text += border + '\n';
-		for (var row = 0, end = model.modelState.textGroup.numRows, asc = 0 <= end; asc ? row < end : row > end; asc ? row++ : row--) {
+		for (var row = 0, end = model.modelState.textGroup.numRows; row < end; row++) {
 			// console.log 'row', row
 			var s = [];
-			for (var col = 0, end1 = model.modelState.textGroup.numCols, asc1 = 0 <= end1; asc1 ? col < end1 : col > end1; asc1 ? col++ : col--) {
+			for (var col = 0, end1 = model.modelState.textGroup.numCols; col < end1; col++) {
 				// console.log '  col', col
 				var i = row * model.modelState.textGroup.numCols + col;
 
@@ -359,8 +359,7 @@ exports.default = Table;
 function __range__(left, right, inclusive) {
 	var range = [];
 	var ascending = left < right;
-	var end = !inclusive ? right : ascending ? right + 1 : right - 1;
-	for (var i = left; ascending ? i < end : i > end; ascending ? i++ : i--) {
+	for (var i = left; i < right; i++) {
 		range.push(i);
 	}
 	return range;
@@ -450,7 +449,8 @@ var GridTextGroup = function (_TextGroup) {
 				this.addAt(i, text, data);
 			}
 
-			this.numRows++;
+			// If there are no columns, adding a row is meaningless
+			if (this.numCols !== 0) this.numRows++;
 
 			return this;
 		}
@@ -472,20 +472,24 @@ var GridTextGroup = function (_TextGroup) {
 				this.addAt(i * this.numCols + colIndex, text, data);
 			}
 
-			this.numCols++;
+			// If there are no rows, adding a column is meaningless
+			if (this.numRows !== 0) this.numCols++;
 
 			return this;
 		}
 	}, {
 		key: 'removeRow',
 		value: function removeRow(rowIndex) {
+			// If there are no rows, or no columns, removing a row is meaningless
+			if (this.numRows <= 0 || this.numCols <= 0) return this;
+
 			if (rowIndex == null) {
 				rowIndex = this.numRows - 1;
 			}
 			this.maxItems -= this.numCols;
 
 			var firstInRowIndex = rowIndex * this.numCols;
-			for (var i = firstInRowIndex, end = firstInRowIndex + this.numCols - 1, asc = firstInRowIndex <= end; asc ? i <= end : i >= end; asc ? i++ : i--) {
+			for (var i = firstInRowIndex, end = firstInRowIndex + this.numCols - 1; i <= end; i++) {
 				this.remove(firstInRowIndex);
 			}
 
@@ -496,6 +500,9 @@ var GridTextGroup = function (_TextGroup) {
 	}, {
 		key: 'removeCol',
 		value: function removeCol(colIndex) {
+			// If there are no rows, or no columns, removing a column is meaningless
+			if (this.numRows <= 0 || this.numCols <= 0) return this;
+
 			if (colIndex == null) {
 				colIndex = this.numCols - 1;
 			}
@@ -583,29 +590,6 @@ var GridTextGroup = function (_TextGroup) {
 				numCols: this.numCols
 			};
 		}
-	}, {
-		key: '__grid_print',
-		value: function __grid_print() {
-			var _this2 = this;
-
-			var s = void 0;
-			var i = void 0,
-			    item = void 0;
-			console.log('========================');
-			return __range__(0, this.numRows, false).map(function (row) {
-				return (
-					// console.log 'row', row
-					s = [], __range__(0, _this2.numCols, false).map(function (col) {
-						return (
-							// console.log '  col', col
-							i = row * _this2.numCols + col,
-							// console.log '    i', i
-							item = _this2.items[i], s.push((item.text.value + '          ').substr(0, 10))
-						);
-					}), console.log(s)
-				);
-			});
-		}
 	}], [{
 		key: 'fromDescriptor',
 		value: function fromDescriptor(descriptor, maxItems, dataTemplate, restoreDataDescriptorFn) {
@@ -655,29 +639,8 @@ var GridTextGroup = function (_TextGroup) {
 
 	return GridTextGroup;
 }(TextGroup);
-// console.log '---------------------'
-
-// window.GridTextGroup = GridTextGroup
-
-// window.g = new GridTextGroup(2,2)
-// g.init(4)
-// g.get(0).text.value = 'a0'
-// g.get(1).text.value = 'a1'
-// g.get(2).text.value = 'b0'
-// g.get(3).text.value = 'b1'
 
 exports.default = GridTextGroup;
-
-
-function __range__(left, right, inclusive) {
-	var range = [];
-	var ascending = left < right;
-	var end = !inclusive ? right : ascending ? right + 1 : right - 1;
-	for (var i = left; ascending ? i < end : i > end; ascending ? i++ : i--) {
-		range.push(i);
-	}
-	return range;
-}
 
 /***/ }),
 

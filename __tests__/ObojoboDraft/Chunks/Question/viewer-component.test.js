@@ -1,6 +1,6 @@
 import React from 'react'
 import renderer from 'react-test-renderer'
-import { shallow, mount, unmount } from 'enzyme'
+import { shallow } from 'enzyme'
 
 jest.mock('../../../../src/scripts/viewer/util/question-util')
 jest.mock('../../../../src/scripts/common/util/focus-util')

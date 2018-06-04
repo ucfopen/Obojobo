@@ -68,7 +68,8 @@ class GridTextGroup extends TextGroup {
 			this.addAt(i, text, data)
 		}
 
-		this.numRows++
+		// If there are no columns, adding a row is meaningless
+		if (this.numCols !== 0) this.numRows++
 
 		return this
 	}
@@ -89,25 +90,23 @@ class GridTextGroup extends TextGroup {
 			this.addAt(i * this.numCols + colIndex, text, data)
 		}
 
-		this.numCols++
+		// If there are no rows, adding a column is meaningless
+		if (this.numRows !== 0) this.numCols++
 
 		return this
 	}
 
 	removeRow(rowIndex) {
+		// If there are no rows, or no columns, removing a row is meaningless
+		if (this.numRows <= 0 || this.numCols <= 0) return this
+
 		if (rowIndex == null) {
 			rowIndex = this.numRows - 1
 		}
 		this.maxItems -= this.numCols
 
 		let firstInRowIndex = rowIndex * this.numCols
-		for (
-			let i = firstInRowIndex,
-				end = firstInRowIndex + this.numCols - 1,
-				asc = firstInRowIndex <= end;
-			asc ? i <= end : i >= end;
-			asc ? i++ : i--
-		) {
+		for (let i = firstInRowIndex, end = firstInRowIndex + this.numCols - 1; i <= end; i++) {
 			this.remove(firstInRowIndex)
 		}
 
@@ -117,6 +116,9 @@ class GridTextGroup extends TextGroup {
 	}
 
 	removeCol(colIndex) {
+		// If there are no rows, or no columns, removing a column is meaningless
+		if (this.numRows <= 0 || this.numCols <= 0) return this
+
 		if (colIndex == null) {
 			colIndex = this.numCols - 1
 		}
@@ -160,48 +162,6 @@ class GridTextGroup extends TextGroup {
 			numCols: this.numCols
 		}
 	}
-
-	__grid_print() {
-		let s
-		let i, item
-		console.log('========================')
-		return __range__(0, this.numRows, false).map(
-			row => (
-				// console.log 'row', row
-				(s = []),
-				__range__(0, this.numCols, false).map(
-					col => (
-						// console.log '  col', col
-						(i = row * this.numCols + col),
-						// console.log '    i', i
-						(item = this.items[i]),
-						s.push((item.text.value + '          ').substr(0, 10))
-					)
-				),
-				console.log(s)
-			)
-		)
-	}
 }
-// console.log '---------------------'
-
-// window.GridTextGroup = GridTextGroup
-
-// window.g = new GridTextGroup(2,2)
-// g.init(4)
-// g.get(0).text.value = 'a0'
-// g.get(1).text.value = 'a1'
-// g.get(2).text.value = 'b0'
-// g.get(3).text.value = 'b1'
 
 export default GridTextGroup
-
-function __range__(left, right, inclusive) {
-	let range = []
-	let ascending = left < right
-	let end = !inclusive ? right : ascending ? right + 1 : right - 1
-	for (let i = left; ascending ? i < end : i > end; ascending ? i++ : i--) {
-		range.push(i)
-	}
-	return range
-}
