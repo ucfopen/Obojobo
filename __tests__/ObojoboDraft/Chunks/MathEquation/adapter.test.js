@@ -1,18 +1,20 @@
 import MathEquationAdapter from '../../../../ObojoboDraft/Chunks/MathEquation/adapter'
 
 describe('MathEquation adapter', () => {
-	it('can be created WITHOUT attributes', () => {
+	it('construct builds without attributes', () => {
 		let model = { modelState: {} }
 		MathEquationAdapter.construct(model)
 		expect(model).toMatchSnapshot()
 	})
 
-	it('can be constructed WITH attributes', () => {
+	it('construct builds with attributes', () => {
 		let model = { modelState: {} }
 		let attrs = {
 			content: {
-				latex: 'test',
-				align: 'left'
+				latex: 'mockEquations',
+				align: 'left',
+				label: 'mockLabel',
+				size: '3'
 			}
 		}
 
@@ -20,7 +22,7 @@ describe('MathEquation adapter', () => {
 		expect(model).toMatchSnapshot()
 	})
 
-	it('can be cloned', () => {
+	it('clone creates a copy', () => {
 		let a = { modelState: {} }
 		let b = { modelState: {} }
 
@@ -31,7 +33,7 @@ describe('MathEquation adapter', () => {
 		expect(a).toEqual(b)
 	})
 
-	it('can be converted to JSON', () => {
+	it('toJSON builds a JSON representation', () => {
 		let model = { modelState: {} }
 		let attrs = {
 			content: {
