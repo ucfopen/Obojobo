@@ -172,6 +172,37 @@ describe('MCChoice viewer-component', () => {
 		expect(component).toMatchSnapshot()
 	})
 
+	test('MCChoice component in review mode with no score data', () => {
+		let question = OboModel.create(questionJSON)
+		let mcassessment = question.children.models[0]
+		let model = mcassessment.children.models[0]
+		let moduleData = {
+			questionState: {
+				// review mode has no score data for the current context
+				scores: {}
+			},
+			navState: {
+				context: 'mockContext'
+			},
+			focusState: 'mockFocus'
+		}
+
+		let props = {
+			model,
+			moduleData,
+			mode: MODE_REVIEW,
+			key: 'mockKey',
+			responseType: TYPE_PICK_ONE,
+			isShowingExplanation: false,
+			questionSubmitted: false,
+			label: 'mocklabel'
+		}
+
+		const component = renderer.create(<MCChoice {...props} />)
+
+		expect(component).toMatchSnapshot()
+	})
+
 	test('MCChoice component type pick-one-multiple-correct', () => {
 		let question = OboModel.create(questionJSON)
 		let mcassessment = question.children.models[0]
