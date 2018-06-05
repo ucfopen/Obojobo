@@ -1,0 +1,23 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`Module adapter construct builds with attributes 1`] = `
+Object {
+  "modelState": Object {
+    "start": "mockStart",
+  },
+}
+`;
+
+exports[`Module adapter construct builds with attributes and unlimited  1`] = `
+Object {
+  "modelState": Object {
+    "start": null,
+  },
+}
+`;
+
+exports[`Module adapter construct builds without attributes 1`] = `
+Object {
+  "modelState": Object {},
+}
+`;
