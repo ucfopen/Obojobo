@@ -10,6 +10,10 @@ import NavUtil from '../../../../src/scripts/viewer/util/nav-util'
 const json = require('../../../../test-object.json')
 
 describe('Module', () => {
+	beforeEach(() => {
+		jest.resetAllMocks()
+	})
+
 	test('Module component', () => {
 		let model = OboModel.create(json)
 		let moduleData = {

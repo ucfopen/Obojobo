@@ -1,6 +1,10 @@
 import ModuleAdapter from '../../../../ObojoboDraft/Modules/Module/adapter'
 
 describe('Module adapter', () => {
+	beforeEach(() => {
+		jest.resetAllMocks()
+	})
+
 	test('construct builds without attributes', () => {
 		let model = { modelState: {} }
 

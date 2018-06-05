@@ -1549,11 +1549,6 @@ var Assessment = function (_React$Component) {
 	}
 
 	_createClass(Assessment, [{
-		key: 'componentWillUnmount',
-		value: function componentWillUnmount() {
-			NavUtil.setContext('practice');
-		}
-	}, {
 		key: 'getCurrentStep',
 		value: function getCurrentStep() {
 			var assessment = AssessmentUtil.getAssessmentForModel(this.props.moduleData.assessmentState, this.props.model);
@@ -1591,6 +1586,7 @@ var Assessment = function (_React$Component) {
 	}, {
 		key: 'componentWillUnmount',
 		value: function componentWillUnmount() {
+			NavUtil.setContext('practice');
 			Dispatcher.off('assessment:endAttempt', this.onEndAttempt);
 			Dispatcher.off('assessment:attemptEnded', this.onAttemptEnded);
 		}
@@ -1706,9 +1702,6 @@ var Assessment = function (_React$Component) {
 							moduleData: _this2.props.moduleData,
 							scoreAction: _this2.getScoreAction()
 						});
-
-					default:
-						return null;
 				}
 			}();
 
