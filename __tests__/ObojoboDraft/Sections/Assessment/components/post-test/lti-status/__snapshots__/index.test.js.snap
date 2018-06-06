@@ -1,6 +1,30 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
-exports[`lti-status error shows a loading state 1`] = `
+exports[`LTIStatus LTIStatus component with an externalSystemLabel and no lti state returns renderError 1`] = `
+<div
+  className="obojobo-draft--sections--assessment--lti-status is-not-synced"
+>
+  <h2>
+    There was a problem sending your score to mocklti.
+  </h2>
+  <p>
+    Don’t worry - your score is safely recorded here. We just weren’t able to send it to mocklti. Click the button below to resend your score:
+  </p>
+  <div
+    className="obojobo-draft--components--button is-dangerous align-center"
+  >
+    <button
+      disabled={undefined}
+      onClick={undefined}
+      tabIndex={undefined}
+    >
+      Try again anyway
+    </button>
+  </div>
+</div>
+`;
+
+exports[`LTIStatus LTIStatus component with error shows a loading state 1`] = `
 <div
   className="obojobo-draft--sections--assessment--lti-status is-not-synced"
 >
@@ -24,7 +48,7 @@ exports[`lti-status error shows a loading state 1`] = `
 </div>
 `;
 
-exports[`lti-status error shows additional information if errorCount is above 0 1`] = `
+exports[`LTIStatus LTIStatus component with error shows additional information if errorCount is above 0 1`] = `
 <div
   className="obojobo-draft--sections--assessment--lti-status is-not-synced"
 >
@@ -54,31 +78,7 @@ exports[`lti-status error shows additional information if errorCount is above 0 
 </div>
 `;
 
-exports[`lti-status rendering with an externalSystemLabel and no lti state returns renderError 1`] = `
-<div
-  className="obojobo-draft--sections--assessment--lti-status is-not-synced"
->
-  <h2>
-    There was a problem sending your score to mocklti.
-  </h2>
-  <p>
-    Don’t worry - your score is safely recorded here. We just weren’t able to send it to mocklti. Click the button below to resend your score:
-  </p>
-  <div
-    className="obojobo-draft--components--button is-dangerous align-center"
-  >
-    <button
-      disabled={undefined}
-      onClick={undefined}
-      tabIndex={undefined}
-    >
-      Try again anyway
-    </button>
-  </div>
-</div>
-`;
-
-exports[`lti-status rendering with isPreviewing true returns notLTI 1`] = `
+exports[`LTIStatus LTIStatus component with isPreviewing true returns notLTI 1`] = `
 <div
   className="obojobo-draft--sections--assessment--lti-status is-not-lti"
 >
@@ -86,7 +86,7 @@ exports[`lti-status rendering with isPreviewing true returns notLTI 1`] = `
 </div>
 `;
 
-exports[`lti-status rendering with lti state GRADEBOOK_STATUS_ERROR_INVALID returns renderError 1`] = `
+exports[`LTIStatus LTIStatus component with lti state GRADEBOOK_STATUS_ERROR_INVALID returns renderError 1`] = `
 <div
   className="obojobo-draft--sections--assessment--lti-status is-not-synced"
 >
@@ -110,7 +110,7 @@ exports[`lti-status rendering with lti state GRADEBOOK_STATUS_ERROR_INVALID retu
 </div>
 `;
 
-exports[`lti-status rendering with lti state GRADEBOOK_STATUS_ERROR_NEWER_SCORE_UNSENT returns renderError 1`] = `
+exports[`LTIStatus LTIStatus component with lti state GRADEBOOK_STATUS_ERROR_NEWER_SCORE_UNSENT returns renderError 1`] = `
 <div
   className="obojobo-draft--sections--assessment--lti-status is-not-synced"
 >
@@ -134,7 +134,7 @@ exports[`lti-status rendering with lti state GRADEBOOK_STATUS_ERROR_NEWER_SCORE_
 </div>
 `;
 
-exports[`lti-status rendering with lti state GRADEBOOK_STATUS_OK_GRADEBOOK_MATCHES_SCORE returns synced 1`] = `
+exports[`LTIStatus LTIStatus component with lti state GRADEBOOK_STATUS_OK_GRADEBOOK_MATCHES_SCORE returns synced 1`] = `
 <div
   className="obojobo-draft--sections--assessment--lti-status is-synced"
 >
@@ -142,15 +142,7 @@ exports[`lti-status rendering with lti state GRADEBOOK_STATUS_OK_GRADEBOOK_MATCH
 </div>
 `;
 
-exports[`lti-status rendering with lti state GRADEBOOK_STATUS_OK_NO_OUTCOME_SERVICE returns notLTI 1`] = `
-<div
-  className="obojobo-draft--sections--assessment--lti-status is-not-lti"
->
-   
-</div>
-`;
-
-exports[`lti-status rendering with lti state GRADEBOOK_STATUS_OK_NULL_SCORE_NOT_SENT returns noScoreSent 1`] = `
+exports[`LTIStatus LTIStatus component with lti state GRADEBOOK_STATUS_OK_NULL_SCORE_NOT_SENT returns noScoreSent 1`] = `
 <div
   className="obojobo-draft--sections--assessment--lti-status is-synced"
 >
@@ -158,7 +150,15 @@ exports[`lti-status rendering with lti state GRADEBOOK_STATUS_OK_NULL_SCORE_NOT_
 </div>
 `;
 
-exports[`lti-status rendering with no externalSystemLabel returns notLTI 1`] = `
+exports[`LTIStatus LTIStatus component with no externalSystemLabel returns notLTI 1`] = `
+<div
+  className="obojobo-draft--sections--assessment--lti-status is-not-lti"
+>
+   
+</div>
+`;
+
+exports[`LTIStatus LTIStatus component with state GRADEBOOK_STATUS_OK_NO_OUTCOME_SERVICE returns notLTI 1`] = `
 <div
   className="obojobo-draft--sections--assessment--lti-status is-not-lti"
 >

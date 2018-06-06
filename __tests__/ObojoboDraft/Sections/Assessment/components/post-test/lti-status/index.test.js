@@ -23,31 +23,31 @@ const GRADEBOOK_STATUS_OK_NO_OUTCOME_SERVICE /*     */ = 'ok_no_outcome_service'
 
 const AWAITING_SEND_ASSESSMENT_SCORE_RESPONSE = 'awaitingSendAssessmentScoreResponse'
 
-describe('lti-status', () => {
+describe('LTIStatus', () => {
 	beforeEach(() => {
 		jest.resetAllMocks()
 	})
 
 	/////////////////////
 	// return notLTI
-	test('rendering with lti state GRADEBOOK_STATUS_OK_NO_OUTCOME_SERVICE returns notLTI', () => {
+	test('LTIStatus component with state GRADEBOOK_STATUS_OK_NO_OUTCOME_SERVICE returns notLTI', () => {
 		expect(
-			renderer.create(<LTIStatus ltiState={getLtiState(GRADEBOOK_STATUS_OK_NO_OUTCOME_SERVICE)} />)
+			renderer.create(<LTIStatus ltiState={getLtiState(GRADEBOOK_STATUS_OK_NO_OUTCOME_SERVICE)} externalSystemLabel={mockSymbol} />)
 		).toMatchSnapshot()
 	})
 
-	test('rendering with isPreviewing true returns notLTI', () => {
+	test('LTIStatus component with isPreviewing true returns notLTI', () => {
 		expect(renderer.create(<LTIStatus isPreviewing={true} />)).toMatchSnapshot()
 	})
 
-	test('rendering with no externalSystemLabel returns notLTI', () => {
+	test('LTIStatus component with no externalSystemLabel returns notLTI', () => {
 		expect(renderer.create(<LTIStatus />)).toMatchSnapshot()
 	})
 	/////////////////////
 
 	/////////////////////
 	// return noScoreSent
-	test('rendering with lti state GRADEBOOK_STATUS_OK_NULL_SCORE_NOT_SENT returns noScoreSent', () => {
+	test('LTIStatus component with lti state GRADEBOOK_STATUS_OK_NULL_SCORE_NOT_SENT returns noScoreSent', () => {
 		expect(
 			renderer.create(
 				<LTIStatus
@@ -61,7 +61,7 @@ describe('lti-status', () => {
 
 	/////////////////////
 	// return synced
-	test('rendering with lti state GRADEBOOK_STATUS_OK_GRADEBOOK_MATCHES_SCORE returns synced', () => {
+	test('LTIStatus component with lti state GRADEBOOK_STATUS_OK_GRADEBOOK_MATCHES_SCORE returns synced', () => {
 		expect(
 			renderer.create(
 				<LTIStatus
@@ -75,11 +75,11 @@ describe('lti-status', () => {
 
 	/////////////////////
 	// return renderError
-	test('rendering with an externalSystemLabel and no lti state returns renderError', () => {
+	test('LTIStatus component with an externalSystemLabel and no lti state returns renderError', () => {
 		expect(renderer.create(<LTIStatus externalSystemLabel={mockSymbol} />)).toMatchSnapshot()
 	})
 
-	test('rendering with lti state GRADEBOOK_STATUS_ERROR_NEWER_SCORE_UNSENT returns renderError', () => {
+	test('LTIStatus component with lti state GRADEBOOK_STATUS_ERROR_NEWER_SCORE_UNSENT returns renderError', () => {
 		expect(
 			renderer.create(
 				<LTIStatus
@@ -90,7 +90,7 @@ describe('lti-status', () => {
 		).toMatchSnapshot()
 	})
 
-	test('rendering with lti state GRADEBOOK_STATUS_ERROR_INVALID returns renderError', () => {
+	test('LTIStatus component with lti state GRADEBOOK_STATUS_ERROR_INVALID returns renderError', () => {
 		expect(
 			renderer.create(
 				<LTIStatus
@@ -101,7 +101,7 @@ describe('lti-status', () => {
 		).toMatchSnapshot()
 	})
 
-	test('error shows additional information if errorCount is above 0', () => {
+	test('LTIStatus component with error shows additional information if errorCount is above 0', () => {
 		const ltiState = {
 			state: {
 				gradebookStatus: 'error'
@@ -114,7 +114,7 @@ describe('lti-status', () => {
 		).toMatchSnapshot()
 	})
 
-	test('error shows a loading state', () => {
+	test('LTIStatus component with error shows a loading state', () => {
 		const ltiState = {
 			state: {
 				gradebookStatus: 'error'
@@ -127,7 +127,7 @@ describe('lti-status', () => {
 		).toMatchSnapshot()
 	})
 
-	test('onClickResendScore is called when error and button clicked', () => {
+	test('LTIStatus component calls onClickResendScore when error and button clicked', () => {
 		const onClickResendScore = jest.fn()
 		const ltiState = {
 			state: {

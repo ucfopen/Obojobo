@@ -657,7 +657,7 @@ var AssessmentPostTest = function AssessmentPostTest(props) {
 	if (assessmentScore !== null) {
 		var highestAttempts = AssessmentUtil.getHighestAttemptsForModelByAssessmentScore(props.moduleData.assessmentState, props.model);
 
-		firstHighestAttempt = highestAttempts.length === 0 ? null : highestAttempts[0];
+		firstHighestAttempt = highestAttempts[0];
 	}
 
 	var onClickResendScore = function onClickResendScore() {
@@ -679,7 +679,7 @@ var AssessmentPostTest = function AssessmentPostTest(props) {
 		scoreActionsPage = React.createElement(
 			'p',
 			null,
-			scoreAction.message
+			props.scoreAction.message
 		);
 	}
 
@@ -738,41 +738,6 @@ var AssessmentPostTest = function AssessmentPostTest(props) {
 				onClickResendScore: onClickResendScore,
 				assessmentScore: assessmentScore
 			}),
-			function () {
-				switch (ltiState.state.gradebookStatus) {
-					case 'ok_no_outcome_service':
-					case 'ok_null_score_not_sent':
-						return null;
-
-					case 'ok_gradebook_matches_assessment_score':
-						return React.createElement(
-							'span',
-							{ className: 'lti-sync-message is-synced' },
-							'(',
-							'sent to ' + externalSystemLabel + ' ',
-							React.createElement(
-								'span',
-								null,
-								'\u2714'
-							),
-							')'
-						);
-
-					default:
-						return React.createElement(
-							'span',
-							{ className: 'lti-sync-message is-not-synced' },
-							'(',
-							'not sent to ' + externalSystemLabel + ' ',
-							React.createElement(
-								'span',
-								null,
-								'\u2716'
-							),
-							')'
-						);
-				}
-			},
 			React.createElement(
 				'div',
 				{ className: 'score-actions-page' },
