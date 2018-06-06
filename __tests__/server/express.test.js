@@ -9,12 +9,18 @@ jest.mock('../../server/assessment', () => ({
 jest.mock('../../server/util')
 
 const logAndRespondToUnexpected = require('../../server/util').logAndRespondToUnexpected
+const db = oboRequire('db')
+const Assessment = require('../../server/assessment')
+const { mockExpressMethods, mockRouterMethods } = require('__mocks__/__mock_express')
+const server = require('../../server/express')
+const lti = oboRequire('lti')
+const logger = oboRequire('logger')
+const oboEvents = oboRequire('obo_events')
+const startAttempt = require('../../server/attempt-start').startAttempt
+const endAttempt = require('../../server/attempt-end').endAttempt
 
 describe('server/express', () => {
-	const db = oboRequire('db')
-	const { mockExpressMethods, mockRouterMethods } = require('__mocks__/__mock_express')
 	const mockUser = { id: 1, canViewEditor: true }
-	const Assessment = require('../../server/assessment')
 	// build the req info
 	const req = {
 		requireCurrentUser: jest.fn().mockResolvedValue(mockUser),
@@ -34,13 +40,6 @@ describe('server/express', () => {
 		unexpected: jest.fn(),
 		notAuthorized: jest.fn()
 	}
-
-	const server = require('../../server/express')
-	const lti = oboRequire('lti')
-	const logger = oboRequire('logger')
-	const oboEvents = oboRequire('obo_events')
-	const startAttempt = require('../../server/attempt-start').startAttempt
-	const endAttempt = require('../../server/attempt-end').endAttempt
 
 	beforeAll(() => {})
 	afterAll(() => {})
