@@ -24,7 +24,7 @@ describe('AttemptIncompleteDialog', () => {
 		expect(tree).toMatchSnapshot()
 	})
 
-	test('Cancels', () => {
+	test('AttemptIncompleteDialog component cancels', () => {
 		let onSubmit = jest.fn()
 		const component = mount(<AttemptIncompleteDialog onSubmit={onSubmit} />)
 
@@ -40,7 +40,7 @@ describe('AttemptIncompleteDialog', () => {
 		expect(onSubmit).not.toHaveBeenCalled()
 	})
 
-	test('Submits', () => {
+	test('AttemptIncompleteDialog component submits', () => {
 		let onSubmit = jest.fn()
 		const component = mount(<AttemptIncompleteDialog onSubmit={onSubmit} />)
 
