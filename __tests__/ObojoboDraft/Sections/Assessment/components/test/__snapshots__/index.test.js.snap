@@ -1,0 +1,115 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`Test Test component 1`] = `
+<div
+  className="test"
+>
+  <MockComponent
+    model={
+      Object {
+        "getComponentClass": [MockFunction] {
+          "calls": Array [
+            Array [],
+          ],
+        },
+      }
+    }
+    moduleData={
+      Object {
+        "focusState": Object {},
+      }
+    }
+  />
+  <div
+    className="submit-button"
+  >
+    <div
+      className="obojobo-draft--components--button is-not-dangerous align-center"
+    >
+      <button
+        disabled={undefined}
+        onClick={undefined}
+        tabIndex={undefined}
+      >
+        Submit (Not all questions have been answered)
+      </button>
+    </div>
+  </div>
+</div>
+`;
+
+exports[`Test Test component fetching score 1`] = `
+<div
+  className="test"
+>
+  <MockComponent
+    model={
+      Object {
+        "getComponentClass": [MockFunction] {
+          "calls": Array [
+            Array [],
+          ],
+        },
+      }
+    }
+    moduleData={
+      Object {
+        "focusState": Object {},
+      }
+    }
+  />
+  <div
+    className="submit-button"
+  >
+    <div
+      className="obojobo-draft--components--button is-not-dangerous align-center"
+    >
+      <button
+        disabled={true}
+        onClick={undefined}
+        tabIndex={undefined}
+      >
+        Loading ...
+      </button>
+    </div>
+  </div>
+</div>
+`;
+
+exports[`Test Test component with completeAttempt 1`] = `
+<div
+  className="test"
+>
+  <MockComponent
+    model={
+      Object {
+        "getComponentClass": [MockFunction] {
+          "calls": Array [
+            Array [],
+          ],
+        },
+      }
+    }
+    moduleData={
+      Object {
+        "focusState": Object {},
+      }
+    }
+  />
+  <div
+    className="submit-button"
+  >
+    <div
+      className="obojobo-draft--components--button is-not-dangerous align-center"
+    >
+      <button
+        disabled={undefined}
+        onClick={undefined}
+        tabIndex={undefined}
+      >
+        Submit
+      </button>
+    </div>
+  </div>
+</div>
+`;
