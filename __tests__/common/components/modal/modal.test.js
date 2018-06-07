@@ -54,6 +54,38 @@ describe('Modal', () => {
 		expect(onClose).toHaveBeenCalledTimes(1)
 	})
 
+	test('Modal does not close with other keys', () => {
+		const component = mount(
+			<Modal onClose={onClose} focusOnFirstElement={focusOnFirstElement}>
+				Content
+			</Modal>
+		)
+
+		expect(onClose).toHaveBeenCalledTimes(0)
+
+		document.dispatchEvent(new KeyboardEvent('keyup', { keyCode: 28 }))
+
+		expect(onClose).not.toHaveBeenCalled()
+	})
+
+	test('Tab will focus on nothing if no close or first element', () => {
+		const component = mount(
+			<Modal>
+				<textarea />
+			</Modal>
+		)
+
+		expect(focusOnFirstElement).toHaveBeenCalledTimes(0)
+
+		component
+			.find('div')
+			.at(0)
+			.find('.first-tab')
+			.simulate('focus')
+
+		expect(focusOnFirstElement).not.toHaveBeenCalled()
+	})
+
 	test('Tab will focus on the first element if no close button', () => {
 		const component = mount(
 			<Modal focusOnFirstElement={focusOnFirstElement}>

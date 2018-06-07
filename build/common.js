@@ -2866,7 +2866,7 @@ var SimpleDialog = function SimpleDialog(props) {
 			onClick: props.onCancel,
 			default: true
 		}];
-	} else if (props.cancelOk) {
+	} else {
 		buttons = [{
 			value: 'Cancel',
 			altAction: true,
