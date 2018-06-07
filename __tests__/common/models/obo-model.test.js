@@ -14,24 +14,15 @@ jest.mock('../../../src/scripts/common/flux/dispatcher', () => {
 		off: jest.fn()
 	}
 })
-// jest.mock('../../../../src/scripts/common/util/uuid', () => {
-// 	return jest.fn().mockImplementation( () => { return 4; } )
-// })
 
 describe('OboModel', () => {
-	// let testModel = {
-	// 	get: () => 'testId'
-	// };
-
 	beforeEach(() => {
-		// jest.resetAllMocks()
+		// Keep tests from interfering with each other
+		OboModel.models = []
 	})
 
-	// @ADD BACK
-	test.skip('should construct a new instance with defaults', () => {
-		OboModel.__setNextGeneratedLocalId('testId')
-
-		let o = new OboModel({})
+	test('should construct a new instance with defaults', () => {
+		let o = new OboModel({ id: 'testId' })
 
 		expect(o.parent).toBe(null)
 		expect(o.children.models.length).toBe(0)
@@ -338,22 +329,50 @@ describe('OboModel', () => {
 		expect(clone.get('wasCloned')).toBe(true)
 	})
 
-	// @ADD BACK
-	test.skip('toJSON will output a model to an object', () => {
-		OboModel.__setNextGeneratedLocalId('testId')
-
+	test('toJSON will output a model to an object', () => {
 		let root = new OboModel({
 			type: 'nodeType',
 			content: { a: 1 }
 		})
 
 		expect(root.toJSON()).toEqual({
-			id: 'testId',
+			id: null,
 			children: null,
 			content: { a: 1 },
 			index: 0,
 			metadata: {},
 			type: 'nodeType'
+		})
+	})
+
+	test('toJSON will output a model with children to an object', () => {
+		let root = OboModel.create({
+			id: 'root',
+			type: 'ObojoboDraft.Modules.Module',
+			children: [
+				{
+					id: 'child',
+					type: 'ObojoboDraft.Sections.Content'
+				}
+			]
+		})
+
+		expect(root.toJSON()).toEqual({
+			children: [
+				{
+					children: null,
+					content: {},
+					id: 'child',
+					index: 0,
+					metadata: {},
+					type: 'ObojoboDraft.Sections.Content'
+				}
+			],
+			content: { start: undefined },
+			id: 'root',
+			index: 0,
+			metadata: {},
+			type: 'ObojoboDraft.Modules.Module'
 		})
 	})
 
@@ -402,6 +421,15 @@ describe('OboModel', () => {
 		parent.children.add(child)
 
 		expect(OboModel.models['parentId'].toText()).toBe('parent text\nchild text')
+	})
+
+	test('toText will output the model into a text format', () => {
+		let parent = new OboModel({
+			id: 'parentId',
+			type: 'parentType'
+		})
+
+		expect(OboModel.models['parentId'].toText()).toBe('')
 	})
 
 	test('revert will clear the model but keep the index and id', () => {
@@ -563,6 +591,20 @@ describe('OboModel', () => {
 		expect(root.children.at(2)).toBe(childB)
 	})
 
+	test('addChildBefore does not add a child to an orphan', () => {
+		let root = new OboModel({})
+		let childA = new OboModel({})
+		let childB = new OboModel({})
+		let newChild = new OboModel({})
+
+		root.children.add(childA)
+		root.children.add(childB)
+
+		root.addChildBefore(newChild)
+
+		expect(root.children.length).toBe(2)
+	})
+
 	test('addChildBefore moves children if child added is already in collection', () => {
 		let root = new OboModel({})
 		let childA = new OboModel({})
@@ -594,6 +636,20 @@ describe('OboModel', () => {
 		expect(root.children.at(0)).toBe(childA)
 		expect(root.children.at(1)).toBe(childB)
 		expect(root.children.at(2)).toBe(newChild)
+	})
+
+	test('addChildAfter does not add a child after an orphan', () => {
+		let root = new OboModel({})
+		let childA = new OboModel({})
+		let childB = new OboModel({})
+		let newChild = new OboModel({})
+
+		root.children.add(childA)
+		root.children.add(childB)
+
+		root.addChildAfter(root)
+
+		expect(root.children.length).toBe(2)
 	})
 
 	test('addChildAfter moves children if child added is already in collection', () => {
@@ -810,6 +866,14 @@ describe('OboModel', () => {
 		expect(child.parent).toBe(null)
 	})
 
+	test('remove will not remove an orphan', () => {
+		let root = new OboModel({})
+
+		root.remove()
+
+		expect(root).not.toBe(null)
+	})
+
 	test('replaceWith will replace a model with another model', () => {
 		let root = new OboModel({})
 		let childA = new OboModel({})
@@ -826,6 +890,22 @@ describe('OboModel', () => {
 		expect(root.children.at(0)).toBe(childA)
 		expect(root.children.at(1)).toBe(replaceModel)
 		expect(root.children.at(2)).toBe(childC)
+	})
+
+	test('replaceWith will not replace an orphan', () => {
+		let root = new OboModel({})
+		let childA = new OboModel({})
+		let childB = new OboModel({})
+		let childC = new OboModel({})
+		let replaceModel = new OboModel({})
+
+		root.children.add(childA)
+		root.children.add(childB)
+		root.children.add(childC)
+
+		root.replaceWith(replaceModel)
+
+		expect(root).not.toBe(replaceModel)
 	})
 
 	test('contains will report if a model contains a given child', () => {
@@ -858,5 +938,50 @@ describe('OboModel', () => {
 		expect(child.getParentOfType('grandparent')).toBe(grandparent)
 		expect(child.getParentOfType('parent')).toBe(parent)
 		expect(child.getParentOfType('child')).toBe(null)
+	})
+
+	test('OboModel.getRoot finds the root node', () => {
+		const model = OboModel.create({
+			id: 'testId',
+			type: 'ObojoboDraft.Chunks.Heading'
+		})
+
+		expect(OboModel.getRoot()).toEqual(model)
+	})
+
+	test('OboModel.getRoot finds the root node', () => {
+		expect(OboModel.getRoot()).toEqual(null)
+	})
+
+	test('Obomodel.create builds default chunks', () => {
+		let model = OboModel.create('chunk')
+
+		expect(model.toJSON()).toEqual({
+			children: null,
+			content: {
+				textGroup: [
+					{
+						data: { align: 'left', indent: 0 },
+						text: { styleList: null, value: '' }
+					}
+				]
+			},
+			id: null,
+			index: 0,
+			metadata: {},
+			type: 'chunk'
+		})
+	})
+
+	test('Obomodel.create builds nothing', () => {
+		let model = OboModel.create('mockChunk')
+
+		expect(model).toEqual(null)
+	})
+
+	test('Obomodel.create builds nothing from object', () => {
+		let model = OboModel.create({ type: 'mockChunk' })
+
+		expect(model).toEqual(null)
 	})
 })

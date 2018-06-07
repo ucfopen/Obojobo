@@ -200,8 +200,6 @@ var OboModel = function (_Backbone$Model) {
 					return root;
 				}
 			}
-
-			return null;
 		}
 	}, {
 		key: 'processTrigger',
@@ -660,17 +658,6 @@ var OboModel = function (_Backbone$Model) {
 			}
 
 			return null;
-		}
-	}, {
-		key: '__debug_print',
-		value: function __debug_print(indent) {
-			if (indent == null) {
-				indent = '';
-			}
-			console.log(indent + this.get('type'));
-			return Array.from(this.children.models).map(function (child) {
-				return child.__debug_print(indent + '  ');
-			});
 		}
 	}]);
 
