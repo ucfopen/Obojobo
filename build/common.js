@@ -7604,9 +7604,7 @@ var OboComponent = function (_React$Component) {
 						break;
 
 					default:
-						if (this.props.hasOwnProperty(propKey)) {
-							otherProps[propKey] = this.props[propKey];
-						}
+						otherProps[propKey] = this.props[propKey];
 						break;
 				}
 			}
@@ -7691,8 +7689,6 @@ var TextMenu = function (_React$Component) {
 	}, {
 		key: 'onMouseDown',
 		value: function onMouseDown(label, event) {
-			console.log(arguments);
-
 			event.preventDefault();
 			event.stopPropagation();
 
