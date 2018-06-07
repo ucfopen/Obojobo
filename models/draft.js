@@ -86,7 +86,7 @@ class Draft {
 			ORDER BY version DESC
 			LIMIT 1
 			`,
-				{ id: id }
+				{ id }
 			)
 			.then(result => {
 				result.content.draftId = result.id

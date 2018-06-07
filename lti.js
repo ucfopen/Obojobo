@@ -149,6 +149,7 @@ let getLatestHighestAssessmentScoreRecord = (userId, draftId, assessmentId) => {
 						user_id = $[userId]
 						AND draft_id = $[draftId]
 						AND assessment_id = $[assessmentId]
+						AND preview = false
 				) T1
 				ORDER BY
 					T1.coalesced_score DESC,
@@ -223,6 +224,7 @@ let getLTIStatesByAssessmentIdForUserAndDraft = (userId, draftId, optionalAssess
 				ON S.id = L.assessment_score_id
 				WHERE S.draft_id = $[draftId]
 				AND S.user_id = $[userId]
+				AND S.preview = false
 				${optionalAssessmentId ? "AND S.assessment_id = '" + optionalAssessmentId + "'" : ''}
 				AND L.id IS NOT NULL
 				ORDER BY S.id DESC
@@ -291,11 +293,13 @@ let getRequiredDataForReplaceResult = function(userId, draftId, assessmentId, lo
 			}
 
 			logger.info(
-				`LTI found assessment score. Details: user:"${result.assessmentScoreRecord
-					.userId}", draft:"${result.assessmentScoreRecord.draftId}", score:"${result
-					.assessmentScoreRecord
-					.score}", assessmentScoreId:"${assessmentScoreResult.id}", attemptId:"${result
-					.assessmentScoreRecord.attemptId}", preview:"${result.assessmentScoreRecord.preview}"`,
+				`LTI found assessment score. Details: user:"${
+					result.assessmentScoreRecord.userId
+				}", draft:"${result.assessmentScoreRecord.draftId}", score:"${
+					result.assessmentScoreRecord.score
+				}", assessmentScoreId:"${assessmentScoreResult.id}", attemptId:"${
+					result.assessmentScoreRecord.attemptId
+				}", preview:"${result.assessmentScoreRecord.preview}"`,
 				logId
 			)
 
@@ -475,13 +479,7 @@ let sendReplaceResultRequest = (outcomeService, score) => {
 // DB write methods
 //
 
-let insertReplaceResultEvent = (
-	userId,
-	draftId,
-	launch,
-	outcomeData,
-	ltiResult
-) => {
+let insertReplaceResultEvent = (userId, draftId, launch, outcomeData, ltiResult) => {
 	insertEvent({
 		action: 'lti:replaceResult',
 		actorTime: new Date().toISOString(),
@@ -638,7 +636,6 @@ const sendHighestAssessmentScore = (userId, draftId, assessmentId) => {
 		outcomeServiceURL: null
 	})
 
-
 	logger.info(
 		`LTI begin sendHighestAssessmentScore for userId:"${userId}", draftId:"${draftId}", assessmentId:"${assessmentId}"`,
 		logId
@@ -668,11 +665,13 @@ const sendHighestAssessmentScore = (userId, draftId, assessmentId) => {
 			result.scoreSent = requiredData.ltiScoreToSend
 
 			logger.info(
-				`LTI attempting replaceResult of score:"${result.scoreSent}" for assessmentScoreId:"${requiredData
-					.assessmentScoreRecord.id}" for user:"${requiredData.assessmentScoreRecord
-					.userId}", draft:"${requiredData.assessmentScoreRecord
-					.draftId}", sourcedid:"${outcomeData.resultSourcedId}", url:"${outcomeData.serviceURL}" using key:"${requiredData
-					.launch.key}"`,
+				`LTI attempting replaceResult of score:"${result.scoreSent}" for assessmentScoreId:"${
+					requiredData.assessmentScoreRecord.id
+				}" for user:"${requiredData.assessmentScoreRecord.userId}", draft:"${
+					requiredData.assessmentScoreRecord.draftId
+				}", sourcedid:"${outcomeData.resultSourcedId}", url:"${
+					outcomeData.serviceURL
+				}" using key:"${requiredData.launch.key}"`,
 				logId
 			)
 
@@ -725,13 +724,7 @@ const sendHighestAssessmentScore = (userId, draftId, assessmentId) => {
 			result.dbStatus = DB_STATUS_ERROR
 		})
 		.then(scoreId => {
-			insertReplaceResultEvent(
-				userId,
-				draftId,
-				requiredData.launch,
-				outcomeData,
-				result
-			)
+			insertReplaceResultEvent(userId, draftId, requiredData.launch, outcomeData, result)
 		})
 		.catch(error => {
 			logger.error(`LTI error with insertReplaceResultEvent`, error.message, logId)
