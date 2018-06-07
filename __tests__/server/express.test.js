@@ -7,10 +7,18 @@ jest.mock('../../server/assessment', () => ({
 	getAttempts: jest.fn().mockReturnValue(Promise.resolve('attempts'))
 }))
 
+jest.mock(
+	'../../__mocks__/models/visit',
+	() => ({
+		fetchById: jest.fn().mockReturnValue({ is_preview: false })
+	}),
+	{ virtual: true }
+)
+
 describe('server/express', () => {
 	const db = oboRequire('db')
-	const { mockExpressMethods, mockRouterMethods } = require('__mocks__/__mock_express')
-	const mockUser = { id: 1, canViewEditor: true }
+	require('__mocks__/__mock_express')
+	const mockUser = { id: 1 }
 	const Assessment = require('../../server/assessment')
 	// build the req info
 	const req = {
@@ -22,7 +30,8 @@ describe('server/express', () => {
 		},
 		body: {
 			draftId: 9,
-			assessmentId: 777
+			assessmentId: 777,
+			visitId: 'mockVisitId'
 		}
 	}
 
@@ -38,10 +47,12 @@ describe('server/express', () => {
 	const oboEvents = oboRequire('obo_events')
 	const startAttempt = require('../../server/attempt-start').startAttempt
 	const endAttempt = require('../../server/attempt-end').endAttempt
+	const Visit = oboRequire('models/visit')
 
 	beforeAll(() => {})
 	afterAll(() => {})
 	beforeEach(() => {
+		req.body.visitId = 'mockVisitId'
 		req.requireCurrentUser.mockRestore()
 		res.success.mockReset()
 		res.unexpected.mockReset()
@@ -57,9 +68,9 @@ describe('server/express', () => {
 	afterEach(() => {})
 
 	test('registers the expected routes', () => {
-		expect.assertions(13)
+		expect.assertions(10)
 
-		expect(server.get).toHaveBeenCalledTimes(4)
+		expect(server.get).toHaveBeenCalledTimes(1)
 		expect(server.post).toHaveBeenCalledTimes(4)
 		expect(server.delete).toHaveBeenCalledTimes(0)
 		expect(server.put).toHaveBeenCalledTimes(0)
@@ -68,15 +79,6 @@ describe('server/express', () => {
 		expect(server.post).toBeCalledWith('/api/assessments/attempt/:attemptId/end', expect.anything())
 		expect(server.post).toBeCalledWith('/api/assessments/clear-preview-scores', expect.anything())
 		expect(server.get).toBeCalledWith('/api/lti/state/draft/:draftId', expect.anything())
-		expect(server.get).toBeCalledWith(
-			'/api/assessments/:draftId/:assessmentId/attempt/:attemptId',
-			expect.anything()
-		)
-		expect(server.get).toBeCalledWith('/api/assessments/:draftId/attempts', expect.anything())
-		expect(server.get).toBeCalledWith(
-			'/api/assessment/:draftId/:assessmentId/attempts',
-			expect.anything()
-		)
 		expect(oboEvents.on).toBeCalledWith('client:question:setResponse', expect.anything())
 	})
 
@@ -158,7 +160,7 @@ describe('server/express', () => {
 		// execute
 		return endAttemptRoute[1](req, res, {}).then(() => {
 			expect(req.requireCurrentUser).toHaveBeenCalled()
-			expect(endAttempt).toHaveBeenCalledWith(req, res, mockUser, 5, true)
+			expect(endAttempt).toHaveBeenCalledWith(req, res, mockUser, 5, false)
 			expect(res.success).toHaveBeenCalledTimes(1)
 			expect(res.success).toHaveBeenCalledWith('endAttemptResult')
 		})
@@ -166,6 +168,11 @@ describe('server/express', () => {
 
 	test('clear-preview-scores route runs queries to empty preview score data', () => {
 		expect.assertions(11)
+
+		// visit is preview visit
+		req.body.visitId = 'mockPreviewVisitId'
+
+		Visit.fetchById.mockReturnValueOnce({ is_preview: true })
 
 		// grab a ref to expected route & verify it's the route we want
 		let clearPreviewScoresRoute = server.post.mock.calls[3]
@@ -178,7 +185,7 @@ describe('server/express', () => {
 		// execute
 		return clearPreviewScoresRoute[1](req, res, {}).then(() => {
 			expect(req.requireCurrentUser).toHaveBeenCalled()
-			expect(endAttempt).toHaveBeenCalledWith(req, res, mockUser, 5, true)
+			expect(endAttempt).toHaveBeenCalledWith(req, res, mockUser, 5, false)
 			expect(res.success).toHaveBeenCalledTimes(1)
 			expect(res.success).toHaveBeenCalledWith()
 
@@ -203,74 +210,23 @@ describe('server/express', () => {
 		})
 	})
 
+	// visit is not preview mode so can't
 	test('clear-preview-scores tests previewing state', () => {
-		expect.assertions(9)
+		expect.assertions(8)
 
 		// grab a ref to expected route & verify it's the route we want
 		let clearPreviewScoresRoute = server.post.mock.calls[3]
 		expect(clearPreviewScoresRoute[0]).toBe('/api/assessments/clear-preview-scores')
 
-		// user that can't preview
-		req.requireCurrentUser.mockResolvedValue({ id: 1, canViewEditor: false })
-
 		// execute
 		return clearPreviewScoresRoute[1](req, res, {}).then(() => {
 			expect(req.requireCurrentUser).toHaveBeenCalled()
-			expect(endAttempt).toHaveBeenCalledWith(req, res, mockUser, 5, true)
 			expect(res.success).toHaveBeenCalledTimes(0)
 			expect(res.unexpected).toHaveBeenCalledTimes(0)
 			expect(db.manyOrNone).toHaveBeenCalledTimes(0)
 			expect(db.none).toHaveBeenCalledTimes(0)
 			expect(res.notAuthorized).toHaveBeenCalledTimes(1)
 			expect(res.notAuthorized).toHaveBeenCalledWith('Not in preview mode')
-		})
-	})
-
-	test('attempt route calls getAttempt', () => {
-		expect.assertions(5)
-
-		// grab a ref to expected route & verify it's the route we want
-		let getAttemptRoute = server.get.mock.calls[1]
-		expect(getAttemptRoute[0]).toBe('/api/assessments/:draftId/:assessmentId/attempt/:attemptId')
-
-		// execute
-		return getAttemptRoute[1](req, res, {}).then(() => {
-			expect(req.requireCurrentUser).toHaveBeenCalled()
-			expect(res.success).toHaveBeenCalledTimes(1)
-			expect(res.success).toHaveBeenCalledWith('attempt')
-			expect(Assessment.getAttempt).toHaveBeenCalledWith(1, 3, 999, 5)
-		})
-	})
-
-	test('attempts route calls getAttempts', () => {
-		expect.assertions(5)
-
-		// grab a ref to expected route & verify it's the route we want
-		let getAttemptsRoute = server.get.mock.calls[2]
-		expect(getAttemptsRoute[0]).toBe('/api/assessments/:draftId/attempts')
-
-		// execute
-		return getAttemptsRoute[1](req, res, {}).then(() => {
-			expect(req.requireCurrentUser).toHaveBeenCalled()
-			expect(res.success).toHaveBeenCalledTimes(1)
-			expect(res.success).toHaveBeenCalledWith('attempts')
-			expect(Assessment.getAttempts).toHaveBeenCalledWith(1, 3)
-		})
-	})
-
-	test('attempts route for a given assessment returns attempts for that assessment', () => {
-		expect.assertions(5)
-
-		// grab a ref to expected route & verify it's the route we want
-		let getAttemptsRoute = server.get.mock.calls[3]
-		expect(getAttemptsRoute[0]).toBe('/api/assessment/:draftId/:assessmentId/attempts')
-
-		// execute
-		return getAttemptsRoute[1](req, res, {}).then(() => {
-			expect(req.requireCurrentUser).toHaveBeenCalled()
-			expect(res.success).toHaveBeenCalledTimes(1)
-			expect(res.success).toHaveBeenCalledWith('attempts')
-			expect(Assessment.getAttempts).toHaveBeenCalledWith(1, 3)
 		})
 	})
 

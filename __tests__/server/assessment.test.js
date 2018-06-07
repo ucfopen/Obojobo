@@ -2,6 +2,14 @@ const db = oboRequire('db')
 const lti = oboRequire('lti')
 const Assessment = require('../../server/assessment')
 
+jest.mock(
+	'../../__mocks__/models/visit',
+	() => ({
+		fetchById: jest.fn().mockReturnValue({ is_preview: false })
+	}),
+	{ virtual: true }
+)
+
 describe('Assessment', () => {
 	beforeEach(() => {
 		jest.restoreAllMocks()
@@ -19,7 +27,7 @@ describe('Assessment', () => {
 			questionScores: ['mockScore']
 		},
 		assessment_score: '15',
-		score_details: 'mockScoreDeails',
+		score_details: 'mockScoreDetails',
 		assessment_score_id: 'scoreId',
 		attempt_number: '12'
 	})
@@ -154,22 +162,13 @@ describe('Assessment', () => {
 			})
 	})
 
-	test('getNumberAttemptsTaken calls db', () => {
-		expect.assertions(1)
-		db.one.mockResolvedValueOnce({ count: 123 })
-
-		return Assessment.getNumberAttemptsTaken(0, 1, 2).then(n => {
-			expect(n).toBe(123)
-		})
-	})
-
 	test('createUserAttempt returns attempt object', () => {
 		let mockAttempt = makeMockAttempt()
 		let res = Assessment.createUserAttempt('mockUserId', 'mockDraftId', mockAttempt)
 		expect(res).toEqual({
 			assessmentId: 'mockAssessmentId',
 			assessmentScore: 15,
-			assessmentScoreDetails: 'mockScoreDeails',
+			assessmentScoreDetails: 'mockScoreDetails',
 			assessmentScoreId: 'scoreId',
 			attemptId: 'mockAttemptId',
 			responses: {},
@@ -195,9 +194,11 @@ describe('Assessment', () => {
 		// there's no lti state
 		lti.getLTIStatesByAssessmentIdForUserAndDraft.mockResolvedValueOnce({})
 
-		return Assessment.getAttempts('mockUserId', 'mockDraftId', 'assessmentId').then(result => {
-			expect(result).toMatchSnapshot()
-		})
+		return Assessment.getAttempts('mockUserId', 'mockDraftId', false, 'assessmentId').then(
+			result => {
+				expect(result).toMatchSnapshot()
+			}
+		)
 	})
 
 	test('getAttempts returns attempts object with response history', () => {
@@ -211,7 +212,7 @@ describe('Assessment', () => {
 				{
 					id: 'mockResponseId',
 					assessment_id: 'mockAssessmentId',
-					repsonse: 'mockResponse'
+					response: 'mockResponse'
 				}
 			]
 		}
@@ -222,14 +223,16 @@ describe('Assessment', () => {
 				scoreSent: 0,
 				sentDate: 'mockSentDate',
 				status: 'mockStatus',
-				gradebookStatus: 'mockGradeBookSatus',
-				statusDetails: 'mockStatusDtails'
+				gradebookStatus: 'mockGradeBookStatus',
+				statusDetails: 'mockStatusDetails'
 			}
 		})
 
-		return Assessment.getAttempts('mockUserId', 'mockDraftId', 'mockAssessmentId').then(result => {
-			expect(result).toMatchSnapshot()
-		})
+		return Assessment.getAttempts('mockUserId', 'mockDraftId', false, 'mockAssessmentId').then(
+			result => {
+				expect(result).toMatchSnapshot()
+			}
+		)
 	})
 
 	test('getAttemptNumber returns the attempt_number property', () => {

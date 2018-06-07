@@ -7,7 +7,7 @@ Object {
     Object {
       "assessmentId": "mockAssessmentId",
       "assessmentScore": 15,
-      "assessmentScoreDetails": "mockScoreDeails",
+      "assessmentScoreDetails": "mockScoreDetails",
       "assessmentScoreId": "scoreId",
       "attemptId": "mockAttemptId",
       "attemptNumber": 12,
@@ -25,11 +25,11 @@ Object {
     },
   ],
   "ltiState": Object {
-    "gradebookStatus": "mockGradeBookSatus",
+    "gradebookStatus": "mockGradeBookStatus",
     "scoreSent": 0,
     "sentDate": "mockSentDate",
     "status": "mockStatus",
-    "statusDetails": "mockStatusDtails",
+    "statusDetails": "mockStatusDetails",
   },
 }
 `;
@@ -41,7 +41,7 @@ Object {
     Object {
       "assessmentId": "mockAssessmentId",
       "assessmentScore": 15,
-      "assessmentScoreDetails": "mockScoreDeails",
+      "assessmentScoreDetails": "mockScoreDetails",
       "assessmentScoreId": "scoreId",
       "attemptId": "mockAttemptId",
       "attemptNumber": 12,

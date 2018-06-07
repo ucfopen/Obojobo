@@ -1,13 +1,10 @@
 const express = require('express')
 const app = express()
 const oboEvents = oboRequire('obo_events')
-const DraftModel = oboRequire('models/draft')
+const VisitModel = oboRequire('models/visit')
 const db = oboRequire('db')
-const Assessment = require('./assessment')
 const lti = oboRequire('lti')
-const insertEvent = oboRequire('insert_event')
 const logger = oboRequire('logger')
-const createCaliperEvent = oboRequire('routes/api/events/create_caliper_event') //@TODO
 const startAttempt = require('./attempt-start').startAttempt
 const endAttempt = require('./attempt-end').endAttempt
 const logAndRespondToUnexpected = require('./util').logAndRespondToUnexpected
@@ -31,7 +28,6 @@ app.post('/api/lti/sendAssessmentScore', (req, res, next) => {
 
 	let currentUser
 	let ltiScoreResult
-	let assessmentScoreId
 	let draftId = req.body.draftId
 	let assessmentId = req.body.assessmentId
 
@@ -67,10 +63,15 @@ app.post('/api/lti/sendAssessmentScore', (req, res, next) => {
 app.post('/api/assessments/attempt/start', (req, res) => startAttempt(req, res))
 
 app.post('/api/assessments/attempt/:attemptId/end', (req, res, next) => {
+	let currentUser
 	return req
 		.requireCurrentUser()
-		.then(currentUser => {
-			let isPreviewing = currentUser.canViewEditor
+		.then(user => {
+			currentUser = user
+			return VisitModel.fetchById(req.body.visitId)
+		})
+		.then(visit => {
+			let isPreviewing = visit.is_preview
 			return endAttempt(req, res, currentUser, req.params.attemptId, isPreviewing)
 		})
 		.then(resp => {
@@ -90,7 +91,10 @@ app.post('/api/assessments/clear-preview-scores', (req, res, next) => {
 		.requireCurrentUser()
 		.then(user => {
 			currentUser = user
-			let isPreviewing = currentUser.canViewEditor
+			return VisitModel.fetchById(req.body.visitId)
+		})
+		.then(visit => {
+			let isPreviewing = visit.is_preview
 
 			if (!isPreviewing) throw 'Not in preview mode'
 
@@ -192,63 +196,6 @@ app.post('/api/assessments/clear-preview-scores', (req, res, next) => {
 			}
 
 			logAndRespondToUnexpected('Unexpected error clearing preview scores', res, req, error)
-		})
-})
-
-app.get('/api/assessments/:draftId/:assessmentId/attempt/:attemptId', (req, res, next) => {
-	// @TODO:
-	// check input
-	return req
-		.requireCurrentUser()
-		.then(currentUser => {
-			return Assessment.getAttempt(
-				currentUser.id,
-				req.params.draftId,
-				req.params.assessmentId,
-				req.params.attemptId
-			)
-		})
-		.then(result => res.success(result))
-		.catch(error => {
-			logAndRespondToUnexpected('Unexpected Error Loading attempt "${:attemptId}"', res, req, error)
-		})
-})
-
-app.get('/api/assessments/:draftId/attempts', (req, res, next) => {
-	// @TODO:
-	// check input
-	return req
-		.requireCurrentUser()
-		.then(currentUser => {
-			return Assessment.getAttempts(currentUser.id, req.params.draftId)
-		})
-		.then(result => {
-			res.success(result)
-		})
-		.catch(error => {
-			if (error.message == 'Login Required') {
-				return res.notAuthorized(error.message)
-			}
-
-			logAndRespondToUnexpected('Unexpected error loading attempts', res, req, error)
-		})
-})
-
-app.get('/api/assessment/:draftId/:assessmentId/attempts', (req, res, next) => {
-	// @TODO:
-	// check input
-	return req
-		.requireCurrentUser()
-		.then(currentUser => {
-			return Assessment.getAttempts(currentUser.id, req.params.draftId, req.params.assessmentId)
-		})
-		.then(result => res.success(result))
-		.catch(error => {
-			if (error.message == 'Login Required') {
-				return res.notAuthorized(error.message)
-			}
-
-			logAndRespondToUnexpected('Unexpected error loading attempts', res, req, error)
 		})
 })
 

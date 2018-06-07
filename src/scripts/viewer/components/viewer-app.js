@@ -316,7 +316,10 @@ export default class ViewerApp extends React.Component {
 	}
 
 	clearPreviewScores() {
-		APIUtil.clearPreviewScores(this.state.model.get('draftId')).then(res => {
+		APIUtil.clearPreviewScores({
+			draftId: this.state.model.get('draftId'),
+			visitId: this.state.navState.visitId
+		}).then(res => {
 			if (res.status === 'error' || res.error) {
 				return ModalUtil.show(
 					<SimpleDialog ok width="15em">

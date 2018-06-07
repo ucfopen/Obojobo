@@ -13,6 +13,14 @@ jest.mock('../../server/assessment', () => ({
 	completeAttempt: jest.fn().mockReturnValue('mockCompleteAttemptResult')
 }))
 
+jest.mock(
+	'../../__mocks__/models/visit',
+	() => ({
+		fetchById: jest.fn().mockReturnValue({ is_preview: false })
+	}),
+	{ virtual: true }
+)
+
 const logger = oboRequire('logger')
 const db = oboRequire('db')
 const DraftModel = oboRequire('models/draft')
@@ -29,8 +37,6 @@ import testJson from '../../test-object.json'
 import {
 	endAttempt,
 	getAttempt,
-	getAttemptHistory,
-	getResponsesForAttempt,
 	getCalculatedScores,
 	calculateScores,
 	completeAttempt,
@@ -39,8 +45,7 @@ import {
 	insertAttemptScoredEvents,
 	reloadAttemptStateIfReviewing,
 	recreateChosenQuestionTree,
-	getNodeQuestion,
-	loadAssessmentProperties
+	getNodeQuestion
 } from '../../server/attempt-end'
 
 describe('Attempt End', () => {
@@ -106,10 +111,6 @@ describe('Attempt End', () => {
 			ltiAssessmentScoreId: 'mockLitScoreId',
 			status: 'mockStatus'
 		})
-
-		// mock score reload
-		let loadAssessmentProperties = jest.fn().mockReturnValueOnce('mockProperties')
-		let reloadAttemptStateIfReviewing = jest.fn().mockReturnValueOnce('mockReload')
 
 		let req = { connection: { remoteAddress: 'mockRemoteAddress' } }
 		let user = { id: 'mockUserId' }
@@ -188,16 +189,6 @@ describe('Attempt End', () => {
 			expect(attempt).toHaveProperty('model', expect.any(DraftModel))
 			expect(attempt).toHaveProperty('assessmentModel', 'mockChild')
 		})
-	})
-
-	test('getAttemptHistory calls Assessment method', () => {
-		let result = getAttemptHistory('userId', 'draftId', 'assessmentId')
-		expect(Assessment.getCompletedAssessmentAttemptHistory).toHaveBeenLastCalledWith(
-			'userId',
-			'draftId',
-			'assessmentId'
-		)
-		expect(result).toBe('super bat dad')
 	})
 
 	test('getCalculatedScores', () => {
@@ -316,8 +307,7 @@ describe('Attempt End', () => {
 			},
 			assessmentId: 'mockAssessmentId',
 			attemptId: 'mockAttemptId',
-			draftId: 'mockDraftId',
-			isPreviewMode: 'mockIsPreviewing'
+			draftId: 'mockDraftId'
 		})
 	})
 
@@ -396,8 +386,7 @@ describe('Attempt End', () => {
 					attemptCount: 'mockAttemptNumber',
 					attemptScore: 'mockAttemptScore',
 					ltiScoreSent: 'mockLtiScoreSent'
-				},
-				isPreviewMode: 'mockIsPreviewing'
+				}
 			})
 		})
 	})

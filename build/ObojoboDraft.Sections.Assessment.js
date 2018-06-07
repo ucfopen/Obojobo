@@ -1637,7 +1637,11 @@ var Assessment = function (_React$Component) {
 	}, {
 		key: 'endAttempt',
 		value: function endAttempt() {
-			return AssessmentUtil.endAttempt(this.props.model, this.props.moduleData.navState.context);
+			return AssessmentUtil.endAttempt({
+				model: this.props.model,
+				context: this.props.moduleData.navState.context,
+				visitId: this.props.moduleData.navState.visitId
+			});
 		}
 	}, {
 		key: 'exitAssessment',

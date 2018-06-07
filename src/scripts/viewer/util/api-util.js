@@ -63,10 +63,6 @@ var APIUtil = {
 		return fetch(`/api/drafts/${id}`).then(processJsonResults)
 	},
 
-	getAttempts(lo) {
-		return APIUtil.get(`/api/drafts/${lo.get('draftId')}/attempts`).then(processJsonResults)
-	},
-
 	requestStart(visitId, draftId) {
 		return APIUtil.post('/api/visits/start', {
 			visitId,
@@ -74,28 +70,30 @@ var APIUtil = {
 		}).then(processJsonResults)
 	},
 
-	startAttempt(lo, assessment) {
+	startAttempt({ lo, assessment, visitId }) {
 		return APIUtil.post('/api/assessments/attempt/start', {
 			draftId: lo.get('draftId'),
-			assessmentId: assessment.get('id')
+			assessmentId: assessment.get('id'),
+			visitId
 		}).then(processJsonResults)
 	},
 
-	endAttempt(attempt) {
-		return APIUtil.post(`/api/assessments/attempt/${attempt.attemptId}/end`).then(
+	endAttempt({ attempt, visitId }) {
+		return APIUtil.post(`/api/assessments/attempt/${attempt.attemptId}/end`, { visitId }).then(
 			processJsonResults
 		)
 	},
 
-	resendLTIAssessmentScore(lo, assessment) {
+	resendLTIAssessmentScore({ lo, assessment, visitId }) {
 		return APIUtil.post('/api/lti/sendAssessmentScore', {
 			draftId: lo.get('draftId'),
-			assessmentId: assessment.get('id')
+			assessmentId: assessment.get('id'),
+			visitId
 		}).then(processJsonResults)
 	},
 
-	clearPreviewScores(draftId) {
-		return APIUtil.post('/api/assessments/clear-preview-scores', { draftId }).then(
+	clearPreviewScores({ draftId, visitId }) {
+		return APIUtil.post('/api/assessments/clear-preview-scores', { draftId, visitId }).then(
 			processJsonResults
 		)
 	}

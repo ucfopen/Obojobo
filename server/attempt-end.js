@@ -1,4 +1,3 @@
-let db = oboRequire('db')
 let DraftModel = oboRequire('models/draft')
 let Assessment = require('./assessment')
 let AssessmentRubric = require('./assessment-rubric')
@@ -12,15 +11,13 @@ const QUESTION_NODE_TYPE = 'ObojoboDraft.Chunks.Question'
 let endAttempt = (req, res, user, attemptId, isPreviewing) => {
 	let attempt
 	let attemptHistory
-	let responseHistory
 	let calculatedScores
-	let updateAttemptData
 	let assessmentScoreId
 	let tree
 
 	logger.info(`End attempt "${attemptId}" begin for user "${user.id}" (Preview="${isPreviewing}")`)
 
-	return getAttempt(attemptId)
+	return getAttempt(attemptId, isPreviewing)
 		.then(attemptResult => {
 			logger.info(`End attempt "${attemptId}" - getAttempt success`)
 
@@ -29,7 +26,12 @@ let endAttempt = (req, res, user, attemptId, isPreviewing) => {
 		})
 		.then(draftTree => {
 			tree = draftTree
-			return getAttemptHistory(user.id, attempt.draftId, attempt.assessmentId)
+			return Assessment.getCompletedAssessmentAttemptHistory(
+				user.id,
+				attempt.draftId,
+				attempt.assessmentId,
+				isPreviewing
+			)
 		})
 		.then(attemptHistoryResult => {
 			logger.info(`End attempt "${attemptId}" - getAttemptHistory success`)
@@ -124,16 +126,18 @@ let endAttempt = (req, res, user, attemptId, isPreviewing) => {
 				calculatedScores.assessmentScoreDetails
 			)
 		})
-		.then(() => Assessment.getAttempts(user.id, attempt.draftId, attempt.assessmentId))
+		.then(() =>
+			Assessment.getAttempts(user.id, attempt.draftId, isPreviewing, attempt.assessmentId)
+		)
 }
 
-let getAttempt = attemptId => {
+let getAttempt = (attemptId, isPreviewing) => {
 	let result
 
 	return Assessment.getAttempt(attemptId)
 		.then(selectResult => {
 			result = selectResult
-			return Assessment.getAttemptNumber(result.user_id, result.draft_id, attemptId)
+			return Assessment.getAttemptNumber(result.user_id, result.draft_id, attemptId, isPreviewing)
 		})
 		.then(attemptNumber => {
 			result.attemptNumber = attemptNumber
@@ -148,9 +152,6 @@ let getAttempt = attemptId => {
 			assessmentModel: draftModel.getChildNodeById(result.assessment_id)
 		}))
 }
-
-let getAttemptHistory = (userId, draftId, assessmentId) =>
-	Assessment.getCompletedAssessmentAttemptHistory(userId, draftId, assessmentId)
 
 let getResponsesForAttempt = (userId, draftId) => Assessment.getResponsesForAttempt(userId, draftId)
 
@@ -244,7 +245,7 @@ let insertAttemptEndEvents = (
 		action: 'assessment:attemptEnd',
 		actorTime: new Date().toISOString(),
 		payload: {
-			attemptId: attemptId,
+			attemptId,
 			attemptCount: attemptNumber
 		},
 		userId: user.id,
@@ -256,8 +257,7 @@ let insertAttemptEndEvents = (
 			actor: { type: 'user', id: user.id },
 			draftId,
 			assessmentId,
-			attemptId: attemptId,
-			isPreviewMode: isPreviewing
+			attemptId
 		})
 	})
 }
@@ -312,9 +312,8 @@ let insertAttemptScoredEvents = (
 					actor: { type: 'serverApp' },
 					draftId,
 					assessmentId,
-					attemptId: attemptId,
+					attemptId,
 					attemptScore,
-					isPreviewMode: isPreviewing,
 					extensions: {
 						attemptCount: attemptNumber,
 						attemptScore,
@@ -377,6 +376,7 @@ let reloadAttemptStateIfReviewing = (
 		return Assessment.getAttempts(
 			assessmentProperties.user.id,
 			draftId,
+			isPreviewing,
 			assessmentProperties.id
 		).then(result => {
 			result.attempts.map(attempt => {
@@ -427,14 +427,14 @@ let loadAssessmentProperties = (draftTree, attempt, user, isPreviewing, attemptH
 	const assessmentNode = draftTree.getChildNodeById(attempt.assessmentId)
 
 	return {
-		user: user,
-		isPreviewing: isPreviewing,
-		draftTree: draftTree,
+		user,
+		isPreviewing,
+		draftTree,
 		id: attempt.assessmentId,
 		oboNode: assessmentNode,
 		nodeChildrenIds: assessmentNode.children[1].childrenSet,
 		assessmentQBTree: assessmentNode.children[1].toObject(),
-		attemptHistory: attemptHistory,
+		attemptHistory,
 		numAttemptsTaken: null,
 		childrenMap: null
 	}
@@ -443,7 +443,6 @@ let loadAssessmentProperties = (draftTree, attempt, user, isPreviewing, attemptH
 module.exports = {
 	endAttempt,
 	getAttempt,
-	getAttemptHistory,
 	getResponsesForAttempt,
 	getCalculatedScores,
 	calculateScores,

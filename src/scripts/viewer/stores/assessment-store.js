@@ -149,7 +149,11 @@ class AssessmentStore extends Store {
 	tryStartAttempt(id) {
 		let model = OboModel.models[id]
 
-		return APIUtil.startAttempt(model.getRoot(), model, {})
+		return APIUtil.startAttempt({
+			lo: model.getRoot(),
+			assessment: model,
+			visitId: NavStore.getState().visitId
+		})
 			.then(res => {
 				if (res.status === 'error') {
 					switch (res.value.message.toLowerCase()) {
@@ -199,9 +203,11 @@ class AssessmentStore extends Store {
 	}
 
 	tryEndAttempt(id, context) {
-		let model = OboModel.models[id]
 		let assessment = this.state.assessments[id]
-		return APIUtil.endAttempt(assessment.current)
+		return APIUtil.endAttempt({
+			attempt: assessment.current,
+			visitId: NavStore.getState().visitId
+		})
 			.then(res => {
 				if (res.status === 'error') {
 					return ErrorUtil.errorResponse(res)
@@ -266,7 +272,11 @@ class AssessmentStore extends Store {
 		assessment.ltiNetworkState = LTINetworkStates.AWAITING_SEND_ASSESSMENT_SCORE_RESPONSE
 		this.triggerChange()
 
-		return APIUtil.resendLTIAssessmentScore(assessmentModel.getRoot(), assessmentModel)
+		return APIUtil.resendLTIAssessmentScore(
+			assessmentModel.getRoot(),
+			assessmentModel,
+			NavStore.getState().visitId
+		)
 			.then(res => {
 				assessment.ltiNetworkState = LTINetworkStates.IDLE
 

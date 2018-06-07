@@ -4826,32 +4826,45 @@ var APIUtil = {
 	getDraft: function getDraft(id) {
 		return fetch('/api/drafts/' + id).then(processJsonResults);
 	},
-	getAttempts: function getAttempts(lo) {
-		return APIUtil.get('/api/drafts/' + lo.get('draftId') + '/attempts').then(processJsonResults);
-	},
 	requestStart: function requestStart(visitId, draftId) {
 		return APIUtil.post('/api/visits/start', {
 			visitId: visitId,
 			draftId: draftId
 		}).then(processJsonResults);
 	},
-	startAttempt: function startAttempt(lo, assessment) {
+	startAttempt: function startAttempt(_ref) {
+		var lo = _ref.lo,
+		    assessment = _ref.assessment,
+		    visitId = _ref.visitId;
+
 		return APIUtil.post('/api/assessments/attempt/start', {
 			draftId: lo.get('draftId'),
-			assessmentId: assessment.get('id')
+			assessmentId: assessment.get('id'),
+			visitId: visitId
 		}).then(processJsonResults);
 	},
-	endAttempt: function endAttempt(attempt) {
-		return APIUtil.post('/api/assessments/attempt/' + attempt.attemptId + '/end').then(processJsonResults);
+	endAttempt: function endAttempt(_ref2) {
+		var attempt = _ref2.attempt,
+		    visitId = _ref2.visitId;
+
+		return APIUtil.post('/api/assessments/attempt/' + attempt.attemptId + '/end', { visitId: visitId }).then(processJsonResults);
 	},
-	resendLTIAssessmentScore: function resendLTIAssessmentScore(lo, assessment) {
+	resendLTIAssessmentScore: function resendLTIAssessmentScore(_ref3) {
+		var lo = _ref3.lo,
+		    assessment = _ref3.assessment,
+		    visitId = _ref3.visitId;
+
 		return APIUtil.post('/api/lti/sendAssessmentScore', {
 			draftId: lo.get('draftId'),
-			assessmentId: assessment.get('id')
+			assessmentId: assessment.get('id'),
+			visitId: visitId
 		}).then(processJsonResults);
 	},
-	clearPreviewScores: function clearPreviewScores(draftId) {
-		return APIUtil.post('/api/assessments/clear-preview-scores', { draftId: draftId }).then(processJsonResults);
+	clearPreviewScores: function clearPreviewScores(_ref4) {
+		var draftId = _ref4.draftId,
+		    visitId = _ref4.visitId;
+
+		return APIUtil.post('/api/assessments/clear-preview-scores', { draftId: draftId, visitId: visitId }).then(processJsonResults);
 	}
 };
 
@@ -5088,11 +5101,16 @@ var AssessmentUtil = {
 			}
 		});
 	},
-	endAttempt: function endAttempt(model, context) {
+	endAttempt: function endAttempt(_ref) {
+		var model = _ref.model,
+		    context = _ref.context,
+		    visitId = _ref.visitId;
+
 		return Dispatcher.trigger('assessment:endAttempt', {
 			value: {
 				id: model.get('id'),
-				context: context
+				context: context,
+				visitId: visitId
 			}
 		});
 	},
@@ -19007,7 +19025,11 @@ var AssessmentStore = function (_Store) {
 
 			var model = OboModel.models[id];
 
-			return _apiUtil2.default.startAttempt(model.getRoot(), model, {}).then(function (res) {
+			return _apiUtil2.default.startAttempt({
+				lo: model.getRoot(),
+				assessment: model,
+				visitId: _navStore2.default.getState().visitId
+			}).then(function (res) {
 				if (res.status === 'error') {
 					switch (res.value.message.toLowerCase()) {
 						case 'attempt limit reached':
@@ -19077,9 +19099,11 @@ var AssessmentStore = function (_Store) {
 		value: function tryEndAttempt(id, context) {
 			var _this3 = this;
 
-			var model = OboModel.models[id];
 			var assessment = this.state.assessments[id];
-			return _apiUtil2.default.endAttempt(assessment.current).then(function (res) {
+			return _apiUtil2.default.endAttempt({
+				attempt: assessment.current,
+				visitId: _navStore2.default.getState().visitId
+			}).then(function (res) {
 				if (res.status === 'error') {
 					return ErrorUtil.errorResponse(res);
 				}
@@ -19146,7 +19170,7 @@ var AssessmentStore = function (_Store) {
 			assessment.ltiNetworkState = _ltiNetworkStates2.default.AWAITING_SEND_ASSESSMENT_SCORE_RESPONSE;
 			this.triggerChange();
 
-			return _apiUtil2.default.resendLTIAssessmentScore(assessmentModel.getRoot(), assessmentModel).then(function (res) {
+			return _apiUtil2.default.resendLTIAssessmentScore(assessmentModel.getRoot(), assessmentModel, _navStore2.default.getState().visitId).then(function (res) {
 				assessment.ltiNetworkState = _ltiNetworkStates2.default.IDLE;
 
 				if (res.status === 'error') {
@@ -23196,7 +23220,10 @@ var ViewerApp = function (_React$Component) {
 	}, {
 		key: 'clearPreviewScores',
 		value: function clearPreviewScores() {
-			_apiUtil2.default.clearPreviewScores(this.state.model.get('draftId')).then(function (res) {
+			_apiUtil2.default.clearPreviewScores({
+				draftId: this.state.model.get('draftId'),
+				visitId: this.state.navState.visitId
+			}).then(function (res) {
 				if (res.status === 'error' || res.error) {
 					return ModalUtil.show(_react2.default.createElement(
 						SimpleDialog,

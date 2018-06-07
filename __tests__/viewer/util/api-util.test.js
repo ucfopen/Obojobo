@@ -168,34 +168,6 @@ describe('apiutil', () => {
 		})
 	})
 
-	test('getAttempts calls fetch', () => {
-		expect.assertions(3)
-		let lo = {
-			get: requestedProp => requestedProp // this will just return the prop as the value
-		}
-		fetch.mockResolvedValueOnce({
-			json: () => ({
-				status: 'ok',
-				value: 'mockValue'
-			})
-		})
-
-		return APIUtil.getAttempts(lo).then(res => {
-			expect(fetch).toHaveBeenCalled()
-			let calledEndpoint = fetch.mock.calls[0][0]
-			let calledOptions = fetch.mock.calls[0][1]
-			expect(calledEndpoint).toBe('/api/drafts/draftId/attempts')
-			expect(calledOptions).toEqual({
-				credentials: 'include',
-				headers: {
-					Accept: 'application/json',
-					'Content-Type': 'application/json'
-				},
-				method: 'GET'
-			})
-		})
-	})
-
 	test('requestStart calls fetch', () => {
 		expect.assertions(4)
 		let lo = {
@@ -245,7 +217,7 @@ describe('apiutil', () => {
 			})
 		})
 
-		return APIUtil.startAttempt(lo, assessment).then(res => {
+		return APIUtil.startAttempt({ lo, assessment, visitId: 'mockVisitId' }).then(res => {
 			expect(fetch).toHaveBeenCalled()
 			let calledEndpoint = fetch.mock.calls[0][0]
 			let calledOptions = fetch.mock.calls[0][1]
@@ -262,13 +234,14 @@ describe('apiutil', () => {
 
 			expect(JSON.parse(calledOptions.body)).toEqual({
 				assessmentId: 'id',
-				draftId: 'draftId'
+				draftId: 'draftId',
+				visitId: 'mockVisitId'
 			})
 		})
 	})
 
 	test('endAttempt calls fetch', () => {
-		expect.assertions(3)
+		expect.assertions(4)
 		fetch.mockResolvedValueOnce({
 			json: () => ({
 				status: 'ok',
@@ -276,19 +249,22 @@ describe('apiutil', () => {
 			})
 		})
 
-		return APIUtil.endAttempt({ attemptId: 999 }).then(res => {
+		return APIUtil.endAttempt({ attempt: { attemptId: 999 }, visitId: 'mockVisitId' }).then(res => {
 			expect(fetch).toHaveBeenCalled()
 			let calledEndpoint = fetch.mock.calls[0][0]
 			let calledOptions = fetch.mock.calls[0][1]
 			expect(calledEndpoint).toBe('/api/assessments/attempt/999/end')
 			expect(calledOptions).toEqual({
-				body: '{}',
+				body: expect.anything(),
 				credentials: 'include',
 				headers: {
 					Accept: 'application/json',
 					'Content-Type': 'application/json'
 				},
 				method: 'POST'
+			})
+			expect(JSON.parse(calledOptions.body)).toEqual({
+				visitId: 'mockVisitId'
 			})
 		})
 	})
@@ -308,7 +284,7 @@ describe('apiutil', () => {
 			})
 		})
 
-		return APIUtil.resendLTIAssessmentScore(lo, assessment).then(res => {
+		return APIUtil.resendLTIAssessmentScore({ lo, assessment }).then(res => {
 			expect(fetch).toHaveBeenCalled()
 			let calledEndpoint = fetch.mock.calls[0][0]
 			let calledOptions = fetch.mock.calls[0][1]
@@ -341,24 +317,27 @@ describe('apiutil', () => {
 			})
 		})
 
-		return APIUtil.clearPreviewScores('mockDraftId').then(res => {
-			expect(fetch).toHaveBeenCalled()
-			let calledEndpoint = fetch.mock.calls[0][0]
-			let calledOptions = fetch.mock.calls[0][1]
-			expect(calledEndpoint).toBe('/api/assessments/clear-preview-scores')
-			expect(calledOptions).toEqual({
-				body: expect.anything(),
-				credentials: 'include',
-				headers: {
-					Accept: 'application/json',
-					'Content-Type': 'application/json'
-				},
-				method: 'POST'
-			})
-			expect(JSON.parse(calledOptions.body)).toEqual({
-				draftId: 'mockDraftId'
-			})
-		})
+		return APIUtil.clearPreviewScores({ draftId: 'mockDraftId', visitId: 'mockVisitId' }).then(
+			res => {
+				expect(fetch).toHaveBeenCalled()
+				let calledEndpoint = fetch.mock.calls[0][0]
+				let calledOptions = fetch.mock.calls[0][1]
+				expect(calledEndpoint).toBe('/api/assessments/clear-preview-scores')
+				expect(calledOptions).toEqual({
+					body: expect.anything(),
+					credentials: 'include',
+					headers: {
+						Accept: 'application/json',
+						'Content-Type': 'application/json'
+					},
+					method: 'POST'
+				})
+				expect(JSON.parse(calledOptions.body)).toEqual({
+					draftId: 'mockDraftId',
+					visitId: 'mockVisitId'
+				})
+			}
+		)
 	})
 
 	test('requestStart handles json parsing error', () => {

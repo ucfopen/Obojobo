@@ -1,9 +1,9 @@
 const Assessment = require('./assessment')
 const DraftModel = oboRequire('models/draft')
+const VisitModel = oboRequire('models/visit')
 const createCaliperEvent = oboRequire('routes/api/events/create_caliper_event')
 const insertEvent = oboRequire('insert_event')
-const logger = oboRequire('logger')
-const logAndRespondToUnexpected = require('./util').logAndRespondToUnexpected
+const { getRandom, logAndRespondToUnexpected } = require('./util')
 const _ = require('underscore')
 
 const QUESTION_BANK_NODE_TYPE = 'ObojoboDraft.Chunks.QuestionBank'
@@ -23,7 +23,7 @@ const startAttempt = (req, res) => {
 		nodeChildrenIds: null,
 		assessmentQBTree: null,
 		attemptHistory: null,
-		numAttemptsaken: null,
+		numAttemptsTaken: null,
 		questionUsesMap: null
 	}
 	let attemptState
@@ -32,8 +32,10 @@ const startAttempt = (req, res) => {
 		.requireCurrentUser()
 		.then(user => {
 			assessmentProperties.user = user
-			assessmentProperties.isPreviewing = user.canViewEditor
-
+			return VisitModel.fetchById(req.body.visitId)
+		})
+		.then(visit => {
+			assessmentProperties.isPreviewing = visit.is_preview
 			return DraftModel.fetchById(req.body.draftId)
 		})
 		.then(draftTree => {
@@ -48,28 +50,20 @@ const startAttempt = (req, res) => {
 			return Assessment.getCompletedAssessmentAttemptHistory(
 				assessmentProperties.user.id,
 				req.body.draftId,
-				req.body.assessmentId
+				req.body.assessmentId,
+				assessmentProperties.isPreviewing
 			)
 		})
 		.then(attemptHistory => {
 			assessmentProperties.attemptHistory = attemptHistory
+			assessmentProperties.numAttemptsTaken = attemptHistory.length
 
-			return Assessment.getNumberAttemptsTaken(
-				assessmentProperties.user.id,
-				req.body.draftId,
-				req.body.assessmentId
-			)
-		})
-		.then(numAttemptsTaken => {
-			assessmentProperties.numAttemptsTaken = numAttemptsTaken
-
-			// If we're in preview mode, allow unlimited attempts, else throw an error
-			// when trying to start an assessment with no attempts left.
 			if (
 				assessmentProperties.oboNode.node.content.attempts &&
 				assessmentProperties.numAttemptsTaken >= assessmentProperties.oboNode.node.content.attempts
-			)
+			) {
 				throw new Error(ERROR_ATTEMPT_LIMIT_REACHED)
+			}
 
 			attemptState = getState(assessmentProperties)
 
@@ -95,7 +89,7 @@ const startAttempt = (req, res) => {
 
 			return insertAttemptStartCaliperEvent(
 				result.attemptId,
-				assessmentProperties.numAttemptsaken,
+				assessmentProperties.numAttemptsTaken,
 				assessmentProperties.user.id,
 				req.body.draftId,
 				req.body.assessmentId,
@@ -219,10 +213,10 @@ const chooseUnseenQuestionsRandomly = (assessmentProperties, rootId, numQuestion
 		[...oboNode.draftTree.getChildNodeById(rootId).immediateChildrenSet]
 			// sort, prioritizing unseen questions
 			.sort((id1, id2) => {
-				// these questsions have been seen the same number of times
-				// randomize their order reletive to each other [a, b] or [b, a]
+				// these questions have been seen the same number of times
+				// randomize their order relative to each other [a, b] or [b, a]
 				if (questionUsesMap.get(id1) === questionUsesMap.get(id2)) {
-					return Math.random() - 0.5
+					return getRandom() - 0.5
 				}
 				// these questions have not been seen the same number of times
 				// place the lesser seen one first
@@ -332,7 +326,6 @@ const insertAttemptStartCaliperEvent = (
 			draftId: draftId,
 			assessmentId: assessmentId,
 			attemptId: attemptId,
-			isPreviewMode: isPreviewing,
 			extensions: {
 				count: numAttemptsTaken
 			}

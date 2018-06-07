@@ -214,11 +214,12 @@ var AssessmentUtil = {
 		})
 	},
 
-	endAttempt(model, context) {
+	endAttempt({ model, context, visitId }) {
 		return Dispatcher.trigger('assessment:endAttempt', {
 			value: {
 				id: model.get('id'),
-				context
+				context,
+				visitId
 			}
 		})
 	},

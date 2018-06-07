@@ -1,10 +1,11 @@
 let DraftNode = oboRequire('models/draft_node')
+let Visit = oboRequire('models/visit')
 let db = oboRequire('db')
 let lti = oboRequire('lti')
 let logger = oboRequire('logger')
 
 class Assessment extends DraftNode {
-	static getCompletedAssessmentAttemptHistory(userId, draftId, assessmentId) {
+	static getCompletedAssessmentAttemptHistory(userId, draftId, assessmentId, isPreview) {
 		return db.manyOrNone(
 			`
 				SELECT
@@ -20,29 +21,10 @@ class Assessment extends DraftNode {
 					AND draft_id = $[draftId]
 					AND assessment_id = $[assessmentId]
 					AND completed_at IS NOT NULL
+					AND preview = $[isPreview]
 				ORDER BY completed_at`,
-			{ userId: userId, draftId: draftId, assessmentId: assessmentId }
+			{ userId, draftId, assessmentId, isPreview }
 		)
-	}
-
-	static getNumberAttemptsTaken(userId, draftId, assessmentId) {
-		return db
-			.one(
-				`
-				SELECT
-					COUNT(*)
-				FROM attempts
-				WHERE
-					user_id = $[userId]
-					AND draft_id = $[draftId]
-					AND assessment_id = $[assessmentId]
-					AND completed_at IS NOT NULL
-			`,
-				{ userId: userId, draftId: draftId, assessmentId: assessmentId }
-			)
-			.then(result => {
-				return parseInt(result.count, 10)
-			})
 	}
 
 	static createUserAttempt(userId, draftId, attempt) {
@@ -65,7 +47,7 @@ class Assessment extends DraftNode {
 		}
 	}
 
-	static getAttempts(userId, draftId, optionalAssessmentId = null) {
+	static getAttempts(userId, draftId, isPreview, optionalAssessmentId = null) {
 		let assessments = {}
 		return db
 			.manyOrNone(
@@ -92,11 +74,13 @@ class Assessment extends DraftNode {
 					ATT.user_id = $[userId]
 					AND ATT.draft_id = $[draftId]
 					${optionalAssessmentId !== null ? 'AND ATT.assessment_id = $[optionalAssessmentId]' : ''}
+					AND ATT.preview = $[isPreview]
 				ORDER BY ATT.completed_at`,
 				{
 					userId,
 					draftId,
-					optionalAssessmentId
+					optionalAssessmentId,
+					isPreview
 				}
 			)
 			.then(attempts => {
@@ -118,7 +102,7 @@ class Assessment extends DraftNode {
 				})
 
 				// now, get the response history for this user & draft
-				return Assessment.getResponseHistory(userId, draftId, optionalAssessmentId)
+				return Assessment.getResponseHistory(userId, draftId, isPreview, optionalAssessmentId)
 			})
 			.then(responseHistory => {
 				// Goal: place the responses from history into the attempts created above
@@ -191,7 +175,7 @@ class Assessment extends DraftNode {
 			})
 	}
 
-	static getAttemptIdsForUserForDraft(userId, draftId) {
+	static getAttemptIdsForUserForDraft(userId, draftId, isPreview) {
 		return db.manyOrNone(
 			`
 			SELECT
@@ -204,14 +188,15 @@ class Assessment extends DraftNode {
 			WHERE
 				user_id = $[userId]
 			AND draft_id = $[draftId]
+			AND preview = $[isPreview]
 			ORDER BY completed_at
 			`,
-			{ userId, draftId }
+			{ userId, draftId, isPreview }
 		)
 	}
 
-	static getAttemptNumber(userId, draftId, attemptId) {
-		return Assessment.getAttemptIdsForUserForDraft(userId, draftId).then(attempts => {
+	static getAttemptNumber(userId, draftId, attemptId, isPreview) {
+		return Assessment.getAttemptIdsForUserForDraft(userId, draftId, isPreview).then(attempts => {
 			for (let attempt of attempts) {
 				if (attempt.id === attemptId) return attempt.attempt_number
 			}
@@ -233,7 +218,7 @@ class Assessment extends DraftNode {
 
 	// get all attempts containing an array of responses
 	// { <attemptId>: [ {...question response...} ] }
-	static getResponseHistory(userId, draftId, optionalAssessmentId = null) {
+	static getResponseHistory(userId, draftId, isPreview, optionalAssessmentId = null) {
 		return db
 			.manyOrNone(
 				`
@@ -244,9 +229,10 @@ class Assessment extends DraftNode {
 					FROM attempts
 					WHERE user_id = $[userId]
 					AND draft_id = $[draftId]
+					AND preview = $[isPreview]
 					${optionalAssessmentId !== null ? "AND assessment_id = '" + optionalAssessmentId + "'" : ''}
 				) ORDER BY updated_at`,
-				{ userId, draftId, optionalAssessmentId }
+				{ userId, draftId, isPreview, optionalAssessmentId }
 			)
 			.then(result => {
 				let history = {}
@@ -415,9 +401,16 @@ class Assessment extends DraftNode {
 	}
 
 	onStartVisit(req, res, draftId, visitId, extensionsProps) {
+		let currentUser
 		return req
 			.requireCurrentUser()
-			.then(currentUser => this.constructor.getAttempts(currentUser.id, draftId))
+			.then(user => {
+				currentUser = user
+				return Visit.fetchById(visitId)
+			})
+			.then(visit => {
+				return this.constructor.getAttempts(currentUser.id, draftId, visit.is_preview)
+			})
 			.then(attempts => {
 				extensionsProps[':ObojoboDraft.Sections.Assessment:attemptHistory'] = attempts
 			})
