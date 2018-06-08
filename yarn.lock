@@ -4938,7 +4938,9 @@ object.pick@^1.3.0:
 
 "obojobo-draft-document-engine@https://github.com/ucfcdl/Obojobo-Document-Engine.git#v1.0.0":
   version "1.0.0"
-  resolved "https://github.com/ucfcdl/Obojobo-Document-Engine.git#3f621b4186414a4a6e3ef7af0d80a27d140af805"
+  resolved "https://github.com/ucfcdl/Obojobo-Document-Engine.git#5b55ee860ace643dc9b5608886542afe5c006e8c"
+  dependencies:
+    underscore "1.5.1"
 
 "obojobo-draft-xml-parser@https://github.com/ucfcdl/Obojobo-Docment-XML-Parser.git#v0.3.0":
   version "0.3.0"
@@ -6951,6 +6953,10 @@ uid-safe@~2.1.5:
 undefsafe@0.0.3:
   version "0.0.3"
   resolved "https://registry.yarnpkg.com/undefsafe/-/undefsafe-0.0.3.tgz#ecca3a03e56b9af17385baac812ac83b994a962f"
+
+underscore@1.5.1:
+  version "1.5.1"
+  resolved "https://registry.yarnpkg.com/underscore/-/underscore-1.5.1.tgz#d2bde817d176ffade894ab71458e682a14b86dc9"
 
 union-value@^1.0.0:
   version "1.0.0"
