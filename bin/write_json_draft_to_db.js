@@ -63,7 +63,7 @@ try {
 		case 'update':
 			draftId = process.argv[4] || 0
 
-			Draft.updateContent(draftId, json)
+			DraftModel.updateContent(draftId, jsonContent)
 				.then(id => {
 					console.info('OK. id=' + id)
 					process.exit()
