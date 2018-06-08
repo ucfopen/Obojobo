@@ -37,6 +37,9 @@
 		]
 	},
 	"author": "",
+	"dependencies": {
+		"underscore": "1.5.1"
+	},
 	"devDependencies": {
 		"babel-core": "^6.6.4",
 		"babel-loader": "^7.0.0",
@@ -70,7 +73,6 @@
 		"style-loader": "^0.17.0",
 		"svg-url-loader": "^2.3.2",
 		"svgo": "^1.0.5",
-		"underscore": "1.5.1",
 		"url-parse": "^1.2.0",
 		"webpack": "^2.5.1",
 		"webpack-dev-server": "^2.4.5",
