@@ -1,5 +1,6 @@
 import styleableTextRenderer from '../../../src/scripts/common/text/styleable-text-renderer'
 import StyleableText from '../../../src/scripts/common/text/styleable-text'
+import StyleRange from '../../../src/scripts/common/text/style-range'
 
 // convience function to easily compare a MockElement
 let mockElToHTMLString = el => {
@@ -54,6 +55,19 @@ describe('styleableTextRenderer', () => {
 		expect(mockElToHTMLString(mockEl)).toEqual(
 			`
 			<span>dog <b>fox</b> cat</span>
+		`.replace(/[\t\n]/g, '')
+		)
+	})
+
+	test('Styled text beyond end', () => {
+		let st = new StyleableText('dog fox cat')
+		let style = new StyleRange(4, 23, 'b')
+		st.styleList.styles[0] = style
+		let mockEl = styleableTextRenderer(st)
+
+		expect(mockElToHTMLString(mockEl)).toEqual(
+			`
+			<span>dog <b>fox cat</b></span>
 		`.replace(/[\t\n]/g, '')
 		)
 	})
@@ -132,7 +146,7 @@ describe('styleableTextRenderer', () => {
 		)
 	})
 
-	test.only('Nested Super/Subscripts', () => {
+	test('Nested Super/Subscripts', () => {
 		let st = new StyleableText('dog-fox-cat')
 		st.styleText('sup', 0, 11, 3)
 		st.styleText('sup', 4, 7, -2)

@@ -1432,48 +1432,6 @@ var StyleableText = function () {
 
 			return this.styleList.normalize();
 		}
-	}, {
-		key: '__debug_print',
-		value: function __debug_print() {
-			var end = void 0,
-			    i = void 0;
-			var s1 = void 0,
-			    s2 = void 0,
-			    start = void 0;
-			console.log('   |          |' + this.value + ' |');
-			var fill = '';
-			for (i = 0, end = this.value.length + 10, asc = 0 <= end; asc ? i <= end : i >= end; asc ? i++ : i--) {
-				var asc;
-				fill += ' ';
-			}
-
-			var j = 0;
-			return Array.from(this.styleList.styles).map(function (style) {
-				return s1 = (style.type + '          ').substr(0, 10) + '|', s2 = '', function () {
-					var result = [];
-					for (i = 0, end1 = style.start, asc1 = 0 <= end1; asc1 ? i < end1 : i > end1; asc1 ? i++ : i--) {
-						var asc1, end1;
-						result.push(s2 += '·');
-					}
-					return result;
-				}(), s2 += '<', function () {
-					var result1 = [];
-					for (start = style.start + 1, i = start, end2 = style.end, asc2 = start <= end2; asc2 ? i < end2 : i > end2; asc2 ? i++ : i--) {
-						var asc2, end2;
-						result1.push(s2 += '=');
-					}
-					return result1;
-				}(), s2 += '>', function () {
-					var result2 = [];
-					for (start1 = style.end + 1, i = start1, end3 = fill.length, asc3 = start1 <= end3; asc3 ? i < end3 : i > end3; asc3 ? i++ : i--) {
-						var asc3, end3, start1;
-						result2.push(s2 += '·');
-					}
-					return result2;
-				}(), console.log((j + '   ').substr(0, 3) + '|' + (s1 + s2 + fill).substr(0, fill.length + 1) + '|' + style.start + ',' + style.end + '|' + JSON.stringify(style.data)), // + '|' + style.__debug
-				j++;
-			});
-		}
 	}]);
 
 	return StyleableText;
@@ -4868,7 +4826,7 @@ var ChunkStyleList = function () {
 		}
 	}, {
 		key: 'get',
-		value: function get() {
+		value: function get(i) {
 			return this.styles[i];
 		}
 	}, {
@@ -5187,25 +5145,27 @@ var ChunkStyleList = function () {
 
 			var curRange = new _styleRange2.default(-1, -1, _styleType2.default.SUPERSCRIPT, 0);
 			var curLevel = 0;
-			for (var _i = 0; _i < mark.length; _i++) {
-				level = mark[_i];
-				if (mark[_i] == null) {
+			for (var i = 0; i < mark.length; i++) {
+				level = mark[i];
+				if (mark[i] == null) {
 					continue;
 				}
 
 				curLevel += level;
 
+				// Establish the first superscript range
 				if (curRange.start === -1) {
-					curRange.start = _i;
+					curRange.start = i;
 					curRange.data = curLevel;
-				} else if (curRange.end === -1) {
-					curRange.end = _i;
+					// Close up the previous range and start a new one
+				} else {
+					curRange.end = i;
 
 					if (curRange.data !== 0) {
 						newStyles.push(curRange);
 					}
 
-					curRange = new _styleRange2.default(_i, -1, _styleType2.default.SUPERSCRIPT, curLevel);
+					curRange = new _styleRange2.default(i, -1, _styleType2.default.SUPERSCRIPT, curLevel);
 				}
 			}
 
@@ -5465,14 +5425,14 @@ var StyleableTextComponent = function (_React$Component) {
 
 			switch (el.type) {
 				case 'a':
-					if ((el.attrs != null ? el.attrs.href : undefined) != null) {
+					if (el.attrs != null && el.attrs.href != null) {
 						attrs.href = el.attrs.href;
 						attrs.target = '_blank';
 					}
 					break;
 
 				case 'span':
-					if ((el.attrs != null ? el.attrs['class'] : undefined) != null) {
+					if (el.attrs != null && el.attrs['class'] != null) {
 						attrs.className = el.attrs['class'];
 					}
 					break;
@@ -5581,6 +5541,7 @@ var getTextNodeFragmentDescriptorsAtHelper = function getTextNodeFragmentDescrip
 		var charsRead = stateObj.charsRead + stateObj.curNode.text.length;
 
 		if (charsRead >= targetEndIndex && stateObj.end === null) {
+			console.log('not here');
 			stateObj.end = {
 				node: stateObj.curNode,
 				startIndex: 0,
@@ -5634,9 +5595,8 @@ var getTextNodeFragmentDescriptorsAt = function getTextNodeFragmentDescriptorsAt
 
 	var fragmentDescriptors = stateObj.inbetween;
 
-	if (stateObj.start !== null) {
-		fragmentDescriptors.unshift(stateObj.start);
-	}
+	fragmentDescriptors.unshift(stateObj.start);
+
 	if (stateObj.end !== null) {
 		fragmentDescriptors.push(stateObj.end);
 	}
@@ -5750,7 +5710,6 @@ var applyStyle = function applyStyle(el, styleRange) {
 };
 
 var getMockElement = function getMockElement(styleableText) {
-	// console.time 'getMockElement'
 	var root = new _mockElement2.default('span');
 	root.addChild(new _mockTextNode2.default(styleableText.value));
 
@@ -5788,8 +5747,6 @@ var getMockElement = function getMockElement(styleableText) {
 				}
 			}
 		}
-
-		// console.timeEnd 'getMockElement'
 	} catch (err) {
 		_didIteratorError = true;
 		_iteratorError = err;
@@ -5807,41 +5764,6 @@ var getMockElement = function getMockElement(styleableText) {
 
 	return root;
 };
-
-// __debugPrintFragments = (fragments) ->
-// 	s = ''
-// 	for fragment in fragments
-// 		s += fragment.node.text + '(' + fragment.startIndex + ':' + fragment.endIndex + ') '
-
-// 	console.log 'Fragments=', fragments, s
-
-var __debugPrintNode = function __debugPrintNode(node, indent) {
-	if (indent == null) {
-		indent = '';
-	}
-	if (node.nodeType === 'element') {
-		console.log(indent + node.type);
-		return Array.from(node.children).map(function (child) {
-			return __debugPrintNode(child, indent + '  ');
-		});
-	} else {
-		return console.log(indent + '[' + node.text + ']');
-	}
-};
-
-var __getHTML = function __getHTML(node) {
-	if (node.nodeType === 'text') {
-		return node.text;
-	}
-
-	return '<' + node.type + '>' + node.children.map(function (child) {
-		return __getHTML(child);
-	}).join('') + '</' + node.type + '>';
-};
-
-window.__getMockElement = getMockElement;
-window.__debugPrintNode = __debugPrintNode;
-window.__getHTML = __getHTML;
 
 exports.default = getMockElement;
 
