@@ -1,6 +1,7 @@
 import Common from 'Common'
 
 import APIUtil from '../../viewer/util/api-util'
+import MediaUtil from '../../viewer/util/media-util'
 
 let { Store } = Common.flux
 let { Dispatcher } = Common.flux
@@ -65,6 +66,9 @@ class MediaStore extends Store {
 		let size = payload.value.size
 		let model = OboModel.models[id]
 
+		let previousSize = MediaUtil.getSize(this.state, model)
+		if (previousSize === null) previousSize = MediaStore.SIZE_DEFAULT
+
 		if (size === null) {
 			delete this.state.sizeById[id]
 		} else {
@@ -77,16 +81,20 @@ class MediaStore extends Store {
 
 		APIUtil.postEvent(model.getRoot(), 'media:setSize', '1.0.0', {
 			id,
+			previousSize,
 			size: newSize
 		})
 
-		Dispatcher.trigger('media:sizeChanged', { id, size: newSize })
+		Dispatcher.trigger('media:sizeChanged', { id, size: newSize, previousSize })
 	}
 
 	setZoom(payload) {
 		let id = payload.value.id
 		let zoom = payload.value.zoom
 		let model = OboModel.models[id]
+
+		let previousZoom = MediaUtil.getZoom(this.state, model)
+		if (previousZoom === null) previousZoom = MediaStore.ZOOM_DEFAULT
 
 		if (zoom !== null && zoom <= 0) return
 
@@ -102,25 +110,30 @@ class MediaStore extends Store {
 
 		APIUtil.postEvent(model.getRoot(), 'media:setZoom', '1.0.0', {
 			id,
+			previousZoom,
 			zoom: newZoom
 		})
 
-		Dispatcher.trigger('media:zoomChanged', { id, zoom: newZoom })
+		Dispatcher.trigger('media:zoomChanged', { id, zoom: newZoom, previousZoom })
 	}
 
 	resetZoom(payload) {
 		let id = payload.value.id
 		let model = OboModel.models[id]
 
+		let previousZoom = MediaUtil.getZoom(this.state, model)
+		if (previousZoom === null) previousZoom = MediaStore.ZOOM_DEFAULT
+
 		delete this.state.zoomById[id]
 
 		this.triggerChange()
 
 		APIUtil.postEvent(model.getRoot(), 'media:resetZoom', '1.0.0', {
-			id
+			id,
+			previousZoom
 		})
 
-		Dispatcher.trigger('media:zoomReset', { id })
+		Dispatcher.trigger('media:zoomReset', { id, previousZoom })
 	}
 
 	init() {

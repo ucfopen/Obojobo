@@ -18695,23 +18695,23 @@ var _assessmentUtil = __webpack_require__(6);
 
 var _assessmentUtil2 = _interopRequireDefault(_assessmentUtil);
 
-var _getScoreComparisionData = __webpack_require__(166);
+var _getScoreComparisionData = __webpack_require__(167);
 
 var _getScoreComparisionData2 = _interopRequireDefault(_getScoreComparisionData);
 
-var _getReportDetailsForAttempt = __webpack_require__(163);
+var _getReportDetailsForAttempt = __webpack_require__(164);
 
 var _getReportDetailsForAttempt2 = _interopRequireDefault(_getReportDetailsForAttempt);
 
-var _getReportDisplayValuesForAttempt = __webpack_require__(164);
+var _getReportDisplayValuesForAttempt = __webpack_require__(165);
 
 var _getReportDisplayValuesForAttempt2 = _interopRequireDefault(_getReportDisplayValuesForAttempt);
 
-var _getScoreChangeDescription = __webpack_require__(165);
+var _getScoreChangeDescription = __webpack_require__(166);
 
 var _getScoreChangeDescription2 = _interopRequireDefault(_getScoreChangeDescription);
 
-var _getTextItems = __webpack_require__(169);
+var _getTextItems = __webpack_require__(170);
 
 var _getTextItems2 = _interopRequireDefault(_getTextItems);
 
@@ -19320,6 +19320,10 @@ var _apiUtil = __webpack_require__(2);
 
 var _apiUtil2 = _interopRequireDefault(_apiUtil);
 
+var _mediaUtil = __webpack_require__(146);
+
+var _mediaUtil2 = _interopRequireDefault(_mediaUtil);
+
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
@@ -19400,6 +19404,9 @@ var MediaStore = function (_Store) {
 			var size = payload.value.size;
 			var model = OboModel.models[id];
 
+			var previousSize = _mediaUtil2.default.getSize(this.state, model);
+			if (previousSize === null) previousSize = MediaStore.SIZE_DEFAULT;
+
 			if (size === null) {
 				delete this.state.sizeById[id];
 			} else {
@@ -19412,10 +19419,11 @@ var MediaStore = function (_Store) {
 
 			_apiUtil2.default.postEvent(model.getRoot(), 'media:setSize', '1.0.0', {
 				id: id,
+				previousSize: previousSize,
 				size: newSize
 			});
 
-			Dispatcher.trigger('media:sizeChanged', { id: id, size: newSize });
+			Dispatcher.trigger('media:sizeChanged', { id: id, size: newSize, previousSize: previousSize });
 		}
 	}, {
 		key: 'setZoom',
@@ -19423,6 +19431,9 @@ var MediaStore = function (_Store) {
 			var id = payload.value.id;
 			var zoom = payload.value.zoom;
 			var model = OboModel.models[id];
+
+			var previousZoom = _mediaUtil2.default.getZoom(this.state, model);
+			if (previousZoom === null) previousZoom = MediaStore.ZOOM_DEFAULT;
 
 			if (zoom !== null && zoom <= 0) return;
 
@@ -19438,10 +19449,11 @@ var MediaStore = function (_Store) {
 
 			_apiUtil2.default.postEvent(model.getRoot(), 'media:setZoom', '1.0.0', {
 				id: id,
+				previousZoom: previousZoom,
 				zoom: newZoom
 			});
 
-			Dispatcher.trigger('media:zoomChanged', { id: id, zoom: newZoom });
+			Dispatcher.trigger('media:zoomChanged', { id: id, zoom: newZoom, previousZoom: previousZoom });
 		}
 	}, {
 		key: 'resetZoom',
@@ -19449,15 +19461,19 @@ var MediaStore = function (_Store) {
 			var id = payload.value.id;
 			var model = OboModel.models[id];
 
+			var previousZoom = _mediaUtil2.default.getZoom(this.state, model);
+			if (previousZoom === null) previousZoom = MediaStore.ZOOM_DEFAULT;
+
 			delete this.state.zoomById[id];
 
 			this.triggerChange();
 
 			_apiUtil2.default.postEvent(model.getRoot(), 'media:resetZoom', '1.0.0', {
-				id: id
+				id: id,
+				previousZoom: previousZoom
 			});
 
-			Dispatcher.trigger('media:zoomReset', { id: id });
+			Dispatcher.trigger('media:zoomReset', { id: id, previousZoom: previousZoom });
 		}
 	}, {
 		key: 'init',
@@ -19509,7 +19525,7 @@ exports.default = function (url) {
 	return hostname;
 };
 
-var _urlParse = __webpack_require__(161);
+var _urlParse = __webpack_require__(162);
 
 var _urlParse2 = _interopRequireDefault(_urlParse);
 
@@ -19517,12 +19533,88 @@ function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { de
 
 /***/ }),
 /* 146 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+Object.defineProperty(exports, "__esModule", {
+	value: true
+});
+
+var _Common = __webpack_require__(1);
+
+var _Common2 = _interopRequireDefault(_Common);
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+var Dispatcher = _Common2.default.flux.Dispatcher;
+
+
+var MediaUtil = {
+	show: function show(id) {
+		return Dispatcher.trigger('media:show', {
+			value: {
+				id: id
+			}
+		});
+	},
+	hide: function hide(id) {
+		var actor = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : null;
+
+		return Dispatcher.trigger('media:hide', {
+			value: {
+				id: id,
+				actor: actor
+			}
+		});
+	},
+	setSize: function setSize(id, size) {
+		return Dispatcher.trigger('media:setSize', {
+			value: {
+				id: id,
+				size: size
+			}
+		});
+	},
+	setZoom: function setZoom(id, zoom) {
+		return Dispatcher.trigger('media:setZoom', {
+			value: {
+				id: id,
+				zoom: zoom
+			}
+		});
+	},
+	resetZoom: function resetZoom(id) {
+		return Dispatcher.trigger('media:resetZoom', {
+			value: {
+				id: id
+			}
+		});
+	},
+	getSize: function getSize(state, model) {
+		if (typeof state.sizeById[model.get('id')] === 'undefined') return null;
+		return state.sizeById[model.get('id')];
+	},
+	getZoom: function getZoom(state, model) {
+		if (typeof state.zoomById[model.get('id')] === 'undefined') return null;
+		return state.zoomById[model.get('id')];
+	},
+	isShowingMedia: function isShowingMedia(state, model) {
+		return state.shown[model.get('id')] === true;
+	}
+};
+
+exports.default = MediaUtil;
+
+/***/ }),
+/* 147 */
 /***/ (function(module, exports) {
 
 module.exports = React;
 
 /***/ }),
-/* 147 */
+/* 148 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -19992,13 +20084,13 @@ module.exports = React;
 })(typeof self !== 'undefined' ? self : undefined);
 
 /***/ }),
-/* 148 */
+/* 149 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
 
 
-var _index = __webpack_require__(173);
+var _index = __webpack_require__(174);
 
 var _index2 = _interopRequireDefault(_index);
 
@@ -20007,7 +20099,7 @@ function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { de
 window.Viewer = _index2.default;
 
 /***/ }),
-/* 149 */
+/* 150 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -20147,7 +20239,7 @@ function isLength(value) {
 module.exports = baseFlatten;
 
 /***/ }),
-/* 150 */
+/* 151 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -20161,7 +20253,7 @@ module.exports = baseFlatten;
  * Copyright 2009-2015 Jeremy Ashkenas, DocumentCloud and Investigative Reporters & Editors
  * Available under MIT license <https://lodash.com/license>
  */
-var isFunction = __webpack_require__(155);
+var isFunction = __webpack_require__(156);
 
 /**
  * The base implementation of `_.functions` which creates an array of
@@ -20190,7 +20282,7 @@ function baseFunctions(object, props) {
 module.exports = baseFunctions;
 
 /***/ }),
-/* 151 */
+/* 152 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -20206,7 +20298,7 @@ var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol
  * Copyright 2009-2016 Jeremy Ashkenas, DocumentCloud and Investigative Reporters & Editors
  * Available under MIT license <https://lodash.com/license>
  */
-var root = __webpack_require__(152);
+var root = __webpack_require__(153);
 
 /** Used to compose bitmasks for wrapper metadata. */
 var BIND_FLAG = 1,
@@ -20879,7 +20971,7 @@ function toNumber(value) {
 module.exports = createWrapper;
 
 /***/ }),
-/* 152 */
+/* 153 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -20943,7 +21035,7 @@ module.exports = root;
 /* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(136)(module), __webpack_require__(8)))
 
 /***/ }),
-/* 153 */
+/* 154 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -20957,10 +21049,10 @@ module.exports = root;
  * Copyright 2009-2015 Jeremy Ashkenas, DocumentCloud and Investigative Reporters & Editors
  * Available under MIT license <https://lodash.com/license>
  */
-var baseFlatten = __webpack_require__(149),
-    createWrapper = __webpack_require__(151),
-    functions = __webpack_require__(154),
-    restParam = __webpack_require__(157);
+var baseFlatten = __webpack_require__(150),
+    createWrapper = __webpack_require__(152),
+    functions = __webpack_require__(155),
+    restParam = __webpack_require__(158);
 
 /** Used to compose bitmasks for wrapper metadata. */
 var BIND_FLAG = 1;
@@ -21009,7 +21101,7 @@ var bindAll = restParam(function (object, methodNames) {
 module.exports = bindAll;
 
 /***/ }),
-/* 154 */
+/* 155 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -21023,8 +21115,8 @@ module.exports = bindAll;
  * Copyright 2009-2015 Jeremy Ashkenas, DocumentCloud and Investigative Reporters & Editors
  * Available under MIT license <https://lodash.com/license>
  */
-var baseFunctions = __webpack_require__(150),
-    keysIn = __webpack_require__(156);
+var baseFunctions = __webpack_require__(151),
+    keysIn = __webpack_require__(157);
 
 /**
  * Creates an array of function property names from all enumerable properties,
@@ -21048,7 +21140,7 @@ function functions(object) {
 module.exports = functions;
 
 /***/ }),
-/* 155 */
+/* 156 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -21212,7 +21304,7 @@ module.exports = isFunction;
 /* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(8)))
 
 /***/ }),
-/* 156 */
+/* 157 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -21352,7 +21444,7 @@ function keysIn(object) {
 module.exports = keysIn;
 
 /***/ }),
-/* 157 */
+/* 158 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -21430,7 +21522,7 @@ function restParam(func, start) {
 module.exports = restParam;
 
 /***/ }),
-/* 158 */
+/* 159 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -21505,7 +21597,7 @@ exports.stringify = querystringify;
 exports.parse = querystring;
 
 /***/ }),
-/* 159 */
+/* 160 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -21527,7 +21619,7 @@ Object.defineProperty(exports, "__esModule", {
   value: true
 });
 
-var _react = __webpack_require__(146);
+var _react = __webpack_require__(147);
 
 var _react2 = _interopRequireDefault(_react);
 
@@ -21535,7 +21627,7 @@ var _moment = __webpack_require__(0);
 
 var _moment2 = _interopRequireDefault(_moment);
 
-var _lodash = __webpack_require__(153);
+var _lodash = __webpack_require__(154);
 
 var _lodash2 = _interopRequireDefault(_lodash);
 
@@ -21847,7 +21939,7 @@ IdleTimer.defaultProps = {
 exports.default = IdleTimer;
 
 /***/ }),
-/* 160 */
+/* 161 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -21892,7 +21984,7 @@ module.exports = function required(port, protocol) {
 };
 
 /***/ }),
-/* 161 */
+/* 162 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -21900,8 +21992,8 @@ module.exports = function required(port, protocol) {
 
 var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol" ? function (obj) { return typeof obj; } : function (obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; };
 
-var required = __webpack_require__(160),
-    qs = __webpack_require__(158),
+var required = __webpack_require__(161),
+    qs = __webpack_require__(159),
     protocolre = /^([a-z][a-z0-9.+-]*:)?(\/\/)?([\S\s]*)/i,
     slashes = /^[A-Za-z][A-Za-z0-9+-.]*:\/\//;
 
@@ -22308,7 +22400,7 @@ module.exports = URL;
 /* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(8)))
 
 /***/ }),
-/* 162 */
+/* 163 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -22386,7 +22478,7 @@ var getDisplayType = function getDisplayType(_ref) {
 exports.default = getDisplayType;
 
 /***/ }),
-/* 163 */
+/* 164 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -22400,7 +22492,7 @@ var _getDisplayFriendlyScore = __webpack_require__(4);
 
 var _getDisplayFriendlyScore2 = _interopRequireDefault(_getDisplayFriendlyScore);
 
-var _getStatusResult = __webpack_require__(167);
+var _getStatusResult = __webpack_require__(168);
 
 var _getStatusResult2 = _interopRequireDefault(_getStatusResult);
 
@@ -22425,7 +22517,7 @@ var getReportDetailsForAttempt = function getReportDetailsForAttempt(assessmentR
 exports.default = getReportDetailsForAttempt;
 
 /***/ }),
-/* 164 */
+/* 165 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -22453,7 +22545,7 @@ var getReportDetailsForAttempt = function getReportDetailsForAttempt(scoreInfo, 
 exports.default = getReportDetailsForAttempt;
 
 /***/ }),
-/* 165 */
+/* 166 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -22494,7 +22586,7 @@ var getScoreChangeDescription = function getScoreChangeDescription(_ref) {
 exports.default = getScoreChangeDescription;
 
 /***/ }),
-/* 166 */
+/* 167 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -22531,7 +22623,7 @@ var getScoreComparisionData = function getScoreComparisionData(allAttempts, atte
 exports.default = getScoreComparisionData;
 
 /***/ }),
-/* 167 */
+/* 168 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -22556,7 +22648,7 @@ var getStatusResult = function getStatusResult(rubric, status) {
 exports.default = getStatusResult;
 
 /***/ }),
-/* 168 */
+/* 169 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -22613,7 +22705,7 @@ var getTextItemsForMods = function getTextItemsForMods(mods, totalNumberOfAttemp
 exports.default = getTextItemsForMods;
 
 /***/ }),
-/* 169 */
+/* 170 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -22627,11 +22719,11 @@ var _getDisplayFriendlyScore = __webpack_require__(4);
 
 var _getDisplayFriendlyScore2 = _interopRequireDefault(_getDisplayFriendlyScore);
 
-var _getTextItemsForMods = __webpack_require__(168);
+var _getTextItemsForMods = __webpack_require__(169);
 
 var _getTextItemsForMods2 = _interopRequireDefault(_getTextItemsForMods);
 
-var _getDisplayType = __webpack_require__(162);
+var _getDisplayType = __webpack_require__(163);
 
 var _getDisplayType2 = _interopRequireDefault(_getDisplayType);
 
@@ -22806,7 +22898,7 @@ var getTextItems = function getTextItems(_ref, _ref2) {
 exports.default = getTextItems;
 
 /***/ }),
-/* 170 */
+/* 171 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -22876,7 +22968,7 @@ var InlineNavButton = function (_React$Component) {
 exports.default = InlineNavButton;
 
 /***/ }),
-/* 171 */
+/* 172 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -23061,7 +23153,7 @@ var Nav = function (_React$Component) {
 exports.default = Nav;
 
 /***/ }),
-/* 172 */
+/* 173 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -23081,15 +23173,15 @@ var _Common = __webpack_require__(1);
 
 var _Common2 = _interopRequireDefault(_Common);
 
-var _react = __webpack_require__(146);
+var _react = __webpack_require__(147);
 
 var _react2 = _interopRequireDefault(_react);
 
-var _reactIdleTimer = __webpack_require__(159);
+var _reactIdleTimer = __webpack_require__(160);
 
 var _reactIdleTimer2 = _interopRequireDefault(_reactIdleTimer);
 
-var _inlineNavButton = __webpack_require__(170);
+var _inlineNavButton = __webpack_require__(171);
 
 var _inlineNavButton2 = _interopRequireDefault(_inlineNavButton);
 
@@ -23121,7 +23213,7 @@ var _mediaStore = __webpack_require__(144);
 
 var _mediaStore2 = _interopRequireDefault(_mediaStore);
 
-var _nav = __webpack_require__(171);
+var _nav = __webpack_require__(172);
 
 var _nav2 = _interopRequireDefault(_nav);
 
@@ -23658,7 +23750,7 @@ var ViewerApp = function (_React$Component) {
 exports.default = ViewerApp;
 
 /***/ }),
-/* 173 */
+/* 174 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -23668,7 +23760,7 @@ Object.defineProperty(exports, "__esModule", {
 	value: true
 });
 
-var _viewerApp = __webpack_require__(172);
+var _viewerApp = __webpack_require__(173);
 
 var _viewerApp2 = _interopRequireDefault(_viewerApp);
 
@@ -23712,7 +23804,7 @@ var _apiUtil = __webpack_require__(2);
 
 var _apiUtil2 = _interopRequireDefault(_apiUtil);
 
-var _mediaUtil = __webpack_require__(174);
+var _mediaUtil = __webpack_require__(146);
 
 var _mediaUtil2 = _interopRequireDefault(_mediaUtil);
 
@@ -23765,82 +23857,6 @@ exports.default = {
 		AssessmentScoreReportView: _assessmentScoreReportView2.default
 	}
 };
-
-/***/ }),
-/* 174 */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-
-
-Object.defineProperty(exports, "__esModule", {
-	value: true
-});
-
-var _Common = __webpack_require__(1);
-
-var _Common2 = _interopRequireDefault(_Common);
-
-function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
-
-var Dispatcher = _Common2.default.flux.Dispatcher;
-
-
-var MediaUtil = {
-	show: function show(id) {
-		return Dispatcher.trigger('media:show', {
-			value: {
-				id: id
-			}
-		});
-	},
-	hide: function hide(id) {
-		var actor = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : null;
-
-		return Dispatcher.trigger('media:hide', {
-			value: {
-				id: id,
-				actor: actor
-			}
-		});
-	},
-	setSize: function setSize(id, size) {
-		return Dispatcher.trigger('media:setSize', {
-			value: {
-				id: id,
-				size: size
-			}
-		});
-	},
-	setZoom: function setZoom(id, zoom) {
-		return Dispatcher.trigger('media:setZoom', {
-			value: {
-				id: id,
-				zoom: zoom
-			}
-		});
-	},
-	resetZoom: function resetZoom(id) {
-		return Dispatcher.trigger('media:resetZoom', {
-			value: {
-				id: id
-			}
-		});
-	},
-	getSize: function getSize(state, model) {
-		if (typeof state.sizeById[model.get('id')] === 'undefined') return null;
-		return state.sizeById[model.get('id')];
-	},
-	getZoom: function getZoom(state, model) {
-		if (typeof state.zoomById[model.get('id')] === 'undefined') return null;
-		return state.zoomById[model.get('id')];
-	},
-	isShowingMedia: function isShowingMedia(state, model) {
-		return state.shown[model.get('id')] === true;
-	}
-};
-
-exports.default = MediaUtil;
 
 /***/ }),
 /* 175 */
@@ -24156,8 +24172,8 @@ webpackContext.id = 182;
 /* 183 */
 /***/ (function(module, exports, __webpack_require__) {
 
-__webpack_require__(147);
-module.exports = __webpack_require__(148);
+__webpack_require__(148);
+module.exports = __webpack_require__(149);
 
 
 /***/ })

@@ -12,7 +12,12 @@ describe('Media Store', () => {
 		jest.resetAllMocks()
 
 		MediaStore.init()
-		OboModel.models = {}
+		OboModel.models = {
+			'mocked-id': {
+				getRoot: () => 'root-id',
+				get: () => 'mocked-id'
+			}
+		}
 	})
 
 	test('init will init state', () => {
@@ -38,9 +43,6 @@ describe('Media Store', () => {
 	})
 
 	test('show', () => {
-		OboModel.models['mocked-id'] = {
-			getRoot: () => 'root-id'
-		}
 		MediaStore.show({
 			value: { id: 'mocked-id' }
 		})
@@ -57,9 +59,6 @@ describe('Media Store', () => {
 	})
 
 	test('hide', () => {
-		OboModel.models['mocked-id'] = {
-			getRoot: () => 'root-id'
-		}
 		MediaStore.state = {
 			shown: { 'mocked-id': true, 'other-id': true },
 			sizeById: { 'mocked-id': 'size', 'other-id': 'other-size' },
@@ -85,9 +84,6 @@ describe('Media Store', () => {
 	})
 
 	test('hide (no actor)', () => {
-		OboModel.models['mocked-id'] = {
-			getRoot: () => 'root-id'
-		}
 		MediaStore.hide({
 			value: { id: 'mocked-id' }
 		})
@@ -103,9 +99,6 @@ describe('Media Store', () => {
 	})
 
 	test('setSize (to a set value)', () => {
-		OboModel.models['mocked-id'] = {
-			getRoot: () => 'root-id'
-		}
 		MediaStore.setSize({
 			value: { id: 'mocked-id', size: 'mocked-size' }
 		})
@@ -117,18 +110,17 @@ describe('Media Store', () => {
 		})
 		expect(APIUtil.postEvent).toHaveBeenCalledWith('root-id', 'media:setSize', '1.0.0', {
 			id: 'mocked-id',
-			size: 'mocked-size'
+			size: 'mocked-size',
+			previousSize: 'default'
 		})
 		expect(Dispatcher.trigger).toHaveBeenCalledWith('media:sizeChanged', {
 			id: 'mocked-id',
-			size: 'mocked-size'
+			size: 'mocked-size',
+			previousSize: 'default'
 		})
 	})
 
 	test('setSize (to null)', () => {
-		OboModel.models['mocked-id'] = {
-			getRoot: () => 'root-id'
-		}
 		MediaStore.state.sizeById['mocked-id'] = 'other-size'
 		MediaStore.setSize({
 			value: { id: 'mocked-id', size: null }
@@ -141,18 +133,17 @@ describe('Media Store', () => {
 		})
 		expect(APIUtil.postEvent).toHaveBeenCalledWith('root-id', 'media:setSize', '1.0.0', {
 			id: 'mocked-id',
-			size: 'default'
+			size: 'default',
+			previousSize: 'other-size'
 		})
 		expect(Dispatcher.trigger).toHaveBeenCalledWith('media:sizeChanged', {
 			id: 'mocked-id',
-			size: 'default'
+			size: 'default',
+			previousSize: 'other-size'
 		})
 	})
 
 	test('setZoom (to a set value)', () => {
-		OboModel.models['mocked-id'] = {
-			getRoot: () => 'root-id'
-		}
 		MediaStore.setZoom({
 			value: { id: 'mocked-id', zoom: 'mocked-zoom' }
 		})
@@ -164,18 +155,17 @@ describe('Media Store', () => {
 		})
 		expect(APIUtil.postEvent).toHaveBeenCalledWith('root-id', 'media:setZoom', '1.0.0', {
 			id: 'mocked-id',
-			zoom: 'mocked-zoom'
+			zoom: 'mocked-zoom',
+			previousZoom: 1
 		})
 		expect(Dispatcher.trigger).toHaveBeenCalledWith('media:zoomChanged', {
 			id: 'mocked-id',
-			zoom: 'mocked-zoom'
+			zoom: 'mocked-zoom',
+			previousZoom: 1
 		})
 	})
 
 	test('setZoom (to null)', () => {
-		OboModel.models['mocked-id'] = {
-			getRoot: () => 'root-id'
-		}
 		MediaStore.state.zoomById['mocked-id'] = 'other-zoom'
 		MediaStore.setZoom({
 			value: { id: 'mocked-id', zoom: null }
@@ -188,18 +178,17 @@ describe('Media Store', () => {
 		})
 		expect(APIUtil.postEvent).toHaveBeenCalledWith('root-id', 'media:setZoom', '1.0.0', {
 			id: 'mocked-id',
-			zoom: 1
+			zoom: 1,
+			previousZoom: 'other-zoom'
 		})
 		expect(Dispatcher.trigger).toHaveBeenCalledWith('media:zoomChanged', {
 			id: 'mocked-id',
-			zoom: 1
+			zoom: 1,
+			previousZoom: 'other-zoom'
 		})
 	})
 
 	test('setZoom (to value <= 0)', () => {
-		OboModel.models['mocked-id'] = {
-			getRoot: () => 'root-id'
-		}
 		MediaStore.setZoom({
 			value: { id: 'mocked-id', zoom: 0 }
 		})
@@ -214,9 +203,6 @@ describe('Media Store', () => {
 	})
 
 	test('resetZoom', () => {
-		OboModel.models['mocked-id'] = {
-			getRoot: () => 'root-id'
-		}
 		MediaStore.state.zoomById['mocked-id'] = 'mocked-zoom'
 		MediaStore.resetZoom({
 			value: { id: 'mocked-id' }
@@ -228,10 +214,12 @@ describe('Media Store', () => {
 			zoomById: {}
 		})
 		expect(APIUtil.postEvent).toHaveBeenCalledWith('root-id', 'media:resetZoom', '1.0.0', {
-			id: 'mocked-id'
+			id: 'mocked-id',
+			previousZoom: 'mocked-zoom'
 		})
 		expect(Dispatcher.trigger).toHaveBeenCalledWith('media:zoomReset', {
-			id: 'mocked-id'
+			id: 'mocked-id',
+			previousZoom: 'mocked-zoom'
 		})
 	})
 })
