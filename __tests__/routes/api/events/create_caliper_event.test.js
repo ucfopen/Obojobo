@@ -17,6 +17,7 @@ const targetId = 'testTargetId'
 const selectedTargets = { ids: [targetId] }
 const score = '50'
 const scoreId = '123'
+const mediaId = 'mediaId'
 const sessionIds = { sessionId: 'testSessionId', launchId: 'testOboLaunchId' }
 const to = 'navigation is going here'
 let originaltoISOString
@@ -29,7 +30,7 @@ describe('Caliper event creator', () => {
 	afterAll(() => {
 		Date.prototype.toISOString = originaltoISOString
 	})
-	it('createNavigationEvent', () => {
+	test('createNavigationEvent', () => {
 		const navEvent = caliperEvents.createNavigationEvent({
 			actor,
 			draftId,
@@ -41,7 +42,7 @@ describe('Caliper event creator', () => {
 		expect(navEvent).toMatchSnapshot()
 	})
 
-	it('createNavigationEvent - throws error given a bad actor', () => {
+	test('createNavigationEvent - throws error given a bad actor', () => {
 		expect(() => {
 			caliperEvents.createNavigationEvent({
 				actor: { type: 'bad' },
@@ -54,9 +55,9 @@ describe('Caliper event creator', () => {
 		}).toThrow(`Invalid actor type. Must provide actor of type user`)
 	})
 
-	///////////////////////////////////////////////////////////////////////////////////////////////////
+	////////////////////////////////////////////////////////////////////////////////////////////////
 
-	it('createViewEvent', () => {
+	test('createViewEvent', () => {
 		const viewEvent = caliperEvents.createViewEvent({
 			actor,
 			draftId,
@@ -67,7 +68,7 @@ describe('Caliper event creator', () => {
 		expect(viewEvent).toMatchSnapshot()
 	})
 
-	it('createViewEvent - sets target of view event when given framename arg', () => {
+	test('createViewEvent - sets target of view event when given framename arg', () => {
 		const viewEvent = caliperEvents.createViewEvent({
 			actor,
 			draftId,
@@ -79,7 +80,7 @@ describe('Caliper event creator', () => {
 		expect(viewEvent).toMatchSnapshot()
 	})
 
-	it('createViewEvent - throws error given a bad actor', () => {
+	test('createViewEvent - throws error given a bad actor', () => {
 		expect(() => {
 			caliperEvents.createViewEvent({
 				actor: { type: 'bad' },
@@ -92,24 +93,24 @@ describe('Caliper event creator', () => {
 		}).toThrow(`Invalid actor type. Must provide actor of type user`)
 	})
 
-	///////////////////////////////////////////////////////////////////////////////////////////////////
+	////////////////////////////////////////////////////////////////////////////////////////////////
 
-	it('createHideEvent', () => {
+	test('createHideEvent', () => {
 		const hideEvent = caliperEvents.createHideEvent({
 			actor,
 			draftId,
-			questionId,
+			itemId,
 			sessionIds,
 			extensions
 		})
 		expect(hideEvent).toMatchSnapshot()
 	})
 
-	it('createHideEvent - sets target of hide event when given framename arg', () => {
+	test('createHideEvent - sets target of hide event when given framename arg', () => {
 		const hideEvent = caliperEvents.createHideEvent({
 			actor,
 			draftId,
-			questionId,
+			itemId,
 			frameName,
 			sessionIds,
 			extensions
@@ -117,12 +118,12 @@ describe('Caliper event creator', () => {
 		expect(hideEvent).toMatchSnapshot()
 	})
 
-	it('createHideEvent - throws error given a bad actor', () => {
+	test('createHideEvent - throws error given a bad actor', () => {
 		expect(() => {
 			caliperEvents.createHideEvent({
 				actor: { type: 'bad' },
 				draftId,
-				questionId,
+				itemId,
 				frameName,
 				sessionIds,
 				extensions
@@ -132,9 +133,9 @@ describe('Caliper event creator', () => {
 		)
 	})
 
-	///////////////////////////////////////////////////////////////////////////////////////////////////
+	////////////////////////////////////////////////////////////////////////////////////////////////
 
-	it('createAssessmentAttemptStartedEvent', () => {
+	test('createAssessmentAttemptStartedEvent', () => {
 		const attemptStarted = caliperEvents.createAssessmentAttemptStartedEvent({
 			actor,
 			draftId,
@@ -146,7 +147,7 @@ describe('Caliper event creator', () => {
 		expect(attemptStarted).toMatchSnapshot()
 	})
 
-	it('createAssessmentAttemptStartedEvent - throws error given a bad actor', () => {
+	test('createAssessmentAttemptStartedEvent - throws error given a bad actor', () => {
 		expect(() => {
 			caliperEvents.createAssessmentAttemptStartedEvent({
 				actor: { type: 'bad' },
@@ -159,9 +160,9 @@ describe('Caliper event creator', () => {
 		}).toThrow(`Invalid actor type. Must provide actor of type user`)
 	})
 
-	///////////////////////////////////////////////////////////////////////////////////////////////////
+	////////////////////////////////////////////////////////////////////////////////////////////////
 
-	it('createAssessmentAttemptSubmittedEvent', () => {
+	test('createAssessmentAttemptSubmittedEvent', () => {
 		const attemptSubmitted = caliperEvents.createAssessmentAttemptSubmittedEvent({
 			actor,
 			draftId,
@@ -173,7 +174,7 @@ describe('Caliper event creator', () => {
 		expect(attemptSubmitted).toMatchSnapshot()
 	})
 
-	it('createAssessmentAttemptSubmittedEvent - throws error given a bad actor', () => {
+	test('createAssessmentAttemptSubmittedEvent - throws error given a bad actor', () => {
 		expect(() => {
 			caliperEvents.createAssessmentAttemptSubmittedEvent({
 				actor: { type: 'bad' },
@@ -186,9 +187,9 @@ describe('Caliper event creator', () => {
 		}).toThrow(`Invalid actor type. Must provide actor of type user`)
 	})
 
-	///////////////////////////////////////////////////////////////////////////////////////////////////
+	////////////////////////////////////////////////////////////////////////////////////////////////
 
-	it('createAssessmentAttemptScoredEvent', () => {
+	test('createAssessmentAttemptScoredEvent', () => {
 		const attemptScored = caliperEvents.createAssessmentAttemptScoredEvent({
 			actor: { type: 'serverApp' },
 			draftId,
@@ -200,7 +201,7 @@ describe('Caliper event creator', () => {
 		expect(attemptScored).toMatchSnapshot()
 	})
 
-	it('createAssessmentAttemptScoredEvent - throws error given a bad actor', () => {
+	test('createAssessmentAttemptScoredEvent - throws error given a bad actor', () => {
 		expect(() => {
 			caliperEvents.createAssessmentAttemptScoredEvent({
 				actor: { type: 'bad' },
@@ -213,9 +214,9 @@ describe('Caliper event creator', () => {
 		}).toThrow(`Invalid actor type. Must provide actor of type serverApp`)
 	})
 
-	///////////////////////////////////////////////////////////////////////////////////////////////////
+	////////////////////////////////////////////////////////////////////////////////////////////////
 
-	it('createPracticeGradeEvent', () => {
+	test('createPracticeGradeEvent', () => {
 		const practiceGrade = caliperEvents.createPracticeGradeEvent({
 			actor: { type: 'viewerClient' },
 			draftId,
@@ -228,7 +229,7 @@ describe('Caliper event creator', () => {
 		expect(practiceGrade).toMatchSnapshot()
 	})
 
-	it('createPracticeGradeEvent - throws error given a bad actor', () => {
+	test('createPracticeGradeEvent - throws error given a bad actor', () => {
 		expect(() => {
 			caliperEvents.createPracticeGradeEvent({
 				actor: { type: 'bad' },
@@ -242,9 +243,9 @@ describe('Caliper event creator', () => {
 		}).toThrow(`Invalid actor type. Must provide actor of type viewerClient`)
 	})
 
-	///////////////////////////////////////////////////////////////////////////////////////////////////
+	////////////////////////////////////////////////////////////////////////////////////////////////
 
-	it('createAssessmentItemEvent', () => {
+	test('createAssessmentItemEvent', () => {
 		const assessmentItem = caliperEvents.createAssessmentItemEvent({
 			actor,
 			draftId,
@@ -258,7 +259,7 @@ describe('Caliper event creator', () => {
 		expect(assessmentItem).toMatchSnapshot()
 	})
 
-	it('createAssessmentItemEvent - when assesmentId is null', () => {
+	test('createAssessmentItemEvent - when assesmentId is null', () => {
 		const assessmentItem = caliperEvents.createAssessmentItemEvent({
 			actor,
 			draftId,
@@ -271,7 +272,7 @@ describe('Caliper event creator', () => {
 		expect(assessmentItem).toMatchSnapshot()
 	})
 
-	it('createAssessmentItemEvent - when attemptId is null', () => {
+	test('createAssessmentItemEvent - when attemptId is null', () => {
 		const assessmentItem = caliperEvents.createAssessmentItemEvent({
 			actor,
 			draftId,
@@ -284,7 +285,7 @@ describe('Caliper event creator', () => {
 		expect(assessmentItem).toMatchSnapshot()
 	})
 
-	it('createAssessmentItemEvent - when assessmentId and attemptId are null', () => {
+	test('createAssessmentItemEvent - when assessmentId and attemptId are null', () => {
 		const assessmentItem = caliperEvents.createAssessmentItemEvent({
 			actor,
 			draftId,
@@ -297,7 +298,7 @@ describe('Caliper event creator', () => {
 		expect(assessmentItem).toMatchSnapshot()
 	})
 
-	it('createAssessmentItemEvent - when assesmentId, attemptId arguments are not provided', () => {
+	test('createAssessmentItemEvent - when assesmentId, attemptId arguments are not provided', () => {
 		const assessmentItem = caliperEvents.createAssessmentItemEvent({
 			actor,
 			draftId,
@@ -308,7 +309,7 @@ describe('Caliper event creator', () => {
 		expect(assessmentItem).toMatchSnapshot()
 	})
 
-	it('createAssessmentItemEvent - throws error given a bad actor', () => {
+	test('createAssessmentItemEvent - throws error given a bad actor', () => {
 		expect(() => {
 			caliperEvents.createAssessmentItemEvent({
 				actor: { type: 'bad' },
@@ -323,9 +324,9 @@ describe('Caliper event creator', () => {
 		}).toThrow(`Invalid actor type. Must provide actor of type user`)
 	})
 
-	///////////////////////////////////////////////////////////////////////////////////////////////////
+	////////////////////////////////////////////////////////////////////////////////////////////////
 
-	it('createPracticeQuestionSubmittedEvent', () => {
+	test('createPracticeQuestionSubmittedEvent', () => {
 		const practiceQuestionSubmitted = caliperEvents.createPracticeQuestionSubmittedEvent({
 			actor,
 			draftId,
@@ -336,7 +337,7 @@ describe('Caliper event creator', () => {
 		expect(practiceQuestionSubmitted).toMatchSnapshot()
 	})
 
-	it('createPracticeQuestionSubmittedEvent - throws error given a bad actor', () => {
+	test('createPracticeQuestionSubmittedEvent - throws error given a bad actor', () => {
 		expect(() => {
 			caliperEvents.createPracticeQuestionSubmittedEvent({
 				actor: { type: 'bad' },
@@ -348,9 +349,9 @@ describe('Caliper event creator', () => {
 		}).toThrow(`Invalid actor type. Must provide actor of type user`)
 	})
 
-	///////////////////////////////////////////////////////////////////////////////////////////////////
+	////////////////////////////////////////////////////////////////////////////////////////////////
 
-	it('createPracticeUngradeEvent', () => {
+	test('createPracticeUngradeEvent', () => {
 		const practiceUngrade = caliperEvents.createPracticeUngradeEvent({
 			actor: { type: 'serverApp' },
 			draftId,
@@ -361,7 +362,7 @@ describe('Caliper event creator', () => {
 		expect(practiceUngrade).toMatchSnapshot()
 	})
 
-	it('createPracticeUngradeEvent - throws error given a bad actor', () => {
+	test('createPracticeUngradeEvent - throws error given a bad actor', () => {
 		expect(() => {
 			caliperEvents.createPracticeUngradeEvent({
 				actor: { type: 'bad' },
@@ -373,9 +374,23 @@ describe('Caliper event creator', () => {
 		}).toThrow('Invalid actor type. Must provide actor of type serverApp')
 	})
 
-	///////////////////////////////////////////////////////////////////////////////////////////////////
+	////////////////////////////////////////////////////////////////////////////////////////////////
 
-	it('createViewerAbandonedEvent', () => {
+	test('createMediaChangedSizeEvent', () => {
+		const mediaChanged = caliperEvents.createMediaChangedSizeEvent({
+			actor,
+			draftId,
+			mediaId,
+			sessionIds,
+			extensions
+		})
+
+		expect(mediaChanged).toMatchSnapshot()
+	})
+
+	////////////////////////////////////////////////////////////////////////////////////////////////
+
+	test('createViewerAbandonedEvent', () => {
 		const viewerAbandoned = caliperEvents.createViewerAbandonedEvent({
 			actor,
 			draftId,
@@ -385,7 +400,7 @@ describe('Caliper event creator', () => {
 		expect(viewerAbandoned).toMatchSnapshot()
 	})
 
-	it('createViewerAbandonedEvent  - throws error given a bad actor', () => {
+	test('createViewerAbandonedEvent  - throws error given a bad actor', () => {
 		expect(() =>
 			caliperEvents.createViewerAbandonedEvent({
 				actor: { type: 'bad' },
@@ -396,9 +411,9 @@ describe('Caliper event creator', () => {
 		).toThrow(`Invalid actor type. Must provide actor of type user`)
 	})
 
-	///////////////////////////////////////////////////////////////////////////////////////////////////
+	////////////////////////////////////////////////////////////////////////////////////////////////
 
-	it('createViewerResumedEvent', () => {
+	test('createViewerResumedEvent', () => {
 		const viewerResumed = caliperEvents.createViewerResumedEvent({
 			actor,
 			draftId,
@@ -408,7 +423,7 @@ describe('Caliper event creator', () => {
 		expect(viewerResumed).toMatchSnapshot()
 	})
 
-	it('createViewerResumedEvent  - throws error given a bad actor', () => {
+	test('createViewerResumedEvent  - throws error given a bad actor', () => {
 		expect(() =>
 			caliperEvents.createViewerResumedEvent({
 				actor: { type: 'bad' },
@@ -419,9 +434,9 @@ describe('Caliper event creator', () => {
 		).toThrow(`Invalid actor type. Must provide actor of type user`)
 	})
 
-	///////////////////////////////////////////////////////////////////////////////////////////////////
+	////////////////////////////////////////////////////////////////////////////////////////////////
 
-	it('createViewerSessionLoggedInEvent', () => {
+	test('createViewerSessionLoggedInEvent', () => {
 		const viewerSessionLoggedIn = caliperEvents.createViewerSessionLoggedInEvent({
 			actor,
 			draftId,
@@ -431,7 +446,7 @@ describe('Caliper event creator', () => {
 		expect(viewerSessionLoggedIn).toMatchSnapshot()
 	})
 
-	it('createViewerSessionLoggedInEvent  - throws error given a bad actor', () => {
+	test('createViewerSessionLoggedInEvent  - throws error given a bad actor', () => {
 		expect(() =>
 			caliperEvents.createViewerSessionLoggedInEvent({
 				actor: { type: 'bad' },
@@ -442,9 +457,9 @@ describe('Caliper event creator', () => {
 		).toThrow(`Invalid actor type. Must provide actor of type user`)
 	})
 
-	///////////////////////////////////////////////////////////////////////////////////////////////////
+	////////////////////////////////////////////////////////////////////////////////////////////////
 
-	it('createViewerSessionLoggedOutEvent', () => {
+	test('createViewerSessionLoggedOutEvent', () => {
 		const viewerSessionLoggedOut = caliperEvents.createViewerSessionLoggedOutEvent({
 			actor,
 			draftId,
@@ -454,7 +469,7 @@ describe('Caliper event creator', () => {
 		expect(viewerSessionLoggedOut).toMatchSnapshot()
 	})
 
-	it('createViewerSessionLoggedOutEvent  - throws error given a bad actor', () => {
+	test('createViewerSessionLoggedOutEvent  - throws error given a bad actor', () => {
 		expect(() =>
 			caliperEvents.createViewerSessionLoggedOutEvent({
 				actor: { type: 'bad' },
@@ -465,9 +480,9 @@ describe('Caliper event creator', () => {
 		).toThrow(`Invalid actor type. Must provide actor of type user`)
 	})
 
-	///////////////////////////////////////////////////////////////////////////////////////////////////
+	////////////////////////////////////////////////////////////////////////////////////////////////
 
-	it('createPracticeQuestionResetEvent', () => {
+	test('createPracticeQuestionResetEvent', () => {
 		const practiceQuestionReset = caliperEvents.createPracticeQuestionResetEvent({
 			actor,
 			draftId,
@@ -478,7 +493,7 @@ describe('Caliper event creator', () => {
 		expect(practiceQuestionReset).toMatchSnapshot()
 	})
 
-	it('createPracticeQuestionResetEvent - throws error given a bad actor', () => {
+	test('createPracticeQuestionResetEvent - throws error given a bad actor', () => {
 		expect(() =>
 			caliperEvents.createPracticeQuestionResetEvent({
 				actor: { type: 'bad' },
@@ -489,9 +504,9 @@ describe('Caliper event creator', () => {
 		).toThrow(`Invalid actor type. Must provide actor of type user`)
 	})
 
-	///////////////////////////////////////////////////////////////////////////////////////////////////
+	////////////////////////////////////////////////////////////////////////////////////////////////
 
-	it('createNavMenuHidEvent', () => {
+	test('createNavMenuHidEvent', () => {
 		const createNavMenuHidEvent = caliperEvents.createNavMenuHidEvent({
 			actor,
 			draftId,
@@ -501,7 +516,7 @@ describe('Caliper event creator', () => {
 		expect(createNavMenuHidEvent).toMatchSnapshot()
 	})
 
-	it('createNavMenuHidEvent - throws error given a bad actor', () => {
+	test('createNavMenuHidEvent - throws error given a bad actor', () => {
 		expect(() =>
 			caliperEvents.createNavMenuHidEvent({
 				actor: { type: 'bad' },
@@ -514,9 +529,9 @@ describe('Caliper event creator', () => {
 		)
 	})
 
-	///////////////////////////////////////////////////////////////////////////////////////////////////
+	////////////////////////////////////////////////////////////////////////////////////////////////
 
-	it('createNavMenuShowedEvent', () => {
+	test('createNavMenuShowedEvent', () => {
 		const createNavMenuShowedEvent = caliperEvents.createNavMenuShowedEvent({
 			actor,
 			draftId,
@@ -526,7 +541,7 @@ describe('Caliper event creator', () => {
 		expect(createNavMenuShowedEvent).toMatchSnapshot()
 	})
 
-	it('createNavMenuShowedEvent - throws error given a bad actor', () => {
+	test('createNavMenuShowedEvent - throws error given a bad actor', () => {
 		expect(() =>
 			caliperEvents.createNavMenuShowedEvent({
 				actor: { type: 'bad' },
@@ -539,9 +554,9 @@ describe('Caliper event creator', () => {
 		)
 	})
 
-	///////////////////////////////////////////////////////////////////////////////////////////////////
+	////////////////////////////////////////////////////////////////////////////////////////////////
 
-	it('createNavMenuToggledEvent', () => {
+	test('createNavMenuToggledEvent', () => {
 		const createNavMenuToggledEvent = caliperEvents.createNavMenuToggledEvent({
 			actor,
 			draftId,
@@ -551,7 +566,7 @@ describe('Caliper event creator', () => {
 		expect(createNavMenuToggledEvent).toMatchSnapshot()
 	})
 
-	it('createNavMenuToggledEvent - throws error given a bad actor', () => {
+	test('createNavMenuToggledEvent - throws error given a bad actor', () => {
 		expect(() =>
 			caliperEvents.createNavMenuToggledEvent({
 				actor: { type: 'bad' },
@@ -564,9 +579,9 @@ describe('Caliper event creator', () => {
 		)
 	})
 
-	///////////////////////////////////////////////////////////////////////////////////////////////////
+	////////////////////////////////////////////////////////////////////////////////////////////////
 
-	it('createNavMenuActivatedEvent', () => {
+	test('createNavMenuActivatedEvent', () => {
 		const createNavMenuActivatedEvent = caliperEvents.createNavMenuActivatedEvent({
 			actor,
 			draftId,
@@ -576,7 +591,7 @@ describe('Caliper event creator', () => {
 		expect(createNavMenuActivatedEvent).toMatchSnapshot()
 	})
 
-	it('createNavMenuActivatedEvent - throws error given a bad actor', () => {
+	test('createNavMenuActivatedEvent - throws error given a bad actor', () => {
 		expect(() =>
 			caliperEvents.createNavMenuActivatedEvent({
 				actor: { type: 'bad' },
@@ -589,9 +604,9 @@ describe('Caliper event creator', () => {
 		)
 	})
 
-	///////////////////////////////////////////////////////////////////////////////////////////////////
+	////////////////////////////////////////////////////////////////////////////////////////////////
 
-	it('createNavMenuDectivatedEvent', () => {
+	test('createNavMenuDectivatedEvent', () => {
 		const createNavMenuDeactivatedEvent = caliperEvents.createNavMenuDeactivatedEvent({
 			actor,
 			draftId,
@@ -601,7 +616,7 @@ describe('Caliper event creator', () => {
 		expect(createNavMenuDeactivatedEvent).toMatchSnapshot()
 	})
 
-	it('createNavMenuDeactivatedEvent - throws error given a bad actor', () => {
+	test('createNavMenuDeactivatedEvent - throws error given a bad actor', () => {
 		expect(() =>
 			caliperEvents.createNavMenuDeactivatedEvent({
 				actor: { type: 'bad' },
@@ -614,16 +629,16 @@ describe('Caliper event creator', () => {
 		)
 	})
 
-	///////////////////////////////////////////////////////////////////////////////////////////////////
+	////////////////////////////////////////////////////////////////////////////////////////////////
 
-	it('createLTIPickerEvent', () => {
+	test('createLTIPickerEvent', () => {
 		const createLTIPickerEvent = caliperEvents.createLTIPickerEvent({
 			actor
 		})
 		expect(createLTIPickerEvent).toMatchSnapshot()
 	})
 
-	it('createLTIPickerEvent - throws error given a bad actor', () => {
+	test('createLTIPickerEvent - throws error given a bad actor', () => {
 		expect(() =>
 			caliperEvents.createLTIPickerEvent({
 				actor: { type: 'bad' }
@@ -631,9 +646,9 @@ describe('Caliper event creator', () => {
 		).toThrow(`Invalid actor type. Must provide actor of type user`)
 	})
 
-	///////////////////////////////////////////////////////////////////////////////////////////////////
+	////////////////////////////////////////////////////////////////////////////////////////////////
 
-	it('createViewerOpenEvent', () => {
+	test('createViewerOpenEvent', () => {
 		const createViewerOpenEvent = caliperEvents.createViewerOpenEvent({
 			actor,
 			visitId: 'visitId'
@@ -641,7 +656,7 @@ describe('Caliper event creator', () => {
 		expect(createViewerOpenEvent).toMatchSnapshot()
 	})
 
-	it('createViewerOpenEvent - throws error given a bad actor', () => {
+	test('createViewerOpenEvent - throws error given a bad actor', () => {
 		expect(() =>
 			caliperEvents.createViewerOpenEvent({
 				actor: { type: 'bad' }
@@ -649,9 +664,9 @@ describe('Caliper event creator', () => {
 		).toThrow(`Invalid actor type. Must provide actor of type user`)
 	})
 
-	///////////////////////////////////////////////////////////////////////////////////////////////////
+	////////////////////////////////////////////////////////////////////////////////////////////////
 
-	it('createVisitCreateEvent', () => {
+	test('createVisitCreateEvent', () => {
 		const createVisitCreateEvent = caliperEvents.createVisitCreateEvent({
 			actor,
 			visitId: 'visitId',
@@ -660,7 +675,7 @@ describe('Caliper event creator', () => {
 		expect(createVisitCreateEvent).toMatchSnapshot()
 	})
 
-	it('createVisitCreateEvent - throws error given a bad actor', () => {
+	test('createVisitCreateEvent - throws error given a bad actor', () => {
 		expect(() =>
 			caliperEvents.createVisitCreateEvent({
 				actor: { type: 'bad' }

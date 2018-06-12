@@ -114,7 +114,7 @@ module.exports = req => {
 			return caliperEvents.createHideEvent({
 				actor: actorFromType(ACTOR_USER),
 				draftId: clientEvent.draft_id,
-				questionId: clientEvent.payload.questionId,
+				itemId: clientEvent.payload.questionId,
 				isPreviewMode,
 				sessionIds
 			})
@@ -142,7 +142,7 @@ module.exports = req => {
 			return caliperEvents.createHideEvent({
 				actor: actorFromType(clientEvent.payload.actor),
 				draftId: clientEvent.draft_id,
-				questionId: clientEvent.payload.questionId,
+				itemId: clientEvent.payload.questionId,
 				frameName: 'explanation',
 				isPreviewMode,
 				sessionIds
@@ -190,6 +190,65 @@ module.exports = req => {
 				questionId: clientEvent.payload.questionId,
 				isPreviewMode,
 				sessionIds
+			})
+
+		case 'media:show':
+			return caliperEvents.createViewEvent({
+				actor: actorFromType(ACTOR_USER),
+				draftId: clientEvent.draft_id,
+				itemId: clientEvent.payload.id,
+				isPreviewMode,
+				sessionIds
+			})
+
+		case 'media:hide':
+			return caliperEvents.createHideEvent({
+				actor: actorFromType(clientEvent.payload.actor),
+				draftId: clientEvent.draft_id,
+				itemId: clientEvent.payload.id,
+				isPreviewMode,
+				sessionIds
+			})
+
+		case 'media:setSize':
+			return caliperEvents.createMediaChangedSizeEvent({
+				actor: actorFromType(ACTOR_USER),
+				draftId: clientEvent.draft_id,
+				mediaId: clientEvent.payload.id,
+				isPreviewMode,
+				sessionIds,
+				extensions: {
+					type: 'setSize',
+					size: clientEvent.payload.size,
+					previousSize: clientEvent.payload.previousSize
+				}
+			})
+
+		case 'media:setZoom':
+			return caliperEvents.createMediaChangedSizeEvent({
+				actor: actorFromType(ACTOR_USER),
+				draftId: clientEvent.draft_id,
+				mediaId: clientEvent.payload.id,
+				isPreviewMode,
+				sessionIds,
+				extensions: {
+					type: 'setZoom',
+					zoom: clientEvent.payload.zoom,
+					previousZoom: clientEvent.payload.previousZoom
+				}
+			})
+
+		case 'media:resetZoom':
+			return caliperEvents.createMediaChangedSizeEvent({
+				actor: actorFromType(ACTOR_USER),
+				draftId: clientEvent.draft_id,
+				mediaId: clientEvent.payload.id,
+				isPreviewMode,
+				sessionIds,
+				extensions: {
+					type: 'resetZoom',
+					previousZoom: clientEvent.payload.previousZoom
+				}
 			})
 
 		case 'viewer:inactive':

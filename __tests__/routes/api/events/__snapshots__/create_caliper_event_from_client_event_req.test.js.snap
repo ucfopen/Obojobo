@@ -1,5 +1,103 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
+exports[`Caliper event from req media:hide returns the expected snapshot 1`] = `
+Event {
+  "@context": "http://purl.imsglobal.org/ctx/caliper/v1p1",
+  "action": "Hid",
+  "actor": "https://hostnameReq/api/user/testUserIdReq",
+  "edApp": "https://hostnameReq/api/system",
+  "eventTime": "2016-09-22T16:57:14.500Z",
+  "extensions": Object {
+    "previewMode": false,
+  },
+  "federatedSession": "https://hostnameReq/api/launch/OboLtiLaunchIdReq",
+  "id": "urn:uuid:DEADBEEF-0000-DEAD-BEEF-1234DEADBEEF",
+  "object": "https://hostnameReq/api/draft/testDraftIdReq#testIdReq",
+  "session": "https://hostnameReq/api/session/SessionIdReq",
+  "type": "Event",
+}
+`;
+
+exports[`Caliper event from req media:resetZoom returns the expected snapshot 1`] = `
+Event {
+  "@context": "http://purl.imsglobal.org/ctx/caliper/v1p1",
+  "action": "ChangedSize",
+  "actor": "https://hostnameReq/api/user/testUserIdReq",
+  "edApp": "https://hostnameReq/api/system",
+  "eventTime": "2016-09-22T16:57:14.500Z",
+  "extensions": Object {
+    "previewMode": false,
+    "previousZoom": 2,
+    "type": "resetZoom",
+  },
+  "federatedSession": "https://hostnameReq/api/launch/OboLtiLaunchIdReq",
+  "id": "urn:uuid:DEADBEEF-0000-DEAD-BEEF-1234DEADBEEF",
+  "object": "https://hostnameReq/api/draft/testDraftIdReq#testIdReq",
+  "session": "https://hostnameReq/api/session/SessionIdReq",
+  "type": "MediaEvent",
+}
+`;
+
+exports[`Caliper event from req media:setSize returns the expected snapshot 1`] = `
+Event {
+  "@context": "http://purl.imsglobal.org/ctx/caliper/v1p1",
+  "action": "ChangedSize",
+  "actor": "https://hostnameReq/api/user/testUserIdReq",
+  "edApp": "https://hostnameReq/api/system",
+  "eventTime": "2016-09-22T16:57:14.500Z",
+  "extensions": Object {
+    "previewMode": false,
+    "previousSize": "small",
+    "size": "large",
+    "type": "setSize",
+  },
+  "federatedSession": "https://hostnameReq/api/launch/OboLtiLaunchIdReq",
+  "id": "urn:uuid:DEADBEEF-0000-DEAD-BEEF-1234DEADBEEF",
+  "object": "https://hostnameReq/api/draft/testDraftIdReq#testIdReq",
+  "session": "https://hostnameReq/api/session/SessionIdReq",
+  "type": "MediaEvent",
+}
+`;
+
+exports[`Caliper event from req media:setZoom returns the expected snapshot 1`] = `
+Event {
+  "@context": "http://purl.imsglobal.org/ctx/caliper/v1p1",
+  "action": "ChangedSize",
+  "actor": "https://hostnameReq/api/user/testUserIdReq",
+  "edApp": "https://hostnameReq/api/system",
+  "eventTime": "2016-09-22T16:57:14.500Z",
+  "extensions": Object {
+    "previewMode": false,
+    "previousZoom": 1,
+    "type": "setZoom",
+    "zoom": 1.1,
+  },
+  "federatedSession": "https://hostnameReq/api/launch/OboLtiLaunchIdReq",
+  "id": "urn:uuid:DEADBEEF-0000-DEAD-BEEF-1234DEADBEEF",
+  "object": "https://hostnameReq/api/draft/testDraftIdReq#testIdReq",
+  "session": "https://hostnameReq/api/session/SessionIdReq",
+  "type": "MediaEvent",
+}
+`;
+
+exports[`Caliper event from req media:show returns the expected snapshot 1`] = `
+Event {
+  "@context": "http://purl.imsglobal.org/ctx/caliper/v1p1",
+  "action": "Viewed",
+  "actor": "https://hostnameReq/api/user/testUserIdReq",
+  "edApp": "https://hostnameReq/api/system",
+  "eventTime": "2016-09-22T16:57:14.500Z",
+  "extensions": Object {
+    "previewMode": false,
+  },
+  "federatedSession": "https://hostnameReq/api/launch/OboLtiLaunchIdReq",
+  "id": "urn:uuid:DEADBEEF-0000-DEAD-BEEF-1234DEADBEEF",
+  "object": "https://hostnameReq/api/draft/testDraftIdReq#testIdReq",
+  "session": "https://hostnameReq/api/session/SessionIdReq",
+  "type": "ViewEvent",
+}
+`;
+
 exports[`Caliper event from req nav:close returns the expected snapshot 1`] = `
 Event {
   "@context": "http://purl.imsglobal.org/ctx/caliper/v1p1",

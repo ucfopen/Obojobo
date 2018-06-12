@@ -233,9 +233,9 @@ Event {
   },
   "federatedSession": "https://testHost/api/launch/testOboLaunchId",
   "id": "urn:uuid:DEADBEEF-0000-DEAD-BEEF-1234DEADBEEF",
-  "object": "https://testHost/api/draft/testDraftId#testQuestionId",
+  "object": "https://testHost/api/draft/testDraftId#testItemId",
   "session": "https://testHost/api/session/testSessionId",
-  "target": "https://testHost/api/draft/testDraftId?context=testFramename#testQuestionId",
+  "target": "https://testHost/api/draft/testDraftId?context=testFramename#testItemId",
   "type": "Event",
 }
 `;
@@ -253,7 +253,7 @@ Event {
   },
   "federatedSession": "https://testHost/api/launch/testOboLaunchId",
   "id": "urn:uuid:DEADBEEF-0000-DEAD-BEEF-1234DEADBEEF",
-  "object": "https://testHost/api/draft/testDraftId#testQuestionId",
+  "object": "https://testHost/api/draft/testDraftId#testItemId",
   "session": "https://testHost/api/session/testSessionId",
   "type": "Event",
 }
@@ -273,6 +273,25 @@ Event {
   "object": "https://testHost/api/system",
   "target": "https://testHost/api/picker",
   "type": "ToolUseEvent",
+}
+`;
+
+exports[`Caliper event creator createMediaChangedSizeEvent 1`] = `
+Event {
+  "@context": "http://purl.imsglobal.org/ctx/caliper/v1p1",
+  "action": "ChangedSize",
+  "actor": "https://testHost/api/user/testUserId",
+  "edApp": "https://testHost/api/system",
+  "eventTime": "mockDate",
+  "extensions": Object {
+    "foo": "bar",
+    "previewMode": false,
+  },
+  "federatedSession": "https://testHost/api/launch/testOboLaunchId",
+  "id": "urn:uuid:DEADBEEF-0000-DEAD-BEEF-1234DEADBEEF",
+  "object": "https://testHost/api/draft/testDraftId#mediaId",
+  "session": "https://testHost/api/session/testSessionId",
+  "type": "MediaEvent",
 }
 `;
 
