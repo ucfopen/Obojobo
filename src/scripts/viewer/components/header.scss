@@ -1,0 +1,49 @@
+@import '../../../scss/_includes.scss';
+
+.viewer--components--header {
+	background: $color-bg;
+	height: 2.5rem;
+	font-size: 0.7rem;
+	font-family: Libre Franklin;
+	color: $color-text;
+	padding: 0.8rem $dimension-header-padding;
+	padding-left: 4rem;
+	box-sizing: border-box;
+	text-align: left;
+
+	> .wrapper {
+		position: relative;
+		line-height: 0.9rem;
+	}
+
+	.module-title {
+		text-transform: uppercase;
+		cursor: default;
+	}
+
+	.location {
+		margin-left: 1rem;
+		font-weight: bold;
+		cursor: default;
+	}
+
+	.viewer--components--logo {
+		color: $color-text-minor;
+		position: fixed;
+		top: 0.8rem;
+		opacity: 0.2;
+		cursor: default;
+	}
+
+	&.is-logo-left {
+		padding-left: 6rem;
+
+		.viewer--components--logo {
+			left: $dimension-header-padding;
+		}
+	}
+
+	&.is-logo-right .viewer--components--logo {
+		right: $dimension-header-padding;
+	}
+}

@@ -1,0 +1,223 @@
+@import '~styles/includes';
+
+.obojobo-draft--chunks--iframe--controls {
+	@mixin tool-tip() {
+		pointer-events: none;
+		position: absolute;
+		border: 2px solid $color-bg;
+		white-space: nowrap;
+		font-size: 0.8em;
+		color: $color-bg;
+		background: $color-action;
+		border-radius: 3em;
+		line-height: 1em;
+		padding: 0.75em 1.5em;
+		font-weight: bold;
+		font-size: 1em;
+		z-index: $z-index-above-all;
+		font-family: $font-default;
+	}
+
+	&.is-expandable.is-zoomable,
+	&.is-unexpandable.is-zoomable {
+		> .size-controls > .zoom-controls {
+			&:after {
+				content: ' ';
+				right: 1.6em;
+				top: 0.2em;
+				width: 1px;
+				display: block;
+				height: 0.8em;
+				position: absolute;
+				background: $color-shadow;
+				pointer-events: none;
+			}
+		}
+	}
+
+	.control-button-container {
+		display: inline-block;
+		font-size: 1.1em;
+		height: 1em;
+
+		> button {
+			@include user-select(none);
+
+			border: none;
+			width: 1em;
+			height: 1em;
+			font-size: 1em;
+			overflow: hidden;
+			padding: 0;
+			border-radius: $dimension-rounded-radius / 2;
+			color: $color-transparent;
+			background-color: $color-bg;
+			background-position: center;
+			background-repeat: no-repeat;
+			cursor: pointer;
+			vertical-align: top;
+			font-family: $font-default;
+			transition: color $duration-animation-default;
+			word-wrap: initial;
+			white-space: nowrap;
+
+			&:focus {
+				position: relative;
+			}
+		}
+
+		&:hover > button {
+			background-color: $color-action;
+		}
+
+		> .tool-tip {
+			@include tool-tip();
+
+			display: none;
+			right: 0.5em;
+			bottom: 3.2em;
+			font-size: 0.65em;
+		}
+
+		&:hover {
+			> .tool-tip {
+				display: inline-block;
+			}
+		}
+	}
+
+	> .reload {
+		position: absolute;
+		left: 0;
+		top: 0;
+
+		> .reload-button {
+			background-image: url('./reload.svg');
+			background-size: 75%;
+		}
+
+		> .tool-tip {
+			left: 0.5em;
+			right: inherit;
+			bottom: 2.55em;
+		}
+
+		&:hover > .reload-button {
+			background-image: url('./reload-hover.svg');
+		}
+	}
+
+	> .size-controls {
+		position: absolute;
+		right: 0;
+		top: 0em;
+	}
+
+	> .size-controls > .zoom-controls {
+		display: inline-block;
+	}
+
+	> .size-controls > .expand {
+		margin-left: 1em;
+
+		> .expand-button {
+			background-image: url('./expand-button.svg');
+			background-size: 75%;
+		}
+
+		&:hover > .expand-button {
+			background-image: url('./expand-button-hover.svg');
+		}
+	}
+
+	> .size-controls > .unexpand {
+		margin-left: 1em;
+
+		> .unexpand-button {
+			background-image: url('./unexpand-button.svg');
+			background-size: 75%;
+		}
+		&:hover > .unexpand-button {
+			background-image: url('./unexpand-button-hover.svg');
+		}
+	}
+
+	> .size-controls > .zoom-controls > .zoom-reset {
+		> .zoom-reset-button {
+			color: #b497d3;
+			overflow: visible;
+			font-size: 0.5em;
+			width: inherit;
+			padding: 0.7em 0.7em;
+			padding-top: 0.9em;
+			line-height: 0;
+			height: 2em;
+			margin-top: 0;
+			vertical-align: top;
+			border-radius: $dimension-rounded-radius;
+		}
+		&:hover > .zoom-reset-button {
+			color: white;
+		}
+	}
+
+	> .size-controls > .zoom-controls > .zoom-out {
+		> .zoom-out-button {
+			background-image: url('./zoom-out.svg');
+			background-size: 50%;
+
+			&:disabled {
+				opacity: 0.4;
+			}
+		}
+
+		&:hover > .zoom-out-button {
+			background-image: url('./zoom-out-hover.svg');
+		}
+	}
+
+	> .size-controls > .zoom-controls > .zoom-in {
+		> .zoom-in-button {
+			background-image: url('./zoom-in.svg');
+			background-size: 50%;
+		}
+
+		&:hover > .zoom-in-button {
+			background-image: url('./zoom-in-hover.svg');
+		}
+	}
+
+	> .new-window-link {
+		position: relative;
+		display: inline-block;
+		margin-top: 0;
+		font-family: $font-default;
+		font-size: 0.7em;
+		opacity: 0.75;
+		line-height: 1.5em;
+		vertical-align: top;
+
+		> a {
+			display: inline-block;
+			color: $color-action;
+			cursor: pointer;
+		}
+
+		> .tool-tip {
+			@include tool-tip();
+
+			top: -3.8em;
+			left: 50%;
+			transform: translate(-50%);
+			display: none;
+		}
+
+		&:hover {
+			opacity: 1;
+
+			> .tool-tip {
+				display: block;
+			}
+		}
+	}
+}

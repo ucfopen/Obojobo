@@ -1,6 +1,7 @@
 import createUUID from '../../common/util/uuid'
 import Dispatcher from '../../common/flux/dispatcher'
 import { Store } from '../../common/store'
+import DOMUtil from '../../common/page/dom-util'
 
 let DefaultAdapter = {
 	construct(attrs) {
@@ -14,14 +15,6 @@ let DefaultAdapter = {
 	},
 	toText(model) {
 		return ''
-	}
-}
-
-let setModelStateProp = (model, attrs, propName, defaultValue, getPropValueFn = p => p) => {
-	if (attrs && attrs.content && typeof attrs.content[propName] !== 'undefined') {
-		model.modelState[propName] = getPropValueFn(attrs.content[propName])
-	} else {
-		model.modelState[propName] = defaultValue
 	}
 }
 
@@ -59,7 +52,7 @@ class OboModel extends Backbone.Model {
 		}
 
 		this.adapter = Object.assign(Object.assign({}, DefaultAdapter), adapter)
-		this.adapter.construct(this, attrs, setModelStateProp.bind(null, this, attrs))
+		this.adapter.construct(this, attrs)
 
 		if ((attrs.content != null ? attrs.content.triggers : undefined) != null) {
 			this.triggers = attrs.content.triggers
@@ -98,6 +91,8 @@ class OboModel extends Backbone.Model {
 			if (trigger.type === type) {
 				for (index = 0; index < trigger.actions.length; index++) {
 					let action = trigger.actions[index]
+					// if (!action.value) action.value = {}
+					// action.value.actor = 'user'
 					if (action.type === '_js') {
 						eval(action.value)
 					} else {
@@ -244,10 +239,8 @@ class OboModel extends Backbone.Model {
 	}
 
 	getDomEl() {
-		// @TODO - This work?
-		return document.body.querySelector(`.component[data-id='${this.get('id')}']`)
+		return DOMUtil.getComponentElementById(this.get('id'))
 	}
-	// document.body.querySelector ".component[data-component-index='#{@getIndex()}']"
 
 	getComponentClass() {
 		return Store.getItemForType(this.get('type')).componentClass

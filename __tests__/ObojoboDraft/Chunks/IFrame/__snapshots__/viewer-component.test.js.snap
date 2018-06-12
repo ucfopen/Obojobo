@@ -10,15 +10,113 @@ exports[`IFrame IFrame component 1`] = `
   id="obo-id"
 >
   <div
-    className="obojobo-draft--chunks--iframe viewer"
+    className="obojobo-draft--chunks--iframe viewer pad is-not-previewing is-not-bordered is-not-showing is-controls-enabled is-not-missing-src is-not-scaled-up is-size-default"
   >
-    <iframe
-      allow={null}
-      allowFullScreen="true"
-      frameBorder="0"
-      is={true}
-      src="http://www.example.com"
-    />
+    <div
+      className="container"
+      onClick={[Function]}
+      style={
+        Object {
+          "width": 710,
+        }
+      }
+    >
+      <div
+        className="iframe-container"
+      >
+        <div
+          className="blocker"
+          style={
+            Object {
+              "height": "154.34782608695653%",
+              "transform": "scale(0.647887323943662)",
+              "width": "154.34782608695653%",
+            }
+          }
+        />
+      </div>
+      <div
+        className="after"
+        style={
+          Object {
+            "paddingTop": "70.4225352112676%",
+          }
+        }
+      />
+      <div
+        className="click-to-load"
+      >
+        <span
+          className="title"
+        >
+          www.example.com
+        </span>
+        <div
+          className="obojobo-draft--components--button is-not-dangerous align-center"
+        >
+          <button
+            disabled={undefined}
+            onClick={undefined}
+            tabIndex={undefined}
+          >
+            View Content
+          </button>
+        </div>
+      </div>
+      <div
+        className="obojobo-draft--chunks--iframe--controls is-not-unexpandable is-expandable is-not-zoomable is-reloadable"
+      >
+        <div
+          className="control-button-container reload"
+        >
+          <button
+            className="reload-button"
+            onClick={[Function]}
+          >
+            Reload
+          </button>
+          <span
+            className="tool-tip"
+          >
+            Reload
+          </span>
+        </div>
+        <div
+          className="new-window-link"
+        >
+          <a
+            href="http://www.example.com"
+            target="_blank"
+          >
+            View in a new window
+          </a>
+          <span
+            className="tool-tip"
+          >
+            www.example.com
+          </span>
+        </div>
+        <div
+          className="size-controls"
+        >
+          <div
+            className="control-button-container expand"
+          >
+            <button
+              className="expand-button"
+              onClick={[Function]}
+            >
+              View larger
+            </button>
+            <span
+              className="tool-tip"
+            >
+              View larger
+            </span>
+          </div>
+        </div>
+      </div>
+    </div>
   </div>
 </div>
 `;

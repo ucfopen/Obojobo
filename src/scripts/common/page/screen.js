@@ -110,5 +110,14 @@ Screen.isElementVisible = function(node) {
 	return !(rect.top > window.innerHeight || rect.bottom < 0)
 }
 
-window.__screen = Screen //@todo
+Screen.isElementFullyVisible = function(node) {
+	let rect = node.getBoundingClientRect()
+	return rect.top >= 0 && rect.bottom <= window.innerHeight
+}
+
+Screen.scrollElementIntoViewIfNeeded = function(element) {
+	if (Screen.isElementFullyVisible(element)) return
+	element.scrollIntoView({ behavior: 'smooth', block: 'start' })
+}
+
 export default Screen

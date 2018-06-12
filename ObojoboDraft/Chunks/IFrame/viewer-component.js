@@ -1,14 +1,28 @@
 import './viewer-component.scss'
 
-import isOrNot from '../../../src/scripts/common/isornot'
+// import parseURL from 'url-parse'
+
+import React from 'react'
+import ReactDOM from 'react-dom'
 
 import Common from 'Common'
-let { OboComponent, DeleteButton, Button } = Common.components
-let { Dispatcher } = Common.flux
-let MediaUtil = Viewer.util.MediaUtil
+import Viewer from 'Viewer'
 
-const DEFAULT_WIDTH = 710
-const DEFAULT_HEIGHT = 500
+import Controls from './controls'
+import { getRenderSettings } from './render-settings'
+
+let DEFAULT_WIDTH = 710
+let DEFAULT_HEIGHT = 500
+let MIN_SCALE = 0.1
+
+let { OboComponent, Button } = Common.components
+let Dispatcher = Common.flux.Dispatcher
+let MediaUtil = Viewer.util.MediaUtil
+let NavUtil = Viewer.util.NavUtil
+let MediaStore = Viewer.stores.MediaStore
+let Logo = Viewer.components.Logo
+let Header = Viewer.components.Header
+let isOrNot = Common.util.isOrNot
 
 export default class IFrame extends React.Component {
 	constructor(props) {
@@ -17,27 +31,24 @@ export default class IFrame extends React.Component {
 		this.boundOnClickBlocker = this.onClickBlocker.bind(this)
 		this.boundOnClickExpand = this.onClickExpand.bind(this)
 		this.boundOnClickExpandClose = this.onClickExpandClose.bind(this)
+		this.boundOnZoomReset = this.onClickZoomReset.bind(this)
+		this.boundOnReload = this.onClickReload.bind(this)
 		this.boundOnViewerContentAreaResized = this.onViewerContentAreaResized.bind(this)
 
 		this.state = {
-			// loaded: this.props.model.modelState.autoload,
-			initialActualWidth: 0,
 			actualWidth: 0,
-			expanded: false,
 			padding: 0
 		}
 	}
 
-	isShowing() {
-		return this.props.model.modelState.autoload || MediaUtil.isShowingMedia(this.props.moduleData.mediaState, this.props.model)
-	}
-
 	getMeasuredDimensions() {
 		let cs = window.getComputedStyle(ReactDOM.findDOMNode(this.refs.main), null)
-		
+
 		return {
 			width: ReactDOM.findDOMNode(this).getBoundingClientRect().width,
-			padding: parseFloat(cs.getPropertyValue('padding-left')) + parseFloat(cs.getPropertyValue('padding-right'))
+			padding:
+				parseFloat(cs.getPropertyValue('padding-left')) +
+				parseFloat(cs.getPropertyValue('padding-right'))
 		}
 	}
 
@@ -51,23 +62,31 @@ export default class IFrame extends React.Component {
 	}
 
 	onClickBlocker() {
-		if (this.isShowing()) return
-
-		// this.setState({
-		// 	loaded: true
-		// })
 		MediaUtil.show(this.props.model.get('id'))
 	}
 
 	onClickExpand() {
-		this.setState({
-			expanded: true
-		})
+		MediaUtil.setSize(this.props.model.get('id'), 'large')
 	}
 
 	onClickExpandClose() {
-		this.setState({
-			expanded: false
+		MediaUtil.setSize(this.props.model.get('id'), null)
+	}
+
+	onClickZoomReset() {
+		MediaUtil.resetZoom(this.props.model.get('id'))
+	}
+
+	onClickSetZoom(newZoom) {
+		MediaUtil.setZoom(this.props.model.get('id'), newZoom)
+	}
+
+	onClickReload() {
+		let src = this.props.model.modelState.src
+
+		this.refs.iframe.src = ''
+		setTimeout(() => {
+			this.refs.iframe.src = src
 		})
 	}
 
@@ -79,115 +98,92 @@ export default class IFrame extends React.Component {
 			padding: dims.padding
 		})
 
-		if(window.ResizeObserver && window.ResizeObserver.prototype && window.ResizeObserver.prototype.observe && window.ResizeObserver.prototype.disconnect)
-		{
+		if (
+			window.ResizeObserver &&
+			window.ResizeObserver.prototype &&
+			window.ResizeObserver.prototype.observe &&
+			window.ResizeObserver.prototype.disconnect
+		) {
 			this.resizeObserver = new ResizeObserver(this.boundOnViewerContentAreaResized)
 			this.resizeObserver.observe(ReactDOM.findDOMNode(this))
-		}
-		else
-		{
+		} else {
 			Dispatcher.on('viewer:contentAreaResized', this.boundOnViewerContentAreaResized)
 		}
 	}
 
 	componentWillUnmount() {
-		if(this.resizeObserver) this.resizeObserver.disconnect()
-		Dispatcher.off('viewer:contentAreaResized', this.boundOnViewerContentAreaResized )
+		if (this.resizeObserver) this.resizeObserver.disconnect()
+		Dispatcher.off('viewer:contentAreaResized', this.boundOnViewerContentAreaResized)
 
-		if(!this.props.model.modelState.autoload && MediaUtil.isShowingMedia(this.props.moduleData.mediaState, this.props.model))
-		{
-			MediaUtil.hide(this.props.model.get('id'))
+		if (
+			!this.props.model.modelState.autoload &&
+			MediaUtil.isShowingMedia(this.props.moduleData.mediaState, this.props.model)
+		) {
+			MediaUtil.hide(this.props.model.get('id'), 'viewerClient')
 		}
 	}
 
+	renderExpandedBackground() {
+		return (
+			<div className="expanded-background">
+				<Header
+					logoPosition="left"
+					moduleTitle={this.props.moduleData.model.title}
+					location={NavUtil.getNavTargetModel(this.props.moduleData.navState).title || ''}
+				/>
+				<Button onClick={this.boundOnClickExpandClose}>Close</Button>
+			</div>
+		)
+	}
+
 	render() {
-		let ms = this.props.model.modelState
-		let w = ms.width || DEFAULT_WIDTH
-		let h = ms.height || DEFAULT_HEIGHT
+		let model = this.props.model
+		let ms = model.modelState
 
-		// if (h % 2 !== 0) h += 0.5
-
-		// if(w === null)
-		// {
-		// 	w = this.state.initialActualWidth - this.state.padding
-		// }
-
-		let scale
-
-		let containerStyle
-
-		// let testScale = Math.min(1, (this.state.actualWidth - this.state.padding) / w) * ms.scale
-		// let fit = ms.fit
-
-		// if(testScale < ms.forceScrollFitAtScale)
-		// {
-		// 	fit = 'scroll'
-		// }
-
-		if (this.state.expanded) {
-			scale = ms.expandedScale
-
-			containerStyle = {
-				width: 'calc(100% - 1em)',
-				height: 'calc(100% - 4.5em)'
-			}
-
-			if (ms.expandedSize === 'restricted') {
-				containerStyle.maxWidth = w
-				containerStyle.maxHeight = h
-			}
-		} else {
-			if (ms.fit === 'scroll') {
-				scale = ms.scale
-				containerStyle = {
-					width: w,
-					height: h
-				}
-			} else {
-				scale = Math.min(1, (this.state.actualWidth - this.state.padding) / w) * ms.scale
-				// scale = Math.min(1, (this.state.actualWidth - 0) / w) * ms.scale
-				containerStyle = {
-					width: w
-				}
-			}
-		}
-
-		scale = Math.min(1, scale)
-
-		let iframeStyle = {
-			transform: `scale(${scale})`,
-			width: 1 / scale * 100 + '%',
-			height: 1 / scale * 100 + '%'
-		}
-
-		let isShowing = this.isShowing()
-
-		let shouldShowExpandButton =
-			isShowing &&
-			ms.expand &&
-			!this.state.expanded &&
-			(ms.expandedSize === 'full' || (ms.expandedSize === 'restricted' && scale < 1))
+		let {
+			zoomValues,
+			zoom,
+			mediaSize,
+			displayedTitle,
+			isExpanded,
+			scaleDimensions,
+			isShowing,
+			controlsOpts,
+			isAtMinScale,
+			iframeStyle,
+			afterStyle
+		} = getRenderSettings(
+			model,
+			this.state.actualWidth,
+			this.state.padding,
+			MediaStore.constructor.SIZE_DEFAULT,
+			DEFAULT_WIDTH,
+			DEFAULT_HEIGHT,
+			MIN_SCALE,
+			this.props.moduleData.mediaState
+		)
 
 		return (
 			<OboComponent model={this.props.model} moduleData={this.props.moduleData}>
 				<div
 					className={
 						'obojobo-draft--chunks--iframe viewer pad' +
+						isOrNot(this.props.moduleData.isPreviewing, 'previewing') +
 						isOrNot(ms.border, 'bordered') +
 						isOrNot(isShowing, 'showing') +
-						isOrNot(ms.expand, 'expandable') +
-						isOrNot(this.state.expanded, 'expanded')
+						isOrNot(controlsOpts.isControlsEnabled, 'controls-enabled') +
+						isOrNot(ms.src === null, 'missing-src') +
+						isOrNot(scaleDimensions.scale > 1, 'scaled-up') +
+						(' is-size-' + mediaSize)
 					}
 					ref="main"
 				>
-					{this.state.expanded ? (
-						<div className="expanded-background" onClick={this.boundOnClickExpandClose} />
-					) : null}
+					{isExpanded ? this.renderExpandedBackground() : null}
 					<div
 						className="container"
 						ref="container"
-						onClick={this.boundOnClickBlocker}
-						style={containerStyle}
+						onClick={isShowing || ms.src !== null ? this.boundOnClickBlocker : null}
+						style={scaleDimensions.containerStyle}
 					>
 						<div className="iframe-container" ref="iframeContainer">
 							{!isShowing ? (
@@ -195,63 +191,35 @@ export default class IFrame extends React.Component {
 							) : (
 								<iframe
 									ref="iframe"
+									title={ms.title}
 									src={ms.src}
 									is
 									frameBorder="0"
-									allowFullScreen="true"
-									allow={ms.allow}
+									allow="geolocation; microphone; camera; midi; encrypted-media; vr"
 									style={iframeStyle}
 								/>
 							)}
 						</div>
-						{ms.fit === 'scale' ? (
-							<div
-								className="after"
-								style={{
-									paddingTop: h / w * 100 + '%'
-								}}
-							/>
-						) : (
-							<div
-								className="after"
-								style={{
-									height: h
-								}}
-							/>
-						)}
+						<div className="after" style={afterStyle} />
 						{isShowing ? null : (
 							<div className="click-to-load">
-								<span className="title">{ms.title || ms.src.replace(/^https?:\/\//,'')}</span>
-								<Button>View Content</Button>
+								<span className="title">{displayedTitle}</span>
+								{ms.src === null ? null : <Button>View Content</Button>}
 							</div>
 						)}
-						{shouldShowExpandButton ? (
-							<div className="expand">
-								<button className="expand-button" onClick={this.boundOnClickExpand}>
-									Expand
-								</button>
-							</div>
-						) : null}
-						{this.state.expanded ? <DeleteButton onClick={this.boundOnClickExpandClose} /> : null}
-					</div>
-					{this.state.expanded ? (
-						<div
-							className="container-placeholder"
-							style={{
-								width: w,
-								height: h
-							}}
+						<Controls
+							newWindowSrc={ms.newWindowSrc ? ms.newWindowSrc : ms.src}
+							controlsOptions={controlsOpts}
+							isZoomAbleToBeReset={zoomValues.isZoomDifferentFromInitial}
+							isUnableToZoomOut={isAtMinScale}
+							reload={this.boundOnReload}
+							zoomIn={this.onClickSetZoom.bind(this, zoom + 0.1)}
+							zoomOut={this.onClickSetZoom.bind(this, zoom - 0.1)}
+							zoomReset={this.boundOnZoomReset}
+							expand={this.boundOnClickExpand}
+							expandClose={this.boundOnClickExpandClose}
 						/>
-					) : null}
-					{ms.newWindow ? (
-						<div className="new-window-link">
-							<a target="_blank" href={ms.newWindowSrc ? ms.newWindowSrc : ms.src}>
-								View in a new window
-							</a>
-
-							<span className="tool-tip">{ms.newWindowSrc ? ms.newWindowSrc : ms.src}</span>
-						</div>
-					) : null}
+					</div>
 				</div>
 			</OboComponent>
 		)

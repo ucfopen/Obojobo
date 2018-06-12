@@ -61,6 +61,13 @@ var DOMUtil = {
 		)
 	},
 
+	getComponentElementById(oboId) {
+		let el = document.body.querySelector(`.component[data-id='${oboId}']`)
+		if (!el || !DOMUtil.elementLikeComponent(el)) return null
+
+		return el
+	},
+
 	elementLikeComponent(node) {
 		return (
 			node.hasAttribute('data-obo-component') &&

@@ -6,13 +6,10 @@
 	margin: 0 auto;
 	text-align: center;
 
-//@TODO - temp stuf:
 	&.is-not-showing {
 		> .container {
-			// background-color: #fdfdfd !important;
 			border: 1px solid transparentize($color-action, 0.8);
 			max-height: 15em;
-
 		}
 	}
 
@@ -22,30 +19,106 @@
 		}
 	}
 
-	&.is-expandable {
+	&.is-controls-enabled {
 		margin-bottom: 1.5em;
 	}
 
-	&.is-expanded {
+	&.is-previewing.is-size-large {
+		> .container {
+			top: -2em;
+			width: calc(100% - 2em);
+			height: calc(100% - 6.5em);
+		}
+	}
+
+	&.is-size-large {
+		> .expanded-background {
+			position: fixed;
+			left: 0;
+			top: 0;
+			right: 0;
+			bottom: 0;
+			background: $color-bg;
+			z-index: $z-index-above-content;
+
+			> .viewer--components--header {
+				position: fixed;
+				left: 0;
+				top: 0;
+				right: 0;
+			}
+
+			> .viewer--components--logo {
+				opacity: 0.3;
+				position: absolute;
+				left: 1em;
+				top: 0.7em;
+			}
+
+			> .obojobo-draft--components--button {
+				position: absolute;
+				right: 1.25em;
+				top: 0.4em;
+				font-size: 0.75em;
+
+				&:after {
+					position: absolute;
+					content: '×';
+					right: 0.7em;
+					top: 0.1em;
+					color: $color-bg;
+					pointer-events: none;
+				}
+
+				> button {
+					padding: 0.25em 1em;
+					padding-right: 2em;
+					//@HACK: This fixes the button for IE11:
+					line-height: 1.2em;
+				}
+			}
+		}
+
 		> .container {
 			position: fixed;
 			left: 0;
-			top: 2.5em;
+			top: 0;
 			right: 0;
 			bottom: 0;
-			z-index: $z-index-above-all;
-			// top: 50%;
-			// transform: translate(0, -50%);
-
-			top: 0;
-			// display: grid;
+			z-index: $z-index-above-content;
+			margin-bottom: 0;
+			padding-left: 0;
+			padding-right: 0;
+			width: calc(100% - 2em);
+			height: calc(100% - 4.5em);
 			margin: auto;
+			//@HACK: This fixes a bug in SAFARI where iframe-container was showing the full fixed
+			// browser dimensions instead of being contained inside container:
+			transform: translate3d(0, 0, 0);
 
-			> .iframe-container > iframe {
+			> .iframe-container {
+				position: fixed;
 				border-radius: $dimension-rounded-radius;
-				position: relative;
-				z-index: 2;
-				background: $color-bg;
+
+				> iframe {
+					position: relative;
+					z-index: 2;
+					background: $color-bg;
+				}
+
+				//@HACK: These are necessary to handle the SAFARI hack mentioned above:
+				right: inherit;
+				bottom: inherit;
+				width: 100%;
+				height: 100%;
+			}
+
+			> .obojobo-draft--chunks--iframe--controls {
+				position: absolute;
+				left: 0;
+				bottom: -2.4em;
+				right: 0;
+				height: 2em;
 			}
 
 			> .obojobo-draft--components--delete-button {
@@ -71,24 +144,36 @@
 		}
 	}
 
-	&.is-bordered.is-showing.is-not-expanded {
+	&.is-showing {
+		> .container {
+			border: 1px solid $color-transparent;
+		}
+	}
+
+	&.is-bordered.is-showing {
 		> .container > .iframe-container {
 			// This gets an outline with rounded corners (border messes up our calculations)
 			$b: darken($color-bg2, 20%);
-			box-shadow: 0 1px 0 $b, 0 -1px 0 $b, 1px 0 0 $b, -1px 0 0 $b, 1px 1px 0 $b, -1px -1px 0 $b, -1px 1px $b, 1px -1px $b;
+			box-shadow: 0 1px 0 $b, 0 -1px 0 $b, 1px 0 0 $b, -1px 0 0 $b, 1px 1px 0 $b, -1px -1px 0 $b,
+				-1px 1px $b, 1px -1px $b;
+		}
+	}
+
+	&.is-scaled-up {
+		> .container > .iframe-container > iframe {
+			transform-origin: top center;
 		}
 	}
 
 	&.is-not-showing {
 		> .container {
 			border-radius: $dimension-rounded-radius;
-			background-color:  #fdfdfd; // $color-bg2;
+			background-color: #fdfdfd;
 			overflow: hidden;
-			// transition: background-position $duration-animation-default;
 			cursor: pointer;
 
 			&::before {
-				content: " ";
+				content: ' ';
 				display: block;
 				background-image: url('./bg.svg');
 				background-size: 38.16px 38.16px;
@@ -101,9 +186,7 @@
 			}
 
 			&:hover {
-				// background-color: lighten($color-action-minor, 20%);
 				background-color: #f9f4ff;
-				// background-position: 3px 0;
 
 				> .click-to-load {
 					transform: translate(-50%, -50%) scale(1.05);
@@ -113,31 +196,26 @@
 				&::before {
 					transform: scale(1.2);
 					opacity: 0.4;
-					// background-position: 3px 0;
 				}
 			}
 		}
 	}
 
-	// &.is-scaled-up {
-	// 	> .container > .iframe-container > iframe {
-	// 		transform-origin: top center;
-	// 	}
-	// }
+	&.is-missing-src {
+		> .container {
+			border: 1px solid $color-error;
+			background-color: lighten($color-error, 65%);
+			pointer-events: none;
 
-	> .expanded-background {
-		position: fixed;
-		left: 0;
-		top: 0;
-		right: 0;
-		bottom: 0;
-		background: rgba(0, 0, 0, 0.7);
-		z-index: $z-index-above-content;
+			> .click-to-load > span {
+				color: $color-error;
+			}
+		}
 	}
 
 	> .container {
 		// @HACK: Enforce pixel perfect children.
-		// Used to make the "Click to load this content" element non-blurry in Chrome
+		// Used to make the "Click to load this content" element non-blurry in CHROME
 		transform-style: preserve-3d;
 	}
 
@@ -158,12 +236,12 @@
 			top: 0;
 			bottom: 0;
 			right: 0;
+
 			overflow: hidden;
 			border-radius: $dimension-rounded-radius;
 
 			> iframe {
 				background: $color-bg2;
-				
 			}
 
 			> iframe,
@@ -182,26 +260,15 @@
 			font-family: $font-default;
 			font-size: 0.8em;
 			line-height: 1.3em;
-			// padding: 1em 2em;
 			box-sizing: border-box;
-			// white-space: nowrap;
 			font-size: 1em;
 			border-radius: $dimension-rounded-radius;
-			// background: transparentize($color-bg, 0.2);
-			// border: 1px solid transparentize($color-action, 0.8);
 			color: $color-text;
 			font-weight: bold;
 			transition: transform 0.2s;
 			max-width: calc(100% - 3em);
-			// max-height: 100%;
 			overflow: hidden;
-
-
-
-
-
 			width: 100%;
-			// height: 100%;
 
 			> .title {
 				display: inline-block;
@@ -209,9 +276,6 @@
 				font-size: 0.8em;
 				opacity: 0.8;
 				width: 100%;
-				// padding: 0.4em 1.4em;
-				// background: $color-bg;
-				// border-radius: 10em;
 			}
 
 			> .obojobo-draft--components--button {
@@ -219,82 +283,25 @@
 			}
 		}
 
-		> .expand {
-			position: relative;
-
-			> .expand-button {
-				@include user-select(none);
-
-				background-image: url('./expand-button.svg');
-				border: none;
-				width: 2em;
-				height: 2em;
-				overflow: hidden;
-				display: inline-block;
-				padding: 0;
-				border-radius: $dimension-rounded-radius;
-				color: $color-transparent;
-				background-color: $color-bg;
-				background-size: 75%;
-				background-position: center;
-				background-repeat: no-repeat;
-				cursor: pointer;
-				position: absolute;
-				right: 0;
-				top: 0.5em;
-				font-family: $font-default;
-				text-indent: -7em;
-				transition: color $duration-animation-default;
-				word-wrap: initial;
-
-				&:hover {
-					background-color: $color-action;
-					background-image: url('./expand-button-hover.svg');
-					overflow: visible;
-					color: $color-action;
-				}
-			}
+		> .obojobo-draft--chunks--iframe--controls {
+			position: absolute;
+			top: 100%;
+			left: 0;
+			right: 0;
+			transform: translate(0, 0.3em);
 		}
 	}
+}
 
-	> .new-window-link {
-		position: relative;
-		display: inline-block;
-		margin-top: 0.25em;
-		font-family: $font-default;
-		font-size: 0.7em;
-		opacity: 0.75;
-
-		> a {
-			display: inline-block;
-			color: $color-action;
-		}
-
-		> .tool-tip {
-			pointer-events: none;
-			position: absolute;
-			top: -3.5em;
-			left: 50%;
-			transform: translate(-50%);
-			display: none;
-			white-space: nowrap;
-			font-size: 0.8em;
-			color: $color-bg;
-			background: $color-action;
-			border-radius: 3em;
-			line-height: 1em;
-			padding: 0.75em 1.5em;
-			font-weight: bold;
-			font-size: 1em;
-			box-shadow: 0 2px 2px $color-shadow;
-		}
-
-		&:hover {
-			opacity: 1;
-
-			> .tool-tip {
-				display: block;
-			}
+//@HACK: An IE11 hack to fix the same issue as the SAFARI hack above
+@media screen and (-ms-high-contrast: active), (-ms-high-contrast: none) {
+	.obojobo-draft--chunks--iframe.is-size-large {
+		> .container > .iframe-container {
+			position: fixed;
+			left: 1em;
+			top: 2em;
+			width: inherit;
+			height: inherit;
 		}
 	}
 }

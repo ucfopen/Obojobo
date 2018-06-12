@@ -71,6 +71,8 @@ import FocusUtil from './util/focus-util'
 import ErrorUtil from './util/error-util'
 import UUID from './util/uuid'
 import RangeParsing from './util/range-parsing'
+import setModelStateProp from './util/set-model-state-prop'
+import isOrNot from './isornot'
 
 export default {
 	Store,
@@ -190,6 +192,8 @@ export default {
 		FocusUtil,
 		ErrorUtil,
 		UUID,
-		RangeParsing
+		RangeParsing,
+		setModelStateProp,
+		isOrNot
 	}
 }
