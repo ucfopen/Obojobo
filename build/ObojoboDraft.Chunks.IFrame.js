@@ -108,12 +108,7 @@ _Common2.default.Store.registerModel('ObojoboDraft.Chunks.IFrame', {
 	type: 'chunk',
 	adapter: _adapter2.default,
 	componentClass: _viewerComponent2.default,
-	selectionHandler: new SelectionHandler(),
-	getFullScreenElement: function getFullScreenElement(el) {
-		var iframeEls = el.getElementsByTagName('iframe');
-
-		return iframeEls && iframeEls[0] ? iframeEls[0] : null;
-	}
+	selectionHandler: new SelectionHandler()
 });
 
 /***/ }),
