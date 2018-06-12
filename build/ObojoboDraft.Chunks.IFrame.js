@@ -639,7 +639,7 @@ var IFrame = function (_React$Component) {
 
 		var _this = _possibleConstructorReturn(this, (IFrame.__proto__ || Object.getPrototypeOf(IFrame)).call(this, props));
 
-		_this.boundOnClickBlocker = _this.onClickBlocker.bind(_this);
+		_this.boundOnClickContainer = _this.onClickContainer.bind(_this);
 		_this.boundOnClickExpand = _this.onClickExpand.bind(_this);
 		_this.boundOnClickExpandClose = _this.onClickExpandClose.bind(_this);
 		_this.boundOnZoomReset = _this.onClickZoomReset.bind(_this);
@@ -674,8 +674,8 @@ var IFrame = function (_React$Component) {
 			});
 		}
 	}, {
-		key: 'onClickBlocker',
-		value: function onClickBlocker() {
+		key: 'onClickContainer',
+		value: function onClickContainer() {
 			MediaUtil.show(this.props.model.get('id'));
 		}
 	}, {
@@ -789,7 +789,7 @@ var IFrame = function (_React$Component) {
 						{
 							className: 'container',
 							ref: 'container',
-							onClick: isShowing || ms.src !== null ? this.boundOnClickBlocker : null,
+							onClick: !isShowing && ms.src !== null ? this.boundOnClickContainer : null,
 							style: scaleDimensions.containerStyle
 						},
 						_react2.default.createElement(
@@ -826,8 +826,8 @@ var IFrame = function (_React$Component) {
 							isZoomAbleToBeReset: zoomValues.isZoomDifferentFromInitial,
 							isUnableToZoomOut: isAtMinScale,
 							reload: this.boundOnReload,
-							zoomIn: this.onClickSetZoom.bind(this, zoom + 0.1),
-							zoomOut: this.onClickSetZoom.bind(this, zoom - 0.1),
+							zoomIn: this.onClickSetZoom.bind(this, parseFloat((zoom + 0.1).toFixed(2))),
+							zoomOut: this.onClickSetZoom.bind(this, parseFloat((zoom - 0.1).toFixed(2))),
 							zoomReset: this.boundOnZoomReset,
 							expand: this.boundOnClickExpand,
 							expandClose: this.boundOnClickExpandClose

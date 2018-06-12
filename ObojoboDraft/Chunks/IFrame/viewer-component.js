@@ -9,7 +9,7 @@ import Common from 'Common'
 import Viewer from 'Viewer'
 
 import Controls from './controls'
-import { getRenderSettings } from './render-settings'
+import { getRenderSettings, getIsShowing } from './render-settings'
 
 let DEFAULT_WIDTH = 710
 let DEFAULT_HEIGHT = 500
@@ -28,7 +28,7 @@ export default class IFrame extends React.Component {
 	constructor(props) {
 		super(props)
 
-		this.boundOnClickBlocker = this.onClickBlocker.bind(this)
+		this.boundOnClickContainer = this.onClickContainer.bind(this)
 		this.boundOnClickExpand = this.onClickExpand.bind(this)
 		this.boundOnClickExpandClose = this.onClickExpandClose.bind(this)
 		this.boundOnZoomReset = this.onClickZoomReset.bind(this)
@@ -61,7 +61,7 @@ export default class IFrame extends React.Component {
 		})
 	}
 
-	onClickBlocker() {
+	onClickContainer() {
 		MediaUtil.show(this.props.model.get('id'))
 	}
 
@@ -182,7 +182,7 @@ export default class IFrame extends React.Component {
 					<div
 						className="container"
 						ref="container"
-						onClick={isShowing || ms.src !== null ? this.boundOnClickBlocker : null}
+						onClick={!isShowing && ms.src !== null ? this.boundOnClickContainer : null}
 						style={scaleDimensions.containerStyle}
 					>
 						<div className="iframe-container" ref="iframeContainer">
@@ -213,8 +213,8 @@ export default class IFrame extends React.Component {
 							isZoomAbleToBeReset={zoomValues.isZoomDifferentFromInitial}
 							isUnableToZoomOut={isAtMinScale}
 							reload={this.boundOnReload}
-							zoomIn={this.onClickSetZoom.bind(this, zoom + 0.1)}
-							zoomOut={this.onClickSetZoom.bind(this, zoom - 0.1)}
+							zoomIn={this.onClickSetZoom.bind(this, parseFloat((zoom + 0.1).toFixed(2)))}
+							zoomOut={this.onClickSetZoom.bind(this, parseFloat((zoom - 0.1).toFixed(2)))}
 							zoomReset={this.boundOnZoomReset}
 							expand={this.boundOnClickExpand}
 							expandClose={this.boundOnClickExpandClose}
