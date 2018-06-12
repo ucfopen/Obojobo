@@ -63,7 +63,7 @@
 /******/ 	__webpack_require__.p = "build/";
 /******/
 /******/ 	// Load entry module and return exports
-/******/ 	return __webpack_require__(__webpack_require__.s = 301);
+/******/ 	return __webpack_require__(__webpack_require__.s = 310);
 /******/ })
 /************************************************************************/
 /******/ ({
@@ -125,11 +125,11 @@ var _Viewer = __webpack_require__(1);
 
 var _Viewer2 = _interopRequireDefault(_Viewer);
 
-var _adapter = __webpack_require__(160);
+var _adapter = __webpack_require__(162);
 
 var _adapter2 = _interopRequireDefault(_adapter);
 
-var _viewerComponent = __webpack_require__(170);
+var _viewerComponent = __webpack_require__(172);
 
 var _viewerComponent2 = _interopRequireDefault(_viewerComponent);
 
@@ -189,7 +189,7 @@ _Common2.default.Store.registerModel('ObojoboDraft.Sections.Assessment', {
 
 /***/ }),
 
-/***/ 160:
+/***/ 162:
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -199,11 +199,11 @@ Object.defineProperty(exports, "__esModule", {
 	value: true
 });
 
-var _scoreActions = __webpack_require__(169);
+var _scoreActions = __webpack_require__(171);
 
 var _scoreActions2 = _interopRequireDefault(_scoreActions);
 
-var _assessmentRubric = __webpack_require__(256);
+var _assessmentRubric = __webpack_require__(262);
 
 var _assessmentRubric2 = _interopRequireDefault(_assessmentRubric);
 
@@ -257,7 +257,7 @@ exports.default = Adapter;
 
 /***/ }),
 
-/***/ 161:
+/***/ 163:
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -313,7 +313,7 @@ exports.default = function (props) {
 
 /***/ }),
 
-/***/ 162:
+/***/ 164:
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -356,7 +356,7 @@ exports.default = basicReview;
 
 /***/ }),
 
-/***/ 163:
+/***/ 165:
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -376,15 +376,15 @@ var _Common = __webpack_require__(0);
 
 var _Common2 = _interopRequireDefault(_Common);
 
-var _reviewIcon = __webpack_require__(167);
+var _reviewIcon = __webpack_require__(169);
 
 var _reviewIcon2 = _interopRequireDefault(_reviewIcon);
 
-var _format = __webpack_require__(243);
+var _format = __webpack_require__(245);
 
 var _format2 = _interopRequireDefault(_format);
 
-var _basicReview = __webpack_require__(162);
+var _basicReview = __webpack_require__(164);
 
 var _basicReview2 = _interopRequireDefault(_basicReview);
 
@@ -592,7 +592,7 @@ exports.default = AssessmentReviewView;
 
 /***/ }),
 
-/***/ 164:
+/***/ 166:
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -612,11 +612,11 @@ var _Viewer = __webpack_require__(1);
 
 var _Viewer2 = _interopRequireDefault(_Viewer);
 
-var _ltiStatus = __webpack_require__(165);
+var _ltiStatus = __webpack_require__(167);
 
 var _ltiStatus2 = _interopRequireDefault(_ltiStatus);
 
-var _fullReview = __webpack_require__(163);
+var _fullReview = __webpack_require__(165);
 
 var _fullReview2 = _interopRequireDefault(_fullReview);
 
@@ -796,7 +796,7 @@ exports.default = AssessmentPostTest;
 
 /***/ }),
 
-/***/ 165:
+/***/ 167:
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -806,7 +806,7 @@ Object.defineProperty(exports, "__esModule", {
 	value: true
 });
 
-__webpack_require__(280);
+__webpack_require__(287);
 
 var _Common = __webpack_require__(0);
 
@@ -918,7 +918,7 @@ exports.default = function (props) {
 
 /***/ }),
 
-/***/ 166:
+/***/ 168:
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -941,7 +941,7 @@ exports.default = AssessmentPreTest;
 
 /***/ }),
 
-/***/ 167:
+/***/ 169:
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -1001,152 +1001,6 @@ exports.default = function (props) {
 		})
 	);
 };
-
-/***/ }),
-
-/***/ 168:
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-
-
-Object.defineProperty(exports, "__esModule", {
-	value: true
-});
-
-var _Common = __webpack_require__(0);
-
-var _Common2 = _interopRequireDefault(_Common);
-
-function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
-
-var Button = _Common2.default.components.Button;
-
-
-var AssessmentTest = function AssessmentTest(props) {
-	var Component = props.model.getComponentClass();
-
-	var submitButtonText = 'Loading ...';
-	if (!props.isAttemptComplete) {
-		submitButtonText = 'Submit (Not all questions have been answered)';
-	} else if (!props.isFetching) {
-		submitButtonText = 'Submit';
-	}
-
-	return React.createElement(
-		'div',
-		{ className: 'test' },
-		React.createElement(Component, { model: props.model, moduleData: props.moduleData }),
-		React.createElement(
-			'div',
-			{ className: 'submit-button' },
-			React.createElement(Button, {
-				disabled: props.isFetching,
-				onClick: props.onClickSubmit,
-				value: submitButtonText
-			})
-		)
-	);
-};
-
-exports.default = AssessmentTest;
-
-/***/ }),
-
-/***/ 169:
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-
-
-Object.defineProperty(exports, "__esModule", {
-	value: true
-});
-
-var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
-
-var _Common = __webpack_require__(0);
-
-var _Common2 = _interopRequireDefault(_Common);
-
-function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
-
-function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
-
-var getParsedRange = _Common2.default.util.RangeParsing.getParsedRange;
-var isValueInRange = _Common2.default.util.RangeParsing.isValueInRange;
-
-var replaceDict = {
-	'no-score': null
-};
-
-var ScoreActions = function () {
-	function ScoreActions(actions) {
-		_classCallCheck(this, ScoreActions);
-
-		this.originalActions = actions;
-
-		this.actions = (actions == null ? [] : actions).map(function (action) {
-			var forAttr = action.for;
-
-			// Transform legacy to/from to newer "for"
-			if (typeof action.from !== 'undefined' && typeof action.to !== 'undefined' && typeof action.for === 'undefined') {
-				forAttr = '[' + action.from + ',' + action.to + ']';
-			}
-
-			return {
-				page: action.page,
-				range: getParsedRange(forAttr)
-			};
-		});
-	}
-
-	_createClass(ScoreActions, [{
-		key: 'getActionForScore',
-		value: function getActionForScore(score) {
-			var _iteratorNormalCompletion = true;
-			var _didIteratorError = false;
-			var _iteratorError = undefined;
-
-			try {
-				for (var _iterator = this.actions[Symbol.iterator](), _step; !(_iteratorNormalCompletion = (_step = _iterator.next()).done); _iteratorNormalCompletion = true) {
-					var action = _step.value;
-
-					if (isValueInRange(score, action.range, replaceDict)) return action;
-				}
-			} catch (err) {
-				_didIteratorError = true;
-				_iteratorError = err;
-			} finally {
-				try {
-					if (!_iteratorNormalCompletion && _iterator.return) {
-						_iterator.return();
-					}
-				} finally {
-					if (_didIteratorError) {
-						throw _iteratorError;
-					}
-				}
-			}
-
-			return null;
-		}
-	}, {
-		key: 'toObject',
-		value: function toObject() {
-			return Object.assign([], this.originalActions);
-		}
-	}, {
-		key: 'clone',
-		value: function clone() {
-			return new ScoreActions(this.toObject());
-		}
-	}]);
-
-	return ScoreActions;
-}();
-
-exports.default = ScoreActions;
 
 /***/ }),
 
@@ -1484,9 +1338,155 @@ Object.defineProperty(exports, "__esModule", {
 	value: true
 });
 
+var _Common = __webpack_require__(0);
+
+var _Common2 = _interopRequireDefault(_Common);
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+var Button = _Common2.default.components.Button;
+
+
+var AssessmentTest = function AssessmentTest(props) {
+	var Component = props.model.getComponentClass();
+
+	var submitButtonText = 'Loading ...';
+	if (!props.isAttemptComplete) {
+		submitButtonText = 'Submit (Not all questions have been answered)';
+	} else if (!props.isFetching) {
+		submitButtonText = 'Submit';
+	}
+
+	return React.createElement(
+		'div',
+		{ className: 'test' },
+		React.createElement(Component, { model: props.model, moduleData: props.moduleData }),
+		React.createElement(
+			'div',
+			{ className: 'submit-button' },
+			React.createElement(Button, {
+				disabled: props.isFetching,
+				onClick: props.onClickSubmit,
+				value: submitButtonText
+			})
+		)
+	);
+};
+
+exports.default = AssessmentTest;
+
+/***/ }),
+
+/***/ 171:
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+Object.defineProperty(exports, "__esModule", {
+	value: true
+});
+
 var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
 
-__webpack_require__(281);
+var _Common = __webpack_require__(0);
+
+var _Common2 = _interopRequireDefault(_Common);
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+var getParsedRange = _Common2.default.util.RangeParsing.getParsedRange;
+var isValueInRange = _Common2.default.util.RangeParsing.isValueInRange;
+
+var replaceDict = {
+	'no-score': null
+};
+
+var ScoreActions = function () {
+	function ScoreActions(actions) {
+		_classCallCheck(this, ScoreActions);
+
+		this.originalActions = actions;
+
+		this.actions = (actions == null ? [] : actions).map(function (action) {
+			var forAttr = action.for;
+
+			// Transform legacy to/from to newer "for"
+			if (typeof action.from !== 'undefined' && typeof action.to !== 'undefined' && typeof action.for === 'undefined') {
+				forAttr = '[' + action.from + ',' + action.to + ']';
+			}
+
+			return {
+				page: action.page,
+				range: getParsedRange(forAttr)
+			};
+		});
+	}
+
+	_createClass(ScoreActions, [{
+		key: 'getActionForScore',
+		value: function getActionForScore(score) {
+			var _iteratorNormalCompletion = true;
+			var _didIteratorError = false;
+			var _iteratorError = undefined;
+
+			try {
+				for (var _iterator = this.actions[Symbol.iterator](), _step; !(_iteratorNormalCompletion = (_step = _iterator.next()).done); _iteratorNormalCompletion = true) {
+					var action = _step.value;
+
+					if (isValueInRange(score, action.range, replaceDict)) return action;
+				}
+			} catch (err) {
+				_didIteratorError = true;
+				_iteratorError = err;
+			} finally {
+				try {
+					if (!_iteratorNormalCompletion && _iterator.return) {
+						_iterator.return();
+					}
+				} finally {
+					if (_didIteratorError) {
+						throw _iteratorError;
+					}
+				}
+			}
+
+			return null;
+		}
+	}, {
+		key: 'toObject',
+		value: function toObject() {
+			return Object.assign([], this.originalActions);
+		}
+	}, {
+		key: 'clone',
+		value: function clone() {
+			return new ScoreActions(this.toObject());
+		}
+	}]);
+
+	return ScoreActions;
+}();
+
+exports.default = ScoreActions;
+
+/***/ }),
+
+/***/ 172:
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+Object.defineProperty(exports, "__esModule", {
+	value: true
+});
+
+var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+
+__webpack_require__(288);
 
 var _Common = __webpack_require__(0);
 
@@ -1496,19 +1496,19 @@ var _Viewer = __webpack_require__(1);
 
 var _Viewer2 = _interopRequireDefault(_Viewer);
 
-var _attemptIncompleteDialog = __webpack_require__(161);
+var _attemptIncompleteDialog = __webpack_require__(163);
 
 var _attemptIncompleteDialog2 = _interopRequireDefault(_attemptIncompleteDialog);
 
-var _preTest = __webpack_require__(166);
+var _preTest = __webpack_require__(168);
 
 var _preTest2 = _interopRequireDefault(_preTest);
 
-var _test = __webpack_require__(168);
+var _test = __webpack_require__(170);
 
 var _test2 = _interopRequireDefault(_test);
 
-var _postTest = __webpack_require__(164);
+var _postTest = __webpack_require__(166);
 
 var _postTest2 = _interopRequireDefault(_postTest);
 
@@ -1731,13 +1731,13 @@ exports.default = Assessment;
 
 /***/ }),
 
-/***/ 242:
+/***/ 244:
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
 
 
-var startOfDay = __webpack_require__(251);
+var startOfDay = __webpack_require__(253);
 
 var MILLISECONDS_IN_MINUTE = 60000;
 var MILLISECONDS_IN_DAY = 86400000;
@@ -1779,18 +1779,18 @@ module.exports = differenceInCalendarDays;
 
 /***/ }),
 
-/***/ 243:
+/***/ 245:
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
 
 
-var getDayOfYear = __webpack_require__(244);
-var getISOWeek = __webpack_require__(245);
+var getDayOfYear = __webpack_require__(246);
+var getISOWeek = __webpack_require__(247);
 var getISOYear = __webpack_require__(99);
 var parse = __webpack_require__(17);
-var isValid = __webpack_require__(246);
-var enLocale = __webpack_require__(250);
+var isValid = __webpack_require__(248);
+var enLocale = __webpack_require__(252);
 
 /**
  * @category Common Helpers
@@ -2116,15 +2116,15 @@ module.exports = format;
 
 /***/ }),
 
-/***/ 244:
+/***/ 246:
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
 
 
 var parse = __webpack_require__(17);
-var startOfYear = __webpack_require__(254);
-var differenceInCalendarDays = __webpack_require__(242);
+var startOfYear = __webpack_require__(256);
+var differenceInCalendarDays = __webpack_require__(244);
 
 /**
  * @category Day Helpers
@@ -2152,7 +2152,7 @@ module.exports = getDayOfYear;
 
 /***/ }),
 
-/***/ 245:
+/***/ 247:
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -2160,7 +2160,7 @@ module.exports = getDayOfYear;
 
 var parse = __webpack_require__(17);
 var startOfISOWeek = __webpack_require__(62);
-var startOfISOYear = __webpack_require__(252);
+var startOfISOYear = __webpack_require__(254);
 
 var MILLISECONDS_IN_WEEK = 604800000;
 
@@ -2195,7 +2195,7 @@ module.exports = getISOWeek;
 
 /***/ }),
 
-/***/ 246:
+/***/ 248:
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -2239,7 +2239,7 @@ module.exports = isValid;
 
 /***/ }),
 
-/***/ 247:
+/***/ 249:
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -2265,7 +2265,7 @@ module.exports = buildFormattingTokensRegExp;
 
 /***/ }),
 
-/***/ 248:
+/***/ 250:
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -2373,13 +2373,13 @@ module.exports = buildDistanceInWordsLocale;
 
 /***/ }),
 
-/***/ 249:
+/***/ 251:
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
 
 
-var buildFormattingTokensRegExp = __webpack_require__(247);
+var buildFormattingTokensRegExp = __webpack_require__(249);
 
 function buildFormatLocale() {
   // Note: in English, the names of days of the week and months are capitalized.
@@ -2469,14 +2469,14 @@ module.exports = buildFormatLocale;
 
 /***/ }),
 
-/***/ 250:
+/***/ 252:
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
 
 
-var buildDistanceInWordsLocale = __webpack_require__(248);
-var buildFormatLocale = __webpack_require__(249);
+var buildDistanceInWordsLocale = __webpack_require__(250);
+var buildFormatLocale = __webpack_require__(251);
 
 /**
  * @category Locales
@@ -2489,7 +2489,7 @@ module.exports = {
 
 /***/ }),
 
-/***/ 251:
+/***/ 253:
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -2523,7 +2523,7 @@ module.exports = startOfDay;
 
 /***/ }),
 
-/***/ 252:
+/***/ 254:
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -2564,7 +2564,7 @@ module.exports = startOfISOYear;
 
 /***/ }),
 
-/***/ 253:
+/***/ 255:
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -2611,7 +2611,7 @@ module.exports = startOfWeek;
 
 /***/ }),
 
-/***/ 254:
+/***/ 256:
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -2647,7 +2647,7 @@ module.exports = startOfYear;
 
 /***/ }),
 
-/***/ 256:
+/***/ 262:
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -2692,7 +2692,7 @@ AttemptRange:
 */
 
 //@TODO: Maybe shouldn't be importing this here since this file will someday be on the server
-var _require = __webpack_require__(257),
+var _require = __webpack_require__(263),
     getParsedRange = _require.getParsedRange,
     tryGetParsedFloat = _require.tryGetParsedFloat,
     isValueInRange = _require.isValueInRange;
@@ -2905,7 +2905,7 @@ module.exports = AssessmentRubric;
 
 /***/ }),
 
-/***/ 257:
+/***/ 263:
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -3012,21 +3012,21 @@ module.exports = {
 
 /***/ }),
 
-/***/ 280:
+/***/ 287:
 /***/ (function(module, exports) {
 
 // removed by extract-text-webpack-plugin
 
 /***/ }),
 
-/***/ 281:
+/***/ 288:
 /***/ (function(module, exports) {
 
 // removed by extract-text-webpack-plugin
 
 /***/ }),
 
-/***/ 301:
+/***/ 310:
 /***/ (function(module, exports, __webpack_require__) {
 
 module.exports = __webpack_require__(118);
@@ -3040,7 +3040,7 @@ module.exports = __webpack_require__(118);
 "use strict";
 
 
-var startOfWeek = __webpack_require__(253);
+var startOfWeek = __webpack_require__(255);
 
 /**
  * @category ISO Week Helpers

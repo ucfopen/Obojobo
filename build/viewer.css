@@ -224,51 +224,26 @@ body {
       .viewer--viewer-app.is-open-nav.is-enabled-nav {
         padding-left: 14rem; } }
     .viewer--viewer-app.is-open-nav.is-enabled-nav > header {
-      top: -2.5rem;
-      border-bottom: 1px solid rgba(0, 0, 0, 0); }
+      top: -2.5rem; }
       .viewer--viewer-app.is-open-nav.is-enabled-nav > header .viewer--components--logo,
       .viewer--viewer-app.is-open-nav.is-enabled-nav > header .location {
         opacity: 0;
         transition-delay: 0s;
         transition: 0.1s opacity; }
-  .viewer--viewer-app > header {
-    background: #ffffff;
+  .viewer--viewer-app > .viewer--components--header {
     position: absolute;
     left: 0;
     width: 100%;
     top: 0;
-    height: 2.5rem;
     z-index: 999;
     border-bottom: 1px solid rgba(0, 0, 0, 0.1);
-    font-size: 0.7rem;
-    font-family: Libre Franklin;
-    color: #000000;
-    padding: 0.8rem 1rem;
-    padding-left: 4rem;
-    box-sizing: border-box;
     transition: top 0.2s;
-    opacity: 0.95; }
-    .viewer--viewer-app > header > div {
-      position: relative; }
-    .viewer--viewer-app > header .module-title {
-      text-transform: uppercase;
-      display: inline-block;
-      cursor: default; }
-    .viewer--viewer-app > header .location {
-      margin-left: 1rem;
-      font-weight: bold;
+    opacity: 0.95;
+    transition: opacity 0.2s;
+    transition-delay: 0.4s; }
+    .viewer--viewer-app > .viewer--components--header .viewer--components--logo {
       transition: opacity 0.2s;
-      transition-delay: 0.4s;
-      cursor: default; }
-    .viewer--viewer-app > header .viewer--components--logo {
-      color: #666666;
-      position: fixed;
-      right: 1rem;
-      top: 0.8rem;
-      transition: opacity 0.2s;
-      transition-delay: 0.6s;
-      opacity: 0.2;
-      cursor: default; }
+      transition-delay: 0.6s; }
   .viewer--viewer-app > .preview-banner {
     font-family: "Libre Franklin", Arial, sans-serif;
     background: #af1b5c;
@@ -682,3 +657,35 @@ body {
 
 .is-previewing .viewer--components--nav {
   bottom: 3em; }
+.viewer--components--header {
+  background: #ffffff;
+  height: 2.5rem;
+  font-size: 0.7rem;
+  font-family: Libre Franklin;
+  color: #000000;
+  padding: 0.8rem 1rem;
+  padding-left: 4rem;
+  box-sizing: border-box;
+  text-align: left; }
+  .viewer--components--header > .wrapper {
+    position: relative;
+    line-height: 0.9rem; }
+  .viewer--components--header .module-title {
+    text-transform: uppercase;
+    cursor: default; }
+  .viewer--components--header .location {
+    margin-left: 1rem;
+    font-weight: bold;
+    cursor: default; }
+  .viewer--components--header .viewer--components--logo {
+    color: #666666;
+    position: fixed;
+    top: 0.8rem;
+    opacity: 0.2;
+    cursor: default; }
+  .viewer--components--header.is-logo-left {
+    padding-left: 6rem; }
+    .viewer--components--header.is-logo-left .viewer--components--logo {
+      left: 1rem; }
+  .viewer--components--header.is-logo-right .viewer--components--logo {
+    right: 1rem; }

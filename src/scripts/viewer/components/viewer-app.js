@@ -94,23 +94,6 @@ export default class ViewerApp extends React.Component {
 
 	componentDidMount() {
 		document.addEventListener('visibilitychange', this.onVisibilityChange)
-		document.addEventListener('webkitfullscreenchange', e => {
-			console.log('YOU WE FULLSCREEN NOW', document.webkitFullscreenElement)
-
-			// if(document.webkitFullscreenElement === null)
-			// {
-			// 	APIUtil.postEvent(this.state.model, 'viewer:leaveFullscreen', '1.0.0')
-			// }
-
-			// let id = [...DOMUtil.findParentComponentElements(e.target)][0]
-
-			// if(id)
-			// {
-			// 	APIUtil.postEvent(this.state.model, 'viewer:fullscreen', '1.0.0', {
-			// 		id
-			// 	})
-			// }
-		})
 
 		let visitIdFromApi
 		let attemptHistory
@@ -136,7 +119,7 @@ export default class ViewerApp extends React.Component {
 				visitIdFromApi = visit.value.visitId
 				viewState = visit.value.viewState
 				attemptHistory = visit.value.extensions[':ObojoboDraft.Sections.Assessment:attemptHistory']
-				isPreviewing = false //visit.value.isPreviewing
+				isPreviewing = visit.value.isPreviewing
 				outcomeServiceURL = visit.value.lti.lisOutcomeServiceUrl
 
 				return APIUtil.getDraft(draftIdFromUrl)
@@ -216,17 +199,6 @@ export default class ViewerApp extends React.Component {
 		if (this.state.loading === true && nextState.loading === false) {
 			this.needsRemoveLoadingElement = true
 		}
-
-		let focussedComponent = FocusUtil.getFocussedComponent(this.state.focusState)
-		let nextFocussedComponent = FocusUtil.getFocussedComponent(nextState.focusState)
-
-		if (
-			nextFocussedComponent !== null &&
-			focussedComponent !== nextFocussedComponent &&
-			FocusUtil.isScrollPrevented(nextState.focusState)
-		) {
-			this.needsScrollFocussedElementIntoViewIfNeeded = true
-		}
 	}
 
 	componentDidUpdate() {
@@ -239,14 +211,6 @@ export default class ViewerApp extends React.Component {
 				this.scrollToTop()
 
 				delete this.needsScroll
-			}
-			if (this.needsScrollFocussedElementIntoViewIfNeeded) {
-				let focussedComponent = FocusUtil.getFocussedComponent(this.state.focusState)
-				if (focussedComponent) {
-					Screen.scrollElementIntoViewIfNeeded(focussedComponent.getDomEl())
-				}
-
-				delete this.needsScrollFocussedElementIntoViewIfNeeded
 			}
 		}
 
@@ -481,10 +445,7 @@ export default class ViewerApp extends React.Component {
 			this.state.navState.locked ? 'is-locked-nav' : 'is-unlocked-nav',
 			this.state.navState.open ? 'is-open-nav' : 'is-closed-nav',
 			this.state.navState.disabled ? 'is-disabled-nav' : 'is-enabled-nav',
-			`is-focus-state-${this.state.focusState.viewState}`,
-			this.state.focusState.isPreventingScroll
-				? `is-focus-scroll-prevented`
-				: `is-not-focus-scroll-prevented`
+			`is-focus-state-${this.state.focusState.viewState}`
 		].join(' ')
 
 		return (

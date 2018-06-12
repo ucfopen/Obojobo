@@ -62,7 +62,7 @@ var DOMUtil = {
 	},
 
 	getComponentElementById(oboId) {
-		let el = document.body.querySelector(`.component[data-id='${oboId}']`)
+		let el = document.getElementById('obo-' + oboId)
 		if (!el || !DOMUtil.elementLikeComponent(el)) return null
 
 		return el

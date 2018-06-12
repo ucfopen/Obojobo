@@ -43,10 +43,6 @@
 		}
 	}
 
-	&.is-focus-state-active.is-focus-scroll-prevented {
-		overflow: hidden;
-	}
-
 	> .viewer--components--header {
 		position: absolute;
 		left: 0;

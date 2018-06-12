@@ -69,4 +69,44 @@ describe('setModelStateProp', () => {
 		})
 		expect(setFn).toHaveBeenCalledTimes(1)
 	})
+
+	test('sets to default value if set function returns null', () => {
+		s(model, { content: { myProp: 'test-value' } }, 'myProp', 'default-value', () => null)
+		expect(model.modelState).toEqual({
+			myProp: 'default-value'
+		})
+	})
+
+	test('allowedValues restricts what is accepted', () => {
+		let setFn = jest.fn()
+		setFn.mockImplementation(x => x)
+
+		s(
+			model,
+			{
+				content: { myProp: 'test-value' }
+			},
+			'myProp',
+			'default-value',
+			setFn,
+			['other-value']
+		)
+		expect(model.modelState).toEqual({
+			myProp: 'default-value'
+		})
+
+		s(
+			model,
+			{
+				content: { myProp: 'test-value' }
+			},
+			'myProp',
+			'default-value',
+			setFn,
+			['test-value']
+		)
+		expect(model.modelState).toEqual({
+			myProp: 'test-value'
+		})
+	})
 })

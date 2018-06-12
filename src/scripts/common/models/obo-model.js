@@ -91,8 +91,6 @@ class OboModel extends Backbone.Model {
 			if (trigger.type === type) {
 				for (index = 0; index < trigger.actions.length; index++) {
 					let action = trigger.actions[index]
-					// if (!action.value) action.value = {}
-					// action.value.actor = 'user'
 					if (action.type === '_js') {
 						eval(action.value)
 					} else {

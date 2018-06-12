@@ -9,6 +9,13 @@ test('DeleteButton', () => {
 	expect(tree).toMatchSnapshot()
 })
 
+test('DeleteButton label', () => {
+	const component = renderer.create(<DeleteButton label="mock-label" />)
+	let tree = component.toJSON()
+
+	expect(tree).toMatchSnapshot()
+})
+
 test('DeleteButton shouldPreventTab', () => {
 	const component = renderer.create(<DeleteButton shouldPreventTab={true} />)
 	let tree = component.toJSON()

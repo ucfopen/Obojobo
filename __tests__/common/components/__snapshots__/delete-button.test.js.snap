@@ -28,6 +28,20 @@ exports[`DeleteButton disabled 1`] = `
 </div>
 `;
 
+exports[`DeleteButton label 1`] = `
+<div
+  className="obojobo-draft--components--delete-button"
+>
+  <button
+    disabled={undefined}
+    onClick={undefined}
+    tabIndex={undefined}
+  >
+    mock-label
+  </button>
+</div>
+`;
+
 exports[`DeleteButton onClick 1`] = `
 <div
   className="obojobo-draft--components--delete-button"
