@@ -122,7 +122,9 @@
           padding: 0 1em;
           vertical-align: middle; }
         .obojobo-draft--sections--assessment .attempt-review-container > .attempt-results > .attempt-header > .attempt-info-container .obojobo-draft--components--more-info-button {
-          margin-left: 0.5em; }
+          margin-left: 0.5em;
+          transform: translate3d(0, 0, 0);
+          z-index: 1; }
           .obojobo-draft--sections--assessment .attempt-review-container > .attempt-results > .attempt-header > .attempt-info-container .obojobo-draft--components--more-info-button .obojobo-draft--sections--assessment--components--score-report {
             font-size: 1.25em;
             margin: 0 auto;
