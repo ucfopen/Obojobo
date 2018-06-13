@@ -1,331 +1,680 @@
-import { Store } from '../../../src/scripts/common/store'
-import OboModel from '../../../__mocks__/_obo-model-with-chunks'
+jest.mock('../../../src/scripts/common/flux/dispatcher')
+jest.mock('../../../src/scripts/viewer/util/question-util')
+
 import AssessmentUtil from '../../../src/scripts/viewer/util/assessment-util'
+
 import Dispatcher from '../../../src/scripts/common/flux/dispatcher'
-import AssessmentStore from '../../../src/scripts/viewer/stores/assessment-store'
-import QuestionStore from '../../../src/scripts/viewer/stores/question-store'
+import QuestionUtil from '../../../src/scripts/viewer/util/question-util'
 
-jest.mock('../../../src/scripts/common/flux/dispatcher', () => {
-	return {
-		trigger: jest.fn(),
-		on: jest.fn(),
-		off: jest.fn()
-	}
-})
+const TYPE_ASSESSMENT = 'ObojoboDraft.Sections.Assessment'
+const GRADEBOOK_STATUS_OK_NO_OUTCOME_SERVICE = 'ok_no_outcome_service'
+const GRADEBOOK_STATUS_OK_NULL_SCORE_NOT_SENT = 'ok_null_score_not_sent'
+const GRADEBOOK_STATUS_OK_GRADEBOOK_MATCHES_SCORE = 'ok_gradebook_matches_assessment_score'
 
-describe.skip('QuestionUtil', () => {
-	let exampleDocument = {
-		id: 'rootId',
-		type: 'ObojoboDraft.Modules.Module',
-		children: [
-			{
-				id: 'assessmentId',
-				type: 'ObojoboDraft.Sections.Assessment',
-				children: [
-					{
-						id: 'pageId',
-						type: 'ObojoboDraft.Pages.Page'
-					},
-					{
-						id: 'questionBankId',
-						type: 'ObojoboDraft.Chunks.QuestionBank',
-						children: [
-							{
-								id: 'q1',
-								type: 'ObojoboDraft.Chunks.Question'
-							},
-							{
-								id: 'q2',
-								type: 'ObojoboDraft.Chunks.Question'
-							}
-						]
-					}
-				]
-			}
-		]
-	}
-
-	let exampleAssessment = {
-		assessments: {
-			assessmentId: {
-				attempts: [
-					{
-						result: {
-							attemptScore: 100,
-							assessmentScore: 100,
-							questionScores: [{ attemptOneScores: 'goHere' }]
-						}
-					},
-					{
-						result: {
-							attemptScore: 50,
-							assessmentScore: 100,
-							questionScores: [{ attemptTwoScores: 'goHere' }]
-						}
-					}
-				],
-				current: {
-					attemptData: 'goesHere'
-				},
-				score: 100
-			}
-		}
-	}
-
-	let exampleAssessmentNoAttempts = {
-		assessments: {
-			assessmentId: {
-				attempts: [],
-				current: null,
-				score: null
-			}
-		}
-	}
-
-	beforeEach(done => {
+describe('AssessmentUtil', () => {
+	beforeEach(() => {
 		jest.resetAllMocks()
-
-		AssessmentStore.init()
-		QuestionStore.init()
-
-		Store.getItems(() => {
-			done()
-		})
 	})
 
-	test('get an assessment from a model', () => {
-		AssessmentStore.setState({
+	test('getAssessmentForModel returns assesment', () => {
+		let model = {
+			get: jest
+				.fn()
+				.mockReturnValueOnce(TYPE_ASSESSMENT)
+				.mockReturnValueOnce('testId')
+		}
+		let state = {
 			assessments: {
-				assessmentId: {
-					hereIs: 'someAssessmentData'
+				testId: 'mockAssessment'
+			}
+		}
+
+		let assessment = AssessmentUtil.getAssessmentForModel(state, model)
+
+		expect(assessment).toEqual('mockAssessment')
+	})
+
+	test('getAssessmentForModel returns with no parent assesment', () => {
+		let model = {
+			get: jest.fn().mockReturnValueOnce('mockType'),
+			getParentOfType: jest.fn().mockReturnValueOnce(null)
+		}
+		let state = {
+			assessments: {
+				testId: 'mockAssessment'
+			}
+		}
+
+		let assessment = AssessmentUtil.getAssessmentForModel(state, model)
+
+		expect(assessment).toEqual(null)
+	})
+
+	test('getAssessmentForModel returns with no state assessments', () => {
+		let model = {
+			get: jest
+				.fn()
+				.mockReturnValueOnce(TYPE_ASSESSMENT)
+				.mockReturnValueOnce('testId')
+		}
+		let state = {
+			assessments: {}
+		}
+
+		let assessment = AssessmentUtil.getAssessmentForModel(state, model)
+
+		expect(assessment).toEqual(null)
+	})
+
+	test('getLastAttemptForModel returns null when no assessment', () => {
+		let model = {
+			get: jest
+				.fn()
+				.mockReturnValueOnce(TYPE_ASSESSMENT)
+				.mockReturnValueOnce('testId')
+		}
+		let state = {
+			assessments: {}
+		}
+
+		let attempt = AssessmentUtil.getLastAttemptForModel(state, model)
+
+		expect(attempt).toEqual(null)
+	})
+
+	test('getLastAttemptForModel returns 0 when no attempts', () => {
+		let model = {
+			get: jest
+				.fn()
+				.mockReturnValueOnce(TYPE_ASSESSMENT)
+				.mockReturnValueOnce('testId')
+		}
+		let state = {
+			assessments: {
+				testId: { attempts: [] }
+			}
+		}
+
+		let attempt = AssessmentUtil.getLastAttemptForModel(state, model)
+
+		expect(attempt).toEqual(0)
+	})
+
+	test('getLastAttemptForModel returns attempt', () => {
+		let model = {
+			get: jest
+				.fn()
+				.mockReturnValueOnce(TYPE_ASSESSMENT)
+				.mockReturnValueOnce('testId')
+		}
+		let state = {
+			assessments: {
+				testId: { attempts: ['mockAttempt'] }
+			}
+		}
+
+		let assessment = AssessmentUtil.getLastAttemptForModel(state, model)
+
+		expect(assessment).toEqual('mockAttempt')
+	})
+
+	test('getHighestAttemptsForModelByAssessmentScore returns empty when no assessment', () => {
+		let model = {
+			get: jest
+				.fn()
+				.mockReturnValueOnce(TYPE_ASSESSMENT)
+				.mockReturnValueOnce('testId')
+		}
+		let state = {
+			assessments: {}
+		}
+
+		let attempt = AssessmentUtil.getHighestAttemptsForModelByAssessmentScore(state, model)
+
+		expect(attempt).toEqual([])
+	})
+
+	test('getHighestAttemptsForModelByAssessmentScore returns high scores', () => {
+		let model = {
+			get: jest
+				.fn()
+				.mockReturnValueOnce(TYPE_ASSESSMENT)
+				.mockReturnValueOnce('testId')
+		}
+		let state = {
+			assessments: {
+				testId: { highestAssessmentScoreAttempts: 'mockHighest' }
+			}
+		}
+
+		let attempt = AssessmentUtil.getHighestAttemptsForModelByAssessmentScore(state, model)
+
+		expect(attempt).toEqual('mockHighest')
+	})
+
+	test('getHighestAttemptsForModelByAttemptScore returns empty when no assessment', () => {
+		let model = {
+			get: jest
+				.fn()
+				.mockReturnValueOnce(TYPE_ASSESSMENT)
+				.mockReturnValueOnce('testId')
+		}
+		let state = {
+			assessments: {}
+		}
+
+		let attempt = AssessmentUtil.getHighestAttemptsForModelByAttemptScore(state, model)
+
+		expect(attempt).toEqual([])
+	})
+
+	test('getHighestAttemptsForModelByAttemptScore returns high scores', () => {
+		let model = {
+			get: jest
+				.fn()
+				.mockReturnValueOnce(TYPE_ASSESSMENT)
+				.mockReturnValueOnce('testId')
+		}
+		let state = {
+			assessments: {
+				testId: { highestAttemptScoreAttempts: 'mockHighest' }
+			}
+		}
+
+		let attempt = AssessmentUtil.getHighestAttemptsForModelByAttemptScore(state, model)
+
+		expect(attempt).toEqual('mockHighest')
+	})
+
+	test('getAssessmentScoreForModel returns null when no attempts', () => {
+		let model = {
+			get: jest
+				.fn()
+				.mockReturnValueOnce(TYPE_ASSESSMENT)
+				.mockReturnValueOnce('testId')
+		}
+		let state = {
+			assessments: {}
+		}
+
+		let score = AssessmentUtil.getAssessmentScoreForModel(state, model)
+
+		expect(score).toEqual(null)
+	})
+
+	test('getAssessmentScoreForModel returns highest score', () => {
+		let model = {
+			get: jest
+				.fn()
+				.mockReturnValueOnce(TYPE_ASSESSMENT)
+				.mockReturnValueOnce('testId')
+		}
+		let state = {
+			assessments: {
+				testId: { highestAssessmentScoreAttempts: [{ assessmentScore: 'mockScore' }] }
+			}
+		}
+
+		let score = AssessmentUtil.getAssessmentScoreForModel(state, model)
+
+		expect(score).toEqual('mockScore')
+	})
+
+	test('getLastAttemptScoresForModel returns null with no assessment', () => {
+		let model = {
+			get: jest
+				.fn()
+				.mockReturnValueOnce(TYPE_ASSESSMENT)
+				.mockReturnValueOnce('testId')
+		}
+		let state = {
+			assessments: {}
+		}
+
+		let scores = AssessmentUtil.getLastAttemptScoresForModel(state, model)
+
+		expect(scores).toEqual(null)
+	})
+
+	test('getLastAttemptScoresForModel returns empty with no attempts', () => {
+		let model = {
+			get: jest
+				.fn()
+				.mockReturnValueOnce(TYPE_ASSESSMENT)
+				.mockReturnValueOnce('testId')
+		}
+		let state = {
+			assessments: {
+				testId: { attempts: [] }
+			}
+		}
+
+		let scores = AssessmentUtil.getLastAttemptScoresForModel(state, model)
+
+		expect(scores).toEqual([])
+	})
+
+	test('getLastAttemptScoresForModel returns scores of last attempt', () => {
+		let model = {
+			get: jest
+				.fn()
+				.mockReturnValueOnce(TYPE_ASSESSMENT)
+				.mockReturnValueOnce('testId')
+		}
+		let state = {
+			assessments: {
+				testId: { attempts: [{ questionScores: 'mockScores' }] }
+			}
+		}
+
+		let scores = AssessmentUtil.getLastAttemptScoresForModel(state, model)
+
+		expect(scores).toEqual('mockScores')
+	})
+
+	test('getCurrentAttemptForModel returns null with no assessment', () => {
+		let model = {
+			get: jest
+				.fn()
+				.mockReturnValueOnce(TYPE_ASSESSMENT)
+				.mockReturnValueOnce('testId')
+		}
+		let state = {
+			assessments: {}
+		}
+
+		let attempt = AssessmentUtil.getCurrentAttemptForModel(state, model)
+
+		expect(attempt).toEqual(null)
+	})
+
+	test('getCurrentAttemptForModel returns current attempt', () => {
+		let model = {
+			get: jest
+				.fn()
+				.mockReturnValueOnce(TYPE_ASSESSMENT)
+				.mockReturnValueOnce('testId')
+		}
+		let state = {
+			assessments: {
+				testId: { current: 'mockCurrent' }
+			}
+		}
+
+		let attempt = AssessmentUtil.getCurrentAttemptForModel(state, model)
+
+		expect(attempt).toEqual('mockCurrent')
+	})
+
+	test('getAllAttempts returns all attempts', () => {
+		let model = {
+			get: jest
+				.fn()
+				.mockReturnValueOnce(TYPE_ASSESSMENT)
+				.mockReturnValueOnce('testId')
+		}
+		let state = {
+			assessments: {
+				testId: { attempts: 'mockAttempts' }
+			}
+		}
+
+		let attempts = AssessmentUtil.getAllAttempts(state, model)
+
+		expect(attempts).toEqual('mockAttempts')
+	})
+
+	test('getAttemptsRemaining returns number of attempts avalible', () => {
+		let model = {
+			get: jest
+				.fn()
+				.mockReturnValueOnce(TYPE_ASSESSMENT)
+				.mockReturnValueOnce('testId'),
+			modelState: {
+				attempts: 12
+			}
+		}
+		let state = {
+			assessments: {
+				testId: { attempts: [] }
+			}
+		}
+
+		let attemptsRemaining = AssessmentUtil.getAttemptsRemaining(state, model)
+
+		expect(attemptsRemaining).toEqual(12)
+	})
+
+	test('hasAttemptsRemaining returns if attempts are avalible', () => {
+		let model = {
+			get: jest
+				.fn()
+				.mockReturnValueOnce(TYPE_ASSESSMENT)
+				.mockReturnValueOnce('testId'),
+			modelState: {
+				attempts: 12
+			}
+		}
+		let state = {
+			assessments: {
+				testId: { attempts: [] }
+			}
+		}
+
+		let attemptsRemaining = AssessmentUtil.hasAttemptsRemaining(state, model)
+
+		expect(attemptsRemaining).toEqual(true)
+	})
+
+	test('getLTIStateForModel returns null with no assessment', () => {
+		let model = {
+			get: jest
+				.fn()
+				.mockReturnValueOnce(TYPE_ASSESSMENT)
+				.mockReturnValueOnce('testId'),
+			modelState: {
+				attempts: 12
+			}
+		}
+		let state = {
+			assessments: {}
+		}
+
+		let ltiState = AssessmentUtil.getLTIStateForModel(state, model)
+
+		expect(ltiState).toEqual(null)
+	})
+
+	test('getLTIStateForModel returns if attempts are avalible', () => {
+		let model = {
+			get: jest
+				.fn()
+				.mockReturnValueOnce(TYPE_ASSESSMENT)
+				.mockReturnValueOnce('testId'),
+			modelState: {
+				attempts: 12
+			}
+		}
+		let state = {
+			assessments: {
+				testId: {
+					lti: 'mockLTI',
+					ltiNetworkState: 'mockNetworkState',
+					ltiErrorCount: 'mockErrors'
 				}
 			}
-		})
-		OboModel.create(exampleDocument)
+		}
 
-		let assessment = AssessmentUtil.getAssessmentForModel(
-			AssessmentStore.getState(),
-			OboModel.models.pageId
-		)
+		let ltiState = AssessmentUtil.getLTIStateForModel(state, model)
 
-		expect(assessment).toEqual({
-			hereIs: 'someAssessmentData'
+		expect(ltiState).toEqual({
+			state: 'mockLTI',
+			networkState: 'mockNetworkState',
+			errorCount: 'mockErrors'
 		})
 	})
 
-	test('gets the assessment score for a model', () => {
-		AssessmentStore.setState(exampleAssessment)
-		OboModel.create(exampleDocument)
-
-		expect(
-			AssessmentUtil.getAssessmentScoreForModel(AssessmentStore.getState(), OboModel.models.pageId)
-		).toBe(100)
-	})
-
-	test('returns null for the assessment score for a model if no assessment', () => {
-		OboModel.create(exampleDocument)
-
-		expect(
-			AssessmentUtil.getAssessmentScoreForModel(AssessmentStore.getState(), OboModel.models.pageId)
-		).toBe(null)
-	})
-
-	test('returns null for the assessment score for a model if no attempts', () => {
-		AssessmentStore.setState(exampleAssessmentNoAttempts)
-		OboModel.create(exampleDocument)
-
-		expect(
-			AssessmentUtil.getAssessmentScoreForModel(AssessmentStore.getState(), OboModel.models.pageId)
-		).toBe(null)
-	})
-
-	test.skip('gets the last attempt scores for a model', () => {
-		AssessmentStore.setState(exampleAssessment)
-		OboModel.create(exampleDocument)
-
-		expect(
-			AssessmentUtil.getLastAttemptScoresForModel(
-				AssessmentStore.getState(),
-				OboModel.models.pageId
-			)
-		).toEqual([{ attemptTwoScores: 'goHere' }])
-	})
-
-	test('returns null for the last attempt scores for a model if no assessment', () => {
-		OboModel.create(exampleDocument)
-
-		expect(
-			AssessmentUtil.getLastAttemptScoresForModel(
-				AssessmentStore.getState(),
-				OboModel.models.pageId
-			)
-		).toEqual(null)
-	})
-
-	test('returns [] for the last attempt scores for a model if no attempts', () => {
-		AssessmentStore.setState(exampleAssessmentNoAttempts)
-		OboModel.create(exampleDocument)
-
-		expect(
-			AssessmentUtil.getLastAttemptScoresForModel(
-				AssessmentStore.getState(),
-				OboModel.models.pageId
-			)
-		).toEqual([])
-	})
-
-	test('gets the current attempt for a model', () => {
-		AssessmentStore.setState(exampleAssessment)
-		OboModel.create(exampleDocument)
-
-		expect(
-			AssessmentUtil.getCurrentAttemptForModel(AssessmentStore.getState(), OboModel.models.pageId)
-		).toEqual({
-			attemptData: 'goesHere'
-		})
-	})
-
-	test('returns null for the current attempt for a model if no assessment', () => {
-		OboModel.create(exampleDocument)
-
-		expect(
-			AssessmentUtil.getCurrentAttemptForModel(AssessmentStore.getState(), OboModel.models.pageId)
-		).toEqual(null)
-	})
-
-	test('knows if incomplete current attempt is incomplete', () => {
-		AssessmentStore.setState(exampleAssessment)
-		QuestionStore.setState({
-			responses: {
-				q1: { set: true }
+	test('isLTIScoreNeedingToBeResynced returns false with no gradebook', () => {
+		let model = {
+			get: jest
+				.fn()
+				.mockReturnValueOnce(TYPE_ASSESSMENT)
+				.mockReturnValueOnce('testId'),
+			modelState: {
+				attempts: 12
 			}
-		})
-		OboModel.create(exampleDocument)
-
-		expect(
-			AssessmentUtil.isCurrentAttemptComplete(
-				AssessmentStore.getState(),
-				QuestionStore.getState(),
-				OboModel.models.assessmentId
-			)
-		).toBe(false)
-	})
-
-	test('knows if completed current attempt is completed', () => {
-		AssessmentStore.setState(exampleAssessment)
-		QuestionStore.setState({
-			responses: {
-				q1: { set: true },
-				q2: { set: true }
+		}
+		let state = {
+			assessments: {
+				testId: {
+					lti: {}
+				}
 			}
-		})
-		OboModel.create(exampleDocument)
+		}
 
-		expect(
-			AssessmentUtil.isCurrentAttemptComplete(
-				AssessmentStore.getState(),
-				QuestionStore.getState(),
-				OboModel.models.assessmentId
-			)
-		).toBe(true)
+		let ltiState = AssessmentUtil.isLTIScoreNeedingToBeResynced(state, model)
+
+		expect(ltiState).toEqual(false)
 	})
 
-	test('returns null for isCurrentAttemptCompleted if no assessment', () => {
-		OboModel.create(exampleDocument)
+	test('isLTIScoreNeedingToBeResynced returns false if synced', () => {
+		let model = {
+			get: jest
+				.fn()
+				.mockReturnValueOnce(TYPE_ASSESSMENT)
+				.mockReturnValueOnce('testId'),
+			modelState: {
+				attempts: 12
+			}
+		}
+		let state = {
+			assessments: {
+				testId: {
+					lti: { gradebookStatus: GRADEBOOK_STATUS_OK_NULL_SCORE_NOT_SENT }
+				}
+			}
+		}
 
-		expect(
-			AssessmentUtil.isCurrentAttemptComplete(
-				AssessmentStore.getState(),
-				QuestionStore.getState(),
-				OboModel.models.assessmentId
-			)
-		).toBe(null)
+		let ltiState = AssessmentUtil.isLTIScoreNeedingToBeResynced(state, model)
+		expect(ltiState).toEqual(false)
+
+		model.get.mockReturnValueOnce(TYPE_ASSESSMENT).mockReturnValueOnce('testId')
+		state.assessments.testId.lti.gradebookStatus = GRADEBOOK_STATUS_OK_GRADEBOOK_MATCHES_SCORE
+
+		ltiState = AssessmentUtil.isLTIScoreNeedingToBeResynced(state, model)
+		expect(ltiState).toEqual(false)
+
+		model.get.mockReturnValueOnce(TYPE_ASSESSMENT).mockReturnValueOnce('testId')
+		state.assessments.testId.lti.gradebookStatus = GRADEBOOK_STATUS_OK_NO_OUTCOME_SERVICE
+
+		ltiState = AssessmentUtil.isLTIScoreNeedingToBeResynced(state, model)
+		expect(ltiState).toEqual(false)
 	})
 
-	test('gets number of copmleted attempts per model', () => {
-		AssessmentStore.setState(exampleAssessment)
-		OboModel.create(exampleDocument)
+	test('isLTIScoreNeedingToBeResynced returns true if not synced', () => {
+		let model = {
+			get: jest
+				.fn()
+				.mockReturnValueOnce(TYPE_ASSESSMENT)
+				.mockReturnValueOnce('testId'),
+			modelState: {
+				attempts: 12
+			}
+		}
+		let state = {
+			assessments: {
+				testId: {
+					lti: { gradebookStatus: 'mockStatus' }
+				}
+			}
+		}
 
-		expect(
-			AssessmentUtil.getNumberOfAttemptsCompletedForModel(
-				AssessmentStore.getState(),
-				OboModel.models.assessmentId
-			)
-		).toBe(2)
+		let ltiState = AssessmentUtil.isLTIScoreNeedingToBeResynced(state, model)
+
+		expect(ltiState).toEqual(true)
 	})
 
-	test('returns 0 fro getNumberOfAttemptsCompletedForModel if no assessment', () => {
-		OboModel.create(exampleDocument)
+	test('getResponseCount returns the number of questions with responses', () => {
+		let models = [{}, {}]
 
-		expect(
-			AssessmentUtil.getNumberOfAttemptsCompletedForModel(
-				AssessmentStore.getState(),
-				OboModel.models.assessmentId
-			)
-		).toBe(0)
+		QuestionUtil.getResponse.mockReturnValueOnce(false).mockReturnValueOnce(true)
+
+		let count = AssessmentUtil.getResponseCount(models)
+
+		expect(QuestionUtil.getResponse).toHaveBeenCalledTimes(2)
+		expect(count).toBe(1)
 	})
 
-	test('dispatches start attempt', () => {
-		OboModel.create(exampleDocument)
+	test('isCurrentAttemptComplete returns null if no attempt', () => {
+		let model = {
+			get: jest
+				.fn()
+				.mockReturnValueOnce(TYPE_ASSESSMENT)
+				.mockReturnValueOnce('testId'),
+			modelState: {
+				attempts: 12
+			}
+		}
+		let state = {
+			assessments: {
+				testId: {}
+			}
+		}
 
-		AssessmentUtil.startAttempt(OboModel.models.assessmentId)
+		let isComplete = AssessmentUtil.isCurrentAttemptComplete(state, null, model)
 
+		expect(isComplete).toEqual(null)
+	})
+
+	test('isCurrentAttemptComplete returns true when every question is answered', () => {
+		let model = {
+			get: jest
+				.fn()
+				.mockReturnValueOnce(TYPE_ASSESSMENT)
+				.mockReturnValueOnce('testId'),
+			modelState: {
+				attempts: 12
+			},
+			children: {
+				at: jest.fn().mockReturnValueOnce({
+					children: {
+						models: [{}, {}]
+					}
+				})
+			}
+		}
+		let state = {
+			assessments: {
+				testId: { current: 'mockCurrent' }
+			}
+		}
+
+		QuestionUtil.getResponse.mockReturnValueOnce(true).mockReturnValueOnce(true)
+
+		let isComplete = AssessmentUtil.isCurrentAttemptComplete(state, null, model)
+
+		expect(isComplete).toEqual(true)
+	})
+
+	test('isInAssessment returns false without a state', () => {
+		let inside = AssessmentUtil.isInAssessment()
+
+		expect(inside).toEqual(false)
+	})
+
+	test('isInAssessment returns false without assessments', () => {
+		let state = {
+			assessments: {}
+		}
+		let inside = AssessmentUtil.isInAssessment(state)
+
+		expect(inside).toEqual(false)
+	})
+
+	test('isInAssessment returns true with current assessment', () => {
+		let state = {
+			assessments: {
+				assess1: { current: null },
+				assess2: { current: true }
+			}
+		}
+		let inside = AssessmentUtil.isInAssessment(state)
+
+		expect(inside).toEqual(true)
+	})
+
+	test('getNumberOfAttemptsCompletedForModel returns 0 when no attempts', () => {
+		let model = {
+			get: jest
+				.fn()
+				.mockReturnValueOnce(TYPE_ASSESSMENT)
+				.mockReturnValueOnce('testId')
+		}
+		let state = {
+			assessments: {
+				testId: { attempts: [] }
+			}
+		}
+
+		let completedAttempts = AssessmentUtil.getNumberOfAttemptsCompletedForModel(state, model)
+
+		expect(completedAttempts).toEqual(0)
+	})
+
+	test('getNumberOfAttemptsCompletedForModel returns number of attempts', () => {
+		let model = {
+			get: jest
+				.fn()
+				.mockReturnValueOnce(TYPE_ASSESSMENT)
+				.mockReturnValueOnce('testId')
+		}
+		let state = {
+			assessments: {
+				testId: { attempts: [{}, {}, {}] }
+			}
+		}
+
+		let completedAttempts = AssessmentUtil.getNumberOfAttemptsCompletedForModel(state, model)
+
+		expect(completedAttempts).toEqual(3)
+	})
+
+	test('getNumCorrect returns correct questions', () => {
+		let questionScores = [{ score: 100 }, { score: 0 }, { score: 100 }]
+
+		let correct = AssessmentUtil.getNumCorrect(questionScores)
+		expect(correct).toEqual(2)
+	})
+
+	test('findHighestAttempts returns empty if no attempts', () => {
+		let highest = AssessmentUtil.findHighestAttempts([])
+
+		expect(highest).toEqual([])
+	})
+
+	test('findHighestAttempts returns highest scores', () => {
+		let attempts = [{ mockScore: 100 }, { mockScore: null }, { mockScore: 68 }, { mockScore: 100 }]
+		let highest = AssessmentUtil.findHighestAttempts(attempts, 'mockScore')
+
+		expect(highest).toEqual([{ mockScore: 100 }, { mockScore: 100 }])
+	})
+
+	test('startAttempt calls assessment:startAttempt', () => {
+		let model = {
+			get: jest.fn().mockReturnValueOnce('testId')
+		}
+
+		AssessmentUtil.startAttempt(model)
+
+		expect(Dispatcher.trigger).toHaveBeenCalled()
 		expect(Dispatcher.trigger).toHaveBeenCalledWith('assessment:startAttempt', {
-			value: {
-				id: 'assessmentId'
-			}
+			value: { id: 'testId' }
 		})
 	})
 
-	test('dispatches end attempt', () => {
-		OboModel.create(exampleDocument)
+	test('endAttempt calls assessment:endAttempt', () => {
+		let model = {
+			get: jest.fn().mockReturnValueOnce('testId')
+		}
 
-		AssessmentUtil.endAttempt(OboModel.models.assessmentId)
+		AssessmentUtil.endAttempt(model, 'mockContext')
 
+		expect(Dispatcher.trigger).toHaveBeenCalled()
 		expect(Dispatcher.trigger).toHaveBeenCalledWith('assessment:endAttempt', {
-			value: {
-				id: 'assessmentId'
-			}
+			value: { id: 'testId', context: 'mockContext' }
 		})
 	})
 
-	test.skip('getLTIStateForModel returns the lti state', () => {
-		//@TODO
-	})
+	test('resendLTIScore calls assessment:resendLTIScore', () => {
+		let model = {
+			get: jest.fn().mockReturnValueOnce('testId')
+		}
 
-	test.skip('isLTIScoreNeedingToBeResynced returns ... well... it returns if the lti score needs to be resynced, obviously', () => {
-		//@TODO
-	})
+		AssessmentUtil.resendLTIScore(model)
 
-	test.skip('isInAssessment returns if the user is in an assessment', () => {
-		//@TODO
-	})
-
-	test.skip('resendLTIScore sends the expected event with expected arguments', () => {
-		//@TODO
-	})
-
-	test.skip('getHighestAttemptsForModelByAssessmentScore returns empty array when no assessment found', () => {
-		//@TODO
-	})
-
-	test.skip('getHighestAttemptsForModelByAssessmentScore returns highestAssessmentScoreAttempts', () => {
-		//@TODO
-	})
-
-	test.skip('getHighestAttemptsForModelByAttemptScore returns empty array when no assessment found', () => {
-		//@TODO
-	})
-
-	test.skip('getHighestAttemptsForModelByAttemptScore returns highestAttemptScoreAttempts', () => {
-		//@TODO
-	})
-
-	test.skip('findHighestAttempts returns highest attempts by "attemptScore"', () => {
-		//@TODO
-	})
-
-	test.skip('findHighestAttempts returns highest attempts by "assessmentScore"', () => {
-		//@TODO
+		expect(Dispatcher.trigger).toHaveBeenCalled()
+		expect(Dispatcher.trigger).toHaveBeenCalledWith('assessment:resendLTIScore', {
+			value: { id: 'testId' }
+		})
 	})
 })

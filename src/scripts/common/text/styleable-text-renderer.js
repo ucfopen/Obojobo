@@ -33,7 +33,6 @@ var getTextNodeFragmentDescriptorsAtHelper = function(stateObj, targetStartIndex
 		let charsRead = stateObj.charsRead + stateObj.curNode.text.length
 
 		if (charsRead >= targetEndIndex && stateObj.end === null) {
-			console.log('not here')
 			stateObj.end = {
 				node: stateObj.curNode,
 				startIndex: 0,

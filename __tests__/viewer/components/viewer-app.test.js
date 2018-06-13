@@ -600,4 +600,17 @@ describe('ViewerApp', () => {
 			expect(Dispatcher.trigger).toHaveBeenLastCalledWith('viewer:loaded', false)
 		})
 	})
+
+	test('viewer:alert calls ModalUtil', () => {
+		ModalUtil.show = jest.fn()
+
+		Dispatcher.trigger('viewer:alert', {
+			value: {
+				title: 'mockTitle',
+				message: 'mockMessage'
+			}
+		})
+
+		expect(ModalUtil.show).toHaveBeenCalled()
+	})
 })

@@ -1121,6 +1121,7 @@ var AssessmentUtil = {
 			if (_questionUtil2.default.getResponse(questionState, questionModel, context)) {
 				return acc + 1;
 			}
+			return acc;
 		};
 
 		return questionModels.reduce(count, 0);
@@ -1330,6 +1331,7 @@ var QuestionUtil = {
 	},
 	getScoreForModel: function getScoreForModel(state, model, context) {
 		var scoreItem = void 0;
+		console.log(state.scores[context]);
 		if (state.scores[context] != null) {
 			scoreItem = state.scores[context][model.get('id')];
 		}

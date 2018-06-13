@@ -16,7 +16,7 @@ describe('QuestionUtil', () => {
 		jest.resetAllMocks()
 	})
 
-	it('should trigger question:setResponse', () => {
+	test('setResponse triggers question:setResponse', () => {
 		QuestionUtil.setResponse('testId', { response: 'A Response' })
 
 		expect(Dispatcher.trigger).toHaveBeenCalledTimes(1)
@@ -28,7 +28,7 @@ describe('QuestionUtil', () => {
 		})
 	})
 
-	it('should trigger question:clearResponse', () => {
+	test('clearResponse triggers question:clearResponse', () => {
 		QuestionUtil.clearResponse('testId')
 
 		expect(Dispatcher.trigger).toHaveBeenCalledTimes(1)
@@ -39,7 +39,7 @@ describe('QuestionUtil', () => {
 		})
 	})
 
-	it('should trigger question:setData', () => {
+	test('setData triggers question:setData', () => {
 		QuestionUtil.setData('testId', 'theKey', 'theValue')
 
 		expect(Dispatcher.trigger).toHaveBeenCalledTimes(1)
@@ -51,7 +51,7 @@ describe('QuestionUtil', () => {
 		})
 	})
 
-	it('should trigger question:clearData', () => {
+	test('clearData triggers question:clearData', () => {
 		QuestionUtil.clearData('testId', 'theKey')
 
 		expect(Dispatcher.trigger).toHaveBeenCalledTimes(1)
@@ -62,7 +62,7 @@ describe('QuestionUtil', () => {
 		})
 	})
 
-	it('should trigger question:viewQuestion', () => {
+	test('viewQuestion triggers question:viewQuestion', () => {
 		QuestionUtil.viewQuestion('testId')
 
 		expect(Dispatcher.trigger).toHaveBeenCalledTimes(1)
@@ -73,7 +73,7 @@ describe('QuestionUtil', () => {
 		})
 	})
 
-	it('should trigger question:hideQuestion', () => {
+	test('hideQuestion triggers question:hideQuestion', () => {
 		QuestionUtil.hideQuestion('testId')
 
 		expect(Dispatcher.trigger).toHaveBeenCalledTimes(1)
@@ -84,7 +84,18 @@ describe('QuestionUtil', () => {
 		})
 	})
 
-	it('should trigger question:showExplanation', () => {
+	test('checkAnswer calls question:checkAnswer', () => {
+		QuestionUtil.checkAnswer('testId')
+
+		expect(Dispatcher.trigger).toHaveBeenCalledTimes(1)
+		expect(Dispatcher.trigger).toHaveBeenCalledWith('question:checkAnswer', {
+			value: {
+				id: 'testId'
+			}
+		})
+	})
+
+	test('showExplanation triggers question:showExplanation', () => {
 		QuestionUtil.showExplanation('testId')
 
 		expect(Dispatcher.trigger).toHaveBeenCalledTimes(1)
@@ -95,7 +106,7 @@ describe('QuestionUtil', () => {
 		})
 	})
 
-	it('should trigger question:hideExplanation', () => {
+	test('hideExplanation triggers question:hideExplanation', () => {
 		QuestionUtil.hideExplanation('testId', 'testActor')
 
 		expect(Dispatcher.trigger).toHaveBeenCalledTimes(1)
@@ -107,7 +118,7 @@ describe('QuestionUtil', () => {
 		})
 	})
 
-	it('should trigger question:retryQuestion', () => {
+	test('retryQuestion triggers question:retryQuestion', () => {
 		QuestionUtil.retryQuestion('testId')
 
 		expect(Dispatcher.trigger).toHaveBeenCalledTimes(1)
@@ -118,7 +129,7 @@ describe('QuestionUtil', () => {
 		})
 	})
 
-	it('should return view states', () => {
+	test('getViewState returns view states', () => {
 		let active = QuestionUtil.getViewState(
 			{
 				viewing: 'testId',
@@ -153,7 +164,7 @@ describe('QuestionUtil', () => {
 		expect(hidden).toEqual('hidden')
 	})
 
-	it('should get a response from state with no matching context', () => {
+	test('getResponse gets a response from state with no matching context', () => {
 		let res = QuestionUtil.getResponse(
 			{
 				responses: {
@@ -169,7 +180,7 @@ describe('QuestionUtil', () => {
 		expect(res).toEqual(null)
 	})
 
-	it('should get a response from state', () => {
+	test('getResponse gets a response from state', () => {
 		let res = QuestionUtil.getResponse(
 			{
 				responses: {
@@ -185,7 +196,7 @@ describe('QuestionUtil', () => {
 		expect(res).toEqual('A Response')
 	})
 
-	it('should get data from state for a given model and key', () => {
+	test('getData gets data from state for a given model and key', () => {
 		let data = QuestionUtil.getData(
 			{
 				data: {
@@ -199,7 +210,7 @@ describe('QuestionUtil', () => {
 		expect(data).toEqual({ someData: true })
 	})
 
-	it('should report if it is showing an explanation', () => {
+	test('isShowingExplanation reports if it is showing an explanation', () => {
 		expect(
 			QuestionUtil.isShowingExplanation(
 				{
@@ -234,13 +245,44 @@ describe('QuestionUtil', () => {
 		).toBe(true)
 	})
 
-	test('checkAnswer', () => {
-		QuestionUtil.checkAnswer('testId')
+	test('getScoreForModel returns the score', () => {
+		let state = {
+			scores: {
+				mockContext: {
+					testId: { score: 100 }
+				}
+			}
+		}
+		let model = {
+			get: jest.fn().mockReturnValueOnce('testId')
+		}
+
+		let score = QuestionUtil.getScoreForModel(state, model, 'mockContext')
+
+		expect(score).toEqual(100)
+	})
+
+	test('setScore calls question:scoreSet', () => {
+		QuestionUtil.setScore('testId', 'mockScore', 'mockContext')
 
 		expect(Dispatcher.trigger).toHaveBeenCalledTimes(1)
-		expect(Dispatcher.trigger).toHaveBeenCalledWith('question:checkAnswer', {
+		expect(Dispatcher.trigger).toHaveBeenCalledWith('question:scoreSet', {
 			value: {
-				id: 'testId'
+				itemId: 'testId',
+				score: 'mockScore',
+				context: 'mockContext'
+			}
+		})
+	})
+
+	test('clearScore calls question:scoreClear', () => {
+		QuestionUtil.clearScore('testId', 'mockContext')
+
+		expect(Dispatcher.trigger).toHaveBeenCalledTimes(1)
+		expect(Dispatcher.trigger).toHaveBeenCalledWith('question:scoreClear', {
+			value: {
+				itemId: 'testId',
+				context: 'mockContext'
 			}
 		})
 	})

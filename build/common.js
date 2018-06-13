@@ -5541,7 +5541,6 @@ var getTextNodeFragmentDescriptorsAtHelper = function getTextNodeFragmentDescrip
 		var charsRead = stateObj.charsRead + stateObj.curNode.text.length;
 
 		if (charsRead >= targetEndIndex && stateObj.end === null) {
-			console.log('not here');
 			stateObj.end = {
 				node: stateObj.curNode,
 				startIndex: 0,
