@@ -115,7 +115,6 @@ let QuestionUtil = {
 
 	getScoreForModel(state, model, context) {
 		let scoreItem
-		console.log(state.scores[context])
 		if (state.scores[context] != null) {
 			scoreItem = state.scores[context][model.get('id')]
 		}

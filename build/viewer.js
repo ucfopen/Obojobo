@@ -1331,7 +1331,6 @@ var QuestionUtil = {
 	},
 	getScoreForModel: function getScoreForModel(state, model, context) {
 		var scoreItem = void 0;
-		console.log(state.scores[context]);
 		if (state.scores[context] != null) {
 			scoreItem = state.scores[context][model.get('id')];
 		}
@@ -7018,7 +7017,7 @@ var ViewerApp = function (_React$Component) {
 					Dispatcher.trigger('viewer:loaded', true);
 				});
 			}).catch(function (err) {
-				console.log(err);
+				console.error(err);
 				_this2.setState({ loading: false, requestStatus: 'invalid' }, function () {
 					return Dispatcher.trigger('viewer:loaded', false);
 				});
