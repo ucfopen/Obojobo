@@ -4,7 +4,7 @@
     "xml-js": "^1.0.2"
   },
   "name": "obojobo-draft-xml-parser",
-  "version": "0.1.1",
+  "version": "0.3.0",
   "main": "xml2draft.js",
   "devDependencies": {
     "jest": "^20.0.4"
@@ -12,7 +12,8 @@
   "scripts": {
     "test": "jest",
     "test:watch": "jest --watch",
-    "test:updateSnapshot": "jest --updateSnapshot"
+    "test:updateSnapshot": "jest --updateSnapshot",
+    "convertTestObjectToJson": "node ./bin/xml2draft.js examples/test-object.xml --spaces=4 --generate-ids > test-object.json"
   },
   "author": "",
   "description": ""

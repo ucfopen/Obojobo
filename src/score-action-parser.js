@@ -8,6 +8,7 @@ let parseScoreAction = (el) => {
 	return {
 		from: el.attributes.from,
 		to: el.attributes.to,
+		for: el.attributes.for,
 		page: el.elements[0]
 	}
 }

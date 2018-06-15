@@ -1,8 +1,23 @@
 let createTextGroup = require('./create-text-group');
 
+let applyAlign = (node) => {
+	if(node && node.attributes && node.attributes.align)
+	{
+		let align = node.attributes.align;
+		delete node.attributes.align;
+		// node.elements[0].elements[0].attributes = { align:align }
+		node.elements[0].elements.forEach(el => {
+			if(!el.attributes) el.attributes = {}
+			el.attributes.align = align
+		})
+	}
+}
+
 let htmlTransform = (node) => {
 	if(node.type === 'element')
 	{
+		if(!node.attributes) node.attributes = {}
+
 		switch(node.name)
 		{
 			case 'h1':
@@ -11,16 +26,17 @@ let htmlTransform = (node) => {
 				node.attributes.headingLevel = parseInt(node.name.charAt(1), 10);
 				node.name = 'ObojoboDraft.Chunks.Heading'
 				node.elements = createTextGroup(node.elements)
-				if(node.attributes.align)
-				{
-					let align = node.attributes.align;
-					delete node.attributes.align;
-					node.elements[0].elements[0].attributes = { align:align }
-				}
+				// if(node.attributes.align)
+				// {
+				// 	let align = node.attributes.align;
+				// 	delete node.attributes.align;
+				// 	node.elements[0].elements[0].attributes = { align:align }
+				// }
+				applyAlign(node)
 
-				
+
 				break;
-			
+
 			case 'ul':
 			case 'ol':
 				let text = node.elements
@@ -42,20 +58,21 @@ let htmlTransform = (node) => {
 					})
 				}]
 				node.name = 'ObojoboDraft.Chunks.List'
-				
+
 				break;
-				
+
 				// let elements = node.elements.map( (node) => {
 				// 	return createTextGroup(node.elements[0])
 				// })
-			
+
 			case 'p':
 				// node.elements = [ createTextGroup(node.elements) ]
 				node.name = 'ObojoboDraft.Chunks.Text'
 				node.elements = createTextGroup(node.elements)
+				applyAlign(node)
 
 				break;
-			
+
 			case 'pre':
 				// node.elements = [ createTextGroup(node.elements) ]
 				node.name = 'ObojoboDraft.Chunks.Code'
@@ -87,8 +104,10 @@ let htmlTransform = (node) => {
 					elements: tEls
 				}];
 
+				applyAlign(node)
+
 				break;
-			
+
 			case 'hr':
 				node.name = 'ObojoboDraft.Chunks.Break'
 
@@ -103,7 +122,7 @@ let htmlTransform = (node) => {
 						case 'img':
 							node.attributes = node.elements[i].attributes;
 							break;
-						
+
 						case 'figcaption':
 							node.elements = createTextGroup(node.elements[i].elements);
 							break;
@@ -113,7 +132,7 @@ let htmlTransform = (node) => {
 				node.attributes.url = node.attributes.src
 				delete node.attributes.src
 				break;
-			
+
 			case 'img':
 				node.name = 'ObojoboDraft.Chunks.Figure'
 				if(node.attributes.width || node.attributes.height)
@@ -124,7 +143,7 @@ let htmlTransform = (node) => {
 				node.attributes.url = node.attributes.src
 				delete node.attributes.src
 				break;
-			
+
 			case 'table':
 				let numRows = node.elements.length
 				let numCols = node.elements[0].elements.length
@@ -136,7 +155,7 @@ let htmlTransform = (node) => {
 						return cells.push(col.elements)
 					})
 				})
-				
+
 				node.elements = [{
 					type: "element",
 					name: "textGroup",
@@ -158,6 +177,8 @@ let htmlTransform = (node) => {
 				node.attributes = { numRows, numCols, header }
 				break;
 		}
+
+		if(Object.keys(node.attributes).length === 0) delete node.attributes
 	}
 
 	if(node.elements)

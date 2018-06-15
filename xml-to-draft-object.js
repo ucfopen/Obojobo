@@ -11,6 +11,7 @@ let parseTg = require('./src/text-group-parser');
 let scoreParser = require('./src/score-action-parser');
 let parseTriggers = require('./src/triggers-parser');
 let parseListStyles = require('./src/list-styles-parser');
+let parseAssessmentRubric = require('./src/assessment-rubric-parser');
 let parseScoreAction = scoreParser.parseScoreAction;
 let parseScoreActions = scoreParser.parseScoreActions;
 
@@ -18,6 +19,7 @@ let parsers = {
 	'textGroup': parseTg,
 	'scoreAction': parseScoreAction,
 	'scoreActions': parseScoreActions,
+	'rubric': parseAssessmentRubric,
 	'triggers': parseTriggers,
 	'listStyles': parseListStyles,
 	'solution': (solAttr) => { return solAttr.elements[0]; }
@@ -66,11 +68,10 @@ module.exports = (xml, generateIds = false) => {
 	let root = convert.xml2js(xml, {
 		compact: false,
 		trim: false,
-		nativeType: true,
+		nativeType: false,
 		ignoreComment: true,
 		ignoreDeclaration: true
 	});
-
 	nameTransform(root)
 	extensionTransform(root)
 	htmlTransform(root)

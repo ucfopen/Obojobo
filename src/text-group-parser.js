@@ -64,20 +64,24 @@ let parseText = (node, textItem, foundText, lastTextNode) => {
 		case 'latex':
 			type = '_latex'
 			break;
-		
+
 		case 'a':
 			data = {
 				href: node.attributes.href
 			}
 			break;
-		
+
 		case 'sup':
 			data = 1;
 			break;
-		
+
 		case 'sub':
 			type = 'sup';
 			data = -1;
+			break;
+
+		case 'code':
+			type = 'monospace';
 			break;
 	}
 

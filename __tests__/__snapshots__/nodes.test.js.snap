@@ -42,8 +42,26 @@ Object {
     },
   ],
   "content": Object {
+    "rubric": Object {
+      "failedResult": "0",
+      "mods": Array [
+        Object {
+          "attemptCondition": "1",
+          "reward": "5",
+        },
+        Object {
+          "attemptCondition": "(1,$last_attempt]",
+          "reward": "2",
+        },
+      ],
+      "passedResult": "100",
+      "passingAttemptScore": "80",
+      "type": "pass-fail",
+      "unableToPassResult": "$highest_attempt_score",
+    },
     "scoreActions": Array [
       Object {
+        "for": undefined,
         "from": "0",
         "page": Object {
           "children": Array [],
@@ -52,6 +70,17 @@ Object {
           "type": "ObojoboDraft.Pages.Page",
         },
         "to": "99",
+      },
+      Object {
+        "for": "(99,100]",
+        "from": undefined,
+        "page": Object {
+          "children": Array [],
+          "content": Object {},
+          "id": null,
+          "type": "ObojoboDraft.Pages.Page",
+        },
+        "to": undefined,
       },
     ],
   },
@@ -211,6 +240,25 @@ Object {
         "textGroup": Array [
           Object {
             "data": null,
+            "text": Object {
+              "styleList": Array [],
+              "value": "This is a test",
+            },
+          },
+        ],
+      },
+      "id": null,
+      "type": "ObojoboDraft.Chunks.Heading",
+    },
+    Object {
+      "children": Array [],
+      "content": Object {
+        "headingLevel": 2,
+        "textGroup": Array [
+          Object {
+            "data": Object {
+              "align": "center",
+            },
             "text": Object {
               "styleList": Array [],
               "value": "This is a test",
@@ -813,6 +861,7 @@ Object {
           "content": Object {
             "scoreActions": Array [
               Object {
+                "for": undefined,
                 "from": "0",
                 "page": Object {
                   "children": Array [],
@@ -838,6 +887,46 @@ Object {
   "content": Object {},
   "id": null,
   "type": "ObojoboDraft.Modules.Module",
+}
+`;
+
+exports[`XML to Draft Object Tranformation Converts native-type xml to native-type node 1`] = `
+Object {
+  "children": Array [],
+  "content": Object {
+    "textGroup": Array [
+      Object {
+        "data": null,
+        "text": Object {
+          "styleList": Array [],
+          "value": "33333333333333333333333333333333333333",
+        },
+      },
+      Object {
+        "data": null,
+        "text": Object {
+          "styleList": Array [],
+          "value": "True",
+        },
+      },
+      Object {
+        "data": null,
+        "text": Object {
+          "styleList": Array [],
+          "value": "0.33333333333333333333333",
+        },
+      },
+      Object {
+        "data": null,
+        "text": Object {
+          "styleList": Array [],
+          "value": "0.3",
+        },
+      },
+    ],
+  },
+  "id": null,
+  "type": "ObojoboDraft.Chunks.Text",
 }
 `;
 

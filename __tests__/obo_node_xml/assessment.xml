@@ -10,6 +10,16 @@
                 <Page>
                 </Page>
             </scoreAction>
+            <scoreAction for="(99,100]">
+                <Page>
+                </Page>
+            </scoreAction>
         </scoreActions>
+        <rubric type="pass-fail" passingAttemptScore="80" passedResult="100" failedResult="0" unableToPassResult="$highest_attempt_score">
+            <mods>
+                <mod attemptCondition="1" reward="5" />
+                <mod attemptCondition="(1,$last_attempt]" reward="2" />
+            </mods>
+        </rubric>
     </Assessment>
 </ObjoboDraftDoc>
