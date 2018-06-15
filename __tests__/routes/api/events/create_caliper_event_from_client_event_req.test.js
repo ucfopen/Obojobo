@@ -1,80 +1,82 @@
-const caliperEvent = require('../../../../routes/api/events/create_caliper_event')
-
-const assessmentId = 'testAssessmentReq'
-const attemptId = 'testAttemptIdReq'
-const attemptIRI = 'testAttemptIRIReq'
-const currentUser = { id: 'testUserIdReq' }
-const draft_id = 'testDraftIdReq'
-const from = 'fromReq'
-const hostname = 'hostnameReq'
-const id = 'testIdReq'
-const inactiveDuration = 'testInactiveDurationReq'
-const itemId = 'testItemIdReq'
-const lastActiveTime = 'testLastActiveTimeReq'
-const questionId = 'testQuestionIdReq'
-const relatedEventId = 'testRelatedEventIdreq'
-const score = 'scoreReq'
-const scoreId = 'scoreIdReq'
-const session = { id: 'SessionIdReq', oboLti: { launchId: 'OboLtiLaunchIdReq' } }
-const sessionIds = { sessionId: 'testSessionIdReq', launchId: 'testOboLaunchIdReq' }
-const testDate = new Date('2016-09-22T16:57:14.500Z')
-const to = 'toReq'
-
-Date = class extends Date {
-	constructor() {
-		super()
-		return testDate
-	}
-}
-
-let baseReqObject = {
-	currentUser,
-	session,
-	hostname,
-	body: {
-		event: {
-			action: null,
-			draft_id,
-			payload: {}
-		}
-	}
-}
-
-const fillReqObj = (action, payload = {}) => {
-	let newReqObject = JSON.parse(JSON.stringify(baseReqObject))
-	let event = newReqObject.body.event
-	event.action = action
-	event.payload = payload
-	return newReqObject
-}
-
-let reqObjects = {
-	nav_goto: fillReqObj('nav:goto', { from, to }),
-	question_view: fillReqObj('question:view', { questionId }),
-	question_hide: fillReqObj('question:hide', { questionId }),
-	question_checkAnswer: fillReqObj('question:checkAnswer', { questionId }),
-	question_showExplanation: fillReqObj('question:showExplanation', { questionId }),
-	question_hideExplanation: fillReqObj('question:hideExplanation', { questionId }),
-	question_setResponse: fillReqObj('question:setResponse', { assessmentId, attemptId, questionId }),
-	score_set: fillReqObj('score:set', { id, itemId, score }),
-	score_clear: fillReqObj('score:clear', { id, itemId }),
-	question_retry: fillReqObj('question:retry', { questionId }),
-	viewer_inactive: fillReqObj('viewer:inactive', { inactiveDuration, lastActiveTime }),
-	viewer_returnFromInactive: fillReqObj('viewer:returnFromInactive', {
-		inactiveDuration,
-		lastActiveTime,
-		relatedEventId
-	}),
-	viewer_close: fillReqObj('viewer:close'),
-	viewer_leave: fillReqObj('viewer:leave'),
-	viewer_return: fillReqObj('viewer:return', { relatedEventId })
-}
-
 describe('Caliper event from req', () => {
-	// Test with all events in req object
-	Object.keys(reqObjects).forEach(reqObjectKey => {
-		it(`${reqObjectKey}`, () => {
-			expect(caliperEvent(reqObjects[reqObjectKey])).toMatchSnapshot()
+	// make sure all Date objects use a static date
+	mockStaticDate()
+
+	const caliperEvent = require('../../../../routes/api/events/create_caliper_event')
+
+	// some redundant values
+	const id = 'testIdReq'
+	const inactiveDuration = 'testInactiveDurationReq'
+	const itemId = 'testItemIdReq'
+	const lastActiveTime = 'testLastActiveTimeReq'
+	const questionId = 'testQuestionIdReq'
+	const relatedEventId = 'testRelatedEventIdreq'
+
+	let buildMockReq = (action, payload) => ({
+		currentUser: {
+			id: 'testUserIdReq'
+		},
+		session: {
+			id: 'SessionIdReq',
+			oboLti: {
+				launchId: 'OboLtiLaunchIdReq'
+			}
+		},
+		hostname: 'hostnameReq',
+		body: {
+			event: {
+				action: action,
+				draft_id: 'testDraftIdReq',
+				payload: payload
+			}
+		}
+	})
+
+	// outline all the events to test with payload
+	let eventsToTest = {
+		'nav:goto': { from: 'fromReq', to: 'toReq' },
+		'nav:open': {},
+		'nav:close': {},
+		'nav:toggle': { isOpen: true },
+		'nav:lock': {},
+		'nav:unlock': {},
+		'question:view': { questionId },
+		'question:hide': { questionId },
+		'question:checkAnswer': { questionId },
+		'question:showExplanation': { questionId },
+		'question:hideExplanation': { questionId, actor: 'user' },
+		'question:setResponse': {
+			assessmentId: 'testAssessmentReq',
+			attemptId: 'testAttemptIdReq',
+			questionId
+		},
+		'score:set': { id, itemId, score: 'scoreReq' },
+		'score:clear': { id, itemId },
+		'question:retry': { questionId },
+		'viewer:inactive': { inactiveDuration, lastActiveTime },
+		'viewer:returnFromInactive': { inactiveDuration, lastActiveTime, relatedEventId },
+		'viewer:close': {},
+		'viewer:leave': {},
+		'viewer:return': { relatedEventId }
+	}
+
+	// test each event type
+	Object.keys(eventsToTest).forEach(reqObjectKey => {
+		test(`${reqObjectKey} returns the expected snapshot`, () => {
+			let mockReq = buildMockReq(reqObjectKey, eventsToTest[reqObjectKey])
+			expect(caliperEvent(mockReq)).toMatchSnapshot()
 		})
+	})
+
+	test('actorFromType returns an object with the actor type and the current users id if given ACTOR_USER', () => {
+		let mockReq = buildMockReq('viewer:close', eventsToTest['viewer:close'])
+		let result = caliperEvent(mockReq)
+		expect(result.actor).toBe('https://hostnameReq/api/user/testUserIdReq')
+	})
+
+	test('actorFromType returns an object with only the given type if the type is not ACTOR_USER', () => {
+		let mockReq = buildMockReq('score:clear', eventsToTest['score:clear'])
+		let result = caliperEvent(mockReq)
+		expect(result.actor).toBe('https://hostnameReq/api/server')
 	})
 })

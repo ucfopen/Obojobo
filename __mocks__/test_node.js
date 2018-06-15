@@ -1,5 +1,5 @@
 let DraftNode = require('../models/draft_node')
 
-class TestNode extends DraftNode{}
+class TestNode extends DraftNode {}
 
-module.exports = TestNode;
+module.exports = TestNode

@@ -1,4 +1,6 @@
 jest.mock('../../../../db')
+const DraftModel = oboRequire('models/draft')
+const db = oboRequire('db')
 
 describe('api draft insert helper', () => {
 	beforeAll(() => {})
@@ -7,124 +9,73 @@ describe('api draft insert helper', () => {
 		let db = oboRequire('db')
 		db.one.mockClear()
 		db.none.mockClear()
+		db.any.mockClear()
 	})
 	afterEach(() => {})
 
 	test('inserts a new draft', () => {
-		expect.assertions(5)
-		let db = oboRequire('db')
-		// respond to BEGIN & COMMIT
-		db.none.mockImplementation(() => {
-			return Promise.resolve()
-		})
-		// respond to insert draft
-		db.one.mockImplementationOnce(() => {
-			return Promise.resolve({ id: 'NEWID' })
-		})
+		expect.assertions(4)
+		// mock insert draft
+		db.one.mockResolvedValueOnce({ id: 'NEWID' })
 		// respond to insert content
-		db.one.mockImplementationOnce(() => {
-			return Promise.resolve('content')
+		db.one.mockResolvedValueOnce('inserted content result')
+		const mockContent = { content: 'yes' }
+		const mockXMLContent = '<?xml version="1.0" encoding="utf-8"?><ObojoboDraftDoc />'
+		const mockUserId = 555
+
+		return DraftModel.createWithContent(mockUserId, mockContent, mockXMLContent).then(newDraft => {
+			// make sure we're using a transaction
+			expect(db.tx).toBeCalled()
+
+			// make sure the result looks as expected
+			expect(newDraft).toEqual({
+				content: 'inserted content result',
+				id: 'NEWID'
+			})
+
+			// make sure mockUserID is sent to the insert draft query
+			expect(db.one.mock.calls[0][1]).toEqual(
+				expect.objectContaining({
+					userId: mockUserId
+				})
+			)
+
+			// make sure the id coming back from insert draft is used to insert content
+			// and make sure the content is sent to the query
+			expect(db.one.mock.calls[1][1]).toEqual({
+				jsonContent: mockContent,
+				xmlContent: mockXMLContent,
+				draftId: 'NEWID'
+			})
 		})
-
-		let updateDraft = oboRequire('routes/api/drafts/insert_new_draft')
-
-		return updateDraft(555, { content: 'yes' })
-			.then(newDraft => {
-				expect(db.none).toBeCalledWith('BEGIN')
-				expect(db.none).toBeCalledWith('COMMIT')
-				expect(newDraft).toEqual(
-					expect.objectContaining({
-						content: 'content',
-						id: 'NEWID'
-					})
-				)
-
-				expect(db.one.mock.calls[0][1]).toEqual(
-					expect.objectContaining({
-						userId: 555
-					})
-				)
-
-				expect(db.one.mock.calls[1][1]).toEqual(
-					expect.objectContaining({
-						content: {
-							content: 'yes'
-						},
-						draftId: 'NEWID'
-					})
-				)
-			})
-			.catch(err => {
-				expect(err).toBe('never called')
-			})
 	})
 
 	test('fails when begin tranaction fails', () => {
 		expect.assertions(1)
-		let db = oboRequire('db')
-		// respond to BEGIN & COMMIT
-		db.none.mockImplementation(() => {
-			return Promise.reject('error')
-		})
 
-		let updateDraft = oboRequire('routes/api/drafts/insert_new_draft')
+		// reject transaction
+		db.tx.mockRejectedValueOnce('error')
 
-		return updateDraft(555, { content: 'yes' })
-			.then(result => {
-				expect(result).toBe('never called')
-			})
-			.catch(err => {
-				expect(err).toBe('error')
-			})
+		return expect(DraftModel.createWithContent(0, 'whatever')).rejects.toThrow('error')
 	})
 
 	test('fails when insert draft fails', () => {
 		expect.assertions(1)
-		let db = oboRequire('db')
-		// respond to BEGIN & COMMIT
-		db.none.mockImplementation(() => {
-			return Promise.resolve()
-		})
-		// respond to insert draft
-		db.one.mockImplementationOnce(() => {
-			return Promise.reject('an error')
-		})
 
-		let updateDraft = oboRequire('routes/api/drafts/insert_new_draft')
+		// reject insert draft query
+		db.one.mockRejectedValueOnce('an error')
 
-		return updateDraft(555, { content: 'yes' })
-			.then(result => {
-				expect(result).toBe('never called')
-			})
-			.catch(err => {
-				expect(err).toBe('an error')
-			})
+		return expect(DraftModel.createWithContent(0, 'whatever')).rejects.toThrow('an error')
 	})
 
 	test('fails when insert content fails', () => {
 		expect.assertions(1)
-		let db = oboRequire('db')
-		// respond to BEGIN & COMMIT
-		db.none.mockImplementation(() => {
-			return Promise.resolve()
-		})
+
 		// respond to insert draft
-		db.one.mockImplementationOnce(() => {
-			return Promise.resolve({ id: 'NEWID' })
-		})
-		// respond to insert content
-		db.one.mockImplementationOnce(() => {
-			return Promise.reject('arrrg!')
-		})
+		db.one.mockResolvedValueOnce({ id: 'NEWID' })
+		// reject insert content query
+		db.one.mockRejectedValueOnce('arrrg!')
 
-		let updateDraft = oboRequire('routes/api/drafts/insert_new_draft')
-
-		return updateDraft(555, { content: 'yes' })
-			.then(result => {
-				expect(result).toBe('never called')
-			})
-			.catch(err => {
-				expect(err).toBe('arrrg!')
-			})
+		return expect(DraftModel.createWithContent(0, 'whatever')).rejects.toThrow('arrrg!')
 	})
 })

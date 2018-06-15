@@ -2,10 +2,8 @@ jest.mock('../../../models/draft')
 jest.mock('../../../models/user')
 jest.mock('../../../db')
 jest.mock('../../../logger')
-const { mockExpressMethods, mockRouterMethods } = require('../../../__mocks__/__mock_express')
 
-let mockInsertNewDraft = mockVirtual('./routes/api/drafts/insert_new_draft')
-let mockUpdateDraft = mockVirtual('./routes/api/drafts/update_draft')
+const { mockExpressMethods, mockRouterMethods } = require('../../../__mocks__/__mock_express')
 
 describe('api draft route', () => {
 	beforeAll(() => {})
@@ -22,16 +20,13 @@ describe('api draft route', () => {
 		expect(mockRouterMethods.get).toBeCalledWith('/:draftId', expect.any(Function))
 		expect(mockRouterMethods.post).toBeCalledWith('/new', expect.any(Function))
 		expect(mockRouterMethods.post).toBeCalledWith('/new', expect.any(Function))
-		// expect(mockRouterMethods.all).toBeCalledWith('/:draftId*', expect.any(Function))
 	})
 
 	test('get draft handles missing drafts', () => {
 		expect.assertions(1)
 
 		let DraftModel = oboRequire('models/draft')
-		DraftModel.fetchById.mockImplementationOnce(() => {
-			return Promise.reject('some error')
-		})
+		DraftModel.fetchById.mockRejectedValueOnce('some error')
 
 		oboRequire('routes/api/drafts')
 		let routeFunction = mockRouterMethods.get.mock.calls[0][1]
@@ -61,13 +56,10 @@ describe('api draft route', () => {
 
 		let User = oboRequire('models/user')
 		let DraftModel = oboRequire('models/draft')
-		let mockYell = jest.fn().mockImplementationOnce(() => {
-			return {
-				document: `{"json":"value"}`,
-				yell: jest.fn().mockImplementationOnce(() => {
-					return 'fake draft'
-				})
-			}
+
+		let mockYell = jest.fn().mockReturnValueOnce({
+			document: `{"json":"value"}`,
+			yell: jest.fn().mockReturnValueOnce('fake draft')
 		})
 
 		DraftModel.__setMockYell(mockYell)
@@ -91,9 +83,7 @@ describe('api draft route', () => {
 		}
 
 		let mockNext = jest.fn()
-		mockInsertNewDraft.mockImplementationOnce(() => {
-			return 'test_result'
-		})
+		DraftModel.createWithContent.mockReturnValueOnce('test_result')
 
 		return routeFunction(mockReq, mockRes, mockNext)
 			.then(() => {
@@ -107,6 +97,7 @@ describe('api draft route', () => {
 	test('creates draft requires user', () => {
 		expect.assertions(1)
 
+		const DraftModel = oboRequire('models/draft')
 		let User = oboRequire('models/user')
 		oboRequire('routes/api/drafts')
 		let routeFunction = mockRouterMethods.post.mock.calls[0][1]
@@ -127,9 +118,7 @@ describe('api draft route', () => {
 		}
 
 		let mockNext = jest.fn()
-		mockInsertNewDraft.mockImplementationOnce(() => {
-			return 'test_result'
-		})
+		DraftModel.createWithContent.mockReturnValueOnce('test_result')
 
 		return routeFunction(mockReq, mockRes, mockNext)
 			.then(() => {
@@ -140,21 +129,14 @@ describe('api draft route', () => {
 			})
 	})
 
-	test('save draft calls next', () => {
+	test('update draft calls next', () => {
 		expect.assertions(1)
-		mockUpdateDraft.mockImplementationOnce(() => {
-			return Promise.resolve(555)
-		})
 
 		let User = oboRequire('models/user')
 		let DraftModel = oboRequire('models/draft')
-		let mockYell = jest.fn().mockImplementationOnce(() => {
-			return {
-				document: `{"json":"value"}`,
-				yell: jest.fn().mockImplementationOnce(() => {
-					return 'fake draft'
-				})
-			}
+		let mockYell = jest.fn().mockReturnValueOnce({
+			document: `{"json":"value"}`,
+			yell: jest.fn().mockReturnValueOnce('fake draft')
 		})
 
 		DraftModel.__setMockYell(mockYell)
@@ -183,7 +165,7 @@ describe('api draft route', () => {
 
 		return routeFunction(mockReq, mockRes, mockNext)
 			.then(() => {
-				expect(mockRes.success).toBeCalledWith({ id: 555 })
+				expect(mockRes.success).toBeCalledWith({ id: 'mockUpdatedContentId' })
 			})
 			.catch(err => {
 				expect(err).toBe('never called')
@@ -231,9 +213,7 @@ describe('api draft route', () => {
 		let routeFunction = mockRouterMethods.post.mock.calls[1][1]
 
 		let mockReq = {
-			requireCurrentUser: () => {
-				return Promise.reject('error1')
-			}
+			requireCurrentUser: () => Promise.reject('error1')
 		}
 
 		let mockRes = {
@@ -259,9 +239,7 @@ describe('api draft route', () => {
 		let routeFunction = mockRouterMethods.delete.mock.calls[0][1]
 
 		let mockReq = {
-			requireCurrentUser: () => {
-				return Promise.reject('error1')
-			}
+			requireCurrentUser: () => Promise.reject('error1')
 		}
 
 		let mockRes = {
@@ -312,18 +290,14 @@ describe('api draft route', () => {
 		expect.assertions(1)
 
 		let db = oboRequire('db')
-		db.none.mockImplementationOnce(() => {
-			return Promise.resolve(5)
-		})
+		db.none.mockResolvedValueOnce(5)
 
 		oboRequire('routes/api/drafts')
 		let routeFunction = mockRouterMethods.delete.mock.calls[0][1]
 
 		let mockReq = {
 			params: { draftId: 555 },
-			requireCurrentUser: () => {
-				return Promise.resolve({ canDeleteDrafts: true })
-			}
+			requireCurrentUser: () => Promise.resolve({ canDeleteDrafts: true })
 		}
 
 		let mockRes = {
@@ -348,9 +322,7 @@ describe('api draft route', () => {
 		let routeFunction = mockRouterMethods.get.mock.calls[1][1]
 
 		let mockReq = {
-			requireCurrentUser: () => {
-				return Promise.reject('error1')
-			}
+			requireCurrentUser: () => Promise.reject('error1')
 		}
 
 		let mockRes = {
@@ -375,9 +347,7 @@ describe('api draft route', () => {
 		let routeFunction = mockRouterMethods.get.mock.calls[1][1]
 
 		let mockReq = {
-			requireCurrentUser: () => {
-				return Promise.resolve({ canViewDrafts: false })
-			}
+			requireCurrentUser: () => Promise.resolve({ canViewDrafts: false })
 		}
 
 		let mockRes = {
@@ -399,18 +369,14 @@ describe('api draft route', () => {
 		expect.assertions(1)
 
 		let db = oboRequire('db')
-		db.any.mockImplementationOnce(() => {
-			return Promise.resolve(5)
-		})
+		db.any.mockResolvedValueOnce(5)
 
 		oboRequire('routes/api/drafts')
 		let routeFunction = mockRouterMethods.get.mock.calls[1][1]
 
 		let mockReq = {
 			params: { draftId: 555 },
-			requireCurrentUser: () => {
-				return Promise.resolve({ id: 5, canViewDrafts: true })
-			}
+			requireCurrentUser: () => Promise.resolve({ id: 5, canViewDrafts: true })
 		}
 
 		let mockRes = {

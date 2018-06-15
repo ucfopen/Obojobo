@@ -3,7 +3,6 @@ jest.mock('../../../db')
 const { mockExpressMethods, mockRouterMethods } = require('../../../__mocks__/__mock_express')
 
 let mockInsertNewDraft = mockVirtual('./routes/api/drafts/insert_new_draft')
-let mockUpdateDraft = mockVirtual('./routes/api/drafts/update_draft')
 
 describe('api draft events route', () => {
 	beforeAll(() => {})
@@ -24,9 +23,7 @@ describe('api draft events route', () => {
 		let routeFunction = mockRouterMethods.post.mock.calls[0][1]
 
 		let mockReq = {
-			requireCurrentUser: () => {
-				return Promise.reject('no current user')
-			}
+			requireCurrentUser: () => Promise.reject('no current user')
 		}
 
 		let mockRes = {
@@ -49,9 +46,7 @@ describe('api draft events route', () => {
 		expect.assertions(1)
 
 		let db = oboRequire('db')
-		db.one.mockImplementationOnce(() => {
-			return Promise.resolve({ created_at: 1 })
-		})
+		db.one.mockResolvedValueOnce({ created_at: 1 })
 
 		oboRequire('routes/api/events')
 		let routeFunction = mockRouterMethods.post.mock.calls[0][1]
@@ -66,9 +61,7 @@ describe('api draft events route', () => {
 					draft_id: 88
 				}
 			},
-			requireCurrentUser: () => {
-				return Promise.resolve({ id: 5 })
-			}
+			requireCurrentUser: () => Promise.resolve({ id: 5 })
 		}
 
 		let mockRes = {
@@ -90,9 +83,7 @@ describe('api draft events route', () => {
 		expect.assertions(1)
 
 		let db = oboRequire('db')
-		db.one.mockImplementationOnce(() => {
-			return Promise.reject('db fail')
-		})
+		db.one.mockRejectedValueOnce('db fail')
 
 		oboRequire('routes/api/events')
 		let routeFunction = mockRouterMethods.post.mock.calls[0][1]
@@ -107,9 +98,7 @@ describe('api draft events route', () => {
 					draft_id: 88
 				}
 			},
-			requireCurrentUser: () => {
-				return Promise.resolve({ id: 5 })
-			}
+			requireCurrentUser: () => Promise.resolve({ id: 5 })
 		}
 
 		let mockRes = {

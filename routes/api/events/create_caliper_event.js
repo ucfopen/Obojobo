@@ -15,8 +15,9 @@ let NavigationEvent = require('caliper-js-public/src/events/navigationEvent')
 let SessionEvent = require('caliper-js-public/src/events/sessionEvent')
 let ViewEvent = require('caliper-js-public/src/events/viewEvent')
 
-// This version doesn't have grade event:
+// This version doesn't have grade event or ToolUse event:
 // let GradeEvent = require('caliper-js-public/src/events/gradeEvent')
+// let ToolUseEvent = require('caliper-js-public/src/events/toolUseEvent')
 
 // @TODO: Remove this when we migrate to using the 1.1 Caliper library
 // (Will potentially want to retain the code that strips out null values)
@@ -73,6 +74,27 @@ let createAssessmentEvent = (obj, IRI) => {
 	caliperEvent.setAction(action)
 	caliperEvent.setObject(IRI.getAssessmentIRI(draftId, assessmentId))
 	caliperEvent.setGenerated(IRI.getAssessmentAttemptIRI(attemptId))
+	Object.assign(caliperEvent.extensions, extensions)
+
+	return updateEventToVersion1_1(caliperEvent)
+}
+
+// Caliper-Spec Properties
+// type: (type: Term, REQUIRED) Event
+// action: (type: Term, REQUIRED) Showed | Hid | Activated | Deactivated
+// object: (type: DigitalResource | SoftwareApplication, REQUIRED) Viewer IRI of the element
+// actor: (REQUIRED)
+let createNavMenuEvent = (obj, IRI) => {
+	let required = ['draftId', 'action']
+	validateCaliperEvent({ required }, obj)
+
+	let options = assignCaliperOptions(obj)
+
+	let { action, actor, draftId, extensions } = obj
+	let caliperEvent = createEvent(Event, actor, IRI, options)
+
+	caliperEvent.setAction(action)
+	caliperEvent.setObject(IRI.getViewerClientIRI(draftId, 'nav'))
 	Object.assign(caliperEvent.extensions, extensions)
 
 	return updateEventToVersion1_1(caliperEvent)
@@ -144,7 +166,7 @@ const caliperEventFactory = (req, host = null, isFromReq = false) => {
 		createHideEvent: obj => {
 			let required = ['draftId', 'questionId']
 			let optional = ['frameName']
-			validateCaliperEvent({ required, optional }, obj, ACTOR_USER)
+			validateCaliperEvent({ required, optional }, obj)
 
 			let options = assignCaliperOptions(obj)
 
@@ -171,6 +193,31 @@ const caliperEventFactory = (req, host = null, isFromReq = false) => {
 			return createAssessmentEvent(obj, IRI)
 		},
 
+		createNavMenuHidEvent: obj => {
+			obj.action = 'Hid'
+			return createNavMenuEvent(obj, IRI)
+		},
+
+		createNavMenuShowedEvent: obj => {
+			obj.action = 'Showed'
+			return createNavMenuEvent(obj, IRI)
+		},
+
+		createNavMenuToggledEvent: obj => {
+			obj.action = 'Toggled'
+			return createNavMenuEvent(obj, IRI)
+		},
+
+		createNavMenuActivatedEvent: obj => {
+			obj.action = 'Activated'
+			return createNavMenuEvent(obj, IRI)
+		},
+
+		createNavMenuDeactivatedEvent: obj => {
+			obj.action = 'Deactivated'
+			return createNavMenuEvent(obj, IRI)
+		},
+
 		// Caliper-Spec Properties
 		// type: (type: Term, REQUIRED) GradeEvent
 		// action: (type: Term, REQUIRED) Graded
@@ -188,6 +235,7 @@ const caliperEventFactory = (req, host = null, isFromReq = false) => {
 			caliperEvent.setType('GradeEvent')
 			caliperEvent.setAction('Graded')
 			caliperEvent.setObject(IRI.getAssessmentAttemptIRI(attemptId))
+			caliperEvent.setTarget(IRI.getAssessmentIRI(draftId, assessmentId))
 
 			//@TODO - Caliper spec will have a Score entity but our version doesn't have this yet
 			caliperEvent.setGenerated(
@@ -256,21 +304,21 @@ const caliperEventFactory = (req, host = null, isFromReq = false) => {
 			const options = assignCaliperOptions(obj)
 			const caliperEvent = createEvent(AssessmentItemEvent, actor, IRI, options)
 			const questionIdIRI = IRI.getDraftIRI(draftId, questionId)
-			const practiceQuesionAttemptIRI = IRI.getPracticeQuestionAttemptIRI(draftId, questionId)
+			const practiceQuestionAttemptIRI = IRI.getPracticeQuestionAttemptIRI(draftId, questionId)
 
 			caliperEvent.setAction('Completed')
 			caliperEvent.setTarget(IRI.getDraftIRI(draftId, targetId))
 			caliperEvent.setGenerated({
 				id: getNewGeneratedId(),
 				type: 'Response',
-				attempt: attemptId ? IRI.getAssessmentAttemptIRI(attemptId) : practiceQuesionAttemptIRI,
+				attempt: attemptId ? IRI.getAssessmentAttemptIRI(attemptId) : practiceQuestionAttemptIRI,
 				extensions: { selectedTargets, targetId }
 			})
 
 			if (assessmentId !== null && attemptId !== null) {
 				caliperEvent.setObject(questionIdIRI)
 			} else {
-				caliperEvent.setObject(practiceQuesionAttemptIRI)
+				caliperEvent.setObject(practiceQuestionAttemptIRI)
 			}
 
 			Object.assign(caliperEvent.extensions, extensions)
@@ -430,6 +478,81 @@ const caliperEventFactory = (req, host = null, isFromReq = false) => {
 			caliperEvent.setAction('Reset')
 			caliperEvent.setObject(IRI.getDraftIRI(draftId, questionId))
 			caliperEvent.setTarget(IRI.getPracticeQuestionAttemptIRI(draftId, questionId))
+
+			Object.assign(caliperEvent.extensions, extensions)
+
+			return updateEventToVersion1_1(caliperEvent)
+		},
+
+		// Caliper-Spec Properties
+		// type: (type: Term, REQUIRED) ToolUseEvent
+		// actor: (type: Person, REQUIRED) User
+		// action: (type: Term, REQUIRED) Used
+		// object: (type: SoftwareApplication, REQUIRED) Obo IRI
+		// target: (type: SoftwareApplication, Optional) Picker IRI
+		createLTIPickerEvent: obj => {
+			let required = []
+			validateCaliperEvent({ required }, obj, ACTOR_USER)
+
+			let options = assignCaliperOptions(obj)
+
+			let { actor, extensions } = obj
+			let caliperEvent = createEvent(Event, actor, IRI, options) //@TODO should be ToolUse Event
+
+			caliperEvent.setType('ToolUseEvent')
+			caliperEvent.setAction('Used')
+			caliperEvent.setObject(IRI.getEdAppIRI())
+			caliperEvent.setTarget(IRI.getPickerIRI())
+
+			Object.assign(caliperEvent.extensions, extensions)
+
+			return updateEventToVersion1_1(caliperEvent)
+		},
+
+		// Caliper-Spec Properties
+		// type: (type: Term, REQUIRED) ToolUseEvent
+		// actor: (type: Person, REQUIRED) User
+		// action: (type: Term, REQUIRED) Used
+		// object: (type: SoftwareApplication, REQUIRED) Obo IRI
+		// generated: (type: Entity, Optional) Visit IRI
+		createViewerOpenEvent: obj => {
+			let required = ['visitId']
+			validateCaliperEvent({ required }, obj, ACTOR_USER)
+
+			let options = assignCaliperOptions(obj)
+
+			let { actor, extensions } = obj
+			let caliperEvent = createEvent(Event, actor, IRI, options) //@TODO should be ToolUse Event
+
+			caliperEvent.setType('ToolUseEvent')
+			caliperEvent.setAction('Used')
+			caliperEvent.setObject(IRI.getEdAppIRI())
+			caliperEvent.setGenerated(IRI.getVisitIRI(obj.visitId))
+
+			Object.assign(caliperEvent.extensions, extensions)
+
+			return updateEventToVersion1_1(caliperEvent)
+		},
+
+		// Caliper-Spec Properties
+		// type: (type: Term, REQUIRED) VisitCreateEvent
+		// actor: (type: Person, REQUIRED) User
+		// action: (type: Term, REQUIRED) Created
+		// object: (type: SoftwareApplication, REQUIRED) Obo IRI
+		// generated: (type: Entity, Optional) Visit IRI
+		createVisitCreateEvent: obj => {
+			let required = ['visitId']
+			validateCaliperEvent({ required }, obj, ACTOR_USER)
+
+			let options = assignCaliperOptions(obj)
+
+			let { actor, extensions } = obj
+			let caliperEvent = createEvent(Event, actor, IRI, options)
+
+			caliperEvent.setType('Event')
+			caliperEvent.setAction('Created')
+			caliperEvent.setObject(IRI.getEdAppIRI())
+			caliperEvent.setGenerated(IRI.getVisitIRI(obj.visitId))
 
 			Object.assign(caliperEvent.extensions, extensions)
 

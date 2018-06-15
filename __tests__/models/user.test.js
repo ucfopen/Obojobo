@@ -1,60 +1,90 @@
 jest.mock('../../db')
+const originalnow = Date.prototype.now
+const User = oboRequire('models/user')
+const db = oboRequire('db')
 
 describe('user model', () => {
-
-	beforeAll(() => {})
-	afterAll(() => {})
-	beforeEach(() => {});
-	afterEach(() => {});
+	beforeAll(() => {
+		Date.now = () => 'mockNowDate'
+	})
+	afterAll(() => {
+		Date.prototype.now = originalnow
+	})
+	beforeEach(() => {
+		jest.resetAllMocks()
+	})
+	afterEach(() => {})
 
 	it('initializes expected properties', () => {
-		let User = oboRequire('models/user')
 		let u = new User({
-			id:5,
-			firstName:'Roger',
-			lastName:'Wilco',
-			email:'e@m.com',
+			id: 5,
+			firstName: 'Roger',
+			lastName: 'Wilco',
+			email: 'e@m.com',
 			username: 'someusername'
-		});
+		})
 		expect(u).toBeInstanceOf(User)
 		expect(u.id).toBe(5)
 		expect(u.firstName).toBe('Roger')
 		expect(u.lastName).toBe('Wilco')
 		expect(u.email).toBe('e@m.com')
 		expect(u.username).toBe('someusername')
-		expect(u.createdAt).toEqual(expect.any(Number))
+		expect(u.createdAt).toEqual('mockNowDate')
 		expect(u.roles).toBeInstanceOf(Array)
 		expect(u.roles).toHaveLength(0)
 	})
 
-
 	it('initializes permission getters', () => {
-		let User = oboRequire('models/user')
 		let u
 
-		u = new User({roles: ["roleName", "otherRoleName"]});
+		u = new User({
+			id: 5,
+			firstName: 'Roger',
+			lastName: 'Wilco',
+			email: 'e@m.com',
+			username: 'someusername',
+			roles: ['roleName', 'otherRoleName']
+		})
 		expect(u.roles).toHaveLength(2)
 		expect(u.canDoThing).toBe(true)
 		expect(u.canDoThingOtherThing).toBe(undefined)
 
-		u = new User({roles: ["roleName2", "otherRoleName"]});
+		u = new User({
+			id: 5,
+			firstName: 'Roger',
+			lastName: 'Wilco',
+			email: 'e@m.com',
+			username: 'someusername',
+			roles: ['roleName2', 'otherRoleName']
+		})
 		expect(u.roles).toHaveLength(2)
 		expect(u.canDoThing).toBe(false)
 		expect(u.canDoThingOtherThing).toBe(undefined)
 	})
 
 	it('hasPermission behaves', () => {
-		let User = oboRequire('models/user')
-		let u = new User({roles: ["roleName", "otherRoleName"]});
+		let u = new User({
+			id: 5,
+			firstName: 'Roger',
+			lastName: 'Wilco',
+			email: 'e@m.com',
+			username: 'someusername',
+			roles: ['roleName', 'otherRoleName']
+		})
 
 		expect(u.hasPermission('test')).toBe(false)
 		expect(u.hasPermission('canDoThing')).toBe(true)
 	})
 
-
 	it('hasRole and hasRoles work', () => {
-		let User = oboRequire('models/user')
-		let u = new User({roles: ["roleName", "otherRoleName"]});
+		let u = new User({
+			id: 5,
+			firstName: 'Roger',
+			lastName: 'Wilco',
+			email: 'e@m.com',
+			username: 'someusername',
+			roles: ['roleName', 'otherRoleName']
+		})
 		expect(u.hasRole('test')).toBe(false)
 		expect(u.hasRole('roleName')).toBe(true)
 		expect(u.hasRole('otherRoleName')).toBe(true)
@@ -68,8 +98,14 @@ describe('user model', () => {
 	})
 
 	it('hasRole and hasOneOfRole work', () => {
-		let User = oboRequire('models/user')
-		let u = new User({roles: ["roleName", "otherRoleName"]});
+		let u = new User({
+			id: 5,
+			firstName: 'Roger',
+			lastName: 'Wilco',
+			email: 'e@m.com',
+			username: 'someusername',
+			roles: ['roleName', 'otherRoleName']
+		})
 		expect(u.hasRole('test')).toBe(false)
 		expect(u.hasRole('roleName')).toBe(true)
 		expect(u.hasRole('otherRoleName')).toBe(true)
@@ -81,66 +117,111 @@ describe('user model', () => {
 	})
 
 	it('responds to isGuest correctly', () => {
-		let User = oboRequire('models/user')
-		let u = new User({roles: ["roleName", "otherRoleName"]});
+		let u = new User({
+			id: 5,
+			firstName: 'Roger',
+			lastName: 'Wilco',
+			email: 'e@m.com',
+			username: 'someusername',
+			roles: ['roleName', 'otherRoleName']
+		})
 		expect(u.isGuest()).toBe(false)
 	})
 
 	it('saves or creates correctly', () => {
-		expect.assertions(3)
+		expect.assertions(4)
 
-		let db = oboRequire('db')
-		let User = oboRequire('models/user')
-		db.one.mockImplementationOnce((query, vars) => {
-			expect(vars).toEqual(expect.objectContaining({
-				"email": "guest@obojobo.ucf.edu",
-				"firstName": "Guest",
-				"id": 0,
-				"lastName": "Guest",
-				"roles": expect.any(Array),
-				"username": "guest"
-			}))
-			return Promise.resolve({id:3})
+		db.one.mockResolvedValueOnce({ id: 3 })
+
+		let u = new User({
+			firstName: 'Roger',
+			lastName: 'Wilco',
+			email: 'e@m.com',
+			username: 'someusername',
+			roles: ['roleName', 'otherRoleName']
 		})
-
-		let u = new User()
-		return u.saveOrCreate()
-		.then(user => {
+		return u.saveOrCreate().then(user => {
 			expect(user).toBeInstanceOf(User)
 			expect(user.id).toBe(3)
-		})
-		.catch(err => {
-			expect(true).toBe("never called")
+			expect(db.one).toHaveBeenCalledTimes(1)
+			expect(db.one.mock.calls[0]).toMatchSnapshot()
 		})
 	})
 
+	it('fetches one from the database', () => {
+		expect.assertions(4)
 
-	it('fetches one from the databse', () => {
-		expect.assertions(3)
-
-		let db = oboRequire('db')
-		let User = oboRequire('models/user')
-		db.one.mockImplementationOnce((query, vars) => {
-			expect(vars).toEqual(5)
-			return Promise.resolve({
-				"id": 5,
-				"createdAt": 3,
-				"email": "guest@obojobo.ucf.edu",
-				"firstName": "Guest",
-				"lastName": "Guest",
-				"roles": expect.any(Array),
-				"username": "guest"
-			})
+		db.one.mockResolvedValueOnce({
+			id: 5,
+			created_at: 'mocked-date',
+			email: 'guest@obojobo.ucf.edu',
+			first_name: 'Guest',
+			last_name: 'Guest',
+			roles: [],
+			username: 'guest'
 		})
 
-		return User.fetchById(5)
-		.then(user => {
+		return User.fetchById(5).then(user => {
 			expect(user).toBeInstanceOf(User)
-			expect(user.id).toBe(5)
-		})
-		.catch(err => {
-			expect(err).toBe("never called")
+			expect(user).toMatchSnapshot()
+			expect(db.one).toHaveBeenCalledTimes(1)
+			expect(db.one.mock.calls[0]).toMatchSnapshot()
 		})
 	})
 
+	it('throws error when not given enough arguments', () => {
+		expect(() => {
+			new User()
+		}).toThrow('Missing arguments for new user')
+
+		expect(() => {
+			new User({
+				firstName: 'first-name'
+			})
+		}).toThrow('Missing arguments for new user')
+
+		expect(() => {
+			new User({
+				firstName: 'first-name',
+				lastName: 'last-name'
+			})
+		}).toThrow('Missing arguments for new user')
+
+		expect(() => {
+			new User({
+				firstName: 'first-name',
+				lastName: 'last-name',
+				email: 'email'
+			})
+		}).toThrow('Missing arguments for new user')
+
+		expect(() => {
+			new User({
+				lastName: 'last-name'
+			})
+		}).toThrow('Missing arguments for new user')
+
+		expect(() => {
+			new User({
+				lastName: 'last-name',
+				email: 'email'
+			})
+		}).toThrow('Missing arguments for new user')
+
+		expect(() => {
+			new User({
+				firstName: 'first-name',
+				email: 'email'
+			})
+		}).toThrow('Missing arguments for new user')
+
+		expect(() => {
+			new User({
+				firstName: 'first-name',
+				lastName: 'last-name',
+				email: 'email',
+				username: 'username'
+			})
+		}).not.toThrow()
+	})
 })

@@ -3,12 +3,12 @@ var router = express.Router()
 var db = require('../db')
 
 let displayEditor = (req, res, next) => {
-	// let oboGlobals = new OboGlobals();
-
 	return req
 		.getCurrentUser(true)
 		.then(user => {
-			if (user.isGuest()) return Promise.reject(new Error('Login Required'))
+			if (user.isGuest()) {
+				return Promise.reject(new Error('Login Required'))
+			}
 			if (!user.canViewEditor) {
 				return next()
 			}
@@ -44,6 +44,8 @@ let displayEditor = (req, res, next) => {
 		})
 }
 
+// Display the Document Editor
+// mounted as /editor
 router.post('/', displayEditor)
 router.get('/', displayEditor)
 

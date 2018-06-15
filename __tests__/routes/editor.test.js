@@ -1,4 +1,6 @@
 jest.mock('../../db')
+jest.mock('../../models/user')
+
 const { mockExpressMethods, mockRouterMethods } = require('../../__mocks__/__mock_express')
 
 describe('editor route', () => {
@@ -18,9 +20,7 @@ describe('editor route', () => {
 		let db = oboRequire('db')
 
 		// mock the launch insert
-		db.any.mockImplementationOnce((query, vars) => {
-			return Promise.resolve({ draft: true })
-		})
+		db.any.mockResolvedValueOnce({ draft: true })
 
 		let User = oboRequire('models/user')
 		let editor = oboRequire('routes/editor')
@@ -57,9 +57,7 @@ describe('editor route', () => {
 		let db = oboRequire('db')
 
 		// mock the launch insert
-		db.any.mockImplementationOnce((query, vars) => {
-			return Promise.resolve({ draft: true })
-		})
+		db.any.mockResolvedValueOnce({ draft: true })
 
 		let GuestUser = oboRequire('models/guest_user')
 		let editor = oboRequire('routes/editor')
@@ -91,9 +89,7 @@ describe('editor route', () => {
 		let db = oboRequire('db')
 
 		// mock the launch insert
-		db.any.mockImplementationOnce((query, vars) => {
-			return Promise.resolve({ draft: true })
-		})
+		db.any.mockResolvedValueOnce({ draft: true })
 
 		let User = oboRequire('models/user')
 		let editor = oboRequire('routes/editor')

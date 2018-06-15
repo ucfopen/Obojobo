@@ -6,7 +6,7 @@ Event {
   "action": "Graded",
   "actor": "https://testHost/api/server",
   "edApp": "https://testHost/api/system",
-  "eventTime": "2017-08-29T16:57:14.500Z",
+  "eventTime": "mockDate",
   "extensions": Object {
     "previewMode": false,
   },
@@ -14,16 +14,17 @@ Event {
   "generated": Object {
     "@context": "http://purl.imsglobal.org/ctx/caliper/v1p1",
     "attempt": "https://testHost/api/attempt/testAttemptId",
-    "dateCreated": "2017-08-29T16:57:14.500Z",
-    "id": "urn:uuid:fb9826d0-3d7a-43b8-a5ad-3949ce620d91",
+    "dateCreated": "mockDate",
+    "id": "urn:uuid:DEADBEEF-0000-DEAD-BEEF-1234DEADBEEF",
     "maxScore": 100,
     "scoreGiven": "50",
     "scoredBy": "https://testHost/api/server",
     "type": "Score",
   },
-  "id": "urn:uuid:fb9826d0-3d7a-43b8-a5ad-3949ce620d91",
+  "id": "urn:uuid:DEADBEEF-0000-DEAD-BEEF-1234DEADBEEF",
   "object": "https://testHost/api/attempt/testAttemptId",
   "session": "https://testHost/api/session/testSessionId",
+  "target": "https://testHost/api/assessment/testDraftId/testAssessment",
   "type": "GradeEvent",
 }
 `;
@@ -34,14 +35,14 @@ Event {
   "action": "Started",
   "actor": "https://testHost/api/user/testUserId",
   "edApp": "https://testHost/api/system",
-  "eventTime": "2017-08-29T16:57:14.500Z",
+  "eventTime": "mockDate",
   "extensions": Object {
     "foo": "bar",
     "previewMode": false,
   },
   "federatedSession": "https://testHost/api/launch/testOboLaunchId",
   "generated": "https://testHost/api/attempt/testAttemptId",
-  "id": "urn:uuid:fb9826d0-3d7a-43b8-a5ad-3949ce620d91",
+  "id": "urn:uuid:DEADBEEF-0000-DEAD-BEEF-1234DEADBEEF",
   "object": "https://testHost/api/assessment/testDraftId/testAssessment",
   "session": "https://testHost/api/session/testSessionId",
   "type": "AssessmentEvent",
@@ -54,14 +55,14 @@ Event {
   "action": "Submitted",
   "actor": "https://testHost/api/user/testUserId",
   "edApp": "https://testHost/api/system",
-  "eventTime": "2017-08-29T16:57:14.500Z",
+  "eventTime": "mockDate",
   "extensions": Object {
     "foo": "bar",
     "previewMode": false,
   },
   "federatedSession": "https://testHost/api/launch/testOboLaunchId",
   "generated": "https://testHost/api/attempt/testAttemptId",
-  "id": "urn:uuid:fb9826d0-3d7a-43b8-a5ad-3949ce620d91",
+  "id": "urn:uuid:DEADBEEF-0000-DEAD-BEEF-1234DEADBEEF",
   "object": "https://testHost/api/assessment/testDraftId/testAssessment",
   "session": "https://testHost/api/session/testSessionId",
   "type": "AssessmentEvent",
@@ -74,7 +75,7 @@ Event {
   "action": "Completed",
   "actor": "https://testHost/api/user/testUserId",
   "edApp": "https://testHost/api/system",
-  "eventTime": "2017-08-29T16:57:14.500Z",
+  "eventTime": "mockDate",
   "extensions": Object {
     "previewMode": false,
   },
@@ -88,10 +89,10 @@ Event {
       },
       "targetId": "testTargetId",
     },
-    "id": "urn:uuid:fb9826d0-3d7a-43b8-a5ad-3949ce620d91",
+    "id": "urn:uuid:DEADBEEF-0000-DEAD-BEEF-1234DEADBEEF",
     "type": "Response",
   },
-  "id": "urn:uuid:fb9826d0-3d7a-43b8-a5ad-3949ce620d91",
+  "id": "urn:uuid:DEADBEEF-0000-DEAD-BEEF-1234DEADBEEF",
   "object": "https://testHost/api/practice/testDraftId/testQuestionId",
   "target": "https://testHost/api/draft/testDraftId#testTargetId",
   "type": "AssessmentItemEvent",
@@ -104,7 +105,7 @@ Event {
   "action": "Completed",
   "actor": "https://testHost/api/user/testUserId",
   "edApp": "https://testHost/api/system",
-  "eventTime": "2017-08-29T16:57:14.500Z",
+  "eventTime": "mockDate",
   "extensions": Object {
     "previewMode": false,
   },
@@ -118,10 +119,10 @@ Event {
       },
       "targetId": "testTargetId",
     },
-    "id": "urn:uuid:fb9826d0-3d7a-43b8-a5ad-3949ce620d91",
+    "id": "urn:uuid:DEADBEEF-0000-DEAD-BEEF-1234DEADBEEF",
     "type": "Response",
   },
-  "id": "urn:uuid:fb9826d0-3d7a-43b8-a5ad-3949ce620d91",
+  "id": "urn:uuid:DEADBEEF-0000-DEAD-BEEF-1234DEADBEEF",
   "object": "https://testHost/api/draft/testDraftId#testQuestionId",
   "target": "https://testHost/api/draft/testDraftId#testTargetId",
   "type": "AssessmentItemEvent",
@@ -134,7 +135,7 @@ Event {
   "action": "Completed",
   "actor": "https://testHost/api/user/testUserId",
   "edApp": "https://testHost/api/system",
-  "eventTime": "2017-08-29T16:57:14.500Z",
+  "eventTime": "mockDate",
   "extensions": Object {
     "previewMode": false,
   },
@@ -148,10 +149,10 @@ Event {
       },
       "targetId": "testTargetId",
     },
-    "id": "urn:uuid:fb9826d0-3d7a-43b8-a5ad-3949ce620d91",
+    "id": "urn:uuid:DEADBEEF-0000-DEAD-BEEF-1234DEADBEEF",
     "type": "Response",
   },
-  "id": "urn:uuid:fb9826d0-3d7a-43b8-a5ad-3949ce620d91",
+  "id": "urn:uuid:DEADBEEF-0000-DEAD-BEEF-1234DEADBEEF",
   "object": "https://testHost/api/practice/testDraftId/testQuestionId",
   "target": "https://testHost/api/draft/testDraftId#testTargetId",
   "type": "AssessmentItemEvent",
@@ -164,7 +165,7 @@ Event {
   "action": "Completed",
   "actor": "https://testHost/api/user/testUserId",
   "edApp": "https://testHost/api/system",
-  "eventTime": "2017-08-29T16:57:14.500Z",
+  "eventTime": "mockDate",
   "extensions": Object {
     "previewMode": false,
   },
@@ -178,10 +179,10 @@ Event {
       },
       "targetId": "testTargetId",
     },
-    "id": "urn:uuid:fb9826d0-3d7a-43b8-a5ad-3949ce620d91",
+    "id": "urn:uuid:DEADBEEF-0000-DEAD-BEEF-1234DEADBEEF",
     "type": "Response",
   },
-  "id": "urn:uuid:fb9826d0-3d7a-43b8-a5ad-3949ce620d91",
+  "id": "urn:uuid:DEADBEEF-0000-DEAD-BEEF-1234DEADBEEF",
   "object": "https://testHost/api/practice/testDraftId/testQuestionId",
   "target": "https://testHost/api/draft/testDraftId#testTargetId",
   "type": "AssessmentItemEvent",
@@ -194,7 +195,7 @@ Event {
   "action": "Completed",
   "actor": "https://testHost/api/user/testUserId",
   "edApp": "https://testHost/api/system",
-  "eventTime": "2017-08-29T16:57:14.500Z",
+  "eventTime": "mockDate",
   "extensions": Object {
     "foo": "bar",
     "previewMode": false,
@@ -209,10 +210,10 @@ Event {
       },
       "targetId": "testTargetId",
     },
-    "id": "urn:uuid:fb9826d0-3d7a-43b8-a5ad-3949ce620d91",
+    "id": "urn:uuid:DEADBEEF-0000-DEAD-BEEF-1234DEADBEEF",
     "type": "Response",
   },
-  "id": "urn:uuid:fb9826d0-3d7a-43b8-a5ad-3949ce620d91",
+  "id": "urn:uuid:DEADBEEF-0000-DEAD-BEEF-1234DEADBEEF",
   "object": "https://testHost/api/draft/testDraftId#testQuestionId",
   "target": "https://testHost/api/draft/testDraftId#testTargetId",
   "type": "AssessmentItemEvent",
@@ -225,13 +226,13 @@ Event {
   "action": "Hid",
   "actor": "https://testHost/api/user/testUserId",
   "edApp": "https://testHost/api/system",
-  "eventTime": "2017-08-29T16:57:14.500Z",
+  "eventTime": "mockDate",
   "extensions": Object {
     "foo": "bar",
     "previewMode": false,
   },
   "federatedSession": "https://testHost/api/launch/testOboLaunchId",
-  "id": "urn:uuid:fb9826d0-3d7a-43b8-a5ad-3949ce620d91",
+  "id": "urn:uuid:DEADBEEF-0000-DEAD-BEEF-1234DEADBEEF",
   "object": "https://testHost/api/draft/testDraftId#testQuestionId",
   "session": "https://testHost/api/session/testSessionId",
   "target": "https://testHost/api/draft/testDraftId?context=testFramename#testQuestionId",
@@ -245,14 +246,126 @@ Event {
   "action": "Hid",
   "actor": "https://testHost/api/user/testUserId",
   "edApp": "https://testHost/api/system",
-  "eventTime": "2017-08-29T16:57:14.500Z",
+  "eventTime": "mockDate",
   "extensions": Object {
     "foo": "bar",
     "previewMode": false,
   },
   "federatedSession": "https://testHost/api/launch/testOboLaunchId",
-  "id": "urn:uuid:fb9826d0-3d7a-43b8-a5ad-3949ce620d91",
+  "id": "urn:uuid:DEADBEEF-0000-DEAD-BEEF-1234DEADBEEF",
   "object": "https://testHost/api/draft/testDraftId#testQuestionId",
+  "session": "https://testHost/api/session/testSessionId",
+  "type": "Event",
+}
+`;
+
+exports[`Caliper event creator createLTIPickerEvent 1`] = `
+Event {
+  "@context": "http://purl.imsglobal.org/ctx/caliper/v1p1",
+  "action": "Used",
+  "actor": "https://testHost/api/user/testUserId",
+  "edApp": "https://testHost/api/system",
+  "eventTime": "mockDate",
+  "extensions": Object {
+    "previewMode": false,
+  },
+  "id": "urn:uuid:DEADBEEF-0000-DEAD-BEEF-1234DEADBEEF",
+  "object": "https://testHost/api/system",
+  "target": "https://testHost/api/picker",
+  "type": "ToolUseEvent",
+}
+`;
+
+exports[`Caliper event creator createNavMenuActivatedEvent 1`] = `
+Event {
+  "@context": "http://purl.imsglobal.org/ctx/caliper/v1p1",
+  "action": "Activated",
+  "actor": "https://testHost/api/user/testUserId",
+  "edApp": "https://testHost/api/system",
+  "eventTime": "mockDate",
+  "extensions": Object {
+    "foo": "bar",
+    "previewMode": false,
+  },
+  "federatedSession": "https://testHost/api/launch/testOboLaunchId",
+  "id": "urn:uuid:DEADBEEF-0000-DEAD-BEEF-1234DEADBEEF",
+  "object": "https://testHost/api/viewer/client/nav%3FdraftId=testDraftId",
+  "session": "https://testHost/api/session/testSessionId",
+  "type": "Event",
+}
+`;
+
+exports[`Caliper event creator createNavMenuDectivatedEvent 1`] = `
+Event {
+  "@context": "http://purl.imsglobal.org/ctx/caliper/v1p1",
+  "action": "Deactivated",
+  "actor": "https://testHost/api/user/testUserId",
+  "edApp": "https://testHost/api/system",
+  "eventTime": "mockDate",
+  "extensions": Object {
+    "foo": "bar",
+    "previewMode": false,
+  },
+  "federatedSession": "https://testHost/api/launch/testOboLaunchId",
+  "id": "urn:uuid:DEADBEEF-0000-DEAD-BEEF-1234DEADBEEF",
+  "object": "https://testHost/api/viewer/client/nav%3FdraftId=testDraftId",
+  "session": "https://testHost/api/session/testSessionId",
+  "type": "Event",
+}
+`;
+
+exports[`Caliper event creator createNavMenuHidEvent 1`] = `
+Event {
+  "@context": "http://purl.imsglobal.org/ctx/caliper/v1p1",
+  "action": "Hid",
+  "actor": "https://testHost/api/user/testUserId",
+  "edApp": "https://testHost/api/system",
+  "eventTime": "mockDate",
+  "extensions": Object {
+    "foo": "bar",
+    "previewMode": false,
+  },
+  "federatedSession": "https://testHost/api/launch/testOboLaunchId",
+  "id": "urn:uuid:DEADBEEF-0000-DEAD-BEEF-1234DEADBEEF",
+  "object": "https://testHost/api/viewer/client/nav%3FdraftId=testDraftId",
+  "session": "https://testHost/api/session/testSessionId",
+  "type": "Event",
+}
+`;
+
+exports[`Caliper event creator createNavMenuShowedEvent 1`] = `
+Event {
+  "@context": "http://purl.imsglobal.org/ctx/caliper/v1p1",
+  "action": "Showed",
+  "actor": "https://testHost/api/user/testUserId",
+  "edApp": "https://testHost/api/system",
+  "eventTime": "mockDate",
+  "extensions": Object {
+    "foo": "bar",
+    "previewMode": false,
+  },
+  "federatedSession": "https://testHost/api/launch/testOboLaunchId",
+  "id": "urn:uuid:DEADBEEF-0000-DEAD-BEEF-1234DEADBEEF",
+  "object": "https://testHost/api/viewer/client/nav%3FdraftId=testDraftId",
+  "session": "https://testHost/api/session/testSessionId",
+  "type": "Event",
+}
+`;
+
+exports[`Caliper event creator createNavMenuToggledEvent 1`] = `
+Event {
+  "@context": "http://purl.imsglobal.org/ctx/caliper/v1p1",
+  "action": "Toggled",
+  "actor": "https://testHost/api/user/testUserId",
+  "edApp": "https://testHost/api/system",
+  "eventTime": "mockDate",
+  "extensions": Object {
+    "foo": "bar",
+    "previewMode": false,
+  },
+  "federatedSession": "https://testHost/api/launch/testOboLaunchId",
+  "id": "urn:uuid:DEADBEEF-0000-DEAD-BEEF-1234DEADBEEF",
+  "object": "https://testHost/api/viewer/client/nav%3FdraftId=testDraftId",
   "session": "https://testHost/api/session/testSessionId",
   "type": "Event",
 }
@@ -264,13 +377,13 @@ Event {
   "action": "NavigatedTo",
   "actor": "https://testHost/api/user/testUserId",
   "edApp": "https://testHost/api/system",
-  "eventTime": "2017-08-29T16:57:14.500Z",
+  "eventTime": "mockDate",
   "extensions": Object {
     "foo": "bar",
     "previewMode": false,
   },
   "federatedSession": "https://testHost/api/launch/testOboLaunchId",
-  "id": "urn:uuid:fb9826d0-3d7a-43b8-a5ad-3949ce620d91",
+  "id": "urn:uuid:DEADBEEF-0000-DEAD-BEEF-1234DEADBEEF",
   "object": "https://testHost/api/draft/testDraftId#navigation is going here",
   "referrer": "https://testHost/api/draft/testDraftId#navigation came from here",
   "session": "https://testHost/api/session/testSessionId",
@@ -284,7 +397,7 @@ Event {
   "action": "Graded",
   "actor": "https://testHost/api/viewer/client",
   "edApp": "https://testHost/api/system",
-  "eventTime": "2017-08-29T16:57:14.500Z",
+  "eventTime": "mockDate",
   "extensions": Object {
     "foo": "bar",
     "previewMode": false,
@@ -293,14 +406,14 @@ Event {
   "generated": Object {
     "@context": "http://purl.imsglobal.org/ctx/caliper/v1p1",
     "attempt": "https://testHost/api/practice/testDraftId/testQuestionId",
-    "dateCreated": "2017-08-29T16:57:14.500Z",
+    "dateCreated": "mockDate",
     "id": "urn:uuid:123",
     "maxScore": 100,
     "scoreGiven": "50",
     "scoredBy": "https://testHost/api/viewer/client",
     "type": "Score",
   },
-  "id": "urn:uuid:fb9826d0-3d7a-43b8-a5ad-3949ce620d91",
+  "id": "urn:uuid:DEADBEEF-0000-DEAD-BEEF-1234DEADBEEF",
   "object": "https://testHost/api/practice/testDraftId/testQuestionId",
   "session": "https://testHost/api/session/testSessionId",
   "type": "GradeEvent",
@@ -313,13 +426,13 @@ Event {
   "action": "Reset",
   "actor": "https://testHost/api/user/testUserId",
   "edApp": "https://testHost/api/system",
-  "eventTime": "2017-08-29T16:57:14.500Z",
+  "eventTime": "mockDate",
   "extensions": Object {
     "foo": "bar",
     "previewMode": false,
   },
   "federatedSession": "https://testHost/api/launch/testOboLaunchId",
-  "id": "urn:uuid:fb9826d0-3d7a-43b8-a5ad-3949ce620d91",
+  "id": "urn:uuid:DEADBEEF-0000-DEAD-BEEF-1234DEADBEEF",
   "object": "https://testHost/api/draft/testDraftId#testQuestionId",
   "session": "https://testHost/api/session/testSessionId",
   "target": "https://testHost/api/practice/testDraftId/testQuestionId",
@@ -333,13 +446,13 @@ Event {
   "action": "Submitted",
   "actor": "https://testHost/api/user/testUserId",
   "edApp": "https://testHost/api/system",
-  "eventTime": "2017-08-29T16:57:14.500Z",
+  "eventTime": "mockDate",
   "extensions": Object {
     "foo": "bar",
     "previewMode": false,
   },
   "federatedSession": "https://testHost/api/launch/testOboLaunchId",
-  "id": "urn:uuid:fb9826d0-3d7a-43b8-a5ad-3949ce620d91",
+  "id": "urn:uuid:DEADBEEF-0000-DEAD-BEEF-1234DEADBEEF",
   "object": "https://testHost/api/practice/testDraftId/testQuestionId",
   "session": "https://testHost/api/session/testSessionId",
   "type": "Event",
@@ -352,12 +465,12 @@ Event {
   "action": "Reset",
   "actor": "https://testHost/api/server",
   "edApp": "https://testHost/api/system",
-  "eventTime": "2017-08-29T16:57:14.500Z",
+  "eventTime": "mockDate",
   "extensions": Object {
     "foo": "bar",
     "previewMode": false,
   },
-  "id": "urn:uuid:fb9826d0-3d7a-43b8-a5ad-3949ce620d91",
+  "id": "urn:uuid:DEADBEEF-0000-DEAD-BEEF-1234DEADBEEF",
   "object": "urn:uuid:123",
   "target": "https://testHost/api/practice/testDraftId/testQuestionId",
   "type": "Event",
@@ -370,13 +483,13 @@ Event {
   "action": "Viewed",
   "actor": "https://testHost/api/user/testUserId",
   "edApp": "https://testHost/api/system",
-  "eventTime": "2017-08-29T16:57:14.500Z",
+  "eventTime": "mockDate",
   "extensions": Object {
     "foo": "bar",
     "previewMode": false,
   },
   "federatedSession": "https://testHost/api/launch/testOboLaunchId",
-  "id": "urn:uuid:fb9826d0-3d7a-43b8-a5ad-3949ce620d91",
+  "id": "urn:uuid:DEADBEEF-0000-DEAD-BEEF-1234DEADBEEF",
   "object": "https://testHost/api/draft/testDraftId#testItemId",
   "session": "https://testHost/api/session/testSessionId",
   "target": "https://testHost/api/draft/testDraftId?context=testFramename#testItemId",
@@ -390,13 +503,13 @@ Event {
   "action": "Viewed",
   "actor": "https://testHost/api/user/testUserId",
   "edApp": "https://testHost/api/system",
-  "eventTime": "2017-08-29T16:57:14.500Z",
+  "eventTime": "mockDate",
   "extensions": Object {
     "foo": "bar",
     "previewMode": false,
   },
   "federatedSession": "https://testHost/api/launch/testOboLaunchId",
-  "id": "urn:uuid:fb9826d0-3d7a-43b8-a5ad-3949ce620d91",
+  "id": "urn:uuid:DEADBEEF-0000-DEAD-BEEF-1234DEADBEEF",
   "object": "https://testHost/api/draft/testDraftId#testItemId",
   "session": "https://testHost/api/session/testSessionId",
   "type": "ViewEvent",
@@ -409,16 +522,33 @@ Event {
   "action": "Abandoned",
   "actor": "https://testHost/api/user/testUserId",
   "edApp": "https://testHost/api/system",
-  "eventTime": "2017-08-29T16:57:14.500Z",
+  "eventTime": "mockDate",
   "extensions": Object {
     "foo": "bar",
     "previewMode": false,
   },
   "federatedSession": "https://testHost/api/launch/testOboLaunchId",
-  "id": "urn:uuid:fb9826d0-3d7a-43b8-a5ad-3949ce620d91",
-  "object": "https:///api/draft/testDraftId",
+  "id": "urn:uuid:DEADBEEF-0000-DEAD-BEEF-1234DEADBEEF",
+  "object": "https://testHost/api/draft/testDraftId",
   "session": "https://testHost/api/session/testSessionId",
   "type": "Event",
+}
+`;
+
+exports[`Caliper event creator createViewerOpenEvent 1`] = `
+Event {
+  "@context": "http://purl.imsglobal.org/ctx/caliper/v1p1",
+  "action": "Used",
+  "actor": "https://testHost/api/user/testUserId",
+  "edApp": "https://testHost/api/system",
+  "eventTime": "mockDate",
+  "extensions": Object {
+    "previewMode": false,
+  },
+  "generated": "https://testHost/api/visit/visitId",
+  "id": "urn:uuid:DEADBEEF-0000-DEAD-BEEF-1234DEADBEEF",
+  "object": "https://testHost/api/system",
+  "type": "ToolUseEvent",
 }
 `;
 
@@ -428,14 +558,14 @@ Event {
   "action": "Resumed",
   "actor": "https://testHost/api/user/testUserId",
   "edApp": "https://testHost/api/system",
-  "eventTime": "2017-08-29T16:57:14.500Z",
+  "eventTime": "mockDate",
   "extensions": Object {
     "foo": "bar",
     "previewMode": false,
   },
   "federatedSession": "https://testHost/api/launch/testOboLaunchId",
-  "id": "urn:uuid:fb9826d0-3d7a-43b8-a5ad-3949ce620d91",
-  "object": "https:///api/draft/testDraftId",
+  "id": "urn:uuid:DEADBEEF-0000-DEAD-BEEF-1234DEADBEEF",
+  "object": "https://testHost/api/draft/testDraftId",
   "session": "https://testHost/api/session/testSessionId",
   "type": "Event",
 }
@@ -447,16 +577,16 @@ Event {
   "action": "LoggedIn",
   "actor": "https://testHost/api/user/testUserId",
   "edApp": "https://testHost/api/system",
-  "eventTime": "2017-08-29T16:57:14.500Z",
+  "eventTime": "mockDate",
   "extensions": Object {
     "foo": "bar",
     "previewMode": false,
   },
   "federatedSession": "https://testHost/api/launch/testOboLaunchId",
-  "id": "urn:uuid:fb9826d0-3d7a-43b8-a5ad-3949ce620d91",
+  "id": "urn:uuid:DEADBEEF-0000-DEAD-BEEF-1234DEADBEEF",
   "object": "https://testHost/api/system",
   "session": "https://testHost/api/session/testSessionId",
-  "target": "https:///api/draft/testDraftId",
+  "target": "https://testHost/api/draft/testDraftId",
   "type": "SessionEvent",
 }
 `;
@@ -467,16 +597,34 @@ Event {
   "action": "LoggedOut",
   "actor": "https://testHost/api/user/testUserId",
   "edApp": "https://testHost/api/system",
-  "eventTime": "2017-08-29T16:57:14.500Z",
+  "eventTime": "mockDate",
   "extensions": Object {
     "foo": "bar",
     "previewMode": false,
   },
   "federatedSession": "https://testHost/api/launch/testOboLaunchId",
-  "id": "urn:uuid:fb9826d0-3d7a-43b8-a5ad-3949ce620d91",
+  "id": "urn:uuid:DEADBEEF-0000-DEAD-BEEF-1234DEADBEEF",
   "object": "https://testHost/api/system",
   "session": "https://testHost/api/session/testSessionId",
-  "target": "https:///api/draft/testDraftId",
+  "target": "https://testHost/api/draft/testDraftId",
   "type": "SessionEvent",
+}
+`;
+
+exports[`Caliper event creator createVisitCreateEvent 1`] = `
+Event {
+  "@context": "http://purl.imsglobal.org/ctx/caliper/v1p1",
+  "action": "Created",
+  "actor": "https://testHost/api/user/testUserId",
+  "edApp": "https://testHost/api/system",
+  "eventTime": "mockDate",
+  "extensions": Object {
+    "deactivatedVisitId": "deactivatedVisitId",
+    "previewMode": false,
+  },
+  "generated": "https://testHost/api/visit/visitId",
+  "id": "urn:uuid:DEADBEEF-0000-DEAD-BEEF-1234DEADBEEF",
+  "object": "https://testHost/api/system",
+  "type": "Event",
 }
 `;

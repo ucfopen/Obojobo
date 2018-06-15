@@ -5,9 +5,9 @@ var type
 var seed
 
 /**
-  * We receive the dbmigrate dependency from dbmigrate initially.
-  * This enables us to not have to rely on NODE_PATH.
-  */
+ * We receive the dbmigrate dependency from dbmigrate initially.
+ * This enables us to not have to rely on NODE_PATH.
+ */
 exports.setup = function(options, seedLink) {
 	dbm = options.dbmigrate
 	type = dbm.dataType
@@ -16,10 +16,7 @@ exports.setup = function(options, seedLink) {
 
 exports.up = function(db) {
 	return db
-		.removeIndex('attempts_question_responses', 'aqr_unique_responses')
-		.then(result => {
-			return db.removeColumn('attempts_question_responses', 'responder_id')
-		})
+		.removeColumn('attempts_question_responses', 'responder_id')
 		.then(result => {
 			return db.addIndex(
 				'attempts_question_responses',
@@ -38,14 +35,6 @@ exports.down = function(db) {
 				type: 'varchar',
 				length: 100
 			})
-		})
-		.then(result => {
-			return db.addIndex(
-				'attempts_question_responses',
-				'aqr_unique_responses',
-				['attempt_id', 'question_id', 'responder_id'],
-				true
-			)
 		})
 }
 

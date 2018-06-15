@@ -18,17 +18,17 @@ const selectedTargets = { ids: [targetId] }
 const score = '50'
 const scoreId = '123'
 const sessionIds = { sessionId: 'testSessionId', launchId: 'testOboLaunchId' }
-const testDate = new Date('2017-08-29T16:57:14.500Z')
 const to = 'navigation is going here'
-
-Date = class extends Date {
-	constructor() {
-		super()
-		return testDate
-	}
-}
+let originaltoISOString
 
 describe('Caliper event creator', () => {
+	beforeAll(() => {
+		originaltoISOString = Date.prototype.toISOString
+		Date.prototype.toISOString = () => 'mockDate'
+	})
+	afterAll(() => {
+		Date.prototype.toISOString = originaltoISOString
+	})
 	it('createNavigationEvent', () => {
 		const navEvent = caliperEvents.createNavigationEvent({
 			actor,
@@ -51,9 +51,7 @@ describe('Caliper event creator', () => {
 				sessionIds,
 				extensions
 			})
-		}).toThrow(
-			`Invalid actor type. Must provide actor of type user\nMissing required arguments: actor.id`
-		)
+		}).toThrow(`Invalid actor type. Must provide actor of type user`)
 	})
 
 	///////////////////////////////////////////////////////////////////////////////////////////////////
@@ -91,9 +89,7 @@ describe('Caliper event creator', () => {
 				sessionIds,
 				extensions
 			})
-		}).toThrow(
-			`Invalid actor type. Must provide actor of type user\nMissing required arguments: actor.id`
-		)
+		}).toThrow(`Invalid actor type. Must provide actor of type user`)
 	})
 
 	///////////////////////////////////////////////////////////////////////////////////////////////////
@@ -132,7 +128,7 @@ describe('Caliper event creator', () => {
 				extensions
 			})
 		}).toThrow(
-			`Invalid actor type. Must provide actor of type user\nMissing required arguments: actor.id`
+			`createEvent actor must be one of "user", "viewerClient" or "serverApp". Instead was given "bad".`
 		)
 	})
 
@@ -160,9 +156,7 @@ describe('Caliper event creator', () => {
 				sessionIds,
 				extensions
 			})
-		}).toThrow(
-			`Invalid actor type. Must provide actor of type user\nMissing required arguments: actor.id`
-		)
+		}).toThrow(`Invalid actor type. Must provide actor of type user`)
 	})
 
 	///////////////////////////////////////////////////////////////////////////////////////////////////
@@ -189,9 +183,7 @@ describe('Caliper event creator', () => {
 				sessionIds,
 				extensions
 			})
-		}).toThrow(
-			`Invalid actor type. Must provide actor of type user\nMissing required arguments: actor.id`
-		)
+		}).toThrow(`Invalid actor type. Must provide actor of type user`)
 	})
 
 	///////////////////////////////////////////////////////////////////////////////////////////////////
@@ -328,9 +320,7 @@ describe('Caliper event creator', () => {
 				selectedTargets,
 				extensions
 			})
-		}).toThrow(
-			`Invalid actor type. Must provide actor of type user\nMissing required arguments: actor.id`
-		)
+		}).toThrow(`Invalid actor type. Must provide actor of type user`)
 	})
 
 	///////////////////////////////////////////////////////////////////////////////////////////////////
@@ -355,9 +345,7 @@ describe('Caliper event creator', () => {
 				sessionIds,
 				extensions
 			})
-		}).toThrow(
-			`Invalid actor type. Must provide actor of type user\nMissing required arguments: actor.id`
-		)
+		}).toThrow(`Invalid actor type. Must provide actor of type user`)
 	})
 
 	///////////////////////////////////////////////////////////////////////////////////////////////////
@@ -405,9 +393,7 @@ describe('Caliper event creator', () => {
 				sessionIds,
 				extensions
 			})
-		).toThrow(
-			`Invalid actor type. Must provide actor of type user\nMissing required arguments: actor.id`
-		)
+		).toThrow(`Invalid actor type. Must provide actor of type user`)
 	})
 
 	///////////////////////////////////////////////////////////////////////////////////////////////////
@@ -430,9 +416,7 @@ describe('Caliper event creator', () => {
 				sessionIds,
 				extensions
 			})
-		).toThrow(
-			`Invalid actor type. Must provide actor of type user\nMissing required arguments: actor.id`
-		)
+		).toThrow(`Invalid actor type. Must provide actor of type user`)
 	})
 
 	///////////////////////////////////////////////////////////////////////////////////////////////////
@@ -455,9 +439,7 @@ describe('Caliper event creator', () => {
 				sessionIds,
 				extensions
 			})
-		).toThrow(
-			`Invalid actor type. Must provide actor of type user\nMissing required arguments: actor.id`
-		)
+		).toThrow(`Invalid actor type. Must provide actor of type user`)
 	})
 
 	///////////////////////////////////////////////////////////////////////////////////////////////////
@@ -480,9 +462,7 @@ describe('Caliper event creator', () => {
 				sessionIds,
 				extensions
 			})
-		).toThrow(
-			`Invalid actor type. Must provide actor of type user\nMissing required arguments: actor.id`
-		)
+		).toThrow(`Invalid actor type. Must provide actor of type user`)
 	})
 
 	///////////////////////////////////////////////////////////////////////////////////////////////////
@@ -506,8 +486,185 @@ describe('Caliper event creator', () => {
 				questionId,
 				extensions
 			})
+		).toThrow(`Invalid actor type. Must provide actor of type user`)
+	})
+
+	///////////////////////////////////////////////////////////////////////////////////////////////////
+
+	it('createNavMenuHidEvent', () => {
+		const createNavMenuHidEvent = caliperEvents.createNavMenuHidEvent({
+			actor,
+			draftId,
+			sessionIds,
+			extensions
+		})
+		expect(createNavMenuHidEvent).toMatchSnapshot()
+	})
+
+	it('createNavMenuHidEvent - throws error given a bad actor', () => {
+		expect(() =>
+			caliperEvents.createNavMenuHidEvent({
+				actor: { type: 'bad' },
+				draftId,
+				sessionIds,
+				extensions
+			})
 		).toThrow(
-			`Invalid actor type. Must provide actor of type user\nMissing required arguments: actor.id`
+			`createEvent actor must be one of "user", "viewerClient" or "serverApp". Instead was given "bad".`
 		)
+	})
+
+	///////////////////////////////////////////////////////////////////////////////////////////////////
+
+	it('createNavMenuShowedEvent', () => {
+		const createNavMenuShowedEvent = caliperEvents.createNavMenuShowedEvent({
+			actor,
+			draftId,
+			sessionIds,
+			extensions
+		})
+		expect(createNavMenuShowedEvent).toMatchSnapshot()
+	})
+
+	it('createNavMenuShowedEvent - throws error given a bad actor', () => {
+		expect(() =>
+			caliperEvents.createNavMenuShowedEvent({
+				actor: { type: 'bad' },
+				draftId,
+				sessionIds,
+				extensions
+			})
+		).toThrow(
+			`createEvent actor must be one of "user", "viewerClient" or "serverApp". Instead was given "bad".`
+		)
+	})
+
+	///////////////////////////////////////////////////////////////////////////////////////////////////
+
+	it('createNavMenuToggledEvent', () => {
+		const createNavMenuToggledEvent = caliperEvents.createNavMenuToggledEvent({
+			actor,
+			draftId,
+			sessionIds,
+			extensions
+		})
+		expect(createNavMenuToggledEvent).toMatchSnapshot()
+	})
+
+	it('createNavMenuToggledEvent - throws error given a bad actor', () => {
+		expect(() =>
+			caliperEvents.createNavMenuToggledEvent({
+				actor: { type: 'bad' },
+				draftId,
+				sessionIds,
+				extensions
+			})
+		).toThrow(
+			`createEvent actor must be one of "user", "viewerClient" or "serverApp". Instead was given "bad".`
+		)
+	})
+
+	///////////////////////////////////////////////////////////////////////////////////////////////////
+
+	it('createNavMenuActivatedEvent', () => {
+		const createNavMenuActivatedEvent = caliperEvents.createNavMenuActivatedEvent({
+			actor,
+			draftId,
+			sessionIds,
+			extensions
+		})
+		expect(createNavMenuActivatedEvent).toMatchSnapshot()
+	})
+
+	it('createNavMenuActivatedEvent - throws error given a bad actor', () => {
+		expect(() =>
+			caliperEvents.createNavMenuActivatedEvent({
+				actor: { type: 'bad' },
+				draftId,
+				sessionIds,
+				extensions
+			})
+		).toThrow(
+			`createEvent actor must be one of "user", "viewerClient" or "serverApp". Instead was given "bad".`
+		)
+	})
+
+	///////////////////////////////////////////////////////////////////////////////////////////////////
+
+	it('createNavMenuDectivatedEvent', () => {
+		const createNavMenuDeactivatedEvent = caliperEvents.createNavMenuDeactivatedEvent({
+			actor,
+			draftId,
+			sessionIds,
+			extensions
+		})
+		expect(createNavMenuDeactivatedEvent).toMatchSnapshot()
+	})
+
+	it('createNavMenuDeactivatedEvent - throws error given a bad actor', () => {
+		expect(() =>
+			caliperEvents.createNavMenuDeactivatedEvent({
+				actor: { type: 'bad' },
+				draftId,
+				sessionIds,
+				extensions
+			})
+		).toThrow(
+			`createEvent actor must be one of "user", "viewerClient" or "serverApp". Instead was given "bad".`
+		)
+	})
+
+	///////////////////////////////////////////////////////////////////////////////////////////////////
+
+	it('createLTIPickerEvent', () => {
+		const createLTIPickerEvent = caliperEvents.createLTIPickerEvent({
+			actor
+		})
+		expect(createLTIPickerEvent).toMatchSnapshot()
+	})
+
+	it('createLTIPickerEvent - throws error given a bad actor', () => {
+		expect(() =>
+			caliperEvents.createLTIPickerEvent({
+				actor: { type: 'bad' }
+			})
+		).toThrow(`Invalid actor type. Must provide actor of type user`)
+	})
+
+	///////////////////////////////////////////////////////////////////////////////////////////////////
+
+	it('createViewerOpenEvent', () => {
+		const createViewerOpenEvent = caliperEvents.createViewerOpenEvent({
+			actor,
+			visitId: 'visitId'
+		})
+		expect(createViewerOpenEvent).toMatchSnapshot()
+	})
+
+	it('createViewerOpenEvent - throws error given a bad actor', () => {
+		expect(() =>
+			caliperEvents.createViewerOpenEvent({
+				actor: { type: 'bad' }
+			})
+		).toThrow(`Invalid actor type. Must provide actor of type user`)
+	})
+
+	///////////////////////////////////////////////////////////////////////////////////////////////////
+
+	it('createVisitCreateEvent', () => {
+		const createVisitCreateEvent = caliperEvents.createVisitCreateEvent({
+			actor,
+			visitId: 'visitId',
+			extensions: { deactivatedVisitId: 'deactivatedVisitId' }
+		})
+		expect(createVisitCreateEvent).toMatchSnapshot()
+	})
+
+	it('createVisitCreateEvent - throws error given a bad actor', () => {
+		expect(() =>
+			caliperEvents.createVisitCreateEvent({
+				actor: { type: 'bad' }
+			})
+		).toThrow(`Invalid actor type. Must provide actor of type user`)
 	})
 })

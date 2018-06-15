@@ -1,6 +1,26 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
-exports[`Caliper event from req nav_goto 1`] = `
+exports[`Caliper event from req nav:close returns the expected snapshot 1`] = `
+Event {
+  "@context": "http://purl.imsglobal.org/ctx/caliper/v1p1",
+  "action": "Hid",
+  "actor": "https://hostnameReq/api/user/testUserIdReq",
+  "edApp": "https://hostnameReq/api/system",
+  "eventTime": "2016-09-22T16:57:14.500Z",
+  "extensions": Object {
+    "internalName": "nav:close",
+    "navType": "close",
+    "previewMode": false,
+  },
+  "federatedSession": "https://hostnameReq/api/launch/OboLtiLaunchIdReq",
+  "id": "urn:uuid:DEADBEEF-0000-DEAD-BEEF-1234DEADBEEF",
+  "object": "https://hostnameReq/api/viewer/client/nav%3FdraftId=testDraftIdReq",
+  "session": "https://hostnameReq/api/session/SessionIdReq",
+  "type": "Event",
+}
+`;
+
+exports[`Caliper event from req nav:goto returns the expected snapshot 1`] = `
 Event {
   "@context": "http://purl.imsglobal.org/ctx/caliper/v1p1",
   "action": "NavigatedTo",
@@ -13,7 +33,7 @@ Event {
     "previewMode": false,
   },
   "federatedSession": "https://hostnameReq/api/launch/OboLtiLaunchIdReq",
-  "id": "urn:uuid:fb9826d0-3d7a-43b8-a5ad-3949ce620d91",
+  "id": "urn:uuid:DEADBEEF-0000-DEAD-BEEF-1234DEADBEEF",
   "object": "https://hostnameReq/api/draft/testDraftIdReq#toReq",
   "referrer": "https://hostnameReq/api/draft/testDraftIdReq#fromReq",
   "session": "https://hostnameReq/api/session/SessionIdReq",
@@ -21,7 +41,88 @@ Event {
 }
 `;
 
-exports[`Caliper event from req question_checkAnswer 1`] = `
+exports[`Caliper event from req nav:lock returns the expected snapshot 1`] = `
+Event {
+  "@context": "http://purl.imsglobal.org/ctx/caliper/v1p1",
+  "action": "Deactivated",
+  "actor": "https://hostnameReq/api/viewer/client",
+  "edApp": "https://hostnameReq/api/system",
+  "eventTime": "2016-09-22T16:57:14.500Z",
+  "extensions": Object {
+    "internalName": "nav:lock",
+    "navType": "lock",
+    "previewMode": false,
+  },
+  "federatedSession": "https://hostnameReq/api/launch/OboLtiLaunchIdReq",
+  "id": "urn:uuid:DEADBEEF-0000-DEAD-BEEF-1234DEADBEEF",
+  "object": "https://hostnameReq/api/viewer/client/nav%3FdraftId=testDraftIdReq",
+  "session": "https://hostnameReq/api/session/SessionIdReq",
+  "type": "Event",
+}
+`;
+
+exports[`Caliper event from req nav:open returns the expected snapshot 1`] = `
+Event {
+  "@context": "http://purl.imsglobal.org/ctx/caliper/v1p1",
+  "action": "Showed",
+  "actor": "https://hostnameReq/api/user/testUserIdReq",
+  "edApp": "https://hostnameReq/api/system",
+  "eventTime": "2016-09-22T16:57:14.500Z",
+  "extensions": Object {
+    "internalName": "nav:open",
+    "navType": "open",
+    "previewMode": false,
+  },
+  "federatedSession": "https://hostnameReq/api/launch/OboLtiLaunchIdReq",
+  "id": "urn:uuid:DEADBEEF-0000-DEAD-BEEF-1234DEADBEEF",
+  "object": "https://hostnameReq/api/viewer/client/nav%3FdraftId=testDraftIdReq",
+  "session": "https://hostnameReq/api/session/SessionIdReq",
+  "type": "Event",
+}
+`;
+
+exports[`Caliper event from req nav:toggle returns the expected snapshot 1`] = `
+Event {
+  "@context": "http://purl.imsglobal.org/ctx/caliper/v1p1",
+  "action": "Toggled",
+  "actor": "https://hostnameReq/api/user/testUserIdReq",
+  "edApp": "https://hostnameReq/api/system",
+  "eventTime": "2016-09-22T16:57:14.500Z",
+  "extensions": Object {
+    "internalName": "nav:toggle",
+    "isOpen": undefined,
+    "navType": "toggle",
+    "previewMode": false,
+  },
+  "federatedSession": "https://hostnameReq/api/launch/OboLtiLaunchIdReq",
+  "id": "urn:uuid:DEADBEEF-0000-DEAD-BEEF-1234DEADBEEF",
+  "object": "https://hostnameReq/api/viewer/client/nav%3FdraftId=testDraftIdReq",
+  "session": "https://hostnameReq/api/session/SessionIdReq",
+  "type": "Event",
+}
+`;
+
+exports[`Caliper event from req nav:unlock returns the expected snapshot 1`] = `
+Event {
+  "@context": "http://purl.imsglobal.org/ctx/caliper/v1p1",
+  "action": "Activated",
+  "actor": "https://hostnameReq/api/viewer/client",
+  "edApp": "https://hostnameReq/api/system",
+  "eventTime": "2016-09-22T16:57:14.500Z",
+  "extensions": Object {
+    "internalName": "nav:unlock",
+    "navType": "unlock",
+    "previewMode": false,
+  },
+  "federatedSession": "https://hostnameReq/api/launch/OboLtiLaunchIdReq",
+  "id": "urn:uuid:DEADBEEF-0000-DEAD-BEEF-1234DEADBEEF",
+  "object": "https://hostnameReq/api/viewer/client/nav%3FdraftId=testDraftIdReq",
+  "session": "https://hostnameReq/api/session/SessionIdReq",
+  "type": "Event",
+}
+`;
+
+exports[`Caliper event from req question:checkAnswer returns the expected snapshot 1`] = `
 Event {
   "@context": "http://purl.imsglobal.org/ctx/caliper/v1p1",
   "action": "Submitted",
@@ -32,14 +133,14 @@ Event {
     "previewMode": false,
   },
   "federatedSession": "https://hostnameReq/api/launch/OboLtiLaunchIdReq",
-  "id": "urn:uuid:fb9826d0-3d7a-43b8-a5ad-3949ce620d91",
+  "id": "urn:uuid:DEADBEEF-0000-DEAD-BEEF-1234DEADBEEF",
   "object": "https://hostnameReq/api/practice/testDraftIdReq/testQuestionIdReq",
   "session": "https://hostnameReq/api/session/SessionIdReq",
   "type": "Event",
 }
 `;
 
-exports[`Caliper event from req question_hide 1`] = `
+exports[`Caliper event from req question:hide returns the expected snapshot 1`] = `
 Event {
   "@context": "http://purl.imsglobal.org/ctx/caliper/v1p1",
   "action": "Hid",
@@ -50,14 +151,14 @@ Event {
     "previewMode": false,
   },
   "federatedSession": "https://hostnameReq/api/launch/OboLtiLaunchIdReq",
-  "id": "urn:uuid:fb9826d0-3d7a-43b8-a5ad-3949ce620d91",
+  "id": "urn:uuid:DEADBEEF-0000-DEAD-BEEF-1234DEADBEEF",
   "object": "https://hostnameReq/api/draft/testDraftIdReq#testQuestionIdReq",
   "session": "https://hostnameReq/api/session/SessionIdReq",
   "type": "Event",
 }
 `;
 
-exports[`Caliper event from req question_hideExplanation 1`] = `
+exports[`Caliper event from req question:hideExplanation returns the expected snapshot 1`] = `
 Event {
   "@context": "http://purl.imsglobal.org/ctx/caliper/v1p1",
   "action": "Hid",
@@ -68,7 +169,7 @@ Event {
     "previewMode": false,
   },
   "federatedSession": "https://hostnameReq/api/launch/OboLtiLaunchIdReq",
-  "id": "urn:uuid:fb9826d0-3d7a-43b8-a5ad-3949ce620d91",
+  "id": "urn:uuid:DEADBEEF-0000-DEAD-BEEF-1234DEADBEEF",
   "object": "https://hostnameReq/api/draft/testDraftIdReq#testQuestionIdReq",
   "session": "https://hostnameReq/api/session/SessionIdReq",
   "target": "https://hostnameReq/api/draft/testDraftIdReq?context=explanation#testQuestionIdReq",
@@ -76,7 +177,7 @@ Event {
 }
 `;
 
-exports[`Caliper event from req question_retry 1`] = `
+exports[`Caliper event from req question:retry returns the expected snapshot 1`] = `
 Event {
   "@context": "http://purl.imsglobal.org/ctx/caliper/v1p1",
   "action": "Reset",
@@ -87,7 +188,7 @@ Event {
     "previewMode": false,
   },
   "federatedSession": "https://hostnameReq/api/launch/OboLtiLaunchIdReq",
-  "id": "urn:uuid:fb9826d0-3d7a-43b8-a5ad-3949ce620d91",
+  "id": "urn:uuid:DEADBEEF-0000-DEAD-BEEF-1234DEADBEEF",
   "object": "https://hostnameReq/api/draft/testDraftIdReq#testQuestionIdReq",
   "session": "https://hostnameReq/api/session/SessionIdReq",
   "target": "https://hostnameReq/api/practice/testDraftIdReq/testQuestionIdReq",
@@ -95,7 +196,7 @@ Event {
 }
 `;
 
-exports[`Caliper event from req question_setResponse 1`] = `
+exports[`Caliper event from req question:setResponse returns the expected snapshot 1`] = `
 Event {
   "@context": "http://purl.imsglobal.org/ctx/caliper/v1p1",
   "action": "Completed",
@@ -112,18 +213,18 @@ Event {
       "selectedTargets": undefined,
       "targetId": undefined,
     },
-    "id": "urn:uuid:fb9826d0-3d7a-43b8-a5ad-3949ce620d91",
+    "id": "urn:uuid:DEADBEEF-0000-DEAD-BEEF-1234DEADBEEF",
     "type": "Response",
   },
-  "id": "urn:uuid:fb9826d0-3d7a-43b8-a5ad-3949ce620d91",
+  "id": "urn:uuid:DEADBEEF-0000-DEAD-BEEF-1234DEADBEEF",
   "object": "https://hostnameReq/api/draft/testDraftIdReq#testQuestionIdReq",
   "session": "https://hostnameReq/api/session/SessionIdReq",
-  "target": "https:///api/draft/testDraftIdReq",
+  "target": "https://hostnameReq/api/draft/testDraftIdReq",
   "type": "AssessmentItemEvent",
 }
 `;
 
-exports[`Caliper event from req question_showExplanation 1`] = `
+exports[`Caliper event from req question:showExplanation returns the expected snapshot 1`] = `
 Event {
   "@context": "http://purl.imsglobal.org/ctx/caliper/v1p1",
   "action": "Viewed",
@@ -134,7 +235,7 @@ Event {
     "previewMode": false,
   },
   "federatedSession": "https://hostnameReq/api/launch/OboLtiLaunchIdReq",
-  "id": "urn:uuid:fb9826d0-3d7a-43b8-a5ad-3949ce620d91",
+  "id": "urn:uuid:DEADBEEF-0000-DEAD-BEEF-1234DEADBEEF",
   "object": "https://hostnameReq/api/draft/testDraftIdReq#testQuestionIdReq",
   "session": "https://hostnameReq/api/session/SessionIdReq",
   "target": "https://hostnameReq/api/draft/testDraftIdReq?context=explanation#testQuestionIdReq",
@@ -142,7 +243,7 @@ Event {
 }
 `;
 
-exports[`Caliper event from req question_view 1`] = `
+exports[`Caliper event from req question:view returns the expected snapshot 1`] = `
 Event {
   "@context": "http://purl.imsglobal.org/ctx/caliper/v1p1",
   "action": "Viewed",
@@ -153,14 +254,14 @@ Event {
     "previewMode": false,
   },
   "federatedSession": "https://hostnameReq/api/launch/OboLtiLaunchIdReq",
-  "id": "urn:uuid:fb9826d0-3d7a-43b8-a5ad-3949ce620d91",
+  "id": "urn:uuid:DEADBEEF-0000-DEAD-BEEF-1234DEADBEEF",
   "object": "https://hostnameReq/api/draft/testDraftIdReq#testQuestionIdReq",
   "session": "https://hostnameReq/api/session/SessionIdReq",
   "type": "ViewEvent",
 }
 `;
 
-exports[`Caliper event from req score_clear 1`] = `
+exports[`Caliper event from req score:clear returns the expected snapshot 1`] = `
 Event {
   "@context": "http://purl.imsglobal.org/ctx/caliper/v1p1",
   "action": "Reset",
@@ -171,7 +272,7 @@ Event {
     "previewMode": false,
   },
   "federatedSession": "https://hostnameReq/api/launch/OboLtiLaunchIdReq",
-  "id": "urn:uuid:fb9826d0-3d7a-43b8-a5ad-3949ce620d91",
+  "id": "urn:uuid:DEADBEEF-0000-DEAD-BEEF-1234DEADBEEF",
   "object": "urn:uuid:testIdReq",
   "session": "https://hostnameReq/api/session/SessionIdReq",
   "target": "https://hostnameReq/api/practice/testDraftIdReq/testItemIdReq",
@@ -179,7 +280,7 @@ Event {
 }
 `;
 
-exports[`Caliper event from req score_set 1`] = `
+exports[`Caliper event from req score:set returns the expected snapshot 1`] = `
 Event {
   "@context": "http://purl.imsglobal.org/ctx/caliper/v1p1",
   "action": "Graded",
@@ -200,14 +301,14 @@ Event {
     "scoredBy": "https://hostnameReq/api/viewer/client",
     "type": "Score",
   },
-  "id": "urn:uuid:fb9826d0-3d7a-43b8-a5ad-3949ce620d91",
+  "id": "urn:uuid:DEADBEEF-0000-DEAD-BEEF-1234DEADBEEF",
   "object": "https://hostnameReq/api/practice/testDraftIdReq/testItemIdReq",
   "session": "https://hostnameReq/api/session/SessionIdReq",
   "type": "GradeEvent",
 }
 `;
 
-exports[`Caliper event from req viewer_close 1`] = `
+exports[`Caliper event from req viewer:close returns the expected snapshot 1`] = `
 Event {
   "@context": "http://purl.imsglobal.org/ctx/caliper/v1p1",
   "action": "LoggedOut",
@@ -218,15 +319,15 @@ Event {
     "previewMode": false,
   },
   "federatedSession": "https://hostnameReq/api/launch/OboLtiLaunchIdReq",
-  "id": "urn:uuid:fb9826d0-3d7a-43b8-a5ad-3949ce620d91",
+  "id": "urn:uuid:DEADBEEF-0000-DEAD-BEEF-1234DEADBEEF",
   "object": "https://hostnameReq/api/system",
   "session": "https://hostnameReq/api/session/SessionIdReq",
-  "target": "https:///api/draft/testDraftIdReq",
+  "target": "https://hostnameReq/api/draft/testDraftIdReq",
   "type": "SessionEvent",
 }
 `;
 
-exports[`Caliper event from req viewer_inactive 1`] = `
+exports[`Caliper event from req viewer:inactive returns the expected snapshot 1`] = `
 Event {
   "@context": "http://purl.imsglobal.org/ctx/caliper/v1p1",
   "action": "Abandoned",
@@ -240,14 +341,14 @@ Event {
     "type": "inactive",
   },
   "federatedSession": "https://hostnameReq/api/launch/OboLtiLaunchIdReq",
-  "id": "urn:uuid:fb9826d0-3d7a-43b8-a5ad-3949ce620d91",
-  "object": "https:///api/draft/testDraftIdReq",
+  "id": "urn:uuid:DEADBEEF-0000-DEAD-BEEF-1234DEADBEEF",
+  "object": "https://hostnameReq/api/draft/testDraftIdReq",
   "session": "https://hostnameReq/api/session/SessionIdReq",
   "type": "Event",
 }
 `;
 
-exports[`Caliper event from req viewer_leave 1`] = `
+exports[`Caliper event from req viewer:leave returns the expected snapshot 1`] = `
 Event {
   "@context": "http://purl.imsglobal.org/ctx/caliper/v1p1",
   "action": "Abandoned",
@@ -259,14 +360,14 @@ Event {
     "type": "leave",
   },
   "federatedSession": "https://hostnameReq/api/launch/OboLtiLaunchIdReq",
-  "id": "urn:uuid:fb9826d0-3d7a-43b8-a5ad-3949ce620d91",
-  "object": "https:///api/draft/testDraftIdReq",
+  "id": "urn:uuid:DEADBEEF-0000-DEAD-BEEF-1234DEADBEEF",
+  "object": "https://hostnameReq/api/draft/testDraftIdReq",
   "session": "https://hostnameReq/api/session/SessionIdReq",
   "type": "Event",
 }
 `;
 
-exports[`Caliper event from req viewer_return 1`] = `
+exports[`Caliper event from req viewer:return returns the expected snapshot 1`] = `
 Event {
   "@context": "http://purl.imsglobal.org/ctx/caliper/v1p1",
   "action": "Resumed",
@@ -279,14 +380,14 @@ Event {
     "type": "return",
   },
   "federatedSession": "https://hostnameReq/api/launch/OboLtiLaunchIdReq",
-  "id": "urn:uuid:fb9826d0-3d7a-43b8-a5ad-3949ce620d91",
-  "object": "https:///api/draft/testDraftIdReq",
+  "id": "urn:uuid:DEADBEEF-0000-DEAD-BEEF-1234DEADBEEF",
+  "object": "https://hostnameReq/api/draft/testDraftIdReq",
   "session": "https://hostnameReq/api/session/SessionIdReq",
   "type": "Event",
 }
 `;
 
-exports[`Caliper event from req viewer_returnFromInactive 1`] = `
+exports[`Caliper event from req viewer:returnFromInactive returns the expected snapshot 1`] = `
 Event {
   "@context": "http://purl.imsglobal.org/ctx/caliper/v1p1",
   "action": "Resumed",
@@ -301,8 +402,8 @@ Event {
     "type": "returnFromInactive",
   },
   "federatedSession": "https://hostnameReq/api/launch/OboLtiLaunchIdReq",
-  "id": "urn:uuid:fb9826d0-3d7a-43b8-a5ad-3949ce620d91",
-  "object": "https:///api/draft/testDraftIdReq",
+  "id": "urn:uuid:DEADBEEF-0000-DEAD-BEEF-1234DEADBEEF",
+  "object": "https://hostnameReq/api/draft/testDraftIdReq",
   "session": "https://hostnameReq/api/session/SessionIdReq",
   "type": "Event",
 }
