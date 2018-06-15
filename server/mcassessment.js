@@ -12,11 +12,6 @@ class MCAssessment extends DraftNode {
 		if (!question.contains(this.node)) return
 
 		switch (this.node.content.responseType) {
-			case 'pick-one':
-			case 'pick-one-multiple-correct':
-				setScore(this.draftTree.getChildNodeById(responseRecord.response.ids[0]).node.content.score)
-				break
-
 			case 'pick-all':
 				let correctIds = new Set(
 					[...this.immediateChildrenSet].filter(id => {
@@ -32,7 +27,13 @@ class MCAssessment extends DraftNode {
 				correctIds.forEach(id => {
 					if (!responseIds.has(id)) score = 0
 				})
-				return setScore(score)
+				setScore(score)
+				break
+
+			default:
+				//'pick-one' and 'pick-one-multiple-correct'
+				setScore(this.draftTree.getChildNodeById(responseRecord.response.ids[0]).node.content.score)
+				break
 		}
 	}
 }

@@ -1,171 +1,134 @@
 import './nav.scss'
-
-import navStore from '../../viewer/stores/nav-store'
 import NavUtil from '../../viewer/util/nav-util'
 import Logo from '../../viewer/components/logo'
-
-import hamburgerImg from 'svg-url-loader?noquotes!./hamburger.svg'
-import arrowImg from 'svg-url-loader?noquotes!./arrow.svg'
-import lockImg from 'svg-url-loader?noquotes!./lock-icon.svg'
-
+import isOrNot from '../../common/isornot'
 import Common from 'Common'
 
-let { getBackgroundImage } = Common.util
 let { OboModel } = Common.models
 let { StyleableText } = Common.text
 let { StyleableTextComponent } = Common.text
 
 export default class Nav extends React.Component {
-	constructor(props) {
-		super(props)
-
-		this.state = {
-			hover: false
-		}
-	}
-
 	onClick(item) {
-		if (item.type === 'link') {
-			if (!NavUtil.canNavigate(this.props.navState)) return
-			return NavUtil.gotoPath(item.fullPath)
-		} else if (item.type === 'sub-link') {
-			let el = OboModel.models[item.id].getDomEl()
-			return el.scrollIntoView({ behavior: 'smooth' })
+		switch (item.type) {
+			case 'link':
+				if (!NavUtil.canNavigate(this.props.navState)) return
+				NavUtil.gotoPath(item.fullPath)
+				break
+
+			case 'sub-link':
+				let el = OboModel.models[item.id].getDomEl()
+				el.scrollIntoView({ behavior: 'smooth', block: 'start' })
+				break
 		}
-	}
-
-	hideNav() {
-		return NavUtil.toggle()
-	}
-
-	onMouseOver() {
-		return this.setState({ hover: true })
-	}
-
-	onMouseOut() {
-		return this.setState({ hover: false })
 	}
 
 	renderLabel(label) {
 		if (label instanceof StyleableText) {
 			return <StyleableTextComponent text={label} />
-		} else {
-			return (
-				<a>
-					{label}
-				</a>
-			)
+		}
+
+		return <a>{label}</a>
+	}
+
+	renderLink(index, isSelected, list, lockEl) {
+		let item = list[index]
+		let isFirstInList = !list[index - 1]
+		let isLastInList = !list[index + 1]
+
+		let className =
+			'link' +
+			isOrNot(isSelected, 'selected') +
+			isOrNot(item.flags.visited, 'visited') +
+			isOrNot(item.flags.complete, 'complete') +
+			isOrNot(item.flags.correct, 'correct') +
+			isOrNot(item.flags.assessment, 'assessment') +
+			isOrNot(isFirstInList, 'first-in-list') +
+			isOrNot(isLastInList, 'last-in-list')
+
+		return (
+			<li key={index} onClick={this.onClick.bind(this, item)} className={className}>
+				{this.renderLabel(item.label)}
+				{lockEl}
+			</li>
+		)
+	}
+
+	renderSubLink(index, isSelected, list, lockEl) {
+		let item = list[index]
+		let isLastInList = !list[index + 1]
+
+		let className =
+			'sub-link' +
+			isOrNot(isSelected, 'selected') +
+			isOrNot(item.flags.correct, 'correct') +
+			isOrNot(isLastInList, 'last-in-list')
+
+		return (
+			<li key={index} onClick={this.onClick.bind(this, item)} className={className}>
+				{this.renderLabel(item.label)}
+				{lockEl}
+			</li>
+		)
+	}
+
+	renderHeading(index, item) {
+		return (
+			<li key={index} className={'heading is-not-selected'}>
+				{this.renderLabel(item.label)}
+			</li>
+		)
+	}
+
+	// renderSep(index) {
+	// 	return (
+	// 		<li key={index} className="seperator">
+	// 			<hr />
+	// 		</li>
+	// 	)
+	// }
+
+	getLockEl(isLocked) {
+		if (isLocked) {
+			return <div className="lock-icon" />
 		}
 	}
 
 	render() {
-		let bg, lockEl
-		if (this.props.navState.open || this.state.hover) {
-			bg = getBackgroundImage(arrowImg)
-		} else {
-			bg = getBackgroundImage(hamburgerImg)
-		}
+		let navState = this.props.navState
+		let lockEl = this.getLockEl(navState.locked)
 
-		if (this.props.navState.locked) {
-			lockEl = (
-				<div className="lock-icon">
-					<img src={lockImg} />
-				</div>
-			)
-		} else {
-			lockEl = null
-		}
+		let list = NavUtil.getOrderedList(navState)
 
-		let list = NavUtil.getOrderedList(this.props.navState)
+		let className =
+			'viewer--components--nav' +
+			isOrNot(navState.locked, 'locked') +
+			isOrNot(navState.open, 'open') +
+			isOrNot(!navState.disabled, 'enabled')
 
 		return (
-			<div
-				className={`viewer--components--nav${this.props.navState.locked
-					? ' is-locked'
-					: ' is-unlocked'}${this.props.navState.open ? ' is-open' : ' is-closed'}${this.props
-					.navState.disabled
-					? ' is-disabled'
-					: ' is-enabled'}`}
-			>
-				<button
-					className="toggle-button"
-					onClick={this.hideNav.bind(this)}
-					onMouseOver={this.onMouseOver.bind(this)}
-					onMouseOut={this.onMouseOut.bind(this)}
-					style={{
-						backgroundImage: bg,
-						transform: !this.props.navState.open && this.state.hover ? 'rotate(180deg)' : '',
-						filter: this.props.navState.open ? 'invert(100%)' : 'invert(0%)'
-					}}
-				>
+			<div className={className}>
+				<button className="toggle-button" onClick={NavUtil.toggle}>
 					Toggle Navigation Menu
 				</button>
 				<ul>
 					{list.map((item, index) => {
 						switch (item.type) {
 							case 'heading':
-								var isSelected = false
-								return (
-									<li
-										key={index}
-										className={`heading${isSelected ? ' is-selected' : ' is-not-select'}`}
-									>
-										{this.renderLabel(item.label)}
-									</li>
-								)
-								break
+								return this.renderHeading(index, item)
 
 							case 'link':
-								var isSelected = this.props.navState.navTargetId === item.id
-								//var isPrevVisited = this.props.navState.navTargetHistory.indexOf(item.id) > -1
-								return (
-									<li
-										key={index}
-										onClick={this.onClick.bind(this, item)}
-										className={`link${isSelected ? ' is-selected' : ' is-not-select'}${item.flags
-											.visited
-											? ' is-visited'
-											: ' is-not-visited'}${item.flags.complete
-											? ' is-complete'
-											: ' is-not-complete'}${item.flags.correct
-											? ' is-correct'
-											: ' is-not-correct'}`}
-									>
-										{this.renderLabel(item.label)}
-										{lockEl}
-									</li>
-								)
-								break
+								return this.renderLink(index, navState.navTargetId === item.id, list, lockEl)
 
 							case 'sub-link':
-								var isSelected = this.props.navState.navTargetIndex === index
+								return this.renderSubLink(index, navState.navTargetIndex === index, list, lockEl)
 
-								return (
-									<li
-										key={index}
-										onClick={this.onClick.bind(this, item)}
-										className={`sub-link${isSelected ? ' is-selected' : ' is-not-select'}${item
-											.flags.correct
-											? ' is-correct'
-											: ' is-not-correct'}`}
-									>
-										{this.renderLabel(item.label)}
-										{lockEl}
-									</li>
-								)
-								break
-
-							case 'seperator':
-								return (
-									<li key={index} className="seperator">
-										<hr />
-									</li>
-								)
-								break
+							// case 'seperator':
+							// 	return this.renderSep(index)
 						}
 					})}
 				</ul>
-				<Logo inverted />
+				<Logo />
 			</div>
 		)
 	}

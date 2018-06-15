@@ -1,7 +1,10 @@
-import es6set from 'es6-set'
-import arrayFrom from 'array-from'
-import promise from 'promise-polyfill'
 import smoothScroll from 'smoothscroll-polyfill'
+
+import isIterable from 'core-js/library/fn/is-iterable.js'
+import arrayFrom from 'core-js/fn/array/from'
+import es6set from 'core-js/library/fn/set'
+import es6Symbol from 'core-js/es6/symbol'
+import promise from 'core-js/es6/promise'
 
 // Object.assign (IE)
 if (typeof Object.assign != 'function') {
@@ -33,7 +36,9 @@ if (typeof Object.assign != 'function') {
 }
 
 // Set (IE)
-if (!window.Set) {
+// IE has partial support for Set so checking for existence of window.Set is not enough.
+// We use core-js's isIterable - This expectedly fails in IE11
+if (!window.Set || !isIterable(new Set())) {
 	window.Set = es6set
 }
 
@@ -47,5 +52,13 @@ if (!window.Promise) {
 	window.Promise = promise
 }
 
+// Symbol (IE)
+if (!window.Symbol) {
+	window.Symbol = es6Symbol
+}
+
 // Smooth scrollTo (non-FF)
 smoothScroll.polyfill()
+
+// Number.isFinite (IE)
+Number.isFinite = Number.isFinite || (n => typeof n === 'number' && isFinite(n))

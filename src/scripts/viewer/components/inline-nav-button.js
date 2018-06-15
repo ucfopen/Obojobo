@@ -20,9 +20,9 @@ export default class InlineNavButton extends React.Component {
 	render() {
 		return (
 			<div
-				className={`viewer--components--inline-nav-button is-${this.props.type}${this.props.disabled
-					? ' is-disabled'
-					: ' is-enabled'}`}
+				className={`viewer--components--inline-nav-button is-${this.props.type}${
+					this.props.disabled ? ' is-not-enabled' : ' is-enabled'
+				}`}
 				onClick={this.onClick.bind(this)}
 			>
 				{this.props.title}

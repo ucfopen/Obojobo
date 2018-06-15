@@ -33,22 +33,22 @@ exports[`SimpleDialog cancelOk 1`] = `
           className="controls"
         >
           <div
-            className="obojobo-draft--components--button alt-action align-center"
+            className="obojobo-draft--components--button alt-action is-not-dangerous align-center"
           >
             <button
               disabled={undefined}
-              onClick={[Function]}
+              onClick={[MockFunction]}
               tabIndex={undefined}
             >
               Cancel
             </button>
           </div>
           <div
-            className="obojobo-draft--components--button align-center"
+            className="obojobo-draft--components--button is-not-dangerous align-center"
           >
             <button
               disabled={undefined}
-              onClick={[Function]}
+              onClick={[MockFunction]}
               tabIndex={undefined}
             >
               OK
@@ -99,11 +99,11 @@ exports[`SimpleDialog noOrYes 1`] = `
           className="controls"
         >
           <div
-            className="obojobo-draft--components--button align-center"
+            className="obojobo-draft--components--button is-not-dangerous align-center"
           >
             <button
               disabled={undefined}
-              onClick={[Function]}
+              onClick={[MockFunction]}
               tabIndex={undefined}
             >
               No
@@ -115,11 +115,11 @@ exports[`SimpleDialog noOrYes 1`] = `
             or
           </span>
           <div
-            className="obojobo-draft--components--button align-center"
+            className="obojobo-draft--components--button is-not-dangerous align-center"
           >
             <button
               disabled={undefined}
-              onClick={[Function]}
+              onClick={[MockFunction]}
               tabIndex={undefined}
             >
               Yes
@@ -170,11 +170,11 @@ exports[`SimpleDialog ok 1`] = `
           className="controls"
         >
           <div
-            className="obojobo-draft--components--button align-center"
+            className="obojobo-draft--components--button is-not-dangerous align-center"
           >
             <button
               disabled={undefined}
-              onClick={[Function]}
+              onClick={[MockFunction]}
               tabIndex={undefined}
             >
               OK
@@ -225,11 +225,11 @@ exports[`SimpleDialog yesOrNo 1`] = `
           className="controls"
         >
           <div
-            className="obojobo-draft--components--button align-center"
+            className="obojobo-draft--components--button is-not-dangerous align-center"
           >
             <button
               disabled={undefined}
-              onClick={[Function]}
+              onClick={[MockFunction]}
               tabIndex={undefined}
             >
               Yes
@@ -241,11 +241,11 @@ exports[`SimpleDialog yesOrNo 1`] = `
             or
           </span>
           <div
-            className="obojobo-draft--components--button align-center"
+            className="obojobo-draft--components--button is-not-dangerous align-center"
           >
             <button
               disabled={undefined}
-              onClick={[Function]}
+              onClick={[MockFunction]}
               tabIndex={undefined}
             >
               No

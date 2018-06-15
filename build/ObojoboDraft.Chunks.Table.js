@@ -63,7 +63,7 @@
 /******/ 	__webpack_require__.p = "build/";
 /******/
 /******/ 	// Load entry module and return exports
-/******/ 	return __webpack_require__(__webpack_require__.s = 170);
+/******/ 	return __webpack_require__(__webpack_require__.s = 298);
 /******/ })
 /************************************************************************/
 /******/ ({
@@ -75,22 +75,315 @@ module.exports = Common;
 
 /***/ }),
 
-/***/ 149:
+/***/ 115:
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+var _Common = __webpack_require__(0);
+
+var _Common2 = _interopRequireDefault(_Common);
+
+var _selectionHandler = __webpack_require__(68);
+
+var _selectionHandler2 = _interopRequireDefault(_selectionHandler);
+
+var _adapter = __webpack_require__(154);
+
+var _adapter2 = _interopRequireDefault(_adapter);
+
+var _viewerComponent = __webpack_require__(155);
+
+var _viewerComponent2 = _interopRequireDefault(_viewerComponent);
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+_Common2.default.Store.registerModel('ObojoboDraft.Chunks.Table', {
+	type: 'chunk',
+	adapter: _adapter2.default,
+	componentClass: _viewerComponent2.default,
+	selectionHandler: new _selectionHandler2.default()
+});
+
+/***/ }),
+
+/***/ 154:
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+Object.defineProperty(exports, "__esModule", {
+	value: true
+});
+
+var _gridTextGroup = __webpack_require__(67);
+
+var _gridTextGroup2 = _interopRequireDefault(_gridTextGroup);
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+var Adapter = {
+	construct: function construct(model, attrs) {
+		if (__guard__(attrs != null ? attrs.content : undefined, function (x) {
+			return x.textGroup;
+		}) != null) {
+			model.modelState.textGroup = _gridTextGroup2.default.fromDescriptor(attrs.content.textGroup, Infinity, {
+				indent: 0
+			});
+		} else {
+			model.modelState.textGroup = _gridTextGroup2.default.create(3, 2);
+		}
+
+		if (__guard__(attrs != null ? attrs.content : undefined, function (x1) {
+			return x1.header;
+		}) != null) {
+			return model.modelState.header = attrs.content.header;
+		} else {
+			return model.modelState.header = true;
+		}
+	},
+	clone: function clone(model, _clone) {
+		_clone.modelState.textGroup = model.modelState.textGroup.clone();
+		return _clone.modelState.header = model.modelState.header;
+	},
+	toJSON: function toJSON(model, json) {
+		json.content.textGroup = model.modelState.textGroup.toDescriptor();
+		return json.content.header = model.modelState.header;
+	},
+	toText: function toText(model) {
+		var longestStringLength = 0;
+		var _iteratorNormalCompletion = true;
+		var _didIteratorError = false;
+		var _iteratorError = undefined;
+
+		try {
+			for (var _iterator = Array.from(model.modelState.textGroup.items)[Symbol.iterator](), _step; !(_iteratorNormalCompletion = (_step = _iterator.next()).done); _iteratorNormalCompletion = true) {
+				var textItem = _step.value;
+
+				longestStringLength = Math.max(longestStringLength, textItem.text.value.length);
+			}
+		} catch (err) {
+			_didIteratorError = true;
+			_iteratorError = err;
+		} finally {
+			try {
+				if (!_iteratorNormalCompletion && _iterator.return) {
+					_iterator.return();
+				}
+			} finally {
+				if (_didIteratorError) {
+					throw _iteratorError;
+				}
+			}
+		}
+
+		var pad = ' '.repeat(longestStringLength);
+		var border = '-'.repeat(longestStringLength);
+
+		var text = '';
+
+		text += border + '\n';
+		for (var row = 0, end = model.modelState.textGroup.numRows, asc = 0 <= end; asc ? row < end : row > end; asc ? row++ : row--) {
+			// console.log 'row', row
+			var s = [];
+			for (var col = 0, end1 = model.modelState.textGroup.numCols, asc1 = 0 <= end1; asc1 ? col < end1 : col > end1; asc1 ? col++ : col--) {
+				// console.log '  col', col
+				var i = row * model.modelState.textGroup.numCols + col;
+
+				// console.log '    i', i
+				var item = model.modelState.textGroup.items[i];
+				s.push((item.text.value + pad).substr(0, pad.length));
+			}
+			text += '| ' + s.join(' | ') + ' |\n' + border + '\n';
+		}
+
+		return text;
+	}
+};
+
+exports.default = Adapter;
+
+function __guard__(value, transform) {
+	return typeof value !== 'undefined' && value !== null ? transform(value) : undefined;
+}
+
+/***/ }),
+
+/***/ 155:
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+Object.defineProperty(exports, "__esModule", {
+	value: true
+});
+
+var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+
+__webpack_require__(277);
+
+var _gridTextGroup = __webpack_require__(67);
+
+var _gridTextGroup2 = _interopRequireDefault(_gridTextGroup);
+
+var _selectionHandler = __webpack_require__(68);
+
+var _selectionHandler2 = _interopRequireDefault(_selectionHandler);
+
+var _Common = __webpack_require__(0);
+
+var _Common2 = _interopRequireDefault(_Common);
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
+
+function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
+
+var TextGroupEl = _Common2.default.chunk.textChunk.TextGroupEl;
+var OboComponent = _Common2.default.components.OboComponent;
+
+var Table = function (_React$Component) {
+	_inherits(Table, _React$Component);
+
+	function Table() {
+		_classCallCheck(this, Table);
+
+		return _possibleConstructorReturn(this, (Table.__proto__ || Object.getPrototypeOf(Table)).apply(this, arguments));
+	}
+
+	_createClass(Table, [{
+		key: 'render',
+		value: function render() {
+			var _this2 = this;
+
+			var header = void 0,
+			    row = void 0;
+			var model = this.props.model;
+
+			var data = model.modelState;
+			var numCols = data.textGroup.numCols;
+
+
+			if (data.header) {
+				row = data.textGroup.items.slice(0, numCols).map(function (textGroupItem, index) {
+					return React.createElement(
+						'th',
+						{
+							key: index,
+							className: 'cell row-0 col-' + index,
+							'data-table-position': model.get('id') + ',0,' + index
+						},
+						React.createElement(TextGroupEl, {
+							parentModel: _this2.props.model,
+							textItem: textGroupItem,
+							groupIndex: index
+						})
+					);
+				});
+
+				header = React.createElement(
+					'tr',
+					{ key: 'header' },
+					row
+				);
+			} else {
+				header = null;
+			}
+
+			var startIndex = data.header ? 1 : 0;
+			var rows = __range__(startIndex, data.textGroup.numRows, false).map(function (rowNum) {
+				row = data.textGroup.items.slice(rowNum * numCols, (rowNum + 1) * numCols).map(function (textGroupItem, index) {
+					return React.createElement(
+						'td',
+						{
+							key: index,
+							className: 'cell row-' + rowNum + ' col-' + index,
+							'data-table-position': model.get('id') + ',' + rowNum + ',' + index
+						},
+						React.createElement(TextGroupEl, {
+							parentModel: _this2.props.model,
+							textItem: textGroupItem,
+							groupIndex: rowNum * numCols + index
+						})
+					);
+				});
+
+				return React.createElement(
+					'tr',
+					{ key: rowNum },
+					row
+				);
+			});
+
+			return React.createElement(
+				OboComponent,
+				{ model: this.props.model, moduleData: this.props.moduleData },
+				React.createElement(
+					'div',
+					{ className: 'obojobo-draft--chunks--table viewer pad' },
+					React.createElement(
+						'div',
+						{ className: 'container' },
+						React.createElement(
+							'table',
+							{ className: 'view', ref: 'table', key: 'table' },
+							React.createElement(
+								'thead',
+								{ key: 'thead' },
+								header
+							),
+							React.createElement(
+								'tbody',
+								{ key: 'tbody' },
+								rows
+							)
+						)
+					)
+				)
+			);
+		}
+	}]);
+
+	return Table;
+}(React.Component);
+
+exports.default = Table;
+
+
+function __range__(left, right, inclusive) {
+	var range = [];
+	var ascending = left < right;
+	var end = !inclusive ? right : ascending ? right + 1 : right - 1;
+	for (var i = left; ascending ? i < end : i > end; ascending ? i++ : i--) {
+		range.push(i);
+	}
+	return range;
+}
+
+/***/ }),
+
+/***/ 277:
 /***/ (function(module, exports) {
 
 // removed by extract-text-webpack-plugin
 
 /***/ }),
 
-/***/ 170:
+/***/ 298:
 /***/ (function(module, exports, __webpack_require__) {
 
-module.exports = __webpack_require__(37);
+module.exports = __webpack_require__(115);
 
 
 /***/ }),
 
-/***/ 18:
+/***/ 67:
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -388,7 +681,7 @@ function __range__(left, right, inclusive) {
 
 /***/ }),
 
-/***/ 19:
+/***/ 68:
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -441,299 +734,6 @@ exports.default = SelectionHandler = function (_TextGroupSelectionHa) {
 
 	return SelectionHandler;
 }(TextGroupSelectionHandler);
-
-/***/ }),
-
-/***/ 37:
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-
-
-var _Common = __webpack_require__(0);
-
-var _Common2 = _interopRequireDefault(_Common);
-
-var _selectionHandler = __webpack_require__(19);
-
-var _selectionHandler2 = _interopRequireDefault(_selectionHandler);
-
-var _adapter = __webpack_require__(76);
-
-var _adapter2 = _interopRequireDefault(_adapter);
-
-var _viewerComponent = __webpack_require__(77);
-
-var _viewerComponent2 = _interopRequireDefault(_viewerComponent);
-
-function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
-
-_Common2.default.Store.registerModel('ObojoboDraft.Chunks.Table', {
-	type: 'chunk',
-	adapter: _adapter2.default,
-	componentClass: _viewerComponent2.default,
-	selectionHandler: new _selectionHandler2.default()
-});
-
-/***/ }),
-
-/***/ 76:
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-
-
-Object.defineProperty(exports, "__esModule", {
-	value: true
-});
-
-var _gridTextGroup = __webpack_require__(18);
-
-var _gridTextGroup2 = _interopRequireDefault(_gridTextGroup);
-
-function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
-
-var Adapter = {
-	construct: function construct(model, attrs) {
-		if (__guard__(attrs != null ? attrs.content : undefined, function (x) {
-			return x.textGroup;
-		}) != null) {
-			model.modelState.textGroup = _gridTextGroup2.default.fromDescriptor(attrs.content.textGroup, Infinity, {
-				indent: 0
-			});
-		} else {
-			model.modelState.textGroup = _gridTextGroup2.default.create(3, 2);
-		}
-
-		if (__guard__(attrs != null ? attrs.content : undefined, function (x1) {
-			return x1.header;
-		}) != null) {
-			return model.modelState.header = attrs.content.header;
-		} else {
-			return model.modelState.header = true;
-		}
-	},
-	clone: function clone(model, _clone) {
-		_clone.modelState.textGroup = model.modelState.textGroup.clone();
-		return _clone.modelState.header = model.modelState.header;
-	},
-	toJSON: function toJSON(model, json) {
-		json.content.textGroup = model.modelState.textGroup.toDescriptor();
-		return json.content.header = model.modelState.header;
-	},
-	toText: function toText(model) {
-		var longestStringLength = 0;
-		var _iteratorNormalCompletion = true;
-		var _didIteratorError = false;
-		var _iteratorError = undefined;
-
-		try {
-			for (var _iterator = Array.from(model.modelState.textGroup.items)[Symbol.iterator](), _step; !(_iteratorNormalCompletion = (_step = _iterator.next()).done); _iteratorNormalCompletion = true) {
-				var textItem = _step.value;
-
-				longestStringLength = Math.max(longestStringLength, textItem.text.value.length);
-			}
-		} catch (err) {
-			_didIteratorError = true;
-			_iteratorError = err;
-		} finally {
-			try {
-				if (!_iteratorNormalCompletion && _iterator.return) {
-					_iterator.return();
-				}
-			} finally {
-				if (_didIteratorError) {
-					throw _iteratorError;
-				}
-			}
-		}
-
-		var pad = ' '.repeat(longestStringLength);
-		var border = '-'.repeat(longestStringLength);
-
-		var text = '';
-
-		text += border + '\n';
-		for (var row = 0, end = model.modelState.textGroup.numRows, asc = 0 <= end; asc ? row < end : row > end; asc ? row++ : row--) {
-			// console.log 'row', row
-			var s = [];
-			for (var col = 0, end1 = model.modelState.textGroup.numCols, asc1 = 0 <= end1; asc1 ? col < end1 : col > end1; asc1 ? col++ : col--) {
-				// console.log '  col', col
-				var i = row * model.modelState.textGroup.numCols + col;
-
-				// console.log '    i', i
-				var item = model.modelState.textGroup.items[i];
-				s.push((item.text.value + pad).substr(0, pad.length));
-			}
-			text += '| ' + s.join(' | ') + ' |\n' + border + '\n';
-		}
-
-		return text;
-	}
-};
-
-exports.default = Adapter;
-
-function __guard__(value, transform) {
-	return typeof value !== 'undefined' && value !== null ? transform(value) : undefined;
-}
-
-/***/ }),
-
-/***/ 77:
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-
-
-Object.defineProperty(exports, "__esModule", {
-	value: true
-});
-
-var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
-
-__webpack_require__(149);
-
-var _gridTextGroup = __webpack_require__(18);
-
-var _gridTextGroup2 = _interopRequireDefault(_gridTextGroup);
-
-var _selectionHandler = __webpack_require__(19);
-
-var _selectionHandler2 = _interopRequireDefault(_selectionHandler);
-
-var _Common = __webpack_require__(0);
-
-var _Common2 = _interopRequireDefault(_Common);
-
-function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
-
-function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
-
-function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
-
-function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
-
-var TextGroupEl = _Common2.default.chunk.textChunk.TextGroupEl;
-var OboComponent = _Common2.default.components.OboComponent;
-
-var Table = function (_React$Component) {
-	_inherits(Table, _React$Component);
-
-	function Table() {
-		_classCallCheck(this, Table);
-
-		return _possibleConstructorReturn(this, (Table.__proto__ || Object.getPrototypeOf(Table)).apply(this, arguments));
-	}
-
-	_createClass(Table, [{
-		key: 'render',
-		value: function render() {
-			var _this2 = this;
-
-			var header = void 0,
-			    row = void 0;
-			var model = this.props.model;
-
-			var data = model.modelState;
-			var numCols = data.textGroup.numCols;
-
-
-			if (data.header) {
-				row = data.textGroup.items.slice(0, numCols).map(function (textGroupItem, index) {
-					return React.createElement(
-						'th',
-						{
-							key: index,
-							className: 'cell row-0 col-' + index,
-							'data-table-position': model.get('id') + ',0,' + index
-						},
-						React.createElement(TextGroupEl, {
-							parentModel: _this2.props.model,
-							textItem: textGroupItem,
-							groupIndex: index
-						})
-					);
-				});
-
-				header = React.createElement(
-					'tr',
-					{ key: 'header' },
-					row
-				);
-			} else {
-				header = null;
-			}
-
-			var startIndex = data.header ? 1 : 0;
-			var rows = __range__(startIndex, data.textGroup.numRows, false).map(function (rowNum) {
-				row = data.textGroup.items.slice(rowNum * numCols, (rowNum + 1) * numCols).map(function (textGroupItem, index) {
-					return React.createElement(
-						'td',
-						{
-							key: index,
-							className: 'cell row-' + rowNum + ' col-' + index,
-							'data-table-position': model.get('id') + ',' + rowNum + ',' + index
-						},
-						React.createElement(TextGroupEl, {
-							parentModel: _this2.props.model,
-							textItem: textGroupItem,
-							groupIndex: rowNum * numCols + index
-						})
-					);
-				});
-
-				return React.createElement(
-					'tr',
-					{ key: rowNum },
-					row
-				);
-			});
-
-			return React.createElement(
-				OboComponent,
-				{ model: this.props.model, moduleData: this.props.moduleData },
-				React.createElement(
-					'div',
-					{ className: 'obojobo-draft--chunks--table viewer pad' },
-					React.createElement(
-						'div',
-						{ className: 'container' },
-						React.createElement(
-							'table',
-							{ className: 'view', ref: 'table', key: 'table' },
-							React.createElement(
-								'thead',
-								{ key: 'thead' },
-								header
-							),
-							React.createElement(
-								'tbody',
-								{ key: 'tbody' },
-								rows
-							)
-						)
-					)
-				)
-			);
-		}
-	}]);
-
-	return Table;
-}(React.Component);
-
-exports.default = Table;
-
-
-function __range__(left, right, inclusive) {
-	var range = [];
-	var ascending = left < right;
-	var end = !inclusive ? right : ascending ? right + 1 : right - 1;
-	for (var i = left; ascending ? i < end : i > end; ascending ? i++ : i--) {
-		range.push(i);
-	}
-	return range;
-}
 
 /***/ })
 

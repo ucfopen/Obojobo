@@ -63,7 +63,7 @@
 /******/ 	__webpack_require__.p = "build/";
 /******/
 /******/ 	// Load entry module and return exports
-/******/ 	return __webpack_require__(__webpack_require__.s = 173);
+/******/ 	return __webpack_require__(__webpack_require__.s = 301);
 /******/ })
 /************************************************************************/
 /******/ ({
@@ -82,22 +82,7 @@ module.exports = Viewer;
 
 /***/ }),
 
-/***/ 152:
-/***/ (function(module, exports) {
-
-// removed by extract-text-webpack-plugin
-
-/***/ }),
-
-/***/ 173:
-/***/ (function(module, exports, __webpack_require__) {
-
-module.exports = __webpack_require__(40);
-
-
-/***/ }),
-
-/***/ 40:
+/***/ 118:
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -107,11 +92,11 @@ var _Common = __webpack_require__(0);
 
 var _Common2 = _interopRequireDefault(_Common);
 
-var _adapter = __webpack_require__(81);
+var _adapter = __webpack_require__(159);
 
 var _adapter2 = _interopRequireDefault(_adapter);
 
-var _viewerComponent = __webpack_require__(82);
+var _viewerComponent = __webpack_require__(160);
 
 var _viewerComponent2 = _interopRequireDefault(_viewerComponent);
 
@@ -129,18 +114,12 @@ _Common2.default.Store.registerModel('ObojoboDraft.Modules.Module', {
 			label: model.title,
 			showChildren: true
 		};
-	},
-	generateNav: function generateNav(model) {
-		return [{
-			type: 'heading',
-			label: model.title
-		}];
 	}
 });
 
 /***/ }),
 
-/***/ 81:
+/***/ 159:
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -177,7 +156,7 @@ function __guard__(value, transform) {
 
 /***/ }),
 
-/***/ 82:
+/***/ 160:
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -187,9 +166,7 @@ Object.defineProperty(exports, "__esModule", {
 	value: true
 });
 
-var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
-
-__webpack_require__(152);
+__webpack_require__(280);
 
 var _Common = __webpack_require__(0);
 
@@ -201,58 +178,50 @@ var _Viewer2 = _interopRequireDefault(_Viewer);
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
-function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
-
-function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
-
-function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
-
 var navStore = _Viewer2.default.stores.navStore;
 var OboComponent = _Common2.default.components.OboComponent;
 var OboModel = _Common2.default.models.OboModel;
 var Dispatcher = _Common2.default.flux.Dispatcher;
 var NavUtil = _Viewer2.default.util.NavUtil;
 
-var Module = function (_React$Component) {
-	_inherits(Module, _React$Component);
+exports.default = function (props) {
+	var childEl = null;
+	var navTargetModel = NavUtil.getNavTargetModel(props.moduleData.navState);
 
-	function Module() {
-		_classCallCheck(this, Module);
-
-		return _possibleConstructorReturn(this, (Module.__proto__ || Object.getPrototypeOf(Module)).apply(this, arguments));
+	if (navTargetModel) {
+		var ChildComponent = navTargetModel.getComponentClass();
+		childEl = React.createElement(ChildComponent, { model: navTargetModel, moduleData: props.moduleData });
 	}
 
-	_createClass(Module, [{
-		key: 'render',
-		value: function render() {
-			var childEl = null;
-			var navTargetModel = NavUtil.getNavTargetModel(this.props.moduleData.navState);
+	return React.createElement(
+		OboComponent,
+		{
+			model: props.model,
+			moduleData: props.moduleData,
+			className: 'obojobo-draft--modules--module'
+		},
+		React.createElement(
+			'div',
+			null,
+			childEl
+		)
+	);
+};
 
-			if (navTargetModel) {
-				var ChildComponent = navTargetModel.getComponentClass();
-				childEl = React.createElement(ChildComponent, { model: navTargetModel, moduleData: this.props.moduleData });
-			}
+/***/ }),
 
-			return React.createElement(
-				OboComponent,
-				{
-					model: this.props.model,
-					moduleData: this.props.moduleData,
-					className: 'obojobo-draft--modules--module'
-				},
-				React.createElement(
-					'div',
-					null,
-					childEl
-				)
-			);
-		}
-	}]);
+/***/ 280:
+/***/ (function(module, exports) {
 
-	return Module;
-}(React.Component);
+// removed by extract-text-webpack-plugin
 
-exports.default = Module;
+/***/ }),
+
+/***/ 301:
+/***/ (function(module, exports, __webpack_require__) {
+
+module.exports = __webpack_require__(118);
+
 
 /***/ })
 

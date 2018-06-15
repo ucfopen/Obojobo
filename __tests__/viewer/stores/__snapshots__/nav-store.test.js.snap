@@ -1,0 +1,480 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`NavStore Regisers events w/ dispatcher 1`] = `
+Object {
+  "nav:close": [Function],
+  "nav:goto": [Function],
+  "nav:gotoPath": [Function],
+  "nav:hideChildren": [Function],
+  "nav:lock": [Function],
+  "nav:next": [Function],
+  "nav:open": [Function],
+  "nav:openExternalLink": [Function],
+  "nav:prev": [Function],
+  "nav:rebuildMenu": [Function],
+  "nav:setContext": [Function],
+  "nav:setFlag": [Function],
+  "nav:showChildren": [Function],
+  "nav:toggle": [Function],
+  "nav:unlock": [Function],
+  "question:scoreSet": [Function],
+}
+`;
+
+exports[`NavStore buildMenu should reset menu items 1`] = `
+Object {
+  "items": "mockModel",
+  "itemsByFullPath": Object {},
+  "itemsById": Object {},
+  "itemsByPath": Object {},
+}
+`;
+
+exports[`NavStore generateNav builds a navItem 1`] = `
+Object {
+  "children": Array [
+    Object {
+      "children": Array [],
+      "flags": Object {
+        "complete": false,
+        "correct": false,
+        "visited": false,
+      },
+      "flatPath": "whatever/whatever2",
+      "fullFlatPath": "/view/66/visit/visitId/whatever/whatever2",
+      "fullPath": Array [
+        "whatever",
+        "whatever2",
+      ],
+      "id": 9,
+      "label": "",
+      "path": "whatever2",
+      "showChildren": true,
+      "showChildrenOnNavigation": true,
+      "type": "hidden",
+    },
+  ],
+  "flags": Object {
+    "complete": false,
+    "correct": false,
+    "visited": false,
+  },
+  "fullPath": Array [
+    "whatever",
+  ],
+  "id": 11,
+  "label": "",
+  "path": "whatever",
+  "showChildren": true,
+  "showChildrenOnNavigation": true,
+  "type": "hidden",
+}
+`;
+
+exports[`NavStore generateNav builds a navItem 2`] = `
+Object {
+  "itemsByFullPath": Object {
+    "/view/66/visit/visitId/whatever/whatever2": Object {
+      "children": Array [],
+      "flags": Object {
+        "complete": false,
+        "correct": false,
+        "visited": false,
+      },
+      "flatPath": "whatever/whatever2",
+      "fullFlatPath": "/view/66/visit/visitId/whatever/whatever2",
+      "fullPath": Array [
+        "whatever",
+        "whatever2",
+      ],
+      "id": 9,
+      "label": "",
+      "path": "whatever2",
+      "showChildren": true,
+      "showChildrenOnNavigation": true,
+      "type": "hidden",
+    },
+  },
+  "itemsById": Object {
+    "11": Object {
+      "children": Array [
+        Object {
+          "children": Array [],
+          "flags": Object {
+            "complete": false,
+            "correct": false,
+            "visited": false,
+          },
+          "flatPath": "whatever/whatever2",
+          "fullFlatPath": "/view/66/visit/visitId/whatever/whatever2",
+          "fullPath": Array [
+            "whatever",
+            "whatever2",
+          ],
+          "id": 9,
+          "label": "",
+          "path": "whatever2",
+          "showChildren": true,
+          "showChildrenOnNavigation": true,
+          "type": "hidden",
+        },
+      ],
+      "flags": Object {
+        "complete": false,
+        "correct": false,
+        "visited": false,
+      },
+      "fullPath": Array [
+        "whatever",
+      ],
+      "id": 11,
+      "label": "",
+      "path": "whatever",
+      "showChildren": true,
+      "showChildrenOnNavigation": true,
+      "type": "hidden",
+    },
+    "9": Object {
+      "children": Array [],
+      "flags": Object {
+        "complete": false,
+        "correct": false,
+        "visited": false,
+      },
+      "flatPath": "whatever/whatever2",
+      "fullFlatPath": "/view/66/visit/visitId/whatever/whatever2",
+      "fullPath": Array [
+        "whatever",
+        "whatever2",
+      ],
+      "id": 9,
+      "label": "",
+      "path": "whatever2",
+      "showChildren": true,
+      "showChildrenOnNavigation": true,
+      "type": "hidden",
+    },
+  },
+  "itemsByPath": Object {
+    "whatever/whatever2": Object {
+      "children": Array [],
+      "flags": Object {
+        "complete": false,
+        "correct": false,
+        "visited": false,
+      },
+      "flatPath": "whatever/whatever2",
+      "fullFlatPath": "/view/66/visit/visitId/whatever/whatever2",
+      "fullPath": Array [
+        "whatever",
+        "whatever2",
+      ],
+      "id": 9,
+      "label": "",
+      "path": "whatever2",
+      "showChildren": true,
+      "showChildrenOnNavigation": true,
+      "type": "hidden",
+    },
+  },
+  "visitId": "visitId",
+}
+`;
+
+exports[`NavStore gotoItem sends triggers events and updates history 1`] = `
+Object {
+  "itemsById": Object {
+    "mockId": Object {
+      "showChildren": false,
+    },
+  },
+  "navTargetHistory": Array [
+    "mockId",
+  ],
+  "navTargetId": "newItem",
+}
+`;
+
+exports[`NavStore nav:close event fires and updates state 1`] = `
+Array [
+  "navstore:change",
+]
+`;
+
+exports[`NavStore nav:close event fires and updates state 2`] = `
+Array [
+  "root",
+  "nav:close",
+  "1.0.0",
+]
+`;
+
+exports[`NavStore nav:close event fires and updates state 3`] = `
+Object {
+  "locked": "unchanged",
+  "open": false,
+}
+`;
+
+exports[`NavStore nav:close event fires and updates state 4`] = `
+Array [
+  "navstore:change",
+]
+`;
+
+exports[`NavStore nav:close event fires and updates state 5`] = `
+Array [
+  "root",
+  "nav:close",
+  "1.0.0",
+]
+`;
+
+exports[`NavStore nav:close event fires and updates state 6`] = `
+Object {
+  "locked": "unchanged",
+  "open": false,
+}
+`;
+
+exports[`NavStore nav:goto changes page and posts event 1`] = `
+Array [
+  "root",
+  "nav:goto",
+  "1.0.0",
+  Object {
+    "from": 7,
+    "to": "mock",
+  },
+]
+`;
+
+exports[`NavStore nav:gotoPath event calls gotoItem and postEvent 1`] = `
+Array [
+  "root",
+  "nav:gotoPath",
+  "1.0.0",
+  Object {
+    "from": 7,
+    "to": "mock",
+  },
+]
+`;
+
+exports[`NavStore nav:hideChildren event fires and updates state 1`] = `
+Array [
+  "navstore:change",
+]
+`;
+
+exports[`NavStore nav:hideChildren event fires and updates state 2`] = `
+Object {
+  "itemsById": Object {
+    "mockID": Object {
+      "showChildren": false,
+    },
+  },
+}
+`;
+
+exports[`NavStore nav:lock event fires and updates state 1`] = `
+Array [
+  "root",
+  "nav:lock",
+  "1.0.0",
+]
+`;
+
+exports[`NavStore nav:lock event fires and updates state 2`] = `
+Object {
+  "locked": true,
+  "open": "unchanged",
+}
+`;
+
+exports[`NavStore nav:next changes page and posts event 1`] = `
+Array [
+  "root",
+  "nav:next",
+  "1.0.0",
+  Object {
+    "from": 7,
+    "to": "mockNext",
+  },
+]
+`;
+
+exports[`NavStore nav:open event fires and updates state 1`] = `
+Array [
+  "navstore:change",
+]
+`;
+
+exports[`NavStore nav:open event fires and updates state 2`] = `
+Array [
+  "root",
+  "nav:open",
+  "1.0.0",
+]
+`;
+
+exports[`NavStore nav:open event fires and updates state 3`] = `
+Object {
+  "locked": "unchanged",
+  "open": true,
+}
+`;
+
+exports[`NavStore nav:openExternalLink fires event and opens a window 1`] = `
+Array [
+  "navstore:change",
+]
+`;
+
+exports[`NavStore nav:prev changes page and posts event 1`] = `
+Array [
+  "root",
+  "nav:prev",
+  "1.0.0",
+  Object {
+    "from": 7,
+    "to": "mockPrev",
+  },
+]
+`;
+
+exports[`NavStore nav:setFlag event updates state and calls trigger 1`] = `
+Object {
+  "itemsById": Object {
+    "fake": Object {
+      "flags": Object {
+        "spoof": undefined,
+      },
+      "id": "mock",
+    },
+  },
+  "navTargetId": 7,
+}
+`;
+
+exports[`NavStore nav:showChildren event fires and updates state 1`] = `
+Array [
+  "navstore:change",
+]
+`;
+
+exports[`NavStore nav:showChildren event fires and updates state 2`] = `
+Object {
+  "itemsById": Object {
+    "mockID": Object {
+      "showChildren": true,
+    },
+  },
+}
+`;
+
+exports[`NavStore nav:toggle event fires and updates state 1`] = `
+Array [
+  "navstore:change",
+]
+`;
+
+exports[`NavStore nav:toggle event fires and updates state 2`] = `
+Array [
+  "root",
+  "nav:toggle",
+  "1.0.0",
+  Object {
+    "open": true,
+  },
+]
+`;
+
+exports[`NavStore nav:toggle event fires and updates state 3`] = `
+Object {
+  "locked": "unchanged",
+  "open": true,
+}
+`;
+
+exports[`NavStore nav:unlock event fires and updates state 1`] = `
+Array [
+  "navstore:change",
+]
+`;
+
+exports[`NavStore nav:unlock event fires and updates state 2`] = `
+Array [
+  "root",
+  "nav:unlock",
+  "1.0.0",
+]
+`;
+
+exports[`NavStore nav:unlock event fires and updates state 3`] = `
+Object {
+  "locked": false,
+  "open": "unchanged",
+}
+`;
+
+exports[`NavStore question:scoreSet sets flag with a score of 100 1`] = `
+Array [
+  "mockID",
+  "correct",
+  false,
+]
+`;
+
+exports[`NavStore question:scoreSet sets flag with a score of 100 2`] = `
+Array [
+  "mockID",
+  "correct",
+  true,
+]
+`;
+
+exports[`NavStore should init state locked state 1`] = `
+Object {
+  "context": "practice",
+  "items": Object {},
+  "itemsByFullPath": Object {},
+  "itemsById": Object {},
+  "itemsByPath": Object {},
+  "locked": true,
+  "navTargetHistory": Array [],
+  "navTargetId": null,
+  "open": true,
+  "visitId": 11,
+}
+`;
+
+exports[`NavStore should init state open state 1`] = `
+Object {
+  "context": "practice",
+  "items": Object {},
+  "itemsByFullPath": Object {},
+  "itemsById": Object {},
+  "itemsByPath": Object {},
+  "locked": false,
+  "navTargetHistory": Array [],
+  "navTargetId": null,
+  "open": true,
+  "visitId": 11,
+}
+`;
+
+exports[`NavStore should init state with basic options 1`] = `
+Object {
+  "context": "practice",
+  "items": Object {},
+  "itemsByFullPath": Object {},
+  "itemsById": Object {},
+  "itemsByPath": Object {},
+  "locked": false,
+  "navTargetHistory": Array [],
+  "navTargetId": null,
+  "open": true,
+  "visitId": 11,
+}
+`;

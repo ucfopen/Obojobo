@@ -7,27 +7,21 @@ let Button = Common.components.Button
 let TextGroupEl = Common.chunk.textChunk.TextGroupEl
 let TextChunk = Common.chunk.TextChunk
 
-export default class ActionButton extends React.Component {
-	onClick() {
-		return this.props.model.processTrigger('onClick')
-	}
+export default props => {
+	let model = props.model
+	let textItem = model.modelState.textGroup ? model.modelState.textGroup.first : ''
 
-	render() {
-		let textItem = this.props.model.modelState.textGroup
-			? this.props.model.modelState.textGroup.first
-			: ''
-		return (
-			<OboComponent model={this.props.model} moduleData={this.props.moduleData}>
-				<TextChunk className="obojobo-draft--chunks--action-button pad">
-					<Button
-						onClick={this.onClick.bind(this)}
-						value={this.props.model.modelState.label}
-						align={this.props.model.modelState.align}
-					>
-						<TextGroupEl textItem={textItem} groupIndex="0" parentModel={this.props.model} />
-					</Button>
-				</TextChunk>
-			</OboComponent>
-		)
-	}
+	return (
+		<OboComponent model={model} moduleData={props.moduleData}>
+			<TextChunk className="obojobo-draft--chunks--action-button pad">
+				<Button
+					onClick={model.processTrigger.bind(model, 'onClick')}
+					value={model.modelState.label}
+					align={model.modelState.align}
+				>
+					<TextGroupEl textItem={textItem} groupIndex="0" parentModel={model} />
+				</Button>
+			</TextChunk>
+		</OboComponent>
+	)
 }

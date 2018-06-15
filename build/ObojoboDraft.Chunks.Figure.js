@@ -63,7 +63,7 @@
 /******/ 	__webpack_require__.p = "build/";
 /******/
 /******/ 	// Load entry module and return exports
-/******/ 	return __webpack_require__(__webpack_require__.s = 160);
+/******/ 	return __webpack_require__(__webpack_require__.s = 288);
 /******/ })
 /************************************************************************/
 /******/ ({
@@ -75,29 +75,7 @@ module.exports = Common;
 
 /***/ }),
 
-/***/ 137:
-/***/ (function(module, exports) {
-
-// removed by extract-text-webpack-plugin
-
-/***/ }),
-
-/***/ 156:
-/***/ (function(module, exports) {
-
-module.exports = "data:image/svg+xml,%3Csvg id='Layer_1' data-name='Layer 1' xmlns='http://www.w3.org/2000/svg' viewBox='0 0 12 12'%3E%3Cdefs%3E%3Cstyle%3E.cls-1%7Bopacity:0.03;%7D%3C/style%3E%3C/defs%3E%3Ctitle%3Ebg%3C/title%3E%3Crect class='cls-1' width='6' height='6'/%3E%3Crect class='cls-1' x='6' y='6' width='6' height='6'/%3E%3C/svg%3E"
-
-/***/ }),
-
-/***/ 160:
-/***/ (function(module, exports, __webpack_require__) {
-
-module.exports = __webpack_require__(28);
-
-
-/***/ }),
-
-/***/ 28:
+/***/ 106:
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -107,15 +85,15 @@ var _Common = __webpack_require__(0);
 
 var _Common2 = _interopRequireDefault(_Common);
 
-var _selectionHandler = __webpack_require__(53);
+var _selectionHandler = __webpack_require__(131);
 
 var _selectionHandler2 = _interopRequireDefault(_selectionHandler);
 
-var _adapter = __webpack_require__(51);
+var _adapter = __webpack_require__(129);
 
 var _adapter2 = _interopRequireDefault(_adapter);
 
-var _viewerComponent = __webpack_require__(54);
+var _viewerComponent = __webpack_require__(132);
 
 var _viewerComponent2 = _interopRequireDefault(_viewerComponent);
 
@@ -130,7 +108,7 @@ _Common2.default.Store.registerModel('ObojoboDraft.Chunks.Figure', {
 
 /***/ }),
 
-/***/ 51:
+/***/ 129:
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -223,7 +201,7 @@ function __guard__(value, transform) {
 
 /***/ }),
 
-/***/ 52:
+/***/ 130:
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -233,74 +211,45 @@ Object.defineProperty(exports, "__esModule", {
 	value: true
 });
 
-var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
-
 var _Common = __webpack_require__(0);
 
 var _Common2 = _interopRequireDefault(_Common);
 
+__webpack_require__(264);
+
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
-function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+exports.default = function (props) {
+	var imgStyles = void 0;
+	var data = props.chunk.modelState;
 
-function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
-
-function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
-
-var Image = function (_React$Component) {
-	_inherits(Image, _React$Component);
-
-	function Image() {
-		_classCallCheck(this, Image);
-
-		return _possibleConstructorReturn(this, (Image.__proto__ || Object.getPrototypeOf(Image)).apply(this, arguments));
+	if (data.url == null) {
+		return React.createElement('div', { className: 'img-placeholder' });
 	}
 
-	_createClass(Image, [{
-		key: 'render',
-		value: function render() {
-			var imgStyles = void 0;
-			var data = this.props.chunk.modelState;
+	switch (data.size) {
+		case 'small':
+		case 'medium':
+		case 'large':
+			return React.createElement('img', { src: data.url, unselectable: 'on', alt: data.alt });
+		case 'custom':
+			imgStyles = {};
 
-			if (data.url == null) {
-				imgStyles = {
-					backgroundImage: _Common2.default.util.getBackgroundImage(__webpack_require__(156)),
-					backgroundSize: '16px',
-					height: '300px'
-				};
-
-				return React.createElement('div', { className: 'img-placeholder', style: imgStyles });
+			if (data.width != null) {
+				imgStyles.width = data.width + 'px';
 			}
 
-			switch (data.size) {
-				case 'small':
-				case 'medium':
-				case 'large':
-					return React.createElement('img', { src: data.url, unselectable: 'on', alt: data.alt });
-				case 'custom':
-					imgStyles = {};
-
-					if (data.width != null) {
-						imgStyles.width = data.width + 'px';
-					}
-
-					if (data.height != null) {
-						imgStyles.height = data.height + 'px';
-					}
-
-					return React.createElement('img', { src: data.url, unselectable: 'on', alt: data.alt, style: imgStyles });
+			if (data.height != null) {
+				imgStyles.height = data.height + 'px';
 			}
-		}
-	}]);
 
-	return Image;
-}(React.Component);
-
-exports.default = Image;
+			return React.createElement('img', { src: data.url, unselectable: 'on', alt: data.alt, style: imgStyles });
+	}
+};
 
 /***/ }),
 
-/***/ 53:
+/***/ 131:
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -350,7 +299,7 @@ exports.default = SelectionHandler = function (_TextGroupSelectionHa) {
 
 /***/ }),
 
-/***/ 54:
+/***/ 132:
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -360,11 +309,9 @@ Object.defineProperty(exports, "__esModule", {
 	value: true
 });
 
-var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+__webpack_require__(265);
 
-__webpack_require__(137);
-
-var _image = __webpack_require__(52);
+var _image = __webpack_require__(130);
 
 var _image2 = _interopRequireDefault(_image);
 
@@ -374,66 +321,62 @@ var _Common2 = _interopRequireDefault(_Common);
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
-function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
-
-function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
-
-function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
-
 var OboComponent = _Common2.default.components.OboComponent;
 var TextGroupEl = _Common2.default.chunk.textChunk.TextGroupEl;
 var NonEditableChunk = _Common2.default.chunk.NonEditableChunk;
 
-var Figure = function (_React$Component) {
-	_inherits(Figure, _React$Component);
-
-	function Figure() {
-		_classCallCheck(this, Figure);
-
-		return _possibleConstructorReturn(this, (Figure.__proto__ || Object.getPrototypeOf(Figure)).apply(this, arguments));
-	}
-
-	_createClass(Figure, [{
-		key: 'render',
-		value: function render() {
-			var data = this.props.model.modelState;
-
-			return React.createElement(
-				OboComponent,
-				{ model: this.props.model, moduleData: this.props.moduleData },
+exports.default = function (props) {
+	return React.createElement(
+		OboComponent,
+		{ model: props.model, moduleData: props.moduleData },
+		React.createElement(
+			NonEditableChunk,
+			{
+				className: 'obojobo-draft--chunks--figure viewer ' + props.model.modelState.size
+			},
+			React.createElement(
+				'div',
+				{ className: 'container' },
 				React.createElement(
-					NonEditableChunk,
-					{
-						className: 'obojobo-draft--chunks--figure viewer ' + data.size,
-						ref: 'component'
-					},
-					React.createElement(
-						'div',
-						{ className: 'container' },
-						React.createElement(
-							'figure',
-							{ unselectable: 'on' },
-							React.createElement(_image2.default, { chunk: this.props.model }),
-							data.textGroup.first.text.length > 0 ? React.createElement(
-								'figcaption',
-								{ ref: 'caption' },
-								React.createElement(TextGroupEl, {
-									parentModel: this.props.model,
-									textItem: data.textGroup.first,
-									groupIndex: '0'
-								})
-							) : null
-						)
-					)
+					'figure',
+					{ unselectable: 'on' },
+					React.createElement(_image2.default, { chunk: props.model }),
+					props.model.modelState.textGroup.first.text.length > 0 ? React.createElement(
+						'figcaption',
+						null,
+						React.createElement(TextGroupEl, {
+							parentModel: props.model,
+							textItem: props.model.modelState.textGroup.first,
+							groupIndex: '0'
+						})
+					) : null
 				)
-			);
-		}
-	}]);
+			)
+		)
+	);
+};
 
-	return Figure;
-}(React.Component);
+/***/ }),
 
-exports.default = Figure;
+/***/ 264:
+/***/ (function(module, exports) {
+
+// removed by extract-text-webpack-plugin
+
+/***/ }),
+
+/***/ 265:
+/***/ (function(module, exports) {
+
+// removed by extract-text-webpack-plugin
+
+/***/ }),
+
+/***/ 288:
+/***/ (function(module, exports, __webpack_require__) {
+
+module.exports = __webpack_require__(106);
+
 
 /***/ })
 

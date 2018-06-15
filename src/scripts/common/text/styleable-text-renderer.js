@@ -1,6 +1,5 @@
 // Turns a StyleableText item into a mock DOM tree, which can then be used to render out in React
 
-import ObjectAssign from 'object-assign'
 import katex from 'katex'
 
 import StyleableText from '../../common/text/styleable-text'
@@ -127,14 +126,14 @@ let wrapElement = function(styleRange, nodeToWrap, text) {
 			return root
 
 		case '_comment':
-			newChild = new MockElement('span', ObjectAssign({ class: 'comment' }, styleRange.data))
+			newChild = new MockElement('span', Object.assign({ class: 'comment' }, styleRange.data))
 			nodeToWrap.parent.replaceChild(nodeToWrap, newChild)
 			newChild.addChild(nodeToWrap)
 			nodeToWrap.text = text
 			return newChild
 
 		case '_latex':
-			newChild = new MockElement('span', ObjectAssign({ class: 'latex' }, styleRange.data))
+			newChild = new MockElement('span', Object.assign({ class: 'latex' }, styleRange.data))
 			nodeToWrap.parent.replaceChild(nodeToWrap, newChild)
 			newChild.addChild(nodeToWrap)
 			let html = katex.renderToString(text)
@@ -142,8 +141,12 @@ let wrapElement = function(styleRange, nodeToWrap, text) {
 			nodeToWrap.text = text
 			return newChild
 
+		case StyleType.MONOSPACE:
+			styleRange.type = 'code'
+		// Intentional fallthrough
+
 		default:
-			newChild = new MockElement(styleRange.type, ObjectAssign({}, styleRange.data))
+			newChild = new MockElement(styleRange.type, Object.assign({}, styleRange.data))
 			nodeToWrap.parent.replaceChild(nodeToWrap, newChild)
 			newChild.addChild(nodeToWrap)
 			nodeToWrap.text = text

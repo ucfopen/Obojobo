@@ -9,11 +9,11 @@ import InlineNavButton from '../../viewer/components/inline-nav-button'
 import NavUtil from '../../viewer/util/nav-util'
 import APIUtil from '../../viewer/util/api-util'
 import Logo from '../../viewer/components/logo'
-import ScoreStore from '../../viewer/stores/score-store'
 import QuestionStore from '../../viewer/stores/question-store'
 import AssessmentStore from '../../viewer/stores/assessment-store'
 import NavStore from '../../viewer/stores/nav-store'
 import Nav from './nav'
+import getLTIOutcomeServiceHostname from '../../viewer/util/get-lti-outcome-service-hostname'
 
 const IDLE_TIMEOUT_DURATION_MS = 600000 // 10 minutes
 
@@ -29,7 +29,6 @@ let { FocusBlocker } = Common.components
 let { ModalStore } = Common.stores
 let { FocusStore } = Common.stores
 let { FocusUtil } = Common.util
-let { OboGlobals } = Common.util
 
 // Dispatcher.on 'all', (eventName, payload) -> console.log 'EVENT TRIGGERED', eventName
 
@@ -47,8 +46,6 @@ export default class ViewerApp extends React.Component {
 	constructor(props) {
 		super(props)
 
-		Common.Store.loadDependency('https://cdnjs.cloudflare.com/ajax/libs/KaTeX/0.5.1/katex.min.css')
-
 		Dispatcher.on('viewer:scrollTo', payload => {
 			return (ReactDOM.findDOMNode(this.refs.container).scrollTop = payload.value)
 		})
@@ -56,36 +53,22 @@ export default class ViewerApp extends React.Component {
 		Dispatcher.on('viewer:scrollToTop', this.scrollToTop.bind(this))
 		Dispatcher.on('getTextForVariable', this.getTextForVariable.bind(this))
 
-		this.isPreviewing = OboGlobals.get('previewing')
-
 		let state = {
-			model: OboModel.create(OboGlobals.get('draft')),
+			model: null,
 			navState: null,
-			scoreState: null,
 			questionState: null,
 			assessmentState: null,
 			modalState: null,
 			focusState: null,
-			navTargetId: null
+			navTargetId: null,
+			loading: true,
+			requestStatus: 'unknown',
+			isPreviewing: false,
+			lti: {
+				outcomeServiceHostname: null
+			}
 		}
-
-		ScoreStore.init()
-		QuestionStore.init()
-		ModalStore.init()
-		FocusStore.init()
-
-		NavStore.init(state.model, state.model.modelState.start, window.location.pathname)
-		AssessmentStore.init(OboGlobals.get('ObojoboDraft.Sections.Assessment:attemptHistory', []))
-
-		state.navState = NavStore.getState()
-		state.scoreState = ScoreStore.getState()
-		state.questionState = QuestionStore.getState()
-		state.assessmentState = AssessmentStore.getState()
-		state.modalState = ModalStore.getState()
-		state.focusState = FocusStore.getState()
-
 		this.onNavStoreChange = () => this.setState({ navState: NavStore.getState() })
-		this.onScoreStoreChange = () => this.setState({ scoreState: ScoreStore.getState() })
 		this.onQuestionStoreChange = () => this.setState({ questionState: QuestionStore.getState() })
 		this.onAssessmentStoreChange = () =>
 			this.setState({ assessmentState: AssessmentStore.getState() })
@@ -94,22 +77,81 @@ export default class ViewerApp extends React.Component {
 
 		this.onIdle = this.onIdle.bind(this)
 		this.onReturnFromIdle = this.onReturnFromIdle.bind(this)
+		this.onBeforeWindowClose = this.onBeforeWindowClose.bind(this)
 		this.onWindowClose = this.onWindowClose.bind(this)
 		this.onVisibilityChange = this.onVisibilityChange.bind(this)
-
-		window.onbeforeunload = this.onWindowClose
 
 		this.state = state
 	}
 
 	componentDidMount() {
 		document.addEventListener('visibilitychange', this.onVisibilityChange)
+
+		let visitIdFromApi
+		let attemptHistory
+		let viewState
+		let isPreviewing
+		let outcomeServiceURL = 'the external system'
+
+		let urlTokens = document.location.pathname.split('/')
+		let visitIdFromUrl = urlTokens[4] ? urlTokens[4] : null
+		let draftIdFromUrl = urlTokens[2] ? urlTokens[2] : null
+
+		Dispatcher.trigger('viewer:loading')
+
+		APIUtil.requestStart(visitIdFromUrl, draftIdFromUrl)
+			.then(visit => {
+				QuestionStore.init()
+				ModalStore.init()
+				FocusStore.init()
+
+				if (visit.status !== 'ok') throw 'Invalid Visit Id'
+
+				visitIdFromApi = visit.value.visitId
+				viewState = visit.value.viewState
+				attemptHistory = visit.value.extensions[':ObojoboDraft.Sections.Assessment:attemptHistory']
+				isPreviewing = visit.value.isPreviewing
+				outcomeServiceURL = visit.value.lti.lisOutcomeServiceUrl
+
+				return APIUtil.getDraft(draftIdFromUrl)
+			})
+			.then(({ value: draftModel }) => {
+				this.state.model = OboModel.create(draftModel)
+
+				NavStore.init(
+					this.state.model,
+					this.state.model.modelState.start,
+					window.location.pathname,
+					visitIdFromApi,
+					viewState
+				)
+				AssessmentStore.init(attemptHistory)
+
+				this.state.navState = NavStore.getState()
+				this.state.questionState = QuestionStore.getState()
+				this.state.assessmentState = AssessmentStore.getState()
+				this.state.modalState = ModalStore.getState()
+				this.state.focusState = FocusStore.getState()
+				this.state.lti.outcomeServiceHostname = getLTIOutcomeServiceHostname(outcomeServiceURL)
+
+				window.onbeforeunload = this.onBeforeWindowClose
+				window.onunload = this.onWindowClose
+
+				this.setState({ loading: false, requestStatus: 'ok', isPreviewing }, () => {
+					Dispatcher.trigger('viewer:loaded', true)
+				})
+			})
+			.catch(err => {
+				console.log(err)
+				this.setState({ loading: false, requestStatus: 'invalid' }, () =>
+					Dispatcher.trigger('viewer:loaded', false)
+				)
+			})
 	}
 
 	componentWillMount() {
 		// === SET UP DATA STORES ===
 		NavStore.onChange(this.onNavStoreChange)
-		ScoreStore.onChange(this.onScoreStoreChange)
 		QuestionStore.onChange(this.onQuestionStoreChange)
 		AssessmentStore.onChange(this.onAssessmentStoreChange)
 		ModalStore.onChange(this.onModalStoreChange)
@@ -118,7 +160,6 @@ export default class ViewerApp extends React.Component {
 
 	componentWillUnmount() {
 		NavStore.offChange(this.onNavStoreChange)
-		ScoreStore.offChange(this.onScoreStoreChange)
 		QuestionStore.offChange(this.onQuestionStoreChange)
 		AssessmentStore.offChange(this.onAssessmentStoreChange)
 		ModalStore.offChange(this.onModalStoreChange)
@@ -127,33 +168,51 @@ export default class ViewerApp extends React.Component {
 		document.removeEventListener('visibilitychange', this.onVisibilityChange)
 	}
 
-	// componentDidMount: ->
-	// NavUtil.gotoPath window.location.pathname
+	shouldComponentUpdate(nextProps, nextState) {
+		return !nextState.loading
+	}
 
 	componentWillUpdate(nextProps, nextState) {
-		let { navTargetId } = this.state
-		let nextNavTargetId = this.state.navState.navTargetId
+		if (this.state.requestStatus === 'ok') {
+			let navTargetId = this.state.navTargetId
+			let nextNavTargetId = this.state.navState.navTargetId
 
-		if (navTargetId !== nextNavTargetId) {
-			this.needsScroll = true
-			return this.setState({ navTargetId: nextNavTargetId })
+			if (navTargetId !== nextNavTargetId) {
+				this.needsScroll = true
+				return this.setState({ navTargetId: nextNavTargetId })
+			}
+		}
+
+		if (this.state.loading === true && nextState.loading === false) {
+			this.needsRemoveLoadingElement = true
 		}
 	}
 
 	componentDidUpdate() {
-		// alert 'here, fixme'
-		if (this.lastCanNavigate !== NavUtil.canNavigate(this.state.navState)) {
-			this.needsScroll = true
-		}
-		this.lastCanNavigate = NavUtil.canNavigate(this.state.navState)
-		if (this.needsScroll != null) {
-			this.scrollToTop()
+		if (this.state.requestStatus === 'ok') {
+			if (this.lastCanNavigate !== NavUtil.canNavigate(this.state.navState)) {
+				this.needsScroll = true
+			}
+			this.lastCanNavigate = NavUtil.canNavigate(this.state.navState)
+			if (this.needsScroll != null) {
+				this.scrollToTop()
 
-			return delete this.needsScroll
+				delete this.needsScroll
+			}
+		}
+
+		if (this.needsRemoveLoadingElement === true) {
+			let loadingEl = document.getElementById('viewer-app-loading')
+			if (loadingEl && loadingEl.parentElement) {
+				document.getElementById('viewer-app').classList.add('is-loaded')
+				loadingEl.parentElement.removeChild(loadingEl)
+
+				delete this.needsRemoveLoadingElement
+			}
 		}
 	}
 
-	onVisibilityChange(event) {
+	onVisibilityChange() {
 		if (document.hidden) {
 			APIUtil.postEvent(this.state.model, 'viewer:leave', '1.0.0', {}).then(res => {
 				this.leaveEvent = res.value
@@ -162,7 +221,6 @@ export default class ViewerApp extends React.Component {
 			APIUtil.postEvent(this.state.model, 'viewer:return', '1.0.0', {
 				relatedEventId: this.leaveEvent.id
 			})
-
 			delete this.leaveEvent
 		}
 	}
@@ -179,31 +237,12 @@ export default class ViewerApp extends React.Component {
 
 		if (el) {
 			return (container.scrollTop = ReactDOM.findDOMNode(el).getBoundingClientRect().height)
-		} else {
-			return (container.scrollTop = 0)
 		}
+
+		return (container.scrollTop = 0)
 	}
 
 	// === NON REACT LIFECYCLE METHODS ===
-
-	update(json) {
-		try {
-			let o
-			return (o = JSON.parse(json))
-		} catch (e) {
-			alert('Error parsing JSON')
-			this.setState({ model: this.state.model })
-			return
-		}
-	}
-
-	onBack() {
-		return NavUtil.goPrev()
-	}
-
-	onNext() {
-		return NavUtil.goNext()
-	}
 
 	onMouseDown(event) {
 		if (this.state.focusState.focussedId == null) {
@@ -235,9 +274,9 @@ export default class ViewerApp extends React.Component {
 	}
 
 	onIdle() {
-		this.lastActiveEpoch = this.refs.idleTimer.getLastActiveTime()
+		this.lastActiveEpoch = new Date(this.refs.idleTimer.getLastActiveTime())
 
-		APIUtil.postEvent(this.state.model, 'viewer:inactive', '1.0.0', {
+		APIUtil.postEvent(this.state.model, 'viewer:inactive', '2.0.0', {
 			lastActiveTime: this.lastActiveEpoch,
 			inactiveDuration: IDLE_TIMEOUT_DURATION_MS
 		}).then(res => {
@@ -246,7 +285,7 @@ export default class ViewerApp extends React.Component {
 	}
 
 	onReturnFromIdle() {
-		APIUtil.postEvent(this.state.model, 'viewer:returnFromInactive', '1.0.0', {
+		APIUtil.postEvent(this.state.model, 'viewer:returnFromInactive', '2.0.0', {
 			lastActiveTime: this.lastActiveEpoch,
 			inactiveDuration: Date.now() - this.lastActiveEpoch,
 			relatedEventId: this.inactiveEvent.id
@@ -256,24 +295,50 @@ export default class ViewerApp extends React.Component {
 		delete this.inactiveEvent
 	}
 
-	onWindowClose(e) {
+	onBeforeWindowClose() {
+		let closePrevented = false
+		// calling this function will prevent the window from closing
+		let preventClose = () => {
+			closePrevented = true
+		}
+
+		Dispatcher.trigger('viewer:closeAttempted', preventClose)
+
+		if (closePrevented) {
+			return true // Returning true will cause browser to ask user to confirm leaving page
+		}
+
+		return undefined // Returning undefined will allow browser to close normally
+	}
+
+	onWindowClose() {
 		APIUtil.postEvent(this.state.model, 'viewer:close', '1.0.0', {})
 	}
 
-	resetAssessments() {
-		AssessmentStore.init()
-		QuestionStore.init()
-		ScoreStore.init()
+	clearPreviewScores() {
+		APIUtil.clearPreviewScores(this.state.model.get('draftId')).then(res => {
+			if (res.status === 'error' || res.error) {
+				return ModalUtil.show(
+					<SimpleDialog ok width="15em">
+						{res.value && res.value.message
+							? `There was an error resetting assessments and questions: ${res.value.message}.`
+							: 'There was an error resetting assessments and questions'}
+					</SimpleDialog>
+				)
+			}
 
-		AssessmentStore.triggerChange()
-		QuestionStore.triggerChange()
-		ScoreStore.triggerChange()
+			AssessmentStore.init()
+			QuestionStore.init()
 
-		return ModalUtil.show(
-			<SimpleDialog ok width="15em">
-				Assessment attempts and all question responses have been reset.
-			</SimpleDialog>
-		)
+			AssessmentStore.triggerChange()
+			QuestionStore.triggerChange()
+
+			return ModalUtil.show(
+				<SimpleDialog ok width="15em">
+					Assessment attempts and all question responses have been reset.
+				</SimpleDialog>
+			)
+		})
 	}
 
 	unlockNavigation() {
@@ -281,6 +346,20 @@ export default class ViewerApp extends React.Component {
 	}
 
 	render() {
+		if (this.state.loading == true) return null
+
+		if (this.state.requestStatus === 'invalid') {
+			return (
+				<div className="viewer--viewer-app--visit-error">
+					{`There was a problem starting your visit. Please return to ${
+						this.state.lti.outcomeServiceHostname
+							? this.state.lti.outcomeServiceHostname
+							: 'the external system'
+					} and relaunch this module.`}
+				</div>
+			) //`There was a problem starting your visit. Please return to ${outcomeServiceURL} and relaunch this module.`
+		}
+
 		let nextEl, nextModel, prevEl
 		window.__lo = this.state.model
 		window.__s = this.state
@@ -297,7 +376,11 @@ export default class ViewerApp extends React.Component {
 		if (NavUtil.canNavigate(this.state.navState)) {
 			prevModel = NavUtil.getPrevModel(this.state.navState)
 			if (prevModel) {
-				prevEl = <InlineNavButton ref="prev" type="prev" title={`Back: ${prevModel.title}`} />
+				let navText =
+					typeof prevModel.title !== 'undefined' && prevModel.title !== null
+						? 'Back: ' + prevModel.title
+						: 'Back'
+				prevEl = <InlineNavButton ref="prev" type="prev" title={`${navText}`} />
 			} else {
 				prevEl = (
 					<InlineNavButton
@@ -311,7 +394,11 @@ export default class ViewerApp extends React.Component {
 
 			nextModel = NavUtil.getNextModel(this.state.navState)
 			if (nextModel) {
-				nextEl = <InlineNavButton ref="next" type="next" title={`Next: ${nextModel.title}`} />
+				let navText =
+					typeof nextModel.title !== 'undefined' && nextModel.title !== null
+						? 'Next: ' + nextModel.title
+						: 'Next'
+				nextEl = <InlineNavButton ref="next" type="next" title={`${navText}`} />
 			} else {
 				nextEl = (
 					<InlineNavButton
@@ -324,7 +411,18 @@ export default class ViewerApp extends React.Component {
 			}
 		}
 
-		let modal = ModalUtil.getCurrentModal(this.state.modalState)
+		let modalItem = ModalUtil.getCurrentModal(this.state.modalState)
+		let hideViewer = modalItem && modalItem.hideViewer
+
+		let classNames = [
+			'viewer--viewer-app',
+			'is-loaded',
+			this.state.isPreviewing ? 'is-previewing' : 'is-not-previewing',
+			this.state.navState.locked ? 'is-locked-nav' : 'is-unlocked-nav',
+			this.state.navState.open ? 'is-open-nav' : 'is-closed-nav',
+			this.state.navState.disabled ? 'is-disabled-nav' : 'is-enabled-nav',
+			`is-focus-state-${this.state.focusState.viewState}`
+		].join(' ')
 
 		return (
 			<IdleTimer
@@ -338,53 +436,46 @@ export default class ViewerApp extends React.Component {
 					ref="container"
 					onMouseDown={this.onMouseDown.bind(this)}
 					onScroll={this.onScroll.bind(this)}
-					className={`viewer--viewer-app${this.isPreviewing
-						? ' is-previewing'
-						: ' is-not-previewing'}${this.state.navState.locked
-						? ' is-locked-nav'
-						: ' is-unlocked-nav'}${this.state.navState.open
-						? ' is-open-nav'
-						: ' is-closed-nav'}${this.state.navState.disabled
-						? ' is-disabled-nav'
-						: ' is-enabled-nav'} is-focus-state-${this.state.focusState.viewState}`}
+					className={classNames}
 				>
-					<header>
-						<div className="pad">
-							<span className="module-title">
-								{this.state.model.title}
-							</span>
-							<span className="location">
-								{navTargetTitle}
-							</span>
-							<Logo />
-						</div>
-					</header>
-					<Nav navState={this.state.navState} />
-					{prevEl}
-					<ModuleComponent model={this.state.model} moduleData={this.state} />
-					{nextEl}
-					{this.isPreviewing
-						? <div className="preview-banner">
-								<span>You are previewing this object - Assessments will not be counted</span>
-								<div className="controls">
-									<button
-										onClick={this.unlockNavigation.bind(this)}
-										disabled={!this.state.navState.locked}
-									>
-										Unlock navigation
-									</button>
-									<button onClick={this.resetAssessments.bind(this)}>
-										Reset assessments &amp; questions
-									</button>
-								</div>
+					{hideViewer ? null : (
+						<header>
+							<div className="pad">
+								<span className="module-title">{this.state.model.title}</span>
+								<span className="location">{navTargetTitle}</span>
+								<Logo />
 							</div>
-						: null}
+						</header>
+					)}
+					{hideViewer ? null : <Nav navState={this.state.navState} />}
+					{hideViewer ? null : prevEl}
+					{hideViewer ? null : <ModuleComponent model={this.state.model} moduleData={this.state} />}
+					{hideViewer ? null : nextEl}
+					{this.state.isPreviewing ? (
+						<div className="preview-banner">
+							<span>You are previewing this module</span>
+							<div className="controls">
+								<span>Preview options:</span>
+								<button
+									onClick={this.unlockNavigation.bind(this)}
+									disabled={!this.state.navState.locked}
+								>
+									Unlock navigation
+								</button>
+								<button
+									className="button-clear-scores"
+									onClick={this.clearPreviewScores.bind(this)}
+								>
+									Reset assessments &amp; questions
+								</button>
+							</div>
+							<div className="border" />
+						</div>
+					) : null}
 					<FocusBlocker moduleData={this.state} />
-					{modal
-						? <ModalContainer>
-								{modal}
-							</ModalContainer>
-						: null}
+					{modalItem && modalItem.component ? (
+						<ModalContainer>{modalItem.component}</ModalContainer>
+					) : null}
 				</div>
 			</IdleTimer>
 		)

@@ -1,7 +1,6 @@
 @import '../../../scss/includes';
 
-.viewer--components--logo
-{
+.viewer--components--logo {
 	display: block;
 	width: 4rem;
 	height: 1rem;
@@ -11,9 +10,9 @@
 	padding-top: 1rem;
 	box-sizing: border-box;
 	overflow: hidden;
+	background-image: url('./obojobo-logo.svg');
 
-	&.is-inverted
-	{
+	&.is-inverted {
 		filter: invert(100%);
 	}
 }

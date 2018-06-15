@@ -37,19 +37,22 @@ export default class Modal extends React.Component {
 
 	render() {
 		return (
-			<div className="obojobo-draft--components--modal--modal">
+			<div
+				className={
+					'obojobo-draft--components--modal--modal' +
+					(this.props.className ? ' ' + this.props.className : '')
+				}
+			>
 				<input
 					className="first-tab"
 					ref="firstTab"
 					type="text"
 					onFocus={this.onTabTrapFocus.bind(this)}
 				/>
-				{this.props.onClose
-					? <DeleteButton ref="closeButton" onClick={this.props.onClose} />
-					: null}
-				<div className="content">
-					{this.props.children}
-				</div>
+				{this.props.onClose ? (
+					<DeleteButton ref="closeButton" onClick={this.props.onClose} />
+				) : null}
+				<div className="content">{this.props.children}</div>
 				<input
 					className="last-tab"
 					ref="lastTab"

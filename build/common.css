@@ -1,5 +1,5 @@
 .obojobo-draft--components--delete-button button {
-  background: #F4F4F4;
+  background: #f4f4f4;
   border: none;
   border-radius: 1.5em;
   box-sizing: border-box;
@@ -23,9 +23,9 @@
     top: 50%;
     transform: translate(-50%, -50%) rotate(45deg); }
   .obojobo-draft--components--delete-button button:hover {
-    background: #6714BD; }
+    background: #6714bd; }
     .obojobo-draft--components--delete-button button:hover::after {
-      color: #FFFFFF; }
+      color: #ffffff; }
 .obojobo-draft--components--edit-button {
   display: inline-block; }
   .obojobo-draft--components--edit-button button {
@@ -33,13 +33,13 @@
     -moz-user-select: none;
     -ms-user-select: none;
     user-select: none;
-    background-color: #FFFFFF;
+    background-color: #ffffff;
     background-position: 0.3rem center;
     background-repeat: no-repeat;
     background-size: 30%;
-    border: 1px solid #6714BD;
+    border: 1px solid #6714bd;
     box-shadow: 0 1px 1px rgba(0, 0, 0, 0.3);
-    color: #6714BD;
+    color: #6714bd;
     cursor: pointer;
     font-family: "Libre Franklin", Arial, sans-serif;
     font-size: 0.7em;
@@ -50,8 +50,8 @@
     text-align: right;
     min-width: 3.25em; }
     .obojobo-draft--components--edit-button button:hover {
-      background-color: #6714BD;
-      color: #FFFFFF;
+      background-color: #6714bd;
+      color: #ffffff;
       opacity: 1;
       text-align: center; }
 .obojobo-draft--components--button {
@@ -64,53 +64,55 @@
     cursor: pointer;
     font-family: "Libre Franklin", Arial, sans-serif;
     font-size: 0.85em;
-    opacity: 0.8;
     position: relative;
     min-width: 3.25em;
-    border-radius: .2em;
-    padding: .6rem 1em;
-    background-color: #6714BD;
-    color: #FFFFFF;
-    border: 1px solid transparent;
+    border-radius: 0.2em;
+    padding: 0.6rem 1em;
+    background-color: #7e18e7;
+    color: #ffffff;
+    border: 1px solid rgba(0, 0, 0, 0);
     border-bottom: 1px solid #350a61; }
     .obojobo-draft--components--button button:hover {
-      opacity: 1; }
+      background-color: #6714bd; }
     .obojobo-draft--components--button button:disabled {
-      background-color: #F4F4F4;
-      color: #999999;
-      border: 1px solid transparent;
-      border-bottom: 1px solid transparent;
+      background-color: #f4f4f4;
+      cursor: default;
+      color: #666666;
+      border: 1px solid rgba(0, 0, 0, 0);
+      border-bottom: 1px solid rgba(0, 0, 0, 0);
       opacity: 1; }
-  .obojobo-draft--components--button.dangerous button {
-    background-color: #D40000;
+  .obojobo-draft--components--button.is-dangerous button {
+    background-color: #d40000;
     border-bottom: 1px solid #350a61; }
   .obojobo-draft--components--button.alt-action button {
-    border: 1px solid #6714BD;
-    border-bottom: 1px solid #6714BD;
-    background-color: #FFFFFF;
-    color: #6714BD; }
+    border: 1px solid #6714bd;
+    border-bottom: 1px solid #6714bd;
+    background-color: #ffffff;
+    color: #6714bd; }
     .obojobo-draft--components--button.alt-action button:hover {
-      background-color: #6714BD;
-      color: #FFFFFF; }
+      background-color: #6714bd;
+      color: #ffffff; }
     .obojobo-draft--components--button.alt-action button:disabled {
-      background-color: #F4F4F4;
-      color: #999999;
-      border: 1px solid transparent;
-      border-bottom: 1px solid transparent;
+      background-color: #f4f4f4;
+      cursor: default;
+      color: #666666;
+      border: 1px solid rgba(0, 0, 0, 0);
+      border-bottom: 1px solid rgba(0, 0, 0, 0);
       opacity: 1; }
-  .obojobo-draft--components--button.alt-action.dangerous button {
-    border: 1px solid #D40000;
-    border-bottom: 1px solid #D40000;
-    background-color: #FFFFFF;
-    color: #D40000; }
-    .obojobo-draft--components--button.alt-action.dangerous button:hover {
-      background-color: #D40000;
-      color: #FFFFFF; }
-    .obojobo-draft--components--button.alt-action.dangerous button:disabled {
-      background-color: #F4F4F4;
-      color: #999999;
-      border: 1px solid transparent;
-      border-bottom: 1px solid transparent;
+  .obojobo-draft--components--button.alt-action.is-dangerous button {
+    border: 1px solid #d40000;
+    border-bottom: 1px solid #d40000;
+    background-color: #ffffff;
+    color: #d40000; }
+    .obojobo-draft--components--button.alt-action.is-dangerous button:hover {
+      background-color: #d40000;
+      color: #ffffff; }
+    .obojobo-draft--components--button.alt-action.is-dangerous button:disabled {
+      background-color: #f4f4f4;
+      cursor: default;
+      color: #666666;
+      border: 1px solid rgba(0, 0, 0, 0);
+      border-bottom: 1px solid rgba(0, 0, 0, 0);
       opacity: 1; }
   .obojobo-draft--components--button.align-left {
     text-align: left; }
@@ -118,8 +120,80 @@
     text-align: right; }
   .obojobo-draft--components--button.align-center {
     text-align: center; }
+.obojobo-draft--components--button-bar > div {
+  display: inline-block; }
+  .obojobo-draft--components--button-bar > div:first-child > .obojobo-draft--components--button > button {
+    border-top-left-radius: 0.25em;
+    border-bottom-left-radius: 0.25em; }
+  .obojobo-draft--components--button-bar > div:last-child > .obojobo-draft--components--button > button {
+    border-top-right-radius: 0.25em;
+    border-bottom-right-radius: 0.25em; }
+  .obojobo-draft--components--button-bar > div:not(:last-child) > .obojobo-draft--components--button > button {
+    border-right: none; }
+  .obojobo-draft--components--button-bar > div > .obojobo-draft--components--button > button {
+    border-radius: 0; }
+    .obojobo-draft--components--button-bar > div > .obojobo-draft--components--button > button:focus {
+      z-index: 2; }
+  .obojobo-draft--components--button-bar > div.is-selected > .obojobo-draft--components--button > button {
+    background-color: #93c6ff;
+    color: #ffffff;
+    z-index: 1; }
+.obojobo-draft--components--more-info-button {
+  position: relative;
+  display: inline-block; }
+
+@keyframes obojobo-draft--components--more-info-button--slidein {
+  0% {
+    transform: translate(100%, -50%) translate(-1em, 0); }
+  100% {
+    transform: translate(100%, -50%); } }
+
+@keyframes obojobo-draft--components--more-info-button--fadein {
+  0% {
+    opacity: 0; }
+  100% {
+    opacity: 1; } }
+  .obojobo-draft--components--more-info-button.is-default-label > button {
+    width: 2em; }
+  .obojobo-draft--components--more-info-button.is-mode-hover > button {
+    background: rgba(103, 20, 189, 0.7);
+    color: #ffffff; }
+  .obojobo-draft--components--more-info-button.is-mode-clicked > button {
+    background: #6714bd;
+    color: #ffffff;
+    cursor: pointer; }
+  .obojobo-draft--components--more-info-button > button {
+    background: #f4f4f4;
+    height: 2em;
+    border-radius: 1.5em;
+    color: #6714bd;
+    border: none;
+    cursor: help; }
+  .obojobo-draft--components--more-info-button > .info {
+    pointer-events: none;
+    position: absolute;
+    right: -1em;
+    top: 50%;
+    transform: translate(100%, -50%);
+    background: #f4f4f4;
+    box-shadow: 0 2px 2px rgba(0, 0, 0, 0.3);
+    z-index: 999;
+    animation: obojobo-draft--components--more-info-button--fadein 0.2s, obojobo-draft--components--more-info-button--slidein 0.2s; }
+    .obojobo-draft--components--more-info-button > .info:before {
+      position: absolute;
+      left: 0;
+      top: 50%;
+      transform: translate(-50%, -50%) rotate(45deg);
+      content: ' ';
+      width: 1em;
+      height: 1em;
+      background: #f4f4f4;
+      box-shadow: 0 2px 2px rgba(0, 0, 0, 0.3); }
+    .obojobo-draft--components--more-info-button > .info > .container {
+      background: #f4f4f4;
+      position: relative; }
 .obojobo-draft--components--modal--bubble {
-  background: #FFFFFF;
+  background: #ffffff;
   border: 1px solid rgba(0, 0, 0, 0.3);
   border-radius: 0.3em;
   bottom: 0;
@@ -133,7 +207,7 @@
   transform: translate(-50%, 120%);
   z-index: 10; }
   .obojobo-draft--components--modal--bubble::before {
-    background: #FFFFFF;
+    background: #ffffff;
     border-left: 1px solid rgba(0, 0, 0, 0.3);
     border-top: 1px solid rgba(0, 0, 0, 0.3);
     content: ' ';
@@ -149,7 +223,7 @@
   margin-bottom: 0.3em; }
 
 .obojobo-draft--components--modal--bubble .single-input-bubble input {
-  border: 1px solid #6714BD;
+  border: 1px solid #6714bd;
   box-sizing: border-box;
   font-family: "Roboto Mono", monospace;
   font-size: 0.8em;
@@ -158,11 +232,11 @@
   width: 75%; }
 
 .obojobo-draft--components--modal--bubble .single-input-bubble button {
-  background: #6714BD;
+  background: #6714bd;
   border: none;
   border-radius: 0 0.3rem 0.3rem 0;
   box-sizing: border-box;
-  color: #FFFFFF;
+  color: #ffffff;
   cursor: pointer;
   font-family: "Libre Franklin", Arial, sans-serif;
   font-size: 0.8em;
@@ -174,19 +248,20 @@
   width: 25%; }
 
 .obojobo-draft--components--modal--bubble .single-input-bubble .label {
-  color: #999999;
+  color: #666666;
   display: block;
   font-family: "Libre Franklin", Arial, sans-serif;
   font-size: 0.7em;
   font-weight: bold;
   text-align: center; }
 .obojobo-draft--components--modal--modal {
-  background: #FFFFFF;
+  background: #ffffff;
   padding: 1.5rem 3em;
   min-width: 15em;
-  position: relative;
   box-shadow: 0 1px 1px rgba(0, 0, 0, 0.3);
-  border-radius: 2px; }
+  border-radius: 2px;
+  max-height: 70vh;
+  overflow: auto; }
   .obojobo-draft--components--modal--modal .obojobo-draft--components--delete-button {
     top: 0.5em;
     right: 0.5em;
@@ -222,7 +297,7 @@
     margin-left: 0.5em;
     margin-right: 0.5em; }
   .obojobo-draft--components--modal--dialog .obojobo-draft--components--modal--modal > .content > .controls .text {
-    color: #999999;
+    color: #666666;
     font-size: 0.9em; }
 .editor--components--text-menu {
   background: rgba(0, 0, 0, 0.9);
@@ -249,7 +324,7 @@
     border: none;
     border-right: 1px solid rgba(255, 255, 255, 0.3);
     box-sizing: border-box;
-    color: #FFFFFF;
+    color: #ffffff;
     cursor: pointer;
     display: inline-block;
     font-family: "Libre Franklin", Arial, sans-serif;
@@ -279,7 +354,7 @@
       line-height: 1.225em;
       pointer-events: none; }
   .editor--components--text-menu .click-blocker {
-    background: #FFFFFF;
+    background: #ffffff;
     display: block;
     height: 100%;
     left: 0;
@@ -325,12 +400,12 @@
   top: 0;
   right: 0;
   bottom: 0;
-  background: #FFFFFF;
+  background: #ffffff;
   transition: opacity 0.8s;
   opacity: 0;
   pointer-events: none; }
 
-.component[data-focussed="true"] {
+.component[data-focussed='true'] {
   z-index: 2; }
 
 .viewer--viewer-app.is-focus-state-enter .viewer--components--focus-blocker, .viewer--viewer-app.is-focus-state-active .viewer--components--focus-blocker {

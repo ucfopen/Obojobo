@@ -1,23 +1,18 @@
 @import '../../../../../../../scss/includes';
 
-.component[data-component-type="ObojoboDraft.Chunks.MathEquation"]
-{
+.component[data-component-type='ObojoboDraft.Chunks.MathEquation'] {
 	&.selection-contains,
 	&.selection-inside,
 	&.selection-start,
-	&.selection-end
-	{
-		.obojobo-draft--components--delete-button
-		{
+	&.selection-end {
+		.obojobo-draft--components--delete-button {
 			display: block;
 		}
 	}
 }
 
-.editing-chunk .obojobo-draft--chunks--math-equation
-{
-	.katex-container
-	{
+.editing-chunk .obojobo-draft--chunks--math-equation {
+	.katex-container {
 		background: $color-bg;
 		border: 2px solid $color-action;
 		border-radius: 0.5em;
@@ -27,24 +22,20 @@
 		transform: translateY(-2px);
 	}
 
-	.anchor
-	{
+	.anchor {
 		pointer-events: none;
 	}
 }
 
-.obojobo-draft--chunks--math-equation
-{
+.obojobo-draft--chunks--math-equation {
 	text-align: center;
 
-	.katex-container
-	{
+	.katex-container {
 		display: inline-block;
 		margin-left: 4em;
 	}
 
-	.error-msg
-	{
+	.error-msg {
 		background: lighten($color-error, 65%);
 		border: 2px solid lighten($color-error, 40%);
 		border-radius: 4px;
@@ -60,8 +51,7 @@
 		width: 50%;
 	}
 
-	.obojobo-draft--components--delete-button
-	{
+	.obojobo-draft--components--delete-button {
 		display: none;
 		position: absolute;
 		right: 0;
@@ -70,8 +60,7 @@
 		z-index: 3;
 	}
 
-	.empty
-	{
+	.empty {
 		color: $color-shadow;
 	}
 }

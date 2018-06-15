@@ -4,13 +4,13 @@ let ReactCSSTransitionGroup = React.addons.CSSTransitionGroup
 
 import Common from 'Common'
 import Viewer from 'Viewer'
+import isOrNot from '../../../src/scripts/common/isornot'
 
 let { OboComponent } = Common.components
 let { Dispatcher } = Common.flux
 let { FocusUtil } = Common.util
 let { Button } = Common.components
 
-let { ScoreUtil } = Viewer.util
 let { QuestionUtil } = Viewer.util
 
 import QuestionContent from './Content/viewer-component'
@@ -19,7 +19,7 @@ export default class Question extends React.Component {
 	onClickBlocker() {
 		QuestionUtil.viewQuestion(this.props.model.get('id'))
 
-		if (this.props.model.modelState.practice) {
+		if (this.props.model.modelState.mode === 'practice') {
 			return FocusUtil.focusComponent(this.props.model.get('id'))
 		}
 	}
@@ -29,22 +29,30 @@ export default class Question extends React.Component {
 			return this.renderContentOnly()
 		}
 
-		let score = ScoreUtil.getScoreForModel(this.props.moduleData.scoreState, this.props.model)
+		let score = QuestionUtil.getScoreForModel(
+			this.props.moduleData.questionState,
+			this.props.model,
+			this.props.moduleData.navState.context
+		)
 		let viewState = QuestionUtil.getViewState(this.props.moduleData.questionState, this.props.model)
 
 		let assessment = this.props.model.children.models[this.props.model.children.models.length - 1]
 		let AssessmentComponent = assessment.getComponentClass()
 
+		let mode = this.props.mode ? this.props.mode : this.props.model.modelState.mode
+
+		let classNames =
+			'flip-container' +
+			' obojobo-draft--chunks--question' +
+			(score === null ? ' ' : score === 100 ? ' is-correct' : ' is-not-correct') +
+			(this.props.mode === 'review' ? ' is-active' : ` is-${viewState}`) +
+			` is-mode-${mode}`
+
 		return (
 			<OboComponent
 				model={this.props.model}
 				moduleData={this.props.moduleData}
-				className={`flip-container obojobo-draft--chunks--question${score === null
-					? ''
-					: score === 100 ? ' is-correct' : ' is-incorrect'} is-${viewState}${this.props.model
-					.modelState.practice
-					? ' is-practice'
-					: ' is-not-practice'}`}
+				className={classNames}
 			>
 				<div className="flipper">
 					<div className="content back">
@@ -53,11 +61,14 @@ export default class Question extends React.Component {
 							key={assessment.get('id')}
 							model={assessment}
 							moduleData={this.props.moduleData}
+							mode={mode}
 						/>
 					</div>
 					<div className="blocker front" key="blocker" onClick={this.onClickBlocker.bind(this)}>
 						<Button
-							value={this.props.model.modelState.practice ? 'Try Question' : 'View Question'}
+							value={
+								this.props.model.modelState.mode === 'practice' ? 'Try Question' : 'View Question'
+							}
 						/>
 					</div>
 				</div>
@@ -65,20 +76,27 @@ export default class Question extends React.Component {
 		)
 	}
 
-	renderContentOnly() {
-		let score = ScoreUtil.getScoreForModel(this.props.moduleData.scoreState, this.props.model)
-		let viewState = QuestionUtil.getViewState(this.props.moduleData.questionState, this.props.model)
+	renderContentOnly(context) {
+		let score = QuestionUtil.getScoreForModel(
+			this.props.moduleData.questionState,
+			this.props.model,
+			this.props.moduleData.navState.context
+		)
+
+		let mode = this.props.mode ? this.props.mode : this.props.model.modelState.mode
+
+		let className =
+			'flip-container' +
+			' obojobo-draft--chunks--question' +
+			isOrNot(score === 100, 'correct') +
+			' is-active' +
+			` is-mode-${mode}`
 
 		return (
 			<OboComponent
 				model={this.props.model}
 				moduleData={this.props.moduleData}
-				className={`flip-container obojobo-draft--chunks--question${score === null
-					? ''
-					: score === 100 ? ' is-correct' : ' is-incorrect'} is-active${this.props.model.modelState
-					.practice
-					? ' is-practice'
-					: ' is-not-practice'}`}
+				className={className}
 			>
 				<div className="flipper">
 					<div className="content back">

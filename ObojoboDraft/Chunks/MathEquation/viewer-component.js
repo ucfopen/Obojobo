@@ -16,44 +16,34 @@ let getLatexHtml = function(latex) {
 	}
 }
 
-export default class MathEquation extends React.Component {
-	constructor(props) {
-		super(props)
-
-		let katexHtml = getLatexHtml(this.props.model.modelState.latex)
-		if (katexHtml.error != null) {
-			katexHtml = ''
-		} else {
-			katexHtml = katexHtml.html
-		}
-
-		this.state = { katexHtml }
+export default props => {
+	let katexHtml = getLatexHtml(props.model.modelState.latex)
+	if (katexHtml.error != null) {
+		katexHtml = ''
+	} else {
+		katexHtml = katexHtml.html
 	}
 
-	render() {
-		if (this.state.katexHtml.length === 0) {
-			return null
-		}
-
-		return (
-			<OboComponent
-				model={this.props.model}
-				moduleData={this.props.moduleData}
-				className={`obojobo-draft--chunks--math-equation pad align-${this.props.model.modelState
-					.align}`}
-			>
-				<NonEditableChunk>
-					<div
-						className="katex-container"
-						dangerouslySetInnerHTML={{ __html: this.state.katexHtml }}
-					/>
-					{this.props.model.modelState.label === ''
-						? null
-						: <div className="equation-label">
-								{this.props.model.modelState.label}
-							</div>}
-				</NonEditableChunk>
-			</OboComponent>
-		)
+	if (katexHtml.length === 0) {
+		return null
 	}
+
+	return (
+		<OboComponent
+			model={props.model}
+			moduleData={props.moduleData}
+			className={`obojobo-draft--chunks--math-equation pad align-${props.model.modelState.align}`}
+		>
+			<NonEditableChunk>
+				<div
+					className="katex-container"
+					style={{ fontSize: props.model.modelState.size }}
+					dangerouslySetInnerHTML={{ __html: katexHtml }}
+				/>
+				{props.model.modelState.label === '' ? null : (
+					<div className="equation-label">{props.model.modelState.label}</div>
+				)}
+			</NonEditableChunk>
+		</OboComponent>
+	)
 }

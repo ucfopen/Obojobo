@@ -1,10 +1,14 @@
 import Common from 'Common'
 
-let { Dispatcher } = Common.flux
-let { OboModel } = Common.models
+const { Dispatcher } = Common.flux
+const { OboModel } = Common.models
 
-var getFlatList = function(item) {
+const getFlatList = function(item) {
 	let list = []
+	let model = OboModel.models[item.id]
+	if (model && model.get('type') === 'ObojoboDraft.Sections.Assessment') {
+		item.flags.assessment = true
+	}
 	if (item.type !== 'hidden') {
 		list.push(item)
 	}
@@ -18,7 +22,7 @@ var getFlatList = function(item) {
 	return list
 }
 
-var NavUtil = {
+const NavUtil = {
 	rebuildMenu(model) {
 		return Dispatcher.trigger('nav:rebuildMenu', {
 			value: {
@@ -106,9 +110,6 @@ var NavUtil = {
 			}
 		})
 	},
-
-	// getNavItemForModel: (state, model) ->
-	// 	state.itemsById[model.get('id')]
 
 	getNavTarget(state) {
 		return state.itemsById[state.navTargetId]
@@ -200,12 +201,38 @@ var NavUtil = {
 		return OboModel.models[nextItem.id]
 	},
 
+	getNavItemForModel(state, model) {
+		let item = state.itemsById[model.get('id')]
+		if (!item) {
+			return null
+		}
+
+		return item
+	},
+
+	getNavLabelForModel(state, model) {
+		let item = NavUtil.getNavItemForModel(state, model)
+		if (!item) {
+			return null
+		}
+
+		return item.label
+	},
+
 	canNavigate(state) {
 		return !state.locked
 	},
 
 	getOrderedList(state) {
 		return getFlatList(state.items)
+	},
+
+	setContext(context) {
+		return Dispatcher.trigger('nav:setContext', {
+			value: {
+				context
+			}
+		})
 	}
 }
 

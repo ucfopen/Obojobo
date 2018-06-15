@@ -1,13 +1,11 @@
 @import '../../../scss/includes';
 
-.obojobo-draft--components--edit-button
-{
+.obojobo-draft--components--edit-button {
 	display: inline-block;
 
-	button
-	{
+	button {
 		@include user-select(none);
-
+		// background-image: url("./edit-button.svg");
 		background-color: $color-bg;
 		background-position: 0.3rem center;
 		background-repeat: no-repeat;
@@ -25,8 +23,7 @@
 		text-align: right;
 		min-width: 3.25em;
 
-		&:hover
-		{
+		&:hover {
 			background-color: $color-action;
 			color: $color-bg;
 			opacity: 1;
