@@ -7,8 +7,8 @@
 	},
 	"main": "index.js",
 	"scripts": {
-		"test": "jest --verbose",
-		"test:ci": "CI=true jest --ci --useStderr --coverage --coverageReporters text-summary cobertura",
+		"test": "TZ='America/New_York' jest --verbose",
+		"test:ci": "TZ='America/New_York' CI=true jest --ci --useStderr --coverage --coverageReporters text-summary cobertura",
 		"start": "webpack --watch",
 		"dev": "webpack-dev-server --colors --port 8090 --host 0.0.0.0",
 		"build": "webpack",
