@@ -1,6 +1,6 @@
 {
 	"name": "obojobo-server",
-	"version": "3.3.0",
+	"version": "3.3.1",
 	"private": true,
 	"scripts": {
 		"start": "yarn express:prod",
@@ -68,7 +68,7 @@
 		"json-inflector": "^1.1.0",
 		"moment": "^2.18.0",
 		"morgan": "~1.7.0",
-		"obojobo-draft-document-engine":"https://github.com/ucfcdl/Obojobo-Document-Engine.git#v1.0.0",
+		"obojobo-draft-document-engine":"https://github.com/ucfcdl/Obojobo-Document-Engine.git#v1.1.0",
 		"obojobo-draft-xml-parser":"https://github.com/ucfcdl/Obojobo-Docment-XML-Parser.git#v0.3.0",
 		"pg-promise": "^5.5.0",
 		"serve-favicon": "~2.3.0"
