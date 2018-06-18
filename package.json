@@ -29,8 +29,8 @@
 		"devXmlParser:clone":"git clone git@github.com:ucfcdl/Obojobo-Docment-XML-Parser.git devsrc/obojobo-draft-xml-parser || echo 'already cloned'",
 		"devXmlParser:nodemodules": "cd ./devsrc/obojobo-draft-xml-parser && yarn",
 		"devXmlParser:link":"cd ./devsrc/obojobo-draft-xml-parser && yarn link && cd ../.. && yarn link obojobo-draft-xml-parser",
-		"test": "jest",
-		"test:ci": "CI=true jest --ci --coverage --coverageReporters text-summary cobertura",
+		"test": "TZ='America/New_York' jest",
+		"test:ci": "TZ='America/New_York' CI=true jest --ci --coverage --coverageReporters text-summary cobertura",
 		"precommit": "yarn test:ci && lint-staged",
 		"prettier:run":"prettier --write '{__{tests,mocks}__,bin,config,migrations,models,routes,views}/**/*.{js,scss}'",
 		"prettier:debug":"prettier -l '{__{tests,mocks}__,bin,config,migrations,models,routes,views}/**/*.{js,scss}'"
