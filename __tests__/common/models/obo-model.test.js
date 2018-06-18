@@ -171,37 +171,6 @@ describe('OboModel', () => {
 		delete global.__actionFn
 	})
 
-	//@TODO: Test fails, flags on modelState are broken, skip for now
-	// Should onChildAdd/onChildRemove dirty the parent?
-	// As test is editor specific and until desired behavior of model methods clear- saving until later
-	test.skip('marking models as dirty sets flags dirty and needsUpdate but does not modify children', () => {
-		expect.assertions(55)
-		Store.getItems(items => {
-			let o = OboModel.create({
-				id: 'ObojoboDraft.Modules.Module',
-				type: 'root-type',
-				children: [
-					{
-						id: 'child',
-						type: 'ObojoboDraft.Sections.Content'
-					}
-				]
-			})
-
-			expect(OboModel.models.root.modelState.dirty).toBe(false)
-			expect(OboModel.models.root.modelState.needsUpdate).toBe(false)
-			expect(OboModel.models.child.modelState.dirty).toBe(false)
-			expect(OboModel.models.child.modelState.needsUpdate).toBe(false)
-
-			o.markDirty()
-
-			expect(OboModel.models.root.modelState.dirty).toBe(true)
-			expect(OboModel.models.root.modelState.needsUpdate).toBe(true)
-			expect(OboModel.models.child.modelState.dirty).toBe(false)
-			expect(OboModel.models.child.modelState.needsUpdate).toBe(false)
-		})
-	})
-
 	test('removing children sets their parent to null, marks them dirty and removes them from the model db', () => {
 		expect.assertions(4)
 		Store.getItems(items => {

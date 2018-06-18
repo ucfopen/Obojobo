@@ -106,6 +106,9 @@ describe('ViewerApp', () => {
 		expect.assertions(2)
 		mocksForMount('not ok')
 
+		// No visit or draft id
+		jest.spyOn(String.prototype, 'split').mockReturnValueOnce([])
+
 		// temporarily mock and unmock console.error to prevent logging to screen
 		let originalError = console.error
 		console.error = jest.fn()

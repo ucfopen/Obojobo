@@ -1,6 +1,6 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
-exports[`ModalContainer 1`] = `
+exports[`ModalContainer ModalContainer component 1`] = `
 <div
   className="obojobo-draft--components--modal-container"
 >
