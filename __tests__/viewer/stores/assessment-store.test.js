@@ -458,6 +458,14 @@ let originalError = describe('AssessmentStore', () => {
 		mockValidStartAttempt()
 		OboModel.create(getExampleAssessment())
 
+		AssessmentStore.setState({
+			assessments: {
+				assessmentId: {
+					currentResponses: ['question1', 'question2']
+				}
+			}
+		})
+
 		APIUtil.endAttempt = jest.fn()
 		APIUtil.endAttempt.mockResolvedValueOnce({
 			status: 'mockStatus',
@@ -495,7 +503,7 @@ let originalError = describe('AssessmentStore', () => {
 			})
 	})
 
-	test('setResponse will update state', () => {
+	test('trySetResponse will not update with no Assessment', () => {
 		expect.assertions(1)
 		mockValidStartAttempt()
 		OboModel.create(getExampleAssessment())
@@ -504,6 +512,23 @@ let originalError = describe('AssessmentStore', () => {
 			.then(() => AssessmentStore.trySetResponse('q1', ['some response']))
 			.then(res => {
 				expect(AssessmentUtil.getAssessmentForModel).toHaveBeenCalled()
+			})
+	})
+
+	test('trySetResponse will update state', () => {
+		expect.assertions(2)
+		mockValidStartAttempt()
+		OboModel.create(getExampleAssessment())
+
+		AssessmentUtil.getAssessmentForModel.mockReturnValueOnce({
+			currentResponses: ['q2']
+		})
+
+		return AssessmentStore.tryStartAttempt('assessmentId')
+			.then(() => AssessmentStore.trySetResponse('q1', ['some response']))
+			.then(res => {
+				expect(AssessmentUtil.getAssessmentForModel).toHaveBeenCalled()
+				expect(AssessmentStore.triggerChange).toHaveBeenCalled()
 			})
 	})
 

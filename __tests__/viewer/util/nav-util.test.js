@@ -463,4 +463,31 @@ describe('NavUtil', () => {
 
 		expect(Common.flux.Dispatcher.trigger).not.toHaveBeenCalled()
 	})
+
+	test('getOrderedList returns assessment item', () => {
+		let assessmentModel = {
+			get: jest.fn().mockReturnValueOnce('ObojoboDraft.Sections.Assessment')
+		}
+		let assessmentItem = {
+			id: 'mockAssessment',
+			flags: {},
+			type: 'none',
+			showChildren: false
+		}
+
+		Common.models.OboModel.models.mockAssessment = assessmentModel
+		let list = NavUtil.getOrderedList({ items: assessmentItem })
+
+		expect(list).toHaveLength(1)
+		expect(list[0]).toHaveProperty('id', 'mockAssessment')
+		expect(list[0]).toHaveProperty('flags', { assessment: true })
+	})
+
+	test('setContext calls Dispatcher.trigger', () => {
+		NavUtil.setContext('mockContext')
+
+		expect(Common.flux.Dispatcher.trigger).toHaveBeenCalledWith('nav:setContext', {
+			value: { context: 'mockContext' }
+		})
+	})
 })

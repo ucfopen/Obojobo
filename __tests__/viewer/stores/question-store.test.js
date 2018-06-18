@@ -139,6 +139,34 @@ describe('QuestionStore', () => {
 		})
 	})
 
+	test('question:setResponse calls triggerChange and postEvent', () => {
+		__createModels()
+
+		QuestionStore.setState({ responses: { mockContext: {} } })
+
+		__mockTrigger('question:setResponse', {
+			value: {
+				id: 'questionId',
+				response: { customResponse: 'responseValue' },
+				context: 'mockContext'
+			}
+		})
+
+		expect(QuestionStore.triggerChange).toHaveBeenCalledTimes(1)
+		expect(APIUtil.postEvent).toHaveBeenCalledTimes(1)
+		expect(APIUtil.postEvent.mock.calls[0][0]).toBe(OboModel.models.questionId)
+		expect(APIUtil.postEvent.mock.calls[0][1]).toEqual('question:setResponse')
+		expect(APIUtil.postEvent.mock.calls[0][2]).toEqual('2.1.0')
+		expect(APIUtil.postEvent.mock.calls[0][3]).toEqual({
+			assessmentId: undefined,
+			attemptId: undefined,
+			context: 'mockContext',
+			questionId: 'questionId',
+			response: { customResponse: 'responseValue' },
+			targetId: undefined
+		})
+	})
+
 	test('question:clearResponse calls triggerChange and updates state', () => {
 		QuestionStore.setState({ responses: { mockContext: { mockId: true } } })
 
@@ -358,6 +386,23 @@ describe('QuestionStore', () => {
 		})
 	})
 
+	test('question:checkAnswer calls APIUtil', () => {
+		__createModels()
+
+		QuestionStore.setState({
+			viewing: null,
+			viewedQuestions: {}
+		})
+
+		__mockTrigger('question:checkAnswer', {
+			value: {
+				id: 'questionId'
+			}
+		})
+
+		expect(APIUtil.postEvent).toHaveBeenCalledTimes(1)
+	})
+
 	test('question:hide marks questions as hidden, and clears viewing if it matches', () => {
 		__createModels()
 
@@ -451,6 +496,7 @@ describe('QuestionStore', () => {
 		__createModels()
 
 		expect(QuestionStore.triggerChange).toHaveBeenCalledTimes(0)
+		QuestionStore.setState({ scores: { mockContext: {} } })
 
 		__mockTrigger('question:scoreSet', {
 			value: {

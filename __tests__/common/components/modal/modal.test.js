@@ -14,7 +14,11 @@ describe('Modal', () => {
 
 	test('Modal', () => {
 		const component = renderer.create(
-			<Modal onClose={onClose} focusOnFirstElement={focusOnFirstElement}>
+			<Modal
+				onClose={onClose}
+				focusOnFirstElement={focusOnFirstElement}
+				className={'mockClassName'}
+			>
 				Content
 			</Modal>
 		)
@@ -131,6 +135,12 @@ describe('Modal', () => {
 				Content
 			</Modal>
 		)
+
+		component.unmount()
+	})
+
+	test('Unmounts with no onClose function', () => {
+		const component = mount(<Modal focusOnFirstElement={focusOnFirstElement}>Content</Modal>)
 
 		component.unmount()
 	})

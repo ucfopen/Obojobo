@@ -180,6 +180,20 @@ describe('QuestionUtil', () => {
 		expect(res).toEqual(null)
 	})
 
+	test('getResponse gets a response from state with no matching id', () => {
+		let res = QuestionUtil.getResponse(
+			{
+				responses: {
+					mockContext: {}
+				}
+			},
+			testModel,
+			'mockContext'
+		)
+
+		expect(res).toEqual(null)
+	})
+
 	test('getResponse gets a response from state', () => {
 		let res = QuestionUtil.getResponse(
 			{
@@ -194,6 +208,18 @@ describe('QuestionUtil', () => {
 		)
 
 		expect(res).toEqual('A Response')
+	})
+
+	test('getData gets data from state with no id match', () => {
+		let data = QuestionUtil.getData(
+			{
+				data: {}
+			},
+			testModel,
+			'theKey'
+		)
+
+		expect(data).toEqual(false)
 	})
 
 	test('getData gets data from state for a given model and key', () => {
