@@ -193,12 +193,12 @@ describe('lti', () => {
 		global.Date.prototype.toISOString = _DateToISOString
 	})
 
-	test('should find the appropriate secret for a given key', () => {
+	test('findSecretForKey should find the appropriate secret for a given key', () => {
 		let secret = lti.findSecretForKey('testkey')
 		expect(secret).toBe('testsecret')
 	})
 
-	test('should fail to find an unused key', () => {
+	test('findSecretForKey should fail to find an unused key', () => {
 		expect(lti.findSecretForKey('fakekey')).toBe(null)
 	})
 
@@ -2305,6 +2305,36 @@ describe('lti', () => {
 		})
 	})
 
+	test('getLTIStatesByAssessmentIdForUserAndDraft searches on assessment', done => {
+		db.manyOrNone.mockResolvedValueOnce([
+			{
+				assessment_id: 'assessment-id',
+				assessment_score_id: 'assessment-score-id',
+				score_sent: 'score-sent',
+				lti_sent_date: 'lti-sent-date',
+				status: 'status',
+				gradebook_status: 'gradebook-status',
+				status_details: 'status-details'
+			}
+		])
+
+		lti.getLTIStatesByAssessmentIdForUserAndDraft('user-id', 'draft-id', 'assessment-id').then(result => {
+			expect(result).toEqual({
+				'assessment-id': {
+					assessmentId: 'assessment-id',
+					assessmentScoreId: 'assessment-score-id',
+					scoreSent: 'score-sent',
+					sentDate: 'lti-sent-date',
+					status: 'status',
+					gradebookStatus: 'gradebook-status',
+					statusDetails: 'status-details'
+				}
+			})
+
+			done()
+		})
+	})
+
 	test('getLTIStatesByAssessmentIdForUserAndDraft returns empty object when nothing returned from database', done => {
 		db.manyOrNone.mockResolvedValueOnce(null)
 
@@ -2346,7 +2376,44 @@ describe('lti', () => {
 		})
 	})
 
-	test('failing to insert the assessment score fails and logs as expected', done => {
+	test('insertReplaceResultEvent calls insertEvent', () => {
+		insertEvent.mockResolvedValueOnce('inserted')
+
+		lti.insertReplaceResultEvent('mockUserId', 'mockDraftId', {}, {}, 'mockLTIResult')
+
+		expect(insertEvent).toHaveBeenCalledWith({
+			"action": "lti:replaceResult",
+			"actorTime": "2018-06-18T20:50:20.939Z",
+			"draftId": "mockDraftId",
+			"eventVersion": "2.0.0",
+			"ip": "",
+			"metadata": {},
+			"payload": {
+				"body": {
+					"lis_outcome_service_url": undefined,
+					"lis_result_sourcedid": undefined
+				},
+				"launchId": undefined,
+				"launchKey": undefined,
+				"result": "mockLTIResult"
+			},
+			"userId": "mockUserId"
+		})
+	})
+
+	test.skip('insertReplaceResultEvent catches error', () => {
+		insertEvent.mockImplementationOnce(() => {
+			throw 'mockError'
+		})
+
+		lti.insertReplaceResultEvent('mockUserId', 'mockDraftId', {}, {}, 'mockLTIResult')
+
+		expect(logger.error).toHaveBeenCalledWith(
+			'There was an error inserting the lti event'
+		)
+	})
+
+	test('sendHighestAssessmentScore fails and logs as expected', done => {
 		mockSendAssessScoreDBCalls(100, 1, moment().toISOString(), true, true, 'testkey', false)
 		mockDate()
 

@@ -3,10 +3,12 @@ jest.mock('../db')
 describe('insert_event', () => {
 	beforeAll(() => {})
 	afterAll(() => {})
-	beforeEach(() => {})
+	beforeEach(() => {
+		jest.resetAllMocks()
+	})
 	afterEach(() => {})
 
-	it('inserts the expected values', () => {
+	test('inserts the expected values', () => {
 		expect.assertions(4)
 
 		let db = oboRequire('db')
@@ -39,7 +41,42 @@ describe('insert_event', () => {
 			})
 	})
 
-	it('Returns promise rejection', () => {
+	test('inserts the expected values with a caliper event', () => {
+		expect.assertions(5)
+
+		let db = oboRequire('db')
+		let insertEvent = oboRequire('insert_event')
+		const expectedCreatedAt = new Date().toISOString()
+		const insertObject = {
+			action: 'test::testAction',
+			actorTime: new Date().toISOString(),
+			payload: { value: 'test' },
+			userId: 9,
+			ip: '1.2.3.4',
+			metadata: { value: 'test2' },
+			draftId: '999999',
+			caliperPayload: { id: 'mockCaliperPayload' }
+		}
+		// mock insert
+		db.one.mockResolvedValueOnce({ created_at: expectedCreatedAt })
+
+		return insertEvent(insertObject)
+			.then(result => {
+				expect(result).toHaveProperty('created_at')
+				expect(result.created_at).toBe(expectedCreatedAt)
+				expect(db.one).toHaveBeenCalledTimes(1)
+				expect(db.one).toHaveBeenCalledWith(
+					expect.stringContaining('INSERT INTO events'),
+					insertObject
+				)
+				expect(db.none).toHaveBeenCalledTimes(1)
+			})
+			.catch(err => {
+				throw err
+			})
+	})
+
+	test('Returns promise rejection', () => {
 		expect.assertions(1)
 
 		let db = oboRequire('db')

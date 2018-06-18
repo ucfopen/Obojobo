@@ -13,10 +13,10 @@ describe('register chunks middleware', () => {
 	beforeEach(() => {})
 	afterEach(() => {})
 
-	it('calls with no errors', () => {
+	test('calls with no errors', () => {
 		let middleware = oboRequire('express_register_chunks')
 		let mockApp = {
-			get: jest.fn(),
+			get: jest.fn().mockReturnValueOnce('production'),
 			use: jest.fn(),
 			locals: {}
 		}
@@ -26,7 +26,7 @@ describe('register chunks middleware', () => {
 		expect(mockApp.use).toHaveBeenCalled()
 	})
 
-	it('registers all nodes as expected', () => {
+	test('registers all nodes as expected', () => {
 		oboRequire('obo_get_installed_modules').mockImplementationOnce(env => {
 			return {
 				express: [],
@@ -49,7 +49,7 @@ describe('register chunks middleware', () => {
 		expect(dns.add).toHaveBeenCalledWith('pkg.type.node2', '/file/other')
 	})
 
-	it('calls express.static as expected', () => {
+	test('calls express.static as expected', () => {
 		let middleware = oboRequire('express_register_chunks')
 		let mockApp = {
 			get: jest.fn(),
@@ -71,7 +71,7 @@ describe('register chunks middleware', () => {
 		expect(express.static).toHaveBeenCalledWith('./public/compiled/viewer.css')
 	})
 
-	it('adds any express applications', () => {
+	test('adds any express applications', () => {
 		oboRequire('obo_get_installed_modules').mockImplementationOnce(env => {
 			return {
 				express: ['/file/path/express.js'],
