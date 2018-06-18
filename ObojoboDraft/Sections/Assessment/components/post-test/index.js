@@ -85,7 +85,7 @@ const AssessmentPostTest = props => {
 						<h2>Recorded Score:</h2>
 						<span className="value">{Math.round(assessmentScore)}</span>
 						<span className="from-attempt">{`From attempt ${
-							firstHighestAttempt.assessmentScoreDetails.attemptNumber
+							firstHighestAttempt.attemptNumber
 						}`}</span>
 					</div>
 				)}

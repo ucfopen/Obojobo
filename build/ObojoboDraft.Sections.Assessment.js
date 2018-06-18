@@ -782,7 +782,7 @@ var AssessmentPostTest = function AssessmentPostTest(props) {
 				React.createElement(
 					'span',
 					{ className: 'from-attempt' },
-					'From attempt ' + firstHighestAttempt.assessmentScoreDetails.attemptNumber
+					'From attempt ' + firstHighestAttempt.attemptNumber
 				)
 			),
 			React.createElement(_ltiStatus2.default, {
