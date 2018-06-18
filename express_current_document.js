@@ -21,9 +21,12 @@ let requireCurrentDocument = (req) => {
 		draftId = req.params.draftId
 	} else if(req.body && req.body.draftId) {
 		draftId = req.body.draftId
+	} else if(req.body && req.body.event && req.body.event.draft_id){
+		draftId = req.body.event.draft_id
 	}
 
 	if(draftId === null) {
+		console.log(req)
 		logger.warn(
 			'No Session or Current DraftDocument?',
 			req.currentDocument

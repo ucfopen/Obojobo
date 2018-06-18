@@ -71,6 +71,17 @@ exports.up = function(db) {
 					notNull: true
 				})
 			})
+			.then(result => {
+				return db.removeIndex('visits', 'user_draft_unique')
+			})
+			.then(result => {
+				return db.addIndex(
+					'view_state',
+					'user_content_unique',
+					['user_id', 'draft_content_id'],
+					true
+				)
+			})
 	)
 }
 
