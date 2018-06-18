@@ -85,7 +85,7 @@ describe('Nav', () => {
 		expect(tree).toMatchSnapshot()
 	})
 
-	test('renders all list item types', () => {
+	test.only('renders all list item types', () => {
 		NavUtil.getOrderedList.mockReturnValueOnce([
 			{
 				id: 4,

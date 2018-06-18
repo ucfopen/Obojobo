@@ -42,7 +42,11 @@ exports[`Dialog Dialog component 1`] = `
 exports[`Dialog Dialog component with props 1`] = `
 <div
   className="obojobo-draft--components--modal--dialog"
-  style={null}
+  style={
+    Object {
+      "width": 5,
+    }
+  }
 >
   <div
     className="obojobo-draft--components--modal--modal"

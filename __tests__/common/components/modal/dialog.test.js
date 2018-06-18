@@ -13,7 +13,7 @@ describe('Dialog', () => {
 
 	test('Dialog component with props', () => {
 		const component = renderer.create(
-			<Dialog title="Title" buttons={[]} centered={false}>
+			<Dialog title="Title" buttons={[]} centered={false} width={5}>
 				Content
 			</Dialog>
 		)

@@ -1,0 +1,24 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`ViewerApp clearPreviewScores shows error dialog 1`] = `
+Array [
+  "modal:show",
+  Object {
+    "value": Object {
+      "component": <SimpleDialog
+        cancelOk={false}
+        noOrYes={false}
+        ok={true}
+        onCancel={[Function]}
+        onConfirm={[Function]}
+        title={null}
+        width="15em"
+        yesOrNo={false}
+      >
+        There was an error resetting assessments and questions
+      </SimpleDialog>,
+      "hideViewer": false,
+    },
+  },
+]
+`;

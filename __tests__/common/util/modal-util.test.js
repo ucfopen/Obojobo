@@ -43,4 +43,12 @@ describe('ModalUtil', () => {
 			})
 		).toEqual({ first: 'modal' })
 	})
+
+	test('getCurrentModal returns null with no modals', () => {
+		expect(
+			ModalUtil.getCurrentModal({
+				modals: []
+			})
+		).toEqual(null)
+	})
 })
