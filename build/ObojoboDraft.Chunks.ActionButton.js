@@ -33,9 +33,6 @@
 /******/ 	// expose the module cache
 /******/ 	__webpack_require__.c = installedModules;
 /******/
-/******/ 	// identity function for calling harmony imports with the correct context
-/******/ 	__webpack_require__.i = function(value) { return value; };
-/******/
 /******/ 	// define getter function for harmony exports
 /******/ 	__webpack_require__.d = function(exports, name, getter) {
 /******/ 		if(!__webpack_require__.o(exports, name)) {
@@ -63,7 +60,7 @@
 /******/ 	__webpack_require__.p = "build/";
 /******/
 /******/ 	// Load entry module and return exports
-/******/ 	return __webpack_require__(__webpack_require__.s = 285);
+/******/ 	return __webpack_require__(__webpack_require__.s = 178);
 /******/ })
 /************************************************************************/
 /******/ ({
@@ -75,17 +72,25 @@ module.exports = Common;
 
 /***/ }),
 
-/***/ 103:
+/***/ 178:
+/***/ (function(module, exports, __webpack_require__) {
+
+module.exports = __webpack_require__(179);
+
+
+/***/ }),
+
+/***/ 179:
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
 
 
-var _adapter = __webpack_require__(124);
+var _adapter = __webpack_require__(180);
 
 var _adapter2 = _interopRequireDefault(_adapter);
 
-var _viewerComponent = __webpack_require__(125);
+var _viewerComponent = __webpack_require__(181);
 
 var _viewerComponent2 = _interopRequireDefault(_viewerComponent);
 
@@ -106,7 +111,7 @@ _Common2.default.Store.registerModel('ObojoboDraft.Chunks.ActionButton', {
 
 /***/ }),
 
-/***/ 124:
+/***/ 180:
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -169,7 +174,7 @@ function __guard__(value, transform) {
 
 /***/ }),
 
-/***/ 125:
+/***/ 181:
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -179,7 +184,7 @@ Object.defineProperty(exports, "__esModule", {
 	value: true
 });
 
-__webpack_require__(261);
+__webpack_require__(182);
 
 var _Common = __webpack_require__(0);
 
@@ -217,18 +222,10 @@ exports.default = function (props) {
 
 /***/ }),
 
-/***/ 261:
+/***/ 182:
 /***/ (function(module, exports) {
 
 // removed by extract-text-webpack-plugin
-
-/***/ }),
-
-/***/ 285:
-/***/ (function(module, exports, __webpack_require__) {
-
-module.exports = __webpack_require__(103);
-
 
 /***/ })
 

@@ -33,9 +33,6 @@
 /******/ 	// expose the module cache
 /******/ 	__webpack_require__.c = installedModules;
 /******/
-/******/ 	// identity function for calling harmony imports with the correct context
-/******/ 	__webpack_require__.i = function(value) { return value; };
-/******/
 /******/ 	// define getter function for harmony exports
 /******/ 	__webpack_require__.d = function(exports, name, getter) {
 /******/ 		if(!__webpack_require__.o(exports, name)) {
@@ -63,7 +60,7 @@
 /******/ 	__webpack_require__.p = "build/";
 /******/
 /******/ 	// Load entry module and return exports
-/******/ 	return __webpack_require__(__webpack_require__.s = 179);
+/******/ 	return __webpack_require__(__webpack_require__.s = 145);
 /******/ })
 /************************************************************************/
 /******/ ([
@@ -1901,7 +1898,7 @@ var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol
             try {
                 oldLocale = globalLocale._abbr;
                 var aliasedRequire = require;
-                __webpack_require__(178)("./" + name);
+                __webpack_require__(153)("./" + name);
                 getSetGlobalLocale(oldLocale);
             } catch (e) {}
         }
@@ -4476,7 +4473,7 @@ var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol
 
     return hooks;
 });
-/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(135)(module)))
+/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(11)(module)))
 
 /***/ }),
 /* 1 */
@@ -4867,12 +4864,141 @@ exports.default = APIUtil;
 Object.defineProperty(exports, "__esModule", {
 	value: true
 });
-var getDisplayFriendlyScore = function getDisplayFriendlyScore(n) {
-	if (n === null) return '--';
-	return Math.round(n).toString();
+
+var _Common = __webpack_require__(1);
+
+var _Common2 = _interopRequireDefault(_Common);
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+var Dispatcher = _Common2.default.flux.Dispatcher;
+var OboModel = _Common2.default.models.OboModel;
+
+
+var QuestionUtil = {
+	setResponse: function setResponse(id, response, targetId, context, assessmentId, attemptId) {
+		return Dispatcher.trigger('question:setResponse', {
+			value: {
+				id: id,
+				response: response,
+				targetId: targetId,
+				context: context,
+				assessmentId: assessmentId,
+				attemptId: attemptId
+			}
+		});
+	},
+	clearResponse: function clearResponse(id, context) {
+		return Dispatcher.trigger('question:clearResponse', {
+			value: {
+				id: id,
+				context: context
+			}
+		});
+	},
+	setData: function setData(id, key, value) {
+		return Dispatcher.trigger('question:setData', {
+			value: {
+				key: id + ':' + key,
+				value: value
+			}
+		});
+	},
+	clearData: function clearData(id, key) {
+		return Dispatcher.trigger('question:clearData', {
+			value: {
+				key: id + ':' + key
+			}
+		});
+	},
+	showExplanation: function showExplanation(id) {
+		return Dispatcher.trigger('question:showExplanation', {
+			value: { id: id }
+		});
+	},
+	hideExplanation: function hideExplanation(id, actor) {
+		return Dispatcher.trigger('question:hideExplanation', {
+			value: { id: id, actor: actor }
+		});
+	},
+	viewQuestion: function viewQuestion(id) {
+		return Dispatcher.trigger('question:view', {
+			value: {
+				id: id
+			}
+		});
+	},
+	hideQuestion: function hideQuestion(id) {
+		return Dispatcher.trigger('question:hide', {
+			value: {
+				id: id
+			}
+		});
+	},
+	checkAnswer: function checkAnswer(id) {
+		return Dispatcher.trigger('question:checkAnswer', {
+			value: {
+				id: id
+			}
+		});
+	},
+	retryQuestion: function retryQuestion(id, context) {
+		return Dispatcher.trigger('question:retry', {
+			value: {
+				id: id,
+				context: context
+			}
+		});
+	},
+	getViewState: function getViewState(state, model) {
+		var modelId = model.get('id');
+
+		if (state.viewing === modelId) {
+			return 'active';
+		}
+		if (state.viewedQuestions[modelId]) {
+			return 'viewed';
+		}
+		return 'hidden';
+	},
+	getResponse: function getResponse(state, model, context) {
+		if (!state.responses[context]) return null;
+		return state.responses[context][model.get('id')] || null;
+	},
+	getData: function getData(state, model, key) {
+		return state.data[model.get('id') + ':' + key] || false;
+	},
+	isShowingExplanation: function isShowingExplanation(state, model) {
+		return state.data[model.get('id') + ':showingExplanation'] || false;
+	},
+	getScoreForModel: function getScoreForModel(state, model, context) {
+		var scoreItem = void 0;
+		if (state.scores[context] != null) {
+			scoreItem = state.scores[context][model.get('id')];
+		}
+
+		return scoreItem == null || scoreItem.score == null ? null : scoreItem.score;
+	},
+	setScore: function setScore(itemId, score, context) {
+		return Dispatcher.trigger('question:scoreSet', {
+			value: {
+				itemId: itemId,
+				score: score,
+				context: context
+			}
+		});
+	},
+	clearScore: function clearScore(itemId, context) {
+		return Dispatcher.trigger('question:scoreClear', {
+			value: {
+				itemId: itemId,
+				context: context
+			}
+		});
+	}
 };
 
-exports.default = getDisplayFriendlyScore;
+exports.default = QuestionUtil;
 
 /***/ }),
 /* 5 */
@@ -4889,7 +5015,7 @@ var _Common = __webpack_require__(1);
 
 var _Common2 = _interopRequireDefault(_Common);
 
-var _questionUtil = __webpack_require__(6);
+var _questionUtil = __webpack_require__(4);
 
 var _questionUtil2 = _interopRequireDefault(_questionUtil);
 
@@ -5117,141 +5243,12 @@ exports.default = AssessmentUtil;
 Object.defineProperty(exports, "__esModule", {
 	value: true
 });
-
-var _Common = __webpack_require__(1);
-
-var _Common2 = _interopRequireDefault(_Common);
-
-function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
-
-var Dispatcher = _Common2.default.flux.Dispatcher;
-var OboModel = _Common2.default.models.OboModel;
-
-
-var QuestionUtil = {
-	setResponse: function setResponse(id, response, targetId, context, assessmentId, attemptId) {
-		return Dispatcher.trigger('question:setResponse', {
-			value: {
-				id: id,
-				response: response,
-				targetId: targetId,
-				context: context,
-				assessmentId: assessmentId,
-				attemptId: attemptId
-			}
-		});
-	},
-	clearResponse: function clearResponse(id, context) {
-		return Dispatcher.trigger('question:clearResponse', {
-			value: {
-				id: id,
-				context: context
-			}
-		});
-	},
-	setData: function setData(id, key, value) {
-		return Dispatcher.trigger('question:setData', {
-			value: {
-				key: id + ':' + key,
-				value: value
-			}
-		});
-	},
-	clearData: function clearData(id, key) {
-		return Dispatcher.trigger('question:clearData', {
-			value: {
-				key: id + ':' + key
-			}
-		});
-	},
-	showExplanation: function showExplanation(id) {
-		return Dispatcher.trigger('question:showExplanation', {
-			value: { id: id }
-		});
-	},
-	hideExplanation: function hideExplanation(id, actor) {
-		return Dispatcher.trigger('question:hideExplanation', {
-			value: { id: id, actor: actor }
-		});
-	},
-	viewQuestion: function viewQuestion(id) {
-		return Dispatcher.trigger('question:view', {
-			value: {
-				id: id
-			}
-		});
-	},
-	hideQuestion: function hideQuestion(id) {
-		return Dispatcher.trigger('question:hide', {
-			value: {
-				id: id
-			}
-		});
-	},
-	checkAnswer: function checkAnswer(id) {
-		return Dispatcher.trigger('question:checkAnswer', {
-			value: {
-				id: id
-			}
-		});
-	},
-	retryQuestion: function retryQuestion(id, context) {
-		return Dispatcher.trigger('question:retry', {
-			value: {
-				id: id,
-				context: context
-			}
-		});
-	},
-	getViewState: function getViewState(state, model) {
-		var modelId = model.get('id');
-
-		if (state.viewing === modelId) {
-			return 'active';
-		}
-		if (state.viewedQuestions[modelId]) {
-			return 'viewed';
-		}
-		return 'hidden';
-	},
-	getResponse: function getResponse(state, model, context) {
-		if (!state.responses[context]) return null;
-		return state.responses[context][model.get('id')] || null;
-	},
-	getData: function getData(state, model, key) {
-		return state.data[model.get('id') + ':' + key] || false;
-	},
-	isShowingExplanation: function isShowingExplanation(state, model) {
-		return state.data[model.get('id') + ':showingExplanation'] || false;
-	},
-	getScoreForModel: function getScoreForModel(state, model, context) {
-		var scoreItem = void 0;
-		if (state.scores[context] != null) {
-			scoreItem = state.scores[context][model.get('id')];
-		}
-
-		return scoreItem == null || scoreItem.score == null ? null : scoreItem.score;
-	},
-	setScore: function setScore(itemId, score, context) {
-		return Dispatcher.trigger('question:scoreSet', {
-			value: {
-				itemId: itemId,
-				score: score,
-				context: context
-			}
-		});
-	},
-	clearScore: function clearScore(itemId, context) {
-		return Dispatcher.trigger('question:scoreClear', {
-			value: {
-				itemId: itemId,
-				context: context
-			}
-		});
-	}
+var getDisplayFriendlyScore = function getDisplayFriendlyScore(n) {
+	if (n === null) return '--';
+	return Math.round(n).toString();
 };
 
-exports.default = QuestionUtil;
+exports.default = getDisplayFriendlyScore;
 
 /***/ }),
 /* 7 */
@@ -5285,6 +5282,249 @@ module.exports = g;
 
 /***/ }),
 /* 8 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+Object.defineProperty(exports, "__esModule", {
+	value: true
+});
+
+var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+
+var _Common = __webpack_require__(1);
+
+var _Common2 = _interopRequireDefault(_Common);
+
+var _apiUtil = __webpack_require__(3);
+
+var _apiUtil2 = _interopRequireDefault(_apiUtil);
+
+var _questionUtil = __webpack_require__(4);
+
+var _questionUtil2 = _interopRequireDefault(_questionUtil);
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
+
+function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
+
+var Store = _Common2.default.flux.Store;
+var Dispatcher = _Common2.default.flux.Dispatcher;
+var OboModel = _Common2.default.models.OboModel;
+var FocusUtil = _Common2.default.util.FocusUtil;
+var UUID = _Common2.default.util.UUID;
+
+var QuestionStore = function (_Store) {
+	_inherits(QuestionStore, _Store);
+
+	function QuestionStore() {
+		_classCallCheck(this, QuestionStore);
+
+		var id = void 0;
+		var model = void 0;
+
+		var _this = _possibleConstructorReturn(this, (QuestionStore.__proto__ || Object.getPrototypeOf(QuestionStore)).call(this, 'questionStore'));
+
+		Dispatcher.on({
+			'question:setResponse': function questionSetResponse(payload) {
+				var id = payload.value.id;
+				var context = payload.value.context;
+				var model = OboModel.models[id];
+				if (!_this.state.responses[context]) _this.state.responses[context] = {};
+				_this.state.responses[context][id] = payload.value.response;
+				_this.triggerChange();
+
+				_apiUtil2.default.postEvent(model.getRoot(), 'question:setResponse', '2.1.0', {
+					questionId: id,
+					response: payload.value.response,
+					targetId: payload.value.targetId,
+					context: context,
+					assessmentId: payload.value.assessmentId,
+					attemptId: payload.value.attemptId
+				});
+			},
+
+			'question:clearResponse': function questionClearResponse(payload) {
+				if (_this.state.responses[payload.value.context]) {
+					delete _this.state.responses[payload.value.context][payload.value.id];
+					_this.triggerChange();
+				}
+			},
+
+			'assessment:endAttempt': function assessmentEndAttempt(payload) {
+				if (_this.state.responses[payload.value.context]) {
+					delete _this.state.responses[payload.value.context][payload.value.id];
+					_this.triggerChange();
+				}
+			},
+
+			'question:setData': function questionSetData(payload) {
+				_this.state.data[payload.value.key] = payload.value.value;
+				_this.triggerChange();
+			},
+
+			'question:showExplanation': function questionShowExplanation(payload) {
+				var root = OboModel.models[payload.value.id].getRoot();
+
+				_apiUtil2.default.postEvent(root, 'question:showExplanation', '1.0.0', {
+					questionId: payload.value.id
+				});
+
+				_questionUtil2.default.setData(payload.value.id, 'showingExplanation', true);
+			},
+
+			'question:hideExplanation': function questionHideExplanation(payload) {
+				var root = OboModel.models[payload.value.id].getRoot();
+
+				_apiUtil2.default.postEvent(root, 'question:hideExplanation', '1.1.0', {
+					questionId: payload.value.id,
+					actor: payload.value.actor
+				});
+
+				_questionUtil2.default.clearData(payload.value.id, 'showingExplanation');
+			},
+
+			'question:clearData': function questionClearData(payload) {
+				delete _this.state.data[payload.value.key];
+				_this.triggerChange();
+			},
+
+			'question:hide': function questionHide(payload) {
+				_apiUtil2.default.postEvent(OboModel.models[payload.value.id].getRoot(), 'question:hide', '1.0.0', {
+					questionId: payload.value.id
+				});
+
+				delete _this.state.viewedQuestions[payload.value.id];
+
+				if (_this.state.viewing === payload.value.id) {
+					_this.state.viewing = null;
+				}
+
+				_this.triggerChange();
+			},
+
+			'question:view': function questionView(payload) {
+				var root = OboModel.models[payload.value.id].getRoot();
+
+				_apiUtil2.default.postEvent(root, 'question:view', '1.0.0', {
+					questionId: payload.value.id
+				});
+
+				_this.state.viewedQuestions[payload.value.id] = true;
+				_this.state.viewing = payload.value.id;
+
+				_this.triggerChange();
+			},
+
+			'question:checkAnswer': function questionCheckAnswer(payload) {
+				var questionId = payload.value.id;
+				var questionModel = OboModel.models[questionId];
+				var root = questionModel.getRoot();
+
+				_apiUtil2.default.postEvent(root, 'question:checkAnswer', '1.0.0', {
+					questionId: payload.value.id
+				});
+			},
+
+			'question:retry': function questionRetry(payload) {
+				var questionId = payload.value.id;
+				var questionModel = OboModel.models[questionId];
+				var root = questionModel.getRoot();
+
+				_this.clearResponses(questionId, payload.value.context);
+
+				_apiUtil2.default.postEvent(root, 'question:retry', '1.0.0', {
+					questionId: questionId
+				});
+
+				if (_questionUtil2.default.isShowingExplanation(_this.state, questionModel)) {
+					_questionUtil2.default.hideExplanation(questionId, 'viewerClient');
+				}
+
+				_questionUtil2.default.clearScore(questionId, payload.value.context);
+			},
+
+			'question:scoreSet': function questionScoreSet(payload) {
+				var scoreId = UUID();
+
+				if (!_this.state.scores[payload.value.context]) _this.state.scores[payload.value.context] = {};
+
+				_this.state.scores[payload.value.context][payload.value.itemId] = {
+					id: scoreId,
+					score: payload.value.score,
+					itemId: payload.value.itemId
+				};
+
+				if (payload.value.score === 100) {
+					FocusUtil.unfocus();
+				}
+
+				_this.triggerChange();
+
+				model = OboModel.models[payload.value.itemId];
+				_apiUtil2.default.postEvent(model.getRoot(), 'question:scoreSet', '1.0.0', {
+					id: scoreId,
+					itemId: payload.value.itemId,
+					score: payload.value.score,
+					context: payload.value.context
+				});
+			},
+
+			'question:scoreClear': function questionScoreClear(payload) {
+				var scoreItem = _this.state.scores[payload.value.context][payload.value.itemId];
+
+				model = OboModel.models[scoreItem.itemId];
+
+				delete _this.state.scores[payload.value.context][payload.value.itemId];
+				_this.triggerChange();
+
+				_apiUtil2.default.postEvent(model.getRoot(), 'question:scoreClear', '1.0.0', scoreItem);
+			}
+		});
+		return _this;
+	}
+
+	_createClass(QuestionStore, [{
+		key: 'clearResponses',
+		value: function clearResponses(questionId, context) {
+			delete this.state.responses[context][questionId];
+		}
+	}, {
+		key: 'init',
+		value: function init() {
+			this.state = {
+				viewing: null,
+				viewedQuestions: {},
+				scores: {},
+				responses: {},
+				data: {}
+			};
+		}
+	}, {
+		key: 'getState',
+		value: function getState() {
+			return this.state;
+		}
+	}, {
+		key: 'setState',
+		value: function setState(newState) {
+			this.state = newState;
+		}
+	}]);
+
+	return QuestionStore;
+}(Store);
+
+var questionStore = new QuestionStore();
+exports.default = questionStore;
+
+/***/ }),
+/* 9 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -5586,484 +5826,10 @@ window.__ns = navStore;
 exports.default = navStore;
 
 /***/ }),
-/* 9 */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-
-
-Object.defineProperty(exports, "__esModule", {
-	value: true
-});
-
-var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
-
-var _Common = __webpack_require__(1);
-
-var _Common2 = _interopRequireDefault(_Common);
-
-var _apiUtil = __webpack_require__(3);
-
-var _apiUtil2 = _interopRequireDefault(_apiUtil);
-
-var _questionUtil = __webpack_require__(6);
-
-var _questionUtil2 = _interopRequireDefault(_questionUtil);
-
-function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
-
-function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
-
-function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
-
-function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
-
-var Store = _Common2.default.flux.Store;
-var Dispatcher = _Common2.default.flux.Dispatcher;
-var OboModel = _Common2.default.models.OboModel;
-var FocusUtil = _Common2.default.util.FocusUtil;
-var UUID = _Common2.default.util.UUID;
-
-var QuestionStore = function (_Store) {
-	_inherits(QuestionStore, _Store);
-
-	function QuestionStore() {
-		_classCallCheck(this, QuestionStore);
-
-		var id = void 0;
-		var model = void 0;
-
-		var _this = _possibleConstructorReturn(this, (QuestionStore.__proto__ || Object.getPrototypeOf(QuestionStore)).call(this, 'questionStore'));
-
-		Dispatcher.on({
-			'question:setResponse': function questionSetResponse(payload) {
-				var id = payload.value.id;
-				var context = payload.value.context;
-				var model = OboModel.models[id];
-				if (!_this.state.responses[context]) _this.state.responses[context] = {};
-				_this.state.responses[context][id] = payload.value.response;
-				_this.triggerChange();
-
-				_apiUtil2.default.postEvent(model.getRoot(), 'question:setResponse', '2.1.0', {
-					questionId: id,
-					response: payload.value.response,
-					targetId: payload.value.targetId,
-					context: context,
-					assessmentId: payload.value.assessmentId,
-					attemptId: payload.value.attemptId
-				});
-			},
-
-			'question:clearResponse': function questionClearResponse(payload) {
-				if (_this.state.responses[payload.value.context]) {
-					delete _this.state.responses[payload.value.context][payload.value.id];
-					_this.triggerChange();
-				}
-			},
-
-			'assessment:endAttempt': function assessmentEndAttempt(payload) {
-				if (_this.state.responses[payload.value.context]) {
-					delete _this.state.responses[payload.value.context][payload.value.id];
-					_this.triggerChange();
-				}
-			},
-
-			'question:setData': function questionSetData(payload) {
-				_this.state.data[payload.value.key] = payload.value.value;
-				_this.triggerChange();
-			},
-
-			'question:showExplanation': function questionShowExplanation(payload) {
-				var root = OboModel.models[payload.value.id].getRoot();
-
-				_apiUtil2.default.postEvent(root, 'question:showExplanation', '1.0.0', {
-					questionId: payload.value.id
-				});
-
-				_questionUtil2.default.setData(payload.value.id, 'showingExplanation', true);
-			},
-
-			'question:hideExplanation': function questionHideExplanation(payload) {
-				var root = OboModel.models[payload.value.id].getRoot();
-
-				_apiUtil2.default.postEvent(root, 'question:hideExplanation', '1.1.0', {
-					questionId: payload.value.id,
-					actor: payload.value.actor
-				});
-
-				_questionUtil2.default.clearData(payload.value.id, 'showingExplanation');
-			},
-
-			'question:clearData': function questionClearData(payload) {
-				delete _this.state.data[payload.value.key];
-				_this.triggerChange();
-			},
-
-			'question:hide': function questionHide(payload) {
-				_apiUtil2.default.postEvent(OboModel.models[payload.value.id].getRoot(), 'question:hide', '1.0.0', {
-					questionId: payload.value.id
-				});
-
-				delete _this.state.viewedQuestions[payload.value.id];
-
-				if (_this.state.viewing === payload.value.id) {
-					_this.state.viewing = null;
-				}
-
-				_this.triggerChange();
-			},
-
-			'question:view': function questionView(payload) {
-				var root = OboModel.models[payload.value.id].getRoot();
-
-				_apiUtil2.default.postEvent(root, 'question:view', '1.0.0', {
-					questionId: payload.value.id
-				});
-
-				_this.state.viewedQuestions[payload.value.id] = true;
-				_this.state.viewing = payload.value.id;
-
-				_this.triggerChange();
-			},
-
-			'question:checkAnswer': function questionCheckAnswer(payload) {
-				var questionId = payload.value.id;
-				var questionModel = OboModel.models[questionId];
-				var root = questionModel.getRoot();
-
-				_apiUtil2.default.postEvent(root, 'question:checkAnswer', '1.0.0', {
-					questionId: payload.value.id
-				});
-			},
-
-			'question:retry': function questionRetry(payload) {
-				var questionId = payload.value.id;
-				var questionModel = OboModel.models[questionId];
-				var root = questionModel.getRoot();
-
-				_this.clearResponses(questionId, payload.value.context);
-
-				_apiUtil2.default.postEvent(root, 'question:retry', '1.0.0', {
-					questionId: questionId
-				});
-
-				if (_questionUtil2.default.isShowingExplanation(_this.state, questionModel)) {
-					_questionUtil2.default.hideExplanation(questionId, 'viewerClient');
-				}
-
-				_questionUtil2.default.clearScore(questionId, payload.value.context);
-			},
-
-			'question:scoreSet': function questionScoreSet(payload) {
-				var scoreId = UUID();
-
-				if (!_this.state.scores[payload.value.context]) _this.state.scores[payload.value.context] = {};
-
-				_this.state.scores[payload.value.context][payload.value.itemId] = {
-					id: scoreId,
-					score: payload.value.score,
-					itemId: payload.value.itemId
-				};
-
-				if (payload.value.score === 100) {
-					FocusUtil.unfocus();
-				}
-
-				_this.triggerChange();
-
-				model = OboModel.models[payload.value.itemId];
-				_apiUtil2.default.postEvent(model.getRoot(), 'question:scoreSet', '1.0.0', {
-					id: scoreId,
-					itemId: payload.value.itemId,
-					score: payload.value.score,
-					context: payload.value.context
-				});
-			},
-
-			'question:scoreClear': function questionScoreClear(payload) {
-				var scoreItem = _this.state.scores[payload.value.context][payload.value.itemId];
-
-				model = OboModel.models[scoreItem.itemId];
-
-				delete _this.state.scores[payload.value.context][payload.value.itemId];
-				_this.triggerChange();
-
-				_apiUtil2.default.postEvent(model.getRoot(), 'question:scoreClear', '1.0.0', scoreItem);
-			}
-		});
-		return _this;
-	}
-
-	_createClass(QuestionStore, [{
-		key: 'clearResponses',
-		value: function clearResponses(questionId, context) {
-			delete this.state.responses[context][questionId];
-		}
-	}, {
-		key: 'init',
-		value: function init() {
-			this.state = {
-				viewing: null,
-				viewedQuestions: {},
-				scores: {},
-				responses: {},
-				data: {}
-			};
-		}
-	}, {
-		key: 'getState',
-		value: function getState() {
-			return this.state;
-		}
-	}, {
-		key: 'setState',
-		value: function setState(newState) {
-			this.state = newState;
-		}
-	}]);
-
-	return QuestionStore;
-}(Store);
-
-var questionStore = new QuestionStore();
-exports.default = questionStore;
-
-/***/ }),
 /* 10 */
-/***/ (function(module, exports, __webpack_require__) {
+/***/ (function(module, exports) {
 
-"use strict";
-
-
-var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol" ? function (obj) { return typeof obj; } : function (obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; };
-
-/**
- * lodash (Custom Build) <https://lodash.com/>
- * Build: `lodash modularize exports="npm" -o ./`
- * Copyright jQuery Foundation and other contributors <https://jquery.org/>
- * Released under MIT license <https://lodash.com/license>
- * Based on Underscore.js 1.8.3 <http://underscorejs.org/LICENSE>
- * Copyright Jeremy Ashkenas, DocumentCloud and Investigative Reporters & Editors
- */
-
-/** Used as references for various `Number` constants. */
-var MAX_SAFE_INTEGER = 9007199254740991;
-
-/** `Object#toString` result references. */
-var argsTag = '[object Arguments]',
-    funcTag = '[object Function]',
-    genTag = '[object GeneratorFunction]';
-
-/** Used for built-in method references. */
-var objectProto = Object.prototype;
-
-/** Used to check objects for own properties. */
-var hasOwnProperty = objectProto.hasOwnProperty;
-
-/**
- * Used to resolve the
- * [`toStringTag`](http://ecma-international.org/ecma-262/7.0/#sec-object.prototype.tostring)
- * of values.
- */
-var objectToString = objectProto.toString;
-
-/** Built-in value references. */
-var propertyIsEnumerable = objectProto.propertyIsEnumerable;
-
-/**
- * Checks if `value` is likely an `arguments` object.
- *
- * @static
- * @memberOf _
- * @since 0.1.0
- * @category Lang
- * @param {*} value The value to check.
- * @returns {boolean} Returns `true` if `value` is an `arguments` object,
- *  else `false`.
- * @example
- *
- * _.isArguments(function() { return arguments; }());
- * // => true
- *
- * _.isArguments([1, 2, 3]);
- * // => false
- */
-function isArguments(value) {
-  // Safari 8.1 makes `arguments.callee` enumerable in strict mode.
-  return isArrayLikeObject(value) && hasOwnProperty.call(value, 'callee') && (!propertyIsEnumerable.call(value, 'callee') || objectToString.call(value) == argsTag);
-}
-
-/**
- * Checks if `value` is array-like. A value is considered array-like if it's
- * not a function and has a `value.length` that's an integer greater than or
- * equal to `0` and less than or equal to `Number.MAX_SAFE_INTEGER`.
- *
- * @static
- * @memberOf _
- * @since 4.0.0
- * @category Lang
- * @param {*} value The value to check.
- * @returns {boolean} Returns `true` if `value` is array-like, else `false`.
- * @example
- *
- * _.isArrayLike([1, 2, 3]);
- * // => true
- *
- * _.isArrayLike(document.body.children);
- * // => true
- *
- * _.isArrayLike('abc');
- * // => true
- *
- * _.isArrayLike(_.noop);
- * // => false
- */
-function isArrayLike(value) {
-  return value != null && isLength(value.length) && !isFunction(value);
-}
-
-/**
- * This method is like `_.isArrayLike` except that it also checks if `value`
- * is an object.
- *
- * @static
- * @memberOf _
- * @since 4.0.0
- * @category Lang
- * @param {*} value The value to check.
- * @returns {boolean} Returns `true` if `value` is an array-like object,
- *  else `false`.
- * @example
- *
- * _.isArrayLikeObject([1, 2, 3]);
- * // => true
- *
- * _.isArrayLikeObject(document.body.children);
- * // => true
- *
- * _.isArrayLikeObject('abc');
- * // => false
- *
- * _.isArrayLikeObject(_.noop);
- * // => false
- */
-function isArrayLikeObject(value) {
-  return isObjectLike(value) && isArrayLike(value);
-}
-
-/**
- * Checks if `value` is classified as a `Function` object.
- *
- * @static
- * @memberOf _
- * @since 0.1.0
- * @category Lang
- * @param {*} value The value to check.
- * @returns {boolean} Returns `true` if `value` is a function, else `false`.
- * @example
- *
- * _.isFunction(_);
- * // => true
- *
- * _.isFunction(/abc/);
- * // => false
- */
-function isFunction(value) {
-  // The use of `Object#toString` avoids issues with the `typeof` operator
-  // in Safari 8-9 which returns 'object' for typed array and other constructors.
-  var tag = isObject(value) ? objectToString.call(value) : '';
-  return tag == funcTag || tag == genTag;
-}
-
-/**
- * Checks if `value` is a valid array-like length.
- *
- * **Note:** This method is loosely based on
- * [`ToLength`](http://ecma-international.org/ecma-262/7.0/#sec-tolength).
- *
- * @static
- * @memberOf _
- * @since 4.0.0
- * @category Lang
- * @param {*} value The value to check.
- * @returns {boolean} Returns `true` if `value` is a valid length, else `false`.
- * @example
- *
- * _.isLength(3);
- * // => true
- *
- * _.isLength(Number.MIN_VALUE);
- * // => false
- *
- * _.isLength(Infinity);
- * // => false
- *
- * _.isLength('3');
- * // => false
- */
-function isLength(value) {
-  return typeof value == 'number' && value > -1 && value % 1 == 0 && value <= MAX_SAFE_INTEGER;
-}
-
-/**
- * Checks if `value` is the
- * [language type](http://www.ecma-international.org/ecma-262/7.0/#sec-ecmascript-language-types)
- * of `Object`. (e.g. arrays, functions, objects, regexes, `new Number(0)`, and `new String('')`)
- *
- * @static
- * @memberOf _
- * @since 0.1.0
- * @category Lang
- * @param {*} value The value to check.
- * @returns {boolean} Returns `true` if `value` is an object, else `false`.
- * @example
- *
- * _.isObject({});
- * // => true
- *
- * _.isObject([1, 2, 3]);
- * // => true
- *
- * _.isObject(_.noop);
- * // => true
- *
- * _.isObject(null);
- * // => false
- */
-function isObject(value) {
-  var type = typeof value === 'undefined' ? 'undefined' : _typeof(value);
-  return !!value && (type == 'object' || type == 'function');
-}
-
-/**
- * Checks if `value` is object-like. A value is object-like if it's not `null`
- * and has a `typeof` result of "object".
- *
- * @static
- * @memberOf _
- * @since 4.0.0
- * @category Lang
- * @param {*} value The value to check.
- * @returns {boolean} Returns `true` if `value` is object-like, else `false`.
- * @example
- *
- * _.isObjectLike({});
- * // => true
- *
- * _.isObjectLike([1, 2, 3]);
- * // => true
- *
- * _.isObjectLike(_.noop);
- * // => false
- *
- * _.isObjectLike(null);
- * // => false
- */
-function isObjectLike(value) {
-  return !!value && (typeof value === 'undefined' ? 'undefined' : _typeof(value)) == 'object';
-}
-
-module.exports = isArguments;
+module.exports = React;
 
 /***/ }),
 /* 11 */
@@ -6072,185 +5838,28 @@ module.exports = isArguments;
 "use strict";
 
 
-var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol" ? function (obj) { return typeof obj; } : function (obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; };
-
-/**
- * lodash 3.0.4 (Custom Build) <https://lodash.com/>
- * Build: `lodash modern modularize exports="npm" -o ./`
- * Copyright 2012-2015 The Dojo Foundation <http://dojofoundation.org/>
- * Based on Underscore.js 1.8.3 <http://underscorejs.org/LICENSE>
- * Copyright 2009-2015 Jeremy Ashkenas, DocumentCloud and Investigative Reporters & Editors
- * Available under MIT license <https://lodash.com/license>
- */
-
-/** `Object#toString` result references. */
-var arrayTag = '[object Array]',
-    funcTag = '[object Function]';
-
-/** Used to detect host constructors (Safari > 5). */
-var reIsHostCtor = /^\[object .+?Constructor\]$/;
-
-/**
- * Checks if `value` is object-like.
- *
- * @private
- * @param {*} value The value to check.
- * @returns {boolean} Returns `true` if `value` is object-like, else `false`.
- */
-function isObjectLike(value) {
-  return !!value && (typeof value === 'undefined' ? 'undefined' : _typeof(value)) == 'object';
-}
-
-/** Used for native method references. */
-var objectProto = Object.prototype;
-
-/** Used to resolve the decompiled source of functions. */
-var fnToString = Function.prototype.toString;
-
-/** Used to check objects for own properties. */
-var hasOwnProperty = objectProto.hasOwnProperty;
-
-/**
- * Used to resolve the [`toStringTag`](http://ecma-international.org/ecma-262/6.0/#sec-object.prototype.tostring)
- * of values.
- */
-var objToString = objectProto.toString;
-
-/** Used to detect if a method is native. */
-var reIsNative = RegExp('^' + fnToString.call(hasOwnProperty).replace(/[\\^$.*+?()[\]{}|]/g, '\\$&').replace(/hasOwnProperty|(function).*?(?=\\\()| for .+?(?=\\\])/g, '$1.*?') + '$');
-
-/* Native method references for those with the same name as other `lodash` methods. */
-var nativeIsArray = getNative(Array, 'isArray');
-
-/**
- * Used as the [maximum length](http://ecma-international.org/ecma-262/6.0/#sec-number.max_safe_integer)
- * of an array-like value.
- */
-var MAX_SAFE_INTEGER = 9007199254740991;
-
-/**
- * Gets the native function at `key` of `object`.
- *
- * @private
- * @param {Object} object The object to query.
- * @param {string} key The key of the method to get.
- * @returns {*} Returns the function if it's native, else `undefined`.
- */
-function getNative(object, key) {
-  var value = object == null ? undefined : object[key];
-  return isNative(value) ? value : undefined;
-}
-
-/**
- * Checks if `value` is a valid array-like length.
- *
- * **Note:** This function is based on [`ToLength`](http://ecma-international.org/ecma-262/6.0/#sec-tolength).
- *
- * @private
- * @param {*} value The value to check.
- * @returns {boolean} Returns `true` if `value` is a valid length, else `false`.
- */
-function isLength(value) {
-  return typeof value == 'number' && value > -1 && value % 1 == 0 && value <= MAX_SAFE_INTEGER;
-}
-
-/**
- * Checks if `value` is classified as an `Array` object.
- *
- * @static
- * @memberOf _
- * @category Lang
- * @param {*} value The value to check.
- * @returns {boolean} Returns `true` if `value` is correctly classified, else `false`.
- * @example
- *
- * _.isArray([1, 2, 3]);
- * // => true
- *
- * _.isArray(function() { return arguments; }());
- * // => false
- */
-var isArray = nativeIsArray || function (value) {
-  return isObjectLike(value) && isLength(value.length) && objToString.call(value) == arrayTag;
+module.exports = function (module) {
+	if (!module.webpackPolyfill) {
+		module.deprecate = function () {};
+		module.paths = [];
+		// module.parent = undefined by default
+		if (!module.children) module.children = [];
+		Object.defineProperty(module, "loaded", {
+			enumerable: true,
+			get: function get() {
+				return module.l;
+			}
+		});
+		Object.defineProperty(module, "id", {
+			enumerable: true,
+			get: function get() {
+				return module.i;
+			}
+		});
+		module.webpackPolyfill = 1;
+	}
+	return module;
 };
-
-/**
- * Checks if `value` is classified as a `Function` object.
- *
- * @static
- * @memberOf _
- * @category Lang
- * @param {*} value The value to check.
- * @returns {boolean} Returns `true` if `value` is correctly classified, else `false`.
- * @example
- *
- * _.isFunction(_);
- * // => true
- *
- * _.isFunction(/abc/);
- * // => false
- */
-function isFunction(value) {
-  // The use of `Object#toString` avoids issues with the `typeof` operator
-  // in older versions of Chrome and Safari which return 'function' for regexes
-  // and Safari 8 equivalents which return 'object' for typed array constructors.
-  return isObject(value) && objToString.call(value) == funcTag;
-}
-
-/**
- * Checks if `value` is the [language type](https://es5.github.io/#x8) of `Object`.
- * (e.g. arrays, functions, objects, regexes, `new Number(0)`, and `new String('')`)
- *
- * @static
- * @memberOf _
- * @category Lang
- * @param {*} value The value to check.
- * @returns {boolean} Returns `true` if `value` is an object, else `false`.
- * @example
- *
- * _.isObject({});
- * // => true
- *
- * _.isObject([1, 2, 3]);
- * // => true
- *
- * _.isObject(1);
- * // => false
- */
-function isObject(value) {
-  // Avoid a V8 JIT bug in Chrome 19-20.
-  // See https://code.google.com/p/v8/issues/detail?id=2291 for more details.
-  var type = typeof value === 'undefined' ? 'undefined' : _typeof(value);
-  return !!value && (type == 'object' || type == 'function');
-}
-
-/**
- * Checks if `value` is a native function.
- *
- * @static
- * @memberOf _
- * @category Lang
- * @param {*} value The value to check.
- * @returns {boolean} Returns `true` if `value` is a native function, else `false`.
- * @example
- *
- * _.isNative(Array.prototype.push);
- * // => true
- *
- * _.isNative(_);
- * // => false
- */
-function isNative(value) {
-  if (value == null) {
-    return false;
-  }
-  if (isFunction(value)) {
-    return reIsNative.test(fnToString.call(value));
-  }
-  return isObjectLike(value) && reIsHostCtor.test(value);
-}
-
-module.exports = isArray;
 
 /***/ }),
 /* 12 */
@@ -6336,508 +5945,6 @@ var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol
 
 /***/ }),
 /* 13 */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-var __WEBPACK_AMD_DEFINE_FACTORY__, __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_DEFINE_RESULT__;
-
-var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol" ? function (obj) { return typeof obj; } : function (obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; };
-
-//! moment.js locale configuration
-
-;(function (global, factory) {
-    ( false ? 'undefined' : _typeof(exports)) === 'object' && typeof module !== 'undefined' && "function" === 'function' ? factory(__webpack_require__(0)) :  true ? !(__WEBPACK_AMD_DEFINE_ARRAY__ = [__webpack_require__(0)], __WEBPACK_AMD_DEFINE_FACTORY__ = (factory),
-				__WEBPACK_AMD_DEFINE_RESULT__ = (typeof __WEBPACK_AMD_DEFINE_FACTORY__ === 'function' ?
-				(__WEBPACK_AMD_DEFINE_FACTORY__.apply(exports, __WEBPACK_AMD_DEFINE_ARRAY__)) : __WEBPACK_AMD_DEFINE_FACTORY__),
-				__WEBPACK_AMD_DEFINE_RESULT__ !== undefined && (module.exports = __WEBPACK_AMD_DEFINE_RESULT__)) : factory(global.moment);
-})(undefined, function (moment) {
-    'use strict';
-
-    var arDz = moment.defineLocale('ar-dz', {
-        months: 'جانفي_فيفري_مارس_أفريل_ماي_جوان_جويلية_أوت_سبتمبر_أكتوبر_نوفمبر_ديسمبر'.split('_'),
-        monthsShort: 'جانفي_فيفري_مارس_أفريل_ماي_جوان_جويلية_أوت_سبتمبر_أكتوبر_نوفمبر_ديسمبر'.split('_'),
-        weekdays: 'الأحد_الإثنين_الثلاثاء_الأربعاء_الخميس_الجمعة_السبت'.split('_'),
-        weekdaysShort: 'احد_اثنين_ثلاثاء_اربعاء_خميس_جمعة_سبت'.split('_'),
-        weekdaysMin: 'أح_إث_ثلا_أر_خم_جم_سب'.split('_'),
-        weekdaysParseExact: true,
-        longDateFormat: {
-            LT: 'HH:mm',
-            LTS: 'HH:mm:ss',
-            L: 'DD/MM/YYYY',
-            LL: 'D MMMM YYYY',
-            LLL: 'D MMMM YYYY HH:mm',
-            LLLL: 'dddd D MMMM YYYY HH:mm'
-        },
-        calendar: {
-            sameDay: '[اليوم على الساعة] LT',
-            nextDay: '[غدا على الساعة] LT',
-            nextWeek: 'dddd [على الساعة] LT',
-            lastDay: '[أمس على الساعة] LT',
-            lastWeek: 'dddd [على الساعة] LT',
-            sameElse: 'L'
-        },
-        relativeTime: {
-            future: 'في %s',
-            past: 'منذ %s',
-            s: 'ثوان',
-            ss: '%d ثانية',
-            m: 'دقيقة',
-            mm: '%d دقائق',
-            h: 'ساعة',
-            hh: '%d ساعات',
-            d: 'يوم',
-            dd: '%d أيام',
-            M: 'شهر',
-            MM: '%d أشهر',
-            y: 'سنة',
-            yy: '%d سنوات'
-        },
-        week: {
-            dow: 0, // Sunday is the first day of the week.
-            doy: 4 // The week that contains Jan 1st is the first week of the year.
-        }
-    });
-
-    return arDz;
-});
-
-/***/ }),
-/* 14 */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-var __WEBPACK_AMD_DEFINE_FACTORY__, __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_DEFINE_RESULT__;
-
-var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol" ? function (obj) { return typeof obj; } : function (obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; };
-
-//! moment.js locale configuration
-
-;(function (global, factory) {
-    ( false ? 'undefined' : _typeof(exports)) === 'object' && typeof module !== 'undefined' && "function" === 'function' ? factory(__webpack_require__(0)) :  true ? !(__WEBPACK_AMD_DEFINE_ARRAY__ = [__webpack_require__(0)], __WEBPACK_AMD_DEFINE_FACTORY__ = (factory),
-				__WEBPACK_AMD_DEFINE_RESULT__ = (typeof __WEBPACK_AMD_DEFINE_FACTORY__ === 'function' ?
-				(__WEBPACK_AMD_DEFINE_FACTORY__.apply(exports, __WEBPACK_AMD_DEFINE_ARRAY__)) : __WEBPACK_AMD_DEFINE_FACTORY__),
-				__WEBPACK_AMD_DEFINE_RESULT__ !== undefined && (module.exports = __WEBPACK_AMD_DEFINE_RESULT__)) : factory(global.moment);
-})(undefined, function (moment) {
-    'use strict';
-
-    var arKw = moment.defineLocale('ar-kw', {
-        months: 'يناير_فبراير_مارس_أبريل_ماي_يونيو_يوليوز_غشت_شتنبر_أكتوبر_نونبر_دجنبر'.split('_'),
-        monthsShort: 'يناير_فبراير_مارس_أبريل_ماي_يونيو_يوليوز_غشت_شتنبر_أكتوبر_نونبر_دجنبر'.split('_'),
-        weekdays: 'الأحد_الإتنين_الثلاثاء_الأربعاء_الخميس_الجمعة_السبت'.split('_'),
-        weekdaysShort: 'احد_اتنين_ثلاثاء_اربعاء_خميس_جمعة_سبت'.split('_'),
-        weekdaysMin: 'ح_ن_ث_ر_خ_ج_س'.split('_'),
-        weekdaysParseExact: true,
-        longDateFormat: {
-            LT: 'HH:mm',
-            LTS: 'HH:mm:ss',
-            L: 'DD/MM/YYYY',
-            LL: 'D MMMM YYYY',
-            LLL: 'D MMMM YYYY HH:mm',
-            LLLL: 'dddd D MMMM YYYY HH:mm'
-        },
-        calendar: {
-            sameDay: '[اليوم على الساعة] LT',
-            nextDay: '[غدا على الساعة] LT',
-            nextWeek: 'dddd [على الساعة] LT',
-            lastDay: '[أمس على الساعة] LT',
-            lastWeek: 'dddd [على الساعة] LT',
-            sameElse: 'L'
-        },
-        relativeTime: {
-            future: 'في %s',
-            past: 'منذ %s',
-            s: 'ثوان',
-            ss: '%d ثانية',
-            m: 'دقيقة',
-            mm: '%d دقائق',
-            h: 'ساعة',
-            hh: '%d ساعات',
-            d: 'يوم',
-            dd: '%d أيام',
-            M: 'شهر',
-            MM: '%d أشهر',
-            y: 'سنة',
-            yy: '%d سنوات'
-        },
-        week: {
-            dow: 0, // Sunday is the first day of the week.
-            doy: 12 // The week that contains Jan 1st is the first week of the year.
-        }
-    });
-
-    return arKw;
-});
-
-/***/ }),
-/* 15 */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-var __WEBPACK_AMD_DEFINE_FACTORY__, __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_DEFINE_RESULT__;
-
-var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol" ? function (obj) { return typeof obj; } : function (obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; };
-
-//! moment.js locale configuration
-
-;(function (global, factory) {
-    ( false ? 'undefined' : _typeof(exports)) === 'object' && typeof module !== 'undefined' && "function" === 'function' ? factory(__webpack_require__(0)) :  true ? !(__WEBPACK_AMD_DEFINE_ARRAY__ = [__webpack_require__(0)], __WEBPACK_AMD_DEFINE_FACTORY__ = (factory),
-				__WEBPACK_AMD_DEFINE_RESULT__ = (typeof __WEBPACK_AMD_DEFINE_FACTORY__ === 'function' ?
-				(__WEBPACK_AMD_DEFINE_FACTORY__.apply(exports, __WEBPACK_AMD_DEFINE_ARRAY__)) : __WEBPACK_AMD_DEFINE_FACTORY__),
-				__WEBPACK_AMD_DEFINE_RESULT__ !== undefined && (module.exports = __WEBPACK_AMD_DEFINE_RESULT__)) : factory(global.moment);
-})(undefined, function (moment) {
-    'use strict';
-
-    var symbolMap = {
-        '1': '1',
-        '2': '2',
-        '3': '3',
-        '4': '4',
-        '5': '5',
-        '6': '6',
-        '7': '7',
-        '8': '8',
-        '9': '9',
-        '0': '0'
-    },
-        pluralForm = function pluralForm(n) {
-        return n === 0 ? 0 : n === 1 ? 1 : n === 2 ? 2 : n % 100 >= 3 && n % 100 <= 10 ? 3 : n % 100 >= 11 ? 4 : 5;
-    },
-        plurals = {
-        s: ['أقل من ثانية', 'ثانية واحدة', ['ثانيتان', 'ثانيتين'], '%d ثوان', '%d ثانية', '%d ثانية'],
-        m: ['أقل من دقيقة', 'دقيقة واحدة', ['دقيقتان', 'دقيقتين'], '%d دقائق', '%d دقيقة', '%d دقيقة'],
-        h: ['أقل من ساعة', 'ساعة واحدة', ['ساعتان', 'ساعتين'], '%d ساعات', '%d ساعة', '%d ساعة'],
-        d: ['أقل من يوم', 'يوم واحد', ['يومان', 'يومين'], '%d أيام', '%d يومًا', '%d يوم'],
-        M: ['أقل من شهر', 'شهر واحد', ['شهران', 'شهرين'], '%d أشهر', '%d شهرا', '%d شهر'],
-        y: ['أقل من عام', 'عام واحد', ['عامان', 'عامين'], '%d أعوام', '%d عامًا', '%d عام']
-    },
-        pluralize = function pluralize(u) {
-        return function (number, withoutSuffix, string, isFuture) {
-            var f = pluralForm(number),
-                str = plurals[u][pluralForm(number)];
-            if (f === 2) {
-                str = str[withoutSuffix ? 0 : 1];
-            }
-            return str.replace(/%d/i, number);
-        };
-    },
-        months = ['يناير', 'فبراير', 'مارس', 'أبريل', 'مايو', 'يونيو', 'يوليو', 'أغسطس', 'سبتمبر', 'أكتوبر', 'نوفمبر', 'ديسمبر'];
-
-    var arLy = moment.defineLocale('ar-ly', {
-        months: months,
-        monthsShort: months,
-        weekdays: 'الأحد_الإثنين_الثلاثاء_الأربعاء_الخميس_الجمعة_السبت'.split('_'),
-        weekdaysShort: 'أحد_إثنين_ثلاثاء_أربعاء_خميس_جمعة_سبت'.split('_'),
-        weekdaysMin: 'ح_ن_ث_ر_خ_ج_س'.split('_'),
-        weekdaysParseExact: true,
-        longDateFormat: {
-            LT: 'HH:mm',
-            LTS: 'HH:mm:ss',
-            L: 'D/\u200FM/\u200FYYYY',
-            LL: 'D MMMM YYYY',
-            LLL: 'D MMMM YYYY HH:mm',
-            LLLL: 'dddd D MMMM YYYY HH:mm'
-        },
-        meridiemParse: /ص|م/,
-        isPM: function isPM(input) {
-            return 'م' === input;
-        },
-        meridiem: function meridiem(hour, minute, isLower) {
-            if (hour < 12) {
-                return 'ص';
-            } else {
-                return 'م';
-            }
-        },
-        calendar: {
-            sameDay: '[اليوم عند الساعة] LT',
-            nextDay: '[غدًا عند الساعة] LT',
-            nextWeek: 'dddd [عند الساعة] LT',
-            lastDay: '[أمس عند الساعة] LT',
-            lastWeek: 'dddd [عند الساعة] LT',
-            sameElse: 'L'
-        },
-        relativeTime: {
-            future: 'بعد %s',
-            past: 'منذ %s',
-            s: pluralize('s'),
-            ss: pluralize('s'),
-            m: pluralize('m'),
-            mm: pluralize('m'),
-            h: pluralize('h'),
-            hh: pluralize('h'),
-            d: pluralize('d'),
-            dd: pluralize('d'),
-            M: pluralize('M'),
-            MM: pluralize('M'),
-            y: pluralize('y'),
-            yy: pluralize('y')
-        },
-        preparse: function preparse(string) {
-            return string.replace(/،/g, ',');
-        },
-        postformat: function postformat(string) {
-            return string.replace(/\d/g, function (match) {
-                return symbolMap[match];
-            }).replace(/,/g, '،');
-        },
-        week: {
-            dow: 6, // Saturday is the first day of the week.
-            doy: 12 // The week that contains Jan 1st is the first week of the year.
-        }
-    });
-
-    return arLy;
-});
-
-/***/ }),
-/* 16 */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-var __WEBPACK_AMD_DEFINE_FACTORY__, __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_DEFINE_RESULT__;
-
-var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol" ? function (obj) { return typeof obj; } : function (obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; };
-
-//! moment.js locale configuration
-
-;(function (global, factory) {
-    ( false ? 'undefined' : _typeof(exports)) === 'object' && typeof module !== 'undefined' && "function" === 'function' ? factory(__webpack_require__(0)) :  true ? !(__WEBPACK_AMD_DEFINE_ARRAY__ = [__webpack_require__(0)], __WEBPACK_AMD_DEFINE_FACTORY__ = (factory),
-				__WEBPACK_AMD_DEFINE_RESULT__ = (typeof __WEBPACK_AMD_DEFINE_FACTORY__ === 'function' ?
-				(__WEBPACK_AMD_DEFINE_FACTORY__.apply(exports, __WEBPACK_AMD_DEFINE_ARRAY__)) : __WEBPACK_AMD_DEFINE_FACTORY__),
-				__WEBPACK_AMD_DEFINE_RESULT__ !== undefined && (module.exports = __WEBPACK_AMD_DEFINE_RESULT__)) : factory(global.moment);
-})(undefined, function (moment) {
-    'use strict';
-
-    var arMa = moment.defineLocale('ar-ma', {
-        months: 'يناير_فبراير_مارس_أبريل_ماي_يونيو_يوليوز_غشت_شتنبر_أكتوبر_نونبر_دجنبر'.split('_'),
-        monthsShort: 'يناير_فبراير_مارس_أبريل_ماي_يونيو_يوليوز_غشت_شتنبر_أكتوبر_نونبر_دجنبر'.split('_'),
-        weekdays: 'الأحد_الإتنين_الثلاثاء_الأربعاء_الخميس_الجمعة_السبت'.split('_'),
-        weekdaysShort: 'احد_اتنين_ثلاثاء_اربعاء_خميس_جمعة_سبت'.split('_'),
-        weekdaysMin: 'ح_ن_ث_ر_خ_ج_س'.split('_'),
-        weekdaysParseExact: true,
-        longDateFormat: {
-            LT: 'HH:mm',
-            LTS: 'HH:mm:ss',
-            L: 'DD/MM/YYYY',
-            LL: 'D MMMM YYYY',
-            LLL: 'D MMMM YYYY HH:mm',
-            LLLL: 'dddd D MMMM YYYY HH:mm'
-        },
-        calendar: {
-            sameDay: '[اليوم على الساعة] LT',
-            nextDay: '[غدا على الساعة] LT',
-            nextWeek: 'dddd [على الساعة] LT',
-            lastDay: '[أمس على الساعة] LT',
-            lastWeek: 'dddd [على الساعة] LT',
-            sameElse: 'L'
-        },
-        relativeTime: {
-            future: 'في %s',
-            past: 'منذ %s',
-            s: 'ثوان',
-            ss: '%d ثانية',
-            m: 'دقيقة',
-            mm: '%d دقائق',
-            h: 'ساعة',
-            hh: '%d ساعات',
-            d: 'يوم',
-            dd: '%d أيام',
-            M: 'شهر',
-            MM: '%d أشهر',
-            y: 'سنة',
-            yy: '%d سنوات'
-        },
-        week: {
-            dow: 6, // Saturday is the first day of the week.
-            doy: 12 // The week that contains Jan 1st is the first week of the year.
-        }
-    });
-
-    return arMa;
-});
-
-/***/ }),
-/* 17 */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-var __WEBPACK_AMD_DEFINE_FACTORY__, __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_DEFINE_RESULT__;
-
-var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol" ? function (obj) { return typeof obj; } : function (obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; };
-
-//! moment.js locale configuration
-
-;(function (global, factory) {
-    ( false ? 'undefined' : _typeof(exports)) === 'object' && typeof module !== 'undefined' && "function" === 'function' ? factory(__webpack_require__(0)) :  true ? !(__WEBPACK_AMD_DEFINE_ARRAY__ = [__webpack_require__(0)], __WEBPACK_AMD_DEFINE_FACTORY__ = (factory),
-				__WEBPACK_AMD_DEFINE_RESULT__ = (typeof __WEBPACK_AMD_DEFINE_FACTORY__ === 'function' ?
-				(__WEBPACK_AMD_DEFINE_FACTORY__.apply(exports, __WEBPACK_AMD_DEFINE_ARRAY__)) : __WEBPACK_AMD_DEFINE_FACTORY__),
-				__WEBPACK_AMD_DEFINE_RESULT__ !== undefined && (module.exports = __WEBPACK_AMD_DEFINE_RESULT__)) : factory(global.moment);
-})(undefined, function (moment) {
-    'use strict';
-
-    var symbolMap = {
-        '1': '١',
-        '2': '٢',
-        '3': '٣',
-        '4': '٤',
-        '5': '٥',
-        '6': '٦',
-        '7': '٧',
-        '8': '٨',
-        '9': '٩',
-        '0': '٠'
-    },
-        numberMap = {
-        '١': '1',
-        '٢': '2',
-        '٣': '3',
-        '٤': '4',
-        '٥': '5',
-        '٦': '6',
-        '٧': '7',
-        '٨': '8',
-        '٩': '9',
-        '٠': '0'
-    };
-
-    var arSa = moment.defineLocale('ar-sa', {
-        months: 'يناير_فبراير_مارس_أبريل_مايو_يونيو_يوليو_أغسطس_سبتمبر_أكتوبر_نوفمبر_ديسمبر'.split('_'),
-        monthsShort: 'يناير_فبراير_مارس_أبريل_مايو_يونيو_يوليو_أغسطس_سبتمبر_أكتوبر_نوفمبر_ديسمبر'.split('_'),
-        weekdays: 'الأحد_الإثنين_الثلاثاء_الأربعاء_الخميس_الجمعة_السبت'.split('_'),
-        weekdaysShort: 'أحد_إثنين_ثلاثاء_أربعاء_خميس_جمعة_سبت'.split('_'),
-        weekdaysMin: 'ح_ن_ث_ر_خ_ج_س'.split('_'),
-        weekdaysParseExact: true,
-        longDateFormat: {
-            LT: 'HH:mm',
-            LTS: 'HH:mm:ss',
-            L: 'DD/MM/YYYY',
-            LL: 'D MMMM YYYY',
-            LLL: 'D MMMM YYYY HH:mm',
-            LLLL: 'dddd D MMMM YYYY HH:mm'
-        },
-        meridiemParse: /ص|م/,
-        isPM: function isPM(input) {
-            return 'م' === input;
-        },
-        meridiem: function meridiem(hour, minute, isLower) {
-            if (hour < 12) {
-                return 'ص';
-            } else {
-                return 'م';
-            }
-        },
-        calendar: {
-            sameDay: '[اليوم على الساعة] LT',
-            nextDay: '[غدا على الساعة] LT',
-            nextWeek: 'dddd [على الساعة] LT',
-            lastDay: '[أمس على الساعة] LT',
-            lastWeek: 'dddd [على الساعة] LT',
-            sameElse: 'L'
-        },
-        relativeTime: {
-            future: 'في %s',
-            past: 'منذ %s',
-            s: 'ثوان',
-            ss: '%d ثانية',
-            m: 'دقيقة',
-            mm: '%d دقائق',
-            h: 'ساعة',
-            hh: '%d ساعات',
-            d: 'يوم',
-            dd: '%d أيام',
-            M: 'شهر',
-            MM: '%d أشهر',
-            y: 'سنة',
-            yy: '%d سنوات'
-        },
-        preparse: function preparse(string) {
-            return string.replace(/[١٢٣٤٥٦٧٨٩٠]/g, function (match) {
-                return numberMap[match];
-            }).replace(/،/g, ',');
-        },
-        postformat: function postformat(string) {
-            return string.replace(/\d/g, function (match) {
-                return symbolMap[match];
-            }).replace(/,/g, '،');
-        },
-        week: {
-            dow: 0, // Sunday is the first day of the week.
-            doy: 6 // The week that contains Jan 1st is the first week of the year.
-        }
-    });
-
-    return arSa;
-});
-
-/***/ }),
-/* 18 */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-var __WEBPACK_AMD_DEFINE_FACTORY__, __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_DEFINE_RESULT__;
-
-var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol" ? function (obj) { return typeof obj; } : function (obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; };
-
-//! moment.js locale configuration
-
-;(function (global, factory) {
-    ( false ? 'undefined' : _typeof(exports)) === 'object' && typeof module !== 'undefined' && "function" === 'function' ? factory(__webpack_require__(0)) :  true ? !(__WEBPACK_AMD_DEFINE_ARRAY__ = [__webpack_require__(0)], __WEBPACK_AMD_DEFINE_FACTORY__ = (factory),
-				__WEBPACK_AMD_DEFINE_RESULT__ = (typeof __WEBPACK_AMD_DEFINE_FACTORY__ === 'function' ?
-				(__WEBPACK_AMD_DEFINE_FACTORY__.apply(exports, __WEBPACK_AMD_DEFINE_ARRAY__)) : __WEBPACK_AMD_DEFINE_FACTORY__),
-				__WEBPACK_AMD_DEFINE_RESULT__ !== undefined && (module.exports = __WEBPACK_AMD_DEFINE_RESULT__)) : factory(global.moment);
-})(undefined, function (moment) {
-    'use strict';
-
-    var arTn = moment.defineLocale('ar-tn', {
-        months: 'جانفي_فيفري_مارس_أفريل_ماي_جوان_جويلية_أوت_سبتمبر_أكتوبر_نوفمبر_ديسمبر'.split('_'),
-        monthsShort: 'جانفي_فيفري_مارس_أفريل_ماي_جوان_جويلية_أوت_سبتمبر_أكتوبر_نوفمبر_ديسمبر'.split('_'),
-        weekdays: 'الأحد_الإثنين_الثلاثاء_الأربعاء_الخميس_الجمعة_السبت'.split('_'),
-        weekdaysShort: 'أحد_إثنين_ثلاثاء_أربعاء_خميس_جمعة_سبت'.split('_'),
-        weekdaysMin: 'ح_ن_ث_ر_خ_ج_س'.split('_'),
-        weekdaysParseExact: true,
-        longDateFormat: {
-            LT: 'HH:mm',
-            LTS: 'HH:mm:ss',
-            L: 'DD/MM/YYYY',
-            LL: 'D MMMM YYYY',
-            LLL: 'D MMMM YYYY HH:mm',
-            LLLL: 'dddd D MMMM YYYY HH:mm'
-        },
-        calendar: {
-            sameDay: '[اليوم على الساعة] LT',
-            nextDay: '[غدا على الساعة] LT',
-            nextWeek: 'dddd [على الساعة] LT',
-            lastDay: '[أمس على الساعة] LT',
-            lastWeek: 'dddd [على الساعة] LT',
-            sameElse: 'L'
-        },
-        relativeTime: {
-            future: 'في %s',
-            past: 'منذ %s',
-            s: 'ثوان',
-            ss: '%d ثانية',
-            m: 'دقيقة',
-            mm: '%d دقائق',
-            h: 'ساعة',
-            hh: '%d ساعات',
-            d: 'يوم',
-            dd: '%d أيام',
-            M: 'شهر',
-            MM: '%d أشهر',
-            y: 'سنة',
-            yy: '%d سنوات'
-        },
-        week: {
-            dow: 1, // Monday is the first day of the week.
-            doy: 4 // The week that contains Jan 4th is the first week of the year.
-        }
-    });
-
-    return arTn;
-});
-
-/***/ }),
-/* 19 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -6969,6 +6076,508 @@ var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol
     });
 
     return ar;
+});
+
+/***/ }),
+/* 14 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+var __WEBPACK_AMD_DEFINE_FACTORY__, __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_DEFINE_RESULT__;
+
+var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol" ? function (obj) { return typeof obj; } : function (obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; };
+
+//! moment.js locale configuration
+
+;(function (global, factory) {
+    ( false ? 'undefined' : _typeof(exports)) === 'object' && typeof module !== 'undefined' && "function" === 'function' ? factory(__webpack_require__(0)) :  true ? !(__WEBPACK_AMD_DEFINE_ARRAY__ = [__webpack_require__(0)], __WEBPACK_AMD_DEFINE_FACTORY__ = (factory),
+				__WEBPACK_AMD_DEFINE_RESULT__ = (typeof __WEBPACK_AMD_DEFINE_FACTORY__ === 'function' ?
+				(__WEBPACK_AMD_DEFINE_FACTORY__.apply(exports, __WEBPACK_AMD_DEFINE_ARRAY__)) : __WEBPACK_AMD_DEFINE_FACTORY__),
+				__WEBPACK_AMD_DEFINE_RESULT__ !== undefined && (module.exports = __WEBPACK_AMD_DEFINE_RESULT__)) : factory(global.moment);
+})(undefined, function (moment) {
+    'use strict';
+
+    var arDz = moment.defineLocale('ar-dz', {
+        months: 'جانفي_فيفري_مارس_أفريل_ماي_جوان_جويلية_أوت_سبتمبر_أكتوبر_نوفمبر_ديسمبر'.split('_'),
+        monthsShort: 'جانفي_فيفري_مارس_أفريل_ماي_جوان_جويلية_أوت_سبتمبر_أكتوبر_نوفمبر_ديسمبر'.split('_'),
+        weekdays: 'الأحد_الإثنين_الثلاثاء_الأربعاء_الخميس_الجمعة_السبت'.split('_'),
+        weekdaysShort: 'احد_اثنين_ثلاثاء_اربعاء_خميس_جمعة_سبت'.split('_'),
+        weekdaysMin: 'أح_إث_ثلا_أر_خم_جم_سب'.split('_'),
+        weekdaysParseExact: true,
+        longDateFormat: {
+            LT: 'HH:mm',
+            LTS: 'HH:mm:ss',
+            L: 'DD/MM/YYYY',
+            LL: 'D MMMM YYYY',
+            LLL: 'D MMMM YYYY HH:mm',
+            LLLL: 'dddd D MMMM YYYY HH:mm'
+        },
+        calendar: {
+            sameDay: '[اليوم على الساعة] LT',
+            nextDay: '[غدا على الساعة] LT',
+            nextWeek: 'dddd [على الساعة] LT',
+            lastDay: '[أمس على الساعة] LT',
+            lastWeek: 'dddd [على الساعة] LT',
+            sameElse: 'L'
+        },
+        relativeTime: {
+            future: 'في %s',
+            past: 'منذ %s',
+            s: 'ثوان',
+            ss: '%d ثانية',
+            m: 'دقيقة',
+            mm: '%d دقائق',
+            h: 'ساعة',
+            hh: '%d ساعات',
+            d: 'يوم',
+            dd: '%d أيام',
+            M: 'شهر',
+            MM: '%d أشهر',
+            y: 'سنة',
+            yy: '%d سنوات'
+        },
+        week: {
+            dow: 0, // Sunday is the first day of the week.
+            doy: 4 // The week that contains Jan 1st is the first week of the year.
+        }
+    });
+
+    return arDz;
+});
+
+/***/ }),
+/* 15 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+var __WEBPACK_AMD_DEFINE_FACTORY__, __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_DEFINE_RESULT__;
+
+var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol" ? function (obj) { return typeof obj; } : function (obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; };
+
+//! moment.js locale configuration
+
+;(function (global, factory) {
+    ( false ? 'undefined' : _typeof(exports)) === 'object' && typeof module !== 'undefined' && "function" === 'function' ? factory(__webpack_require__(0)) :  true ? !(__WEBPACK_AMD_DEFINE_ARRAY__ = [__webpack_require__(0)], __WEBPACK_AMD_DEFINE_FACTORY__ = (factory),
+				__WEBPACK_AMD_DEFINE_RESULT__ = (typeof __WEBPACK_AMD_DEFINE_FACTORY__ === 'function' ?
+				(__WEBPACK_AMD_DEFINE_FACTORY__.apply(exports, __WEBPACK_AMD_DEFINE_ARRAY__)) : __WEBPACK_AMD_DEFINE_FACTORY__),
+				__WEBPACK_AMD_DEFINE_RESULT__ !== undefined && (module.exports = __WEBPACK_AMD_DEFINE_RESULT__)) : factory(global.moment);
+})(undefined, function (moment) {
+    'use strict';
+
+    var arKw = moment.defineLocale('ar-kw', {
+        months: 'يناير_فبراير_مارس_أبريل_ماي_يونيو_يوليوز_غشت_شتنبر_أكتوبر_نونبر_دجنبر'.split('_'),
+        monthsShort: 'يناير_فبراير_مارس_أبريل_ماي_يونيو_يوليوز_غشت_شتنبر_أكتوبر_نونبر_دجنبر'.split('_'),
+        weekdays: 'الأحد_الإتنين_الثلاثاء_الأربعاء_الخميس_الجمعة_السبت'.split('_'),
+        weekdaysShort: 'احد_اتنين_ثلاثاء_اربعاء_خميس_جمعة_سبت'.split('_'),
+        weekdaysMin: 'ح_ن_ث_ر_خ_ج_س'.split('_'),
+        weekdaysParseExact: true,
+        longDateFormat: {
+            LT: 'HH:mm',
+            LTS: 'HH:mm:ss',
+            L: 'DD/MM/YYYY',
+            LL: 'D MMMM YYYY',
+            LLL: 'D MMMM YYYY HH:mm',
+            LLLL: 'dddd D MMMM YYYY HH:mm'
+        },
+        calendar: {
+            sameDay: '[اليوم على الساعة] LT',
+            nextDay: '[غدا على الساعة] LT',
+            nextWeek: 'dddd [على الساعة] LT',
+            lastDay: '[أمس على الساعة] LT',
+            lastWeek: 'dddd [على الساعة] LT',
+            sameElse: 'L'
+        },
+        relativeTime: {
+            future: 'في %s',
+            past: 'منذ %s',
+            s: 'ثوان',
+            ss: '%d ثانية',
+            m: 'دقيقة',
+            mm: '%d دقائق',
+            h: 'ساعة',
+            hh: '%d ساعات',
+            d: 'يوم',
+            dd: '%d أيام',
+            M: 'شهر',
+            MM: '%d أشهر',
+            y: 'سنة',
+            yy: '%d سنوات'
+        },
+        week: {
+            dow: 0, // Sunday is the first day of the week.
+            doy: 12 // The week that contains Jan 1st is the first week of the year.
+        }
+    });
+
+    return arKw;
+});
+
+/***/ }),
+/* 16 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+var __WEBPACK_AMD_DEFINE_FACTORY__, __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_DEFINE_RESULT__;
+
+var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol" ? function (obj) { return typeof obj; } : function (obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; };
+
+//! moment.js locale configuration
+
+;(function (global, factory) {
+    ( false ? 'undefined' : _typeof(exports)) === 'object' && typeof module !== 'undefined' && "function" === 'function' ? factory(__webpack_require__(0)) :  true ? !(__WEBPACK_AMD_DEFINE_ARRAY__ = [__webpack_require__(0)], __WEBPACK_AMD_DEFINE_FACTORY__ = (factory),
+				__WEBPACK_AMD_DEFINE_RESULT__ = (typeof __WEBPACK_AMD_DEFINE_FACTORY__ === 'function' ?
+				(__WEBPACK_AMD_DEFINE_FACTORY__.apply(exports, __WEBPACK_AMD_DEFINE_ARRAY__)) : __WEBPACK_AMD_DEFINE_FACTORY__),
+				__WEBPACK_AMD_DEFINE_RESULT__ !== undefined && (module.exports = __WEBPACK_AMD_DEFINE_RESULT__)) : factory(global.moment);
+})(undefined, function (moment) {
+    'use strict';
+
+    var symbolMap = {
+        '1': '1',
+        '2': '2',
+        '3': '3',
+        '4': '4',
+        '5': '5',
+        '6': '6',
+        '7': '7',
+        '8': '8',
+        '9': '9',
+        '0': '0'
+    },
+        pluralForm = function pluralForm(n) {
+        return n === 0 ? 0 : n === 1 ? 1 : n === 2 ? 2 : n % 100 >= 3 && n % 100 <= 10 ? 3 : n % 100 >= 11 ? 4 : 5;
+    },
+        plurals = {
+        s: ['أقل من ثانية', 'ثانية واحدة', ['ثانيتان', 'ثانيتين'], '%d ثوان', '%d ثانية', '%d ثانية'],
+        m: ['أقل من دقيقة', 'دقيقة واحدة', ['دقيقتان', 'دقيقتين'], '%d دقائق', '%d دقيقة', '%d دقيقة'],
+        h: ['أقل من ساعة', 'ساعة واحدة', ['ساعتان', 'ساعتين'], '%d ساعات', '%d ساعة', '%d ساعة'],
+        d: ['أقل من يوم', 'يوم واحد', ['يومان', 'يومين'], '%d أيام', '%d يومًا', '%d يوم'],
+        M: ['أقل من شهر', 'شهر واحد', ['شهران', 'شهرين'], '%d أشهر', '%d شهرا', '%d شهر'],
+        y: ['أقل من عام', 'عام واحد', ['عامان', 'عامين'], '%d أعوام', '%d عامًا', '%d عام']
+    },
+        pluralize = function pluralize(u) {
+        return function (number, withoutSuffix, string, isFuture) {
+            var f = pluralForm(number),
+                str = plurals[u][pluralForm(number)];
+            if (f === 2) {
+                str = str[withoutSuffix ? 0 : 1];
+            }
+            return str.replace(/%d/i, number);
+        };
+    },
+        months = ['يناير', 'فبراير', 'مارس', 'أبريل', 'مايو', 'يونيو', 'يوليو', 'أغسطس', 'سبتمبر', 'أكتوبر', 'نوفمبر', 'ديسمبر'];
+
+    var arLy = moment.defineLocale('ar-ly', {
+        months: months,
+        monthsShort: months,
+        weekdays: 'الأحد_الإثنين_الثلاثاء_الأربعاء_الخميس_الجمعة_السبت'.split('_'),
+        weekdaysShort: 'أحد_إثنين_ثلاثاء_أربعاء_خميس_جمعة_سبت'.split('_'),
+        weekdaysMin: 'ح_ن_ث_ر_خ_ج_س'.split('_'),
+        weekdaysParseExact: true,
+        longDateFormat: {
+            LT: 'HH:mm',
+            LTS: 'HH:mm:ss',
+            L: 'D/\u200FM/\u200FYYYY',
+            LL: 'D MMMM YYYY',
+            LLL: 'D MMMM YYYY HH:mm',
+            LLLL: 'dddd D MMMM YYYY HH:mm'
+        },
+        meridiemParse: /ص|م/,
+        isPM: function isPM(input) {
+            return 'م' === input;
+        },
+        meridiem: function meridiem(hour, minute, isLower) {
+            if (hour < 12) {
+                return 'ص';
+            } else {
+                return 'م';
+            }
+        },
+        calendar: {
+            sameDay: '[اليوم عند الساعة] LT',
+            nextDay: '[غدًا عند الساعة] LT',
+            nextWeek: 'dddd [عند الساعة] LT',
+            lastDay: '[أمس عند الساعة] LT',
+            lastWeek: 'dddd [عند الساعة] LT',
+            sameElse: 'L'
+        },
+        relativeTime: {
+            future: 'بعد %s',
+            past: 'منذ %s',
+            s: pluralize('s'),
+            ss: pluralize('s'),
+            m: pluralize('m'),
+            mm: pluralize('m'),
+            h: pluralize('h'),
+            hh: pluralize('h'),
+            d: pluralize('d'),
+            dd: pluralize('d'),
+            M: pluralize('M'),
+            MM: pluralize('M'),
+            y: pluralize('y'),
+            yy: pluralize('y')
+        },
+        preparse: function preparse(string) {
+            return string.replace(/،/g, ',');
+        },
+        postformat: function postformat(string) {
+            return string.replace(/\d/g, function (match) {
+                return symbolMap[match];
+            }).replace(/,/g, '،');
+        },
+        week: {
+            dow: 6, // Saturday is the first day of the week.
+            doy: 12 // The week that contains Jan 1st is the first week of the year.
+        }
+    });
+
+    return arLy;
+});
+
+/***/ }),
+/* 17 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+var __WEBPACK_AMD_DEFINE_FACTORY__, __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_DEFINE_RESULT__;
+
+var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol" ? function (obj) { return typeof obj; } : function (obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; };
+
+//! moment.js locale configuration
+
+;(function (global, factory) {
+    ( false ? 'undefined' : _typeof(exports)) === 'object' && typeof module !== 'undefined' && "function" === 'function' ? factory(__webpack_require__(0)) :  true ? !(__WEBPACK_AMD_DEFINE_ARRAY__ = [__webpack_require__(0)], __WEBPACK_AMD_DEFINE_FACTORY__ = (factory),
+				__WEBPACK_AMD_DEFINE_RESULT__ = (typeof __WEBPACK_AMD_DEFINE_FACTORY__ === 'function' ?
+				(__WEBPACK_AMD_DEFINE_FACTORY__.apply(exports, __WEBPACK_AMD_DEFINE_ARRAY__)) : __WEBPACK_AMD_DEFINE_FACTORY__),
+				__WEBPACK_AMD_DEFINE_RESULT__ !== undefined && (module.exports = __WEBPACK_AMD_DEFINE_RESULT__)) : factory(global.moment);
+})(undefined, function (moment) {
+    'use strict';
+
+    var arMa = moment.defineLocale('ar-ma', {
+        months: 'يناير_فبراير_مارس_أبريل_ماي_يونيو_يوليوز_غشت_شتنبر_أكتوبر_نونبر_دجنبر'.split('_'),
+        monthsShort: 'يناير_فبراير_مارس_أبريل_ماي_يونيو_يوليوز_غشت_شتنبر_أكتوبر_نونبر_دجنبر'.split('_'),
+        weekdays: 'الأحد_الإتنين_الثلاثاء_الأربعاء_الخميس_الجمعة_السبت'.split('_'),
+        weekdaysShort: 'احد_اتنين_ثلاثاء_اربعاء_خميس_جمعة_سبت'.split('_'),
+        weekdaysMin: 'ح_ن_ث_ر_خ_ج_س'.split('_'),
+        weekdaysParseExact: true,
+        longDateFormat: {
+            LT: 'HH:mm',
+            LTS: 'HH:mm:ss',
+            L: 'DD/MM/YYYY',
+            LL: 'D MMMM YYYY',
+            LLL: 'D MMMM YYYY HH:mm',
+            LLLL: 'dddd D MMMM YYYY HH:mm'
+        },
+        calendar: {
+            sameDay: '[اليوم على الساعة] LT',
+            nextDay: '[غدا على الساعة] LT',
+            nextWeek: 'dddd [على الساعة] LT',
+            lastDay: '[أمس على الساعة] LT',
+            lastWeek: 'dddd [على الساعة] LT',
+            sameElse: 'L'
+        },
+        relativeTime: {
+            future: 'في %s',
+            past: 'منذ %s',
+            s: 'ثوان',
+            ss: '%d ثانية',
+            m: 'دقيقة',
+            mm: '%d دقائق',
+            h: 'ساعة',
+            hh: '%d ساعات',
+            d: 'يوم',
+            dd: '%d أيام',
+            M: 'شهر',
+            MM: '%d أشهر',
+            y: 'سنة',
+            yy: '%d سنوات'
+        },
+        week: {
+            dow: 6, // Saturday is the first day of the week.
+            doy: 12 // The week that contains Jan 1st is the first week of the year.
+        }
+    });
+
+    return arMa;
+});
+
+/***/ }),
+/* 18 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+var __WEBPACK_AMD_DEFINE_FACTORY__, __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_DEFINE_RESULT__;
+
+var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol" ? function (obj) { return typeof obj; } : function (obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; };
+
+//! moment.js locale configuration
+
+;(function (global, factory) {
+    ( false ? 'undefined' : _typeof(exports)) === 'object' && typeof module !== 'undefined' && "function" === 'function' ? factory(__webpack_require__(0)) :  true ? !(__WEBPACK_AMD_DEFINE_ARRAY__ = [__webpack_require__(0)], __WEBPACK_AMD_DEFINE_FACTORY__ = (factory),
+				__WEBPACK_AMD_DEFINE_RESULT__ = (typeof __WEBPACK_AMD_DEFINE_FACTORY__ === 'function' ?
+				(__WEBPACK_AMD_DEFINE_FACTORY__.apply(exports, __WEBPACK_AMD_DEFINE_ARRAY__)) : __WEBPACK_AMD_DEFINE_FACTORY__),
+				__WEBPACK_AMD_DEFINE_RESULT__ !== undefined && (module.exports = __WEBPACK_AMD_DEFINE_RESULT__)) : factory(global.moment);
+})(undefined, function (moment) {
+    'use strict';
+
+    var symbolMap = {
+        '1': '١',
+        '2': '٢',
+        '3': '٣',
+        '4': '٤',
+        '5': '٥',
+        '6': '٦',
+        '7': '٧',
+        '8': '٨',
+        '9': '٩',
+        '0': '٠'
+    },
+        numberMap = {
+        '١': '1',
+        '٢': '2',
+        '٣': '3',
+        '٤': '4',
+        '٥': '5',
+        '٦': '6',
+        '٧': '7',
+        '٨': '8',
+        '٩': '9',
+        '٠': '0'
+    };
+
+    var arSa = moment.defineLocale('ar-sa', {
+        months: 'يناير_فبراير_مارس_أبريل_مايو_يونيو_يوليو_أغسطس_سبتمبر_أكتوبر_نوفمبر_ديسمبر'.split('_'),
+        monthsShort: 'يناير_فبراير_مارس_أبريل_مايو_يونيو_يوليو_أغسطس_سبتمبر_أكتوبر_نوفمبر_ديسمبر'.split('_'),
+        weekdays: 'الأحد_الإثنين_الثلاثاء_الأربعاء_الخميس_الجمعة_السبت'.split('_'),
+        weekdaysShort: 'أحد_إثنين_ثلاثاء_أربعاء_خميس_جمعة_سبت'.split('_'),
+        weekdaysMin: 'ح_ن_ث_ر_خ_ج_س'.split('_'),
+        weekdaysParseExact: true,
+        longDateFormat: {
+            LT: 'HH:mm',
+            LTS: 'HH:mm:ss',
+            L: 'DD/MM/YYYY',
+            LL: 'D MMMM YYYY',
+            LLL: 'D MMMM YYYY HH:mm',
+            LLLL: 'dddd D MMMM YYYY HH:mm'
+        },
+        meridiemParse: /ص|م/,
+        isPM: function isPM(input) {
+            return 'م' === input;
+        },
+        meridiem: function meridiem(hour, minute, isLower) {
+            if (hour < 12) {
+                return 'ص';
+            } else {
+                return 'م';
+            }
+        },
+        calendar: {
+            sameDay: '[اليوم على الساعة] LT',
+            nextDay: '[غدا على الساعة] LT',
+            nextWeek: 'dddd [على الساعة] LT',
+            lastDay: '[أمس على الساعة] LT',
+            lastWeek: 'dddd [على الساعة] LT',
+            sameElse: 'L'
+        },
+        relativeTime: {
+            future: 'في %s',
+            past: 'منذ %s',
+            s: 'ثوان',
+            ss: '%d ثانية',
+            m: 'دقيقة',
+            mm: '%d دقائق',
+            h: 'ساعة',
+            hh: '%d ساعات',
+            d: 'يوم',
+            dd: '%d أيام',
+            M: 'شهر',
+            MM: '%d أشهر',
+            y: 'سنة',
+            yy: '%d سنوات'
+        },
+        preparse: function preparse(string) {
+            return string.replace(/[١٢٣٤٥٦٧٨٩٠]/g, function (match) {
+                return numberMap[match];
+            }).replace(/،/g, ',');
+        },
+        postformat: function postformat(string) {
+            return string.replace(/\d/g, function (match) {
+                return symbolMap[match];
+            }).replace(/,/g, '،');
+        },
+        week: {
+            dow: 0, // Sunday is the first day of the week.
+            doy: 6 // The week that contains Jan 1st is the first week of the year.
+        }
+    });
+
+    return arSa;
+});
+
+/***/ }),
+/* 19 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+var __WEBPACK_AMD_DEFINE_FACTORY__, __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_DEFINE_RESULT__;
+
+var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol" ? function (obj) { return typeof obj; } : function (obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; };
+
+//! moment.js locale configuration
+
+;(function (global, factory) {
+    ( false ? 'undefined' : _typeof(exports)) === 'object' && typeof module !== 'undefined' && "function" === 'function' ? factory(__webpack_require__(0)) :  true ? !(__WEBPACK_AMD_DEFINE_ARRAY__ = [__webpack_require__(0)], __WEBPACK_AMD_DEFINE_FACTORY__ = (factory),
+				__WEBPACK_AMD_DEFINE_RESULT__ = (typeof __WEBPACK_AMD_DEFINE_FACTORY__ === 'function' ?
+				(__WEBPACK_AMD_DEFINE_FACTORY__.apply(exports, __WEBPACK_AMD_DEFINE_ARRAY__)) : __WEBPACK_AMD_DEFINE_FACTORY__),
+				__WEBPACK_AMD_DEFINE_RESULT__ !== undefined && (module.exports = __WEBPACK_AMD_DEFINE_RESULT__)) : factory(global.moment);
+})(undefined, function (moment) {
+    'use strict';
+
+    var arTn = moment.defineLocale('ar-tn', {
+        months: 'جانفي_فيفري_مارس_أفريل_ماي_جوان_جويلية_أوت_سبتمبر_أكتوبر_نوفمبر_ديسمبر'.split('_'),
+        monthsShort: 'جانفي_فيفري_مارس_أفريل_ماي_جوان_جويلية_أوت_سبتمبر_أكتوبر_نوفمبر_ديسمبر'.split('_'),
+        weekdays: 'الأحد_الإثنين_الثلاثاء_الأربعاء_الخميس_الجمعة_السبت'.split('_'),
+        weekdaysShort: 'أحد_إثنين_ثلاثاء_أربعاء_خميس_جمعة_سبت'.split('_'),
+        weekdaysMin: 'ح_ن_ث_ر_خ_ج_س'.split('_'),
+        weekdaysParseExact: true,
+        longDateFormat: {
+            LT: 'HH:mm',
+            LTS: 'HH:mm:ss',
+            L: 'DD/MM/YYYY',
+            LL: 'D MMMM YYYY',
+            LLL: 'D MMMM YYYY HH:mm',
+            LLLL: 'dddd D MMMM YYYY HH:mm'
+        },
+        calendar: {
+            sameDay: '[اليوم على الساعة] LT',
+            nextDay: '[غدا على الساعة] LT',
+            nextWeek: 'dddd [على الساعة] LT',
+            lastDay: '[أمس على الساعة] LT',
+            lastWeek: 'dddd [على الساعة] LT',
+            sameElse: 'L'
+        },
+        relativeTime: {
+            future: 'في %s',
+            past: 'منذ %s',
+            s: 'ثوان',
+            ss: '%d ثانية',
+            m: 'دقيقة',
+            mm: '%d دقائق',
+            h: 'ساعة',
+            hh: '%d ساعات',
+            d: 'يوم',
+            dd: '%d أيام',
+            M: 'شهر',
+            MM: '%d أشهر',
+            y: 'سنة',
+            yy: '%d سنوات'
+        },
+        week: {
+            dow: 1, // Monday is the first day of the week.
+            doy: 4 // The week that contains Jan 4th is the first week of the year.
+        }
+    });
+
+    return arTn;
 });
 
 /***/ }),
@@ -8468,6 +8077,90 @@ var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol
         return withoutSuffix ? format[key][0] : format[key][1];
     }
 
+    var de = moment.defineLocale('de', {
+        months: 'Januar_Februar_März_April_Mai_Juni_Juli_August_September_Oktober_November_Dezember'.split('_'),
+        monthsShort: 'Jan._Feb._März_Apr._Mai_Juni_Juli_Aug._Sep._Okt._Nov._Dez.'.split('_'),
+        monthsParseExact: true,
+        weekdays: 'Sonntag_Montag_Dienstag_Mittwoch_Donnerstag_Freitag_Samstag'.split('_'),
+        weekdaysShort: 'So._Mo._Di._Mi._Do._Fr._Sa.'.split('_'),
+        weekdaysMin: 'So_Mo_Di_Mi_Do_Fr_Sa'.split('_'),
+        weekdaysParseExact: true,
+        longDateFormat: {
+            LT: 'HH:mm',
+            LTS: 'HH:mm:ss',
+            L: 'DD.MM.YYYY',
+            LL: 'D. MMMM YYYY',
+            LLL: 'D. MMMM YYYY HH:mm',
+            LLLL: 'dddd, D. MMMM YYYY HH:mm'
+        },
+        calendar: {
+            sameDay: '[heute um] LT [Uhr]',
+            sameElse: 'L',
+            nextDay: '[morgen um] LT [Uhr]',
+            nextWeek: 'dddd [um] LT [Uhr]',
+            lastDay: '[gestern um] LT [Uhr]',
+            lastWeek: '[letzten] dddd [um] LT [Uhr]'
+        },
+        relativeTime: {
+            future: 'in %s',
+            past: 'vor %s',
+            s: 'ein paar Sekunden',
+            ss: '%d Sekunden',
+            m: processRelativeTime,
+            mm: '%d Minuten',
+            h: processRelativeTime,
+            hh: '%d Stunden',
+            d: processRelativeTime,
+            dd: processRelativeTime,
+            M: processRelativeTime,
+            MM: processRelativeTime,
+            y: processRelativeTime,
+            yy: processRelativeTime
+        },
+        dayOfMonthOrdinalParse: /\d{1,2}\./,
+        ordinal: '%d.',
+        week: {
+            dow: 1, // Monday is the first day of the week.
+            doy: 4 // The week that contains Jan 4th is the first week of the year.
+        }
+    });
+
+    return de;
+});
+
+/***/ }),
+/* 34 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+var __WEBPACK_AMD_DEFINE_FACTORY__, __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_DEFINE_RESULT__;
+
+var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol" ? function (obj) { return typeof obj; } : function (obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; };
+
+//! moment.js locale configuration
+
+;(function (global, factory) {
+    ( false ? 'undefined' : _typeof(exports)) === 'object' && typeof module !== 'undefined' && "function" === 'function' ? factory(__webpack_require__(0)) :  true ? !(__WEBPACK_AMD_DEFINE_ARRAY__ = [__webpack_require__(0)], __WEBPACK_AMD_DEFINE_FACTORY__ = (factory),
+				__WEBPACK_AMD_DEFINE_RESULT__ = (typeof __WEBPACK_AMD_DEFINE_FACTORY__ === 'function' ?
+				(__WEBPACK_AMD_DEFINE_FACTORY__.apply(exports, __WEBPACK_AMD_DEFINE_ARRAY__)) : __WEBPACK_AMD_DEFINE_FACTORY__),
+				__WEBPACK_AMD_DEFINE_RESULT__ !== undefined && (module.exports = __WEBPACK_AMD_DEFINE_RESULT__)) : factory(global.moment);
+})(undefined, function (moment) {
+    'use strict';
+
+    function processRelativeTime(number, withoutSuffix, key, isFuture) {
+        var format = {
+            'm': ['eine Minute', 'einer Minute'],
+            'h': ['eine Stunde', 'einer Stunde'],
+            'd': ['ein Tag', 'einem Tag'],
+            'dd': [number + ' Tage', number + ' Tagen'],
+            'M': ['ein Monat', 'einem Monat'],
+            'MM': [number + ' Monate', number + ' Monaten'],
+            'y': ['ein Jahr', 'einem Jahr'],
+            'yy': [number + ' Jahre', number + ' Jahren']
+        };
+        return withoutSuffix ? format[key][0] : format[key][1];
+    }
+
     var deAt = moment.defineLocale('de-at', {
         months: 'Jänner_Februar_März_April_Mai_Juni_Juli_August_September_Oktober_November_Dezember'.split('_'),
         monthsShort: 'Jän._Feb._März_Apr._Mai_Juni_Juli_Aug._Sep._Okt._Nov._Dez.'.split('_'),
@@ -8520,7 +8213,7 @@ var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol
 });
 
 /***/ }),
-/* 34 */
+/* 35 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -8601,90 +8294,6 @@ var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol
     });
 
     return deCh;
-});
-
-/***/ }),
-/* 35 */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-var __WEBPACK_AMD_DEFINE_FACTORY__, __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_DEFINE_RESULT__;
-
-var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol" ? function (obj) { return typeof obj; } : function (obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; };
-
-//! moment.js locale configuration
-
-;(function (global, factory) {
-    ( false ? 'undefined' : _typeof(exports)) === 'object' && typeof module !== 'undefined' && "function" === 'function' ? factory(__webpack_require__(0)) :  true ? !(__WEBPACK_AMD_DEFINE_ARRAY__ = [__webpack_require__(0)], __WEBPACK_AMD_DEFINE_FACTORY__ = (factory),
-				__WEBPACK_AMD_DEFINE_RESULT__ = (typeof __WEBPACK_AMD_DEFINE_FACTORY__ === 'function' ?
-				(__WEBPACK_AMD_DEFINE_FACTORY__.apply(exports, __WEBPACK_AMD_DEFINE_ARRAY__)) : __WEBPACK_AMD_DEFINE_FACTORY__),
-				__WEBPACK_AMD_DEFINE_RESULT__ !== undefined && (module.exports = __WEBPACK_AMD_DEFINE_RESULT__)) : factory(global.moment);
-})(undefined, function (moment) {
-    'use strict';
-
-    function processRelativeTime(number, withoutSuffix, key, isFuture) {
-        var format = {
-            'm': ['eine Minute', 'einer Minute'],
-            'h': ['eine Stunde', 'einer Stunde'],
-            'd': ['ein Tag', 'einem Tag'],
-            'dd': [number + ' Tage', number + ' Tagen'],
-            'M': ['ein Monat', 'einem Monat'],
-            'MM': [number + ' Monate', number + ' Monaten'],
-            'y': ['ein Jahr', 'einem Jahr'],
-            'yy': [number + ' Jahre', number + ' Jahren']
-        };
-        return withoutSuffix ? format[key][0] : format[key][1];
-    }
-
-    var de = moment.defineLocale('de', {
-        months: 'Januar_Februar_März_April_Mai_Juni_Juli_August_September_Oktober_November_Dezember'.split('_'),
-        monthsShort: 'Jan._Feb._März_Apr._Mai_Juni_Juli_Aug._Sep._Okt._Nov._Dez.'.split('_'),
-        monthsParseExact: true,
-        weekdays: 'Sonntag_Montag_Dienstag_Mittwoch_Donnerstag_Freitag_Samstag'.split('_'),
-        weekdaysShort: 'So._Mo._Di._Mi._Do._Fr._Sa.'.split('_'),
-        weekdaysMin: 'So_Mo_Di_Mi_Do_Fr_Sa'.split('_'),
-        weekdaysParseExact: true,
-        longDateFormat: {
-            LT: 'HH:mm',
-            LTS: 'HH:mm:ss',
-            L: 'DD.MM.YYYY',
-            LL: 'D. MMMM YYYY',
-            LLL: 'D. MMMM YYYY HH:mm',
-            LLLL: 'dddd, D. MMMM YYYY HH:mm'
-        },
-        calendar: {
-            sameDay: '[heute um] LT [Uhr]',
-            sameElse: 'L',
-            nextDay: '[morgen um] LT [Uhr]',
-            nextWeek: 'dddd [um] LT [Uhr]',
-            lastDay: '[gestern um] LT [Uhr]',
-            lastWeek: '[letzten] dddd [um] LT [Uhr]'
-        },
-        relativeTime: {
-            future: 'in %s',
-            past: 'vor %s',
-            s: 'ein paar Sekunden',
-            ss: '%d Sekunden',
-            m: processRelativeTime,
-            mm: '%d Minuten',
-            h: processRelativeTime,
-            hh: '%d Stunden',
-            d: processRelativeTime,
-            dd: processRelativeTime,
-            M: processRelativeTime,
-            MM: processRelativeTime,
-            y: processRelativeTime,
-            yy: processRelativeTime
-        },
-        dayOfMonthOrdinalParse: /\d{1,2}\./,
-        ordinal: '%d.',
-        week: {
-            dow: 1, // Monday is the first day of the week.
-            doy: 4 // The week that contains Jan 4th is the first week of the year.
-        }
-    });
-
-    return de;
 });
 
 /***/ }),
@@ -9410,6 +9019,106 @@ var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol
     var monthsParse = [/^ene/i, /^feb/i, /^mar/i, /^abr/i, /^may/i, /^jun/i, /^jul/i, /^ago/i, /^sep/i, /^oct/i, /^nov/i, /^dic/i];
     var monthsRegex = /^(enero|febrero|marzo|abril|mayo|junio|julio|agosto|septiembre|octubre|noviembre|diciembre|ene\.?|feb\.?|mar\.?|abr\.?|may\.?|jun\.?|jul\.?|ago\.?|sep\.?|oct\.?|nov\.?|dic\.?)/i;
 
+    var es = moment.defineLocale('es', {
+        months: 'enero_febrero_marzo_abril_mayo_junio_julio_agosto_septiembre_octubre_noviembre_diciembre'.split('_'),
+        monthsShort: function monthsShort(m, format) {
+            if (!m) {
+                return monthsShortDot;
+            } else if (/-MMM-/.test(format)) {
+                return _monthsShort[m.month()];
+            } else {
+                return monthsShortDot[m.month()];
+            }
+        },
+        monthsRegex: monthsRegex,
+        monthsShortRegex: monthsRegex,
+        monthsStrictRegex: /^(enero|febrero|marzo|abril|mayo|junio|julio|agosto|septiembre|octubre|noviembre|diciembre)/i,
+        monthsShortStrictRegex: /^(ene\.?|feb\.?|mar\.?|abr\.?|may\.?|jun\.?|jul\.?|ago\.?|sep\.?|oct\.?|nov\.?|dic\.?)/i,
+        monthsParse: monthsParse,
+        longMonthsParse: monthsParse,
+        shortMonthsParse: monthsParse,
+        weekdays: 'domingo_lunes_martes_miércoles_jueves_viernes_sábado'.split('_'),
+        weekdaysShort: 'dom._lun._mar._mié._jue._vie._sáb.'.split('_'),
+        weekdaysMin: 'do_lu_ma_mi_ju_vi_sá'.split('_'),
+        weekdaysParseExact: true,
+        longDateFormat: {
+            LT: 'H:mm',
+            LTS: 'H:mm:ss',
+            L: 'DD/MM/YYYY',
+            LL: 'D [de] MMMM [de] YYYY',
+            LLL: 'D [de] MMMM [de] YYYY H:mm',
+            LLLL: 'dddd, D [de] MMMM [de] YYYY H:mm'
+        },
+        calendar: {
+            sameDay: function sameDay() {
+                return '[hoy a la' + (this.hours() !== 1 ? 's' : '') + '] LT';
+            },
+            nextDay: function nextDay() {
+                return '[mañana a la' + (this.hours() !== 1 ? 's' : '') + '] LT';
+            },
+            nextWeek: function nextWeek() {
+                return 'dddd [a la' + (this.hours() !== 1 ? 's' : '') + '] LT';
+            },
+            lastDay: function lastDay() {
+                return '[ayer a la' + (this.hours() !== 1 ? 's' : '') + '] LT';
+            },
+            lastWeek: function lastWeek() {
+                return '[el] dddd [pasado a la' + (this.hours() !== 1 ? 's' : '') + '] LT';
+            },
+            sameElse: 'L'
+        },
+        relativeTime: {
+            future: 'en %s',
+            past: 'hace %s',
+            s: 'unos segundos',
+            ss: '%d segundos',
+            m: 'un minuto',
+            mm: '%d minutos',
+            h: 'una hora',
+            hh: '%d horas',
+            d: 'un día',
+            dd: '%d días',
+            M: 'un mes',
+            MM: '%d meses',
+            y: 'un año',
+            yy: '%d años'
+        },
+        dayOfMonthOrdinalParse: /\d{1,2}º/,
+        ordinal: '%dº',
+        week: {
+            dow: 1, // Monday is the first day of the week.
+            doy: 4 // The week that contains Jan 4th is the first week of the year.
+        }
+    });
+
+    return es;
+});
+
+/***/ }),
+/* 46 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+var __WEBPACK_AMD_DEFINE_FACTORY__, __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_DEFINE_RESULT__;
+
+var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol" ? function (obj) { return typeof obj; } : function (obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; };
+
+//! moment.js locale configuration
+
+;(function (global, factory) {
+    ( false ? 'undefined' : _typeof(exports)) === 'object' && typeof module !== 'undefined' && "function" === 'function' ? factory(__webpack_require__(0)) :  true ? !(__WEBPACK_AMD_DEFINE_ARRAY__ = [__webpack_require__(0)], __WEBPACK_AMD_DEFINE_FACTORY__ = (factory),
+				__WEBPACK_AMD_DEFINE_RESULT__ = (typeof __WEBPACK_AMD_DEFINE_FACTORY__ === 'function' ?
+				(__WEBPACK_AMD_DEFINE_FACTORY__.apply(exports, __WEBPACK_AMD_DEFINE_ARRAY__)) : __WEBPACK_AMD_DEFINE_FACTORY__),
+				__WEBPACK_AMD_DEFINE_RESULT__ !== undefined && (module.exports = __WEBPACK_AMD_DEFINE_RESULT__)) : factory(global.moment);
+})(undefined, function (moment) {
+    'use strict';
+
+    var monthsShortDot = 'ene._feb._mar._abr._may._jun._jul._ago._sep._oct._nov._dic.'.split('_'),
+        _monthsShort = 'ene_feb_mar_abr_may_jun_jul_ago_sep_oct_nov_dic'.split('_');
+
+    var monthsParse = [/^ene/i, /^feb/i, /^mar/i, /^abr/i, /^may/i, /^jun/i, /^jul/i, /^ago/i, /^sep/i, /^oct/i, /^nov/i, /^dic/i];
+    var monthsRegex = /^(enero|febrero|marzo|abril|mayo|junio|julio|agosto|septiembre|octubre|noviembre|diciembre|ene\.?|feb\.?|mar\.?|abr\.?|may\.?|jun\.?|jul\.?|ago\.?|sep\.?|oct\.?|nov\.?|dic\.?)/i;
+
     var esDo = moment.defineLocale('es-do', {
         months: 'enero_febrero_marzo_abril_mayo_junio_julio_agosto_septiembre_octubre_noviembre_diciembre'.split('_'),
         monthsShort: function monthsShort(m, format) {
@@ -9486,7 +9195,7 @@ var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol
 });
 
 /***/ }),
-/* 46 */
+/* 47 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -9574,106 +9283,6 @@ var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol
     });
 
     return esUs;
-});
-
-/***/ }),
-/* 47 */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-var __WEBPACK_AMD_DEFINE_FACTORY__, __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_DEFINE_RESULT__;
-
-var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol" ? function (obj) { return typeof obj; } : function (obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; };
-
-//! moment.js locale configuration
-
-;(function (global, factory) {
-    ( false ? 'undefined' : _typeof(exports)) === 'object' && typeof module !== 'undefined' && "function" === 'function' ? factory(__webpack_require__(0)) :  true ? !(__WEBPACK_AMD_DEFINE_ARRAY__ = [__webpack_require__(0)], __WEBPACK_AMD_DEFINE_FACTORY__ = (factory),
-				__WEBPACK_AMD_DEFINE_RESULT__ = (typeof __WEBPACK_AMD_DEFINE_FACTORY__ === 'function' ?
-				(__WEBPACK_AMD_DEFINE_FACTORY__.apply(exports, __WEBPACK_AMD_DEFINE_ARRAY__)) : __WEBPACK_AMD_DEFINE_FACTORY__),
-				__WEBPACK_AMD_DEFINE_RESULT__ !== undefined && (module.exports = __WEBPACK_AMD_DEFINE_RESULT__)) : factory(global.moment);
-})(undefined, function (moment) {
-    'use strict';
-
-    var monthsShortDot = 'ene._feb._mar._abr._may._jun._jul._ago._sep._oct._nov._dic.'.split('_'),
-        _monthsShort = 'ene_feb_mar_abr_may_jun_jul_ago_sep_oct_nov_dic'.split('_');
-
-    var monthsParse = [/^ene/i, /^feb/i, /^mar/i, /^abr/i, /^may/i, /^jun/i, /^jul/i, /^ago/i, /^sep/i, /^oct/i, /^nov/i, /^dic/i];
-    var monthsRegex = /^(enero|febrero|marzo|abril|mayo|junio|julio|agosto|septiembre|octubre|noviembre|diciembre|ene\.?|feb\.?|mar\.?|abr\.?|may\.?|jun\.?|jul\.?|ago\.?|sep\.?|oct\.?|nov\.?|dic\.?)/i;
-
-    var es = moment.defineLocale('es', {
-        months: 'enero_febrero_marzo_abril_mayo_junio_julio_agosto_septiembre_octubre_noviembre_diciembre'.split('_'),
-        monthsShort: function monthsShort(m, format) {
-            if (!m) {
-                return monthsShortDot;
-            } else if (/-MMM-/.test(format)) {
-                return _monthsShort[m.month()];
-            } else {
-                return monthsShortDot[m.month()];
-            }
-        },
-        monthsRegex: monthsRegex,
-        monthsShortRegex: monthsRegex,
-        monthsStrictRegex: /^(enero|febrero|marzo|abril|mayo|junio|julio|agosto|septiembre|octubre|noviembre|diciembre)/i,
-        monthsShortStrictRegex: /^(ene\.?|feb\.?|mar\.?|abr\.?|may\.?|jun\.?|jul\.?|ago\.?|sep\.?|oct\.?|nov\.?|dic\.?)/i,
-        monthsParse: monthsParse,
-        longMonthsParse: monthsParse,
-        shortMonthsParse: monthsParse,
-        weekdays: 'domingo_lunes_martes_miércoles_jueves_viernes_sábado'.split('_'),
-        weekdaysShort: 'dom._lun._mar._mié._jue._vie._sáb.'.split('_'),
-        weekdaysMin: 'do_lu_ma_mi_ju_vi_sá'.split('_'),
-        weekdaysParseExact: true,
-        longDateFormat: {
-            LT: 'H:mm',
-            LTS: 'H:mm:ss',
-            L: 'DD/MM/YYYY',
-            LL: 'D [de] MMMM [de] YYYY',
-            LLL: 'D [de] MMMM [de] YYYY H:mm',
-            LLLL: 'dddd, D [de] MMMM [de] YYYY H:mm'
-        },
-        calendar: {
-            sameDay: function sameDay() {
-                return '[hoy a la' + (this.hours() !== 1 ? 's' : '') + '] LT';
-            },
-            nextDay: function nextDay() {
-                return '[mañana a la' + (this.hours() !== 1 ? 's' : '') + '] LT';
-            },
-            nextWeek: function nextWeek() {
-                return 'dddd [a la' + (this.hours() !== 1 ? 's' : '') + '] LT';
-            },
-            lastDay: function lastDay() {
-                return '[ayer a la' + (this.hours() !== 1 ? 's' : '') + '] LT';
-            },
-            lastWeek: function lastWeek() {
-                return '[el] dddd [pasado a la' + (this.hours() !== 1 ? 's' : '') + '] LT';
-            },
-            sameElse: 'L'
-        },
-        relativeTime: {
-            future: 'en %s',
-            past: 'hace %s',
-            s: 'unos segundos',
-            ss: '%d segundos',
-            m: 'un minuto',
-            mm: '%d minutos',
-            h: 'una hora',
-            hh: '%d horas',
-            d: 'un día',
-            dd: '%d días',
-            M: 'un mes',
-            MM: '%d meses',
-            y: 'un año',
-            yy: '%d años'
-        },
-        dayOfMonthOrdinalParse: /\d{1,2}º/,
-        ordinal: '%dº',
-        week: {
-            dow: 1, // Monday is the first day of the week.
-            doy: 4 // The week that contains Jan 4th is the first week of the year.
-        }
-    });
-
-    return es;
 });
 
 /***/ }),
@@ -10155,6 +9764,97 @@ var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol
 })(undefined, function (moment) {
     'use strict';
 
+    var fr = moment.defineLocale('fr', {
+        months: 'janvier_février_mars_avril_mai_juin_juillet_août_septembre_octobre_novembre_décembre'.split('_'),
+        monthsShort: 'janv._févr._mars_avr._mai_juin_juil._août_sept._oct._nov._déc.'.split('_'),
+        monthsParseExact: true,
+        weekdays: 'dimanche_lundi_mardi_mercredi_jeudi_vendredi_samedi'.split('_'),
+        weekdaysShort: 'dim._lun._mar._mer._jeu._ven._sam.'.split('_'),
+        weekdaysMin: 'di_lu_ma_me_je_ve_sa'.split('_'),
+        weekdaysParseExact: true,
+        longDateFormat: {
+            LT: 'HH:mm',
+            LTS: 'HH:mm:ss',
+            L: 'DD/MM/YYYY',
+            LL: 'D MMMM YYYY',
+            LLL: 'D MMMM YYYY HH:mm',
+            LLLL: 'dddd D MMMM YYYY HH:mm'
+        },
+        calendar: {
+            sameDay: '[Aujourd’hui à] LT',
+            nextDay: '[Demain à] LT',
+            nextWeek: 'dddd [à] LT',
+            lastDay: '[Hier à] LT',
+            lastWeek: 'dddd [dernier à] LT',
+            sameElse: 'L'
+        },
+        relativeTime: {
+            future: 'dans %s',
+            past: 'il y a %s',
+            s: 'quelques secondes',
+            ss: '%d secondes',
+            m: 'une minute',
+            mm: '%d minutes',
+            h: 'une heure',
+            hh: '%d heures',
+            d: 'un jour',
+            dd: '%d jours',
+            M: 'un mois',
+            MM: '%d mois',
+            y: 'un an',
+            yy: '%d ans'
+        },
+        dayOfMonthOrdinalParse: /\d{1,2}(er|)/,
+        ordinal: function ordinal(number, period) {
+            switch (period) {
+                // TODO: Return 'e' when day of month > 1. Move this case inside
+                // block for masculine words below.
+                // See https://github.com/moment/moment/issues/3375
+                case 'D':
+                    return number + (number === 1 ? 'er' : '');
+
+                // Words with masculine grammatical gender: mois, trimestre, jour
+                default:
+                case 'M':
+                case 'Q':
+                case 'DDD':
+                case 'd':
+                    return number + (number === 1 ? 'er' : 'e');
+
+                // Words with feminine grammatical gender: semaine
+                case 'w':
+                case 'W':
+                    return number + (number === 1 ? 're' : 'e');
+            }
+        },
+        week: {
+            dow: 1, // Monday is the first day of the week.
+            doy: 4 // The week that contains Jan 4th is the first week of the year.
+        }
+    });
+
+    return fr;
+});
+
+/***/ }),
+/* 54 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+var __WEBPACK_AMD_DEFINE_FACTORY__, __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_DEFINE_RESULT__;
+
+var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol" ? function (obj) { return typeof obj; } : function (obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; };
+
+//! moment.js locale configuration
+
+;(function (global, factory) {
+    ( false ? 'undefined' : _typeof(exports)) === 'object' && typeof module !== 'undefined' && "function" === 'function' ? factory(__webpack_require__(0)) :  true ? !(__WEBPACK_AMD_DEFINE_ARRAY__ = [__webpack_require__(0)], __WEBPACK_AMD_DEFINE_FACTORY__ = (factory),
+				__WEBPACK_AMD_DEFINE_RESULT__ = (typeof __WEBPACK_AMD_DEFINE_FACTORY__ === 'function' ?
+				(__WEBPACK_AMD_DEFINE_FACTORY__.apply(exports, __WEBPACK_AMD_DEFINE_ARRAY__)) : __WEBPACK_AMD_DEFINE_FACTORY__),
+				__WEBPACK_AMD_DEFINE_RESULT__ !== undefined && (module.exports = __WEBPACK_AMD_DEFINE_RESULT__)) : factory(global.moment);
+})(undefined, function (moment) {
+    'use strict';
+
     var frCa = moment.defineLocale('fr-ca', {
         months: 'janvier_février_mars_avril_mai_juin_juillet_août_septembre_octobre_novembre_décembre'.split('_'),
         monthsShort: 'janv._févr._mars_avr._mai_juin_juil._août_sept._oct._nov._déc.'.split('_'),
@@ -10219,7 +9919,7 @@ var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol
 });
 
 /***/ }),
-/* 54 */
+/* 55 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -10302,97 +10002,6 @@ var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol
     });
 
     return frCh;
-});
-
-/***/ }),
-/* 55 */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-var __WEBPACK_AMD_DEFINE_FACTORY__, __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_DEFINE_RESULT__;
-
-var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol" ? function (obj) { return typeof obj; } : function (obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; };
-
-//! moment.js locale configuration
-
-;(function (global, factory) {
-    ( false ? 'undefined' : _typeof(exports)) === 'object' && typeof module !== 'undefined' && "function" === 'function' ? factory(__webpack_require__(0)) :  true ? !(__WEBPACK_AMD_DEFINE_ARRAY__ = [__webpack_require__(0)], __WEBPACK_AMD_DEFINE_FACTORY__ = (factory),
-				__WEBPACK_AMD_DEFINE_RESULT__ = (typeof __WEBPACK_AMD_DEFINE_FACTORY__ === 'function' ?
-				(__WEBPACK_AMD_DEFINE_FACTORY__.apply(exports, __WEBPACK_AMD_DEFINE_ARRAY__)) : __WEBPACK_AMD_DEFINE_FACTORY__),
-				__WEBPACK_AMD_DEFINE_RESULT__ !== undefined && (module.exports = __WEBPACK_AMD_DEFINE_RESULT__)) : factory(global.moment);
-})(undefined, function (moment) {
-    'use strict';
-
-    var fr = moment.defineLocale('fr', {
-        months: 'janvier_février_mars_avril_mai_juin_juillet_août_septembre_octobre_novembre_décembre'.split('_'),
-        monthsShort: 'janv._févr._mars_avr._mai_juin_juil._août_sept._oct._nov._déc.'.split('_'),
-        monthsParseExact: true,
-        weekdays: 'dimanche_lundi_mardi_mercredi_jeudi_vendredi_samedi'.split('_'),
-        weekdaysShort: 'dim._lun._mar._mer._jeu._ven._sam.'.split('_'),
-        weekdaysMin: 'di_lu_ma_me_je_ve_sa'.split('_'),
-        weekdaysParseExact: true,
-        longDateFormat: {
-            LT: 'HH:mm',
-            LTS: 'HH:mm:ss',
-            L: 'DD/MM/YYYY',
-            LL: 'D MMMM YYYY',
-            LLL: 'D MMMM YYYY HH:mm',
-            LLLL: 'dddd D MMMM YYYY HH:mm'
-        },
-        calendar: {
-            sameDay: '[Aujourd’hui à] LT',
-            nextDay: '[Demain à] LT',
-            nextWeek: 'dddd [à] LT',
-            lastDay: '[Hier à] LT',
-            lastWeek: 'dddd [dernier à] LT',
-            sameElse: 'L'
-        },
-        relativeTime: {
-            future: 'dans %s',
-            past: 'il y a %s',
-            s: 'quelques secondes',
-            ss: '%d secondes',
-            m: 'une minute',
-            mm: '%d minutes',
-            h: 'une heure',
-            hh: '%d heures',
-            d: 'un jour',
-            dd: '%d jours',
-            M: 'un mois',
-            MM: '%d mois',
-            y: 'un an',
-            yy: '%d ans'
-        },
-        dayOfMonthOrdinalParse: /\d{1,2}(er|)/,
-        ordinal: function ordinal(number, period) {
-            switch (period) {
-                // TODO: Return 'e' when day of month > 1. Move this case inside
-                // block for masculine words below.
-                // See https://github.com/moment/moment/issues/3375
-                case 'D':
-                    return number + (number === 1 ? 'er' : '');
-
-                // Words with masculine grammatical gender: mois, trimestre, jour
-                default:
-                case 'M':
-                case 'Q':
-                case 'DDD':
-                case 'd':
-                    return number + (number === 1 ? 'er' : 'e');
-
-                // Words with feminine grammatical gender: semaine
-                case 'w':
-                case 'W':
-                    return number + (number === 1 ? 're' : 'e');
-            }
-        },
-        week: {
-            dow: 1, // Monday is the first day of the week.
-            doy: 4 // The week that contains Jan 4th is the first week of the year.
-        }
-    });
-
-    return fr;
 });
 
 /***/ }),
@@ -13795,96 +13404,6 @@ var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol
 })(undefined, function (moment) {
     'use strict';
 
-    var msMy = moment.defineLocale('ms-my', {
-        months: 'Januari_Februari_Mac_April_Mei_Jun_Julai_Ogos_September_Oktober_November_Disember'.split('_'),
-        monthsShort: 'Jan_Feb_Mac_Apr_Mei_Jun_Jul_Ogs_Sep_Okt_Nov_Dis'.split('_'),
-        weekdays: 'Ahad_Isnin_Selasa_Rabu_Khamis_Jumaat_Sabtu'.split('_'),
-        weekdaysShort: 'Ahd_Isn_Sel_Rab_Kha_Jum_Sab'.split('_'),
-        weekdaysMin: 'Ah_Is_Sl_Rb_Km_Jm_Sb'.split('_'),
-        longDateFormat: {
-            LT: 'HH.mm',
-            LTS: 'HH.mm.ss',
-            L: 'DD/MM/YYYY',
-            LL: 'D MMMM YYYY',
-            LLL: 'D MMMM YYYY [pukul] HH.mm',
-            LLLL: 'dddd, D MMMM YYYY [pukul] HH.mm'
-        },
-        meridiemParse: /pagi|tengahari|petang|malam/,
-        meridiemHour: function meridiemHour(hour, meridiem) {
-            if (hour === 12) {
-                hour = 0;
-            }
-            if (meridiem === 'pagi') {
-                return hour;
-            } else if (meridiem === 'tengahari') {
-                return hour >= 11 ? hour : hour + 12;
-            } else if (meridiem === 'petang' || meridiem === 'malam') {
-                return hour + 12;
-            }
-        },
-        meridiem: function meridiem(hours, minutes, isLower) {
-            if (hours < 11) {
-                return 'pagi';
-            } else if (hours < 15) {
-                return 'tengahari';
-            } else if (hours < 19) {
-                return 'petang';
-            } else {
-                return 'malam';
-            }
-        },
-        calendar: {
-            sameDay: '[Hari ini pukul] LT',
-            nextDay: '[Esok pukul] LT',
-            nextWeek: 'dddd [pukul] LT',
-            lastDay: '[Kelmarin pukul] LT',
-            lastWeek: 'dddd [lepas pukul] LT',
-            sameElse: 'L'
-        },
-        relativeTime: {
-            future: 'dalam %s',
-            past: '%s yang lepas',
-            s: 'beberapa saat',
-            ss: '%d saat',
-            m: 'seminit',
-            mm: '%d minit',
-            h: 'sejam',
-            hh: '%d jam',
-            d: 'sehari',
-            dd: '%d hari',
-            M: 'sebulan',
-            MM: '%d bulan',
-            y: 'setahun',
-            yy: '%d tahun'
-        },
-        week: {
-            dow: 1, // Monday is the first day of the week.
-            doy: 7 // The week that contains Jan 1st is the first week of the year.
-        }
-    });
-
-    return msMy;
-});
-
-/***/ }),
-/* 88 */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-var __WEBPACK_AMD_DEFINE_FACTORY__, __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_DEFINE_RESULT__;
-
-var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol" ? function (obj) { return typeof obj; } : function (obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; };
-
-//! moment.js locale configuration
-
-;(function (global, factory) {
-    ( false ? 'undefined' : _typeof(exports)) === 'object' && typeof module !== 'undefined' && "function" === 'function' ? factory(__webpack_require__(0)) :  true ? !(__WEBPACK_AMD_DEFINE_ARRAY__ = [__webpack_require__(0)], __WEBPACK_AMD_DEFINE_FACTORY__ = (factory),
-				__WEBPACK_AMD_DEFINE_RESULT__ = (typeof __WEBPACK_AMD_DEFINE_FACTORY__ === 'function' ?
-				(__WEBPACK_AMD_DEFINE_FACTORY__.apply(exports, __WEBPACK_AMD_DEFINE_ARRAY__)) : __WEBPACK_AMD_DEFINE_FACTORY__),
-				__WEBPACK_AMD_DEFINE_RESULT__ !== undefined && (module.exports = __WEBPACK_AMD_DEFINE_RESULT__)) : factory(global.moment);
-})(undefined, function (moment) {
-    'use strict';
-
     var ms = moment.defineLocale('ms', {
         months: 'Januari_Februari_Mac_April_Mei_Jun_Julai_Ogos_September_Oktober_November_Disember'.split('_'),
         monthsShort: 'Jan_Feb_Mac_Apr_Mei_Jun_Jul_Ogs_Sep_Okt_Nov_Dis'.split('_'),
@@ -13954,6 +13473,96 @@ var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol
     });
 
     return ms;
+});
+
+/***/ }),
+/* 88 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+var __WEBPACK_AMD_DEFINE_FACTORY__, __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_DEFINE_RESULT__;
+
+var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol" ? function (obj) { return typeof obj; } : function (obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; };
+
+//! moment.js locale configuration
+
+;(function (global, factory) {
+    ( false ? 'undefined' : _typeof(exports)) === 'object' && typeof module !== 'undefined' && "function" === 'function' ? factory(__webpack_require__(0)) :  true ? !(__WEBPACK_AMD_DEFINE_ARRAY__ = [__webpack_require__(0)], __WEBPACK_AMD_DEFINE_FACTORY__ = (factory),
+				__WEBPACK_AMD_DEFINE_RESULT__ = (typeof __WEBPACK_AMD_DEFINE_FACTORY__ === 'function' ?
+				(__WEBPACK_AMD_DEFINE_FACTORY__.apply(exports, __WEBPACK_AMD_DEFINE_ARRAY__)) : __WEBPACK_AMD_DEFINE_FACTORY__),
+				__WEBPACK_AMD_DEFINE_RESULT__ !== undefined && (module.exports = __WEBPACK_AMD_DEFINE_RESULT__)) : factory(global.moment);
+})(undefined, function (moment) {
+    'use strict';
+
+    var msMy = moment.defineLocale('ms-my', {
+        months: 'Januari_Februari_Mac_April_Mei_Jun_Julai_Ogos_September_Oktober_November_Disember'.split('_'),
+        monthsShort: 'Jan_Feb_Mac_Apr_Mei_Jun_Jul_Ogs_Sep_Okt_Nov_Dis'.split('_'),
+        weekdays: 'Ahad_Isnin_Selasa_Rabu_Khamis_Jumaat_Sabtu'.split('_'),
+        weekdaysShort: 'Ahd_Isn_Sel_Rab_Kha_Jum_Sab'.split('_'),
+        weekdaysMin: 'Ah_Is_Sl_Rb_Km_Jm_Sb'.split('_'),
+        longDateFormat: {
+            LT: 'HH.mm',
+            LTS: 'HH.mm.ss',
+            L: 'DD/MM/YYYY',
+            LL: 'D MMMM YYYY',
+            LLL: 'D MMMM YYYY [pukul] HH.mm',
+            LLLL: 'dddd, D MMMM YYYY [pukul] HH.mm'
+        },
+        meridiemParse: /pagi|tengahari|petang|malam/,
+        meridiemHour: function meridiemHour(hour, meridiem) {
+            if (hour === 12) {
+                hour = 0;
+            }
+            if (meridiem === 'pagi') {
+                return hour;
+            } else if (meridiem === 'tengahari') {
+                return hour >= 11 ? hour : hour + 12;
+            } else if (meridiem === 'petang' || meridiem === 'malam') {
+                return hour + 12;
+            }
+        },
+        meridiem: function meridiem(hours, minutes, isLower) {
+            if (hours < 11) {
+                return 'pagi';
+            } else if (hours < 15) {
+                return 'tengahari';
+            } else if (hours < 19) {
+                return 'petang';
+            } else {
+                return 'malam';
+            }
+        },
+        calendar: {
+            sameDay: '[Hari ini pukul] LT',
+            nextDay: '[Esok pukul] LT',
+            nextWeek: 'dddd [pukul] LT',
+            lastDay: '[Kelmarin pukul] LT',
+            lastWeek: 'dddd [lepas pukul] LT',
+            sameElse: 'L'
+        },
+        relativeTime: {
+            future: 'dalam %s',
+            past: '%s yang lepas',
+            s: 'beberapa saat',
+            ss: '%d saat',
+            m: 'seminit',
+            mm: '%d minit',
+            h: 'sejam',
+            hh: '%d jam',
+            d: 'sehari',
+            dd: '%d hari',
+            M: 'sebulan',
+            MM: '%d bulan',
+            y: 'setahun',
+            yy: '%d tahun'
+        },
+        week: {
+            dow: 1, // Monday is the first day of the week.
+            doy: 7 // The week that contains Jan 1st is the first week of the year.
+        }
+    });
+
+    return msMy;
 });
 
 /***/ }),
@@ -14352,101 +13961,6 @@ var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol
     var monthsParse = [/^jan/i, /^feb/i, /^maart|mrt.?$/i, /^apr/i, /^mei$/i, /^jun[i.]?$/i, /^jul[i.]?$/i, /^aug/i, /^sep/i, /^okt/i, /^nov/i, /^dec/i];
     var monthsRegex = /^(januari|februari|maart|april|mei|april|ju[nl]i|augustus|september|oktober|november|december|jan\.?|feb\.?|mrt\.?|apr\.?|ju[nl]\.?|aug\.?|sep\.?|okt\.?|nov\.?|dec\.?)/i;
 
-    var nlBe = moment.defineLocale('nl-be', {
-        months: 'januari_februari_maart_april_mei_juni_juli_augustus_september_oktober_november_december'.split('_'),
-        monthsShort: function monthsShort(m, format) {
-            if (!m) {
-                return monthsShortWithDots;
-            } else if (/-MMM-/.test(format)) {
-                return monthsShortWithoutDots[m.month()];
-            } else {
-                return monthsShortWithDots[m.month()];
-            }
-        },
-
-        monthsRegex: monthsRegex,
-        monthsShortRegex: monthsRegex,
-        monthsStrictRegex: /^(januari|februari|maart|mei|ju[nl]i|april|augustus|september|oktober|november|december)/i,
-        monthsShortStrictRegex: /^(jan\.?|feb\.?|mrt\.?|apr\.?|mei|ju[nl]\.?|aug\.?|sep\.?|okt\.?|nov\.?|dec\.?)/i,
-
-        monthsParse: monthsParse,
-        longMonthsParse: monthsParse,
-        shortMonthsParse: monthsParse,
-
-        weekdays: 'zondag_maandag_dinsdag_woensdag_donderdag_vrijdag_zaterdag'.split('_'),
-        weekdaysShort: 'zo._ma._di._wo._do._vr._za.'.split('_'),
-        weekdaysMin: 'zo_ma_di_wo_do_vr_za'.split('_'),
-        weekdaysParseExact: true,
-        longDateFormat: {
-            LT: 'HH:mm',
-            LTS: 'HH:mm:ss',
-            L: 'DD/MM/YYYY',
-            LL: 'D MMMM YYYY',
-            LLL: 'D MMMM YYYY HH:mm',
-            LLLL: 'dddd D MMMM YYYY HH:mm'
-        },
-        calendar: {
-            sameDay: '[vandaag om] LT',
-            nextDay: '[morgen om] LT',
-            nextWeek: 'dddd [om] LT',
-            lastDay: '[gisteren om] LT',
-            lastWeek: '[afgelopen] dddd [om] LT',
-            sameElse: 'L'
-        },
-        relativeTime: {
-            future: 'over %s',
-            past: '%s geleden',
-            s: 'een paar seconden',
-            ss: '%d seconden',
-            m: 'één minuut',
-            mm: '%d minuten',
-            h: 'één uur',
-            hh: '%d uur',
-            d: 'één dag',
-            dd: '%d dagen',
-            M: 'één maand',
-            MM: '%d maanden',
-            y: 'één jaar',
-            yy: '%d jaar'
-        },
-        dayOfMonthOrdinalParse: /\d{1,2}(ste|de)/,
-        ordinal: function ordinal(number) {
-            return number + (number === 1 || number === 8 || number >= 20 ? 'ste' : 'de');
-        },
-        week: {
-            dow: 1, // Monday is the first day of the week.
-            doy: 4 // The week that contains Jan 4th is the first week of the year.
-        }
-    });
-
-    return nlBe;
-});
-
-/***/ }),
-/* 94 */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-var __WEBPACK_AMD_DEFINE_FACTORY__, __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_DEFINE_RESULT__;
-
-var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol" ? function (obj) { return typeof obj; } : function (obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; };
-
-//! moment.js locale configuration
-
-;(function (global, factory) {
-    ( false ? 'undefined' : _typeof(exports)) === 'object' && typeof module !== 'undefined' && "function" === 'function' ? factory(__webpack_require__(0)) :  true ? !(__WEBPACK_AMD_DEFINE_ARRAY__ = [__webpack_require__(0)], __WEBPACK_AMD_DEFINE_FACTORY__ = (factory),
-				__WEBPACK_AMD_DEFINE_RESULT__ = (typeof __WEBPACK_AMD_DEFINE_FACTORY__ === 'function' ?
-				(__WEBPACK_AMD_DEFINE_FACTORY__.apply(exports, __WEBPACK_AMD_DEFINE_ARRAY__)) : __WEBPACK_AMD_DEFINE_FACTORY__),
-				__WEBPACK_AMD_DEFINE_RESULT__ !== undefined && (module.exports = __WEBPACK_AMD_DEFINE_RESULT__)) : factory(global.moment);
-})(undefined, function (moment) {
-    'use strict';
-
-    var monthsShortWithDots = 'jan._feb._mrt._apr._mei_jun._jul._aug._sep._okt._nov._dec.'.split('_'),
-        monthsShortWithoutDots = 'jan_feb_mrt_apr_mei_jun_jul_aug_sep_okt_nov_dec'.split('_');
-
-    var monthsParse = [/^jan/i, /^feb/i, /^maart|mrt.?$/i, /^apr/i, /^mei$/i, /^jun[i.]?$/i, /^jul[i.]?$/i, /^aug/i, /^sep/i, /^okt/i, /^nov/i, /^dec/i];
-    var monthsRegex = /^(januari|februari|maart|april|mei|april|ju[nl]i|augustus|september|oktober|november|december|jan\.?|feb\.?|mrt\.?|apr\.?|ju[nl]\.?|aug\.?|sep\.?|okt\.?|nov\.?|dec\.?)/i;
-
     var nl = moment.defineLocale('nl', {
         months: 'januari_februari_maart_april_mei_juni_juli_augustus_september_oktober_november_december'.split('_'),
         monthsShort: function monthsShort(m, format) {
@@ -14515,6 +14029,101 @@ var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol
     });
 
     return nl;
+});
+
+/***/ }),
+/* 94 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+var __WEBPACK_AMD_DEFINE_FACTORY__, __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_DEFINE_RESULT__;
+
+var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol" ? function (obj) { return typeof obj; } : function (obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; };
+
+//! moment.js locale configuration
+
+;(function (global, factory) {
+    ( false ? 'undefined' : _typeof(exports)) === 'object' && typeof module !== 'undefined' && "function" === 'function' ? factory(__webpack_require__(0)) :  true ? !(__WEBPACK_AMD_DEFINE_ARRAY__ = [__webpack_require__(0)], __WEBPACK_AMD_DEFINE_FACTORY__ = (factory),
+				__WEBPACK_AMD_DEFINE_RESULT__ = (typeof __WEBPACK_AMD_DEFINE_FACTORY__ === 'function' ?
+				(__WEBPACK_AMD_DEFINE_FACTORY__.apply(exports, __WEBPACK_AMD_DEFINE_ARRAY__)) : __WEBPACK_AMD_DEFINE_FACTORY__),
+				__WEBPACK_AMD_DEFINE_RESULT__ !== undefined && (module.exports = __WEBPACK_AMD_DEFINE_RESULT__)) : factory(global.moment);
+})(undefined, function (moment) {
+    'use strict';
+
+    var monthsShortWithDots = 'jan._feb._mrt._apr._mei_jun._jul._aug._sep._okt._nov._dec.'.split('_'),
+        monthsShortWithoutDots = 'jan_feb_mrt_apr_mei_jun_jul_aug_sep_okt_nov_dec'.split('_');
+
+    var monthsParse = [/^jan/i, /^feb/i, /^maart|mrt.?$/i, /^apr/i, /^mei$/i, /^jun[i.]?$/i, /^jul[i.]?$/i, /^aug/i, /^sep/i, /^okt/i, /^nov/i, /^dec/i];
+    var monthsRegex = /^(januari|februari|maart|april|mei|april|ju[nl]i|augustus|september|oktober|november|december|jan\.?|feb\.?|mrt\.?|apr\.?|ju[nl]\.?|aug\.?|sep\.?|okt\.?|nov\.?|dec\.?)/i;
+
+    var nlBe = moment.defineLocale('nl-be', {
+        months: 'januari_februari_maart_april_mei_juni_juli_augustus_september_oktober_november_december'.split('_'),
+        monthsShort: function monthsShort(m, format) {
+            if (!m) {
+                return monthsShortWithDots;
+            } else if (/-MMM-/.test(format)) {
+                return monthsShortWithoutDots[m.month()];
+            } else {
+                return monthsShortWithDots[m.month()];
+            }
+        },
+
+        monthsRegex: monthsRegex,
+        monthsShortRegex: monthsRegex,
+        monthsStrictRegex: /^(januari|februari|maart|mei|ju[nl]i|april|augustus|september|oktober|november|december)/i,
+        monthsShortStrictRegex: /^(jan\.?|feb\.?|mrt\.?|apr\.?|mei|ju[nl]\.?|aug\.?|sep\.?|okt\.?|nov\.?|dec\.?)/i,
+
+        monthsParse: monthsParse,
+        longMonthsParse: monthsParse,
+        shortMonthsParse: monthsParse,
+
+        weekdays: 'zondag_maandag_dinsdag_woensdag_donderdag_vrijdag_zaterdag'.split('_'),
+        weekdaysShort: 'zo._ma._di._wo._do._vr._za.'.split('_'),
+        weekdaysMin: 'zo_ma_di_wo_do_vr_za'.split('_'),
+        weekdaysParseExact: true,
+        longDateFormat: {
+            LT: 'HH:mm',
+            LTS: 'HH:mm:ss',
+            L: 'DD/MM/YYYY',
+            LL: 'D MMMM YYYY',
+            LLL: 'D MMMM YYYY HH:mm',
+            LLLL: 'dddd D MMMM YYYY HH:mm'
+        },
+        calendar: {
+            sameDay: '[vandaag om] LT',
+            nextDay: '[morgen om] LT',
+            nextWeek: 'dddd [om] LT',
+            lastDay: '[gisteren om] LT',
+            lastWeek: '[afgelopen] dddd [om] LT',
+            sameElse: 'L'
+        },
+        relativeTime: {
+            future: 'over %s',
+            past: '%s geleden',
+            s: 'een paar seconden',
+            ss: '%d seconden',
+            m: 'één minuut',
+            mm: '%d minuten',
+            h: 'één uur',
+            hh: '%d uur',
+            d: 'één dag',
+            dd: '%d dagen',
+            M: 'één maand',
+            MM: '%d maanden',
+            y: 'één jaar',
+            yy: '%d jaar'
+        },
+        dayOfMonthOrdinalParse: /\d{1,2}(ste|de)/,
+        ordinal: function ordinal(number) {
+            return number + (number === 1 || number === 8 || number >= 20 ? 'ste' : 'de');
+        },
+        week: {
+            dow: 1, // Monday is the first day of the week.
+            doy: 4 // The week that contains Jan 4th is the first week of the year.
+        }
+    });
+
+    return nlBe;
 });
 
 /***/ }),
@@ -14870,74 +14479,6 @@ var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol
 })(undefined, function (moment) {
     'use strict';
 
-    var ptBr = moment.defineLocale('pt-br', {
-        months: 'janeiro_fevereiro_março_abril_maio_junho_julho_agosto_setembro_outubro_novembro_dezembro'.split('_'),
-        monthsShort: 'jan_fev_mar_abr_mai_jun_jul_ago_set_out_nov_dez'.split('_'),
-        weekdays: 'Domingo_Segunda-feira_Terça-feira_Quarta-feira_Quinta-feira_Sexta-feira_Sábado'.split('_'),
-        weekdaysShort: 'Dom_Seg_Ter_Qua_Qui_Sex_Sáb'.split('_'),
-        weekdaysMin: 'Do_2ª_3ª_4ª_5ª_6ª_Sá'.split('_'),
-        weekdaysParseExact: true,
-        longDateFormat: {
-            LT: 'HH:mm',
-            LTS: 'HH:mm:ss',
-            L: 'DD/MM/YYYY',
-            LL: 'D [de] MMMM [de] YYYY',
-            LLL: 'D [de] MMMM [de] YYYY [às] HH:mm',
-            LLLL: 'dddd, D [de] MMMM [de] YYYY [às] HH:mm'
-        },
-        calendar: {
-            sameDay: '[Hoje às] LT',
-            nextDay: '[Amanhã às] LT',
-            nextWeek: 'dddd [às] LT',
-            lastDay: '[Ontem às] LT',
-            lastWeek: function lastWeek() {
-                return this.day() === 0 || this.day() === 6 ? '[Último] dddd [às] LT' : // Saturday + Sunday
-                '[Última] dddd [às] LT'; // Monday - Friday
-            },
-            sameElse: 'L'
-        },
-        relativeTime: {
-            future: 'em %s',
-            past: 'há %s',
-            s: 'poucos segundos',
-            ss: '%d segundos',
-            m: 'um minuto',
-            mm: '%d minutos',
-            h: 'uma hora',
-            hh: '%d horas',
-            d: 'um dia',
-            dd: '%d dias',
-            M: 'um mês',
-            MM: '%d meses',
-            y: 'um ano',
-            yy: '%d anos'
-        },
-        dayOfMonthOrdinalParse: /\d{1,2}º/,
-        ordinal: '%dº'
-    });
-
-    return ptBr;
-});
-
-/***/ }),
-/* 99 */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-var __WEBPACK_AMD_DEFINE_FACTORY__, __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_DEFINE_RESULT__;
-
-var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol" ? function (obj) { return typeof obj; } : function (obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; };
-
-//! moment.js locale configuration
-
-;(function (global, factory) {
-    ( false ? 'undefined' : _typeof(exports)) === 'object' && typeof module !== 'undefined' && "function" === 'function' ? factory(__webpack_require__(0)) :  true ? !(__WEBPACK_AMD_DEFINE_ARRAY__ = [__webpack_require__(0)], __WEBPACK_AMD_DEFINE_FACTORY__ = (factory),
-				__WEBPACK_AMD_DEFINE_RESULT__ = (typeof __WEBPACK_AMD_DEFINE_FACTORY__ === 'function' ?
-				(__WEBPACK_AMD_DEFINE_FACTORY__.apply(exports, __WEBPACK_AMD_DEFINE_ARRAY__)) : __WEBPACK_AMD_DEFINE_FACTORY__),
-				__WEBPACK_AMD_DEFINE_RESULT__ !== undefined && (module.exports = __WEBPACK_AMD_DEFINE_RESULT__)) : factory(global.moment);
-})(undefined, function (moment) {
-    'use strict';
-
     var pt = moment.defineLocale('pt', {
         months: 'janeiro_fevereiro_março_abril_maio_junho_julho_agosto_setembro_outubro_novembro_dezembro'.split('_'),
         monthsShort: 'jan_fev_mar_abr_mai_jun_jul_ago_set_out_nov_dez'.split('_'),
@@ -14989,6 +14530,74 @@ var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol
     });
 
     return pt;
+});
+
+/***/ }),
+/* 99 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+var __WEBPACK_AMD_DEFINE_FACTORY__, __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_DEFINE_RESULT__;
+
+var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol" ? function (obj) { return typeof obj; } : function (obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; };
+
+//! moment.js locale configuration
+
+;(function (global, factory) {
+    ( false ? 'undefined' : _typeof(exports)) === 'object' && typeof module !== 'undefined' && "function" === 'function' ? factory(__webpack_require__(0)) :  true ? !(__WEBPACK_AMD_DEFINE_ARRAY__ = [__webpack_require__(0)], __WEBPACK_AMD_DEFINE_FACTORY__ = (factory),
+				__WEBPACK_AMD_DEFINE_RESULT__ = (typeof __WEBPACK_AMD_DEFINE_FACTORY__ === 'function' ?
+				(__WEBPACK_AMD_DEFINE_FACTORY__.apply(exports, __WEBPACK_AMD_DEFINE_ARRAY__)) : __WEBPACK_AMD_DEFINE_FACTORY__),
+				__WEBPACK_AMD_DEFINE_RESULT__ !== undefined && (module.exports = __WEBPACK_AMD_DEFINE_RESULT__)) : factory(global.moment);
+})(undefined, function (moment) {
+    'use strict';
+
+    var ptBr = moment.defineLocale('pt-br', {
+        months: 'janeiro_fevereiro_março_abril_maio_junho_julho_agosto_setembro_outubro_novembro_dezembro'.split('_'),
+        monthsShort: 'jan_fev_mar_abr_mai_jun_jul_ago_set_out_nov_dez'.split('_'),
+        weekdays: 'Domingo_Segunda-feira_Terça-feira_Quarta-feira_Quinta-feira_Sexta-feira_Sábado'.split('_'),
+        weekdaysShort: 'Dom_Seg_Ter_Qua_Qui_Sex_Sáb'.split('_'),
+        weekdaysMin: 'Do_2ª_3ª_4ª_5ª_6ª_Sá'.split('_'),
+        weekdaysParseExact: true,
+        longDateFormat: {
+            LT: 'HH:mm',
+            LTS: 'HH:mm:ss',
+            L: 'DD/MM/YYYY',
+            LL: 'D [de] MMMM [de] YYYY',
+            LLL: 'D [de] MMMM [de] YYYY [às] HH:mm',
+            LLLL: 'dddd, D [de] MMMM [de] YYYY [às] HH:mm'
+        },
+        calendar: {
+            sameDay: '[Hoje às] LT',
+            nextDay: '[Amanhã às] LT',
+            nextWeek: 'dddd [às] LT',
+            lastDay: '[Ontem às] LT',
+            lastWeek: function lastWeek() {
+                return this.day() === 0 || this.day() === 6 ? '[Último] dddd [às] LT' : // Saturday + Sunday
+                '[Última] dddd [às] LT'; // Monday - Friday
+            },
+            sameElse: 'L'
+        },
+        relativeTime: {
+            future: 'em %s',
+            past: 'há %s',
+            s: 'poucos segundos',
+            ss: '%d segundos',
+            m: 'um minuto',
+            mm: '%d minutos',
+            h: 'uma hora',
+            hh: '%d horas',
+            d: 'um dia',
+            dd: '%d dias',
+            M: 'um mês',
+            MM: '%d meses',
+            y: 'um ano',
+            yy: '%d anos'
+        },
+        dayOfMonthOrdinalParse: /\d{1,2}º/,
+        ordinal: '%dº'
+    });
+
+    return ptBr;
 });
 
 /***/ }),
@@ -15951,117 +15560,6 @@ var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol
 
     var translator = {
         words: { //Different grammatical cases
-            ss: ['секунда', 'секунде', 'секунди'],
-            m: ['један минут', 'једне минуте'],
-            mm: ['минут', 'минуте', 'минута'],
-            h: ['један сат', 'једног сата'],
-            hh: ['сат', 'сата', 'сати'],
-            dd: ['дан', 'дана', 'дана'],
-            MM: ['месец', 'месеца', 'месеци'],
-            yy: ['година', 'године', 'година']
-        },
-        correctGrammaticalCase: function correctGrammaticalCase(number, wordKey) {
-            return number === 1 ? wordKey[0] : number >= 2 && number <= 4 ? wordKey[1] : wordKey[2];
-        },
-        translate: function translate(number, withoutSuffix, key) {
-            var wordKey = translator.words[key];
-            if (key.length === 1) {
-                return withoutSuffix ? wordKey[0] : wordKey[1];
-            } else {
-                return number + ' ' + translator.correctGrammaticalCase(number, wordKey);
-            }
-        }
-    };
-
-    var srCyrl = moment.defineLocale('sr-cyrl', {
-        months: 'јануар_фебруар_март_април_мај_јун_јул_август_септембар_октобар_новембар_децембар'.split('_'),
-        monthsShort: 'јан._феб._мар._апр._мај_јун_јул_авг._сеп._окт._нов._дец.'.split('_'),
-        monthsParseExact: true,
-        weekdays: 'недеља_понедељак_уторак_среда_четвртак_петак_субота'.split('_'),
-        weekdaysShort: 'нед._пон._уто._сре._чет._пет._суб.'.split('_'),
-        weekdaysMin: 'не_по_ут_ср_че_пе_су'.split('_'),
-        weekdaysParseExact: true,
-        longDateFormat: {
-            LT: 'H:mm',
-            LTS: 'H:mm:ss',
-            L: 'DD.MM.YYYY',
-            LL: 'D. MMMM YYYY',
-            LLL: 'D. MMMM YYYY H:mm',
-            LLLL: 'dddd, D. MMMM YYYY H:mm'
-        },
-        calendar: {
-            sameDay: '[данас у] LT',
-            nextDay: '[сутра у] LT',
-            nextWeek: function nextWeek() {
-                switch (this.day()) {
-                    case 0:
-                        return '[у] [недељу] [у] LT';
-                    case 3:
-                        return '[у] [среду] [у] LT';
-                    case 6:
-                        return '[у] [суботу] [у] LT';
-                    case 1:
-                    case 2:
-                    case 4:
-                    case 5:
-                        return '[у] dddd [у] LT';
-                }
-            },
-            lastDay: '[јуче у] LT',
-            lastWeek: function lastWeek() {
-                var lastWeekDays = ['[прошле] [недеље] [у] LT', '[прошлог] [понедељка] [у] LT', '[прошлог] [уторка] [у] LT', '[прошле] [среде] [у] LT', '[прошлог] [четвртка] [у] LT', '[прошлог] [петка] [у] LT', '[прошле] [суботе] [у] LT'];
-                return lastWeekDays[this.day()];
-            },
-            sameElse: 'L'
-        },
-        relativeTime: {
-            future: 'за %s',
-            past: 'пре %s',
-            s: 'неколико секунди',
-            ss: translator.translate,
-            m: translator.translate,
-            mm: translator.translate,
-            h: translator.translate,
-            hh: translator.translate,
-            d: 'дан',
-            dd: translator.translate,
-            M: 'месец',
-            MM: translator.translate,
-            y: 'годину',
-            yy: translator.translate
-        },
-        dayOfMonthOrdinalParse: /\d{1,2}\./,
-        ordinal: '%d.',
-        week: {
-            dow: 1, // Monday is the first day of the week.
-            doy: 7 // The week that contains Jan 1st is the first week of the year.
-        }
-    });
-
-    return srCyrl;
-});
-
-/***/ }),
-/* 109 */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-var __WEBPACK_AMD_DEFINE_FACTORY__, __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_DEFINE_RESULT__;
-
-var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol" ? function (obj) { return typeof obj; } : function (obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; };
-
-//! moment.js locale configuration
-
-;(function (global, factory) {
-    ( false ? 'undefined' : _typeof(exports)) === 'object' && typeof module !== 'undefined' && "function" === 'function' ? factory(__webpack_require__(0)) :  true ? !(__WEBPACK_AMD_DEFINE_ARRAY__ = [__webpack_require__(0)], __WEBPACK_AMD_DEFINE_FACTORY__ = (factory),
-				__WEBPACK_AMD_DEFINE_RESULT__ = (typeof __WEBPACK_AMD_DEFINE_FACTORY__ === 'function' ?
-				(__WEBPACK_AMD_DEFINE_FACTORY__.apply(exports, __WEBPACK_AMD_DEFINE_ARRAY__)) : __WEBPACK_AMD_DEFINE_FACTORY__),
-				__WEBPACK_AMD_DEFINE_RESULT__ !== undefined && (module.exports = __WEBPACK_AMD_DEFINE_RESULT__)) : factory(global.moment);
-})(undefined, function (moment) {
-    'use strict';
-
-    var translator = {
-        words: { //Different grammatical cases
             ss: ['sekunda', 'sekunde', 'sekundi'],
             m: ['jedan minut', 'jedne minute'],
             mm: ['minut', 'minute', 'minuta'],
@@ -16150,6 +15648,117 @@ var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol
     });
 
     return sr;
+});
+
+/***/ }),
+/* 109 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+var __WEBPACK_AMD_DEFINE_FACTORY__, __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_DEFINE_RESULT__;
+
+var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol" ? function (obj) { return typeof obj; } : function (obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; };
+
+//! moment.js locale configuration
+
+;(function (global, factory) {
+    ( false ? 'undefined' : _typeof(exports)) === 'object' && typeof module !== 'undefined' && "function" === 'function' ? factory(__webpack_require__(0)) :  true ? !(__WEBPACK_AMD_DEFINE_ARRAY__ = [__webpack_require__(0)], __WEBPACK_AMD_DEFINE_FACTORY__ = (factory),
+				__WEBPACK_AMD_DEFINE_RESULT__ = (typeof __WEBPACK_AMD_DEFINE_FACTORY__ === 'function' ?
+				(__WEBPACK_AMD_DEFINE_FACTORY__.apply(exports, __WEBPACK_AMD_DEFINE_ARRAY__)) : __WEBPACK_AMD_DEFINE_FACTORY__),
+				__WEBPACK_AMD_DEFINE_RESULT__ !== undefined && (module.exports = __WEBPACK_AMD_DEFINE_RESULT__)) : factory(global.moment);
+})(undefined, function (moment) {
+    'use strict';
+
+    var translator = {
+        words: { //Different grammatical cases
+            ss: ['секунда', 'секунде', 'секунди'],
+            m: ['један минут', 'једне минуте'],
+            mm: ['минут', 'минуте', 'минута'],
+            h: ['један сат', 'једног сата'],
+            hh: ['сат', 'сата', 'сати'],
+            dd: ['дан', 'дана', 'дана'],
+            MM: ['месец', 'месеца', 'месеци'],
+            yy: ['година', 'године', 'година']
+        },
+        correctGrammaticalCase: function correctGrammaticalCase(number, wordKey) {
+            return number === 1 ? wordKey[0] : number >= 2 && number <= 4 ? wordKey[1] : wordKey[2];
+        },
+        translate: function translate(number, withoutSuffix, key) {
+            var wordKey = translator.words[key];
+            if (key.length === 1) {
+                return withoutSuffix ? wordKey[0] : wordKey[1];
+            } else {
+                return number + ' ' + translator.correctGrammaticalCase(number, wordKey);
+            }
+        }
+    };
+
+    var srCyrl = moment.defineLocale('sr-cyrl', {
+        months: 'јануар_фебруар_март_април_мај_јун_јул_август_септембар_октобар_новембар_децембар'.split('_'),
+        monthsShort: 'јан._феб._мар._апр._мај_јун_јул_авг._сеп._окт._нов._дец.'.split('_'),
+        monthsParseExact: true,
+        weekdays: 'недеља_понедељак_уторак_среда_четвртак_петак_субота'.split('_'),
+        weekdaysShort: 'нед._пон._уто._сре._чет._пет._суб.'.split('_'),
+        weekdaysMin: 'не_по_ут_ср_че_пе_су'.split('_'),
+        weekdaysParseExact: true,
+        longDateFormat: {
+            LT: 'H:mm',
+            LTS: 'H:mm:ss',
+            L: 'DD.MM.YYYY',
+            LL: 'D. MMMM YYYY',
+            LLL: 'D. MMMM YYYY H:mm',
+            LLLL: 'dddd, D. MMMM YYYY H:mm'
+        },
+        calendar: {
+            sameDay: '[данас у] LT',
+            nextDay: '[сутра у] LT',
+            nextWeek: function nextWeek() {
+                switch (this.day()) {
+                    case 0:
+                        return '[у] [недељу] [у] LT';
+                    case 3:
+                        return '[у] [среду] [у] LT';
+                    case 6:
+                        return '[у] [суботу] [у] LT';
+                    case 1:
+                    case 2:
+                    case 4:
+                    case 5:
+                        return '[у] dddd [у] LT';
+                }
+            },
+            lastDay: '[јуче у] LT',
+            lastWeek: function lastWeek() {
+                var lastWeekDays = ['[прошле] [недеље] [у] LT', '[прошлог] [понедељка] [у] LT', '[прошлог] [уторка] [у] LT', '[прошле] [среде] [у] LT', '[прошлог] [четвртка] [у] LT', '[прошлог] [петка] [у] LT', '[прошле] [суботе] [у] LT'];
+                return lastWeekDays[this.day()];
+            },
+            sameElse: 'L'
+        },
+        relativeTime: {
+            future: 'за %s',
+            past: 'пре %s',
+            s: 'неколико секунди',
+            ss: translator.translate,
+            m: translator.translate,
+            mm: translator.translate,
+            h: translator.translate,
+            hh: translator.translate,
+            d: 'дан',
+            dd: translator.translate,
+            M: 'месец',
+            MM: translator.translate,
+            y: 'годину',
+            yy: translator.translate
+        },
+        dayOfMonthOrdinalParse: /\d{1,2}\./,
+        ordinal: '%d.',
+        week: {
+            dow: 1, // Monday is the first day of the week.
+            doy: 7 // The week that contains Jan 1st is the first week of the year.
+        }
+    });
+
+    return srCyrl;
 });
 
 /***/ }),
@@ -17305,72 +16914,6 @@ var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol
 })(undefined, function (moment) {
     'use strict';
 
-    var tzmLatn = moment.defineLocale('tzm-latn', {
-        months: 'innayr_brˤayrˤ_marˤsˤ_ibrir_mayyw_ywnyw_ywlywz_ɣwšt_šwtanbir_ktˤwbrˤ_nwwanbir_dwjnbir'.split('_'),
-        monthsShort: 'innayr_brˤayrˤ_marˤsˤ_ibrir_mayyw_ywnyw_ywlywz_ɣwšt_šwtanbir_ktˤwbrˤ_nwwanbir_dwjnbir'.split('_'),
-        weekdays: 'asamas_aynas_asinas_akras_akwas_asimwas_asiḍyas'.split('_'),
-        weekdaysShort: 'asamas_aynas_asinas_akras_akwas_asimwas_asiḍyas'.split('_'),
-        weekdaysMin: 'asamas_aynas_asinas_akras_akwas_asimwas_asiḍyas'.split('_'),
-        longDateFormat: {
-            LT: 'HH:mm',
-            LTS: 'HH:mm:ss',
-            L: 'DD/MM/YYYY',
-            LL: 'D MMMM YYYY',
-            LLL: 'D MMMM YYYY HH:mm',
-            LLLL: 'dddd D MMMM YYYY HH:mm'
-        },
-        calendar: {
-            sameDay: '[asdkh g] LT',
-            nextDay: '[aska g] LT',
-            nextWeek: 'dddd [g] LT',
-            lastDay: '[assant g] LT',
-            lastWeek: 'dddd [g] LT',
-            sameElse: 'L'
-        },
-        relativeTime: {
-            future: 'dadkh s yan %s',
-            past: 'yan %s',
-            s: 'imik',
-            ss: '%d imik',
-            m: 'minuḍ',
-            mm: '%d minuḍ',
-            h: 'saɛa',
-            hh: '%d tassaɛin',
-            d: 'ass',
-            dd: '%d ossan',
-            M: 'ayowr',
-            MM: '%d iyyirn',
-            y: 'asgas',
-            yy: '%d isgasn'
-        },
-        week: {
-            dow: 6, // Saturday is the first day of the week.
-            doy: 12 // The week that contains Jan 1st is the first week of the year.
-        }
-    });
-
-    return tzmLatn;
-});
-
-/***/ }),
-/* 123 */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-var __WEBPACK_AMD_DEFINE_FACTORY__, __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_DEFINE_RESULT__;
-
-var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol" ? function (obj) { return typeof obj; } : function (obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; };
-
-//! moment.js locale configuration
-
-;(function (global, factory) {
-    ( false ? 'undefined' : _typeof(exports)) === 'object' && typeof module !== 'undefined' && "function" === 'function' ? factory(__webpack_require__(0)) :  true ? !(__WEBPACK_AMD_DEFINE_ARRAY__ = [__webpack_require__(0)], __WEBPACK_AMD_DEFINE_FACTORY__ = (factory),
-				__WEBPACK_AMD_DEFINE_RESULT__ = (typeof __WEBPACK_AMD_DEFINE_FACTORY__ === 'function' ?
-				(__WEBPACK_AMD_DEFINE_FACTORY__.apply(exports, __WEBPACK_AMD_DEFINE_ARRAY__)) : __WEBPACK_AMD_DEFINE_FACTORY__),
-				__WEBPACK_AMD_DEFINE_RESULT__ !== undefined && (module.exports = __WEBPACK_AMD_DEFINE_RESULT__)) : factory(global.moment);
-})(undefined, function (moment) {
-    'use strict';
-
     var tzm = moment.defineLocale('tzm', {
         months: 'ⵉⵏⵏⴰⵢⵔ_ⴱⵕⴰⵢⵕ_ⵎⴰⵕⵚ_ⵉⴱⵔⵉⵔ_ⵎⴰⵢⵢⵓ_ⵢⵓⵏⵢⵓ_ⵢⵓⵍⵢⵓⵣ_ⵖⵓⵛⵜ_ⵛⵓⵜⴰⵏⴱⵉⵔ_ⴽⵟⵓⴱⵕ_ⵏⵓⵡⴰⵏⴱⵉⵔ_ⴷⵓⵊⵏⴱⵉⵔ'.split('_'),
         monthsShort: 'ⵉⵏⵏⴰⵢⵔ_ⴱⵕⴰⵢⵕ_ⵎⴰⵕⵚ_ⵉⴱⵔⵉⵔ_ⵎⴰⵢⵢⵓ_ⵢⵓⵏⵢⵓ_ⵢⵓⵍⵢⵓⵣ_ⵖⵓⵛⵜ_ⵛⵓⵜⴰⵏⴱⵉⵔ_ⴽⵟⵓⴱⵕ_ⵏⵓⵡⴰⵏⴱⵉⵔ_ⴷⵓⵊⵏⴱⵉⵔ'.split('_'),
@@ -17416,6 +16959,72 @@ var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol
     });
 
     return tzm;
+});
+
+/***/ }),
+/* 123 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+var __WEBPACK_AMD_DEFINE_FACTORY__, __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_DEFINE_RESULT__;
+
+var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol" ? function (obj) { return typeof obj; } : function (obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; };
+
+//! moment.js locale configuration
+
+;(function (global, factory) {
+    ( false ? 'undefined' : _typeof(exports)) === 'object' && typeof module !== 'undefined' && "function" === 'function' ? factory(__webpack_require__(0)) :  true ? !(__WEBPACK_AMD_DEFINE_ARRAY__ = [__webpack_require__(0)], __WEBPACK_AMD_DEFINE_FACTORY__ = (factory),
+				__WEBPACK_AMD_DEFINE_RESULT__ = (typeof __WEBPACK_AMD_DEFINE_FACTORY__ === 'function' ?
+				(__WEBPACK_AMD_DEFINE_FACTORY__.apply(exports, __WEBPACK_AMD_DEFINE_ARRAY__)) : __WEBPACK_AMD_DEFINE_FACTORY__),
+				__WEBPACK_AMD_DEFINE_RESULT__ !== undefined && (module.exports = __WEBPACK_AMD_DEFINE_RESULT__)) : factory(global.moment);
+})(undefined, function (moment) {
+    'use strict';
+
+    var tzmLatn = moment.defineLocale('tzm-latn', {
+        months: 'innayr_brˤayrˤ_marˤsˤ_ibrir_mayyw_ywnyw_ywlywz_ɣwšt_šwtanbir_ktˤwbrˤ_nwwanbir_dwjnbir'.split('_'),
+        monthsShort: 'innayr_brˤayrˤ_marˤsˤ_ibrir_mayyw_ywnyw_ywlywz_ɣwšt_šwtanbir_ktˤwbrˤ_nwwanbir_dwjnbir'.split('_'),
+        weekdays: 'asamas_aynas_asinas_akras_akwas_asimwas_asiḍyas'.split('_'),
+        weekdaysShort: 'asamas_aynas_asinas_akras_akwas_asimwas_asiḍyas'.split('_'),
+        weekdaysMin: 'asamas_aynas_asinas_akras_akwas_asimwas_asiḍyas'.split('_'),
+        longDateFormat: {
+            LT: 'HH:mm',
+            LTS: 'HH:mm:ss',
+            L: 'DD/MM/YYYY',
+            LL: 'D MMMM YYYY',
+            LLL: 'D MMMM YYYY HH:mm',
+            LLLL: 'dddd D MMMM YYYY HH:mm'
+        },
+        calendar: {
+            sameDay: '[asdkh g] LT',
+            nextDay: '[aska g] LT',
+            nextWeek: 'dddd [g] LT',
+            lastDay: '[assant g] LT',
+            lastWeek: 'dddd [g] LT',
+            sameElse: 'L'
+        },
+        relativeTime: {
+            future: 'dadkh s yan %s',
+            past: 'yan %s',
+            s: 'imik',
+            ss: '%d imik',
+            m: 'minuḍ',
+            mm: '%d minuḍ',
+            h: 'saɛa',
+            hh: '%d tassaɛin',
+            d: 'ass',
+            dd: '%d ossan',
+            M: 'ayowr',
+            MM: '%d iyyirn',
+            y: 'asgas',
+            yy: '%d isgasn'
+        },
+        week: {
+            dow: 6, // Saturday is the first day of the week.
+            doy: 12 // The week that contains Jan 1st is the first week of the year.
+        }
+    });
+
+    return tzmLatn;
 });
 
 /***/ }),
@@ -17793,72 +17402,6 @@ var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol
 })(undefined, function (moment) {
     'use strict';
 
-    var uzLatn = moment.defineLocale('uz-latn', {
-        months: 'Yanvar_Fevral_Mart_Aprel_May_Iyun_Iyul_Avgust_Sentabr_Oktabr_Noyabr_Dekabr'.split('_'),
-        monthsShort: 'Yan_Fev_Mar_Apr_May_Iyun_Iyul_Avg_Sen_Okt_Noy_Dek'.split('_'),
-        weekdays: 'Yakshanba_Dushanba_Seshanba_Chorshanba_Payshanba_Juma_Shanba'.split('_'),
-        weekdaysShort: 'Yak_Dush_Sesh_Chor_Pay_Jum_Shan'.split('_'),
-        weekdaysMin: 'Ya_Du_Se_Cho_Pa_Ju_Sha'.split('_'),
-        longDateFormat: {
-            LT: 'HH:mm',
-            LTS: 'HH:mm:ss',
-            L: 'DD/MM/YYYY',
-            LL: 'D MMMM YYYY',
-            LLL: 'D MMMM YYYY HH:mm',
-            LLLL: 'D MMMM YYYY, dddd HH:mm'
-        },
-        calendar: {
-            sameDay: '[Bugun soat] LT [da]',
-            nextDay: '[Ertaga] LT [da]',
-            nextWeek: 'dddd [kuni soat] LT [da]',
-            lastDay: '[Kecha soat] LT [da]',
-            lastWeek: '[O\'tgan] dddd [kuni soat] LT [da]',
-            sameElse: 'L'
-        },
-        relativeTime: {
-            future: 'Yaqin %s ichida',
-            past: 'Bir necha %s oldin',
-            s: 'soniya',
-            ss: '%d soniya',
-            m: 'bir daqiqa',
-            mm: '%d daqiqa',
-            h: 'bir soat',
-            hh: '%d soat',
-            d: 'bir kun',
-            dd: '%d kun',
-            M: 'bir oy',
-            MM: '%d oy',
-            y: 'bir yil',
-            yy: '%d yil'
-        },
-        week: {
-            dow: 1, // Monday is the first day of the week.
-            doy: 7 // The week that contains Jan 1st is the first week of the year.
-        }
-    });
-
-    return uzLatn;
-});
-
-/***/ }),
-/* 128 */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-var __WEBPACK_AMD_DEFINE_FACTORY__, __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_DEFINE_RESULT__;
-
-var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol" ? function (obj) { return typeof obj; } : function (obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; };
-
-//! moment.js locale configuration
-
-;(function (global, factory) {
-    ( false ? 'undefined' : _typeof(exports)) === 'object' && typeof module !== 'undefined' && "function" === 'function' ? factory(__webpack_require__(0)) :  true ? !(__WEBPACK_AMD_DEFINE_ARRAY__ = [__webpack_require__(0)], __WEBPACK_AMD_DEFINE_FACTORY__ = (factory),
-				__WEBPACK_AMD_DEFINE_RESULT__ = (typeof __WEBPACK_AMD_DEFINE_FACTORY__ === 'function' ?
-				(__WEBPACK_AMD_DEFINE_FACTORY__.apply(exports, __WEBPACK_AMD_DEFINE_ARRAY__)) : __WEBPACK_AMD_DEFINE_FACTORY__),
-				__WEBPACK_AMD_DEFINE_RESULT__ !== undefined && (module.exports = __WEBPACK_AMD_DEFINE_RESULT__)) : factory(global.moment);
-})(undefined, function (moment) {
-    'use strict';
-
     var uz = moment.defineLocale('uz', {
         months: 'январ_феврал_март_апрел_май_июн_июл_август_сентябр_октябр_ноябр_декабр'.split('_'),
         monthsShort: 'янв_фев_мар_апр_май_июн_июл_авг_сен_окт_ноя_дек'.split('_'),
@@ -17904,6 +17447,72 @@ var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol
     });
 
     return uz;
+});
+
+/***/ }),
+/* 128 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+var __WEBPACK_AMD_DEFINE_FACTORY__, __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_DEFINE_RESULT__;
+
+var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol" ? function (obj) { return typeof obj; } : function (obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; };
+
+//! moment.js locale configuration
+
+;(function (global, factory) {
+    ( false ? 'undefined' : _typeof(exports)) === 'object' && typeof module !== 'undefined' && "function" === 'function' ? factory(__webpack_require__(0)) :  true ? !(__WEBPACK_AMD_DEFINE_ARRAY__ = [__webpack_require__(0)], __WEBPACK_AMD_DEFINE_FACTORY__ = (factory),
+				__WEBPACK_AMD_DEFINE_RESULT__ = (typeof __WEBPACK_AMD_DEFINE_FACTORY__ === 'function' ?
+				(__WEBPACK_AMD_DEFINE_FACTORY__.apply(exports, __WEBPACK_AMD_DEFINE_ARRAY__)) : __WEBPACK_AMD_DEFINE_FACTORY__),
+				__WEBPACK_AMD_DEFINE_RESULT__ !== undefined && (module.exports = __WEBPACK_AMD_DEFINE_RESULT__)) : factory(global.moment);
+})(undefined, function (moment) {
+    'use strict';
+
+    var uzLatn = moment.defineLocale('uz-latn', {
+        months: 'Yanvar_Fevral_Mart_Aprel_May_Iyun_Iyul_Avgust_Sentabr_Oktabr_Noyabr_Dekabr'.split('_'),
+        monthsShort: 'Yan_Fev_Mar_Apr_May_Iyun_Iyul_Avg_Sen_Okt_Noy_Dek'.split('_'),
+        weekdays: 'Yakshanba_Dushanba_Seshanba_Chorshanba_Payshanba_Juma_Shanba'.split('_'),
+        weekdaysShort: 'Yak_Dush_Sesh_Chor_Pay_Jum_Shan'.split('_'),
+        weekdaysMin: 'Ya_Du_Se_Cho_Pa_Ju_Sha'.split('_'),
+        longDateFormat: {
+            LT: 'HH:mm',
+            LTS: 'HH:mm:ss',
+            L: 'DD/MM/YYYY',
+            LL: 'D MMMM YYYY',
+            LLL: 'D MMMM YYYY HH:mm',
+            LLLL: 'D MMMM YYYY, dddd HH:mm'
+        },
+        calendar: {
+            sameDay: '[Bugun soat] LT [da]',
+            nextDay: '[Ertaga] LT [da]',
+            nextWeek: 'dddd [kuni soat] LT [da]',
+            lastDay: '[Kecha soat] LT [da]',
+            lastWeek: '[O\'tgan] dddd [kuni soat] LT [da]',
+            sameElse: 'L'
+        },
+        relativeTime: {
+            future: 'Yaqin %s ichida',
+            past: 'Bir necha %s oldin',
+            s: 'soniya',
+            ss: '%d soniya',
+            m: 'bir daqiqa',
+            mm: '%d daqiqa',
+            h: 'bir soat',
+            hh: '%d soat',
+            d: 'bir kun',
+            dd: '%d kun',
+            M: 'bir oy',
+            MM: '%d oy',
+            y: 'bir yil',
+            yy: '%d yil'
+        },
+        week: {
+            dow: 1, // Monday is the first day of the week.
+            doy: 7 // The week that contains Jan 1st is the first week of the year.
+        }
+    });
+
+    return uzLatn;
 });
 
 /***/ }),
@@ -18481,28 +18090,235 @@ var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol
 "use strict";
 
 
-module.exports = function (module) {
-	if (!module.webpackPolyfill) {
-		module.deprecate = function () {};
-		module.paths = [];
-		// module.parent = undefined by default
-		if (!module.children) module.children = [];
-		Object.defineProperty(module, "loaded", {
-			enumerable: true,
-			get: function get() {
-				return module.l;
-			}
-		});
-		Object.defineProperty(module, "id", {
-			enumerable: true,
-			get: function get() {
-				return module.i;
-			}
-		});
-		module.webpackPolyfill = 1;
-	}
-	return module;
-};
+var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol" ? function (obj) { return typeof obj; } : function (obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; };
+
+/**
+ * lodash (Custom Build) <https://lodash.com/>
+ * Build: `lodash modularize exports="npm" -o ./`
+ * Copyright jQuery Foundation and other contributors <https://jquery.org/>
+ * Released under MIT license <https://lodash.com/license>
+ * Based on Underscore.js 1.8.3 <http://underscorejs.org/LICENSE>
+ * Copyright Jeremy Ashkenas, DocumentCloud and Investigative Reporters & Editors
+ */
+
+/** Used as references for various `Number` constants. */
+var MAX_SAFE_INTEGER = 9007199254740991;
+
+/** `Object#toString` result references. */
+var argsTag = '[object Arguments]',
+    funcTag = '[object Function]',
+    genTag = '[object GeneratorFunction]';
+
+/** Used for built-in method references. */
+var objectProto = Object.prototype;
+
+/** Used to check objects for own properties. */
+var hasOwnProperty = objectProto.hasOwnProperty;
+
+/**
+ * Used to resolve the
+ * [`toStringTag`](http://ecma-international.org/ecma-262/7.0/#sec-object.prototype.tostring)
+ * of values.
+ */
+var objectToString = objectProto.toString;
+
+/** Built-in value references. */
+var propertyIsEnumerable = objectProto.propertyIsEnumerable;
+
+/**
+ * Checks if `value` is likely an `arguments` object.
+ *
+ * @static
+ * @memberOf _
+ * @since 0.1.0
+ * @category Lang
+ * @param {*} value The value to check.
+ * @returns {boolean} Returns `true` if `value` is an `arguments` object,
+ *  else `false`.
+ * @example
+ *
+ * _.isArguments(function() { return arguments; }());
+ * // => true
+ *
+ * _.isArguments([1, 2, 3]);
+ * // => false
+ */
+function isArguments(value) {
+  // Safari 8.1 makes `arguments.callee` enumerable in strict mode.
+  return isArrayLikeObject(value) && hasOwnProperty.call(value, 'callee') && (!propertyIsEnumerable.call(value, 'callee') || objectToString.call(value) == argsTag);
+}
+
+/**
+ * Checks if `value` is array-like. A value is considered array-like if it's
+ * not a function and has a `value.length` that's an integer greater than or
+ * equal to `0` and less than or equal to `Number.MAX_SAFE_INTEGER`.
+ *
+ * @static
+ * @memberOf _
+ * @since 4.0.0
+ * @category Lang
+ * @param {*} value The value to check.
+ * @returns {boolean} Returns `true` if `value` is array-like, else `false`.
+ * @example
+ *
+ * _.isArrayLike([1, 2, 3]);
+ * // => true
+ *
+ * _.isArrayLike(document.body.children);
+ * // => true
+ *
+ * _.isArrayLike('abc');
+ * // => true
+ *
+ * _.isArrayLike(_.noop);
+ * // => false
+ */
+function isArrayLike(value) {
+  return value != null && isLength(value.length) && !isFunction(value);
+}
+
+/**
+ * This method is like `_.isArrayLike` except that it also checks if `value`
+ * is an object.
+ *
+ * @static
+ * @memberOf _
+ * @since 4.0.0
+ * @category Lang
+ * @param {*} value The value to check.
+ * @returns {boolean} Returns `true` if `value` is an array-like object,
+ *  else `false`.
+ * @example
+ *
+ * _.isArrayLikeObject([1, 2, 3]);
+ * // => true
+ *
+ * _.isArrayLikeObject(document.body.children);
+ * // => true
+ *
+ * _.isArrayLikeObject('abc');
+ * // => false
+ *
+ * _.isArrayLikeObject(_.noop);
+ * // => false
+ */
+function isArrayLikeObject(value) {
+  return isObjectLike(value) && isArrayLike(value);
+}
+
+/**
+ * Checks if `value` is classified as a `Function` object.
+ *
+ * @static
+ * @memberOf _
+ * @since 0.1.0
+ * @category Lang
+ * @param {*} value The value to check.
+ * @returns {boolean} Returns `true` if `value` is a function, else `false`.
+ * @example
+ *
+ * _.isFunction(_);
+ * // => true
+ *
+ * _.isFunction(/abc/);
+ * // => false
+ */
+function isFunction(value) {
+  // The use of `Object#toString` avoids issues with the `typeof` operator
+  // in Safari 8-9 which returns 'object' for typed array and other constructors.
+  var tag = isObject(value) ? objectToString.call(value) : '';
+  return tag == funcTag || tag == genTag;
+}
+
+/**
+ * Checks if `value` is a valid array-like length.
+ *
+ * **Note:** This method is loosely based on
+ * [`ToLength`](http://ecma-international.org/ecma-262/7.0/#sec-tolength).
+ *
+ * @static
+ * @memberOf _
+ * @since 4.0.0
+ * @category Lang
+ * @param {*} value The value to check.
+ * @returns {boolean} Returns `true` if `value` is a valid length, else `false`.
+ * @example
+ *
+ * _.isLength(3);
+ * // => true
+ *
+ * _.isLength(Number.MIN_VALUE);
+ * // => false
+ *
+ * _.isLength(Infinity);
+ * // => false
+ *
+ * _.isLength('3');
+ * // => false
+ */
+function isLength(value) {
+  return typeof value == 'number' && value > -1 && value % 1 == 0 && value <= MAX_SAFE_INTEGER;
+}
+
+/**
+ * Checks if `value` is the
+ * [language type](http://www.ecma-international.org/ecma-262/7.0/#sec-ecmascript-language-types)
+ * of `Object`. (e.g. arrays, functions, objects, regexes, `new Number(0)`, and `new String('')`)
+ *
+ * @static
+ * @memberOf _
+ * @since 0.1.0
+ * @category Lang
+ * @param {*} value The value to check.
+ * @returns {boolean} Returns `true` if `value` is an object, else `false`.
+ * @example
+ *
+ * _.isObject({});
+ * // => true
+ *
+ * _.isObject([1, 2, 3]);
+ * // => true
+ *
+ * _.isObject(_.noop);
+ * // => true
+ *
+ * _.isObject(null);
+ * // => false
+ */
+function isObject(value) {
+  var type = typeof value === 'undefined' ? 'undefined' : _typeof(value);
+  return !!value && (type == 'object' || type == 'function');
+}
+
+/**
+ * Checks if `value` is object-like. A value is object-like if it's not `null`
+ * and has a `typeof` result of "object".
+ *
+ * @static
+ * @memberOf _
+ * @since 4.0.0
+ * @category Lang
+ * @param {*} value The value to check.
+ * @returns {boolean} Returns `true` if `value` is object-like, else `false`.
+ * @example
+ *
+ * _.isObjectLike({});
+ * // => true
+ *
+ * _.isObjectLike([1, 2, 3]);
+ * // => true
+ *
+ * _.isObjectLike(_.noop);
+ * // => false
+ *
+ * _.isObjectLike(null);
+ * // => false
+ */
+function isObjectLike(value) {
+  return !!value && (typeof value === 'undefined' ? 'undefined' : _typeof(value)) == 'object';
+}
+
+module.exports = isArguments;
 
 /***/ }),
 /* 136 */
@@ -18511,14 +18327,185 @@ module.exports = function (module) {
 "use strict";
 
 
-Object.defineProperty(exports, "__esModule", {
-  value: true
-});
-// used to apply ' is-label' or ' is-not-label' styles
-var isOrNot = function isOrNot(flag, label) {
-  return ' is-' + (flag ? '' : 'not-') + label;
+var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol" ? function (obj) { return typeof obj; } : function (obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; };
+
+/**
+ * lodash 3.0.4 (Custom Build) <https://lodash.com/>
+ * Build: `lodash modern modularize exports="npm" -o ./`
+ * Copyright 2012-2015 The Dojo Foundation <http://dojofoundation.org/>
+ * Based on Underscore.js 1.8.3 <http://underscorejs.org/LICENSE>
+ * Copyright 2009-2015 Jeremy Ashkenas, DocumentCloud and Investigative Reporters & Editors
+ * Available under MIT license <https://lodash.com/license>
+ */
+
+/** `Object#toString` result references. */
+var arrayTag = '[object Array]',
+    funcTag = '[object Function]';
+
+/** Used to detect host constructors (Safari > 5). */
+var reIsHostCtor = /^\[object .+?Constructor\]$/;
+
+/**
+ * Checks if `value` is object-like.
+ *
+ * @private
+ * @param {*} value The value to check.
+ * @returns {boolean} Returns `true` if `value` is object-like, else `false`.
+ */
+function isObjectLike(value) {
+  return !!value && (typeof value === 'undefined' ? 'undefined' : _typeof(value)) == 'object';
+}
+
+/** Used for native method references. */
+var objectProto = Object.prototype;
+
+/** Used to resolve the decompiled source of functions. */
+var fnToString = Function.prototype.toString;
+
+/** Used to check objects for own properties. */
+var hasOwnProperty = objectProto.hasOwnProperty;
+
+/**
+ * Used to resolve the [`toStringTag`](http://ecma-international.org/ecma-262/6.0/#sec-object.prototype.tostring)
+ * of values.
+ */
+var objToString = objectProto.toString;
+
+/** Used to detect if a method is native. */
+var reIsNative = RegExp('^' + fnToString.call(hasOwnProperty).replace(/[\\^$.*+?()[\]{}|]/g, '\\$&').replace(/hasOwnProperty|(function).*?(?=\\\()| for .+?(?=\\\])/g, '$1.*?') + '$');
+
+/* Native method references for those with the same name as other `lodash` methods. */
+var nativeIsArray = getNative(Array, 'isArray');
+
+/**
+ * Used as the [maximum length](http://ecma-international.org/ecma-262/6.0/#sec-number.max_safe_integer)
+ * of an array-like value.
+ */
+var MAX_SAFE_INTEGER = 9007199254740991;
+
+/**
+ * Gets the native function at `key` of `object`.
+ *
+ * @private
+ * @param {Object} object The object to query.
+ * @param {string} key The key of the method to get.
+ * @returns {*} Returns the function if it's native, else `undefined`.
+ */
+function getNative(object, key) {
+  var value = object == null ? undefined : object[key];
+  return isNative(value) ? value : undefined;
+}
+
+/**
+ * Checks if `value` is a valid array-like length.
+ *
+ * **Note:** This function is based on [`ToLength`](http://ecma-international.org/ecma-262/6.0/#sec-tolength).
+ *
+ * @private
+ * @param {*} value The value to check.
+ * @returns {boolean} Returns `true` if `value` is a valid length, else `false`.
+ */
+function isLength(value) {
+  return typeof value == 'number' && value > -1 && value % 1 == 0 && value <= MAX_SAFE_INTEGER;
+}
+
+/**
+ * Checks if `value` is classified as an `Array` object.
+ *
+ * @static
+ * @memberOf _
+ * @category Lang
+ * @param {*} value The value to check.
+ * @returns {boolean} Returns `true` if `value` is correctly classified, else `false`.
+ * @example
+ *
+ * _.isArray([1, 2, 3]);
+ * // => true
+ *
+ * _.isArray(function() { return arguments; }());
+ * // => false
+ */
+var isArray = nativeIsArray || function (value) {
+  return isObjectLike(value) && isLength(value.length) && objToString.call(value) == arrayTag;
 };
-exports.default = isOrNot;
+
+/**
+ * Checks if `value` is classified as a `Function` object.
+ *
+ * @static
+ * @memberOf _
+ * @category Lang
+ * @param {*} value The value to check.
+ * @returns {boolean} Returns `true` if `value` is correctly classified, else `false`.
+ * @example
+ *
+ * _.isFunction(_);
+ * // => true
+ *
+ * _.isFunction(/abc/);
+ * // => false
+ */
+function isFunction(value) {
+  // The use of `Object#toString` avoids issues with the `typeof` operator
+  // in older versions of Chrome and Safari which return 'function' for regexes
+  // and Safari 8 equivalents which return 'object' for typed array constructors.
+  return isObject(value) && objToString.call(value) == funcTag;
+}
+
+/**
+ * Checks if `value` is the [language type](https://es5.github.io/#x8) of `Object`.
+ * (e.g. arrays, functions, objects, regexes, `new Number(0)`, and `new String('')`)
+ *
+ * @static
+ * @memberOf _
+ * @category Lang
+ * @param {*} value The value to check.
+ * @returns {boolean} Returns `true` if `value` is an object, else `false`.
+ * @example
+ *
+ * _.isObject({});
+ * // => true
+ *
+ * _.isObject([1, 2, 3]);
+ * // => true
+ *
+ * _.isObject(1);
+ * // => false
+ */
+function isObject(value) {
+  // Avoid a V8 JIT bug in Chrome 19-20.
+  // See https://code.google.com/p/v8/issues/detail?id=2291 for more details.
+  var type = typeof value === 'undefined' ? 'undefined' : _typeof(value);
+  return !!value && (type == 'object' || type == 'function');
+}
+
+/**
+ * Checks if `value` is a native function.
+ *
+ * @static
+ * @memberOf _
+ * @category Lang
+ * @param {*} value The value to check.
+ * @returns {boolean} Returns `true` if `value` is a native function, else `false`.
+ * @example
+ *
+ * _.isNative(Array.prototype.push);
+ * // => true
+ *
+ * _.isNative(_);
+ * // => false
+ */
+function isNative(value) {
+  if (value == null) {
+    return false;
+  }
+  if (isFunction(value)) {
+    return reIsNative.test(fnToString.call(value));
+  }
+  return isObjectLike(value) && reIsHostCtor.test(value);
+}
+
+module.exports = isArray;
 
 /***/ }),
 /* 137 */
@@ -18530,254 +18517,10 @@ exports.default = isOrNot;
 Object.defineProperty(exports, "__esModule", {
 	value: true
 });
-__webpack_require__(172);
 
-var GREAT_JOB_YOU_ROCK_EMOJI = '😎';
+__webpack_require__(165);
 
-var scoreReportView = function scoreReportView(props) {
-	return React.createElement(
-		'div',
-		{ className: 'obojobo-draft--sections--assessment--components--score-report' },
-		React.createElement(
-			'div',
-			{ className: 'text-items' },
-			props.report.textItems.map(getItemEl)
-		),
-		props.report.scoreChangeDescription === null ? null : React.createElement(
-			'span',
-			{ className: 'score-change-description' },
-			props.report.scoreChangeDescription
-		)
-	);
-};
-
-var getAmountEl = function getAmountEl(value) {
-	var isTotalOf100 = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : false;
-
-	if (value === 'Did Not Pass') {
-		return React.createElement(
-			'span',
-			{ className: 'amount is-null' },
-			'Did Not Pass'
-		);
-	}
-
-	if (isTotalOf100) {
-		return React.createElement(
-			'div',
-			{ className: 'amount is-number' },
-			value,
-			'%',
-			React.createElement(
-				'span',
-				{ className: 'great-job-you-rock' },
-				GREAT_JOB_YOU_ROCK_EMOJI
-			)
-		);
-	}
-
-	return React.createElement(
-		'span',
-		{ className: 'amount is-number' },
-		value,
-		'%'
-	);
-};
-
-var getItemEl = function getItemEl(item, index) {
-	switch (item.type) {
-		case 'text':
-			return React.createElement(
-				'div',
-				{ key: index, className: 'text' },
-				item.text
-			);
-
-		case 'divider':
-			return React.createElement('hr', { key: index, className: 'divider' });
-
-		case 'extra-credit':
-			return React.createElement(
-				'div',
-				{ key: index, className: 'extra-credit' },
-				React.createElement(
-					'span',
-					{ className: 'label' },
-					React.createElement(
-						'span',
-						null,
-						'Extra-credit'
-					),
-					' - ',
-					item.text
-				),
-				getAmountEl('+' + item.value)
-			);
-
-		case 'penalty':
-			return React.createElement(
-				'div',
-				{ key: index, className: 'penalty' },
-				React.createElement(
-					'span',
-					{ className: 'label' },
-					React.createElement(
-						'span',
-						null,
-						'Penalty'
-					),
-					' - ',
-					item.text
-				),
-				getAmountEl('-' + item.value)
-			);
-
-		case 'value':
-		case 'total':
-			return React.createElement(
-				'div',
-				{ key: index, className: item.type },
-				React.createElement(
-					'div',
-					{ className: 'label' },
-					item.text
-				),
-				getAmountEl(item.value, item.type === 'total' && item.value === '100')
-			);
-	}
-};
-
-exports.default = scoreReportView;
-
-/***/ }),
-/* 138 */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-
-
-Object.defineProperty(exports, "__esModule", {
-	value: true
-});
-
-var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
-
-var _assessmentUtil = __webpack_require__(5);
-
-var _assessmentUtil2 = _interopRequireDefault(_assessmentUtil);
-
-var _getScoreComparisionData = __webpack_require__(164);
-
-var _getScoreComparisionData2 = _interopRequireDefault(_getScoreComparisionData);
-
-var _getReportDetailsForAttempt = __webpack_require__(161);
-
-var _getReportDetailsForAttempt2 = _interopRequireDefault(_getReportDetailsForAttempt);
-
-var _getReportDisplayValuesForAttempt = __webpack_require__(162);
-
-var _getReportDisplayValuesForAttempt2 = _interopRequireDefault(_getReportDisplayValuesForAttempt);
-
-var _getScoreChangeDescription = __webpack_require__(163);
-
-var _getScoreChangeDescription2 = _interopRequireDefault(_getScoreChangeDescription);
-
-var _getTextItems = __webpack_require__(167);
-
-var _getTextItems2 = _interopRequireDefault(_getTextItems);
-
-function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
-
-function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
-
-var AssessmentScoreReporter = function () {
-	function AssessmentScoreReporter(_ref) {
-		var assessmentRubric = _ref.assessmentRubric,
-		    allAttempts = _ref.allAttempts,
-		    totalNumberOfAttemptsAllowed = _ref.totalNumberOfAttemptsAllowed;
-
-		_classCallCheck(this, AssessmentScoreReporter);
-
-		this.assessmentRubric = assessmentRubric;
-		this.totalNumberOfAttemptsAllowed = totalNumberOfAttemptsAllowed;
-		this.allAttempts = allAttempts;
-	}
-
-	_createClass(AssessmentScoreReporter, [{
-		key: 'getReportFor',
-		value: function getReportFor(attemptNumberToGenerateReportFor) {
-			if (attemptNumberToGenerateReportFor === 0) {
-				throw new Error('attemptNumberToGenerateReportFor parameter is not zero-indexed - Use "1" for first attempt');
-			}
-
-			var assessScoreInfoToReport = this.allAttempts[attemptNumberToGenerateReportFor - 1].assessmentScoreDetails;
-
-			return {
-				textItems: (0, _getTextItems2.default)((0, _getReportDetailsForAttempt2.default)(this.assessmentRubric, assessScoreInfoToReport), (0, _getReportDisplayValuesForAttempt2.default)(assessScoreInfoToReport, this.totalNumberOfAttemptsAllowed)),
-				scoreChangeDescription: (0, _getScoreChangeDescription2.default)((0, _getScoreComparisionData2.default)(this.allAttempts, attemptNumberToGenerateReportFor))
-			};
-		}
-	}]);
-
-	return AssessmentScoreReporter;
-}();
-
-exports.default = AssessmentScoreReporter;
-
-/***/ }),
-/* 139 */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-
-
-Object.defineProperty(exports, "__esModule", {
-	value: true
-});
-var TYPE_ATTEMPT_WITHOUT_MODS_REWARDED = 'attempt-without-mods-rewarded';
-var TYPE_ATTEMPT_WITH_MODS_REWARDED = 'attempt-with-mods-rewarded';
-var TYPE_PASSFAIL_PASSED_GIVEN_ATTEMPT_SCORE_WITHOUT_MODS_REWARDED = 'passfail-passed-given-attempt-score-without-mods-rewarded';
-var TYPE_PASSFAIL_PASSED_GIVEN_ATTEMPT_SCORE_WITH_MODS_REWARDED = 'passfail-passed-given-attempt-score-with-mods-rewarded';
-var TYPE_PASSFAIL_PASSED_GIVEN_SCORE_AND_ATTEMPT_SCORE_LESS_THAN_100 = 'passfail-passed-given-score-and-attempt-score-less-than-100';
-var TYPE_PASSFAIL_PASSED_GIVEN_SCORE_AND_ATTEMPT_SCORE_IS_100_AND_NO_MODS_REWARDED = 'passfail-passed-given-score-and-attempt-score-is-100-and-no-mods-rewarded';
-var TYPE_PASSFAIL_PASSED_GIVEN_SCORE_AND_ATTEMPT_SCORE_IS_100_AND_MODS_REWARDED = 'passfail-passed-given-score-and-attempt-score-is-100-and-mods-rewarded';
-var TYPE_PASSFAIL_FAILED_GIVEN_ATTEMPT_SCORE = 'passfail-failed-given-attempt-score';
-var TYPE_PASSFAIL_FAILED_GIVEN_NO_SCORE = 'passfail-failed-given-no-score';
-var TYPE_PASSFAIL_FAILED_GIVEN_SCORE = 'passfail-failed-given-score';
-var TYPE_PASSFAIL_UNABLE_TO_PASS_GIVEN_NO_SCORE = 'passfail-unable-to-pass-given-no-score';
-var TYPE_PASSFAIL_UNABLE_TO_PASS_GIVEN_HIGHEST_ATTEMPT_SCORE = 'passfail-unable-to-pass-given-highest-attempt-score';
-var TYPE_PASSFAIL_UNABLE_TO_PASS_GIVEN_SCORE = 'passfail-unable-to-pass-given-score';
-var ERROR_UNKNOWN_DISPLAY_TYPE = 'error-unknown-display-type';
-
-exports.TYPE_ATTEMPT_WITHOUT_MODS_REWARDED = TYPE_ATTEMPT_WITHOUT_MODS_REWARDED;
-exports.TYPE_ATTEMPT_WITH_MODS_REWARDED = TYPE_ATTEMPT_WITH_MODS_REWARDED;
-exports.TYPE_PASSFAIL_PASSED_GIVEN_ATTEMPT_SCORE_WITHOUT_MODS_REWARDED = TYPE_PASSFAIL_PASSED_GIVEN_ATTEMPT_SCORE_WITHOUT_MODS_REWARDED;
-exports.TYPE_PASSFAIL_PASSED_GIVEN_ATTEMPT_SCORE_WITH_MODS_REWARDED = TYPE_PASSFAIL_PASSED_GIVEN_ATTEMPT_SCORE_WITH_MODS_REWARDED;
-exports.TYPE_PASSFAIL_PASSED_GIVEN_SCORE_AND_ATTEMPT_SCORE_LESS_THAN_100 = TYPE_PASSFAIL_PASSED_GIVEN_SCORE_AND_ATTEMPT_SCORE_LESS_THAN_100;
-exports.TYPE_PASSFAIL_PASSED_GIVEN_SCORE_AND_ATTEMPT_SCORE_IS_100_AND_NO_MODS_REWARDED = TYPE_PASSFAIL_PASSED_GIVEN_SCORE_AND_ATTEMPT_SCORE_IS_100_AND_NO_MODS_REWARDED;
-exports.TYPE_PASSFAIL_PASSED_GIVEN_SCORE_AND_ATTEMPT_SCORE_IS_100_AND_MODS_REWARDED = TYPE_PASSFAIL_PASSED_GIVEN_SCORE_AND_ATTEMPT_SCORE_IS_100_AND_MODS_REWARDED;
-exports.TYPE_PASSFAIL_FAILED_GIVEN_ATTEMPT_SCORE = TYPE_PASSFAIL_FAILED_GIVEN_ATTEMPT_SCORE;
-exports.TYPE_PASSFAIL_FAILED_GIVEN_NO_SCORE = TYPE_PASSFAIL_FAILED_GIVEN_NO_SCORE;
-exports.TYPE_PASSFAIL_FAILED_GIVEN_SCORE = TYPE_PASSFAIL_FAILED_GIVEN_SCORE;
-exports.TYPE_PASSFAIL_UNABLE_TO_PASS_GIVEN_NO_SCORE = TYPE_PASSFAIL_UNABLE_TO_PASS_GIVEN_NO_SCORE;
-exports.TYPE_PASSFAIL_UNABLE_TO_PASS_GIVEN_HIGHEST_ATTEMPT_SCORE = TYPE_PASSFAIL_UNABLE_TO_PASS_GIVEN_HIGHEST_ATTEMPT_SCORE;
-exports.TYPE_PASSFAIL_UNABLE_TO_PASS_GIVEN_SCORE = TYPE_PASSFAIL_UNABLE_TO_PASS_GIVEN_SCORE;
-exports.ERROR_UNKNOWN_DISPLAY_TYPE = ERROR_UNKNOWN_DISPLAY_TYPE;
-
-/***/ }),
-/* 140 */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-
-
-Object.defineProperty(exports, "__esModule", {
-	value: true
-});
-
-__webpack_require__(174);
-
-var _isornot = __webpack_require__(136);
+var _isornot = __webpack_require__(138);
 
 var _isornot2 = _interopRequireDefault(_isornot);
 
@@ -18794,7 +18537,23 @@ var Logo = function Logo(props) {
 exports.default = Logo;
 
 /***/ }),
-/* 141 */
+/* 138 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+// used to apply ' is-label' or ' is-not-label' styles
+var isOrNot = function isOrNot(flag, label) {
+  return ' is-' + (flag ? '' : 'not-') + label;
+};
+exports.default = isOrNot;
+
+/***/ }),
+/* 139 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -18814,7 +18573,7 @@ var _assessmentUtil = __webpack_require__(5);
 
 var _assessmentUtil2 = _interopRequireDefault(_assessmentUtil);
 
-var _questionUtil = __webpack_require__(6);
+var _questionUtil = __webpack_require__(4);
 
 var _questionUtil2 = _interopRequireDefault(_questionUtil);
 
@@ -18826,23 +18585,23 @@ var _navUtil = __webpack_require__(2);
 
 var _navUtil2 = _interopRequireDefault(_navUtil);
 
-var _navStore = __webpack_require__(8);
+var _navStore = __webpack_require__(9);
 
 var _navStore2 = _interopRequireDefault(_navStore);
 
-var _ltiNetworkStates = __webpack_require__(142);
+var _ltiNetworkStates = __webpack_require__(140);
 
 var _ltiNetworkStates2 = _interopRequireDefault(_ltiNetworkStates);
 
-var _questionStore = __webpack_require__(9);
+var _questionStore = __webpack_require__(8);
 
 var _questionStore2 = _interopRequireDefault(_questionStore);
 
-var _assessmentScoreReporter = __webpack_require__(138);
+var _assessmentScoreReporter = __webpack_require__(141);
 
 var _assessmentScoreReporter2 = _interopRequireDefault(_assessmentScoreReporter);
 
-var _assessmentScoreReportView = __webpack_require__(137);
+var _assessmentScoreReportView = __webpack_require__(143);
 
 var _assessmentScoreReportView2 = _interopRequireDefault(_assessmentScoreReportView);
 
@@ -19205,7 +18964,7 @@ var assessmentStore = new AssessmentStore();
 exports.default = assessmentStore;
 
 /***/ }),
-/* 142 */
+/* 140 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -19221,7 +18980,251 @@ exports.default = {
 };
 
 /***/ }),
+/* 141 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+Object.defineProperty(exports, "__esModule", {
+	value: true
+});
+
+var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+
+var _assessmentUtil = __webpack_require__(5);
+
+var _assessmentUtil2 = _interopRequireDefault(_assessmentUtil);
+
+var _getScoreComparisionData = __webpack_require__(166);
+
+var _getScoreComparisionData2 = _interopRequireDefault(_getScoreComparisionData);
+
+var _getReportDetailsForAttempt = __webpack_require__(167);
+
+var _getReportDetailsForAttempt2 = _interopRequireDefault(_getReportDetailsForAttempt);
+
+var _getReportDisplayValuesForAttempt = __webpack_require__(169);
+
+var _getReportDisplayValuesForAttempt2 = _interopRequireDefault(_getReportDisplayValuesForAttempt);
+
+var _getScoreChangeDescription = __webpack_require__(170);
+
+var _getScoreChangeDescription2 = _interopRequireDefault(_getScoreChangeDescription);
+
+var _getTextItems = __webpack_require__(171);
+
+var _getTextItems2 = _interopRequireDefault(_getTextItems);
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+var AssessmentScoreReporter = function () {
+	function AssessmentScoreReporter(_ref) {
+		var assessmentRubric = _ref.assessmentRubric,
+		    allAttempts = _ref.allAttempts,
+		    totalNumberOfAttemptsAllowed = _ref.totalNumberOfAttemptsAllowed;
+
+		_classCallCheck(this, AssessmentScoreReporter);
+
+		this.assessmentRubric = assessmentRubric;
+		this.totalNumberOfAttemptsAllowed = totalNumberOfAttemptsAllowed;
+		this.allAttempts = allAttempts;
+	}
+
+	_createClass(AssessmentScoreReporter, [{
+		key: 'getReportFor',
+		value: function getReportFor(attemptNumberToGenerateReportFor) {
+			if (attemptNumberToGenerateReportFor === 0) {
+				throw new Error('attemptNumberToGenerateReportFor parameter is not zero-indexed - Use "1" for first attempt');
+			}
+
+			var assessScoreInfoToReport = this.allAttempts[attemptNumberToGenerateReportFor - 1].assessmentScoreDetails;
+
+			return {
+				textItems: (0, _getTextItems2.default)((0, _getReportDetailsForAttempt2.default)(this.assessmentRubric, assessScoreInfoToReport), (0, _getReportDisplayValuesForAttempt2.default)(assessScoreInfoToReport, this.totalNumberOfAttemptsAllowed)),
+				scoreChangeDescription: (0, _getScoreChangeDescription2.default)((0, _getScoreComparisionData2.default)(this.allAttempts, attemptNumberToGenerateReportFor))
+			};
+		}
+	}]);
+
+	return AssessmentScoreReporter;
+}();
+
+exports.default = AssessmentScoreReporter;
+
+/***/ }),
+/* 142 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+Object.defineProperty(exports, "__esModule", {
+	value: true
+});
+var TYPE_ATTEMPT_WITHOUT_MODS_REWARDED = 'attempt-without-mods-rewarded';
+var TYPE_ATTEMPT_WITH_MODS_REWARDED = 'attempt-with-mods-rewarded';
+var TYPE_PASSFAIL_PASSED_GIVEN_ATTEMPT_SCORE_WITHOUT_MODS_REWARDED = 'passfail-passed-given-attempt-score-without-mods-rewarded';
+var TYPE_PASSFAIL_PASSED_GIVEN_ATTEMPT_SCORE_WITH_MODS_REWARDED = 'passfail-passed-given-attempt-score-with-mods-rewarded';
+var TYPE_PASSFAIL_PASSED_GIVEN_SCORE_AND_ATTEMPT_SCORE_LESS_THAN_100 = 'passfail-passed-given-score-and-attempt-score-less-than-100';
+var TYPE_PASSFAIL_PASSED_GIVEN_SCORE_AND_ATTEMPT_SCORE_IS_100_AND_NO_MODS_REWARDED = 'passfail-passed-given-score-and-attempt-score-is-100-and-no-mods-rewarded';
+var TYPE_PASSFAIL_PASSED_GIVEN_SCORE_AND_ATTEMPT_SCORE_IS_100_AND_MODS_REWARDED = 'passfail-passed-given-score-and-attempt-score-is-100-and-mods-rewarded';
+var TYPE_PASSFAIL_FAILED_GIVEN_ATTEMPT_SCORE = 'passfail-failed-given-attempt-score';
+var TYPE_PASSFAIL_FAILED_GIVEN_NO_SCORE = 'passfail-failed-given-no-score';
+var TYPE_PASSFAIL_FAILED_GIVEN_SCORE = 'passfail-failed-given-score';
+var TYPE_PASSFAIL_UNABLE_TO_PASS_GIVEN_NO_SCORE = 'passfail-unable-to-pass-given-no-score';
+var TYPE_PASSFAIL_UNABLE_TO_PASS_GIVEN_HIGHEST_ATTEMPT_SCORE = 'passfail-unable-to-pass-given-highest-attempt-score';
+var TYPE_PASSFAIL_UNABLE_TO_PASS_GIVEN_SCORE = 'passfail-unable-to-pass-given-score';
+var ERROR_UNKNOWN_DISPLAY_TYPE = 'error-unknown-display-type';
+
+exports.TYPE_ATTEMPT_WITHOUT_MODS_REWARDED = TYPE_ATTEMPT_WITHOUT_MODS_REWARDED;
+exports.TYPE_ATTEMPT_WITH_MODS_REWARDED = TYPE_ATTEMPT_WITH_MODS_REWARDED;
+exports.TYPE_PASSFAIL_PASSED_GIVEN_ATTEMPT_SCORE_WITHOUT_MODS_REWARDED = TYPE_PASSFAIL_PASSED_GIVEN_ATTEMPT_SCORE_WITHOUT_MODS_REWARDED;
+exports.TYPE_PASSFAIL_PASSED_GIVEN_ATTEMPT_SCORE_WITH_MODS_REWARDED = TYPE_PASSFAIL_PASSED_GIVEN_ATTEMPT_SCORE_WITH_MODS_REWARDED;
+exports.TYPE_PASSFAIL_PASSED_GIVEN_SCORE_AND_ATTEMPT_SCORE_LESS_THAN_100 = TYPE_PASSFAIL_PASSED_GIVEN_SCORE_AND_ATTEMPT_SCORE_LESS_THAN_100;
+exports.TYPE_PASSFAIL_PASSED_GIVEN_SCORE_AND_ATTEMPT_SCORE_IS_100_AND_NO_MODS_REWARDED = TYPE_PASSFAIL_PASSED_GIVEN_SCORE_AND_ATTEMPT_SCORE_IS_100_AND_NO_MODS_REWARDED;
+exports.TYPE_PASSFAIL_PASSED_GIVEN_SCORE_AND_ATTEMPT_SCORE_IS_100_AND_MODS_REWARDED = TYPE_PASSFAIL_PASSED_GIVEN_SCORE_AND_ATTEMPT_SCORE_IS_100_AND_MODS_REWARDED;
+exports.TYPE_PASSFAIL_FAILED_GIVEN_ATTEMPT_SCORE = TYPE_PASSFAIL_FAILED_GIVEN_ATTEMPT_SCORE;
+exports.TYPE_PASSFAIL_FAILED_GIVEN_NO_SCORE = TYPE_PASSFAIL_FAILED_GIVEN_NO_SCORE;
+exports.TYPE_PASSFAIL_FAILED_GIVEN_SCORE = TYPE_PASSFAIL_FAILED_GIVEN_SCORE;
+exports.TYPE_PASSFAIL_UNABLE_TO_PASS_GIVEN_NO_SCORE = TYPE_PASSFAIL_UNABLE_TO_PASS_GIVEN_NO_SCORE;
+exports.TYPE_PASSFAIL_UNABLE_TO_PASS_GIVEN_HIGHEST_ATTEMPT_SCORE = TYPE_PASSFAIL_UNABLE_TO_PASS_GIVEN_HIGHEST_ATTEMPT_SCORE;
+exports.TYPE_PASSFAIL_UNABLE_TO_PASS_GIVEN_SCORE = TYPE_PASSFAIL_UNABLE_TO_PASS_GIVEN_SCORE;
+exports.ERROR_UNKNOWN_DISPLAY_TYPE = ERROR_UNKNOWN_DISPLAY_TYPE;
+
+/***/ }),
 /* 143 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+Object.defineProperty(exports, "__esModule", {
+	value: true
+});
+__webpack_require__(174);
+
+var GREAT_JOB_YOU_ROCK_EMOJI = '😎';
+
+var scoreReportView = function scoreReportView(props) {
+	return React.createElement(
+		'div',
+		{ className: 'obojobo-draft--sections--assessment--components--score-report' },
+		React.createElement(
+			'div',
+			{ className: 'text-items' },
+			props.report.textItems.map(getItemEl)
+		),
+		props.report.scoreChangeDescription === null ? null : React.createElement(
+			'span',
+			{ className: 'score-change-description' },
+			props.report.scoreChangeDescription
+		)
+	);
+};
+
+var getAmountEl = function getAmountEl(value) {
+	var isTotalOf100 = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : false;
+
+	if (value === 'Did Not Pass') {
+		return React.createElement(
+			'span',
+			{ className: 'amount is-null' },
+			'Did Not Pass'
+		);
+	}
+
+	if (isTotalOf100) {
+		return React.createElement(
+			'div',
+			{ className: 'amount is-number' },
+			value,
+			'%',
+			React.createElement(
+				'span',
+				{ className: 'great-job-you-rock' },
+				GREAT_JOB_YOU_ROCK_EMOJI
+			)
+		);
+	}
+
+	return React.createElement(
+		'span',
+		{ className: 'amount is-number' },
+		value,
+		'%'
+	);
+};
+
+var getItemEl = function getItemEl(item, index) {
+	switch (item.type) {
+		case 'text':
+			return React.createElement(
+				'div',
+				{ key: index, className: 'text' },
+				item.text
+			);
+
+		case 'divider':
+			return React.createElement('hr', { key: index, className: 'divider' });
+
+		case 'extra-credit':
+			return React.createElement(
+				'div',
+				{ key: index, className: 'extra-credit' },
+				React.createElement(
+					'span',
+					{ className: 'label' },
+					React.createElement(
+						'span',
+						null,
+						'Extra-credit'
+					),
+					' - ',
+					item.text
+				),
+				getAmountEl('+' + item.value)
+			);
+
+		case 'penalty':
+			return React.createElement(
+				'div',
+				{ key: index, className: 'penalty' },
+				React.createElement(
+					'span',
+					{ className: 'label' },
+					React.createElement(
+						'span',
+						null,
+						'Penalty'
+					),
+					' - ',
+					item.text
+				),
+				getAmountEl('-' + item.value)
+			);
+
+		case 'value':
+		case 'total':
+			return React.createElement(
+				'div',
+				{ key: index, className: item.type },
+				React.createElement(
+					'div',
+					{ className: 'label' },
+					item.text
+				),
+				getAmountEl(item.value, item.type === 'total' && item.value === '100')
+			);
+	}
+};
+
+exports.default = scoreReportView;
+
+/***/ }),
+/* 144 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -19240,20 +19243,22 @@ exports.default = function (url) {
 	return hostname;
 };
 
-var _urlParse = __webpack_require__(159);
+var _urlParse = __webpack_require__(177);
 
 var _urlParse2 = _interopRequireDefault(_urlParse);
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 /***/ }),
-/* 144 */
-/***/ (function(module, exports) {
+/* 145 */
+/***/ (function(module, exports, __webpack_require__) {
 
-module.exports = React;
+__webpack_require__(146);
+module.exports = __webpack_require__(147);
+
 
 /***/ }),
-/* 145 */
+/* 146 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -19723,13 +19728,13 @@ module.exports = React;
 })(typeof self !== 'undefined' ? self : undefined);
 
 /***/ }),
-/* 146 */
+/* 147 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
 
 
-var _index = __webpack_require__(171);
+var _index = __webpack_require__(148);
 
 var _index2 = _interopRequireDefault(_index);
 
@@ -19738,7 +19743,1368 @@ function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { de
 window.Viewer = _index2.default;
 
 /***/ }),
-/* 147 */
+/* 148 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+Object.defineProperty(exports, "__esModule", {
+	value: true
+});
+
+var _viewerApp = __webpack_require__(149);
+
+var _viewerApp2 = _interopRequireDefault(_viewerApp);
+
+var _assessmentStore = __webpack_require__(139);
+
+var _assessmentStore2 = _interopRequireDefault(_assessmentStore);
+
+var _ltiNetworkStates = __webpack_require__(140);
+
+var _ltiNetworkStates2 = _interopRequireDefault(_ltiNetworkStates);
+
+var _navStore = __webpack_require__(9);
+
+var _navStore2 = _interopRequireDefault(_navStore);
+
+var _questionStore = __webpack_require__(8);
+
+var _questionStore2 = _interopRequireDefault(_questionStore);
+
+var _assessmentUtil = __webpack_require__(5);
+
+var _assessmentUtil2 = _interopRequireDefault(_assessmentUtil);
+
+var _navUtil = __webpack_require__(2);
+
+var _navUtil2 = _interopRequireDefault(_navUtil);
+
+var _apiUtil = __webpack_require__(3);
+
+var _apiUtil2 = _interopRequireDefault(_apiUtil);
+
+var _questionUtil = __webpack_require__(4);
+
+var _questionUtil2 = _interopRequireDefault(_questionUtil);
+
+var _getLtiOutcomeServiceHostname = __webpack_require__(144);
+
+var _getLtiOutcomeServiceHostname2 = _interopRequireDefault(_getLtiOutcomeServiceHostname);
+
+var _assessmentScoreReporter = __webpack_require__(141);
+
+var _assessmentScoreReporter2 = _interopRequireDefault(_assessmentScoreReporter);
+
+var _assessmentScoreReportView = __webpack_require__(143);
+
+var _assessmentScoreReportView2 = _interopRequireDefault(_assessmentScoreReportView);
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+exports.default = {
+	components: {
+		ViewerApp: _viewerApp2.default
+	},
+
+	stores: {
+		AssessmentStore: _assessmentStore2.default,
+		assessmentStore: {
+			LTINetworkStates: _ltiNetworkStates2.default
+		},
+		NavStore: _navStore2.default,
+		QuestionStore: _questionStore2.default
+	},
+
+	util: {
+		AssessmentUtil: _assessmentUtil2.default,
+		NavUtil: _navUtil2.default,
+		APIUtil: _apiUtil2.default,
+		QuestionUtil: _questionUtil2.default,
+		getLTIOutcomeServiceHostname: _getLtiOutcomeServiceHostname2.default
+	},
+
+	assessment: {
+		AssessmentScoreReporter: _assessmentScoreReporter2.default,
+		AssessmentScoreReportView: _assessmentScoreReportView2.default
+	}
+};
+
+/***/ }),
+/* 149 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+Object.defineProperty(exports, "__esModule", {
+	value: true
+});
+
+var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+
+__webpack_require__(150);
+
+__webpack_require__(151);
+
+var _Common = __webpack_require__(1);
+
+var _Common2 = _interopRequireDefault(_Common);
+
+var _react = __webpack_require__(10);
+
+var _react2 = _interopRequireDefault(_react);
+
+var _reactIdleTimer = __webpack_require__(152);
+
+var _reactIdleTimer2 = _interopRequireDefault(_reactIdleTimer);
+
+var _inlineNavButton = __webpack_require__(163);
+
+var _inlineNavButton2 = _interopRequireDefault(_inlineNavButton);
+
+var _navUtil = __webpack_require__(2);
+
+var _navUtil2 = _interopRequireDefault(_navUtil);
+
+var _apiUtil = __webpack_require__(3);
+
+var _apiUtil2 = _interopRequireDefault(_apiUtil);
+
+var _logo = __webpack_require__(137);
+
+var _logo2 = _interopRequireDefault(_logo);
+
+var _questionStore = __webpack_require__(8);
+
+var _questionStore2 = _interopRequireDefault(_questionStore);
+
+var _assessmentStore = __webpack_require__(139);
+
+var _assessmentStore2 = _interopRequireDefault(_assessmentStore);
+
+var _navStore = __webpack_require__(9);
+
+var _navStore2 = _interopRequireDefault(_navStore);
+
+var _nav = __webpack_require__(175);
+
+var _nav2 = _interopRequireDefault(_nav);
+
+var _getLtiOutcomeServiceHostname = __webpack_require__(144);
+
+var _getLtiOutcomeServiceHostname2 = _interopRequireDefault(_getLtiOutcomeServiceHostname);
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
+
+function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
+
+var IDLE_TIMEOUT_DURATION_MS = 600000; // 10 minutes
+
+var Legacy = _Common2.default.models.Legacy;
+var DOMUtil = _Common2.default.page.DOMUtil;
+var Screen = _Common2.default.page.Screen;
+var OboModel = _Common2.default.models.OboModel;
+var Dispatcher = _Common2.default.flux.Dispatcher;
+var ModalContainer = _Common2.default.components.ModalContainer;
+var SimpleDialog = _Common2.default.components.modal.SimpleDialog;
+var ModalUtil = _Common2.default.util.ModalUtil;
+var FocusBlocker = _Common2.default.components.FocusBlocker;
+var ModalStore = _Common2.default.stores.ModalStore;
+var FocusStore = _Common2.default.stores.FocusStore;
+var FocusUtil = _Common2.default.util.FocusUtil;
+
+// Dispatcher.on 'all', (eventName, payload) -> console.log 'EVENT TRIGGERED', eventName
+
+Dispatcher.on('viewer:alert', function (payload) {
+	return ModalUtil.show(_react2.default.createElement(
+		SimpleDialog,
+		{ ok: true, title: payload.value.title },
+		payload.value.message
+	));
+});
+
+var ViewerApp = function (_React$Component) {
+	_inherits(ViewerApp, _React$Component);
+
+	// === REACT LIFECYCLE METHODS ===
+
+	function ViewerApp(props) {
+		_classCallCheck(this, ViewerApp);
+
+		var _this = _possibleConstructorReturn(this, (ViewerApp.__proto__ || Object.getPrototypeOf(ViewerApp)).call(this, props));
+
+		Dispatcher.on('viewer:scrollTo', function (payload) {
+			return ReactDOM.findDOMNode(_this.refs.container).scrollTop = payload.value;
+		});
+
+		Dispatcher.on('viewer:scrollToTop', _this.scrollToTop.bind(_this));
+		Dispatcher.on('getTextForVariable', _this.getTextForVariable.bind(_this));
+
+		var state = {
+			model: null,
+			navState: null,
+			questionState: null,
+			assessmentState: null,
+			modalState: null,
+			focusState: null,
+			navTargetId: null,
+			loading: true,
+			requestStatus: 'unknown',
+			isPreviewing: false,
+			lti: {
+				outcomeServiceHostname: null
+			}
+		};
+		_this.onNavStoreChange = function () {
+			return _this.setState({ navState: _navStore2.default.getState() });
+		};
+		_this.onQuestionStoreChange = function () {
+			return _this.setState({ questionState: _questionStore2.default.getState() });
+		};
+		_this.onAssessmentStoreChange = function () {
+			return _this.setState({ assessmentState: _assessmentStore2.default.getState() });
+		};
+		_this.onModalStoreChange = function () {
+			return _this.setState({ modalState: ModalStore.getState() });
+		};
+		_this.onFocusStoreChange = function () {
+			return _this.setState({ focusState: FocusStore.getState() });
+		};
+
+		_this.onIdle = _this.onIdle.bind(_this);
+		_this.onReturnFromIdle = _this.onReturnFromIdle.bind(_this);
+		_this.onBeforeWindowClose = _this.onBeforeWindowClose.bind(_this);
+		_this.onWindowClose = _this.onWindowClose.bind(_this);
+		_this.onVisibilityChange = _this.onVisibilityChange.bind(_this);
+
+		_this.state = state;
+		return _this;
+	}
+
+	_createClass(ViewerApp, [{
+		key: 'componentDidMount',
+		value: function componentDidMount() {
+			var _this2 = this;
+
+			document.addEventListener('visibilitychange', this.onVisibilityChange);
+
+			var visitIdFromApi = void 0;
+			var attemptHistory = void 0;
+			var viewState = void 0;
+			var isPreviewing = void 0;
+			var outcomeServiceURL = 'the external system';
+
+			var urlTokens = document.location.pathname.split('/');
+			var visitIdFromUrl = urlTokens[4] ? urlTokens[4] : null;
+			var draftIdFromUrl = urlTokens[2] ? urlTokens[2] : null;
+
+			Dispatcher.trigger('viewer:loading');
+
+			_apiUtil2.default.requestStart(visitIdFromUrl, draftIdFromUrl).then(function (visit) {
+				_questionStore2.default.init();
+				ModalStore.init();
+				FocusStore.init();
+
+				if (visit.status !== 'ok') throw 'Invalid Visit Id';
+
+				visitIdFromApi = visit.value.visitId;
+				viewState = visit.value.viewState;
+				attemptHistory = visit.value.extensions[':ObojoboDraft.Sections.Assessment:attemptHistory'];
+				isPreviewing = visit.value.isPreviewing;
+				outcomeServiceURL = visit.value.lti.lisOutcomeServiceUrl;
+
+				return _apiUtil2.default.getDraft(draftIdFromUrl);
+			}).then(function (_ref) {
+				var draftModel = _ref.value;
+
+				_this2.state.model = OboModel.create(draftModel);
+
+				_navStore2.default.init(_this2.state.model, _this2.state.model.modelState.start, window.location.pathname, visitIdFromApi, viewState);
+				_assessmentStore2.default.init(attemptHistory);
+
+				_this2.state.navState = _navStore2.default.getState();
+				_this2.state.questionState = _questionStore2.default.getState();
+				_this2.state.assessmentState = _assessmentStore2.default.getState();
+				_this2.state.modalState = ModalStore.getState();
+				_this2.state.focusState = FocusStore.getState();
+				_this2.state.lti.outcomeServiceHostname = (0, _getLtiOutcomeServiceHostname2.default)(outcomeServiceURL);
+
+				window.onbeforeunload = _this2.onBeforeWindowClose;
+				window.onunload = _this2.onWindowClose;
+
+				_this2.setState({ loading: false, requestStatus: 'ok', isPreviewing: isPreviewing }, function () {
+					Dispatcher.trigger('viewer:loaded', true);
+				});
+			}).catch(function (err) {
+				console.log(err);
+				_this2.setState({ loading: false, requestStatus: 'invalid' }, function () {
+					return Dispatcher.trigger('viewer:loaded', false);
+				});
+			});
+		}
+	}, {
+		key: 'componentWillMount',
+		value: function componentWillMount() {
+			// === SET UP DATA STORES ===
+			_navStore2.default.onChange(this.onNavStoreChange);
+			_questionStore2.default.onChange(this.onQuestionStoreChange);
+			_assessmentStore2.default.onChange(this.onAssessmentStoreChange);
+			ModalStore.onChange(this.onModalStoreChange);
+			FocusStore.onChange(this.onFocusStoreChange);
+		}
+	}, {
+		key: 'componentWillUnmount',
+		value: function componentWillUnmount() {
+			_navStore2.default.offChange(this.onNavStoreChange);
+			_questionStore2.default.offChange(this.onQuestionStoreChange);
+			_assessmentStore2.default.offChange(this.onAssessmentStoreChange);
+			ModalStore.offChange(this.onModalStoreChange);
+			FocusStore.offChange(this.onFocusStoreChange);
+
+			document.removeEventListener('visibilitychange', this.onVisibilityChange);
+		}
+	}, {
+		key: 'shouldComponentUpdate',
+		value: function shouldComponentUpdate(nextProps, nextState) {
+			return !nextState.loading;
+		}
+	}, {
+		key: 'componentWillUpdate',
+		value: function componentWillUpdate(nextProps, nextState) {
+			if (this.state.requestStatus === 'ok') {
+				var navTargetId = this.state.navTargetId;
+				var nextNavTargetId = this.state.navState.navTargetId;
+
+				if (navTargetId !== nextNavTargetId) {
+					this.needsScroll = true;
+					return this.setState({ navTargetId: nextNavTargetId });
+				}
+			}
+
+			if (this.state.loading === true && nextState.loading === false) {
+				this.needsRemoveLoadingElement = true;
+			}
+		}
+	}, {
+		key: 'componentDidUpdate',
+		value: function componentDidUpdate() {
+			if (this.state.requestStatus === 'ok') {
+				if (this.lastCanNavigate !== _navUtil2.default.canNavigate(this.state.navState)) {
+					this.needsScroll = true;
+				}
+				this.lastCanNavigate = _navUtil2.default.canNavigate(this.state.navState);
+				if (this.needsScroll != null) {
+					this.scrollToTop();
+
+					delete this.needsScroll;
+				}
+			}
+
+			if (this.needsRemoveLoadingElement === true) {
+				var loadingEl = document.getElementById('viewer-app-loading');
+				if (loadingEl && loadingEl.parentElement) {
+					document.getElementById('viewer-app').classList.add('is-loaded');
+					loadingEl.parentElement.removeChild(loadingEl);
+
+					delete this.needsRemoveLoadingElement;
+				}
+			}
+		}
+	}, {
+		key: 'onVisibilityChange',
+		value: function onVisibilityChange() {
+			var _this3 = this;
+
+			if (document.hidden) {
+				_apiUtil2.default.postEvent(this.state.model, 'viewer:leave', '1.0.0', {}).then(function (res) {
+					_this3.leaveEvent = res.value;
+				});
+			} else {
+				_apiUtil2.default.postEvent(this.state.model, 'viewer:return', '1.0.0', {
+					relatedEventId: this.leaveEvent.id
+				});
+				delete this.leaveEvent;
+			}
+		}
+	}, {
+		key: 'getTextForVariable',
+		value: function getTextForVariable(event, variable, textModel) {
+			return event.text = _Common2.default.Store.getTextForVariable(variable, textModel, this.state);
+		}
+	}, {
+		key: 'scrollToTop',
+		value: function scrollToTop() {
+			var el = ReactDOM.findDOMNode(this.refs.prev);
+			var container = ReactDOM.findDOMNode(this.refs.container);
+
+			if (!container) return;
+
+			if (el) {
+				return container.scrollTop = ReactDOM.findDOMNode(el).getBoundingClientRect().height;
+			}
+
+			return container.scrollTop = 0;
+		}
+
+		// === NON REACT LIFECYCLE METHODS ===
+
+	}, {
+		key: 'onMouseDown',
+		value: function onMouseDown(event) {
+			if (this.state.focusState.focussedId == null) {
+				return;
+			}
+			if (!DOMUtil.findParentComponentIds(event.target).has(this.state.focusState.focussedId)) {
+				return FocusUtil.unfocus();
+			}
+		}
+	}, {
+		key: 'onScroll',
+		value: function onScroll(event) {
+			if (this.state.focusState.focussedId == null) {
+				return;
+			}
+
+			var component = FocusUtil.getFocussedComponent(this.state.focusState);
+			if (component == null) {
+				return;
+			}
+
+			var el = component.getDomEl();
+			if (!el) {
+				return;
+			}
+
+			if (!Screen.isElementVisible(el)) {
+				return FocusUtil.unfocus();
+			}
+		}
+	}, {
+		key: 'onIdle',
+		value: function onIdle() {
+			var _this4 = this;
+
+			this.lastActiveEpoch = new Date(this.refs.idleTimer.getLastActiveTime());
+
+			_apiUtil2.default.postEvent(this.state.model, 'viewer:inactive', '2.0.0', {
+				lastActiveTime: this.lastActiveEpoch,
+				inactiveDuration: IDLE_TIMEOUT_DURATION_MS
+			}).then(function (res) {
+				_this4.inactiveEvent = res.value;
+			});
+		}
+	}, {
+		key: 'onReturnFromIdle',
+		value: function onReturnFromIdle() {
+			_apiUtil2.default.postEvent(this.state.model, 'viewer:returnFromInactive', '2.0.0', {
+				lastActiveTime: this.lastActiveEpoch,
+				inactiveDuration: Date.now() - this.lastActiveEpoch,
+				relatedEventId: this.inactiveEvent.id
+			});
+
+			delete this.lastActiveEpoch;
+			delete this.inactiveEvent;
+		}
+	}, {
+		key: 'onBeforeWindowClose',
+		value: function onBeforeWindowClose() {
+			var closePrevented = false;
+			// calling this function will prevent the window from closing
+			var preventClose = function preventClose() {
+				closePrevented = true;
+			};
+
+			Dispatcher.trigger('viewer:closeAttempted', preventClose);
+
+			if (closePrevented) {
+				return true; // Returning true will cause browser to ask user to confirm leaving page
+			}
+
+			return undefined; // Returning undefined will allow browser to close normally
+		}
+	}, {
+		key: 'onWindowClose',
+		value: function onWindowClose() {
+			_apiUtil2.default.postEvent(this.state.model, 'viewer:close', '1.0.0', {});
+		}
+	}, {
+		key: 'clearPreviewScores',
+		value: function clearPreviewScores() {
+			_apiUtil2.default.clearPreviewScores(this.state.model.get('draftId')).then(function (res) {
+				if (res.status === 'error' || res.error) {
+					return ModalUtil.show(_react2.default.createElement(
+						SimpleDialog,
+						{ ok: true, width: '15em' },
+						res.value && res.value.message ? 'There was an error resetting assessments and questions: ' + res.value.message + '.' : 'There was an error resetting assessments and questions'
+					));
+				}
+
+				_assessmentStore2.default.init();
+				_questionStore2.default.init();
+
+				_assessmentStore2.default.triggerChange();
+				_questionStore2.default.triggerChange();
+
+				return ModalUtil.show(_react2.default.createElement(
+					SimpleDialog,
+					{ ok: true, width: '15em' },
+					'Assessment attempts and all question responses have been reset.'
+				));
+			});
+		}
+	}, {
+		key: 'unlockNavigation',
+		value: function unlockNavigation() {
+			return _navUtil2.default.unlock();
+		}
+	}, {
+		key: 'render',
+		value: function render() {
+			if (this.state.loading == true) return null;
+
+			if (this.state.requestStatus === 'invalid') {
+				return _react2.default.createElement(
+					'div',
+					{ className: 'viewer--viewer-app--visit-error' },
+					'There was a problem starting your visit. Please return to ' + (this.state.lti.outcomeServiceHostname ? this.state.lti.outcomeServiceHostname : 'the external system') + ' and relaunch this module.'
+				); //`There was a problem starting your visit. Please return to ${outcomeServiceURL} and relaunch this module.`
+			}
+
+			var nextEl = void 0,
+			    nextModel = void 0,
+			    prevEl = void 0;
+			window.__lo = this.state.model;
+			window.__s = this.state;
+
+			var ModuleComponent = this.state.model.getComponentClass();
+
+			var navTargetModel = _navUtil2.default.getNavTargetModel(this.state.navState);
+			var navTargetTitle = '?';
+			if (navTargetModel != null) {
+				navTargetTitle = navTargetModel.title;
+			}
+
+			var prevModel = nextModel = null;
+			if (_navUtil2.default.canNavigate(this.state.navState)) {
+				prevModel = _navUtil2.default.getPrevModel(this.state.navState);
+				if (prevModel) {
+					var navText = typeof prevModel.title !== 'undefined' && prevModel.title !== null ? 'Back: ' + prevModel.title : 'Back';
+					prevEl = _react2.default.createElement(_inlineNavButton2.default, { ref: 'prev', type: 'prev', title: '' + navText });
+				} else {
+					prevEl = _react2.default.createElement(_inlineNavButton2.default, {
+						ref: 'prev',
+						type: 'prev',
+						title: 'Start of ' + this.state.model.title,
+						disabled: true
+					});
+				}
+
+				nextModel = _navUtil2.default.getNextModel(this.state.navState);
+				if (nextModel) {
+					var _navText = typeof nextModel.title !== 'undefined' && nextModel.title !== null ? 'Next: ' + nextModel.title : 'Next';
+					nextEl = _react2.default.createElement(_inlineNavButton2.default, { ref: 'next', type: 'next', title: '' + _navText });
+				} else {
+					nextEl = _react2.default.createElement(_inlineNavButton2.default, {
+						ref: 'next',
+						type: 'next',
+						title: 'End of ' + this.state.model.title,
+						disabled: true
+					});
+				}
+			}
+
+			var modalItem = ModalUtil.getCurrentModal(this.state.modalState);
+			var hideViewer = modalItem && modalItem.hideViewer;
+
+			var classNames = ['viewer--viewer-app', 'is-loaded', this.state.isPreviewing ? 'is-previewing' : 'is-not-previewing', this.state.navState.locked ? 'is-locked-nav' : 'is-unlocked-nav', this.state.navState.open ? 'is-open-nav' : 'is-closed-nav', this.state.navState.disabled ? 'is-disabled-nav' : 'is-enabled-nav', 'is-focus-state-' + this.state.focusState.viewState].join(' ');
+
+			return _react2.default.createElement(
+				_reactIdleTimer2.default,
+				{
+					ref: 'idleTimer',
+					element: window,
+					timeout: IDLE_TIMEOUT_DURATION_MS,
+					idleAction: this.onIdle,
+					activeAction: this.onReturnFromIdle
+				},
+				_react2.default.createElement(
+					'div',
+					{
+						ref: 'container',
+						onMouseDown: this.onMouseDown.bind(this),
+						onScroll: this.onScroll.bind(this),
+						className: classNames
+					},
+					hideViewer ? null : _react2.default.createElement(
+						'header',
+						null,
+						_react2.default.createElement(
+							'div',
+							{ className: 'pad' },
+							_react2.default.createElement(
+								'span',
+								{ className: 'module-title' },
+								this.state.model.title
+							),
+							_react2.default.createElement(
+								'span',
+								{ className: 'location' },
+								navTargetTitle
+							),
+							_react2.default.createElement(_logo2.default, null)
+						)
+					),
+					hideViewer ? null : _react2.default.createElement(_nav2.default, { navState: this.state.navState }),
+					hideViewer ? null : prevEl,
+					hideViewer ? null : _react2.default.createElement(ModuleComponent, { model: this.state.model, moduleData: this.state }),
+					hideViewer ? null : nextEl,
+					this.state.isPreviewing ? _react2.default.createElement(
+						'div',
+						{ className: 'preview-banner' },
+						_react2.default.createElement(
+							'span',
+							null,
+							'You are previewing this module'
+						),
+						_react2.default.createElement(
+							'div',
+							{ className: 'controls' },
+							_react2.default.createElement(
+								'span',
+								null,
+								'Preview options:'
+							),
+							_react2.default.createElement(
+								'button',
+								{
+									onClick: this.unlockNavigation.bind(this),
+									disabled: !this.state.navState.locked
+								},
+								'Unlock navigation'
+							),
+							_react2.default.createElement(
+								'button',
+								{
+									className: 'button-clear-scores',
+									onClick: this.clearPreviewScores.bind(this)
+								},
+								'Reset assessments & questions'
+							)
+						),
+						_react2.default.createElement('div', { className: 'border' })
+					) : null,
+					_react2.default.createElement(FocusBlocker, { moduleData: this.state }),
+					modalItem && modalItem.component ? _react2.default.createElement(
+						ModalContainer,
+						null,
+						modalItem.component
+					) : null
+				)
+			);
+		}
+	}]);
+
+	return ViewerApp;
+}(_react2.default.Component);
+
+exports.default = ViewerApp;
+
+/***/ }),
+/* 150 */
+/***/ (function(module, exports) {
+
+// removed by extract-text-webpack-plugin
+
+/***/ }),
+/* 151 */
+/***/ (function(module, exports) {
+
+// removed by extract-text-webpack-plugin
+
+/***/ }),
+/* 152 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol" ? function (obj) { return typeof obj; } : function (obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; };
+
+var _createClass = function () {
+  function defineProperties(target, props) {
+    for (var i = 0; i < props.length; i++) {
+      var descriptor = props[i];descriptor.enumerable = descriptor.enumerable || false;descriptor.configurable = true;if ("value" in descriptor) descriptor.writable = true;Object.defineProperty(target, descriptor.key, descriptor);
+    }
+  }return function (Constructor, protoProps, staticProps) {
+    if (protoProps) defineProperties(Constructor.prototype, protoProps);if (staticProps) defineProperties(Constructor, staticProps);return Constructor;
+  };
+}();
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+
+var _react = __webpack_require__(10);
+
+var _react2 = _interopRequireDefault(_react);
+
+var _moment = __webpack_require__(0);
+
+var _moment2 = _interopRequireDefault(_moment);
+
+var _lodash = __webpack_require__(154);
+
+var _lodash2 = _interopRequireDefault(_lodash);
+
+function _interopRequireDefault(obj) {
+  return obj && obj.__esModule ? obj : { default: obj };
+}
+
+function _classCallCheck(instance, Constructor) {
+  if (!(instance instanceof Constructor)) {
+    throw new TypeError("Cannot call a class as a function");
+  }
+}
+
+function _possibleConstructorReturn(self, call) {
+  if (!self) {
+    throw new ReferenceError("this hasn't been initialised - super() hasn't been called");
+  }return call && ((typeof call === "undefined" ? "undefined" : _typeof(call)) === "object" || typeof call === "function") ? call : self;
+}
+
+function _inherits(subClass, superClass) {
+  if (typeof superClass !== "function" && superClass !== null) {
+    throw new TypeError("Super expression must either be null or a function, not " + (typeof superClass === "undefined" ? "undefined" : _typeof(superClass)));
+  }subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } });if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass;
+} /**
+   * React Idle Timer
+   *
+   * @author  Randy Lebeau
+   * @class   IdleTimer
+   *
+   */
+
+var IdleTimer = function (_Component) {
+  _inherits(IdleTimer, _Component);
+
+  function IdleTimer(props) {
+    _classCallCheck(this, IdleTimer);
+
+    var _this = _possibleConstructorReturn(this, Object.getPrototypeOf(IdleTimer).call(this, props));
+
+    _this.state = {
+      idle: false,
+      oldDate: +new Date(),
+      lastActive: +new Date(),
+      remaining: null,
+      tId: null,
+      pageX: null,
+      pageY: null
+    };
+
+    (0, _lodash2.default)(_this, ['_toggleIdleState', '_handleEvent', 'reset', 'pause', 'resume', 'getRemainingTime', 'getElapsedTime', 'getLastActiveTime', 'isIdle']);
+
+    return _this;
+  }
+
+  _createClass(IdleTimer, [{
+    key: 'componentWillMount',
+    value: function componentWillMount() {
+      var _this2 = this;
+
+      this.props.events.forEach(function (e) {
+        return _this2.props.element.addEventListener(e, _this2._handleEvent);
+      });
+    }
+  }, {
+    key: 'componentDidMount',
+    value: function componentDidMount() {
+      if (this.props.startOnLoad) this.reset();
+    }
+  }, {
+    key: 'componentWillUnmount',
+    value: function componentWillUnmount() {
+      var _this3 = this;
+
+      // Clear timeout to prevent delayed state changes
+      clearTimeout(this.state.tId);
+      // Unbind all events
+      this.props.events.forEach(function (e) {
+        return _this3.props.element.removeEventListener(e, _this3._handleEvent);
+      });
+    }
+  }, {
+    key: 'render',
+    value: function render() {
+      return this.props.children ? this.props.children : null;
+    }
+
+    /////////////////////
+    // Private Methods //
+    /////////////////////
+
+    /**
+     * Toggles the idle state and calls the proper action
+     *
+     * @return {void}
+     *
+     */
+
+  }, {
+    key: '_toggleIdleState',
+    value: function _toggleIdleState() {
+      // Set the state
+      this.setState({
+        idle: !this.state.idle
+      });
+
+      // Fire the appropriate action
+      if (!this.state.idle) this.props.activeAction();else this.props.idleAction();
+    }
+
+    /**
+     * Event handler for supported event types
+     *
+     * @param  {Object} e event object
+     * @return {void}
+     *
+     */
+
+  }, {
+    key: '_handleEvent',
+    value: function _handleEvent(e) {
+
+      // Already idle, ignore events
+      if (this.state.remaining) return;
+
+      // Mousemove event
+      if (e.type === 'mousemove') {
+        // if coord are same, it didn't move
+        if (e.pageX === this.state.pageX && e.pageY === this.state.pageY) return;
+        // if coord don't exist how could it move
+        if (typeof e.pageX === 'undefined' && typeof e.pageY === 'undefined') return;
+        // under 200 ms is hard to do, and you would have to stop, as continuous activity will bypass this
+        var elapsed = +new Date() - this.state.oldDate;
+        if (elapsed < 200) return;
+      }
+
+      // clear any existing timeout
+      clearTimeout(this.state.tId);
+
+      // if the idle timer is enabled, flip
+      if (this.state.idle) this._toggleIdleState(e);
+
+      this.setState({
+        lastActive: +new Date() // store when user was last active
+
+        , pageX: e.pageX // update mouse coord
+
+        , pageY: e.pageY,
+        tId: setTimeout(this._toggleIdleState, this.props.timeout) // set a new timeout
+      });
+    }
+
+    ////////////////
+    // Public API //
+    ////////////////
+
+    /**
+     * Restore initial settings and restart timer
+     *
+     * @return {Void}
+     *
+     */
+
+  }, {
+    key: 'reset',
+    value: function reset() {
+      // reset timers
+      clearTimeout(this.state.tId);
+
+      // reset settings
+      this.setState({
+        idle: false,
+        oldDate: +new Date(),
+        lastActive: this.state.oldDate,
+        remaining: null,
+        tId: setTimeout(this._toggleIdleState, this.props.timeout)
+      });
+    }
+
+    /**
+     * Store remaining time and stop timer.
+     * You can pause from idle or active state.
+     *
+     * @return {Void}
+     *
+     */
+
+  }, {
+    key: 'pause',
+    value: function pause() {
+      // this is already paused
+      if (this.state.remaining !== null) return;
+
+      // clear any existing timeout
+      clearTimeout(this.state.tId);
+
+      // define how much is left on the timer
+      this.setState({
+        remaining: this.props.timeout - (+new Date() - this.state.oldDate)
+      });
+    }
+
+    /**
+     * Resumes a stopped timer
+     *
+     * @return {Void}
+     *
+     */
+
+  }, {
+    key: 'resume',
+    value: function resume() {
+      // this isn't paused yet
+      if (this.state.remaining === null) return;
+
+      // start timer and clear remaining
+      if (!this.state.idle) {
+        this.setState({
+          tId: setTimeout(this._toggleIdleState, this.state.remaining),
+          remaining: null
+        });
+      }
+    }
+
+    /**
+     * Time remaining before idle
+     *
+     * @return {Number} Milliseconds remaining
+     *
+     */
+
+  }, {
+    key: 'getRemainingTime',
+    value: function getRemainingTime() {
+      // If idle there is no time remaining
+      if (this.state.idle) return 0;
+
+      // If its paused just return that
+      if (this.state.remaining != null) return this.state.remaining;
+
+      // Determine remaining, if negative idle didn't finish flipping, just return 0
+      var remaining = this.props.timeout - (+new Date() - this.state.lastActive);
+      if (remaining < 0) remaining = 0;
+
+      // If this is paused return that number, else return current remaining
+      return remaining;
+    }
+
+    /**
+     * How much time has elapsed
+     *
+     * @return {Timestamp}
+     *
+     */
+
+  }, {
+    key: 'getElapsedTime',
+    value: function getElapsedTime() {
+      return +new Date() - this.state.oldDate;
+    }
+
+    /**
+     * Last time the user was active
+     *
+     * @return {Timestamp}
+     *
+     */
+
+  }, {
+    key: 'getLastActiveTime',
+    value: function getLastActiveTime() {
+      if (this.props.format) return (0, _moment2.default)(this.state.lastActive).format(this.props.format);
+      return this.state.lastActive;
+    }
+
+    /**
+     * Is the user idle
+     *
+     * @return {Boolean}
+     *
+     */
+
+  }, {
+    key: 'isIdle',
+    value: function isIdle() {
+      return this.state.idle;
+    }
+  }]);
+
+  return IdleTimer;
+}(_react.Component);
+
+IdleTimer.propTypes = {
+  timeout: _react.PropTypes.number, // Activity timeout
+  events: _react.PropTypes.arrayOf(_react.PropTypes.string), // Activity events to bind
+  idleAction: _react.PropTypes.func, // Action to call when user becomes inactive
+  activeAction: _react.PropTypes.func, // Action to call when user becomes active
+  element: _react.PropTypes.oneOfType([_react.PropTypes.object, _react.PropTypes.string]), // Element ref to watch activty on
+  format: _react.PropTypes.string,
+  startOnLoad: _react.PropTypes.bool
+};
+IdleTimer.defaultProps = {
+  timeout: 1000 * 60 * 20, // 20 minutes
+  events: ['mousemove', 'keydown', 'wheel', 'DOMMouseScroll', 'mouseWheel', 'mousedown', 'touchstart', 'touchmove', 'MSPointerDown', 'MSPointerMove'],
+  idleAction: function idleAction() {},
+  activeAction: function activeAction() {},
+  element: document,
+  startOnLoad: true
+};
+exports.default = IdleTimer;
+
+/***/ }),
+/* 153 */
+/***/ (function(module, exports, __webpack_require__) {
+
+var map = {
+	"./af": 12,
+	"./af.js": 12,
+	"./ar": 13,
+	"./ar-dz": 14,
+	"./ar-dz.js": 14,
+	"./ar-kw": 15,
+	"./ar-kw.js": 15,
+	"./ar-ly": 16,
+	"./ar-ly.js": 16,
+	"./ar-ma": 17,
+	"./ar-ma.js": 17,
+	"./ar-sa": 18,
+	"./ar-sa.js": 18,
+	"./ar-tn": 19,
+	"./ar-tn.js": 19,
+	"./ar.js": 13,
+	"./az": 20,
+	"./az.js": 20,
+	"./be": 21,
+	"./be.js": 21,
+	"./bg": 22,
+	"./bg.js": 22,
+	"./bm": 23,
+	"./bm.js": 23,
+	"./bn": 24,
+	"./bn.js": 24,
+	"./bo": 25,
+	"./bo.js": 25,
+	"./br": 26,
+	"./br.js": 26,
+	"./bs": 27,
+	"./bs.js": 27,
+	"./ca": 28,
+	"./ca.js": 28,
+	"./cs": 29,
+	"./cs.js": 29,
+	"./cv": 30,
+	"./cv.js": 30,
+	"./cy": 31,
+	"./cy.js": 31,
+	"./da": 32,
+	"./da.js": 32,
+	"./de": 33,
+	"./de-at": 34,
+	"./de-at.js": 34,
+	"./de-ch": 35,
+	"./de-ch.js": 35,
+	"./de.js": 33,
+	"./dv": 36,
+	"./dv.js": 36,
+	"./el": 37,
+	"./el.js": 37,
+	"./en-au": 38,
+	"./en-au.js": 38,
+	"./en-ca": 39,
+	"./en-ca.js": 39,
+	"./en-gb": 40,
+	"./en-gb.js": 40,
+	"./en-ie": 41,
+	"./en-ie.js": 41,
+	"./en-il": 42,
+	"./en-il.js": 42,
+	"./en-nz": 43,
+	"./en-nz.js": 43,
+	"./eo": 44,
+	"./eo.js": 44,
+	"./es": 45,
+	"./es-do": 46,
+	"./es-do.js": 46,
+	"./es-us": 47,
+	"./es-us.js": 47,
+	"./es.js": 45,
+	"./et": 48,
+	"./et.js": 48,
+	"./eu": 49,
+	"./eu.js": 49,
+	"./fa": 50,
+	"./fa.js": 50,
+	"./fi": 51,
+	"./fi.js": 51,
+	"./fo": 52,
+	"./fo.js": 52,
+	"./fr": 53,
+	"./fr-ca": 54,
+	"./fr-ca.js": 54,
+	"./fr-ch": 55,
+	"./fr-ch.js": 55,
+	"./fr.js": 53,
+	"./fy": 56,
+	"./fy.js": 56,
+	"./gd": 57,
+	"./gd.js": 57,
+	"./gl": 58,
+	"./gl.js": 58,
+	"./gom-latn": 59,
+	"./gom-latn.js": 59,
+	"./gu": 60,
+	"./gu.js": 60,
+	"./he": 61,
+	"./he.js": 61,
+	"./hi": 62,
+	"./hi.js": 62,
+	"./hr": 63,
+	"./hr.js": 63,
+	"./hu": 64,
+	"./hu.js": 64,
+	"./hy-am": 65,
+	"./hy-am.js": 65,
+	"./id": 66,
+	"./id.js": 66,
+	"./is": 67,
+	"./is.js": 67,
+	"./it": 68,
+	"./it.js": 68,
+	"./ja": 69,
+	"./ja.js": 69,
+	"./jv": 70,
+	"./jv.js": 70,
+	"./ka": 71,
+	"./ka.js": 71,
+	"./kk": 72,
+	"./kk.js": 72,
+	"./km": 73,
+	"./km.js": 73,
+	"./kn": 74,
+	"./kn.js": 74,
+	"./ko": 75,
+	"./ko.js": 75,
+	"./ky": 76,
+	"./ky.js": 76,
+	"./lb": 77,
+	"./lb.js": 77,
+	"./lo": 78,
+	"./lo.js": 78,
+	"./lt": 79,
+	"./lt.js": 79,
+	"./lv": 80,
+	"./lv.js": 80,
+	"./me": 81,
+	"./me.js": 81,
+	"./mi": 82,
+	"./mi.js": 82,
+	"./mk": 83,
+	"./mk.js": 83,
+	"./ml": 84,
+	"./ml.js": 84,
+	"./mn": 85,
+	"./mn.js": 85,
+	"./mr": 86,
+	"./mr.js": 86,
+	"./ms": 87,
+	"./ms-my": 88,
+	"./ms-my.js": 88,
+	"./ms.js": 87,
+	"./mt": 89,
+	"./mt.js": 89,
+	"./my": 90,
+	"./my.js": 90,
+	"./nb": 91,
+	"./nb.js": 91,
+	"./ne": 92,
+	"./ne.js": 92,
+	"./nl": 93,
+	"./nl-be": 94,
+	"./nl-be.js": 94,
+	"./nl.js": 93,
+	"./nn": 95,
+	"./nn.js": 95,
+	"./pa-in": 96,
+	"./pa-in.js": 96,
+	"./pl": 97,
+	"./pl.js": 97,
+	"./pt": 98,
+	"./pt-br": 99,
+	"./pt-br.js": 99,
+	"./pt.js": 98,
+	"./ro": 100,
+	"./ro.js": 100,
+	"./ru": 101,
+	"./ru.js": 101,
+	"./sd": 102,
+	"./sd.js": 102,
+	"./se": 103,
+	"./se.js": 103,
+	"./si": 104,
+	"./si.js": 104,
+	"./sk": 105,
+	"./sk.js": 105,
+	"./sl": 106,
+	"./sl.js": 106,
+	"./sq": 107,
+	"./sq.js": 107,
+	"./sr": 108,
+	"./sr-cyrl": 109,
+	"./sr-cyrl.js": 109,
+	"./sr.js": 108,
+	"./ss": 110,
+	"./ss.js": 110,
+	"./sv": 111,
+	"./sv.js": 111,
+	"./sw": 112,
+	"./sw.js": 112,
+	"./ta": 113,
+	"./ta.js": 113,
+	"./te": 114,
+	"./te.js": 114,
+	"./tet": 115,
+	"./tet.js": 115,
+	"./tg": 116,
+	"./tg.js": 116,
+	"./th": 117,
+	"./th.js": 117,
+	"./tl-ph": 118,
+	"./tl-ph.js": 118,
+	"./tlh": 119,
+	"./tlh.js": 119,
+	"./tr": 120,
+	"./tr.js": 120,
+	"./tzl": 121,
+	"./tzl.js": 121,
+	"./tzm": 122,
+	"./tzm-latn": 123,
+	"./tzm-latn.js": 123,
+	"./tzm.js": 122,
+	"./ug-cn": 124,
+	"./ug-cn.js": 124,
+	"./uk": 125,
+	"./uk.js": 125,
+	"./ur": 126,
+	"./ur.js": 126,
+	"./uz": 127,
+	"./uz-latn": 128,
+	"./uz-latn.js": 128,
+	"./uz.js": 127,
+	"./vi": 129,
+	"./vi.js": 129,
+	"./x-pseudo": 130,
+	"./x-pseudo.js": 130,
+	"./yo": 131,
+	"./yo.js": 131,
+	"./zh-cn": 132,
+	"./zh-cn.js": 132,
+	"./zh-hk": 133,
+	"./zh-hk.js": 133,
+	"./zh-tw": 134,
+	"./zh-tw.js": 134
+};
+function webpackContext(req) {
+	return __webpack_require__(webpackContextResolve(req));
+};
+function webpackContextResolve(req) {
+	var id = map[req];
+	if(!(id + 1)) // check for number or string
+		throw new Error("Cannot find module '" + req + "'.");
+	return id;
+};
+webpackContext.keys = function webpackContextKeys() {
+	return Object.keys(map);
+};
+webpackContext.resolve = webpackContextResolve;
+module.exports = webpackContext;
+webpackContext.id = 153;
+
+/***/ }),
+/* 154 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+/**
+ * lodash 3.1.0 (Custom Build) <https://lodash.com/>
+ * Build: `lodash modern modularize exports="npm" -o ./`
+ * Copyright 2012-2015 The Dojo Foundation <http://dojofoundation.org/>
+ * Based on Underscore.js 1.8.2 <http://underscorejs.org/LICENSE>
+ * Copyright 2009-2015 Jeremy Ashkenas, DocumentCloud and Investigative Reporters & Editors
+ * Available under MIT license <https://lodash.com/license>
+ */
+var baseFlatten = __webpack_require__(155),
+    createWrapper = __webpack_require__(156),
+    functions = __webpack_require__(158),
+    restParam = __webpack_require__(162);
+
+/** Used to compose bitmasks for wrapper metadata. */
+var BIND_FLAG = 1;
+
+/**
+ * Binds methods of an object to the object itself, overwriting the existing
+ * method. Method names may be specified as individual arguments or as arrays
+ * of method names. If no method names are provided all enumerable function
+ * properties, own and inherited, of `object` are bound.
+ *
+ * **Note:** This method does not set the `length` property of bound functions.
+ *
+ * @static
+ * @memberOf _
+ * @category Function
+ * @param {Object} object The object to bind and assign the bound methods to.
+ * @param {...(string|string[])} [methodNames] The object method names to bind,
+ *  specified as individual method names or arrays of method names.
+ * @returns {Object} Returns `object`.
+ * @example
+ *
+ * var view = {
+ *   'label': 'docs',
+ *   'onClick': function() {
+ *     console.log('clicked ' + this.label);
+ *   }
+ * };
+ *
+ * _.bindAll(view);
+ * jQuery('#docs').on('click', view.onClick);
+ * // => logs 'clicked docs' when the element is clicked
+ */
+var bindAll = restParam(function (object, methodNames) {
+  methodNames = methodNames.length ? baseFlatten(methodNames) : functions(object);
+
+  var index = -1,
+      length = methodNames.length;
+
+  while (++index < length) {
+    var key = methodNames[index];
+    object[key] = createWrapper(object[key], BIND_FLAG, object);
+  }
+  return object;
+});
+
+module.exports = bindAll;
+
+/***/ }),
+/* 155 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -19754,8 +21120,8 @@ var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol
  * Copyright 2009-2015 Jeremy Ashkenas, DocumentCloud and Investigative Reporters & Editors
  * Available under MIT license <https://lodash.com/license>
  */
-var isArguments = __webpack_require__(10),
-    isArray = __webpack_require__(11);
+var isArguments = __webpack_require__(135),
+    isArray = __webpack_require__(136);
 
 /**
  * Checks if `value` is object-like.
@@ -19878,50 +21244,7 @@ function isLength(value) {
 module.exports = baseFlatten;
 
 /***/ }),
-/* 148 */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-
-
-/**
- * lodash 3.0.0 (Custom Build) <https://lodash.com/>
- * Build: `lodash modern modularize exports="npm" -o ./`
- * Copyright 2012-2015 The Dojo Foundation <http://dojofoundation.org/>
- * Based on Underscore.js 1.7.0 <http://underscorejs.org/LICENSE>
- * Copyright 2009-2015 Jeremy Ashkenas, DocumentCloud and Investigative Reporters & Editors
- * Available under MIT license <https://lodash.com/license>
- */
-var isFunction = __webpack_require__(153);
-
-/**
- * The base implementation of `_.functions` which creates an array of
- * `object` function property names filtered from those provided.
- *
- * @private
- * @param {Object} object The object to inspect.
- * @param {Array} props The property names to filter.
- * @returns {Array} Returns the new array of filtered property names.
- */
-function baseFunctions(object, props) {
-  var index = -1,
-      length = props.length,
-      resIndex = -1,
-      result = [];
-
-  while (++index < length) {
-    var key = props[index];
-    if (isFunction(object[key])) {
-      result[++resIndex] = key;
-    }
-  }
-  return result;
-}
-
-module.exports = baseFunctions;
-
-/***/ }),
-/* 149 */
+/* 156 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -19937,7 +21260,7 @@ var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol
  * Copyright 2009-2016 Jeremy Ashkenas, DocumentCloud and Investigative Reporters & Editors
  * Available under MIT license <https://lodash.com/license>
  */
-var root = __webpack_require__(150);
+var root = __webpack_require__(157);
 
 /** Used to compose bitmasks for wrapper metadata. */
 var BIND_FLAG = 1,
@@ -20610,7 +21933,7 @@ function toNumber(value) {
 module.exports = createWrapper;
 
 /***/ }),
-/* 150 */
+/* 157 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -20671,76 +21994,10 @@ function checkGlobal(value) {
 }
 
 module.exports = root;
-/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(135)(module), __webpack_require__(7)))
+/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(11)(module), __webpack_require__(7)))
 
 /***/ }),
-/* 151 */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-
-
-/**
- * lodash 3.1.0 (Custom Build) <https://lodash.com/>
- * Build: `lodash modern modularize exports="npm" -o ./`
- * Copyright 2012-2015 The Dojo Foundation <http://dojofoundation.org/>
- * Based on Underscore.js 1.8.2 <http://underscorejs.org/LICENSE>
- * Copyright 2009-2015 Jeremy Ashkenas, DocumentCloud and Investigative Reporters & Editors
- * Available under MIT license <https://lodash.com/license>
- */
-var baseFlatten = __webpack_require__(147),
-    createWrapper = __webpack_require__(149),
-    functions = __webpack_require__(152),
-    restParam = __webpack_require__(155);
-
-/** Used to compose bitmasks for wrapper metadata. */
-var BIND_FLAG = 1;
-
-/**
- * Binds methods of an object to the object itself, overwriting the existing
- * method. Method names may be specified as individual arguments or as arrays
- * of method names. If no method names are provided all enumerable function
- * properties, own and inherited, of `object` are bound.
- *
- * **Note:** This method does not set the `length` property of bound functions.
- *
- * @static
- * @memberOf _
- * @category Function
- * @param {Object} object The object to bind and assign the bound methods to.
- * @param {...(string|string[])} [methodNames] The object method names to bind,
- *  specified as individual method names or arrays of method names.
- * @returns {Object} Returns `object`.
- * @example
- *
- * var view = {
- *   'label': 'docs',
- *   'onClick': function() {
- *     console.log('clicked ' + this.label);
- *   }
- * };
- *
- * _.bindAll(view);
- * jQuery('#docs').on('click', view.onClick);
- * // => logs 'clicked docs' when the element is clicked
- */
-var bindAll = restParam(function (object, methodNames) {
-  methodNames = methodNames.length ? baseFlatten(methodNames) : functions(object);
-
-  var index = -1,
-      length = methodNames.length;
-
-  while (++index < length) {
-    var key = methodNames[index];
-    object[key] = createWrapper(object[key], BIND_FLAG, object);
-  }
-  return object;
-});
-
-module.exports = bindAll;
-
-/***/ }),
-/* 152 */
+/* 158 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -20754,8 +22011,8 @@ module.exports = bindAll;
  * Copyright 2009-2015 Jeremy Ashkenas, DocumentCloud and Investigative Reporters & Editors
  * Available under MIT license <https://lodash.com/license>
  */
-var baseFunctions = __webpack_require__(148),
-    keysIn = __webpack_require__(154);
+var baseFunctions = __webpack_require__(159),
+    keysIn = __webpack_require__(161);
 
 /**
  * Creates an array of function property names from all enumerable properties,
@@ -20779,7 +22036,50 @@ function functions(object) {
 module.exports = functions;
 
 /***/ }),
-/* 153 */
+/* 159 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+/**
+ * lodash 3.0.0 (Custom Build) <https://lodash.com/>
+ * Build: `lodash modern modularize exports="npm" -o ./`
+ * Copyright 2012-2015 The Dojo Foundation <http://dojofoundation.org/>
+ * Based on Underscore.js 1.7.0 <http://underscorejs.org/LICENSE>
+ * Copyright 2009-2015 Jeremy Ashkenas, DocumentCloud and Investigative Reporters & Editors
+ * Available under MIT license <https://lodash.com/license>
+ */
+var isFunction = __webpack_require__(160);
+
+/**
+ * The base implementation of `_.functions` which creates an array of
+ * `object` function property names filtered from those provided.
+ *
+ * @private
+ * @param {Object} object The object to inspect.
+ * @param {Array} props The property names to filter.
+ * @returns {Array} Returns the new array of filtered property names.
+ */
+function baseFunctions(object, props) {
+  var index = -1,
+      length = props.length,
+      resIndex = -1,
+      result = [];
+
+  while (++index < length) {
+    var key = props[index];
+    if (isFunction(object[key])) {
+      result[++resIndex] = key;
+    }
+  }
+  return result;
+}
+
+module.exports = baseFunctions;
+
+/***/ }),
+/* 160 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -20943,7 +22243,7 @@ module.exports = isFunction;
 /* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(7)))
 
 /***/ }),
-/* 154 */
+/* 161 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -20959,8 +22259,8 @@ var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol
  * Copyright 2009-2015 Jeremy Ashkenas, DocumentCloud and Investigative Reporters & Editors
  * Available under MIT license <https://lodash.com/license>
  */
-var isArguments = __webpack_require__(10),
-    isArray = __webpack_require__(11);
+var isArguments = __webpack_require__(135),
+    isArray = __webpack_require__(136);
 
 /** Used to detect unsigned integer values. */
 var reIsUint = /^\d+$/;
@@ -21083,7 +22383,7 @@ function keysIn(object) {
 module.exports = keysIn;
 
 /***/ }),
-/* 155 */
+/* 162 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -21161,469 +22461,784 @@ function restParam(func, start) {
 module.exports = restParam;
 
 /***/ }),
-/* 156 */
+/* 163 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
 
-
-var has = Object.prototype.hasOwnProperty;
-
-/**
- * Decode a URI encoded string.
- *
- * @param {String} input The URI encoded string.
- * @returns {String} The decoded string.
- * @api private
- */
-function decode(input) {
-  return decodeURIComponent(input.replace(/\+/g, ' '));
-}
-
-/**
- * Simple query string parser.
- *
- * @param {String} query The query string that needs to be parsed.
- * @returns {Object}
- * @api public
- */
-function querystring(query) {
-  var parser = /([^=?&]+)=?([^&]*)/g,
-      result = {},
-      part;
-
-  //
-  // Little nifty parsing hack, leverage the fact that RegExp.exec increments
-  // the lastIndex property so we can continue executing this loop until we've
-  // parsed all results.
-  //
-  for (; part = parser.exec(query); result[decode(part[1])] = decode(part[2])) {}
-
-  return result;
-}
-
-/**
- * Transform a query string to an object.
- *
- * @param {Object} obj Object that should be transformed.
- * @param {String} prefix Optional prefix.
- * @returns {String}
- * @api public
- */
-function querystringify(obj, prefix) {
-  prefix = prefix || '';
-
-  var pairs = [];
-
-  //
-  // Optionally prefix with a '?' if needed
-  //
-  if ('string' !== typeof prefix) prefix = '?';
-
-  for (var key in obj) {
-    if (has.call(obj, key)) {
-      pairs.push(encodeURIComponent(key) + '=' + encodeURIComponent(obj[key]));
-    }
-  }
-
-  return pairs.length ? prefix + pairs.join('&') : '';
-}
-
-//
-// Expose the module.
-//
-exports.stringify = querystringify;
-exports.parse = querystring;
-
-/***/ }),
-/* 157 */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-
-
-var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol" ? function (obj) { return typeof obj; } : function (obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; };
-
-var _createClass = function () {
-  function defineProperties(target, props) {
-    for (var i = 0; i < props.length; i++) {
-      var descriptor = props[i];descriptor.enumerable = descriptor.enumerable || false;descriptor.configurable = true;if ("value" in descriptor) descriptor.writable = true;Object.defineProperty(target, descriptor.key, descriptor);
-    }
-  }return function (Constructor, protoProps, staticProps) {
-    if (protoProps) defineProperties(Constructor.prototype, protoProps);if (staticProps) defineProperties(Constructor, staticProps);return Constructor;
-  };
-}();
 
 Object.defineProperty(exports, "__esModule", {
-  value: true
+	value: true
 });
 
-var _react = __webpack_require__(144);
+var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
 
-var _react2 = _interopRequireDefault(_react);
+__webpack_require__(164);
 
-var _moment = __webpack_require__(0);
+var _navUtil = __webpack_require__(2);
 
-var _moment2 = _interopRequireDefault(_moment);
+var _navUtil2 = _interopRequireDefault(_navUtil);
 
-var _lodash = __webpack_require__(151);
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
-var _lodash2 = _interopRequireDefault(_lodash);
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
-function _interopRequireDefault(obj) {
-  return obj && obj.__esModule ? obj : { default: obj };
-}
+function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
 
-function _classCallCheck(instance, Constructor) {
-  if (!(instance instanceof Constructor)) {
-    throw new TypeError("Cannot call a class as a function");
-  }
-}
+function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
 
-function _possibleConstructorReturn(self, call) {
-  if (!self) {
-    throw new ReferenceError("this hasn't been initialised - super() hasn't been called");
-  }return call && ((typeof call === "undefined" ? "undefined" : _typeof(call)) === "object" || typeof call === "function") ? call : self;
-}
+var InlineNavButton = function (_React$Component) {
+	_inherits(InlineNavButton, _React$Component);
 
-function _inherits(subClass, superClass) {
-  if (typeof superClass !== "function" && superClass !== null) {
-    throw new TypeError("Super expression must either be null or a function, not " + (typeof superClass === "undefined" ? "undefined" : _typeof(superClass)));
-  }subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } });if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass;
-} /**
-   * React Idle Timer
-   *
-   * @author  Randy Lebeau
-   * @class   IdleTimer
-   *
-   */
+	function InlineNavButton() {
+		_classCallCheck(this, InlineNavButton);
 
-var IdleTimer = function (_Component) {
-  _inherits(IdleTimer, _Component);
+		return _possibleConstructorReturn(this, (InlineNavButton.__proto__ || Object.getPrototypeOf(InlineNavButton)).apply(this, arguments));
+	}
 
-  function IdleTimer(props) {
-    _classCallCheck(this, IdleTimer);
+	_createClass(InlineNavButton, [{
+		key: 'onClick',
+		value: function onClick() {
+			if (this.props.disabled) {
+				return;
+			}
 
-    var _this = _possibleConstructorReturn(this, Object.getPrototypeOf(IdleTimer).call(this, props));
+			switch (this.props.type) {
+				case 'prev':
+					return _navUtil2.default.goPrev();
 
-    _this.state = {
-      idle: false,
-      oldDate: +new Date(),
-      lastActive: +new Date(),
-      remaining: null,
-      tId: null,
-      pageX: null,
-      pageY: null
-    };
+				case 'next':
+					return _navUtil2.default.goNext();
+			}
+		}
+	}, {
+		key: 'render',
+		value: function render() {
+			return React.createElement(
+				'div',
+				{
+					className: 'viewer--components--inline-nav-button is-' + this.props.type + (this.props.disabled ? ' is-not-enabled' : ' is-enabled'),
+					onClick: this.onClick.bind(this)
+				},
+				this.props.title
+			);
+		}
+	}]);
 
-    (0, _lodash2.default)(_this, ['_toggleIdleState', '_handleEvent', 'reset', 'pause', 'resume', 'getRemainingTime', 'getElapsedTime', 'getLastActiveTime', 'isIdle']);
+	return InlineNavButton;
+}(React.Component);
 
-    return _this;
-  }
-
-  _createClass(IdleTimer, [{
-    key: 'componentWillMount',
-    value: function componentWillMount() {
-      var _this2 = this;
-
-      this.props.events.forEach(function (e) {
-        return _this2.props.element.addEventListener(e, _this2._handleEvent);
-      });
-    }
-  }, {
-    key: 'componentDidMount',
-    value: function componentDidMount() {
-      if (this.props.startOnLoad) this.reset();
-    }
-  }, {
-    key: 'componentWillUnmount',
-    value: function componentWillUnmount() {
-      var _this3 = this;
-
-      // Clear timeout to prevent delayed state changes
-      clearTimeout(this.state.tId);
-      // Unbind all events
-      this.props.events.forEach(function (e) {
-        return _this3.props.element.removeEventListener(e, _this3._handleEvent);
-      });
-    }
-  }, {
-    key: 'render',
-    value: function render() {
-      return this.props.children ? this.props.children : null;
-    }
-
-    /////////////////////
-    // Private Methods //
-    /////////////////////
-
-    /**
-     * Toggles the idle state and calls the proper action
-     *
-     * @return {void}
-     *
-     */
-
-  }, {
-    key: '_toggleIdleState',
-    value: function _toggleIdleState() {
-      // Set the state
-      this.setState({
-        idle: !this.state.idle
-      });
-
-      // Fire the appropriate action
-      if (!this.state.idle) this.props.activeAction();else this.props.idleAction();
-    }
-
-    /**
-     * Event handler for supported event types
-     *
-     * @param  {Object} e event object
-     * @return {void}
-     *
-     */
-
-  }, {
-    key: '_handleEvent',
-    value: function _handleEvent(e) {
-
-      // Already idle, ignore events
-      if (this.state.remaining) return;
-
-      // Mousemove event
-      if (e.type === 'mousemove') {
-        // if coord are same, it didn't move
-        if (e.pageX === this.state.pageX && e.pageY === this.state.pageY) return;
-        // if coord don't exist how could it move
-        if (typeof e.pageX === 'undefined' && typeof e.pageY === 'undefined') return;
-        // under 200 ms is hard to do, and you would have to stop, as continuous activity will bypass this
-        var elapsed = +new Date() - this.state.oldDate;
-        if (elapsed < 200) return;
-      }
-
-      // clear any existing timeout
-      clearTimeout(this.state.tId);
-
-      // if the idle timer is enabled, flip
-      if (this.state.idle) this._toggleIdleState(e);
-
-      this.setState({
-        lastActive: +new Date() // store when user was last active
-
-        , pageX: e.pageX // update mouse coord
-
-        , pageY: e.pageY,
-        tId: setTimeout(this._toggleIdleState, this.props.timeout) // set a new timeout
-      });
-    }
-
-    ////////////////
-    // Public API //
-    ////////////////
-
-    /**
-     * Restore initial settings and restart timer
-     *
-     * @return {Void}
-     *
-     */
-
-  }, {
-    key: 'reset',
-    value: function reset() {
-      // reset timers
-      clearTimeout(this.state.tId);
-
-      // reset settings
-      this.setState({
-        idle: false,
-        oldDate: +new Date(),
-        lastActive: this.state.oldDate,
-        remaining: null,
-        tId: setTimeout(this._toggleIdleState, this.props.timeout)
-      });
-    }
-
-    /**
-     * Store remaining time and stop timer.
-     * You can pause from idle or active state.
-     *
-     * @return {Void}
-     *
-     */
-
-  }, {
-    key: 'pause',
-    value: function pause() {
-      // this is already paused
-      if (this.state.remaining !== null) return;
-
-      // clear any existing timeout
-      clearTimeout(this.state.tId);
-
-      // define how much is left on the timer
-      this.setState({
-        remaining: this.props.timeout - (+new Date() - this.state.oldDate)
-      });
-    }
-
-    /**
-     * Resumes a stopped timer
-     *
-     * @return {Void}
-     *
-     */
-
-  }, {
-    key: 'resume',
-    value: function resume() {
-      // this isn't paused yet
-      if (this.state.remaining === null) return;
-
-      // start timer and clear remaining
-      if (!this.state.idle) {
-        this.setState({
-          tId: setTimeout(this._toggleIdleState, this.state.remaining),
-          remaining: null
-        });
-      }
-    }
-
-    /**
-     * Time remaining before idle
-     *
-     * @return {Number} Milliseconds remaining
-     *
-     */
-
-  }, {
-    key: 'getRemainingTime',
-    value: function getRemainingTime() {
-      // If idle there is no time remaining
-      if (this.state.idle) return 0;
-
-      // If its paused just return that
-      if (this.state.remaining != null) return this.state.remaining;
-
-      // Determine remaining, if negative idle didn't finish flipping, just return 0
-      var remaining = this.props.timeout - (+new Date() - this.state.lastActive);
-      if (remaining < 0) remaining = 0;
-
-      // If this is paused return that number, else return current remaining
-      return remaining;
-    }
-
-    /**
-     * How much time has elapsed
-     *
-     * @return {Timestamp}
-     *
-     */
-
-  }, {
-    key: 'getElapsedTime',
-    value: function getElapsedTime() {
-      return +new Date() - this.state.oldDate;
-    }
-
-    /**
-     * Last time the user was active
-     *
-     * @return {Timestamp}
-     *
-     */
-
-  }, {
-    key: 'getLastActiveTime',
-    value: function getLastActiveTime() {
-      if (this.props.format) return (0, _moment2.default)(this.state.lastActive).format(this.props.format);
-      return this.state.lastActive;
-    }
-
-    /**
-     * Is the user idle
-     *
-     * @return {Boolean}
-     *
-     */
-
-  }, {
-    key: 'isIdle',
-    value: function isIdle() {
-      return this.state.idle;
-    }
-  }]);
-
-  return IdleTimer;
-}(_react.Component);
-
-IdleTimer.propTypes = {
-  timeout: _react.PropTypes.number, // Activity timeout
-  events: _react.PropTypes.arrayOf(_react.PropTypes.string), // Activity events to bind
-  idleAction: _react.PropTypes.func, // Action to call when user becomes inactive
-  activeAction: _react.PropTypes.func, // Action to call when user becomes active
-  element: _react.PropTypes.oneOfType([_react.PropTypes.object, _react.PropTypes.string]), // Element ref to watch activty on
-  format: _react.PropTypes.string,
-  startOnLoad: _react.PropTypes.bool
-};
-IdleTimer.defaultProps = {
-  timeout: 1000 * 60 * 20, // 20 minutes
-  events: ['mousemove', 'keydown', 'wheel', 'DOMMouseScroll', 'mouseWheel', 'mousedown', 'touchstart', 'touchmove', 'MSPointerDown', 'MSPointerMove'],
-  idleAction: function idleAction() {},
-  activeAction: function activeAction() {},
-  element: document,
-  startOnLoad: true
-};
-exports.default = IdleTimer;
+exports.default = InlineNavButton;
 
 /***/ }),
-/* 158 */
+/* 164 */
+/***/ (function(module, exports) {
+
+// removed by extract-text-webpack-plugin
+
+/***/ }),
+/* 165 */
+/***/ (function(module, exports) {
+
+// removed by extract-text-webpack-plugin
+
+/***/ }),
+/* 166 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
 
 
-/**
- * Check if we're required to add a port number.
- *
- * @see https://url.spec.whatwg.org/#default-port
- * @param {Number|String} port Port number we need to check
- * @param {String} protocol Protocol we need to check against.
- * @returns {Boolean} Is it a default port for the given protocol
- * @api private
- */
+Object.defineProperty(exports, "__esModule", {
+	value: true
+});
 
-module.exports = function required(port, protocol) {
-  protocol = protocol.split(':')[0];
-  port = +port;
+var _assessmentUtil = __webpack_require__(5);
 
-  if (!port) return false;
+var _assessmentUtil2 = _interopRequireDefault(_assessmentUtil);
 
-  switch (protocol) {
-    case 'http':
-    case 'ws':
-      return port !== 80;
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
-    case 'https':
-    case 'wss':
-      return port !== 443;
+var getScoreComparisionData = function getScoreComparisionData(allAttempts, attemptNumberToGenerateReportFor) {
+	if (allAttempts.length === 0) {
+		return {
+			prevHighestInfo: null,
+			newInfo: null
+		};
+	}
 
-    case 'ftp':
-      return port !== 21;
+	var prevAttempts = allAttempts.slice(0, attemptNumberToGenerateReportFor - 1);
+	var highestAttempts = _assessmentUtil2.default.findHighestAttempts(prevAttempts, 'assessmentScore');
+	var prevHighestAttempt = highestAttempts.length === 0 ? null : highestAttempts[0];
 
-    case 'gopher':
-      return port !== 70;
-
-    case 'file':
-      return false;
-  }
-
-  return port !== 0;
+	return {
+		prevHighestInfo: prevHighestAttempt ? prevHighestAttempt.assessmentScoreDetails : null,
+		newInfo: allAttempts[attemptNumberToGenerateReportFor - 1].assessmentScoreDetails
+	};
 };
 
+exports.default = getScoreComparisionData;
+
 /***/ }),
-/* 159 */
+/* 167 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+Object.defineProperty(exports, "__esModule", {
+	value: true
+});
+
+var _getDisplayFriendlyScore = __webpack_require__(6);
+
+var _getDisplayFriendlyScore2 = _interopRequireDefault(_getDisplayFriendlyScore);
+
+var _getStatusResult = __webpack_require__(168);
+
+var _getStatusResult2 = _interopRequireDefault(_getStatusResult);
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+var getReportDetailsForAttempt = function getReportDetailsForAttempt(assessmentRubric, scoreInfo) {
+	var statusResult = (0, _getStatusResult2.default)(assessmentRubric, scoreInfo.status);
+
+	return {
+		rubricType: assessmentRubric.type,
+		mods: scoreInfo.rewardedMods.map(function (modIndex) {
+			return assessmentRubric.mods[modIndex];
+		}),
+		status: scoreInfo.status,
+		statusResult: statusResult,
+		passingAttemptScore: typeof assessmentRubric.passingAttemptScore !== 'undefined' ? assessmentRubric.passingAttemptScore : 100,
+		isAttemptScore100: scoreInfo.attemptScore === 100,
+		isAssessScoreOver100: scoreInfo.status === 'passed' && scoreInfo.assessmentScore !== null && scoreInfo.assessmentScore + scoreInfo.rewardTotal > 100
+	};
+};
+
+exports.default = getReportDetailsForAttempt;
+
+/***/ }),
+/* 168 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+Object.defineProperty(exports, "__esModule", {
+	value: true
+});
+var getStatusResult = function getStatusResult(rubric, status) {
+	switch (status) {
+		case 'passed':
+			return typeof rubric.passedResult !== 'undefined' ? rubric.passedResult : 100;
+		case 'failed':
+			return typeof rubric.failedResult !== 'undefined' ? rubric.failedResult : 0;
+		case 'unableToPass':
+			return typeof rubric.unableToPassResult !== 'undefined' ? rubric.unableToPassResult : 0;
+	}
+
+	throw new Error('Unknown status: ' + status);
+};
+
+exports.default = getStatusResult;
+
+/***/ }),
+/* 169 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+Object.defineProperty(exports, "__esModule", {
+	value: true
+});
+
+var _getDisplayFriendlyScore = __webpack_require__(6);
+
+var _getDisplayFriendlyScore2 = _interopRequireDefault(_getDisplayFriendlyScore);
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+var getReportDetailsForAttempt = function getReportDetailsForAttempt(scoreInfo, totalNumberOfAttemptsAllowed) {
+	return {
+		attemptNum: '' + scoreInfo.attemptNumber,
+		attemptScore: (0, _getDisplayFriendlyScore2.default)(scoreInfo.attemptScore),
+		assessScore: scoreInfo.assessmentModdedScore === null ? 'Did Not Pass' : (0, _getDisplayFriendlyScore2.default)(scoreInfo.assessmentModdedScore),
+		totalNumberOfAttemptsAllowed: '' + totalNumberOfAttemptsAllowed
+	};
+};
+
+exports.default = getReportDetailsForAttempt;
+
+/***/ }),
+/* 170 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+Object.defineProperty(exports, "__esModule", {
+	value: true
+});
+var getScoreChangeDescription = function getScoreChangeDescription(_ref) {
+	var prevHighestInfo = _ref.prevHighestInfo,
+	    newInfo = _ref.newInfo;
+
+	if (prevHighestInfo === null || newInfo === null) return null;
+
+	var prevHighestScore = prevHighestInfo.assessmentModdedScore;
+	var newScore = newInfo.assessmentModdedScore;
+
+	if (newScore === null && prevHighestScore === null) {
+		return 'This did not change your recorded score';
+	}
+
+	if (prevHighestScore === null) {
+		return '\u2714 Your recorded score was updated to ' + Math.round(newScore) + '%';
+	}
+
+	if (newScore > prevHighestScore) {
+		return '\u2714 Your recorded score was updated from ' + Math.round(prevHighestScore) + '% to ' + Math.round(newScore) + '%';
+	}
+
+	if (newScore === prevHighestScore) {
+		return 'This maintains your recorded score of ' + Math.round(prevHighestScore) + '%';
+	}
+
+	// Else newScore === null && prevHighestScore !== null
+	return 'This did not change your recorded score of ' + Math.round(prevHighestScore) + '%';
+};
+
+exports.default = getScoreChangeDescription;
+
+/***/ }),
+/* 171 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+Object.defineProperty(exports, "__esModule", {
+	value: true
+});
+
+var _getDisplayFriendlyScore = __webpack_require__(6);
+
+var _getDisplayFriendlyScore2 = _interopRequireDefault(_getDisplayFriendlyScore);
+
+var _getTextItemsForMods = __webpack_require__(172);
+
+var _getTextItemsForMods2 = _interopRequireDefault(_getTextItemsForMods);
+
+var _getDisplayType = __webpack_require__(173);
+
+var _getDisplayType2 = _interopRequireDefault(_getDisplayType);
+
+var _displayTypes = __webpack_require__(142);
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+var getPassingRange = function getPassingRange(passingNumber) {
+	if (passingNumber === '100') return '100%';
+	return (0, _getDisplayFriendlyScore2.default)(passingNumber) + '% or higher';
+};
+
+var getTextItems = function getTextItems(_ref, _ref2) {
+	var rubricType = _ref.rubricType,
+	    mods = _ref.mods,
+	    status = _ref.status,
+	    statusResult = _ref.statusResult,
+	    passingAttemptScore = _ref.passingAttemptScore,
+	    isAttemptScore100 = _ref.isAttemptScore100,
+	    isAssessScoreOver100 = _ref.isAssessScoreOver100;
+	var attemptNum = _ref2.attemptNum,
+	    attemptScore = _ref2.attemptScore,
+	    assessScore = _ref2.assessScore,
+	    totalNumberOfAttemptsAllowed = _ref2.totalNumberOfAttemptsAllowed;
+
+	var items = [];
+
+	switch ((0, _getDisplayType2.default)({
+		rubricType: rubricType,
+		mods: mods,
+		status: status,
+		statusResult: statusResult,
+		isAttemptScore100: isAttemptScore100
+	})) {
+		case _displayTypes.TYPE_ATTEMPT_WITHOUT_MODS_REWARDED:
+		case _displayTypes.TYPE_PASSFAIL_PASSED_GIVEN_ATTEMPT_SCORE_WITHOUT_MODS_REWARDED:
+		case _displayTypes.TYPE_PASSFAIL_PASSED_GIVEN_SCORE_AND_ATTEMPT_SCORE_IS_100_AND_NO_MODS_REWARDED:
+		case _displayTypes.ERROR_UNKNOWN_DISPLAY_TYPE:
+			// Shouldn't get here but we still want to show their score
+			items.push({
+				type: 'total',
+				text: 'Score',
+				value: assessScore
+			});
+			break;
+
+		case _displayTypes.TYPE_ATTEMPT_WITH_MODS_REWARDED:
+		case _displayTypes.TYPE_PASSFAIL_PASSED_GIVEN_ATTEMPT_SCORE_WITH_MODS_REWARDED:
+			items.push({
+				type: 'value',
+				text: 'Attempt Score',
+				value: attemptScore
+			});
+			break;
+
+		case _displayTypes.TYPE_PASSFAIL_PASSED_GIVEN_SCORE_AND_ATTEMPT_SCORE_LESS_THAN_100:
+			items.push({
+				type: 'value',
+				text: 'Attempt Score (Passed)',
+				value: attemptScore
+			}, {
+				type: 'divider'
+			}, {
+				type: 'value',
+				text: 'Score adjusted for passing',
+				value: (0, _getDisplayFriendlyScore2.default)(statusResult)
+			});
+			break;
+
+		case _displayTypes.TYPE_PASSFAIL_PASSED_GIVEN_SCORE_AND_ATTEMPT_SCORE_IS_100_AND_MODS_REWARDED:
+			items.push({
+				type: 'value',
+				text: 'Attempt Score (Passed)',
+				value: attemptScore
+			});
+			break;
+
+		case _displayTypes.TYPE_PASSFAIL_FAILED_GIVEN_ATTEMPT_SCORE:
+		case _displayTypes.TYPE_PASSFAIL_FAILED_GIVEN_NO_SCORE:
+			items.push({
+				type: 'value',
+				text: 'Attempt Score',
+				value: attemptScore
+			}, {
+				type: 'divider'
+			}, {
+				type: 'text',
+				text: 'You need ' + getPassingRange(passingAttemptScore) + ' to pass'
+			});
+			break;
+
+		case _displayTypes.TYPE_PASSFAIL_FAILED_GIVEN_SCORE:
+			items.push({
+				type: 'value',
+				text: 'Attempt Score',
+				value: attemptScore
+			}, {
+				type: 'divider'
+			}, {
+				type: 'value',
+				text: 'Score adjusted for not passing (less than ' + (0, _getDisplayFriendlyScore2.default)(passingAttemptScore) + '%)',
+				value: (0, _getDisplayFriendlyScore2.default)(statusResult)
+			});
+			break;
+
+		case _displayTypes.TYPE_PASSFAIL_UNABLE_TO_PASS_GIVEN_NO_SCORE:
+			items.push({
+				type: 'value',
+				text: 'Attempt Score',
+				value: attemptScore
+			}, {
+				type: 'divider'
+			}, {
+				type: 'text',
+				text: 'You needed ' + getPassingRange(passingAttemptScore) + ' to pass'
+			});
+			break;
+
+		case _displayTypes.TYPE_PASSFAIL_UNABLE_TO_PASS_GIVEN_HIGHEST_ATTEMPT_SCORE:
+			items.push({
+				type: 'value',
+				text: 'Attempt Score',
+				value: attemptScore
+			}, {
+				type: 'divider'
+			}, {
+				type: 'text',
+				text: 'You did not achieve a passing ' + getPassingRange(passingAttemptScore) + ' score within the number of attempts available. Your highest attempt score will be used instead.'
+			}, {
+				type: 'divider'
+			}, {
+				type: 'value',
+				text: 'Highest attempt score (Attempt\xA0' + attemptNum + ')',
+				value: assessScore
+			});
+			break;
+
+		case _displayTypes.TYPE_PASSFAIL_UNABLE_TO_PASS_GIVEN_SCORE:
+			items.push({
+				type: 'value',
+				text: 'Attempt Score',
+				value: attemptScore
+			}, {
+				type: 'divider'
+			}, {
+				type: 'text',
+				text: 'You did not achieve a passing ' + getPassingRange(passingAttemptScore) + ' score within the number of attempts available.'
+			}, {
+				type: 'value',
+				text: 'Score for not achieving a passing attempt',
+				value: (0, _getDisplayFriendlyScore2.default)(statusResult)
+			});
+			break;
+	}
+
+	items = items.concat((0, _getTextItemsForMods2.default)(mods, totalNumberOfAttemptsAllowed));
+
+	if (items.length > 1) {
+		items.push({
+			type: 'divider'
+		}, {
+			type: 'total',
+			text: 'Total Score' + (isAssessScoreOver100 ? ' (Max 100%)' : ''),
+			// value: assessScore === null ? 'Did Not Pass' : assessScore
+			value: assessScore
+		});
+	}
+
+	return items;
+};
+
+exports.default = getTextItems;
+
+/***/ }),
+/* 172 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+Object.defineProperty(exports, "__esModule", {
+	value: true
+});
+
+var _getDisplayFriendlyScore = __webpack_require__(6);
+
+var _getDisplayFriendlyScore2 = _interopRequireDefault(_getDisplayFriendlyScore);
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+var whitespaceRegex = /\s/g;
+
+var getModText = function getModText(attemptCondition, totalNumberOfAttemptsAllowed) {
+	attemptCondition = ('' + attemptCondition).replace(whitespaceRegex, '').replace('$last_attempt', '' + totalNumberOfAttemptsAllowed);
+
+	var range = [];
+	if (attemptCondition.indexOf(',') === -1) {
+		range.push(parseInt(attemptCondition, 10));
+	} else {
+		var tokens = attemptCondition.split(',');
+		range.push(parseInt(tokens[0].substr(1), 10));
+		range.push(parseInt(tokens[1].substr(0, tokens[1].length - 1), 10));
+
+		if (tokens[0].charAt(0) === '(') range[0]++;
+		if (tokens[1].charAt(tokens[1].length - 1) === ')') range[1]--;
+
+		if (range[0] === range[1]) range.splice(1, 1);
+	}
+
+	if (range.length === 1) {
+		if (range[0] === 1) return 'Passed on first attempt';
+		if (range[0] === totalNumberOfAttemptsAllowed) return 'Passed on last attempt';
+		return 'Passed on attempt\xA0' + range[0];
+	}
+
+	return 'Passed on attempts ' + range[0] + ' to ' + range[1];
+};
+
+var getTextItemsForMods = function getTextItemsForMods(mods, totalNumberOfAttemptsAllowed) {
+	return mods.map(function (mod) {
+		return {
+			type: parseInt(mod.reward) >= 0 ? 'extra-credit' : 'penalty',
+			text: getModText(mod.attemptCondition, totalNumberOfAttemptsAllowed),
+			value: (0, _getDisplayFriendlyScore2.default)(Math.abs(mod.reward))
+		};
+	});
+};
+
+exports.default = getTextItemsForMods;
+
+/***/ }),
+/* 173 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+Object.defineProperty(exports, "__esModule", {
+	value: true
+});
+
+var _displayTypes = __webpack_require__(142);
+
+var getDisplayType = function getDisplayType(_ref) {
+	var rubricType = _ref.rubricType,
+	    mods = _ref.mods,
+	    status = _ref.status,
+	    statusResult = _ref.statusResult,
+	    isAttemptScore100 = _ref.isAttemptScore100;
+
+	var passed = status === 'passed';
+	var failed = status === 'failed';
+	var unableToPass = status === 'unableToPass';
+	var isAttemptRubric = rubricType === 'attempt';
+	var isPassFailRubric = rubricType === 'pass-fail';
+	var isRewardedMods = mods.length > 0;
+	var isResultNumeric = Number.isFinite(parseFloat(statusResult));
+	var isResultNoScore = statusResult === 'no-score';
+	var isResultAttemptScore = statusResult === '$attempt_score';
+	var isResultHighestAttemptScore = statusResult === '$highest_attempt_score';
+
+	var items = [];
+
+	if (isAttemptRubric && passed && isResultAttemptScore && !isRewardedMods) {
+		return _displayTypes.TYPE_ATTEMPT_WITHOUT_MODS_REWARDED;
+	}
+	if (isAttemptRubric && passed && isResultAttemptScore && isRewardedMods) {
+		return _displayTypes.TYPE_ATTEMPT_WITH_MODS_REWARDED;
+	}
+	if (isPassFailRubric && passed && isResultAttemptScore && !isRewardedMods) {
+		return _displayTypes.TYPE_PASSFAIL_PASSED_GIVEN_ATTEMPT_SCORE_WITHOUT_MODS_REWARDED;
+	}
+	if (isPassFailRubric && passed && isResultAttemptScore && isRewardedMods) {
+		return _displayTypes.TYPE_PASSFAIL_PASSED_GIVEN_ATTEMPT_SCORE_WITH_MODS_REWARDED;
+	}
+	if (isPassFailRubric && passed && isResultNumeric && !isAttemptScore100) {
+		return _displayTypes.TYPE_PASSFAIL_PASSED_GIVEN_SCORE_AND_ATTEMPT_SCORE_LESS_THAN_100;
+	}
+	if (isPassFailRubric && passed && isResultNumeric && isAttemptScore100 && !isRewardedMods) {
+		return _displayTypes.TYPE_PASSFAIL_PASSED_GIVEN_SCORE_AND_ATTEMPT_SCORE_IS_100_AND_NO_MODS_REWARDED;
+	}
+	if (isPassFailRubric && passed && isResultNumeric && isAttemptScore100 && isRewardedMods) {
+		return _displayTypes.TYPE_PASSFAIL_PASSED_GIVEN_SCORE_AND_ATTEMPT_SCORE_IS_100_AND_MODS_REWARDED;
+	}
+	if (isPassFailRubric && failed && isResultAttemptScore && !isRewardedMods) {
+		return _displayTypes.TYPE_PASSFAIL_FAILED_GIVEN_ATTEMPT_SCORE;
+	}
+	if (isPassFailRubric && failed && isResultNoScore && !isRewardedMods) {
+		return _displayTypes.TYPE_PASSFAIL_FAILED_GIVEN_NO_SCORE;
+	}
+	if (isPassFailRubric && failed && isResultNumeric && !isRewardedMods) {
+		return _displayTypes.TYPE_PASSFAIL_FAILED_GIVEN_SCORE;
+	}
+	if (isPassFailRubric && unableToPass && isResultNoScore && !isRewardedMods) {
+		return _displayTypes.TYPE_PASSFAIL_UNABLE_TO_PASS_GIVEN_NO_SCORE;
+	}
+	if (isPassFailRubric && unableToPass && isResultHighestAttemptScore && !isRewardedMods) {
+		return _displayTypes.TYPE_PASSFAIL_UNABLE_TO_PASS_GIVEN_HIGHEST_ATTEMPT_SCORE;
+	}
+	if (isPassFailRubric && unableToPass && isResultNumeric && !isRewardedMods) {
+		return _displayTypes.TYPE_PASSFAIL_UNABLE_TO_PASS_GIVEN_SCORE;
+	}
+
+	return _displayTypes.ERROR_UNKNOWN_DISPLAY_TYPE;
+};
+
+exports.default = getDisplayType;
+
+/***/ }),
+/* 174 */
+/***/ (function(module, exports) {
+
+// removed by extract-text-webpack-plugin
+
+/***/ }),
+/* 175 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+Object.defineProperty(exports, "__esModule", {
+	value: true
+});
+
+var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+
+__webpack_require__(176);
+
+var _navUtil = __webpack_require__(2);
+
+var _navUtil2 = _interopRequireDefault(_navUtil);
+
+var _logo = __webpack_require__(137);
+
+var _logo2 = _interopRequireDefault(_logo);
+
+var _isornot = __webpack_require__(138);
+
+var _isornot2 = _interopRequireDefault(_isornot);
+
+var _Common = __webpack_require__(1);
+
+var _Common2 = _interopRequireDefault(_Common);
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
+
+function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
+
+var OboModel = _Common2.default.models.OboModel;
+var StyleableText = _Common2.default.text.StyleableText;
+var StyleableTextComponent = _Common2.default.text.StyleableTextComponent;
+
+var Nav = function (_React$Component) {
+	_inherits(Nav, _React$Component);
+
+	function Nav() {
+		_classCallCheck(this, Nav);
+
+		return _possibleConstructorReturn(this, (Nav.__proto__ || Object.getPrototypeOf(Nav)).apply(this, arguments));
+	}
+
+	_createClass(Nav, [{
+		key: 'onClick',
+		value: function onClick(item) {
+			switch (item.type) {
+				case 'link':
+					if (!_navUtil2.default.canNavigate(this.props.navState)) return;
+					_navUtil2.default.gotoPath(item.fullPath);
+					break;
+
+				case 'sub-link':
+					var el = OboModel.models[item.id].getDomEl();
+					el.scrollIntoView({ behavior: 'smooth', block: 'start' });
+					break;
+			}
+		}
+	}, {
+		key: 'renderLabel',
+		value: function renderLabel(label) {
+			if (label instanceof StyleableText) {
+				return React.createElement(StyleableTextComponent, { text: label });
+			}
+
+			return React.createElement(
+				'a',
+				null,
+				label
+			);
+		}
+	}, {
+		key: 'renderLink',
+		value: function renderLink(index, isSelected, list, lockEl) {
+			var item = list[index];
+			var isFirstInList = !list[index - 1];
+			var isLastInList = !list[index + 1];
+
+			var className = 'link' + (0, _isornot2.default)(isSelected, 'selected') + (0, _isornot2.default)(item.flags.visited, 'visited') + (0, _isornot2.default)(item.flags.complete, 'complete') + (0, _isornot2.default)(item.flags.correct, 'correct') + (0, _isornot2.default)(item.flags.assessment, 'assessment') + (0, _isornot2.default)(isFirstInList, 'first-in-list') + (0, _isornot2.default)(isLastInList, 'last-in-list');
+
+			return React.createElement(
+				'li',
+				{ key: index, onClick: this.onClick.bind(this, item), className: className },
+				this.renderLabel(item.label),
+				lockEl
+			);
+		}
+	}, {
+		key: 'renderSubLink',
+		value: function renderSubLink(index, isSelected, list, lockEl) {
+			var item = list[index];
+			var isLastInList = !list[index + 1];
+
+			var className = 'sub-link' + (0, _isornot2.default)(isSelected, 'selected') + (0, _isornot2.default)(item.flags.correct, 'correct') + (0, _isornot2.default)(isLastInList, 'last-in-list');
+
+			return React.createElement(
+				'li',
+				{ key: index, onClick: this.onClick.bind(this, item), className: className },
+				this.renderLabel(item.label),
+				lockEl
+			);
+		}
+	}, {
+		key: 'renderHeading',
+		value: function renderHeading(index, item) {
+			return React.createElement(
+				'li',
+				{ key: index, className: 'heading is-not-selected' },
+				this.renderLabel(item.label)
+			);
+		}
+
+		// renderSep(index) {
+		// 	return (
+		// 		<li key={index} className="seperator">
+		// 			<hr />
+		// 		</li>
+		// 	)
+		// }
+
+	}, {
+		key: 'getLockEl',
+		value: function getLockEl(isLocked) {
+			if (isLocked) {
+				return React.createElement('div', { className: 'lock-icon' });
+			}
+		}
+	}, {
+		key: 'render',
+		value: function render() {
+			var _this2 = this;
+
+			var navState = this.props.navState;
+			var lockEl = this.getLockEl(navState.locked);
+
+			var list = _navUtil2.default.getOrderedList(navState);
+
+			var className = 'viewer--components--nav' + (0, _isornot2.default)(navState.locked, 'locked') + (0, _isornot2.default)(navState.open, 'open') + (0, _isornot2.default)(!navState.disabled, 'enabled');
+
+			return React.createElement(
+				'div',
+				{ className: className },
+				React.createElement(
+					'button',
+					{ className: 'toggle-button', onClick: _navUtil2.default.toggle },
+					'Toggle Navigation Menu'
+				),
+				React.createElement(
+					'ul',
+					null,
+					list.map(function (item, index) {
+						switch (item.type) {
+							case 'heading':
+								return _this2.renderHeading(index, item);
+
+							case 'link':
+								return _this2.renderLink(index, navState.navTargetId === item.id, list, lockEl);
+
+							case 'sub-link':
+								return _this2.renderSubLink(index, navState.navTargetIndex === index, list, lockEl);
+
+							// case 'seperator':
+							// 	return this.renderSep(index)
+						}
+					})
+				),
+				React.createElement(_logo2.default, null)
+			);
+		}
+	}]);
+
+	return Nav;
+}(React.Component);
+
+exports.default = Nav;
+
+/***/ }),
+/* 176 */
+/***/ (function(module, exports) {
+
+// removed by extract-text-webpack-plugin
+
+/***/ }),
+/* 177 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -21631,8 +23246,8 @@ module.exports = function required(port, protocol) {
 
 var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol" ? function (obj) { return typeof obj; } : function (obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; };
 
-var required = __webpack_require__(158),
-    qs = __webpack_require__(156),
+var required = __webpack_require__(178),
+    qs = __webpack_require__(179),
     protocolre = /^([a-z][a-z0-9.+-]*:)?(\/\/)?([\S\s]*)/i,
     slashes = /^[A-Za-z][A-Za-z0-9+-.]*:\/\//;
 
@@ -22039,1742 +23654,124 @@ module.exports = URL;
 /* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(7)))
 
 /***/ }),
-/* 160 */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-
-
-Object.defineProperty(exports, "__esModule", {
-	value: true
-});
-
-var _displayTypes = __webpack_require__(139);
-
-var getDisplayType = function getDisplayType(_ref) {
-	var rubricType = _ref.rubricType,
-	    mods = _ref.mods,
-	    status = _ref.status,
-	    statusResult = _ref.statusResult,
-	    isAttemptScore100 = _ref.isAttemptScore100;
-
-	var passed = status === 'passed';
-	var failed = status === 'failed';
-	var unableToPass = status === 'unableToPass';
-	var isAttemptRubric = rubricType === 'attempt';
-	var isPassFailRubric = rubricType === 'pass-fail';
-	var isRewardedMods = mods.length > 0;
-	var isResultNumeric = Number.isFinite(parseFloat(statusResult));
-	var isResultNoScore = statusResult === 'no-score';
-	var isResultAttemptScore = statusResult === '$attempt_score';
-	var isResultHighestAttemptScore = statusResult === '$highest_attempt_score';
-
-	var items = [];
-
-	if (isAttemptRubric && passed && isResultAttemptScore && !isRewardedMods) {
-		return _displayTypes.TYPE_ATTEMPT_WITHOUT_MODS_REWARDED;
-	}
-	if (isAttemptRubric && passed && isResultAttemptScore && isRewardedMods) {
-		return _displayTypes.TYPE_ATTEMPT_WITH_MODS_REWARDED;
-	}
-	if (isPassFailRubric && passed && isResultAttemptScore && !isRewardedMods) {
-		return _displayTypes.TYPE_PASSFAIL_PASSED_GIVEN_ATTEMPT_SCORE_WITHOUT_MODS_REWARDED;
-	}
-	if (isPassFailRubric && passed && isResultAttemptScore && isRewardedMods) {
-		return _displayTypes.TYPE_PASSFAIL_PASSED_GIVEN_ATTEMPT_SCORE_WITH_MODS_REWARDED;
-	}
-	if (isPassFailRubric && passed && isResultNumeric && !isAttemptScore100) {
-		return _displayTypes.TYPE_PASSFAIL_PASSED_GIVEN_SCORE_AND_ATTEMPT_SCORE_LESS_THAN_100;
-	}
-	if (isPassFailRubric && passed && isResultNumeric && isAttemptScore100 && !isRewardedMods) {
-		return _displayTypes.TYPE_PASSFAIL_PASSED_GIVEN_SCORE_AND_ATTEMPT_SCORE_IS_100_AND_NO_MODS_REWARDED;
-	}
-	if (isPassFailRubric && passed && isResultNumeric && isAttemptScore100 && isRewardedMods) {
-		return _displayTypes.TYPE_PASSFAIL_PASSED_GIVEN_SCORE_AND_ATTEMPT_SCORE_IS_100_AND_MODS_REWARDED;
-	}
-	if (isPassFailRubric && failed && isResultAttemptScore && !isRewardedMods) {
-		return _displayTypes.TYPE_PASSFAIL_FAILED_GIVEN_ATTEMPT_SCORE;
-	}
-	if (isPassFailRubric && failed && isResultNoScore && !isRewardedMods) {
-		return _displayTypes.TYPE_PASSFAIL_FAILED_GIVEN_NO_SCORE;
-	}
-	if (isPassFailRubric && failed && isResultNumeric && !isRewardedMods) {
-		return _displayTypes.TYPE_PASSFAIL_FAILED_GIVEN_SCORE;
-	}
-	if (isPassFailRubric && unableToPass && isResultNoScore && !isRewardedMods) {
-		return _displayTypes.TYPE_PASSFAIL_UNABLE_TO_PASS_GIVEN_NO_SCORE;
-	}
-	if (isPassFailRubric && unableToPass && isResultHighestAttemptScore && !isRewardedMods) {
-		return _displayTypes.TYPE_PASSFAIL_UNABLE_TO_PASS_GIVEN_HIGHEST_ATTEMPT_SCORE;
-	}
-	if (isPassFailRubric && unableToPass && isResultNumeric && !isRewardedMods) {
-		return _displayTypes.TYPE_PASSFAIL_UNABLE_TO_PASS_GIVEN_SCORE;
-	}
-
-	return _displayTypes.ERROR_UNKNOWN_DISPLAY_TYPE;
-};
-
-exports.default = getDisplayType;
-
-/***/ }),
-/* 161 */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-
-
-Object.defineProperty(exports, "__esModule", {
-	value: true
-});
-
-var _getDisplayFriendlyScore = __webpack_require__(4);
-
-var _getDisplayFriendlyScore2 = _interopRequireDefault(_getDisplayFriendlyScore);
-
-var _getStatusResult = __webpack_require__(165);
-
-var _getStatusResult2 = _interopRequireDefault(_getStatusResult);
-
-function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
-
-var getReportDetailsForAttempt = function getReportDetailsForAttempt(assessmentRubric, scoreInfo) {
-	var statusResult = (0, _getStatusResult2.default)(assessmentRubric, scoreInfo.status);
-
-	return {
-		rubricType: assessmentRubric.type,
-		mods: scoreInfo.rewardedMods.map(function (modIndex) {
-			return assessmentRubric.mods[modIndex];
-		}),
-		status: scoreInfo.status,
-		statusResult: statusResult,
-		passingAttemptScore: typeof assessmentRubric.passingAttemptScore !== 'undefined' ? assessmentRubric.passingAttemptScore : 100,
-		isAttemptScore100: scoreInfo.attemptScore === 100,
-		isAssessScoreOver100: scoreInfo.status === 'passed' && scoreInfo.assessmentScore !== null && scoreInfo.assessmentScore + scoreInfo.rewardTotal > 100
-	};
-};
-
-exports.default = getReportDetailsForAttempt;
-
-/***/ }),
-/* 162 */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-
-
-Object.defineProperty(exports, "__esModule", {
-	value: true
-});
-
-var _getDisplayFriendlyScore = __webpack_require__(4);
-
-var _getDisplayFriendlyScore2 = _interopRequireDefault(_getDisplayFriendlyScore);
-
-function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
-
-var getReportDetailsForAttempt = function getReportDetailsForAttempt(scoreInfo, totalNumberOfAttemptsAllowed) {
-	return {
-		attemptNum: '' + scoreInfo.attemptNumber,
-		attemptScore: (0, _getDisplayFriendlyScore2.default)(scoreInfo.attemptScore),
-		assessScore: scoreInfo.assessmentModdedScore === null ? 'Did Not Pass' : (0, _getDisplayFriendlyScore2.default)(scoreInfo.assessmentModdedScore),
-		totalNumberOfAttemptsAllowed: '' + totalNumberOfAttemptsAllowed
-	};
-};
-
-exports.default = getReportDetailsForAttempt;
-
-/***/ }),
-/* 163 */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-
-
-Object.defineProperty(exports, "__esModule", {
-	value: true
-});
-var getScoreChangeDescription = function getScoreChangeDescription(_ref) {
-	var prevHighestInfo = _ref.prevHighestInfo,
-	    newInfo = _ref.newInfo;
-
-	if (prevHighestInfo === null || newInfo === null) return null;
-
-	var prevHighestScore = prevHighestInfo.assessmentModdedScore;
-	var newScore = newInfo.assessmentModdedScore;
-
-	if (newScore === null && prevHighestScore === null) {
-		return 'This did not change your recorded score';
-	}
-
-	if (prevHighestScore === null) {
-		return '\u2714 Your recorded score was updated to ' + Math.round(newScore) + '%';
-	}
-
-	if (newScore > prevHighestScore) {
-		return '\u2714 Your recorded score was updated from ' + Math.round(prevHighestScore) + '% to ' + Math.round(newScore) + '%';
-	}
-
-	if (newScore === prevHighestScore) {
-		return 'This maintains your recorded score of ' + Math.round(prevHighestScore) + '%';
-	}
-
-	// Else newScore === null && prevHighestScore !== null
-	return 'This did not change your recorded score of ' + Math.round(prevHighestScore) + '%';
-};
-
-exports.default = getScoreChangeDescription;
-
-/***/ }),
-/* 164 */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-
-
-Object.defineProperty(exports, "__esModule", {
-	value: true
-});
-
-var _assessmentUtil = __webpack_require__(5);
-
-var _assessmentUtil2 = _interopRequireDefault(_assessmentUtil);
-
-function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
-
-var getScoreComparisionData = function getScoreComparisionData(allAttempts, attemptNumberToGenerateReportFor) {
-	if (allAttempts.length === 0) {
-		return {
-			prevHighestInfo: null,
-			newInfo: null
-		};
-	}
-
-	var prevAttempts = allAttempts.slice(0, attemptNumberToGenerateReportFor - 1);
-	var highestAttempts = _assessmentUtil2.default.findHighestAttempts(prevAttempts, 'assessmentScore');
-	var prevHighestAttempt = highestAttempts.length === 0 ? null : highestAttempts[0];
-
-	return {
-		prevHighestInfo: prevHighestAttempt ? prevHighestAttempt.assessmentScoreDetails : null,
-		newInfo: allAttempts[attemptNumberToGenerateReportFor - 1].assessmentScoreDetails
-	};
-};
-
-exports.default = getScoreComparisionData;
-
-/***/ }),
-/* 165 */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-
-
-Object.defineProperty(exports, "__esModule", {
-	value: true
-});
-var getStatusResult = function getStatusResult(rubric, status) {
-	switch (status) {
-		case 'passed':
-			return typeof rubric.passedResult !== 'undefined' ? rubric.passedResult : 100;
-		case 'failed':
-			return typeof rubric.failedResult !== 'undefined' ? rubric.failedResult : 0;
-		case 'unableToPass':
-			return typeof rubric.unableToPassResult !== 'undefined' ? rubric.unableToPassResult : 0;
-	}
-
-	throw new Error('Unknown status: ' + status);
-};
-
-exports.default = getStatusResult;
-
-/***/ }),
-/* 166 */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-
-
-Object.defineProperty(exports, "__esModule", {
-	value: true
-});
-
-var _getDisplayFriendlyScore = __webpack_require__(4);
-
-var _getDisplayFriendlyScore2 = _interopRequireDefault(_getDisplayFriendlyScore);
-
-function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
-
-var whitespaceRegex = /\s/g;
-
-var getModText = function getModText(attemptCondition, totalNumberOfAttemptsAllowed) {
-	attemptCondition = ('' + attemptCondition).replace(whitespaceRegex, '').replace('$last_attempt', '' + totalNumberOfAttemptsAllowed);
-
-	var range = [];
-	if (attemptCondition.indexOf(',') === -1) {
-		range.push(parseInt(attemptCondition, 10));
-	} else {
-		var tokens = attemptCondition.split(',');
-		range.push(parseInt(tokens[0].substr(1), 10));
-		range.push(parseInt(tokens[1].substr(0, tokens[1].length - 1), 10));
-
-		if (tokens[0].charAt(0) === '(') range[0]++;
-		if (tokens[1].charAt(tokens[1].length - 1) === ')') range[1]--;
-
-		if (range[0] === range[1]) range.splice(1, 1);
-	}
-
-	if (range.length === 1) {
-		if (range[0] === 1) return 'Passed on first attempt';
-		if (range[0] === totalNumberOfAttemptsAllowed) return 'Passed on last attempt';
-		return 'Passed on attempt\xA0' + range[0];
-	}
-
-	return 'Passed on attempts ' + range[0] + ' to ' + range[1];
-};
-
-var getTextItemsForMods = function getTextItemsForMods(mods, totalNumberOfAttemptsAllowed) {
-	return mods.map(function (mod) {
-		return {
-			type: parseInt(mod.reward) >= 0 ? 'extra-credit' : 'penalty',
-			text: getModText(mod.attemptCondition, totalNumberOfAttemptsAllowed),
-			value: (0, _getDisplayFriendlyScore2.default)(Math.abs(mod.reward))
-		};
-	});
-};
-
-exports.default = getTextItemsForMods;
-
-/***/ }),
-/* 167 */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-
-
-Object.defineProperty(exports, "__esModule", {
-	value: true
-});
-
-var _getDisplayFriendlyScore = __webpack_require__(4);
-
-var _getDisplayFriendlyScore2 = _interopRequireDefault(_getDisplayFriendlyScore);
-
-var _getTextItemsForMods = __webpack_require__(166);
-
-var _getTextItemsForMods2 = _interopRequireDefault(_getTextItemsForMods);
-
-var _getDisplayType = __webpack_require__(160);
-
-var _getDisplayType2 = _interopRequireDefault(_getDisplayType);
-
-var _displayTypes = __webpack_require__(139);
-
-function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
-
-var getPassingRange = function getPassingRange(passingNumber) {
-	if (passingNumber === '100') return '100%';
-	return (0, _getDisplayFriendlyScore2.default)(passingNumber) + '% or higher';
-};
-
-var getTextItems = function getTextItems(_ref, _ref2) {
-	var rubricType = _ref.rubricType,
-	    mods = _ref.mods,
-	    status = _ref.status,
-	    statusResult = _ref.statusResult,
-	    passingAttemptScore = _ref.passingAttemptScore,
-	    isAttemptScore100 = _ref.isAttemptScore100,
-	    isAssessScoreOver100 = _ref.isAssessScoreOver100;
-	var attemptNum = _ref2.attemptNum,
-	    attemptScore = _ref2.attemptScore,
-	    assessScore = _ref2.assessScore,
-	    totalNumberOfAttemptsAllowed = _ref2.totalNumberOfAttemptsAllowed;
-
-	var items = [];
-
-	switch ((0, _getDisplayType2.default)({
-		rubricType: rubricType,
-		mods: mods,
-		status: status,
-		statusResult: statusResult,
-		isAttemptScore100: isAttemptScore100
-	})) {
-		case _displayTypes.TYPE_ATTEMPT_WITHOUT_MODS_REWARDED:
-		case _displayTypes.TYPE_PASSFAIL_PASSED_GIVEN_ATTEMPT_SCORE_WITHOUT_MODS_REWARDED:
-		case _displayTypes.TYPE_PASSFAIL_PASSED_GIVEN_SCORE_AND_ATTEMPT_SCORE_IS_100_AND_NO_MODS_REWARDED:
-		case _displayTypes.ERROR_UNKNOWN_DISPLAY_TYPE:
-			// Shouldn't get here but we still want to show their score
-			items.push({
-				type: 'total',
-				text: 'Score',
-				value: assessScore
-			});
-			break;
-
-		case _displayTypes.TYPE_ATTEMPT_WITH_MODS_REWARDED:
-		case _displayTypes.TYPE_PASSFAIL_PASSED_GIVEN_ATTEMPT_SCORE_WITH_MODS_REWARDED:
-			items.push({
-				type: 'value',
-				text: 'Attempt Score',
-				value: attemptScore
-			});
-			break;
-
-		case _displayTypes.TYPE_PASSFAIL_PASSED_GIVEN_SCORE_AND_ATTEMPT_SCORE_LESS_THAN_100:
-			items.push({
-				type: 'value',
-				text: 'Attempt Score (Passed)',
-				value: attemptScore
-			}, {
-				type: 'divider'
-			}, {
-				type: 'value',
-				text: 'Score adjusted for passing',
-				value: (0, _getDisplayFriendlyScore2.default)(statusResult)
-			});
-			break;
-
-		case _displayTypes.TYPE_PASSFAIL_PASSED_GIVEN_SCORE_AND_ATTEMPT_SCORE_IS_100_AND_MODS_REWARDED:
-			items.push({
-				type: 'value',
-				text: 'Attempt Score (Passed)',
-				value: attemptScore
-			});
-			break;
-
-		case _displayTypes.TYPE_PASSFAIL_FAILED_GIVEN_ATTEMPT_SCORE:
-		case _displayTypes.TYPE_PASSFAIL_FAILED_GIVEN_NO_SCORE:
-			items.push({
-				type: 'value',
-				text: 'Attempt Score',
-				value: attemptScore
-			}, {
-				type: 'divider'
-			}, {
-				type: 'text',
-				text: 'You need ' + getPassingRange(passingAttemptScore) + ' to pass'
-			});
-			break;
-
-		case _displayTypes.TYPE_PASSFAIL_FAILED_GIVEN_SCORE:
-			items.push({
-				type: 'value',
-				text: 'Attempt Score',
-				value: attemptScore
-			}, {
-				type: 'divider'
-			}, {
-				type: 'value',
-				text: 'Score adjusted for not passing (less than ' + (0, _getDisplayFriendlyScore2.default)(passingAttemptScore) + '%)',
-				value: (0, _getDisplayFriendlyScore2.default)(statusResult)
-			});
-			break;
-
-		case _displayTypes.TYPE_PASSFAIL_UNABLE_TO_PASS_GIVEN_NO_SCORE:
-			items.push({
-				type: 'value',
-				text: 'Attempt Score',
-				value: attemptScore
-			}, {
-				type: 'divider'
-			}, {
-				type: 'text',
-				text: 'You needed ' + getPassingRange(passingAttemptScore) + ' to pass'
-			});
-			break;
-
-		case _displayTypes.TYPE_PASSFAIL_UNABLE_TO_PASS_GIVEN_HIGHEST_ATTEMPT_SCORE:
-			items.push({
-				type: 'value',
-				text: 'Attempt Score',
-				value: attemptScore
-			}, {
-				type: 'divider'
-			}, {
-				type: 'text',
-				text: 'You did not achieve a passing ' + getPassingRange(passingAttemptScore) + ' score within the number of attempts available. Your highest attempt score will be used instead.'
-			}, {
-				type: 'divider'
-			}, {
-				type: 'value',
-				text: 'Highest attempt score (Attempt\xA0' + attemptNum + ')',
-				value: assessScore
-			});
-			break;
-
-		case _displayTypes.TYPE_PASSFAIL_UNABLE_TO_PASS_GIVEN_SCORE:
-			items.push({
-				type: 'value',
-				text: 'Attempt Score',
-				value: attemptScore
-			}, {
-				type: 'divider'
-			}, {
-				type: 'text',
-				text: 'You did not achieve a passing ' + getPassingRange(passingAttemptScore) + ' score within the number of attempts available.'
-			}, {
-				type: 'value',
-				text: 'Score for not achieving a passing attempt',
-				value: (0, _getDisplayFriendlyScore2.default)(statusResult)
-			});
-			break;
-	}
-
-	items = items.concat((0, _getTextItemsForMods2.default)(mods, totalNumberOfAttemptsAllowed));
-
-	if (items.length > 1) {
-		items.push({
-			type: 'divider'
-		}, {
-			type: 'total',
-			text: 'Total Score' + (isAssessScoreOver100 ? ' (Max 100%)' : ''),
-			// value: assessScore === null ? 'Did Not Pass' : assessScore
-			value: assessScore
-		});
-	}
-
-	return items;
-};
-
-exports.default = getTextItems;
-
-/***/ }),
-/* 168 */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-
-
-Object.defineProperty(exports, "__esModule", {
-	value: true
-});
-
-var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
-
-__webpack_require__(173);
-
-var _navUtil = __webpack_require__(2);
-
-var _navUtil2 = _interopRequireDefault(_navUtil);
-
-function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
-
-function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
-
-function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
-
-function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
-
-var InlineNavButton = function (_React$Component) {
-	_inherits(InlineNavButton, _React$Component);
-
-	function InlineNavButton() {
-		_classCallCheck(this, InlineNavButton);
-
-		return _possibleConstructorReturn(this, (InlineNavButton.__proto__ || Object.getPrototypeOf(InlineNavButton)).apply(this, arguments));
-	}
-
-	_createClass(InlineNavButton, [{
-		key: 'onClick',
-		value: function onClick() {
-			if (this.props.disabled) {
-				return;
-			}
-
-			switch (this.props.type) {
-				case 'prev':
-					return _navUtil2.default.goPrev();
-
-				case 'next':
-					return _navUtil2.default.goNext();
-			}
-		}
-	}, {
-		key: 'render',
-		value: function render() {
-			return React.createElement(
-				'div',
-				{
-					className: 'viewer--components--inline-nav-button is-' + this.props.type + (this.props.disabled ? ' is-not-enabled' : ' is-enabled'),
-					onClick: this.onClick.bind(this)
-				},
-				this.props.title
-			);
-		}
-	}]);
-
-	return InlineNavButton;
-}(React.Component);
-
-exports.default = InlineNavButton;
-
-/***/ }),
-/* 169 */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-
-
-Object.defineProperty(exports, "__esModule", {
-	value: true
-});
-
-var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
-
-__webpack_require__(175);
-
-var _navUtil = __webpack_require__(2);
-
-var _navUtil2 = _interopRequireDefault(_navUtil);
-
-var _logo = __webpack_require__(140);
-
-var _logo2 = _interopRequireDefault(_logo);
-
-var _isornot = __webpack_require__(136);
-
-var _isornot2 = _interopRequireDefault(_isornot);
-
-var _Common = __webpack_require__(1);
-
-var _Common2 = _interopRequireDefault(_Common);
-
-function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
-
-function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
-
-function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
-
-function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
-
-var OboModel = _Common2.default.models.OboModel;
-var StyleableText = _Common2.default.text.StyleableText;
-var StyleableTextComponent = _Common2.default.text.StyleableTextComponent;
-
-var Nav = function (_React$Component) {
-	_inherits(Nav, _React$Component);
-
-	function Nav() {
-		_classCallCheck(this, Nav);
-
-		return _possibleConstructorReturn(this, (Nav.__proto__ || Object.getPrototypeOf(Nav)).apply(this, arguments));
-	}
-
-	_createClass(Nav, [{
-		key: 'onClick',
-		value: function onClick(item) {
-			switch (item.type) {
-				case 'link':
-					if (!_navUtil2.default.canNavigate(this.props.navState)) return;
-					_navUtil2.default.gotoPath(item.fullPath);
-					break;
-
-				case 'sub-link':
-					var el = OboModel.models[item.id].getDomEl();
-					el.scrollIntoView({ behavior: 'smooth', block: 'start' });
-					break;
-			}
-		}
-	}, {
-		key: 'renderLabel',
-		value: function renderLabel(label) {
-			if (label instanceof StyleableText) {
-				return React.createElement(StyleableTextComponent, { text: label });
-			}
-
-			return React.createElement(
-				'a',
-				null,
-				label
-			);
-		}
-	}, {
-		key: 'renderLink',
-		value: function renderLink(index, isSelected, list, lockEl) {
-			var item = list[index];
-			var isFirstInList = !list[index - 1];
-			var isLastInList = !list[index + 1];
-
-			var className = 'link' + (0, _isornot2.default)(isSelected, 'selected') + (0, _isornot2.default)(item.flags.visited, 'visited') + (0, _isornot2.default)(item.flags.complete, 'complete') + (0, _isornot2.default)(item.flags.correct, 'correct') + (0, _isornot2.default)(item.flags.assessment, 'assessment') + (0, _isornot2.default)(isFirstInList, 'first-in-list') + (0, _isornot2.default)(isLastInList, 'last-in-list');
-
-			return React.createElement(
-				'li',
-				{ key: index, onClick: this.onClick.bind(this, item), className: className },
-				this.renderLabel(item.label),
-				lockEl
-			);
-		}
-	}, {
-		key: 'renderSubLink',
-		value: function renderSubLink(index, isSelected, list, lockEl) {
-			var item = list[index];
-			var isLastInList = !list[index + 1];
-
-			var className = 'sub-link' + (0, _isornot2.default)(isSelected, 'selected') + (0, _isornot2.default)(item.flags.correct, 'correct') + (0, _isornot2.default)(isLastInList, 'last-in-list');
-
-			return React.createElement(
-				'li',
-				{ key: index, onClick: this.onClick.bind(this, item), className: className },
-				this.renderLabel(item.label),
-				lockEl
-			);
-		}
-	}, {
-		key: 'renderHeading',
-		value: function renderHeading(index, item) {
-			return React.createElement(
-				'li',
-				{ key: index, className: 'heading is-not-selected' },
-				this.renderLabel(item.label)
-			);
-		}
-
-		// renderSep(index) {
-		// 	return (
-		// 		<li key={index} className="seperator">
-		// 			<hr />
-		// 		</li>
-		// 	)
-		// }
-
-	}, {
-		key: 'getLockEl',
-		value: function getLockEl(isLocked) {
-			if (isLocked) {
-				return React.createElement('div', { className: 'lock-icon' });
-			}
-		}
-	}, {
-		key: 'render',
-		value: function render() {
-			var _this2 = this;
-
-			var navState = this.props.navState;
-			var lockEl = this.getLockEl(navState.locked);
-
-			var list = _navUtil2.default.getOrderedList(navState);
-
-			var className = 'viewer--components--nav' + (0, _isornot2.default)(navState.locked, 'locked') + (0, _isornot2.default)(navState.open, 'open') + (0, _isornot2.default)(!navState.disabled, 'enabled');
-
-			return React.createElement(
-				'div',
-				{ className: className },
-				React.createElement(
-					'button',
-					{ className: 'toggle-button', onClick: _navUtil2.default.toggle },
-					'Toggle Navigation Menu'
-				),
-				React.createElement(
-					'ul',
-					null,
-					list.map(function (item, index) {
-						switch (item.type) {
-							case 'heading':
-								return _this2.renderHeading(index, item);
-
-							case 'link':
-								return _this2.renderLink(index, navState.navTargetId === item.id, list, lockEl);
-
-							case 'sub-link':
-								return _this2.renderSubLink(index, navState.navTargetIndex === index, list, lockEl);
-
-							// case 'seperator':
-							// 	return this.renderSep(index)
-						}
-					})
-				),
-				React.createElement(_logo2.default, null)
-			);
-		}
-	}]);
-
-	return Nav;
-}(React.Component);
-
-exports.default = Nav;
-
-/***/ }),
-/* 170 */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-
-
-Object.defineProperty(exports, "__esModule", {
-	value: true
-});
-
-var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
-
-__webpack_require__(177);
-
-__webpack_require__(176);
-
-var _Common = __webpack_require__(1);
-
-var _Common2 = _interopRequireDefault(_Common);
-
-var _react = __webpack_require__(144);
-
-var _react2 = _interopRequireDefault(_react);
-
-var _reactIdleTimer = __webpack_require__(157);
-
-var _reactIdleTimer2 = _interopRequireDefault(_reactIdleTimer);
-
-var _inlineNavButton = __webpack_require__(168);
-
-var _inlineNavButton2 = _interopRequireDefault(_inlineNavButton);
-
-var _navUtil = __webpack_require__(2);
-
-var _navUtil2 = _interopRequireDefault(_navUtil);
-
-var _apiUtil = __webpack_require__(3);
-
-var _apiUtil2 = _interopRequireDefault(_apiUtil);
-
-var _logo = __webpack_require__(140);
-
-var _logo2 = _interopRequireDefault(_logo);
-
-var _questionStore = __webpack_require__(9);
-
-var _questionStore2 = _interopRequireDefault(_questionStore);
-
-var _assessmentStore = __webpack_require__(141);
-
-var _assessmentStore2 = _interopRequireDefault(_assessmentStore);
-
-var _navStore = __webpack_require__(8);
-
-var _navStore2 = _interopRequireDefault(_navStore);
-
-var _nav = __webpack_require__(169);
-
-var _nav2 = _interopRequireDefault(_nav);
-
-var _getLtiOutcomeServiceHostname = __webpack_require__(143);
-
-var _getLtiOutcomeServiceHostname2 = _interopRequireDefault(_getLtiOutcomeServiceHostname);
-
-function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
-
-function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
-
-function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
-
-function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
-
-var IDLE_TIMEOUT_DURATION_MS = 600000; // 10 minutes
-
-var Legacy = _Common2.default.models.Legacy;
-var DOMUtil = _Common2.default.page.DOMUtil;
-var Screen = _Common2.default.page.Screen;
-var OboModel = _Common2.default.models.OboModel;
-var Dispatcher = _Common2.default.flux.Dispatcher;
-var ModalContainer = _Common2.default.components.ModalContainer;
-var SimpleDialog = _Common2.default.components.modal.SimpleDialog;
-var ModalUtil = _Common2.default.util.ModalUtil;
-var FocusBlocker = _Common2.default.components.FocusBlocker;
-var ModalStore = _Common2.default.stores.ModalStore;
-var FocusStore = _Common2.default.stores.FocusStore;
-var FocusUtil = _Common2.default.util.FocusUtil;
-
-// Dispatcher.on 'all', (eventName, payload) -> console.log 'EVENT TRIGGERED', eventName
-
-Dispatcher.on('viewer:alert', function (payload) {
-	return ModalUtil.show(_react2.default.createElement(
-		SimpleDialog,
-		{ ok: true, title: payload.value.title },
-		payload.value.message
-	));
-});
-
-var ViewerApp = function (_React$Component) {
-	_inherits(ViewerApp, _React$Component);
-
-	// === REACT LIFECYCLE METHODS ===
-
-	function ViewerApp(props) {
-		_classCallCheck(this, ViewerApp);
-
-		var _this = _possibleConstructorReturn(this, (ViewerApp.__proto__ || Object.getPrototypeOf(ViewerApp)).call(this, props));
-
-		Dispatcher.on('viewer:scrollTo', function (payload) {
-			return ReactDOM.findDOMNode(_this.refs.container).scrollTop = payload.value;
-		});
-
-		Dispatcher.on('viewer:scrollToTop', _this.scrollToTop.bind(_this));
-		Dispatcher.on('getTextForVariable', _this.getTextForVariable.bind(_this));
-
-		var state = {
-			model: null,
-			navState: null,
-			questionState: null,
-			assessmentState: null,
-			modalState: null,
-			focusState: null,
-			navTargetId: null,
-			loading: true,
-			requestStatus: 'unknown',
-			isPreviewing: false,
-			lti: {
-				outcomeServiceHostname: null
-			}
-		};
-		_this.onNavStoreChange = function () {
-			return _this.setState({ navState: _navStore2.default.getState() });
-		};
-		_this.onQuestionStoreChange = function () {
-			return _this.setState({ questionState: _questionStore2.default.getState() });
-		};
-		_this.onAssessmentStoreChange = function () {
-			return _this.setState({ assessmentState: _assessmentStore2.default.getState() });
-		};
-		_this.onModalStoreChange = function () {
-			return _this.setState({ modalState: ModalStore.getState() });
-		};
-		_this.onFocusStoreChange = function () {
-			return _this.setState({ focusState: FocusStore.getState() });
-		};
-
-		_this.onIdle = _this.onIdle.bind(_this);
-		_this.onReturnFromIdle = _this.onReturnFromIdle.bind(_this);
-		_this.onBeforeWindowClose = _this.onBeforeWindowClose.bind(_this);
-		_this.onWindowClose = _this.onWindowClose.bind(_this);
-		_this.onVisibilityChange = _this.onVisibilityChange.bind(_this);
-
-		_this.state = state;
-		return _this;
-	}
-
-	_createClass(ViewerApp, [{
-		key: 'componentDidMount',
-		value: function componentDidMount() {
-			var _this2 = this;
-
-			document.addEventListener('visibilitychange', this.onVisibilityChange);
-
-			var visitIdFromApi = void 0;
-			var attemptHistory = void 0;
-			var viewState = void 0;
-			var isPreviewing = void 0;
-			var outcomeServiceURL = 'the external system';
-
-			var urlTokens = document.location.pathname.split('/');
-			var visitIdFromUrl = urlTokens[4] ? urlTokens[4] : null;
-			var draftIdFromUrl = urlTokens[2] ? urlTokens[2] : null;
-
-			Dispatcher.trigger('viewer:loading');
-
-			_apiUtil2.default.requestStart(visitIdFromUrl, draftIdFromUrl).then(function (visit) {
-				_questionStore2.default.init();
-				ModalStore.init();
-				FocusStore.init();
-
-				if (visit.status !== 'ok') throw 'Invalid Visit Id';
-
-				visitIdFromApi = visit.value.visitId;
-				viewState = visit.value.viewState;
-				attemptHistory = visit.value.extensions[':ObojoboDraft.Sections.Assessment:attemptHistory'];
-				isPreviewing = visit.value.isPreviewing;
-				outcomeServiceURL = visit.value.lti.lisOutcomeServiceUrl;
-
-				return _apiUtil2.default.getDraft(draftIdFromUrl);
-			}).then(function (_ref) {
-				var draftModel = _ref.value;
-
-				_this2.state.model = OboModel.create(draftModel);
-
-				_navStore2.default.init(_this2.state.model, _this2.state.model.modelState.start, window.location.pathname, visitIdFromApi, viewState);
-				_assessmentStore2.default.init(attemptHistory);
-
-				_this2.state.navState = _navStore2.default.getState();
-				_this2.state.questionState = _questionStore2.default.getState();
-				_this2.state.assessmentState = _assessmentStore2.default.getState();
-				_this2.state.modalState = ModalStore.getState();
-				_this2.state.focusState = FocusStore.getState();
-				_this2.state.lti.outcomeServiceHostname = (0, _getLtiOutcomeServiceHostname2.default)(outcomeServiceURL);
-
-				window.onbeforeunload = _this2.onBeforeWindowClose;
-				window.onunload = _this2.onWindowClose;
-
-				_this2.setState({ loading: false, requestStatus: 'ok', isPreviewing: isPreviewing }, function () {
-					Dispatcher.trigger('viewer:loaded', true);
-				});
-			}).catch(function (err) {
-				console.log(err);
-				_this2.setState({ loading: false, requestStatus: 'invalid' }, function () {
-					return Dispatcher.trigger('viewer:loaded', false);
-				});
-			});
-		}
-	}, {
-		key: 'componentWillMount',
-		value: function componentWillMount() {
-			// === SET UP DATA STORES ===
-			_navStore2.default.onChange(this.onNavStoreChange);
-			_questionStore2.default.onChange(this.onQuestionStoreChange);
-			_assessmentStore2.default.onChange(this.onAssessmentStoreChange);
-			ModalStore.onChange(this.onModalStoreChange);
-			FocusStore.onChange(this.onFocusStoreChange);
-		}
-	}, {
-		key: 'componentWillUnmount',
-		value: function componentWillUnmount() {
-			_navStore2.default.offChange(this.onNavStoreChange);
-			_questionStore2.default.offChange(this.onQuestionStoreChange);
-			_assessmentStore2.default.offChange(this.onAssessmentStoreChange);
-			ModalStore.offChange(this.onModalStoreChange);
-			FocusStore.offChange(this.onFocusStoreChange);
-
-			document.removeEventListener('visibilitychange', this.onVisibilityChange);
-		}
-	}, {
-		key: 'shouldComponentUpdate',
-		value: function shouldComponentUpdate(nextProps, nextState) {
-			return !nextState.loading;
-		}
-	}, {
-		key: 'componentWillUpdate',
-		value: function componentWillUpdate(nextProps, nextState) {
-			if (this.state.requestStatus === 'ok') {
-				var navTargetId = this.state.navTargetId;
-				var nextNavTargetId = this.state.navState.navTargetId;
-
-				if (navTargetId !== nextNavTargetId) {
-					this.needsScroll = true;
-					return this.setState({ navTargetId: nextNavTargetId });
-				}
-			}
-
-			if (this.state.loading === true && nextState.loading === false) {
-				this.needsRemoveLoadingElement = true;
-			}
-		}
-	}, {
-		key: 'componentDidUpdate',
-		value: function componentDidUpdate() {
-			if (this.state.requestStatus === 'ok') {
-				if (this.lastCanNavigate !== _navUtil2.default.canNavigate(this.state.navState)) {
-					this.needsScroll = true;
-				}
-				this.lastCanNavigate = _navUtil2.default.canNavigate(this.state.navState);
-				if (this.needsScroll != null) {
-					this.scrollToTop();
-
-					delete this.needsScroll;
-				}
-			}
-
-			if (this.needsRemoveLoadingElement === true) {
-				var loadingEl = document.getElementById('viewer-app-loading');
-				if (loadingEl && loadingEl.parentElement) {
-					document.getElementById('viewer-app').classList.add('is-loaded');
-					loadingEl.parentElement.removeChild(loadingEl);
-
-					delete this.needsRemoveLoadingElement;
-				}
-			}
-		}
-	}, {
-		key: 'onVisibilityChange',
-		value: function onVisibilityChange() {
-			var _this3 = this;
-
-			if (document.hidden) {
-				_apiUtil2.default.postEvent(this.state.model, 'viewer:leave', '1.0.0', {}).then(function (res) {
-					_this3.leaveEvent = res.value;
-				});
-			} else {
-				_apiUtil2.default.postEvent(this.state.model, 'viewer:return', '1.0.0', {
-					relatedEventId: this.leaveEvent.id
-				});
-				delete this.leaveEvent;
-			}
-		}
-	}, {
-		key: 'getTextForVariable',
-		value: function getTextForVariable(event, variable, textModel) {
-			return event.text = _Common2.default.Store.getTextForVariable(variable, textModel, this.state);
-		}
-	}, {
-		key: 'scrollToTop',
-		value: function scrollToTop() {
-			var el = ReactDOM.findDOMNode(this.refs.prev);
-			var container = ReactDOM.findDOMNode(this.refs.container);
-
-			if (!container) return;
-
-			if (el) {
-				return container.scrollTop = ReactDOM.findDOMNode(el).getBoundingClientRect().height;
-			}
-
-			return container.scrollTop = 0;
-		}
-
-		// === NON REACT LIFECYCLE METHODS ===
-
-	}, {
-		key: 'onMouseDown',
-		value: function onMouseDown(event) {
-			if (this.state.focusState.focussedId == null) {
-				return;
-			}
-			if (!DOMUtil.findParentComponentIds(event.target).has(this.state.focusState.focussedId)) {
-				return FocusUtil.unfocus();
-			}
-		}
-	}, {
-		key: 'onScroll',
-		value: function onScroll(event) {
-			if (this.state.focusState.focussedId == null) {
-				return;
-			}
-
-			var component = FocusUtil.getFocussedComponent(this.state.focusState);
-			if (component == null) {
-				return;
-			}
-
-			var el = component.getDomEl();
-			if (!el) {
-				return;
-			}
-
-			if (!Screen.isElementVisible(el)) {
-				return FocusUtil.unfocus();
-			}
-		}
-	}, {
-		key: 'onIdle',
-		value: function onIdle() {
-			var _this4 = this;
-
-			this.lastActiveEpoch = new Date(this.refs.idleTimer.getLastActiveTime());
-
-			_apiUtil2.default.postEvent(this.state.model, 'viewer:inactive', '2.0.0', {
-				lastActiveTime: this.lastActiveEpoch,
-				inactiveDuration: IDLE_TIMEOUT_DURATION_MS
-			}).then(function (res) {
-				_this4.inactiveEvent = res.value;
-			});
-		}
-	}, {
-		key: 'onReturnFromIdle',
-		value: function onReturnFromIdle() {
-			_apiUtil2.default.postEvent(this.state.model, 'viewer:returnFromInactive', '2.0.0', {
-				lastActiveTime: this.lastActiveEpoch,
-				inactiveDuration: Date.now() - this.lastActiveEpoch,
-				relatedEventId: this.inactiveEvent.id
-			});
-
-			delete this.lastActiveEpoch;
-			delete this.inactiveEvent;
-		}
-	}, {
-		key: 'onBeforeWindowClose',
-		value: function onBeforeWindowClose() {
-			var closePrevented = false;
-			// calling this function will prevent the window from closing
-			var preventClose = function preventClose() {
-				closePrevented = true;
-			};
-
-			Dispatcher.trigger('viewer:closeAttempted', preventClose);
-
-			if (closePrevented) {
-				return true; // Returning true will cause browser to ask user to confirm leaving page
-			}
-
-			return undefined; // Returning undefined will allow browser to close normally
-		}
-	}, {
-		key: 'onWindowClose',
-		value: function onWindowClose() {
-			_apiUtil2.default.postEvent(this.state.model, 'viewer:close', '1.0.0', {});
-		}
-	}, {
-		key: 'clearPreviewScores',
-		value: function clearPreviewScores() {
-			_apiUtil2.default.clearPreviewScores(this.state.model.get('draftId')).then(function (res) {
-				if (res.status === 'error' || res.error) {
-					return ModalUtil.show(_react2.default.createElement(
-						SimpleDialog,
-						{ ok: true, width: '15em' },
-						res.value && res.value.message ? 'There was an error resetting assessments and questions: ' + res.value.message + '.' : 'There was an error resetting assessments and questions'
-					));
-				}
-
-				_assessmentStore2.default.init();
-				_questionStore2.default.init();
-
-				_assessmentStore2.default.triggerChange();
-				_questionStore2.default.triggerChange();
-
-				return ModalUtil.show(_react2.default.createElement(
-					SimpleDialog,
-					{ ok: true, width: '15em' },
-					'Assessment attempts and all question responses have been reset.'
-				));
-			});
-		}
-	}, {
-		key: 'unlockNavigation',
-		value: function unlockNavigation() {
-			return _navUtil2.default.unlock();
-		}
-	}, {
-		key: 'render',
-		value: function render() {
-			if (this.state.loading == true) return null;
-
-			if (this.state.requestStatus === 'invalid') {
-				return _react2.default.createElement(
-					'div',
-					{ className: 'viewer--viewer-app--visit-error' },
-					'There was a problem starting your visit. Please return to ' + (this.state.lti.outcomeServiceHostname ? this.state.lti.outcomeServiceHostname : 'the external system') + ' and relaunch this module.'
-				); //`There was a problem starting your visit. Please return to ${outcomeServiceURL} and relaunch this module.`
-			}
-
-			var nextEl = void 0,
-			    nextModel = void 0,
-			    prevEl = void 0;
-			window.__lo = this.state.model;
-			window.__s = this.state;
-
-			var ModuleComponent = this.state.model.getComponentClass();
-
-			var navTargetModel = _navUtil2.default.getNavTargetModel(this.state.navState);
-			var navTargetTitle = '?';
-			if (navTargetModel != null) {
-				navTargetTitle = navTargetModel.title;
-			}
-
-			var prevModel = nextModel = null;
-			if (_navUtil2.default.canNavigate(this.state.navState)) {
-				prevModel = _navUtil2.default.getPrevModel(this.state.navState);
-				if (prevModel) {
-					var navText = typeof prevModel.title !== 'undefined' && prevModel.title !== null ? 'Back: ' + prevModel.title : 'Back';
-					prevEl = _react2.default.createElement(_inlineNavButton2.default, { ref: 'prev', type: 'prev', title: '' + navText });
-				} else {
-					prevEl = _react2.default.createElement(_inlineNavButton2.default, {
-						ref: 'prev',
-						type: 'prev',
-						title: 'Start of ' + this.state.model.title,
-						disabled: true
-					});
-				}
-
-				nextModel = _navUtil2.default.getNextModel(this.state.navState);
-				if (nextModel) {
-					var _navText = typeof nextModel.title !== 'undefined' && nextModel.title !== null ? 'Next: ' + nextModel.title : 'Next';
-					nextEl = _react2.default.createElement(_inlineNavButton2.default, { ref: 'next', type: 'next', title: '' + _navText });
-				} else {
-					nextEl = _react2.default.createElement(_inlineNavButton2.default, {
-						ref: 'next',
-						type: 'next',
-						title: 'End of ' + this.state.model.title,
-						disabled: true
-					});
-				}
-			}
-
-			var modalItem = ModalUtil.getCurrentModal(this.state.modalState);
-			var hideViewer = modalItem && modalItem.hideViewer;
-
-			var classNames = ['viewer--viewer-app', 'is-loaded', this.state.isPreviewing ? 'is-previewing' : 'is-not-previewing', this.state.navState.locked ? 'is-locked-nav' : 'is-unlocked-nav', this.state.navState.open ? 'is-open-nav' : 'is-closed-nav', this.state.navState.disabled ? 'is-disabled-nav' : 'is-enabled-nav', 'is-focus-state-' + this.state.focusState.viewState].join(' ');
-
-			return _react2.default.createElement(
-				_reactIdleTimer2.default,
-				{
-					ref: 'idleTimer',
-					element: window,
-					timeout: IDLE_TIMEOUT_DURATION_MS,
-					idleAction: this.onIdle,
-					activeAction: this.onReturnFromIdle
-				},
-				_react2.default.createElement(
-					'div',
-					{
-						ref: 'container',
-						onMouseDown: this.onMouseDown.bind(this),
-						onScroll: this.onScroll.bind(this),
-						className: classNames
-					},
-					hideViewer ? null : _react2.default.createElement(
-						'header',
-						null,
-						_react2.default.createElement(
-							'div',
-							{ className: 'pad' },
-							_react2.default.createElement(
-								'span',
-								{ className: 'module-title' },
-								this.state.model.title
-							),
-							_react2.default.createElement(
-								'span',
-								{ className: 'location' },
-								navTargetTitle
-							),
-							_react2.default.createElement(_logo2.default, null)
-						)
-					),
-					hideViewer ? null : _react2.default.createElement(_nav2.default, { navState: this.state.navState }),
-					hideViewer ? null : prevEl,
-					hideViewer ? null : _react2.default.createElement(ModuleComponent, { model: this.state.model, moduleData: this.state }),
-					hideViewer ? null : nextEl,
-					this.state.isPreviewing ? _react2.default.createElement(
-						'div',
-						{ className: 'preview-banner' },
-						_react2.default.createElement(
-							'span',
-							null,
-							'You are previewing this module'
-						),
-						_react2.default.createElement(
-							'div',
-							{ className: 'controls' },
-							_react2.default.createElement(
-								'span',
-								null,
-								'Preview options:'
-							),
-							_react2.default.createElement(
-								'button',
-								{
-									onClick: this.unlockNavigation.bind(this),
-									disabled: !this.state.navState.locked
-								},
-								'Unlock navigation'
-							),
-							_react2.default.createElement(
-								'button',
-								{
-									className: 'button-clear-scores',
-									onClick: this.clearPreviewScores.bind(this)
-								},
-								'Reset assessments & questions'
-							)
-						),
-						_react2.default.createElement('div', { className: 'border' })
-					) : null,
-					_react2.default.createElement(FocusBlocker, { moduleData: this.state }),
-					modalItem && modalItem.component ? _react2.default.createElement(
-						ModalContainer,
-						null,
-						modalItem.component
-					) : null
-				)
-			);
-		}
-	}]);
-
-	return ViewerApp;
-}(_react2.default.Component);
-
-exports.default = ViewerApp;
-
-/***/ }),
-/* 171 */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-
-
-Object.defineProperty(exports, "__esModule", {
-	value: true
-});
-
-var _viewerApp = __webpack_require__(170);
-
-var _viewerApp2 = _interopRequireDefault(_viewerApp);
-
-var _assessmentStore = __webpack_require__(141);
-
-var _assessmentStore2 = _interopRequireDefault(_assessmentStore);
-
-var _ltiNetworkStates = __webpack_require__(142);
-
-var _ltiNetworkStates2 = _interopRequireDefault(_ltiNetworkStates);
-
-var _navStore = __webpack_require__(8);
-
-var _navStore2 = _interopRequireDefault(_navStore);
-
-var _questionStore = __webpack_require__(9);
-
-var _questionStore2 = _interopRequireDefault(_questionStore);
-
-var _assessmentUtil = __webpack_require__(5);
-
-var _assessmentUtil2 = _interopRequireDefault(_assessmentUtil);
-
-var _navUtil = __webpack_require__(2);
-
-var _navUtil2 = _interopRequireDefault(_navUtil);
-
-var _apiUtil = __webpack_require__(3);
-
-var _apiUtil2 = _interopRequireDefault(_apiUtil);
-
-var _questionUtil = __webpack_require__(6);
-
-var _questionUtil2 = _interopRequireDefault(_questionUtil);
-
-var _getLtiOutcomeServiceHostname = __webpack_require__(143);
-
-var _getLtiOutcomeServiceHostname2 = _interopRequireDefault(_getLtiOutcomeServiceHostname);
-
-var _assessmentScoreReporter = __webpack_require__(138);
-
-var _assessmentScoreReporter2 = _interopRequireDefault(_assessmentScoreReporter);
-
-var _assessmentScoreReportView = __webpack_require__(137);
-
-var _assessmentScoreReportView2 = _interopRequireDefault(_assessmentScoreReportView);
-
-function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
-
-exports.default = {
-	components: {
-		ViewerApp: _viewerApp2.default
-	},
-
-	stores: {
-		AssessmentStore: _assessmentStore2.default,
-		assessmentStore: {
-			LTINetworkStates: _ltiNetworkStates2.default
-		},
-		NavStore: _navStore2.default,
-		QuestionStore: _questionStore2.default
-	},
-
-	util: {
-		AssessmentUtil: _assessmentUtil2.default,
-		NavUtil: _navUtil2.default,
-		APIUtil: _apiUtil2.default,
-		QuestionUtil: _questionUtil2.default,
-		getLTIOutcomeServiceHostname: _getLtiOutcomeServiceHostname2.default
-	},
-
-	assessment: {
-		AssessmentScoreReporter: _assessmentScoreReporter2.default,
-		AssessmentScoreReportView: _assessmentScoreReportView2.default
-	}
-};
-
-/***/ }),
-/* 172 */
-/***/ (function(module, exports) {
-
-// removed by extract-text-webpack-plugin
-
-/***/ }),
-/* 173 */
-/***/ (function(module, exports) {
-
-// removed by extract-text-webpack-plugin
-
-/***/ }),
-/* 174 */
-/***/ (function(module, exports) {
-
-// removed by extract-text-webpack-plugin
-
-/***/ }),
-/* 175 */
-/***/ (function(module, exports) {
-
-// removed by extract-text-webpack-plugin
-
-/***/ }),
-/* 176 */
-/***/ (function(module, exports) {
-
-// removed by extract-text-webpack-plugin
-
-/***/ }),
-/* 177 */
-/***/ (function(module, exports) {
-
-// removed by extract-text-webpack-plugin
-
-/***/ }),
 /* 178 */
 /***/ (function(module, exports, __webpack_require__) {
 
-var map = {
-	"./af": 12,
-	"./af.js": 12,
-	"./ar": 19,
-	"./ar-dz": 13,
-	"./ar-dz.js": 13,
-	"./ar-kw": 14,
-	"./ar-kw.js": 14,
-	"./ar-ly": 15,
-	"./ar-ly.js": 15,
-	"./ar-ma": 16,
-	"./ar-ma.js": 16,
-	"./ar-sa": 17,
-	"./ar-sa.js": 17,
-	"./ar-tn": 18,
-	"./ar-tn.js": 18,
-	"./ar.js": 19,
-	"./az": 20,
-	"./az.js": 20,
-	"./be": 21,
-	"./be.js": 21,
-	"./bg": 22,
-	"./bg.js": 22,
-	"./bm": 23,
-	"./bm.js": 23,
-	"./bn": 24,
-	"./bn.js": 24,
-	"./bo": 25,
-	"./bo.js": 25,
-	"./br": 26,
-	"./br.js": 26,
-	"./bs": 27,
-	"./bs.js": 27,
-	"./ca": 28,
-	"./ca.js": 28,
-	"./cs": 29,
-	"./cs.js": 29,
-	"./cv": 30,
-	"./cv.js": 30,
-	"./cy": 31,
-	"./cy.js": 31,
-	"./da": 32,
-	"./da.js": 32,
-	"./de": 35,
-	"./de-at": 33,
-	"./de-at.js": 33,
-	"./de-ch": 34,
-	"./de-ch.js": 34,
-	"./de.js": 35,
-	"./dv": 36,
-	"./dv.js": 36,
-	"./el": 37,
-	"./el.js": 37,
-	"./en-au": 38,
-	"./en-au.js": 38,
-	"./en-ca": 39,
-	"./en-ca.js": 39,
-	"./en-gb": 40,
-	"./en-gb.js": 40,
-	"./en-ie": 41,
-	"./en-ie.js": 41,
-	"./en-il": 42,
-	"./en-il.js": 42,
-	"./en-nz": 43,
-	"./en-nz.js": 43,
-	"./eo": 44,
-	"./eo.js": 44,
-	"./es": 47,
-	"./es-do": 45,
-	"./es-do.js": 45,
-	"./es-us": 46,
-	"./es-us.js": 46,
-	"./es.js": 47,
-	"./et": 48,
-	"./et.js": 48,
-	"./eu": 49,
-	"./eu.js": 49,
-	"./fa": 50,
-	"./fa.js": 50,
-	"./fi": 51,
-	"./fi.js": 51,
-	"./fo": 52,
-	"./fo.js": 52,
-	"./fr": 55,
-	"./fr-ca": 53,
-	"./fr-ca.js": 53,
-	"./fr-ch": 54,
-	"./fr-ch.js": 54,
-	"./fr.js": 55,
-	"./fy": 56,
-	"./fy.js": 56,
-	"./gd": 57,
-	"./gd.js": 57,
-	"./gl": 58,
-	"./gl.js": 58,
-	"./gom-latn": 59,
-	"./gom-latn.js": 59,
-	"./gu": 60,
-	"./gu.js": 60,
-	"./he": 61,
-	"./he.js": 61,
-	"./hi": 62,
-	"./hi.js": 62,
-	"./hr": 63,
-	"./hr.js": 63,
-	"./hu": 64,
-	"./hu.js": 64,
-	"./hy-am": 65,
-	"./hy-am.js": 65,
-	"./id": 66,
-	"./id.js": 66,
-	"./is": 67,
-	"./is.js": 67,
-	"./it": 68,
-	"./it.js": 68,
-	"./ja": 69,
-	"./ja.js": 69,
-	"./jv": 70,
-	"./jv.js": 70,
-	"./ka": 71,
-	"./ka.js": 71,
-	"./kk": 72,
-	"./kk.js": 72,
-	"./km": 73,
-	"./km.js": 73,
-	"./kn": 74,
-	"./kn.js": 74,
-	"./ko": 75,
-	"./ko.js": 75,
-	"./ky": 76,
-	"./ky.js": 76,
-	"./lb": 77,
-	"./lb.js": 77,
-	"./lo": 78,
-	"./lo.js": 78,
-	"./lt": 79,
-	"./lt.js": 79,
-	"./lv": 80,
-	"./lv.js": 80,
-	"./me": 81,
-	"./me.js": 81,
-	"./mi": 82,
-	"./mi.js": 82,
-	"./mk": 83,
-	"./mk.js": 83,
-	"./ml": 84,
-	"./ml.js": 84,
-	"./mn": 85,
-	"./mn.js": 85,
-	"./mr": 86,
-	"./mr.js": 86,
-	"./ms": 88,
-	"./ms-my": 87,
-	"./ms-my.js": 87,
-	"./ms.js": 88,
-	"./mt": 89,
-	"./mt.js": 89,
-	"./my": 90,
-	"./my.js": 90,
-	"./nb": 91,
-	"./nb.js": 91,
-	"./ne": 92,
-	"./ne.js": 92,
-	"./nl": 94,
-	"./nl-be": 93,
-	"./nl-be.js": 93,
-	"./nl.js": 94,
-	"./nn": 95,
-	"./nn.js": 95,
-	"./pa-in": 96,
-	"./pa-in.js": 96,
-	"./pl": 97,
-	"./pl.js": 97,
-	"./pt": 99,
-	"./pt-br": 98,
-	"./pt-br.js": 98,
-	"./pt.js": 99,
-	"./ro": 100,
-	"./ro.js": 100,
-	"./ru": 101,
-	"./ru.js": 101,
-	"./sd": 102,
-	"./sd.js": 102,
-	"./se": 103,
-	"./se.js": 103,
-	"./si": 104,
-	"./si.js": 104,
-	"./sk": 105,
-	"./sk.js": 105,
-	"./sl": 106,
-	"./sl.js": 106,
-	"./sq": 107,
-	"./sq.js": 107,
-	"./sr": 109,
-	"./sr-cyrl": 108,
-	"./sr-cyrl.js": 108,
-	"./sr.js": 109,
-	"./ss": 110,
-	"./ss.js": 110,
-	"./sv": 111,
-	"./sv.js": 111,
-	"./sw": 112,
-	"./sw.js": 112,
-	"./ta": 113,
-	"./ta.js": 113,
-	"./te": 114,
-	"./te.js": 114,
-	"./tet": 115,
-	"./tet.js": 115,
-	"./tg": 116,
-	"./tg.js": 116,
-	"./th": 117,
-	"./th.js": 117,
-	"./tl-ph": 118,
-	"./tl-ph.js": 118,
-	"./tlh": 119,
-	"./tlh.js": 119,
-	"./tr": 120,
-	"./tr.js": 120,
-	"./tzl": 121,
-	"./tzl.js": 121,
-	"./tzm": 123,
-	"./tzm-latn": 122,
-	"./tzm-latn.js": 122,
-	"./tzm.js": 123,
-	"./ug-cn": 124,
-	"./ug-cn.js": 124,
-	"./uk": 125,
-	"./uk.js": 125,
-	"./ur": 126,
-	"./ur.js": 126,
-	"./uz": 128,
-	"./uz-latn": 127,
-	"./uz-latn.js": 127,
-	"./uz.js": 128,
-	"./vi": 129,
-	"./vi.js": 129,
-	"./x-pseudo": 130,
-	"./x-pseudo.js": 130,
-	"./yo": 131,
-	"./yo.js": 131,
-	"./zh-cn": 132,
-	"./zh-cn.js": 132,
-	"./zh-hk": 133,
-	"./zh-hk.js": 133,
-	"./zh-tw": 134,
-	"./zh-tw.js": 134
+"use strict";
+
+
+/**
+ * Check if we're required to add a port number.
+ *
+ * @see https://url.spec.whatwg.org/#default-port
+ * @param {Number|String} port Port number we need to check
+ * @param {String} protocol Protocol we need to check against.
+ * @returns {Boolean} Is it a default port for the given protocol
+ * @api private
+ */
+
+module.exports = function required(port, protocol) {
+  protocol = protocol.split(':')[0];
+  port = +port;
+
+  if (!port) return false;
+
+  switch (protocol) {
+    case 'http':
+    case 'ws':
+      return port !== 80;
+
+    case 'https':
+    case 'wss':
+      return port !== 443;
+
+    case 'ftp':
+      return port !== 21;
+
+    case 'gopher':
+      return port !== 70;
+
+    case 'file':
+      return false;
+  }
+
+  return port !== 0;
 };
-function webpackContext(req) {
-	return __webpack_require__(webpackContextResolve(req));
-};
-function webpackContextResolve(req) {
-	var id = map[req];
-	if(!(id + 1)) // check for number or string
-		throw new Error("Cannot find module '" + req + "'.");
-	return id;
-};
-webpackContext.keys = function webpackContextKeys() {
-	return Object.keys(map);
-};
-webpackContext.resolve = webpackContextResolve;
-module.exports = webpackContext;
-webpackContext.id = 178;
 
 /***/ }),
 /* 179 */
 /***/ (function(module, exports, __webpack_require__) {
 
-__webpack_require__(145);
-module.exports = __webpack_require__(146);
+"use strict";
 
+
+var has = Object.prototype.hasOwnProperty;
+
+/**
+ * Decode a URI encoded string.
+ *
+ * @param {String} input The URI encoded string.
+ * @returns {String} The decoded string.
+ * @api private
+ */
+function decode(input) {
+  return decodeURIComponent(input.replace(/\+/g, ' '));
+}
+
+/**
+ * Simple query string parser.
+ *
+ * @param {String} query The query string that needs to be parsed.
+ * @returns {Object}
+ * @api public
+ */
+function querystring(query) {
+  var parser = /([^=?&]+)=?([^&]*)/g,
+      result = {},
+      part;
+
+  //
+  // Little nifty parsing hack, leverage the fact that RegExp.exec increments
+  // the lastIndex property so we can continue executing this loop until we've
+  // parsed all results.
+  //
+  for (; part = parser.exec(query); result[decode(part[1])] = decode(part[2])) {}
+
+  return result;
+}
+
+/**
+ * Transform a query string to an object.
+ *
+ * @param {Object} obj Object that should be transformed.
+ * @param {String} prefix Optional prefix.
+ * @returns {String}
+ * @api public
+ */
+function querystringify(obj, prefix) {
+  prefix = prefix || '';
+
+  var pairs = [];
+
+  //
+  // Optionally prefix with a '?' if needed
+  //
+  if ('string' !== typeof prefix) prefix = '?';
+
+  for (var key in obj) {
+    if (has.call(obj, key)) {
+      pairs.push(encodeURIComponent(key) + '=' + encodeURIComponent(obj[key]));
+    }
+  }
+
+  return pairs.length ? prefix + pairs.join('&') : '';
+}
+
+//
+// Expose the module.
+//
+exports.stringify = querystringify;
+exports.parse = querystring;
 
 /***/ })
 /******/ ]);

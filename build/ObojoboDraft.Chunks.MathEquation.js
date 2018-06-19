@@ -33,9 +33,6 @@
 /******/ 	// expose the module cache
 /******/ 	__webpack_require__.c = installedModules;
 /******/
-/******/ 	// identity function for calling harmony imports with the correct context
-/******/ 	__webpack_require__.i = function(value) { return value; };
-/******/
 /******/ 	// define getter function for harmony exports
 /******/ 	__webpack_require__.d = function(exports, name, getter) {
 /******/ 		if(!__webpack_require__.o(exports, name)) {
@@ -63,7 +60,7 @@
 /******/ 	__webpack_require__.p = "build/";
 /******/
 /******/ 	// Load entry module and return exports
-/******/ 	return __webpack_require__(__webpack_require__.s = 295);
+/******/ 	return __webpack_require__(__webpack_require__.s = 220);
 /******/ })
 /************************************************************************/
 /******/ ({
@@ -75,7 +72,15 @@ module.exports = Common;
 
 /***/ }),
 
-/***/ 112:
+/***/ 220:
+/***/ (function(module, exports, __webpack_require__) {
+
+module.exports = __webpack_require__(221);
+
+
+/***/ }),
+
+/***/ 221:
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -85,11 +90,11 @@ var _Common = __webpack_require__(0);
 
 var _Common2 = _interopRequireDefault(_Common);
 
-var _adapter = __webpack_require__(147);
+var _adapter = __webpack_require__(222);
 
 var _adapter2 = _interopRequireDefault(_adapter);
 
-var _viewerComponent = __webpack_require__(148);
+var _viewerComponent = __webpack_require__(223);
 
 var _viewerComponent2 = _interopRequireDefault(_viewerComponent);
 
@@ -107,7 +112,7 @@ _Common2.default.Store.registerModel('ObojoboDraft.Chunks.MathEquation', {
 
 /***/ }),
 
-/***/ 147:
+/***/ 222:
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -175,7 +180,7 @@ function __guard__(value, transform) {
 
 /***/ }),
 
-/***/ 148:
+/***/ 223:
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -185,9 +190,9 @@ Object.defineProperty(exports, "__esModule", {
 	value: true
 });
 
-__webpack_require__(273);
+__webpack_require__(224);
 
-var _katex = __webpack_require__(65);
+var _katex = __webpack_require__(60);
 
 var _katex2 = _interopRequireDefault(_katex);
 
@@ -249,22 +254,14 @@ exports.default = function (props) {
 
 /***/ }),
 
-/***/ 273:
+/***/ 224:
 /***/ (function(module, exports) {
 
 // removed by extract-text-webpack-plugin
 
 /***/ }),
 
-/***/ 295:
-/***/ (function(module, exports, __webpack_require__) {
-
-module.exports = __webpack_require__(112);
-
-
-/***/ }),
-
-/***/ 65:
+/***/ 60:
 /***/ (function(module, exports) {
 
 module.exports = katex;

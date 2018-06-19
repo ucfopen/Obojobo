@@ -33,9 +33,6 @@
 /******/ 	// expose the module cache
 /******/ 	__webpack_require__.c = installedModules;
 /******/
-/******/ 	// identity function for calling harmony imports with the correct context
-/******/ 	__webpack_require__.i = function(value) { return value; };
-/******/
 /******/ 	// define getter function for harmony exports
 /******/ 	__webpack_require__.d = function(exports, name, getter) {
 /******/ 		if(!__webpack_require__.o(exports, name)) {
@@ -63,7 +60,7 @@
 /******/ 	__webpack_require__.p = "build/";
 /******/
 /******/ 	// Load entry module and return exports
-/******/ 	return __webpack_require__(__webpack_require__.s = 299);
+/******/ 	return __webpack_require__(__webpack_require__.s = 254);
 /******/ })
 /************************************************************************/
 /******/ ({
@@ -75,7 +72,15 @@ module.exports = Common;
 
 /***/ }),
 
-/***/ 116:
+/***/ 254:
+/***/ (function(module, exports, __webpack_require__) {
+
+module.exports = __webpack_require__(255);
+
+
+/***/ }),
+
+/***/ 255:
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -85,7 +90,7 @@ var _Common = __webpack_require__(0);
 
 var _Common2 = _interopRequireDefault(_Common);
 
-var _viewerComponent = __webpack_require__(156);
+var _viewerComponent = __webpack_require__(256);
 
 var _viewerComponent2 = _interopRequireDefault(_viewerComponent);
 
@@ -104,7 +109,7 @@ _Common2.default.Store.registerModel('ObojoboDraft.Chunks.Text', {
 
 /***/ }),
 
-/***/ 156:
+/***/ 256:
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -114,7 +119,7 @@ Object.defineProperty(exports, "__esModule", {
 	value: true
 });
 
-__webpack_require__(278);
+__webpack_require__(257);
 
 var _Common = __webpack_require__(0);
 
@@ -143,18 +148,10 @@ exports.default = function (props) {
 
 /***/ }),
 
-/***/ 278:
+/***/ 257:
 /***/ (function(module, exports) {
 
 // removed by extract-text-webpack-plugin
-
-/***/ }),
-
-/***/ 299:
-/***/ (function(module, exports, __webpack_require__) {
-
-module.exports = __webpack_require__(116);
-
 
 /***/ })
 

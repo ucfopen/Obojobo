@@ -33,9 +33,6 @@
 /******/ 	// expose the module cache
 /******/ 	__webpack_require__.c = installedModules;
 /******/
-/******/ 	// identity function for calling harmony imports with the correct context
-/******/ 	__webpack_require__.i = function(value) { return value; };
-/******/
 /******/ 	// define getter function for harmony exports
 /******/ 	__webpack_require__.d = function(exports, name, getter) {
 /******/ 		if(!__webpack_require__.o(exports, name)) {
@@ -63,7 +60,7 @@
 /******/ 	__webpack_require__.p = "build/";
 /******/
 /******/ 	// Load entry module and return exports
-/******/ 	return __webpack_require__(__webpack_require__.s = 292);
+/******/ 	return __webpack_require__(__webpack_require__.s = 215);
 /******/ })
 /************************************************************************/
 /******/ ({
@@ -75,7 +72,15 @@ module.exports = Common;
 
 /***/ }),
 
-/***/ 110:
+/***/ 215:
+/***/ (function(module, exports, __webpack_require__) {
+
+module.exports = __webpack_require__(216);
+
+
+/***/ }),
+
+/***/ 216:
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -85,11 +90,11 @@ var _Common = __webpack_require__(0);
 
 var _Common2 = _interopRequireDefault(_Common);
 
-var _adapter = __webpack_require__(139);
+var _adapter = __webpack_require__(217);
 
 var _adapter2 = _interopRequireDefault(_adapter);
 
-var _viewerComponent = __webpack_require__(140);
+var _viewerComponent = __webpack_require__(218);
 
 var _viewerComponent2 = _interopRequireDefault(_viewerComponent);
 
@@ -106,7 +111,7 @@ _Common2.default.Store.registerModel('ObojoboDraft.Chunks.List', {
 
 /***/ }),
 
-/***/ 139:
+/***/ 217:
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -116,7 +121,7 @@ Object.defineProperty(exports, "__esModule", {
 	value: true
 });
 
-var _listStyles = __webpack_require__(66);
+var _listStyles = __webpack_require__(98);
 
 var _listStyles2 = _interopRequireDefault(_listStyles);
 
@@ -190,7 +195,7 @@ function __guard__(value, transform) {
 
 /***/ }),
 
-/***/ 140:
+/***/ 218:
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -200,9 +205,9 @@ Object.defineProperty(exports, "__esModule", {
 	value: true
 });
 
-__webpack_require__(269);
+__webpack_require__(219);
 
-var _listStyles = __webpack_require__(66);
+var _listStyles = __webpack_require__(98);
 
 var _listStyles2 = _interopRequireDefault(_listStyles);
 
@@ -382,22 +387,14 @@ exports.default = function (props) {
 
 /***/ }),
 
-/***/ 269:
+/***/ 219:
 /***/ (function(module, exports) {
 
 // removed by extract-text-webpack-plugin
 
 /***/ }),
 
-/***/ 292:
-/***/ (function(module, exports, __webpack_require__) {
-
-module.exports = __webpack_require__(110);
-
-
-/***/ }),
-
-/***/ 66:
+/***/ 98:
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";

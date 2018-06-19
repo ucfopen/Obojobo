@@ -33,9 +33,6 @@
 /******/ 	// expose the module cache
 /******/ 	__webpack_require__.c = installedModules;
 /******/
-/******/ 	// identity function for calling harmony imports with the correct context
-/******/ 	__webpack_require__.i = function(value) { return value; };
-/******/
 /******/ 	// define getter function for harmony exports
 /******/ 	__webpack_require__.d = function(exports, name, getter) {
 /******/ 		if(!__webpack_require__.o(exports, name)) {
@@ -63,7 +60,7 @@
 /******/ 	__webpack_require__.p = "build/";
 /******/
 /******/ 	// Load entry module and return exports
-/******/ 	return __webpack_require__(__webpack_require__.s = 301);
+/******/ 	return __webpack_require__(__webpack_require__.s = 263);
 /******/ })
 /************************************************************************/
 /******/ ({
@@ -82,7 +79,15 @@ module.exports = Viewer;
 
 /***/ }),
 
-/***/ 118:
+/***/ 263:
+/***/ (function(module, exports, __webpack_require__) {
+
+module.exports = __webpack_require__(264);
+
+
+/***/ }),
+
+/***/ 264:
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -92,11 +97,11 @@ var _Common = __webpack_require__(0);
 
 var _Common2 = _interopRequireDefault(_Common);
 
-var _adapter = __webpack_require__(159);
+var _adapter = __webpack_require__(265);
 
 var _adapter2 = _interopRequireDefault(_adapter);
 
-var _viewerComponent = __webpack_require__(160);
+var _viewerComponent = __webpack_require__(266);
 
 var _viewerComponent2 = _interopRequireDefault(_viewerComponent);
 
@@ -119,7 +124,7 @@ _Common2.default.Store.registerModel('ObojoboDraft.Modules.Module', {
 
 /***/ }),
 
-/***/ 159:
+/***/ 265:
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -156,7 +161,7 @@ function __guard__(value, transform) {
 
 /***/ }),
 
-/***/ 160:
+/***/ 266:
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -166,7 +171,7 @@ Object.defineProperty(exports, "__esModule", {
 	value: true
 });
 
-__webpack_require__(280);
+__webpack_require__(267);
 
 var _Common = __webpack_require__(0);
 
@@ -210,18 +215,10 @@ exports.default = function (props) {
 
 /***/ }),
 
-/***/ 280:
+/***/ 267:
 /***/ (function(module, exports) {
 
 // removed by extract-text-webpack-plugin
-
-/***/ }),
-
-/***/ 301:
-/***/ (function(module, exports, __webpack_require__) {
-
-module.exports = __webpack_require__(118);
-
 
 /***/ })
 

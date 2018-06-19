@@ -3,7 +3,8 @@
 	"version": "1.0.0-alpha2",
 	"description": "",
 	"engines": {
-		"yarn": "^1.0"
+		"yarn": "^1.0",
+		"node": "^10.4.1"
 	},
 	"main": "index.js",
 	"scripts": {
@@ -46,7 +47,7 @@
 		"css-loader": "^0.28.1",
 		"enzyme": "^3.3.0",
 		"enzyme-adapter-react-15": "^1.0.5",
-		"extract-text-webpack-plugin": "^2.1.0",
+		"extract-text-webpack-plugin": "^3.0.2",
 		"husky": "^0.14.3",
 		"jest": "^22.4.3",
 		"json-loader": "^0.5.4",
@@ -59,8 +60,8 @@
 		"style-loader": "^0.17.0",
 		"svg-url-loader": "^2.3.2",
 		"svgo": "^1.0.5",
-		"webpack": "^2.5.1",
-		"webpack-dev-server": "^2.4.5"
+		"webpack": "^3.10.0",
+		"webpack-dev-server": "^2.11.2"
 	},
 	"dependencies": {
 		"babel-polyfill": "^6.26.0",

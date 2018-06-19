@@ -33,9 +33,6 @@
 /******/ 	// expose the module cache
 /******/ 	__webpack_require__.c = installedModules;
 /******/
-/******/ 	// identity function for calling harmony imports with the correct context
-/******/ 	__webpack_require__.i = function(value) { return value; };
-/******/
 /******/ 	// define getter function for harmony exports
 /******/ 	__webpack_require__.d = function(exports, name, getter) {
 /******/ 		if(!__webpack_require__.o(exports, name)) {
@@ -63,7 +60,7 @@
 /******/ 	__webpack_require__.p = "build/";
 /******/
 /******/ 	// Load entry module and return exports
-/******/ 	return __webpack_require__(__webpack_require__.s = 296);
+/******/ 	return __webpack_require__(__webpack_require__.s = 237);
 /******/ })
 /************************************************************************/
 /******/ ({
@@ -82,7 +79,32 @@ module.exports = Viewer;
 
 /***/ }),
 
-/***/ 113:
+/***/ 21:
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+// used to apply ' is-label' or ' is-not-label' styles
+var isOrNot = function isOrNot(flag, label) {
+  return ' is-' + (flag ? '' : 'not-') + label;
+};
+exports.default = isOrNot;
+
+/***/ }),
+
+/***/ 237:
+/***/ (function(module, exports, __webpack_require__) {
+
+module.exports = __webpack_require__(238);
+
+
+/***/ }),
+
+/***/ 238:
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -92,11 +114,11 @@ var _Common = __webpack_require__(0);
 
 var _Common2 = _interopRequireDefault(_Common);
 
-var _adapter = __webpack_require__(150);
+var _adapter = __webpack_require__(239);
 
 var _adapter2 = _interopRequireDefault(_adapter);
 
-var _viewerComponent = __webpack_require__(151);
+var _viewerComponent = __webpack_require__(240);
 
 var _viewerComponent2 = _interopRequireDefault(_viewerComponent);
 
@@ -133,32 +155,7 @@ _Common2.default.Store.registerModel('ObojoboDraft.Chunks.Question', {
 
 /***/ }),
 
-/***/ 149:
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-
-
-Object.defineProperty(exports, "__esModule", {
-	value: true
-});
-
-__webpack_require__(274);
-
-exports.default = function (props) {
-	return React.createElement(
-		'div',
-		{ className: 'obojobo-draft--chunks--mc-question--content' },
-		props.model.children.models.slice(0, -1).map(function (child, index) {
-			var Component = child.getComponentClass();
-			return React.createElement(Component, { key: child.get('id'), model: child, moduleData: props.moduleData });
-		})
-	);
-};
-
-/***/ }),
-
-/***/ 150:
+/***/ 239:
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -224,7 +221,7 @@ function __guard__(value, transform) {
 
 /***/ }),
 
-/***/ 151:
+/***/ 240:
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -236,7 +233,7 @@ Object.defineProperty(exports, "__esModule", {
 
 var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
 
-__webpack_require__(275);
+__webpack_require__(241);
 
 var _Common = __webpack_require__(0);
 
@@ -250,7 +247,7 @@ var _isornot = __webpack_require__(21);
 
 var _isornot2 = _interopRequireDefault(_isornot);
 
-var _viewerComponent = __webpack_require__(149);
+var _viewerComponent = __webpack_require__(242);
 
 var _viewerComponent2 = _interopRequireDefault(_viewerComponent);
 
@@ -377,42 +374,42 @@ exports.default = Question;
 
 /***/ }),
 
-/***/ 21:
+/***/ 241:
+/***/ (function(module, exports) {
+
+// removed by extract-text-webpack-plugin
+
+/***/ }),
+
+/***/ 242:
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
 
 
 Object.defineProperty(exports, "__esModule", {
-  value: true
+	value: true
 });
-// used to apply ' is-label' or ' is-not-label' styles
-var isOrNot = function isOrNot(flag, label) {
-  return ' is-' + (flag ? '' : 'not-') + label;
+
+__webpack_require__(243);
+
+exports.default = function (props) {
+	return React.createElement(
+		'div',
+		{ className: 'obojobo-draft--chunks--mc-question--content' },
+		props.model.children.models.slice(0, -1).map(function (child, index) {
+			var Component = child.getComponentClass();
+			return React.createElement(Component, { key: child.get('id'), model: child, moduleData: props.moduleData });
+		})
+	);
 };
-exports.default = isOrNot;
 
 /***/ }),
 
-/***/ 274:
+/***/ 243:
 /***/ (function(module, exports) {
 
 // removed by extract-text-webpack-plugin
-
-/***/ }),
-
-/***/ 275:
-/***/ (function(module, exports) {
-
-// removed by extract-text-webpack-plugin
-
-/***/ }),
-
-/***/ 296:
-/***/ (function(module, exports, __webpack_require__) {
-
-module.exports = __webpack_require__(113);
-
 
 /***/ })
 

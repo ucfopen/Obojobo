@@ -33,9 +33,6 @@
 /******/ 	// expose the module cache
 /******/ 	__webpack_require__.c = installedModules;
 /******/
-/******/ 	// identity function for calling harmony imports with the correct context
-/******/ 	__webpack_require__.i = function(value) { return value; };
-/******/
 /******/ 	// define getter function for harmony exports
 /******/ 	__webpack_require__.d = function(exports, name, getter) {
 /******/ 		if(!__webpack_require__.o(exports, name)) {
@@ -63,7 +60,7 @@
 /******/ 	__webpack_require__.p = "build/";
 /******/
 /******/ 	// Load entry module and return exports
-/******/ 	return __webpack_require__(__webpack_require__.s = 288);
+/******/ 	return __webpack_require__(__webpack_require__.s = 192);
 /******/ })
 /************************************************************************/
 /******/ ({
@@ -75,7 +72,15 @@ module.exports = Common;
 
 /***/ }),
 
-/***/ 106:
+/***/ 192:
+/***/ (function(module, exports, __webpack_require__) {
+
+module.exports = __webpack_require__(193);
+
+
+/***/ }),
+
+/***/ 193:
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -85,15 +90,15 @@ var _Common = __webpack_require__(0);
 
 var _Common2 = _interopRequireDefault(_Common);
 
-var _selectionHandler = __webpack_require__(131);
+var _selectionHandler = __webpack_require__(194);
 
 var _selectionHandler2 = _interopRequireDefault(_selectionHandler);
 
-var _adapter = __webpack_require__(129);
+var _adapter = __webpack_require__(195);
 
 var _adapter2 = _interopRequireDefault(_adapter);
 
-var _viewerComponent = __webpack_require__(132);
+var _viewerComponent = __webpack_require__(196);
 
 var _viewerComponent2 = _interopRequireDefault(_viewerComponent);
 
@@ -108,7 +113,57 @@ _Common2.default.Store.registerModel('ObojoboDraft.Chunks.Figure', {
 
 /***/ }),
 
-/***/ 129:
+/***/ 194:
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+Object.defineProperty(exports, "__esModule", {
+	value: true
+});
+
+var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+
+var _Common = __webpack_require__(0);
+
+var _Common2 = _interopRequireDefault(_Common);
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
+
+function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
+
+var SelectionHandler = void 0;
+var TextGroupSelectionHandler = _Common2.default.chunk.textChunk.TextGroupSelectionHandler;
+var FocusableSelectionHandler = _Common2.default.chunk.focusableChunk.FocusableSelectionHandler;
+var Chunk = _Common2.default.models.Chunk;
+
+exports.default = SelectionHandler = function (_TextGroupSelectionHa) {
+	_inherits(SelectionHandler, _TextGroupSelectionHa);
+
+	function SelectionHandler() {
+		_classCallCheck(this, SelectionHandler);
+
+		return _possibleConstructorReturn(this, (SelectionHandler.__proto__ || Object.getPrototypeOf(SelectionHandler)).apply(this, arguments));
+	}
+
+	_createClass(SelectionHandler, [{
+		key: 'selectStart',
+		value: function selectStart(selection, chunk) {
+			return FocusableSelectionHandler.prototype.selectStart(selection, chunk);
+		}
+	}]);
+
+	return SelectionHandler;
+}(TextGroupSelectionHandler);
+
+/***/ }),
+
+/***/ 195:
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -201,7 +256,7 @@ function __guard__(value, transform) {
 
 /***/ }),
 
-/***/ 130:
+/***/ 196:
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -211,107 +266,9 @@ Object.defineProperty(exports, "__esModule", {
 	value: true
 });
 
-var _Common = __webpack_require__(0);
+__webpack_require__(197);
 
-var _Common2 = _interopRequireDefault(_Common);
-
-__webpack_require__(264);
-
-function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
-
-exports.default = function (props) {
-	var imgStyles = void 0;
-	var data = props.chunk.modelState;
-
-	if (data.url == null) {
-		return React.createElement('div', { className: 'img-placeholder' });
-	}
-
-	switch (data.size) {
-		case 'small':
-		case 'medium':
-		case 'large':
-			return React.createElement('img', { src: data.url, unselectable: 'on', alt: data.alt });
-		case 'custom':
-			imgStyles = {};
-
-			if (data.width != null) {
-				imgStyles.width = data.width + 'px';
-			}
-
-			if (data.height != null) {
-				imgStyles.height = data.height + 'px';
-			}
-
-			return React.createElement('img', { src: data.url, unselectable: 'on', alt: data.alt, style: imgStyles });
-	}
-};
-
-/***/ }),
-
-/***/ 131:
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-
-
-Object.defineProperty(exports, "__esModule", {
-	value: true
-});
-
-var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
-
-var _Common = __webpack_require__(0);
-
-var _Common2 = _interopRequireDefault(_Common);
-
-function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
-
-function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
-
-function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
-
-function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
-
-var SelectionHandler = void 0;
-var TextGroupSelectionHandler = _Common2.default.chunk.textChunk.TextGroupSelectionHandler;
-var FocusableSelectionHandler = _Common2.default.chunk.focusableChunk.FocusableSelectionHandler;
-var Chunk = _Common2.default.models.Chunk;
-
-exports.default = SelectionHandler = function (_TextGroupSelectionHa) {
-	_inherits(SelectionHandler, _TextGroupSelectionHa);
-
-	function SelectionHandler() {
-		_classCallCheck(this, SelectionHandler);
-
-		return _possibleConstructorReturn(this, (SelectionHandler.__proto__ || Object.getPrototypeOf(SelectionHandler)).apply(this, arguments));
-	}
-
-	_createClass(SelectionHandler, [{
-		key: 'selectStart',
-		value: function selectStart(selection, chunk) {
-			return FocusableSelectionHandler.prototype.selectStart(selection, chunk);
-		}
-	}]);
-
-	return SelectionHandler;
-}(TextGroupSelectionHandler);
-
-/***/ }),
-
-/***/ 132:
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-
-
-Object.defineProperty(exports, "__esModule", {
-	value: true
-});
-
-__webpack_require__(265);
-
-var _image = __webpack_require__(130);
+var _image = __webpack_require__(198);
 
 var _image2 = _interopRequireDefault(_image);
 
@@ -358,25 +315,65 @@ exports.default = function (props) {
 
 /***/ }),
 
-/***/ 264:
+/***/ 197:
 /***/ (function(module, exports) {
 
 // removed by extract-text-webpack-plugin
 
 /***/ }),
 
-/***/ 265:
-/***/ (function(module, exports) {
-
-// removed by extract-text-webpack-plugin
-
-/***/ }),
-
-/***/ 288:
+/***/ 198:
 /***/ (function(module, exports, __webpack_require__) {
 
-module.exports = __webpack_require__(106);
+"use strict";
 
+
+Object.defineProperty(exports, "__esModule", {
+	value: true
+});
+
+var _Common = __webpack_require__(0);
+
+var _Common2 = _interopRequireDefault(_Common);
+
+__webpack_require__(199);
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+exports.default = function (props) {
+	var imgStyles = void 0;
+	var data = props.chunk.modelState;
+
+	if (data.url == null) {
+		return React.createElement('div', { className: 'img-placeholder' });
+	}
+
+	switch (data.size) {
+		case 'small':
+		case 'medium':
+		case 'large':
+			return React.createElement('img', { src: data.url, unselectable: 'on', alt: data.alt });
+		case 'custom':
+			imgStyles = {};
+
+			if (data.width != null) {
+				imgStyles.width = data.width + 'px';
+			}
+
+			if (data.height != null) {
+				imgStyles.height = data.height + 'px';
+			}
+
+			return React.createElement('img', { src: data.url, unselectable: 'on', alt: data.alt, style: imgStyles });
+	}
+};
+
+/***/ }),
+
+/***/ 199:
+/***/ (function(module, exports) {
+
+// removed by extract-text-webpack-plugin
 
 /***/ })
 
