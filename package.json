@@ -12,7 +12,7 @@
 		"test:ci": "CI=true jest --ci --useStderr --coverage --coverageReporters text-summary cobertura",
 		"start": "webpack --watch",
 		"dev": "webpack-dev-server --colors --port 8090 --host 0.0.0.0",
-		"build": "webpack",
+		"build": "webpack --mode production",
 		"build:gitadd": "git add ./build",
 		"build:minifysvg": "find ./ ! -path node_modules -type f -name '*.svg' ! -name '*.min.svg' -exec svgo {} --multipass --pretty --precision=2 \\;",
 		"generateModuleManifest": "node ./bin/generate_module_manifest.js",
@@ -46,11 +46,11 @@
 		"css-loader": "^0.28.11",
 		"enzyme": "^3.3.0",
 		"enzyme-adapter-react-15": "^1.0.5",
-		"extract-text-webpack-plugin": "^3.0.2",
 		"husky": "^0.14.3",
 		"jest": "^22.4.3",
 		"json-loader": "^0.5.4",
 		"lint-staged": "^6.1.1",
+		"mini-css-extract-plugin": "^0.4.0",
 		"node-bourbon": "^4.2.8",
 		"node-sass": "^4.9.0",
 		"prettier": "1.11.1",
@@ -59,8 +59,9 @@
 		"style-loader": "^0.21.0",
 		"svg-url-loader": "^2.3.2",
 		"svgo": "^1.0.5",
-		"webpack": "^3.10.0",
-		"webpack-dev-server": "^2.11.2"
+		"webpack": "^4.12.0",
+		"webpack-cli": "^3.0.8",
+		"webpack-dev-server": "^3.1.4"
 	},
 	"dependencies": {
 		"babel-polyfill": "^6.26.0",
