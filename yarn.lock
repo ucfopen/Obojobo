@@ -4936,9 +4936,9 @@ object.pick@^1.3.0:
   dependencies:
     isobject "^3.0.1"
 
-"obojobo-draft-document-engine@https://github.com/ucfcdl/Obojobo-Document-Engine.git#v1.0.0":
+"obojobo-draft-document-engine@https://github.com/ucfcdl/Obojobo-Document-Engine.git#v1.0.1":
   version "1.0.0"
-  resolved "https://github.com/ucfcdl/Obojobo-Document-Engine.git#bee300878ee6726d82e6c79f13ace1b4747aca0b"
+  resolved "https://github.com/ucfcdl/Obojobo-Document-Engine.git#f4ed239b9478259e6e7742b4152d23244358c5d9"
   dependencies:
     underscore "1.5.1"
 
