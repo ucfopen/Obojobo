@@ -26,7 +26,6 @@ let requireCurrentDocument = (req) => {
 	}
 
 	if(draftId === null) {
-		console.log(req)
 		logger.warn(
 			'No Session or Current DraftDocument?',
 			req.currentDocument

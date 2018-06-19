@@ -64,13 +64,6 @@ exports.up = function(db) {
 				updates = updates.join(';')
 				return db.runSql(updates)
 			})
-			// Require notNull after content has all been filled out
-			.then(result => {
-				return db.changeColumn('events', 'draft_content_id', {
-					type: 'UUID',
-					notNull: true
-				})
-			})
 	)
 }
 
