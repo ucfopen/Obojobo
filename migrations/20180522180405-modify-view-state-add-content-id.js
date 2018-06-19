@@ -72,7 +72,7 @@ exports.up = function(db) {
 				})
 			})
 			.then(result => {
-				return db.removeIndex('visits', 'user_draft_unique')
+				return db.removeIndex('view_state', 'user_draft_unique')
 			})
 			.then(result => {
 				return db.addIndex(
@@ -86,7 +86,9 @@ exports.up = function(db) {
 }
 
 exports.down = function(db) {
-	return db.removeColumn('view_state', 'draft_content_id')
+	return db.removeColumn('view_state', 'draft_content_id').then(result => {
+		return db.addIndex('view_state', 'user_draft_unique', ['user_id', 'draft_id'], true)
+	})
 }
 
 exports._meta = {
