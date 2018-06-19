@@ -16,7 +16,7 @@
 			<Page>
 				<h1 align="center">Assessment Intro Title</h1>
 				<p align="center">Some overview before starting the Assessment.</p>
-				<p align="center">You have {{assessment:attemptsRemaining}} attemps remaining.</p>
+				<p align="center">You have {{assessment:attemptsRemaining}} attempts remaining.</p>
 
 				<!-- This button will start an assessment attempt: -->
 				<ActionButton>
@@ -70,7 +70,7 @@
 				<scoreAction for="[0,100]">
 					<Page>
 						<h1 align="center">How did you do?</h1>
-						<p align="center">You have {{assessment:attemptsRemaining}} attemps remaining.</p>
+						<p align="center">You have {{assessment:attemptsRemaining}} attempts remaining.</p>
 
 						<!-- This button will start another assessment attempt: -->
 						<ActionButton align="center">
