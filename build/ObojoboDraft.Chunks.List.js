@@ -63,7 +63,7 @@
 /******/ 	__webpack_require__.p = "build/";
 /******/
 /******/ 	// Load entry module and return exports
-/******/ 	return __webpack_require__(__webpack_require__.s = 290);
+/******/ 	return __webpack_require__(__webpack_require__.s = 292);
 /******/ })
 /************************************************************************/
 /******/ ({
@@ -75,7 +75,7 @@ module.exports = Common;
 
 /***/ }),
 
-/***/ 108:
+/***/ 110:
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -85,11 +85,11 @@ var _Common = __webpack_require__(0);
 
 var _Common2 = _interopRequireDefault(_Common);
 
-var _adapter = __webpack_require__(137);
+var _adapter = __webpack_require__(139);
 
 var _adapter2 = _interopRequireDefault(_adapter);
 
-var _viewerComponent = __webpack_require__(138);
+var _viewerComponent = __webpack_require__(140);
 
 var _viewerComponent2 = _interopRequireDefault(_viewerComponent);
 
@@ -106,7 +106,7 @@ _Common2.default.Store.registerModel('ObojoboDraft.Chunks.List', {
 
 /***/ }),
 
-/***/ 137:
+/***/ 139:
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -116,7 +116,7 @@ Object.defineProperty(exports, "__esModule", {
 	value: true
 });
 
-var _listStyles = __webpack_require__(65);
+var _listStyles = __webpack_require__(66);
 
 var _listStyles2 = _interopRequireDefault(_listStyles);
 
@@ -190,7 +190,7 @@ function __guard__(value, transform) {
 
 /***/ }),
 
-/***/ 138:
+/***/ 140:
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -200,9 +200,9 @@ Object.defineProperty(exports, "__esModule", {
 	value: true
 });
 
-__webpack_require__(267);
+__webpack_require__(269);
 
-var _listStyles = __webpack_require__(65);
+var _listStyles = __webpack_require__(66);
 
 var _listStyles2 = _interopRequireDefault(_listStyles);
 
@@ -380,22 +380,22 @@ exports.default = function (props) {
 
 /***/ }),
 
-/***/ 267:
+/***/ 269:
 /***/ (function(module, exports) {
 
 // removed by extract-text-webpack-plugin
 
 /***/ }),
 
-/***/ 290:
+/***/ 292:
 /***/ (function(module, exports, __webpack_require__) {
 
-module.exports = __webpack_require__(108);
+module.exports = __webpack_require__(110);
 
 
 /***/ }),
 
-/***/ 65:
+/***/ 66:
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";

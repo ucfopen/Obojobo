@@ -63,7 +63,7 @@
 /******/ 	__webpack_require__.p = "build/";
 /******/
 /******/ 	// Load entry module and return exports
-/******/ 	return __webpack_require__(__webpack_require__.s = 286);
+/******/ 	return __webpack_require__(__webpack_require__.s = 288);
 /******/ })
 /************************************************************************/
 /******/ ({
@@ -75,7 +75,7 @@ module.exports = Common;
 
 /***/ }),
 
-/***/ 104:
+/***/ 106:
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -85,15 +85,15 @@ var _Common = __webpack_require__(0);
 
 var _Common2 = _interopRequireDefault(_Common);
 
-var _selectionHandler = __webpack_require__(129);
+var _selectionHandler = __webpack_require__(131);
 
 var _selectionHandler2 = _interopRequireDefault(_selectionHandler);
 
-var _adapter = __webpack_require__(127);
+var _adapter = __webpack_require__(129);
 
 var _adapter2 = _interopRequireDefault(_adapter);
 
-var _viewerComponent = __webpack_require__(130);
+var _viewerComponent = __webpack_require__(132);
 
 var _viewerComponent2 = _interopRequireDefault(_viewerComponent);
 
@@ -108,7 +108,7 @@ _Common2.default.Store.registerModel('ObojoboDraft.Chunks.Figure', {
 
 /***/ }),
 
-/***/ 127:
+/***/ 129:
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -201,7 +201,7 @@ function __guard__(value, transform) {
 
 /***/ }),
 
-/***/ 128:
+/***/ 130:
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -215,7 +215,7 @@ var _Common = __webpack_require__(0);
 
 var _Common2 = _interopRequireDefault(_Common);
 
-__webpack_require__(262);
+__webpack_require__(264);
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
@@ -249,7 +249,7 @@ exports.default = function (props) {
 
 /***/ }),
 
-/***/ 129:
+/***/ 131:
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -299,7 +299,7 @@ exports.default = SelectionHandler = function (_TextGroupSelectionHa) {
 
 /***/ }),
 
-/***/ 130:
+/***/ 132:
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -309,9 +309,9 @@ Object.defineProperty(exports, "__esModule", {
 	value: true
 });
 
-__webpack_require__(263);
+__webpack_require__(265);
 
-var _image = __webpack_require__(128);
+var _image = __webpack_require__(130);
 
 var _image2 = _interopRequireDefault(_image);
 
@@ -358,24 +358,24 @@ exports.default = function (props) {
 
 /***/ }),
 
-/***/ 262:
+/***/ 264:
 /***/ (function(module, exports) {
 
 // removed by extract-text-webpack-plugin
 
 /***/ }),
 
-/***/ 263:
+/***/ 265:
 /***/ (function(module, exports) {
 
 // removed by extract-text-webpack-plugin
 
 /***/ }),
 
-/***/ 286:
+/***/ 288:
 /***/ (function(module, exports, __webpack_require__) {
 
-module.exports = __webpack_require__(104);
+module.exports = __webpack_require__(106);
 
 
 /***/ })

@@ -225,7 +225,7 @@ body {
         padding-left: 14rem; } }
     .viewer--viewer-app.is-open-nav.is-enabled-nav > header {
       top: -2.5rem;
-      border-bottom: 1px solid transparent; }
+      border-bottom: 1px solid rgba(0, 0, 0, 0); }
       .viewer--viewer-app.is-open-nav.is-enabled-nav > header .viewer--components--logo,
       .viewer--viewer-app.is-open-nav.is-enabled-nav > header .location {
         opacity: 0;
@@ -484,8 +484,7 @@ body {
         left: -1rem;
         height: 0.65rem; } }
   .viewer--components--nav .is-assessment .lock-icon {
-    top: 0.8rem;
-    left: -0.9em; }
+    left: -1.3rem; }
   .viewer--components--nav hr {
     border: none;
     border-bottom: 1px solid #ffffff;
