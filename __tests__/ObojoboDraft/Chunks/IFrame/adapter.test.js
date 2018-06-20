@@ -32,7 +32,7 @@ describe('IFrame adapter', () => {
 		expect(a.modelState).toEqual(b.modelState)
 	})
 
-	it('toJSON builds a JSON representation', () => {
+	test('toJSON builds a JSON representation', () => {
 		let model = { modelState: {} }
 		let attrs = { content: { src: 'mockSrc' } }
 		let json = { content: {} }
@@ -42,7 +42,7 @@ describe('IFrame adapter', () => {
 		expect(json).toMatchSnapshot()
 	})
 
-	it('toText creates a text representation', () => {
+	test('toText creates a text representation', () => {
 		let model = { modelState: {} }
 		let attrs = { content: { src: 'mockSrc' } }
 

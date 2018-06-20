@@ -253,7 +253,7 @@ describe('ChunkStyleList', function() {
 		expect(hasStyle).toEqual(true)
 	})
 
-	it('normalizes similar ranges', function() {
+	test('normalizes similar ranges', function() {
 		let newStyleRange = new StyleRange(5, 15, 'b')
 		styleList.add(newStyleRange)
 		styleList.normalize()
@@ -267,7 +267,7 @@ describe('ChunkStyleList', function() {
 		})
 	})
 
-	it("doesn't normalize dis-similar ranges", function() {
+	test("doesn't normalize dis-similar ranges", function() {
 		let newStyleRange = new StyleRange(0, 20, 'a', { href: 'new-website.com' })
 		styleList.add(newStyleRange)
 		styleList.normalize()

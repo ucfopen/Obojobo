@@ -14,7 +14,7 @@ describe('Question', () => {
 	}
 	const currentAttempt = { addScore: jest.fn() }
 
-	it('registers expected events', () => {
+	test('registers expected events', () => {
 		expect(question.registerEvents).toHaveBeenCalledTimes(1)
 		let events = question.registerEvents.mock.calls[0][0]
 		expect(question.registerEvents.mock.calls[0]).toMatchSnapshot()
@@ -24,21 +24,21 @@ describe('Question', () => {
 		expect(events['ObojoboDraft.Sections.Assessment:attemptEnd']).toBe(question.onAttemptEnd)
 	})
 
-	it('disables practice on send to assessment', () => {
+	test('disables practice on send to assessment', () => {
 		let responseHistory = []
 		question.node.content = { mode: 'practice' }
 		question.onSendToAssessment()
 		expect(question.node.content.mode).toBe('assessment')
 	})
 
-	it("returns if assessment doesn't contain 'this' node on attempt end", () => {
+	test("returns if assessment doesn't contain 'this' node on attempt end", () => {
 		let mockAssessment = { contains: () => false }
 		let res = question.onAttemptEnd({}, {}, mockAssessment, {}, currentAttempt)
 		expect(res).toBe(undefined)
 		expect(question.yell).not.toHaveBeenCalled()
 	})
 
-	it('returns if there are no question responses', () => {
+	test('returns if there are no question responses', () => {
 		let mockAssessment = { contains: () => true }
 
 		let res = question.onAttemptEnd({}, {}, mockAssessment, [], currentAttempt)
@@ -46,7 +46,7 @@ describe('Question', () => {
 		expect(question.yell).not.toHaveBeenCalled()
 	})
 
-	it('emits calculate score event when necessary', () => {
+	test('emits calculate score event when necessary', () => {
 		let mockAssessment = { contains: () => true }
 		let responseHistory = [{ question_id: question.node.id }]
 
@@ -66,7 +66,7 @@ describe('Question', () => {
 		expect(currentAttempt.addScore).toHaveBeenCalledWith('mockQuestion', 50)
 	})
 
-	it('throws error if given non-unique question response rows', () => {
+	test('throws error if given non-unique question response rows', () => {
 		let mockAssessment = { contains: () => true }
 
 		let responseRecord = { question_id: question.node.id }

@@ -241,7 +241,7 @@ describe('StyleableText', () => {
 		expect(st.clone().styleText('b')).toEqual(st.clone().styleText('b', 0, 15))
 	})
 
-	it('unstyleText uses the start and end of the text if none given', () => {
+	test('unstyleText uses the start and end of the text if none given', () => {
 		expect(st.clone().unstyleText('b', 2)).toEqual(st.clone().unstyleText('b', 2, 15))
 		expect(st.clone().unstyleText('b', null, 4)).toEqual(st.clone().unstyleText('b', 0, 4))
 		expect(st.clone().unstyleText('b')).toEqual(st.clone().unstyleText('b', 0, 15))
