@@ -1,6 +1,6 @@
 {
 	"name": "obojobo-draft-document-engine",
-	"version": "1.0.0",
+	"version": "1.0.1",
 	"description": "",
 	"engines": {
 		"yarn": "^1.0"
@@ -12,12 +12,11 @@
 		"start": "webpack --watch",
 		"dev": "webpack-dev-server --colors --port 8090 --host 0.0.0.0",
 		"build": "webpack",
-		"build:gitadd": "git add ./build",
 		"build:minifysvg": "find ./ ! -path node_modules -type f -name '*.svg' ! -name '*.min.svg' -exec svgo {} --multipass --pretty --precision=2 \\;",
 		"generateModuleManifest": "node ./bin/generate_module_manifest.js",
 		"prettier:run": "prettier --write '{src,server,__{tests,mocks}__,ObojoboDraft}/**/*.{js,scss}'",
 		"prettier:debug": "prettier -l '{src,server,__{tests,mocks}__,ObojoboDraft}/**/*.{js,scss}'",
-		"precommit": "yarn test && lint-staged && yarn build && yarn build:gitadd",
+		"precommit": "yarn test && lint-staged",
 		"ci:prepare": "docker build -t docengine:latest .",
 		"ci:mounted:install": "docker run -i -v $(pwd):/project/ -w /project docengine:latest yarn install --force",
 		"ci:mounted:test": "docker run -i -v $(pwd):/project/ -w /project docengine:latest yarn test --coverage",
