@@ -191,7 +191,7 @@ describe('lti route', () => {
 			}
 		}
 		mockReq.getCurrentUser.mockReturnValueOnce(Promise.resolve(mockUser))
-		// mock method chaining on res.satus
+		// mock method chaining on res.status
 		mockRes.status.mockReturnValueOnce({ send: mockRes.send })
 		return resourceSelectionRoute(mockReq, mockRes, mockNext).then(() => {
 			expect(mockRes.redirect).not.toBeCalled()
@@ -201,6 +201,24 @@ describe('lti route', () => {
 				isAssignment: true,
 				returnUrl: 'newgrounds'
 			})
+		})
+	})
+
+	test('canvas resource_selection throws unknown url', () => {
+		expect.assertions(4)
+		let resourceSelectionRoute = mockRouterMethods.post.mock.calls[1][1]
+		let mockUser = { canViewEditor: true }
+		mockReq.lti = {
+			body: {
+				ext_lti_assignment_id: 999
+			}
+		}
+		mockReq.getCurrentUser.mockReturnValueOnce(Promise.resolve(mockUser))
+		return resourceSelectionRoute(mockReq, mockRes, mockNext).then(() => {
+			expect(mockRes.redirect).not.toBeCalled()
+			expect(mockRes.status).not.toBeCalled()
+			expect(mockRes.send).not.toBeCalled()
+			expect(mockNext).toBeCalledWith('Unknown return url for assignment selection')
 		})
 	})
 

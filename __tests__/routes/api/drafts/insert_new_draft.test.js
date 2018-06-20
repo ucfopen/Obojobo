@@ -54,7 +54,7 @@ describe('api draft insert helper', () => {
 		db.tx.mockRejectedValueOnce('error')
 		let updateDraft = oboRequire('routes/api/drafts/insert_new_draft')
 
-		return updateDraft(555, { content: 'yes' })
+		return updateDraft(555)
 			.then(result => {
 				expect(result).toBe('never called')
 			})

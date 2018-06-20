@@ -13,7 +13,7 @@ describe('obo path', () => {
 	beforeEach(() => {})
 	afterEach(() => {})
 
-	it('expandDraftPath acts as expected', () => {
+	test('expandDraftPath acts as expected', () => {
 		expect(oboPath.expandDraftPath('app.js')).toBe(`${__dirname}/test_draft_path/app.js`)
 		expect(oboPath.expandDraftPath('./app.js')).toBe(`${__dirname}/test_draft_path/app.js`)
 		expect(oboPath.expandDraftPath('../test_draft_path/app.js')).toBe(
@@ -21,7 +21,7 @@ describe('obo path', () => {
 		)
 	})
 
-	it('getDraftPath returns the path when there is a match', () => {
-		expect(oboPath.getDraftPath('./test_draft_path/')).toBe('./__tests__/test_draft_path/')
+	test('getDraftPath returns the path when there is a match', () => {
+		expect(oboPath.getDraftPath()).toBe('./__tests__/test_draft_path/')
 	})
 })

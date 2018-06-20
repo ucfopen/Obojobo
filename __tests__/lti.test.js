@@ -2318,21 +2318,23 @@ describe('lti', () => {
 			}
 		])
 
-		lti.getLTIStatesByAssessmentIdForUserAndDraft('user-id', 'draft-id', 'assessment-id').then(result => {
-			expect(result).toEqual({
-				'assessment-id': {
-					assessmentId: 'assessment-id',
-					assessmentScoreId: 'assessment-score-id',
-					scoreSent: 'score-sent',
-					sentDate: 'lti-sent-date',
-					status: 'status',
-					gradebookStatus: 'gradebook-status',
-					statusDetails: 'status-details'
-				}
-			})
+		lti
+			.getLTIStatesByAssessmentIdForUserAndDraft('user-id', 'draft-id', 'assessment-id')
+			.then(result => {
+				expect(result).toEqual({
+					'assessment-id': {
+						assessmentId: 'assessment-id',
+						assessmentScoreId: 'assessment-score-id',
+						scoreSent: 'score-sent',
+						sentDate: 'lti-sent-date',
+						status: 'status',
+						gradebookStatus: 'gradebook-status',
+						statusDetails: 'status-details'
+					}
+				})
 
-			done()
-		})
+				done()
+			})
 	})
 
 	test('getLTIStatesByAssessmentIdForUserAndDraft returns empty object when nothing returned from database', done => {
@@ -2376,41 +2378,32 @@ describe('lti', () => {
 		})
 	})
 
-	test('insertReplaceResultEvent calls insertEvent', () => {
+	test('insertReplaceResultEvent calls insertEvent', done => {
 		insertEvent.mockResolvedValueOnce('inserted')
 
-		lti.insertReplaceResultEvent('mockUserId', 'mockDraftId', {}, {}, 'mockLTIResult')
-
-		expect(insertEvent).toHaveBeenCalledWith({
-			"action": "lti:replaceResult",
-			"actorTime": "2018-06-18T20:50:20.939Z",
-			"draftId": "mockDraftId",
-			"eventVersion": "2.0.0",
-			"ip": "",
-			"metadata": {},
-			"payload": {
-				"body": {
-					"lis_outcome_service_url": undefined,
-					"lis_result_sourcedid": undefined
-				},
-				"launchId": undefined,
-				"launchKey": undefined,
-				"result": "mockLTIResult"
-			},
-			"userId": "mockUserId"
+		lti.insertReplaceResultEvent('mockUserId', 'mockDraftId', {}, {}, 'mockLTIResult').then(() => {
+			expect(insertEvent).toHaveBeenCalled()
+			done()
 		})
 	})
 
-	test.skip('insertReplaceResultEvent catches error', () => {
-		insertEvent.mockImplementationOnce(() => {
-			throw 'mockError'
+	test('insertReplaceResultEvent catches error', done => {
+		insertEvent.mockRejectedValueOnce(new Error('mock Error'))
+
+		lti.insertReplaceResultEvent('mockUserId', 'mockDraftId', {}, {}, 'mockLTIResult').then(() => {
+			expect(logger.error).toHaveBeenCalledWith('There was an error inserting the lti event')
+			done()
 		})
+	})
 
-		lti.insertReplaceResultEvent('mockUserId', 'mockDraftId', {}, {}, 'mockLTIResult')
+	test('logAndGetStatusForError logs unexpected error', () => {
+		// All other errors are tested through other methods
 
-		expect(logger.error).toHaveBeenCalledWith(
-			'There was an error inserting the lti event'
-		)
+		let result = lti.logAndGetStatusForError(new Error('Mock Error'), {}, logId)
+		expect(result).toEqual({
+			status: 'error_unexpected',
+			statusDetails: { message: 'Mock Error' }
+		})
 	})
 
 	test('sendHighestAssessmentScore fails and logs as expected', done => {

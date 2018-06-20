@@ -1,9 +1,10 @@
 jest.mock('../../db')
 
-describe('Visit Model', () => {
-	const db = oboRequire('db')
-	const Visit = oboRequire('models/visit')
+import Visit from '../../models/visit'
 
+const db = oboRequire('db')
+
+describe('Visit Model', () => {
 	beforeEach(() => {
 		jest.resetAllMocks()
 	})
