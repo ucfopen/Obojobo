@@ -6,6 +6,7 @@ Object {
     "align": "left",
     "label": "",
     "latex": "test",
+    "size": "1em",
   },
 }
 `;
@@ -16,6 +17,7 @@ Object {
     "align": "left",
     "label": "",
     "latex": "test",
+    "size": "1em",
   },
 }
 `;
@@ -26,6 +28,7 @@ Object {
     "align": "center",
     "label": "",
     "latex": "",
+    "size": "1em",
   },
 }
 `;

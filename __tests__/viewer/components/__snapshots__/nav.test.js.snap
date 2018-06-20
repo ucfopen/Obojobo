@@ -7,15 +7,6 @@ exports[`Nav renders all list item types 1`] = `
   <button
     className="toggle-button"
     onClick={[MockFunction]}
-    onMouseOut={[Function]}
-    onMouseOver={[Function]}
-    style={
-      Object {
-        "backgroundImage": undefined,
-        "filter": "invert(0%)",
-        "transform": "",
-      }
-    }
   >
     Toggle Navigation Menu
   </button>
@@ -28,7 +19,7 @@ exports[`Nav renders all list item types 1`] = `
       </a>
     </li>
     <li
-      className="link is-not-selected is-not-visited is-not-complete is-not-correct"
+      className="link is-not-selected is-not-visited is-not-complete is-not-correct is-not-assessment is-not-first-in-list is-not-last-in-list"
       onClick={[Function]}
     >
       <a>
@@ -36,14 +27,10 @@ exports[`Nav renders all list item types 1`] = `
       </a>
       <div
         className="lock-icon"
-      >
-        <img
-          src={Object {}}
-        />
-      </div>
+      />
     </li>
     <li
-      className="link is-not-selected is-not-visited is-not-complete is-not-correct"
+      className="link is-not-selected is-not-visited is-not-complete is-not-correct is-not-assessment is-not-first-in-list is-not-last-in-list"
       onClick={[Function]}
     >
       <a>
@@ -54,14 +41,10 @@ exports[`Nav renders all list item types 1`] = `
       </a>
       <div
         className="lock-icon"
-      >
-        <img
-          src={Object {}}
-        />
-      </div>
+      />
     </li>
     <li
-      className="link is-selected is-visited is-complete is-correct"
+      className="link is-selected is-visited is-complete is-correct is-not-assessment is-not-first-in-list is-not-last-in-list"
       onClick={[Function]}
     >
       <a>
@@ -69,14 +52,10 @@ exports[`Nav renders all list item types 1`] = `
       </a>
       <div
         className="lock-icon"
-      >
-        <img
-          src={Object {}}
-        />
-      </div>
+      />
     </li>
     <li
-      className="sub-link is-not-selected is-not-correct"
+      className="sub-link is-not-selected is-not-correct is-last-in-list"
       onClick={[Function]}
     >
       <a>
@@ -84,25 +63,11 @@ exports[`Nav renders all list item types 1`] = `
       </a>
       <div
         className="lock-icon"
-      >
-        <img
-          src={Object {}}
-        />
-      </div>
-    </li>
-    <li
-      className="seperator"
-    >
-      <hr />
+      />
     </li>
   </ul>
   <div
-    className="viewer--components--logo is-inverted"
-    style={
-      Object {
-        "backgroundImage": undefined,
-      }
-    }
+    className="viewer--components--logo is-not-inverted"
   >
     Obojobo
   </div>
@@ -116,26 +81,12 @@ exports[`Nav renders closed 1`] = `
   <button
     className="toggle-button"
     onClick={[MockFunction]}
-    onMouseOut={[Function]}
-    onMouseOver={[Function]}
-    style={
-      Object {
-        "backgroundImage": undefined,
-        "filter": "invert(100%)",
-        "transform": "",
-      }
-    }
   >
     Toggle Navigation Menu
   </button>
   <ul />
   <div
-    className="viewer--components--logo is-inverted"
-    style={
-      Object {
-        "backgroundImage": undefined,
-      }
-    }
+    className="viewer--components--logo is-not-inverted"
   >
     Obojobo
   </div>
@@ -149,26 +100,12 @@ exports[`Nav renders opened 1`] = `
   <button
     className="toggle-button"
     onClick={[MockFunction]}
-    onMouseOut={[Function]}
-    onMouseOver={[Function]}
-    style={
-      Object {
-        "backgroundImage": undefined,
-        "filter": "invert(0%)",
-        "transform": "",
-      }
-    }
   >
     Toggle Navigation Menu
   </button>
   <ul />
   <div
-    className="viewer--components--logo is-inverted"
-    style={
-      Object {
-        "backgroundImage": undefined,
-      }
-    }
+    className="viewer--components--logo is-not-inverted"
   >
     Obojobo
   </div>
@@ -182,26 +119,12 @@ exports[`Nav renders unlocked 1`] = `
   <button
     className="toggle-button"
     onClick={[MockFunction]}
-    onMouseOut={[Function]}
-    onMouseOver={[Function]}
-    style={
-      Object {
-        "backgroundImage": undefined,
-        "filter": "invert(0%)",
-        "transform": "",
-      }
-    }
   >
     Toggle Navigation Menu
   </button>
   <ul />
   <div
-    className="viewer--components--logo is-inverted"
-    style={
-      Object {
-        "backgroundImage": undefined,
-      }
-    }
+    className="viewer--components--logo is-not-inverted"
   >
     Obojobo
   </div>
