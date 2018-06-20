@@ -4,5 +4,7 @@
 	"prettier.printWidth": 100,
 	"prettier.semi": false,
 	"prettier.useTabs": true,
-	"prettier.singleQuote": true
+	"prettier.singleQuote": true,
+	"eslint.packageManager": "yarn",
+	"prettier.eslintIntegration": true
 }

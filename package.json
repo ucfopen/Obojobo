@@ -27,6 +27,8 @@
 			"docker run -i -w -v $(pwd):/project/ -w /project docengine:latest yarn build",
 		"ci:isolated:test":
 			"docker run -i -e GIT_USER -e GIT_PASSWORD -e GIT_BRANCH docengine:latest /bin/docker_clone_and_test.sh",
+		"lint": "yarn lint:js",
+		"lint:js": "eslint .",
 		"lint:css": "stylelint **/*.scss"
 	},
 	"prettier": {
@@ -47,6 +49,7 @@
 	},
 	"devDependencies": {
 		"babel-core": "^6.6.4",
+		"babel-eslint": "^8.2.3",
 		"babel-loader": "^7.0.0",
 		"babel-polyfill": "^6.26.0",
 		"babel-preset-env": "^1.5.1",
@@ -59,6 +62,8 @@
 		"dragula": "^3.7.1",
 		"enzyme": "^3.3.0",
 		"enzyme-adapter-react-15": "^1.0.5",
+		"eslint": "^4.19.1",
+		"eslint-plugin-react": "^7.7.0",
 		"extract-text-webpack-plugin": "^2.1.0",
 		"husky": "^0.14.3",
 		"jest": "^22.4.3",
