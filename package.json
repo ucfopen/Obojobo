@@ -79,6 +79,8 @@
 		"style-loader": "^0.17.0",
 		"style-loader": "^0.17.0",
 		"stylelint": "^9.2.0",
+		"stylelint-config-standard": "^18.2.0",
+		"stylelint-declaration-use-variable": "^1.6.1",
 		"svg-url-loader": "^2.3.2",
 		"svgo": "^1.0.5",
 		"url-parse": "^1.2.0",
