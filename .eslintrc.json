@@ -1,0 +1,48 @@
+{
+	"extends": ["eslint:recommended", "plugin:react/recommended"],
+	"parser": "babel-eslint",
+	"globals": {
+		"oboRequire": false
+	},
+	"env": {
+		"amd": true,
+		"node": true,
+		"browser": true,
+		"jest": true,
+		"es6": true
+	},
+	"rules": {
+		"no-var": "warn",
+		"prefer-const": "warn",
+		"curly": ["error", "multi-line"],
+		"brace-style": ["error", "1tbs", { "allowSingleLine": true }],
+		"no-undefined": "error",
+		"new-cap": "warn",
+		"no-lonely-if": "error",
+		"no-nested-ternary": "error",
+		"no-unneeded-ternary": "error",
+		"no-alert": "warn",
+		"no-console": "warn",
+		"no-debugger": "warn",
+		"no-duplicate-imports": "warn",
+		"radix": "error",
+		"array-callback-return": "error",
+		"eqeqeq": "warn",
+		"no-eval": "error",
+		"no-implied-eval": "error",
+		"no-labels": "error",
+		"no-extend-native": "error",
+		"no-floating-decimal": "error",
+		"no-loop-func": "warn",
+		"no-new": "error",
+		"no-new-func": "warn",
+		"no-new-wrappers": "warn",
+		"no-self-compare": "error",
+		"no-return-assign": "warn",
+		"no-useless-return": "warn",
+		"no-with": "error",
+		"yoda": "warn",
+		"react/prop-types": 0,
+		"react/prefer-stateless-function": 2
+	}
+}
