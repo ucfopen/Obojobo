@@ -1,10 +1,5 @@
-import './tablecontrols.scss'
-
+import './table-controls.scss'
 import TableMenu from './table-menu'
-
-import insertButton from 'svg-url-loader?noquotes!./assets/table-insert.svg'
-
-import Common from 'Common'
 
 export default class TableControls extends React.Component {
 	addRow(event) {
@@ -77,7 +72,6 @@ export default class TableControls extends React.Component {
 
 	render() {
 		let { onTableMenuCommand } = this.props
-		let bgInsert = Common.util.getBackgroundImage(insertButton)
 		let { getCellPosition } = this
 
 		let rows = __range__(0, this.props.chunk.modelState.textGroup.numRows, false).map(index => (
@@ -102,24 +96,10 @@ export default class TableControls extends React.Component {
 			<div className="obojobo-draft--chunks--table--table-controls" ref="self">
 				<div className="rows">{rows}</div>
 				<div className="cols">{cols}</div>
-				<button
-					className="add-row"
-					key="0"
-					onMouseDown={this.addRow.bind(this)}
-					style={{
-						backgroundImage: bgInsert
-					}}
-				>
+				<button className="add-row" key="0" onMouseDown={this.addRow.bind(this)}>
 					Add a row
 				</button>
-				<button
-					className="add-col"
-					key="1"
-					onMouseDown={this.addCol.bind(this)}
-					style={{
-						backgroundImage: bgInsert
-					}}
-				>
+				<button className="add-col" key="1" onMouseDown={this.addCol.bind(this)}>
 					Add a column
 				</button>
 			</div>

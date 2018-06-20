@@ -1,11 +1,4 @@
-import './tablemenu.scss'
-
-import Common from 'Common'
-let { Assets } = Common
-
-let icon = Common.util.getBackgroundImage(
-	require('svg-url-loader?noquotes!./assets/table-menu-icon.svg')
-)
+import './table-menu.scss'
 
 export default class TableMenu extends React.Component {
 	static get defaultProps() {
@@ -42,10 +35,8 @@ export default class TableMenu extends React.Component {
 	}
 
 	renderRow() {
-		let styles = { backgroundImage: icon }
-
 		return (
-			<div className="obojobo-draft--chunks--table--table-menu row" style={styles}>
+			<div className="obojobo-draft--chunks--table--table-menu row">
 				<ul>
 					<li className="insert-above" onClick={this.onClick.bind(this, 'insertRowAbove')}>
 						Insert 1 row above
@@ -62,10 +53,8 @@ export default class TableMenu extends React.Component {
 	}
 
 	renderCol() {
-		let styles = { backgroundImage: icon }
-
 		return (
-			<div className="obojobo-draft--chunks--table--table-menu col" style={styles}>
+			<div className="obojobo-draft--chunks--table--table-menu col">
 				<ul>
 					<li className="insert-left" onClick={this.onClick.bind(this, 'insertColLeft')}>
 						Insert 1 column left

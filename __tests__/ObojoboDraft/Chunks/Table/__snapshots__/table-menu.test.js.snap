@@ -43,9 +43,6 @@ ShallowWrapper {
         </li>
       </ul>,
       "className": "obojobo-draft--chunks--table--table-menu row",
-      "style": Object {
-        "backgroundImage": "",
-      },
     },
     "ref": null,
     "rendered": Object {
@@ -147,9 +144,6 @@ ShallowWrapper {
           </li>
         </ul>,
         "className": "obojobo-draft--chunks--table--table-menu row",
-        "style": Object {
-          "backgroundImage": "",
-        },
       },
       "ref": null,
       "rendered": Object {

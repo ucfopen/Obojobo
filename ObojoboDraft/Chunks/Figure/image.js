@@ -1,19 +1,12 @@
 import Common from 'Common'
+import './image.scss'
 
 export default props => {
 	let imgStyles
 	let data = props.chunk.modelState
 
 	if (data.url == null) {
-		imgStyles = {
-			backgroundImage: Common.util.getBackgroundImage(
-				require('svg-url-loader?noquotes!./assets/bg.svg')
-			),
-			backgroundSize: '16px',
-			height: '300px'
-		}
-
-		return <div className="img-placeholder" style={imgStyles} />
+		return <div className="img-placeholder" />
 	}
 
 	switch (data.size) {

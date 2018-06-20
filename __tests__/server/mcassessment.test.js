@@ -86,4 +86,13 @@ describe('MCAssessment', () => {
 		let res = mcAssessment.onCalculateScore({}, question, responseRecord, setScore)
 		expect(setScore).toHaveBeenCalledWith(100)
 	})
+
+	it('does not require responseType to be specified and will use a default', () => {
+		let question = { contains: () => true }
+		const responseRecord = { response: { ids: ['test'] } }
+		mcAssessment.node.content = {}
+		expect(setScore).not.toHaveBeenCalled()
+		let res = mcAssessment.onCalculateScore({}, question, responseRecord, setScore)
+		expect(setScore).toHaveBeenCalledWith(100)
+	})
 })

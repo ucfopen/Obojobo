@@ -1,23 +1,8 @@
 import './logo.scss'
-import logo from 'svg-url-loader?noquotes!./obojobo-logo.svg'
-import Common from 'Common'
-let { getBackgroundImage } = Common.util
+import isOrNot from '../../common/isornot'
 
-export default class Logo extends React.Component {
-	render() {
-		let bg = getBackgroundImage(logo)
+const Logo = props => (
+	<div className={`viewer--components--logo${isOrNot(props.inverted, 'inverted')}`}>Obojobo</div>
+)
 
-		return (
-			<div
-				className={`viewer--components--logo${
-					this.props.inverted ? ' is-inverted' : ' is-not-inverted'
-				}`}
-				style={{
-					backgroundImage: bg
-				}}
-			>
-				Obojobo
-			</div>
-		)
-	}
-}
+export default Logo

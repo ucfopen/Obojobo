@@ -6,6 +6,7 @@ import APIUtil from '../../viewer/util/api-util'
 const { Store } = Common.flux
 const { Dispatcher } = Common.flux
 const { OboModel } = Common.models
+const { FocusUtil } = Common.util
 
 class NavStore extends Store {
 	constructor() {
@@ -166,6 +167,8 @@ class NavStore extends Store {
 		if (navItem.showChildrenOnNavigation) {
 			navItem.showChildren = true
 		}
+
+		FocusUtil.unfocus()
 		window.history.pushState({}, document.title, navItem.fullFlatPath)
 		this.state.navTargetId = navItem.id
 		NavUtil.getNavTargetModel(this.state).processTrigger('onNavEnter')

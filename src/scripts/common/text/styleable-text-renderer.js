@@ -141,6 +141,10 @@ let wrapElement = function(styleRange, nodeToWrap, text) {
 			nodeToWrap.text = text
 			return newChild
 
+		case StyleType.MONOSPACE:
+			styleRange.type = 'code'
+		// Intentional fallthrough
+
 		default:
 			newChild = new MockElement(styleRange.type, Object.assign({}, styleRange.data))
 			nodeToWrap.parent.replaceChild(nodeToWrap, newChild)

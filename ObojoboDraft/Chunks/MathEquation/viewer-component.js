@@ -35,7 +35,11 @@ export default props => {
 			className={`obojobo-draft--chunks--math-equation pad align-${props.model.modelState.align}`}
 		>
 			<NonEditableChunk>
-				<div className="katex-container" dangerouslySetInnerHTML={{ __html: katexHtml }} />
+				<div
+					className="katex-container"
+					style={{ fontSize: props.model.modelState.size }}
+					dangerouslySetInnerHTML={{ __html: katexHtml }}
+				/>
 				{props.model.modelState.label === '' ? null : (
 					<div className="equation-label">{props.model.modelState.label}</div>
 				)}

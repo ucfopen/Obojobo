@@ -22,7 +22,7 @@ const synced = (assessmentScore, externalSystemLabel) => (
 	</div>
 )
 
-const renderError = (ltiState, systemLabel, onClickResendScore) => (
+const renderError = (ltiState = {}, systemLabel, onClickResendScore) => (
 	<div className="obojobo-draft--sections--assessment--lti-status is-not-synced">
 		<h2>{`There was a problem sending your score to ${systemLabel}.`}</h2>
 		<p>
@@ -52,7 +52,11 @@ const renderError = (ltiState, systemLabel, onClickResendScore) => (
 )
 
 export default props => {
-	if (!props.ltiState.state) return null
+	if (props.isPreviewing || !props.externalSystemLabel) return notLTI()
+
+	if (props.externalSystemLabel && (!props.ltiState || !props.ltiState.state)) {
+		return renderError(props.ltiState, props.externalSystemLabel, props.onClickResendScore)
+	}
 
 	switch (props.ltiState.state.gradebookStatus) {
 		case 'ok_no_outcome_service':

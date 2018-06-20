@@ -1,0 +1,363 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`QuestionStore question:hideExplanation calls triggerChange and updates state 1`] = `
+Array [
+  Object {
+    "children": Array [
+      Object {
+        "children": null,
+        "content": Object {
+          "textGroup": Array [
+            Object {
+              "data": Object {
+                "align": "left",
+                "indent": 0,
+              },
+              "text": Object {
+                "styleList": null,
+                "value": "Question Text",
+              },
+            },
+          ],
+        },
+        "id": "text",
+        "index": 0,
+        "metadata": Object {},
+        "type": "ObojoboDraft.Chunks.Text",
+      },
+      Object {
+        "children": Array [
+          Object {
+            "children": Array [
+              Object {
+                "children": null,
+                "content": Object {},
+                "id": "c1-a1-id",
+                "index": 0,
+                "metadata": Object {},
+                "type": "ObojoboDraft.Chunks.MCAssessment.MCAnswer",
+              },
+            ],
+            "content": Object {
+              "score": "",
+            },
+            "id": "c1-id",
+            "index": 0,
+            "metadata": Object {},
+            "type": "ObojoboDraft.Chunks.MCAssessment.MCChoice",
+          },
+        ],
+        "content": Object {
+          "correctLabels": null,
+          "incorrectLabels": null,
+          "responseType": "",
+          "score": 100,
+          "shuffle": true,
+        },
+        "id": "responderId",
+        "index": 0,
+        "metadata": Object {},
+        "type": "ObojoboDraft.Chunks.MCAssessment",
+      },
+    ],
+    "content": Object {
+      "mode": "practice",
+      "solution": null,
+      "type": undefined,
+    },
+    "id": "questionId",
+    "index": 0,
+    "metadata": Object {},
+    "type": "ObojoboDraft.Chunks.Question",
+  },
+  "question:hideExplanation",
+  "1.1.0",
+  Object {
+    "actor": "testActor",
+    "questionId": "questionId",
+  },
+]
+`;
+
+exports[`QuestionStore question:scoreClear posts an event 1`] = `
+Array [
+  Object {
+    "children": Array [
+      Object {
+        "children": null,
+        "content": Object {
+          "textGroup": Array [
+            Object {
+              "data": Object {
+                "align": "left",
+                "indent": 0,
+              },
+              "text": Object {
+                "styleList": null,
+                "value": "Question Text",
+              },
+            },
+          ],
+        },
+        "id": "text",
+        "index": 0,
+        "metadata": Object {},
+        "type": "ObojoboDraft.Chunks.Text",
+      },
+      Object {
+        "children": Array [
+          Object {
+            "children": Array [
+              Object {
+                "children": null,
+                "content": Object {},
+                "id": "c1-a1-id",
+                "index": 0,
+                "metadata": Object {},
+                "type": "ObojoboDraft.Chunks.MCAssessment.MCAnswer",
+              },
+            ],
+            "content": Object {
+              "score": "",
+            },
+            "id": "c1-id",
+            "index": 0,
+            "metadata": Object {},
+            "type": "ObojoboDraft.Chunks.MCAssessment.MCChoice",
+          },
+        ],
+        "content": Object {
+          "correctLabels": null,
+          "incorrectLabels": null,
+          "responseType": "",
+          "score": 100,
+          "shuffle": true,
+        },
+        "id": "responderId",
+        "index": 0,
+        "metadata": Object {},
+        "type": "ObojoboDraft.Chunks.MCAssessment",
+      },
+    ],
+    "content": Object {
+      "mode": "practice",
+      "solution": null,
+      "type": undefined,
+    },
+    "id": "questionId",
+    "index": 0,
+    "metadata": Object {},
+    "type": "ObojoboDraft.Chunks.Question",
+  },
+  "question:scoreClear",
+  "1.0.0",
+  Object {
+    "itemId": "questionId",
+  },
+]
+`;
+
+exports[`QuestionStore question:scoreSet posts an event 1`] = `
+Array [
+  Object {
+    "children": Array [
+      Object {
+        "children": null,
+        "content": Object {
+          "textGroup": Array [
+            Object {
+              "data": Object {
+                "align": "left",
+                "indent": 0,
+              },
+              "text": Object {
+                "styleList": null,
+                "value": "Question Text",
+              },
+            },
+          ],
+        },
+        "id": "text",
+        "index": 0,
+        "metadata": Object {},
+        "type": "ObojoboDraft.Chunks.Text",
+      },
+      Object {
+        "children": Array [
+          Object {
+            "children": Array [
+              Object {
+                "children": null,
+                "content": Object {},
+                "id": "c1-a1-id",
+                "index": 0,
+                "metadata": Object {},
+                "type": "ObojoboDraft.Chunks.MCAssessment.MCAnswer",
+              },
+            ],
+            "content": Object {
+              "score": "",
+            },
+            "id": "c1-id",
+            "index": 0,
+            "metadata": Object {},
+            "type": "ObojoboDraft.Chunks.MCAssessment.MCChoice",
+          },
+        ],
+        "content": Object {
+          "correctLabels": null,
+          "incorrectLabels": null,
+          "responseType": "",
+          "score": 100,
+          "shuffle": true,
+        },
+        "id": "responderId",
+        "index": 0,
+        "metadata": Object {},
+        "type": "ObojoboDraft.Chunks.MCAssessment",
+      },
+    ],
+    "content": Object {
+      "mode": "practice",
+      "solution": null,
+      "type": undefined,
+    },
+    "id": "questionId",
+    "index": 0,
+    "metadata": Object {},
+    "type": "ObojoboDraft.Chunks.Question",
+  },
+  "question:scoreSet",
+  "1.0.0",
+  Object {
+    "context": "mockContext",
+    "id": "mock-uuid",
+    "itemId": "questionId",
+    "score": 100,
+  },
+]
+`;
+
+exports[`QuestionStore question:scoreSet updates the state 1`] = `
+Object {
+  "data": Object {},
+  "responses": Object {},
+  "scores": Object {},
+  "viewedQuestions": Object {},
+  "viewing": null,
+}
+`;
+
+exports[`QuestionStore question:scoreSet updates the state 2`] = `
+Object {
+  "data": Object {},
+  "responses": Object {},
+  "scores": Object {
+    "mockContext": Object {
+      "questionId": Object {
+        "id": "mock-uuid",
+        "itemId": "questionId",
+        "score": 100,
+      },
+    },
+  },
+  "viewedQuestions": Object {},
+  "viewing": null,
+}
+`;
+
+exports[`QuestionStore question:showExplanation calls postEvent and sets question data 1`] = `
+Array [
+  Object {
+    "children": Array [
+      Object {
+        "children": null,
+        "content": Object {
+          "textGroup": Array [
+            Object {
+              "data": Object {
+                "align": "left",
+                "indent": 0,
+              },
+              "text": Object {
+                "styleList": null,
+                "value": "Question Text",
+              },
+            },
+          ],
+        },
+        "id": "text",
+        "index": 0,
+        "metadata": Object {},
+        "type": "ObojoboDraft.Chunks.Text",
+      },
+      Object {
+        "children": Array [
+          Object {
+            "children": Array [
+              Object {
+                "children": null,
+                "content": Object {},
+                "id": "c1-a1-id",
+                "index": 0,
+                "metadata": Object {},
+                "type": "ObojoboDraft.Chunks.MCAssessment.MCAnswer",
+              },
+            ],
+            "content": Object {
+              "score": "",
+            },
+            "id": "c1-id",
+            "index": 0,
+            "metadata": Object {},
+            "type": "ObojoboDraft.Chunks.MCAssessment.MCChoice",
+          },
+        ],
+        "content": Object {
+          "correctLabels": null,
+          "incorrectLabels": null,
+          "responseType": "",
+          "score": 100,
+          "shuffle": true,
+        },
+        "id": "responderId",
+        "index": 0,
+        "metadata": Object {},
+        "type": "ObojoboDraft.Chunks.MCAssessment",
+      },
+    ],
+    "content": Object {
+      "mode": "practice",
+      "solution": null,
+      "type": undefined,
+    },
+    "id": "questionId",
+    "index": 0,
+    "metadata": Object {},
+    "type": "ObojoboDraft.Chunks.Question",
+  },
+  "question:showExplanation",
+  "1.0.0",
+  Object {
+    "questionId": "questionId",
+  },
+]
+`;
+
+exports[`QuestionStore registers the expected dispatch listeners 1`] = `
+Object {
+  "assessment:endAttempt": [Function],
+  "question:checkAnswer": [Function],
+  "question:clearData": [Function],
+  "question:clearResponse": [Function],
+  "question:hide": [Function],
+  "question:hideExplanation": [Function],
+  "question:retry": [Function],
+  "question:scoreClear": [Function],
+  "question:scoreSet": [Function],
+  "question:setData": [Function],
+  "question:setResponse": [Function],
+  "question:showExplanation": [Function],
+  "question:view": [Function],
+}
+`;

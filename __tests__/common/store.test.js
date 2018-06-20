@@ -1,13 +1,4 @@
 import { Store } from '../../src/scripts/common/store'
-// import Dispatcher from '../../../src/scripts/common/flux/dispatcher'
-
-// jest.mock('../../../src/scripts/common/flux/dispatcher', () => {
-// 	return {
-// 		trigger: jest.fn(),
-// 		on: jest.fn(),
-// 		off: jest.fn()
-// 	}
-// })
 
 describe('Store', () => {
 	beforeEach(() => {
