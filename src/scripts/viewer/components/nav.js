@@ -24,8 +24,6 @@ export default class Nav extends React.Component {
 	}
 
 	renderLabel(label) {
-		console.log(typeof label)
-		console.log(StyleableText)
 		if (label instanceof StyleableText) {
 			return <StyleableTextComponent text={label} />
 		}
