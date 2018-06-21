@@ -2,6 +2,7 @@ let express = require('express')
 let router = express.Router()
 let config = oboRequire('config')
 const { requireCanViewEditor } = oboRequire('express_validators')
+let ltiLaunch = oboRequire('express_lti_launch')
 
 // LTI Instructions
 // mounted as /lti/
@@ -12,7 +13,7 @@ router.get('/', (req, res, next) => {
 		xml_url: `https://${hostname}/lti/config.xml`,
 		launch_url: `https://${hostname}/lti`,
 		course_navigation_url: `https://${hostname}/lti/canvas/course_navigation`,
-		assignment_selection_url: `https://${hostname}/lti/canvas/assignment_selection`,
+		assignment_selection_url: `https://${hostname}/lti/canvas/resource_selection`,
 		keys: Object.keys(config.lti.keys)
 	})
 })
@@ -40,10 +41,16 @@ router.get('/config.xml', (req, res, next) => {
 // mounted as /lti/canvas/course_navigation
 router
 	.route('/canvas/course_navigation')
+	.post(ltiLaunch.courseNavlaunch)
 	.post(requireCanViewEditor)
 	.post((req, res, next) => res.redirect('/editor'))
 
+
+// this is an array because we want to add
+// the lit launch assignmentSelection middleware
+// to all times this is executed
 let showModuleSelector = [
+	ltiLaunch.assignmentSelection,
 	requireCanViewEditor,
 	(req, res, next) => {
 		try {
@@ -53,6 +60,7 @@ let showModuleSelector = [
 				returnUrl = req.lti.body.content_item_return_url
 					? req.lti.body.content_item_return_url
 					: null
+
 				returnUrl = req.lti.body.ext_content_return_url
 					? req.lti.body.ext_content_return_url
 					: returnUrl
@@ -73,8 +81,9 @@ let showModuleSelector = [
 	}
 ]
 
+// mounted as /lti/canvas/resource_selection
 router.post('/canvas/resource_selection', showModuleSelector)
+// mounted as /lti/canvas/editor_button
 router.post('/canvas/editor_button', showModuleSelector)
-router.post('/canvas/assignment_selection', showModuleSelector)
 
 module.exports = router

@@ -15,7 +15,6 @@ const {
 const insertNewDraft = require('./drafts/insert_new_draft')
 const updateDraft = require('./drafts/update_draft')
 const getDuplicateId = require('./drafts/get_duplicate_obo_node_id')
-
 const draftTemplateXML = fs
 	.readFileSync('./node_modules/obojobo-draft-document-engine/documents/empty.xml')
 	.toString()
@@ -48,9 +47,8 @@ router
 	.post(requireCanCreateDrafts)
 	.post((req, res, next) => {
 		let newDraft = null
-		let user = null
 
-		return insertNewDraft(req.currentUser.id, draftTemplate, draftTemplateXML)
+		return DraftModel.createWithContent(req.currentUser.id, draftTemplate, draftTemplateXML)
 			.then(newDraft => {
 				res.success(newDraft)
 			})
@@ -100,16 +98,18 @@ router
 				}
 
 				// Scan through json for identical ids
-				let duplicateId = getDuplicateId(reqInput)
-				if (duplicateId) {
+				let duplicateId = DraftModel.findDuplicateIds(reqInput)
+				if (duplicateId !== null) {
 					logger.error('Posting draft failed - duplicate id "' + duplicateId + '"')
 					res.badInput('Posting draft failed - duplicate id "' + duplicateId + '"')
 					return
 				}
 
-				return updateDraft(req.params[0], reqInput, xml || null).then(id => {
-					res.success({ id })
-				})
+				return DraftModel
+					.updateContent(req.params[0], reqInput, xml || null)
+					.then(id => {
+						res.success({ id })
+					})
 			})
 			.catch(error => {
 				logger.error(error)

@@ -51,7 +51,7 @@ describe('api response middleware', () => {
 		apiFunctions.forEach((prop, index) => {
 			res[prop]()
 		})
-		expect(mockStatus.mock.calls).toEqual([[200], [404], [400], [500], [403], [401]])
+		expect(mockStatus.mock.calls).toEqual([[200], [404], [422], [500], [403], [401]])
 	})
 
 	it('success to pass the value object', () => {

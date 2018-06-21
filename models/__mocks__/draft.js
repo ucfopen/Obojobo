@@ -13,6 +13,9 @@ class MockDraft {
 }
 
 MockDraft.fetchById = jest.fn().mockResolvedValue(new MockDraft())
+MockDraft.createWithContent = jest.fn().mockResolvedValue({ id: 'mockDraftId' })
+MockDraft.updateContent = jest.fn().mockResolvedValue('mockUpdatedContentId')
+MockDraft.findDuplicateIds = jest.fn().mockReturnValue(null)
 
 MockDraft.__setMockYell = newMock => {
 	mockYell = newMock

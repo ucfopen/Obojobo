@@ -1,39 +1,33 @@
 #!/usr/bin/env node
-global.oboRequire = name => {
-	return require(`${__dirname}/../${name}`)
-}
-let fs = require('fs')
-
-let usageError = new Error(`Usage:
+global.oboRequire = name => require(`${__dirname}/../${name}`)
+const fs = require('fs')
+const db = oboRequire('db')
+const DraftModel = oboRequire('models/draft')
+const usageError = new Error(`Usage:
 	node write_json_draft_to_db.js insert file.json [user_id] [draft_id]
 	node write_json_draft_to_db.js update file.json draft_id`)
 
-let db = oboRequire('db')
-let insertNewDraft = oboRequire('routes/api/drafts/insert_new_draft')
-let updateDraft = oboRequire('routes/api/drafts/update_draft')
-
-let draftId
-let userId
-let generatedDraftId
-
 try {
+	let desiredDraftId
+	let userId
+	let generatedDraftId
+
 	if (process.argv.length <= 2) throw usageError
 
-	let fn = process.argv[2]
-	let jsonFilePath = process.argv[3]
+	const insertOrUpdate = process.argv[2]
+	const jsonFilePath = process.argv[3]
+	let contentFile = fs.readFileSync(jsonFilePath)
+	let jsonContent = JSON.parse(contentFile)
 
-	let file = fs.readFileSync(jsonFilePath)
-	let json = JSON.parse(file)
-
-	switch (fn) {
+	switch (insertOrUpdate) {
 		case 'insert':
 			userId = process.argv[4] || 0
-			draftId = process.argv[5] || null
+			desiredDraftId = process.argv[5] || null
 
-			insertNewDraft(userId, json)
+			DraftModel.createWithContent(userId, jsonContent)
 				.then(newDraft => {
-					if (draftId) {
-						console.info(draftId)
+					if (desiredDraftId) {
+						console.info(desiredDraftId)
 						generatedDraftId = newDraft.id
 						return db.tx('Update if given id', t => {
 							return t.batch([
@@ -41,13 +35,13 @@ try {
 									`UPDATE drafts
 									SET id = $[newId]
 									WHERE id = $[currentId]`,
-									{ newId: draftId, currentId: generatedDraftId }
+									{ newId: desiredDraftId, currentId: generatedDraftId }
 								),
 								t.none(
 									`UPDATE drafts_content
 									SET draft_id = $[newId]
 									WHERE draft_id = $[currentId]`,
-									{ newId: draftId, currentId: generatedDraftId }
+									{ newId: desiredDraftId, currentId: generatedDraftId }
 								)
 							])
 						})
@@ -69,7 +63,7 @@ try {
 		case 'update':
 			draftId = process.argv[4] || 0
 
-			updateDraft(draftId, json)
+			DraftModel.updateContent(draftId, jsonContent)
 				.then(id => {
 					console.info('OK. id=' + id)
 					process.exit()

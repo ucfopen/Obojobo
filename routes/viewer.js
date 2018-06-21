@@ -7,6 +7,7 @@ const insertEvent = oboRequire('insert_event')
 const createCaliperEvent = oboRequire('routes/api/events/create_caliper_event')
 const { ACTOR_USER } = oboRequire('routes/api/events/caliper_constants')
 const { getSessionIds } = oboRequire('routes/api/events/caliper_utils')
+let ltiLaunch = oboRequire('express_lti_launch')
 const db = oboRequire('db')
 const { checkValidation, requireDraftId, requireVisitId, requireCurrentUser } = oboRequire(
 	'express_validators'
@@ -16,10 +17,10 @@ const { checkValidation, requireDraftId, requireVisitId, requireCurrentUser } = 
 // mounted as /visit/:draftId/:page
 router
 	.route('/:draftId/:page?')
-	.post([requireDraftId, checkValidation, requireCurrentUser]) // add middleware validation
+	.post(ltiLaunch.assignment) // run through lti middleware
+	.post([requireDraftId, checkValidation, requireCurrentUser]) // run through validation middleware
 	.post((req, res, next) => {
 		let createdVisitId
-
 		return Visit.createVisit(
 			req.currentUser.id,
 			req.params.draftId,

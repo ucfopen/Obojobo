@@ -1,4 +1,4 @@
-const checkIds = oboRequire('routes/api/drafts/get_duplicate_obo_node_id')
+const DraftModel = oboRequire('models/draft')
 
 describe('draft id checker', () => {
 	beforeAll(() => {})
@@ -13,7 +13,7 @@ describe('draft id checker', () => {
 		}
 		let ids = {}
 
-		let duplicate = checkIds(testTree, ids)
+		let duplicate = DraftModel.findDuplicateIds(testTree, ids)
 
 		expect(duplicate).toBe(null)
 	})
@@ -39,7 +39,7 @@ describe('draft id checker', () => {
 		}
 		let ids = {}
 
-		let duplicate = checkIds(testTree, ids)
+		let duplicate = DraftModel.findDuplicateIds(testTree, ids)
 
 		expect(duplicate).toBe(null)
 	})
@@ -65,7 +65,7 @@ describe('draft id checker', () => {
 		}
 		let ids = {}
 
-		let duplicate = checkIds(testTree, ids)
+		let duplicate = DraftModel.findDuplicateIds(testTree, ids)
 
 		expect(duplicate).toBe('duplicate-id-test')
 	})
