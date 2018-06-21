@@ -39,5 +39,4 @@ public/compiled
 *.DS_Store
 
 # Editor specific
-.vscode
 .idea
