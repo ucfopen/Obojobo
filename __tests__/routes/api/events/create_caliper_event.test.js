@@ -1,3 +1,5 @@
+import BaseCaliper from '../../../../routes/api/events/create_base_caliper_event'
+jest.spyOn(BaseCaliper, 'createEvent')
 const caliperEvents = require('../../../../routes/api/events/create_caliper_event')(
 	null,
 	'testHost'
@@ -29,7 +31,37 @@ describe('Caliper event creator', () => {
 	afterAll(() => {
 		Date.prototype.toISOString = originaltoISOString
 	})
+
 	test('createNavigationEvent', () => {
+		const navEvent = caliperEvents.createNavigationEvent({
+			actor,
+			draftId,
+			from,
+			to,
+			sessionIds,
+			extensions
+		})
+		expect(navEvent).toMatchSnapshot()
+	})
+
+	test('createNavigationEvent with no type or action', () => {
+		BaseCaliper.createEvent.mockReturnValueOnce({
+			'@context': 'http://purl.imsglobal.org/ctx/caliper/v1p1',
+			actor: 'https://mockhost/api/server',
+			edApp: 'https://mockhost/api/system',
+			eventTime: expect.any(String),
+			extensions: { previewMode: false },
+			federatedSession: null,
+			generated: null,
+			group: null,
+			id: 'urn:uuid:DEADBEEF-0000-DEAD-BEEF-1234DEADBEEF',
+			membership: null,
+			object: null,
+			target: null,
+			setAction: jest.fn(),
+			setObject: jest.fn()
+		})
+
 		const navEvent = caliperEvents.createNavigationEvent({
 			actor,
 			draftId,

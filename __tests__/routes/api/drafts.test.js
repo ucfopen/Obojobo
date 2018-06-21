@@ -20,6 +20,8 @@ describe('api draft route', () => {
 	afterAll(() => {})
 	beforeEach(() => {
 		logger.error.mockReset()
+		mockInsertNewDraft.mockReset()
+		mockXMLParser.mockReset()
 	})
 	afterEach(() => {})
 
@@ -123,11 +125,10 @@ describe('api draft route', () => {
 		}
 
 		let mockNext = jest.fn()
-		mockInsertNewDraft.mockReturnValueOnce('test_result')
 
 		return routeFunction(mockReq, mockRes, mockNext)
 			.then(() => {
-				expect(mockRes.success).toBeCalledWith('test_result')
+				expect(mockRes.success).toBeCalledWith(undefined)
 			})
 			.catch(err => {
 				expect(err).toBe('never called')
