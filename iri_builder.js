@@ -53,7 +53,7 @@ const iriFactory = (req, providedHost) => {
 			let iri
 
 			if (oboNodeId === null) {
-				iri = createIRI(`/api/draft/${draftId}`)
+				iri = createIRI(host, `/api/draft/${draftId}`)
 			} else if (contextName === null) {
 				iri = createIRI(host, `/api/draft/${draftId}`, `#${oboNodeId}`)
 			} else {
@@ -73,6 +73,14 @@ const iriFactory = (req, providedHost) => {
 
 		getAssessmentAttemptIRI: attemptId => {
 			return createIRI(host, `/api/attempt/${attemptId}`)
+		},
+
+		getPickerIRI: () => {
+			return createIRI(host, `/api/picker`)
+		},
+
+		getVisitIRI: visitId => {
+			return createIRI(host, `/api/visit/${visitId}`)
 		}
 	}
 }

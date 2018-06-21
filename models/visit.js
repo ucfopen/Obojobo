@@ -11,38 +11,47 @@ let deactivateOldVisitsAndCreateNewVisit = (
 	launchId,
 	isPreview
 ) => {
+	let deactivatedVisitIds
 	return db
-		.none(
+		.manyOrNone(
 			// deactivate all my visits for this draft
 			`UPDATE visits
 			SET is_active = false
 			WHERE user_id = $[userId]
-			AND draft_id = $[draftId]`,
+			AND draft_id = $[draftId]
+			AND is_active = true
+			RETURNING id`,
 			{
 				draftId,
 				userId
 			}
 		)
-		.then(() =>
-			db.one(
+		.then(deactivatedVisits => {
+			// get the visits and squash them into an array of ids
+			deactivatedVisitIds = null
+			if (deactivatedVisits && deactivatedVisits.length) {
+				deactivatedVisitIds = deactivatedVisits.map(visit => visit.id)
+			}
+
+			return db.one(
 				// get id of the newest version of the draft
 				`SELECT id
-			FROM drafts_content
-			WHERE draft_id = $[draftId]
-			ORDER BY created_at DESC
-			LIMIT 1`,
+						FROM drafts_content
+						WHERE draft_id = $[draftId]
+						ORDER BY created_at DESC
+						LIMIT 1`,
 				{
 					draftId
 				}
 			)
-		)
+		})
 		.then(draftsContent =>
 			db.one(
 				// Create a new visit
 				`INSERT INTO visits
-			(draft_id, draft_content_id, user_id, launch_id, resource_link_id, is_active, is_preview)
-			VALUES ($[draftId], $[draftContentId], $[userId], $[launchId], $[resourceLinkId], true, $[isPreview])
-			RETURNING id`,
+					(draft_id, draft_content_id, user_id, launch_id, resource_link_id, is_active, is_preview)
+					VALUES ($[draftId], $[draftContentId], $[userId], $[launchId], $[resourceLinkId], true, $[isPreview])
+					RETURNING id`,
 				{
 					draftId,
 					draftContentId: draftsContent.id,
@@ -53,6 +62,7 @@ let deactivateOldVisitsAndCreateNewVisit = (
 				}
 			)
 		)
+		.then(visit => ({ visitId: visit.id, deactivatedVisitIds }))
 }
 
 class Visit {

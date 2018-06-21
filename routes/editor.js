@@ -6,7 +6,9 @@ let displayEditor = (req, res, next) => {
 	return req
 		.getCurrentUser(true)
 		.then(user => {
-			if (user.isGuest()) return Promise.reject(new Error('Login Required'))
+			if (user.isGuest()) {
+				return Promise.reject(new Error('Login Required'))
+			}
 			if (!user.canViewEditor) {
 				return next()
 			}

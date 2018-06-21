@@ -1,20 +1,24 @@
-var express = require('express')
-var router = express.Router()
-let DraftModel = oboRequire('models/draft')
+const express = require('express')
+const router = express.Router()
+const DraftModel = oboRequire('models/draft')
 const Visit = oboRequire('models/visit')
-let logger = oboRequire('logger')
-let insertEvent = oboRequire('insert_event')
-let createCaliperEvent = oboRequire('routes/api/events/create_caliper_event')
-let { ACTOR_USER } = require('./api/events/caliper_constants')
-let { getSessionIds } = require('./api/events/caliper_utils')
-let db = oboRequire('db')
+const logger = oboRequire('logger')
+const insertEvent = oboRequire('insert_event')
+const createCaliperEvent = oboRequire('routes/api/events/create_caliper_event')
+const { ACTOR_USER } = oboRequire('routes/api/events/caliper_constants')
+const { getSessionIds } = oboRequire('routes/api/events/caliper_utils')
+const db = oboRequire('db')
 
 // launch lti view of draft - redirects to visit route
 // mounted as /visit/:draftId/:page
 router.post('/:draftId/:page?', (req, res, next) => {
+	let user
+	let createdVisitId
+
 	return req
 		.requireCurrentUser()
 		.then(currentUser => {
+			user = currentUser
 			return Visit.createVisit(
 				currentUser.id,
 				req.params.draftId,
@@ -22,17 +26,41 @@ router.post('/:draftId/:page?', (req, res, next) => {
 				req.oboLti.launchId
 			)
 		})
-		.then(visit => {
-			return new Promise((resolve, reject) => {
-				req.session.save(function(err) {
-					if (err) return reject(err)
-
-					resolve(visit)
+		.then(({ visitId, deactivatedVisitId }) => {
+			createdVisitId = visitId
+			let { createVisitCreateEvent } = createCaliperEvent(null, req.hostname)
+			return insertEvent({
+				action: 'visit:create',
+				actorTime: new Date().toISOString(),
+				userId: user.id,
+				ip: req.connection.remoteAddress,
+				metadata: {},
+				draftId: req.params.draftId,
+				payload: {
+					visitId,
+					deactivatedVisitId
+				},
+				eventVersion: '1.0.0',
+				caliperPayload: createVisitCreateEvent({
+					actor: { type: ACTOR_USER, id: user.id },
+					isPreviewMode: user.canViewEditor,
+					sessionIds: getSessionIds(req.session),
+					visitId,
+					extensions: { deactivatedVisitId }
 				})
 			})
 		})
-		.then(visit => {
-			res.redirect(`/view/${req.params.draftId}/visit/${visit.id}`)
+		.then(() => {
+			// save session before redirect
+			return new Promise((resolve, reject) => {
+				req.session.save(err => {
+					if (err) return reject(err)
+					resolve()
+				})
+			})
+		})
+		.then(() => {
+			res.redirect(`/view/${req.params.draftId}/visit/${createdVisitId}`)
 		})
 		.catch(error => {
 			logger.error(error)
@@ -43,8 +71,9 @@ router.post('/:draftId/:page?', (req, res, next) => {
 // MAIN VISIT ROUTE
 // mounted as /visit/:draftId/visit/:visitId
 router.get('/:draftId/visit/:visitId*', (req, res, next) => {
-	let user = null
-	let draft = null
+	let user
+	let draft
+
 	return req
 		.requireCurrentUser()
 		.then(currentUser => {
@@ -56,7 +85,27 @@ router.get('/:draftId/visit/:visitId*', (req, res, next) => {
 			draft = draftModel
 			return draft.yell('internal:sendToClient', req, res)
 		})
-		.then(draft => {
+		.then(draftReturn => {
+			draft = draftReturn
+			let { createViewerOpenEvent } = createCaliperEvent(null, req.hostname)
+			return insertEvent({
+				action: 'viewer:open',
+				actorTime: new Date().toISOString(),
+				userId: user.id,
+				ip: req.connection.remoteAddress,
+				metadata: {},
+				draftId: req.params.draftId,
+				payload: { visitId: req.params.visitId },
+				eventVersion: '1.1.0',
+				caliperPayload: createViewerOpenEvent({
+					actor: { type: ACTOR_USER, id: user.id },
+					isPreviewMode: user.canViewEditor,
+					sessionIds: getSessionIds(req.session),
+					visitId: req.params.visitId
+				})
+			})
+		})
+		.then(() => {
 			res.render('viewer', {
 				draftTitle:
 					draft &&
@@ -66,24 +115,6 @@ router.get('/:draftId/visit/:visitId*', (req, res, next) => {
 					draft.root.node.content.title
 						? draft.root.node.content.title
 						: ''
-			})
-			let { createViewerSessionLoggedInEvent } = createCaliperEvent(null, req.hostname)
-
-			insertEvent({
-				action: 'viewer:open',
-				actorTime: new Date().toISOString(),
-				userId: user.id,
-				ip: req.connection.remoteAddress,
-				metadata: {},
-				draftId: req.params.draftId,
-				payload: {},
-				eventVersion: '1.0.0',
-				caliperPayload: createViewerSessionLoggedInEvent({
-					draftId: req.params.draftId,
-					actor: { type: ACTOR_USER, id: user.id },
-					isPreviewMode: user.canViewEditor,
-					sessionIds: getSessionIds(req.session)
-				})
 			})
 		})
 		.catch(error => {
