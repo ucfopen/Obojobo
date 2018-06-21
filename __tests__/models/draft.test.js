@@ -1,8 +1,12 @@
-describe('models draft', () => {
-	jest.mock('../../db')
-	jest.mock('../../logger')
+jest.mock('../../db')
+jest.mock('../../logger')
 
-	let mockRawDraft = {
+const db = oboRequire('db')
+const Draft = oboRequire('models/draft')
+const DraftNode = oboRequire('models/draft_node')
+
+describe('models draft', () => {
+	const mockRawDraft = {
 		id: 'whatever',
 		version: 9,
 		draft_created_at: new Date().toISOString(),
@@ -33,8 +37,6 @@ describe('models draft', () => {
 	afterEach(() => {})
 
 	it('initializes expected properties', () => {
-		let Draft = oboRequire('models/draft')
-		let DraftNode = oboRequire('models/draft_node')
 		let d = new Draft({})
 		expect(d.nodesById).toBeInstanceOf(Map)
 		expect(d.nodesByType).toBeInstanceOf(Map)
@@ -43,10 +45,6 @@ describe('models draft', () => {
 
 	it('loads a draft from the database', () => {
 		expect.assertions(5)
-
-		let Draft = oboRequire('models/draft')
-		let DraftNode = oboRequire('models/draft_node')
-		let db = oboRequire('db')
 		db.one.mockResolvedValueOnce(mockRawDraft)
 
 		return Draft.fetchById('whatever').then(model => {
@@ -60,10 +58,6 @@ describe('models draft', () => {
 
 	it('returns error when not found in database', () => {
 		expect.assertions(2)
-
-		let Draft = oboRequire('models/draft')
-		let DraftNode = oboRequire('models/draft_node')
-		let db = oboRequire('db')
 		db.one.mockRejectedValueOnce(new Error('not found in db'))
 
 		return Draft.fetchById('whatever')
@@ -78,11 +72,8 @@ describe('models draft', () => {
 
 	it('responds to get document', () => {
 		expect.assertions(1)
-
-		let Draft = oboRequire('models/draft')
-		let DraftNode = oboRequire('models/draft_node')
-		let db = oboRequire('db')
 		db.one.mockResolvedValueOnce(mockRawDraft)
+
 		return Draft.fetchById('whatever').then(model => {
 			expect(model.document).toEqual(
 				expect.objectContaining({
@@ -97,10 +88,6 @@ describe('models draft', () => {
 
 	it('responds to getChildNodeById', () => {
 		expect.assertions(4)
-
-		let Draft = oboRequire('models/draft')
-		let DraftNode = oboRequire('models/draft_node')
-		let db = oboRequire('db')
 		db.one.mockResolvedValueOnce(mockRawDraft)
 
 		return Draft.fetchById('whatever').then(model => {
@@ -113,10 +100,6 @@ describe('models draft', () => {
 
 	it('responds to getChildNodesByType', () => {
 		expect.assertions(7)
-
-		let Draft = oboRequire('models/draft')
-		let DraftNode = oboRequire('models/draft_node')
-		let db = oboRequire('db')
 		db.one.mockResolvedValueOnce(mockRawDraft)
 
 		return Draft.fetchById('whatever').then(model => {
@@ -134,13 +117,9 @@ describe('models draft', () => {
 
 	it('yells to child nodes', () => {
 		expect.assertions(1)
-
-		let Draft = oboRequire('models/draft')
-		let DraftNode = oboRequire('models/draft_node')
-		let db = oboRequire('db')
-		let childNode
 		db.one.mockResolvedValueOnce(mockRawDraft)
 
+		let childNode
 		return Draft.fetchById('whatever')
 			.then(model => {
 				childNode = model.getChildNodesByType('DraftNode')[0]
