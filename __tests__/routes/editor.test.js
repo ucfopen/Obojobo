@@ -1,6 +1,10 @@
 jest.mock('../../db')
 jest.mock('../../models/user')
 
+mockVirtual('../../express_validators')
+let expressValidators = oboRequire('express_validators')
+expressValidators.requireCanViewEditor = 'requireCanViewEditor'
+
 const { mockExpressMethods, mockRouterMethods } = require('../../__mocks__/__mock_express')
 
 describe('editor route', () => {
@@ -11,7 +15,18 @@ describe('editor route', () => {
 
 	test('registers the expected routes ', () => {
 		let editor = oboRequire('routes/editor')
-		expect(mockRouterMethods.post).toBeCalledWith('/', expect.any(Function))
+		expect(mockRouterMethods.route).toHaveBeenCalledTimes(1)
+		expect(mockRouterMethods.route).toBeCalledWith('/')
+
+		expect(mockRouterMethods.post).toHaveBeenCalledTimes(1)
+		expect(mockRouterMethods.all).toHaveBeenCalledTimes(1)
+		expect(mockRouterMethods.get).toHaveBeenCalledTimes(1)
+	})
+
+	test('applies expected validators to each route', () => {
+		let editor = oboRequire('routes/editor')
+		expect(mockRouterMethods.all).toHaveBeenCalledTimes(1)
+		expect(mockRouterMethods.all).toHaveBeenCalledWith(expressValidators.requireCanViewEditor)
 	})
 
 	test('loads the expected draft ', () => {
@@ -24,14 +39,12 @@ describe('editor route', () => {
 
 		let User = oboRequire('models/user')
 		let editor = oboRequire('routes/editor')
-		let displayEditor = mockRouterMethods.post.mock.calls[0][1]
+		let displayEditor = mockRouterMethods.post.mock.calls[0][0]
 
 		let mockReq = {
-			getCurrentUser: jest.fn().mockImplementationOnce(() => {
-				let u = new User()
-				u.canViewEditor = true
-				return Promise.resolve(u)
-			})
+			currentUser:{
+				id: new User()
+			}
 		}
 
 		let mockRes = {
@@ -51,67 +64,4 @@ describe('editor route', () => {
 		})
 	})
 
-	test('rejects for guests', () => {
-		expect.assertions(2)
-
-		let db = oboRequire('db')
-
-		// mock the launch insert
-		db.any.mockResolvedValueOnce({ draft: true })
-
-		let GuestUser = oboRequire('models/guest_user')
-		let editor = oboRequire('routes/editor')
-		let displayEditor = mockRouterMethods.post.mock.calls[0][1]
-
-		let mockReq = {
-			getCurrentUser: jest.fn().mockImplementationOnce(() => {
-				let u = new GuestUser()
-				return Promise.resolve(u)
-			})
-		}
-
-		let mockRes = {
-			status: jest.fn(),
-			render: jest.fn()
-		}
-
-		let mockNext = jest.fn()
-
-		return displayEditor(mockReq, mockRes, mockNext).then(() => {
-			expect(mockNext).toBeCalledWith(expect.any(Error))
-			expect(mockNext.mock.calls[0][0].message).toBe('Login Required')
-		})
-	})
-
-	test('rejects for users without editor permissions', () => {
-		expect.assertions(1)
-
-		let db = oboRequire('db')
-
-		// mock the launch insert
-		db.any.mockResolvedValueOnce({ draft: true })
-
-		let User = oboRequire('models/user')
-		let editor = oboRequire('routes/editor')
-		let displayEditor = mockRouterMethods.post.mock.calls[0][1]
-
-		let mockReq = {
-			getCurrentUser: jest.fn().mockImplementationOnce(() => {
-				let u = new User()
-				u.canViewEditor = false
-				return Promise.resolve(u)
-			})
-		}
-
-		let mockRes = {
-			status: jest.fn(),
-			render: jest.fn()
-		}
-
-		let mockNext = jest.fn()
-
-		return displayEditor(mockReq, mockRes, mockNext).then(() => {
-			expect(mockNext).toBeCalledWith()
-		})
-	})
 })
