@@ -60,7 +60,7 @@ router.post('/new', (req, res, next) => {
 //@TODO - Ensure that you can't post to a deleted draft, ensure you can only delete your own stuff
 // Update a Draft
 // mounted as /api/drafts/:draftid
-router.post(/(\w{8}-\w{4}-\w{4}-\w{4}-\w{12})/, (req, res, next) => {
+router.post('/:draftId', (req, res, next) => {
 	return req
 		.requireCurrentUser()
 		.then(currentUser => {

@@ -2,16 +2,17 @@ jest.mock('../../../models/draft')
 jest.mock('../../../models/user')
 jest.mock('../../../db')
 jest.mock('../../../logger')
+jest.mock('obojobo-draft-xml-parser/xml-to-draft-object')
 
 import DraftModel from '../../../models/draft'
 import User from '../../../models/user'
 import logger from '../../../logger'
+import mockXMLParser from 'obojobo-draft-xml-parser/xml-to-draft-object'
 let xml = require('obojobo-draft-xml-parser/xml-to-draft-object')
 
 const { mockExpressMethods, mockRouterMethods } = require('../../../__mocks__/__mock_express')
 
 let mockInsertNewDraft = mockVirtual('./routes/api/drafts/insert_new_draft')
-let mockXMLParser = mockVirtual('obojobo-draft-xml-parser/xml-to-draft-object')
 const db = oboRequire('db')
 const drafts = oboRequire('routes/api/drafts')
 

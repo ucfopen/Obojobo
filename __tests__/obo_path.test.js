@@ -24,4 +24,12 @@ describe('obo path', () => {
 	test('getDraftPath returns the path when there is a match', () => {
 		expect(oboPath.getDraftPath()).toBe('./__tests__/test_draft_path/')
 	})
+
+	test('getDraftPath returns the path when there is no match', () => {
+		fs.existsSync = jest.fn().mockReturnValue(false)
+
+		expect(oboPath.getDraftPath()).toBe(null)
+
+		fs.existsSync.mockReset()
+	})
 })
