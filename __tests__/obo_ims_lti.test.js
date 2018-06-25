@@ -6,6 +6,9 @@ jest.mock('fs')
 jest.mock('../dev_nonce_store')
 jest.mock('express-ims-lti')
 jest.mock('../logger')
+jest.mock('express-ims-lti', () => {
+	return jest.fn()
+})
 
 let oboLtiMiddleware
 

@@ -2,10 +2,17 @@ jest.mock('fs')
 jest.mock('express')
 jest.mock('child_process')
 jest.mock('../obo_get_installed_modules')
+jest.mock('extract-text-webpack-plugin')
 jest.mock('../draft_node_store')
 
 // just mock these non-existent things
 mockVirtual('/file/path/express.js', () => ({ expressApp: true }))
+
+// Prevent webpack from printing to console
+const originalLog = console.log
+console.log = jest.fn()
+const webpack = require('../webpack.config.js')
+console.log = originalLog
 
 describe('register chunks middleware', () => {
 	beforeAll(() => {})
