@@ -160,6 +160,45 @@ describe('Draft Model', () => {
 		return expect(DraftModel.createWithContent(0, 'whatever')).rejects.toThrow('arrrg!')
 	})
 
+	test('updateContent calls db.one with expected args', () => {
+		expect.assertions(2)
+
+		const id = 555
+		const jsonContent = 'mockJsonContent'
+		const xmlContent = 'mockXmlContent'
+
+		db.one.mockResolvedValueOnce({ id })
+
+		return DraftModel.updateContent(id, jsonContent, xmlContent)
+			.then(resultId => {
+				expect(resultId).toBe(id)
+				expect(db.one).toBeCalledWith(
+					expect.any(String),
+					expect.objectContaining({
+						draftId: id,
+						jsonContent: jsonContent,
+						xmlContent: xmlContent
+					})
+				)
+			})
+			.catch(err => {
+				expect(err).toBe('never called')
+			})
+	})
+
+	test('updateContent fails as expected', () => {
+		expect.assertions(1)
+		db.one.mockRejectedValueOnce('test error')
+
+		return DraftModel.updateContent(555, 'content')
+			.then(id => {
+				expect(id).toBe('never called')
+			})
+			.catch(err => {
+				expect(err).toBe('test error')
+			})
+	})
+
 	test('findDuplicateIds parses a single level draft with no duplications', () => {
 		let testTree = {
 			id: 'test-id',
