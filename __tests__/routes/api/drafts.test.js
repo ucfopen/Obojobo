@@ -100,9 +100,7 @@ describe('api draft route', () => {
 		let mockYell = jest.fn().mockImplementationOnce(() => {
 			return {
 				document: `{"json":"value"}`,
-				yell: jest.fn().mockImplementationOnce(() => {
-					return 'fake draft'
-				})
+				yell: jest.fn().mockReturnValueOnce('fake draft')
 			}
 		})
 
@@ -127,9 +125,11 @@ describe('api draft route', () => {
 
 		let mockNext = jest.fn()
 
+		DraftModel.createWithContent.mockReturnValueOnce('test_result')
+
 		return routeFunction(mockReq, mockRes, mockNext)
 			.then(() => {
-				expect(mockRes.success).toBeCalledWith(undefined)
+				expect(mockRes.success).toBeCalledWith('test_result')
 			})
 			.catch(err => {
 				expect(err).toBe('never called')
@@ -157,9 +157,7 @@ describe('api draft route', () => {
 		}
 
 		let mockNext = jest.fn()
-		mockInsertNewDraft.mockImplementationOnce(() => {
-			return 'test_result'
-		})
+		DraftModel.createWithContent.mockReturnValueOnce('test_result')
 
 		return routeFunction(mockReq, mockRes, mockNext)
 			.then(() => {
@@ -176,9 +174,7 @@ describe('api draft route', () => {
 		let mockYell = jest.fn().mockImplementationOnce(() => {
 			return {
 				document: `{"json":"value"}`,
-				yell: jest.fn().mockImplementationOnce(() => {
-					return 'fake draft'
-				})
+				yell: jest.fn().mockReturnValueOnce('fake draft')
 			}
 		})
 

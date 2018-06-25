@@ -10,9 +10,11 @@ describe('api draft update helper', () => {
 
 	test('calls db.one with expected args', () => {
 		expect.assertions(2)
+
 		const id = 555
 		const jsonContent = 'mockJsonContent'
 		const xmlContent = 'mockXmlContent'
+
 		db.one.mockResolvedValueOnce({ id })
 
 		return DraftModel.updateContent(id, jsonContent, xmlContent)

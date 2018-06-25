@@ -1,4 +1,3 @@
-jest.mock('newrelic', () => {})
 jest.mock('../obo_express', () => {})
 jest.mock('serve-favicon')
 jest.mock('../config', () => {

@@ -34,7 +34,9 @@ describe('Draft Model', () => {
 
 	beforeAll(() => {})
 	afterAll(() => {})
-	beforeEach(() => {})
+	beforeEach(() => {
+		db.one.mockReset()
+	})
 	afterEach(() => {})
 
 	test('constructor initializes expected properties', () => {
@@ -90,6 +92,72 @@ describe('Draft Model', () => {
 				expect(err).toBeInstanceOf(Error)
 				expect(err.message).toBe('not found in db')
 			})
+	})
+
+	test('createWithContent inserts a new draft', () => {
+		expect.assertions(4)
+		// mock insert draft
+		db.one.mockResolvedValueOnce({ id: 'NEWID' })
+		// respond to insert content
+		db.one.mockResolvedValueOnce('inserted content result')
+		const mockContent = { content: 'yes' }
+		const mockXMLContent = '<?xml version="1.0" encoding="utf-8"?><ObojoboDraftDoc />'
+		const mockUserId = 555
+
+		return DraftModel.createWithContent(mockUserId, mockContent, mockXMLContent).then(newDraft => {
+			// make sure we're using a transaction
+			expect(db.tx).toBeCalled()
+
+			// make sure the result looks as expected
+			expect(newDraft).toEqual({
+				content: 'inserted content result',
+				id: 'NEWID'
+			})
+
+			// make sure mockUserID is sent to the insert draft query
+			expect(db.one.mock.calls[0][1]).toEqual(
+				expect.objectContaining({
+					userId: mockUserId
+				})
+			)
+
+			// make sure the id coming back from insert draft is used to insert content
+			// and make sure the content is sent to the query
+			expect(db.one.mock.calls[1][1]).toEqual({
+				jsonContent: mockContent,
+				xmlContent: mockXMLContent,
+				draftId: 'NEWID'
+			})
+		})
+	})
+
+	test('createWithContent fails when begin tranaction fails', () => {
+		expect.assertions(1)
+
+		// reject transaction
+		db.tx.mockRejectedValueOnce(new Error('error'))
+
+		return expect(DraftModel.createWithContent(0)).rejects.toThrow('error')
+	})
+
+	test('createWithContent fails when insert draft fails', () => {
+		expect.assertions(1)
+
+		// reject insert draft query
+		db.one.mockRejectedValueOnce(new Error('an error'))
+
+		return expect(DraftModel.createWithContent(0, 'whatever')).rejects.toThrow('an error')
+	})
+
+	test('createWithContent fails when insert content fails', () => {
+		expect.assertions(1)
+
+		// respond to insert draft
+		db.one.mockResolvedValueOnce({ id: 'NEWID' })
+		// reject insert content query
+		db.one.mockRejectedValueOnce(new Error('arrrg!'))
+
+		return expect(DraftModel.createWithContent(0, 'whatever')).rejects.toThrow('arrrg!')
 	})
 
 	test('findDuplicateIds parses a single level draft with no duplications', () => {
