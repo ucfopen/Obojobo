@@ -396,10 +396,7 @@ Object {
   "@context": "http://purl.imsglobal.org/ctx/caliper/v1p1",
   "actor": "https://mockhost/api/server",
   "edApp": "https://mockhost/api/system",
-  "eventTime": Any {
-    "$$typeof": Symbol(jest.asymmetricMatcher),
-    "sample": [Function],
-  },
+  "eventTime": Any<String>,
   "extensions": Object {
     "foo": "bar",
     "previewMode": false,
@@ -412,12 +409,24 @@ Object {
         "http://purl.imsglobal.org/vocab/caliper/v1/action#NavigatedTo",
       ],
     ],
+    "results": Array [
+      Object {
+        "isThrow": false,
+        "value": undefined,
+      },
+    ],
   },
   "setObject": [MockFunction] {
     "calls": Array [
       Array [
         "https://testHost/api/draft/testDraftId#navigation is going here",
       ],
+    ],
+    "results": Array [
+      Object {
+        "isThrow": false,
+        "value": undefined,
+      },
     ],
   },
 }
