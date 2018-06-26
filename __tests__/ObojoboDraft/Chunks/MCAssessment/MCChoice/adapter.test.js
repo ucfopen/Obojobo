@@ -1,19 +1,19 @@
 import MCChoiceAdapter from '../../../../../ObojoboDraft/Chunks/MCAssessment/MCChoice/adapter'
 
 describe('MCChoice adapter', () => {
-	test('Sets modelState with default values', () => {
+	test('construct builds without attributes', () => {
 		let model = { modelState: {} }
 		MCChoiceAdapter.construct(model)
 		expect(model.modelState).toMatchObject({ score: '' })
 	})
 
-	test('sets modelState with given values', () => {
+	test('construct builds with attributes', () => {
 		let model = { modelState: {} }
 		MCChoiceAdapter.construct(model, { content: { score: 999 } })
 		expect(model.modelState).toMatchObject({ score: 999 })
 	})
 
-	test('clones successfully', () => {
+	test('clone creates a copy', () => {
 		let a = { modelState: {} }
 		let b = { modelState: {} }
 
@@ -25,7 +25,7 @@ describe('MCChoice adapter', () => {
 		expect(a.modelState).toMatchObject(b.modelState)
 	})
 
-	test.only('toJSON returns an json-able representation', () => {
+	test('toJSON builds a JSON representation', () => {
 		let model = { modelState: {} }
 		let attrs = { content: { score: 777 } }
 		let json = { content: {} }

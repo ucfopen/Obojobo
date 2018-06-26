@@ -1,0 +1,39 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`MCAnswer MCAnswer component 1`] = `
+<div
+  className="component obojobo-draft--chunks--mc-assessment--mc-answer"
+  data-focussed={false}
+  data-id="choice1-answer"
+  data-obo-component={true}
+  data-type="ObojoboDraft.Chunks.MCAssessment.MCAnswer"
+  id="obo-choice1-answer"
+>
+  <div
+    className="component"
+    data-focussed={false}
+    data-id="choice1-answer-text"
+    data-obo-component={true}
+    data-type="ObojoboDraft.Chunks.Text"
+    id="obo-choice1-answer-text"
+  >
+    <div
+      className="text-chunk obojobo-draft--chunks--single-text pad"
+    >
+      <span
+        className="text align-left"
+        data-group-index={0}
+        data-indent={0}
+      >
+        <span>
+          <span>
+            <span>
+              Example Text
+            </span>
+          </span>
+        </span>
+      </span>
+    </div>
+  </div>
+</div>
+`;

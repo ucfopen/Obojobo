@@ -519,6 +519,27 @@ describe('AssessmentRubric', () => {
 		})
 	})
 
+	test('mods with no condition are not applied', () => {
+		let ar = new AssessmentRubric({
+			type: 'attempt',
+			mods: [
+				{
+					reward: 100
+				}
+			]
+		})
+
+		expect(ar.getAssessmentScoreInfoForAttempt(10, [80])).toEqual({
+			attemptNumber: 1,
+			attemptScore: 80,
+			status: 'passed',
+			assessmentScore: 80,
+			rewardTotal: 0,
+			assessmentModdedScore: 80,
+			rewardedMods: []
+		})
+	})
+
 	test('assessment score floor at 0', () => {
 		let ar = new AssessmentRubric({
 			type: 'attempt',
@@ -581,7 +602,7 @@ describe('AssessmentRubric', () => {
 					reward: 10
 				},
 				{
-					attemptCondition: '(3,4]',
+					attemptCondition: '[3,4)',
 					reward: 15
 				}
 			]
@@ -607,7 +628,7 @@ describe('AssessmentRubric', () => {
 					reward: 10
 				},
 				{
-					attemptCondition: '(3,4]',
+					attemptCondition: '[3,4)',
 					reward: 15
 				}
 			]

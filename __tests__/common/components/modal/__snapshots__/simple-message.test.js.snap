@@ -1,6 +1,6 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
-exports[`SimpleMessage 1`] = `
+exports[`SimpleMessage SimpleMessage component 1`] = `
 <div>
   <p>
     Content

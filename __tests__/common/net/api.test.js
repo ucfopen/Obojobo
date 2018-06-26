@@ -71,4 +71,23 @@ describe('Net API', () => {
 
 		expect(callback).toHaveBeenCalledWith('callbackArg')
 	})
+
+	test('APIChunk with null values', () => {
+		let chunkMoved = {
+			get: jest.fn(() => 'movedId')
+		}
+		let chunkBefore = {
+			get: jest.fn(() => 'beforeId')
+		}
+
+		mockAddEventListener.mockImplementationOnce((name, callback) => {
+			return callback()
+		})
+
+		API.chunk.move(chunkMoved, null, null)
+
+		expect(mockAddEventListener).toHaveBeenCalledWith('load', expect.any(Function))
+		expect(mockOpen).toHaveBeenCalledWith('POST', '/api/chunk/movedId/move_before', true)
+		expect(mockSend).toHaveBeenCalledWith('before_chunk_id=null')
+	})
 })

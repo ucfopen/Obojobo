@@ -1,8 +1,9 @@
 FROM node:6.9-alpine
 RUN apk add --no-cache \
-	build-base \
-	git \
-	python
+  tzdata \
+  build-base \
+  git \
+  python
 
 # Install yarn - borrowed from https://github.com/nodejs/docker-node/blob/9023f588717d236a92d91a8483ff0582484c22d1/9/alpine/Dockerfile
 ENV YARN_VERSION 1.5.1
