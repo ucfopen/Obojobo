@@ -13,7 +13,6 @@ describe('Question adapter', () => {
 		let model = { modelState: {} }
 		let attrs = {
 			content: {
-				limit: 2,
 				mode: 'review',
 				practice: false,
 				solution: {
@@ -51,7 +50,6 @@ describe('Question adapter', () => {
 		let b = { modelState: {} }
 		let attrs = {
 			content: {
-				limit: 2,
 				practice: false
 			}
 		}
@@ -68,7 +66,6 @@ describe('Question adapter', () => {
 		let b = { modelState: {} }
 		let attrs = {
 			content: {
-				limit: 2,
 				practice: false,
 				solution: {
 					id: '249138ca-be09-4ab5-b015-3a8107b4c79e',
@@ -108,7 +105,6 @@ describe('Question adapter', () => {
 		let json = { content: {} }
 		let attrs = {
 			content: {
-				limit: 2,
 				practice: false
 			}
 		}
@@ -123,7 +119,6 @@ describe('Question adapter', () => {
 		let json = { content: {} }
 		let attrs = {
 			content: {
-				limit: 2,
 				practice: false,
 				solution: {
 					id: '249138ca-be09-4ab5-b015-3a8107b4c79e',

@@ -129,7 +129,7 @@ describe('Modal', () => {
 		)
 	})
 
-	test('Unmounts', () => {
+	test('Unmounts with onClose function', () => {
 		const component = mount(
 			<Modal onClose={onClose} focusOnFirstElement={focusOnFirstElement}>
 				Content
@@ -137,11 +137,15 @@ describe('Modal', () => {
 		)
 
 		component.unmount()
+
+		expect(onClose).not.toHaveBeenCalled()
 	})
 
 	test('Unmounts with no onClose function', () => {
 		const component = mount(<Modal focusOnFirstElement={focusOnFirstElement}>Content</Modal>)
 
 		component.unmount()
+
+		expect(onClose).not.toHaveBeenCalled()
 	})
 })

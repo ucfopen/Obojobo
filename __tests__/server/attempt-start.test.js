@@ -346,21 +346,7 @@ describe('start attempt route', () => {
 
 		const state = getState(mockAssessmentProperties)
 
-		expect(0).toEqual(0)
-		/*expect(state.questions).toEqual([
-			{
-				node: {
-					id: 'qb1.q1',
-					type: 'ObojoboDraft.Chunks.Question'
-				}
-			},
-			{
-				node: {
-					id: 'qb1.q2',
-					type: 'ObojoboDraft.Chunks.Question'
-				}
-			}
-		])*/
+		expect(state.questions).toEqual([])
 	})
 
 	test('loadChildren builds a full map of used questions', () => {

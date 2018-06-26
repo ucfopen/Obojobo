@@ -136,6 +136,7 @@ describe('ActionButton adapter', () => {
 		})
 		expect(b.modelState).toEqual({
 			align: 'center',
+			label: '',
 			textGroup: 'mockClone'
 		})
 	})
