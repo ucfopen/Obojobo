@@ -32,12 +32,12 @@ describe('current user middleware', () => {
 		mockJson.mockClear()
 	})
 
-	it('calls next', () => {
+	test('calls next', () => {
 		let [res, req, mockJson, mockStatus, mockNext] = mockArgs
 		expect(mockNext).toBeCalledWith()
 	})
 
-	it('sets the expected properties on req', () => {
+	test('sets the expected properties on req', () => {
 		expect.assertions(userFunctions.length * 2)
 
 		let [res, req, mockJson, mockStatus, mockNext] = mockArgs
@@ -48,7 +48,7 @@ describe('current user middleware', () => {
 		})
 	})
 
-	it('sets the current user on req.session', () => {
+	test('sets the current user on req.session', () => {
 		expect.assertions(1)
 
 		let [res, req, mockJson, mockStatus, mockNext] = mockArgs
@@ -58,7 +58,7 @@ describe('current user middleware', () => {
 		expect(req.session.currentUserId).toBe(999)
 	})
 
-	it('unsets the curent user', () => {
+	test('unsets the curent user', () => {
 		expect.assertions(6)
 		let [res, req, mockJson, mockStatus, mockNext] = mockArgs
 		let User = oboRequire('models/user')
@@ -84,7 +84,7 @@ describe('current user middleware', () => {
 			})
 	})
 
-	it('setCurrentUser throws when not using a User', () => {
+	test('setCurrentUser throws when not using a User', () => {
 		expect.assertions(1)
 
 		let [res, req, mockJson, mockStatus, mockNext] = mockArgs
@@ -94,7 +94,7 @@ describe('current user middleware', () => {
 		}).toThrow()
 	})
 
-	it('getCurrentUser gets the current user', () => {
+	test('getCurrentUser gets the current user', () => {
 		expect.assertions(3)
 
 		let [res, req, mockJson, mockStatus, mockNext] = mockArgs
@@ -110,7 +110,7 @@ describe('current user middleware', () => {
 		})
 	})
 
-	it('getCurrentUser gets the current user when required', () => {
+	test('getCurrentUser gets the current user when required', () => {
 		expect.assertions(3)
 
 		let [res, req, mockJson, mockStatus, mockNext] = mockArgs
@@ -126,7 +126,7 @@ describe('current user middleware', () => {
 		})
 	})
 
-	it('getCurrentUser gets a guest user', () => {
+	test('getCurrentUser gets a guest user', () => {
 		expect.assertions(3)
 
 		let [res, req, mockJson, mockStatus, mockNext] = mockArgs
@@ -140,7 +140,7 @@ describe('current user middleware', () => {
 		})
 	})
 
-	it('getCurrentUser rejects when required', () => {
+	test('getCurrentUser rejects when required', () => {
 		expect.assertions(1)
 
 		let [res, req, mockJson, mockStatus, mockNext] = mockArgs
@@ -156,7 +156,7 @@ describe('current user middleware', () => {
 			})
 	})
 
-	it('gets currentUser if already set on req', () => {
+	test('gets currentUser if already set on req', () => {
 		expect.assertions(2)
 
 		let [res, req, mockJson, mockStatus, mockNext] = mockArgs
@@ -176,7 +176,7 @@ describe('current user middleware', () => {
 			})
 	})
 
-	it('getCurrentUser returns a guest user when fetchById fails', () => {
+	test('getCurrentUser returns a guest user when fetchById fails', () => {
 		expect.assertions(2)
 
 		let [res, req, mockJson, mockStatus, mockNext] = mockArgs
@@ -190,7 +190,7 @@ describe('current user middleware', () => {
 		})
 	})
 
-	it('getCurrentUser returns rejects when fetchById fails and login is required', () => {
+	test('getCurrentUser returns rejects when fetchById fails and login is required', () => {
 		expect.assertions(3)
 
 		let [res, req, mockJson, mockStatus, mockNext] = mockArgs
@@ -211,7 +211,7 @@ describe('current user middleware', () => {
 			})
 	})
 
-	it('getCurrentUser gets the current user', () => {
+	test('getCurrentUser gets the current user', () => {
 		expect.assertions(3)
 
 		let [res, req, mockJson, mockStatus, mockNext] = mockArgs
@@ -227,7 +227,7 @@ describe('current user middleware', () => {
 		})
 	})
 
-	it('requireCurrentUser rejects when expected', () => {
+	test('requireCurrentUser rejects when expected', () => {
 		expect.assertions(1)
 
 		let [res, req, mockJson, mockStatus, mockNext] = mockArgs

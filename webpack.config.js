@@ -2,13 +2,13 @@ global.oboRequire = name => {
 	return require(`${__dirname}/${name}`)
 }
 const path = require('path')
-//const ExtractTextPlugin = require('extract-text-webpack-plugin')
 const MiniCssExtractPlugin = require('mini-css-extract-plugin')
 const getInstalledModules = require('./obo_get_installed_modules')
+console.log('wat')
 
-let optimize = process.env.NODE_ENV === 'production'
-let filename = optimize ? '[name].min' : '[name]'
-let docEngineBasePath = path.join(
+const optimize = process.env.NODE_ENV === 'production'
+const filename = optimize ? '[name].min' : '[name]'
+const docEngineBasePath = path.join(
 	__dirname,
 	'node_modules',
 	'obojobo-draft-document-engine',
@@ -44,10 +44,7 @@ module.exports = {
 		rules: [
 			{
 				test: /\.css$/,
-				use: [
-					MiniCssExtractPlugin.loader,
-					'css-loader'
-				]
+				use: [MiniCssExtractPlugin.loader, 'css-loader']
 			}
 		]
 	},

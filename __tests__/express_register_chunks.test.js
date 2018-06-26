@@ -1,11 +1,30 @@
-jest.mock('fs')
+jest.mock('fs', () =>
+	// Node 10 and Jest 23 and fs (used by 'mini-css-extract-plugin')
+	// die when running tests for mysterious reasons.
+	// Should remove this when we can get these packages to align!
+	// More info: https://github.com/facebook/jest/pull/6532/files
+	// And: https://github.com/facebook/jest/pull/6532
+	Object.assign({}, jest.genMockFromModule('fs'), {
+		ReadStream: require.requireActual('fs').ReadStream,
+		WriteStream: require.requireActual('fs').WriteStream,
+		dirname: require.requireActual('fs').dirname,
+		realpathSync: require.requireActual('fs').realpathSync
+	})
+)
 jest.mock('express')
 jest.mock('child_process')
 jest.mock('../obo_get_installed_modules')
+jest.mock('mini-css-extract-plugin')
 jest.mock('../draft_node_store')
 
 // just mock these non-existent things
 mockVirtual('/file/path/express.js', () => ({ expressApp: true }))
+
+// Prevent webpack from printing to console
+const originalLog = console.log
+console.log = jest.fn()
+const webpack = require('../webpack.config.js')
+console.log = originalLog
 
 describe('register chunks middleware', () => {
 	beforeAll(() => {})
@@ -13,10 +32,10 @@ describe('register chunks middleware', () => {
 	beforeEach(() => {})
 	afterEach(() => {})
 
-	it('calls with no errors', () => {
-		let middleware = oboRequire('express_register_chunks')
-		let mockApp = {
-			get: jest.fn(),
+	test('calls with no errors', () => {
+		const middleware = oboRequire('express_register_chunks')
+		const mockApp = {
+			get: jest.fn().mockReturnValueOnce('production'),
 			use: jest.fn(),
 			locals: {}
 		}
@@ -26,7 +45,7 @@ describe('register chunks middleware', () => {
 		expect(mockApp.use).toHaveBeenCalled()
 	})
 
-	it('registers all nodes as expected', () => {
+	test('registers all nodes as expected', () => {
 		oboRequire('obo_get_installed_modules').mockImplementationOnce(env => {
 			return {
 				express: [],
@@ -35,9 +54,9 @@ describe('register chunks middleware', () => {
 			}
 		})
 
-		let dns = oboRequire('draft_node_store')
-		let middleware = oboRequire('express_register_chunks')
-		let mockApp = {
+		const dns = oboRequire('draft_node_store')
+		const middleware = oboRequire('express_register_chunks')
+		const mockApp = {
 			get: jest.fn(),
 			use: jest.fn(),
 			locals: {}
@@ -49,16 +68,16 @@ describe('register chunks middleware', () => {
 		expect(dns.add).toHaveBeenCalledWith('pkg.type.node2', '/file/other')
 	})
 
-	it('calls express.static as expected', () => {
-		let middleware = oboRequire('express_register_chunks')
-		let mockApp = {
+	test('calls express.static as expected', () => {
+		const middleware = oboRequire('express_register_chunks')
+		const mockApp = {
 			get: jest.fn(),
 			use: jest.fn(),
 			locals: {}
 		}
 
 		// mock static so it just returns it's argument for the haveBeenCalledWith tests below
-		let express = require('express')
+		const express = require('express')
 		express.static.mockImplementation(path => {
 			return path
 		})
@@ -71,7 +90,7 @@ describe('register chunks middleware', () => {
 		expect(express.static).toHaveBeenCalledWith('./public/compiled/viewer.css')
 	})
 
-	it('adds any express applications', () => {
+	test('adds any express applications', () => {
 		oboRequire('obo_get_installed_modules').mockImplementationOnce(env => {
 			return {
 				express: ['/file/path/express.js'],
@@ -79,15 +98,15 @@ describe('register chunks middleware', () => {
 				draftNodes: new Map()
 			}
 		})
-		let middleware = oboRequire('express_register_chunks')
-		let mockApp = {
+		const middleware = oboRequire('express_register_chunks')
+		const mockApp = {
 			get: jest.fn(),
 			use: jest.fn(),
 			locals: {}
 		}
 
 		// mock static so it just returns it's argument for the haveBeenCalledWith tests below
-		let express = require('express')
+		const express = require('express')
 		express.static.mockImplementation(path => {
 			return path
 		})

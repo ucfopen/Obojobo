@@ -6,7 +6,7 @@ describe('guest user model', () => {
 	beforeEach(() => {})
 	afterEach(() => {})
 
-	it('extends user', () => {
+	test('extends user', () => {
 		let GuestUser = oboRequire('models/guest_user')
 		let User = oboRequire('models/user')
 		let g = new GuestUser()
@@ -14,13 +14,13 @@ describe('guest user model', () => {
 		expect(g).toBeInstanceOf(User)
 	})
 
-	it('responds to isGuest', () => {
+	test('responds to isGuest', () => {
 		let GuestUser = oboRequire('models/guest_user')
 		let g = new GuestUser()
 		expect(g.isGuest()).toBe(true)
 	})
 
-	it('throws error using saveOrCreate', () => {
+	test('throws error using saveOrCreate', () => {
 		let GuestUser = oboRequire('models/guest_user')
 		let g = new GuestUser()
 
@@ -29,7 +29,7 @@ describe('guest user model', () => {
 		}).toThrowError('Cannot save or create Guest User')
 	})
 
-	it('throws error using fetchById', () => {
+	test('throws error using fetchById', () => {
 		let GuestUser = oboRequire('models/guest_user')
 
 		expect(() => {

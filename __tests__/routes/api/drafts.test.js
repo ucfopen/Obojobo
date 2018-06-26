@@ -2,14 +2,28 @@ jest.mock('../../../models/draft')
 jest.mock('../../../models/user')
 jest.mock('../../../db')
 jest.mock('../../../logger')
+jest.mock('obojobo-draft-xml-parser/xml-to-draft-object')
+
+import DraftModel from '../../../models/draft'
+import User from '../../../models/user'
+import logger from '../../../logger'
+import mockXMLParser from 'obojobo-draft-xml-parser/xml-to-draft-object'
+let xml = require('obojobo-draft-xml-parser/xml-to-draft-object')
+
 const { mockExpressMethods, mockRouterMethods } = require('../../../__mocks__/__mock_express')
 
 let mockInsertNewDraft = mockVirtual('./routes/api/drafts/insert_new_draft')
+const db = oboRequire('db')
+const drafts = oboRequire('routes/api/drafts')
 
 describe('api draft route', () => {
 	beforeAll(() => {})
 	afterAll(() => {})
-	beforeEach(() => {})
+	beforeEach(() => {
+		logger.error.mockReset()
+		mockInsertNewDraft.mockReset()
+		mockXMLParser.mockReset()
+	})
 	afterEach(() => {})
 
 	test('registers the expected routes ', () => {
@@ -21,16 +35,12 @@ describe('api draft route', () => {
 		expect(mockRouterMethods.get).toBeCalledWith('/:draftId', expect.any(Function))
 		expect(mockRouterMethods.post).toBeCalledWith('/new', expect.any(Function))
 		expect(mockRouterMethods.post).toBeCalledWith('/new', expect.any(Function))
-		// expect(mockRouterMethods.all).toBeCalledWith('/:draftId*', expect.any(Function))
 	})
 
-	test('get draft handles missing drafts', () => {
+	test('GET /:draftId handles missing drafts', () => {
 		expect.assertions(1)
 
-		let DraftModel = oboRequire('models/draft')
 		DraftModel.fetchById.mockRejectedValueOnce('some error')
-
-		oboRequire('routes/api/drafts')
 		let routeFunction = mockRouterMethods.get.mock.calls[0][1]
 
 		let mockReq = {
@@ -53,23 +63,49 @@ describe('api draft route', () => {
 			})
 	})
 
-	test('create draft calls success', () => {
+	test('GET /:draftId calls internal:sendToClient', () => {
 		expect.assertions(1)
 
-		let User = oboRequire('models/user')
-		let DraftModel = oboRequire('models/draft')
+		DraftModel.fetchById.mockResolvedValueOnce({
+			root: {
+				yell: jest.fn()
+			}
+		})
+
+		let routeFunction = mockRouterMethods.get.mock.calls[0][1]
+
+		let mockReq = {
+			params: { draftId: 555 },
+			app: { get: jest.fn() }
+		}
+
+		let mockRes = {
+			missing: jest.fn()
+		}
+
+		let mockNext = jest.fn()
+
+		return routeFunction(mockReq, mockRes, mockNext)
+			.then(err => {
+				expect(mockRes.missing).toBeCalledWith('Draft not found')
+			})
+			.catch(err => {
+				expect(err).toBe('never called')
+			})
+	})
+
+	test('GET /new calls success', () => {
+		expect.assertions(1)
+
 		let mockYell = jest.fn().mockImplementationOnce(() => {
 			return {
 				document: `{"json":"value"}`,
-				yell: jest.fn().mockImplementationOnce(() => {
-					return 'fake draft'
-				})
+				yell: jest.fn().mockReturnValueOnce('fake draft')
 			}
 		})
 
 		DraftModel.__setMockYell(mockYell)
 
-		oboRequire('routes/api/drafts')
 		let routeFunction = mockRouterMethods.post.mock.calls[0][1]
 
 		let mockReq = {
@@ -88,9 +124,8 @@ describe('api draft route', () => {
 		}
 
 		let mockNext = jest.fn()
-		mockInsertNewDraft.mockImplementationOnce(() => {
-			return 'test_result'
-		})
+
+		DraftModel.createWithContent.mockReturnValueOnce('test_result')
 
 		return routeFunction(mockReq, mockRes, mockNext)
 			.then(() => {
@@ -101,11 +136,9 @@ describe('api draft route', () => {
 			})
 	})
 
-	test('creates draft requires user', () => {
+	test('GET /new requires user', () => {
 		expect.assertions(1)
 
-		let User = oboRequire('models/user')
-		oboRequire('routes/api/drafts')
 		let routeFunction = mockRouterMethods.post.mock.calls[0][1]
 
 		let mockReq = {
@@ -124,9 +157,7 @@ describe('api draft route', () => {
 		}
 
 		let mockNext = jest.fn()
-		mockInsertNewDraft.mockImplementationOnce(() => {
-			return 'test_result'
-		})
+		DraftModel.createWithContent.mockReturnValueOnce('test_result')
 
 		return routeFunction(mockReq, mockRes, mockNext)
 			.then(() => {
@@ -137,23 +168,18 @@ describe('api draft route', () => {
 			})
 	})
 
-	test('update draft calls next', () => {
+	test('POST /:draftId calls res.success', () => {
 		expect.assertions(1)
 
-		let User = oboRequire('models/user')
-		let DraftModel = oboRequire('models/draft')
 		let mockYell = jest.fn().mockImplementationOnce(() => {
 			return {
 				document: `{"json":"value"}`,
-				yell: jest.fn().mockImplementationOnce(() => {
-					return 'fake draft'
-				})
+				yell: jest.fn().mockReturnValueOnce('fake draft')
 			}
 		})
 
 		DraftModel.__setMockYell(mockYell)
 
-		oboRequire('routes/api/drafts')
 		let routeFunction = mockRouterMethods.post.mock.calls[1][1]
 
 		let mockReq = {
@@ -184,11 +210,176 @@ describe('api draft route', () => {
 			})
 	})
 
-	test('save draft requires perms', () => {
+	test('POST /:draftId parses bad xml', () => {
+		expect.assertions(2)
+
+		let mockYell = jest.fn().mockImplementationOnce(() => {
+			return {
+				document: `{"json":"value"}`,
+				yell: jest.fn().mockImplementationOnce(() => {
+					return 'fake draft'
+				})
+			}
+		})
+
+		DraftModel.__setMockYell(mockYell)
+
+		let routeFunction = mockRouterMethods.post.mock.calls[1][1]
+		mockXMLParser.mockImplementationOnce(() => {
+			throw 'mockError'
+		})
+
+		let mockReq = {
+			params: { draftId: 555 },
+			app: { get: jest.fn() },
+			body: 'mockXML',
+			requireCurrentUser: () => {
+				let u = new User()
+				u.id = 111
+				u.canEditDrafts = true
+				return Promise.resolve(u)
+			}
+		}
+
+		let mockRes = {
+			success: jest.fn(),
+			unexpected: jest.fn(),
+			badInput: jest.fn()
+		}
+
+		let mockNext = jest.fn()
+
+		return routeFunction(mockReq, mockRes, mockNext)
+			.then(() => {
+				expect(logger.error).toBeCalledWith('Posting draft failed - format unexpected:', 'mockXML')
+				expect(mockRes.badInput).toBeCalledWith('Posting draft failed - format unexpected')
+			})
+			.catch(err => {
+				expect(err).toBe('never called')
+			})
+	})
+
+	test('POST /:draftId parses good xml', () => {
 		expect.assertions(1)
 
-		let User = oboRequire('models/user')
-		oboRequire('routes/api/drafts')
+		let mockYell = jest.fn().mockImplementationOnce(() => {
+			return {
+				document: `{"json":"value"}`,
+				yell: jest.fn().mockImplementationOnce(() => {
+					return 'fake draft'
+				})
+			}
+		})
+
+		DraftModel.__setMockYell(mockYell)
+
+		let routeFunction = mockRouterMethods.post.mock.calls[1][1]
+		mockXMLParser.mockReturnValueOnce({})
+
+		let mockReq = {
+			params: { draftId: 555 },
+			app: { get: jest.fn() },
+			body: `<ObojoboDraftDocument>
+				<Module title="My Module">
+					<Content>
+						<Page>
+					        <Text>
+								<textGroup>
+									<t>Hello World!</t>
+								</textGroup>
+							</Text>
+						</Page>
+					</Content>
+				</Module>
+			</ObojoboDraftDocument>`,
+			requireCurrentUser: () => {
+				let u = new User()
+				u.id = 111
+				u.canEditDrafts = true
+				return Promise.resolve(u)
+			}
+		}
+
+		let mockRes = {
+			success: jest.fn(),
+			unexpected: jest.fn(),
+			badInput: jest.fn()
+		}
+
+		let mockNext = jest.fn()
+
+		return routeFunction(mockReq, mockRes, mockNext)
+			.then(() => {
+				expect(mockRes.success).toBeCalledWith({ id: 'mockUpdatedContentId' })
+			})
+			.catch(err => {
+				expect(err).toBe('never called')
+			})
+	})
+
+	test('POST /:draftId parses good xml but does not return object', () => {
+		expect.assertions(2)
+
+		let mockYell = jest.fn().mockImplementationOnce(() => {
+			return {
+				document: `{"json":"value"}`,
+				yell: jest.fn().mockImplementationOnce(() => {
+					return 'fake draft'
+				})
+			}
+		})
+
+		DraftModel.__setMockYell(mockYell)
+
+		mockXMLParser.mockReturnValueOnce('mockJSON')
+		let routeFunction = mockRouterMethods.post.mock.calls[1][1]
+		let testXML = `<ObojoboDraftDocument>
+			<Module title="My Module">
+				<Content>
+					<Page>
+				        <Text>
+							<textGroup>
+								<t>Hello World!</t>
+							</textGroup>
+						</Text>
+					</Page>
+				</Content>
+			</Module>
+		</ObojoboDraftDocument>`
+
+		let mockReq = {
+			params: { draftId: 555 },
+			app: { get: jest.fn() },
+			body: testXML,
+			requireCurrentUser: () => {
+				let u = new User()
+				u.id = 111
+				u.canEditDrafts = true
+				return Promise.resolve(u)
+			}
+		}
+
+		let mockRes = {
+			success: jest.fn(),
+			unexpected: jest.fn(),
+			badInput: jest.fn()
+		}
+
+		let mockNext = jest.fn()
+
+		return routeFunction(mockReq, mockRes, mockNext)
+			.then(() => {
+				expect(logger.error).toBeCalledWith('Posting draft failed - format unexpected:', testXML)
+				expect(mockRes.badInput).toBeCalledWith('Posting draft failed - format unexpected')
+			})
+			.catch(err => {
+				expect(err).toBe('never called')
+			})
+	})
+
+	test('POST /:draftId requires perms', () => {
+		expect.assertions(1)
+
 		let routeFunction = mockRouterMethods.post.mock.calls[1][1]
 
 		let mockReq = {
@@ -218,10 +409,9 @@ describe('api draft route', () => {
 			})
 	})
 
-	test('save draft requires login', () => {
+	test('POST /:draftId requires login', () => {
 		expect.assertions(1)
 
-		oboRequire('routes/api/drafts')
 		let routeFunction = mockRouterMethods.post.mock.calls[1][1]
 
 		let mockReq = {
@@ -244,10 +434,58 @@ describe('api draft route', () => {
 			})
 	})
 
-	test('delete draft rejects guest', () => {
+	test('POST /:draftId rejects duplicate ids', () => {
+		expect.assertions(2)
+
+		let mockYell = jest.fn().mockImplementationOnce(() => {
+			return {
+				document: `{"json":"value"}`,
+				yell: jest.fn().mockImplementationOnce(() => {
+					return 'fake draft'
+				})
+			}
+		})
+
+		DraftModel.__setMockYell(mockYell)
+
+		let routeFunction = mockRouterMethods.post.mock.calls[1][1]
+		DraftModel.findDuplicateIds.mockReturnValueOnce('mockDuplicateId')
+
+		let mockReq = {
+			params: { draftId: 555 },
+			app: { get: jest.fn() },
+			body: { a: 1 },
+			requireCurrentUser: () => {
+				let u = new User()
+				u.id = 111
+				u.canEditDrafts = true
+				return Promise.resolve(u)
+			}
+		}
+
+		let mockRes = {
+			success: jest.fn(),
+			unexpected: jest.fn(),
+			badInput: jest.fn()
+		}
+
+		let mockNext = jest.fn()
+
+		return routeFunction(mockReq, mockRes, mockNext)
+			.then(() => {
+				expect(logger.error).toBeCalledWith('Posting draft failed - duplicate id "mockDuplicateId"')
+				expect(mockRes.badInput).toBeCalledWith(
+					'Posting draft failed - duplicate id "mockDuplicateId"'
+				)
+			})
+			.catch(err => {
+				expect(err).toBe('never called')
+			})
+	})
+
+	test('DELETE /:draftId rejects guest', () => {
 		expect.assertions(1)
 
-		oboRequire('routes/api/drafts')
 		let routeFunction = mockRouterMethods.delete.mock.calls[0][1]
 
 		let mockReq = {
@@ -272,7 +510,6 @@ describe('api draft route', () => {
 	test('delete draft requires canDeleteDrafts', () => {
 		expect.assertions(1)
 
-		oboRequire('routes/api/drafts')
 		let routeFunction = mockRouterMethods.delete.mock.calls[0][1]
 
 		let mockReq = {
@@ -301,10 +538,8 @@ describe('api draft route', () => {
 	test('delete draft requires deletes', () => {
 		expect.assertions(1)
 
-		let db = oboRequire('db')
 		db.none.mockResolvedValueOnce(5)
 
-		oboRequire('routes/api/drafts')
 		let routeFunction = mockRouterMethods.delete.mock.calls[0][1]
 
 		let mockReq = {
@@ -330,7 +565,6 @@ describe('api draft route', () => {
 	test('list drafts rejects guest', () => {
 		expect.assertions(1)
 
-		oboRequire('routes/api/drafts')
 		let routeFunction = mockRouterMethods.get.mock.calls[1][1]
 
 		let mockReq = {
@@ -355,7 +589,6 @@ describe('api draft route', () => {
 	test('list drafts requires canViewDrafts', () => {
 		expect.assertions(1)
 
-		oboRequire('routes/api/drafts')
 		let routeFunction = mockRouterMethods.get.mock.calls[1][1]
 
 		let mockReq = {
@@ -380,10 +613,7 @@ describe('api draft route', () => {
 	test('list drafts renders results', () => {
 		expect.assertions(1)
 
-		let db = oboRequire('db')
 		db.any.mockResolvedValueOnce(5)
-
-		oboRequire('routes/api/drafts')
 		let routeFunction = mockRouterMethods.get.mock.calls[1][1]
 
 		let mockReq = {
