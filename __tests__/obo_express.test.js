@@ -47,11 +47,11 @@ describe('obo express', () => {
 	beforeEach(() => {})
 	afterEach(() => {})
 
-	it('listens to mount event', () => {
+	test('listens to mount event', () => {
 		expect(mockOn).toBeCalledWith('mount', expect.any(Function))
 	})
 
-	it('implements expected middleware on parent app', () => {
+	test('implements expected middleware on parent app', () => {
 		let oe = oboRequire('obo_express')
 		let mockApp = require('express')()
 		let registerChunks = oboRequire('express_register_chunks')
@@ -67,7 +67,7 @@ describe('obo express', () => {
 		)
 	})
 
-	it('returns an express application', () => {
+	test('returns an express application', () => {
 		mockExpress()
 		let oe = oboRequire('obo_express')
 
