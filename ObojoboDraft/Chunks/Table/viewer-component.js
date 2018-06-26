@@ -75,9 +75,8 @@ export default class Table extends React.Component {
 	}
 }
 
-function __range__(left, right, inclusive) {
+function __range__(left, right) {
 	let range = []
-	let ascending = left < right
 	for (let i = left; i < right; i++) {
 		range.push(i)
 	}

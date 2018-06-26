@@ -684,7 +684,7 @@ describe('QuestionStore', () => {
 		expect(QuestionStore.getState().responses.mockContext).not.toHaveProperty('questionId')
 	})
 
-	test('question:retry only clears scores with no explanation', () => {
+	test('question:retry clears scores with no explanation', () => {
 		__createModels()
 
 		QuestionUtil.isShowingExplanation.mockReturnValue(false)
@@ -705,7 +705,7 @@ describe('QuestionStore', () => {
 		// make sure clear score was called
 		expect(QuestionUtil.clearScore).toHaveBeenCalledWith('questionId', 'mockContext')
 
-		// make sure hideExplanation was called
+		// make sure hideExplanation was not called
 		expect(QuestionUtil.hideExplanation).not.toHaveBeenCalled()
 
 		// make sure state.responses.mockContext.questionId is wiped out

@@ -13,7 +13,6 @@ describe('Question adapter', () => {
 		let model = { modelState: {} }
 		let attrs = {
 			content: {
-				limit: 2,
 				mode: 'review',
 				practice: false,
 				solution: {
@@ -51,7 +50,6 @@ describe('Question adapter', () => {
 		let b = { modelState: {} }
 		let attrs = {
 			content: {
-				limit: 2,
 				practice: false
 			}
 		}
