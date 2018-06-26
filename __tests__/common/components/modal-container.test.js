@@ -3,9 +3,11 @@ import renderer from 'react-test-renderer'
 
 import ModalContainer from '../../../src/scripts/common/components/modal-container'
 
-test('ModalContainer', () => {
-	const component = renderer.create(<ModalContainer />)
-	let tree = component.toJSON()
+describe('ModalContainer', () => {
+	test('ModalContainer component', () => {
+		const component = renderer.create(<ModalContainer />)
+		let tree = component.toJSON()
 
-	expect(tree).toMatchSnapshot()
+		expect(tree).toMatchSnapshot()
+	})
 })

@@ -1,20 +1,20 @@
 import YoutubeAdapter from '../../../../ObojoboDraft/Chunks/YouTube/adapter'
 
 describe('Youtube adapter', () => {
-	it('can be constructed WITHOUT attributes', () => {
+	test('construct builds without attributes', () => {
 		let model = { modelState: {} }
 		YoutubeAdapter.construct(model)
 		expect(model).toMatchSnapshot()
 	})
 
-	it('can be constructed WITH attributes', () => {
+	test('construct builds with attributes', () => {
 		let model = { modelState: {} }
 		let attrs = { content: { videoId: 'example_video_id' } }
 		YoutubeAdapter.construct(model, attrs)
 		expect(model).toMatchSnapshot()
 	})
 
-	it('can be cloned', () => {
+	test('clone creates a copy', () => {
 		let a = { modelState: {} }
 		let b = { modelState: {} }
 		let attrs = { content: { videoId: 'example_video_id' } }
@@ -26,7 +26,7 @@ describe('Youtube adapter', () => {
 		expect(a).toEqual(b)
 	})
 
-	it('can conver to JSON', () => {
+	test('toJSON builds a JSON representation', () => {
 		let model = { modelState: {} }
 		let json = { content: {} }
 		let attrs = { content: { videoId: 'example_video_id' } }
@@ -37,7 +37,7 @@ describe('Youtube adapter', () => {
 		expect(json).toMatchSnapshot()
 	})
 
-	it('can convert to text', () => {
+	test('toText creates a text representation', () => {
 		let model = { modelState: {} }
 		let attrs = { content: { videoId: 'example_video_id' } }
 		YoutubeAdapter.construct(model, attrs)

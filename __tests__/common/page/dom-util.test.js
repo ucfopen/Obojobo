@@ -19,6 +19,13 @@ describe('DOMUtil', () => {
 				</div>
 			</div>
 			<div id="id-j" data-obo-component>Not quite a real obo component</div>
+			<div id="id-k" data-nest="true">
+				<div>
+					<div data-obo-component>
+						<p id="id-l">A deeply nested item</p>
+					</div>
+				</div>
+			</div>
 		</div>
 	`.replace(/[\t\n]/g, '')
 	let root = document.createElement('div')
@@ -31,6 +38,13 @@ describe('DOMUtil', () => {
 		let target = DOMUtil.findParentWithAttr(g, 'data-x')
 
 		expect(target).toBe(document.getElementById('id-b'))
+	})
+
+	test('finds parent elements with a given attribute', () => {
+		let l = {}
+		let target = DOMUtil.findParentWithAttr(l, 'data-nest')
+
+		expect(target).toBe(null)
 	})
 
 	test('finds parent elements with a given value', () => {
@@ -92,6 +106,15 @@ describe('DOMUtil', () => {
 		expect([...els]).toEqual([g, d, a])
 	})
 
+	test('finds no parent component elements', () => {
+		let a = document.getElementById('id-a')
+		let d = document.getElementById('id-d')
+		let l = document.getElementById('id-l')
+		let els = DOMUtil.findParentComponentElements(l)
+
+		expect([...els]).toEqual([a])
+	})
+
 	test('finds parent component elements ids', () => {
 		let a = document.getElementById('id-a')
 		let d = document.getElementById('id-d')
@@ -131,7 +154,8 @@ describe('DOMUtil', () => {
 			' content',
 			' inside',
 			'Third text',
-			'Not quite a real obo component'
+			'Not quite a real obo component',
+			'A deeply nested item'
 		])
 	})
 })

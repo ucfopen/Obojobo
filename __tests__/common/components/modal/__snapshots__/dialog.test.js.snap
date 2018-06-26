@@ -1,0 +1,93 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`Dialog Dialog component 1`] = `
+<div
+  className="obojobo-draft--components--modal--dialog"
+  style={null}
+>
+  <div
+    className="obojobo-draft--components--modal--modal"
+  >
+    <input
+      className="first-tab"
+      onFocus={[Function]}
+      type="text"
+    />
+    <div
+      className="content"
+    >
+      <div
+        className="dialog-content"
+        style={
+          Object {
+            "textAlign": "center",
+          }
+        }
+      >
+        Content
+      </div>
+      <div
+        className="controls"
+      />
+    </div>
+    <input
+      className="last-tab"
+      onFocus={[Function]}
+      type="text"
+    />
+  </div>
+</div>
+`;
+
+exports[`Dialog Dialog component with props 1`] = `
+<div
+  className="obojobo-draft--components--modal--dialog"
+  style={
+    Object {
+      "width": 5,
+    }
+  }
+>
+  <div
+    className="obojobo-draft--components--modal--modal"
+  >
+    <input
+      className="first-tab"
+      onFocus={[Function]}
+      type="text"
+    />
+    <div
+      className="content"
+    >
+      <h1
+        className="heading"
+        style={
+          Object {
+            "textAlign": null,
+          }
+        }
+      >
+        Title
+      </h1>
+      <div
+        className="dialog-content"
+        style={
+          Object {
+            "textAlign": null,
+          }
+        }
+      >
+        Content
+      </div>
+      <div
+        className="controls"
+      />
+    </div>
+    <input
+      className="last-tab"
+      onFocus={[Function]}
+      type="text"
+    />
+  </div>
+</div>
+`;

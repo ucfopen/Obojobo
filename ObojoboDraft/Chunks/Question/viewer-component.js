@@ -18,8 +18,9 @@ import QuestionContent from './Content/viewer-component'
 export default class Question extends React.Component {
 	onClickBlocker() {
 		QuestionUtil.viewQuestion(this.props.model.get('id'))
+		let mode = this.props.mode ? this.props.mode : this.props.model.modelState.mode
 
-		if (this.props.model.modelState.mode === 'practice') {
+		if (mode === 'practice') {
 			return FocusUtil.focusComponent(this.props.model.get('id'))
 		}
 	}
@@ -45,7 +46,7 @@ export default class Question extends React.Component {
 			'flip-container' +
 			' obojobo-draft--chunks--question' +
 			(score === null ? ' ' : score === 100 ? ' is-correct' : ' is-not-correct') +
-			(this.props.mode === 'review' ? ' is-active' : ` is-${viewState}`) +
+			(mode === 'review' ? ' is-active' : ` is-${viewState}`) +
 			` is-mode-${mode}`
 
 		return (
@@ -65,11 +66,7 @@ export default class Question extends React.Component {
 						/>
 					</div>
 					<div className="blocker front" key="blocker" onClick={this.onClickBlocker.bind(this)}>
-						<Button
-							value={
-								this.props.model.modelState.mode === 'practice' ? 'Try Question' : 'View Question'
-							}
-						/>
+						<Button value={mode === 'practice' ? 'Try Question' : 'View Question'} />
 					</div>
 				</div>
 			</OboComponent>

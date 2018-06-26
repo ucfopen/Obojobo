@@ -386,7 +386,6 @@ let reloadAttemptStateIfReviewing = (
 				)
 
 				let newQuestions = []
-				logger.info('inside')
 
 				attempt.state.questions.map(question => {
 					newQuestions.push(getNodeQuestion(question.id, assessmentProperties.draftTree))
@@ -394,12 +393,12 @@ let reloadAttemptStateIfReviewing = (
 
 				attempt.state.questions = newQuestions
 
-				Assessment.updateAttemptState(attempt.attemptId, attempt.state)
+				return Assessment.updateAttemptState(attempt.attemptId, attempt.state)
 			})
 		})
 	}
 
-	logger.info(`Error: Reached exceptional state while reloading state for ${attemptId}`)
+	logger.error(`Error: Reached exceptional state while reloading state for ${attemptId}`)
 	return null
 }
 

@@ -1,9 +1,9 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
-exports[`Question adapter can be constructed WITH attributes 1`] = `
+exports[`Question adapter construct builds with attributes 1`] = `
 Object {
   "modelState": Object {
-    "practice": false,
+    "mode": "review",
     "solution": Object {
       "children": Array [
         Object {
@@ -38,7 +38,26 @@ Object {
 }
 `;
 
-exports[`Question adapter can be converted to JSON 1`] = `
+exports[`Question adapter construct builds without attributes 1`] = `
+Object {
+  "modelState": Object {
+    "mode": "practice",
+    "solution": null,
+  },
+}
+`;
+
+exports[`Question adapter toJSON builds a JSON representation 1`] = `
+Object {
+  "content": Object {
+    "mode": "practice",
+    "solution": null,
+    "type": undefined,
+  },
+}
+`;
+
+exports[`Question adapter toJSON builds a JSON representation with solution 1`] = `
 Object {
   "content": Object {
     "mode": "practice",
@@ -73,15 +92,6 @@ Object {
       "type": "ObojoboDraft.Pages.Page",
     },
     "type": undefined,
-  },
-}
-`;
-
-exports[`Question adapter can be created WITHOUT attributes 1`] = `
-Object {
-  "modelState": Object {
-    "practice": true,
-    "solution": null,
   },
 }
 `;

@@ -86,9 +86,8 @@ let getTextNodeFragmentDescriptorsAt = function(rootNode, startIndex, endIndex) 
 
 	let fragmentDescriptors = stateObj.inbetween
 
-	if (stateObj.start !== null) {
-		fragmentDescriptors.unshift(stateObj.start)
-	}
+	fragmentDescriptors.unshift(stateObj.start)
+
 	if (stateObj.end !== null) {
 		fragmentDescriptors.push(stateObj.end)
 	}
@@ -198,7 +197,6 @@ let applyStyle = function(el, styleRange) {
 }
 
 let getMockElement = function(styleableText) {
-	// console.time 'getMockElement'
 	let root = new MockElement('span')
 	root.addChild(new MockTextNode(styleableText.value))
 
@@ -210,40 +208,7 @@ let getMockElement = function(styleableText) {
 		}
 	}
 
-	// console.timeEnd 'getMockElement'
-
 	return root
 }
-
-// __debugPrintFragments = (fragments) ->
-// 	s = ''
-// 	for fragment in fragments
-// 		s += fragment.node.text + '(' + fragment.startIndex + ':' + fragment.endIndex + ') '
-
-// 	console.log 'Fragments=', fragments, s
-
-var __debugPrintNode = function(node, indent) {
-	if (indent == null) {
-		indent = ''
-	}
-	if (node.nodeType === 'element') {
-		console.log(indent + node.type)
-		return Array.from(node.children).map(child => __debugPrintNode(child, indent + '  '))
-	} else {
-		return console.log(indent + '[' + node.text + ']')
-	}
-}
-
-var __getHTML = function(node) {
-	if (node.nodeType === 'text') {
-		return node.text
-	}
-
-	return `<${node.type}>${node.children.map(child => __getHTML(child)).join('')}</${node.type}>`
-}
-
-window.__getMockElement = getMockElement
-window.__debugPrintNode = __debugPrintNode
-window.__getHTML = __getHTML
 
 export default getMockElement

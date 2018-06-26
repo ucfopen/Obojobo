@@ -1,204 +1,804 @@
 import React from 'react'
 import renderer from 'react-test-renderer'
-import { shallow } from 'enzyme'
+import { shallow, mount, unmount } from 'enzyme'
 
-import {
-	moduleData,
-	initModuleData,
-	AssessmentStore,
-	NavStore,
-	QuestionStore,
-	ModalStore,
-	FocusStore
-} from '../../../../__mocks__/viewer-state.mock'
-import OboModel from '../../../../__mocks__/_obo-model-with-chunks'
-import {
-	getAttemptStartServerResponse,
-	getAttemptEndServerResponse
-} from '../../../../__mocks__/assessment-server.mock'
+jest.mock('../../../../src/scripts/viewer/util/assessment-util')
+jest.mock('../../../../ObojoboDraft/Sections/Assessment/components/pre-test')
+jest.mock('../../../../ObojoboDraft/Sections/Assessment/components/test')
+jest.mock('../../../../ObojoboDraft/Sections/Assessment/components/post-test')
+jest.mock('../../../../src/scripts/viewer/util/nav-util')
+jest.mock('../../../../src/scripts/common/flux/dispatcher')
+jest.mock('../../../../src/scripts/common/util/modal-util')
+
 import Assessment from '../../../../ObojoboDraft/Sections/Assessment/viewer-component'
-import Dispatcher from '../../../../src/scripts/common/flux/dispatcher'
-import Common from '../../../../src/scripts/common'
-import APIUtil from '../../../../src/scripts/viewer/util/api-util'
+import OboModel from '../../../../__mocks__/_obo-model-with-chunks'
 import AssessmentUtil from '../../../../src/scripts/viewer/util/assessment-util'
+import NavUtil from '../../../../src/scripts/viewer/util/nav-util'
+import ModalUtil from '../../../../src/scripts/common/util/modal-util'
+import Dispatcher from '../../../../src/scripts/common/flux/dispatcher'
 
-APIUtil.startAttempt = () => {
-	return Promise.resolve(getAttemptStartServerResponse())
+const assessmentJSON = {
+	id: 'assessment',
+	type: 'ObojoboDraft.Sections.Assessment',
+	content: {
+		attempts: 3
+	},
+	children: [
+		{
+			id: 'page',
+			type: 'ObojoboDraft.Pages.Page',
+			children: [
+				{
+					id: 'child',
+					type: 'ObojoboDraft.Chunks.Text',
+					content: {
+						textGroup: [
+							{
+								text: {
+									value:
+										'You have {{assessment:attemptsRemaining}} attempts remaining out of {{assessment:attemptsAmount}}.'
+								}
+							}
+						]
+					}
+				}
+			]
+		},
+		{
+			id: 'QuestionBank',
+			type: 'ObojoboDraft.Chunks.QuestionBank'
+		}
+	]
 }
-APIUtil.post = jest.fn()
 
 describe('Assessment', () => {
-	_.shuffle = a => a
-
-	let model = OboModel.create({
-		id: 'assessment',
-		type: 'ObojoboDraft.Sections.Assessment',
-		content: {
-			attempts: 3
-		},
-		children: [
-			{
-				id: 'page',
-				type: 'ObojoboDraft.Pages.Page',
-				children: [
-					{
-						id: 'child',
-						type: 'ObojoboDraft.Chunks.Text',
-						content: {
-							textGroup: [
-								{
-									text: {
-										value:
-											'You have {{assessment:attemptsRemaining}} attempts remaining out of {{assessment:attemptsAmount}}.'
-									}
-								}
-							]
-						}
-					}
-				]
-			},
-			{
-				id: 'QuestionBank',
-				type: 'ObojoboDraft.Chunks.QuestionBank'
-			}
-		]
+	beforeAll(() => {
+		_.shuffle = a => a
 	})
 
 	beforeEach(() => {
-		initModuleData()
+		jest.resetAllMocks()
 	})
 
 	test('Assessment component', () => {
+		let model = OboModel.create(assessmentJSON)
+		let moduleData = {
+			assessmentState: 'mockAssessmentState',
+			focusState: {}
+		}
+
+		AssessmentUtil.getAssessmentScoreForModel.mockReturnValueOnce(null)
+		AssessmentUtil.getLTIStateForModel.mockReturnValueOnce(null)
+		AssessmentUtil.getAssessmentForModel.mockReturnValueOnce(null)
+
 		const component = renderer.create(<Assessment model={model} moduleData={moduleData} />)
 		let tree = component.toJSON()
 
+		expect(AssessmentUtil.getAssessmentScoreForModel).toHaveBeenCalledWith(
+			'mockAssessmentState',
+			model
+		)
+		expect(AssessmentUtil.getLTIStateForModel).toHaveBeenCalledWith('mockAssessmentState', model)
+		expect(AssessmentUtil.getAssessmentForModel).toHaveBeenCalledWith('mockAssessmentState', model)
 		expect(tree).toMatchSnapshot()
 	})
 
-	test('Assessment variable replacement', () => {
-		// No replacement:
-		const component = renderer.create(<Assessment model={model} moduleData={moduleData} />)
-		let tree = component.toJSON()
-		expect(tree).toMatchSnapshot()
+	test('Assessment component in pre-test stage', () => {
+		let model = OboModel.create(assessmentJSON)
+		let moduleData = {
+			assessmentState: 'mockAssessmentState',
+			focusState: {}
+		}
 
-		// Replacement with 3 attempts:
-		Dispatcher.on('getTextForVariable', (event, variable, textModel) => {
-			event.text = Common.Store.getTextForVariable(variable, textModel, moduleData)
+		AssessmentUtil.getAssessmentScoreForModel.mockReturnValueOnce(null)
+		AssessmentUtil.getLTIStateForModel.mockReturnValueOnce(null)
+		AssessmentUtil.getAssessmentForModel.mockReturnValueOnce({
+			current: null,
+			attempts: []
 		})
-		const component2 = renderer.create(<Assessment model={model} moduleData={moduleData} />)
-		let tree2 = component2.toJSON()
-		expect(tree2).toMatchSnapshot()
 
-		expect(tree).not.toEqual(tree2)
-
-		let el2 = document.createElement('div')
-		el2.innerHTML = shallow(<Assessment model={model} moduleData={moduleData} />).html()
-		expect(el2.textContent).toBe('You have 3 attempts remaining out of 3.')
-
-		// Replacement with no attempt limit:
-		OboModel.models.assessment.modelState.attempts = Infinity
-		const component3 = renderer.create(<Assessment model={model} moduleData={moduleData} />)
-		let tree3 = component3.toJSON()
-		expect(tree3).toMatchSnapshot()
-
-		expect(tree).not.toEqual(tree3)
-		expect(tree).not.toEqual(tree2)
-
-		let el3 = document.createElement('div')
-		el3.innerHTML = shallow(<Assessment model={model} moduleData={moduleData} />).html()
-		expect(el3.textContent).toBe('You have unlimited attempts remaining out of unlimited.')
-	})
-
-	test.skip('Assessment page changes when attempt started and submitted', () => {
-		// New assessment:
 		const component = renderer.create(<Assessment model={model} moduleData={moduleData} />)
 		let tree = component.toJSON()
+
+		expect(AssessmentUtil.getAssessmentScoreForModel).toHaveBeenCalledWith(
+			'mockAssessmentState',
+			model
+		)
+		expect(AssessmentUtil.getLTIStateForModel).toHaveBeenCalledWith('mockAssessmentState', model)
+		expect(AssessmentUtil.getAssessmentForModel).toHaveBeenCalledWith('mockAssessmentState', model)
 		expect(tree).toMatchSnapshot()
-		let el = document.createElement('div')
-		el.innerHTML = shallow(<Assessment model={model} moduleData={moduleData} />).html()
-		expect(el.textContent.indexOf('%')).toBe(-1)
-
-		// Start attempt:
-		AssessmentStore.startAttempt(getAttemptStartServerResponse().value)
-
-		const component2 = renderer.create(<Assessment model={model} moduleData={moduleData} />)
-		let tree2 = component2.toJSON()
-		expect(tree2).toMatchSnapshot()
-		expect(tree).not.toEqual(tree2)
-		let el2 = document.createElement('div')
-		el2.innerHTML = shallow(<Assessment model={model} moduleData={moduleData} />).html()
-
-		expect(el.innerHTML).not.toEqual(el2.innerHTML)
-		expect(el2.textContent.indexOf('%')).toBe(-1)
-
-		// End attempt (0%):
-		AssessmentStore.endAttempt(getAttemptEndServerResponse(0, 0).value)
-
-		const component3 = renderer.create(<Assessment model={model} moduleData={moduleData} />)
-		let tree3 = component3.toJSON()
-		expect(tree3).toMatchSnapshot()
-		expect(tree).not.toEqual(tree3)
-		expect(tree2).not.toEqual(tree3)
-		let el3 = document.createElement('div')
-		el3.innerHTML = shallow(<Assessment model={model} moduleData={moduleData} />).html()
-
-		expect(el.innerHTML).not.toEqual(el3.innerHTML)
-		expect(el2.innerHTML).not.toEqual(el3.innerHTML)
-
-		expect(el3.textContent.indexOf(' 0%')).not.toBe(-1)
-		expect(el3.textContent.indexOf(' 100%')).toBe(-1)
-		expect(el3.textContent.indexOf('This is your recorded score')).not.toBe(-1)
-
-		// Another attempt (100%):
-		AssessmentStore.startAttempt(getAttemptStartServerResponse().value)
-		AssessmentStore.endAttempt(getAttemptEndServerResponse(100, 100).value)
-
-		const component4 = renderer.create(<Assessment model={model} moduleData={moduleData} />)
-		let tree4 = component4.toJSON()
-		expect(tree4).toMatchSnapshot()
-		expect(tree).not.toEqual(tree4)
-		expect(tree2).not.toEqual(tree4)
-		expect(tree3).not.toEqual(tree4)
-		let el4 = document.createElement('div')
-		el4.innerHTML = shallow(<Assessment model={model} moduleData={moduleData} />).html()
-
-		expect(el.innerHTML).not.toEqual(el4.innerHTML)
-		expect(el2.innerHTML).not.toEqual(el4.innerHTML)
-		expect(el3.innerHTML).not.toEqual(el4.innerHTML)
-
-		expect(el4.textContent.indexOf(' 0%')).toBe(-1)
-		expect(el4.textContent.indexOf(' 100%')).not.toBe(-1)
-		expect(el4.textContent.indexOf('This is your recorded score')).not.toBe(-1)
-
-		// Last attempt (0%):
-		AssessmentStore.startAttempt(getAttemptStartServerResponse().value)
-		AssessmentStore.endAttempt(getAttemptEndServerResponse(0, 100).value)
-
-		const component5 = renderer.create(<Assessment model={model} moduleData={moduleData} />)
-		let tree5 = component5.toJSON()
-		expect(tree5).toMatchSnapshot()
-		expect(tree).not.toEqual(tree5)
-		expect(tree2).not.toEqual(tree5)
-		expect(tree3).not.toEqual(tree5)
-		expect(tree4).not.toEqual(tree5)
-		let el5 = document.createElement('div')
-		el5.innerHTML = shallow(<Assessment model={model} moduleData={moduleData} />).html()
-
-		expect(el.innerHTML).not.toEqual(el5.innerHTML)
-		expect(el2.innerHTML).not.toEqual(el5.innerHTML)
-		expect(el3.innerHTML).not.toEqual(el5.innerHTML)
-		expect(el4.innerHTML).not.toEqual(el5.innerHTML)
-
-		expect(el5.textContent.indexOf(' 0%')).not.toBe(-1)
-		expect(el5.textContent.indexOf(' 100%')).not.toBe(-1)
-		expect(el5.textContent.indexOf('This is your highest score')).toBe(-1)
 	})
 
-	test.skip('takingTest case renders correct', () => {
-		//@TODO
+	test('Assessment component in test stage', () => {
+		let model = OboModel.create(assessmentJSON)
+		let moduleData = {
+			assessmentState: 'mockAssessmentState',
+			questionState: 'mockQuestionState',
+			navState: {
+				context: 'mockContext'
+			},
+			focusState: {}
+		}
+
+		AssessmentUtil.getAssessmentScoreForModel.mockReturnValueOnce(null)
+		AssessmentUtil.getLTIStateForModel.mockReturnValueOnce(null)
+		AssessmentUtil.getAssessmentForModel.mockReturnValueOnce({ current: true })
+		AssessmentUtil.isCurrentAttemptComplete.mockReturnValueOnce(false)
+
+		const component = renderer.create(<Assessment model={model} moduleData={moduleData} />)
+		let tree = component.toJSON()
+
+		expect(AssessmentUtil.getAssessmentScoreForModel).toHaveBeenCalledWith(
+			'mockAssessmentState',
+			model
+		)
+		expect(AssessmentUtil.getLTIStateForModel).toHaveBeenCalledWith('mockAssessmentState', model)
+		expect(AssessmentUtil.getAssessmentForModel).toHaveBeenCalledWith('mockAssessmentState', model)
+		expect(AssessmentUtil.isCurrentAttemptComplete).toHaveBeenCalledWith(
+			'mockAssessmentState',
+			'mockQuestionState',
+			model,
+			'mockContext'
+		)
+		expect(tree).toMatchSnapshot()
 	})
 
-	test.skip('scoreSubmitted page renders the matching score action page', () => {
-		//@TODO
+	test('Assessment component in post-test stage', () => {
+		let model = OboModel.create(assessmentJSON)
+		let moduleData = {
+			assessmentState: 'mockAssessmentState',
+			focusState: {}
+		}
+
+		AssessmentUtil.getAssessmentScoreForModel.mockReturnValueOnce(null)
+		AssessmentUtil.getLTIStateForModel.mockReturnValueOnce(null)
+		AssessmentUtil.getAssessmentForModel.mockReturnValueOnce({
+			current: null,
+			attempts: [{}]
+		})
+
+		const component = renderer.create(<Assessment model={model} moduleData={moduleData} />)
+		let tree = component.toJSON()
+
+		expect(AssessmentUtil.getAssessmentScoreForModel).toHaveBeenCalledWith(
+			'mockAssessmentState',
+			model
+		)
+		expect(AssessmentUtil.getLTIStateForModel).toHaveBeenCalledWith('mockAssessmentState', model)
+		expect(AssessmentUtil.getAssessmentForModel).toHaveBeenCalledWith('mockAssessmentState', model)
+		expect(tree).toMatchSnapshot()
+	})
+
+	test('Assessment component in post-test stage with score actions', () => {
+		let model = OboModel.create(assessmentJSON)
+		model.modelState.scoreActions = {
+			getActionForScore: jest.fn().mockReturnValueOnce({})
+		}
+		let moduleData = {
+			assessmentState: 'mockAssessmentState',
+			focusState: {}
+		}
+
+		AssessmentUtil.getAssessmentScoreForModel.mockReturnValueOnce(null)
+		AssessmentUtil.getLTIStateForModel.mockReturnValueOnce(null)
+		AssessmentUtil.getAssessmentForModel.mockReturnValueOnce({
+			current: null,
+			attempts: [{}]
+		})
+
+		const component = renderer.create(<Assessment model={model} moduleData={moduleData} />)
+		let tree = component.toJSON()
+
+		expect(AssessmentUtil.getAssessmentScoreForModel).toHaveBeenCalledWith(
+			'mockAssessmentState',
+			model
+		)
+		expect(AssessmentUtil.getLTIStateForModel).toHaveBeenCalledWith('mockAssessmentState', model)
+		expect(AssessmentUtil.getAssessmentForModel).toHaveBeenCalledWith('mockAssessmentState', model)
+		expect(tree).toMatchSnapshot()
+	})
+
+	test('getCurrentStep returns pre-test with no assessment', () => {
+		let model = OboModel.create(assessmentJSON)
+		let moduleData = {
+			assessmentState: 'mockAssessmentState',
+			focusState: {}
+		}
+
+		// mock for render
+		AssessmentUtil.getAssessmentForModel.mockReturnValueOnce(null)
+
+		const component = shallow(<Assessment model={model} moduleData={moduleData} />)
+
+		// clear out any render calls
+		jest.resetAllMocks()
+		// mock for getCurrentStep call
+		AssessmentUtil.getAssessmentForModel.mockReturnValueOnce(null)
+
+		let stage = component.instance().getCurrentStep()
+
+		expect(AssessmentUtil.getAssessmentForModel).toHaveBeenCalledWith('mockAssessmentState', model)
+		expect(stage).toEqual('pre-test')
+	})
+
+	test('getCurrentStep returns test when assignment is current', () => {
+		let model = OboModel.create(assessmentJSON)
+		let moduleData = {
+			assessmentState: 'mockAssessmentState',
+			focusState: {}
+		}
+
+		// mock for render
+		AssessmentUtil.getAssessmentForModel.mockReturnValueOnce(null)
+
+		const component = shallow(<Assessment model={model} moduleData={moduleData} />)
+
+		// clear out any render calls
+		jest.resetAllMocks()
+		// mock for getCurrentStep call
+		AssessmentUtil.getAssessmentForModel.mockReturnValueOnce({ current: true })
+
+		let stage = component.instance().getCurrentStep()
+
+		expect(AssessmentUtil.getAssessmentForModel).toHaveBeenCalledWith('mockAssessmentState', model)
+		expect(stage).toEqual('test')
+	})
+
+	test('getCurrentStep returns post-test when assignment has attempts', () => {
+		let model = OboModel.create(assessmentJSON)
+		let moduleData = {
+			assessmentState: 'mockAssessmentState',
+			focusState: {}
+		}
+
+		// mock for render
+		AssessmentUtil.getAssessmentForModel.mockReturnValueOnce(null)
+
+		const component = shallow(<Assessment model={model} moduleData={moduleData} />)
+
+		// clear out any render calls
+		jest.resetAllMocks()
+		// mock for getCurrentStep call
+		AssessmentUtil.getAssessmentForModel.mockReturnValueOnce({
+			current: null,
+			attempts: [{}]
+		})
+
+		let stage = component.instance().getCurrentStep()
+
+		expect(AssessmentUtil.getAssessmentForModel).toHaveBeenCalledWith('mockAssessmentState', model)
+		expect(stage).toEqual('post-test')
+	})
+
+	test('getCurrentStep returns pre-test when assignment has no attempts', () => {
+		let model = OboModel.create(assessmentJSON)
+		let moduleData = {
+			assessmentState: 'mockAssessmentState',
+			focusState: {}
+		}
+
+		// mock for render
+		AssessmentUtil.getAssessmentForModel.mockReturnValueOnce(null)
+
+		const component = shallow(<Assessment model={model} moduleData={moduleData} />)
+
+		// clear out any render calls
+		jest.resetAllMocks()
+		// mock for getCurrentStep call
+		AssessmentUtil.getAssessmentForModel.mockReturnValueOnce({
+			current: null,
+			attempts: []
+		})
+
+		let stage = component.instance().getCurrentStep()
+
+		expect(AssessmentUtil.getAssessmentForModel).toHaveBeenCalledWith('mockAssessmentState', model)
+		expect(stage).toEqual('pre-test')
+	})
+
+	test('componentWillRecieveProps changes the state', () => {
+		let model = OboModel.create(assessmentJSON)
+		let moduleData = {
+			assessmentState: 'mockAssessmentState',
+			focusState: {}
+		}
+
+		// mock for render
+		AssessmentUtil.getAssessmentForModel.mockReturnValueOnce(null)
+
+		const component = shallow(
+			<Assessment model={model} moduleData={moduleData} mode="assessment" />
+		)
+
+		expect(component.instance().state.step).toEqual(null)
+
+		// clear out any render calls
+		jest.resetAllMocks()
+		// mock for getCurrentStep call
+		AssessmentUtil.getAssessmentForModel.mockReturnValueOnce(null)
+		// mock for second render call
+		AssessmentUtil.getAssessmentForModel.mockReturnValueOnce(null)
+
+		// calls componentWillRecieveProps()
+		component.setProps({ model: model, moduleData: moduleData })
+
+		expect(AssessmentUtil.getAssessmentForModel).toHaveBeenCalledWith('mockAssessmentState', model)
+		expect(component.instance().state.step).toEqual('pre-test')
+	})
+
+	test('componentWillRecieveProps remains on the same state', () => {
+		let model = OboModel.create(assessmentJSON)
+		let moduleData = {
+			assessmentState: 'mockAssessmentState',
+			focusState: {}
+		}
+
+		// mock for render
+		AssessmentUtil.getAssessmentForModel.mockReturnValueOnce(null)
+
+		const component = shallow(
+			<Assessment model={model} moduleData={moduleData} mode="assessment" />
+		)
+
+		expect(component.instance().state.step).toEqual(null)
+
+		// clear out any render calls
+		jest.resetAllMocks()
+		// mock for getCurrentStep call
+		AssessmentUtil.getAssessmentForModel.mockReturnValueOnce(null)
+		// mock for second render call
+		AssessmentUtil.getAssessmentForModel.mockReturnValueOnce(null)
+
+		// calls componentWillRecieveProps()
+		component.setProps({ model: model, moduleData: moduleData })
+
+		expect(component.instance().state.step).toEqual('pre-test')
+
+		// clear out any render calls
+		jest.resetAllMocks()
+		// mock for getCurrentStep call
+		AssessmentUtil.getAssessmentForModel.mockReturnValueOnce(null)
+		// mock for second render call
+		AssessmentUtil.getAssessmentForModel.mockReturnValueOnce(null)
+
+		// calls componentWillRecieveProps()
+		component.setProps({ model: model, moduleData: moduleData })
+
+		expect(AssessmentUtil.getAssessmentForModel).toHaveBeenCalledWith('mockAssessmentState', model)
+		expect(component.instance().state.step).toEqual('pre-test')
+	})
+
+	test('componentWillMount calls dispatcher', () => {
+		let model = OboModel.create(assessmentJSON)
+		let moduleData = {
+			assessmentState: 'mockAssessmentState',
+			focusState: {}
+		}
+
+		AssessmentUtil.getAssessmentForModel.mockReturnValueOnce(null)
+
+		const component = mount(<Assessment model={model} moduleData={moduleData} />)
+
+		expect(Dispatcher.on).toHaveBeenCalledWith('assessment:endAttempt', expect.any(Function))
+		expect(Dispatcher.on).toHaveBeenCalledWith('assessment:attemptEnded', expect.any(Function))
+	})
+
+	test('componentWillUnmount calls dispatcher and NavUtil', () => {
+		let model = OboModel.create(assessmentJSON)
+		let moduleData = {
+			assessmentState: 'mockAssessmentState',
+			focusState: {}
+		}
+
+		AssessmentUtil.getAssessmentForModel.mockReturnValueOnce(null)
+
+		const component = mount(<Assessment model={model} moduleData={moduleData} />)
+		component.unmount()
+
+		expect(NavUtil.setContext).toHaveBeenCalledWith('practice')
+		expect(Dispatcher.off).toHaveBeenCalledWith('assessment:endAttempt', expect.any(Function))
+		expect(Dispatcher.off).toHaveBeenCalledWith('assessment:attemptEnded', expect.any(Function))
+	})
+
+	test('componentWillRecieveProps changes the state', () => {
+		let model = OboModel.create(assessmentJSON)
+		let moduleData = {
+			assessmentState: 'mockAssessmentState',
+			focusState: {}
+		}
+
+		// mock for render
+		AssessmentUtil.getAssessmentForModel.mockReturnValueOnce(null)
+
+		const component = shallow(
+			<Assessment model={model} moduleData={moduleData} mode="assessment" />
+		)
+
+		expect(component.instance().state.step).toEqual(null)
+
+		// clear out any render calls
+		jest.resetAllMocks()
+		// mock for getCurrentStep call
+		AssessmentUtil.getAssessmentForModel.mockReturnValueOnce(null)
+		// mock for second render call
+		AssessmentUtil.getAssessmentForModel.mockReturnValueOnce(null)
+
+		// calls componentDidUpdate()
+		component.setProps({ model: model, moduleData: moduleData })
+
+		expect(AssessmentUtil.getAssessmentForModel).toHaveBeenCalledWith('mockAssessmentState', model)
+		expect(component.instance().state.step).toEqual('pre-test')
+	})
+
+	test('componentWillRecieveProps remains on the same state', () => {
+		let model = OboModel.create(assessmentJSON)
+		let moduleData = {
+			assessmentState: 'mockAssessmentState',
+			focusState: {}
+		}
+
+		// mock for render
+		AssessmentUtil.getAssessmentForModel.mockReturnValueOnce(null)
+
+		const component = shallow(
+			<Assessment model={model} moduleData={moduleData} mode="assessment" />
+		)
+
+		expect(component.instance().state.step).toEqual(null)
+
+		// clear out any render calls
+		jest.resetAllMocks()
+		// mock for getCurrentStep call
+		AssessmentUtil.getAssessmentForModel.mockReturnValueOnce(null)
+		// mock for second render call
+		AssessmentUtil.getAssessmentForModel.mockReturnValueOnce(null)
+
+		// calls componentDidUpdate()
+		component.setProps({ model: model, moduleData: moduleData })
+
+		expect(component.instance().state.step).toEqual('pre-test')
+
+		// clear out any render calls
+		jest.resetAllMocks()
+		// mock for getCurrentStep call
+		AssessmentUtil.getAssessmentForModel.mockReturnValueOnce(null)
+		// mock for second render call
+		AssessmentUtil.getAssessmentForModel.mockReturnValueOnce(null)
+
+		// calls componentDidUpdate()
+		component.setProps({ model: model, moduleData: moduleData })
+
+		expect(AssessmentUtil.getAssessmentForModel).toHaveBeenCalledWith('mockAssessmentState', model)
+		expect(component.instance().state.step).toEqual('pre-test')
+	})
+
+	test('onEndAttempt alters the state', () => {
+		let model = OboModel.create(assessmentJSON)
+		let moduleData = {
+			assessmentState: 'mockAssessmentState',
+			focusState: {}
+		}
+
+		// mock for render
+		AssessmentUtil.getAssessmentForModel.mockReturnValueOnce(null)
+		AssessmentUtil.getAssessmentForModel.mockReturnValueOnce(null)
+
+		const component = shallow(<Assessment model={model} moduleData={moduleData} />)
+
+		expect(component.instance().state.isFetching).toEqual(false)
+		component.instance().onEndAttempt()
+		expect(component.instance().state.isFetching).toEqual(true)
+	})
+
+	test('onAttemptEnded alters the state', () => {
+		let model = OboModel.create(assessmentJSON)
+		let moduleData = {
+			assessmentState: 'mockAssessmentState',
+			focusState: {}
+		}
+
+		// mock for render
+		AssessmentUtil.getAssessmentForModel.mockReturnValueOnce(null)
+		AssessmentUtil.getAssessmentForModel.mockReturnValueOnce(null)
+		AssessmentUtil.getAssessmentForModel.mockReturnValueOnce(null)
+
+		const component = shallow(<Assessment model={model} moduleData={moduleData} />)
+
+		expect(component.instance().state.isFetching).toEqual(false)
+		component.instance().onEndAttempt()
+		expect(component.instance().state.isFetching).toEqual(true)
+		component.instance().onAttemptEnded()
+		expect(component.instance().state.isFetching).toEqual(false)
+	})
+
+	test('isAttemptComplete calls AssessmentUtil', () => {
+		let model = OboModel.create(assessmentJSON)
+		let moduleData = {
+			assessmentState: 'mockAssessmentState',
+			questionState: 'mockQuestionState',
+			navState: {
+				context: 'mockContext'
+			},
+			focusState: {}
+		}
+
+		// mock for render
+		AssessmentUtil.getAssessmentForModel.mockReturnValueOnce(null)
+
+		AssessmentUtil.isCurrentAttemptComplete.mockReturnValueOnce('mockComplete')
+
+		const component = shallow(<Assessment model={model} moduleData={moduleData} />)
+
+		let complete = component.instance().isAttemptComplete()
+
+		expect(AssessmentUtil.isCurrentAttemptComplete).toHaveBeenCalledWith(
+			'mockAssessmentState',
+			'mockQuestionState',
+			model,
+			'mockContext'
+		)
+		expect(complete).toEqual('mockComplete')
+	})
+
+	test('isAssessmentComplete calls AssessmentUtil', () => {
+		let model = OboModel.create(assessmentJSON)
+		let moduleData = {
+			assessmentState: 'mockAssessmentState',
+			questionState: 'mockQuestionState',
+			navState: {
+				context: 'mockContext'
+			},
+			focusState: {}
+		}
+
+		// mock for render
+		AssessmentUtil.getAssessmentForModel.mockReturnValueOnce(null)
+
+		AssessmentUtil.hasAttemptsRemaining.mockReturnValueOnce(false)
+
+		const component = shallow(<Assessment model={model} moduleData={moduleData} />)
+
+		let complete = component.instance().isAssessmentComplete()
+
+		expect(AssessmentUtil.hasAttemptsRemaining).toHaveBeenCalledWith('mockAssessmentState', model)
+		expect(complete).toEqual(true)
+	})
+
+	test('onClickSubmit cant be clicked multiple times', () => {
+		let model = OboModel.create(assessmentJSON)
+		let moduleData = {
+			assessmentState: 'mockAssessmentState',
+			questionState: 'mockQuestionState',
+			navState: {
+				context: 'mockContext'
+			},
+			focusState: {}
+		}
+
+		// mock for render
+		AssessmentUtil.getAssessmentForModel.mockReturnValueOnce(null)
+
+		AssessmentUtil.isCurrentAttemptComplete.mockReturnValueOnce(false)
+
+		const component = shallow(<Assessment model={model} moduleData={moduleData} />)
+
+		// set button to have already been clicked
+		component.instance().state.isFetching = true
+
+		let complete = component.instance().onClickSubmit()
+
+		expect(AssessmentUtil.endAttempt).not.toHaveBeenCalled()
+		expect(ModalUtil.show).not.toHaveBeenCalled()
+	})
+
+	test('onClickSubmit displays a Modal if attempt is not complete', () => {
+		let model = OboModel.create(assessmentJSON)
+		let moduleData = {
+			assessmentState: 'mockAssessmentState',
+			questionState: 'mockQuestionState',
+			navState: {
+				context: 'mockContext'
+			},
+			focusState: {}
+		}
+
+		// mock for render
+		AssessmentUtil.getAssessmentForModel.mockReturnValueOnce(null)
+		// Attempt is not complete
+		AssessmentUtil.isCurrentAttemptComplete.mockReturnValueOnce(false)
+
+		const component = shallow(<Assessment model={model} moduleData={moduleData} />)
+
+		let complete = component.instance().onClickSubmit()
+
+		expect(AssessmentUtil.endAttempt).not.toHaveBeenCalled()
+		expect(ModalUtil.show).toHaveBeenCalled()
+	})
+
+	test('onClickSubmit calls endAttempt', () => {
+		let model = OboModel.create(assessmentJSON)
+		let moduleData = {
+			assessmentState: 'mockAssessmentState',
+			questionState: 'mockQuestionState',
+			navState: {
+				context: 'mockContext'
+			},
+			focusState: {}
+		}
+
+		// mock for render
+		AssessmentUtil.getAssessmentForModel.mockReturnValueOnce(null)
+		// Attempt is complete
+		AssessmentUtil.isCurrentAttemptComplete.mockReturnValueOnce(true)
+
+		const component = shallow(<Assessment model={model} moduleData={moduleData} />)
+
+		let complete = component.instance().onClickSubmit()
+
+		expect(AssessmentUtil.endAttempt).toHaveBeenCalled()
+		expect(ModalUtil.show).not.toHaveBeenCalled()
+	})
+
+	test('endAttempt calls AssessmentUtil', () => {
+		let model = OboModel.create(assessmentJSON)
+		let moduleData = {
+			assessmentState: 'mockAssessmentState',
+			questionState: 'mockQuestionState',
+			navState: {
+				context: 'mockContext'
+			},
+			focusState: {}
+		}
+
+		// mock for render
+		AssessmentUtil.getAssessmentForModel.mockReturnValueOnce(null)
+		// Attempt is complete
+		AssessmentUtil.isCurrentAttemptComplete.mockReturnValueOnce(true)
+
+		const component = shallow(<Assessment model={model} moduleData={moduleData} />)
+
+		let complete = component.instance().endAttempt()
+
+		expect(AssessmentUtil.endAttempt).toHaveBeenCalled()
+	})
+
+	test('exitAssessment calls NavUtil and goes to location', () => {
+		let model = OboModel.create(assessmentJSON)
+		model.modelState.scoreActions = {
+			getActionForScore: jest.fn().mockReturnValueOnce({ action: {} })
+		}
+		let moduleData = {
+			assessmentState: 'mockAssessmentState',
+			questionState: 'mockQuestionState',
+			navState: {
+				context: 'mockContext'
+			},
+			focusState: {}
+		}
+
+		// mock for render
+		AssessmentUtil.getAssessmentForModel.mockReturnValueOnce(null)
+
+		const component = shallow(<Assessment model={model} moduleData={moduleData} />)
+
+		component.instance().exitAssessment()
+
+		expect(NavUtil.goto).toHaveBeenCalled()
+	})
+
+	test('exitAssessment calls NavUtil and goes to next', () => {
+		let model = OboModel.create(assessmentJSON)
+		model.modelState.scoreActions = {
+			getActionForScore: jest.fn().mockReturnValueOnce({
+				action: { value: '_next' }
+			})
+		}
+		let moduleData = {
+			assessmentState: 'mockAssessmentState',
+			questionState: 'mockQuestionState',
+			navState: {
+				context: 'mockContext'
+			},
+			focusState: {}
+		}
+
+		// mock for render
+		AssessmentUtil.getAssessmentForModel.mockReturnValueOnce(null)
+
+		const component = shallow(<Assessment model={model} moduleData={moduleData} />)
+
+		component.instance().exitAssessment()
+
+		expect(NavUtil.goNext).toHaveBeenCalled()
+	})
+
+	test('exitAssessment calls NavUtil and goes to next', () => {
+		let model = OboModel.create(assessmentJSON)
+		model.modelState.scoreActions = {
+			getActionForScore: jest.fn().mockReturnValueOnce({
+				action: { value: '_prev' }
+			})
+		}
+		let moduleData = {
+			assessmentState: 'mockAssessmentState',
+			questionState: 'mockQuestionState',
+			navState: {
+				context: 'mockContext'
+			},
+			focusState: {}
+		}
+
+		// mock for render
+		AssessmentUtil.getAssessmentForModel.mockReturnValueOnce(null)
+
+		const component = shallow(<Assessment model={model} moduleData={moduleData} />)
+
+		component.instance().exitAssessment()
+
+		expect(NavUtil.goPrev).toHaveBeenCalled()
+	})
+
+	test('getScoreAction calls AssessmentUtil and returns default', () => {
+		let model = OboModel.create(assessmentJSON)
+		model.modelState.scoreActions = {
+			getActionForScore: jest.fn().mockReturnValueOnce(null)
+		}
+		let moduleData = {
+			assessmentState: 'mockAssessmentState',
+			questionState: 'mockQuestionState',
+			navState: {
+				context: 'mockContext'
+			},
+			focusState: {}
+		}
+
+		// mock for render
+		AssessmentUtil.getAssessmentForModel.mockReturnValueOnce(null)
+
+		const component = shallow(<Assessment model={model} moduleData={moduleData} />)
+
+		let action = component.instance().getScoreAction()
+
+		expect(AssessmentUtil.getAssessmentScoreForModel).toHaveBeenCalledWith(
+			'mockAssessmentState',
+			model
+		)
+		expect(action).toEqual({
+			from: 0,
+			to: 100,
+			message: '',
+			action: {
+				type: 'unlock',
+				value: '_next'
+			}
+		})
+	})
+
+	test('getScoreAction calls AssessmentUtil and returns custom', () => {
+		let model = OboModel.create(assessmentJSON)
+		model.modelState.scoreActions = {
+			getActionForScore: jest.fn().mockReturnValueOnce('mockAction')
+		}
+		let moduleData = {
+			assessmentState: 'mockAssessmentState',
+			questionState: 'mockQuestionState',
+			navState: {
+				context: 'mockContext'
+			},
+			focusState: {}
+		}
+
+		// mock for render
+		AssessmentUtil.getAssessmentForModel.mockReturnValueOnce(null)
+
+		const component = shallow(<Assessment model={model} moduleData={moduleData} />)
+
+		let action = component.instance().getScoreAction()
+
+		expect(AssessmentUtil.getAssessmentScoreForModel).toHaveBeenCalledWith(
+			'mockAssessmentState',
+			model
+		)
+		expect(action).toEqual('mockAction')
 	})
 })

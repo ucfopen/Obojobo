@@ -1,0 +1,31 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`ObojoboDraft.Chunks.Question registration getNavItem returns link for a question 1`] = `
+Object {
+  "label": "mockTitle",
+  "path": Array [
+    "#obo-mockQuestion",
+  ],
+  "type": "sub-link",
+}
+`;
+
+exports[`ObojoboDraft.Chunks.Question registration getNavItem returns link for a question in practice mode 1`] = `
+Object {
+  "label": "Practice Question 0",
+  "path": Array [
+    "#obo-mockQuestion",
+  ],
+  "type": "sub-link",
+}
+`;
+
+exports[`ObojoboDraft.Chunks.Question registration getNavItem returns link for a question in review mode 1`] = `
+Object {
+  "label": "Question 0",
+  "path": Array [
+    "#obo-mockQuestion",
+  ],
+  "type": "sub-link",
+}
+`;

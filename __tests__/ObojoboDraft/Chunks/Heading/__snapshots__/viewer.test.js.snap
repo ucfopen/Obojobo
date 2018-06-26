@@ -1,0 +1,27 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`ObojoboDraft.Chunks.Heading registration getNavItem returns link for level 1 headings 1`] = `
+Object {
+  "label": "mockHeading",
+  "path": Array [
+    "mocktext",
+  ],
+  "showChildren": false,
+  "type": "sub-link",
+}
+`;
+
+exports[`ObojoboDraft.Chunks.Heading registration getNavItem returns link for level 2 headings 1`] = `
+Object {
+  "label": "mockHeading",
+  "path": Array [
+    "mocktext",
+  ],
+  "showChildren": false,
+  "type": "sub-link",
+}
+`;
+
+exports[`ObojoboDraft.Chunks.Heading registration getNavItem returns nothing for level 1 headings with a zero index 1`] = `null`;
+
+exports[`ObojoboDraft.Chunks.Heading registration getNavItem returns nothing for level 3 headings 1`] = `null`;

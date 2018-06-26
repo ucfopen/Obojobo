@@ -6,7 +6,7 @@ const QuestionContent = require('../../../../../ObojoboDraft/Chunks/Question/Con
 const mockComponent = props => <div {...props} />
 
 describe('QuestionContent', () => {
-	test('renders with no children', () => {
+	test('QuestionContent component with no children', () => {
 		let props = {
 			model: {
 				children: {
@@ -22,7 +22,7 @@ describe('QuestionContent', () => {
 		expect(tree).toMatchSnapshot()
 	})
 
-	test('renders all child except the last one', () => {
+	test('QuestionContent component with multiple children', () => {
 		let key = 0
 		let mockChild = {
 			getComponentClass: () => mockComponent,

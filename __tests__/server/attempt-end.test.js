@@ -58,6 +58,7 @@ describe('Attempt End', () => {
 			assessmentScore: 'mockScoreForAttempt'
 		})
 		lti.sendHighestAssessmentScore.mockReset()
+		DraftModel.fetchById.mockReset()
 	})
 
 	test('endAttempt returns Assessment.getAttempts, sends lti highest score, and inserts 2 events', () => {
@@ -178,14 +179,22 @@ describe('Attempt End', () => {
 	})
 
 	test('getAttempt returns an object of attempt info', () => {
-		expect.assertions(6)
+		expect.assertions(9)
 
-		return getAttempt(1).then(attempt => {
+		let mockDraft = {
+			getChildNodeById: jest.fn(id => 'mockChild')
+		}
+		DraftModel.fetchById.mockReturnValueOnce(mockDraft)
+
+		return getAttempt('mockAttemptId').then(attempt => {
+			expect(Assessment.getAttempt).toHaveBeenCalledWith('mockAttemptId')
+			expect(DraftModel.fetchById).toHaveBeenCalledWith('mockDraftId')
+			expect(mockDraft.getChildNodeById).toHaveBeenCalledWith('mockAssessmentId')
 			expect(attempt).toHaveProperty('assessmentId', 'mockAssessmentId')
 			expect(attempt).toHaveProperty('number', 6)
 			expect(attempt).toHaveProperty('attemptState', 'mockState')
 			expect(attempt).toHaveProperty('draftId', 'mockDraftId')
-			expect(attempt).toHaveProperty('model', expect.any(DraftModel))
+			expect(attempt).toHaveProperty('model', mockDraft)
 			expect(attempt).toHaveProperty('assessmentModel', 'mockChild')
 		})
 	})
@@ -198,6 +207,17 @@ describe('Attempt End', () => {
 			'assessmentId'
 		)
 		expect(result).toBe('super bat dad')
+	})
+
+	test('getResponsesForAttempt calls Assessment method', done => {
+		return getResponsesForAttempt('mockUserId', 'mockDraftId').then(result => {
+			expect(Assessment.getResponsesForAttempt).toHaveBeenLastCalledWith(
+				'mockUserId',
+				'mockDraftId'
+			)
+			expect(result).toBe('mockResponsesForAttempt')
+			return done()
+		})
 	})
 
 	test('getCalculatedScores', () => {
@@ -267,6 +287,154 @@ describe('Attempt End', () => {
 		})
 	})
 
+	test('getCalculatedScores calls calculateScores with expected values', () => {
+		let attemptHistory = [
+			{
+				result: {
+					attemptScore: 25
+				}
+			}
+		]
+
+		let attemptState = {
+			questions: [{ id: 4 }, { id: 5 }, { id: 6 }]
+		}
+
+		let x = new DraftModel({ content: { rubric: 1 } })
+
+		// now we have to mock yell so that we can call addScore()
+		x.yell.mockImplementationOnce((event, req, res, model, history, funcs) => {
+			funcs.addScore(4, 10)
+			funcs.addScore(5, 66)
+			funcs.addScore(6, 77)
+			return [Promise.resolve()]
+		})
+
+		return getCalculatedScores({}, {}, x, attemptState, attemptHistory, 'rh').then(result => {
+			expect(result).toEqual({
+				assessmentScoreDetails: {
+					assessmentScore: 'mockScoreForAttempt'
+				},
+				attempt: {
+					attemptScore: 51,
+					questionScores: [
+						{
+							id: 4,
+							score: 10
+						},
+						{
+							id: 5,
+							score: 66
+						},
+						{
+							id: 6,
+							score: 77
+						}
+					]
+				}
+			})
+
+			expect()
+		})
+	})
+
+	test('calculateScores keeps all scores in order', () => {
+		let assessmentModel = { node: { content: {} } }
+
+		let attemptHistory = [
+			{
+				result: {
+					attemptScore: 25
+				}
+			}
+		]
+
+		let scoreInfo = {
+			questions: [{ id: 4 }, { id: 5 }, { id: 6 }],
+			scoresByQuestionId: { 4: 50, 5: 75, 6: 27 },
+			scores: [50, 75, 27]
+		}
+
+		let result = calculateScores(assessmentModel, attemptHistory, scoreInfo)
+
+		// make sure the questionScores are in the same order
+		expect(result.attempt.questionScores).toEqual([
+			{ id: 4, score: 50 },
+			{ id: 5, score: 75 },
+			{ id: 6, score: 27 }
+		])
+	})
+
+	test('calculateScores calculates expected attemptScore', () => {
+		let assessmentModel = { node: { content: {} } }
+
+		let attemptHistory = [
+			{
+				result: {
+					attemptScore: 25
+				}
+			}
+		]
+
+		let scoreInfo = {
+			questions: [{ id: 4 }, { id: 5 }, { id: 6 }],
+			scoresByQuestionId: { 4: 50, 5: 75, 6: 27 },
+			scores: [50, 75, 27]
+		}
+
+		let result = calculateScores(assessmentModel, attemptHistory, scoreInfo)
+		expect(result.attempt.attemptScore).toBe(50.666666666666664)
+	})
+
+	test('calculateScores calls AssessmentRubric.getAssessmentScoreInfoForAttempt with expected values', () => {
+		expect(AssessmentRubric.mockGetAssessmentScoreInfoForAttempt).toHaveBeenCalledTimes(0)
+		let assessmentModel = { node: { content: { attempts: '2' } } }
+
+		let attemptHistory = [{ result: { attemptScore: 25 } }]
+
+		let scoreInfo = {
+			questions: [{ id: 4 }, { id: 5 }],
+			scoresByQuestionId: { 4: 50, 5: 75 },
+			scores: [50, 75]
+		}
+
+		let result = calculateScores(assessmentModel, attemptHistory, scoreInfo)
+
+		expect(result).toHaveProperty('assessmentScoreDetails', {
+			assessmentScore: 'mockScoreForAttempt'
+		})
+		expect(AssessmentRubric.mockGetAssessmentScoreInfoForAttempt).toHaveBeenCalledTimes(1)
+		expect(AssessmentRubric.mockGetAssessmentScoreInfoForAttempt).toHaveBeenCalledWith(2, [
+			25,
+			62.5
+		])
+	})
+
+	test('completeAttempt calls Assessment.completeAttempt with expected values', () => {
+		let r = completeAttempt(
+			'mockAssessmentId',
+			'mockAttemptId',
+			'mockUserId',
+			'mockDraftId',
+			{ attempt: 'mockCalculatedScores', assessmentScoreDetails: 'mockScoreDeets' },
+			'mockPreview'
+		)
+
+		// make sure we get the result of insertEvent back
+		expect(r).toBe('mockCompleteAttemptResult')
+
+		// make sure Assessment.completeAttempt is called
+		expect(Assessment.completeAttempt).toHaveBeenLastCalledWith(
+			'mockAssessmentId',
+			'mockAttemptId',
+			'mockUserId',
+			'mockDraftId',
+			'mockCalculatedScores',
+			'mockScoreDeets',
+			'mockPreview'
+		)
+	})
+
 	test('insertAttemptEndEvents calls insertEvent with expected params (preview mode = true)', () => {
 		// mock the caliperEvent method
 		let createAssessmentAttemptSubmittedEvent = jest.fn().mockReturnValue('mockCaliperPayload')
@@ -318,6 +486,48 @@ describe('Attempt End', () => {
 			attemptId: 'mockAttemptId',
 			draftId: 'mockDraftId',
 			isPreviewMode: 'mockIsPreviewing'
+		})
+	})
+
+	test('insertAttemptEndEvents creates a correct caliper event and internal event', () => {
+		// mock the caliperEvent method
+		let createAssessmentAttemptSubmittedEvent = jest.fn().mockReturnValue('mockCaliperPayload')
+		insertEvent.mockReturnValueOnce('mockInsertResult')
+		createCaliperEvent.mockReturnValueOnce({
+			createAssessmentAttemptSubmittedEvent
+		})
+
+		let r = insertAttemptEndEvents(
+			{ id: 1 },
+			'mockDraftId',
+			'mockAssessmentId',
+			'mockAttemptId',
+			'mockAttemptNumber',
+			'mockIsPreviewing',
+			'mockHostname',
+			'mockRemoteAddress'
+		)
+
+		// make sure we get the result of insertEvent back
+		expect(r).toBe('mockInsertResult')
+
+		// make sure insert event is called
+		expect(insertEvent).toHaveBeenCalledTimes(1)
+
+		// make sure insert event is called with the arguments we expect
+		expect(insertEvent).toHaveBeenCalledWith({
+			action: 'assessment:attemptEnd',
+			actorTime: 'mockDate',
+			caliperPayload: 'mockCaliperPayload',
+			draftId: 'mockDraftId',
+			eventVersion: '1.1.0',
+			ip: 'mockRemoteAddress',
+			metadata: {},
+			payload: {
+				attemptCount: 'mockAttemptNumber',
+				attemptId: 'mockAttemptId'
+			},
+			userId: 1
 		})
 	})
 
@@ -402,270 +612,224 @@ describe('Attempt End', () => {
 		})
 	})
 
-	test('sendLTIHighestAssessmentScore calls lti.sendLTIHighestAssessmentScore', () => {
-		expect(lti.sendHighestAssessmentScore).toHaveBeenCalledTimes(0)
-		sendLTIHighestAssessmentScore()
-		expect(lti.sendHighestAssessmentScore).toHaveBeenCalledTimes(1)
-	})
-
-	test('calculateScores keeps all scores in order', () => {
-		let assessmentModel = { node: { content: {} } }
-
-		let attemptHistory = [
-			{
-				result: {
-					attemptScore: 25
+	test('reloadAttemptStateIfReviewing does not reload when reviews are not allowed', () => {
+		const mockAttempt = {
+			assessmentModel: {
+				node: {
+					content: {
+						review: 'never'
+					}
 				}
 			}
-		]
-
-		let scoreInfo = {
-			questions: [{ id: 4 }, { id: 5 }, { id: 6 }],
-			scoresByQuestionId: { 4: 50, 5: 75, 6: 27 },
-			scores: [50, 75, 27]
 		}
 
-		let result = calculateScores(assessmentModel, attemptHistory, scoreInfo)
+		let response = reloadAttemptStateIfReviewing(0, 0, mockAttempt, null, null, false, null)
 
-		// make sure the questionScores are in the same order
-		expect(result.attempt.questionScores).toEqual([
-			{ id: 4, score: 50 },
-			{ id: 5, score: 75 },
-			{ id: 6, score: 27 }
-		])
+		expect(response).toBe(null)
 	})
 
-	test('calculateScores calculates expected attemptScore', () => {
-		let assessmentModel = { node: { content: {} } }
-
-		let attemptHistory = [
-			{
-				result: {
-					attemptScore: 25
+	test('reloadAttemptStateIfReviewing does not reload when reviews are allowed after attempts, but it is not the last attempt', () => {
+		const mockAttempt = {
+			number: 1,
+			assessmentModel: {
+				node: {
+					content: {
+						review: 'no-attempts-remaining',
+						attempts: 3
+					}
 				}
 			}
-		]
-
-		let scoreInfo = {
-			questions: [{ id: 4 }, { id: 5 }, { id: 6 }],
-			scoresByQuestionId: { 4: 50, 5: 75, 6: 27 },
-			scores: [50, 75, 27]
 		}
 
-		let result = calculateScores(assessmentModel, attemptHistory, scoreInfo)
-		expect(result.attempt.attemptScore).toBe(50.666666666666664)
+		let response = reloadAttemptStateIfReviewing(0, 0, mockAttempt, null, null, false, null)
+
+		expect(response).toBe(null)
 	})
 
-	test('calculateScores calls AssessmentRubric.getAssessmentScoreInfoForAttempt with expected values', () => {
-		expect(AssessmentRubric.mockGetAssessmentScoreInfoForAttempt).toHaveBeenCalledTimes(0)
-		let assessmentModel = { node: { content: { attempts: '2' } } }
-
-		let attemptHistory = [{ result: { attemptScore: 25 } }]
-
-		let scoreInfo = {
-			questions: [{ id: 4 }, { id: 5 }],
-			scoresByQuestionId: { 4: 50, 5: 75 },
-			scores: [50, 75]
-		}
-
-		let result = calculateScores(assessmentModel, attemptHistory, scoreInfo)
-
-		expect(result).toHaveProperty('assessmentScoreDetails', {
-			assessmentScore: 'mockScoreForAttempt'
-		})
-		expect(AssessmentRubric.mockGetAssessmentScoreInfoForAttempt).toHaveBeenCalledTimes(1)
-		expect(AssessmentRubric.mockGetAssessmentScoreInfoForAttempt).toHaveBeenCalledWith(2, [
-			25,
-			62.5
-		])
-	})
-
-	test.skip('@TODO - Need to make sure that these tests log correct', () => {
-		//Don't actually write this test - this is just a reminder
-		//that we need to add log mocks to the other tests in this file
-	})
-
-	test('getCalculatedScores calls calculateScores with expected values', () => {
-		let attemptHistory = [
-			{
-				result: {
-					attemptScore: 25
-				}
-			}
-		]
-
-		let attemptState = {
-			questions: [{ id: 4 }, { id: 5 }, { id: 6 }]
-		}
-
-		let x = new DraftModel({ content: { rubric: 1 } })
-
-		// now we have to mock yell so that we can call addScore()
-		x.yell.mockImplementationOnce((event, req, res, model, history, funcs) => {
-			funcs.addScore(4, 10)
-			funcs.addScore(5, 66)
-			funcs.addScore(6, 77)
-			return [Promise.resolve()]
-		})
-
-		return getCalculatedScores({}, {}, x, attemptState, attemptHistory, 'rh').then(result => {
-			expect(result).toEqual({
-				assessmentScoreDetails: {
-					assessmentScore: 'mockScoreForAttempt'
-				},
-				attempt: {
-					attemptScore: 51,
-					questionScores: [
-						{
-							id: 4,
-							score: 10
-						},
-						{
-							id: 5,
-							score: 66
-						},
-						{
-							id: 6,
-							score: 77
-						}
-					]
-				}
-			})
-
-			expect()
-		})
-	})
-
-	test('completeAttempt calls Assessment.completeAttempt with expected values', () => {
-		let r = completeAttempt(
-			'mockAssessmentId',
-			'mockAttemptId',
-			'mockUserId',
-			'mockDraftId',
-			{ attempt: 'mockCalculatedScores', assessmentScoreDetails: 'mockScoreDeets' },
-			'mockPreview'
-		)
-
-		// make sure we get the result of insertEvent back
-		expect(r).toBe('mockCompleteAttemptResult')
-
-		// make sure Assessment.completeAttempt is called
-		expect(Assessment.completeAttempt).toHaveBeenLastCalledWith(
-			'mockAssessmentId',
-			'mockAttemptId',
-			'mockUserId',
-			'mockDraftId',
-			'mockCalculatedScores',
-			'mockScoreDeets',
-			'mockPreview'
-		)
-	})
-
-	test('insertAttemptEndEvents creates a correct caliper event and internal event', () => {
-		// mock the caliperEvent method
-		let createAssessmentAttemptSubmittedEvent = jest.fn().mockReturnValue('mockCaliperPayload')
-		insertEvent.mockReturnValueOnce('mockInsertResult')
-		createCaliperEvent.mockReturnValueOnce({
-			createAssessmentAttemptSubmittedEvent
-		})
-
-		let r = insertAttemptEndEvents(
-			{ id: 1 },
-			'mockDraftId',
-			'mockAssessmentId',
-			'mockAttemptId',
-			'mockAttemptNumber',
-			'mockIsPreviewing',
-			'mockHostname',
-			'mockRemoteAddress'
-		)
-
-		// make sure we get the result of insertEvent back
-		expect(r).toBe('mockInsertResult')
-
-		// make sure insert event is called
-		expect(insertEvent).toHaveBeenCalledTimes(1)
-
-		// make sure insert event is called with the arguments we expect
-		expect(insertEvent).toHaveBeenCalledWith({
-			action: 'assessment:attemptEnd',
-			actorTime: 'mockDate',
-			caliperPayload: 'mockCaliperPayload',
-			draftId: 'mockDraftId',
-			eventVersion: '1.1.0',
-			ip: 'mockRemoteAddress',
-			metadata: {},
-			payload: {
-				attemptCount: 'mockAttemptNumber',
-				attemptId: 'mockAttemptId'
-			},
-			userId: 1
-		})
-	})
-	test('getNodeQuestion reloads score', () => {
+	test('reloadAttemptStateIfReviewing reloads only one when reviews are always allowed', () => {
 		const mockDraft = new DraftModel(testJson)
-		const assessmentNode = mockDraft.getChildNodeById('assessment')
+		mockDraft.getChildNodeById.mockReturnValueOnce({
+			children: [
+				{},
+				{
+					toObject: () => {
+						return {
+							id: 'qb1.q1',
+							type: 'ObojoboDraft.Chunks.Question',
+							children: [{}, {}]
+						}
+					},
+					childrenSet: [{}, {}]
+				}
+			]
+		})
+
+		const mockAttempt = {
+			assessmentModel: {
+				node: {
+					content: {
+						review: 'always'
+					}
+				}
+			}
+		}
+
+		attemptStart.getState = jest.fn().mockReturnValueOnce({
+			qb: {},
+			questions: [],
+			data: {}
+		})
+		Assessment.updateAttemptState = jest.fn()
+
+		let response = reloadAttemptStateIfReviewing(0, 0, mockAttempt, mockDraft, null, false, null)
+
+		expect(Assessment.updateAttemptState).toHaveBeenCalledTimes(1)
+	})
+
+	test('reloadAttemptStateIfReviewing reloads all when reviews are allowed after last', done => {
+		const mockDraft = new DraftModel(testJson)
+		mockDraft.getChildNodeById.mockReturnValueOnce({
+			children: [
+				{},
+				{
+					toObject: () => {
+						return {
+							id: 'qb1.q1',
+							type: 'ObojoboDraft.Chunks.Question',
+							children: [{}, {}]
+						}
+					},
+					childrenSet: [{}, {}]
+				}
+			]
+		})
+		const mockAttempt = {
+			number: 3,
+			assessmentModel: {
+				node: {
+					content: {
+						review: 'no-attempts-remaining',
+						attempts: 3
+					}
+				}
+			}
+		}
+
+		attemptStart.getState = jest.fn().mockReturnValueOnce({
+			qb: {},
+			questions: [],
+			data: {}
+		})
+		Assessment.getAttempts.mockResolvedValueOnce({
+			attempts: [
+				{
+					state: {
+						qb: {
+							id: 'qb.lv1',
+							type: 'ObojoboDraft.Chunks.QuestionBank',
+							children: [
+								{
+									id: 'qb.lv2',
+									type: 'ObojoboDraft.Chunks.QuestionBank',
+									children: [
+										{
+											id: 'qb.lv3',
+											type: 'ObojoboDraft.Chunks.QuestionBank',
+											children: [
+												{
+													id: 'qb1.q1',
+													type: 'ObojoboDraft.Chunks.Question',
+													children: []
+												}
+											]
+										}
+									]
+								}
+							]
+						},
+						questions: [{ id: 'qb1.q1' }]
+					}
+				}
+			]
+		})
+		// Set up mock question retrieval
 		mockDraft.getChildNodeById.mockReturnValueOnce({
 			toObject: () => {
 				return {
 					id: 'qb1.q1',
 					type: 'ObojoboDraft.Chunks.Question',
-					children: [
-						{
-							id: 'e3d455d5-80dd-4df8-87cf-594218016f44',
-							type: 'ObojoboDraft.Chunks.Text',
-							content: {},
-							children: []
-						},
-						{
-							id: 'qb1-q1-mca',
-							type: 'ObojoboDraft.Chunks.MCAssessment',
-							content: {},
-							children: [
-								{
-									id: 'qb1-q1-mca-mc1',
-									type: 'ObojoboDraft.Chunks.MCAssessment.MCChoice',
-									content: { score: 100 }
-								}
-							]
-						}
-					]
+					children: [{}, {}]
 				}
-			}
+			},
+			childrenSet: [{}, {}]
 		})
+		mockDraft.getChildNodeById.mockReturnValueOnce({
+			toObject: () => {
+				return {
+					id: 'qb1.q1',
+					type: 'ObojoboDraft.Chunks.Question',
+					children: [{}, {}]
+				}
+			},
+			childrenSet: [{}, {}]
+		})
+		Assessment.updateAttemptState = jest.fn()
 
-		const mockQuestion = {
-			id: 'qb1.q1',
-			type: 'ObojoboDraft.Chunks.Question',
+		return reloadAttemptStateIfReviewing(0, 0, mockAttempt, mockDraft, { id: 1 }, false, null).then(
+			result => {
+				expect(Assessment.getAttempts).toHaveBeenCalled()
+				expect(Assessment.updateAttemptState).toHaveBeenCalledTimes(1)
+				return done()
+			}
+		)
+	})
+
+	test('reloadAttemptStateIfReviewing logs an error when reaching an exceptional state', () => {
+		const mockDraft = new DraftModel(testJson)
+		mockDraft.getChildNodeById.mockReturnValueOnce({
 			children: [
+				{},
 				{
-					id: 'e3d455d5-80dd-4df8-87cf-594218016f44',
-					type: 'ObojoboDraft.Chunks.Text',
-					content: {},
-					children: []
-				},
-				{
-					id: 'qb1-q1-mca',
-					type: 'ObojoboDraft.Chunks.MCAssessment',
-					content: {},
-					children: [
-						{
-							id: 'qb1-q1-mca-mc1',
-							type: 'ObojoboDraft.Chunks.MCAssessment.MCChoice',
-							content: { score: 0 }
+					toObject: () => {
+						return {
+							id: 'qb1.q1',
+							type: 'ObojoboDraft.Chunks.Question',
+							children: [{}, {}]
 						}
-					]
+					},
+					childrenSet: [{}, {}]
 				}
 			]
+		})
+
+		const mockAttempt = {
+			number: 3,
+			assessmentModel: {
+				node: {
+					content: {
+						review: 'bad-review-type',
+						attempts: 3
+					}
+				}
+			}
 		}
 
-		expect(mockQuestion.id).toBe('qb1.q1')
-		expect(mockQuestion.children[1].children[0].content.score).toBe(0)
+		attemptStart.getState = jest.fn().mockReturnValueOnce({
+			qb: {},
+			questions: [
+				{
+					toObject: jest.fn(() => {})
+				}
+			],
+			data: {}
+		})
 
-		let reloadedQuestion = getNodeQuestion(mockQuestion.id, mockDraft)
+		let result = reloadAttemptStateIfReviewing(0, 0, mockAttempt, mockDraft, { id: 1 }, false, null)
 
-		expect(reloadedQuestion.id).toBe(mockQuestion.id)
-		expect(reloadedQuestion.children[1].children[0].content.score).toBe(100)
+		expect(logger.error).toHaveBeenCalledWith(
+			'Error: Reached exceptional state while reloading state for 0'
+		)
+		expect(result).toEqual(null)
 	})
 
 	test('recreateChosenQuestionTree parses down a one-level question bank', () => {
@@ -748,159 +912,134 @@ describe('Attempt End', () => {
 		expect(mockQB.children[0].children[0].children[0].children.length).not.toBe(0)
 	})
 
-	test('reloadAttemptStateIfReviewing does not reload when reviews are not allowed', () => {
-		const mockAttempt = {
-			assessmentModel: {
-				node: {
-					content: {
-						review: 'never'
-					}
-				}
-			}
-		}
-
-		let response = reloadAttemptStateIfReviewing(0, 0, mockAttempt, null, null, false, null)
-
-		expect(response).toBe(null)
-	})
-
-	test('reloadAttemptStateIfReviewing does not reload when reviews are allowed after attempts, but it is not the last attempt', () => {
-		const mockAttempt = {
-			number: 1,
-			assessmentModel: {
-				node: {
-					content: {
-						review: 'no-attempts-remaining',
-						attempts: 3
-					}
-				}
-			}
-		}
-
-		let response = reloadAttemptStateIfReviewing(0, 0, mockAttempt, null, null, false, null)
-
-		expect(response).toBe(null)
-	})
-
-	test('reloadAttemptStateIfReviewing reloads only one when reviews are always allowed', () => {
+	test('getNodeQuestion reloads score', () => {
 		const mockDraft = new DraftModel(testJson)
+		const assessmentNode = mockDraft.getChildNodeById('assessment')
 		mockDraft.getChildNodeById.mockReturnValueOnce({
-			children: [
-				{},
-				{
-					toObject: () => {
-						return {
-							id: 'qb1.q1',
-							type: 'ObojoboDraft.Chunks.Question',
-							children: [{}, {}]
-						}
-					},
-					childrenSet: [{}, {}]
-				}
-			]
-		})
-
-		const mockAttempt = {
-			assessmentModel: {
-				node: {
-					content: {
-						review: 'always'
-					}
-				}
-			}
-		}
-
-		attemptStart.getState = jest.fn().mockReturnValueOnce({
-			qb: {},
-			questions: [],
-			data: {}
-		})
-		Assessment.updateAttemptState = jest.fn()
-
-		let response = reloadAttemptStateIfReviewing(0, 0, mockAttempt, mockDraft, null, false, null)
-
-		expect(Assessment.updateAttemptState).toHaveBeenCalledTimes(1)
-	})
-
-	test.skip('reloadAttemptStateIfReviewing reloads all when reviews are allowed after last', () => {
-		const mockDraft = new DraftModel(testJson)
-		mockDraft.getChildNodeById.mockReturnValueOnce({
-			children: [
-				{},
-				{
-					toObject: () => {
-						return {
-							id: 'qb1.q1',
-							type: 'ObojoboDraft.Chunks.Question',
-							children: [{}, {}]
-						}
-					},
-					childrenSet: [{}, {}]
-				}
-			]
-		})
-		const mockAttempt = {
-			number: 3,
-			assessmentModel: {
-				node: {
-					content: {
-						review: 'no-attempts-remaining',
-						attempts: 3
-					}
-				}
-			}
-		}
-
-		attemptStart.getState = jest.fn().mockReturnValueOnce({
-			qb: {},
-			questions: [],
-			data: {}
-		})
-		Assessment.getAttempts.mockResolvedValueOnce({
-			attempts: [
-				{
-					state: {
-						qb: {
-							id: 'qb.lv1',
-							type: 'ObojoboDraft.Chunks.QuestionBank',
+			toObject: () => {
+				return {
+					id: 'qb1.q1',
+					type: 'ObojoboDraft.Chunks.Question',
+					children: [
+						{
+							id: 'e3d455d5-80dd-4df8-87cf-594218016f44',
+							type: 'ObojoboDraft.Chunks.Text',
+							content: {},
+							children: []
+						},
+						{
+							id: 'qb1-q1-mca',
+							type: 'ObojoboDraft.Chunks.MCAssessment',
+							content: {},
 							children: [
 								{
-									id: 'qb.lv2',
-									type: 'ObojoboDraft.Chunks.QuestionBank',
-									children: [
-										{
-											id: 'qb.lv3',
-											type: 'ObojoboDraft.Chunks.QuestionBank',
-											children: [
-												{
-													id: 'qb1.q1',
-													type: 'ObojoboDraft.Chunks.Question',
-													children: []
-												}
-											]
-										}
-									]
+									id: 'qb1-q1-mca-mc1',
+									type: 'ObojoboDraft.Chunks.MCAssessment.MCChoice',
+									content: { score: 100 }
 								}
 							]
-						},
-						questions: [{ id: 'qb1.q1' }]
-					}
+						}
+					]
+				}
+			}
+		})
+
+		const mockQuestion = {
+			id: 'qb1.q1',
+			type: 'ObojoboDraft.Chunks.Question',
+			children: [
+				{
+					id: 'e3d455d5-80dd-4df8-87cf-594218016f44',
+					type: 'ObojoboDraft.Chunks.Text',
+					content: {},
+					children: []
+				},
+				{
+					id: 'qb1-q1-mca',
+					type: 'ObojoboDraft.Chunks.MCAssessment',
+					content: {},
+					children: [
+						{
+							id: 'qb1-q1-mca-mc1',
+							type: 'ObojoboDraft.Chunks.MCAssessment.MCChoice',
+							content: { score: 0 }
+						}
+					]
 				}
 			]
-		})
-		Assessment.updateAttemptState = jest.fn()
+		}
 
-		let response = reloadAttemptStateIfReviewing(
-			0,
-			0,
-			mockAttempt,
+		expect(mockQuestion.id).toBe('qb1.q1')
+		expect(mockQuestion.children[1].children[0].content.score).toBe(0)
+
+		let reloadedQuestion = getNodeQuestion(mockQuestion.id, mockDraft)
+
+		expect(reloadedQuestion.id).toBe(mockQuestion.id)
+		expect(reloadedQuestion.children[1].children[0].content.score).toBe(100)
+	})
+
+	test('loadAssessmentProperties builds the appropriate object', () => {
+		const mockDraft = {
+			getChildNodeById: jest.fn().mockReturnValueOnce({
+				children: [
+					{},
+					{
+						toObject: () => {
+							return {
+								id: 'qb1.q1',
+								type: 'ObojoboDraft.Chunks.Question',
+								children: [{}, {}]
+							}
+						},
+						childrenSet: [{}, {}]
+					}
+				]
+			})
+		}
+		const mockAttempt = {
+			number: 3,
+			assessmentId: 'mockAssessmentId',
+			assessmentModel: {
+				node: {
+					content: {
+						review: 'no-attempts-remaining',
+						attempts: 3
+					}
+				}
+			}
+		}
+
+		const properties = loadAssessmentProperties(
 			mockDraft,
-			{ id: 1 },
-			false,
-			null
+			mockAttempt,
+			'mockUser',
+			'mockPreviewing',
+			'mockAttemptHistory'
 		)
 
-		expect(Assessment.updateAttemptState).toHaveBeenCalledTimes(2)
-		expect(Assessment.getAttempts).toHaveBeenCalled()
+		expect(properties).toEqual({
+			assessmentQBTree: {
+				children: [{}, {}],
+				id: 'qb1.q1',
+				type: 'ObojoboDraft.Chunks.Question'
+			},
+			attemptHistory: 'mockAttemptHistory',
+			childrenMap: null,
+			draftTree: {
+				getChildNodeById: expect.any(Function)
+			},
+			id: 'mockAssessmentId',
+			isPreviewing: 'mockPreviewing',
+			nodeChildrenIds: [{}, {}],
+			numAttemptsTaken: null,
+			oboNode: { children: [{}, { childrenSet: [{}, {}], toObject: expect.any(Function) }] },
+			user: 'mockUser'
+		})
+	})
+
+	test('sendLTIHighestAssessmentScore calls lti.sendLTIHighestAssessmentScore', () => {
+		expect(lti.sendHighestAssessmentScore).toHaveBeenCalledTimes(0)
+		sendLTIHighestAssessmentScore()
+		expect(lti.sendHighestAssessmentScore).toHaveBeenCalledTimes(1)
 	})
 })

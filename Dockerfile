@@ -1,11 +1,10 @@
 FROM node:10-alpine
 RUN apk add --no-cache \
+  tzdata \
   build-base \
   git \
   python \
   yarn
-
-
 
 CMD mkdir /project
 

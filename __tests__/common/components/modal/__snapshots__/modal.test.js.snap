@@ -2,7 +2,7 @@
 
 exports[`Modal Modal 1`] = `
 <div
-  className="obojobo-draft--components--modal--modal"
+  className="obojobo-draft--components--modal--modal mockClassName"
 >
   <input
     className="first-tab"

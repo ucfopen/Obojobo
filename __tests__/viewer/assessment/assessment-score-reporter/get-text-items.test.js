@@ -19,6 +19,7 @@ import getDisplayFriendlyScore from '../../../../src/scripts/viewer/assessment/a
 
 let getDisplayType = require('../../../../src/scripts/viewer/assessment/assessment-score-reporter/get-display-type')
 	.default
+
 jest.mock('../../../../src/scripts/viewer/assessment/assessment-score-reporter/get-display-type')
 
 describe('getTextItems', () => {
@@ -630,6 +631,76 @@ describe('getTextItems', () => {
 			{
 				type: 'text',
 				text: 'You needed 50% or higher to pass'
+			},
+			{
+				type: 'divider'
+			},
+			{
+				type: 'total',
+				text: 'Total Score',
+				value: 'AssessmentScore'
+			}
+		])
+	})
+
+	test('TYPE_PASSFAIL_UNABLE_TO_PASS_GIVEN_NO_SCORE with 100% needed', () => {
+		getDisplayType.mockReturnValueOnce(TYPE_PASSFAIL_UNABLE_TO_PASS_GIVEN_NO_SCORE)
+		expect(
+			getTextItems(
+				{
+					passingAttemptScore: '100',
+					statusResult: 0,
+					mods: []
+				},
+				displayValues
+			)
+		).toEqual([
+			{
+				type: 'value',
+				text: 'Attempt Score',
+				value: 'AttemptScore'
+			},
+			{
+				type: 'divider'
+			},
+			{
+				type: 'text',
+				text: 'You needed 100% to pass'
+			},
+			{
+				type: 'divider'
+			},
+			{
+				type: 'total',
+				text: 'Total Score',
+				value: 'AssessmentScore'
+			}
+		])
+	})
+
+	test('TYPE_PASSFAIL_UNABLE_TO_PASS_GIVEN_NO_SCORE with null needed', () => {
+		getDisplayType.mockReturnValueOnce(TYPE_PASSFAIL_UNABLE_TO_PASS_GIVEN_NO_SCORE)
+		expect(
+			getTextItems(
+				{
+					passingAttemptScore: null,
+					statusResult: 0,
+					mods: []
+				},
+				displayValues
+			)
+		).toEqual([
+			{
+				type: 'value',
+				text: 'Attempt Score',
+				value: 'AttemptScore'
+			},
+			{
+				type: 'divider'
+			},
+			{
+				type: 'text',
+				text: 'You needed --% or higher to pass'
 			},
 			{
 				type: 'divider'

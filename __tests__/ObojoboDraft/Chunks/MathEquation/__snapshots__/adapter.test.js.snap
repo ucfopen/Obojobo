@@ -1,33 +1,33 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
-exports[`MathEquation adapter can be constructed WITH attributes 1`] = `
+exports[`MathEquation adapter construct builds with attributes 1`] = `
 Object {
   "modelState": Object {
     "align": "left",
-    "label": "",
-    "latex": "test",
-    "size": "1em",
+    "label": "mockLabel",
+    "latex": "mockEquations",
+    "size": "3em",
   },
 }
 `;
 
-exports[`MathEquation adapter can be converted to JSON 1`] = `
-Object {
-  "content": Object {
-    "align": "left",
-    "label": "",
-    "latex": "test",
-    "size": "1em",
-  },
-}
-`;
-
-exports[`MathEquation adapter can be created WITHOUT attributes 1`] = `
+exports[`MathEquation adapter construct builds without attributes 1`] = `
 Object {
   "modelState": Object {
     "align": "center",
     "label": "",
     "latex": "",
+    "size": "1em",
+  },
+}
+`;
+
+exports[`MathEquation adapter toJSON builds a JSON representation 1`] = `
+Object {
+  "content": Object {
+    "align": "left",
+    "label": "",
+    "latex": "test",
     "size": "1em",
   },
 }

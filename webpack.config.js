@@ -1,11 +1,8 @@
 const path = require('path')
-const webpack = require('webpack')
-const glob = require('glob')
-// var ExtractTextPlugin = require('extract-text-webpack-plugin')
-const MiniCssExtractPlugin = require("mini-css-extract-plugin");
+const MiniCssExtractPlugin = require('mini-css-extract-plugin')
 const bourbon = require('node-bourbon')
 
-var obojoboDraftConfig = {
+const obojoboDraftConfig = {
 	entry: {
 		common: [path.join(__dirname, 'src', 'scripts', 'common', 'dist.js')]
 	},
@@ -51,7 +48,7 @@ var obojoboDraftConfig = {
 	plugins: [new MiniCssExtractPlugin('[name].css')]
 }
 
-var viewerConfig = {
+const viewerConfig = {
 	entry: {
 		viewer: ['whatwg-fetch', path.join(__dirname, 'src', 'scripts', 'viewer', 'dist.js')]
 	},
@@ -98,7 +95,7 @@ var viewerConfig = {
 	plugins: [new MiniCssExtractPlugin('[name].css')]
 }
 
-var mainConfig = {
+const mainConfig = {
 	entry: {
 		'viewer-app': ['whatwg-fetch', path.join(__dirname, 'src', 'scripts', 'viewer', 'app.js')],
 		'ObojoboDraft.Chunks.ActionButton': [

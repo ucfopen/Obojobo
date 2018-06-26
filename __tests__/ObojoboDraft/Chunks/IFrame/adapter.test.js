@@ -1,22 +1,27 @@
 import IFrameAdapter from '../../../../ObojoboDraft/Chunks/IFrame/adapter'
 
 describe('IFrame adapter', () => {
-	it('can be constructed WITHOUT attributes', () => {
+	test('construct builds without attributes', () => {
 		let model = { modelState: {} }
 		IFrameAdapter.construct(model)
 		expect(model).toMatchSnapshot()
 	})
 
-	it('can be constructed WITH attributes', () => {
+	test('construct builds with attributes', () => {
 		let model = { modelState: {} }
-		let attrs = { content: { src: 'test src' } }
+		let attrs = {
+			content: {
+				src: 'mockSrc',
+				allow: 'mockAllow'
+			}
+		}
 
 		IFrameAdapter.construct(model, attrs)
 
 		expect(model).toMatchSnapshot()
 	})
 
-	it('can be cloned', () => {
+	test('clone creates a copy', () => {
 		let a = { modelState: {} }
 		let b = { modelState: {} }
 
@@ -27,9 +32,9 @@ describe('IFrame adapter', () => {
 		expect(a.modelState).toEqual(b.modelState)
 	})
 
-	it('can convert to JSON', () => {
+	test('toJSON builds a JSON representation', () => {
 		let model = { modelState: {} }
-		let attrs = { content: { src: 'test src' } }
+		let attrs = { content: { src: 'mockSrc' } }
 		let json = { content: {} }
 
 		IFrameAdapter.construct(model, attrs)
@@ -37,11 +42,11 @@ describe('IFrame adapter', () => {
 		expect(json).toMatchSnapshot()
 	})
 
-	it('can convert to text', () => {
+	test('toText creates a text representation', () => {
 		let model = { modelState: {} }
-		let attrs = { content: { src: 'test src' } }
+		let attrs = { content: { src: 'mockSrc' } }
 
 		IFrameAdapter.construct(model, attrs)
-		expect(IFrameAdapter.toText(model)).toMatch('test src')
+		expect(IFrameAdapter.toText(model)).toMatch('mockSrc')
 	})
 })

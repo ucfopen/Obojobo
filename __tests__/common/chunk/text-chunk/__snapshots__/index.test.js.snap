@@ -1,0 +1,13 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`TextChunk TextChunk component 1`] = `
+<div
+  className="text-chunk"
+/>
+`;
+
+exports[`TextChunk TextChunk component with name 1`] = `
+<div
+  className="text-chunk mock-class-name"
+/>
+`;

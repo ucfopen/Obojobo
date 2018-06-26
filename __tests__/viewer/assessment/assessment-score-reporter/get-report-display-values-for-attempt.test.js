@@ -19,20 +19,20 @@ describe('getReportDisplayValuesForAttempt', () => {
 		})
 	})
 
-	test('returns default value for passingAttemptScore', () => {
+	test('returns default value for passingAttemptScore and assessScore', () => {
 		expect(
 			getReportDisplayValuesForAttempt(
 				{
 					attemptNumber: 20,
 					attemptScore: 30,
-					assessmentModdedScore: 40
+					assessmentModdedScore: null
 				},
 				50
 			)
 		).toEqual({
 			attemptNum: '20',
 			attemptScore: '30',
-			assessScore: '40',
+			assessScore: 'Did Not Pass',
 			totalNumberOfAttemptsAllowed: '50'
 		})
 	})
