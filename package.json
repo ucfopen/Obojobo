@@ -141,6 +141,14 @@
 		],
 		"coverageReporters": ["text", "lcov"],
 		"testPathIgnorePatterns": ["<rootDir>/devsrc"],
-		"modulePathIgnorePatterns": ["<rootDir>/devsrc"]
+		"modulePathIgnorePatterns": ["<rootDir>/devsrc"],
+		"coverageThreshold": {
+			"global": {
+				"branches": 100,
+				"functions": 100,
+				"lines": 100,
+				"statements": 100
+			}
+		}
 	}
 }
