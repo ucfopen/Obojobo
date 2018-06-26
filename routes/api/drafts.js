@@ -13,7 +13,7 @@ const draftTemplate = xmlToDraftObject(draftTemplateXML, true)
 // Get a Draft Document Tree
 // mounted as /api/drafts/:draftId
 router.get('/:draftId', (req, res, next) => {
-	let draftId = req.params.draftId
+	const draftId = req.params.draftId
 
 	return DraftModel.fetchById(draftId)
 		.then(draftTree => {
@@ -31,7 +31,7 @@ router.get('/:draftId', (req, res, next) => {
 // Create a Draft
 // mounted as /api/drafts/new
 router.post('/new', (req, res, next) => {
-	let newDraft = null
+	const newDraft = null
 	let user = null
 
 	return req
@@ -90,14 +90,14 @@ router.post('/:draftId', (req, res, next) => {
 			}
 
 			// Scan through json for identical ids
-			let duplicateId = DraftModel.findDuplicateIds(reqInput)
+			const duplicateId = DraftModel.findDuplicateIds(reqInput)
 			if (duplicateId !== null) {
 				logger.error('Posting draft failed - duplicate id "' + duplicateId + '"')
 				res.badInput('Posting draft failed - duplicate id "' + duplicateId + '"')
 				return
 			}
 
-			return DraftModel.updateContent(req.params[0], reqInput, xml || null).then(id => {
+			return DraftModel.updateContent(req.params.draftId, reqInput, xml || null).then(id => {
 				res.success({ id })
 			})
 		})
