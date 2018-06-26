@@ -2,7 +2,8 @@ global.oboRequire = name => {
 	return require(`${__dirname}/${name}`)
 }
 const path = require('path')
-const ExtractTextPlugin = require('extract-text-webpack-plugin')
+//const ExtractTextPlugin = require('extract-text-webpack-plugin')
+const MiniCssExtractPlugin = require('mini-css-extract-plugin')
 const getInstalledModules = require('./obo_get_installed_modules')
 
 let optimize = process.env.NODE_ENV === 'production'
@@ -43,10 +44,10 @@ module.exports = {
 		rules: [
 			{
 				test: /\.css$/,
-				use: ExtractTextPlugin.extract({
-					fallback: 'style-loader',
-					use: 'css-loader'
-				})
+				use: [
+					MiniCssExtractPlugin.loader,
+					'css-loader'
+				]
 			}
 		]
 	},
@@ -54,5 +55,5 @@ module.exports = {
 		path: path.join(__dirname, 'public', 'compiled'),
 		filename: `${filename}.js`
 	},
-	plugins: [new ExtractTextPlugin(`${filename}.css`)]
+	plugins: [new MiniCssExtractPlugin(`${filename}.css`)]
 }
