@@ -1,14 +1,6 @@
 import ModalStore from '../../../src/scripts/common/stores/modal-store'
 import Dispatcher from '../../../src/scripts/common/flux/dispatcher'
 
-jest.mock('../../../src/scripts/common/flux/dispatcher', () => {
-	return {
-		trigger: jest.fn(),
-		on: jest.fn(),
-		off: jest.fn()
-	}
-})
-
 describe('ModalStore', () => {
 	beforeEach(() => {
 		jest.resetAllMocks()
@@ -41,5 +33,20 @@ describe('ModalStore', () => {
 			modals: []
 		})
 		expect(ModalStore.triggerChange).toHaveBeenCalledTimes(2)
+	})
+
+	test('setState saves the provided state', () => {
+		let state = { a: 1, b: 2 }
+		ModalStore.setState(state)
+
+		expect(ModalStore.getState()).toEqual(state)
+	})
+
+	test('modal:show calls ModalStore._show', () => {
+		jest.spyOn(ModalStore, '_show')
+
+		Dispatcher.trigger('modal:show', { value: 'mockValue' })
+
+		expect(ModalStore._show).toHaveBeenCalledWith('mockValue')
 	})
 })

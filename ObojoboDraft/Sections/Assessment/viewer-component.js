@@ -33,10 +33,6 @@ export default class Assessment extends React.Component {
 		this.onClickSubmit = this.onClickSubmit.bind(this)
 	}
 
-	componentWillUnmount() {
-		NavUtil.setContext('practice')
-	}
-
 	getCurrentStep() {
 		const assessment = AssessmentUtil.getAssessmentForModel(
 			this.props.moduleData.assessmentState,
@@ -72,6 +68,7 @@ export default class Assessment extends React.Component {
 	}
 
 	componentWillUnmount() {
+		NavUtil.setContext('practice')
 		Dispatcher.off('assessment:endAttempt', this.onEndAttempt)
 		Dispatcher.off('assessment:attemptEnded', this.onAttemptEnded)
 	}
@@ -192,9 +189,6 @@ export default class Assessment extends React.Component {
 						moduleData: this.props.moduleData,
 						scoreAction: this.getScoreAction()
 					})
-
-				default:
-					return null
 			}
 		})()
 

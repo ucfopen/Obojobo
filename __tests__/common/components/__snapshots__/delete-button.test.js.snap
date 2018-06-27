@@ -1,6 +1,6 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
-exports[`DeleteButton 1`] = `
+exports[`DeleteButton DeleteButton component 1`] = `
 <div
   className="obojobo-draft--components--delete-button"
 >
@@ -14,7 +14,7 @@ exports[`DeleteButton 1`] = `
 </div>
 `;
 
-exports[`DeleteButton disabled 1`] = `
+exports[`DeleteButton DeleteButton component disabled 1`] = `
 <div
   className="obojobo-draft--components--delete-button"
 >
@@ -28,21 +28,7 @@ exports[`DeleteButton disabled 1`] = `
 </div>
 `;
 
-exports[`DeleteButton label 1`] = `
-<div
-  className="obojobo-draft--components--delete-button"
->
-  <button
-    disabled={undefined}
-    onClick={undefined}
-    tabIndex={undefined}
-  >
-    mock-label
-  </button>
-</div>
-`;
-
-exports[`DeleteButton onClick 1`] = `
+exports[`DeleteButton DeleteButton component with onClick 1`] = `
 <div
   className="obojobo-draft--components--delete-button"
 >
@@ -56,7 +42,7 @@ exports[`DeleteButton onClick 1`] = `
 </div>
 `;
 
-exports[`DeleteButton shouldPreventTab 1`] = `
+exports[`DeleteButton DeleteButton component with shouldPreventTab 1`] = `
 <div
   className="obojobo-draft--components--delete-button"
 >
@@ -70,7 +56,7 @@ exports[`DeleteButton shouldPreventTab 1`] = `
 </div>
 `;
 
-exports[`DeleteButton tabIndex 1`] = `
+exports[`DeleteButton DeleteButton component with tabIndex 1`] = `
 <div
   className="obojobo-draft--components--delete-button"
 >

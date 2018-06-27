@@ -1,0 +1,27 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`ButtonBar ButtonBar component 1`] = `
+<div
+  className="obojobo-draft--components--button-bar"
+/>
+`;
+
+exports[`ButtonBar ButtonBar component with attributes 1`] = `
+<div
+  className="obojobo-draft--components--button-bar"
+>
+  <div
+    className=""
+  >
+    <div
+      className="obojobo-draft--components--button alt-action is-dangerous align-center"
+    >
+      <button
+        disabled={true}
+        onClick={[Function]}
+        tabIndex={undefined}
+      />
+    </div>
+  </div>
+</div>
+`;

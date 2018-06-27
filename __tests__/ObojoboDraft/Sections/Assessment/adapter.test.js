@@ -1,34 +1,34 @@
 import AssessmentAdapter from 'ObojoboDraft/Sections/Assessment/adapter'
 
 describe('ObojoboDraft.Sections.Assessment adapter', () => {
-	test('constructs with default values', () => {
+	test('construct builds without attributes', () => {
 		let model = { modelState: {} }
 		AssessmentAdapter.construct(model)
 		expect(model.modelState).toMatchSnapshot()
 	})
 
-	test('constructs with N attempts', () => {
+	test('construct builds with N attempts', () => {
 		let model = { modelState: {} }
 		AssessmentAdapter.construct(model, { content: { attempts: 6 } })
 		expect(model.modelState).toMatchSnapshot()
 		expect(model.modelState.attempts).toBe(6)
 	})
 
-	test('constructs with unlimited attempts', () => {
+	test('construct builds with unlimited attempts', () => {
 		let model = { modelState: {} }
 		AssessmentAdapter.construct(model, { content: { attempts: 'unlimited' } })
 		expect(model.modelState).toMatchSnapshot()
 		expect(model.modelState.attempts).toBe(Infinity)
 	})
 
-	test('constructor floors decimal attempt integers', () => {
+	test('construct floors decimal attempt integers', () => {
 		let model = { modelState: {} }
 		AssessmentAdapter.construct(model, { content: { attempts: 6.9 } })
 		expect(model.modelState).toMatchSnapshot()
 		expect(model.modelState.attempts).toBe(6)
 	})
 
-	test('constructs with legacy score actions', () => {
+	test('construct builds with legacy score actions', () => {
 		let model = { modelState: {} }
 
 		// use the legacy action syntax
@@ -57,7 +57,7 @@ describe('ObojoboDraft.Sections.Assessment adapter', () => {
 		})
 	})
 
-	test('constructs with score actions', () => {
+	test('construct builds with score actions', () => {
 		let model = { modelState: {} }
 		let action = {
 			for: '[2,4]',
@@ -83,7 +83,40 @@ describe('ObojoboDraft.Sections.Assessment adapter', () => {
 		})
 	})
 
-	test('exports to json', () => {
+	test('clone creates a copy', () => {
+		let model = { modelState: {} }
+		let model2 = { modelState: {} }
+		let action = {
+			for: '[2,4]',
+			page: 5
+		}
+		AssessmentAdapter.construct(model, { content: { scoreActions: [action] } })
+		expect(model.modelState).toMatchObject({
+			attempts: Infinity,
+			scoreActions: {
+				actions: [
+					{
+						page: 5,
+						range: {
+							isMaxInclusive: true,
+							isMinInclusive: true,
+							max: '4',
+							min: '2'
+						}
+					}
+				],
+				originalActions: [action]
+			}
+		})
+
+		AssessmentAdapter.clone(model, model2)
+
+		expect(model).not.toBe(model2)
+		expect(model.modelState).not.toBe(model2.modelState)
+		expect(model.modelState).toMatchObject(model2.modelState)
+	})
+
+	test('toJSON builds a JSON representation', () => {
 		let model = { modelState: {} }
 		let action = {
 			for: '[2,4]',
@@ -122,39 +155,5 @@ describe('ObojoboDraft.Sections.Assessment adapter', () => {
 				]
 			}
 		})
-	})
-
-	test.skip('clones itself', () => {
-		let model = { modelState: {} }
-		let model2 = { modelState: {} }
-		let action = {
-			for: '[2,4]',
-			page: 5
-		}
-		AssessmentAdapter.construct(model, { content: { scoreActions: [action] } })
-		expect(model.modelState).toMatchObject({
-			attempts: Infinity,
-			scoreActions: {
-				actions: [
-					{
-						page: 5,
-						range: {
-							isMaxInclusive: true,
-							isMinInclusive: true,
-							max: '4',
-							min: '2'
-						}
-					}
-				],
-				originalActions: [action]
-			}
-		})
-
-		let json = { content: {} }
-		AssessmentAdapter.clone(model, json)
-
-		expect(model).not.toBe(model2)
-		expect(model.modelState).not.toBe(model2.modelState)
-		expect(model.modelState).toMatchObject(model2.modelState)
 	})
 })

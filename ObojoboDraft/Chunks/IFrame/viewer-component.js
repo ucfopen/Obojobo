@@ -11,18 +11,18 @@ import Viewer from 'Viewer'
 import Controls from './controls'
 import { getRenderSettings, getIsShowing } from './render-settings'
 
-let DEFAULT_WIDTH = 710
-let DEFAULT_HEIGHT = 500
-let MIN_SCALE = 0.1
+const DEFAULT_WIDTH = 710
+const DEFAULT_HEIGHT = 500
+const MIN_SCALE = 0.1
 
-let { OboComponent, Button } = Common.components
-let Dispatcher = Common.flux.Dispatcher
-let MediaUtil = Viewer.util.MediaUtil
-let NavUtil = Viewer.util.NavUtil
-let MediaStore = Viewer.stores.MediaStore
-let Logo = Viewer.components.Logo
-let Header = Viewer.components.Header
-let isOrNot = Common.util.isOrNot
+const { OboComponent, Button } = Common.components
+const Dispatcher = Common.flux.Dispatcher
+const MediaUtil = Viewer.util.MediaUtil
+const NavUtil = Viewer.util.NavUtil
+const MediaStore = Viewer.stores.MediaStore
+const Logo = Viewer.components.Logo
+const Header = Viewer.components.Header
+const isOrNot = Common.util.isOrNot
 
 export default class IFrame extends React.Component {
 	constructor(props) {
@@ -42,7 +42,7 @@ export default class IFrame extends React.Component {
 	}
 
 	getMeasuredDimensions() {
-		let cs = window.getComputedStyle(ReactDOM.findDOMNode(this.refs.main), null)
+		const cs = window.getComputedStyle(ReactDOM.findDOMNode(this.refs.main), null)
 
 		return {
 			width: ReactDOM.findDOMNode(this).getBoundingClientRect().width,
@@ -53,7 +53,7 @@ export default class IFrame extends React.Component {
 	}
 
 	onViewerContentAreaResized() {
-		let dims = this.getMeasuredDimensions()
+		const dims = this.getMeasuredDimensions()
 
 		this.setState({
 			actualWidth: dims.width,
@@ -82,7 +82,7 @@ export default class IFrame extends React.Component {
 	}
 
 	onClickReload() {
-		let src = this.props.model.modelState.src
+		const src = this.props.model.modelState.src
 
 		this.refs.iframe.src = ''
 		setTimeout(() => {
@@ -91,7 +91,7 @@ export default class IFrame extends React.Component {
 	}
 
 	componentDidMount() {
-		let dims = this.getMeasuredDimensions()
+		const dims = this.getMeasuredDimensions()
 
 		this.setState({
 			actualWidth: dims.width,
@@ -137,10 +137,10 @@ export default class IFrame extends React.Component {
 	}
 
 	render() {
-		let model = this.props.model
-		let ms = model.modelState
+		const model = this.props.model
+		const ms = model.modelState
 
-		let {
+		const {
 			zoomValues,
 			zoom,
 			mediaSize,

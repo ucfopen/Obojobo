@@ -19,8 +19,6 @@ export default class TextMenu extends React.Component {
 	}
 
 	onMouseDown(label, event) {
-		console.log(arguments)
-
 		event.preventDefault()
 		event.stopPropagation()
 

@@ -1,4 +1,3 @@
-import { shallow, mount } from 'enzyme'
 import GridTextGroup from '../../../../ObojoboDraft/Chunks/Table/grid-text-group'
 import StylableText from '../../../../src/scripts/common/text/styleable-text'
 
@@ -20,176 +19,568 @@ describe('GridTextGroup', () => {
 		}
 	})
 
-	it('adds a row to the first index', () => {
-		const result = [
-			{ text: { value: 'added row cell', styleList: null }, data: {} },
-			{ text: { value: 'added row cell', styleList: null }, data: {} },
-			{ text: { value: 'first cell', styleList: null }, data: {} },
-			{ text: { value: 'second cell', styleList: null }, data: {} },
-			{ text: { value: 'third cell', styleList: null }, data: {} },
-			{ text: { value: 'fourth cell', styleList: null }, data: {} }
-		]
+	test('constructor builds a GridTextGroup', () => {
+		let gridTextGroup = new GridTextGroup(2, 2, {}, [
+			{ text: new StylableText('first cell') },
+			{ text: new StylableText('second cell') },
+			{ text: new StylableText('third cell') },
+			{ text: new StylableText('fourth cell') }
+		])
 
-		gridTextGroup.addRow(0, new StylableText('added row cell'))
-		expectDimensionsAndMaxItems(3, 2, 6)
-		expect(gridTextGroup.toDescriptor().textGroup).toEqual(result)
+		/*
+		Expected Grid:
+		----------------------------
+		| first cell | second cell |
+		----------------------------
+		| third cell | fourth cell |
+		----------------------------
+		*/
+
+		expect(gridTextGroup.numRows).toEqual(2)
+		expect(gridTextGroup.numCols).toEqual(2)
+		expect(gridTextGroup.maxItems).toEqual(4)
+		expect(gridTextGroup).toMatchSnapshot()
+		expect(gridTextGroup.toDescriptor()).toEqual({
+			numCols: 2,
+			numRows: 2,
+			textGroup: [
+				{ data: {}, text: { styleList: null, value: 'first cell' } },
+				{ data: {}, text: { styleList: null, value: 'second cell' } },
+				{ data: {}, text: { styleList: null, value: 'third cell' } },
+				{ data: {}, text: { styleList: null, value: 'fourth cell' } }
+			]
+		})
 	})
 
-	it('adds a row to a middle index', () => {
-		const result = [
-			{ text: { value: 'first cell', styleList: null }, data: {} },
-			{ text: { value: 'second cell', styleList: null }, data: {} },
-			{ text: { value: 'added row cell', styleList: null }, data: {} },
-			{ text: { value: 'added row cell', styleList: null }, data: {} },
-			{ text: { value: 'third cell', styleList: null }, data: {} },
-			{ text: { value: 'fourth cell', styleList: null }, data: {} }
-		]
+	test('fromDescriptor builds a GridTextGroup from a descriptor with default method', () => {
+		let descriptor = {
+			numRows: 2,
+			numCols: 2,
+			textGroup: [
+				{
+					text: {
+						value: 'first cell'
+					}
+				},
+				{
+					text: {
+						value: 'second cell'
+					}
+				},
+				{
+					text: {
+						value: 'third cell'
+					}
+				},
+				{
+					text: {
+						value: 'fourth cell'
+					}
+				}
+			]
+		}
 
-		gridTextGroup.addRow(1, new StylableText('added row cell'))
-		expectDimensionsAndMaxItems(3, 2, 6)
-		expect(gridTextGroup.toDescriptor().textGroup).toEqual(result)
+		let grid = GridTextGroup.fromDescriptor(descriptor)
+
+		/*
+		Expected Grid:
+		----------------------------
+		| first cell | second cell |
+		----------------------------
+		| third cell | fourth cell |
+		----------------------------
+		*/
+
+		expect(grid.numRows).toEqual(2)
+		expect(grid.numCols).toEqual(2)
+		expect(grid.maxItems).toEqual(4)
+		expect(grid).toMatchSnapshot()
+		expect(grid.toDescriptor()).toEqual({
+			numCols: 2,
+			numRows: 2,
+			textGroup: [
+				{ data: {}, text: { styleList: null, value: 'first cell' } },
+				{ data: {}, text: { styleList: null, value: 'second cell' } },
+				{ data: {}, text: { styleList: null, value: 'third cell' } },
+				{ data: {}, text: { styleList: null, value: 'fourth cell' } }
+			]
+		})
 	})
 
-	it('adds a row to the end', () => {
-		const result = [
-			{ text: { value: 'first cell', styleList: null }, data: {} },
-			{ text: { value: 'second cell', styleList: null }, data: {} },
-			{ text: { value: 'third cell', styleList: null }, data: {} },
-			{ text: { value: 'fourth cell', styleList: null }, data: {} },
-			{ text: { value: 'added row cell', styleList: null }, data: {} },
-			{ text: { value: 'added row cell', styleList: null }, data: {} }
-		]
+	test('fromDescriptor builds a GridTextGroup from a descriptor with custom method', () => {
+		let descriptor = {
+			numRows: 2,
+			numCols: 2,
+			textGroup: [
+				{
+					text: {
+						value: 'first cell'
+					}
+				},
+				{
+					text: {
+						value: 'second cell'
+					}
+				},
+				{
+					text: {
+						value: 'third cell'
+					}
+				},
+				{
+					text: {
+						value: 'fourth cell'
+					}
+				}
+			]
+		}
+		let customMethod = jest.fn()
 
-		gridTextGroup.addRow(2, new StylableText('added row cell'))
-		expectDimensionsAndMaxItems(3, 2, 6)
-		expect(gridTextGroup.toDescriptor().textGroup).toEqual(result)
+		let grid = GridTextGroup.fromDescriptor(descriptor, 4, {}, customMethod)
+
+		/*
+		Expected Grid:
+		----------------------------
+		| first cell | second cell |
+		----------------------------
+		| third cell | fourth cell |
+		----------------------------
+		*/
+
+		expect(customMethod).toHaveBeenCalledTimes(4)
+		expect(grid.numRows).toEqual(2)
+		expect(grid.numCols).toEqual(2)
+		expect(grid.maxItems).toEqual(4)
+		expect(grid).toMatchSnapshot()
+		expect(grid.toDescriptor()).toEqual({
+			numCols: 2,
+			numRows: 2,
+			textGroup: [
+				{ data: {}, text: { styleList: null, value: 'first cell' } },
+				{ data: {}, text: { styleList: null, value: 'second cell' } },
+				{ data: {}, text: { styleList: null, value: 'third cell' } },
+				{ data: {}, text: { styleList: null, value: 'fourth cell' } }
+			]
+		})
 	})
 
-	it('removes a row from the first index', () => {
-		const result = [
-			{ text: { value: 'third cell', styleList: null }, data: {} },
-			{ text: { value: 'fourth cell', styleList: null }, data: {} }
-		]
+	test('create builds without data template', () => {
+		let grid = GridTextGroup.create(2, 2)
+
+		/*
+		Expected Grid:
+		---------
+		|   |   |
+		---------
+		|   |   |
+		---------
+		*/
+
+		expect(grid.numRows).toEqual(2)
+		expect(grid.numCols).toEqual(2)
+		expect(grid.maxItems).toEqual(4)
+		expect(grid).toMatchSnapshot()
+		expect(grid.toDescriptor()).toEqual({
+			numCols: 2,
+			numRows: 2,
+			textGroup: [
+				{ data: {}, text: { styleList: null, value: '' } },
+				{ data: {}, text: { styleList: null, value: '' } },
+				{ data: {}, text: { styleList: null, value: '' } },
+				{ data: {}, text: { styleList: null, value: '' } }
+			]
+		})
+	})
+
+	test('create builds with data template', () => {
+		let grid = GridTextGroup.create(2, 2, {})
+
+		/*
+		Expected Grid:
+		---------
+		|   |   |
+		---------
+		|   |   |
+		---------
+		*/
+
+		expect(grid.numRows).toEqual(2)
+		expect(grid.numCols).toEqual(2)
+		expect(grid.maxItems).toEqual(4)
+		expect(grid).toMatchSnapshot()
+		expect(grid.toDescriptor()).toEqual({
+			numCols: 2,
+			numRows: 2,
+			textGroup: [
+				{ data: {}, text: { styleList: null, value: '' } },
+				{ data: {}, text: { styleList: null, value: '' } },
+				{ data: {}, text: { styleList: null, value: '' } },
+				{ data: {}, text: { styleList: null, value: '' } }
+			]
+		})
+	})
+
+	test('addRow does not add to an empty grid', () => {
+		let gridTextGroup = new GridTextGroup(0, 0, {})
+
+		/*
+		Expected Grid:
+		Empty
+		*/
+
+		gridTextGroup.addRow()
+		expect(gridTextGroup.numRows).toEqual(0)
+		expect(gridTextGroup.numCols).toEqual(0)
+		expect(gridTextGroup.maxItems).toEqual(0)
+		expect(gridTextGroup).toMatchSnapshot()
+		expect(gridTextGroup.toDescriptor()).toEqual({
+			numCols: 0,
+			numRows: 0,
+			textGroup: []
+		})
+	})
+
+	test('addRow adds with no values', () => {
+		let gridTextGroup = new GridTextGroup(2, 2, {}, [
+			{ text: new StylableText('first cell') },
+			{ text: new StylableText('second cell') },
+			{ text: new StylableText('third cell') },
+			{ text: new StylableText('fourth cell') }
+		])
+
+		/*
+		Expected Grid:
+		----------------------------
+		| first cell | second cell |
+		----------------------------
+		| third cell | fourth cell |
+		----------------------------
+		|            |             |
+		----------------------------
+		*/
+
+		gridTextGroup.addRow()
+		expect(gridTextGroup.numRows).toEqual(3)
+		expect(gridTextGroup.numCols).toEqual(2)
+		expect(gridTextGroup.maxItems).toEqual(6)
+		expect(gridTextGroup).toMatchSnapshot()
+		expect(gridTextGroup.toDescriptor()).toEqual({
+			numCols: 2,
+			numRows: 3,
+			textGroup: [
+				{ data: {}, text: { styleList: null, value: 'first cell' } },
+				{ data: {}, text: { styleList: null, value: 'second cell' } },
+				{ data: {}, text: { styleList: null, value: 'third cell' } },
+				{ data: {}, text: { styleList: null, value: 'fourth cell' } },
+				{ data: {}, text: { styleList: null, value: '' } },
+				{ data: {}, text: { styleList: null, value: '' } }
+			]
+		})
+	})
+
+	test('addRow adds with given values', () => {
+		let gridTextGroup = new GridTextGroup(2, 2, {}, [
+			{ text: new StylableText('first cell') },
+			{ text: new StylableText('second cell') },
+			{ text: new StylableText('third cell') },
+			{ text: new StylableText('fourth cell') }
+		])
+
+		/*
+		Expected Grid:
+		-----------------------------------
+		|   first cell   |   second cell  |
+		-----------------------------------
+		| added row cell | added row cell |
+		-----------------------------------
+		|   third cell   |   fourth cell  |
+		-----------------------------------
+		*/
+
+		gridTextGroup.addRow(1, new StylableText('added row cell'), {})
+		expect(gridTextGroup.numRows).toEqual(3)
+		expect(gridTextGroup.numCols).toEqual(2)
+		expect(gridTextGroup.maxItems).toEqual(6)
+		expect(gridTextGroup).toMatchSnapshot()
+		expect(gridTextGroup.toDescriptor()).toEqual({
+			numCols: 2,
+			numRows: 3,
+			textGroup: [
+				{ data: {}, text: { styleList: null, value: 'first cell' } },
+				{ data: {}, text: { styleList: null, value: 'second cell' } },
+				{ data: {}, text: { styleList: null, value: 'added row cell' } },
+				{ data: {}, text: { styleList: null, value: 'added row cell' } },
+				{ data: {}, text: { styleList: null, value: 'third cell' } },
+				{ data: {}, text: { styleList: null, value: 'fourth cell' } }
+			]
+		})
+	})
+
+	test('addCol does not add to an empty grid', () => {
+		let gridTextGroup = new GridTextGroup(0, 0, {})
+
+		/*
+		Expected Grid:
+		Empty
+		*/
+
+		gridTextGroup.addCol()
+		expect(gridTextGroup.numRows).toEqual(0)
+		expect(gridTextGroup.numCols).toEqual(0)
+		expect(gridTextGroup.maxItems).toEqual(0)
+		expect(gridTextGroup).toMatchSnapshot()
+		expect(gridTextGroup.toDescriptor()).toEqual({
+			numCols: 0,
+			numRows: 0,
+			textGroup: []
+		})
+	})
+
+	test('addCol adds with no values', () => {
+		let gridTextGroup = new GridTextGroup(2, 2, {}, [
+			{ text: new StylableText('first cell') },
+			{ text: new StylableText('second cell') },
+			{ text: new StylableText('third cell') },
+			{ text: new StylableText('fourth cell') }
+		])
+
+		/*
+		Expected Grid:
+		-----------------------------------
+		| first cell | second cell |      |
+		-----------------------------------
+		| third cell | fourth cell |      |
+		-----------------------------------
+		*/
+
+		gridTextGroup.addCol()
+		expect(gridTextGroup.numRows).toEqual(2)
+		expect(gridTextGroup.numCols).toEqual(3)
+		expect(gridTextGroup.maxItems).toEqual(6)
+		expect(gridTextGroup).toMatchSnapshot()
+		expect(gridTextGroup.toDescriptor()).toEqual({
+			numCols: 3,
+			numRows: 2,
+			textGroup: [
+				{ data: {}, text: { styleList: null, value: 'first cell' } },
+				{ data: {}, text: { styleList: null, value: 'second cell' } },
+				{ data: {}, text: { styleList: null, value: '' } },
+				{ data: {}, text: { styleList: null, value: 'third cell' } },
+				{ data: {}, text: { styleList: null, value: 'fourth cell' } },
+				{ data: {}, text: { styleList: null, value: '' } }
+			]
+		})
+	})
+
+	test('addCol adds with given values', () => {
+		let gridTextGroup = new GridTextGroup(2, 2, {}, [
+			{ text: new StylableText('first cell') },
+			{ text: new StylableText('second cell') },
+			{ text: new StylableText('third cell') },
+			{ text: new StylableText('fourth cell') }
+		])
+
+		/*
+		Expected Grid:
+		---------------------------------------------
+		| first cell | added row cell | second cell |
+		---------------------------------------------
+		| third cell | added row cell | fourth cell |
+		---------------------------------------------
+		*/
+
+		gridTextGroup.addCol(1, new StylableText('added row cell'), {})
+		expect(gridTextGroup.numRows).toEqual(2)
+		expect(gridTextGroup.numCols).toEqual(3)
+		expect(gridTextGroup.maxItems).toEqual(6)
+		expect(gridTextGroup).toMatchSnapshot()
+		expect(gridTextGroup.toDescriptor()).toEqual({
+			numCols: 3,
+			numRows: 2,
+			textGroup: [
+				{ data: {}, text: { styleList: null, value: 'first cell' } },
+				{ data: {}, text: { styleList: null, value: 'added row cell' } },
+				{ data: {}, text: { styleList: null, value: 'second cell' } },
+				{ data: {}, text: { styleList: null, value: 'third cell' } },
+				{ data: {}, text: { styleList: null, value: 'added row cell' } },
+				{ data: {}, text: { styleList: null, value: 'fourth cell' } }
+			]
+		})
+	})
+
+	test('removeRow does nothing to an empty grid', () => {
+		let gridTextGroup = new GridTextGroup(0, 0, {})
+
+		gridTextGroup.removeRow()
+		expect(gridTextGroup.numRows).toEqual(0)
+		expect(gridTextGroup.numCols).toEqual(0)
+		expect(gridTextGroup.maxItems).toEqual(0)
+		expect(gridTextGroup).toMatchSnapshot()
+		expect(gridTextGroup.toDescriptor()).toEqual({
+			numCols: 0,
+			numRows: 0,
+			textGroup: []
+		})
+	})
+
+	test('removeRow removes the last row by default', () => {
+		let gridTextGroup = new GridTextGroup(2, 2, {}, [
+			{ text: new StylableText('first cell') },
+			{ text: new StylableText('second cell') },
+			{ text: new StylableText('third cell') },
+			{ text: new StylableText('fourth cell') }
+		])
+
+		/*
+		Expected Grid:
+		----------------------------
+		| first cell | second cell |
+		----------------------------
+		*/
+
+		gridTextGroup.removeRow()
+		expect(gridTextGroup.numRows).toEqual(1)
+		expect(gridTextGroup.numCols).toEqual(2)
+		expect(gridTextGroup.maxItems).toEqual(2)
+		expect(gridTextGroup).toMatchSnapshot()
+		expect(gridTextGroup.toDescriptor()).toEqual({
+			numCols: 2,
+			numRows: 1,
+			textGroup: [
+				{ data: {}, text: { styleList: null, value: 'first cell' } },
+				{ data: {}, text: { styleList: null, value: 'second cell' } }
+			]
+		})
+	})
+
+	test('removeRow removes a specified row', () => {
+		let gridTextGroup = new GridTextGroup(2, 2, {}, [
+			{ text: new StylableText('first cell') },
+			{ text: new StylableText('second cell') },
+			{ text: new StylableText('third cell') },
+			{ text: new StylableText('fourth cell') }
+		])
+
+		/*
+		Expected Grid:
+		----------------------------
+		| third cell | fourth cell |
+		----------------------------
+		*/
 
 		gridTextGroup.removeRow(0)
-		expectDimensionsAndMaxItems(1, 2, 2)
-		expect(gridTextGroup.toDescriptor().textGroup).toEqual(result)
+		expect(gridTextGroup.numRows).toEqual(1)
+		expect(gridTextGroup.numCols).toEqual(2)
+		expect(gridTextGroup.maxItems).toEqual(2)
+		expect(gridTextGroup).toMatchSnapshot()
+		expect(gridTextGroup.toDescriptor()).toEqual({
+			numCols: 2,
+			numRows: 1,
+			textGroup: [
+				{ data: {}, text: { styleList: null, value: 'third cell' } },
+				{ data: {}, text: { styleList: null, value: 'fourth cell' } }
+			]
+		})
 	})
 
-	it('removes a row from a middle index', () => {
-		const result = [
-			{ text: { value: 'added row cell', styleList: null }, data: {} },
-			{ text: { value: 'added row cell', styleList: null }, data: {} },
-			{ text: { value: 'third cell', styleList: null }, data: {} },
-			{ text: { value: 'fourth cell', styleList: null }, data: {} }
-		]
+	test('removeCol does nothing to an empty grid', () => {
+		let gridTextGroup = new GridTextGroup(0, 0, {})
 
-		gridTextGroup.addRow(0, new StylableText('added row cell'))
-		gridTextGroup.removeRow(1)
-		expectDimensionsAndMaxItems(2, 2, 4)
-		expect(gridTextGroup.toDescriptor().textGroup).toEqual(result)
+		gridTextGroup.removeCol()
+		expect(gridTextGroup.numRows).toEqual(0)
+		expect(gridTextGroup.numCols).toEqual(0)
+		expect(gridTextGroup.maxItems).toEqual(0)
+		expect(gridTextGroup).toMatchSnapshot()
+		expect(gridTextGroup.toDescriptor()).toEqual({
+			numCols: 0,
+			numRows: 0,
+			textGroup: []
+		})
 	})
 
-	it('removes a row from the end', () => {
-		const result = [
-			{ text: { value: 'first cell', styleList: null }, data: {} },
-			{ text: { value: 'second cell', styleList: null }, data: {} }
-		]
+	test('removeCol removes the last row by default', () => {
+		let gridTextGroup = new GridTextGroup(2, 2, {}, [
+			{ text: new StylableText('first cell') },
+			{ text: new StylableText('second cell') },
+			{ text: new StylableText('third cell') },
+			{ text: new StylableText('fourth cell') }
+		])
 
-		gridTextGroup.removeRow(1)
-		expectDimensionsAndMaxItems(1, 2, 2)
-		expect(gridTextGroup.toDescriptor().textGroup).toEqual(result)
+		/*
+		Expected Grid:
+		--------------
+		| first cell |
+		--------------
+		| third cell |
+		--------------
+		*/
+
+		gridTextGroup.removeCol()
+		expect(gridTextGroup.numRows).toEqual(2)
+		expect(gridTextGroup.numCols).toEqual(1)
+		expect(gridTextGroup.maxItems).toEqual(2)
+		expect(gridTextGroup).toMatchSnapshot()
+		expect(gridTextGroup.toDescriptor()).toEqual({
+			numCols: 1,
+			numRows: 2,
+			textGroup: [
+				{ data: {}, text: { styleList: null, value: 'first cell' } },
+				{ data: {}, text: { styleList: null, value: 'third cell' } }
+			]
+		})
 	})
 
-	it('adds a col to the first index', () => {
-		const result = [
-			{ text: { value: 'added col cell', styleList: null }, data: {} },
-			{ text: { value: 'first cell', styleList: null }, data: {} },
-			{ text: { value: 'second cell', styleList: null }, data: {} },
-			{ text: { value: 'added col cell', styleList: null }, data: {} },
-			{ text: { value: 'third cell', styleList: null }, data: {} },
-			{ text: { value: 'fourth cell', styleList: null }, data: {} }
-		]
+	test('removeCol removes a specified row', () => {
+		let gridTextGroup = new GridTextGroup(2, 2, {}, [
+			{ text: new StylableText('first cell') },
+			{ text: new StylableText('second cell') },
+			{ text: new StylableText('third cell') },
+			{ text: new StylableText('fourth cell') }
+		])
 
-		gridTextGroup.addCol(0, new StylableText('added col cell'))
-		expectDimensionsAndMaxItems(2, 3, 6)
-		expect(gridTextGroup.toDescriptor().textGroup).toEqual(result)
-	})
-
-	it('adds a col to a middle index', () => {
-		const result = [
-			{ text: { value: 'first cell', styleList: null }, data: {} },
-			{ text: { value: 'added col cell', styleList: null }, data: {} },
-			{ text: { value: 'second cell', styleList: null }, data: {} },
-			{ text: { value: 'third cell', styleList: null }, data: {} },
-			{ text: { value: 'added col cell', styleList: null }, data: {} },
-			{ text: { value: 'fourth cell', styleList: null }, data: {} }
-		]
-
-		gridTextGroup.addCol(1, new StylableText('added col cell'))
-		expectDimensionsAndMaxItems(2, 3, 6)
-		expect(gridTextGroup.toDescriptor().textGroup).toEqual(result)
-	})
-
-	it('adds a col to the end', () => {
-		const result = [
-			{ text: { value: 'first cell', styleList: null }, data: {} },
-			{ text: { value: 'second cell', styleList: null }, data: {} },
-			{ text: { value: 'added col cell', styleList: null }, data: {} },
-			{ text: { value: 'third cell', styleList: null }, data: {} },
-			{ text: { value: 'fourth cell', styleList: null }, data: {} },
-			{ text: { value: 'added col cell', styleList: null }, data: {} }
-		]
-
-		gridTextGroup.addCol(2, new StylableText('added col cell'))
-		expectDimensionsAndMaxItems(2, 3, 6)
-		expect(gridTextGroup.toDescriptor().textGroup).toEqual(result)
-	})
-
-	it('removes a col from the first index', () => {
-		const result = [
-			{ text: { value: 'second cell', styleList: null }, data: {} },
-			{ text: { value: 'fourth cell', styleList: null }, data: {} }
-		]
+		/*
+		Expected Grid:
+		---------------
+		| second cell |
+		---------------
+		| fourth cell |
+		---------------
+		*/
 
 		gridTextGroup.removeCol(0)
-		expectDimensionsAndMaxItems(2, 1, 2)
-		expect(gridTextGroup.toDescriptor().textGroup).toEqual(result)
+		expect(gridTextGroup.numRows).toEqual(2)
+		expect(gridTextGroup.numCols).toEqual(1)
+		expect(gridTextGroup.maxItems).toEqual(2)
+		expect(gridTextGroup).toMatchSnapshot()
+		expect(gridTextGroup.toDescriptor()).toEqual({
+			numCols: 1,
+			numRows: 2,
+			textGroup: [
+				{ data: {}, text: { styleList: null, value: 'second cell' } },
+				{ data: {}, text: { styleList: null, value: 'fourth cell' } }
+			]
+		})
 	})
 
-	it('removes a col from a middle index', () => {
-		const result = [
-			{ text: { value: 'first cell', styleList: null }, data: {} },
-			{ text: { value: 'second cell', styleList: null }, data: {} },
-			{ text: { value: 'third cell', styleList: null }, data: {} },
-			{ text: { value: 'fourth cell', styleList: null }, data: {} }
-		]
-
-		gridTextGroup.addCol(1, new StylableText('added col cell'))
-		gridTextGroup.removeCol(1)
-		expectDimensionsAndMaxItems(2, 2, 4)
-		expect(gridTextGroup.toDescriptor().textGroup).toEqual(result)
-	})
-
-	it('removes a col from the end', () => {
-		const result = [
-			{ text: { value: 'first cell', styleList: null }, data: {} },
-			{ text: { value: 'third cell', styleList: null }, data: {} }
-		]
-
-		gridTextGroup.removeCol(1)
-		expectDimensionsAndMaxItems(2, 1, 2)
-		expect(gridTextGroup.toDescriptor().textGroup).toEqual(result)
-	})
-
-	it('can be cloned', () => {
+	test('clone creates a copy', () => {
 		const tempGridTextGroup = new GridTextGroup(1, 1, { num: true }, [
 			{ text: new StylableText('first cell'), data: { num: 1 } }
 		])
 		expect(tempGridTextGroup.clone().toDescriptor()).toEqual(tempGridTextGroup.toDescriptor())
 	})
 
-	it('can be converted to its descriptor', () => {
+	test('clone creates a copy with a custom function', () => {
+		const tempGridTextGroup = new GridTextGroup(1, 1, { num: true }, [
+			{ text: new StylableText('first cell'), data: { num: 1 } }
+		])
+		const customFunction = jest.fn().mockReturnValueOnce({ num: 1 })
+
+		expect(tempGridTextGroup.clone(customFunction).toDescriptor()).toEqual(
+			tempGridTextGroup.toDescriptor()
+		)
+	})
+
+	test('toDescriptor ceates a description', () => {
 		const mockDataToDescriptorFn = jest.fn(data => {
 			return { num: data.num * 2 }
 		})

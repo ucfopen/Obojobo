@@ -2,44 +2,39 @@ import React from 'react'
 import DeleteButton from '../../../src/scripts/common/components/delete-button'
 import renderer from 'react-test-renderer'
 
-test('DeleteButton', () => {
-	const component = renderer.create(<DeleteButton />)
-	let tree = component.toJSON()
+describe('DeleteButton', () => {
+	test('DeleteButton component', () => {
+		const component = renderer.create(<DeleteButton />)
+		const tree = component.toJSON()
 
-	expect(tree).toMatchSnapshot()
-})
+		expect(tree).toMatchSnapshot()
+	})
 
-test('DeleteButton label', () => {
-	const component = renderer.create(<DeleteButton label="mock-label" />)
-	let tree = component.toJSON()
+	test('DeleteButton component with shouldPreventTab', () => {
+		const component = renderer.create(<DeleteButton shouldPreventTab={true} />)
+		const tree = component.toJSON()
 
-	expect(tree).toMatchSnapshot()
-})
+		expect(tree).toMatchSnapshot()
+	})
 
-test('DeleteButton shouldPreventTab', () => {
-	const component = renderer.create(<DeleteButton shouldPreventTab={true} />)
-	let tree = component.toJSON()
+	test('DeleteButton component with tabIndex', () => {
+		const component = renderer.create(<DeleteButton tabIndex={50} />)
+		const tree = component.toJSON()
 
-	expect(tree).toMatchSnapshot()
-})
+		expect(tree).toMatchSnapshot()
+	})
 
-test('DeleteButton tabIndex', () => {
-	const component = renderer.create(<DeleteButton tabIndex={50} />)
-	let tree = component.toJSON()
+	test('DeleteButton component disabled', () => {
+		const component = renderer.create(<DeleteButton disabled />)
+		const tree = component.toJSON()
 
-	expect(tree).toMatchSnapshot()
-})
+		expect(tree).toMatchSnapshot()
+	})
 
-test('DeleteButton disabled', () => {
-	const component = renderer.create(<DeleteButton disabled />)
-	let tree = component.toJSON()
+	test('DeleteButton component with onClick', () => {
+		const component = renderer.create(<DeleteButton onClick={function() {}} />)
+		const tree = component.toJSON()
 
-	expect(tree).toMatchSnapshot()
-})
-
-test('DeleteButton onClick', () => {
-	const component = renderer.create(<DeleteButton onClick={function() {}} />)
-	let tree = component.toJSON()
-
-	expect(tree).toMatchSnapshot()
+		expect(tree).toMatchSnapshot()
+	})
 })

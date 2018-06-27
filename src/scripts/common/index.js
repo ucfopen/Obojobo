@@ -64,7 +64,6 @@ import TextGroupItem from './text-group/text-group-item'
 import TextGroupSelection from './text-group/text-group-selection'
 import TextGroupUtil from './text-group/text-group-util'
 import Console from './util/console' // @TODO
-import getBackgroundImage from './util/get-background-image'
 import HtmlUtil from './util/html-util'
 import ModalUtil from './util/modal-util'
 import FocusUtil from './util/focus-util'
@@ -186,7 +185,6 @@ export default {
 
 	util: {
 		Console,
-		getBackgroundImage,
 		HtmlUtil,
 		ModalUtil,
 		FocusUtil,

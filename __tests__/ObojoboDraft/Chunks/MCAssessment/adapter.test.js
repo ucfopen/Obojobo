@@ -1,13 +1,13 @@
 import MCAssessmentAdapter from '../../../../ObojoboDraft/Chunks/MCAssessment/adapter'
 
 describe('MCAssessment adapter', () => {
-	it('can be constructed WITHOUT attributes', () => {
+	test('construct builds without attributes', () => {
 		let model = { modelState: {} }
 		MCAssessmentAdapter.construct(model)
 		expect(model).toMatchSnapshot()
 	})
 
-	it('can be constructed WITH attributes', () => {
+	test('construct builds with attributes', () => {
 		let model = { modelState: {} }
 		let attrs = {
 			content: {
@@ -23,7 +23,7 @@ describe('MCAssessment adapter', () => {
 		expect(model).toMatchSnapshot()
 	})
 
-	it('can be constructed WITH responseType', () => {
+	test('construct builds with responseType', () => {
 		let model = { modelState: {} }
 		let attrs = {
 			content: {
@@ -36,7 +36,7 @@ describe('MCAssessment adapter', () => {
 		expect(model).toMatchSnapshot()
 	})
 
-	it('can be constructed WITH correctLabels', () => {
+	test('construct builds with correctLabels', () => {
 		let model = { modelState: {} }
 		let attrs = {
 			content: {
@@ -49,7 +49,7 @@ describe('MCAssessment adapter', () => {
 		expect(model).toMatchSnapshot()
 	})
 
-	it('can be constructed WITH incorrectLabels', () => {
+	test('construct builds with incorrectLabels', () => {
 		let model = { modelState: {} }
 		let attrs = {
 			content: {
@@ -62,11 +62,11 @@ describe('MCAssessment adapter', () => {
 		expect(model).toMatchSnapshot()
 	})
 
-	it('can be constructed WITH shuffle', () => {
+	test('construct builds with shuffle', () => {
 		let model = { modelState: {} }
 		let attrs = {
 			content: {
-				shuffle: false
+				shuffle: true
 			}
 		}
 
@@ -75,7 +75,7 @@ describe('MCAssessment adapter', () => {
 		expect(model).toMatchSnapshot()
 	})
 
-	it('can be cloned', () => {
+	test('clone creates a copy', () => {
 		let a = { modelState: {} }
 		let b = { modelState: {} }
 
@@ -86,32 +86,40 @@ describe('MCAssessment adapter', () => {
 		expect(a.modelState).toEqual(b.modelState)
 	})
 
-	it('can be cloned WITH attributes', () => {
+	test('clone creates a copy with attributes', () => {
 		let a = {
 			modelState: {
 				responseType: 'pick-one',
 				correctLabels: 'Correct!|Great job!',
 				incorrectLabels: 'Incorrect|wrong',
-				shuffle: false
+				shuffle: true
+			}
+		}
+		let attrs = {
+			content: {
+				responseType: 'pick-one',
+				correctLabels: 'Correct!|Great job!',
+				incorrectLabels: 'Incorrect|wrong',
+				shuffle: true
 			}
 		}
 		let b = {
 			modelState: {
-				responseType: 'pick-one',
-				correctLabels: 'Correct!|Great job!',
-				incorrectLabels: 'Incorrect|wrong',
+				responseType: null,
+				correctLabels: null,
+				incorrectLabels: null,
 				shuffle: false
 			}
 		}
 
-		MCAssessmentAdapter.construct(a)
+		MCAssessmentAdapter.construct(a, attrs)
 		MCAssessmentAdapter.clone(a, b)
 
 		expect(a).not.toBe(b)
 		expect(a.modelState).toEqual(b.modelState)
 	})
 
-	it('can convert to JSON', () => {
+	test('can convert to JSON', () => {
 		let model = { modelState: {} }
 		let attrs = { content: { responseType: 'pick-one' } }
 		let json = { content: {} }
@@ -122,14 +130,14 @@ describe('MCAssessment adapter', () => {
 		expect(json).toMatchSnapshot()
 	})
 
-	it('can convert to JSON WITH attributes', () => {
+	test('can convert to JSON WITH attributes', () => {
 		let model = { modelState: {} }
 		let attrs = {
 			content: {
 				responseType: 'pick-one',
 				correctLabels: 'Correct!|Great job!',
 				incorrectLabels: 'Incorrect|wrong',
-				shuffle: false
+				shuffle: true
 			}
 		}
 		let json = { content: {} }

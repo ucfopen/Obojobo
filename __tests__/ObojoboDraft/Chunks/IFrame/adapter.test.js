@@ -4,24 +4,23 @@ describe('IFrame adapter', () => {
 	let model
 
 	beforeEach(() => {
-		model = {
-			modelState: {}
-		}
+		model = { modelState: {} }
 	})
 
-	test('can be constructed WITHOUT attributes', () => {
+	test('construct builds without attributes', () => {
 		IFrameAdapter.construct(model)
 		expect(model).toMatchSnapshot()
 	})
 
-	test('can be constructed WITH attributes (1/2)', () => {
-		IFrameAdapter.construct(model, { content: { src: 'mock-src', type: 'webpage' } })
-		expect(model).toMatchSnapshot()
-	})
+	test('construct builds with attributes', () => {
+		const attrs = {
+			content: {
+				src: 'mockSrc',
+				allow: 'mockAllow'
+			}
+		}
 
-	test('can be constructed WITH attributes (2/2)', () => {
-		IFrameAdapter.construct(model, { content: { src: 'mock-src', type: 'media' } })
-		expect(model).toMatchSnapshot()
+		IFrameAdapter.construct(model, attrs)
 	})
 
 	test('adapter sets newWindow correctly', () => {
@@ -208,8 +207,8 @@ describe('IFrame adapter', () => {
 	})
 
 	test('can be cloned', () => {
-		let a = { modelState: {} }
-		let b = { modelState: {} }
+		const a = { modelState: {} }
+		const b = { modelState: {} }
 
 		IFrameAdapter.construct(a)
 		IFrameAdapter.clone(a, b)
@@ -218,19 +217,21 @@ describe('IFrame adapter', () => {
 		expect(a.modelState).toEqual(b.modelState)
 	})
 
-	test('can convert to JSON', () => {
-		let attrs = { content: { src: 'mock-src' } }
-		let json = { content: {} }
+	test('toJSON builds a JSON representation', () => {
+		const model = { modelState: {} }
+		const attrs = { content: { src: 'mockSrc' } }
+		const json = { content: {} }
 
 		IFrameAdapter.construct(model, attrs)
 		IFrameAdapter.toJSON(model, json)
 		expect(json).toMatchSnapshot()
 	})
 
-	test('can convert to text', () => {
-		let attrs = { content: { src: 'mock-src' } }
+	test('toText creates a text representation', () => {
+		const model = { modelState: {} }
+		const attrs = { content: { src: 'mockSrc' } }
 
 		IFrameAdapter.construct(model, attrs)
-		expect(IFrameAdapter.toText(model)).toMatch('mock-src')
+		expect(IFrameAdapter.toText(model)).toMatch('mockSrc')
 	})
 })

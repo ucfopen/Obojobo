@@ -3,7 +3,7 @@ import StyleRange from '../../../src/scripts/common/text/style-range'
 import TextGroup from '../../../src/scripts/common/text-group/text-group'
 import TextGroupItem from '../../../src/scripts/common/text-group/text-group-item'
 
-describe('TextGroup', function() {
+describe('TextGroup', () => {
 	let tg, tg3items, tgDataTemplate, tgWithItems, tgWith3Items, frozenEmptyObject
 
 	beforeEach(() => {
@@ -23,7 +23,7 @@ describe('TextGroup', function() {
 		frozenEmptyObject = Object.freeze({})
 	})
 
-	it('creates instances with expected values', function() {
+	test('constructor creates instances with expected values', () => {
 		expect(tg.maxItems).toBe(Infinity)
 		expect(tg.items.length).toBe(0)
 		expect(tg.dataTemplate).toEqual(frozenEmptyObject)
@@ -41,11 +41,7 @@ describe('TextGroup', function() {
 		expect(tgWithItems.dataTemplate).toEqual(frozenEmptyObject)
 	})
 
-	it('adds initial items while conforming to data template', function() {
-		expect(tgWithItems.items[0].data).toEqual({})
-	})
-
-	it('clears items', function() {
+	test('clear removes items', () => {
 		tgWithItems.clear()
 
 		expect(tgWithItems.maxItems).toBe(Infinity)
@@ -53,13 +49,13 @@ describe('TextGroup', function() {
 		expect(tgWithItems.dataTemplate).toEqual(frozenEmptyObject)
 	})
 
-	it('returns the index of an item', function() {
+	test('indexOf returns the index of an item', () => {
 		tg.add(new StyleableText('test'))
 
 		expect(tg.indexOf(tg.first)).toBe(0)
 	})
 
-	it('initializes the text group with items', function() {
+	test('init builds the text group with items', () => {
 		tgWithItems.init(10)
 
 		tgWithItems.items.map(function(item) {
@@ -70,7 +66,7 @@ describe('TextGroup', function() {
 		expect(tgWithItems.items.length).toBe(10)
 	})
 
-	it('initializes the text group with items while respecting the max items limit', function() {
+	test('init builds the text group with items while respecting the max items limit', () => {
 		tg3items.init(10)
 
 		tg3items.items.map(function(item) {
@@ -81,7 +77,7 @@ describe('TextGroup', function() {
 		expect(tg3items.items.length).toBe(3)
 	})
 
-	it('initializes the text group with 1 item if number not specified', function() {
+	test('init builds the text group with 1 item if number not specified', () => {
 		tgWithItems.init()
 
 		tgWithItems.items.map(function(item) {
@@ -92,7 +88,7 @@ describe('TextGroup', function() {
 		expect(tgWithItems.items.length).toBe(1)
 	})
 
-	it('fills items to the max item limit', function() {
+	test('fill adds items to the max item limit', () => {
 		tg3items.fill()
 
 		tg3items.items.map(function(item) {
@@ -103,13 +99,29 @@ describe('TextGroup', function() {
 		expect(tg3items.items.length).toBe(3)
 	})
 
-	it("doesn't fill items with no max item limit", function() {
+	test("fill doesn't fill items with no max item limit", () => {
 		tg.fill()
 
 		expect(tg.items.length).toBe(0)
 	})
 
-	it('adds items while respecting data template', function() {
+	test('add inserts a new item', () => {
+		tg.add(new StyleableText('test'))
+
+		expect(tg.length).toBe(1)
+	})
+
+	test('add does not insert a new item if full', () => {
+		tg3items.fill()
+
+		expect(tg3items.length).toBe(3)
+
+		tg3items.add(new StyleableText('test'))
+
+		expect(tg3items.length).toBe(3)
+	})
+
+	test('add builds items while respecting data template', () => {
 		tg.add(new StyleableText('new item'), { x: 0 })
 
 		expect(tg.items.length).toBe(1)
@@ -123,7 +135,7 @@ describe('TextGroup', function() {
 		expect(tgDataTemplate.first.data).toEqual({ a: 100, b: 2 })
 	})
 
-	it('adds item at a specified index', function() {
+	test('addAt adds item at a specified index', () => {
 		tgWithItems.addAt(0, new StyleableText('new'))
 
 		expect(tgWithItems.items.length).toBe(3)
@@ -131,7 +143,17 @@ describe('TextGroup', function() {
 		expect(tgWithItems.first.data).toEqual({})
 	})
 
-	it('adds a group', function() {
+	test('addAt does not add item at a specified index when full', () => {
+		tg3items.fill()
+
+		expect(tg3items.length).toBe(3)
+
+		tg3items.addAt(0, new StyleableText('new'))
+
+		expect(tg3items.length).toBe(3)
+	})
+
+	test('addGroup adds a group', () => {
 		tg.add(new StyleableText('A'))
 		tg.add(new StyleableText('B'))
 
@@ -144,7 +166,7 @@ describe('TextGroup', function() {
 		expect(tg.items[3].text).toEqual(new StyleableText('second'))
 	})
 
-	it('adds a group at a specified index', function() {
+	test('addGroup adds a group at a specified index', () => {
 		tg.add(new StyleableText('A'))
 		tg.add(new StyleableText('B'))
 
@@ -157,21 +179,7 @@ describe('TextGroup', function() {
 		expect(tg.items[3].text).toEqual(new StyleableText('B'))
 	})
 
-	it('adds a group and maintains data template', function() {
-		tg.dataTemplate = { a: 1, b: 2, x: 3 }
-		tg.add(new StyleableText('A'))
-		tg.add(new StyleableText('B'), { a: 100, c: 200, x: 300 })
-
-		expect(tg.items[1].data).toEqual({ a: 100, b: 2, x: 300 })
-
-		tgDataTemplate.addGroupAt(tg)
-
-		expect(tgDataTemplate.items.length).toBe(2)
-		expect(tgDataTemplate.items[0].data).toEqual({ a: 1, b: 2 })
-		expect(tgDataTemplate.items[1].data).toEqual({ a: 100, b: 2 })
-	})
-
-	it('adds a group with custom clone data function', function() {
+	test('addGroup adds a group with custom clone data function', () => {
 		tg.dataTemplate = { a: 1, b: 2, x: 3 }
 		tg.add(new StyleableText('A'))
 		tg.add(new StyleableText('B'))
@@ -186,25 +194,39 @@ describe('TextGroup', function() {
 		expect(tg.items[2].data).toEqual({ a: 1, b: 2, x: 1000 })
 	})
 
-	it('retrieves an item at a specified index', function() {
+	test('addGroupAt adds a group and maintains data template', () => {
+		tg.dataTemplate = { a: 1, b: 2, x: 3 }
+		tg.add(new StyleableText('A'))
+		tg.add(new StyleableText('B'), { a: 100, c: 200, x: 300 })
+
+		expect(tg.items[1].data).toEqual({ a: 100, b: 2, x: 300 })
+
+		tgDataTemplate.addGroupAt(tg)
+
+		expect(tgDataTemplate.items.length).toBe(2)
+		expect(tgDataTemplate.items[0].data).toEqual({ a: 1, b: 2 })
+		expect(tgDataTemplate.items[1].data).toEqual({ a: 100, b: 2 })
+	})
+
+	test('get retrieves an item at a specified index', () => {
 		expect(tgWithItems.get(0)).toEqual(tgWithItems.items[0])
 	})
 
-	it('sets an item at a specified index', function() {
+	test('set places an item at a specified index', () => {
 		tgWithItems.set(0, new StyleableText('new'))
 
 		expect(tgWithItems.items.length).toBe(2)
 		expect(tgWithItems.items[0].text).toEqual(new StyleableText('new'))
 	})
 
-	it('removes an item at a specified index', function() {
+	test('remove deletes an item at a specified index', () => {
 		tgWithItems.remove(0)
 
 		expect(tgWithItems.items.length).toBe(1)
 		expect(tgWithItems.items[0].text).toEqual(new StyleableText('second'))
 	})
 
-	it('removed item has an index of -1', function() {
+	test('remove sets item index to -1', () => {
 		let firstItem = tgWithItems.get(0)
 
 		expect(firstItem.index).toBe(0)
@@ -215,7 +237,7 @@ describe('TextGroup', function() {
 		expect(firstItem.index).toBe(-1)
 	})
 
-	it('clones itself', function() {
+	test('clone creates a copy', () => {
 		let clone = tgWithItems.clone()
 
 		expect(clone).not.toBe(tgWithItems)
@@ -230,7 +252,7 @@ describe('TextGroup', function() {
 		expect(clone.items[1].data).toEqual(tgWithItems.items[1].data)
 	})
 
-	it('clones itself with a custom clone function', function() {
+	test('clone creates a copy with a custom clone function', () => {
 		tgDataTemplate.add(new StyleableText('new1'), { a: 100 })
 		tgDataTemplate.add(new StyleableText('new2'), { b: 100 })
 
@@ -246,7 +268,7 @@ describe('TextGroup', function() {
 		expect(clone.items[1].data).toEqual({ a: 1, b: 5 })
 	})
 
-	it('exports to an object', function() {
+	test('toDescriptor exports to an object', () => {
 		expect(tgWithItems.toDescriptor()).toEqual([
 			{
 				text: {
@@ -265,21 +287,21 @@ describe('TextGroup', function() {
 		])
 	})
 
-	it('reduces to a subset with toSlice', function() {
+	test('toSlice reduces to a subset', () => {
 		tgWithItems.toSlice(0, 1)
 
 		expect(tgWithItems.items.length).toBe(1)
 		expect(tgWithItems.items[0].text).toEqual(new StyleableText('first'))
 	})
 
-	it('toSlice slices to end without second param', function() {
+	test('toSlice slices to end without second param', () => {
 		tgWithItems.toSlice(1)
 
 		expect(tgWithItems.items.length).toBe(1)
 		expect(tgWithItems.items[0].text).toEqual(new StyleableText('second'))
 	})
 
-	it('splits itself into two groups', function() {
+	test('splitBefore splits itself into two groups', () => {
 		tg.add(new StyleableText('A'))
 		tg.add(new StyleableText('B'))
 		tg.add(new StyleableText('C'))
@@ -310,7 +332,7 @@ describe('TextGroup', function() {
 		expect(c.items[2].text).toEqual(new StyleableText('C'))
 	})
 
-	it('splits text at the start of the group', function() {
+	test('splitText splits at the start of the group', () => {
 		tgWithItems.splitText(0, 0)
 
 		expect(tgWithItems.items.length).toBe(3)
@@ -319,7 +341,7 @@ describe('TextGroup', function() {
 		expect(tgWithItems.items[2].text).toEqual(new StyleableText('second'))
 	})
 
-	it('splits text in the middle of the group', function() {
+	test('splitText splits in the middle of the group', () => {
 		tgWithItems.splitText(0, 2)
 
 		expect(tgWithItems.items.length).toBe(3)
@@ -328,7 +350,7 @@ describe('TextGroup', function() {
 		expect(tgWithItems.items[2].text).toEqual(new StyleableText('second'))
 	})
 
-	it('splits text at the end of the group', function() {
+	test('splitText splits at the end of the group', () => {
 		tgWithItems.splitText(1, 6)
 
 		expect(tgWithItems.items.length).toBe(3)
@@ -337,7 +359,7 @@ describe('TextGroup', function() {
 		expect(tgWithItems.items[2].text).toEqual(new StyleableText(''))
 	})
 
-	it('splits text and clones data', function() {
+	test('splitText clones data', () => {
 		tgDataTemplate.add(new StyleableText('first'), { a: 100 })
 		tgDataTemplate.add(new StyleableText('second'), { b: 200 })
 
@@ -349,7 +371,7 @@ describe('TextGroup', function() {
 		expect(tgDataTemplate.items[2].data).toEqual({ a: 1, b: 200 })
 	})
 
-	it('merges text', function() {
+	test('merge combines text', () => {
 		tgDataTemplate.add(new StyleableText('my'), { a: 'my', b: 100 })
 		tgDataTemplate.add(new StyleableText('hot'), { a: 'hot', b: 200 })
 		tgDataTemplate.add(new StyleableText('dog'), { a: 'dog', b: 300 })
@@ -367,7 +389,22 @@ describe('TextGroup', function() {
 		expect(tgDataTemplate.items[2].data).toEqual({ a: 'is tasty', b: 400 })
 	})
 
-	it('merges text with a custom merge function', function() {
+	test('merge does not combine text outside of bounds', () => {
+		tgDataTemplate.add(new StyleableText('my'), { a: 'my', b: 100 })
+		tgDataTemplate.add(new StyleableText('hot'), { a: 'hot', b: 200 })
+		tgDataTemplate.add(new StyleableText('dog'), { a: 'dog', b: 300 })
+		tgDataTemplate.add(new StyleableText('is tasty'), { a: 'is tasty', b: 400 })
+
+		tgDataTemplate.merge(8)
+
+		expect(tgDataTemplate.items.length).toBe(4)
+		expect(tgDataTemplate.items[0].text).toEqual(new StyleableText('my'))
+		expect(tgDataTemplate.items[1].text).toEqual(new StyleableText('hot'))
+		expect(tgDataTemplate.items[2].text).toEqual(new StyleableText('dog'))
+		expect(tgDataTemplate.items[3].text).toEqual(new StyleableText('is tasty'))
+	})
+
+	test('merge combines text with a custom merge function', () => {
 		tgDataTemplate.add(new StyleableText('abc'), { b: 100 })
 		tgDataTemplate.add(new StyleableText('xyz'), { b: 200 })
 
@@ -379,7 +416,7 @@ describe('TextGroup', function() {
 		expect(tgDataTemplate.items[0].data).toEqual({ a: 1, b: 300 })
 	})
 
-	it('deletes a span of text', function() {
+	test('deleteSpan deletes a span of text', () => {
 		tgWithItems.deleteSpan(0, 1, 0, 2)
 
 		expect(tgWithItems.items.length).toBe(2)
@@ -387,7 +424,7 @@ describe('TextGroup', function() {
 		expect(tgWithItems.items[1].text).toEqual(new StyleableText('second'))
 	})
 
-	it('deletes a span of text at the start of the first item', function() {
+	test('deleteSpan deletes a span of text at the start of the first item', () => {
 		tgWithItems.deleteSpan(0, 0, 0, 1)
 
 		expect(tgWithItems.items.length).toBe(2)
@@ -395,7 +432,7 @@ describe('TextGroup', function() {
 		expect(tgWithItems.items[1].text).toEqual(new StyleableText('second'))
 	})
 
-	it('deletes a span of text at the end of the first item', function() {
+	test('deleteSpan deletes a span of text at the end of the first item', () => {
 		tgWithItems.deleteSpan(0, 4, 0, 5)
 
 		expect(tgWithItems.items.length).toBe(2)
@@ -403,7 +440,7 @@ describe('TextGroup', function() {
 		expect(tgWithItems.items[1].text).toEqual(new StyleableText('second'))
 	})
 
-	it('deletes the complete span of the first text item', function() {
+	test('deleteSpan deletes the complete span of the first text item', () => {
 		tgWithItems.deleteSpan(0, 0, 0, 5)
 
 		expect(tgWithItems.items.length).toBe(2)
@@ -411,7 +448,7 @@ describe('TextGroup', function() {
 		expect(tgWithItems.items[1].text).toEqual(new StyleableText('second'))
 	})
 
-	it('deletes a span of text at the start of the last item', function() {
+	test('deleteSpan deletes a span of text at the start of the last item', () => {
 		tgWithItems.deleteSpan(1, 0, 1, 1)
 
 		expect(tgWithItems.items.length).toBe(2)
@@ -419,7 +456,7 @@ describe('TextGroup', function() {
 		expect(tgWithItems.items[1].text).toEqual(new StyleableText('econd'))
 	})
 
-	it('deletes a span of text at the end of the last item', function() {
+	test('deleteSpan deletes a span of text at the end of the last item', () => {
 		tgWithItems.deleteSpan(1, 5, 1, 6)
 
 		expect(tgWithItems.items.length).toBe(2)
@@ -427,7 +464,7 @@ describe('TextGroup', function() {
 		expect(tgWithItems.items[1].text).toEqual(new StyleableText('secon'))
 	})
 
-	it('deletes the complete span of the last text item', function() {
+	test('deleteSpan deletes the complete span of the last text item', () => {
 		tgWithItems.deleteSpan(1, 0, 1, 6)
 
 		expect(tgWithItems.items.length).toBe(2)
@@ -435,14 +472,14 @@ describe('TextGroup', function() {
 		expect(tgWithItems.items[1].text).toEqual(new StyleableText(''))
 	})
 
-	it('deletes a span of text that covers two text items', function() {
+	test('deleteSpan deletes a span of text that covers two text items', () => {
 		tgWithItems.deleteSpan(0, 1, 1, 5)
 
 		expect(tgWithItems.items.length).toBe(1)
 		expect(tgWithItems.items[0].text).toEqual(new StyleableText('fd'))
 	})
 
-	it("deletes a span of text that covers two text items but doesn't merge when specified not to merge", function() {
+	test("deleteSpan deletes a span of text that covers two text items but doesn't merge when specified not to merge", () => {
 		tgWithItems.deleteSpan(0, 1, 1, 5, false)
 
 		expect(tgWithItems.items.length).toBe(2)
@@ -450,14 +487,14 @@ describe('TextGroup', function() {
 		expect(tgWithItems.items[1].text).toEqual(new StyleableText('d'))
 	})
 
-	it('deletes a span of text that covers three text items', function() {
+	test('deleteSpan deletes a span of text that covers three text items', () => {
 		tgWith3Items.deleteSpan(0, 1, 2, 4)
 
 		expect(tgWith3Items.items.length).toBe(1)
 		expect(tgWith3Items.items[0].text).toEqual(new StyleableText('fd'))
 	})
 
-	it('deletes a span of text that covers two middle items', function() {
+	test('deleteSpan deletes a span of text that covers two middle items', () => {
 		tgWith3Items.add(new StyleableText('fourth'))
 		tgWith3Items.deleteSpan(1, 1, 2, 4)
 
@@ -467,28 +504,28 @@ describe('TextGroup', function() {
 		expect(tgWith3Items.items[2].text).toEqual(new StyleableText('fourth'))
 	})
 
-	it('deletes a span of text from the beginning to inside the last text item', function() {
+	test('deleteSpan deletes a span of text from the beginning to inside the last text item', () => {
 		tgWithItems.deleteSpan(0, 0, 1, 5)
 
 		expect(tgWithItems.items.length).toBe(1)
 		expect(tgWithItems.items[0].text).toEqual(new StyleableText('d'))
 	})
 
-	it('deletes a span of text from inside the first text item to the end', function() {
+	test('deleteSpan deletes a span of text from inside the first text item to the end', () => {
 		tgWithItems.deleteSpan(0, 1, 1, 6)
 
 		expect(tgWithItems.items.length).toBe(1)
 		expect(tgWithItems.items[0].text).toEqual(new StyleableText('f'))
 	})
 
-	it('deletes all the text', function() {
+	test('deleteSpan deletes all the text', () => {
 		tgWithItems.deleteSpan(0, 0, 1, 6)
 
 		expect(tgWithItems.items.length).toBe(1)
 		expect(tgWithItems.items[0].text).toEqual(new StyleableText(''))
 	})
 
-	it('deletes a span of text and merges data', function() {
+	test('deleteSpan deletes a span of text and merges data', () => {
 		tgDataTemplate.add(new StyleableText('first'), { a: 100 })
 		tgDataTemplate.add(new StyleableText('second'), { b: 200 })
 
@@ -498,7 +535,7 @@ describe('TextGroup', function() {
 		expect(tgDataTemplate.items[0].data).toEqual({ a: 100, b: 2 })
 	})
 
-	it('deletes a span of text and merges data with a custom merge function', function() {
+	test('deleteSpan deletes a span of text and merges data with a custom merge function', () => {
 		tgDataTemplate.add(new StyleableText('first'), { a: 100 })
 		tgDataTemplate.add(new StyleableText('second'), { b: 200 })
 
@@ -511,7 +548,7 @@ describe('TextGroup', function() {
 		expect(tgDataTemplate.items[0].data).toEqual({ a: 101, b: 2 })
 	})
 
-	it('clears a span of text', function() {
+	test('clearSpan clears a span of text', () => {
 		tgWithItems.clearSpan(0, 1, 0, 2)
 
 		expect(tgWithItems.items.length).toBe(2)
@@ -519,7 +556,7 @@ describe('TextGroup', function() {
 		expect(tgWithItems.items[1].text).toEqual(new StyleableText('second'))
 	})
 
-	it('clears a span of text at the start of the first item', function() {
+	test('clearSpan clears a span of text at the start of the first item', () => {
 		tgWithItems.clearSpan(0, 0, 0, 1)
 
 		expect(tgWithItems.items.length).toBe(2)
@@ -527,7 +564,7 @@ describe('TextGroup', function() {
 		expect(tgWithItems.items[1].text).toEqual(new StyleableText('second'))
 	})
 
-	it('clears a span of text at the end of the first item', function() {
+	test('clearSpan clears a span of text at the end of the first item', () => {
 		tgWithItems.clearSpan(0, 4, 0, 5)
 
 		expect(tgWithItems.items.length).toBe(2)
@@ -535,7 +572,7 @@ describe('TextGroup', function() {
 		expect(tgWithItems.items[1].text).toEqual(new StyleableText('second'))
 	})
 
-	it('clears the complete span of the first text item', function() {
+	test('clearSpan clears the complete span of the first text item', () => {
 		tgWithItems.clearSpan(0, 0, 0, 5)
 
 		expect(tgWithItems.items.length).toBe(2)
@@ -543,7 +580,7 @@ describe('TextGroup', function() {
 		expect(tgWithItems.items[1].text).toEqual(new StyleableText('second'))
 	})
 
-	it('clears a span of text at the start of the last item', function() {
+	test('clearSpan clears a span of text at the start of the last item', () => {
 		tgWithItems.clearSpan(1, 0, 1, 1)
 
 		expect(tgWithItems.items.length).toBe(2)
@@ -551,7 +588,7 @@ describe('TextGroup', function() {
 		expect(tgWithItems.items[1].text).toEqual(new StyleableText('econd'))
 	})
 
-	it('clears a span of text at the end of the last item', function() {
+	test('clearSpan clears a span of text at the end of the last item', () => {
 		tgWithItems.clearSpan(1, 5, 1, 6)
 
 		expect(tgWithItems.items.length).toBe(2)
@@ -559,7 +596,7 @@ describe('TextGroup', function() {
 		expect(tgWithItems.items[1].text).toEqual(new StyleableText('secon'))
 	})
 
-	it('clears the complete span of the last text item', function() {
+	test('clearSpan clears the complete span of the last text item', () => {
 		tgWithItems.clearSpan(1, 0, 1, 6)
 
 		expect(tgWithItems.items.length).toBe(2)
@@ -567,7 +604,7 @@ describe('TextGroup', function() {
 		expect(tgWithItems.items[1].text).toEqual(new StyleableText(''))
 	})
 
-	it('clears a span of text that covers two text items', function() {
+	test('clearSpan clears a span of text that covers two text items', () => {
 		tgWithItems.clearSpan(0, 1, 1, 5, false)
 
 		expect(tgWithItems.items.length).toBe(2)
@@ -575,7 +612,7 @@ describe('TextGroup', function() {
 		expect(tgWithItems.items[1].text).toEqual(new StyleableText('d'))
 	})
 
-	it('clears a span of text that covers three text items', function() {
+	test('clears a span of text that covers three text items', () => {
 		tgWith3Items.clearSpan(0, 1, 2, 4, false)
 
 		expect(tgWith3Items.items.length).toBe(3)
@@ -584,7 +621,7 @@ describe('TextGroup', function() {
 		expect(tgWith3Items.items[2].text).toEqual(new StyleableText('d'))
 	})
 
-	it('clears a span of text from the beginning to inside the last text item', function() {
+	test('clearSpan clears a span of text from the beginning to inside the last text item', () => {
 		tgWithItems.clearSpan(0, 0, 1, 5)
 
 		expect(tgWithItems.items.length).toBe(2)
@@ -592,7 +629,7 @@ describe('TextGroup', function() {
 		expect(tgWithItems.items[1].text).toEqual(new StyleableText('d'))
 	})
 
-	it('clears a span of text from inside the first text item to the end', function() {
+	test('clearSpan clears a span of text from inside the first text item to the end', () => {
 		tgWithItems.clearSpan(0, 1, 1, 6)
 
 		expect(tgWithItems.items.length).toBe(2)
@@ -600,7 +637,7 @@ describe('TextGroup', function() {
 		expect(tgWithItems.items[1].text).toEqual(new StyleableText(''))
 	})
 
-	it('clears all the text', function() {
+	test('clearSpan clears all the text', () => {
 		tgWithItems.clearSpan(0, 0, 1, 6)
 
 		expect(tgWithItems.items.length).toBe(2)
@@ -608,7 +645,7 @@ describe('TextGroup', function() {
 		expect(tgWithItems.items[1].text).toEqual(new StyleableText(''))
 	})
 
-	it('styles text at the beginning of the group', function() {
+	test('styleText styles text at the beginning of the group', () => {
 		tgWith3Items.styleText(0, 0, 0, 1, 'b')
 		let styles1 = tgWith3Items.items[0].text.styleList.styles
 		let styles2 = tgWith3Items.items[1].text.styleList.styles
@@ -620,7 +657,7 @@ describe('TextGroup', function() {
 		expect(styles1[0]).toEqual(new StyleRange(0, 1, 'b'))
 	})
 
-	it('styles text at the end of the group', function() {
+	test('styleText styles text at the end of the group', () => {
 		tgWith3Items.styleText(2, 4, 2, 5, 'b')
 		let styles1 = tgWith3Items.items[0].text.styleList.styles
 		let styles2 = tgWith3Items.items[1].text.styleList.styles
@@ -632,7 +669,7 @@ describe('TextGroup', function() {
 		expect(styles3[0]).toEqual(new StyleRange(4, 5, 'b'))
 	})
 
-	it('styles text spanning two text items', function() {
+	test('styleText styles text spanning two text items', () => {
 		tgWith3Items.styleText(0, 1, 1, 1, 'b')
 		let styles1 = tgWith3Items.items[0].text.styleList.styles
 		let styles2 = tgWith3Items.items[1].text.styleList.styles
@@ -645,7 +682,7 @@ describe('TextGroup', function() {
 		expect(styles2[0]).toEqual(new StyleRange(0, 1, 'b'))
 	})
 
-	it('styles all text', function() {
+	test('styleText styles all text', () => {
 		tgWith3Items.styleText(0, 0, 2, 5, 'b')
 		let styles1 = tgWith3Items.items[0].text.styleList.styles
 		let styles2 = tgWith3Items.items[1].text.styleList.styles
@@ -659,7 +696,18 @@ describe('TextGroup', function() {
 		expect(styles3[0]).toEqual(new StyleRange(0, 5, 'b'))
 	})
 
-	it('unstyles a span of text', function() {
+	test('styleText does not style if range is backwards', () => {
+		tgWith3Items.styleText(2, 1, 1, 1, 'i')
+		let styles1 = tgWith3Items.items[0].text.styleList.styles
+		let styles2 = tgWith3Items.items[1].text.styleList.styles
+		let styles3 = tgWith3Items.items[2].text.styleList.styles
+
+		expect(styles1.length).toBe(0)
+		expect(styles2.length).toBe(1)
+		expect(styles3.length).toBe(0)
+	})
+
+	test('unstyleText unstyles a span of text', () => {
 		tgWith3Items.styleText(0, 0, 2, 5, 'b')
 		tgWith3Items.unstyleText(0, 0, 0, 1, 'b')
 		let styles1 = tgWith3Items.items[0].text.styleList.styles
@@ -674,7 +722,7 @@ describe('TextGroup', function() {
 		expect(styles3[0]).toEqual(new StyleRange(0, 5, 'b'))
 	})
 
-	it('toggleStyle will style a portion of un-styled text', function() {
+	test('toggleStyleText will style a portion of un-styled text', () => {
 		tgWith3Items.toggleStyleText(1, 1, 1, 5, 'b')
 		let styles1 = tgWith3Items.items[0].text.styleList.styles
 		let styles2 = tgWith3Items.items[1].text.styleList.styles
@@ -686,7 +734,7 @@ describe('TextGroup', function() {
 		expect(styles2[0]).toEqual(new StyleRange(1, 5, 'b'))
 	})
 
-	it('toggleStyle will style a portion of partially styled text', function() {
+	test('toggleStyleText will style a portion of partially styled text', () => {
 		tgWith3Items.styleText(1, 1, 1, 5, 'b')
 		tgWith3Items.toggleStyleText(1, 0, 1, 6, 'b')
 		let styles1 = tgWith3Items.items[0].text.styleList.styles
@@ -699,7 +747,7 @@ describe('TextGroup', function() {
 		expect(styles2[0]).toEqual(new StyleRange(0, 6, 'b'))
 	})
 
-	it('toggleStyle will un-style a portion of styled text', function() {
+	test('toggleStyleText will un-style a portion of styled text', () => {
 		tgWith3Items.styleText(1, 1, 1, 5, 'b')
 		tgWith3Items.toggleStyleText(1, 2, 1, 5, 'b')
 		let styles1 = tgWith3Items.items[0].text.styleList.styles
@@ -712,7 +760,7 @@ describe('TextGroup', function() {
 		expect(styles2[0]).toEqual(new StyleRange(1, 2, 'b'))
 	})
 
-	it('toggleStyle will un-style the portion of styled text', function() {
+	test('toggleStyleText will un-style the portion of styled text', () => {
 		tgWith3Items.styleText(1, 1, 1, 5, 'b')
 		tgWith3Items.toggleStyleText(1, 1, 1, 5, 'b')
 		let styles1 = tgWith3Items.items[0].text.styleList.styles
@@ -724,7 +772,7 @@ describe('TextGroup', function() {
 		expect(styles3.length).toBe(0)
 	})
 
-	it('getStyles will return only the styles covered by the span', function() {
+	test('getStyles will return only the styles covered by the span', () => {
 		tgWith3Items.styleText(1, 1, 1, 5, 'b')
 		tgWith3Items.styleText(1, 0, 1, 6, 'i')
 		let styles1 = tgWith3Items.items[0].text.styleList.styles
@@ -740,7 +788,7 @@ describe('TextGroup', function() {
 		expect(styles.b).not.toBeDefined()
 	})
 
-	it('getStyles works over multiple items', function() {
+	test('getStyles works over multiple items', () => {
 		tgWith3Items.styleText(0, 1, 2, 1, 'b')
 
 		let styles = tgWith3Items.getStyles(0, 0, 2, 1)
@@ -750,19 +798,42 @@ describe('TextGroup', function() {
 		expect(styles).toEqual({ b: 'b' })
 	})
 
-	it('returns the length', function() {
+	test('getStyles returns empty if given incorrect params', () => {
+		tgWith3Items.styleText(0, 1, 2, 1, 'b')
+
+		let styles = tgWith3Items.getStyles(72, 83, 2, 1)
+		expect(styles).toEqual({})
+	})
+
+	test('getStyles returns nothing if first item does not have text', () => {
+		tgWith3Items.styleText(0, 1, 2, 1, 'b')
+		tgWith3Items.items[3] = {}
+
+		let styles = tgWith3Items.getStyles(3, 0, 2, 1)
+		expect(styles).toEqual({})
+	})
+
+	test('getStyles returns styles if found', () => {
+		tgWith3Items.styleText(0, 1, 2, 1, 'b')
+		tgWith3Items.add({})
+
+		let styles = tgWith3Items.getStyles(3, 0, 2, 1)
+		expect(styles).toEqual({ b: 'b' })
+	})
+
+	test('length returns the length', () => {
 		expect(tgWithItems.length).toBe(tgWithItems.items.length)
 	})
 
-	it('returns the first item', function() {
+	test('first returns the first item', () => {
 		expect(tgWithItems.first).toBe(tgWithItems.items[0])
 	})
 
-	it('returns the last item', function() {
+	test('last returns the last item', () => {
 		expect(tgWithItems.last).toBe(tgWithItems.items[tgWithItems.items.length - 1])
 	})
 
-	it('can respond if it is full', function() {
+	test('isFull can respond if it is full', () => {
 		expect(tg3items.isFull).toBe(false)
 		tg3items.add(new StyleableText('item'))
 		expect(tg3items.isFull).toBe(false)
@@ -772,27 +843,39 @@ describe('TextGroup', function() {
 		expect(tg3items.isFull).toBe(true)
 	})
 
-	it('can respond if it is empty or blank', function() {
+	test('isEmpty can respond if it is empty or blank', () => {
 		expect(tgWithItems.isEmpty).toBe(false)
-		expect(tgWithItems.isBlank).toBe(false)
 
 		tgWithItems.remove(0)
 
 		expect(tgWithItems.isEmpty).toBe(false)
-		expect(tgWithItems.isBlank).toBe(false)
 
 		tgWithItems.first.text.init()
 
 		expect(tgWithItems.isEmpty).toBe(false)
-		expect(tgWithItems.isBlank).toBe(true)
 
 		tgWithItems.remove(0)
 
 		expect(tgWithItems.isEmpty).toBe(true)
+	})
+
+	test('isBlank can respond if it is blank', () => {
+		expect(tgWithItems.isBlank).toBe(false)
+
+		tgWithItems.remove(0)
+
+		expect(tgWithItems.isBlank).toBe(false)
+
+		tgWithItems.first.text.init()
+
+		expect(tgWithItems.isBlank).toBe(true)
+
+		tgWithItems.remove(0)
+
 		expect(tgWithItems.isBlank).toBe(true)
 	})
 
-	it('can create an instance from an object', function() {
+	test('fromDescriptor can create an instance from an object', () => {
 		tgDataTemplate.add('first', { a: 1, c: 1 })
 		tgDataTemplate.add('second', { a: 2, c: 2 })
 
@@ -807,7 +890,23 @@ describe('TextGroup', function() {
 		expect(newTg.items[1].data).toEqual({ b: 2 })
 	})
 
-	it('can create an instance using the create method shortcut', function() {
+	test('fromDescriptor can create an instance from an object with a custom function', () => {
+		let mockMethod = jest.fn()
+		tgDataTemplate.add('first', { a: 1, c: 1 })
+		tgDataTemplate.add('second', { a: 2, c: 2 })
+
+		let o = tgWithItems.toDescriptor()
+		let newTg = TextGroup.fromDescriptor(o, 10, { b: 2 }, mockMethod)
+
+		expect(newTg.maxItems).toBe(10)
+		expect(newTg.items.length).toBe(2)
+		expect(newTg.items[0].text).toEqual(new StyleableText('first'))
+		expect(newTg.items[1].text).toEqual(new StyleableText('second'))
+		expect(newTg.items[0].data).toEqual({ b: 2 })
+		expect(newTg.items[1].data).toEqual({ b: 2 })
+	})
+
+	test('create builds an instance', () => {
 		let newTg = TextGroup.create(10, { x: 1 }, 4)
 		newTg.addAt(0, new StyleableText('first'), { x: 2, y: 1 })
 
@@ -823,5 +922,13 @@ describe('TextGroup', function() {
 		expect(newTg.items[2].data).toEqual({ x: 1 })
 		expect(newTg.items[3].data).toEqual({ x: 1 })
 		expect(newTg.items[4].data).toEqual({ x: 1 })
+	})
+
+	test('create builds an instance without attributes', () => {
+		let newTg = TextGroup.create()
+
+		expect(newTg.maxItems).toBe(Infinity)
+		expect(newTg.items.length).toBe(1)
+		expect(newTg.items[0].text).toEqual(new StyleableText(''))
 	})
 })

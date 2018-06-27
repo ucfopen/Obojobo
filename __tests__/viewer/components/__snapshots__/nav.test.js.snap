@@ -33,12 +33,14 @@ exports[`Nav renders all list item types 1`] = `
       className="link is-not-selected is-not-visited is-not-complete is-not-correct is-not-assessment is-not-first-in-list is-not-last-in-list"
       onClick={[Function]}
     >
-      <a>
-        <div
-          className="mockStylableText"
-          text="mockMe"
-        />
-      </a>
+      <div
+        className="mockStylableText"
+        text={
+          mockStylableText {
+            "value": "mockMe",
+          }
+        }
+      />
       <div
         className="lock-icon"
       />

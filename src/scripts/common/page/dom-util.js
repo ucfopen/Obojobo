@@ -1,6 +1,6 @@
 // Note that parent here includes the node itself
 
-let getTextNodesInOrderRecur = (element, textNodes) => {
+const getTextNodesInOrderRecur = (element, textNodes) => {
 	return Array.from(element.childNodes).map(
 		node =>
 			node.nodeType === Node.TEXT_NODE
@@ -9,11 +9,11 @@ let getTextNodesInOrderRecur = (element, textNodes) => {
 	)
 }
 
-var DOMUtil = {
+const DOMUtil = {
 	findParentWithAttr(node, targetAttribute, targetValue = null, rootParent = document.body) {
 		while (node != null && node !== rootParent) {
 			if (node.getAttribute != null) {
-				let attr = node.getAttribute(targetAttribute)
+				const attr = node.getAttribute(targetAttribute)
 				if (attr != null && (targetValue === null || attr === targetValue)) {
 					return node
 				}
@@ -35,7 +35,7 @@ var DOMUtil = {
 
 	findParentComponentElements(node) {
 		// return null
-		let componentSet = new Set()
+		const componentSet = new Set()
 
 		let cur = node
 		while (cur !== null) {
@@ -62,7 +62,7 @@ var DOMUtil = {
 	},
 
 	getComponentElementById(oboId) {
-		let el = document.getElementById('obo-' + oboId)
+		const el = document.getElementById('obo-' + oboId)
 		if (!el || !DOMUtil.elementLikeComponent(el)) return null
 
 		return el
@@ -86,10 +86,9 @@ var DOMUtil = {
 	},
 
 	getTextNodesInOrder(element) {
-		let textNodes = []
+		const textNodes = []
 		getTextNodesInOrderRecur(element, textNodes)
-		// console.log 'GET TEXT NODES IN ORDER'
-		// console.log textNodes
+
 		return textNodes
 	}
 }

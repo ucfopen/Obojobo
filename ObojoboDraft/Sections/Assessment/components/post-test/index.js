@@ -45,7 +45,7 @@ const AssessmentPostTest = props => {
 			props.model
 		)
 
-		firstHighestAttempt = highestAttempts.length === 0 ? null : highestAttempts[0]
+		firstHighestAttempt = highestAttempts[0]
 	}
 
 	let onClickResendScore = () => {
@@ -64,7 +64,7 @@ const AssessmentPostTest = props => {
 		let PageComponent = pageModel.getComponentClass()
 		scoreActionsPage = <PageComponent model={pageModel} moduleData={props.moduleData} />
 	} else {
-		scoreActionsPage = <p>{scoreAction.message}</p>
+		scoreActionsPage = <p>{props.scoreAction.message}</p>
 	}
 
 	let externalSystemLabel = props.moduleData.lti.outcomeServiceHostname
@@ -97,29 +97,6 @@ const AssessmentPostTest = props => {
 					onClickResendScore={onClickResendScore}
 					assessmentScore={assessmentScore}
 				/>
-				{() => {
-					switch (ltiState.state.gradebookStatus) {
-						case 'ok_no_outcome_service':
-						case 'ok_null_score_not_sent':
-							return null
-
-						case 'ok_gradebook_matches_assessment_score':
-							return (
-								<span className="lti-sync-message is-synced">
-									({`sent to ${externalSystemLabel} `}
-									<span>✔</span>)
-								</span>
-							)
-
-						default:
-							return (
-								<span className="lti-sync-message is-not-synced">
-									({`not sent to ${externalSystemLabel} `}
-									<span>✖</span>)
-								</span>
-							)
-					}
-				}}
 				<div className="score-actions-page">{scoreActionsPage}</div>
 			</div>
 			<div className="attempt-history">

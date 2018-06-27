@@ -78,8 +78,6 @@ class OboModel extends Backbone.Model {
 				return root
 			}
 		}
-
-		return null
 	}
 
 	processTrigger(type) {
@@ -402,14 +400,6 @@ class OboModel extends Backbone.Model {
 		}
 
 		return null
-	}
-
-	__debug_print(indent) {
-		if (indent == null) {
-			indent = ''
-		}
-		console.log(indent + this.get('type'))
-		return Array.from(this.children.models).map(child => child.__debug_print(indent + '  '))
 	}
 }
 
