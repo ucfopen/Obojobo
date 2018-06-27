@@ -13,15 +13,18 @@ const { getSessionIds } = oboRequire('routes/api/events/caliper_utils')
 const getDraftAndStartVisitProps = (req, res, draftDocument) => {
 	let visitStartReturnExtensionsProps = {}
 
-	draftDocument.yell(
-		'internal:startVisit',
-		req,
-		res,
-		draftDocument.draftId,
-		req.body.visitId,
-		visitStartReturnExtensionsProps
-	)
-	return visitStartReturnExtensionsProps
+	return draftDocument
+		.yell(
+			'internal:startVisit',
+			req,
+			res,
+			draftDocument.draftId,
+			req.body.visitId,
+			visitStartReturnExtensionsProps
+		)
+		.then(() => {
+			return visitStartReturnExtensionsProps
+		})
 }
 
 // Start a new visit

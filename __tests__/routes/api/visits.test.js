@@ -45,7 +45,7 @@ describe('api visits route', () => {
 		success: jest.fn()
 	}
 	const mockNext = jest.fn()
-	const mockYell = jest.fn()
+	const mockYell = jest.fn().mockResolvedValue(undefined)
 	let startVisitRoute
 
 	beforeAll(() => {})
