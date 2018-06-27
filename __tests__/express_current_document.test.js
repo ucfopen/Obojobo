@@ -135,6 +135,23 @@ describe('current document middleware', () => {
 		})
 	})
 
+	test('requireCurrentDocument loads the draft document from body.event when one is avalible', done => {
+		expect.assertions(2)
+
+		let [res, req, mockJson, mockStatus, mockNext] = mockArgs
+		req.body = {
+			event: {
+				draft_id: 1
+			}
+		}
+
+		return req.requireCurrentDocument().then(draftDocument => {
+			expect(draftDocument.draftId).toBe(1)
+			expect(draftDocument).toBeInstanceOf(DraftDocument)
+			done()
+		})
+	})
+
 	test('requireCurrentDocument rejects when no DraftDocument is set', done => {
 		expect.assertions(1)
 

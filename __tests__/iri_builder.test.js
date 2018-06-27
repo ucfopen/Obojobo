@@ -42,10 +42,17 @@ describe('IRI Builder', () => {
 		expect(path).toBe('https://testHost/api/viewer/client%3FdraftId=testDraft')
 	})
 
-	test('getViewerClientIRI returns with expected path when given draftId and client', () => {
-		let path = iri(null, 'testHost').getViewerClientIRI('testDraft', 'testContent', 'testClient')
+	test('getViewerClientIRI returns with expected path when given draftId and contentId', () => {
+		let path = iri(null, 'testHost').getViewerClientIRI('testDraft', 'testContent')
 		expect(path).toBe(
-			'https://testHost/api/viewer/client/testClient%3FdraftId=testDraft&contentId=testContent'
+			'https://testHost/api/viewer/client%3FdraftId=testDraft&contentId=testContent'
+		)
+	})
+
+	test('getViewerClientIRI returns with expected path when given draftId, contentId, and client', () => {
+		let path = iri(null, 'testHost').getViewerClientIRI('testDraft', 'testContentId', 'testClient')
+		expect(path).toBe(
+			'https://testHost/api/viewer/client/testClient%3FdraftId=testDraft&contentId=testContentId'
 		)
 	})
 

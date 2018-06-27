@@ -195,12 +195,12 @@ describe('lti', () => {
 		global.Date.prototype.toISOString = _DateToISOString
 	})
 
-	test('should find the appropriate secret for a given key', () => {
+	test('findSecretForKey should find the appropriate secret for a given key', () => {
 		let secret = lti.findSecretForKey('testkey')
 		expect(secret).toBe('testsecret')
 	})
 
-	test('should fail to find an unused key', () => {
+	test('findSecretForKey should fail to find an unused key', () => {
 		expect(lti.findSecretForKey('fakekey')).toBe(null)
 	})
 
@@ -2434,6 +2434,38 @@ describe('lti', () => {
 		})
 	})
 
+	test('getLTIStatesByAssessmentIdForUserAndDraft searches on assessment', done => {
+		db.manyOrNone.mockResolvedValueOnce([
+			{
+				assessment_id: 'assessment-id',
+				assessment_score_id: 'assessment-score-id',
+				score_sent: 'score-sent',
+				lti_sent_date: 'lti-sent-date',
+				status: 'status',
+				gradebook_status: 'gradebook-status',
+				status_details: 'status-details'
+			}
+		])
+
+		lti
+			.getLTIStatesByAssessmentIdForUserAndDraft('user-id', 'draft-id', 'assessment-id')
+			.then(result => {
+				expect(result).toEqual({
+					'assessment-id': {
+						assessmentId: 'assessment-id',
+						assessmentScoreId: 'assessment-score-id',
+						scoreSent: 'score-sent',
+						sentDate: 'lti-sent-date',
+						status: 'status',
+						gradebookStatus: 'gradebook-status',
+						statusDetails: 'status-details'
+					}
+				})
+
+				done()
+			})
+	})
+
 	test('getLTIStatesByAssessmentIdForUserAndDraft returns empty object when nothing returned from database', done => {
 		db.manyOrNone.mockResolvedValueOnce(null)
 
@@ -2475,7 +2507,35 @@ describe('lti', () => {
 		})
 	})
 
-	test('failing to insert the assessment score fails and logs as expected', done => {
+	test('insertReplaceResultEvent calls insertEvent', done => {
+		insertEvent.mockResolvedValueOnce('inserted')
+
+		lti.insertReplaceResultEvent('mockUserId', 'mockDraftId', {}, {}, 'mockLTIResult').then(() => {
+			expect(insertEvent).toHaveBeenCalled()
+			done()
+		})
+	})
+
+	test('insertReplaceResultEvent catches error', done => {
+		insertEvent.mockRejectedValueOnce(new Error('mock Error'))
+
+		lti.insertReplaceResultEvent('mockUserId', 'mockDraftId', {}, {}, 'mockLTIResult').then(() => {
+			expect(logger.error).toHaveBeenCalledWith('There was an error inserting the lti event')
+			done()
+		})
+	})
+
+	test('logAndGetStatusForError logs unexpected error', () => {
+		// All other errors are tested through other methods
+
+		let result = lti.logAndGetStatusForError(new Error('Mock Error'), {}, logId)
+		expect(result).toEqual({
+			status: 'error_unexpected',
+			statusDetails: { message: 'Mock Error' }
+		})
+	})
+
+	test('sendHighestAssessmentScore fails and logs as expected', done => {
 		mockSendAssessScoreDBCalls(100, 1, moment().toISOString(), true, true, 'testkey', false)
 		mockDate()
 		let mockDraft = {

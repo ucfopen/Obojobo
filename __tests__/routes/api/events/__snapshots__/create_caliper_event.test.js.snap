@@ -391,6 +391,47 @@ Event {
 }
 `;
 
+exports[`Caliper event creator createNavigationEvent with no type or action 1`] = `
+Object {
+  "@context": "http://purl.imsglobal.org/ctx/caliper/v1p1",
+  "actor": "https://mockhost/api/server",
+  "edApp": "https://mockhost/api/system",
+  "eventTime": Any<String>,
+  "extensions": Object {
+    "foo": "bar",
+    "previewMode": false,
+  },
+  "id": "urn:uuid:DEADBEEF-0000-DEAD-BEEF-1234DEADBEEF",
+  "referrer": "https://testHost/api/draft-content/testContentId#navigation came from here",
+  "setAction": [MockFunction] {
+    "calls": Array [
+      Array [
+        "http://purl.imsglobal.org/vocab/caliper/v1/action#NavigatedTo",
+      ],
+    ],
+    "results": Array [
+      Object {
+        "isThrow": false,
+        "value": undefined,
+      },
+    ],
+  },
+  "setObject": [MockFunction] {
+    "calls": Array [
+      Array [
+        "https://testHost/api/draft-content/testContentId#navigation is going here",
+      ],
+    ],
+    "results": Array [
+      Object {
+        "isThrow": false,
+        "value": undefined,
+      },
+    ],
+  },
+}
+`;
+
 exports[`Caliper event creator createPracticeGradeEvent 1`] = `
 Event {
   "@context": "http://purl.imsglobal.org/ctx/caliper/v1p1",

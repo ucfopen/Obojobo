@@ -1,5 +1,5 @@
 let iriFactory = require('../../../iri_builder')
-let createEvent = require('./create_base_caliper_event')
+let createEvent = require('./create_base_caliper_event').createEvent
 let validateCaliperEvent = require('./validate_caliper_event').validateArguments
 let assignCaliperOptions = require('./validate_caliper_event').assignOptions
 let createCaliperEventFromReq = require('./create_caliper_event_from_client_event_req')

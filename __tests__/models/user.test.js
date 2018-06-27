@@ -15,7 +15,7 @@ describe('user model', () => {
 	})
 	afterEach(() => {})
 
-	it('initializes expected properties', () => {
+	test('initializes expected properties', () => {
 		let u = new User({
 			id: 5,
 			firstName: 'Roger',
@@ -34,7 +34,7 @@ describe('user model', () => {
 		expect(u.roles).toHaveLength(0)
 	})
 
-	it('initializes permission getters', () => {
+	test('initializes permission getters', () => {
 		let u
 
 		u = new User({
@@ -62,7 +62,7 @@ describe('user model', () => {
 		expect(u.canDoThingOtherThing).toBe(undefined)
 	})
 
-	it('hasPermission behaves', () => {
+	test('hasPermission behaves', () => {
 		let u = new User({
 			id: 5,
 			firstName: 'Roger',
@@ -76,7 +76,7 @@ describe('user model', () => {
 		expect(u.hasPermission('canDoThing')).toBe(true)
 	})
 
-	it('hasRole and hasRoles work', () => {
+	test('hasRole and hasRoles work', () => {
 		let u = new User({
 			id: 5,
 			firstName: 'Roger',
@@ -97,7 +97,7 @@ describe('user model', () => {
 		expect(u.hasOneOfRole([]))
 	})
 
-	it('hasRole and hasOneOfRole work', () => {
+	test('hasRole and hasOneOfRole work', () => {
 		let u = new User({
 			id: 5,
 			firstName: 'Roger',
@@ -116,7 +116,7 @@ describe('user model', () => {
 		expect(u.hasOneOfRole(['roleName', 'test'])).toBe(true)
 	})
 
-	it('responds to isGuest correctly', () => {
+	test('responds to isGuest correctly', () => {
 		let u = new User({
 			id: 5,
 			firstName: 'Roger',
@@ -128,7 +128,7 @@ describe('user model', () => {
 		expect(u.isGuest()).toBe(false)
 	})
 
-	it('saves or creates correctly', () => {
+	test('saves or creates correctly', () => {
 		expect.assertions(4)
 
 		db.one.mockResolvedValueOnce({ id: 3 })
@@ -148,7 +148,7 @@ describe('user model', () => {
 		})
 	})
 
-	it('fetches one from the database', () => {
+	test('fetches one from the database', () => {
 		expect.assertions(4)
 
 		db.one.mockResolvedValueOnce({
@@ -169,7 +169,7 @@ describe('user model', () => {
 		})
 	})
 
-	it('throws error when not given enough arguments', () => {
+	test('throws error when not given enough arguments', () => {
 		expect(() => {
 			new User()
 		}).toThrow('Missing arguments for new user')

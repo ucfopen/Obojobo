@@ -52,6 +52,7 @@ describe('preview route', () => {
 		mockReq.app.get.mockReset()
 		mockRes.redirect.mockReset()
 		mockNext.mockReset()
+		logger.error.mockReset()
 		Visit.createPreviewVisit.mockReturnValueOnce({
 			visitId: 'mocked-visit-id',
 			deactivatedVisitId: 'mocked-deactivated-visit-id'
@@ -107,6 +108,21 @@ describe('preview route', () => {
 		return routeFunction(mockReq, mockRes, mockNext).then(result => {
 			expect(logger.error).toBeCalledWith(mockedError)
 			expect(mockNext).toBeCalledWith(mockedError)
+		})
+	})
+
+	test('GET preview/:draftId logs error and calls next if error thrown', () => {
+		expect.assertions(2)
+
+		let routeFunction = mockRouterMethods.get.mock.calls[0][1]
+		mockReq.requireCurrentUser.mockResolvedValueOnce(new User())
+		mockReq.session.save = jest.fn().mockImplementationOnce(funct => {
+			funct({})
+		})
+
+		return routeFunction(mockReq, mockRes, mockNext).then(result => {
+			expect(logger.error).toBeCalledWith(expect.any(Error))
+			expect(mockNext).toBeCalledWith(expect.any(Error))
 		})
 	})
 

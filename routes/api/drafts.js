@@ -5,9 +5,6 @@ const DraftModel = oboRequire('models/draft')
 const logger = oboRequire('logger')
 const db = oboRequire('db')
 const xmlToDraftObject = require('obojobo-draft-xml-parser/xml-to-draft-object')
-
-const insertNewDraft = require('./drafts/insert_new_draft')
-
 const draftTemplateXML = fs
 	.readFileSync('./node_modules/obojobo-draft-document-engine/documents/empty.xml')
 	.toString()
@@ -16,7 +13,7 @@ const draftTemplate = xmlToDraftObject(draftTemplateXML, true)
 // Get a Draft Document Tree
 // mounted as /api/drafts/:draftId
 router.get('/:draftId', (req, res, next) => {
-	let draftId = req.params.draftId
+	const draftId = req.params.draftId
 
 	return DraftModel.fetchById(draftId)
 		.then(draftTree => {
@@ -34,7 +31,7 @@ router.get('/:draftId', (req, res, next) => {
 // Create a Draft
 // mounted as /api/drafts/new
 router.post('/new', (req, res, next) => {
-	let newDraft = null
+	const newDraft = null
 	let user = null
 
 	return req
@@ -42,11 +39,7 @@ router.post('/new', (req, res, next) => {
 		.then(currentUser => {
 			user = currentUser
 			if (!currentUser.canCreateDrafts) throw 'Insufficent permissions'
-
-			return db.none(`BEGIN`)
-		})
-		.then(() => {
-			return insertNewDraft(user.id, draftTemplate, draftTemplateXML)
+			return DraftModel.createWithContent(user.id, draftTemplate, draftTemplateXML)
 		})
 		.then(newDraft => {
 			res.success(newDraft)
@@ -60,7 +53,7 @@ router.post('/new', (req, res, next) => {
 //@TODO - Ensure that you can't post to a deleted draft, ensure you can only delete your own stuff
 // Update a Draft
 // mounted as /api/drafts/:draftid
-router.post(/(\w{8}-\w{4}-\w{4}-\w{4}-\w{12})/, (req, res, next) => {
+router.post('/:draftId', (req, res, next) => {
 	return req
 		.requireCurrentUser()
 		.then(currentUser => {
@@ -97,14 +90,14 @@ router.post(/(\w{8}-\w{4}-\w{4}-\w{4}-\w{12})/, (req, res, next) => {
 			}
 
 			// Scan through json for identical ids
-			let duplicateId = DraftModel.findDuplicateIds(reqInput)
+			const duplicateId = DraftModel.findDuplicateIds(reqInput)
 			if (duplicateId !== null) {
 				logger.error('Posting draft failed - duplicate id "' + duplicateId + '"')
 				res.badInput('Posting draft failed - duplicate id "' + duplicateId + '"')
 				return
 			}
 
-			return DraftModel.updateContent(req.params[0], reqInput, xml || null).then(id => {
+			return DraftModel.updateContent(req.params.draftId, reqInput, xml || null).then(id => {
 				res.success({ id })
 			})
 		})

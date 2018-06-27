@@ -103,6 +103,45 @@ class Draft {
 			})
 	}
 
+	static createWithContent(userId, jsonContent = {}, xmlContent = null) {
+		let newDraft
+
+		return db
+			.tx(transactionDb => {
+				// Create a draft first
+				return transactionDb
+					.one(
+						`
+						INSERT INTO drafts
+							(user_id)
+						VALUES
+							($[userId])
+						RETURNING *`,
+						{ userId }
+					)
+					.then(result => {
+						newDraft = result
+						// Add content referencing the draft
+						return transactionDb.one(
+							`
+							INSERT INTO drafts_content
+								(draft_id, content, xml)
+							VALUES
+								($[draftId], $[jsonContent], $[xmlContent])
+							RETURNING *`,
+							{ draftId: result.id, jsonContent, xmlContent }
+						)
+					})
+					.then(result => {
+						newDraft.content = result
+					})
+			})
+			.then(() => {
+				// transaction committed
+				return newDraft
+			})
+	}
+
 	static updateContent(draftId, jsonContent, xmlContent) {
 		return db
 			.one(

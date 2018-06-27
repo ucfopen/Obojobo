@@ -4,7 +4,7 @@ describe('obo events', () => {
 	beforeEach(() => {})
 	afterEach(() => {})
 
-	it('returns a singleton event emitter', () => {
+	test('returns a singleton event emitter', () => {
 		jest.mock('events')
 		let expectedEmitter = require('events')
 		let oboEvents = oboRequire('obo_events')

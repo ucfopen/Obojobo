@@ -30,14 +30,7 @@ app.on('mount', app => {
 	app.use(currentUserMiddleware)
 	app.use(currentDocumentMiddleware)
 	app.use(oboLtiMiddleware)
-	app.use('/view/:draftId*', ltiLaunch.assignment)
-	app.use('/lti/canvas/editor_button', ltiLaunch.assignmentSelection)
-	app.use('/lti/canvas/course_navigation', ltiLaunch.courseNavlaunch)
-	app.use('/lti/canvas/resource_selection', ltiLaunch.assignmentSelection)
 	app.use('/api', apiResponseDecorator)
-
-	// =========== REGISTER OBOJOBO DRAFT CHUNKS ===========
-	registerChunks(app)
 
 	// =========== ROUTING & CONTROLERS ===========
 	app.use('/preview', oboRequire('routes/preview'))
@@ -48,6 +41,9 @@ app.on('mount', app => {
 	app.use('/api/events', oboRequire('routes/api/events'))
 	app.use('/api/visits', oboRequire('routes/api/visits'))
 	app.use('/profile', oboRequire('routes/profile'))
+
+	// =========== REGISTER OBOJOBO DRAFT CHUNKS ===========
+	registerChunks(app)
 })
 
 module.exports = app

@@ -487,7 +487,7 @@ let insertReplaceResultEvent = (
 	outcomeData,
 	ltiResult
 ) => {
-	insertEvent({
+	return insertEvent({
 		action: 'lti:replaceResult',
 		actorTime: new Date().toISOString(),
 		payload: {
