@@ -1,13 +1,13 @@
-import fs from 'fs'
-import ltiMiddleware from 'express-ims-lti'
-import logger from '../logger'
-
 jest.mock('fs')
 jest.mock('../dev_nonce_store')
 jest.mock('../logger')
 jest.mock('express-ims-lti', () => {
 	return jest.fn()
 })
+
+import fs from 'fs'
+import ltiMiddleware from 'express-ims-lti'
+import logger from '../logger'
 
 let oboLtiMiddleware
 
