@@ -1,13 +1,13 @@
 import QuestionBankAdapter from '../../../../ObojoboDraft/Chunks/QuestionBank/adapter'
 
 describe('QuestionBank adapter', () => {
-	it('can be constructed WITHOUT attributes', () => {
+	test('construct builds without attributes', () => {
 		let model = { modelState: {} }
 		QuestionBankAdapter.construct(model)
 		expect(model).toMatchSnapshot()
 	})
 
-	it('can be constructed WITH attributes', () => {
+	test('construct builds with attributes', () => {
 		let model = { modelState: {} }
 		let attrs = {
 			content: {
@@ -22,7 +22,7 @@ describe('QuestionBank adapter', () => {
 		expect(model).toMatchSnapshot()
 	})
 
-	it('can be cloned', () => {
+	test('clone creates a copy', () => {
 		let a = { modelState: {} }
 		let b = { modelState: {} }
 		let attrs = {
@@ -41,7 +41,7 @@ describe('QuestionBank adapter', () => {
 		expect(a).toEqual(b)
 	})
 
-	it('can be converted to JSON', () => {
+	test('toJSON builds a JSON representation', () => {
 		let model = { modelState: {} }
 		let json = { content: {} }
 		let attrs = {

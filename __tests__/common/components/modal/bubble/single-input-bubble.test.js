@@ -1,8 +1,9 @@
 import React from 'react'
 import renderer from 'react-test-renderer'
-import { mount } from 'enzyme'
+import { mount, unmount } from 'enzyme'
 
 import SingleInputBubble from '../../../../../src/scripts/common/components/modal/bubble/single-input-bubble'
+jest.useFakeTimers()
 
 describe('SingleInputBubble', () => {
 	let onClose, onCancel, onChange
@@ -14,7 +15,7 @@ describe('SingleInputBubble', () => {
 	})
 
 	test('SingleInputBubble Snapshot', () => {
-		const component = renderer.create(
+		const component = mount(
 			<SingleInputBubble
 				label="Label"
 				value="Value"
@@ -23,9 +24,26 @@ describe('SingleInputBubble', () => {
 				onChange={onChange}
 			/>
 		)
-		let tree = component.toJSON()
 
-		expect(tree).toMatchSnapshot()
+		expect(component.html()).toMatchSnapshot()
+	})
+
+	test('SingleInputBubble times out', () => {
+		const el = mount(
+			<SingleInputBubble
+				label="Timed"
+				value="Value"
+				onClose={onClose}
+				onCancel={onCancel}
+				onChange={onChange}
+			/>
+		)
+
+		let spy = jest.spyOn(el.instance().refs.input, 'select')
+
+		jest.runAllTimers()
+
+		expect(spy).toHaveBeenCalled()
 	})
 
 	test('SingleInputBubble cancels on ESC', () => {

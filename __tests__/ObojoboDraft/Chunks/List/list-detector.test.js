@@ -14,6 +14,7 @@ describe('List Detector', () => {
 		expect(looksLikeListItem('1.Text')).toBe(false)
 		expect(looksLikeListItem('1. Text')).toBe(false)
 		expect(looksLikeListItem('1 ')).toBe(false)
+		expect(looksLikeListItem('*. ')).toBe(false)
 	})
 
 	test('looksLikeListItem returns details about a text-representation of an unordered list', () => {
@@ -26,7 +27,7 @@ describe('List Detector', () => {
 		})
 	})
 
-	test('looksLikeListItem returns details about a text-representation of an ordered list', () => {
+	test('looksLikeListItem returns details about a text-representation of an ordered list - Number', () => {
 		expect(looksLikeListItem('1. ')).toEqual({
 			type: 'ordered',
 			symbol: '1',
@@ -50,31 +51,9 @@ describe('List Detector', () => {
 			defaultSymbol: false,
 			symbolStyle: 'decimal'
 		})
+	})
 
-		expect(looksLikeListItem('i. ')).toEqual({
-			type: 'ordered',
-			symbol: 'i',
-			symbolIndex: 1,
-			defaultSymbol: false,
-			symbolStyle: 'lower-roman'
-		})
-
-		expect(looksLikeListItem('I. ')).toEqual({
-			type: 'ordered',
-			symbol: 'I',
-			symbolIndex: 1,
-			defaultSymbol: false,
-			symbolStyle: 'upper-roman'
-		})
-
-		expect(looksLikeListItem('ix. ')).toEqual({
-			type: 'ordered',
-			symbol: 'ix',
-			symbolIndex: 9,
-			defaultSymbol: false,
-			symbolStyle: 'lower-roman'
-		})
-
+	test('looksLikeListItem returns details about a text-representation of an ordered list - Letter', () => {
 		expect(looksLikeListItem('a. ')).toEqual({
 			type: 'ordered',
 			symbol: 'a',
@@ -89,6 +68,80 @@ describe('List Detector', () => {
 			symbolIndex: 2,
 			defaultSymbol: false,
 			symbolStyle: 'upper-alpha'
+		})
+	})
+
+	test('looksLikeListItem returns details about a text-representation of an ordered list - Roman', () => {
+		expect(looksLikeListItem('i. ')).toEqual({
+			type: 'ordered',
+			symbol: 'i',
+			symbolIndex: 1,
+			defaultSymbol: false,
+			symbolStyle: 'lower-roman'
+		})
+
+		expect(looksLikeListItem('II. ')).toEqual({
+			type: 'ordered',
+			symbol: 'II',
+			symbolIndex: 2,
+			defaultSymbol: false,
+			symbolStyle: 'upper-roman'
+		})
+
+		expect(looksLikeListItem('iii. ')).toEqual({
+			type: 'ordered',
+			symbol: 'iii',
+			symbolIndex: 3,
+			defaultSymbol: false,
+			symbolStyle: 'lower-roman'
+		})
+
+		expect(looksLikeListItem('IV. ')).toEqual({
+			type: 'ordered',
+			symbol: 'IV',
+			symbolIndex: 4,
+			defaultSymbol: false,
+			symbolStyle: 'upper-roman'
+		})
+
+		expect(looksLikeListItem('v. ')).toEqual({
+			type: 'ordered',
+			symbol: 'v',
+			symbolIndex: 5,
+			defaultSymbol: false,
+			symbolStyle: 'lower-roman'
+		})
+
+		expect(looksLikeListItem('VI. ')).toEqual({
+			type: 'ordered',
+			symbol: 'VI',
+			symbolIndex: 6,
+			defaultSymbol: false,
+			symbolStyle: 'upper-roman'
+		})
+
+		expect(looksLikeListItem('vii. ')).toEqual({
+			type: 'ordered',
+			symbol: 'vii',
+			symbolIndex: 7,
+			defaultSymbol: false,
+			symbolStyle: 'lower-roman'
+		})
+
+		expect(looksLikeListItem('VIII. ')).toEqual({
+			type: 'ordered',
+			symbol: 'VIII',
+			symbolIndex: 8,
+			defaultSymbol: false,
+			symbolStyle: 'upper-roman'
+		})
+
+		expect(looksLikeListItem('ix. ')).toEqual({
+			type: 'ordered',
+			symbol: 'ix',
+			symbolIndex: 9,
+			defaultSymbol: false,
+			symbolStyle: 'lower-roman'
 		})
 	})
 })

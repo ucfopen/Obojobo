@@ -50,7 +50,7 @@ Array [
         "content": Object {
           "correctLabels": null,
           "incorrectLabels": null,
-          "responseType": "",
+          "responseType": "pick-one",
           "score": 100,
           "shuffle": true,
         },
@@ -129,7 +129,7 @@ Array [
         "content": Object {
           "correctLabels": null,
           "incorrectLabels": null,
-          "responseType": "",
+          "responseType": "pick-one",
           "score": 100,
           "shuffle": true,
         },
@@ -207,7 +207,7 @@ Array [
         "content": Object {
           "correctLabels": null,
           "incorrectLabels": null,
-          "responseType": "",
+          "responseType": "pick-one",
           "score": 100,
           "shuffle": true,
         },
@@ -316,7 +316,7 @@ Array [
         "content": Object {
           "correctLabels": null,
           "incorrectLabels": null,
-          "responseType": "",
+          "responseType": "pick-one",
           "score": 100,
           "shuffle": true,
         },

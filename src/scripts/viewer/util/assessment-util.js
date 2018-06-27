@@ -138,6 +138,7 @@ var AssessmentUtil = {
 			if (QuestionUtil.getResponse(questionState, questionModel, context)) {
 				return acc + 1
 			}
+			return acc
 		}
 
 		return questionModels.reduce(count, 0)

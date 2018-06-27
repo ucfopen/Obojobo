@@ -39,18 +39,10 @@ let Adapter = {
 		let text = ''
 
 		text += border + '\n'
-		for (
-			let row = 0, end = model.modelState.textGroup.numRows, asc = 0 <= end;
-			asc ? row < end : row > end;
-			asc ? row++ : row--
-		) {
+		for (let row = 0, end = model.modelState.textGroup.numRows; row < end; row++) {
 			// console.log 'row', row
 			let s = []
-			for (
-				let col = 0, end1 = model.modelState.textGroup.numCols, asc1 = 0 <= end1;
-				asc1 ? col < end1 : col > end1;
-				asc1 ? col++ : col--
-			) {
+			for (let col = 0, end1 = model.modelState.textGroup.numCols; col < end1; col++) {
 				// console.log '  col', col
 				let i = row * model.modelState.textGroup.numCols + col
 

@@ -8,5 +8,14 @@ exports[`QuestionBank QuestionBank component 1`] = `
   data-obo-component={true}
   data-type="ObojoboDraft.Chunks.QuestionBank"
   id="obo-id"
-/>
+>
+  <div
+    className="component obojobo-draft--chunks--question-bank"
+    data-focussed={false}
+    data-id="child-id"
+    data-obo-component={true}
+    data-type="ObojoboDraft.Chunks.QuestionBank"
+    id="obo-child-id"
+  />
+</div>
 `;

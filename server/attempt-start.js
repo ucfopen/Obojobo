@@ -100,7 +100,7 @@ const startAttempt = (req, res) => {
 
 			return insertAttemptStartCaliperEvent(
 				result.attemptId,
-				assessmentProperties.numAttemptsaken,
+				assessmentProperties.numAttemptsTaken,
 				assessmentProperties.user.id,
 				currentDocument,
 				req.body.assessmentId,

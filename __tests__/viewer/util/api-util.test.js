@@ -51,6 +51,23 @@ describe('apiutil', () => {
 		})
 	})
 
+	test('post fetches with blank body', () => {
+		APIUtil.post('mockEndpoint')
+		expect(fetch).toHaveBeenCalled()
+		let calledEndpoint = fetch.mock.calls[0][0]
+		let calledOptions = fetch.mock.calls[0][1]
+		expect(calledEndpoint).toBe('mockEndpoint')
+		expect(calledOptions).toEqual({
+			body: JSON.stringify({}),
+			credentials: 'include',
+			headers: {
+				Accept: 'application/json',
+				'Content-Type': 'application/json'
+			},
+			method: 'POST'
+		})
+	})
+
 	test('postEvent fetches with the correct args', () => {
 		let lo = {
 			get: requestedProp => requestedProp // this will just return the prop as the value

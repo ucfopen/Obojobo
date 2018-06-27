@@ -6,13 +6,7 @@ import TextGroup from '../../../../src/scripts/common/text-group/text-group'
 import StyleableText from '../../../../src/scripts/common/text/styleable-text'
 import Dispatcher from '../../../../src/scripts/common/flux/dispatcher'
 
-jest.mock('../../../../src/scripts/common/flux/dispatcher', () => {
-	return {
-		trigger: (eventName, event, variable, model) => {
-			event.text = 'REPLACE(' + variable + ')'
-		}
-	}
-})
+jest.mock('../../../../src/scripts/common/flux/dispatcher')
 
 describe('TextGroupEl', () => {
 	let tg
@@ -53,6 +47,10 @@ describe('TextGroupEl', () => {
 	})
 
 	test('Variable replacement', () => {
+		Dispatcher.trigger.mockImplementationOnce((eventName, event, variable, model) => {
+			event.text = 'REPLACE(' + variable + ')'
+		})
+
 		const component = mount(
 			<TextGroupEl groupIndex={1} textItem={tg.get(1)} parentModel={jest.fn()} />
 		)
@@ -60,11 +58,15 @@ describe('TextGroupEl', () => {
 		expect(component.text()).toBe('Some BOLD text with a REPLACE(variable) included')
 	})
 
-	test('Variable replacement', () => {
+	test('Variable replacement with no match', () => {
+		Dispatcher.trigger.mockImplementationOnce((eventName, event, variable, model) => {
+			event.text = null
+		})
+
 		const component = mount(
 			<TextGroupEl groupIndex={1} textItem={tg.get(1)} parentModel={jest.fn()} />
 		)
 
-		expect(component.text()).toBe('Some BOLD text with a REPLACE(variable) included')
+		expect(component.text()).toBe('Some BOLD text with a variable included')
 	})
 })

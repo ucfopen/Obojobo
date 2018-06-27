@@ -499,11 +499,6 @@ describe('Attempt End', () => {
 		])
 	})
 
-	test.skip('@TODO - Need to make sure that these tests log correct', () => {
-		//Don't actually write this test - this is just a reminder
-		//that we need to add log mocks to the other tests in this file
-	})
-
 	test('getCalculatedScores calls calculateScores with expected values', () => {
 		let attemptHistory = [
 			{
@@ -857,7 +852,7 @@ describe('Attempt End', () => {
 		expect(Assessment.updateAttemptState).toHaveBeenCalledTimes(1)
 	})
 
-	test.skip('reloadAttemptStateIfReviewing reloads all when reviews are allowed after last', () => {
+	test('reloadAttemptStateIfReviewing reloads all when reviews are allowed after last', done => {
 		const mockDraftDocument = new DraftDocument(testJson)
 		mockDraftDocument.getChildNodeById.mockReturnValueOnce({
 			children: [
@@ -923,9 +918,85 @@ describe('Attempt End', () => {
 				}
 			]
 		})
+		// Set up mock question retrieval
+		mockDraftDocument.getChildNodeById.mockReturnValueOnce({
+			toObject: () => {
+				return {
+					id: 'qb1.q1',
+					type: 'ObojoboDraft.Chunks.Question',
+					children: [{}, {}]
+				}
+			},
+			childrenSet: [{}, {}]
+		})
+		mockDraftDocument.getChildNodeById.mockReturnValueOnce({
+			toObject: () => {
+				return {
+					id: 'qb1.q1',
+					type: 'ObojoboDraft.Chunks.Question',
+					children: [{}, {}]
+				}
+			},
+			childrenSet: [{}, {}]
+		})
 		Assessment.updateAttemptState = jest.fn()
 
-		let response = reloadAttemptStateIfReviewing(
+		return reloadAttemptStateIfReviewing(
+			0,
+			0,
+			mockAttempt,
+			mockDraftDocument,
+			{ id: 1 },
+			false,
+			null
+		).then(result => {
+			expect(Assessment.getAttempts).toHaveBeenCalled()
+			expect(Assessment.updateAttemptState).toHaveBeenCalledTimes(1)
+			return done()
+		})
+	})
+
+	test('reloadAttemptStateIfReviewing logs an error when reaching an exceptional state', () => {
+		const mockDraftDocument = new DraftDocument(testJson)
+		mockDraftDocument.getChildNodeById.mockReturnValueOnce({
+			children: [
+				{},
+				{
+					toObject: () => {
+						return {
+							id: 'qb1.q1',
+							type: 'ObojoboDraft.Chunks.Question',
+							children: [{}, {}]
+						}
+					},
+					childrenSet: [{}, {}]
+				}
+			]
+		})
+
+		const mockAttempt = {
+			number: 3,
+			assessmentModel: {
+				node: {
+					content: {
+						review: 'bad-review-type',
+						attempts: 3
+					}
+				}
+			}
+		}
+
+		attemptStart.getState = jest.fn().mockReturnValueOnce({
+			qb: {},
+			questions: [
+				{
+					toObject: jest.fn(() => {})
+				}
+			],
+			data: {}
+		})
+
+		let result = reloadAttemptStateIfReviewing(
 			0,
 			0,
 			mockAttempt,
@@ -935,7 +1006,9 @@ describe('Attempt End', () => {
 			null
 		)
 
-		expect(Assessment.updateAttemptState).toHaveBeenCalledTimes(2)
-		expect(Assessment.getAttempts).toHaveBeenCalled()
+		expect(logger.error).toHaveBeenCalledWith(
+			'Error: Reached exceptional state while reloading state for 0'
+		)
+		expect(result).toEqual(null)
 	})
 })

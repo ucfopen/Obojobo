@@ -14,7 +14,11 @@ describe('Modal', () => {
 
 	test('Modal', () => {
 		const component = renderer.create(
-			<Modal onClose={onClose} focusOnFirstElement={focusOnFirstElement}>
+			<Modal
+				onClose={onClose}
+				focusOnFirstElement={focusOnFirstElement}
+				className={'mockClassName'}
+			>
 				Content
 			</Modal>
 		)
@@ -52,6 +56,38 @@ describe('Modal', () => {
 		document.dispatchEvent(new KeyboardEvent('keyup', { keyCode: 27 }))
 
 		expect(onClose).toHaveBeenCalledTimes(1)
+	})
+
+	test('Modal does not close with other keys', () => {
+		const component = mount(
+			<Modal onClose={onClose} focusOnFirstElement={focusOnFirstElement}>
+				Content
+			</Modal>
+		)
+
+		expect(onClose).toHaveBeenCalledTimes(0)
+
+		document.dispatchEvent(new KeyboardEvent('keyup', { keyCode: 28 }))
+
+		expect(onClose).not.toHaveBeenCalled()
+	})
+
+	test('Tab will focus on nothing if no close or first element', () => {
+		const component = mount(
+			<Modal>
+				<textarea />
+			</Modal>
+		)
+
+		expect(focusOnFirstElement).toHaveBeenCalledTimes(0)
+
+		component
+			.find('div')
+			.at(0)
+			.find('.first-tab')
+			.simulate('focus')
+
+		expect(focusOnFirstElement).not.toHaveBeenCalled()
 	})
 
 	test('Tab will focus on the first element if no close button', () => {
@@ -93,7 +129,7 @@ describe('Modal', () => {
 		)
 	})
 
-	test('Unmounts', () => {
+	test('Unmounts with onClose function', () => {
 		const component = mount(
 			<Modal onClose={onClose} focusOnFirstElement={focusOnFirstElement}>
 				Content
@@ -101,5 +137,15 @@ describe('Modal', () => {
 		)
 
 		component.unmount()
+
+		expect(onClose).not.toHaveBeenCalled()
+	})
+
+	test('Unmounts with no onClose function', () => {
+		const component = mount(<Modal focusOnFirstElement={focusOnFirstElement}>Content</Modal>)
+
+		component.unmount()
+
+		expect(onClose).not.toHaveBeenCalled()
 	})
 })

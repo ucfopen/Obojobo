@@ -304,7 +304,10 @@ oboEvents.on('client:question:setResponse', (event, req) => {
 
 	return Promise.resolve()
 		.then(() => {
-			if (!event.payload.attemptId) throw 'Missing Attempt ID'
+			// If no attemptId is specified assume that we are in practice and
+			// we don't need to store the response
+			if (!event.payload.attemptId) return
+
 			if (!event.payload.questionId) throw 'Missing Question ID'
 			if (!event.payload.response) throw 'Missing Response'
 

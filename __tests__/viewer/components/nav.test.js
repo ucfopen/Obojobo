@@ -2,7 +2,12 @@ import { shallow } from 'enzyme'
 import React from 'react'
 import renderer from 'react-test-renderer'
 
-const mockStylableText = props => <div {...props} className={'mockStylableText'} />
+class mockStylableText {
+	constructor(text) {
+		this.value = text
+	}
+}
+const mockStylableComponent = props => <div {...props} className={'mockStylableText'} />
 const mockScrollIntoView = jest.fn()
 // Common
 jest.mock('../../../src/scripts/common/index', () => ({
@@ -22,7 +27,7 @@ jest.mock('../../../src/scripts/common/index', () => ({
 	},
 	text: {
 		StyleableText: mockStylableText,
-		StyleableTextComponent: jest.fn()
+		StyleableTextComponent: mockStylableComponent
 	}
 }))
 
@@ -106,7 +111,7 @@ describe('Nav', () => {
 			{
 				id: 5,
 				type: 'link',
-				label: new mockStylableText({ text: 'mockMe' }),
+				label: new mockStylableText('mockMe'),
 				flags: {
 					visited: false,
 					complete: false,

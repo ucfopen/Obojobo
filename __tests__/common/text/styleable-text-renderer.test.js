@@ -1,5 +1,6 @@
 import styleableTextRenderer from '../../../src/scripts/common/text/styleable-text-renderer'
 import StyleableText from '../../../src/scripts/common/text/styleable-text'
+import StyleRange from '../../../src/scripts/common/text/style-range'
 
 // convience function to easily compare a MockElement
 let mockElToHTMLString = el => {
@@ -58,6 +59,19 @@ describe('styleableTextRenderer', () => {
 		)
 	})
 
+	test('Styled text beyond end', () => {
+		let st = new StyleableText('dog fox cat')
+		let style = new StyleRange(4, 23, 'b')
+		st.styleList.styles[0] = style
+		let mockEl = styleableTextRenderer(st)
+
+		expect(mockElToHTMLString(mockEl)).toEqual(
+			`
+			<span>dog <b>fox cat</b></span>
+		`.replace(/[\t\n]/g, '')
+		)
+	})
+
 	test('Styled text with attributes', () => {
 		let st = new StyleableText('dog fox cat')
 		st.styleText('a', 4, 7, { href: 'www.site.com' })
@@ -110,6 +124,30 @@ describe('styleableTextRenderer', () => {
 		)
 	})
 
+	test('Latex', () => {
+		let st = new StyleableText('dog fox cat')
+		st.styleText('_latex', 4, 7, { a: 1 })
+		let mockEl = styleableTextRenderer(st)
+
+		expect(mockElToHTMLString(mockEl)).toEqual(
+			`
+			<span>dog <span class="latex" a="1"><span class="katex"><span class="katex-mathml"><math><semantics><mrow><mi>f</mi><mi>o</mi><mi>x</mi></mrow><annotation encoding="application/x-tex">fox</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="strut" style="height:0.69444em;"></span><span class="strut bottom" style="height:0.8888799999999999em;vertical-align:-0.19444em;"></span><span class="base"><span class="mord mathit" style="margin-right:0.10764em;">f</span><span class="mord mathit">o</span><span class="mord mathit">x</span></span></span></span></span> cat</span>
+		`.replace(/[\t\n]/g, '')
+		)
+	})
+
+	test('Monospace', () => {
+		let st = new StyleableText('dog fox cat')
+		st.styleText('monospace', 4, 7, { a: 1 })
+		let mockEl = styleableTextRenderer(st)
+
+		expect(mockElToHTMLString(mockEl)).toEqual(
+			`
+			<span>dog <code a=\"1\">fox</code> cat</span>
+		`.replace(/[\t\n]/g, '')
+		)
+	})
+
 	test('Super/Subscripts', () => {
 		let st = new StyleableText('dog-fox-cat')
 		st.styleText('sup', 4, 7, 1)
@@ -132,7 +170,7 @@ describe('styleableTextRenderer', () => {
 		)
 	})
 
-	test.only('Nested Super/Subscripts', () => {
+	test('Nested Super/Subscripts', () => {
 		let st = new StyleableText('dog-fox-cat')
 		st.styleText('sup', 0, 11, 3)
 		st.styleText('sup', 4, 7, -2)

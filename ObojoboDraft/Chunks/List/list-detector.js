@@ -2,7 +2,7 @@ import ListStyles from './list-styles'
 
 let regexes = {
 	bulletListItem: /^[ \t]*(\*)[ \t]+([\s\S]*)/, // Interpert text such as ' * list item' as a bullet in a list
-	numericListItem: /^[ \t]*([0-9]+|[A-Za-z]|VIII|VII|VI|IV|IX|III|II|viii|vii|vi|iv|ix|iii|ii)\.[ \t]+([\s\S]*)/, // Interpert text such as ' 1. list item' as a bullet in a list
+	numericListItem: /^[ \t]*([0-9]+|[A-Za-z]|VIII|VII|VI|IV|IX|III|II|viii|vii|vi|iv|ix|iii|ii)\.[ \t]+$/, // Interpert text such as ' 1. list item' as a bullet in a list
 
 	symbolUpperRoman: /VIII|VII|VI|IV|IX|V|III|II|I/,
 	symbolLowerRoman: /viii|vii|vi|iv|ix|v|iii|ii|i/,
@@ -26,7 +26,7 @@ let looksLikeListItem = function(s) {
 				symbolStyle: ''
 			}
 		}
-	} else if (s.length === 3 || s.length === 4) {
+	} else if (s.length >= 3) {
 		let numericList = replace(s, 'numericListItem')
 		if (numericList != null) {
 			let symbolStyle = getSymbolStyle(numericList.symbol)
@@ -83,12 +83,9 @@ var getSymbolStyle = function(symbol) {
 		return ListStyles.STYLE_UPPERCASE_LETTER
 	}
 
-	matches = regexes.symbolLowerLetter.exec(symbol)
-	if (matches) {
-		return ListStyles.STYLE_LOWERCASE_LETTER
-	}
-
-	return null
+	// Because of the numericListItem regex, symbol is garunteed to be one of the styles
+	// If we get here, it has to be lowercase by process of elimination
+	return ListStyles.STYLE_LOWERCASE_LETTER
 }
 
 var getSymbolIndex = function(symbol, symbolStyle) {
@@ -100,8 +97,9 @@ var getSymbolIndex = function(symbol, symbolStyle) {
 			return symbol.charCodeAt(0) - 96
 		case ListStyles.STYLE_UPPERCASE_LETTER:
 			return symbol.charCodeAt(0) - 64
-		case ListStyles.STYLE_LOWERCASE_ROMAN:
-		case ListStyles.STYLE_UPPERCASE_ROMAN:
+		// Because of the getSymbolStyle, symbol is garunteed to be one of the styles
+		// If we get here, it has to be roman numerals by process of elimination
+		default:
 			switch (symbol.toLowerCase()) {
 				case 'i':
 					return 1
@@ -119,13 +117,11 @@ var getSymbolIndex = function(symbol, symbolStyle) {
 					return 7
 				case 'viii':
 					return 8
-				case 'ix':
-					return 9
+				// Because of the regex, symbol has to be i - ix
+				// If we get here, it has to be 9 by process of elimination
 				default:
-					return 1
+					return 9
 			}
-		default:
-			return 1
 	}
 }
 
