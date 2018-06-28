@@ -9,7 +9,7 @@ import Common from 'Common'
 import Viewer from 'Viewer'
 
 import Controls from './controls'
-import { getRenderSettings, getIsShowing } from './render-settings'
+import { getRenderSettings } from './render-settings'
 
 const DEFAULT_WIDTH = 710
 const DEFAULT_HEIGHT = 500
@@ -20,7 +20,6 @@ const Dispatcher = Common.flux.Dispatcher
 const MediaUtil = Viewer.util.MediaUtil
 const NavUtil = Viewer.util.NavUtil
 const MediaStore = Viewer.stores.MediaStore
-const Logo = Viewer.components.Logo
 const Header = Viewer.components.Header
 const isOrNot = Common.util.isOrNot
 
@@ -111,14 +110,18 @@ export default class IFrame extends React.Component {
 		}
 	}
 
+	isMediaNeedingToBeHidden() {
+		return (
+			!this.props.model.modelState.autoload &&
+			MediaUtil.isShowingMedia(this.props.moduleData.mediaState, this.props.model)
+		)
+	}
+
 	componentWillUnmount() {
 		if (this.resizeObserver) this.resizeObserver.disconnect()
 		Dispatcher.off('viewer:contentAreaResized', this.boundOnViewerContentAreaResized)
 
-		if (
-			!this.props.model.modelState.autoload &&
-			MediaUtil.isShowingMedia(this.props.moduleData.mediaState, this.props.model)
-		) {
+		if (this.isMediaNeedingToBeHidden()) {
 			MediaUtil.hide(this.props.model.get('id'), 'viewerClient')
 		}
 	}

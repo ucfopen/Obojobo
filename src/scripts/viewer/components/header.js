@@ -1,29 +1,32 @@
 import './header.scss'
+
+import React from 'react'
+
 import Logo from './logo'
 
-export default class Header extends React.Component {
-	render() {
-		let logoPosition
+const Header = props => {
+	let logoPosition
 
-		switch (this.props.logoPosition) {
-			case 'left':
-				logoPosition = 'left'
-				break
+	switch (props.logoPosition) {
+		case 'left':
+			logoPosition = 'left'
+			break
 
-			case 'right':
-			default:
-				logoPosition = 'right'
-				break
-		}
-
-		return (
-			<header className={'viewer--components--header is-logo-' + logoPosition}>
-				<div className="wrapper">
-					<span className="module-title">{this.props.moduleTitle}</span>
-					<span className="location">{this.props.location}</span>
-					<Logo />
-				</div>
-			</header>
-		)
+		case 'right':
+		default:
+			logoPosition = 'right'
+			break
 	}
+
+	return (
+		<header className={'viewer--components--header is-logo-' + logoPosition}>
+			<div className="wrapper">
+				<span className="module-title">{props.moduleTitle}</span>
+				<span className="location">{props.location}</span>
+				<Logo />
+			</div>
+		</header>
+	)
 }
+
+export default Header

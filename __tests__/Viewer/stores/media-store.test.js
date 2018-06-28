@@ -31,8 +31,24 @@ describe('Media Store', () => {
 		})
 	})
 
+	test('setState will set state', () => {
+		MediaStore.state = {}
+		MediaStore.setState({ a: 1 })
+
+		expect(MediaStore.state).toEqual({
+			a: 1
+		})
+	})
+
+	test('getState will get state', () => {
+		MediaStore.state = { a: 1 }
+		expect(MediaStore.getState()).toEqual({
+			a: 1
+		})
+	})
+
 	test('Dispatcher listening for the right events', () => {
-		let newMediaStore = new MediaStore.constructor()
+		const newMediaStore = new MediaStore.constructor()
 		expect(Dispatcher.on).toHaveBeenCalledWith({
 			'media:show': expect.any(Function),
 			'media:hide': expect.any(Function),
@@ -220,6 +236,26 @@ describe('Media Store', () => {
 		expect(Dispatcher.trigger).toHaveBeenCalledWith('media:zoomReset', {
 			id: 'mocked-id',
 			previousZoom: 'mocked-zoom'
+		})
+	})
+
+	test('resetZoom works even if no zoom previously set', () => {
+		MediaStore.resetZoom({
+			value: { id: 'mocked-id' }
+		})
+
+		expect(MediaStore.state).toEqual({
+			shown: {},
+			sizeById: {},
+			zoomById: {}
+		})
+		expect(APIUtil.postEvent).toHaveBeenCalledWith('root-id', 'media:resetZoom', '1.0.0', {
+			id: 'mocked-id',
+			previousZoom: 1
+		})
+		expect(Dispatcher.trigger).toHaveBeenCalledWith('media:zoomReset', {
+			id: 'mocked-id',
+			previousZoom: 1
 		})
 	})
 })

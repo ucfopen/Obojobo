@@ -1,14 +1,15 @@
 import './controls.scss'
 
+import React from 'react'
 import parseURL from 'url-parse'
 
 import Common from 'Common'
-let isOrNot = Common.util.isOrNot
+const isOrNot = Common.util.isOrNot
 
-export default props => {
-	let controlsOpts = props.controlsOptions
-	let isShowingSizeControls = controlsOpts.zoom || controlsOpts.expand || controlsOpts.unexpand
-	let newWindowToolTip = parseURL(props.newWindowSrc).hostname
+const controls = props => {
+	const controlsOpts = props.controlsOptions
+	const isShowingSizeControls = controlsOpts.zoom || controlsOpts.expand || controlsOpts.unexpand
+	const newWindowToolTip = parseURL(props.newWindowSrc).hostname
 
 	return (
 		<div
@@ -90,3 +91,5 @@ export default props => {
 		</div>
 	)
 }
+
+export default controls

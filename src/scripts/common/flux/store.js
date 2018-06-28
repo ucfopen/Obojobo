@@ -35,7 +35,7 @@ class Store {
 	}
 
 	updateStateByContext(obj, context) {
-		for (let key in obj) {
+		for (const key in obj) {
 			if (!this.state[key]) this.state[key] = {}
 			this.state[key][context] = obj[key]
 		}

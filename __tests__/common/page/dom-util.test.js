@@ -155,4 +155,8 @@ describe('DOMUtil', () => {
 		const d = document.getElementById('obo-d')
 		expect(DOMUtil.getComponentElementById('d')).toBe(d)
 	})
+
+	test('getComponentElementById returns null if element not found', () => {
+		expect(DOMUtil.getComponentElementById('obo-does-not-exist')).toBe(null)
+	})
 })

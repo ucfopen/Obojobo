@@ -8,7 +8,6 @@ import IdleTimer from 'react-idle-timer'
 import InlineNavButton from '../../viewer/components/inline-nav-button'
 import NavUtil from '../../viewer/util/nav-util'
 import APIUtil from '../../viewer/util/api-util'
-import Logo from '../../viewer/components/logo'
 import QuestionStore from '../../viewer/stores/question-store'
 import AssessmentStore from '../../viewer/stores/assessment-store'
 import NavStore from '../../viewer/stores/nav-store'
@@ -20,18 +19,18 @@ import Header from '../../viewer/components/header'
 const IDLE_TIMEOUT_DURATION_MS = 600000 // 10 minutes
 const NAV_CLOSE_DURATION_MS = 400
 
-let { Legacy } = Common.models
-let { DOMUtil } = Common.page
-let { Screen } = Common.page
-let { OboModel } = Common.models
-let { Dispatcher } = Common.flux
-let { ModalContainer } = Common.components
-let { SimpleDialog } = Common.components.modal
-let { ModalUtil } = Common.util
-let { FocusBlocker } = Common.components
-let { ModalStore } = Common.stores
-let { FocusStore } = Common.stores
-let { FocusUtil } = Common.util
+const { Legacy } = Common.models
+const { DOMUtil } = Common.page
+const { Screen } = Common.page
+const { OboModel } = Common.models
+const { Dispatcher } = Common.flux
+const { ModalContainer } = Common.components
+const { SimpleDialog } = Common.components.modal
+const { ModalUtil } = Common.util
+const { FocusBlocker } = Common.components
+const { ModalStore } = Common.stores
+const { FocusStore } = Common.stores
+const { FocusUtil } = Common.util
 
 // Dispatcher.on 'all', (eventName, payload) -> console.log 'EVENT TRIGGERED', eventName
 
@@ -55,11 +54,7 @@ export default class ViewerApp extends React.Component {
 		Dispatcher.on('viewer:scrollToTop', this.scrollToTop.bind(this))
 		Dispatcher.on('getTextForVariable', this.getTextForVariable.bind(this))
 
-		Dispatcher.on('nav:open', this.onDelayResize.bind(this))
-		Dispatcher.on('nav:close', this.onDelayResize.bind(this))
-		Dispatcher.on('nav:toggle', this.onDelayResize.bind(this))
-
-		let state = {
+		const state = {
 			model: null,
 			navState: null,
 			mediaState: null,
@@ -101,9 +96,9 @@ export default class ViewerApp extends React.Component {
 		let isPreviewing
 		let outcomeServiceURL = 'the external system'
 
-		let urlTokens = document.location.pathname.split('/')
-		let visitIdFromUrl = urlTokens[4] ? urlTokens[4] : null
-		let draftIdFromUrl = urlTokens[2] ? urlTokens[2] : null
+		const urlTokens = document.location.pathname.split('/')
+		const visitIdFromUrl = urlTokens[4] ? urlTokens[4] : null
+		const draftIdFromUrl = urlTokens[2] ? urlTokens[2] : null
 
 		Dispatcher.trigger('viewer:loading')
 
@@ -148,6 +143,11 @@ export default class ViewerApp extends React.Component {
 				window.onunload = this.onWindowClose
 				window.onresize = this.onResize.bind(this)
 
+				this.boundOnDelayResize = this.onDelayResize.bind(this)
+				Dispatcher.on('nav:open', this.boundOnDelayResize)
+				Dispatcher.on('nav:close', this.boundOnDelayResize)
+				Dispatcher.on('nav:toggle', this.boundOnDelayResize)
+
 				this.setState({ loading: false, requestStatus: 'ok', isPreviewing }, () => {
 					Dispatcher.trigger('viewer:loaded', true)
 				})
@@ -187,8 +187,8 @@ export default class ViewerApp extends React.Component {
 
 	componentWillUpdate(nextProps, nextState) {
 		if (this.state.requestStatus === 'ok') {
-			let navTargetId = this.state.navTargetId
-			let nextNavTargetId = this.state.navState.navTargetId
+			const navTargetId = this.state.navTargetId
+			const nextNavTargetId = this.state.navState.navTargetId
 
 			if (navTargetId !== nextNavTargetId) {
 				this.needsScroll = true
@@ -215,7 +215,7 @@ export default class ViewerApp extends React.Component {
 		}
 
 		if (this.needsRemoveLoadingElement === true) {
-			let loadingEl = document.getElementById('viewer-app-loading')
+			const loadingEl = document.getElementById('viewer-app-loading')
 			if (loadingEl && loadingEl.parentElement) {
 				document.getElementById('viewer-app').classList.add('is-loaded')
 				loadingEl.parentElement.removeChild(loadingEl)
@@ -243,8 +243,8 @@ export default class ViewerApp extends React.Component {
 	}
 
 	scrollToTop() {
-		let el = ReactDOM.findDOMNode(this.refs.prev)
-		let container = ReactDOM.findDOMNode(this.refs.container)
+		const el = ReactDOM.findDOMNode(this.refs.prev)
+		const container = ReactDOM.findDOMNode(this.refs.container)
 
 		if (!container) return
 
@@ -271,12 +271,12 @@ export default class ViewerApp extends React.Component {
 			return
 		}
 
-		let component = FocusUtil.getFocussedComponent(this.state.focusState)
+		const component = FocusUtil.getFocussedComponent(this.state.focusState)
 		if (component == null) {
 			return
 		}
 
-		let el = component.getDomEl()
+		const el = component.getDomEl()
 		if (!el) {
 			return
 		}
@@ -322,7 +322,7 @@ export default class ViewerApp extends React.Component {
 	onBeforeWindowClose() {
 		let closePrevented = false
 		// calling this function will prevent the window from closing
-		let preventClose = () => {
+		const preventClose = () => {
 			closePrevented = true
 		}
 
@@ -388,9 +388,9 @@ export default class ViewerApp extends React.Component {
 		window.__lo = this.state.model
 		window.__s = this.state
 
-		let ModuleComponent = this.state.model.getComponentClass()
+		const ModuleComponent = this.state.model.getComponentClass()
 
-		let navTargetModel = NavUtil.getNavTargetModel(this.state.navState)
+		const navTargetModel = NavUtil.getNavTargetModel(this.state.navState)
 		let navTargetTitle = '?'
 		if (navTargetModel != null) {
 			navTargetTitle = navTargetModel.title
@@ -400,7 +400,7 @@ export default class ViewerApp extends React.Component {
 		if (NavUtil.canNavigate(this.state.navState)) {
 			prevModel = NavUtil.getPrevModel(this.state.navState)
 			if (prevModel) {
-				let navText =
+				const navText =
 					typeof prevModel.title !== 'undefined' && prevModel.title !== null
 						? 'Back: ' + prevModel.title
 						: 'Back'
@@ -418,7 +418,7 @@ export default class ViewerApp extends React.Component {
 
 			nextModel = NavUtil.getNextModel(this.state.navState)
 			if (nextModel) {
-				let navText =
+				const navText =
 					typeof nextModel.title !== 'undefined' && nextModel.title !== null
 						? 'Next: ' + nextModel.title
 						: 'Next'
@@ -435,10 +435,10 @@ export default class ViewerApp extends React.Component {
 			}
 		}
 
-		let modalItem = ModalUtil.getCurrentModal(this.state.modalState)
-		let hideViewer = modalItem && modalItem.hideViewer
+		const modalItem = ModalUtil.getCurrentModal(this.state.modalState)
+		const hideViewer = modalItem && modalItem.hideViewer
 
-		let classNames = [
+		const classNames = [
 			'viewer--viewer-app',
 			'is-loaded',
 			this.state.isPreviewing ? 'is-previewing' : 'is-not-previewing',

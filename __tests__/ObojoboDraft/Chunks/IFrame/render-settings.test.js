@@ -16,7 +16,7 @@ import {
 describe('render-settings', () => {
 	let model
 
-	let testGetControlsOptions = (controls, newWindow, sizeState) => {
+	const testGetControlsOptions = (controls, newWindow, sizeState) => {
 		return getControlsOptions(
 			{
 				controls,
@@ -163,7 +163,7 @@ describe('render-settings', () => {
 	})
 
 	test('getControlsOptions (newWindow=null, sizeState="expanded")', () => {
-		let c = testGetControlsOptions
+		const c = testGetControlsOptions
 
 		expect(c([], null, 'expanded')).toEqual({
 			zoom: false,
@@ -239,7 +239,7 @@ describe('render-settings', () => {
 	})
 
 	test('getControlsOptions (newWindow=null, sizeState="ableToExpand")', () => {
-		let c = testGetControlsOptions
+		const c = testGetControlsOptions
 
 		expect(c([], null, 'ableToExpand')).toEqual({
 			zoom: false,
@@ -315,7 +315,7 @@ describe('render-settings', () => {
 	})
 
 	test('getControlsOptions (newWindow=null, sizeState="unableToExpand")', () => {
-		let c = testGetControlsOptions
+		const c = testGetControlsOptions
 
 		expect(c([], null, 'unableToExpand')).toEqual({
 			zoom: false,
@@ -393,7 +393,7 @@ describe('render-settings', () => {
 	//here
 
 	test('getControlsOptions (newWindow=defined, sizeState="expanded")', () => {
-		let c = testGetControlsOptions
+		const c = testGetControlsOptions
 
 		expect(c([], 'nw', 'expanded')).toEqual({
 			zoom: false,
@@ -469,7 +469,7 @@ describe('render-settings', () => {
 	})
 
 	test('getControlsOptions (newWindow=defined, sizeState="ableToExpand")', () => {
-		let c = testGetControlsOptions
+		const c = testGetControlsOptions
 
 		expect(c([], 'nw', 'ableToExpand')).toEqual({
 			zoom: false,
@@ -545,7 +545,7 @@ describe('render-settings', () => {
 	})
 
 	test('getControlsOptions (newWindow=defined, sizeState="unableToExpand")', () => {
-		let c = testGetControlsOptions
+		const c = testGetControlsOptions
 
 		expect(c([], 'nw', 'unableToExpand')).toEqual({
 			zoom: false,
@@ -621,7 +621,7 @@ describe('render-settings', () => {
 	})
 
 	test('getSizeState', () => {
-		let s = getSizeState
+		const s = getSizeState
 
 		expect(s('full', 1, 'normal')).toBe('ableToExpand')
 		expect(s('full', 0.5, 'normal')).toBe('ableToExpand')
@@ -634,24 +634,25 @@ describe('render-settings', () => {
 	})
 
 	test('getMediaSize', () => {
-		let m = getMediaSize
-		let model = { get: () => 'id' }
+		const m = getMediaSize
+		const model = { get: () => 'id' }
 
 		expect(m({ sizeById: {} }, model, 'default')).toBe('default')
 		expect(m({ sizeById: { id: 'size' } }, model, 'default')).toBe('size')
 	})
 
 	test('getDisplayedTitle', () => {
-		let t = getDisplayedTitle
+		const t = getDisplayedTitle
 
 		expect(t({ src: null, title: null })).toBe('IFrame missing src attribute')
 		expect(t({ src: null, title: 'title' })).toBe('IFrame missing src attribute')
 		expect(t({ src: 'src', title: null })).toBe('src')
 		expect(t({ src: 'src', title: 'title' })).toBe('title')
+		expect(t({ src: false, title: null })).toBe('')
 	})
 
 	test('getSetDimensions', () => {
-		let d = getSetDimensions
+		const d = getSetDimensions
 
 		expect(d({ width: 'w', height: 'h' }, 'dw', 'dh')).toEqual({ w: 'w', h: 'h' })
 		expect(d({ height: 'h' }, 'dw', 'dh')).toEqual({ w: 'dw', h: 'h' })
@@ -660,7 +661,7 @@ describe('render-settings', () => {
 	})
 
 	test('getScaleAmount', () => {
-		let s = getScaleAmount
+		const s = getScaleAmount
 
 		expect(s(1, 2, 3)).toBe(-1 / 3)
 		expect(s(3, 2, 1)).toBe(1)
@@ -669,8 +670,8 @@ describe('render-settings', () => {
 	})
 
 	test('getScaleDimensions (expandedSize="full", fit="scale")', () => {
-		let d = getScaleDimensions
-		let ms = { expandedSize: 'full', fit: 'scale' }
+		const d = getScaleDimensions
+		const ms = { expandedSize: 'full', fit: 'scale' }
 
 		expect(d(ms, 123, false, 0.5, 0.1, { w: 'w', h: 'h' })).toEqual({
 			scale: 123 * 0.5,
@@ -685,8 +686,8 @@ describe('render-settings', () => {
 	})
 
 	test('getScaleDimensions (expandedSize="restricted", fit="scale")', () => {
-		let d = getScaleDimensions
-		let ms = { expandedSize: 'restricted', fit: 'scale' }
+		const d = getScaleDimensions
+		const ms = { expandedSize: 'restricted', fit: 'scale' }
 
 		expect(d(ms, 123, false, 0.5, 0.1, { w: 'w', h: 'h' })).toEqual({
 			scale: 123 * 0.5,
@@ -704,8 +705,8 @@ describe('render-settings', () => {
 	})
 
 	test('getScaleDimensions (expandedSize="full", fit="scroll")', () => {
-		let d = getScaleDimensions
-		let ms = { expandedSize: 'full', fit: 'scroll' }
+		const d = getScaleDimensions
+		const ms = { expandedSize: 'full', fit: 'scroll' }
 
 		expect(d(ms, 123, false, 0.5, 0.1, { w: 'w', h: 'h' })).toEqual({
 			scale: 123,
@@ -721,8 +722,8 @@ describe('render-settings', () => {
 	})
 
 	test('getScaleDimensions (expandedSize="restricted", fit="scale")', () => {
-		let d = getScaleDimensions
-		let ms = { expandedSize: 'restricted', fit: 'scroll' }
+		const d = getScaleDimensions
+		const ms = { expandedSize: 'restricted', fit: 'scroll' }
 
 		expect(d(ms, 123, false, 0.5, 0.1, { w: 'w', h: 'h' })).toEqual({
 			scale: 123,
@@ -741,7 +742,7 @@ describe('render-settings', () => {
 	})
 
 	test('getIFrameStyle', () => {
-		let i = getIFrameStyle
+		const i = getIFrameStyle
 
 		expect(i(721)).toEqual({
 			transform: 'scale(721)',
@@ -751,7 +752,7 @@ describe('render-settings', () => {
 	})
 
 	test('getAfterStyle', () => {
-		let a = getAfterStyle
+		const a = getAfterStyle
 
 		expect(a(123, 456, 'scale')).toEqual({
 			paddingTop: 456 / 123 * 100 + '%'
@@ -762,7 +763,7 @@ describe('render-settings', () => {
 	})
 
 	test('getZoomValues', () => {
-		let z = getZoomValues
+		const z = getZoomValues
 		let model
 
 		model = {
@@ -784,12 +785,12 @@ describe('render-settings', () => {
 	})
 
 	test('getRenderSettings', () => {
-		let mediaState = {
+		const mediaState = {
 			zoomById: {},
 			sizeById: {},
 			shown: {}
 		}
-		let model = {
+		const model = {
 			get: () => 'id',
 			modelState: {
 				zoom: 1,
