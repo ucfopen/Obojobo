@@ -13,8 +13,8 @@
 			"TZ='America/New_York' CI=true jest --ci --useStderr --coverage --coverageReporters text-summary cobertura",
 		"start": "webpack --watch",
 		"dev": "webpack-dev-server --colors --port 8090 --host 0.0.0.0",
-		"build": "webpack --mode production",
-		"build:gitadd": "git add ./build",
+		"build": "webpack --mode production --optimize-minimize",
+		"build:dev": "webpack --mode development",
 		"build:minifysvg":
 			"find ./ ! -path node_modules -type f -name '*.svg' ! -name '*.min.svg' -exec svgo {} --multipass --pretty --precision=2 \\;",
 		"generateModuleManifest": "node ./bin/generate_module_manifest.js",

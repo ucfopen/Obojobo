@@ -45,7 +45,7 @@ const obojoboDraftConfig = {
 		backbone: 'Backbone',
 		katex: 'katex'
 	},
-	plugins: [new MiniCssExtractPlugin('[name].css')]
+	plugins: [new MiniCssExtractPlugin()]
 }
 
 const viewerConfig = {
@@ -92,7 +92,7 @@ const viewerConfig = {
 		katex: 'katex',
 		Common: 'Common'
 	},
-	plugins: [new MiniCssExtractPlugin('[name].css')]
+	plugins: [new MiniCssExtractPlugin()]
 }
 
 const mainConfig = {
@@ -198,7 +198,7 @@ const mainConfig = {
 		Common: 'Common',
 		Viewer: 'Viewer'
 	},
-	plugins: [new MiniCssExtractPlugin('[name].css')],
+	plugins: [new MiniCssExtractPlugin()],
 	resolve: {
 		alias: {
 			styles: path.join(__dirname, 'src', 'scss')
