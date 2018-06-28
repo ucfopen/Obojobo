@@ -4,7 +4,6 @@ global.oboRequire = name => {
 const path = require('path')
 const MiniCssExtractPlugin = require('mini-css-extract-plugin')
 const getInstalledModules = require('./obo_get_installed_modules')
-console.log('wat')
 
 const optimize = process.env.NODE_ENV === 'production'
 const filename = optimize ? '[name].min' : '[name]'
@@ -17,6 +16,7 @@ const docEngineBasePath = path.join(
 console.log(`Building assets for ${optimize ? 'production' : 'development'}`)
 
 module.exports = {
+	mode: optimize ? 'production' : 'development',
 	target: 'web',
 	devServer: {
 		https: true,
@@ -52,5 +52,5 @@ module.exports = {
 		path: path.join(__dirname, 'public', 'compiled'),
 		filename: `${filename}.js`
 	},
-	plugins: [new MiniCssExtractPlugin(`${filename}.css`)]
+	plugins: [new MiniCssExtractPlugin({filename: `${filename}.css`})]
 }
