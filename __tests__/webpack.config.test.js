@@ -35,7 +35,7 @@ describe('Webpack', () => {
 	})
 
 	test('Webpack builds expected object', () => {
-		expect(webpack).toEqual({
+		expect(webpack(null, { mode: 'production' })).toEqual({
 			devServer: {
 				host: '127.0.0.1',
 				https: true,
@@ -62,8 +62,16 @@ describe('Webpack', () => {
 	})
 
 	test('setup requires middleware', () => {
-		webpack.devServer.setup({})
+		webpack(null, { mode: 'production' }).devServer.setup({})
 
 		expect(middleware).toHaveBeenCalled()
+	})
+
+	test('Webpack uses min filenames in production', () => {
+		expect(webpack(null, { mode: 'production' }).output).toHaveProperty('filename', '[name].min.js')
+	})
+
+	test('Webpack doesnt use min in development', () => {
+		expect(webpack(null, { mode: 'development' }).output).toHaveProperty('filename', '[name].js')
 	})
 })

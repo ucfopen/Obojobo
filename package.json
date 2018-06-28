@@ -21,8 +21,8 @@
 		"express:dev":
 			"DEBUG=obojobo_server:error,obojobo_server:warn,obojobo_server:info IS_WEBPACK=true nodemon ./node_modules/.bin/webpack-dev-server",
 		"express:prod": "pm2 start pm2_prod.yaml",
-		"assets": "NODE_ENV=production webpack -p",
-		"assets:dev": "webpack",
+		"assets": "webpack --mode production --optimize-minimize",
+		"assets:dev": "webpack --mode development",
 		"devDocEngine:start": "cd ./node_modules/obojobo-draft-document-engine && yarn start",
 		"devDocEngine:setup": "yarn devDocEngine:clone && yarn devDocEngine:nodemodules",
 		"devDocEngine:clone":
