@@ -1,4 +1,4 @@
-@import 'bourbon';
+@import '_bourbon';
 
 $color-action: #6714bd;
 $color-action-minor: desaturate(lighten($color-action, 30%), 40%);
