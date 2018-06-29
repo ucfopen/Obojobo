@@ -17,8 +17,9 @@
 		"sampleDraft:watch": "node ./bin/sample_draft.js watch",
 		"express:dev": "DEBUG=obojobo_server:error,obojobo_server:warn,obojobo_server:info IS_WEBPACK=true nodemon ./node_modules/.bin/webpack-dev-server",
 		"express:prod": "pm2 start pm2_prod.yaml",
-		"assets": "NODE_ENV=production webpack -p",
-		"assets:dev": "webpack",
+		"assets": "yarn assets:docEngine && webpack --mode production --optimize-minimize",
+		"assets:dev": "yarn assets:docEngine && webpack --mode development",
+		"assets:docEngine": "cd node_modules/obojobo-draft-document-engine && yarn install && yarn build",
 		"devDocEngine:start": "cd ./node_modules/obojobo-draft-document-engine && yarn start",
 		"devDocEngine:setup": "yarn devDocEngine:clone && yarn devDocEngine:nodemodules",
 		"devDocEngine:clone": "git clone https://github.com/ucfcdl/Obojobo-Document-Engine.git devsrc/obojobo-draft-document-engine || echo 'already cloned'",
@@ -32,12 +33,13 @@
 		"test": "TZ='America/New_York' jest",
 		"test:ci": "TZ='America/New_York' CI=true jest --ci --coverage --coverageReporters text-summary cobertura",
 		"lint": "eslint .",
-		"precommit": "yarn test:ci && lint-staged",
+		"precommit": "lint-staged && yarn test:ci",
 		"prettier:run": "prettier --write '{__{tests,mocks}__,bin,config,migrations,models,routes,views}/**/*.{js,scss}'",
 		"prettier:debug": "prettier -l '{__{tests,mocks}__,bin,config,migrations,models,routes,views}/**/*.{js,scss}'"
 	},
 	"engines": {
-		"node": "^6.9.4"
+		"yarn": "^1.0",
+		"node": "^10.4.1"
 	},
 	"lint-staged": {
 		"{__{tests,mocks}__,bin,config,migrations,models,routes,views}/**/*.{js,scss}": [
@@ -61,7 +63,6 @@
 		"debug": "~2.2.0",
 		"debug-logger": "^0.4.1",
 		"ejs": "^2.5.7",
-		"eslint": "^4.19.1",
 		"eventemitter": "^0.3.3",
 		"express": "~4.14.0",
 		"express-ims-lti": "https://github.com/ucfcdl/express-ims-lti.git#20e4f025cf498b31bd21a981fe1af0707d2028b5",
@@ -70,7 +71,7 @@
 		"json-inflector": "^1.1.0",
 		"moment": "^2.18.0",
 		"morgan": "~1.7.0",
-		"obojobo-draft-document-engine": "https://github.com/ucfcdl/Obojobo-Document-Engine.git#v1.0.1",
+		"obojobo-draft-document-engine": "https://github.com/ucfcdl/Obojobo-Document-Engine.git#dev/4-amethyst",
 		"obojobo-draft-xml-parser": "https://github.com/ucfcdl/Obojobo-Docment-XML-Parser.git#v0.3.0",
 		"pg-promise": "^5.5.0",
 		"serve-favicon": "~2.3.0"
@@ -80,23 +81,24 @@
 		"babel-preset-env": "^1.5.1",
 		"concurrently": "^3.5.0",
 		"css-loader": "^0.28.1",
-		"eslint": "^3.18.0",
+		"eslint": "^4.19.1",
 		"eslint-config-standard": "^11.0.0",
 		"eslint-plugin-import": "^2.11.0",
 		"eslint-plugin-node": "^6.0.1",
 		"eslint-plugin-promise": "^3.7.0",
 		"eslint-plugin-standard": "^3.1.0",
-		"extract-text-webpack-plugin": "^2.1.0",
 		"husky": "^0.13.3",
 		"jest": "^23.2.0",
 		"lint-staged": "^6.1.1",
+		"mini-css-extract-plugin": "^0.4.0",
 		"nodemon": "^1.12.1",
 		"on-build-webpack": "^0.1.0",
 		"prettier": "1.11.1",
 		"style-loader": "^0.17.0",
-		"webpack": "^2.4.1",
-		"webpack-dev-middleware": "^1.10.2",
-		"webpack-dev-server": "^2.7.1"
+		"webpack": "^4.12.0",
+		"webpack-cli": "^3.0.8",
+		"webpack-dev-middleware": "^3.1.3",
+		"webpack-dev-server": "^3.1.4"
 	},
 	"nodemonConfig": {
 		"ext": "js pug",
@@ -135,6 +137,14 @@
 		],
 		"modulePathIgnorePatterns": [
 			"<rootDir>/devsrc"
-		]
+		],
+		"coverageThreshold": {
+			"global": {
+				"branches": 100,
+				"functions": 100,
+				"lines": 100,
+				"statements": 100
+			}
+		}
 	}
 }

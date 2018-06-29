@@ -1,14 +1,10 @@
-import fs from 'fs'
-import ltiMiddleware from 'express-ims-lti'
-import logger from '../logger'
-
 jest.mock('fs')
 jest.mock('../dev_nonce_store')
-jest.mock('express-ims-lti')
 jest.mock('../logger')
-jest.mock('express-ims-lti', () => {
-	return jest.fn()
-})
+jest.mock('ims-lti')
+
+import fs from 'fs'
+import logger from '../logger'
 
 let oboLtiMiddleware
 
@@ -30,11 +26,6 @@ describe('Middleware Abstraction', () => {
 		}`)
 		global.EXPIRE_IN_SEC = ''
 
-		ltiMiddleware.mockImplementationOnce(obj => {
-			return key => {
-				obj.credentials(key, jest.fn())
-			}
-		})
 		oboLtiMiddleware = require('../obo_ims_lti')
 	})
 	afterAll(() => {
@@ -45,14 +36,30 @@ describe('Middleware Abstraction', () => {
 	})
 
 	test('Middleware loads as expected', () => {
-		oboLtiMiddleware('mockKey')
+		const mockNext = jest.fn()
+		const mockReq = {
+			method: 'POST',
+			body: {
+				lti_message_type: 'basic-lti-launch-request',
+				oauth_consumer_key: 'mockKey'
+			}
+		}
+		oboLtiMiddleware(mockReq, {}, mockNext)
 
 		expect(logger.error).not.toHaveBeenCalled()
 	})
 
 	test('Middleware loads with no secret', () => {
-		oboLtiMiddleware('mockNotKey')
+		const mockNext = jest.fn()
+		const mockReq = {
+			method: 'POST',
+			body: {
+				lti_message_type: 'basic-lti-launch-request',
+				oauth_consumer_key: 'mockNotKey'
+			}
+		}
+		oboLtiMiddleware(mockReq, {}, mockNext)
 
-		expect(logger.error).toHaveBeenCalledWith('LTI unable to find secret for key')
+		expect(logger.error).toHaveBeenCalled()
 	})
 })

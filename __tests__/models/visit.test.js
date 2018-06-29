@@ -2,6 +2,7 @@ jest.mock('../../db')
 jest.mock('../../logger')
 
 import Visit from '../../models/visit'
+import logger from '../../logger'
 
 const db = oboRequire('db')
 
@@ -11,7 +12,7 @@ describe('Visit Model', () => {
 	})
 
 	test('constructor builds expected values', () => {
-		let visit = new Visit({ mockKey: 'mockValue', mockSecond: 'mockVal' })
+		const visit = new Visit({ mockKey: 'mockValue', mockSecond: 'mockVal' })
 
 		expect(visit).toHaveProperty('mockKey', 'mockValue')
 		expect(visit).toHaveProperty('mockSecond', 'mockVal')
@@ -33,13 +34,20 @@ describe('Visit Model', () => {
 		})
 	})
 
-	test('fetchById logs errors', () => {
+	test('fetchById logs errors', done => {
+		expect.assertions(2)
 		db.one.mockRejectedValueOnce(new Error('mockError'))
 
-		Visit.fetchById('mockVisitId').then(result => {
-			expect(logger.error).toHaveBeenCalledWith('Visit fetchById Error', 'mockError')
-			expect(result).toEqual('mockError')
-		})
+		Visit.fetchById('mockVisitId')
+			.then(result => {
+				expect(result).toEqual('never reached')
+				done()
+			})
+			.catch(error => {
+				expect(logger.error).toHaveBeenCalledWith('Visit fetchById Error', 'mockError')
+				expect(error.message).toEqual('mockError')
+				done()
+			})
 	})
 
 	test('createVisit updates and inserts visit with expected values', () => {

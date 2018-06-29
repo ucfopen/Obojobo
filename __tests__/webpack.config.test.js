@@ -1,9 +1,22 @@
 import lti from '../lti'
 import middleware from '../middleware.default.js'
 
+jest.mock('fs', () =>
+	// Node 10 and Jest 23 and fs (used by 'mini-css-extract-plugin')
+	// die when running tests for mysterious reasons.
+	// Should remove this when we can get these packages to align!
+	// More info: https://github.com/facebook/jest/pull/6532/files
+	// And: https://github.com/facebook/jest/pull/6532
+	Object.assign({}, jest.genMockFromModule('fs'), {
+		ReadStream: require.requireActual('fs').ReadStream,
+		WriteStream: require.requireActual('fs').WriteStream,
+		dirname: require.requireActual('fs').dirname,
+		realpathSync: require.requireActual('fs').realpathSync
+	})
+)
 jest.mock('express')
 jest.mock('../obo_get_installed_modules')
-jest.mock('extract-text-webpack-plugin')
+jest.mock('mini-css-extract-plugin')
 jest.mock('../middleware.default.js', () => {
 	return jest.fn()
 })
@@ -22,7 +35,7 @@ describe('Webpack', () => {
 	})
 
 	test('Webpack builds expected object', () => {
-		expect(webpack).toEqual({
+		expect(webpack(null, { mode: 'production' })).toEqual({
 			devServer: {
 				host: '127.0.0.1',
 				https: true,
@@ -44,13 +57,21 @@ describe('Webpack', () => {
 	})
 
 	test('oboRequire requires named file', () => {
-		let thing = oboRequire('lti')
+		const thing = oboRequire('lti')
 		expect(thing).toEqual(lti)
 	})
 
 	test('setup requires middleware', () => {
-		webpack.devServer.setup({})
+		webpack(null, { mode: 'production' }).devServer.setup({})
 
 		expect(middleware).toHaveBeenCalled()
+	})
+
+	test('Webpack uses min filenames in production', () => {
+		expect(webpack(null, { mode: 'production' }).output).toHaveProperty('filename', '[name].min.js')
+	})
+
+	test('Webpack doesnt use min in development', () => {
+		expect(webpack(null, { mode: 'development' }).output).toHaveProperty('filename', '[name].js')
 	})
 })
