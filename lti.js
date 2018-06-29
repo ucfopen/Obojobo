@@ -479,8 +479,14 @@ let sendReplaceResultRequest = (outcomeService, score) => {
 // DB write methods
 //
 
-let insertReplaceResultEvent = (userId, draftId, launch, outcomeData, ltiResult) => {
-	insertEvent({
+let insertReplaceResultEvent = (
+	userId,
+	draftId,
+	launch,
+	outcomeData,
+	ltiResult
+) => {
+	return insertEvent({
 		action: 'lti:replaceResult',
 		actorTime: new Date().toISOString(),
 		payload: {

@@ -70,7 +70,7 @@ describe('api visits route', () => {
 		expect(mockRouterMethods.put).not.toBeCalled()
 	})
 
-	test('start fails without current user', () => {
+	test('/start fails without current user', () => {
 		expect.assertions(3)
 		mockReq.requireCurrentUser.mockRejectedValueOnce('not logged in')
 
@@ -81,7 +81,7 @@ describe('api visits route', () => {
 		})
 	})
 
-	test('start fails when theres no visit id in the request', () => {
+	test('/start fails when theres no visit id in the request', () => {
 		expect.assertions(3)
 		mockReq.requireCurrentUser.mockResolvedValueOnce(new User())
 		return startVisitRoute(mockReq, mockRes, mockNext).then(result => {
@@ -91,7 +91,7 @@ describe('api visits route', () => {
 		})
 	})
 
-	test('start fails when theres no matching visit', () => {
+	test('/start fails when theres no matching visit', () => {
 		expect.assertions(3)
 		mockReq.requireCurrentUser.mockResolvedValueOnce(new User())
 		mockReq.body = { draftId: 1, visitId: 9 }
@@ -105,7 +105,7 @@ describe('api visits route', () => {
 		})
 	})
 
-	test('start fails when theres no linked lti launch (when not in preview mode)', () => {
+	test('/start fails when theres no linked lti launch (when not in preview mode)', () => {
 		expect.assertions(3)
 		mockReq.requireCurrentUser.mockResolvedValueOnce(new User())
 		mockReq.body = { draftId: 1, visitId: 9 }
@@ -137,7 +137,7 @@ describe('api visits route', () => {
 		})
 	})
 
-	test('start fails when draft_content_ids do not match', () => {
+	test('/start fails when draft_content_ids do not match', () => {
 		expect.assertions(3)
 		mockReq.requireCurrentUser.mockResolvedValueOnce(new User())
 		mockReq.body = { visitId: 9, draftId: 1 }
@@ -173,7 +173,7 @@ describe('api visits route', () => {
 		})
 	})
 
-	test('start when draft_content_ids do not match in preview mode', () => {
+	test('/start fails when draft_content_ids do not match in preview mode', () => {
 		expect.assertions(4)
 		mockReq.requireCurrentUser.mockResolvedValueOnce(new User())
 		mockReq.body = { visitId: 9, draftId: 1 }
@@ -210,7 +210,7 @@ describe('api visits route', () => {
 		})
 	})
 
-	test('start fails when theres no outcome service url', () => {
+	test('/start fails when theres no outcome service url', () => {
 		expect.assertions(3)
 		mockReq.requireCurrentUser.mockResolvedValueOnce(new User())
 		mockReq.body = { visitId: 9, draftId: 1 }
@@ -245,7 +245,7 @@ describe('api visits route', () => {
 		})
 	})
 
-	test('start fails when theres no draft', () => {
+	test('/start fails when theres no draft', () => {
 		expect.assertions(3)
 		mockReq.requireCurrentUser.mockResolvedValueOnce(new User())
 		mockReq.body = { visitId: 9, draftId: 1 }
@@ -279,7 +279,7 @@ describe('api visits route', () => {
 		})
 	})
 
-	test('start yells internal:startVisit and respond with success', () => {
+	test('/start yells internal:startVisit and respond with success', () => {
 		expect.assertions(5)
 		mockReq.requireCurrentUser.mockResolvedValueOnce(new User())
 		mockReq.body = { draftId: 8, visitId: 9 }
@@ -334,9 +334,11 @@ describe('api visits route', () => {
 		})
 	})
 
-	test('start is also successful for a preview visit', () => {
+	test('/start is also successful for a preview visit', () => {
 		expect.assertions(5)
-		mockReq.requireCurrentUser.mockResolvedValueOnce(new User())
+		let user = new User()
+		user.canViewEditor = true
+		mockReq.requireCurrentUser.mockResolvedValueOnce(user)
 		mockReq.body = { draftId: 8, visitId: 9 }
 
 		// resolve db.one lookup of visit
