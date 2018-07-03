@@ -17,6 +17,8 @@ let app = express()
 let apiResponseDecorator = oboRequire('api_response_decorator')
 let loadBalancerHelperMiddleware = oboRequire('express_load_balancer_helper')
 let currentUserMiddleware = oboRequire('express_current_user')
+let currentDocumentMiddleware = oboRequire('express_current_document')
+let ltiLaunch = oboRequire('express_lti_launch')
 let registerChunks = oboRequire('express_register_chunks')
 let oboLtiMiddleware = oboRequire('obo_ims_lti')
 let viewerMiddleware = oboRequire('viewer_events')
@@ -26,6 +28,7 @@ app.on('mount', app => {
 	// =========== MIDDLEWARE ===========
 	app.use(loadBalancerHelperMiddleware)
 	app.use(currentUserMiddleware)
+	app.use(currentDocumentMiddleware)
 	app.use(oboLtiMiddleware)
 	app.use('/api', apiResponseDecorator)
 
